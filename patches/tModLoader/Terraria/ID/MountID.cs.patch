@@ -6,8 +6,7 @@
 +
  namespace Terraria.ID;
  
--public static class MountID
-+public class MountID
+ public static class MountID
  {
 +#if !TMLANALYZER
 -	public static class Sets
