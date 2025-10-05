@@ -6,11 +6,11 @@
 +
  namespace Terraria.ID;
  
- public static class MountID
+-public static class MountID
++public class MountID
  {
 +#if !TMLANALYZER
--	public static class Sets
-+	public static partial class Sets
+ 	public static class Sets
  	{
 -		public static SetFactory Factory = new SetFactory(Count);
 +		public static SetFactory Factory = new SetFactory(MountLoader.MountCount, nameof(MountID), Search);
