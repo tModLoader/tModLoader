@@ -702,8 +702,19 @@ public abstract class ModTile : ModBlockType
 	{
 	}
 
-
-	public virtual bool DrawCracks(SpriteBatch spriteBatch, int i, int j, int damage, int crackStyle, bool isAnimation, int animationTimeElapsed) {
+	/// <summary>
+	/// Allows you to draw custom tile hit "cracking" animations at this tile. Return false to preserve vanilla drawing, return false to stop vanilla drawing.
+	/// </summary>
+	/// <param name="spriteBatch"></param>
+	/// <param name="i">The x position in tile coordinates.</param>
+	/// <param name="j">The y position in tile coordinates.</param>
+	/// <param name="damage">The current damage value to the tile, determines the cracks visual stage.</param>
+	/// <param name="crackStyle">The crack style index from HitTile.data[].crackStyle</param>
+	/// <param name="isAnimation">Whether or not this call is for the initial hit animation.</param>
+	/// <param name="animationTimeElapsed">Time elapsed since the initial hit. Used to calculate animation (scale, opacity) progress.</param>
+	/// <returns></returns>
+	public virtual bool DrawCracks(SpriteBatch spriteBatch, int i, int j, int damage, int crackStyle, bool isAnimation, int animationTimeElapsed)
+	{
 		return false;
 	}
 
