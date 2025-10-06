@@ -91,11 +91,10 @@ public static class MonoModHooks
 			}
 			*/
 		};
-
-		// Issue, type Action<> is defined in an assembly not imported
-		TerrariaHooks.Logging.OnObsoleteHookSubscribed += (s) => {
-			Logging.tML.Debug($"OnObsoleteHookSubscribed {s}");
-		};
+		  
+		TerrariaHooks.Logging.OnObsoleteHookSubscribed += (MethodBase s) => {
+			Logging.tML.Debug($"OnObsoleteHookSubscribed {StringRep(s)}");
+		}; 
 
 		isInitialized = true;
 	}
