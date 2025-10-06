@@ -51,7 +51,7 @@ internal class BatchMetadataSetRunner
 		Directory.CreateDirectory(workingDirectory);
 		File.WriteAllLines($"{workingDirectory}/install.txt", publishedFileIds);
 
-		Console.WriteLine($"Workshop directory for Page #{currentPage} created");
+		Logging.tML.Info($"Workshop directory for Page #{currentPage} created");
 		return workingDirectory;
 	}
 
@@ -84,7 +84,7 @@ internal class BatchMetadataSetRunner
 			SteamWebWrapper.SetDeveloperMetadata(item.publishedId, item.metadata);
 			//SteamWebWrapper.SetKeyValueTags(publishedFileId, keyValueTags);
 
-			Console.WriteLine($"Metadata for Workshop Item {item.publishedId} has been updated");
+			Logging.tML.Info($"Metadata for Workshop Item {item.publishedId} has been updated");
 		}
 
 		// Free up disk drive space by cleaning out workshop items folder when complete

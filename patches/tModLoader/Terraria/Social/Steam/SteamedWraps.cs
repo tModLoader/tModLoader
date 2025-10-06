@@ -524,11 +524,6 @@ public static class SteamedWraps
 		{
 			void MarkDownloadComplete(DownloadItemResult_t result)
 			{
-				// https://github.com/rlabrecque/Steamworks.NET/issues/747
-				// can't check these fields since marshalling is broken. Hope and prayers instead
-				result.m_nPublishedFileId = publishId;
-				result.m_eResult = EResult.k_EResultOK;
-
 				Logging.tML.Debug($"Steam Download Callback: appId={result.m_unAppID}, fileId={result.m_nPublishedFileId} result={result.m_eResult}");
 
 				if (result.m_unAppID != ModLoader.Engine.Steam.TMLAppID_t || result.m_nPublishedFileId != publishId)

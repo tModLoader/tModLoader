@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using Terraria.ModLoader;
 
 namespace Terraria.Social.Steam;
 
@@ -46,13 +47,22 @@ internal class SteamCmdDownloaderInstance
 			FileName = SteamCMDPath
 		};
 
-		Console.WriteLine($"Starting SteamCmd Workshop Download Items...");
+		Logging.tML.Info($"Starting SteamCmd Workshop Download Items...");
 
 		var downloader = Process.Start(steamCmdStartInfo);
 		downloader.WaitForExit();
 
-		Console.WriteLine($"SteamCmd Workshop Download Items completed.");
+		// Check if all items were downloaded and log when it wasn't
+		var workshopFolder = GetActualModDownloadsWorkshopFolder();
+		foreach (var modPath in Directory.GetDirectories(workshopFolder)) {
+			var modId = Path.GetFileNameWithoutExtension(modPath);
 
-		return GetActualModDownloadsWorkshopFolder();
+			if (!publishIds.Contains(modId))
+				Logging.tML.Warn($"PublishID {modId} Failed to Download. Skipping metadata edits");
+		}
+
+		Logging.tML.Info($"SteamCmd Workshop Download Items completed for {modDownloadFolderPath}.");
+
+		return workshopFolder;
 	}
 }

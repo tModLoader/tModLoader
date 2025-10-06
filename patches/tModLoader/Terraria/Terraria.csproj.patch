@@ -8,7 +8,7 @@
  
  	<!-- General -->
  	<PropertyGroup>
-@@ -11,59 +_,95 @@
+@@ -11,60 +_,96 @@
  		<Company>Re-Logic</Company>
  		<Copyright>Copyright © 2022 Re-Logic</Copyright>
  		<RootNamespace>Terraria</RootNamespace>
@@ -112,11 +112,12 @@
  		<None Remove="Libraries/Windows/**" />
  		<None Remove="Libraries/XNA/**" />
  		<Content Include="Libraries/Native/**" CopyToOutputDirectory="PreserveNewest" />
+ 		<Content Include="Libraries/Steamworks.NET.AnyCPU.Windows/**" CopyToOutputDirectory="PreserveNewest" />
 +		<Content Include="release_extras/**" CopyToOutputDirectory="PreserveNewest" Link="%(RecursiveDir)%(Filename)%(Extension)" />
  	</ItemGroup>
  
  	<!-- Import tasks -->
-@@ -104,9 +_,13 @@
+@@ -105,9 +_,13 @@
  	<!-- Installs the build's output into the relevant game folder. -->
  	<Target Name="CopyToActualOutputDirectory" AfterTargets="Build">
  		<PropertyGroup>
@@ -131,7 +132,7 @@
  		<!-- Copy files systematically to output folder -->
  		<ItemGroup>
  			<BinFiles Include="$(TargetDir)**" />
-@@ -114,6 +_,7 @@
+@@ -115,6 +_,7 @@
  
  		<Message Text="Copying $(AssemblyName) to '$(_ActualOutputDirectory)'..." Importance="high" />
  		<Copy SourceFiles="@(BinFiles)" DestinationFolder="$(_ActualOutputDirectory)/%(RecursiveDir)" SkipUnchangedFiles="True" />
