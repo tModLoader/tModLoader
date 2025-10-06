@@ -53,8 +53,7 @@ namespace ExampleMod.Content.Tiles
 			if (Main.drawToScreen) {
 				drawOffset = Vector2.Zero;
 			}
-			Vector2 drawPos =
-				new Vector2(i * 16 - (int)Main.screenPosition.X, j * 16 - (int)Main.screenPosition.Y) + drawOffset;
+			Vector2 drawPos = new Vector2(i * 16 - (int)Main.screenPosition.X, j * 16 - (int)Main.screenPosition.Y) + drawOffset;
 
 			spriteBatch.Draw(
 				customCrackTexture,
