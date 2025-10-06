@@ -91,10 +91,11 @@ public static class MonoModHooks
 			}
 			*/
 		};
-		  
-		TerrariaHooks.Logging.OnObsoleteHookSubscribed += (MethodBase s) => {
-			Logging.tML.Debug($"OnObsoleteHookSubscribed {StringRep(s)}");
-		}; 
+		
+		TerrariaHooks.Logging.OnObsoleteHookSubscribed += (MethodBase method, Delegate modded) => {
+			var owner = modded.Method.DeclaringType.Assembly;
+			Logging.tML.Error($"The method {StringRep(method)} is Obsolete. It was hooked by the {StringRep(modded.Method)} method of {owner.GetName().Name}");
+		};
 
 		isInitialized = true;
 	}

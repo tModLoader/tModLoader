@@ -317,6 +317,7 @@ namespace MonoMod.RuntimeDetour.HookGen
                 if (LogObsoleteHookSubscribed != null) {
                     il.Emit(OpCodes.Ldtoken, methodRef);
                     il.Emit(OpCodes.Call, m_GetMethodFromHandle);
+                    il.Emit(OpCodes.Ldarg_0);
                     il.Emit(OpCodes.Call, LogObsoleteHookSubscribed);
                 }
                 il.Emit(OpCodes.Ret);
@@ -377,6 +378,12 @@ namespace MonoMod.RuntimeDetour.HookGen
             addIL.Body = new MethodBody(addIL);
             il = addIL.Body.GetILProcessor();
             if (obsolete) {
+                if (LogObsoleteHookSubscribed != null) {
+                    il.Emit(OpCodes.Ldtoken, methodRef);
+                    il.Emit(OpCodes.Call, m_GetMethodFromHandle);
+                    il.Emit(OpCodes.Ldarg_0);
+                    il.Emit(OpCodes.Call, LogObsoleteHookSubscribed);
+                }
                 il.Emit(OpCodes.Ret);
             }
             else {
@@ -658,15 +665,16 @@ namespace MonoMod.RuntimeDetour.HookGen
             // Generated on https://cecilifier.me/
             /*
             using System;
+            using System.Reflection;
 
             namespace TerrariaHooks {
                 public static class Logging
                 {
-                    public static Action<MethodBase> OnObsoleteHookSubscribed;
+                    public static Action<MethodBase, Delegate> OnObsoleteHookSubscribed;
 
-                    public static void LogObsoleteHookSubscribed(MethodBase methodBase) {
+                    public static void LogObsoleteHookSubscribed(MethodBase methodBase, Delegate methodDelegate) {
                         if(OnObsoleteHookSubscribed != null) {
-                            OnObsoleteHookSubscribed.Invoke(methodBase);
+                            OnObsoleteHookSubscribed.Invoke(methodBase, methodDelegate);
                         }
                     }
                 }
@@ -677,8 +685,9 @@ namespace MonoMod.RuntimeDetour.HookGen
             OutputModule.Types.Add(cls_Logging_0);
 
             OutputModule.ImportReference(modder.FindType("System.Reflection.MethodBase").Resolve());
+            OutputModule.ImportReference(modder.FindType("System.Delegate").Resolve());
 
-            var fld_OnObsoleteHookSubscribed_1 = new FieldDefinition("OnObsoleteHookSubscribed", FieldAttributes.Public | FieldAttributes.Static, OutputModule.ImportReference(modder.FindType("System.Action`1").Resolve().MakeGenericInstanceType(modder.FindType("System.Reflection.MethodBase").Resolve())));
+            var fld_OnObsoleteHookSubscribed_1 = new FieldDefinition("OnObsoleteHookSubscribed", FieldAttributes.Public | FieldAttributes.Static, OutputModule.ImportReference(modder.FindType("System.Action`2").Resolve().MakeGenericInstanceType(modder.FindType("System.Reflection.MethodBase").Resolve(), modder.FindType("System.Delegate").Resolve())));
             //var fld_OnObsoleteHookSubscribed_1 = new FieldDefinition("OnObsoleteHookSubscribed", FieldAttributes.Public | FieldAttributes.Static, OutputModule.ImportReference(typeof(System.Action<>)).MakeGenericInstanceType(OutputModule.TypeSystem.String)); // Generated code that causes assembly reference issue
 
             cls_Logging_0.Fields.Add(fld_OnObsoleteHookSubscribed_1);
@@ -689,9 +698,11 @@ namespace MonoMod.RuntimeDetour.HookGen
             md_LogObsoleteHookSubscribed_2.Body.InitLocals = true;
             var il_LogObsoleteHookSubscribed_3 = md_LogObsoleteHookSubscribed_2.Body.GetILProcessor();
 
-            //Parameters of 'public static void LogObsoleteHookSubscribed(MethodBase methodBase) {...'
+            //Parameters of 'public static void LogObsoleteHookSubscribed(MethodBase methodBase, Delegate methodDelegate) {...'
             var p_MethodBase_4 = new ParameterDefinition("methodBase", ParameterAttributes.None, OutputModule.ImportReference(modder.FindType("System.Reflection.MethodBase").Resolve()));
             md_LogObsoleteHookSubscribed_2.Parameters.Add(p_MethodBase_4);
+            var p_MethodDelegate_5 = new ParameterDefinition("methodDelegate", ParameterAttributes.None, OutputModule.ImportReference(modder.FindType("System.Delegate").Resolve()));
+            md_LogObsoleteHookSubscribed_2.Parameters.Add(p_MethodDelegate_5);
 
             LogObsoleteHookSubscribed = md_LogObsoleteHookSubscribed_2; // Store reference for later
 
@@ -705,10 +716,11 @@ namespace MonoMod.RuntimeDetour.HookGen
             il_LogObsoleteHookSubscribed_3.Emit(OpCodes.Brfalse, lbl_ElseEntryPoint_5);
             //if body
 
-            //OnObsoleteHookSubscribed.Invoke(methodBase);
+            //OnObsoleteHookSubscribed.Invoke(methodBase, methodDelegate);
             il_LogObsoleteHookSubscribed_3.Emit(OpCodes.Ldsfld, fld_OnObsoleteHookSubscribed_1);
             il_LogObsoleteHookSubscribed_3.Emit(OpCodes.Ldarg_0);
-            il_LogObsoleteHookSubscribed_3.Emit(OpCodes.Callvirt, OutputModule.ImportReference(TypeHelpers.ResolveMethod(typeof(System.Action<System.Reflection.MethodBase>), "Invoke", System.Reflection.BindingFlags.Default | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public, "System.Reflection.MethodBase")));
+            il_LogObsoleteHookSubscribed_3.Emit(OpCodes.Ldarg_1);
+            il_LogObsoleteHookSubscribed_3.Emit(OpCodes.Callvirt, OutputModule.ImportReference(TypeHelpers.ResolveMethod(typeof(System.Action<System.Reflection.MethodBase, System.Delegate>), "Invoke", System.Reflection.BindingFlags.Default | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public, "System.Reflection.MethodBase", "System.Delegate")));
             var lbl_ElseEnd_6 = il_LogObsoleteHookSubscribed_3.Create(OpCodes.Nop);
             il_LogObsoleteHookSubscribed_3.Append(lbl_ElseEntryPoint_5);
             il_LogObsoleteHookSubscribed_3.Append(lbl_ElseEnd_6);
