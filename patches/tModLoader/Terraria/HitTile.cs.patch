@@ -22,9 +22,9 @@
  			int animationTimeElapsed = data[j].animationTimeElapsed;
  			if (!((float)animationTimeElapsed >= 10f)) {
 +				/* Check if the current tile is a modded tile. */
-+				if (ModContent.GetModTile(tile.type) is { } modTile) {
++				if (TileLoader.GetTile(tile.type) is { } modTile) {
 +					/* If it is a modtile, custom drawing is handled and we should skip the rest of this loop for this tile. */
-+					if (modTile.DrawCracks(spriteBatch, x, y, damage, data[j].crackStyle)) {
++					if (modTile.DrawCracks(spriteBatch, x, y, damage, data[j].crackStyle, true, animationTimeElapsed)) {
 +						continue;
 +					}
 +				}

@@ -6739,8 +6739,8 @@
 +
 +			/* Check if the current tile is a modded tile. */
 +			if (crackType == 1 && currentTile.HasTile && TileLoader.GetTile(currentTile.TileType) is { } modTile) {
-+				/* If it is a modtile, custom drawing it handled and we should skip the rest of this loop for this tile. */
-+				if (modTile.DrawCracks(spriteBatch, x, y, damage, hitter.data[i].crackStyle)) {
++				/* If it is a modtile, custom drawing is handled and we should skip the rest of this loop for this tile. */
++				if (modTile.DrawCracks(spriteBatch, x, y, damage, hitter.data[i].crackStyle, false, 0)) {
 +					continue;
 +				}
 +			}

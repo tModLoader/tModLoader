@@ -703,7 +703,7 @@ public abstract class ModTile : ModBlockType
 	}
 
 
-	public virtual bool DrawCracks(SpriteBatch spriteBatch, int i, int j, int damage, int crackStyle) {
+	public virtual bool DrawCracks(SpriteBatch spriteBatch, int i, int j, int damage, int crackStyle, bool isAnimation, int animationTimeElapsed) {
 		return false;
 	}
 
