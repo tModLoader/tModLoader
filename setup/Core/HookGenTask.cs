@@ -80,7 +80,7 @@ namespace Terraria.ModLoader.Setup.Core
 				HookPrivate = true,
 			};
 
-			gen.GenerateObsoleteLogging();
+			gen.GenerateObsoleteLogging(mm);
 
 			foreach (var type in mm.Module.Types) {
 				cancellationToken.ThrowIfCancellationRequested();
@@ -115,7 +115,7 @@ namespace Terraria.ModLoader.Setup.Core
 			type.Namespace = type.Namespace[Math.Min(3, type.Namespace.Length)..];
 		}
 
-		private class ProgressReportingMonoModder : MonoModder
+		public class ProgressReportingMonoModder : MonoModder
 		{
 			private IWorkItemProgress progress;
 
