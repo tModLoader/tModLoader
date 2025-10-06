@@ -703,7 +703,7 @@ public abstract class ModTile : ModBlockType
 	}
 
 	/// <summary>
-	/// Allows you to draw custom tile hit "cracking" animations at this tile. Return false to preserve vanilla drawing, return false to stop vanilla drawing.
+	/// Allows you to draw custom tile hit "cracking" animations at this tile. Return false to preserve vanilla drawing, return true to stop vanilla drawing.
 	/// </summary>
 	/// <param name="spriteBatch"></param>
 	/// <param name="i">The x position in tile coordinates.</param>
