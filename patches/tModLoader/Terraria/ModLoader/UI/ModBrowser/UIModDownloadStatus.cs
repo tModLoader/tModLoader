@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 
 namespace Terraria.ModLoader.UI.ModBrowser;
@@ -16,6 +17,7 @@ public class UIModDownloadStatus : UIAnimatedImage
 
 	public UIModDownloadStatus() : base(Texture, 36, 36, 0, 0, 1, 5, 2)
 	{
+		ColorNotHovered = Color.White;
 		SetCurrentState(ModDownloadStatusState.Queued);
 	}
 

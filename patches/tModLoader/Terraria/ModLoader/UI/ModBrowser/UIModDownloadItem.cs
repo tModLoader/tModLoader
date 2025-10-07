@@ -333,6 +333,7 @@ internal class UIModDownloadItem : UIPanel
 	{
 		SoundEngine.PlaySound(SoundID.MenuTick);
 
+		// TODO: Decide if this should be the default
 		if (Main.keyState.PressingShift()) {
 			UIModBrowser.DownloadModsNoUI([ModDownload]);
 			return;

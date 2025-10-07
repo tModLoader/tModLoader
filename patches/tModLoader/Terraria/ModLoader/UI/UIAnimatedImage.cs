@@ -20,6 +20,9 @@ public class UIAnimatedImage : UIElement
 	public int FrameCount { get; set; } = 1;
 	public int TicksPerFrame { get; set; } = 5;
 
+	public Color ColorNotHovered { get; set; } = Color.Silver;
+	public Color ColorHovered { get; set; } = Color.White;
+
 	private int _tickCounter = 0;
 	private int _frameCounter = 0;
 
@@ -67,7 +70,7 @@ public class UIAnimatedImage : UIElement
 	protected override void DrawSelf(SpriteBatch spriteBatch)
 	{
 		CalculatedStyle dimensions = GetDimensions();
-		Color color = IsMouseHovering ? Color.White : Color.Silver;
+		Color color = IsMouseHovering ? ColorHovered : ColorNotHovered;
 		var frame = FrameStart + _frameCounter % FrameCount;
 		spriteBatch.Draw(_texture.Value, dimensions.ToRectangle(), FrameToRect(frame), color);
 	}

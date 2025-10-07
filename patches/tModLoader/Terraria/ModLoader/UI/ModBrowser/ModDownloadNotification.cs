@@ -32,8 +32,8 @@ public class ModDownloadNotification : IInGameNotification, IDownloadProgress
 				return MathHelper.Lerp(0f, 1f, timeLeft / 30f);
 			}
 
-			if (timeLeft > 285) {
-				return MathHelper.Lerp(1f, 0f, (timeLeft - 285) / 15f);
+			if (timeLeft > 165) {
+				return MathHelper.Lerp(1f, 0f, (timeLeft - 165) / 15f);
 			}
 
 			return 1f;
@@ -53,8 +53,12 @@ public class ModDownloadNotification : IInGameNotification, IDownloadProgress
 	public void Update()
 	{
 		animationTimer++;
-		if (!downloadItem.IsInstalled) // TODO: Sometimes this stays false somehow -> Fixed by calling ModOrganizer.LocalModsChanged
+
+		if (!downloadItem.IsInstalled) {
+			if (timeLeft > 120)
+				timeLeft--;
 			return;
+		}
 
 		timeLeft--;
 

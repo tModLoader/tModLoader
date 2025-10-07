@@ -507,7 +507,7 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 	internal static void DownloadModsNoUI(IEnumerable<ModDownloadItem> mods)
 	{
 		var set = mods.ToHashSet();
-		Interface.modBrowser.SocialBackend.GetDependenciesRecursive(set);
+		Interface.modBrowser.SocialBackend.GetDependenciesRecursive(set); // Causes a bit of lag
 
 		var fullList = ModDownloadItem.NeedsInstallOrUpdate(set).ToList();
 		if (!fullList.Any())
