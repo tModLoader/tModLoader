@@ -875,6 +875,11 @@ Mods: {
 				Tooltip: ""
 			}
 
+			ExampleTransparentShapedTileItem: {
+				DisplayName: Fiery Mesh
+				Tooltip: "'Touch this to BURN!!'"
+			}
+
 			ExampleAnimatedTileItem: {
 				DisplayName: Red Firefly in a Bottle
 				Tooltip: ""

@@ -1,16 +1,17 @@
-using log4net;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using log4net;
+using Newtonsoft.Json;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Config;
 using Terraria.ModLoader.Core;
 using Terraria.ModLoader.UI;
 using Terraria.Net;
+using Terraria.Social.Steam;
 using Terraria.UI;
 
 namespace Terraria.ModLoader;
@@ -85,6 +86,7 @@ public static class ModNet
 	private static Version IncompatiblePatchVersion = new(2022, 1, 1, 1);
 	private static Version? StableNetVersion { get; } = !(BuildInfo.IsStable || BuildInfo.IsPreview) ? null : IncompatiblePatchVersion.MajorMinor() == BuildInfo.tMLVersion.MajorMinor() ? IncompatiblePatchVersion : BuildInfo.tMLVersion.MajorMinorBuild();
 	internal static string NetVersionString { get; } = BuildInfo.versionedName + (StableNetVersion != null ? "!" + StableNetVersion : "");
+	internal static bool ModNetDownloadQueued => downloadQueue.Count > 0;
 	static ModNet()
 	{
 		if (Main.dedServ && StableNetVersion != null)
@@ -342,19 +344,36 @@ public static class ModNet
 
 	private static ReloadRequiredExplanation MakeDownloadModExplanation(LocalMod[] modFiles, ModHeader header, Mod clientMod)
 	{
+		WorkshopHelper.WorkshopSearchReturnState workshopSearchReturnState = WorkshopHelper.QueryHelper.AQueryInstance.TryGetModDownloadItem(header.name, out var workshopMod);
+
+		DownloadModRiskState riskState = workshopSearchReturnState switch {
+			WorkshopHelper.WorkshopSearchReturnState.NotFound => DownloadModRiskState.NotOnWorkshop,
+			WorkshopHelper.WorkshopSearchReturnState.Success when workshopMod.Banned => DownloadModRiskState.BannedOnWorkshop,
+			WorkshopHelper.WorkshopSearchReturnState.Success when workshopMod.Downloads < 1000 => DownloadModRiskState.LowSubscriberCount,
+			WorkshopHelper.WorkshopSearchReturnState.Success => DownloadModRiskState.AvailableOnWorkshop,
+			_ => DownloadModRiskState.UnableToVerify
+		};
+
+		if (riskState == DownloadModRiskState.LowSubscriberCount || riskState == DownloadModRiskState.AvailableOnWorkshop){
+			if (!workshopMod.DevMetadata.modVersionHashes.Any(x => x.GetHash().SequenceEqual(header.hash))) {
+				// Mod doesn't match any hash on workshop. Either a dev build or custom build by host.
+				riskState = DownloadModRiskState.HashDiffersFromWorkshop;
+			}
+		}
+
 		if (modFiles.FirstOrDefault(mod => header.MatchesNameAndVersion(mod.modFile)) is LocalMod localMod) {
 			// We have the correct mod and version, but hash is different.
 			// We could differentiate between a workshop mod being different and a local mod, which is likely because user is mod dev or playtester.
 			//if(localMod.location == ModLocation.Workshop)
 			//	reloadRequiredExplanationEntries.Add(new Reason(1, header.name, $"[c/00BFFF:Download] v{header.version} ({string.Concat(header.hash[..4].Select(b => b.ToString("x2")))}) from server\n[c/ff0000:(Mod differs from local copy, it may have been edited!)]", localMod));
 			//else
-			return new ReloadRequiredExplanation(1, header.name, localMod, Language.GetTextValue("tModLoader.ReloadRequiredExplanationDownloadHashDiffers", "00BFFF", header.version, string.Concat(header.hash[..4].Select(b => b.ToString("x2")))));
+			return new ReloadRequiredExplanation(1, header.name, localMod, Language.GetTextValue("tModLoader.ReloadRequiredExplanationDownloadHashDiffers", "00BFFF", header.version, string.Concat(header.hash[..4].Select(b => b.ToString("x2")))), riskState: riskState);
 		}
 		else {
 			LocalMod localModMatchingNameOnly = modFiles.Where(mod => mod.Name == header.name).OrderByDescending(mod => mod.Version).FirstOrDefault(); // Technically might show mod icon from .tmod file that won't be selected to load, but this is fine.
 			if (localModMatchingNameOnly == null) {
 				// We don't have the mod.
-				return new ReloadRequiredExplanation(1, header.name, null, Language.GetTextValue("tModLoader.ReloadRequiredExplanationDownload", "00BFFF", header.version));
+				return new ReloadRequiredExplanation(1, header.name, null, Language.GetTextValue("tModLoader.ReloadRequiredExplanationDownload", "00BFFF", header.version), riskState: riskState);
 			}
 			else {
 				if (clientMod != null) {
@@ -367,15 +386,15 @@ public static class ModNet
 
 						// If workshop mod exists but local mod is loaded: The local mod will downgrade, the lower version will load temporarily, but the user will be permanently downgraded to the workshop version. That's a bit confusing to communicate and extremely rare, and would only happen with mod devs, not worth worrying about.
 
-						return new ReloadRequiredExplanation(1, header.name, localModMatchingNameOnly, Language.GetTextValue(downgradeIsTemporary ? "tModLoader.ReloadRequiredExplanationDownloadDowngradeTemporary" : "tModLoader.ReloadRequiredExplanationDownloadDowngrade", "00BFFF", header.version, clientMod.Version));
+						return new ReloadRequiredExplanation(1, header.name, localModMatchingNameOnly, Language.GetTextValue(downgradeIsTemporary ? "tModLoader.ReloadRequiredExplanationDownloadDowngradeTemporary" : "tModLoader.ReloadRequiredExplanationDownloadDowngrade", "00BFFF", header.version, clientMod.Version), riskState: riskState);
 					}
 					else {
-						return new ReloadRequiredExplanation(1, header.name, localModMatchingNameOnly, Language.GetTextValue("tModLoader.ReloadRequiredExplanationDownloadUpgrade", "00BFFF", header.version, clientMod.Version));
+						return new ReloadRequiredExplanation(1, header.name, localModMatchingNameOnly, Language.GetTextValue("tModLoader.ReloadRequiredExplanationDownloadUpgrade", "00BFFF", header.version, clientMod.Version), riskState: riskState);
 					}
 				}
 				else {
 					// We have the mod, but not the correct version.
-					return new ReloadRequiredExplanation(1, header.name, localModMatchingNameOnly, Language.GetTextValue("tModLoader.ReloadRequiredExplanationDownload", "00BFFF", header.version));
+					return new ReloadRequiredExplanation(1, header.name, localModMatchingNameOnly, Language.GetTextValue("tModLoader.ReloadRequiredExplanationDownload", "00BFFF", header.version), riskState: riskState);
 				}
 			}
 		}

@@ -22,15 +22,26 @@ public sealed class ChangeMagicNumberToIDUnitTest
 			item.rare = [|-1|];
 			item.rare = [|4|];
 			item.useTime = 69;
+
 			var player = new Player();
 			player.cursorItemIconID = [|327|];
 			player.cursorItemIconID = -1;
+
+			var mount = new Mount();
+			if (mount.Type != [|12|])
+			{
+				if (mount._data.buff != [|168|] || mount.BuffType != [|168|])
+				{
+					item.buffType = [|168|];
+					item.mountType = [|12|];
+				}
+			}
 
 			Terraria.ModLoader.ModTile modTile = null;
 			modTile.DustType = [|1|];
 			Terraria.ModLoader.ModWall modWall = null;
 			modWall.DustType = [|2|];
-			
+
 			var tile = Main.tile[10, 20];
 			tile.TileType = [|490|];
 			tile.WallType = [|276|];
@@ -54,7 +65,7 @@ public sealed class ChangeMagicNumberToIDUnitTest
 			"""
 			using Terraria;
 			using Terraria.ID;
-			
+
 			var item = new Item();
 			item.createTile = TileID.HangingLanterns;
 			item.type = ItemID.Shuriken;
@@ -63,9 +74,20 @@ public sealed class ChangeMagicNumberToIDUnitTest
 			item.rare = ItemRarityID.Gray;
 			item.rare = ItemRarityID.LightRed;
 			item.useTime = 69;
+
 			var player = new Player();
 			player.cursorItemIconID = ItemID.GoldenKey;
 			player.cursorItemIconID = -1;
+
+			var mount = new Mount();
+			if (mount.Type != MountID.CuteFishron)
+			{
+				if (mount._data.buff != BuffID.CuteFishronMount || mount.BuffType != BuffID.CuteFishronMount)
+				{
+					item.buffType = BuffID.CuteFishronMount;
+					item.mountType = MountID.CuteFishron;
+				}
+			}
 
 			Terraria.ModLoader.ModTile modTile = null;
 			modTile.DustType = DustID.Stone;
@@ -78,16 +100,16 @@ public sealed class ChangeMagicNumberToIDUnitTest
 			tile.TileColor = PaintID.RedPaint;
 			tile.WallColor = PaintID.RedPaint;
 			tile.LiquidType = LiquidID.Lava;
-			
+
 			var projectile = new Projectile();
 			projectile.aiStyle = ProjAIStyleID.Arrow;
 
 			Terraria.ModLoader.ModProjectile modProjectile = null;
 			modProjectile.AIType = ProjectileID.MagicDagger;
-			
+
 			var npc = new NPC();
 			npc.aiStyle = NPCAIStyleID.Jellyfish;
-			
+
 			Terraria.ModLoader.ModNPC modNPC = null;
 			modNPC.AIType = NPCID.GreenJellyfish;
 			modNPC.AnimationType = NPCID.PinkJellyfish;
@@ -108,7 +130,7 @@ public sealed class ChangeMagicNumberToIDUnitTest
 			"""
 			using Terraria;
 			using Terraria.ID;
-			
+
 			_ = new Item().type == ItemID.IronPickaxe;
 			_ = new Projectile().type == ProjectileID.Xenopopper;
 			_ = Main.tile[10, 20].TileType == TileID.Gold; // ref property
@@ -123,35 +145,105 @@ public sealed class ChangeMagicNumberToIDUnitTest
 			using Microsoft.Xna.Framework;
 			using Terraria;
 			using Terraria.ID;
+			using Terraria.DataStructures;
 
 			var recipe = Recipe.Create([|420|]);
 			recipe.AddTile([|412|]);
 			recipe.AddIngredient([|430|]);
 			NetMessage.SendData(number: 42, number2: 42, number5: 42, msgType: [|42|]);
 			Projectile.NewProjectile(Main.LocalPlayer.GetSource_FromThis(), Main.LocalPlayer.Top, new Vector2(0, -Main.rand.NextFloat(2f, 4f)).RotatedByRandom(0.3f), [|60|], 0, 0, Main.myPlayer);
-			new Item().CloneDefaults([|5450|]);
+
+			var item = new Item();
+			item.CloneDefaults([|5450|]);
+			item.netDefaults([|42|]);
+			item.SetDefaults([|42|]);
+			item.SetDefaults([|42|], true, null);
 			Dust.NewDust(Vector2.Zero, 1, 2, [|3|], 4, 5, 6, Color.Red, 7);
 			Dust.NewDustDirect(Vector2.Zero, 1, 2, [|75|], 4, 5);
 			Dust.NewDustPerfect(Vector2.Zero, [|76|]);
-			new Player().AddBuff([|20|], 120);
-			new NPC().AddBuff([|24|], 120, true);
+
+			var player = new Player();
+			player.AddBuff([|20|], 120);
+			player.ClearBuff([|20|]);
+			player.FindBuffIndex([|20|]);
+			player.HasBuff([|20|]);
+			player.CountItem([|42|]);
+			player.ConsumeItem([|42|]);
+			player.FindItem([|42|], []);
+			player.FindItemInInventoryOrOpenVoidBag([|42|], out _);
+			player.HasItem([|42|]);
+			player.HasItem([|42|], []);
+			player.HasItemInInventoryOrOpenVoidBag([|42|]);
+			player.HasItemInAnyInventory([|42|]);
+			player.OpenBossBag([|42|]);
+			player.PutItemInInventoryFromItemUsage([|42|]);
+			player.StatusToNPC([|42|], 0);
+			player.StatusToPlayerPvP([|42|], 0);
+			player.PutItemInInventoryFromItemUsage([|42|]);
+			var entitySource = new EntitySource_ItemOpen(player, item.type);
+			player.QuickSpawnItem(entitySource, [|42|], 1);
+			player.QuickSpawnItemDirect(entitySource, [|42|], 1);
+			player.isNearNPC([|1|]);
+
+			var npc = new NPC();
+			npc.AddBuff([|24|], 120, true);
+			npc.FindBuffIndex([|24|]);
+			npc.HasBuff([|24|]);
+			NPC.NewNPC(entitySource, 0, 0, [|1|], 0, 0, 0, 0, 0, 0);
+			NPC.NewNPCDirect(entitySource, 0, 0, [|1|], 0, 0, 0, 0, 0, 0);
+			NPC.NewNPCDirect(entitySource, new Vector2(0, 0), [|1|], 0, 0, 0, 0, 0, 0);
 			""",
 			"""
 			using Microsoft.Xna.Framework;
 			using Terraria;
 			using Terraria.ID;
-			
+			using Terraria.DataStructures;
+
 			var recipe = Recipe.Create(ItemID.CobaltBrickWall);
 			recipe.AddTile(TileID.LunarCraftingStation);
 			recipe.AddIngredient(ItemID.PurpleTorch);
 			NetMessage.SendData(number: 42, number2: 42, number5: 42, msgType: MessageID.PlayerMana);
 			Projectile.NewProjectile(Main.LocalPlayer.GetSource_FromThis(), Main.LocalPlayer.Top, new Vector2(0, -Main.rand.NextFloat(2f, 4f)).RotatedByRandom(0.3f), ProjectileID.MythrilDrill, 0, 0, Main.myPlayer);
-			new Item().CloneDefaults(ItemID.RainbowMossBlockWall);
+
+			var item = new Item();
+			item.CloneDefaults(ItemID.RainbowMossBlockWall);
+			item.netDefaults(ItemID.Shuriken);
+			item.SetDefaults(ItemID.Shuriken);
+			item.SetDefaults(ItemID.Shuriken, true, null);
 			Dust.NewDust(Vector2.Zero, 1, 2, DustID.GrassBlades, 4, 5, 6, Color.Red, 7);
 			Dust.NewDustDirect(Vector2.Zero, 1, 2, DustID.CursedTorch, 4, 5);
 			Dust.NewDustPerfect(Vector2.Zero, DustID.Snow);
-			new Player().AddBuff(BuffID.Poisoned, 120);
-			new NPC().AddBuff(BuffID.OnFire, 120, true);
+
+			var player = new Player();
+			player.AddBuff(BuffID.Poisoned, 120);
+			player.ClearBuff(BuffID.Poisoned);
+			player.FindBuffIndex(BuffID.Poisoned);
+			player.HasBuff(BuffID.Poisoned);
+			player.CountItem(ItemID.Shuriken);
+			player.ConsumeItem(ItemID.Shuriken);
+			player.FindItem(ItemID.Shuriken, []);
+			player.FindItemInInventoryOrOpenVoidBag(ItemID.Shuriken, out _);
+			player.HasItem(ItemID.Shuriken);
+			player.HasItem(ItemID.Shuriken, []);
+			player.HasItemInInventoryOrOpenVoidBag(ItemID.Shuriken);
+			player.HasItemInAnyInventory(ItemID.Shuriken);
+			player.OpenBossBag(ItemID.Shuriken);
+			player.PutItemInInventoryFromItemUsage(ItemID.Shuriken);
+			player.StatusToNPC(ItemID.Shuriken, 0);
+			player.StatusToPlayerPvP(ItemID.Shuriken, 0);
+			player.PutItemInInventoryFromItemUsage(ItemID.Shuriken);
+			var entitySource = new EntitySource_ItemOpen(player, item.type);
+			player.QuickSpawnItem(entitySource, ItemID.Shuriken, 1);
+			player.QuickSpawnItemDirect(entitySource, ItemID.Shuriken, 1);
+			player.isNearNPC(NPCID.BlueSlime);
+
+			var npc = new NPC();
+			npc.AddBuff(BuffID.OnFire, 120, true);
+			npc.FindBuffIndex(BuffID.OnFire);
+			npc.HasBuff(BuffID.OnFire);
+			NPC.NewNPC(entitySource, 0, 0, NPCID.BlueSlime, 0, 0, 0, 0, 0, 0);
+			NPC.NewNPCDirect(entitySource, 0, 0, NPCID.BlueSlime, 0, 0, 0, 0, 0, 0);
+			NPC.NewNPCDirect(entitySource, new Vector2(0, 0), NPCID.BlueSlime, 0, 0, 0, 0, 0, 0);
 			""");
 	}
 
@@ -170,7 +262,7 @@ public sealed class ChangeMagicNumberToIDUnitTest
 			"""
 			using Terraria;
 			using Terraria.ID;
-			
+
 			switch (new NPC().type) {
 				case NPCID.NebulaBrain:
 					break;
@@ -194,13 +286,14 @@ public sealed class ChangeMagicNumberToIDUnitTest
 			TileID.Sets.Conversion.Sand[[|461|]] = true;
 			WallID.Sets.Transparent[[|12|]] = true;
 			WallID.Sets.Conversion.Grass[[|65|]] = true;
+			MountID.Sets.Cart[[|12|]] = true;
 			_ = TextureAssets.Extra[[|98|]].Value;
 			""",
 			"""
 			using Terraria;
 			using Terraria.GameContent;
 			using Terraria.ID;
-			
+
 			ItemID.Sets.StaffMinionSlotsRequired[ItemID.SlimeStaff] = 2f;
 			NPCID.Sets.MustAlwaysDraw[NPCID.WallofFleshEye] = true;
 			ProjectileID.Sets.TrailingMode[ProjectileID.CrystalStorm] = 1;
@@ -208,6 +301,7 @@ public sealed class ChangeMagicNumberToIDUnitTest
 			TileID.Sets.Conversion.Sand[TileID.SandDrip] = true;
 			WallID.Sets.Transparent[WallID.CopperBrick] = true;
 			WallID.Sets.Conversion.Grass[WallID.FlowerUnsafe] = true;
+			MountID.Sets.Cart[MountID.CuteFishron] = true;
 			_ = TextureAssets.Extra[ExtrasID.SharpTears].Value;
 			""");
 	}

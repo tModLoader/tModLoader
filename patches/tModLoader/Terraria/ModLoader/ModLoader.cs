@@ -10,6 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using ReLogic.Content;
 using ReLogic.OS;
+using Terraria.GameContent.Liquid;
 using Terraria.Initializers;
 using Terraria.Localization;
 using Terraria.ModLoader.Assets;
@@ -382,6 +383,8 @@ public static class ModLoader
 		Main.Configuration.Put(nameof(LatestNewsTimestamp), LatestNewsTimestamp);
 		Main.Configuration.Put(nameof(WarnedFamilyShareDontShowAgain), WarnedFamilyShareDontShowAgain);
 		Main.Configuration.Put(nameof(ModsMenuSortMode), Enum.GetName(typeof(ModsMenuSortMode), Interface.modsMenu.sortMode));
+
+		Main.Configuration.Put("LiquidSlopeFix", LiquidEdgeRenderer.Enabled);
 	}
 
 	internal static void LoadConfiguration()
@@ -412,6 +415,8 @@ public static class ModLoader
 		Main.Configuration.Get(nameof(WarnedFamilyShareDontShowAgain), ref WarnedFamilyShareDontShowAgain);
 		if (Enum.TryParse<ModsMenuSortMode>(Main.Configuration.Get(nameof(ModsMenuSortMode), ModsMenuSortMode.RecentlyUpdated.ToString()), out var modsMenuSortMode))
 			Interface.modsMenu.sortMode = modsMenuSortMode;
+
+		Main.Configuration.Get("LiquidSlopeFix", ref LiquidEdgeRenderer.Enabled);
 	}
 
 	internal static void MigrateSettings()

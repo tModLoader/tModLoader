@@ -1,0 +1,35 @@
+--- src/TerrariaNetCore/ReLogic/OS/Linux/Clipboard.cs
++++ src/tModLoader/ReLogic/OS/Linux/Clipboard.cs
+@@ -8,6 +_,8 @@
+ {
+ 	protected override string GetClipboard()
+ 	{
++		return SDL2.SDL.SDL_GetClipboardText();
++		/*
+ 		try {
+ 			string result;
+ 			using (Process process = new Process()) {
+@@ -26,6 +_,7 @@
+ 		catch (Exception) {
+ 			return "";
+ 		}
++		*/
+ 	}
+ 
+ 	private void ClearClipboard()
+@@ -47,6 +_,8 @@
+ 
+ 	protected override void SetClipboard(string text)
+ 	{
++		SDL2.SDL.SDL_SetClipboardText(text);
++		/*
+ 		if (text == "") {
+ 			ClearClipboard();
+ 			return;
+@@ -67,5 +_,6 @@
+ 		}
+ 		catch (Exception) {
+ 		}
++		*/
+ 	}
+ }

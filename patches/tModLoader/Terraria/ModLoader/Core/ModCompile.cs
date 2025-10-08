@@ -79,7 +79,17 @@ internal class ModCompile
 	public static bool activelyModding;
 	internal static DateTime recentlyBuiltModCheckTimeCutoff = DateTime.Now - TimeSpan.FromSeconds(60);
 
-	public static bool DeveloperMode => Debugger.IsAttached || FindModSources().Length > 0;
+	private static bool? _developerMode;
+	public static bool DeveloperMode => _developerMode ??= CheckDeveloperMode();
+	private static bool CheckDeveloperMode()
+	{
+		if (Debugger.IsAttached || Program.LaunchParameters.ContainsKey("-build") || FindModSources().Length > 0) {
+			Logging.tML.Info("Developer mode enabled");
+			return true;
+		}
+
+		return false;
+	}
 
 	private static readonly string tMLDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 	private static readonly string oldModReferencesPath = Path.Combine(Program.SavePath, "references");
