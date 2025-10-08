@@ -2847,6 +2847,15 @@
  		if (soundDelay > 0)
  			soundDelay--;
  
+@@ -72639,7 +_,7 @@
+ 			}
+ 		}
+ 
+-		if (Main.netMode != 1 && !noTileCollide && lifeMax > 1 && Collision.SwitchTiles(position, width, height, oldPosition, 2) && (type == 46 || type == 148 || type == 149 || type == 303 || type == 361 || type == 362 || type == 364 || type == 366 || type == 367 || (type >= 442 && type <= 448) || type == 602 || type == 608 || type == 614 || type == 687)) {
++		if (Main.netMode != 1 && !noTileCollide && lifeMax > 1 && Collision.SwitchTiles(this, position, width, height, oldPosition, 2) && (type == 46 || type == 148 || type == 149 || type == 303 || type == 361 || type == 362 || type == 364 || type == 366 || type == 367 || (type >= 442 && type <= 448) || type == 602 || type == 608 || type == 614 || type == 687)) {
+ 			ai[0] = 1f;
+ 			ai[1] = 400f;
+ 			ai[2] = 0f;
 @@ -72653,19 +_,21 @@
  		justHit = false;
  	}

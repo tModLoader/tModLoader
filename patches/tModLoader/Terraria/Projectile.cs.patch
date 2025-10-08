@@ -1304,6 +1304,15 @@
  			}
  
  			if (minion && numUpdates == -1 && type != 625 && type != 628) {
+@@ -12800,7 +_,7 @@
+ 			}
+ 
+ 			if (Main.netMode != 1 && (type == 99 || type == 1013 || type == 655 || type == 727 || type == 1014 || type == 1021))
+-				Collision.SwitchTiles(position, width, height, oldPosition, 3);
++				Collision.SwitchTiles(this, position, width, height, oldPosition, 3);
+ 
+ 			if (ProjectileID.Sets.TrailingMode[type] == 0) {
+ 				for (int num20 = oldPos.Length - 1; num20 > 0; num20--) {
 @@ -12965,9 +_,16 @@
  		}
  	}
@@ -1364,6 +1373,15 @@
  
  					if (wet) {
  						if (shimmerWet) {
+@@ -13441,7 +_,7 @@
+ 
+ 								flag2 = true;
+ 								if (owner == Main.myPlayer && vector2 != vector10 && !flag4)
+-									Collision.SwitchTiles(vector2, num2, num3, vector10, 4);
++									Collision.SwitchTiles(this, vector2, num2, num3, vector10, 4);
+ 
+ 								vector12 = velocity;
+ 								zero += vector12;
 @@ -13592,6 +_,7 @@
  					}
  				}
@@ -1381,6 +1399,24 @@
  							if (velocity.X != lastVelocity.X) {
  								velocity.X = lastVelocity.X * -0.4f;
  								if (type == 29)
+@@ -14545,7 +_,7 @@
+ 				vector26 = new Vector2(oldPosition.X + (float)(width / 2) - (float)(num52 / 2), oldPosition.Y + (float)(height / 2) - (float)(num53 / 2));
+ 			}
+ 
+-			Collision.SwitchTiles(vector25, num52, num53, vector26, 4);
++			Collision.SwitchTiles(this, vector25, num52, num53, vector26, 4);
+ 		}
+ 	}
+ 
+@@ -14592,7 +_,7 @@
+ 		if (ballStepResult.State == BallState.Moving && owner == Main.myPlayer) {
+ 			bool? flag = ProjectileID.Sets.ForcePlateDetection[135];
+ 			if ((!flag.HasValue || flag.Value) && localAI[1] != 0f)
+-				Collision.SwitchTiles(position, width, height, oldPosition, 4);
++				Collision.SwitchTiles(this, position, width, height, oldPosition, 4);
+ 		}
+ 
+ 		if (ballStepResult.State == BallState.Moving && Main.netMode == 2 && Main.player.IndexInRange(owner) && Main.player[owner].active)
 @@ -14643,6 +_,9 @@
  		if (aiStyle == 4 || aiStyle == 38 || aiStyle == 84 || aiStyle == 148 || (aiStyle == 7 && ai[0] == 2f) || ((type == 440 || type == 449 || type == 606) && ai[1] == 1f) || (aiStyle == 93 && ai[0] < 0f) || type == 540 || type == 756 || type == 818 || type == 856 || type == 961 || type == 933 || ProjectileID.Sets.IsAGolfBall[type])
  			return;

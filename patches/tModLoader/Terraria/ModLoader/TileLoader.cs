@@ -101,7 +101,7 @@ public static class TileLoader
 	private static Func<int, int, int, bool>[] HookPreHitWire;
 	private static Action<int, int, int>[] HookHitWire;
 	private static Func<int, int, int, bool>[] HookHitSwitch;
-	private static Func<int, int, int, Vector2, int, int, Vector2, int, bool>[] HookSwitchTiles;
+	private static Func<int, int, int, Entity, Vector2, int, int, Vector2, int, bool>[] HookSwitchTiles;
 	private static Func<int, int, int, bool>[] HookSlope;
 	private static Action<int, Player>[] HookFloorVisuals;
 	private delegate void DelegateChangeWaterfallStyle(int type, ref int style);
@@ -1248,13 +1248,13 @@ public static class TileLoader
 		return true;
 	}
 
-	public static bool SwitchTiles(int i, int j, int type, Vector2 position, int width, int height, Vector2 oldPosition, int objType)
+	public static bool SwitchTiles(int i, int j, int type, Entity entity, Vector2 position, int width, int height, Vector2 oldPosition, int objType)
 	{
 		bool returnValue = false;
 		foreach (var hook in HookSwitchTiles) {
-			returnValue |= hook(i, j, type, position, width, height, oldPosition, objType);
+			returnValue |= hook(i, j, type, entity, position, width, height, oldPosition, objType);
 		}
-		returnValue |= GetTile(type)?.SwitchTiles(i, j, position, width, height, oldPosition, objType) ?? false;
+		returnValue |= GetTile(type)?.SwitchTiles(i, j, entity, position, width, height, oldPosition, objType) ?? false;
 		return returnValue;
 	}
 

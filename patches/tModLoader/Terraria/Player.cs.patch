@@ -4834,6 +4834,15 @@
  		if (tongued) {
  			position += velocity;
  			flag30 = false;
+@@ -21791,7 +_,7 @@
+ 			FloorVisuals(falling);
+ 
+ 		if (whoAmI == Main.myPlayer && !shimmering)
+-			Collision.SwitchTiles(position, width, height, oldPosition, 1);
++			Collision.SwitchTiles(this, position, width, height, oldPosition, 1);
+ 
+ 		PressurePlateHelper.UpdatePlayerPosition(this);
+ 		BordersMovement();
 @@ -21811,10 +_,15 @@
  		if (statMana > statManaMax2)
  			statMana = statManaMax2;

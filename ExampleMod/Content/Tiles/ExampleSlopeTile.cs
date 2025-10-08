@@ -28,11 +28,16 @@ namespace ExampleMod.Content.Tiles
 		}
 
 		// This method demonstrates the SwitchTiles hook and is not necessary for a basic non-Solid tile that can be sloped.
-		public override bool SwitchTiles(int i, int j, Vector2 position, int width, int height, Vector2 oldPosition, int objType) {
+		public override bool SwitchTiles(int i, int j, Entity entity, Vector2 position, int width, int height, Vector2 oldPosition, int objType) {
 			// This example demonstrates using SwitchTiles for tile collision interaction. This example sends a wire signal when a player travels through this tile in the direction of the arrow.
 
-			if (objType != 1) {
-				return false; // Player only.
+			if (entity is not Player player) {
+				// Player only. We could also just check if (objType != 1), but we use the Player instance in this example.
+				return false;
+			}
+
+			if (player.invis) {
+				return false; // If the Invisibility buff is active, don't trigger
 			}
 
 			var tileCoordinates = new Rectangle(i * 16, j * 16, 16, 16);

@@ -307,8 +307,8 @@ public abstract class GlobalTile : GlobalBlockType
 		return true;
 	}
 
-	/// <inheritdoc cref="ModTile.SwitchTiles(int, int, Vector2, int, int, Vector2, int)"/>
-	public virtual bool SwitchTiles(int i, int j, int type, Vector2 position, int width, int height, Vector2 oldPosition, int objType)
+	/// <inheritdoc cref="ModTile.SwitchTiles(int, int, Entity, Vector2, int, int, Vector2, int)"/>
+	public virtual bool SwitchTiles(int i, int j, int type, Entity entity, Vector2 position, int width, int height, Vector2 oldPosition, int objType)
 	{
 		return false;
 	}

@@ -583,7 +583,7 @@ public abstract class ModTile : ModBlockType
 	/// <summary>
 	/// Called when <see cref="Wiring.HitSwitch"/> is called on the tile. Ordinarily this only happens for modded tiles if they opt in to specific functionality, such as <see cref="TileID.Sets.PressurePlate"/>, but mods can call it directly as well.
 	/// <br/><br/> Can be used for running code on the server and all clients for tile interactions, unlike <see cref="HitWire(int, int)"/> which runs on the server or <see cref="RightClick(int, int)"/> which runs on the local client.
-	/// <br/><br/> Code in HitWire or RightClick could call <see cref="Wiring.HitSwitch"/> and <c>NetMessage.SendData(MessageID.HitSwitch...)</c>, which would result in <see cref="Wiring.HitSwitch"/> and consequently this method running on the server and all clients. Essentially, this can be used to sync a tile interaction effect without making a custom ModPacket.
+	/// <br/><br/> Code in HitWire, RightClick, or SwitchTiles could call <see cref="Wiring.HitSwitch"/> and <c>NetMessage.SendData(MessageID.HitSwitch...)</c>, which would result in <see cref="Wiring.HitSwitch"/> and consequently this method running on the server and all clients. Essentially, this can be used to sync a tile interaction effect without making a custom ModPacket, and it is up to the modder to decide how that interaction is triggered.
 	/// <br/><br/> The most common usage of this is to sync playing a sound.
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
@@ -593,7 +593,7 @@ public abstract class ModTile : ModBlockType
 	}
 
 	/// <summary>
-	/// Called in <see cref="Collision.SwitchTiles(Vector2, int, int, Vector2, int)"/>. This hook allows acting on entities colliding with tiles.
+	/// Called in <see cref="Collision.SwitchTiles(Entity, Vector2, int, int, Vector2, int)"/>. This hook allows acting on entities colliding with tiles.
 	/// <br/><br/> The <paramref name="position"/>, <paramref name="width"/>, and <paramref name="height"/> parameters indicate the hitbox of the entity, while <paramref name="oldPosition"/> is the position of the entity on the previous update. You'll need to use these to determine if a collision is occurring and if the entity is entering or leaving the collision bounds this tile is interested in. This is called on every 
 	/// <br/><br/> <include file = 'CommonDocs.xml' path='Common/SwitchTilesObjType' />
 	/// <br/><br/> Called on the local client for owned projectile and the player, and on the server for boulder projectiles and NPC.
@@ -601,12 +601,13 @@ public abstract class ModTile : ModBlockType
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>
+	/// <param name="entity">The entity colliding with this tile</param>
 	/// <param name="position">Position of the colliding entity</param>
 	/// <param name="width">Width of the colliding entity</param>
 	/// <param name="height">Height of the colliding entity</param>
 	/// <param name="oldPosition">Position of the colliding entity on the previous update</param>
 	/// <param name="objType"><include file = 'CommonDocs.xml' path='Common/SwitchTilesObjType' /></param>
-	public virtual bool SwitchTiles(int i, int j, Vector2 position, int width, int height, Vector2 oldPosition, int objType)
+	public virtual bool SwitchTiles(int i, int j, Entity entity, Vector2 position, int width, int height, Vector2 oldPosition, int objType)
 	{
 		return false;
 	}
