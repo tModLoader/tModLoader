@@ -92,6 +92,8 @@ internal class WorkshopBrowserModule : SocialBrowserModule
 	public void DownloadItem(ModDownloadItem item, IDownloadProgress uiProgress)
 	{
 		item.UpdateInstallState();
+		if (item.Banned)
+			throw new BannedModException($"Attempted to Download a Banned Mod {item.DisplayName} with ID {item.PublishId}. Aborting...", item.DisplayName, item.PublishId.ToString());
 
 		var publishId = new PublishedFileId_t(ulong.Parse(item.PublishId.m_ModPubId));
 		bool forceUpdate = item.NeedUpdate || !SteamedWraps.IsWorkshopItemInstalled(publishId);
@@ -108,6 +110,7 @@ internal class WorkshopBrowserModule : SocialBrowserModule
 
 	/// <summary>
 	/// Assumes Intialize has been run prior to use.
+	/// As of Sept 21, 2025, called exclusively by UI Mod Browser
 	/// </summary>
 	public async IAsyncEnumerable<ModDownloadItem> QueryBrowser(QueryParameters queryParams, [EnumeratorCancellation] CancellationToken token = default)
 	{
@@ -156,6 +159,29 @@ internal class WorkshopBrowserModule : SocialBrowserModule
 			throw new Exception("Unexpected Call of DirectQueryItems while either Steam is not initialized or query parameters.searchModIds is null"); // Should only be called if the above is filled in & Steam is Available.
 
 		return new WorkshopHelper.QueryHelper.AQueryInstance(queryParams).QueryItemsSynchronously(out missingMods);
+	}
+
+	/// <summary>
+	/// This uses the provided modId and retrieves the list of approved mod hashes from ModBrowser.
+	/// Uses Steam Web API as a fall back when Steam API isn't available (such as headless environments)
+	/// </summary>
+	public DeveloperMetadata GetDeveloperMetadataFromModBrowser(ModPubId_t modId)
+	{
+		// Mod Doesn't Exist, return empty hashes
+		if (string.IsNullOrEmpty(modId.m_ModPubId) || string.Equals(modId.m_ModPubId, "0"))
+			return new();
+
+		if (!SteamedWraps.SteamAvailable) {
+			// If Steam Server and Steam Client are both not available, retrieve it via WebAPI
+			var itemDetails = SteamWebWrapper.GetItemMetadata(modId.m_ModPubId);
+
+			return DeveloperMetadata.Deserialize(itemDetails.Metadata);
+		}
+
+		// Mod should Exist, check Mod Browser
+		var items = DirectQueryItems(new QueryParameters() { searchModIds = [modId], queryType = QueryType.SearchDirect, returnDevMetadata = true }, out _);
+
+		return items.FirstOrDefault()?.DevMetadata ?? new();
 	}
 }
 

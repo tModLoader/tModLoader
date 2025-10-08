@@ -32,6 +32,7 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 	private readonly List<UIModItem> items = new List<UIModItem>();
 	private Task<List<UIModItem>> modItemsTask;
 	private bool updateNeeded;
+	private bool saveNeeded;
 	private UIMemoryBar ramUsage;
 	private bool showRamUsage;
 	public bool loading;
@@ -167,10 +168,12 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 				toggleImage.SetCurrentState((int)sortMode);
 				toggleImage.OnLeftClick += (a, b) => {
 					sortMode = sortMode.NextEnum();
+					saveNeeded = true;
 					updateNeeded = true;
 				};
 				toggleImage.OnRightClick += (a, b) => {
 					sortMode = sortMode.PreviousEnum();
+					saveNeeded = true;
 					updateNeeded = true;
 				};
 			}
@@ -574,6 +577,10 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 		_cts?.Dispose();
 		_cts = null;
 		modListViewPosition = modList.ViewPosition;
+		if (saveNeeded) {
+			saveNeeded = false;
+			Main.SaveSettings();
+		}
 	}
 
 	internal void StoreCurrentScrollPosition()

@@ -1469,12 +1469,18 @@
  			string lpWindowName = (Console.Title = "terraria" + rand.Next(int.MaxValue));
  			if (Platform.IsWindows) {
  				IntPtr intPtr = FindWindow(null, lpWindowName);
-@@ -4157,17 +_,31 @@
+@@ -4157,17 +_,37 @@
  			}
  		}
  		else {
 -			Console.Title = "Terraria Server " + versionNumber2;
 +			Console.Title = "Terraria Server " + versionNumber2 + " - " + ModLoader.ModLoader.versionedName;
++		}
++
++		if (showServerConsole) {
++			// Make a new console and use it. I don't know why, but trying to start the server process will share the same console by default.
++			Platform.Get<IWindowService>().ReleaseConsole();
++			Platform.Get<IWindowService>().CreateAndRedirectConsole();
  		}
  
  		dedServ = true;
@@ -1521,8 +1527,12 @@
  							Console.WriteLine("");
  							Console.WriteLine(Language.GetTextValue("CLI.DeleteConfirmation", WorldList[num2].Name));
  							Console.Write("({0}/{1}): ", Language.GetTextValue("CLI.ShortYes"), Language.GetTextValue("CLI.ShortNo"));
-@@ -4220,7 +_,7 @@
- 				if (text2 == "n" || text2 == "N") {
+@@ -4217,10 +_,10 @@
+ 					continue;
+ 				}
+ 
+-				if (text2 == "n" || text2 == "N") {
++				if (text2 == "n" || text2 == "N" || string.Equals(text2, Language.GetTextValue("CLI.NewWorld_Command"), StringComparison.CurrentCultureIgnoreCase)) {
  					bool flag2 = true;
  					while (flag2) {
 -						Console.WriteLine(Language.GetTextValue("CLI.Server", versionNumber2));
@@ -3016,6 +3026,14 @@
  		if (diff == 1)
  			baseColor = new Microsoft.Xna.Framework.Color((byte)((float)(int)mcColor.R * num2), (byte)((float)(int)mcColor.G * num2), (byte)((float)(int)mcColor.B * num2), mouseTextColor);
  
+@@ -16095,6 +_,7 @@
+ 			hoverItem.knockBack *= 1f + (1f - player[myPlayer].stealth) * 0.5f;
+ 
+ 		int num2 = 30;
++		num2 += hoverItem.ToolTip?.Lines ?? 0; // Easy fix to #4772. A full fix would require rewrites of hooks.
+ 		int numLines = 1;
+ 		string[] array = new string[num2];
+ 		bool[] array2 = new bool[num2];
 @@ -16104,7 +_,10 @@
  			array3[i] = false;
  		}
@@ -6228,6 +6246,25 @@
  	}
  
  	private static void PostDrawMenu(Microsoft.Xna.Framework.Point screenSizeCache, Microsoft.Xna.Framework.Point screenSizeCacheAfterScaling)
+@@ -42862,11 +_,18 @@
+ 
+ 	private static bool IsBorderlessDisplayAvailable()
+ 	{
++		// TML: Exclusive fullscreen is retired in favor of borderless
++		// fullscreen.  As such, the borderless option serves no purpose (and
++		// is ignored in practice).
++		return false;
++
++		/*
+ 		bool result = false;
+ 		if (Platform.IsWindows)
+ 			result = true;
+ 
+ 		return result;
++		*/
+ 	}
+ 
+ #if !NETCORE
 @@ -43330,9 +_,17 @@
  		float value = (float)((double)(screenPosition.Y - (float)(screenHeight / 2) + 200f) - rockLayer * 16.0) / 300f;
  		value = MathHelper.Clamp(value, 0f, 1f);
@@ -6448,8 +6485,13 @@
  			if (IsLiquidStyleWater(j) && liquidAlpha[j] > 0f && j != waterStyle) {
  				DrawLiquid(isBackground, j, isBackground ? 1f : liquidAlpha[j], drawSinglePassLiquids: false);
  				flag = true;
-@@ -47314,7 +_,7 @@
+@@ -47312,9 +_,12 @@
+ 		}
+ 
  		DrawLiquid(isBackground, waterStyle, flag ? liquidAlpha[waterStyle] : 1f);
++
++		if (LiquidEdgeRenderer.Active && !drawToScreen)
++			LiquidEdgeRenderer.DrawTileMask(spriteBatch, tileTarget, sceneTilePos - screenPosition + new Vector2(drawToScreen ? 0 : offScreenRange));
  	}
  
 -	protected void DrawLiquid(bool bg = false, int waterStyle = 0, float Alpha = 1f, bool drawSinglePassLiquids = true)
@@ -6457,6 +6499,45 @@
  	{
  		if (!Lighting.NotRetro) {
  			oldDrawWater(bg, waterStyle, Alpha);
+@@ -47324,7 +_,8 @@
+ 		Stopwatch stopwatch = new Stopwatch();
+ 		stopwatch.Start();
+ 		Vector2 drawOffset = (drawToScreen ? Vector2.Zero : new Vector2(offScreenRange, offScreenRange)) - screenPosition;
+-		if (bg)
++
++		if (bg && !LiquidEdgeRenderer.Active)
+ 			TilesRenderer.DrawLiquidBehindTiles(waterStyle);
+ 
+ 		LiquidRenderer.Instance.DrawNormalLiquids(spriteBatch, drawOffset, waterStyle, Alpha, bg);
+@@ -47776,6 +_,7 @@
+ 			}
+ 		}
+ 
++		bool liquidSlopeFix = LiquidEdgeRenderer.Active;
+ 		bool flag = ShouldShowInvisibleWalls();
+ 		for (int i = num5; i < num6; i++) {
+ 			bool flag2 = i >= UnderworldLayer;
+@@ -47794,6 +_,12 @@
+ 					Tile tile = Main.tile[j, i];
+ 					float num8 = Lighting.Brightness(j, i);
+ 					num8 = (float)Math.Floor(num8 * 255f) / 255f;
++
++
++					// TML(liquid-slopes): Avoid drawing over liquid edges.
++					if (liquidSlopeFix && LiquidRenderer.Instance.HasFullWater(j, i) && ((tile.Slope != SlopeType.Solid || tile.IsHalfBlock) && num8 >= (5f / 255f) || num8 > (5f / 255f)))
++						break;
++
+ 					byte b = tile.liquid;
+ 					bool num9 = num8 <= num2 && ((!flag2 && b < 250) || WorldGen.SolidTile(tile) || (b >= 200 && num8 == 0f));
+ 					bool flag3 = tile.active() && tileBlockLight[tile.type] && (!tile.invisibleBlock() || flag);
+@@ -48019,6 +_,7 @@
+ 				backgroundTarget = new RenderTarget2D(base.GraphicsDevice, width, height, mipMap: false, base.GraphicsDevice.PresentationParameters.BackBufferFormat, DepthFormat.None);
+ 				screenTarget = new RenderTarget2D(base.GraphicsDevice, base.GraphicsDevice.PresentationParameters.BackBufferWidth, base.GraphicsDevice.PresentationParameters.BackBufferHeight, mipMap: false, base.GraphicsDevice.PresentationParameters.BackBufferFormat, DepthFormat.None);
+ 				screenTargetSwap = new RenderTarget2D(base.GraphicsDevice, base.GraphicsDevice.PresentationParameters.BackBufferWidth, base.GraphicsDevice.PresentationParameters.BackBufferHeight, mipMap: false, base.GraphicsDevice.PresentationParameters.BackBufferFormat, DepthFormat.None);
++
+ 				if (Main.OnRenderTargetsInitialized != null)
+ 					Main.OnRenderTargetsInitialized(base.GraphicsDevice.PresentationParameters.BackBufferWidth, base.GraphicsDevice.PresentationParameters.BackBufferHeight);
+ 			}
 @@ -48744,18 +_,33 @@
  		}
  	}

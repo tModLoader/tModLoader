@@ -116,7 +116,7 @@ public abstract class RangeElement : ConfigElement
 		//rectangle.X = (int)num2;
 		//rectangle.Y = (int)num3;
 
-		bool flag = rectangle.Contains(new Point(Main.mouseX, Main.mouseY));
+		bool flag = IsMouseHovering && rectangle.Contains(new Point(Main.mouseX, Main.mouseY));
 
 		if (lockState == 2) {
 			flag = false;

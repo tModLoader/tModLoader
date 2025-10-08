@@ -1,9 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
 using Terraria;
-using Terraria.GameContent.Generation;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -44,6 +42,13 @@ namespace ExampleMod.Content.Tiles.Plants
 		public override void SetSpriteEffects(int i, int j, ref SpriteEffects spriteEffects) {
 			if (i % 2 == 0) {
 				spriteEffects = SpriteEffects.FlipHorizontally;
+			}
+		}
+
+		public override IEnumerable<Item> GetItemDrops(int i, int j) {
+			// Support for https://terraria.wiki.gg/wiki/Guide_to_Plant_Fiber_Cordage. Optional, only some vines do this.
+			if (Main.rand.NextBool(2) && WorldGen.GetPlayerForTile(i, j).cordage) {
+				yield return new Item(ItemID.VineRope);
 			}
 		}
 	}

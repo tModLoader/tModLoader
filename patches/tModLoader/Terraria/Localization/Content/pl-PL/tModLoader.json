@@ -199,6 +199,10 @@
 		"PublishNewButton": "Opublikuj nowy",
 		"DownloadProgress": "Pobrano {0}%",
 		"DescriptionLengthExceedLimit": "Opis tego moda (Workshop) przekracza limit znaków Steam wynoszący {0}",
+		// "CommandLinePublishNeedsSteam": "Command line publishing requires steam to be loaded (-steam command line option)",
+		// "CommandLinePublishOnlyUsableWithServerSideMods": "Command line publishing can only be used to publish server-side mods at this time.",
+		// "WorkshopTagNotFound": "The supplied tag '{0}' is not a valid option for -publishtags.",
+		// "TestServerModLoadingNotification": "This window is testing that a server-side mod loads without errors\nDo not close to allow testing to complete.",
 
 		// Mod Errors
 		"LoadError": "Wystąpił błąd podczas ładowania {0}",
@@ -314,6 +318,12 @@
 		"MPServerModsCantDownloadReasonSigned": "ponieważ akceptujesz tylko mody podpisane przez przeglądarkę modów",
 		"MPServerModsCantDownloadReasonAutomaticDownloadDisabled": "ponieważ masz wyłączone automatyczne pobieranie modów",
 		"MPServerModsCantDownloadChangeSettingsHint": "Musisz zmienić swoje ustawienia lub nabyć mody od właściciela serwera.",
+		// "MPServerModsDownloadFromServerWarning": "Mods may contain malicious code. Only download them if you trust the server host.",
+		// "MPServerModAvailableOnWorkshop": "Available on the workshop",
+		// "MPServerModAvailableOnWorkshopLowSubscriberCount": "Low subscriber count. Do you trust the server host?",
+		// "MPServerModBannedOnWorkshop": "This mod has been banned from the workshop and is likly dangerous.",
+		// "MPServerModCustomBuild": "Custom build that has not been published on the workshop. Do you trust the server host?",
+		// "MPServerModUnableToVerify": "This mod was unable to be verified. Unable to access Steam Workshop.",
 		"MPShowServerConsoleYes": "Pokaż Konsolę Serwera: Włączone",
 		"MPShowServerConsoleNo": "Pokaż Konsolę Serwera: Wyłączone",
 		"MPErrorModHashMismatch": "Niezgodność Hash",
@@ -746,6 +756,7 @@
 
 		"PercentChanceToSaveAmmo": "{0}% szans na zaoszczędzenie amunicji",
 		"PercentReducedManaCost": "{0}% mniejszy koszt many",
+		"ReducesHealingPotionCooldownByPercent": "Skraca czas odnowienia mikstur leczenia o {0}%",
 
 		"PercentIncreasedMiningSpeed": "{0}% zwiększona szybkość kopania",
 		"PercentIncreasedMovementSpeed": "{0}% zwiększona szybkość poruszania się",

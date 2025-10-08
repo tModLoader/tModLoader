@@ -192,6 +192,15 @@
  	{
  		for (int i = 0; i < itemsThatWillResearchTheItemToUnlock.Length; i++) {
  			AddItemResearchOverride_Inner(itemsThatWillResearchTheItemToUnlock[i], itemTypeToUnlock);
+@@ -805,7 +_,7 @@
+ 	public static void FixItemsAfterRecipesAreAdded()
+ 	{
+ 		foreach (KeyValuePair<int, Item> item in ItemsByType) {
+-			item.Value.material = ItemID.Sets.IsAMaterial[item.Key];
++			item.Value.Refresh(onlyIfVariantChanged: false);
+ 		}
+ 	}
+ 
 @@ -955,7 +_,10 @@
  		NPCSpawnParams nPCSpawnParams = default(NPCSpawnParams);
  		nPCSpawnParams.gameModeData = Main.RegisteredGameModes[0];

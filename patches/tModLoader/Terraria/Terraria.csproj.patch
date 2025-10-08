@@ -8,7 +8,7 @@
  
  	<!-- General -->
  	<PropertyGroup>
-@@ -11,59 +_,90 @@
+@@ -11,60 +_,96 @@
  		<Company>Re-Logic</Company>
  		<Copyright>Copyright © 2022 Re-Logic</Copyright>
  		<RootNamespace>Terraria</RootNamespace>
@@ -33,6 +33,10 @@
  		<CopyDebugSymbolFilesFromPackages>true</CopyDebugSymbolFilesFromPackages>
  		<CopyDocumentationFilesFromPackages>true</CopyDocumentationFilesFromPackages>
 +		<ValidateExecutableReferencesMatchSelfContained>false</ValidateExecutableReferencesMatchSelfContained>
++
++		<DotNetName Condition=" '$(OS)' == 'Windows_NT' ">dotnet.exe</DotNetName>
++		<DotNetName Condition=" '$(OS)' == 'Unix' ">dotnet</DotNetName>
++		<DotNetName Condition=" '$(DotNetName)' == '' ">dotnet</DotNetName>
 +	</PropertyGroup>
 +
 +	<!-- Versioning -->
@@ -72,7 +76,7 @@
 +		<Reference Include="TerrariaHooks" />
  
 +		<PackageReference Include="DotNetZip" Version="1.16.0" />
- 		<PackageReference Include="Steamworks.NET" Version="20.1.0" />
+ 		<PackageReference Include="Steamworks.NET.AnyCPU" Version="2025.162.2" />
 +		<PackageReference Include="Basic.Reference.Assemblies.Net80" Version="1.5.0" />
 +		<PackageReference Include="MonoMod.RuntimeDetour" Version="25.3.0" />
 +		<PackageReference Include="Microsoft.Win32.Registry" Version="6.0.0-preview.5.21301.5 " />
@@ -84,6 +88,7 @@
  	<!-- Embedded Resources -->
  	<ItemGroup>
 +		<EmbeddedResource Include="**\*.png" />
++		<EmbeddedResource Include="**\*.fxc" />
  		<EmbeddedResource Include="GameContent/Creative/Content/*" />
  		<EmbeddedResource Include="GameContent/Metadata/MaterialData/*" />
  		<EmbeddedResource Include="GameContent/WorldBuilding/*" />
@@ -107,11 +112,12 @@
  		<None Remove="Libraries/Windows/**" />
  		<None Remove="Libraries/XNA/**" />
  		<Content Include="Libraries/Native/**" CopyToOutputDirectory="PreserveNewest" />
+ 		<Content Include="Libraries/Steamworks.NET.AnyCPU.Windows/**" CopyToOutputDirectory="PreserveNewest" />
 +		<Content Include="release_extras/**" CopyToOutputDirectory="PreserveNewest" Link="%(RecursiveDir)%(Filename)%(Extension)" />
  	</ItemGroup>
  
  	<!-- Import tasks -->
-@@ -104,9 +_,13 @@
+@@ -105,9 +_,13 @@
  	<!-- Installs the build's output into the relevant game folder. -->
  	<Target Name="CopyToActualOutputDirectory" AfterTargets="Build">
  		<PropertyGroup>
@@ -126,7 +132,7 @@
  		<!-- Copy files systematically to output folder -->
  		<ItemGroup>
  			<BinFiles Include="$(TargetDir)**" />
-@@ -114,6 +_,7 @@
+@@ -115,6 +_,7 @@
  
  		<Message Text="Copying $(AssemblyName) to '$(_ActualOutputDirectory)'..." Importance="high" />
  		<Copy SourceFiles="@(BinFiles)" DestinationFolder="$(_ActualOutputDirectory)/%(RecursiveDir)" SkipUnchangedFiles="True" />

@@ -240,7 +240,8 @@
 +		/// Indicates that this tile should not be considered solid for the purpose of tile placement anchors despite being <see cref="Main.tileSolid"/>. Used by <see cref="ClosedDoor"/>, <see cref="TrapdoorClosed"/>, and <see cref="TallGateClosed"/>. These tiles are solid and have collision, but because they transform into a non-solid tile when interacted with, they are not suitable for placing tiles on.
 +		/// </summary>
  		public static bool[] NotReallySolid = Factory.CreateBoolSet(387, 388, 10);
- 		public static bool[] BlocksWaterDrawingBehindSelf = Factory.CreateBoolSet(false, 54, 541, 328, 470);
+-		public static bool[] BlocksWaterDrawingBehindSelf = Factory.CreateBoolSet(false, 54, 541, 328, 470);
++		public static bool[] BlocksWaterDrawingBehindSelf = Factory.CreateBoolSet(false, 54, 541, 328, 470, 459);
  		public static bool[] AllowLightInWater = Factory.CreateBoolSet(false, 54, 541, 328);
  		public static bool[] NeedsGrassFraming = Factory.CreateBoolSet(633);
  		public static int[] NeedsGrassFramingDirt = Factory.CreateIntSet(0, 633, 57);

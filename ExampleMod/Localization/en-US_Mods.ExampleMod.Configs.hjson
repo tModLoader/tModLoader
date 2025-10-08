@@ -412,6 +412,33 @@ ModConfigShowcaseMisc: {
 		Label: List of Ints
 		Tooltip: ""
 	}
+
+	EnumDefault: {
+		Label: Enum Default
+		Tooltip: ""
+	}
+
+	EnumSlider: {
+		Label: Enum Slider
+		Tooltip: ""
+	}
+
+	EnumDropdown: {
+		Label: Enum Dropdown
+		Tooltip: ""
+	}
+
+	EnumCycle: {
+		Label: Enum Cycle
+		Tooltip: Left or right click to select an option
+	}
+
+	Headers: {
+		CustomElements: Custom Elements
+		EnumOptions: Enum Options
+		Collections: Collections
+		CustomDataClasses: Custom Data Classes
+	}
 }
 
 ModConfigShowcaseRanges: {
@@ -605,18 +632,50 @@ SubSubConfigExample: {
 
 SampleEnum: {
 	Tooltip: ""
-	Weird.Label: Weird
-	Odd.Label: Odd
-	Peculiar.Label: Very Peculiar
-	Strange.Label: Quite Strange
+
+	Weird: {
+		Label: Weird
+		Tooltip: ""
+	}
+
+	Odd: {
+		Label: Odd
+		Tooltip: Add a tooltip if an enum option needs more explanation
+	}
+
+	Peculiar: {
+		Label: Very Peculiar
+		Tooltip: ""
+	}
+
+	Strange: {
+		Label: Quite Strange
+		Tooltip: ""
+	}
 }
 
 Corner: {
 	Tooltip: Anchor Position
-	TopLeft.Label: Top Left
-	TopRight.Label: Top Right
-	BottomLeft.Label: Bottom Left
-	BottomRight.Label: Bottom Right
+
+	TopLeft: {
+		Label: Top Left
+		Tooltip: ""
+	}
+
+	TopRight: {
+		Label: Top Right
+		Tooltip: ""
+	}
+
+	BottomLeft: {
+		Label: Bottom Left
+		Tooltip: ""
+	}
+
+	BottomRight: {
+		Label: Bottom Right
+		Tooltip: ""
+	}
 }
 
 ClassUsedAsKey: {

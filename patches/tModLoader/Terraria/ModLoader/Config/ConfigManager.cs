@@ -142,6 +142,9 @@ public static class ConfigManager
 
 			string labelKey = GetConfigKey<LabelKeyAttribute>(field, "Label");
 			Language.GetOrRegister(labelKey, () => labelObsolete?.LocalizationEntry ?? Regex.Replace(field.Name, "([A-Z])", " $1").Trim());
+
+			string tooltipKey = GetConfigKey<TooltipKeyAttribute>(field, "Tooltip");
+			Language.GetOrRegister(tooltipKey, () => "");
 		}
 	}
 
@@ -565,7 +568,7 @@ public static class ConfigManager
 			return FormatTextAttribute(memberLocalization, memberInfo.MemberInfo.GetCustomAttribute<TArgs>()?.args);
 
 		// bool, int, etc.
-		if (memberInfo.Type.IsPrimitive)
+		if (memberInfo.Type.IsPrimitive || memberInfo.IsFieldOfAnEnum)
 			return null;
 
 		// try falling back to the type

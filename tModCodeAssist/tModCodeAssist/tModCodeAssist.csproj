@@ -31,6 +31,7 @@
     <Compile Remove="$(TMLSourcePath)\Terraria\ID\SetFactory*.cs" />
 
     <!-- All ID classes from original Code Assist. TODO: Expand and include all ID classes from Terraria/ID/ directory -->
+    <Compile Include="$(TMLSourcePath)\Terraria\ID\BuffID.cs" LinkBase="$(SourceIDsPath)" />
     <Compile Include="$(TMLSourcePath)\Terraria\ID\DustID.cs" LinkBase="$(SourceIDsPath)" />
     <Compile Include="$(TMLSourcePath)\Terraria\ID\DustID.TML.cs" LinkBase="$(SourceIDsPath)" />
     <Compile Include="$(TMLSourcePath)\Terraria\ID\ExtrasID.cs" LinkBase="$(SourceIDsPath)" />
@@ -40,9 +41,12 @@
     <Compile Include="$(TMLSourcePath)\Terraria\ID\LiquidID.cs" LinkBase="$(SourceIDsPath)" />
     <Compile Include="$(TMLSourcePath)\Terraria\ID\MessageID.cs" LinkBase="$(SourceIDsPath)" />
     <Compile Include="$(TMLSourcePath)\Terraria\ID\MessageID.TML.cs" LinkBase="$(SourceIDsPath)" />
+    <Compile Include="$(TMLSourcePath)\Terraria\ID\MountID.cs" LinkBase="$(SourceIDsPath)" />
     <Compile Include="$(TMLSourcePath)\Terraria\ID\NetmodeID.cs" LinkBase="$(SourceIDsPath)" />
+    <Compile Include="$(TMLSourcePath)\Terraria\ID\NPCAIStyleID.cs" LinkBase="$(SourceIDsPath)" />
     <Compile Include="$(TMLSourcePath)\Terraria\ID\NPCID.cs" LinkBase="$(SourceIDsPath)" />
     <Compile Include="$(TMLSourcePath)\Terraria\ID\PaintID.cs" LinkBase="$(SourceIDsPath)" />
+    <Compile Include="$(TMLSourcePath)\Terraria\ID\ProjAIStyleID.cs" LinkBase="$(SourceIDsPath)" />
     <Compile Include="$(TMLSourcePath)\Terraria\ID\ProjectileID.cs" LinkBase="$(SourceIDsPath)" />
     <Compile Include="$(TMLSourcePath)\Terraria\ID\TileID.cs" LinkBase="$(SourceIDsPath)" />
     <Compile Include="$(TMLSourcePath)\Terraria\ID\WallID.cs" LinkBase="$(SourceIDsPath)" />
