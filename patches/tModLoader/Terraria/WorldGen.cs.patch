@@ -1930,7 +1930,7 @@
  			return false;
  
  		if (!InWorld(i, j, 2))
-@@ -39342,8 +_,41 @@
+@@ -39342,8 +_,42 @@
  		return true;
  	}
  
@@ -1947,6 +1947,7 @@
 +		public ConversionRecursion() => conversionRecursionDepth++;
 +		void IDisposable.Dispose() => conversionRecursionDepth--;
 +	}
++
 +	/// <summary>
 +	/// Converts biome variant tiles and walls to a target biome.<br/>
 +	/// Converts a 9x9 square by default, but can be adjusted with the <paramref name="size"/> parameter.
