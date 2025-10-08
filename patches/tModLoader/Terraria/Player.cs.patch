@@ -447,7 +447,7 @@
  	public Chest bank4 = new Chest(bank: true);
  	public BitsByte voidVaultInfo;
  	public float headRotation;
-@@ -836,23 +_,47 @@
+@@ -836,23 +_,50 @@
  	public int fartKartCloudDelay;
  	public const int fartKartCloudDelayMax = 20;
  	public int nonTorch = -1;
@@ -467,6 +467,9 @@
  	public const int respawnTimerMax = 3600;
  	public long lastTimePlayerWasSaved;
  	public int attackCD;
++	/// <summary>
++	/// The potion sickness delay, in ticks. This value mirrors the remaining time for the <see cref="BuffID.PotionSickness"/> buff.
++	/// </summary>
  	public int potionDelay;
 +	/// <summary>
 +	/// The <see href="https://terraria.wiki.gg/wiki/Difficulty">player difficulty</see>. Valid values are found in <see cref="PlayerDifficultyID"/>. 
@@ -4521,6 +4524,33 @@
  
  				if (stoned) {
  					int num24 = (int)(((float)num18 * gravDir - 2f) * 20f);
+@@ -19683,14 +_,25 @@
+ 		if (jump > 0 || velocity.Y != 0f)
+ 			ResetFloorFlags();
+ 
+-		bool flag12 = pStone;
++		//bool flag12 = pStone;
++		StatModifier oldPotionDelay = PotionDelayModifier;
++
+ 		potionDelayTime = Item.potionDelay;
+ 		restorationDelayTime = Item.restorationDelay;
+ 		mushroomDelayTime = Item.mushroomDelay;
++
++		// TML: Make potion delay modifiers more extensible.  Philosopher's Stone
++		// multiplier is now applied as part of an accessible StatModifier.
++		// *DelayTime fields are no longer set to their reduced amounts and are
++		// instead combined with the StatModifier when being applied.
++		PotionDelayModifier = StatModifier.Default;
+ 		if (pStone) {
++			PotionDelayModifier *= PhilosopherStoneDurationMultiplier;
++			/*
+ 			potionDelayTime = (int)((float)potionDelayTime * PhilosopherStoneDurationMultiplier);
+ 			restorationDelayTime = (int)((float)restorationDelayTime * PhilosopherStoneDurationMultiplier);
+ 			mushroomDelayTime = (int)((float)mushroomDelayTime * PhilosopherStoneDurationMultiplier);
++			*/
+ 		}
+ 
+ 		if (yoraiz0rEye > 0)
 @@ -19706,9 +_,16 @@
  		else
  			afkCounter = 0;
@@ -4561,6 +4591,18 @@
  		if (whoAmI == Main.myPlayer) {
  			if (!onFire && !poisoned)
  				trapDebuffSource = false;
+@@ -19808,8 +_,9 @@
+ 		if (Main.npcShop <= 0)
+ 			discountAvailable = discountEquipped;
+ 
++		//if (flag12 != pStone)
+-		if (flag12 != pStone)
++		if (oldPotionDelay != PotionDelayModifier)
+-			AdjustRemainingPotionSickness();
++			AdjustRemainingPotionSickness(oldPotionDelay);
+ 
+ 		UpdatePermanentBoosters();
+ 		UpdateLuck();
 @@ -19850,6 +_,10 @@
  		if (shadowDodge && !onHitDodge)
  			ClearBuff(59);
@@ -4808,6 +4850,29 @@
  	}
  
  	private void TryToToggleSmartCursor(ref bool smartCursorWanted)
+@@ -21923,15 +_,21 @@
+ 		return result;
+ 	}
+ 
+-	private void AdjustRemainingPotionSickness()
++	private void AdjustRemainingPotionSickness(StatModifier oldPotionDelayModifier)
+ 	{
+ 		if (whoAmI == Main.myPlayer) {
+ 			int num = FindBuffIndex(21);
+ 			if (num != -1) {
++				/*
+ 				float num2 = buffTime[num];
+ 				float philosopherStoneDurationMultiplier = PhilosopherStoneDurationMultiplier;
+ 				num2 = ((!pStone) ? (num2 / philosopherStoneDurationMultiplier) : (num2 * philosopherStoneDurationMultiplier));
+ 				buffTime[num] = (int)num2;
++				*/
++				float time = PotionDelayModifier.ApplyTo(oldPotionDelayModifier.Undo(buffTime[num]));
++				if (time < 1)
++					time = 1;
++				buffTime[num] = (int)time;
+ 			}
+ 		}
+ 	}
 @@ -21989,9 +_,11 @@
  
  	private void CapAttackSpeeds()
@@ -7991,7 +8056,43 @@
  					break;
  
  				int type2 = Main.projectile[list[l]].type;
-@@ -39862,8 +_,12 @@
+@@ -39836,6 +_,9 @@
+ 
+ 	private void ApplyPotionDelay(Item sItem)
+ 	{
++		// TML: Rewrite this for simplicity as part of an effort to give
++		// modders more control over potion delay application.
++		/*
+ 		if (sItem.type == 3001) {
+ 			int minValue = 2400;
+ 			int num = 4200;
+@@ -39858,12 +_,38 @@
+ 			potionDelay = potionDelayTime;
+ 			AddBuff(21, potionDelay);
+ 		}
++		*/
++
++		int baseDelay = sItem.type switch {
++			ItemID.StrangeBrew => Main.rand.Next(2400, 4200 + 1),
++			ItemID.RestorationPotion => restorationDelayTime,
++			ItemID.Mushroom => mushroomDelayTime,
++			_ => potionDelayTime,
++		};
++
++		ItemLoader.ModifyPotionDelay(sItem, this, ref baseDelay);
++
++		int actualDelay = (int)PotionDelayModifier.ApplyTo(baseDelay);
++
++		bool skip = !CombinedHooks.ApplyPotionDelay(sItem, this, actualDelay);
++		if (skip || actualDelay <= 0)
++			return;
++
++		potionDelay = actualDelay;
++		AddBuff(BuffID.PotionSickness, potionDelay);
++
++		if (sItem.type == ItemID.Mushroom)
++			TryToResetHungerToNeutral();
+ 	}
  
  	private void ApplyLifeAndOrMana(Item item)
  	{

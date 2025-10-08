@@ -1,0 +1,17 @@
+--- src/Terraria/Terraria/Social/Steam/NetClientSocialModule.cs
++++ src/TerrariaNetCore/Terraria/Social/Steam/NetClientSocialModule.cs
+@@ -190,8 +_,12 @@
+ 	private void SendAuthTicket(CSteamID address)
+ 	{
+ 		WeGameHelper.WriteDebugString(" SendAuthTicket");
+-		if (_authTicket == HAuthTicket.Invalid)
+-			_authTicket = SteamUser.GetAuthSessionTicket(_authData, _authData.Length, out _authDataLength);
++		if (_authTicket == HAuthTicket.Invalid) {
++			var identity = new SteamNetworkingIdentity();
++			identity.SetSteamID(address);
++
++			_authTicket = SteamUser.GetAuthSessionTicket(_authData, _authData.Length, out _authDataLength, ref identity);
++		}
+ 
+ 		int num = (int)(_authDataLength + 3);
+ 		byte[] array = new byte[num];

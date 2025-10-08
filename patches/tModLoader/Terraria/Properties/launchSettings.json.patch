@@ -4,7 +4,7 @@
    "profiles": {
      "Terraria": {
        "commandName": "Executable",
-+      "executablePath": "dotnet",
++      "executablePath": "$(DotNetName)",
 -      "executablePath": "$(TerrariaSteamPath)/$(OutputName).exe",
 +      "commandLineArgs": "$(OutputName).dll",
 -      "workingDirectory": "$(TerrariaSteamPath)"
@@ -12,26 +12,27 @@
      },
      "Terraria Server": {
        "commandName": "Executable",
-       "executablePath": "dotnet",
+-      "executablePath": "dotnet",
++      "executablePath": "$(DotNetName)",
        "commandLineArgs": "$(OutputName).dll -server",
 -      "workingDirectory": "$(TerrariaSteamPath)"
 +      "workingDirectory": "$(tModLoaderSteamPath)"
 +    },
 +    "Terraria GoG": {
 +      "commandName": "Executable",
-+      "executablePath": "dotnet",
++      "executablePath": "$(DotNetName)",
 +      "commandLineArgs": "$(OutputName).dll -nosteam",
 +      "workingDirectory": "$(tModLoaderSteamPath)"
 +    },
 +    "Terraria Steam Server": {
 +      "commandName": "Executable",
-+      "executablePath": "dotnet",
++      "executablePath": "$(DotNetName)",
 +      "commandLineArgs": "$(OutputName).dll -server -steam -lobby friends -friendsoffriends",
 +      "workingDirectory": "$(tModLoaderSteamPath)"
 +    },
 +    "tModPorter ExampleMod.csproj": {
 +      "commandName": "Executable",
-+      "executablePath": "dotnet",
++      "executablePath": "$(DotNetName)",
 +      "commandLineArgs": "$(OutputName).dll -tModPorter \"$(ProjectDir)/../../../ExampleMod/ExampleMod.csproj\"",
 +      "workingDirectory": "$(tModLoaderSteamPath)"
      }

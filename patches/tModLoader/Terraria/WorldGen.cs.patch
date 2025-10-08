@@ -1930,13 +1930,15 @@
  			return false;
  
  		if (!InWorld(i, j, 2))
-@@ -39342,7 +_,30 @@
+@@ -39342,7 +_,32 @@
  		return true;
  	}
  
 -	public static void Convert(int i, int j, int conversionType, int size = 4)
 +	// legacy overload for abi compat, remove in 1.4.5
 +	/// <inheritdoc cref="Convert(int, int, int, int, bool, bool)"/>
++	[OriginalOverload]
++	[Obsolete("Use Convert(int, int, int, int, bool, bool) instead")]
 +	public static void Convert(int i, int j, int conversionType, int size) => Convert(i, j, conversionType, size, tiles: true, walls: true);
 +
 +	/// <summary>

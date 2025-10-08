@@ -1,5 +1,15 @@
 --- src/TerrariaNetCore/Terraria/GameContent/UI/Elements/UICharacter.cs
 +++ src/tModLoader/Terraria/GameContent/UI/Elements/UICharacter.cs
+@@ -26,6 +_,9 @@
+ 		if (useAClone) {
+ 			_player = player.SerializedClone();
+ 			_player.dead = false;
++
++			// Override Main.CurrentPlayer until the end of this method.
++			using var _currentPlr = new Main.CurrentPlayerOverride(_player);
+ 			_player.PlayerFrame();
+ 		}
+ 
 @@ -45,7 +_,8 @@
  	{
  		if (!_player.hideMisc[0]) {

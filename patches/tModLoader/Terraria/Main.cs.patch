@@ -1469,12 +1469,18 @@
  			string lpWindowName = (Console.Title = "terraria" + rand.Next(int.MaxValue));
  			if (Platform.IsWindows) {
  				IntPtr intPtr = FindWindow(null, lpWindowName);
-@@ -4157,17 +_,31 @@
+@@ -4157,17 +_,37 @@
  			}
  		}
  		else {
 -			Console.Title = "Terraria Server " + versionNumber2;
 +			Console.Title = "Terraria Server " + versionNumber2 + " - " + ModLoader.ModLoader.versionedName;
++		}
++
++		if (showServerConsole) {
++			// Make a new console and use it. I don't know why, but trying to start the server process will share the same console by default.
++			Platform.Get<IWindowService>().ReleaseConsole();
++			Platform.Get<IWindowService>().CreateAndRedirectConsole();
  		}
  
  		dedServ = true;
@@ -1503,12 +1509,11 @@
  				Console.WriteLine("");
  				for (int i = 0; i < WorldList.Count; i++) {
  					Console.WriteLine(i + 1 + "\t\t" + WorldList[i].Name);
-@@ -4180,6 +_,9 @@
+@@ -4180,6 +_,8 @@
  				textValue2 = textValue2 + new string('\t', num - textValue2.Length / 8) + Language.GetTextValue("CLI.DeleteWorld_Description");
  				Console.WriteLine(textValue);
  				Console.WriteLine(textValue2);
-+				string modListCommand = Language.GetTextValue("tModLoader.ModsListCommand");
-+				Console.WriteLine(modListCommand + new string('\t', num - modListCommand.Length / 8) + Language.GetTextValue("tModLoader.ModsModsList"));
++				Console.WriteLine("m\t\t" + Language.GetTextValue("tModLoader.ModsModsList"));
 +				//Console.WriteLine("b\t\t" + Language.GetTextValue("tModLoader.MenuModBrowser")); // Not functional in the 1.4 Steam Workshop Environment 
  				Console.WriteLine("");
  				Console.Write(Language.GetTextValue("CLI.ChooseWorld"));
@@ -6241,6 +6246,25 @@
  	}
  
  	private static void PostDrawMenu(Microsoft.Xna.Framework.Point screenSizeCache, Microsoft.Xna.Framework.Point screenSizeCacheAfterScaling)
+@@ -42862,11 +_,18 @@
+ 
+ 	private static bool IsBorderlessDisplayAvailable()
+ 	{
++		// TML: Exclusive fullscreen is retired in favor of borderless
++		// fullscreen.  As such, the borderless option serves no purpose (and
++		// is ignored in practice).
++		return false;
++
++		/*
+ 		bool result = false;
+ 		if (Platform.IsWindows)
+ 			result = true;
+ 
+ 		return result;
++		*/
+ 	}
+ 
+ #if !NETCORE
 @@ -43330,9 +_,17 @@
  		float value = (float)((double)(screenPosition.Y - (float)(screenHeight / 2) + 200f) - rockLayer * 16.0) / 300f;
  		value = MathHelper.Clamp(value, 0f, 1f);
@@ -6461,8 +6485,13 @@
  			if (IsLiquidStyleWater(j) && liquidAlpha[j] > 0f && j != waterStyle) {
  				DrawLiquid(isBackground, j, isBackground ? 1f : liquidAlpha[j], drawSinglePassLiquids: false);
  				flag = true;
-@@ -47314,7 +_,7 @@
+@@ -47312,9 +_,12 @@
+ 		}
+ 
  		DrawLiquid(isBackground, waterStyle, flag ? liquidAlpha[waterStyle] : 1f);
++
++		if (LiquidEdgeRenderer.Active && !drawToScreen)
++			LiquidEdgeRenderer.DrawTileMask(spriteBatch, tileTarget, sceneTilePos - screenPosition + new Vector2(drawToScreen ? 0 : offScreenRange));
  	}
  
 -	protected void DrawLiquid(bool bg = false, int waterStyle = 0, float Alpha = 1f, bool drawSinglePassLiquids = true)
@@ -6470,6 +6499,45 @@
  	{
  		if (!Lighting.NotRetro) {
  			oldDrawWater(bg, waterStyle, Alpha);
+@@ -47324,7 +_,8 @@
+ 		Stopwatch stopwatch = new Stopwatch();
+ 		stopwatch.Start();
+ 		Vector2 drawOffset = (drawToScreen ? Vector2.Zero : new Vector2(offScreenRange, offScreenRange)) - screenPosition;
+-		if (bg)
++
++		if (bg && !LiquidEdgeRenderer.Active)
+ 			TilesRenderer.DrawLiquidBehindTiles(waterStyle);
+ 
+ 		LiquidRenderer.Instance.DrawNormalLiquids(spriteBatch, drawOffset, waterStyle, Alpha, bg);
+@@ -47776,6 +_,7 @@
+ 			}
+ 		}
+ 
++		bool liquidSlopeFix = LiquidEdgeRenderer.Active;
+ 		bool flag = ShouldShowInvisibleWalls();
+ 		for (int i = num5; i < num6; i++) {
+ 			bool flag2 = i >= UnderworldLayer;
+@@ -47794,6 +_,12 @@
+ 					Tile tile = Main.tile[j, i];
+ 					float num8 = Lighting.Brightness(j, i);
+ 					num8 = (float)Math.Floor(num8 * 255f) / 255f;
++
++
++					// TML(liquid-slopes): Avoid drawing over liquid edges.
++					if (liquidSlopeFix && LiquidRenderer.Instance.HasFullWater(j, i) && ((tile.Slope != SlopeType.Solid || tile.IsHalfBlock) && num8 >= (5f / 255f) || num8 > (5f / 255f)))
++						break;
++
+ 					byte b = tile.liquid;
+ 					bool num9 = num8 <= num2 && ((!flag2 && b < 250) || WorldGen.SolidTile(tile) || (b >= 200 && num8 == 0f));
+ 					bool flag3 = tile.active() && tileBlockLight[tile.type] && (!tile.invisibleBlock() || flag);
+@@ -48019,6 +_,7 @@
+ 				backgroundTarget = new RenderTarget2D(base.GraphicsDevice, width, height, mipMap: false, base.GraphicsDevice.PresentationParameters.BackBufferFormat, DepthFormat.None);
+ 				screenTarget = new RenderTarget2D(base.GraphicsDevice, base.GraphicsDevice.PresentationParameters.BackBufferWidth, base.GraphicsDevice.PresentationParameters.BackBufferHeight, mipMap: false, base.GraphicsDevice.PresentationParameters.BackBufferFormat, DepthFormat.None);
+ 				screenTargetSwap = new RenderTarget2D(base.GraphicsDevice, base.GraphicsDevice.PresentationParameters.BackBufferWidth, base.GraphicsDevice.PresentationParameters.BackBufferHeight, mipMap: false, base.GraphicsDevice.PresentationParameters.BackBufferFormat, DepthFormat.None);
++
+ 				if (Main.OnRenderTargetsInitialized != null)
+ 					Main.OnRenderTargetsInitialized(base.GraphicsDevice.PresentationParameters.BackBufferWidth, base.GraphicsDevice.PresentationParameters.BackBufferHeight);
+ 			}
 @@ -48744,18 +_,33 @@
  		}
  	}

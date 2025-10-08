@@ -23,6 +23,7 @@ namespace ExampleMod.Common.Configs.ModConfigShowcases
 		public int SomeInt;
 		public float SomeFloat;
 		public string SomeString;
+		// Use [Slider], [Dropdown], or [Cycle] to present the enum as a slider, a dropdown, or a cycle button instead of the default chooser. (See examples in ModConfigShowcaseMisc.cs)
 		public EquipType SomeEnum;
 		public byte SomeByte;
 		public uint SomeUInt;

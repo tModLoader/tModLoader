@@ -27,6 +27,12 @@ namespace Terraria.ModLoader.Setup.Core
 				throw new FileNotFoundException($"\"{TmlAssemblyPath}\" does not exist.");
 			}
 
+			DateTime buildTimestamp = File.GetLastWriteTime(TmlAssemblyPath);
+			int buildDaysAgo = (DateTime.Now - buildTimestamp).Days;
+			if (buildDaysAgo > 1) {
+				throw new Exception($"tModLoader.dll was last modified on {buildTimestamp} ({buildDaysAgo} day(s) ago). HookGen is run on the release build, make sure to build release.");
+			}
+
 			// Hopefully this always works since we should be running on a system install of a .NET Core sdk
 			var dotnetPath = Path.GetFullPath(Path.GetDirectoryName(typeof(object).Assembly.Location) + "/../../..");
 			var dotnetRefsLocation = Path.Combine(dotnetPath, $"packs/Microsoft.NETCore.App.Ref/{Environment.Version}/ref/{DotnetTargetVersion}");
@@ -74,6 +80,8 @@ namespace Terraria.ModLoader.Setup.Core
 				HookPrivate = true,
 			};
 
+			gen.GenerateObsoleteLogging(mm);
+
 			foreach (var type in mm.Module.Types) {
 				cancellationToken.ThrowIfCancellationRequested();
 
@@ -107,7 +115,7 @@ namespace Terraria.ModLoader.Setup.Core
 			type.Namespace = type.Namespace[Math.Min(3, type.Namespace.Length)..];
 		}
 
-		private class ProgressReportingMonoModder : MonoModder
+		public class ProgressReportingMonoModder : MonoModder
 		{
 			private IWorkItemProgress progress;
 

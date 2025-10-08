@@ -58,6 +58,20 @@
  		}
  
  		return null;
+@@ -433,8 +_,13 @@
+ 	{
+ 		for (int i = 0; i < Main.maxTilesX; i++) {
+ 			for (int j = 0; j < Main.maxTilesY; j++) {
++				/*
+ 				if (Main.tile[i, j].type == 127 || Main.tile[i, j].type == 504)
+ 					WorldGen.KillTile(i, j);
++				*/
++				// TML: noItem: true added to KillTile. Vanilla tiles in that set do not drop items, but modded ones might
++				if (TileID.Sets.ClearedOnWorldLoad[Main.tile[i, j].type])
++					WorldGen.KillTile(i, j, noItem: true);
+ 			}
+ 		}
+ 	}
 @@ -446,6 +_,8 @@
  		Main.checkXMas();
  		Main.checkHalloween();
@@ -78,6 +92,14 @@
  				if (num3 != 0)
  					WorldGen.loadFailed = true;
  				else
+@@ -502,6 +_,7 @@
+ 
+ 				ConvertOldTileEntities();
+ 				ClearTempTiles();
++				SystemLoader.PostWorldLoad();
+ 				WorldGen.gen = true;
+ 				GenVars.waterLine = Main.maxTilesY;
+ 				Liquid.QuickWater(2);
 @@ -652,6 +_,9 @@
  		if (Main.worldPathName == null)
  			return;

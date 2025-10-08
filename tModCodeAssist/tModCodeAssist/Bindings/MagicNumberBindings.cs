@@ -83,22 +83,53 @@ public static class MagicNumberBindings
 			AddBinding(typeof(PaintID), "Terraria.Tile", "WallColor", (ctx) => new FieldBinding(ctx));
 			AddBinding(typeof(LiquidID), "Terraria.Tile", "LiquidType", (ctx) => new FieldBinding(ctx));
 			AddBinding<ExtrasID>("Terraria.GameContent.TextureAssets", "Extra", (ctx) => new FieldBinding(ctx), typeof(short));
+			AddBinding<MountID>("Terraria.Item", "mountType", (ctx) => new FieldBinding(ctx));
+			AddBinding<MountID>("Terraria.Mount", "Type", (ctx) => new FieldBinding(ctx));
+			AddBinding<BuffID>("Terraria.Item", "buffType", (ctx) => new FieldBinding(ctx));
+			AddBinding<BuffID>("Terraria.Mount.MountData", "buff", (ctx) => new FieldBinding(ctx));
+			AddBinding<BuffID>("Terraria.Mount", "BuffType", (ctx) => new FieldBinding(ctx));
 
 			AddBinding<ItemID>("Terraria.Item", "CloneDefaults", (ctx) => new MethodParameterBinding(ctx, 0));
+			AddBinding<ItemID>("Terraria.Item", "netDefaults", (ctx) => new MethodParameterBinding(ctx, 0), allowNegativeIDs: true);
+			AddBinding<ItemID>("Terraria.Item", "SetDefaults(int)", (ctx) => new MethodParameterBinding(ctx, 0), allowNegativeIDs: true);
+			AddBinding<ItemID>("Terraria.Item", "SetDefaults(int, bool, Terraria.GameContent.Items.ItemVariant)", (ctx) => new MethodParameterBinding(ctx, 0), allowNegativeIDs: true);
 			AddBinding<MessageID>("Terraria.NetMessage", "SendData", (ctx) => new MethodParameterBinding(ctx, 0));
 			AddBinding<DustID>("Terraria.Dust", "NewDust", (ctx) => new MethodParameterBinding(ctx, 3));
 			AddBinding<DustID>("Terraria.Dust", "NewDustDirect", (ctx) => new MethodParameterBinding(ctx, 3));
 			AddBinding<DustID>("Terraria.Dust", "NewDustPerfect", (ctx) => new MethodParameterBinding(ctx, 1));
+			AddBinding<ItemID>("Terraria.Player", "CountItem", (ctx) => new MethodParameterBinding(ctx, 0));
+			AddBinding<ItemID>("Terraria.Player", "ConsumeItem", (ctx) => new MethodParameterBinding(ctx, 0));
+			AddBinding<ItemID>("Terraria.Player", "FindItem(int, Terraria.Item[])", (ctx) => new MethodParameterBinding(ctx, 0));
+			AddBinding<ItemID>("Terraria.Player", "FindItemInInventoryOrOpenVoidBag", (ctx) => new MethodParameterBinding(ctx, 0));
+			AddBinding<ItemID>("Terraria.Player", "HasItem(int)", (ctx) => new MethodParameterBinding(ctx, 0));
+			AddBinding<ItemID>("Terraria.Player", "HasItem(int, Terraria.Item[])", (ctx) => new MethodParameterBinding(ctx, 0));
+			AddBinding<ItemID>("Terraria.Player", "HasItemInInventoryOrOpenVoidBag", (ctx) => new MethodParameterBinding(ctx, 0));
+			AddBinding<ItemID>("Terraria.Player", "HasItemInAnyInventory", (ctx) => new MethodParameterBinding(ctx, 0));
+			AddBinding<ItemID>("Terraria.Player", "OpenBossBag", (ctx) => new MethodParameterBinding(ctx, 0));
+			AddBinding<ItemID>("Terraria.Player", "PutItemInInventoryFromItemUsage", (ctx) => new MethodParameterBinding(ctx, 0));
+			AddBinding<ItemID>("Terraria.Player", "StatusToNPC", (ctx) => new MethodParameterBinding(ctx, 0));
+			AddBinding<ItemID>("Terraria.Player", "StatusToPlayerPvP", (ctx) => new MethodParameterBinding(ctx, 0));
+			AddBinding<ItemID>("Terraria.Player", "QuickSpawnItem(Terraria.DataStructures.IEntitySource, int, int)", (ctx) => new MethodParameterBinding(ctx, 1));
+			AddBinding<ItemID>("Terraria.Player", "QuickSpawnItemDirect(Terraria.DataStructures.IEntitySource, int, int)", (ctx) => new MethodParameterBinding(ctx, 1));
 			AddBinding<ItemID>("Terraria.Recipe", "Create", (ctx) => new MethodParameterBinding(ctx, 0));
 			AddBinding<TileID>("Terraria.Recipe", "AddTile", (ctx) => new MethodParameterBinding(ctx, 0));
 			AddBinding<ItemID>("Terraria.Recipe", "AddIngredient", (ctx) => new MethodParameterBinding(ctx, 0));
 			AddBinding<ItemID>("Terraria.Recipe", "HasResult", (ctx) => new MethodParameterBinding(ctx, 0));
 			AddBinding<ItemID>("Terraria.ModLoader.Mod", "CreateRecipe", (ctx) => new MethodParameterBinding(ctx, 0));
+			AddBinding<NPCID>("Terraria.Player", "isNearNPC", (ctx) => new MethodParameterBinding(ctx, 0));
+			AddBinding<NPCID>("Terraria.NPC", "NewNPC", (ctx) => new MethodParameterBinding(ctx, 3));
+			AddBinding<NPCID>("Terraria.NPC", "NewNPCDirect(Terraria.DataStructures.IEntitySource, int, int, int, int, float, float, float, float, int)", (ctx) => new MethodParameterBinding(ctx, 3));
+			AddBinding<NPCID>("Terraria.NPC", "NewNPCDirect(Terraria.DataStructures.IEntitySource, Microsoft.Xna.Framework.Vector2, int, int, float, float, float, float, int)", (ctx) => new MethodParameterBinding(ctx, 2));
 			AddBinding<ProjectileID>("Terraria.Projectile", "NewProjectile(Terraria.DataStructures.IEntitySource, Microsoft.Xna.Framework.Vector2, Microsoft.Xna.Framework.Vector2, int, int, float, int, float, float, float)", (ctx) => new MethodParameterBinding(ctx, 3));
 			AddBinding<ProjectileID>("Terraria.Projectile", "NewProjectile(Terraria.DataStructures.IEntitySource, float, float, float, float, int, int, float, int, float, float, float)", (ctx) => new MethodParameterBinding(ctx, 5));
 			AddBinding<ProjectileID>("Terraria.Projectile", "NewProjectileDirect(Terraria.DataStructures.IEntitySource, Microsoft.Xna.Framework.Vector2, Microsoft.Xna.Framework.Vector2, int, int, float, int, float, float, float)", (ctx) => new MethodParameterBinding(ctx, 3));
 			AddBinding<BuffID>("Terraria.Player", "AddBuff", (ctx) => new MethodParameterBinding(ctx, 0));
+			AddBinding<BuffID>("Terraria.Player", "ClearBuff", (ctx) => new MethodParameterBinding(ctx, 0));
+			AddBinding<BuffID>("Terraria.Player", "FindBuffIndex", (ctx) => new MethodParameterBinding(ctx, 0));
+			AddBinding<BuffID>("Terraria.Player", "HasBuff(int)", (ctx) => new MethodParameterBinding(ctx, 0));
 			AddBinding<BuffID>("Terraria.NPC", "AddBuff", (ctx) => new MethodParameterBinding(ctx, 0));
+			AddBinding<BuffID>("Terraria.NPC", "FindBuffIndex", (ctx) => new MethodParameterBinding(ctx, 0));
+			AddBinding<BuffID>("Terraria.NPC", "HasBuff(int)", (ctx) => new MethodParameterBinding(ctx, 0));
 
 			AddBinding<ItemID>("Terraria.ID.ItemID.Sets", "*", (ctx) => new FieldBinding(ctx));
 			AddBinding<NPCID>("Terraria.ID.NPCID.Sets", "*", (ctx) => new FieldBinding(ctx));
@@ -107,6 +138,7 @@ public static class MagicNumberBindings
 			AddBinding<TileID>("Terraria.ID.TileID.Sets.Conversion", "*", (ctx) => new FieldBinding(ctx));
 			AddBinding<WallID>("Terraria.ID.WallID.Sets", "*", (ctx) => new FieldBinding(ctx));
 			AddBinding<WallID>("Terraria.ID.WallID.Sets.Conversion", "*", (ctx) => new FieldBinding(ctx));
+			AddBinding<MountID>("Terraria.ID.MountID.Sets", "*", (ctx) => new FieldBinding(ctx));
 		}
 	}
 

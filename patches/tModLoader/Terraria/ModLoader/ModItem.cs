@@ -313,6 +313,27 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	}
 
 	/// <summary>
+	/// Allows you to dynamically modify the potion delay applied by a specific healing potion. <paramref name="baseDelay"/> and <see cref="Player.PotionDelayModifier"/> will be used to calculate a final potion delay, provided in <see cref="ApplyPotionDelay"/>.
+	/// <br/><br/> Modders can modify <see cref="Player.PotionDelayModifier"/> directly in hooks like <see cref="ModItem.UpdateAccessory(Player, bool)"/> rather than use this hook to adjust potion delay times for all items.
+	/// </summary>
+	/// <param name="player">The player consuming the item.</param>
+	/// <param name="baseDelay">The base potion delay length, in ticks.</param>
+	public virtual void ModifyPotionDelay(Player player, ref int baseDelay)
+	{
+	}
+
+	/// <summary>
+	/// Called before the potion delay is applied to the player after consuming a healing potion. 
+	/// <br/><br/> Return false to prevent application of the <see cref="BuffID.PotionSickness"/> buff and setting <see cref="Player.potionDelay"/>.
+	/// </summary>
+	/// <param name="player">The player consuming the item.</param>
+	/// <param name="potionDelay">The calculated potion delay.</param>
+	public virtual bool ApplyPotionDelay(Player player, int potionDelay)
+	{
+		return true;
+	}
+
+	/// <summary>
 	/// Allows you to dynamically modify a weapon's damage based on player and item conditions.
 	/// Can be utilized to modify damage beyond the tools that DamageClass has to offer.
 	/// <para/> <b>Do not</b> modify <see cref="Item.damage"/>, modify the <paramref name="damage"/> parameter.

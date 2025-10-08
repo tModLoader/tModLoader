@@ -12,7 +12,7 @@ internal class ErrorReporting
 {
 	internal static void MessageBoxShow(string message, bool fatal = false)
 	{
-		var title = ModLoader.versionedName + (fatal ? " Error" : " Fatal Error");
+		var title = ModLoader.versionedName + (fatal ? " Fatal Error" : " Error");
 
 		string logDir = Path.GetFullPath(Logging.LogDir);
 		var logFileName = Logging.LogPath == null ? "Natives.log" : Path.GetFileName(Logging.LogPath);

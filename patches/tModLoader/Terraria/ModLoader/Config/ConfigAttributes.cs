@@ -501,9 +501,9 @@ public class RangeAttribute : Attribute
 }
 
 /// <summary>
-/// Affects whether this data will be presented as a slider or an input field. Add this attribute to use a slider. Currently only affects data of type int.
+/// Affects whether this data will be presented as a slider or an input field. Add this attribute to use a slider. Currently only affects data of type int and enum.
 /// </summary>
-[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
+[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Enum)]
 public class SliderAttribute : Attribute
 {
 
@@ -580,6 +580,22 @@ public class ExpandAttribute : Attribute
 		Expand = expand;
 		ExpandListElements = expandListElements;
 	}
+}
+
+/// <summary>
+/// If present, this data will be presented as a drop down. Currently only affects enums, causing the choices to be displayed as a dropdown instead of the usual expanded panel.
+/// </summary>
+[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Enum)]
+public class DropdownAttribute : Attribute
+{
+}
+
+/// <summary>
+/// If present, this data will be presented as a cylc button. Currently only affects enums, causing the choices to be cycled by button clicks instead of the usual expanded panel.
+/// </summary>
+[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Enum)]
+public class CycleAttribute : Attribute
+{
 }
 
 // Unimplemented ideas below:

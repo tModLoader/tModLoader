@@ -1,6 +1,71 @@
 --- src/TerrariaNetCore/Terraria/GameContent/Liquid/LiquidRenderer.cs
 +++ src/tModLoader/Terraria/GameContent/Liquid/LiquidRenderer.cs
-@@ -86,7 +_,7 @@
+@@ -1,4 +_,5 @@
+ using System;
++using System.Collections.Generic;
+ using Microsoft.Xna.Framework;
+ using Microsoft.Xna.Framework.Graphics;
+ using ReLogic.Content;
+@@ -10,7 +_,7 @@
+ 
+ public class LiquidRenderer
+ {
+-	private struct LiquidCache
++	public struct LiquidCache
+ 	{
+ 		public float LiquidLevel;
+ 		public float VisibleLiquidLevel;
+@@ -35,10 +_,13 @@
+ 		public float VisibleTopWall;
+ 		public byte Type;
+ 		public byte VisibleType;
++		public LiquidEdgeData? EdgeData;
+ 	}
+ 
+-	private struct LiquidDrawCache
++	public struct LiquidDrawCache
+ 	{
++		public int X;
++		public int Y;
+ 		public Rectangle SourceRectangle;
+ 		public Vector2 LiquidOffset;
+ 		public bool IsVisible;
+@@ -48,6 +_,7 @@
+ 		public bool HasWall;
+ 	}
+ 
++	/*
+ 	private struct SpecialLiquidDrawCache
+ 	{
+ 		public int X;
+@@ -60,17 +_,24 @@
+ 		public bool IsSurfaceLiquid;
+ 		public bool HasWall;
+ 	}
++	*/
++
++	public struct LiquidEdgeData
++	{
++		public Rectangle SourceRectangle;
++		public Vector2 LiquidOffset;
++	}
+ 
+ 	private const int ANIMATION_FRAME_COUNT = 16;
+ 	private const int CACHE_PADDING = 2;
+ 	private const int CACHE_PADDING_2 = 4;
+-	private static readonly int[] WATERFALL_LENGTH = new int[4] {
++	public static readonly int[] WATERFALL_LENGTH = new int[4] {
+ 		10,
+ 		3,
+ 		2,
+ 		10
+ 	};
+-	private static readonly float[] DEFAULT_OPACITY = new float[4] {
++	public static readonly float[] DEFAULT_OPACITY = new float[4] {
+ 		0.6f,
+ 		0.95f,
+ 		0.95f,
+@@ -86,17 +_,19 @@
  	};
  	public const float MIN_LIQUID_SIZE = 0.25f;
  	public static LiquidRenderer Instance;
@@ -8,8 +73,11 @@
 +	public Asset<Texture2D>[] _liquidTextures = new Asset<Texture2D>[15];
  	private LiquidCache[] _cache = new LiquidCache[1];
  	private LiquidDrawCache[] _drawCache = new LiquidDrawCache[1];
- 	private SpecialLiquidDrawCache[] _drawCacheForShimmer = new SpecialLiquidDrawCache[1];
-@@ -96,7 +_,9 @@
+-	private SpecialLiquidDrawCache[] _drawCacheForShimmer = new SpecialLiquidDrawCache[1];
++	// private SpecialLiquidDrawCache[] _drawCacheForShimmer = new SpecialLiquidDrawCache[1];
+ 	private int _animationFrame;
+ 	private Rectangle _drawArea = new Rectangle(0, 0, 1, 1);
+ 	private readonly UnifiedRandom _random = new UnifiedRandom();
  	private Color[] _waveMask = new Color[1];
  	private float _frameState;
  
@@ -19,7 +87,26 @@
  
  	public event Action<Color[], Rectangle> WaveFilters;
  
-@@ -131,14 +_,14 @@
+@@ -117,6 +_,9 @@
+ 
+ 	private unsafe void InternalPrepareDraw(Rectangle drawArea)
+ 	{
++		LiquidEdgeRenderer.Clear();
++		bool edgeData = LiquidEdgeRenderer.Active;
++
+ 		Rectangle rectangle = new Rectangle(drawArea.X - 2, drawArea.Y - 2, drawArea.Width + 4, drawArea.Height + 4);
+ 		_drawArea = drawArea;
+ 		if (_cache.Length < rectangle.Width * rectangle.Height + 1)
+@@ -125,20 +_,23 @@
+ 		if (_drawCache.Length < drawArea.Width * drawArea.Height + 1)
+ 			_drawCache = new LiquidDrawCache[drawArea.Width * drawArea.Height + 1];
+ 
++		// TML: Liquid draw caches merged, initialization redundant
++		/*
+ 		if (_drawCacheForShimmer.Length < drawArea.Width * drawArea.Height + 1)
+ 			_drawCacheForShimmer = new SpecialLiquidDrawCache[drawArea.Width * drawArea.Height + 1];
++		*/
+ 
  		if (_waveMask.Length < drawArea.Width * drawArea.Height)
  			_waveMask = new Color[drawArea.Width * drawArea.Height];
  
@@ -36,3 +123,163 @@
  					if (tile == null)
  						tile = new Tile();
  
+@@ -152,6 +_,10 @@
+ 					if (ptr2->IsHalfBrick && !ptr2->HasLiquid)
+ 						ptr2->Type = ptr2[-1].Type;
+ 
++					ptr2->EdgeData = null;
++					if (edgeData)
++						LiquidEdgeRenderer.CollectEdgeData(ptr2, tile, i, j);
++
+ 					ptr2++;
+ 				}
+ 			}
+@@ -165,7 +_,7 @@
+ 					if (ptr2->IsHalfBrick && ptr2[-1].HasLiquid) {
+ 						num2 = 1f;
+ 					}
+-					else if (!ptr2->HasLiquid) {
++					else if (!ptr2->HasLiquid && !ptr2->EdgeData.HasValue) { // edge tiles don't have liquid, but shouldn't participate in gap filling
+ 						LiquidCache liquidCache = ptr2[-1];
+ 						LiquidCache liquidCache2 = ptr2[1];
+ 						LiquidCache liquidCache3 = ptr2[-rectangle.Height];
+@@ -212,8 +_,12 @@
+ 							ptr2[num5].VisibleType = ptr2->Type;
+ 						}
+ 					}
++					else if (ptr2->HasVisibleLiquid && ptr2->EdgeData.HasValue) { // edge water needs opacity and visibility set
++						ptr2->Opacity = 1f;
++						ptr2->VisibleType = ptr2->Type;
++					}
+ 
+-					if (ptr2->IsSolid && !ptr2->IsHalfBrick) {
++					if (ptr2->IsSolid && !ptr2->IsHalfBrick && !ptr2->EdgeData.HasValue) {
+ 						ptr2->VisibleLiquidLevel = 1f;
+ 						ptr2->HasVisibleLiquid = false;
+ 					}
+@@ -227,6 +_,7 @@
+ 				ptr2 += 10;
+ 			}
+ 
++
+ 			ptr2 = ptr;
+ 			ptr2 += num;
+ 			for (int num6 = 2; num6 < rectangle.Width - 2; num6++) {
+@@ -247,8 +_,8 @@
+ 						float num10 = 0f;
+ 						float num11 = 1f;
+ 						float visibleLiquidLevel = ptr2->VisibleLiquidLevel;
+-						if (!liquidCache.HasVisibleLiquid)
+-							num10 += liquidCache2.VisibleLiquidLevel * (1f - visibleLiquidLevel);
++						if (!liquidCache.HasVisibleLiquid || (liquidCache.EdgeData.HasValue && !liquidCache.IsHalfBrick)) // half bricks are meant to leak water below them creating waterfalls and providing 'surface tension' through the bottom
++							num10 += (liquidCache2.EdgeData.HasValue ? 1f : liquidCache2.VisibleLiquidLevel) * (1f - visibleLiquidLevel); // this is just creating the same effect as if the tile above didn't have any edgedata, (empty tiles have VisibleLiquidLevel = 1)
+ 
+ 						if (!liquidCache2.HasVisibleLiquid && !liquidCache2.IsSolid && !liquidCache2.IsHalfBrick)
+ 							num11 -= liquidCache.VisibleLiquidLevel * (1f - visibleLiquidLevel);
+@@ -320,8 +_,11 @@
+ 							if (ptr2->HasRightEdge)
+ 								ptr2->VisibleRightWall = (ptr2->RightWall * 2f + liquidCache.RightWall + liquidCache2.RightWall) * 0.25f;
+ 						}
+-
+-						if (liquidCache3.HasVisibleLiquid && liquidCache4.HasVisibleLiquid) {
++						// Ignore edges when smoothing liquids
++						bool smoothCondition = edgeData ?
++							liquidCache3.HasVisibleLiquid && !liquidCache3.IsSolid && liquidCache4.HasVisibleLiquid && !liquidCache4.IsSolid :
++							liquidCache3.HasVisibleLiquid && liquidCache4.HasVisibleLiquid;
++						if (smoothCondition) {
+ 							if (ptr2->HasTopEdge)
+ 								ptr2->VisibleTopWall = (ptr2->TopWall * 2f + liquidCache3.TopWall + liquidCache4.TopWall) * 0.25f;
+ 
+@@ -424,7 +_,9 @@
+ 								if (ptr2->IsHalfBrick && ptr2->IsSolid && num23 > 0.5f)
+ 									num23 = 0.5f;
+ 
++								ptr4->X = num18;
++								ptr4->Y = num19;
+-								ptr4->IsVisible = ptr2->HasWall || !ptr2->IsHalfBrick || !ptr2->HasLiquid || !(ptr2->LiquidLevel < 1f);
++								ptr4->IsVisible = ptr2->HasWall || !ptr2->IsHalfBrick || !ptr2->HasLiquid || !(ptr2->LiquidLevel < 1f) || ptr2->EdgeData.HasValue;
+ 								ptr4->SourceRectangle = new Rectangle((int)(16f - num21 * 16f) + ptr2->FrameOffset.X, (int)(16f - num23 * 16f) + ptr2->FrameOffset.Y, (int)Math.Ceiling((num21 - num20) * 16f), (int)Math.Ceiling((num23 - num22) * 16f));
+ 								ptr4->IsSurfaceLiquid = ptr2->FrameOffset.X == 16 && ptr2->FrameOffset.Y == 0 && (double)(num19 + rectangle.Y) > Main.worldSurface - 40.0;
+ 								ptr4->Opacity = ptr2->Opacity;
+@@ -439,6 +_,11 @@
+ 								LiquidCache* ptr7 = ptr2 - 1;
+ 								if (num19 != 2 && !ptr7->HasVisibleLiquid && !ptr7->IsSolid && !ptr7->IsHalfBrick)
+ 									*(ptr6 - 1) = *ptr6;
++
++								if (ptr2->EdgeData.HasValue) { // ignore previous instructions and use custom framing from LiquidEdgeRenderer
++									ptr4->LiquidOffset = ptr2->EdgeData.Value.LiquidOffset;
++									ptr4->SourceRectangle = ptr2->EdgeData.Value.SourceRectangle;
++								}
+ 							}
+ 							else {
+ 								ptr4->IsVisible = false;
+@@ -483,6 +_,8 @@
+ 				}
+ 			}
+ 
++			// TML: Liquid draw caches merged, population redundant
++			/*
+ 			fixed (LiquidDrawCache* ptr8 = &_drawCache[0]) {
+ 				fixed (SpecialLiquidDrawCache* ptr10 = &_drawCacheForShimmer[0]) {
+ 					LiquidDrawCache* ptr9 = ptr8;
+@@ -510,6 +_,7 @@
+ 					ptr11->IsVisible = false;
+ 				}
+ 			}
++			*/
+ 		}
+ 
+ 		if (this.WaveFilters != null)
+@@ -522,9 +_,17 @@
+ 		Main.tileBatch.Begin();
+ 		fixed (LiquidDrawCache* ptr = &_drawCache[0]) {
+ 			LiquidDrawCache* ptr2 = ptr;
++			// TML: Liquid draw caches merged, screen loop redundant
++			/*
+ 			for (int i = drawArea.X; i < drawArea.X + drawArea.Width; i++) {
+ 				for (int j = drawArea.Y; j < drawArea.Y + drawArea.Height; j++) {
+ 					if (ptr2->IsVisible) {
++			*/
++			{
++				int cacheLength = _drawCache.Length;
++				for (int k = 0; k < cacheLength; k++) {
++					// TML: Liquid draw caches merged, add shimmer type check
++					if (ptr2->IsVisible && ptr2->Type != LiquidID.Shimmer) {
+ 						Rectangle sourceRectangle = ptr2->SourceRectangle;
+ 						if (ptr2->IsSurfaceLiquid)
+ 							sourceRectangle.Y = 1280;
+@@ -544,6 +_,9 @@
+ 								break;
+ 						}
+ 
++						// TML: use cached X and Y instead of loop positions
++						int i = ptr2->X + drawArea.X - 2;
++						int j = ptr2->Y + drawArea.Y - 2;
+ 						num = Math.Min(1f, num);
+ 						Lighting.GetCornerColors(i, j, out var vertices);
+ 						vertices.BottomLeftColor *= num;
+@@ -566,12 +_,24 @@
+ 	{
+ 		Rectangle drawArea = _drawArea;
+ 		Main.tileBatch.Begin();
++		/*
+ 		fixed (SpecialLiquidDrawCache* ptr = &_drawCacheForShimmer[0]) {
+ 			SpecialLiquidDrawCache* ptr2 = ptr;
+ 			int num = _drawCacheForShimmer.Length;
++		*/
++		fixed (LiquidDrawCache* ptr = &_drawCache[0]) {
++			LiquidDrawCache* ptr2 = ptr;
++			int num = _drawCache.Length;
+ 			for (int i = 0; i < num; i++) {
++				// TML: Liquid draw caches merged, add shimmer type check
++				/*
+ 				if (!ptr2->IsVisible)
+ 					break;
++				*/
++				if (!ptr2->IsVisible || ptr2->Type != LiquidID.Shimmer) {
++					ptr2++;
++					continue;
++				}
+ 
+ 				Rectangle sourceRectangle = ptr2->SourceRectangle;
+ 				if (ptr2->IsSurfaceLiquid)

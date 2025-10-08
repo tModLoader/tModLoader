@@ -14,6 +14,10 @@ public abstract class ModAccessorySlot : ModType
 {
 	public int Type { get; internal set; }
 
+	/// <summary>
+	/// The player that this ModAccessorySlot is currently accessing, equivalent to <see cref="Main.CurrentPlayer"/>. ModAccessorySlot are singletons, the behavior of properties like <see cref="FunctionalItem"/> depends on the current player.
+	/// <br/><br/> <b>Main.CurrentPlayer documentation:</b><br/> <inheritdoc cref="Main.CurrentPlayer"/>
+	/// </summary>
 	public static Player Player => Main.CurrentPlayer;
 
 	public ModAccessorySlotPlayer ModSlotPlayer => AccessorySlotLoader.ModSlotPlayer(Player);
@@ -48,21 +52,37 @@ public abstract class ModAccessorySlot : ModType
 	public virtual bool HasEquipmentLoadoutSupport => true;
 
 	// Get/Set Properties for fetching slot information
+	/// <summary>
+	/// The functional item of this equipment slot.
+	/// <br/><br/> This property always accesses the equipment of the current player, see <see cref="Player"/> for more info.
+	/// </summary>
 	public Item FunctionalItem {
 		get => ModSlotPlayer.exAccessorySlot[Type];
 		set => ModSlotPlayer.exAccessorySlot[Type] = value;
 	}
 
+	/// <summary>
+	/// The vanity item of this equipment slot.
+	/// <br/><br/> This property always accesses the equipment of the current player, see <see cref="Player"/> for more info.
+	/// </summary>
 	public Item VanityItem {
 		get => ModSlotPlayer.exAccessorySlot[Type + ModSlotPlayer.SlotCount];
 		set => ModSlotPlayer.exAccessorySlot[Type + ModSlotPlayer.SlotCount] = value;
 	}
 
+	/// <summary>
+	/// The dye item of this equipment slot.
+	/// <br/><br/> This property always accesses the equipment of the current player, see <see cref="Player"/> for more info.
+	/// </summary>
 	public Item DyeItem {
 		get => ModSlotPlayer.exDyesAccessory[Type];
 		set => ModSlotPlayer.exDyesAccessory[Type] = value;
 	}
 
+	/// <summary>
+	/// Indicates if the corresponding <see cref="FunctionalItem"/> is set to be hidden or not. 
+	/// <br/><br/> This property always accesses the equipment of the current player, see <see cref="Player"/> for more info.
+	/// </summary>
 	public bool HideVisuals {
 		get => ModSlotPlayer.exHideAccessory[Type];
 		set => ModSlotPlayer.exHideAccessory[Type] = value;
