@@ -74,12 +74,21 @@
  	public static void SkipWire(Point16 point)
  	{
  		_wireSkip[point] = true;
-@@ -193,11 +_,17 @@
+@@ -193,11 +_,26 @@
  		}
  	}
  
 +	/// <summary>
-+	/// Contains shared code for tile interactions. Usually called on the server and all clients. Typically called in conjunction with <c>NetMessage.SendData(MessageID.HitSwitch...)</c> to have the method run everywhere else.
++	/// Helper method that calls <see cref="HitSwitch(int, int)"/> followed by <c>NetMessage.SendData(MessageID.HitSwitch...)</c>. This will cause the HitSwitch logic to run on all clients and the server, as intended.
++	/// </summary>
++	public static void HitSwitchAndSync(int i, int j)
++	{
++		Wiring.HitSwitch(i, j);
++		NetMessage.SendData(MessageID.HitSwitch, number: i, number2: j);
++	}
++
++	/// <summary>
++	/// Contains shared code for tile interactions. Usually called on the server and all clients. Typically called in conjunction with <c>NetMessage.SendData(MessageID.HitSwitch...)</c> to have the method run everywhere else. (Or use the <see cref="HitSwitchAndSync(int, int)"/> helper method instead)
 +	/// </summary>
  	public static void HitSwitch(int i, int j)
  	{
