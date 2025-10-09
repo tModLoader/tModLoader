@@ -101,7 +101,7 @@ public partial class WorldGen
 			if (!InWorld(testX, testY, 10))
 				return;
 
-			if (nearbyChlorophyte(testX, testY)) {
+			if (nearbyChlorophyte(testX, testY) && conversionType != BiomeConversionID.Hallow) {
 				ChlorophyteDefense(testX, testY);
 				return;
 			}
@@ -110,6 +110,9 @@ public partial class WorldGen
 				return;
 
 			int preConversionType = Main.tile[testX, testY].type;
+			if (!TileID.Sets.Infectable[preConversionType])
+				return;
+
 			Convert(testX, testY, conversionType, size: 0, tiles: true, walls: false);
 			if (preConversionType != Main.tile[testX, testY].type)
 				keepSpreading = genRand.NextBool(2); // 1 in 2 chance to attempt to spread to another tile if we successfuly converted the first one

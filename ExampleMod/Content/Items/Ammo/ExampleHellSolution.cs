@@ -93,21 +93,16 @@ namespace ExampleMod.Content.Items.Ammo
 			TileLoader.RegisterConversion(TileID.Grass, Type, HellifyGrass);
 			TileLoader.RegisterConversion(TileID.GolfGrass, Type, HellifyGrass);
 
-			TileLoader.RegisterConversion(TileID.Dirt, Type, ConvertToAsh);
-			TileLoader.RegisterConversion(TileID.Stone, Type, ConvertToAsh);
-			TileLoader.RegisterConversion(TileID.Sand, Type, ConvertToAsh);
+			TileLoader.RegisterConversion(TileID.Dirt, Type, TileID.Ash);
+			TileLoader.RegisterConversion(TileID.Stone, Type, TileID.Ash);
+			TileLoader.RegisterConversion(TileID.Sand, Type, TileID.Ash);
 
 			// Manually register clay
-			TileLoader.RegisterConversion(TileID.ClayBlock, Type, ConvertToAsh);
+			TileLoader.RegisterConversion(TileID.ClayBlock, Type, TileID.Ash);
 
 			WallLoader.RegisterConversion(WallID.DirtUnsafe, Type, HellifyWall);
 			WallLoader.RegisterConversion(WallID.GrassUnsafe, Type, HellifyWall);
 			WallLoader.RegisterConversion(WallID.Stone, Type, HellifyWall);
-		}
-
-		public bool ConvertToAsh(int i, int j, int type, int conversionType) {
-			WorldGen.ConvertTile(i, j, TileID.Ash, true);
-			return false;
 		}
 
 		public bool HellifyGrass(int i, int j, int type, int conversionType) {

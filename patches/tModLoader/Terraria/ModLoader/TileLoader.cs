@@ -722,6 +722,22 @@ public static class TileLoader
 		var list = conversions[conversionType] ??= new();
 		list.Add(conversionDelegate);
 	}
+
+	/// <summary>
+	/// Registers a tile type as having custom biome conversion code for this specific <see cref="BiomeConversionID"/>. For modded tiles, you can directly use <see cref="Convert"/> <br/>
+	/// If you need to register conversions that rely on <see cref="TileID.Sets.Conversion"/> being fully populated, consider doing it in <see cref="ModBiomeConversion.PostSetupContent"/>
+	/// </summary>
+	/// <param name="tileType">The tile type that has is affected by this custom conversion.</param>
+	/// <param name="conversionType">The conversion type for which the tile should use custom conversion code.</param>
+	/// <param name="toType">What <paramref name="tileType"/> is converted into when it's hit with the <paramref name="conversionType"/>.</param>
+	public static void RegisterConversion(int tileType, int conversionType, int toType)
+	{
+		RegisterConversion(tileType, conversionType, (int i, int j, int type, int conversionType) => {
+			WorldGen.ConvertTile(i, j, toType);
+			return false;
+		});
+	}
+
 	/// <summary>
 	/// Registers a conversion that replaces <paramref name="tileType"/> with <paramref name="toType"/> when touched by <paramref name="conversionType"/> <br/>
 	/// Also registers <paramref name="tileType"/> as a fallback for <paramref name="toType"/> so that other conversions can convert <paramref name="toType"/> as if it was <paramref name="tileType"/>. <br/>
@@ -737,6 +753,7 @@ public static class TileLoader
 			WorldGen.ConvertTile(i, j, toType);
 			return false;
 		});
+
 		RegisterConversionFallback(toType, tileType, conversionType);
 
 		if (purification) {
@@ -747,7 +764,8 @@ public static class TileLoader
 			}
 			RegisterConversion(toType, BiomeConversionID.Purity, Purify);
 			RegisterConversion(toType, BiomeConversionID.PurificationPowder, Purify);
-			RegisterConversion(toType, BiomeConversionID.Chlorophyte, Purify);
+			if (conversionType != BiomeConversionID.Hallow)
+				RegisterConversion(toType, BiomeConversionID.Chlorophyte, Purify);
 		}
 	}
 

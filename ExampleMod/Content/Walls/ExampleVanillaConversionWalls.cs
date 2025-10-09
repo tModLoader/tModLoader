@@ -18,35 +18,12 @@ namespace ExampleMod.Content.Walls
 			DustType = DustID.Pearlsand;
 			AddMapEntry(new Color(157, 76, 152));
 
-			// We need to register a conversion from the vanilla desert fossil wall into our modded variants, so our custom code can be called when the game attempts to convert the vanilla wall
+			// We need to register a conversion from the vanilla desert fossil wall into our modded variants, our method here automatically registers the conversion and fallback values here
 			// Note: WallID.DesertFossil is unused, WallID.DesertFossilEcho is the only fossil wall that can be placed ingame
-			WallLoader.RegisterConversion(WallID.DesertFossilEcho, BiomeConversionID.Hallow, ConvertToHallow);
-		}
+			WallLoader.RegisterSimpleConversion(WallID.DesertFossilEcho, BiomeConversionID.Hallow, Type);
 
-		public bool ConvertToHallow(int i, int j, int type, int conversionType) {
-
-			// This method is called whenever hallow biome conversion happens on a desert fossil wall, as per the RegisterConversion we called in SetStaticDefaults
-			// We don't need to check the type or the conversionType as we only registered one conversion with this method, but the same method could be reused for multiple conversion types or walls
-
-			// We can use the ConvertWall utility method to change the fossil wall into our hallowed fossil wall, and it'll automatically handle wall frame updates and network syncing!
-			WorldGen.ConvertWall(i, j, Type);
-			return false;
-		}
-
-		// This code is called when the game attempts to convert our hallowed wall into a new biome
-		public override void Convert(int i, int j, int conversionType) {
-			switch (conversionType) {
-				case BiomeConversionID.Purity:
-				case BiomeConversionID.Sand:
-					WorldGen.ConvertWall(i, j, WallID.DesertFossilEcho);
-					return;
-				case BiomeConversionID.Corruption:
-					WorldGen.ConvertWall(i, j, ModContent.WallType<CorruptFossilWall>());
-					return;
-				case BiomeConversionID.Crimson:
-					WorldGen.ConvertWall(i, j, ModContent.WallType<CrimsonFossilWall>());
-					return;
-			}
+			// Yellow (desert) solution should convert the infected desert fossil wall back into purity, so we do that manually 
+			WallLoader.RegisterConversion(Type, BiomeConversionID.Sand, WallID.DesertFossilEcho);
 		}
 	}
 
@@ -57,28 +34,8 @@ namespace ExampleMod.Content.Walls
 			DustType = DustID.Corruption;
 			AddMapEntry(new Color(65, 48, 99));
 
-			WallLoader.RegisterConversion(WallID.DesertFossilEcho, BiomeConversionID.Corruption, ConvertToCorruption);
-		}
-
-		public bool ConvertToCorruption(int i, int j, int type, int conversionType) {
-			WorldGen.ConvertWall(i, j, Type);
-			return false;
-		}
-
-		public override void Convert(int i, int j, int conversionType) {
-			switch (conversionType) {
-				case BiomeConversionID.Purity:
-				case BiomeConversionID.Sand:
-				// Eventhough this is a corrupt wall, we do not need to check for BiomeConversionID.PurificationPowder, since purification powder doesnt work on walls
-					WorldGen.ConvertWall(i, j, WallID.DesertFossilEcho);
-					return;
-				case BiomeConversionID.Hallow:
-					WorldGen.ConvertWall(i, j, ModContent.WallType<HallowedFossilWall>());
-					return;
-				case BiomeConversionID.Crimson:
-					WorldGen.ConvertWall(i, j, ModContent.WallType<CrimsonFossilWall>());
-					return;
-			}
+			WallLoader.RegisterSimpleConversion(WallID.DesertFossilEcho, BiomeConversionID.Corruption, Type);
+			WallLoader.RegisterConversion(Type, BiomeConversionID.Sand, WallID.DesertFossilEcho);
 		}
 	}
 
@@ -89,27 +46,8 @@ namespace ExampleMod.Content.Walls
 			DustType = DustID.Crimstone;
 			AddMapEntry(new Color(112, 33, 32));
 
-			WallLoader.RegisterConversion(WallID.DesertFossilEcho, BiomeConversionID.Crimson, ConvertToCrimson);
-		}
-
-		public bool ConvertToCrimson(int i, int j, int type, int conversionType) {
-			WorldGen.ConvertWall(i, j, Type);
-			return false;
-		}
-
-		public override void Convert(int i, int j, int conversionType) {
-			switch (conversionType) {
-				case BiomeConversionID.Purity:
-				case BiomeConversionID.Sand:
-					WorldGen.ConvertWall(i, j, WallID.DesertFossilEcho);
-					return;
-				case BiomeConversionID.Hallow:
-					WorldGen.ConvertWall(i, j, ModContent.WallType<HallowedFossilWall>());
-					return;
-				case BiomeConversionID.Corruption:
-					WorldGen.ConvertWall(i, j, ModContent.WallType<CorruptFossilWall>());
-					return;
-			}
+			WallLoader.RegisterSimpleConversion(WallID.DesertFossilEcho, BiomeConversionID.Crimson, Type);
+			WallLoader.RegisterConversion(Type, BiomeConversionID.Sand, WallID.DesertFossilEcho);
 		}
 	}
 

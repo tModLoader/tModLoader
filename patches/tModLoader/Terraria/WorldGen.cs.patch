@@ -2973,7 +2973,7 @@
  		if (!Main.remixWorld)
  			return;
  
-+		if (!TileLoader.Convert(x, y, 9))
++		if (!TileLoader.Convert(x, y, BiomeConversionID.Chlorophyte))
 +			return;
 +
  		if (Main.tile[x, y].type == 23 || Main.tile[x, y].type == 199 || Main.tile[x, y].type == 661 || Main.tile[x, y].type == 662) {
@@ -3005,7 +3005,7 @@
  						continue;
  
 +					int preHookType = Main.tile[num8, num9].type;
-+					bool convertTile = TileLoader.Convert(num8, num9, 9);
++					bool convertTile = TileLoader.Convert(num8, num9, BiomeConversionID.Chlorophyte);
 +
 +					if (preHookType != Main.tile[num8, num9].type) {
 +						flag = true;
@@ -3034,7 +3034,7 @@
  						continue;
  
 +					int preHookType = Main.tile[num11, num12].type;
-+					bool convertTile = TileLoader.Convert(num11, num12, 1);
++					bool convertTile = TileLoader.Convert(num11, num12, BiomeConversionID.Corruption);
 +
 +					if (preHookType != Main.tile[num11, num12].type) {
 +						if (genRand.Next(2) == 0)
@@ -3064,7 +3064,7 @@
  						continue;
  
 +					int preHookType = Main.tile[num13, num14].type;
-+					bool convertTile = TileLoader.Convert(num13, num14, 4);
++					bool convertTile = TileLoader.Convert(num13, num14, BiomeConversionID.Crimson);
 +
 +					if (preHookType != Main.tile[num13, num14].type) {
 +						if (genRand.Next(2) == 0)
@@ -3087,7 +3087,7 @@
 +				continue;
 +
 +			int preHookType = Main.tile[num15, num16].type;
-+			bool convertTile = TileLoader.Convert(num15, num16, 2);
++			bool convertTile = TileLoader.Convert(num15, num16, BiomeConversionID.Hallow);
 +
 +			if (preHookType != Main.tile[num15, num16].type) {
 +				if (genRand.Next(2) == 0)
@@ -3245,8 +3245,8 @@
  					if (!(Math.Abs((double)m - vector2D.X) + Math.Abs((double)n - vector2D.Y) < (double)num2 * 0.5 * (1.0 + (double)genRand.Next(-10, 11) * 0.015)))
  						continue;
  
-+					bool convertWall = WallLoader.Convert(m, n, good ? 2 : crimson ? 4 : 1);
-+					bool convertTile = TileLoader.Convert(m, n, good ? 2 : crimson ? 4 : 1);
++					bool convertWall = WallLoader.Convert(m, n, good ? BiomeConversionID.Hallow : crimson ? BiomeConversionID.Crimson : BiomeConversionID.Corruption);
++					bool convertTile = TileLoader.Convert(m, n, good ? BiomeConversionID.Hallow : crimson ? BiomeConversionID.Crimson : BiomeConversionID.Corruption);
 +
  					if (good) {
 +						if (!convertWall)

@@ -19,6 +19,11 @@ partial class TileID
 		/// <summary> Allows non-solid tiles to be sloped (solid tiles can always be sloped, regardless of this set). </summary>
 		public static bool[] CanBeSloped = Factory.CreateBoolSet();
 
+		/// <summary> Whether or not this tile can be infected by the natural spreading of biomes such as corruption, crimson, or hallow.
+		/// <br>Doesn't affect the spreading in <see cref="WorldGen.hardUpdateWorld"/>, only used in <see cref="WorldGen.SpreadInfectionToNearbyTile"/></br>
+		/// </summary>
+		public static bool[] Infectable = Factory.CreateBoolSet(1, 2, 53, 60, 69, 161, 179, 180, 181, 182, 183, 381, 396, 397, 534, 536, 539, 625, 627);
+
 		/// <summary>
 		/// Prevents a tile immediately below a tile of this type from being hammered (sloped). Since a sloped tile would break a typical bottom tile anchor, this prevents such tiles from being broken in this manner. Anything in <see cref="BasicChest"/> or <see cref="BasicDresser"/> are also protected in the same manner. This is typically used for tiles that shouldn't break as easily as other tiles, such as tiles containing Tile Entities holding items.
 		/// <para/> Some examples include DemonAltar, Teleporter, Mannequins, and HatRack.

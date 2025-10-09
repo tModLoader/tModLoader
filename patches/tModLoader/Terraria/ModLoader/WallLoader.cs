@@ -292,6 +292,22 @@ public static class WallLoader
 		var list = conversions[conversionType] ??= new();
 		list.Add(conversionDelegate);
 	}
+
+	/// <summary>
+	/// Registers a wall type as having custom biome conversion code for this specific <see cref="BiomeConversionID"/>. For modded walls, you can directly use <see cref="Convert"/> <br/>
+	/// If you need to register conversions that rely on <see cref="WallID.Sets.Conversion"/> being fully populated, consider doing it in <see cref="ModBiomeConversion.PostSetupContent"/>
+	/// </summary>
+	/// <param name="wallType">The wall type that has is affected by this custom conversion.</param>
+	/// <param name="conversionType">The conversion type for which the wall should use custom conversion code.</param>
+	/// <param name="toType">What <paramref name="wallType"/> is converted into when it's hit with the <paramref name="conversionType"/>.</param>
+	public static void RegisterConversion(int wallType, int conversionType, int toType)
+	{
+		RegisterConversion(wallType, conversionType, (int i, int j, int type, int conversionType) => {
+			WorldGen.ConvertWall(i, j, toType);
+			return false;
+		});
+	}
+
 	/// <summary>
 	/// Registers a conversion that replaces <paramref name="wallType"/> with <paramref name="toType"/> when touched by <paramref name="conversionType"/> <br/>
 	/// Also registers <paramref name="wallType"/> as a fallback for <paramref name="toType"/> so that other conversions can convert <paramref name="toType"/> as if it was <paramref name="wallType"/>. <br/>
@@ -317,7 +333,6 @@ public static class WallLoader
 			}
 			RegisterConversion(toType, BiomeConversionID.Purity, Purify);
 			RegisterConversion(toType, BiomeConversionID.PurificationPowder, Purify);
-			RegisterConversion(toType, BiomeConversionID.Chlorophyte, Purify);
 		}
 	}
 
