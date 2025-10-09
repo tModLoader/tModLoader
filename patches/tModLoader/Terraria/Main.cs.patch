@@ -1908,6 +1908,14 @@
  		ClientInitialize();
  		base.Initialize();
  	}
+@@ -5213,6 +_,7 @@
+ 		Initialize_TileAndNPCData1();
+ 		Initialize_TileAndNPCData2();
+ 		Initialize_Items();
++		LiquidRenderer.Initialize_LiquidData();
+ 		for (int i = 1; i < ProjectileID.Count; i++) {
+ 			Projectile obj = new Projectile();
+ 			obj.SetDefaults(i);
 @@ -5239,11 +_,18 @@
  		}
  
