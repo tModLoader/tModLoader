@@ -38,7 +38,7 @@
  	private struct SpecialLiquidDrawCache
  	{
  		public int X;
-@@ -60,17 +_,24 @@
+@@ -60,23 +_,58 @@
  		public bool IsSurfaceLiquid;
  		public bool HasWall;
  	}
@@ -53,20 +53,56 @@
  	private const int ANIMATION_FRAME_COUNT = 16;
  	private const int CACHE_PADDING = 2;
  	private const int CACHE_PADDING_2 = 4;
--	private static readonly int[] WATERFALL_LENGTH = new int[4] {
-+	public static readonly int[] WATERFALL_LENGTH = new int[4] {
++	/// <summary>
++	/// Liquids use this to control how many tiles long their liquidfall is. <br/>
++	/// Liquidfalls are drawn whenever there is not a solid block underneath a liquid, most visible when a liquid is overtop of a half block. <br/>
++	/// This makes liquids look less akward when falling downwards.
++	/// </summary>
++	public static int[] WATERFALL_LENGTH = new int[LiquidID.Count];
++	/*
+ 	private static readonly int[] WATERFALL_LENGTH = new int[4] {
  		10,
  		3,
  		2,
  		10
  	};
--	private static readonly float[] DEFAULT_OPACITY = new float[4] {
-+	public static readonly float[] DEFAULT_OPACITY = new float[4] {
++	*/
++	/// <summary>
++	/// How strong a liquid's opacity. <br/>
++	/// Liquids like lava and honey use this to make them look more viscous by making things inside the liquid less visible. <br/>
++	/// </summary>
++	public static float[] DEFAULT_OPACITY = new float[LiquidID.Count];
++	/*
+ 	private static readonly float[] DEFAULT_OPACITY = new float[4] {
  		0.6f,
  		0.95f,
  		0.95f,
-@@ -86,17 +_,19 @@
+ 		0.75f
  	};
++	*/
++	/// <summary>
++	/// Modifies the colors of the liquid wavemask. <br/>
++	/// Modifies the wave alpha. <br/>
++	/// Vanilla leaves this array blank by default.
++	/// </summary>
++	private static byte[] WAVE_MASK_STRENGTH = new byte[5];
+-	private static readonly byte[] WAVE_MASK_STRENGTH = new byte[5];
++	//private static readonly byte[] WAVE_MASK_STRENGTH = new byte[5];
++	/// <summary>
++	/// This is how powerful the ripples are for liquids. <br/>
++	/// Lava and honey use this to have ripples be less strong. <br/>
++	/// Can cause weird visual issues with ripples if set to large numbers like 255.
++	/// </summary>
++	public static byte[] VISCOSITY_MASK = new byte[5];
++	/*
+ 	private static readonly byte[] VISCOSITY_MASK = new byte[5] {
+ 		0,
+ 		200,
+@@ -84,19 +_,22 @@
+ 		0,
+ 		0
+ 	};
++	*/
  	public const float MIN_LIQUID_SIZE = 0.25f;
  	public static LiquidRenderer Instance;
 -	private readonly Asset<Texture2D>[] _liquidTextures = new Asset<Texture2D>[15];
@@ -87,6 +123,37 @@
  
  	public event Action<Color[], Rectangle> WaveFilters;
  
+@@ -106,6 +_,30 @@
+ 		Instance.PrepareAssets();
+ 	}
+ 
++	public static void Initialize_LiquidData()
++	{
++		WATERFALL_LENGTH = new int[4] {
++			10,
++			3,
++			2,
++			10
++		};
++		DEFAULT_OPACITY = new float[4] {
++			0.6f,
++			0.95f,
++			0.95f,
++			0.75f
++		};
++		WAVE_MASK_STRENGTH = new byte[5];
++		VISCOSITY_MASK = new byte[5] {
++			0,
++			200,
++			240,
++			0,
++			0
++		};
++	}
++
+ 	private void PrepareAssets()
+ 	{
+ 		if (!Main.dedServ) {
 @@ -117,6 +_,9 @@
  
  	private unsafe void InternalPrepareDraw(Rectangle drawArea)
