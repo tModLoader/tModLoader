@@ -1,5 +1,8 @@
 var NAVTREEINDEX19 =
 {
+"class_player_texture_i_d.html":[3,0,1007],
+"class_player_titanium_storm_buff_texture_content.html":[3,0,1008],
+"class_player_variant_i_d.html":[3,0,1009],
 "class_player_variant_i_d_1_1_sets.html":[3,0,1009,0],
 "class_player_variant_i_d_1_1_sets.html#a0b2b5d05bedba2ad7931b927984953ea":[3,0,1009,0,1],
 "class_player_variant_i_d_1_1_sets.html#a0c55e8ebfd5b72f24a4102533394aa3d":[3,0,1009,0,3],
@@ -246,8 +249,5 @@ var NAVTREEINDEX19 =
 "class_proj_a_i_style_i_d.html#ad88193fc029830942a9a11af60774ace":[3,0,1035,82],
 "class_proj_a_i_style_i_d.html#ad961a65e3f0127a81c69647576f67bfc":[3,0,1035,144],
 "class_proj_a_i_style_i_d.html#adbe36ec22e39f21d3251ce6e9d9aa10f":[3,0,1035,60],
-"class_proj_a_i_style_i_d.html#adc625ef32baacf8cd048e74af34c53c7":[3,0,1035,127],
-"class_proj_a_i_style_i_d.html#adc8090a1cdf41e1218d3cde2cfeb5e24":[3,0,1035,187],
-"class_proj_a_i_style_i_d.html#adde3e3ce0f8b63c81e01055368cb7c2a":[3,0,1035,175],
-"class_proj_a_i_style_i_d.html#ade06a8b480aa7264a7575b3c78a68e90":[3,0,1035,112]
+"class_proj_a_i_style_i_d.html#adc625ef32baacf8cd048e74af34c53c7":[3,0,1035,127]
 };

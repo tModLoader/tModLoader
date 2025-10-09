@@ -1,5 +1,8 @@
 var NAVTREEINDEX27 =
 {
+"struct_extra_seat_info.html":[3,0,372],
+"struct_extra_seat_info.html#a32f9a194db09ff3f5d27f69677ae2cfd":[3,0,372,0],
+"struct_fast_random.html":[3,0,382],
 "struct_filtered_array_enumerator.html":[3,0,393],
 "struct_filtered_span_enumerator.html":[3,0,394],
 "struct_final_fractal_helper.html":[3,0,398],
@@ -246,8 +249,5 @@ var NAVTREEINDEX27 =
 "struct_ref_read_only_array.html":[3,0,1071],
 "struct_resource_draw_settings.html":[3,0,1081],
 "struct_resource_overlay_draw_context.html":[3,0,1083],
-"struct_resource_overlay_draw_context.html#a1513a044235b5904046f48ed59c8e4c1":[3,0,1083,5],
-"struct_resource_overlay_draw_context.html#a46493f40a782e875eefb93bb0a4c6221":[3,0,1083,3],
-"struct_resource_overlay_draw_context.html#ab6569d2846bd21cae368ad0a675329b6":[3,0,1083,4],
-"struct_resource_overlay_draw_context.html#ab713f5302770f19d3eb04ecd24638a34":[3,0,1083,0]
+"struct_resource_overlay_draw_context.html#a1513a044235b5904046f48ed59c8e4c1":[3,0,1083,5]
 };

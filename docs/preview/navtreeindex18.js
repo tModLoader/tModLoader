@@ -1,5 +1,8 @@
 var NAVTREEINDEX18 =
 {
+"class_player.html#a74fc42862885f4ca1de6c3466ee454b0":[3,0,980,145],
+"class_player.html#a76372478cf660458c1b639299cf8a293":[3,0,980,55],
+"class_player.html#a76c20d10171633a097c8ab53770098ef":[3,0,980,247],
 "class_player.html#a77d899015e43c0583996a1774c760ec8":[3,0,980,217],
 "class_player.html#a782b58d9c3dfc2ce794de1d9c280f046":[3,0,980,26],
 "class_player.html#a7895ba7bc430f5da5385022da7289551":[3,0,980,151],
@@ -246,8 +249,5 @@ var NAVTREEINDEX18 =
 "class_player_queen_slime_mount_texture_content.html":[3,0,1000],
 "class_player_rainbow_wings_texture_content.html":[3,0,1001],
 "class_player_resource_sets_manager.html":[3,0,1002],
-"class_player_resource_sets_manager2.html":[3,0,1003],
-"class_player_texture_i_d.html":[3,0,1007],
-"class_player_titanium_storm_buff_texture_content.html":[3,0,1008],
-"class_player_variant_i_d.html":[3,0,1009]
+"class_player_resource_sets_manager2.html":[3,0,1003]
 };
