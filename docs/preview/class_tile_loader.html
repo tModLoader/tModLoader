@@ -310,6 +310,10 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>RecountTiles</
 <tr class="memdesc:a56a8c9a569d918151d73ee4287678e6d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Registers a tile type as having custom biome conversion code for this specific <a class="el" href="class_biome_conversion_i_d.html">BiomeConversionID</a>. For modded tiles, you can directly use Convert <br  />
  If you need to register conversions that rely on <a class="el" href="class_tile_i_d_1_1_sets_1_1_conversion.html">TileID.Sets.Conversion</a> being fully populated, consider doing it in ModBiomeConversion.PostSetupContent  <a href="class_tile_loader.html#a56a8c9a569d918151d73ee4287678e6d">More...</a><br /></td></tr>
 <tr class="separator:a56a8c9a569d918151d73ee4287678e6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a692a45f2e1b75d6cd1c503dee3a594fc"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_tile_loader.html#a692a45f2e1b75d6cd1c503dee3a594fc">RegisterConversion</a> (int tileType, int conversionType, int toType)</td></tr>
+<tr class="memdesc:a692a45f2e1b75d6cd1c503dee3a594fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Registers a tile type as having custom biome conversion code for this specific <a class="el" href="class_biome_conversion_i_d.html">BiomeConversionID</a>. For modded tiles, you can directly use Convert <br  />
+ If you need to register conversions that rely on <a class="el" href="class_tile_i_d_1_1_sets_1_1_conversion.html">TileID.Sets.Conversion</a> being fully populated, consider doing it in ModBiomeConversion.PostSetupContent  <a href="class_tile_loader.html#a692a45f2e1b75d6cd1c503dee3a594fc">More...</a><br /></td></tr>
+<tr class="separator:a692a45f2e1b75d6cd1c503dee3a594fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a58f0eca544a3ee85eef1198c2287ff93"><td class="memItemLeft" align="right" valign="top"><a id="a58f0eca544a3ee85eef1198c2287ff93" name="a58f0eca544a3ee85eef1198c2287ff93"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>RegisterConversionFallback</b> (int tileType, int fallbackType, params int[] exceptForConversionTypes)</td></tr>
 <tr class="memdesc:a58f0eca544a3ee85eef1198c2287ff93"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets a fallback tile type for all conversion types except those in <em>exceptForConversionTypes</em>  <br  />
@@ -463,7 +467,7 @@ static int&#160;</td><td class="memItemRight" valign="bottom"><b>TileCount</b><c
 </div>
 </div>
 <a id="a56a8c9a569d918151d73ee4287678e6d" name="a56a8c9a569d918151d73ee4287678e6d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a56a8c9a569d918151d73ee4287678e6d">&#9670;&nbsp;</a></span>RegisterConversion()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a56a8c9a569d918151d73ee4287678e6d">&#9670;&nbsp;</a></span>RegisterConversion() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -509,6 +513,59 @@ static int&#160;</td><td class="memItemRight" valign="bottom"><b>TileCount</b><c
     <tr><td class="paramname">tileType</td><td>The tile type that has is affected by this custom conversion.</td></tr>
     <tr><td class="paramname">conversionType</td><td>The conversion type for which the tile should use custom conversion code.</td></tr>
     <tr><td class="paramname">conversionDelegate</td><td>Code to run when the tile attempts to get converted. Return false to signal that your custom conversion took place and that vanilla code shouldn't be ran.</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a692a45f2e1b75d6cd1c503dee3a594fc" name="a692a45f2e1b75d6cd1c503dee3a594fc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a692a45f2e1b75d6cd1c503dee3a594fc">&#9670;&nbsp;</a></span>RegisterConversion() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void TileLoader.RegisterConversion </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>tileType</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>conversionType</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>toType</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Registers a tile type as having custom biome conversion code for this specific <a class="el" href="class_biome_conversion_i_d.html">BiomeConversionID</a>. For modded tiles, you can directly use Convert <br  />
+ If you need to register conversions that rely on <a class="el" href="class_tile_i_d_1_1_sets_1_1_conversion.html">TileID.Sets.Conversion</a> being fully populated, consider doing it in ModBiomeConversion.PostSetupContent </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">tileType</td><td>The tile type that has is affected by this custom conversion.</td></tr>
+    <tr><td class="paramname">conversionType</td><td>The conversion type for which the tile should use custom conversion code.</td></tr>
+    <tr><td class="paramname">toType</td><td>What <em>tileType</em>  is converted into when it's hit with the <em>conversionType</em> .</td></tr>
   </table>
   </dd>
 </dl>

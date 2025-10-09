@@ -1,5 +1,8 @@
 var NAVTREEINDEX27 =
 {
+"struct_extra_jump_state.html#aa796ec3b44c5ebd15f6268c8f1696902":[3,0,371,1],
+"struct_extra_jump_state.html#ab9baf7bdb4fb3bfdaf74f39a2708ca71":[3,0,371,3],
+"struct_extra_jump_state.html#ae499c81e723ad86fa7269d42b4cb7038":[3,0,371,4],
 "struct_extra_seat_info.html":[3,0,372],
 "struct_extra_seat_info.html#a32f9a194db09ff3f5d27f69677ae2cfd":[3,0,372,0],
 "struct_fast_random.html":[3,0,382],
@@ -246,8 +249,5 @@ var NAVTREEINDEX27 =
 "struct_projectile_1_1_hallow_boss_pellet_storm_info.html":[3,0,1036,0],
 "struct_query_parameters.html":[3,0,1049],
 "struct_rainbow_rod_drawer.html":[3,0,1052],
-"struct_ref_read_only_array.html":[3,0,1071],
-"struct_resource_draw_settings.html":[3,0,1081],
-"struct_resource_overlay_draw_context.html":[3,0,1083],
-"struct_resource_overlay_draw_context.html#a1513a044235b5904046f48ed59c8e4c1":[3,0,1083,5]
+"struct_ref_read_only_array.html":[3,0,1071]
 };

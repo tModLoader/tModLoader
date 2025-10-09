@@ -6,6 +6,7 @@ var class_tile_loader =
     [ "IsClosedDoor", "class_tile_loader.html#a6e0fd00883840882258124f98abb7eed", null ],
     [ "IsClosedDoor", "class_tile_loader.html#acf2cfd3a048f6b6c46ec666847aea14f", null ],
     [ "RegisterConversion", "class_tile_loader.html#a56a8c9a569d918151d73ee4287678e6d", null ],
+    [ "RegisterConversion", "class_tile_loader.html#a692a45f2e1b75d6cd1c503dee3a594fc", null ],
     [ "RegisterConversionFallback", "class_tile_loader.html#a58f0eca544a3ee85eef1198c2287ff93", null ],
     [ "RegisterSimpleConversion", "class_tile_loader.html#a15efbd568917c436d951990fab3cb457", null ],
     [ "SetAnimationFrame", "class_tile_loader.html#ad3057a7f8fce273523a722ce3309de01", null ],
