@@ -583,7 +583,7 @@ public abstract class ModTile : ModBlockType
 	/// <summary>
 	/// Called when <see cref="Wiring.HitSwitch"/> is called on the tile. Ordinarily this only happens for modded tiles if they opt in to specific functionality, such as <see cref="TileID.Sets.PressurePlate"/>, but mods can call it directly as well.
 	/// <br/><br/> Can be used for running code on the server and all clients for tile interactions, unlike <see cref="HitWire(int, int)"/> which runs on the server or <see cref="RightClick(int, int)"/> which runs on the local client.
-	/// <br/><br/> Code in HitWire, RightClick, or SwitchTiles could call <see cref="Wiring.HitSwitch"/> and <c>NetMessage.SendData(MessageID.HitSwitch...)</c>, which would result in <see cref="Wiring.HitSwitch"/> and consequently this method running on the server and all clients. Essentially, this can be used to sync a tile interaction effect without making a custom ModPacket, and it is up to the modder to decide how that interaction is triggered.
+	/// <br/><br/> Code in HitWire, RightClick, or SwitchTiles could call <see cref="Wiring.HitSwitch"/> followed by <c>NetMessage.SendData(MessageID.HitSwitch...)</c> (Or just <see cref="Wiring.HitSwitchAndSync"/> by itself), which would result in <see cref="Wiring.HitSwitch"/> and consequently this method running on the server and all clients. Essentially, this can be used to sync a tile interaction effect without making a custom ModPacket, and it is up to the modder to decide how that interaction is triggered.
 	/// <br/><br/> The most common usage of this is to sync playing a sound.
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>

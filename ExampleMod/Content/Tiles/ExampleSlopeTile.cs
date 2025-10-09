@@ -59,10 +59,8 @@ namespace ExampleMod.Content.Tiles
 			};
 
 			if (success) {
-				// Since SwitchTiles is called locally, rather than calling Wiring.TripWire(i, j, 1, 1); here, we delegate that work to HitSwitch which is called on the server and all clients if we send MessageID.HitSwitch as well.
-				Wiring.HitSwitch(i, j);
-				NetMessage.SendData(MessageID.HitSwitch, number: i, number2: j);
-				// Another option is Wiring.HitSwitchAndSync(i, j), for simplicity. 
+				// Since SwitchTiles is called locally, rather than calling Wiring.TripWire(i, j, 1, 1); here, we delegate that work to HitSwitch which is called on the server and all clients if we use Wiring.HitSwitchAndSync.
+				Wiring.HitSwitchAndSync(i, j);
 				return true;
 			}
 
