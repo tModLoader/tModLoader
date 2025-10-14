@@ -70,12 +70,12 @@
  		PlayerDrawLayers.DrawPlayer_TransformDrawData(ref drawInfo);
  		if (scale != 1f)
  			PlayerDrawLayers.DrawPlayer_ScaleDrawData(ref drawInfo, scale);
-@@ -289,6 +_,8 @@
- 					drawPlayer.invis = true;
+@@ -263,6 +_,8 @@
+ 					}
  				}
  			}
 +
 +			PlayerLoader.DrawPlayer(drawPlayer, camera);
  
- 			if (drawPlayer.armorEffectDrawOutlines) {
- 				_ = drawPlayer.position;
+ 			if (drawPlayer.armorEffectDrawShadowEOCShield) {
+ 				int num = drawPlayer.eocDash / 4;
