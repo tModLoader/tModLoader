@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Terraria.DataStructures;
 using Terraria.GameInput;
+using Terraria.Graphics;
 using Terraria.ID;
 using Terraria.ModLoader.Core;
 using Terraria.ModLoader.IO;
@@ -1415,6 +1416,14 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// <param name="oldLoadoutIndex">The old loadout index.</param>
 	/// <param name="loadoutIndex">The new loadout index.</param>
 	public virtual void OnEquipmentLoadoutSwitched(int oldLoadoutIndex, int loadoutIndex)
+	{
+	}
+
+	/// <summary>
+	/// Allows drawing additional copies of the player, usually to implement an armor set shadow visual effect, dodge effect, or dash effect. Use <c>Main.PlayerRenderer.DrawPlayer(...)</c> to draw the additional player copies. The normal player will be drawn after this method runs.
+	/// <br/><br/> Called during <see cref="Terraria.Graphics.Renderers.LegacyPlayerRenderer.DrawPlayerFull(Graphics.Camera, Player)"/>. 
+	/// </summary>
+	public virtual void DrawPlayer(Camera camera)
 	{
 	}
 }

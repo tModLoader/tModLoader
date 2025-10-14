@@ -6,6 +6,7 @@ using System.Linq.Expressions;
 using System.Runtime.InteropServices;
 using Terraria.DataStructures;
 using Terraria.GameInput;
+using Terraria.Graphics;
 using Terraria.ModLoader.Default;
 using HookList = Terraria.ModLoader.Core.HookList<Terraria.ModLoader.ModPlayer>;
 
@@ -1508,6 +1509,14 @@ public static class PlayerLoader
 	{
 		foreach (var modPlayer in HookOnEquipmentLoadoutSwitched.Enumerate(player)) {
 			modPlayer.OnEquipmentLoadoutSwitched(oldLoadoutIndex, loadoutIndex);
+		}
+	}
+
+	private static HookList HookDrawPlayer = AddHook<Action<Camera>>(p => p.DrawPlayer);
+
+	public static void DrawPlayer(Player player, Camera camera) {
+		foreach (var modPlayer in HookDrawPlayer.Enumerate(player)) {
+			modPlayer.DrawPlayer(camera);
 		}
 	}
 }

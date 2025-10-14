@@ -70,3 +70,12 @@
  		PlayerDrawLayers.DrawPlayer_TransformDrawData(ref drawInfo);
  		if (scale != 1f)
  			PlayerDrawLayers.DrawPlayer_ScaleDrawData(ref drawInfo, scale);
+@@ -289,6 +_,8 @@
+ 					drawPlayer.invis = true;
+ 				}
+ 			}
++
++			PlayerLoader.DrawPlayer(drawPlayer, camera);
+ 
+ 			if (drawPlayer.armorEffectDrawOutlines) {
+ 				_ = drawPlayer.position;
