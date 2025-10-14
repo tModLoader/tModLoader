@@ -1,5 +1,6 @@
 var NAVTREEINDEX27 =
 {
+"struct_extra_jump_state.html#a407ce11d5c72e6264c11ddb7e9f05566":[3,0,371,2],
 "struct_extra_jump_state.html#aa796ec3b44c5ebd15f6268c8f1696902":[3,0,371,1],
 "struct_extra_jump_state.html#ab9baf7bdb4fb3bfdaf74f39a2708ca71":[3,0,371,3],
 "struct_extra_jump_state.html#ae499c81e723ad86fa7269d42b4cb7038":[3,0,371,4],
@@ -248,6 +249,5 @@ var NAVTREEINDEX27 =
 "struct_potion_of_return_gate_helper.html":[3,0,1018],
 "struct_projectile_1_1_hallow_boss_pellet_storm_info.html":[3,0,1036,0],
 "struct_query_parameters.html":[3,0,1049],
-"struct_rainbow_rod_drawer.html":[3,0,1052],
-"struct_ref_read_only_array.html":[3,0,1071]
+"struct_rainbow_rod_drawer.html":[3,0,1052]
 };

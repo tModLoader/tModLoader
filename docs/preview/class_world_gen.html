@@ -506,9 +506,12 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>Convert</b> (i
 <tr class="memdesc:a3708e3da9f373cad064eb35b7d2710d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts biome variant tiles and walls to a target biome.<br  />
  Converts a 9x9 square by default, but can be adjusted with the <em>size</em>  parameter.  <a href="class_world_gen.html#a3708e3da9f373cad064eb35b7d2710d7">More...</a><br /></td></tr>
 <tr class="separator:a3708e3da9f373cad064eb35b7d2710d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8b218eba48d8b0d018eb87eb2b78b253"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_world_gen.html#a8b218eba48d8b0d018eb87eb2b78b253">ConvertTile</a> (int i, int j, int newType, bool tryBreakTrees=false)</td></tr>
-<tr class="memdesc:a8b218eba48d8b0d018eb87eb2b78b253"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts the single tile at the given coordinate into a specified new tile type<br  />
- Automatically handles tile framing and multiplayer syncing.  <a href="class_world_gen.html#a8b218eba48d8b0d018eb87eb2b78b253">More...</a><br /></td></tr>
+<tr class="memitem:afce5e3c3d1d3cd4bdbdf077f0ac2ec7b"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_world_gen.html#afce5e3c3d1d3cd4bdbdf077f0ac2ec7b">ConvertTile</a> (int i, int j, int newType)</td></tr>
+<tr class="memdesc:afce5e3c3d1d3cd4bdbdf077f0ac2ec7b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts the single tile at the given coordinate into a specified new tile type<br  />
+ Automatically handles tile framing and multiplayer syncing.  <a href="class_world_gen.html#afce5e3c3d1d3cd4bdbdf077f0ac2ec7b">More...</a><br /></td></tr>
+<tr class="separator:afce5e3c3d1d3cd4bdbdf077f0ac2ec7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8b218eba48d8b0d018eb87eb2b78b253"><td class="memItemLeft" align="right" valign="top"><a id="a8b218eba48d8b0d018eb87eb2b78b253" name="a8b218eba48d8b0d018eb87eb2b78b253"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>ConvertTile</b> (int i, int j, int newType, bool tryBreakTrees=false)</td></tr>
 <tr class="separator:a8b218eba48d8b0d018eb87eb2b78b253"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4959269f52c93923394fc70bd91c0b39"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_world_gen.html#a4959269f52c93923394fc70bd91c0b39">ConvertWall</a> (int i, int j, int newType)</td></tr>
 <tr class="memdesc:a4959269f52c93923394fc70bd91c0b39"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts the single wall at the given coordinate into a specified new wall type<br  />
@@ -2252,8 +2255,8 @@ static IReadOnlyDictionary&lt; string, <a class="el" href="class_gen_pass.html">
 
 </div>
 </div>
-<a id="a8b218eba48d8b0d018eb87eb2b78b253" name="a8b218eba48d8b0d018eb87eb2b78b253"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8b218eba48d8b0d018eb87eb2b78b253">&#9670;&nbsp;</a></span>ConvertTile()</h2>
+<a id="afce5e3c3d1d3cd4bdbdf077f0ac2ec7b" name="afce5e3c3d1d3cd4bdbdf077f0ac2ec7b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afce5e3c3d1d3cd4bdbdf077f0ac2ec7b">&#9670;&nbsp;</a></span>ConvertTile()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2277,13 +2280,7 @@ static IReadOnlyDictionary&lt; string, <a class="el" href="class_gen_pass.html">
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>newType</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>tryBreakTrees</em> = <code>false</code>&#160;</td>
+          <td class="paramname"><em>newType</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -2305,7 +2302,6 @@ static IReadOnlyDictionary&lt; string, <a class="el" href="class_gen_pass.html">
     <tr><td class="paramname">i</td><td>The X coordinate of the target tile.</td></tr>
     <tr><td class="paramname">j</td><td>The Y coordinate of the target tile.</td></tr>
     <tr><td class="paramname">newType</td><td>The new type to convert the tile into</td></tr>
-    <tr><td class="paramname">tryBreakTrees</td><td>Should the conversion try to break trees above the converted tile if the new type is invalid for the tree</td></tr>
   </table>
   </dd>
 </dl>

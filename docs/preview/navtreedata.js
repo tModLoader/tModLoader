@@ -74,9 +74,9 @@ var NAVTREEINDEX =
 "class_tile_object_data.html#a53b8bac9565ef3dfaf7db671e3155cc2",
 "class_u_i_element.html#af5055cef018dcf27099bf6f034ae5a07",
 "class_unlockable_n_p_c_entry_icon.html",
-"functions_prop_t.html",
-"struct_extra_jump_state.html#aa796ec3b44c5ebd15f6268c8f1696902",
-"struct_resource_draw_settings.html"
+"functions_prop_s.html",
+"struct_extra_jump_state.html#a407ce11d5c72e6264c11ddb7e9f05566",
+"struct_ref_read_only_array.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

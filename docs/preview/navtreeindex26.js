@@ -1,5 +1,6 @@
 var NAVTREEINDEX26 =
 {
+"functions_prop_s.html":[3,3,4,16],
 "functions_prop_t.html":[3,3,4,17],
 "functions_prop_u.html":[3,3,4,18],
 "functions_prop_v.html":[3,3,4,19],
@@ -248,6 +249,5 @@ var NAVTREEINDEX26 =
 "struct_extension_filter.html":[3,0,367],
 "struct_extra_bestiary_info_page_information.html":[3,0,368],
 "struct_extra_jump_state.html":[3,0,371],
-"struct_extra_jump_state.html#a290a7d90773c3c40a968c15ca7f711dd":[3,0,371,0],
-"struct_extra_jump_state.html#a407ce11d5c72e6264c11ddb7e9f05566":[3,0,371,2]
+"struct_extra_jump_state.html#a290a7d90773c3c40a968c15ca7f711dd":[3,0,371,0]
 };
