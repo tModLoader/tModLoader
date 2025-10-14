@@ -36,7 +36,7 @@ public partial class WorldGen
 	}
 
 	/// <inheritdoc cref="ConvertTile(int, int, int)"/>
-	[OriginalOverload]
+	//[OriginalOverload]
 	[Obsolete("Use ConvertTile(int, int, int) instead")]
 	public static void ConvertTile(int i, int j, int newType, bool tryBreakTrees = false) => ConvertTile(i, j, newType);
 
