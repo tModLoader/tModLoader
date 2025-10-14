@@ -7037,10 +7037,11 @@
  	}
  
  	private static void UpdateAtmosphereTransparencyToSkyColor()
-@@ -52230,6 +_,9 @@
+@@ -52230,6 +_,10 @@
  
  				vec.X -= messageSize.X / 2f;
  				vec.Y += player[i].gfxOffY;
++				// Proper fix coming in 1.4.5
 +				if (i != myPlayer && player[myPlayer].gravDir == -1f)
 +					vec.Y = Main.screenHeight - vec.Y - messageSize.Y;
 +
