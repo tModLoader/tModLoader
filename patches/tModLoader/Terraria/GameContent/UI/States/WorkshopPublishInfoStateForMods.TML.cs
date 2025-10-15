@@ -1,18 +1,21 @@
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.IO;
 using System.Linq;
 using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
 using Terraria.Localization;
+using Terraria.ModLoader;
 using Terraria.ModLoader.Core;
-using Terraria.ModLoader.UI.ModBrowser;
 using Terraria.Social;
 using Terraria.Social.Base;
 using Terraria.Social.Steam;
 using Terraria.UI;
+using Terraria.Utilities;
 
 namespace Terraria.GameContent.UI.States;
 
@@ -21,6 +24,7 @@ public class WorkshopPublishInfoStateForMods : AWorkshopPublishInfoState<TmodFil
 	public const string TmlRules = "https://forums.terraria.org/index.php?threads/player-created-game-enhancements-rules-guidelines.286/";
 
 	private readonly NameValueCollection _buildData;
+	protected UIText imageWarningText;
 	internal string changeNotes;
 
 	public WorkshopPublishInfoStateForMods(UIState stateToGoBackTo, TmodFile modFile, NameValueCollection buildData)
@@ -40,16 +44,38 @@ public class WorkshopPublishInfoStateForMods : AWorkshopPublishInfoState<TmodFil
 
 	protected override void GoToPublishConfirmation()
 	{
+		// If needed, create a resized image and use it instead.
+		bool resizedPreviewImage = false;
+		if (CheckPreviewImageNeedsResizing(out _, out int newWidth, out int newHeight)) {
+			string srcPath = _previewImagePath;
+			string dstPath = Path.Combine(Path.GetTempPath(), "icon_workshop.png." + DateTime.Now.Ticks);
+			UpscaleAndSaveImageAsPng(srcPath, dstPath, newWidth, newHeight);
+			_previewImagePath = dstPath;
+			resizedPreviewImage = true;
+		}
+
 		/* if ( SocialAPI.Workshop != null) */
-		SocialAPI.Workshop.PublishMod(_dataObject, _buildData, GetPublishSettings());
+		using (_dataObject.Open()) {
+			SocialAPI.Workshop.PublishMod(_dataObject, _buildData, GetPublishSettings());
+		}
 
 		if (Main.MenuUI.CurrentState?.GetType() != typeof(UIReportsPage)) {
+			// Copy the used preview image to the mod's source directory if it's not a resize and if one isn't there already.
+			string iconWorkshopPath = Path.Combine(_buildData["sourcesfolder"], "icon_workshop.png");
+			if (_previewImagePath != iconWorkshopPath && !resizedPreviewImage && !File.Exists(iconWorkshopPath)) {
+				try {
+					File.Copy(_previewImagePath, iconWorkshopPath, overwrite: true);
+					_previewImagePath = iconWorkshopPath;
+				}
+				catch { }
+			}
+
 			Main.menuMode = 888;
 			Main.MenuUI.SetState(_previousUIState);
 		}
 	}
 
-	protected override List<WorkshopTagOption> GetTagsToShow() => SocialAPI.Workshop.SupportedTags.ModTags;
+	protected override List<WorkshopTagOption> GetTagsToShow() => SteamedWraps.ModTags;
 
 	protected override bool TryFindingTags(out FoundWorkshopEntryInfo info) => SocialAPI.Workshop.TryGetInfoForMod(_dataObject, out info);
 
@@ -129,39 +155,19 @@ public class WorkshopPublishInfoStateForMods : AWorkshopPublishInfoState<TmodFil
 
 		// Update Localization Tags Automatically if the mod is loaded. (Can only publish if enabled, but just in case.)
 		if (ModLoader.ModLoader.TryGetMod(_dataObject.Name, out ModLoader.Mod mod)) {
-			var localizationCounts = ModLoader.LocalizationLoader.GetLocalizationCounts(mod);
-			int countMaxEntries = localizationCounts.DefaultIfEmpty().Max(x => x.Value);
-			ModLoader.Logging.tML.Info($"Determining localization progress for {mod.Name}:");
-			foreach (GroupOptionButton<WorkshopTagOption> tagOption in _tagOptions) {
-				if (tagOption.OptionValue.NameKey.StartsWith("tModLoader.TagsLanguage_")) {
-					// I couldn't see any other way to convert this.
-					var culture = tagOption.OptionValue.NameKey.Split('_')[1] switch {
-						"English" => GameCulture.FromName("en-US"),
-						"Spanish" => GameCulture.FromName("es-ES"),
-						"French" => GameCulture.FromName("fr-FR"),
-						"Italian" => GameCulture.FromName("it-IT"),
-						"Russian" => GameCulture.FromName("ru-RU"),
-						"Chinese" => GameCulture.FromName("zh-Hans"),
-						"Portuguese" => GameCulture.FromName("pt-BR"),
-						"German" => GameCulture.FromName("de-DE"),
-						"Polish" => GameCulture.FromName("pl-PL"),
-						_ => throw new NotImplementedException(),
-					};
+			var autoLocalTags = SocialBrowserModule.GetModLocalizationProgress(mod.File, _tagOptions.Where(a => a.IsSelected).Select(b => b.OptionValue).ToList());
 
-					int countOtherEntries;
-					localizationCounts.TryGetValue(culture, out countOtherEntries);
-					float localizationProgress = (float)countOtherEntries / countMaxEntries;
-					ModLoader.Logging.tML.Info($"{culture.Name}, {countOtherEntries}/{countMaxEntries}, {localizationProgress:P0}, missing {countMaxEntries - countOtherEntries}");
+			foreach (var localTag in autoLocalTags) {
+				var tagOption = _tagOptions.Find(a => a.OptionValue == localTag.tag);
 
-					bool languageMostlyLocalized = localizationProgress > 0.75f; // 75% Threshold to be localized.
-					bool languagePreviouslyLocalizedAndStillEnough = tagOption.IsSelected && localizationProgress > 0.5f; // If mod previously tagged as localized, persist selection as long as above 50%
-
-					// Override existing selection. Existing selection will persist if still above 50% to accommodate temporarily falling below threshold.
-					tagOption.SetCurrentOption(languageMostlyLocalized || languagePreviouslyLocalizedAndStillEnough ? tagOption.OptionValue : null);
-					// Automatically set option slightly redder, indicating it was automatically selected. Even redder if below 75%
-					tagOption.SetColor(tagOption.IsSelected ? (languageMostlyLocalized ? new Color(192, 175, 235) : new Color(255, 175, 235)) : Colors.InventoryDefaultColor, 1f);
-				}
+				// Override existing selection. Existing selection will persist if still above 50% to accommodate temporarily falling below threshold.
+				tagOption.SetCurrentOption(localTag.setState ? tagOption.OptionValue : null);
+				// Automatically set option slightly redder, indicating it was automatically selected. Even redder if below 75%
+				tagOption.SetColor(tagOption.IsSelected ? (!localTag.degraded ? new Color(192, 175, 235) : new Color(255, 175, 235)) : Colors.InventoryDefaultColor, 1f);
 			}
+			var translationTagOption = _tagOptions.FirstOrDefault(x => x.OptionValue.NameKey == "tModLoader.TagsTranslation");
+			translationTagOption.SetCurrentOption(mod.TranslationForMods != null ? translationTagOption.OptionValue : null);
+			translationTagOption.SetColor(translationTagOption.IsSelected ? new Color(192, 175, 235) : Colors.InventoryDefaultColor, 1f);
 		}
 	}
 
@@ -172,11 +178,11 @@ public class WorkshopPublishInfoStateForMods : AWorkshopPublishInfoState<TmodFil
 			queryType = QueryType.SearchDirect
 		};
 
-		if (!WorkshopHelper.TryGetModDownloadItemsByInternalName(query, out List<ModDownloadItem> mods) || mods.Count != 1 || mods[0] == null) {
+		if (WorkshopHelper.QueryHelper.AQueryInstance.TryGetModDownloadItem(_dataObject.Name, out var mod) != WorkshopHelper.WorkshopSearchReturnState.Success) {
 			return;
 		}
 
-		ulong existingAuthorID = ulong.Parse(mods[0].OwnerId);
+		ulong existingAuthorID = ulong.Parse(mod.OwnerId);
 		if (existingAuthorID == 0 || existingAuthorID == Steamworks.SteamUser.GetSteamID().m_SteamID) {
 			return;
 		}
@@ -224,5 +230,52 @@ public class WorkshopPublishInfoStateForMods : AWorkshopPublishInfoState<TmodFil
 		uIElement.Append(uIText);
 		uIText.SetSnapPoint("warning", 0);
 		uiList.Add(groupOptionButton);
+	}
+
+	protected override void UpdateImagePreview()
+	{
+		base.UpdateImagePreview();
+
+		if (imageWarningText == null) {
+			imageWarningText = new UIText(string.Empty) {
+				TextOriginX = 0f,
+				TextOriginY = 0.5f,
+				Width = _previewImagePathPlate.Width,
+				Height = new(0f, 0f),
+				Left = new(10f, 0f),
+				Top = new(10f, 0f), //Top = new(0f, 0.675f),
+				TextColor = new Color(106, 190, 48),
+			};
+			_previewImagePathPlate.Parent.Append(imageWarningText);
+		}
+
+		// Display a warning that the preview image will be resized.
+		if (CheckPreviewImageNeedsResizing(out var tex, out int newWidth, out int newHeight)) {
+			imageWarningText.SetText(Language.GetTextValue("tModLoader.ModWorkshopIconResizeWarning", $"{tex.Width}x{tex.Height}", $"{newWidth}x{newHeight}"));
+		}
+		else {
+			imageWarningText.SetText(string.Empty);
+		}
+	}
+
+	private bool CheckPreviewImageNeedsResizing(out Texture2D texture, out int newWidth, out int newHeight)
+	{
+		const int TargetDimensions = 480; // (512 % 80), lets Steam perform crispier downscaling for pixel art drawn at 40/80px resolution.
+		if (_previewImagePath != null && _previewImageTransientTexture is Texture2D tex) {
+			(texture, newWidth, newHeight) = (tex, TargetDimensions, TargetDimensions);
+			return tex.Width < TargetDimensions || tex.Height < TargetDimensions;
+		}
+
+		(texture, newWidth, newHeight) = (default, default, default);
+		return false;
+	}
+
+	internal static unsafe void UpscaleAndSaveImageAsPng(string srcImagePath, string dstImagePath, int dstWidth, int dstHeight)
+	{
+		using var srcStream = File.OpenRead(srcImagePath);
+		Texture2D.TextureDataFromStreamEXT(srcStream, out int srcWidth, out int srcHeight, out byte[] srcBytes); 
+
+		using var dstStream = File.OpenWrite(dstImagePath);
+		PlatformUtilities.SavePng(dstStream, srcWidth, srcHeight, dstWidth, dstHeight, srcBytes);
 	}
 }

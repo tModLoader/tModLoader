@@ -84,9 +84,8 @@ public static class CommandLoader
 
 	internal static bool HandleCommand(string input, CommandCaller caller)
 	{
-		var args = input.TrimEnd().Split(' ');
-		var name = args[0];
-		args = args.Skip(1).ToArray();
+		int sep = input.IndexOf(" ");
+		string name = (sep >= 0 ? input.Substring(0, sep) : input).ToLower();
 
 		if (caller.CommandType != CommandType.Console) {
 			if (name == "" || name[0] != '/')
@@ -100,6 +99,12 @@ public static class CommandLoader
 
 		if (mc == null)//error in command name (multiple commands or missing mod etc)
 			return true;
+
+		if (!mc.IsCaseSensitive)
+			input = input.ToLower();
+
+		var args = input.TrimEnd().Split(' ');
+		args = args.Skip(1).ToArray();
 
 		try {
 			mc.Action(caller, input, args);

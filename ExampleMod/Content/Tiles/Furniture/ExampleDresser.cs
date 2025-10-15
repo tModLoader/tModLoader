@@ -29,7 +29,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 			TileID.Sets.IsAContainer[Type] = true;
 			AddToArray(ref TileID.Sets.RoomNeeds.CountsAsTable);
 
-			AdjTiles = new int[] { TileID.Dressers };
+			AdjTiles = [TileID.Dressers];
 			DustType = ModContent.DustType<Sparkle>();
 
 			// Names
@@ -39,13 +39,13 @@ namespace ExampleMod.Content.Tiles.Furniture
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style3x2);
 			TileObjectData.newTile.HookCheckIfCanPlace = new PlacementHook(Chest.FindEmptyChest, -1, 0, true);
 			TileObjectData.newTile.HookPostPlaceMyPlayer = new PlacementHook(Chest.AfterPlacement_Hook, -1, 0, false);
-			TileObjectData.newTile.AnchorInvalidTiles = new int[] {
+			TileObjectData.newTile.AnchorInvalidTiles = [
 				TileID.MagicalIceBlock,
 				TileID.Boulder,
 				TileID.BouncyBoulder,
 				TileID.LifeCrystalBoulder,
 				TileID.RollingCactus
-			};
+			];
 			TileObjectData.newTile.LavaDeath = false;
 			TileObjectData.addTile(Type);
 		}
@@ -83,7 +83,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 					Main.npcChatText = string.Empty;
 				}
 				if (player.editedChestName) {
-					NetMessage.SendData(MessageID.SyncPlayerChest, -1, -1, NetworkText.FromLiteral(Main.chest[player.chest].name), player.chest, 1f);
+					NetMessage.SendData(MessageID.SyncPlayerChest, text: NetworkText.FromLiteral(Main.chest[player.chest].name), number: player.chest, number2: 1f);
 					player.editedChestName = false;
 				}
 				if (Main.netMode == NetmodeID.MultiplayerClient) {
@@ -93,7 +93,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 						SoundEngine.PlaySound(SoundID.MenuClose);
 					}
 					else {
-						NetMessage.SendData(MessageID.RequestChestOpen, -1, -1, null, left, top);
+						NetMessage.SendData(MessageID.RequestChestOpen, number: left, number2: top);
 						Main.stackSplit = 600;
 					}
 				}
@@ -171,7 +171,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 			MouseOverNearAndFarSharedLogic(player, i, j);
 			if (player.cursorItemIconText == "") {
 				player.cursorItemIconEnabled = false;
-				player.cursorItemIconID = 0;
+				player.cursorItemIconID = ItemID.None;
 			}
 		}
 

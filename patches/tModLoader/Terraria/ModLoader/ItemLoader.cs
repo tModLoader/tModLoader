@@ -27,6 +27,7 @@ namespace Terraria.ModLoader;
 public static class ItemLoader
 {
 	public static int ItemCount { get; private set; } = ItemID.Count;
+	public static int UseStyleCount { get; private set; } = ItemUseStyleID.Count;
 	private static readonly IList<ModItem> items = new List<ModItem>();
 
 	private static readonly List<HookList> hooks = new List<HookList>();
@@ -54,6 +55,16 @@ public static class ItemLoader
 	}
 
 	/// <summary>
+	/// Registers a new item use style (<see cref="ItemUseStyleID"/>). The return value is its unique ID suitable for <see cref="Item.useStyle"/>.
+	/// </summary>
+	public static int RegisterUseStyle(Mod mod, string useStyleName)
+	{
+		int useStyle = UseStyleCount++;
+		ItemUseStyleID.Search.Add($"{mod?.Name ?? "Terraria"}/{useStyleName}", useStyle);
+		return useStyle;
+	}
+
+	/// <summary>
 	/// Gets the ModItem template instance corresponding to the specified type (not the clone/new instance which gets added to Items as the game is played). Returns null if no modded item has the given type.
 	/// </summary>
 	public static ModItem GetItem(int type)
@@ -74,6 +85,8 @@ public static class ItemLoader
 		LoaderUtils.ResetStaticMembers(typeof(ItemID));
 		LoaderUtils.ResetStaticMembers(typeof(AmmoID));
 		LoaderUtils.ResetStaticMembers(typeof(PrefixLegacy.ItemSets));
+		if (unloading)
+			LoaderUtils.ResetStaticMembers(typeof(ItemUseStyleID));
 
 		//Etc
 		Array.Resize(ref Item.cachedItemSpawnsByType, ItemCount);
@@ -151,6 +164,7 @@ public static class ItemLoader
 	internal static void Unload()
 	{
 		ItemCount = ItemID.Count;
+		UseStyleCount = ItemUseStyleID.Count;
 		items.Clear();
 		FlexibleTileWand.Reload();
 		GlobalList<GlobalItem>.Reset();
@@ -496,6 +510,31 @@ public static class ItemLoader
 		foreach (var g in HookOnConsumeMana.Enumerate(item)) {
 			g.OnConsumeMana(item, player, manaConsumed);
 		}
+	}
+
+	private delegate void DelegateModifyPotionDelay(Item item, Player player, ref int baseDelay);
+	private static HookList HookModifyPotionDelay = AddHook<DelegateModifyPotionDelay>(g => g.ModifyPotionDelay);
+
+	public static void ModifyPotionDelay(Item item, Player player, ref int baseDelay)
+	{
+		item.ModItem?.ModifyPotionDelay(player, ref baseDelay);
+
+		foreach (var g in HookModifyPotionDelay.Enumerate(item)) {
+			g.ModifyPotionDelay(item, player, ref baseDelay);
+		}
+	}
+
+	private delegate bool DelegateApplyPotionDelay(Item item, Player player, int potionDelay);
+	private static HookList HookApplyPotionDelay = AddHook<DelegateApplyPotionDelay>(g => g.ApplyPotionDelay);
+
+	public static bool ApplyPotionDelay(Item item, Player player, int potionDelay)
+	{
+		foreach (var g in HookApplyPotionDelay.Enumerate(item)) {
+			if (!g.ApplyPotionDelay(item, player, potionDelay))
+				return false;
+		}
+
+		return item.ModItem?.ApplyPotionDelay(player, potionDelay) ?? true;
 	}
 
 	private delegate bool? DelegateCanConsumeBait(Player baiter, Item bait);
@@ -1236,10 +1275,38 @@ public static class ItemLoader
 		}
 	}
 
+	private static HookList HookUpdateVisibleAccessory = AddHook<Action<Item, Player, bool>>(g => g.UpdateVisibleAccessory);
+
+	/// <summary>
+	/// Hook at the end of Player.UpdateVisibleAccessory that can be called to set flags related to player drawing.
+	/// </summary>
+	public static void UpdateVisibleAccessory(Item item, Player player, bool hideVisual)
+	{
+		if (item.IsAir)
+			return;
+
+		item.ModItem?.UpdateVisibleAccessory(player, hideVisual);
+
+		foreach (var g in HookUpdateVisibleAccessory.Enumerate(item)) {
+			g.UpdateVisibleAccessory(item, player, hideVisual);
+		}
+	}
+
+	private static HookList HookUpdateItemDye = AddHook<Action<Item, Player, int, bool>>(g => g.UpdateItemDye);
+
+	public static void UpdateItemDye(Item item, Player player, int dye, bool hideVisual)
+	{
+		item.ModItem?.UpdateItemDye(player, dye, hideVisual);
+
+		foreach (var g in HookUpdateItemDye.Enumerate(item)) {
+			g.UpdateItemDye(item, player, dye, hideVisual);
+		}
+	}
+
 	private static HookList HookUpdateArmorSet = AddHook<Action<Player, string>>(g => g.UpdateArmorSet);
 
 	/// <summary>
-	/// If the head's ModItem.IsArmorSet returns true, calls the head's ModItem.UpdateArmorSet. This is then repeated for the body, then the legs. Then for each GlobalItem, if GlobalItem.IsArmorSet returns a non-empty string, calls GlobalItem.UpdateArmorSet with that string.
+	/// If the head's <see cref="ModItem.IsArmorSet(Item, Item, Item)"/> returns true, calls the head's <see cref="ModItem.UpdateArmorSet(Player)"/>. This is then repeated for the body, then the legs. Then for each GlobalItem, if <see cref="GlobalItem.IsArmorSet(Item, Item, Item)"/> returns a non-empty string, calls <see cref="GlobalItem.UpdateArmorSet(Player, string)"/> with that string.
 	/// </summary>
 	public static void UpdateArmorSet(Player player, Item head, Item body, Item legs)
 	{
@@ -1514,6 +1581,11 @@ public static class ItemLoader
 		if (source.favorited && !isSplittingToHand) {
 			destination.favorited = true;
 			source.favorited = false;
+		}
+
+		if (destination.shopCustomPrice != source.shopCustomPrice) {
+			// If attempting to stack items with custom prices, null them out to prevent exploits. Fixes #4370 while preserving normal resell behavior.
+			destination.shopCustomPrice = null;
 		}
 
 		destination.stack += numTransferred;
@@ -2039,11 +2111,29 @@ public static class ItemLoader
 		return true;
 	}
 
+	public static bool CanEquipAccessory(Player player, Item item, int slot, bool modded)
+	{
+		if (item.ModItem != null && !item.ModItem.CanEquipAccessory(player, slot, modded))
+			return false;
+
+		foreach (var g in HookCanEquipAccessory.Enumerate(item)) {
+			if (!g.CanEquipAccessory(item, player, slot, modded))
+				return false;
+		}
+
+		return true;
+	}
+
 	private static HookList HookCanAccessoryBeEquippedWith = AddHook<Func<Item, Item, Player, bool>>(g => g.CanAccessoryBeEquippedWith);
 
 	public static bool CanAccessoryBeEquippedWith(Item equippedItem, Item incomingItem)
 	{
 		Player player = Main.player[Main.myPlayer];
+		return CanAccessoryBeEquippedWith(equippedItem, incomingItem, player) && CanAccessoryBeEquippedWith(incomingItem, equippedItem, player);
+	}
+
+	public static bool CanAccessoryBeEquippedWith(Player player, Item equippedItem, Item incomingItem)
+	{
 		return CanAccessoryBeEquippedWith(equippedItem, incomingItem, player) && CanAccessoryBeEquippedWith(incomingItem, equippedItem, player);
 	}
 

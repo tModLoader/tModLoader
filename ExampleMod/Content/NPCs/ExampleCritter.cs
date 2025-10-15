@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using ExampleMod.Content.Achievements;
+using Microsoft.Xna.Framework;
 using MonoMod.Cil;
 using System;
 using Terraria;
@@ -129,7 +130,7 @@ namespace ExampleMod.Content.NPCs
 
 		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry) {
 			bestiaryEntry.AddTags(BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.TheUnderworld,
-				new FlavorTextBestiaryInfoElement("The most adorable goodest spicy child. Do not dare be mean to him!"));
+				new FlavorTextBestiaryInfoElement("Mods.ExampleMod.Bestiary.ExampleCritterNPC"));
 		}
 
 		public override float SpawnChance(NPCSpawnInfo spawnInfo) {
@@ -150,6 +151,20 @@ namespace ExampleMod.Content.NPCs
 				}
 				Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, Mod.Find<ModGore>($"{Name}_Gore_Head").Type, NPC.scale);
 				Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, Mod.Find<ModGore>($"{Name}_Gore_Leg").Type, NPC.scale);
+			}
+		}
+
+		public override void OnHitByItem(Player player, Item item, NPC.HitInfo hit, int damageDone) {
+			ModContent.GetInstance<AdvancedExampleAchievement>().TotalDamageCondition.Value += damageDone;
+			if (item.type == ItemID.IronPickaxe) {
+				ModContent.GetInstance<AdvancedExampleAchievement>().IronPickaxeCondition.Complete();
+			}
+		}
+
+		public override void OnHitByProjectile(Projectile projectile, NPC.HitInfo hit, int damageDone) {
+			// OnHitByProjectile can be called on servers, so we need to check this to make sure to only access the achievement on a client to avoid null exceptions.
+			if (Main.netMode != NetmodeID.Server && !projectile.trap && !projectile.npcProj) {
+				ModContent.GetInstance<AdvancedExampleAchievement>().TotalDamageCondition.Value += damageDone;
 			}
 		}
 

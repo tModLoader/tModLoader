@@ -1,7 +1,8 @@
 namespace Terraria.ModLoader;
 
 /// <summary>
-/// This is an enum of all possible types of extra mount textures for custom mounts. Use these as keys in the extraTextures dictionary passed to Mod.AddMount to give your mount front and back textures.
+/// This is an enum of all possible types of extra mount textures for custom mounts.
+/// <br/> The enum's keys are used in default texture autoloading lookup paths, which can be overriden in <see cref="ModMount.GetExtraTexture"/>.
 /// </summary>
 public enum MountTextureType
 {

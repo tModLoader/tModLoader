@@ -1,0 +1,17 @@
+--- src/TerrariaNetCore/Terraria/GameContent/Achievements/CustomFlagCondition.cs
++++ src/tModLoader/Terraria/GameContent/Achievements/CustomFlagCondition.cs
+@@ -2,9 +_,13 @@
+ 
+ namespace Terraria.GameContent.Achievements;
+ 
++/// <summary>
++/// A custom boolean condition. Must be manually completed by calling <see cref="AchievementCondition.Complete"/>.
++/// <br/><br/> If multiple custom conditions are used for an achievement, a unique key should be provided.
++/// </summary>
+ public class CustomFlagCondition : AchievementCondition
+ {
+-	private CustomFlagCondition(string name)
++	public CustomFlagCondition(string name)
+ 		: base(name)
+ 	{
+ 	}

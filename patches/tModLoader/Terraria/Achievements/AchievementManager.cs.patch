@@ -1,5 +1,13 @@
 --- src/TerrariaNetCore/Terraria/Achievements/AchievementManager.cs
 +++ src/tModLoader/Terraria/Achievements/AchievementManager.cs
+@@ -7,6 +_,7 @@
+ using Newtonsoft.Json;
+ using Newtonsoft.Json.Bson;
+ using Newtonsoft.Json.Linq;
++using Terraria.ModLoader;
+ using Terraria.Social;
+ using Terraria.UI;
+ using Terraria.Utilities;
 @@ -33,7 +_,8 @@
  
  	public AchievementManager()
@@ -10,3 +18,190 @@
  			_savePath = SocialAPI.Achievements.GetSavePath();
  			_isCloudSave = true;
  			_cryptoKey = SocialAPI.Achievements.GetEncryptionKey();
+@@ -59,13 +_,31 @@
+ 				SocialAPI.Achievements.StoreStats();
+ 
+ 			try {
++				// This allows loading achievement data from unloaded mods so that unloaded achievement progress data is not lost.
++				Dictionary<string, object> existingData = LoadExistingAchievements(path, cloud);
++
++				foreach (var kvp in _achievements) {
++					existingData[kvp.Key] = kvp.Value;
++				}
++				// TODO: Should we clear out achievements that no longer exist in the currently loaded mods?
++
+ 				using MemoryStream memoryStream = new MemoryStream();
+ 				using CryptoStream cryptoStream = new CryptoStream(memoryStream, new RijndaelManaged().CreateEncryptor(_cryptoKey, _cryptoKey), CryptoStreamMode.Write);
+ 				using BsonWriter bsonWriter = new BsonWriter(cryptoStream);
++				/*
+ 				JsonSerializer.Create(_serializerSettings).Serialize(bsonWriter, _achievements);
++				*/
++				JsonSerializer.Create(_serializerSettings).Serialize(bsonWriter, existingData);
+ 				bsonWriter.Flush();
+ 				cryptoStream.FlushFinalBlock();
+ 				FileUtilities.WriteAllBytes(path, memoryStream.ToArray(), cloud);
++
++				if (ModLoader.Core.ModCompile.activelyModding) {
++					// Modders might want to verify the info, save a human-readable copy of achievements.dat
++					string json = JsonConvert.SerializeObject(existingData, Formatting.Indented);
++					json = "// This file is to help modders debug and visualize their achievement conditions. It will not be loaded, so editing it will have no effect.\n" + json;
++					File.WriteAllText(path + ".json", json);
++				}
+ 			}
+ 			catch (Exception exception) {
+ 				FancyErrorPrinter.ShowFileSavingFailError(exception, _savePath);
+@@ -75,6 +_,25 @@
+ 
+ 	public List<Achievement> CreateAchievementsList() => _achievements.Values.ToList();
+ 
++	private Dictionary<string, object> LoadExistingAchievements(string path, bool cloud)
++	{
++		try {
++			if (FileUtilities.Exists(path, cloud)) {
++				byte[] fileData = FileUtilities.ReadAllBytes(path, cloud);
++				using MemoryStream memoryStream = new MemoryStream(fileData);
++				using CryptoStream cryptoStream = new CryptoStream(memoryStream,
++					new RijndaelManaged().CreateDecryptor(_cryptoKey, _cryptoKey), CryptoStreamMode.Read);
++				using BsonReader bsonReader = new BsonReader(cryptoStream);
++				return JsonSerializer.Create(_serializerSettings).Deserialize<Dictionary<string, object>>(bsonReader) ??
++					new Dictionary<string, object>();
++			}
++		}
++		catch (Exception) {
++			FileUtilities.Delete(path, cloud);
++		}
++		return new Dictionary<string, object>();
++	}
++
+ 	public void Load()
+ 	{
+ 		Load(_savePath, _isCloudSave);
+@@ -131,6 +_,10 @@
+ 			achievement.Value.ClearProgress();
+ 		}
+ 
++		if (File.Exists(_savePath)) {
++			// Just in case a user accidentally clears their achievements, they can use achievements.dat.bak to restore them by replacing achievements.dat
++			File.Copy(_savePath, _savePath + ".bak", overwrite: true);
++		}
+ 		Save();
+ 	}
+ 
+@@ -147,6 +_,13 @@
+ 		achievement.OnCompleted += AchievementCompleted;
+ 	}
+ 
++	public void Unregister(Achievement achievement)
++	{
++		_achievements.Remove(achievement.Name);
++		_achievementIconIndexes.Remove(achievement.Name);
++		achievement.OnCompleted -= AchievementCompleted;
++	}
++
+ 	public void RegisterIconIndex(string achievementName, int iconIndex)
+ 	{
+ 		_achievementIconIndexes.Add(achievementName, iconIndex);
+@@ -157,6 +_,9 @@
+ 		_achievements[achievementName].SetCategory(category);
+ 	}
+ 
++	/// <summary>
++	/// Returns the achievement with the provided identifier. Consult the <see href="https://github.com/tModLoader/tModLoader/wiki/Vanilla-Content-IDs#achievement-identifiers">Achievement Identifiers section of the Vanilla Content IDs wiki page</see> to look up vanilla achievement identifiers. Modded achievements will be in the form of "ModName/Name".
++	/// </summary>
+ 	public Achievement GetAchievement(string achievementName)
+ 	{
+ 		if (_achievements.TryGetValue(achievementName, out var value))
+@@ -181,5 +_,93 @@
+ 			return value;
+ 
+ 		return 0;
++	}
++
++	internal static Achievement FirstVanillaAchievement => Main.Achievements.GetAchievement("TIMBER");
++	internal static Achievement LastVanillaAchievement => Main.Achievements.GetAchievement("TO_INFINITY_AND_BEYOND");
++	internal static readonly int DefaultLayerCount = 115;
++
++	internal static void FinishSetup()
++	{
++		if (Main.dedServ)
++			return;
++
++		// Reload the achievements with each mod change to make sure any new mod's achievements are loaded with their completion value set.
++		Main.Achievements.Load();
++
++		// Sort achievements by setting Achievement.Id:
++		var AchievementsInOrder = Main.Achievements.CreateAchievementsList();
++		IEnumerable<ModAchievement> ModdedAchievements = AchievementsInOrder.Skip(DefaultLayerCount).Select(x => x.ModAchievement);
++		AchievementsInOrder.Sort((x, y) => x.Id.CompareTo(y.Id));
++
++		var sortingSlots = new List<Achievement>[DefaultLayerCount + 1];
++		for (int i = 0; i < sortingSlots.Length; ++i)
++			sortingSlots[i] = [];
++
++		foreach (ModAchievement modAchievement in ModdedAchievements) {
++			var position = modAchievement.GetDefaultPosition();
++
++			switch (position) {
++				case ModAchievement.After after: {
++					int afterIndex = AchievementsInOrder.IndexOf(after.Achievement);
++					if (afterIndex >= DefaultLayerCount || afterIndex is -1)
++						throw BlameAchievementException(new ArgumentException($"ModAchievement {modAchievement} did not refer to a vanilla achievement in GetDefaultPosition()"));
++
++					sortingSlots[afterIndex + 1].Add(modAchievement.Achievement);
++					break;
++				}
++				case ModAchievement.Before before: {
++					int beforeIndex = AchievementsInOrder.IndexOf(before.Achievement);
++					if (beforeIndex >= DefaultLayerCount || beforeIndex is -1)
++						throw BlameAchievementException(new ArgumentException($"ModAchievement {modAchievement} did not refer to a vanilla achievement in GetDefaultPosition()"));
++
++					sortingSlots[beforeIndex].Add(modAchievement.Achievement);
++					break;
++				}
++				default: {
++					var ex = new ArgumentException($"ModMapLayer {modAchievement} has unknown Position {position}");
++					throw BlameAchievementException(ex);
++				}
++			}
++
++			Exception BlameAchievementException(Exception ex)
++			{
++				if (modAchievement is ModAchievement moddedAchievement)
++					ex.Data["mod"] = moddedAchievement.Mod.Name;
++				return ex;
++			}
++		}
++
++		List<Achievement> sortedAchievements = [];
++
++		for (int i = 0; i < DefaultLayerCount + 1; i++) {
++			var elements = sortingSlots[i];
++			var sort = new TopoSort<Achievement>(elements,
++				l => l.ModAchievement?.GetModdedConstraints()?.OfType<ModAchievement.After>().Select(a => a.Achievement).Where(elements.Contains) ?? [],
++				l => l.ModAchievement?.GetModdedConstraints()?.OfType<ModAchievement.Before>().Select(b => b.Achievement).Where(elements.Contains) ?? []);
++
++			foreach (Achievement layer in sort.Sort()) {
++				sortedAchievements.Add(layer);
++			}
++
++			if (i < DefaultLayerCount)
++				sortedAchievements.Add(AchievementsInOrder[i]);
++		}
++
++		for (int i = 0; i < sortedAchievements.Count; i++) {
++			sortedAchievements[i].Id = i;
++		}
++	}
++
++	internal static void Unload()
++	{
++		if (Main.dedServ)
++			return;
++
++		var ModAchievements = Main.Achievements._achievements.Values.Where(x => x.ModAchievement != null).ToList();
++		foreach (var Achievement in ModAchievements) {
++			Main.Achievements.Unregister(Achievement);
++			Achievement.OnCompleted -= Achievement.ModAchievement.OnCompleted;
++		}
+ 	}
+ }

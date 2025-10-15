@@ -1,14 +1,12 @@
-using Microsoft.Xna.Framework;
-using ReLogic.OS;
-using Steamworks;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
 using System.Threading;
+using ReLogic.OS;
+using Steamworks;
 using Terraria.Localization;
 using Terraria.ModLoader;
-using Terraria.ModLoader.Core;
 using Terraria.ModLoader.UI;
 using Terraria.ModLoader.UI.DownloadManager;
 using Terraria.ModLoader.UI.ModBrowser;
@@ -72,6 +70,8 @@ public static class SteamedWraps
 
 	internal static void Initialize()
 	{
+		InitializeModTags();
+
 		if (!FamilyShared && SocialAPI.Mode == SocialMode.Steam) {
 			SteamAvailable = true;
 			SteamClient = true;
@@ -146,6 +146,7 @@ public static class SteamedWraps
 		if (SteamClient) {
 			SteamUGC.SetAllowCachedResponse(qHandle, 0); // Anything other than 0 may cause Access Denied errors.
 
+			SteamUGC.SetReturnMetadata(qHandle, qP.returnDevMetadata);
 			SteamUGC.SetRankedByTrendDays(qHandle, qP.days);
 			SteamUGC.SetLanguage(qHandle, GetCurrentSteamLangKey());
 			SteamUGC.SetReturnChildren(qHandle, true);
@@ -155,6 +156,7 @@ public static class SteamedWraps
 		else if (SteamAvailable) {
 			SteamGameServerUGC.SetAllowCachedResponse(qHandle, 0); // Anything other than 0 may cause Access Denied errors.
 
+			SteamGameServerUGC.SetReturnMetadata(qHandle, qP.returnDevMetadata);
 			SteamGameServerUGC.SetRankedByTrendDays(qHandle, qP.days);
 			SteamGameServerUGC.SetLanguage(qHandle, GetCurrentSteamLangKey());
 			SteamGameServerUGC.SetReturnChildren(qHandle, true);
@@ -208,18 +210,18 @@ public static class SteamedWraps
 			SteamGameServerUGC.SetSearchText(qHandle, text);
 	}
 
-	public static SteamAPICall_t GenerateDirectItemsQuery(string[] modId)
+	public static SteamAPICall_t GenerateDirectItemsQuery(string[] modId, QueryParameters qP)
 	{
 		var publishId = Array.ConvertAll(modId, new Converter<string, PublishedFileId_t>((s) => new PublishedFileId_t(ulong.Parse(s))));
 
 		if (SteamClient) {
 			UGCQueryHandle_t qHandle = SteamUGC.CreateQueryUGCDetailsRequest(publishId, (uint)publishId.Length);
-			ModifyQueryHandle(ref qHandle, new QueryParameters());
+			ModifyQueryHandle(ref qHandle, qP);
 			return SteamUGC.SendQueryUGCRequest(qHandle);
 		}
 		else if (SteamAvailable) {
 			UGCQueryHandle_t qHandle = SteamGameServerUGC.CreateQueryUGCDetailsRequest(publishId, (uint)publishId.Length);
-			ModifyQueryHandle(ref qHandle, new QueryParameters());
+			ModifyQueryHandle(ref qHandle, qP);
 			return SteamGameServerUGC.SendQueryUGCRequest(qHandle);
 		}
 
@@ -244,24 +246,43 @@ public static class SteamedWraps
 
 	public static SteamAPICall_t GenerateAndSubmitModBrowserQuery(uint page, QueryParameters qP, string internalName = null)
 	{
-		if (SteamClient) {
-			UGCQueryHandle_t qHandle = SteamUGC.CreateQueryAllUGCRequest(CalculateQuerySort(qP), EUGCMatchingUGCType.k_EUGCMatchingUGCType_Items, new AppId_t(thisApp), new AppId_t(thisApp), page);
+		var qHandle = GetQueryHandle(page, qP);
+		if (qHandle == default)
+			return new();
 
+		if (SteamClient) {
 			ModifyQueryHandle(ref qHandle, qP);
 			FilterByInternalName(ref qHandle, internalName);
 
 			return SteamUGC.SendQueryUGCRequest(qHandle);
 		}
-		else if (SteamAvailable) {
-			UGCQueryHandle_t qHandle = SteamGameServerUGC.CreateQueryAllUGCRequest(CalculateQuerySort(qP), EUGCMatchingUGCType.k_EUGCMatchingUGCType_Items, new AppId_t(thisApp), new AppId_t(thisApp), page);
-
+		else { // assumes SteamAvailable as GetQueryHandle already checks this and is a required pre-req
 			ModifyQueryHandle(ref qHandle, qP);
 			FilterByInternalName(ref qHandle, internalName);
 			
 			return SteamGameServerUGC.SendQueryUGCRequest(qHandle);
 		}
+	}
 
-		return new();
+	public static UGCQueryHandle_t GetQueryHandle(uint page, QueryParameters qP)
+	{
+		// To find unlisted / private / friends only mods on Steam Workshop that user can see but QueryAll does not, we have to side step to a custom query. - Solxan, July 30 2024
+		if (SteamClient && qP.queryType == QueryType.SearchUserPublishedOnly) {
+			return SteamUGC.CreateQueryUserUGCRequest(SteamUser.GetSteamID().GetAccountID(), EUserUGCList.k_EUserUGCList_Published, EUGCMatchingUGCType.k_EUGCMatchingUGCType_Items, EUserUGCListSortOrder.k_EUserUGCListSortOrder_CreationOrderDesc, new AppId_t(thisApp), new AppId_t(thisApp), page);
+		}
+
+		// Search by author steamid64, can be used to find friends-only mods in-game, normal search through the API doesn't seem to show them
+		if (SteamClient && qP.searchAuthor?.Length == 17 && ulong.TryParse(qP.searchAuthor, out ulong steamID64)) {
+			return SteamUGC.CreateQueryUserUGCRequest(new AccountID_t((uint)(steamID64 & 0xFFFFFFFFu)), EUserUGCList.k_EUserUGCList_Published, EUGCMatchingUGCType.k_EUGCMatchingUGCType_Items, EUserUGCListSortOrder.k_EUserUGCListSortOrder_CreationOrderDesc, new AppId_t(thisApp), new AppId_t(thisApp), page);
+		}
+
+		// These will only return visibility = public - Solxan, July 30 2024
+		if (SteamClient)
+			return SteamUGC.CreateQueryAllUGCRequest(CalculateQuerySort(qP), EUGCMatchingUGCType.k_EUGCMatchingUGCType_Items, new AppId_t(thisApp), new AppId_t(thisApp), page);
+		else if (SteamAvailable)
+			return SteamGameServerUGC.CreateQueryAllUGCRequest(CalculateQuerySort(qP), EUGCMatchingUGCType.k_EUGCMatchingUGCType_Items, new AppId_t(thisApp), new AppId_t(thisApp), page);
+
+		return default;
 	}
 
 	public static void FetchPlayTimeStats(UGCQueryHandle_t handle, uint index, out ulong hot, out ulong downloads)
@@ -312,6 +333,16 @@ public static class SteamedWraps
 
 			metadata[key] = val;
 		}
+	}
+
+	public static bool FetchDeveloperMetadata(UGCQueryHandle_t handle, uint index, out string devMetadataSerialized)
+	{
+		if (SteamClient)
+			return SteamUGC.GetQueryUGCMetadata(handle, index, out devMetadataSerialized, Constants.k_cchDeveloperMetadataMax);
+		else if (SteamAvailable)
+			return SteamGameServerUGC.GetQueryUGCMetadata(handle, index, out devMetadataSerialized, Constants.k_cchDeveloperMetadataMax);
+
+		throw new Exception("Invalid Call to FetchDeveloperMetadata. Steam is not initialized");
 	}
 
 	public static void RunCallbacks()
@@ -487,22 +518,25 @@ public static class SteamedWraps
 	internal class ModDownloadInstance
 	{
 		// All of the below are for actually verifying a download has completed in the 'proper' steam method, but hasn't worked for gameserver?
-		private EResult _downloadCallback;
-		protected Callback<DownloadItemResult_t> _downloadHook;
+		private EResult _downloadCallbackResult;
 
-		public ModDownloadInstance()
+		private Callback<DownloadItemResult_t> RegisterDownloadCallback(PublishedFileId_t publishId)
 		{
+			void MarkDownloadComplete(DownloadItemResult_t result)
+			{
+				Logging.tML.Debug($"Steam Download Callback: appId={result.m_unAppID}, fileId={result.m_nPublishedFileId} result={result.m_eResult}");
+
+				if (result.m_unAppID != ModLoader.Engine.Steam.TMLAppID_t || result.m_nPublishedFileId != publishId)
+					return;
+
+				_downloadCallbackResult = result.m_eResult;
+			}
+
 			// For Steam Users
 			if (SteamClient)
-				_downloadHook = Callback<DownloadItemResult_t>.Create(MarkDownloadComplete);
+				return Callback<DownloadItemResult_t>.Create(MarkDownloadComplete);
 			else // For Non-Steam Users
-				_downloadHook = Callback<DownloadItemResult_t>.CreateGameServer(MarkDownloadComplete);
-		}
-
-		internal void MarkDownloadComplete(DownloadItemResult_t result)
-		{
-			_downloadCallback = result.m_eResult;
-			Logging.tML.Debug($"Download Callback Received From Steam: {_downloadCallback}");
+				return Callback<DownloadItemResult_t>.CreateGameServer(MarkDownloadComplete);
 		}
 
 		/// <summary>
@@ -512,6 +546,8 @@ public static class SteamedWraps
 		{
 			if (!SteamAvailable)
 				return;
+
+			using var _callback = RegisterDownloadCallback(publishId);
 
 			if (SteamClient)
 				SteamUGC.SubscribeItem(publishId);
@@ -592,15 +628,15 @@ public static class SteamedWraps
 
 			// Due to issues with Steam moving files from downloading folder to installed folder,
 			// there can be some latency in detecting it's installed. - Solxan
-			while (_downloadCallback == EResult.k_EResultNone) {
+			while (_downloadCallbackResult == EResult.k_EResultNone) {
 				Thread.Sleep(100);
 				RunCallbacks();
 			}
 
-			if (_downloadCallback != EResult.k_EResultOK) {
+			if (_downloadCallbackResult != EResult.k_EResultOK) {
 				//TODO: does this happen often? Never seen before at this stage in flow - Solxan
 				ReportCheckSteamLogs();
-				Logging.tML.Error($"Mod with ID {publishId} failed to install with Steam Error Result {_downloadCallback}");
+				Logging.tML.Error($"Mod with ID {publishId} failed to install with Steam Error Result {_downloadCallbackResult}");
 			}
 		}
 	}
@@ -635,17 +671,22 @@ public static class SteamedWraps
 		if (!SteamClient)
 			throw new Exception("Invalid Call to ModifyUgcUpdateHandleTModLoader. Steam Client API not initialized!");
 
+		// Add player metadata to the Workshop item
 		Logging.tML.Info("Adding tModLoader Metadata to Workshop Upload");
 		foreach (var key in WorkshopHelper.MetadataKeys) {
 			SteamUGC.RemoveItemKeyValueTags(uGCUpdateHandle_t, key);
 			SteamUGC.AddItemKeyValueTag(uGCUpdateHandle_t, key, _entryData.BuildData[key]);
 		}
 
+		// Add developer metadata to the Workshop item
+		AddDeveloperMetadata(ref uGCUpdateHandle_t, _entryData.BuildData["developermetadata"]);
+
+		// Adde Dependencies to the Workshop item
 		string refs = _entryData.BuildData["workshopdeps"];
 
 		if (!string.IsNullOrWhiteSpace(refs)) {
 			Logging.tML.Info("Adding dependencies to Workshop Upload");
-			string[] dependencies = refs.Split(",", StringSplitOptions.TrimEntries);
+			string[] dependencies = refs.Split(",", StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
 
 			foreach (string dependency in dependencies) {
 				try {
@@ -657,5 +698,53 @@ public static class SteamedWraps
 				}
 			}
 		}
+	}
+
+	private static bool AddDeveloperMetadata(ref UGCUpdateHandle_t uGCUpdateHandle_t, string developerMetadata)
+	{
+		if (!SteamClient)
+			throw new Exception("Invalid Call to AddDeveloperMetadata. Steam Client API not initialized!");
+
+		if (developerMetadata.Length >= Constants.k_cchDeveloperMetadataMax)
+			throw new Exception($"Invalid Call to AddDeveloperMetadata. Developer Metadata exceeds {Constants.k_cchDeveloperMetadataMax} characters");
+
+		return SteamUGC.SetItemMetadata(uGCUpdateHandle_t, developerMetadata);
+	}
+
+	public static readonly List<WorkshopTagOption> ModTags = new List<WorkshopTagOption>();
+
+	private static void InitializeModTags()
+	{
+		// Common Mod Focuses
+		AddModTag("tModLoader.TagsContent", "New Content");
+		AddModTag("tModLoader.TagsUtility", "Utilities");
+		AddModTag("tModLoader.TagsLibrary", "Library");
+		AddModTag("tModLoader.TagsTranslation", "Translation");
+		AddModTag("tModLoader.TagsQoL", "Quality of Life");
+
+		// Tweaks
+		AddModTag("tModLoader.TagsGameplay", "Gameplay Tweaks");
+		AddModTag("tModLoader.TagsAudio", "Audio Tweaks");
+		AddModTag("tModLoader.TagsVisual", "Visual Tweaks");
+
+		// TBD Grouping
+		//AddModTag("tModLoader.TagsLang", "Localization Support");
+		AddModTag("tModLoader.TagsGen", "Custom World Gen"); // Note: Don't change internal name to "World Gen" here or on steam, it will most likely break legacy modders publishing updates. Unless we are sure the steam backend handles migrating from legacy internal names, keep the internal names consistent.
+
+		// Languages
+		AddModTag("tModLoader.TagsLanguage_English", "English");
+		AddModTag("tModLoader.TagsLanguage_German", "German");
+		AddModTag("tModLoader.TagsLanguage_Italian", "Italian");
+		AddModTag("tModLoader.TagsLanguage_French", "French");
+		AddModTag("tModLoader.TagsLanguage_Spanish", "Spanish");
+		AddModTag("tModLoader.TagsLanguage_Russian", "Russian");
+		AddModTag("tModLoader.TagsLanguage_Chinese", "Chinese");
+		AddModTag("tModLoader.TagsLanguage_Portuguese", "Portuguese");
+		AddModTag("tModLoader.TagsLanguage_Polish", "Polish");
+	}
+
+	private static void AddModTag(string tagNameKey, string tagInternalName)
+	{
+		ModTags.Add(new WorkshopTagOption(tagNameKey, tagInternalName));
 	}
 }

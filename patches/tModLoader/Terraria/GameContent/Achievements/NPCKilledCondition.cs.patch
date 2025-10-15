@@ -1,0 +1,49 @@
+--- src/TerrariaNetCore/Terraria/GameContent/Achievements/NPCKilledCondition.cs
++++ src/tModLoader/Terraria/GameContent/Achievements/NPCKilledCondition.cs
+@@ -3,6 +_,10 @@
+ 
+ namespace Terraria.GameContent.Achievements;
+ 
++/// <summary>
++/// Satisfied when any of the provided NPCs is killed. Only players who damaged/"interacted" with the NPC (<see cref="NPC.playerInteraction"/>) will be awarded the achievement.
++/// <br/><br/> Use multiple conditions if tracking multiple NPC individually is needed.
++/// </summary>
+ public class NPCKilledCondition : AchievementCondition
+ {
+ 	private const string Identifier = "NPC_KILLED";
+@@ -10,8 +_,10 @@
+ 	private static bool _isListenerHooked;
+ 	private short[] _npcIds;
+ 
++	private static string IDToIdentifier(short npcId) => ModLoader.NPCLoader.GetNPC(npcId)?.FullName ?? npcId.ToString();
++
+-	private NPCKilledCondition(short npcId)
++	public NPCKilledCondition(short npcId)
+-		: base("NPC_KILLED_" + npcId)
++		: base("NPC_KILLED_" + IDToIdentifier(npcId))
+ 	{
+ 		_npcIds = new short[1] {
+ 			npcId
+@@ -20,8 +_,20 @@
+ 		ListenForPickup(this);
+ 	}
+ 
+-	private NPCKilledCondition(short[] npcIds)
++	public NPCKilledCondition(short[] npcIds)
+-		: base("NPC_KILLED_" + npcIds[0])
++		: base("NPC_KILLED_" + IDToIdentifier(npcIds[0]))
++	{
++		_npcIds = npcIds;
++		ListenForPickup(this);
++	}
++
++	public NPCKilledCondition(short npcId, string name) : base(name)
++	{
++		_npcIds = [npcId];
++		ListenForPickup(this);
++	}
++
++	public NPCKilledCondition(short[] npcIds, string name) : base(name)
+ 	{
+ 		_npcIds = npcIds;
+ 		ListenForPickup(this);

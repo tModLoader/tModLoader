@@ -54,6 +54,10 @@ namespace ExampleMod.Content.Tiles
 		public override void SetStaticDefaults() {
 			base.SetStaticDefaults();
 
+			// Only the natural version is broken automatically by placing other tiles over it or block swapping under it.
+			TileID.Sets.BreakableWhenPlacing[Type] = true;
+			TileID.Sets.ReplaceTileBreakUp[Type] = true;
+
 			// By default, the TileObjectData.Style3x2 tile we copied in Example3x2RubbleBase has LavaDeath = true. Natural rubble tiles don't have this behavior, so we want to be immune to lava.
 			TileObjectData.GetTileData(Type, 0).LavaDeath = false;
 		}

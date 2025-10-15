@@ -44,6 +44,11 @@ public static class CombinedHooks
 		PlayerLoader.OnMissingMana(player, item, neededMana);
 	}
 
+	public static bool ApplyPotionDelay(Item item, Player player, int potionDelay)
+	{
+		return PlayerLoader.ApplyPotionDelay(item, player, potionDelay) && ItemLoader.ApplyPotionDelay(item, player, potionDelay);
+	}
+
 	public static bool CanConsumeAmmo(Player player, Item weapon, Item ammo)
 	{
 		return PlayerLoader.CanConsumeAmmo(player, weapon, ammo) && ItemLoader.CanConsumeAmmo(weapon, ammo, player);
@@ -123,6 +128,15 @@ public static class CombinedHooks
 	{
 		ItemLoader.MeleeEffects(sItem, player, itemRectangle);
 		PlayerLoader.MeleeEffects(player, sItem, itemRectangle);
+	}
+
+	public static void EmitEnchantmentVisualsAt(Projectile projectile, Vector2 boxPosition, int boxWidth, int boxHeight)
+	{
+		ProjectileLoader.EmitEnchantmentVisualsAt(projectile, boxPosition, boxWidth, boxHeight);
+
+		if (projectile.TryGetOwner(out var realPlayer)) {
+			PlayerLoader.EmitEnchantmentVisualsAt(realPlayer, projectile, boxPosition, boxWidth, boxHeight);
+		}
 	}
 
 	public static bool? CanHitNPCWithProj(Projectile proj, NPC npc)
@@ -312,5 +326,10 @@ public static class CombinedHooks
 	public static bool OnPickup(Item item, Player player)
 	{
 		return ItemLoader.OnPickup(item, player) && PlayerLoader.OnPickup(player, item);
+	}
+
+	public static bool CanBeTeleportedTo(Player player, Vector2 teleportPosition, int i, int j, string context)
+	{
+		return PlayerLoader.CanBeTeleportedTo(player, teleportPosition, context) && WallLoader.CanBeTeleportedTo(i, j, Main.tile[i, j].WallType, player, context);
 	}
 }

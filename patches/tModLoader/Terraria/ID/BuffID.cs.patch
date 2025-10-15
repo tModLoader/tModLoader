@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/ID/BuffID.cs
 +++ src/tModLoader/Terraria/ID/BuffID.cs
-@@ -1,25 +_,86 @@
+@@ -1,25 +_,87 @@
  using ReLogic.Reflection;
 +using Terraria.ModLoader;
  
@@ -10,6 +10,7 @@
 +public partial class BuffID
  {
 -	public class Sets
++#if !TMLANALYZER
 +	public partial class Sets
  	{
 +		/// <summary>
@@ -29,7 +30,7 @@
  		}
  
 -		public static SetFactory Factory = new SetFactory(Count);
-+		public static SetFactory Factory = new SetFactory(BuffLoader.BuffCount);
++		public static SetFactory Factory = new SetFactory(BuffLoader.BuffCount, nameof(BuffID), Search);
 +
 +		/// <summary>
 +		/// If <see langword="true"/> for a given <see cref="BuffID"/>, then that buff is some variation of <see cref="WellFed"/>.
@@ -91,3 +92,11 @@
  		public static BuffMountData[] BasicMountData = Factory.CreateCustomSet<BuffMountData>(null, new object[108] {
  			118,
  			new BuffMountData {
+@@ -293,6 +_,7 @@
+ 			}
+ 		});
+ 	}
++#endif
+ 
+ 	public const int ObsidianSkin = 1;
+ 	public const int Regeneration = 2;

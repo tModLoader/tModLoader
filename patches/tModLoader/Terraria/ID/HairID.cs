@@ -1,11 +1,12 @@
-﻿using Terraria.ModLoader;
+﻿using ReLogic.Reflection;
+using Terraria.ModLoader;
 
 namespace Terraria.ID;
 public class HairID
 {
 	public class Sets
 	{
-		public static SetFactory Factory = new SetFactory(Count);
+		public static SetFactory Factory = new SetFactory(HairLoader.Count, nameof(HairID), Search);
 
 		// Created based on 'backHairDraw' definition in 'Player.GetHairSettings'.
 		/// <summary>
@@ -19,4 +20,6 @@ public class HairID
 	}
 
 	public static readonly int Count = 165;
+
+	public static IdDictionary Search = IdDictionary.Create<HairID, int>();
 }

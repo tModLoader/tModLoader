@@ -1,7 +1,10 @@
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
+using ReLogic.Graphics;
 using Terraria.Audio;
+using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
 using Terraria.Localization;
@@ -172,11 +175,13 @@ internal class UIModConfigList : UIState
 					MaxWidth = { Percent = 0.95f },
 					HAlign = 0.5f,
 					ScalePanel = true,
+					UseInnerDimensions = true,
 					AltPanelColor = UICommon.MainPanelBackground,
 					AltHoverPanelColor = UICommon.MainPanelBackground * (1 / 0.8f),
 					UseAltColors = () => selectedMod != mod,
 					ClickSound = SoundID.MenuTick,
 				};
+				AddSmallIcon(mod, modPanel);
 
 				modPanel.OnLeftClick += delegate (UIMouseEvent evt, UIElement listeningElement) {
 					selectedMod = mod;
@@ -185,6 +190,47 @@ internal class UIModConfigList : UIState
 
 				modList.Add(modPanel);
 			}
+			else {
+				if (mod.Name == "ModLoader")
+					continue;
+
+				var modPanel = new UIButton<string>(mod.DisplayName) {
+					MaxWidth = { Percent = 0.95f },
+					HAlign = 0.5f,
+					ScalePanel = true,
+					UseInnerDimensions = true,
+					BackgroundColor = Color.Gray,
+					HoverPanelColor = Color.Gray,
+					HoverBorderColor = Color.Black,
+					TooltipText = true,
+					HoverText = Language.GetTextValue("tModLoader.ModConfigModLoaderButNoConfigs")
+				};
+				AddSmallIcon(mod, modPanel);
+
+				modList.Add(modPanel);
+			}
+		}
+
+		void AddSmallIcon(Mod mod, UIButton<string> modPanel)
+		{
+			var iconTexture = GetSmallIcon(mod);
+			if (iconTexture == null) {
+				return;
+			}
+
+			float iconOffset = iconTexture.Width();
+			float iconPadding = 2;
+			modPanel.PaddingLeft += iconOffset + iconPadding;
+
+			var sideIndicator = new UIImage(iconTexture) {
+				VAlign = 0.5f,
+				HAlign = 0f,
+				Color = Color.White,
+				MarginLeft = -iconOffset - iconPadding - 4.5f, // -4.5 for alignment, 4 is 11 and 5 is 9 so 4.5 is 10
+				MarginTop = -13,
+			};
+
+			modPanel.Append(sideIndicator);
 		}
 	}
 
@@ -200,8 +246,6 @@ internal class UIModConfigList : UIState
 		var sortedConfigs = configs.OrderBy(x => Utils.CleanChatTags(x.DisplayName.Value)).ToList();
 
 		foreach (var config in sortedConfigs) {
-			float indicatorOffset = 24;
-
 			var configPanel = new UIButton<LocalizedText>(config.DisplayName) {
 				MaxWidth = { Percent = 0.95f },
 				HAlign = 0.5f,
@@ -209,7 +253,6 @@ internal class UIModConfigList : UIState
 				UseInnerDimensions = true,
 				ClickSound = SoundID.MenuOpen,
 			};
-			configPanel.PaddingRight += indicatorOffset;
 
 			configPanel.OnLeftClick += delegate (UIMouseEvent evt, UIElement listeningElement) {
 				Interface.modConfig.SetMod(selectedMod, config);
@@ -219,32 +262,45 @@ internal class UIModConfigList : UIState
 					Main.InGameUI.SetState(Interface.modConfig);
 			};
 
-			configList.Add(configPanel);
-
 			// ConfigScope indicator
 			var indicatorTexture = UICommon.ConfigSideIndicatorTexture;
-			var indicatorFrame = indicatorTexture.Frame(2, 1, config.Mode == ConfigScope.ServerSide ? 1 : 0, 0);
-			var serverColor = Colors.RarityRed;
-			var clientColor = Colors.RarityCyan;
+			// -2 to account for padding in texture to avoid texture atlas issues
+			var indicatorFrame = indicatorTexture.Frame(2, 1, config.Mode == ConfigScope.ServerSide ? 1 : 0, 0, -2);
+
+			float indicatorOffset = indicatorFrame.Width;
+			float indicatorPadding = 6;
+			configPanel.PaddingRight += indicatorOffset + indicatorPadding;
 
 			var sideIndicator = new UIImageFramed(indicatorTexture, indicatorFrame) {
 				VAlign = 0.5f,
 				HAlign = 1f,
 				Color = Color.White,
-				MarginRight = -indicatorOffset - 4,
-				MarginTop = -4,
+				MarginRight = -indicatorOffset - indicatorPadding - 2, // -2 for alignment
+				MarginTop = -6,
 			};
 
-			sideIndicator.OnUpdate += delegate (UIElement affectedElement) {
+			sideIndicator.OnDraw += delegate (UIElement affectedElement) {
 				if (sideIndicator.IsMouseHovering) {
-					string colorCode = config.Mode == ConfigScope.ServerSide ? serverColor.Hex3() : clientColor.Hex3();
 					string hoverText = Language.GetTextValue(config.Mode == ConfigScope.ServerSide ? "tModLoader.ModConfigServerSide" : "tModLoader.ModConfigClientSide");
-					Main.instance.MouseText($"[c/{colorCode}:{hoverText}]");
+					UICommon.TooltipMouseText(hoverText);
 				}
 			};
 
 			configPanel.Append(sideIndicator);
+			configList.Add(configPanel);
 		}
+	}
+
+	private Asset<Texture2D> GetSmallIcon(Mod mod)
+	{
+		if (mod.HasAsset("icon_small")) {
+			var asset = mod.Assets.Request<Texture2D>("icon_small");
+			if (asset.Size() == new Vector2(30)) {
+				return asset;
+			}
+			mod.Logger.Info("icon_small needs to be 30x30 pixels.");
+		}
+		return null;
 	}
 
 	public override void Draw(SpriteBatch spriteBatch)

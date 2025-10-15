@@ -15,6 +15,7 @@ using Terraria.ModLoader.Core;
 using Terraria.Audio;
 using Terraria.ID;
 using System;
+using Terraria.GameContent;
 
 namespace Terraria.ModLoader.UI;
 
@@ -31,6 +32,7 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 	private readonly List<UIModItem> items = new List<UIModItem>();
 	private Task<List<UIModItem>> modItemsTask;
 	private bool updateNeeded;
+	private bool saveNeeded;
 	private UIMemoryBar ramUsage;
 	private bool showRamUsage;
 	public bool loading;
@@ -48,6 +50,13 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 	private UIAutoScaleTextTextPanel<LocalizedText> buttonB;
 	private UIAutoScaleTextTextPanel<LocalizedText> buttonOMF;
 	private UIAutoScaleTextTextPanel<LocalizedText> buttonCL;
+	// confirmation dialog
+	private UIAutoScaleTextTextPanel<LocalizedText> _confirmDialogYesButton;
+	private UIAutoScaleTextTextPanel<LocalizedText> _confirmDialogNoButton;
+	private UIText _confirmDialogText;
+	private UIImage _blockInput;
+	private UIPanel _activeDialog;
+
 	private CancellationTokenSource _cts;
 	private bool forceReloadHidden => ModLoader.autoReloadRequiredModsLeavingModsScreen && !ModCompile.DeveloperMode;
 
@@ -106,7 +115,7 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 			VAlign = 1f,
 			Top = { Pixels = -65 }
 		}.WithFadedMouseOver();
-		buttonEA.OnLeftClick += EnableAll;
+		buttonEA.OnLeftClick += QuickEnableAll;
 		uIElement.Append(buttonEA);
 
 		// TODO CopyStyle doesn't capture all the duplication here, consider an inner method
@@ -115,7 +124,7 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 		buttonDA.TextColor = Color.Red;
 		buttonDA.HAlign = 0.5f;
 		buttonDA.WithFadedMouseOver();
-		buttonDA.OnLeftClick += DisableAll;
+		buttonDA.OnLeftClick += QuickDisableAll;
 		uIElement.Append(buttonDA);
 
 		buttonRM = new UIAutoScaleTextTextPanel<LocalizedText>(Language.GetText("tModLoader.ModsForceReload"));
@@ -159,10 +168,12 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 				toggleImage.SetCurrentState((int)sortMode);
 				toggleImage.OnLeftClick += (a, b) => {
 					sortMode = sortMode.NextEnum();
+					saveNeeded = true;
 					updateNeeded = true;
 				};
 				toggleImage.OnRightClick += (a, b) => {
 					sortMode = sortMode.PreviousEnum();
+					saveNeeded = true;
 					updateNeeded = true;
 				};
 			}
@@ -289,6 +300,11 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 
 	public void HandleBackButtonUsage()
 	{
+		if (_blockInput != null && HasChild(_blockInput)) {
+			CloseConfirmDialog(null, null);
+			return;
+		}
+
 		// To prevent entering the game with Configs that violate ReloadRequired
 		if (ConfigManager.AnyModNeedsReload()) {
 			Main.menuMode = Interface.reloadModsID;
@@ -325,9 +341,43 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 		}
 	}
 
+	internal void CloseConfirmDialog(UIMouseEvent evt, UIElement listeningElement)
+	{
+		SoundEngine.PlaySound(SoundID.MenuClose);
+		_blockInput?.Remove();
+		_activeDialog?.Remove();
+	}
+
+	internal void ShowConfirmDialog(UIPanel dialog)
+	{
+		_blockInput = new UIImage(TextureAssets.Extra[190]) {
+			Width = { Percent = 1 },
+			Height = { Percent = 1 },
+			Color = Color.Black * 0.5f,
+			ScaleToFit = true
+		};
+		_blockInput.Width = StyleDimension.Fill;
+		_blockInput.Height = StyleDimension.Fill;
+		_blockInput.OnLeftMouseDown += CloseConfirmDialog;
+		Append(_blockInput);
+
+		Append(_activeDialog = dialog);
+	}
+
+	private void QuickEnableAll(UIMouseEvent evt, UIElement listeningElement)
+	{
+		bool shiftPressed = Main.keyState.PressingShift();
+		if (shiftPressed || !ModLoader.showConfirmationWindowWhenEnableDisableAllMods) {
+			EnableAll(evt, listeningElement);
+		}
+		else {
+			SoundEngine.PlaySound(10, -1, -1, 1);
+			ShowConfirmationWindow(EnableAll, "tModLoader.ModsEnableAllConfirm");
+		}
+	}
+
 	private void EnableAll(UIMouseEvent evt, UIElement listeningElement)
 	{
-		SoundEngine.PlaySound(SoundID.MenuTick);
 		foreach (UIModItem modItem in items) {
 			if (modItem.tMLUpdateRequired != null)
 				continue;
@@ -335,9 +385,76 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 		}
 	}
 
+	private void QuickDisableAll(UIMouseEvent evt, UIElement listeningElement)
+	{
+		bool shiftPressed = Main.keyState.PressingShift();
+		if (shiftPressed || !ModLoader.showConfirmationWindowWhenEnableDisableAllMods) {
+			DisableAll(evt, listeningElement);
+		}
+		else {
+			SoundEngine.PlaySound(10, -1, -1, 1);
+			ShowConfirmationWindow(DisableAll, "tModLoader.ModsDisableAllConfirm");
+		}
+	}
+
+	private void ShowConfirmationWindow(MouseEvent yesAction, string confirmDialogTextKey)
+	{
+		var _toggleModsDialog = new UIPanel() {
+			Width = { Percent = .30f },
+			Height = { Percent = .30f },
+			HAlign = .5f,
+			VAlign = .5f,
+			BackgroundColor = new Color(63, 82, 151),
+			BorderColor = Color.Black
+		};
+		_toggleModsDialog.SetPadding(6f);
+		ShowConfirmDialog(_toggleModsDialog);
+
+		_confirmDialogYesButton = new UIAutoScaleTextTextPanel<LocalizedText>(Language.GetText("LegacyMenu.104")) {
+			TextColor = Color.White,
+			Width = new StyleDimension(-10f, 1f / 3f),
+			Height = { Pixels = 40 },
+			VAlign = .6f,
+			HAlign = .15f
+		}.WithFadedMouseOver();
+		_confirmDialogYesButton.OnLeftClick += yesAction;
+		_confirmDialogYesButton.OnLeftClick += CloseConfirmDialog;
+		_toggleModsDialog.Append(_confirmDialogYesButton);
+
+		_confirmDialogNoButton = new UIAutoScaleTextTextPanel<LocalizedText>(Language.GetText("LegacyMenu.105")) {
+			TextColor = Color.White,
+			Width = new StyleDimension(-10f, 1f / 3f),
+			Height = { Pixels = 40 },
+			VAlign = .6f,
+			HAlign = .85f
+		}.WithFadedMouseOver();
+		_confirmDialogNoButton.OnLeftClick += CloseConfirmDialog;
+		_toggleModsDialog.Append(_confirmDialogNoButton);
+
+		var yesDontAskAgainButton = new UIAutoScaleTextTextPanel<LocalizedText>(Language.GetText("tModLoader.YesDontAskAgain")) {
+			TextColor = Color.White,
+			Width = new StyleDimension(0f, 2f / 3f),
+			Height = { Pixels = 40 },
+			VAlign = 0.95f,
+			HAlign = .5f
+		}.WithFadedMouseOver();
+		yesDontAskAgainButton.OnLeftClick += (a, b) => ModLoader.showConfirmationWindowWhenEnableDisableAllMods = false;
+		yesDontAskAgainButton.OnLeftClick += yesAction;
+		yesDontAskAgainButton.OnLeftClick += CloseConfirmDialog;
+		_toggleModsDialog.Append(yesDontAskAgainButton);
+
+		_confirmDialogText = new UIText(Language.GetTextValue(confirmDialogTextKey)) {
+			Width = { Percent = .75f },
+			HAlign = .5f,
+			VAlign = .2f,
+			IsWrapped = true
+		};
+		_toggleModsDialog.Append(_confirmDialogText);
+		Recalculate();
+	}
+
 	private void DisableAll(UIMouseEvent evt, UIElement listeningElement)
 	{
-		SoundEngine.PlaySound(SoundID.MenuTick);
 		foreach (UIModItem modItem in items) {
 			modItem.Disable();
 		}
@@ -357,6 +474,7 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 	public override void Update(GameTime gameTime)
 	{
 		base.Update(gameTime);
+		UIModBrowser.PageUpDownSupport(modList);
 		if (modItemsTask is { IsCompleted: true }) {
 			var result = modItemsTask.Result;
 			items.AddRange(result);
@@ -458,6 +576,15 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 		_cts?.Cancel(false);
 		_cts?.Dispose();
 		_cts = null;
+		modListViewPosition = modList.ViewPosition;
+		if (saveNeeded) {
+			saveNeeded = false;
+			Main.SaveSettings();
+		}
+	}
+
+	internal void StoreCurrentScrollPosition()
+	{
 		modListViewPosition = modList.ViewPosition;
 	}
 

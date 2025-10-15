@@ -18,7 +18,7 @@
  {
  	private class NPCDistanceByIndexComparator : IComparer<Tuple<int, float>>
  	{
-@@ -63,79 +_,332 @@
+@@ -63,79 +_,356 @@
  	public const int SentryLifeTime = 36000;
  	public const int ArrowLifeTime = 1200;
  	public float ownerHitCheckDistance = 1000f;
@@ -37,7 +37,7 @@
 +
 +	/// <summary>
 +	/// Set to true if you don't want this projectile to have a chance to recover the ammo item that shot this, provided that the projectile is programmed to drop the item. For example, if you shoot the <see cref="ProjectileID.PaperAirplaneA"/> projectile, it will always drop the <see cref="ItemID.PaperAirplaneA"/> item. If your weapon shoots multiple recoverable projectiles for 1 ammo, you might want to consider setting this field to prevent infinite ammo exploits. Make sure to set this for any situation where a potentially recoverable ammo is spawned by something other than the player, such as traps and Town NPC.
-+	/// <para/> To implement recoverable ammo item drops, in <see cref="ModProjectile.OnKill(int)"/> check this, <see cref="owner"/>, and optionally a random chance to decide if the item should drop: <c>if (Projectile.owner == Main.myPlayer &amp;&amp; !Projectile.noDropItem)</c> See <see href="https://github.com/tModLoader/tModLoader/blob/1.4.4/ExampleMod/Content/Projectiles/ExamplePaperAirplaneProjectile.cs#L142">ExamplePaperAirplaneProjectile</see> for an example of this logic.
++	/// <para/> To implement recoverable ammo item drops, in <see cref="ModProjectile.OnKill(int)"/> check this, <see cref="owner"/>, and optionally a random chance to decide if the item should drop: <c>if (Projectile.owner == Main.myPlayer &amp;&amp; !Projectile.noDropItem)</c> See <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/Projectiles/ExamplePaperAirplaneProjectile.cs#L142">ExamplePaperAirplaneProjectile</see> for an example of this logic.
 +	/// <para/> Set directly on the projectile instance returned from <see cref="Projectile.NewProjectile(IEntitySource, float, float, float, float, int, int, float, int, float, float, float)"/>, not in <see cref="ModProjectile.SetDefaults"/>. This ensures that the weapon or source spawning the projectile decides if the ammo item will spawn, which is more compatible.
 +	/// <para/> Set automatically when shot from a weapon that counts as <see cref="DamageClass.Throwing"/> and <see cref="Player.AnyThrownCostReduction"/> is <see langword="true"/>.
 +	/// <para/> Defaults to <see langword="false"/>.
@@ -66,17 +66,17 @@
  	public int type;
 +
 +	/// <summary>
-+	/// How transparent to draw this projectile. 0 to 255. 255 is completely transparent.
-+	/// <br/> <see href="https://github.com/tModLoader/tModLoader/blob/1.4.4/ExampleMod/Content/Projectiles/ExampleBullet.cs">ExampleBullet</see> sets this to 255, and the projectile aiStyle of <see cref="ProjAIStyleID.Arrow"/> automatically decreases alpha each tick, letting the projectile fade in quickly after being spawned. Useful for projectiles that look odd when initially spawned on the weapon because of texture overlap.
-+	/// <br/> The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Projectile#fade-inout">Basic Projectile Guide</see> teaches more about projectile fade in and out.
-+	/// <br/> Defaults to 0.
++	/// How transparent to draw this projectile. Ranges from 0 to 255. 0 is fully opaque and 255 is completely transparent. (<see cref="Opacity"/> also controls alpha and might be easier to work with in some situations.)
++	/// <para/> Can be adjusted to dynamically fade in or out a projectile. One example usage is for projectiles that look odd when initially spawned on the weapon because of texture overlap. <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/Projectiles/ExampleBullet.cs">ExampleBullet.SetDefaults</see> sets this to 255, and the projectile aiStyle of <see cref="ProjAIStyleID.Arrow"/> automatically decreases alpha each tick, causing the projectile to fade in quickly after being spawned.
++	/// <para/> The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Projectile#fade-inout">Basic Projectile Guide</see> teaches more about projectile fade in and out.
++	/// <para/> Defaults to 0.
 +	/// </summary>
  	public int alpha;
 +	/// <summary>
-+	/// Indicates that this projectile is a sentry
-+	/// <br/> Defaults to <see langword="false"/>.
-+	/// <br/> All sentries should set <see cref="Projectile.timeLeft"/> to <see cref="Projectile.SentryLifeTime"/>.
-+	/// <br/> When a sentry is spawned, <see cref="Player.UpdateMaxTurrets"/> should be called immediately after.
++	/// Indicates that this projectile is a sentry.
++	/// <br/><br/> Defaults to <see langword="false"/>.
++	/// <br/><br/> All sentries should set <see cref="Projectile.timeLeft"/> to <see cref="Projectile.SentryLifeTime"/>.
++	/// <br/><br/> When a sentry is spawned, <see cref="Player.UpdateMaxTurrets"/> should be called immediately after.
 +	/// </summary>
  	public bool sentry;
  	public short glowMask;
@@ -84,14 +84,14 @@
 +	/// <summary>
 +	/// The index of the player who owns this projectile. In Multiplayer, Clients "own" projectiles that they shoot, while the Server "owns" projectiles spawned by NPCs and the World.
 +	/// <br/> NPC <b>never</b> own projectiles, do not use owner to index into <see cref="Main.npc"/>. 
-+	/// <br/> It is very important to check <c>if (Projectile.owner == Main.myPlayer)</c> for things like dropping items or spawning projectiles in <see cref="ModProjectile.AI"/> and some other methods because AI runs simultaneously on all Clients and the Server. This check gates some of the code that should only run on the owners computer. <see href="https://github.com/tModLoader/tModLoader/blob/1.4.4/ExampleMod/Content/Projectiles/ExamplePaperAirplaneProjectile.cs#L142">ExamplePaperAirplaneProjectile</see> checks owner for spawning the recovered ammo item. If you don't do this, you will run into desync bugs in your mod.
++	/// <br/> It is very important to check <c>if (Projectile.owner == Main.myPlayer)</c> for things like dropping items or spawning projectiles in <see cref="ModProjectile.AI"/> and some other methods because AI runs simultaneously on all Clients and the Server. This check gates some of the code that should only run on the owners computer. <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/Projectiles/ExamplePaperAirplaneProjectile.cs#L142">ExamplePaperAirplaneProjectile</see> checks owner for spawning the recovered ammo item. If you don't do this, you will run into desync bugs in your mod.
 +	/// <br/> Defaults to the owner parameter of Projectile.NewProjectile, which should always be set to <see cref="Main.myPlayer"/> to correspond to the client that owns the projectile..
 +	/// </summary>
  	public int owner = 255;
 +
 +	/// <summary>
 +	/// An array with 3 slots used for any sort of data storage, which is occasionally synced to the server. Each vanilla <see cref="ProjAIStyleID"/> uses these slots for different purposes. Set <see cref="netUpdate"/> to true during AI methods to manually sync. The advantage of using these 3 floats is that they are synced automatically. Using fields in your <see cref="ModProjectile"/> class will work just the same, but they might need to be synced via <see cref="ModProjectile.SendExtraAI(System.IO.BinaryWriter)"/> and <see cref="ModProjectile.ReceiveExtraAI(System.IO.BinaryReader)"/> if necessary.
-+	/// <br/> Clever use of <see href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/ref#reference-return-values">Reference return values</see> as seen in <see href="https://github.com/tModLoader/tModLoader/blob/1.4.4/ExampleMod/Content/Pets/ExampleLightPet/ExampleLightPetProjectile.cs#L22">ExampleLightPetProjectile.cs</see> can be used to reuse the ai array entries with readable names.
++	/// <br/> Clever use of <see href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/ref#reference-return-values">Reference return values</see> as seen in <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/Pets/ExampleLightPet/ExampleLightPetProjectile.cs#L22">ExampleLightPetProjectile.cs</see> can be used to reuse the ai array entries with readable names.
 +	/// <br/> Defaults to the values passed into <see cref="Projectile.NewProjectile(IEntitySource, float, float, float, float, int, int, float, int, float, float, float)"/>, usually [0, 0, 0].
 +	/// </summary>
  	public float[] ai = new float[maxAI];
@@ -111,7 +111,7 @@
  	public float stepSpeed = 1f;
 +
 +	/// <summary>
-+	/// Selects which vanilla code to use for the AI method. Vanilla projectile AI styles are enumerated in the <see cref="ProjAIStyleID"/> class. Modders can use vanilla aiStyle and optionally <see cref="ModProjectile.AIType"/> to mimic AI code already in the game. This is usually only useful as a prototyping tool since it is difficult to customize existing aiStyle code. See <see cref="ModProjectile.AIType"/> and <see href="https://github.com/tModLoader/tModLoader/blob/1.4.4/ExampleMod/Content/Projectiles/ExampleCloneProjectile.cs">ExampleCloneProjectile</see> to see how to use vanilla ai. If you are using custom AI code, there is no need to set this field.
++	/// Selects which vanilla code to use for the AI method. Vanilla projectile AI styles are enumerated in the <see cref="ProjAIStyleID"/> class. Modders can use vanilla aiStyle and optionally <see cref="ModProjectile.AIType"/> to mimic AI code already in the game. This is usually only useful as a prototyping tool since it is difficult to customize existing aiStyle code. See <see cref="ModProjectile.AIType"/> and <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/Projectiles/ExampleCloneProjectile.cs">ExampleCloneProjectile</see> to see how to use vanilla ai. If you are using custom AI code, there is no need to set this field.
 +	/// <br/> The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Projectile#what-is-ai">Basic Projectile Guide</see> teaches how to use an existing aiStyle.
 +	/// <br/> Customizing an existing aiStyle usually requires following the <see href="https://github.com/tModLoader/tModLoader/wiki/Advanced-Vanilla-Code-Adaption#example-projectile-or-npc-ai-code">Vanilla Code Adaption Guide</see>.
 +	/// <br/> Defaults to 0.
@@ -124,12 +124,21 @@
 +	/// <br/> Defaults to 3600.
 +	/// </summary>
  	public int timeLeft;
++	/// <summary>
++	/// Represents a delay measured in ticks before this projectile should play a sound again. Automatically decreased by 1 each tick until it reaches 0. It is up to the AI of the projectile to set this to a value and play sounds once it reaches 0.
++	/// <br/><br/> Defaults to 0.
++	/// </summary>
  	public int soundDelay;
 +
 +	/// <summary>
 +	/// This will always be set in Projectile.NewProjectile based on the weapons damage and player stat modifiers. Modders should not set this in <see cref="ModProjectile.SetDefaults"/> as it will be overwritten.
 +	/// </summary>
  	public int damage;
++	/// <summary>
++	/// The damage of this projectile, without any player bonuses.
++	/// <br/><br/> Used by <see cref="ContinuouslyUpdateDamageStats"/> to recalculate <see cref="damage"/>.
++	/// <br/><br/> Automatically set to the damage passed into <see cref="NewProjectile(IEntitySource, float, float, float, float, int, int, float, int, float, float, float)"/>. If the IEntitySource of NewProjectile corresponds to a player using an item, this will be set to <see cref="Item.damage"/> instead.
++	/// </summary>
  	public int originalDamage;
  	public int spriteDirection = 1;
 +
@@ -152,7 +161,7 @@
  	public bool friendly;
 +
 +	/// <summary>
-+	/// The remaining number of npc can this projectile hit before dying. (Or tile bounces). Assign this field in SetDefaults and use it in ModProjectile logic if needed. A value of -1 means the projectile will penetrate infinitely. See <see href="https://github.com/tModLoader/tModLoader/blob/1.4.4/ExampleMod/Content/Projectiles/ExamplePiercingProjectile.cs">ExamplePiercingProjectile</see> for more information on how penetrate influences NPC immunity frames.
++	/// The remaining number of npc can this projectile hit before dying. (Or tile bounces). Assign this field in SetDefaults and use it in ModProjectile logic if needed. A value of -1 means the projectile will penetrate infinitely. See <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/Projectiles/ExamplePiercingProjectile.cs">ExamplePiercingProjectile</see> for more information on how penetrate influences NPC immunity frames.
 +	/// <br/> Defaults to 1. Used to automatically assigned a value to <see cref="maxPenetrate"/> at the end of SetDefaults.
 +	/// </summary>
  	public int penetrate = 1;
@@ -210,6 +219,7 @@
 +
 +	/// <summary>
 +	/// Holds the value of <see cref="Entity.position"/> from previous updates from newest to oldest. Use for drawing trails. Must be used with <see cref="ProjectileID.Sets.TrailCacheLength"/> and <see cref="ProjectileID.Sets.TrailingMode"/> to be used properly.
++	/// <para/> Note that <c>oldPos[0]</c> will be equal to <see cref="Entity.position"/> during drawing methods, so index 0 should be skipped unless skipping vanilla drawing. Also note that they should be drawn in reverse order to layer properly. Also note that the values are from previous updates, not previous draws, which might be relevant if <see cref="extraUpdates"/> is used.
 +	/// </summary>
  	public Vector2[] oldPos = new Vector2[10];
 +
@@ -242,16 +252,21 @@
  	public int restrikeDelay;
 +
 +	/// <summary>
-+	/// If true, the projectile will collide with tiles, usually bouncing or killing the tile depending on <see cref="ModProjectile.OnTileCollide(Vector2)"/>. <see href="https://github.com/tModLoader/tModLoader/blob/1.4.4/ExampleMod/Content/Projectiles/ExampleBullet.cs#L37">ExampleBullet</see> shows how to implement bounce.
++	/// If true, the projectile will collide with tiles, usually bouncing or killing the tile depending on <see cref="ModProjectile.OnTileCollide(Vector2)"/>. <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/Projectiles/ExampleBullet.cs#L37">ExampleBullet</see> shows how to implement bounce.
 +	/// <br/> Defaults to <see langword="true"/>.
 +	/// </summary>
  	public bool tileCollide;
 +
 +	/// <summary>
 +	/// Additional update steps per tick. Useful for really fast projectiles such as <see href="https://github.com/tModLoader/tModLoader/wiki/Advanced-Vanilla-Code-Adaption#example-item-and-projectile-shadowbeam-staff-clone">Shadowbeam Staff</see>. If your projectile is mistakenly occasionally traveling through tiles, you may need to increase this to prevent that.
-+	/// <br/> Defaults to 0.
++	/// <para/> Also useful as a velocity multiplier for ammo projectile. The <see href="https://terraria.wiki.gg/wiki/Velocity">Shoot Speed wiki page</see> explains how that works.
++	/// <para/> Defaults to 0.
 +	/// </summary>
  	public int extraUpdates;
++	/// <summary>
++	/// If true, the projectile will have penetrate set to -1 and damage set to 0 when damaging an NPC and having penetrate reach 0. What this effectively does is keep the projectile from dying once it satisfies the penetrate limit while also making the projectile harmless, allowing it to despawn later in some other manner rather than immediately. 
++	/// <br/> Defaults to <see langword="false"/>.
++	/// </summary>
  	public bool stopsDealingDamageAfterPenetrateHits;
  	public int numUpdates;
 +
@@ -264,7 +279,7 @@
 +
 +	/// <summary>
 +	/// Projectile is not drawn normally. Held projectiles (<see cref="Player.heldProj"/>) and projectiles specified to be drawn at specific layers (<see cref="ModProjectile.DrawBehind(int, List{int}, List{int}, List{int}, List{int}, List{int})"/>)  use this.
-+	/// <para/> Be default this will also influence the lighting of this projectile to match the players lighting, as if it were a held projectile. Projectiles that are not held ny the player should set <see cref="ProjectileID.Sets.DontAttachHideToAlpha"/> to true in SetStaticDefaults: <c>ProjectileID.Sets.DontAttachHideToAlpha[Type] = true;</c>
++	/// <para/> By default this will also influence the lighting of this projectile to match the players lighting, as if it were a held projectile. Projectiles that are not held by the player should set <see cref="ProjectileID.Sets.DontAttachHideToAlpha"/> to true in SetStaticDefaults: <c>ProjectileID.Sets.DontAttachHideToAlpha[Type] = true;</c>
 +	/// <para/> Defaults to <see langword="false"/>.
 +	/// </summary>
  	public bool hide;
@@ -313,7 +328,16 @@
 +	}
 +
  	public bool coldDamage;
++	/// <summary>
++	/// If true, this projectile will not benefit from weapon enchantments such as flasks, frost armor, or magma stone effects. This means the projectile won't inflict associated buffs or spawn associated visuals.
++	/// <para/> Defaults to false.
++	/// </summary>
  	public bool noEnchantments;
++	/// <summary>
++	/// If true, this projectile will not have <see cref="EmitEnchantmentVisualsAt(Vector2, int, int)"/> called automatically. This can be set to true for projectiles that wish to manually call <see cref="EmitEnchantmentVisualsAt(Vector2, int, int)"/> in AI methods for finer control over the spawn location of enchantment visuals.
++	/// <para/> Use <see cref="noEnchantments"/> instead to indicate that the projectile is not suitable for weapon enchantment effects at all and shouldn't inflict associated buffs either.
++	/// <para/> Defaults to false.
++	/// </summary>
  	public bool noEnchantmentVisuals;
 +
 +	/// <summary>
@@ -390,6 +414,17 @@
  	public int MaxUpdates {
  		get {
  			return extraUpdates + 1;
+@@ -181,6 +_,10 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// The NPC targeted by the owner player of this projectile, either by right clicking with a summon item (<see cref="ProjectileID.Sets.MinionTargettingFeature"/>) or by hitting the NPC with a whip.
++	/// <br/><br/> Will be null if there is no current target. See also <see cref="Player.MinionAttackTargetNPC"/>.
++	/// </summary>
+ 	public NPC OwnerMinionAttackTargetNPC {
+ 		get {
+ 			if (Main.player[owner].MinionAttackTargetNPC < 0)
 @@ -202,7 +_,7 @@
  
  	public static void ResetImmunity()
@@ -1269,6 +1304,32 @@
  			}
  
  			if (minion && numUpdates == -1 && type != 625 && type != 628) {
+@@ -12800,7 +_,7 @@
+ 			}
+ 
+ 			if (Main.netMode != 1 && (type == 99 || type == 1013 || type == 655 || type == 727 || type == 1014 || type == 1021))
+-				Collision.SwitchTiles(position, width, height, oldPosition, 3);
++				Collision.SwitchTiles(this, position, width, height, oldPosition, 3);
+ 
+ 			if (ProjectileID.Sets.TrailingMode[type] == 0) {
+ 				for (int num20 = oldPos.Length - 1; num20 > 0; num20--) {
+@@ -12965,9 +_,16 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Spawns weapon enchantment visuals the specified location. <paramref name="boxPosition"/> is the top left corner of the intended spawn area and <paramref name="boxWidth"/> and <paramref name="boxHeight"/> dictate the spawn area.
++	/// <para/> This method is automatically called for all projectiles that are not <see cref="npcProj"/> and not <see cref="noEnchantmentVisuals"/>. Modders can use <see cref="noEnchantmentVisuals"/> to prevent the automatic calling of this method and manually call this method in <see cref="ModProjectile.AI"/> to customize the intended enchantment visuals position. Set <see cref="noEnchantments"/> to true on projectiles that shouldn't have enchantment visuals or effects at all.
++	/// </summary>
+ 	public void EmitEnchantmentVisualsAt(Vector2 boxPosition, int boxWidth, int boxHeight)
+ 	{
++		CombinedHooks.EmitEnchantmentVisualsAt(this, boxPosition, boxWidth, boxHeight);
++
+ 		Player player = Main.player[owner];
++
+ 		if (player.frostBurn && (melee || ranged) && friendly && !hostile && !noEnchantments && Main.rand.Next(2 * (1 + extraUpdates)) == 0) {
+ 			int num = Dust.NewDust(boxPosition, boxWidth, boxHeight, 135, velocity.X * 0.2f + (float)(direction * 3), velocity.Y * 0.2f, 100, default(Color), 2f);
+ 			Main.dust[num].noGravity = true;
 @@ -13278,8 +_,24 @@
  				overrideHeight = 4;
  			}
@@ -1312,6 +1373,15 @@
  
  					if (wet) {
  						if (shimmerWet) {
+@@ -13441,7 +_,7 @@
+ 
+ 								flag2 = true;
+ 								if (owner == Main.myPlayer && vector2 != vector10 && !flag4)
+-									Collision.SwitchTiles(vector2, num2, num3, vector10, 4);
++									Collision.SwitchTiles(this, vector2, num2, num3, vector10, 4);
+ 
+ 								vector12 = velocity;
+ 								zero += vector12;
 @@ -13592,6 +_,7 @@
  					}
  				}
@@ -1329,6 +1399,24 @@
  							if (velocity.X != lastVelocity.X) {
  								velocity.X = lastVelocity.X * -0.4f;
  								if (type == 29)
+@@ -14545,7 +_,7 @@
+ 				vector26 = new Vector2(oldPosition.X + (float)(width / 2) - (float)(num52 / 2), oldPosition.Y + (float)(height / 2) - (float)(num53 / 2));
+ 			}
+ 
+-			Collision.SwitchTiles(vector25, num52, num53, vector26, 4);
++			Collision.SwitchTiles(this, vector25, num52, num53, vector26, 4);
+ 		}
+ 	}
+ 
+@@ -14592,7 +_,7 @@
+ 		if (ballStepResult.State == BallState.Moving && owner == Main.myPlayer) {
+ 			bool? flag = ProjectileID.Sets.ForcePlateDetection[135];
+ 			if ((!flag.HasValue || flag.Value) && localAI[1] != 0f)
+-				Collision.SwitchTiles(position, width, height, oldPosition, 4);
++				Collision.SwitchTiles(this, position, width, height, oldPosition, 4);
+ 		}
+ 
+ 		if (ballStepResult.State == BallState.Moving && Main.netMode == 2 && Main.player.IndexInRange(owner) && Main.player[owner].active)
 @@ -14643,6 +_,9 @@
  		if (aiStyle == 4 || aiStyle == 38 || aiStyle == 84 || aiStyle == 148 || (aiStyle == 7 && ai[0] == 2f) || ((type == 440 || type == 449 || type == 606) && ai[1] == 1f) || (aiStyle == 93 && ai[0] < 0f) || type == 540 || type == 756 || type == 818 || type == 856 || type == 961 || type == 933 || ProjectileID.Sets.IsAGolfBall[type])
  			return;
@@ -1467,6 +1555,24 @@
  		if (aiStyle == 1) {
  			AI_001();
  		}
+@@ -17290,6 +_,8 @@
+ 							continue;
+ 
+ 						if (type == 10) {
++							if (!TileLoader.Convert(num96, num97, BiomeConversionID.PurificationPowder))
++								goto SkipPurificationConversion;
+ 							if (Main.tile[num96, num97].type == 23 || Main.tile[num96, num97].type == 199) {
+ 								Main.tile[num96, num97].type = 2;
+ 								WorldGen.SquareTileFrame(num96, num97);
+@@ -17348,6 +_,8 @@
+ 								WorldGen.Convert(num96, num97, 4, 1);
+ 						}
+ 
++					    SkipPurificationConversion:
++
+ 						if (!flag3)
+ 							continue;
+ 
 @@ -24212,7 +_,7 @@
  					int num799 = (int)base.Center.Y / 16;
  					for (int num800 = num798 - num797; num800 <= num798 + num797; num800++) {
@@ -2001,7 +2107,19 @@
  							WorldGen.KillWall(k, l);
  							if (Main.tile[k, l].wall == 0 && Main.netMode != 0)
  								NetMessage.SendData(17, -1, -1, null, 2, k, l);
-@@ -56860,6 +_,9 @@
+@@ -56851,15 +_,21 @@
+ 
+ 	public bool IsInteractible()
+ 	{
++		return ProjectileID.Sets.IsInteractable[type];
++		/*
+ 		int num = type;
+ 		if (num == 525 || num == 734 || num == 960)
+ 			return true;
+ 
+ 		return false;
++		*/
+ 	}
  
  	public Color GetAlpha(Color newColor)
  	{

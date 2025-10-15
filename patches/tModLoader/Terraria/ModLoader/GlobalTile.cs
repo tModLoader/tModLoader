@@ -3,11 +3,13 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using Terraria.DataStructures;
 using Terraria.ID;
+using Terraria.Enums;
 
 namespace Terraria.ModLoader;
 
 /// <summary>
-/// This class allows you to modify the behavior of any tile in the game. Create an instance of an overriding class then call Mod.AddGlobalTile to use this.
+/// This class allows you to modify the behavior of any tile in the game, both vanilla and modded.
+/// <br/> To use it, simply create a new class deriving from this one. Implementations will be registered automatically.
 /// </summary>
 public abstract class GlobalTile : GlobalBlockType
 {
@@ -86,13 +88,7 @@ public abstract class GlobalTile : GlobalBlockType
 	{
 	}
 
-	/// <summary>
-	/// Allows you to make things happen when the tile is within a certain range of the player (around the same range water fountains and music boxes work). The closer parameter is whether or not the tile is within the range at which things like campfires and banners work.
-	/// </summary>
-	/// <param name="i">The x position in tile coordinates.</param>
-	/// <param name="j">The y position in tile coordinates.</param>
-	/// <param name="type">The tile type</param>
-	/// <param name="closer"></param>
+	/// <inheritdoc cref="ModTile.NearbyEffects(int, int, bool)"/>
 	public virtual void NearbyEffects(int i, int j, int type, bool closer)
 	{
 	}
@@ -155,16 +151,13 @@ public abstract class GlobalTile : GlobalBlockType
 	{
 	}
 
-	/// <summary>
-	/// Allows you to make stuff happen whenever the tile at the given coordinates is drawn. For example, creating dust or changing the color the tile is drawn in.
-	/// SpecialDraw will only be called if coordinates are added using Main.instance.TilesRenderer.AddSpecialLegacyPoint here.
-	/// </summary>
-	/// <param name="i">The x position in tile coordinates.</param>
-	/// <param name="j">The y position in tile coordinates.</param>
-	/// <param name="type">The Tile type of the tile being drawn</param>
-	/// <param name="spriteBatch">The SpriteBatch that should be used for all draw calls</param>
-	/// <param name="drawData">Various information about the tile that is being drawn, such as color, framing, glow textures, etc.</param>
+	/// <inheritdoc cref="ModTile.DrawEffects(int, int, SpriteBatch, ref TileDrawInfo)"/>
 	public virtual void DrawEffects(int i, int j, int type, SpriteBatch spriteBatch, ref TileDrawInfo drawData)
+	{
+	}
+
+	/// <inheritdoc cref="ModTile.EmitParticles(int, int, Tile, short, short, Color, bool)"/>
+	public virtual void EmitParticles(int i, int j, Tile tileCache, ushort typeCache, short tileFrameX, short tileFrameY, Color tileLight, bool visible)
 	{
 	}
 
@@ -176,6 +169,42 @@ public abstract class GlobalTile : GlobalBlockType
 	/// <param name="type">The Tile type of the tile being drawn</param>
 	/// <param name="spriteBatch">The SpriteBatch that should be used for all draw calls</param>
 	public virtual void SpecialDraw(int i, int j, int type, SpriteBatch spriteBatch)
+	{
+	}
+
+	/// <summary>
+	/// Allows you to draw behind this multi-tile's regular placement preview rendering, or change relevant drawing parameters. This is ran for each rendered section of the multi-tile.
+	/// <br/><br/> Make sure to use <paramref name="frame"/> for logic rather than the TileFrameX/Y values of the tile at the provided coordinates, this tile isn't placed yet.
+	/// <br/><br/> Return false to stop this section from drawing normally. Returns true by default.
+	/// </summary>
+	/// <param name="i">The x position in tile coordinates.</param>
+	/// <param name="j">The y position in tile coordinates.</param>
+	/// <param name="type">The Tile type of the preview that will be drawn.</param>
+	/// <param name="spriteBatch"></param>
+	/// <param name="frame">The source rectangle that this section will use for rendering.</param>
+	/// <param name="position">The position at which this section will be drawn.</param>
+	/// <param name="color">The color with which this section will be drawn. This is red when overlapping with another tile.</param>
+	/// <param name="validPlacement">Indicates if the tile can occupy this location.</param>
+	/// <param name="spriteEffects">The <see cref="SpriteEffects"/> that will be used to draw this section.</param>
+	public virtual bool PreDrawPlacementPreview(int i, int j, int type, SpriteBatch spriteBatch, ref Rectangle frame, ref Vector2 position, ref Color color, bool validPlacement, ref SpriteEffects spriteEffects)
+	{
+		return true;
+	}
+
+	/// <summary>
+	/// Allows you to draw in front of this multi-tile's placement preview rendering. This is ran for each rendered section of the multi-tile.
+	/// <br/><br/> Make sure to use <paramref name="frame"/> for logic rather than the TileFrameX/Y values of the tile at the provided coordinates, this tile isn't placed yet.
+	/// </summary>
+	/// <param name="i">The x position in tile coordinates.</param>
+	/// <param name="j">The y position in tile coordinates.</param>
+	/// <param name="type">The Tile type of the preview that was drawn.</param>
+	/// <param name="spriteBatch"></param>
+	/// <param name="frame">The source rectangle that was used for rendering this section.</param>
+	/// <param name="position">The position at which this section was drawn.</param>
+	/// <param name="color">The color with which this section was drawn.</param>
+	/// <param name="validPlacement">Indicates if the tile can occupy this location.</param>
+	/// <param name="spriteEffects">The <see cref="SpriteEffects"/> that were used to draw this section.</param>
+	public virtual void PostDrawPlacementPreview(int i, int j, int type, SpriteBatch spriteBatch, Rectangle frame, Vector2 position, Color color, bool validPlacement, SpriteEffects spriteEffects)
 	{
 	}
 
@@ -270,6 +299,21 @@ public abstract class GlobalTile : GlobalBlockType
 	}
 
 	/// <summary>
+	/// Called when <see cref="Wiring.HitSwitch"/> is called on the tile. Can be used to skip or override the vanilla behavior by returning false.
+	/// <br/><br/> Returns true by default.
+	/// </summary>
+	public virtual bool HitSwitch(int i, int j, int type)
+	{
+		return true;
+	}
+
+	/// <inheritdoc cref="ModTile.SwitchTiles(int, int, Entity, Vector2, int, int, Vector2, int)"/>
+	public virtual bool SwitchTiles(int i, int j, int type, Entity entity, Vector2 position, int width, int height, Vector2 oldPosition, int objType)
+	{
+		return false;
+	}
+
+	/// <summary>
 	/// Allows you to control how hammers slope any tile. Return true to allow the tile to slope normally. Returns true by default. Called on the local Client and Single Player.
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
@@ -315,10 +359,41 @@ public abstract class GlobalTile : GlobalBlockType
 		return true;
 	}
 
+	/// <inheritdoc cref="ModTile.ReplaceTile(int, int, int, int)"/>
+	public virtual void ReplaceTile(int i, int j, int type, int targetType, int targetStyle)
+	{
+	}
+
 	/// <summary>
 	/// Can be used to adjust tile merge related things that are not possible to do in <see cref="ModBlockType.SetStaticDefaults"/> due to timing.
 	/// </summary>
 	public virtual void PostSetupTileMerge()
 	{
+	}
+
+	/// <summary>
+	/// This hook runs before <see cref="ShakeTree(int, int, TreeTypes)"/> and is intended to be used to spawn bonus tree shaking drops and prevent existing drops using <see cref="NPCLoader.blockLoot"/>.
+	/// <para/> The tile coordinates provided indicates the leafy top of the tree where entities should be spawned.
+	/// <para/> Runs on the server or singleplayer.
+	/// </summary>
+	/// <param name="x">The x tile coordinate of the tree.</param>
+	/// <param name="y">The y tile coordinate of the top of the tree.</param>
+	/// <param name="treeType">The type of tree that is being shaken. Modded trees will be <see cref="TreeTypes.Custom"/> by default.</param>
+	public virtual void PreShakeTree(int x, int y, TreeTypes treeType)
+	{
+	}
+
+	/// <summary>
+	/// This hook runs when any tree is shaken (See the <see href="https://terraria.wiki.gg/wiki/Trees#Shaking">Tree Shaking wiki page</see>). It is intended to be used to drop the primary item (or NPC). Use <see cref="PreShakeTree(int, int, TreeTypes)"/> to implement bonus drops instead, since this method isn't guaranteed to be called if another mod rolls an item drop.
+	/// <para/> If a drop happens, return true to signify that a primary drop has been spawned and to prevent other mods and vanilla code from also attempting to drop the primary item. When spawning the drop be sure to use <see cref="EntitySource_ShakeTree"/> as the source.
+	/// <para/> The tile coordinates provided indicates the leafy top of the tree where entities should be spawned.
+	/// <para/> Returns false by default. Runs on the server or singleplayer.
+	/// </summary>
+	/// <param name="x">The x tile coordinate of the tree.</param>
+	/// <param name="y">The y tile coordinate of the top of the tree.</param>
+	/// <param name="treeType">The type of tree that is being shaken. Modded trees will be <see cref="TreeTypes.Custom"/> by default.</param>
+	public virtual bool ShakeTree(int x, int y, TreeTypes treeType)
+	{
+		return false;
 	}
 }

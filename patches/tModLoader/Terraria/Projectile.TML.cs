@@ -87,22 +87,21 @@ public partial class Projectile : IEntityWithGlobals<GlobalProjectile>
 	}
 
 	/// <summary>
-	/// The crit chance of this projectile, without any player bonuses, similar to <see cref="originalDamage"/><br/>
-	/// Used by <see cref="ContinuouslyUpdateDamageStats"/> to recalculate <see cref="CritChance"/> in combination with <see cref="Player.GetTotalCritChance(DamageClass)"/>
+	/// The crit chance of this projectile, without any player bonuses, similar to <see cref="originalDamage"/>
+	/// <br/><br/> Used by <see cref="ContinuouslyUpdateDamageStats"/> to recalculate <see cref="CritChance"/> in combination with <see cref="Player.GetTotalCritChance(DamageClass)"/>
 	/// </summary>
 	public int OriginalCritChance { get; set; }
 
 	/// <summary>
-	/// The crit chance of this projectile, without any player bonuses, similar to <see cref="originalDamage"/><br/>
-	/// Used by <see cref="ContinuouslyUpdateDamageStats"/> to recalculate <see cref="ArmorPenetration"/> in combination with <see cref="Player.GetTotalArmorPenetration(DamageClass)"/>
+	/// The armor penetration of this projectile, without any player bonuses, similar to <see cref="originalDamage"/>
+	/// <br/><br/> Used by <see cref="ContinuouslyUpdateDamageStats"/> to recalculate <see cref="ArmorPenetration"/> in combination with <see cref="Player.GetTotalArmorPenetration(DamageClass)"/>
 	/// </summary>
 	public int OriginalArmorPenetration { get; set; }
 
 	/// <summary>
 	/// If set <see cref="damage"/> will be recalculated based on <see cref="originalDamage"/>, <see cref="DamageType"/> and the <see cref="owner"/> player, just like minions and sentries. <br/>
 	/// Similarly for <see cref="CritChance"/> and <see cref="ArmorPenetration"/>.
-	/// 
-	/// No need to set this if <see cref="minion"/> or <see cref="sentry"/> is set.
+	/// <br/><br/> No need to set this if <see cref="minion"/> or <see cref="sentry"/> is set.
 	/// </summary>
 	public bool ContinuouslyUpdateDamageStats { get; set; }
 
@@ -161,6 +160,12 @@ public partial class Projectile : IEntityWithGlobals<GlobalProjectile>
 		}
 	}
 
+	/// <summary>
+	/// Attempts to get the owner player of this projectile. Returns null for projectiles spawned by TownNPC (<see cref="npcProj"/>) and trap projectiles (<see cref="trap"/>). Returns <c>Main.player[owner]</c> otherwise.
+	/// <para/> Note that this logic assumes that projectiles have the correct fields set, which might not always be true. Also note that in single player enemy projectiles are also "owned" by the player, so this alone isn't sufficient to know which projectiles were spawned by the player. Additional <see cref="friendly"/> checks would be needed for that.
+	/// </summary>
+	/// <param name="player"></param>
+	/// <returns></returns>
 	public bool TryGetOwner([NotNullWhen(true)] out Player? player)
 	{
 		player = null;

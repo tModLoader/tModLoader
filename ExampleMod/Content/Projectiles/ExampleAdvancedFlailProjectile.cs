@@ -191,8 +191,8 @@ namespace ExampleMod.Content.Projectiles
 						}
 						break;
 					}
-				case AIState.UnusedState: // Projectile.ai[0] == 3; This case is actually unused, but maybe a Terraria update will add it back in, or maybe it is useless, so I left it here.
-					{
+				// Projectile.ai[0] == 3; This case is actually unused, but maybe a Terraria update will add it back in, or maybe it is useless, so I left it here.
+				case AIState.UnusedState: {
 						if (!player.controlUseItem) {
 							CurrentAIState = AIState.ForcedRetracting; // Move to super retracting mode if the player taps
 							StateTimer = 0f;
@@ -228,8 +228,7 @@ namespace ExampleMod.Content.Projectiles
 						player.ChangeDir((player.Center.X < Projectile.Center.X).ToDirectionInt());
 						break;
 					}
-				case AIState.ForcedRetracting:
-					{
+				case AIState.ForcedRetracting: {
 						Projectile.tileCollide = false;
 						Vector2 unitVectorTowardsPlayer = Projectile.DirectionTo(mountedCenter).SafeNormalize(Vector2.Zero);
 						if (Projectile.Distance(mountedCenter) <= maxForcedRetractSpeed) {
@@ -303,7 +302,7 @@ namespace ExampleMod.Content.Projectiles
 
 			Projectile.timeLeft = 2; // Makes sure the flail doesn't die (good when the flail is resting on the ground)
 			player.heldProj = Projectile.whoAmI;
-			player.SetDummyItemTime(2); //Add a delay so the player can't button mash the flail
+			player.SetDummyItemTime(2); // Add a delay so the player can't button mash the flail
 			player.itemRotation = Projectile.DirectionFrom(mountedCenter).ToRotation();
 			if (Projectile.Center.X < mountedCenter.X) {
 				player.itemRotation += (float)Math.PI;
@@ -501,7 +500,8 @@ namespace ExampleMod.Content.Projectiles
 				Texture2D projectileTexture = TextureAssets.Projectile[Type].Value;
 				Vector2 drawOrigin = new Vector2(projectileTexture.Width * 0.5f, Projectile.height * 0.5f);
 				SpriteEffects spriteEffects = Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
-				for (int k = 0; k < Projectile.oldPos.Length && k < StateTimer; k++) {
+				int afterimageCount = Math.Min(Projectile.oldPos.Length - 1, (int)StateTimer);
+				for (int k = afterimageCount; k > 0; k--) {
 					Vector2 drawPos = Projectile.oldPos[k] - Main.screenPosition + drawOrigin + new Vector2(0f, Projectile.gfxOffY);
 					Color color = Projectile.GetAlpha(lightColor) * ((float)(Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length);
 					Main.spriteBatch.Draw(projectileTexture, drawPos, null, color, Projectile.rotation, drawOrigin, Projectile.scale - k / (float)Projectile.oldPos.Length / 3, spriteEffects, 0f);
