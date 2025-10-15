@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/DataStructures/PlayerDrawSet.cs
 +++ src/tModLoader/Terraria/DataStructures/PlayerDrawSet.cs
-@@ -5,10 +_,11 @@
+@@ -5,11 +_,15 @@
  using Terraria.GameContent.Golf;
  using Terraria.Graphics.Shaders;
  using Terraria.ID;
@@ -11,8 +11,12 @@
 -public struct PlayerDrawSet
 +public partial struct PlayerDrawSet
  {
++	/// <summary>
++	/// Contains <see cref="DrawData"/> representing each individual layer, from back to front, comprising the full visuals of the player.
++	/// </summary>
  	public List<DrawData> DrawDataCache;
  	public List<int> DustCache;
+ 	public List<int> GoreCache;
 @@ -19,8 +_,19 @@
  	public int projectileDrawPosition;
  	public Vector2 ItemLocation;

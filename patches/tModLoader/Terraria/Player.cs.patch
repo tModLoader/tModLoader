@@ -541,7 +541,7 @@
  	public bool controlDownHold;
  	public bool isOperatingAnotherEntity;
  	public bool autoReuseAllWeapons;
-@@ -930,10 +_,26 @@
+@@ -930,20 +_,49 @@
  	public bool delayUseItem;
  	public const int defaultWidth = 20;
  	public const int defaultHeight = 42;
@@ -568,8 +568,17 @@
  	public string cursorItemIconText = "";
  	public int runSoundDelay;
  	public float opacityForAnimation = 1f;
-@@ -943,7 +_,13 @@
+ 	public const int shadowMax = 3;
++	/// <summary>
++	/// Contains the player positioning data for the last 3 frames. Used by <see cref="armorEffectDrawShadow"/> and other similar effects.
++	/// <br/><br/> See <see cref="GetAdvancedShadow(int)"/> for a more flexible approach. 
++	/// </summary>
+ 	public Vector2[] shadowPos = new Vector2[3];
++	/// <inheritdoc cref="shadowPos"/>
+ 	public float[] shadowRotation = new float[3];
++	/// <inheritdoc cref="shadowPos"/>
  	public Vector2[] shadowOrigin = new Vector2[3];
++	/// <inheritdoc cref="shadowPos"/>
  	public int[] shadowDirection = new int[3];
  	public int shadowCount;
 +
@@ -582,6 +591,16 @@
  	public bool fireWalk;
  	public bool channel;
  	public int step = -1;
+@@ -952,6 +_,9 @@
+ 	public RabbitOrderFrameHelper rabbitOrderFrame;
+ 	public bool creativeGodMode;
+ 	private const int MaxAdvancedShadows = 60;
++	/// <summary>
++	/// The number of frames of previous positioning data available for use with <see cref="GetAdvancedShadow(int)"/>. This will max at 60. Teleporting and mounting are some ways the previous positioning data will be cleared.
++	/// </summary>
+ 	public int availableAdvancedShadowsCount;
+ 	private EntityShadowInfo[] _advancedShadows = new EntityShadowInfo[60];
+ 	private int _lastAddedAvancedShadow;
 @@ -961,38 +_,124 @@
  	public int golferScoreAccumulated;
  	public int bartenderQuestLog;
@@ -1379,6 +1398,18 @@
  	public Vector2 RotatedRelativePoint(Vector2 pos, bool reverseRotation = false, bool addGfxOffY = true)
  	{
  		float num = (reverseRotation ? (0f - fullRotation) : fullRotation);
+@@ -2282,6 +_,11 @@
+ 		return num;
+ 	}
+ 
++	/// <summary>
++	/// Returns positioning data for this player <paramref name="shadowIndex"/> frames ago, up to <see cref="availableAdvancedShadowsCount"/>.
++	/// <br/><br/> This can be used to draw trails that follow the movement of the player. You'll usually want to iterate from <see cref="availableAdvancedShadowsCount"/> down to 1 for proper draw layering and to skip index 0 which would be the current frame when using this to draw a trail.
++	/// <br/><br/> See <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/ExampleMod/Common/Players/ExampleArmorSetBonusPlayer.cs">ExampleArmorSetBonusPlayer.DrawPlayer</see> for an example of correctly using this.
++	/// </summary>
+ 	public EntityShadowInfo GetAdvancedShadow(int shadowIndex)
+ 	{
+ 		if (shadowIndex > availableAdvancedShadowsCount)
 @@ -2328,6 +_,7 @@
  	{
  		talkNPC = npcIndex;
