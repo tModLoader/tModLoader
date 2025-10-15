@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.Graphics;
 using Terraria.ModLoader;
 
@@ -15,6 +16,7 @@ namespace ExampleMod.Common.Players
 		public int ShadowStyle = 0; // This is the shadow to use. Note that ExampleHood.ArmorSetShadows will only be called if the full armor set is visible.
 		public bool CustomShadow; // Indicates that our custom shadow should be used.
 		private int CustomShadowTimer; // Used in our custom shadow logic.
+		private Color CustomShadowColor = Color.White;
 
 		public override void ResetEffects() {
 			ExampleSetHood = false;
@@ -76,9 +78,13 @@ namespace ExampleMod.Common.Players
 				Vector2 drawPosition = playerPosition + new Vector2(0f, distanceFromPlayer).RotatedBy(rotation) * 25;
 				float shadow = 1 - Utils.Remap(Math.Abs(distanceFromPlayer), 0, 1, 0.1f, 0.4f, clamped: true);
 
-				// Main.PlayerRenderer.DrawPlayer handles drawing the player clone. 
+				// CustomShadowColor is used in TransformDrawData to apply a tint to the player clones.
+				CustomShadowColor = Color.Lerp(Color.Aqua, Color.Red, (float)i / (clones - 1));
+
+				// Main.PlayerRenderer.DrawPlayer handles drawing the player clone.
 				Main.PlayerRenderer.DrawPlayer(camera, Player, drawPosition, Player.fullRotation, Player.fullRotationOrigin, shadow);
 			}
+			CustomShadowColor = Color.White; // Reset CustomShadowColor so it doesn't affect normal drawing or other clones.
 
 			// Another common player effect is to draw the player at previous positions and slightly faded. Player.shadowPos/shadowRotation/shadowOrigin stores the last 3 positions and is used by shadow effects added to the game in early versions. Player.GetAdvancedShadow is a more recent addition and can be used for more advanced control and stores up to 60 previous positions.
 			/* 
@@ -90,6 +96,22 @@ namespace ExampleMod.Common.Players
 				Main.PlayerRenderer.DrawPlayer(camera, Player, advancedShadow.Position, advancedShadow.Rotation, advancedShadow.Origin, shadow);
 			}
 			*/
+		}
+
+		// TransformDrawData can be used to affect all PlayerDrawSet.DrawDataCache entries immediately before they are drawn.
+		public override void TransformDrawData(ref PlayerDrawSet drawInfo) {
+			// Check to only affect specific clones
+			if (CustomShadowColor == Color.White) {
+				return;
+			}
+
+			// Tint the clones with CustomShadowColor by modifying the draw color of every DrawData in drawInfo.DrawDataCache.
+			for (int i = 0; i < drawInfo.DrawDataCache.Count; i++) {
+				DrawData value = drawInfo.DrawDataCache[i];
+				// Multiply the colors to tint it rather than assign it directly since DrawData.color will likely already have some non-white color.
+				value.color = value.color.MultiplyRGBA(CustomShadowColor);
+				drawInfo.DrawDataCache[i] = value;
+			}
 		}
 	}
 }

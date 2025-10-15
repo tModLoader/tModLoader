@@ -1134,11 +1134,19 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
-	/// Allows you to modify the drawing parameters of the player before drawing begins.
+	/// Allows you to modify the drawing parameters of the player before drawing begins (before every <see cref="PlayerDrawLayer"/> runs).
 	/// <para/> Called on local and remote clients.
 	/// </summary>
 	/// <param name="drawInfo"></param>
 	public virtual void ModifyDrawInfo(ref PlayerDrawSet drawInfo)
+	{
+	}
+
+	/// <summary>
+	/// Allows modifying player draw data after all <see cref="PlayerDrawLayer"/> have run (and added <see cref="PlayerDrawSet.DrawDataCache"/> entries) and immediately before the <see cref="PlayerDrawSet.DrawDataCache"/> entries are actually drawn.
+	/// <br/><br/> This can be used to modify all <see cref="PlayerDrawSet.DrawDataCache"/> entries, such as modifying the draw color of each entry. Vanilla uses this to apply the scale parameter of <see cref="Graphics.Renderers.IPlayerRenderer.DrawPlayer"/> and to customize how the First Fractal clones are rendered (unobtainable weapon).
+	/// </summary>
+	public virtual void TransformDrawData(ref PlayerDrawSet drawInfo)
 	{
 	}
 
