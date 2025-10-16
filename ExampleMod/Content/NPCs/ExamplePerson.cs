@@ -339,6 +339,7 @@ namespace ExampleMod.Content.NPCs
 			if (ModContent.GetInstance<ExampleModConfig>().ExampleWingsToggle) {
 				npcShop.Add<ExampleWings>(ExampleConditions.InExampleBiome);
 			}
+			npcShop.Add<ExampleCustomDrawWings>(ExampleConditions.InExampleBiome);
 
 			if (ModContent.TryFind("SummonersAssociation/BloodTalisman", out ModItem bloodTalisman)) {
 				npcShop.Add(bloodTalisman.Type);

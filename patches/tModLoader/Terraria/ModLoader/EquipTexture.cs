@@ -180,8 +180,8 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	}
 
 	/// <summary>
-	/// Allows customization of the <see cref="DrawData"/> responcible for drawing this <see cref="EquipTexture"/>. Additional <see cref="DrawData"/> can be added to <paramref name="drawInfo"/> for more advanced drawing if needed.
-	/// <para/> Note that the default behavior of this hook is to call and return the return value of the <see cref="ModItem.ModifyEquipTextureDraw(ref PlayerDrawSet, ref DrawData, EquipType, int)"/> hook on the associated ModItem, if it exists.
+	/// Allows customization of the <see cref="DrawData"/> responsible for drawing this <see cref="EquipTexture"/>. Additional <see cref="DrawData"/> can be added to <paramref name="drawInfo"/> for more advanced drawing if needed.
+	/// <para/> Note that the default behavior of this hook is to call and return the return value of the <see cref="ModItem.ModifyEquipTextureDraw"/> hook on the associated ModItem, if it exists.
 	/// <para/> Return false to stop the game from adding the <paramref name="drawData"/> to the player drawing. Returns true if not associated with a ModItem.
 	/// </summary>
 	public virtual bool ModifyDraw(ref PlayerDrawSet drawInfo, ref DrawData drawData, string memberName)

@@ -1505,9 +1505,9 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	public Recipe CreateRecipe(int amount = 1) => Recipe.Create(Type, amount);
 
 	/// <summary>
-	/// Allows customization of the <see cref="DrawData"/> responcible for drawing the <see cref="EquipTexture"/> corresponding to the <paramref name="type"/> and <paramref name="slot"/> assigned to this item. Additional <see cref="DrawData"/> can be added to <paramref name="drawInfo"/> for more advanced drawing if needed.
+	/// Allows customization of the <see cref="DrawData"/> responsible for drawing the <see cref="EquipTexture"/> corresponding to the <paramref name="type"/> and <paramref name="slot"/> assigned to this item. Additional <see cref="DrawData"/> can be added to <paramref name="drawInfo"/> for more advanced drawing if needed.
 	/// <para/> <paramref name="memberName"/> is the method name of the method being hooked into. Some <see cref="EquipType"/> are drawn multiple times depending on layering, this parameter provides that context if relevant.
-	/// <para/> Note that this hook is only ever called through this item's associated equipment texture (<see cref="EquipTexture.ModifyDraw(ref PlayerDrawSet, ref DrawData, string)"/>).
+	/// <para/> Note that this hook is only ever called through this item's associated equipment texture (<see cref="EquipTexture.ModifyDraw"/>).
 	/// <para/> Return false to stop the game from adding the <paramref name="drawData"/> to the player drawing. Returns true by default.
 	/// </summary>
 	public virtual bool ModifyEquipTextureDraw(ref PlayerDrawSet drawInfo, ref DrawData drawData, EquipType type, int slot, string memberName) {
