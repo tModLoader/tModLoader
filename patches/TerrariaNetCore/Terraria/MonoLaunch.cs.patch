@@ -58,7 +58,7 @@
 +
 +	private static string NativePlatformDir =>
 +		RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "Windows" :
-+		RuntimeInformation.IsOSPlatform(OSPlatform.Linux) ? "Linux" :
++		RuntimeInformation.IsOSPlatform(OSPlatform.Linux) ? (RuntimeInformation.ProcessArchitecture == Architecture.Arm64 ? "Linux-arm64" : "Linux") :
 +		RuntimeInformation.IsOSPlatform(OSPlatform.OSX) ? "OSX" :
 +		throw new InvalidOperationException("Unknown OS.");
 +
