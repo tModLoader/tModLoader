@@ -178,7 +178,7 @@
 		"AchievementsReset": "重置成就",
 		"AchievementsResetConfirm": "确定？",
 		"AchievementsResetConfirmTooltip": "此操作不可逆转，你确定要继续重置成就吗？",
-		"AchievementsOnlyShowModded": "仅显示被修改的成就",
+		"AchievementsOnlyShowModded": "仅显示模组成就",
 
 		// Workshop
 		"WorkshopDisclaimer": "在提交之前，你需要同意tModLoader的服务条款",
