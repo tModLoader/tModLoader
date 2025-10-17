@@ -32,23 +32,20 @@ internal static class InstallVerifier
 	private static byte[] gogHash;
 	private static byte[] steamHash;
 
-	private static bool IsSteamUnsupported => RuntimeInformation.RuntimeIdentifier == "linux-arm64";
+	private static bool IsSteamUnsupported = false;
 
 	private static string SteamworksFolder => Path.Combine(Path.GetDirectoryName(typeof(SteamAPI).Assembly.Location), "..", "..");
 
 	static InstallVerifier()
 	{
-		if (IsSteamUnsupported)
-			return;
-
-		var nativesDir = $"{SteamworksFolder}/runtimes/{RuntimeInformation.RuntimeIdentifier}/native";
-		if (Platform.IsWindows) {
+		string portableRid = RuntimeInformation.RuntimeIdentifier;
+		if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) {
 			if (RuntimeInformation.ProcessArchitecture == Architecture.X86) {
-				steamAPIPath = $"{nativesDir}/libsteam_api.dll";
+				steamAPIPath = "/libsteam_api.dll";
 				steamAPIHash = ToByteArray("6750595142dad4552d0f6f04973a7331");
 			}
 			else {
-				steamAPIPath = $"{nativesDir}/steam_api64.dll";
+				steamAPIPath = "/steam_api64.dll";
 				steamAPIHash = ToByteArray("3bae3a5ecad22eec751e154f68e09361");
 			}
 
@@ -56,15 +53,21 @@ internal static class InstallVerifier
 			gogHash = ToByteArray("efccd835e6b54697e05e8a4b72d935cd"); // Don't forget to update CheckExe above
 			steamHash = ToByteArray("4530e0acfa4c789f462addb77b405ccb");
 		}
-		else if (Platform.IsOSX) {
-			steamAPIPath = $"{nativesDir}/libsteam_api.dylib";
+		else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX)) {
+			steamAPIPath = "libsteam_api.dylib";
 			steamAPIHash = ToByteArray("b7736b391a8276faccb4c055d515d531");
 			vanillaSteamAPI = "libsteam_api.dylib";
 			gogHash = ToByteArray("da2b740b4c6031df3a8b1f68b40cb82b");
 			steamHash = ToByteArray("4512beef5d7607fa1771c3fdf6cdc712");
 		}
-		else if (Platform.IsLinux) {
-			steamAPIPath = $"{nativesDir}/libsteam_api.so";
+		else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux)) {
+			if (RuntimeInformation.ProcessArchitecture == Architecture.Arm64) {
+				IsSteamUnsupported = true;
+				return;
+			}
+
+			portableRid = $"linux-{RuntimeInformation.ProcessArchitecture.ToString().ToLowerInvariant()}";
+			steamAPIPath = "libsteam_api.so";
 			steamAPIHash = ToByteArray("4b7a8cabaa354fcd25743aabfb4b1366");
 			vanillaSteamAPI = "libsteam_api.so";
 			gogHash = ToByteArray("9db40ef7cd4b37794cfe29e8866bb6b4");
@@ -73,6 +76,8 @@ internal static class InstallVerifier
 		else {
 			ErrorReporting.FatalExit(Language.GetTextValue("tModLoader.UnknownVerificationOS"));
 		}
+
+		steamAPIPath = $"{SteamworksFolder}/runtimes/{portableRid}/native/{steamAPIPath}";
 	}
 
 	private static bool HashMatchesFile(string path, byte[] hash)
