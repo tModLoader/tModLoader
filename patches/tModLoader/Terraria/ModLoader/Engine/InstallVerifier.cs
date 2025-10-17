@@ -34,8 +34,6 @@ internal static class InstallVerifier
 
 	private static bool IsSteamUnsupported = false;
 
-	private static string SteamworksFolder => Path.Combine(Path.GetDirectoryName(typeof(SteamAPI).Assembly.Location), "..", "..");
-
 	static InstallVerifier()
 	{
 		string portableRid = RuntimeInformation.RuntimeIdentifier;
@@ -77,7 +75,11 @@ internal static class InstallVerifier
 			ErrorReporting.FatalExit(Language.GetTextValue("tModLoader.UnknownVerificationOS"));
 		}
 
-		steamAPIPath = $"{SteamworksFolder}/runtimes/{portableRid}/native/{steamAPIPath}";
+		var steamworksFolder = typeof(SteamAPI).Assembly.Location;
+		while (!Directory.Exists($"{steamworksFolder}/runtimes"))
+			steamworksFolder = Path.GetDirectoryName(steamworksFolder);
+
+		steamAPIPath = $"{steamworksFolder}/runtimes/{portableRid}/native/{steamAPIPath}";
 	}
 
 	private static bool HashMatchesFile(string path, byte[] hash)
