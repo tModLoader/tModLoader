@@ -52,6 +52,7 @@ internal static class InstallVerifier
 			steamHash = ToByteArray("4530e0acfa4c789f462addb77b405ccb");
 		}
 		else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX)) {
+			portableRid = $"osx";
 			steamAPIPath = "libsteam_api.dylib";
 			steamAPIHash = ToByteArray("b7736b391a8276faccb4c055d515d531");
 			vanillaSteamAPI = "libsteam_api.dylib";
