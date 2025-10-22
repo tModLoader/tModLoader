@@ -1851,8 +1851,8 @@ public static class ItemLoader
 
 	public static bool ModifyEquipTextureDraw(ref PlayerDrawSet drawInfo, ref DrawData drawData, EquipType type, int slot, [CallerMemberName] string memberName = "")
 	{
-		// Currently hooked up: Back, Balloon, Neck, Shoes (Sitting not implemented)
-		// Not hooked up: Head, Body, Legs, HandsOn, HandsOff, Front, Waist, Wings, Shield, Face, Beard
+		// Currently hooked up: Back, Balloon, Neck, Shoes (Sitting not implemented), Beard
+		// Not hooked up: Head, Body, Legs, HandsOn, HandsOff, Front, Waist, Wings, Shield, Face
 
 		if (slot <= 0)
 			return true;

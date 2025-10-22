@@ -85,15 +85,6 @@
  		if (drawinfo.drawPlayer.wings == 43 && drawinfo.shadow == 0f) {
  			Vector2 vector13 = vector12;
  			Vector2 origin = new Vector2(TextureAssets.Wings[drawinfo.drawPlayer.wings].Width() / 2, TextureAssets.Wings[drawinfo.drawPlayer.wings].Height() / num13 / 2);
-@@ -752,7 +_,7 @@
- 			for (int l = 0; l < 2; l++) {
- 				item = new DrawData(position: vector13 + new Vector2((float)Main.rand.Next(-10, 10) * 0.125f, (float)Main.rand.Next(-10, 10) * 0.125f), texture: TextureAssets.GlowMask[272].Value, sourceRect: value5, color: new Color(230, 230, 230, 60), rotation: drawinfo.drawPlayer.bodyRotation, origin: origin, scale: 1f, effect: drawinfo.playerEffect);
- 				item.shader = drawinfo.cWings;
--				drawinfo.DrawDataCache.Add(item);
-+				// drawinfo.DrawDataCache.Add(item);
- 			}
- 		}
- 
 @@ -842,14 +_,15 @@
  
  	public static void DrawPlayer_12_1_BalloonFronts(ref PlayerDrawSet drawinfo)
