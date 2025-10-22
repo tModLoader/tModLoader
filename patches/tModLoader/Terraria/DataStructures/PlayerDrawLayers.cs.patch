@@ -43,6 +43,14 @@
  			Vector2 vector2 = new Vector2(0f, 8f);
  			Vector2 vec4 = drawinfo.Position - Main.screenPosition + drawinfo.drawPlayer.bodyPosition + new Vector2(drawinfo.drawPlayer.width / 2, drawinfo.drawPlayer.height - drawinfo.drawPlayer.bodyFrame.Height / 2) + new Vector2(0f, -4f) + vector2;
  			vec4 = vec4.Floor();
+ 			DrawData item = new DrawData(TextureAssets.AccBack[drawinfo.drawPlayer.backpack].Value, vec4, drawinfo.drawPlayer.bodyFrame, drawinfo.colorArmorBody, drawinfo.drawPlayer.bodyRotation, drawinfo.bodyVect, 1f, drawinfo.playerEffect);
+ 			item.shader = drawinfo.cBackpack;
++			if (ItemLoader.ModifyEquipTextureDraw(ref drawinfo, ref item, EquipType.Back, drawinfo.drawPlayer.back)) // Back, backpack
+-			drawinfo.DrawDataCache.Add(item);
++				drawinfo.DrawDataCache.Add(item);
+ 		}
+ 		else {
+ 			if (drawinfo.heldItem.type != 1178 && drawinfo.heldItem.type != 779 && drawinfo.heldItem.type != 5134 && drawinfo.heldItem.type != 1295 && drawinfo.heldItem.type != 1910 && !drawinfo.drawPlayer.turtleArmor && drawinfo.drawPlayer.body != 106 && drawinfo.drawPlayer.body != 170)
 @@ -448,7 +_,7 @@
  
  	public static void DrawPlayer_08_1_Tails(ref PlayerDrawSet drawinfo)
@@ -52,7 +60,15 @@
  			Vector2 zero = Vector2.Zero;
  			if (drawinfo.isSitting)
  				zero.Y += -2f;
-@@ -464,10 +_,10 @@
+@@ -458,16 +_,17 @@
+ 			vec = vec.Floor();
+ 			DrawData item = new DrawData(TextureAssets.AccBack[drawinfo.drawPlayer.tail].Value, vec, drawinfo.drawPlayer.bodyFrame, drawinfo.colorArmorBody, drawinfo.drawPlayer.bodyRotation, drawinfo.bodyVect, 1f, drawinfo.playerEffect);
+ 			item.shader = drawinfo.cTail;
++			if (ItemLoader.ModifyEquipTextureDraw(ref drawinfo, ref item, EquipType.Back, drawinfo.drawPlayer.back)) // Back, tail
+-			drawinfo.DrawDataCache.Add(item);
++				drawinfo.DrawDataCache.Add(item);
+ 		}
+ 	}
  
  	public static void DrawPlayer_10_BackAcc(ref PlayerDrawSet drawinfo)
  	{
@@ -69,7 +85,7 @@
  		vec = vec.Floor();
  		DrawData item = new DrawData(TextureAssets.AccBack[drawinfo.drawPlayer.back].Value, vec, drawinfo.drawPlayer.bodyFrame, drawinfo.colorArmorBody, drawinfo.drawPlayer.bodyRotation, drawinfo.bodyVect, 1f, drawinfo.playerEffect);
  		item.shader = drawinfo.cBack;
-+		if(ItemLoader.ModifyEquipTextureDraw(ref drawinfo, ref item, EquipType.Back, drawinfo.drawPlayer.back))
++		if (ItemLoader.ModifyEquipTextureDraw(ref drawinfo, ref item, EquipType.Back, drawinfo.drawPlayer.back)) // Back, non-tail, non-backpack
 -		drawinfo.DrawDataCache.Add(item);
 +			drawinfo.DrawDataCache.Add(item);
  		if (drawinfo.drawPlayer.back == 36) {
@@ -132,7 +148,7 @@
  		vector3 = vector3.Floor();
  		item = new DrawData(TextureAssets.AccBalloon[drawinfo.drawPlayer.balloon].Value, vector3, new Rectangle(0, TextureAssets.AccBalloon[drawinfo.drawPlayer.balloon].Height() / 4 * num, TextureAssets.AccBalloon[drawinfo.drawPlayer.balloon].Width(), TextureAssets.AccBalloon[drawinfo.drawPlayer.balloon].Height() / 4), drawinfo.colorArmorBody, drawinfo.drawPlayer.bodyRotation, new Vector2(26 + drawinfo.drawPlayer.direction * 4, 28f + drawinfo.drawPlayer.gravDir * 6f), 1f, drawinfo.playerEffect);
  		item.shader = drawinfo.cBalloon;
-+		if(ItemLoader.ModifyEquipTextureDraw(ref drawinfo, ref item, EquipType.Balloon, drawinfo.drawPlayer.balloon))
++		if (ItemLoader.ModifyEquipTextureDraw(ref drawinfo, ref item, EquipType.Balloon, drawinfo.drawPlayer.balloon))
 -		drawinfo.DrawDataCache.Add(item);
 +			drawinfo.DrawDataCache.Add(item);
  	}
