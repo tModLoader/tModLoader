@@ -370,6 +370,16 @@
  			if (!(drawinfo.drawPlayer.invis && flag3)) {
  				if (drawinfo.drawPlayer.head == 13) {
  					int hatStacks2 = GetHatStacks(ref drawinfo, 205);
+@@ -1803,7 +_,8 @@
+ 
+ 			DrawData item = new DrawData(TextureAssets.AccBeard[drawinfo.drawPlayer.beard].Value, beardDrawOffsetFromHelmet + new Vector2((int)(drawinfo.Position.X - Main.screenPosition.X - (float)(drawinfo.drawPlayer.bodyFrame.Width / 2) + (float)(drawinfo.drawPlayer.width / 2)), (int)(drawinfo.Position.Y - Main.screenPosition.Y + (float)drawinfo.drawPlayer.height - (float)drawinfo.drawPlayer.bodyFrame.Height + 4f)) + drawinfo.drawPlayer.headPosition + drawinfo.headVect, drawinfo.drawPlayer.bodyFrame, color5, drawinfo.drawPlayer.headRotation, drawinfo.headVect, 1f, drawinfo.playerEffect);
+ 			item.shader = drawinfo.cBeard;
++			if (ItemLoader.ModifyEquipTextureDraw(ref drawinfo, ref item, EquipType.Beard, drawinfo.drawPlayer.beard))
+-			drawinfo.DrawDataCache.Add(item);
++				drawinfo.DrawDataCache.Add(item);
+ 		}
+ 
+ 		if (drawinfo.drawPlayer.head == 205) {
 @@ -1844,6 +_,11 @@
  				drawinfo.DrawDataCache.Add(item);
  			}
@@ -405,7 +415,11 @@
  			Vector2 faceHeadOffsetFromHelmet = drawinfo.drawPlayer.GetFaceHeadOffsetFromHelmet();
  			DrawData item = new DrawData(TextureAssets.AccFace[drawinfo.drawPlayer.faceHead].Value, new Vector2((int)(drawinfo.Position.X - Main.screenPosition.X - (float)(drawinfo.drawPlayer.bodyFrame.Width / 2) + (float)(drawinfo.drawPlayer.width / 2)), (int)(drawinfo.Position.Y - Main.screenPosition.Y + (float)drawinfo.drawPlayer.height - (float)drawinfo.drawPlayer.bodyFrame.Height + 4f)) + drawinfo.drawPlayer.headPosition + drawinfo.headVect + faceHeadOffsetFromHelmet, drawinfo.drawPlayer.bodyFrame, drawinfo.colorArmorHead, drawinfo.drawPlayer.headRotation, drawinfo.headVect, 1f, drawinfo.playerEffect);
  			item.shader = drawinfo.cFaceHead;
-@@ -1923,7 +_,7 @@
++			if (ItemLoader.ModifyEquipTextureDraw(ref drawinfo, ref item, EquipType.Face, drawinfo.drawPlayer.faceHead)) // Face under helmet, DrawInFaceHeadLayer, ArmorIDs.Head.Sets.DrawHead
+-			drawinfo.DrawDataCache.Add(item);
++				drawinfo.DrawDataCache.Add(item);
+ 			if (drawinfo.drawPlayer.face <= 0 || !ArmorIDs.Face.Sets.DrawInFaceUnderHairLayer[drawinfo.drawPlayer.face])
+ 				return;
  
  			float num = 0f;
  			if (drawinfo.drawPlayer.face == 5) {
@@ -414,7 +428,26 @@
  				if ((uint)(faceHead - 10) <= 3u)
  					num = 2 * drawinfo.drawPlayer.direction;
  			}
-@@ -1986,11 +_,12 @@
+ 
+ 			item = new DrawData(TextureAssets.AccFace[drawinfo.drawPlayer.face].Value, new Vector2((float)(int)(drawinfo.Position.X - Main.screenPosition.X - (float)(drawinfo.drawPlayer.bodyFrame.Width / 2) + (float)(drawinfo.drawPlayer.width / 2)) + num, (int)(drawinfo.Position.Y - Main.screenPosition.Y + (float)drawinfo.drawPlayer.height - (float)drawinfo.drawPlayer.bodyFrame.Height + 4f)) + drawinfo.drawPlayer.headPosition + drawinfo.headVect, drawinfo.drawPlayer.bodyFrame, drawinfo.colorArmorHead, drawinfo.drawPlayer.headRotation, drawinfo.headVect, 1f, drawinfo.playerEffect);
+ 			item.shader = drawinfo.cFace;
++			if (ItemLoader.ModifyEquipTextureDraw(ref drawinfo, ref item, EquipType.Face, drawinfo.drawPlayer.face)) // Face under helmet, DrawInFaceHeadLayer, ArmorIDs.Head.Sets.DrawHead, DrawInFaceUnderHairLayer
+-			drawinfo.DrawDataCache.Add(item);
++				drawinfo.DrawDataCache.Add(item);
+ 		}
+ 		else if (!drawinfo.drawPlayer.invis && !flag) {
+ 			DrawData drawData = new DrawData(TextureAssets.Players[drawinfo.skinVar, 0].Value, new Vector2((int)(drawinfo.Position.X - Main.screenPosition.X - (float)(drawinfo.drawPlayer.bodyFrame.Width / 2) + (float)(drawinfo.drawPlayer.width / 2)), (int)(drawinfo.Position.Y - Main.screenPosition.Y + (float)drawinfo.drawPlayer.height - (float)drawinfo.drawPlayer.bodyFrame.Height + 4f)) + drawinfo.drawPlayer.headPosition + drawinfo.headVect, drawinfo.drawPlayer.bodyFrame, drawinfo.colorHead, drawinfo.drawPlayer.headRotation, drawinfo.headVect, 1f, drawinfo.playerEffect);
+@@ -1963,7 +_,8 @@
+ 			if (drawinfo.drawPlayer.face > 0 && ArmorIDs.Face.Sets.DrawInFaceUnderHairLayer[drawinfo.drawPlayer.face]) {
+ 				item = new DrawData(TextureAssets.AccFace[drawinfo.drawPlayer.face].Value, new Vector2((int)(drawinfo.Position.X - Main.screenPosition.X - (float)(drawinfo.drawPlayer.bodyFrame.Width / 2) + (float)(drawinfo.drawPlayer.width / 2)), (int)(drawinfo.Position.Y - Main.screenPosition.Y + (float)drawinfo.drawPlayer.height - (float)drawinfo.drawPlayer.bodyFrame.Height + 4f)) + drawinfo.drawPlayer.headPosition + drawinfo.headVect, drawinfo.drawPlayer.bodyFrame, drawinfo.colorArmorHead, drawinfo.drawPlayer.headRotation, drawinfo.headVect, 1f, drawinfo.playerEffect);
+ 				item.shader = drawinfo.cFace;
++				if (ItemLoader.ModifyEquipTextureDraw(ref drawinfo, ref item, EquipType.Face, drawinfo.drawPlayer.face)) // Face under helmet, Not DrawInFaceHeadLayer, ArmorIDs.Head.Sets.DrawHead, DrawInFaceUnderHairLayer
+-				drawinfo.DrawDataCache.Add(item);
++					drawinfo.DrawDataCache.Add(item);
+ 			}
+ 		}
+ 	}
+@@ -1986,24 +_,27 @@
  	public static void DrawPlayer_22_FaceAcc(ref PlayerDrawSet drawinfo)
  	{
  		Vector2 vector = Vector2.Zero;
@@ -428,15 +461,24 @@
  			Vector2 vector2 = Vector2.Zero;
  			if (drawinfo.drawPlayer.face == 19)
  				vector2 = new Vector2(0f, -6f) * drawinfo.drawPlayer.Directions;
-@@ -2000,7 +_,7 @@
- 			drawinfo.DrawDataCache.Add(item);
+ 
+ 			DrawData item = new DrawData(TextureAssets.AccFace[drawinfo.drawPlayer.face].Value, vector2 + vector + new Vector2((int)(drawinfo.Position.X - Main.screenPosition.X - (float)(drawinfo.drawPlayer.bodyFrame.Width / 2) + (float)(drawinfo.drawPlayer.width / 2)), (int)(drawinfo.Position.Y - Main.screenPosition.Y + (float)drawinfo.drawPlayer.height - (float)drawinfo.drawPlayer.bodyFrame.Height + 4f)) + drawinfo.drawPlayer.headPosition + drawinfo.headVect, drawinfo.drawPlayer.bodyFrame, drawinfo.colorArmorHead, drawinfo.drawPlayer.headRotation, drawinfo.headVect, 1f, drawinfo.playerEffect);
+ 			item.shader = drawinfo.cFace;
++			if (ItemLoader.ModifyEquipTextureDraw(ref drawinfo, ref item, EquipType.Face, drawinfo.drawPlayer.face)) // Face, Not DrawInFaceUnderHairLayer
+-			drawinfo.DrawDataCache.Add(item);
++				drawinfo.DrawDataCache.Add(item);
  		}
  
 -		if (drawinfo.drawPlayer.faceFlower > 0 && drawinfo.drawPlayer.faceFlower < ArmorIDs.Face.Count) {
 +		if (drawinfo.drawPlayer.faceFlower > 0) {
  			DrawData item = new DrawData(TextureAssets.AccFace[drawinfo.drawPlayer.faceFlower].Value, vector + drawinfo.helmetOffset + new Vector2((int)(drawinfo.Position.X - Main.screenPosition.X - (float)(drawinfo.drawPlayer.bodyFrame.Width / 2) + (float)(drawinfo.drawPlayer.width / 2)), (int)(drawinfo.Position.Y - Main.screenPosition.Y + (float)drawinfo.drawPlayer.height - (float)drawinfo.drawPlayer.bodyFrame.Height + 4f)) + drawinfo.drawPlayer.headPosition + drawinfo.headVect, drawinfo.drawPlayer.bodyFrame, drawinfo.colorArmorHead, drawinfo.drawPlayer.headRotation, drawinfo.headVect, 1f, drawinfo.playerEffect);
  			item.shader = drawinfo.cFaceFlower;
- 			drawinfo.DrawDataCache.Add(item);
++			if (ItemLoader.ModifyEquipTextureDraw(ref drawinfo, ref item, EquipType.Face, drawinfo.drawPlayer.faceFlower)) // Face, DrawInFaceFlowerLayer
+-			drawinfo.DrawDataCache.Add(item);
++				drawinfo.DrawDataCache.Add(item);
+ 		}
+ 
+ 		if (drawinfo.drawUnicornHorn) {
 @@ -2165,7 +_,7 @@
  
  	public static void DrawPlayer_25_Shield(ref PlayerDrawSet drawinfo)
