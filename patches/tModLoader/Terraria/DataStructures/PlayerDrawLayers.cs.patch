@@ -14,7 +14,38 @@
  {
  	private const int DEFAULT_MAX_SPRITES = 200;
  	private static SpriteDrawBuffer spriteBuffer;
-@@ -233,7 +_,7 @@
+@@ -42,7 +_,13 @@
+ 
+ 	public static void DrawCompositeArmorPiece(ref PlayerDrawSet drawinfo, CompositePlayerDrawContext context, DrawData data)
+ 	{
++		var args = context switch {
++			CompositePlayerDrawContext.FrontArmAccessory => (EquipType.HandsOn, drawinfo.drawPlayer.handon),
++			CompositePlayerDrawContext.BackArmAccessory => (EquipType.HandsOff, drawinfo.drawPlayer.handoff),
++			_ => (EquipType.Body, drawinfo.drawPlayer.body),
++		};
++		if (ItemLoader.ModifyEquipTextureDraw(ref drawinfo, ref data, args.Item1, args.Item2)) // Body, HandsOn, HandsOff, Normal
+-		drawinfo.DrawDataCache.Add(data);
++			drawinfo.DrawDataCache.Add(data);
+ 		switch (context) {
+ 			case CompositePlayerDrawContext.BackShoulder:
+ 			case CompositePlayerDrawContext.BackArm:
+@@ -66,6 +_,7 @@
+ 					}
+ 				}
+ 
++				// if (ItemLoader.ModifyEquipTextureDraw(ref drawinfo, ref data, EquipType.Body, drawinfo.drawPlayer.body)) // Body GlowMask, no API support for glowmasks yet
+ 				drawinfo.DrawDataCache.Add(item2);
+ 				break;
+ 			}
+@@ -88,6 +_,7 @@
+ 					}
+ 				}
+ 
++				// if (ItemLoader.ModifyEquipTextureDraw(ref drawinfo, ref data, EquipType.Body, drawinfo.drawPlayer.body)) // Body GlowMask, no API support for glowmasks yet
+ 				drawinfo.DrawDataCache.Add(item);
+ 				break;
+ 			}
+@@ -233,13 +_,14 @@
  
  	public static void DrawPlayer_01_3_BackHead(ref PlayerDrawSet drawinfo)
  	{
@@ -319,6 +350,19 @@
  			Rectangle bodyFrame = drawinfo.drawPlayer.bodyFrame;
  			int num = drawinfo.armorAdjust;
  			bodyFrame.X += num;
+@@ -1454,10 +_,12 @@
+ 				Texture2D texture = (drawinfo.drawPlayer.Male ? TextureAssets.ArmorBody[drawinfo.drawPlayer.body].Value : TextureAssets.FemaleBody[drawinfo.drawPlayer.body].Value);
+ 				DrawData item = new DrawData(texture, new Vector2((int)(drawinfo.Position.X - Main.screenPosition.X - (float)(drawinfo.drawPlayer.bodyFrame.Width / 2) + (float)(drawinfo.drawPlayer.width / 2)) + num, (int)(drawinfo.Position.Y - Main.screenPosition.Y + (float)drawinfo.drawPlayer.height - (float)drawinfo.drawPlayer.bodyFrame.Height + 4f)) + drawinfo.drawPlayer.bodyPosition + new Vector2(drawinfo.drawPlayer.bodyFrame.Width / 2, drawinfo.drawPlayer.bodyFrame.Height / 2), bodyFrame, drawinfo.colorArmorBody, drawinfo.drawPlayer.bodyRotation, drawinfo.bodyVect, 1f, drawinfo.playerEffect);
+ 				item.shader = drawinfo.cBody;
++				// Non-composite Body. No need for ModifyEquipTextureDraw hook.
+ 				drawinfo.DrawDataCache.Add(item);
+ 				if (drawinfo.bodyGlowMask != -1) {
+ 					item = new DrawData(TextureAssets.GlowMask[drawinfo.bodyGlowMask].Value, new Vector2((int)(drawinfo.Position.X - Main.screenPosition.X - (float)(drawinfo.drawPlayer.bodyFrame.Width / 2) + (float)(drawinfo.drawPlayer.width / 2)) + num, (int)(drawinfo.Position.Y - Main.screenPosition.Y + (float)drawinfo.drawPlayer.height - (float)drawinfo.drawPlayer.bodyFrame.Height + 4f)) + drawinfo.drawPlayer.bodyPosition + new Vector2(drawinfo.drawPlayer.bodyFrame.Width / 2, drawinfo.drawPlayer.bodyFrame.Height / 2), bodyFrame, drawinfo.bodyGlowColor, drawinfo.drawPlayer.bodyRotation, drawinfo.bodyVect, 1f, drawinfo.playerEffect);
+ 					item.shader = drawinfo.cBody;
++					// Non-composite Body Glowmask. No need for ModifyEquipTextureDraw hook.
+ 					drawinfo.DrawDataCache.Add(item);
+ 				}
+ 			}
 @@ -1503,7 +_,7 @@
  		Vector2 compositeOffset_BackArm = GetCompositeOffset_BackArm(ref drawinfo);
  		_ = vector3 + compositeOffset_BackArm;
@@ -328,7 +372,7 @@
  			if (!drawinfo.drawPlayer.invis || IsArmorDrawnWhenInvisible(drawinfo.drawPlayer.body)) {
  				Texture2D value = TextureAssets.ArmorBodyComposite[drawinfo.drawPlayer.body].Value;
  				DrawCompositeArmorPiece(ref drawinfo, CompositePlayerDrawContext.Torso, new DrawData(value, vector, drawinfo.compTorsoFrame, drawinfo.colorArmorBody, bodyRotation, drawinfo.bodyVect, 1f, drawinfo.playerEffect) {
-@@ -1527,7 +_,7 @@
+@@ -1527,9 +_,10 @@
  
  	public static void DrawPlayer_18_OffhandAcc(ref PlayerDrawSet drawinfo)
  	{
@@ -336,8 +380,11 @@
 +		if (!drawinfo.usesCompositeBackHandAcc && drawinfo.drawPlayer.handoff > 0) {
  			DrawData item = new DrawData(TextureAssets.AccHandsOff[drawinfo.drawPlayer.handoff].Value, new Vector2((int)(drawinfo.Position.X - Main.screenPosition.X - (float)(drawinfo.drawPlayer.bodyFrame.Width / 2) + (float)(drawinfo.drawPlayer.width / 2)), (int)(drawinfo.Position.Y - Main.screenPosition.Y + (float)drawinfo.drawPlayer.height - (float)drawinfo.drawPlayer.bodyFrame.Height + 4f)) + drawinfo.drawPlayer.bodyPosition + new Vector2(drawinfo.drawPlayer.bodyFrame.Width / 2, drawinfo.drawPlayer.bodyFrame.Height / 2), drawinfo.drawPlayer.bodyFrame, drawinfo.colorArmorBody, drawinfo.drawPlayer.bodyRotation, drawinfo.bodyVect, 1f, drawinfo.playerEffect);
  			item.shader = drawinfo.cHandOff;
++			// Non-composite HandsOff. No need for ModifyEquipTextureDraw hook.
  			drawinfo.DrawDataCache.Add(item);
-@@ -1547,7 +_,7 @@
+ 		}
+ 	}
+@@ -1547,23 +_,25 @@
  
  	public static void DrawPlayer_19_WaistAcc(ref PlayerDrawSet drawinfo)
  	{
@@ -641,7 +688,7 @@
  			Texture2D value2 = TextureAssets.AccHandsOnComposite[drawinfo.drawPlayer.handon].Value;
  			DrawCompositeArmorPiece(ref drawinfo, CompositePlayerDrawContext.FrontArmAccessory, new DrawData(value2, vector, drawinfo.compFrontArmFrame, drawinfo.colorArmorBody, rotation, bodyVect, 1f, drawinfo.playerEffect) {
  				shader = drawinfo.cHandOn
-@@ -2766,7 +_,7 @@
+@@ -2766,9 +_,10 @@
  
  	public static void DrawPlayer_29_OnhandAcc(ref PlayerDrawSet drawinfo)
  	{
@@ -649,8 +696,11 @@
 +		if (!drawinfo.usesCompositeFrontHandAcc && drawinfo.drawPlayer.handon > 0) {
  			DrawData item = new DrawData(TextureAssets.AccHandsOn[drawinfo.drawPlayer.handon].Value, new Vector2((int)(drawinfo.Position.X - Main.screenPosition.X - (float)(drawinfo.drawPlayer.bodyFrame.Width / 2) + (float)(drawinfo.drawPlayer.width / 2)), (int)(drawinfo.Position.Y - Main.screenPosition.Y + (float)drawinfo.drawPlayer.height - (float)drawinfo.drawPlayer.bodyFrame.Height + 4f)) + drawinfo.drawPlayer.bodyPosition + new Vector2(drawinfo.drawPlayer.bodyFrame.Width / 2, drawinfo.drawPlayer.bodyFrame.Height / 2), drawinfo.drawPlayer.bodyFrame, drawinfo.colorArmorBody, drawinfo.drawPlayer.bodyRotation, drawinfo.bodyVect, 1f, drawinfo.playerEffect);
  			item.shader = drawinfo.cHandOn;
++			// Non-composite HandsOn. No need for ModifyEquipTextureDraw hook.
  			drawinfo.DrawDataCache.Add(item);
-@@ -2801,7 +_,7 @@
+ 		}
+ 	}
+@@ -2801,17 +_,18 @@
  
  	public static void DrawPlayer_32_FrontAcc(ref PlayerDrawSet drawinfo)
  	{
@@ -659,7 +709,10 @@
  			Vector2 zero = Vector2.Zero;
  			DrawData item = new DrawData(TextureAssets.AccFront[drawinfo.drawPlayer.front].Value, zero + new Vector2((int)(drawinfo.Position.X - Main.screenPosition.X - (float)(drawinfo.drawPlayer.bodyFrame.Width / 2) + (float)(drawinfo.drawPlayer.width / 2)), (int)(drawinfo.Position.Y - Main.screenPosition.Y + (float)drawinfo.drawPlayer.height - (float)drawinfo.drawPlayer.bodyFrame.Height + 4f)) + drawinfo.drawPlayer.bodyPosition + new Vector2(drawinfo.drawPlayer.bodyFrame.Width / 2, drawinfo.drawPlayer.bodyFrame.Height / 2), drawinfo.drawPlayer.bodyFrame, drawinfo.colorArmorBody, drawinfo.drawPlayer.bodyRotation, drawinfo.bodyVect, 1f, drawinfo.playerEffect);
  			item.shader = drawinfo.cFront;
-@@ -2811,7 +_,7 @@
++			// Method unused. No need for hook.
+ 			drawinfo.DrawDataCache.Add(item);
+ 		}
+ 	}
  
  	public static void DrawPlayer_32_FrontAcc_FrontPart(ref PlayerDrawSet drawinfo)
  	{
