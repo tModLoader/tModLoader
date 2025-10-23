@@ -593,6 +593,16 @@
  			return;
  
  		Rectangle bodyFrame = drawinfo.drawPlayer.bodyFrame;
+@@ -2824,7 +_,8 @@
+ 		Vector2 vector = Vector2.Zero + new Vector2((int)(drawinfo.Position.X - Main.screenPosition.X - (float)(drawinfo.drawPlayer.bodyFrame.Width / 2) + (float)(drawinfo.drawPlayer.width / 2)), (int)(drawinfo.Position.Y - Main.screenPosition.Y + (float)drawinfo.drawPlayer.height - (float)drawinfo.drawPlayer.bodyFrame.Height + 4f)) + drawinfo.drawPlayer.bodyPosition + new Vector2(drawinfo.drawPlayer.bodyFrame.Width / 2, drawinfo.drawPlayer.bodyFrame.Height / 2);
+ 		DrawData item = new DrawData(TextureAssets.AccFront[drawinfo.drawPlayer.front].Value, vector, bodyFrame, drawinfo.colorArmorBody, drawinfo.drawPlayer.bodyRotation, bodyVect, 1f, drawinfo.playerEffect);
+ 		item.shader = drawinfo.cFront;
++		if (ItemLoader.ModifyEquipTextureDraw(ref drawinfo, ref item, EquipType.Front, drawinfo.drawPlayer.front)) // Front, "front part". Both front and back will be called.
+-		drawinfo.DrawDataCache.Add(item);
++			drawinfo.DrawDataCache.Add(item);
+ 		if (drawinfo.drawPlayer.front == 12) {
+ 			Rectangle rectangle = bodyFrame;
+ 			Rectangle value = rectangle;
 @@ -2850,7 +_,7 @@
  
  	public static void DrawPlayer_32_FrontAcc_BackPart(ref PlayerDrawSet drawinfo)
@@ -602,3 +612,13 @@
  			return;
  
  		Rectangle bodyFrame = drawinfo.drawPlayer.bodyFrame;
+@@ -2864,7 +_,8 @@
+ 		Vector2 vector = Vector2.Zero + new Vector2((int)(drawinfo.Position.X - Main.screenPosition.X - (float)(drawinfo.drawPlayer.bodyFrame.Width / 2) + (float)(drawinfo.drawPlayer.width / 2)), (int)(drawinfo.Position.Y - Main.screenPosition.Y + (float)drawinfo.drawPlayer.height - (float)drawinfo.drawPlayer.bodyFrame.Height + 4f)) + drawinfo.drawPlayer.bodyPosition + new Vector2(drawinfo.drawPlayer.bodyFrame.Width / 2, drawinfo.drawPlayer.bodyFrame.Height / 2);
+ 		DrawData item = new DrawData(TextureAssets.AccFront[drawinfo.drawPlayer.front].Value, vector, bodyFrame, drawinfo.colorArmorBody, drawinfo.drawPlayer.bodyRotation, bodyVect, 1f, drawinfo.playerEffect);
+ 		item.shader = drawinfo.cFront;
++		if (ItemLoader.ModifyEquipTextureDraw(ref drawinfo, ref item, EquipType.Front, drawinfo.drawPlayer.front)) // Front, "back part". Both front and back will be called.
+-		drawinfo.DrawDataCache.Add(item);
++			drawinfo.DrawDataCache.Add(item);
+ 		if (drawinfo.drawPlayer.front == 12) {
+ 			Rectangle rectangle = bodyFrame;
+ 			Rectangle value = rectangle;
