@@ -113,7 +113,7 @@
  		if (ArmorIDs.Balloon.Sets.UsesTorsoFraming[drawinfo.drawPlayer.balloonFront]) {
  			item = new DrawData(TextureAssets.AccBalloon[drawinfo.drawPlayer.balloonFront].Value, new Vector2((int)(drawinfo.Position.X - Main.screenPosition.X - (float)(drawinfo.drawPlayer.bodyFrame.Width / 2) + (float)(drawinfo.drawPlayer.width / 2)), (int)(drawinfo.Position.Y - Main.screenPosition.Y + (float)drawinfo.drawPlayer.height - (float)drawinfo.drawPlayer.bodyFrame.Height + 4f)) + drawinfo.drawPlayer.bodyPosition + drawinfo.bodyVect, drawinfo.drawPlayer.bodyFrame, drawinfo.colorArmorBody, drawinfo.drawPlayer.bodyRotation, drawinfo.bodyVect, 1f, drawinfo.playerEffect);
  			item.shader = drawinfo.cBalloonFront;
-+			if (ItemLoader.ModifyEquipTextureDraw(ref drawinfo, ref item, EquipType.Balloon, drawinfo.drawPlayer.balloonFront))
++			if (ItemLoader.ModifyEquipTextureDraw(ref drawinfo, ref item, EquipType.Balloon, drawinfo.drawPlayer.balloonFront)) // Balloon, ArmorIDs.Balloon.Sets.DrawInFrontOfBackArmLayer and ArmorIDs.Balloon.Sets.UsesTorsoFraming
 -			drawinfo.DrawDataCache.Add(item);
 +				drawinfo.DrawDataCache.Add(item);
  			return;
@@ -123,7 +123,7 @@
  		vector3 = vector3.Floor();
  		item = new DrawData(TextureAssets.AccBalloon[drawinfo.drawPlayer.balloonFront].Value, vector3, new Rectangle(0, TextureAssets.AccBalloon[drawinfo.drawPlayer.balloonFront].Height() / 4 * num, TextureAssets.AccBalloon[drawinfo.drawPlayer.balloonFront].Width(), TextureAssets.AccBalloon[drawinfo.drawPlayer.balloonFront].Height() / 4), drawinfo.colorArmorBody, drawinfo.drawPlayer.bodyRotation, new Vector2(26 + drawinfo.drawPlayer.direction * 4, 28f + drawinfo.drawPlayer.gravDir * 6f), 1f, drawinfo.playerEffect);
  		item.shader = drawinfo.cBalloonFront;
-+		if (ItemLoader.ModifyEquipTextureDraw(ref drawinfo, ref item, EquipType.Balloon, drawinfo.drawPlayer.balloonFront))
++		if (ItemLoader.ModifyEquipTextureDraw(ref drawinfo, ref item, EquipType.Balloon, drawinfo.drawPlayer.balloonFront)) // Balloon, ArmorIDs.Balloon.Sets.DrawInFrontOfBackArmLayer and Not ArmorIDs.Balloon.Sets.UsesTorsoFraming
 -		drawinfo.DrawDataCache.Add(item);
 +			drawinfo.DrawDataCache.Add(item);
  	}
@@ -138,7 +138,7 @@
  		if (ArmorIDs.Balloon.Sets.UsesTorsoFraming[drawinfo.drawPlayer.balloon]) {
  			item = new DrawData(TextureAssets.AccBalloon[drawinfo.drawPlayer.balloon].Value, new Vector2((int)(drawinfo.Position.X - Main.screenPosition.X - (float)(drawinfo.drawPlayer.bodyFrame.Width / 2) + (float)(drawinfo.drawPlayer.width / 2)), (int)(drawinfo.Position.Y - Main.screenPosition.Y + (float)drawinfo.drawPlayer.height - (float)drawinfo.drawPlayer.bodyFrame.Height + 4f)) + drawinfo.drawPlayer.bodyPosition + drawinfo.bodyVect, drawinfo.drawPlayer.bodyFrame, drawinfo.colorArmorBody, drawinfo.drawPlayer.bodyRotation, drawinfo.bodyVect, 1f, drawinfo.playerEffect);
  			item.shader = drawinfo.cBalloon;
-+			if (ItemLoader.ModifyEquipTextureDraw(ref drawinfo, ref item, EquipType.Balloon, drawinfo.drawPlayer.balloon))
++			if (ItemLoader.ModifyEquipTextureDraw(ref drawinfo, ref item, EquipType.Balloon, drawinfo.drawPlayer.balloon)) // Balloon, Not ArmorIDs.Balloon.Sets.DrawInFrontOfBackArmLayer and ArmorIDs.Balloon.Sets.UsesTorsoFraming
 -			drawinfo.DrawDataCache.Add(item);
 +				drawinfo.DrawDataCache.Add(item);
  			return;
@@ -148,7 +148,7 @@
  		vector3 = vector3.Floor();
  		item = new DrawData(TextureAssets.AccBalloon[drawinfo.drawPlayer.balloon].Value, vector3, new Rectangle(0, TextureAssets.AccBalloon[drawinfo.drawPlayer.balloon].Height() / 4 * num, TextureAssets.AccBalloon[drawinfo.drawPlayer.balloon].Width(), TextureAssets.AccBalloon[drawinfo.drawPlayer.balloon].Height() / 4), drawinfo.colorArmorBody, drawinfo.drawPlayer.bodyRotation, new Vector2(26 + drawinfo.drawPlayer.direction * 4, 28f + drawinfo.drawPlayer.gravDir * 6f), 1f, drawinfo.playerEffect);
  		item.shader = drawinfo.cBalloon;
-+		if (ItemLoader.ModifyEquipTextureDraw(ref drawinfo, ref item, EquipType.Balloon, drawinfo.drawPlayer.balloon))
++		if (ItemLoader.ModifyEquipTextureDraw(ref drawinfo, ref item, EquipType.Balloon, drawinfo.drawPlayer.balloon))  // Balloon, Not ArmorIDs.Balloon.Sets.DrawInFrontOfBackArmLayer and Not ArmorIDs.Balloon.Sets.UsesTorsoFraming
 -		drawinfo.DrawDataCache.Add(item);
 +			drawinfo.DrawDataCache.Add(item);
  	}
