@@ -23,6 +23,14 @@
  			int num = ArmorIDs.Head.Sets.FrontToBackID[drawinfo.drawPlayer.head];
  			if (num >= 0) {
  				Vector2 helmetOffset = drawinfo.helmetOffset;
+ 				DrawData item = new DrawData(TextureAssets.ArmorHead[num].Value, helmetOffset + new Vector2((int)(drawinfo.Position.X - Main.screenPosition.X - (float)(drawinfo.drawPlayer.bodyFrame.Width / 2) + (float)(drawinfo.drawPlayer.width / 2)), (int)(drawinfo.Position.Y - Main.screenPosition.Y + (float)drawinfo.drawPlayer.height - (float)drawinfo.drawPlayer.bodyFrame.Height + 4f)) + drawinfo.drawPlayer.headPosition + drawinfo.headVect, drawinfo.drawPlayer.bodyFrame, drawinfo.colorArmorHead, drawinfo.drawPlayer.headRotation, drawinfo.headVect, 1f, drawinfo.playerEffect);
+ 				item.shader = drawinfo.cHead;
++				if (ItemLoader.ModifyEquipTextureDraw(ref drawinfo, ref item, EquipType.Head, num)) // Head, Head.Sets.FrontToBackID entry ("Back head alternate")
+-				drawinfo.DrawDataCache.Add(item);
++					drawinfo.DrawDataCache.Add(item);
+ 			}
+ 		}
+ 	}
 @@ -292,6 +_,10 @@
  
  	public static void DrawPlayer_07_LeinforsHairShampoo(ref PlayerDrawSet drawinfo)
@@ -368,6 +376,26 @@
  		bool flag2 = drawinfo.drawPlayer.head == 28;
  		bool flag3 = drawinfo.drawPlayer.head == 39 || drawinfo.drawPlayer.head == 38;
  		Vector2 vector = new Vector2(-drawinfo.drawPlayer.bodyFrame.Width / 2 + drawinfo.drawPlayer.width / 2, drawinfo.drawPlayer.height - drawinfo.drawPlayer.bodyFrame.Height + 4);
+@@ -1592,7 +_,8 @@
+ 
+ 			DrawData item = new DrawData(TextureAssets.ArmorHead[drawinfo.drawPlayer.head].Value, helmetOffset + new Vector2((int)(drawinfo.Position.X - Main.screenPosition.X - (float)(drawinfo.drawPlayer.bodyFrame.Width / 2) + (float)(drawinfo.drawPlayer.width / 2)), (int)(drawinfo.Position.Y - Main.screenPosition.Y + (float)drawinfo.drawPlayer.height - (float)drawinfo.drawPlayer.bodyFrame.Height + 4f)) + drawinfo.drawPlayer.headPosition + drawinfo.headVect, drawinfo.drawPlayer.bodyFrame, color, drawinfo.drawPlayer.headRotation, drawinfo.headVect, 1f, drawinfo.playerEffect);
+ 			item.shader = shader;
++			if (ItemLoader.ModifyEquipTextureDraw(ref drawinfo, ref item, EquipType.Head, drawinfo.drawPlayer.head)) // Head, ArmorIDs.Head.Sets.DrawFullHair
+-			drawinfo.DrawDataCache.Add(item);
++				drawinfo.DrawDataCache.Add(item);
+ 			if (!drawinfo.drawPlayer.invis) {
+ 				item = new DrawData(TextureAssets.PlayerHair[drawinfo.drawPlayer.hair].Value, position, drawinfo.hairFrontFrame, drawinfo.colorHair, drawinfo.drawPlayer.headRotation, drawinfo.headVect, 1f, drawinfo.playerEffect);
+ 				item.shader = drawinfo.hairDyePacked;
+@@ -1642,7 +_,8 @@
+ 
+ 			DrawData item = new DrawData(TextureAssets.ArmorHead[drawinfo.drawPlayer.head].Value, helmetOffset + new Vector2((int)(drawinfo.Position.X - Main.screenPosition.X - (float)(drawinfo.drawPlayer.bodyFrame.Width / 2) + (float)(drawinfo.drawPlayer.width / 2)), (int)(drawinfo.Position.Y - Main.screenPosition.Y + (float)drawinfo.drawPlayer.height - (float)drawinfo.drawPlayer.bodyFrame.Height + 4f)) + drawinfo.drawPlayer.headPosition + drawinfo.headVect, bodyFrame2, color2, drawinfo.drawPlayer.headRotation, headVect, 1f, drawinfo.playerEffect);
+ 			item.shader = shader2;
++			if (ItemLoader.ModifyEquipTextureDraw(ref drawinfo, ref item, EquipType.Head, drawinfo.drawPlayer.head)) // Head, ArmorIDs.Head.Sets.IsTallHat
+-			drawinfo.DrawDataCache.Add(item);
++				drawinfo.DrawDataCache.Add(item);
+ 		}
+ 		else if (drawinfo.drawPlayer.head == 259) {
+ 			int verticalFrames = 27;
 @@ -1667,7 +_,7 @@
  				drawinfo.DrawDataCache.Add(item);
  			}
@@ -377,6 +405,25 @@
  			if (!(drawinfo.drawPlayer.invis && flag3)) {
  				if (drawinfo.drawPlayer.head == 13) {
  					int hatStacks2 = GetHatStacks(ref drawinfo, 205);
+@@ -1733,7 +_,8 @@
+ 
+ 					DrawData item = new DrawData(TextureAssets.ArmorHead[drawinfo.drawPlayer.head].Value, helmetOffset + new Vector2((int)(drawinfo.Position.X - Main.screenPosition.X - (float)(drawinfo.drawPlayer.bodyFrame.Width / 2) + (float)(drawinfo.drawPlayer.width / 2)), (int)(drawinfo.Position.Y - Main.screenPosition.Y + (float)drawinfo.drawPlayer.height - (float)drawinfo.drawPlayer.bodyFrame.Height + 4f)) + drawinfo.drawPlayer.headPosition + drawinfo.headVect, bodyFrame3, color3, drawinfo.drawPlayer.headRotation, headVect2, 1f, drawinfo.playerEffect);
+ 					item.shader = shader3;
++					if (ItemLoader.ModifyEquipTextureDraw(ref drawinfo, ref item, EquipType.Head, drawinfo.drawPlayer.head)) // Head, Not ArmorIDs.Head.Sets.IsTallHat
+-					drawinfo.DrawDataCache.Add(item);
++						drawinfo.DrawDataCache.Add(item);
+ 					if (drawinfo.headGlowMask != -1) {
+ 						if (drawinfo.headGlowMask == 309) {
+ 							int num15 = DrawPlayer_Head_GetTVScreen(drawinfo.drawPlayer);
+@@ -1770,6 +_,8 @@
+ 						else {
+ 							item = new DrawData(TextureAssets.GlowMask[drawinfo.headGlowMask].Value, helmetOffset + new Vector2((int)(drawinfo.Position.X - Main.screenPosition.X - (float)(drawinfo.drawPlayer.bodyFrame.Width / 2) + (float)(drawinfo.drawPlayer.width / 2)), (int)(drawinfo.Position.Y - Main.screenPosition.Y + (float)drawinfo.drawPlayer.height - (float)drawinfo.drawPlayer.bodyFrame.Height + 4f)) + drawinfo.drawPlayer.headPosition + drawinfo.headVect, bodyFrame3, drawinfo.headGlowColor, drawinfo.drawPlayer.headRotation, headVect2, 1f, drawinfo.playerEffect);
+ 							item.shader = drawinfo.cHead;
++							// TODO: Support arbitrary GlowMask in TextureAssets.GlowMask.
++							// if (ItemLoader.ModifyEquipTextureDraw(ref drawinfo, ref item, EquipType.Head, drawinfo.drawPlayer.head)) // Head GlowMask, Not ArmorIDs.Head.Sets.IsTallHat
+ 							drawinfo.DrawDataCache.Add(item);
+ 						}
+ 					}
 @@ -1803,7 +_,8 @@
  
  			DrawData item = new DrawData(TextureAssets.AccBeard[drawinfo.drawPlayer.beard].Value, beardDrawOffsetFromHelmet + new Vector2((int)(drawinfo.Position.X - Main.screenPosition.X - (float)(drawinfo.drawPlayer.bodyFrame.Width / 2) + (float)(drawinfo.drawPlayer.width / 2)), (int)(drawinfo.Position.Y - Main.screenPosition.Y + (float)drawinfo.drawPlayer.height - (float)drawinfo.drawPlayer.bodyFrame.Height + 4f)) + drawinfo.drawPlayer.headPosition + drawinfo.headVect, drawinfo.drawPlayer.bodyFrame, color5, drawinfo.drawPlayer.headRotation, drawinfo.headVect, 1f, drawinfo.playerEffect);

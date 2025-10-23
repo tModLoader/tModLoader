@@ -110,6 +110,8 @@ public class EquipTexture
 
 	/// <summary>
 	/// Allows you to modify the colors in which this armor texture and surrounding accessories are drawn, in addition to which glow mask and in what color is drawn. By default this will call the associated ModItem's <see cref="ModItem.DrawArmorColor(Player, float, ref Color, ref int, ref Color)"/> if there is an associated ModItem.
+	/// <br/><br/> Note that the <paramref name="glowMask"/> parameter will only work with existing glowmask textures until glowmask support is added.
+	/// <br/><br/> Note that the <paramref name="glowMask"/> parameter will only work with existing glowmask textures (<see cref="GlowMaskID"/> until custom glowmask support is added. You can use <see cref="ModifyDraw"/> and manually add a DrawData for the glowmask instead.
 	/// </summary>
 	/// <param name="drawPlayer"></param>
 	/// <param name="shadow"></param>

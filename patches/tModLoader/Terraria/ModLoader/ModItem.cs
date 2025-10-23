@@ -1057,6 +1057,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to modify the colors in which this armor and surrounding accessories are drawn, in addition to which glow mask and in what color is drawn. Note that this hook is only ever called through this item's associated equipment texture.
+	/// <br/><br/> Note that the <paramref name="glowMask"/> parameter will only work with existing glowmask textures (<see cref="GlowMaskID"/> until custom glowmask support is added. You can use <see cref="ModifyEquipTextureDraw"/> and manually add a DrawData for the glowmask instead.
 	/// <para/> Called on local and remote clients.
 	/// </summary>
 	/// <param name="drawPlayer">The draw player.</param>

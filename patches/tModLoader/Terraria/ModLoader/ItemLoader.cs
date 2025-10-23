@@ -1851,8 +1851,8 @@ public static class ItemLoader
 
 	public static bool ModifyEquipTextureDraw(ref PlayerDrawSet drawInfo, ref DrawData drawData, EquipType type, int slot, [CallerMemberName] string memberName = "")
 	{
-		// Currently hooked up: Back (Normal, Backpack, Tail), Balloon, Neck, Shoes (Sitting not implemented), Beard, Face (faceHead, faceFlower, face), Waist, Front (called twice for each half of texture)
-		// Not hooked up: Head, Body, Legs, HandsOn, HandsOff, Wings, Shield
+		// Currently hooked up: Back (Normal, Backpack, Tail), Balloon, Neck, Shoes (Sitting not implemented), Beard, Face (faceHead, faceFlower, face), Waist, Front (called twice for each half of texture), Head (Not called for glowmask texture)
+		// Not hooked up: Body, Legs, HandsOn, HandsOff, Wings, Shield
 
 		if (slot <= 0)
 			return true;
