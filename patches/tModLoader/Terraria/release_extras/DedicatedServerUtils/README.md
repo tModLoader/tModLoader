@@ -102,7 +102,7 @@ To explore all the options before continuing, run `./manage-tModLoaderServer.sh 
       1. Run `./manage-tModLoaderServer.sh install-tml --github`. This will install the latest GitHub release, which is the same version as released on Steam
          * If you wish to use a specific/legacy tModLoader version from Github, provide either a `tmlversion.txt` file from a modpack or pass the `TMLVERSION` environment variable with a specific version, e.g. `v2022.06.96.4`
 3. Install any necessary mods with `./manage-tModLoaderServer.sh install-mods`
-   * Run . No mods will be installed if `install.txt` is missing, and no mods will be enabled if `enabled.json` is missing. **You will need a `Mods/enabled.json` to contain all Mods that you want enabled, including local mods**
+   * No mods will be installed if `install.txt` is missing, and no mods will be enabled if `enabled.json` is missing. **You will need a `Mods/enabled.json` to contain all Mods that you want enabled, including local mods**
 4. Start the server with `./manage-tModLoaderServer.sh start`. Be sure to pass in `--folder` again if you used a custom location during installation
 
 **NOTE**: These steps can be combined into a single command, `./manage-tModLoaderServer.sh install ...` which installs TML and the provided mods in one command

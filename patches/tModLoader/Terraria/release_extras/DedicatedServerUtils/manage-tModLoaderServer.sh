@@ -367,6 +367,8 @@ case $cmd in
 		if is_in_docker; then
 			mkdir -p "$folder/Mods" "$folder/Worlds"
 			install_workshop_mods
+
+			cat "dotnet installed via management script... pending first server start..." >> "$HOME/server/tModLoader-Logs/server.log"
 			cd "$HOME/server" || exit
 		elif ! [[ -f "$folder/server/LaunchUtils/ScriptCaller.sh" ]]; then
 			echo "A tModLoader server is not installed yet, please run the install or install-tml command before starting a server"
