@@ -31,6 +31,7 @@ namespace ExampleMod.Content.Projectiles
 			Projectile.extraUpdates = 1;
 			Projectile.usesLocalNPCImmunity = true;
 			Projectile.localNPCHitCooldown = -1;
+			Projectile.DamageType = DamageClass.SummonMeleeSpeed;
 			Projectile.WhipSettings.Segments = 10;
 			Projectile.WhipSettings.RangeMultiplier = 1.5f;
 		}

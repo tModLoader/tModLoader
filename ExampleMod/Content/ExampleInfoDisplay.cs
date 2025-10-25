@@ -2,6 +2,7 @@
 using ExampleMod.Content.Items.Accessories;
 using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content
@@ -12,6 +13,14 @@ namespace ExampleMod.Content
 	/// </summary>
 	public class ExampleInfoDisplay : InfoDisplay
 	{
+		public static LocalizedText CurrentMinionsText { get; private set; }
+		public static LocalizedText NoMinionsText { get; private set; }
+
+		public override void SetStaticDefaults() {
+			CurrentMinionsText = this.GetLocalization("CurrentMinions");
+			NoMinionsText = this.GetLocalization("NoMinions");
+		}
+
 		public static Color RedInfoTextColor => new(255, 19, 19, Main.mouseTextColor);
 
 		// By default, the vanilla circular outline texture will be used. 
@@ -52,7 +61,7 @@ namespace ExampleMod.Content
 			}
 			*/
 
-			return !noInfo ? $"{minionCount} minions" : "No minions";
+			return !noInfo ? CurrentMinionsText.Format(minionCount) : NoMinionsText.Value;
 		}
 	}
 

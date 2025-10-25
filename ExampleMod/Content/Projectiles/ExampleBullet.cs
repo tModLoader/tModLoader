@@ -19,7 +19,7 @@ namespace ExampleMod.Content.Projectiles
 		public override void SetDefaults() {
 			Projectile.width = 8; // The width of projectile hitbox
 			Projectile.height = 8; // The height of projectile hitbox
-			Projectile.aiStyle = 1; // The ai style of the projectile, please reference the source code of Terraria
+			Projectile.aiStyle = ProjAIStyleID.Arrow; // The ai style of the projectile, please reference the source code of Terraria
 			Projectile.friendly = true; // Can the projectile deal damage to enemies?
 			Projectile.hostile = false; // Can the projectile deal damage to the player?
 			Projectile.DamageType = DamageClass.Ranged; // Is the projectile shoot by a ranged weapon?
@@ -60,11 +60,12 @@ namespace ExampleMod.Content.Projectiles
 		}
 
 		public override bool PreDraw(ref Color lightColor) {
+			// Draws an afterimage trail. See https://github.com/tModLoader/tModLoader/wiki/Basic-Projectile#afterimage-trail for more information.
+
 			Texture2D texture = TextureAssets.Projectile[Type].Value;
 
-			// Redraw the projectile with the color not influenced by light
 			Vector2 drawOrigin = new Vector2(texture.Width * 0.5f, Projectile.height * 0.5f);
-			for (int k = 0; k < Projectile.oldPos.Length; k++) {
+			for (int k = Projectile.oldPos.Length - 1; k > 0; k--) {
 				Vector2 drawPos = (Projectile.oldPos[k] - Main.screenPosition) + drawOrigin + new Vector2(0f, Projectile.gfxOffY);
 				Color color = Projectile.GetAlpha(lightColor) * ((Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length);
 				Main.EntitySpriteDraw(texture, drawPos, null, color, Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0);

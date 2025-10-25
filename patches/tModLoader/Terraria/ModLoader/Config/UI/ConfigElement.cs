@@ -25,6 +25,9 @@ public abstract class ConfigElement : UIElement
 
 	public int Index { get; set; }
 
+	public const int flashRate = 120;
+	public bool Flashing { get; set; }
+
 	protected Asset<Texture2D> PlayTexture { get; set; } = Main.Assets.Request<Texture2D>("Images/UI/ButtonPlay");
 	protected Asset<Texture2D> DeleteTexture { get; set; } = Main.Assets.Request<Texture2D>("Images/UI/ButtonDelete");
 	protected Asset<Texture2D> PlusTexture { get; set; } = UICommon.ButtonPlusTexture;
@@ -35,10 +38,10 @@ public abstract class ConfigElement : UIElement
 	protected Asset<Texture2D> ExpandedTexture { get; set; } = UICommon.ButtonExpandedTexture;
 
 	// Provides access to the field/property contained in the item
-	protected PropertyFieldWrapper MemberInfo { get; set; }
+	protected internal PropertyFieldWrapper MemberInfo { get; set; }
 	// The object that contains the memberInfo. This is usually a ModConfig instance or an object instance contained within a ModConfig instance.
 	protected object Item { get; set; }
-	// If non-null, the memberInfo actually referes to the collection containing this item and array and index need to be used to assign this data
+	// If non-null, the memberInfo actually refers to the collection containing this item and array and index need to be used to assign this data
 	protected IList List { get; set; }
 	// Attributes
 	protected LabelKeyAttribute LabelAttribute;
@@ -149,6 +152,11 @@ public abstract class ConfigElement : UIElement
 		Color panelColor = base.IsMouseHovering ? backgroundColor : backgroundColor.MultiplyRGBA(new Color(180, 180, 180));
 		Vector2 position = vector;
 
+		if (Flashing) {
+			float ratio = Utils.Turn01ToCyclic010(((Interface.modConfig.UpdateCount % flashRate) / (float)flashRate)) * 0.5f + 0.5f;
+			panelColor = Color.Lerp(panelColor, Color.White, MathF.Pow(ratio, 2));
+		}
+
 		DrawPanel2(spriteBatch, position, TextureAssets.SettingsPanel.Value, settingsWidth, dimensions.Height, panelColor);
 
 		if (DrawLabel) {
@@ -176,6 +184,12 @@ public abstract class ConfigElement : UIElement
 
 			UIModConfig.Tooltip = tooltip;
 		}
+	}
+
+	public override void MouseOver(UIMouseEvent evt)
+	{
+		base.MouseOver(evt);
+		Flashing = false;
 	}
 
 	public static void DrawPanel2(SpriteBatch spriteBatch, Vector2 position, Texture2D texture, float width, float height, Color color)

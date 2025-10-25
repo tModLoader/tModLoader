@@ -23,8 +23,11 @@
 		"ShowNewUpdatedModsInfoMessage": "The following mods were added or updated from the workshop since last launch (you can disable this message in the settings):\n",
 		"ShowNewUpdatedModsInfoMessageNewMods": "\nNew Mods:",
 		"ShowNewUpdatedModsInfoMessageUpdatedMods": "\nUpdated Mods:",
+		"ShowRemovedModsInfoMessageUpdatedMods": "\nRemoved Mods since last session. If any of these were removed in error, please click 'Redownload Mods' to have the option to redownload",
 		"DependenciesNeededForOtherMods": "\nSome dependencies are missing:",
 		"InstallDependencies": "Install Dependencies",
+		"RedownloadMods": "Redownload Mods",
+		"InstallDependenciesAndRedownloadMods": "Install Dependencies and Redownload Mods",
 		"ContinueAnyway": "Continue Anyway",
 		"ModUpdatedSinceLastLaunchMessage": "This mod has been automatically updated\nsince last launch from version {0}",
 		"ModAddedSinceLastLaunchMessage": "This mod has been added since last launch",
@@ -73,6 +76,12 @@
 		"ModDependencyModsNotFound": "The following mods were not found: {0}",
 		"ModDidNotFullyUnloadWarning": "This mod did not fully unload during last unload.\n(This is a message for the mod creator)",
 		"BetaModCantPublishError": "You cannot publish a Mod built on a beta version of tModLoader",
+		"ModDescriptionMissing": "The file {0} doesn't exist. Please create a valid description for your mod.",
+		"ModDescriptionLengthTooShort": "Mod description is too short, please create a valid description for your mod by modifying {0}.",
+		"ModDescriptionInvalid": "Mod description is equal to or too similar to the description template, please create a valid description for your mod by modifying {0}.",
+		"ModWorkshopDescriptionInvalid": "Workshop description is equal to or too similar to the description template, please create a valid description for your workshop page by modifying {0}. You can also delete {0} if you wish to use {1} as the description of your workshop page.",
+		"ModWorkshopIconResizeWarning": "Will be resized from {0} to {1}.",
+		"ModUsesDefaultIcon": "Please create a custom icon for your mod by modifying {0}.",
 		"OutdatedModCantPublishError": "You cannot publish a Mod built on an old version of tModLoader",
 		"WrongVersionCantPublishError": "You cannot publish a Mod built on a different version of tModLoader than what it was built with",
 		"ModReloadRequired": "Reload Required",
@@ -134,9 +143,12 @@
 		"ModConfigNotification": "Notification: ",
 		"ModConfigModConfig": "Mod Config",
 		"ModConfigSaveConfig": "Save Config",
+		"ModConfigConfigSaved": "Config Saved",
 		"ModConfigBack": "Back",
 		"ModConfigRevertChanges": "Revert Changes",
+		"ModConfigChangesReverted": "Changes Reverted",
 		"ModConfigRestoreDefaults": "Restore Defaults",
+		"ModConfigDefaultsRestored": "Defaults Restored",
 		"ModConfigAskingServerToAcceptChanges": "Asking server to accept changes...",
 		"ModConfigCantSaveBecauseChangesWouldRequireAReload": "Can't save because changes would require a reload",
 		"ModConfigServerSide": "Server Side Config",
@@ -150,6 +162,7 @@
 		"ModConfigScaleUp": "Scale Up",
 		"ModConfigScaleDown": "Scale Down",
 		"ModConfigTypeHere": "Type Here",
+		"ModConfigUnknownEnum": "Unknown value",
 		"ModConfigServerResponse": "Server response: {0}",
 		"ModConfigServerRejectedChanges": "Server rejected changes: {0}",
 		"ModConfigSharedConfigChanged": "Shared config changed: Message: {0}, Mod: {1}, Config: {2}",
@@ -160,6 +173,12 @@
 		// Interface
 		"BossBarStyle": "Boss Bar Style: {0}",
 		"BossBarStyleNoOptions": "No Options",
+
+		// Achievements
+		"AchievementsReset": "Reset",
+		"AchievementsResetConfirm": "Are you sure?",
+		"AchievementsResetConfirmTooltip": "Resetting your achievements means you'll lose them permanently, are you sure you want to continue?",
+		"AchievementsOnlyShowModded": "Only show modded achievements",
 
 		// Workshop
 		"WorkshopDisclaimer": "By submitting this item, you agree to the tModLoader Terms of Service",
@@ -182,6 +201,10 @@
 		"PublishNewButton": "Publish New",
 		"DownloadProgress": "Download {0}% Complete",
 		"DescriptionLengthExceedLimit": "The (Workshop) Description of this mod exceeds the Steam Limit of {0} characters",
+		"CommandLinePublishNeedsSteam": "Command line publishing requires steam to be loaded (-steam command line option)",
+		"CommandLinePublishOnlyUsableWithServerSideMods": "Command line publishing can only be used to publish server-side mods at this time.",
+		"WorkshopTagNotFound": "The supplied tag '{0}' is not a valid option for -publishtags.",
+		"TestServerModLoadingNotification": "This window is testing that a server-side mod loads without errors\nDo not close to allow testing to complete.",
 
 		// Mod Errors
 		"LoadError": "An error occurred while loading {0}",
@@ -195,11 +218,12 @@
 		"LoadErrorDependencyMissing": "Missing mod: {0} required by {1}",
 		"LoadErrorErrorReadingModFile": "Error reading mod file {0}",
 		"LoadErrorHashMismatchCorrupted": "Hash mismatch, data blob has been modified or corrupted",
+		"LoadErrorHashMismatchCorruptedWithModName": "Unable to verify integrity of {0}: hash mismatch; data blob has been modified or corrupted",
 		"LoadErrorDependencyVersionTooLow": "{0} requires {2} version {1} or greater but version {3} is installed",
 		"LoadErrorMajorVersionMismatch": "{0} targets {2} version {1} but you have a newer major version ({3}) which may not be compatible. {0} must be updated.",
 		"LoadErrorRecentlyBuiltLocalModWithLowerVersionWorkshop": "{0} v{1} was recently built, but was not selected to load because the subscribed workshop copy (v{2}) is newer.\nEither update build.txt and rebuild the mod or temporarily unsubscribe from the mod.",
 		"LoadErrorRecentlyBuiltLocalModWithLowerVersionModpack": "{0} v{1} was recently built, but was not selected to load because a frozen copy (v{2}) is present in the active modpack.\nThe mod pack will need to be disabled to test this mod.",
-		"LoadWarningBannerOrBannerItemNotSet": "{0}: {1}. You have set ModNPC.banner or ModNPC.bannerItem, but not the other. Make sure you set both, check your spelling, and that the item exists if you are using mod.ItemType(). Report this to the {0} developers.",
+		"LoadWarningBannerOrBannerItemNotSet": "{0}: {1}. You have set ModNPC.Banner or ModNPC.BannerItem, but not the other. Or, the BannerItem value conflicts with other ModNPC sharing the same banner. Make sure you set both for the representative ModNPC, check your spelling, and that the item exists if you are using Mod.Find<ModItem>().Type. Report this to the {0} developers.",
 		"UnloadError": "One or more errors occurred while unloading and tModLoader must be restarted to prevent further issues.",
 		"DefensiveUnload": "{0} was unable to unload properly. Modders must use defensive programming to ensure unloading completes regardless of any errors during loading.",
 		"BuildError": "An error occurred while building {0}",
@@ -224,8 +248,10 @@
 		"LoadErrorEffectFailedToLoad": "The effect file at {0} failed to load",
 		"LoadErrorUnknownXNBFileHint": "Unknown xnb file {0}. Perhaps it should be in Fonts/ or Effects/",
 		"LoadErrorCannotLoadCompressedEffects": "Cannot load compressed effects.",
+		"LoadErrorCallDuringLoad": "{0} may only be called after content has Loaded. Please move the offending code from a Load() hook into a SetStaticDefaults() or PostSetupContent() hook.",
+		"LoadErrorEquipTextureMissingParameters": "AddEquipTexture requires either an item or a name be provided, but neither were found.",
 
-		"LoadErrorNotLoading": "Mod.AddContent can only be called during loading",
+		"LoadErrorNotLoading": "Modded content can only be added during Mod.Load or Mod.Autoload",
 		"LoadErrorDuplicateName": "Cannot add two {0} with the same name: {1}. Maybe 2 classes share a classname but in different namespaces while autoloading or you manually called AddContent with 2 {0} of the same name, or maybe there is a duplicate/already in use legacyname",
 
 		"LoadErrorResourceNotFoundPathHint": "Expected resource not found:\n    {0}\nClosest guess: (Is there a spelling or folder placement error?)\n    {1}",
@@ -234,6 +260,7 @@
 		"RuntimeErrorSeeLogsForFullTrace": "(see {0} for full trace)",
 		"ShopOverflow": "Not all items could fit in the shop!",
 		"PlayerSaveFail": "An error occurred while saving the player",
+		"BackingUpPlayerFile": "Backing up player file",
 		"OpenLogs": "Open Logs",
 		"OpenWebHelp": "Open Web Help",
 		"SkipToMainMenu": "Skip Loading Mods",
@@ -293,6 +320,12 @@
 		"MPServerModsCantDownloadReasonSigned": "because you only accept mods signed by the mod browser",
 		"MPServerModsCantDownloadReasonAutomaticDownloadDisabled": "because you have disabled automatic mod downloading",
 		"MPServerModsCantDownloadChangeSettingsHint": "You will need to change your settings or acquire the mods from the server owner.",
+		"MPServerModsDownloadFromServerWarning": "Mods may contain malicious code. Only download them if you trust the server host.",
+		"MPServerModAvailableOnWorkshop": "Available on the workshop",
+		"MPServerModAvailableOnWorkshopLowSubscriberCount": "Low subscriber count. Do you trust the server host?",
+		"MPServerModBannedOnWorkshop": "This mod has been banned from the workshop and is likly dangerous.",
+		"MPServerModCustomBuild": "Custom build that has not been published on the workshop. Do you trust the server host?",
+		"MPServerModUnableToVerify": "This mod was unable to be verified. Unable to access Steam Workshop.",
 		"MPShowServerConsoleYes": "Show Server Console: On",
 		"MPShowServerConsoleNo": "Show Server Console: Off",
 		"MPErrorModHashMismatch": "Hash mismatch",
@@ -315,6 +348,7 @@
 		"ReloadRequiredExplanationDisable": "[c/{0}:Disable]",
 		"ReloadRequiredExplanationConfigChanged": "[c/{0}:Change config] temporarily",
 		"ReloadRequiredExplanationConfigChangedRestore": "[c/{0}:Restore config]",
+		"ReloadRequiredHostAndPlayModWasDisabledHint": "It is possible that a mod you had previously enabled has errors when run on the server and has been automatically disabled. Check server.log to investigate these issues. Click here to open the FAQ for this issue.",
 
 		// UIAsyncList
 		"ALLoading": "Loading...",
@@ -490,6 +524,7 @@
 		"MSModSourcesCantHaveSpaces": "(ModSources folders can't have spaces)",
 		"MSLastBuilt": "Last built: {0}",
 		"MSCreateMod": "Create Mod",
+		"MSOpenCustomSourceFolder": "Open custom source folder: {0}",
 		"VersionUpgrade": "Learn about Mod Migration",
 		"WikiLink": "Explore the Wiki",
 		"ExampleModLink": "Check Out the Example Mod",
@@ -497,9 +532,12 @@
 		"DiscordLink": "Find Help on the Discord Server",
 		"MSPortToLatest": "Run tModPorter",
 		"MSFirstLaunchModderWelcomeMessage": "Welcome to the Develop Mods menu. This menu is for those making mods. Here you'll be able to build your mod.\n\nIf you are new to making mods, please click the \"View on GitHub\" button below to visit our wiki and look for the \"I am new to modding\" section.",
+		"MSNoModSourcesLinkToBasicModdingGuide": "There are no mod sources yet.\n\nIf you are new to modding, please click here to view the \"Basic tModLoader Modding Guide\" which will guide you through your first mod.",
 		"MSNetSDKNotFound": "Making mods for tModLoader requires the .NET {0} SDK to be installed, but it has not been detected. Click the \"Download .NET {0} SDK\" button below for installation instructions. After installing, you may need to restart tModLoader.",
 		"DownloadNetSDK": "Download .NET SDK",
 		"DevModsInSandbox": "tModLoader cannot develop mods while running in a sandbox (such as Flatpak). Please make sure to install Steam directly on your system.",
+		"MSSourceIssue": "Mod Source Issue",
+		"MSSourceIssueMessage": "The following error was found with the {0} mod's source code: {1}",
 
 		// Create Mod
 		"CreateModName": "ModName (no spaces)",
@@ -547,6 +585,10 @@
 		"CommandModListSyncedMods": "Synced Mods:",
 		"CommandModListClientMods": "Client Mods:",
 		"CommandModListModlist": "Modlist:",
+		"CommandCustomSetsDescription": "Displays a list of named ID sets.",
+		"CommandCustomSetsUsage": "/customsets [ModName|SetKey|SearchTerm] [-v (output values)] [-o (open logs folder)]",
+		"CommandPurgeUnloadedDescription": "Removes unloaded tiles and walls from the world",
+		"CommandPurgeUnloadedUsage": "/purgeunloaded [ModName] [-t (purge tiles)] [-w (purge walls)] [-p (confirm purge action)]",
 
 		// Mod Building
 		"Building": "Building: {0}",
@@ -602,6 +644,9 @@
 		"slotStack": "Stack",
 		"slotScroll": "Scroll",
 		"PressXToClose": "Press {0} to close",
+		"SharedAccessorySlotConflictMessage": "One or more shared accessory conflicts with the accessories in this loadout, they have been disabled.",
+		"SharedAccessorySlotConflictTooltip": "This shared accessory slot is disabled since it conflicts with other accessories in this loadout",
+		"ModAccessorySlotNoLongerSharedItemsRemoved": "Some items have been moved from accessory slots to inventory due to HasEquipmentLoadoutSupport changing to true.",
 
 		// Misc
 		"OK": "OK",
@@ -647,6 +692,8 @@
 		"TagsUtilityDescription": "Adds utility-oriented content or features",
 		"TagsLibrary": "Library",
 		"TagsLibraryDescription": "Provides additional API & features useful to modders",
+		"TagsTranslation": "Translation",
+		"TagsTranslationDescription": "Provides a translation for another mod. (translationMod = true in build.txt)",
 		"TagsQoL": "Quality Of Life",
 		"TagsQoLDescription": "Features or changes that reduce time spent on typically less fun tasks.",
 		"TagsGameplay": "Gameplay Tweaks",
@@ -711,6 +758,7 @@
 
 		"PercentChanceToSaveAmmo": "{0}% chance to save ammo",
 		"PercentReducedManaCost": "{0}% reduced mana cost",
+		"ReducesHealingPotionCooldownByPercent": "Reduces the cooldown of healing potions by {0}%",
 
 		"PercentIncreasedMiningSpeed": "{0}% increased mining speed",
 		"PercentIncreasedMovementSpeed": "{0}% increased movement speed",

@@ -12,7 +12,8 @@ namespace ExampleMod.Content.Items
 	// Pickups usually provide resources to the player, such as hearts providing life or stars providing mana. Nebula armor boosters are another example.
 	// This example drops from enemies when Example Resource is low, similar to how hearts and stars only drop if the player is lacking health or mana.
 	// See ExampleResourcePickupGlobalNPC for the item drop code.
-	public class ExampleResourcePickup : ModItem {
+	public class ExampleResourcePickup : ModItem
+	{
 		public static readonly int ExampleResourceHealAmount = 50;
 
 		public override LocalizedText Tooltip => LocalizedText.Empty;

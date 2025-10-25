@@ -1,0 +1,28 @@
+--- src/Terraria/Terraria/Social/Steam/AchievementsSocialModule.cs
++++ src/TerrariaNetCore/Terraria/Social/Steam/AchievementsSocialModule.cs
+@@ -16,17 +_,25 @@
+ 
+ 	public override void Initialize()
+ 	{
++		// https://github.com/rlabrecque/SteamworksSDK
++		// v1.61 8th November 2024
++		// * RequestCurrentStats is no longer necessary and has been removed. The Steam Client will synchronize this data before your game launches.
++
++		/*
+ 		_userStatsReceived = Callback<UserStatsReceived_t>.Create(OnUserStatsReceived);
+ 		SteamUserStats.RequestCurrentStats();
+ 		while (!_areStatsReceived) {
+ 			CoreSocialModule.Pulse();
+ 			Thread.Sleep(10);
+ 		}
++		*/
+ 	}
+ 
+ 	public override void Shutdown()
+ 	{
++		/*
+ 		_userStatsReceived.Unregister();
++		*/
+ 		StoreStats();
+ 	}
+ 

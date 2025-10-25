@@ -45,6 +45,68 @@
  
  		return dictionary;
  	}
+@@ -117,8 +_,27 @@
+ 		return value;
+ 	}
+ 
++	/// <summary>
++	/// Remaps a provided value from 0->1 to a cosine curve. Provides a method of turning an input sawtooth pattern into a smooth cyclic curve. This is useful when using repeating timers to drive effects that should return smoothly to their initial value before repeating rather than reset abruptly.
++	/// </summary>
++	/// <param name="value"></param>
++	/// <returns></returns>
+ 	public static float Turn01ToCyclic010(float value) => 1f - ((float)Math.Cos(value * ((float)Math.PI * 2f)) * 0.5f + 0.5f);
+ 
++	/// <summary>
++	/// Remaps a provided value from 0->1 to 0->1->0, essentially turning a sawtooth pattern into a triangle wave pattern:
++	/// <code>
++	///          Original:   Remap:    Range Values ↓    
++	///                 /      / \          1        
++	///              /        /   \        0.5      
++	///           /          /     \        0        
++	/// Input→    0 .5  1    0 .5  1
++	/// Output→   0 .5  1    0  1  0
++	/// </code>
++	/// This is useful when using repeating timers to drive effects that should return linearly to their initial value before repeating rather than reset abruptly.
++	/// </summary>
++	/// <param name="value"></param>
++	/// <returns></returns>
+ 	public static float PingPongFrom01To010(float value)
+ 	{
+ 		value %= 1f;
+@@ -131,6 +_,22 @@
+ 		return value * 2f;
+ 	}
+ 
++	/// <summary>
++	/// Linearly interpolates between several values denoting a continuous piecewise linear function (<see href="https://en.wikipedia.org/wiki/Piecewise_linear_function">Piecewise linear function wikipedia page</see>).
++	/// <para/> This can be used to interpolate between several values, providing finer control over the transition between values.
++	/// <code>
++	/// floats parameter→ 0      4      1    Range Values ↓
++	///                         /   \            3    
++	///                       /        \         2   
++	///                     /                    1
++	///                   /                      0
++	/// percent input→    0 .25 .5 .75  1 
++	/// output→           0  2   4  3   2    
++	/// </code>
++	/// </summary>
++	/// <param name="percent"></param>
++	/// <param name="floats"></param>
++	/// <returns></returns>
+ 	public static float MultiLerp(float percent, params float[] floats)
+ 	{
+ 		float num = 1f / ((float)floats.Length - 1f);
+@@ -175,6 +_,10 @@
+ 		return (t - from) / (to - from);
+ 	}
+ 
++	/// <summary>
++	/// Remaps an input value (<paramref name="fromValue"/>) in the range of <paramref name="fromMin"/> to <paramref name="fromMax"/> to the corresponding value proportionally along the range from <paramref name="toMin"/> to <paramref name="toMax"/>.
++	/// <para/> For example, an input of (1.5f, 1, 3, 20, 30) would result in 22.5 because 1.5 is 25% between 1 and 3 and 25% between 20 and 30 is 22.5.
++	/// </summary>
+ 	public static float Remap(float fromValue, float fromMin, float fromMax, float toMin, float toMax, bool clamped = true) => MathHelper.Lerp(toMin, toMax, GetLerpValue(fromMin, fromMax, fromValue, clamped));
+ 
+ 	public static void ClampWithinWorld(ref int minX, ref int minY, ref int maxX, ref int maxY, bool lastValuesInclusiveToIteration = false, int fluffX = 0, int fluffY = 0)
 @@ -278,6 +_,10 @@
  		return (t - from) / (to - from);
  	}
@@ -81,6 +143,16 @@
  						if (num3 < 0)
  							num3 = 0;
  
+@@ -550,6 +_,9 @@
+ 		return num;
+ 	}
+ 
++	/// <summary>
++	/// Converts a coin value into an array of individual coin currency item counts. The result is a 4 element array containing <c>[Copper, Silver, Gold, Platinum]</c> coin counts totaling to the coin value provided.
++	/// </summary>
+ 	public static int[] CoinsSplit(long count)
+ 	{
+ 		int[] array = new int[4];
 @@ -644,17 +_,32 @@
  			return false;
  		}
@@ -126,6 +198,25 @@
  	public static float NextFloat(this UnifiedRandom r) => (float)r.NextDouble();
  	public static float NextFloatDirection(this UnifiedRandom r) => (float)r.NextDouble() * 2f - 1f;
  	public static float NextFloat(this UnifiedRandom random, FloatRange range) => random.NextFloat() * (range.Maximum - range.Minimum) + range.Minimum;
+@@ -697,6 +_,7 @@
+ 		return asset.Value.Height;
+ 	}
+ 
++	/// <inheritdoc cref="Terraria.Utils.Frame(Texture2D, int, int, int, int, int, int)"/>
+ 	public static Rectangle Frame(this Asset<Texture2D> tex, int horizontalFrames = 1, int verticalFrames = 1, int frameX = 0, int frameY = 0, int sizeOffsetX = 0, int sizeOffsetY = 0)
+ 	{
+ 		if (!tex.IsLoaded)
+@@ -720,6 +_,10 @@
+ 		return tex.Value.Size();
+ 	}
+ 
++	/// <summary>
++	/// Returns a Rectangle region ("frame") of the Texture2D corresponding to the layout provided. Can be used to easily retrieve coordinates for drawing a specific frame of a texture.
++	/// <para/> For example <c>texture.Frame(1, 3, 0, 2)</c> indicates that the texture has 1 column and 3 rows and returns the coordinates of the bottom (index #2, or 3rd) frame of the only column. 
++	/// </summary>
+ 	public static Rectangle Frame(this Texture2D tex, int horizontalFrames = 1, int verticalFrames = 1, int frameX = 0, int frameY = 0, int sizeOffsetX = 0, int sizeOffsetY = 0)
+ 	{
+ 		int num = tex.Width / horizontalFrames;
 @@ -927,7 +_,9 @@
  	public static Vector2 ToVector2(this Point16 p) => new Vector2(p.X, p.Y);
  	public static Vector2D ToVector2D(this Point p) => new Vector2D(p.X, p.Y);
@@ -166,7 +257,7 @@
  	public static Vector2 ClosestPointOnLine(this Vector2 P, Vector2 A, Vector2 B)
  	{
  		Vector2 value = P - A;
-@@ -1007,6 +_,7 @@
+@@ -1007,16 +_,24 @@
  	public static float DistanceSQ(this Vector2 Origin, Vector2 Target) => Vector2.DistanceSquared(Origin, Target);
  	public static Vector2 DirectionTo(this Vector2 Origin, Vector2 Target) => Vector2.Normalize(Target - Origin);
  	public static Vector2 DirectionFrom(this Vector2 Origin, Vector2 Target) => Vector2.Normalize(Origin - Target);
@@ -174,7 +265,16 @@
  	public static bool WithinRange(this Vector2 Origin, Vector2 Target, float MaxRange) => Vector2.DistanceSquared(Origin, Target) <= MaxRange * MaxRange;
  	public static Vector2 XY(this Vector4 vec) => new Vector2(vec.X, vec.Y);
  	public static Vector2 ZW(this Vector4 vec) => new Vector2(vec.Z, vec.W);
-@@ -1017,6 +_,7 @@
+ 	public static Vector3 XZW(this Vector4 vec) => new Vector3(vec.X, vec.Z, vec.W);
+ 	public static Vector3 YZW(this Vector4 vec) => new Vector3(vec.Y, vec.Z, vec.W);
++	/// <summary>
++	/// Multiplies each channel (except for the Alpha channel, which will be 1 in the result) of this Color with the provided color, resulting in a darker blended color. This is the "multiply blend mode" used by drawing programs.
++	/// </summary>
+ 	public static Color MultiplyRGB(this Color firstColor, Color secondColor) => new Color((byte)((float)(firstColor.R * secondColor.R) / 255f), (byte)((float)(firstColor.G * secondColor.G) / 255f), (byte)((float)(firstColor.B * secondColor.B) / 255f));
++	/// <summary>
++	/// Multiplies each channel of this Color with the provided color, resulting in a darker blended color. This is the "multiply blend mode" used by drawing programs.
++	/// </summary>
+ 	public static Color MultiplyRGBA(this Color firstColor, Color secondColor) => new Color((byte)((float)(firstColor.R * secondColor.R) / 255f), (byte)((float)(firstColor.G * secondColor.G) / 255f), (byte)((float)(firstColor.B * secondColor.B) / 255f), (byte)((float)(firstColor.A * secondColor.A) / 255f));
  	public static string Hex3(this Color color) => (color.R.ToString("X2") + color.G.ToString("X2") + color.B.ToString("X2")).ToLower();
  	public static string Hex4(this Color color) => (color.R.ToString("X2") + color.G.ToString("X2") + color.B.ToString("X2") + color.A.ToString("X2")).ToLower();
  
@@ -190,6 +290,14 @@
  	public static int ToInt(this bool value)
  	{
  		if (!value)
+@@ -1089,6 +_,7 @@
+ 		return false;
+ 	}
+ 
++	/// <summary> Returns a list of the indexes within this array that are <see langword="true"/>. </summary>
+ 	public static List<int> GetTrueIndexes(this bool[] array)
+ 	{
+ 		List<int> list = new List<int>();
 @@ -1383,14 +_,26 @@
  			text.Substring(0, maxCharactersDisplayed);
  

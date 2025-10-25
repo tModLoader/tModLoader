@@ -8,6 +8,9 @@ partial class ItemDropDatabase
 	private Dictionary<int, List<IItemDropRule>> _entriesByItemId = new Dictionary<int, List<IItemDropRule>>();
 	private Dictionary<int, List<int>> _itemIdsByType = new Dictionary<int, List<int>>();
 
+	/// <summary>
+	/// Retrieves all the registered <see cref="IItemDropRule"/> for this specific item type.
+	/// </summary>
 	public List<IItemDropRule> GetRulesForItemID(int itemID)
 	{
 		List<IItemDropRule> list = new List<IItemDropRule>();
@@ -502,7 +505,7 @@ partial class ItemDropDatabase
 		IItemDropRule[] goldCrate = new IItemDropRule[] {
 			ItemDropRule.SequentialRulesNotScalingWithLuck(1, themed),
 			ItemDropRule.NotScalingWithLuck(ItemID.GoldCoin, 3, 8, 20),
-			ItemDropRule.SequentialRulesNotScalingWithLuck(1, new OneFromRulesRule(5, ores), new OneFromRulesRule(3, 2, bars)),
+			ItemDropRule.SequentialRulesNotScalingWithLuck(1, new OneFromRulesRule(5, ores), new OneFromRulesRule(3, 1, bars)),
 			new OneFromRulesRule(3, potions),
 			ItemDropRule.NotScalingWithLuck(ItemID.EnchantedSword, 30),
 		};
@@ -514,7 +517,7 @@ partial class ItemDropDatabase
 					new OneFromRulesRule(2, hardmodeOres),
 					new OneFromRulesRule(1, ores)
 				),
-				ItemDropRule.SequentialRulesNotScalingWithLuckWithNumerator(3, 2,
+				ItemDropRule.SequentialRulesNotScalingWithLuckWithNumerator(3, 1,
 					new OneFromRulesRule(3, 2, hardmodeBars),
 					new OneFromRulesRule(1, bars)
 				)
@@ -658,7 +661,7 @@ partial class ItemDropDatabase
 		};
 		extraBait = new IItemDropRule[]
 		{
-			ItemDropRule.NotScalingWithLuck(ItemID.MasterBait, 3, 2, 6),
+			ItemDropRule.NotScalingWithLuck(ItemID.MasterBait, 2, 2, 6),
 			ItemDropRule.NotScalingWithLuck(ItemID.JourneymanBait, 1, 2, 6)
 		};
 		#endregion
@@ -679,7 +682,7 @@ partial class ItemDropDatabase
 			bc_goldCoin,
 			new OneFromRulesRule(7, ores),
 			new OneFromRulesRule(4, bars),
-			new OneFromRulesRule(3, potions),
+			new OneFromRulesRule(4, potions),
 
 			bc_bamboo,
 			bc_seaweed,
@@ -691,7 +694,7 @@ partial class ItemDropDatabase
 			bc_goldCoin,
 			hardmodeBiomeCrateOres,
 			hardmodeBiomeCrateBars,
-			new OneFromRulesRule(3, potions),
+			new OneFromRulesRule(4, potions),
 
 			bc_bamboo,
 			bc_seaweed,
@@ -706,7 +709,7 @@ partial class ItemDropDatabase
 			bc_goldCoin,
 			new OneFromRulesRule(7, ores),
 			new OneFromRulesRule(4, bars),
-			new OneFromRulesRule(3, potions),
+			new OneFromRulesRule(4, potions),
 		};
 		IItemDropRule[] azure = new IItemDropRule[]
 		{
@@ -718,7 +721,7 @@ partial class ItemDropDatabase
 			bc_goldCoin,
 			hardmodeBiomeCrateOres,
 			hardmodeBiomeCrateBars,
-			new OneFromRulesRule(3, potions),
+			new OneFromRulesRule(4, potions),
 		};
 		IItemDropRule[] corrupt = new IItemDropRule[] {
 			bc_corrupt,
@@ -726,7 +729,7 @@ partial class ItemDropDatabase
 			bc_goldCoin,
 			new OneFromRulesRule(7, ores),
 			new OneFromRulesRule(4, bars),
-			new OneFromRulesRule(3, potions),
+			new OneFromRulesRule(4, potions),
 		};
 		IItemDropRule[] defiled = new IItemDropRule[] {
 			bc_corrupt,
@@ -734,7 +737,7 @@ partial class ItemDropDatabase
 			bc_goldCoin,
 			hardmodeBiomeCrateOres,
 			hardmodeBiomeCrateBars,
-			new OneFromRulesRule(3, potions),
+			new OneFromRulesRule(4, potions),
 
 			bc_son,
 			bc_cursed,
@@ -745,7 +748,7 @@ partial class ItemDropDatabase
 			bc_goldCoin,
 			new OneFromRulesRule(7, ores),
 			new OneFromRulesRule(4, bars),
-			new OneFromRulesRule(3, potions),
+			new OneFromRulesRule(4, potions),
 		};
 		IItemDropRule[] hematic = new IItemDropRule[] {
 			bc_crimson,
@@ -753,7 +756,7 @@ partial class ItemDropDatabase
 			bc_goldCoin,
 			hardmodeBiomeCrateOres,
 			hardmodeBiomeCrateBars,
-			new OneFromRulesRule(3, potions),
+			new OneFromRulesRule(4, potions),
 
 			bc_son,
 			bc_ichor,
@@ -762,13 +765,13 @@ partial class ItemDropDatabase
 			bc_goldCoin,
 			new OneFromRulesRule(7, ores),
 			new OneFromRulesRule(4, bars),
-			new OneFromRulesRule(3, potions),
+			new OneFromRulesRule(4, potions),
 		};
 		IItemDropRule[] divine = new IItemDropRule[] {
 			bc_goldCoin,
 			hardmodeBiomeCrateOres,
 			hardmodeBiomeCrateBars,
-			new OneFromRulesRule(3, potions),
+			new OneFromRulesRule(4, potions),
 
 			bc_sol,
 			bc_shard,
@@ -780,7 +783,7 @@ partial class ItemDropDatabase
 			bc_goldCoin,
 			new OneFromRulesRule(7, ores),
 			new OneFromRulesRule(4, bars),
-			new OneFromRulesRule(3, potions),
+			new OneFromRulesRule(4, potions),
 		};
 		IItemDropRule[] stockade = new IItemDropRule[] {
 			bc_lockbox,
@@ -789,7 +792,7 @@ partial class ItemDropDatabase
 			bc_goldCoin,
 			hardmodeBiomeCrateOres,
 			hardmodeBiomeCrateBars,
-			new OneFromRulesRule(3, potions),
+			new OneFromRulesRule(4, potions),
 		};
 		IItemDropRule[] frozen = new IItemDropRule[] {
 			bc_ice,
@@ -797,7 +800,7 @@ partial class ItemDropDatabase
 			bc_goldCoin,
 			new OneFromRulesRule(7, ores),
 			new OneFromRulesRule(4, bars),
-			new OneFromRulesRule(3, potions),
+			new OneFromRulesRule(4, potions),
 
 			bc_fish,
 		};
@@ -807,7 +810,7 @@ partial class ItemDropDatabase
 			bc_goldCoin,
 			hardmodeBiomeCrateOres,
 			hardmodeBiomeCrateBars,
-			new OneFromRulesRule(3, potions),
+			new OneFromRulesRule(4, potions),
 
 			bc_fish,
 		};
@@ -820,7 +823,7 @@ partial class ItemDropDatabase
 			bc_fossil,
 			new OneFromRulesRule(7, ores),
 			new OneFromRulesRule(4, bars),
-			new OneFromRulesRule(3, potions),
+			new OneFromRulesRule(4, potions),
 		};
 		IItemDropRule[] mirage = new IItemDropRule[] {
 			bc_scarab,
@@ -831,7 +834,7 @@ partial class ItemDropDatabase
 			bc_fossil,
 			hardmodeBiomeCrateOres,
 			hardmodeBiomeCrateBars,
-			new OneFromRulesRule(3, potions),
+			new OneFromRulesRule(4, potions),
 		};
 		IItemDropRule[] obsidian = new IItemDropRule[] {
 			ItemDropRule.SequentialRulesNotScalingWithLuck(1, bc_lava),
@@ -845,7 +848,7 @@ partial class ItemDropDatabase
 			bc_goldCoin,
 			new OneFromRulesRule(7, ores),
 			new OneFromRulesRule(4, bars),
-			new OneFromRulesRule(3, potions),
+			new OneFromRulesRule(4, potions),
 
 			bc_ornate,
 			bc_cake,
@@ -862,7 +865,7 @@ partial class ItemDropDatabase
 			bc_goldCoin,
 			hardmodeBiomeCrateOres,
 			hardmodeBiomeCrateBars,
-			new OneFromRulesRule(3, potions),
+			new OneFromRulesRule(4, potions),
 
 			bc_ornate,
 			bc_cake,
@@ -874,7 +877,7 @@ partial class ItemDropDatabase
 			bc_goldCoin,
 			new OneFromRulesRule(7, ores),
 			new OneFromRulesRule(4, bars),
-			new OneFromRulesRule(3, potions),
+			new OneFromRulesRule(4, potions),
 
 			bc_pile,
 			bc_sand,
@@ -886,7 +889,7 @@ partial class ItemDropDatabase
 			bc_goldCoin,
 			hardmodeBiomeCrateOres,
 			hardmodeBiomeCrateBars,
-			new OneFromRulesRule(3, potions),
+			new OneFromRulesRule(4, potions),
 
 			bc_pile,
 			bc_sand,

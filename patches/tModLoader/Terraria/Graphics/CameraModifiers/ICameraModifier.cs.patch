@@ -1,0 +1,12 @@
+--- src/TerrariaNetCore/Terraria/Graphics/CameraModifiers/ICameraModifier.cs
++++ src/tModLoader/Terraria/Graphics/CameraModifiers/ICameraModifier.cs
+@@ -2,6 +_,9 @@
+ 
+ public interface ICameraModifier
+ {
++	/// <summary>
++	/// Will cause any other active camera modifiers with the same value to be cleared when this camera modifier is added
++	/// </summary>
+ 	string UniqueIdentity { get; }
+ 
+ 	bool Finished { get; }

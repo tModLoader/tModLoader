@@ -14,7 +14,7 @@
  			return PlayerInput.BuildCommand(Lang.misc[56].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["Inventory"]) + PlayerInput.BuildCommand(Lang.misc[64].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["HotbarMinus"], PlayerInput.ProfileGamepadUI.KeyStatus["HotbarPlus"]) + PlayerInput.BuildCommand(Lang.misc[70].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["Grapple"]) + PlayerInput.BuildCommand(Lang.misc[69].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["SmartSelect"]) + (flag6 ? PlayerInput.BuildCommand("Evict", false, PlayerInput.ProfileGamepadUI.KeyStatus["MouseRight"]) : "");
  		};
  
-+		// TODO: document TML change. Why 650 -> 698?
++		// Increased (600 -> 698) for modded TownNPC support. #461
 -		for (int num14 = 600; num14 <= 650; num14++) {
 +		for (int num14 = 600; num14 <= 698; num14++) {
  			UILinkPoint value13 = new UILinkPoint(num14, enabled: true, num14 + 10, num14 - 10, num14 - 1, num14 + 1);
@@ -24,12 +24,24 @@
  			if (num58 == 0)
  				num58 = 100;
  
-+			//TODO: Document TML change. Why 50 -> 98?
++			// Increased (50 -> 98) for modded TownNPC support. #461
 -			for (int num59 = 0; num59 < 50; num59++) {
 +			for (int num59 = 0; num59 < 98; num59++) {
  				cp14.LinkMap[600 + num59].Up = ((num59 % num58 == 0) ? (-1) : (600 + num59 - 1));
  				if (cp14.LinkMap[600 + num59].Up == -1) {
  					if (num59 >= num58 * 2)
+@@ -692,6 +_,11 @@
+ 				cp14.LinkMap[600 + num59].Down = (((num59 + 1) % num58 == 0 || num59 == UILinkPointNavigator.Shortcuts.NPCS_IconsTotal - 1) ? 308 : (600 + num59 + 1));
+ 				cp14.LinkMap[600 + num59].Left = ((num59 < UILinkPointNavigator.Shortcuts.NPCS_IconsTotal - num58) ? (600 + num59 + num58) : (-3));
+ 				cp14.LinkMap[600 + num59].Right = ((num59 < num58) ? (-4) : (600 + num59 - num58));
++				// Avoid navigating to crafting menu when a lot of TownNPC. #4790
++				if (cp14.LinkMap[600 + num59].Down >= 698)
++					cp14.LinkMap[600 + num59].Down = 308;
++				if (cp14.LinkMap[600 + num59].Left >= 698)
++					cp14.LinkMap[600 + num59].Left = -3;
+ 			}
+ 		};
+ 
 @@ -906,10 +_,16 @@
  			}
  

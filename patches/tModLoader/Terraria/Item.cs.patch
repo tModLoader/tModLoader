@@ -24,7 +24,7 @@
  {
  	private string _nameOverride;
  	public const int luckPotionDuration1 = 18000;
-@@ -37,78 +_,455 @@
+@@ -37,78 +_,473 @@
  	private readonly int eclipsePrice = sellPrice(0, 7, 50);
  	private readonly int eclipsePostPlanteraPrice = sellPrice(0, 10);
  	private readonly int eclipseMothronPrice = sellPrice(0, 12, 50);
@@ -43,20 +43,20 @@
  	public static int[] cachedItemSpawnsByType = ItemID.Sets.Factory.CreateIntSet(-1);
 +
 +	/// <summary>
-+	/// The default cooldown, in ticks, of most healing items.<br/>
-+	/// This value is never changed. For creating a Philosopher's Stone-like item, see <see cref="Player.pStone"/> or <see cref="Player.potionDelayTime"/>.<br/>
++	/// The default cooldown, in ticks, of most healing items.
++	/// <br/><br/> This value is never changed. For creating a Philosopher's Stone-like item, see <see cref="Player.pStone"/> and <see cref="Player.PotionDelayModifier"/>.
 +	/// </summary>
  	public static int potionDelay = 3600;
 +
 +	/// <summary>
-+	/// The default cooldown, in ticks, of Restoration Potions.<br/>
-+	/// This value is never changed. For creating a Philosopher's Stone-like item, see <see cref="Player.pStone"/> or <see cref="Player.restorationDelayTime"/>.<br/>
++	/// The default cooldown, in ticks, of Restoration Potions.
++	/// <br/><br/> This value is never changed. For creating a Philosopher's Stone-like item, For creating a Philosopher's Stone-like item, see <see cref="Player.pStone"/> and <see cref="Player.PotionDelayModifier"/>.
 +	/// </summary>
  	public static int restorationDelay = 2700;
 +
 +	/// <summary>
-+	/// The default cooldown, in ticks, of Mushrooms.<br/>
-+	/// This value is never changed. For creating a Philosopher's Stone-like item, see <see cref="Player.pStone"/> or <see cref="Player.mushroomDelayTime"/>.<br/>
++	/// The default cooldown, in ticks, of Mushrooms.
++	/// <br/><br/> This value is never changed. For creating a Philosopher's Stone-like item, see <see cref="Player.pStone"/> and <see cref="Player.PotionDelayModifier"/>.
 +	/// </summary>
  	public static int mushroomDelay = 1800;
 +
@@ -298,8 +298,10 @@
  	public int holdStyle;
 +
 +	/// <summary>
-+	/// Assign to an <see cref="ItemUseStyleID"/> value to give this item a specific animation while in use. Leave as 0 and use <see cref="ModLoader.ModItem.UseStyle"/> hook to implement a custom animation.
-+	/// <br/> Defaults to <see cref="ItemUseStyleID.None"/>.
++	/// Assign to an <see cref="ItemUseStyleID"/> value to give this item a specific animation while in use.
++	/// <br/><br/> Custom item use styles can be made (or existing use styles customized) by implementing <see cref="ModItem.UseStyle(Player, Rectangle)"/>, <see cref="ModItem.UseItemHitbox(Player, ref Rectangle, ref bool)"/>, and <see cref="ModItem.UseItemFrame(Player)"/>. Set this to <c>-1</c> if making a completely custom use style for this specific item. The methods in <see cref="GlobalItem"/> can be used to implement a custom use style used by many items. Use <see cref="ItemLoader.RegisterUseStyle(Mod, string)"/> to reserve a unique custom use style ID.
++	/// <br/><br/> <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/Items/Weapons/ExampleCustomUseStyleWeapon.cs">ExampleCustomUseStyleWeapon.cs</see> contains a full example of a custom item use style.
++	/// <br/><br/> Defaults to <see cref="ItemUseStyleID.None"/>. This will skip all use animation code as well as the UseStyle/UseItemHitbox/UseItemFrame hooks unless set to another value.
 +	/// </summary>
  	public int useStyle;
 +
@@ -324,7 +326,7 @@
 +	/// <summary>
 +	/// The time span of using the item in ticks. This is independent of the time it takes for the item animation to finish. 
 +	/// <br/> Blocks use 10. Default value is 100.
-+	/// <br/> Weapons usually have equal <see cref="useAnimation"/> and useTime, unequal values for these two results in multiple attacks per click. See <see href="https://github.com/tModLoader/tModLoader/blob/1.4.4/ExampleMod/Content/Items/Weapons/ExampleGun.cs#L105">ExampleGun.cs's Clockwork Assault Rifle example</see> for an example of that.
++	/// <br/> Weapons usually have equal <see cref="useAnimation"/> and useTime, unequal values for these two results in multiple attacks per click. See <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/Items/Weapons/ExampleGun.cs#L105">ExampleGun.cs's Clockwork Assault Rifle example</see> for an example of that.
 +	/// </summary>
  	public int useTime;
 +
@@ -362,7 +364,8 @@
 +
 +	/// <summary>
 +	/// Additional tile range provided by this tool or tile. Copper Pickaxe has a value of -1, reducing the range. Chain uses 3 to allow the tile to be placed from farther away than normal tiles.
-+	/// <br/> Defaults to 0.
++	/// <br/><br/> For accessory effects, modify <see cref="Player.tileRangeX"/> or <see cref="Player.blockRange"/> in <see cref="ModItem.UpdateAccessory(Player, bool)"/> instead.
++	/// <br/><br/> Defaults to 0.
 +	/// </summary>
  	public int tileBoost;
 +
@@ -414,8 +417,8 @@
  	public int healMana;
 +
 +	/// <summary>
-+	/// If true, this item will inflict potion sickness on use. Also determines whether the item cannot be used when the player has potion sickness, and if the item can be used with the Quick Heal key.
-+	/// <br/> Defaults to <see langword="false"/>.
++	/// If true, this item will inflict potion sickness on use. Also determines whether the item cannot be used when the player has potion sickness (<see cref="Player.potionDelay"/> > 0), and if the item can be used with the Quick Heal key.
++	/// <br/><br/> Defaults to <see langword="false"/>.
 +	/// </summary>
  	public bool potion;
 +
@@ -477,29 +480,60 @@
 +	/// <br/> Defaults to 0.
 +	/// </summary>
  	public int defense;
++	/// <summary>
++	/// The head equipment slot for this item (<see cref="ArmorIDs.Head"/>). When this item is equipped, <see cref="Player.head"/> will be set to this value and the corresponding equipment texture will be displayed on the player.
++	/// <br/><br/> For <see cref="ModItem"/>, this is set automatically using <see cref="AutoloadEquip"/> with <see cref="EquipType.Head"/>.
++	/// <br/><br/> Defaults to -1.
++	/// </summary>
  	public int headSlot = -1;
++	/// <summary>
++	/// The body equipment slot for this item (<see cref="ArmorIDs.Body"/>). When this item is equipped, <see cref="Player.body"/> will be set to this value and the corresponding equipment texture will be displayed on the player.
++	/// <br/><br/> For <see cref="ModItem"/>, this is set automatically using <see cref="AutoloadEquip"/> with <see cref="EquipType.Body"/>.
++	/// <br/><br/> Defaults to -1.
++	/// </summary>
  	public int bodySlot = -1;
++	/// <summary>
++	/// The legs equipment slot for this item (<see cref="ArmorIDs.Legs"/>). When this item is equipped, <see cref="Player.legs"/> will be set to this value and the corresponding equipment texture will be displayed on the player.
++	/// <br/><br/> For <see cref="ModItem"/>, this is set automatically using <see cref="AutoloadEquip"/> with <see cref="EquipType.Legs"/>.
++	/// <br/><br/> Defaults to -1.
++	/// </summary>
  	public int legSlot = -1;
 +	/* sbyte -> int
  	public sbyte handOnSlot = -1;
  	public sbyte handOffSlot = -1;
  	public sbyte backSlot = -1;
-@@ -121,49 +_,248 @@
+@@ -121,49 +_,271 @@
  	public sbyte faceSlot = -1;
  	public sbyte balloonSlot = -1;
  	public sbyte beardSlot = -1;
 +	*/
++	/// <summary>
++	/// The equipment slot for this item (See the entry in <see cref="ArmorIDs"/> for this EquipType). When this item is equipped, the corresponding <see cref="Player"/> field will be set to this value (for example, item.faceSlot will set player.face) and the corresponding equipment texture will be displayed on the player.
++	/// <br/><br/> For <see cref="ModItem"/>, this is set automatically using <see cref="AutoloadEquip"/> with the corresponding <see cref="EquipType"/> value.
++	/// <br/><br/> Defaults to -1, indicating that this item does not have a specific equipment texture for this slot.
++	/// </summary>
 +	public int handOnSlot = -1;
++	/// <inheritdoc cref="handOnSlot"/>
 +	public int handOffSlot = -1;
++	/// <inheritdoc cref="handOnSlot"/>
 +	public int backSlot = -1;
++	/// <inheritdoc cref="handOnSlot"/>
 +	public int frontSlot = -1;
++	/// <inheritdoc cref="handOnSlot"/>
 +	public int shoeSlot = -1;
++	/// <inheritdoc cref="handOnSlot"/>
 +	public int waistSlot = -1;
++	/// <inheritdoc cref="handOnSlot"/>
 +	public int wingSlot = -1;
++	/// <inheritdoc cref="handOnSlot"/>
 +	public int shieldSlot = -1;
++	/// <inheritdoc cref="handOnSlot"/>
 +	public int neckSlot = -1;
++	/// <inheritdoc cref="handOnSlot"/>
 +	public int faceSlot = -1;
++	/// <inheritdoc cref="handOnSlot"/>
 +	public int balloonSlot = -1;
++	/// <inheritdoc cref="handOnSlot"/>
 +	public int beardSlot = -1;
  	public int stringColor;
  	public ItemTooltip ToolTip;
@@ -523,8 +557,11 @@
  	public int shoot;
 +
 +	/// <summary>
-+	/// The velocity in pixels the projectile fired by this item will have. Actual velocity depends on the projectile being fired. If your weapon is shooting projectiles and they are stationary, change this to something like 10f. Throwing Knife uses 10f. Held projectiles like Vortex Beater use shootSpeed to determine how far away from the player to hold the projectile.
-+	/// <br/> Defaults to 0f.
++	/// The velocity in pixels the projectile fired by this item will have. If your weapon is shooting projectiles and they are stationary, change this to something like 10f and adjust as needed. Throwing Knife uses 10f.
++	/// <para/> Actual velocity depends on the projectile being fired, most notably the <see cref="Projectile.extraUpdates"/> value of that projectile. For example, <see cref="ItemID.LaserRifle"/> has <c>shootSpeed = 17f;</c> and shoots <see cref="ProjectileID.PurpleLaser"/>, which has <c>extraUpdates = 4;</c>, meaning 5 total updates per game tick. This projectile will have an effective velocity of 85 (because <c>17 * (1 + 4) == 85</c>). The <see href="https://terraria.wiki.gg/wiki/Velocity">Shoot Speed wiki page</see> has more information and examples of how these values work together in practice.
++	/// <para/> For weapons using ammo, the weapon's shootSpeed is added to the ammo's shootSpeed, so adjust ammo and weapon shootSpeed values accordingly. Consult the <see href="https://terraria.wiki.gg/wiki/Ammunition_items">Ammunition items wiki page</see> and wiki pages for the weapons that shoot various ammo for suitable values to use.
++	/// <para/> Held projectiles like Vortex Beater use shootSpeed to determine how far away from the player to hold the projectile.
++	/// <para/> Defaults to 0f.
 +	/// </summary>
  	public float shootSpeed;
 +
@@ -551,6 +588,7 @@
 +	/// <br/> Defaults to <c>0</c>.
 +	/// </summary>
  	public int lifeRegen;
++	/// <summary> <strong>Unused.</strong> </summary>
  	public int manaIncrease;
 +	/// <summary>
 +	/// Indicates that an item in a shop can only be bought once, meaning it is an item that has been sold to the NPC shop by the player.
@@ -618,7 +656,7 @@
  	public int buffTime;
 +
 +	/// <summary>
-+	/// Specifies which mount to equip when the item is used. Assign to <c>ModContent.MountType&lt;ModdedMountHere&gt;()</c>. See <see href="https://github.com/tModLoader/tModLoader/blob/1.4.4/ExampleMod/Content/Items/ExampleMountItem.cs">ExampleMountItem.cs</see> for an example.
++	/// Specifies which mount to equip when the item is used. Assign to <c>ModContent.MountType&lt;ModdedMountHere&gt;()</c>. See <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/Items/ExampleMountItem.cs">ExampleMountItem.cs</see> for an example.
 +	/// <br/> Defaults to -1.
 +	/// </summary>
  	public int mountType = -1;
@@ -652,6 +690,9 @@
 +	/// </summary>
  	public int? shopCustomPrice;
  	public bool shootsEveryUse;
++	/// <summary>
++	/// If true, then the player won't swing the arm and item while attempting to use this item unless hovering over an Extractinator tile. This helps avoid misleading the player into thinking an item should do something when used. This and other properties common to extractinator-only items can be set using <see cref="Item.MakeUsableWithChlorophyteExtractinator"/>.
++	/// </summary>
  	public bool chlorophyteExtractinatorConsumable;
 +
 +	/// <summary>
@@ -1204,7 +1245,7 @@
  	public static int NPCtoBanner(int i)
  	{
  		switch (i) {
-@@ -1771,15 +_,24 @@
+@@ -1771,15 +_,25 @@
  				return 286;
  			case 176:
  				return 287;
@@ -1222,7 +1263,8 @@
  	}
  
 +	/// <summary>
-+	/// Converts a banner ID into the equivalent NPC type (<see cref="NPC.type"/>).
++	/// Converts a BannerID into the equivalent NPC type (<see cref="NPC.type"/>). Used to determine a single NPC type from a BannerID for display purposes.
++	/// Note that modded BannerIDs are the same number as their NPC type, and those BannerIDs might not actually be used.
 +	/// </summary>
 +	/// <param name="i">The banner ID to convert.</param>
 +	/// <returns>The NPC type associated with the given banner ID, or <see cref="NPCID.None"/> for an invalid banner ID.</returns>
@@ -1245,6 +1287,38 @@
  				return 0;
  		}
  	}
+@@ -3269,6 +_,7 @@
+ 				consumable = true;
+ 				createTile = 330;
+ 				noMelee = true;
++				material = false;
+ 				break;
+ 			case 72:
+ 				width = 10;
+@@ -3289,6 +_,7 @@
+ 				consumable = true;
+ 				createTile = 331;
+ 				noMelee = true;
++				material = false;
+ 				break;
+ 			case 73:
+ 				width = 10;
+@@ -3309,6 +_,7 @@
+ 				consumable = true;
+ 				createTile = 332;
+ 				noMelee = true;
++				material = false;
+ 				break;
+ 			case 74:
+ 				width = 12;
+@@ -3329,6 +_,7 @@
+ 				consumable = true;
+ 				createTile = 333;
+ 				noMelee = true;
++				material = false;
+ 				break;
+ 			case 75:
+ 				width = 18;
 @@ -7679,6 +_,8 @@
  				value = 300;
  				break;
@@ -1263,6 +1337,30 @@
  				useStyle = 5;
  				autoReuse = true;
  				useAnimation = 30;
+@@ -9158,6 +_,7 @@
+ 					consumable = true;
+ 					useAnimation = 45;
+ 					useTime = 45;
++					material = false;
+ 				}
+ 				maxStack = CommonMaxStack;
+ 				rare = 3;
+@@ -9294,6 +_,7 @@
+ 					consumable = true;
+ 					useAnimation = 45;
+ 					useTime = 45;
++					material = false;
+ 				}
+ 				maxStack = CommonMaxStack;
+ 				rare = 3;
+@@ -9306,6 +_,7 @@
+ 					consumable = true;
+ 					useAnimation = 45;
+ 					useTime = 45;
++					material = false;
+ 				}
+ 				maxStack = CommonMaxStack;
+ 				rare = 3;
 @@ -11396,6 +_,7 @@
  				knockBack = 6.5f;
  				melee = true;
@@ -1315,6 +1413,21 @@
  				return;
  			case 3612:
  				useStyle = 1;
+@@ -36121,8 +_,12 @@
+ 			case 3767:
+ 			case 3768:
+ 			case 3769:
+-				SetDefaults(198);
+-				this.type = type;
++				useStyle = 1;
++				knockBack = 3f;
++				width = 40;
++				height = 40;
++				UseSound = SoundID.Item15;
++				melee = true;
+ 				damage = 48;
+ 				useTime = 16;
+ 				useAnimation = 16;
 @@ -36886,6 +_,8 @@
  				shootSpeed = 17f;
  				return;
@@ -1351,6 +1464,37 @@
  	public void DefaultToGolfBall(int projid)
  	{
  		shoot = projid;
+@@ -38632,6 +_,7 @@
+ 				width = 12;
+ 				height = 12;
+ 				value = 100000;
++				material = false;
+ 				break;
+ 			case 4091:
+ 				DefaultToPlaceableTile((ushort)496, 0);
+@@ -38769,6 +_,7 @@
+ 				useTime = 28;
+ 				rare = 3;
+ 				value = sellPrice(0, 2);
++				material = false;
+ 				break;
+ 			case 4132:
+ 				width = 18;
+@@ -39568,8 +_,12 @@
+ 				melee = true;
+ 				break;
+ 			case 4259:
+-				SetDefaults(198);
+-				this.type = type;
++				useStyle = 1;
++				knockBack = 3f;
++				width = 40;
++				height = 40;
++				UseSound = SoundID.Item15;
++				melee = true;
+ 				damage = 48;
+ 				useTime = 16;
+ 				useAnimation = 16;
 @@ -43082,6 +_,8 @@
  				expert = true;
  				break;
@@ -1442,6 +1586,17 @@
  		noUseGraphic = true;
  		damage = dmg;
  		knockBack = kb;
+@@ -46387,6 +_,10 @@
+ 		SetShopValues(ItemRarityColor.Blue1, buyPrice(0, 2));
+ 	}
+ 
++	/// <summary>
++	/// Calls <see cref="SetDefaults(int)"/> to change this item to another item type while preserving <see cref="Item.favorited"/>. Used by right click code of items that transform into other items, such as how <see cref="ItemID.Shellphone"/> cycles between different items for different destinations. Does not preserve modded data.
++	/// </summary>
++	/// <param name="to"></param>
+ 	public void ChangeItemType(int to)
+ 	{
+ 		bool flag = favorited;
 @@ -46422,7 +_,7 @@
  		return false;
  	}
@@ -1708,6 +1863,16 @@
  	public void DefaultToPlaceableTile(ushort tileIDToPlace, int tileStyleToPlace = 0)
  	{
  		createTile = tileIDToPlace;
+@@ -46959,6 +_,9 @@
+ 		consumable = true;
+ 	}
+ 
++	/// <summary>
++	/// Assigns properties common to extractinator-only items, ensuring a typical use animation when clicking on an Extractinator tile and no animation otherwise. Use this method for items that don't do anything when used but should be useable in an Extractinator. Most notably this sets <see cref="chlorophyteExtractinatorConsumable"/> to true.
++	/// </summary>
+ 	public void MakeUsableWithChlorophyteExtractinator()
+ 	{
+ 		useStyle = 1;
 @@ -46995,6 +_,27 @@
  		autoReuse = true;
  	}
@@ -1791,15 +1956,22 @@
  	{
  		useStyle = 1;
  		useTurn = true;
-@@ -47088,6 +_,22 @@
+@@ -47088,6 +_,30 @@
  		SetDefaults(Type, noMatCheck: false, null);
  	}
  
 +	// Added by TML.
++	/// <summary>
++	/// Call in <see cref="ModItem.SetDefaults"/> to clone all the default item property values of an existing item. This is useful for prototyping or making a variant of an existing item. Note that other changes made to the cloned item, such as if another mod changes a weapon's damage, will be applied when using this approach. This may or may not be desired. 
++	/// <para/> When using this method make sure that any additional changes to item properties are on lines after this method is called, otherwise they will be overwritten. Some values cloned by this method might be undesired, such as equipment slot values like shoeSlot. <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/Items/Accessories/WaspNest.cs#L51">WaspNest.cs</see> shows how to cache and restore those values.
++	/// <para/> This will only clone the values, any additional logic such as shoot accuracy, recipes, accessory effects, use item logic, etc. will not be copied. The <see href="https://github.com/tModLoader/tModLoader/wiki/Advanced-Vanilla-Code-Adaption">Vanilla Code Adaption wiki page</see> teaches how to make a complete clone of an existing item.
++	/// </summary>
++	/// <param name="TypeToClone"></param>
 +	public void CloneDefaults(int TypeToClone)
 +	{
 +		int originalType = type;
 +		int originalNetID = netID;
++		var originalMaterial = material;
 +		var originalModItem = ModItem;
 +		var originalGlobals = _globals;
 +
@@ -1807,6 +1979,7 @@
 +
 +		type = originalType;
 +		netID = originalNetID;
++		material = originalMaterial;
 +		ModItem = originalModItem;
 +		_globals = originalGlobals;
 +	}
@@ -1814,10 +1987,11 @@
  	public void SetDefaults(int Type, bool noMatCheck = false, ItemVariant variant = null)
  	{
  		if (Type < 0) {
-@@ -47101,8 +_,11 @@
+@@ -47101,8 +_,12 @@
  			playerIndexTheItemIsReservedFor = Main.myPlayer;
  
  		ResetStats(Type);
++		material = ItemID.Sets.IsAMaterial[type];
 +
 +		/*
  		if (type >= ItemID.Count)
@@ -1846,15 +2020,14 @@
  		if (hairDye != 0)
  			hairDye = GameShaders.Hair.GetShaderIdFromItemId(type);
  
-@@ -47297,19 +_,27 @@
+@@ -47297,19 +_,24 @@
  			maxStack = CommonMaxStack;
  
  		netID = type;
+-		if (!noMatCheck)
+-			material = ItemID.Sets.IsAMaterial[type];
 +
 +		ItemLoader.SetDefaults(this);
-+
- 		if (!noMatCheck)
- 			material = ItemID.Sets.IsAMaterial[type];
  
  		RebuildTooltip();
 -		if (type > 0 && type < ItemID.Count && ItemID.Sets.Deprecated[type]) {
@@ -1875,7 +2048,7 @@
  		if (type == 5437)
  			SetDefaults(5358);
  	}
-@@ -47318,14 +_,33 @@
+@@ -47318,14 +_,34 @@
  	{
  		tooltipContext = -1;
  		BestiaryNotes = null;
@@ -1896,6 +2069,7 @@
 +		ChangePlayerDirectionOnShoot = true;
 +		ArmorPenetration = 0;
 +
++		_nameOverride = null; // Added by TML.
  		sentry = false;
  		hasVanityEffects = false;
  		DD2Summon = false;
@@ -2001,6 +2175,43 @@
  
  			Main.player[Main.myPlayer].AddCoinLuck(base.Center, stack);
  			NetMessage.SendData(146, -1, -1, null, 1, (int)base.Center.X, (int)base.Center.Y, stack);
+@@ -47808,10 +_,34 @@
+ 			shimmered = true;
+ 		}
+ 		else if (ItemID.Sets.ShimmerTransformToItem[shimmerEquivalentType] > 0) {
++			// Since 1.4.5 seems to add item stacking (April 2024 state of the game) this is likely a temporary fix. All variables are renamed as such so I can read this later. (Copy paste + modify from decrafting code) - Kogsey
+-			int num8 = stack;
++			int stackSize = stack;
+ 			SetDefaults(ItemID.Sets.ShimmerTransformToItem[shimmerEquivalentType]);
+-			stack = num8;
++			stack = stackSize;
++			if (stack > maxStack)
++				stack = maxStack;
++			stackSize -= stack;
+ 			shimmered = true;
++			int spawnCount = 0;
++
++			while (stackSize > 0) {
++				spawnCount++;
++
++				int newItemIndex = NewItem(GetItemSource_Misc(8), (int)position.X, (int)position.Y, width, height, type);
++				Item item = Main.item[newItemIndex];
++				item.stack = stackSize;
++				if (item.stack > maxStack)
++					item.stack = maxStack;
++				stackSize -= item.stack;
++				item.shimmerTime = 1f;
++				item.shimmered = true;
++				item.shimmerWet = true;
++				item.wet = true;
++				item.velocity *= 0.1f;
++				item.playerIndexTheItemIsReservedFor = Main.myPlayer;
++
++				NetMessage.SendData(145, -1, -1, null, newItemIndex, 1f);
++			}
+ 		}
+ 		else if (type == 4986) {
+ 			if (NPC.unlockedSlimeRainbowSpawn)
 @@ -47857,7 +_,7 @@
  			int num13 = FindDecraftAmount();
  			Recipe recipe = Main.recipe[decraftingRecipeIndex];
@@ -2010,6 +2221,31 @@
  			IEnumerable<Item> enumerable = recipe.requiredItem;
  			if (recipe.customShimmerResults != null)
  				enumerable = recipe.customShimmerResults;
+@@ -47869,17 +_,22 @@
+ 
+ 				num15++;
+ 				int num16 = num13 * item2.stack;
++
++				/* TML: Recipe.alchemy is removed due to being replaced by consume item hooks
+ 				if (recipe.alchemy) {
+ 					for (int num17 = num16; num17 > 0; num17--) {
+ 						if (Main.rand.Next(3) == 0)
+ 							num16--;
+ 					}
+ 				}
++				*/
++
++				RecipeLoader.ConsumeIngredient(recipe, item2.type, ref num16, true);
+ 
+ 				while (num16 > 0) {
+ 					int num18 = num16;
+-					if (num18 > 9999)
+-						num18 = 9999;
++					if (num18 > item2.maxStack)
++						num18 = item2.maxStack;
+ 
+ 					num16 -= num18;
+ 					int num19 = NewItem(GetItemSource_Misc(8), (int)position.X, (int)position.Y, width, height, item2.type);
 @@ -48004,7 +_,7 @@
  		if (Main.netMode == 1) {
  			int num = (int)(position.X + (float)(width / 2)) / 16;
@@ -2102,23 +2338,23 @@
  
 +	/// <summary>
 +	/// <inheritdoc cref="Item.NewItem(IEntitySource, int, int, int, int, int, int, bool, int, bool, bool)"/>
-+	/// <br/><br/>This particular overload uses two Vector2 to determine the actual spawn position.
++	/// <br/><br/> This particular overload uses two Vector2 to determine the actual spawn position.
 +	/// </summary>
 +	/// <returns><inheritdoc cref="Item.NewItem(IEntitySource, int, int, int, int, int, int, bool, int, bool, bool)"/></returns>
  	public static int NewItem(IEntitySource source, Vector2 pos, Vector2 randomBox, int Type, int Stack = 1, bool noBroadcast = false, int prefixGiven = 0, bool noGrabDelay = false, bool reverseLookup = false) => NewItem(source, (int)pos.X, (int)pos.Y, (int)randomBox.X, (int)randomBox.Y, Type, Stack, noBroadcast, prefixGiven, noGrabDelay, reverseLookup);
 +
 +	/// <summary>
 +	/// <inheritdoc cref="Item.NewItem(IEntitySource, int, int, int, int, int, int, bool, int, bool, bool)"/>
-+	/// <br/><br/>This particular overload uses a Vector2 instead of X and Y to determine the actual spawn position.
++	/// <br/><br/> This particular overload uses a Vector2 instead of X and Y to determine the actual spawn position.
 +	/// </summary>
 +	/// <returns><inheritdoc cref="Item.NewItem(IEntitySource, int, int, int, int, int, int, bool, int, bool, bool)"/></returns>
  	public static int NewItem(IEntitySource source, Vector2 pos, int Width, int Height, int Type, int Stack = 1, bool noBroadcast = false, int prefixGiven = 0, bool noGrabDelay = false, bool reverseLookup = false) => NewItem(source, (int)pos.X, (int)pos.Y, Width, Height, Type, Stack, noBroadcast, prefixGiven, noGrabDelay, reverseLookup);
  
 +	/// <summary>
 +	/// Spawns an item into the game world with the given type and stack size. The X, Y, Width, and Height parameters dictate a rectangle, the item will be spawned centered within that rectangle. Other overloads support passing in a position directly, or just use 0 for Width and Height if the center is passed in a X and Y.
-+	/// <br/> This method should not be called on multiplayer clients. If you need to spawn items from client code, use <see cref="Player.QuickSpawnItem(IEntitySource, int, int)"/> instead, it handles the multiplayer syncing code needed.
-+	/// <br/> See the <paramref name="noBroadcast"/> documentation if you need to customize attached ModItem or GlobalItem data prior to syncing.
-+	/// <br/> The source represents the entity causing this item to spawn. The return value is the index of the spawned Item within the <see cref="Main.item"/> array. 
++	/// <br/><br/> This method should not be called on multiplayer clients. If you need to spawn items from client code, use <see cref="Player.QuickSpawnItem(IEntitySource, int, int)"/> instead, it handles the multiplayer syncing code needed.
++	/// <br/><br/> See the <paramref name="noBroadcast"/> documentation if you need to customize attached ModItem or GlobalItem data prior to syncing.
++	/// <br/><br/> The source represents the entity causing this item to spawn. The return value is the index of the spawned Item within the <see cref="Main.item"/> array. 
 +	/// </summary>
 +	/// <param name="source"></param>
 +	/// <param name="X"></param>
@@ -2253,12 +2489,13 @@
  	{
  		if (netID == compareItem.netID && stack == compareItem.stack)
  			return prefix != compareItem.prefix;
-@@ -49285,11 +_,18 @@
+@@ -49285,11 +_,19 @@
  		return true;
  	}
  
 +	/// <summary>
-+	/// Overrides the value of <see cref="Name"/>.
++	/// Overrides the value of <see cref="Name"/> for this Item instance. This is used mainly to change the name shown on the item tooltip for recipe group ingredients to "Any RecipeGroupItemNameHere".
++	/// <para/> This does not change the actual name of this item when shown elsewhere as text, for example, so it is not a suitable way to permanently change an item name. To do that a <see href="https://github.com/tModLoader/tModLoader/wiki/Localization#overwriting-existing-terraria-keys">localization file entry</see> should be used instead.
 +	/// </summary>
 +	/// <param name="name">The new name of this <see cref="Item"/>.</param>
  	public void SetNameOverride(string name)

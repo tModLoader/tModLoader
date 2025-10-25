@@ -39,7 +39,7 @@
  		if (drawPlayer.ShouldNotDraw)
  			return;
  
-@@ -121,8 +_,30 @@
+@@ -121,12 +_,36 @@
  		_drawData.Clear();
  		_dust.Clear();
  		_gore.Clear();
@@ -70,3 +70,18 @@
  		PlayerDrawLayers.DrawPlayer_TransformDrawData(ref drawInfo);
  		if (scale != 1f)
  			PlayerDrawLayers.DrawPlayer_ScaleDrawData(ref drawInfo, scale);
+ 
++		PlayerLoader.TransformDrawData(ref drawInfo);
++
+ 		PlayerDrawLayers.DrawPlayer_RenderAllLayers(ref drawInfo);
+ 		if (!drawInfo.drawPlayer.mount.Active || !drawInfo.drawPlayer.UsingSuperCart)
+ 			return;
+@@ -263,6 +_,8 @@
+ 					}
+ 				}
+ 			}
++
++			PlayerLoader.DrawPlayer(drawPlayer, camera);
+ 
+ 			if (drawPlayer.armorEffectDrawShadowEOCShield) {
+ 				int num = drawPlayer.eocDash / 4;

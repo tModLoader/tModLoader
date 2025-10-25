@@ -2,6 +2,7 @@ using Ionic.Zlib;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
@@ -64,6 +65,10 @@ public class TmodFile : IEnumerable<TmodFile.FileEntry>
 	public byte[] Hash { get; private set; }
 
 	internal byte[] Signature { get; private set; } = new byte[256];
+
+	// Starting position of the hashable part of the stream.
+	private long hashStartPos;
+	private bool? hashVerified;
 
 	internal TmodFile(string path, string name = null, Version version = null)
 	{
@@ -319,41 +324,48 @@ public class TmodFile : IEnumerable<TmodFile.FileEntry>
 		//currently unused, included to read the entire data-blob as a byte-array without decompressing or waiting to hit end of stream
 		int datalen = reader.ReadInt32();
 
-		// verify integrity
-		long pos = fileStream.Position;
-		var verifyHash = SHA1.Create().ComputeHash(fileStream);
-		if (!verifyHash.SequenceEqual(Hash))
+		// Verification.  We postpone hash verification until mod loading or an error
+		// occurs during reading.
+		hashStartPos = fileStream.Position;
+		if (datalen != fileStream.Length - hashStartPos)
 			throw new Exception(Language.GetTextValue("tModLoader.LoadErrorHashMismatchCorrupted"));
 
-		fileStream.Position = pos;
+		try {
+			if (TModLoaderVersion < new Version(0, 11)) {
+				Upgrade();
+				return;
+			}
 
-		if (TModLoaderVersion < new Version(0, 11)) {
-			Upgrade();
-			return;
+			// read hashed/signed mod info
+			Name = reader.ReadString();
+			Version = new Version(reader.ReadString());
+
+			// read file table
+			int offset = 0;
+			fileTable = new FileEntry[reader.ReadInt32()];
+			for (int i = 0; i < fileTable.Length; i++) {
+				var f = new FileEntry(
+					reader.ReadString(),
+					offset,
+					reader.ReadInt32(),
+					reader.ReadInt32());
+				fileTable[i] = f;
+				files[f.Name] = f;
+
+				offset += f.CompressedLength;
+			}
+
+			int fileStartPos = (int)fileStream.Position;
+			foreach (var f in fileTable)
+				f.Offset += fileStartPos;
 		}
+		catch (Exception e) {
+			if (!VerifyHash())
+				throw new Exception(Language.GetTextValue("tModLoader.LoadErrorHashMismatchCorrupted"), e);
 
-		// read hashed/signed mod info
-		Name = reader.ReadString();
-		Version = new Version(reader.ReadString());
-
-		// read file table
-		int offset = 0;
-		fileTable = new FileEntry[reader.ReadInt32()];
-		for (int i = 0; i < fileTable.Length; i++) {
-			var f = new FileEntry(
-				reader.ReadString(),
-				offset,
-				reader.ReadInt32(),
-				reader.ReadInt32());
-			fileTable[i] = f;
-			files[f.Name] = f;
-
-			offset += f.CompressedLength;
+			// If the hash is fine, let it bubble up like normal.
+			throw;
 		}
-
-		int fileStartPos = (int)fileStream.Position;
-		foreach (var f in fileTable)
-			f.Offset += fileStartPos;
 	}
 
 	private void Reopen()
@@ -435,5 +447,17 @@ public class TmodFile : IEnumerable<TmodFile.FileEntry>
 		// Save closes the file so re-open it
 		Open();
 		// Read contract fulfilled
+	}
+
+	internal bool VerifyHash() => hashVerified ??= _VerifyHash();
+
+	private bool _VerifyHash()
+	{
+		if (hashStartPos == 0)
+			return false;
+
+		using var fs = File.OpenRead(path);
+		fs.Position = hashStartPos;
+		return Hash.SequenceEqual(SHA1.Create().ComputeHash(fs));
 	}
 }

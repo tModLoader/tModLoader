@@ -224,6 +224,12 @@ public partial class PlayerDrawLayers
 	public static PlayerDrawLayer FirstVanillaLayer => FixedVanillaLayers[0];
 	public static PlayerDrawLayer LastVanillaLayer => FixedVanillaLayers[^1];
 
+	/// <summary>
+	/// Use to order this layer before the first vanilla layer. This layer will draw behind all vanilla layers.
+	/// </summary>
 	public static Between BeforeFirstVanillaLayer => new Between(null, FirstVanillaLayer);
+	/// <summary>
+	/// Use to order this layer after the last vanilla layer. This layer will draw after all vanilla layers.
+	/// </summary>
 	public static Between AfterLastVanillaLayer => new Between(LastVanillaLayer, null);
 }

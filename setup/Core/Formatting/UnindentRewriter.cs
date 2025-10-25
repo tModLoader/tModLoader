@@ -1,11 +1,10 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Terraria.ModLoader.Setup.Formatting
+namespace Terraria.ModLoader.Setup.Core.Formatting
 {
 	public class UnindentRewriter : CSharpSyntaxRewriter {
-		bool nextTokenIsOnNewLine = true;
+		private bool nextTokenIsOnNewLine = true;
 
 		public override SyntaxToken VisitToken(SyntaxToken token) {
 			if (token.IsKind(SyntaxKind.None))

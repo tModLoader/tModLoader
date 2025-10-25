@@ -1,38 +1,44 @@
-﻿using System.Linq;
+﻿using Terraria.ModLoader.Setup.Core.Abstractions;
 
-namespace Terraria.ModLoader.Setup
+namespace Terraria.ModLoader.Setup.Core
 {
 	public class CompositeTask : SetupOperation
 	{
-		private SetupOperation[] tasks;
-		private SetupOperation failed;
+		private readonly SetupOperation[] tasks;
+		private SetupOperation? failed;
 
-		public CompositeTask(ITaskInterface taskInterface, params SetupOperation[] tasks) : base(taskInterface) {
+		public CompositeTask(params SetupOperation[] tasks)
+		{
 			this.tasks = tasks;
 		}
 
-		public override bool ConfigurationDialog() {
-			return tasks.All(task => task.ConfigurationDialog());
+		public override async ValueTask ConfigurationPrompt(CancellationToken cancellationToken = default)
+		{
+			foreach (var task in tasks) {
+				await task.ConfigurationPrompt(cancellationToken);
+			}
 		}
 
-		public override bool Failed() {
-			return failed != null;
-		}
+		public override bool Failed() => failed != null;
 
-		public override void FinishedDialog() {
+		public override bool Warnings() => tasks.Any(x => x.Warnings());
+
+		public override void FinishedPrompt()
+		{
 			if (failed != null)
-				failed.FinishedDialog();
+				failed.FinishedPrompt();
 			else
 				foreach (var task in tasks)
-					task.FinishedDialog();
+					task.FinishedPrompt();
 		}
 
-		public override void Run() {
+		public override async Task Run(IProgress progress, CancellationToken cancellationToken = default)
+		{
 			foreach (var task in tasks) {
-				task.Run();
+				await task.Run(progress, cancellationToken);
 				if (task.Failed()) {
 					failed = task;
-					return;
+					break;
 				}
 			}
 		}

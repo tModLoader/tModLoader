@@ -1,0 +1,20 @@
+--- src/Terraria/Terraria/Social/Steam/WorkshopHelper.cs
++++ src/TerrariaNetCore/Terraria/Social/Steam/WorkshopHelper.cs
+@@ -1,6 +_,7 @@
+ using System;
+ using System.Collections.Generic;
+ using System.IO;
++using System.Runtime.InteropServices;
+ using Steamworks;
+ using Terraria.IO;
+ using Terraria.Social.Base;
+@@ -57,6 +_,9 @@
+ 
+ 			public bool Refresh(WorkshopIssueReporter issueReporter)
+ 			{
++				if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux) && RuntimeInformation.ProcessArchitecture == Architecture.Arm64)
++					return true;
++
+ 				ResourcePackPaths.Clear();
+ 				WorldPaths.Clear();
+ 				foreach (string listOfSubscribedItemsPath in GetListOfSubscribedItemsPaths()) {
