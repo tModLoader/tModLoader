@@ -59,8 +59,6 @@ namespace ExampleMod.Content.Items
 			Item.useStyle = ItemUseStyleID.Swing;
 			Item.useAnimation = 60;
 			Item.useTime = 60;
-
-			Item.color = Color.Red;
 		}
 
 		public override bool CanRightClick() => true;
