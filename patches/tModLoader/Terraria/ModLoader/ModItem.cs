@@ -1210,6 +1210,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// Vector2 drawOrigin = itemFrame.Size() / 2f;
 	/// Vector2 drawPosition = Item.Bottom - Main.screenPosition - new Vector2(0, drawOrigin.Y);
 	/// </code>
+	/// <br/><br/> See <c>PreDrawInInventory</c> and <c>PostDrawInInventory</c> for modifying the inventory visuals and <c>ModifyItemDraw</c> for modifying the held item visuals.
 	/// <para/> Returns true by default.
 	/// </summary>
 	/// <param name="spriteBatch">The sprite batch.</param>
@@ -1227,6 +1228,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// <summary>
 	/// Allows you to draw things in front of this item. This method is called even if PreDrawInWorld returns false.
 	/// <para/> Note that items in the world are drawn centered horizontally sitting at the bottom of the item hitbox, not in the center of the hitbox. To replicate the normal drawing calculations, use the following and then use <see cref="SpriteBatch.DrawString(SpriteFont, string, Vector2, Color, float, Vector2, float, SpriteEffects, float)"/>:
+	/// <br/><br/> See <c>PreDrawInInventory</c> and <c>PostDrawInInventory</c> for modifying the inventory visuals and <c>ModifyItemDraw</c> for modifying the held item visuals.
 	/// <para/> Called on all clients.
 	/// <code>
 	/// Main.GetItemDrawFrame(Item.type, out var itemTexture, out var itemFrame);
@@ -1247,6 +1249,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// <summary>
 	/// Allows you to draw things behind this item in the inventory. Return false to stop the game from drawing the item (useful if you're manually drawing the item).
 	/// <para/> Note that <paramref name="position"/> is the center of the inventory slot and <paramref name="origin"/> is the center of the texture <paramref name="frame"/> to be drawn, so the provided parameters can be passed into <see cref="SpriteBatch.DrawString(SpriteFont, string, Vector2, Color, float, Vector2, float, SpriteEffects, float)"/> to draw a texture in the typical manner.
+	/// <br/><br/> See <c>PreDrawInWorld</c> and <c>PostDrawInWorld</c> for modifying the in-world visuals and <c>ModifyItemDraw</c> for modifying the held item visuals.
 	/// <para/> Called on the local client only.
 	/// <para/> Returns true by default.
 	/// </summary>
@@ -1267,6 +1270,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// <summary>
 	/// Allows you to draw things in front of this item in the inventory. This method is called even if PreDrawInInventory returns false.
 	/// <para/> Note that <paramref name="position"/> is the center of the inventory slot and <paramref name="origin"/> is the center of the texture <paramref name="frame"/> to be drawn, so the provided parameters can be passed into <see cref="SpriteBatch.DrawString(SpriteFont, string, Vector2, Color, float, Vector2, float, SpriteEffects, float)"/> to draw a texture in the typical manner.
+	/// <br/><br/> See <c>PreDrawInWorld</c> and <c>PostDrawInWorld</c> for modifying the in-world visuals and <c>ModifyItemDraw</c> for modifying the held item visuals.
 	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="spriteBatch">The sprite batch.</param>
@@ -1279,6 +1283,18 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	public virtual void PostDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor,
 		Color itemColor, Vector2 origin, float scale)
 	{
+	}
+
+	/// <summary>
+	/// Allows customization of the <see cref="DrawData"/> responsible for drawing the held item. Held items are drawn as part of the player drawing process. Additional <see cref="DrawData"/> can be added to <paramref name="drawInfo"/> for more advanced drawing if needed. (Add DrawData objects to <see cref="PlayerDrawSet.DrawDataCache"/>)
+	/// <br/><br/> <paramref name="drawData"/> is the DrawData for the normal drawing. <paramref name="coloredDrawData"/> is an additional drawing if <see cref="Item.color"/> was set, overlaid over the normal drawing to tint it. <paramref name="glowMaskDrawData"/> is a separate glow mask texture, if <see cref="Item.glowMask"/> was set.
+	/// <br/><br/> Return false to stop the game from adding the <paramref name="drawData"/> (and <paramref name="coloredDrawData"/> and <paramref name="glowMaskDrawData"/> if they are not null) to the player drawing. This is useful if manually adding <paramref name="drawInfo"/> and an additional custom DrawData to properly order the custom DrawData after the normal DrawData.
+	/// <br/><br/> See <c>PreDrawInInventory</c> and <c>PostDrawInInventory</c> for modifying the inventory visuals and <c>PreDrawInWorld</c> and <c>PostDrawInWorld</c> for modifying the in-world visuals.
+	/// <br/><br/> Returns true by default.
+	/// </summary>
+	public virtual bool ModifyItemDraw(ref PlayerDrawSet drawInfo, ref DrawData drawData, ref DrawData? coloredDrawData, ref DrawData? glowMaskDrawData)
+	{
+		return true;
 	}
 
 	/// <summary>
@@ -1511,7 +1527,8 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// <br/><br/> Note that this hook is only ever called through this item's associated equipment texture (<see cref="EquipTexture.ModifyDraw"/>).
 	/// <br/><br/> Return false to stop the game from adding the <paramref name="drawData"/> to the player drawing. Returns true by default.
 	/// </summary>
-	public virtual bool ModifyEquipTextureDraw(ref PlayerDrawSet drawInfo, ref DrawData drawData, EquipType type, int slot, string methodName) {
+	public virtual bool ModifyEquipTextureDraw(ref PlayerDrawSet drawInfo, ref DrawData drawData, EquipType type, int slot, string methodName)
+	{
 		return true;
 	}
 }

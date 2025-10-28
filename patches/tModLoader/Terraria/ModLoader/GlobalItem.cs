@@ -1075,6 +1075,21 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	}
 
 	/// <summary>
+	/// Allows customization of the <see cref="DrawData"/> responsible for drawing the held item. Held items are drawn as part of the player drawing process. Additional <see cref="DrawData"/> can be added to <paramref name="drawInfo"/> for more advanced drawing if needed. (Add DrawData objects to <see cref="PlayerDrawSet.DrawDataCache"/>)
+	/// <br/><br/> <paramref name="drawData"/> is the DrawData for the normal drawing. <paramref name="coloredDrawData"/> is an additional drawing if <see cref="Item.color"/> was set, overlaid over the normal drawing to tint it. <paramref name="glowMaskDrawData"/> is a separate glow mask texture, if <see cref="Item.glowMask"/> was set.
+	/// </summary>
+	public virtual void PreModifyItemDraw(Item item, ref PlayerDrawSet drawInfo, ref DrawData drawData, ref DrawData? coloredDrawData, ref DrawData? glowMaskDrawData)
+	{
+	}
+
+	/// <summary>
+	/// Allows drawing additional <see cref="DrawData"/> after the normal drawing by adding to <paramref name="drawInfo"/>. (Add DrawData objects to <see cref="PlayerDrawSet.DrawDataCache"/>)
+	/// </summary>
+	public virtual void PostModifyItemDraw(Item item, ref PlayerDrawSet drawInfo, DrawData drawData, DrawData? coloredDrawData, DrawData? glowmaskDrawData)
+	{
+	}
+
+	/// <summary>
 	/// Allows you to determine the offset of an item's sprite when used by the player.
 	/// This is only used for items with a useStyle of 5 that aren't staves.
 	/// Return null to use the item's default holdout offset; returns null by default.

@@ -33,7 +33,7 @@
  					}
  				}
  
-+				// if (ItemLoader.ModifyEquipTextureDraw(ref drawinfo, ref data, EquipType.Body, drawinfo.drawPlayer.body)) // Body GlowMask, no API support for glowmasks yet
++				// if (ItemLoader.ModifyEquipTextureDraw(ref drawinfo, ref data, EquipType.Body, drawinfo.drawPlayer.body)) // Body Glow Mask, no API support for glow masks yet
  				drawinfo.DrawDataCache.Add(item2);
  				break;
  			}
@@ -41,7 +41,7 @@
  					}
  				}
  
-+				// if (ItemLoader.ModifyEquipTextureDraw(ref drawinfo, ref data, EquipType.Body, drawinfo.drawPlayer.body)) // Body GlowMask, no API support for glowmasks yet
++				// if (ItemLoader.ModifyEquipTextureDraw(ref drawinfo, ref data, EquipType.Body, drawinfo.drawPlayer.body)) // Body Glow Mask, no API support for glow masks yet
  				drawinfo.DrawDataCache.Add(item);
  				break;
  			}
@@ -289,7 +289,7 @@
 -					DrawSittingLegs(ref drawinfo, TextureAssets.ArmorLeg[drawinfo.drawPlayer.legs].Value, drawinfo.colorArmorLegs, drawinfo.cLegs);
 +					DrawSittingLegs(ref drawinfo, TextureAssets.ArmorLeg[drawinfo.drawPlayer.legs].Value, drawinfo.colorArmorLegs, drawinfo.cLegs, equipType: EquipType.Legs);
  					if (drawinfo.legsGlowMask != -1)
-+						// Legs Glowmask, sitting, Under robes or normal, no API support for glowmasks yet. glowmask bool will also need to be set.
++						// Legs Glow Mask, sitting, Under robes or normal, no API support for glow masks yet. glow mask bool will also need to be set.
  						DrawSittingLegs(ref drawinfo, TextureAssets.GlowMask[drawinfo.legsGlowMask].Value, drawinfo.legsGlowColor, drawinfo.cLegs);
  				}
  			}
@@ -314,7 +314,7 @@
  			else {
  				item = new DrawData(TextureAssets.GlowMask[drawinfo.legsGlowMask].Value, legsOffset + new Vector2((int)(drawinfo.Position.X - Main.screenPosition.X - (float)(drawinfo.drawPlayer.legFrame.Width / 2) + (float)(drawinfo.drawPlayer.width / 2)), (int)(drawinfo.Position.Y - Main.screenPosition.Y + (float)drawinfo.drawPlayer.height - (float)drawinfo.drawPlayer.legFrame.Height + 4f)) + drawinfo.drawPlayer.legPosition + drawinfo.legVect, drawinfo.drawPlayer.legFrame, drawinfo.legsGlowColor, drawinfo.drawPlayer.legRotation, drawinfo.legVect, 1f, drawinfo.playerEffect);
  				item.shader = drawinfo.cLegs;
-+				// if (ItemLoader.ModifyEquipTextureDraw(ref drawinfo, ref item, EquipType.Legs, drawinfo.drawPlayer.legs)) // Legs Glowmask, Not sitting, Under robes, no API support for glowmasks yet
++				// if (ItemLoader.ModifyEquipTextureDraw(ref drawinfo, ref item, EquipType.Legs, drawinfo.drawPlayer.legs)) // Legs Glow mask, Not sitting, Under robes, no API support for glow masks yet
  				drawinfo.DrawDataCache.Add(item);
  			}
  		}
@@ -431,7 +431,7 @@
  				if (drawinfo.bodyGlowMask != -1) {
  					item = new DrawData(TextureAssets.GlowMask[drawinfo.bodyGlowMask].Value, new Vector2((int)(drawinfo.Position.X - Main.screenPosition.X - (float)(drawinfo.drawPlayer.bodyFrame.Width / 2) + (float)(drawinfo.drawPlayer.width / 2)) + num, (int)(drawinfo.Position.Y - Main.screenPosition.Y + (float)drawinfo.drawPlayer.height - (float)drawinfo.drawPlayer.bodyFrame.Height + 4f)) + drawinfo.drawPlayer.bodyPosition + new Vector2(drawinfo.drawPlayer.bodyFrame.Width / 2, drawinfo.drawPlayer.bodyFrame.Height / 2), bodyFrame, drawinfo.bodyGlowColor, drawinfo.drawPlayer.bodyRotation, drawinfo.bodyVect, 1f, drawinfo.playerEffect);
  					item.shader = drawinfo.cBody;
-+					// Non-composite Body Glowmask. No need for ModifyEquipTextureDraw hook.
++					// Non-composite Body Glow mask. No need for ModifyEquipTextureDraw hook.
  					drawinfo.DrawDataCache.Add(item);
  				}
  			}
@@ -538,8 +538,8 @@
  						else {
  							item = new DrawData(TextureAssets.GlowMask[drawinfo.headGlowMask].Value, helmetOffset + new Vector2((int)(drawinfo.Position.X - Main.screenPosition.X - (float)(drawinfo.drawPlayer.bodyFrame.Width / 2) + (float)(drawinfo.drawPlayer.width / 2)), (int)(drawinfo.Position.Y - Main.screenPosition.Y + (float)drawinfo.drawPlayer.height - (float)drawinfo.drawPlayer.bodyFrame.Height + 4f)) + drawinfo.drawPlayer.headPosition + drawinfo.headVect, bodyFrame3, drawinfo.headGlowColor, drawinfo.drawPlayer.headRotation, headVect2, 1f, drawinfo.playerEffect);
  							item.shader = drawinfo.cHead;
-+							// TODO: Support arbitrary GlowMask in TextureAssets.GlowMask.
-+							// if (ItemLoader.ModifyEquipTextureDraw(ref drawinfo, ref item, EquipType.Head, drawinfo.drawPlayer.head)) // Head GlowMask, Not ArmorIDs.Head.Sets.IsTallHat
++							// TODO: Support arbitrary Glow Mask in TextureAssets.GlowMask.
++							// if (ItemLoader.ModifyEquipTextureDraw(ref drawinfo, ref item, EquipType.Head, drawinfo.drawPlayer.head)) // Head Glow Mask, Not ArmorIDs.Head.Sets.IsTallHat
  							drawinfo.DrawDataCache.Add(item);
  						}
  					}
@@ -698,7 +698,18 @@
  			return;
  
  		_ = drawinfo.drawPlayer.name;
-@@ -2468,12 +_,16 @@
+@@ -2431,6 +_,10 @@
+ 			}
+ 		}
+ 
++		// Used to facilitate ItemLoader.ModifyItemDraw
++		DrawData normal = default;
++		DrawData? colored = null;
++		DrawData? glow = null;
+ 		if (heldItem.useStyle == 5) {
+ 			if (Item.staff[num]) {
+ 				float num9 = drawinfo.drawPlayer.itemRotation + 0.785f * (float)drawinfo.drawPlayer.direction;
+@@ -2468,13 +_,21 @@
  						origin5 = Vector2.Zero;
  					}
  				}
@@ -712,9 +723,14 @@
 +
  				item = new DrawData(value, new Vector2((int)(drawinfo.ItemLocation.X - Main.screenPosition.X + origin5.X + num10), (int)(drawinfo.ItemLocation.Y - Main.screenPosition.Y + num11)), itemDrawFrame, heldItem.GetAlpha(drawinfo.itemColor), num9, origin5, adjustedItemScale, drawinfo.itemEffect);
 +
++				normal = item;
++				/*
  				drawinfo.DrawDataCache.Add(item);
++				*/
++				ItemLoader.ModifyItemDraw(heldItem, ref drawinfo, normal, colored, glow); // useStyle == 5, Item.staff[num], no vanilla colored or glow support
  				if (num == 3870) {
  					item = new DrawData(TextureAssets.GlowMask[238].Value, new Vector2((int)(drawinfo.ItemLocation.X - Main.screenPosition.X + origin5.X + num10), (int)(drawinfo.ItemLocation.Y - Main.screenPosition.Y + num11)), itemDrawFrame, new Color(255, 255, 255, 127), num9, origin5, adjustedItemScale, drawinfo.itemEffect);
+ 					drawinfo.DrawDataCache.Add(item);
 @@ -2485,7 +_,7 @@
  
  			if (num == 5118) {
@@ -733,6 +749,86 @@
  			Vector2 vector10 = Main.DrawPlayerItemPos(drawinfo.drawPlayer.gravDir, num);
  			num12 = (int)vector10.X;
  			vector9.Y = vector10.Y;
+@@ -2504,16 +_,27 @@
+ 				origin7 = new Vector2(itemDrawFrame.Width + num12, itemDrawFrame.Height / 2);
+ 
+ 			item = new DrawData(value, new Vector2((int)(drawinfo.ItemLocation.X - Main.screenPosition.X + vector9.X), (int)(drawinfo.ItemLocation.Y - Main.screenPosition.Y + vector9.Y)), itemDrawFrame, heldItem.GetAlpha(drawinfo.itemColor), drawinfo.drawPlayer.itemRotation, origin7, adjustedItemScale, drawinfo.itemEffect);
++
++			normal = item;
++			/*
+ 			drawinfo.DrawDataCache.Add(item);
++			*/
+ 			if (heldItem.color != default(Color)) {
+ 				item = new DrawData(value, new Vector2((int)(drawinfo.ItemLocation.X - Main.screenPosition.X + vector9.X), (int)(drawinfo.ItemLocation.Y - Main.screenPosition.Y + vector9.Y)), itemDrawFrame, heldItem.GetColor(drawinfo.itemColor), drawinfo.drawPlayer.itemRotation, origin7, adjustedItemScale, drawinfo.itemEffect);
++				colored = item;
++				/*
+ 				drawinfo.DrawDataCache.Add(item);
++				*/
+ 			}
+ 
+ 			if (heldItem.glowMask != -1) {
+ 				item = new DrawData(TextureAssets.GlowMask[heldItem.glowMask].Value, new Vector2((int)(drawinfo.ItemLocation.X - Main.screenPosition.X + vector9.X), (int)(drawinfo.ItemLocation.Y - Main.screenPosition.Y + vector9.Y)), itemDrawFrame, new Color(250, 250, 250, heldItem.alpha), drawinfo.drawPlayer.itemRotation, origin7, adjustedItemScale, drawinfo.itemEffect);
++				glow = item;
++				/*
+ 				drawinfo.DrawDataCache.Add(item);
++				*/
+ 			}
++			ItemLoader.ModifyItemDraw(heldItem, ref drawinfo, normal, colored, glow); // useStyle == 5, Not Item.staff[num]
+ 
+ 			if (num == 3788) {
+ 				float num13 = ((float)drawinfo.drawPlayer.miscCounter / 75f * ((float)Math.PI * 2f)).ToRotationVector2().X * 1f + 0f;
+@@ -2529,31 +_,51 @@
+ 
+ 		if (drawinfo.drawPlayer.gravDir == -1f) {
+ 			item = new DrawData(value, position, itemDrawFrame, heldItem.GetAlpha(drawinfo.itemColor), num5, origin, adjustedItemScale, drawinfo.itemEffect);
++			normal = item;
++			/*
+ 			drawinfo.DrawDataCache.Add(item);
++			*/
+ 			if (heldItem.color != default(Color)) {
+ 				item = new DrawData(value, position, itemDrawFrame, heldItem.GetColor(drawinfo.itemColor), num5, origin, adjustedItemScale, drawinfo.itemEffect);
++				colored = item;
++				/*
+ 				drawinfo.DrawDataCache.Add(item);
++				*/
+ 			}
+ 
+ 			if (heldItem.glowMask != -1) {
+ 				item = new DrawData(TextureAssets.GlowMask[heldItem.glowMask].Value, position, itemDrawFrame, new Color(250, 250, 250, heldItem.alpha), num5, origin, adjustedItemScale, drawinfo.itemEffect);
++				glow = item;
++				/*
+ 				drawinfo.DrawDataCache.Add(item);
++				*/
+ 			}
++			ItemLoader.ModifyItemDraw(heldItem, ref drawinfo, normal, colored, glow); // useStyle != 5, reversed gravity
+ 
+ 			return;
+ 		}
+ 
+ 		item = new DrawData(value, position, itemDrawFrame, heldItem.GetAlpha(drawinfo.itemColor), num5, origin, adjustedItemScale, drawinfo.itemEffect);
++		normal = item;
++		/*
+ 		drawinfo.DrawDataCache.Add(item);
++		*/
+ 		if (heldItem.color != default(Color)) {
+ 			item = new DrawData(value, position, itemDrawFrame, heldItem.GetColor(drawinfo.itemColor), num5, origin, adjustedItemScale, drawinfo.itemEffect);
++			colored = item;
++			/*
+ 			drawinfo.DrawDataCache.Add(item);
++			*/
+ 		}
+ 
+ 		if (heldItem.glowMask != -1) {
+ 			item = new DrawData(TextureAssets.GlowMask[heldItem.glowMask].Value, position, itemDrawFrame, color, num5, origin, adjustedItemScale, drawinfo.itemEffect);
++			glow = item;
++			/*
+ 			drawinfo.DrawDataCache.Add(item);
++			*/
+ 		}
++		ItemLoader.ModifyItemDraw(heldItem, ref drawinfo, normal, colored, glow); // useStyle != 5, normal gravity
+ 
+ 		if (!heldItem.flame || drawinfo.shadow != 0f)
+ 			return;
 @@ -2603,7 +_,7 @@
  		if (drawinfo.usesCompositeTorso) {
  			DrawPlayer_28_ArmOverItemComposite(ref drawinfo);

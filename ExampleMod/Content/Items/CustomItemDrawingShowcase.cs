@@ -5,15 +5,16 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.GameContent;
+using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
-using Terraria.UI;
 
 namespace ExampleMod.Content.Items
 {
 	/*
-	This item showcases proper usage of PreDrawInInventory, PostDrawInInventory, PreDrawInWorld, and PostDrawInWorld. In particular, these examples are intended to show the correct math and arguments needed to draw at the intended positions. World drawing and inventory have specific nuances that modders need to be aware of.
+	This item showcases proper usage of PreDrawInInventory, PostDrawInInventory, PreDrawInWorld, PostDrawInWorld, and ModifyItemDraw. In particular, these examples are intended to show the correct math and arguments needed to draw at the intended positions. World drawing and inventory have specific nuances that modders need to be aware of.
 
 	Right click on the item in the inventory to toggle between each example:
 		DrawModeGlowmask: A separate texture, CustomItemDrawingShowcase_Front, is drawn using PostDrawInInventory and PostDrawInWorld
@@ -22,7 +23,6 @@ namespace ExampleMod.Content.Items
 		DrawModeHighlightEffect: The item texture is drawn manually several times in PreDrawInWorld to give the item a afterimage aura effect, similar to Boss Bags.
 		DrawModeRockingRotation: The item texture is drawn manually.
 
-	Note that these techniques can't be used as is for useable items, such as swords, that would require more advanced logic and hooks.
 	When using these techniques, it's a good idea to test your custom inventory drawing code in other UI such as an ItemDefinition field of a ModConfig to make sure the drawing logic is correct at different draw scales.
 	*/
 	public class CustomItemDrawingShowcase : ModItem
@@ -55,6 +55,12 @@ namespace ExampleMod.Content.Items
 			Item.width = 20;
 			Item.height = 20;
 			// Note that Item.width and height are the in-world hitbox dimensions and don't have to match the texture dimensions. Be mindful of this distinction when writing custom item drawing code.
+			Item.holdStyle = ItemHoldStyleID.HoldFront;
+			Item.useStyle = ItemUseStyleID.Swing;
+			Item.useAnimation = 60;
+			Item.useTime = 60;
+
+			Item.color = Color.Red;
 		}
 
 		public override bool CanRightClick() => true;
@@ -169,6 +175,66 @@ namespace ExampleMod.Content.Items
 				// Instead of the provided lightColor, however, we use Color.White since we want to draw the glowmask texture at full brightness regardless of world lighting conditions.
 				spriteBatch.Draw(frontTexture.Value, drawPosition, itemFrame, Color.White, rotation, origin, scale, SpriteEffects.None, 0);
 			}
+		}
+
+		public override void HoldStyle(Player player, Rectangle heldItemFrame) {
+			// The logic for ItemHoldStyleID.HoldFront holds the item out a little farther than desired, so we customize the location to bring it closer to the player.
+			player.itemLocation.X = player.position.X + player.width * 0.5f + (heldItemFrame.Width * 0.5f - 10f) * player.direction;
+		}
+
+		// ModifyItemDraw is used to modify how a held item is drawn.
+		// Note that held items are drawn as part of the player drawing. Player drawing is unique in that it collects DrawData for each layer (the held item is one of those layers), and then later on all DrawData are drawn at once. Because of this, we do not use spriteBatch.Draw here, but rather manipulate the DrawData to achieve the desired visuals. This is similar to how PlayerDrawLayer works.
+		// Also note that if Item.color is set, you'll want to duplicate much of the logic for coloredDrawData as well.
+		public override bool ModifyItemDraw(ref PlayerDrawSet drawInfo, ref DrawData drawData, ref DrawData? coloredDrawData, ref DrawData? glowmaskDrawData) {
+			if (drawMode == DrawModeGlowmask) {
+				glowmaskDrawData = drawData with { texture = frontTexture.Value };
+			}
+			else if (drawMode == DrawModePulse) {
+				// Since held items are drawn with an origin at the bottom left or right corner (depending on player direction), the pulsing effect here is visually different than the in-world pulsing. This may or may not be desired. This effect can be made to behave exactly the same with more math, if desired.
+				drawData = drawData with { scale = drawData.scale * Main.essScale, color = drawData.color * Main.essScale };
+			}
+			else if (drawMode == DrawModeBehindTexture) {
+				// CustomItemDrawingShowcase_Back.png has different dimensions than CustomItemDrawingShowcase.png, so we need to calculate values for the origin and sourceRectangle parameters to draw correctly
+
+				int backFrameNumber = (int)(Main.GameUpdateCount % 60 / 30);
+				var backSourceRectangle = backTexture.Frame(verticalFrames: 2, frameY: backFrameNumber);
+				int originalHeight = drawData.sourceRect.HasValue ? drawData.sourceRect.Value.Height : drawData.texture.Height;
+				int adjustment = (backSourceRectangle.Height - originalHeight) / 2;
+				var backOrigin = drawData.origin + new Vector2(adjustment);
+
+				var behind = drawData with { texture = backTexture.Value, sourceRect = backSourceRectangle, origin = backOrigin };
+				drawInfo.DrawDataCache.Add(behind);
+			}
+			else if (drawMode == DrawModeHighlightAfterImageEffect) {
+				float counter = Main.GlobalTimeWrappedHourly * 0.29f; // Item.timeSinceItemSpawned will be 0 for held items, so adjusted logic
+				float offsetScale = Main.GlobalTimeWrappedHourly;
+				offsetScale %= 4f;
+				offsetScale /= 2f;
+				if (offsetScale >= 1f) {
+					offsetScale = 2f - offsetScale;
+				}
+
+				offsetScale = offsetScale * 0.5f + 0.5f;
+				// 4 far afterimages
+				for (float i = 0f; i < 1f; i += 0.25f) {
+					//spriteBatch.Draw(itemTexture, drawPosition + new Vector2(0f, 8f).RotatedBy((i + counter) * ((float)Math.PI * 2f)) * offsetScale, itemFrame, new Color(90, 70, 255, 50), rotation, drawOrigin, scale, SpriteEffects.None, 0f);
+
+					var farAfterimage = drawData with { position = drawData.position + new Vector2(0f, 8f).RotatedBy((i + counter) * ((float)Math.PI * 2f)) * offsetScale, color = new Color(90, 70, 255, 50) };
+					drawInfo.DrawDataCache.Add(farAfterimage);
+
+				}
+				// 3 close afterimages
+				for (float i = 0f; i < 1f; i += 0.34f) {
+					var farAfterimage = drawData with { position = drawData.position + new Vector2(0f, 4f).RotatedBy((i + counter) * ((float)Math.PI * 2f)) * offsetScale, color = new Color(140, 120, 255, 77) };
+					drawInfo.DrawDataCache.Add(farAfterimage);
+				}
+			}
+			else if (drawMode == DrawModeRockingRotation) {
+				// Since held items are drawn with an origin at the bottom left or right corner (depending on player direction), the rocking effect here is visually different than the in-world pulsing. This may or may not be desired. This effect can be made to behave exactly the same with more math, if desired.
+				drawData.rotation += MathF.Cos(Main.GameUpdateCount * 0.03f) * MathHelper.ToRadians(30);
+			}
+
+			return true;
 		}
 	}
 }
