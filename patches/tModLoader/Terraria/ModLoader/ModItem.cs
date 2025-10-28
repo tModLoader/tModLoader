@@ -1108,11 +1108,11 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	}
 
 	/// <summary>
-	/// Allows for Wings to do various things while in use. "inUse" is whether or not the jump button is currently pressed. Called when these wings visually appear on the player. Use to animate wings, create dusts, invoke sounds, and create lights. Note that this hook is only ever called through this item's associated equipment texture. False will keep everything the same. True, you need to handle all animations in your own code.
+	/// Allows for Wings to do various things while in use. <paramref name="inUse"/> is whether or not the jump button is currently pressed and there is remaining <see cref="Player.wingTime"/>, meaning the wings are actively flying. If <paramref name="inUse"/> is false but <see cref="Player.controlJump"/> is true, the player is gliding. Called when these wings visually appear on the player. Use to animate wings, create dusts, invoke sounds, and create lights. Note that this hook is only ever called through this item's associated equipment texture. False will keep everything the same. True, you need to handle all animations in your own code.
 	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="player">The player.</param>
-	/// <param name="inUse">if set to <c>true</c> [in use].</param>
+	/// <param name="inUse">If <c>true</c>, the wings are actively flying.</param>
 	/// <returns></returns>
 	public virtual bool WingUpdate(Player player, bool inUse)
 	{

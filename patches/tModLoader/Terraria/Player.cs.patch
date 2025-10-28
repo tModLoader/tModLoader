@@ -296,6 +296,24 @@
  	public float slotsMinions;
  	public bool pygmy;
  	public bool raven;
+@@ -697,7 +_,17 @@
+ 	public bool abigailMinion;
+ 	public int highestAbigailCounterOriginalDamage;
+ 	public float wingTime;
++	/// <summary>
++	/// The visible wings equipment slot (<see cref="ArmorIDs.Wing"/>). Usually corresponds to the <see cref="Item.wingSlot"/> of the visible wing accessory (unless hidden and either a mount is active or velocity.Y is 0) or vanity accessory.
++	/// <br/><br/> Responsible for wing visuals and sounds, not the movement (see <see cref="wingsLogic"/>.
++	/// <br/><br/> Defaults to 0.
++	/// </summary>
+ 	public int wings;
++	/// <summary>
++	/// The functional wings equipment slot (<see cref="ArmorIDs.Wing"/>). Usually corresponds to the <see cref="Item.wingSlot"/> of the wing accessory (non-vanity).
++	/// <br/><br/> Responsible for wing movement, not the visuals and sounds (see <see cref="wings"/>.
++	/// <br/><br/> Defaults to 0.
++	/// </summary>
+ 	public int wingsLogic;
+ 	public int wingTimeMax;
+ 	public int wingFrame;
 @@ -726,11 +_,24 @@
  	public bool dontHurtCritters;
  	public bool hasLucyTheAxe;
@@ -4943,6 +4961,17 @@
  		if (wings == 32)
  			num27 = 3;
  
+@@ -23012,6 +_,10 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Returns true if the player isn't on a mount and isn't wet or shouldn't float and has non-zero vertical velocity or is currently grappling.
++	/// <br/><br/> Checked by wings that only draw when in use.
++	/// </summary>
+ 	public bool ShouldDrawWingsThatAreAlwaysAnimated()
+ 	{
+ 		if ((velocity.Y != 0f || grappling[0] != -1) && (!wet || !ShouldFloatInWater))
 @@ -23333,7 +_,7 @@
  		if (TileID.Sets.BasicChest[tile.type] || tile.type == 97)
  			r = new Rectangle(chestPointX * 16, chestPointY * 16, 32, 32);
