@@ -2541,7 +2541,7 @@
  			TurnToAir();
  	}
  
-@@ -49356,9 +_,15 @@
+@@ -49356,9 +_,19 @@
  		}
  	}
  
@@ -2552,12 +2552,16 @@
 +	/// <param name="onlyIfVariantChanged"></param>
  	public void Refresh(bool onlyIfVariantChanged = true)
  	{
++		// Don't adjust custom prices. For shops, modders would need to add multiple shop entries to account for variants with custom prices anyway. 
++		var originalCustomPrice = shopCustomPrice;
++		var originalSpecialCurrency = shopSpecialCurrency;
++		
  		if (!IsAir && (!onlyIfVariantChanged || ItemVariants.SelectVariant(type) != Variant)) {
 +			/*
  			bool flag = favorited;
  			int num = stack;
  			int num2 = netID;
-@@ -49367,6 +_,13 @@
+@@ -49367,6 +_,16 @@
  			Prefix(prefixWeWant);
  			stack = num;
  			favorited = flag;
@@ -2569,5 +2573,8 @@
 +			ms.Position = 0;
 +			ItemIO.Receive(this, new BinaryReader(ms), readStack: true, readFavorite: true);
  		}
++
++		shopCustomPrice = originalCustomPrice;
++		shopSpecialCurrency = originalSpecialCurrency;
  	}
  }
