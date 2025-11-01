@@ -1,5 +1,8 @@
 var NAVTREEINDEX3 =
 {
+"class_corruption_biome.html":[3,0,207],
+"class_corruption_pit_biome.html":[3,0,208],
+"class_crash_dump.html":[3,0,210],
 "class_crash_dump.html#a1188ad6628fff27a4ba35c73b07b2e94":[3,0,210,0],
 "class_crash_watcher.html":[3,0,211],
 "class_creative_item_sacrifices_catalog.html":[3,0,212],
@@ -246,8 +249,5 @@ var NAVTREEINDEX3 =
 "class_emote_i_d_1_1_category.html#a200f4766a70cd7a6bbf5237a2706ae17":[3,0,310,0,2],
 "class_emote_i_d_1_1_category.html#a20c9336b4a2451f9543d637a1fc1eb2f":[3,0,310,0,4],
 "class_emote_i_d_1_1_category.html#a607bc5eb597053c298de2568b774707e":[3,0,310,0,3],
-"class_emote_i_d_1_1_category.html#aa0bea02dfffd06e07b53f0acd1a354e1":[3,0,310,0,5],
-"class_emote_i_d_1_1_category.html#aa48a861b1acb0d936d42e87bbf10767f":[3,0,310,0,6],
-"class_emote_i_d_1_1_category.html#ab01aa776dcb1b3aa7b5a8d35fd83266f":[3,0,310,0,0],
-"class_emote_i_d_1_1_category.html#adffe3d2b871e0b53fe59678fbb6a4787":[3,0,310,0,1]
+"class_emote_i_d_1_1_category.html#aa0bea02dfffd06e07b53f0acd1a354e1":[3,0,310,0,5]
 };

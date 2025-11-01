@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.09</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.10</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -207,6 +207,15 @@ const byte&#160;</td><td class="memItemRight" valign="bottom"><b>Hello</b> = 1</
 <tr class="separator:a6215949269660d7af58e81f97b48a7fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a871852147af35bbcd542fcce8fbf7cfe"><td class="memItemLeft" align="right" valign="top"><a id="a871852147af35bbcd542fcce8fbf7cfe" name="a871852147af35bbcd542fcce8fbf7cfe"></a>
 const byte&#160;</td><td class="memItemRight" valign="bottom"><b>HitSwitch</b> = 59</td></tr>
+<tr class="memdesc:a871852147af35bbcd542fcce8fbf7cfe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls <a class="el" href="class_wiring.html#aaa9000058d0dba92aa99a3738010acbc" title="Contains shared code for tile interactions. Usually called on the server and all clients....">Wiring.HitSwitch(int, int)</a> at the provided tile coordinates. This is used to sync effects from tile interactions, like playing sounds. <br  />
+<br  />
+ Modders should use this message whenever they call <a class="el" href="class_wiring.html#aaa9000058d0dba92aa99a3738010acbc" title="Contains shared code for tile interactions. Usually called on the server and all clients....">Wiring.HitSwitch(int, int)</a> to sync the effects. <br  />
+<br  />
+ <code><a class="el" href="class_net_message.html#aae9f950a067b8cd26edda26e73a41b2d" title="Used to send a vanilla MessageID message to send data between the server and client....">NetMessage.SendData</a></code> parameters: <br  />
+ <b>number:</b> x tile coordinate to use with <a class="el" href="class_wiring.html#aaa9000058d0dba92aa99a3738010acbc" title="Contains shared code for tile interactions. Usually called on the server and all clients....">Wiring.HitSwitch</a> <br  />
+ <b>number2:</b> y tile coordinate to use with <a class="el" href="class_wiring.html#aaa9000058d0dba92aa99a3738010acbc" title="Contains shared code for tile interactions. Usually called on the server and all clients....">Wiring.HitSwitch</a> <br  />
+<br  />
+ <b>Forwarded to other clients</b> <br /></td></tr>
 <tr class="separator:a871852147af35bbcd542fcce8fbf7cfe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa790cdeb9f80d1abcfcbe607069d997f"><td class="memItemLeft" align="right" valign="top"><a id="aa790cdeb9f80d1abcfcbe607069d997f" name="aa790cdeb9f80d1abcfcbe607069d997f"></a>
 const byte&#160;</td><td class="memItemRight" valign="bottom"><b>HurtPlayer</b> = 26</td></tr>

@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.09</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.10</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -630,7 +630,7 @@ string&#160;</td><td class="memItemRight" valign="bottom"><b>BestiaryNotes</b></
 <tr class="separator:a925d2771b593be81604bf54ac3542c6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaf50c5f1a88cd2c2c2e27b200b6b97b9"><td class="memItemLeft" align="right" valign="top"><a id="aaf50c5f1a88cd2c2c2e27b200b6b97b9" name="aaf50c5f1a88cd2c2c2e27b200b6b97b9"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>bodySlot</b> = -1</td></tr>
-<tr class="memdesc:aaf50c5f1a88cd2c2c2e27b200b6b97b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">The body equipment slot for this item. When this item is equipped, <a class="el" href="class_player.html#a4fa33b3cbc16ad78dc6d2fc49d04ad69" title="The visible body equipment slot. Usually corresponds to the Item.bodySlot of the visible body (&quot;shirt...">Player.body</a> will be set to this value and the corresponding equipment texture will be displayed on the player. <br  />
+<tr class="memdesc:aaf50c5f1a88cd2c2c2e27b200b6b97b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">The body equipment slot for this item (<a class="el" href="class_armor_i_ds_1_1_body.html">ArmorIDs.Body</a>). When this item is equipped, <a class="el" href="class_player.html#a4fa33b3cbc16ad78dc6d2fc49d04ad69" title="The visible body equipment slot (ArmorIDs.Body). Usually corresponds to the Item.bodySlot of the visi...">Player.body</a> will be set to this value and the corresponding equipment texture will be displayed on the player. <br  />
 <br  />
  For <a class="el" href="class_mod_item.html" title="This class serves as a place for you to place all your properties and hooks for each item....">ModItem</a>, this is set automatically using <a class="el" href="class_autoload_equip.html" title="This attribute annotates a ModItem class to indicate that the game should autoload the specified equi...">AutoloadEquip</a> with EquipType.Body. <br  />
 <br  />
@@ -785,7 +785,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>handOffSlot</b> = -1</
 <tr class="separator:a31b8aa7ff3cea3c3d8b5259de45ef860"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a52b0319b91e55e34732d4ed0e50080f6"><td class="memItemLeft" align="right" valign="top"><a id="a52b0319b91e55e34732d4ed0e50080f6" name="a52b0319b91e55e34732d4ed0e50080f6"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>handOnSlot</b> = -1</td></tr>
-<tr class="memdesc:a52b0319b91e55e34732d4ed0e50080f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">The equipment slot for this item. When this item is equipped, the corresponding <a class="el" href="class_player.html">Player</a> field will be set to this value (for example, item.faceSlot will set player.face) and the corresponding equipment texture will be displayed on the player. <br  />
+<tr class="memdesc:a52b0319b91e55e34732d4ed0e50080f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">The equipment slot for this item (See the entry in <a class="el" href="class_armor_i_ds.html">ArmorIDs</a> for this EquipType). When this item is equipped, the corresponding <a class="el" href="class_player.html">Player</a> field will be set to this value (for example, item.faceSlot will set player.face) and the corresponding equipment texture will be displayed on the player. <br  />
 <br  />
  For <a class="el" href="class_mod_item.html" title="This class serves as a place for you to place all your properties and hooks for each item....">ModItem</a>, this is set automatically using <a class="el" href="class_autoload_equip.html" title="This attribute annotates a ModItem class to indicate that the game should autoload the specified equi...">AutoloadEquip</a> with the corresponding EquipType value. <br  />
 <br  />
@@ -798,7 +798,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>hasVanityEffects</b><
 <tr class="separator:a60df2d8d6ebe0a18166ef84fddffb797"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a09c37d0ba914a9dd2ac4f2ac9f4ef2cc"><td class="memItemLeft" align="right" valign="top"><a id="a09c37d0ba914a9dd2ac4f2ac9f4ef2cc" name="a09c37d0ba914a9dd2ac4f2ac9f4ef2cc"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>headSlot</b> = -1</td></tr>
-<tr class="memdesc:a09c37d0ba914a9dd2ac4f2ac9f4ef2cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">The head equipment slot for this item. When this item is equipped, <a class="el" href="class_player.html#a7895ba7bc430f5da5385022da7289551" title="The visible head equipment slot. Usually corresponds to the Item.legSlot of the visible head (&quot;helmet...">Player.head</a> will be set to this value and the corresponding equipment texture will be displayed on the player. <br  />
+<tr class="memdesc:a09c37d0ba914a9dd2ac4f2ac9f4ef2cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">The head equipment slot for this item (<a class="el" href="class_armor_i_ds_1_1_head.html">ArmorIDs.Head</a>). When this item is equipped, <a class="el" href="class_player.html#a7895ba7bc430f5da5385022da7289551" title="The visible head equipment slot (ArmorIDs.Head). Usually corresponds to the Item.headSlot of the visi...">Player.head</a> will be set to this value and the corresponding equipment texture will be displayed on the player. <br  />
 <br  />
  For <a class="el" href="class_mod_item.html" title="This class serves as a place for you to place all your properties and hooks for each item....">ModItem</a>, this is set automatically using <a class="el" href="class_autoload_equip.html" title="This attribute annotates a ModItem class to indicate that the game should autoload the specified equi...">AutoloadEquip</a> with EquipType.Head. <br  />
 <br  />
@@ -846,7 +846,7 @@ float&#160;</td><td class="memItemRight" valign="bottom"><b>knockBack</b></td></
 <tr class="separator:a98c6c332c5aa30e68e8d366571d87c95"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afc09b462c2cdd8469c0e8891c0245e38"><td class="memItemLeft" align="right" valign="top"><a id="afc09b462c2cdd8469c0e8891c0245e38" name="afc09b462c2cdd8469c0e8891c0245e38"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>legSlot</b> = -1</td></tr>
-<tr class="memdesc:afc09b462c2cdd8469c0e8891c0245e38"><td class="mdescLeft">&#160;</td><td class="mdescRight">The legs equipment slot for this item. When this item is equipped, <a class="el" href="class_player.html#acd8cd21ad0a9e253c48b419daa541ec9" title="The visible legs equipment slot. Usually corresponds to the Item.legSlot of the visible legs (&quot;pants&quot;...">Player.legs</a> will be set to this value and the corresponding equipment texture will be displayed on the player. <br  />
+<tr class="memdesc:afc09b462c2cdd8469c0e8891c0245e38"><td class="mdescLeft">&#160;</td><td class="mdescRight">The legs equipment slot for this item (<a class="el" href="class_armor_i_ds_1_1_legs.html">ArmorIDs.Legs</a>). When this item is equipped, <a class="el" href="class_player.html#acd8cd21ad0a9e253c48b419daa541ec9" title="The visible legs equipment slot (ArmorIDs.Legs). Usually corresponds to the Item.legSlot of the visib...">Player.legs</a> will be set to this value and the corresponding equipment texture will be displayed on the player. <br  />
 <br  />
  For <a class="el" href="class_mod_item.html" title="This class serves as a place for you to place all your properties and hooks for each item....">ModItem</a>, this is set automatically using <a class="el" href="class_autoload_equip.html" title="This attribute annotates a ModItem class to indicate that the game should autoload the specified equi...">AutoloadEquip</a> with EquipType.Legs. <br  />
 <br  />
@@ -1245,8 +1245,8 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>width</b></td></tr>
 Static Public Attributes</h2></td></tr>
 <tr class="memitem:a19537efd3f1a35e4f0c00561f89703ce"><td class="memItemLeft" align="right" valign="top"><a id="a19537efd3f1a35e4f0c00561f89703ce" name="a19537efd3f1a35e4f0c00561f89703ce"></a>
 static int[]&#160;</td><td class="memItemRight" valign="bottom"><b>bodyType</b> = new int[ArmorIDs.Body.Count]</td></tr>
-<tr class="memdesc:a19537efd3f1a35e4f0c00561f89703ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">An array for converting an <a class="el" href="class_item.html#aaf50c5f1a88cd2c2c2e27b200b6b97b9" title="The body equipment slot for this item. When this item is equipped, Player.body will be set to this va...">bodySlot</a> value into a <a class="el" href="class_item.html#af79ba8b09813fd867fa3da24a4e31e51" title="The Item ID of this item. The Item ID is a unique number assigned to each Item loaded into the game....">type</a> value.<br  />
- Indexed by <a class="el" href="class_item.html#aaf50c5f1a88cd2c2c2e27b200b6b97b9" title="The body equipment slot for this item. When this item is equipped, Player.body will be set to this va...">bodySlot</a>. Defaults to 0.<br  />
+<tr class="memdesc:a19537efd3f1a35e4f0c00561f89703ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">An array for converting an <a class="el" href="class_item.html#aaf50c5f1a88cd2c2c2e27b200b6b97b9" title="The body equipment slot for this item (ArmorIDs.Body). When this item is equipped,...">bodySlot</a> value into a <a class="el" href="class_item.html#af79ba8b09813fd867fa3da24a4e31e51" title="The Item ID of this item. The Item ID is a unique number assigned to each Item loaded into the game....">type</a> value.<br  />
+ Indexed by <a class="el" href="class_item.html#aaf50c5f1a88cd2c2c2e27b200b6b97b9" title="The body equipment slot for this item (ArmorIDs.Body). When this item is equipped,...">bodySlot</a>. Defaults to 0.<br  />
  <br /></td></tr>
 <tr class="separator:a19537efd3f1a35e4f0c00561f89703ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a93678c115261a95508cc016fa07518d6"><td class="memItemLeft" align="right" valign="top"><a id="a93678c115261a95508cc016fa07518d6" name="a93678c115261a95508cc016fa07518d6"></a>
@@ -1292,14 +1292,14 @@ const int&#160;</td><td class="memItemRight" valign="bottom"><b>goldCritterRarit
 <tr class="separator:a10dda81209231ca8a4681a4cc5dfde96"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8e6a10ef3ca56481a5afc50edc79c590"><td class="memItemLeft" align="right" valign="top"><a id="a8e6a10ef3ca56481a5afc50edc79c590" name="a8e6a10ef3ca56481a5afc50edc79c590"></a>
 static int[]&#160;</td><td class="memItemRight" valign="bottom"><b>headType</b> = new int[ArmorIDs.Head.Count]</td></tr>
-<tr class="memdesc:a8e6a10ef3ca56481a5afc50edc79c590"><td class="mdescLeft">&#160;</td><td class="mdescRight">An array for converting an <a class="el" href="class_item.html#a09c37d0ba914a9dd2ac4f2ac9f4ef2cc" title="The head equipment slot for this item. When this item is equipped, Player.head will be set to this va...">headSlot</a> value into a <a class="el" href="class_item.html#af79ba8b09813fd867fa3da24a4e31e51" title="The Item ID of this item. The Item ID is a unique number assigned to each Item loaded into the game....">type</a> value.<br  />
- Indexed by <a class="el" href="class_item.html#a09c37d0ba914a9dd2ac4f2ac9f4ef2cc" title="The head equipment slot for this item. When this item is equipped, Player.head will be set to this va...">headSlot</a>. Defaults to 0.<br  />
+<tr class="memdesc:a8e6a10ef3ca56481a5afc50edc79c590"><td class="mdescLeft">&#160;</td><td class="mdescRight">An array for converting an <a class="el" href="class_item.html#a09c37d0ba914a9dd2ac4f2ac9f4ef2cc" title="The head equipment slot for this item (ArmorIDs.Head). When this item is equipped,...">headSlot</a> value into a <a class="el" href="class_item.html#af79ba8b09813fd867fa3da24a4e31e51" title="The Item ID of this item. The Item ID is a unique number assigned to each Item loaded into the game....">type</a> value.<br  />
+ Indexed by <a class="el" href="class_item.html#a09c37d0ba914a9dd2ac4f2ac9f4ef2cc" title="The head equipment slot for this item (ArmorIDs.Head). When this item is equipped,...">headSlot</a>. Defaults to 0.<br  />
  <br /></td></tr>
 <tr class="separator:a8e6a10ef3ca56481a5afc50edc79c590"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a14b45469911bdb1643d9850729efd7b4"><td class="memItemLeft" align="right" valign="top"><a id="a14b45469911bdb1643d9850729efd7b4" name="a14b45469911bdb1643d9850729efd7b4"></a>
 static int[]&#160;</td><td class="memItemRight" valign="bottom"><b>legType</b> = new int[ArmorIDs.Legs.Count]</td></tr>
-<tr class="memdesc:a14b45469911bdb1643d9850729efd7b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">An array for converting an <a class="el" href="class_item.html#afc09b462c2cdd8469c0e8891c0245e38" title="The legs equipment slot for this item. When this item is equipped, Player.legs will be set to this va...">legSlot</a> value into a <a class="el" href="class_item.html#af79ba8b09813fd867fa3da24a4e31e51" title="The Item ID of this item. The Item ID is a unique number assigned to each Item loaded into the game....">type</a> value.<br  />
- Indexed by <a class="el" href="class_item.html#afc09b462c2cdd8469c0e8891c0245e38" title="The legs equipment slot for this item. When this item is equipped, Player.legs will be set to this va...">legSlot</a>. Defaults to 0.<br  />
+<tr class="memdesc:a14b45469911bdb1643d9850729efd7b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">An array for converting an <a class="el" href="class_item.html#afc09b462c2cdd8469c0e8891c0245e38" title="The legs equipment slot for this item (ArmorIDs.Legs). When this item is equipped,...">legSlot</a> value into a <a class="el" href="class_item.html#af79ba8b09813fd867fa3da24a4e31e51" title="The Item ID of this item. The Item ID is a unique number assigned to each Item loaded into the game....">type</a> value.<br  />
+ Indexed by <a class="el" href="class_item.html#afc09b462c2cdd8469c0e8891c0245e38" title="The legs equipment slot for this item (ArmorIDs.Legs). When this item is equipped,...">legSlot</a>. Defaults to 0.<br  />
  <br /></td></tr>
 <tr class="separator:a14b45469911bdb1643d9850729efd7b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab0656ddd68272719de52a79cdc422da6"><td class="memItemLeft" align="right" valign="top"><a id="ab0656ddd68272719de52a79cdc422da6" name="ab0656ddd68272719de52a79cdc422da6"></a>

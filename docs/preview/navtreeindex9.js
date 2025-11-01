@@ -1,5 +1,10 @@
 var NAVTREEINDEX9 =
 {
+"class_item_loader.html#a8da5e3afb33529eb9de4ecb400e50ace":[3,0,647,78],
+"class_item_loader.html#a8da67083aeb88eabde0ee0a8d01be3f3":[3,0,647,75],
+"class_item_loader.html#a8f2b898d35a7bfd4aecdaa5de7ca3c4d":[3,0,647,69],
+"class_item_loader.html#a92da3f793f6a00f1f1541e156c9eaef2":[3,0,647,43],
+"class_item_loader.html#a934752bdc8c051fc7f3ca55ff447b79e":[3,0,647,26],
 "class_item_loader.html#a949b07546df7b3f8aaf1e7bd85c78a83":[3,0,647,74],
 "class_item_loader.html#a950ef43ff8171eebc5103cb75a6e3012":[3,0,647,16],
 "class_item_loader.html#a961b2ed71823d29bd9010bbb35c8c61a":[3,0,647,5],
@@ -152,6 +157,7 @@ var NAVTREEINDEX9 =
 "class_legacy_net_buffer_pool.html":[3,0,706],
 "class_legacy_net_diagnostics_u_i.html":[3,0,707],
 "class_legacy_player_renderer.html":[3,0,708],
+"class_legacy_player_renderer.html#a4314bfeda41e6757f6b434a129f9eb71":[3,0,708,0],
 "class_legacy_sound_player.html":[3,0,709],
 "class_levenshtein_distance.html":[3,0,710],
 "class_lifeform_analyzer_info_display.html":[3,0,711],
@@ -243,11 +249,5 @@ var NAVTREEINDEX9 =
 "class_main.html#a21a46385d01e0203cf3627f89e488661":[3,0,747,44],
 "class_main.html#a224593043e88020b9290cc6065a8c1ba":[3,0,747,124],
 "class_main.html#a22fc679c60b8037ff70749ab5ee3a3d3":[3,0,747,10],
-"class_main.html#a2335d9663703c85c735a940d7b498f06":[3,0,747,22],
-"class_main.html#a238b234362a3970c732ac814b2c23369":[3,0,747,5],
-"class_main.html#a239aa7a925524e2c6476a9a03cb2843e":[3,0,747,54],
-"class_main.html#a25d14fbe7eb0e4a6fbac9cd00c65d8b0":[3,0,747,48],
-"class_main.html#a286e04821e5e48abf3d683972a668976":[3,0,747,125],
-"class_main.html#a2acb653c4505fbd0d29230630234732a":[3,0,747,56],
-"class_main.html#a2bea304d8285015eddc5db9030485d91":[3,0,747,38]
+"class_main.html#a2335d9663703c85c735a940d7b498f06":[3,0,747,22]
 };

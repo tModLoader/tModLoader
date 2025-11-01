@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.09</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.10</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -120,7 +120,12 @@ static <a class="el" href="interface_i_entity_source.html">IEntitySource</a>&#16
 <tr class="separator:a0c8a9755f4ce92750eab1cfacb59000c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaa9000058d0dba92aa99a3738010acbc"><td class="memItemLeft" align="right" valign="top"><a id="aaa9000058d0dba92aa99a3738010acbc" name="aaa9000058d0dba92aa99a3738010acbc"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>HitSwitch</b> (int i, int j)</td></tr>
+<tr class="memdesc:aaa9000058d0dba92aa99a3738010acbc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Contains shared code for tile interactions. Usually called on the server and all clients. Typically called in conjunction with <code><a class="el" href="class_net_message.html#aae9f950a067b8cd26edda26e73a41b2d" title="Used to send a vanilla MessageID message to send data between the server and client....">NetMessage.SendData</a>(<a class="el" href="class_message_i_d.html#a871852147af35bbcd542fcce8fbf7cfe" title="Calls Wiring.HitSwitch(int, int) at the provided tile coordinates. This is used to sync effects from ...">MessageID.HitSwitch</a>...)</code> to have the method run everywhere else. (Or use the <a class="el" href="class_wiring.html#ad9965c68e284e7f990ac80beaf5e0552" title="Helper method that calls HitSwitch(int, int) followed by NetMessage.SendData(MessageID....">HitSwitchAndSync(int, int)</a> helper method instead) <br /></td></tr>
 <tr class="separator:aaa9000058d0dba92aa99a3738010acbc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad9965c68e284e7f990ac80beaf5e0552"><td class="memItemLeft" align="right" valign="top"><a id="ad9965c68e284e7f990ac80beaf5e0552" name="ad9965c68e284e7f990ac80beaf5e0552"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>HitSwitchAndSync</b> (int i, int j)</td></tr>
+<tr class="memdesc:ad9965c68e284e7f990ac80beaf5e0552"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper method that calls <a class="el" href="class_wiring.html#aaa9000058d0dba92aa99a3738010acbc" title="Contains shared code for tile interactions. Usually called on the server and all clients....">HitSwitch(int, int)</a> followed by <code><a class="el" href="class_net_message.html#aae9f950a067b8cd26edda26e73a41b2d" title="Used to send a vanilla MessageID message to send data between the server and client....">NetMessage.SendData</a>(<a class="el" href="class_message_i_d.html#a871852147af35bbcd542fcce8fbf7cfe" title="Calls Wiring.HitSwitch(int, int) at the provided tile coordinates. This is used to sync effects from ...">MessageID.HitSwitch</a>...)</code>. This will cause the HitSwitch logic to run on all clients and the server, as intended. <br /></td></tr>
+<tr class="separator:ad9965c68e284e7f990ac80beaf5e0552"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a43115d9d5efe8e25ad29e9217bca4b05"><td class="memItemLeft" align="right" valign="top"><a id="a43115d9d5efe8e25ad29e9217bca4b05" name="a43115d9d5efe8e25ad29e9217bca4b05"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>Initialize</b> ()</td></tr>
 <tr class="separator:a43115d9d5efe8e25ad29e9217bca4b05"><td class="memSeparator" colspan="2">&#160;</td></tr>

@@ -13,6 +13,7 @@ var class_global_tile =
     [ "DropCritterChance", "class_global_tile.html#a8d81c5aceb5f569a24f6cc85ec077fd0", null ],
     [ "EmitParticles", "class_global_tile.html#a3cfb6d8bb2a5a68664d6e2c468adda8c", null ],
     [ "FloorVisuals", "class_global_tile.html#a5b78b88d68fb1b0fc11cc70371a87320", null ],
+    [ "HitSwitch", "class_global_tile.html#acaaeec2d512f0ec83beb6598fdbbaa1e", null ],
     [ "HitWire", "class_global_tile.html#aac0b41a49c4d1eeb01f99d4aa258e64e", null ],
     [ "IsTileBiomeSightable", "class_global_tile.html#aaa2dd1c766d28f39ac2217e3d6b2717c", null ],
     [ "IsTileDangerous", "class_global_tile.html#ab40cdeb72ef161dde8abf61ab2486f57", null ],
@@ -34,5 +35,6 @@ var class_global_tile =
     [ "ShakeTree", "class_global_tile.html#a55ba6a9536bb124af00a371850286dbb", null ],
     [ "Slope", "class_global_tile.html#aea6470973410113a596702a787037288", null ],
     [ "SpecialDraw", "class_global_tile.html#a09b794bc47b52d1aa682b22cc0d97aa2", null ],
+    [ "SwitchTiles", "class_global_tile.html#a0a09aa2193a7e3bad885f67ad777a2b4", null ],
     [ "TileFrame", "class_global_tile.html#a28bcb7cd4cc43ba2cf63073782154d4e", null ]
 ];

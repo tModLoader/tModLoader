@@ -56,8 +56,8 @@ var searchData=
   ['armorsetbonus_53',['ArmorSetBonus',['../class_game_tip_i_d.html#ad769b21f3d469105d22e705d8377dd81',1,'GameTipID']]],
   ['armoveritem_54',['ArmOverItem',['../class_player_draw_layers.html#ac7584a0c7e95bb19997d072ad8e02670',1,'PlayerDrawLayers']]],
   ['armsdealerneedsguntomovein_55',['ArmsDealerNeedsGunToMoveIn',['../class_game_tip_i_d.html#a0a12789f65f57045a20dc14d9c0b30ee',1,'GameTipID']]],
-  ['arrow_56',['Arrow',['../class_proj_a_i_style_i_d.html#a78688ab08e230c17c5404d10eaa26046',1,'ProjAIStyleID']]],
-  ['arrow_57',['arrow',['../class_projectile.html#a216398584913137aec429a3778202f2f',1,'Projectile']]],
+  ['arrow_56',['arrow',['../class_projectile.html#a216398584913137aec429a3778202f2f',1,'Projectile']]],
+  ['arrow_57',['Arrow',['../class_proj_a_i_style_i_d.html#a78688ab08e230c17c5404d10eaa26046',1,'ProjAIStyleID']]],
   ['askguideforcraftingrecipes_58',['AskGuideForCraftingRecipes',['../class_game_tip_i_d.html#af8e9aa191b4be983416ab5a1bbb8f2ce',1,'GameTipID']]],
   ['atmo_59',['atmo',['../struct_fishing_attempt.html#a7871aa1440c78af896981e8417440ea3',1,'FishingAttempt']]],
   ['attackaveragechance_60',['AttackAverageChance',['../class_n_p_c_i_d_1_1_sets.html#a50d93ef47c858637b9c3a3e6773c693e',1,'NPCID::Sets']]],
@@ -65,8 +65,9 @@ var searchData=
   ['attacktime_62',['AttackTime',['../class_n_p_c_i_d_1_1_sets.html#a91daa683d1788394e06ee58d3ea3ba0b',1,'NPCID::Sets']]],
   ['attacktype_63',['AttackType',['../class_n_p_c_i_d_1_1_sets.html#a00330581d37514acedb24a24afda2a4f',1,'NPCID::Sets']]],
   ['autoreuse_64',['autoReuse',['../class_item.html#a376a17bbe7a00d603833cde54a63ae27',1,'Item']]],
-  ['availablerecipe_65',['availableRecipe',['../class_main.html#a446cd9c5d93185537e2a5a5703742535',1,'Main']]],
-  ['avoidedbymeteorlanding_66',['AvoidedByMeteorLanding',['../class_tile_i_d_1_1_sets.html#a6d101531bc983eb74a49b4055de8b313',1,'TileID::Sets']]],
-  ['avoidedbynpcs_67',['AvoidedByNPCs',['../class_tile_i_d_1_1_sets.html#a3d93dd2054d05cd842021a54ddc54a8a',1,'TileID::Sets']]],
-  ['axe_68',['axe',['../class_item.html#aa545ee1e8c6f1df9008e3afde89c4aeb',1,'Item']]]
+  ['availableadvancedshadowscount_65',['availableAdvancedShadowsCount',['../class_player.html#a8928e5fed2a341c5d057bbe7eb61f921',1,'Player']]],
+  ['availablerecipe_66',['availableRecipe',['../class_main.html#a446cd9c5d93185537e2a5a5703742535',1,'Main']]],
+  ['avoidedbymeteorlanding_67',['AvoidedByMeteorLanding',['../class_tile_i_d_1_1_sets.html#a6d101531bc983eb74a49b4055de8b313',1,'TileID::Sets']]],
+  ['avoidedbynpcs_68',['AvoidedByNPCs',['../class_tile_i_d_1_1_sets.html#a3d93dd2054d05cd842021a54ddc54a8a',1,'TileID::Sets']]],
+  ['axe_69',['axe',['../class_item.html#aa545ee1e8c6f1df9008e3afde89c4aeb',1,'Item']]]
 ];

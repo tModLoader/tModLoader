@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.09</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.10</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -103,6 +103,7 @@ Classes</h2></td></tr>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a52ba649d117de38614af47fc5106d660"><td class="memItemLeft" align="right" valign="top"><a id="a52ba649d117de38614af47fc5106d660" name="a52ba649d117de38614af47fc5106d660"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>SwitchTilesNew</b> (Vector2 <a class="el" href="class_position.html">Position</a>, int Width, int Height, Vector2 oldPosition, int objType)</td></tr>
+<tr class="memdesc:a52ba649d117de38614af47fc5106d660"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>Unused.</b><br /></td></tr>
 <tr class="separator:a52ba649d117de38614af47fc5106d660"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
@@ -257,6 +258,11 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>StepUp</b> (re
 <tr class="memitem:a6a22ede6dcace8f36d6bc3cb08d2d8f0"><td class="memItemLeft" align="right" valign="top"><a id="a6a22ede6dcace8f36d6bc3cb08d2d8f0" name="a6a22ede6dcace8f36d6bc3cb08d2d8f0"></a>
 static Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>StickyTiles</b> (Vector2 <a class="el" href="class_position.html">Position</a>, Vector2 Velocity, int Width, int Height)</td></tr>
 <tr class="separator:a6a22ede6dcace8f36d6bc3cb08d2d8f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afef0e595ef31c11246a6a36ec9a47d91"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_collision.html#afef0e595ef31c11246a6a36ec9a47d91">SwitchTiles</a> (<a class="el" href="class_entity.html">Entity</a> entity, Vector2 <a class="el" href="class_position.html">Position</a>, int Width, int Height, Vector2 oldPosition, int objType)</td></tr>
+<tr class="memdesc:afef0e595ef31c11246a6a36ec9a47d91"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls collision related tile actions. Acts on <a class="el" href="class_tile_i_d_1_1_sets.html#a5ef25584eb93aafb6da7f4782b775a64" title="Indicates that this tile is a pressure plate, and which entities should trigger it when they collide ...">TileID.Sets.PressurePlate</a>, ProjectilePressurePad, LandMine, GeyserTrap, as well as modded content using <a class="el" href="class_collision.html#acb8d8ea4bf15065b4f5b7c278d5fd061">ModTile.SwitchTiles</a> <br  />
+<br  />
+ Successful collisions usually call <a class="el" href="class_wiring.html#aaa9000058d0dba92aa99a3738010acbc" title="Contains shared code for tile interactions. Usually called on the server and all clients....">Wiring.HitSwitch(int, int)</a> and sync it.   <a href="class_collision.html#afef0e595ef31c11246a6a36ec9a47d91">More...</a><br /></td></tr>
+<tr class="separator:afef0e595ef31c11246a6a36ec9a47d91"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acb8d8ea4bf15065b4f5b7c278d5fd061"><td class="memItemLeft" align="right" valign="top"><a id="acb8d8ea4bf15065b4f5b7c278d5fd061" name="acb8d8ea4bf15065b4f5b7c278d5fd061"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>SwitchTiles</b> (Vector2 <a class="el" href="class_position.html">Position</a>, int Width, int Height, Vector2 oldPosition, int objType)</td></tr>
 <tr class="separator:acb8d8ea4bf15065b4f5b7c278d5fd061"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -309,6 +315,82 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>stairFall</b><
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>up</b></td></tr>
 <tr class="separator:a4438d62fb09e0f426990d258e6241962"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="afef0e595ef31c11246a6a36ec9a47d91" name="afef0e595ef31c11246a6a36ec9a47d91"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afef0e595ef31c11246a6a36ec9a47d91">&#9670;&nbsp;</a></span>SwitchTiles()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static bool Collision.SwitchTiles </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_entity.html">Entity</a>&#160;</td>
+          <td class="paramname"><em>entity</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Vector2&#160;</td>
+          <td class="paramname"><em>Position</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>Width</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>Height</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Vector2&#160;</td>
+          <td class="paramname"><em>oldPosition</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>objType</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Calls collision related tile actions. Acts on <a class="el" href="class_tile_i_d_1_1_sets.html#a5ef25584eb93aafb6da7f4782b775a64" title="Indicates that this tile is a pressure plate, and which entities should trigger it when they collide ...">TileID.Sets.PressurePlate</a>, ProjectilePressurePad, LandMine, GeyserTrap, as well as modded content using <a class="el" href="class_collision.html#acb8d8ea4bf15065b4f5b7c278d5fd061">ModTile.SwitchTiles</a> <br  />
+<br  />
+ Successful collisions usually call <a class="el" href="class_wiring.html#aaa9000058d0dba92aa99a3738010acbc" title="Contains shared code for tile interactions. Usually called on the server and all clients....">Wiring.HitSwitch(int, int)</a> and sync it.  </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">entity</td><td></td></tr>
+    <tr><td class="paramname"><a class="el" href="class_position.html">Position</a></td><td></td></tr>
+    <tr><td class="paramname">Width</td><td></td></tr>
+    <tr><td class="paramname">Height</td><td></td></tr>
+    <tr><td class="paramname">oldPosition</td><td></td></tr>
+    <tr><td class="paramname">objType</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

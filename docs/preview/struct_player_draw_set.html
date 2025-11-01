@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.09</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.10</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -92,6 +92,13 @@ $(document).ready(function(){initNavTree('struct_player_draw_set.html',''); init
   <div class="headertitle"><div class="title">PlayerDrawSet Struct Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>Contains all the parameters defining how a particular player will be rendered in the current lighting, copied from the drawPlayer. <br  />
+<br  />
+ First, the color of each body part is calculated and all of the fields are populated. Next, this data is used by each ModLoader.PlayerDrawLayer to populate <a class="el" href="struct_player_draw_set.html#aca6f0fbea669312c5bb625a30aefc3ad" title="Contains DrawData representing each individual layer, from back to front, comprising the full visuals...">DrawDataCache</a> with <a class="el" href="struct_draw_data.html">DrawData</a> corresponding to each individual layer making up the visuals of the player. Finally, every <a class="el" href="struct_player_draw_set.html#aca6f0fbea669312c5bb625a30aefc3ad" title="Contains DrawData representing each individual layer, from back to front, comprising the full visuals...">DrawDataCache</a> is actually drawn. <br  />
+<br  />
+ In terms of modded logic, ModLoader.ModPlayer.DrawEffects runs before body part color values are calculated, ModLoader.ModPlayer.ModifyDrawInfo runs right before each ModLoader.PlayerDrawLayer runs, then each ModLoader.PlayerDrawLayer runs, and finally ModLoader.ModPlayer.TransformDrawData runs.  
+ <a href="struct_player_draw_set.html#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -295,6 +302,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>drawAngelHalo</b></td
 <tr class="separator:a554c7c058947903119fb2f7f147f7cac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aca6f0fbea669312c5bb625a30aefc3ad"><td class="memItemLeft" align="right" valign="top"><a id="aca6f0fbea669312c5bb625a30aefc3ad" name="aca6f0fbea669312c5bb625a30aefc3ad"></a>
 <a class="el" href="class_list.html">List</a>&lt; <a class="el" href="struct_draw_data.html">DrawData</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>DrawDataCache</b></td></tr>
+<tr class="memdesc:aca6f0fbea669312c5bb625a30aefc3ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Contains <a class="el" href="struct_draw_data.html">DrawData</a> representing each individual layer, from back to front, comprising the full visuals of the player. <br /></td></tr>
 <tr class="separator:aca6f0fbea669312c5bb625a30aefc3ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a390b2ba1ea307fafa94d5ac6aefe68fb"><td class="memItemLeft" align="right" valign="top"><a id="a390b2ba1ea307fafa94d5ac6aefe68fb" name="a390b2ba1ea307fafa94d5ac6aefe68fb"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>drawFloatingTube</b></td></tr>
@@ -471,7 +479,13 @@ Properties</h2></td></tr>
 Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>Center</b><code> [get]</code></td></tr>
 <tr class="separator:a601bd1cc96b435923718ff3d2c18c8f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-</div><!-- contents -->
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p >Contains all the parameters defining how a particular player will be rendered in the current lighting, copied from the drawPlayer. <br  />
+<br  />
+ First, the color of each body part is calculated and all of the fields are populated. Next, this data is used by each ModLoader.PlayerDrawLayer to populate <a class="el" href="struct_player_draw_set.html#aca6f0fbea669312c5bb625a30aefc3ad" title="Contains DrawData representing each individual layer, from back to front, comprising the full visuals...">DrawDataCache</a> with <a class="el" href="struct_draw_data.html">DrawData</a> corresponding to each individual layer making up the visuals of the player. Finally, every <a class="el" href="struct_player_draw_set.html#aca6f0fbea669312c5bb625a30aefc3ad" title="Contains DrawData representing each individual layer, from back to front, comprising the full visuals...">DrawDataCache</a> is actually drawn. <br  />
+<br  />
+ In terms of modded logic, ModLoader.ModPlayer.DrawEffects runs before body part color values are calculated, ModLoader.ModPlayer.ModifyDrawInfo runs right before each ModLoader.PlayerDrawLayer runs, then each ModLoader.PlayerDrawLayer runs, and finally ModLoader.ModPlayer.TransformDrawData runs. </p>
+</div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->

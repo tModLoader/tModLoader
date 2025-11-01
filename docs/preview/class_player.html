@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.09</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.10</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -547,6 +547,11 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>GamepadEnableGrappleC
 <tr class="separator:a86dc26d848a78fb17112f93ca59b414d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7cf0faa60697b4a364ea206b6b1c402d"><td class="memItemLeft" align="right" valign="top"><a id="a7cf0faa60697b4a364ea206b6b1c402d" name="a7cf0faa60697b4a364ea206b6b1c402d"></a>
 <a class="el" href="struct_entity_shadow_info.html">EntityShadowInfo</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetAdvancedShadow</b> (int shadowIndex)</td></tr>
+<tr class="memdesc:a7cf0faa60697b4a364ea206b6b1c402d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns positioning data for this player <em>shadowIndex</em>  frames ago, up to <a class="el" href="class_player.html#a8928e5fed2a341c5d057bbe7eb61f921" title="The number of frames of previous positioning data available for use with GetAdvancedShadow(int)....">availableAdvancedShadowsCount</a>. <br  />
+<br  />
+ This can be used to draw trails that follow the movement of the player. You'll usually want to iterate from <a class="el" href="class_player.html#a8928e5fed2a341c5d057bbe7eb61f921" title="The number of frames of previous positioning data available for use with GetAdvancedShadow(int)....">availableAdvancedShadowsCount</a> down to 1 for proper draw layering and to skip index 0 which would be the current frame when using this to draw a trail. <br  />
+<br  />
+ See ExampleArmorSetBonusPlayer.DrawPlayerfor an example of correctly using this. <br /></td></tr>
 <tr class="separator:a7cf0faa60697b4a364ea206b6b1c402d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5550bce8e3b2385dfab25189cd573e60"><td class="memItemLeft" align="right" valign="top"><a id="a5550bce8e3b2385dfab25189cd573e60" name="a5550bce8e3b2385dfab25189cd573e60"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>GetAmountOfExtraAccessorySlotsToShow</b> ()</td></tr>
@@ -1861,6 +1866,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>autoReuseGlove</b></t
 <tr class="separator:ae0741b8c2d218f7f2e03e4acaf2f3a25"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8928e5fed2a341c5d057bbe7eb61f921"><td class="memItemLeft" align="right" valign="top"><a id="a8928e5fed2a341c5d057bbe7eb61f921" name="a8928e5fed2a341c5d057bbe7eb61f921"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>availableAdvancedShadowsCount</b></td></tr>
+<tr class="memdesc:a8928e5fed2a341c5d057bbe7eb61f921"><td class="mdescLeft">&#160;</td><td class="mdescRight">The number of frames of previous positioning data available for use with <a class="el" href="class_player.html#a7cf0faa60697b4a364ea206b6b1c402d" title="Returns positioning data for this player shadowIndex  frames ago, up to availableAdvancedShadowsCount...">GetAdvancedShadow(int)</a>. This will max at 60. Teleporting and mounting are some ways the previous positioning data will be cleared. <br /></td></tr>
 <tr class="separator:a8928e5fed2a341c5d057bbe7eb61f921"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8c5c318073cf4a57a3f6ddf7bf1bab65"><td class="memItemLeft" align="right" valign="top"><a id="a8c5c318073cf4a57a3f6ddf7bf1bab65" name="a8c5c318073cf4a57a3f6ddf7bf1bab65"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>babyBird</b></td></tr>
@@ -1984,7 +1990,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>blueFairy</b></td></t
 <tr class="separator:a4e1a901fdc49ba7f3c2be2b61d2e1b23"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4fa33b3cbc16ad78dc6d2fc49d04ad69"><td class="memItemLeft" align="right" valign="top"><a id="a4fa33b3cbc16ad78dc6d2fc49d04ad69" name="a4fa33b3cbc16ad78dc6d2fc49d04ad69"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>body</b> = -1</td></tr>
-<tr class="memdesc:a4fa33b3cbc16ad78dc6d2fc49d04ad69"><td class="mdescLeft">&#160;</td><td class="mdescRight">The visible body equipment slot. Usually corresponds to the <a class="el" href="class_item.html#aaf50c5f1a88cd2c2c2e27b200b6b97b9" title="The body equipment slot for this item. When this item is equipped, Player.body will be set to this va...">Item.bodySlot</a> of the visible body ("shirt") armor or vanity item. <br  />
+<tr class="memdesc:a4fa33b3cbc16ad78dc6d2fc49d04ad69"><td class="mdescLeft">&#160;</td><td class="mdescRight">The visible body equipment slot (<a class="el" href="class_armor_i_ds_1_1_body.html">ArmorIDs.Body</a>). Usually corresponds to the <a class="el" href="class_item.html#aaf50c5f1a88cd2c2c2e27b200b6b97b9" title="The body equipment slot for this item (ArmorIDs.Body). When this item is equipped,...">Item.bodySlot</a> of the visible body ("shirt") armor or vanity item. <br  />
 <br  />
  Defaults to -1. <br /></td></tr>
 <tr class="separator:a4fa33b3cbc16ad78dc6d2fc49d04ad69"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2863,7 +2869,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>hbLocked</b></td></tr
 <tr class="separator:a64fe5fbfaaa6e029e0effc63db9e097d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7895ba7bc430f5da5385022da7289551"><td class="memItemLeft" align="right" valign="top"><a id="a7895ba7bc430f5da5385022da7289551" name="a7895ba7bc430f5da5385022da7289551"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>head</b> = -1</td></tr>
-<tr class="memdesc:a7895ba7bc430f5da5385022da7289551"><td class="mdescLeft">&#160;</td><td class="mdescRight">The visible head equipment slot. Usually corresponds to the <a class="el" href="class_item.html#afc09b462c2cdd8469c0e8891c0245e38" title="The legs equipment slot for this item. When this item is equipped, Player.legs will be set to this va...">Item.legSlot</a> of the visible head ("helmet") armor or vanity item. <br  />
+<tr class="memdesc:a7895ba7bc430f5da5385022da7289551"><td class="mdescLeft">&#160;</td><td class="mdescRight">The visible head equipment slot (<a class="el" href="class_armor_i_ds_1_1_head.html">ArmorIDs.Head</a>). Usually corresponds to the <a class="el" href="class_item.html#a09c37d0ba914a9dd2ac4f2ac9f4ef2cc" title="The head equipment slot for this item (ArmorIDs.Head). When this item is equipped,...">Item.headSlot</a> of the visible head ("helmet") armor or vanity item. <br  />
 <br  />
  Defaults to -1. <br /></td></tr>
 <tr class="separator:a7895ba7bc430f5da5385022da7289551"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -3209,7 +3215,7 @@ float&#160;</td><td class="memItemRight" valign="bottom"><b>legRotation</b></td>
 <tr class="separator:ae4405c48fa1bc58f47fab8e4ba235bfe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acd8cd21ad0a9e253c48b419daa541ec9"><td class="memItemLeft" align="right" valign="top"><a id="acd8cd21ad0a9e253c48b419daa541ec9" name="acd8cd21ad0a9e253c48b419daa541ec9"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>legs</b> = -1</td></tr>
-<tr class="memdesc:acd8cd21ad0a9e253c48b419daa541ec9"><td class="mdescLeft">&#160;</td><td class="mdescRight">The visible legs equipment slot. Usually corresponds to the <a class="el" href="class_item.html#afc09b462c2cdd8469c0e8891c0245e38" title="The legs equipment slot for this item. When this item is equipped, Player.legs will be set to this va...">Item.legSlot</a> of the visible legs ("pants") armor or vanity item. <br  />
+<tr class="memdesc:acd8cd21ad0a9e253c48b419daa541ec9"><td class="mdescLeft">&#160;</td><td class="mdescRight">The visible legs equipment slot (<a class="el" href="class_armor_i_ds_1_1_legs.html">ArmorIDs.Legs</a>). Usually corresponds to the <a class="el" href="class_item.html#afc09b462c2cdd8469c0e8891c0245e38" title="The legs equipment slot for this item (ArmorIDs.Legs). When this item is equipped,...">Item.legSlot</a> of the visible legs ("pants") armor or vanity item. <br  />
 <br  />
  Defaults to -1. <br /></td></tr>
 <tr class="separator:acd8cd21ad0a9e253c48b419daa541ec9"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -4098,6 +4104,9 @@ Vector2[]&#160;</td><td class="memItemRight" valign="bottom"><b>shadowOrigin</b>
 <tr class="separator:a0e9550f507e4111bb692c63c249e9fad"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad80763172dc4bc807340a9c95a9aad62"><td class="memItemLeft" align="right" valign="top"><a id="ad80763172dc4bc807340a9c95a9aad62" name="ad80763172dc4bc807340a9c95a9aad62"></a>
 Vector2[]&#160;</td><td class="memItemRight" valign="bottom"><b>shadowPos</b> = new Vector2[3]</td></tr>
+<tr class="memdesc:ad80763172dc4bc807340a9c95a9aad62"><td class="mdescLeft">&#160;</td><td class="mdescRight">Contains the player positioning data for the last 3 frames. Used by armorEffectDrawShadow and other similar effects. <br  />
+<br  />
+ See <a class="el" href="class_player.html#a7cf0faa60697b4a364ea206b6b1c402d" title="Returns positioning data for this player shadowIndex  frames ago, up to availableAdvancedShadowsCount...">GetAdvancedShadow(int)</a> for a more flexible approach. <br /></td></tr>
 <tr class="separator:ad80763172dc4bc807340a9c95a9aad62"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af34633de5d33a08b342003d92b279d7a"><td class="memItemLeft" align="right" valign="top"><a id="af34633de5d33a08b342003d92b279d7a" name="af34633de5d33a08b342003d92b279d7a"></a>
 float[]&#160;</td><td class="memItemRight" valign="bottom"><b>shadowRotation</b> = new float[3]</td></tr>

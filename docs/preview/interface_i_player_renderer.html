@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.09</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.10</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -95,8 +95,12 @@ $(document).ready(function(){initNavTree('interface_i_player_renderer.html','');
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:afd06c7b988bf3865576150260946f458"><td class="memItemLeft" align="right" valign="top"><a id="afd06c7b988bf3865576150260946f458" name="afd06c7b988bf3865576150260946f458"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>DrawPlayer</b> (<a class="el" href="class_camera.html">Camera</a> camera, <a class="el" href="class_player.html">Player</a> drawPlayer, Vector2 position, float rotation, Vector2 rotationOrigin, float shadow=0f, float scale=1f)</td></tr>
+<tr class="memitem:afd06c7b988bf3865576150260946f458"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_i_player_renderer.html#afd06c7b988bf3865576150260946f458">DrawPlayer</a> (<a class="el" href="class_camera.html">Camera</a> camera, <a class="el" href="class_player.html">Player</a> drawPlayer, Vector2 position, float rotation, Vector2 rotationOrigin, float shadow=0f, float scale=1f)</td></tr>
+<tr class="memdesc:afd06c7b988bf3865576150260946f458"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draws a player fully. <br  />
+<br  />
+ When using this method for an armor set shadow effect, make sure shadow is never 0 so that only the main body renders with the item and other visual effects that are intended to only be drawn on the main body. A shadow value of 0 is fully opaque, while a value of 1 is fully transparent. <br  />
+<br  />
+ When using this method outside of the game world, such as in a UI, setting Player.isDisplayDollOrInanimate to true will avoid world lighting values affecting how the player is drawn.  <a href="interface_i_player_renderer.html#afd06c7b988bf3865576150260946f458">More...</a><br /></td></tr>
 <tr class="separator:afd06c7b988bf3865576150260946f458"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a94b52d82559ef6a84d975d2a64f9fc07"><td class="memItemLeft" align="right" valign="top"><a id="a94b52d82559ef6a84d975d2a64f9fc07" name="a94b52d82559ef6a84d975d2a64f9fc07"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>DrawPlayerHead</b> (<a class="el" href="class_camera.html">Camera</a> camera, <a class="el" href="class_player.html">Player</a> drawPlayer, Vector2 position, float alpha=1f, float scale=1f, Color borderColor=default(Color))</td></tr>
@@ -105,6 +109,73 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>DrawPlayerHead</b> (<
 void&#160;</td><td class="memItemRight" valign="bottom"><b>DrawPlayers</b> (<a class="el" href="class_camera.html">Camera</a> camera, <a class="el" href="class_i_enumerable.html">IEnumerable</a>&lt; <a class="el" href="class_player.html">Player</a> &gt; players)</td></tr>
 <tr class="separator:a9cdbed4dcb4b42323194e189b8966523"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="afd06c7b988bf3865576150260946f458" name="afd06c7b988bf3865576150260946f458"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afd06c7b988bf3865576150260946f458">&#9670;&nbsp;</a></span>DrawPlayer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void IPlayerRenderer.DrawPlayer </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_camera.html">Camera</a>&#160;</td>
+          <td class="paramname"><em>camera</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_player.html">Player</a>&#160;</td>
+          <td class="paramname"><em>drawPlayer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Vector2&#160;</td>
+          <td class="paramname"><em>position</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>rotation</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Vector2&#160;</td>
+          <td class="paramname"><em>rotationOrigin</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>shadow</em> = <code>0f</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>scale</em> = <code>1f</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Draws a player fully. <br  />
+<br  />
+ When using this method for an armor set shadow effect, make sure shadow is never 0 so that only the main body renders with the item and other visual effects that are intended to only be drawn on the main body. A shadow value of 0 is fully opaque, while a value of 1 is fully transparent. <br  />
+<br  />
+ When using this method outside of the game world, such as in a UI, setting Player.isDisplayDollOrInanimate to true will avoid world lighting values affecting how the player is drawn. </p>
+
+<p>Implemented in <a class="el" href="class_legacy_player_renderer.html#a4314bfeda41e6757f6b434a129f9eb71">LegacyPlayerRenderer</a>.</p>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
