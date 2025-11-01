@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.08</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.09</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -90,6 +90,11 @@ $(document).ready(function(){initNavTree('struct_main_1_1_current_player_overrid
   <div class="headertitle"><div class="title">Main.CurrentPlayerOverride Struct Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>Overrides <a class="el" href="class_main.html#ab60656fb0e91b1cbec3a13882f999cae" title="A replacement for Main.LocalPlayer which respects whichever player is currently running hooks on the ...">Main.CurrentPlayer</a>. For example, <code>using var _currentPlr = new <a class="el" href="struct_main_1_1_current_player_override.html" title="Overrides Main.CurrentPlayer. For example, using var _currentPlr = new Main.CurrentPlayerOverride(pla...">Main.CurrentPlayerOverride(player)</a>;</code> would result in <a class="el" href="class_main.html#ab60656fb0e91b1cbec3a13882f999cae" title="A replacement for Main.LocalPlayer which respects whichever player is currently running hooks on the ...">Main.CurrentPlayer</a> returning the specified player until the end of the current scope. <br  />
+<br  />
+ Used internally to make <a class="el" href="class_mod_accessory_slot.html" title="A ModAccessorySlot instance represents a net new accessory slot instance. You can store fields in the...">ModAccessorySlot</a> access a specific player rather than <a class="el" href="class_main.html#ad16e3f4f93bb8e3ea87505b2d4eae809" title="Retrieves the Player object for the local user. Shorthand for player[myPlayer].  Many gameplay elemen...">Main.LocalPlayer</a>.  
+ <a href="struct_main_1_1_current_player_override.html#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -100,7 +105,11 @@ Public Member Functions</h2></td></tr>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>Dispose</b> ()</td></tr>
 <tr class="separator:abca010d4c62bb4a7b45f45b316915a7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-</div><!-- contents -->
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p >Overrides <a class="el" href="class_main.html#ab60656fb0e91b1cbec3a13882f999cae" title="A replacement for Main.LocalPlayer which respects whichever player is currently running hooks on the ...">Main.CurrentPlayer</a>. For example, <code>using var _currentPlr = new <a class="el" href="struct_main_1_1_current_player_override.html" title="Overrides Main.CurrentPlayer. For example, using var _currentPlr = new Main.CurrentPlayerOverride(pla...">Main.CurrentPlayerOverride(player)</a>;</code> would result in <a class="el" href="class_main.html#ab60656fb0e91b1cbec3a13882f999cae" title="A replacement for Main.LocalPlayer which respects whichever player is currently running hooks on the ...">Main.CurrentPlayer</a> returning the specified player until the end of the current scope. <br  />
+<br  />
+ Used internally to make <a class="el" href="class_mod_accessory_slot.html" title="A ModAccessorySlot instance represents a net new accessory slot instance. You can store fields in the...">ModAccessorySlot</a> access a specific player rather than <a class="el" href="class_main.html#ad16e3f4f93bb8e3ea87505b2d4eae809" title="Retrieves the Player object for the local user. Shorthand for player[myPlayer].  Many gameplay elemen...">Main.LocalPlayer</a>. </p>
+</div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->

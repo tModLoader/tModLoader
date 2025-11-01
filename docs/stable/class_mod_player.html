@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.08</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.09</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -113,6 +113,11 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a4eba6c93717354fc57d7145664cd5a95"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_player.html#a4eba6c93717354fc57d7145664cd5a95">AnglerQuestReward</a> (float rareMultiplier, <a class="el" href="class_list.html">List</a>&lt; <a class="el" href="class_item.html">Item</a> &gt; rewardItems)</td></tr>
 <tr class="memdesc:a4eba6c93717354fc57d7145664cd5a95"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to add to, change, or remove from the items the player earns when finishing an Angler quest. The rareMultiplier is a number between 0.15 and 1 inclusively; the lower it is the higher chance there should be for the player to earn rare items. Called on the local client only.  <a href="class_mod_player.html#a4eba6c93717354fc57d7145664cd5a95">More...</a><br /></td></tr>
 <tr class="separator:a4eba6c93717354fc57d7145664cd5a95"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6dff6521e2f1b90dc185e79cd814ebb3"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_player.html#a6dff6521e2f1b90dc185e79cd814ebb3">ApplyPotionDelay</a> (<a class="el" href="class_item.html">Item</a> item, int potionDelay)</td></tr>
+<tr class="memdesc:a6dff6521e2f1b90dc185e79cd814ebb3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called before the potion delay is applied to the player after consuming a healing potion. <br  />
+<br  />
+ Return false to prevent application of the BuffID.PotionSickness buff and setting <a class="el" href="class_player.html#a201c52749d7defd7d0732d8271ca270c" title="The potion sickness delay, in ticks. This value mirrors the remaining time for the BuffID....">Player.potionDelay</a>.  <a href="class_mod_player.html#a6dff6521e2f1b90dc185e79cd814ebb3">More...</a><br /></td></tr>
+<tr class="separator:a6dff6521e2f1b90dc185e79cd814ebb3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af9057df46f682f9e1c44f4c09b94214b"><td class="memItemLeft" align="right" valign="top"><a id="af9057df46f682f9e1c44f4c09b94214b" name="af9057df46f682f9e1c44f4c09b94214b"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>ArmorSetBonusActivated</b> ()</td></tr>
 <tr class="memdesc:af9057df46f682f9e1c44f4c09b94214b"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is called when the player activates their armor set bonus by double tapping down (or up if Main.ReversedUpDownArmorSetBonuses is true). As an example, the Vortex armor uses this to toggle stealth mode. Use this to implement armor set bonuses that need to be activated by the player. Don't forget to check if your armor set is active. While this technically can be used for other effects, it will likely be frustrating for your players if non-armor set effects are being triggered in tandem with armor set bonus effects. Modders can use <a class="el" href="class_player.html#a04c89cfe9ebf6a6de95c5d2d83ff7dcf" title="Counts how long (in ticks) the player has been holding directional movement keys. Updated immediately...">Player.holdDownCardinalTimer</a> and <a class="el" href="class_player.html#a4c393753b377985bd8619d4868fc25a6" title="Used to count time between repeated directional movement key presses. When a directional key is press...">Player.doubleTapCardinalTimer</a> directly in other hooks for similar effects if needed. Called on the local client only. <br /></td></tr>
@@ -792,6 +797,53 @@ ushort&#160;</td><td class="memItemRight" valign="bottom"><b>Index</b><code> [ge
   <table class="params">
     <tr><td class="paramname">rareMultiplier</td><td></td></tr>
     <tr><td class="paramname">rewardItems</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a6dff6521e2f1b90dc185e79cd814ebb3" name="a6dff6521e2f1b90dc185e79cd814ebb3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6dff6521e2f1b90dc185e79cd814ebb3">&#9670;&nbsp;</a></span>ApplyPotionDelay()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool ModPlayer.ApplyPotionDelay </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_item.html">Item</a>&#160;</td>
+          <td class="paramname"><em>item</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>potionDelay</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Called before the potion delay is applied to the player after consuming a healing potion. <br  />
+<br  />
+ Return false to prevent application of the BuffID.PotionSickness buff and setting <a class="el" href="class_player.html#a201c52749d7defd7d0732d8271ca270c" title="The potion sickness delay, in ticks. This value mirrors the remaining time for the BuffID....">Player.potionDelay</a>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">item</td><td>The healing item being used.</td></tr>
+    <tr><td class="paramname">potionDelay</td><td>The calculated potion delay.</td></tr>
   </table>
   </dd>
 </dl>

@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.08</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.09</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -96,6 +96,15 @@ $(document).ready(function(){initNavTree('class_liquid_renderer.html',''); initR
 </div><!--header-->
 <div class="contents">
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_liquid_renderer_1_1_liquid_cache.html">LiquidCache</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_liquid_renderer_1_1_liquid_draw_cache.html">LiquidDrawCache</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_liquid_renderer_1_1_liquid_edge_data.html">LiquidEdgeData</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a78aabefccfbfba79b132b5be28d7ce77"><td class="memItemLeft" align="right" valign="top"><a id="a78aabefccfbfba79b132b5be28d7ce77" name="a78aabefccfbfba79b132b5be28d7ce77"></a>
@@ -140,6 +149,9 @@ static float&#160;</td><td class="memItemRight" valign="bottom"><b>GetShimmerGli
 <tr class="memitem:af68831b0935bd47c6b1e5081a8d01c69"><td class="memItemLeft" align="right" valign="top"><a id="af68831b0935bd47c6b1e5081a8d01c69" name="af68831b0935bd47c6b1e5081a8d01c69"></a>
 static float&#160;</td><td class="memItemRight" valign="bottom"><b>GetShimmerWave</b> (ref float worldPositionX, ref float worldPositionY)</td></tr>
 <tr class="separator:af68831b0935bd47c6b1e5081a8d01c69"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa99dfd7dcff84f1d7b3fb8761f208512"><td class="memItemLeft" align="right" valign="top"><a id="aa99dfd7dcff84f1d7b3fb8761f208512" name="aa99dfd7dcff84f1d7b3fb8761f208512"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>Initialize_LiquidData</b> ()</td></tr>
+<tr class="separator:aa99dfd7dcff84f1d7b3fb8761f208512"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4d11f7b26cb68eda4001a8d597a2dbd5"><td class="memItemLeft" align="right" valign="top"><a id="a4d11f7b26cb68eda4001a8d597a2dbd5" name="a4d11f7b26cb68eda4001a8d597a2dbd5"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>LoadContent</b> ()</td></tr>
 <tr class="separator:a4d11f7b26cb68eda4001a8d597a2dbd5"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -158,12 +170,30 @@ Asset&lt; Texture2D &gt;[]&#160;</td><td class="memItemRight" valign="bottom"><b
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
+<tr class="memitem:abde7089ecad7b8124e5c5b52893a60bb"><td class="memItemLeft" align="right" valign="top"><a id="abde7089ecad7b8124e5c5b52893a60bb" name="abde7089ecad7b8124e5c5b52893a60bb"></a>
+static float[]&#160;</td><td class="memItemRight" valign="bottom"><b>DEFAULT_OPACITY</b> = new float[LiquidID.Count]</td></tr>
+<tr class="memdesc:abde7089ecad7b8124e5c5b52893a60bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">How strong a liquid's opacity. <br  />
+ Liquids like lava and honey use this to make them look more viscous by making things inside the liquid less visible. <br  />
+ <br /></td></tr>
+<tr class="separator:abde7089ecad7b8124e5c5b52893a60bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:accb685eb277773a84f983e95b762cb55"><td class="memItemLeft" align="right" valign="top"><a id="accb685eb277773a84f983e95b762cb55" name="accb685eb277773a84f983e95b762cb55"></a>
 static <a class="el" href="class_liquid_renderer.html">LiquidRenderer</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Instance</b></td></tr>
 <tr class="separator:accb685eb277773a84f983e95b762cb55"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7b28427af3000480508023e846865df9"><td class="memItemLeft" align="right" valign="top"><a id="a7b28427af3000480508023e846865df9" name="a7b28427af3000480508023e846865df9"></a>
 const float&#160;</td><td class="memItemRight" valign="bottom"><b>MIN_LIQUID_SIZE</b> = 0.25f</td></tr>
 <tr class="separator:a7b28427af3000480508023e846865df9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac4001e54dd8cc15e98ea0d40ac34c8dc"><td class="memItemLeft" align="right" valign="top"><a id="ac4001e54dd8cc15e98ea0d40ac34c8dc" name="ac4001e54dd8cc15e98ea0d40ac34c8dc"></a>
+static byte[]&#160;</td><td class="memItemRight" valign="bottom"><b>VISCOSITY_MASK</b> = new byte[5]</td></tr>
+<tr class="memdesc:ac4001e54dd8cc15e98ea0d40ac34c8dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is how powerful the ripples are for liquids. <br  />
+ Lava and honey use this to have ripples be less strong. <br  />
+ Can cause weird visual issues with ripples if set to large numbers like 255. <br /></td></tr>
+<tr class="separator:ac4001e54dd8cc15e98ea0d40ac34c8dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a999a00d17148d0f80c0d9b3f52b90376"><td class="memItemLeft" align="right" valign="top"><a id="a999a00d17148d0f80c0d9b3f52b90376" name="a999a00d17148d0f80c0d9b3f52b90376"></a>
+static int[]&#160;</td><td class="memItemRight" valign="bottom"><b>WATERFALL_LENGTH</b> = new int[LiquidID.Count]</td></tr>
+<tr class="memdesc:a999a00d17148d0f80c0d9b3f52b90376"><td class="mdescLeft">&#160;</td><td class="mdescRight">Liquids use this to control how many tiles long their liquidfall is. <br  />
+ Liquidfalls are drawn whenever there is not a solid block underneath a liquid, most visible when a liquid is overtop of a half block. <br  />
+ This makes liquids look less akward when falling downwards. <br /></td></tr>
+<tr class="separator:a999a00d17148d0f80c0d9b3f52b90376"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="events" name="events"></a>
 Events</h2></td></tr>

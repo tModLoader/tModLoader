@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.08</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.09</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -93,7 +93,9 @@ $(document).ready(function(){initNavTree('class_lighting.html',''); initResizabl
 </div><!--header-->
 <div class="contents">
 
-<p>This class manages lighting in the game world. <a class="el" href="class_lighting.html" title="This class manages lighting in the game world. Lighting is calculated and tracked at tile coordinates...">Lighting</a> is calculated and tracked at tile coordinates within the users game view. The most common use of this class is to use GetColor methods to retrieve the light values at a location for drawing a specific entity. Another common usage is adding light to the game world using the AddLight methods.  
+<p>This class manages lighting in the game world. <a class="el" href="class_lighting.html" title="This class manages lighting in the game world. Lighting is calculated and tracked at tile coordinates...">Lighting</a> is calculated and tracked at tile coordinates within the users game view. The most common use of this class is to use <code>GetColor</code> methods to retrieve the light values at a location for drawing a specific entity. Another common usage is adding light to the game world using the <code>AddLight</code> methods. <br  />
+<br  />
+ <a class="el" href="class_lighting.html" title="This class manages lighting in the game world. Lighting is calculated and tracked at tile coordinates...">Lighting</a> is not calculated on the server, as such it should not be used for anything gameplay related that needs to sync with the server.  
  <a href="class_lighting.html#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
@@ -114,6 +116,7 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>AddLight</b> (
 <tr class="separator:a231da45b0b9d4569fa06bd6f031f88f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5cc03007aa459da86d76a8e06e9cf25a"><td class="memItemLeft" align="right" valign="top"><a id="a5cc03007aa459da86d76a8e06e9cf25a" name="a5cc03007aa459da86d76a8e06e9cf25a"></a>
 static float&#160;</td><td class="memItemRight" valign="bottom"><b>Brightness</b> (int x, int y)</td></tr>
+<tr class="memdesc:a5cc03007aa459da86d76a8e06e9cf25a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the light level at the specified <a class="el" href="struct_tile.html" title="A data structure used for accessing information about tiles, walls, wires, and liquids at a single po...">Tile</a> coordinate location. The light level is the average RGB values at the tile coordinate (<a class="el" href="class_lighting.html#afefe893018692f523bdd8abd8430b4c6" title="Gets the lighting color at the specified Tile coordinate location.">GetColor(int, int)</a>) multiplied by GlobalBrightness. Ranges from 0 to 1.2 and is affected by BuffID.Darkness. <br /></td></tr>
 <tr class="separator:a5cc03007aa459da86d76a8e06e9cf25a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a70c88eebc45738e31bbf7719590f18bf"><td class="memItemLeft" align="right" valign="top"><a id="a70c88eebc45738e31bbf7719590f18bf" name="a70c88eebc45738e31bbf7719590f18bf"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>Clear</b> ()</td></tr>
@@ -192,7 +195,9 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>UsingNewLighti
 <tr class="separator:a9446f0c56d60a9059b33af44aff753cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p >This class manages lighting in the game world. <a class="el" href="class_lighting.html" title="This class manages lighting in the game world. Lighting is calculated and tracked at tile coordinates...">Lighting</a> is calculated and tracked at tile coordinates within the users game view. The most common use of this class is to use GetColor methods to retrieve the light values at a location for drawing a specific entity. Another common usage is adding light to the game world using the AddLight methods. </p>
+<div class="textblock"><p >This class manages lighting in the game world. <a class="el" href="class_lighting.html" title="This class manages lighting in the game world. Lighting is calculated and tracked at tile coordinates...">Lighting</a> is calculated and tracked at tile coordinates within the users game view. The most common use of this class is to use <code>GetColor</code> methods to retrieve the light values at a location for drawing a specific entity. Another common usage is adding light to the game world using the <code>AddLight</code> methods. <br  />
+<br  />
+ <a class="el" href="class_lighting.html" title="This class manages lighting in the game world. Lighting is calculated and tracked at tile coordinates...">Lighting</a> is not calculated on the server, as such it should not be used for anything gameplay related that needs to sync with the server. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a657943484e31f0e345c978bcdcd47feb" name="a657943484e31f0e345c978bcdcd47feb"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a657943484e31f0e345c978bcdcd47feb">&#9670;&nbsp;</a></span>AddLight() <span class="overload">[1/3]</span></h2>

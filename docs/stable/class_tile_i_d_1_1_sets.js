@@ -52,6 +52,7 @@ var class_tile_i_d_1_1_sets =
     [ "IgnoredByGrowingSaplings", "class_tile_i_d_1_1_sets.html#af69a818caf125df9f8897c190f049add", null ],
     [ "IgnoredByNpcStepUp", "class_tile_i_d_1_1_sets.html#a627678a41ae21731ed608c9569e34b3b", null ],
     [ "IgnoresNearbyHalfbricksWhenDrawn", "class_tile_i_d_1_1_sets.html#a685eed3c2a831a7c96e839ae383a68c2", null ],
+    [ "Infectable", "class_tile_i_d_1_1_sets.html#a064f3fee90da51a19f32649cb402006f", null ],
     [ "InteractibleByNPCs", "class_tile_i_d_1_1_sets.html#ac90f5d6a5f14c9aeb9c7182b936bd7a9", null ],
     [ "IsAContainer", "class_tile_i_d_1_1_sets.html#aff8ff43ce2fe95a587735a42c9a9326d", null ],
     [ "IsAMechanism", "class_tile_i_d_1_1_sets.html#af452616a3fccf34a1dbda65c19571175", null ],

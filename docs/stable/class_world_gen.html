@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.08</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.09</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -506,9 +506,12 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>Convert</b> (i
 <tr class="memdesc:a3708e3da9f373cad064eb35b7d2710d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts biome variant tiles and walls to a target biome.<br  />
  Converts a 9x9 square by default, but can be adjusted with the <em>size</em>  parameter.  <a href="class_world_gen.html#a3708e3da9f373cad064eb35b7d2710d7">More...</a><br /></td></tr>
 <tr class="separator:a3708e3da9f373cad064eb35b7d2710d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8b218eba48d8b0d018eb87eb2b78b253"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_world_gen.html#a8b218eba48d8b0d018eb87eb2b78b253">ConvertTile</a> (int i, int j, int newType, bool tryBreakTrees=false)</td></tr>
-<tr class="memdesc:a8b218eba48d8b0d018eb87eb2b78b253"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts the single tile at the given coordinate into a specified new tile type<br  />
- Automatically handles tile framing and multiplayer syncing.  <a href="class_world_gen.html#a8b218eba48d8b0d018eb87eb2b78b253">More...</a><br /></td></tr>
+<tr class="memitem:afce5e3c3d1d3cd4bdbdf077f0ac2ec7b"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_world_gen.html#afce5e3c3d1d3cd4bdbdf077f0ac2ec7b">ConvertTile</a> (int i, int j, int newType)</td></tr>
+<tr class="memdesc:afce5e3c3d1d3cd4bdbdf077f0ac2ec7b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts the single tile at the given coordinate into a specified new tile type<br  />
+ Automatically handles tile framing and multiplayer syncing.  <a href="class_world_gen.html#afce5e3c3d1d3cd4bdbdf077f0ac2ec7b">More...</a><br /></td></tr>
+<tr class="separator:afce5e3c3d1d3cd4bdbdf077f0ac2ec7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8b218eba48d8b0d018eb87eb2b78b253"><td class="memItemLeft" align="right" valign="top"><a id="a8b218eba48d8b0d018eb87eb2b78b253" name="a8b218eba48d8b0d018eb87eb2b78b253"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>ConvertTile</b> (int i, int j, int newType, bool tryBreakTrees=false)</td></tr>
 <tr class="separator:a8b218eba48d8b0d018eb87eb2b78b253"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4959269f52c93923394fc70bd91c0b39"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_world_gen.html#a4959269f52c93923394fc70bd91c0b39">ConvertWall</a> (int i, int j, int newType)</td></tr>
 <tr class="memdesc:a4959269f52c93923394fc70bd91c0b39"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts the single wall at the given coordinate into a specified new wall type<br  />
@@ -712,6 +715,12 @@ static int&#160;</td><td class="memItemRight" valign="bottom"><b>GetNextJungleCh
 <tr class="memitem:a1fc9c6cd5ef06356b4bf05be0eb24bc4"><td class="memItemLeft" align="right" valign="top"><a id="a1fc9c6cd5ef06356b4bf05be0eb24bc4" name="a1fc9c6cd5ef06356b4bf05be0eb24bc4"></a>
 static <a class="el" href="class_entity_source___shake_tree.html">EntitySource_ShakeTree</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetNPCSource_ShakeTree</b> (int x, int y)</td></tr>
 <tr class="separator:a1fc9c6cd5ef06356b4bf05be0eb24bc4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af4692f185db68afdfd0d24a1ee7a9746"><td class="memItemLeft" align="right" valign="top"><a id="af4692f185db68afdfd0d24a1ee7a9746" name="af4692f185db68afdfd0d24a1ee7a9746"></a>
+static <a class="el" href="class_player.html">Player</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetPlayerForTile</b> (int x, int y)</td></tr>
+<tr class="memdesc:af4692f185db68afdfd0d24a1ee7a9746"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the player closest to the provided tile coordinates. Usually used to determine which player mined a tile. <br  />
+<br  />
+ Technically this could be incorrect if multiple players are close, but since tile operations do not track which player triggered them, this is a reasonable approach. <br /></td></tr>
+<tr class="separator:af4692f185db68afdfd0d24a1ee7a9746"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae9ad7b384849b347b56df5a3797927bd"><td class="memItemLeft" align="right" valign="top"><a id="ae9ad7b384849b347b56df5a3797927bd" name="ae9ad7b384849b347b56df5a3797927bd"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>GetRidOfCultists</b> ()</td></tr>
 <tr class="separator:ae9ad7b384849b347b56df5a3797927bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -918,6 +927,9 @@ static int&#160;</td><td class="memItemRight" valign="bottom"><b>KillTile_MakeTi
 <tr class="memitem:a422499a5a35a0d5fb7849539fc48e45e"><td class="memItemLeft" align="right" valign="top"><a id="a422499a5a35a0d5fb7849539fc48e45e" name="a422499a5a35a0d5fb7849539fc48e45e"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>KillTile_PlaySounds</b> (int i, int j, bool fail, <a class="el" href="struct_tile.html">Tile</a> tileCache)</td></tr>
 <tr class="separator:a422499a5a35a0d5fb7849539fc48e45e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5c6e22a9c276a4147c1c21c27c3dbd7d"><td class="memItemLeft" align="right" valign="top"><a id="a5c6e22a9c276a4147c1c21c27c3dbd7d" name="a5c6e22a9c276a4147c1c21c27c3dbd7d"></a>
+static bool&#160;</td><td class="memItemRight" valign="bottom"><b>KillTile_ShouldDropSeeds</b> (int x, int y)</td></tr>
+<tr class="separator:a5c6e22a9c276a4147c1c21c27c3dbd7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae31e333d8b2f36d66b1fb83a246be903"><td class="memItemLeft" align="right" valign="top"><a id="ae31e333d8b2f36d66b1fb83a246be903" name="ae31e333d8b2f36d66b1fb83a246be903"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>KillWall</b> (int i, int j, bool fail=false)</td></tr>
 <tr class="separator:ae31e333d8b2f36d66b1fb83a246be903"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2243,8 +2255,8 @@ static IReadOnlyDictionary&lt; string, <a class="el" href="class_gen_pass.html">
 
 </div>
 </div>
-<a id="a8b218eba48d8b0d018eb87eb2b78b253" name="a8b218eba48d8b0d018eb87eb2b78b253"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8b218eba48d8b0d018eb87eb2b78b253">&#9670;&nbsp;</a></span>ConvertTile()</h2>
+<a id="afce5e3c3d1d3cd4bdbdf077f0ac2ec7b" name="afce5e3c3d1d3cd4bdbdf077f0ac2ec7b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afce5e3c3d1d3cd4bdbdf077f0ac2ec7b">&#9670;&nbsp;</a></span>ConvertTile()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2268,13 +2280,7 @@ static IReadOnlyDictionary&lt; string, <a class="el" href="class_gen_pass.html">
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>newType</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>tryBreakTrees</em> = <code>false</code>&#160;</td>
+          <td class="paramname"><em>newType</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -2296,7 +2302,6 @@ static IReadOnlyDictionary&lt; string, <a class="el" href="class_gen_pass.html">
     <tr><td class="paramname">i</td><td>The X coordinate of the target tile.</td></tr>
     <tr><td class="paramname">j</td><td>The Y coordinate of the target tile.</td></tr>
     <tr><td class="paramname">newType</td><td>The new type to convert the tile into</td></tr>
-    <tr><td class="paramname">tryBreakTrees</td><td>Should the conversion try to break trees above the converted tile if the new type is invalid for the tree</td></tr>
   </table>
   </dd>
 </dl>

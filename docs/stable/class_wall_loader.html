@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.08</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.09</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -157,6 +157,10 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>RandomUpdate</
 <tr class="memdesc:a6f91c964d84df346689a44103c395617"><td class="mdescLeft">&#160;</td><td class="mdescRight">Registers a wall type as having custom biome conversion code for this specific <a class="el" href="class_biome_conversion_i_d.html">BiomeConversionID</a>. For modded walls, you can directly use Convert <br  />
  If you need to register conversions that rely on <a class="el" href="class_wall_i_d_1_1_sets_1_1_conversion.html">WallID.Sets.Conversion</a> being fully populated, consider doing it in ModBiomeConversion.PostSetupContent  <a href="class_wall_loader.html#a6f91c964d84df346689a44103c395617">More...</a><br /></td></tr>
 <tr class="separator:a6f91c964d84df346689a44103c395617"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aead005bfa67148cc9e17f5f5685ccabf"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_wall_loader.html#aead005bfa67148cc9e17f5f5685ccabf">RegisterConversion</a> (int wallType, int conversionType, int toType)</td></tr>
+<tr class="memdesc:aead005bfa67148cc9e17f5f5685ccabf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Registers a wall type as having custom biome conversion code for this specific <a class="el" href="class_biome_conversion_i_d.html">BiomeConversionID</a>. For modded walls, you can directly use Convert <br  />
+ If you need to register conversions that rely on <a class="el" href="class_wall_i_d_1_1_sets_1_1_conversion.html">WallID.Sets.Conversion</a> being fully populated, consider doing it in ModBiomeConversion.PostSetupContent  <a href="class_wall_loader.html#aead005bfa67148cc9e17f5f5685ccabf">More...</a><br /></td></tr>
+<tr class="separator:aead005bfa67148cc9e17f5f5685ccabf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7812e2490f19c8e0b51b8d37b616f83a"><td class="memItemLeft" align="right" valign="top"><a id="a7812e2490f19c8e0b51b8d37b616f83a" name="a7812e2490f19c8e0b51b8d37b616f83a"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>RegisterConversionFallback</b> (int wallType, int fallbackType, params int[] exceptForConversionTypes)</td></tr>
 <tr class="memdesc:a7812e2490f19c8e0b51b8d37b616f83a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets a fallback wall type for all conversion types except those in <em>exceptForConversionTypes</em>  <br  />
@@ -193,7 +197,7 @@ static int&#160;</td><td class="memItemRight" valign="bottom"><b>WallCount</b><c
 <div class="textblock"><p >This serves as the central class from which wall-related functions are supported and carried out. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a6f91c964d84df346689a44103c395617" name="a6f91c964d84df346689a44103c395617"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6f91c964d84df346689a44103c395617">&#9670;&nbsp;</a></span>RegisterConversion()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a6f91c964d84df346689a44103c395617">&#9670;&nbsp;</a></span>RegisterConversion() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -239,6 +243,59 @@ static int&#160;</td><td class="memItemRight" valign="bottom"><b>WallCount</b><c
     <tr><td class="paramname">wallType</td><td>The wall type that has is affected by this custom conversion.</td></tr>
     <tr><td class="paramname">conversionType</td><td>The conversion type for which the wall should use custom conversion code.</td></tr>
     <tr><td class="paramname">conversionDelegate</td><td>Code to run when the wall attempts to get converted. Return false to signal that your custom conversion took place and that vanilla code shouldn't be ran.</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="aead005bfa67148cc9e17f5f5685ccabf" name="aead005bfa67148cc9e17f5f5685ccabf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aead005bfa67148cc9e17f5f5685ccabf">&#9670;&nbsp;</a></span>RegisterConversion() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void WallLoader.RegisterConversion </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>wallType</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>conversionType</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>toType</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Registers a wall type as having custom biome conversion code for this specific <a class="el" href="class_biome_conversion_i_d.html">BiomeConversionID</a>. For modded walls, you can directly use Convert <br  />
+ If you need to register conversions that rely on <a class="el" href="class_wall_i_d_1_1_sets_1_1_conversion.html">WallID.Sets.Conversion</a> being fully populated, consider doing it in ModBiomeConversion.PostSetupContent </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">wallType</td><td>The wall type that has is affected by this custom conversion.</td></tr>
+    <tr><td class="paramname">conversionType</td><td>The conversion type for which the wall should use custom conversion code.</td></tr>
+    <tr><td class="paramname">toType</td><td>What <em>wallType</em>  is converted into when it's hit with the <em>conversionType</em> .</td></tr>
   </table>
   </dd>
 </dl>

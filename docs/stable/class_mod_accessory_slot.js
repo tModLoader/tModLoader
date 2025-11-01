@@ -10,5 +10,10 @@ var class_mod_accessory_slot =
     [ "OnMouseHover", "class_mod_accessory_slot.html#a601af1d60cc58f942a73784742b52f62", null ],
     [ "PreDraw", "class_mod_accessory_slot.html#a1b616a1a28b08b3bddfa38db33b45737", null ],
     [ "Register", "class_mod_accessory_slot.html#a6f1e619acde87e981174555821fa5932", null ],
-    [ "HasEquipmentLoadoutSupport", "class_mod_accessory_slot.html#a9bb2d012491a3bdae1cd18a68a7c26d3", null ]
+    [ "DyeItem", "class_mod_accessory_slot.html#afdaed9f75306dfff76223b372af6d7b6", null ],
+    [ "FunctionalItem", "class_mod_accessory_slot.html#a83e676a07276c9c742abb77fd70e0071", null ],
+    [ "HasEquipmentLoadoutSupport", "class_mod_accessory_slot.html#a9bb2d012491a3bdae1cd18a68a7c26d3", null ],
+    [ "HideVisuals", "class_mod_accessory_slot.html#a33b494cceb7bd88b38910e5d87a53793", null ],
+    [ "Player", "class_mod_accessory_slot.html#a4f2eb58a4c936b38229bc542f4a59c7f", null ],
+    [ "VanityItem", "class_mod_accessory_slot.html#add01c7bdbba500f5e9296d25bd62e006", null ]
 ];

@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.08</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.09</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -275,7 +275,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>SetSnapPoint</b> (str
 delegate void&#160;</td><td class="memItemRight" valign="bottom"><b>UIElementAction</b> (<a class="el" href="class_u_i_element.html">UIElement</a> element)</td></tr>
 <tr class="separator:aabb016249eca4a6152490dffec95a411 inherit pub_methods_class_u_i_element"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7e61e1d8256aee421acb81f3e5ebe743 inherit pub_methods_class_u_i_element"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_u_i_element.html#a7e61e1d8256aee421acb81f3e5ebe743">Update</a> (GameTime gameTime)</td></tr>
-<tr class="memdesc:a7e61e1d8256aee421acb81f3e5ebe743 inherit pub_methods_class_u_i_element"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls OnUpdate and then calls <a class="el" href="class_u_i_element.html#a7e61e1d8256aee421acb81f3e5ebe743" title="Calls OnUpdate and then calls Update(GameTime) on each child element in the order they were added.">Update(GameTime)</a> on each child element in the order they were added.  <a href="class_u_i_element.html#a7e61e1d8256aee421acb81f3e5ebe743">More...</a><br /></td></tr>
+<tr class="memdesc:a7e61e1d8256aee421acb81f3e5ebe743 inherit pub_methods_class_u_i_element"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls <a class="el" href="class_u_i_element.html#a84868077ad254e8b5f82770844752cea" title="Called at the start of Update(GameTime). Use this event instead of inheritance if suitable.">OnUpdate</a> and then calls <a class="el" href="class_u_i_element.html#a7e61e1d8256aee421acb81f3e5ebe743" title="Calls OnUpdate and then calls Update(GameTime) on each child element in the order they were added.">Update(GameTime)</a> on each child element in the order they were added.  <a href="class_u_i_element.html#a7e61e1d8256aee421acb81f3e5ebe743">More...</a><br /></td></tr>
 <tr class="separator:a7e61e1d8256aee421acb81f3e5ebe743 inherit pub_methods_class_u_i_element"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a199aac916ca2027ef427b198aa3de106 inherit pub_methods_class_u_i_element"><td class="memItemLeft" align="right" valign="top"><a id="a199aac916ca2027ef427b198aa3de106" name="a199aac916ca2027ef427b198aa3de106"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>XButton1Click</b> (<a class="el" href="class_u_i_mouse_event.html">UIMouseEvent</a> evt)</td></tr>
@@ -424,6 +424,10 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsMouseHovering</b><c
 int&#160;</td><td class="memItemRight" valign="bottom"><b>UniqueId</b><code> [get]</code></td></tr>
 <tr class="separator:a414222acbf5292e38eca8b23a4dcb0ac inherit properties_class_u_i_element"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header events_class_u_i_element"><td colspan="2" onclick="javascript:toggleInherit('events_class_u_i_element')"><img src="closed.png" alt="-"/>&#160;Events inherited from <a class="el" href="class_u_i_element.html">UIElement</a></td></tr>
+<tr class="memitem:a4515441ee437b4fa1af9d96f28d2b100 inherit events_class_u_i_element"><td class="memItemLeft" align="right" valign="top"><a id="a4515441ee437b4fa1af9d96f28d2b100" name="a4515441ee437b4fa1af9d96f28d2b100"></a>
+ElementEvent&#160;</td><td class="memItemRight" valign="bottom"><b>OnDraw</b></td></tr>
+<tr class="memdesc:a4515441ee437b4fa1af9d96f28d2b100 inherit events_class_u_i_element"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called at the start of <a class="el" href="class_u_i_element.html#a0e7f0b480b90da1361844567745f2db4" title="Handles drawing this element and all of its children over this element. Calls DrawSelf(SpriteBatch) a...">Draw(SpriteBatch)</a>. Use this event instead of inheritance if suitable. <br /></td></tr>
+<tr class="separator:a4515441ee437b4fa1af9d96f28d2b100 inherit events_class_u_i_element"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4be95b10e34efd990a8a956e2703f65a inherit events_class_u_i_element"><td class="memItemLeft" align="right" valign="top"><a id="a4be95b10e34efd990a8a956e2703f65a" name="a4be95b10e34efd990a8a956e2703f65a"></a>
 MouseEvent&#160;</td><td class="memItemRight" valign="bottom"><b>OnLeftClick</b></td></tr>
 <tr class="separator:a4be95b10e34efd990a8a956e2703f65a inherit events_class_u_i_element"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -473,6 +477,7 @@ ScrollWheelEvent&#160;</td><td class="memItemRight" valign="bottom"><b>OnScrollW
 <tr class="separator:a19348bae15b34b24698712b0231f89d4 inherit events_class_u_i_element"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a84868077ad254e8b5f82770844752cea inherit events_class_u_i_element"><td class="memItemLeft" align="right" valign="top"><a id="a84868077ad254e8b5f82770844752cea" name="a84868077ad254e8b5f82770844752cea"></a>
 ElementEvent&#160;</td><td class="memItemRight" valign="bottom"><b>OnUpdate</b></td></tr>
+<tr class="memdesc:a84868077ad254e8b5f82770844752cea inherit events_class_u_i_element"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called at the start of <a class="el" href="class_u_i_element.html#a7e61e1d8256aee421acb81f3e5ebe743" title="Calls OnUpdate and then calls Update(GameTime) on each child element in the order they were added.">Update(GameTime)</a>. Use this event instead of inheritance if suitable. <br /></td></tr>
 <tr class="separator:a84868077ad254e8b5f82770844752cea inherit events_class_u_i_element"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4d5a0d01eac19f69eb8249b2cfe6598a inherit events_class_u_i_element"><td class="memItemLeft" align="right" valign="top"><a id="a4d5a0d01eac19f69eb8249b2cfe6598a" name="a4d5a0d01eac19f69eb8249b2cfe6598a"></a>
 MouseEvent&#160;</td><td class="memItemRight" valign="bottom"><b>OnXButton1Click</b></td></tr>
