@@ -141,7 +141,7 @@
 +		foreach (ModAchievement modAchievement in ModdedAchievements) {
 +			modAchievement.SetStaticDefaults();
 +			if (modAchievement.Achievement._conditions.Count == 0)
-+				throw BlameAchievementException(new Exception($"The ModAchievement '{modAchievement}' has no conditions, achievements must have at least one condition."));
++				throw BlameAchievementException(new Exception($"The ModAchievement '{modAchievement.Name}' has no conditions, achievements must have at least one condition."));
 +			modAchievement.AutoStaticDefaults();
 +
 +			var position = modAchievement.GetDefaultPosition();
@@ -164,7 +164,7 @@
 +					break;
 +				}
 +				default: {
-+					var ex = new ArgumentException($"ModMapLayer {modAchievement} has unknown Position {position}");
++					var ex = new ArgumentException($"ModAchievement {modAchievement} has unknown Position {position}");
 +					throw BlameAchievementException(ex);
 +				}
 +			}
