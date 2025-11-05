@@ -41,8 +41,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Reference Include="$(tMLSteamPath)$(tMLPath)" />
-		<Reference Include="$(tMLLibraryPath)/**/*.dll" />
+		<Reference Include="$(tMLSteamPath)$(tMLPath)" Private="false" />
+		<Reference Include="$(tMLLibraryPath)/**/*.dll" Private="false" />
 		<Reference Remove="$(tMLLibraryPath)/Native/**" />
 		<Reference Remove="$(tMLLibraryPath)/**/runtime*/**" />
 		<Reference Remove="$(tMLLibraryPath)/**/*.resources.dll" />
