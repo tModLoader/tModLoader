@@ -57,7 +57,7 @@ echo "This may take a few moments."
 source ./DotNetVersion.sh
 
 # Attempt to fix first time Crash To Desktop due to dotnet install failure
-if [[ ! -f "$LaunchLogs/client.log" && ! -f "$LaunchLogs/server.log" && ! "$is_first_run" ]]; then
+if [[ ! "$is_first_run" && ! -f "$LaunchLogs/client.log" && ! -f "$LaunchLogs/server.log" ]]; then
 	echo "Last Run Attempt Failed to Start tModLoader. Deleting dotnet_dir and resetting"  2>&1 | tee -a "$LogFile"
 	rm -rf "$dotnet_dir"
 fi
