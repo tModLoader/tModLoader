@@ -286,7 +286,7 @@ public static class LiquidEdgeRenderer
 					}
 					if (slope is SlopeType.SlopeDownRight or SlopeType.SlopeUpRight) {
 						offset = new Vector2(0, depthPush);
-						if (WorldGen.SolidTile(tileRightCache)) {
+						if (WorldGen.SolidOrSlopedTile(tileRightCache)) {
 							size = (16, 16 - depthPush);
 						}
 						else {
@@ -296,7 +296,7 @@ public static class LiquidEdgeRenderer
 				}
 				else if (right) {
 					if (slope is SlopeType.SlopeDownLeft or SlopeType.SlopeUpLeft) {
-						if (WorldGen.SolidTile(tileLeftCache)) {
+						if (WorldGen.SolidOrSlopedTile(tileLeftCache)) {
 							offset = new Vector2(0, depthPush);
 							size = (16, 16 - depthPush);
 						}
