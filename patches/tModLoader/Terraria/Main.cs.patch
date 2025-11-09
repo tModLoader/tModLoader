@@ -642,7 +642,7 @@
  	public static bool[] tileSign = new bool[TileID.Count];
  	public static bool[][] tileMerge = new bool[TileID.Count][];
  	public static int cageFrames = 25;
-@@ -941,9 +_,23 @@
+@@ -941,30 +_,70 @@
  	public static int[] grasshopperCageFrame = new int[cageFrames];
  	public static int[] grasshopperCageFrameCounter = new int[cageFrames];
  	public static bool[] tileSand = new bool[TileID.Count];
@@ -666,7 +666,10 @@
  	public static int[] tileFrameCounter = new int[TileID.Count];
  	public static byte[] wallFrame = new byte[WallID.Count];
  	public static byte[] wallFrameCounter = new byte[WallID.Count];
-@@ -952,19 +_,43 @@
++	public static int[] liquidFrame = new int[LiquidID.Count]; // Added by TML.
++	public static float[] liquidFrameState = new float[LiquidID.Count]; // Added by TML.
+ 	public static int[] backgroundWidth = new int[maxBackgrounds];
+ 	public static int[] backgroundHeight = new int[maxBackgrounds];
  	public static HairstyleUnlocksHelper Hairstyles = new HairstyleUnlocksHelper();
  	public static bool tilesLoaded = false;
  	public static WorldMap Map;

@@ -1,12 +1,17 @@
 --- src/TerrariaNetCore/Terraria/GameContent/Liquid/LiquidRenderer.cs
 +++ src/tModLoader/Terraria/GameContent/Liquid/LiquidRenderer.cs
-@@ -1,4 +_,5 @@
+@@ -1,16 +_,18 @@
  using System;
 +using System.Collections.Generic;
  using Microsoft.Xna.Framework;
  using Microsoft.Xna.Framework.Graphics;
  using ReLogic.Content;
-@@ -10,7 +_,7 @@
+ using Terraria.Graphics;
+ using Terraria.ID;
++using Terraria.ModLoader;
+ using Terraria.Utilities;
+ 
+ namespace Terraria.GameContent.Liquid;
  
  public class LiquidRenderer
  {
@@ -85,7 +90,7 @@
 +	/// Modifies the wave alpha. <br/>
 +	/// Vanilla leaves this array blank by default.
 +	/// </summary>
-+	private static byte[] WAVE_MASK_STRENGTH = new byte[5];
++	internal static byte[] WAVE_MASK_STRENGTH = new byte[5];
 -	private static readonly byte[] WAVE_MASK_STRENGTH = new byte[5];
 +	//private static readonly byte[] WAVE_MASK_STRENGTH = new byte[5];
 +	/// <summary>
@@ -107,8 +112,10 @@
  	public static LiquidRenderer Instance;
 -	private readonly Asset<Texture2D>[] _liquidTextures = new Asset<Texture2D>[15];
 +	public Asset<Texture2D>[] _liquidTextures = new Asset<Texture2D>[15];
- 	private LiquidCache[] _cache = new LiquidCache[1];
- 	private LiquidDrawCache[] _drawCache = new LiquidDrawCache[1];
+-	private LiquidCache[] _cache = new LiquidCache[1];
++	internal LiquidCache[] _cache = new LiquidCache[1];
+-	private LiquidDrawCache[] _drawCache = new LiquidDrawCache[1];
++	internal LiquidDrawCache[] _drawCache = new LiquidDrawCache[1];
 -	private SpecialLiquidDrawCache[] _drawCacheForShimmer = new SpecialLiquidDrawCache[1];
 +	// private SpecialLiquidDrawCache[] _drawCacheForShimmer = new SpecialLiquidDrawCache[1];
  	private int _animationFrame;
@@ -297,7 +304,7 @@
  		}
  
  		if (this.WaveFilters != null)
-@@ -522,9 +_,17 @@
+@@ -522,14 +_,22 @@
  		Main.tileBatch.Begin();
  		fixed (LiquidDrawCache* ptr = &_drawCache[0]) {
  			LiquidDrawCache* ptr2 = ptr;
@@ -315,6 +322,12 @@
  						Rectangle sourceRectangle = ptr2->SourceRectangle;
  						if (ptr2->IsSurfaceLiquid)
  							sourceRectangle.Y = 1280;
+ 						else
+-							sourceRectangle.Y += _animationFrame * 80;
++							sourceRectangle.Y += Main.liquidFrame[ptr2->Type] * 80; //animation replaced with the Main liquidFrame array for more customisation
+ 
+ 						Vector2 liquidOffset = ptr2->LiquidOffset;
+ 						float num = ptr2->Opacity * (isBackgroundDraw ? 1f : DEFAULT_OPACITY[ptr2->Type]);
 @@ -544,6 +_,9 @@
  								break;
  						}
@@ -325,7 +338,7 @@
  						num = Math.Min(1f, num);
  						Lighting.GetCornerColors(i, j, out var vertices);
  						vertices.BottomLeftColor *= num;
-@@ -566,12 +_,24 @@
+@@ -566,18 +_,30 @@
  	{
  		Rectangle drawArea = _drawArea;
  		Main.tileBatch.Begin();
@@ -350,3 +363,24 @@
  
  				Rectangle sourceRectangle = ptr2->SourceRectangle;
  				if (ptr2->IsSurfaceLiquid)
+ 					sourceRectangle.Y = 1280;
+ 				else
+-					sourceRectangle.Y += _animationFrame * 80;
++					sourceRectangle.Y += Main.liquidFrame[ptr2->Type] * 80; //animation replaced with the Main liquidFrame array for more customisation
+ 
+ 				Vector2 liquidOffset = ptr2->LiquidOffset;
+ 				float val = ptr2->Opacity * (isBackgroundDraw ? 1f : 0.75f);
+@@ -717,6 +_,13 @@
+ 
+ 			_frameState %= 16f;
+ 			_animationFrame = (int)_frameState;
++
++			for (int i = 0; i < Main.liquidFrameState.Length; i++) {
++				if (LiquidLoader.AnimateLiquid(i, gameTime, ref Main.liquidFrame[i], ref Main.liquidFrameState[i])) {
++					Main.liquidFrame[i] = _animationFrame;
++					Main.liquidFrameState[i] = _frameState;
++				}
++			}
+ 		}
+ 	}
+ 

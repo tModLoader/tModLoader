@@ -112,6 +112,7 @@
 		"ModsXWalls": "{0} {^0:wall;walls}",
 		"ModsXBuffs": "{0} {^0:buff;buffs}",
 		"ModsXMounts": "{0} {^0:mount;mounts}",
+		"ModsXLiquids": "{0} {^0:liquid;liquids}",
 
 		//Dedicated server
 		"ModsReloadAndReturn": "Reload and return to world menu",
@@ -793,6 +794,7 @@
 		"NearLava": "Near lava",
 		"NearHoney": "Near honey",
 		"NearShimmer": "Near shimmer",
+		"NearLiquid": "Near {0}",
 
 		"TimeDay": "During daytime",
 		"TimeNight": "At night",

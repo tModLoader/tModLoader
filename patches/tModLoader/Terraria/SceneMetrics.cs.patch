@@ -22,7 +22,8 @@
  	public bool hasBanner;
 -	private readonly int[] _tileCounts = new int[TileID.Count];
 +	internal int[] _tileCounts = new int[TileLoader.TileCount];
- 	private readonly int[] _liquidCounts = new int[LiquidID.Count];
+-	private readonly int[] _liquidCounts = new int[LiquidID.Count];
++	internal int[] _liquidCounts = new int[LiquidID.Count];
  	private readonly List<Point> _oreFinderTileLocations = new List<Point>(512);
  	public int bestOre;
  
@@ -210,13 +211,15 @@
  	public void Reset()
  	{
  		Array.Clear(_tileCounts, 0, _tileCounts.Length);
-@@ -388,6 +_,9 @@
+@@ -388,6 +_,11 @@
  		Array.Clear(NPCBannerBuff, 0, NPCBannerBuff.Length);
  		hasBanner = false;
  		CanPlayCreditsRoll = false;
 +
 +		if (NPCBannerBuff.Length < ModLoader.NPCLoader.NPCCount)
 +			Array.Resize(ref NPCBannerBuff, ModLoader.NPCLoader.NPCCount);
++		if (_liquidCounts.Length < ModLoader.LiquidLoader.LiquidCount)
++			Array.Resize(ref _liquidCounts, ModLoader.LiquidLoader.LiquidCount);
  	}
  
  	private void UpdateOreFinderData()

@@ -66,12 +66,22 @@ internal static class MapIO
 			if (MapLoader.entryToTile.ContainsKey(type)) {
 				ModTile tile = TileLoader.GetTile(MapLoader.entryToTile[type]);
 				writer.Write(true);
+				writer.Write(false);
 				writer.Write(tile.Mod.Name);
 				writer.Write(tile.Name);
 				writer.Write((ushort)(type - MapHelper.tileLookup[tile.Type]));
 			}
+			else if (MapLoader.entryToLiquid.ContainsKey(type)) {
+				ModLiquid liquid = LiquidLoader.GetLiquid(MapLoader.entryToLiquid[type]);
+				writer.Write(false);
+				writer.Write(true);
+				writer.Write(liquid.Mod.Name);
+				writer.Write(liquid.Name);
+				writer.Write((ushort)(type - MapHelper.liquidLookup[liquid.Type]));
+			}
 			else if (MapLoader.entryToWall.ContainsKey(type)) {
 				ModWall wall = WallLoader.GetWall(MapLoader.entryToWall[type]);
+				writer.Write(false);
 				writer.Write(false);
 				writer.Write(wall.Mod.Name);
 				writer.Write(wall.Name);
@@ -95,6 +105,7 @@ internal static class MapIO
 		for (ushort k = 0; k < count; k++) {
 			ushort type = reader.ReadUInt16();
 			bool isTile = reader.ReadBoolean();
+			bool isLiquid = reader.ReadBoolean();
 			string modName = reader.ReadString();
 			string name = reader.ReadString();
 			ushort option = reader.ReadUInt16();
@@ -105,6 +116,14 @@ internal static class MapIO
 						option = 0;
 					}
 					newType = (ushort)MapHelper.TileToLookup(tile.Type, option);
+				}
+			}
+			else if (isLiquid) {
+				if (ModContent.TryFind(modName, name, out ModLiquid liquid)) {
+					if (option >= MapLoader.modLiquidOptions(liquid.Type)) {
+						option = 0;
+					}
+					newType = (ushort)(MapHelper.liquidLookup[liquid.Type] + option);
 				}
 			}
 			else {

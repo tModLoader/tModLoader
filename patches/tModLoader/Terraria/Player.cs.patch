@@ -866,7 +866,7 @@
  	public int SpawnY = -1;
  	public Vector2? PotionOfReturnOriginalUsePosition;
  	public Vector2? PotionOfReturnHomePosition;
-@@ -1223,32 +_,103 @@
+@@ -1223,32 +_,134 @@
  	public int[] spY = new int[200];
  	public string[] spN = new string[200];
  	public int[] spI = new int[200];
@@ -939,6 +939,37 @@
 -	public bool[] adjTile = new bool[TileID.Count];
 -	public bool[] oldAdjTile = new bool[TileID.Count];
 +	public bool oldAdjShimmer;
++
++	private bool[] _adjLiquid = new bool[LiquidLoader.LiquidCount]; // Added by TML.
++
++	/// <summary>
++	/// An array indexed by liquid type (<see cref="Tile.LiquidType"/>, <see cref="LiquidID"/>) indicating if the player is within crafting range of a tile with lava or a <see cref="TileID.Sets.CountsAsLiquidSource"/> tile. Note that this includes liquids acting like other liquids (<see cref="ModLiquid.AdjLiquids"/>, <see cref="Player.AdjTiles"/>), so the player might not actually be near specific liquids.
++	/// </summary>
++	public bool[] adjLiquid {
++		get {
++			if (_adjLiquid.Length != LiquidLoader.LiquidCount) {
++				Array.Resize(ref _adjLiquid, LiquidLoader.LiquidCount);
++			}
++			return _adjLiquid;
++		}
++		set {
++			_adjLiquid = value;
++		}
++	}
++
++	private bool[] _oldAdjLiquid = new bool[LiquidLoader.LiquidCount]; // Added by TML.
++
++	public bool[] oldAdjLiquid {
++		get {
++			if (_oldAdjLiquid.Length != LiquidLoader.LiquidCount) {
++				Array.Resize(ref _oldAdjLiquid, LiquidLoader.LiquidCount);
++			}
++			return _oldAdjLiquid;
++		}
++		set {
++			_oldAdjLiquid = value;
++		}
++	}
 +
 +	private bool[] _adjTile = new bool[TileLoader.TileCount];
 +	/// <summary>
@@ -5408,7 +5439,7 @@
  		List<Item[]> list = new List<Item[]>();
  		Dictionary<int, List<int>> dictionary = new Dictionary<int, List<int>>();
  		List<Point> list2 = new List<Point>();
-@@ -27569,7 +_,7 @@
+@@ -27569,17 +_,28 @@
  			num2 += 4;
  		}
  
@@ -5417,41 +5448,79 @@
  			oldAdjTile[i] = adjTile[i];
  			adjTile[i] = false;
  		}
-@@ -27580,6 +_,8 @@
- 		adjHoney = false;
- 		oldAdjLava = adjLava;
- 		adjLava = false;
-+		oldAdjShimmer = adjShimmer;
-+		adjShimmer = false;
+ 
++		for (int i = 0; i < adjLiquid.Length; i++) {
++			oldAdjLiquid[i] = adjLiquid[i];
++			adjLiquid[i] = false;
++		}
++
+-		oldAdjWater = adjWater;
++		//oldAdjWater = adjWater;
+-		adjWater = false;
++		//adjWater = false;
+-		oldAdjHoney = adjHoney;
++		//oldAdjHoney = adjHoney;
+-		adjHoney = false;
++		//adjHoney = false;
+-		oldAdjLava = adjLava;
++		//oldAdjLava = adjLava;
+-		adjLava = false;
++		//adjLava = false;
++		//oldAdjShimmer = adjShimmer;
++		//adjShimmer = false;
++		oldAdjWater = oldAdjLiquid[LiquidID.Water];
++		oldAdjLava = oldAdjLiquid[LiquidID.Lava];
++		oldAdjHoney = oldAdjLiquid[LiquidID.Honey];
++		oldAdjShimmer = oldAdjLiquid[LiquidID.Shimmer];
  		alchemyTable = false;
  		int num3 = (int)((position.X + (float)(width / 2)) / 16f);
  		int num4 = (int)((position.Y + (float)height) / 16f);
-@@ -27610,16 +_,21 @@
+@@ -27610,16 +_,34 @@
  							alchemyTable = true;
  							break;
  					}
+-				}
+-
+-				if (Main.tile[j, k].liquid > 200 && Main.tile[j, k].liquidType() == 0)
+-					adjWater = true;
+-
+-				if (Main.tile[j, k].liquid > 200 && Main.tile[j, k].liquidType() == 2)
+-					adjHoney = true;
+-
+-				if (Main.tile[j, k].liquid > 200 && Main.tile[j, k].liquidType() == 1)
+-					adjLava = true;
 +
 +					TileLoader.AdjTiles(this, Main.tile[j, k].type);
- 				}
- 
--				if (Main.tile[j, k].liquid > 200 && Main.tile[j, k].liquidType() == 0)
-+				if ((Main.tile[j, k].liquid > 200 && Main.tile[j, k].liquidType() == 0) || TileID.Sets.CountsAsWaterSource[Main.tile[j, k].type])
- 					adjWater = true;
- 
--				if (Main.tile[j, k].liquid > 200 && Main.tile[j, k].liquidType() == 2)
-+				if ((Main.tile[j, k].liquid > 200 && Main.tile[j, k].liquidType() == 2) || TileID.Sets.CountsAsHoneySource[Main.tile[j, k].type])
- 					adjHoney = true;
- 
--				if (Main.tile[j, k].liquid > 200 && Main.tile[j, k].liquidType() == 1)
-+				if ((Main.tile[j, k].liquid > 200 && Main.tile[j, k].liquidType() == 1) || TileID.Sets.CountsAsLavaSource[Main.tile[j, k].type])
- 					adjLava = true;
++				}
 +
-+				if ((Main.tile[j, k].liquid > 200 && Main.tile[j, k].liquidType() == 3) || TileID.Sets.CountsAsShimmerSource[Main.tile[j, k].type])
-+					adjShimmer = true;
++				//Adjusts all liquid types instead of the hardcoded four
++				if (Main.tile[j, k].LiquidAmount > 200) {
++					adjLiquid[Main.tile[j, k].LiquidType] = true;
++				}
++				else {
++					for (int i = 0; i < LiquidLoader.LiquidCount; i++) {
++						if (TileID.Sets.CountsAsLiquidSource[Main.tile[j, k].TileType][i]) {
++							adjLiquid[i] = true;
++						}
++					}
++				}
++				LiquidLoader.AdjLiquids(this, Main.tile[j, k].LiquidType);
++
++				//if ((Main.tile[j, k].liquid > 200 && Main.tile[j, k].liquidType() == 0) || TileID.Sets.CountsAsWaterSource[Main.tile[j, k].type])
++				//	adjWater = true;
++
++				//if ((Main.tile[j, k].liquid > 200 && Main.tile[j, k].liquidType() == 2) || TileID.Sets.CountsAsHoneySource[Main.tile[j, k].type])
++				//	adjHoney = true;
++
++				//if ((Main.tile[j, k].liquid > 200 && Main.tile[j, k].liquidType() == 1) || TileID.Sets.CountsAsLavaSource[Main.tile[j, k].type])
++				//	adjLava = true;
++
++				//if ((Main.tile[j, k].liquid > 200 && Main.tile[j, k].liquidType() == 3) || TileID.Sets.CountsAsShimmerSource[Main.tile[j, k].type])
++				//	adjShimmer = true;
  			}
  		}
  
-@@ -27627,7 +_,7 @@
+@@ -27627,21 +_,36 @@
  			return;
  
  		bool flag = false;
@@ -5460,16 +5529,41 @@
  			if (oldAdjTile[l] != adjTile[l]) {
  				flag = true;
  				break;
-@@ -27643,6 +_,9 @@
- 		if (adjLava != oldAdjLava)
- 			flag = true;
+ 			}
+ 		}
  
-+		if (adjShimmer != oldAdjShimmer)
-+			flag = true;
++		//Update the find recipes flag for all liquids
++		adjWater = adjLiquid[LiquidID.Water];
++		adjLava = adjLiquid[LiquidID.Lava];
++		adjHoney = adjLiquid[LiquidID.Honey];
++		adjShimmer = adjLiquid[LiquidID.Shimmer];
++		for (int l = 0; l < adjLiquid.Length; l++) {
++			if (oldAdjLiquid[l] != adjLiquid[l]) {
++				flag = true;
++				break;
++			}
++		}
 +
+-		if (adjWater != oldAdjWater)
++		//if (adjWater != oldAdjWater)
+-			flag = true;
++		//	flag = true;
+ 
+-		if (adjHoney != oldAdjHoney)
++		//if (adjHoney != oldAdjHoney)
+-			flag = true;
++		//	flag = true;
+ 
+-		if (adjLava != oldAdjLava)
++		//if (adjLava != oldAdjLava)
+-			flag = true;
++		//	flag = true;
++
++		//if (adjShimmer != oldAdjShimmer)
++		//	flag = true;
+ 
  		if (flag)
  			Recipe.FindRecipes();
- 	}
 @@ -27759,7 +_,7 @@
  			waist = 0;
  

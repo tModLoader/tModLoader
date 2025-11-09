@@ -189,6 +189,9 @@ public static class ModContent
 	/// <inheritdoc cref="WallLoader.GetWall"/>
 	public static ModWall GetModWall(int type) => WallLoader.GetWall(type);
 
+	/// <inheritdoc cref="LiquidLoader.GetLiquid"/>
+	public static ModLiquid GetModLiquid(int type) => LiquidLoader.GetLiquid(type);
+
 	/// <summary>
 	/// Returns the ModWaterStyle with the given ID.
 	/// </summary>
@@ -282,6 +285,11 @@ public static class ModContent
 	/// Get the id (type) of a ModMount by class. Assumes one instance per class.
 	/// </summary>
 	public static int MountType<T>() where T : ModMount => GetInstance<T>()?.Type ?? 0;
+
+	/// <summary>
+	/// Get the id (type) of a ModLiquid by class. Assumes one instance per class.
+	/// </summary>
+	public static int LiquidType<T>() where T : ModLiquid => GetInstance<T>()?.Type ?? 0;
 
 	/// <summary>
 	/// Get the id (type) of a ModEmoteBubble by class. Assumes one instance per class.
