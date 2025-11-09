@@ -286,13 +286,24 @@ public static class LiquidEdgeRenderer
 					}
 					if (slope is SlopeType.SlopeDownRight or SlopeType.SlopeUpRight) {
 						offset = new Vector2(0, depthPush);
-						size = (14, 16 - depthPush);
+						if (WorldGen.SolidOrSlopedTile(tileRightCache)) {
+							size = (16, 16 - depthPush);
+						}
+						else {
+							size = (14, 16 - depthPush);
+						}
 					}
 				}
 				else if (right) {
 					if (slope is SlopeType.SlopeDownLeft or SlopeType.SlopeUpLeft) {
-						offset = new Vector2(2, depthPush);
-						size = (14, 16 - depthPush);
+						if (WorldGen.SolidOrSlopedTile(tileLeftCache)) {
+							offset = new Vector2(0, depthPush);
+							size = (16, 16 - depthPush);
+						}
+						else {
+							offset = new Vector2(2, depthPush);
+							size = (14, 16 - depthPush);
+						}
 					}
 					if (slope is SlopeType.SlopeDownRight or SlopeType.SlopeUpRight) {
 						offset = new Vector2(14, depthPush);
