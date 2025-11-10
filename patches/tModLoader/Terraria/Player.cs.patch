@@ -4326,6 +4326,15 @@
  	}
  
  	public void StickyMovement()
+@@ -18047,7 +_,7 @@
+ 		TryFloatingInFluid();
+ 	}
+ 
+-	private void TryFloatingInFluid()
++	public void TryFloatingInFluid()
+ 	{
+ 		if (!ShouldFloatInWater)
+ 			return;
 @@ -18269,10 +_,10 @@
  		if (gravDir == -1f)
  			num2 = (int)(position.Y - 0.1f) / 16;

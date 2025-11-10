@@ -192,10 +192,10 @@ public static class LiquidLoader
 		Array.Resize(ref LiquidAssets, LiquidCount);
 		Array.Resize(ref LiquidBlockAssets, LiquidCount);
 		Array.Resize(ref LiquidSlopeAssets, LiquidCount);
-		Array.Resize(ref Unsafe.AsRef(in LiquidRenderer.WATERFALL_LENGTH), LiquidCount);
-		Array.Resize(ref Unsafe.AsRef(in LiquidRenderer.DEFAULT_OPACITY), LiquidCount);
-		Array.Resize(ref Unsafe.AsRef(in LiquidRenderer.WAVE_MASK_STRENGTH), LiquidCount);
-		Array.Resize(ref Unsafe.AsRef(in LiquidRenderer.VISCOSITY_MASK), LiquidCount);
+		Array.Resize(ref LiquidRenderer.WATERFALL_LENGTH, LiquidCount);
+		Array.Resize(ref LiquidRenderer.DEFAULT_OPACITY, LiquidCount);
+		Array.Resize(ref LiquidRenderer.WAVE_MASK_STRENGTH, LiquidCount);
+		Array.Resize(ref LiquidRenderer.VISCOSITY_MASK, LiquidCount);
 		Array.Resize(ref Main.liquidFrame, LiquidCount);
 		Array.Resize(ref Main.liquidFrameState, LiquidCount);
 		LoaderUtils.ResetStaticMembers(typeof(LiquidID));
@@ -258,10 +258,10 @@ public static class LiquidLoader
 		liquids.Clear();
 		nextLiquid = LiquidID.Count;
 		globalLiquids.Clear();
-		Array.Resize(ref Unsafe.AsRef(in LiquidRenderer.WATERFALL_LENGTH), 4);
-		Array.Resize(ref Unsafe.AsRef(in LiquidRenderer.DEFAULT_OPACITY), 4);
-		Array.Resize(ref Unsafe.AsRef(in LiquidRenderer.WAVE_MASK_STRENGTH), 5);
-		Array.Resize(ref Unsafe.AsRef(in LiquidRenderer.VISCOSITY_MASK), 5);
+		Array.Resize(ref LiquidRenderer.WATERFALL_LENGTH, 4); //not sure why im unloading, relic from ModLiquidLib?
+		Array.Resize(ref LiquidRenderer.DEFAULT_OPACITY, 4);
+		Array.Resize(ref LiquidRenderer.WAVE_MASK_STRENGTH, 5);
+		Array.Resize(ref LiquidRenderer.VISCOSITY_MASK, 5);
 	}
 
 	public static void ModifyLight(int i, int j, int type, ref float r, ref float g, ref float b)

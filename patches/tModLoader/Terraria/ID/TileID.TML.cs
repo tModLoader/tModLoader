@@ -1,3 +1,4 @@
+using System;
 using Terraria.GameContent.Drawing;
 using Terraria.ModLoader;
 
@@ -110,7 +111,7 @@ partial class TileID
 		public static bool[] CountsAsShimmerSource = Factory.CreateBoolSet();
 
 		/// <summary> Whether or not this tile counts as a this liquid's source for crafting purposes. </summary>
-		public static bool[][] CountsAsLiquidSource = Factory.CreateCustomSet(new bool[LiquidID.Count]);
+		public static bool[][] CountsAsLiquidSource;
 
 		/// <summary> Whether or not saplings count this tile as empty when trying to grow. </summary>
 		public static bool[] IgnoredByGrowingSaplings = Factory.CreateBoolSet(3, 24, 32, 61, 62, 69, 71, 73, 74, 82, 83, 84, 110, 113, 184, 201, 233, 352, 485, 529, 530, 637, 655);
@@ -231,6 +232,14 @@ partial class TileID
 		{
 			JungleBiome[type] = strength;
 			RemixJungleBiome[type] = strength;
+		}
+
+		static Sets()
+		{
+			CountsAsLiquidSource = Factory.CreateCustomSet<bool[]>(null, Array.Empty<object>());
+			for (int type = 0; type < TileLoader.TileCount; type++) {
+				CountsAsLiquidSource[type] = new bool[LiquidLoader.LiquidCount];
+			}
 		}
 	}
 }
