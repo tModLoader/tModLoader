@@ -2,6 +2,7 @@
 using Terraria.ModLoader.Default;
 
 namespace Terraria.ModLoader.IO;
+
 internal class LiquidEntry : TagSerializable
 {
 	public ushort type;

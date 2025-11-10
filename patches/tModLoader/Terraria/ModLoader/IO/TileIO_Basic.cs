@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Terraria.ID;
-using static System.Net.WebRequestMethods;
 
 namespace Terraria.ModLoader.IO;
 
