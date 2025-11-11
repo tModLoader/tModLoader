@@ -8,6 +8,113 @@
  
  namespace Terraria.Graphics.Light;
  
+@@ -24,7 +_,7 @@
+ 						outputMap[i - area.X, j - area.Y] = Vector3.Zero;
+ 					}
+ 					else {
+-						LightMaskMode tileMask = GetTileMask(Main.tile[i, j]);
++						LightMaskMode tileMask = GetTileMask(Main.tile[i, j], i, j);
+ 						outputMap.SetMaskAt(i - area.X, j - area.Y, tileMask);
+ 						GetTileLight(i, j, out var outputColor);
+ 						outputMap[i - area.X, j - area.Y] = outputColor;
+@@ -51,21 +_,29 @@
+ 		_random.NextSeed();
+ 	}
+ 
+-	public LightMaskMode GetMaskMode(int x, int y) => GetTileMask(Main.tile[x, y]);
++	public LightMaskMode GetMaskMode(int x, int y) => GetTileMask(Main.tile[x, y], x, y);
+ 
+-	private LightMaskMode GetTileMask(Tile tile)
++	private LightMaskMode GetTileMask(Tile tile, int x, int y)
+ 	{
++		LightMaskMode maskMode = LightMaskMode.None;
+ 		if (LightIsBlocked(tile) && tile.type != 131 && !tile.inActive() && tile.slope() == 0)
+-			return LightMaskMode.Solid;
++			maskMode = LightMaskMode.Solid;
+ 
+ 		if (!tile.lava() && tile.liquid > 128) {
+ 			if (!tile.honey())
+-				return LightMaskMode.Water;
++				maskMode = LightMaskMode.Water;
+ 
+-			return LightMaskMode.Honey;
++			maskMode = LightMaskMode.Honey;
+ 		}
+ 
+-		return LightMaskMode.None;
++		if (tile.liquid > 128) {
++			LiquidLoader.LiquidLightMaskMode(x, y, tile.liquidType(), ref maskMode);
++		}
++		else if (LightIsBlocked(tile) && !tile.inActive() && tile.slope() == 0) {
++			TileLoader.TileLightMaskMode(x, y, tile.type, ref maskMode);
++		}
++
++		return maskMode;
+ 	}
+ 
+ 	public void GetTileLight(int x, int y, out Vector3 outputColor)
+@@ -82,39 +_,43 @@
+ 		if (tile.active())
+ 			ApplyTileLight(tile, x, y, ref localRandom, ref outputColor);
+ 
+-		ApplyLiquidLight(tile, ref outputColor);
++		ApplyLiquidLight(tile, x, y, ref outputColor);
+ 	}
+ 
+-	private void ApplyLiquidLight(Tile tile, ref Vector3 lightColor)
++	private void ApplyLiquidLight(Tile tile, int x, int y, ref Vector3 lightColor)
+ 	{
+ 		if (tile.liquid <= 0)
+ 			return;
+ 
++		// R, G and B variables added by TML.
++		float R = 0f;
++		float G = 0f;
++		float B = 0f;
+ 		if (tile.lava()) {
+ 			float num = 0.55f;
+ 			num += (float)(270 - Main.mouseTextColor) / 900f;
+-			if (lightColor.X < num)
+-				lightColor.X = num;
+-
+-			if (lightColor.Y < num)
+-				lightColor.Y = num * 0.6f;
+-
+-			if (lightColor.Z < num)
+-				lightColor.Z = num * 0.2f;
++			R = num;
++			G = num * 0.6f;
++			B = num * 0.2f;
+ 		}
+ 		else if (tile.shimmer()) {
+ 			float num2 = 0.7f;
+ 			float num3 = 0.7f;
+ 			num2 += (float)(270 - Main.mouseTextColor) / 900f;
+ 			num3 += (float)(270 - Main.mouseTextColor) / 125f;
+-			if (lightColor.X < num2)
+-				lightColor.X = num2 * 0.6f;
+-
+-			if (lightColor.Y < num3)
+-				lightColor.Y = num3 * 0.25f;
+-
+-			if (lightColor.Z < num2)
+-				lightColor.Z = num2 * 0.9f;
++			R = num2 * 0.6f;
++			G = num3 * 0.25f;
++			B = num2 * 0.9f;
++		}
++		LiquidLoader.ModifyLight(x, y, tile.liquidType(), ref R, ref G, ref B);
++		if (lightColor.X < R) {
++			lightColor.X = R;
++		}
++		if (lightColor.Y < G) {
++			lightColor.Y = G;
++		}
++		if (lightColor.Z < B) {
++			lightColor.Z = B;
+ 		}
+ 	}
+ 
 @@ -255,9 +_,12 @@
  				break;
  		}

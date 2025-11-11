@@ -15,44 +15,6 @@ using Terraria.ModLoader.Core;
 namespace Terraria.ModLoader;
 public static class LiquidLoader
 {
-	private delegate void DelegateModifyLight(int i, int j, int type, ref float r, ref float g, ref float b);
-
-	private delegate bool DelegatePreSlopeDraw(int i, int j, int type, bool behindBlocks, ref Vector2 drawPosition, ref Rectangle liquidSize, ref VertexColors colors);
-
-	private delegate void DelegatePostSlopeDraw(int i, int j, int type, bool behindBlocks, ref Vector2 drawPosition, ref Rectangle liquidSize, ref VertexColors colors);
-
-	private delegate void DelegateRetroDrawEffects(int i, int j, int type, SpriteBatch spriteBatch, ref RetroLiquidDrawInfo drawData, float liquidAmountModified, int liquidGFXQuality);
-
-	private delegate void DelegateLiquidMergeTilesSound(int i, int j, int type, int otherLiquid, ref SoundStyle? collisionSound);
-
-	private delegate void DelegateCanPlayerDrown(Player player, int type, ref bool isDrowning);
-
-	private delegate void DelegatePoolSizeMultiplier(int type, ref float multiplier);
-
-	private delegate void DelegateWaterRippleMultipler(int type, ref float multiplier);
-
-	private delegate void DelegateStopWatchMPHMultiplier(int type, ref float multiplier);
-
-	private delegate void DelegateSlopeOpacity(int type, ref float slopeOpacity);
-
-	private delegate void DelegateLiquidMaskMode(int i, int j, int type, ref LightMaskMode liquidMaskMode);
-
-	private delegate void DelegatePlayerGravityModifier(Player player, int type, ref float grav, ref float gravMax, ref int jumpMax, ref float jumpSpeed);
-
-	private delegate void DelegateItemLiquidMovement(Item item, int type, ref Vector2 wetVelocity, ref float grav, ref float gravMax);
-
-	private delegate void DelegateNPCGravityModifier(NPC npc, int type, ref float grav, ref float gravMax);
-
-	private delegate bool DelegateProjectileLiquidMovement(Projectile proj, int type, ref Vector2 wetVelocity, Vector2 collisionPosition, int Width, int height, bool fallThrough);
-
-	private delegate bool DelegateAnimateLiquid(int type, GameTime gameTime, ref int frame, ref float frameState);
-
-	private delegate void DelegateModLiquidAnimateLiquid(GameTime gameTime, ref int frame, ref float frameState);
-
-	private delegate void DelegateNPCRippleModifier(NPC npc, int type, ref float rippleStrength, ref float rippleOffset);
-
-	private delegate void DelegatePlayerRippleModifier(Player player, int type, ref float rippleStrength, ref float rippleOffset);
-
 	private static int nextLiquid = LiquidID.Count;
 
 	internal static readonly IList<ModLiquid> liquids = new List<ModLiquid>();
@@ -61,100 +23,72 @@ public static class LiquidLoader
 
 	private static bool loaded = false;
 
+	private delegate void DelegateModifyLight(int i, int j, int type, ref float r, ref float g, ref float b);
+	private delegate bool DelegatePreSlopeDraw(int i, int j, int type, bool behindBlocks, ref Vector2 drawPosition, ref Rectangle liquidSize, ref VertexColors colors);
+	private delegate void DelegatePostSlopeDraw(int i, int j, int type, bool behindBlocks, ref Vector2 drawPosition, ref Rectangle liquidSize, ref VertexColors colors);
+	private delegate void DelegateRetroDrawEffects(int i, int j, int type, SpriteBatch spriteBatch, ref RetroLiquidDrawInfo drawData, float liquidAmountModified, int liquidGFXQuality);
+	private delegate void DelegateLiquidMergeTilesSound(int i, int j, int type, int otherLiquid, ref SoundStyle? collisionSound);
+	private delegate void DelegateCanPlayerDrown(Player player, int type, ref bool isDrowning);
+	private delegate void DelegatePoolSizeMultiplier(int type, ref float multiplier);
+	private delegate void DelegateWaterRippleMultipler(int type, ref float multiplier);
+	private delegate void DelegateStopWatchMPHMultiplier(int type, ref float multiplier);
+	private delegate void DelegateSlopeOpacity(int type, ref float slopeOpacity);
+	private delegate void DelegateLiquidMaskMode(int i, int j, int type, ref LightMaskMode liquidMaskMode);
+	private delegate void DelegatePlayerGravityModifier(Player player, int type, ref float grav, ref float gravMax, ref int jumpMax, ref float jumpSpeed);
+	private delegate void DelegateItemLiquidMovement(Item item, int type, ref Vector2 wetVelocity, ref float grav, ref float gravMax);
+	private delegate void DelegateNPCGravityModifier(NPC npc, int type, ref float grav, ref float gravMax);
+	private delegate bool DelegateProjectileLiquidMovement(Projectile proj, int type, ref Vector2 wetVelocity, Vector2 collisionPosition, int Width, int height, bool fallThrough);
+	private delegate bool DelegateAnimateLiquid(int type, GameTime gameTime, ref int frame, ref float frameState);
+	private delegate void DelegateModLiquidAnimateLiquid(GameTime gameTime, ref int frame, ref float frameState);
+	private delegate void DelegateNPCRippleModifier(NPC npc, int type, ref float rippleStrength, ref float rippleOffset);
+	private delegate void DelegatePlayerRippleModifier(Player player, int type, ref float rippleStrength, ref float rippleOffset);
 	private static DelegateModifyLight[] HookModifyLight;
-
 	private static Func<int, int, int, LiquidRenderer.LiquidDrawCache, Vector2, bool, int, float, bool>[] HookPreDraw;
-
 	private static Action<int, int, int, LiquidRenderer.LiquidDrawCache, Vector2, bool, int, float>[] HookPostDraw;
-
 	private static Func<int, int, int, LiquidRenderer.LiquidCache, bool>[] HookEmitEffects;
-
 	private static Func<int, int, int, SpriteBatch, bool>[] HookPreRetroDraw;
-
 	private static DelegateRetroDrawEffects[] HookRetroDrawEffects;
-
 	private static Action<int, int, int, SpriteBatch>[] HookPostRetroDraw;
-
 	private static DelegatePreSlopeDraw[] HookPreSlopeDraw;
-
 	private static DelegatePostSlopeDraw[] HookPostSlopeDraw;
-
 	private static Func<int, int, bool>[] HookDisableRetroLavaBubbles;
-
 	private static Func<int, int, int, int?>[] HookDrawWaterfall;
-
 	private static Func<int, int, int, Liquid, bool>[] HookUpdate;
-
 	private static Func<int, int, int, bool?>[] HookEvaporation;
-
 	private static Func<int, int, int, bool>[] HookSettleLiquidMovement;
-
 	private static Func<int, int, int, int, int?>[] HookMergeTiles;
-
 	private static DelegateLiquidMergeTilesSound[] HookMergeTilesSounds;
-
 	private static Func<int, int, int, int, int, int, bool>[] HookPreLiquidMerge;
-
 	private static Func<int, int?>[] HookLiquidFallDelay;
-
 	private static Func<int, int[]>[] HookAdjLiquids;
-
 	private static Func<Player, int, int, int, bool?>[] HookBlocksTilePlacement;
-
 	private static Func<Player, int, bool, bool>[] HookOnPlayerSplash;
-
 	private static Func<NPC, int, bool, bool>[] HookOnNPCSplash;
-
 	private static Func<Projectile, int, bool, bool>[] HookOnProjectileSplash;
-
 	private static Func<Projectile, int, bool>[] HookOnFishingBobberSplash;
-
 	private static Func<Item, int, bool, bool>[] HookOnItemSplash;
-
 	private static Func<Player, int, bool, bool, bool>[] HookPlayerCollision;
-
 	private static DelegatePlayerGravityModifier[] HookPlayerGravityModifier;
-
 	private static DelegateItemLiquidMovement[] HookItemLiquidMovement;
-
 	private static Func<NPC, int, Vector2, bool>[] HookNPCLiquidCollision;
-
 	private static DelegateNPCGravityModifier[] HookNPCGravityModifier;
-
 	private static DelegateProjectileLiquidMovement[] HookProjectileLiquidMovement;
-
 	private static Func<int, bool?>[] HookChecksForDrowning;
-
 	private static Func<int, bool?>[] HookPlayersEmitBreathBubbles;
-
 	private static DelegateCanPlayerDrown[] HookCanPlayerDrown;
-
 	private static DelegatePoolSizeMultiplier[] HookPoolSizeMultiplier;
-
 	private static Func<bool>[] HookAllowFishingInShimmer;
-
 	private static DelegateSlopeOpacity[] HookLiquidSlopeOpacity;
-
 	private static DelegateLiquidMaskMode[] HookLiquidLightMaskMode;
-
 	private static DelegateWaterRippleMultipler[] HookWaterRippleMultipler;
-
 	private static Action<int, int, int, int, int>[] HookModifyTilesNearby;
-
 	private static Func<int, int, int, int, int, bool>[] HookOnPump;
-
 	private static DelegateStopWatchMPHMultiplier[] HookStopWatchMPHMultiplier;
-
 	private static Action<Projectile, int>[] HookOnProjectileCollision;
-
 	private static Action<NPC, int>[] HookOnNPCCollision;
-
 	private static Action<Player, int>[] HookOnPlayerCollision;
-
 	private static DelegateAnimateLiquid[] HookAnimateLiquid;
-
 	private static DelegateNPCRippleModifier[] HookNPCRippleModifier;
-
 	private static DelegatePlayerRippleModifier[] HookPlayerRippleModifier;
 
 	public static int LiquidCount => nextLiquid;
@@ -282,12 +216,6 @@ public static class LiquidLoader
 		DelegateLiquidMaskMode[] hookLiquidLightMaskMode = HookLiquidLightMaskMode;
 		for (int k = 0; k < hookLiquidLightMaskMode.Length; k++) {
 			hookLiquidLightMaskMode[k](i, j, type, ref liquidMaskMode);
-		}
-		if (type >= LiquidID.Count) //sets the mask mode to the liquid ID for modifying
-		{
-			if (liquidMaskMode == 0) {
-				liquidMaskMode = (LightMaskMode)(byte)type;
-			}
 		}
 	}
 

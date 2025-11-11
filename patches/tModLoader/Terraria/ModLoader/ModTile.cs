@@ -1,10 +1,11 @@
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.GameContent.ObjectInteractions;
+using Terraria.Graphics.Light;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ObjectData;
@@ -298,6 +299,18 @@ public abstract class ModTile : ModBlockType
 	/// <param name="closer"></param>
 	public virtual void NearbyEffects(int i, int j, bool closer)
 	{
+	}
+
+	/// <summary>
+	/// Allows you to change the Light Mask Mode for this tile. The Light Mask Mode is the mask for lighting to determine how light interacts with this tile. <br/>
+	/// Vanilla has options for Solid and None. Where all solid tiles will use Solid and active stone tiles will use the None option. <br/>
+	/// Defaults to LightMaskMode.Solid.
+	/// </summary>
+	/// <param name="i">The x position in tile coordinates.</param>
+	/// <param name="j">The y position in tile coordinates.</param>
+	public virtual LightMaskMode TileLightMaskMode(int i, int j)
+	{
+		return LightMaskMode.Solid;
 	}
 
 	/// <summary>

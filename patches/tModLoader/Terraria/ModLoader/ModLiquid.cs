@@ -284,6 +284,7 @@ public abstract class ModLiquid : ModTexturedType, ILocalizedModType, IModType
 	{
 	}
 
+	//TODO: Discuss proper implementation, whether a ModLightMaskMode would be needed or not
 	/// <summary>
 	/// Modifies the LightMaskMode used for this liquid. <br/>
 	/// Due to limitations in the lighting engine, tile coordinates and editing of vanilla lightmasks are unavaliable. <br/>

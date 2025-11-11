@@ -1,9 +1,10 @@
+using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 using Terraria.DataStructures;
-using Terraria.ID;
 using Terraria.Enums;
+using Terraria.Graphics.Light;
+using Terraria.ID;
 
 namespace Terraria.ModLoader;
 
@@ -220,6 +221,18 @@ public abstract class GlobalTile : GlobalBlockType
 	public virtual bool TileFrame(int i, int j, int type, ref bool resetFrame, ref bool noBreak)
 	{
 		return true;
+	}
+
+	/// <summary>
+	/// Allows you to change the Light Mask Mode for any tile. The Light Mask Mode is the mask for lighting to determine how light interacts with a tile. <br/>
+	/// Vanilla has options for Solid and None. Where all solid tiles will use Solid and active stone tiles will use the None option. <br/>
+	/// </summary>
+	/// <param name="i">The x position in tile coordinates.</param>
+	/// <param name="j">The y position in tile coordinates.</param>
+	/// <param name="type"></param>
+	/// <param name="tileMaskMode">Edit this param to change the Light Mask Mode of the liquid.</param>
+	public virtual void TileLightMaskMode(int i, int j, int type, ref LightMaskMode tileMaskMode)
+	{
 	}
 
 	/// <summary>

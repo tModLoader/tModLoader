@@ -1,8 +1,8 @@
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.Enums;
@@ -10,6 +10,7 @@ using Terraria.GameContent;
 using Terraria.GameContent.Biomes.CaveHouse;
 using Terraria.GameContent.Liquid;
 using Terraria.GameContent.ObjectInteractions;
+using Terraria.Graphics.Light;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
@@ -110,6 +111,8 @@ public static class TileLoader
 	private static Action[] HookPostSetupTileMerge;
 	private static Action<int, int, TreeTypes>[] HookPreShakeTree;
 	private static Func<int, int, TreeTypes, bool>[] HookShakeTree;
+	private delegate void DelegateTileMaskMode(int i, int j, int type, ref LightMaskMode liquidMaskMode);
+	private static DelegateTileMaskMode[] HookTileLightMaskMode;
 
 	internal static int ReserveTileID()
 	{
@@ -268,6 +271,7 @@ public static class TileLoader
 		ModLoader.BuildGlobalHook(ref HookPostSetupTileMerge, globalTiles, g => g.PostSetupTileMerge);
 		ModLoader.BuildGlobalHook(ref HookPreShakeTree, globalTiles, g => g.PreShakeTree);
 		ModLoader.BuildGlobalHook(ref HookShakeTree, globalTiles, g => g.ShakeTree);
+		ModLoader.BuildGlobalHook(ref HookTileLightMaskMode, globalTiles, g => g.TileLightMaskMode);
 
 		if (!unloading) {
 			loaded = true;
@@ -707,6 +711,18 @@ public static class TileLoader
 
 		foreach (var hook in HookModifyLight) {
 			hook(i, j, type, ref r, ref g, ref b);
+		}
+	}
+
+	public static void TileLightMaskMode(int i, int j, int type, ref LightMaskMode liquidMaskMode)
+	{
+		ModTile modTile = GetTile(type);
+		if (modTile != null) {
+			liquidMaskMode = modTile.TileLightMaskMode(i, j);
+		}
+		DelegateTileMaskMode[] hookTileLightMaskMode = HookTileLightMaskMode;
+		for (int k = 0; k < hookTileLightMaskMode.Length; k++) {
+			hookTileLightMaskMode[k](i, j, type, ref liquidMaskMode);
 		}
 	}
 
