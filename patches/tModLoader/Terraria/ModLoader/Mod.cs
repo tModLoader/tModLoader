@@ -55,6 +55,10 @@ public partial class Mod
 	public string SourceFolder { get; internal set; }
 
 	/// <summary>
+	/// Whether or not this mod will show its content count baubles in the mod list.
+	/// </summary>
+	public bool ShowContentCountBaubles { get; init; } = true;
+	/// <summary>
 	/// Whether or not this mod will autoload content by default. Autoloading content means you do not need to manually add content through methods.
 	/// </summary>
 	public bool ContentAutoloadingEnabled { get; init; } = true;
