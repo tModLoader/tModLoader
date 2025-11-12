@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Reflection;
 using Microsoft.CodeAnalysis;
 using ReLogic.Reflection;
@@ -27,18 +28,38 @@ public static class MagicNumberBindings
 		public string FullIdType => context.FullIdType;
 		public IdDictionary Search => context.Search;
 		public bool AllowNegativeIDs => context.AllowNegativeIDs;
+
+		public abstract bool AppliesTo(ISymbol symbol);
 	}
 
-	// Designates a field's type as an ID type.
-	private sealed class FieldBinding(Binding.CreationContext context) : Binding(context) { }
+	// Designates a field or property's type as an ID type.
+	private sealed class FieldOrPropertyBinding(Binding.CreationContext context) : Binding(context)
+	{
+		// No need to check whether names match; we need to support wildcard
+		// operators ('*') and filtering is handled prior to this call.
+		public override bool AppliesTo(ISymbol symbol) => symbol is IFieldSymbol or IPropertySymbol;
+	}
 
 	// Designates a method's return type as an ID type.
-	private sealed class MethodReturnBinding(Binding.CreationContext context) : Binding(context) { }
+	private sealed class MethodReturnBinding(Binding.CreationContext context) : Binding(context)
+	{
+		// No need to check whether names match; we need to support wildcard
+		// operators ('*') and filtering is handled prior to this call.
+		// Be sure to filter out parameter symbols.
+		public override bool AppliesTo(ISymbol symbol) => symbol is IMethodSymbol;
+	}
 
 	// Designates a method parameter's type as an ID type.
-	private sealed class MethodParameterBinding(Binding.CreationContext context, int parameterOrder) : Binding(context)
+	private sealed class MethodParameterBinding(Binding.CreationContext context, int parameterOrdinal) : Binding(context)
 	{
-		public int ParameterOrdinal => parameterOrder;
+		public int ParameterOrdinal => parameterOrdinal;
+
+		// We only want to match against parameters of the same ordinal.
+		// No need to check whether the method name is the same; wildcard
+		// operators aren't used here, but filtering is handled prior to this
+		// call regardless.
+		public override bool AppliesTo(ISymbol symbol) =>
+			symbol is IParameterSymbol parameterSymbol && parameterSymbol.Ordinal == ParameterOrdinal;
 	}
 
 	// Foo
@@ -67,33 +88,33 @@ public static class MagicNumberBindings
 			searchCache = [];
 			bindingsByMemberByOwningClass = [];
 
-			AddBinding<TileID>("Terraria.Item", "createTile", (ctx) => new FieldBinding(ctx));
-			AddBinding<ItemID>("Terraria.Item", "type", (ctx) => new FieldBinding(ctx));
-			AddBinding<ItemID>("Terraria.Player", "cursorItemIconID", (ctx) => new FieldBinding(ctx));
-			AddBinding<ProjectileID>("Terraria.Item", "shoot", (ctx) => new FieldBinding(ctx));
-			AddBinding<ProjectileID>("Terraria.ModLoader.ModProjectile", "AIType", (ctx) => new FieldBinding(ctx));
-			AddBinding<ItemUseStyleID>("Terraria.Item", "useStyle", (ctx) => new FieldBinding(ctx));
-			AddBinding(typeof(ItemRarityID), "Terraria.Item", "rare", (ctx) => new FieldBinding(ctx), allowNegativeIDs: true);
-			AddBinding<NPCAIStyleID>("Terraria.NPC", "aiStyle", (ctx) => new FieldBinding(ctx));
-			AddBinding<NPCID>("Terraria.NPC", "type", (ctx) => new FieldBinding(ctx));
-			AddBinding<NPCID>("Terraria.ModLoader.ModNPC", "AIType", (ctx) => new FieldBinding(ctx));
-			AddBinding<NPCID>("Terraria.ModLoader.ModNPC", "AnimationType", (ctx) => new FieldBinding(ctx));
-			AddBinding(typeof(NetmodeID), "Terraria.Main", "netMode", (ctx) => new FieldBinding(ctx));
-			AddBinding<ProjAIStyleID>("Terraria.Projectile", "aiStyle", (ctx) => new FieldBinding(ctx));
-			AddBinding<ProjectileID>("Terraria.Projectile", "type", (ctx) => new FieldBinding(ctx));
-			AddBinding<DustID>("Terraria.ModLoader.ModBlockType", "DustType", (ctx) => new FieldBinding(ctx));
-			AddBinding<DustID>("Terraria.ModLoader.ModDust", "UpdateType", (ctx) => new FieldBinding(ctx));
-			AddBinding<TileID>("Terraria.Tile", "TileType", (ctx) => new FieldBinding(ctx));
-			AddBinding<WallID>("Terraria.Tile", "WallType", (ctx) => new FieldBinding(ctx));
-			AddBinding(typeof(PaintID), "Terraria.Tile", "TileColor", (ctx) => new FieldBinding(ctx));
-			AddBinding(typeof(PaintID), "Terraria.Tile", "WallColor", (ctx) => new FieldBinding(ctx));
-			AddBinding(typeof(LiquidID), "Terraria.Tile", "LiquidType", (ctx) => new FieldBinding(ctx));
-			AddBinding<ExtrasID>("Terraria.GameContent.TextureAssets", "Extra", (ctx) => new FieldBinding(ctx), typeof(short));
-			AddBinding<MountID>("Terraria.Item", "mountType", (ctx) => new FieldBinding(ctx));
-			AddBinding<MountID>("Terraria.Mount", "Type", (ctx) => new FieldBinding(ctx));
-			AddBinding<BuffID>("Terraria.Item", "buffType", (ctx) => new FieldBinding(ctx));
-			AddBinding<BuffID>("Terraria.Mount.MountData", "buff", (ctx) => new FieldBinding(ctx));
-			AddBinding<BuffID>("Terraria.Mount", "BuffType", (ctx) => new FieldBinding(ctx));
+			AddBinding<TileID>("Terraria.Item", "createTile", (ctx) => new FieldOrPropertyBinding(ctx));
+			AddBinding<ItemID>("Terraria.Item", "type", (ctx) => new FieldOrPropertyBinding(ctx));
+			AddBinding<ItemID>("Terraria.Player", "cursorItemIconID", (ctx) => new FieldOrPropertyBinding(ctx));
+			AddBinding<ProjectileID>("Terraria.Item", "shoot", (ctx) => new FieldOrPropertyBinding(ctx));
+			AddBinding<ProjectileID>("Terraria.ModLoader.ModProjectile", "AIType", (ctx) => new FieldOrPropertyBinding(ctx));
+			AddBinding<ItemUseStyleID>("Terraria.Item", "useStyle", (ctx) => new FieldOrPropertyBinding(ctx));
+			AddBinding(typeof(ItemRarityID), "Terraria.Item", "rare", (ctx) => new FieldOrPropertyBinding(ctx), allowNegativeIDs: true);
+			AddBinding<NPCAIStyleID>("Terraria.NPC", "aiStyle", (ctx) => new FieldOrPropertyBinding(ctx));
+			AddBinding<NPCID>("Terraria.NPC", "type", (ctx) => new FieldOrPropertyBinding(ctx));
+			AddBinding<NPCID>("Terraria.ModLoader.ModNPC", "AIType", (ctx) => new FieldOrPropertyBinding(ctx));
+			AddBinding<NPCID>("Terraria.ModLoader.ModNPC", "AnimationType", (ctx) => new FieldOrPropertyBinding(ctx));
+			AddBinding(typeof(NetmodeID), "Terraria.Main", "netMode", (ctx) => new FieldOrPropertyBinding(ctx));
+			AddBinding<ProjAIStyleID>("Terraria.Projectile", "aiStyle", (ctx) => new FieldOrPropertyBinding(ctx));
+			AddBinding<ProjectileID>("Terraria.Projectile", "type", (ctx) => new FieldOrPropertyBinding(ctx));
+			AddBinding<DustID>("Terraria.ModLoader.ModBlockType", "DustType", (ctx) => new FieldOrPropertyBinding(ctx));
+			AddBinding<DustID>("Terraria.ModLoader.ModDust", "UpdateType", (ctx) => new FieldOrPropertyBinding(ctx));
+			AddBinding<TileID>("Terraria.Tile", "TileType", (ctx) => new FieldOrPropertyBinding(ctx));
+			AddBinding<WallID>("Terraria.Tile", "WallType", (ctx) => new FieldOrPropertyBinding(ctx));
+			AddBinding(typeof(PaintID), "Terraria.Tile", "TileColor", (ctx) => new FieldOrPropertyBinding(ctx));
+			AddBinding(typeof(PaintID), "Terraria.Tile", "WallColor", (ctx) => new FieldOrPropertyBinding(ctx));
+			AddBinding(typeof(LiquidID), "Terraria.Tile", "LiquidType", (ctx) => new FieldOrPropertyBinding(ctx));
+			AddBinding<ExtrasID>("Terraria.GameContent.TextureAssets", "Extra", (ctx) => new FieldOrPropertyBinding(ctx), typeof(short));
+			AddBinding<MountID>("Terraria.Item", "mountType", (ctx) => new FieldOrPropertyBinding(ctx));
+			AddBinding<MountID>("Terraria.Mount", "Type", (ctx) => new FieldOrPropertyBinding(ctx));
+			AddBinding<BuffID>("Terraria.Item", "buffType", (ctx) => new FieldOrPropertyBinding(ctx));
+			AddBinding<BuffID>("Terraria.Mount.MountData", "buff", (ctx) => new FieldOrPropertyBinding(ctx));
+			AddBinding<BuffID>("Terraria.Mount", "BuffType", (ctx) => new FieldOrPropertyBinding(ctx));
 
 			AddBinding<ItemID>("Terraria.Item", "CloneDefaults", (ctx) => new MethodParameterBinding(ctx, 0));
 			AddBinding<ItemID>("Terraria.Item", "netDefaults", (ctx) => new MethodParameterBinding(ctx, 0), allowNegativeIDs: true);
@@ -137,14 +158,14 @@ public static class MagicNumberBindings
 			AddBinding<BuffID>("Terraria.NPC", "FindBuffIndex", (ctx) => new MethodParameterBinding(ctx, 0));
 			AddBinding<BuffID>("Terraria.NPC", "HasBuff(int)", (ctx) => new MethodParameterBinding(ctx, 0));
 
-			AddBinding<ItemID>("Terraria.ID.ItemID.Sets", "*", (ctx) => new FieldBinding(ctx));
-			AddBinding<NPCID>("Terraria.ID.NPCID.Sets", "*", (ctx) => new FieldBinding(ctx));
-			AddBinding<ProjectileID>("Terraria.ID.ProjectileID.Sets", "*", (ctx) => new FieldBinding(ctx));
-			AddBinding<TileID>("Terraria.ID.TileID.Sets", "*", (ctx) => new FieldBinding(ctx));
-			AddBinding<TileID>("Terraria.ID.TileID.Sets.Conversion", "*", (ctx) => new FieldBinding(ctx));
-			AddBinding<WallID>("Terraria.ID.WallID.Sets", "*", (ctx) => new FieldBinding(ctx));
-			AddBinding<WallID>("Terraria.ID.WallID.Sets.Conversion", "*", (ctx) => new FieldBinding(ctx));
-			AddBinding<MountID>("Terraria.ID.MountID.Sets", "*", (ctx) => new FieldBinding(ctx));
+			AddBinding<ItemID>("Terraria.ID.ItemID.Sets", "*", (ctx) => new FieldOrPropertyBinding(ctx));
+			AddBinding<NPCID>("Terraria.ID.NPCID.Sets", "*", (ctx) => new FieldOrPropertyBinding(ctx));
+			AddBinding<ProjectileID>("Terraria.ID.ProjectileID.Sets", "*", (ctx) => new FieldOrPropertyBinding(ctx));
+			AddBinding<TileID>("Terraria.ID.TileID.Sets", "*", (ctx) => new FieldOrPropertyBinding(ctx));
+			AddBinding<TileID>("Terraria.ID.TileID.Sets.Conversion", "*", (ctx) => new FieldOrPropertyBinding(ctx));
+			AddBinding<WallID>("Terraria.ID.WallID.Sets", "*", (ctx) => new FieldOrPropertyBinding(ctx));
+			AddBinding<WallID>("Terraria.ID.WallID.Sets.Conversion", "*", (ctx) => new FieldOrPropertyBinding(ctx));
+			AddBinding<MountID>("Terraria.ID.MountID.Sets", "*", (ctx) => new FieldOrPropertyBinding(ctx));
 		}
 	}
 
@@ -184,14 +205,9 @@ public static class MagicNumberBindings
 		}
 	}
 
-	public static bool TryGetBindings(ISymbol symbol, out Binding[] bindings)
+	public static bool TryGetBindings(ISymbol symbol, out List<Binding> bindings)
 	{
 		bindings = null;
-
-		static string BuildQualifiedName(ISymbol symbol)
-		{
-			return symbol.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat.WithGlobalNamespaceStyle(SymbolDisplayGlobalNamespaceStyle.Omitted));
-		}
 
 		if (symbol is IFieldSymbol fieldSymbol && bindingsByMemberByOwningClass.TryGetValue(BuildQualifiedName(symbol.ContainingType), out var bindingsByMember)) {
 			if (bindingsByMember.TryGetValue(fieldSymbol.MetadataName, out bindings)) {
@@ -217,17 +233,32 @@ public static class MagicNumberBindings
 			}
 		}
 		else if (symbol is IParameterSymbol parameterSymbol) {
-			if (TryGetBinding(parameterSymbol.ContainingSymbol, out bindings) && parameterSymbol.Ordinal == ((MethodParameterBinding)bindings).ParameterOrdinal) {
+			if (TryGetBindings(parameterSymbol.ContainingSymbol, out bindings)) {
 				return true;
 			}
 		}
 
 		return false;
+
+		static string BuildQualifiedName(ISymbol symbol)
+		{
+			return symbol.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat.WithGlobalNamespaceStyle(SymbolDisplayGlobalNamespaceStyle.Omitted));
+		}
 	}
 
 	public static bool TryGetBinding(ISymbol symbol, out Binding binding)
 	{
-		binding = null;
+		if (!TryGetBindings(symbol, out var bindings)) {
+			binding = null;
+			return false;
+		}
 
+		return TryFindBinding(symbol, bindings, out binding);
+	}
+
+	private static bool TryFindBinding(ISymbol symbol, IEnumerable<Binding> bindings, out Binding binding)
+	{
+		binding = bindings.FirstOrDefault(x => x.AppliesTo(symbol));
+		return binding is not null;
 	}
 }
