@@ -3,6 +3,7 @@
 	<!-- Set the default value for BuildMod -->
 	<PropertyGroup>
 		<BuildMod Condition="'$(BuildMod)' == ''">true</BuildMod>
+		<OutputTmlReferences Condition="'$(OutputTmlReferences)' == ''">false</OutputTmlReferences>
 	</PropertyGroup>
 
 	<!-- Build Defaults -->
@@ -41,8 +42,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Reference Include="$(tMLSteamPath)$(tMLPath)" Private="false" />
-		<Reference Include="$(tMLLibraryPath)/**/*.dll" Private="false" />
+		<Reference Include="$(tMLSteamPath)$(tMLPath)" Private="$(OutputTmlReferences)" />
+		<Reference Include="$(tMLLibraryPath)/**/*.dll" Private="$(OutputTmlReferences)" />
 		<Reference Remove="$(tMLLibraryPath)/Native/**" />
 		<Reference Remove="$(tMLLibraryPath)/**/runtime*/**" />
 		<Reference Remove="$(tMLLibraryPath)/**/*.resources.dll" />
