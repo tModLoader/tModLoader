@@ -17,7 +17,7 @@
  						outputMap.SetMaskAt(i - area.X, j - area.Y, tileMask);
  						GetTileLight(i, j, out var outputColor);
  						outputMap[i - area.X, j - area.Y] = outputColor;
-@@ -51,21 +_,29 @@
+@@ -51,21 +_,31 @@
  		_random.NextSeed();
  	}
  
@@ -27,28 +27,37 @@
 -	private LightMaskMode GetTileMask(Tile tile)
 +	private LightMaskMode GetTileMask(Tile tile, int x, int y)
  	{
-+		LightMaskMode maskMode = LightMaskMode.None;
- 		if (LightIsBlocked(tile) && tile.type != 131 && !tile.inActive() && tile.slope() == 0)
+-		if (LightIsBlocked(tile) && tile.type != 131 && !tile.inActive() && tile.slope() == 0)
 -			return LightMaskMode.Solid;
-+			maskMode = LightMaskMode.Solid;
- 
- 		if (!tile.lava() && tile.liquid > 128) {
- 			if (!tile.honey())
+-
+-		if (!tile.lava() && tile.liquid > 128) {
+-			if (!tile.honey())
 -				return LightMaskMode.Water;
-+				maskMode = LightMaskMode.Water;
- 
+-
 -			return LightMaskMode.Honey;
-+			maskMode = LightMaskMode.Honey;
- 		}
- 
+-		}
+-
 -		return LightMaskMode.None;
-+		if (tile.liquid > 128) {
-+			LiquidLoader.LiquidLightMaskMode(x, y, tile.liquidType(), ref maskMode);
-+		}
-+		else if (LightIsBlocked(tile) && !tile.inActive() && tile.slope() == 0) {
++		LightMaskMode maskMode = LightMaskMode.None;
++		if (LightIsBlocked(tile) && !tile.inActive() && tile.slope() == 0) {
++			if (tile.type != 131) {
++				maskMode = LightMaskMode.Solid;
++			}
 +			TileLoader.TileLightMaskMode(x, y, tile.type, ref maskMode);
++			return maskMode;
 +		}
-+
++		if (tile.liquid > 128) {
++			if (!tile.lava()) {
++				if (!tile.honey()) {
++					maskMode = LightMaskMode.Water;
++				}
++				else {
++					maskMode = LightMaskMode.Honey;
++				}
++			}
++			LiquidLoader.LiquidLightMaskMode(x, y, tile.liquidType(), ref maskMode);
++			return maskMode;
++		}
 +		return maskMode;
  	}
  

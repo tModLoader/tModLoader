@@ -6567,6 +6567,32 @@
  			TilesRenderer.DrawLiquidBehindTiles(waterStyle);
  
  		LiquidRenderer.Instance.DrawNormalLiquids(spriteBatch, drawOffset, waterStyle, Alpha, bg);
+@@ -47337,16 +_,18 @@
+ 
+ 	public static void DrawTileInWater(Vector2 drawOffset, int x, int y)
+ 	{
+-		if (Main.tile[x, y] != null && Main.tile[x, y].active() && Main.tile[x, y].type == 518) {
++		if (Main.tile[x, y] != null && Main.tile[x, y].active()) {
+ 			instance.LoadTiles(Main.tile[x, y].type);
+ 			Tile tile = Main.tile[x, y];
++			if (TileLoader.DrawTileInWater(x, y, Main.tile[x, y].type, spriteBatch, drawOffset) && Main.tile[x, y].type == 518) {
+-			int num = (int)tile.liquid / 16;
++				int num = (int)tile.liquid / 16;
+-			num -= 3;
++				num -= 3;
+-			if (WorldGen.SolidTile(x, y - 1) && num > 8)
++				if (WorldGen.SolidTile(x, y - 1) && num > 8)
+-				num = 8;
++					num = 8;
+ 
+-			Microsoft.Xna.Framework.Rectangle value = new Microsoft.Xna.Framework.Rectangle(tile.frameX, tile.frameY, 16, 16);
++				Microsoft.Xna.Framework.Rectangle value = new Microsoft.Xna.Framework.Rectangle(tile.frameX, tile.frameY, 16, 16);
+-			spriteBatch.Draw(TextureAssets.Tile[tile.type].Value, new Vector2(x * 16, y * 16 - num) + drawOffset, value, Lighting.GetColor(x, y), 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
++				spriteBatch.Draw(TextureAssets.Tile[tile.type].Value, new Vector2(x * 16, y * 16 - num) + drawOffset, value, Lighting.GetColor(x, y), 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
++			}
+ 		}
+ 	}
+ 
 @@ -47389,6 +_,10 @@
  				if (tile[j, i].liquid <= 0 || (tile[j, i].nactive() && tileSolid[tile[j, i].type] && !tileSolidTop[tile[j, i].type]) || !(Lighting.Brightness(j, i) > 0f || bg))
  					continue;

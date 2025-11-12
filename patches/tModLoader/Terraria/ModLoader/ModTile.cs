@@ -434,6 +434,18 @@ public abstract class ModTile : ModBlockType
 	}
 
 	/// <summary>
+	/// Allows the rendering of tiles attached to liquids. <br/>
+	/// Lily pads use this hook to draw themselves to liquids so water ripples/waves effect those tiles.
+	/// </summary>
+	/// <param name="i">The x position in tile coordinates.</param>
+	/// <param name="j">The y position in tile coordinates.</param>
+	/// <param name="spriteBatch"></param>
+	/// <param name="drawOffset">The draw offset of the tile, used to position the tile correctly.</param>
+	public virtual void DrawTileInWater(int i, int j, SpriteBatch spriteBatch, Vector2 drawOffset)
+	{
+	}
+
+	/// <summary>
 	/// Used to spawn Dust or Gore particle effects.
 	/// <para/> Note that this is called even if the tile is invisible due to echo coating, so check <paramref name="visible"/> if dust should only be spawned if the tile is visible. Tiles that still spawn particle effects while invisible can be useful to builders. Some tiles that spawn dust even when invisible include BubbleMachine, FogMachine, BrazierSuspended, Campfire, Chimney, SillyBalloonMachine, LeafBlock, and PoopBlock.
 	/// <para/> The <paramref name="tileFrameX"/> and <paramref name="tileFrameY"/> values differ from the Tile frame values in that they incorporate the changes from <see cref="SetDrawPositions"/> and should normally be used instead of <see cref="Tile.TileFrameX"/> and Y directly.

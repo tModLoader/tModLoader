@@ -163,6 +163,21 @@ public abstract class GlobalTile : GlobalBlockType
 	}
 
 	/// <summary>
+	/// Allows the rendering of tiles attached to liquids. <br/>
+	/// Lily pads use this hook to draw themselves to liquids so water ripples/waves effect those tiles. <br/>
+	/// Return false to prevent the rendering of tiles attached to liquids
+	/// </summary>
+	/// <param name="i">The x position in tile coordinates.</param>
+	/// <param name="j">The y position in tile coordinates.</param>
+	/// <param name="type">The Tile type of the tile being drawn</param>
+	/// <param name="spriteBatch"></param>
+	/// <param name="drawOffset">The draw offset of the tile, used to position the tile correctly.</param>
+	public virtual bool DrawTileInWater(int i, int j, int type, SpriteBatch spriteBatch, Vector2 drawOffset)
+	{
+		return true;
+	}
+
+	/// <summary>
 	/// Special Draw. Only called if coordinates are added using Main.instance.TilesRenderer.AddSpecialLegacyPoint during DrawEffects. Useful for drawing things that would otherwise be impossible to draw due to draw order, such as items in item frames.
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
