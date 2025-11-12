@@ -81,7 +81,7 @@ internal class UIModTagFilterDropdown : UIPanel
 				groupOptionButton.OnLeftClick += ClickLanguageTag;
 			else
 				groupOptionButton.OnLeftClick += ClickCategoryTag;
-			// groupOptionButton.SetSnapPoint("SortSteps", j);
+			groupOptionButton.SetSnapPoint("TagOption", j);
 			dropdownPanel.Append(groupOptionButton);
 			tagButtons.Add(groupOptionButton);
 		}
@@ -102,6 +102,7 @@ internal class UIModTagFilterDropdown : UIPanel
 			Interface.modBrowser.ResetTagFilters();
 			OnClickingTag?.Invoke();
 		};
+		clearTagsButton.SetSnapPoint("ClearTags", 0);
 		dropdownPanel.Append(clearTagsButton);
 	}
 

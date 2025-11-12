@@ -1,20 +1,22 @@
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Newtonsoft.Json;
 using Terraria.Audio;
 using Terraria.GameContent;
+using Terraria.GameContent.RGB;
 using Terraria.GameContent.UI.Elements;
 using Terraria.GameContent.UI.States;
+using Terraria.GameInput;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader.UI;
 using Terraria.UI;
 using Terraria.UI.Gamepad;
-using Terraria.Localization;
 using tModPorter;
 
 namespace Terraria.ModLoader.Config.UI;
@@ -51,7 +53,9 @@ internal class UIModConfig : UIState, IHaveBackButtonCommand
 	internal ModConfig pendingConfig; // the clone we modify.
 	private bool updateNeeded;
 	private bool preserveNotificationMessage;
+	private bool preserveFilterText;
 	private UIFocusInputTextField filterTextField;
+	private UIImageButton clearTextFilterButton;
 	internal string scrollToOption = null;
 	internal bool centerScrolledOption = false;
 
@@ -81,6 +85,7 @@ internal class UIModConfig : UIState, IHaveBackButtonCommand
 		textBoxBackground.Left.Set(-190, 1f);
 		textBoxBackground.Width.Set(180, 0f);
 		textBoxBackground.Height.Set(30, 0f);
+		textBoxBackground.WithFadedMouseOver();
 		uIElement.Append(textBoxBackground);
 
 		filterTextField.SetText("");
@@ -94,7 +99,18 @@ internal class UIModConfig : UIState, IHaveBackButtonCommand
 		filterTextField.OnRightClick += (a, b) => {
 			filterTextField.SetText("");
 		};
+		filterTextField.OnLeftClick += LeftClickTextBox;
+		filterTextField.SetSnapPoint("FilterTextField", 0);
 		textBoxBackground.Append(filterTextField);
+
+		clearTextFilterButton = new UIImageButton(Main.Assets.Request<Texture2D>("Images/UI/SearchCancel")) {
+			HAlign = 1f,
+			VAlign = 0.5f,
+			Left = new StyleDimension(-2f, 0f)
+		};
+		clearTextFilterButton.OnLeftClick += (a, b) => filterTextField.SetText("");
+		clearTextFilterButton.SetSnapPoint("ClearTextFilter", 0);
+		textBoxBackground.Append(clearTextFilterButton);
 
 		// TODO: ModConfig Localization support
 		message = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModConfigNotification"));//"Notification: "
@@ -136,6 +152,7 @@ internal class UIModConfig : UIState, IHaveBackButtonCommand
 		previousConfigButton.HAlign = 0f;
 		previousConfigButton.WithFadedMouseOver();
 		previousConfigButton.OnLeftClick += PreviousConfig;
+		previousConfigButton.SetSnapPoint("PreviousConfig", 0);
 		//uIElement.Append(previousConfigButton);
 
 		nextConfigButton = new UITextPanel<string>(">", 1f, false);
@@ -143,6 +160,7 @@ internal class UIModConfig : UIState, IHaveBackButtonCommand
 		nextConfigButton.WithFadedMouseOver();
 		nextConfigButton.HAlign = 1f;
 		nextConfigButton.OnLeftClick += NextConfig;
+		nextConfigButton.SetSnapPoint("NextConfig", 0);
 		//uIElement.Append(nextConfigButton);
 
 		saveConfigButton = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModConfigSaveConfig"), 1f, false);//"Save Config"
@@ -153,6 +171,7 @@ internal class UIModConfig : UIState, IHaveBackButtonCommand
 		saveConfigButton.HAlign = 0.33f;
 		saveConfigButton.VAlign = 1f;
 		saveConfigButton.OnLeftClick += SaveConfig;
+		saveConfigButton.SetSnapPoint("SaveConfig", 0);
 		//uIElement.Append(saveConfigButton);
 
 		backButton = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModConfigBack"), 1f, false);//"Back"
@@ -168,6 +187,7 @@ internal class UIModConfig : UIState, IHaveBackButtonCommand
 				backButton.BackgroundColor = Color.Red * 0.7f;
 		};
 		backButton.OnLeftClick += BackClick;
+		backButton.SetSnapPoint("Back", 0);
 		uIElement.Append(backButton);
 
 		revertConfigButton = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModConfigRevertChanges"), 1f, false);//"Revert Changes"
@@ -175,6 +195,7 @@ internal class UIModConfig : UIState, IHaveBackButtonCommand
 		revertConfigButton.WithFadedMouseOver();
 		revertConfigButton.HAlign = 0.66f;
 		revertConfigButton.OnLeftClick += RevertConfig;
+		revertConfigButton.SetSnapPoint("RevertConfig", 0);
 		//uIElement.Append(revertConfigButton);
 
 		//float scale = Math.Min(1f, 130f/FontAssets.MouseText.Value.MeasureString("Restore Defaults").X);
@@ -183,11 +204,46 @@ internal class UIModConfig : UIState, IHaveBackButtonCommand
 		restoreDefaultsConfigButton.WithFadedMouseOver();
 		restoreDefaultsConfigButton.HAlign = 1f;
 		restoreDefaultsConfigButton.OnLeftClick += RestoreDefaults;
+		restoreDefaultsConfigButton.SetSnapPoint("RestoreDefaults", 0);
 		uIElement.Append(restoreDefaultsConfigButton);
 
 		uIPanel.BackgroundColor = UICommon.MainPanelBackground;
 
 		Append(uIElement);
+	}
+
+	private void LeftClickTextBox(UIMouseEvent evt, UIElement listeningElement)
+	{
+		if (!PlayerInput.UsingGamepadUI || evt.Target == clearTextFilterButton) {
+			return;
+		}
+
+		SoundEngine.PlaySound(SoundID.MenuOpen);
+		Main.clrInput();
+		UIVirtualKeyboard uIVirtualKeyboard = new UIVirtualKeyboard(Language.GetTextValue("tModLoader.ModsTypeToSearch"), filterTextField.CurrentString, OnFinishedNaming, OnCanceledNaming, 0, allowEmpty: true);
+		uIVirtualKeyboard.SetMaxInputLength(20);
+		if (Main.gameMenu)
+			Main.MenuUI.SetState(uIVirtualKeyboard);
+		else
+			Main.InGameUI.SetState(uIVirtualKeyboard);
+	}
+
+	private void OnFinishedNaming(string name)
+	{
+		filterTextField.SetText(name.Trim());
+		preserveFilterText = true;
+		if (Main.gameMenu)
+			Main.MenuUI.SetState(this);
+		else
+			Main.InGameUI.SetState(this);
+	}
+
+	private void OnCanceledNaming()
+	{
+		if (Main.gameMenu)
+			Main.MenuUI.SetState(this);
+		else
+			Main.InGameUI.SetState(this);
 	}
 
 	private void BackClick(UIMouseEvent evt, UIElement listeningElement)
@@ -402,6 +458,95 @@ internal class UIModConfig : UIState, IHaveBackButtonCommand
 		}
 
 		UILinkPointNavigator.Shortcuts.BackButtonCommand = 7;
+
+		SetupGamepadPoints(spriteBatch);
+	}
+
+	private void SetupGamepadPoints(SpriteBatch spriteBatch)
+	{
+		UIGamepadHelper helper;
+		int startID = GamepadPointID.FancyUI0 + 2;
+		int currentID = startID;
+
+		UILinkPoint linkPoint_FilterText = helper.GetLinkPoint(currentID++, filterTextField);
+		UILinkPoint linkPoint_ClearTextFilter = helper.GetLinkPoint(currentID++, clearTextFilterButton);
+		UILinkPoint linkPoint_Back = helper.GetLinkPoint(currentID++, backButton);
+		UILinkPoint linkPoint_RestoreDefaults = helper.GetLinkPoint(currentID++, restoreDefaultsConfigButton);
+		UILinkPoint linkPoint_SaveConfig = helper.GetLinkPoint(currentID++, saveConfigButton);
+		UILinkPoint linkPoint_RevertConfig = helper.GetLinkPoint(currentID++, revertConfigButton);
+		UILinkPoint linkPoint_PreviousConfig = helper.GetLinkPoint(currentID++, previousConfigButton);
+		UILinkPoint linkPoint_NextConfig = helper.GetLinkPoint(currentID++, nextConfigButton);
+
+		UILinkPoint linkPoint_LastConfigEntry = linkPoint_FilterText;
+		UILinkPoint linkPoint_BelowSearch = null;
+
+		var configListSnapPoints = mainConfigList.GetSnapPoints();
+		helper.CullPointsOutOfElementArea(spriteBatch, configListSnapPoints, mainConfigList);
+		UILinkPoint[] configListLinkPoints = helper.CreateUILinkStripVertical(ref currentID, configListSnapPoints);
+		if (configListLinkPoints.Length > 0) {
+			linkPoint_BelowSearch = configListLinkPoints[0];
+			linkPoint_LastConfigEntry = configListLinkPoints[^1];
+		}
+
+		UILinkPoint linkPoint_AboveBottomLeft = linkPoint_PreviousConfig;
+		UILinkPoint linkPoint_AboveBottomRight = linkPoint_NextConfig;
+
+		helper.PairLeftRight(linkPoint_FilterText, linkPoint_ClearTextFilter);
+
+		if (previousConfigButton.Parent != null && nextConfigButton.Parent != null)
+			helper.PairLeftRight(linkPoint_PreviousConfig, linkPoint_NextConfig);
+
+		if (previousConfigButton.Parent != null) {
+			helper.PairUpDown(linkPoint_LastConfigEntry, linkPoint_PreviousConfig);
+			if (linkPoint_BelowSearch == null && nextConfigButton.Parent == null)
+				linkPoint_BelowSearch = linkPoint_PreviousConfig;
+		}
+		else {
+			linkPoint_AboveBottomLeft = linkPoint_AboveBottomRight;
+		}
+		bool left = false;
+		if (nextConfigButton.Parent != null) {
+			helper.PairUpDown(linkPoint_LastConfigEntry, linkPoint_NextConfig);
+			if (linkPoint_BelowSearch == null)
+				linkPoint_BelowSearch = linkPoint_NextConfig;
+		}
+		else {
+			linkPoint_AboveBottomRight = linkPoint_AboveBottomLeft;
+			left = true;
+		}
+		if (nextConfigButton.Parent == null && previousConfigButton.Parent == null) {
+			linkPoint_AboveBottomLeft = linkPoint_AboveBottomRight = linkPoint_LastConfigEntry;
+		}
+
+		if (!left) {
+			helper.PairUpDown(linkPoint_AboveBottomLeft, linkPoint_SaveConfig);
+			helper.PairUpDown(linkPoint_AboveBottomLeft, linkPoint_Back);
+		}
+		helper.PairUpDown(linkPoint_AboveBottomRight, linkPoint_RevertConfig);
+		helper.PairUpDown(linkPoint_AboveBottomRight, linkPoint_RestoreDefaults);
+		if (left) {
+			helper.PairUpDown(linkPoint_AboveBottomLeft, linkPoint_SaveConfig);
+			helper.PairUpDown(linkPoint_AboveBottomLeft, linkPoint_Back);
+		}
+
+		if (linkPoint_BelowSearch == null)
+			linkPoint_BelowSearch = linkPoint_RestoreDefaults;
+		helper.PairUpDown(linkPoint_ClearTextFilter, linkPoint_BelowSearch);
+		helper.PairUpDown(linkPoint_FilterText, linkPoint_BelowSearch);
+
+		List<UILinkPoint> bottomRowButtons = [linkPoint_Back];
+		if (saveConfigButton.Parent != null)
+			bottomRowButtons.Add(linkPoint_SaveConfig);
+		if (revertConfigButton.Parent != null)
+			bottomRowButtons.Add(linkPoint_RevertConfig);
+		bottomRowButtons.Add(linkPoint_RestoreDefaults);
+		for (int i = 0; i < bottomRowButtons.Count; i++) {
+			var linkPoint = bottomRowButtons[i];
+			linkPoint.Left = ((i == 0) ? (-3) : (bottomRowButtons[i - 1].ID));
+			linkPoint.Right = ((i == bottomRowButtons.Count - 1) ? (-4) : (bottomRowButtons[i + 1].ID));
+		}
+		linkPoint_Back.Up = linkPoint_SaveConfig.Up = linkPoint_AboveBottomLeft.ID;
+		linkPoint_RevertConfig.Up = linkPoint_RestoreDefaults.Up = linkPoint_AboveBottomRight.ID;
 	}
 
 	// do we need 2 copies? We can discard changes by reloading.
@@ -438,9 +583,11 @@ internal class UIModConfig : UIState, IHaveBackButtonCommand
 	public override void OnActivate()
 	{
 		Interface.modConfigList.ModToSelectOnOpen = mod;
-		filterTextField.SetText("");
-
-		updateNeeded = false;
+		if (!preserveFilterText) {
+			filterTextField.SetText("");
+			updateNeeded = false;
+		}
+		preserveFilterText = false;
 
 		if (!preserveNotificationMessage)
 			SetMessage("", Color.White);
@@ -508,6 +655,8 @@ internal class UIModConfig : UIState, IHaveBackButtonCommand
 
 			WrapIt(mainConfigList, ref top, variable, pendingConfig, order++);
 		}
+
+		UILinkPointNavigator.ChangePoint(GamepadPointID.FancyUI0 + 2);
 	}
 
 	public static Tuple<UIElement, UIElement> WrapIt(UIElement parent, ref int top, PropertyFieldWrapper memberInfo, object item, int order, object list = null, Type arrayType = null, int index = -1)

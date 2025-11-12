@@ -87,6 +87,7 @@ internal class UIModSourceItem : UIPanel
 		buildButton.PaddingTop -= 2f;
 		buildButton.PaddingBottom -= 2f;
 		buildButton.OnLeftClick += BuildMod;
+		buildButton.SetSnapPoint("BuildMod", 0);
 		Append(buildButton);
 
 		var buildReloadButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.MSBuildReload"));
@@ -95,6 +96,7 @@ internal class UIModSourceItem : UIPanel
 		buildReloadButton.Left.Pixels = 150;
 		buildReloadButton.WithFadedMouseOver();
 		buildReloadButton.OnLeftClick += BuildAndReload;
+		buildReloadButton.SetSnapPoint("BuildAndReload", 0);
 		Append(buildReloadButton);
 
 		_builtMod = builtMod;
@@ -112,6 +114,7 @@ internal class UIModSourceItem : UIPanel
 			publishButton.Width.Pixels = 100;
 			publishButton.Left.Pixels = 390;
 			publishButton.WithFadedMouseOver();
+			publishButton.SetSnapPoint("PublishMod", 0);
 
 			if (builtMod.properties.side == ModSide.Server) {
 				publishButton.OnLeftClick += PublishServerSideMod;
@@ -151,6 +154,7 @@ internal class UIModSourceItem : UIPanel
 					);
 				}
 			};
+			openCSProjButton.SetSnapPoint("OpenCSProj", 0);
 			Append(openCSProjButton);
 
 			contextButtonsLeft -= 26;
@@ -165,6 +169,7 @@ internal class UIModSourceItem : UIPanel
 				Top = { Pixels = 4 }
 			};
 			openFolderButton.OnLeftClick += (a, b) => Utils.OpenFolder(_mod);
+			openFolderButton.SetSnapPoint("OpenFolder", 0);
 			Append(openFolderButton);
 			contextButtonsLeft -= 26;
 		}
@@ -468,6 +473,7 @@ internal class UIModSourceItem : UIPanel
 			// When this button is pressed, the csproj no longer requires an upgrade. This means that the tModPorter button should now be added.
 			AddModPorterButton();
 		};
+		upgradeCSProjButton.SetSnapPoint("UpgradeCSProj", 0);
 
 		Append(upgradeCSProjButton);
 
@@ -506,6 +512,7 @@ internal class UIModSourceItem : UIPanel
 				Logging.tML.Error("Failed to start tModPorter", ex);
 			}
 		};
+		portModButton.SetSnapPoint("tModPorter", 0);
 
 		Append(portModButton);
 
@@ -525,6 +532,7 @@ internal class UIModSourceItem : UIPanel
 		modSaveErrorWarning.OnLeftClick += (a, b) => {
 			Interface.infoMessage.Show(fullError, 888, Interface.modSources);
 		};
+		modSaveErrorWarning.SetSnapPoint("ErrorButton", 0);
 
 		Append(modSaveErrorWarning);
 

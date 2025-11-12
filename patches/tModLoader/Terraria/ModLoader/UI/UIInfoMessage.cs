@@ -1,7 +1,9 @@
-using Microsoft.Xna.Framework.Graphics;
 using System;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
+using Terraria.GameContent.UI.States;
+using Terraria.GameInput;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.UI;
@@ -63,6 +65,7 @@ internal class UIInfoMessage : UIState, IHaveBackButtonCommand
 			Top = { Pixels = -30 }
 		}.WithFadedMouseOver();
 		_button.OnLeftClick += OKClick;
+		_button.SetSnapPoint("OK", 0);
 		_area.Append(_button);
 
 		_buttonAlt = new UIAutoScaleTextTextPanel<string>("???", 0.7f, true) {
@@ -73,6 +76,7 @@ internal class UIInfoMessage : UIState, IHaveBackButtonCommand
 			Top = { Pixels = -30 }
 		}.WithFadedMouseOver();
 		_buttonAlt.OnLeftClick += AltClick;
+		_buttonAlt.SetSnapPoint("Alt", 0);
 		_area.Append(_buttonAlt);
 
 		Append(_area);
@@ -86,6 +90,8 @@ internal class UIInfoMessage : UIState, IHaveBackButtonCommand
 		bool showAlt = !string.IsNullOrEmpty(_altText);
 		_button.Left.Percent = showAlt ? 0 : .25f;
 		_area.AddOrRemoveChild(_buttonAlt, showAlt);
+
+		UILinkPointNavigator.ChangePoint(GamepadPointID.FancyUI0 + 2);
 	}
 
 	internal void Show(string message, int gotoMenu, UIState gotoState = null, string altButtonText = "", Action altButtonAction = null, string okButtonText = null)
@@ -129,5 +135,26 @@ internal class UIInfoMessage : UIState, IHaveBackButtonCommand
 	{
 		base.DrawSelf(spriteBatch);
 		UILinkPointNavigator.Shortcuts.BackButtonCommand = 7;
+	}
+
+	public override void Draw(SpriteBatch spriteBatch)
+	{
+		base.Draw(spriteBatch);
+		SetupGamepadPoints(spriteBatch);
+	}
+
+	private void SetupGamepadPoints(SpriteBatch spriteBatch)
+	{
+		UIGamepadHelper helper;
+		// Note: GamepadPageID.FancyUI starts at 3002
+		int startID = GamepadPointID.FancyUI0 + 2;
+		int currentID = startID;
+
+		UILinkPoint linkPoint_Button = helper.GetLinkPoint(currentID++, _button);
+		UILinkPoint linkPoint_ButtonAlt = helper.GetLinkPoint(currentID++, _buttonAlt);
+
+		if (_buttonAlt.Parent != null) {
+			helper.PairLeftRight(linkPoint_Button, linkPoint_ButtonAlt);
+		}
 	}
 }

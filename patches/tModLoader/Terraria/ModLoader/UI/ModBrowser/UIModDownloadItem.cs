@@ -78,6 +78,7 @@ internal class UIModDownloadItem : UIPanel
 			Top = { Pixels = 40 }
 		};
 		_moreInfoButton.OnLeftClick += ViewModInfo;
+		_moreInfoButton.SetSnapPoint("ViewModInfo", 0);
 		Append(_moreInfoButton);
 
 		var modBuildVersion = ModDownload.ModloaderVersion;
@@ -108,7 +109,8 @@ internal class UIModDownloadItem : UIPanel
 		_updateWithDepsButton.CopyStyle(_moreInfoButton);
 		_updateWithDepsButton.Left.Pixels += 36 + PADDING;
 		_updateWithDepsButton.OnLeftClick += DownloadWithDeps;
-		
+		_updateWithDepsButton.SetSnapPoint("DownloadWithDeps", 0);
+
 		if (ModDownload.ModReferencesBySlug?.Length > 0) {
 			var icon = UICommon.ButtonDepsTexture;
 			var modReferenceIcon = new UIHoverImage(icon, Language.GetTextValue("tModLoader.MBClickToViewDependencyMods", string.Join("\n", ModDownload.ModReferencesBySlug.Split(',').Select(x => x.Trim())))) {
@@ -117,6 +119,7 @@ internal class UIModDownloadItem : UIPanel
 				Left = { Pixels = -icon.Width() - PADDING, Percent = 1f }
 			};
 			modReferenceIcon.OnLeftClick += ShowModDependencies;
+			modReferenceIcon.SetSnapPoint("ShowModDependencies", 0);
 			Append(modReferenceIcon);
 		}
 

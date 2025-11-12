@@ -41,6 +41,8 @@ internal class UIFocusInputTextField : UIElement
 
 	public override void LeftClick(UIMouseEvent evt)
 	{
+		base.LeftClick(evt);
+
 		Main.clrInput();
 		Focused = true;
 	}

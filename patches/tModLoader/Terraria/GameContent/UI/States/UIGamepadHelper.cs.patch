@@ -1,0 +1,13 @@
+--- src/TerrariaNetCore/Terraria/GameContent/UI/States/UIGamepadHelper.cs
++++ src/tModLoader/Terraria/GameContent/UI/States/UIGamepadHelper.cs
+@@ -20,7 +_,9 @@
+ 		for (int i = 0; i < pointsForGrid.Count; i++) {
+ 			int num2 = i % pointsPerLine;
+ 			int num3 = i / pointsPerLine;
++			int id = currentID++;
++			if (pointsForGrid[i] != null) // Support null inputs. Consume id for reliable arithmetic.
+-			array[num2, num3] = MakeLinkPointFromSnapPoint(currentID++, pointsForGrid[i]);
++				array[num2, num3] = MakeLinkPointFromSnapPoint(id, pointsForGrid[i]);
+ 		}
+ 
+ 		for (int j = 0; j < array.GetLength(0); j++) {
