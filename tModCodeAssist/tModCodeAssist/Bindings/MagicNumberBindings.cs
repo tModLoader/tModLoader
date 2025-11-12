@@ -6,6 +6,7 @@ using System.Reflection;
 using Microsoft.CodeAnalysis;
 using ReLogic.Reflection;
 using Terraria.ID;
+using static tModCodeAssist.Bindings.MagicNumberBindings;
 
 namespace tModCodeAssist.Bindings;
 
@@ -27,12 +28,17 @@ public static class MagicNumberBindings
 		public IdDictionary Search => context.Search;
 		public bool AllowNegativeIDs => context.AllowNegativeIDs;
 	}
-	private sealed class FieldBinding(Binding.CreationContext context) : Binding(context)
-	{
-	}
+
+	// Designates a field's type as an ID type.
+	private sealed class FieldBinding(Binding.CreationContext context) : Binding(context) { }
+
+	// Designates a method's return type as an ID type.
+	private sealed class MethodReturnBinding(Binding.CreationContext context) : Binding(context) { }
+
+	// Designates a method parameter's type as an ID type.
 	private sealed class MethodParameterBinding(Binding.CreationContext context, int parameterOrder) : Binding(context)
 	{
-		public int ParameterOrder => parameterOrder;
+		public int ParameterOrdinal => parameterOrder;
 	}
 
 	// Foo
@@ -50,16 +56,16 @@ public static class MagicNumberBindings
 
 	private static readonly object @lock = new();
 	private static ConcurrentDictionary<Type, IdDictionary> searchCache;
-	private static ConcurrentDictionary<string, Dictionary<string, Binding>> bindingByMemberByOwningClass;
+	private static ConcurrentDictionary<string, Dictionary<string, List<Binding>>> bindingsByMemberByOwningClass;
 
 	public static void PopulateBindings()
 	{
 		lock (@lock) {
-			if (bindingByMemberByOwningClass != null)
+			if (bindingsByMemberByOwningClass != null)
 				return;
 
 			searchCache = [];
-			bindingByMemberByOwningClass = [];
+			bindingsByMemberByOwningClass = [];
 
 			AddBinding<TileID>("Terraria.Item", "createTile", (ctx) => new FieldBinding(ctx));
 			AddBinding<ItemID>("Terraria.Item", "type", (ctx) => new FieldBinding(ctx));
@@ -167,52 +173,61 @@ public static class MagicNumberBindings
 		var context = new Binding.CreationContext(owningClassName, memberName, idClass.Name, idClass.FullName, search, AllowNegativeIDs: allowNegativeIDs);
 		var binding = func(context);
 
-		if (bindingByMemberByOwningClass.TryGetValue(owningClassName, out var bindingByMember)) {
-			bindingByMember.Add(memberName, binding);
+		if (bindingsByMemberByOwningClass.TryGetValue(owningClassName, out var bindingsByMember)) {
+			if (!bindingsByMember.TryGetValue(memberName, out var bindings))
+				bindingsByMember[memberName] = bindings = [];
+
+			bindings.Add(binding);
 		}
 		else {
-			bindingByMemberByOwningClass[owningClassName] = new() { [memberName] = binding };
+			bindingsByMemberByOwningClass[owningClassName] = new() { [memberName] = [binding] };
 		}
 	}
 
-	public static bool TryGetBinding(ISymbol symbol, out Binding binding)
+	public static bool TryGetBindings(ISymbol symbol, out Binding[] bindings)
 	{
-		binding = null;
+		bindings = null;
 
 		static string BuildQualifiedName(ISymbol symbol)
 		{
 			return symbol.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat.WithGlobalNamespaceStyle(SymbolDisplayGlobalNamespaceStyle.Omitted));
 		}
 
-		if (symbol is IFieldSymbol fieldSymbol && bindingByMemberByOwningClass.TryGetValue(BuildQualifiedName(symbol.ContainingType), out Dictionary<string, Binding> bindingByMember)) {
-			if (bindingByMember.TryGetValue(fieldSymbol.MetadataName, out binding)) {
+		if (symbol is IFieldSymbol fieldSymbol && bindingsByMemberByOwningClass.TryGetValue(BuildQualifiedName(symbol.ContainingType), out var bindingsByMember)) {
+			if (bindingsByMember.TryGetValue(fieldSymbol.MetadataName, out bindings)) {
 				return true;
 			}
 
-			if (bindingByMember.TryGetValue("*", out binding)) {
+			if (bindingsByMember.TryGetValue("*", out bindings)) {
 				return true;
 			}
 		}
-		else if (symbol is IPropertySymbol propertySymbol && bindingByMemberByOwningClass.TryGetValue(BuildQualifiedName(symbol.ContainingType), out bindingByMember)) {
-			if (bindingByMember.TryGetValue(propertySymbol.MetadataName, out binding)) {
+		else if (symbol is IPropertySymbol propertySymbol && bindingsByMemberByOwningClass.TryGetValue(BuildQualifiedName(symbol.ContainingType), out bindingsByMember)) {
+			if (bindingsByMember.TryGetValue(propertySymbol.MetadataName, out bindings)) {
 				return true;
 			}
 		}
-		else if (symbol is IMethodSymbol methodSymbol && bindingByMemberByOwningClass.TryGetValue(BuildQualifiedName(symbol.ContainingType), out bindingByMember)) {
-			if (bindingByMember.TryGetValue(methodSymbol.ToDisplayString(MethodNameOnlyDisplayFormat), out binding)) {
+		else if (symbol is IMethodSymbol methodSymbol && bindingsByMemberByOwningClass.TryGetValue(BuildQualifiedName(symbol.ContainingType), out bindingsByMember)) {
+			if (bindingsByMember.TryGetValue(methodSymbol.ToDisplayString(MethodNameOnlyDisplayFormat), out bindings)) {
 				return true;
 			}
 
-			if (bindingByMember.TryGetValue(methodSymbol.ToDisplayString(MethodWithQualifiedParametersDisplayFormat), out binding)) {
+			if (bindingsByMember.TryGetValue(methodSymbol.ToDisplayString(MethodWithQualifiedParametersDisplayFormat), out bindings)) {
 				return true;
 			}
 		}
 		else if (symbol is IParameterSymbol parameterSymbol) {
-			if (TryGetBinding(parameterSymbol.ContainingSymbol, out binding) && parameterSymbol.Ordinal == ((MethodParameterBinding)binding).ParameterOrder) {
+			if (TryGetBinding(parameterSymbol.ContainingSymbol, out bindings) && parameterSymbol.Ordinal == ((MethodParameterBinding)bindings).ParameterOrdinal) {
 				return true;
 			}
 		}
 
 		return false;
+	}
+
+	public static bool TryGetBinding(ISymbol symbol, out Binding binding)
+	{
+		binding = null;
+
 	}
 }
