@@ -3,16 +3,20 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
+using Terraria.GameContent.UI.States;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Config;
 using Terraria.ModLoader.UI;
 using Terraria.UI;
+using Terraria.UI.Gamepad;
 
 namespace ExampleMod.Common.UI.ExampleFullscreenUI
 {
@@ -40,10 +44,15 @@ namespace ExampleMod.Common.UI.ExampleFullscreenUI
 		private static Asset<Texture2D> SomeBoolToggleTexture { get; set; }
 
 		private UIText itemDefinitionMessage;
+		private UITextPanel<LocalizedText> randomizeButton;
+		private UITextPanel<LocalizedText> openConfigAButton;
 		private UICycleImage onlyChangeableDuringNightToggle;
 		private UIText onlyChangeableDuringNightMessage;
 		private UIText someNumberMessage;
+		private UITextPanel<LocalizedText> openConfigBButton;
+		private UITextPanel<LocalizedText> saveConfigBButton;
 		private UIText ConfigSaveStatusMessage;
+		private UITextPanel<LocalizedText> backButton;
 
 		private ModConfigShowcaseDataTypes configA;
 		private ModConfigShowcaseAcceptClientChanges configB;
@@ -109,7 +118,7 @@ namespace ExampleMod.Common.UI.ExampleFullscreenUI
 			panel.Append(itemDefinitionMessage);
 			top += 60;
 
-			var randomizeButton = new UITextPanel<LocalizedText>(RandomizeItemText, 0.7f) {
+			randomizeButton = new UITextPanel<LocalizedText>(RandomizeItemText, 0.7f) {
 				Top = new(top, 0f),
 				Width = new(-10f, 1 / 3f),
 				Height = new(30f, 0f)
@@ -117,13 +126,15 @@ namespace ExampleMod.Common.UI.ExampleFullscreenUI
 			randomizeButton.HAlign = 0f;
 			randomizeButton.WithFadedMouseOver();
 			randomizeButton.OnLeftClick += RandomizeButton_OnLeftClick;
+			randomizeButton.SetSnapPoint("Randomize", 0);
 			panel.Append(randomizeButton);
 
-			var openConfigAButton = new UITextPanel<LocalizedText>(Language.GetText("tModLoader.ModsOpenConfig"), 0.7f);
+			openConfigAButton = new UITextPanel<LocalizedText>(Language.GetText("tModLoader.ModsOpenConfig"), 0.7f);
 			openConfigAButton.CopyStyle(randomizeButton);
 			openConfigAButton.HAlign = 0.5f;
 			openConfigAButton.WithFadedMouseOver();
 			openConfigAButton.OnLeftClick += OpenConfigAButton_OnLeftClick;
+			openConfigAButton.SetSnapPoint("OpenConfigAButton", 0);
 			panel.Append(openConfigAButton);
 			top += 40;
 
@@ -134,6 +145,7 @@ namespace ExampleMod.Common.UI.ExampleFullscreenUI
 				Top = new(top, 0f),
 			};
 			onlyChangeableDuringNightToggle.OnLeftClick += OnlyChangeableDuringNightToggle_OnLeftClick;
+			onlyChangeableDuringNightToggle.SetSnapPoint("OnlyChangeableDuringNightToggle", 0);
 			panel.Append(onlyChangeableDuringNightToggle);
 
 			onlyChangeableDuringNightMessage = new UIText(GetOnlyChangeableDuringNightMessageText()) {
@@ -155,7 +167,7 @@ namespace ExampleMod.Common.UI.ExampleFullscreenUI
 			panel.Append(someNumberMessage);
 			top += 32;
 
-			var openConfigBButton = new UITextPanel<LocalizedText>(Language.GetText("tModLoader.ModsOpenConfig"), 0.7f) {
+			openConfigBButton = new UITextPanel<LocalizedText>(Language.GetText("tModLoader.ModsOpenConfig"), 0.7f) {
 				Top = new(top, 0f),
 				Width = new(-10f, 1 / 3f),
 				Height = new(30f, 0f)
@@ -163,14 +175,16 @@ namespace ExampleMod.Common.UI.ExampleFullscreenUI
 			openConfigBButton.HAlign = 0.5f;
 			openConfigBButton.WithFadedMouseOver();
 			openConfigBButton.OnLeftClick += OpenConfigBButton_OnLeftClick;
+			openConfigBButton.SetSnapPoint("OpenConfigBButton", 0);
 			panel.Append(openConfigBButton);
 
-			var saveConfigBButton = new UITextPanel<LocalizedText>(Language.GetText("tModLoader.ModConfigSaveConfig"), 0.7f);
+			saveConfigBButton = new UITextPanel<LocalizedText>(Language.GetText("tModLoader.ModConfigSaveConfig"), 0.7f);
 			saveConfigBButton.CopyStyle(openConfigBButton);
 			saveConfigBButton.HAlign = 1f;
 			saveConfigBButton.BackgroundColor = Color.Purple * 0.7f;
 			saveConfigBButton.WithFadedMouseOver(Color.Purple, Color.Purple * 0.7f);
 			saveConfigBButton.OnLeftClick += SaveConfigBButton_OnLeftClick;
+			saveConfigBButton.SetSnapPoint("SaveConfigBButton", 0);
 			panel.Append(saveConfigBButton);
 			top += 40;
 
@@ -185,7 +199,7 @@ namespace ExampleMod.Common.UI.ExampleFullscreenUI
 			panel.Append(ConfigSaveStatusMessage);
 			top += 30;
 
-			var backButton = new UITextPanel<LocalizedText>(Language.GetText("UI.Back"), 0.7f) {
+			backButton = new UITextPanel<LocalizedText>(Language.GetText("UI.Back"), 0.7f) {
 				TextColor = Color.Red,
 				Top = new(top, 0f),
 				Width = new(-10f, 1 / 3f),
@@ -193,6 +207,7 @@ namespace ExampleMod.Common.UI.ExampleFullscreenUI
 			};
 			backButton.WithFadedMouseOver();
 			backButton.OnLeftClick += BackButton_OnLeftClick;
+			backButton.SetSnapPoint("BackButton", 0);
 			panel.Append(backButton);
 			top += 40;
 
@@ -213,6 +228,9 @@ namespace ExampleMod.Common.UI.ExampleFullscreenUI
 			RefreshContents();
 
 			UpdateConfigSaveStatusMessage("", Color.White);
+
+			// When this UI is opened, place the gamepad at the 1st element, which for various reasons should be GamepadPointID.FancyUI0 + 2 for fullscreen UI using IngameFancyUI.
+			UILinkPointNavigator.ChangePoint(GamepadPointID.FancyUI0 + 2);
 		}
 
 		public void RefreshContents() {
@@ -314,6 +332,62 @@ namespace ExampleMod.Common.UI.ExampleFullscreenUI
 		private string GetSomeNumberMessageText() {
 			string configEntryLabel = Language.GetTextValue(configB.GetLocalizationKey($"{nameof(configB.SomeNumber)}.Label"));
 			return SaveValueText.Format(configEntryLabel, configB.SomeNumber);
+		}
+
+		public override void Draw(SpriteBatch spriteBatch) {
+			base.Draw(spriteBatch);
+
+			SetupGamepadPoints(spriteBatch);
+		}
+
+		// This method is in charge of adding gamepad support for this UI.
+		private void SetupGamepadPoints(SpriteBatch spriteBatch) {
+			UIGamepadHelper helper;
+			// Due to various reasons, fullscreen UI using IngameFancyUI should start at GamepadPointID.FancyUI0 + 2
+			int startID = GamepadPointID.FancyUI0 + 2;
+			int currentID = startID;
+
+			// Here we declare the "links" between each interactable UIElement in our UI.
+			// First, we assign each UIElement a UILinkPoint, which represents a gamepad interaction location.
+			// Each interactable UIElement needs to use the SetSnapPoint method for GetLinkPoint to be useable.
+			UILinkPoint randomizeButtonLP = helper.GetLinkPoint(currentID++, randomizeButton);
+			UILinkPoint openConfigAButtonLP = helper.GetLinkPoint(currentID++, openConfigAButton);
+			UILinkPoint onlyChangeableDuringNightToggleLP = helper.GetLinkPoint(currentID++, onlyChangeableDuringNightToggle);
+			UILinkPoint openConfigBButtonLP = helper.GetLinkPoint(currentID++, openConfigBButton);
+			UILinkPoint saveConfigBButtonLP = helper.GetLinkPoint(currentID++, saveConfigBButton);
+			UILinkPoint backButtonLP = helper.GetLinkPoint(currentID++, backButton);
+
+			// Then, we declare the bi-directional and one-way links.
+			// For example, the "Randomize Item" and "Click to open config" buttons are side by side, so they get paired left and right. Pressing to the right and left on the gamepad will navigate between them.
+			// The "Only Changeable During Night" button is below the "Randomize Item" button, and it is also the best option for a down press from the "Click to open config" button. In this case, "Only Changeable During Night" button and "Randomize Item" button get paired up and down, meaning pressing up and down navigates between them, but the "Click to open config" button has its down link set to the "Only Changeable During Night" button, causing a one-way travel from "Click to open config" to "Only Changeable During Night" when the user presses down.
+			helper.PairLeftRight(randomizeButtonLP, openConfigAButtonLP);
+			helper.PairUpDown(randomizeButtonLP, onlyChangeableDuringNightToggleLP);
+			openConfigAButtonLP.Down = onlyChangeableDuringNightToggleLP.ID;
+			// Similar logic for other buttons according to their placement in the UI.
+			helper.PairUpDown(onlyChangeableDuringNightToggleLP, openConfigBButtonLP);
+			saveConfigBButtonLP.Up = onlyChangeableDuringNightToggleLP.ID;
+			helper.PairLeftRight(openConfigBButtonLP, saveConfigBButtonLP);
+			helper.PairUpDown(openConfigBButtonLP, backButtonLP);
+			saveConfigBButtonLP.Down = backButtonLP.ID;
+
+			// Note that helper (UIGamepadHelper) has many helper methods that make setting up gamepad links much simpler for more common layouts. For example, the CreateUILinkPointGrid method can create links between UIElements arranged in a grid pattern, and CreateUILinkStripVertical/Horizontal can link elements together one after the other.
+			// This example demonstrated manually setting bi-directional and one-way links, but gamepad support should be more easily implemented and straightforward than this example for the majority of modded UI.
+
+			// For example, a UI with 2 rows and 3 columns, with no element in the last position could be implemented like this:
+			/*
+			// Gather the UIElements that should link to each other
+			UIElement[] buttons = [
+				row0Col0, row0Col1, row0Col2,
+				row1Col0, row1Col1, null,
+			];
+			// Gather their SnapPoints
+			List<SnapPoint> snapPoints = buttons.Select(x => x.GetSnapPoint(out SnapPoint point) ? point : null).ToList();
+			// Link them together
+			UILinkPoint[,] linkPoints = helper.CreateUILinkPointGrid(ref currentID, snapPoints, 3, null, null, null, null);
+			// Optionally add in missing links. In this case row0Col2 should travel to row1Col1 on a down press.
+			linkPoints[2, 0].Down = linkPoints[1, 1].ID;
+			*/
+			// Also, the GetSnapPoints method can be used rather than listing out each UIElement reference directly.
 		}
 	}
 }
