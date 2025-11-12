@@ -8080,7 +8080,7 @@
  			pulley = false;
  			pulleyDir = 1;
  			if (controlRight)
-@@ -39780,7 +_,10 @@
+@@ -39780,11 +_,15 @@
  			}
  
  			for (int l = 0; l < list.Count; l++) {
@@ -8091,6 +8091,12 @@
  					break;
  
  				int type2 = Main.projectile[list[l]].type;
+-				if (type2 == num4 || type2 == 625 || type2 == 628 || type2 == 623)
++				// if (type2 == num4 || type2 == 625 || type2 == 628 || type2 == 623)
++				if (type2 == num4 || ProjectileID.Sets.MinionCannotBeFreed[type2])
+ 					continue;
+ 
+ 				if (type2 == 388 && num4 == 387)
 @@ -39836,6 +_,9 @@
  
  	private void ApplyPotionDelay(Item sItem)
