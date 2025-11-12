@@ -8,3 +8,27 @@
  		public static int FANCYUI_HIGHEST_INDEX = 1;
  		public static int FANCYUI_SPECIAL_INSTRUCTIONS = 0;
  		public static int INFOACCCOUNT = 0;
+@@ -42,7 +_,13 @@
+ 		public static int INV_MOVE_OPTION_CD = 0;
+ 	}
+ 
++	/// <summary>
++	/// Contains all <see cref="UILinkPage"/> indexed by their <see cref="UILinkPage.ID"/> (<see cref="GamepadPageID"/>).
++	/// </summary>
+ 	public static Dictionary<int, UILinkPage> Pages = new Dictionary<int, UILinkPage>();
++	/// <summary>
++	/// Contains all <see cref="UILinkPoint"/> indexed by their <see cref="UILinkPoint.ID"/> (<see cref="GamepadPointID"/>).
++	/// </summary>
+ 	public static Dictionary<int, UILinkPoint> Points = new Dictionary<int, UILinkPoint>();
+ 	public static int CurrentPage = 1000;
+ 	public static int OldPage = 1000;
+@@ -371,6 +_,9 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Navigates to a specific <see cref="UILinkPoint"/> using its ID (<see cref="GamepadPointID"/>).
++	/// </summary>
+ 	public static void ChangePoint(int PointID)
+ 	{
+ 		if (Points.ContainsKey(PointID)) {

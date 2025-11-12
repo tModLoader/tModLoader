@@ -1,0 +1,16 @@
+--- src/TerrariaNetCore/Terraria/UI/SnapPoint.cs
++++ src/tModLoader/Terraria/UI/SnapPoint.cs
+@@ -3,6 +_,13 @@
+ 
+ namespace Terraria.UI;
+ 
++/// <summary>
++/// Represents an interaction target for a specific UIElement.
++/// <br/><br/> <see cref="Name"/> serves as a tag, allowing logic to locate or filter the SnapPoints of specific UIElements. <see cref="ID"/> indicates an order within that tag when multiple elements share the same <see cref="Name"/>.
++/// <br/><br/> <see cref="_anchor"/> and <see cref="_offset"/> are used to calculate <see cref="Position"/> from the dimensions of this UIElement. Position is the mouse location to use when snapping to a SnapPoint. Adjusting the anchor and offset can adjust where tooltips are displayed.
++/// <br/><br/> SnapPoints are typically created through <see cref="UIElement.SetSnapPoint(string, int, Vector2?, Vector2?)"/>, which defaults to centering the anchor on the element.
++/// <br/><br/> SnapPoints are used to populate <see cref="Gamepad.UILinkPoint"/> positions by using <see cref="GameContent.UI.States.UIGamepadHelper.MakeLinkPointFromSnapPoint(int, SnapPoint)"/> or other helper methods in <see cref="GameContent.UI.States.UIGamepadHelper"/>.
++/// </summary>
+ [DebuggerDisplay("Snap Point - {Name} {Id}")]
+ public class SnapPoint
+ {

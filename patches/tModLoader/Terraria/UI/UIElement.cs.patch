@@ -90,7 +90,7 @@
  	public bool IsMouseHovering { get; private set; }
  
  	public event MouseEvent OnLeftMouseDown;
-@@ -68,10 +_,15 @@
+@@ -68,16 +_,26 @@
  	public event MouseEvent OnRightMouseUp;
  	public event MouseEvent OnRightClick;
  	public event MouseEvent OnRightDoubleClick;
@@ -106,6 +106,27 @@
  
  	public UIElement()
  	{
+ 		UniqueId = _idCounter++;
+ 	}
+ 
++	/// <summary>
++	/// Sets the <see cref="SnapPoint"/> for this UIElement. <paramref name="name"/> and <paramref name="id"/> are used as "tags" and <paramref name="anchor"/> and <paramref name="offset"/> are used when calculating where the mouse should snap to within the element dimensions.
++	/// <br/><br/> Can be retrieved using <see cref="GetSnapPoints"/> or <see cref="GetSnapPoint(out SnapPoint)"/>.
++	/// <br/><br/> Setting a SnapPoint helps facilitate populating <see cref="UI.Gamepad.UILinkPoint"/>s with appropriate data, especially for dynamic UI such as those using UIList or UIGrid. 
++	/// </summary>
+ 	public void SetSnapPoint(string name, int id, Vector2? anchor = null, Vector2? offset = null)
+ 	{
+ 		if (!anchor.HasValue)
+@@ -89,6 +_,9 @@
+ 		_snapPoint = new SnapPoint(name, id, anchor.Value, offset.Value);
+ 	}
+ 
++	/// <summary>
++	/// Retrieves the <see cref="SnapPoint"/> of this element. Returns false if the SnapPoint has not been assigned (<see cref="SetSnapPoint"/>).
++	/// </summary>
+ 	public bool GetSnapPoint(out SnapPoint point)
+ 	{
+ 		point = _snapPoint;
 @@ -106,10 +_,14 @@
  		}
  	}
@@ -177,6 +198,16 @@
  	public virtual void Update(GameTime gameTime)
  	{
  		if (this.OnUpdate != null)
+@@ -212,6 +_,9 @@
+ 		return new Rectangle(num3, num4, num5 - num3, num6 - num4);
+ 	}
+ 
++	/// <summary>
++	/// Returns a list of the <see cref="SnapPoint"/>s of this element and all the children elements recursively.
++	/// </summary>
+ 	public virtual List<SnapPoint> GetSnapPoints()
+ 	{
+ 		List<SnapPoint> list = new List<SnapPoint>();
 @@ -296,6 +_,9 @@
  
  	public virtual Rectangle GetViewCullingArea() => _dimensions.ToRectangle();
