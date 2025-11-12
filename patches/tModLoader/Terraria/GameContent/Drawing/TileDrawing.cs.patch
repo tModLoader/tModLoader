@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/GameContent/Drawing/TileDrawing.cs
 +++ src/tModLoader/Terraria/GameContent/Drawing/TileDrawing.cs
-@@ -11,33 +_,48 @@
+@@ -11,33 +_,49 @@
  using Terraria.Graphics;
  using Terraria.Graphics.Capture;
  using Terraria.ID;
@@ -8,6 +8,7 @@
  using Terraria.ObjectData;
  using Terraria.UI;
  using Terraria.Utilities;
++using static Terraria.Graphics.Capture.CaptureBiome.Sets;
  
  namespace Terraria.GameContent.Drawing;
  
@@ -443,6 +444,72 @@
  		return num;
  	}
  
+@@ -2662,6 +_,7 @@
+ 		bool flag6 = false;
+ 		int num3 = tileCache.slope();
+ 		int num4 = tileCache.blockType();
++		int liquidID = 0;
+ 		if (tileCache.type == 546 && tileCache.liquid > 0) {
+ 			flag5 = true;
+ 			flag4 = true;
+@@ -2683,6 +_,7 @@
+ 			}
+ 
+ 			num = tileCache.liquid;
++			liquidID = tileCache.liquidType();
+ 		}
+ 		else {
+ 			if (tileCache.liquid > 0 && num4 != 0 && (num4 != 1 || tileCache.liquid > 160)) {
+@@ -2702,8 +_,10 @@
+ 						break;
+ 				}
+ 
+-				if (tileCache.liquid > num)
++				if (tileCache.liquid > num) {
+ 					num = tileCache.liquid;
++					liquidID = tileCache.liquidType();
++				}
+ 			}
+ 
+ 			if (tile2.liquid > 0 && num3 != 1 && num3 != 3) {
+@@ -2723,8 +_,10 @@
+ 						break;
+ 				}
+ 
+-				if (tile2.liquid > num)
++				if (tile2.liquid > num) {
+ 					num = tile2.liquid;
++					liquidID = tile2.liquidType();
++				}
+ 			}
+ 
+ 			if (tile.liquid > 0 && num3 != 2 && num3 != 4) {
+@@ -2744,12 +_,15 @@
+ 						break;
+ 				}
+ 
+-				if (tile.liquid > num)
++				if (tile.liquid > num) {
+ 					num = tile.liquid;
++					liquidID = tile.liquidType();
++				}
+ 			}
+ 
+ 			if (tile3.liquid > 0 && num3 != 3 && num3 != 4) {
+ 				flag3 = true;
++				liquidID = tile3.liquidType();
+ 				switch (tile3.liquidType()) {
+ 					case 0:
+ 						flag6 = true;
+@@ -2769,7 +_,7 @@
+ 			if (tile4.liquid > 0 && num3 != 1 && num3 != 2) {
+ 				if (tile4.liquid > 240)
+ 					flag4 = true;
+-
++				liquidID = tile4.liquidType();
+ 				switch (tile4.liquidType()) {
+ 					case 0:
+ 						flag6 = true;
 @@ -2825,6 +_,7 @@
  
  				int num6 = (int)num5 * 2;
@@ -451,7 +518,7 @@
  					vector = new Vector2(tileX * 16, tileY * 16 + num6);
  					liquidSize = new Rectangle(0, num6, 16, 16 - num6);
  				}
-@@ -2875,9 +_,11 @@
+@@ -2875,11 +_,13 @@
  		vertices.BottomRightColor *= num7;
  		vertices.TopLeftColor *= num7;
  		vertices.TopRightColor *= num7;
@@ -462,8 +529,20 @@
 -			for (int i = 0; i < 15; i++) {
 +			for (int i = 0; i < totalCount; i++) {
  				if (Main.IsLiquidStyleWater(i) && Main.liquidAlpha[i] > 0f && i != num2) {
- 					DrawPartialLiquid(!solidLayer, tileCache, ref position, ref liquidSize, i, ref vertices);
+-					DrawPartialLiquid(!solidLayer, tileCache, ref position, ref liquidSize, i, ref vertices);
++					DrawPartialLiquid(tileX, tileY, !solidLayer, tileCache, ref position, ref liquidSize, i, liquidID, ref vertices);
  					flag7 = true;
+ 					break;
+ 				}
+@@ -2895,7 +_,7 @@
+ 		if (num2 == 14)
+ 			LiquidRenderer.SetShimmerVertexColors(ref colors, solidLayer ? 0.75f : 1f, tileX, tileY);
+ 
+-		DrawPartialLiquid(!solidLayer, tileCache, ref position, ref liquidSize, num2, ref colors);
++		DrawPartialLiquid(tileX, tileY, !solidLayer, tileCache, ref position, ref liquidSize, num2, liquidID, ref colors);
+ 	}
+ 
+ 	private void CacheSpecialDraws_Part1(int tileX, int tileY, int tileType, int drawDataTileFrameX, int drawDataTileFrameY, bool skipDraw)
 @@ -3112,7 +_,8 @@
  		}
  	}
@@ -498,16 +577,63 @@
  	{
  		if (Main.InSmartCursorHighlightArea(x, y, out var actuallySelected)) {
  			int num = (tileLight.R + tileLight.G + tileLight.B) / 3;
-@@ -3148,7 +_,7 @@
+@@ -3148,38 +_,42 @@
  		}
  	}
  
 -	private void DrawPartialLiquid(bool behindBlocks, Tile tileCache, ref Vector2 position, ref Rectangle liquidSize, int liquidType, ref VertexColors colors)
-+	internal void DrawPartialLiquid(bool behindBlocks, Tile tileCache, ref Vector2 position, ref Rectangle liquidSize, int liquidType, ref VertexColors colors)
++	// TML: Added waterStyle/x/y parameters, changed liquidType parameter to be the LiquidID and waterStyle is now the texture asset ID
++	internal void DrawPartialLiquid(int x, int y, bool behindBlocks, Tile tileCache, ref Vector2 position, ref Rectangle liquidSize, int waterStyle, int liquidType, ref VertexColors colors)
  	{
- 		int num = tileCache.slope();
- 		bool flag = !TileID.Sets.BlocksWaterDrawingBehindSelf[tileCache.type];
-@@ -3177,9 +_,9 @@
++		if (LiquidLoader.PreSlopeDraw(x, y, tileCache.liquidType(), behindBlocks, ref position, ref liquidSize, ref colors)) {
+-		int num = tileCache.slope();
++			int num = tileCache.slope();
+-		bool flag = !TileID.Sets.BlocksWaterDrawingBehindSelf[tileCache.type];
++			bool flag = !TileID.Sets.BlocksWaterDrawingBehindSelf[tileCache.type];
+-		if (!behindBlocks)
++			if (!behindBlocks)
+-			flag = false;
++				flag = false;
+ 
+-		if (flag || num == 0) {
++			if (flag || num == 0) {
+-			Main.tileBatch.Draw(TextureAssets.Liquid[liquidType].Value, position, liquidSize, colors, default(Vector2), 1f, SpriteEffects.None);
++				Main.tileBatch.Draw(liquidType < LiquidID.Count ? TextureAssets.LiquidSlope[waterStyle].Value : LiquidLoader.LiquidSlopeAssets[liquidType].Value, position, liquidSize, colors, default(Vector2), 1f, SpriteEffects.None);
+-			return;
++				return;
+-		}
++			}
+ 
+-		liquidSize.X += 18 * (num - 1);
++			liquidSize.X += 18 * (num - 1);
+-		switch (num) {
++			switch (num) {
+-			case 1:
++				case 1:
+-				Main.tileBatch.Draw(TextureAssets.LiquidSlope[liquidType].Value, position, liquidSize, colors, Vector2.Zero, 1f, SpriteEffects.None);
++					Main.tileBatch.Draw(liquidType < LiquidID.Count ? TextureAssets.LiquidSlope[waterStyle].Value : LiquidLoader.LiquidSlopeAssets[liquidType].Value, position, liquidSize, colors, Vector2.Zero, 1f, SpriteEffects.None);
+-				break;
++					break;
+-			case 2:
++				case 2:
+-				Main.tileBatch.Draw(TextureAssets.LiquidSlope[liquidType].Value, position, liquidSize, colors, Vector2.Zero, 1f, SpriteEffects.None);
++					Main.tileBatch.Draw(liquidType < LiquidID.Count ? TextureAssets.LiquidSlope[waterStyle].Value : LiquidLoader.LiquidSlopeAssets[liquidType].Value, position, liquidSize, colors, Vector2.Zero, 1f, SpriteEffects.None);
+-				break;
++					break;
+-			case 3:
++				case 3:
+-				Main.tileBatch.Draw(TextureAssets.LiquidSlope[liquidType].Value, position, liquidSize, colors, Vector2.Zero, 1f, SpriteEffects.None);
++					Main.tileBatch.Draw(liquidType < LiquidID.Count ? TextureAssets.LiquidSlope[waterStyle].Value : LiquidLoader.LiquidSlopeAssets[liquidType].Value, position, liquidSize, colors, Vector2.Zero, 1f, SpriteEffects.None);
+-				break;
++					break;
+-			case 4:
++				case 4:
+-				Main.tileBatch.Draw(TextureAssets.LiquidSlope[liquidType].Value, position, liquidSize, colors, Vector2.Zero, 1f, SpriteEffects.None);
++					Main.tileBatch.Draw(liquidType < LiquidID.Count ? TextureAssets.LiquidSlope[waterStyle].Value : LiquidLoader.LiquidSlopeAssets[liquidType].Value, position, liquidSize, colors, Vector2.Zero, 1f, SpriteEffects.None);
+-				break;
++					break;
++			}
++			LiquidLoader.PostSlopeDraw(x, y, tileCache.liquidType(), behindBlocks, ref position, ref liquidSize, ref colors);
  		}
  	}
  
