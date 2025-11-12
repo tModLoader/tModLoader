@@ -518,6 +518,14 @@
  					vector = new Vector2(tileX * 16, tileY * 16 + num6);
  					liquidSize = new Rectangle(0, num6, 16, 16 - num6);
  				}
+@@ -2853,6 +_,7 @@
+ 				num7 = Math.Max(num7 * 1.7f, 1f);
+ 				break;
+ 		}
++		LiquidLoader.LiquidSlopeOpacity(liquidID, ref num7);
+ 
+ 		if ((double)tileY <= Main.worldSurface || num7 > 1f) {
+ 			num7 = 1f;
 @@ -2875,11 +_,13 @@
  		vertices.BottomRightColor *= num7;
  		vertices.TopLeftColor *= num7;
@@ -582,7 +590,7 @@
  	}
  
 -	private void DrawPartialLiquid(bool behindBlocks, Tile tileCache, ref Vector2 position, ref Rectangle liquidSize, int liquidType, ref VertexColors colors)
-+	// TML: Added waterStyle/x/y parameters, changed liquidType parameter to be the LiquidID and waterStyle is now the texture asset ID
++	// TML: Added x/y/waterStyle parameter, changed liquidType parameter to be the LiquidID and waterStyle is now the liquid texture asset ID
 +	internal void DrawPartialLiquid(int x, int y, bool behindBlocks, Tile tileCache, ref Vector2 position, ref Rectangle liquidSize, int waterStyle, int liquidType, ref VertexColors colors)
  	{
 +		if (LiquidLoader.PreSlopeDraw(x, y, tileCache.liquidType(), behindBlocks, ref position, ref liquidSize, ref colors)) {
