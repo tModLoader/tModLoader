@@ -7,7 +7,6 @@ using System.Reflection;
 using Microsoft.CodeAnalysis;
 using ReLogic.Reflection;
 using Terraria.ID;
-using static tModCodeAssist.Bindings.MagicNumberBindings;
 
 namespace tModCodeAssist.Bindings;
 
