@@ -114,7 +114,7 @@ public sealed class ChangeMagicNumberToIDAnalyzer() : AbstractDiagnosticAnalyzer
 			var node = (InvocationExpressionSyntax)ctx.Node;
 
 			if (ctx.SemanticModel.GetSymbolInfo(node, ctx.CancellationToken).Symbol as IMethodSymbol is not { } invokedMethodSymbol) return;
-			if (!MagicNumberBindings.TryGetBinding(invokedMethodSymbol, out _)) return;
+			if (!MagicNumberBindings.HasBindingsForSymbol(invokedMethodSymbol)) return;
 
 			for (int i = 0; i < node.ArgumentList.Arguments.Count; i++) {
 				ctx.CancellationToken.ThrowIfCancellationRequested();

@@ -43,8 +43,8 @@ public static class MagicNumberBindings
 	// Designates a method's return type as an ID type.
 	private sealed class MethodReturnBinding(Binding.CreationContext context) : Binding(context)
 	{
-		// No need to check whether names match; we need to support wildcard
-		// operators ('*') and filtering is handled prior to this call.
+		// No need to check whether names match; filtering is handled prior to
+		// this call.
 		// Be sure to filter out parameter symbols.
 		public override bool AppliesTo(ISymbol symbol) => symbol is IMethodSymbol;
 	}
@@ -55,9 +55,8 @@ public static class MagicNumberBindings
 		public int ParameterOrdinal => parameterOrdinal;
 
 		// We only want to match against parameters of the same ordinal.
-		// No need to check whether the method name is the same; wildcard
-		// operators aren't used here, but filtering is handled prior to this
-		// call regardless.
+		// No need to check whether the method name is the same; filtering is
+		// handled prior to this call.
 		public override bool AppliesTo(ISymbol symbol) =>
 			symbol is IParameterSymbol parameterSymbol && parameterSymbol.Ordinal == ParameterOrdinal;
 	}
@@ -239,11 +238,6 @@ public static class MagicNumberBindings
 		}
 
 		return false;
-
-		static string BuildQualifiedName(ISymbol symbol)
-		{
-			return symbol.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat.WithGlobalNamespaceStyle(SymbolDisplayGlobalNamespaceStyle.Omitted));
-		}
 	}
 
 	public static bool TryGetBinding(ISymbol symbol, out Binding binding)
@@ -254,6 +248,37 @@ public static class MagicNumberBindings
 		}
 
 		return TryFindBinding(symbol, bindings, out binding);
+	}
+
+	// Whether the symbol or symbols within it (e.g. parameters of methods)
+	// contain any bindings.
+	public static bool HasBindingsForSymbol(ISymbol symbol)
+	{
+		if (symbol is IFieldSymbol fieldSymbol && bindingsByMemberByOwningClass.TryGetValue(BuildQualifiedName(symbol.ContainingType), out var bindingsByMember)) {
+			return bindingsByMember.ContainsKey(fieldSymbol.MetadataName)
+				|| bindingsByMember.ContainsKey("*");
+		}
+		else if (symbol is IPropertySymbol propertySymbol && bindingsByMemberByOwningClass.TryGetValue(BuildQualifiedName(symbol.ContainingType), out bindingsByMember)) {
+			return bindingsByMember.ContainsKey(propertySymbol.MetadataName);
+		}
+		else if (symbol is IMethodSymbol methodSymbol && bindingsByMemberByOwningClass.TryGetValue(BuildQualifiedName(symbol.ContainingType), out bindingsByMember)) {
+			// This includes parameters!  They only get filtered out in
+			// TryGetBinding(s).
+			return bindingsByMember.ContainsKey(methodSymbol.ToDisplayString(MethodNameOnlyDisplayFormat))
+				|| bindingsByMember.ContainsKey(methodSymbol.ToDisplayString(MethodWithQualifiedParametersDisplayFormat));
+		}
+		else if (symbol is IParameterSymbol parameterSymbol) {
+			// The parameter case is a bit of an edge case in this context but
+			// we can support it by treating it identically to its TryGet case.
+			return TryGetBindings(parameterSymbol, out _);
+		}
+
+		return false;
+	}
+
+	private static string BuildQualifiedName(ISymbol symbol)
+	{
+		return symbol.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat.WithGlobalNamespaceStyle(SymbolDisplayGlobalNamespaceStyle.Omitted));
 	}
 
 	private static bool TryFindBinding(ISymbol symbol, IEnumerable<Binding> bindings, out Binding binding)
