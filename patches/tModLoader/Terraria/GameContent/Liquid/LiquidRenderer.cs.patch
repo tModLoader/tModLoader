@@ -308,7 +308,7 @@
  					if (ptr2->IsVisible) {
 +			*/
 +			{
-+				int cacheLength = _drawCache.Length;
++				int cacheLength = drawArea.Width * drawArea.Height /*_drawCache.Length*/;
 +				for (int k = 0; k < cacheLength; k++) {
 +					// TML: Liquid draw caches merged, add shimmer type check
 +					if (ptr2->IsVisible && ptr2->Type != LiquidID.Shimmer) {
@@ -336,7 +336,7 @@
 +		*/
 +		fixed (LiquidDrawCache* ptr = &_drawCache[0]) {
 +			LiquidDrawCache* ptr2 = ptr;
-+			int num = _drawCache.Length;
++			int num = drawArea.Width * drawArea.Height /*_drawCache.Length*/;
  			for (int i = 0; i < num; i++) {
 +				// TML: Liquid draw caches merged, add shimmer type check
 +				/*
