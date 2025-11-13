@@ -313,7 +313,7 @@
  			SpecialLiquidDrawCache* ptr2 = ptr;
  			int num = _drawCacheForShimmer.Length;
 +		*/
-+					fixed (LiquidDrawCache* ptr = &_drawCache[0]) {
++		fixed (LiquidDrawCache* ptr = &_drawCache[0]) {
 +			LiquidDrawCache* ptr2 = ptr;
 +			/*
  			for (int i = 0; i < num; i++) {
@@ -332,14 +332,14 @@
  
  				Rectangle sourceRectangle = ptr2->SourceRectangle;
  				if (ptr2->IsSurfaceLiquid)
-@@ -583,8 +_,8 @@
+@@ -583,8 +_,10 @@
  				float val = ptr2->Opacity * (isBackgroundDraw ? 1f : 0.75f);
  				int num2 = 14;
  				val = Math.Min(1f, val);
--				int num3 = ptr2->X + drawArea.X - 2;
--				int num4 = ptr2->Y + drawArea.Y - 2;
-+				// int num3 = ptr2->X;
-+				// int num4 = ptr2->Y;
++				/*
+ 				int num3 = ptr2->X + drawArea.X - 2;
+ 				int num4 = ptr2->Y + drawArea.Y - 2;
++				*/
  				Lighting.GetCornerColors(num3, num4, out var vertices);
  				SetShimmerVertexColors(ref vertices, val, num3, num4);
  				Main.DrawTileInWater(drawOffset, num3, num4);
