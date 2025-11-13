@@ -6562,20 +6562,6 @@
  			TilesRenderer.DrawLiquidBehindTiles(waterStyle);
  
  		LiquidRenderer.Instance.DrawNormalLiquids(spriteBatch, drawOffset, waterStyle, Alpha, bg);
-@@ -47337,6 +_,13 @@
- 
- 	public static void DrawTileInWater(Vector2 drawOffset, int x, int y)
- 	{
-+		// TML(liquid-slopes): There was an IOOB being thrown here when liquid
-+		// draw cache sitll used relative XY coordinates.  We now use absolute
-+		// XY coordinates, which should fix the issue, but it doesn't hurt to
-+		// be safe.
-+		if (!WorldGen.InWorld(x, y))
-+			return;
-+
- 		if (Main.tile[x, y] != null && Main.tile[x, y].active() && Main.tile[x, y].type == 518) {
- 			instance.LoadTiles(Main.tile[x, y].type);
- 			Tile tile = Main.tile[x, y];
 @@ -47776,6 +_,7 @@
  			}
  		}
