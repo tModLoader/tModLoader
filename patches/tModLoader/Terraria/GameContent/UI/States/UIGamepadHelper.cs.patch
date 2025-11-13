@@ -1,5 +1,22 @@
 --- src/TerrariaNetCore/Terraria/GameContent/UI/States/UIGamepadHelper.cs
 +++ src/tModLoader/Terraria/GameContent/UI/States/UIGamepadHelper.cs
+@@ -10,9 +_,16 @@
+ 
+ namespace Terraria.GameContent.UI.States;
+ 
++/// <summary>
++/// Contains various helper methods for setting up gamepad link points, especially dynamically changing link points.
++/// <br/><br/> Despite this being a struct, this contains no fields and all the methods can be considered to be static methods in behavior.
++/// </summary>
+ [StructLayout(LayoutKind.Sequential, Size = 1)]
+ public struct UIGamepadHelper
+ {
++	/// <summary>
++	/// Links each element in <paramref name="pointsForGrid"/> to each other in all directions as if they were in a grid <paramref name="pointsPerLine"/> elements wide. <paramref name="topLinkPoint"/>, <paramref name="leftLinkPoint"/>, <paramref name="rightLinkPoint"/>, and <paramref name="bottomLinkPoint"/>, if not null, will be linked with points along the edges of the grid in those directions.
++	/// </summary>
+ 	public UILinkPoint[,] CreateUILinkPointGrid(ref int currentID, List<SnapPoint> pointsForGrid, int pointsPerLine, UILinkPoint topLinkPoint, UILinkPoint leftLinkPoint, UILinkPoint rightLinkPoint, UILinkPoint bottomLinkPoint)
+ 	{
+ 		int num = (int)Math.Ceiling((float)pointsForGrid.Count / (float)pointsPerLine);
 @@ -20,7 +_,9 @@
  		for (int i = 0; i < pointsForGrid.Count; i++) {
  			int num2 = i % pointsPerLine;
@@ -11,3 +28,96 @@
  		}
  
  		for (int j = 0; j < array.GetLength(0); j++) {
+@@ -58,6 +_,9 @@
+ 		return array;
+ 	}
+ 
++	/// <summary>
++	/// Links elements left and right from <paramref name="stripOnLeft"/> to the corresponding element in <paramref name="stripOnRight"/>. Excess elements in one list will link in one direction to the last element in the shorter list.
++	/// </summary>
+ 	public void LinkVerticalStrips(UILinkPoint[] stripOnLeft, UILinkPoint[] stripOnRight, int leftStripStartOffset)
+ 	{
+ 		if (stripOnLeft == null || stripOnRight == null)
+@@ -137,6 +_,9 @@
+ 			PairUpDown(strip[strip.Length - 1], theSingle);
+ 	}
+ 
++	/// <summary>
++	/// Links the provided SnapPoints (<paramref name="currentStrip"/>) together in order from top to bottom.
++	/// </summary>
+ 	public UILinkPoint[] CreateUILinkStripVertical(ref int currentID, List<SnapPoint> currentStrip)
+ 	{
+ 		UILinkPoint[] array = new UILinkPoint[currentStrip.Count];
+@@ -190,6 +_,10 @@
+ 			UILinkPointNavigator.ChangePoint(uILinkPoint.ID);
+ 	}
+ 
++	/// <summary>
++	/// Returns the SnapPoints in <paramref name="pts"/> with <see cref="SnapPoint.Name"/> equal to <paramref name="name"/> ordered by <see cref="SnapPoint.Id"/>.
++	/// <br/><br/> Useful for lists or grids with list elements that have multiple interaction points. This method would be called on each of those named interaction points. This method is usually followed up by calling <see cref="CreateUILinkStripVertical"/> or <see cref="CreateUILinkPointGrid"/> to link together the resulting SnapPoints.
++	/// </summary>
+ 	public List<SnapPoint> GetOrderedPointsByCategoryName(List<SnapPoint> pts, string name)
+ 	{
+ 		return (from x in pts
+@@ -198,6 +_,9 @@
+ 				select x).ToList();
+ 	}
+ 
++	/// <summary>
++	/// Creates a bi-directional link from <paramref name="leftSide"/> to <paramref name="rightSide"/>.
++	/// </summary>
+ 	public void PairLeftRight(UILinkPoint leftSide, UILinkPoint rightSide)
+ 	{
+ 		if (leftSide != null && rightSide != null) {
+@@ -206,6 +_,9 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Creates a bi-directional link from <paramref name="upSide"/> to <paramref name="downSide"/>.
++	/// </summary>
+ 	public void PairUpDown(UILinkPoint upSide, UILinkPoint downSide)
+ 	{
+ 		if (upSide != null && downSide != null) {
+@@ -214,6 +_,9 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Retrieves and populates a <see cref="UILinkPoint"/> with the given <paramref name="id"/> (<see cref="UILinkPoint.ID"/>, <see cref="GamepadPointID"/>) from the provided <see cref="SnapPoint"/> (<paramref name="snap"/>). The returned UILinkPoint will have its position set and all directional links reset to nothing.
++	/// </summary>
+ 	public UILinkPoint MakeLinkPointFromSnapPoint(int id, SnapPoint snap)
+ 	{
+ 		UILinkPointNavigator.SetPosition(id, snap.Position);
+@@ -222,6 +_,10 @@
+ 		return uILinkPoint;
+ 	}
+ 
++	/// <summary>
++	/// Retrieves and populates a <see cref="UILinkPoint"/> with the given <paramref name="id"/> (<see cref="UILinkPoint.ID"/>, <see cref="GamepadPointID"/>) from the provided <see cref="UIElement"/>. Returns null if the <see cref="SnapPoint"/> of the UIElement has not been assigned (<see cref="UIElement.SetSnapPoint"/>).
++	/// <br/><br/> This is the typical way of getting a UILinkPoint to set up gamepad links for a solitary UIElement not in a grid or list arrangement.
++	/// </summary>
+ 	public UILinkPoint GetLinkPoint(int id, UIElement element)
+ 	{
+ 		if (element.GetSnapPoint(out var point))
+@@ -248,6 +_,10 @@
+ 		return result;
+ 	}
+ 
++	/// <summary>
++	/// If the currently selected gamepad link point (<see cref="UILinkPoint"/>) is not within the provided range (<paramref name="idRangeStartInclusive"/> to <paramref name="idRangeEndExclusive"/>), the gamepad location will be moved to the link point within that range that is closest to the current gamepad location.
++	/// <br/><br/> This is useful for navigating to a sensible gamepad location when a specific UI becomes activated.
++	/// </summary>
+ 	public void MoveToVisuallyClosestPoint(int idRangeStartInclusive, int idRangeEndExclusive)
+ 	{
+ 		if (UILinkPointNavigator.CurrentPoint >= idRangeStartInclusive && UILinkPointNavigator.CurrentPoint < idRangeEndExclusive)
+@@ -268,6 +_,9 @@
+ 			UILinkPointNavigator.ChangePoint(uILinkPoint.ID);
+ 	}
+ 
++	/// <summary>
++	/// Removes all SnapPoints from the provided list that are outside the bounds of <paramref name="container"/>. This is most typically used when working with scrolling elements like <see cref="Elements.UIList"/> to limit interaction to visible elements.
++	/// </summary>
+ 	public void CullPointsOutOfElementArea(SpriteBatch spriteBatch, List<SnapPoint> pointsAtMiddle, UIElement container)
+ 	{
+ 		float num = 1f / Main.UIScale;

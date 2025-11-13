@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/UI/Gamepad/UILinkPoint.cs
 +++ src/tModLoader/Terraria/UI/Gamepad/UILinkPoint.cs
-@@ -3,6 +_,11 @@
+@@ -3,10 +_,21 @@
  
  namespace Terraria.UI.Gamepad;
  
@@ -11,4 +11,14 @@
 +/// </summary>
  public class UILinkPoint
  {
++	/// <summary>
++	/// A unique identifier for this UILinkPoint. Known IDs and ID ranges are found in <see cref="GamepadPointID"/>.
++	/// </summary>
  	public int ID;
+ 	public bool Enabled;
++	/// <summary>
++	/// The screen coordinates of this UILinkPoint. Use <see cref="UILinkPointNavigator.SetPosition(int, Vector2)"/> to assign this to properly account for <see cref="Main.UIScale"/>.
++	/// </summary>
+ 	public Vector2 Position;
+ 	public int Left;
+ 	public int Right;
