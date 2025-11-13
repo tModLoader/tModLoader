@@ -15,7 +15,7 @@
  	{
  		public float LiquidLevel;
  		public float VisibleLiquidLevel;
-@@ -35,9 +_,10 @@
+@@ -35,10 +_,13 @@
  		public float VisibleTopWall;
  		public byte Type;
  		public byte VisibleType;
@@ -25,8 +25,11 @@
 -	private struct LiquidDrawCache
 +	public struct LiquidDrawCache
  	{
++		public int X;
++		public int Y;
  		public Rectangle SourceRectangle;
  		public Vector2 LiquidOffset;
+ 		public bool IsVisible;
 @@ -48,6 +_,7 @@
  		public bool HasWall;
  	}
@@ -254,10 +257,12 @@
  							if (ptr2->HasTopEdge)
  								ptr2->VisibleTopWall = (ptr2->TopWall * 2f + liquidCache3.TopWall + liquidCache4.TopWall) * 0.25f;
  
-@@ -424,7 +_,7 @@
+@@ -424,7 +_,9 @@
  								if (ptr2->IsHalfBrick && ptr2->IsSolid && num23 > 0.5f)
  									num23 = 0.5f;
  
++								ptr4->X = num18;
++								ptr4->Y = num19;
 -								ptr4->IsVisible = ptr2->HasWall || !ptr2->IsHalfBrick || !ptr2->HasLiquid || !(ptr2->LiquidLevel < 1f);
 +								ptr4->IsVisible = ptr2->HasWall || !ptr2->IsHalfBrick || !ptr2->HasLiquid || !(ptr2->LiquidLevel < 1f) || ptr2->EdgeData.HasValue;
  								ptr4->SourceRectangle = new Rectangle((int)(16f - num21 * 16f) + ptr2->FrameOffset.X, (int)(16f - num23 * 16f) + ptr2->FrameOffset.Y, (int)Math.Ceiling((num21 - num20) * 16f), (int)Math.Ceiling((num23 - num22) * 16f));
