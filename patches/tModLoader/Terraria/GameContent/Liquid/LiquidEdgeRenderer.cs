@@ -31,7 +31,7 @@ public static class LiquidEdgeRenderer
 	/// <summary>
 	/// Whether the new rendering is actually active for this frame.
 	/// </summary>
-	public static bool Active => Lighting.NotRetro/* && !Main.keyState.PressingShift()*/;
+	public static bool Active => Enabled && Lighting.NotRetro/* && !Main.keyState.PressingShift()*/;
 
 	/// <summary>
 	/// Turns all pixels with alpha above zero white, and all others transparent.
