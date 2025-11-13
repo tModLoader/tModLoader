@@ -261,8 +261,8 @@
  								if (ptr2->IsHalfBrick && ptr2->IsSolid && num23 > 0.5f)
  									num23 = 0.5f;
  
-+								ptr4->X = num18;
-+								ptr4->Y = num19;
++								ptr4->X = rectangle.X + num18;
++								ptr4->Y = rectangle.Y + num19;
 -								ptr4->IsVisible = ptr2->HasWall || !ptr2->IsHalfBrick || !ptr2->HasLiquid || !(ptr2->LiquidLevel < 1f);
 +								ptr4->IsVisible = ptr2->HasWall || !ptr2->IsHalfBrick || !ptr2->HasLiquid || !(ptr2->LiquidLevel < 1f) || ptr2->EdgeData.HasValue;
  								ptr4->SourceRectangle = new Rectangle((int)(16f - num21 * 16f) + ptr2->FrameOffset.X, (int)(16f - num23 * 16f) + ptr2->FrameOffset.Y, (int)Math.Ceiling((num21 - num20) * 16f), (int)Math.Ceiling((num23 - num22) * 16f));
@@ -320,8 +320,8 @@
  						}
  
 +						// TML: use cached X and Y instead of loop positions
-+						int i = ptr2->X + drawArea.X - 2;
-+						int j = ptr2->Y + drawArea.Y - 2;
++						int i = ptr2->X;
++						int j = ptr2->Y;
  						num = Math.Min(1f, num);
  						Lighting.GetCornerColors(i, j, out var vertices);
  						vertices.BottomLeftColor *= num;
@@ -350,3 +350,14 @@
  
  				Rectangle sourceRectangle = ptr2->SourceRectangle;
  				if (ptr2->IsSurfaceLiquid)
+@@ -583,8 +_,8 @@
+ 				float val = ptr2->Opacity * (isBackgroundDraw ? 1f : 0.75f);
+ 				int num2 = 14;
+ 				val = Math.Min(1f, val);
+-				int num3 = ptr2->X + drawArea.X - 2;
+-				int num4 = ptr2->Y + drawArea.Y - 2;
++				int num3 = ptr2->X;
++				int num4 = ptr2->Y;
+ 				Lighting.GetCornerColors(num3, num4, out var vertices);
+ 				SetShimmerVertexColors(ref vertices, val, num3, num4);
+ 				Main.DrawTileInWater(drawOffset, num3, num4);

@@ -6543,15 +6543,14 @@
  			TilesRenderer.DrawLiquidBehindTiles(waterStyle);
  
  		LiquidRenderer.Instance.DrawNormalLiquids(spriteBatch, drawOffset, waterStyle, Alpha, bg);
-@@ -47337,6 +_,14 @@
+@@ -47337,6 +_,13 @@
  
  	public static void DrawTileInWater(Vector2 drawOffset, int x, int y)
  	{
-+		// TML(liquid-slopes): There seems to be an IOOB being thrown here,
-+		// presumably due to tile coordinates being stored as relative XY
-+		// positions as a result of the merger with the shimmer draw cache.
-+		// For now, just add a safety check here.  We can keep this even if
-+		// it's properly addressed.
++		// TML(liquid-slopes): There was an IOOB being thrown here when liquid
++		// draw cache sitll used relative XY coordinates.  We now use absolute
++		// XY coordinates, which should fix the issue, but it doesn't hurt to
++		// be safe.
 +		if (!WorldGen.InWorld(x, y))
 +			return;
 +
