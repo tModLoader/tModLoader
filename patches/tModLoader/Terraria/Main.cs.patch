@@ -6470,6 +6470,25 @@
  		Asset<Texture2D> asset = TextureAssets.MapBGs[0];
  		int num = -1;
  		Microsoft.Xna.Framework.Color color = Microsoft.Xna.Framework.Color.White;
+@@ -46783,6 +_,9 @@
+ 
+ 	public void DrawCapture(Microsoft.Xna.Framework.Rectangle area, CaptureSettings settings)
+ 	{
++		// Remove in 1.4.5
++		bool lidquidEdgeRendererEnabled = LiquidEdgeRenderer.Enabled;
++		LiquidEdgeRenderer.Enabled = false;
+ 		float[] array = bgAlphaFrontLayer;
+ 		bgAlphaFrontLayer = new float[array.Length];
+ 		float[] array2 = bgAlphaFarBackLayer;
+@@ -47132,6 +_,8 @@
+ 		SceneMetrics.HolyTileCount = holyTileCount;
+ 		Lighting.Initialize();
+ 		GameViewMatrix = gameViewMatrix;
++		// Remove in 1.4.5
++		LiquidEdgeRenderer.Enabled = lidquidEdgeRendererEnabled;
+ 	}
+ 
+ 	protected void RenderTiles()
 @@ -47244,6 +_,12 @@
  			case 4:
  				return 13;
