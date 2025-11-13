@@ -292,17 +292,19 @@
  		}
  
  		if (this.WaveFilters != null)
-@@ -524,7 +_,8 @@
+@@ -524,7 +_,11 @@
  			LiquidDrawCache* ptr2 = ptr;
  			for (int i = drawArea.X; i < drawArea.X + drawArea.Width; i++) {
  				for (int j = drawArea.Y; j < drawArea.Y + drawArea.Height; j++) {
--					if (ptr2->IsVisible) {
 +					// TML: Liquid draw caches merged, add shimmer type check
++					/*
+ 					if (ptr2->IsVisible) {
++					*/
 +					if (ptr2->IsVisible && ptr2->Type != LiquidID.Shimmer) {
  						Rectangle sourceRectangle = ptr2->SourceRectangle;
  						if (ptr2->IsSurfaceLiquid)
  							sourceRectangle.Y = 1280;
-@@ -566,12 +_,28 @@
+@@ -566,12 +_,27 @@
  	{
  		Rectangle drawArea = _drawArea;
  		Main.tileBatch.Begin();
@@ -311,10 +313,9 @@
  			SpecialLiquidDrawCache* ptr2 = ptr;
  			int num = _drawCacheForShimmer.Length;
 +		*/
-+		fixed (LiquidDrawCache* ptr = &_drawCache[0]) {
++					fixed (LiquidDrawCache* ptr = &_drawCache[0]) {
 +			LiquidDrawCache* ptr2 = ptr;
 +			/*
-+			int num = _drawCache.Length;
  			for (int i = 0; i < num; i++) {
 +			*/
 +			for (int num3 = drawArea.X; num3 < drawArea.X + drawArea.Width; num3++)
