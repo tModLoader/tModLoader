@@ -56,18 +56,40 @@ internal class ModCompile
 
 	internal static string[] FindModSources()
 	{
-		Directory.CreateDirectory(ModSourcePath);
-		return Directory.GetDirectories(ModSourcePath, "*", SearchOption.TopDirectoryOnly).Where(dir => {
-			var directory = new DirectoryInfo(dir);
-			return directory.Name[0] != '.' && directory.Name != "ModAssemblies" && directory.Name != "Mod Libraries";
-		}).ToArray();
+		var modSources = new List<string>();
+
+		// Find any mod sources defined in the ModSources directory.
+		if (Directory.Exists(ModSourcePath)) {
+			modSources.AddRange(Directory.GetDirectories(ModSourcePath, "*", SearchOption.TopDirectoryOnly).Where(dir => {
+				var directory = new DirectoryInfo(dir);
+				return directory.Name[0] != '.' && directory.Name != "ModAssemblies" && directory.Name != "Mod Libraries";
+			}));
+		}
+
+		// Find mod sources defined by built .tmod files.
+		// It's possible for AllFoundMods to not be populated in low-init scenarios
+		// such as mod building, so we can populate it ourselves.
+		var foundMods = ModOrganizer.AllFoundMods ?? ModOrganizer.FindAllMods();
+		modSources.AddRange(ModOrganizer.AllFoundMods.Where(m => m.location == ModLocation.Local).Select(m => m.properties.modSource).Where(s => !string.IsNullOrEmpty(s)));
+
+		return modSources.Distinct().Where(Directory.Exists).ToArray();
 	}
 
 	// Silence exception reporting in the chat unless actively modding.
 	public static bool activelyModding;
 	internal static DateTime recentlyBuiltModCheckTimeCutoff = DateTime.Now - TimeSpan.FromSeconds(60);
 
-	public static bool DeveloperMode => Debugger.IsAttached || Directory.Exists(ModSourcePath) && FindModSources().Length > 0;
+	private static bool? _developerMode;
+	public static bool DeveloperMode => _developerMode ??= CheckDeveloperMode();
+	private static bool CheckDeveloperMode()
+	{
+		if (Debugger.IsAttached || Program.LaunchParameters.ContainsKey("-build") || FindModSources().Length > 0) {
+			Logging.tML.Info("Developer mode enabled");
+			return true;
+		}
+
+		return false;
+	}
 
 	private static readonly string oldModReferencesPath = Path.Combine(Program.SavePath, "references");
 	private static readonly string modTargetsPath = Path.Combine(ModSourcePath, "tModLoader.targets");
@@ -99,6 +121,18 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 		byte[] bytes = Encoding.UTF8.GetBytes(contents);
 		if (!File.Exists(path) || !Enumerable.SequenceEqual(bytes, File.ReadAllBytes(path)))
 			File.WriteAllBytes(path, bytes);
+	}
+
+	public static Process StartOnHost(ProcessStartInfo info)
+	{
+		// Steam runtime uses pressure vessel to 'sandbox' the application, providing its own set of system libraries and applications.
+		// We can run commands on the host via `steam-runtime-launch-client --alongside-steam --host -- <the command for the app>`
+		// See the steam runtime docs: https://gitlab.steamos.cloud/steamrt/steam-runtime-tools/-/blob/main/docs/slr-for-game-developers.md#running-commands-outside-the-container
+		if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("PRESSURE_VESSEL_RUNTIME"))) {
+			info.Arguments = "--alongside-steam --host -- " + info.FileName + " " + info.Arguments;
+			info.FileName = "steam-runtime-launch-client";
+		}
+		return Process.Start(info);
 	}
 
 	internal static IList<string> sourceExtensions = new List<string> { ".csproj", ".cs", ".sln" };
@@ -142,6 +176,7 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 		try {
 			ModOrganizer.EnsureDependenciesExist(modList, true);
 			ModOrganizer.EnsureTargetVersionsMet(modList);
+			ModOrganizer.EnsureHashesAreValid(modList);
 			var sortedModList = ModOrganizer.Sort(modList);
 			modsToBuild = sortedModList.OfType<BuildingMod>().ToList();
 		}
@@ -286,6 +321,22 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 		var relPath = resource.Substring(mod.path.Length + 1);
 		using (var src = File.OpenRead(resource))
 		using (var dst = new MemoryStream()) {
+			// Skip icon_small if it is unchanged since it is optional
+			if (relPath == "icon_small.png") {
+				using var defaultIconStream = typeof(ModLoader).Assembly.GetManifestResourceStream($"Terraria/ModLoader/Templates/icon_small.png");
+				using var defaultIconMemoryStream = new MemoryStream((int)defaultIconStream.Length);
+				defaultIconStream.CopyTo(defaultIconMemoryStream);
+				var defaultIconBytes = (ReadOnlySpan<byte>)defaultIconMemoryStream.GetBuffer();
+
+				using var modIconMemoryStream = new MemoryStream();
+				src.CopyTo(modIconMemoryStream);
+				var modIconBytes = (ReadOnlySpan<byte>)modIconMemoryStream.GetBuffer();
+
+				if (modIconBytes.SequenceEqual(defaultIconBytes)) {
+					return;
+				}
+			}
+
 			if (!ContentConverters.Convert(ref relPath, src, dst))
 				src.CopyTo(dst);
 
@@ -334,6 +385,8 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 		string dllName = mod.Name + ".dll";
 		string dllPath = null;
 		string pdbPath() => Path.ChangeExtension(dllPath, "pdb");
+
+		mod.properties.modSource = mod.path;
 
 		// look for pre-compiled paths
 		if (mod.properties.noCompile) {
@@ -458,6 +511,7 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 			var path = f.Replace('\\', '/');
 			if (!path.EndsWith(".resources.dll") &&
 				!path.Contains("/Native/") &&
+				!path.Contains("/tModCodeAssist/") &&
 				!path.Contains("/runtime"))
 				yield return f;
 		}

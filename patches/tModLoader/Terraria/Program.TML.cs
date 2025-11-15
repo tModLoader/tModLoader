@@ -347,9 +347,6 @@ public static partial class Program
 
 			SetSavePath();
 
-			if (ModLoader.Core.ModCompile.DeveloperMode) // Needs to run after SetSavePath, as the static ctor depends on SavePath
-				Logging.tML.Info("Developer mode enabled");
-
 			AttemptSupportHighDPI(isServer); // Can run anytime
 
 		    if (!isServer) {

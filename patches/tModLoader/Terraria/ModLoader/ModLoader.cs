@@ -1,24 +1,25 @@
-using ReLogic.OS;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
+using ReLogic.Content;
+using ReLogic.OS;
+using Terraria.GameContent.Liquid;
+using Terraria.Initializers;
 using Terraria.Localization;
+using Terraria.ModLoader.Assets;
 using Terraria.ModLoader.Core;
 using Terraria.ModLoader.Default;
 using Terraria.ModLoader.Engine;
-using Terraria.ModLoader.UI;
-using Terraria.Initializers;
-using Terraria.ModLoader.Assets;
-using ReLogic.Content;
-using System.Runtime.CompilerServices;
-using Terraria.Social.Steam;
 using Terraria.ModLoader.Exceptions;
+using Terraria.ModLoader.UI;
+using Terraria.Social.Steam;
 
 namespace Terraria.ModLoader;
 
@@ -37,10 +38,11 @@ public static class ModLoader
 	public static bool ShowFirstLaunchWelcomeMessage;
 	public static bool SeenFirstLaunchModderWelcomeMessage;
 	public static bool WarnedFamilyShare;
+	public static bool WarnedFamilyShareDontShowAgain;
 	public static Version LastPreviewFreezeNotificationSeen;
-	public static int LatestNewsTimestamp; 
+	public static int LatestNewsTimestamp;
 
-	// Update this name if doing an upgrade 
+	// Update this name if doing an upgrade
 	public static bool BetaUpgradeWelcomed144;
 
 	public static string versionedName => (BuildInfo.Purpose != BuildInfo.BuildPurpose.Stable) ? BuildInfo.versionedNameDevFriendly : BuildInfo.versionedName;
@@ -58,7 +60,7 @@ public static class ModLoader
 	internal static readonly string modBrowserPublicKey = "<RSAKeyValue><Modulus>oCZObovrqLjlgTXY/BKy72dRZhoaA6nWRSGuA+aAIzlvtcxkBK5uKev3DZzIj0X51dE/qgRS3OHkcrukqvrdKdsuluu0JmQXCv+m7sDYjPQ0E6rN4nYQhgfRn2kfSvKYWGefp+kqmMF9xoAq666YNGVoERPm3j99vA+6EIwKaeqLB24MrNMO/TIf9ysb0SSxoV8pC/5P/N6ViIOk3adSnrgGbXnFkNQwD0qsgOWDks8jbYyrxUFMc4rFmZ8lZKhikVR+AisQtPGUs3ruVh4EWbiZGM2NOkhOCOM4k1hsdBOyX2gUliD0yjK5tiU3LBqkxoi2t342hWAkNNb4ZxLotw==</Modulus><Exponent>AQAB</Exponent></RSAKeyValue>";
 	internal static string modBrowserPassphrase = "";
 
-	internal static bool autoReloadAndEnableModsLeavingModBrowser = true;
+	internal static bool autoReloadAndEnableModsLeavingModBrowser = true; // Currently unimplemented
 	internal static bool autoReloadRequiredModsLeavingModsScreen = true;
 	internal static bool removeForcedMinimumZoom;
 	internal static int attackSpeedScalingTooltipVisibility = 1; // Shown, WhenNonZero, Hidden
@@ -66,6 +68,7 @@ public static class ModLoader
 	internal static bool showNewUpdatedModsInfo = true;
 	internal static bool showConfirmationWindowWhenEnableDisableAllMods = true;
 	internal static bool skipLoad;
+	internal static bool preparingServerSidePublish;
 	internal static Action OnSuccessfulLoad;
 
 	internal static bool isLoading;
@@ -76,7 +79,8 @@ public static class ModLoader
 	internal static AssetRepository ManifestAssets { get; set; } //This is used for keeping track of assets that are loaded either from the application's resources, or created directly from a texture.
 	internal static AssemblyResourcesContentSource ManifestContentSource { get; set; }
 
-	/// <summary> Gets the instance of the Mod with the specified name. This will throw an exception if the mod cannot be found. </summary>
+	/// <summary> Gets the instance of the Mod with the specified name. This will throw an exception if the mod cannot be found so it should only be used for mods known to be enabled, such as a strong mod dependency.
+	/// <para/> Use <see cref="TryGetMod(string, out Mod)"/> instead if the mod might not be enabled. </summary>
 	/// <exception cref="KeyNotFoundException"/>
 	public static Mod GetMod(string name) => modsByName[name];
 
@@ -147,6 +151,9 @@ public static class ModLoader
 
 			Logging.tML.Info($"Mod Load Completed in {sw.ElapsedMilliseconds}ms");
 
+			if (preparingServerSidePublish)
+				Environment.Exit(0);
+
 			if (OnSuccessfulLoad != null) {
 				OnSuccessfulLoad();
 			}
@@ -181,7 +188,7 @@ public static class ModLoader
 				if (mod != null && mod.tModLoaderVersion.MajorMinorBuild() != BuildInfo.tMLVersion.MajorMinorBuild())
 					msg += "\n" + Language.GetTextValue("tModLoader.LoadErrorVersionMessage", mod.tModLoaderVersion, versionedName);
 				else if (mod != null)
-					// if the mod exists, and the MajorMinorBuild() is identical, then assume it is an error in the Steam install/deployment - Solxan 
+					// if the mod exists, and the MajorMinorBuild() is identical, then assume it is an error in the Steam install/deployment - Solxan
 					SteamedWraps.QueueForceValidateSteamInstall();
 
 				if (e is Exceptions.JITException)
@@ -213,7 +220,7 @@ public static class ModLoader
 					DisableModAndDependents(dependent);
 				}
 			}
-			
+
 			Logging.tML.Error(msg, e);
 
 			isLoading = false; // disable loading flag, because server will just instantly retry reload
@@ -306,7 +313,9 @@ public static class ModLoader
 			Console.WriteLine(msg);
 			Console.ResetColor();
 
-			if (fatal) {
+			if (preparingServerSidePublish)
+				Environment.Exit(-1);
+			else if (fatal) {
 				Console.WriteLine("Press any key to exit...");
 				Console.ReadKey();
 				Environment.Exit(-1);
@@ -391,6 +400,10 @@ public static class ModLoader
 		Main.Configuration.Put(nameof(LastPreviewFreezeNotificationSeen), LastPreviewFreezeNotificationSeen.ToString());
 		Main.Configuration.Put(nameof(ModOrganizer.ModPackActive), ModOrganizer.ModPackActive);
 		Main.Configuration.Put(nameof(LatestNewsTimestamp), LatestNewsTimestamp);
+		Main.Configuration.Put(nameof(WarnedFamilyShareDontShowAgain), WarnedFamilyShareDontShowAgain);
+		Main.Configuration.Put(nameof(ModsMenuSortMode), Enum.GetName(typeof(ModsMenuSortMode), Interface.modsMenu.sortMode));
+
+		Main.Configuration.Put("LiquidSlopeFix", LiquidEdgeRenderer.Enabled);
 	}
 
 	internal static void LoadConfiguration()
@@ -418,6 +431,11 @@ public static class ModLoader
 		Main.Configuration.Get(nameof(LastLaunchedTModLoaderAlphaSha), ref LastLaunchedTModLoaderAlphaSha);
 		LastPreviewFreezeNotificationSeen = new Version(Main.Configuration.Get(nameof(LastPreviewFreezeNotificationSeen), "0.0"));
 		Main.Configuration.Get(nameof(LatestNewsTimestamp), ref LatestNewsTimestamp);
+		Main.Configuration.Get(nameof(WarnedFamilyShareDontShowAgain), ref WarnedFamilyShareDontShowAgain);
+		if (Enum.TryParse<ModsMenuSortMode>(Main.Configuration.Get(nameof(ModsMenuSortMode), ModsMenuSortMode.RecentlyUpdated.ToString()), out var modsMenuSortMode))
+			Interface.modsMenu.sortMode = modsMenuSortMode;
+
+		Main.Configuration.Get("LiquidSlopeFix", ref LiquidEdgeRenderer.Enabled);
 	}
 
 	internal static void MigrateSettings()
