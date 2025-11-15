@@ -1,7 +1,7 @@
-﻿using Terraria.ID;
-using Terraria.ModLoader;
+﻿using ExampleMod.Content.Tiles;
 using Terraria;
-using ExampleMod.Content.Tiles;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items
 {

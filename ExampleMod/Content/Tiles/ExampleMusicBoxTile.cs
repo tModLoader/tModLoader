@@ -1,19 +1,16 @@
 using ExampleMod.Content.Items.Placeable;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.DataStructures;
-using Terraria.GameContent.Drawing;
 using Terraria.GameContent.ObjectInteractions;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
-using Terraria.Utilities;
 
 namespace ExampleMod.Content.Tiles
 {
-	// See ExampleMod/Common/Systems/MusicLoadingSystem for an explanation on music.
+	// See ExampleMod/Content/Items/Placeable/ExampleMusicBox.cs for more explanation on music.
 	public class ExampleMusicBoxTile : ModTile
 	{
 		public override void SetStaticDefaults() {
@@ -43,15 +40,11 @@ namespace ExampleMod.Content.Tiles
 			return true;
 		}
 
-		public override void DrawEffects(int i, int j, SpriteBatch spriteBatch, ref TileDrawInfo drawData) {
+		public override void EmitParticles(int i, int j, Tile tileCache, short tileFrameX, short tileFrameY, Color tileLight, bool visible) {
 			// This code spawns the music notes when the music box is open.
-			if (Lighting.UpdateEveryFrame && new FastRandom(Main.TileFrameSeed).WithModifier(i, j).Next(4) != 0) {
-				return;
-			}
-
 			Tile tile = Main.tile[i, j];
 
-			if (!TileDrawing.IsVisible(tile) || tile.TileFrameX != 36 || tile.TileFrameY % 36 != 0 || (int)Main.timeForVisualEffects % 7 != 0 || !Main.rand.NextBool(3)) {
+			if (!visible || tile.TileFrameX != 36 || tile.TileFrameY % 36 != 0 || (int)Main.timeForVisualEffects % 7 != 0 || !Main.rand.NextBool(3)) {
 				return;
 			}
 

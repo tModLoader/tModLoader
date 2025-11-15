@@ -3,8 +3,10 @@ using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Terraria;
 using Terraria.GameContent;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.UI;
 
@@ -36,9 +38,17 @@ namespace ExampleMod.Content.Items
 		private const int DrawModeRockingRotation = 4;
 		private const int Count = 5;
 
+		public static LocalizedText RightClickText { get; private set; }
+		public static LocalizedText[] DrawModeText { get; private set; }
+
 		public override void Load() {
 			backTexture = ModContent.Request<Texture2D>(Texture + "_Back");
 			frontTexture = ModContent.Request<Texture2D>(Texture + "_Front");
+		}
+
+		public override void SetStaticDefaults() {
+			RightClickText = this.GetLocalization("RightClick");
+			DrawModeText = Enumerable.Range(0, 5).Select(i => this.GetLocalization($"DrawMode_{i}")).ToArray();
 		}
 
 		public override void SetDefaults() {
@@ -53,22 +63,14 @@ namespace ExampleMod.Content.Items
 
 		public override void RightClick(Player player) {
 			drawMode = (drawMode + 1) % Count;
-			Main.NewText($"Switching to drawMode #{drawMode}: {GetMessageForDrawMode()}");
+			Main.NewText(RightClickText.Format(drawMode, GetMessageForDrawMode()));
 		}
 
 		private string GetMessageForDrawMode() {
-			switch (drawMode) {
-				case DrawModeGlowmask:
-					return "Draw an overlay/glowmask";
-				case DrawModePulse:
-					return "Scale drawing to make a pulse effect similar to Soul items";
-				case DrawModeBehindTexture:
-					return "Draw a texture behind the item";
-				case DrawModeHighlightAfterImageEffect:
-					return "Draw a highlight border similar to the Boss Bag visual effect";
-				case DrawModeRockingRotation:
-					return "Draws the item rocking left and right";
+			if (DrawModeText.IndexInRange(drawMode)) {
+				return DrawModeText[drawMode].Value;
 			}
+
 			return "Unknown mode";
 		}
 

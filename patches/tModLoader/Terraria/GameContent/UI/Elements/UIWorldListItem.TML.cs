@@ -4,6 +4,7 @@ using System;
 using System.Linq;
 using Terraria.IO;
 using Terraria.Localization;
+using Terraria.ModLoader.Core;
 using Terraria.ModLoader.UI;
 using Terraria.UI;
 using Terraria.Utilities;
@@ -55,9 +56,9 @@ public partial class UIWorldListItem : AWorldListItem
 		// TODO: Should we also show a separate button for mods that were present during worldgen but aren't enabled?
 		if (data.usedMods != null) {
 			string[] currentModNames = ModLoader.ModLoader.Mods.Select(m => m.Name).ToArray();
-			var missingMods = data.usedMods.Except(currentModNames).ToList();
-			var newMods = currentModNames.Except(new[] { "ModLoader" }).Except(data.usedMods).ToList();
-			bool checkModPack = System.IO.Path.GetFileNameWithoutExtension(ModLoader.Core.ModOrganizer.ModPackActive) != data.modPack;
+			var missingMods = data.usedMods.Except(currentModNames).Select(ModOrganizer.GetDisplayNameCleanFromLocalModsOrDefaultToModName).ToList();
+			var newMods = currentModNames.Except(new[] { "ModLoader" }).Except(data.usedMods).Select(ModOrganizer.GetDisplayNameCleanFromLocalModsOrDefaultToModName).ToList();
+			bool checkModPack = System.IO.Path.GetFileNameWithoutExtension(ModOrganizer.ModPackActive) != data.modPack;
 
 			if (checkModPack || missingMods.Count > 0 || newMods.Count > 0) {
 				UIImageButton modListWarning = new UIImageButton(UICommon.ButtonErrorTexture) {

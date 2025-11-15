@@ -20,6 +20,17 @@
  	public bool PendingTerminationApproved;
  	public bool IsAnnouncementCompleted;
  	public int State;
+@@ -20,6 +_,10 @@
+ 	public string StatusText2;
+ 	public int StatusCount;
+ 	public int StatusMax;
++	/// <summary>
++	/// Indicates if specific world sections (200 x 150 tile chunks) of the world are loaded by this client. The server will sync world sections to the client as the player visits them by calling <see cref="CheckSection"/>.
++	/// <br/><br/> <b>Only accessible on Server!</b>
++	/// </summary>
+ 	public bool[,] TileSections = new bool[Main.maxTilesX / 200 + 1, Main.maxTilesY / 150 + 1];
+ 	public byte[] ReadBuffer;
+ 	public float SpamProjectile;
 @@ -32,6 +_,13 @@
  	public float SpamWaterMax = 50f;
  	private volatile bool _isReading;
@@ -34,6 +45,18 @@
  	public bool IsConnected()
  	{
  		if (Socket != null)
+@@ -87,6 +_,11 @@
+ 		SpamWater = 0f;
+ 	}
+ 
++	/// <summary>
++	/// Ensures that the specified client (<paramref name="playerIndex"/>) has the world section containing the provided <paramref name="position"/> loaded. <paramref name="fluff"/> determines how many surrounding sections will be synced at the same time.
++	/// <br/><br/> The server should call this method before teleporting the player or when the player is viewing locations detached from the player, such as with Kwad Racer Drone or golf.
++	/// <br/><br/> <b>Call on Server only!</b>
++	/// </summary>
+ 	public static void CheckSection(int playerIndex, Vector2 position, int fluff = 1)
+ 	{
+ 		int sectionX = Netplay.GetSectionX((int)(position.X / 16f));
 @@ -199,7 +_,7 @@
  			}
  		}

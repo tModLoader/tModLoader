@@ -7,6 +7,9 @@ namespace Terraria;
 
 public partial class Player
 {
+	/// <summary>
+	/// Represents a damage calculation in the process of being calculated for damage to be applied to a Player. The final damage calculation will be present in the resulting <see cref="HurtInfo"/> provided to various hooks.
+	/// </summary>
 	public struct HurtModifiers
 	{
 		/// <summary>
@@ -107,6 +110,13 @@ public partial class Player
 		/// </summary>
 		public MultipliableFloat KnockbackImmunityEffectiveness = new();
 
+		private bool _cancelled = default;
+		/// <summary>
+		/// Cancels the Hurt. Further hooks like <see cref="ModPlayer.FreeDodge"/> and <see cref="ModPlayer.OnHurt(HurtInfo)"/> will not be called. <br/>
+		/// Does not automatically apply immune frames, so the player can get hit again next frame. 
+		/// </summary>
+		public void Cancel() => _cancelled = true;
+
 		private bool _dustDisabled = default;
 		/// <summary>
 		/// Prevents dust from spawning
@@ -161,6 +171,7 @@ public partial class Player
 				SourceDamage = (int)SourceDamage.ApplyTo(damage),
 				Damage = (int)GetDamage(damage, defense, defenseEffectiveness),
 				Knockback = GetKnockback(knockback, knockbackImmune),
+				Cancelled = _cancelled,
 				DustDisabled = _dustDisabled,
 				SoundDisabled = _soundDisabled,
 			};
@@ -173,6 +184,9 @@ public partial class Player
 		}
 	}
 
+	/// <summary>
+	/// Represents a finalized damage calculation for damage about to be applied to a Player. This is the result of all modifications done previously in a <see cref="HurtModifiers"/> provided to various hooks.
+	/// </summary>
 	public struct HurtInfo
 	{
 		/// <summary>
@@ -228,6 +242,11 @@ public partial class Player
 		/// The amount of knockback to apply. Should always be >= 0.
 		/// </summary>
 		public float Knockback = 0;
+
+		/// <summary>
+		/// <inheritdoc cref="HurtModifiers.Cancel"/>
+		/// </summary>
+		public bool Cancelled = false;
 
 		/// <summary>
 		/// If true, dust will not spawn

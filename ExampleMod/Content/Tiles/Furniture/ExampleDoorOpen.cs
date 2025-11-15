@@ -24,11 +24,12 @@ namespace ExampleMod.Content.Tiles.Furniture
 			TileID.Sets.HasOutlines[Type] = true;
 			TileID.Sets.DisableSmartCursor[Type] = true;
 			TileID.Sets.CloseDoorID[Type] = ModContent.TileType<ExampleDoorClosed>();
+			TileID.Sets.DrawTileInSolidLayer[Type] = true; // needed to draw at the correct "layer" for npc that draw below solid tiles like worms
 
 			AddToArray(ref TileID.Sets.RoomNeeds.CountsAsDoor);
 
 			DustType = ModContent.DustType<Sparkle>();
-			AdjTiles = new int[] { TileID.OpenDoor };
+			AdjTiles = [TileID.OpenDoor];
 			// Tiles usually drop their corresponding item automatically, but RegisterItemDrop is needed here since the ExampleDoor item places ExampleDoorClosed, not this tile.
 			RegisterItemDrop(ModContent.ItemType<ExampleDoor>(), 0);
 			TileID.Sets.CloseDoorID[Type] = ModContent.TileType<ExampleDoorClosed>();
@@ -46,7 +47,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 			TileObjectData.newTile.AnchorBottom = new AnchorData(AnchorType.SolidTile, 1, 0);
 			TileObjectData.newTile.UsesCustomCanPlace = true;
 			TileObjectData.newTile.LavaDeath = true;
-			TileObjectData.newTile.CoordinateHeights = new[] { 16, 16, 16 };
+			TileObjectData.newTile.CoordinateHeights = [16, 16, 16];
 			TileObjectData.newTile.CoordinateWidth = 16;
 			TileObjectData.newTile.CoordinatePadding = 2;
 			TileObjectData.newTile.StyleHorizontal = true;

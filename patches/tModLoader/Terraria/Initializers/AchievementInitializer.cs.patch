@@ -1,0 +1,12 @@
+--- src/TerrariaNetCore/Terraria/Initializers/AchievementInitializer.cs
++++ src/tModLoader/Terraria/Initializers/AchievementInitializer.cs
+@@ -606,7 +_,9 @@
+ 			Main.Achievements.RegisterAchievementCategory("GLORIOUS_GOLDEN_POLE", category);
+ 			Main.Achievements.RegisterAchievementCategory("TEMPLE_RAIDER", category);
+ 			Main.Achievements.RegisterAchievementCategory("LIKE_A_BOSS", category);
++			/*
+ 			Main.Achievements.Load();
++			*/
+ 			Main.Achievements.OnAchievementCompleted += OnAchievementCompleted;
+ 			AchievementsHelper.Initialize();
+ 		}

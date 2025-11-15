@@ -8,7 +8,8 @@ namespace ExampleMod.Content.Items.Weapons
 {
 	// Rocket launchers are special because they typically have ammo-specific variant projectiles.
 	// ExampleRocketLauncher will inherit the variants specified by the Rocket Launcher weapon
-	public class ExampleRocketLauncher : ModItem {
+	public class ExampleRocketLauncher : ModItem
+	{
 		public override void SetStaticDefaults() {
 			// This line lets ExampleRocketLauncher act like a normal RocketLauncher in regard to any variant projectiles
 			// corresponding to ammo that aren't specifically populated in SpecificLauncherAmmoProjectileMatches below.
@@ -20,7 +21,7 @@ namespace ExampleMod.Content.Items.Weapons
 			// that is needed for an "upgrade". A completely custom rocket launcher would instead specify new and
 			// unique projectiles for all possible rocket ammo.
 			AmmoID.Sets.SpecificLauncherAmmoProjectileMatches.Add(Type, new Dictionary<int, int> {
-				{ ItemID.RocketIII, ProjectileID.Meowmere }, 
+				{ ItemID.RocketIII, ProjectileID.Meowmere },
 			});
 
 			// Note that some rocket launchers, like Celebration and Electrosphere Launcher, will always

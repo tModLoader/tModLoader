@@ -61,6 +61,8 @@ partial class SystemLoader
 
 	private static HookList HookOnWorldLoad = AddHook<Action>(s => s.OnWorldLoad);
 
+	private static HookList HookPostWorldLoad = AddHook<Action>(s => s.PostWorldLoad);
+
 	private static HookList HookOnWorldUnload = AddHook<Action>(s => s.OnWorldUnload);
 
 	private static HookList HookClearWorld = AddHook<Action>(s => s.ClearWorld);
@@ -153,4 +155,6 @@ partial class SystemLoader
 
 	internal static HookList HookNetSend = AddHook<Action<BinaryWriter>>(s => s.NetSend);
 	internal static HookList HookNetReceive = AddHook<Action<BinaryReader>>(s => s.NetReceive);
+
+	private static HookList HookResizeArrays = AddHook<Action>(s => s.ResizeArrays);
 }

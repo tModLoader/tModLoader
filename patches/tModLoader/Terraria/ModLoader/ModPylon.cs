@@ -361,7 +361,7 @@ public abstract class ModPylon : ModTile
 			Main.dust[numForDust].velocity.Y -= 0.2f;
 		}
 
-		// Get color value and draw the the crystal
+		// Get color value and draw the crystal
 		Color color = Lighting.GetColor(point.X, point.Y);
 		color = Color.Lerp(color, Color.White, 0.8f);
 		spriteBatch.Draw(crystalTexture.Value, drawingPosition - Main.screenPosition, crystalFrame, color * 0.7f, 0f, origin, 1f, SpriteEffects.None, 0f);

@@ -1,0 +1,18 @@
+--- src/Terraria/Terraria/nativefiledialog.cs
++++ src/TerrariaNetCore/Terraria/nativefiledialog.cs
+@@ -58,8 +_,15 @@
+ 		return result;
+ 	}
+ 
++	/*
+ 	[DllImport("msvcrt", CallingConvention = CallingConvention.Cdecl)]
+ 	private static extern void free(IntPtr ptr);
++	*/
++	private unsafe static void free(IntPtr ptr)
++	{
++		// Cross-platform C deallocation.
++		NativeMemory.Free((void*)ptr);
++	}
+ 
+ 	[DllImport("nfd", CallingConvention = CallingConvention.Cdecl, EntryPoint = "NFD_OpenDialog")]
+ 	private unsafe static extern nfdresult_t INTERNAL_NFD_OpenDialog(byte* filterList, byte* defaultPath, out IntPtr outPath);

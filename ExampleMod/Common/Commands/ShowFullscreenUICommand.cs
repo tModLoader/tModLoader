@@ -19,7 +19,7 @@ namespace ExampleMod.Common.Commands
 			=> CommandDescription.Value; // "Show the example fullscreen UI";
 
 		public override void SetStaticDefaults() {
-			CommandDescription = Mod.GetLocalization($"Commands.ShowFullscreenUICommand.Description");
+			CommandDescription = Mod.GetLocalization($"Commands.{nameof(ShowFullscreenUICommand)}.Description");
 		}
 
 		public override void Action(CommandCaller caller, string input, string[] args) {

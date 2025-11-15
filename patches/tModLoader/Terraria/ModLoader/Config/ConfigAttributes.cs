@@ -405,12 +405,17 @@ public class OptionStringsAttribute : Attribute
 }
 
 /// <summary>
-/// Use this to set an increment for sliders. The slider will move by the amount assigned. Remember that this is just a UI suggestion and manual editing of config files can specify other values, so validate your values.
-/// Defaults are: float: 0.01f - byte/int/uint: 1
+/// Use this to set an increment for sliders (if using <see cref="SliderAttribute"/>) or the +/- buttons. The slider will move by the amount assigned. The +/- buttons will adjust the value by the amount as well.
+/// <para/> Remember that this is just a UI suggestion and manual editing of config files can specify other values, so validate your values.
+/// <para/> Defaults are as follows:
+/// <br/><b>float:</b> 0.01f
+/// <br/><b>byte/int/uint/long/ulong:</b> 1
+/// <para/> When using this, you might need to cast the arguments to the desired numeric type to call the correct overload.
 /// </summary>
 [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
 public class IncrementAttribute : Attribute
 {
+	// TODO: We could loosen the requirement for matching the exact type (overload) in the ctor with some casting helper methods if that is desired. 
 	public object Increment { get; }
 
 	public IncrementAttribute(int increment)
@@ -428,6 +433,16 @@ public class IncrementAttribute : Attribute
 		Increment = increment;
 	}
 
+	public IncrementAttribute(long increment)
+	{
+		Increment = increment;
+	}
+
+	public IncrementAttribute(ulong increment)
+	{
+		Increment = increment;
+	}
+
 	public IncrementAttribute(byte increment)
 	{
 		Increment = increment;
@@ -435,7 +450,12 @@ public class IncrementAttribute : Attribute
 }
 
 /// <summary>
-/// Specifies a range for primitive data values. Without this, default min and max are as follows: float: 0, 1 - int/uint: 0, 100 - byte: 0, 255
+/// Specifies a range for primitive data values. Without this, default min and max are as follows:
+/// <br/><b>float:</b> 0, 1
+/// <br/><b>int/uint:</b> 0, 100
+/// <br/><b>byte:</b> 0, 255
+/// <br/><b>long/ulong:</b> Unchanged from the full range of the type
+/// <para/> When using this, you might need to cast the arguments to the desired numeric type to call the correct overload.
 /// </summary>
 [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
 public class RangeAttribute : Attribute
@@ -461,6 +481,18 @@ public class RangeAttribute : Attribute
 		Max = max;
 	}
 
+	public RangeAttribute(long min, long max)
+	{
+		Min = min;
+		Max = max;
+	}
+
+	public RangeAttribute(ulong min, ulong max)
+	{
+		Min = min;
+		Max = max;
+	}
+
 	public RangeAttribute(byte min, byte max)
 	{
 		Min = min;
@@ -469,9 +501,9 @@ public class RangeAttribute : Attribute
 }
 
 /// <summary>
-/// Affects whether this data will be presented as a slider or an input field. Add this attribute to use a slider. Currently only affects data of type int.
+/// Affects whether this data will be presented as a slider or an input field. Add this attribute to use a slider. Currently only affects data of type int and enum.
 /// </summary>
-[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
+[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Enum)]
 public class SliderAttribute : Attribute
 {
 
@@ -548,6 +580,22 @@ public class ExpandAttribute : Attribute
 		Expand = expand;
 		ExpandListElements = expandListElements;
 	}
+}
+
+/// <summary>
+/// If present, this data will be presented as a drop down. Currently only affects enums, causing the choices to be displayed as a dropdown instead of the usual expanded panel.
+/// </summary>
+[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Enum)]
+public class DropdownAttribute : Attribute
+{
+}
+
+/// <summary>
+/// If present, this data will be presented as a cylc button. Currently only affects enums, causing the choices to be cycled by button clicks instead of the usual expanded panel.
+/// </summary>
+[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Enum)]
+public class CycleAttribute : Attribute
+{
 }
 
 // Unimplemented ideas below:

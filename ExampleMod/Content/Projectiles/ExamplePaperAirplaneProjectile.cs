@@ -109,7 +109,7 @@ namespace ExampleMod.Content.Projectiles
 
 			// Let's add some dust for special effect. In this case, it runs every other tick (30 ticks per second).
 			if (Projectile.timeLeft % 2 == 0) {
-				Dust.NewDustPerfect(new Vector2(Projectile.Center.X - (Projectile.width * Projectile.direction), Projectile.Center.Y), ModContent.DustType<Dusts.Sparkle>(), null, 0, default, 0.5f); //Here we spawn the dust at the back of the projectile with half scale.
+				Dust.NewDustPerfect(new Vector2(Projectile.Center.X - (Projectile.width * Projectile.direction), Projectile.Center.Y), ModContent.DustType<Dusts.Sparkle>(), null, 0, default, 0.5f); // Here we spawn the dust at the back of the projectile with half scale.
 			}
 		}
 

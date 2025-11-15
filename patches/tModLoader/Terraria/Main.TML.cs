@@ -75,8 +75,9 @@ public partial class Main
 	private static Player _currentPlayerOverride;
 
 	/// <summary>
-	/// A replacement for `Main.LocalPlayer` which respects whichever player is currently running hooks on the main thread.
-	/// This works in the player select screen, and in multiplayer (when other players are updating)
+	/// A replacement for <see cref="Main.LocalPlayer"/> which respects whichever player is currently running hooks on the main thread.
+	/// This works in the player select screen, and in multiplayer (when other players are updating).
+	/// <br/><br/> <see cref="CurrentPlayerOverride"/> can be used to temporarily override CurrentPlayer.
 	/// </summary>
 	public static Player CurrentPlayer => _currentPlayerOverride ?? LocalPlayer;
 
@@ -449,6 +450,10 @@ public partial class Main
 		}
 	}
 
+	/// <summary>
+	/// Overrides <see cref="Main.CurrentPlayer"/>. For example, <c>using var _currentPlr = new Main.CurrentPlayerOverride(player);</c> would result in Main.CurrentPlayer returning the specified player until the end of the current scope.
+	/// <br/><br/> Used internally to make <see cref="ModAccessorySlot"/> access a specific player rather than <see cref="Main.LocalPlayer"/>.
+	/// </summary>
 	public ref struct CurrentPlayerOverride
 	{
 		private Player _prevPlayer;
@@ -496,7 +501,7 @@ public partial class Main
 		}
 
 		// Canary file for legacy Terraria branches.
-		if (!File.Exists(Path.Combine(vanillaContentFolder, "Images", "Projectile_112.xnb"))) {
+		if (!File.Exists(Path.Combine(vanillaContentFolder, "Images", "Projectile_651.xnb"))) {
 			Utils.OpenToURL("https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Usage-FAQ#terraria-is-out-of-date-or-terraria-is-on-a-legacy-version");
 			ErrorReporting.FatalExit(Language.GetTextValue("tModLoader.TerrariaLegacyBranchMessage"));
 		}
@@ -578,7 +583,7 @@ public partial class Main
 				newsChecked = true;
 				// Download latest news, save to config.json.
 				// https://partner.steamgames.com/doc/webapi/ISteamNews
-				client.GetStringAsync("https://api.steampowered.com/ISteamNews/GetNewsForApp/v2/?appid=1281930&count=1").ContinueWith(response => {
+				client.GetStringAsync("https://api.steampowered.com/ISteamNews/GetNewsForApp/v2/?appid=1281930&count=1&feeds=steam_community_announcements").ContinueWith(response => {
 					if (!response.IsCompletedSuccessfully || response.Exception != null) {
 						newsText = Language.GetTextValue("tModLoader.LatestNewsOffline");
 						return;

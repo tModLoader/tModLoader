@@ -1,3 +1,5 @@
+using ExampleMod.Common.Systems;
+using ExampleMod.Content.NPCs.TownPets;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Chat;
@@ -5,8 +7,6 @@ using Terraria.Enums;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
-using ExampleMod.Content.NPCs.TownPets;
-using ExampleMod.Common.Systems;
 
 namespace ExampleMod.Content.Items.Consumables
 {

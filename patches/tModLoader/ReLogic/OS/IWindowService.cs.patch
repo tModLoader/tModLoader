@@ -5,13 +5,22 @@
  using Microsoft.Xna.Framework;
  
  namespace ReLogic.OS;
-@@ -13,4 +_,14 @@
+@@ -13,4 +_,23 @@
  	float GetScaling();
  
  	void SetQuickEditEnabled(bool enabled);
 +
 +	// Added by TML.
 +	void HideConsole();
++
++	// Added by TML.
++	void ShowConsole();
++
++	// Added by TML.
++	void ReleaseConsole();
++
++	// Added by TML.
++	void CreateAndRedirectConsole();
 +
 +	// Added by TML.
 +	void SetIcon(GameWindow window)

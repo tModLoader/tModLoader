@@ -1,0 +1,13 @@
+--- src/TerrariaNetCore/Terraria/Graphics/Renderers/IPlayerRenderer.cs
++++ src/tModLoader/Terraria/Graphics/Renderers/IPlayerRenderer.cs
+@@ -9,5 +_,10 @@
+ 
+ 	void DrawPlayerHead(Camera camera, Player drawPlayer, Vector2 position, float alpha = 1f, float scale = 1f, Color borderColor = default(Color));
+ 
++	/// <summary>
++	/// Draws a player fully.
++	/// <br/><br/> When using this method for an armor set shadow effect, make sure shadow is never 0 so that only the main body renders with the item and other visual effects that are intended to only be drawn on the main body. A shadow value of 0 is fully opaque, while a value of 1 is fully transparent.
++	/// <br/><br/> When using this method outside of the game world, such as in a UI, setting <see cref="Player.isDisplayDollOrInanimate"/> to true will avoid world lighting values affecting how the player is drawn.
++	/// </summary>
+ 	void DrawPlayer(Camera camera, Player drawPlayer, Vector2 position, float rotation, Vector2 rotationOrigin, float shadow = 0f, float scale = 1f);
+ }

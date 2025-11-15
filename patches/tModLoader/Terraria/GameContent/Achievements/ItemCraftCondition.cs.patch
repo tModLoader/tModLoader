@@ -1,0 +1,48 @@
+--- src/TerrariaNetCore/Terraria/GameContent/Achievements/ItemCraftCondition.cs
++++ src/tModLoader/Terraria/GameContent/Achievements/ItemCraftCondition.cs
+@@ -3,6 +_,9 @@
+ 
+ namespace Terraria.GameContent.Achievements;
+ 
++/// <summary>
++/// Satisfied when any of the provided items is crafted by the local player.
++/// </summary>
+ public class ItemCraftCondition : AchievementCondition
+ {
+ 	private const string Identifier = "ITEM_PICKUP";
+@@ -10,8 +_,10 @@
+ 	private static bool _isListenerHooked;
+ 	private short[] _itemIds;
+ 
++	private static string IDToIdentifier(short itemId) => ModLoader.ItemLoader.GetItem(itemId)?.FullName ?? itemId.ToString();
++
+-	private ItemCraftCondition(short itemId)
++	public ItemCraftCondition(short itemId)
+-		: base("ITEM_PICKUP_" + itemId)
++		: base("ITEM_PICKUP_" + IDToIdentifier(itemId))
+ 	{
+ 		_itemIds = new short[1] {
+ 			itemId
+@@ -20,8 +_,20 @@
+ 		ListenForCraft(this);
+ 	}
+ 
+-	private ItemCraftCondition(short[] itemIds)
++	public ItemCraftCondition(short[] itemIds)
+-		: base("ITEM_PICKUP_" + itemIds[0])
++		: base("ITEM_PICKUP_" + IDToIdentifier(itemIds[0]))
++	{
++		_itemIds = itemIds;
++		ListenForCraft(this);
++	}
++
++	public ItemCraftCondition(short itemId, string name) : base(name)
++	{
++		_itemIds = [itemId];
++		ListenForCraft(this);
++	}
++
++	public ItemCraftCondition(short[] itemIds, string name) : base(name)
+ 	{
+ 		_itemIds = itemIds;
+ 		ListenForCraft(this);

@@ -8,17 +8,30 @@ cd "$(dirname "$0")"
 
 echo "You are on platform: \"$_uname\" arch: \"$_arch\""
 
-# Detect arm64 launches and the presence of Rosetta (oahd running on the system is how the dotnet official install script does it)
-if [ "$_arch" = "arm64" ] && [ "$(/usr/bin/pgrep oahd >/dev/null 2>&1;echo $?)" -eq 0 ]; then
-	echo "arm64 environment with Rosetta detected, restarting under arch -x86_64"
-	# Note this only changes the environment, so that dotnet install scripts download an x86 version. Launching an x86 process from an arm shell or vice versa does not require using arch, or otherwise intentionally invoking Rosetta.
-	exec arch -x86_64 ./ScriptCaller.sh "$@"
+# Check for -arm
+arm_flag=false
+for arg in "$@"; do [[ "$arg" == "-arm" || "$arg" == "-arm64" ]] && { arm_flag=true; break; }; done
+
+# Detect the presence of Rosetta (oahd running on the system is how the dotnet official install script does it)
+if [ "$(/usr/bin/pgrep oahd >/dev/null 2>&1;echo $?)" -eq 0 ]; then
+	echo "Rosetta detected"
+	# Note this only changes the environment, so that dotnet install scripts download an arm64/x86 version. Launching an x86 process from an arm shell or vice versa does not require using arch, or otherwise intentionally invoking Rosetta.
+	if [ "$_arch" = "arm64" ] && [ "$arm_flag" = false ]; then
+		echo "Restarting under arch -x86_64"
+		exec arch -x86_64 ./ScriptCaller.sh "$@"
+	elif [ "$_arch" = "x86_64" ] && [ "$arm_flag" = true ]; then
+		echo "Restarting under arch -arm64"
+		exec arch -arm64 ./ScriptCaller.sh "$@"
+	fi
 fi
 
 LaunchLogs="$root_dir/tModLoader-Logs"
 
 if [ ! -d "$LaunchLogs" ]; then
 	mkdir -p "$LaunchLogs"
+	is_first_run=true
+else
+	is_first_run=false
 fi
 
 LogFile="$LaunchLogs/Launch.log"
@@ -44,10 +57,9 @@ echo "This may take a few moments."
 source ./DotNetVersion.sh
 
 # Attempt to fix first time Crash To Desktop due to dotnet install failure
-if [[ ! -f "$LaunchLogs/client.log" && ! -f "$LaunchLogs/server.log" ]]; then
+if [[ ! "$is_first_run" && ! -f "$LaunchLogs/client.log" && ! -f "$LaunchLogs/server.log" ]]; then
 	echo "Last Run Attempt Failed to Start tModLoader. Deleting dotnet_dir and resetting"  2>&1 | tee -a "$LogFile"
 	rm -rf "$dotnet_dir"
-	mkdir "$dotnet_dir"
 fi
 
 # Dotnet binaries Fixes (Proton, AppleSilicon)
@@ -55,18 +67,19 @@ if [[ "$_uname" == *"_NT"* ]]; then
 	if [[ -f "$dotnet_dir/dotnet" ]]; then
 		echo "A non-Windows dotnet executable was detected. Deleting dotnet_dir and resetting"  2>&1 | tee -a "$LogFile"
 		rm -rf "$dotnet_dir"
-		mkdir "$dotnet_dir"
 	fi
 else
 	if [[ -f "$dotnet_dir/dotnet.exe" ]]; then
 		echo "A Windows dotnet executable was detected, possibly from a previous Proton launch. Deleting dotnet_dir and resetting"  2>&1 | tee -a "$LogFile"
 		rm -rf "$dotnet_dir"
-		mkdir "$dotnet_dir"
-	elif [[ "$_arch" != "arm64" ]] && [[ "$(file "$dotnet_dir/dotnet")" == *"arm64"* ]]; then
+	elif [ "$_uname" = Darwin ] && [[ "$_arch" != "arm64" ]] && [[ "$(file "$dotnet_dir/dotnet")" == *"arm64"* ]]; then
 		echo "An arm64 install of dotnet was detected. Deleting dotnet_dir and resetting"  2>&1 | tee -a "$LogFile"
 		rm -rf "$dotnet_dir"
-		mkdir "$dotnet_dir"
 	fi
+fi
+
+if [ ! -d "$dotnet_dir" ]; then
+	mkdir -p "$dotnet_dir"
 fi
 
 # Installing Dotnet

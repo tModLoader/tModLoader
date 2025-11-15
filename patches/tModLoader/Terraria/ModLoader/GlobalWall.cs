@@ -1,3 +1,5 @@
+using Microsoft.Xna.Framework;
+
 namespace Terraria.ModLoader;
 
 /// <summary>
@@ -40,6 +42,12 @@ public abstract class GlobalWall : GlobalBlockType
 	/// <param name="frameNumber">The random style that will be applied</param>
 	/// <returns></returns>
 	public virtual bool WallFrame(int i, int j, int type, bool randomizeFrame, ref int style, ref int frameNumber)
+	{
+		return true;
+	}
+
+	/// <inheritdoc cref="ModPlayer.CanBeTeleportedTo(Vector2, string)"/>
+	public virtual bool CanBeTeleportedTo(int i, int j, int type, Player player, string context)
 	{
 		return true;
 	}

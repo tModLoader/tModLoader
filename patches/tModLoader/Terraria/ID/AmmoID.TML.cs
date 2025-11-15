@@ -10,7 +10,7 @@ partial class AmmoID
 {
 	partial class Sets
 	{
-		public static SetFactory Factory = new(ItemLoader.ItemCount);
+		public static SetFactory Factory = new(ItemLoader.ItemCount, nameof(AmmoID), ItemID.Search);
 
 		// Elements for the below three "Is<x>" sets from Player.GetWeaponDamage() and Player.PickAmmo().
 		// https://github.com/tModLoader/tModLoader/pull/2288

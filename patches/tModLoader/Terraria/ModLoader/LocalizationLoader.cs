@@ -20,7 +20,7 @@ public static class LocalizationLoader
 		var lang = LanguageManager.Instance;
 		var gameTipPrefix = $"Mods.{mod.Name}.GameTips.";
 
-		foreach (var (key, _) in LoadTranslations(mod, GameCulture.DefaultCulture)) {
+		foreach (var (key, _) in LoadTranslations(mod.File, GameCulture.DefaultCulture)) {
 			var text = lang.GetOrRegister(key); // adds the key but leaves it untranslated for now.
 
 			if (key.StartsWith(gameTipPrefix))
@@ -32,7 +32,7 @@ public static class LocalizationLoader
 	{
 		var lang = LanguageManager.Instance;
 		foreach (var mod in ModLoader.Mods) {
-			foreach (var (key, value) in LoadTranslations(mod, culture)) {
+			foreach (var (key, value) in LoadTranslations(mod.File, culture)) {
 				lang.GetText(key).SetValue(value); // can only set the value of existing keys. Cannot register new keys.
 			}
 		}
@@ -178,30 +178,36 @@ public static class LocalizationLoader
 		return false;
 	}
 
-	private static List<(string key, string value)> LoadTranslations(Mod mod, GameCulture culture)
+	private static List<(string key, string value)> LoadTranslations(Mod mod, GameCulture culture) => LoadTranslations(mod.File, culture);
+
+	private static List<(string key, string value)> LoadTranslations(TmodFile tModFile, GameCulture culture)
 	{
-		if (mod.File == null)
+		if (tModFile == null)
 			return new();
+
+		var properties = BuildProperties.ReadModFile(tModFile);
+		string sourceFolder = Directory.Exists(properties.modSource) ? properties.modSource : "";
 
 		try {
 			// Flatten JSON into dot separated key and value
 			var flattened = new List<(string, string)>();
 
-			foreach (var translationFile in mod.File.Where(entry => Path.GetExtension(entry.Name) == ".hjson")) {
+			foreach (var translationFile in tModFile.Where(entry => Path.GetExtension(entry.Name) == ".hjson")) {
 				if (!TryGetCultureAndPrefixFromPath(translationFile.Name, out var fileCulture, out string prefix))
 					continue;
 
 				if (fileCulture != culture)
 					continue;
 
-				using var stream = mod.File.GetStream(translationFile);
+				using var stream = tModFile.GetStream(translationFile);
 				using var streamReader = new StreamReader(stream, Encoding.UTF8, detectEncodingFromByteOrderMarks: true);
 
 				string translationFileContents = streamReader.ReadToEnd();
 
-				string modpath = Path.Combine(mod.Name, translationFile.Name).Replace('/', '\\');
-				if (changedFiles.Select(x => Path.Join(x.Mod, x.fileName)).Contains(modpath)) {
-					string path = Path.Combine(ModCompile.ModSourcePath, modpath);
+				string modpath = Path.Combine(tModFile.Name, translationFile.Name).Replace('/', '\\');
+				if (!string.IsNullOrWhiteSpace(sourceFolder) && changedFiles.Select(x => Path.Join(x.Mod, x.fileName).Replace('/', '\\')).Contains(modpath)) {
+					// TODO: we could skip this for GetLocalizationCounts to be more accurate to the entries in the mod itself, but that is not needed since we don't allow publishing on the client if any changedFiles and the command line publish won't detect changedFiles unless hosting.
+					string path = Path.Combine(sourceFolder, translationFile.Name);
 					if (File.Exists(path)) {
 						try {
 							translationFileContents = File.ReadAllText(path);
@@ -218,7 +224,7 @@ public static class LocalizationLoader
 				}
 				catch (Exception e) {
 					string additionalContext = "";
-					if(e is ArgumentException && Regex.Match(e.Message, "At line (\\d+),") is Match { Success: true } match && int.TryParse(match.Groups[1].Value, out int line)) {
+					if (e is ArgumentException && Regex.Match(e.Message, "At line (\\d+),") is Match { Success: true } match && int.TryParse(match.Groups[1].Value, out int line)) {
 						string[] lines = translationFileContents.Replace("\r", "").Replace("\t", "    ").Split('\n');
 						int start = Math.Max(0, line - 4);
 						int end = Math.Min(lines.Length, line + 3);
@@ -272,7 +278,7 @@ public static class LocalizationLoader
 			return flattened;
 		}
 		catch (Exception e) {
-			e.Data["mod"] = mod.Name;
+			e.Data["mod"] = tModFile.Name;
 			throw;
 		}
 	}
@@ -314,6 +320,10 @@ public static class LocalizationLoader
 
 	private static void UpdateLocalizationFilesForMod(Mod mod, string outputPath = null, GameCulture specificCulture = null)
 	{
+		// ModLoaderMod does not exist on disk and is not applicable.
+		if (mod.File == null)
+			return;
+
 		var desiredCultures = new HashSet<GameCulture>();
 		if (specificCulture != null)
 			desiredCultures.Add(specificCulture);
@@ -323,7 +333,7 @@ public static class LocalizationLoader
 		};
 
 		// TODO: Maybe optimize to only recently built?
-		string sourceFolder = outputPath ?? Path.Combine(ModCompile.ModSourcePath, mod.Name);
+		string sourceFolder = outputPath ?? mod.SourceFolder;
 		if (!Directory.Exists(sourceFolder))
 			return;
 
@@ -426,7 +436,7 @@ public static class LocalizationLoader
 		// Remove duplicates. Only remove string entries. Remove from longest filename.
 		// TODO: could combine comments to remaining entry. Also consider removing empty objects somewhere.
 		var duplicates = baseLocalizationFiles.SelectMany(f => f.Entries).Where(w => w.type == JsonType.String).GroupBy(x => x.key).Where(c => c.Count() > 1).ToDictionary(g => g.Key, g => g.ToList());
-		foreach (var baseLocalizationFile in baseLocalizationFiles.OrderByDescending(x=>x.path.Length)) {
+		foreach (var baseLocalizationFile in baseLocalizationFiles.OrderByDescending(x => x.path.Length)) {
 			var toRemove = new List<LocalizationEntry>();
 			foreach (var entry in baseLocalizationFile.Entries) {
 				if (duplicates.ContainsKey(entry.key)) {
@@ -521,7 +531,7 @@ public static class LocalizationLoader
 			string translationsNeededPath = Path.Combine(sourceFolder, "Localization", "TranslationsNeeded.txt");
 			if (File.Exists(translationsNeededPath)) {
 				int countMaxEntries = localizationCounts.DefaultIfEmpty().Max(x => x.Value);
-				string neededText = string.Join(Environment.NewLine, localizationCounts.OrderBy(x => x.Key.LegacyId).Select(x => $"{x.Key.Name}, {x.Value}/{countMaxEntries}, {(float)x.Value/countMaxEntries:0%}, missing {countMaxEntries - x.Value}")) + Environment.NewLine;
+				string neededText = string.Join(Environment.NewLine, localizationCounts.OrderBy(x => x.Key.LegacyId).Select(x => $"{x.Key.Name}, {x.Value}/{countMaxEntries}, {(float)x.Value / countMaxEntries:0%}, missing {countMaxEntries - x.Value}")) + Environment.NewLine;
 				if (File.ReadAllText(translationsNeededPath).ReplaceLineEndings() != neededText.ReplaceLineEndings()) {
 					File.WriteAllText(translationsNeededPath, neededText);
 				}
@@ -772,20 +782,20 @@ public static class LocalizationLoader
 	}
 
 	private static readonly Dictionary<string, Dictionary<GameCulture, int>> localizationEntriesCounts = new();
-	internal static Dictionary<GameCulture, int> GetLocalizationCounts(Mod mod)
+	internal static Dictionary<GameCulture, int> GetLocalizationCounts(TmodFile tModFile)
 	{
-		if (localizationEntriesCounts.TryGetValue(mod.Name, out var results)) {
+		if (localizationEntriesCounts.TryGetValue(tModFile.Name, out var results)) {
 			return results;
 		}
 
 		results = new Dictionary<GameCulture, int>();
 		foreach (var culture in GameCulture.KnownCultures) {
-			var localizationEntries = LoadTranslations(mod, culture);
+			var localizationEntries = LoadTranslations(tModFile, culture);
 			// Only count only non-"" entries. Also ignore entries that are just substitutions.
 			int countNonTrivialEntries = localizationEntries.Where(x => HasTextThatNeedsLocalization(x.value)).Count();
 			results.Add(culture, countNonTrivialEntries);
 		}
-		localizationEntriesCounts[mod.Name] = results;
+		localizationEntriesCounts[tModFile.Name] = results;
 		return results;
 	}
 
@@ -813,7 +823,11 @@ public static class LocalizationLoader
 		// Add a watcher for each loaded mod that has a corresponding mod sources folder
 		// Don't worry about the mod being local or not, for now. The feature might be useful for even workshop tmod files
 		foreach (var mod in ModLoader.Mods) {
-			string path = Path.Combine(ModCompile.ModSourcePath, mod.Name);
+			// ModLoaderMod does not exist on disk and is not applicable.
+			if (mod.File == null)
+				continue;
+
+			string path = mod.SourceFolder;
 			if (!Directory.Exists(path))
 				continue;
 

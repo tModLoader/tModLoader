@@ -30,7 +30,7 @@ namespace ExampleMod.Content.Tiles
 			TileID.Sets.Campfire[Type] = true;
 
 			DustType = -1; // No dust when mined.
-			AdjTiles = new int[] { TileID.Campfire };
+			AdjTiles = [TileID.Campfire];
 
 			// Placement
 			TileObjectData.newTile.CopyFrom(TileObjectData.GetTileData(TileID.Campfire, 0));
@@ -54,6 +54,11 @@ namespace ExampleMod.Content.Tiles
 		}
 
 		public override void NearbyEffects(int i, int j, bool closer) {
+			// HasCampfire is a gameplay effect, so we don't run the code if closer is true.
+			if (closer) {
+				return;
+			}
+
 			if (Main.tile[i, j].TileFrameY < 36) {
 				Main.SceneMetrics.HasCampfire = true;
 			}
@@ -125,26 +130,23 @@ namespace ExampleMod.Content.Tiles
 			}
 		}
 
-		public override void DrawEffects(int i, int j, SpriteBatch spriteBatch, ref TileDrawInfo drawData) {
-			if (Main.gamePaused || !Main.instance.IsActive) {
-				return;
-			}
-			if (!Lighting.UpdateEveryFrame || new FastRandom(Main.TileFrameSeed).WithModifier(i, j).Next(4) == 0) {
-				Tile tile = Main.tile[i, j];
-				// Only emit dust from the top tiles, and only if toggled on. This logic limits dust spawning under different conditions.
-				if (tile.TileFrameY == 0 && Main.rand.NextBool(3) && ((Main.drawToScreen && Main.rand.NextBool(4)) || !Main.drawToScreen)) {
-					Dust dust = Dust.NewDustDirect(new Vector2(i * 16 + 2, j * 16 - 4), 4, 8, DustID.Smoke, 0f, 0f, 100);
-					if (tile.TileFrameX == 0)
-						dust.position.X += Main.rand.Next(8);
+		public override void EmitParticles(int i, int j, Tile tileCache, short tileFrameX, short tileFrameY, Color tileLight, bool visible) {
+			// Unlike a typical tile, campfire tiles intentionally still spawn dust even when the tile is invisible. This means we do NOT check visible as other examples do.
 
-					if (tile.TileFrameX == 36)
-						dust.position.X -= Main.rand.Next(8);
+			Tile tile = Main.tile[i, j];
+			// Only emit dust from the top tiles, and only if toggled on. This logic limits dust spawning under different conditions.
+			if (tile.TileFrameY == 0 && Main.rand.NextBool(3)) {
+				Dust dust = Dust.NewDustDirect(new Vector2(i * 16 + 2, j * 16 - 4), 4, 8, DustID.Smoke, 0f, 0f, 100);
+				if (tile.TileFrameX == 0)
+					dust.position.X += Main.rand.Next(8);
 
-					dust.alpha += Main.rand.Next(100);
-					dust.velocity *= 0.2f;
-					dust.velocity.Y -= 0.5f + Main.rand.Next(10) * 0.1f;
-					dust.fadeIn = 0.5f + Main.rand.Next(10) * 0.1f;
-				}
+				if (tile.TileFrameX == 36)
+					dust.position.X -= Main.rand.Next(8);
+
+				dust.alpha += Main.rand.Next(100);
+				dust.velocity *= 0.2f;
+				dust.velocity.Y -= 0.5f + Main.rand.Next(10) * 0.1f;
+				dust.fadeIn = 0.5f + Main.rand.Next(10) * 0.1f;
 			}
 		}
 
@@ -169,10 +171,7 @@ namespace ExampleMod.Content.Tiles
 			if (tile.TileFrameY < 36) {
 				Color color = new Color(255, 255, 255, 0);
 
-				Vector2 zero = new Vector2(Main.offScreenRange, Main.offScreenRange);
-				if (Main.drawToScreen) {
-					zero = Vector2.Zero;
-				}
+				Vector2 zero = Main.drawToScreen ? Vector2.Zero : new Vector2(Main.offScreenRange);
 
 				int width = 16;
 				int offsetY = 0;

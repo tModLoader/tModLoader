@@ -1,9 +1,13 @@
+using Terraria.GameContent.Drawing;
+using Terraria.ModLoader;
+
 namespace Terraria.ID;
 
 partial class TileID
 {
 	partial class Sets
 	{
+		/// <summary> Will cause the tile to be killed when right clicked, like <see cref="Torches"/> or <see cref="Bottles"/>. No need to set this if using <see cref="Torch"/>. </summary>
 		public static bool[] CanDropFromRightClick = Factory.CreateBoolSet(4);
 		public static bool[] Stone = Factory.CreateBoolSet(1, 117, 25, 203);
 		public static bool[] Grass = Factory.CreateBoolSet(2, 23, 109, 199, 477, 492, 633); // Might be incorrect?
@@ -15,6 +19,18 @@ partial class TileID
 
 		/// <summary> Allows non-solid tiles to be sloped (solid tiles can always be sloped, regardless of this set). </summary>
 		public static bool[] CanBeSloped = Factory.CreateBoolSet();
+
+		/// <summary> Whether or not this tile can be infected by the natural spreading of biomes such as corruption, crimson, or hallow.
+		/// <br>Doesn't affect the spreading in <see cref="WorldGen.hardUpdateWorld"/>, only used in <see cref="WorldGen.SpreadInfectionToNearbyTile"/></br>
+		/// </summary>
+		public static bool[] Infectable = Factory.CreateBoolSet(1, 2, 53, 60, 69, 161, 179, 180, 181, 182, 183, 381, 396, 397, 534, 536, 539, 625, 627);
+
+		/// <summary>
+		/// Prevents a tile immediately below a tile of this type from being hammered (sloped). Since a sloped tile would break a typical bottom tile anchor, this prevents such tiles from being broken in this manner. Anything in <see cref="BasicChest"/> or <see cref="BasicDresser"/> are also protected in the same manner. This is typically used for tiles that shouldn't break as easily as other tiles, such as tiles containing Tile Entities holding items.
+		/// <para/> Some examples include DemonAltar, Teleporter, Mannequins, and HatRack.
+		/// <para/> See also <see cref="PreventsTileRemovalIfOnTopOfIt"/>, which is frequently set in tandem with this.
+		/// </summary>
+		public static bool[] PreventsTileHammeringIfOnTopOfIt = Factory.CreateBoolSet(false, 21, 26, 77, 88, 235, 237, 441, 467, 468, 470, 475, 488, 597);
 
 		/// <summary>Used in <see cref="FallingBlockProjectile"/>.</summary>
 		public class FallingBlockProjectileInfo
@@ -94,11 +110,13 @@ partial class TileID
 		public static bool[] CountsAsShimmerSource = Factory.CreateBoolSet();
 
 		/// <summary> Whether or not saplings count this tile as empty when trying to grow. </summary>
-		public static bool[] IgnoredByGrowingSaplings = Factory.CreateBoolSet(3, 24, 32, 61, 62, 69, 71, 73, 74, 82, 83, 84, 110, 113, 201, 233, 352, 485, 529, 530, 637, 655);
+		public static bool[] IgnoredByGrowingSaplings = Factory.CreateBoolSet(3, 24, 32, 61, 62, 69, 71, 73, 74, 82, 83, 84, 110, 113, 184, 201, 233, 352, 485, 529, 530, 637, 655);
 
-		/// <summary> Whether or not this tile prevents a meteor from landing near it.</summary>
+		/// <summary> Whether or not this tile prevents a meteor from landing near it.
+		/// <para/> Contains LihzahrdBrick, DisplayDoll, HatRack, FallenLog, and TeleportationPylon.
+		/// </summary>
 		/// <remarks> Note: Chests and Dungeon tiles are not in this set, but also prevent landing (handled through <see cref="BasicChest"/> and <see cref="Main.tileDungeon"/>)</remarks>
-		public static bool[] AvoidedByMeteorLanding = Factory.CreateBoolSet(226, 470, 475, 448, 597);
+		public static bool[] AvoidedByMeteorLanding = Factory.CreateBoolSet(226, 470, 475, 488, 597);
 
 		/// <summary>
 		/// Whether or not this tile will prevent sand/slush from falling beneath it.
@@ -157,6 +175,41 @@ partial class TileID
 		/// The ID of the tile that a given open door transforms into when it becomes CLOSED. Defaults to -1, which means said tile isn't an open door.
 		/// </summary>
 		public static int[] CloseDoorID = Factory.CreateIntSet(-1);
+
+		/// <summary>
+		/// A version of <see cref="TileID.Sets.SwaysInWindBasic"/> that functions with multitiles. Causes the tile to sway along with the wind and player interaction.
+		/// <para/> <see cref="ModTile.AdjustMultiTileVineParameters(int, int, ref float?, ref float, ref float, ref bool, ref float, ref Microsoft.Xna.Framework.Graphics.Texture2D, ref Microsoft.Xna.Framework.Color)"/> can be used to customize how the tile sways with wind and player interaction.
+		/// <para/> <b>NOTE:</b> Requires calling <see cref="TileDrawing.AddSpecialPoint"/> in <c>ModTile.PreDraw</c> for the coordinates of the top left tile of the multitile. Use either
+		/// <see cref="TileDrawing.TileCounterType.MultiTileVine"/> or <see cref="TileDrawing.TileCounterType.MultiTileGrass"/>, depending on what kind of sway interaction you want.
+		/// </summary>
+		public static bool[] MultiTileSway = Factory.CreateBoolSet(false);
+
+		/// <summary>
+		/// If true, players landing on these tiles will not suffer <see href="https://terraria.wiki.gg/wiki/Fall_damage#Tiles">fall damage</see>. Vanilla entries include Cloud, RainCloud, SnowCloud, and PoopBlock. Defaults to false.
+		/// <para/> See also <see cref="Main.tileBouncy"/>.
+		/// </summary>
+		public static bool[] NegatesFallDamage = Factory.CreateBoolSet(Cloud, RainCloud, SnowCloud, PoopBlock);
+
+		/// <summary>
+		/// Indicates that this tile is a pressure plate, and which entities should trigger it when they collide with it. Custom tiles will still need to implement <see cref="ModTile.HitSwitch(int, int)"/> to act on the trigger. The <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/Tiles/ExamplePressurePlate.cs">ExamplePressurePlate.cs</see> example demonstrates this.
+		/// <br/><br/> Positive values and 0 indicate that this pressure plate acts like a specific <see cref="PressurePlates"/> style, inheriting the specific set of entity interactions of that style. (See the <see href="https://terraria.wiki.gg/wiki/Pressure_Plates">Pressure Plates wiki page</see>.) For example: 2 for players only, 0 for all entities, 5 for NPC, and 7 for player only but the pressure plate breaks.
+		/// <br/><br/> A -2 value indicates that this pressure plate acts exactly like <see cref="PressurePlates"/>, with each style corresponding to the same entity interactions sets of the <see cref="PressurePlates"/> styles.
+		/// <br/><br/> A -3 value indicates that this is a <see cref="WeightedPressurePlate"/>. It can only be interacted by players but will trigger when stepped on and off.
+		/// <br/><br/> A -4 value indicates that this is a <see cref="ProjectilePressurePad"/>. It can only be interacted by projectiles support all 4 placement orientations.
+		/// <br/><br/> Note that for each of these the tile sprite dimensions should match the vanilla sprite.
+		/// <br/><br/> <see cref="ModTile.SwitchTiles"/> can be used if these options are insufficient and custom collision calculations are needed. The <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/Tiles/ExampleSlopeTile.cs">ExampleSlopeTile.cs</see> example demonstrates this.
+		/// <br/><br/> Defaults to -1.
+		/// </summary>
+		public static int[] PressurePlate = Factory.CreateIntSet(-1, PressurePlates, -2, WeightedPressurePlate, -3, ProjectilePressurePad, -4);
+		
+		// Values taken from WorldFile.ClearTempTiles
+		/// <summary>
+		/// If true, the tile will be destroyed after the world is loaded, before it is entered. Can be used to get rid of temporary tiles such as the block created by <see href="https://terraria.wiki.gg/wiki/Ice_Rod">Ice Rod</see>.
+		/// <br/><br/> The tile will NOT drop it's associated item, but it will trigger any effects invoked through <see cref="GlobalTile.KillTile(int, int, int, ref bool, ref bool, ref bool)"/> and <see cref="ModTile.KillTile(int, int, ref bool, ref bool, ref bool)"/>.
+		/// <br/><br/> The tile will NOT get destroyed in cases where certain tiles - such as non-empty chests - anchor onto it.
+		/// <br/><br/> Defaults to <see langword="false"/>.
+		/// </summary>
+		public static bool[] ClearedOnWorldLoad = Factory.CreateBoolSet(MagicalIceBlock, MysticSnakeRope);
 
 		/// Functions to simplify modders adding a tile to the crimson, corruption, or jungle regardless of a remix world or not. Can still add manually as needed.
 		public static void AddCrimsonTile(ushort type, int strength = 1)

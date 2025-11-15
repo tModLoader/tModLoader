@@ -13,7 +13,7 @@ using Terraria.GameContent.UI.Elements;
 
 namespace Terraria.ModLoader;
 
-//TODO: further documentation
+// TODO: further documentation
 /// <summary>
 /// This serves as a central place to store equipment slots and their corresponding textures. You will use this to obtain the IDs for your equipment textures.
 /// </summary>
@@ -166,10 +166,25 @@ public class AccessorySlotLoader : Loader<ModAccessorySlot>
 	{
 		bool flag3;
 		bool flag4 = false;
+		bool loadoutConflict = false;
+		bool accessoryConflict = false;
+		bool vanityConflict = false;
 
 		if (modded) {
 			flag3 = !ModdedIsItemSlotUnlockedAndUsable(slot, Player);
 			flag4 = !ModdedCanSlotBeShown(slot);
+			// flag3 && flag4: If not usable (flag3) and hidden when not usable (flag4), don't draw.
+
+			// If there is a loadout conflict, force not usable but allow user to fix the issue by forcing it to show.
+			ModAccessorySlotPlayer modAccessorySlotPlayer = ModSlotPlayer(Player);
+			if (modAccessorySlotPlayer.SharedSlotHasLoadoutConflict(slot, vanitySlot: false)) {
+				loadoutConflict = true;
+				accessoryConflict = true;
+			}
+			if (modAccessorySlotPlayer.SharedSlotHasLoadoutConflict(slot, vanitySlot: true)) {
+				loadoutConflict = true;
+				vanityConflict = true;
+			}
 		}
 		else {
 			flag3 = !Player.IsItemSlotUnlockedAndUsable(slot);
@@ -181,7 +196,7 @@ public class AccessorySlotLoader : Loader<ModAccessorySlot>
 			}
 		}
 
-		if (flag4 && flag3 || modded && IsHidden(slot)) {
+		if (flag4 && flag3 && !loadoutConflict || modded && IsHidden(slot)) {
 			return false;
 		}
 
@@ -208,16 +223,22 @@ public class AccessorySlotLoader : Loader<ModAccessorySlot>
 			}
 
 			var thisSlot = Get(slot);
+			ModAccessorySlotPlayer modSlotPlayer = ModSlotPlayer(Player);
 
+			Main.inventoryBack = flag3 || accessoryConflict ? new Color(80, 80, 80, 80) : color;
 			if (thisSlot.DrawFunctionalSlot) {
-				bool skipMouse = DrawVisibility(ref ModSlotPlayer(Player).exHideAccessory[slot], -10, xLoc, yLoc, out var xLoc2, out var yLoc2, out var value4);
-				DrawSlot(ModSlotPlayer(Player).exAccessorySlot, -10, slot, flag3, xLoc, yLoc, skipMouse);
+				bool skipMouse = DrawVisibility(ref modSlotPlayer.exHideAccessory[slot], -10, xLoc, yLoc, out var xLoc2, out var yLoc2, out var value4);
+				DrawSlot(modSlotPlayer.exAccessorySlot, -10, slot, flag3, xLoc, yLoc, skipMouse);
 				Main.spriteBatch.Draw(value4, new Vector2(xLoc2, yLoc2), Color.White * 0.7f);
 			}
+
+			Main.inventoryBack = flag3 || vanityConflict ? new Color(80, 80, 80, 80) : color;
 			if (thisSlot.DrawVanitySlot)
-				DrawSlot(ModSlotPlayer(Player).exAccessorySlot, -11, slot + ModSlotPlayer(Player).SlotCount, flag3, xLoc, yLoc);
+				DrawSlot(modSlotPlayer.exAccessorySlot, -11, slot + modSlotPlayer.SlotCount, flag3, xLoc, yLoc);
+
+			Main.inventoryBack = flag3 ? new Color(80, 80, 80, 80) : color;
 			if (thisSlot.DrawDyeSlot)
-				DrawSlot(ModSlotPlayer(Player).exDyesAccessory, -12, slot, flag3, xLoc, yLoc);
+				DrawSlot(modSlotPlayer.exDyesAccessory, -12, slot, flag3, xLoc, yLoc);
 		}
 		else {
 			if (!customLoc && Main.EquipPage != 0) {
@@ -327,7 +348,7 @@ public class AccessorySlotLoader : Loader<ModAccessorySlot>
 	/// Generates a significant amount of functionality for the slot, despite being named drawing because vanilla.
 	/// At the end, calls this.DrawRedirect to enable custom drawing
 	/// </summary>
-	internal void DrawSlot(Item[] items, int context, int slot, bool flag3, int xLoc, int yLoc, bool skipCheck = false)
+	private void DrawSlot(Item[] items, int context, int slot, bool flag3, int xLoc, int yLoc, bool skipCheck = false)
 	{
 		bool flag = flag3 && !Main.mouseItem.IsAir;
 		int xLoc1 = xLoc - 47 * (slotDrawLoopCounter++);
@@ -359,8 +380,20 @@ public class AccessorySlotLoader : Loader<ModAccessorySlot>
 
 			ItemSlot.MouseHover(items, Math.Abs(context), slot);
 
-			if (context < 0)
+			if (context < 0) {
 				OnHover(slot, context);
+
+				// Override custom hover text for this important information
+				if (Math.Abs(context) != 12 && ModSlotPlayer(Player).SharedSlotHasLoadoutConflict(slot, vanitySlot: Math.Abs(context) == 11)) {
+					Main.HoverItem = new Item();
+					Main.hoverItemName = Language.GetTextValue("tModLoader.SharedAccessorySlotConflictTooltip");
+				}
+
+				// TODO: We could also show the name of an UnloadedAccessorySlot in the tooltip.
+
+				// Debug Code: 
+				//Main.hoverItemName += " - Slot #" + slot;
+			}
 		}
 		DrawRedirect(items, context, slot, new Vector2(xLoc1, yLoc), isHovered);
 	}
@@ -382,26 +415,34 @@ public class AccessorySlotLoader : Loader<ModAccessorySlot>
 	/// Provides the Texture for a Modded Accessory Slot
 	/// This probably will need optimization down the road.
 	/// </summary>
-	internal Texture2D GetBackgroundTexture(int slot, int context)
+	internal (Texture2D, bool shared) GetBackgroundTexture(int slot, int context)
 	{
 		var thisSlot = Get(slot);
 		switch (context) {
 			case -10:
 				if (ModContent.RequestIfExists<Texture2D>(thisSlot.FunctionalBackgroundTexture, out var funcTexture))
-					return funcTexture.Value;
-				return TextureAssets.InventoryBack3.Value;
+					return (funcTexture.Value, true);
+				break;
 			case -11:
 				if (ModContent.RequestIfExists<Texture2D>(thisSlot.VanityBackgroundTexture, out var vanityTexture))
-					return vanityTexture.Value;
-				return TextureAssets.InventoryBack8.Value;
+					return (vanityTexture.Value, true);
+				break;
 			case -12:
 				if (ModContent.RequestIfExists<Texture2D>(thisSlot.DyeBackgroundTexture, out var dyeTexture))
-					return dyeTexture.Value;
-				return TextureAssets.InventoryBack12.Value;
+					return (dyeTexture.Value, true);
+				break;
 		}
 
-		// Default to a functional slot
-		return TextureAssets.InventoryBack3.Value;
+		if (ModSlotPlayer(Player).IsSharedSlot(thisSlot.Type)) {
+			// Shared slots retain the old background textures by default.
+			return context switch {
+				-10 => (TextureAssets.InventoryBack3.Value, true),
+				-11 => (TextureAssets.InventoryBack8.Value, true),
+				-12 => (TextureAssets.InventoryBack12.Value, true),
+				_ => throw new NotImplementedException()
+			};
+		}
+		return (TextureAssets.InventoryBack13.Value, false);
 	}
 
 	internal void DrawSlotTexture(Texture2D value6, Vector2 position, Rectangle rectangle, Color color, float rotation, Vector2 origin, float scale, SpriteEffects effects, float layerDepth, int slot, int context)
@@ -438,7 +479,20 @@ public class AccessorySlotLoader : Loader<ModAccessorySlot>
 
 	public AccessorySlotType ContextToEnum(int context) => (AccessorySlotType)Math.Abs(context);
 
+	/// <summary>
+	/// Checks if the ModAccessorySlot at the given index is enabled. Does not account for the functional or vanity slots individually being disabled due to conflicts arising from shared accessory slots.
+	/// </summary>
 	public bool ModdedIsItemSlotUnlockedAndUsable(int index, Player player) => Get(index, player).IsEnabled();
+
+	/// <summary>
+	/// Like <see cref="ModdedIsItemSlotUnlockedAndUsable(int, Player)"/>, except this also checks if the functional or vanity slot specifically is disabled due to conflicts arising from switching loadouts while using shared accessory slots.
+	/// </summary>
+	public bool ModdedIsSpecificItemSlotUnlockedAndUsable(int index, Player player, bool vanity)
+	{
+		ModAccessorySlot slot = Get(index, player);
+		ModAccessorySlotPlayer modAccessorySlotPlayer = ModSlotPlayer(player);
+		return !modAccessorySlotPlayer.SharedSlotHasLoadoutConflict(index, vanity) && slot.IsEnabled();
+	}
 
 	public void CustomUpdateEquips(int index, Player player) => Get(index, player).ApplyEquipEffects();
 
@@ -448,15 +502,34 @@ public class AccessorySlotLoader : Loader<ModAccessorySlot>
 
 	public bool CanAcceptItem(int index, Item checkItem, int context) => Get(index).CanAcceptItem(checkItem, ContextToEnum(context));
 
+	public bool CanPlayerAcceptItem(Player player, int index, Item checkItem, int context) => Get(index, player).CanAcceptItem(checkItem, ContextToEnum(context));
+
 	public void OnHover(int index, int context) => Get(index).OnMouseHover(ContextToEnum(context));
 
 	/// <summary>
 	/// Checks if the provided item can go in to the provided slot.
 	/// Includes checking if the item already exists in either of Player.Armor or ModSlotPlayer.exAccessorySlot
 	/// Invokes directly ItemSlot.AccCheck &amp; ModSlot.CanAcceptItem
+	/// Note that this doesn't check for conflicts of shared slots with the items of other loadouts, that check is done in <see cref="ModAccessorySlotPlayer.DetectConflictsWithSharedSlots"/> to prevent a confusing user experience. The accessory slot acts like a disabled slot while in conflict, allowing the player to choose how to fix the issue.
 	/// </summary>
 	public bool ModSlotCheck(Item checkItem, int slot, int context) => CanAcceptItem(slot, checkItem, context) &&
 		!ItemSlot.AccCheck_ForLocalPlayer(Player.armor.Concat(ModSlotPlayer(Player).exAccessorySlot).ToArray(), checkItem, slot + Player.armor.Length);
+
+	private static Item dummyAccessoryCheckItem = new Item();
+	/// <summary>
+	/// Similar to <see cref="ModSlotCheck(Item, int, int)"/> except it ignores the item in <paramref name="slot"/> since that item is being passed in as <paramref name="checkItem"/>.
+	/// </summary>
+	public bool IsAccessoryInConflict(Player player, Item checkItem, int slot, int context)
+	{
+		if (checkItem.IsAir)
+			return false;
+		bool canGoInSlot = CanPlayerAcceptItem(player, slot, checkItem, context);
+		if (!canGoInSlot)
+			return true;
+		Item[] itemCollection = player.armor.Concat(ModSlotPlayer(player).exAccessorySlot).ToArray();
+		itemCollection[slot + player.armor.Length] = dummyAccessoryCheckItem;
+		return ItemSlot.AccCheck_ForPlayer(player, itemCollection, checkItem, slot + player.armor.Length);
+	}
 
 	/// <summary>
 	/// After checking for empty slots in ItemSlot.AccessorySwap, this allows for changing what the target slot will be if the accessory isn't already equipped.
@@ -465,7 +538,7 @@ public class AccessorySlotLoader : Loader<ModAccessorySlot>
 	public void ModifyDefaultSwapSlot(Item item, ref int accSlotToSwapTo)
 	{
 		for (int num = ModSlotPlayer(Player).SlotCount - 1; num >= 0; num--) {
-			if (ModdedIsItemSlotUnlockedAndUsable(num, Player)) {
+			if (ModdedIsSpecificItemSlotUnlockedAndUsable(num, Player, vanity: false)) {
 				if (Get(num).ModifyDefaultSwapSlot(item, accSlotToSwapTo)) {
 					accSlotToSwapTo = num + 20;
 				}
@@ -473,7 +546,7 @@ public class AccessorySlotLoader : Loader<ModAccessorySlot>
 		}
 	}
 
-	//TODO: Look into if this should have an actual hook later, and which class to associate to (item or player). Not a priority to the Accessory Slot ModType PR
+	// TODO: Look into if this should have an actual hook later, and which class to associate to (item or player). Not a priority to the Accessory Slot ModType PR
 	/// <summary>
 	/// Mirrors Player.GetPreferredGolfBallToUse.
 	/// Provides the golf ball projectile from an accessory slot.
@@ -481,7 +554,7 @@ public class AccessorySlotLoader : Loader<ModAccessorySlot>
 	public bool PreferredGolfBall(ref int projType)
 	{
 		for (int num = ModSlotPlayer(Player).SlotCount * 2 - 1; num >= 0; num--) {
-			if (ModdedIsItemSlotUnlockedAndUsable(num, Player)) {
+			if (ModdedIsSpecificItemSlotUnlockedAndUsable(num, Player, vanity: num >= ModSlotPlayer(Player).SlotCount)) {
 				Item item2 = ModSlotPlayer(Player).exAccessorySlot[num];
 				if (!item2.IsAir && item2.shoot > 0 && ProjectileID.Sets.IsAGolfBall[item2.shoot]) {
 					projType = item2.shoot;

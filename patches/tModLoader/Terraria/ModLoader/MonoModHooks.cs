@@ -78,6 +78,11 @@ public static class MonoModHooks
 			GetDetourList(owner).ilHooks.Add(info);
 			Logging.tML.Debug($"ILHook {StringRep(info.Method.Method)} added by {owner.GetName().Name}");
 		};
+		
+		TerrariaHooks.Logging.OnObsoleteHookSubscribed += (MethodBase method, Delegate modded) => {
+			var owner = modded.Method.DeclaringType.Assembly;
+			Logging.tML.Error($"The method {StringRep(method)} is Obsolete. It was hooked by the {StringRep(modded.Method)} method of {owner.GetName().Name}");
+		};
 
 		isInitialized = true;
 	}
@@ -213,9 +218,13 @@ public static class MonoModHooks
 	/// <param name="il"></param>
 	public static void DumpIL(Mod mod, ILContext il)
 	{
-		string methodName = il.Method.FullName.Replace(':', '_');
+		string methodName = il.Method.FullName.Replace(':', '_').Replace('<', '[').Replace('>', ']');
 		if (methodName.Contains('?')) // MonoMod IL copies are created with mangled names like DMD<Terraria.Player::beeType>?38504011::Terraria.Player::beeType(Terraria.Player)
 			methodName = methodName[(methodName.LastIndexOf('?') + 1)..];
+		methodName = string.Join("_", methodName.Split(Path.GetInvalidFileNameChars())); // Catch any other illegal characters, just in case.
+		int maxFileNameLength = 255 - 4; // Most OS, max filename length is 255, leave room for ".txt".
+		if (methodName.Length > maxFileNameLength)
+			methodName = methodName.Substring(0, maxFileNameLength);
 
 		string filePath = Path.Combine(Logging.LogDir, "ILDumps", mod.Name, methodName + ".txt");
 		string folderPath = Path.GetDirectoryName(filePath);

@@ -89,7 +89,9 @@ public static class UICommon
 	}
 
 	/// <summary>
-	/// Draws a tooltip on the mouse cursor. Functions like <see cref="Main.MouseText(string, int, byte, int, int, int, int, int)"/> and <see cref="Main.hoverItemName"/>, but adds the same background seen in item tooltips behind the text.
+	/// Draws a tooltip on the mouse cursor.
+	/// <br/><br/> Functions like <see cref="Main.MouseText(string, int, byte, int, int, int, int, int)"/> and <see cref="Main.hoverItemName"/>, but adds the same background seen in item tooltips behind the text.
+	/// <br/><br/> Only works during rendering, calling this during Update will not do anything.
 	/// </summary>
 	/// <param name="text"></param>
 	public static void TooltipMouseText(string text)
@@ -118,6 +120,7 @@ public static class UICommon
 	public static Asset<Texture2D> ButtonCollapsedTexture { get; internal set; }
 	public static Asset<Texture2D> ButtonExpandedTexture { get; internal set; }
 	public static Asset<Texture2D> ModBrowserIconsTexture { get; internal set; }
+	public static Asset<Texture2D> UIAchievementsMenuIconsTexture { get; internal set; }
 	public static Asset<Texture2D> ConfigSideIndicatorTexture { get; internal set; }
 	public static Asset<Texture2D> ButtonExclamationTexture { get; internal set; }
 	public static Asset<Texture2D> ButtonDepsTexture { get; internal set; }
@@ -125,6 +128,7 @@ public static class UICommon
 	public static Asset<Texture2D> ButtonUpgradeLang { get; internal set; }
 	public static Asset<Texture2D> ButtonRunTModPorter { get; internal set; }
 	public static Asset<Texture2D> ButtonOpenFolder { get; internal set; }
+	public static Asset<Texture2D> ButtonOpenFolderCustom { get; internal set; }
 	public static Asset<Texture2D> ButtonTranslationModTexture { get; internal set; }
 	public static Asset<Texture2D> LoaderTexture { get; internal set; }
 	public static Asset<Texture2D> LoaderBgTexture { get; internal set; }
@@ -140,6 +144,7 @@ public static class UICommon
 	public static Asset<Texture2D> InfoDisplayPageArrowTexture { get; internal set; }
 	public static Asset<Texture2D> tModLoaderTitleLinkButtonsTexture { get; internal set; }
 	public static Asset<Texture2D> CopyCodeButtonTexture { get; internal set; }
+	public static Asset<Texture2D> DropdownIconTexture { get; internal set; }
 
 	internal static void LoadTextures()
 	{
@@ -153,6 +158,7 @@ public static class UICommon
 		ButtonCollapsedTexture = LoadEmbeddedTexture("Config.UI.ButtonCollapsed");
 		ButtonExpandedTexture = LoadEmbeddedTexture("Config.UI.ButtonExpanded");
 		ModBrowserIconsTexture = LoadEmbeddedTexture("UI.UIModBrowserIcons");
+		UIAchievementsMenuIconsTexture = LoadEmbeddedTexture("UI.UIAchievementsMenuIcons");
 		ConfigSideIndicatorTexture = LoadEmbeddedTexture("UI.ConfigSideIndicator");
 		ButtonExclamationTexture = LoadEmbeddedTexture("UI.ButtonExclamation");
 		ButtonDepsTexture = LoadEmbeddedTexture("UI.ButtonDeps");
@@ -160,6 +166,7 @@ public static class UICommon
 		ButtonUpgradeLang = LoadEmbeddedTexture("UI.ButtonUpgradeLang");
 		ButtonRunTModPorter = LoadEmbeddedTexture("UI.ButtonRunTModPorter");
 		ButtonOpenFolder = LoadEmbeddedTexture("UI.ButtonOpenFolder");
+		ButtonOpenFolderCustom = LoadEmbeddedTexture("UI.ButtonOpenFolderCustom");
 		ButtonTranslationModTexture = LoadEmbeddedTexture("UI.ButtonTranslationMod");
 		LoaderTexture = LoadEmbeddedTexture("UI.Loader");
 		LoaderBgTexture = LoadEmbeddedTexture("UI.LoaderBG");
@@ -177,5 +184,6 @@ public static class UICommon
 		InfoDisplayPageArrowTexture = LoadEmbeddedTexture("UI.InfoDisplayPageArrow");
 		tModLoaderTitleLinkButtonsTexture = LoadEmbeddedTexture("UI.tModLoaderTitleLinkButtons");
 		CopyCodeButtonTexture = LoadEmbeddedTexture("UI.CopyCodeButton");
+		DropdownIconTexture = LoadEmbeddedTexture("UI.DropdownIcon");
 	}
 }

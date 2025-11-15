@@ -178,9 +178,10 @@ public abstract class ModTree : ITree
 	public abstract Asset<Texture2D> GetTexture();
 
 	/// <summary>
-	/// Used mostly for vanilla tree shake loot tables
+	/// <br>Used mostly for vanilla tree shake loot tables</br>
+	/// <br>Defaults to <see cref="TreeTypes.Custom"/>. Set to <see cref="TreeTypes.None"/> to prevent the tree from being able to be shaken.</br>
 	/// </summary>
-	public virtual TreeTypes CountsAsTreeType => TreeTypes.Forest;
+	public virtual TreeTypes CountsAsTreeType => TreeTypes.Custom;
 
 	/// <summary>
 	/// Return the type of dust created when this tree is destroyed. Returns 7 by default.
@@ -274,9 +275,10 @@ public abstract class ModPalmTree : ITree
 	public abstract Asset<Texture2D> GetTexture();
 
 	/// <summary>
-	/// Used mostly for vanilla tree shake loot tables
+	/// <br>Used mostly for vanilla tree shake loot tables</br>
+	/// <br>Defaults to <see cref="TreeTypes.Custom"/>. Set to <see cref="TreeTypes.None"/> to prevent the tree from being able to be shaken.</br>
 	/// </summary>
-	public virtual TreeTypes CountsAsTreeType => TreeTypes.Palm;
+	public virtual TreeTypes CountsAsTreeType => TreeTypes.Custom;
 
 	/// <summary>
 	/// Return the type of dust created when this palm tree is destroyed. Returns 215 by default.

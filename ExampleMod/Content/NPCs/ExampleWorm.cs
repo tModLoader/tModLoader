@@ -1,4 +1,5 @@
-﻿using ExampleMod.NPCs;
+using ExampleMod.Content.Items.Placeable.Banners;
+using ExampleMod.NPCs;
 using Microsoft.Xna.Framework;
 using System.IO;
 using Terraria;
@@ -29,18 +30,23 @@ namespace ExampleMod.Content.NPCs
 			// Head is 10 defense, body 20, tail 30.
 			NPC.CloneDefaults(NPCID.DiggerHead);
 			NPC.aiStyle = -1;
+
+			Banner = Type;
+			// These lines are only needed in the main body part.
+			BannerItem = ModContent.ItemType<ExampleWormHeadBanner>();
+			ItemID.Sets.KillsToBanner[BannerItem] = 25; // Custom kill count required for banner drop and bestiary unlock. Omit this line for the default 50 kill count.
 		}
 
 		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry) {
 			// We can use AddRange instead of calling Add multiple times in order to add multiple items at once
-			bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
+			bestiaryEntry.Info.AddRange([
 				// Sets the spawning conditions of this NPC that is listed in the bestiary.
 				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Underground,
 				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Caverns,
 
 				// Sets the description of this NPC that is listed in the bestiary.
-				new FlavorTextBestiaryInfoElement("Looks like a Digger fell into some aqua-colored paint. Oh well.")
-			});
+				new FlavorTextBestiaryInfoElement("Mods.ExampleMod.Bestiary.ExampleWormHead")
+			]);
 		}
 
 		public override void Init() {
@@ -96,11 +102,15 @@ namespace ExampleMod.Content.NPCs
 				Hide = true // Hides this NPC from the Bestiary, useful for multi-part NPCs whom you only want one entry.
 			};
 			NPCID.Sets.NPCBestiaryDrawOffset.Add(NPC.type, value);
+			NPCID.Sets.RespawnEnemyID[NPC.type] = ModContent.NPCType<ExampleWormHead>();
 		}
 
 		public override void SetDefaults() {
 			NPC.CloneDefaults(NPCID.DiggerBody);
 			NPC.aiStyle = -1;
+
+			// Extra body parts should use the same Banner value as the main ModNPC.
+			Banner = ModContent.NPCType<ExampleWormHead>();
 		}
 
 		public override void Init() {
@@ -115,11 +125,15 @@ namespace ExampleMod.Content.NPCs
 				Hide = true // Hides this NPC from the Bestiary, useful for multi-part NPCs whom you only want one entry.
 			};
 			NPCID.Sets.NPCBestiaryDrawOffset.Add(NPC.type, value);
+			NPCID.Sets.RespawnEnemyID[NPC.type] = ModContent.NPCType<ExampleWormHead>();
 		}
 
 		public override void SetDefaults() {
 			NPC.CloneDefaults(NPCID.DiggerTail);
 			NPC.aiStyle = -1;
+
+			// Extra body parts should use the same Banner value as the main ModNPC.
+			Banner = ModContent.NPCType<ExampleWormHead>();
 		}
 
 		public override void Init() {

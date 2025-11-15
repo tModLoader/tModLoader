@@ -52,7 +52,7 @@ public class UIAutoScaleTextTextPanel<T> : UIPanel
 			var textSize = ChatManager.GetStringSize(dynamicSpriteFont, Text, new Vector2(TextScaleMax));
 
 			Width.Set(PaddingLeft + textSize.X + PaddingRight, 0f);
-			Height.Set(PaddingTop + (IsLarge ? 32f : 16f) + PaddingBottom, 0f);
+			Height.Set(PaddingTop + textSize.Y + PaddingBottom, 0f);
 
 			base.Recalculate();
 		}
@@ -65,27 +65,26 @@ public class UIAutoScaleTextTextPanel<T> : UIPanel
 			TextScaleMax = textScaleMax;
 			DynamicSpriteFont dynamicSpriteFont = large ? FontAssets.DeathText.Value : FontAssets.MouseText.Value;
 			Vector2 textSize = ChatManager.GetStringSize(dynamicSpriteFont, text.ToString(), new Vector2(TextScaleMax));
+			textSize.Y = CalculateStringHeight(textSize, TextScaleMax);
 
-			if (UseInnerDimensions)
-				innerDimensionsRectangle.Inflate(0, 6);
-			else
-				innerDimensionsRectangle.Inflate(-4, 0);// Why not put -8 in inflate parameter here?
+			innerDimensionsRectangle.Inflate(-4, 0);// Why not put -8 in inflate parameter here?
 
 			var availableSpace = new Vector2(innerDimensionsRectangle.Width, innerDimensionsRectangle.Height);
 
 			if (textSize.X > availableSpace.X || textSize.Y > availableSpace.Y) {
-				float scale = (textSize.X / availableSpace.X > textSize.Y / availableSpace.Y) ? availableSpace.X / textSize.X : availableSpace.Y / textSize.Y;
+				Vector2 textSizeOne = ChatManager.GetStringSize(dynamicSpriteFont, text.ToString(), Vector2.One);
+				textSizeOne.Y = CalculateStringHeight(textSizeOne, 1f);
+				float scale = (textSizeOne.X / availableSpace.X > textSizeOne.Y / availableSpace.Y) ? availableSpace.X / textSizeOne.X : availableSpace.Y / textSizeOne.Y;
 				TextScale = scale;
 				textSize = ChatManager.GetStringSize(dynamicSpriteFont, text.ToString(), new Vector2(TextScale));
+				textSize.Y = CalculateStringHeight(textSize, TextScale);
 			}
 			else {
 				TextScale = TextScaleMax;
 			}
 
-			if (!UseInnerDimensions) {
-				innerDimensionsRectangle.Y += 8;
-				innerDimensionsRectangle.Height -= 8;
-			}
+			innerDimensionsRectangle.Y += 8;
+			innerDimensionsRectangle.Height -= 8;
 			_text = text;
 			oldText = _text?.ToString();
 			TextSize = textSize;
@@ -96,14 +95,10 @@ public class UIAutoScaleTextTextPanel<T> : UIPanel
 			drawOffsets = new Vector2[textStrings.Length];
 			for (int i = 0; i < textStrings.Length; i++) {
 				Vector2 size = ChatManager.GetStringSize(dynamicSpriteFont, textStrings[i], new Vector2(TextScale));
-				if (UseInnerDimensions)
-					size.Y = IsLarge ? 32f : 16f;
+				size.Y = (IsLarge ? 72f : 28f) * TextScale;
 
 				float x = (innerDimensionsRectangle.Width - size.X) * TextOriginX;
-				float y = (-textStrings.Length * size.Y * TextOriginY) + i * size.Y + innerDimensionsRectangle.Height * TextOriginY;
-
-				if (UseInnerDimensions)
-					y -= 2;
+				float y = (-textSize.Y * TextOriginY) + i * size.Y + innerDimensionsRectangle.Height * TextOriginY;
 
 				drawOffsets[i] = new Vector2(x, y);
 			}
@@ -121,10 +116,7 @@ public class UIAutoScaleTextTextPanel<T> : UIPanel
 			base.DrawSelf(spriteBatch);
 
 		var innerDimensions = UseInnerDimensions ? GetInnerDimensions().ToRectangle() : GetDimensions().ToRectangle();
-		if (UseInnerDimensions)
-			innerDimensions.Inflate(0, 6);
-		else
-			innerDimensions.Inflate(-4, -8);
+		innerDimensions.Inflate(-4, -8);
 
 		for (int i = 0; i < textStrings.Length; i++) {
 			//Vector2 pos = innerDimensions.Center.ToVector2() + drawOffsets[i];
@@ -154,5 +146,11 @@ public class UIAutoScaleTextTextPanel<T> : UIPanel
 		//	}
 		//	Utils.DrawBorderString(spriteBatch, this.Text, pos, this.TextColor, this.TextScale, 0f, 0f, -1);
 		//}
+	}
+
+	private float CalculateStringHeight(Vector2 calculatedSize, float scale)
+	{
+		// ChatManager.GetStringSize seems to only apply scale to lines past the 1st, meaning we need to separately scale the 1st line to get the correct height.
+		return calculatedSize.Y - (IsLarge ? 72f : 28f) * (1 - scale);
 	}
 }
