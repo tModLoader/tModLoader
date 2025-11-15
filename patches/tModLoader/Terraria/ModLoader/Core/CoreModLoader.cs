@@ -33,7 +33,7 @@ internal static class CoreModLoader
 		}
 	}
 
-	internal static bool FindCoreMods(string[] programArgs, out Mod[] coreMods)
+	internal static bool FindCoreMods(out Mod[] coreMods)
 	{
 		coreMods = [];
 
@@ -69,13 +69,16 @@ internal static class CoreModLoader
 		Assembly transformedChildtML = _transformedAssemblies[typeof(CoreModLoader).Assembly.GetName().Name!];
 
 		// For now, just unload the loaded mod ALCs, since after their transformers are applied they are just taking up space
+		Logging.tML.InfoFormat("Clearing & unloading all loaded CoreMods.");
 		ModLoader.ClearMods();
 		AssemblyManager.Unload();
 
-		transformedChildtML.GetType(typeof(CoreModLoader).FullName).GetField(nameof(CoreModLoader.transformedAssemblyBytes), BindingFlags.Static | BindingFlags.NonPublic).SetValue(null, transformedAssemblyBytes);
+		transformedChildtML.GetType(typeof(CoreModLoader).FullName!)!.GetField(nameof(transformedAssemblyBytes), BindingFlags.Static | BindingFlags.NonPublic)!.SetValue(null, transformedAssemblyBytes);
 
 		// Set Launch Params, Save Paths, Main Thread, tML Directory
 		Type childProgramType = transformedChildtML.GetType(typeof(Program).FullName!)!;
+
+		Logging.tML.InfoFormat("Initializing necessary child tML fields.");
 		childProgramType.GetField(nameof(Program.LaunchParameters), BindingFlags.Public | BindingFlags.Static)!.SetValue(null, Program.LaunchParameters);
 		childProgramType.GetField(nameof(Program.SavePath), BindingFlags.Static | BindingFlags.Public)!.SetValue(null, Program.SavePath);
 		childProgramType.GetProperty(nameof(Program.SavePathShared), BindingFlags.Static | BindingFlags.Public)!.SetValue(null, Program.SavePathShared);
@@ -84,10 +87,13 @@ internal static class CoreModLoader
 
 		// Set logging of child to be "tML_Child" for clarity's sake
 		Type childLoggingType = transformedChildtML.GetType(typeof(Logging).FullName!)!;
+		Logging.tML.InfoFormat("Initializing child tML Logging...");
 		childLoggingType.GetProperty(nameof(Logging.tML), BindingFlags.NonPublic | BindingFlags.Static)!.SetValue(null, LogManager.GetLogger("tML_CHILD"));
 
 		// Launch child ALC
-		Logging.tML.InfoFormat("Launching Transformed Child tML...");
+		_childALC.ResolvingUnmanagedDll += MonoLaunch.ResolveNativeLibrary;
+
+		Logging.tML.InfoFormat("----====---- LAUNCHING TRANSFORMED CHILD TML ----====----");
 		childProgramType.GetMethod(nameof(Program.LaunchGame_), BindingFlags.Public | BindingFlags.Static)!.Invoke(null, [ isServer ]);
 	}
 

@@ -73,7 +73,15 @@
  		Program.LaunchGame(args, monoArgs: true);
  	}
  
-@@ -57,29 +_,39 @@
+@@ -50,36 +_,46 @@
+ 
+ 	// Note: AssemblyLoadContext.Default.ResolvingUnmanagedDll is only called if the dll is not found on PATH
+ 	// In a production environment, you need to prepend to PATH prioritise your shipped libraries, making this logging mostly useless.
+-	private static IntPtr ResolveNativeLibrary(Assembly assembly, string name)
++	internal static IntPtr ResolveNativeLibrary(Assembly assembly, string name)
+ 	{
+ 		// This method shouldn't be throwing exceptions, in case we're in a TryLoad scenario.
+ 		lock (resolverLock) {
  			if (assemblies.TryGetValue(name, out var handle))
  				return handle;
  

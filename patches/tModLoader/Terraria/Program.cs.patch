@@ -116,11 +116,11 @@
  #endif
 +		*/
 +
-+		ProcessLaunchArgs(args, monoArgs, out bool isServer);
++		ProcessLaunchArgs(args, monoArgs, out bool isServer, out bool skipCoreMods);
 +
 +		StartupSequenceTml(isServer);
 +
-+		if (CoreModLoader.FindCoreMods(args, out Mod[] coreMods)) {
++		if (!skipCoreMods && CoreModLoader.FindCoreMods(out Mod[] coreMods)) {
 +			Logging.tML.InfoFormat("Coremods found, initiating child tML startup...");
 +			CoreModLoader.LaunchALCWithCoreMods(isServer, coreMods);
 +			return;
@@ -156,14 +156,13 @@
  		Platform.Get<IWindowService>().SetQuickEditEnabled(enabled: false);
  		RunGame();
  	}
-@@ -184,9 +_,14 @@
- 				Main.instance.IsMouseVisible = false;
+@@ -185,8 +_,13 @@
  			};
  		}
-+		
-+		InstallVerifier.Startup();
  
 -		using Main main = new Main();
++		InstallVerifier.Startup();
++
  		try {
 +			ModLoader.ModLoader.EngineInit();
 +
