@@ -66,10 +66,11 @@ internal static class CoreModLoader
 		Logging.tML.InfoFormat("Applying CoreMod transformers...");
 		AddTransformedAssemblies(GetAllDependentAssemblyLocations(), coreMods);
 		Logging.tML.InfoFormat("Success! Transformed Assemblies created.");
+
 		Assembly transformedChildtML = _transformedAssemblies[typeof(CoreModLoader).Assembly.GetName().Name!];
 
 		// For now, just unload the loaded mod ALCs, since after their transformers are applied they are just taking up space
-		Logging.tML.InfoFormat("Clearing & unloading all loaded CoreMods.");
+		Logging.tML.InfoFormat("Clearing & unloading all loaded CoreMods...");
 		ModLoader.ClearMods();
 		AssemblyManager.Unload();
 
@@ -78,7 +79,7 @@ internal static class CoreModLoader
 		// Set Launch Params, Save Paths, Main Thread, tML Directory
 		Type childProgramType = transformedChildtML.GetType(typeof(Program).FullName!)!;
 
-		Logging.tML.InfoFormat("Initializing necessary child tML fields.");
+		Logging.tML.InfoFormat("Initializing necessary child tML fields...");
 		childProgramType.GetField(nameof(Program.LaunchParameters), BindingFlags.Public | BindingFlags.Static)!.SetValue(null, Program.LaunchParameters);
 		childProgramType.GetField(nameof(Program.SavePath), BindingFlags.Static | BindingFlags.Public)!.SetValue(null, Program.SavePath);
 		childProgramType.GetProperty(nameof(Program.SavePathShared), BindingFlags.Static | BindingFlags.Public)!.SetValue(null, Program.SavePathShared);
@@ -134,6 +135,7 @@ internal static class CoreModLoader
 				               .Select(t => (ModuleTransformer)Activator.CreateInstance(t, true))
 				               .ToList();
 
+			Logging.tML.InfoFormat("Starting transformation process for {0}.", coreMod.Name);
 			foreach (string assemblyLocation in assemblyLocations) {
 				bool hasSymbols = File.Exists(Path.ChangeExtension(assemblyLocation, ".pdb"));
 				using AssemblyDefinition assemblyDefinition = AssemblyDefinition.ReadAssembly(assemblyLocation, new ReaderParameters {  ReadSymbols = hasSymbols });
@@ -142,7 +144,13 @@ internal static class CoreModLoader
 				assemblyDefinition.MainModule.Mvid = Guid.NewGuid();
 
 				// Apply transformers
-				transformers.ForEach(transformer => transformer.Transform(assemblyDefinition.MainModule));
+				foreach (ModuleTransformer transformer in transformers) {
+					if (!transformer.Transform(assemblyDefinition.MainModule)) {
+						continue;
+					}
+
+					Logging.tML.InfoFormat("{0} successfully applied transformer on {1}.", coreMod.Name, assemblyDefinition.Name);
+				}
 
 				// Write to stream, which is then loaded to actual assembly. Skips the intermediary step of writing to a file instead, then immediately loading said file
 				using MemoryStream assemblyStream = new MemoryStream();

@@ -13,6 +13,11 @@ namespace Terraria.ModLoader;
 public abstract class ModuleTransformer
 {
 
-	public abstract void Transform(ModuleDefinition module);
+	/// <summary>
+	/// Triggered during the core mod loading step in the tML Parent process when transforming the child tML Assembly (and others) via the
+	/// module parameter.
+	/// </summary>
+	/// <returns>Whether this transformer successfully transformed the given module.</returns>
+	public abstract bool Transform(ModuleDefinition module);
 
 }
