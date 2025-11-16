@@ -110,7 +110,7 @@
  		if (monoArgs)
  			args = Utils.ConvertMonoArgsToDotNet(args);
  
-@@ -164,6 +_,35 @@
+@@ -164,6 +_,39 @@
  		// Unify server and client dll via launch param
  		Main.dedServ = LaunchParameters.ContainsKey("-server");
  #endif
@@ -121,9 +121,13 @@
 +		StartupSequenceTml(isServer);
 +
 +		if (!skipCoreMods && CoreModLoader.IsAnyCoreMods(out Mod[] nonCoreMods, out Mod[] coreMods)) {
-+			Logging.tML.InfoFormat("Coremods found, initiating child tML startup...");
-+			CoreModLoader.LaunchALCWithCoreMods(isServer, nonCoreMods, coreMods);
-+			return;
++			Logging.tML.InfoFormat("Core Mods found, initiating transformation process...");
++
++			if (CoreModLoader.LaunchALCWithCoreMods(isServer, nonCoreMods, coreMods)) {
++				return;
++			}
++
++			Logging.tML.Warn("Core Mods were found, but no assemblies were transformed. Launching tML as normal.");
 +		}
 +
 +		Logging.tML.InfoFormat("No coremods found, running tML as usual...");

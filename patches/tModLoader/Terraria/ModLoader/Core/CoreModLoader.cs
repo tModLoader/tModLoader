@@ -67,7 +67,7 @@ internal static class CoreModLoader
 		return false;
 	}
 
-	internal static void LaunchALCWithCoreMods(bool isServer, Mod[] allMods, Mod[] coreMods)
+	internal static bool LaunchALCWithCoreMods(bool isServer, Mod[] allMods, Mod[] coreMods)
 	{
 		ForceTypeConvertersToLookupConvertersInTheSameAssembly();
 
@@ -77,7 +77,11 @@ internal static class CoreModLoader
 		List<string> tModLoaderDependencyAssemblyLocations = GetAllDependentAssemblyLocations();
 
 		Logging.tML.InfoFormat("Applying Core Mod transformers...");
-		AddTransformedAssemblies(tModLoaderDependencyAssemblyLocations, allMods, coreMods);
+
+		if (!AddTransformedAssemblies(tModLoaderDependencyAssemblyLocations, allMods, coreMods)) {
+			return false;
+		};
+
 		Logging.tML.InfoFormat("Success! Transformed Assemblies created.");
 
 		Assembly transformedChildtML = _transformedAssemblies[typeof(CoreModLoader).Assembly.GetName().Name!];
@@ -109,6 +113,7 @@ internal static class CoreModLoader
 
 		Logging.tML.InfoFormat("----====---- LAUNCHING TRANSFORMED CHILD TML ----====----");
 		childProgramType.GetMethod(nameof(Program.LaunchGame_), BindingFlags.Public | BindingFlags.Static)!.Invoke(null, [ isServer ]);
+		return true;
 	}
 
 	private static List<string> GetAllDependentAssemblyLocations()
@@ -135,7 +140,7 @@ internal static class CoreModLoader
 		})).ToList();
 	}
 
-	private static void AddTransformedAssemblies(List<string> dependentAssemblyLocations, Mod[] allMods, Mod[] coreMods)
+	private static bool AddTransformedAssemblies(List<string> dependentAssemblyLocations, Mod[] allMods, Mod[] coreMods)
 	{
 		List<AssemblyTransformationCandidate> allAssemblyCandidates = [];
 		// Load from file directly
@@ -209,6 +214,7 @@ internal static class CoreModLoader
 		}
 
 		// Generate assemblies from all candidates that were successfully transformed
+		bool anyAssembliesTransformed = false;
 		foreach ((AssemblyDefinition definition, bool hasSymbols, string modName, bool wasTransformed) in allAssemblyCandidates) {
 			if (!wasTransformed) {
 				definition.Dispose();
@@ -239,9 +245,12 @@ internal static class CoreModLoader
 
 			transformedAssemblyBytes[transformedAssembly] = assemblyStream.ToArray();
 
+			anyAssembliesTransformed = true;
+
 			definition.Dispose();
 		}
 
+		return anyAssembliesTransformed;
 	}
 
 	private static Hook _typeConverterAttrHook;
