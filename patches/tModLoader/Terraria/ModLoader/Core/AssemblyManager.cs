@@ -297,7 +297,7 @@ public static class AssemblyManager
 		}
 	}
 
-	internal static string GetModAssemblyFileName(this TmodFile modFile) => $"{modFile.Name}.dll";
+	private static string GetModAssemblyFileName(this TmodFile modFile) => $"{modFile.Name}.dll";
 
 	public static byte[] GetModAssembly(this TmodFile modFile) => modFile.GetBytes(modFile.GetModAssemblyFileName());
 

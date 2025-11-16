@@ -17,10 +17,8 @@ using MonoMod.RuntimeDetour;
 namespace Terraria.ModLoader.Core;
 internal static class CoreModLoader
 {
-	private record struct AssemblyTransformationCandidate(AssemblyDefinition Definition, bool HasSymbols = true, string ModName = null, bool WasTransformed = false) : IDisposable
+	private record struct AssemblyTransformationCandidate(AssemblyDefinition Definition, bool HasSymbols = true, string ModName = null, bool WasTransformed = false)
 	{
-		public void Dispose() => Definition?.Dispose();
-
 		public static implicit operator AssemblyTransformationCandidate(AssemblyDefinition definition) => new(definition);
 
 		public static implicit operator AssemblyDefinition(AssemblyTransformationCandidate candidate) => candidate.Definition;
@@ -139,11 +137,11 @@ internal static class CoreModLoader
 
 	private static void AddTransformedAssemblies(List<string> dependentAssemblyLocations, Mod[] allMods, Mod[] coreMods)
 	{
-		List<AssemblyTransformationCandidate> allAssemblyDefinitions = [];
+		List<AssemblyTransformationCandidate> allAssemblyCandidates = [];
 		// Load from file directly
 		foreach (string assemblyLocation in dependentAssemblyLocations) {
 			bool hasSymbols = File.Exists(Path.ChangeExtension(assemblyLocation, ".pdb"));
-			allAssemblyDefinitions.Add(AssemblyDefinition.ReadAssembly(assemblyLocation, new ReaderParameters { ReadSymbols = hasSymbols }));
+			allAssemblyCandidates.Add(AssemblyDefinition.ReadAssembly(assemblyLocation, new ReaderParameters { ReadSymbols = hasSymbols }));
 		}
 
 		// Load mod assemblies into streams, which then can be put into assembly definitions
@@ -151,18 +149,29 @@ internal static class CoreModLoader
 			using (mod.File.Open()) {
 				TmodFile modFile = mod.File;
 
+				using var assemblyStream = new MemoryStream(modFile.GetModAssembly(), false);
+
 				bool hasSymbols = modFile.HasFile(modFile.GetModPdbFileName());
-				allAssemblyDefinitions.Add(
+				var readerParameters = new ReaderParameters { ReadSymbols = hasSymbols };
+				if (hasSymbols) {
+					readerParameters.SymbolStream = new MemoryStream(modFile.GetModPdb(), false);
+				}
+
+				allAssemblyCandidates.Add(
 					new AssemblyTransformationCandidate(
-							AssemblyDefinition.ReadAssembly(modFile.GetStream(modFile.GetModAssemblyFileName()), new ReaderParameters { ReadSymbols = hasSymbols}),
-							true,
+							AssemblyDefinition.ReadAssembly(assemblyStream, readerParameters),
+							hasSymbols,
 							mod.Name
 						)
 					);
+
+				if (hasSymbols) {
+					readerParameters.SymbolStream.Dispose();
+				}
 			}
 		}
 
-		foreach (AssemblyDefinition assemblyDefinition in allAssemblyDefinitions) {
+		foreach (AssemblyDefinition assemblyDefinition in allAssemblyCandidates) {
 			// May or may not be required. Haven't got line numbers in stack traces or VS debugging to work yet -- CB
 			assemblyDefinition.MainModule.Mvid = Guid.NewGuid();
 		}
@@ -179,8 +188,8 @@ internal static class CoreModLoader
 
 
 			Logging.tML.InfoFormat("Starting \"{0}\"'s transformation process.", coreMod.Name);
-			for (int i = 0; i < allAssemblyDefinitions.Count; i++) {
-				(AssemblyDefinition definition, bool _, string assemblyModName, bool _) = allAssemblyDefinitions[i];
+			for (int i = 0; i < allAssemblyCandidates.Count; i++) {
+				(AssemblyDefinition definition, bool _, string assemblyModName, bool _) = allAssemblyCandidates[i];
 
 				// Core Mods cannot modify themselves
 				if (assemblyModName != null && assemblyModName == coreMod.Name) {
@@ -193,22 +202,28 @@ internal static class CoreModLoader
 						continue;
 					}
 
-					allAssemblyDefinitions[i] = allAssemblyDefinitions[i] with { WasTransformed = true };
+					allAssemblyCandidates[i] = allAssemblyCandidates[i] with { WasTransformed = true };
 					Logging.tML.InfoFormat("{0} successfully applied transformer on {1}.", coreMod.Name, definition.Name);
 				}
 			}
 		}
 
+		// Generate assemblies from all candidates that were successfully transformed
+		foreach ((AssemblyDefinition definition, bool hasSymbols, string modName, bool wasTransformed) in allAssemblyCandidates) {
+			if (!wasTransformed) {
+				definition.Dispose();
+				continue;
+			}
 
-		// Write to stream, which is then loaded to actual assembly. Skips the intermediary step of writing to a file instead, then immediately loading said file
-		using MemoryStream assemblyStream = new MemoryStream();
-		using MemoryStream symbolStream = new MemoryStream();
-		definition.Write(assemblyStream, new WriterParameters { WriteSymbols = hasSymbols, SymbolStream = symbolStream, SymbolWriterProvider = new PortablePdbWriterProvider() });
+			// Write to stream, which is then loaded to actual assembly. Skips the intermediary step of writing to a file instead, then immediately loading said file
+			using var assemblyStream = new MemoryStream();
+			using var symbolStream = new MemoryStream();
+			definition.Write(assemblyStream, new WriterParameters { WriteSymbols = hasSymbols, SymbolStream = symbolStream, SymbolWriterProvider = new PortablePdbWriterProvider() });
 
-		assemblyStream.Position = 0;
-		symbolStream.Position = 0;
+			assemblyStream.Position = 0;
+			symbolStream.Position = 0;
 
-		#if LOAD_UNTRANSFORMED_ASSEMBLIES_TO_KEEP_DEBUGGER_HAPPY_TEMPORARILY
+			#if LOAD_UNTRANSFORMED_ASSEMBLIES_TO_KEEP_DEBUGGER_HAPPY_TEMPORARILY
 				assemblyStream.SetLength(0);
 				symbolStream.SetLength(0);
 				assemblyStream.Write(File.ReadAllBytes(assemblyLocation));
@@ -216,12 +231,17 @@ internal static class CoreModLoader
 					symbolStream.Write(File.ReadAllBytes(Path.ChangeExtension(assemblyLocation, ".pdb")));
 				assemblyStream.Position = 0;
 				symbolStream.Position = 0;
-		#endif
+			#endif
 
-		Assembly transformedAssembly = _childALC.LoadFromStream(assemblyStream, symbolStream);
-		_transformedAssemblies[transformedAssembly.GetName().Name!] = transformedAssembly;
+			// TODO: Persist transformed mod assemblies to the child tML ALC
+			Assembly transformedAssembly = _childALC.LoadFromStream(assemblyStream, symbolStream);
+			_transformedAssemblies[transformedAssembly.GetName().Name!] = transformedAssembly;
 
-		transformedAssemblyBytes[transformedAssembly] = assemblyStream.ToArray();
+			transformedAssemblyBytes[transformedAssembly] = assemblyStream.ToArray();
+
+			definition.Dispose();
+		}
+
 	}
 
 	private static Hook _typeConverterAttrHook;
