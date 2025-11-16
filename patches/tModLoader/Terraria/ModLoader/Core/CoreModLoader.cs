@@ -146,13 +146,7 @@ internal static class CoreModLoader
 		// Load from file directly
 		foreach (string assemblyLocation in dependentAssemblyLocations) {
 			bool hasSymbols = File.Exists(Path.ChangeExtension(assemblyLocation, ".pdb"));
-			allAssemblyCandidates.Add(
-				new AssemblyTransformationCandidate(
-						AssemblyDefinition.ReadAssembly(assemblyLocation, new ReaderParameters { ReadSymbols = hasSymbols }),
-						// TODO: Figure out why the dependent assemblies have to be "transformed" regardless of if anything was actually done to them (MonoMod hooks fail otherwise)
-						WasTransformed: true
-					)
-				);
+			allAssemblyCandidates.Add(AssemblyDefinition.ReadAssembly(assemblyLocation, new ReaderParameters { ReadSymbols = hasSymbols }));
 		}
 
 		// Load mod assemblies into streams, which then can be put into assembly definitions
@@ -187,6 +181,7 @@ internal static class CoreModLoader
 			assemblyDefinition.MainModule.Mvid = Guid.NewGuid();
 		}
 
+		bool anyModLoaderDependencyAssemblyTransformed = false;
 		foreach (Mod coreMod in coreMods) {
 			List<ModuleTransformer> transformers =
 				AssemblyManager.GetLoadableTypes(coreMod.Code)
@@ -203,7 +198,8 @@ internal static class CoreModLoader
 				(AssemblyDefinition definition, bool _, string assemblyModName, bool _) = allAssemblyCandidates[i];
 
 				// Core Mods cannot modify themselves
-				if (assemblyModName != null && assemblyModName == coreMod.Name) {
+				// tML dependency candidates have their ModName field set to null
+				if (assemblyModName is not null && assemblyModName == coreMod.Name) {
 					continue;
 				}
 
@@ -214,15 +210,22 @@ internal static class CoreModLoader
 					}
 
 					allAssemblyCandidates[i] = allAssemblyCandidates[i] with { WasTransformed = true };
+
+					if (assemblyModName is null) {
+						anyModLoaderDependencyAssemblyTransformed = true;
+					}
+
 					Logging.tML.InfoFormat("{0} successfully applied transformer on {1}.", coreMod.Name, definition.Name);
 				}
 			}
 		}
 
 		// Generate assemblies from all candidates that were successfully transformed
+		// If any tML dependency assemblies were transformed, ALL others will be psuedo-transformed and added to the transformed dictionary above.
+		// TODO: Figure out why the above line/explanation ^ is necessary
 		bool anyAssembliesTransformed = false;
 		foreach ((AssemblyDefinition definition, bool hasSymbols, string modName, bool wasTransformed) in allAssemblyCandidates) {
-			if (!wasTransformed) {
+			if ((modName is null && !wasTransformed && !anyModLoaderDependencyAssemblyTransformed) || (modName is not null && !wasTransformed)) {
 				definition.Dispose();
 				continue;
 			}

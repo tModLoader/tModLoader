@@ -137,14 +137,15 @@ public static class AssemblyManager
 					return existing;
 
 				var runtime = mod.LoadFromAssemblyName(assemblyName);
+				// Transformed assemblies always come first, if one exists
+				if (CoreModLoader.transformedAssemblyBytes.TryGetValue(runtime, out byte[] bytes))
+					return context.LoadFromByteArray(bytes);
+
 				if (!string.IsNullOrEmpty(runtime.Location))
 					return context.LoadFromAssemblyPath(runtime.Location);
 
 				if (GetLoadContext(runtime) is ModLoadContext modLoadContext)
 					return context.LoadFromByteArray(modLoadContext.assemblyBytes[assemblyName.Name]);
-
-				if (CoreModLoader.transformedAssemblyBytes.TryGetValue(runtime, out var bytes))
-					return context.LoadFromByteArray(bytes);
 
 				throw new Exception($"Unable to find bytes for {runtime.FullName}");
 			}
