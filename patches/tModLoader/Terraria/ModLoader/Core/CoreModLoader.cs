@@ -146,7 +146,13 @@ internal static class CoreModLoader
 		// Load from file directly
 		foreach (string assemblyLocation in dependentAssemblyLocations) {
 			bool hasSymbols = File.Exists(Path.ChangeExtension(assemblyLocation, ".pdb"));
-			allAssemblyCandidates.Add(AssemblyDefinition.ReadAssembly(assemblyLocation, new ReaderParameters { ReadSymbols = hasSymbols }));
+			allAssemblyCandidates.Add(
+				new AssemblyTransformationCandidate(
+						AssemblyDefinition.ReadAssembly(assemblyLocation, new ReaderParameters { ReadSymbols = hasSymbols }),
+						// TODO: Figure out why the dependent assemblies have to be "transformed" regardless of if anything was actually done to them (MonoMod hooks fail otherwise)
+						WasTransformed: true
+					)
+				);
 		}
 
 		// Load mod assemblies into streams, which then can be put into assembly definitions
