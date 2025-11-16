@@ -110,7 +110,7 @@
  		if (monoArgs)
  			args = Utils.ConvertMonoArgsToDotNet(args);
  
-@@ -164,6 +_,39 @@
+@@ -164,6 +_,38 @@
  		// Unify server and client dll via launch param
  		Main.dedServ = LaunchParameters.ContainsKey("-server");
  #endif
@@ -130,7 +130,6 @@
 +			Logging.tML.Warn("Core Mods were found, but no assemblies were transformed. Launching tML as normal.");
 +		}
 +
-+		Logging.tML.InfoFormat("No coremods found, running tML as usual...");
 +		LaunchGame_(isServer);
 +	}
 +
