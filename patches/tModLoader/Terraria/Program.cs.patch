@@ -116,11 +116,11 @@
  #endif
 +		*/
 +
-+		ProcessLaunchArgs(args, monoArgs, out bool isServer, out bool skipCoreMods);
++		ProcessLaunchArgs(args, monoArgs, out bool isServer);
 +
 +		StartupSequenceTml(isServer);
 +
-+		if (!skipCoreMods && CoreModLoader.IsAnyCoreMods(out Mod[] nonCoreMods, out Mod[] coreMods)) {
++		if (!LaunchParameters.ContainsKey("-skipcore") && !LaunchParameters.ContainsKey("-build") && CoreModLoader.IsAnyCoreMods(out Mod[] nonCoreMods, out Mod[] coreMods)) {
 +			Logging.tML.InfoFormat("Core Mods found, initiating transformation process...");
 +
 +			if (CoreModLoader.LaunchALCWithCoreMods(isServer, nonCoreMods, coreMods)) {

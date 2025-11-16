@@ -359,10 +359,9 @@ public static partial class Program
 		}
 	}
 
-	private static void ProcessLaunchArgs(string[] args, bool monoArgs, out bool isServer, out bool skipCoreMods)
+	private static void ProcessLaunchArgs(string[] args, bool monoArgs, out bool isServer)
 	{
 		isServer = false;
-		skipCoreMods = false;
 
 		try {
 			if (monoArgs)
@@ -380,7 +379,6 @@ public static partial class Program
 
 			// Unify server and client dll via launch param
 			isServer = LaunchParameters.ContainsKey("-server");
-			skipCoreMods = LaunchParameters.ContainsKey("-skipcore");
 		}
 		catch (Exception e) {
 			ErrorReporting.FatalExit("Unhandled Issue with Launch Arguments. Please verify sources such as Steam Launch Options, cli-ArgsConfig, and VS profiles", e);
