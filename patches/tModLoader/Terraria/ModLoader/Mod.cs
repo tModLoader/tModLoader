@@ -55,6 +55,11 @@ public partial class Mod
 	public string SourceFolder { get; internal set; }
 
 	/// <summary>
+	/// Whether this mod was defined to have coremod transformers in the built.txt file, and thus will be denoted as Core Mod.
+	/// </summary>
+	public bool HasCoreModTransformers { get; internal set; }
+
+	/// <summary>
 	/// Whether or not this mod will autoload content by default. Autoloading content means you do not need to manually add content through methods.
 	/// </summary>
 	public bool ContentAutoloadingEnabled { get; init; } = true;
@@ -88,7 +93,7 @@ public partial class Mod
 	/// The display name of this mod in the Mods menu.
 	/// </summary>
 	public string DisplayName { get; internal set; }
-	
+
 	private string displayNameClean;
 	/// <summary>
 	/// Same as DisplayName, but chat tags are removed. This can be used for more readable logging and console output. It is also useful for code that searches or filters by mod name.

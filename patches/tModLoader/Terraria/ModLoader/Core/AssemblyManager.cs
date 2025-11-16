@@ -222,6 +222,7 @@ public static class AssemblyManager
 			m.TModLoaderVersion = mod.properties.buildVersion;
 			m.TranslationForMods = mod.properties.translationMod ? mod.properties.RefNames(true).ToList() : null;
 			m.SourceFolder = Directory.Exists(mod.properties.modSource) ? mod.properties.modSource : "";
+			m.HasCoreModTransformers = mod.properties.hasCoreModTransformers;
 			return m;
 		}
 		catch (Exception e) {
@@ -296,11 +297,13 @@ public static class AssemblyManager
 		}
 	}
 
-	private static string GetModAssemblyFileName(this TmodFile modFile) => $"{modFile.Name}.dll";
+	internal static string GetModAssemblyFileName(this TmodFile modFile) => $"{modFile.Name}.dll";
 
 	public static byte[] GetModAssembly(this TmodFile modFile) => modFile.GetBytes(modFile.GetModAssemblyFileName());
 
-	public static byte[] GetModPdb(this TmodFile modFile) => modFile.GetBytes(Path.ChangeExtension(modFile.GetModAssemblyFileName(), "pdb"));
+	internal static string GetModPdbFileName(this TmodFile modFile) => Path.ChangeExtension(modFile.GetModAssemblyFileName(), "pdb");
+
+	public static byte[] GetModPdb(this TmodFile modFile) => modFile.GetBytes(modFile.GetModPdbFileName());
 
 	private static ModLoadContext GetLoadContext(string name) => loadedModContexts.TryGetValue(name, out var value) ? value : throw new KeyNotFoundException(name);
 
