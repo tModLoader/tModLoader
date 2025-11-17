@@ -403,6 +403,8 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 		Append(_blockInput);
 
 		Append(_activeDialog = dialog);
+
+		UILinkPointNavigator.ChangePoint(GamepadPointID.FancyUI0 + 2); // 1st button of dialog
 	}
 
 	private void QuickEnableAll(UIMouseEvent evt, UIElement listeningElement)
@@ -460,6 +462,7 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 		}.WithFadedMouseOver();
 		_confirmDialogYesButton.OnLeftClick += yesAction;
 		_confirmDialogYesButton.OnLeftClick += CloseConfirmDialog;
+		_confirmDialogYesButton.SetSnapPoint("Yes", 0);
 		_toggleModsDialog.Append(_confirmDialogYesButton);
 
 		_confirmDialogNoButton = new UIAutoScaleTextTextPanel<LocalizedText>(Language.GetText("LegacyMenu.105")) {
@@ -470,6 +473,7 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 			HAlign = .85f
 		}.WithFadedMouseOver();
 		_confirmDialogNoButton.OnLeftClick += CloseConfirmDialog;
+		_confirmDialogNoButton.SetSnapPoint("No", 0);
 		_toggleModsDialog.Append(_confirmDialogNoButton);
 
 		var yesDontAskAgainButton = new UIAutoScaleTextTextPanel<LocalizedText>(Language.GetText("tModLoader.YesDontAskAgain")) {
@@ -482,6 +486,7 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 		yesDontAskAgainButton.OnLeftClick += (a, b) => ModLoader.showConfirmationWindowWhenEnableDisableAllMods = false;
 		yesDontAskAgainButton.OnLeftClick += yesAction;
 		yesDontAskAgainButton.OnLeftClick += CloseConfirmDialog;
+		yesDontAskAgainButton.SetSnapPoint("YesDontAskAgain", 0);
 		_toggleModsDialog.Append(yesDontAskAgainButton);
 
 		_confirmDialogText = new UIText(Language.GetTextValue(confirmDialogTextKey)) {
@@ -605,6 +610,17 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 		UIGamepadHelper helper;
 		int startID = GamepadPointID.FancyUI0 + 2;
 		int currentID = startID;
+
+		if (_activeDialog?.Parent != null) {
+			var dialogSnapPoints = _activeDialog.GetSnapPoints();
+			var dialogLinkPoints = helper.CreateUILinkPointGrid(ref currentID, dialogSnapPoints, 2, null, null, null, null);
+
+			// _activeDialog could currently be delete mod (yes/no) or enable/disable all (yes/no, yes don't ask again)
+			if (dialogSnapPoints.Count == 3) {
+				dialogLinkPoints[1, 0].Down = dialogLinkPoints[0, 1].ID;
+			}
+			return;
+		}
 
 		int modsUpSide = currentID;
 		var upperMenuSnapPoints = upperMenuContainer.GetSnapPoints();

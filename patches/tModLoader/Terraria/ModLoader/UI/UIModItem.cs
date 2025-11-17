@@ -646,6 +646,7 @@ internal class UIModItem : UIPanel
 				HAlign = .15f
 			}.WithFadedMouseOver();
 			_dialogYesButton.OnLeftClick += DeleteMod;
+			_dialogYesButton.SetSnapPoint("DeleteYes", 0);
 			_deleteModDialog.Append(_dialogYesButton);
 
 			_dialogNoButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("LegacyMenu.105")) {
@@ -656,6 +657,7 @@ internal class UIModItem : UIPanel
 				HAlign = .85f
 			}.WithFadedMouseOver();
 			_dialogNoButton.OnLeftClick += Interface.modsMenu.CloseConfirmDialog;
+			_dialogNoButton.SetSnapPoint("DeleteNo", 0);
 			_deleteModDialog.Append(_dialogNoButton);
 
 			_dialogText = new UIText(Language.GetTextValue("tModLoader.DeleteModConfirm")) {
