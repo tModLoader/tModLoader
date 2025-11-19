@@ -214,7 +214,7 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 
 	/// <summary>
 	/// Allows you to control what happens when this projectile is killed (for example, creating dust or making sounds). Also useful for creating retrievable ammo.
-	/// <para/> Can be called on the local client or server, depending on who owns the projectile.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	public virtual void OnKill(int timeLeft)
 	{
