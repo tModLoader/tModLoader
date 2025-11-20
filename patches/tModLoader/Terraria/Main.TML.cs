@@ -72,6 +72,7 @@ public partial class Main
 	// Tracks whether the Stylist has had her hairstyle list updated for the current interaction.
 	private static bool hairstylesUpdatedForThisInteraction; // TML: Track whether hairstyle cache needs refreshing for Stylist UI.
 
+	[ThreadStatic]
 	private static Player _currentPlayerOverride;
 
 	/// <summary>
