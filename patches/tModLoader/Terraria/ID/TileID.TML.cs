@@ -20,9 +20,7 @@ partial class TileID
 		/// <summary> Allows non-solid tiles to be sloped (solid tiles can always be sloped, regardless of this set). </summary>
 		public static bool[] CanBeSloped = Factory.CreateBoolSet();
 
-		/// <summary> Whether or not this tile can be infected by the natural spreading of biomes such as corruption, crimson, or hallow.
-		/// <br>Doesn't affect the spreading in <see cref="WorldGen.hardUpdateWorld"/>, only used in <see cref="WorldGen.SpreadInfectionToNearbyTile"/></br>
-		/// </summary>
+		/// <summary> Whether or not this tile can be infected by the natural spreading of biomes such as corruption, crimson, or hallow. </summary>
 		public static bool[] Infectable = Factory.CreateBoolSet(1, 2, 53, 60, 69, 161, 179, 180, 181, 182, 183, 381, 396, 397, 534, 536, 539, 625, 627);
 
 		/// <summary>

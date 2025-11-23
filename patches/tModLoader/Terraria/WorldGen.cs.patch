@@ -311,70 +311,6 @@
  		if (Main.rand == null)
  			Main.rand = new UnifiedRandom((int)DateTime.Now.Ticks);
  
-@@ -2624,30 +_,62 @@
- 					worldBackup = false;
- 
- 				if (!Main.dedServ) {
-+					// If the loading error is mod related, show the exception, then back to the load backup/load failed menus.
-+					if (WorldFile.LastThrownLoadException is CustomModDataException ex) {
-+						WorldIO.customDataFail = ex;
-+						Utils.ShowFancyErrorMessage($"{Language.GetTextValue("tModLoader.WorldIOException")}\n{ex.modName}\n\n{ex.Message}\n{ex.StackTrace}", worldBackup ? 200 : 201);
-+						return;
-+					}
- 					if (worldBackup)
- 						Main.menuMode = 200;
- 					else
- 						Main.menuMode = 201;
--
- 					return;
- 				}
- 
- 				if (!worldBackup) {
-+					/*
- 					Console.WriteLine(Language.GetTextValue("Error.LoadFailedNoBackup"));
-+					*/
-+					string message = Language.GetTextValue("Error.LoadFailedNoBackup");
-+
-+					if (WorldIO.customDataFail != null) {
-+						message = WorldIO.customDataFail.modName + " " + message;
-+						message += "\n" + WorldIO.customDataFail.InnerException;
-+					}
-+
-+					Console.WriteLine(message);
- 					return;
- 				}
- 
- 				FileUtilities.Copy(Main.worldPathName, Main.worldPathName + ".bad", isCloudSave);
- 				FileUtilities.Copy(Main.worldPathName + ".bak", Main.worldPathName, isCloudSave);
- 				FileUtilities.Delete(Main.worldPathName + ".bak", isCloudSave);
-+
-+				WorldIO.LoadDedServBackup(Main.worldPathName, isCloudSave);
-+
- 				WorldFile.LoadWorld(Main.ActiveWorldFileData.IsCloudSave);
- 				if (loadFailed || !loadSuccess) {
- 					WorldFile.LoadWorld(Main.ActiveWorldFileData.IsCloudSave);
-+
-+					// Patch context/merge.
- 					if (loadFailed || !loadSuccess) {
- 						FileUtilities.Copy(Main.worldPathName, Main.worldPathName + ".bak", isCloudSave);
- 						FileUtilities.Copy(Main.worldPathName + ".bad", Main.worldPathName, isCloudSave);
- 						FileUtilities.Delete(Main.worldPathName + ".bad", isCloudSave);
-+
-+						WorldIO.RevertDedServBackup(Main.worldPathName, isCloudSave);
-+
-+						/*
- 						Console.WriteLine(Language.GetTextValue("Error.LoadFailed"));
-+						*/
-+						string message = Language.GetTextValue("Error.LoadFailed");
-+
-+						if (WorldIO.customDataFail != null) {
-+							message = $"{WorldIO.customDataFail.modName} {message}\r\n{WorldIO.customDataFail.InnerException}";
-+						}
-+
-+						Console.WriteLine(message);
- 						return;
- 					}
- 				}
 @@ -2674,6 +_,12 @@
  		if (Main.netMode == 0 && Main.anglerWhoFinishedToday.Contains(Main.player[Main.myPlayer].name))
  			Main.anglerQuestFinished = true;
@@ -3021,89 +2957,255 @@
  					if (Main.tile[num8, num9].type == 661 || Main.tile[num8, num9].type == 662 || Main.tile[num8, num9].type == 23 || Main.tile[num8, num9].type == 199 || Main.tile[num8, num9].type == 2 || Main.tile[num8, num9].type == 477 || Main.tile[num8, num9].type == 492 || Main.tile[num8, num9].type == 109) {
  						Main.tile[num8, num9].type = 60;
  						SquareTileFrame(num8, num9);
-@@ -50708,6 +_,9 @@
- 				if (!InWorld(num11, num12, 10))
- 					continue;
+@@ -50696,245 +_,18 @@
+ 			}
+ 		}
  
-+				if (!Main.tile[num11, num12].active())
-+					continue;
-+
- 				if (nearbyChlorophyte(num11, num12)) {
- 					ChlorophyteDefense(num11, num12);
- 				}
-@@ -50715,6 +_,19 @@
- 					if (CountNearBlocksTypes(num11, num12, 2, 1, 27) > 0)
- 						continue;
+-		if ((NPC.downedPlantBoss && genRand.Next(2) != 0) || !AllowedToSpreadInfections)
+-			return;
+-
+ 		if (type == 23 || type == 25 || type == 32 || type == 112 || type == 163 || type == 400 || type == 398 || type == 636 || type == 661) {
+-			bool flag2 = true;
+-			while (flag2) {
+-				flag2 = false;
+-				int num11 = i + genRand.Next(-3, 4);
+-				int num12 = j + genRand.Next(-3, 4);
+-				if (!InWorld(num11, num12, 10))
+-					continue;
+-
+-				if (nearbyChlorophyte(num11, num12)) {
+-					ChlorophyteDefense(num11, num12);
+-				}
+-				else {
+-					if (CountNearBlocksTypes(num11, num12, 2, 1, 27) > 0)
+-						continue;
+-
+-					if (Main.tile[num11, num12].type == 2) {
+-						if (genRand.Next(2) == 0)
+-							flag2 = true;
+-
+-						Main.tile[num11, num12].type = 23;
+-						SquareTileFrame(num11, num12);
+-						NetMessage.SendTileSquare(-1, num11, num12);
+-					}
+-					else if (Main.tile[num11, num12].type == 1 || Main.tileMoss[Main.tile[num11, num12].type]) {
+-						if (genRand.Next(2) == 0)
+-							flag2 = true;
+-
+-						Main.tile[num11, num12].type = 25;
+-						SquareTileFrame(num11, num12);
+-						NetMessage.SendTileSquare(-1, num11, num12);
+-					}
+-					else if (Main.tile[num11, num12].type == 53) {
+-						if (genRand.Next(2) == 0)
+-							flag2 = true;
+-
+-						Main.tile[num11, num12].type = 112;
+-						SquareTileFrame(num11, num12);
+-						NetMessage.SendTileSquare(-1, num11, num12);
+-					}
+-					else if (Main.tile[num11, num12].type == 396) {
+-						if (genRand.Next(2) == 0)
+-							flag2 = true;
+-
+-						Main.tile[num11, num12].type = 400;
+-						SquareTileFrame(num11, num12);
+-						NetMessage.SendTileSquare(-1, num11, num12);
+-					}
+-					else if (Main.tile[num11, num12].type == 397) {
+-						if (genRand.Next(2) == 0)
+-							flag2 = true;
+-
+-						Main.tile[num11, num12].type = 398;
+-						SquareTileFrame(num11, num12);
+-						NetMessage.SendTileSquare(-1, num11, num12);
+-					}
+-					else if (Main.tile[num11, num12].type == 60) {
+-						if (genRand.Next(2) == 0)
+-							flag2 = true;
+-
+-						Main.tile[num11, num12].type = 661;
+-						SquareTileFrame(num11, num12);
+-						NetMessage.SendTileSquare(-1, num11, num12);
+-					}
+-					else if (Main.tile[num11, num12].type == 69) {
+-						if (genRand.Next(2) == 0)
+-							flag2 = true;
+-
+-						Main.tile[num11, num12].type = 32;
+-						SquareTileFrame(num11, num12);
+-						NetMessage.SendTileSquare(-1, num11, num12);
+-					}
+-					else if (Main.tile[num11, num12].type == 161) {
+-						if (genRand.Next(2) == 0)
+-							flag2 = true;
+-
+-						Main.tile[num11, num12].type = 163;
+-						SquareTileFrame(num11, num12);
+-						NetMessage.SendTileSquare(-1, num11, num12);
+-					}
+-				}
+-			}
++			SpreadInfectionToNearbyTile(i, j, BiomeConversionID.Corruption);
+ 		}
  
-+					int preHookType = Main.tile[num11, num12].type;
-+					bool convertTile = TileLoader.Convert(num11, num12, BiomeConversionID.Corruption);
-+
-+					if (preHookType != Main.tile[num11, num12].type) {
-+						if (genRand.Next(2) == 0)
-+							flag2 = true;
-+
-+						continue;
-+					}
-+
-+					if (!convertTile)
-+						continue;
-+
- 					if (Main.tile[num11, num12].type == 2) {
- 						if (genRand.Next(2) == 0)
- 							flag2 = true;
-@@ -50792,6 +_,9 @@
- 				if (!InWorld(num13, num14, 10))
- 					continue;
+ 		if (type == 199 || type == 200 || type == 201 || type == 203 || type == 205 || type == 234 || type == 352 || type == 401 || type == 399 || type == 662) {
+-			bool flag3 = true;
+-			while (flag3) {
+-				flag3 = false;
+-				int num13 = i + genRand.Next(-3, 4);
+-				int num14 = j + genRand.Next(-3, 4);
+-				if (!InWorld(num13, num14, 10))
+-					continue;
+-
+-				if (nearbyChlorophyte(num13, num14)) {
+-					ChlorophyteDefense(num13, num14);
+-				}
+-				else {
+-					if (CountNearBlocksTypes(num13, num14, 2, 1, 27) > 0)
+-						continue;
+-
+-					if (Main.tile[num13, num14].type == 2) {
+-						if (genRand.Next(2) == 0)
+-							flag3 = true;
+-
+-						Main.tile[num13, num14].type = 199;
+-						SquareTileFrame(num13, num14);
+-						NetMessage.SendTileSquare(-1, num13, num14);
+-					}
+-					else if (Main.tile[num13, num14].type == 1 || Main.tileMoss[Main.tile[num13, num14].type]) {
+-						if (genRand.Next(2) == 0)
+-							flag3 = true;
+-
+-						Main.tile[num13, num14].type = 203;
+-						SquareTileFrame(num13, num14);
+-						NetMessage.SendTileSquare(-1, num13, num14);
+-					}
+-					else if (Main.tile[num13, num14].type == 53) {
+-						if (genRand.Next(2) == 0)
+-							flag3 = true;
+-
+-						Main.tile[num13, num14].type = 234;
+-						SquareTileFrame(num13, num14);
+-						NetMessage.SendTileSquare(-1, num13, num14);
+-					}
+-					else if (Main.tile[num13, num14].type == 396) {
+-						if (genRand.Next(2) == 0)
+-							flag3 = true;
+-
+-						Main.tile[num13, num14].type = 401;
+-						SquareTileFrame(num13, num14);
+-						NetMessage.SendTileSquare(-1, num13, num14);
+-					}
+-					else if (Main.tile[num13, num14].type == 397) {
+-						if (genRand.Next(2) == 0)
+-							flag3 = true;
+-
+-						Main.tile[num13, num14].type = 399;
+-						SquareTileFrame(num13, num14);
+-						NetMessage.SendTileSquare(-1, num13, num14);
+-					}
+-					else if (Main.tile[num13, num14].type == 60) {
+-						if (genRand.Next(2) == 0)
+-							flag3 = true;
+-
+-						Main.tile[num13, num14].type = 662;
+-						SquareTileFrame(num13, num14);
+-						NetMessage.SendTileSquare(-1, num13, num14);
+-					}
+-					else if (Main.tile[num13, num14].type == 69) {
+-						if (genRand.Next(2) == 0)
+-							flag3 = true;
+-
+-						Main.tile[num13, num14].type = 352;
+-						SquareTileFrame(num13, num14);
+-						NetMessage.SendTileSquare(-1, num13, num14);
+-					}
+-					else if (Main.tile[num13, num14].type == 161) {
+-						if (genRand.Next(2) == 0)
+-							flag3 = true;
+-
+-						Main.tile[num13, num14].type = 200;
+-						SquareTileFrame(num13, num14);
+-						NetMessage.SendTileSquare(-1, num13, num14);
+-					}
+-				}
+-			}
++			SpreadInfectionToNearbyTile(i, j, BiomeConversionID.Crimson);
+ 		}
  
-+				if (!Main.tile[num13, num14].active())
-+					continue;
-+
- 				if (nearbyChlorophyte(num13, num14)) {
- 					ChlorophyteDefense(num13, num14);
- 				}
-@@ -50799,6 +_,19 @@
- 					if (CountNearBlocksTypes(num13, num14, 2, 1, 27) > 0)
- 						continue;
+ 		if (type != 109 && type != 110 && type != 113 && type != 115 && type != 116 && type != 117 && type != 164 && type != 402 && type != 403 && type != 492)
+ 			return;
  
-+					int preHookType = Main.tile[num13, num14].type;
-+					bool convertTile = TileLoader.Convert(num13, num14, BiomeConversionID.Crimson);
-+
-+					if (preHookType != Main.tile[num13, num14].type) {
-+						if (genRand.Next(2) == 0)
-+							flag3 = true;
-+
-+						continue;
-+					}
-+
-+					if (!convertTile)
-+						continue;
-+
- 					if (Main.tile[num13, num14].type == 2) {
- 						if (genRand.Next(2) == 0)
- 							flag3 = true;
-@@ -50878,6 +_,22 @@
- 			if (!InWorld(num15, num16, 10) || CountNearBlocksTypes(num15, num16, 2, 1, 27) > 0)
- 				continue;
+-		bool flag4 = true;
+-		while (flag4) {
+-			flag4 = false;
+-			int num15 = i + genRand.Next(-3, 4);
+-			int num16 = j + genRand.Next(-3, 4);
+-			if (!InWorld(num15, num16, 10) || CountNearBlocksTypes(num15, num16, 2, 1, 27) > 0)
+-				continue;
+-
+-			if (Main.tile[num15, num16].type == 2) {
+-				if (genRand.Next(2) == 0)
+-					flag4 = true;
+-
+-				Main.tile[num15, num16].type = 109;
+-				SquareTileFrame(num15, num16);
+-				NetMessage.SendTileSquare(-1, num15, num16);
+-			}
+-			else if (Main.tile[num15, num16].type == 477) {
+-				if (genRand.Next(2) == 0)
+-					flag4 = true;
+-
+-				Main.tile[num15, num16].type = 492;
+-				SquareTileFrame(num15, num16);
+-				NetMessage.SendTileSquare(-1, num15, num16);
+-			}
+-			else if (Main.tile[num15, num16].type == 1 || Main.tileMoss[Main.tile[num15, num16].type]) {
+-				if (genRand.Next(2) == 0)
+-					flag4 = true;
+-
+-				Main.tile[num15, num16].type = 117;
+-				SquareTileFrame(num15, num16);
+-				NetMessage.SendTileSquare(-1, num15, num16);
+-			}
+-			else if (Main.tile[num15, num16].type == 53) {
+-				if (genRand.Next(2) == 0)
+-					flag4 = true;
+-
+-				Main.tile[num15, num16].type = 116;
+-				SquareTileFrame(num15, num16);
+-				NetMessage.SendTileSquare(-1, num15, num16);
+-			}
+-			else if (Main.tile[num15, num16].type == 396) {
+-				if (genRand.Next(2) == 0)
+-					flag4 = true;
+-
+-				Main.tile[num15, num16].type = 403;
+-				SquareTileFrame(num15, num16);
+-				NetMessage.SendTileSquare(-1, num15, num16);
+-			}
+-			else if (Main.tile[num15, num16].type == 397) {
+-				if (genRand.Next(2) == 0)
+-					flag4 = true;
+-
+-				Main.tile[num15, num16].type = 402;
+-				SquareTileFrame(num15, num16);
+-				NetMessage.SendTileSquare(-1, num15, num16);
+-			}
+-			else if (Main.tile[num15, num16].type == 161) {
+-				if (genRand.Next(2) == 0)
+-					flag4 = true;
+-
+-				Main.tile[num15, num16].type = 164;
+-				SquareTileFrame(num15, num16);
+-				NetMessage.SendTileSquare(-1, num15, num16);
+-			}
+-		}
++		SpreadInfectionToNearbyTile(i, j, BiomeConversionID.Hallow);
+ 	}
  
-+			if (!Main.tile[num15, num16].active())
-+				continue;
-+
-+			int preHookType = Main.tile[num15, num16].type;
-+			bool convertTile = TileLoader.Convert(num15, num16, BiomeConversionID.Hallow);
-+
-+			if (preHookType != Main.tile[num15, num16].type) {
-+				if (genRand.Next(2) == 0)
-+					flag4 = true;
-+
-+				continue;
-+			}
-+
-+			if (!convertTile)
-+				continue;
-+
- 			if (Main.tile[num15, num16].type == 2) {
- 				if (genRand.Next(2) == 0)
- 					flag4 = true;
+ 	public static bool SolidTile(Tile testTile)
 @@ -51041,6 +_,10 @@
  		return true;
  	}
