@@ -2964,7 +2964,7 @@
 -		if ((NPC.downedPlantBoss && genRand.Next(2) != 0) || !AllowedToSpreadInfections)
 -			return;
 -
- 		if (type == 23 || type == 25 || type == 32 || type == 112 || type == 163 || type == 400 || type == 398 || type == 636 || type == 661) {
+-		if (type == 23 || type == 25 || type == 32 || type == 112 || type == 163 || type == 400 || type == 398 || type == 636 || type == 661) {
 -			bool flag2 = true;
 -			while (flag2) {
 -				flag2 = false;
@@ -3046,6 +3046,7 @@
 -					}
 -				}
 -			}
++		if (type == 23 || type == 25 || type == 32 || type == 112 || type == 163 || type == 400 || type == 398 || type == 636 || type == 661 || type == 24) {
 +			SpreadInfectionToNearbyTile(i, j, BiomeConversionID.Corruption);
  		}
  
