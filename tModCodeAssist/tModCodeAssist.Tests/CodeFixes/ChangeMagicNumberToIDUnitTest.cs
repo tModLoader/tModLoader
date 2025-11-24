@@ -126,6 +126,9 @@ public sealed class ChangeMagicNumberToIDUnitTest
 			_ = new Item().type == [|1|];
 			_ = new Projectile().type == [|444|];
 			_ = Main.tile[10, 20].TileType == [|8|]; // ref property
+
+			// https://github.com/tModLoader/tModLoader/issues/4849
+			_ = new Player().CountItem([|2|]) < 10;
 			""",
 			"""
 			using Terraria;
@@ -134,6 +137,9 @@ public sealed class ChangeMagicNumberToIDUnitTest
 			_ = new Item().type == ItemID.IronPickaxe;
 			_ = new Projectile().type == ProjectileID.Xenopopper;
 			_ = Main.tile[10, 20].TileType == TileID.Gold; // ref property
+
+			// https://github.com/tModLoader/tModLoader/issues/4849
+			_ = new Player().CountItem(ItemID.DirtBlock) < 10;
 			""");
 	}
 

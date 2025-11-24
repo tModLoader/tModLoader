@@ -6470,6 +6470,25 @@
  		Asset<Texture2D> asset = TextureAssets.MapBGs[0];
  		int num = -1;
  		Microsoft.Xna.Framework.Color color = Microsoft.Xna.Framework.Color.White;
+@@ -46783,6 +_,9 @@
+ 
+ 	public void DrawCapture(Microsoft.Xna.Framework.Rectangle area, CaptureSettings settings)
+ 	{
++		// Remove in 1.4.5
++		bool lidquidEdgeRendererEnabled = LiquidEdgeRenderer.Enabled;
++		LiquidEdgeRenderer.Enabled = false;
+ 		float[] array = bgAlphaFrontLayer;
+ 		bgAlphaFrontLayer = new float[array.Length];
+ 		float[] array2 = bgAlphaFarBackLayer;
+@@ -47132,6 +_,8 @@
+ 		SceneMetrics.HolyTileCount = holyTileCount;
+ 		Lighting.Initialize();
+ 		GameViewMatrix = gameViewMatrix;
++		// Remove in 1.4.5
++		LiquidEdgeRenderer.Enabled = lidquidEdgeRendererEnabled;
+ 	}
+ 
+ 	protected void RenderTiles()
 @@ -47244,6 +_,12 @@
  			case 4:
  				return 13;
@@ -6543,21 +6562,6 @@
  			TilesRenderer.DrawLiquidBehindTiles(waterStyle);
  
  		LiquidRenderer.Instance.DrawNormalLiquids(spriteBatch, drawOffset, waterStyle, Alpha, bg);
-@@ -47337,6 +_,14 @@
- 
- 	public static void DrawTileInWater(Vector2 drawOffset, int x, int y)
- 	{
-+		// TML(liquid-slopes): There seems to be an IOOB being thrown here,
-+		// presumably due to tile coordinates being stored as relative XY
-+		// positions as a result of the merger with the shimmer draw cache.
-+		// For now, just add a safety check here.  We can keep this even if
-+		// it's properly addressed.
-+		if (!WorldGen.InWorld(x, y))
-+			return;
-+
- 		if (Main.tile[x, y] != null && Main.tile[x, y].active() && Main.tile[x, y].type == 518) {
- 			instance.LoadTiles(Main.tile[x, y].type);
- 			Tile tile = Main.tile[x, y];
 @@ -47776,6 +_,7 @@
  			}
  		}

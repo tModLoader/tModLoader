@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <BuildMod>false</BuildMod>
+    <OutputTmlReferences>true</OutputTmlReferences>
   </PropertyGroup>
 
   <Import Project="../../src/WorkspaceInfo.targets" />

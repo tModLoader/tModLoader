@@ -75,7 +75,8 @@
 +				return IntPtr.Zero;
 +
  			if (name.StartsWith("steam_api")) {
- 				Console.WriteLine("\tdelegating to Steamworks.NET.AnyCPU resolver");
+-				Console.WriteLine("\tdelegating to Steamworks.NET.AnyCPU resolver");
++				Logging.tML.Debug("\tdelegating to Steamworks.NET.AnyCPU resolver");
  				return assemblies[name] = IntPtr.Zero;
  			}
  

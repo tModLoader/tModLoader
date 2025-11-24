@@ -96,7 +96,7 @@ namespace ExampleMod.Content
 				// Adds a mod tile requirement. To specify more than one crafting station, use multiple recipe.AddTile() calls.
 				.AddTile<Tiles.Furniture.ExampleWorkbench>()
 				// An alternate string-based approach to the above. Try to only use it for other mods' tiles, because it's slower.
-				.AddTile(Mod, "ExampleWorkbench")
+				//.AddTile(Mod, "ExampleWorkbench")
 
 				// Adds pre-defined conditions. These 3 lines combine to make so that the recipe must be crafted in desert waters at night.
 				.AddCondition(Condition.InDesert)

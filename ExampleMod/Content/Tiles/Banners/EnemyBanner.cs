@@ -32,6 +32,8 @@ namespace ExampleMod.Content.Tiles.Banners
 	// BannerItem = ModContent.ItemType<ExampleCustomAISlimeNPCBanner>();
 	// to
 	// BannerItem = Mod.Find<ModItem>("ExampleCustomAISlimeNPCBanner").Type;
+	// or
+	// BannerItem = Mod.Find<ModItem>($"{nameof(EnemyBanner.StyleID.ExampleCustomAISlimeNPC)}Banner").Type;
 
 	public class EnemyBannerLoader : ILoadable
 	{

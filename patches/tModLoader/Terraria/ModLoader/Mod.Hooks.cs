@@ -89,7 +89,7 @@ partial class Mod
 	/// The <see cref="ModSystem.HijackGetData(ref byte, ref BinaryReader, int)"/> hook can be used to intercept any packet used by Terraria.
 	/// </summary>
 	/// <param name="reader">The reader.</param>
-	/// <param name="whoAmI">The player the message is from. Only relevant for server code. For clients it will always be 255, the server. For the server it will be the whoAmI of the client.</param>
+	/// <param name="whoAmI">The player the message is from. Only relevant for server code. For clients it will always be 256, the server. For the server it will be the whoAmI of the client.</param>
 	public virtual void HandlePacket(BinaryReader reader, int whoAmI)
 	{
 	}
