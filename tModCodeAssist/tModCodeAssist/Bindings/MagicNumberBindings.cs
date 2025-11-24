@@ -155,7 +155,7 @@ public static class MagicNumberBindings
 			AddBinding<BuffID>("Terraria.NPC", "AddBuff", (ctx) => new MethodParameterBinding(ctx, 0));
 			AddBinding<BuffID>("Terraria.NPC", "FindBuffIndex", (ctx) => new MethodParameterBinding(ctx, 0));
 			AddBinding<BuffID>("Terraria.NPC", "HasBuff(int)", (ctx) => new MethodParameterBinding(ctx, 0));
-			AddBinding<RecipeGroupID>("Terraria.Recipe", "AddRecipeGroup(int, int)", (ctx) => new MethodParameterBinding(ctx, 0));
+			AddBinding<RecipeGroupID>("Terraria.Recipe", "AddRecipeGroup(int, int)", (ctx) => new MethodParameterBinding(ctx, 0), idType: typeof(int));
 
 			AddBinding<ItemID>("Terraria.ID.ItemID.Sets", "*", (ctx) => new FieldOrPropertyBinding(ctx));
 			AddBinding<NPCID>("Terraria.ID.NPCID.Sets", "*", (ctx) => new FieldOrPropertyBinding(ctx));
