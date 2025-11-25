@@ -3021,15 +3021,22 @@
  					if (Main.tile[num8, num9].type == 661 || Main.tile[num8, num9].type == 662 || Main.tile[num8, num9].type == 23 || Main.tile[num8, num9].type == 199 || Main.tile[num8, num9].type == 2 || Main.tile[num8, num9].type == 477 || Main.tile[num8, num9].type == 492 || Main.tile[num8, num9].type == 109) {
  						Main.tile[num8, num9].type = 60;
  						SquareTileFrame(num8, num9);
-@@ -50695,7 +_,7 @@
- 				}
+@@ -50696,10 +_,15 @@
  			}
  		}
--
+ 
 +		/*
  		if ((NPC.downedPlantBoss && genRand.Next(2) != 0) || !AllowedToSpreadInfections)
  			return;
  
+ 		if (type == 23 || type == 25 || type == 32 || type == 112 || type == 163 || type == 400 || type == 398 || type == 636 || type == 661) {
++		*/
++		if (type == 23 || type == 25 || type == 32 || type == 112 || type == 163 || type == 400 || type == 398 || type == 636 || type == 661 || type == TileID.CorruptPlants) {
++			SpreadInfectionToNearbyTile(i, j, BiomeConversionID.Corruption);
++			/*
+ 			bool flag2 = true;
+ 			while (flag2) {
+ 				flag2 = false;
 @@ -50708,6 +_,9 @@
  				if (!InWorld(num11, num12, 10))
  					continue;
@@ -3060,6 +3067,19 @@
  					if (Main.tile[num11, num12].type == 2) {
  						if (genRand.Next(2) == 0)
  							flag2 = true;
+@@ -50781,9 +_,12 @@
+ 					}
+ 				}
+ 			}
++			*/
+ 		}
+ 
+ 		if (type == 199 || type == 200 || type == 201 || type == 203 || type == 205 || type == 234 || type == 352 || type == 401 || type == 399 || type == 662) {
++			SpreadInfectionToNearbyTile(i, j, BiomeConversionID.Crimson);
++			/*
+ 			bool flag3 = true;
+ 			while (flag3) {
+ 				flag3 = false;
 @@ -50792,6 +_,9 @@
  				if (!InWorld(num13, num14, 10))
  					continue;
@@ -3090,6 +3110,21 @@
  					if (Main.tile[num13, num14].type == 2) {
  						if (genRand.Next(2) == 0)
  							flag3 = true;
+@@ -50865,11 +_,14 @@
+ 					}
+ 				}
+ 			}
++			*/
+ 		}
+ 
+ 		if (type != 109 && type != 110 && type != 113 && type != 115 && type != 116 && type != 117 && type != 164 && type != 402 && type != 403 && type != 492)
+ 			return;
+ 
++		SpreadInfectionToNearbyTile(i, j, BiomeConversionID.Hallow);
++		/*
+ 		bool flag4 = true;
+ 		while (flag4) {
+ 			flag4 = false;
 @@ -50878,6 +_,22 @@
  			if (!InWorld(num15, num16, 10) || CountNearBlocksTypes(num15, num16, 2, 1, 27) > 0)
  				continue;
@@ -3113,22 +3148,11 @@
  			if (Main.tile[num15, num16].type == 2) {
  				if (genRand.Next(2) == 0)
  					flag4 = true;
-@@ -50935,6 +_,18 @@
+@@ -50935,6 +_,7 @@
  				NetMessage.SendTileSquare(-1, num15, num16);
  			}
  		}
 +		*/
-+		if (type == 23 || type == 25 || type == 32 || type == 112 || type == 163 || type == 400 || type == 398 || type == 636 || type == 661 || type == 24) {
-+			SpreadInfectionToNearbyTile(i, j, BiomeConversionID.Corruption);
-+		}
-+
-+		if (type == 199 || type == 200 || type == 201 || type == 203 || type == 205 || type == 234 || type == 352 || type == 401 || type == 399 || type == 662) {
-+			SpreadInfectionToNearbyTile(i, j, BiomeConversionID.Crimson);
-+		}
-+
-+		if (type != 109 && type != 110 && type != 113 && type != 115 && type != 116 && type != 117 && type != 164 && type != 402 && type != 403 && type != 492)
-+			return;
-+		SpreadInfectionToNearbyTile(i, j, BiomeConversionID.Hallow);
  	}
  
  	public static bool SolidTile(Tile testTile)
