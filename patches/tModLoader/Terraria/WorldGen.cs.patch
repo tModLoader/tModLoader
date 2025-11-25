@@ -2957,252 +2957,113 @@
  					if (Main.tile[num8, num9].type == 661 || Main.tile[num8, num9].type == 662 || Main.tile[num8, num9].type == 23 || Main.tile[num8, num9].type == 199 || Main.tile[num8, num9].type == 2 || Main.tile[num8, num9].type == 477 || Main.tile[num8, num9].type == 492 || Main.tile[num8, num9].type == 109) {
  						Main.tile[num8, num9].type = 60;
  						SquareTileFrame(num8, num9);
-@@ -50696,245 +_,18 @@
+@@ -50695,7 +_,7 @@
+ 				}
  			}
  		}
- 
--		if ((NPC.downedPlantBoss && genRand.Next(2) != 0) || !AllowedToSpreadInfections)
--			return;
 -
--		if (type == 23 || type == 25 || type == 32 || type == 112 || type == 163 || type == 400 || type == 398 || type == 636 || type == 661) {
--			bool flag2 = true;
--			while (flag2) {
--				flag2 = false;
--				int num11 = i + genRand.Next(-3, 4);
--				int num12 = j + genRand.Next(-3, 4);
--				if (!InWorld(num11, num12, 10))
--					continue;
--
--				if (nearbyChlorophyte(num11, num12)) {
--					ChlorophyteDefense(num11, num12);
--				}
--				else {
--					if (CountNearBlocksTypes(num11, num12, 2, 1, 27) > 0)
--						continue;
--
--					if (Main.tile[num11, num12].type == 2) {
--						if (genRand.Next(2) == 0)
--							flag2 = true;
--
--						Main.tile[num11, num12].type = 23;
--						SquareTileFrame(num11, num12);
--						NetMessage.SendTileSquare(-1, num11, num12);
--					}
--					else if (Main.tile[num11, num12].type == 1 || Main.tileMoss[Main.tile[num11, num12].type]) {
--						if (genRand.Next(2) == 0)
--							flag2 = true;
--
--						Main.tile[num11, num12].type = 25;
--						SquareTileFrame(num11, num12);
--						NetMessage.SendTileSquare(-1, num11, num12);
--					}
--					else if (Main.tile[num11, num12].type == 53) {
--						if (genRand.Next(2) == 0)
--							flag2 = true;
--
--						Main.tile[num11, num12].type = 112;
--						SquareTileFrame(num11, num12);
--						NetMessage.SendTileSquare(-1, num11, num12);
--					}
--					else if (Main.tile[num11, num12].type == 396) {
--						if (genRand.Next(2) == 0)
--							flag2 = true;
--
--						Main.tile[num11, num12].type = 400;
--						SquareTileFrame(num11, num12);
--						NetMessage.SendTileSquare(-1, num11, num12);
--					}
--					else if (Main.tile[num11, num12].type == 397) {
--						if (genRand.Next(2) == 0)
--							flag2 = true;
--
--						Main.tile[num11, num12].type = 398;
--						SquareTileFrame(num11, num12);
--						NetMessage.SendTileSquare(-1, num11, num12);
--					}
--					else if (Main.tile[num11, num12].type == 60) {
--						if (genRand.Next(2) == 0)
--							flag2 = true;
--
--						Main.tile[num11, num12].type = 661;
--						SquareTileFrame(num11, num12);
--						NetMessage.SendTileSquare(-1, num11, num12);
--					}
--					else if (Main.tile[num11, num12].type == 69) {
--						if (genRand.Next(2) == 0)
--							flag2 = true;
--
--						Main.tile[num11, num12].type = 32;
--						SquareTileFrame(num11, num12);
--						NetMessage.SendTileSquare(-1, num11, num12);
--					}
--					else if (Main.tile[num11, num12].type == 161) {
--						if (genRand.Next(2) == 0)
--							flag2 = true;
--
--						Main.tile[num11, num12].type = 163;
--						SquareTileFrame(num11, num12);
--						NetMessage.SendTileSquare(-1, num11, num12);
--					}
--				}
--			}
-+		if (type == 23 || type == 25 || type == 32 || type == 112 || type == 163 || type == 400 || type == 398 || type == 636 || type == 661 || type == 24) {
-+			SpreadInfectionToNearbyTile(i, j, BiomeConversionID.Corruption);
- 		}
- 
- 		if (type == 199 || type == 200 || type == 201 || type == 203 || type == 205 || type == 234 || type == 352 || type == 401 || type == 399 || type == 662) {
--			bool flag3 = true;
--			while (flag3) {
--				flag3 = false;
--				int num13 = i + genRand.Next(-3, 4);
--				int num14 = j + genRand.Next(-3, 4);
--				if (!InWorld(num13, num14, 10))
--					continue;
--
--				if (nearbyChlorophyte(num13, num14)) {
--					ChlorophyteDefense(num13, num14);
--				}
--				else {
--					if (CountNearBlocksTypes(num13, num14, 2, 1, 27) > 0)
--						continue;
--
--					if (Main.tile[num13, num14].type == 2) {
--						if (genRand.Next(2) == 0)
--							flag3 = true;
--
--						Main.tile[num13, num14].type = 199;
--						SquareTileFrame(num13, num14);
--						NetMessage.SendTileSquare(-1, num13, num14);
--					}
--					else if (Main.tile[num13, num14].type == 1 || Main.tileMoss[Main.tile[num13, num14].type]) {
--						if (genRand.Next(2) == 0)
--							flag3 = true;
--
--						Main.tile[num13, num14].type = 203;
--						SquareTileFrame(num13, num14);
--						NetMessage.SendTileSquare(-1, num13, num14);
--					}
--					else if (Main.tile[num13, num14].type == 53) {
--						if (genRand.Next(2) == 0)
--							flag3 = true;
--
--						Main.tile[num13, num14].type = 234;
--						SquareTileFrame(num13, num14);
--						NetMessage.SendTileSquare(-1, num13, num14);
--					}
--					else if (Main.tile[num13, num14].type == 396) {
--						if (genRand.Next(2) == 0)
--							flag3 = true;
--
--						Main.tile[num13, num14].type = 401;
--						SquareTileFrame(num13, num14);
--						NetMessage.SendTileSquare(-1, num13, num14);
--					}
--					else if (Main.tile[num13, num14].type == 397) {
--						if (genRand.Next(2) == 0)
--							flag3 = true;
--
--						Main.tile[num13, num14].type = 399;
--						SquareTileFrame(num13, num14);
--						NetMessage.SendTileSquare(-1, num13, num14);
--					}
--					else if (Main.tile[num13, num14].type == 60) {
--						if (genRand.Next(2) == 0)
--							flag3 = true;
--
--						Main.tile[num13, num14].type = 662;
--						SquareTileFrame(num13, num14);
--						NetMessage.SendTileSquare(-1, num13, num14);
--					}
--					else if (Main.tile[num13, num14].type == 69) {
--						if (genRand.Next(2) == 0)
--							flag3 = true;
--
--						Main.tile[num13, num14].type = 352;
--						SquareTileFrame(num13, num14);
--						NetMessage.SendTileSquare(-1, num13, num14);
--					}
--					else if (Main.tile[num13, num14].type == 161) {
--						if (genRand.Next(2) == 0)
--							flag3 = true;
--
--						Main.tile[num13, num14].type = 200;
--						SquareTileFrame(num13, num14);
--						NetMessage.SendTileSquare(-1, num13, num14);
--					}
--				}
--			}
-+			SpreadInfectionToNearbyTile(i, j, BiomeConversionID.Crimson);
- 		}
- 
- 		if (type != 109 && type != 110 && type != 113 && type != 115 && type != 116 && type != 117 && type != 164 && type != 402 && type != 403 && type != 492)
++		/*
+ 		if ((NPC.downedPlantBoss && genRand.Next(2) != 0) || !AllowedToSpreadInfections)
  			return;
  
--		bool flag4 = true;
--		while (flag4) {
--			flag4 = false;
--			int num15 = i + genRand.Next(-3, 4);
--			int num16 = j + genRand.Next(-3, 4);
--			if (!InWorld(num15, num16, 10) || CountNearBlocksTypes(num15, num16, 2, 1, 27) > 0)
--				continue;
--
--			if (Main.tile[num15, num16].type == 2) {
--				if (genRand.Next(2) == 0)
--					flag4 = true;
--
--				Main.tile[num15, num16].type = 109;
--				SquareTileFrame(num15, num16);
--				NetMessage.SendTileSquare(-1, num15, num16);
--			}
--			else if (Main.tile[num15, num16].type == 477) {
--				if (genRand.Next(2) == 0)
--					flag4 = true;
--
--				Main.tile[num15, num16].type = 492;
--				SquareTileFrame(num15, num16);
--				NetMessage.SendTileSquare(-1, num15, num16);
--			}
--			else if (Main.tile[num15, num16].type == 1 || Main.tileMoss[Main.tile[num15, num16].type]) {
--				if (genRand.Next(2) == 0)
--					flag4 = true;
--
--				Main.tile[num15, num16].type = 117;
--				SquareTileFrame(num15, num16);
--				NetMessage.SendTileSquare(-1, num15, num16);
--			}
--			else if (Main.tile[num15, num16].type == 53) {
--				if (genRand.Next(2) == 0)
--					flag4 = true;
--
--				Main.tile[num15, num16].type = 116;
--				SquareTileFrame(num15, num16);
--				NetMessage.SendTileSquare(-1, num15, num16);
--			}
--			else if (Main.tile[num15, num16].type == 396) {
--				if (genRand.Next(2) == 0)
--					flag4 = true;
--
--				Main.tile[num15, num16].type = 403;
--				SquareTileFrame(num15, num16);
--				NetMessage.SendTileSquare(-1, num15, num16);
--			}
--			else if (Main.tile[num15, num16].type == 397) {
--				if (genRand.Next(2) == 0)
--					flag4 = true;
--
--				Main.tile[num15, num16].type = 402;
--				SquareTileFrame(num15, num16);
--				NetMessage.SendTileSquare(-1, num15, num16);
--			}
--			else if (Main.tile[num15, num16].type == 161) {
--				if (genRand.Next(2) == 0)
--					flag4 = true;
--
--				Main.tile[num15, num16].type = 164;
--				SquareTileFrame(num15, num16);
--				NetMessage.SendTileSquare(-1, num15, num16);
--			}
--		}
+@@ -50708,6 +_,9 @@
+ 				if (!InWorld(num11, num12, 10))
+ 					continue;
+ 
++				if (!Main.tile[num11, num12].active())
++					continue;
++
+ 				if (nearbyChlorophyte(num11, num12)) {
+ 					ChlorophyteDefense(num11, num12);
+ 				}
+@@ -50715,6 +_,19 @@
+ 					if (CountNearBlocksTypes(num11, num12, 2, 1, 27) > 0)
+ 						continue;
+ 
++					int preHookType = Main.tile[num11, num12].type;
++					bool convertTile = TileLoader.Convert(num11, num12, BiomeConversionID.Corruption);
++
++					if (preHookType != Main.tile[num11, num12].type) {
++						if (genRand.Next(2) == 0)
++							flag2 = true;
++
++						continue;
++					}
++
++					if (!convertTile)
++						continue;
++
+ 					if (Main.tile[num11, num12].type == 2) {
+ 						if (genRand.Next(2) == 0)
+ 							flag2 = true;
+@@ -50792,6 +_,9 @@
+ 				if (!InWorld(num13, num14, 10))
+ 					continue;
+ 
++				if (!Main.tile[num13, num14].active())
++					continue;
++
+ 				if (nearbyChlorophyte(num13, num14)) {
+ 					ChlorophyteDefense(num13, num14);
+ 				}
+@@ -50799,6 +_,19 @@
+ 					if (CountNearBlocksTypes(num13, num14, 2, 1, 27) > 0)
+ 						continue;
+ 
++					int preHookType = Main.tile[num13, num14].type;
++					bool convertTile = TileLoader.Convert(num13, num14, BiomeConversionID.Crimson);
++
++					if (preHookType != Main.tile[num13, num14].type) {
++						if (genRand.Next(2) == 0)
++							flag3 = true;
++
++						continue;
++					}
++
++					if (!convertTile)
++						continue;
++
+ 					if (Main.tile[num13, num14].type == 2) {
+ 						if (genRand.Next(2) == 0)
+ 							flag3 = true;
+@@ -50878,6 +_,22 @@
+ 			if (!InWorld(num15, num16, 10) || CountNearBlocksTypes(num15, num16, 2, 1, 27) > 0)
+ 				continue;
+ 
++			if (!Main.tile[num15, num16].active())
++				continue;
++
++			int preHookType = Main.tile[num15, num16].type;
++			bool convertTile = TileLoader.Convert(num15, num16, BiomeConversionID.Hallow);
++
++			if (preHookType != Main.tile[num15, num16].type) {
++				if (genRand.Next(2) == 0)
++					flag4 = true;
++
++				continue;
++			}
++
++			if (!convertTile)
++				continue;
++
+ 			if (Main.tile[num15, num16].type == 2) {
+ 				if (genRand.Next(2) == 0)
+ 					flag4 = true;
+@@ -50935,6 +_,18 @@
+ 				NetMessage.SendTileSquare(-1, num15, num16);
+ 			}
+ 		}
++		*/
++		if (type == 23 || type == 25 || type == 32 || type == 112 || type == 163 || type == 400 || type == 398 || type == 636 || type == 661 || type == 24) {
++			SpreadInfectionToNearbyTile(i, j, BiomeConversionID.Corruption);
++		}
++
++		if (type == 199 || type == 200 || type == 201 || type == 203 || type == 205 || type == 234 || type == 352 || type == 401 || type == 399 || type == 662) {
++			SpreadInfectionToNearbyTile(i, j, BiomeConversionID.Crimson);
++		}
++
++		if (type != 109 && type != 110 && type != 113 && type != 115 && type != 116 && type != 117 && type != 164 && type != 402 && type != 403 && type != 492)
++			return;
 +		SpreadInfectionToNearbyTile(i, j, BiomeConversionID.Hallow);
  	}
  
