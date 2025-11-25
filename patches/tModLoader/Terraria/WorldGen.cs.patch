@@ -1934,12 +1934,6 @@
  		return true;
  	}
  
-+	// legacy overload for abi compat, remove in 1.4.5
-+	/// <inheritdoc cref="Convert(int, int, int, int, bool, bool)"/>
-+	[OriginalOverload]
-+	[Obsolete("Use Convert(int, int, int, int, bool, bool) instead")]
-+	public static void Convert(int i, int j, int conversionType, int size) => Convert(i, j, conversionType, size, tiles: true, walls: true);
-+
 +	[ThreadStatic]
 +	private static int conversionRecursionDepth;
 +	internal readonly struct ConversionRecursion : IDisposable
@@ -1947,6 +1941,12 @@
 +		public ConversionRecursion() => conversionRecursionDepth++;
 +		void IDisposable.Dispose() => conversionRecursionDepth--;
 +	}
++
++	// legacy overload for abi compat, remove in 1.4.5
++	/// <inheritdoc cref="Convert(int, int, int, int, bool, bool)"/>
++	[OriginalOverload]
++	[Obsolete("Use Convert(int, int, int, int, bool, bool) instead")]
++	public static void Convert(int i, int j, int conversionType, int size) => Convert(i, j, conversionType, size, tiles: true, walls: true);
 +
 +	/// <summary>
 +	/// Converts biome variant tiles and walls to a target biome.<br/>
