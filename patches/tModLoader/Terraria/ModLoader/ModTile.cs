@@ -769,6 +769,14 @@ public abstract class ModTile : ModBlockType
 	{
 	}
 
+	/// <summary>
+	/// Called when this tile has been converted to another tile type via biome conversion. Check <paramref name="fromType"/> and <paramref name="toType"/> to see the tile types the tile changed between. For ModTile, this will be called when converting both to and from the tile. <paramref name="conversionType"/> is a <see cref="BiomeConversionID"/> (or <see cref="ModBiomeConversion.Type"/>).
+	/// </summary>
+	/// <param name="i">The x position in tile coordinates.</param>
+	/// <param name="j">The y position in tile coordinates.</param>
+	/// <param name="fromType">The original tile type</param>
+	/// <param name="toType">The new tile type</param>
+	/// <param name="conversionType">A <see cref="BiomeConversionID"/> (or <see cref="ModBiomeConversion.Type"/>)</param>
 	public virtual void OnTileConverted(int i, int j, int fromType, int toType, int conversionType)
 	{
 	}

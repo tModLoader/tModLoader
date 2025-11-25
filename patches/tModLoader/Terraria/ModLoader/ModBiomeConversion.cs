@@ -7,12 +7,12 @@ namespace Terraria.ModLoader;
 
 /// <summary>
 /// This class allows you to define a modded conversion to work with <see cref="ModBlockType.Convert"/> and <see cref="TileLoader.RegisterConversion"/> / <see cref="WallLoader.RegisterConversion"/> <br/>
-/// For the moment, this class does not provide any functional hooks, but it can still be used by mods in combination with the aforementionned hooks to create custom conversion behavior
+/// For the moment, this class does not provide any functional hooks, but it can still be used by mods in combination with the aforementioned hooks to create custom conversion behavior
 /// </summary>
 public abstract class ModBiomeConversion : ModType
 {
 	/// <summary>
-	/// The ID of the biome conversion
+	/// The ID of the biome conversion, equivalent to <see cref="ID.BiomeConversionID"/>.
 	/// </summary>
 	public int Type { get; internal set; }
 

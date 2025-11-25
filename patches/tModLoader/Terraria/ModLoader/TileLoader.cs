@@ -8,14 +8,12 @@ using Terraria.DataStructures;
 using Terraria.Enums;
 using Terraria.GameContent;
 using Terraria.GameContent.Biomes.CaveHouse;
-using Terraria.GameContent.Liquid;
 using Terraria.GameContent.ObjectInteractions;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
 using Terraria.ModLoader.IO;
 using Terraria.ObjectData;
-using static Terraria.GameContent.ItemDropRules.Conditions;
 
 namespace Terraria.ModLoader;
 

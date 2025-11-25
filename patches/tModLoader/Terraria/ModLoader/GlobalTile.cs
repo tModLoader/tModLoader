@@ -397,6 +397,7 @@ public abstract class GlobalTile : GlobalBlockType
 		return false;
 	}
 
+	/// <inheritdoc cref="ModTile.OnTileConverted(int, int, int, int, int)"/>
 	public virtual void OnTileConverted(int i, int j, int fromType, int toType, int conversionType)
 	{
 	}

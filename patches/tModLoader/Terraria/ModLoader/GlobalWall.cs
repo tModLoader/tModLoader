@@ -52,6 +52,7 @@ public abstract class GlobalWall : GlobalBlockType
 		return true;
 	}
 
+	/// <inheritdoc cref="ModWall.OnWallConverted(int, int, int, int, int)"/>
 	public virtual void OnWallConverted(int i, int j, int fromType, int toType, int conversionType)
 	{
 	}

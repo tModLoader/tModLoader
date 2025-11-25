@@ -9,7 +9,6 @@ using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
-using static System.Net.WebRequestMethods;
 
 namespace Terraria.ModLoader;
 
@@ -583,6 +582,7 @@ public static class WallLoader
 
 		GetWall(type)?.PlaceInWorld(i, j, item);
 	}
+
 	public static void OnWallConverted(int i, int j, int fromType, int toType, int conversionType)
 	{
 		foreach (var hook in HookOnWallConverted) {

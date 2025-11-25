@@ -3052,7 +3052,7 @@
 +
 +					if (preHookType != Main.tile[num8, num9].type) {
 +						flag = true;
-+						TileLoader.OnTileConverted(num8, num9, preHookType, Main.tile[num8, num9].type, 9);
++						TileLoader.OnTileConverted(num8, num9, preHookType, Main.tile[num8, num9].type, BiomeConversionID.Chlorophyte);
 +
 +						continue;
 +					}
@@ -3097,7 +3097,7 @@
 +					bool convertTile = TileLoader.Convert(num11, num12, BiomeConversionID.Corruption);
 +
 +					if (preHookType != Main.tile[num11, num12].type) {
-+						TileLoader.OnTileConverted(num11, num12, preHookType, Main.tile[num11, num12].type, 1);
++						TileLoader.OnTileConverted(num11, num12, preHookType, Main.tile[num11, num12].type, BiomeConversionID.Corruption);
 +						if (genRand.Next(2) == 0)
 +							flag2 = true;
 +
@@ -3116,7 +3116,8 @@
  			}
 +			*/
  		}
- 
+-
++		
  		if (type == 199 || type == 200 || type == 201 || type == 203 || type == 205 || type == 234 || type == 352 || type == 401 || type == 399 || type == 662) {
 +			SpreadInfectionToNearbyTile(i, j, BiomeConversionID.Crimson);
 +			/*
@@ -3141,7 +3142,7 @@
 +					bool convertTile = TileLoader.Convert(num13, num14, BiomeConversionID.Crimson);
 +
 +					if (preHookType != Main.tile[num13, num14].type) {
-+						TileLoader.OnTileConverted(num13, num14, preHookType, Main.tile[num13, num14].type, 4);
++						TileLoader.OnTileConverted(num13, num14, preHookType, Main.tile[num13, num14].type, BiomeConversionID.Crimson);
 +						if (genRand.Next(2) == 0)
 +							flag3 = true;
 +
@@ -3163,7 +3164,8 @@
  
  		if (type != 109 && type != 110 && type != 113 && type != 115 && type != 116 && type != 117 && type != 164 && type != 402 && type != 403 && type != 492)
  			return;
- 
+-
++		
 +		SpreadInfectionToNearbyTile(i, j, BiomeConversionID.Hallow);
 +		/*
  		bool flag4 = true;
@@ -3180,7 +3182,7 @@
 +			bool convertTile = TileLoader.Convert(num15, num16, BiomeConversionID.Hallow);
 +
 +			if (preHookType != Main.tile[num15, num16].type) {
-+				TileLoader.OnTileConverted(num15, num16, preHookType, Main.tile[num15, num16].type, 2);
++				TileLoader.OnTileConverted(num15, num16, preHookType, Main.tile[num15, num16].type, BiomeConversionID.Hallow);
 +				if (genRand.Next(2) == 0)
 +					flag4 = true;
 +
