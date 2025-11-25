@@ -52,7 +52,7 @@ namespace ExampleMod.Content.Projectiles
 		};
 
 		public override void SetStaticDefaults() {
-			Main.projFrames[Projectile.type] = 6;
+			Main.projFrames[Type] = 6;
 		}
 
 		public override void SetDefaults() {

@@ -26,6 +26,8 @@
 		"ShowRemovedModsInfoMessageUpdatedMods": "\nMods supprimés depuis la dernière session. Si certains de ces mods ont été retirés par erreur, cliquez sur 'Télécharcher les dépendances' pour pouvoir les retélecharger",
 		"DependenciesNeededForOtherMods": "\nDes dépendances sont manquantes:",
 		"InstallDependencies": "Installer les dépendances",
+		// "RedownloadMods": "Redownload Mods",
+		// "InstallDependenciesAndRedownloadMods": "Install Dependencies and Redownload Mods",
 		"ContinueAnyway": "Continuer quand même",
 		"ModUpdatedSinceLastLaunchMessage": "Ce mod à été mis à jour automatiquement\ndepuis le dernier lancement de la version {0}",
 		"ModAddedSinceLastLaunchMessage": "Ce mod a été ajouté depuis le dernier lancement",

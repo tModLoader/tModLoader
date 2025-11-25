@@ -20,7 +20,7 @@ namespace ExampleMod.Content.Projectiles
 		public ref float DelayTimer => ref Projectile.ai[1];
 
 		public override void SetStaticDefaults() {
-			ProjectileID.Sets.CultistIsResistantTo[Projectile.type] = true; // Make the cultist resistant to this projectile, as it's resistant to all homing projectiles.
+			ProjectileID.Sets.CultistIsResistantTo[Type] = true; // Make the cultist resistant to this projectile, as it's resistant to all homing projectiles.
 		}
 
 		public override void SetDefaults() {

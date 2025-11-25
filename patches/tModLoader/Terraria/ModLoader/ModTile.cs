@@ -79,7 +79,7 @@ public abstract class ModTile : ModBlockType
 
 	/// <summary>
 	/// <inheritdoc cref="AddMapEntry(Color, LocalizedText)"/>
-	/// <br/><br/> <b>Overload specific:</b> This overload has an additional <paramref name="nameFunc"/> parameter. This function will be used to dynamically adjust the hover text. The parameters for the function are the default display name, x-coordinate, and y-coordinate. This function is most typically used for chests and dressers to show the current chest name, if assigned, instead of the default chest name. <see href="https://github.com/tModLoader/tModLoader/blob/1.4.4/ExampleMod/Content/Tiles/Furniture/ExampleChest.cs">ExampleMod's ExampleChest</see> is one example of this functionality.
+	/// <br/><br/> <b>Overload specific:</b> This overload has an additional <paramref name="nameFunc"/> parameter. This function will be used to dynamically adjust the hover text. The parameters for the function are the default display name, x-coordinate, and y-coordinate. This function is most typically used for chests and dressers to show the current chest name, if assigned, instead of the default chest name. <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/Tiles/Furniture/ExampleChest.cs">ExampleMod's ExampleChest</see> is one example of this functionality.
 	/// </summary>
 	public void AddMapEntry(Color color, LocalizedText name, Func<string, int, int, string> nameFunc)
 	{
@@ -499,14 +499,14 @@ public abstract class ModTile : ModBlockType
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>
-	/// <param name="up">The merge type of the tile above. Unitializaed if the tile is <see cref="Main.tileFrameImportant"/>.</param>
-	/// <param name="down">The merge type of the tile below. Unitializaed if the tile is <see cref="Main.tileFrameImportant"/>.</param>
-	/// <param name="left">The merge type of the tile to the left. Unitializaed if the tile is <see cref="Main.tileFrameImportant"/>.</param>
-	/// <param name="right">The merge type of the tile to the right. Unitializaed if the tile is <see cref="Main.tileFrameImportant"/>.</param>
-	/// <param name="upLeft">The merge type of the tile on the top left. Unitializaed if the tile is <see cref="Main.tileFrameImportant"/>.</param>
-	/// <param name="upRight">The merge type of the tile on the top right. Unitializaed if the tile is <see cref="Main.tileFrameImportant"/>.</param>
-	/// <param name="downLeft">The merge type of the tile on the bottom left. Unitializaed if the tile is <see cref="Main.tileFrameImportant"/>.</param>
-	/// <param name="downRight">The merge type of the tile on the bottom right. Unitializaed if the tile is <see cref="Main.tileFrameImportant"/>.</param>
+	/// <param name="up">The merge type of the tile above. Uninitialized if the tile is <see cref="Main.tileFrameImportant"/>.</param>
+	/// <param name="down">The merge type of the tile below. Uninitialized if the tile is <see cref="Main.tileFrameImportant"/>.</param>
+	/// <param name="left">The merge type of the tile to the left. Uninitialized if the tile is <see cref="Main.tileFrameImportant"/>.</param>
+	/// <param name="right">The merge type of the tile to the right. Uninitialized if the tile is <see cref="Main.tileFrameImportant"/>.</param>
+	/// <param name="upLeft">The merge type of the tile on the top left. Uninitialized if the tile is <see cref="Main.tileFrameImportant"/>.</param>
+	/// <param name="upRight">The merge type of the tile on the top right. Uninitialized if the tile is <see cref="Main.tileFrameImportant"/>.</param>
+	/// <param name="downLeft">The merge type of the tile on the bottom left. Uninitialized if the tile is <see cref="Main.tileFrameImportant"/>.</param>
+	/// <param name="downRight">The merge type of the tile on the bottom right. Uninitialized if the tile is <see cref="Main.tileFrameImportant"/>.</param>
 	public virtual void PostTileFrame(int i, int j, int up, int down, int left, int right, int upLeft, int upRight, int downLeft, int downRight)
 	{
 	}
@@ -578,6 +578,38 @@ public abstract class ModTile : ModBlockType
 	/// <param name="j">The y position in tile coordinates.</param>
 	public virtual void HitWire(int i, int j)
 	{
+	}
+
+	/// <summary>
+	/// Called when <see cref="Wiring.HitSwitch"/> is called on the tile. Ordinarily this only happens for modded tiles if they opt in to specific functionality, such as <see cref="TileID.Sets.PressurePlate"/>, but mods can call it directly as well.
+	/// <br/><br/> Can be used for running code on the server and all clients for tile interactions, unlike <see cref="HitWire(int, int)"/> which runs on the server or <see cref="RightClick(int, int)"/> which runs on the local client.
+	/// <br/><br/> Code in HitWire, RightClick, or SwitchTiles could call <see cref="Wiring.HitSwitch"/> followed by <c>NetMessage.SendData(MessageID.HitSwitch...)</c> (Or just <see cref="Wiring.HitSwitchAndSync"/> by itself), which would result in <see cref="Wiring.HitSwitch"/> and consequently this method running on the server and all clients. Essentially, this can be used to sync a tile interaction effect without making a custom ModPacket, and it is up to the modder to decide how that interaction is triggered.
+	/// <br/><br/> The most common usage of this is to sync playing a sound.
+	/// </summary>
+	/// <param name="i">The x position in tile coordinates.</param>
+	/// <param name="j">The y position in tile coordinates.</param>
+	public virtual void HitSwitch(int i, int j)
+	{
+	}
+
+	/// <summary>
+	/// Called in <see cref="Collision.SwitchTiles(Entity, Vector2, int, int, Vector2, int)"/>. This hook allows acting on entities colliding with tiles.
+	/// <br/><br/> The <paramref name="position"/>, <paramref name="width"/>, and <paramref name="height"/> parameters indicate the hitbox of the entity, while <paramref name="oldPosition"/> is the position of the entity on the previous update. You'll need to use these to determine if a collision is occurring and if the entity is entering or leaving the collision bounds this tile is interested in. This is called on every 
+	/// <br/><br/> <include file = 'CommonDocs.xml' path='Common/SwitchTilesObjType' />
+	/// <br/><br/> Called on the local client for owned projectile and the player, and on the server for boulder projectiles and NPC.
+	/// <br/><br/> Returns false by default. Return true to indicate that the tile had some sort of interaction occur. This return value is only used to force specific friendly NPC to keep walking, preventing them from resting on pressure plates, for example.
+	/// </summary>
+	/// <param name="i">The x position in tile coordinates.</param>
+	/// <param name="j">The y position in tile coordinates.</param>
+	/// <param name="entity">The entity colliding with this tile</param>
+	/// <param name="position">Position of the colliding entity</param>
+	/// <param name="width">Width of the colliding entity</param>
+	/// <param name="height">Height of the colliding entity</param>
+	/// <param name="oldPosition">Position of the colliding entity on the previous update</param>
+	/// <param name="objType"><include file = 'CommonDocs.xml' path='Common/SwitchTilesObjType' /></param>
+	public virtual bool SwitchTiles(int i, int j, Entity entity, Vector2 position, int width, int height, Vector2 oldPosition, int objType)
+	{
+		return false;
 	}
 
 	/// <summary>

@@ -16,10 +16,10 @@ namespace ExampleMod.Content.Items
 		public static LocalizedText FaceText { get; private set; }
 
 		public override void SetStaticDefaults() {
-			Main.RegisterItemAnimation(Item.type, new DrawAnimationVertical(30, 4));
-			ItemID.Sets.AnimatesAsSoul[Item.type] = true; // Makes the item have an animation while in world (not held.). Use in combination with RegisterItemAnimation
+			Main.RegisterItemAnimation(Type, new DrawAnimationVertical(30, 4));
+			ItemID.Sets.AnimatesAsSoul[Type] = true; // Makes the item have an animation while in world (not held.). Use in combination with RegisterItemAnimation
 
-			ItemID.Sets.ItemNoGravity[Item.type] = true;
+			ItemID.Sets.ItemNoGravity[Type] = true;
 
 			RemoveMeText = this.GetLocalization("RemoveMe");
 			FaceText = this.GetLocalization("Face");

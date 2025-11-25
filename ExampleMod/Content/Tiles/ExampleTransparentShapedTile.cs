@@ -16,7 +16,7 @@ public sealed class ExampleTransparentShapedTile : ModTile
 		Main.tileBlockLight[Type] = false;
 
 		// The following lines make the tile dangerous to touch, like spikes
-		TileID.Sets.TouchDamageImmediate[Type] = 30; 
+		TileID.Sets.TouchDamageImmediate[Type] = 30;
 		TileID.Sets.TouchDamageHot[Type] = true;
 		TileID.Sets.CanBeSloped[Type] = false;
 

@@ -5,6 +5,7 @@ using Terraria.WorldBuilding;
 using Terraria.IO;
 using Terraria.ModLoader;
 using Terraria.ID;
+using System;
 
 namespace Terraria;
 
@@ -34,6 +35,11 @@ public partial class WorldGen
 		MonoModHooks.Add(pass._method.Method, hookDelegate);
 	}
 
+	/// <inheritdoc cref="ConvertTile(int, int, int)"/>
+	[OriginalOverload]
+	[Obsolete("Use ConvertTile(int, int, int) instead")]
+	public static void ConvertTile(int i, int j, int newType, bool tryBreakTrees = false) => ConvertTile(i, j, newType);
+
 	/// <summary>
 	/// Converts the single tile at the given coordinate into a specified new tile type<br/>
 	/// Automatically handles tile framing and multiplayer syncing.
@@ -41,15 +47,13 @@ public partial class WorldGen
 	/// <param name="i">The X coordinate of the target tile.</param>
 	/// <param name="j">The Y coordinate of the target tile.</param>
 	/// <param name="newType">The new type to convert the tile into</param>
-	/// <param name="tryBreakTrees">Should the conversion try to break trees above the converted tile if the new type is invalid for the tree</param>
-	public static void ConvertTile(int i, int j, int newType, bool tryBreakTrees = false)
+	public static void ConvertTile(int i, int j, int newType)
 	{
 		Tile tile = Main.tile[i, j];
 		if (tile.type == (ushort)newType)
 			return;
 
-		if (tryBreakTrees)
-			TryKillingTreesAboveIfTheyWouldBecomeInvalid(i, j, newType);
+		TryKillingTreesAboveIfTheyWouldBecomeInvalid(i, j, newType);
 
 		tile.type = (ushort)newType;
 		SquareTileFrame(i, j);
@@ -101,7 +105,7 @@ public partial class WorldGen
 			if (!InWorld(testX, testY, 10))
 				return;
 
-			if (nearbyChlorophyte(testX, testY)) {
+			if (nearbyChlorophyte(testX, testY) && conversionType != BiomeConversionID.Hallow) {
 				ChlorophyteDefense(testX, testY);
 				return;
 			}
@@ -110,6 +114,9 @@ public partial class WorldGen
 				return;
 
 			int preConversionType = Main.tile[testX, testY].type;
+			if (!TileID.Sets.Infectable[preConversionType])
+				return;
+
 			Convert(testX, testY, conversionType, size: 0, tiles: true, walls: false);
 			if (preConversionType != Main.tile[testX, testY].type)
 				keepSpreading = genRand.NextBool(2); // 1 in 2 chance to attempt to spread to another tile if we successfuly converted the first one

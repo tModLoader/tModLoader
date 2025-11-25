@@ -354,7 +354,7 @@
  	public const int SupportedMiscSlotCount = 5;
 +	/// <summary>
 +	/// The player's armor and accessories. Indexes 0-2 hold head, chest, and legs armor while 10-12 hold the respective social armor items. Indexes 3-9 hold the accessories and 13-19 hold the social accessory items. Modded accessory slots are stored separately.<br/><br/>
-+	/// Generally speaking, modders <b>should not be accessing this array</b> to check for specific accessories, that is not how Terraria is designed and is not scalable, especially since modded accessory slots exist and each can have special logic. Modders should be using <see cref="ModItem.UpdateAccessory(Player, bool)"/> to set fields in a <see cref="ModPlayer"/> class, then use those values for gameplay effects. <see href="https://github.com/tModLoader/tModLoader/blob/1.4.4/ExampleMod/Old/SimpleModPlayer.cs">SimpleModPlayer.cs</see> shows the proper approach and explains this pattern.<br/><br/>
++	/// Generally speaking, modders <b>should not be accessing this array</b> to check for specific accessories, that is not how Terraria is designed and is not scalable, especially since modded accessory slots exist and each can have special logic. Modders should be using <see cref="ModItem.UpdateAccessory(Player, bool)"/> to set fields in a <see cref="ModPlayer"/> class, then use those values for gameplay effects. <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Common/Players/SimpleModPlayer.cs">SimpleModPlayer.cs</see> shows the proper approach and explains this pattern.<br/><br/>
 +	/// The corresponding dye items are found in <see cref="dye"/>. The player's inventory is <see cref="inventory"/>. For equipment, see <see cref="miscEquips"/> and <see cref="miscDyes"/>. <see cref="trashItem"/> is the trash slot.<br/><br/>
 +	/// </summary>
  	public Item[] armor = new Item[20];
@@ -480,17 +480,17 @@
  	public HitTile hitReplace;
  	public int jump;
 +	/// <summary>
-+	/// The visible head equipment slot. Usually corresponds to the <see cref="Item.legSlot"/> of the visible head ("helmet") armor or vanity item.
++	/// The visible head equipment slot (<see cref="ArmorIDs.Head"/>). Usually corresponds to the <see cref="Item.headSlot"/> of the visible head ("helmet") armor or vanity item.
 +	/// <br/><br/> Defaults to -1.
 +	/// </summary>
  	public int head = -1;
 +	/// <summary>
-+	/// The visible body equipment slot. Usually corresponds to the <see cref="Item.bodySlot"/> of the visible body ("shirt") armor or vanity item.
++	/// The visible body equipment slot (<see cref="ArmorIDs.Body"/>). Usually corresponds to the <see cref="Item.bodySlot"/> of the visible body ("shirt") armor or vanity item.
 +	/// <br/><br/> Defaults to -1.
 +	/// </summary>
  	public int body = -1;
 +	/// <summary>
-+	/// The visible legs equipment slot. Usually corresponds to the <see cref="Item.legSlot"/> of the visible legs ("pants") armor or vanity item.
++	/// The visible legs equipment slot (<see cref="ArmorIDs.Legs"/>). Usually corresponds to the <see cref="Item.legSlot"/> of the visible legs ("pants") armor or vanity item.
 +	/// <br/><br/> Defaults to -1.
 +	/// </summary>
  	public int legs = -1;
@@ -541,7 +541,7 @@
  	public bool controlDownHold;
  	public bool isOperatingAnotherEntity;
  	public bool autoReuseAllWeapons;
-@@ -930,10 +_,26 @@
+@@ -930,20 +_,49 @@
  	public bool delayUseItem;
  	public const int defaultWidth = 20;
  	public const int defaultHeight = 42;
@@ -568,8 +568,17 @@
  	public string cursorItemIconText = "";
  	public int runSoundDelay;
  	public float opacityForAnimation = 1f;
-@@ -943,7 +_,13 @@
+ 	public const int shadowMax = 3;
++	/// <summary>
++	/// Contains the player positioning data for the last 3 frames. Used by <see cref="armorEffectDrawShadow"/> and other similar effects.
++	/// <br/><br/> See <see cref="GetAdvancedShadow(int)"/> for a more flexible approach. 
++	/// </summary>
+ 	public Vector2[] shadowPos = new Vector2[3];
++	/// <inheritdoc cref="shadowPos"/>
+ 	public float[] shadowRotation = new float[3];
++	/// <inheritdoc cref="shadowPos"/>
  	public Vector2[] shadowOrigin = new Vector2[3];
++	/// <inheritdoc cref="shadowPos"/>
  	public int[] shadowDirection = new int[3];
  	public int shadowCount;
 +
@@ -582,6 +591,16 @@
  	public bool fireWalk;
  	public bool channel;
  	public int step = -1;
+@@ -952,6 +_,9 @@
+ 	public RabbitOrderFrameHelper rabbitOrderFrame;
+ 	public bool creativeGodMode;
+ 	private const int MaxAdvancedShadows = 60;
++	/// <summary>
++	/// The number of frames of previous positioning data available for use with <see cref="GetAdvancedShadow(int)"/>. This will max at 60. Teleporting and mounting are some ways the previous positioning data will be cleared.
++	/// </summary>
+ 	public int availableAdvancedShadowsCount;
+ 	private EntityShadowInfo[] _advancedShadows = new EntityShadowInfo[60];
+ 	private int _lastAddedAvancedShadow;
 @@ -961,38 +_,124 @@
  	public int golferScoreAccumulated;
  	public int bartenderQuestLog;
@@ -1379,6 +1398,18 @@
  	public Vector2 RotatedRelativePoint(Vector2 pos, bool reverseRotation = false, bool addGfxOffY = true)
  	{
  		float num = (reverseRotation ? (0f - fullRotation) : fullRotation);
+@@ -2282,6 +_,11 @@
+ 		return num;
+ 	}
+ 
++	/// <summary>
++	/// Returns positioning data for this player <paramref name="shadowIndex"/> frames ago, up to <see cref="availableAdvancedShadowsCount"/>.
++	/// <br/><br/> This can be used to draw trails that follow the movement of the player. You'll usually want to iterate from <see cref="availableAdvancedShadowsCount"/> down to 1 for proper draw layering and to skip index 0 which would be the current frame when using this to draw a trail.
++	/// <br/><br/> See <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/ExampleMod/Common/Players/ExampleArmorSetBonusPlayer.cs">ExampleArmorSetBonusPlayer.DrawPlayer</see> for an example of correctly using this.
++	/// </summary>
+ 	public EntityShadowInfo GetAdvancedShadow(int shadowIndex)
+ 	{
+ 		if (shadowIndex > availableAdvancedShadowsCount)
 @@ -2328,6 +_,7 @@
  	{
  		talkNPC = npcIndex;
@@ -4834,6 +4865,15 @@
  		if (tongued) {
  			position += velocity;
  			flag30 = false;
+@@ -21791,7 +_,7 @@
+ 			FloorVisuals(falling);
+ 
+ 		if (whoAmI == Main.myPlayer && !shimmering)
+-			Collision.SwitchTiles(position, width, height, oldPosition, 1);
++			Collision.SwitchTiles(this, position, width, height, oldPosition, 1);
+ 
+ 		PressurePlateHelper.UpdatePlayerPosition(this);
+ 		BordersMovement();
 @@ -21811,10 +_,15 @@
  		if (statMana > statManaMax2)
  			statMana = statManaMax2;
@@ -5304,18 +5344,13 @@
  	public void RefreshItems(bool onlyIfVariantChanged = true)
  	{
  		if (onlyIfVariantChanged && whoAmI == Main.myPlayer)
-@@ -27301,6 +_,15 @@
+@@ -27301,6 +_,10 @@
  		RefreshItems(bank3.item, onlyIfVariantChanged);
  		RefreshItems(bank4.item, onlyIfVariantChanged);
  		RefreshItems(_temporaryItemSlots, onlyIfVariantChanged);
 +
 +		foreach (Item item in NPCShopDatabase.AllShops.SelectMany(x => x.ActiveEntries).Select(x => x.Item)) {
-+			// Don't adjust custom prices, modders would need to add multiple shop entries to account for variants with custom prices anyway. 
-+			var originalCustomPrice = item.shopCustomPrice;
-+			var originalSpecialCurrency = item.shopSpecialCurrency;
 +			item.Refresh(onlyIfVariantChanged);
-+			item.shopCustomPrice = originalCustomPrice;
-+			item.shopSpecialCurrency = originalSpecialCurrency;
 +		}
  	}
  
@@ -8045,7 +8080,7 @@
  			pulley = false;
  			pulleyDir = 1;
  			if (controlRight)
-@@ -39780,7 +_,10 @@
+@@ -39780,11 +_,17 @@
  			}
  
  			for (int l = 0; l < list.Count; l++) {
@@ -8056,6 +8091,13 @@
  					break;
  
  				int type2 = Main.projectile[list[l]].type;
++				/*
+ 				if (type2 == num4 || type2 == 625 || type2 == 628 || type2 == 623)
++				*/
++				if (type2 == num4 || ProjectileID.Sets.MinionCannotBeFreed[type2])
+ 					continue;
+ 
+ 				if (type2 == 388 && num4 == 387)
 @@ -39836,6 +_,9 @@
  
  	private void ApplyPotionDelay(Item sItem)

@@ -300,7 +300,7 @@
 +	/// <summary>
 +	/// Assign to an <see cref="ItemUseStyleID"/> value to give this item a specific animation while in use.
 +	/// <br/><br/> Custom item use styles can be made (or existing use styles customized) by implementing <see cref="ModItem.UseStyle(Player, Rectangle)"/>, <see cref="ModItem.UseItemHitbox(Player, ref Rectangle, ref bool)"/>, and <see cref="ModItem.UseItemFrame(Player)"/>. Set this to <c>-1</c> if making a completely custom use style for this specific item. The methods in <see cref="GlobalItem"/> can be used to implement a custom use style used by many items. Use <see cref="ItemLoader.RegisterUseStyle(Mod, string)"/> to reserve a unique custom use style ID.
-+	/// <br/><br/> <see href="https://github.com/tModLoader/tModLoader/blob/1.4.4/ExampleMod/Content/Items/Weapons/ExampleCustomUseStyleWeapon.cs">ExampleCustomUseStyleWeapon.cs</see> contains a full example of a custom item use style.
++	/// <br/><br/> <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/Items/Weapons/ExampleCustomUseStyleWeapon.cs">ExampleCustomUseStyleWeapon.cs</see> contains a full example of a custom item use style.
 +	/// <br/><br/> Defaults to <see cref="ItemUseStyleID.None"/>. This will skip all use animation code as well as the UseStyle/UseItemHitbox/UseItemFrame hooks unless set to another value.
 +	/// </summary>
  	public int useStyle;
@@ -326,7 +326,7 @@
 +	/// <summary>
 +	/// The time span of using the item in ticks. This is independent of the time it takes for the item animation to finish. 
 +	/// <br/> Blocks use 10. Default value is 100.
-+	/// <br/> Weapons usually have equal <see cref="useAnimation"/> and useTime, unequal values for these two results in multiple attacks per click. See <see href="https://github.com/tModLoader/tModLoader/blob/1.4.4/ExampleMod/Content/Items/Weapons/ExampleGun.cs#L105">ExampleGun.cs's Clockwork Assault Rifle example</see> for an example of that.
++	/// <br/> Weapons usually have equal <see cref="useAnimation"/> and useTime, unequal values for these two results in multiple attacks per click. See <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/Items/Weapons/ExampleGun.cs#L105">ExampleGun.cs's Clockwork Assault Rifle example</see> for an example of that.
 +	/// </summary>
  	public int useTime;
 +
@@ -481,19 +481,19 @@
 +	/// </summary>
  	public int defense;
 +	/// <summary>
-+	/// The head equipment slot for this item. When this item is equipped, <see cref="Player.head"/> will be set to this value and the corresponding equipment texture will be displayed on the player.
++	/// The head equipment slot for this item (<see cref="ArmorIDs.Head"/>). When this item is equipped, <see cref="Player.head"/> will be set to this value and the corresponding equipment texture will be displayed on the player.
 +	/// <br/><br/> For <see cref="ModItem"/>, this is set automatically using <see cref="AutoloadEquip"/> with <see cref="EquipType.Head"/>.
 +	/// <br/><br/> Defaults to -1.
 +	/// </summary>
  	public int headSlot = -1;
 +	/// <summary>
-+	/// The body equipment slot for this item. When this item is equipped, <see cref="Player.body"/> will be set to this value and the corresponding equipment texture will be displayed on the player.
++	/// The body equipment slot for this item (<see cref="ArmorIDs.Body"/>). When this item is equipped, <see cref="Player.body"/> will be set to this value and the corresponding equipment texture will be displayed on the player.
 +	/// <br/><br/> For <see cref="ModItem"/>, this is set automatically using <see cref="AutoloadEquip"/> with <see cref="EquipType.Body"/>.
 +	/// <br/><br/> Defaults to -1.
 +	/// </summary>
  	public int bodySlot = -1;
 +	/// <summary>
-+	/// The legs equipment slot for this item. When this item is equipped, <see cref="Player.legs"/> will be set to this value and the corresponding equipment texture will be displayed on the player.
++	/// The legs equipment slot for this item (<see cref="ArmorIDs.Legs"/>). When this item is equipped, <see cref="Player.legs"/> will be set to this value and the corresponding equipment texture will be displayed on the player.
 +	/// <br/><br/> For <see cref="ModItem"/>, this is set automatically using <see cref="AutoloadEquip"/> with <see cref="EquipType.Legs"/>.
 +	/// <br/><br/> Defaults to -1.
 +	/// </summary>
@@ -502,13 +502,13 @@
  	public sbyte handOnSlot = -1;
  	public sbyte handOffSlot = -1;
  	public sbyte backSlot = -1;
-@@ -121,49 +_,271 @@
+@@ -121,49 +_,272 @@
  	public sbyte faceSlot = -1;
  	public sbyte balloonSlot = -1;
  	public sbyte beardSlot = -1;
 +	*/
 +	/// <summary>
-+	/// The equipment slot for this item. When this item is equipped, the corresponding <see cref="Player"/> field will be set to this value (for example, item.faceSlot will set player.face) and the corresponding equipment texture will be displayed on the player.
++	/// The equipment slot for this item (See the entry in <see cref="ArmorIDs"/> for this EquipType). When this item is equipped, the corresponding <see cref="Player"/> field will be set to this value (for example, item.faceSlot will set player.face) and the corresponding equipment texture will be displayed on the player.
 +	/// <br/><br/> For <see cref="ModItem"/>, this is set automatically using <see cref="AutoloadEquip"/> with the corresponding <see cref="EquipType"/> value.
 +	/// <br/><br/> Defaults to -1, indicating that this item does not have a specific equipment texture for this slot.
 +	/// </summary>
@@ -631,7 +631,8 @@
  	public bool vanity;
 +
 +	/// <summary>
-+	/// Indicates that an item should show the material tooltip. Typically this means that the item is used in at least 1 recipe. Automatically assigned.
++	/// Indicates that an item should be considered a "material". This includes showing the material tooltip and supporting shift-clicking into the guide's "crafting" menu.
++	/// <br/><br/> This will default to the value of <see cref="ItemID.Sets.IsAMaterial"/>, indicating that it is used in at least 1 non-disabled recipe. Some items, like coins for example, manually set this to <see langword="false"/> so that the item is not treated as a material. Some world specific item variants also use this to reflect that they aren't actually a material in the current special world seed. This can be done by checking <see cref="Item.Variant"/>.
 +	/// </summary>
  	public bool material;
 +
@@ -656,7 +657,7 @@
  	public int buffTime;
 +
 +	/// <summary>
-+	/// Specifies which mount to equip when the item is used. Assign to <c>ModContent.MountType&lt;ModdedMountHere&gt;()</c>. See <see href="https://github.com/tModLoader/tModLoader/blob/1.4.4/ExampleMod/Content/Items/ExampleMountItem.cs">ExampleMountItem.cs</see> for an example.
++	/// Specifies which mount to equip when the item is used. Assign to <c>ModContent.MountType&lt;ModdedMountHere&gt;()</c>. See <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/Items/ExampleMountItem.cs">ExampleMountItem.cs</see> for an example.
 +	/// <br/> Defaults to -1.
 +	/// </summary>
  	public int mountType = -1;
@@ -1963,7 +1964,7 @@
 +	// Added by TML.
 +	/// <summary>
 +	/// Call in <see cref="ModItem.SetDefaults"/> to clone all the default item property values of an existing item. This is useful for prototyping or making a variant of an existing item. Note that other changes made to the cloned item, such as if another mod changes a weapon's damage, will be applied when using this approach. This may or may not be desired. 
-+	/// <para/> When using this method make sure that any additional changes to item properties are on lines after this method is called, otherwise they will be overwritten. Some values cloned by this method might be undesired, such as equipment slot values like shoeSlot. <see href="https://github.com/tModLoader/tModLoader/blob/1.4.4/ExampleMod/Content/Items/Accessories/WaspNest.cs#L51">WaspNest.cs</see> shows how to cache and restore those values.
++	/// <para/> When using this method make sure that any additional changes to item properties are on lines after this method is called, otherwise they will be overwritten. Some values cloned by this method might be undesired, such as equipment slot values like shoeSlot. <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/Items/Accessories/WaspNest.cs#L51">WaspNest.cs</see> shows how to cache and restore those values.
 +	/// <para/> This will only clone the values, any additional logic such as shoot accuracy, recipes, accessory effects, use item logic, etc. will not be copied. The <see href="https://github.com/tModLoader/tModLoader/wiki/Advanced-Vanilla-Code-Adaption">Vanilla Code Adaption wiki page</see> teaches how to make a complete clone of an existing item.
 +	/// </summary>
 +	/// <param name="TypeToClone"></param>
@@ -2541,7 +2542,7 @@
  			TurnToAir();
  	}
  
-@@ -49356,9 +_,15 @@
+@@ -49356,9 +_,19 @@
  		}
  	}
  
@@ -2552,12 +2553,16 @@
 +	/// <param name="onlyIfVariantChanged"></param>
  	public void Refresh(bool onlyIfVariantChanged = true)
  	{
++		// Don't adjust custom prices. For shops, modders would need to add multiple shop entries to account for variants with custom prices anyway. 
++		var originalCustomPrice = shopCustomPrice;
++		var originalSpecialCurrency = shopSpecialCurrency;
++		
  		if (!IsAir && (!onlyIfVariantChanged || ItemVariants.SelectVariant(type) != Variant)) {
 +			/*
  			bool flag = favorited;
  			int num = stack;
  			int num2 = netID;
-@@ -49367,6 +_,13 @@
+@@ -49367,6 +_,16 @@
  			Prefix(prefixWeWant);
  			stack = num;
  			favorited = flag;
@@ -2569,5 +2574,8 @@
 +			ms.Position = 0;
 +			ItemIO.Receive(this, new BinaryReader(ms), readStack: true, readFavorite: true);
  		}
++
++		shopCustomPrice = originalCustomPrice;
++		shopSpecialCurrency = originalSpecialCurrency;
  	}
  }

@@ -556,9 +556,9 @@
  
 +	/// <summary>
 +	/// An array defining how tall each individual tile within this multitile is, in pixels. This array must have exactly <see cref="Height"/> elements in it. In most cases, all values should be 16, but sometimes 18 is suitable for the last value.
-+	/// <para/> For example, a 3 tile high multitile might set CoordinateHeights as follows: <c>TileObjectData.newTile.CoordinateHeights = new int[] { 16, 16, 18 };</c>.
++	/// <para/> For example, a 3 tile high multitile might set CoordinateHeights as follows: <c>TileObjectData.newTile.CoordinateHeights = [16, 16, 18];</c>.
 +	/// <para/> Read the <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Tile#coordinateheights">CoordinateHeights section of the Basic Tile Guide on the wiki</see> for more information and helpful visualizations.
-+	/// <para/> Defaults to <c>new int[] { 16 }</c>. If changing <see cref="Height"/> this must be changed as well.
++	/// <para/> Defaults to <c>[16]</c>. If changing <see cref="Height"/> this must be changed as well.
 +	/// </summary>
  	public int[] CoordinateHeights {
  		get {

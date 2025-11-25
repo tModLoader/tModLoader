@@ -179,7 +179,7 @@ public abstract class ModBlockType : ModTexturedType, ILocalizedModType
 	/// <summary>
 	/// Allows you to change what happens when this tile/wall is converted into another biome. If you need to override or add a new conversion to a vailla tile, use <see cref="TileLoader.RegisterConversion"/> and <see cref="WallLoader.RegisterConversion"/>.
 	/// <para/> Purification powder uses a separate conversionType, as it doesn't convert hallowed tiles back to purity tiles. Be sure to check for <see cref="BiomeConversionID.PurificationPowder"/> as well as <see cref="BiomeConversionID.Purity"/> when handling corruption/crimson tiles.
-	/// <para/> You can use <see cref="WorldGen.ConvertTile"/> or <see cref="WorldGen.ConvertWall"/> to automatically handle tile framing and multiplayer syncing.
+	/// <para/> You can use <see cref="WorldGen.ConvertTile(int, int, int)"/> or <see cref="WorldGen.ConvertWall"/> to automatically handle tile framing and multiplayer syncing.
 	/// </summary>
 	/// <param name="i"></param>
 	/// <param name="j"></param>

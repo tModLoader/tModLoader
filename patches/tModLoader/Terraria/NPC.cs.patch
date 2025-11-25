@@ -371,7 +371,7 @@
  	public static CoinLossRevengeSystem RevengeManager = new CoinLossRevengeSystem();
 +
 +	/// <summary>
-+	/// This determines if an NPC can be hit by a item or projectile owned by a particular player (it is an array, each slot corresponds to different players (whoAmI)). It is decremented towards 0 every update. Melee items set immune[Player.whoAmI] to Player.itemAnimation, which starts at item.useAnimation and decrements towards 0. Penetrating projectiles usually set immune to 10, while non-penetrating projectiles do not set immune. <see href="https://github.com/tModLoader/tModLoader/blob/1.4.4/ExampleMod/Content/Projectiles/ExamplePiercingProjectile.cs">ExamplePiercingProjectile.cs</see> explains more about options for npc and projectile immunity.
++	/// This determines if an NPC can be hit by a item or projectile owned by a particular player (it is an array, each slot corresponds to different players (whoAmI)). It is decremented towards 0 every update. Melee items set immune[Player.whoAmI] to Player.itemAnimation, which starts at item.useAnimation and decrements towards 0. Penetrating projectiles usually set immune to 10, while non-penetrating projectiles do not set immune. <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/Projectiles/ExamplePiercingProjectile.cs">ExamplePiercingProjectile.cs</see> explains more about options for npc and projectile immunity.
 +	/// </summary>
  	public int[] immune = new int[256];
  	public int directionY = 1;
@@ -383,7 +383,7 @@
  	public int type;
 +	/// <summary>
 +	/// An array with 4 slots used for any sort of data storage, which is occasionally synced from the server to clients. Each vanilla <see cref="NPCAIStyleID"/> uses these slots for different purposes. Set <see cref="netUpdate"/> to true to manually sync. The advantage of using these 4 floats is that they are synced automatically. Using fields in your <see cref="ModNPC"/> class will work just the same, but they might need to be synced via <see cref="ModNPC.SendExtraAI(System.IO.BinaryWriter)"/> and <see cref="ModNPC.ReceiveExtraAI(System.IO.BinaryReader)"/> if necessary.
-+	/// <br/> Clever use of <see href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/ref#reference-return-values">Reference return values</see> as seen in <see href="https://github.com/tModLoader/tModLoader/blob/1.4.4/ExampleMod/Content/NPCs/ExampleCustomAISlimeNPC.cs#L36">ExampleCustomAISlimeNPC.cs</see> can be used to reuse the ai array entries with readable names.
++	/// <br/> Clever use of <see href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/ref#reference-return-values">Reference return values</see> as seen in <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/NPCs/ExampleCustomAISlimeNPC.cs#L36">ExampleCustomAISlimeNPC.cs</see> can be used to reuse the ai array entries with readable names.
 +	/// <br/> Defaults to the values passed into <see cref="NPC.NewNPC(IEntitySource, int, int, int, int, float, float, float, float, int)"/>, usually [0, 0, 0, 0].
 +	/// </summary>
  	public float[] ai = new float[maxAI];
@@ -395,7 +395,7 @@
  	public int aiAction;
 +
 +	/// <summary>
-+	/// Selects which vanilla code to use for the AI method. Vanilla NPC AI styles are enumerated in the <see cref="NPCAIStyleID"/> class. Modders can use vanilla aiStyle and optionally <see cref="ModNPC.AIType"/> to mimic AI code already in the game. This is usually only useful as a prototyping tool since it is difficult to customize existing aiStyle code. See <see cref="ModNPC.AIType"/> and <see href="https://github.com/tModLoader/tModLoader/blob/1.4.4/ExampleMod/Content/NPCs/PartyZombie.cs">PartyZombie</see> to see how to use vanilla ai. If you are using custom AI code, there is no need to set this field.
++	/// Selects which vanilla code to use for the AI method. Vanilla NPC AI styles are enumerated in the <see cref="NPCAIStyleID"/> class. Modders can use vanilla aiStyle and optionally <see cref="ModNPC.AIType"/> to mimic AI code already in the game. This is usually only useful as a prototyping tool since it is difficult to customize existing aiStyle code. See <see cref="ModNPC.AIType"/> and <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/NPCs/PartyZombie.cs">PartyZombie</see> to see how to use vanilla ai. If you are using custom AI code, there is no need to set this field.
 +	/// <para/> Customizing an existing aiStyle usually requires following the <see href="https://github.com/tModLoader/tModLoader/wiki/Advanced-Vanilla-Code-Adaption#example-projectile-or-npc-ai-code">Vanilla Code Adaption Guide</see>.
 +	/// <para/> An aiStyle of 0 will face the player automatically, while an aiStyle of -1 is used for completely custom ai.
 +	/// <para/> Defaults to 0 for vanilla NPC and -1 for modded NPC.
@@ -493,7 +493,7 @@
 +
 +	/// <summary>
 +	/// Indicates that this NPC is drawn at a specific layer in the render order. Must use in conjunction with <see cref="ModNPC.DrawBehind(int)"/>.
-+	/// <br/> See <see href="https://github.com/tModLoader/tModLoader/blob/1.4.4/ExampleMod/Content/NPCs/ExampleDrawBehindNPC.cs">ExampleDrawBehindNPC</see> for examples of how to use this and all available layers to draw in.
++	/// <br/> See <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/NPCs/ExampleDrawBehindNPC.cs">ExampleDrawBehindNPC</see> for examples of how to use this and all available layers to draw in.
 +	/// </summary>
  	public bool hide;
 +
@@ -542,7 +542,7 @@
 +
 +	/// <summary>
 +	/// Indicates that this NPC draws behind solid tiles.
-+	/// <br/> See <see href="https://github.com/tModLoader/tModLoader/blob/1.4.4/ExampleMod/Content/NPCs/ExampleDrawBehindNPC.cs">ExampleDrawBehindNPC</see> for examples of how to use this and other options for layers to draw in.
++	/// <br/> See <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/NPCs/ExampleDrawBehindNPC.cs">ExampleDrawBehindNPC</see> for examples of how to use this and other options for layers to draw in.
 +	/// </summary>
  	public bool behindTiles;
  	public bool lavaImmune;
@@ -2847,6 +2847,15 @@
  		if (soundDelay > 0)
  			soundDelay--;
  
+@@ -72639,7 +_,7 @@
+ 			}
+ 		}
+ 
+-		if (Main.netMode != 1 && !noTileCollide && lifeMax > 1 && Collision.SwitchTiles(position, width, height, oldPosition, 2) && (type == 46 || type == 148 || type == 149 || type == 303 || type == 361 || type == 362 || type == 364 || type == 366 || type == 367 || (type >= 442 && type <= 448) || type == 602 || type == 608 || type == 614 || type == 687)) {
++		if (Main.netMode != 1 && !noTileCollide && lifeMax > 1 && Collision.SwitchTiles(this, position, width, height, oldPosition, 2) && (type == 46 || type == 148 || type == 149 || type == 303 || type == 361 || type == 362 || type == 364 || type == 366 || type == 367 || (type >= 442 && type <= 448) || type == 602 || type == 608 || type == 614 || type == 687)) {
+ 			ai[0] = 1f;
+ 			ai[1] = 400f;
+ 			ai[2] = 0f;
 @@ -72653,19 +_,21 @@
  		justHit = false;
  	}

@@ -159,10 +159,6 @@ public abstract class ModAchievement : ModType<Achievement, ModAchievement>, ILo
 
 	public override sealed void SetupContent()
 	{
-		SetStaticDefaults();
-		if (Achievement._conditions.Count == 0)
-			throw new Exception($"The ModAchievement '{Name}' has no conditions, achievements must have at least one condition.");
-		AutoStaticDefaults();
 		Main.Achievements.Register(Achievement);
 		Main.Achievements.RegisterIconIndex(Achievement.Name, Index);
 		Achievement.OnCompleted += OnCompleted;

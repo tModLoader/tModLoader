@@ -34,6 +34,9 @@ namespace ExampleMod.Content
 			// We also add ExampleSand to the Sand group, which is used in the Glass and Magic Sand Dropper recipes
 			RecipeGroup.recipeGroups[RecipeGroupID.Sand].ValidItems.Add(ModContent.ItemType<ExampleSandBlock>());
 
+			// We can also add ExamplePressurePlate to the pressure plate group, allowing it to be used to craft weighted pressure plates and pressure plate track. Since ExamplePressurePlate is a weighed pressure plate, we'll leave this commented out.
+			//RecipeGroup.recipeGroups[RecipeGroupID.PressurePlate].ValidItems.Add(ModContent.ItemType<ExamplePressurePlate>());
+
 			// While an "IronBar" group exists, "SilverBar" does not. tModLoader will merge recipe groups registered with the same name, so if you are registering a recipe group with a vanilla item as the 1st item, you can register it using just the internal item name if you anticipate other mods wanting to use this recipe group for the same concept. By doing this, multiple mods can add to the same group without extra effort. In this case we are adding a SilverBar group. Don't store the RecipeGroup instance, it might not be used, use the same nameof(ItemID.ItemName) or RecipeGroupID returned from RegisterGroup when using Recipe.AddRecipeGroup instead.
 			RecipeGroup SilverBarRecipeGroup = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} {Lang.GetItemNameValue(ItemID.SilverBar)}",
 			ItemID.SilverBar, ItemID.TungstenBar, ModContent.ItemType<Items.Placeable.ExampleBar>());
@@ -93,7 +96,7 @@ namespace ExampleMod.Content
 				// Adds a mod tile requirement. To specify more than one crafting station, use multiple recipe.AddTile() calls.
 				.AddTile<Tiles.Furniture.ExampleWorkbench>()
 				// An alternate string-based approach to the above. Try to only use it for other mods' tiles, because it's slower.
-				.AddTile(Mod, "ExampleWorkbench")
+				//.AddTile(Mod, "ExampleWorkbench")
 
 				// Adds pre-defined conditions. These 3 lines combine to make so that the recipe must be crafted in desert waters at night.
 				.AddCondition(Condition.InDesert)

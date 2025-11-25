@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/ID/MessageID.cs
 +++ src/tModLoader/Terraria/ID/MessageID.cs
-@@ -1,163 +_,665 @@
+@@ -1,163 +_,673 @@
  using Terraria.Utilities;
 +using Terraria.ModLoader;
  
@@ -386,6 +386,14 @@
 +
 +	// Wiring.HitSwitch(x, y)
 +	// Forwarded to other clients
++	/// <summary>
++	/// Calls <see cref="Wiring.HitSwitch(int, int)"/> at the provided tile coordinates. This is used to sync effects from tile interactions, like playing sounds.
++	/// <br/><br/> Modders should use this message whenever they call <see cref="Wiring.HitSwitch(int, int)"/> to sync the effects.
++	/// <br/><br/> <c>NetMessage.SendData</c> parameters:
++	/// <br/> <b>number:</b> x tile coordinate to use with Wiring.HitSwitch
++	/// <br/> <b>number2:</b> y tile coordinate to use with Wiring.HitSwitch
++	/// <br/><br/> <b>Forwarded to other clients</b>
++	/// </summary>
  	public const byte HitSwitch = 59;
 +
 +	// NpcID, homeX, homeY, changeType

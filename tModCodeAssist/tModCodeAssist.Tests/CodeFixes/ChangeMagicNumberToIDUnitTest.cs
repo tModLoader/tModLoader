@@ -126,6 +126,9 @@ public sealed class ChangeMagicNumberToIDUnitTest
 			_ = new Item().type == [|1|];
 			_ = new Projectile().type == [|444|];
 			_ = Main.tile[10, 20].TileType == [|8|]; // ref property
+
+			// https://github.com/tModLoader/tModLoader/issues/4849
+			_ = new Player().CountItem([|2|]) < 10;
 			""",
 			"""
 			using Terraria;
@@ -134,6 +137,9 @@ public sealed class ChangeMagicNumberToIDUnitTest
 			_ = new Item().type == ItemID.IronPickaxe;
 			_ = new Projectile().type == ProjectileID.Xenopopper;
 			_ = Main.tile[10, 20].TileType == TileID.Gold; // ref property
+
+			// https://github.com/tModLoader/tModLoader/issues/4849
+			_ = new Player().CountItem(ItemID.DirtBlock) < 10;
 			""");
 	}
 
@@ -304,5 +310,86 @@ public sealed class ChangeMagicNumberToIDUnitTest
 			MountID.Sets.Cart[MountID.CuteFishron] = true;
 			_ = TextureAssets.Extra[ExtrasID.SharpTears].Value;
 			""");
+	}
+
+	// Note: It seems that even with WithTriviaFrom, some whitespace formatting is lost due to auto-formatting. Anything with comments is preserved, but errant spaces are removed, and some tabs are being turned into to spaces in these tests.
+	// This is fine, however, since the important trivia such as comments are still preserved and the tabs issue is corrected when used in a real mod.
+	[TestMethod]
+	public async Task Test_Whitespace()
+	{
+		await VerifyCS.Run(
+			"""
+			using Terraria;
+			using Microsoft.Xna.Framework;
+
+			// Invocation tests
+			Dust d = Dust.NewDustPerfect(
+				Vector2.Zero,
+				[|68|]
+			);
+
+			var player = new Player();
+			player.AddBuff( /* Before */ [|20|]  /* After */ , 120);
+			player.ClearBuff(
+				[|20|]);
+			player.HasBuff(
+				[|20|] // Test
+			);
+
+			// ArrayIndexing
+			Terraria.ID.ProjectileID.Sets.TrailingMode[[|94|] /* Note */] = 1;
+
+			// Assignment
+			var item = new Item();
+			item.createTile =
+							[|42|];
+			
+			//Binary
+			_ = new Item().type == /* Note */ [|1|] /* Note2 */;
+			_ = new Item().type ==[|1|];
+			
+			// CaseSwitchLabel
+			switch (new NPC().type) {
+				case [|420|] /* Note */:
+					break;
+			}
+			""",
+			""""
+			using Terraria;
+			using Microsoft.Xna.Framework;
+			using Terraria.ID;
+
+			// Invocation tests
+			Dust d = Dust.NewDustPerfect(
+				Vector2.Zero,
+			    DustID.BlueCrystalShard
+			);
+
+			var player = new Player();
+			player.AddBuff( /* Before */ BuffID.Poisoned  /* After */ , 120);
+			player.ClearBuff(
+			    BuffID.Poisoned);
+			player.HasBuff(
+			    BuffID.Poisoned // Test
+			);
+
+			// ArrayIndexing
+			Terraria.ID.ProjectileID.Sets.TrailingMode[ProjectileID.CrystalStorm /* Note */] = 1;
+
+			// Assignment
+			var item = new Item();
+			item.createTile =
+			                TileID.HangingLanterns;
+
+			//Binary
+			_ = new Item().type == /* Note */ ItemID.IronPickaxe /* Note2 */;
+			_ = new Item().type == ItemID.IronPickaxe;
+
+			// CaseSwitchLabel
+			switch (new NPC().type) {
+				case NPCID.NebulaBrain /* Note */:
+					break;
+			}
+			"""");
 	}
 }

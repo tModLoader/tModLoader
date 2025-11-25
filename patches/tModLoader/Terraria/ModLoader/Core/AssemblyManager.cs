@@ -154,6 +154,7 @@ public static class AssemblyManager
 			["tModLoader"] = Assembly.GetExecutingAssembly(), // Unsure if still needed, but lets us ignore versioning when mods resolve
 			["FNA"] = typeof(Vector2).Assembly, // Unsure if still needed, but lets us ignore versioning when mods resolve
 			["Ionic.Zip.Reduced"] = typeof(ZipFile).Assembly, // Assembly name changed to DotNetZip
+			["Steamworks.NET"] = typeof(Steamworks.SteamApps).Assembly, // Version can change
 		};
 
 		private static Hook _hook = new Hook(

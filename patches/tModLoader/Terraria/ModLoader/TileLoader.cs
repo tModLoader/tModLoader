@@ -100,6 +100,8 @@ public static class TileLoader
 	private static Func<int, int, int, Item, bool>[] HookAutoSelect;
 	private static Func<int, int, int, bool>[] HookPreHitWire;
 	private static Action<int, int, int>[] HookHitWire;
+	private static Func<int, int, int, bool>[] HookHitSwitch;
+	private static Func<int, int, int, Entity, Vector2, int, int, Vector2, int, bool>[] HookSwitchTiles;
 	private static Func<int, int, int, bool>[] HookSlope;
 	private static Action<int, Player>[] HookFloorVisuals;
 	private delegate void DelegateChangeWaterfallStyle(int type, ref int style);
@@ -258,6 +260,8 @@ public static class TileLoader
 		ModLoader.BuildGlobalHook(ref HookAutoSelect, globalTiles, g => g.AutoSelect);
 		ModLoader.BuildGlobalHook(ref HookPreHitWire, globalTiles, g => g.PreHitWire);
 		ModLoader.BuildGlobalHook(ref HookHitWire, globalTiles, g => g.HitWire);
+		ModLoader.BuildGlobalHook(ref HookHitSwitch, globalTiles, g => g.HitSwitch);
+		ModLoader.BuildGlobalHook(ref HookSwitchTiles, globalTiles, g => g.SwitchTiles);
 		ModLoader.BuildGlobalHook(ref HookSlope, globalTiles, g => g.Slope);
 		ModLoader.BuildGlobalHook(ref HookFloorVisuals, globalTiles, g => g.FloorVisuals);
 		ModLoader.BuildGlobalHook<GlobalTile, DelegateChangeWaterfallStyle>(ref HookChangeWaterfallStyle, globalTiles, g => g.ChangeWaterfallStyle);
@@ -724,6 +728,22 @@ public static class TileLoader
 		var list = conversions[conversionType] ??= new();
 		list.Add(conversionDelegate);
 	}
+
+	/// <summary>
+	/// Registers a tile type as having custom biome conversion code for this specific <see cref="BiomeConversionID"/>. For modded tiles, you can directly use <see cref="Convert"/> <br/>
+	/// If you need to register conversions that rely on <see cref="TileID.Sets.Conversion"/> being fully populated, consider doing it in <see cref="ModBiomeConversion.PostSetupContent"/>
+	/// </summary>
+	/// <param name="tileType">The tile type that has is affected by this custom conversion.</param>
+	/// <param name="conversionType">The conversion type for which the tile should use custom conversion code.</param>
+	/// <param name="toType">What <paramref name="tileType"/> is converted into when it's hit with the <paramref name="conversionType"/>.</param>
+	public static void RegisterConversion(int tileType, int conversionType, int toType)
+	{
+		RegisterConversion(tileType, conversionType, (int i, int j, int type, int conversionType) => {
+			WorldGen.ConvertTile(i, j, toType);
+			return false;
+		});
+	}
+
 	/// <summary>
 	/// Registers a conversion that replaces <paramref name="tileType"/> with <paramref name="toType"/> when touched by <paramref name="conversionType"/> <br/>
 	/// Also registers <paramref name="tileType"/> as a fallback for <paramref name="toType"/> so that other conversions can convert <paramref name="toType"/> as if it was <paramref name="tileType"/>. <br/>
@@ -739,6 +759,7 @@ public static class TileLoader
 			WorldGen.ConvertTile(i, j, toType);
 			return false;
 		});
+
 		RegisterConversionFallback(toType, tileType, conversionType);
 
 		if (purification) {
@@ -749,7 +770,8 @@ public static class TileLoader
 			}
 			RegisterConversion(toType, BiomeConversionID.Purity, Purify);
 			RegisterConversion(toType, BiomeConversionID.PurificationPowder, Purify);
-			RegisterConversion(toType, BiomeConversionID.Chlorophyte, Purify);
+			if (conversionType != BiomeConversionID.Hallow)
+				RegisterConversion(toType, BiomeConversionID.Chlorophyte, Purify);
 		}
 	}
 
@@ -1237,6 +1259,26 @@ public static class TileLoader
 		}
 	}
 
+	public static bool HitSwitch(int i, int j, int type)
+	{
+		foreach (var hook in HookHitSwitch) {
+			if (!hook(i, j, type))
+				return false;
+		}
+		GetTile(type)?.HitSwitch(i, j);
+		return true;
+	}
+
+	public static bool SwitchTiles(int i, int j, int type, Entity entity, Vector2 position, int width, int height, Vector2 oldPosition, int objType)
+	{
+		bool returnValue = false;
+		foreach (var hook in HookSwitchTiles) {
+			returnValue |= hook(i, j, type, entity, position, width, height, oldPosition, objType);
+		}
+		returnValue |= GetTile(type)?.SwitchTiles(i, j, entity, position, width, height, oldPosition, objType) ?? false;
+		return returnValue;
+	}
+
 	public static void FloorVisuals(int type, Player player)
 	{
 		GetTile(type)?.FloorVisuals(player);
@@ -1369,8 +1411,9 @@ public static class TileLoader
 
 	public static void PlaceInWorld(int i, int j, Item item)
 	{
-		int type = item.createTile;
-		if (type < 0)
+		Tile tile = Main.tile[i, j];
+		int type = tile.TileType;
+		if (!tile.HasTile)
 			return;
 
 		foreach (var hook in HookPlaceInWorld) {

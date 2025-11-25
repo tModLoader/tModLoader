@@ -7,6 +7,7 @@ partial class TileID
 {
 	partial class Sets
 	{
+		/// <summary> Will cause the tile to be killed when right clicked, like <see cref="Torches"/> or <see cref="Bottles"/>. No need to set this if using <see cref="Torch"/>. </summary>
 		public static bool[] CanDropFromRightClick = Factory.CreateBoolSet(4);
 		public static bool[] Stone = Factory.CreateBoolSet(1, 117, 25, 203);
 		public static bool[] Grass = Factory.CreateBoolSet(2, 23, 109, 199, 477, 492, 633); // Might be incorrect?
@@ -18,6 +19,9 @@ partial class TileID
 
 		/// <summary> Allows non-solid tiles to be sloped (solid tiles can always be sloped, regardless of this set). </summary>
 		public static bool[] CanBeSloped = Factory.CreateBoolSet();
+
+		/// <summary> Whether or not this tile can be infected by the natural spreading of biomes such as corruption, crimson, or hallow. </summary>
+		public static bool[] Infectable = Factory.CreateBoolSet(1, 2, 53, 60, 69, 161, 179, 180, 181, 182, 183, 381, 396, 397, 534, 536, 539, 625, 627);
 
 		/// <summary>
 		/// Prevents a tile immediately below a tile of this type from being hammered (sloped). Since a sloped tile would break a typical bottom tile anchor, this prevents such tiles from being broken in this manner. Anything in <see cref="BasicChest"/> or <see cref="BasicDresser"/> are also protected in the same manner. This is typically used for tiles that shouldn't break as easily as other tiles, such as tiles containing Tile Entities holding items.
@@ -147,9 +151,9 @@ partial class TileID
 		public static bool[] CanPlaceNextToNonSolidTile = Factory.CreateBoolSet(false, Cobweb, CopperCoinPile, SilverCoinPile, GoldCoinPile, PlatinumCoinPile, LivingFire, LivingCursedFire, LivingDemonFire, LivingFrostFire, LivingIchor, LivingUltrabrightFire, ChimneySmoke, Bubble);
 
 		/// New created sets to facilitate vanilla biome block counting including modded blocks. To replace the current hardcoded counts in SceneMetrics.cs
-		public static int[] CorruptBiome = Factory.CreateIntSet(0, 23, 1, 24, 1, 25, 1, 32, 1, 112, 1, 163, 1, 400, 1, 398, 1, 27, -10);
+		public static int[] CorruptBiome = Factory.CreateIntSet(0, 23, 1, 661, 1, 24, 1, 25, 1, 32, 1, 112, 1, 163, 1, 400, 1, 398, 1, 27, -10);
 		public static int[] HallowBiome = Factory.CreateIntSet(0, 109, 1, 492, 1, 110, 1, 113, 1, 117, 1, 116, 1, 164, 1, 403, 1, 402, 1);
-		public static int[] CrimsonBiome = Factory.CreateIntSet(0, 199, 1, 203, 1, 200, 1, 401, 1, 399, 1, 234, 1, 352, 1, 27, -10);
+		public static int[] CrimsonBiome = Factory.CreateIntSet(0, 199, 1, 662, 1, 203, 1, 200, 1, 401, 1, 399, 1, 234, 1, 352, 1, 27, -10, 201, 1);
 		public static int[] SnowBiome = Factory.CreateIntSet(0, 147, 1, 148, 1, 161, 1, 162, 1, 164, 1, 163, 1, 200, 1);
 		public static int[] JungleBiome = Factory.CreateIntSet(0, 60, 1, 61, 1, 62, 1, 74, 1, 226, 1, 225, 1);
 		public static int[] MushroomBiome = Factory.CreateIntSet(0, 70, 1, 71, 1, 72, 1, 528, 1);
@@ -157,8 +161,8 @@ partial class TileID
 		public static int[] DungeonBiome = Factory.CreateIntSet(0, 41, 1, 43, 1, 44, 1, 481, 1, 482, 1, 483, 1);
 
 		public static int[] RemixJungleBiome = Factory.CreateIntSet(0, 60, 1, 61, 1, 62, 1, 74, 1, 225, 1);
-		public static int[] RemixCrimsonBiome = Factory.CreateIntSet(0, 199, 1, 203, 1, 200, 1, 401, 1, 399, 1, 234, 1, 352, 1, 27, -10, 195, 1);
-		public static int[] RemixCorruptBiome = Factory.CreateIntSet(0, 23, 1, 24, 1, 25, 1, 32, 1, 112, 1, 163, 1, 400, 1, 398, 1, 27, -10, 474, 1);
+		public static int[] RemixCrimsonBiome = Factory.CreateIntSet(0, 199, 1, 662, 1, 203, 1, 200, 1, 401, 1, 399, 1, 234, 1, 352, 1, 27, -10, 195, 1, 201, 1);
+		public static int[] RemixCorruptBiome = Factory.CreateIntSet(0, 23, 1, 661, 1, 24, 1, 25, 1, 32, 1, 112, 1, 163, 1, 400, 1, 398, 1, 27, -10, 474, 1);
 
 		/// <summary>
 		/// The ID of the tile that a given closed door transforms into when it becomes OPENED. Defaults to -1, which means said tile isn't a closed door.
@@ -184,6 +188,18 @@ partial class TileID
 		/// </summary>
 		public static bool[] NegatesFallDamage = Factory.CreateBoolSet(Cloud, RainCloud, SnowCloud, PoopBlock);
 
+		/// <summary>
+		/// Indicates that this tile is a pressure plate, and which entities should trigger it when they collide with it. Custom tiles will still need to implement <see cref="ModTile.HitSwitch(int, int)"/> to act on the trigger. The <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/Tiles/ExamplePressurePlate.cs">ExamplePressurePlate.cs</see> example demonstrates this.
+		/// <br/><br/> Positive values and 0 indicate that this pressure plate acts like a specific <see cref="PressurePlates"/> style, inheriting the specific set of entity interactions of that style. (See the <see href="https://terraria.wiki.gg/wiki/Pressure_Plates">Pressure Plates wiki page</see>.) For example: 2 for players only, 0 for all entities, 5 for NPC, and 7 for player only but the pressure plate breaks.
+		/// <br/><br/> A -2 value indicates that this pressure plate acts exactly like <see cref="PressurePlates"/>, with each style corresponding to the same entity interactions sets of the <see cref="PressurePlates"/> styles.
+		/// <br/><br/> A -3 value indicates that this is a <see cref="WeightedPressurePlate"/>. It can only be interacted by players but will trigger when stepped on and off.
+		/// <br/><br/> A -4 value indicates that this is a <see cref="ProjectilePressurePad"/>. It can only be interacted by projectiles support all 4 placement orientations.
+		/// <br/><br/> Note that for each of these the tile sprite dimensions should match the vanilla sprite.
+		/// <br/><br/> <see cref="ModTile.SwitchTiles"/> can be used if these options are insufficient and custom collision calculations are needed. The <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/Tiles/ExampleSlopeTile.cs">ExampleSlopeTile.cs</see> example demonstrates this.
+		/// <br/><br/> Defaults to -1.
+		/// </summary>
+		public static int[] PressurePlate = Factory.CreateIntSet(-1, PressurePlates, -2, WeightedPressurePlate, -3, ProjectilePressurePad, -4);
+		
 		// Values taken from WorldFile.ClearTempTiles
 		/// <summary>
 		/// If true, the tile will be destroyed after the world is loaded, before it is entered. Can be used to get rid of temporary tiles such as the block created by <see href="https://terraria.wiki.gg/wiki/Ice_Rod">Ice Rod</see>.

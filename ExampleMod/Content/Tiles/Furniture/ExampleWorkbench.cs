@@ -30,7 +30,8 @@ namespace ExampleMod.Content.Tiles.Furniture
 			AddToArray(ref TileID.Sets.RoomNeeds.CountsAsTable);
 
 			// Etc
-			AddMapEntry(new Color(200, 200, 200), Language.GetText("ItemName.WorkBench"));
+			LocalizedText name = CreateMapEntryName();
+			AddMapEntry(new Color(200, 200, 200), name);
 		}
 
 		public override void NumDust(int x, int y, bool fail, ref int num) {

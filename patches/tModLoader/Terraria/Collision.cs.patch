@@ -17,6 +17,68 @@
  			return false;
  
  		int num = tile.blockType();
+@@ -2228,7 +_,25 @@
+ 		return false;
+ 	}
+ 
++	// legacy overload for abi compat, remove in 1.4.5
++	/// <inheritdoc cref="SwitchTiles(Entity, Vector2, int, int, Vector2, int)"/>
++	[OriginalOverload]
++	[Obsolete("Use SwitchTiles(Entity, Vector2, int, int, Vector2, int) instead")]
+ 	public static bool SwitchTiles(Vector2 Position, int Width, int Height, Vector2 oldPosition, int objType)
++	=> SwitchTiles(null, Position, Width, Height, oldPosition, objType);
++
++	/// <summary>
++	/// Calls collision related tile actions. Acts on <see cref="TileID.Sets.PressurePlate"/>, ProjectilePressurePad, LandMine, GeyserTrap, as well as modded content using <see cref="ModTile.SwitchTiles"/>
++	/// <br/><br/> Successful collisions usually call <see cref="Wiring.HitSwitch(int, int)"/> and sync it.
++	/// <include file = 'CommonDocs.xml' path='Common/SwitchTilesObjType' />
++	/// </summary>
++	/// <param name="entity"><inheritdoc cref="ModTile.SwitchTiles" path="/param[@name='entity']"/></param>
++	/// <param name="Position"><inheritdoc cref="ModTile.SwitchTiles" path="/param[@name='position']"/></param>
++	/// <param name="Width"><inheritdoc cref="ModTile.SwitchTiles" path="/param[@name='width']"/></param>
++	/// <param name="Height"><inheritdoc cref="ModTile.SwitchTiles" path="/param[@name='height']"/></param>
++	/// <param name="oldPosition"><inheritdoc cref="ModTile.SwitchTiles" path="/param[@name='oldPosition']"/></param>
++	/// <param name="objType"><inheritdoc cref="ModTile.SwitchTiles" path="/param[@name='objType']"/></param>
++	public static bool SwitchTiles(Entity entity, Vector2 Position, int Width, int Height, Vector2 oldPosition, int objType)
+ 	{
+ 		int num = (int)(Position.X / 16f) - 1;
+ 		int num2 = (int)((Position.X + (float)Width) / 16f) + 2;
+@@ -2253,13 +_,18 @@
+ 					continue;
+ 
+ 				int type = Main.tile[i, j].type;
++				if (TileLoader.SwitchTiles(i, j, Main.tile[i, j].TileType, entity, Position, Width, Height, oldPosition, objType))
++					return true;
++				/*
+ 				if (!Main.tile[i, j].active() || (type != 135 && type != 210 && type != 443 && type != 442))
++				*/
++				if (!Main.tile[i, j].active() || ((TileID.Sets.PressurePlate[type] == -1 || TileID.Sets.PressurePlate[type] == -3) && type != 210 && type != 443))
+ 					continue;
+ 
+ 				vector.X = i * 16;
+ 				vector.Y = j * 16 + 12;
+ 				bool flag = false;
+-				if (type == 442) {
++				if (TileID.Sets.PressurePlate[type] == -4) {
+ 					if (objType == 4) {
+ 						float r1StartX = 0f;
+ 						float r1StartY = 0f;
+@@ -2322,6 +_,7 @@
+ 					}
+ 
+ 					int num5 = Main.tile[i, j].frameY / 18;
++					if (TileID.Sets.PressurePlate[type] >= 0) num5 = TileID.Sets.PressurePlate[type];
+ 					bool flag2 = true;
+ 					if ((num5 == 4 || num5 == 2 || num5 == 3 || num5 == 6 || num5 == 7) && objType != 1)
+ 						flag2 = false;
+@@ -2348,6 +_,7 @@
+ 		return false;
+ 	}
+ 
++	/// <summary><strong>Unused.</strong></summary>
+ 	public bool SwitchTilesNew(Vector2 Position, int Width, int Height, Vector2 oldPosition, int objType)
+ 	{
+ 		Point point = Position.ToTileCoordinates();
 @@ -2614,7 +_,10 @@
  			tile = Main.tile[num2, num3];
  			tile2 = Main.tile[num2, num3 - 1];

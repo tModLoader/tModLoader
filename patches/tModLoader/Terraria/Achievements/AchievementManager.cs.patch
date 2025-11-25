@@ -111,7 +111,7 @@
  	public Achievement GetAchievement(string achievementName)
  	{
  		if (_achievements.TryGetValue(achievementName, out var value))
-@@ -181,5 +_,93 @@
+@@ -181,5 +_,98 @@
  			return value;
  
  		return 0;
@@ -139,13 +139,18 @@
 +			sortingSlots[i] = [];
 +
 +		foreach (ModAchievement modAchievement in ModdedAchievements) {
++			modAchievement.SetStaticDefaults();
++			if (modAchievement.Achievement._conditions.Count == 0)
++				throw BlameAchievementException(new Exception($"The ModAchievement '{modAchievement.FullName}' has no conditions, achievements must have at least one condition."));
++			modAchievement.AutoStaticDefaults();
++
 +			var position = modAchievement.GetDefaultPosition();
 +
 +			switch (position) {
 +				case ModAchievement.After after: {
 +					int afterIndex = AchievementsInOrder.IndexOf(after.Achievement);
 +					if (afterIndex >= DefaultLayerCount || afterIndex is -1)
-+						throw BlameAchievementException(new ArgumentException($"ModAchievement {modAchievement} did not refer to a vanilla achievement in GetDefaultPosition()"));
++						throw BlameAchievementException(new ArgumentException($"ModAchievement {modAchievement.FullName} did not refer to a vanilla achievement in GetDefaultPosition()"));
 +
 +					sortingSlots[afterIndex + 1].Add(modAchievement.Achievement);
 +					break;
@@ -153,13 +158,13 @@
 +				case ModAchievement.Before before: {
 +					int beforeIndex = AchievementsInOrder.IndexOf(before.Achievement);
 +					if (beforeIndex >= DefaultLayerCount || beforeIndex is -1)
-+						throw BlameAchievementException(new ArgumentException($"ModAchievement {modAchievement} did not refer to a vanilla achievement in GetDefaultPosition()"));
++						throw BlameAchievementException(new ArgumentException($"ModAchievement {modAchievement.FullName} did not refer to a vanilla achievement in GetDefaultPosition()"));
 +
 +					sortingSlots[beforeIndex].Add(modAchievement.Achievement);
 +					break;
 +				}
 +				default: {
-+					var ex = new ArgumentException($"ModMapLayer {modAchievement} has unknown Position {position}");
++					var ex = new ArgumentException($"ModAchievement {modAchievement.FullName} has unknown Position {position}");
 +					throw BlameAchievementException(ex);
 +				}
 +			}

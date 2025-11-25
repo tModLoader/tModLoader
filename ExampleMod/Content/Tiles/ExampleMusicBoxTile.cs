@@ -1,19 +1,16 @@
 using ExampleMod.Content.Items.Placeable;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.DataStructures;
-using Terraria.GameContent.Drawing;
 using Terraria.GameContent.ObjectInteractions;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
-using Terraria.Utilities;
 
 namespace ExampleMod.Content.Tiles
 {
-	// See ExampleMod/Common/Systems/MusicLoadingSystem for an explanation on music.
+	// See ExampleMod/Content/Items/Placeable/ExampleMusicBox.cs for more explanation on music.
 	public class ExampleMusicBoxTile : ModTile
 	{
 		public override void SetStaticDefaults() {

@@ -14,7 +14,7 @@ namespace ExampleMod.Content.NPCs
 	{
 		public override void SetStaticDefaults() {
 			// Total count animation frames
-			Main.npcFrameCount[NPC.type] = 6;
+			Main.npcFrameCount[Type] = 6;
 		}
 
 		public override void SetDefaults() {
@@ -113,7 +113,7 @@ namespace ExampleMod.Content.NPCs
 						player.releaseInventory = false;
 					}
 
-					if (player.talkNPC != NPC.whoAmI && !player.tileInteractionHappened ) {
+					if (player.talkNPC != NPC.whoAmI && !player.tileInteractionHappened) {
 						if (player.HasItem(keyItem) && player.ConsumeItem(keyItem)) {
 							SoundEngine.PlaySound(SoundID.Item14); // The bomb explosion sound
 							NPC.SimpleStrikeNPC(1000, 0);

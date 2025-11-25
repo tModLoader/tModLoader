@@ -1908,6 +1908,14 @@
  		ClientInitialize();
  		base.Initialize();
  	}
+@@ -5213,6 +_,7 @@
+ 		Initialize_TileAndNPCData1();
+ 		Initialize_TileAndNPCData2();
+ 		Initialize_Items();
++		LiquidRenderer.Initialize_LiquidData();
+ 		for (int i = 1; i < ProjectileID.Count; i++) {
+ 			Projectile obj = new Projectile();
+ 			obj.SetDefaults(i);
 @@ -5239,11 +_,18 @@
  		}
  
@@ -5038,6 +5046,20 @@
  					_npcIndexWhoHoldsHeadIndex[headIndexSafe] = j;
  					_npcTypesThatAlreadyDrewAHead.Add(npc[j].type);
  				}
+@@ -34040,10 +_,11 @@
+ 				}
+ 			}
+ 
++			if (num <= 98) // GamePointID 700+ are for crafting. This check avoids an exception, but does not support gamepad navigation past 98 TownNPC. That would require too many patches. #4790
+-			UILinkPointNavigator.SetPosition(600 + num, new Vector2(num7, num8) + TextureAssets.InventoryBack.Value.Size() * 0.75f);
++				UILinkPointNavigator.SetPosition(600 + num, new Vector2(num7, num8) + TextureAssets.InventoryBack.Value.Size() * 0.75f);
+ 			Texture2D value = TextureAssets.InventoryBack11.Value;
+ 			Microsoft.Xna.Framework.Color white = inventoryBack;
+-			if (UILinkPointNavigator.CurrentPoint - 600 == num) {
++			if (num <= 98 && UILinkPointNavigator.CurrentPoint - 600 == num) {
+ 				value = TextureAssets.InventoryBack14.Value;
+ 				white = Microsoft.Xna.Framework.Color.White;
+ 			}
 @@ -34097,7 +_,7 @@
  		else {
  			text = Lang.inter[21].Value + " " + guideItem.Name;
@@ -5365,6 +5387,18 @@
  
  		PlayerInput.SetZoom_World();
  	}
+@@ -36525,7 +_,11 @@
+ 		if (num > 0) {
+ 			int num3 = 10 + player[myPlayer].cursorItemIconPush;
+ 			instance.LoadItem(num);
++			Vector2 value = Item.GetDrawHitbox(num, null).Size() * num2 * 0.5f;
++			ItemSlot.DrawItemIcon(ContentSamples.ItemsByType[num], ItemSlot.Context.InWorld, Main.spriteBatch, new Vector2(Main.mouseX + num3, Main.mouseY + num3) + value, num2, 9999f, currentColor);
++			/* Fix item frame drawing not respecting default item.color
+ 			spriteBatch.Draw(TextureAssets.Item[num].Value, new Vector2(mouseX + num3, mouseY + num3), Item.GetDrawHitbox(num, null), currentColor, 0f, default(Vector2), num2, effects, 0f);
++			*/
+ 			if (num == item.type && TryGetAmmo(item, out var ammoItem, out var ammoColor, out var ammoScale, out var ammoOffset)) {
+ 				float scale = num2 * ammoScale;
+ 				int type = ammoItem.type;
 @@ -36758,6 +_,9 @@
  
  	private void DrawInterface_33_MouseText()
@@ -6436,6 +6470,25 @@
  		Asset<Texture2D> asset = TextureAssets.MapBGs[0];
  		int num = -1;
  		Microsoft.Xna.Framework.Color color = Microsoft.Xna.Framework.Color.White;
+@@ -46783,6 +_,9 @@
+ 
+ 	public void DrawCapture(Microsoft.Xna.Framework.Rectangle area, CaptureSettings settings)
+ 	{
++		// Remove in 1.4.5
++		bool lidquidEdgeRendererEnabled = LiquidEdgeRenderer.Enabled;
++		LiquidEdgeRenderer.Enabled = false;
+ 		float[] array = bgAlphaFrontLayer;
+ 		bgAlphaFrontLayer = new float[array.Length];
+ 		float[] array2 = bgAlphaFarBackLayer;
+@@ -47132,6 +_,8 @@
+ 		SceneMetrics.HolyTileCount = holyTileCount;
+ 		Lighting.Initialize();
+ 		GameViewMatrix = gameViewMatrix;
++		// Remove in 1.4.5
++		LiquidEdgeRenderer.Enabled = lidquidEdgeRendererEnabled;
+ 	}
+ 
+ 	protected void RenderTiles()
 @@ -47244,6 +_,12 @@
  			case 4:
  				return 13;
@@ -7037,6 +7090,17 @@
  	}
  
  	private static void UpdateAtmosphereTransparencyToSkyColor()
+@@ -52230,6 +_,10 @@
+ 
+ 				vec.X -= messageSize.X / 2f;
+ 				vec.Y += player[i].gfxOffY;
++				// Proper fix coming in 1.4.5
++				if (i != myPlayer && player[myPlayer].gravDir == -1f)
++					vec.Y = Main.screenHeight - vec.Y - messageSize.Y;
++
+ 				vec = vec.Floor();
+ 				int hoveredSnippet = 0;
+ 				ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.MouseText.Value, player[i].chatOverhead.snippets, vec, 0f, player[i].chatOverhead.color, Vector2.Zero, Vector2.One, out hoveredSnippet);
 @@ -52937,6 +_,10 @@
  			preferredBGStyleForPlayer = bgStyle;
  			if (WorldGen.drunkWorldGen)

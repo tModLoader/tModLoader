@@ -16,6 +16,12 @@ partial class ProjectileID
 		public static bool[] FiresFewerFromDaedalusStormbow = Factory.CreateBoolSet(false, 91, 4, 5, 41);
 
 		/// <summary>
+		/// If <see langword="true"/> for a given projectile type (<see cref="Projectile.type"/>), then this minion will not be replaced when resummoning.
+		/// <br/><br/> Defaults to <see langword="false"/>. Vanilla examples: <see cref="StardustGuardian"/>, <see cref="StardustDragon1"/>, <see cref="StardustDragon4"/>
+		/// </summary>
+		public static bool[] MinionCannotBeFreed = Factory.CreateBoolSet(false, StardustGuardian, StardustDragon1, StardustDragon4);
+
+		/// <summary>
 		/// Used to scale down summon tag damage for fast hitting minions and sentries. 
 		/// </summary>
 		public static float[] SummonTagDamageMultiplier = Factory.CreateFloatSet(1f,
