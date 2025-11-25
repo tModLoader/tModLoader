@@ -311,6 +311,70 @@
  		if (Main.rand == null)
  			Main.rand = new UnifiedRandom((int)DateTime.Now.Ticks);
  
+@@ -2624,30 +_,62 @@
+ 					worldBackup = false;
+ 
+ 				if (!Main.dedServ) {
++					// If the loading error is mod related, show the exception, then back to the load backup/load failed menus.
++					if (WorldFile.LastThrownLoadException is CustomModDataException ex) {
++						WorldIO.customDataFail = ex;
++						Utils.ShowFancyErrorMessage($"{Language.GetTextValue("tModLoader.WorldIOException")}\n{ex.modName}\n\n{ex.Message}\n{ex.StackTrace}", worldBackup ? 200 : 201);
++						return;
++					}
+ 					if (worldBackup)
+ 						Main.menuMode = 200;
+ 					else
+ 						Main.menuMode = 201;
+-
+ 					return;
+ 				}
+ 
+ 				if (!worldBackup) {
++					/*
+ 					Console.WriteLine(Language.GetTextValue("Error.LoadFailedNoBackup"));
++					*/
++					string message = Language.GetTextValue("Error.LoadFailedNoBackup");
++
++					if (WorldIO.customDataFail != null) {
++						message = WorldIO.customDataFail.modName + " " + message;
++						message += "\n" + WorldIO.customDataFail.InnerException;
++					}
++
++					Console.WriteLine(message);
+ 					return;
+ 				}
+ 
+ 				FileUtilities.Copy(Main.worldPathName, Main.worldPathName + ".bad", isCloudSave);
+ 				FileUtilities.Copy(Main.worldPathName + ".bak", Main.worldPathName, isCloudSave);
+ 				FileUtilities.Delete(Main.worldPathName + ".bak", isCloudSave);
++
++				WorldIO.LoadDedServBackup(Main.worldPathName, isCloudSave);
++
+ 				WorldFile.LoadWorld(Main.ActiveWorldFileData.IsCloudSave);
+ 				if (loadFailed || !loadSuccess) {
+ 					WorldFile.LoadWorld(Main.ActiveWorldFileData.IsCloudSave);
++
++					// Patch context/merge.
+ 					if (loadFailed || !loadSuccess) {
+ 						FileUtilities.Copy(Main.worldPathName, Main.worldPathName + ".bak", isCloudSave);
+ 						FileUtilities.Copy(Main.worldPathName + ".bad", Main.worldPathName, isCloudSave);
+ 						FileUtilities.Delete(Main.worldPathName + ".bad", isCloudSave);
++
++						WorldIO.RevertDedServBackup(Main.worldPathName, isCloudSave);
++
++						/*
+ 						Console.WriteLine(Language.GetTextValue("Error.LoadFailed"));
++						*/
++						string message = Language.GetTextValue("Error.LoadFailed");
++
++						if (WorldIO.customDataFail != null) {
++							message = $"{WorldIO.customDataFail.modName} {message}\r\n{WorldIO.customDataFail.InnerException}";
++						}
++
++						Console.WriteLine(message);
+ 						return;
+ 					}
+ 				}
 @@ -2674,6 +_,12 @@
  		if (Main.netMode == 0 && Main.anglerWhoFinishedToday.Contains(Main.player[Main.myPlayer].name))
  			Main.anglerQuestFinished = true;
