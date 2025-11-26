@@ -91,7 +91,7 @@ The `server`, `steamapps` and `logs` folders are created by the management scrip
 
 ### Obtaining install.txt
 Because the steam workshop does not use mod names to identify mods, you must create a modpack to install mods from the workshop. To get an `install.txt` file and its accompanying `enabled.json`
-1. Go to Workshop
+1. Go to Workshop in-game
 2. Go to Mod Packs
 3. Click `Save Enabled as New Mod Pack`
 4. Click `Open Mod Pack Folder`
