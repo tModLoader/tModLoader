@@ -3361,10 +3361,13 @@
  			Main.tile[num2, num3].wall = num6.Value;
  			if (Main.netMode == 2)
  				NetMessage.SendTileSquare(-1, num2, num3);
-@@ -55301,7 +_,13 @@
+@@ -55301,7 +_,16 @@
  					if (!(Math.Abs((double)m - vector2D.X) + Math.Abs((double)n - vector2D.Y) < (double)num2 * 0.5 * (1.0 + (double)genRand.Next(-10, 11) * 0.015)))
  						continue;
  
++					ushort oldTileType = Main.tile[m, n].type;
++					ushort oldWallType = Main.tile[m, n].wall;
++
 +					bool convertWall = WallLoader.Convert(m, n, good ? BiomeConversionID.Hallow : crimson ? BiomeConversionID.Crimson : BiomeConversionID.Corruption);
 +					bool convertTile = TileLoader.Convert(m, n, good ? BiomeConversionID.Hallow : crimson ? BiomeConversionID.Crimson : BiomeConversionID.Corruption);
 +
@@ -3436,12 +3439,19 @@
  						if (flag && Main.tile[m, n].type == 225) {
  							Main.tile[m, n].type = 25;
  							SquareTileFrame(m, n);
-@@ -55441,6 +_,8 @@
+@@ -55441,6 +_,15 @@
  							Main.tile[m, n].type = 398;
  							SquareTileFrame(m, n);
  						}
 +					SkipTileConversion:
 +						;
++					}
++					int conversionID = good ? BiomeConversionID.Hallow : crimson ? BiomeConversionID.Crimson : BiomeConversionID.Corruption;
++					if (oldTileType != Main.tile[m, n].type) {
++						TileLoader.OnTileConverted(m, n, oldTileType, Main.tile[m, n].type, conversionID);
++					}
++					if (oldWallType != Main.tile[m, n].wall) {
++						WallLoader.OnWallConverted(m, n, oldWallType, Main.tile[m, n].wall, conversionID);
  					}
  				}
  			}
