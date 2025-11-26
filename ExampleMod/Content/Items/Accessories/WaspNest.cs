@@ -1,12 +1,9 @@
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
-using ReLogic.Content;
 using System;
 using Terraria;
 using Terraria.DataStructures;
-using Terraria.GameContent.Liquid;
 using Terraria.ID;
 using Terraria.ModLoader;
 
