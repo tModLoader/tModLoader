@@ -3340,6 +3340,27 @@
  		int num = i - 1;
  		int num2 = i + 2;
  		int num3 = j - 1;
+@@ -54455,6 +_,20 @@
+ 		}
+ 
+ 		if (num6.HasValue && Main.tile[num2, num3].wall != num6.Value) {
++			int conversionType = -1;
++			switch (num) {
++				case 1:
++					conversionType = BiomeConversionID.Corruption;
++					break;
++				case 2:
++					conversionType = BiomeConversionID.Hallow;
++					break;
++				case 3:
++					conversionType = BiomeConversionID.Crimson;
++					break;
++			}
++			if(conversionType != -1)
++				WallLoader.OnWallConverted(num2, num3, Main.tile[num2, num3].wall, num6.Value, conversionType);
+ 			Main.tile[num2, num3].wall = num6.Value;
+ 			if (Main.netMode == 2)
+ 				NetMessage.SendTileSquare(-1, num2, num3);
 @@ -55301,7 +_,13 @@
  					if (!(Math.Abs((double)m - vector2D.X) + Math.Abs((double)n - vector2D.Y) < (double)num2 * 0.5 * (1.0 + (double)genRand.Next(-10, 11) * 0.015)))
  						continue;
