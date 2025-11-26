@@ -1246,6 +1246,11 @@ Mods: {
 				// DisplayName: Example Weighted Pressure Plate
 				// Tooltip: "{$ItemTooltip.WeightedPressurePlateCyan}"
 			}
+
+			ExampleCustomDrawWings: {
+				// DisplayName: Example Custom Draw Wings
+				// Tooltip: ""
+			}
 		}
 
 		# Projectile display names mainly show in chat when a player dies from it.

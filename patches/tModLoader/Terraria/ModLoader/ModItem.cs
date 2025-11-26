@@ -1524,7 +1524,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// <summary>
 	/// Allows customization of the <see cref="DrawData"/> responsible for drawing the <see cref="EquipTexture"/> corresponding to the <paramref name="type"/> and <paramref name="slot"/> assigned to this item. Additional <see cref="DrawData"/> can be added to <paramref name="drawInfo"/> for more advanced drawing if needed.
 	/// <br/><br/> <paramref name="methodName"/> is the name of the method being hooked into. Some <see cref="EquipType"/> are drawn multiple times depending on layering, this provides that context if relevant.
-	/// <br/><br/> Note that this hook is only ever called through this item's associated equipment texture (<see cref="EquipTexture.ModifyDraw"/>).
+	/// <br/><br/> Note that this hook is only ever called through this item's associated equipment texture (<see cref="EquipTexture.ModifyDraw"/>). This means that the Item instance is not the actual equipped item instance. If the visuals depend on item data, you'll need to store that item instance in a ModPlayer and use the data from it rather than this item. See <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/Items/Accessories/WaspNest.cs#L77">WaspNestPlayer.strongBeesItem</see> for an example of this.
 	/// <br/><br/> Return false to stop the game from adding the <paramref name="drawData"/> to the player drawing. Returns true by default.
 	/// </summary>
 	public virtual bool ModifyEquipTextureDraw(ref PlayerDrawSet drawInfo, ref DrawData drawData, EquipType type, int slot, string methodName)
