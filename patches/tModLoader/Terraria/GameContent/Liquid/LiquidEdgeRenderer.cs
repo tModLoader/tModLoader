@@ -54,11 +54,11 @@ public static class LiquidEdgeRenderer
 		AlphaDestinationBlend = Blend.InverseSourceAlpha
 	};
 
-	private static List<Point> BlockWaterBehindLocations { get; } = [];
+	private static List<Point> EdgeDataPoint { get; } = [];
 
 	public static void Clear()
 	{
-		BlockWaterBehindLocations.Clear();
+		EdgeDataPoint.Clear();
 	}
 
 	public static void DrawTileMask(SpriteBatch spriteBatch, RenderTarget2D tileTarget, Vector2 tileTargetOffset)
@@ -66,8 +66,8 @@ public static class LiquidEdgeRenderer
 		spriteBatch.End();
 		spriteBatch.Begin(SpriteSortMode.Deferred, MaskingBlendState, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, MaskShader);
 
-		spriteBatch.Draw(tileTarget, tileTargetOffset, Color.White);
-		foreach (var pt in BlockWaterBehindLocations)
+		// spriteBatch.Draw(tileTarget, tileTargetOffset, Color.White);
+		foreach (var pt in EdgeDataPoint)
 			DrawSingleTileMask(spriteBatch, pt.X, pt.Y);
 	}
 
@@ -75,7 +75,19 @@ public static class LiquidEdgeRenderer
 	{
 		Tile tileCache = Main.tile[tileX, tileY];
 		Vector2 position = new Vector2(tileX * 16, tileY * 16) + new Vector2(Main.drawToScreen ? 0 : Main.offScreenRange) - Main.screenPosition;
-		Texture2D texture = DefaultLiquidMask;
+
+		int tileType = tileCache.TileType;
+		Texture2D texture;
+		if (TileID.Sets.BlocksWaterDrawingBehindSelf[tileType]) {
+			texture = DefaultLiquidMask;
+		}
+		else {
+			var asset = TextureAssets.Tile[tileType];
+			if (!asset.IsLoaded)
+				Main.instance.LoadTiles(tileType);
+
+			texture = asset.Value;
+		}
 
 		if (tileCache.Slope != SlopeType.Solid && !TileID.Sets.HasSlopeFrames[tileCache.TileType]) {
 			int slopeType = (int)tileCache.Slope;
@@ -344,8 +356,7 @@ public static class LiquidEdgeRenderer
 			SourceRectangle = new Rectangle(16, isSurfaceLiquid ? 0 : 64, size.Width, size.Height)
 		};
 
-		if (TileID.Sets.BlocksWaterDrawingBehindSelf[tileCache.type])
-			BlockWaterBehindLocations.Add(new Point(tileX, tileY));
+		EdgeDataPoint.Add(new Point(tileX, tileY));
 
 		if (blockType is BlockType.HalfBlock) {
 			if (!pCache->IsHalfBrick) {
