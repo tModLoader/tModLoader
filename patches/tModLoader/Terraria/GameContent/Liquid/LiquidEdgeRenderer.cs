@@ -248,10 +248,10 @@ public static class LiquidEdgeRenderer
 			else if (down) {
 				size = (16, 16);
 			}
-			else if(tileCache.IsHalfBlock || slope != SlopeType.Solid) {
+			else if (tileCache.IsHalfBlock || slope != SlopeType.Solid) {
 				size = slope switch {
 					SlopeType.SlopeUpLeft or SlopeType.SlopeUpRight => (16, 2),
-					SlopeType.SlopeDownLeft or SlopeType.SlopeDownRight => (16, 12),
+					SlopeType.SlopeDownLeft or SlopeType.SlopeDownRight => (16, WorldGen.SolidOrSlopedTile(tileDownCache) ? 16 : 12),
 					_ => (16, 16),
 				};
 			}
