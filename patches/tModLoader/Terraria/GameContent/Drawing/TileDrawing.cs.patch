@@ -1,5 +1,13 @@
 --- src/TerrariaNetCore/Terraria/GameContent/Drawing/TileDrawing.cs
 +++ src/tModLoader/Terraria/GameContent/Drawing/TileDrawing.cs
+@@ -2,6 +_,7 @@
+ using System.Collections.Generic;
+ using System.Diagnostics;
+ using System.Threading;
++using FullSerializer.Internal;
+ using Microsoft.Xna.Framework;
+ using Microsoft.Xna.Framework.Graphics;
+ using Terraria.DataStructures;
 @@ -11,33 +_,48 @@
  using Terraria.Graphics;
  using Terraria.Graphics.Capture;
@@ -188,8 +196,12 @@
  				Tile tile = Main.tile[j, i];
  				if (tile == null) {
  					tile = new Tile();
-@@ -408,7 +_,9 @@
- 					if (!tile.active() || IsTileDrawLayerSolid(tile.type) != solidLayer)
+@@ -405,10 +_,12 @@
+ 					Main.mapTime += 60;
+ 				}
+ 				else {
+-					if (!tile.active() || IsTileDrawLayerSolid(tile.type) != solidLayer)
++					if (!tile.active() || IsTileDrawLayerSolid(tile) != solidLayer)
  						continue;
  
 -					if (solidLayer)
@@ -463,7 +475,7 @@
  	{
  		bool flag = false || typeCache == 135 || typeCache == 137 || TileID.Sets.Boulders[typeCache] || typeCache == 141 || typeCache == 210 || typeCache == 442 || typeCache == 443 || typeCache == 444 || typeCache == 411 || typeCache == 485 || typeCache == 85 || typeCache == 654 || (typeCache == 314 && Minecart.IsPressurePlate(tileCache));
  		flag |= Main.getGoodWorld && typeCache == 230;
-@@ -3122,10 +_,14 @@
+@@ -3122,22 +_,30 @@
  			if (!localPlayer.fireWalk)
  				flag = flag || typeCache == 37 || typeCache == 58 || typeCache == 76;
  
@@ -478,8 +490,17 @@
  		return flag;
  	}
  
-@@ -3137,7 +_,7 @@
+-	private bool IsTileDrawLayerSolid(ushort typeCache)
++	private bool IsTileDrawLayerSolid(Tile tile)
+ 	{
++		/*
+ 		if (TileID.Sets.DrawTileInSolidLayer[typeCache].HasValue)
+ 			return TileID.Sets.DrawTileInSolidLayer[typeCache].Value;
+ 
  		return _tileSolid[typeCache];
++		*/
++
++		return _tileSolid[tile.TileType] && !_tileSolidTop[tile.TileType] && !tile.IsActuated;
  	}
  
 -	private void GetTileOutlineInfo(int x, int y, ushort typeCache, ref Color tileLight, ref Texture2D highlightTexture, ref Color highlightColor)
