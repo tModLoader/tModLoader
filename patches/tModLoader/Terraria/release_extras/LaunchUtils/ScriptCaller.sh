@@ -29,6 +29,9 @@ LaunchLogs="$root_dir/tModLoader-Logs"
 
 if [ ! -d "$LaunchLogs" ]; then
 	mkdir -p "$LaunchLogs"
+	is_first_run=true
+else
+	is_first_run=false
 fi
 
 LogFile="$LaunchLogs/Launch.log"
@@ -54,10 +57,9 @@ echo "This may take a few moments."
 source ./DotNetVersion.sh
 
 # Attempt to fix first time Crash To Desktop due to dotnet install failure
-if [[ ! -f "$LaunchLogs/client.log" && ! -f "$LaunchLogs/server.log" ]]; then
+if [[ ! "$is_first_run" && ! -f "$LaunchLogs/client.log" && ! -f "$LaunchLogs/server.log" ]]; then
 	echo "Last Run Attempt Failed to Start tModLoader. Deleting dotnet_dir and resetting"  2>&1 | tee -a "$LogFile"
 	rm -rf "$dotnet_dir"
-	mkdir "$dotnet_dir"
 fi
 
 # Dotnet binaries Fixes (Proton, AppleSilicon)
@@ -65,18 +67,19 @@ if [[ "$_uname" == *"_NT"* ]]; then
 	if [[ -f "$dotnet_dir/dotnet" ]]; then
 		echo "A non-Windows dotnet executable was detected. Deleting dotnet_dir and resetting"  2>&1 | tee -a "$LogFile"
 		rm -rf "$dotnet_dir"
-		mkdir "$dotnet_dir"
 	fi
 else
 	if [[ -f "$dotnet_dir/dotnet.exe" ]]; then
 		echo "A Windows dotnet executable was detected, possibly from a previous Proton launch. Deleting dotnet_dir and resetting"  2>&1 | tee -a "$LogFile"
 		rm -rf "$dotnet_dir"
-		mkdir "$dotnet_dir"
-	elif [[ "$_arch" != "arm64" ]] && [[ "$(file "$dotnet_dir/dotnet")" == *"arm64"* ]]; then
+	elif [ "$_uname" = Darwin ] && [[ "$_arch" != "arm64" ]] && [[ "$(file "$dotnet_dir/dotnet")" == *"arm64"* ]]; then
 		echo "An arm64 install of dotnet was detected. Deleting dotnet_dir and resetting"  2>&1 | tee -a "$LogFile"
 		rm -rf "$dotnet_dir"
-		mkdir "$dotnet_dir"
 	fi
+fi
+
+if [ ! -d "$dotnet_dir" ]; then
+	mkdir -p "$dotnet_dir"
 fi
 
 # Installing Dotnet

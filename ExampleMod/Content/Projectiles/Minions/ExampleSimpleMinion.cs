@@ -40,8 +40,8 @@ namespace ExampleMod.Content.Projectiles.Minions
 	public class ExampleSimpleMinionItem : ModItem
 	{
 		public override void SetStaticDefaults() {
-			ItemID.Sets.GamepadWholeScreenUseRange[Item.type] = true; // This lets the player target anywhere on the whole screen while using a controller
-			ItemID.Sets.LockOnIgnoresCollision[Item.type] = true;
+			ItemID.Sets.GamepadWholeScreenUseRange[Type] = true; // This lets the player target anywhere on the whole screen while using a controller
+			ItemID.Sets.LockOnIgnoresCollision[Type] = true;
 
 			ItemID.Sets.StaffMinionSlotsRequired[Type] = 1f; // The default value is 1, but other values are supported. See the docs for more guidance. 
 		}
@@ -97,14 +97,14 @@ namespace ExampleMod.Content.Projectiles.Minions
 	{
 		public override void SetStaticDefaults() {
 			// Sets the amount of frames this minion has on its spritesheet
-			Main.projFrames[Projectile.type] = 4;
+			Main.projFrames[Type] = 4;
 			// This is necessary for right-click targeting
-			ProjectileID.Sets.MinionTargettingFeature[Projectile.type] = true;
+			ProjectileID.Sets.MinionTargettingFeature[Type] = true;
 
-			Main.projPet[Projectile.type] = true; // Denotes that this projectile is a pet or minion
+			Main.projPet[Type] = true; // Denotes that this projectile is a pet or minion
 
-			ProjectileID.Sets.MinionSacrificable[Projectile.type] = true; // This is needed so your minion can properly spawn when summoned and replaced when other minions are summoned
-			ProjectileID.Sets.CultistIsResistantTo[Projectile.type] = true; // Make the cultist resistant to this projectile, as it's resistant to all homing projectiles.
+			ProjectileID.Sets.MinionSacrificable[Type] = true; // This is needed so your minion can properly spawn when summoned and replaced when other minions are summoned
+			ProjectileID.Sets.CultistIsResistantTo[Type] = true; // Make the cultist resistant to this projectile, as it's resistant to all homing projectiles.
 		}
 
 		public sealed override void SetDefaults() {
@@ -310,7 +310,7 @@ namespace ExampleMod.Content.Projectiles.Minions
 				Projectile.frameCounter = 0;
 				Projectile.frame++;
 
-				if (Projectile.frame >= Main.projFrames[Projectile.type]) {
+				if (Projectile.frame >= Main.projFrames[Type]) {
 					Projectile.frame = 0;
 				}
 			}

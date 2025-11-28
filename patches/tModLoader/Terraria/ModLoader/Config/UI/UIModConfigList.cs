@@ -181,6 +181,7 @@ internal class UIModConfigList : UIState
 					UseAltColors = () => selectedMod != mod,
 					ClickSound = SoundID.MenuTick,
 				};
+				modPanel.SetPadding(6);
 				AddSmallIcon(mod, modPanel);
 
 				modPanel.OnLeftClick += delegate (UIMouseEvent evt, UIElement listeningElement) {
@@ -205,6 +206,7 @@ internal class UIModConfigList : UIState
 					TooltipText = true,
 					HoverText = Language.GetTextValue("tModLoader.ModConfigModLoaderButNoConfigs")
 				};
+				modPanel.SetPadding(6);
 				AddSmallIcon(mod, modPanel);
 
 				modList.Add(modPanel);
@@ -226,8 +228,8 @@ internal class UIModConfigList : UIState
 				VAlign = 0.5f,
 				HAlign = 0f,
 				Color = Color.White,
-				MarginLeft = -iconOffset - iconPadding - 4.5f, // -4.5 for alignment, 4 is 11 and 5 is 9 so 4.5 is 10
-				MarginTop = -13,
+				MarginLeft = -iconOffset - iconPadding,
+				MarginTop = -2, // 40 - 30 is 10, padding is 6, so -2 would make 5 pixels top and bottom since VAlign is 0.5
 			};
 
 			modPanel.Append(sideIndicator);
@@ -253,6 +255,7 @@ internal class UIModConfigList : UIState
 				UseInnerDimensions = true,
 				ClickSound = SoundID.MenuOpen,
 			};
+			configPanel.SetPadding(6);
 
 			configPanel.OnLeftClick += delegate (UIMouseEvent evt, UIElement listeningElement) {
 				Interface.modConfig.SetMod(selectedMod, config);
@@ -268,15 +271,14 @@ internal class UIModConfigList : UIState
 			var indicatorFrame = indicatorTexture.Frame(2, 1, config.Mode == ConfigScope.ServerSide ? 1 : 0, 0, -2);
 
 			float indicatorOffset = indicatorFrame.Width;
-			float indicatorPadding = 6;
+			float indicatorPadding = 12;
 			configPanel.PaddingRight += indicatorOffset + indicatorPadding;
 
 			var sideIndicator = new UIImageFramed(indicatorTexture, indicatorFrame) {
 				VAlign = 0.5f,
 				HAlign = 1f,
 				Color = Color.White,
-				MarginRight = -indicatorOffset - indicatorPadding - 2, // -2 for alignment
-				MarginTop = -6,
+				MarginRight = -indicatorOffset - indicatorPadding + 4, // 4 for alignment
 			};
 
 			sideIndicator.OnDraw += delegate (UIElement affectedElement) {

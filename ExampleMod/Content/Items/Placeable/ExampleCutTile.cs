@@ -8,7 +8,7 @@ namespace ExampleMod.Content.Items.Placeable
 	{
 		public override void SetStaticDefaults() {
 			// Prevent the tile from dropping this item
-			ItemID.Sets.DisableAutomaticPlaceableDrop[Type] = true; 
+			ItemID.Sets.DisableAutomaticPlaceableDrop[Type] = true;
 		}
 
 		public override void SetDefaults() {

@@ -80,4 +80,11 @@ PostAI()</code>
 	<MouseRightMouseRightReleaseNote>
 		<br/><br/> <see cref="mouseRight"/> and <see cref="mouseRightRelease"/> are usually checked together to detect a right mouse click. For example: <c>if (Main.mouseRight &amp;&amp; Main.mouseRightRelease)</c>. <see cref="mouseRightRelease"/> is usually set to false if that check passes to "consume" the click preventing a single click from affecting multiple things in the game.
 	</MouseRightMouseRightReleaseNote>
+	<SwitchTilesObjType>
+		<br/><br/> <paramref name="objType"/> indicates what type of entity is colliding with tiles:
+		<br/>1->Player
+		<br/>2->NPC
+		<br/>3->Specific projectiles, boulders and other falling traps. These also trigger Yellow Pressure Plate
+		<br/>4->Projectile (Must have <see cref="Projectile.tileCollide"/> of <see cref="ProjectileID.Sets.ForcePlateDetection"/> set to true. Owned by this client only)
+	</SwitchTilesObjType>
 </Common>

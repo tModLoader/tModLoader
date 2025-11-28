@@ -14,7 +14,7 @@ namespace ExampleMod.Content.Projectiles
 	{
 		public override void SetStaticDefaults() {
 			// Total count animation frames
-			Main.projFrames[Projectile.type] = 4;
+			Main.projFrames[Type] = 4;
 		}
 
 		public override void SetDefaults() {
@@ -54,8 +54,8 @@ namespace ExampleMod.Content.Projectiles
 			// Projectile.frame — index of current frame
 			if (++Projectile.frameCounter >= 5) {
 				Projectile.frameCounter = 0;
-				// Or more compactly Projectile.frame = ++Projectile.frame % Main.projFrames[Projectile.type];
-				if (++Projectile.frame >= Main.projFrames[Projectile.type])
+				// Or more compactly Projectile.frame = ++Projectile.frame % Main.projFrames[Type];
+				if (++Projectile.frame >= Main.projFrames[Type])
 					Projectile.frame = 0;
 			}
 

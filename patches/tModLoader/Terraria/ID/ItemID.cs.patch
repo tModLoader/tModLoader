@@ -303,7 +303,7 @@
  			}
  		});
 +
-+		/// <summary> Indicates that an item should show the material tooltip. Typically this means that the item is used in at least 1 recipe, but some items such as coins and void bag hide the tooltip for aesthetic reasons. </summary>
++		/// <summary> Indicates that an item is used in at least 1 non-disabled recipe (or in a recipe group used by at least 1 non-disabled recipe). Used to assign an initial value to <see cref="Item.material"/> at the start of item defaults. </summary>
  		public static bool[] IsAMaterial = Factory.CreateBoolSet();
 -		public static int[] IsCrafted = Factory.CreateIntSet();
 +

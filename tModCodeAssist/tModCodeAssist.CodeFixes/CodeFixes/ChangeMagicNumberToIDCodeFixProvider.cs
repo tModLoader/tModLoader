@@ -89,7 +89,7 @@ public sealed class ChangeMagicNumberToIDCodeFixProvider() : AbstractCodeFixProv
 		var idClassExpression = syntaxGenerator.TypeExpression(idClassTypeSymbol)
 			.WithAdditionalAnnotations(Simplifier.AddImportsAnnotation);
 
-		return syntaxGenerator.MemberAccessExpression(idClassExpression, constantName);
+		return syntaxGenerator.MemberAccessExpression(idClassExpression, constantName).WithTriviaFrom(literalSyntax);
 	}
 
 	// TODO: consider taking this down once multiple names support is introduced

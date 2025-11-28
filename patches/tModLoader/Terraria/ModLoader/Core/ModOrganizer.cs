@@ -602,7 +602,7 @@ internal static class ModOrganizer
 
 	internal static List<LocalMod> Sort(ICollection<LocalMod> mods)
 	{
-		var preSorted = mods.OrderBy(mod => mod.Name).ToList();
+		var preSorted = mods.OrderBy(mod => mod.Name, StringComparer.InvariantCulture).ToList();
 		var syncedSort = BuildSort(preSorted.Where(mod => mod.properties.side == ModSide.Both).ToList());
 		var fullSort = BuildSort(preSorted);
 		EnsureSyncedDependencyStability(syncedSort, fullSort);

@@ -1,10 +1,11 @@
 --- src/TerrariaNetCore/Terraria/Social/Steam/WorkshopHelper.cs
 +++ src/tModLoader/Terraria/Social/Steam/WorkshopHelper.cs
-@@ -1,14 +_,19 @@
+@@ -1,15 +_,20 @@
  using System;
  using System.Collections.Generic;
 +using System.Collections.Specialized;
  using System.IO;
+ using System.Runtime.InteropServices;
 +using System.Linq;
 +using System.Threading;
  using Steamworks;
@@ -21,7 +22,7 @@
  {
  	public class UGCBased
  	{
-@@ -20,6 +_,10 @@
+@@ -21,6 +_,10 @@
  			public string[] Tags;
  			public string Title;
  			public ERemoteStoragePublishedFileVisibility? Visibility;
@@ -32,7 +33,7 @@
  		}
  
  		public class Downloader
-@@ -28,16 +_,28 @@
+@@ -29,16 +_,28 @@
  
  			public List<string> WorldPaths { get; private set; }
  
@@ -61,7 +62,7 @@
  				PublishedFileId_t[] array = new PublishedFileId_t[SteamUGC.GetNumSubscribedItems()];
  				SteamUGC.GetSubscribedItems(array, (uint)array.Length);
  				ulong punSizeOnDisk = 0uL;
-@@ -51,6 +_,7 @@
+@@ -52,6 +_,7 @@
  				}
  
  				return list;
@@ -69,8 +70,8 @@
  			}
  
  			public bool Prepare(WorkshopIssueReporter issueReporter) => Refresh(issueReporter);
-@@ -59,6 +_,9 @@
- 			{
+@@ -63,6 +_,9 @@
+ 
  				ResourcePackPaths.Clear();
  				WorldPaths.Clear();
 +
@@ -79,7 +80,7 @@
  				foreach (string listOfSubscribedItemsPath in GetListOfSubscribedItemsPaths()) {
  					if (listOfSubscribedItemsPath == null)
  						continue;
-@@ -72,6 +_,8 @@
+@@ -76,6 +_,8 @@
  						if (!(text == "World")) {
  							if (text == "ResourcePack")
  								ResourcePackPaths.Add(listOfSubscribedItemsPath);
@@ -88,7 +89,7 @@
  						}
  						else {
  							WorldPaths.Add(listOfSubscribedItemsPath);
-@@ -155,19 +_,32 @@
+@@ -159,19 +_,32 @@
  
  			protected WorkshopItemPublicSettingId _publicity;
  			protected SteamWorkshopItem _entryData;
@@ -122,7 +123,7 @@
  				ERemoteStoragePublishedFileVisibility visibility = GetVisibility(publicity);
  				_entryData = new SteamWorkshopItem {
  					Title = itemTitle,
-@@ -175,9 +_,21 @@
+@@ -179,9 +_,21 @@
  					ContentFolderPath = contentFolderPath,
  					Tags = tags,
  					PreviewImagePath = previewImagePath,
@@ -145,7 +146,7 @@
  				ulong? num = null;
  				if (AWorkshopEntry.TryReadingManifest(contentFolderPath + Path.DirectorySeparatorChar + "workshop.json", out var info))
  					num = info.workshopEntryId;
-@@ -185,9 +_,23 @@
+@@ -189,9 +_,23 @@
  				if (num.HasValue && finder.HasItemOfId(num.Value)) {
  					_publishedFileID = new PublishedFileId_t(num.Value);
  					PreventUpdatingCertainThings();
@@ -169,7 +170,7 @@
  					CreateItem();
  				}
  			}
-@@ -207,19 +_,48 @@
+@@ -211,19 +_,48 @@
  						return ERemoteStoragePublishedFileVisibility.k_ERemoteStoragePublishedFileVisibilityFriendsOnly;
  					case WorkshopItemPublicSettingId.Public:
  						return ERemoteStoragePublishedFileVisibility.k_ERemoteStoragePublishedFileVisibilityPublic;
@@ -218,7 +219,7 @@
  				if (param.m_bUserNeedsToAcceptWorkshopLegalAgreement) {
  					_issueReporter.ReportDelayedUploadProblem("Workshop.ReportIssue_FailedToPublish_UserDidNotAcceptWorkshopTermsOfService");
  					_endAction(this);
-@@ -232,12 +_,36 @@
+@@ -236,12 +_,36 @@
  					_issueReporter.ReportDelayedUploadProblemWithoutKnownReason("Workshop.ReportIssue_FailedToPublish_WithoutKnownReason", param.m_eResult.ToString());
  					_endAction(this);
  				}
@@ -255,7 +256,7 @@
  			private void UpdateItem()
  			{
  				string headerText = GetHeaderText();
-@@ -245,8 +_,15 @@
+@@ -249,8 +_,15 @@
  					_endAction(this);
  					return;
  				}
@@ -271,7 +272,7 @@
  				UGCUpdateHandle_t uGCUpdateHandle_t = SteamUGC.StartItemUpdate(SteamUtils.GetAppID(), _publishedFileID);
  				if (_entryData.Title != null)
  					SteamUGC.SetItemTitle(uGCUpdateHandle_t, _entryData.Title);
-@@ -261,23 +_,61 @@
+@@ -265,23 +_,61 @@
  
  				if (_entryData.Visibility.HasValue)
  					SteamUGC.SetItemVisibility(uGCUpdateHandle_t, _entryData.Visibility.Value);
@@ -335,7 +336,7 @@
  					case EResult.k_EResultOK:
  						SteamFriends.ActivateGameOverlayToWebPage("steam://url/CommunityFilePage/" + _publishedFileID.m_PublishedFileId);
  						break;
-@@ -301,6 +_,11 @@
+@@ -305,6 +_,11 @@
  						break;
  				}
  
@@ -347,7 +348,7 @@
  				_endAction(this);
  			}
  
-@@ -316,6 +_,19 @@
+@@ -320,6 +_,19 @@
  					_issueReporter.ReportManifestCreationProblem("Workshop.ReportIssue_CouldNotCreateResourcePackManifestFile", exception);
  					return false;
  				}

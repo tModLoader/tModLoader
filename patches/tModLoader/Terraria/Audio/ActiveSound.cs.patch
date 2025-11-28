@@ -134,7 +134,7 @@
  		if (Sound != null && Sound.State == SoundState.Paused)
  			Sound.Resume();
  	}
-@@ -96,18 +_,27 @@
+@@ -96,19 +_,34 @@
  		if (Sound == null)
  			return;
  
@@ -154,18 +154,25 @@
  
  		Vector2 value = Main.screenPosition + new Vector2(Main.screenWidth / 2, Main.screenHeight / 2);
  		float num = 1f;
-+		//if (!IsGlobal) {
 -		if (!IsGlobal) {
-+		if (Position.HasValue) {
 -			float value2 = (Position.X - value.X) / ((float)Main.screenWidth * 0.5f);
++		//if (!IsGlobal) {
++		if (Position.HasValue) {
++			/*
 +			float value2 = (Position.Value.X - value.X) / ((float)Main.screenWidth * 0.5f);
  			value2 = MathHelper.Clamp(value2, -1f, 1f);
  			Sound.Pan = value2;
 -			float num2 = Vector2.Distance(Position, value);
 +			float num2 = Vector2.Distance(Position.Value, value);
  			num = 1f - num2 / ((float)Main.screenWidth * 1.5f);
++			*/
++			// forward port from 1.4.5
++			var offset = Position.Value - Main.Camera.Center;
++			Sound.Pan = MathHelper.Clamp(offset.X / (1920 * 0.5f), -1.0f, 1.0f);
++			num = MathHelper.Clamp(1.0f - offset.Length() / 2500, 0, 1);
  		}
  
+ 		num *= Style.Volume * Volume;
 @@ -118,6 +_,12 @@
  				break;
  			case SoundType.Ambient:

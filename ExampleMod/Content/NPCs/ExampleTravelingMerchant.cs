@@ -364,7 +364,7 @@ namespace ExampleMod.Content.NPCs
 			Main.GetItemDrawFrame(ModContent.ItemType<ExampleSword>(), out item, out itemFrame);
 			itemSize = 40;
 			// This adjustment draws the swing the way town npcs usually do.
-			if (NPC.ai[1] > NPCID.Sets.AttackTime[NPC.type] * 0.66f) {
+			if (NPC.ai[1] > NPCID.Sets.AttackTime[Type] * 0.66f) {
 				offset.Y = 12f;
 			}
 		}

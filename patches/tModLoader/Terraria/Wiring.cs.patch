@@ -74,6 +74,33 @@
  	public static void SkipWire(Point16 point)
  	{
  		_wireSkip[point] = true;
+@@ -193,11 +_,26 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Helper method that calls <see cref="HitSwitch(int, int)"/> followed by <c>NetMessage.SendData(MessageID.HitSwitch...)</c>. This will cause the HitSwitch logic to run on all clients and the server, as intended.
++	/// </summary>
++	public static void HitSwitchAndSync(int i, int j)
++	{
++		Wiring.HitSwitch(i, j);
++		NetMessage.SendData(MessageID.HitSwitch, number: i, number2: j);
++	}
++
++	/// <summary>
++	/// Contains shared code for tile interactions. Usually called on the server and all clients. Typically called in conjunction with <c>NetMessage.SendData(MessageID.HitSwitch...)</c> to have the method run everywhere else. (Or use the <see cref="HitSwitchAndSync(int, int)"/> helper method instead)
++	/// </summary>
+ 	public static void HitSwitch(int i, int j)
+ 	{
+ 		if (!WorldGen.InWorld(i, j) || Main.tile[i, j] == null)
+ 			return;
+ 
++		if (!TileLoader.HitSwitch(i, j, Main.tile[i, j].TileType))
++			return;
++
+ 		if (Main.tile[i, j].type == 135 || Main.tile[i, j].type == 314 || Main.tile[i, j].type == 423 || Main.tile[i, j].type == 428 || Main.tile[i, j].type == 442 || Main.tile[i, j].type == 476) {
+ 			SoundEngine.PlaySound(28, i * 16, j * 16, 0);
+ 			TripWire(i, j, 1, 1);
 @@ -349,7 +_,14 @@
  		}
  	}

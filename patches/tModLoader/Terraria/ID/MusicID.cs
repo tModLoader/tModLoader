@@ -107,5 +107,5 @@ public class MusicID
 	public const short Shimmer = 91;
 	public const short Count = 92;
 
-	public static IdDictionary Search = IdDictionary.Create<MusicID, int>();
+	public static IdDictionary Search = IdDictionary.Create<MusicID, short>();
 }

@@ -12,15 +12,15 @@ namespace ExampleMod.Content.Projectiles
 
 			// YoyosLifeTimeMultiplier is how long in seconds the yoyo will stay out before automatically returning to the player. 
 			// Vanilla values range from 3f (Wood) to 16f (Chik), and defaults to -1f. Leaving as -1 will make the time infinite.
-			ProjectileID.Sets.YoyosLifeTimeMultiplier[Projectile.type] = 3.5f;
+			ProjectileID.Sets.YoyosLifeTimeMultiplier[Type] = 3.5f;
 
 			// YoyosMaximumRange is the maximum distance the yoyo sleep away from the player. 
 			// Vanilla values range from 130f (Wood) to 400f (Terrarian), and defaults to 200f.
-			ProjectileID.Sets.YoyosMaximumRange[Projectile.type] = 300f;
+			ProjectileID.Sets.YoyosMaximumRange[Type] = 300f;
 
 			// YoyosTopSpeed is top speed of the yoyo Projectile.
 			// Vanilla values range from 9f (Wood) to 17.5f (Terrarian), and defaults to 10f.
-			ProjectileID.Sets.YoyosTopSpeed[Projectile.type] = 13f;
+			ProjectileID.Sets.YoyosTopSpeed[Type] = 13f;
 		}
 
 		public override void SetDefaults() {

@@ -44,16 +44,21 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	public virtual LocalizedText DeathMessage => null;
 
 	/// <summary>
-	/// The file name of this type's texture file in the mod loader's file space.<br/>
-	/// The resulting  Asset&lt;Texture2D&gt; can be retrieved using <see cref="TextureAssets.Npc"/> indexed by <see cref="Type"/> if needed. <br/>
-	/// You can use a vanilla texture by returning <c>$"Terraria/Images/NPC_{NPCID.NPCNameHere}"</c> <br/>
+	/// The file name of this type's texture file in the mod loader's file space, without the file extension.
+	/// <br/><br/> The resulting  Asset&lt;Texture2D&gt; can be retrieved using <see cref="TextureAssets.Npc"/> indexed by <see cref="Type"/> if needed.
+	/// <br/><br/> You can use a vanilla texture by returning <c>$"Terraria/Images/NPC_{NPCID.NPCNameHere}"</c> <br/>
 	/// </summary>
 	public virtual string Texture => (GetType().Namespace + "." + Name).Replace('.', '/');//GetType().FullName.Replace('.', '/');
 
-	/// <summary> The file name of this NPC's head texture file, to be used in autoloading. </summary>
+	/// <summary>
+	/// The file name of this NPC's head texture file, to be used in autoloading. This texture will be automatically loaded if <see cref="AutoloadHead"/> annotates this class, and <see cref="Mod.AddNPCHeadTexture(int, string)"/> can be used to register additional head textures if needed for a shimmered Town NPC variant, for example.
+	/// <br/><br/> Defaults to <see cref="Texture"/> followed by "_Head".</summary>
 	public virtual string HeadTexture => Texture + "_Head";
 
-	/// <summary> This file name of this NPC's boss head texture file, to be used in autoloading. </summary>
+	/// <summary>
+	/// This file name of this NPC's boss head texture file, to be used in autoloading. This texture will be automatically loaded if <see cref="AutoloadBossHead"/> annotates this class, and <see cref="Mod.AddBossHeadTexture(string, int)"/> can be used to register additional boss head textures if needed for a multi-stage boss, for example. (See also <see cref="ModNPC.BossHeadSlot(ref int)"/>)
+	/// <br/><br/> Defaults to <see cref="Texture"/> followed by "_Head_Boss".
+	/// </summary>
 	public virtual string BossHeadTexture => Texture + "_Head_Boss";
 
 	/// <summary> Determines which type of vanilla NPC this ModNPC will copy the behavior (AI) of. Leave as 0 to not copy any behavior. Defaults to 0. </summary>

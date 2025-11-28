@@ -257,7 +257,7 @@
  	public static Vector2 ClosestPointOnLine(this Vector2 P, Vector2 A, Vector2 B)
  	{
  		Vector2 value = P - A;
-@@ -1007,6 +_,7 @@
+@@ -1007,16 +_,24 @@
  	public static float DistanceSQ(this Vector2 Origin, Vector2 Target) => Vector2.DistanceSquared(Origin, Target);
  	public static Vector2 DirectionTo(this Vector2 Origin, Vector2 Target) => Vector2.Normalize(Target - Origin);
  	public static Vector2 DirectionFrom(this Vector2 Origin, Vector2 Target) => Vector2.Normalize(Origin - Target);
@@ -265,7 +265,16 @@
  	public static bool WithinRange(this Vector2 Origin, Vector2 Target, float MaxRange) => Vector2.DistanceSquared(Origin, Target) <= MaxRange * MaxRange;
  	public static Vector2 XY(this Vector4 vec) => new Vector2(vec.X, vec.Y);
  	public static Vector2 ZW(this Vector4 vec) => new Vector2(vec.Z, vec.W);
-@@ -1017,6 +_,7 @@
+ 	public static Vector3 XZW(this Vector4 vec) => new Vector3(vec.X, vec.Z, vec.W);
+ 	public static Vector3 YZW(this Vector4 vec) => new Vector3(vec.Y, vec.Z, vec.W);
++	/// <summary>
++	/// Multiplies each channel (except for the Alpha channel, which will be 1 in the result) of this Color with the provided color, resulting in a darker blended color. This is the "multiply blend mode" used by drawing programs.
++	/// </summary>
+ 	public static Color MultiplyRGB(this Color firstColor, Color secondColor) => new Color((byte)((float)(firstColor.R * secondColor.R) / 255f), (byte)((float)(firstColor.G * secondColor.G) / 255f), (byte)((float)(firstColor.B * secondColor.B) / 255f));
++	/// <summary>
++	/// Multiplies each channel of this Color with the provided color, resulting in a darker blended color. This is the "multiply blend mode" used by drawing programs.
++	/// </summary>
+ 	public static Color MultiplyRGBA(this Color firstColor, Color secondColor) => new Color((byte)((float)(firstColor.R * secondColor.R) / 255f), (byte)((float)(firstColor.G * secondColor.G) / 255f), (byte)((float)(firstColor.B * secondColor.B) / 255f), (byte)((float)(firstColor.A * secondColor.A) / 255f));
  	public static string Hex3(this Color color) => (color.R.ToString("X2") + color.G.ToString("X2") + color.B.ToString("X2")).ToLower();
  	public static string Hex4(this Color color) => (color.R.ToString("X2") + color.G.ToString("X2") + color.B.ToString("X2") + color.A.ToString("X2")).ToLower();
  

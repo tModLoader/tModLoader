@@ -198,10 +198,18 @@ internal static class Interface
 				}
 				message = message.Trim('\n');
 
-				bool promptDepDownloads = missingDeps.Any() || removedMods.Any();
+				bool anyMissingDependency = missingDeps.Any();
+				bool anyRemovedMod = removedMods.Any();
+				bool promptDepDownloads = anyMissingDependency || anyRemovedMod;
 
 				string cancelButton = promptDepDownloads ? Language.GetTextValue("tModLoader.ContinueAnyway") : null;
-				string continueButton = promptDepDownloads ? Language.GetTextValue("tModLoader.InstallDependencies") : "";
+				string continueButton = "";
+				if (anyMissingDependency && anyRemovedMod)
+					continueButton = Language.GetTextValue("tModLoader.InstallDependenciesAndRedownloadMods");
+				else if (anyMissingDependency)
+					continueButton = Language.GetTextValue("tModLoader.InstallDependencies");
+				else if (anyRemovedMod)
+					continueButton = Language.GetTextValue("tModLoader.RedownloadMods");
 
 				Action downloadAction = async () => {
 					HashSet<ModDownloadItem> downloads = new();

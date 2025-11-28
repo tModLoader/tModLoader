@@ -52,7 +52,7 @@ namespace ExampleMod.Content.Projectiles
 
 			// This code handles the after images.
 			if (Projectile.ai[0] == 1f) {
-				Texture2D projectileTexture = TextureAssets.Projectile[Projectile.type].Value;
+				Texture2D projectileTexture = TextureAssets.Projectile[Type].Value;
 				Vector2 drawPosition = Projectile.position + new Vector2(Projectile.width, Projectile.height) / 2f + Vector2.UnitY * Projectile.gfxOffY - Main.screenPosition;
 				Vector2 drawOrigin = new Vector2(projectileTexture.Width, projectileTexture.Height) / 2f;
 				Color drawColor = Projectile.GetAlpha(lightColor);

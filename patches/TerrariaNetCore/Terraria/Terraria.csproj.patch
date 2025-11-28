@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/Terraria.csproj
 +++ src/TerrariaNetCore/Terraria/Terraria.csproj
-@@ -1,90 +_,123 @@
+@@ -1,90 +_,122 @@
  <Project Sdk="Microsoft.NET.Sdk">
 +
  	<Import Project="../Configuration.targets" />
@@ -80,7 +80,7 @@
 -		</Reference>
 -		<Reference Include="WindowsBase" />
 +
-+		<PackageReference Include="Steamworks.NET.AnyCPU" Version="2025.162.2" />
++		<PackageReference Include="Steamworks.NET.AnyCPU" Version="2025.162.4" />
  	</ItemGroup>
 +
 +	<!-- Embedded Resources -->
@@ -106,7 +106,6 @@
 +		<None Remove="Libraries/Windows/**" />
 +		<None Remove="Libraries/XNA/**" />
 +		<Content Include="Libraries/Native/**" CopyToOutputDirectory="PreserveNewest" />
-+		<Content Include="Libraries/Steamworks.NET.AnyCPU.Windows/**" CopyToOutputDirectory="PreserveNewest" />
  	</ItemGroup>
 -	<Target Name="EditBin" AfterTargets="Build">
 -		<PropertyGroup>
