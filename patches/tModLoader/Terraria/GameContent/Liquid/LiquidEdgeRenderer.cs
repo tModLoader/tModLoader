@@ -75,18 +75,13 @@ public static class LiquidEdgeRenderer
 		Tile tileCache = Main.tile[tileX, tileY];
 		Vector2 position = new Vector2(tileX * 16, tileY * 16) + new Vector2(Main.drawToScreen ? 0 : Main.offScreenRange) - Main.screenPosition;
 
-		int tileType = tileCache.TileType;
-		Texture2D texture;
-		if (TileID.Sets.BlocksWaterDrawingBehindSelf[tileType]) {
-			texture = DefaultLiquidMask;
+		if (!TileID.Sets.BlocksWaterDrawingBehindSelf[tileCache.TileType]) {
+			var offset = Main.sceneTilePos;
+			spriteBatch.Draw(Main.instance.tileTarget, position, new Rectangle(tileX * 16 - (int)offset.X, tileY * 16 - (int)offset.Y, 16, 16), Color.White, 0f, Vector2.Zero, 1f, 0, 0f);
+			return;
 		}
-		else {
-			var asset = TextureAssets.Tile[tileType];
-			if (!asset.IsLoaded)
-				Main.instance.LoadTiles(tileType);
 
-			texture = asset.Value;
-		}
+		Texture2D texture = DefaultLiquidMask;
 
 		if (tileCache.Slope != SlopeType.Solid && !TileID.Sets.HasSlopeFrames[tileCache.TileType]) {
 			int slopeType = (int)tileCache.Slope;
