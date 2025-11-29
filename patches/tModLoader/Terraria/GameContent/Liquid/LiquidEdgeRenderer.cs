@@ -64,7 +64,7 @@ public static class LiquidEdgeRenderer
 	public static void DrawTileMask(SpriteBatch spriteBatch, RenderTarget2D tileTarget, Vector2 tileTargetOffset)
 	{
 		spriteBatch.End();
-		spriteBatch.Begin(SpriteSortMode.Deferred, MaskingBlendState, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, MaskShader);
+		spriteBatch.Begin(SpriteSortMode.Deferred, MaskingBlendState, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, MaskShader);
 
 		foreach (var pt in EdgeDataPoint)
 			DrawSingleTileMask(spriteBatch, pt.X, pt.Y);
