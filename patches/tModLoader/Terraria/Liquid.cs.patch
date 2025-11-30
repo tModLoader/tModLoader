@@ -1,0 +1,373 @@
+--- src/TerrariaNetCore/Terraria/Liquid.cs
++++ src/tModLoader/Terraria/Liquid.cs
+@@ -3,6 +_,7 @@
+ using Terraria.GameContent.NetModules;
+ using Terraria.ID;
+ using Terraria.Localization;
++using Terraria.ModLoader;
+ using Terraria.ObjectData;
+ using Terraria.WorldBuilding;
+ 
+@@ -111,6 +_,13 @@
+ 	private static void SettleWaterAt(int originX, int originY)
+ 	{
+ 		Tile tile = Main.tile[originX, originY];
++		bool settleLiquid = LiquidLoader.SettleLiquidMovement(originX, originY, tile.liquidType());
++		if (!settleLiquid) {
++			tilesIgnoreWater(ignoreSolids: false);
++		}
++		else
++			return;
++
+ 		tilesIgnoreWater(ignoreSolids: true);
+ 		if (tile.liquid == 0)
+ 			return;
+@@ -329,6 +_,9 @@
+ 		Tile tile3 = Main.tile[x, y - 1];
+ 		Tile tile4 = Main.tile[x, y + 1];
+ 		Tile tile5 = Main.tile[x, y];
++		if (!LiquidLoader.UpdateLiquid(x, y, Main.tile[x, y].liquidType(), this)) {
++			return;
++		}
+ 		if (tile5.nactive() && Main.tileSolid[tile5.type] && !Main.tileSolidTop[tile5.type]) {
+ 			_ = tile5.type;
+ 			_ = 10;
+@@ -338,7 +_,10 @@
+ 
+ 		byte liquid = tile5.liquid;
+ 		float num = 0f;
++		bool? canEvaporate = LiquidLoader.EvaporatesInHell(x, y, tile5.liquidType());
++		if (canEvaporate == null)
++			canEvaporate = tile5.liquidType() == 0;
+-		if (y > Main.UnderworldLayer && tile5.liquidType() == 0 && tile5.liquid > 0) {
++		if (y > Main.UnderworldLayer && (bool)canEvaporate && tile5.liquid > 0) {
+ 			byte b = 2;
+ 			if (tile5.liquid < b)
+ 				b = tile5.liquid;
+@@ -351,70 +_,46 @@
+ 			return;
+ 		}
+ 
+-		if (tile5.lava()) {
+-			LavaCheck(x, y);
+-			if (!quickFall) {
+-				if (delay < 5) {
+-					delay++;
+-					return;
+-				}
+-
+-				delay = 0;
+-			}
+-		}
+-		else {
+-			if (tile.lava())
+-				AddWater(x - 1, y);
+-
+-			if (tile2.lava())
+-				AddWater(x + 1, y);
+-
+-			if (tile3.lava())
+-				AddWater(x, y - 1);
+-
+-			if (tile4.lava())
+-				AddWater(x, y + 1);
+-
+-			if (tile5.honey()) {
+-				HoneyCheck(x, y);
++		// Liquid Checking completely remade by TML, thanks to DradonHunter for helping with this code
++		for (int i = 0; i < LiquidLoader.LiquidCount; i++) {
++			if (tile5.LiquidType == i) {
++				if (tile5.LiquidType == LiquidID.Lava) {
++					LavaCheck(x, y);
++				}
++				else {
++					LiquidCheck(x, y, i);
++				}
+ 				if (!quickFall) {
++					int fallDelay = 0;
++					if (i == LiquidID.Lava) {
++						fallDelay = 5;
++					}
++					if (i == LiquidID.Honey) {
++						fallDelay = 10;
++					}
++					if (i >= LiquidID.Count) {
++						fallDelay = LiquidLoader.GetLiquid(i).FallDelay;
++					}
++					if (LiquidLoader.LiquidEditingFallDelay(i) != null) {
++						fallDelay = (int)LiquidLoader.LiquidEditingFallDelay(i);
++					}
+-					if (delay < 10) {
++					if (delay < fallDelay) {
+ 						delay++;
+ 						return;
+ 					}
+-
+ 					delay = 0;
+ 				}
++				break;
+ 			}
+ 			else {
+-				if (tile.honey())
++				if (tile.LiquidType == i)
+ 					AddWater(x - 1, y);
+-
+-				if (tile2.honey())
++				if (tile2.LiquidType == i)
+ 					AddWater(x + 1, y);
+-
+-				if (tile3.honey())
++				if (tile3.LiquidType == i)
+ 					AddWater(x, y - 1);
+-
+-				if (tile4.honey())
++				if (tile4.LiquidType == i)
+ 					AddWater(x, y + 1);
+-
+-				if (tile5.shimmer()) {
+-					ShimmerCheck(x, y);
+-				}
+-				else {
+-					if (tile.shimmer())
+-						AddWater(x - 1, y);
+-
+-					if (tile2.shimmer())
+-						AddWater(x + 1, y);
+-
+-					if (tile3.shimmer())
+-						AddWater(x, y - 1);
+-
+-					if (tile4.shimmer())
+-						AddWater(x, y + 1);
+-				}
+ 			}
+ 		}
+ 
+@@ -987,19 +_,42 @@
+ 
+ 			int liquidMergeTileType = 56;
+ 			int liquidMergeType = 0;
+-			bool waterNearby = tile.liquidType() == 0 || tile2.liquidType() == 0 || tile3.liquidType() == 0;
+-			bool lavaNearby = tile.lava() || tile2.lava() || tile3.lava();
+-			bool honeyNearby = tile.honey() || tile2.honey() || tile3.honey();
+-			bool shimmerNearby = tile.shimmer() || tile2.shimmer() || tile3.shimmer();
+-			GetLiquidMergeTypes(thisLiquidType, out liquidMergeTileType, out liquidMergeType, waterNearby, lavaNearby, honeyNearby, shimmerNearby);
+-			if (num < 24 || liquidMergeType == thisLiquidType)
+-				return;
+-
+ 			if (tile5.active() && Main.tileObsidianKill[tile5.type]) {
+ 				WorldGen.KillTile(x, y);
+ 				if (Main.netMode == 2)
+ 					NetMessage.SendData(17, -1, -1, null, 0, x, y);
+ 			}
++			if (!tile5.active()) {
++				bool[] liquidsNearby = new bool[LiquidLoader.LiquidCount]; // Added by TML, normally each liquid would have their own flag
++
++				if (tile.liquid > 0) {
++					liquidsNearby[tile.liquidType()] = true;
++				}
++
++				if (tile2.liquid > 0) {
++					liquidsNearby[tile2.liquidType()] = true;
++				}
++
++				if (tile3.liquid > 0) {
++					liquidsNearby[tile3.liquidType()] = true;
++				}
++
++				GetLiquidMergeTypes(x, y, thisLiquidType, out liquidMergeTileType, out liquidMergeType, liquidsNearby);
++
++				if (!LiquidLoader.PreLiquidMerge(x, y, x, y, thisLiquidType, liquidMergeType)) {
++					return;
++				}
++			}
++			else {
++				return;
++			}
++			//bool waterNearby = tile.liquidType() == 0 || tile2.liquidType() == 0 || tile3.liquidType() == 0;
++			//bool lavaNearby = tile.lava() || tile2.lava() || tile3.lava();
++			//bool honeyNearby = tile.honey() || tile2.honey() || tile3.honey();
++			//bool shimmerNearby = tile.shimmer() || tile2.shimmer() || tile3.shimmer();
++			//GetLiquidMergeTypes(thisLiquidType, out liquidMergeTileType, out liquidMergeType, waterNearby, lavaNearby, honeyNearby, shimmerNearby);
++			if (num < 24 || liquidMergeType == thisLiquidType)
++				return;
+ 
+ 			if (!tile5.active()) {
+ 				tile5.liquid = 0;
+@@ -1015,14 +_,15 @@
+ 						break;
+ 				}
+ 
+-				TileChangeType liquidChangeType = WorldGen.GetLiquidChangeType(thisLiquidType, liquidMergeType);
++				//TileChangeType liquidChangeType = WorldGen.GetLiquidChangeType(thisLiquidType, liquidMergeType);
+ 				if (!WorldGen.gen)
+-					WorldGen.PlayLiquidChangeSound(liquidChangeType, x, y);
++					WorldGen.PlayLiquidChangeSound(x, y, thisLiquidType, liquidMergeType);
+ 
++				//Double check tile placement, according to documentation some non-frame important tiles might not place correctly
+ 				WorldGen.PlaceTile(x, y, liquidMergeTileType, mute: true, forced: true);
+ 				WorldGen.SquareTileFrame(x, y);
+ 				if (Main.netMode == 2)
+-					NetMessage.SendTileSquare(-1, x - 1, y - 1, 3, liquidChangeType);
++					NetMessage.SendTileSquare(-1, x - 1, y - 1, 3, (byte)thisLiquidType, (byte)liquidMergeType);
+ 			}
+ 		}
+ 		else {
+@@ -1058,11 +_,19 @@
+ 
+ 			int liquidMergeTileType2 = 56;
+ 			int liquidMergeType2 = 0;
++			bool[] liquidsNearby = new bool[LiquidLoader.LiquidCount];
++			if (tile4.liquid > 0) {
++				liquidsNearby[tile4.liquidType()] = true;
++			}
++			GetLiquidMergeTypes(x, y, thisLiquidType, out liquidMergeTileType2, out liquidMergeType2, liquidsNearby);
++			if (!LiquidLoader.PreLiquidMerge(x, y, x, y + 1, thisLiquidType, liquidMergeType2)) {
++				return;
++			}
+-			bool waterNearby2 = tile4.liquidType() == 0;
++			//bool waterNearby2 = tile4.liquidType() == 0;
+-			bool lavaNearby2 = tile4.lava();
++			//bool lavaNearby2 = tile4.lava();
+-			bool honeyNearby2 = tile4.honey();
++			//bool honeyNearby2 = tile4.honey();
+-			bool shimmerNearby2 = tile4.shimmer();
++			//bool shimmerNearby2 = tile4.shimmer();
+-			GetLiquidMergeTypes(thisLiquidType, out liquidMergeTileType2, out liquidMergeType2, waterNearby2, lavaNearby2, honeyNearby2, shimmerNearby2);
++			//GetLiquidMergeTypes(thisLiquidType, out liquidMergeTileType2, out liquidMergeType2, waterNearby2, lavaNearby2, honeyNearby2, shimmerNearby2);
+ 			tile5.liquid = 0;
+ 			switch (thisLiquidType) {
+ 				case 1:
+@@ -1077,22 +_,25 @@
+ 			}
+ 
+ 			tile4.liquid = 0;
+-			TileChangeType liquidChangeType2 = WorldGen.GetLiquidChangeType(thisLiquidType, liquidMergeType2);
++			//TileChangeType liquidChangeType2 = WorldGen.GetLiquidChangeType(thisLiquidType, liquidMergeType2);
+ 			if (!Main.gameMenu)
+-				WorldGen.PlayLiquidChangeSound(liquidChangeType2, x, y);
++				WorldGen.PlayLiquidChangeSound(x, y, thisLiquidType, liquidMergeType2);
+ 
++			//Same here as the last placement, some tiles may not place correctly, please force place a tile if so
+ 			WorldGen.PlaceTile(x, y + 1, liquidMergeTileType2, mute: true, forced: true);
+ 			WorldGen.SquareTileFrame(x, y + 1);
+ 			if (Main.netMode == 2)
+-				NetMessage.SendTileSquare(-1, x - 1, y, 3, liquidChangeType2);
++				NetMessage.SendTileSquare(-1, x - 1, y, 3, (byte)thisLiquidType, (byte)liquidMergeType2);
+ 		}
+ 	}
+ 
+-	public static void GetLiquidMergeTypes(int thisLiquidType, out int liquidMergeTileType, out int liquidMergeType, bool waterNearby, bool lavaNearby, bool honeyNearby, bool shimmerNearby)
++	// Added x/y/liquidsNearby parameters and removed the waterNearby, lavaNearby, honeyNearby and shimmerNearby parameters
++	public static void GetLiquidMergeTypes(int x, int y, int thisLiquidType, out int liquidMergeTileType, out int liquidMergeType, bool[] liquidsNearby)
+ 	{
+ 		liquidMergeTileType = 56;
+ 		liquidMergeType = thisLiquidType;
+-		if (thisLiquidType != 0 && waterNearby) {
++		int? modLiquidTileType = null;
++		if (thisLiquidType != 0 && liquidsNearby[LiquidID.Water]) {
+ 			switch (thisLiquidType) {
+ 				case 1:
+ 					liquidMergeTileType = 56;
+@@ -1108,7 +_,7 @@
+ 			liquidMergeType = 0;
+ 		}
+ 
+-		if (thisLiquidType != 1 && lavaNearby) {
++		if (thisLiquidType != 1 && liquidsNearby[LiquidID.Lava]) {
+ 			switch (thisLiquidType) {
+ 				case 0:
+ 					liquidMergeTileType = 56;
+@@ -1124,7 +_,7 @@
+ 			liquidMergeType = 1;
+ 		}
+ 
+-		if (thisLiquidType != 2 && honeyNearby) {
++		if (thisLiquidType != 2 && liquidsNearby[LiquidID.Honey]) {
+ 			switch (thisLiquidType) {
+ 				case 0:
+ 					liquidMergeTileType = 229;
+@@ -1140,7 +_,7 @@
+ 			liquidMergeType = 2;
+ 		}
+ 
+-		if (thisLiquidType != 3 && shimmerNearby) {
++		if (thisLiquidType != 3 && liquidsNearby[LiquidID.Shimmer]) {
+ 			switch (thisLiquidType) {
+ 				case 0:
+ 					liquidMergeTileType = 659;
+@@ -1155,6 +_,17 @@
+ 
+ 			liquidMergeType = 3;
+ 		}
++
++		for (int i = 0; i < LiquidLoader.LiquidCount; i++) {
++			if (thisLiquidType != i && liquidsNearby[i]) {
++				modLiquidTileType = LiquidLoader.LiquidMergeTilesType(x, y, i, thisLiquidType);
++				if (modLiquidTileType != null) {
++					liquidMergeTileType = (int)modLiquidTileType;
++				}
++				liquidMergeType = i;
++				break;
++			}
++		}
+ 	}
+ 
+ 	public static void LavaCheck(int x, int y)
+@@ -1225,32 +_,36 @@
+ 
+ 			if (tile4.lava()) {
+ 				LavaCheck(num, num2);
+-				for (int i = num - 1; i <= num + 1; i++) {
+-					for (int j = num2 - 1; j <= num2 + 1; j++) {
+-						Tile tile5 = Main.tile[i, j];
+-						if (!tile5.active())
+-							continue;
+-
+-						if (tile5.type == 2 || tile5.type == 23 || tile5.type == 109 || tile5.type == 199 || tile5.type == 477 || tile5.type == 492) {
+-							tile5.type = 0;
+-							WorldGen.SquareTileFrame(i, j);
+-							if (Main.netMode == 2)
+-								NetMessage.SendTileSquare(-1, num, num2, 3);
+-						}
+-						else if (tile5.type == 60 || tile5.type == 70 || tile5.type == 661 || tile5.type == 662) {
+-							tile5.type = 59;
+-							WorldGen.SquareTileFrame(i, j);
+-							if (Main.netMode == 2)
+-								NetMessage.SendTileSquare(-1, num, num2, 3);
+-						}
+-					}
+-				}
+ 			}
+ 			else if (tile4.honey()) {
+ 				HoneyCheck(num, num2);
+ 			}
+ 			else if (tile4.shimmer()) {
+ 				ShimmerCheck(num, num2);
++			}
++
++			for (int i = num - 1; i <= num + 1; i++) {
++				for (int j = num2 - 1; j <= num2 + 1; j++) {
++					Tile tile5 = Main.tile[i, j];
++					if (!tile5.active())
++						continue;
++
++					if (tile4.lava()) {
++						if (tile5.type == 2 || tile5.type == 23 || tile5.type == 109 || tile5.type == 199 || tile5.type == 477 || tile5.type == 492) {
++							tile5.type = 0;
++							WorldGen.SquareTileFrame(i, j);
++							if (Main.netMode == 2)
++								NetMessage.SendTileSquare(-1, num, num2, 3);
++						}
++						else if (tile5.type == 60 || tile5.type == 70 || tile5.type == 661 || tile5.type == 662) {
++							tile5.type = 59;
++							WorldGen.SquareTileFrame(i, j);
++							if (Main.netMode == 2)
++								NetMessage.SendTileSquare(-1, num, num2, 3);
++						}
++					}
++					LiquidLoader.ModifyNearbyTiles(i, j, tile4.liquidType(), num, num2);
++				}
+ 			}
+ 		}
+ 

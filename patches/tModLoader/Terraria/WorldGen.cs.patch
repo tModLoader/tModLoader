@@ -93,6 +93,56 @@
  	}
  
  	public static void PlaceStatueTrap(int x, int y)
+@@ -1072,13 +_,16 @@
+ 		}
+ 
+ 		int liquidMergeTileType = 0;
+-		bool waterNearby = b == 0;
++		//bool waterNearby = b == 0;
+-		bool lavaNearby = b == 1;
++		//bool lavaNearby = b == 1;
+-		bool honeyNearby = b == 2;
++		//bool honeyNearby = b == 2;
+-		bool shimmerNearby = b == 3;
++		//bool shimmerNearby = b == 3;
+ 		int liquidMergeType = 0;
+-		Liquid.GetLiquidMergeTypes(liquidType, out liquidMergeTileType, out liquidMergeType, waterNearby, lavaNearby, honeyNearby, shimmerNearby);
+-		if (liquidMergeTileType != 0) {
++		bool[] nearbyLiquids = new bool[LiquidLoader.LiquidCount];
++		Array.Fill(nearbyLiquids, false);
++		nearbyLiquids[Main.tile[x, y].liquidType()] = true;
++		Liquid.GetLiquidMergeTypes(x, y, liquidType, out liquidMergeTileType, out liquidMergeType, nearbyLiquids);
++		if (liquidMergeTileType != 0 && LiquidLoader.PreLiquidMerge(x, y, x, y, liquidType, liquidMergeType)) {
+ 			tile.liquid = 0;
+ 			tile.liquidType(0);
+ 			PlaceTile(x, y, liquidMergeTileType, mute: true);
+@@ -1116,6 +_,26 @@
+ 		}
+ 	}
+ 
++	public static void PlayLiquidChangeSound(int x, int y, int type, int otherType, int count = 1)
++	{
++		SoundStyle? collisionSound = SoundID.LiquidsHoneyWater;
++
++		if ((type == LiquidID.Water && otherType == LiquidID.Lava) || (type == LiquidID.Lava && otherType == LiquidID.Water))
++			collisionSound = SoundID.LiquidsWaterLava;
++		else if ((type == LiquidID.Water && otherType == LiquidID.Honey) || (type == LiquidID.Honey && otherType == LiquidID.Water))
++			collisionSound = SoundID.LiquidsHoneyWater;
++		else if ((type == LiquidID.Lava && otherType == LiquidID.Honey) || (type == LiquidID.Honey && otherType == LiquidID.Lava))
++			collisionSound = SoundID.LiquidsHoneyLava;
++		else if ((type == LiquidID.Shimmer || otherType == LiquidID.Shimmer) && type < LiquidID.Count && otherType < LiquidID.Count)
++			collisionSound = SoundID.ShimmerWeak1;
++
++		LiquidLoader.LiquidMergeSounds(x, y, type, otherType, ref collisionSound);
++
++		if (collisionSound != null) {
++			SoundEngine.PlaySound(collisionSound, x * 16, y * 16);
++		}
++	}
++
+ 	public static TileChangeType GetLiquidChangeType(int liquidType, int otherLiquidType)
+ 	{
+ 		if ((liquidType == 0 && otherLiquidType == 1) || (liquidType == 1 && otherLiquidType == 0))
 @@ -1284,7 +_,7 @@
  			}
  		}

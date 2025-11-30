@@ -23,7 +23,7 @@
 -	private readonly int[] _tileCounts = new int[TileID.Count];
 +	internal int[] _tileCounts = new int[TileLoader.TileCount];
 -	private readonly int[] _liquidCounts = new int[LiquidID.Count];
-+	internal int[] _liquidCounts = new int[LiquidID.Count];
++	internal int[] _liquidCounts = new int[LiquidLoader.LiquidCount];
  	private readonly List<Point> _oreFinderTileLocations = new List<Point>(512);
  	public int bestOre;
  
@@ -175,9 +175,12 @@
  	}
  
  	private void ExportTileCountsToMain()
-@@ -300,6 +_,7 @@
+@@ -298,8 +_,9 @@
+ 		if (_tileCounts[567] > 0)
+ 			HasGardenGnome = true;
  
- 		ShimmerTileCount = _liquidCounts[3];
+-		ShimmerTileCount = _liquidCounts[3];
++		ShimmerTileCount = _liquidCounts[LiquidID.Shimmer];
  		HoneyBlockCount = _tileCounts[229];
 +		/*
  		HolyTileCount = _tileCounts[109] + _tileCounts[492] + _tileCounts[110] + _tileCounts[113] + _tileCounts[117] + _tileCounts[116] + _tileCounts[164] + _tileCounts[403] + _tileCounts[402];
@@ -211,15 +214,13 @@
  	public void Reset()
  	{
  		Array.Clear(_tileCounts, 0, _tileCounts.Length);
-@@ -388,6 +_,11 @@
+@@ -388,6 +_,9 @@
  		Array.Clear(NPCBannerBuff, 0, NPCBannerBuff.Length);
  		hasBanner = false;
  		CanPlayCreditsRoll = false;
 +
 +		if (NPCBannerBuff.Length < ModLoader.NPCLoader.NPCCount)
 +			Array.Resize(ref NPCBannerBuff, ModLoader.NPCLoader.NPCCount);
-+		if (_liquidCounts.Length < ModLoader.LiquidLoader.LiquidCount)
-+			Array.Resize(ref _liquidCounts, ModLoader.LiquidLoader.LiquidCount);
  	}
  
  	private void UpdateOreFinderData()

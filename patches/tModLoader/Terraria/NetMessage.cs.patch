@@ -419,6 +419,16 @@
  						short num11 = (short)Sign.ReadSign(j, i);
  						if (num11 != -1)
  							_compressSignList[num2++] = num11;
+@@ -1853,6 +_,9 @@
+ 						b = (byte)(b | 8u);
+ 					}
+ 
++					array[num5] = tile2.liquidType();
++					num5++;
++
+ 					array[num5] = tile2.liquid;
+ 					num5++;
+ 				}
 @@ -1951,9 +_,18 @@
  			writer.Write(sign.text);
  		}
@@ -461,6 +471,14 @@
  
  					continue;
  				}
+@@ -2046,6 +_,7 @@
+ 				b5 = (byte)((b4 & 0x18) >> 3);
+ 				if (b5 != 0) {
+ 					tile.liquid = reader.ReadByte();
++					tile.liquidType(reader.ReadByte());
+ 					if ((b2 & 0x80) == 128) {
+ 						tile.shimmer(shimmer: true);
+ 					}
 @@ -2154,7 +_,7 @@
  
  		num3 = reader.ReadInt16();
@@ -589,7 +607,7 @@
  	public static void SendPlayerDeath(int playerTargetIndex, PlayerDeathReason reason, int damage, int direction, bool pvp, int remoteClient = -1, int ignoreClient = -1)
  	{
  		_currentPlayerDeathReason = reason;
-@@ -2291,18 +_,54 @@
+@@ -2291,18 +_,67 @@
  		SendData(126, remoteClient, ignoreClient);
  	}
  
@@ -622,10 +640,17 @@
 +	/// </summary>
  	public static void SendTileSquare(int whoAmi, int tileX, int tileY, int xSize, int ySize, TileChangeType changeType = TileChangeType.None)
  	{
- 		SendData(20, whoAmi, -1, null, tileX, tileY, xSize, ySize, (int)changeType);
+-		SendData(20, whoAmi, -1, null, tileX, tileY, xSize, ySize, (int)changeType);
++		SendData(20, whoAmi, -1, null, tileX, tileY, xSize, ySize, (int)changeType, -1);
  		WorldGen.RangeFrame(tileX, tileY, xSize, ySize);
  	}
  
++	public static void SendTileSquare(int whoAmi, int tileX, int tileY, int xSize, int ySize, byte liquidType, byte otherLiquid)
++	{
++		SendData(20, whoAmi, -1, null, tileX, tileY, xSize, ySize, (int)liquidType, otherLiquid);
++		WorldGen.RangeFrame(tileX, tileY, xSize, ySize);
++	}
++
 +	/// <summary>
 +	/// <inheritdoc cref="SendTileSquare(int, int, int, int, int, TileChangeType)" path="/SharedSummary/node()"/>
 +	/// <b>Range: </b>In this particular overload, <paramref name="tileX"/> and <paramref name="tileY"/> denote the center of a square range of tiles to sync and <paramref name="centeredSquareSize"/> denotes the width/height of the square to send. Odd <paramref name="centeredSquareSize"/> values result in a square centered directly on <paramref name="tileX"/> and <paramref name="tileY"/>, while even values will result in the square being 1 tile longer to the right of and below of the coordinates.
@@ -637,6 +662,13 @@
  		SendTileSquare(whoAmi, tileX - num, tileY - num, centeredSquareSize, centeredSquareSize, changeType);
  	}
  
++	// Add docs if agreed to add this 
++	public static void SendTileSquare(int whoAmi, int tileX, int tileY, int centeredSquareSize, byte liquidType, byte otherLiquid)
++	{
++		int num = (centeredSquareSize - 1) / 2;
++		SendTileSquare(whoAmi, tileX - num, tileY - num, centeredSquareSize, centeredSquareSize, liquidType, otherLiquid);
++	}
++
 +	/// <summary>
 +	/// <inheritdoc cref="SendTileSquare(int, int, int, int, int, TileChangeType)" path="/SharedSummary/node()"/>
 +	/// <b>Range: </b>In this particular overload, <paramref name="tileX"/> and <paramref name="tileY"/> denote a single tile to sync. If sending multiple tiles use the other overloads instead.
