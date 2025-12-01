@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.09</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.10</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -219,6 +219,7 @@ static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>CanBeSloped<
 <tr class="separator:a1358ffd200656f7e6cc8f472ac4f2409"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a96cc4f5c0183c2100bab43ff2633e09c"><td class="memItemLeft" align="right" valign="top"><a id="a96cc4f5c0183c2100bab43ff2633e09c" name="a96cc4f5c0183c2100bab43ff2633e09c"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>CanDropFromRightClick</b> = Factory.CreateBoolSet(4)</td></tr>
+<tr class="memdesc:a96cc4f5c0183c2100bab43ff2633e09c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Will cause the tile to be killed when right clicked, like Torches or Bottles. No need to set this if using <a class="el" href="class_tile_i_d_1_1_sets.html#af83141b5db3aec5e8f108fc234de071b" title="Whether or not this tile behaves like a torch. If you are making a torch tile, then setting this to t...">Torch</a>. <br /></td></tr>
 <tr class="separator:a96cc4f5c0183c2100bab43ff2633e09c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2d2bb989f5affa90f95c561c6288475d"><td class="memItemLeft" align="right" valign="top"><a id="a2d2bb989f5affa90f95c561c6288475d" name="a2d2bb989f5affa90f95c561c6288475d"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>CanGrowCrystalShards</b> = Factory.CreateBoolSet(117, 116, 164, 402, 403)</td></tr>
@@ -572,6 +573,24 @@ static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>Paintings</b
 <tr class="memitem:a8cd0f5aad541fcfeb63c911e3e1455ad"><td class="memItemLeft" align="right" valign="top"><a id="a8cd0f5aad541fcfeb63c911e3e1455ad" name="a8cd0f5aad541fcfeb63c911e3e1455ad"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>Platforms</b> = Factory.CreateBoolSet(19, 427, 435, 436, 437, 438, 439)</td></tr>
 <tr class="separator:a8cd0f5aad541fcfeb63c911e3e1455ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5ef25584eb93aafb6da7f4782b775a64"><td class="memItemLeft" align="right" valign="top"><a id="a5ef25584eb93aafb6da7f4782b775a64" name="a5ef25584eb93aafb6da7f4782b775a64"></a>
+static int[]&#160;</td><td class="memItemRight" valign="bottom"><b>PressurePlate</b> = Factory.CreateIntSet(-1, PressurePlates, -2, WeightedPressurePlate, -3, ProjectilePressurePad, -4)</td></tr>
+<tr class="memdesc:a5ef25584eb93aafb6da7f4782b775a64"><td class="mdescLeft">&#160;</td><td class="mdescRight">Indicates that this tile is a pressure plate, and which entities should trigger it when they collide with it. Custom tiles will still need to implement <a class="el" href="class_wiring.html#aaa9000058d0dba92aa99a3738010acbc" title="Contains shared code for tile interactions. Usually called on the server and all clients....">ModTile.HitSwitch(int, int)</a> to act on the trigger. The ExamplePressurePlate.csexample demonstrates this. <br  />
+<br  />
+ Positive values and 0 indicate that this pressure plate acts like a specific PressurePlates style, inheriting the specific set of entity interactions of that style. (See the Pressure Plates wiki page.) For example: 2 for players only, 0 for all entities, 5 for <a class="el" href="class_n_p_c.html">NPC</a>, and 7 for player only but the pressure plate breaks. <br  />
+<br  />
+ A -2 value indicates that this pressure plate acts exactly like PressurePlates, with each style corresponding to the same entity interactions sets of the PressurePlates styles. <br  />
+<br  />
+ A -3 value indicates that this is a WeightedPressurePlate. It can only be interacted by players but will trigger when stepped on and off. <br  />
+<br  />
+ A -4 value indicates that this is a ProjectilePressurePad. It can only be interacted by projectiles support all 4 placement orientations. <br  />
+<br  />
+ Note that for each of these the tile sprite dimensions should match the vanilla sprite. <br  />
+<br  />
+ <a class="el" href="class_collision.html#acb8d8ea4bf15065b4f5b7c278d5fd061">ModTile.SwitchTiles</a> can be used if these options are insufficient and custom collision calculations are needed. The ExampleSlopeTile.csexample demonstrates this. <br  />
+<br  />
+ Defaults to -1. <br /></td></tr>
+<tr class="separator:a5ef25584eb93aafb6da7f4782b775a64"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad8a3338d13c14792154c3793dc960375"><td class="memItemLeft" align="right" valign="top">static bool[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_tile_i_d_1_1_sets.html#ad8a3338d13c14792154c3793dc960375">PreventsSandfall</a> = Factory.CreateBoolSet(26, 77, 80, 323, 470, 475, 597)</td></tr>
 <tr class="memdesc:ad8a3338d13c14792154c3793dc960375"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not this tile will prevent sand/slush from falling beneath it.  <a href="class_tile_i_d_1_1_sets.html#ad8a3338d13c14792154c3793dc960375">More...</a><br /></td></tr>
 <tr class="separator:ad8a3338d13c14792154c3793dc960375"><td class="memSeparator" colspan="2">&#160;</td></tr>

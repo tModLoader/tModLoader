@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.09</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.10</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -97,13 +97,22 @@ $(document).ready(function(){initNavTree('class_legacy_player_renderer.html','')
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a4314bfeda41e6757f6b434a129f9eb71"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_legacy_player_renderer.html#a4314bfeda41e6757f6b434a129f9eb71">DrawPlayer</a> (<a class="el" href="class_camera.html">Camera</a> camera, <a class="el" href="class_player.html">Player</a> drawPlayer, Vector2 position, float rotation, Vector2 rotationOrigin, float shadow=0f, float scale=1f)</td></tr>
+<tr class="memdesc:a4314bfeda41e6757f6b434a129f9eb71"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draws a player fully. <br  />
+<br  />
+ When using this method for an armor set shadow effect, make sure shadow is never 0 so that only the main body renders with the item and other visual effects that are intended to only be drawn on the main body. A shadow value of 0 is fully opaque, while a value of 1 is fully transparent. <br  />
+<br  />
+ When using this method outside of the game world, such as in a UI, setting Player.isDisplayDollOrInanimate to true will avoid world lighting values affecting how the player is drawn.  <a href="class_legacy_player_renderer.html#a4314bfeda41e6757f6b434a129f9eb71">More...</a><br /></td></tr>
 <tr class="separator:a4314bfeda41e6757f6b434a129f9eb71"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8f08d689bdf8c6ac79afe703ffe32546"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_legacy_player_renderer.html#a8f08d689bdf8c6ac79afe703ffe32546">DrawPlayerHead</a> (<a class="el" href="class_camera.html">Camera</a> camera, <a class="el" href="class_player.html">Player</a> drawPlayer, Vector2 position, float alpha=1f, float scale=1f, Color borderColor=default(Color))</td></tr>
 <tr class="separator:a8f08d689bdf8c6ac79afe703ffe32546"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a044cf7896ff774cd9cee48372184f1ff"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_legacy_player_renderer.html#a044cf7896ff774cd9cee48372184f1ff">DrawPlayers</a> (<a class="el" href="class_camera.html">Camera</a> camera, <a class="el" href="class_i_enumerable.html">IEnumerable</a>&lt; <a class="el" href="class_player.html">Player</a> &gt; players)</td></tr>
 <tr class="separator:a044cf7896ff774cd9cee48372184f1ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afd06c7b988bf3865576150260946f458"><td class="memItemLeft" align="right" valign="top"><a id="afd06c7b988bf3865576150260946f458" name="afd06c7b988bf3865576150260946f458"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>DrawPlayer</b> (<a class="el" href="class_camera.html">Camera</a> camera, <a class="el" href="class_player.html">Player</a> drawPlayer, Vector2 position, float rotation, Vector2 rotationOrigin, float shadow=0f, float scale=1f)</td></tr>
+<tr class="memitem:afd06c7b988bf3865576150260946f458"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_i_player_renderer.html#afd06c7b988bf3865576150260946f458">DrawPlayer</a> (<a class="el" href="class_camera.html">Camera</a> camera, <a class="el" href="class_player.html">Player</a> drawPlayer, Vector2 position, float rotation, Vector2 rotationOrigin, float shadow=0f, float scale=1f)</td></tr>
+<tr class="memdesc:afd06c7b988bf3865576150260946f458"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draws a player fully. <br  />
+<br  />
+ When using this method for an armor set shadow effect, make sure shadow is never 0 so that only the main body renders with the item and other visual effects that are intended to only be drawn on the main body. A shadow value of 0 is fully opaque, while a value of 1 is fully transparent. <br  />
+<br  />
+ When using this method outside of the game world, such as in a UI, setting Player.isDisplayDollOrInanimate to true will avoid world lighting values affecting how the player is drawn.  <a href="interface_i_player_renderer.html#afd06c7b988bf3865576150260946f458">More...</a><br /></td></tr>
 <tr class="separator:afd06c7b988bf3865576150260946f458"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a94b52d82559ef6a84d975d2a64f9fc07"><td class="memItemLeft" align="right" valign="top"><a id="a94b52d82559ef6a84d975d2a64f9fc07" name="a94b52d82559ef6a84d975d2a64f9fc07"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>DrawPlayerHead</b> (<a class="el" href="class_camera.html">Camera</a> camera, <a class="el" href="class_player.html">Player</a> drawPlayer, Vector2 position, float alpha=1f, float scale=1f, Color borderColor=default(Color))</td></tr>
@@ -175,7 +184,13 @@ static SamplerState&#160;</td><td class="memItemRight" valign="bottom"><b>Mounte
       </table>
 </div><div class="memdoc">
 
-<p>Implements <a class="el" href="interface_i_player_renderer.html">IPlayerRenderer</a>.</p>
+<p>Draws a player fully. <br  />
+<br  />
+ When using this method for an armor set shadow effect, make sure shadow is never 0 so that only the main body renders with the item and other visual effects that are intended to only be drawn on the main body. A shadow value of 0 is fully opaque, while a value of 1 is fully transparent. <br  />
+<br  />
+ When using this method outside of the game world, such as in a UI, setting Player.isDisplayDollOrInanimate to true will avoid world lighting values affecting how the player is drawn. </p>
+
+<p>Implements <a class="el" href="interface_i_player_renderer.html#afd06c7b988bf3865576150260946f458">IPlayerRenderer</a>.</p>
 
 </div>
 </div>

@@ -2,6 +2,7 @@ var class_message_i_d =
 [
     [ "CombatTextInt", "class_message_i_d.html#ad8f6712b71742c1756050ad73b4470ca", null ],
     [ "CombatTextString", "class_message_i_d.html#a2076661fc313d5a07c7abe39dc8aa2c7", null ],
+    [ "HitSwitch", "class_message_i_d.html#a871852147af35bbcd542fcce8fbf7cfe", null ],
     [ "InGameChangeConfig", "class_message_i_d.html#a1f47c434ff34c5a612f8ce936014ed50", null ],
     [ "InstancedItem", "class_message_i_d.html#adfc1ef65b08d602029fccfe8cde33c2e", null ],
     [ "KeepAliveDuringModReload", "class_message_i_d.html#acb52c89d29fdd8ce27f7d4495b4df5e2", null ],

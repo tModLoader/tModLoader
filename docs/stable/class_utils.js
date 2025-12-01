@@ -14,6 +14,8 @@ var class_utils =
     [ "Including", "class_utils.html#a8da61f9b40bc38150c9b410ebab4124e", null ],
     [ "Including", "class_utils.html#a11fc8afdde6704eaf9c59a238d1e1128", null ],
     [ "MultiLerp", "class_utils.html#a54b07febc0e0b2f0703a75feb2287a5b", null ],
+    [ "MultiplyRGB", "class_utils.html#ade4152cc9efcb80bd2bfa61014673f4c", null ],
+    [ "MultiplyRGBA", "class_utils.html#a069be277c3980dbad33fff5f6e867c98", null ],
     [ "Next< T >", "class_utils.html#a89069d24f25560e0c9d565dd55e2187f", null ],
     [ "Next< T >", "class_utils.html#a20b08c978c09a4c4046fd34c2510df05", null ],
     [ "NextBool", "class_utils.html#a0f5347faf5b45c4175e236b265168370", null ],
