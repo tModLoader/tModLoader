@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.10</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.11</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -266,7 +266,7 @@ static int[]&#160;</td><td class="memItemRight" valign="bottom"><b>ConveyorDirec
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>Corrupt</b> = Factory.CreateBoolSet(23, 661, 25, 112, 163, 398, 400, 636)</td></tr>
 <tr class="separator:a46689c05cfa70065ac5af4ef888fdf9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aef592754544449020d5694a7b23141f1"><td class="memItemLeft" align="right" valign="top"><a id="aef592754544449020d5694a7b23141f1" name="aef592754544449020d5694a7b23141f1"></a>
-static int[]&#160;</td><td class="memItemRight" valign="bottom"><b>CorruptBiome</b> = Factory.CreateIntSet(0, 23, 1, 24, 1, 25, 1, 32, 1, 112, 1, 163, 1, 400, 1, 398, 1, 27, -10)</td></tr>
+static int[]&#160;</td><td class="memItemRight" valign="bottom"><b>CorruptBiome</b> = Factory.CreateIntSet(0, 23, 1, 661, 1, 24, 1, 25, 1, 32, 1, 112, 1, 163, 1, 400, 1, 398, 1, 27, -10)</td></tr>
 <tr class="memdesc:aef592754544449020d5694a7b23141f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">New created sets to facilitate vanilla biome block counting including modded blocks. To replace the current hardcoded counts in SceneMetrics.cs. <br /></td></tr>
 <tr class="separator:aef592754544449020d5694a7b23141f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8952ec4281a93dc76f3c23394c854110"><td class="memItemLeft" align="right" valign="top"><a id="a8952ec4281a93dc76f3c23394c854110" name="a8952ec4281a93dc76f3c23394c854110"></a>
@@ -306,7 +306,7 @@ static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>CrackedBrick
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>Crimson</b> = Factory.CreateBoolSet(199, 662, 203, 234, 200, 399, 401, 205)</td></tr>
 <tr class="separator:a23b0bf9ac7b4c29640c3fb1d2fcaae2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa779b7acd871ccb88af0cd4b91a0f1ca"><td class="memItemLeft" align="right" valign="top"><a id="aa779b7acd871ccb88af0cd4b91a0f1ca" name="aa779b7acd871ccb88af0cd4b91a0f1ca"></a>
-static int[]&#160;</td><td class="memItemRight" valign="bottom"><b>CrimsonBiome</b> = Factory.CreateIntSet(0, 199, 1, 203, 1, 200, 1, 401, 1, 399, 1, 234, 1, 352, 1, 27, -10)</td></tr>
+static int[]&#160;</td><td class="memItemRight" valign="bottom"><b>CrimsonBiome</b> = Factory.CreateIntSet(0, 199, 1, 662, 1, 203, 1, 200, 1, 401, 1, 399, 1, 234, 1, 352, 1, 27, -10, 201, 1)</td></tr>
 <tr class="separator:aa779b7acd871ccb88af0cd4b91a0f1ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad043412607c2d30200eeefebb0719114"><td class="memItemLeft" align="right" valign="top"><a id="ad043412607c2d30200eeefebb0719114" name="ad043412607c2d30200eeefebb0719114"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>CrimsonBiomeSight</b> = Factory.CreateBoolSet(199, 662, 203, 234, 200, 399, 401, 205, 201, 352)</td></tr>
@@ -465,8 +465,7 @@ static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>IgnoresTileR
 <tr class="separator:aa1c0723d448248b57916d2365f2e2ff2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a064f3fee90da51a19f32649cb402006f"><td class="memItemLeft" align="right" valign="top"><a id="a064f3fee90da51a19f32649cb402006f" name="a064f3fee90da51a19f32649cb402006f"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>Infectable</b> = Factory.CreateBoolSet(1, 2, 53, 60, 69, 161, 179, 180, 181, 182, 183, 381, 396, 397, 534, 536, 539, 625, 627)</td></tr>
-<tr class="memdesc:a064f3fee90da51a19f32649cb402006f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not this tile can be infected by the natural spreading of biomes such as corruption, crimson, or hallow. <br  />
-Doesn't affect the spreading in WorldGen.hardUpdateWorld, only used in <a class="el" href="class_world_gen.html#a8c7927f8924d2179b021defe4bced4d7" title="Utility method that mimics vanilla behavior for biome spread in hardmode. Call this in ModBlockType....">WorldGen.SpreadInfectionToNearbyTile</a> <br /></td></tr>
+<tr class="memdesc:a064f3fee90da51a19f32649cb402006f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not this tile can be infected by the natural spreading of biomes such as corruption, crimson, or hallow. <br /></td></tr>
 <tr class="separator:a064f3fee90da51a19f32649cb402006f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac90f5d6a5f14c9aeb9c7182b936bd7a9"><td class="memItemLeft" align="right" valign="top"><a id="ac90f5d6a5f14c9aeb9c7182b936bd7a9" name="ac90f5d6a5f14c9aeb9c7182b936bd7a9"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>InteractibleByNPCs</b> = Factory.CreateBoolSet(17, 77, 133, 12, 665, 639, 26, 35, 36, 55, 395, 471, 21, 467, 29, 97, 88, 99, 463, 491, 33, 372, 174, 49, 646, 100, 173, 78, 79, 94, 96, 101, 50, 103, 282, 106, 114, 125, 171, 172, 207, 215, 220, 219, 244, 228, 237, 247, 128, 269, 354, 355, 377, 287, 378, 390, 302, 405, 406, 411, 425, 209, 441, 468, 452, 454, 455, 457, 462, 470, 475, 494, 499, 505, 511, 510, 520, 543, 565, 573, 597, 598, 617, 621, 464, 642)</td></tr>
@@ -613,10 +612,10 @@ static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>PreventsTile
  Used mostly by trees tiles. <br /></td></tr>
 <tr class="separator:a0ffb8223f3a721bbeaeee866d909e781"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af16fc2adc5646a198c4f97b9e1490fee"><td class="memItemLeft" align="right" valign="top"><a id="af16fc2adc5646a198c4f97b9e1490fee" name="af16fc2adc5646a198c4f97b9e1490fee"></a>
-static int[]&#160;</td><td class="memItemRight" valign="bottom"><b>RemixCorruptBiome</b> = Factory.CreateIntSet(0, 23, 1, 24, 1, 25, 1, 32, 1, 112, 1, 163, 1, 400, 1, 398, 1, 27, -10, 474, 1)</td></tr>
+static int[]&#160;</td><td class="memItemRight" valign="bottom"><b>RemixCorruptBiome</b> = Factory.CreateIntSet(0, 23, 1, 661, 1, 24, 1, 25, 1, 32, 1, 112, 1, 163, 1, 400, 1, 398, 1, 27, -10, 474, 1)</td></tr>
 <tr class="separator:af16fc2adc5646a198c4f97b9e1490fee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a64c3b11a59597b9106e788e5203df472"><td class="memItemLeft" align="right" valign="top"><a id="a64c3b11a59597b9106e788e5203df472" name="a64c3b11a59597b9106e788e5203df472"></a>
-static int[]&#160;</td><td class="memItemRight" valign="bottom"><b>RemixCrimsonBiome</b> = Factory.CreateIntSet(0, 199, 1, 203, 1, 200, 1, 401, 1, 399, 1, 234, 1, 352, 1, 27, -10, 195, 1)</td></tr>
+static int[]&#160;</td><td class="memItemRight" valign="bottom"><b>RemixCrimsonBiome</b> = Factory.CreateIntSet(0, 199, 1, 662, 1, 203, 1, 200, 1, 401, 1, 399, 1, 234, 1, 352, 1, 27, -10, 195, 1, 201, 1)</td></tr>
 <tr class="separator:a64c3b11a59597b9106e788e5203df472"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7e77217ab7a90c1c966380a2e2383a23"><td class="memItemLeft" align="right" valign="top"><a id="a7e77217ab7a90c1c966380a2e2383a23" name="a7e77217ab7a90c1c966380a2e2383a23"></a>
 static int[]&#160;</td><td class="memItemRight" valign="bottom"><b>RemixJungleBiome</b> = Factory.CreateIntSet(0, 60, 1, 61, 1, 62, 1, 74, 1, 225, 1)</td></tr>

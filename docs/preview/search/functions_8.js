@@ -32,7 +32,7 @@ var searchData=
   ['istiledangerous_29',['IsTileDangerous',['../class_tile_drawing.html#a86bf3a6bcd0fc5ccc57622c2d8ab7557',1,'TileDrawing.IsTileDangerous()'],['../class_global_tile.html#ab40cdeb72ef161dde8abf61ab2486f57',1,'GlobalTile.IsTileDangerous()'],['../class_mod_tile.html#af551fdea1eb13d886fd6b09151f58612',1,'ModTile.IsTileDangerous()']]],
   ['istilespelunkable_30',['IsTileSpelunkable',['../class_main.html#af632a20e0c6ec7f274f4e63a8e0e0353',1,'Main.IsTileSpelunkable()'],['../class_global_tile.html#ad97f4af4e5fcaecbdfebeda0ad2a23f7',1,'GlobalTile.IsTileSpelunkable()'],['../class_mod_tile.html#a442bc92e90e61588278fdf7f89376ca7',1,'ModTile.IsTileSpelunkable()']]],
   ['istilevalidforentity_31',['IsTileValidForEntity',['../class_t_e_modded_pylon.html#a592f1c794bc9b0177b53d5bd2925427d',1,'TEModdedPylon.IsTileValidForEntity()'],['../class_unloaded_tile_entity.html#af4f5531f8fe60bf9c8a8636565d57760',1,'UnloadedTileEntity.IsTileValidForEntity()'],['../class_mod_tile_entity.html#a8415b71088157d5fcf4ed024cffe868d',1,'ModTileEntity.IsTileValidForEntity()']]],
-  ['istopleft_32',['IsTopLeft',['../class_tile_object_data.html#a4205896800b8eb9044efb847edfcf0b3',1,'TileObjectData.IsTopLeft(int i, int j)'],['../class_tile_object_data.html#aa6efdaa1022b066032eeaf3eb2a20280',1,'TileObjectData.IsTopLeft(Tile tile)']]],
+  ['istopleft_32',['IsTopLeft',['../class_tile_object_data.html#aa6efdaa1022b066032eeaf3eb2a20280',1,'TileObjectData.IsTopLeft(Tile tile)'],['../class_tile_object_data.html#a4205896800b8eb9044efb847edfcf0b3',1,'TileObjectData.IsTopLeft(int i, int j)']]],
   ['isunlocked_33',['IsUnlocked',['../class_mod_emote_bubble.html#a23c94e078a4557e3e6178cf2eea92c4e',1,'ModEmoteBubble']]],
   ['isvalidalternateanchor_34',['isValidAlternateAnchor',['../class_tile_object_data.html#a7737c2ce84bf08c72a4b07cc536d6ae7',1,'TileObjectData']]],
   ['isvalidtileanchor_35',['isValidTileAnchor',['../class_tile_object_data.html#a27d0c26c0b1d347634d755d127a5ef17',1,'TileObjectData']]],
@@ -42,7 +42,8 @@ var searchData=
   ['isvisiblewhennotenabled_39',['IsVisibleWhenNotEnabled',['../class_mod_accessory_slot.html#aa390402f3cadc98ac3eb38712e15563e',1,'ModAccessorySlot']]],
   ['itemconsumedcallback_40',['ItemConsumedCallback',['../class_mod_player.html#a6b34e5ab775f0b0e547870de325edb66',1,'ModPlayer']]],
   ['itemdefinition_41',['ItemDefinition',['../class_item_definition.html#a5209f4f531e28faebf7c941a03a3fae2',1,'ItemDefinition']]],
-  ['itemspace_42',['ItemSpace',['../class_global_item.html#a06dc12c3d4fefe54b4d17a54d2e18e36',1,'GlobalItem.ItemSpace()'],['../class_mod_item.html#acfc46a2a397ebe4dc8b01308ec1d3126',1,'ModItem.ItemSpace()']]],
-  ['itemtype_3c_20t_20_3e_43',['ItemType&lt; T &gt;',['../class_mod_content.html#a9b116a7709430393751b7c562bf978d0',1,'ModContent']]],
-  ['itemvariant_44',['ItemVariant',['../class_item_variant.html#a04b24d40434156cfe40bd870f7c54378',1,'ItemVariant']]]
+  ['itempickupcondition_42',['ItemPickupCondition',['../class_item_pickup_condition.html#a5cf30635dd2a290aaf0b5972460bdf5d',1,'ItemPickupCondition']]],
+  ['itemspace_43',['ItemSpace',['../class_global_item.html#a06dc12c3d4fefe54b4d17a54d2e18e36',1,'GlobalItem.ItemSpace()'],['../class_mod_item.html#acfc46a2a397ebe4dc8b01308ec1d3126',1,'ModItem.ItemSpace()']]],
+  ['itemtype_3c_20t_20_3e_44',['ItemType&lt; T &gt;',['../class_mod_content.html#a9b116a7709430393751b7c562bf978d0',1,'ModContent']]],
+  ['itemvariant_45',['ItemVariant',['../class_item_variant.html#a04b24d40434156cfe40bd870f7c54378',1,'ItemVariant']]]
 ];

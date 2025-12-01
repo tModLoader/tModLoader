@@ -1,5 +1,7 @@
 var NAVTREEINDEX28 =
 {
+"struct_player_eye_helper.html#a2b46fc8c646ce30c5413a7b6c6b98dccaa55c75a4451478e14f04f0b0bbaa25a5":[3,0,990,0,1],
+"struct_player_eye_helper.html#a2b46fc8c646ce30c5413a7b6c6b98dccab4fc5f9d75519f3d796f82e3778c2662":[3,0,990,0,6],
 "struct_player_eye_helper.html#a2b46fc8c646ce30c5413a7b6c6b98dccac3e8eee880729358e90fda8a90f137ea":[3,0,990,0,4],
 "struct_player_eye_helper.html#a2b46fc8c646ce30c5413a7b6c6b98dccae01888a251fea7e7bdd17b71de1c8d94":[3,0,990,0,0],
 "struct_player_fishing_conditions.html":[3,0,992],

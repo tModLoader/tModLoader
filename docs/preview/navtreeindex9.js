@@ -39,6 +39,7 @@ var NAVTREEINDEX9 =
 "class_item_loader.html#af6eb664b317e04679d5120fe9e8d239d":[3,0,647,65],
 "class_item_loader.html#af9539871994cbfd1231dcc64e9111be8":[3,0,647,23],
 "class_item_pickup_condition.html":[3,0,649],
+"class_item_pickup_condition.html#a5cf30635dd2a290aaf0b5972460bdf5d":[3,0,649,0],
 "class_item_rarity.html":[3,0,650],
 "class_item_rarity_i_d.html":[3,0,651],
 "class_item_rarity_i_d.html#a0512de49930d571a81d992af8b4a5aed":[3,0,651,14],
@@ -248,6 +249,5 @@ var NAVTREEINDEX9 =
 "class_main.html#a1f3d919e18f0c4f182b462a2c8092210":[3,0,747,108],
 "class_main.html#a21a46385d01e0203cf3627f89e488661":[3,0,747,44],
 "class_main.html#a224593043e88020b9290cc6065a8c1ba":[3,0,747,124],
-"class_main.html#a22fc679c60b8037ff70749ab5ee3a3d3":[3,0,747,10],
-"class_main.html#a2335d9663703c85c735a940d7b498f06":[3,0,747,22]
+"class_main.html#a22fc679c60b8037ff70749ab5ee3a3d3":[3,0,747,10]
 };

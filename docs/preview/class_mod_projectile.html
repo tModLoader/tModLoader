@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.10</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.11</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -200,7 +200,11 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>NumGrappleHoo
 <tr class="separator:ae787b0649576c7134952c1f9b962c3d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1154c0c4a7cf829584f1fa97608ab470"><td class="memItemLeft" align="right" valign="top"><a id="a1154c0c4a7cf829584f1fa97608ab470" name="a1154c0c4a7cf829584f1fa97608ab470"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>OnKill</b> (int timeLeft)</td></tr>
-<tr class="memdesc:a1154c0c4a7cf829584f1fa97608ab470"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to control what happens when this projectile is killed (for example, creating dust or making sounds). Also useful for creating retrievable ammo. Can be called on the local client or server, depending on who owns the projectile. <br /></td></tr>
+<tr class="memdesc:a1154c0c4a7cf829584f1fa97608ab470"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to control what happens when this projectile is killed (for example, creating dust or making sounds). Also useful for creating retrievable ammo. <br  />
+<br  />
+ Be sure to check <code>if (<a class="el" href="class_projectile.html#aab5b090f7428f4d974921a807149e991" title="The index of the player who owns this projectile. In Multiplayer, Clients &quot;own&quot; projectiles that they...">Projectile.owner</a> == <a class="el" href="class_main.html#a42ee3929161f68a93443261b95643df4" title="The index in player of this client&#39;s Player.   If this is 255, this client is the server....">Main.myPlayer</a>)</code> for logic that should only run for the projectile owner. Some examples include spawning items, spawning projectiles, and modifying tiles. <br  />
+<br  />
+ Called on local, server, and remote clients. <br /></td></tr>
 <tr class="separator:a1154c0c4a7cf829584f1fa97608ab470"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab15bdf7d367d10003312746be807c5fa"><td class="memItemLeft" align="right" valign="top"><a id="ab15bdf7d367d10003312746be807c5fa" name="ab15bdf7d367d10003312746be807c5fa"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>OnSpawn</b> (<a class="el" href="interface_i_entity_source.html">IEntitySource</a> source)</td></tr>

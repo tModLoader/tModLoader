@@ -29,6 +29,7 @@ var class_projectile_i_d_1_1_sets =
     [ "IsAWhip", "class_projectile_i_d_1_1_sets.html#afbaef65e8e6c93acda4f938196f87d5b", null ],
     [ "IsInteractable", "class_projectile_i_d_1_1_sets.html#a2ec3fcaaabf56c15f7eca2071b2a3684", null ],
     [ "LightPet", "class_projectile_i_d_1_1_sets.html#aab31733abf774f4ff20b82e655bc4590", null ],
+    [ "MinionCannotBeFreed", "class_projectile_i_d_1_1_sets.html#a93eacc17a2244c56f3000762891c689f", null ],
     [ "MinionSacrificable", "class_projectile_i_d_1_1_sets.html#a6476098c135953f1f8a6c5542caeb037", null ],
     [ "MinionShot", "class_projectile_i_d_1_1_sets.html#ab1318e63cf6daff849f28039375d50e9", null ],
     [ "MinionTargettingFeature", "class_projectile_i_d_1_1_sets.html#a7387ac144a71f66d6a0d89b520de4b10", null ],

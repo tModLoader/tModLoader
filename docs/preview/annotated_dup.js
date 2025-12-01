@@ -649,7 +649,7 @@ var annotated_dup =
     [ "ItemIO", "class_item_i_o.html", null ],
     [ "ItemLoader", "class_item_loader.html", "class_item_loader" ],
     [ "ItemLoot", "struct_item_loot.html", "struct_item_loot" ],
-    [ "ItemPickupCondition", "class_item_pickup_condition.html", null ],
+    [ "ItemPickupCondition", "class_item_pickup_condition.html", "class_item_pickup_condition" ],
     [ "ItemRarity", "class_item_rarity.html", null ],
     [ "ItemRarityID", "class_item_rarity_i_d.html", "class_item_rarity_i_d" ],
     [ "ItemShopSellbackHelper", "class_item_shop_sellback_helper.html", null ],

@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.10</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.11</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -887,7 +887,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>masterOnly</b></td></
 <tr class="separator:ab6ac0751a342aa03245cbecca460edf0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a37c251dd854a06a070fc1acefaaf2367"><td class="memItemLeft" align="right" valign="top"><a id="a37c251dd854a06a070fc1acefaaf2367" name="a37c251dd854a06a070fc1acefaaf2367"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>material</b></td></tr>
-<tr class="memdesc:a37c251dd854a06a070fc1acefaaf2367"><td class="mdescLeft">&#160;</td><td class="mdescRight">Indicates that an item should show the material tooltip. Typically this means that the item is used in at least 1 recipe. Automatically assigned. <br /></td></tr>
+<tr class="memdesc:a37c251dd854a06a070fc1acefaaf2367"><td class="mdescLeft">&#160;</td><td class="mdescRight">Indicates that an item should be considered a "material". This includes showing the material tooltip and supporting shift-clicking into the guide's "crafting" menu. <br  />
+<br  />
+ This will default to the value of <a class="el" href="class_item_i_d_1_1_sets.html#af804349b0e39d4afc1f4bd64f19cd157" title="Indicates that an item is used in at least 1 non-disabled recipe (or in a recipe group used by at lea...">ItemID.Sets.IsAMaterial</a>, indicating that it is used in at least 1 non-disabled recipe. Some items, like coins for example, manually set this to <code>false</code> so that the item is not treated as a material. Some world specific item variants also use this to reflect that they aren't actually a material in the current special world seed. This can be done by checking <a class="el" href="class_item.html#a2f3c4c189bf37852038ded6b11b910bb" title="If not null, indicates that this item has a special seed variant active. Item variants are not suppor...">Item.Variant</a>. <br /></td></tr>
 <tr class="separator:a37c251dd854a06a070fc1acefaaf2367"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6e35aa31ca611fa855542433cc7adbc8"><td class="memItemLeft" align="right" valign="top"><a id="a6e35aa31ca611fa855542433cc7adbc8" name="a6e35aa31ca611fa855542433cc7adbc8"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>maxStack</b></td></tr>
