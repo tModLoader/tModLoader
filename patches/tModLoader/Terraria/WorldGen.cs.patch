@@ -93,7 +93,7 @@
  	}
  
  	public static void PlaceStatueTrap(int x, int y)
-@@ -1072,13 +_,16 @@
+@@ -1072,19 +_,22 @@
  		}
  
  		int liquidMergeTileType = 0;
@@ -116,6 +116,13 @@
  			tile.liquid = 0;
  			tile.liquidType(0);
  			PlaceTile(x, y, liquidMergeTileType, mute: true);
+ 			SquareTileFrame(x, y);
+ 			if (Main.netMode != 0)
+-				NetMessage.SendTileSquare(-1, x - 1, y - 1, GetLiquidChangeType(liquidType, b));
++				NetMessage.SendTileSquare(-1, x - 1, y - 1, liquidType, b);
+ 
+ 			return true;
+ 		}
 @@ -1116,6 +_,26 @@
  		}
  	}
@@ -136,7 +143,7 @@
 +		LiquidLoader.LiquidMergeSounds(x, y, type, otherType, ref collisionSound);
 +
 +		if (collisionSound != null) {
-+			SoundEngine.PlaySound(collisionSound, x * 16, y * 16);
++			SoundEngine.PlaySound(collisionSound, x * 16 + count * 8, y * 16 + count * 8);
 +		}
 +	}
 +

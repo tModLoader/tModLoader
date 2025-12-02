@@ -123,15 +123,16 @@ public static class LiquidLoader
 			LiquidRenderer.Instance._cache = new LiquidRenderer.LiquidCache[1];
 			LiquidRenderer.Instance._drawCache = new LiquidRenderer.LiquidDrawCache[1];
 		}
-		Array.Resize(ref LiquidAssets, LiquidCount);
-		Array.Resize(ref LiquidBlockAssets, LiquidCount);
-		Array.Resize(ref LiquidSlopeAssets, LiquidCount);
-		Array.Resize(ref LiquidRenderer.WATERFALL_LENGTH, LiquidCount);
-		Array.Resize(ref LiquidRenderer.DEFAULT_OPACITY, LiquidCount);
-		Array.Resize(ref LiquidRenderer.WAVE_MASK_STRENGTH, LiquidCount);
-		Array.Resize(ref LiquidRenderer.VISCOSITY_MASK, LiquidCount);
-		Array.Resize(ref Main.liquidFrame, LiquidCount);
-		Array.Resize(ref Main.liquidFrameState, LiquidCount);
+		Array.Resize(ref LiquidAssets, nextLiquid);
+		Array.Resize(ref LiquidBlockAssets, nextLiquid);
+		Array.Resize(ref LiquidSlopeAssets, nextLiquid);
+		Array.Resize(ref LiquidRenderer.WATERFALL_LENGTH, nextLiquid);
+		Array.Resize(ref LiquidRenderer.DEFAULT_OPACITY, nextLiquid);
+		Array.Resize(ref LiquidRenderer.WAVE_MASK_STRENGTH, nextLiquid);
+		Array.Resize(ref LiquidRenderer.VISCOSITY_MASK, nextLiquid);
+		Array.Resize(ref Main.liquidFrame, nextLiquid);
+		Array.Resize(ref Main.liquidFrameState, nextLiquid);
+		Array.Resize(ref Main.SceneMetrics._liquidCounts, nextLiquid);
 		LoaderUtils.ResetStaticMembers(typeof(LiquidID));
 		ModLoader.BuildGlobalHook(ref HookModifyLight, globalLiquids, (GlobalLiquid g) => g.ModifyLight);
 		ModLoader.BuildGlobalHook(ref HookPreDraw, globalLiquids, (GlobalLiquid g) => g.PreDraw);

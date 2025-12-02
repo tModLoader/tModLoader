@@ -123,6 +123,15 @@
  		if (settings.BiomeScanCenterPositionInWorld.HasValue) {
  			Point point = settings.BiomeScanCenterPositionInWorld.Value.ToTileCoordinates();
  			Rectangle tileRectangle = new Rectangle(point.X - Main.buffScanAreaWidth / 2, point.Y - Main.buffScanAreaHeight / 2, Main.buffScanAreaWidth, Main.buffScanAreaHeight);
+@@ -145,7 +_,7 @@
+ 
+ 					if (!tile.active()) {
+ 						if (tile.liquid > 0)
+-							_liquidCounts[tile.liquidType()]++;
++							_liquidCounts[tile.LiquidType]++;
+ 
+ 						continue;
+ 					}
 @@ -194,6 +_,8 @@
  
  					if (settings.ScanOreFinderData && Main.tileOreFinderPriority[tile.type] != 0)

@@ -107,6 +107,14 @@
  					break;
  				}
  				case 8:
+@@ -481,6 +_,7 @@
+ 					writer.Write((byte)num15);
+ 					writer.Write((byte)num16);
+ 					writer.Write((byte)number5);
++					writer.Write(number6);
+ 					for (int num17 = num13; num17 < num13 + num15; num17++) {
+ 						for (int num18 = num14; num18 < num14 + num16; num18++) {
+ 							BitsByte bitsByte19 = (byte)0;
 @@ -551,8 +_,12 @@
  					writer.Write((short)number);
  					writer.WriteVector2(item3.position);
@@ -471,14 +479,14 @@
  
  					continue;
  				}
-@@ -2046,6 +_,7 @@
+@@ -2045,6 +_,7 @@
+ 
  				b5 = (byte)((b4 & 0x18) >> 3);
  				if (b5 != 0) {
- 					tile.liquid = reader.ReadByte();
 +					tile.liquidType(reader.ReadByte());
+ 					tile.liquid = reader.ReadByte();
  					if ((b2 & 0x80) == 128) {
  						tile.shimmer(shimmer: true);
- 					}
 @@ -2154,7 +_,7 @@
  
  		num3 = reader.ReadInt16();
@@ -607,7 +615,7 @@
  	public static void SendPlayerDeath(int playerTargetIndex, PlayerDeathReason reason, int damage, int direction, bool pvp, int remoteClient = -1, int ignoreClient = -1)
  	{
  		_currentPlayerDeathReason = reason;
-@@ -2291,18 +_,67 @@
+@@ -2291,18 +_,77 @@
  		SendData(126, remoteClient, ignoreClient);
  	}
  
@@ -645,16 +653,23 @@
  		WorldGen.RangeFrame(tileX, tileY, xSize, ySize);
  	}
  
++	/// <summary>
++	/// <inheritdoc cref="SendTileSquare(int, int, int, int, int, TileChangeType)" path="/SharedSummary/node()"/>
++	/// In this particular overload, <paramref name="liquidType"/> and <paramref name="otherLiquid"/> are used to send a liquid merge sound. Specifically used by Terraria.Liquid.LiquidCheck. <paramref name="liquidType"/> and <paramref name="otherLiquid"/> are the two liquid IDs merging together.
++	/// </summary>
 +	public static void SendTileSquare(int whoAmi, int tileX, int tileY, int xSize, int ySize, byte liquidType, byte otherLiquid)
 +	{
-+		SendData(20, whoAmi, -1, null, tileX, tileY, xSize, ySize, (int)liquidType, otherLiquid);
++		SendData(20, whoAmi, -1, null, tileX, tileY, xSize, ySize, liquidType, (int)(otherLiquid));
 +		WorldGen.RangeFrame(tileX, tileY, xSize, ySize);
 +	}
 +
-+	/// <summary>
++	/// <SharedSummary>
 +	/// <inheritdoc cref="SendTileSquare(int, int, int, int, int, TileChangeType)" path="/SharedSummary/node()"/>
 +	/// <b>Range: </b>In this particular overload, <paramref name="tileX"/> and <paramref name="tileY"/> denote the center of a square range of tiles to sync and <paramref name="centeredSquareSize"/> denotes the width/height of the square to send. Odd <paramref name="centeredSquareSize"/> values result in a square centered directly on <paramref name="tileX"/> and <paramref name="tileY"/>, while even values will result in the square being 1 tile longer to the right of and below of the coordinates.
 +	/// <para/> The <see cref="SendTileSquare(int, int, int, int, int, TileChangeType)"/> overload is usually preferred to this because it sends the exact range of tiles desired and visualizing how the square range fits over the desired range of tiles can be hard to visualize and program correctly. 
++	/// </SharedSummary>
++	/// <summary>
++	/// <inheritdoc cref="SendTileSquare(int, int, int, int, TileChangeType)" path="/SharedSummary/node()"/>
 +	/// </summary>
  	public static void SendTileSquare(int whoAmi, int tileX, int tileY, int centeredSquareSize, TileChangeType changeType = TileChangeType.None)
  	{
@@ -662,7 +677,10 @@
  		SendTileSquare(whoAmi, tileX - num, tileY - num, centeredSquareSize, centeredSquareSize, changeType);
  	}
  
-+	// Add docs if agreed to add this 
++	/// <summary>
++	/// <inheritdoc cref="SendTileSquare(int, int, int, int, TileChangeType)" path="/SharedSummary/node()"/>
++	/// <br/><br/> In this particular overload, <paramref name="liquidType"/> and <paramref name="otherLiquid"/> are used to send a liquid merge sound. Specifically used by Terraria.Liquid.LiquidCheck. <paramref name="liquidType"/> and <paramref name="otherLiquid"/> are the two liquid IDs merging together.
++	/// </summary>
 +	public static void SendTileSquare(int whoAmi, int tileX, int tileY, int centeredSquareSize, byte liquidType, byte otherLiquid)
 +	{
 +		int num = (centeredSquareSize - 1) / 2;
