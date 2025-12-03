@@ -6406,7 +6406,7 @@
  				if (inventory[selectedItem].stack == 0)
  					inventory[selectedItem].SetDefaults();
  
-@@ -30673,9 +_,13 @@
+@@ -30673,9 +_,14 @@
  			int? forcedRandom = null;
  			TileObject objectData = default(TileObject);
  			FigureOutWhatToPlace(tile, item, out tileToCreate, out var previewPlaceStyle, out overrideCanPlace, out forcedRandom);
@@ -6416,6 +6416,7 @@
  			}
 +			else if (!TileLoader.CanPlace(tileTargetX, tileTargetY, tileToCreate)) {
 +				canPlace = false;
++				// TODO: CanPlace hook that allows forcing canPlace to true, rather than just preventing placement.
 +			}
  			else if (TileObjectData.CustomPlace(tileToCreate, previewPlaceStyle) && tileToCreate != 82 && tileToCreate != 227) {
  				newObjectType = true;
