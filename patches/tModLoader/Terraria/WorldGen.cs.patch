@@ -3158,6 +3158,26 @@
  	}
  
  	public static bool SolidTile(Tile testTile)
+@@ -50994,6 +_,10 @@
+ 
+ 	public static bool SolidTile(Point p) => SolidTile(p.X, p.Y);
+ 
++	/// <summary>
++	/// Checks if the tile at the given tile coordinates: <see cref="Tile.HasTile"/>, is <see cref="Main.tileSolid"/>, isn't <see cref="Main.tileSolidTop"/>, isn't sloped/halfblock/hammered (<see cref="Tile.Slope"/> and <see cref="Tile.IsHalfBlock"/>), and isn't actuated (<see cref="Tile.IsActuated"/>).
++	/// <br/><br/> If <paramref name="noDoors"/> is true, also checks that the tile isn't a closed door tile.
++	/// </summary>
+ 	public static bool SolidTile(int i, int j, bool noDoors = false)
+ 	{
+ 		try {
+@@ -51001,7 +_,7 @@
+ 				return true;
+ 
+ 			if (Main.tile[i, j].active() && Main.tileSolid[Main.tile[i, j].type] && !Main.tileSolidTop[Main.tile[i, j].type] && !Main.tile[i, j].halfBrick() && Main.tile[i, j].slope() == 0 && !Main.tile[i, j].inActive()) {
+-				if (noDoors && Main.tile[i, j].type == 10)
++				if (noDoors && TileLoader.IsClosedDoor(Main.tile[i, j]))
+ 					return false;
+ 
+ 				return true;
 @@ -51041,6 +_,10 @@
  		return true;
  	}
@@ -3445,6 +3465,28 @@
  								CheckTorch(i, j);
  								break;
  							case 442:
+@@ -59389,10 +_,10 @@
+ 											if (tile5 != null && tile5.nactive() && !tile5.halfBrick() && !tile5.leftSlope())
+ 												num18 = tile5.type;
+ 
+-											if (num17 == 10)
++											if (TileLoader.IsClosedDoor(num17))
+ 												num17 = -1;
+ 
+-											if (num18 == 10)
++											if (TileLoader.IsClosedDoor(num18))
+ 												num18 = -1;
+ 
+ 											short num19 = (short)(genRand.Next(3) * 18);
+@@ -59401,7 +_,7 @@
+ 													tile.frameY = num19;
+ 											}
+ 											else if (num17 >= 0 && Main.tileSolid[num17] && !Main.tileSolidTop[num17]) {
+-												if (tile.frameY < 108 || tile.frameY > 54)
++												if (tile.frameY < 108 || tile.frameY > 144) // Fix framing bug. Fixed in vanilla.
+ 													tile.frameY = (short)(108 + num19);
+ 											}
+ 											else if (num18 >= 0 && Main.tileSolid[num18] && !Main.tileSolidTop[num18]) {
 @@ -59474,7 +_,7 @@
  
  											Tile tile3 = Main.tile[i, j + 1];
