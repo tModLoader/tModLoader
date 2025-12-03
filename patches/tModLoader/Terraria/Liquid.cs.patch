@@ -44,7 +44,7 @@
  			byte b = 2;
  			if (tile5.liquid < b)
  				b = tile5.liquid;
-@@ -351,70 +_,46 @@
+@@ -351,73 +_,48 @@
  			return;
  		}
  
@@ -76,8 +76,8 @@
 -				HoneyCheck(x, y);
 +		// Liquid Checking completely remade by TML, thanks to DradonHunter for helping with this code
 +		for (int i = 0; i < LiquidLoader.LiquidCount; i++) {
-+			if (tile5.LiquidType == i) {
-+				if (tile5.LiquidType == LiquidID.Lava) {
++			if (tile5.liquidType() == i) {
++				if (tile5.liquidType() == LiquidID.Lava) {
 +					LavaCheck(x, y);
 +				}
 +				else {
@@ -109,19 +109,19 @@
  			}
  			else {
 -				if (tile.honey())
-+				if (tile.LiquidType == i)
++				if (tile.liquidType() == i)
  					AddWater(x - 1, y);
 -
 -				if (tile2.honey())
-+				if (tile2.LiquidType == i)
++				if (tile2.liquidType() == i)
  					AddWater(x + 1, y);
 -
 -				if (tile3.honey())
-+				if (tile3.LiquidType == i)
++				if (tile3.liquidType() == i)
  					AddWater(x, y - 1);
 -
 -				if (tile4.honey())
-+				if (tile4.LiquidType == i)
++				if (tile4.liquidType() == i)
  					AddWater(x, y + 1);
 -
 -				if (tile5.shimmer()) {
@@ -142,9 +142,15 @@
 -				}
  			}
  		}
- 
-@@ -987,19 +_,42 @@
- 
+-
+ 		if ((!tile4.nactive() || !Main.tileSolid[tile4.type] || Main.tileSolidTop[tile4.type]) && (tile4.liquid <= 0 || tile4.liquidType() == tile5.liquidType()) && tile4.liquid < byte.MaxValue) {
+ 			bool flag = false;
+ 			num = 255 - tile4.liquid;
+@@ -984,22 +_,36 @@
+ 				num += tile3.liquid;
+ 				tile3.liquid = 0;
+ 			}
+-
  			int liquidMergeTileType = 56;
  			int liquidMergeType = 0;
 -			bool waterNearby = tile.liquidType() == 0 || tile2.liquidType() == 0 || tile3.liquidType() == 0;
@@ -163,17 +169,9 @@
 +			if (!tile5.active()) {
 +				bool[] liquidsNearby = new bool[LiquidLoader.LiquidCount]; // Added by TML, normally each liquid would have their own flag
 +
-+				if (tile.liquid > 0) {
-+					liquidsNearby[tile.liquidType()] = true;
-+				}
-+
-+				if (tile2.liquid > 0) {
-+					liquidsNearby[tile2.liquidType()] = true;
-+				}
-+
-+				if (tile3.liquid > 0) {
-+					liquidsNearby[tile3.liquidType()] = true;
-+				}
++				liquidsNearby[tile.liquidType()] = true;
++				liquidsNearby[tile2.liquidType()] = true;
++				liquidsNearby[tile3.liquidType()] = true;
 +
 +				GetLiquidMergeTypes(x, y, thisLiquidType, out liquidMergeTileType, out liquidMergeType, liquidsNearby);
 +
@@ -213,8 +211,11 @@
  			}
  		}
  		else {
-@@ -1058,11 +_,19 @@
+@@ -1055,14 +_,21 @@
  
+ 				return;
+ 			}
+-
  			int liquidMergeTileType2 = 56;
  			int liquidMergeType2 = 0;
 +			bool[] liquidsNearby = new bool[LiquidLoader.LiquidCount];
