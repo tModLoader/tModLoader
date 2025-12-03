@@ -146,6 +146,15 @@
  		if ((!tile4.nactive() || !Main.tileSolid[tile4.type] || Main.tileSolidTop[tile4.type]) && (tile4.liquid <= 0 || tile4.liquidType() == tile5.liquidType()) && tile4.liquid < byte.MaxValue) {
  			bool flag = false;
  			num = 255 - tile4.liquid;
+@@ -958,6 +_,8 @@
+ 		return false;
+ 	}
+ 
++	//Will note here, since all liquids now call LiquidCheck (now including water), water now generates slightly less obsidian, crispy honey and shimmer block when interacting with their vanilla counterparts.
++	//Unsure why this is, but if water is prevented from calling LiquidCheck, it then looses its functionality of being edited with GlobalLiquid for anything merge related
+ 	public static void LiquidCheck(int x, int y, int thisLiquidType)
+ 	{
+ 		if (WorldGen.SolidTile(x, y))
 @@ -984,22 +_,36 @@
  				num += tile3.liquid;
  				tile3.liquid = 0;
