@@ -398,6 +398,9 @@ public sealed class ChangeMagicNumberToIDUnitTest
 	{
 		// https://github.com/tModLoader/tModLoader/issues/4889
 
+		// TODO: In the future, we may want to teach the analyzer how to process
+		//       these complex expressions.
+
 		await VerifyCS.Run(
 			"""
 			using Terraria;
