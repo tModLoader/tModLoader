@@ -2220,7 +2220,8 @@
  					if (Main.tile[num, num2 - 1].honey())
 +						// Patch note: flag8 - Honey
  						flag8 = true;
- 					else
+-					else
++					else if (Main.tile[num, num2 - 1].liquidType() < LiquidID.Count)
 +						// Patch note: flag7 - Water
  						flag7 = true;
  				}
