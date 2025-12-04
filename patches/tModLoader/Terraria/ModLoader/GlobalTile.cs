@@ -5,6 +5,7 @@ using Terraria.DataStructures;
 using Terraria.Enums;
 using Terraria.Graphics.Light;
 using Terraria.ID;
+using static Terraria.WaterfallManager;
 
 namespace Terraria.ModLoader;
 
@@ -423,5 +424,20 @@ public abstract class GlobalTile : GlobalBlockType
 	public virtual bool ShakeTree(int x, int y, TreeTypes treeType)
 	{
 		return false;
+	}
+
+	/// <summary>
+	/// Used to create waterfalls from a tile.<br/>
+	/// This method is used only by rain clouds and snow clouds to create their effects beneath them.<br/>
+	/// Waterfall data is used to set the position and type of the waterfall. Return waterfall data with the type of -1 to prevent the creation of a waterfall from a given tile. <br/>
+	/// Returns null by default.
+	/// </summary>
+	/// <param name="i">The x position in tile coordinates.</param>
+	/// <param name="j">The y position in tile coordinates.</param>
+	/// <param name="type"></param>
+	/// <returns>The data of a waterfall created by this tile.</returns>
+	public virtual WaterfallData? CreateWaterfall(int i, int j, int type)
+	{
+		return null;
 	}
 }

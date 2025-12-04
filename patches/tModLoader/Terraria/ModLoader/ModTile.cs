@@ -9,6 +9,7 @@ using Terraria.Graphics.Light;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ObjectData;
+using static Terraria.WaterfallManager;
 
 namespace Terraria.ModLoader;
 
@@ -792,5 +793,19 @@ public abstract class ModTile : ModBlockType
 	/// <param name="tileFlameData">Contains parameters for drawing the flame.</param>
 	public virtual void GetTileFlameData(int i, int j, ref GameContent.Drawing.TileDrawing.TileFlameData tileFlameData)
 	{
+	}
+
+	/// <summary>
+	/// Used to create waterfalls from this tile. <br/>
+	/// This method is used only by rain clouds and snow clouds to create their effects beneath them. Modded tiles can use this method to create their own custom rain clouds.<br/>
+	/// Waterfall data is used to set the position and type of the waterfall. Return type -1 when you don't want to create a waterfall. <br/>
+	/// Returns waterfall data with the type as -1 by default.
+	/// </summary>
+	/// <param name="i">The x position in tile coordinates.</param>
+	/// <param name="j">The y position in tile coordinates.</param>
+	/// <returns>The data of a waterfall created by this tile.</returns>
+	public virtual WaterfallData CreateWaterfall(int i, int j)
+	{
+		return new WaterfallData() { type = -1, x = i, y = j };
 	}
 }

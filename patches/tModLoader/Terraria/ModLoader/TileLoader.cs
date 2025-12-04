@@ -115,6 +115,8 @@ public static class TileLoader
 	private static Func<int, int, TreeTypes, bool>[] HookShakeTree;
 	private delegate void DelegateTileMaskMode(int i, int j, int type, ref LightMaskMode liquidMaskMode);
 	private static DelegateTileMaskMode[] HookTileLightMaskMode;
+	private delegate WaterfallManager.WaterfallData? DelegateCreateWaterfall(int i, int j, int type);
+	private static DelegateCreateWaterfall[] HookCreateWaterfall;
 
 	internal static int ReserveTileID()
 	{
@@ -275,6 +277,7 @@ public static class TileLoader
 		ModLoader.BuildGlobalHook(ref HookShakeTree, globalTiles, g => g.ShakeTree);
 		ModLoader.BuildGlobalHook(ref HookTileLightMaskMode, globalTiles, g => g.TileLightMaskMode);
 		ModLoader.BuildGlobalHook(ref HookDrawTileInWater, globalTiles, g => g.DrawTileInWater);
+		ModLoader.BuildGlobalHook(ref HookCreateWaterfall, globalTiles, g => g.CreateWaterfall);
 
 		if (!unloading) {
 			loaded = true;
@@ -1540,5 +1543,14 @@ public static class TileLoader
 				return true;
 		}
 		return false;
+	}
+
+	public static WaterfallManager.WaterfallData? CreateWaterfall(int i, int j, int type)
+	{
+		WaterfallManager.WaterfallData? data = GetTile(type)?.CreateWaterfall(i, j);
+		foreach (var hook in HookCreateWaterfall) {
+			data = hook(i, j, type);
+		}
+		return data;
 	}
 }
