@@ -6,6 +6,7 @@ using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Terraria.DataStructures;
 using Terraria.ID;
 
 namespace Terraria.GameContent.Liquid;
@@ -54,11 +55,21 @@ public static class LiquidEdgeRenderer
 		AlphaDestinationBlend = Blend.InverseSourceAlpha
 	};
 
-	private static List<Point> EdgeDataPoint { get; } = [];
+	private struct EdgeSpan
+	{
+		public ushort X;
+		public ushort YStart;
+		public byte Height;
+	}
+
+	private static readonly List<Point16> maskPoints = [];
+	private static readonly List<EdgeSpan> edgeSpans = [];
+	private static EdgeSpan? currentSpan;
 
 	public static void Clear()
 	{
-		EdgeDataPoint.Clear();
+		maskPoints.Clear();
+		edgeSpans.Clear();
 	}
 
 	public static void DrawTileMask(SpriteBatch spriteBatch, RenderTarget2D tileTarget, Vector2 tileTargetOffset)
@@ -66,21 +77,17 @@ public static class LiquidEdgeRenderer
 		spriteBatch.End();
 		spriteBatch.Begin(SpriteSortMode.Deferred, MaskingBlendState, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, MaskShader);
 
-		foreach (var pt in EdgeDataPoint)
+		foreach (var pt in maskPoints)
 			DrawSingleTileMask(spriteBatch, pt.X, pt.Y);
+
+		foreach (var span in edgeSpans)
+			DrawScreenTargetSlices(spriteBatch, span);
 	}
 
 	private static void DrawSingleTileMask(SpriteBatch spriteBatch, int tileX, int tileY)
 	{
 		Tile tileCache = Main.tile[tileX, tileY];
 		Vector2 position = new Vector2(tileX * 16, tileY * 16) + new Vector2(Main.drawToScreen ? 0 : Main.offScreenRange) - Main.screenPosition;
-
-		if (!TileID.Sets.BlocksWaterDrawingBehindSelf[tileCache.TileType]) {
-			var offset = Main.sceneTilePos;
-			spriteBatch.Draw(Main.instance.tileTarget, position, new Rectangle(tileX * 16 - (int)offset.X, tileY * 16 - (int)offset.Y, 16, 16), Color.White, 0f, Vector2.Zero, 1f, 0, 0f);
-			return;
-		}
-
 		Texture2D texture = DefaultLiquidMask;
 
 		if (tileCache.Slope != SlopeType.Solid && !TileID.Sets.HasSlopeFrames[tileCache.TileType]) {
@@ -125,6 +132,14 @@ public static class LiquidEdgeRenderer
 
 			spriteBatch.Draw(texture, position + new Vector2(0, fullTileHeight), new Rectangle(tileCache.TileFrameX, tileCache.TileFrameY, 16, 16 - fullTileHeight), Color.White, 0f, Vector2.Zero, 1f, 0, 0f);
 		}
+	}
+
+	private static void DrawScreenTargetSlices(SpriteBatch spriteBatch, EdgeSpan span)
+	{
+		Vector2 position = new Vector2(span.X * 16, span.YStart * 16) + new Vector2(Main.drawToScreen ? 0 : Main.offScreenRange) - Main.screenPosition;
+
+		var offset = Main.sceneTilePos;
+		spriteBatch.Draw(Main.instance.tileTarget, position, new Rectangle(span.X * 16 - (int)offset.X, span.YStart * 16 - (int)offset.Y, 16, 16 * span.Height), Color.White, 0f, Vector2.Zero, 1f, 0, 0f);
 	}
 
 	public static unsafe void CollectEdgeData(LiquidRenderer.LiquidCache* pCache, Tile tileCache, int tileX, int tileY)
@@ -350,7 +365,7 @@ public static class LiquidEdgeRenderer
 			SourceRectangle = new Rectangle(16, isSurfaceLiquid ? 0 : 64, size.Width, size.Height)
 		};
 
-		EdgeDataPoint.Add(new Point(tileX, tileY));
+		AddEdgePoint((ushort)tileX, (ushort)tileY, TileID.Sets.BlocksWaterDrawingBehindSelf[tileCache.TileType]);
 
 		if (blockType is BlockType.HalfBlock) {
 			if (!pCache->IsHalfBrick) {
@@ -370,5 +385,58 @@ public static class LiquidEdgeRenderer
 			pCache->LiquidLevel = highLiquid / 255f;
 			pCache->Type = (byte)liquidType;
 		}
+	}
+
+	private static void AddEdgePoint(ushort tileX, ushort tileY, bool hasSpecialMask)
+	{
+		// Masks always break the span because they need to be rendered separately.
+		if (hasSpecialMask) {
+			if (currentSpan.HasValue) {
+				edgeSpans.Add(currentSpan.Value);
+				currentSpan = null;
+			}
+
+			maskPoints.Add(new Point16(tileX, tileY));
+			return;
+		}
+
+		// Begin building the span if there is none.
+		if (!currentSpan.HasValue) {
+			currentSpan = new EdgeSpan {
+				X = tileX,
+				YStart = tileY,
+				Height = 1,
+			};
+			return;
+		}
+
+		var span = currentSpan.Value;
+
+		// If we're at a new column, start a new span.
+		if (span.X != tileX) {
+			edgeSpans.Add(span);
+			currentSpan = new EdgeSpan {
+				X = tileX,
+				YStart = tileY,
+				Height = 1,
+			};
+			return;
+		}
+
+		// Make sure the tiles are contiguous; we don't call this for every
+		// tile, only for confirmed edges.
+		if (span.YStart + span.Height == tileY) {
+			span.Height++;
+			currentSpan = span;
+			return;
+		}
+
+		// If we've broken the span, commit it and start building a new one.
+		edgeSpans.Add(span);
+		currentSpan = new EdgeSpan {
+			X = tileX,
+			YStart = tileY,
+			Height = 1,
+		};
 	}
 }
