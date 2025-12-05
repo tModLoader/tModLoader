@@ -8,7 +8,7 @@
  
  	<!-- General -->
  	<PropertyGroup>
-@@ -11,59 +_,98 @@
+@@ -11,59 +_,99 @@
  		<Company>Re-Logic</Company>
  		<Copyright>Copyright © 2022 Re-Logic</Copyright>
  		<RootNamespace>Terraria</RootNamespace>
@@ -79,7 +79,6 @@
 +		<Reference Include="TerrariaHooks" />
  
 +		<PackageReference Include="DotNetZip" Version="1.16.0" />
-+
 +		<PackageReference Include="JetBrains.Annotations" Version="2025.2.4" />
  		<PackageReference Include="Steamworks.NET.AnyCPU" Version="2025.162.4" />
 +		<PackageReference Include="Basic.Reference.Assemblies.Net80" Version="1.5.0" />
