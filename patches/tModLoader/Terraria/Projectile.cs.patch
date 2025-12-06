@@ -1,5 +1,13 @@
 --- src/TerrariaNetCore/Terraria/Projectile.cs
 +++ src/tModLoader/Terraria/Projectile.cs
+@@ -1,5 +_,7 @@
+ using System;
+ using System.Collections.Generic;
++using System.Linq;
++using System.Security.Policy;
+ using Microsoft.Xna.Framework;
+ using Microsoft.Xna.Framework.Audio;
+ using ReLogic.Utilities;
 @@ -20,14 +_,16 @@
  using Terraria.Graphics.Shaders;
  using Terraria.ID;
@@ -1304,6 +1312,178 @@
  			}
  
  			if (minion && numUpdates == -1 && type != 625 && type != 628) {
+@@ -12535,17 +_,43 @@
+ 			if (!ignoreWater) {
+ 				bool flag;
+ 				bool flag2;
++				bool inModdedLiquid;
+ 				try {
+ 					flag = Collision.LavaCollision(position, width, height);
+-					flag2 = Collision.WetCollision(position, width, height);
+-					if (flag)
++					bool isWaterWet = true;
++					if (flag) {
+ 						lavaWet = true;
++						LiquidLoader.OnProjectileCollision(LiquidID.Lava, this);
++						isWaterWet = false;
++					}
+ 
+-					if (Collision.honey)
++					if (Collision.honey) {
+ 						honeyWet = true;
++						LiquidLoader.OnProjectileCollision(LiquidID.Honey, this);
++						isWaterWet = false;
++					}
+ 
+-					if (Collision.shimmer)
++					if (Collision.shimmer) {
+ 						shimmerWet = true;
++						LiquidLoader.OnProjectileCollision(LiquidID.Shimmer, this);
++						isWaterWet = false;
++					}
++
++					inModdedLiquid = Collision.GetModdedWets(position, width, height, out bool[] liquidsIn);
++					for (int j = LiquidID.Count; j < LiquidLoader.LiquidCount; j++) {
++						if (liquidsIn[j]) {
++							wets[j] = true;
++							LiquidLoader.OnProjectileCollision(j, this);
++							isWaterWet = false;
++						}
++					}
++
++					flag2 = Collision.WetCollision(position, width, height);
++					if (flag2 && isWaterWet) 
++						LiquidLoader.OnProjectileCollision(LiquidID.Water, this);
++
++					if (!wets.Contains(true) && wet)
++						wets[LiquidID.Water] = true;
+ 				}
+ 				catch {
+ 					active = false;
+@@ -12580,7 +_,7 @@
+ 				if (flag2) {
+ 					if (type != 155 && wetCount == 0 && !wet) {
+ 						if (!flag) {
+-							if (shimmerWet) {
++							if (shimmerWet && LiquidLoader.OnProjectileSplash(LiquidID.Shimmer, this, true)) {
+ 								for (int l = 0; l < 10; l++) {
+ 									int num4 = Dust.NewDust(new Vector2(position.X - 6f, position.Y + (float)(height / 2) - 8f), width + 12, 24, 308);
+ 									Main.dust[num4].velocity.Y -= 4f;
+@@ -12605,7 +_,7 @@
+ 									SoundEngine.PlaySound(19, (int)position.X, (int)position.Y, 4);
+ 								}
+ 							}
+-							else if (honeyWet) {
++							else if (honeyWet && LiquidLoader.OnProjectileSplash(LiquidID.Honey, this, true)) {
+ 								for (int m = 0; m < 10; m++) {
+ 									int num5 = Dust.NewDust(new Vector2(position.X - 6f, position.Y + (float)(height / 2) - 8f), width + 12, 24, 152);
+ 									Main.dust[num5].velocity.Y -= 1f;
+@@ -12617,7 +_,27 @@
+ 
+ 								SoundEngine.PlaySound(19, (int)position.X, (int)position.Y);
+ 							}
+-							else {
++							else if (inModdedLiquid) {
++								for (int k = LiquidID.Count; k < LiquidLoader.LiquidCount; k++) {
++									if (wets[k] && LiquidLoader.OnProjectileSplash(k, this, true)) {
++										ModLiquid modLiquid = LiquidLoader.GetLiquid(k);
++										if (modLiquid.OnProjectileSplash(this, true)) {
++											if (modLiquid.SplashDustType >= 0) {
++												for (int j = 0; j < 10; j++) {
++													int dust = Dust.NewDust(new Vector2(position.X - 6f, position.Y + (height / 2) - 8f), width + 12, 24, modLiquid.SplashDustType);
++													Main.dust[dust].velocity.Y -= 2f;
++													Main.dust[dust].velocity.X *= 2.5f;
++													Main.dust[dust].scale = 1.3f;
++													Main.dust[dust].alpha = 100;
++													Main.dust[dust].noGravity = true;
++												}
++											}
++											SoundEngine.PlaySound(modLiquid.SplashSound, position);
++										}
++									}
++								}
++							}
++							else if (LiquidLoader.OnProjectileSplash(LiquidID.Water, this, true)) {
+ 								for (int n = 0; n < 10; n++) {
+ 									int num6 = Dust.NewDust(new Vector2(position.X - 6f, position.Y + (float)(height / 2) - 8f), width + 12, 24, Dust.dustWater());
+ 									Main.dust[num6].velocity.Y -= 4f;
+@@ -12630,7 +_,7 @@
+ 								SoundEngine.PlaySound(19, (int)position.X, (int)position.Y);
+ 							}
+ 						}
+-						else {
++						else if (LiquidLoader.OnProjectileSplash(LiquidID.Lava, this, true))  {
+ 							for (int num7 = 0; num7 < 10; num7++) {
+ 								int num8 = Dust.NewDust(new Vector2(position.X - 6f, position.Y + (float)(height / 2) - 8f), width + 12, 24, 35);
+ 								Main.dust[num8].velocity.Y -= 1.5f;
+@@ -12654,7 +_,7 @@
+ 					else if (wetCount == 0) {
+ 						wetCount = 10;
+ 						if (!lavaWet) {
+-							if (shimmerWet) {
++							if (shimmerWet && LiquidLoader.OnProjectileSplash(LiquidID.Shimmer, this, false)) {
+ 								for (int num9 = 0; num9 < 10; num9++) {
+ 									int num10 = Dust.NewDust(new Vector2(position.X - 6f, position.Y + (float)(height / 2) - 8f), width + 12, 24, 308);
+ 									Main.dust[num10].velocity.Y -= 4f;
+@@ -12679,7 +_,7 @@
+ 									SoundEngine.PlaySound(19, (int)position.X, (int)position.Y, 5);
+ 								}
+ 							}
+-							else if (honeyWet) {
++							else if (honeyWet && LiquidLoader.OnProjectileSplash(LiquidID.Honey, this, false)) {
+ 								for (int num11 = 0; num11 < 10; num11++) {
+ 									int num12 = Dust.NewDust(new Vector2(position.X - 6f, position.Y + (float)(height / 2) - 8f), width + 12, 24, 152);
+ 									Main.dust[num12].velocity.Y -= 1f;
+@@ -12691,7 +_,27 @@
+ 
+ 								SoundEngine.PlaySound(19, (int)position.X, (int)position.Y);
+ 							}
+-							else {
++							else if (inModdedLiquid) {
++								for (int k = LiquidID.Count; k < LiquidLoader.LiquidCount; k++) {
++									if (wets[k] && LiquidLoader.OnProjectileSplash(k, this, false)) {
++										ModLiquid modLiquid = LiquidLoader.GetLiquid(i);
++										if (modLiquid.OnProjectileSplash(this, false)) {
++											if (modLiquid.SplashDustType >= 0) {
++												for (int j = 0; j < 10; j++) {
++													int dust = Dust.NewDust(new Vector2(position.X - 6f, position.Y + (height / 2) - 8f), width + 12, 24, modLiquid.SplashDustType);
++													Main.dust[dust].velocity.Y -= 2f;
++													Main.dust[dust].velocity.X *= 2.5f;
++													Main.dust[dust].scale = 1.3f;
++													Main.dust[dust].alpha = 100;
++													Main.dust[dust].noGravity = true;
++												}
++											}
++											SoundEngine.PlaySound(modLiquid.SplashSound, position);
++										}
++									}
++								}
++							}
++							else if (LiquidLoader.OnProjectileSplash(LiquidID.Water, this, false)) {
+ 								for (int num13 = 0; num13 < 10; num13++) {
+ 									int num14 = Dust.NewDust(new Vector2(position.X - 6f, position.Y + (float)(height / 2)), width + 12, 24, Dust.dustWater());
+ 									Main.dust[num14].velocity.Y -= 4f;
+@@ -12704,7 +_,7 @@
+ 								SoundEngine.PlaySound(19, (int)position.X, (int)position.Y);
+ 							}
+ 						}
+-						else {
++						else if (LiquidLoader.OnProjectileSplash(LiquidID.Lava, this, false)) {
+ 							for (int num15 = 0; num15 < 10; num15++) {
+ 								int num16 = Dust.NewDust(new Vector2(position.X - 6f, position.Y + (float)(height / 2) - 8f), width + 12, 24, 35);
+ 								Main.dust[num16].velocity.Y -= 1.5f;
+@@ -12723,7 +_,11 @@
+ 					lavaWet = false;
+ 					honeyWet = false;
+ 					shimmerWet = false;
++					for (int j = LiquidID.Count; j < LiquidLoader.LiquidCount; j++)
++						wets[j] = false;
+ 				}
++				if (!wets.Contains(true) && wet)
++					wets[LiquidID.Water] = true;
+ 
+ 				if (wetCount > 0)
+ 					wetCount--;
 @@ -12800,7 +_,7 @@
  			}
  
@@ -1355,7 +1535,7 @@
  					if (type >= 736 && type <= 738) {
  						velocity = Collision.TileCollision(position, velocity, width, height, flag6, flag6);
  					}
-@@ -13293,13 +_,17 @@
+@@ -13293,44 +_,69 @@
  					else {
  						velocity = Collision.TileCollision(position, velocity, width, height, flag6, flag6);
  					}
@@ -1372,7 +1552,85 @@
 +					*/
  
  					if (wet) {
- 						if (shimmerWet) {
++						bool inModdedLiquid = false;
++						for (int i = LiquidLoader.LiquidCount; i > LiquidID.Count; i--) {
++							if (wets[i]) {
++								if (LiquidLoader.ProjectileLiquidMovement(i, this, ref wetVelocity, vector2, num2, num3, flag6)) {
++									Vector2 vector3 = velocity;
++									velocity = Collision.TileCollision(vector2, velocity, num2, num3, flag6, flag6);
++									wetVelocity = velocity * LiquidLoader.GetLiquid(i).ProjectileMovementMultiplier;
++									if (velocity.X != vector3.X) {
++										wetVelocity.X = velocity.X;
++									}
++									if (velocity.Y != vector3.Y) {
++										wetVelocity.Y = velocity.Y;
++									}
++								}
++								inModdedLiquid = true;
++							}
++						}
+-						if (shimmerWet) {
++						if (!inModdedLiquid) {
++							if (shimmerWet && LiquidLoader.ProjectileLiquidMovement(LiquidID.Shimmer, this, ref wetVelocity, vector2, num2, num3, flag6)) {
+-							Vector2 vector3 = velocity;
++								Vector2 vector3 = velocity;
+-							velocity = Collision.TileCollision(vector2, velocity, num2, num3, flag6, flag6);
++								velocity = Collision.TileCollision(vector2, velocity, num2, num3, flag6, flag6);
+-							wetVelocity = velocity * 0.375f;
++								wetVelocity = velocity * 0.375f;
+-							if (velocity.X != vector3.X)
++								if (velocity.X != vector3.X)
+-								wetVelocity.X = velocity.X;
++									wetVelocity.X = velocity.X;
+ 
+-							if (velocity.Y != vector3.Y)
++								if (velocity.Y != vector3.Y)
+-								wetVelocity.Y = velocity.Y;
++									wetVelocity.Y = velocity.Y;
+-						}
++							}
+-						else if (honeyWet) {
++							else if (honeyWet && LiquidLoader.ProjectileLiquidMovement(LiquidID.Honey, this, ref wetVelocity, vector2, num2, num3, flag6)) {
+-							Vector2 vector4 = velocity;
++								Vector2 vector4 = velocity;
+-							velocity = Collision.TileCollision(vector2, velocity, num2, num3, flag6, flag6);
++								velocity = Collision.TileCollision(vector2, velocity, num2, num3, flag6, flag6);
+-							wetVelocity = velocity * 0.25f;
++								wetVelocity = velocity * 0.25f;
+-							if (velocity.X != vector4.X)
++								if (velocity.X != vector4.X)
+-								wetVelocity.X = velocity.X;
++									wetVelocity.X = velocity.X;
+ 
+-							if (velocity.Y != vector4.Y)
++								if (velocity.Y != vector4.Y)
+-								wetVelocity.Y = velocity.Y;
++									wetVelocity.Y = velocity.Y;
+-						}
++							}
+-						else {
++							else {
++								if (LiquidLoader.ProjectileLiquidMovement(lavaWet ? LiquidID.Lava : LiquidID.Water, this, ref wetVelocity, vector2, num2, num3, flag6)) {
+-							Vector2 vector5 = velocity;
++									Vector2 vector5 = velocity;
+-							velocity = Collision.TileCollision(vector2, velocity, num2, num3, flag6, flag6);
++									velocity = Collision.TileCollision(vector2, velocity, num2, num3, flag6, flag6);
+-							wetVelocity = velocity * 0.5f;
++									wetVelocity = velocity * 0.5f;
+-							if (velocity.X != vector5.X)
++									if (velocity.X != vector5.X)
+-								wetVelocity.X = velocity.X;
++										wetVelocity.X = velocity.X;
+ 
+-							if (velocity.Y != vector5.Y)
++									if (velocity.Y != vector5.Y)
+-								wetVelocity.Y = velocity.Y;
++										wetVelocity.Y = velocity.Y;
++								}
++							}
+ 						}
+ 
+ 						if (!Main.projPet[type]) {
 @@ -13441,7 +_,7 @@
  
  								flag2 = true;
@@ -1427,6 +1685,15 @@
  		if (wet)
  			position += wetVelocity;
  		else
+@@ -14680,7 +_,7 @@
+ 		fisher.X = (int)(base.Center.X / 16f);
+ 		fisher.Y = (int)(base.Center.Y / 16f);
+ 		fisher.bobberType = type;
+-		GetFishingPondState(fisher.X, fisher.Y, out fisher.inLava, out fisher.inHoney, out fisher.waterTilesCount, out fisher.chumsInWater);
++		GetFishingPondState(fisher.X, fisher.Y, out fisher.inLiquid, out fisher.waterTilesCount, out fisher.chumsInWater);
+ 		if (Main.notTheBeesWorld && Main.rand.Next(2) == 0)
+ 			fisher.inHoney = false;
+ 
 @@ -14781,16 +_,35 @@
  		}
  
@@ -1473,6 +1740,71 @@
  				PopupText.AssignAsSonarText(PopupText.NewText(PopupTextContext.SonarAlert, fisher.rolledEnemySpawn, base.Center, stay5TimesLonger: false));
  
  			float num4 = fisher.fishingLevel;
+@@ -14832,7 +_,7 @@
+ 
+ 	private void FishingCheck_RollEnemySpawns(ref FishingAttempt fisher)
+ 	{
+-		if (fisher.inLava || fisher.inHoney || !Main.bloodMoon || Main.dayTime)
++		if (!fisher.inLiquid[LiquidID.Water] || !Main.bloodMoon || Main.dayTime)
+ 			return;
+ 
+ 		int maxValue = 6;
+@@ -14931,6 +_,10 @@
+ 			return;
+ 		}
+ 
++		if (!fisher.inLiquid[LiquidID.Water]) {
++			return;
++		}
++
+ 		if (Main.rand.Next(50) > fisher.fishingLevel && Main.rand.Next(50) > fisher.fishingLevel && fisher.waterTilesCount < fisher.waterNeededToFish) {
+ 			fisher.rolledItemDrop = Main.rand.Next(2337, 2340);
+ 			if (Main.rand.Next(8) == 0)
+@@ -15317,10 +_,10 @@
+ 			crate = true;
+ 	}
+ 
++	// Added liquids parameter, removed lava and honey parameters.
+-	private static void GetFishingPondState(int x, int y, out bool lava, out bool honey, out int numWaters, out int chumCount)
++	private static void GetFishingPondState(int x, int y, out bool[] liquids, out int numWaters, out int chumCount)
+ 	{
+-		lava = false;
+-		honey = false;
++		liquids = new bool[LiquidLoader.LiquidCount];
+ 		numWaters = 0;
+ 		chumCount = 0;
+ 		Point tileCoords = new Point(0, 0);
+@@ -15330,10 +_,7 @@
+ 			while (Main.tile[i, num] != null && Main.tile[i, num].liquid > 0 && !WorldGen.SolidTile(i, num) && num < Main.maxTilesY - 10) {
+ 				numWaters++;
+ 				num++;
+-				if (Main.tile[i, num].lava())
+-					lava = true;
+-				else if (Main.tile[i, num].honey())
+-					honey = true;
++				liquids[Main.tile[i, num].liquidType()] = true;
+ 
+ 				tileCoords.X = i;
+ 				tileCoords.Y = num;
+@@ -15341,8 +_,16 @@
+ 			}
+ 		}
+ 
+-		if (honey)
+-			numWaters = (int)((double)numWaters * 1.5);
++		float poolMultiplier = 1f;
++		if (liquids[LiquidID.Honey]) {
++			poolMultiplier = 1.5f;
++		}
++		for (int i = 0; i < liquids.Length; i++) {
++			if (liquids[i]) {
++				LiquidLoader.LiquidFishingPoolSizeMulitplier(i, ref poolMultiplier);
++			}
++		}
++		numWaters = (int)((double)numWaters * poolMultiplier);
+ 	}
+ 
+ 	private static void GetFishingPondWidth(int x, int y, out int minX, out int maxX)
 @@ -15733,6 +_,9 @@
  					return 0.77f;
  				case "Random":
@@ -1837,6 +2169,115 @@
  					for (int l = 0; l < num4; l++) {
  						Dust obj = Main.dust[WorldGen.KillTile_MakeTileDust(j, k, tileSafely)];
  						obj.velocity.Y -= 3f + (float)num3 * 1.5f;
+@@ -37145,7 +_,7 @@
+ 			Main.instance.ChumBucketProjectileHelper.AddChumLocation(spot);
+ 	}
+ 
+-	private void ReduceRemainingChumsInPool()
++	public void ReduceRemainingChumsInPool()
+ 	{
+ 		int x = (int)base.Center.X / 16;
+ 		int num = (int)base.Center.Y / 16;
+@@ -37189,7 +_,7 @@
+ 		}
+ 	}
+ 
+-	private void AI_061_FishingBobber()
++	public void AI_061_FishingBobber()
+ 	{
+ 		Player player = Main.player[owner];
+ 		bool flag = type >= 986 && type <= 993;
+@@ -37211,16 +_,14 @@
+ 
+ 		if (ai[1] > 0f && localAI[1] != 0f) {
+ 			localAI[1] = 0f;
+-			if (!lavaWet && !honeyWet)
+-				AI_061_FishingBobber_DoASplash();
++			AI_061_FishingBobber_DoASplash();
+ 		}
+ 
+ 		if (ai[0] >= 1f) {
+ 			if (ai[0] == 2f) {
+ 				ai[0] += 1f;
+ 				SoundEngine.PlaySound(SoundID.Item17, position);
+-				if (!lavaWet && !honeyWet)
+-					AI_061_FishingBobber_DoASplash();
++				AI_061_FishingBobber_DoASplash();
+ 			}
+ 
+ 			if (localAI[0] < 100f)
+@@ -37261,7 +_,7 @@
+ 			ai[0] = 1f;
+ 
+ 		if (wet) {
+-			if (shimmerWet) {
++			if (shimmerWet && LiquidLoader.AllowFishingInShimmer()) {
+ 				if (Main.myPlayer == owner)
+ 					Main.player[owner].AddBuff(353, 60);
+ 
+@@ -37339,7 +_,8 @@
+ 			}
+ 		}
+ 		else if (ai[1] < 0f) {
+-			if (velocity.Y == 0f || (honeyWet && Math.Abs(velocity.Y) <= 0.01f)) {
++			//if (velocity.Y == 0f || (honeyWet && Math.Abs(velocity.Y) <= 0.01f)) {
++			if (Math.Abs(velocity.Y) <= 0.01f && velocity.Y == oldVelocity.Y) {
+ 				velocity.Y = (float)Main.rand.Next(100, 500) * 0.015f;
+ 				velocity.X = (float)Main.rand.Next(-100, 101) * 0.015f;
+ 				wet = false;
+@@ -37356,7 +_,7 @@
+ 		}
+ 	}
+ 
+-	private float AI_061_FishingBobber_GetWaterLine(int X, int Y)
++	public float AI_061_FishingBobber_GetWaterLine(int X, int Y)
+ 	{
+ 		float result = position.Y + (float)height;
+ 		if (Main.tile[X, Y - 1] == null)
+@@ -37384,21 +_,33 @@
+ 		return result;
+ 	}
+ 
+-	private void AI_061_FishingBobber_DoASplash()
++	public void AI_061_FishingBobber_DoASplash()
+ 	{
+-		for (int i = 0; i < 100; i++) {
+-			int num = Dust.NewDust(new Vector2(position.X - 6f, position.Y - 10f), width + 12, 24, Dust.dustWater());
+-			Main.dust[num].velocity.Y -= 4f;
+-			Main.dust[num].velocity.X *= 2.5f;
+-			Main.dust[num].scale = 0.8f;
+-			Main.dust[num].alpha = 100;
+-			Main.dust[num].noGravity = true;
++		bool inModdedLiquid = false;
++		for (int i = LiquidLoader.LiquidCount; i < LiquidID.Lava; i++) {
++			if (wets[i]) {
++				LiquidLoader.OnFishingBobberSplash(i, this);
++				if (i >= LiquidID.Count)
++					inModdedLiquid = true;
++			}
+ 		}
++		if (!inModdedLiquid && !lavaWet && !honeyWet && !shimmerWet && wet) {
++			if (LiquidLoader.OnFishingBobberSplash(LiquidID.Water, this)) {
++				for (int i = 0; i < 100; i++) {
++					int num = Dust.NewDust(new Vector2(position.X - 6f, position.Y - 10f), width + 12, 24, Dust.dustWater());
++					Main.dust[num].velocity.Y -= 4f;
++					Main.dust[num].velocity.X *= 2.5f;
++					Main.dust[num].scale = 0.8f;
++					Main.dust[num].alpha = 100;
++					Main.dust[num].noGravity = true;
++				}
+ 
+-		SoundEngine.PlaySound(19, (int)position.X, (int)position.Y, 0);
++				SoundEngine.PlaySound(19, (int)position.X, (int)position.Y, 0);
++			}
++		}
+ 	}
+ 
+-	private void AI_061_FishingBobber_GiveItemToPlayer(Player thePlayer, int itemType)
++	public void AI_061_FishingBobber_GiveItemToPlayer(Player thePlayer, int itemType)
+ 	{
+ 		Item item = new Item();
+ 		item.SetDefaults(itemType);
 @@ -37442,10 +_,13 @@
  			item.stack = stack2;
  		}

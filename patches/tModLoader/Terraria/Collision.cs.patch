@@ -1,6 +1,9 @@
 --- src/TerrariaNetCore/Terraria/Collision.cs
 +++ src/tModLoader/Terraria/Collision.cs
-@@ -3,6 +_,7 @@
+@@ -1,8 +_,10 @@
+ using System;
+ using System.Collections.Generic;
++using System.Linq;
  using Microsoft.Xna.Framework;
  using Terraria.DataStructures;
  using Terraria.ID;
@@ -17,6 +20,100 @@
  			return false;
  
  		int num = tile.blockType();
+@@ -1135,6 +_,12 @@
+ 
+ 	public static bool WetCollision(Vector2 Position, int Width, int Height)
+ 	{
++		return WetCollision(Position, Width, Height, out bool[] _);
++	}
++	public static bool WetCollision(Vector2 Position, int Width, int Height, out bool[] liquidsIn)
++	{
++		liquidsIn = new bool[LiquidLoader.LiquidCount];
++		bool flag = false;
+ 		honey = false;
+ 		shimmer = false;
+ 		Vector2 vector = new Vector2(Position.X + (float)(Width / 2), Position.Y + (float)(Height / 2));
+@@ -1176,7 +_,8 @@
+ 						if (Main.tile[i, j].shimmer())
+ 							shimmer = true;
+ 
+-						return true;
++						liquidsIn[Main.tile[i, j].liquidType()] = true;
++						flag = true;
+ 					}
+ 				}
+ 				else {
+@@ -1192,17 +_,26 @@
+ 						else if (Main.tile[i, j - 1].shimmer())
+ 							shimmer = true;
+ 
+-						return true;
++						liquidsIn[Main.tile[i, j - 1].liquidType()] = true;
++						flag = true;
+ 					}
+ 				}
+ 			}
+ 		}
+ 
+-		return false;
++		return flag;
+ 	}
+ 
+ 	public static bool LavaCollision(Vector2 Position, int Width, int Height)
+ 	{
++		LavaCollision(Position, Width, Height, out bool[] liquidsIn);
++		return liquidsIn[LiquidID.Lava];
++	}
++
++	public static bool LavaCollision(Vector2 Position, int Width, int Height, out bool[] liquidsIn)
++	{
++		liquidsIn = new bool[LiquidLoader.LiquidCount];
++		bool flag = false;
+ 		int value = (int)(Position.X / 16f) - 1;
+ 		int value2 = (int)((Position.X + (float)Width) / 16f) + 2;
+ 		int value3 = (int)(Position.Y / 16f) - 1;
+@@ -1214,7 +_,7 @@
+ 		Vector2 vector = default(Vector2);
+ 		for (int i = num; i < value2; i++) {
+ 			for (int j = value3; j < value4; j++) {
+-				if (Main.tile[i, j] != null && Main.tile[i, j].liquid > 0 && Main.tile[i, j].lava()) {
++				if (Main.tile[i, j] != null && Main.tile[i, j].liquid > 0) {
+ 					vector.X = i * 16;
+ 					vector.Y = j * 16;
+ 					int num2 = 16;
+@@ -1222,13 +_,29 @@
+ 					num3 /= 32f;
+ 					vector.Y += num3 * 2f;
+ 					num2 -= (int)(num3 * 2f);
+-					if (Position.X + (float)Width > vector.X && Position.X < vector.X + 16f && Position.Y + (float)Height > vector.Y && Position.Y < vector.Y + (float)num2)
+-						return true;
++					if (Position.X + (float)Width > vector.X && Position.X < vector.X + 16f && Position.Y + (float)Height > vector.Y && Position.Y < vector.Y + (float)num2) {
++						liquidsIn[Main.tile[i, j].liquidType()] = true;
++						flag = true;
++					}
+ 				}
+ 			}
+ 		}
+ 
+-		return false;
++		return flag;
++	}
++
++	public static bool GetModdedWets(Vector2 Position, int Width, int Height, out bool[] liquidsIn)
++	{
++		liquidsIn = new bool[LiquidLoader.LiquidCount];
++		WetCollision(Position, Width, Height, out bool[] liquidsInNorm);
++		LavaCollision(Position, Width, Height, out bool[] liquidsInAlt);
++		Array.Copy(liquidsInNorm, liquidsIn, LiquidLoader.LiquidCount);
++		for (int i = LiquidID.Count; i < LiquidLoader.LiquidCount; i++) {
++			if (LiquidLoader.GetLiquid(i).UsesLavaCollisionForWet) {
++				liquidsIn[i] = liquidsInAlt[i];
++			}
++		}
++		return liquidsIn.Contains(true);
+ 	}
+ 
+ 	public static Vector4 WalkDownSlope(Vector2 Position, Vector2 Velocity, int Width, int Height, float gravity = 0f)
 @@ -2228,7 +_,25 @@
  		return false;
  	}
