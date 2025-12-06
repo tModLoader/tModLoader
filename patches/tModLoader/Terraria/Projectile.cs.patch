@@ -1312,14 +1312,14 @@
  			}
  
  			if (minion && numUpdates == -1 && type != 625 && type != 628) {
-@@ -12535,17 +_,43 @@
+@@ -12535,17 +_,45 @@
  			if (!ignoreWater) {
  				bool flag;
  				bool flag2;
 +				bool inModdedLiquid;
  				try {
  					flag = Collision.LavaCollision(position, width, height);
--					flag2 = Collision.WetCollision(position, width, height);
+ 					flag2 = Collision.WetCollision(position, width, height);
 -					if (flag)
 +					bool isWaterWet = true;
 +					if (flag) {
@@ -1343,15 +1343,16 @@
 +					}
 +
 +					inModdedLiquid = Collision.GetModdedWets(position, width, height, out bool[] liquidsIn);
-+					for (int j = LiquidID.Count; j < LiquidLoader.LiquidCount; j++) {
-+						if (liquidsIn[j]) {
-+							wets[j] = true;
-+							LiquidLoader.OnProjectileCollision(j, this);
-+							isWaterWet = false;
++					if (inModdedLiquid) {
++						for (int j = LiquidID.Count; j < LiquidLoader.LiquidCount; j++) {
++							if (liquidsIn[j]) {
++								wets[j] = true;
++								LiquidLoader.OnProjectileCollision(j, this);
++								isWaterWet = false;
++							}
 +						}
 +					}
 +
-+					flag2 = Collision.WetCollision(position, width, height);
 +					if (flag2 && isWaterWet) 
 +						LiquidLoader.OnProjectileCollision(LiquidID.Water, this);
 +
@@ -1442,7 +1443,7 @@
 +							else if (inModdedLiquid) {
 +								for (int k = LiquidID.Count; k < LiquidLoader.LiquidCount; k++) {
 +									if (wets[k] && LiquidLoader.OnProjectileSplash(k, this, false)) {
-+										ModLiquid modLiquid = LiquidLoader.GetLiquid(i);
++										ModLiquid modLiquid = LiquidLoader.GetLiquid(k);
 +										if (modLiquid.OnProjectileSplash(this, false)) {
 +											if (modLiquid.SplashDustType >= 0) {
 +												for (int j = 0; j < 10; j++) {
@@ -1472,7 +1473,11 @@
  							for (int num15 = 0; num15 < 10; num15++) {
  								int num16 = Dust.NewDust(new Vector2(position.X - 6f, position.Y + (float)(height / 2) - 8f), width + 12, 24, 35);
  								Main.dust[num16].velocity.Y -= 1.5f;
-@@ -12723,7 +_,11 @@
+@@ -12720,10 +_,15 @@
+ 				}
+ 
+ 				if (!wet) {
++					wets[LiquidID.Water] = false;
  					lavaWet = false;
  					honeyWet = false;
  					shimmerWet = false;
@@ -1553,7 +1558,7 @@
  
  					if (wet) {
 +						bool inModdedLiquid = false;
-+						for (int i = LiquidLoader.LiquidCount; i > LiquidID.Count; i--) {
++						for (int i = LiquidLoader.LiquidCount - 1; i > LiquidID.Count; i--) {
 +							if (wets[i]) {
 +								if (LiquidLoader.ProjectileLiquidMovement(i, this, ref wetVelocity, vector2, num2, num3, flag6)) {
 +									Vector2 vector3 = velocity;
@@ -2249,7 +2254,7 @@
 -			Main.dust[num].alpha = 100;
 -			Main.dust[num].noGravity = true;
 +		bool inModdedLiquid = false;
-+		for (int i = LiquidLoader.LiquidCount; i < LiquidID.Lava; i++) {
++		for (int i = LiquidLoader.LiquidCount - 1; i < LiquidID.Lava; i++) {
 +			if (wets[i]) {
 +				LiquidLoader.OnFishingBobberSplash(i, this);
 +				if (i >= LiquidID.Count)

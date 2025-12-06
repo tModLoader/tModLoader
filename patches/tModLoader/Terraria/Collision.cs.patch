@@ -43,7 +43,7 @@
  					}
  				}
  				else {
-@@ -1192,17 +_,26 @@
+@@ -1192,17 +_,25 @@
  						else if (Main.tile[i, j - 1].shimmer())
  							shimmer = true;
  
@@ -54,7 +54,7 @@
  				}
  			}
  		}
- 
+-
 -		return false;
 +		return flag;
  	}
@@ -81,7 +81,7 @@
  					vector.X = i * 16;
  					vector.Y = j * 16;
  					int num2 = 16;
-@@ -1222,13 +_,29 @@
+@@ -1222,13 +_,28 @@
  					num3 /= 32f;
  					vector.Y += num3 * 2f;
  					num2 -= (int)(num3 * 2f);
@@ -94,11 +94,10 @@
  				}
  			}
  		}
- 
--		return false;
 +		return flag;
 +	}
-+
+ 
+-		return false;
 +	public static bool GetModdedWets(Vector2 Position, int Width, int Height, out bool[] liquidsIn)
 +	{
 +		liquidsIn = new bool[LiquidLoader.LiquidCount];

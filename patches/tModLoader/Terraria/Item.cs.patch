@@ -2421,7 +2421,11 @@
  					for (int num15 = 0; num15 < 5; num15++) {
  						int num16 = Dust.NewDust(new Vector2(position.X - 6f, position.Y + (float)(height / 2) - 8f), width + 12, 24, 35);
  						Main.dust[num16].velocity.Y -= 1.5f;
-@@ -48508,7 +_,11 @@
+@@ -48505,10 +_,15 @@
+ 		}
+ 
+ 		if (!wet) {
++			wets[LiquidID.Water] = false;
  			lavaWet = false;
  			honeyWet = false;
  			shimmerWet = false;

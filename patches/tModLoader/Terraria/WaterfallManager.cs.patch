@@ -188,7 +188,7 @@
  			int num20 = 0;
  			int num21;
  			int num22;
-+			if (!LoaderManager.Get<WaterFallStylesLoader>().Get(num12).PreDraw(waterfalls[i], num13, num14, Main.spriteBatch))
++			if (num12 >= WaterfallID.Count && !LoaderManager.Get<WaterFallStylesLoader>().Get(num12).PreDraw(waterfalls[i], num13, num14, Main.spriteBatch))
 +				continue;
  			if (num12 == 1 || num12 == 14 || num12 == 25) {
  				if (Main.drewLava || waterfalls[i].stopAtStep == 0)
@@ -203,7 +203,7 @@
  			}
  
  			int num29 = 0;
-@@ -480,14 +_,18 @@
+@@ -480,15 +_,23 @@
  					case 267:
  					case 268:
  						num12 = 15 + num34 - 262;
@@ -221,22 +221,28 @@
 -				float alpha = GetAlpha(Alpha, num22, num12, num14, k, tile3);
 +				float alpha = GetAlpha(Alpha, num22, num12, num14, k, num13, num14);
  				color5 = StylizeColor(alpha, num22, num12, num14, k, tile3, color5);
++				bool canPlaySound = true;
++				if (num12 >= WaterfallID.Count) {
++					canPlaySound = LoaderManager.Get<WaterFallStylesLoader>().Get(num12).PlayWaterfallSounds();
++				}
  				if (num12 == 1) {
  					float num35 = Math.Abs((float)(num13 * 16 + 8) - (Main.screenPosition.X + (float)(Main.screenWidth / 2)));
+ 					float num36 = Math.Abs((float)(num14 * 16 + 8) - (Main.screenPosition.Y + (float)(Main.screenHeight / 2)));
 @@ -509,7 +_,7 @@
  						num10 = num14 * 16 + 8;
  					}
  				}
 -				else if (num12 != 1 && num12 != 14 && num12 != 25 && num12 != 11 && num12 != 12 && num12 != 22) {
-+				else if (num12 != 1 && num12 != 14 && num12 != 25 && num12 != 11 && num12 != 12 && num12 != 22 && LoaderManager.Get<WaterFallStylesLoader>().Get(num12).PlayWaterfallSounds()) {
++				else if (num12 != 1 && num12 != 14 && num12 != 25 && num12 != 11 && num12 != 12 && num12 != 22 && canPlaySound) {
  					float num39 = Math.Abs((float)(num13 * 16 + 8) - (Main.screenPosition.X + (float)(Main.screenWidth / 2)));
  					float num40 = Math.Abs((float)(num14 * 16 + 8) - (Main.screenPosition.Y + (float)(Main.screenHeight / 2)));
  					if (num39 < (float)(Main.screenWidth * 2) && num40 < (float)(Main.screenHeight * 2)) {
-@@ -689,6 +_,7 @@
+@@ -689,6 +_,8 @@
  				if ((tile4.active() && (tile4.type == 189 || tile4.type == 196)) || (tile6.active() && (tile6.type == 189 || tile6.type == 196)) || (tile5.active() && (tile5.type == 189 || tile5.type == 196)))
  					num22 = (int)(40f * ((float)Main.maxTilesX / 4200f) * Main.gfxQuality);
  			}
-+			LoaderManager.Get<WaterFallStylesLoader>().Get(num12).PostDraw(waterfalls[i], num13, num14, Main.spriteBatch);
++			if (num12 >= WaterfallID.Count)
++				LoaderManager.Get<WaterFallStylesLoader>().Get(num12).PostDraw(waterfalls[i], num13, num14, Main.spriteBatch);
  		}
  
  		Main.ambientWaterfallX = num4;
@@ -263,13 +269,15 @@
  		float num;
  		switch (waterfallType) {
  			case 1:
-@@ -774,6 +_,10 @@
+@@ -774,6 +_,12 @@
  		if (s > maxSteps - 10)
  			num *= (float)(maxSteps - s) / 10f;
  
-+		float? alpha = LoaderManager.Get<WaterFallStylesLoader>().Get(waterfallType).Alpha(tileX, tileY, Alpha, maxSteps, s, tileCache);
-+		if (alpha != null) {
-+			num = (float)alpha;
++		if (waterfallType >= WaterfallID.Count) {
++			float? alpha = LoaderManager.Get<WaterFallStylesLoader>().Get(waterfallType).Alpha(tileX, tileY, Alpha, maxSteps, s, tileCache);
++			if (alpha != null) {
++				num = (float)alpha;
++			}
 +		}
  		return num;
  	}
