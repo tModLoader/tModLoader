@@ -1,0 +1,24 @@
+--- src/TerrariaNetCore/Terraria/UI/Gamepad/UILinkPoint.cs
++++ src/tModLoader/Terraria/UI/Gamepad/UILinkPoint.cs
+@@ -3,10 +_,21 @@
+ 
+ namespace Terraria.UI.Gamepad;
+ 
++/// <summary>
++/// Represents a gamepad interaction point. Each UILinkPoint has a unique <see cref="ID"/> (see <see cref="GamepadPointID"/>). Each UILinkPoint belongs to a <see cref="Page"/> (see <see cref="UILinkPage"/>). <see cref="UILinkPointNavigator.Points"/> can be used to retrieve a specific UILinkPoint.
++/// <br/><br/> <see cref="Position"/> is the screen coordinates of this interaction point. It is typically set manually through <see cref="UILinkPointNavigator.SetPosition(int, Vector2)"/> or derived from the <see cref="SnapPoint"/> of a <see cref="UIElement"/> using <see cref="GameContent.UI.States.UIGamepadHelper.MakeLinkPointFromSnapPoint(int, SnapPoint)"/>.
++/// <br/><br/> The <see cref="Left"/>, <c>Right</c>, <c>Up</c>, and <c>Down</c> fields indicate the ID of the UILinkPoint that will be navigated to if the user moves the gamepad in those directions. <see cref="Enabled"/> is unused.
++/// </summary>
+ public class UILinkPoint
+ {
++	/// <summary>
++	/// A unique identifier for this UILinkPoint. Known IDs and ID ranges are found in <see cref="GamepadPointID"/>.
++	/// </summary>
+ 	public int ID;
+ 	public bool Enabled;
++	/// <summary>
++	/// The screen coordinates of this UILinkPoint. Use <see cref="UILinkPointNavigator.SetPosition(int, Vector2)"/> to assign this to properly account for <see cref="Main.UIScale"/>.
++	/// </summary>
+ 	public Vector2 Position;
+ 	public int Left;
+ 	public int Right;

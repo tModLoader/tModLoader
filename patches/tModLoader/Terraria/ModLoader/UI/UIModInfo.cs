@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
+using Terraria.GameContent.UI.States;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
@@ -26,6 +27,7 @@ internal class UIModInfo : UIState
 	private UIAutoScaleTextTextPanel<string> _extractButton;
 	private UIAutoScaleTextTextPanel<string> _deleteButton;
 	private UIAutoScaleTextTextPanel<string> _fakeDeleteButton; // easier than making new OnMouseOver code.
+	private UIAutoScaleTextTextPanel<string> backButton;
 	private readonly UILoaderAnimatedImage _loaderElement = new UILoaderAnimatedImage(0.5f, 0.5f);
 
 	private int _gotoMenu;
@@ -37,34 +39,36 @@ internal class UIModInfo : UIState
 	private ModPubId_t _publishedFileId;
 	private bool _loading;
 	private bool _ready;
+	private bool realDeleteButton;
 
 	private CancellationTokenSource _cts;
 
 	public override void OnInitialize()
 	{
 		_uIElement = new UIElement {
-			Width = {Percent = 0.8f},
+			Width = { Percent = 0.8f },
 			MaxWidth = new StyleDimension(800f, 0f), //UICommon.MaxPanelWidth,
-			Top = {Pixels = 220},
-			Height = {Pixels = -220, Percent = 1f},
+			Top = { Pixels = 220 },
+			Height = { Pixels = -220, Percent = 1f },
 			HAlign = 0.5f
 		};
 
 		var uIPanel = new UIPanel {
-			Width = {Percent = 1f},
-			Height = {Pixels = -110, Percent = 1f},
+			Width = { Percent = 1f },
+			Height = { Pixels = -110, Percent = 1f },
 			BackgroundColor = UICommon.MainPanelBackground
 		};
 		_uIElement.Append(uIPanel);
 
 		_modInfo = new UIMessageBox(string.Empty) {
-			Width = {Pixels = -25, Percent = 1f},
-			Height = {Percent = 1f}
+			Width = { Pixels = -25, Percent = 1f },
+			Height = { Percent = 1f }
 		};
+		_modInfo.SetSnapPoint("ModInfo", 0);
 		uIPanel.Append(_modInfo);
 
 		var uIScrollbar = new UIScrollbar {
-			Height = {Pixels = -12, Percent = 1f},
+			Height = { Pixels = -12, Percent = 1f },
 			VAlign = 0.5f,
 			HAlign = 1f
 		}.WithView(100f, 1000f);
@@ -73,19 +77,20 @@ internal class UIModInfo : UIState
 		_modInfo.SetScrollbar(uIScrollbar);
 		_uITextPanel = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModInfoHeader"), 0.8f, true) {
 			HAlign = 0.5f,
-			Top = {Pixels = -35},
+			Top = { Pixels = -35 },
 			BackgroundColor = UICommon.DefaultUIBlue
 		}.WithPadding(15f);
 		_uIElement.Append(_uITextPanel);
 
 		_modHomepageButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModInfoVisitHomepage")) {
 			Width = { Pixels = -10, Percent = 0.333f },
-			Height = {Pixels = 40},
+			Height = { Pixels = 40 },
 			HAlign = 0.5f,
 			VAlign = 1f,
-			Top = {Pixels = -65}
+			Top = { Pixels = -65 }
 		}.WithFadedMouseOver();
 		_modHomepageButton.OnLeftClick += VisitModHomePage;
+		_modHomepageButton.SetSnapPoint("VisitModHomePage", 0);
 
 		_modSteamButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModInfoVisitSteampage")) {
 			Width = { Pixels = -10, Percent = 0.333f },
@@ -95,6 +100,7 @@ internal class UIModInfo : UIState
 			Top = { Pixels = -65 }
 		}.WithFadedMouseOver();
 		_modSteamButton.OnLeftClick += VisitModHostPage;
+		_modSteamButton.SetSnapPoint("VisitModHostPage", 0);
 
 		extractLocalizationButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModInfoExtractLocalization")) {
 			Width = { Pixels = -10, Percent = 0.333f },
@@ -104,6 +110,7 @@ internal class UIModInfo : UIState
 			Top = { Pixels = -65 }
 		}.WithFadedMouseOver();
 		extractLocalizationButton.OnLeftClick += ExtractLocalization;
+		extractLocalizationButton.SetSnapPoint("ExtractLocalization", 0);
 
 		fakeExtractLocalizationButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModInfoExtractLocalization")) {
 			Width = { Pixels = -10, Percent = 0.333f },
@@ -113,33 +120,37 @@ internal class UIModInfo : UIState
 			Top = { Pixels = -65 }
 		};
 		fakeExtractLocalizationButton.BackgroundColor = Color.Gray;
+		fakeExtractLocalizationButton.SetSnapPoint("FakeExtractLocalization", 0);
 
-		var backButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("UI.Back")) {
-			Width = {Pixels = -10, Percent = 0.333f},
-			Height = {Pixels = 40},
+		backButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("UI.Back")) {
+			Width = { Pixels = -10, Percent = 0.333f },
+			Height = { Pixels = 40 },
 			VAlign = 1f,
-			Top = {Pixels = -20}
+			Top = { Pixels = -20 }
 		}.WithFadedMouseOver();
 		backButton.OnLeftClick += BackClick;
+		backButton.SetSnapPoint("BackClick", 0);
 		_uIElement.Append(backButton);
 
 		_extractButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModInfoExtract")) {
-			Width = {Pixels = -10, Percent = 0.333f},
-			Height = {Pixels = 40},
+			Width = { Pixels = -10, Percent = 0.333f },
+			Height = { Pixels = 40 },
 			VAlign = 1f,
 			HAlign = 0.5f,
-			Top = {Pixels = -20}
+			Top = { Pixels = -20 }
 		}.WithFadedMouseOver();
 		_extractButton.OnLeftClick += ExtractMod;
+		_extractButton.SetSnapPoint("ExtractMod", 0);
 
 		_deleteButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("UI.Delete")) {
-			Width = {Pixels = -10, Percent = 0.333f},
-			Height = {Pixels = 40},
+			Width = { Pixels = -10, Percent = 0.333f },
+			Height = { Pixels = 40 },
 			VAlign = 1f,
 			HAlign = 1f,
-			Top = {Pixels = -20}
+			Top = { Pixels = -20 }
 		}.WithFadedMouseOver();
 		_deleteButton.OnLeftClick += DeleteMod;
+		_deleteButton.SetSnapPoint("DeleteMod", 0);
 
 		_fakeDeleteButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("UI.Delete")) {
 			Width = { Pixels = -10, Percent = 0.333f },
@@ -147,8 +158,9 @@ internal class UIModInfo : UIState
 			VAlign = 1f,
 			HAlign = 1f,
 			Top = { Pixels = -20 }
-		};
+		}.WithFadedMouseOver(overColor: Color.Gray, outColor: Color.Gray);
 		_fakeDeleteButton.BackgroundColor = Color.Gray;
+		_fakeDeleteButton.SetSnapPoint("FakeDeleteMod", 0);
 
 		Append(_uIElement);
 	}
@@ -158,7 +170,7 @@ internal class UIModInfo : UIState
 		SoundEngine.PlaySound(SoundID.MenuOpen);
 		// No need for a separate UIState, the process should be quick.
 		bool success = LocalizationLoader.ExtractLocalizationFiles(_modName);
-		if(success)
+		if (success)
 			extractLocalizationButton.SetText(Language.GetTextValue("tModLoader.ModInfoExtracted"));
 	}
 
@@ -254,6 +266,47 @@ internal class UIModInfo : UIState
 		if (fakeExtractLocalizationButton.IsMouseHovering) {
 			UICommon.TooltipMouseText(Language.GetTextValue("tModLoader.ModInfoEnableModToExtractLocalizationFiles"));
 		}
+
+		SetupGamepadPoints(spriteBatch);
+	}
+
+	private void SetupGamepadPoints(SpriteBatch spriteBatch)
+	{
+		UIGamepadHelper helper;
+		int startID = GamepadPointID.FancyUI0 + 100;
+		int currentID = startID;
+
+		UILinkPoint linkPoint_ModInfo = helper.GetLinkPoint(currentID++, _modInfo);
+
+		var optionalSteam = _modSteamButton.Parent != null ? _modSteamButton : null;
+		var optionalHomepage = _modHomepageButton.Parent != null ? _modHomepageButton : null;
+		var optionalExtractLocalization = _localMod != null ? (realDeleteButton ? fakeExtractLocalizationButton : extractLocalizationButton) : null;
+		var optionalExtract = _localMod != null ? _extractButton : null;
+		var optionalDelete = _localMod != null ? (realDeleteButton ? _deleteButton : _fakeDeleteButton) : null;
+
+		UIElement[] buttons = [
+			optionalSteam, optionalHomepage, optionalExtractLocalization,
+			backButton, optionalExtract, optionalDelete
+		];
+		var buttonSnapPoints = buttons.Select(x => x?.GetSnapPoint(out SnapPoint point) == true ? point : null).ToList();
+		UILinkPoint[,] linkPointGrid = helper.CreateUILinkPointGrid(ref currentID, buttonSnapPoints, 3, linkPoint_ModInfo, null, null, null);
+
+		linkPoint_ModInfo.Down = linkPointGrid[0, 1].ID;
+		for (int i = 0; i < 3; i++) {
+			if (linkPointGrid[i, 0] != null) {
+				linkPoint_ModInfo.Down = linkPointGrid[i, 0].ID;
+				break;
+			}
+		}
+		for (int i = 3 - 1; i >= 0; i--) {
+			if (linkPointGrid[i, 0] == null && linkPointGrid[i, 1] != null) {
+				linkPointGrid[i, 1].Up = linkPoint_ModInfo.ID;
+			}
+		}
+
+		if (UILinkPointNavigator.CurrentPoint >= startID && UILinkPointNavigator.CurrentPoint < currentID)
+			return;
+		UILinkPointNavigator.ChangePoint(startID + 4); // Back button.
 	}
 
 	public override void OnActivate()
@@ -269,7 +322,7 @@ internal class UIModInfo : UIState
 		if (!_loading && _ready) {
 			_modInfo.SetText(_info);
 
-			if (!string.IsNullOrEmpty(_url)){
+			if (!string.IsNullOrEmpty(_url)) {
 				_uIElement.Append(_modHomepageButton);
 			}
 
@@ -278,7 +331,7 @@ internal class UIModInfo : UIState
 			}
 
 			if (_localMod != null) {
-				bool realDeleteButton = ModLoader.Mods.All(x => x.Name != _localMod.Name);
+				realDeleteButton = ModLoader.Mods.All(x => x.Name != _localMod.Name);
 				_uIElement.AddOrRemoveChild(_deleteButton, realDeleteButton);
 				_uIElement.AddOrRemoveChild(_fakeDeleteButton, !realDeleteButton);
 				_uIElement.AddOrRemoveChild(extractLocalizationButton, !realDeleteButton); // show real only if mod enabled

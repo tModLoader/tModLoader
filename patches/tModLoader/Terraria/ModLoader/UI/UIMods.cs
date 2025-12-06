@@ -1,21 +1,24 @@
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Terraria.Audio;
+using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
+using Terraria.GameContent.UI.States;
+using Terraria.GameInput;
+using Terraria.ID;
 using Terraria.Localization;
+using Terraria.ModLoader.Config;
+using Terraria.ModLoader.Core;
+using Terraria.ModLoader.UI.ModBrowser;
 using Terraria.UI;
 using Terraria.UI.Gamepad;
-using Terraria.ModLoader.Config;
-using Terraria.ModLoader.UI.ModBrowser;
-using Terraria.ModLoader.Core;
-using Terraria.Audio;
-using Terraria.ID;
-using System;
-using Terraria.GameContent;
 
 namespace Terraria.ModLoader.UI;
 
@@ -37,11 +40,13 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 	private bool showRamUsage;
 	public bool loading;
 	private UIInputTextField filterTextBox;
+	private UIImageButton clearSearchButton;
 	public UICycleImage SearchFilterToggle;
 	public ModsMenuSortMode sortMode = ModsMenuSortMode.RecentlyUpdated;
 	public EnabledFilter enabledFilterMode = EnabledFilter.All;
 	public ModSideFilter modSideFilterMode = ModSideFilter.All;
 	public SearchFilter searchFilterMode = SearchFilter.Name;
+	private UIElement upperMenuContainer;
 	internal readonly List<UICycleImage> _categoryButtons = new List<UICycleImage>();
 	internal string filter;
 	private UIAutoScaleTextTextPanel<LocalizedText> buttonEA;
@@ -116,6 +121,7 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 			Top = { Pixels = -65 }
 		}.WithFadedMouseOver();
 		buttonEA.OnLeftClick += QuickEnableAll;
+		buttonEA.SetSnapPoint("EnableAll", 0);
 		uIElement.Append(buttonEA);
 
 		// TODO CopyStyle doesn't capture all the duplication here, consider an inner method
@@ -125,6 +131,7 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 		buttonDA.HAlign = 0.5f;
 		buttonDA.WithFadedMouseOver();
 		buttonDA.OnLeftClick += QuickDisableAll;
+		buttonDA.SetSnapPoint("DisableAll", 0);
 		uIElement.Append(buttonDA);
 
 		buttonRM = new UIAutoScaleTextTextPanel<LocalizedText>(Language.GetText("tModLoader.ModsForceReload"));
@@ -133,6 +140,7 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 		buttonRM.HAlign = 1f;
 		buttonRM.WithFadedMouseOver();
 		buttonRM.OnLeftClick += ReloadMods;
+		buttonRM.SetSnapPoint("ReloadMods", 0);
 		uIElement.Append(buttonRM);
 
 		UpdateTopRowButtons();
@@ -145,6 +153,7 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 		}.WithFadedMouseOver();
 
 		buttonB.OnLeftClick += (_, _) => HandleBackButtonUsage();
+		buttonB.SetSnapPoint("Back", 0);
 
 		uIElement.Append(buttonB);
 		buttonOMF = new UIAutoScaleTextTextPanel<LocalizedText>(Language.GetText("tModLoader.ModsOpenModsFolders"));
@@ -152,10 +161,11 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 		buttonOMF.HAlign = 0.5f;
 		buttonOMF.WithFadedMouseOver();
 		buttonOMF.OnLeftClick += OpenModsFolder;
+		buttonOMF.SetSnapPoint("OpenModsFolder", 0);
 		uIElement.Append(buttonOMF);
 
 		var texture = UICommon.ModBrowserIconsTexture;
-		var upperMenuContainer = new UIElement {
+		upperMenuContainer = new UIElement {
 			Width = { Percent = 1f },
 			Height = { Pixels = 32 },
 			Top = { Pixels = 10 }
@@ -222,6 +232,7 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 				}
 			}
 			toggleImage.Left.Pixels = j * 36;
+			toggleImage.SetSnapPoint("ToggleImage" + j, 0);
 			_categoryButtons.Add(toggleImage);
 			upperMenuContainer.Append(toggleImage);
 		}
@@ -233,7 +244,9 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 			Height = { Pixels = 40 }
 		};
 		filterTextBoxBackground.SetPadding(0);
+		filterTextBoxBackground.OnLeftClick += LeftClickTextBox;
 		filterTextBoxBackground.OnRightClick += ClearSearchField;
+		filterTextBoxBackground.WithFadedMouseOver();
 		upperMenuContainer.Append(filterTextBoxBackground);
 
 		filterTextBox = new UIInputTextField(Language.GetTextValue("tModLoader.ModsTypeToSearch")) {
@@ -244,9 +257,10 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 			VAlign = 0.5f,
 		};
 		filterTextBox.OnTextChange += (a, b) => updateNeeded = true;
+		filterTextBox.SetSnapPoint("FilterTextBox", 0);
 		filterTextBoxBackground.Append(filterTextBox);
 
-		UIImageButton clearSearchButton = new UIImageButton(Main.Assets.Request<Texture2D>("Images/UI/SearchCancel")) {
+		clearSearchButton = new UIImageButton(Main.Assets.Request<Texture2D>("Images/UI/SearchCancel")) {
 			HAlign = 1f,
 			VAlign = 0.5f,
 			Left = new StyleDimension(-2f, 0f)
@@ -254,6 +268,7 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 
 		//clearSearchButton.OnMouseOver += searchCancelButton_OnMouseOver;
 		clearSearchButton.OnLeftClick += ClearSearchField;
+		clearSearchButton.SetSnapPoint("ClearSearchButton", 0); // TODO: Does this click the filterTextBoxBackground as well?
 		filterTextBoxBackground.Append(clearSearchButton);
 
 		SearchFilterToggle = new UICycleImage(texture, 2, 32, 32, 34 * 2, 0) {
@@ -268,6 +283,7 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 			searchFilterMode = searchFilterMode.PreviousEnum();
 			updateNeeded = true;
 		};
+		SearchFilterToggle.SetSnapPoint("SearchFilterToggle", 0);
 		_categoryButtons.Add(SearchFilterToggle);
 		upperMenuContainer.Append(SearchFilterToggle);
 
@@ -276,10 +292,35 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 		buttonCL.HAlign = 1f;
 		buttonCL.WithFadedMouseOver();
 		buttonCL.OnLeftClick += GotoModConfigList;
+		buttonCL.SetSnapPoint("GotoModConfigList", 0);
 		uIElement.Append(buttonCL);
 
 		uIPanel.Append(upperMenuContainer);
 		Append(uIElement);
+	}
+
+	private void LeftClickTextBox(UIMouseEvent evt, UIElement listeningElement)
+	{
+		if (!PlayerInput.UsingGamepadUI || evt.Target == clearSearchButton) {
+			return;
+		}
+
+		SoundEngine.PlaySound(SoundID.MenuOpen);
+		Main.clrInput();
+		UIVirtualKeyboard uIVirtualKeyboard = new UIVirtualKeyboard(Language.GetTextValue("tModLoader.ModsTypeToSearch"), filterTextBox.Text, OnFinishedNaming, OnCanceledNaming, 0, allowEmpty: true);
+		uIVirtualKeyboard.SetMaxInputLength(20);
+		Main.MenuUI.SetState(uIVirtualKeyboard);
+	}
+
+	private void OnFinishedNaming(string name)
+	{
+		filterTextBox.Text = name.Trim();
+		Main.MenuUI.SetState(this);
+	}
+
+	private void OnCanceledNaming()
+	{
+		Main.MenuUI.SetState(this);
 	}
 
 	private void ClearSearchField(UIMouseEvent evt, UIElement listeningElement) => filterTextBox.Text = "";
@@ -362,6 +403,8 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 		Append(_blockInput);
 
 		Append(_activeDialog = dialog);
+
+		UILinkPointNavigator.ChangePoint(GamepadPointID.FancyUI0 + 2); // 1st button of dialog
 	}
 
 	private void QuickEnableAll(UIMouseEvent evt, UIElement listeningElement)
@@ -419,6 +462,7 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 		}.WithFadedMouseOver();
 		_confirmDialogYesButton.OnLeftClick += yesAction;
 		_confirmDialogYesButton.OnLeftClick += CloseConfirmDialog;
+		_confirmDialogYesButton.SetSnapPoint("Yes", 0);
 		_toggleModsDialog.Append(_confirmDialogYesButton);
 
 		_confirmDialogNoButton = new UIAutoScaleTextTextPanel<LocalizedText>(Language.GetText("LegacyMenu.105")) {
@@ -429,6 +473,7 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 			HAlign = .85f
 		}.WithFadedMouseOver();
 		_confirmDialogNoButton.OnLeftClick += CloseConfirmDialog;
+		_confirmDialogNoButton.SetSnapPoint("No", 0);
 		_toggleModsDialog.Append(_confirmDialogNoButton);
 
 		var yesDontAskAgainButton = new UIAutoScaleTextTextPanel<LocalizedText>(Language.GetText("tModLoader.YesDontAskAgain")) {
@@ -441,6 +486,7 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 		yesDontAskAgainButton.OnLeftClick += (a, b) => ModLoader.showConfirmationWindowWhenEnableDisableAllMods = false;
 		yesDontAskAgainButton.OnLeftClick += yesAction;
 		yesDontAskAgainButton.OnLeftClick += CloseConfirmDialog;
+		yesDontAskAgainButton.SetSnapPoint("YesDontAskAgain", 0);
 		_toggleModsDialog.Append(yesDontAskAgainButton);
 
 		_confirmDialogText = new UIText(Language.GetTextValue(confirmDialogTextKey)) {
@@ -551,11 +597,76 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 						break;
 				}
 				UICommon.TooltipMouseText(text);
-				return;
 			}
 		}
 		if (buttonOMF.IsMouseHovering)
 			UICommon.TooltipMouseText(Language.GetTextValue("tModLoader.ModsOpenModsFoldersTooltip"));
+
+		SetupGamepadPoints(spriteBatch);
+	}
+
+	private void SetupGamepadPoints(SpriteBatch spriteBatch)
+	{
+		UIGamepadHelper helper;
+		int startID = GamepadPointID.FancyUI0 + 2;
+		int currentID = startID;
+
+		if (_activeDialog?.Parent != null) {
+			var dialogSnapPoints = _activeDialog.GetSnapPoints();
+			var dialogLinkPoints = helper.CreateUILinkPointGrid(ref currentID, dialogSnapPoints, 2, null, null, null, null);
+
+			// _activeDialog could currently be delete mod (yes/no) or enable/disable all (yes/no, yes don't ask again)
+			if (dialogSnapPoints.Count == 3) {
+				dialogLinkPoints[1, 0].Down = dialogLinkPoints[0, 1].ID;
+			}
+			return;
+		}
+
+		int modsUpSide = currentID;
+		var upperMenuSnapPoints = upperMenuContainer.GetSnapPoints();
+		upperMenuSnapPoints.Sort((SnapPoint x, SnapPoint y) => x.Position.X.CompareTo(y.Position.X));
+		var categoryLinkPoints = helper.CreateUILinkStripHorizontal(ref currentID, upperMenuSnapPoints);
+		foreach (var item in categoryLinkPoints) {
+			item.Down = currentID;
+		}
+
+		if (showRamUsage) {
+			UILinkPointNavigator.SetPosition(currentID, ramUsage.GetInnerDimensions().ToRectangle().Center.ToVector2());
+			UILinkPoint ramUsageLinkPoint = UILinkPointNavigator.Points[currentID];
+			ramUsageLinkPoint.Unlink();
+			ramUsageLinkPoint.Up = modsUpSide;
+			ramUsageLinkPoint.Down = currentID + 1;
+			modsUpSide = currentID;
+			currentID++;
+		}
+
+		int modsLast = modsUpSide;
+		List<(UIModItem, List<SnapPoint>)> elementSnapPairs = modList._items.OfType<UIModItem>().Select(x => (x, x.GetSnapPoints())).ToList();
+		float num = 1f / Main.UIScale;
+		Rectangle clippingRectangle = modList.GetClippingRectangle(spriteBatch);
+		Vector2 minimum = clippingRectangle.TopLeft() * num;
+		Vector2 maximum = clippingRectangle.BottomRight() * num;
+		for (int i = 0; i < elementSnapPairs.Count; i++) {
+			if (!elementSnapPairs[i].Item2[0].Position.Between(minimum, maximum)) {
+				elementSnapPairs.Remove(elementSnapPairs[i]);
+				i--;
+			}
+			else {
+				int down = currentID + 10;
+				modsLast = currentID;
+				elementSnapPairs[i].Item1.SetupGamepadPoints(ref currentID, modsUpSide, down);
+				modsUpSide = modsLast;
+				currentID = down;
+			}
+		}
+
+		UIElement[] buttons = [buttonEA, buttonDA, buttonRM, buttonB, buttonOMF, buttonCL];
+		var buttonSnapPoints = buttons.Select(x => x.GetSnapPoint(out SnapPoint point) ? point : null).ToList();
+		UILinkPoint[,] linkPointGrid = helper.CreateUILinkPointGrid(ref currentID, buttonSnapPoints, 3, null, null, null, null);
+
+		linkPointGrid[0, 0].Up = modsLast;
+		linkPointGrid[1, 0].Up = modsLast;
+		linkPointGrid[2, 0].Up = modsLast;
 	}
 
 	public override void OnActivate()
@@ -569,6 +680,8 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 		ConfigManager.LoadAll(); // Makes sure MP configs are cleared.
 		Populate();
 		UpdateTopRowButtons();
+
+		UILinkPointNavigator.ChangePoint(GamepadPointID.FancyUI0 + 2); // Sort button.
 	}
 
 	public override void OnDeactivate()

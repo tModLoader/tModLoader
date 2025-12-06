@@ -1,10 +1,14 @@
-using Microsoft.Xna.Framework;
 using System;
+using System.Linq;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
+using Terraria.GameContent.UI.States;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.UI;
+using Terraria.UI.Gamepad;
 
 namespace Terraria.ModLoader.UI;
 
@@ -13,6 +17,7 @@ internal class UIErrorMessage : UIState
 	private UIMessageBox messageBox;
 	private UIElement area;
 	private UITextPanel<string> continueButton; // label changes to retry/exit
+	private UITextPanel<string> openLogsButton;
 	private UITextPanel<string> exitAndDisableAllButton;
 	private UITextPanel<string> webHelpButton;
 	private UITextPanel<string> skipLoadButton;
@@ -46,6 +51,7 @@ internal class UIErrorMessage : UIState
 			Width = { Pixels = -25, Percent = 1f },
 			Height = { Percent = 1f }
 		};
+		messageBox.SetSnapPoint("Message", 0);
 		uIPanel.Append(messageBox);
 
 		var uIScrollbar = new UIScrollbar {
@@ -64,13 +70,15 @@ internal class UIErrorMessage : UIState
 		};
 		continueButton.WithFadedMouseOver();
 		continueButton.OnLeftClick += ContinueClick;
+		continueButton.SetSnapPoint("Continue", 0);
 		area.Append(continueButton);
 
-		var openLogsButton = new UITextPanel<string>(Language.GetTextValue("tModLoader.OpenLogs"), 0.7f, true);
+		openLogsButton = new UITextPanel<string>(Language.GetTextValue("tModLoader.OpenLogs"), 0.7f, true);
 		openLogsButton.CopyStyle(continueButton);
 		openLogsButton.HAlign = 1f;
 		openLogsButton.WithFadedMouseOver();
 		openLogsButton.OnLeftClick += OpenFile;
+		openLogsButton.SetSnapPoint("OpenLogs", 0);
 		area.Append(openLogsButton);
 
 		webHelpButton = new UITextPanel<string>(Language.GetTextValue("tModLoader.OpenWebHelp"), 0.7f, true);
@@ -78,6 +86,7 @@ internal class UIErrorMessage : UIState
 		webHelpButton.Top.Set(-55f, 1f);
 		webHelpButton.WithFadedMouseOver();
 		webHelpButton.OnLeftClick += VisitRegisterWebpage;
+		webHelpButton.SetSnapPoint("OpenWebHelp", 0);
 		area.Append(webHelpButton);
 
 		skipLoadButton = new UITextPanel<string>(Language.GetTextValue("tModLoader.SkipToMainMenu"), 0.7f, true);
@@ -85,6 +94,7 @@ internal class UIErrorMessage : UIState
 		skipLoadButton.Top.Set(-55f, 1f);
 		skipLoadButton.WithFadedMouseOver();
 		skipLoadButton.OnLeftClick += SkipLoad;
+		skipLoadButton.SetSnapPoint("SkipLoad", 0);
 		area.Append(skipLoadButton);
 
 		exitAndDisableAllButton = new UITextPanel<string>(Language.GetTextValue("tModLoader.ExitAndDisableAll"), 0.7f, true);
@@ -92,12 +102,14 @@ internal class UIErrorMessage : UIState
 		exitAndDisableAllButton.TextColor = Color.Red;
 		exitAndDisableAllButton.WithFadedMouseOver();
 		exitAndDisableAllButton.OnLeftClick += ExitAndDisableAll;
+		exitAndDisableAllButton.SetSnapPoint("ExitAndDisableAll", 0);
 
 		retryButton = new UITextPanel<string>("Retry", 0.7f, true);
 		retryButton.CopyStyle(continueButton);
-		retryButton.Top.Set(-50f, 1f);
+		retryButton.Top.Set(-55f, 1f);
 		retryButton.WithFadedMouseOver();
 		retryButton.OnLeftClick += (evt, elem) => retryAction();
+		retryButton.SetSnapPoint("Retry", 0);
 
 		Append(area);
 	}
@@ -175,5 +187,43 @@ internal class UIErrorMessage : UIState
 	{
 		ContinueClick(evt, listeningElement);
 		ModLoader.skipLoad = true;
+	}
+
+	public override void Draw(SpriteBatch spriteBatch)
+	{
+		base.Draw(spriteBatch);
+		SetupGamepadPoints(spriteBatch);
+	}
+
+	private void SetupGamepadPoints(SpriteBatch spriteBatch)
+	{
+		UIGamepadHelper helper;
+		// Note: GamepadPageID.FancyUI starts at 3002
+		int startID = GamepadPointID.FancyUI0 + 1;
+		int currentID = startID;
+
+		UILinkPoint linkPoint_Message = helper.GetLinkPoint(currentID++, messageBox);
+
+		// continueButton                                        openLogsButton
+		// skipLoadButton/exitAndDisableAllButton/retryButton    webHelpButton
+		var optionalBottomLeft = skipLoadButton.Parent != null ? skipLoadButton : null;
+		optionalBottomLeft ??= exitAndDisableAllButton.Parent != null ? exitAndDisableAllButton : null;
+		optionalBottomLeft ??= retryButton.Parent != null ? retryButton : null;
+		var optionalWebHelpButton = webHelpButton.Parent != null ? webHelpButton : null;
+
+		UIElement[] buttons = [
+			continueButton, openLogsButton,
+			optionalBottomLeft, optionalWebHelpButton
+		];
+
+		var buttonSnapPoints = buttons.Select(x => x?.GetSnapPoint(out SnapPoint point) == true ? point : null).ToList();
+		UILinkPoint[,] linkPointGrid = helper.CreateUILinkPointGrid(ref currentID, buttonSnapPoints, 2, linkPoint_Message, null, null, null);
+
+		linkPoint_Message.Down = linkPointGrid[0, 0].ID;
+
+		if (linkPointGrid[0, 1] == null && linkPointGrid[1, 1] != null)
+			linkPointGrid[0, 0].Down = linkPointGrid[1, 1].ID;
+		if (linkPointGrid[0, 1] != null && linkPointGrid[1, 1] == null)
+			linkPointGrid[1, 0].Down = linkPointGrid[0, 1].ID;
 	}
 }

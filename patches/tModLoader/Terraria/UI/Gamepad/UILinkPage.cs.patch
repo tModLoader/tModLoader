@@ -1,0 +1,24 @@
+--- src/TerrariaNetCore/Terraria/UI/Gamepad/UILinkPage.cs
++++ src/tModLoader/Terraria/UI/Gamepad/UILinkPage.cs
+@@ -3,6 +_,10 @@
+ 
+ namespace Terraria.UI.Gamepad;
+ 
++/// <summary>
++/// Represents a collection of <see cref="UILinkPoint"/> all belonging to the same "page/menu/section" of the game UI. Users can use the gamepad trigger buttons to navigate to the next or previous "page", <see cref="PageOnLeft"/> or <see cref="PageOnRight"/>, rather than travel through each <see cref="UILinkPoint"/> individually. When they do this they will arrive at <see cref="DefaultPoint"/>.
++/// <br/><br/> Each UILinkPage has a unique <see cref="ID"/> (see <see cref="GamepadPageID"/>) assigned during registration. 
++/// </summary>
+ public class UILinkPage
+ {
+ 	public int ID;
+@@ -10,6 +_,10 @@
+ 	public int PageOnRight = -1;
+ 	public int DefaultPoint;
+ 	public int CurrentPoint;
++	/// <summary>
++	/// Contains all <see cref="UILinkPoint"/> belonging to this page indexed by their <see cref="UILinkPoint.ID"/> (<see cref="GamepadPointID"/>).
++	/// <br/><br/> Mirrored to <see cref="UILinkPointNavigator.Points"/> during registration.
++	/// </summary>
+ 	public Dictionary<int, UILinkPoint> LinkMap = new Dictionary<int, UILinkPoint>();
+ 
+ 	public event Action<int, int> ReachEndEvent;

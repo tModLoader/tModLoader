@@ -3,6 +3,7 @@ using Terraria.Audio;
 using Terraria.Localization;
 using Terraria.ModLoader.UI;
 using Terraria.UI;
+using Terraria.UI.Gamepad;
 
 namespace Terraria.GameContent.UI.States;
 
@@ -116,5 +117,9 @@ partial class UIWorkshopHub : IHaveBackButtonCommand
 	private UIElement MakeFancyButtonMod(string path, string textKey)
 	{
 		return MakeFancyButton_Inner(ModLoader.ModLoader.ManifestAssets.Request<Texture2D>(path), textKey);
+	}
+
+	public override void OnActivate() {
+		UILinkPointNavigator.ChangePoint(GamepadPointID.FancyUI0 + 2); // Mods button.
 	}
 }

@@ -1,7 +1,3 @@
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Graphics;
-using ReLogic.OS;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -12,9 +8,14 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Transactions;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Graphics;
+using ReLogic.OS;
 using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
+using Terraria.GameContent.UI.States;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
@@ -35,6 +36,9 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 	private UIInputTextField filterTextBox;
 	private UILoaderAnimatedImage _uiLoader;
 	private UIElement _links;
+	private UIAutoScaleTextTextPanel<string> buttonCreateMod;
+	private UIAutoScaleTextTextPanel<string> buttonB;
+	private UIAutoScaleTextTextPanel<string> buttonOS;
 	private CancellationTokenSource _cts;
 	private static bool dotnetSDKFound;
 
@@ -139,27 +143,30 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 		buttonBRA.OnLeftClick += BuildAndReload;
 		//_uIElement.Append(buttonBRA);
 
-		var buttonCreateMod = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.MSCreateMod"));
+		buttonCreateMod = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.MSCreateMod"));
 		buttonCreateMod.CopyStyle(buttonBA);
 		buttonCreateMod.HAlign = 1f;
 		buttonCreateMod.Top.Pixels = -20;
 		buttonCreateMod.WithFadedMouseOver();
 		buttonCreateMod.OnLeftClick += ButtonCreateMod_OnClick;
+		buttonCreateMod.SetSnapPoint("CreateMod", 0);
 		_uIElement.Append(buttonCreateMod);
 
-		var buttonB = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("UI.Back"));
+		buttonB = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("UI.Back"));
 		buttonB.CopyStyle(buttonBA);
 		//buttonB.Width.Set(-10f, 1f / 3f);
 		buttonB.Top.Pixels = -20;
 		buttonB.WithFadedMouseOver();
 		buttonB.OnLeftClick += BackClick;
+		buttonB.SetSnapPoint("Back", 0);
 		_uIElement.Append(buttonB);
 
-		var buttonOS = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.MSOpenSources"));
+		buttonOS = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.MSOpenSources"));
 		buttonOS.CopyStyle(buttonB);
 		buttonOS.HAlign = .5f;
 		buttonOS.WithFadedMouseOver();
 		buttonOS.OnLeftClick += OpenSources;
+		buttonOS.SetSnapPoint("OpenSources", 0);
 		_uIElement.Append(buttonOS);
 
 		Append(_uIElement);
@@ -227,6 +234,42 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 	{
 		UILinkPointNavigator.Shortcuts.BackButtonCommand = 7;
 		base.Draw(spriteBatch);
+
+		SetupGamepadPoints(spriteBatch);
+	}
+
+	private void SetupGamepadPoints(SpriteBatch spriteBatch)
+	{
+		UIGamepadHelper helper;
+		int startID = GamepadPointID.FancyUI0 + 2;
+		int currentID = startID;
+
+		List<(UIElement, List<SnapPoint>)> elementSnapPairs = _modList._items.Select(x => (x, x.GetSnapPoints())).ToList();
+		foreach (var item in elementSnapPairs) {
+			helper.CullPointsOutOfElementArea(spriteBatch, item.Item2, _modList);
+		}
+		elementSnapPairs.RemoveAll(x => x.Item2.Count == 0);
+		int above = -1;
+		int lastListButton = -1;
+		foreach (var item in elementSnapPairs) {
+			item.Item2.Sort((x, y) => x.Position.X.CompareTo(y.Position.X));
+			lastListButton = currentID;
+			var buttonLinkPoints = helper.CreateUILinkStripHorizontal(ref currentID, item.Item2);
+			foreach (var buttonLinkPoint in buttonLinkPoints) {
+				buttonLinkPoint.Up = above;
+				buttonLinkPoint.Down = currentID;
+			}
+			above = buttonLinkPoints[0].ID;
+		}
+
+		above = currentID;
+		UILinkPoint linkPoint_Back = helper.GetLinkPoint(currentID++, buttonB);
+		UILinkPoint linkPoint_OpenSources = helper.GetLinkPoint(currentID++, buttonOS);
+		UILinkPoint linkPoint_CreateMod = helper.GetLinkPoint(currentID++, buttonCreateMod);
+
+		helper.PairLeftRight(linkPoint_Back, linkPoint_OpenSources);
+		helper.PairLeftRight(linkPoint_OpenSources, linkPoint_CreateMod);
+		linkPoint_Back.Up = linkPoint_OpenSources.Up = linkPoint_CreateMod.Up = lastListButton;	
 	}
 
 	public override void OnActivate()
@@ -240,6 +283,8 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 		if (ShowInfoMessages())
 			return;
 		Populate();
+
+		UILinkPointNavigator.ChangePoint(GamepadPointID.FancyUI0 + 2); // Build button on 1st mod source.
 	}
 
 	public override void OnDeactivate()

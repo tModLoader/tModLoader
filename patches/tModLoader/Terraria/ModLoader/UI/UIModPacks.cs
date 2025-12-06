@@ -1,7 +1,3 @@
-using Ionic.Zip;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,14 +5,19 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using Ionic.Zip;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Newtonsoft.Json;
+using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
 using Terraria.GameContent.UI.States;
+using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
 using Terraria.UI;
 using Terraria.UI.Gamepad;
 using Terraria.Utilities;
-using Terraria.Audio;
 
 namespace Terraria.ModLoader.UI;
 
@@ -28,6 +29,9 @@ internal class UIModPacks : UIState, IHaveBackButtonCommand
 	private UIList _modPacks;
 	private UILoaderAnimatedImage _uiLoader;
 	private UIPanel _scrollPanel;
+	private UIAutoScaleTextTextPanel<LocalizedText> folderButton;
+	private UIAutoScaleTextTextPanel<LocalizedText> backButton;
+	private UIAutoScaleTextTextPanel<LocalizedText> saveNewButton;
 	private CancellationTokenSource _cts;
 	public UIState PreviousUIState { get; set; }
 
@@ -74,7 +78,7 @@ internal class UIModPacks : UIState, IHaveBackButtonCommand
 		}.WithPadding(15f);
 		uIElement.Append(titleTextPanel);
 
-		var folderButton = new UIAutoScaleTextTextPanel<LocalizedText>(Language.GetText("tModLoader.OpenModPackFolder")) {
+		folderButton = new UIAutoScaleTextTextPanel<LocalizedText>(Language.GetText("tModLoader.OpenModPackFolder")) {
 			Width = new StyleDimension(-10f, 1f / 2f),
 			Height = { Pixels = 40 },
 			VAlign = 0.9f,
@@ -82,9 +86,10 @@ internal class UIModPacks : UIState, IHaveBackButtonCommand
 			Top = { Pixels = -20 }
 		}.WithFadedMouseOver();
 		folderButton.OnLeftClick += OpenFolder;
+		folderButton.SetSnapPoint("OpenFolder", 0);
 		uIElement.Append(folderButton);
 
-		var backButton = new UIAutoScaleTextTextPanel<LocalizedText>(Language.GetText("UI.Back")) {
+		backButton = new UIAutoScaleTextTextPanel<LocalizedText>(Language.GetText("UI.Back")) {
 			Width = new StyleDimension(-10f, 1f / 2f),
 			Height = { Pixels = 40 },
 			VAlign = 1f,
@@ -92,15 +97,17 @@ internal class UIModPacks : UIState, IHaveBackButtonCommand
 			Top = { Pixels = -20 }
 		}.WithFadedMouseOver();
 		backButton.OnLeftClick += BackClick;
+		backButton.SetSnapPoint("Back", 0);
 		uIElement.Append(backButton);
 
-		var saveNewButton = new UIAutoScaleTextTextPanel<LocalizedText>(Language.GetText("tModLoader.ModPacksSaveEnabledAsNewPack"));
+		saveNewButton = new UIAutoScaleTextTextPanel<LocalizedText>(Language.GetText("tModLoader.ModPacksSaveEnabledAsNewPack"));
 		saveNewButton.CopyStyle(backButton);
 		saveNewButton.TextColor = Color.Green;
 		saveNewButton.VAlign = 1f;
 		saveNewButton.HAlign = 1f;
 		saveNewButton.WithFadedMouseOver();
 		saveNewButton.OnLeftClick += SaveNewModList;
+		saveNewButton.SetSnapPoint("SaveNewModList", 0);
 		uIElement.Append(saveNewButton);
 
 		Append(uIElement);
@@ -113,7 +120,7 @@ internal class UIModPacks : UIState, IHaveBackButtonCommand
 
 	private static void SaveNewModList(UIMouseEvent evt, UIElement listeningElement)
 	{
-		SoundEngine.PlaySound(11);
+		SoundEngine.PlaySound(SoundID.MenuClose);
 		Main.clrInput();
 		VirtualKeyboard.Text = "";
 		Main.MenuUI.SetState(VirtualKeyboard);
@@ -153,6 +160,48 @@ internal class UIModPacks : UIState, IHaveBackButtonCommand
 	{
 		base.Draw(spriteBatch);
 		UILinkPointNavigator.Shortcuts.BackButtonCommand = 7;
+		SetupGamepadPoints(spriteBatch);
+	}
+
+	private void SetupGamepadPoints(SpriteBatch spriteBatch)
+	{
+		UIGamepadHelper helper;
+		int startID = GamepadPointID.FancyUI0;
+		int currentID = startID;
+
+		List<(UIElement, List<SnapPoint>)> elementSnapPairs = _modPacks._items.Select(x => (x, x.GetSnapPoints())).ToList();
+		foreach (var item in elementSnapPairs) {
+			helper.CullPointsOutOfElementArea(spriteBatch, item.Item2, _modPacks);
+		}
+		elementSnapPairs.RemoveAll(x => x.Item2.Count == 0);
+		int above = -1;
+		int lastListButton = -1;
+		for (int i = 0; i < elementSnapPairs.Count; i++) {
+			var item = elementSnapPairs[i];
+			item.Item2.Sort((x, y) => {
+				var ret = x.Position.Y.CompareTo(y.Position.Y);
+				if (ret == 0)
+					ret = x.Position.X.CompareTo(y.Position.X);
+				return ret;
+			});
+			lastListButton = currentID;
+			var buttonLinkPoints = helper.CreateUILinkStripHorizontal(ref currentID, item.Item2);
+			foreach (var buttonLinkPoint in buttonLinkPoints) {
+				buttonLinkPoint.Up = above;
+				buttonLinkPoint.Down = currentID;
+			}
+			above = buttonLinkPoints[0].ID;
+		}
+
+		above = currentID;
+
+		UILinkPoint linkPoint_OpenFolder = helper.GetLinkPoint(currentID++, folderButton);
+		UILinkPoint linkPoint_Back = helper.GetLinkPoint(currentID++, backButton);
+		UILinkPoint linkPoint_SaveNew = helper.GetLinkPoint(currentID++, saveNewButton);
+		helper.PairLeftRight(linkPoint_Back, linkPoint_SaveNew);
+		helper.PairUpDown(linkPoint_OpenFolder, linkPoint_SaveNew);
+		helper.PairUpDown(linkPoint_OpenFolder, linkPoint_Back);
+		linkPoint_OpenFolder.Up = lastListButton; // Navigate to Enable only this list option
 	}
 
 	internal static string SanitizeModpackName(string name)
@@ -201,8 +250,11 @@ internal class UIModPacks : UIState, IHaveBackButtonCommand
 			Main.QueueMainThreadAction(() => {
 				_modPacks.AddRange(ModPacksToAdd);
 				_scrollPanel.RemoveChild(_uiLoader);
+				UILinkPointNavigator.ChangePoint(GamepadPointID.FancyUI0);
 			});
 		});
+
+		UILinkPointNavigator.ChangePoint(GamepadPointID.FancyUI0);
 	}
 
 	public UIModPackItem LoadModernModPack(string folderPath)
@@ -279,7 +331,7 @@ internal class UIModPacks : UIState, IHaveBackButtonCommand
 		Directory.CreateDirectory(Path.Combine(instancePath, "SaveData"));
 
 		//TODO: When implementing ModConfig as part of Mod Pack, update
-		string modsPath =  ModPackModsPath(modPackName); 
+		string modsPath = ModPackModsPath(modPackName);
 		string configPath = Config.ConfigManager.ModConfigPath; //ModPackConfigPath(modPackName);
 
 		// Deploy Mods, Configs to instance

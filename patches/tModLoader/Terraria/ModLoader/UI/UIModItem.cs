@@ -1,19 +1,21 @@
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
+using Terraria.Audio;
+using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
-using Terraria.UI;
+using Terraria.GameContent.UI.States;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Config;
 using Terraria.ModLoader.Core;
 using Terraria.ModLoader.UI.ModBrowser;
-using Terraria.Audio;
-using Terraria.GameContent;
-using ReLogic.Content;
 using Terraria.Social.Base;
+using Terraria.UI;
+using Terraria.UI.Gamepad;
 
 namespace Terraria.ModLoader.UI;
 
@@ -53,7 +55,7 @@ internal class UIModItem : UIPanel
 	private string ToggleModStateText {
 		get {
 			if (_mod.Enabled) {
-				if(_modDependents.Any())
+				if (_modDependents.Any())
 					return Language.GetTextValue("tModLoader.ModsDisableAndDependents", _mod.DisplayName, _modDependents.Length);
 				return Language.GetTextValue("tModLoader.ModsDisable");
 			}
@@ -122,6 +124,7 @@ internal class UIModItem : UIPanel
 			Left = { Pixels = _modIconAdjust }
 		};
 		_uiModStateText.OnLeftClick += ToggleEnabled;
+		_uiModStateText.SetSnapPoint("ToggleEnabled", 0);
 
 		// Don't show the Enable/Disable button if there is no loadable version
 		string updateVersion = null;
@@ -167,6 +170,7 @@ internal class UIModItem : UIPanel
 			Top = { Pixels = 40 }
 		};
 		_moreInfoButton.OnLeftClick += ShowMoreInfo;
+		_moreInfoButton.SetSnapPoint("MoreInfo", 0);
 		Append(_moreInfoButton);
 
 		if (ModLoader.TryGetMod(ModName, out var loadedMod) && ConfigManager.Configs.ContainsKey(loadedMod)) {
@@ -179,6 +183,7 @@ internal class UIModItem : UIPanel
 				Top = { Pixels = 40f }
 			};
 			_configButton.OnLeftClick += OpenConfig;
+			_configButton.SetSnapPoint("OpenConfig", 0);
 			Append(_configButton);
 			if (ConfigManager.ModNeedsReload(loadedMod)) {
 				_configChangesRequireReload = true;
@@ -329,6 +334,7 @@ internal class UIModItem : UIPanel
 				Top = { Pixels = 42.5f }
 			};
 			_deleteModButton.OnLeftClick += QuickModDelete;
+			_deleteModButton.SetSnapPoint("DeleteMod", 0);
 			Append(_deleteModButton);
 		}
 
@@ -640,6 +646,7 @@ internal class UIModItem : UIPanel
 				HAlign = .15f
 			}.WithFadedMouseOver();
 			_dialogYesButton.OnLeftClick += DeleteMod;
+			_dialogYesButton.SetSnapPoint("DeleteYes", 0);
 			_deleteModDialog.Append(_dialogYesButton);
 
 			_dialogNoButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("LegacyMenu.105")) {
@@ -650,6 +657,7 @@ internal class UIModItem : UIPanel
 				HAlign = .85f
 			}.WithFadedMouseOver();
 			_dialogNoButton.OnLeftClick += Interface.modsMenu.CloseConfirmDialog;
+			_dialogNoButton.SetSnapPoint("DeleteNo", 0);
 			_deleteModDialog.Append(_dialogNoButton);
 
 			_dialogText = new UIText(Language.GetTextValue("tModLoader.DeleteModConfirm")) {
@@ -680,5 +688,25 @@ internal class UIModItem : UIPanel
 	{
 		recommendedModBrowserVersion = SocialBrowserModule.GetBrowserVersionNumber(_mod.tModLoaderVersion);
 		return recommendedModBrowserVersion == SocialBrowserModule.GetBrowserVersionNumber(BuildInfo.tMLVersion);
+	}
+
+	internal void SetupGamepadPoints(ref int current, int up, int down)
+	{
+		UIGamepadHelper helper;
+		List<UILinkPoint> linkPoints = new();
+		linkPoints.Add(helper.GetLinkPoint(current++, _uiModStateText));
+		if(_deleteModButton != null)
+			linkPoints.Add(helper.GetLinkPoint(current++, _deleteModButton));
+		if(_configButton != null)
+			linkPoints.Add(helper.GetLinkPoint(current++, _configButton));
+		if (_moreInfoButton != null)
+			linkPoints.Add(helper.GetLinkPoint(current++, _moreInfoButton));
+		for (int i = 0; i < linkPoints.Count; i++) {
+			var linkPoint = linkPoints[i];
+			linkPoint.Up = up;
+			linkPoint.Down = down;
+			linkPoint.Left = ((i == 0) ? (-3) : (linkPoints[i - 1].ID));
+			linkPoint.Right = ((i == linkPoints.Count - 1) ? (-4) : (linkPoints[i + 1].ID));
+		}
 	}
 }

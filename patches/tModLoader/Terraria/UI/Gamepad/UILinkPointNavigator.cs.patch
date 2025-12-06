@@ -8,3 +8,49 @@
  		public static int FANCYUI_HIGHEST_INDEX = 1;
  		public static int FANCYUI_SPECIAL_INSTRUCTIONS = 0;
  		public static int INFOACCCOUNT = 0;
+@@ -42,7 +_,13 @@
+ 		public static int INV_MOVE_OPTION_CD = 0;
+ 	}
+ 
++	/// <summary>
++	/// Contains all <see cref="UILinkPage"/> indexed by their <see cref="UILinkPage.ID"/> (<see cref="GamepadPageID"/>).
++	/// </summary>
+ 	public static Dictionary<int, UILinkPage> Pages = new Dictionary<int, UILinkPage>();
++	/// <summary>
++	/// Contains all <see cref="UILinkPoint"/> indexed by their <see cref="UILinkPoint.ID"/> (<see cref="GamepadPointID"/>).
++	/// </summary>
+ 	public static Dictionary<int, UILinkPoint> Points = new Dictionary<int, UILinkPoint>();
+ 	public static int CurrentPage = 1000;
+ 	public static int OldPage = 1000;
+@@ -56,6 +_,9 @@
+ 	private static int? _suggestedPointID;
+ 	private static int? _preSuggestionPoint;
+ 
++	/// <summary>
++	/// The ID of the current <see cref="UILinkPoint"/> selected by the gamepad.
++	/// </summary>
+ 	public static int CurrentPoint => Pages[CurrentPage].CurrentPoint;
+ 
+ 	public static bool Available {
+@@ -343,6 +_,11 @@
+ 		YCooldown = time;
+ 	}
+ 
++	/// <summary>
++	/// Sets the <see cref="UILinkPoint.Position"/> of the UILinkPoint with the provided <paramref name="ID"/> to the provided <paramref name="Position"/>, scaled appropriately.
++	/// <br/><br/> Can be used to directly set a UILinkPoint position in rare cases where creating a UILinkPoint from a <see cref="SnapPoint"/> is not suitable (such as <see cref="GameContent.UI.States.UIGamepadHelper.GetLinkPoint"/> or <see cref="GameContent.UI.States.UIGamepadHelper.MakeLinkPointFromSnapPoint"/>).
++	/// <br/><br/> Use this instead of directly setting <see cref="UILinkPoint.Position"/> because this method scales <paramref name="Position"/> by <see cref="Main.UIScale"/> to properly convert the provided UI coordinate to screen coordinates.
++	/// </summary>
+ 	public static void SetPosition(int ID, Vector2 Position)
+ 	{
+ 		Points[ID].Position = Position * Main.UIScale;
+@@ -371,6 +_,9 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Navigates to a specific <see cref="UILinkPoint"/> using its ID (<see cref="GamepadPointID"/>).
++	/// </summary>
+ 	public static void ChangePoint(int PointID)
+ 	{
+ 		if (Points.ContainsKey(PointID)) {

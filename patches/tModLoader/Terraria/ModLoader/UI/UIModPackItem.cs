@@ -103,12 +103,13 @@ internal class UIModPackItem : UIPanel
 		var viewListButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModPackViewList")) {
 			Width = { Pixels = 100 },
 			Height = { Pixels = 36 },
-			Left = { Pixels = 407 },
+			Left = { Pixels = 357 },
 			Top = { Pixels = 40 }
 		}.WithFadedMouseOver();
 		viewListButton.PaddingTop -= 2f;
 		viewListButton.PaddingBottom -= 2f;
 		viewListButton.OnLeftClick += ViewListInfo;
+		viewListButton.SetSnapPoint("ViewListInfo", 0);
 		Append(viewListButton);
 
 		// Enable (1-L)
@@ -116,12 +117,13 @@ internal class UIModPackItem : UIPanel
 			Language.GetTextValue("tModLoader.ModPackEnableThisList")) {
 			Width = { Pixels = 151 },
 			Height = { Pixels = 36 },
-			Left = { Pixels = 248 },
+			Left = { Pixels = 198 },
 			Top = { Pixels = 40 }
 		}.WithFadedMouseOver();
 		_enableListButton.PaddingTop -= 2f;
 		_enableListButton.PaddingBottom -= 2f;
 		_enableListButton.OnLeftClick += EnableList;
+		_enableListButton.SetSnapPoint("EnableList", 0);
 		Append(_enableListButton);
 
 		// Enable List Only (2-L)
@@ -129,12 +131,12 @@ internal class UIModPackItem : UIPanel
 			Language.GetTextValue("tModLoader.ModPackEnableOnlyThisList")) {
 			Width = { Pixels = 190 },
 			Height = { Pixels = 36 },
-			Left = { Pixels = 50 },
 			Top = { Pixels = 40 }
 		}.WithFadedMouseOver();
 		_enableListOnlyButton.PaddingTop -= 2f;
 		_enableListOnlyButton.PaddingBottom -= 2f;
 		_enableListOnlyButton.OnLeftClick += EnabledListOnly;
+		_enableListOnlyButton.SetSnapPoint("EnabledListOnly", 0);
 		Append(_enableListOnlyButton);
 
 		// View on Browser (2-R)
@@ -142,37 +144,42 @@ internal class UIModPackItem : UIPanel
 			Language.GetTextValue("tModLoader.ModPackViewModsInModBrowser")) {
 			Width = { Pixels = 246 },
 			Height = { Pixels = 36 },
-			Left = { Pixels = 50 },
 			Top = { Pixels = 80 }
 		}.WithFadedMouseOver();
 		_viewInModBrowserButton.PaddingTop -= 2f;
 		_viewInModBrowserButton.PaddingBottom -= 2f;
 		_viewInModBrowserButton.OnLeftClick += DownloadMissingMods;
+		_viewInModBrowserButton.SetSnapPoint("DownloadMissingMods", 0);
 		Append(_viewInModBrowserButton);
 
 		// Update From Local (3-L)
 		_updateListWithEnabledButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModPackUpdateListWithEnabled")) {
 			Width = { Pixels = 225 },
 			Height = { Pixels = 36 },
-			Left = { Pixels = 304 },
+			Left = { Pixels = 254 },
 			Top = { Pixels = 80 }
 		}.WithFadedMouseOver();
 		_updateListWithEnabledButton.PaddingTop -= 2f;
 		_updateListWithEnabledButton.PaddingBottom -= 2f;
 		_updateListWithEnabledButton.OnLeftClick += UpdateModPack;
+		_updateListWithEnabledButton.SetSnapPoint("UpdateModPack", 0);
 		Append(_updateListWithEnabledButton);
 
 		// Delete button
 		_deleteButton = new UIImageButton(Main.Assets.Request<Texture2D>("Images/UI/ButtonDelete")) {
-			Top = { Pixels = 40 }
+			Top = { Pixels = Height.Pixels - 40 },
+			Left = { Percent = 1f, Pixels = -40 }
 		};
 		_deleteButton.OnLeftClick += DeleteButtonClick;
+		_deleteButton.SetSnapPoint("DeleteButton", 0);
 		this.AddOrRemoveChild(_deleteButton, !IsLocalModPack);
 
 		_fakeDeleteButton = new UIImageButton(Main.Assets.Request<Texture2D>("Images/UI/ButtonDelete")) {
-			Top = { Pixels = 40 }
+			Top = { Pixels = Height.Pixels - 40 },
+			Left = { Percent = 1f, Pixels = -40 }
 		};
 		_fakeDeleteButton.SetVisibility(0.4f, 0.4f);
+		_fakeDeleteButton.SetSnapPoint("FakeDeleteButton", 0);
 		this.AddOrRemoveChild(_fakeDeleteButton, IsLocalModPack);
 
 		if (_legacy)
@@ -184,36 +191,37 @@ internal class UIModPackItem : UIPanel
 		_importFromPackLocalButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.InstallPackLocal")) {
 			Width = { Pixels = 225 },
 			Height = { Pixels = 36 },
-			Left = { Pixels = 50 },
 			Top = { Pixels = 120 }
 		}.WithFadedMouseOver();
 		_importFromPackLocalButton.PaddingTop -= 2f;
 		_importFromPackLocalButton.PaddingBottom -= 2f;
 		_importFromPackLocalButton.OnLeftClick += ImportModPackLocal;
+		_importFromPackLocalButton.SetSnapPoint("ImportModPackLocal", 0);
 		Append(_importFromPackLocalButton);
 
 		// Remove Pack (Local) (3-R)
 		_removePackLocalButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.RemovePackLocal")) {
 			Width = { Pixels = 225 },
 			Height = { Pixels = 36 },
-			Left = { Pixels = 280 },
+			Left = { Pixels = 230 },
 			Top = { Pixels = 120 }
 		}.WithFadedMouseOver();
 		_removePackLocalButton.PaddingTop -= 2f;
 		_removePackLocalButton.PaddingBottom -= 2f;
 		_removePackLocalButton.OnLeftClick += RemoveModPackLocal;
+		_removePackLocalButton.SetSnapPoint("RemoveModPackLocal", 0);
 		Append(_removePackLocalButton);
 
 		// Export Pack Instance (4-L)
 		_exportPackInstanceButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ExportPackInstance")) {
 			Width = { Pixels = 200 },
 			Height = { Pixels = 36 },
-			Left = { Pixels = 10 },
 			Top = { Pixels = 160 }
 		}.WithFadedMouseOver();
 		_exportPackInstanceButton.PaddingTop -= 2f;
 		_exportPackInstanceButton.PaddingBottom -= 2f;
 		_exportPackInstanceButton.OnLeftClick += ExportInstance;
+		_exportPackInstanceButton.SetSnapPoint("ExportInstance", 0);
 		Append(_exportPackInstanceButton);
 
 		string instancePath = Path.Combine(Directory.GetCurrentDirectory(), _filename);
@@ -222,12 +230,13 @@ internal class UIModPackItem : UIPanel
 			_removePackInstanceButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.DeletePackInstance")) {
 				Width = { Pixels = 140 },
 				Height = { Pixels = 36 },
-				Left = { Pixels = 370 },
+				Left = { Pixels = 320 },
 				Top = { Pixels = 160 }
 			}.WithFadedMouseOver();
 			_removePackInstanceButton.PaddingTop -= 2f;
 			_removePackInstanceButton.PaddingBottom -= 2f;
 			_removePackInstanceButton.OnLeftClick += DeleteInstance;
+			_removePackInstanceButton.SetSnapPoint("DeleteInstance", 0);
 			Append(_removePackInstanceButton);
 
 			//TODO: Play Instance (4-M)

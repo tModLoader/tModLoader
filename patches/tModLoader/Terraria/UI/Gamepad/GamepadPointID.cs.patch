@@ -1,5 +1,14 @@
 --- src/TerrariaNetCore/Terraria/UI/Gamepad/GamepadPointID.cs
 +++ src/tModLoader/Terraria/UI/Gamepad/GamepadPointID.cs
+@@ -1,5 +_,8 @@
+ namespace Terraria.UI.Gamepad;
+ 
++/// <summary>
++/// Contains known UILinkPoint ID values (<see cref="UILinkPoint.ID"/>). Some entries indicate the start of a range of values rather than list out each possible value.
++/// </summary>
+ public static class GamepadPointID
+ {
+ 	public const int EndUp = -1;
 @@ -166,7 +_,7 @@
  	public const int ChestActRenameChest = 504;
  	public const int ChestSort = 505;

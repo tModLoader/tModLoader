@@ -1,9 +1,12 @@
 --- src/TerrariaNetCore/Terraria/GameContent/UI/States/UIWorkshopHub.cs
 +++ src/tModLoader/Terraria/GameContent/UI/States/UIWorkshopHub.cs
-@@ -1,6 +_,7 @@
+@@ -1,6 +_,10 @@
  using System;
++using System.Collections.Generic;
++using System.Linq;
  using Microsoft.Xna.Framework;
  using Microsoft.Xna.Framework.Graphics;
++using Microsoft.Xna.Framework.Input;
 +using ReLogic.Content;
  using Terraria.Audio;
  using Terraria.GameContent.UI.Elements;
@@ -130,23 +133,32 @@
  		SoundEngine.PlaySound(11);
  	}
  
-@@ -333,7 +_,11 @@
- 
+@@ -334,8 +_,11 @@
  	private void SetupGamepadPoints(SpriteBatch spriteBatch)
  	{
-+		//TODO: Add workshop mod gamepad link point
-+
  		UILinkPointNavigator.Shortcuts.BackButtonCommand = 7;
 +
-+		/*
  		int num = 3000;
++		num += 2; // adjust for default being 3002
  		int idRangeEndExclusive = num;
++		/*
  		UILinkPoint linkPoint = _helper.GetLinkPoint(idRangeEndExclusive++, _buttonUseResourcePacks);
-@@ -350,6 +_,7 @@
+ 		UILinkPoint linkPoint2 = _helper.GetLinkPoint(idRangeEndExclusive++, _buttonPublishResourcePacks);
+ 		UILinkPoint linkPoint3 = _helper.GetLinkPoint(idRangeEndExclusive++, _buttonImportWorlds);
+@@ -350,6 +_,16 @@
  		_helper.PairUpDown(linkPoint4, linkPoint5);
  		_helper.PairUpDown(linkPoint2, linkPoint6);
  		_helper.MoveToVisuallyClosestPoint(num, idRangeEndExclusive);
 +		*/
++
++		UIElement[] buttons = [
++			_buttonMods, _buttonModSources,
++			_buttonModBrowser, _buttonModPack,
++			_buttonImportWorlds, _buttonUseResourcePacks,
++			_buttonBack, _buttonLogs
++		];
++		List<SnapPoint> snapPoints = buttons.Select(x => x.GetSnapPoint(out SnapPoint point) ? point : null).ToList();
++		UILinkPoint[,] linkPoints = _helper.CreateUILinkPointGrid(ref idRangeEndExclusive, snapPoints, 2, null, null, null, null);
  	}
  
  	static UIWorkshopHub()

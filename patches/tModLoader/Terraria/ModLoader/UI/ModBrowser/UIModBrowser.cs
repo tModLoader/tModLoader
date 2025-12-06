@@ -1,10 +1,10 @@
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.Localization;
@@ -252,12 +252,17 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 		if (_browserStatus.IsMouseHovering && ModList.State != AsyncProviderState.Completed) {
 			UICommon.TooltipMouseText(ModList.GetEndItemText());
 		}
+
+		SetupGamepadPoints(spriteBatch);
 	}
 
 	public void HandleBackButtonUsage()
 	{
 		try {
-			CloseTagFilterDropdown();
+			if (modTagFilterDropdown.Parent != null) {
+				CloseTagFilterDropdown();
+				return;
+			}
 			if (reloadOnExit) {
 				Main.menuMode = Interface.reloadModsID;
 				return;
@@ -317,6 +322,8 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 		}
 		catch (Exception) {
 		}
+
+		UILinkPointNavigator.ChangePoint(GamepadPointID.FancyUI0 + 2);
 	}
 
 	private void CbLocalModsChanged(HashSet<string> modSlugs, bool isDeletion)

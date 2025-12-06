@@ -6,6 +6,7 @@ using ReLogic.Graphics;
 using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
+using Terraria.GameContent.UI.States;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.UI;
@@ -131,6 +132,7 @@ internal class UIModConfigList : UIState
 			else
 				IngameFancyUI.Close();
 		};
+		backButton.SetSnapPoint("Back", 0);
 
 		uIElement.Append(backButton);
 	}
@@ -169,7 +171,8 @@ internal class UIModConfigList : UIState
 		var mods = ModLoader.Mods.ToList();
 		mods.Sort((x, y) => x.DisplayNameClean.CompareTo(y.DisplayNameClean));
 
-		foreach (var mod in mods) {
+		for (int i = 0; i < mods.Count; i++) {
+			Mod mod = mods[i];
 			if (ConfigManager.Configs.TryGetValue(mod, out _)) {
 				var modPanel = new UIButton<string>(mod.DisplayName) {
 					MaxWidth = { Percent = 0.95f },
@@ -188,6 +191,7 @@ internal class UIModConfigList : UIState
 					selectedMod = mod;
 					PopulateConfigs();
 				};
+				modPanel.SetSnapPoint("ModEntry", i);
 
 				modList.Add(modPanel);
 			}
@@ -208,6 +212,7 @@ internal class UIModConfigList : UIState
 				};
 				modPanel.SetPadding(6);
 				AddSmallIcon(mod, modPanel);
+				modPanel.SetSnapPoint("ModEntry", i);
 
 				modList.Add(modPanel);
 			}
@@ -247,7 +252,8 @@ internal class UIModConfigList : UIState
 		// TODO: Support sort by attribute or some other custom ordering then replicate logic in UIModConfig.SetMod too
 		var sortedConfigs = configs.OrderBy(x => Utils.CleanChatTags(x.DisplayName.Value)).ToList();
 
-		foreach (var config in sortedConfigs) {
+		for (int i = 0; i < sortedConfigs.Count; i++) {
+			ModConfig config = sortedConfigs[i];
 			var configPanel = new UIButton<LocalizedText>(config.DisplayName) {
 				MaxWidth = { Percent = 0.95f },
 				HAlign = 0.5f,
@@ -288,6 +294,7 @@ internal class UIModConfigList : UIState
 				}
 			};
 
+			configPanel.SetSnapPoint("ConfigEntry", i);
 			configPanel.Append(sideIndicator);
 			configList.Add(configPanel);
 		}
@@ -311,5 +318,31 @@ internal class UIModConfigList : UIState
 
 		UILinkPointNavigator.Shortcuts.BackButtonCommand = 100;
 		UILinkPointNavigator.Shortcuts.BackButtonGoto = Interface.modsMenuID;
+
+		SetupGamepadPoints(spriteBatch);
+	}
+
+	private void SetupGamepadPoints(SpriteBatch spriteBatch)
+	{
+		UIGamepadHelper helper;
+		int startID = GamepadPointID.FancyUI0 + 2;
+		int currentID = startID;
+
+		var modListSnapPoints = modList.GetSnapPoints();
+		var configListSnapPoints = configList.GetSnapPoints();
+
+		var modListLinkPoints = helper.CreateUILinkStripVertical(ref currentID, modListSnapPoints);
+		var configListLinkPoints = helper.CreateUILinkStripVertical(ref currentID, configListSnapPoints);
+
+		UILinkPoint linkPoint_Back = helper.GetLinkPoint(currentID++, backButton);
+		if(configListLinkPoints.Length > 0) {
+			helper.PairUpDown(configListLinkPoints[^1], linkPoint_Back);
+		}
+		if (modListLinkPoints.Length > 0) {
+			helper.PairUpDown(modListLinkPoints[^1], linkPoint_Back);
+		}
+		if (modListLinkPoints.Length > 0 && configListLinkPoints.Length > 0) {
+			helper.LinkVerticalStrips(modListLinkPoints, configListLinkPoints, 0);
+		}
 	}
 }
