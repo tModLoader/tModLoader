@@ -6468,12 +6468,15 @@
  	public void LoadTiles(int i)
  	{
  		if (TextureAssets.Tile[i].State == AssetState.NotLoaded)
-@@ -48940,7 +_,7 @@
+@@ -48940,7 +_,10 @@
  		num4 = (0f - num3 + screenOff / 2f) / (num2 * 16f);
  		float num5 = 2f;
  		int num6 = 0;
++		SkyDrawParams skyParams = new SkyDrawParams(true, true, 1f);
++		if (gameMenu)
++			MenuLoader.CurrentMenu.ModifyDrawSky(ref skyParams);
 -		float num7 = SkyManager.Instance.ProcessCloudAlpha() * atmo;
-+		float num7 = SkyManager.Instance.ProcessCloudAlpha() * atmo * (gameMenu ? MenuLoader.CurrentMenu.GetCloudAlpha() : 1f);
++		float num7 = SkyManager.Instance.ProcessCloudAlpha() * atmo * skyParams.CloudAlpha;
  		if (flag && (double)screenPosition.Y < worldSurface * 16.0 + 16.0) {
  			for (int i = 0; i < 200; i++) {
  				if (cloud[i].active && cloud[i].scale < 1f) {
@@ -6710,12 +6713,14 @@
  		if (gameMenu || player[myPlayer].gravDir == 1f)
  			Rasterizer = RasterizerState.CullCounterClockwise;
  		else
-@@ -51113,7 +_,11 @@
+@@ -51113,7 +_,13 @@
  		sceneArea.totalWidth = screenWidth;
  		sceneArea.SceneLocalScreenPositionOffset = Vector2.Zero;
  		SceneArea sceneArea2 = sceneArea;
-+		SkyDrawParams skyDrawParams = new SkyDrawParams(true, true);
-+		bool drawSky = gameMenu ? MenuLoader.CurrentMenu.PreDrawSky(spriteBatch, ref skyDrawParams) : true;
++		SkyDrawParams skyDrawParams = new SkyDrawParams(true, true, 1f);
++		if (gameMenu)
++			MenuLoader.CurrentMenu.ModifyDrawSky(ref skyDrawParams);
++		bool drawSky = gameMenu ? MenuLoader.CurrentMenu.PreDrawSky(spriteBatch, skyDrawParams) : true;
  		if (!mapFullscreen) {
 +			if (!drawSky)
 +				goto skipDrawSky;

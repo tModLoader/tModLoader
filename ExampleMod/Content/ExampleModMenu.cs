@@ -50,12 +50,11 @@ namespace ExampleMod.Content
 			return true;
 		}
 
-		public override bool PreDrawSky(SpriteBatch spriteBatch, ref SkyDrawParams drawParams) {
+		// ModifyDrawSky lets you modify some parameters in the menu such as whether or not the sun and moon should draw.
+		public override void ModifyDrawSky(ref SkyDrawParams drawParams) {
 			drawParams.DrawStars = false; // Prevents the stars in the background from drawing.
-
-			// You can return false to prevent the sky itself from drawing,
-			// this is also possible with the background using PreDrawBackground(SpriteBatch). 
-			return true;
+			
+			drawParams.CloudAlpha = 0.2f; // Set the cloud opacity to 20%
 		}
 	}
 }

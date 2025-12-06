@@ -19,9 +19,15 @@ public struct SkyDrawParams
 	/// </summary>
 	public bool DrawSunAndMoon;
 
-	public SkyDrawParams(bool drawStars, bool drawSunAndMoon)
+	/// <summary>
+	/// A multiplier of the cloud opacity, defaults to 1.
+	/// </summary>
+	public float CloudAlpha;
+
+	public SkyDrawParams(bool drawStars, bool drawSunAndMoon, float cloudAlpha)
 	{
 		DrawStars = drawStars;
 		DrawSunAndMoon = drawSunAndMoon;
+		CloudAlpha = cloudAlpha;
 	}
 }

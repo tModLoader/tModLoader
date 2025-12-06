@@ -63,8 +63,6 @@ public abstract class ModMenu : ModType
 
 	public bool IsSelected => MenuLoader.CurrentMenu == this;
 
-	public virtual float GetCloudAlpha() => 1f;
-
 	/// <summary>
 	/// Called when this ModMenu is selected. Set the state of the UserInterface to a given UIState to make that UIState appear on the main menu.
 	/// </summary>
@@ -99,16 +97,25 @@ public abstract class ModMenu : ModType
 	}
 
 	/// <summary>
-	/// Called just before the sky is drawn, and allows you to modify some of the parameters of the sky's drawing code.
-	/// <br>Return false to prevent the usual sky from drawing.</br>
+	/// Allows you to modify some of the parameters of the sky's drawing code, namely: <c>DrawStars</c>, <c>DrawSunAndMoon</c>, and <c>CloudAlpha</c>.
+	/// <para>Only use this hook for modifying the parameters, use <see cref="PreDrawSky(SpriteBatch, SkyDrawParams)"/> or <see cref="PostDrawSky(SpriteBatch)"/> for drawing.</para>
 	/// </summary>
-	public virtual bool PreDrawSky(SpriteBatch spriteBatch, ref SkyDrawParams drawParams)
+	public virtual void ModifyDrawSky(ref SkyDrawParams drawParams) 
+	{
+	}
+
+	/// <summary>
+	/// Called just before the sky is drawn. Return false to prevent the usual sky from drawing.
+	/// <para>You may modify some common parameters relating to the sky's rendering in <see cref="ModifyDrawSky(ref SkyDrawParams)"/>.</para>
+	/// </summary>
+	public virtual bool PreDrawSky(SpriteBatch spriteBatch, SkyDrawParams drawParams)
 	{
 		return true;
 	}
 
 	/// <summary>
-	/// Called just after the sky is drawn, regardless of what <see cref="PreDrawSky(SpriteBatch, ref SkyDrawParams)"/> returns.
+	/// Called just after the sky is drawn, regardless of what <see cref="PreDrawSky(SpriteBatch, SkyDrawParams)"/> returns.
+	/// <para>You may modify some common parameters relating to the sky's rendering in <see cref="ModifyDrawSky(ref SkyDrawParams)"/>.</para>
 	/// </summary>
 	public virtual void PostDrawSky(SpriteBatch spriteBatch)
 	{
@@ -116,7 +123,7 @@ public abstract class ModMenu : ModType
 
 	/// <summary>
 	/// Called just before the background is drawn. 
-	/// <br>Return false to prevent the usual background from drawing.</br>
+	/// <para>Return false to prevent the usual background from drawing.</para>
 	/// </summary>
 	public virtual bool PreDrawBackground(SpriteBatch spriteBatch)
 	{
