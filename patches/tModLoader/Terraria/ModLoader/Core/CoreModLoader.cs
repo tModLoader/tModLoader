@@ -24,7 +24,7 @@ internal static class CoreModLoader
 		public static implicit operator AssemblyDefinition(AssemblyTransformationCandidate candidate) => candidate.Definition;
 	}
 
-	// The same dictioanry is shared into the child ALC's instance of this field
+	// The same dictionary is shared into the child ALC's instance of this field
 	internal static Dictionary<Assembly, byte[]> transformedAssemblyBytes = new();
 
 	private static Dictionary<string, Assembly> _transformedAssemblies = new();
@@ -146,6 +146,7 @@ internal static class CoreModLoader
 		// Load from file directly
 		foreach (string assemblyLocation in dependentAssemblyLocations) {
 			bool hasSymbols = File.Exists(Path.ChangeExtension(assemblyLocation, ".pdb"));
+			// AssemblyDefinition internally handles streams/byte data, so no needing to persist anything
 			allAssemblyCandidates.Add(AssemblyDefinition.ReadAssembly(assemblyLocation, new ReaderParameters { ReadSymbols = hasSymbols }));
 		}
 
@@ -154,12 +155,13 @@ internal static class CoreModLoader
 			using (mod.File.Open()) {
 				TmodFile modFile = mod.File;
 
-				using var assemblyStream = new MemoryStream(modFile.GetModAssembly(), false);
+				// Cecil holds onto these streams by placing them into the definitions and lazy reading/writing, so they CANNOT be cleaned up until we're done with the definitions
+				var assemblyStream = new MemoryStream(modFile.GetModAssembly(), true);
 
 				bool hasSymbols = modFile.HasFile(modFile.GetModPdbFileName());
-				var readerParameters = new ReaderParameters { ReadSymbols = hasSymbols };
+				var readerParameters = new ReaderParameters { ReadSymbols = hasSymbols};
 				if (hasSymbols) {
-					readerParameters.SymbolStream = new MemoryStream(modFile.GetModPdb(), false);
+					readerParameters.SymbolStream = new MemoryStream(modFile.GetModPdb(), true);
 				}
 
 				allAssemblyCandidates.Add(
@@ -169,10 +171,6 @@ internal static class CoreModLoader
 							mod.Name
 						)
 					);
-
-				if (hasSymbols) {
-					readerParameters.SymbolStream.Dispose();
-				}
 			}
 		}
 
@@ -233,10 +231,10 @@ internal static class CoreModLoader
 			// Write to stream, which is then loaded to actual assembly. Skips the intermediary step of writing to a file instead, then immediately loading said file
 			using var assemblyStream = new MemoryStream();
 			using var symbolStream = new MemoryStream();
+
 			definition.Write(assemblyStream, new WriterParameters { WriteSymbols = hasSymbols, SymbolStream = symbolStream, SymbolWriterProvider = new PortablePdbWriterProvider() });
 
-			assemblyStream.Position = 0;
-			symbolStream.Position = 0;
+			assemblyStream.Position = symbolStream.Position = 0;
 
 			#if LOAD_UNTRANSFORMED_ASSEMBLIES_TO_KEEP_DEBUGGER_HAPPY_TEMPORARILY
 				assemblyStream.SetLength(0);
