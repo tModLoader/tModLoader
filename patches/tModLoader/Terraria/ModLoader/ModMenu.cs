@@ -97,27 +97,26 @@ public abstract class ModMenu : ModType
 	}
 
 	/// <summary>
-	/// Allows you to modify some of the parameters of the sky's drawing code, namely: <c>DrawStars</c>, <c>DrawSunAndMoon</c>, and <c>CloudAlpha</c>.
-	/// <para>Only use this hook for modifying the parameters, use <see cref="PreDrawSky(SpriteBatch, SkyDrawParams)"/> or <see cref="PostDrawSky(SpriteBatch)"/> for drawing.</para>
+	/// Allows you to modify some of the parameters of the sky's drawing code. You may modify the color of the sky through changing <see cref="Main.ColorOfTheSkies"/>.
+	/// <para>Do not draw anything in this hook, use <see cref="PreDrawSky(SpriteBatch, SkyDrawParams)"/> or <see cref="PostDrawSky(SpriteBatch, SkyDrawParams)"/> for drawing.</para>
 	/// </summary>
 	public virtual void ModifyDrawSky(ref SkyDrawParams drawParams) 
 	{
 	}
 
 	/// <summary>
-	/// Called just before the sky is drawn. Return false to prevent the usual sky from drawing.
+	/// Called just before the sky is drawn.
 	/// <para>You may modify some common parameters relating to the sky's rendering in <see cref="ModifyDrawSky(ref SkyDrawParams)"/>.</para>
 	/// </summary>
-	public virtual bool PreDrawSky(SpriteBatch spriteBatch, SkyDrawParams drawParams)
+	public virtual void PreDrawSky(SpriteBatch spriteBatch, SkyDrawParams drawParams)
 	{
-		return true;
 	}
 
 	/// <summary>
-	/// Called just after the sky is drawn, regardless of what <see cref="PreDrawSky(SpriteBatch, SkyDrawParams)"/> returns.
+	/// Called just after the sky is drawn.
 	/// <para>You may modify some common parameters relating to the sky's rendering in <see cref="ModifyDrawSky(ref SkyDrawParams)"/>.</para>
 	/// </summary>
-	public virtual void PostDrawSky(SpriteBatch spriteBatch)
+	public virtual void PostDrawSky(SpriteBatch spriteBatch, SkyDrawParams drawParams)
 	{
 	}
 
