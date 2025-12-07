@@ -1312,7 +1312,7 @@
  			}
  
  			if (minion && numUpdates == -1 && type != 625 && type != 628) {
-@@ -12538,14 +_,39 @@
+@@ -12538,14 +_,38 @@
  				try {
  					flag = Collision.LavaCollision(position, width, height);
  					flag2 = Collision.WetCollision(position, width, height);
@@ -1347,11 +1347,10 @@
 +						}
 +					}
 +
-+					if (flag2 && isWaterWet) 
++					if (flag2 && isWaterWet) {
 +						LiquidLoader.OnProjectileCollision(LiquidID.Water, this);
-+
-+					if (!wets.Contains(true) && wet)
 +						wets[LiquidID.Water] = true;
++					}	
  				}
  				catch {
  					active = false;
