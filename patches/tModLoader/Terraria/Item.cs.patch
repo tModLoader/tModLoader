@@ -2296,14 +2296,15 @@
  		if (!shimmered && ItemID.Sets.ItemNoGravity[type]) {
  			velocity.X *= 0.95f;
  			if ((double)velocity.X < 0.1 && (double)velocity.X > -0.1)
-@@ -48362,12 +_,20 @@
+@@ -48362,12 +_,21 @@
  		if (Collision.shimmer)
  			shimmerWet = true;
  
-+		bool inModdedLiquid = Collision.GetModdedWets(position, width, height, out bool[] liquidsIn);
-+		for (int j = 0; j < LiquidLoader.LiquidCount; j++) {
-+			if (liquidsIn[j])
++		Collision.GetModdedWets(position, width, height, out bool[] liquidsIn);
++		for (int j = LiquidID.Count; j < LiquidLoader.LiquidCount; j++) {
++			if (liquidsIn[j]) {
 +				wets[j] = true;
++			}
 +		}
 +		if (!wets.Contains(true) && wet)
 +			wets[LiquidID.Water] = true;
@@ -2327,37 +2328,52 @@
  							for (int l = 0; l < 5; l++) {
  								int num6 = Dust.NewDust(new Vector2(position.X - 6f, position.Y + (float)(height / 2) - 8f), width + 12, 24, 152);
  								Main.dust[num6].velocity.Y -= 1f;
-@@ -48404,7 +_,27 @@
- 
+@@ -48405,19 +_,43 @@
  							SoundEngine.PlaySound(19, (int)position.X, (int)position.Y);
  						}
--						else {
-+						else if (inModdedLiquid) {
+ 						else {
++							bool inModdedLiquid = false;
 +							for (int k = LiquidID.Count; k < LiquidLoader.LiquidCount; k++) {
-+								if (wets[k] && LiquidLoader.OnItemSplash(k, this, true)) {
-+									ModLiquid modLiquid = LiquidLoader.GetLiquid(k);
-+									if (modLiquid.OnItemSplash(this, true)) {
-+										if (modLiquid.SplashDustType >= 0) {
-+											for (int j = 0; j < 5; j++) {
-+												int dust = Dust.NewDust(new Vector2(position.X - 6f, position.Y + (height / 2) - 8f), width + 12, 24, modLiquid.SplashDustType);
-+												Main.dust[dust].velocity.Y -= 2f;
-+												Main.dust[dust].velocity.X *= 2.5f;
-+												Main.dust[dust].scale = 1.3f;
-+												Main.dust[dust].alpha = 100;
-+												Main.dust[dust].noGravity = true;
++								if (wets[k]) {
++									if (LiquidLoader.OnItemSplash(k, this, true)) {
++										ModLiquid modLiquid = LiquidLoader.GetLiquid(k);
++										if (modLiquid.OnItemSplash(this, true)) {
++											if (modLiquid.SplashDustType >= 0) {
+-							for (int m = 0; m < 10; m++) {
++												for (int j = 0; j < 5; j++) {
+-								int num7 = Dust.NewDust(new Vector2(position.X - 6f, position.Y + (float)(height / 2) - 8f), width + 12, 24, Dust.dustWater());
++													int dust = Dust.NewDust(new Vector2(position.X - 6f, position.Y + (height / 2) - 8f), width + 12, 24, modLiquid.SplashDustType);
+-								Main.dust[num7].velocity.Y -= 4f;
++													Main.dust[dust].velocity.Y -= 2f;
+-								Main.dust[num7].velocity.X *= 2.5f;
++													Main.dust[dust].velocity.X *= 2.5f;
+-								Main.dust[num7].scale *= 0.8f;
++													Main.dust[dust].scale = 1.3f;
+-								Main.dust[num7].alpha = 100;
++													Main.dust[dust].alpha = 100;
+-								Main.dust[num7].noGravity = true;
++													Main.dust[dust].noGravity = true;
++												}
 +											}
++											SoundEngine.PlaySound(modLiquid.SplashSound, position);
 +										}
-+										SoundEngine.PlaySound(modLiquid.SplashSound, position);
 +									}
++									inModdedLiquid = true;
 +								}
+ 							}
++							if (!inModdedLiquid && LiquidLoader.OnItemSplash(LiquidID.Water, this, true)) {
++								for (int m = 0; m < 10; m++) {
++									int num7 = Dust.NewDust(new Vector2(position.X - 6f, position.Y + (float)(height / 2) - 8f), width + 12, 24, Dust.dustWater());
++									Main.dust[num7].velocity.Y -= 4f;
++									Main.dust[num7].velocity.X *= 2.5f;
++									Main.dust[num7].scale *= 0.8f;
++									Main.dust[num7].alpha = 100;
++									Main.dust[num7].noGravity = true;
++								}
+ 
+-							SoundEngine.PlaySound(19, (int)position.X, (int)position.Y);
++								SoundEngine.PlaySound(19, (int)position.X, (int)position.Y);
 +							}
-+						}
-+						else if (LiquidLoader.OnItemSplash(LiquidID.Water, this, true)) {
- 							for (int m = 0; m < 10; m++) {
- 								int num7 = Dust.NewDust(new Vector2(position.X - 6f, position.Y + (float)(height / 2) - 8f), width + 12, 24, Dust.dustWater());
- 								Main.dust[num7].velocity.Y -= 4f;
-@@ -48417,7 +_,7 @@
- 							SoundEngine.PlaySound(19, (int)position.X, (int)position.Y);
  						}
  					}
 -					else {
@@ -2383,37 +2399,52 @@
  						for (int num11 = 0; num11 < 5; num11++) {
  							int num12 = Dust.NewDust(new Vector2(position.X - 6f, position.Y + (float)(height / 2) - 8f), width + 12, 24, 152);
  							Main.dust[num12].velocity.Y -= 1f;
-@@ -48476,7 +_,27 @@
- 
+@@ -48477,19 +_,43 @@
  						SoundEngine.PlaySound(19, (int)position.X, (int)position.Y);
  					}
--					else {
-+					else if (inModdedLiquid) {
+ 					else {
++						bool inModdedLiquid = false;
 +						for (int k = LiquidID.Count; k < LiquidLoader.LiquidCount; k++) {
-+							if (wets[k] && LiquidLoader.OnItemSplash(k, this, false)) {
-+								ModLiquid modLiquid = LiquidLoader.GetLiquid(k);
-+								if (modLiquid.OnItemSplash(this, false)) {
-+									if (modLiquid.SplashDustType >= 0) {
-+										for (int j = 0; j < 5; j++) {
-+											int dust = Dust.NewDust(new Vector2(position.X - 6f, position.Y + (height / 2) - 8f), width + 12, 24, modLiquid.SplashDustType);
-+											Main.dust[dust].velocity.Y -= 2f;
-+											Main.dust[dust].velocity.X *= 2.5f;
-+											Main.dust[dust].scale = 1.3f;
-+											Main.dust[dust].alpha = 100;
-+											Main.dust[dust].noGravity = true;
++							if (wets[k]) {
++								if (LiquidLoader.OnItemSplash(k, this, false)) {
++									ModLiquid modLiquid = LiquidLoader.GetLiquid(k);
++									if (modLiquid.OnItemSplash(this, false)) {
++										if (modLiquid.SplashDustType >= 0) {
+-						for (int num13 = 0; num13 < 10; num13++) {
++											for (int j = 0; j < 5; j++) {
+-							int num14 = Dust.NewDust(new Vector2(position.X - 6f, position.Y + (float)(height / 2)), width + 12, 24, Dust.dustWater());
++												int dust = Dust.NewDust(new Vector2(position.X - 6f, position.Y + (height / 2) - 8f), width + 12, 24, modLiquid.SplashDustType);
+-							Main.dust[num14].velocity.Y -= 4f;
++												Main.dust[dust].velocity.Y -= 2f;
+-							Main.dust[num14].velocity.X *= 2.5f;
++												Main.dust[dust].velocity.X *= 2.5f;
+-							Main.dust[num14].scale *= 0.8f;
++												Main.dust[dust].scale = 1.3f;
+-							Main.dust[num14].alpha = 100;
++												Main.dust[dust].alpha = 100;
+-							Main.dust[num14].noGravity = true;
++												Main.dust[dust].noGravity = true;
++											}
 +										}
++										SoundEngine.PlaySound(modLiquid.SplashSound, position);
 +									}
-+									SoundEngine.PlaySound(modLiquid.SplashSound, position);
 +								}
++								inModdedLiquid = true;
 +							}
+ 						}
++						if (!inModdedLiquid && LiquidLoader.OnItemSplash(LiquidID.Water, this, false)) {
++							for (int num13 = 0; num13 < 10; num13++) {
++								int num14 = Dust.NewDust(new Vector2(position.X - 6f, position.Y + (float)(height / 2)), width + 12, 24, Dust.dustWater());
++								Main.dust[num14].velocity.Y -= 4f;
++								Main.dust[num14].velocity.X *= 2.5f;
++								Main.dust[num14].scale *= 0.8f;
++								Main.dust[num14].alpha = 100;
++								Main.dust[num14].noGravity = true;
++							}
+ 
+-						SoundEngine.PlaySound(19, (int)position.X, (int)position.Y);
++							SoundEngine.PlaySound(19, (int)position.X, (int)position.Y);
 +						}
-+					}
-+					else if (LiquidLoader.OnItemSplash(LiquidID.Water, this, false)) {
- 						for (int num13 = 0; num13 < 10; num13++) {
- 							int num14 = Dust.NewDust(new Vector2(position.X - 6f, position.Y + (float)(height / 2)), width + 12, 24, Dust.dustWater());
- 							Main.dust[num14].velocity.Y -= 4f;
-@@ -48489,7 +_,7 @@
- 						SoundEngine.PlaySound(19, (int)position.X, (int)position.Y);
  					}
  				}
 -				else {
