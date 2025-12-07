@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Properties/launchSettings.json
 +++ src/tModLoader/Terraria/Properties/launchSettings.json
-@@ -2,14 +_,33 @@
+@@ -2,14 +_,39 @@
    "profiles": {
      "Terraria": {
        "commandName": "Executable",
@@ -8,6 +8,12 @@
 -      "executablePath": "$(TerrariaSteamPath)/$(OutputName).exe",
 +      "commandLineArgs": "$(OutputName).dll",
 -      "workingDirectory": "$(TerrariaSteamPath)"
++      "workingDirectory": "$(tModLoaderSteamPath)"
++    },
++    "Terraria (Skip Core Mods)": {
++      "commandName": "Executable",
++      "executablePath": "$(DotNetName)",
++      "commandLineArgs": "$(OutputName).dll -skipcore",
 +      "workingDirectory": "$(tModLoaderSteamPath)"
      },
      "Terraria Server": {

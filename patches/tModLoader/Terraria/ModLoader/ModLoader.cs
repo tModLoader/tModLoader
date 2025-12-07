@@ -40,9 +40,9 @@ public static class ModLoader
 	public static bool WarnedFamilyShare;
 	public static bool WarnedFamilyShareDontShowAgain;
 	public static Version LastPreviewFreezeNotificationSeen;
-	public static int LatestNewsTimestamp; 
+	public static int LatestNewsTimestamp;
 
-	// Update this name if doing an upgrade 
+	// Update this name if doing an upgrade
 	public static bool BetaUpgradeWelcomed144;
 
 	public static string versionedName => (BuildInfo.Purpose != BuildInfo.BuildPurpose.Stable) ? BuildInfo.versionedNameDevFriendly : BuildInfo.versionedName;
@@ -72,6 +72,7 @@ public static class ModLoader
 	internal static Action OnSuccessfulLoad;
 
 	internal static bool isLoading;
+	private static bool minimallyInitialized;
 
 	public static Mod[] Mods { get; private set; } = new Mod[0];
 
@@ -91,11 +92,24 @@ public static class ModLoader
 	/// <returns> Whether or not a mod with the provided internal name has been found. </returns>
 	public static bool HasMod(string name) => modsByName.ContainsKey(name);
 
-	internal static void EngineInit()
+	// Minimal subset of engine initialization for coremod loading
+	internal static void MinimalEngineInit()
 	{
+		if (minimallyInitialized) {
+			return;
+		}
+
 		FileAssociationSupport.UpdateFileAssociation();
 		FolderShortcutSupport.UpdateFolderShortcuts();
 		MonoModHooks.Initialize();
+		minimallyInitialized = true;
+	}
+
+	internal static void EngineInit()
+	{
+		if (!minimallyInitialized) {
+			MinimalEngineInit();
+		}
 		FNAFixes.Init();
 		LoaderManager.AutoLoad();
 	}
@@ -174,7 +188,7 @@ public static class ModLoader
 				if (mod != null && mod.tModLoaderVersion.MajorMinorBuild() != BuildInfo.tMLVersion.MajorMinorBuild())
 					msg += "\n" + Language.GetTextValue("tModLoader.LoadErrorVersionMessage", mod.tModLoaderVersion, versionedName);
 				else if (mod != null)
-					// if the mod exists, and the MajorMinorBuild() is identical, then assume it is an error in the Steam install/deployment - Solxan 
+					// if the mod exists, and the MajorMinorBuild() is identical, then assume it is an error in the Steam install/deployment - Solxan
 					SteamedWraps.QueueForceValidateSteamInstall();
 
 				if (e is Exceptions.JITException)
@@ -206,7 +220,7 @@ public static class ModLoader
 					DisableModAndDependents(dependent);
 				}
 			}
-			
+
 			Logging.tML.Error(msg, e);
 
 			isLoading = false; // disable loading flag, because server will just instantly retry reload
@@ -253,6 +267,12 @@ public static class ModLoader
 
 	internal static bool IsUnloadedModStillAlive(string name) => AssemblyManager.OldLoadContexts().Contains(name);
 
+	internal static void ClearMods()
+	{
+		Mods = Array.Empty<Mod>();
+		modsByName.Clear();
+	}
+
 	[MethodImpl(MethodImplOptions.NoInlining)]
 	private static WeakReference<Mod>[] GetWeakModRefs() => Mods.Select(x => new WeakReference<Mod>(x)).ToArray();
 
@@ -264,8 +284,7 @@ public static class ModLoader
 		WorldGen.clearWorld();
 		ModContent.UnloadModContent();
 
-		Mods = new Mod[0];
-		modsByName.Clear();
+		ClearMods();
 		ModContent.Unload();
 		MemoryTracking.Clear();
 		Thread.MemoryBarrier();

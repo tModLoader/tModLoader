@@ -68,6 +68,7 @@ internal class BuildProperties
 	internal bool playableOnPreview = true;
 	internal bool translationMod = false;
 	internal string modSource = "";
+	internal bool hasCoreModTransformers;
 
 	public IEnumerable<ModReference> Refs(bool includeWeak) =>
 		includeWeak ? modReferences.Concat(weakReferences) : modReferences;
@@ -175,6 +176,9 @@ internal class BuildProperties
 					if (!Enum.TryParse(value, true, out properties.side))
 						throw new Exception("side is not one of (Both, Client, Server, NoSync): " + value);
 					break;
+				case nameof(hasCoreModTransformers):
+					properties.hasCoreModTransformers = string.Equals(value, "true", StringComparison.OrdinalIgnoreCase);
+					break;
 			}
 		}
 
@@ -268,6 +272,9 @@ internal class BuildProperties
 					writer.Write("modSource");
 					writer.Write(modSource);
 				}
+				if (hasCoreModTransformers) {
+					writer.Write(nameof(hasCoreModTransformers));
+				}
 
 				writer.Write("buildVersion");
 				writer.Write(buildVersion.ToString());
@@ -351,6 +358,9 @@ internal class BuildProperties
 				}
 				if (tag == "modSource") {
 					properties.modSource = reader.ReadString();
+				}
+				if (tag == nameof(hasCoreModTransformers)) {
+					properties.hasCoreModTransformers = true;
 				}
 			}
 		}

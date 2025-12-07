@@ -67,9 +67,11 @@ public static class AssemblyManager
 						LoadAssembly(modFile.GetBytes("lib/" + dll + ".dll"));
 					}
 
-					assembly = Debugger.IsAttached && File.Exists(properties.eacPath) ?
-						LoadAssembly(modFile.GetModAssembly(), File.ReadAllBytes(properties.eacPath)): //load the unmodified dll and EaC pdb
-						LoadAssembly(modFile.GetModAssembly(), modFile.GetModPdb());
+					byte[] pdbBytes = Debugger.IsAttached && File.Exists(properties.eacPath) ? File.ReadAllBytes(properties.eacPath) /* load the unmodified dll and EaC pdb */ : modFile.GetModPdb();
+
+					assembly = CoreModLoader.transformedAssemblyBytes.TryGetValue(Name!, out byte[] transformedAssemblyBytes)
+						? LoadAssembly(transformedAssemblyBytes, pdbBytes)
+						: LoadAssembly(modFile.GetModAssembly());
 				}
 
 				var mlc = new MetadataLoadContext(new MetadataResolver(this));
@@ -112,7 +114,10 @@ public static class AssemblyManager
 			if (assemblies.TryGetValue(assemblyName.Name, out var asm))
 				return asm;
 
-			return dependencies.Select(dep => dep.Load(assemblyName)).FirstOrDefault(a => a != null);
+			if (dependencies.Select(dep => dep.Load(assemblyName)).FirstOrDefault(a => a != null) is Assembly dep)
+				return dep;
+
+			return GetLoadContext(Assembly.GetExecutingAssembly()).LoadFromAssemblyName(assemblyName);
 		}
 
 		internal bool IsModDependencyPresent(string name) => name == Name || dependencies.Any(d => d.IsModDependencyPresent(name));
@@ -134,11 +139,16 @@ public static class AssemblyManager
 					return existing;
 
 				var runtime = mod.LoadFromAssemblyName(assemblyName);
-				if (string.IsNullOrEmpty(runtime.Location))
-					return context.LoadFromByteArray(((ModLoadContext)GetLoadContext(runtime)).assemblyBytes[assemblyName.Name]);
+				if (!string.IsNullOrEmpty(runtime.Location))
+					return context.LoadFromAssemblyPath(runtime.Location);
 
+				if (GetLoadContext(runtime) is ModLoadContext modLoadContext)
+					return context.LoadFromByteArray(modLoadContext.assemblyBytes[assemblyName.Name!]);
 
-				return context.LoadFromAssemblyPath(runtime.Location);
+				if (CoreModLoader.transformedAssemblyBytes.TryGetValue(assemblyName.Name!, out byte[] bytes))
+					return context.LoadFromByteArray(bytes);
+
+				throw new Exception($"Unable to find bytes for {runtime.FullName}");
 			}
 		}
 
@@ -214,6 +224,7 @@ public static class AssemblyManager
 			m.TModLoaderVersion = mod.properties.buildVersion;
 			m.TranslationForMods = mod.properties.translationMod ? mod.properties.RefNames(true).ToList() : null;
 			m.SourceFolder = Directory.Exists(mod.properties.modSource) ? mod.properties.modSource : "";
+			m.HasCoreModTransformers = mod.properties.hasCoreModTransformers;
 			return m;
 		}
 		catch (Exception e) {
@@ -292,7 +303,9 @@ public static class AssemblyManager
 
 	public static byte[] GetModAssembly(this TmodFile modFile) => modFile.GetBytes(modFile.GetModAssemblyFileName());
 
-	public static byte[] GetModPdb(this TmodFile modFile) => modFile.GetBytes(Path.ChangeExtension(modFile.GetModAssemblyFileName(), "pdb"));
+	internal static string GetModPdbFileName(this TmodFile modFile) => Path.ChangeExtension(modFile.GetModAssemblyFileName(), "pdb");
+
+	public static byte[] GetModPdb(this TmodFile modFile) => modFile.GetBytes(modFile.GetModPdbFileName());
 
 	private static ModLoadContext GetLoadContext(string name) => loadedModContexts.TryGetValue(name, out var value) ? value : throw new KeyNotFoundException(name);
 

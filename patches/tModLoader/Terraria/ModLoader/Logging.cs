@@ -44,7 +44,7 @@ public static partial class Logging
 	public static ILog PublicLogger { get; } = LogManager.GetLogger("PublicLogger");
 
 	internal static ILog Terraria { get; } = LogManager.GetLogger("Terraria");
-	internal static ILog tML { get; } = LogManager.GetLogger("tML");
+	internal static ILog tML { get; private set; } = LogManager.GetLogger("tML");
 	internal static ILog FNA { get; } = LogManager.GetLogger("FNA");
 
 	internal static void Init(LogFile logFile)

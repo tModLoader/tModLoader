@@ -8,7 +8,7 @@
  using System.Reflection;
  using System.Runtime.CompilerServices;
  using System.Text;
-@@ -11,12 +_,16 @@
+@@ -11,12 +_,17 @@
  using ReLogic.OS;
  using Terraria.Initializers;
  using Terraria.Localization;
@@ -17,6 +17,7 @@
 +using Terraria.ModLoader.Engine;
 +using Terraria.ModLoader.Exceptions;
  using Terraria.Social;
++using Terraria.Social.WeGame;
  using Terraria.Utilities;
  
  namespace Terraria;
@@ -109,7 +110,7 @@
  		if (monoArgs)
  			args = Utils.ConvertMonoArgsToDotNet(args);
  
-@@ -164,6 +_,28 @@
+@@ -164,6 +_,38 @@
  		// Unify server and client dll via launch param
  		Main.dedServ = LaunchParameters.ContainsKey("-server");
  #endif
@@ -118,7 +119,17 @@
 +		ProcessLaunchArgs(args, monoArgs, out bool isServer);
 +
 +		StartupSequenceTml(isServer);
-+		
++
++		if (!LaunchParameters.ContainsKey("-skipcore") && !LaunchParameters.ContainsKey("-build") && CoreModLoader.IsAnyCoreMods(out Mod[] nonCoreMods, out Mod[] coreMods)) {
++			Logging.tML.InfoFormat("Core Mods found, initiating transformation process...");
++
++			if (CoreModLoader.LaunchALCWithCoreMods(isServer, nonCoreMods, coreMods)) {
++				return;
++			}
++
++			Logging.tML.Warn("Core Mods were found, but no assemblies were transformed. Launching tML as normal.");
++		}
++
 +		LaunchGame_(isServer);
 +	}
 +
@@ -148,14 +159,13 @@
  		Platform.Get<IWindowService>().SetQuickEditEnabled(enabled: false);
  		RunGame();
  	}
-@@ -184,9 +_,14 @@
- 				Main.instance.IsMouseVisible = false;
+@@ -185,8 +_,13 @@
  			};
  		}
-+		
-+		InstallVerifier.Startup();
  
 -		using Main main = new Main();
++		InstallVerifier.Startup();
++
  		try {
 +			ModLoader.ModLoader.EngineInit();
 +

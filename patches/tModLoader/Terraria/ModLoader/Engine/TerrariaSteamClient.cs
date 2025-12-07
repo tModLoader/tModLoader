@@ -51,7 +51,7 @@ internal class TerrariaSteamClient
 		}
 
 		serverPipe = new AnonymousPipeServerStream(PipeDirection.Out, HandleInheritability.Inheritable);
-		var tMLName = Path.GetFileName(Assembly.GetExecutingAssembly().Location);
+		var tMLName = Path.GetFileName(Program.tMLAssemblyLocation);
 		var proc = new Process() {
 			StartInfo = {
 				FileName = Environment.ProcessPath,
@@ -169,7 +169,7 @@ internal class TerrariaSteamClient
 				SteamShutdown();
 				return;
 			}
-			if (TerrariaBuildID < LatestTerrariaBuildID) { 
+			if (TerrariaBuildID < LatestTerrariaBuildID) {
 				Logger.Fatal("Terraria is out of date, you need to update Terraria in Steam.");
 				Send(MsgInstallOutOfDate);
 				SteamShutdown();
