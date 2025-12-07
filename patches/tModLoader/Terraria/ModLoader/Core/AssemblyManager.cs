@@ -67,9 +67,11 @@ public static class AssemblyManager
 						LoadAssembly(modFile.GetBytes("lib/" + dll + ".dll"));
 					}
 
-					assembly = Debugger.IsAttached && File.Exists(properties.eacPath) ?
-						LoadAssembly(modFile.GetModAssembly(), File.ReadAllBytes(properties.eacPath)): //load the unmodified dll and EaC pdb
-						LoadAssembly(modFile.GetModAssembly(), modFile.GetModPdb());
+					byte[] pdbBytes = Debugger.IsAttached && File.Exists(properties.eacPath) ? File.ReadAllBytes(properties.eacPath) /* load the unmodified dll and EaC pdb */ : modFile.GetModPdb();
+
+					assembly = CoreModLoader.transformedAssemblyBytes.TryGetValue(Name!, out byte[] transformedAssemblyBytes)
+						? LoadAssembly(transformedAssemblyBytes, pdbBytes)
+						: LoadAssembly(modFile.GetModAssembly());
 				}
 
 				var mlc = new MetadataLoadContext(new MetadataResolver(this));
@@ -137,15 +139,14 @@ public static class AssemblyManager
 					return existing;
 
 				var runtime = mod.LoadFromAssemblyName(assemblyName);
-				// Transformed assemblies always come first, if one exists
-				if (CoreModLoader.transformedAssemblyBytes.TryGetValue(runtime, out byte[] bytes))
-					return context.LoadFromByteArray(bytes);
-
 				if (!string.IsNullOrEmpty(runtime.Location))
 					return context.LoadFromAssemblyPath(runtime.Location);
 
 				if (GetLoadContext(runtime) is ModLoadContext modLoadContext)
-					return context.LoadFromByteArray(modLoadContext.assemblyBytes[assemblyName.Name]);
+					return context.LoadFromByteArray(modLoadContext.assemblyBytes[assemblyName.Name!]);
+
+				if (CoreModLoader.transformedAssemblyBytes.TryGetValue(assemblyName.Name!, out byte[] bytes))
+					return context.LoadFromByteArray(bytes);
 
 				throw new Exception($"Unable to find bytes for {runtime.FullName}");
 			}

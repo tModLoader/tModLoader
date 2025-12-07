@@ -24,8 +24,8 @@ internal static class CoreModLoader
 		public static implicit operator AssemblyDefinition(AssemblyTransformationCandidate candidate) => candidate.Definition;
 	}
 
-	// The same dictionary is shared into the child ALC's instance of this field
-	internal static Dictionary<Assembly, byte[]> transformedAssemblyBytes = new();
+	// Shared with the child ALC
+	internal static Dictionary<string, byte[]> transformedAssemblyBytes = new();
 
 	private static Dictionary<string, Assembly> _transformedAssemblies = new();
 
@@ -91,6 +91,7 @@ internal static class CoreModLoader
 		ModLoader.ClearMods();
 		AssemblyManager.Unload();
 
+		// TODO: Clean up reflection for child ALC sharing
 		transformedChildtML.GetType(typeof(CoreModLoader).FullName!)!.GetField(nameof(transformedAssemblyBytes), BindingFlags.Static | BindingFlags.NonPublic)!.SetValue(null, transformedAssemblyBytes);
 
 		// Set Launch Params, Save Paths, Main Thread, tML Directory
@@ -248,9 +249,10 @@ internal static class CoreModLoader
 
 			// TODO: Persist transformed mod assemblies to the child tML ALC
 			Assembly transformedAssembly = _childALC.LoadFromStream(assemblyStream, symbolStream);
-			_transformedAssemblies[transformedAssembly.GetName().Name!] = transformedAssembly;
 
-			transformedAssemblyBytes[transformedAssembly] = assemblyStream.ToArray();
+			string assemblyName = transformedAssembly.GetName().Name!;
+			_transformedAssemblies[assemblyName] = transformedAssembly;
+			transformedAssemblyBytes[assemblyName] = assemblyStream.ToArray();
 
 			anyAssembliesTransformed = true;
 
