@@ -50,6 +50,6 @@ public record struct SkyDrawParams()
 	/// </summary>
 	public float SunAlpha = 1f;
 	
-	public Color? MoonColor = null;
-	public Color? SunColor = null;
+	public Color MoonColor;
+	public Color SunColor;
 }

@@ -6717,7 +6717,7 @@
  		sceneArea.totalWidth = screenWidth;
  		sceneArea.SceneLocalScreenPositionOffset = Vector2.Zero;
  		SceneArea sceneArea2 = sceneArea;
-+		SkyDrawParams skyDrawParams = new SkyDrawParams();
++		SkyDrawParams skyDrawParams = new SkyDrawParams() with { MoonColor = moonColor, SunColor = sunColor };
 +		if (gameMenu) {
 +			MenuLoader.CurrentMenu.ModifyDrawSky(ref skyDrawParams);
 +			MenuLoader.CurrentMenu.PreDrawSky(spriteBatch, skyDrawParams);
@@ -6757,7 +6757,7 @@
 -			if ((double)(screenPosition.Y / 16f) < worldSurface + 2.0)
 -				DrawSunAndMoon(sceneArea2, moonColor, sunColor, num6);
 +			if ((double)(screenPosition.Y / 16f) < worldSurface + 2.0 && skyDrawParams.DrawSunAndMoon)
-+				DrawSunAndMoon(sceneArea2, (skyDrawParams.MoonColor ?? moonColor) * skyDrawParams.MoonAlpha, (skyDrawParams.SunColor ?? sunColor) * skyDrawParams.SunAlpha, num6);
++				DrawSunAndMoon(sceneArea2, skyDrawParams.MoonColor * skyDrawParams.MoonAlpha, skyDrawParams.SunColor * skyDrawParams.SunAlpha, num6);
  
  			TimeLogger.DetailedDrawTime(7);
  		}
