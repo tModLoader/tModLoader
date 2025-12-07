@@ -3219,7 +3219,7 @@
  			wetCount = 10;
  
  		if (flag) {
-+			bool putsOutOnfire = false;
++			bool putsOutOnfire = true;
 +			for (int i = LiquidLoader.LiquidCount - 1; i >= LiquidID.Count; i--)
 +				if (wets[i])
 +					putsOutOnfire = LiquidLoader.GetLiquid(i).ExtinguishesOnFireDebuffs;
@@ -3423,21 +3423,20 @@
  		return result;
  	}
  
-@@ -76495,7 +_,18 @@
+@@ -76495,7 +_,17 @@
  			}
  		}
  
 -		if (flag && Main.rand.Next(20) == 0 && !lavaWet && !honeyWet && !shimmerWet) {
 +		bool? canEmitBreath = true;
-+		for (int i = 0; i < LiquidLoader.LiquidCount; i++) {
++		for (int i = 0; i < LiquidLoader.LiquidCount; i++)
 +			if (wets[i])
 +				canEmitBreath = LiquidLoader.PlayersEmitBreathBubbles(i);
-+			if (canEmitBreath == null) {
-+				if (lavaWet || honeyWet || shimmerWet)
-+					canEmitBreath = false;
-+				else
-+					canEmitBreath = true;
-+			}
++		if (canEmitBreath == null) {
++			if (lavaWet || honeyWet || shimmerWet)
++				canEmitBreath = false;
++			else
++				canEmitBreath = true;
 +		}
 +		if (flag && Main.rand.Next(20) == 0 && (bool)canEmitBreath) {
  			int num = 0;

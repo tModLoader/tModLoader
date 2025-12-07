@@ -866,7 +866,7 @@
  	public int SpawnY = -1;
  	public Vector2? PotionOfReturnOriginalUsePosition;
  	public Vector2? PotionOfReturnHomePosition;
-@@ -1223,32 +_,134 @@
+@@ -1223,32 +_,170 @@
  	public int[] spY = new int[200];
  	public string[] spN = new string[200];
  	public int[] spI = new int[200];
@@ -925,20 +925,62 @@
 +	/// <remarks>To apply a global run speed modifier, use <see cref="moveSpeed"/>.</remarks>
  	public float runAcceleration = 0.08f;
  	public float runSlowdown = 0.2f;
-+	/// <summary> True if the player is within crafting range of a tile with water or a <see cref="TileID.Sets.CountsAsWaterSource"/> tile. (adjWater stands for adjacent to water) </summary>
- 	public bool adjWater;
-+	/// <summary> True if the player is within crafting range of a tile with honey or a <see cref="TileID.Sets.CountsAsHoneySource"/> tile. (adjHoney stands for adjacent to honey) </summary>
- 	public bool adjHoney;
-+	/// <summary> True if the player is within crafting range of a tile with shimmer or a <see cref="TileID.Sets.CountsAsShimmerSource"/> tile. (adjShimmer stands for adjacent to shimmer) </summary>
-+	public bool adjShimmer;
-+	/// <summary> True if the player is within crafting range of a tile with lava or a <see cref="TileID.Sets.CountsAsLavaSource"/> tile. (adjLava stands for adjacent to lava) </summary>
- 	public bool adjLava;
- 	public bool oldAdjWater;
- 	public bool oldAdjHoney;
- 	public bool oldAdjLava;
+-	public bool adjWater;
+-	public bool adjHoney;
+-	public bool adjLava;
+-	public bool oldAdjWater;
+-	public bool oldAdjHoney;
+-	public bool oldAdjLava;
 -	public bool[] adjTile = new bool[TileID.Count];
 -	public bool[] oldAdjTile = new bool[TileID.Count];
-+	public bool oldAdjShimmer;
++	/// <summary> True if the player is within crafting range of a tile with water or a <see cref="TileID.Sets.CountsAsWaterSource"/> tile. (adjWater stands for adjacent to water) <br/> <br/> Legacy code, use <see cref="adjLiquid"/> instead. </summary>
++	public bool adjWater {
++		get => adjLiquid[LiquidID.Water];
++		set => adjLiquid[LiquidID.Water] = value;
++	}
++	/// <summary> True if the player is within crafting range of a tile with honey or a <see cref="TileID.Sets.CountsAsHoneySource"/> tile. (adjHoney stands for adjacent to honey) <br/> <br/> Legacy code, use <see cref="adjLiquid"/> instead. </summary>
++	public bool adjHoney {
++		get => adjLiquid[LiquidID.Honey];
++		set => adjLiquid[LiquidID.Honey] = value;
++	}
++	/// <summary> True if the player is within crafting range of a tile with shimmer or a <see cref="TileID.Sets.CountsAsShimmerSource"/> tile. (adjShimmer stands for adjacent to shimmer) <br/> <br/> Legacy code, use <see cref="adjLiquid"/> instead. </summary>
++	public bool adjShimmer {
++		get => adjLiquid[LiquidID.Shimmer];
++		set => adjLiquid[LiquidID.Shimmer] = value;
++	}
++	/// <summary> True if the player is within crafting range of a tile with lava or a <see cref="TileID.Sets.CountsAsLavaSource"/> tile. (adjLava stands for adjacent to lava) <br/> <br/> Legacy code, use <see cref="adjLiquid"/> instead. </summary>
++	public bool adjLava {
++		get => adjLiquid[LiquidID.Lava];
++		set => adjLiquid[LiquidID.Lava] = value;
++	}
++	/// <summary>
++	/// Legacy code, use <see cref="oldAdjLiquid"/> instead.
++	/// </summary>
++	public bool oldAdjWater {
++		get => oldAdjLiquid[LiquidID.Water];
++		set => oldAdjLiquid[LiquidID.Water] = value;
++	}
++	/// <summary>
++	/// Legacy code, use <see cref="oldAdjLiquid"/> instead.
++	/// </summary>
++	public bool oldAdjHoney {
++		get => oldAdjLiquid[LiquidID.Honey];
++		set => oldAdjLiquid[LiquidID.Honey] = value;
++	}
++	/// <summary>
++	/// Legacy code, use <see cref="oldAdjLiquid"/> instead.
++	/// </summary>
++	public bool oldAdjLava {
++		get => oldAdjLiquid[LiquidID.Lava];
++		set => oldAdjLiquid[LiquidID.Lava] = value;
++	}
++	/// <summary>
++	/// Legacy code, use <see cref="oldAdjLiquid"/> instead.
++	/// </summary>
++	public bool oldAdjShimmer {
++		get => oldAdjLiquid[LiquidID.Shimmer];
++		set => oldAdjLiquid[LiquidID.Shimmer] = value;
++	}
 +
 +	private bool[] _adjLiquid = new bool[LiquidLoader.LiquidCount]; // Added by TML.
 +
@@ -4326,6 +4368,59 @@
  	}
  
  	public void StickyMovement()
+@@ -17855,6 +_,10 @@
+ 		if (mount.Active && mount.Type == 4)
+ 			flag = false;
+ 
++		for (int i = 0; i < LiquidLoader.LiquidCount; i++)
++			if (wets[i])
++				LiquidLoader.CanPlayerDrown(i, this, ref flag);
++
+ 		if (Main.myPlayer == whoAmI) {
+ 			if (accMerman) {
+ 				if (flag)
+@@ -17891,7 +_,17 @@
+ 			}
+ 		}
+ 
++		bool? canEmitBreath = true;
++		for (int i = 0; i < LiquidLoader.LiquidCount; i++)
++			if (wets[i])
++				canEmitBreath = LiquidLoader.PlayersEmitBreathBubbles(i);
++		if (canEmitBreath == null) {
++			if (lavaWet || honeyWet)
++				canEmitBreath = false;
++			else
++				canEmitBreath = true;
++		}
+-		if (flag && Main.rand.Next(20) == 0 && !lavaWet && !honeyWet) {
++		if (flag && Main.rand.Next(20) == 0 && (bool)canEmitBreath) {
+ 			int num4 = 0;
+ 			if (gravDir == -1f)
+ 				num4 += height - 12;
+@@ -17996,6 +_,22 @@
+ 		}
+ 	}
+ 
++	public void ModLiquidCollision(int liquidID, bool fallThrough, bool ignorePlats)
++	{
++		int num = ((!onTrack) ? height : (height - 20));
++		Vector2 vector = velocity;
++		velocity = Collision.TileCollision(position, velocity, width, num, fallThrough, ignorePlats, (int)gravDir);
++		Vector2 vector2 = velocity * LiquidLoader.GetLiquid(liquidID).PlayerMovementMultiplier;
++		if (velocity.X != vector.X)
++			vector2.X = velocity.X;
++
++		if (velocity.Y != vector.Y)
++			vector2.Y = velocity.Y;
++
++		position += vector2;
++		TryFloatingInFluid();
++	}
++
+ 	public void ShimmerCollision(bool fallThrough, bool ignorePlats, bool noCollision)
+ 	{
+ 		int num = ((!onTrack) ? height : (height - 20));
 @@ -18047,7 +_,7 @@
  		TryFloatingInFluid();
  	}
@@ -4415,6 +4510,16 @@
  		if (i == Main.myPlayer && Main.netMode != 2)
  			LockOnHelper.Update();
  
+@@ -18771,6 +_,9 @@
+ 				jumpSpeed = 6.01f;
+ 			}
+ 		}
++		for (int j = 0; j < LiquidLoader.LiquidCount; j++)
++			if (wets[j])
++				LiquidLoader.PlayerGravityModifier(i, this, ref gravity, ref maxFallSpeed, ref jumpHeight, ref jumpSpeed);
+ 
+ 		if (vortexDebuff)
+ 			gravity = 0f;
 @@ -18833,6 +_,7 @@
  		if (whoAmI != Main.myPlayer) {
  			int num2 = (int)(position.X + (float)(width / 2)) / 16;
@@ -4896,7 +5001,221 @@
  
  						bool crit = false;
  						if ((float)Main.rand.Next(1, 101) <= num80)
-@@ -21722,6 +_,8 @@
+@@ -21336,6 +_,7 @@
+ 		if (waterWalk)
+ 			num82 -= 6;
+ 
++		bool isWaterWet = true;
+ 		bool flag25 = false;
+ 		if (!shimmering)
+ 			flag25 = Collision.LavaCollision(position, width, num82);
+@@ -21377,6 +_,8 @@
+ 			}
+ 
+ 			lavaWet = true;
++			LiquidLoader.OnPlayerCollision(LiquidID.Lava, this);
++			isWaterWet = false;
+ 		}
+ 		else {
+ 			lavaWet = false;
+@@ -21393,8 +_,11 @@
+ 		bool num85 = Collision.WetCollision(position, width, height);
+ 		bool flag26 = Collision.honey;
+ 		bool shimmer = Collision.shimmer;
++		Collision.GetModdedWets(position, width, height, out bool[] liquidsIn);
+ 		if (shimmer) {
+ 			shimmerWet = true;
++			LiquidLoader.OnPlayerCollision(LiquidID.Shimmer, this);
++			isWaterWet = false;
+ 			if (whoAmI == Main.myPlayer && !shimmerImmune && !shimmerUnstuckHelper.ShouldUnstuck) {
+ 				int num86 = (int)(base.Center.X / 16f);
+ 				int num87 = (int)((position.Y + 1f) / 16f);
+@@ -21406,10 +_,29 @@
+ 		if (flag26 && !shimmering) {
+ 			AddBuff(48, 1800);
+ 			honeyWet = true;
++			LiquidLoader.OnPlayerCollision(LiquidID.Honey, this);
++			isWaterWet = false;
++		}
++
++		for (int j = LiquidID.Count; j < LiquidLoader.LiquidCount; j++) {
++			if (liquidsIn[j]) {
++				wets[j] = true;
++				LiquidLoader.OnPlayerCollision(j, this);
++				isWaterWet = false;
++			}
++		}
++
++		if (num85 && isWaterWet) {
++			LiquidLoader.OnPlayerCollision(LiquidID.Water, this);
++			wets[LiquidID.Water] = true;
+ 		}
+ 
+ 		if (num85) {
++			bool putsOutOnfire = true;
++			for (int j = LiquidLoader.LiquidCount - 1; j >= LiquidID.Count; j--)
++				if (wets[j])
++					putsOutOnfire = LiquidLoader.GetLiquid(j).ExtinguishesOnFireDebuffs;
+-			if ((onFire || onFire3) && !lavaWet) {
++			if ((onFire || onFire3) && !lavaWet && putsOutOnfire) {
+ 				for (int num88 = 0; num88 < maxBuffs; num88++) {
+ 					int num89 = buffType[num88];
+ 					if (num89 == 24 || num89 == 323)
+@@ -21422,7 +_,7 @@
+ 					wetCount = 10;
+ 					if (!shimmering) {
+ 						if (!flag25) {
+-							if (shimmerWet) {
++							if (shimmerWet && LiquidLoader.OnPlayerSplash(LiquidID.Shimmer, this, true)) {
+ 								for (int num90 = 0; num90 < 50; num90++) {
+ 									int num91 = Dust.NewDust(new Vector2(position.X - 6f, position.Y + (float)(height / 2)), width + 12, 24, 308);
+ 									Main.dust[num91].velocity.Y -= 4f;
+@@ -21447,7 +_,7 @@
+ 
+ 								SoundEngine.PlaySound(19, (int)position.X, (int)position.Y, 2);
+ 							}
+-							else if (honeyWet) {
++							else if (honeyWet && LiquidLoader.OnPlayerSplash(LiquidID.Honey, this, true)) {
+ 								for (int num92 = 0; num92 < 20; num92++) {
+ 									int num93 = Dust.NewDust(new Vector2(position.X - 6f, position.Y + (float)(height / 2) - 8f), width + 12, 24, 152);
+ 									Main.dust[num93].velocity.Y -= 1f;
+@@ -21460,19 +_,43 @@
+ 								SoundEngine.PlaySound(19, (int)position.X, (int)position.Y);
+ 							}
+ 							else {
++								bool inModdedLiquid = false;
++								for (int k = LiquidID.Count; k < LiquidLoader.LiquidCount; k++) {
++									if (wets[k]) {
++										if (LiquidLoader.OnPlayerSplash(k, this, true)) {
++											ModLiquid modLiquid = LiquidLoader.GetLiquid(k);
++											if (modLiquid.OnPlayerSplash(this, true)) {
++												if (modLiquid.SplashDustType >= 0) {
+-								for (int num94 = 0; num94 < 50; num94++) {
++													for (int j = 0; j < 20; j++) {
+-									int num95 = Dust.NewDust(new Vector2(position.X - 6f, position.Y + (float)(height / 2) - 8f), width + 12, 24, Dust.dustWater());
++														int dust = Dust.NewDust(new Vector2(position.X - 6f, position.Y + (height / 2) - 8f), width + 12, 24, modLiquid.SplashDustType);
+-									Main.dust[num95].velocity.Y -= 3f;
++														Main.dust[dust].velocity.Y -= 2f;
+-									Main.dust[num95].velocity.X *= 2.5f;
++														Main.dust[dust].velocity.X *= 2.5f;
+-									Main.dust[num95].scale = 0.8f;
++														Main.dust[dust].scale = 1.3f;
+-									Main.dust[num95].alpha = 100;
++														Main.dust[dust].alpha = 100;
+-									Main.dust[num95].noGravity = true;
++														Main.dust[dust].noGravity = true;
++													}
++												}
++												SoundEngine.PlaySound(modLiquid.SplashSound, position);
++											}
++										}
++										inModdedLiquid = true;
++									}
+ 								}
++								if (!inModdedLiquid && LiquidLoader.OnPlayerSplash(LiquidID.Water, this, true)) {
++									for (int num94 = 0; num94 < 50; num94++) {
++										int num95 = Dust.NewDust(new Vector2(position.X - 6f, position.Y + (float)(height / 2) - 8f), width + 12, 24, Dust.dustWater());
++										Main.dust[num95].velocity.Y -= 3f;
++										Main.dust[num95].velocity.X *= 2.5f;
++										Main.dust[num95].scale = 0.8f;
++										Main.dust[num95].alpha = 100;
++										Main.dust[num95].noGravity = true;
++									}
+ 
+-								SoundEngine.PlaySound(19, (int)position.X, (int)position.Y, 0);
++									SoundEngine.PlaySound(19, (int)position.X, (int)position.Y, 0);
++								}
+ 							}
+ 						}
+-						else {
++						else if (LiquidLoader.OnPlayerSplash(LiquidID.Lava, this, true)) {
+ 							for (int num96 = 0; num96 < 20; num96++) {
+ 								int num97 = Dust.NewDust(new Vector2(position.X - 6f, position.Y + (float)(height / 2) - 8f), width + 12, 24, 35);
+ 								Main.dust[num97].velocity.Y -= 1.5f;
+@@ -21504,7 +_,7 @@
+ 				wetCount = 10;
+ 				if (!shimmering) {
+ 					if (!lavaWet) {
+-						if (shimmerWet) {
++						if (shimmerWet && LiquidLoader.OnPlayerSplash(LiquidID.Shimmer, this, false)) {
+ 							for (int num98 = 0; num98 < 50; num98++) {
+ 								int num99 = Dust.NewDust(new Vector2(position.X - 6f, position.Y + (float)(height / 2)), width + 12, 24, 308);
+ 								Main.dust[num99].velocity.Y -= 4f;
+@@ -21529,7 +_,7 @@
+ 
+ 							SoundEngine.PlaySound(19, (int)position.X, (int)position.Y, 3);
+ 						}
+-						else if (honeyWet) {
++						else if (honeyWet && LiquidLoader.OnPlayerSplash(LiquidID.Honey, this, false)) {
+ 							for (int num100 = 0; num100 < 20; num100++) {
+ 								int num101 = Dust.NewDust(new Vector2(position.X - 6f, position.Y + (float)(height / 2) - 8f), width + 12, 24, 152);
+ 								Main.dust[num101].velocity.Y -= 1f;
+@@ -21542,19 +_,43 @@
+ 							SoundEngine.PlaySound(19, (int)position.X, (int)position.Y);
+ 						}
+ 						else {
++							bool inModdedLiquid = false;
++							for (int k = LiquidID.Count; k < LiquidLoader.LiquidCount; k++) {
++								if (wets[k]) {
++									if (LiquidLoader.OnPlayerSplash(k, this, false)) {
++										ModLiquid modLiquid = LiquidLoader.GetLiquid(k);
++										if (modLiquid.OnPlayerSplash(this, false)) {
++											if (modLiquid.SplashDustType >= 0) {
+-							for (int num102 = 0; num102 < 50; num102++) {
++												for (int j = 0; j < 20; j++) {
+-								int num103 = Dust.NewDust(new Vector2(position.X - 6f, position.Y + (float)(height / 2)), width + 12, 24, Dust.dustWater());
++													int dust = Dust.NewDust(new Vector2(position.X - 6f, position.Y + (height / 2) - 8f), width + 12, 24, modLiquid.SplashDustType);
+-								Main.dust[num103].velocity.Y -= 4f;
++													Main.dust[dust].velocity.Y -= 2f;
+-								Main.dust[num103].velocity.X *= 2.5f;
++													Main.dust[dust].velocity.X *= 2.5f;
+-								Main.dust[num103].scale = 0.8f;
++													Main.dust[dust].scale = 1.3f;
+-								Main.dust[num103].alpha = 100;
++													Main.dust[dust].alpha = 100;
+-								Main.dust[num103].noGravity = true;
++													Main.dust[dust].noGravity = true;
++												}
++											}
++											SoundEngine.PlaySound(modLiquid.SplashSound, position);
++										}
++									}
++									inModdedLiquid = true;
++								}
+ 							}
++							if (!inModdedLiquid && LiquidLoader.OnPlayerSplash(LiquidID.Water, this, false)) {
++								for (int num102 = 0; num102 < 50; num102++) {
++									int num103 = Dust.NewDust(new Vector2(position.X - 6f, position.Y + (float)(height / 2)), width + 12, 24, Dust.dustWater());
++									Main.dust[num103].velocity.Y -= 4f;
++									Main.dust[num103].velocity.X *= 2.5f;
++									Main.dust[num103].scale = 0.8f;
++									Main.dust[num103].alpha = 100;
++									Main.dust[num103].noGravity = true;
++								}
+ 
+-							SoundEngine.PlaySound(19, (int)position.X, (int)position.Y, 0);
++								SoundEngine.PlaySound(19, (int)position.X, (int)position.Y, 0);
++							}
+ 						}
+ 					}
+-					else {
++					else if (LiquidLoader.OnPlayerSplash(LiquidID.Lava, this, false)) {
+ 						for (int num104 = 0; num104 < 20; num104++) {
+ 							int num105 = Dust.NewDust(new Vector2(position.X - 6f, position.Y + (float)(height / 2) - 8f), width + 12, 24, 35);
+ 							Main.dust[num105].velocity.Y -= 1.5f;
+@@ -21580,7 +_,11 @@
+ 			lavaWet = false;
+ 			honeyWet = false;
+ 			shimmerWet = false;
++			for (int j = LiquidID.Count; j < LiquidLoader.LiquidCount; j++)
++				wets[j] = false;
+ 		}
++		if (!wets.Contains(true) && wet)
++			wets[LiquidID.Water] = true;
+ 
+ 		if (wetCount > 0)
+ 			wetCount--;
+@@ -21722,18 +_,45 @@
  		if (vortexDebuff)
  			velocity.Y = velocity.Y * 0.8f + (float)Math.Cos(base.Center.X % 120f / 120f * ((float)Math.PI * 2f)) * 5f * 0.2f;
  
@@ -4905,6 +5224,51 @@
  		if (tongued) {
  			position += velocity;
  			flag30 = false;
+ 		}
+-		else if (shimmerWet || shimmering) {
+-			ShimmerCollision(fallThrough, ignorePlats, shimmering);
+-		}
+-		else if (honeyWet && !ignoreWater) {
+-			HoneyCollision(fallThrough, ignorePlats);
+-		}
+-		else if (wet && !merman && !ignoreWater && !trident) {
+-			WaterCollision(fallThrough, ignorePlats);
++		else if (shimmering) {
++			if (LiquidLoader.PlayerLiquidMovement(LiquidID.Shimmer, this, fallThrough, ignorePlats)) {
++				ShimmerCollision(fallThrough, ignorePlats, true);
++			}
++		}
++		else if (wet) {
++			int inModdedLiquidID = 0;
++			for (int j = LiquidLoader.LiquidCount - 1; j >= LiquidID.Count; j--) {
++				if (wets[j]) {
++					inModdedLiquidID = j;
++					break;
++				}
++			}
++			if (inModdedLiquidID > 0) {
++				if (LiquidLoader.PlayerLiquidMovement(inModdedLiquidID, this, fallThrough, ignorePlats)) {
++					ModLiquidCollision(inModdedLiquidID, fallThrough, ignorePlats);
++				}
++			}
++			else if (shimmerWet) {
++				if (LiquidLoader.PlayerLiquidMovement(LiquidID.Shimmer, this, fallThrough, ignorePlats)) {
++					ShimmerCollision(fallThrough, ignorePlats, true);
++				}
++			}
++			else if (honeyWet && !ignoreWater) {
++				if (LiquidLoader.PlayerLiquidMovement(LiquidID.Honey, this, fallThrough, ignorePlats)) {
++					HoneyCollision(fallThrough, ignorePlats);
++				}
++			}
++			else if (!merman && !ignoreWater && !trident) {
++				if (LiquidLoader.PlayerLiquidMovement(lavaWet ? LiquidID.Lava : LiquidID.Water, this, fallThrough, ignorePlats)) {
++					WaterCollision(fallThrough, ignorePlats);
++				}
++			}
+ 		}
+ 		else {
+ 			DryCollision(fallThrough, ignorePlats);
 @@ -21791,7 +_,7 @@
  			FloorVisuals(falling);
  
@@ -5448,7 +5812,7 @@
  		List<Item[]> list = new List<Item[]>();
  		Dictionary<int, List<int>> dictionary = new Dictionary<int, List<int>>();
  		List<Point> list2 = new List<Point>();
-@@ -27569,17 +_,28 @@
+@@ -27569,17 +_,24 @@
  			num2 += 4;
  		}
  
@@ -5477,10 +5841,6 @@
 +		//adjLava = false;
 +		//oldAdjShimmer = adjShimmer;
 +		//adjShimmer = false;
-+		oldAdjWater = oldAdjLiquid[LiquidID.Water];
-+		oldAdjLava = oldAdjLiquid[LiquidID.Lava];
-+		oldAdjHoney = oldAdjLiquid[LiquidID.Honey];
-+		oldAdjShimmer = oldAdjLiquid[LiquidID.Shimmer];
  		alchemyTable = false;
  		int num3 = (int)((position.X + (float)(width / 2)) / 16f);
  		int num4 = (int)((position.Y + (float)height) / 16f);
@@ -5529,7 +5889,7 @@
  			}
  		}
  
-@@ -27627,21 +_,36 @@
+@@ -27627,21 +_,31 @@
  			return;
  
  		bool flag = false;
@@ -5541,11 +5901,6 @@
  			}
  		}
  
-+		//Update the find recipes flag for all liquids
-+		adjWater = adjLiquid[LiquidID.Water];
-+		adjLava = adjLiquid[LiquidID.Lava];
-+		adjHoney = adjLiquid[LiquidID.Honey];
-+		adjShimmer = adjLiquid[LiquidID.Shimmer];
 +		for (int l = 0; l < adjLiquid.Length; l++) {
 +			if (oldAdjLiquid[l] != adjLiquid[l]) {
 +				flag = true;
@@ -6569,7 +6924,7 @@
  			}
  		}
  
-@@ -30803,10 +_,10 @@
+@@ -30803,14 +_,20 @@
  		int createTile = HeldItem.createTile;
  		int num = HeldItem.placeStyle;
  		if (UsingBiomeTorches && createTile == 4)
@@ -6581,7 +6936,19 @@
 +			BiomeCampfirePlaceStyle(ref createTile, ref num);
  
  		Tile tile = Main.tile[tileTargetX, tileTargetY];
- 		if (WorldGen.WouldTileReplacementBeBlockedByLiquid(tileTargetX, tileTargetY, 1))
+-		if (WorldGen.WouldTileReplacementBeBlockedByLiquid(tileTargetX, tileTargetY, 1))
+-			return false;
++		//if (WorldGen.WouldTileReplacementBeBlockedByLiquid(tileTargetX, tileTargetY, 1))
++		//	return false;
++
++		for (int i = 0; i < LiquidLoader.LiquidCount; i++) {
++			if (LiquidLoader.BlocksTilePlacement(this, tileTargetX, tileTargetY, i) && WorldGen.WouldTileReplacementBeBlockedByLiquid(tileTargetX, tileTargetY, i)) {
++					return false;
++			}
++		}
+ 
+ 		if (ItemID.Sets.SortingPriorityRopes[HeldItem.type] != -1)
+ 			return false;
 @@ -30833,11 +_,19 @@
  		if (TileID.Sets.Platforms[tile.type] && tile.type == createTile)
  			return tile.frameY != num * 18;
@@ -6788,6 +7155,24 @@
  			if (Main.tile[tileTargetX + 1, tileTargetY].active() || Main.tile[tileTargetX + 1, tileTargetY].wall > 0 || Main.tile[tileTargetX - 1, tileTargetY].active() || Main.tile[tileTargetX - 1, tileTargetY].wall > 0 || Main.tile[tileTargetX, tileTargetY + 1].active() || Main.tile[tileTargetX, tileTargetY + 1].wall > 0 || Main.tile[tileTargetX, tileTargetY - 1].active() || Main.tile[tileTargetX, tileTargetY - 1].wall > 0)
  				canPlace = true;
  		}
+@@ -31924,7 +_,7 @@
+ 	private bool PlaceThing_Tiles_CheckLavaBlocking()
+ 	{
+ 		bool result = false;
+-		if (Main.tile[tileTargetX, tileTargetY].liquid > 0 && Main.tile[tileTargetX, tileTargetY].lava()) {
++		if (Main.tile[tileTargetX, tileTargetY].liquid > 0 && LiquidLoader.BlocksTilePlacement(this, tileTargetX, tileTargetY, Main.tile[tileTargetX, tileTargetY].liquidType())) {
+ 			if (Main.tileSolid[inventory[selectedItem].createTile])
+ 				result = true;
+ 			else if (!TileObjectData.CheckLiquidPlacement(inventory[selectedItem].createTile, inventory[selectedItem].placeStyle, Main.tile[tileTargetX, tileTargetY]))
+@@ -31940,7 +_,7 @@
+ 			int num = tileTargetY;
+ 			int num2 = tileTargetX;
+ 			bool flag = inventory[selectedItem].createTile == 214;
+-			while (Main.tile[num2, num].active() && (Main.tileRope[Main.tile[num2, num].type] || Main.tile[num2, num].type == 314 || TileID.Sets.Platforms[Main.tile[num2, num].type]) && num < Main.maxTilesY - 5 && Main.tile[num2, num + 2] != null && (flag || !Main.tile[num2, num + 1].lava())) {
++			while (Main.tile[num2, num].active() && (Main.tileRope[Main.tile[num2, num].type] || Main.tile[num2, num].type == 314 || TileID.Sets.Platforms[Main.tile[num2, num].type]) && num < Main.maxTilesY - 5 && Main.tile[num2, num + 2] != null && (flag || !LiquidLoader.BlocksTilePlacement(this, num2, num + 1, Main.tile[num2, num + 1].liquidType()))) {
+ 				num++;
+ 				if (Main.tile[num2, num] == null) {
+ 					canUse = false;
 @@ -32318,7 +_,9 @@
  		byte paint = targetItem.paint;
  		if (paintingAWall) {

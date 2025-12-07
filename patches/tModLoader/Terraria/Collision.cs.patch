@@ -11,6 +11,24 @@
  
  namespace Terraria;
  
+@@ -1003,7 +_,16 @@
+ 		for (int i = num3; i < value2; i++) {
+ 			for (int j = value3; j < value4; j++) {
+ 				Tile tile = Main.tile[i, j];
++				bool? canLiquidTypeDrown = LiquidLoader.ChecksForDrowning(tile.liquidType());
++				if (canLiquidTypeDrown == null) {
++					canLiquidTypeDrown = true;
++					if (tile.lava() || tile.shimmer())
++						canLiquidTypeDrown = false;
++
++					if (tile.liquidType() >= LiquidID.Count)
++						canLiquidTypeDrown = LiquidLoader.GetLiquid(tile.liquidType()).ChecksForDrowning;
++				}
+-				if (tile != null && tile.liquid > 0 && !tile.lava() && !tile.shimmer() && (j != num4 || !tile.active() || !Main.tileSolid[tile.type] || Main.tileSolidTop[tile.type] || (includeSlopes && tile.blockType() != 0))) {
++				if (tile != null && tile.liquid > 0 && (bool)canLiquidTypeDrown && (j != num4 || !tile.active() || !Main.tileSolid[tile.type] || Main.tileSolidTop[tile.type] || (includeSlopes && tile.blockType() != 0))) {
+ 					vector2.X = i * 16;
+ 					vector2.Y = j * 16;
+ 					int num5 = 16;
 @@ -1030,7 +_,7 @@
  		if (tile == null || !tile.active() || tile.inActive() || !Main.tileSolid[tile.type])
  			return false;
