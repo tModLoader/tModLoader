@@ -246,6 +246,24 @@
  		}
  
  		Main.ambientWaterfallX = num4;
+@@ -700,7 +_,7 @@
+ 		Main.tileSolid[546] = true;
+ 	}
+ 
+-	private void DrawWaterfall(int waterfallType, int x, int y, float opacity, Vector2 position, Rectangle sourceRect, Color color, SpriteEffects effects)
++	public void DrawWaterfall(int waterfallType, int x, int y, float opacity, Vector2 position, Rectangle sourceRect, Color color, SpriteEffects effects)
+ 	{
+ 		Texture2D value = waterfallTexture[waterfallType].Value;
+ 		if (waterfallType == 25) {
+@@ -716,7 +_,7 @@
+ 		}
+ 	}
+ 
+-	private static Color StylizeColor(float alpha, int maxSteps, int waterfallType, int y, int s, Tile tileCache, Color aColor)
++	public static Color StylizeColor(float alpha, int maxSteps, int waterfallType, int y, int s, Tile tileCache, Color aColor)
+ 	{
+ 		float num = (float)(int)aColor.R * alpha;
+ 		float num2 = (float)(int)aColor.G * alpha;
 @@ -746,15 +_,21 @@
  				num = 255f * alpha;
  				num2 = 255f * alpha;
@@ -263,13 +281,13 @@
  
 +	// Added x/y parameters and removed the tileCache parameters
 -	private static float GetAlpha(float Alpha, int maxSteps, int waterfallType, int y, int s, Tile tileCache)
-+	private static float GetAlpha(float Alpha, int maxSteps, int waterfallType, int y, int s, int tileX, int tileY)
++	public static float GetAlpha(float Alpha, int maxSteps, int waterfallType, int y, int s, int tileX, int tileY)
  	{
 +		Tile tileCache = Main.tile[tileX, tileY];
  		float num;
  		switch (waterfallType) {
  			case 1:
-@@ -774,6 +_,12 @@
+@@ -774,10 +_,16 @@
  		if (s > maxSteps - 10)
  			num *= (float)(maxSteps - s) / 10f;
  
@@ -282,9 +300,17 @@
  		return num;
  	}
  
-@@ -796,6 +_,9 @@
+-	private static void TrySparkling(int x, int y, int direction, Color aColor2)
++	public static void TrySparkling(int x, int y, int direction, Color aColor2)
+ 	{
+ 		if (aColor2.R > 20 || aColor2.B > 20 || aColor2.G > 20) {
+ 			float num = (int)aColor2.R;
+@@ -794,8 +_,11 @@
+ 		}
+ 	}
  
- 	private static void AddLight(int waterfallType, int x, int y)
+-	private static void AddLight(int waterfallType, int x, int y)
++	public static void AddLight(int waterfallType, int x, int y)
  	{
 +		if (waterfallType >= maxTypes)
 +			LoaderManager.Get<WaterFallStylesLoader>().Get(waterfallType).AddLight(x, y);
