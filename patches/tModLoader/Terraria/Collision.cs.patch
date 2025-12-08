@@ -131,6 +131,25 @@
  	}
  
  	public static Vector4 WalkDownSlope(Vector2 Position, Vector2 Velocity, int Width, int Height, float gravity = 0f)
+@@ -1906,7 +_,8 @@
+ 		return false;
+ 	}
+ 
++	// Added walkableLiquids parameter, removed lavaWalk parameters.
+-	public static Vector2 WaterCollision(Vector2 Position, Vector2 Velocity, int Width, int Height, bool fallThrough = false, bool fall2 = false, bool lavaWalk = true)
++	public static Vector2 WaterCollision(Vector2 Position, Vector2 Velocity, int Width, int Height, bool[] walkableLiquids, bool fallThrough = false, bool fall2 = false)
+ 	{
+ 		Vector2 result = Velocity;
+ 		Vector2 vector = Position + Velocity;
+@@ -1922,7 +_,7 @@
+ 		Vector2 vector3 = default(Vector2);
+ 		for (int i = num; i < value2; i++) {
+ 			for (int j = value3; j < value4; j++) {
+-				if (Main.tile[i, j] != null && Main.tile[i, j].liquid > 0 && Main.tile[i, j - 1].liquid == 0 && (!Main.tile[i, j].lava() || lavaWalk)) {
++				if (Main.tile[i, j] != null && Main.tile[i, j].liquid > 0 && Main.tile[i, j - 1].liquid == 0 && walkableLiquids[Main.tile[i, j].liquidType()]) {
+ 					int num2 = (int)Main.tile[i, j].liquid / 32 * 2 + 2;
+ 					vector3.X = i * 16;
+ 					vector3.Y = j * 16 + 16 - num2;
 @@ -2228,7 +_,25 @@
  		return false;
  	}

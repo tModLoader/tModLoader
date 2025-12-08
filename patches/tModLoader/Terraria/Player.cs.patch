@@ -19,10 +19,11 @@
  using Terraria.ObjectData;
  using Terraria.Social;
  using Terraria.UI;
-@@ -35,10 +_,11 @@
+@@ -35,10 +_,12 @@
  using Terraria.UI.Gamepad;
  using Terraria.Utilities;
  using Terraria.WorldBuilding;
++using static System.Net.WebRequestMethods;
 +using LegacySoundStyle = Terraria.Audio.SoundStyle;
  
  namespace Terraria;
@@ -1159,7 +1160,7 @@
  	public bool lavaImmune;
  	public bool gills;
  	public bool slowFall;
-@@ -1392,16 +_,27 @@
+@@ -1392,16 +_,29 @@
  	public int maxTurrets = 1;
  	public int maxTurretsOld = 1;
  	public bool vortexStealthActive;
@@ -1167,6 +1168,8 @@
  	public bool waterWalk;
 +	/// <summary> Allows the player to walk on water, honey, lava, and shimmer, such as given by <see cref="ItemID.LavaWaders"/>. </summary>
  	public bool waterWalk2;
++	/// <summary> Allows mooders to set whenever a specific liquid can be walked on. Set this in <see cref="ModPlayer.PreUpdateMovement"/> <br/> Normally for liquids, the condition is waterWalk || waterWalk2. <br/> This array is reset every frame.</summary>
++	public bool[] canLiquidBeWalkedOn = new bool[LiquidLoader.LiquidCount]; // Added by TML.
  	public int forcedGravity;
  	public bool gravControl;
  	public bool gravControl2;
@@ -3723,6 +3726,15 @@
  		spawnMax = false;
  		spaceGun = false;
  		killGuide = false;
+@@ -14268,6 +_,8 @@
+ 		aggro = 0;
+ 		waterWalk = false;
+ 		waterWalk2 = false;
++		for (int i = 0; i < LiquidLoader.LiquidCount; i++)
++			canLiquidBeWalkedOn[i] = false;
+ 		detectCreature = false;
+ 		gravControl = false;
+ 		if (forcedGravity > 0)
 @@ -14275,18 +_,33 @@
  
  		honeyCombItem = null;
@@ -4434,6 +4446,39 @@
  	{
  		if (!ShouldFloatInWater)
  			return;
+@@ -18108,7 +_,7 @@
+ 				SlopeDownMovement();
+ 				vector3 = velocity;
+ 				if (velocity.Y == gravity && (!mount.Active || (!mount.Cart && mount.Type != 48 && !flag)))
+-					Collision.StepDown(ref position, ref vector3, width, height, ref stepSpeed, ref gfxOffY, (int)gravDir, waterWalk || waterWalk2);
++					Collision.StepDown(ref position, ref vector3, width, height, ref stepSpeed, ref gfxOffY, (int)gravDir, canLiquidBeWalkedOn.Contains(true));
+ 
+ 				if (gravDir == -1f) {
+ 					if ((carpetFrame != -1 || velocity.Y <= gravity) && !controlUp)
+@@ -18122,9 +_,9 @@
+ 				if (Collision.up && gravDir == 1f)
+ 					jump = 0;
+ 
+-				if (waterWalk || waterWalk2) {
++				if (canLiquidBeWalkedOn.Contains(true)) {
+ 					Vector2 vector5 = velocity;
+-					vector4 = Collision.WaterCollision(position, vector4, width, height, fallThrough, fall2: false, waterWalk);
++					vector4 = Collision.WaterCollision(position, vector4, width, height, canLiquidBeWalkedOn, fallThrough, fall2: false);
+ 					if (vector5 != velocity)
+ 						fallStart = (int)(position.Y / 16f);
+ 				}
+@@ -18155,9 +_,9 @@
+ 		if (Collision.up && gravDir == 1f)
+ 			jump = 0;
+ 
+-		if (waterWalk || waterWalk2) {
++		if (canLiquidBeWalkedOn.Contains(true)) {
+ 			Vector2 vector6 = velocity;
+-			velocity = Collision.WaterCollision(position, velocity, width, height, fallThrough, fall2: false, waterWalk);
++			velocity = Collision.WaterCollision(position, velocity, width, height, canLiquidBeWalkedOn, fallThrough, fall2: false);
+ 			if (vector6 != velocity)
+ 				fallStart = (int)(position.Y / 16f);
+ 		}
 @@ -18269,10 +_,10 @@
  		if (gravDir == -1f)
  			num2 = (int)(position.Y - 0.1f) / 16;
@@ -5207,18 +5252,35 @@
  						for (int num104 = 0; num104 < 20; num104++) {
  							int num105 = Dust.NewDust(new Vector2(position.X - 6f, position.Y + (float)(height / 2) - 8f), width + 12, 24, 35);
  							Main.dust[num105].velocity.Y -= 1.5f;
-@@ -21580,7 +_,11 @@
+@@ -21580,6 +_,19 @@
  			lavaWet = false;
  			honeyWet = false;
  			shimmerWet = false;
 +			for (int j = LiquidID.Count; j < LiquidLoader.LiquidCount; j++)
 +				wets[j] = false;
- 		}
++		}
 +		if (!wets.Contains(true) && wet)
 +			wets[LiquidID.Water] = true;
++
++		//Placed here and not directly before PreUpdateMovement due to an extra check when shimmering and collision stepping down
++		//Sets canLiquidBeWalkedOn to their default values after waterWalk/2 have been set by other methods
++		for (int j = 0; j < LiquidLoader.LiquidCount; j++) {
++			if (j == LiquidID.Lava)
++				canLiquidBeWalkedOn[j] = waterWalk;
++			else
++				canLiquidBeWalkedOn[j] = waterWalk || waterWalk2;
+ 		}
  
  		if (wetCount > 0)
- 			wetCount--;
+@@ -21639,7 +_,7 @@
+ 			SlopeDownMovement();
+ 			bool flag27 = mount.Type == 7 || mount.Type == 8 || mount.Type == 12 || mount.Type == 44 || mount.Type == 49;
+ 			if (velocity.Y == gravity && (!mount.Active || (!mount.Cart && mount.Type != 48 && !flag27)))
+-				Collision.StepDown(ref position, ref velocity, width, height, ref stepSpeed, ref gfxOffY, (int)gravDir, waterWalk || waterWalk2);
++				Collision.StepDown(ref position, ref velocity, width, height, ref stepSpeed, ref gfxOffY, (int)gravDir, canLiquidBeWalkedOn.Contains(true));
+ 
+ 			if (gravDir == -1f) {
+ 				if ((carpetFrame != -1 || velocity.Y <= gravity) && !controlUp)
 @@ -21722,18 +_,45 @@
  		if (vortexDebuff)
  			velocity.Y = velocity.Y * 0.8f + (float)Math.Cos(base.Center.X % 120f / 120f * ((float)Math.PI * 2f)) * 5f * 0.2f;
@@ -8242,6 +8304,79 @@
  				if (TileID.Sets.Platforms[Main.tile[x, y].type]) {
  					if (tile.halfBrick()) {
  						WorldGen.PoundTile(x, y);
+@@ -36070,7 +_,15 @@
+ 
+ 	private void ItemCheck_UseBuckets(Item sItem)
+ 	{
+-		if (((sItem.type < 205 || sItem.type > 207) && sItem.type != 1128 && sItem.type != 3031 && sItem.type != 3032 && sItem.type != 4820 && sItem.type != 4872 && sItem.type != 5302 && sItem.type != 5303 && sItem.type != 5304 && sItem.type != 5364) || noBuilding || !(position.X / 16f - (float)tileRangeX - (float)sItem.tileBoost <= (float)tileTargetX) || !((position.X + (float)width) / 16f + (float)tileRangeX + (float)sItem.tileBoost - 1f >= (float)tileTargetX) || !(position.Y / 16f - (float)tileRangeY - (float)sItem.tileBoost <= (float)tileTargetY) || !((position.Y + (float)height) / 16f + (float)tileRangeY + (float)sItem.tileBoost - 2f >= (float)tileTargetY))
++		List<int> validTypes = new List<int> { ItemID.EmptyBucket, ItemID.WaterBucket, ItemID.LavaBucket, ItemID.HoneyBucket, ItemID.BottomlessBucket, ItemID.BottomlessLavaBucket, ItemID.BottomlessHoneyBucket, ItemID.BottomlessShimmerBucket };
++		for (int i = 0; i < LiquidLoader.LiquidCount; i++) {
++			foreach (int iD in LiquidID.Sets.CanBeAbsorbedBy[i]) {
++				if (!validTypes.Contains(iD)) {
++					validTypes.Add(iD);
++				}
++			}
++		}
++		if (!validTypes.Contains(sItem.type) || noBuilding || !(position.X / 16f - (float)tileRangeX - (float)sItem.tileBoost <= (float)tileTargetX) || !((position.X + (float)width) / 16f + (float)tileRangeX + (float)sItem.tileBoost - 1f >= (float)tileTargetX) || !(position.Y / 16f - (float)tileRangeY - (float)sItem.tileBoost <= (float)tileTargetY) || !((position.Y + (float)height) / 16f + (float)tileRangeY + (float)sItem.tileBoost - 2f >= (float)tileTargetY))
+ 			return;
+ 
+ 		if (!Main.GamepadDisableCursorItemIcon) {
+@@ -36081,7 +_,7 @@
+ 		if (!ItemTimeIsZero || itemAnimation <= 0 || !controlUseItem)
+ 			return;
+ 
+-		if ((sItem.type == 205 && !Main.tile[tileTargetX, tileTargetY].shimmer()) || (sItem.type == 3032 && Main.tile[tileTargetX, tileTargetY].liquidType() == 0) || (sItem.type == 3032 && Main.tile[tileTargetX, tileTargetY].shimmer()) || (sItem.type == 4872 && Main.tile[tileTargetX, tileTargetY].lava()) || (sItem.type == 5303 && Main.tile[tileTargetX, tileTargetY].honey()) || sItem.type == 5304) {
++		if ((sItem.type == 205 && LiquidID.Sets.CreateLiquidBucketItem[Main.tile[tileTargetX, tileTargetY].liquidType()] != -1) || LiquidID.Sets.CanBeAbsorbedBy[Main.tile[tileTargetX, tileTargetY].liquidType()].Contains(sItem.type)) {
+ 			int num = Main.tile[tileTargetX, tileTargetY].liquidType();
+ 			int num2 = 0;
+ 			for (int i = tileTargetX - 1; i <= tileTargetX + 1; i++) {
+@@ -36091,26 +_,32 @@
+ 				}
+ 			}
+ 
+-			if (Main.tile[tileTargetX, tileTargetY].liquid <= 0 || (num2 <= 100 && sItem.type != 3032 && sItem.type != 4872 && sItem.type != 5303 && sItem.type != 5304))
++			if (Main.tile[tileTargetX, tileTargetY].liquid <= 0 || (num2 <= 100 && !LiquidID.Sets.CanBeAbsorbedBy[Main.tile[tileTargetX, tileTargetY].liquidType()].Contains(sItem.type)))
+ 				return;
+ 
+ 			int liquidType = Main.tile[tileTargetX, tileTargetY].liquidType();
+-			if (sItem.type != 3032 && sItem.type != 4872 && sItem.type != 5303 && sItem.type != 5304) {
+-				if (Main.tile[tileTargetX, tileTargetY].honey() && sItem.type == 205) {
+-					sItem.stack--;
+-					PutItemInInventoryFromItemUsage(1128, selectedItem);
+-				}
+-				else if (Main.tile[tileTargetX, tileTargetY].lava() && sItem.type == 205) {
+-					sItem.stack--;
+-					PutItemInInventoryFromItemUsage(207, selectedItem);
+-				}
+-				else {
+-					if (Main.tile[tileTargetX, tileTargetY].shimmer() && sItem.type == 205)
+-						return;
++			if (!LiquidID.Sets.CanBeAbsorbedBy[Main.tile[tileTargetX, tileTargetY].liquidType()].Contains(sItem.type)) {
++				//if (Main.tile[tileTargetX, tileTargetY].honey() && sItem.type == 205) {
++				//	sItem.stack--;
++				//	PutItemInInventoryFromItemUsage(1128, selectedItem);
++				//}
++				//else if (Main.tile[tileTargetX, tileTargetY].lava() && sItem.type == 205) {
++				//	sItem.stack--;
++				//	PutItemInInventoryFromItemUsage(207, selectedItem);
++				//}
++				//else {
++				//	if (Main.tile[tileTargetX, tileTargetY].shimmer() && sItem.type == 205)
++				//		return;
+ 
++				//	sItem.stack--;
++				//	PutItemInInventoryFromItemUsage(206, selectedItem);
++				//}
++				if (LiquidID.Sets.CreateLiquidBucketItem[Main.tile[tileTargetX, tileTargetY].liquidType()] != -1) {
+ 					sItem.stack--;
+-					PutItemInInventoryFromItemUsage(206, selectedItem);
++					PutItemInInventoryFromItemUsage(LiquidID.Sets.CreateLiquidBucketItem[Main.tile[tileTargetX, tileTargetY].liquidType()], selectedItem);
+ 				}
++				else
++					return;
+ 			}
+ 
+ 			SoundEngine.PlaySound(19, (int)position.X, (int)position.Y);
 @@ -36439,7 +_,9 @@
  			}
  
