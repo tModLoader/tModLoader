@@ -273,7 +273,7 @@ public class WorkshopPublishInfoStateForMods : AWorkshopPublishInfoState<TmodFil
 	internal static unsafe void UpscaleAndSaveImageAsPng(string srcImagePath, string dstImagePath, int dstWidth, int dstHeight)
 	{
 		using var srcStream = File.OpenRead(srcImagePath);
-		Texture2D.TextureDataFromStreamEXT(srcStream, out int srcWidth, out int srcHeight, out byte[] srcBytes); 
+		Texture2D.TextureDataFromStreamEXT(srcStream, out int srcWidth, out int srcHeight, out byte[] srcBytes);
 
 		using var dstStream = File.OpenWrite(dstImagePath);
 		PlatformUtilities.SavePng(dstStream, srcWidth, srcHeight, dstWidth, dstHeight, srcBytes);

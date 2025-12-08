@@ -57,7 +57,7 @@
 +		else {
 +			// Only recalculate when about to put the file to cloud
 +			ModLoader.Engine.Steam.RecalculateAvailableSteamCloudStorage();
-+			
++
 +			// Don't allow both the move to cloud, and the setting of the label
 +			if (!ModLoader.Engine.Steam.CheckSteamCloudStorageSufficient(_fileSize))
 +				return;

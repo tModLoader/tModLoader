@@ -89,7 +89,7 @@
  		list.Add(new Point16(105, 37));
  		list.Add(new Point16(105, 2));
  		GenVars.statueList = list.ToArray();
-+		GenVars.StatuesWithTraps = new List<int>(new int[4] {4, 7, 10, 18 }); // Duplicated here for modder convenience. 
++		GenVars.StatuesWithTraps = new List<int>(new int[4] {4, 7, 10, 18 }); // Duplicated here for modder convenience.
  	}
  
  	public static void PlaceStatueTrap(int x, int y)
@@ -252,7 +252,7 @@
  		catch {
  		}
 +		*/
-+		
++
 +		// Properly stop waterfall/lavafall sounds.
 +		// The above wouldn't do anything in the new sound system.
 +		Main.ambientWaterfallStrength = 0f;
@@ -271,7 +271,7 @@
 +		}
 +		catch {
 +		}
-+		
++
  		CaptureInterface.ResetFocus();
  		Main.ActivePlayerFileData.StopPlayTimer();
  		Player.SavePlayer(Main.ActivePlayerFileData);
@@ -751,7 +751,7 @@
 +		bool vanillaCanGrow = true;
  		if (tile.type != 53 && tile.type != 234 && tile.type != 116 && tile.type != 112)
 +			vanillaCanGrow = false;
-+		
++
 +		if (!vanillaCanGrow && !TileLoader.CanGrowModPalmTree(tile.type))
  			return false;
  
@@ -794,7 +794,7 @@
  		for (int num = -1; num > -100; num--) {
  			Tile tile = Main.tile[x, y + num];
  			if (!tile.active() || !TileID.Sets.GetsCheckedForLeaves[tile.type])
-@@ -17655,14 +_,18 @@
+@@ -17655,14 +_,19 @@
  						case 17:
  							passStyle = num2 + 8;
  							break;
@@ -809,6 +809,7 @@
  			}
  		}
 +
++		// TODO: Need treeHeight parameter to support spawning leaves from really tall tree tops.
 +		PlantLoader.GetTreeLeaf(t.type, ref passStyle);
  	}
  
@@ -2677,7 +2678,7 @@
  	private static bool ReplaceTile_IsValidChest(int type) => TileID.Sets.BasicChest[type];
  	private static bool ReplaceTile_IsValidDresser(int type) => TileID.Sets.BasicDresser[type];
  	private static bool ReplaceTile_IsValidPlatform(int type) => TileID.Sets.Platforms[type];
-@@ -44973,14 +_,26 @@
+@@ -44973,14 +_,27 @@
  					else if (i % 3 == 1) {
  						treeFrame += 3;
  					}
@@ -2691,6 +2692,7 @@
 +				default:
 +					var tree = PlantLoader.Get<ModTree>(TileID.Trees, tile.type);
 +					if (tree != null) {
++						tree.SetTreeFoliageSettings(i, j, tile, xoffset, ref treeFrame, floorY, ref topTextureFrameWidth, ref topTextureFrameHeight);
 +						tree.SetTreeFoliageSettings(tile, ref xoffset, ref treeFrame, ref floorY, ref topTextureFrameWidth, ref topTextureFrameHeight);
 +						treeStyle = tile.type + ModTree.VanillaTopTextureCount;
 +						return true;
@@ -2878,7 +2880,7 @@
  						if (tile.type == 2 || tile.type == 109 || tile.type == 477 || tile.type == 492 || tile.type == 147 || tile.type == 199 || tile.type == 23 || tile.type == 633) {
 +							vanillaResult = true;
 +						}
-+						
++
 +						if (vanillaResult || TileLoader.CanDropAcorn(tile.type)) {
  							dropItem = 9;
  							secondaryItem = 27;
@@ -3079,37 +3081,6 @@
  			bool flag2 = true;
  			while (flag2) {
  				flag2 = false;
-@@ -50708,6 +_,9 @@
- 				if (!InWorld(num11, num12, 10))
- 					continue;
- 
-+				if (!Main.tile[num11, num12].active())
-+					continue;
-+
- 				if (nearbyChlorophyte(num11, num12)) {
- 					ChlorophyteDefense(num11, num12);
- 				}
-@@ -50715,6 +_,20 @@
- 					if (CountNearBlocksTypes(num11, num12, 2, 1, 27) > 0)
- 						continue;
- 
-+					int preHookType = Main.tile[num11, num12].type;
-+					bool convertTile = TileLoader.Convert(num11, num12, BiomeConversionID.Corruption);
-+
-+					if (preHookType != Main.tile[num11, num12].type) {
-+						TileLoader.OnTileConverted(num11, num12, preHookType, Main.tile[num11, num12].type, BiomeConversionID.Corruption);
-+						if (genRand.Next(2) == 0)
-+							flag2 = true;
-+
-+						continue;
-+					}
-+
-+					if (!convertTile)
-+						continue;
-+
- 					if (Main.tile[num11, num12].type == 2) {
- 						if (genRand.Next(2) == 0)
- 							flag2 = true;
 @@ -50781,9 +_,12 @@
  					}
  				}
@@ -3123,37 +3094,6 @@
  			bool flag3 = true;
  			while (flag3) {
  				flag3 = false;
-@@ -50792,6 +_,9 @@
- 				if (!InWorld(num13, num14, 10))
- 					continue;
- 
-+				if (!Main.tile[num13, num14].active())
-+					continue;
-+
- 				if (nearbyChlorophyte(num13, num14)) {
- 					ChlorophyteDefense(num13, num14);
- 				}
-@@ -50799,6 +_,20 @@
- 					if (CountNearBlocksTypes(num13, num14, 2, 1, 27) > 0)
- 						continue;
- 
-+					int preHookType = Main.tile[num13, num14].type;
-+					bool convertTile = TileLoader.Convert(num13, num14, BiomeConversionID.Crimson);
-+
-+					if (preHookType != Main.tile[num13, num14].type) {
-+						TileLoader.OnTileConverted(num13, num14, preHookType, Main.tile[num13, num14].type, BiomeConversionID.Crimson);
-+						if (genRand.Next(2) == 0)
-+							flag3 = true;
-+
-+						continue;
-+					}
-+
-+					if (!convertTile)
-+						continue;
-+
- 					if (Main.tile[num13, num14].type == 2) {
- 						if (genRand.Next(2) == 0)
- 							flag3 = true;
 @@ -50865,11 +_,14 @@
  					}
  				}
@@ -3169,30 +3109,6 @@
  		bool flag4 = true;
  		while (flag4) {
  			flag4 = false;
-@@ -50878,6 +_,23 @@
- 			if (!InWorld(num15, num16, 10) || CountNearBlocksTypes(num15, num16, 2, 1, 27) > 0)
- 				continue;
- 
-+			if (!Main.tile[num15, num16].active())
-+				continue;
-+
-+			int preHookType = Main.tile[num15, num16].type;
-+			bool convertTile = TileLoader.Convert(num15, num16, BiomeConversionID.Hallow);
-+
-+			if (preHookType != Main.tile[num15, num16].type) {
-+				TileLoader.OnTileConverted(num15, num16, preHookType, Main.tile[num15, num16].type, BiomeConversionID.Hallow);
-+				if (genRand.Next(2) == 0)
-+					flag4 = true;
-+
-+				continue;
-+			}
-+
-+			if (!convertTile)
-+				continue;
-+
- 			if (Main.tile[num15, num16].type == 2) {
- 				if (genRand.Next(2) == 0)
- 					flag4 = true;
 @@ -50935,6 +_,7 @@
  				NetMessage.SendTileSquare(-1, num15, num16);
  			}
@@ -3201,6 +3117,26 @@
  	}
  
  	public static bool SolidTile(Tile testTile)
+@@ -50994,6 +_,10 @@
+ 
+ 	public static bool SolidTile(Point p) => SolidTile(p.X, p.Y);
+ 
++	/// <summary>
++	/// Checks if the tile at the given tile coordinates: <see cref="Tile.HasTile"/>, is <see cref="Main.tileSolid"/>, isn't <see cref="Main.tileSolidTop"/>, isn't sloped/halfblock/hammered (<see cref="Tile.Slope"/> and <see cref="Tile.IsHalfBlock"/>), and isn't actuated (<see cref="Tile.IsActuated"/>).
++	/// <br/><br/> If <paramref name="noDoors"/> is true, also checks that the tile isn't a closed door tile.
++	/// </summary>
+ 	public static bool SolidTile(int i, int j, bool noDoors = false)
+ 	{
+ 		try {
+@@ -51001,7 +_,7 @@
+ 				return true;
+ 
+ 			if (Main.tile[i, j].active() && Main.tileSolid[Main.tile[i, j].type] && !Main.tileSolidTop[Main.tile[i, j].type] && !Main.tile[i, j].halfBrick() && Main.tile[i, j].slope() == 0 && !Main.tile[i, j].inActive()) {
+-				if (noDoors && Main.tile[i, j].type == 10)
++				if (noDoors && TileLoader.IsClosedDoor(Main.tile[i, j]))
+ 					return false;
+ 
+ 				return true;
 @@ -51041,6 +_,10 @@
  		return true;
  	}
@@ -3519,6 +3455,28 @@
  								CheckTorch(i, j);
  								break;
  							case 442:
+@@ -59389,10 +_,10 @@
+ 											if (tile5 != null && tile5.nactive() && !tile5.halfBrick() && !tile5.leftSlope())
+ 												num18 = tile5.type;
+ 
+-											if (num17 == 10)
++											if (TileLoader.IsClosedDoor(num17))
+ 												num17 = -1;
+ 
+-											if (num18 == 10)
++											if (TileLoader.IsClosedDoor(num18))
+ 												num18 = -1;
+ 
+ 											short num19 = (short)(genRand.Next(3) * 18);
+@@ -59401,7 +_,7 @@
+ 													tile.frameY = num19;
+ 											}
+ 											else if (num17 >= 0 && Main.tileSolid[num17] && !Main.tileSolidTop[num17]) {
+-												if (tile.frameY < 108 || tile.frameY > 54)
++												if (tile.frameY < 108 || tile.frameY > 144) // Fix framing bug. Fixed in vanilla.
+ 													tile.frameY = (short)(108 + num19);
+ 											}
+ 											else if (num18 >= 0 && Main.tileSolid[num18] && !Main.tileSolidTop[num18]) {
 @@ -59474,7 +_,7 @@
  
  											Tile tile3 = Main.tile[i, j + 1];
@@ -3759,7 +3717,7 @@
  									TileMergeAttempt(num, TileID.Sets.Mud, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
  
 +								TileLoader.ModifyFrameMerge(num, i, j, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
-+								
++
  								bool flag = false;
  								TileMergeCullCache tileMergeCullCache = default(TileMergeCullCache);
  								if (!Main.ShouldShowInvisibleWalls()) {

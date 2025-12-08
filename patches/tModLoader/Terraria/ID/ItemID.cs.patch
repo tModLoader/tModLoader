@@ -425,7 +425,7 @@
  		public static int DefaultKillsForBannerNeeded = 50;
 +
 +		/// <summary>
-+		/// Determines the number of NPC of the corresponding BannerID that are required to be killed to obtain the given banner item type (<see cref="Item.type"/>). 
++		/// Determines the number of NPC of the corresponding BannerID that are required to be killed to obtain the given banner item type (<see cref="Item.type"/>).
 +		/// <br/> Defaults to <c><see cref="DefaultKillsForBannerNeeded"/> (50)</c>.
 +		/// <para/> This is also used to determine how many kills are needed to fully unlock the Bestiary entry for each NPC type using the corresponding BannerID, although Bestiary kill counts are tracked individually for each NPC type instead of sharing a kill count with all other NPC types using the same BannerID as they do for banner dropping purposes.
 +		/// </summary>

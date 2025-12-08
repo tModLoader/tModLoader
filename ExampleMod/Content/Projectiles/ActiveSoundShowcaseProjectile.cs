@@ -124,7 +124,7 @@ namespace ExampleMod.Content.Projectiles
 					// Projectile.localAI[0] = soundSlot.ToFloat();
 
 					// As an alternate approach to TryGetActiveSound, we could use FindActiveSound. The difference is that FindActiveSound will find any ActiveSound matching the given SoundStyle, so if 2 projectile instances spawn the same SoundStyle, the ActiveSound retrieved isn't necessarily the sound spawned by this instance. This can be useful, but in this situation we want the ActiveSound spawned by this projectile.
-					/* 
+					/*
 					var activeSoundB = SoundEngine.FindActiveSound(soundStyleIgniteLoop);
 					if (activeSoundB == null) {
 						SoundEngine.PlaySound(soundStyleIgniteLoop, Projectile.position, updateIgniteLoop);

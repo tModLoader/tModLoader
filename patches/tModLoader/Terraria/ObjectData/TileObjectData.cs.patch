@@ -12,7 +12,7 @@
 -public class TileObjectData
 +/// <summary>
 +/// Contains tile properties for multitiles dictating how they are placed and how they behave. Multitiles are non-terrain tiles.
-+/// <para/> TileObjectData supports alternate placements as well as tile style-specific behaviors. 
++/// <para/> TileObjectData supports alternate placements as well as tile style-specific behaviors.
 +/// <para/> The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Tile#tileobjectdata-or-frameimportantmultitiles">TileObjectData section of the Basic Tile wiki guide</see> has visuals and guides teaching how to use the TileObjectData system.
 +/// </summary>
 +public partial class TileObjectData
@@ -121,7 +121,7 @@
  	}
  
 +	/// <summary>
-+	/// If true, this tile will use anchors to decide if the tile can be placed, otherwise it will fallback to being placed like a terrain tile. Aside from platforms and torches, all multitiles set this to true. 
++	/// If true, this tile will use anchors to decide if the tile can be placed, otherwise it will fallback to being placed like a terrain tile. Aside from platforms and torches, all multitiles set this to true.
 +	/// <para/> Defaults to false, but most template styles set this to true. If not copying from a template style or existing tile <b>be sure to set this to true</b>.
 +	/// </summary>
  	public bool UsesCustomCanPlace {
@@ -196,7 +196,7 @@
  	}
  
 +	/// <summary>
-+	/// Limits which tile types are valid for anchoring to a specific set of types. 
++	/// Limits which tile types are valid for anchoring to a specific set of types.
 +	/// </summary>
  	public int[] AnchorValidTiles {
  		get {
@@ -206,7 +206,7 @@
  	}
  
 +	/// <summary>
-+	/// Dictates specific tile types that are not valid for anchoring to. 
++	/// Dictates specific tile types that are not valid for anchoring to.
 +	/// </summary>
  	public int[] AnchorInvalidTiles {
  		get {
@@ -284,7 +284,7 @@
  	}
  
 +	/// <summary>
-+	/// Designates a method to call to determine if the tile can't be placed by the player at the location. This method is only called on the client placing the tile. This is used by chest tiles to see if the chest limit has been reached and by pylons to check if the pylon has already been placed. 
++	/// Designates a method to call to determine if the tile can't be placed by the player at the location. This method is only called on the client placing the tile. This is used by chest tiles to see if the chest limit has been reached and by pylons to check if the pylon has already been placed.
 +	/// </summary>
  	public PlacementHook HookCheckIfCanPlace {
  		get {
@@ -394,7 +394,7 @@
  
 +	/// <summary>
 +	/// If true, tile styles are arranged one after the other horizontally in the spritesheet, otherwise they are arranged vertically. New lines of styles will roll over to the next row once <see cref="StyleWrapLimit"/> is reached, if defined.
-+	/// <para/> Some tiles keep this false but use a small <see cref="StyleWrapLimit"/> and <see cref="StyleMultiplier"/> value to provide space for alternate placements, resulting in the tile styles themselves appearing to be arranged horizontally in the resulting spritesheet with the alternate placements below.  
++	/// <para/> Some tiles keep this false but use a small <see cref="StyleWrapLimit"/> and <see cref="StyleMultiplier"/> value to provide space for alternate placements, resulting in the tile styles themselves appearing to be arranged horizontally in the resulting spritesheet with the alternate placements below.
 +	/// <para/> Defaults to <c>false</c>.
 +	/// </summary>
  	public bool StyleHorizontal {
@@ -642,7 +642,7 @@
 +	/// <summary>
 +	/// Copies all tile object data from the <paramref name="copy"/> to this TileObjectData <b>except</b> the subtiles. <see cref="FullCopyFrom(TileObjectData)"/> will additionally copy subtiles.
 +	/// <para/> Copying tile data will copy anchors, sizes, origin, and all other properties of the tile dictating their placement behavior.
-+	/// <para/> The most common usage is to copy the tile properties of one of the existing tile templates found in the TileObjectData class: <c>TileObjectData.newTile.CopyFrom(TileObjectData.Style3x4);</c>. After copying from a template, the properties would be further customized if desired. 
++	/// <para/> The most common usage is to copy the tile properties of one of the existing tile templates found in the TileObjectData class: <c>TileObjectData.newTile.CopyFrom(TileObjectData.Style3x4);</c>. After copying from a template, the properties would be further customized if desired.
 +	/// <para/> Another common usage would be to copy a vanilla furniture tile to easily create tiles matching the behavior of existing furniture: <c>TileObjectData.newTile.CopyFrom(TileObjectData.GetTileData(TileID.OpenDoor, 0));</c>. CopyFrom is used instead of FullCopyFrom in this situation because copying subtiles would incorrectly copy over subtile specific behavior, such as lava immunity for some subtiles.
 +	/// <para/> One more usage is to copy over tile properties from <see cref="newTile"/> to either <see cref="newAlternate"/> or <see cref="newSubTile"/>: <c>TileObjectData.newSubTile.CopyFrom(TileObjectData.newTile);</c>.
 +	/// <para/> Copying tile properties is a good approach to writing clean code and avoiding hard to troubleshoot bugs. Make sure to call this method before modifying any other properties as this method will overwrite any changes made earlier in the code.
@@ -755,7 +755,7 @@
  	}
  
 +	/// <summary>
-+	/// Calculates a placement style from a provided tile style and random style offset. A placement style is the tile style multiplied by <see cref="StyleMultiplier"/> plus the alternate and random placement style offsets. 
++	/// Calculates a placement style from a provided tile style and random style offset. A placement style is the tile style multiplied by <see cref="StyleMultiplier"/> plus the alternate and random placement style offsets.
 +	/// <para/> The <paramref name="alternate"/> parameter is unused, but the <see cref="Style"/> of this TileObjectData (equivalent to the value passed into <see cref="addAlternate(int)"/>) is used to offset the style to account for alternate placements. As such, this method should be called on the alternate TileObjectData if applicable, not the root TileObjectData for this tile style. Do this by first retrieving it by calling the <see cref="GetTileData(Tile)"/> method.
 +	/// </summary>
  	public int CalculatePlacementStyle(int style, int alternate, int random)
@@ -810,7 +810,7 @@
  	}
  
 +	/// <summary>
-+	/// Registers <see cref="newAlternate"/> as an alternate placement of <see cref="newTile"/>. The <paramref name="baseStyle"/> parameter corresponds to which placement style sprite this alternate placement will use. This value will apply an offset to the tile style being placed. 
++	/// Registers <see cref="newAlternate"/> as an alternate placement of <see cref="newTile"/>. The <paramref name="baseStyle"/> parameter corresponds to which placement style sprite this alternate placement will use. This value will apply an offset to the tile style being placed.
 +	/// <para/> <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/Tiles/ExampleTorch.cs#L44">ExampleTorch</see>, for example, shows alternate placements using the 0, 1, and 2 placement style sprites, showing how different anchors can result in different placements sprites. <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/Tiles/Furniture/ExampleDoorClosed.cs#L59">ExampleDoorClosed</see>, on the other hand, adds multiple alternates all using the same 0 placement sprite but different <see cref="Origin"/> to allow the user an easier time placing the door in a doorway.
 +	/// <para/> <see cref="StyleMultiplier"/> is usually used to account for alternate placements to allow them to be considered the same tile style. If <see cref="RandomStyleRange"/> is used, the random style will be added after the alternate placement style has been applied, so usually multiples of RandomStyleRange would be used for each addAlternate parameter. (For example, if RandomStyleRange is 5 for a tile with left and right placements, addAlternate(5) could be used for the right facing placement and StyleMultiplier should be set to 10.)
 +	/// </summary>

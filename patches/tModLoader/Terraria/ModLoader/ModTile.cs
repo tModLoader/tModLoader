@@ -17,7 +17,7 @@ namespace Terraria.ModLoader;
 /// </summary>
 public abstract class ModTile : ModBlockType
 {
-	/// <summary> The height of a group of animation frames for this tile. Defaults to 0, which disables animations. 
+	/// <summary> The height of a group of animation frames for this tile. Defaults to 0, which disables animations.
 	/// <para/> Used in conjunction with <see cref="AnimateTile(ref int, ref int)"/> to automatically animate tiles. Use <see cref="AnimateIndividualTile(int, int, int, ref int, ref int)"/> as well if needed.
 	/// <para/> An easy way to set this correctly without doing any math is to set this to the value of <see cref="TileObjectData.CoordinateFullHeight"/>.
 	/// <para/> Note that this assumes animation frames are laid out vertically in the tile spritesheet, if that is not the case then <see cref="AnimateIndividualTile"/> will need to be used to apply AnimationFrameHeight to X coordinates instead.
@@ -61,7 +61,7 @@ public abstract class ModTile : ModBlockType
 	/// <summary>
 	/// Adds an entry to the minimap for this tile with the given color and display name. This should be called in SetDefaults.
 	/// <br/> For a typical tile that has a map display name, use <see cref="ModBlockType.CreateMapEntryName"/> as the name parameter for a default key using the pattern "Mods.{ModName}.Tiles.{ContentName}.MapEntry".
-	/// <br/> If a tile will be using multiple map entries, it is suggested to use <c>this.GetLocalization("CustomMapEntryName")</c>. Modders can also re-use the display name localization of items, such as <c>ModContent.GetInstance&lt;ItemThatPlacesThisStyle&gt;().DisplayName</c>. 
+	/// <br/> If a tile will be using multiple map entries, it is suggested to use <c>this.GetLocalization("CustomMapEntryName")</c>. Modders can also re-use the display name localization of items, such as <c>ModContent.GetInstance&lt;ItemThatPlacesThisStyle&gt;().DisplayName</c>.
 	/// <br/><br/> Multiple map entries are suitable for tiles that need a different color or hover text for different tile styles. Vanilla code uses this mostly only for chest and dresser tiles. Map entries will be given a corresponding map option value, counting from 0, according to the order in which they are added. Map option values don't necessarily correspond to tile styles.
 	/// <br/> <see cref="ModBlockType.GetMapOption"/> will be used to choose which map entry is used for a given coordinate.
 	/// <br/><br/> Vanilla map entries for most furniture tiles tend to be fairly generic, opting to use a single map entry to show "Table" for all styles of tables instead of the style-specific text such as "Wooden Table", "Honey Table", etc. To use these existing localizations, use the <see cref="Language.GetText(string)"/> method with the appropriate key, such as "MapObject.Chair", "MapObject.Door", "ItemName.WorkBench", etc. Consult the source code or ExampleMod to find the existing localization keys for common furniture types. The <c>array</c> array in <c>MapHelper.Initialize</c> has vanilla tile color values and <c>Lang.BuildMapAtlas</c> has the text.
@@ -227,7 +227,7 @@ public abstract class ModTile : ModBlockType
 
 	/// <summary>
 	/// Allows customization of the items the tile at the given coordinates drops.<br/><br/>
-	/// The default item drop is determined by finding an item with <see cref="Item.createTile"/> and <see cref="Item.placeStyle"/> matching the type and style of this tile. 
+	/// The default item drop is determined by finding an item with <see cref="Item.createTile"/> and <see cref="Item.placeStyle"/> matching the type and style of this tile.
 	/// <see cref="ModTile.RegisterItemDrop(int, int[])"/> can be used to manually register item drops for tile styles with no corresponding item. It can also be used to register a fallback item, which will be dropped if no suitable item is found.<br/><br/>
 	/// The default behavior should cover 99% of use cases, meaning that overriding this method should only be necessary in extremely unique tiles, such as tiles dropping multiple items, tiles dropping items with custom data, or tiles with custom tile style code.<br/><br/>
 	/// When overriding, use <c>yield return new Item(ItemTypeHere);</c> for each spawned item. Note that a random prefix will be applied to these items, if applicable, so if specific prefixes or no prefix is needed for an item drop, it will have to be spawned in manually using <see cref="KillMultiTile(int, int, int, int)"/> or <see cref="KillTile(int, int, ref bool, ref bool, ref bool)"/>.<br/><br/>
@@ -572,7 +572,7 @@ public abstract class ModTile : ModBlockType
 
 	/// <summary>
 	/// Allows you to make something happen when a wire current passes through this tile. Both <see cref="Wiring.SkipWire(int, int)"/> and <see cref="NetMessage.SendTileSquare(int, int, int, int, TileChangeType)"/> are usually required in the logic used in this method to correctly work.
-	/// <br/>Only called on the server and single player. All wiring happens on the world, not multiplayer clients. 
+	/// <br/>Only called on the server and single player. All wiring happens on the world, not multiplayer clients.
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>
@@ -594,7 +594,7 @@ public abstract class ModTile : ModBlockType
 
 	/// <summary>
 	/// Called in <see cref="Collision.SwitchTiles(Entity, Vector2, int, int, Vector2, int)"/>. This hook allows acting on entities colliding with tiles.
-	/// <br/><br/> The <paramref name="position"/>, <paramref name="width"/>, and <paramref name="height"/> parameters indicate the hitbox of the entity, while <paramref name="oldPosition"/> is the position of the entity on the previous update. You'll need to use these to determine if a collision is occurring and if the entity is entering or leaving the collision bounds this tile is interested in. This is called on every 
+	/// <br/><br/> The <paramref name="position"/>, <paramref name="width"/>, and <paramref name="height"/> parameters indicate the hitbox of the entity, while <paramref name="oldPosition"/> is the position of the entity on the previous update. You'll need to use these to determine if a collision is occurring and if the entity is entering or leaving the collision bounds this tile is interested in. This is called on every
 	/// <br/><br/> <include file = 'CommonDocs.xml' path='Common/SwitchTilesObjType' />
 	/// <br/><br/> Called on the local client for owned projectile and the player, and on the server for boulder projectiles and NPC.
 	/// <br/><br/> Returns false by default. Return true to indicate that the tile had some sort of interaction occur. This return value is only used to force specific friendly NPC to keep walking, preventing them from resting on pressure plates, for example.
@@ -641,7 +641,7 @@ public abstract class ModTile : ModBlockType
 
 	/// <summary>
 	/// Allows you to modify the dust created when the player walks on this tile. The makeDust parameter is whether or not to make dust; you can randomly set this to false to reduce the amount of dust produced.
-	/// <para/> The default dust (<paramref name="dustType"/>) is <see cref="DustID.Snow"/> 
+	/// <para/> The default dust (<paramref name="dustType"/>) is <see cref="DustID.Snow"/>
 	/// </summary>
 	/// <param name="dustType"></param>
 	/// <param name="makeDust"></param>

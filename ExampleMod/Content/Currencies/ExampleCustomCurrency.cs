@@ -25,7 +25,7 @@ namespace ExampleMod.Content.Currencies
 		// This is what Item.shopSpecialCurrency will be set to to make a shop entry use our currency.
 		public static int ExampleItemCurrency { get; set; }
 
-		// We use PostSetupContent to be sure that items' types have been initialized and are accessible. 
+		// We use PostSetupContent to be sure that items' types have been initialized and are accessible.
 		public override void PostSetupContent() {
 			// This call actually registers our custom currency.
 			ExampleItemCurrency = CustomCurrencyManager.RegisterCurrency(new ExampleCustomCurrency(

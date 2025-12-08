@@ -6,7 +6,7 @@
  
 +/// <summary>
 +/// This class manages lighting in the game world. Lighting is calculated and tracked at tile coordinates within the users game view. The most common use of this class is to use <c>GetColor</c> methods to retrieve the light values at a location for drawing a specific entity. Another common usage is adding light to the game world using the <c>AddLight</c> methods.
-+/// <br/><br/> Lighting is not calculated on the server, as such it should not be used for anything gameplay related that needs to sync with the server. 
++/// <br/><br/> Lighting is not calculated on the server, as such it should not be used for anything gameplay related that needs to sync with the server.
 +/// </summary>
  public class Lighting
  {

@@ -116,7 +116,7 @@ namespace ExampleMod.Content.Projectiles
 		}
 
 		public override void SendExtraAI(BinaryWriter writer) {
-			// Projectile.spriteDirection for this projectile is derived from the mouse position of the owner in OnSpawn, as such it needs to be synced. spriteDirection is not one of the fields automatically synced over the network. All Projectile.ai slots are used already, so we will sync it manually. 
+			// Projectile.spriteDirection for this projectile is derived from the mouse position of the owner in OnSpawn, as such it needs to be synced. spriteDirection is not one of the fields automatically synced over the network. All Projectile.ai slots are used already, so we will sync it manually.
 			writer.Write((sbyte)Projectile.spriteDirection);
 		}
 

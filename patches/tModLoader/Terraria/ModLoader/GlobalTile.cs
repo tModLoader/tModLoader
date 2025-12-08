@@ -109,7 +109,7 @@ public abstract class GlobalTile : GlobalBlockType
 
 	/// <summary>
 	/// Allows you to customize whether this tile glows <paramref name="sightColor"/> while the local player has the <see href="https://terraria.wiki.gg/wiki/Biome_Sight_Potion">Biome Sight buff</see>.
-	/// <br/>Return true to force this behavior, or false to prevent it, overriding vanilla conditions and colors. Returns null by default. 
+	/// <br/>Return true to force this behavior, or false to prevent it, overriding vanilla conditions and colors. Returns null by default.
 	/// <br/>This is only called on the local client.
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
@@ -289,7 +289,7 @@ public abstract class GlobalTile : GlobalBlockType
 
 	/// <summary>
 	/// Allows you to make something happen when a wire current passes through any tile. Both <see cref="Wiring.SkipWire(int, int)"/> and <see cref="NetMessage.SendTileSquare(int, int, int, int, ID.TileChangeType)"/> are usually required in the logic used in this method to correctly work.
-	/// <br/>Only called on the server and single player. All wiring happens on the world, not multiplayer clients. 
+	/// <br/>Only called on the server and single player. All wiring happens on the world, not multiplayer clients.
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>

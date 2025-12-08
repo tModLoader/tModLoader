@@ -278,7 +278,7 @@
  	public int timeLeftInWhichTheItemCannotBeTakenByEnemies;
 +
 +	/// <summary>
-+	/// The Item ID of this item. The Item ID is a unique number assigned to each Item loaded into the game. This will be equal to either an <see cref="ItemID"/> entry or <see cref="ModContent.ItemType{T}"/>, for example <see cref="ItemID.IronskinPotion"/> or ModContent.ItemType&lt;MyModItem&gt;(). To check if an Item instance is a specific Item, check <c>Item.type == ItemID.VanillaItemHere</c> or <c>Item.type == ModContent.ItemType&lt;ModdedItemHere&gt;()</c> in an <see langword="if"/> statement. 
++	/// The Item ID of this item. The Item ID is a unique number assigned to each Item loaded into the game. This will be equal to either an <see cref="ItemID"/> entry or <see cref="ModContent.ItemType{T}"/>, for example <see cref="ItemID.IronskinPotion"/> or ModContent.ItemType&lt;MyModItem&gt;(). To check if an Item instance is a specific Item, check <c>Item.type == ItemID.VanillaItemHere</c> or <c>Item.type == ModContent.ItemType&lt;ModdedItemHere&gt;()</c> in an <see langword="if"/> statement.
 +	/// </summary>
  	public int type;
 +
@@ -324,7 +324,7 @@
  	public int useAnimation;
 +
 +	/// <summary>
-+	/// The time span of using the item in ticks. This is independent of the time it takes for the item animation to finish. 
++	/// The time span of using the item in ticks. This is independent of the time it takes for the item animation to finish.
 +	/// <br/> Blocks use 10. Default value is 100.
 +	/// <br/> Weapons usually have equal <see cref="useAnimation"/> and useTime, unequal values for these two results in multiple attacks per click. See <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/Items/Weapons/ExampleGun.cs#L105">ExampleGun.cs's Clockwork Assault Rifle example</see> for an example of that.
 +	/// </summary>
@@ -469,7 +469,7 @@
 +
 +	/// <summary>
 +	/// The sound this item makes when used. Set this to an existing <see cref="SoundID"/> entry or assign to a new <see cref="SoundStyle"/> for a custom sound.
-+	/// <br/> The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Sounds">Basic Sounds Guide</see> teaches how to find existing sounds to use, how to use custom sounds, and how to customize the playback properties of the sounds. 
++	/// <br/> The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Sounds">Basic Sounds Guide</see> teaches how to find existing sounds to use, how to use custom sounds, and how to customize the playback properties of the sounds.
 +	/// <br/> For example <c>Item.UseSound = SoundID.Item1;</c> can be used for the sword swing sound.
 +	/// <br/> Defaults to null.
 +	/// </summary>
@@ -650,8 +650,8 @@
  	public int buffType;
 +
 +	/// <summary>
-+	/// The duration in ticks of the buff given by this item on use. There are 60 ticks per second, multiply the number of seconds by 60. For example, a buff lasting 8 minutes would use a value of either <c>28800</c> or <c>8*60*60</c>. 
-+	/// <br/> Make sure to set <see cref="buffType"/> as well. 
++	/// The duration in ticks of the buff given by this item on use. There are 60 ticks per second, multiply the number of seconds by 60. For example, a buff lasting 8 minutes would use a value of either <c>28800</c> or <c>8*60*60</c>.
++	/// <br/> Make sure to set <see cref="buffType"/> as well.
 +	/// <br/> Defaults to 0.
 +	/// </summary>
  	public int buffTime;
@@ -1122,7 +1122,7 @@
 +	{
 +		if (PrefixLegacy.ItemSets.SwordsHammersAxesPicks[type] || ItemLoader.MeleePrefix(this))
 +			return PrefixCategory.Melee;
-+		
++
 +		if (PrefixLegacy.ItemSets.GunsBows[type] || ItemLoader.RangedPrefix(this))
 +			return PrefixCategory.Ranged;
 +
@@ -1161,7 +1161,7 @@
  			return false;
  
  		rolledPrefix = rollablePrefixes[random.Next(rollablePrefixes.Length)];
-+		
++
  		return true;
 +		*/
 +
@@ -1907,7 +1907,7 @@
  	}
  
 +	/// <summary>
-+	/// A helper method that sets item rarity (<see cref="Item.rare"/>) and item value (<see cref="Item.value"/>). 
++	/// A helper method that sets item rarity (<see cref="Item.rare"/>) and item value (<see cref="Item.value"/>).
 +	/// </summary>
 +	/// <param name="rarity"></param>
 +	/// <param name="coinValue"></param>
@@ -1963,7 +1963,7 @@
  
 +	// Added by TML.
 +	/// <summary>
-+	/// Call in <see cref="ModItem.SetDefaults"/> to clone all the default item property values of an existing item. This is useful for prototyping or making a variant of an existing item. Note that other changes made to the cloned item, such as if another mod changes a weapon's damage, will be applied when using this approach. This may or may not be desired. 
++	/// Call in <see cref="ModItem.SetDefaults"/> to clone all the default item property values of an existing item. This is useful for prototyping or making a variant of an existing item. Note that other changes made to the cloned item, such as if another mod changes a weapon's damage, will be applied when using this approach. This may or may not be desired.
 +	/// <para/> When using this method make sure that any additional changes to item properties are on lines after this method is called, otherwise they will be overwritten. Some values cloned by this method might be undesired, such as equipment slot values like shoeSlot. <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/Items/Accessories/WaspNest.cs#L51">WaspNest.cs</see> shows how to cache and restore those values.
 +	/// <para/> This will only clone the values, any additional logic such as shoot accuracy, recipes, accessory effects, use item logic, etc. will not be copied. The <see href="https://github.com/tModLoader/tModLoader/wiki/Advanced-Vanilla-Code-Adaption">Vanilla Code Adaption wiki page</see> teaches how to make a complete clone of an existing item.
 +	/// </summary>
@@ -2355,7 +2355,7 @@
 +	/// Spawns an item into the game world with the given type and stack size. The X, Y, Width, and Height parameters dictate a rectangle, the item will be spawned centered within that rectangle. Other overloads support passing in a position directly, or just use 0 for Width and Height if the center is passed in a X and Y.
 +	/// <br/><br/> This method should not be called on multiplayer clients. If you need to spawn items from client code, use <see cref="Player.QuickSpawnItem(IEntitySource, int, int)"/> instead, it handles the multiplayer syncing code needed.
 +	/// <br/><br/> See the <paramref name="noBroadcast"/> documentation if you need to customize attached ModItem or GlobalItem data prior to syncing.
-+	/// <br/><br/> The source represents the entity causing this item to spawn. The return value is the index of the spawned Item within the <see cref="Main.item"/> array. 
++	/// <br/><br/> The source represents the entity causing this item to spawn. The return value is the index of the spawned Item within the <see cref="Main.item"/> array.
 +	/// </summary>
 +	/// <param name="source"></param>
 +	/// <param name="X"></param>
@@ -2553,10 +2553,10 @@
 +	/// <param name="onlyIfVariantChanged"></param>
  	public void Refresh(bool onlyIfVariantChanged = true)
  	{
-+		// Don't adjust custom prices. For shops, modders would need to add multiple shop entries to account for variants with custom prices anyway. 
++		// Don't adjust custom prices. For shops, modders would need to add multiple shop entries to account for variants with custom prices anyway.
 +		var originalCustomPrice = shopCustomPrice;
 +		var originalSpecialCurrency = shopSpecialCurrency;
-+		
++
  		if (!IsAir && (!onlyIfVariantChanged || ItemVariants.SelectVariant(type) != Variant)) {
 +			/*
  			bool flag = favorited;

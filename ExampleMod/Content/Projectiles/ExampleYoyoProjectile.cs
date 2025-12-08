@@ -10,11 +10,11 @@ namespace ExampleMod.Content.Projectiles
 		public override void SetStaticDefaults() {
 			// The following sets are only applicable to yoyo that use aiStyle 99.
 
-			// YoyosLifeTimeMultiplier is how long in seconds the yoyo will stay out before automatically returning to the player. 
+			// YoyosLifeTimeMultiplier is how long in seconds the yoyo will stay out before automatically returning to the player.
 			// Vanilla values range from 3f (Wood) to 16f (Chik), and defaults to -1f. Leaving as -1 will make the time infinite.
 			ProjectileID.Sets.YoyosLifeTimeMultiplier[Type] = 3.5f;
 
-			// YoyosMaximumRange is the maximum distance the yoyo sleep away from the player. 
+			// YoyosMaximumRange is the maximum distance the yoyo sleep away from the player.
 			// Vanilla values range from 130f (Wood) to 400f (Terrarian), and defaults to 200f.
 			ProjectileID.Sets.YoyosMaximumRange[Type] = 300f;
 
@@ -35,7 +35,7 @@ namespace ExampleMod.Content.Projectiles
 			// Projectile.scale = 1f; // The scale of the projectile. Most yoyos are 1f, but a few are larger. The Kraken is the largest at 1.2f
 		}
 
-		// notes for aiStyle 99: 
+		// notes for aiStyle 99:
 		// localAI[0] is used for timing up to YoyosLifeTimeMultiplier
 		// localAI[1] can be used freely by specific types
 		// ai[0] and ai[1] usually point towards the x and y world coordinate hover point

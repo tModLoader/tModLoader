@@ -46,5 +46,5 @@
 +	/// <param name="id">The id of the currency system to retrieve.</param>
 +	/// <param name="system">When this method returns, contains the retrieved CustomCurrencySystem object, or null if the retrieval failed.</param>
 +	/// <returns>true if the retrieval was successful; otherwise, false.</returns>
-+	public static bool TryGetCurrencySystem(int id, out CustomCurrencySystem system) => _currencies.TryGetValue(id, out system); // Requested in #3133	
++	public static bool TryGetCurrencySystem(int id, out CustomCurrencySystem system) => _currencies.TryGetValue(id, out system); // Requested in #3133
  }

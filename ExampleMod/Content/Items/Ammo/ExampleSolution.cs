@@ -118,7 +118,7 @@ namespace ExampleMod.Content.Items.Ammo
 					WallID.Sets.Conversion.Sandstone[i] ||
 					WallID.Sets.Conversion.HardenedSand[i] ||
 					WallID.Sets.Conversion.Ice[i] ||
-					WallID.Sets.Conversion.NewWall1[i] || // NewWalls are the underground wall variants 
+					WallID.Sets.Conversion.NewWall1[i] || // NewWalls are the underground wall variants
 					WallID.Sets.Conversion.NewWall2[i] ||
 					WallID.Sets.Conversion.NewWall3[i] ||
 					WallID.Sets.Conversion.NewWall4[i])

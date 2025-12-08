@@ -368,7 +368,7 @@ public static class TileLoader
 				break;
 			}
 		}
-		// TODO: Placed modded tiles can't automatically reorient themselves to an alternate placement, like Torch and Sign do. 
+		// TODO: Placed modded tiles can't automatically reorient themselves to an alternate placement, like Torch and Sign do.
 		if (partiallyDestroyed || !TileObject.CanPlace(originX, originY, type, style, 0, out TileObject objectData, onlyCheck: true, checkStay: true)) {
 			WorldGen.destroyObject = true;
 			// First the Items to drop are tallied and spawned, then Kill each tile, then KillMultiTile can clean up TileEntities or Chests
@@ -492,7 +492,7 @@ public static class TileLoader
 		ModTile modTile = GetTile(type);
 		if (modTile != null) {
 			// Because vanilla sets its own offset based on frameY, ignoring tile type, which might not be set to an expected default, reassign it
-			info.VisualOffset = new Vector2(-9f, 1f); // Taken from default case of vanilla beds 
+			info.VisualOffset = new Vector2(-9f, 1f); // Taken from default case of vanilla beds
 			modTile.ModifySleepingTargetInfo(i, j, ref info);
 		}
 	}

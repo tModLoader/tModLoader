@@ -68,7 +68,7 @@ namespace ExampleMod.Content.Projectiles
 			// Vanilla flails all use aiStyle 15, but the code isn't customizable so an adaption of that aiStyle is used in the AI method
 		}
 
-		// This AI code was adapted from vanilla code: Terraria.Projectile.AI_015_Flails() 
+		// This AI code was adapted from vanilla code: Terraria.Projectile.AI_015_Flails()
 		public override void AI() {
 			Player player = Main.player[Projectile.owner];
 			// Kill the projectile if the player dies or gets crowd controlled
@@ -440,7 +440,7 @@ namespace ExampleMod.Content.Projectiles
 
 			Rectangle? chainSourceRectangle = null;
 			// Drippler Crippler customizes sourceRectangle to cycle through sprite frames: sourceRectangle = asset.Frame(1, 6);
-			float chainHeightAdjustment = 0f; // Use this to adjust the chain overlap. 
+			float chainHeightAdjustment = 0f; // Use this to adjust the chain overlap.
 
 			Vector2 chainOrigin = chainSourceRectangle.HasValue ? (chainSourceRectangle.Value.Size() / 2f) : (chainTexture.Size() / 2f);
 			Vector2 chainDrawPosition = Projectile.Center;

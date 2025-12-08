@@ -170,7 +170,7 @@ internal static class InstallVerifier
 		// If .exe not present check parent directory (Nested Manual Install)
 		vanillaPath = Directory.GetParent(vanillaPath).FullName;
 		yield return vanillaPath;
-		
+
 		// If .exe not present, check Terraria directory (Side-by-Side Manual Install)
 		vanillaPath = Path.Combine(vanillaPath, "Terraria");
 		if (Platform.IsOSX) {

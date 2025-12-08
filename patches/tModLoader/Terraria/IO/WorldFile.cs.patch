@@ -185,7 +185,7 @@
 -		writer.Write(Main.anglerQuest);
 +
 +		writer.Write(Main.anglerQuest < ItemLoader.vanillaQuestFishCount ? Main.anglerQuest : 0);
-+		
++
  		writer.Write(NPC.savedStylist);
  		writer.Write(NPC.savedTaxCollector);
  		writer.Write(NPC.savedGolfer);

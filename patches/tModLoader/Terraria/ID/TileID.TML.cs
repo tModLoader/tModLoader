@@ -67,7 +67,7 @@ partial class TileID
 		public static bool[] IgnoredByNpcStepUp = Factory.CreateBoolSet(14, 16, 18, 134, 469);
 
 		/// <summary>
-		/// Whether or not the smart cursor function is disabled when the cursor hovers above this tile. Used by tiles frequently right click interacted with to help prevent accidental tile placement when the player accidentally left clicks on it with smart cursor enabled, such as doors and containers. 
+		/// Whether or not the smart cursor function is disabled when the cursor hovers above this tile. Used by tiles frequently right click interacted with to help prevent accidental tile placement when the player accidentally left clicks on it with smart cursor enabled, such as doors and containers.
 		/// <para/> Defaults to <see langword="false"/>.
 		/// </summary>
 		// Maybe this should be a hook instead?
@@ -199,7 +199,7 @@ partial class TileID
 		/// <br/><br/> Defaults to -1.
 		/// </summary>
 		public static int[] PressurePlate = Factory.CreateIntSet(-1, PressurePlates, -2, WeightedPressurePlate, -3, ProjectilePressurePad, -4);
-		
+
 		// Values taken from WorldFile.ClearTempTiles
 		/// <summary>
 		/// If true, the tile will be destroyed after the world is loaded, before it is entered. Can be used to get rid of temporary tiles such as the block created by <see href="https://terraria.wiki.gg/wiki/Ice_Rod">Ice Rod</see>.

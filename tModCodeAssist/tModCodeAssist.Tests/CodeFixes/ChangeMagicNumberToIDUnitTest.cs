@@ -343,11 +343,11 @@ public sealed class ChangeMagicNumberToIDUnitTest
 			var item = new Item();
 			item.createTile =
 							[|42|];
-			
+
 			//Binary
 			_ = new Item().type == /* Note */ [|1|] /* Note2 */;
 			_ = new Item().type ==[|1|];
-			
+
 			// CaseSwitchLabel
 			switch (new NPC().type) {
 				case [|420|] /* Note */:
@@ -391,5 +391,36 @@ public sealed class ChangeMagicNumberToIDUnitTest
 					break;
 			}
 			"""");
+	}
+
+	[TestMethod]
+	public async Task Test_4889()
+	{
+		// https://github.com/tModLoader/tModLoader/issues/4889
+
+		// TODO: In the future, we may want to teach the analyzer how to process
+		//       these complex expressions.
+
+		await VerifyCS.Run(
+			"""
+			using Terraria;
+			using Terraria.ID;
+
+			Projectile.NewProjectile(null, 0f, 0f, 0f, 0f, [|0|], 0, 0f, 0, 0f, 0f);
+			Projectile.NewProjectile(null, 0f, 0f, 0f, 0f, (true ? 0 : 1), 0, 0f, 0, 0f, 0f);
+			Projectile.NewProjectile(null, 0f, 0f, 0f, 0f, (true ? 0 : ProjectileID.WoodenArrowFriendly), 0, 0f, 0, 0f, 0f);
+			Projectile.NewProjectile(null, 0f, 0f, 0f, 0f, (true ? ProjectileID.None : 1), 0, 0f, 0, 0f, 0f);
+			Projectile.NewProjectile(null, 0f, 0f, 0f, 0f, (true ? ProjectileID.None : ProjectileID.WoodenArrowFriendly), 0, 0f, 0, 0f, 0f);
+			""",
+			"""
+			using Terraria;
+			using Terraria.ID;
+
+			Projectile.NewProjectile(null, 0f, 0f, 0f, 0f, ProjectileID.None, 0, 0f, 0, 0f, 0f);
+			Projectile.NewProjectile(null, 0f, 0f, 0f, 0f, (true ? 0 : 1), 0, 0f, 0, 0f, 0f);
+			Projectile.NewProjectile(null, 0f, 0f, 0f, 0f, (true ? 0 : ProjectileID.WoodenArrowFriendly), 0, 0f, 0, 0f, 0f);
+			Projectile.NewProjectile(null, 0f, 0f, 0f, 0f, (true ? ProjectileID.None : 1), 0, 0f, 0, 0f, 0f);
+			Projectile.NewProjectile(null, 0f, 0f, 0f, 0f, (true ? ProjectileID.None : ProjectileID.WoodenArrowFriendly), 0, 0f, 0, 0f, 0f);
+			""");
 	}
 }

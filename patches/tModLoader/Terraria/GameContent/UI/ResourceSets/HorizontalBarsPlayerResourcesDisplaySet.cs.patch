@@ -9,16 +9,16 @@
  
  namespace Terraria.GameContent.UI.ResourceSets;
  
-@@ -25,6 +_,9 @@
- 	private Asset<Texture2D> _panelRightHP;
+@@ -26,6 +_,9 @@
  	private Asset<Texture2D> _panelMiddleMP;
  	private Asset<Texture2D> _panelRightMP;
-+	
+ 
 +	// Added by TML.
 +	public string DisplayedName => Language.GetTextValue("UI.HealthManaStyle_" + NameKey);
- 
++
  	public string NameKey { get; private set; }
  
+ 	public string ConfigKey { get; private set; }
 @@ -69,6 +_,10 @@
  			DrawLifeBarText(spriteBatch, new Vector2(num3, num2));
  		}

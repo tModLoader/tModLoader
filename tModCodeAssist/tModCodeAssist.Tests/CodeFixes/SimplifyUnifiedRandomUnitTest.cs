@@ -23,7 +23,7 @@ public sealed class SimplifyUnifiedRandomUnitTest
 			""",
 			"""
 			using Terraria;
-			
+
 			_ = Main.rand.NextBool(4);
 			_ = Main.rand.NextBool(4);
 			_ = Main.rand.Next(4) == 4;

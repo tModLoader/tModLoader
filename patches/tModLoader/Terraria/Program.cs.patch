@@ -118,7 +118,7 @@
 +		ProcessLaunchArgs(args, monoArgs, out bool isServer);
 +
 +		StartupSequenceTml(isServer);
-+		
++
 +		LaunchGame_(isServer);
 +	}
 +
@@ -148,14 +148,13 @@
  		Platform.Get<IWindowService>().SetQuickEditEnabled(enabled: false);
  		RunGame();
  	}
-@@ -184,9 +_,14 @@
- 				Main.instance.IsMouseVisible = false;
+@@ -185,8 +_,13 @@
  			};
  		}
-+		
-+		InstallVerifier.Startup();
  
 -		using Main main = new Main();
++		InstallVerifier.Startup();
++
  		try {
 +			ModLoader.ModLoader.EngineInit();
 +

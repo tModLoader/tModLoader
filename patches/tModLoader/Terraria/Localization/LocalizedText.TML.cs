@@ -57,10 +57,10 @@ public partial class LocalizedText
 				// one, few, many
 				if (count == 1)
 					return 0;
-				
+
 				if (contains(mod_i10, 2, 4) && !contains(mod_i100, 12, 14))
 					return 1;
-				
+
 				return 2;
 
 			case (int)GameCulture.CultureName.Chinese:
@@ -78,7 +78,7 @@ public partial class LocalizedText
 		return PluralizationPatternRegex.Replace(value, delegate (Match match) {
 			int argIndex = Convert.ToInt32(match.Groups[1].Value);
 			string[] options = match.Groups[2].Value.Split(';');
-			int count = Convert.ToInt32(args[argIndex] is IConvertible c ? c : args[argIndex].ToString());			
+			int count = Convert.ToInt32(args[argIndex] is IConvertible c ? c : args[argIndex].ToString());
 			int rule = CardinalPluralRule(Language.ActiveCulture, count);
 			return options[Math.Min(rule, options.Length-1)];
 		});
@@ -87,7 +87,7 @@ public partial class LocalizedText
 	/// <summary>
 	/// Creates a string from this LocalizedText populated with data from the provided <paramref name="args"/> arguments. Formats the string in the same manner as <see href="https://learn.microsoft.com/en-us/dotnet/api/system.string.format?view=net-6.0">string.Format</see>. Placeholders such as "{0}", "{1}", etc will be replaced with the string representation of the corresponding objects provided.<br/>
 	/// Additionally, pluralization is supported as well. The <see href="https://github.com/tModLoader/tModLoader/wiki/Localization#string-formatting">Localization Guide</see> teaches more about placeholders and plural support.
-	/// 
+	///
 	/// </summary>
 	/// <param name="args"></param>
 	/// <returns></returns>

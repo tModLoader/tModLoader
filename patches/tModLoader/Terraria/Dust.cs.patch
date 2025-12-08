@@ -68,7 +68,7 @@
 +	/// </summary>
  	public int alpha;
 +	/// <summary>
-+	/// The portion of the sprite sheet that this dust will be drawn using. Typical vanilla dust spawn with a randomly chosen 8x8 frame from a set of 3 options, but modded dust can use whatever dimensions are desired. 
++	/// The portion of the sprite sheet that this dust will be drawn using. Typical vanilla dust spawn with a randomly chosen 8x8 frame from a set of 3 options, but modded dust can use whatever dimensions are desired.
 +	/// </summary>
  	public Rectangle frame;
 +	/// <summary>
@@ -81,13 +81,13 @@
 +	/// </summary>
  	public object customData;
  	public bool firstFrame;
-+	
+ 
 +	// Added by TML.
 +	/// <summary>
 +	/// Used to temporarily store <see cref="type"/> when using <see cref="ModDust.UpdateType"/> to copy the behavior of an existing dust type.
 +	/// </summary>
 +	internal int realType = -1;
- 
++
 +	/// <summary>
 +	/// Attempts to spawn a single Dust into the game world. <paramref name="Position"/> indicates the spawn position and <paramref name="Velocity"/> indicates the initial velocity. Unlike <see cref="NewDust(Vector2, int, int, int, float, float, int, Color, float)"/>, position and velocity will not be slightly randomized, making this method suitable for visual effects that need exact positioning.
 +	/// </summary>

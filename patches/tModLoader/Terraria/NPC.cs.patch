@@ -86,7 +86,7 @@
  	private static int spawnSpaceX = 3;
  	private static int spawnSpaceY = 3;
 +	/// <summary>
-+	/// An offset from the actual position of the npc that will be added to the draw position. Used to fake the effect of NPC smoothly traveling up single block obstacles. 
++	/// An offset from the actual position of the npc that will be added to the draw position. Used to fake the effect of NPC smoothly traveling up single block obstacles.
 +	/// </summary>
  	public float gfxOffY;
 +	/// <summary>
@@ -144,7 +144,7 @@
  	public int[] buffTime = new int[maxBuffs];
 +
 +	/// <summary>
-+	/// Contains the NPC buff immunities for this NPC. The default values in this array are populated from <see cref="NPCID.Sets.ImmuneToAllBuffs"/>, <see cref="NPCID.Sets.ImmuneToRegularBuffs"/>, <see cref="NPCID.Sets.SpecificDebuffImmunity"/>, and <see cref="BuffID.Sets.GrantImmunityWith"/>. 
++	/// Contains the NPC buff immunities for this NPC. The default values in this array are populated from <see cref="NPCID.Sets.ImmuneToAllBuffs"/>, <see cref="NPCID.Sets.ImmuneToRegularBuffs"/>, <see cref="NPCID.Sets.SpecificDebuffImmunity"/>, and <see cref="BuffID.Sets.GrantImmunityWith"/>.
 +	/// </summary>
 -	public bool[] buffImmune = new bool[BuffID.Count];
 +	public bool[] buffImmune = new bool[BuffLoader.BuffCount];
@@ -159,7 +159,7 @@
 +	/// The rate of this NPC's life regeneration or loss in health per tick, divided by <c>120</c>. To put it another way, it is health regeneration every 2 seconds. Used to implement the damage over time of debuffs.
 +	/// <br/> For example, subtracting <c>12</c> from this value loses <c>12 / 120</c> = <c>1/10</c> health per tick, or 6 health per second.
 +	/// <br/> Life regeneration is accumulated every tick in <see cref="lifeRegenCount"/>.
-+	/// <br/> This value should be subtracted from in <see cref="ModNPC.UpdateLifeRegen(ref int)"/> or <see cref="GlobalNPC.UpdateLifeRegen(NPC, ref int)"/>. See <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Common/GlobalNPCs/DamageOverTimeGlobalNPC.cs#L16">DamageOverTimeGlobalNPC.cs</see> for an example. The game does not actually use positive life regen for NPC, so positive values might not work as expected. 
++	/// <br/> This value should be subtracted from in <see cref="ModNPC.UpdateLifeRegen(ref int)"/> or <see cref="GlobalNPC.UpdateLifeRegen(NPC, ref int)"/>. See <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Common/GlobalNPCs/DamageOverTimeGlobalNPC.cs#L16">DamageOverTimeGlobalNPC.cs</see> for an example. The game does not actually use positive life regen for NPC, so positive values might not work as expected.
 +	/// </summary>
  	public int lifeRegen;
 +	/// <summary>
@@ -180,7 +180,7 @@
 +	/// </summary>
  	public bool immortal;
 +	/// <summary>
-+	/// If false, this NPC will be ignored by <see cref="CanBeChasedBy"/>, meaning that entities won't specifically target this NPC. The cultists set this to true, helping ensure that they are not accidentally killed by minions or homing weapons. Duke Fishron uses this during his 3rd phase while he is invisible, resulting in homing weapons and minions being unable to target him effectively. 
++	/// If false, this NPC will be ignored by <see cref="CanBeChasedBy"/>, meaning that entities won't specifically target this NPC. The cultists set this to true, helping ensure that they are not accidentally killed by minions or homing weapons. Duke Fishron uses this during his 3rd phase while he is invisible, resulting in homing weapons and minions being unable to target him effectively.
 +	/// <para/> Defaults to true.
 +	/// </summary>
  	public bool chaseable = true;
@@ -404,7 +404,7 @@
  	public bool justHit;
 +	/// <summary>
 +	/// Despawn timer in charge of determining when an NPC that is offscreen but not far away enough to immediately despawn will despawn naturally. Gets set to <see cref="activeTime"/> when near any player and decreases each update otherwise. The <see href="https://terraria.wiki.gg/wiki/NPC_despawning">NPC despawning wiki page</see> has more information. <see cref="ModNPC.CheckActive"/> can be used to prevent an NPC outside the immediate despawn range from despawning.
-+	/// </summary> 
++	/// </summary>
  	public int timeLeft;
 +	/// <summary>
 +	/// The Player that this NPC is currently targeting, represented as the index of that Player within <see cref="Main.player"/> (the Player's <see cref="Entity.whoAmI"/>).
@@ -765,7 +765,7 @@
  	}
  
 +	/// <summary>
-+	/// Similar to <see cref="FullName"/>, but results in a NetworkText instead of a string, making it suitable for network messages allowing the text to be localized on each client using the clients selected language. 
++	/// Similar to <see cref="FullName"/>, but results in a NetworkText instead of a string, making it suitable for network messages allowing the text to be localized on each client using the clients selected language.
 +	/// </summary>
  	public NetworkText GetFullNetName()
  	{
@@ -1000,7 +1000,7 @@
  			DeathSound = SoundID.NPCDeath6;
  			catchItem = 2121;
  		}
-+		// TML: Moved before NPCLoader.SetDefaults to allow changing. DebuffImmunitySets broken into separate sets for easier manipulation.  
++		// TML: Moved before NPCLoader.SetDefaults to allow changing. DebuffImmunitySets broken into separate sets for easier manipulation.
 +		if (NPCID.Sets.ImmuneToAllBuffs[type])
 +			Array.Fill(buffImmune, true);
 +
@@ -1104,7 +1104,7 @@
 -		if (type >= 0 && type < NPCID.Count && Main.npcCatchable[type]) {
 +		if (type >= 0 && Main.npcCatchable[type] && catchableNPCTempImmunityCounter < 1) {
  			catchableNPCTempImmunityCounter = 90;
-+			catchableNPCOriginallyFriendly = friendly; 
++			catchableNPCOriginallyFriendly = friendly;
  			friendly = true;
  		}
  
@@ -2766,7 +2766,7 @@
  	}
  
 +	/// <summary>
-+	/// Removes the buff at the provided index and shuffles the remaining buff indexes down to fill the gap. The buff types and times will then be synced to clients. This method should only be called on the server or in single player. 
++	/// Removes the buff at the provided index and shuffles the remaining buff indexes down to fill the gap. The buff types and times will then be synced to clients. This method should only be called on the server or in single player.
 +	/// </summary>
 +	/// <param name="buffIndex">The index of the buff to remove.</param>
  	public void DelBuff(int buffIndex)

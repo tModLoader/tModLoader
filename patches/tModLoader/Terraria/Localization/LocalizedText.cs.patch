@@ -13,8 +13,7 @@
  	public static readonly LocalizedText Empty = new LocalizedText("", "");
  	private static Regex _substitutionRegex = new Regex("{(\\?(?:!)?)?([a-zA-Z][\\w\\.]*)}", RegexOptions.Compiled);
  	public readonly string Key;
--
-+	
+ 
 +	/*
  	public string Value { get; private set; }
 +	*/

@@ -37,7 +37,7 @@ namespace ExampleMod.Content.Items.Weapons
 			Item.value = Item.buyPrice(gold: 1); // The amount of money that the item is can be bought for.
 
 			Item.shoot = ModContent.ProjectileType<ExampleYoyoProjectile>(); // Which projectile this item will shoot. We set this to our corresponding projectile.
-			Item.shootSpeed = 16f; // The velocity of the shot projectile.			
+			Item.shootSpeed = 16f; // The velocity of the shot projectile.
 		}
 
 		// Here is an example of blacklisting certain modifiers. Remove this section for standard vanilla behavior.

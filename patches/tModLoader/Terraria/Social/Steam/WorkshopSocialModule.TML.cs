@@ -34,8 +34,8 @@ public partial class WorkshopSocialModule
 			IssueReporter.ReportInstantUploadProblem("tModLoader.NoWorkshopAccess");
 			return false;
 		}
-		
-		// TODO: Localized String missing 
+
+		// TODO: Localized String missing
 		if (state == WorkshopHelper.WorkshopSearchReturnState.RetrievalFailed) {
 			IssueReporter.ReportInstantUploadProblem("TODO: Localized String - Workshop Item is Corrupted; reach out in tML support");
 			return false;
@@ -366,7 +366,7 @@ public partial class WorkshopSocialModule
 		// Folder containing all the current copies of the mod on the workshop
 		Program.LaunchParameters.TryGetValue("-publishedmodfiles", out string publishedModFiles);
 
-		// folder which will be used for the upload when the artifact is downloaded in post-build action. 
+		// folder which will be used for the upload when the artifact is downloaded in post-build action.
 		Program.LaunchParameters.TryGetValue("-uploadfolder", out string uploadFolder);
 
 		// The Folder where we will put all the files that should be included in the build artifact
@@ -450,7 +450,7 @@ public partial class WorkshopSocialModule
 			/// "kvtags":[{"key":"name","value":"ToBeDeleted"},{"key":"Author","value":"Solxan"},{"key":"modside","value":"Both"},{"key":"homepage","value":""},{"key":"modloaderversion","value":"9999.0"},{"key":"version","value":"0.0.0"},{"key":"modreferences","value":""},{"key":"versionsummary","value":"9999.0:0.3.0.13;2023.10.3.0:0.3.0.9;2024.3:0.3.0.11"}]
 			/// "metadata":"{\"hashes\":[\"9999.0|0.3.0.13|\\u0010�L��\\fI\\\"r�����\\\\���n�\",\"9999.0|0.3.0.13|\\u0012%E�Aa�l�A�RdG����m0\"]}"
 
-			// 
+			//
 
 			return null;
 		}

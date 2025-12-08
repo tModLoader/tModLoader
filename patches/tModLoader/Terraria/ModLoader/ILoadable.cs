@@ -1,8 +1,14 @@
+using JetBrains.Annotations;
+
 namespace Terraria.ModLoader;
 
 /// <summary>
 /// Allows for implementing types to be loaded and unloaded.
 /// </summary>
+[UsedImplicitly(
+	ImplicitUseKindFlags.InstantiatedNoFixedConstructorSignature,
+	ImplicitUseTargetFlags.WithMembers | ImplicitUseTargetFlags.WithInheritors
+)]
 public interface ILoadable
 {
 	/// <summary>

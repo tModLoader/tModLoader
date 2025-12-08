@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace ExampleMod.Common.Commands
 {
-	// This example, like ExampleFullscreenUI.cs, modifies a loaded ModConfig. This example simply shows that calling ModConfig.SaveChanges on the server for ServerSide configs is supported. (Since this command is CommandType.World, it runs on the server in multiplayer.) 
+	// This example, like ExampleFullscreenUI.cs, modifies a loaded ModConfig. This example simply shows that calling ModConfig.SaveChanges on the server for ServerSide configs is supported. (Since this command is CommandType.World, it runs on the server in multiplayer.)
 	public class ModifyServerConfigValueCommand : ModCommand
 	{
 		public static LocalizedText UsageText { get; private set; }

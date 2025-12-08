@@ -254,7 +254,7 @@ public partial class Main
 				spriteBatch.Draw(TextureAssets.InfoIcon[13].Value, buttonPosition - Vector2.One * 2f, null, OurFavoriteColor, 0f, default, 1f, SpriteEffects.None, 0f);
 		}
 	}
-	
+
 	public static void BuilderTogglePageHandler(int startY, int activeToggles, out bool moveDownForButton, out int startIndex, out int endIndex) {
 		startIndex = 0;
 		endIndex = activeToggles;
@@ -487,7 +487,7 @@ public partial class Main
 		}
 		// Explicitly path if we are family shared using the old logic from prior to #4018; Temporary Hotfix - Solxan
 		// Maybe replace with a call to get InstallDir from TerrariaSteamClient? Or change Steam.GetInstallDir to be 'FamilyShare' safe?
-		// Also left as a generic fallback 
+		// Also left as a generic fallback
 		else /*if (Social.Steam.SteamedWraps.FamilyShared)*/ {
 			vanillaContentFolder = Platform.IsOSX ? "../Terraria/Terraria.app/Contents/Resources/Content" : "../Terraria/Content"; // Side-by-Side Manual Install
 
@@ -495,7 +495,7 @@ public partial class Main
 				vanillaContentFolder = Platform.IsOSX ? "../Terraria.app/Contents/Resources/Content" : "../Content"; // Nested Manual Install
 			}
 		}
-		
+
 
 		if (!Directory.Exists(vanillaContentFolder)) {
 			ErrorReporting.FatalExit(Language.GetTextValue("tModLoader.ContentFolderNotFound"));
@@ -507,7 +507,7 @@ public partial class Main
 			ErrorReporting.FatalExit(Language.GetTextValue("tModLoader.TerrariaLegacyBranchMessage"));
 		}
 
-		// Canary file, ensures that Terraria has updated to at least the version this tModLoader was built for. Alternate check to BuildID check in TerrariaSteamClient for non-Steam launches 
+		// Canary file, ensures that Terraria has updated to at least the version this tModLoader was built for. Alternate check to BuildID check in TerrariaSteamClient for non-Steam launches
 		if (!File.Exists(Path.Combine(vanillaContentFolder, "Images", "Projectile_981.xnb"))) {
 			Utils.OpenToURL("https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Usage-FAQ#terraria-is-out-of-date-or-terraria-is-on-a-legacy-version");
 			ErrorReporting.FatalExit(Language.GetTextValue("tModLoader.TerrariaOutOfDateMessage"));
@@ -520,7 +520,7 @@ public partial class Main
 
 		base.Content = new TMLContentManager(Content.ServiceProvider, vanillaContentFolder, localOverrideContentManager);
 	}
-	
+
 	private static void DrawtModLoaderSocialMediaButtons(Microsoft.Xna.Framework.Color menuColor, float upBump)
 	{
 		List<TitleLinkButton> titleLinks = tModLoaderTitleLinks;
@@ -649,7 +649,7 @@ public partial class Main
 			}
 		}
 
-		// If reload is required, show message. Back action should leave current ModConfig instances unchanged 
+		// If reload is required, show message. Back action should leave current ModConfig instances unchanged
 		if (needsReload) {
 			string continueButtonText = Language.GetTextValue("tModLoader.ReloadRequiredReloadAndContinue");
 			Interface.serverModsDifferMessage.Show(Language.GetTextValue("tModLoader.ReloadRequiredSinglePlayerMessage", continueButtonText),

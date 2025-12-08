@@ -66,7 +66,7 @@
 +			// some extra safety for projectiles, because their ids are not sent across the network
 +			if (Main.player.IndexInRange(_sourcePlayerIndex) && (_sourcePlayerIndex != Main.myPlayer || ((Projectile)entity).owner != _sourcePlayerIndex))
 +				entity = Main.player[_sourcePlayerIndex];
-+			
++
  			return true;
  		}
  
