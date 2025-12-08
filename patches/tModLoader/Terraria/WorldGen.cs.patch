@@ -3065,7 +3065,15 @@
  					if (Main.tile[num8, num9].type == 661 || Main.tile[num8, num9].type == 662 || Main.tile[num8, num9].type == 23 || Main.tile[num8, num9].type == 199 || Main.tile[num8, num9].type == 2 || Main.tile[num8, num9].type == 477 || Main.tile[num8, num9].type == 492 || Main.tile[num8, num9].type == 109) {
  						Main.tile[num8, num9].type = 60;
  						SquareTileFrame(num8, num9);
-@@ -50696,10 +_,15 @@
+@@ -50692,14 +_,23 @@
+ 
+ 						flag = true;
+ 					}
++
++					if (preHookType != Main.tile[num8, num9].type) {
++						TileLoader.OnTileConverted(num8, num9, preHookType, Main.tile[num8, num9].type, BiomeConversionID.Chlorophyte);
++					}
+ 				}
  			}
  		}
  
