@@ -5613,7 +5613,7 @@
  				num = 9;
  				text3 = Lang.inter[103].Value;
  				Vector2 vector = player[myPlayer].velocity + player[myPlayer].instantMovementAccumulatedThisFrame;
-@@ -38314,23 +_,37 @@
+@@ -38314,23 +_,41 @@
  				int num19 = 216000;
  				float num20 = num16 * (float)num19 / (float)num18;
  				if (!player[myPlayer].merman && !player[myPlayer].ignoreWater) {
@@ -5622,16 +5622,20 @@
 -					else if (player[myPlayer].wet)
 -						num20 /= 2f;
 +					float multiplier = 1f;
-+					if (Main.player[Main.myPlayer].shimmerWet) {
-+						multiplier = 0.375f;
++					for (int j = 0; j < LiquidLoader.LiquidCount; j++) {
++						if (player[myPlayer].wets[j]) {
++							if (player[myPlayer].shimmerWet) {
++								multiplier = 0.375f;
++							}
++							else if (player[myPlayer].honeyWet) {
++								multiplier = 0.25f;
++							}
++							else if (player[myPlayer].wets[LiquidID.Water] || player[myPlayer].wets[LiquidID.Lava]) {
++								multiplier = 0.5f;
++							}
++							LiquidLoader.StopWatchMPHMultiplier(j, ref multiplier);
++						}
 +					}
-+					else if (Main.player[Main.myPlayer].honeyWet) {
-+						multiplier = 0.25f;
-+					}
-+					else if (Main.player[Main.myPlayer].wet) {
-+						multiplier = 0.5f;
-+					}
-+					//LiquidLoader.StopWatchMPHMultiplier(Main.myPlayer.wets[], ref multiplier); //When wets are added, uncomment this line
 +					num20 *= multiplier;
  				}
  
