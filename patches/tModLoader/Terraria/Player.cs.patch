@@ -4379,19 +4379,23 @@
  		if (Main.myPlayer == whoAmI) {
  			if (accMerman) {
  				if (flag)
-@@ -17891,7 +_,17 @@
+@@ -17891,7 +_,21 @@
  			}
  		}
  
-+		bool? canEmitBreath = true;
-+		for (int i = 0; i < LiquidLoader.LiquidCount; i++)
-+			if (wets[i])
++		bool? canEmitBreath = null;
++		for (int i = 0; i < LiquidLoader.LiquidCount; i++) {
++			if (wets[i]) {
 +				canEmitBreath = LiquidLoader.PlayersEmitBreathBubbles(i);
-+		if (canEmitBreath == null) {
-+			if (lavaWet || honeyWet)
-+				canEmitBreath = false;
-+			else
-+				canEmitBreath = true;
++				if (canEmitBreath == null) {
++					if (i >= LiquidID.Count)
++						canEmitBreath = LiquidLoader.GetLiquid(i).AllowEmitBreathBubbles;
++					else if (lavaWet || honeyWet)
++						canEmitBreath = false;
++					else
++						canEmitBreath = true;
++				}
++			}
 +		}
 -		if (flag && Main.rand.Next(20) == 0 && !lavaWet && !honeyWet) {
 +		if (flag && Main.rand.Next(20) == 0 && (bool)canEmitBreath) {

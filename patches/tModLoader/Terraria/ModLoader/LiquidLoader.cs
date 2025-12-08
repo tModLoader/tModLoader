@@ -573,7 +573,9 @@ public static class LiquidLoader
 	{
 		Func<int, bool?>[] hookPlayersEmitBreathBubbles = HookPlayersEmitBreathBubbles;
 		for (int k = 0; k < hookPlayersEmitBreathBubbles.Length; k++) {
-			return hookPlayersEmitBreathBubbles[k](type);
+			bool? emitBubbles = hookPlayersEmitBreathBubbles[k](type);
+			if (emitBubbles != null)
+				return emitBubbles;
 		}
 		return null;
 	}
