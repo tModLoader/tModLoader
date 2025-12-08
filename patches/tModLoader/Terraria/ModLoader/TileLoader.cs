@@ -861,6 +861,7 @@ public static class TileLoader
 
 	public static bool Convert(int i, int j, int conversionType)
 	{
+		using var recursionCounter = new WorldGen.ConversionRecursion();
 		var tile = Main.tile[i, j];
 		int type = tile.TileType;
 		var list = tileConversionDelegates[type]?[conversionType];
@@ -875,7 +876,6 @@ public static class TileLoader
 
 		if (tile.TileType == type && TryGetConversionFallback(type, conversionType, out var fallback)) {
 			tile.TileType = (ushort)fallback;
-			using var recursionCounter = new WorldGen.ConversionRecursion();
 			WorldGen.Convert(i, j, conversionType, size: 0, walls: false);
 
 			if (tile.TileType == fallback)
