@@ -199,6 +199,15 @@ public abstract class ModAchievement : ModType<Achievement, ModAchievement>, ILo
 	public virtual Position GetDefaultPosition() => AfterLastVanillaAchievement;
 
 	/// <summary>
+	/// Some of the vanilla achievements are showed next to the inventory to advise the player on what to do next.
+	/// This hook allows you to place this achievement in the advisor before/after other vanilla advisor achievements.
+	/// Make use of e.g. <see cref="Before"/>/<see cref="After"/>, and provide an achievement (for example <c>new After("EYE_ON_YOU")</c>). Consult the <see href="https://github.com/tModLoader/tModLoader/wiki/Vanilla-Content-IDs#achievement-identifiers">Achievement Identifiers section of the Vanilla Content IDs wiki page</see> to look up the string to use with GetAchievement. You can also use <see cref="BeforeFirstAdvisorAchievement"/> or <see cref="AfterLastAdvisorAchievement"/> to put your achievement at the start/end of the vanilla advisor achievement order.
+	/// <br/><br/> <b>NOTE:</b> The position must specify a vanilla<see cref="Achievements.Achievement"/> that is in the advisor otherwise an exception will be thrown. Use<see cref = "GetModdedConstraints" /> to order modded achievements.
+	/// <br/><br/> By default, this hook returns <see langword="null"/>, which indicates that this achievement will not be placed inside the advisor.
+	/// </summary>
+	public virtual Position GetAdvisorPosition() => null;
+
+	/// <summary>
 	/// Modded achievements are placed between vanilla achievements via <see cref="GetDefaultPosition"/> and, by default, are sorted in load order.<br/>
 	/// This hook allows you to sort this achievement before/after other modded achievements that were placed between the same two vanilla achievements.<br/>
 	/// Example:
@@ -215,6 +224,8 @@ public abstract class ModAchievement : ModType<Achievement, ModAchievement>, ILo
 
 	public static Position BeforeFirstVanillaAchievement => new Before(AchievementManager.FirstVanillaAchievement);
 	public static Position AfterLastVanillaAchievement => new After(AchievementManager.LastVanillaAchievement);
+	public static Position BeforeFirstAdvisorAchievement => new Before(AchievementManager.FirstAdvisorAchievement);
+	public static Position AfterLastAdvisorAchievement => new After(AchievementManager.LastAdvisorAchievement);
 
 	public sealed class Default : Position { }
 
