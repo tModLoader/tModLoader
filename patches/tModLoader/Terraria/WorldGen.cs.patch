@@ -1988,7 +1988,7 @@
  				switch (conversionType) {
  					case 4:
 -						if (type <= TileID.Count && wall <= WallID.Count) {
-+						if (type <= TileLoader.TileCount && wall <= WallLoader.WallCount) {
++						if (true /* type <= TileID.Count && wall <= WallID.Count */) {
 +							if (!convertWall)
 +								goto SkipWallCrimsonConversion;
 +
@@ -2006,7 +2006,7 @@
  							if ((Main.tileMoss[type] || TileID.Sets.Conversion.Stone[type]) && type != 203) {
  								TryKillingTreesAboveIfTheyWouldBecomeInvalid(k, l, 203);
  								tile.type = 203;
-@@ -39441,11 +_,20 @@
+@@ -39441,11 +_,21 @@
  								SquareTileFrame(k, l);
  								NetMessage.SendTileSquare(-1, k, l);
  							}
@@ -2018,11 +2018,10 @@
 +						goto SkipTilePurityConversion;
 +						//continue;
  					case 2:
--						if (type > TileID.Count || wall > WallID.Count)
--							continue;
-+						if (type >= TileLoader.TileCount || wall >= WallLoader.WallCount)
-+							goto SkipTilePurityConversion;
-+							//continue;
++						/*
+ 						if (type > TileID.Count || wall > WallID.Count)
+ 							continue;
++						*/
 +
 +						if (!convertWall)
 +							goto SkipWallHallowConversion;
@@ -2053,7 +2052,7 @@
 +						//continue;
  					case 1:
 -						if (type <= TileID.Count && wall <= WallID.Count) {
-+						if (type <= TileLoader.TileCount && wall <= WallLoader.WallCount) {
++						if (true /* type <= TileID.Count && wall <= WallID.Count */) {
 +							if (!convertWall)
 +								goto SkipWallCorruptionConversion;
 +
@@ -2121,7 +2120,7 @@
  						if (tile.type == 60) {
  							TryKillingTreesAboveIfTheyWouldBecomeInvalid(k, l, 70);
  							tile.type = 70;
-@@ -39643,10 +_,18 @@
+@@ -39643,10 +_,19 @@
  							if (Main.netMode == 1)
  								NetMessage.SendData(17, -1, -1, null, 0, k, l);
  						}
@@ -2131,11 +2130,10 @@
 +						goto SkipTilePurityConversion;
 +						//continue;
  					case 5:
--						if (type < 0 || type > TileID.Count || wall < 0 || wall > WallID.Count)
--							continue;
-+						if (type < 0 || type >= TileLoader.TileCount || wall < 0 || wall >= WallLoader.WallCount)
-+							goto SkipTilePurityConversion;
-+							//continue;
++						/*
+ 						if (type < 0 || type > TileID.Count || wall < 0 || wall > WallID.Count)
+ 							continue;
++						*/
 +
 +						if (!convertWall)
 +							goto SkipWallDesertConversion;
@@ -2155,7 +2153,7 @@
  						if ((TileID.Sets.Conversion.Grass[type] || TileID.Sets.Conversion.Sand[type] || TileID.Sets.Conversion.Snow[type] || TileID.Sets.Conversion.Dirt[type]) && type != 53) {
  							int num = 53;
  							if (BlockBelowMakesSandConvertIntoHardenedSand(k, l))
-@@ -39683,10 +_,18 @@
+@@ -39683,10 +_,19 @@
  							if (Main.netMode == 1)
  								NetMessage.SendData(17, -1, -1, null, 0, k, l);
  						}
@@ -2165,11 +2163,10 @@
 +						goto SkipTilePurityConversion;
 +						//continue;
  					case 6:
--						if (type < 0 || type > TileID.Count || wall < 0 || wall > WallID.Count)
--							continue;
-+						if (type < 0 || type >= TileLoader.TileCount || wall < 0 || wall >= WallLoader.WallCount)
-+							goto SkipTilePurityConversion;
-+							//continue;
++						/*
+ 						if (type < 0 || type > TileID.Count || wall < 0 || wall > WallID.Count)
+ 							continue;
++						*/
 +
 +						if (!convertWall)
 +							goto SkipWallSnowConversion;
@@ -2189,7 +2186,7 @@
  						if ((TileID.Sets.Conversion.Grass[type] || TileID.Sets.Conversion.Sand[type] || TileID.Sets.Conversion.HardenedSand[type] || TileID.Sets.Conversion.Snow[type] || TileID.Sets.Conversion.Dirt[type]) && type != 147) {
  							TryKillingTreesAboveIfTheyWouldBecomeInvalid(k, l, 147);
  							tile.type = 147;
-@@ -39714,10 +_,18 @@
+@@ -39714,10 +_,19 @@
  							if (Main.netMode == 1)
  								NetMessage.SendData(17, -1, -1, null, 0, k, l);
  						}
@@ -2199,11 +2196,10 @@
 +						goto SkipTilePurityConversion;
 +						//continue;
  					case 7:
--						if (type < 0 || type > TileID.Count || wall < 0 || wall > WallID.Count)
--							continue;
-+						if (type < 0 || type >= TileLoader.TileCount || wall < 0 || wall >= WallLoader.WallCount)
-+							goto SkipTilePurityConversion;
-+							//continue;
++						/*
+ 						if (type < 0 || type > TileID.Count || wall < 0 || wall > WallID.Count)
+ 							continue;
++						*/
 +
 +						if (!convertWall)
 +							goto SkipWallForestConversion;
