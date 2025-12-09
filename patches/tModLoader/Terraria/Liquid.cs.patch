@@ -32,16 +32,15 @@
  	}
  
  	public static void ReInit()
-@@ -111,6 +_,13 @@
+@@ -111,6 +_,12 @@
  	private static void SettleWaterAt(int originX, int originY)
  	{
  		Tile tile = Main.tile[originX, originY];
 +		bool settleLiquid = LiquidLoader.SettleLiquidMovement(originX, originY, tile.liquidType());
 +		if (!settleLiquid) {
 +			tilesIgnoreWater(ignoreSolids: false);
-+		}
-+		else
 +			return;
++		}
 +
  		tilesIgnoreWater(ignoreSolids: true);
  		if (tile.liquid == 0)

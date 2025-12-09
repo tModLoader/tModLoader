@@ -284,20 +284,6 @@ public abstract class ModLiquid : ModTexturedType, ILocalizedModType, IModType
 	{
 	}
 
-	//TODO: Discuss proper implementation, whether a ModLightMaskMode would be needed or not
-	/// <summary>
-	/// Modifies the LightMaskMode used for this liquid. <br/>
-	/// Due to limitations in the lighting engine, tile coordinates and editing of vanilla lightmasks are unavaliable. <br/>
-	/// NOTE: set LiquidLightMaskMode to None for this hook/method to be called. Otherwise this liquid will use the other mask mode instead.
-	/// </summary>
-	/// <param name="index">The current LightMap index. Water uses this to randomise its colors slightly.</param>
-	/// <param name="r">The red component of light, usually a value between 0 and 1</param>
-	/// <param name="g">The green component of light, usually a value between 0 and 1</param>
-	/// <param name="b">The blue component of light, usually a value between 0 and 1</param>
-	public virtual void ModifyLightMaskMode(int index, ref float r, ref float g, ref float b)
-	{
-	}
-
 	/// <summary>
 	/// Allows you to change the Light Mask Mode for this liquid. The Light Mask Mode is the mask for lighting to determine how light interacts with this liquid. <br/>
 	/// Vanilla has options for Water (slight blue fade) and Honey (dark black) while lava uses the None option. <br/>
@@ -382,7 +368,6 @@ public abstract class ModLiquid : ModTexturedType, ILocalizedModType, IModType
 	/// <param name="collisionSound">The sound to be played, set this to a sound if you don't want the default merge sound to play.</param>
 	public virtual void LiquidMergeSound(int i, int j, int otherLiquid, ref SoundStyle? collisionSound)
 	{
-
 	}
 
 	/// <summary>

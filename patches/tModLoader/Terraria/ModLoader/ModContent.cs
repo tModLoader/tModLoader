@@ -537,6 +537,7 @@ public static class ModContent
 		PrefixLoader.Unload();
 		DustLoader.Unload();
 		TileLoader.Unload();
+		LiquidLoader.Unload();
 		PylonLoader.Unload();
 		WallLoader.Unload();
 		ProjectileLoader.Unload();

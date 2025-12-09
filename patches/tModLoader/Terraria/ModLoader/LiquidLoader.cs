@@ -193,10 +193,6 @@ public static class LiquidLoader
 		liquids.Clear();
 		nextLiquid = LiquidID.Count;
 		globalLiquids.Clear();
-		Array.Resize(ref LiquidRenderer.WATERFALL_LENGTH, 4); //not sure why im unloading, relic from ModLiquidLib?
-		Array.Resize(ref LiquidRenderer.DEFAULT_OPACITY, 4);
-		Array.Resize(ref LiquidRenderer.WAVE_MASK_STRENGTH, 5);
-		Array.Resize(ref LiquidRenderer.VISCOSITY_MASK, 5);
 	}
 
 	public static void ModifyLight(int i, int j, int type, ref float r, ref float g, ref float b)
