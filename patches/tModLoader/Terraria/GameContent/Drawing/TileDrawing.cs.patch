@@ -478,12 +478,8 @@
  		return flag;
  	}
  
-@@ -3134,10 +_,10 @@
- 		if (TileID.Sets.DrawTileInSolidLayer[typeCache].HasValue)
- 			return TileID.Sets.DrawTileInSolidLayer[typeCache].Value;
- 
--		return _tileSolid[typeCache];
-+		return _tileSolid[typeCache] && !TileID.Sets.Platforms[typeCache];
+@@ -3137,7 +_,7 @@
+ 		return _tileSolid[typeCache];
  	}
  
 -	private void GetTileOutlineInfo(int x, int y, ushort typeCache, ref Color tileLight, ref Texture2D highlightTexture, ref Color highlightColor)
