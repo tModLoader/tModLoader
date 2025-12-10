@@ -59,7 +59,9 @@ public static class LiquidEdgeRenderer
 	{
 		public ushort X;
 		public ushort YStart;
-		public byte Height;
+		public ushort Height;
+
+		public readonly int YEnd => YStart + Height - 1;
 	}
 
 	private static readonly List<Point16> maskPoints = [];
@@ -390,41 +392,26 @@ public static class LiquidEdgeRenderer
 		}
 	}
 
+	internal static void FinishEdgeData()
+	{
+		if (currentSpan is not { } span)
+			return;
+
+		edgeSpans.Add(span);
+		currentSpan = null;
+	}
+
 	private static void AddEdgePoint(ushort tileX, ushort tileY)
 	{
-		// Begin building the span if there is none.
-		if (!currentSpan.HasValue) {
-			currentSpan = new EdgeSpan {
-				X = tileX,
-				YStart = tileY,
-				Height = 1,
-			};
-			return;
-		}
-
-		var span = currentSpan.Value;
-
-		// If we're at a new column, start a new span.
-		if (span.X != tileX) {
-			edgeSpans.Add(span);
-			currentSpan = new EdgeSpan {
-				X = tileX,
-				YStart = tileY,
-				Height = 1,
-			};
-			return;
-		}
-
-		// Make sure the tiles are contiguous; we don't call this for every
-		// tile, only for confirmed edges.
-		if (span.YStart + span.Height == tileY) {
+		if (currentSpan is { } span && span.X == tileX && span.YEnd == tileY - 1) {
 			span.Height++;
 			currentSpan = span;
 			return;
 		}
 
-		// If we've broken the span, commit it and start building a new one.
-		edgeSpans.Add(span);
+		if (currentSpan.HasValue)
+			edgeSpans.Add(currentSpan.Value);
+
 		currentSpan = new EdgeSpan {
 			X = tileX,
 			YStart = tileY,
