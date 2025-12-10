@@ -1168,7 +1168,7 @@
  	public bool waterWalk;
 +	/// <summary> Allows the player to walk on water, honey, lava, and shimmer, such as given by <see cref="ItemID.LavaWaders"/>. </summary>
  	public bool waterWalk2;
-+	/// <summary> Allows mooders to set whenever a specific liquid can be walked on. Set this in <see cref="ModPlayer.PreUpdateMovement"/> <br/> Normally for liquids, the condition is waterWalk || waterWalk2. <br/> This array is reset every frame.</summary>
++	/// <summary> Allows mooders to set whenever a specific liquid can be walked on. Set this in <see cref="ModPlayer.PostUpdateRunSpeeds"/> <br/> Normally for liquids, the condition is waterWalk || waterWalk2. <br/> This array is reset every frame.</summary>
 +	public bool[] canLiquidBeWalkedOn = new bool[LiquidLoader.LiquidCount]; // Added by TML.
  	public int forcedGravity;
  	public bool gravControl;
@@ -4985,10 +4985,18 @@
  
  			if (carpetFrame != -1) {
  				runAcceleration *= 1.25f;
-@@ -20594,6 +_,8 @@
+@@ -20594,6 +_,16 @@
  					mount.UpdateDrill(this, controlUp, controlDown);
  			}
  
++			//Sets canLiquidBeWalkedOn to their default values after waterWalk/2 have been set by other methods
++			for (int j = 0; j < LiquidLoader.LiquidCount; j++) {
++				if (j == LiquidID.Lava)
++					canLiquidBeWalkedOn[j] = waterWalk;
++				else
++					canLiquidBeWalkedOn[j] = waterWalk || waterWalk2;
++			}
++
 +			PlayerLoader.PostUpdateRunSpeeds(this);
 +
  			HorizontalMovement();
@@ -5253,26 +5261,18 @@
  						for (int num104 = 0; num104 < 20; num104++) {
  							int num105 = Dust.NewDust(new Vector2(position.X - 6f, position.Y + (float)(height / 2) - 8f), width + 12, 24, 35);
  							Main.dust[num105].velocity.Y -= 1.5f;
-@@ -21580,6 +_,19 @@
+@@ -21580,7 +_,11 @@
  			lavaWet = false;
  			honeyWet = false;
  			shimmerWet = false;
 +			for (int j = LiquidID.Count; j < LiquidLoader.LiquidCount; j++)
 +				wets[j] = false;
-+		}
+ 		}
 +		if (!wets.Contains(true) && wet)
 +			wets[LiquidID.Water] = true;
-+
-+		//Placed here and not directly before PreUpdateMovement due to an extra check when shimmering and collision stepping down
-+		//Sets canLiquidBeWalkedOn to their default values after waterWalk/2 have been set by other methods
-+		for (int j = 0; j < LiquidLoader.LiquidCount; j++) {
-+			if (j == LiquidID.Lava)
-+				canLiquidBeWalkedOn[j] = waterWalk;
-+			else
-+				canLiquidBeWalkedOn[j] = waterWalk || waterWalk2;
- 		}
  
  		if (wetCount > 0)
+ 			wetCount--;
 @@ -21639,7 +_,7 @@
  			SlopeDownMovement();
  			bool flag27 = mount.Type == 7 || mount.Type == 8 || mount.Type == 12 || mount.Type == 44 || mount.Type == 49;

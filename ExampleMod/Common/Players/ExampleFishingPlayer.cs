@@ -1,5 +1,6 @@
 ﻿using ExampleMod.Content.Biomes;
 using ExampleMod.Content.Items.Tools;
+using ExampleMod.Content.Liquids;
 using ExampleMod.Content.NPCs;
 using Microsoft.Xna.Framework;
 using Terraria;
@@ -31,6 +32,11 @@ namespace ExampleMod.Common.Players
 				if (Main.rand.Next(100) < 10) {
 					attempt.crate = true;
 				}
+			}
+
+			//Here we make ExampleBasicLiquid count as honey for fishing
+			if (attempt.inLiquid[ModContent.LiquidType<ExampleBasicLiquid>()]) {
+				attempt.inLiquid[LiquidID.Honey] = true;
 			}
 		}
 
@@ -83,6 +89,43 @@ namespace ExampleMod.Common.Players
 				if (Player.gravDir < 0f && attempt.uncommon) {
 					itemDrop = exampleQuestFish;
 					return; // While there is no more code that could roll a fish after this, we might add some in the future so it's best to return here
+				}
+			}
+
+			//Here we have our own lootpool to ExampleLiquid
+			if (attempt.inLiquid[ModContent.LiquidType<ExampleLiquid>()]) {
+				if (attempt.crate && Main.rand.NextBool(6)) { //crate for the liquid
+					if (Main.hardMode) {
+						itemDrop = ItemID.LavaCrateHard;
+					}
+					else {
+						itemDrop = ItemID.LavaCrate;
+					}
+				}
+				else if (attempt.veryrare) { //If not a crate, then a rare fish
+					itemDrop = ItemID.GoldenCarp;
+				}
+				else if (attempt.rare) { //otherwise a fish 
+					itemDrop = ItemID.Goldfish;
+				}
+				else { 
+					itemDrop = 0; //If nothing else, make it so that most of the time fish are not caught when fishing (making catching fish rarer similarly to lava)
+				}
+			}
+			//Here we give shimmer a fishing lootpool too, See ExampleGlobalLiquid.AllowShimmerFishing for enabling fishing in shimmer
+			else if (attempt.inLiquid[LiquidID.Shimmer])
+			{
+				if (attempt.veryrare) {
+					itemDrop = ItemID.CrystalSerpent;
+				}
+				else if (attempt.rare) {
+					itemDrop = ItemID.PrincessFish;
+				}
+				else if (attempt.uncommon) {
+					itemDrop = ItemID.ChaosFish;
+				}
+				else {
+					itemDrop = ItemID.Prismite;
 				}
 			}
 		}

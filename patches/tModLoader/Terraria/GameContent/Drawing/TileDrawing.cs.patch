@@ -593,7 +593,7 @@
 +	// TML: Added x/y/waterStyle parameter, changed liquidType parameter to be the LiquidID and waterStyle is now the liquid texture asset ID
 +	internal void DrawPartialLiquid(int x, int y, bool behindBlocks, Tile tileCache, ref Vector2 position, ref Rectangle liquidSize, int waterStyle, int liquidType, ref VertexColors colors)
  	{
-+		if (LiquidLoader.PreSlopeDraw(x, y, tileCache.liquidType(), behindBlocks, ref position, ref liquidSize, ref colors)) {
++		if (LiquidLoader.PreSlopeDraw(x, y, liquidType, behindBlocks, ref position, ref liquidSize, ref colors)) {
 -		int num = tileCache.slope();
 +			int num = tileCache.slope();
 -		bool flag = !TileID.Sets.BlocksWaterDrawingBehindSelf[tileCache.type];
@@ -641,7 +641,7 @@
 -				break;
 +					break;
 +			}
-+			LiquidLoader.PostSlopeDraw(x, y, tileCache.liquidType(), behindBlocks, ref position, ref liquidSize, ref colors);
++			LiquidLoader.PostSlopeDraw(x, y, liquidType, behindBlocks, ref position, ref liquidSize, ref colors);
  		}
  	}
  

@@ -147,6 +147,8 @@ Mods: {
 					}
 				}
 			}
+
+			// ExampleAnglerFish.DisplayName: Example Angler Fish
 		}
 
 		Tiles: {
@@ -174,6 +176,8 @@ Mods: {
 				// MapEntry: Basic Tile Entity Tile
 				// StatusText: Filled: {0}%
 			}
+
+			// ExampleDrip.MapEntry: Example Drip
 		}
 
 		Items: {
@@ -1246,6 +1250,61 @@ Mods: {
 				// DisplayName: Example Weighted Pressure Plate
 				// Tooltip: "{$ItemTooltip.WeightedPressurePlateCyan}"
 			}
+
+			ExampleBasicLiquidBucket: {
+				// DisplayName: Example Basic Liquid Bucket
+				// Tooltip: ""
+			}
+
+			ExampleBottomlessBucket: {
+				// DisplayName: Example Bottomless Bucket
+				// Tooltip: ""
+			}
+
+			ExampleComplexLiquidBucket: {
+				// DisplayName: Example Complex Liquid Bucket
+				// Tooltip: ""
+			}
+
+			ExampleLiquidBucket: {
+				// DisplayName: Example Liquid Bucket
+				// Tooltip: ""
+			}
+
+			ExampleLiquidSponge: {
+				// DisplayName: Example Liquid Sponge
+				// Tooltip: ""
+			}
+
+			ExampleBasicLiquidSensor: {
+				// DisplayName: Example Basic Liquid Sensor
+				// Tooltip: ""
+			}
+
+			ExampleCloudBlock: {
+				// DisplayName: Example Cloud Block
+				// Tooltip: ""
+			}
+
+			ExampleComplexLiquidSensor: {
+				// DisplayName: Example Complex Liquid Sensor
+				// Tooltip: ""
+			}
+
+			ExampleLiquidSensor: {
+				// DisplayName: Example Liquid Sensor
+				// Tooltip: ""
+			}
+
+			MagicExampleLiquidDropper: {
+				// DisplayName: Magic Example Liquid Dropper
+				// Tooltip: ""
+			}
+
+			ExampleWaders: {
+				// DisplayName: Example Waders
+				// Tooltip: ""
+			}
 		}
 
 		# Projectile display names mainly show in chat when a player dies from it.
@@ -1619,6 +1678,8 @@ Mods: {
 			// ShortPose.VictoryCheer: Yay!
 			// LongPose.VictoryCheer: We did it!
 		}
+
+		// Liquids.ExampleLiquid.MapEntry: Example Liquid
 	}
 }
 

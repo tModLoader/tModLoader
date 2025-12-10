@@ -2285,7 +2285,7 @@
 -			Main.dust[num].alpha = 100;
 -			Main.dust[num].noGravity = true;
 +		bool inModdedLiquid = false;
-+		for (int i = LiquidLoader.LiquidCount - 1; i < LiquidID.Lava; i++) {
++		for (int i = LiquidLoader.LiquidCount - 1; i >= LiquidID.Lava; i--) {
 +			if (wets[i]) {
 +				LiquidLoader.OnFishingBobberSplash(i, this);
 +				if (i >= LiquidID.Count)
