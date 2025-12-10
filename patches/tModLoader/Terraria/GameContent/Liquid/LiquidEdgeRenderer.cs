@@ -365,7 +365,10 @@ public static class LiquidEdgeRenderer
 			SourceRectangle = new Rectangle(16, isSurfaceLiquid ? 0 : 64, size.Width, size.Height)
 		};
 
-		AddEdgePoint((ushort)tileX, (ushort)tileY, TileID.Sets.BlocksWaterDrawingBehindSelf[tileCache.TileType]);
+		if (TileID.Sets.BlocksWaterDrawingBehindSelf[tileCache.TileType])
+			maskPoints.Add(new Point16(tileX, tileY));
+		else
+			AddEdgePoint((ushort)tileX, (ushort)tileY);
 
 		if (blockType is BlockType.HalfBlock) {
 			if (!pCache->IsHalfBrick) {
@@ -387,19 +390,8 @@ public static class LiquidEdgeRenderer
 		}
 	}
 
-	private static void AddEdgePoint(ushort tileX, ushort tileY, bool hasSpecialMask)
+	private static void AddEdgePoint(ushort tileX, ushort tileY)
 	{
-		// Masks always break the span because they need to be rendered separately.
-		if (hasSpecialMask) {
-			if (currentSpan.HasValue) {
-				edgeSpans.Add(currentSpan.Value);
-				currentSpan = null;
-			}
-
-			maskPoints.Add(new Point16(tileX, tileY));
-			return;
-		}
-
 		// Begin building the span if there is none.
 		if (!currentSpan.HasValue) {
 			currentSpan = new EdgeSpan {
