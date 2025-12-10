@@ -77,7 +77,7 @@ internal static class NativeExceptionHandling
 
 	[DllImport("kernel32.dll", CharSet = CharSet.Auto)]
 	static extern uint GetModuleFileName(IntPtr hModule, StringBuilder lpFilename, int nSize);
-	
+
 
 	// Constants for GetModuleHandleEx
 	const uint GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS = 0x00000004;

@@ -29,7 +29,7 @@ public abstract class ModAchievement : ModType<Achievement, ModAchievement>, ILo
 	public Asset<Texture2D> Texture { get; private set; }
 
 	/// <summary>
-	/// The index of this achievement within the texture. Additional achievements are placed below on new rows. Can be used to share a achievement texture among multiple achievements. Defaults to 0. 
+	/// The index of this achievement within the texture. Additional achievements are placed below on new rows. Can be used to share a achievement texture among multiple achievements. Defaults to 0.
 	/// </summary>
 	public virtual int Index => 0;
 
@@ -192,7 +192,7 @@ public abstract class ModAchievement : ModType<Achievement, ModAchievement>, ILo
 	}
 
 	/// <summary>
-	/// Returns the achievement's default position in regard to vanilla's achievement ordering. Make use of e.g. <see cref="Before"/>/<see cref="After"/>, and provide an achievement (for example <c>new After("EYE_ON_YOU")</c>). Consult the <see href="https://github.com/tModLoader/tModLoader/wiki/Vanilla-Content-IDs#achievement-identifiers">Achievement Identifiers section of the Vanilla Content IDs wiki page</see> to look up the string to use with GetAchievement. You can also use <see cref="BeforeFirstVanillaAchievement"/> or <see cref="AfterLastVanillaAchievement"/> to put your achievement at the start/end of the vanilla achievement order. 
+	/// Returns the achievement's default position in regard to vanilla's achievement ordering. Make use of e.g. <see cref="Before"/>/<see cref="After"/>, and provide an achievement (for example <c>new After("EYE_ON_YOU")</c>). Consult the <see href="https://github.com/tModLoader/tModLoader/wiki/Vanilla-Content-IDs#achievement-identifiers">Achievement Identifiers section of the Vanilla Content IDs wiki page</see> to look up the string to use with GetAchievement. You can also use <see cref="BeforeFirstVanillaAchievement"/> or <see cref="AfterLastVanillaAchievement"/> to put your achievement at the start/end of the vanilla achievement order.
 	/// <br/><br/> <b>NOTE:</b> The position must specify a vanilla <see cref="Achievements.Achievement"/> otherwise an exception will be thrown. Use <see cref="GetModdedConstraints"/> to order modded achievements.
 	/// <br/><br/> By default, this hook positions this achievement after all vanilla achievements.
 	/// </summary>

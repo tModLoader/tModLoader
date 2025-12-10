@@ -59,10 +59,10 @@
 +	/// <summary>
 +	/// Remaps a provided value from 0->1 to 0->1->0, essentially turning a sawtooth pattern into a triangle wave pattern:
 +	/// <code>
-+	///          Original:   Remap:    Range Values ↓    
-+	///                 /      / \          1        
-+	///              /        /   \        0.5      
-+	///           /          /     \        0        
++	///          Original:   Remap:    Range Values ↓
++	///                 /      / \          1
++	///              /        /   \        0.5
++	///           /          /     \        0
 +	/// Input→    0 .5  1    0 .5  1
 +	/// Output→   0 .5  1    0  1  0
 +	/// </code>
@@ -82,12 +82,12 @@
 +	/// <para/> This can be used to interpolate between several values, providing finer control over the transition between values.
 +	/// <code>
 +	/// floats parameter→ 0      4      1    Range Values ↓
-+	///                         /   \            3    
-+	///                       /        \         2   
++	///                         /   \            3
++	///                       /        \         2
 +	///                     /                    1
 +	///                   /                      0
-+	/// percent input→    0 .25 .5 .75  1 
-+	/// output→           0  2   4  3   2    
++	/// percent input→    0 .25 .5 .75  1
++	/// output→           0  2   4  3   2
 +	/// </code>
 +	/// </summary>
 +	/// <param name="percent"></param>
@@ -212,7 +212,7 @@
  
 +	/// <summary>
 +	/// Returns a Rectangle region ("frame") of the Texture2D corresponding to the layout provided. Can be used to easily retrieve coordinates for drawing a specific frame of a texture.
-+	/// <para/> For example <c>texture.Frame(1, 3, 0, 2)</c> indicates that the texture has 1 column and 3 rows and returns the coordinates of the bottom (index #2, or 3rd) frame of the only column. 
++	/// <para/> For example <c>texture.Frame(1, 3, 0, 2)</c> indicates that the texture has 1 column and 3 rows and returns the coordinates of the bottom (index #2, or 3rd) frame of the only column.
 +	/// </summary>
  	public static Rectangle Frame(this Texture2D tex, int horizontalFrames = 1, int verticalFrames = 1, int frameX = 0, int frameY = 0, int sizeOffsetX = 0, int sizeOffsetY = 0)
  	{
@@ -244,7 +244,7 @@
 +	/// <summary>
 +	/// <inheritdoc cref="Vector2.Normalize()"/>
 +	/// <para/> If this Vector2 can't be normalized, either because it is a 0 length vector or has not a number values, <paramref name="defaultValue"/> will be returned instead as a fallback. It will not be normalized so using <see cref="Vector2.UnitX"/> or <see cref="Vector2.UnitY"/> is appropriate. <see cref="Vector2.Zero"/> can also be appropriate if the surrounding logic expects it.
-+	/// <para/> Using SafeNormalize instead of Normalize avoids many difficult to anticipate issues that would cause bugs. 
++	/// <para/> Using SafeNormalize instead of Normalize avoids many difficult to anticipate issues that would cause bugs.
 +	/// </summary>
  	public static Vector2 SafeNormalize(this Vector2 v, Vector2 defaultValue)
  	{

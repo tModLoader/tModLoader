@@ -137,7 +137,7 @@ public abstract class ModMount : ModType<Mount.MountData, ModMount>
 	/// <br/> 0. Standing still on the ground or sliding
 	/// <br/> 1. Moving on the ground
 	/// <br/> 2. In the air, not flying. Hovering counts as this as well.
-	/// <br/> 3. In the air, flying 
+	/// <br/> 3. In the air, flying
 	/// <br/> 4. Flying in water
 	/// </summary>
 	/// <param name="mountedPlayer"></param>

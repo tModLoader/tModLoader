@@ -176,6 +176,7 @@ Mods: {
 			}
 
 			// ExampleWorkbench.MapEntry: Example Workbench
+			// ExampleExposedGem.MapEntry: Example Gem
 		}
 
 		Items: {
@@ -1247,6 +1248,11 @@ Mods: {
 			ExamplePressurePlate: {
 				// DisplayName: Example Weighted Pressure Plate
 				// Tooltip: "{$ItemTooltip.WeightedPressurePlateCyan}"
+			}
+
+			ExampleGem: {
+				// DisplayName: Example Gem
+				// Tooltip: ""
 			}
 		}
 

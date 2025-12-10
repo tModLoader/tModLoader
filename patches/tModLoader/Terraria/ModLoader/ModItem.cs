@@ -323,7 +323,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Called before the potion delay is applied to the player after consuming a healing potion. 
+	/// Called before the potion delay is applied to the player after consuming a healing potion.
 	/// <br/><br/> Return false to prevent application of the <see cref="BuffID.PotionSickness"/> buff and setting <see cref="Player.potionDelay"/>.
 	/// </summary>
 	/// <param name="player">The player consuming the item.</param>

@@ -34,7 +34,7 @@ namespace ExampleMod.Content.Items.Placeable
 		public override string Name => GetInternalNameFromStyle(placeStyle);
 
 		// This helper method converts from the custom instanced data to the internal name. In this example the placeStyle value is the only custom data.
-		// This method is called by the Name property and 
+		// This method is called by the Name property and
 		public static string GetInternalNameFromStyle(int style) {
 			// Here we define some strings that will be used as the ModItem.Name, the internal name of the ModItem.
 			// Every ModItem must have a unique internal name, so this step is necessary.

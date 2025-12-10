@@ -44,7 +44,7 @@ namespace ExampleMod.Content.Tiles
 
 		// Here is an example of what manually implementing the critter cage frames for a unique animation would look like.
 		// This is the worm cage animation code, which is the simplest vanilla example.
-		// See the Main.AnimateTiles_CritterCages source code and https://terraria.wiki.gg/wiki/Cages#Action_patterns to work out how existing animations are implemented if you wish to implement a custom critter animation. 
+		// See the Main.AnimateTiles_CritterCages source code and https://terraria.wiki.gg/wiki/Cages#Action_patterns to work out how existing animations are implemented if you wish to implement a custom critter animation.
 		/*
 		public static int[] cageFrames = new int[Main.cageFrames];
 		public static int[] cageFrameCounters = new int[Main.cageFrames];

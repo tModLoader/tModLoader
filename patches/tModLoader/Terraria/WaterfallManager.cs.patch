@@ -64,7 +64,7 @@
  	{
 +		if (waterfallType >= maxTypes)
 +			LoaderManager.Get<WaterFallStylesLoader>().Get(waterfallType).AddLight(x, y);
-+		
++
  		switch (waterfallType) {
  			case 1: {
  				float r;

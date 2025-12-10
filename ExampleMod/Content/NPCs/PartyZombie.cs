@@ -51,7 +51,7 @@ namespace ExampleMod.Content.NPCs
 			// (1) This example shows copying the drops directly. For consistency and mod compatibility, we suggest using the smallest positive NPCID when dealing with npcs with many variants and shared drop pools.
 			var zombieDropRules = Main.ItemDropsDB.GetRulesForNPCID(NPCID.Zombie, false); // false is important here
 			foreach (var zombieDropRule in zombieDropRules) {
-				// In this foreach loop, we simple add each drop to the PartyZombie drop pool. 
+				// In this foreach loop, we simple add each drop to the PartyZombie drop pool.
 				npcLoot.Add(zombieDropRule);
 			}
 

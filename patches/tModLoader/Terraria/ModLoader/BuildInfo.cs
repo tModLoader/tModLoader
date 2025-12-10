@@ -10,7 +10,7 @@ public static class BuildInfo
 	{
 		Dev, // Personal Builds
 		Preview, // Monthly preview builds from CI that modders develop against for compatibility
-		Stable // The 'stable' builds from CI that players are expected to play on. 
+		Stable // The 'stable' builds from CI that players are expected to play on.
 	}
 
 	public static readonly string BuildIdentifier = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion;

@@ -94,7 +94,7 @@ public abstract partial class ModSystem : ModType
 	public virtual void OnWorldLoad() { }
 
 	/// <summary>
-	/// Called whenever a world is loaded, after <see cref="LoadWorldData"/>. 
+	/// Called whenever a world is loaded, after <see cref="LoadWorldData"/>.
 	/// <br/><br/> At this point, the world is ready to be entered by players, and all modded world data is loaded.
 	/// <br/><br/> Can be used to migrate modded world data across different <see cref="ModSystem"/>s, or to modify <see cref="Main.tile"/>. For deleting temporary tiles, use <see cref="TileID.Sets.ClearedOnWorldLoad"/> instead.
 	/// <br/><br/> Only called in single player or on the server, not on multiplayer clients.

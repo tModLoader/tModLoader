@@ -256,7 +256,7 @@ namespace ExampleMod.Content.NPCs
 				// Retrieve the gore types. This NPC has shimmer variants for head, arm, and leg gore. It also has a custom hat gore. (7 gores)
 				// This NPC will spawn either the assigned party hat or a custom hat gore when not shimmered. When shimmered the top hat is part of the head and no hat gore is spawned.
 				int hatGore = NPC.GetPartyHatGore();
-				// If not wearing a party hat, and not shimmered, retrieve the custom hat gore 
+				// If not wearing a party hat, and not shimmered, retrieve the custom hat gore
 				if (hatGore == 0 && !NPC.IsShimmerVariant) {
 					hatGore = Mod.Find<ModGore>($"{Name}_Gore_Hat").Type;
 				}
@@ -373,7 +373,7 @@ namespace ExampleMod.Content.NPCs
 	// You have the freedom to implement custom shops however you want
 	// This example uses a 'pool' concept where items will be randomly selected from a pool with equal weight
 	// We copy a bunch of code from NPCShop and NPCShop.Entry, allowing this shop to be easily adjusted by other mods.
-	// 
+	//
 	// This uses some fairly advanced C# to avoid being excessively long, so make sure you learn the language before trying to adapt it significantly
 	public class ExampleTravelingMerchantShop : AbstractNPCShop
 	{

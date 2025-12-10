@@ -38,7 +38,7 @@ namespace ExampleMod.Content.Tiles.Banners
 	public class EnemyBannerLoader : ILoadable
 	{
 		public void Load(Mod mod) {
-			// For each entry in EnemyBanner.StyleID, we dynamically load an AutoloadedBannerItem. 
+			// For each entry in EnemyBanner.StyleID, we dynamically load an AutoloadedBannerItem.
 			foreach (EnemyBanner.StyleID styleID in Enum.GetValues(typeof(EnemyBanner.StyleID))) {
 				mod.AddContent(new AutoloadedBannerItem(styleID.ToString() + "Banner", (int)styleID));
 			}

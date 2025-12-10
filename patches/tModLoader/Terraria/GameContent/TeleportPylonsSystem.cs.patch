@@ -57,7 +57,7 @@
 +
 +			flag = PylonLoader.ValidTeleportCheck_PreAnyDanger(info) is bool value
 +				? value : info.ModPylon?.ValidTeleportCheck_AnyDanger(info) ?? flag;
-+	
++
  			if (!flag)
  				key = "Net.CannotTeleportToPylonBecauseThereIsDanger";
  		}
@@ -146,7 +146,7 @@
  
  	public static bool DoesPositionHaveEnoughNPCs(int necessaryNPCCount, Point16 centerPoint)
  	{
-+		if (necessaryNPCCount <= 0) 
++		if (necessaryNPCCount <= 0)
 +			return true;
  		Rectangle rectangle = new Rectangle(centerPoint.X - Main.buffScanAreaWidth / 2, centerPoint.Y - Main.buffScanAreaHeight / 2, Main.buffScanAreaWidth, Main.buffScanAreaHeight);
  		int num = necessaryNPCCount;
@@ -159,7 +159,7 @@
 +		if (PylonLoader.ValidTeleportCheck_PreBiomeRequirements(info, _sceneMetrics) is bool value)
 +			return value;
 +
-+		if (info.ModPylon is ModPylon pylon) 
++		if (info.ModPylon is ModPylon pylon)
 +			return pylon.ValidTeleportCheck_BiomeRequirements(info, _sceneMetrics);
  
  		switch (info.TypeOfPylon) {

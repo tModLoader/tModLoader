@@ -22,7 +22,7 @@ partial class ProjectileID
 		public static bool[] MinionCannotBeFreed = Factory.CreateBoolSet(false, StardustGuardian, StardustDragon1, StardustDragon4);
 
 		/// <summary>
-		/// Used to scale down summon tag damage for fast hitting minions and sentries. 
+		/// Used to scale down summon tag damage for fast hitting minions and sentries.
 		/// </summary>
 		public static float[] SummonTagDamageMultiplier = Factory.CreateFloatSet(1f,
 			ProjectileID.Smolstar, 0.75f,
@@ -44,7 +44,7 @@ partial class ProjectileID
 		}
 
 		/// <summary>
-		/// Maps falling tile projectiles (projectiles using <see cref="ProjAIStyleID.FallingTile"/>) to the tile they place and the item they drop if tile placement fails. Falling tile projectiles come in 2 variants, the falling version and the weapon version. The weapon version typically leaves item drop as 0 so that the item is not recovered. 
+		/// Maps falling tile projectiles (projectiles using <see cref="ProjAIStyleID.FallingTile"/>) to the tile they place and the item they drop if tile placement fails. Falling tile projectiles come in 2 variants, the falling version and the weapon version. The weapon version typically leaves item drop as 0 so that the item is not recovered.
 		/// </summary>
 		public static FallingBlockTileItemInfo[] FallingBlockTileItem = Factory.CreateCustomSet<FallingBlockTileItemInfo>(null,
 			SandBallGun, new FallingBlockTileItemInfo(TileID.Sand),
@@ -87,7 +87,7 @@ partial class ProjectileID
 
 		/// <summary>
 		/// This projectile is a candidate for player interaction. The projectile will be able to be targeted with smart cursor. Projectile that can be right clicked should set this to true.
-		/// <br/><br/> The <see href="https://github.com/tModLoader/tModLoader/tree/1.4.4/ExampleMod/Content/Projectiles/ExampleInteractableProjectile.cs">ExampleInteractableProjectile.cs</see> example demonstrates properly implementing an interactable projectile. 
+		/// <br/><br/> The <see href="https://github.com/tModLoader/tModLoader/tree/1.4.4/ExampleMod/Content/Projectiles/ExampleInteractableProjectile.cs">ExampleInteractableProjectile.cs</see> example demonstrates properly implementing an interactable projectile.
 		/// <br/><br/> Defaults to false. Vanilla entries include <see cref="FlyingPiggyBank"/>, <see cref="VoidLens"/>, and <see cref="ChesterPet"/>.
 		/// </summary>
 		public static bool[] IsInteractable = Factory.CreateBoolSet(false, 525, 734, 960);

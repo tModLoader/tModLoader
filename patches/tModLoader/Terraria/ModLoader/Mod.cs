@@ -1,23 +1,28 @@
-using log4net;
-using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Reflection;
-using Terraria.ID;
-using Terraria.Localization;
-using Terraria.ModLoader.Core;
-using Terraria.ModLoader.Exceptions;
 using System.Linq;
-using Terraria.ModLoader.Config;
+using System.Reflection;
+using JetBrains.Annotations;
+using log4net;
+using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using ReLogic.Content.Sources;
+using Terraria.ID;
+using Terraria.Localization;
+using Terraria.ModLoader.Config;
+using Terraria.ModLoader.Core;
+using Terraria.ModLoader.Exceptions;
 
 namespace Terraria.ModLoader;
 
 /// <summary>
 /// Mod is an abstract class that you will override. It serves as a central place from which the mod's contents are stored. It provides methods for you to use or override.
 /// </summary>
+[UsedImplicitly(
+	ImplicitUseKindFlags.InstantiatedNoFixedConstructorSignature,
+	ImplicitUseTargetFlags.WithMembers | ImplicitUseTargetFlags.WithInheritors
+)]
 public partial class Mod
 {
 	/// <summary>
@@ -88,7 +93,7 @@ public partial class Mod
 	/// The display name of this mod in the Mods menu.
 	/// </summary>
 	public string DisplayName { get; internal set; }
-	
+
 	private string displayNameClean;
 	/// <summary>
 	/// Same as DisplayName, but chat tags are removed. This can be used for more readable logging and console output. It is also useful for code that searches or filters by mod name.

@@ -511,7 +511,7 @@
  	public static bool[] tileMergeDirt = new bool[TileID.Count];
 +	/// <summary>
 +	/// If true, Tiles of the indexed Tile Type will be destroyed by weapons and projectiles. These tiles will also be destroyed when placing a tile at it's location, see also <see cref="TileID.Sets.BreakableWhenPlacing"/>, which is limited to breaking this tile only by tile placement. <see cref="ModProjectile.CanCutTiles"/> can be used to customize if a projectile should destroy tiles with this property.
-+	/// <br/><br/> For desirable plant tiles, set <see cref="TileID.Sets.TileCutIgnore.Regrowth"/> as well to ignore them when using the <see cref="ItemID.StaffofRegrowth"/>. 
++	/// <br/><br/> For desirable plant tiles, set <see cref="TileID.Sets.TileCutIgnore.Regrowth"/> as well to ignore them when using the <see cref="ItemID.StaffofRegrowth"/>.
 +	/// <br/><br/> Defaults to false.
 +	/// </summary>
  	public static bool[] tileCut = new bool[TileID.Count];
@@ -521,7 +521,7 @@
 +	/// </summary>
  	public static int[] tileShine = new int[TileID.Count];
 +	/// <summary>
-+	/// If true, the tile will be drawn to be slightly more bright. 
++	/// If true, the tile will be drawn to be slightly more bright.
 +	/// </summary>
  	public static bool[] tileShine2 = new bool[TileID.Count];
 +	/// <summary>
@@ -534,7 +534,7 @@
 +	/// </summary>
  	public static bool[] wallLight = new bool[WallID.Count];
 +	/// <summary>
-+	/// Set to a wall type to "blend" with that wall. All walls sharing the same value are considered to be the same wall type when blending. By default, a faint black line is drawn between walls of different types to transition between them. Walls that blend will not have this line drawn. 
++	/// Set to a wall type to "blend" with that wall. All walls sharing the same value are considered to be the same wall type when blending. By default, a faint black line is drawn between walls of different types to transition between them. Walls that blend will not have this line drawn.
 +	/// <br/><br/> This is most commonly used to blend safe and unsafe wall variants, although there are some exceptions. All variants that should blend together should set this to a common shared base variant. The base variant does not need to set this. For example, <see cref="WallID.GreenDungeonUnsafe"/>, <see cref="WallID.GreenDungeonTileUnsafe"/>, and <see cref="WallID.GreenDungeonSlabUnsafe"/> all set this to <see cref="WallID.GreenDungeon"/> allowing all 4 wall types to be considered to be <see cref="WallID.GreenDungeon"/> and blend together.
 +	/// <br/><br/> Defaults to it's own wall type, meaning it does not blend with any other wall (unless another wall is set to this wall's type.
 +	/// </summary>
@@ -567,7 +567,7 @@
  	public static bool[] tileNoSunLight = new bool[TileID.Count];
  	public static bool[] tileDungeon = new bool[TileID.Count];
 +	/// <summary>
-+	/// If true for the given tile type, tiles will be drawn much brighter and give off additional dust if the player is under the effects of the Spelunker buff, magic lantern, or similar effect. 
++	/// If true for the given tile type, tiles will be drawn much brighter and give off additional dust if the player is under the effects of the Spelunker buff, magic lantern, or similar effect.
 +	/// </summary>
  	public static bool[] tileSpelunker = new bool[TileID.Count];
 +	/// <summary>
@@ -614,7 +614,7 @@
  	public static bool[] tileBrick = new bool[TileID.Count];
  	public static bool[] tileMoss = new bool[TileID.Count];
 +	/// <summary>
-+	/// If true, tiles can't be attached to this tile. Furniture tiles typically set this. A good rule of thumb is to set this to true if placing a torch on this tile would look strange. 
++	/// If true, tiles can't be attached to this tile. Furniture tiles typically set this. A good rule of thumb is to set this to true if placing a torch on this tile would look strange.
 +	/// </summary>
  	public static bool[] tileNoAttach = new bool[TileID.Count];
  	public static bool[] tileNoFail = new bool[TileID.Count];
@@ -701,7 +701,7 @@
  	public static CombatText[] combatText = new CombatText[100];
  	public static PopupText[] popupText = new PopupText[20];
 +	/// <summary>
-+	/// Contains all the placed chests in the world. This includes dressers and chests, but not player storage such as piggy bank and safe. 
++	/// Contains all the placed chests in the world. This includes dressers and chests, but not player storage such as piggy bank and safe.
 +	/// </summary>
  	public static Chest[] chest = new Chest[8000];
 +	/// <summary>
@@ -759,7 +759,7 @@
  	public static int recStart;
 +	/// <summary>
 +	/// Contains all the <see cref="Recipe"/> in the game. Be sure to read <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Recipes">the Basic Recipes wiki page</see> to learn how to create and edit recipes.
-+	/// <para/> Modders should not attempt to manually edit Main.recipe, doing so will break things. Recipes can be disabled or edited but should not be removed. Recipe ordering can be done through the sort methods, such as <see cref="Recipe.SortBefore(Recipe)"/>. Main.recipe is populated during mod loading and should not be changed in-game. Dynamic recipe availability is done through recipe conditions. 
++	/// <para/> Modders should not attempt to manually edit Main.recipe, doing so will break things. Recipes can be disabled or edited but should not be removed. Recipe ordering can be done through the sort methods, such as <see cref="Recipe.SortBefore(Recipe)"/>. Main.recipe is populated during mod loading and should not be changed in-game. Dynamic recipe availability is done through recipe conditions.
 +	/// </summary>
  	public static Recipe[] recipe = new Recipe[Recipe.maxRecipes];
 +	/// <summary>
@@ -912,7 +912,7 @@
  	public static int SmartInteractNPC;
 +	/// <summary>
 +	/// Indicates the <c>Projectile.whoAmI</c> of the projectile currently being targeted by the local player's cursor for smart cursor (right click) purposes. Will be set automatically for <see cref="ProjectileID.Sets.IsInteractable"/> projectiles.
-+	/// <br/><br/> Will be -1 if a projectile isn't the target of smart cursor currently. 
++	/// <br/><br/> Will be -1 if a projectile isn't the target of smart cursor currently.
 +	/// </summary>
  	public static int SmartInteractProj;
  	public static bool SmartInteractPotionOfReturn;
@@ -1514,7 +1514,7 @@
  				Console.WriteLine(textValue);
  				Console.WriteLine(textValue2);
 +				Console.WriteLine("m\t\t" + Language.GetTextValue("tModLoader.ModsModsList"));
-+				//Console.WriteLine("b\t\t" + Language.GetTextValue("tModLoader.MenuModBrowser")); // Not functional in the 1.4 Steam Workshop Environment 
++				//Console.WriteLine("b\t\t" + Language.GetTextValue("tModLoader.MenuModBrowser")); // Not functional in the 1.4 Steam Workshop Environment
  				Console.WriteLine("");
  				Console.Write(Language.GetTextValue("CLI.ChooseWorld"));
  				string text2 = ReadLineInput();
@@ -1706,10 +1706,10 @@
 +				double now = stopwatch.ElapsedMilliseconds;
 +				double remaining = target - now;
 +				target += delta; // New target
-+				
++
 +				// Reset target if can't catch up.
 +				// TODO: warning in the logs/console?
-+				if (target < now) 
++				if (target < now)
 +					target = now + delta;
 +
 +				// TODO, should this be if remaining > 0? Do we actually want to risk relinquishing our time-slice if we're struggling to keep up?
@@ -2299,7 +2299,7 @@
  					case 395:
  					case 520:
 +					*/
-+					// No 387 tesla turret, handled via NoInvasionMusic below 
++					// No 387 tesla turret, handled via NoInvasionMusic below
 +					case int _ when NPCID.Sets.BelongsToInvasionMartianMadness[npc[j].type] && NPCID.Sets.InvasionSlotCount[npc[j].type] > 0:
  						num3 = 9;
  						break;
@@ -2705,7 +2705,7 @@
  
  		CreativeMenu.Update(gameTime);
 +
-+		SystemLoader.UpdateUI(gameTime);		
++		SystemLoader.UpdateUI(gameTime);
 +		PlayerInput.ScrollWheelDeltaForUI = 0; //TODO: Should this be before PlayerInput.ResetInputsOnActiveStateChange()?
 +		BossBarLoader.HandleStyle(); // Has to be outside of the !gameMenu check because it deals with switching and saving the boss style in menus, including the main menu
 +
@@ -3308,7 +3308,7 @@
 +					// These lines add a degree of transparency which vanilla doesn't provide by telling the player what
 +					// does and doesn't get affected by attack speed bonuses, as well as if the item in question has any
 +					// special scaling rules. they're TML-specific, and can be messed with at the will of the modder.
-+					// 
++					//
 +					// As for why they're differently named: preparation for when that tooltip rework comes out.
 +					// - Thomas
 +					if (item.DamageType == DamageClass.MeleeNoSpeed || ItemID.Sets.BonusAttackSpeedMultiplier[item.type] == 0f) {
@@ -3947,7 +3947,7 @@
 +			/*
  			if (((gore[i].type >= 706 && gore[i].type <= 717) || gore[i].type == 943 || gore[i].type == 1147 || (gore[i].type >= 1160 && gore[i].type <= 1162)) && (gore[i].frame < 7 || gore[i].frame > 9)) {
 +			*/
-+			if (GoreID.Sets.DrawBehind[gore[i].type] || (GoreID.Sets.LiquidDroplet[gore[i].type] && gore[i].frame is < 7 or > 9)) { 
++			if (GoreID.Sets.DrawBehind[gore[i].type] || (GoreID.Sets.LiquidDroplet[gore[i].type] && gore[i].frame is < 7 or > 9)) {
  				drawBackGore = true;
  				continue;
  			}
@@ -4766,7 +4766,7 @@
 +		SetNPCShopIndex(1);
 -		shop[npcShop].SetupShop(npcShop);
 +		shop[npcShop].SetupShop(shopIndex);
-+		
++
  		SoundEngine.PlaySound(12);
  	}
  
@@ -5039,7 +5039,7 @@
  			if (npc[j].active && !_npcTypesThatAlreadyDrewAHead.Contains(npc[j].type)) {
 +				if (npc[j].ModNPC?.TownNPCStayingHomeless is true)
 +					continue;
-+				
++
  				int headIndexSafe = TownNPCProfiles.GetHeadIndexSafe(npc[j]);
 -				if (headIndexSafe > 0 && headIndexSafe <= NPCHeadID.Count && !NPCHeadID.Sets.CannotBeDrawnInHousingUI[headIndexSafe] && _npcIndexWhoHoldsHeadIndex[headIndexSafe] == -1) {
 +				if (headIndexSafe > 0 && !NPCHeadID.Sets.CannotBeDrawnInHousingUI[headIndexSafe] && _npcIndexWhoHoldsHeadIndex[headIndexSafe] == -1) {
@@ -5369,7 +5369,7 @@
  			SetupDrawInterfaceLayers();
  
  		PlayerInput.SetZoom_UI();
-+		
++
 +		/*
  		using (List<GameInterfaceLayer>.Enumerator enumerator = _gameInterfaceLayers.GetEnumerator()) {
  			while (enumerator.MoveNext() && enumerator.Current.Draw()) {
@@ -5379,7 +5379,7 @@
 +
 +		var interfaceLayers = new List<GameInterfaceLayer>(_gameInterfaceLayers);
 +		SystemLoader.ModifyInterfaceLayers(interfaceLayers);
-+		
++
 +		foreach (var layer in interfaceLayers) {
 +			if(!layer.Draw())
 +				break;
@@ -5442,7 +5442,7 @@
 +			ModNet.ModNetDiagnosticsUI.Draw(spriteBatch);
 +			return;
 +		}
-+		
++
  		if (shouldDrawNetDiagnosticsUI)
  			ActiveNetDiagnosticsUI.Draw(spriteBatch);
  	}
@@ -5891,9 +5891,9 @@
  			array4[4] = 70;
  			array4[5] = 70;
  			num5 = 6;
-+			
++
 +			// Add server console toggle" button.
-+			int serverConsoleToggleId = num5++;			
++			int serverConsoleToggleId = num5++;
 +			array4[serverConsoleToggleId] = 70;
 +			array9[serverConsoleToggleId] = Language.GetTextValue(showServerConsole ? "tModLoader.MPShowServerConsoleYes" : "tModLoader.MPShowServerConsoleNo");
 +			array7[serverConsoleToggleId] = 0.5f;
@@ -6149,9 +6149,9 @@
 +		// TML options
 +		text += $@" -modpath ""{ModOrganizer.modPath}""";
 +
-+		if (Program.LaunchParameters.TryGetValue("-tmlsavedirectory", out var tmlsavedirectory)) 
++		if (Program.LaunchParameters.TryGetValue("-tmlsavedirectory", out var tmlsavedirectory))
 +			text += $@" -tmlsavedirectory ""{tmlsavedirectory}""";
-+		else if (Program.LaunchParameters.TryGetValue("-savedirectory", out var savedirectory)) 
++		else if (Program.LaunchParameters.TryGetValue("-savedirectory", out var savedirectory))
 +			text += $@" -savedirectory ""{savedirectory}""";
 +
 +		if (showServerConsole)
@@ -6196,7 +6196,7 @@
 +
 +		// Show number of mods - 1 such as to show number of enabled mods that are not tModLoader itself
 +		string modsMessage = Language.GetTextValue("tModLoader.MenuModsEnabled", Math.Max(0, ModLoader.ModLoader.Mods.Length - 1));
-+		
++
 +		//TODO: FUTURE
 +		//if (ModLoader.Core.GOGModUpdateChecker.ModUpdatesAvailable > 0) {
 +		//	modsMessage += " " + Language.GetTextValue("tModLoader.MenuModUpdatesAvailable", ModLoader.Core.GOGModUpdateChecker.ModUpdatesAvailable);
@@ -6507,7 +6507,7 @@
  			return liquidStyle != 11;
  
 +		// Currently all modded liquid styles come from WaterStylesLoader
-+		if (liquidStyle >= maxLiquidTypes)			
++		if (liquidStyle >= maxLiquidTypes)
 +			return true;
 +
  		return false;
@@ -6748,7 +6748,7 @@
 +			SpriteEffects effects = cloud.spriteDir;
 +			DrawData drawData = new DrawData(texture.Value, position, sourceRectangle, color, rotation, origin, scale, effects);
 +			if (cloud.ModCloud?.Draw(spriteBatch, cloud, cloudIndex, ref drawData) == false)
-+				return; 
++				return;
 +			drawData.Draw(spriteBatch);
 +		}
  	}
@@ -7488,7 +7488,7 @@
  	{
 +		return DamageVar(dmg, DefaultDamageVariationPercent, luck);
 +	}
-+	
++
 +	public static int DamageVar(float dmg, int percent, float luck = 0f)
 +	{
 -		float num = dmg * (1f + (float)rand.Next(-15, 16) * 0.01f);

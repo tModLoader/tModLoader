@@ -470,7 +470,6 @@ internal static class ModOrganizer
 		}
 	}
 
-	
 	private static void EnsureRecentlyBuildModsAreLoading(List<LocalMod> mods)
 	{
 		// If a mod maker attempts to debug a mod with a lower version, it won't be selected so we catch that here. We throw an error because this is definitely not desired.
@@ -649,7 +648,7 @@ internal static class ModOrganizer
 
 	internal static string GetActiveTmodInRepo(string repo)
 	{
-		var information = AnalyzeWorkshopTmods(repo).Where(t => 
+		var information = AnalyzeWorkshopTmods(repo).Where(t =>
 			// Ignore Transitive versions of tModLoader, such as 1.4.4-transitive. See 'GetBrowserVersionNumber' for why
 			!SocialBrowserModule.GetBrowserVersionNumber(t.tModVersion).Contains("Transitive")
 		);

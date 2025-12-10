@@ -1,21 +1,19 @@
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.Enums;
 using Terraria.GameContent;
 using Terraria.GameContent.Biomes.CaveHouse;
-using Terraria.GameContent.Liquid;
 using Terraria.GameContent.ObjectInteractions;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
 using Terraria.ModLoader.IO;
 using Terraria.ObjectData;
-using static Terraria.GameContent.ItemDropRules.Conditions;
 
 namespace Terraria.ModLoader;
 
@@ -110,6 +108,7 @@ public static class TileLoader
 	private static Action[] HookPostSetupTileMerge;
 	private static Action<int, int, TreeTypes>[] HookPreShakeTree;
 	private static Func<int, int, TreeTypes, bool>[] HookShakeTree;
+	private static Action<int, int, int, int, int>[] HookOnTileConverted;
 
 	internal static int ReserveTileID()
 	{
@@ -268,6 +267,7 @@ public static class TileLoader
 		ModLoader.BuildGlobalHook(ref HookPostSetupTileMerge, globalTiles, g => g.PostSetupTileMerge);
 		ModLoader.BuildGlobalHook(ref HookPreShakeTree, globalTiles, g => g.PreShakeTree);
 		ModLoader.BuildGlobalHook(ref HookShakeTree, globalTiles, g => g.ShakeTree);
+		ModLoader.BuildGlobalHook(ref HookOnTileConverted, globalTiles, g => g.OnTileConverted);
 
 		if (!unloading) {
 			loaded = true;
@@ -368,7 +368,7 @@ public static class TileLoader
 				break;
 			}
 		}
-		// TODO: Placed modded tiles can't automatically reorient themselves to an alternate placement, like Torch and Sign do. 
+		// TODO: Placed modded tiles can't automatically reorient themselves to an alternate placement, like Torch and Sign do.
 		if (partiallyDestroyed || !TileObject.CanPlace(originX, originY, type, style, 0, out TileObject objectData, onlyCheck: true, checkStay: true)) {
 			WorldGen.destroyObject = true;
 			// First the Items to drop are tallied and spawned, then Kill each tile, then KillMultiTile can clean up TileEntities or Chests
@@ -492,7 +492,7 @@ public static class TileLoader
 		ModTile modTile = GetTile(type);
 		if (modTile != null) {
 			// Because vanilla sets its own offset based on frameY, ignoring tile type, which might not be set to an expected default, reassign it
-			info.VisualOffset = new Vector2(-9f, 1f); // Taken from default case of vanilla beds 
+			info.VisualOffset = new Vector2(-9f, 1f); // Taken from default case of vanilla beds
 			modTile.ModifySleepingTargetInfo(i, j, ref info);
 		}
 	}
@@ -861,6 +861,7 @@ public static class TileLoader
 
 	public static bool Convert(int i, int j, int conversionType)
 	{
+		using var recursionCounter = new WorldGen.ConversionRecursion();
 		var tile = Main.tile[i, j];
 		int type = tile.TileType;
 		var list = tileConversionDelegates[type]?[conversionType];
@@ -1510,5 +1511,15 @@ public static class TileLoader
 				return true;
 		}
 		return false;
+	}
+
+	public static void OnTileConverted(int i, int j, int fromType, int toType, int conversionType)
+	{
+		foreach (var hook in HookOnTileConverted) {
+			hook(i, j, fromType, toType, conversionType);
+		}
+
+		GetTile(fromType)?.OnTileConverted(i, j, fromType, toType, conversionType);
+		GetTile(toType)?.OnTileConverted(i, j, fromType, toType, conversionType);
 	}
 }

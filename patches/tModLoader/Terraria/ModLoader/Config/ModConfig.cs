@@ -70,8 +70,8 @@ public abstract class ModConfig : ILocalizedModType
 		=> true;
 
 	/// <summary>
-	/// Called on multiplayer clients after the server accepts or rejects ServerSide config changes made by a client. Can be used to update UI attempting to manually save changes to a ServerSide config (using <see cref="SaveChanges(ModConfig, Action{string, Color}, bool, bool)"/>. For rejections this is only called on the client who requested the changes. 
-	/// <br/><br/> <paramref name="player"/> indicates which player requested the changes (see <see cref="Main.myPlayer"/>). 
+	/// Called on multiplayer clients after the server accepts or rejects ServerSide config changes made by a client. Can be used to update UI attempting to manually save changes to a ServerSide config (using <see cref="SaveChanges(ModConfig, Action{string, Color}, bool, bool)"/>. For rejections this is only called on the client who requested the changes.
+	/// <br/><br/> <paramref name="player"/> indicates which player requested the changes (see <see cref="Main.myPlayer"/>).
 	/// <br/><br/> <paramref name="success"/> indicates if the changes were accepted and <paramref name="message"/> is the corresponding message from AcceptClientChanges.
 	/// </summary>
 	public virtual void HandleAcceptClientChangesReply(bool success, int player, NetworkText message) { }
@@ -108,7 +108,7 @@ public abstract class ModConfig : ILocalizedModType
 
 	/// <summary>
 	/// Attempts to save changes made to this ModConfig. This must be called on the active ModConfig instance.
-	/// <br/><br/> If <paramref name="pendingConfig"/> is provided, it will be used as the source for the changes to apply to the active config instance. If <paramref name="status"/> is provided, it will be called with text and a color to indicate the status of the operation. If <paramref name="silent"/> is false, sounds will play indicating success or failure. If <paramref name="broadcast"/> is false, the chat message informing all players when a ServerSide config is changed saying "Shared config changed: Message: {0}, Mod: {1}, Config: {2}" will not appear on clients. 
+	/// <br/><br/> If <paramref name="pendingConfig"/> is provided, it will be used as the source for the changes to apply to the active config instance. If <paramref name="status"/> is provided, it will be called with text and a color to indicate the status of the operation. If <paramref name="silent"/> is false, sounds will play indicating success or failure. If <paramref name="broadcast"/> is false, the chat message informing all players when a ServerSide config is changed saying "Shared config changed: Message: {0}, Mod: {1}, Config: {2}" will not appear on clients.
 	/// <br/><br/> <b>Mod code can run this method in-game, but there are some considerations to keep in mind: </b>
 	/// <br/><br/> Calling this method on a <see cref="ConfigScope.ServerSide"/> config from a multiplayer client will result in <see cref="ConfigSaveResult.RequestSentToServer"/> being returned and the actual save logic being performed on the server. <see cref="HandleAcceptClientChangesReply(bool, int, NetworkText)"/> will be called on all clients after the server accepts or denies the changes. Calling this method on the server for a ServerSide config is also supported.
 	/// <br/><br/> Attempting to save changes that would violate <see cref="NeedsReload"/> will fail and <see cref="ConfigSaveResult.NeedsReload"/> will be returned.

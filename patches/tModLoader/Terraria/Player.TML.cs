@@ -503,7 +503,7 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 			ItemLoader.UpdateVisibleAccessory(item, this, true);
 	}
 
-	[Obsolete("Removed in 1.4.5. Use Player.TryDroppingSingleItem instead.")] 
+	[Obsolete("Removed in 1.4.5. Use Player.TryDroppingSingleItem instead.")]
 	public void DropItem(IEntitySource source, Vector2 position, ref Item item) => TryDroppingSingleItem(source, item);
 
 	public int GetHealLife(Item item, bool quickHeal = false)

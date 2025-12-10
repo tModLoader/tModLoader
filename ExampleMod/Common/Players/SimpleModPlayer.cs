@@ -8,8 +8,8 @@ namespace ExampleMod.Common.Players
 	// This file shows the very basics of using ModPlayer classes.
 	// The comments in this file and https://github.com/tModLoader/tModLoader/wiki/ModPlayer are useful for learning how to use ModPlayer in your mod.
 
-	// ModPlayer classes provide a way to attach data to Players and act on that data. 
-	// This example will hopefully provide you with an understanding of the basic building blocks of how ModPlayer works. 
+	// ModPlayer classes provide a way to attach data to Players and act on that data.
+	// This example will hopefully provide you with an understanding of the basic building blocks of how ModPlayer works.
 	// This example will teach the most commonly sought after effect: "How to do X if the player has Y?"
 	// X in this example will be "Apply a debuff to enemies."
 	// Y in this example will be "Wearing an accessory."
@@ -18,7 +18,7 @@ namespace ExampleMod.Common.Players
 	// Another example would be an armor set effect. Simply use the ModItem.UpdateArmorSet hook.
 	// The point is, each of these effects follow the same pattern.
 
-	// Below you will see the ModPlayer class (SimpleModPlayer), and below that will be a ModItem class called SimpleAccessory which is an accessory item. These are both in the same file for your reading convenience. This accessory will give our effect to our ModPlayer. 
+	// Below you will see the ModPlayer class (SimpleModPlayer), and below that will be a ModItem class called SimpleAccessory which is an accessory item. These are both in the same file for your reading convenience. This accessory will give our effect to our ModPlayer.
 
 	// This is the ModPlayer class. Make note of the classname, which is SimpleModPlayer, since we will be using this in the accessory item below.
 	public class SimpleModPlayer : ModPlayer

@@ -20,7 +20,7 @@
  
  	public static void Initialize(SocialMode? mode = null)
  	{
-+		
++
  		if (!mode.HasValue) {
  			mode = SocialMode.None;
 +
@@ -89,7 +89,7 @@
 +		/*
 +		if (ModLoader.Engine.Steam.IsSteamApp)
 +			goto SkipAchievements;
-+		
++
  		Achievements = LoadModule<Terraria.Social.Steam.AchievementsSocialModule>();
 +		SkipAchievements:
 +		*/

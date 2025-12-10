@@ -370,7 +370,7 @@ public static class NPCLoader
 		foreach (var g in HookSendExtraAI.Enumerate(npc)) {
 			g.SendExtraAI(npc, bitWriter, binaryWriter);
 		}
-	
+
 		bitWriter.Flush(modWriter);
 		modWriter.Write(bufferedStream.ToArray());
 
@@ -631,9 +631,9 @@ public static class NPCLoader
 			g.OnCaughtBy(npc, player, item, failed);
 		}
 	}
-		
+
 	private static HookList HookPickEmote = AddHook<Func<NPC, Player, List<int>, WorldUIAnchor, int?>>(g => g.PickEmote);
-		
+
 	public static int? PickEmote(NPC npc, Player closestPlayer, List<int> emoteList, WorldUIAnchor anchor) {
 		int? result = null;
 

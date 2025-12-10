@@ -159,7 +159,7 @@ namespace ExampleMod.Content.CustomModType
 		}
 	}
 
-	// A slightly tweaked CreativeSacrificeParticle. IParticle are similar to Dust, but can be customized completely. 
+	// A slightly tweaked CreativeSacrificeParticle. IParticle are similar to Dust, but can be customized completely.
 	public class PoseIconParticle : IParticle
 	{
 		public Vector2 AccelerationPerFrame;

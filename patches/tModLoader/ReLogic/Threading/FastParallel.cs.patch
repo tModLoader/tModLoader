@@ -1,14 +1,16 @@
 --- src/TerrariaNetCore/ReLogic/Threading/FastParallel.cs
 +++ src/tModLoader/ReLogic/Threading/FastParallel.cs
-@@ -66,6 +_,8 @@
+@@ -66,7 +_,9 @@
  		ThreadPriority priority = Thread.CurrentThread.Priority;
  		Thread.CurrentThread.Priority = ThreadPriority.Highest;
  		*/
+-		
 +
 +		var tpStartState = (completed: ThreadPool.CompletedWorkItemCount, pending: ThreadPool.PendingWorkItemCount);
- 		
++
  		int num3 = num / num2;
  		int num4 = num % num2;
+ 		CountdownEvent countdownEvent = new CountdownEvent(num2);
 @@ -98,8 +_,13 @@
  		if (!countdownEvent.Wait(10000)) {
  			// #2659, throw an exception instead of freezing the process forever.

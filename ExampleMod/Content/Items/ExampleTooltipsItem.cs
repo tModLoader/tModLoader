@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 namespace ExampleMod.Content.Items
 {
 	// This item showcases dynamically editing item tooltips using ModifyTooltips.
-	// Note that for typical tooltips for typical items you would just assign them in the .hjson file and it will automatically be displayed. 
+	// Note that for typical tooltips for typical items you would just assign them in the .hjson file and it will automatically be displayed.
 	public class ExampleTooltipsItem : ModItem
 	{
 		public static LocalizedText RemoveMeText { get; private set; }

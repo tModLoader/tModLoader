@@ -1,6 +1,6 @@
 <Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
-	<!-- Set the default value for BuildMod -->
+	<!-- Set default values for our build config properties -->
 	<PropertyGroup>
 		<BuildMod Condition="'$(BuildMod)' == ''">true</BuildMod>
 		<OutputTmlReferences Condition="'$(OutputTmlReferences)' == ''">false</OutputTmlReferences>
@@ -11,6 +11,9 @@
 		<PlatformTarget>AnyCPU</PlatformTarget>
 		<TargetFramework>net8.0</TargetFramework>
 		<LangVersion>12.0</LangVersion>
+
+		<!-- Include annotations in compiled binary for mods to see. -->
+		<DefineConstants>$(DefineConstants);JETBRAINS_ANNOTATIONS</DefineConstants>
 	</PropertyGroup>
 
 	<PropertyGroup>
