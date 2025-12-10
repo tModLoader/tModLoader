@@ -66,7 +66,7 @@ public abstract class ModLiquid : ModTexturedType, ILocalizedModType, IModType
 	/// <summary> The multiplier used for stopwatches to know how to offset the MPH reading. </summary>
 	public float StopWatchMPHMultiplier { get; set; } = 0.5f;
 
-	/// <summary> The default value that ModLiquidNPC.moddedLiquidMovementSpeed sets to before ModNPC.SetDefaults </summary>
+	/// <summary> The default value that NPC.liquidMovementSpeed sets to before ModNPC.SetDefaults </summary>
 	public float NPCMovementMultiplierDefault { get; set; } = 0.5f;
 
 	/// <summary> The multiplier thats used to specify how slow (or fast) projectiles move while in this liquid. </summary>
