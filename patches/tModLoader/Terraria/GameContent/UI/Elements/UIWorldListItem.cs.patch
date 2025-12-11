@@ -26,26 +26,26 @@
  		_orderInList = orderInList;
  		_data = data;
  		_canBePlayed = canBePlayed;
-+		
++
 +		InitializeTmlFields(data);
-+		
++
  		LoadTextures();
  		InitializeAppearance();
  		_worldIcon = GetIconElement();
-@@ -96,6 +_,8 @@
- 			Append(uIImageButton4);
+@@ -97,6 +_,8 @@
  			num += 24f;
  		}
-+		
-+		AddTmlElements(data, ref num);
  
++		AddTmlElements(data, ref num);
++
  		UIImageButton uIImageButton5 = new UIImageButton(_buttonRenameTexture);
  		uIImageButton5.VAlign = 1f;
+ 		uIImageButton5.Left.Set(num, 0f);
 @@ -148,6 +_,8 @@
  		_buttonSeedTexture = Main.Assets.Request<Texture2D>("Images/UI/ButtonSeed");
  		_buttonRenameTexture = Main.Assets.Request<Texture2D>("Images/UI/ButtonRename");
  		_buttonDeleteTexture = Main.Assets.Request<Texture2D>("Images/UI/ButtonDelete");
-+		
++
 +		LoadTmlTextures();
  	}
  

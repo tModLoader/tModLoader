@@ -226,7 +226,7 @@ static class LevenshteinDistance
 			if (costDiagonal <= costLeft && costDiagonal <= costUp && (costDiagonal == cost - 1 || costDiagonal == cost)) {
 				if (costDiagonal == cost - 1) {
 					editsFromStoT.Push((Edits.Substitute, s[x - 1]));
-					editsFromTtoS.Push((Edits.Substitute, t[y - 1])); 
+					editsFromTtoS.Push((Edits.Substitute, t[y - 1]));
 					x--;
 					y--;
 				}
@@ -280,7 +280,7 @@ static class LevenshteinDistance
 			if (editCurrent != Edits.Keep && editCurrent != Edits.Blank)
 				result += "]";
 			return result;
-		} 
+		}
 
 		return (resultA, resultB);
 	}

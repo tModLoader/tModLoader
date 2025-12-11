@@ -45,7 +45,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 			AddMapEntry(new Color(0, 141, 63), this.GetLocalization("MapEntry1"), MapChestName);
 
 			// Style 1 is ExampleChest when locked. We want that tile style to drop the ExampleChest item as well. Use the Chest Lock item to lock this chest.
-			// No item places ExampleChest in the locked style, so the automatically determined item drop is unknown, this is why RegisterItemDrop is necessary in this situation. 
+			// No item places ExampleChest in the locked style, so the automatically determined item drop is unknown, this is why RegisterItemDrop is necessary in this situation.
 			RegisterItemDrop(ModContent.ItemType<Items.Placeable.Furniture.ExampleChest>(), 1);
 			// Sometimes mods remove content, such as tile styles, or tiles accidentally get corrupted. We can, if desired, register a fallback item for any tile style that doesn't have an automatically determined item drop. This is done by omitting the tileStyles parameter.
 			RegisterItemDrop(ItemID.Chest);
@@ -115,7 +115,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 
 		public override bool LockChest(int i, int j, ref short frameXAdjustment, ref bool manual) {
 			int style = TileObjectData.GetTileStyle(Main.tile[i, j]);
-			// We need to return true only if the tile style is the unlocked variant of a chest that supports locking. 
+			// We need to return true only if the tile style is the unlocked variant of a chest that supports locking.
 			if (style == 0) {
 				// We can check other conditions as well, such as how biome chests can't be locked until Plantera is defeated
 				return true;

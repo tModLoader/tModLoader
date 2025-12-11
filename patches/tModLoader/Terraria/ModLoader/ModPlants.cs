@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Terraria.ID;
 using Terraria.GameContent;
 using Terraria.Enums;
+using System;
 
 namespace Terraria.ModLoader;
 
@@ -239,7 +240,21 @@ public abstract class ModTree : ITree
 	/// <returns></returns>
 	public abstract int DropWood();
 
-	public abstract void SetTreeFoliageSettings(Tile tile, ref int xoffset, ref int treeFrame, ref int floorY, ref int topTextureFrameWidth, ref int topTextureFrameHeight);
+	/// <summary>
+	/// Allows customization of various tree foliage drawing parameters. These control how leafy branches and the tree top are drawn at the <paramref name="i"/> and <paramref name="j"/> coordinates.
+	/// <br/><br/> <paramref name="treeFrame"/> indicates which option for tree top or branch will be drawn. Hallow trees use this to provide many more options (various colors) than the default 3 options by adjusting based on <paramref name="i"/>.
+	/// <br/><br/> <paramref name="floorY"/> is the y tile coordinate of the tile this tree is grown on.
+	/// <br/><br/> <paramref name="topTextureFrameWidth"/> and <paramref name="topTextureFrameHeight"/> dictate the size of the sprite for the tree top. The tree top will be drawn centered above the top tile of the tree. These default to 80 and should be consistent between each tree top option. Branches are 40x40 and are not customizable.
+	/// <br/><br/> <paramref name="xoffset"/> will be 0 for tree tops, 1 for a left branch, and -1 for a right branch. Can be combined with <paramref name="i"/> and <paramref name="floorY"/> to calculate the coordinates of the tile this tree is grown on.
+	/// </summary>
+	public virtual void SetTreeFoliageSettings(int i, int j, Tile tile, int xoffset, ref int treeFrame, int floorY, ref int topTextureFrameWidth, ref int topTextureFrameHeight)
+	{
+	}
+
+	[Obsolete("Use the updated hook signature")]
+	public virtual void SetTreeFoliageSettings(Tile tile, ref int xoffset, ref int treeFrame, ref int floorY, ref int topTextureFrameWidth, ref int topTextureFrameHeight)
+	{
+	}
 
 	/// <summary>
 	/// Return the texture containing the possible tree tops that can be drawn above this tree.

@@ -119,7 +119,7 @@
 +
 +				//TML: Looks like vanilla forgot to set this.
 +				_publicity = publicity;
-+				
++
  				ERemoteStoragePublishedFileVisibility visibility = GetVisibility(publicity);
  				_entryData = new SteamWorkshopItem {
  					Title = itemTitle,
@@ -141,7 +141,7 @@
 +					_issueReporter.ReportInstantUploadProblem("Workshop.ReportIssue_FailedToPublish_CouldNotFindFolderToUpload");
 +					return;
 +				}
-+				
++
 +				/*
  				ulong? num = null;
  				if (AWorkshopEntry.TryReadingManifest(contentFolderPath + Path.DirectorySeparatorChar + "workshop.json", out var info))

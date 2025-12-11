@@ -114,7 +114,7 @@ namespace ExampleMod.Content.Items
 		public override bool PreDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI) {
 			Main.GetItemDrawFrame(Item.type, out var itemTexture, out var itemFrame);
 			Vector2 drawOrigin = itemFrame.Size() / 2f;
-			// Items in the world are drawn centered horizontally sitting at the bottom of the item hitbox, not in the center. 
+			// Items in the world are drawn centered horizontally sitting at the bottom of the item hitbox, not in the center.
 			Vector2 drawPosition = Item.Bottom - Main.screenPosition - new Vector2(0, drawOrigin.Y);
 
 			if (drawMode == DrawModePulse) {
@@ -124,7 +124,7 @@ namespace ExampleMod.Content.Items
 				return false; // Since we drew the texture, return false so the item isn't drawn twice.
 			}
 			else if (drawMode == DrawModeBehindTexture) {
-				// CustomItemDrawingShowcase_Back.png has different dimensions than CustomItemDrawingShowcase.png, so we need to calculate values for the origin and sourceRectangle parameters to draw correctly 
+				// CustomItemDrawingShowcase_Back.png has different dimensions than CustomItemDrawingShowcase.png, so we need to calculate values for the origin and sourceRectangle parameters to draw correctly
 
 				int backFrameNumber = (int)(Main.GameUpdateCount % 60 / 30);
 				var backSourceRectangle = backTexture.Frame(verticalFrames: 2, frameY: backFrameNumber);

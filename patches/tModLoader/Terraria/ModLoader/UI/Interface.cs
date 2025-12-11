@@ -191,7 +191,7 @@ internal static class Interface
 
 				// Find dependencies that need to be downloaded.
 				var missingDeps = ModOrganizer.IdentifyMissingWorkshopDependencies().ToList();
-				
+
 				string message = $"{ModOrganizer.DetectModChangesForInfoMessage(out IEnumerable<string> removedMods)}";
 				if (missingDeps.Any()) {
 					message += $"{Language.GetTextValue("tModLoader.DependenciesNeededForOtherMods")}\n  {string.Join("\n  ", missingDeps)}";
@@ -523,7 +523,7 @@ internal static class Interface
 					WriteColoredLine(ConsoleColor.Yellow, Language.GetTextValue("tModLoader.DedErrorNoConfig"));
 				}
 				else {
-					// We are acting on the actual configs rather than a clone because a reload will be forced anyway. If changing configs during server play is implemented later this will need to adjust to the clone approach.  
+					// We are acting on the actual configs rather than a clone because a reload will be forced anyway. If changing configs during server play is implemented later this will need to adjust to the clone approach.
 					ConfigureMod(mod, configs);
 				}
 			}

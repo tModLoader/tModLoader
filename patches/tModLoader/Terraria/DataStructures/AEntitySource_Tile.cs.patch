@@ -9,7 +9,7 @@
  
 +/// <summary>
 +/// Abstract base class for entities which come from a tile. <br/><br/>
-+/// 
++///
 +/// If the entity comes from a Player/NPC/Projectile, and a tile is only incidentally involved, consider making your own subclass of <see cref="EntitySource_Parent"/> instead
 +/// </summary>
 -public abstract class AEntitySource_Tile : IEntitySource

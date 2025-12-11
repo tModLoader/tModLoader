@@ -178,6 +178,8 @@ Mods: {
 			}
 
 			// ExampleDrip.MapEntry: Example Drip
+			// ExampleWorkbench.MapEntry: Example Workbench
+			// ExampleExposedGem.MapEntry: Example Gem
 		}
 
 		Items: {
@@ -1303,6 +1305,11 @@ Mods: {
 
 			ExampleWaders: {
 				// DisplayName: Example Waders
+				// Tooltip: "Provides the ability to walk on example liquid, example basic liquid & example complex liquid"
+			}
+
+			ExampleGem: {
+				// DisplayName: Example Gem
 				// Tooltip: ""
 			}
 		}

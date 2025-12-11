@@ -113,7 +113,7 @@ public interface SocialBrowserModule
 		var iterationSet = set;
 
 		while (true) {
-			// Get the list of all Publish IDs labelled as dependencies 
+			// Get the list of all Publish IDs labelled as dependencies
 			foreach (var item in iterationSet) {
 				iterationList.UnionWith(item.ModReferenceByModId);
 			}

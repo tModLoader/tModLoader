@@ -94,7 +94,7 @@ public partial class TileObjectData
 	public static bool IsTopLeft(int i, int j) => IsTopLeft(Main.tile[i, j]);
 
 	/// <summary>
-	/// Returns true if the <see cref="Tile"/> provided has a placed tile and is the top left tile of a multitile (supports alternate placements and states as well). Returns false otherwise. 
+	/// Returns true if the <see cref="Tile"/> provided has a placed tile and is the top left tile of a multitile (supports alternate placements and states as well). Returns false otherwise.
 	/// <para/> Can be used for logic that should only run once per multitile, such as custom tile rendering.
 	/// </summary>
 	public static bool IsTopLeft(Tile tile)

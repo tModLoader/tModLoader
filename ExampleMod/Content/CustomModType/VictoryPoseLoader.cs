@@ -16,7 +16,7 @@ namespace ExampleMod.Content.CustomModType
 	{
 		internal static readonly List<ModVictoryPose> victoryPoses = [];
 
-		// Expose victoryPoses as a ReadOnlyList to other mods to prevent accidental manipulations. 
+		// Expose victoryPoses as a ReadOnlyList to other mods to prevent accidental manipulations.
 		public static IReadOnlyList<ModVictoryPose> VictoryPoses => victoryPoses;
 
 		internal static int Add(ModVictoryPose victoryPose) {

@@ -81,7 +81,7 @@ public class ModDownloadItem
 		return (ModName, PublishId.m_ModPubId, Version);
 	}
 
-	// Explicit Equals was required due to a bizarre issue where two ModDownloadItems with equal properties 
+	// Explicit Equals was required due to a bizarre issue where two ModDownloadItems with equal properties
 	//	were not found equal in CachedInstalledModDownloadItems.Contains(item). - Solxan 2023-07-29
 	public bool Equals(ModDownloadItem item)
 	{

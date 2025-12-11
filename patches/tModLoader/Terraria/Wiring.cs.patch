@@ -10,11 +10,11 @@
  
  public static class Wiring
  {
-+	//TML: Many many fields below were made public.	
++	//TML: Many many fields below were made public.
  	public static bool blockPlayerTeleportationForOneIteration;
 +	/// <summary>
 +	/// True while wiring pulse code is running, which happens in <see cref="TripWire"/>. Check this before calling <see cref="Wiring.SkipWire(int, int)"/> in any code that is shared between wiring and other interactions to prevent buggy behavior.<br/><br/>
-+	/// For example, the code in <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/Tiles/ExampleCampfire.cs#L97">ExampleCampfire</see> needs to check <see cref="running"/> because the code is shared between wiring and right click interactions. 
++	/// For example, the code in <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/Tiles/ExampleCampfire.cs#L97">ExampleCampfire</see> needs to check <see cref="running"/> because the code is shared between wiring and right click interactions.
 +	/// </summary>
  	public static bool running;
  	private static Dictionary<Point16, bool> _wireSkip;

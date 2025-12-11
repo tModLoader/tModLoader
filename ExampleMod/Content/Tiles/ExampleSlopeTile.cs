@@ -68,7 +68,7 @@ namespace ExampleMod.Content.Tiles
 		}
 
 		public override void HitSwitch(int i, int j) {
-			// These will run on the server and all clients, to sync their effects. 
+			// These will run on the server and all clients, to sync their effects.
 			Wiring.TripWire(i, j, 1, 1); // TripWire only has effect on the server, but it is fine to call it regardless.
 			Dust.NewDust(new Vector2(i * 16, j * 16), 16, 16, DustID.GreenFairy);
 			SoundEngine.PlaySound(SoundID.Unlock, new Vector2(i * 16, j * 16));
