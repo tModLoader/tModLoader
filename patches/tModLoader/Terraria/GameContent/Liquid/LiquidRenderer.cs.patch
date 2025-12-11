@@ -215,12 +215,11 @@
  						LiquidCache liquidCache = ptr2[-1];
  						LiquidCache liquidCache2 = ptr2[1];
  						LiquidCache liquidCache3 = ptr2[-rectangle.Height];
-@@ -203,7 +_,8 @@
+@@ -203,7 +_,7 @@
  						float num3 = 1f / (float)(WATERFALL_LENGTH[ptr2->Type] + 1);
  						float num4 = 1f;
  						for (int num5 = 1; num5 <= WATERFALL_LENGTH[ptr2->Type]; num5++) {
 -							num4 -= num3;
-+							// num4 -= num3;
 +							num4 -= ptr2->Type >= LiquidID.Count ? (float)(num3 * LiquidLoader.GetLiquid(ptr2->Type).LiquidfallOpacityMultiplier) : num3;
  							if (ptr2[num5].IsSolid)
  								break;
