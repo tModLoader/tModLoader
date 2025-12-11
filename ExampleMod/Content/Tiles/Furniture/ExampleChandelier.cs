@@ -204,7 +204,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 					overrideWindCycle = 0f;
 					break;
 				case StyleID.BorealWood:
-					// The boreal wood style 
+					// The boreal wood style
 					overrideWindCycle = null;
 					windPushPowerY = -1f;
 					dontRotateTopTiles = true;

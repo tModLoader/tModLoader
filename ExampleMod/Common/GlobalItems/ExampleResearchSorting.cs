@@ -22,7 +22,7 @@ namespace ExampleMod.Common.GlobalItems
 				// Vanilla already has many default research sorting groups that you can add your item into. It is usually done automatically with a few exceptions. For an example of an exception, refer to the ExampleFishingCrate file.
 			}
 
-			// Modders who want to quickly check over the current item sorting group values for items in their mod can use the following code snippet, then check client.log. 
+			// Modders who want to quickly check over the current item sorting group values for items in their mod can use the following code snippet, then check client.log.
 			/*
 			if (item.ModItem?.Mod == Mod) {
 				Mod.Logger.Info($"{item.ModItem.Name}: {itemGroup}");

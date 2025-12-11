@@ -762,7 +762,7 @@ public static class LocalizationLoader
 		file.Entries.Insert(placementIndex, new(key, value, comment));
 	}
 
-	// Generates hjson files for the current culture in 
+	// Generates hjson files for the current culture in
 	internal static bool ExtractLocalizationFiles(string modName)
 	{
 		var dir = Path.Combine(Main.SavePath, "ModLocalization", modName);

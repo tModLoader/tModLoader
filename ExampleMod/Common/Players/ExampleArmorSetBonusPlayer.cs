@@ -87,7 +87,7 @@ namespace ExampleMod.Common.Players
 			CustomShadowColor = Color.White; // Reset CustomShadowColor so it doesn't affect normal drawing or other clones.
 
 			// Another common player effect is to draw the player at previous positions and slightly faded. Player.shadowPos/shadowRotation/shadowOrigin stores the last 3 positions and is used by shadow effects added to the game in early versions. Player.GetAdvancedShadow is a more recent addition and can be used for more advanced control and stores up to 60 previous positions.
-			/* 
+			/*
 			int totalShadows = Math.Min(Player.availableAdvancedShadowsCount, 30);
 			int skip = 5;
 			for (int i = totalShadows - totalShadows % skip; i > 0; i -= skip) {

@@ -19,7 +19,7 @@
 +
 +		// TML: Fixed parsing
 +		var tags = _vorbisReader.Tags.All;
-+		
++
 +		void TryReadInteger(string entryName, ref int result) {
 +			if (tags.TryGetValue(entryName, out var values) && values.Count > 0 && int.TryParse(values[0], out int potentialResult)) {
 +				result = potentialResult;

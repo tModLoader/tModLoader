@@ -1,5 +1,4 @@
-zh-Hans 0
-ru-RU 9
+ru-RU 7
 pt-BR 39
 pl-PL 37
 it-IT 988

@@ -101,8 +101,8 @@ namespace ExampleMod.Content.NPCs
 			NPCID.Sets.NPCBestiaryDrawModifiers value = new NPCID.Sets.NPCBestiaryDrawModifiers() {
 				Hide = true // Hides this NPC from the Bestiary, useful for multi-part NPCs whom you only want one entry.
 			};
-			NPCID.Sets.NPCBestiaryDrawOffset.Add(NPC.type, value);
-			NPCID.Sets.RespawnEnemyID[NPC.type] = ModContent.NPCType<ExampleWormHead>();
+			NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, value);
+			NPCID.Sets.RespawnEnemyID[Type] = ModContent.NPCType<ExampleWormHead>();
 		}
 
 		public override void SetDefaults() {
@@ -124,8 +124,8 @@ namespace ExampleMod.Content.NPCs
 			NPCID.Sets.NPCBestiaryDrawModifiers value = new NPCID.Sets.NPCBestiaryDrawModifiers() {
 				Hide = true // Hides this NPC from the Bestiary, useful for multi-part NPCs whom you only want one entry.
 			};
-			NPCID.Sets.NPCBestiaryDrawOffset.Add(NPC.type, value);
-			NPCID.Sets.RespawnEnemyID[NPC.type] = ModContent.NPCType<ExampleWormHead>();
+			NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, value);
+			NPCID.Sets.RespawnEnemyID[Type] = ModContent.NPCType<ExampleWormHead>();
 		}
 
 		public override void SetDefaults() {

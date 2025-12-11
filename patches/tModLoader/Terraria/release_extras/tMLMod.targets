@@ -1,8 +1,9 @@
 <Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
-	<!-- Set the default value for BuildMod -->
+	<!-- Set default values for our build config properties -->
 	<PropertyGroup>
 		<BuildMod Condition="'$(BuildMod)' == ''">true</BuildMod>
+		<OutputTmlReferences Condition="'$(OutputTmlReferences)' == ''">false</OutputTmlReferences>
 	</PropertyGroup>
 
 	<!-- Build Defaults -->
@@ -10,6 +11,9 @@
 		<PlatformTarget>AnyCPU</PlatformTarget>
 		<TargetFramework>net8.0</TargetFramework>
 		<LangVersion>12.0</LangVersion>
+
+		<!-- Include annotations in compiled binary for mods to see. -->
+		<DefineConstants>$(DefineConstants);JETBRAINS_ANNOTATIONS</DefineConstants>
 	</PropertyGroup>
 
 	<PropertyGroup>
@@ -41,8 +45,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Reference Include="$(tMLSteamPath)$(tMLPath)" Private="false" />
-		<Reference Include="$(tMLLibraryPath)/**/*.dll" Private="false" />
+		<Reference Include="$(tMLSteamPath)$(tMLPath)" Private="$(OutputTmlReferences)" />
+		<Reference Include="$(tMLLibraryPath)/**/*.dll" Private="$(OutputTmlReferences)" />
 		<Reference Remove="$(tMLLibraryPath)/Native/**" />
 		<Reference Remove="$(tMLLibraryPath)/**/runtime*/**" />
 		<Reference Remove="$(tMLLibraryPath)/**/*.resources.dll" />

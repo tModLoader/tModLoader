@@ -95,7 +95,7 @@
  				int num37 = coordinates.Y + objectStart.Y;
 +				int num38 = x - tileObjectData.Origin.X;
 +				int num39 = y - tileObjectData.Origin.Y;
-+				/* Fix random cache not working with alternates with different origins (mistakenly cycles new random each update), it should use the alternates TOD, not the tile styles TOD 
++				/* Fix random cache not working with alternates with different origins (mistakenly cycles new random each update), it should use the alternates TOD, not the tile styles TOD
  				int num38 = x - tileData.Origin.X;
  				int num39 = y - tileData.Origin.Y;
 +				*/

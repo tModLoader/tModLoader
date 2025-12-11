@@ -60,7 +60,7 @@ public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>
 	public List<Mod> StatsModifiedBy { get; private set; } = new();
 
 	/// <summary>
-	/// An additional identifier 
+	/// An additional identifier
 	/// </summary>
 	public int NetStateVersion { get; private set; }
 

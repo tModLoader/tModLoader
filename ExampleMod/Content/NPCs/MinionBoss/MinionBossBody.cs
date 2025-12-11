@@ -262,7 +262,7 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 
 			if (SecondStage) {
 				startFrame = 3;
-				finalFrame = Main.npcFrameCount[NPC.type] - 1;
+				finalFrame = Main.npcFrameCount[Type] - 1;
 
 				if (NPC.frame.Y < startFrame * frameHeight) {
 					// If we were animating the first stage frames and then switch to second stage, immediately change to the start frame of the second stage

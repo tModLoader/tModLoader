@@ -570,7 +570,7 @@ public static class ItemLoader
 	private static HookList HookCanResearch = AddHook<DelegateCanResearch>(g => g.CanResearch);
 
 	/// <summary>
-	/// Hook that determines if an item will be prevented from being consumed by the research function. 
+	/// Hook that determines if an item will be prevented from being consumed by the research function.
 	/// </summary>
 	/// <param name="item">The item to be consumed or not</param>
 	public static bool CanResearch(Item item)

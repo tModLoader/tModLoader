@@ -114,4 +114,16 @@ public abstract class ModWall : ModBlockType
 	{
 		return true;
 	}
+
+	/// <summary>
+	/// Called when this wall has been converted to another wall type via biome conversion. Check <paramref name="fromType"/> and <paramref name="toType"/> to see the wall types the wall changed between. For ModWall, this will be called when converting both to and from the wall. <paramref name="conversionType"/> is a <see cref="BiomeConversionID"/> (or <see cref="ModBiomeConversion.Type"/>).
+	/// </summary>
+	/// <param name="i">The x position in tile coordinates.</param>
+	/// <param name="j">The y position in tile coordinates.</param>
+	/// <param name="fromType">The original wall type</param>
+	/// <param name="toType">The new wall type</param>
+	/// <param name="conversionType">A <see cref="BiomeConversionID"/> (or <see cref="ModBiomeConversion.Type"/>)</param>
+	public virtual void OnWallConverted(int i, int j, int fromType, int toType, int conversionType)
+	{
+	}
 }

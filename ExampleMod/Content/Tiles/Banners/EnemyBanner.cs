@@ -32,11 +32,13 @@ namespace ExampleMod.Content.Tiles.Banners
 	// BannerItem = ModContent.ItemType<ExampleCustomAISlimeNPCBanner>();
 	// to
 	// BannerItem = Mod.Find<ModItem>("ExampleCustomAISlimeNPCBanner").Type;
+	// or
+	// BannerItem = Mod.Find<ModItem>($"{nameof(EnemyBanner.StyleID.ExampleCustomAISlimeNPC)}Banner").Type;
 
 	public class EnemyBannerLoader : ILoadable
 	{
 		public void Load(Mod mod) {
-			// For each entry in EnemyBanner.StyleID, we dynamically load an AutoloadedBannerItem. 
+			// For each entry in EnemyBanner.StyleID, we dynamically load an AutoloadedBannerItem.
 			foreach (EnemyBanner.StyleID styleID in Enum.GetValues(typeof(EnemyBanner.StyleID))) {
 				mod.AddContent(new AutoloadedBannerItem(styleID.ToString() + "Banner", (int)styleID));
 			}

@@ -114,17 +114,22 @@ public sealed class ChangeMagicNumberToIDAnalyzer() : AbstractDiagnosticAnalyzer
 			var node = (InvocationExpressionSyntax)ctx.Node;
 
 			if (ctx.SemanticModel.GetSymbolInfo(node, ctx.CancellationToken).Symbol as IMethodSymbol is not { } invokedMethodSymbol) return;
-			if (!MagicNumberBindings.TryGetBinding(invokedMethodSymbol, out _)) return;
+			if (!MagicNumberBindings.HasBindingsForSymbol(invokedMethodSymbol)) return;
 
-			for (int i = 0; i < node.ArgumentList.Arguments.Count; i++) {
+			if (ctx.SemanticModel.GetOperation(node) is not IInvocationOperation invokeOperation)
+				return;
+
+			foreach (IArgumentOperation argument in invokeOperation.Arguments)
+			{
 				ctx.CancellationToken.ThrowIfCancellationRequested();
 
-				var argument = node.ArgumentList.Arguments[i];
-				var argumentOperation = (IArgumentOperation)ctx.SemanticModel.GetOperation(argument, ctx.CancellationToken);
-				if (!MagicNumberBindings.TryGetBinding(argumentOperation.Parameter, out var binding))
+				if (argument.Parameter is null || argument.Syntax is not ArgumentSyntax argumentSyntax)
 					continue;
 
-				TryReportVariedDiagnostics(ctx.ReportDiagnostic, ctx.SemanticModel, argument.Expression, binding, ctx.CancellationToken);
+				if (!MagicNumberBindings.TryGetBinding(argument.Parameter, out var binding))
+					continue;
+
+				TryReportVariedDiagnostics(ctx.ReportDiagnostic, ctx.SemanticModel, argumentSyntax.Expression, binding, ctx.CancellationToken);
 			}
 		}, SyntaxKind.InvocationExpression);
 
@@ -137,7 +142,7 @@ public sealed class ChangeMagicNumberToIDAnalyzer() : AbstractDiagnosticAnalyzer
 			}
 
 					=>
-		
+
 			switch (item.type) {
 				case ItemID.IronPickaxe:
 					break;

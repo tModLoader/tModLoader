@@ -143,7 +143,7 @@ internal static class SteamWebWrapper
 
 	// We don't know enough about what the formatting is for this method's tags_to_add to use it in Github Actions yet - Solxan
 	// https://steamapi.xpaw.me/#IPublishedFileService/UpdateKeyValueTags
-	/* 
+	/*
 	internal static string SetKeyValueTags(string publishedFileId, List<KeyValueTags> keyValueTags)
 	{
 		if (string.IsNullOrEmpty(PublisherKey))

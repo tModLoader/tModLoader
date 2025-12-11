@@ -105,16 +105,16 @@ public partial class WorldGen
 			if (!InWorld(testX, testY, 10))
 				return;
 
+			int preConversionType = Main.tile[testX, testY].type;
+			if (!TileID.Sets.Infectable[preConversionType])
+				return;
+
 			if (nearbyChlorophyte(testX, testY) && conversionType != BiomeConversionID.Hallow) {
 				ChlorophyteDefense(testX, testY);
 				return;
 			}
 
 			if (CountNearBlocksTypes(testX, testY, 2, 1, TileID.Sunflower) > 0)
-				return;
-
-			int preConversionType = Main.tile[testX, testY].type;
-			if (!TileID.Sets.Infectable[preConversionType])
 				return;
 
 			Convert(testX, testY, conversionType, size: 0, tiles: true, walls: false);

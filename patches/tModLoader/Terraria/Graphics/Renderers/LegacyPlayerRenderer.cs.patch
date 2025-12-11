@@ -48,7 +48,7 @@
 +			drawInfo.HeadOnlySetup(drawPlayer, _drawData, _dust, _gore, position.X, position.Y, alpha, scale);
 +			goto SkipBoringSetup;
 +		}
-+		
++
  		drawInfo.BoringSetup(drawPlayer, _drawData, _dust, _gore, position, shadow, rotation, rotationOrigin);
 +		SkipBoringSetup:
 +

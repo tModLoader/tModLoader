@@ -59,7 +59,7 @@
 +		//IsGlobal = false;
 +		Style = style.WithSelectedVariant(style.SelectedVariant); // Select a variant if for some reason not set at this point.
 +		Callback = updateCallback;
-+		
++
  		Play();
  	}
  
@@ -108,7 +108,7 @@
 +			RunOnMainThreadAndWait(Stop);
 +			return;
 +		}
-+		
++
  		if (Sound != null)
  			Sound.Stop();
  	}
@@ -119,7 +119,7 @@
 +			RunOnMainThreadAndWait(Pause);
 +			return;
 +		}
-+		
++
  		if (Sound != null && Sound.State == SoundState.Playing)
  			Sound.Pause();
  	}
@@ -130,7 +130,7 @@
 +			RunOnMainThreadAndWait(Resume);
 +			return;
 +		}
-+		
++
  		if (Sound != null && Sound.State == SoundState.Paused)
  			Sound.Resume();
  	}

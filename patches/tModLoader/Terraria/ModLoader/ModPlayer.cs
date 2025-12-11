@@ -152,8 +152,8 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
-	/// Allows you to copy information to the <paramref name="targetCopy"/> parameter that you intend to sync between this local client and both the server and other clients. 
-	/// <br/><br/> You would then use the <see cref="SendClientChanges"/> hook to compare against that data and decide what needs synchronizing, sending that data in a <see cref="ModPacket"/> to the server. The server will then need to relay that information to the other remote clients. 
+	/// Allows you to copy information to the <paramref name="targetCopy"/> parameter that you intend to sync between this local client and both the server and other clients.
+	/// <br/><br/> You would then use the <see cref="SendClientChanges"/> hook to compare against that data and decide what needs synchronizing, sending that data in a <see cref="ModPacket"/> to the server. The server will then need to relay that information to the other remote clients.
 	/// <br/><br/> This hook is called with every call of the <see cref="Player.clientClone"/> method (each game update).
 	/// <br/><br/> See <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Netcode#player--modplayer">the Player / ModPlayer section of the Basic Netcode wiki page</see> for more information.
 	/// <br/>
@@ -673,7 +673,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
-	/// Called before the potion delay is applied to the player after consuming a healing potion. 
+	/// Called before the potion delay is applied to the player after consuming a healing potion.
 	/// <br/><br/> Return false to prevent application of the <see cref="BuffID.PotionSickness"/> buff and setting <see cref="Player.potionDelay"/>.
 	/// </summary>
 	/// <param name="item">The healing item being used.</param>
@@ -1432,7 +1432,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// Allows drawing additional copies of the player, usually to implement an armor set shadow visual effect, dodge effect, or dash effect. Use <c>Main.PlayerRenderer.DrawPlayer(...)</c> to draw the additional player copies. The normal player will be drawn after this method runs.
-	/// <br/><br/> Called during <see cref="Terraria.Graphics.Renderers.LegacyPlayerRenderer.DrawPlayerFull(Graphics.Camera, Player)"/>. 
+	/// <br/><br/> Called during <see cref="Terraria.Graphics.Renderers.LegacyPlayerRenderer.DrawPlayerFull(Graphics.Camera, Player)"/>.
 	/// </summary>
 	public virtual void DrawPlayer(Camera camera)
 	{

@@ -28,7 +28,7 @@ internal class SteamCmdDownloaderInstance
 		$"{modDownloadFolderPath}/steamapps/workshop/content/1281930";
 
 	/// <summary>
-	/// 
+	///
 	/// </summary>
 	/// <returns>The Actual Workshop Folder that the mods were downloaded to</returns>
 	internal string DownloadItems()

@@ -473,7 +473,7 @@
 +	/// </summary>
  	public int potionDelay;
 +	/// <summary>
-+	/// The <see href="https://terraria.wiki.gg/wiki/Difficulty">player difficulty</see>. Valid values are found in <see cref="PlayerDifficultyID"/>. 
++	/// The <see href="https://terraria.wiki.gg/wiki/Difficulty">player difficulty</see>. Valid values are found in <see cref="PlayerDifficultyID"/>.
 +	/// </summary>
  	public byte difficulty;
  	public byte wetSlime;
@@ -521,7 +521,7 @@
 +	public int balloonFront = -1;
 +	public int beard = -1;
 +	/// <summary>
-+	/// Indicates if the corresponding <see cref="armor"/> accessory is set to be hidden or not. 
++	/// Indicates if the corresponding <see cref="armor"/> accessory is set to be hidden or not.
 +	/// </summary>
  	public bool[] hideVisibleAccessory = new bool[10];
  	public BitsByte hideMisc = (byte)0;
@@ -564,7 +564,7 @@
 +	/// </summary>
  	public int cursorItemIconPush;
 +	/// <summary>
-+	/// Text to be drawn on the cursor when <see cref="cursorItemIconEnabled"/> is true. 
++	/// Text to be drawn on the cursor when <see cref="cursorItemIconEnabled"/> is true.
 +	/// </summary>
  	public string cursorItemIconText = "";
  	public int runSoundDelay;
@@ -572,7 +572,7 @@
  	public const int shadowMax = 3;
 +	/// <summary>
 +	/// Contains the player positioning data for the last 3 frames. Used by <see cref="armorEffectDrawShadow"/> and other similar effects.
-+	/// <br/><br/> See <see cref="GetAdvancedShadow(int)"/> for a more flexible approach. 
++	/// <br/><br/> See <see cref="GetAdvancedShadow(int)"/> for a more flexible approach.
 +	/// </summary>
  	public Vector2[] shadowPos = new Vector2[3];
 +	/// <inheritdoc cref="shadowPos"/>
@@ -3610,7 +3610,7 @@
  		for (int i = 0; i < numberOfTorchAttacksMade; i++) {
  			int num = unlitTorchX[i];
  			int num2 = unlitTorchY[i];
-+			
++
 -			if (Main.tile[num, num2].type == 4 && Main.tile[num, num2].frameX >= 66) {
 +			if (TileID.Sets.Torch[Main.tile[num, num2].type] && Main.tile[num, num2].frameX >= 66) {
  				Main.tile[num, num2].frameX -= 66;
@@ -4649,7 +4649,7 @@
  						int num15 = -1;
 -						if (Main.keyState.IsKeyDown(Keys.D1)) {
 +						// TML: Fix for digit keys being incorrectly checked instead of Hotbar hotkeys. Should be fixed in 1.4.5.
-+						if (PlayerInput.Triggers.Current.Hotbar1) { 
++						if (PlayerInput.Triggers.Current.Hotbar1) {
  							num15 = 0;
  							flag10 = true;
  						}
@@ -6254,7 +6254,7 @@
  
 +	/// <summary>
 +	/// Teleports the player to the provided world coordinates. In multiplayer, clients should send <see cref="MessageID.TeleportEntity"/> rather than call this method directly.
-+	/// <br/> <b>newPos: </b> The teleportation destination in world coordinates. (Sets position, not Center) 
++	/// <br/> <b>newPos: </b> The teleportation destination in world coordinates. (Sets position, not Center)
 +	/// <br/> <b>Style: </b> Controls the visuals and sounds of the teleport. Equivalent to <see cref="TeleportationStyleID"/> values.
 +	/// </summary>
  	public void Teleport(Vector2 newPos, int Style = 0, int extraInfo = 0)
@@ -6931,7 +6931,7 @@
  				if (inventory[selectedItem].stack == 0)
  					inventory[selectedItem].SetDefaults();
  
-@@ -30673,9 +_,13 @@
+@@ -30673,9 +_,14 @@
  			int? forcedRandom = null;
  			TileObject objectData = default(TileObject);
  			FigureOutWhatToPlace(tile, item, out tileToCreate, out var previewPlaceStyle, out overrideCanPlace, out forcedRandom);
@@ -6941,6 +6941,7 @@
  			}
 +			else if (!TileLoader.CanPlace(tileTargetX, tileTargetY, tileToCreate)) {
 +				canPlace = false;
++				// TODO: CanPlace hook that allows forcing canPlace to true, rather than just preventing placement.
 +			}
  			else if (TileObjectData.CustomPlace(tileToCreate, previewPlaceStyle) && tileToCreate != 82 && tileToCreate != 227) {
  				newObjectType = true;
@@ -7948,9 +7949,9 @@
  			int weaponCrit = GetWeaponCrit(sItem);
  			if (Main.rand.Next(1, 101) <= weaponCrit)
  				flag3 = true;
-+			
-+			skipStandardCritCalcs:
  
++			skipStandardCritCalcs:
++
 +			/*
  			int num2 = Item.NPCtoBanner(nPC.BannerID());
  			if (num2 > 0 && HasNPCBannerBuff(num2))
@@ -8708,7 +8709,7 @@
  			pulley = false;
  			pulleyDir = 1;
  			if (controlRight)
-@@ -39780,7 +_,10 @@
+@@ -39780,11 +_,17 @@
  			}
  
  			for (int l = 0; l < list.Count; l++) {
@@ -8719,6 +8720,13 @@
  					break;
  
  				int type2 = Main.projectile[list[l]].type;
++				/*
+ 				if (type2 == num4 || type2 == 625 || type2 == 628 || type2 == 623)
++				*/
++				if (type2 == num4 || ProjectileID.Sets.MinionCannotBeFreed[type2])
+ 					continue;
+ 
+ 				if (type2 == 388 && num4 == 387)
 @@ -39836,6 +_,9 @@
  
  	private void ApplyPotionDelay(Item sItem)

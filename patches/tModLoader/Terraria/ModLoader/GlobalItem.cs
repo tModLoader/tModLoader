@@ -223,7 +223,7 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	}
 
 	/// <summary>
-	/// Called before the potion delay is applied to the player after consuming a healing potion. 
+	/// Called before the potion delay is applied to the player after consuming a healing potion.
 	/// <br/><br/> Return false to prevent application of the <see cref="BuffID.PotionSickness"/> buff and setting <see cref="Player.potionDelay"/>.
 	/// </summary>
 	/// <param name="item">The healing item being used.</param>
