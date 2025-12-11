@@ -403,14 +403,14 @@ public static class LiquidEdgeRenderer
 
 	private static void AddEdgePoint(ushort tileX, ushort tileY)
 	{
-		if (currentSpan is { } span && span.X == tileX && span.YEnd == tileY - 1) {
-			span.Height++;
-			currentSpan = span;
-			return;
-		}
+		if (currentSpan is { } span) {
+			if (span.X == tileX && span.YEnd == tileY - 1) {
+				currentSpan = span with { Height = (ushort)(span.Height + 1) };
+				return;
+			}
 
-		if (currentSpan.HasValue)
-			edgeSpans.Add(currentSpan.Value);
+			edgeSpans.Add(span);
+		}
 
 		currentSpan = new EdgeSpan {
 			X = tileX,
