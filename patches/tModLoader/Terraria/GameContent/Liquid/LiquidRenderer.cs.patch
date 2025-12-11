@@ -101,7 +101,7 @@
  	private static readonly byte[] VISCOSITY_MASK = new byte[5] {
  		0,
  		200,
-@@ -84,19 +_,22 @@
+@@ -84,19 +_,24 @@
  		0,
  		0
  	};
@@ -114,8 +114,9 @@
 +	internal LiquidCache[] _cache = new LiquidCache[1];
 -	private LiquidDrawCache[] _drawCache = new LiquidDrawCache[1];
 +	internal LiquidDrawCache[] _drawCache = new LiquidDrawCache[1];
--	private SpecialLiquidDrawCache[] _drawCacheForShimmer = new SpecialLiquidDrawCache[1];
-+	// private SpecialLiquidDrawCache[] _drawCacheForShimmer = new SpecialLiquidDrawCache[1];
++	/*
+ 	private SpecialLiquidDrawCache[] _drawCacheForShimmer = new SpecialLiquidDrawCache[1];
++	*/
  	private int _animationFrame;
  	private Rectangle _drawArea = new Rectangle(0, 0, 1, 1);
  	private readonly UnifiedRandom _random = new UnifiedRandom();
@@ -238,14 +239,6 @@
  						ptr2->VisibleLiquidLevel = 1f;
  						ptr2->HasVisibleLiquid = false;
  					}
-@@ -227,6 +_,7 @@
- 				ptr2 += 10;
- 			}
- 
-+
- 			ptr2 = ptr;
- 			ptr2 += num;
- 			for (int num6 = 2; num6 < rectangle.Width - 2; num6++) {
 @@ -247,8 +_,8 @@
  						float num10 = 0f;
  						float num11 = 1f;
@@ -257,11 +250,10 @@
  
  						if (!liquidCache2.HasVisibleLiquid && !liquidCache2.IsSolid && !liquidCache2.IsHalfBrick)
  							num11 -= liquidCache.VisibleLiquidLevel * (1f - visibleLiquidLevel);
-@@ -320,8 +_,11 @@
- 							if (ptr2->HasRightEdge)
+@@ -321,7 +_,11 @@
  								ptr2->VisibleRightWall = (ptr2->RightWall * 2f + liquidCache.RightWall + liquidCache2.RightWall) * 0.25f;
  						}
--
+ 
 -						if (liquidCache3.HasVisibleLiquid && liquidCache4.HasVisibleLiquid) {
 +						// Ignore edges when smoothing liquids
 +						bool smoothCondition = edgeData ?
@@ -292,13 +284,12 @@
  							}
  							else {
  								ptr4->IsVisible = false;
-@@ -463,7 +_,9 @@
+@@ -463,7 +_,8 @@
  			ptr2 = ptr;
  			for (int num25 = rectangle.X; num25 < rectangle.X + rectangle.Width; num25++) {
  				for (int num26 = rectangle.Y; num26 < rectangle.Y + rectangle.Height; num26++) {
--					if (ptr2->VisibleType == 1 && ptr2->HasVisibleLiquid && Dust.lavaBubbles < 200) {
-+					// if (ptr2->VisibleType == 1 && ptr2->HasVisibleLiquid && Dust.lavaBubbles < 200) {
 +					if (ptr2->HasVisibleLiquid && LiquidLoader.EmitEffects(num25, num26, ptr2->VisibleType, *ptr2))
+-					if (ptr2->VisibleType == 1 && ptr2->HasVisibleLiquid && Dust.lavaBubbles < 200) {
 +					if (ptr2->VisibleType == 1 && Dust.lavaBubbles < 200) {
  						if (_random.Next(700) == 0)
  							Dust.NewDust(new Vector2(num25 * 16, num26 * 16), 16, 16, 35, 0f, 0f, 0, Color.White);
@@ -341,13 +332,12 @@
  
  						Vector2 liquidOffset = ptr2->LiquidOffset;
  						float num = ptr2->Opacity * (isBackgroundDraw ? 1f : DEFAULT_OPACITY[ptr2->Type]);
-@@ -551,7 +_,12 @@
+@@ -551,7 +_,11 @@
  						vertices.TopLeftColor *= num;
  						vertices.TopRightColor *= num;
  						Main.DrawTileInWater(drawOffset, i, j);
--						Main.tileBatch.Draw(_liquidTextures[num2].Value, new Vector2(i << 4, j << 4) + drawOffset + liquidOffset, sourceRectangle, vertices, Vector2.Zero, 1f, SpriteEffects.None);
-+						// Main.tileBatch.Draw(_liquidTextures[num2].Value, new Vector2(i << 4, j << 4) + drawOffset + liquidOffset, sourceRectangle, vertices, Vector2.Zero, 1f, SpriteEffects.None);
 +						var texture = ptr2->Type >= LiquidID.Count ? LiquidLoader.LiquidAssets[ptr2->Type] : _liquidTextures[num2];
+-						Main.tileBatch.Draw(_liquidTextures[num2].Value, new Vector2(i << 4, j << 4) + drawOffset + liquidOffset, sourceRectangle, vertices, Vector2.Zero, 1f, SpriteEffects.None);
 +						Main.tileBatch.Draw(texture.Value, new Vector2(i << 4, j << 4) + drawOffset + liquidOffset, sourceRectangle, vertices, Vector2.Zero, 1f, SpriteEffects.None);
 +
 +					PostDraw:
