@@ -1,11 +1,10 @@
 --- src/TerrariaNetCore/Terraria/WaterfallManager.cs
 +++ src/tModLoader/Terraria/WaterfallManager.cs
-@@ -1,10 +_,14 @@
+@@ -1,10 +_,13 @@
  using System;
 +using System.Linq.Expressions;
  using Microsoft.Xna.Framework;
  using Microsoft.Xna.Framework.Graphics;
-+using Microsoft.Xna.Framework.Graphics.PackedVector;
  using ReLogic.Content;
  using Terraria.GameContent.Liquid;
  using Terraria.ID;

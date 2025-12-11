@@ -93,18 +93,16 @@
  	}
  
  	public static void PlaceStatueTrap(int x, int y)
-@@ -1072,19 +_,22 @@
+@@ -1072,19 +_,24 @@
  		}
  
  		int liquidMergeTileType = 0;
--		bool waterNearby = b == 0;
-+		//bool waterNearby = b == 0;
--		bool lavaNearby = b == 1;
-+		//bool lavaNearby = b == 1;
--		bool honeyNearby = b == 2;
-+		//bool honeyNearby = b == 2;
--		bool shimmerNearby = b == 3;
-+		//bool shimmerNearby = b == 3;
++		/*
+ 		bool waterNearby = b == 0;
+ 		bool lavaNearby = b == 1;
+ 		bool honeyNearby = b == 2;
+ 		bool shimmerNearby = b == 3;
++		*/
  		int liquidMergeType = 0;
 -		Liquid.GetLiquidMergeTypes(liquidType, out liquidMergeTileType, out liquidMergeType, waterNearby, lavaNearby, honeyNearby, shimmerNearby);
 -		if (liquidMergeTileType != 0) {
