@@ -188,6 +188,11 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	public virtual bool AllowPrefix(int pre) => true;
 
 	/// <summary>
+	/// Called immediately after <see cref="ModPrefix.Apply(Item)"/>
+	/// </summary>
+	public virtual void ApplyPrefix(int pre) { }
+
+	/// <summary>
 	/// Returns whether or not this item can be used. By default returns true.
 	/// <para/> Called on local, server, and remote clients.
 	/// <br/><br/> The item may or not be used after this method is called, so logic in this method should have no side effects such as consuming items or resources.

@@ -1001,13 +1001,14 @@
  		damage = (int)Math.Round((float)damage * dmg);
  		useAnimation = (int)Math.Round((float)useAnimation * spd);
  		useTime = (int)Math.Round((float)useTime * spd);
-@@ -356,6 +_,12 @@
+@@ -356,6 +_,13 @@
  		scale *= size;
  		shootSpeed *= shtspd;
  		crit += crt;
 +
 +		if (rolledPrefix >= PrefixID.Count)
 +			PrefixLoader.GetPrefix(rolledPrefix)?.Apply(this);
++		ItemLoader.ApplyPrefix(this, rolledPrefix);
 +
 +		ApplyItemAnimationCompensationsToVanillaItems();
 +
