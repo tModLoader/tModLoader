@@ -187,7 +187,7 @@
  					if (tile == null)
  						tile = new Tile();
  
-@@ -152,6 +_,10 @@
+@@ -152,9 +_,16 @@
  					if (ptr2->IsHalfBrick && !ptr2->HasLiquid)
  						ptr2->Type = ptr2[-1].Type;
  
@@ -198,6 +198,12 @@
  					ptr2++;
  				}
  			}
++
++			if (edgeData)
++				LiquidEdgeRenderer.FinishEdgeData();
+ 
+ 			ptr2 = ptr;
+ 			float num2 = 0f;
 @@ -165,7 +_,7 @@
  					if (ptr2->IsHalfBrick && ptr2[-1].HasLiquid) {
  						num2 = 1f;
