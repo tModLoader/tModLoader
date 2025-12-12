@@ -61,7 +61,7 @@ public static class LiquidEdgeRenderer
 		public ushort YStart;
 		public ushort Height;
 
-		public readonly int YEnd => YStart + Height - 1;
+		public readonly int YEnd => YStart + Height;
 	}
 
 	private static readonly List<Point16> maskPoints = [];
@@ -404,7 +404,7 @@ public static class LiquidEdgeRenderer
 	private static void AddEdgePoint(ushort tileX, ushort tileY)
 	{
 		if (currentSpan is { } span) {
-			if (span.X == tileX && span.YEnd == tileY - 1) {
+			if (span.X == tileX && span.YEnd == tileY) {
 				currentSpan = span with { Height = (ushort)(span.Height + 1) };
 				return;
 			}
