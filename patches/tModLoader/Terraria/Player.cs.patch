@@ -7187,6 +7187,17 @@
  						if (item.stack > 0)
  							item.stack--;
  
+@@ -33753,7 +_,9 @@
+ 				if (item.stack <= 0 && itemAnimation == 0)
+ 					inventory[selectedItem] = new Item();
+ 
++				// Fix ModItem fields not persisting sometimes when selected with the mouse
+-				if (selectedItem == 58 && itemAnimation != 0)
++				// if (selectedItem == 58 && itemAnimation != 0)
++				if (selectedItem == 58) 
+ 					Main.mouseItem = item.Clone();
+ 			}
+ 		}
 @@ -33770,6 +_,8 @@
  		if (Main.myPlayer == whoAmI && itemAnimation == 0) {
  			Tile targetTile = Main.tile[tileTargetX, tileTargetY];
