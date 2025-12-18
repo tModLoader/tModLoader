@@ -1264,12 +1264,6 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// </summary>
 	/// <param name="item">The item.</param>
 	/// <param name="player">The player using the item.</param>
-	/// <param name="usageSettings">The special tool configuration for this item.</param>
-	public virtual void UseMiningTools(Item item, Player player, ref Player.SpecialToolUsageSettings usageSettings)
-	{
-
-	}
-
 	public virtual void MiningUsage(Player player, Item item, int targetX, int targetY)
 	{
 
