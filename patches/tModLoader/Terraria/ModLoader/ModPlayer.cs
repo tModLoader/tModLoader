@@ -1437,4 +1437,15 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	public virtual void DrawPlayer(Camera camera)
 	{
 	}
+
+	/// <summary>
+	/// Can be used to modify the attack power of this tool
+	/// </summary>
+	/// <param name="item"> use item </param>
+	/// <param name="x"> tile x position </param>
+	/// <param name="y"> tile y position </param>
+	/// <param name="pick"> PickTile pick </param>
+	public virtual void PickTile(Item item, int x, int y, ref int pick)
+	{
+	}
 }

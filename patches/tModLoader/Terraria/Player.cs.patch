@@ -32,6 +32,9 @@
  {
  	public static class BuilderAccToggleIDs
  	{
+@@ -216,7 +_,7 @@
+-	private struct SpecialToolUsageSettings
++	public struct SpecialToolUsageSettings
 @@ -252,20 +_,33 @@
  		public static void PlayerConnect(int playerIndex)
  		{
@@ -7646,6 +7649,15 @@
  	}
  
  	private void DamageTileWithShovel(Player user, Item item, int x, int y)
+@@ -35503,7 +_,7 @@
+ 			specialToolUsageSettings2.UsageAction = UseShovel;
+ 			specialToolUsageSettings = specialToolUsageSettings2;
+ 		}
+-
++		ItemLoader.UseMiningTools(sItem, this, ref specialToolUsageSettings);
+ 		if (sItem.pick <= 0 && sItem.axe <= 0 && sItem.hammer <= 0 && !specialToolUsageSettings.IsAValidTool)
+ 			return;
+ 
 @@ -35516,7 +_,10 @@
  
  		if (toolTime == 0 && itemAnimation > 0 && controlUseItem) {
@@ -7699,8 +7711,14 @@
  				}
  				else {
  					WorldGen.KillTile(x, y, fail: true);
-@@ -35649,8 +_,12 @@
- 			PickTile(x, y, sItem.pick);
+@@ -35646,11 +_,16 @@
+ 			}
+ 		}
+ 		else if (sItem.pick > 0) {
++			int pick = sItem.pick;
++			PlayerLoader.PickTile(this, sItem, x, y, ref pick);
+-			PickTile(x, y, sItem.pick);
++			PickTile(x, y, pick);
  		}
  
 +

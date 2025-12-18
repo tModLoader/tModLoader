@@ -2338,4 +2338,27 @@ public static class ItemLoader
 
 		return false;
 	}
+
+	private delegate void DelegateUseMiningTools(Item item, Player player, ref Player.SpecialToolUsageSettings usageSettings);
+	internal static HookList HookUseMiningTools = AddHook<DelegateUseMiningTools>(g => g.UseMiningTools);
+	public static void UseMiningTools(Item item, Player player, ref Player.SpecialToolUsageSettings usageSettings)
+	{
+		item.ModItem?.UseMiningTools(item, player, ref usageSettings);
+		bool defaultAValidTool = usageSettings.IsAValidTool;
+		Player.SpecialToolUsageSettings.CanUseToolCondition canUseToolCondition = usageSettings.UsageCondition;
+		Player.SpecialToolUsageSettings.UseToolAction useToolAction = usageSettings.UsageAction;;
+		foreach (var g in HookUseMiningTools.Enumerate(item)) {
+			g.UseMiningTools(item, player, ref usageSettings);
+			defaultAValidTool &= usageSettings.IsAValidTool;
+			if(usageSettings.UsageCondition != null) {
+				canUseToolCondition += usageSettings.UsageCondition;
+			}
+			if(usageSettings.UsageAction != null) {
+				useToolAction += usageSettings.UsageAction;
+			}
+		}
+		usageSettings.IsAValidTool = defaultAValidTool;
+		usageSettings.UsageAction = useToolAction;
+		usageSettings.UsageCondition = canUseToolCondition;
+	}
 }

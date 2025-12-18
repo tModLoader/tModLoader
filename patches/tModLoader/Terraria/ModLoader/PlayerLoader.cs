@@ -1532,4 +1532,13 @@ public static class PlayerLoader
 			modPlayer.DrawPlayer(camera);
 		}
 	}
+
+	private delegate void DelegatePickTile(Item item, int x, int y, ref int pick);
+	private static HookList HookPickTile = AddHook<DelegatePickTile>(p => p.PickTile);
+	public static void PickTile(Player player, Item item, int x, int y, ref int pick)
+	{
+		foreach (var modPlayer in HookPickTile.Enumerate(player)) {
+			modPlayer.PickTile(item, x, y, ref pick);
+		}
+	}
 }

@@ -1257,4 +1257,16 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	public virtual void NetReceive(Item item, BinaryReader reader)
 	{
 	}
+
+	/// <summary>
+	/// 如果 <see cref="Player.SpecialToolUsageSettings.UsageAction"/> 不为空，那么将跳过实际的工具调用
+	/// <br/> 而是执行此委托中的逻辑
+	/// </summary>
+	/// <param name="item"> 这个物品 </param>
+	/// <param name="player"> 这个玩家 </param>
+	/// <param name="usageSettings"> 这个物品的特殊工具配置 </param>
+	public virtual void UseMiningTools(Item item, Player player, ref Player.SpecialToolUsageSettings usageSettings)
+	{
+
+	}
 }
