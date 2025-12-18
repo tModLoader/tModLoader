@@ -2346,19 +2346,35 @@ public static class ItemLoader
 		item.ModItem?.UseMiningTools(item, player, ref usageSettings);
 		bool defaultAValidTool = usageSettings.IsAValidTool;
 		Player.SpecialToolUsageSettings.CanUseToolCondition canUseToolCondition = usageSettings.UsageCondition;
-		Player.SpecialToolUsageSettings.UseToolAction useToolAction = usageSettings.UsageAction;;
+		Player.SpecialToolUsageSettings.UseToolAction useToolAction = usageSettings.UsageAction;
+
+		bool anyGlobal = false;  //If there are no hooks, the global returns false
+		bool globalUsageCondition = true;
 		foreach (var g in HookUseMiningTools.Enumerate(item)) {
+			anyGlobal = true;
 			g.UseMiningTools(item, player, ref usageSettings);
 			defaultAValidTool &= usageSettings.IsAValidTool;
 			if(usageSettings.UsageCondition != null) {
-				canUseToolCondition += usageSettings.UsageCondition;
+				globalUsageCondition &= usageSettings.UsageCondition(player, item, Player.tileTargetX, Player.tileTargetY);
+				//canUseToolCondition += usageSettings.UsageCondition;
 			}
 			if(usageSettings.UsageAction != null) {
 				useToolAction += usageSettings.UsageAction;
+				usageSettings.UsageAction = null;
 			}
 		}
+
 		usageSettings.IsAValidTool = defaultAValidTool;
 		usageSettings.UsageAction = useToolAction;
-		usageSettings.UsageCondition = canUseToolCondition;
+
+		usageSettings.UsageCondition = (player, item, x, y) => {
+			if (!anyGlobal) { // not global
+				return canUseToolCondition?.Invoke(player, item, x, y) ?? true;
+			}
+			else {
+				return globalUsageCondition &= canUseToolCondition?.Invoke(player, item, x, y) ?? true;
+			}
+		};
+			
 	}
 }

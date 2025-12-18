@@ -1445,7 +1445,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// <param name="x"> tile x position </param>
 	/// <param name="y"> tile y position </param>
 	/// <param name="pick"> PickTile pick </param>
-	public virtual void PickTile(Item item, int x, int y, ref int pick)
+	public virtual void ModifyPickTile(Item item, int x, int y, ref int pick)
 	{
 	}
 }

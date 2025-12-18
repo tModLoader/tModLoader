@@ -7722,7 +7722,7 @@
  		}
  		else if (sItem.pick > 0) {
 +			int pick = sItem.pick;
-+			PlayerLoader.PickTile(this, sItem, x, y, ref pick);
++			PlayerLoader.ModifyPickTile(this, sItem, x, y, ref pick);
 -			PickTile(x, y, sItem.pick);
 +			PickTile(x, y, pick);
  		}
