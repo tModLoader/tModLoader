@@ -4149,21 +4149,75 @@
  						int num7 = Projectile.NewProjectile(GetProjectileSource_OnHit(nPC2, 2), base.Center.X, base.Center.Y, 0f, 0f, 608, (int)num4, 15f, Main.myPlayer);
  						Main.projectile[num7].Kill();
  					}
-@@ -16631,6 +_,14 @@
+@@ -16523,7 +_,7 @@
+ 				return;
+ 
+ 			if (dash == 1) {
+-				DoCommonDashHandle(out var dir, out var dashing);
++				DoCommonDashHandle(out var dir, out var dashing, ref dashTime);
+ 				if (dashing) {
+ 					velocity.X = 16.9f * (float)dir;
+ 					Point point = (base.Center + new Vector2(dir * width / 2 + 2, gravDir * (float)(-height) / 2f + gravDir * 2f)).ToTileCoordinates();
+@@ -16551,7 +_,7 @@
+ 				}
+ 			}
+ 			else if (dash == 2) {
+-				DoCommonDashHandle(out var dir2, out var dashing2);
++				DoCommonDashHandle(out var dir2, out var dashing2, ref dashTime);
+ 				if (dashing2) {
+ 					velocity.X = 14.5f * (float)dir2;
+ 					Point point3 = (base.Center + new Vector2(dir2 * width / 2 + 2, gravDir * (float)(-height) / 2f + gravDir * 2f)).ToTileCoordinates();
+@@ -16571,7 +_,7 @@
+ 				}
+ 			}
+ 			else if (dash == 3) {
+-				DoCommonDashHandle(out var dir3, out var dashing3, SolarDashStart);
++				DoCommonDashHandle(out var dir3, out var dashing3, ref dashTime, SolarDashStart);
+ 				if (dashing3) {
+ 					velocity.X = 21.9f * (float)dir3;
+ 					Point point5 = (base.Center + new Vector2(dir3 * width / 2 + 2, gravDir * (float)(-height) / 2f + gravDir * 2f)).ToTileCoordinates();
+@@ -16596,7 +_,7 @@
+ 			if (dash != 5)
+ 				return;
+ 
+-			DoCommonDashHandle(out var dir4, out var dashing4);
++			DoCommonDashHandle(out var dir4, out var dashing4, ref dashTime);
+ 			if (dashing4) {
+ 				velocity.X = 16.9f * (float)dir4;
+ 				Point point7 = (base.Center + new Vector2(dir4 * width / 2 + 2, gravDir * (float)(-height) / 2f + gravDir * 2f)).ToTileCoordinates();
+@@ -16631,7 +_,15 @@
  		solarDashConsumedFlare = false;
  	}
  
 +
-+	// TODO:
-+	// - Make public, as it has little reason to be private and could be of great help to those making modded dashes
-+	// - Properly explain how to use this in the context of programming a modded dash (use ExampleShield for this; see below)
-+	// - Make ExampleShield use this, and simplify it accordingly (it currently has way too many moving parts that require extra upkeep, for way too little payoff)
-+	//
-+	// I'll do all this in an upcoming PR if nobody else does.
-+	// - Thomas
- 	private void DoCommonDashHandle(out int dir, out bool dashing, DashStartAction dashStartAction = null)
++	/// <summary>
++	/// Handles "normal" dash functionality, tracking if the player has double tapped in a direction and setting <paramref name="dir"/>, <paramref name="dashing"/>, and <paramref name="dashTime"/> accordingly.
++	/// </summary>
++	/// <param name="dir">Set based on the direction the player is dashing: -1 for left, 1 for right, 0 for none.</param>
++	/// <param name="dashing">Set to true if the player has started a dash, false otherwise.</param>
++	/// <param name="dashTime">The time the player has left to input another left/right press. A negative value indicates waiting for a left press, and a postive one indicates a right press.</param>
++	/// <param name="dashStartAction">The <see cref="DashStartAction"/> to invoke when a dash is started.</param>
+-	private void DoCommonDashHandle(out int dir, out bool dashing, DashStartAction dashStartAction = null)
++	public void DoCommonDashHandle(out int dir, out bool dashing, ref int dashTime, DashStartAction dashStartAction = null)
  	{
  		dir = 0;
+ 		dashing = false;
+@@ -16647,6 +_,7 @@
+ 				dashing = true;
+ 				dashTime = 0;
+ 				timeSinceLastDashStarted = 0;
++				PlayerLoader.OnDash(this, dir);
+ 				dashStartAction?.Invoke(dir);
+ 			}
+ 			else {
+@@ -16659,6 +_,7 @@
+ 				dashing = true;
+ 				dashTime = 0;
+ 				timeSinceLastDashStarted = 0;
++				PlayerLoader.OnDash(this, dir);
+ 				dashStartAction?.Invoke(dir);
+ 			}
+ 			else {
 @@ -16745,7 +_,7 @@
  	public void CarpetMovement()
  	{
@@ -4772,6 +4826,14 @@
  		}
  
  		if (!carpet) {
+@@ -20444,6 +_,7 @@
+ 			canRocket = false;
+ 			rocketRelease = false;
+ 			DashMovement();
++			PlayerLoader.PostDash(this);
+ 			UpdateControlHolds();
+ 		}
+ 		else if (grappling[0] == -1 && !tongued) {
 @@ -20511,6 +_,7 @@
  				}
  			}
@@ -4799,6 +4861,14 @@
  			HorizontalMovement();
  			bool flag20 = !mount.Active;
  			if (forcedGravity > 0) {
+@@ -20651,6 +_,7 @@
+ 				CancelAllJumpVisualEffects();
+ 
+ 			DashMovement();
++			PlayerLoader.PostDash(this);
+ 			WallslideMovement();
+ 			CarpetMovement();
+ 			DoubleJumpVisuals();
 @@ -20684,12 +_,13 @@
  				CancelAllJumpVisualEffects();
  			}
