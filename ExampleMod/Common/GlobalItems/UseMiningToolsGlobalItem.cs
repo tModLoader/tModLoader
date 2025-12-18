@@ -15,7 +15,11 @@ namespace ExampleMod.Common.GlobalItems
 		}
 
 		public override bool IsAValidTool(Player player, Item item) {
-			return false;
+			// can Gravedigger's Shovel digging
+			if (item.type == ItemID.GravediggerShovel) {
+				return false;
+			}
+			return true;
 		}
 	}
 }

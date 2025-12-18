@@ -2341,9 +2341,12 @@ public static class ItemLoader
 
 	public static void UseMiningTools(Item item, Player player, ref Player.SpecialToolUsageSettings usageSettings)
 	{
-		usageSettings.UsageAction += MiningUsage;
 		usageSettings.UsageCondition = MiningUsageCondition;
-		usageSettings.IsAValidTool = IsAValidTool(item, player, usageSettings);
+		bool isAValidTool = IsAValidTool(item, player, usageSettings);
+		usageSettings.IsAValidTool = isAValidTool;
+		if (isAValidTool == true) {
+			usageSettings.UsageAction += MiningUsage;
+		}
 	}
 
 	internal static HookList HookMiningUsage = AddHook<Action<Player, Item, int, int>>(g => g.MiningUsage);
@@ -2356,7 +2359,7 @@ public static class ItemLoader
 	}
 
 	internal static HookList HookMiningUsageCondition = AddHook<Func<Player, Item, int, int, bool>>(g => g.MiningUsageCondition);
-	public static bool MiningUsageCondition(Player player, Item item, int targetX, int targetY) // 特殊效果能否生效
+	public static bool MiningUsageCondition(Player player, Item item, int targetX, int targetY)
 	{
 		bool orig = true;
 		orig &= item.ModItem?.MiningUsageCondition(player, targetX, targetY) ?? true; //vanilla is null default is true
@@ -2367,7 +2370,7 @@ public static class ItemLoader
 	}
 
 	internal static HookList HookIsAValidTool = AddHook<Func<Player, Item, bool>>(g => g.IsAValidTool);
-	public static bool IsAValidTool(Item item, Player player, Player.SpecialToolUsageSettings usageSettings) // 是合法工具
+	public static bool IsAValidTool(Item item, Player player, Player.SpecialToolUsageSettings usageSettings)
 	{
 		bool isAValidTool;
 		if (item.ModItem == null) { // item is vanilla

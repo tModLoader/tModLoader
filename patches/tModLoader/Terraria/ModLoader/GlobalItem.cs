@@ -1259,29 +1259,38 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	}
 
 	/// <summary>
-	/// Called when checking whether an item is a tool. Modifying the content in <paramref name="usageSettings"/> can give the tool special functionality.
-	/// <br/> If <see cref="Player.SpecialToolUsageSettings.UsageAction"/> is not null, the actual tool usage will be skipped and the logic within this delegate will be executed instead.
+	/// Invoked when both<see cref = "MiningUsageCondition(Player, Item, int, int)" /> and <see cref="IsAValidTool(Player, Item)"/> return true.
 	/// </summary>
 	/// <param name="item">The item.</param>
 	/// <param name="player">The player using the item.</param>
+	/// <param name="targetX"> The position of this Tile x </param>
+	/// <param name="targetY"> The position of this Tile y </param>
 	public virtual void MiningUsage(Player player, Item item, int targetX, int targetY)
 	{
 
 	}
 
 	/// <summary>
-	/// 特殊工具能否被调用，默认为true，原版这个委托是空的
+	/// Calling conditions for <see cref="MiningUsage(Player, Item, int, int)"/>
+	/// <br/> If false is returned, the conventional tool call will be invalidated.
 	/// </summary>
-	/// <param name="player"></param>
-	/// <param name="item"></param>
-	/// <param name="targetX"></param>
-	/// <param name="targetY"></param>
-	/// <returns></returns>
+	/// <param name="player">The player using the item.</param>
+	/// <param name="item"> the item </param>
+	/// <param name="targetX"> The position of this Tile x </param>
+	/// <param name="targetY"> The position of this Tile y </param>
+	/// <returns>Whether the conditions for calling<see cref = "MiningUsage(Player, Item, int, int)" /> are met, default is true.</returns>
 	public virtual bool MiningUsageCondition(Player player, Item item, int targetX, int targetY)
 	{
 		return true;
 	}
 
+	/// <summary>
+	/// Determines whether this item can be used as a tool without having <see cref="Item.axe"/>, <see cref="Item.hammer"/>, or <see cref="Item.pick"/>.
+	/// <br/> If you want <see cref="MiningUsage(Player, Item, int, int)"/> to be called, return true or meet one of the three conditions above.
+	/// </summary>
+	/// <param name="player">The player using the item.</param>
+	/// <param name="item">The item.</param>
+	/// <returns>Whether it is considered a tool, default false</returns>
 	public virtual bool IsAValidTool(Player player, Item item)
 	{
 		return false;
