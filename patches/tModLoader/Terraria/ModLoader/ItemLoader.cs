@@ -2343,7 +2343,7 @@ public static class ItemLoader
 	internal static HookList HookUseMiningTools = AddHook<DelegateUseMiningTools>(g => g.UseMiningTools);
 	public static void UseMiningTools(Item item, Player player, ref Player.SpecialToolUsageSettings usageSettings)
 	{
-		item.ModItem?.UseMiningTools(item, player, ref usageSettings);
+		item.ModItem?.UseMiningTools(player, ref usageSettings);
 		bool defaultAValidTool = usageSettings.IsAValidTool;
 		Player.SpecialToolUsageSettings.CanUseToolCondition canUseToolCondition = usageSettings.UsageCondition;
 		Player.SpecialToolUsageSettings.UseToolAction useToolAction = usageSettings.UsageAction;
@@ -2376,6 +2376,23 @@ public static class ItemLoader
 				return globalUsageCondition && orig;
 			}
 		};
-			
+	}
+
+	internal static HookList HookMiningUsage = AddHook<Action<Player, Item, int, int>>(g => g.MiningUsage);
+	public static void MiningUsage(Player user, Item item, int targetX, int targetY)
+	{
+
+	}
+
+	internal static HookList HookMiningUsageCondition = AddHook<Func<Player, Item, int, int, bool>>(g => g.MiningUsageCondition);
+	public static bool MiningUsageCondition(Player user, Item item, int targetX, int targetY)
+	{
+		return true;
+	}
+
+	internal static HookList HookIsAValidTool = AddHook<Func<Player, Item, int, int, bool>>(g => g.IsAValidTool);
+	public static bool IsAValidTool(Item item, Player player, int targetX, int targetY)
+	{
+		return false;
 	}
 }

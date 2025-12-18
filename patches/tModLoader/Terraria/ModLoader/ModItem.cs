@@ -1504,7 +1504,30 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// <returns></returns>
 	public Recipe CreateRecipe(int amount = 1) => Recipe.Create(Type, amount);
 
-	public virtual void UseMiningTools(Item item, Player player, ref Player.SpecialToolUsageSettings usageSettings)
+	public virtual void UseMiningTools(Player player, ref Player.SpecialToolUsageSettings usageSettings)
 	{
 	}
+
+	public virtual void MiningUsage(Player user, int targetX, int targetY)
+	{
+
+	}
+
+	/// <summary>
+	/// 特殊工具能否被调用，默认为true，原版这个委托是空的
+	/// </summary>
+	/// <param name="player"></param>
+	/// <param name="targetX"></param>
+	/// <param name="targetY"></param>
+	/// <returns></returns>
+	public virtual bool MiningUsageCondition(Player player, int targetX, int targetY)
+	{
+		return true;
+	}
+
+	public virtual bool IsAValidTool(Player player, int targetX, int targetY)
+	{
+		return false;
+	}
+
 }
