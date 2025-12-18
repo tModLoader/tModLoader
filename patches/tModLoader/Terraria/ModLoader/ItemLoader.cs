@@ -2368,11 +2368,12 @@ public static class ItemLoader
 		usageSettings.UsageAction = useToolAction;
 
 		usageSettings.UsageCondition = (player, item, x, y) => {
+			bool orig = canUseToolCondition?.Invoke(player, item, x, y) ?? true;
 			if (!anyGlobal) { // not global
-				return canUseToolCondition?.Invoke(player, item, x, y) ?? true;
+				return orig;
 			}
 			else {
-				return globalUsageCondition &= canUseToolCondition?.Invoke(player, item, x, y) ?? true;
+				return globalUsageCondition &= orig;
 			}
 		};
 			
