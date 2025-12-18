@@ -33,8 +33,14 @@
  	public static class BuilderAccToggleIDs
  	{
 @@ -216,7 +_,7 @@
+ 		public bool SkipItemConsumption;
+ 	}
+ 
 -	private struct SpecialToolUsageSettings
 +	public struct SpecialToolUsageSettings
+ 	{
+ 		public delegate bool CanUseToolCondition(Player user, Item item, int targetX, int targetY);
+ 
 @@ -252,20 +_,33 @@
  		public static void PlayerConnect(int playerIndex)
  		{
