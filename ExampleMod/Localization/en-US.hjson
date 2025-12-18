@@ -1254,6 +1254,11 @@ Mods: {
 				DisplayName: Example Gem
 				Tooltip: ""
 			}
+
+			ExampleUseMiningTools: {
+				DisplayName: Example Use Mining Tools
+				Tooltip: ""
+			}
 		}
 
 		# Projectile display names mainly show in chat when a player dies from it.
