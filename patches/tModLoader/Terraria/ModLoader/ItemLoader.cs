@@ -2339,60 +2339,47 @@ public static class ItemLoader
 		return false;
 	}
 
-	private delegate void DelegateUseMiningTools(Item item, Player player, ref Player.SpecialToolUsageSettings usageSettings);
-	internal static HookList HookUseMiningTools = AddHook<DelegateUseMiningTools>(g => g.UseMiningTools);
 	public static void UseMiningTools(Item item, Player player, ref Player.SpecialToolUsageSettings usageSettings)
 	{
-		item.ModItem?.UseMiningTools(player, ref usageSettings);
-		bool defaultAValidTool = usageSettings.IsAValidTool;
-		Player.SpecialToolUsageSettings.CanUseToolCondition canUseToolCondition = usageSettings.UsageCondition;
-		Player.SpecialToolUsageSettings.UseToolAction useToolAction = usageSettings.UsageAction;
-
-		bool anyGlobal = false;  //If there are no hooks, the global returns false
-		bool globalUsageCondition = true;
-		foreach (var g in HookUseMiningTools.Enumerate(item)) {
-			anyGlobal = true;
-			g.UseMiningTools(item, player, ref usageSettings);
-			defaultAValidTool &= usageSettings.IsAValidTool;
-			if(usageSettings.UsageCondition != null) {
-				globalUsageCondition &= usageSettings.UsageCondition(player, item, Player.tileTargetX, Player.tileTargetY);
-				//canUseToolCondition += usageSettings.UsageCondition;
-			}
-			if(usageSettings.UsageAction != null) {
-				useToolAction += usageSettings.UsageAction;
-				usageSettings.UsageAction = null;
-			}
-		}
-
-		usageSettings.IsAValidTool = defaultAValidTool;
-		usageSettings.UsageAction = useToolAction;
-
-		usageSettings.UsageCondition = (player, item, x, y) => {
-			bool orig = canUseToolCondition?.Invoke(player, item, x, y) ?? true;
-			if (!anyGlobal) { // not global
-				return orig;
-			}
-			else {
-				return globalUsageCondition && orig;
-			}
-		};
+		usageSettings.UsageAction += MiningUsage;
+		usageSettings.UsageCondition = MiningUsageCondition;
+		usageSettings.IsAValidTool = IsAValidTool(item, player, usageSettings);
 	}
 
 	internal static HookList HookMiningUsage = AddHook<Action<Player, Item, int, int>>(g => g.MiningUsage);
-	public static void MiningUsage(Player user, Item item, int targetX, int targetY)
+	public static void MiningUsage(Player player, Item item, int targetX, int targetY) // 特殊效果
 	{
-
+		item.ModItem?.MiningUsage(player, targetX, targetY);
+		foreach (var g in HookMiningUsage.Enumerate()) {
+			g.MiningUsage(player, item, targetX, targetY);
+		}
 	}
 
 	internal static HookList HookMiningUsageCondition = AddHook<Func<Player, Item, int, int, bool>>(g => g.MiningUsageCondition);
-	public static bool MiningUsageCondition(Player user, Item item, int targetX, int targetY)
+	public static bool MiningUsageCondition(Player player, Item item, int targetX, int targetY) // 特殊效果能否生效
 	{
-		return true;
+		bool orig = true;
+		orig &= item.ModItem?.MiningUsageCondition(player, targetX, targetY) ?? true; //vanilla is null default is true
+		foreach(var g in HookMiningUsageCondition.Enumerate()) {
+			orig &= g.MiningUsageCondition(player, item, targetX, targetY);
+		}
+		return orig;
 	}
 
-	internal static HookList HookIsAValidTool = AddHook<Func<Player, Item, int, int, bool>>(g => g.IsAValidTool);
-	public static bool IsAValidTool(Item item, Player player, int targetX, int targetY)
+	internal static HookList HookIsAValidTool = AddHook<Func<Player, Item, bool>>(g => g.IsAValidTool);
+	public static bool IsAValidTool(Item item, Player player, Player.SpecialToolUsageSettings usageSettings) // 是合法工具
 	{
-		return false;
+		bool isAValidTool;
+		if (item.ModItem == null) { // item is vanilla
+			isAValidTool = usageSettings.IsAValidTool;
+		}
+		else { // item is mod
+			isAValidTool = item.ModItem.IsAValidTool(player);
+		}
+
+		foreach(var g in HookIsAValidTool.Enumerate()) {
+			isAValidTool &= g.IsAValidTool(player, item);
+		}
+		return isAValidTool;
 	}
 }

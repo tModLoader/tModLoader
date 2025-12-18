@@ -1504,10 +1504,6 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// <returns></returns>
 	public Recipe CreateRecipe(int amount = 1) => Recipe.Create(Type, amount);
 
-	public virtual void UseMiningTools(Player player, ref Player.SpecialToolUsageSettings usageSettings)
-	{
-	}
-
 	public virtual void MiningUsage(Player user, int targetX, int targetY)
 	{
 
@@ -1525,7 +1521,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 		return true;
 	}
 
-	public virtual bool IsAValidTool(Player player, int targetX, int targetY)
+	public virtual bool IsAValidTool(Player player)
 	{
 		return false;
 	}

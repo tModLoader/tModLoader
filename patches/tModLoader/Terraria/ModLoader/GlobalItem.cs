@@ -1288,7 +1288,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 		return true;
 	}
 
-	public virtual bool IsAValidTool(Player player, Item item, int targetX, int targetY)
+	public virtual bool IsAValidTool(Player player, Item item)
 	{
 		return false;
 	}
