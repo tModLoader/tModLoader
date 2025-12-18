@@ -2373,7 +2373,7 @@ public static class ItemLoader
 				return orig;
 			}
 			else {
-				return globalUsageCondition &= orig;
+				return globalUsageCondition && orig;
 			}
 		};
 			
