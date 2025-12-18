@@ -236,6 +236,18 @@
  
  		return num;
  	}
+@@ -2333,8 +_,10 @@
+ 						if (mountedPlayer.noBuilding)
+ 							flag2 = false;
+ 
+-						if (flag2)
++						if (flag2) {
++							PlayerLoader.ModifyPickTile(mountedPlayer, GetProjectileSpawnSource(mountedPlayer), point.X, point.Y, ref pickPower);
+ 							mountedPlayer.PickTile(point.X, point.Y, pickPower);
++						}
+ 					}
+ 
+ 					Vector2 vector = new Vector2((float)(point.X << 4) + 8f, (float)(point.Y << 4) + 8f);
 @@ -2503,7 +_,10 @@
  						Vector2 vector = mountedPlayer.Center + new Vector2(mountedPlayer.width * -mountedPlayer.direction, 26f);
  						Vector2 vector2 = new Vector2(0f, -4f).RotatedByRandom(0.10000000149011612);

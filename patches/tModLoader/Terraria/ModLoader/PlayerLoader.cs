@@ -1533,12 +1533,12 @@ public static class PlayerLoader
 		}
 	}
 
-	private delegate void DelegatePickTile(Item item, int x, int y, ref int pick);
+	private delegate void DelegatePickTile(IEntitySource source, int x, int y, ref int pick);
 	private static HookList HookPickTile = AddHook<DelegatePickTile>(p => p.ModifyPickTile);
-	public static void ModifyPickTile(Player player, Item item, int x, int y, ref int pick)
+	public static void ModifyPickTile(Player player, IEntitySource source, int x, int y, ref int pick)
 	{
 		foreach (var modPlayer in HookPickTile.Enumerate(player)) {
-			modPlayer.ModifyPickTile(item, x, y, ref pick);
+			modPlayer.ModifyPickTile(source, x, y, ref pick);
 		}
 	}
 }

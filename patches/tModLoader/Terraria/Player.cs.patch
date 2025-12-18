@@ -7717,12 +7717,13 @@
  				}
  				else {
  					WorldGen.KillTile(x, y, fail: true);
-@@ -35646,11 +_,16 @@
+@@ -35646,11 +_,17 @@
  			}
  		}
  		else if (sItem.pick > 0) {
++			IEntitySource source = GetSource_ItemUse(sItem);
 +			int pick = sItem.pick;
-+			PlayerLoader.ModifyPickTile(this, sItem, x, y, ref pick);
++			PlayerLoader.ModifyPickTile(this, source, x, y, ref pick);
 -			PickTile(x, y, sItem.pick);
 +			PickTile(x, y, pick);
  		}
