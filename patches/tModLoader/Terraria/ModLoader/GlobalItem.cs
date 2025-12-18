@@ -1259,12 +1259,12 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	}
 
 	/// <summary>
-	/// 如果 <see cref="Player.SpecialToolUsageSettings.UsageAction"/> 不为空，那么将跳过实际的工具调用
-	/// <br/> 而是执行此委托中的逻辑
+	/// Called when checking whether an item is a tool. Modifying the content in <paramref name="usageSettings"/> can give the tool special functionality.
+	/// <br/> If <see cref="Player.SpecialToolUsageSettings.UsageAction"/> is not null, the actual tool usage will be skipped and the logic within this delegate will be executed instead.
 	/// </summary>
-	/// <param name="item"> 这个物品 </param>
-	/// <param name="player"> 这个玩家 </param>
-	/// <param name="usageSettings"> 这个物品的特殊工具配置 </param>
+	/// <param name="item">The item.</param>
+	/// <param name="player">The player using the item.</param>
+	/// <param name="usageSettings">The special tool configuration for this item.</param>
 	public virtual void UseMiningTools(Item item, Player player, ref Player.SpecialToolUsageSettings usageSettings)
 	{
 
