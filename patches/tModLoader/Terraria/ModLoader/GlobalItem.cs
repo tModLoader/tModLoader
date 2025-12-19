@@ -1259,7 +1259,9 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	}
 
 	/// <summary>
-	/// Invoked when both<see cref = "MiningUsageCondition(Player, Item, int, int, bool)" /> and <see cref="IsAValidTool(Player, Item, bool)"/> return true.
+	/// Called when the item is used as a tool, provided the following conditions are met:
+	/// <br/> 1. <see cref="MiningUsageCondition(Player, Item, int, int, bool)"/> returns true
+	/// <br/> 2. <see cref="IsAValidTool(Player, Item, bool)"/> returns true
 	/// </summary>
 	/// <param name="item">The item.</param>
 	/// <param name="player">The player using the item.</param>
@@ -1271,8 +1273,10 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	}
 
 	/// <summary>
-	/// Calling conditions for <see cref="MiningUsage(Player, Item, int, int)"/>
-	/// <br/> If false is returned, the conventional tool call will be invalidated.
+	/// Called when <see cref="IsAValidTool(Player, Item, bool)"/> returns true.
+	/// <br/> Determines whether to execute <see cref="MiningUsage(Player, Item, int, int)"/>.
+	/// <br/> If this method returns false, <see cref="MiningUsage(Player, Item, int, int)"/> will not be executed.
+	/// <br/> Note: The original tool usage is already skipped when <see cref="IsAValidTool(Player, Item, bool)"/> returns true.
 	/// </summary>
 	/// <param name="player">The player using the item.</param>
 	/// <param name="item"> the item </param>
@@ -1287,7 +1291,12 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 
 	/// <summary>
 	/// Determines whether this item can be used as a tool without having <see cref="Item.axe"/>, <see cref="Item.hammer"/>, or <see cref="Item.pick"/>.
-	/// <br/> If you want <see cref="MiningUsage(Player, Item, int, int)"/> to be called, return true or meet one of the three conditions above.
+	/// <br/>
+	/// <br/>If this method returns true:
+	/// <br/>- The original tool usage will be skipped
+	/// <br/>- <see cref="MiningUsageCondition(Player, Item, int, int, bool)"/> will be called to determine whether to execute <see cref="MiningUsage(Player, Item, int, int)"/>
+	/// <br/>- If <see cref="MiningUsageCondition(Player, Item, int, int, bool)"/> returns true, <see cref="MiningUsage(Player, Item, int, int)"/> will be executed
+	/// <br/>- If <see cref="MiningUsageCondition(Player, Item, int, int, bool)"/> returns false, no tool action will be performed
 	/// </summary>
 	/// <param name="player">The player using the item.</param>
 	/// <param name="item">The item.</param>

@@ -1505,7 +1505,9 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	public Recipe CreateRecipe(int amount = 1) => Recipe.Create(Type, amount);
 
 	/// <summary>
-	/// Invoked when both<see cref = "MiningUsageCondition(Player, int, int)" /> and <see cref="IsAValidTool(Player)"/> return true.
+	/// Called when the item is used as a tool, provided the following conditions are met:
+	/// <br/> 1. <see cref="IsAValidTool(Player)"/> returns true
+	/// <br/> 2. <see cref="MiningUsageCondition(Player, int, int)"/> returns true
 	/// </summary>
 	/// <param name="player">The player using the item.</param>
 	/// <param name="targetX"> The position of this Tile x </param>
@@ -1516,8 +1518,11 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	}
 
 	/// <summary>
-	/// Calling conditions for <see cref="MiningUsage(Player, int, int)"/>
-	/// <br/> If false is returned, the conventional tool call will be invalidated.
+	/// Called when <see cref="IsAValidTool(Player)"/> returns true.
+	/// Determines whether to execute <see cref="MiningUsage(Player, int, int)"/>.
+	/// <br/>
+	/// <br/>If this method returns false, <see cref="MiningUsage(Player, int, int)"/> will not be executed.
+	/// <br/>Note: The original tool usage is already skipped when <see cref="IsAValidTool(Player)"/> returns true.
 	/// </summary>
 	/// <param name="player">The player using the item.</param>
 	/// <param name="targetX"> The position of this Tile x </param>
@@ -1530,7 +1535,12 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 
 	/// <summary>
 	/// Determines whether this item can be used as a tool without having <see cref="Item.axe"/>, <see cref="Item.hammer"/>, or <see cref="Item.pick"/>.
-	/// <br/> If you want <see cref="MiningUsage(Player, int, int)"/> to be called, return true or meet one of the three conditions above.
+	/// <br/>
+	/// <br/>If this method returns true:
+	/// <br/>- The original tool usage will be skipped
+	/// <br/>- <see cref="MiningUsageCondition(Player, int, int)"/> will be called to determine whether to execute <see cref="MiningUsage(Player, int, int)"/>
+	/// <br/>- If <see cref="MiningUsageCondition(Player, int, int)"/> returns true, <see cref="MiningUsage(Player, int, int)"/> will be executed
+	/// <br/>- If <see cref="MiningUsageCondition(Player, int, int)"/> returns false, no tool action will be performed
 	/// </summary>
 	/// <param name="player">The player using the item.</param>
 	/// <returns>Whether it is considered a tool, default false</returns>
@@ -1538,5 +1548,4 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	{
 		return false;
 	}
-
 }
