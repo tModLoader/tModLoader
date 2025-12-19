@@ -2344,13 +2344,13 @@ public static class ItemLoader
 		usageSettings.UsageCondition = MiningUsageCondition;
 		bool isAValidTool = IsAValidTool(item, player, usageSettings);
 		usageSettings.IsAValidTool = isAValidTool;
-		if (isAValidTool == true) {
+		if (isAValidTool == true) { // Non-special tools do not append, otherwise the original logic is not executed
 			usageSettings.UsageAction += MiningUsage;
 		}
 	}
 
 	internal static HookList HookMiningUsage = AddHook<Action<Player, Item, int, int>>(g => g.MiningUsage);
-	public static void MiningUsage(Player player, Item item, int targetX, int targetY) // 特殊效果
+	public static void MiningUsage(Player player, Item item, int targetX, int targetY)
 	{
 		item.ModItem?.MiningUsage(player, targetX, targetY);
 		foreach (var g in HookMiningUsage.Enumerate()) {

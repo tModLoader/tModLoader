@@ -7728,7 +7728,6 @@
 +			PickTile(x, y, pick);
  		}
  
-+
  		if (sItem.pick > 0)
 +		/*
  			itemTime = (int)((float)sItem.useTime * pickSpeed);
