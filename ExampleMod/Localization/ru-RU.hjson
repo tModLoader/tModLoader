@@ -1257,7 +1257,11 @@ Mods: {
 
 			ExampleUseMiningTools: {
 				// DisplayName: Example Use Mining Tools
-				// Tooltip: ""
+				/* Tooltip:
+					'''
+					This item demonstrates how to implement an effect similar to Gravedigger's Shovel.
+					It takes effect when the player's current health is above 200 and the cursor is pointing at Stone, and can only mine Stone.
+					''' */
 			}
 		}
 

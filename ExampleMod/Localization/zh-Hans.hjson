@@ -1256,8 +1256,14 @@ Mods: {
 			}
 
 			ExampleUseMiningTools: {
-				// DisplayName: Example Use Mining Tools
-				// Tooltip: ""
+				DisplayName: 掘石者之铲
+				Tooltip:
+					'''
+					这个物品用于演示如何实现类似掘墓者铲的效果
+					满足下列条件才会进行挖掘:
+					1. 玩家当前生命值小于200
+					2. 被指向的物块是石块
+					'''
 			}
 		}
 
