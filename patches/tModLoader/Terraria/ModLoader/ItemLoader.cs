@@ -2358,18 +2358,18 @@ public static class ItemLoader
 		}
 	}
 
-	internal static HookList HookMiningUsageCondition = AddHook<Func<Player, Item, int, int, bool>>(g => g.MiningUsageCondition);
+	internal static HookList HookMiningUsageCondition = AddHook<Func<Player, Item, int, int, bool, bool>>(g => g.MiningUsageCondition);
 	public static bool MiningUsageCondition(Player player, Item item, int targetX, int targetY)
 	{
 		bool orig = true;
 		orig &= item.ModItem?.MiningUsageCondition(player, targetX, targetY) ?? true; //vanilla is null default is true
 		foreach(var g in HookMiningUsageCondition.Enumerate()) {
-			orig &= g.MiningUsageCondition(player, item, targetX, targetY);
+			orig &= g.MiningUsageCondition(player, item, targetX, targetY, tempFlag);
 		}
 		return orig;
 	}
 
-	internal static HookList HookIsAValidTool = AddHook<Func<Player, Item, bool>>(g => g.IsAValidTool);
+	internal static HookList HookIsAValidTool = AddHook<Func<Player, Item, bool, bool>>(g => g.IsAValidTool);
 	public static bool IsAValidTool(Item item, Player player, Player.SpecialToolUsageSettings usageSettings)
 	{
 		bool isAValidTool;
@@ -2380,8 +2380,9 @@ public static class ItemLoader
 			isAValidTool = item.ModItem.IsAValidTool(player);
 		}
 
+		bool tempFlag = isAValidTool;
 		foreach(var g in HookIsAValidTool.Enumerate()) {
-			isAValidTool &= g.IsAValidTool(player, item);
+			isAValidTool &= g.IsAValidTool(player, item, tempFlag);
 		}
 		return isAValidTool;
 	}

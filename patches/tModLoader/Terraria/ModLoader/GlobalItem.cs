@@ -1259,7 +1259,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	}
 
 	/// <summary>
-	/// Invoked when both<see cref = "MiningUsageCondition(Player, Item, int, int)" /> and <see cref="IsAValidTool(Player, Item)"/> return true.
+	/// Invoked when both<see cref = "MiningUsageCondition(Player, Item, int, int, bool)" /> and <see cref="IsAValidTool(Player, Item, bool)"/> return true.
 	/// </summary>
 	/// <param name="item">The item.</param>
 	/// <param name="player">The player using the item.</param>
@@ -1278,10 +1278,11 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// <param name="item"> the item </param>
 	/// <param name="targetX"> The position of this Tile x </param>
 	/// <param name="targetY"> The position of this Tile y </param>
-	/// <returns>Whether the conditions for calling<see cref = "MiningUsage(Player, Item, int, int)" /> are met, default is true.</returns>
-	public virtual bool MiningUsageCondition(Player player, Item item, int targetX, int targetY)
+	/// <param name="origConditionValue"> Whether the original judgment is through the conditional judgment </param>
+	/// <returns>Whether the conditions for calling<see cref = "MiningUsage(Player, Item, int, int)" /> are met, default is <paramref name="origConditionValue"/>.</returns>
+	public virtual bool MiningUsageCondition(Player player, Item item, int targetX, int targetY, bool origConditionValue)
 	{
-		return true;
+		return origConditionValue;
 	}
 
 	/// <summary>
@@ -1290,9 +1291,10 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// </summary>
 	/// <param name="player">The player using the item.</param>
 	/// <param name="item">The item.</param>
-	/// <returns>Whether it is considered a tool, default false</returns>
-	public virtual bool IsAValidTool(Player player, Item item)
+	/// <param name="isAValidTool"> The item orig IsAValidTool </param>
+	/// <returns>Whether it is considered a tool, default <paramref name="isAValidTool"/></returns>
+	public virtual bool IsAValidTool(Player player, Item item, bool isAValidTool)
 	{
-		return false;
+		return isAValidTool;
 	}
 }
