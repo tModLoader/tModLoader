@@ -2363,6 +2363,7 @@ public static class ItemLoader
 	{
 		bool orig = true;
 		orig &= item.ModItem?.MiningUsageCondition(player, targetX, targetY) ?? true; //vanilla is null default is true
+		bool tempFlag = orig;
 		foreach(var g in HookMiningUsageCondition.Enumerate()) {
 			orig &= g.MiningUsageCondition(player, item, targetX, targetY, tempFlag);
 		}
