@@ -1538,7 +1538,7 @@ public static class PlayerLoader
 	public static void ModifyPickTile(Player player, IEntitySource source, int x, int y, ref int pick)
 	{
 		foreach (var modPlayer in HookPickTile.Enumerate(player)) {
-			modPlayer.ModifyPickTile(source, x, y, ref pick);
+			try { modPlayer.ModifyPickTile(source, x, y, ref pick); } catch { }
 		}
 	}
 }
