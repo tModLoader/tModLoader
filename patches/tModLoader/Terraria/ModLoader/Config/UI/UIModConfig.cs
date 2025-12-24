@@ -4,8 +4,10 @@ using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using System.Timers;
 using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
@@ -24,6 +26,9 @@ namespace Terraria.ModLoader.Config.UI;
 // TODO: Localization support
 public class UIModConfig : UIState, IHaveBackButtonCommand
 {
+	// Public API for modders since Interface is internal
+	public static UIModConfig Instance => Interface.modConfig;
+
 	public int UpdateCount { get; set; }
 
 	private readonly List<Tuple<UIElement, UIElement>> mainConfigItems = new();
@@ -44,9 +49,8 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 	private bool openedFromModder = false;
 	private Action modderOnClose = null;
 
-	// TODO: these should be set in PendingChanges (which should be renamed to OnConfigModified) by comparing this config to the actual one/load time one
-	public bool HasUnsavedChanges { get; set; } = false;// TODO: calculate properly, requires comparing configs
-	public bool HasDefaultValues => false; // TODO: set/calculate properly, requires comparing configs
+	public bool HasUnsavedChanges { get; private set; }
+	public bool HasDefaultValues { get; private set; }
 
 	#region UI
 
@@ -212,7 +216,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 				false,
 				Language.GetText("tModLoader.ModConfigBackUnsavedChanges"),
 				(_, _) => {
-                    HasUnsavedChanges = false;
+                    OnConfigModified();
                     HandleBackButtonUsage();
                 }
 			);
@@ -282,7 +286,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 		if (result == ConfigSaveResult.Success) // Don't clear out pending changes for needs reload or sent to server
 		{
 			DoMenuModeState(preserveNotificationMessage: true);
-			HasUnsavedChanges = false;
+			OnConfigModified();
 		}
 	}
 
@@ -293,7 +297,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 
 		SoundEngine.PlaySound(SoundID.MenuOpen);
 		pendingRevertDefaults = true;
-		HasUnsavedChanges = true;
+		OnConfigModified();
 		SetMessage(Language.GetTextValue("tModLoader.ModConfigDefaultsRestored"), Color.Green);
 		DoMenuModeState(preserveNotificationMessage: true);
 	}
@@ -311,18 +315,18 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 	{
 		SetMessage(Language.GetTextValue("tModLoader.ModConfigChangesReverted"), Color.Green);
 		DoMenuModeState(preserveNotificationMessage: true);
-		HasUnsavedChanges = false;
+		OnConfigModified();
 	}
 
-	private bool pendingChanges;
 	private bool pendingChangesUIUpdate;
 
-	public void SetPendingChanges(bool changes = true)
+	public void OnConfigModified()
 	{
-		HasUnsavedChanges |= changes;
+		HasUnsavedChanges = !ConfigManager.AreConfigsEqual(pendingConfig, modConfig);
+		HasDefaultValues = ConfigManager.AreConfigsEqual(pendingConfig, ConfigManager.GetLoadTimeConfig(mod, modConfig.Name));
 
-		pendingChangesUIUpdate |= changes;
-		pendingChanges |= changes;
+		// TODO: changes this to a RefreshUI call
+		pendingChangesUIUpdate = true;
 	}
 
 	public void SetMessage(string text, Color color)
@@ -435,8 +439,6 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 	// need some CopyTo method to preserve references....hmmm
 	internal void SetMod(Mod mod, ModConfig config = null, bool openedFromModder = false, Action onClose = null, string scrollToOption = null, bool centerScrolledOption = true)
 	{
-		HasUnsavedChanges = false;
-
 		this.mod = mod;
 		this.openedFromModder = openedFromModder;
 		this.modderOnClose = onClose;
@@ -480,13 +482,14 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 
 		headerTextPanel.SetText(string.IsNullOrEmpty(configDisplayName) ? modConfig.Mod.DisplayName : modConfig.Mod.DisplayName + " - " + configDisplayName);
 		pendingConfig = ConfigManager.GeneratePopulatedClone(modConfig);
-		pendingChanges = pendingRevertDefaults;
 
 		if (pendingRevertDefaults) {
 			pendingRevertDefaults = false;
 			ConfigManager.Reset(pendingConfig);
 			pendingChangesUIUpdate = true;
 		}
+
+		OnConfigModified();
 
 		// TODO: fix sub configs in the future
 		//uiElement.RemoveChild(configPanelStack.Peek());

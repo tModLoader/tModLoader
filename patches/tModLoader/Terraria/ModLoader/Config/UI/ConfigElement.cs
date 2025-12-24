@@ -117,7 +117,7 @@ public abstract class ConfigElement : UIElement
 	{
 		if (List != null) {
 			List[Index] = value;
-			Interface.modConfig.SetPendingChanges();
+			Interface.modConfig.OnConfigModified();
 			return;
 		}
 
@@ -125,7 +125,7 @@ public abstract class ConfigElement : UIElement
 			return;
 
 		MemberInfo.SetValue(Item, value);
-		Interface.modConfig.SetPendingChanges();
+		Interface.modConfig.OnConfigModified();
 	}
 
 	protected virtual object GetObject()
