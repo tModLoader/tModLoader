@@ -7752,6 +7752,15 @@
  		if (!TileObject.CanPlace(tileTargetX, tileTargetY, type, style, direction, out var objectData))
  			return;
  
+@@ -35752,6 +_,8 @@
+ 	{
+ 		if (Main.tile[wX, wY].wall > 0 && (!Main.tile[wX, wY].active() || wX != tileTargetX || wY != tileTargetY || (!Main.tileHammer[Main.tile[wX, wY].type] && !poundRelease)) && toolTime == 0 && itemAnimation > 0 && controlUseItem && sItem.hammer > 0 && CanPlayerSmashWall(wX, wY)) {
+ 			int damage = (int)((float)sItem.hammer * 1.5f);
++			IEntitySource source = this.GetSource_ItemUse(sItem);
++			PlayerLoader.ModifyPickWall(this, source, wX, wY, ref damage);
+ 			PickWall(wX, wY, damage);
+ 			itemTime = sItem.useTime / 2;
+ 		}
 @@ -35798,7 +_,14 @@
  	private void ItemCheck_UseMiningTools_TryPoundingTile(Item sItem, int tileHitId, ref bool hitWall, int x, int y)
  	{

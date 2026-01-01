@@ -236,18 +236,32 @@
  
  		return num;
  	}
-@@ -2333,8 +_,10 @@
+@@ -2333,8 +_,11 @@
  						if (mountedPlayer.noBuilding)
  							flag2 = false;
  
 -						if (flag2)
 +						if (flag2) {
-+							PlayerLoader.ModifyPickTile(mountedPlayer, GetProjectileSpawnSource(mountedPlayer), point.X, point.Y, ref pickPower);
++							IEntitySource source = GetProjectileSpawnSource(mountedPlayer);						
++							PlayerLoader.ModifyPickTile(mountedPlayer, source, point.X, point.Y, ref pickPower);
  							mountedPlayer.PickTile(point.X, point.Y, pickPower);
 +						}
  					}
  
  					Vector2 vector = new Vector2((float)(point.X << 4) + 8f, (float)(point.Y << 4) + 8f);
+@@ -2381,8 +_,11 @@
+ 					if (mountedPlayer.noBuilding)
+ 						flag3 = false;
+ 
+-					if (flag3)
++					if (flag3) {
++						IEntitySource source = GetProjectileSpawnSource(mountedPlayer);
++						PlayerLoader.ModifyPickWall(mountedPlayer, source, point2.X, point2.Y, ref damage);
+ 						mountedPlayer.PickWall(point2.X, point2.Y, damage);
++					}
+ 				}
+ 
+ 				Vector2 vector3 = new Vector2((float)(point2.X << 4) + 8f, (float)(point2.Y << 4) + 8f);
 @@ -2503,7 +_,10 @@
  						Vector2 vector = mountedPlayer.Center + new Vector2(mountedPlayer.width * -mountedPlayer.direction, 26f);
  						Vector2 vector2 = new Vector2(0f, -4f).RotatedByRandom(0.10000000149011612);

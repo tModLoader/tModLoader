@@ -1439,13 +1439,34 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
-	/// Can be used to modify the attack power of this tool
+	/// It can be used to modify the player's damage to tiles.
+	/// <br/>
+	///	For Item:
+	/// <code>
+	///	source is EntitySource_ItemUse
+	/// </code>
+	/// For Mount:
+	/// <code>
+	///	source is EntitySource_Mount
+	/// </code>
 	/// </summary>
-	/// <param name="source"> use item </param>
-	/// <param name="x"> tile x position </param>
-	/// <param name="y"> tile y position </param>
-	/// <param name="pick"> PickTile pick </param>
 	public virtual void ModifyPickTile(IEntitySource source, int x, int y, ref int pick)
+	{
+	}
+
+	/// <summary>
+	/// It can be used to modify the damage dealt by the player to walls.
+	/// <br/>
+	///	For Item:
+	/// <code>
+	///	source is EntitySource_ItemUse
+	/// </code>
+	/// For Mount:
+	/// <code>
+	///	source is EntitySource_Mount
+	/// </code>
+	/// </summary>
+	public virtual void ModifyPickWall(IEntitySource source, int x, int y, ref int damage)
 	{
 	}
 }
