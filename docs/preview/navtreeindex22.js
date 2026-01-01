@@ -1,5 +1,10 @@
 var NAVTREEINDEX22 =
 {
+"class_t_e_food_platter.html#acd418790b6b07d4219772b5f147b39d4":[3,0,1221,2],
+"class_t_e_hat_rack.html":[3,0,1222],
+"class_t_e_hat_rack.html#ab24487f6356d35cc7f9071224704ff36":[3,0,1222,3],
+"class_t_e_hat_rack.html#ab8a71d53dc4dbeff086730ece85ab958":[3,0,1222,2],
+"class_t_e_hat_rack.html#ac4880b2e9209f59cf1bf5c02ec8615ac":[3,0,1222,1],
 "class_t_e_hat_rack.html#ad59fe25bc951d91941964f13fdf8c2ca":[3,0,1222,0],
 "class_t_e_item_frame.html":[3,0,1223],
 "class_t_e_item_frame.html#a4fb230b8f046e2e36d3ba0fd6410b149":[3,0,1223,0],
@@ -244,10 +249,5 @@ var NAVTREEINDEX22 =
 "class_tile_material.html":[3,0,1261],
 "class_tile_materials.html":[3,0,1262],
 "class_tile_object_alternates_module.html":[3,0,1264],
-"class_tile_object_base_module.html":[3,0,1265],
-"class_tile_object_coordinates_module.html":[3,0,1266],
-"class_tile_object_data.html":[3,0,1267],
-"class_tile_object_data.html#a015c8da678601da43619587ed4f44558":[3,0,1267,55],
-"class_tile_object_data.html#a0458ff9c1a8b42c6899890cc76f1a258":[3,0,1267,53],
-"class_tile_object_data.html#a081a31d1e066851fcb26f2d497d041e2":[3,0,1267,67]
+"class_tile_object_base_module.html":[3,0,1265]
 };

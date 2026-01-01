@@ -1,5 +1,10 @@
 var NAVTREEINDEX21 =
 {
+"class_recipe_item_creation_context.html#aa2b9da98834baa9b9ae680809949fe55":[3,0,1065,0],
+"class_recipe_loader.html":[3,0,1066],
+"class_recipe_loader.html#a66c925ee94dc17f2f4e2c74eb28c3f2c":[3,0,1066,1],
+"class_recipe_loader.html#a9fbc49b0d67cab5ad394254ac71ace11":[3,0,1066,4],
+"class_recipe_loader.html#aa917a2e31a58005a7175adcf752883d0":[3,0,1066,2],
 "class_recipe_loader.html#ac1ba4f356bc304c908e6fb81c26acf35":[3,0,1066,5],
 "class_recipe_loader.html#adc919b47a014153aa61dd98a10ed3fa4":[3,0,1066,0],
 "class_recipe_loader.html#aeaaa89370b17536181962f67826a9a96":[3,0,1066,3],
@@ -244,10 +249,5 @@ var NAVTREEINDEX21 =
 "class_t_e_food_platter.html":[3,0,1221],
 "class_t_e_food_platter.html#a29278af6ef66c1dee5612d9928dd2513":[3,0,1221,1],
 "class_t_e_food_platter.html#a78537f71602513a8949b03c9239c06be":[3,0,1221,0],
-"class_t_e_food_platter.html#ac0abf33a9212bc6d97fdc69e7c898b3a":[3,0,1221,3],
-"class_t_e_food_platter.html#acd418790b6b07d4219772b5f147b39d4":[3,0,1221,2],
-"class_t_e_hat_rack.html":[3,0,1222],
-"class_t_e_hat_rack.html#ab24487f6356d35cc7f9071224704ff36":[3,0,1222,3],
-"class_t_e_hat_rack.html#ab8a71d53dc4dbeff086730ece85ab958":[3,0,1222,2],
-"class_t_e_hat_rack.html#ac4880b2e9209f59cf1bf5c02ec8615ac":[3,0,1222,1]
+"class_t_e_food_platter.html#ac0abf33a9212bc6d97fdc69e7c898b3a":[3,0,1221,3]
 };

@@ -1,5 +1,11 @@
 var NAVTREEINDEX27 =
 {
+"struct_buff_draw_params.html#a8a31fa564f587ad7df1bb7d1466188c5":[3,0,119,5],
+"struct_buff_draw_params.html#a94dc35a5f9b9e8add7539b27946b26a6":[3,0,119,4],
+"struct_buff_draw_params.html#a99ce7cd8ff4b6dc56d8cae3b6a6b09d4":[3,0,119,0],
+"struct_builder_toggle_draw_params.html":[3,0,124],
+"struct_builder_toggle_draw_params.html#a1424fd8327ccdc2133e5fcd68298e0ee":[3,0,124,2],
+"struct_builder_toggle_draw_params.html#a826edec2b2ea262b8a3d9a2dfa6aaf9e":[3,0,124,4],
 "struct_builder_toggle_draw_params.html#a9437176221beacbf2fd489f66796f124":[3,0,124,0],
 "struct_builder_toggle_draw_params.html#aa830bd933d6c442cdf0aae65ca2d9a7d":[3,0,124,1],
 "struct_builder_toggle_draw_params.html#abc549fd199b8a167a83f6ad379b4ab04":[3,0,124,5],
@@ -243,11 +249,5 @@ var NAVTREEINDEX27 =
 "struct_player_1_1_rabbit_order_frame_helper.html":[3,0,980,10],
 "struct_player_1_1_set_match_request.html":[3,0,980,14],
 "struct_player_draw_set.html":[3,0,989],
-"struct_player_draw_set.html#aca6f0fbea669312c5bb625a30aefc3ad":[3,0,989,0],
-"struct_player_eye_helper.html":[3,0,990],
-"struct_player_eye_helper.html#a2b46fc8c646ce30c5413a7b6c6b98dcc":[3,0,990,0],
-"struct_player_eye_helper.html#a2b46fc8c646ce30c5413a7b6c6b98dcca17a534ce8bc354776ba2bf6bd4050095":[3,0,990,0,7],
-"struct_player_eye_helper.html#a2b46fc8c646ce30c5413a7b6c6b98dcca6b6cceb98a8c7c84b12454e5ade29483":[3,0,990,0,5],
-"struct_player_eye_helper.html#a2b46fc8c646ce30c5413a7b6c6b98dcca80e068c35fb15df9d7793c4f67eaa382":[3,0,990,0,2],
-"struct_player_eye_helper.html#a2b46fc8c646ce30c5413a7b6c6b98dcca916dc502f832704781518588dd87faef":[3,0,990,0,3]
+"struct_player_draw_set.html#aca6f0fbea669312c5bb625a30aefc3ad":[3,0,989,0]
 };

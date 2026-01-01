@@ -1,11 +1,13 @@
 var NAVTREEINDEX7 =
 {
+"class_global_wall.html":[3,0,474],
+"class_global_wall.html#a00a23cfc39d7bc112bd85257e02f2606":[3,0,474,3],
 "class_global_wall.html#a166ab34cbb7ce20f162f7c9a7c457e75":[3,0,474,2],
-"class_global_wall.html#a2bca1fa0af94dec20cc1e38162a84d8c":[3,0,474,3],
+"class_global_wall.html#a2bca1fa0af94dec20cc1e38162a84d8c":[3,0,474,4],
 "class_global_wall.html#a4c68c359fda675d590609b2de070af91":[3,0,474,1],
 "class_global_wall.html#a781a65ceb3650cf8c4d6155714405fc2":[3,0,474,0],
-"class_global_wall.html#a8b0f1f27c46817ad562a125c6530bd64":[3,0,474,4],
-"class_global_wall.html#ab947daf993a3db20c249889a85b31496":[3,0,474,5],
+"class_global_wall.html#a8b0f1f27c46817ad562a125c6530bd64":[3,0,474,5],
+"class_global_wall.html#ab947daf993a3db20c249889a85b31496":[3,0,474,6],
 "class_glow_mask_i_d.html":[3,0,475],
 "class_glyph_tag_handler.html":[3,0,476],
 "class_goat_mount_jump.html":[3,0,477],
@@ -247,7 +249,5 @@ var NAVTREEINDEX7 =
 "class_item.html#aa545ee1e8c6f1df9008e3afde89c4aeb":[3,0,631,68],
 "class_item.html#aa681f8f65ccb0983c4349c07ae0bff07":[3,0,631,174],
 "class_item.html#aab24cfb4fb684aa5e3697b42f7c37f35":[3,0,631,183],
-"class_item.html#aab4098bfcd01cf2bbf9ad0201984c77e":[3,0,631,101],
-"class_item.html#aae13cf054f98781555a4f50ff417cc88":[3,0,631,13],
-"class_item.html#aaf50c5f1a88cd2c2c2e27b200b6b97b9":[3,0,631,74]
+"class_item.html#aab4098bfcd01cf2bbf9ad0201984c77e":[3,0,631,101]
 };

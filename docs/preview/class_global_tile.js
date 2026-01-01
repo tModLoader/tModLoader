@@ -22,6 +22,7 @@ var class_global_tile =
     [ "MouseOver", "class_global_tile.html#a41f5cd5d54215e2e41ff440f89340cc0", null ],
     [ "MouseOverFar", "class_global_tile.html#a86355a0bac4b8cfcc6e3d5990a4c82bf", null ],
     [ "NearbyEffects", "class_global_tile.html#a1173ef4323d9e01a36b5c909f1d348fd", null ],
+    [ "OnTileConverted", "class_global_tile.html#a953d05f7ee71d9a1458cec2f04ec689c", null ],
     [ "PostDrawPlacementPreview", "class_global_tile.html#a3e481dc835faca10224d7dd31d64d695", null ],
     [ "PostSetupTileMerge", "class_global_tile.html#a7c20aceb0500f1518da17f0a9c29294b", null ],
     [ "PreDrawPlacementPreview", "class_global_tile.html#aa3dfc2fbc0928e042d5aa82d5c765e31", null ],

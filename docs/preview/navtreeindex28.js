@@ -1,5 +1,11 @@
 var NAVTREEINDEX28 =
 {
+"struct_player_eye_helper.html":[3,0,990],
+"struct_player_eye_helper.html#a2b46fc8c646ce30c5413a7b6c6b98dcc":[3,0,990,0],
+"struct_player_eye_helper.html#a2b46fc8c646ce30c5413a7b6c6b98dcca17a534ce8bc354776ba2bf6bd4050095":[3,0,990,0,7],
+"struct_player_eye_helper.html#a2b46fc8c646ce30c5413a7b6c6b98dcca6b6cceb98a8c7c84b12454e5ade29483":[3,0,990,0,5],
+"struct_player_eye_helper.html#a2b46fc8c646ce30c5413a7b6c6b98dcca80e068c35fb15df9d7793c4f67eaa382":[3,0,990,0,2],
+"struct_player_eye_helper.html#a2b46fc8c646ce30c5413a7b6c6b98dcca916dc502f832704781518588dd87faef":[3,0,990,0,3],
 "struct_player_eye_helper.html#a2b46fc8c646ce30c5413a7b6c6b98dccaa55c75a4451478e14f04f0b0bbaa25a5":[3,0,990,0,1],
 "struct_player_eye_helper.html#a2b46fc8c646ce30c5413a7b6c6b98dccab4fc5f9d75519f3d796f82e3778c2662":[3,0,990,0,6],
 "struct_player_eye_helper.html#a2b46fc8c646ce30c5413a7b6c6b98dccac3e8eee880729358e90fda8a90f137ea":[3,0,990,0,4],
@@ -179,5 +185,5 @@ var NAVTREEINDEX28 =
 "struct_world_gen_1_1_check_tree_settings.html":[3,0,1512,0],
 "struct_world_gen_1_1_grow_tree_settings.html":[3,0,1512,1],
 "struct_world_gen_1_1_tile_merge_cull_cache.html":[3,0,1512,6],
-"structnativefiledialog_1_1nfdpathset__t.html":[3,0,873,0]
+"structnativefiledialog_1_1nfdpathset__t.html":[3,0,874,0]
 };
