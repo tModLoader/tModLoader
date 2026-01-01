@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.10</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.11</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -179,7 +179,7 @@ static <a class="el" href="class_list.html">List</a>&lt; int &gt;&#160;</td><td 
 <tr class="separator:a3f2f3b2f5345490fdd06752c5eef8480"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af3b49213199f56ce7ee548c3a3b8c3af"><td class="memItemLeft" align="right" valign="top">static int[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_n_p_c_i_d_1_1_sets.html#af3b49213199f56ce7ee548c3a3b8c3af">BossHeadTextures</a> = Factory.CreateIntSet(-1, 4, 0, 13, 2, 344, 3, 370, 4, 246, 5, 249, 5, 345, 6, 50, 7, 396, 8, 395, 9, 325, 10, 262, 11, 327, 13, 222, 14, 125, 15, 126, 20, 346, 17, 127, 18, 35, 19, 68, 19, 113, 22, 266, 23, 439, 24, 440, 24, 134, 25, 491, 26, 517, 27, 422, 28, 507, 29, 493, 30, 549, 35, 564, 32, 565, 32, 576, 33, 577, 33, 551, 34, 548, 36, 636, 37, 657, 38, 668, 39)</td></tr>
 <tr class="memdesc:af3b49213199f56ce7ee548c3a3b8c3af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Associates an <a class="el" href="class_n_p_c.html">NPC</a> type (<a class="el" href="class_n_p_c.html#acf886c9366b1f1ce9e2a278c21a9c78b" title="The NPC ID of this NPC. The NPC ID is a unique number assigned to each NPC loaded into the game....">NPC.type</a>) with the index in GameContent.TextureAssets.NpcHeadBoss of its default map icon. <br  />
- Auto-set using <a class="el" href="class_autoload_boss_head.html">AutoloadBossHead</a>. <br  />
+ Auto-set using <a class="el" href="class_autoload_boss_head.html" title="This attribute annotates a ModNPC class to indicate that the game should autoload the boss head textu...">AutoloadBossHead</a>. <br  />
  Defaults to <code>-1</code>.  <a href="class_n_p_c_i_d_1_1_sets.html#af3b49213199f56ce7ee548c3a3b8c3af">More...</a><br /></td></tr>
 <tr class="separator:af3b49213199f56ce7ee548c3a3b8c3af"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adf7f72636c147b2d0ce8a152cf3cbb70"><td class="memItemLeft" align="right" valign="top"><a id="adf7f72636c147b2d0ce8a152cf3cbb70" name="adf7f72636c147b2d0ce8a152cf3cbb70"></a>
@@ -647,7 +647,7 @@ static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>Zombies</b> 
 </div><div class="memdoc">
 
 <p>Associates an <a class="el" href="class_n_p_c.html">NPC</a> type (<a class="el" href="class_n_p_c.html#acf886c9366b1f1ce9e2a278c21a9c78b" title="The NPC ID of this NPC. The NPC ID is a unique number assigned to each NPC loaded into the game....">NPC.type</a>) with the index in GameContent.TextureAssets.NpcHeadBoss of its default map icon. <br  />
- Auto-set using <a class="el" href="class_autoload_boss_head.html">AutoloadBossHead</a>. <br  />
+ Auto-set using <a class="el" href="class_autoload_boss_head.html" title="This attribute annotates a ModNPC class to indicate that the game should autoload the boss head textu...">AutoloadBossHead</a>. <br  />
  Defaults to <code>-1</code>. </p>
 <p >If you need to dynamically change your boss's head icon, use <a class="el" href="class_mod_n_p_c.html#a704bc149b03d1f47c98a66332a6ab4bd" title="Allows you to customize the boss head texture used by an NPC based on its state. Set index to -1 to s...">ModNPC.BossHeadSlot(ref int)</a> and <a class="el" href="class_n_p_c_head_loader.html#a2c971cf191e3dc8b98470b52b9975feb" title="Gets the index of the boss head texture corresponding to the given texture path.">NPCHeadLoader.GetBossHeadSlot(string)</a>. <br  />
  If you need an <a class="el" href="class_n_p_c.html">NPC</a>'s <em>current</em> head index, using NPC.GetBossHeadTextureIndex, which handles phase changes. </p>

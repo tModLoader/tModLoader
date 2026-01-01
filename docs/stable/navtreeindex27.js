@@ -1,5 +1,7 @@
 var NAVTREEINDEX27 =
 {
+"struct_builder_toggle_draw_params.html#a9437176221beacbf2fd489f66796f124":[3,0,124,0],
+"struct_builder_toggle_draw_params.html#aa830bd933d6c442cdf0aae65ca2d9a7d":[3,0,124,1],
 "struct_builder_toggle_draw_params.html#abc549fd199b8a167a83f6ad379b4ab04":[3,0,124,5],
 "struct_builder_toggle_draw_params.html#abf3aa154171825597ef3dcfdc416bc32":[3,0,124,3],
 "struct_calculated_style.html":[3,0,129],
@@ -247,7 +249,5 @@ var NAVTREEINDEX27 =
 "struct_player_eye_helper.html#a2b46fc8c646ce30c5413a7b6c6b98dcca17a534ce8bc354776ba2bf6bd4050095":[3,0,990,0,7],
 "struct_player_eye_helper.html#a2b46fc8c646ce30c5413a7b6c6b98dcca6b6cceb98a8c7c84b12454e5ade29483":[3,0,990,0,5],
 "struct_player_eye_helper.html#a2b46fc8c646ce30c5413a7b6c6b98dcca80e068c35fb15df9d7793c4f67eaa382":[3,0,990,0,2],
-"struct_player_eye_helper.html#a2b46fc8c646ce30c5413a7b6c6b98dcca916dc502f832704781518588dd87faef":[3,0,990,0,3],
-"struct_player_eye_helper.html#a2b46fc8c646ce30c5413a7b6c6b98dccaa55c75a4451478e14f04f0b0bbaa25a5":[3,0,990,0,1],
-"struct_player_eye_helper.html#a2b46fc8c646ce30c5413a7b6c6b98dccab4fc5f9d75519f3d796f82e3778c2662":[3,0,990,0,6]
+"struct_player_eye_helper.html#a2b46fc8c646ce30c5413a7b6c6b98dcca916dc502f832704781518588dd87faef":[3,0,990,0,3]
 };

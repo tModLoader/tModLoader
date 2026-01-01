@@ -1,5 +1,7 @@
 var NAVTREEINDEX21 =
 {
+"class_recipe_loader.html#ac1ba4f356bc304c908e6fb81c26acf35":[3,0,1066,5],
+"class_recipe_loader.html#adc919b47a014153aa61dd98a10ed3fa4":[3,0,1066,0],
 "class_recipe_loader.html#aeaaa89370b17536181962f67826a9a96":[3,0,1066,3],
 "class_rectangle_serializer.html":[3,0,1067],
 "class_red_wire_visibility_builder_toggle.html":[3,0,1068],
@@ -247,7 +249,5 @@ var NAVTREEINDEX21 =
 "class_t_e_hat_rack.html":[3,0,1222],
 "class_t_e_hat_rack.html#ab24487f6356d35cc7f9071224704ff36":[3,0,1222,3],
 "class_t_e_hat_rack.html#ab8a71d53dc4dbeff086730ece85ab958":[3,0,1222,2],
-"class_t_e_hat_rack.html#ac4880b2e9209f59cf1bf5c02ec8615ac":[3,0,1222,1],
-"class_t_e_hat_rack.html#ad59fe25bc951d91941964f13fdf8c2ca":[3,0,1222,0],
-"class_t_e_item_frame.html":[3,0,1223]
+"class_t_e_hat_rack.html#ac4880b2e9209f59cf1bf5c02ec8615ac":[3,0,1222,1]
 };

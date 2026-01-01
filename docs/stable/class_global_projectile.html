@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.10</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.11</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -180,7 +180,11 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>NumGrappleHoo
  Called on the client taking damage.  <a href="class_global_projectile.html#a124c3a586e8c1eeb6fd81eb8b59b1c0f">More...</a><br /></td></tr>
 <tr class="separator:a124c3a586e8c1eeb6fd81eb8b59b1c0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afd4b89da038710058b217f6b8a309ae5"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_projectile.html#afd4b89da038710058b217f6b8a309ae5">OnKill</a> (<a class="el" href="class_projectile.html">Projectile</a> projectile, int timeLeft)</td></tr>
-<tr class="memdesc:afd4b89da038710058b217f6b8a309ae5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to control what happens when a projectile is killed (for example, creating dust or making sounds). Can be called on the local client or server, depending on who owns the projectile.  <a href="class_global_projectile.html#afd4b89da038710058b217f6b8a309ae5">More...</a><br /></td></tr>
+<tr class="memdesc:afd4b89da038710058b217f6b8a309ae5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to control what happens when a projectile is killed (for example, creating dust or making sounds). <br  />
+<br  />
+ Be sure to check <code>if (<a class="el" href="class_projectile.html#aab5b090f7428f4d974921a807149e991" title="The index of the player who owns this projectile. In Multiplayer, Clients &quot;own&quot; projectiles that they...">Projectile.owner</a> == <a class="el" href="class_main.html#a42ee3929161f68a93443261b95643df4" title="The index in player of this client&#39;s Player.   If this is 255, this client is the server....">Main.myPlayer</a>)</code> for logic that should only run for the projectile owner. Some examples include spawning items, spawning projectiles, and modifying tiles. <br  />
+<br  />
+ Called on local, server, and remote clients.  <a href="class_global_projectile.html#afd4b89da038710058b217f6b8a309ae5">More...</a><br /></td></tr>
 <tr class="separator:afd4b89da038710058b217f6b8a309ae5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5e5a20d5923e842b14cfe959ca515138"><td class="memItemLeft" align="right" valign="top"><a id="a5e5a20d5923e842b14cfe959ca515138" name="a5e5a20d5923e842b14cfe959ca515138"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>OnSpawn</b> (<a class="el" href="class_projectile.html">Projectile</a> projectile, <a class="el" href="interface_i_entity_source.html">IEntitySource</a> source)</td></tr>
@@ -1111,7 +1115,11 @@ short&#160;</td><td class="memItemRight" valign="bottom"><b>StaticIndex</b><code
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to control what happens when a projectile is killed (for example, creating dust or making sounds). Can be called on the local client or server, depending on who owns the projectile. </p>
+<p>Allows you to control what happens when a projectile is killed (for example, creating dust or making sounds). <br  />
+<br  />
+ Be sure to check <code>if (<a class="el" href="class_projectile.html#aab5b090f7428f4d974921a807149e991" title="The index of the player who owns this projectile. In Multiplayer, Clients &quot;own&quot; projectiles that they...">Projectile.owner</a> == <a class="el" href="class_main.html#a42ee3929161f68a93443261b95643df4" title="The index in player of this client&#39;s Player.   If this is 255, this client is the server....">Main.myPlayer</a>)</code> for logic that should only run for the projectile owner. Some examples include spawning items, spawning projectiles, and modifying tiles. <br  />
+<br  />
+ Called on local, server, and remote clients. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">projectile</td><td></td></tr>

@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.10</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.11</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -105,8 +105,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a4f835a1412bec3e3e044f035b1aef571"><td class="memItemLeft" align="right" valign="top"><a id="a4f835a1412bec3e3e044f035b1aef571" name="a4f835a1412bec3e3e044f035b1aef571"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>ItemPickupCondition</b> (short itemId, string name)</td></tr>
 <tr class="separator:a4f835a1412bec3e3e044f035b1aef571"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5cf30635dd2a290aaf0b5972460bdf5d"><td class="memItemLeft" align="right" valign="top"><a id="a5cf30635dd2a290aaf0b5972460bdf5d" name="a5cf30635dd2a290aaf0b5972460bdf5d"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>ItemPickupCondition</b> (short[] itemIds)</td></tr>
+<tr class="memitem:a5cf30635dd2a290aaf0b5972460bdf5d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_item_pickup_condition.html#a5cf30635dd2a290aaf0b5972460bdf5d">ItemPickupCondition</a> (short[] itemIds)</td></tr>
+<tr class="memdesc:a5cf30635dd2a290aaf0b5972460bdf5d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Since this takes a short array, you may need to do something like this to convert a set:  <a href="class_item_pickup_condition.html#a5cf30635dd2a290aaf0b5972460bdf5d">More...</a><br /></td></tr>
 <tr class="separator:a5cf30635dd2a290aaf0b5972460bdf5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab40ab51b3c2b3ae0aa23e4e78ad844da"><td class="memItemLeft" align="right" valign="top"><a id="ab40ab51b3c2b3ae0aa23e4e78ad844da" name="ab40ab51b3c2b3ae0aa23e4e78ad844da"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>ItemPickupCondition</b> (short[] itemIds, string name)</td></tr>
@@ -168,7 +168,29 @@ AchievementUpdate&#160;</td><td class="memItemRight" valign="bottom"><b>OnComple
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >Satisfied when any of the provided items is picked up by the local player. </p>
-</div></div><!-- contents -->
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a5cf30635dd2a290aaf0b5972460bdf5d" name="a5cf30635dd2a290aaf0b5972460bdf5d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5cf30635dd2a290aaf0b5972460bdf5d">&#9670;&nbsp;</a></span>ItemPickupCondition()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">ItemPickupCondition.ItemPickupCondition </td>
+          <td>(</td>
+          <td class="paramtype">short[]&#160;</td>
+          <td class="paramname"><em>itemIds</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Since this takes a short array, you may need to do something like this to convert a set: </p>
+<p ><code> int[] drillItems = ItemID.Sets.IsDrill.GetTrueIndexes().ToArray(); short[] drillItemsAsShort = Array.ConvertAll(drillItems, Convert.ToInt16); AddCondition(new ItemPickupCondition(drillItemsAsShort)); </code> </p>
+
+</div>
+</div>
+</div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
