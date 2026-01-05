@@ -23,7 +23,7 @@ public abstract class GlobalLiquid : ModType
 
 	/// <summary>
 	/// Allows you to draw things behind the liquid at the given coordinates. Return false to stop the game from drawing the liquid normally. Returns true by default.<para />
-	/// This method is only called in "Color" and "White" lighting modes. Use <see cref="P:ModLiquidLib.ModLoader.GlobalLiquid.PreRetroDraw" /> for the other Lighting modes pre drawing
+	/// This method is only called in "Color" and "White" lighting modes. Use <see cref="GlobalLiquid.PreRetroDraw" /> for the other Lighting modes pre drawing
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>
@@ -38,8 +38,8 @@ public abstract class GlobalLiquid : ModType
 
 	/// <summary>
 	/// Allows you to draw things in front of the liquid at the given coordinates. This can also be used to do things such as rendering glowmasks.<para />
-	/// This hook is not called if <see cref="P:ModLiquidLib.ModLoader.ModLiquid.PreDraw" /> returns false.<para />
-	/// This method is only called in "Color" and "White" lighting modes. Use <see cref="P:ModLiquidLib.ModLoader.GlobalLiquid.PostRetroDraw" /> for the other Lighting modes post drawing
+	/// This hook is not called if <see cref="GlobalLiquid.PreDraw" /> returns false.<para />
+	/// This method is only called in "Color" and "White" lighting modes. Use <see cref="GlobalLiquid.PostRetroDraw" /> for the other Lighting modes post drawing
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>
@@ -67,7 +67,7 @@ public abstract class GlobalLiquid : ModType
 
 	/// <summary>
 	/// Allows you to draw things behind the liquid at the given coordinates. Return false to stop the game from drawing the liquid normally. Returns true by default.<para />
-	/// This method is only called in "Retro" and "Trippy" lighting modes. Use <see cref="P:ModLiquidLib.ModLoader.GlobalLiquid.PreDraw" /> for the other Lighting modes pre drawing
+	/// This method is only called in "Retro" and "Trippy" lighting modes. Use <see cref="GlobalLiquid.PreDraw" /> for the other Lighting modes pre drawing
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>
@@ -80,8 +80,8 @@ public abstract class GlobalLiquid : ModType
 
 	/// <summary>
 	/// Allows you to draw things in front of the liquid at the given coordinates. This can also be used to do things such as rendering glowmasks.<para />
-	/// This hook is not called if <see cref="P:ModLiquidLib.ModLoader.GlobalLiquid.PreRetroDraw" /> returns false.<para />
-	/// This method is only called in "Retro" and "Trippy" lighting modes. Use <see cref="P:ModLiquidLib.ModLoader.GlobalLiquid.PostDraw" /> for the other Lighting modes post drawing
+	/// This hook is not called if <see cref="GlobalLiquid.PreRetroDraw" /> returns false.<para />
+	/// This method is only called in "Retro" and "Trippy" lighting modes. Use <see cref="GlobalLiquid.PostDraw" /> for the other Lighting modes post drawing
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>
@@ -93,7 +93,7 @@ public abstract class GlobalLiquid : ModType
 
 	/// <summary>
 	/// Allows you to make stuff happen whenever the liquid at the given coordinates is drawn. For example, creating bubble dusts or changing the color the liquid is drawn in. <para />
-	/// This hook is not called if <see cref="P:ModLiquidLib.ModLoader.GlobalLiquid.PreRetroDraw" /> returns false.
+	/// This hook is not called if <see cref="GlobalLiquid.PreRetroDraw" /> returns false.
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>
@@ -108,7 +108,7 @@ public abstract class GlobalLiquid : ModType
 
 	/// <summary>
 	/// Allows you to draw things behind the liquid at the given coordinates. Return false to stop the game from drawing the liquid normally. Returns true by default. <para />
-	/// Only called for liquid slopes. If you want to predraw the liquid itself, see <see cref="P:ModLiquidLib.ModLoader.GlobalLiquid.PreDraw" /> or <see cref="P:ModLiquidLib.ModLoader.GlobalLiquid.PreRetroDraw" />
+	/// Only called for liquid slopes. If you want to predraw the liquid itself, see <see cref="GlobalLiquid.PreDraw" /> or <see cref="GlobalLiquid.PreRetroDraw" />
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>
@@ -124,8 +124,8 @@ public abstract class GlobalLiquid : ModType
 
 	/// <summary>
 	/// Allows you to draw things in front of the liquid at the given coordinates. This can also be used to do things such as rendering glowmasks.<para />
-	/// This hook is not called if <see cref="P:ModLiquidLib.ModLoader.GlobalLiquid.PreSlopeDraw" /> returns false.<para />
-	/// Only called for liquid slopes. If you want to postdraw the liquid itself, see <see cref="P:ModLiquidLib.ModLoader.GlobalLiquid.POstDraw" /> or <see cref="P:ModLiquidLib.ModLoader.GlobalLiquid.PostRetroDraw" />
+	/// This hook is not called if <see cref="GlobalLiquid.PreSlopeDraw" /> returns false.<para />
+	/// Only called for liquid slopes. If you want to postdraw the liquid itself, see <see cref="GlobalLiquid.POstDraw" /> or <see cref="GlobalLiquid.PostRetroDraw" />
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>
@@ -141,7 +141,7 @@ public abstract class GlobalLiquid : ModType
 	/// <summary>
 	/// Allows you to determine how much light this liquid emits.<br />
 	/// It can also let you light up the block in front of this liquid.<br />
-	/// See <see cref="M:Terraria.Graphics.Light.TileLightScanner.ApplyTileLight(Terraria.Tile,System.Int32,System.Int32,Terraria.Utilities.FastRandom@,Microsoft.Xna.Framework.Vector3@)" /> for vanilla tile light values to use as a reference.<br />
+	/// See <see cref="TileLightScanner.ApplyLiquidLight(Tile, int, int, ref Vector3)" /> for vanilla tile light values to use as a reference.<br />
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>
@@ -309,7 +309,6 @@ public abstract class GlobalLiquid : ModType
 
 	/// <summary>
 	/// Allows you to decide what happens when the player enters and exits this liquid. Vanilla liquids use this to spawn dusts and make a splashing noise when a player enters and leaves. <br/>
-	/// Players now also have a moddedWet array to show which modded liquids are being entered in at a time. Please see <see cref="P:ModLiquidLib.Utils.ModLiquidPlayer.moddedWet" /> array on how to use it. <br/>
 	/// Return true to allow the liquids to call their normal splash code. Returns true by default.
 	/// </summary>
 	/// <param name="player">The player instance thats entering or exiting the liquid.</param>
@@ -322,7 +321,6 @@ public abstract class GlobalLiquid : ModType
 
 	/// <summary>
 	/// Allows you to decide what happens when a NPC enters and exits this liquid. Vanilla liquids use this to spawn dusts and make a splashing noise when a NPC enters and leaves. <br/>
-	/// NPCs now also have a moddedWet array to show which modded liquids are being entered in at a time. Please see <see cref="P:ModLiquidLib.Utils.ModLiquidPlayer.moddedWet" /> array on how to use it. <br/>
 	/// Return true to allow the liquids to call their normal splash code. Returns true by default.
 	/// </summary>
 	/// <param name="npc">The NPC instance thats entering or exiting the liquid.</param>
@@ -335,7 +333,6 @@ public abstract class GlobalLiquid : ModType
 
 	/// <summary>
 	/// Allows you to decide what happens when a projectile enters and exits this liquid. Vanilla liquids use this to spawn dusts and make a splashing noise when a projectile enters and leaves. <br/>
-	/// Projectiles now also have a moddedWet array to show which modded liquids are being entered in at a time. Please see <see cref="P:ModLiquidLib.Utils.ModLiquidPlayer.moddedWet" /> array on how to use it. <br/>
 	/// Return true to allow the liquids to call their normal splash code. Returns true by default.
 	/// </summary>
 	/// <param name="proj">The projectile instance thats entering or exiting the liquid.</param>
@@ -360,7 +357,6 @@ public abstract class GlobalLiquid : ModType
 
 	/// <summary>
 	/// Allows you to decide what happens when an item enters and exits this liquid. Vanilla liquids use this to spawn dusts and make a splashing noise when an item enters and leaves. <br/>
-	/// Items now also have a moddedWet array to show which modded liquids are being entered in at a time. Please see <see cref="P:ModLiquidLib.Utils.ModLiquidPlayer.moddedWet" /> array on how to use it. <br/>
 	/// Return true to allow the liquids to call their normal splash code. Returns true by default.
 	/// </summary>
 	/// <param name="item">The item instance thats entering or exiting the liquid.</param>
@@ -373,7 +369,7 @@ public abstract class GlobalLiquid : ModType
 
 	/// <summary>
 	/// Allows the user to specify how a liquid interacts with the player (especially player movement). <br/>
-	/// Please see <see cref="P:Terraria.Player.WaterCollision" />, <see cref="P:Terraria.Player.HoneyCollision" />, or <see cref="P:Terraria.Player.ShimmerCollision" /> to see how vanilla handles it's liquid collision. <br/>
+	/// Please see <see cref="Terraria.Player.WaterCollision" />, <see cref="Terraria.Player.HoneyCollision" />, or <see cref="Terraria.Player.ShimmerCollision" /> to see how vanilla handles it's liquid collision. <br/>
 	/// Return true for the liquid to use the normal liquid collision code. <br/>
 	/// Returns true by default.
 	/// </summary>
@@ -389,7 +385,7 @@ public abstract class GlobalLiquid : ModType
 
 	/// <summary>
 	/// Allows the user to specify how a liquid interacts with the player (especially player gravity). <br/>
-	/// Please see <see cref="P:Terraria.Player.Update" />, to see how vanilla handles it's liquid gravity.
+	/// Please see <see cref="Terraria.Player.Update" />, to see how vanilla handles it's liquid gravity.
 	/// </summary>
 	/// <param name="player">The player instance thats being effected by the liquid.</param>
 	/// <param name="type"></param>
@@ -403,7 +399,7 @@ public abstract class GlobalLiquid : ModType
 
 	/// <summary>
 	/// Allows the user to specify how a liquid interacts with an item (especially item gravity and movement). <br/>
-	/// Please see <see cref="P:Terraria.Item.UpdateItem" />, to see how vanilla handles it's liquid collision. <br/> <br/>
+	/// Please see <see cref="Terraria.Item.UpdateItem" />, to see how vanilla handles it's liquid collision. <br/> <br/>
 	/// This method is also used to modify items detected to be in liquids. Use this to do things such as deleting items touching this liquid.
 	/// </summary>
 	/// <param name="item">The item instance thats being effected by the liquid.</param>
@@ -417,7 +413,7 @@ public abstract class GlobalLiquid : ModType
 
 	/// <summary>
 	/// Allows the user to specify how a liquid interacts with a npc (especially npc movement). <br/>
-	/// Please see <see cref="P:Terraria.NPC.UpdateCollision" />, to see how vanilla handles it's liquid collision. <br/>
+	/// Please see <see cref="Terraria.NPC.UpdateCollision" />, to see how vanilla handles it's liquid collision. <br/>
 	/// Return true for the liquid to call the method that applies the liquid velocity multiplier. <br/>
 	/// Returns true by default.
 	/// </summary>
@@ -432,7 +428,7 @@ public abstract class GlobalLiquid : ModType
 
 	/// <summary>
 	/// Allows the user to specify how a liquid interacts with an npc (especially npc gravity). <br/>
-	/// Please see <see cref="P:Terraria.NPC.UpdateNPC_UpdateGravity" />, to see how vanilla handles it's liquid collision.
+	/// Please see <see cref="Terraria.NPC.UpdateNPC_UpdateGravity" />, to see how vanilla handles it's liquid collision.
 	/// </summary>
 	/// <param name="npc">The npc instance thats being effected by the liquid.</param>
 	/// <param name="type"></param>
@@ -444,7 +440,7 @@ public abstract class GlobalLiquid : ModType
 
 	/// <summary>
 	/// Allows the user to specify how a liquid interacts with a projectile (especially projectile movement). <br/>
-	/// Please see <see cref="P:Terraria.Projectile.HandleMovement" />, to see how vanilla handles it's liquid collision. <br/>
+	/// Please see <see cref="Terraria.Projectile.HandleMovement" />, to see how vanilla handles it's liquid collision. <br/>
 	/// Return true for the liquid to use the normal liquid collision code. <br/>
 	/// Returns true by default.
 	/// </summary>
@@ -489,7 +485,7 @@ public abstract class GlobalLiquid : ModType
 	/// Allows you to give conditions for when the game attempts to check to see if the player is drowning. <br/>
 	/// Set isDrowning to either true or false depending on whether the player should or should not be drowning. <br/>
 	/// This is used by items such as the Breething Reed to make the player be submerged deeper underwater. <br/>
-	/// Please see <see cref="P:Terraria.Player.CheckDrowning" /> for how vanilla uses the isDrowning boolean flag. <br/>
+	/// Please see <see cref="Terraria.Player.CheckDrowning" /> for how vanilla uses the isDrowning boolean flag. <br/>
 	/// ChecksForDrowning must be set to true for this to run. Not to be confused with ChecksForDrowning hook.
 	/// </summary>
 	/// <param name="player">The player instance thats being effected by the liquid.</param>
