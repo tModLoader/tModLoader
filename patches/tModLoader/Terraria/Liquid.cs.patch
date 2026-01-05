@@ -8,16 +8,15 @@
  using Terraria.ObjectData;
  using Terraria.WorldBuilding;
  
-@@ -44,17 +_,16 @@
+@@ -44,17 +_,14 @@
  
  	public static void tilesIgnoreWater(bool ignoreSolids)
  	{
 -		Main.tileSolid[138] = !ignoreSolids;
 -		Main.tileSolid[484] = !ignoreSolids;
 -		Main.tileSolid[546] = !ignoreSolids;
-+		for (int i = 0; i < TileLoader.TileCount; i++)
-+			if (TileID.Sets.IgnoresWater[i])
-+				Main.tileSolid[i] = !ignoreSolids;
++		foreach (int tileType in TileID.Sets.IgnoresWater)
++				Main.tileSolid[tileType] = !ignoreSolids;
  	}
  
  	public static void worldGenTilesIgnoreWater(bool ignoreSolids)
@@ -26,9 +25,8 @@
 -		Main.tileSolid[192] = !ignoreSolids;
 -		Main.tileSolid[191] = !ignoreSolids;
 -		Main.tileSolid[190] = !ignoreSolids;
-+		for (int i = 0; i < TileLoader.TileCount; i++)
-+			if (TileID.Sets.IgnoresWaterDuringWorldgen[i])
-+				Main.tileSolid[i] = !ignoreSolids;
++		foreach (int tileType in TileID.Sets.IgnoresWaterDuringWorldgen)
++				Main.tileSolid[tileType] = !ignoreSolids;
  	}
  
  	public static void ReInit()
