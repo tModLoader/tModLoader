@@ -126,9 +126,6 @@
 +		if (Main.dedServ)
 +			return;
 +
-+		// Reload the achievements with each mod change to make sure any new mod's achievements are loaded with their completion value set.
-+		Main.Achievements.Load();
-+
 +		// Sort achievements by setting Achievement.Id:
 +		var AchievementsInOrder = Main.Achievements.CreateAchievementsList();
 +		IEnumerable<ModAchievement> ModdedAchievements = AchievementsInOrder.Skip(DefaultLayerCount).Select(x => x.ModAchievement);
@@ -196,6 +193,9 @@
 +		for (int i = 0; i < sortedAchievements.Count; i++) {
 +			sortedAchievements[i].Id = i;
 +		}
++
++		// Reload the achievements with each mod change to make sure any new mod's achievements are loaded with their completion value set.
++		Main.Achievements.Load();
 +	}
 +
 +	internal static void Unload()
