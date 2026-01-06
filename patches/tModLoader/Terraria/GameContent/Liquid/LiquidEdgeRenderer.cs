@@ -6,6 +6,7 @@ using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Terraria.DataStructures;
 using Terraria.ID;
 
 namespace Terraria.GameContent.Liquid;
@@ -54,21 +55,35 @@ public static class LiquidEdgeRenderer
 		AlphaDestinationBlend = Blend.InverseSourceAlpha
 	};
 
-	private static List<Point> BlockWaterBehindLocations { get; } = [];
+	private struct EdgeSpan
+	{
+		public ushort X;
+		public ushort YStart;
+		public ushort Height;
+
+		public readonly int YEnd => YStart + Height;
+	}
+
+	private static readonly List<Point16> maskPoints = [];
+	private static readonly List<EdgeSpan> edgeSpans = [];
+	private static EdgeSpan? currentSpan;
 
 	public static void Clear()
 	{
-		BlockWaterBehindLocations.Clear();
+		maskPoints.Clear();
+		edgeSpans.Clear();
 	}
 
 	public static void DrawTileMask(SpriteBatch spriteBatch, RenderTarget2D tileTarget, Vector2 tileTargetOffset)
 	{
 		spriteBatch.End();
-		spriteBatch.Begin(SpriteSortMode.Deferred, MaskingBlendState, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, MaskShader);
+		spriteBatch.Begin(SpriteSortMode.Deferred, MaskingBlendState, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, MaskShader);
 
-		spriteBatch.Draw(tileTarget, tileTargetOffset, Color.White);
-		foreach (var pt in BlockWaterBehindLocations)
+		foreach (var pt in maskPoints)
 			DrawSingleTileMask(spriteBatch, pt.X, pt.Y);
+
+		foreach (var span in edgeSpans)
+			DrawScreenTargetSlices(spriteBatch, span);
 	}
 
 	private static void DrawSingleTileMask(SpriteBatch spriteBatch, int tileX, int tileY)
@@ -117,8 +132,16 @@ public static class LiquidEdgeRenderer
 				fullTileHeight += 8;
 			}
 
-			spriteBatch.Draw(texture, position + new Vector2(0, fullTileHeight), new Rectangle(tileCache.TileFrameX, tileCache.TileFrameY + fullTileHeight, 16, 16 - fullTileHeight), Color.White, 0f, Vector2.Zero, 1f, 0, 0f);
+			spriteBatch.Draw(texture, position + new Vector2(0, fullTileHeight), new Rectangle(tileCache.TileFrameX, tileCache.TileFrameY, 16, 16 - fullTileHeight), Color.White, 0f, Vector2.Zero, 1f, 0, 0f);
 		}
+	}
+
+	private static void DrawScreenTargetSlices(SpriteBatch spriteBatch, EdgeSpan span)
+	{
+		Vector2 position = new Vector2(span.X * 16, span.YStart * 16) + new Vector2(Main.drawToScreen ? 0 : Main.offScreenRange) - Main.screenPosition;
+
+		var offset = Main.sceneTilePos;
+		spriteBatch.Draw(Main.instance.tileTarget, position, new Rectangle(span.X * 16 - (int)offset.X, span.YStart * 16 - (int)offset.Y, 16, 16 * span.Height), Color.White, 0f, Vector2.Zero, 1f, 0, 0f);
 	}
 
 	public static unsafe void CollectEdgeData(LiquidRenderer.LiquidCache* pCache, Tile tileCache, int tileX, int tileY)
@@ -242,10 +265,10 @@ public static class LiquidEdgeRenderer
 			else if (down) {
 				size = (16, 16);
 			}
-			else if(tileCache.IsHalfBlock || slope != SlopeType.Solid) {
+			else if (tileCache.IsHalfBlock || slope != SlopeType.Solid) {
 				size = slope switch {
 					SlopeType.SlopeUpLeft or SlopeType.SlopeUpRight => (16, 2),
-					SlopeType.SlopeDownLeft or SlopeType.SlopeDownRight => (16, 12),
+					SlopeType.SlopeDownLeft or SlopeType.SlopeDownRight => (16, WorldGen.SolidOrSlopedTile(tileDownCache) ? 16 : 12),
 					_ => (16, 16),
 				};
 			}
@@ -344,8 +367,10 @@ public static class LiquidEdgeRenderer
 			SourceRectangle = new Rectangle(16, isSurfaceLiquid ? 0 : 64, size.Width, size.Height)
 		};
 
-		if (TileID.Sets.BlocksWaterDrawingBehindSelf[tileCache.type])
-			BlockWaterBehindLocations.Add(new Point(tileX, tileY));
+		if (TileID.Sets.BlocksWaterDrawingBehindSelf[tileCache.TileType])
+			maskPoints.Add(new Point16(tileX, tileY));
+		else
+			AddEdgePoint((ushort)tileX, (ushort)tileY);
 
 		if (blockType is BlockType.HalfBlock) {
 			if (!pCache->IsHalfBrick) {
@@ -365,5 +390,32 @@ public static class LiquidEdgeRenderer
 			pCache->LiquidLevel = highLiquid / 255f;
 			pCache->Type = (byte)liquidType;
 		}
+	}
+
+	internal static void FinishEdgeData()
+	{
+		if (currentSpan is not { } span)
+			return;
+
+		edgeSpans.Add(span);
+		currentSpan = null;
+	}
+
+	private static void AddEdgePoint(ushort tileX, ushort tileY)
+	{
+		if (currentSpan is { } span) {
+			if (span.X == tileX && span.YEnd == tileY) {
+				currentSpan = span with { Height = (ushort)(span.Height + 1) };
+				return;
+			}
+
+			edgeSpans.Add(span);
+		}
+
+		currentSpan = new EdgeSpan {
+			X = tileX,
+			YStart = tileY,
+			Height = 1,
+		};
 	}
 }
