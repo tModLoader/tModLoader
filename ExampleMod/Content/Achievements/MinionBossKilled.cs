@@ -24,6 +24,6 @@ public class MinionBossKilled : ModAchievement
 
 	// By default a ModAchievement will not be placed in the Achievement Advisor.
 	// GetAdvisorPosition is used to position a ModAchievement in relation to the vanilla achievements that are in the advisor UI next to the inventory.
-	// This doesnt need to be the same as GetDefaultPosition, but in this case it makes sense for it to be.
+	// This doesn't need to be the same as GetDefaultPosition, but in this case it makes sense for it to be. Note that the advisor order differs from the normal achievement ordering, and many vanilla achievements are not included.
 	public override Position GetAdvisorPosition() => new After("EYE_ON_YOU");
 }

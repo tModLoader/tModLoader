@@ -6,6 +6,7 @@ using ReLogic.Content;
 using Terraria.Achievements;
 using Terraria.GameContent.Achievements;
 using Terraria.Localization;
+using Terraria.UI;
 
 namespace Terraria.ModLoader;
 
@@ -202,7 +203,7 @@ public abstract class ModAchievement : ModType<Achievement, ModAchievement>, ILo
 	/// Some of the vanilla achievements are showed next to the inventory to advise the player on what to do next.
 	/// This hook allows you to place this achievement in the advisor before/after other vanilla advisor achievements.
 	/// Make use of e.g. <see cref="Before"/>/<see cref="After"/>, and provide an achievement (for example <c>new After("EYE_ON_YOU")</c>). Consult the <see href="https://github.com/tModLoader/tModLoader/wiki/Vanilla-Content-IDs#achievement-identifiers">Achievement Identifiers section of the Vanilla Content IDs wiki page</see> to look up the string to use with GetAchievement. You can also use <see cref="BeforeFirstAdvisorAchievement"/> or <see cref="AfterLastAdvisorAchievement"/> to put your achievement at the start/end of the vanilla advisor achievement order.
-	/// <br/><br/> <b>NOTE:</b> The position must specify a vanilla<see cref="Achievements.Achievement"/> that is in the advisor otherwise an exception will be thrown. Use<see cref = "GetModdedConstraints" /> to order modded achievements.
+	/// <br/><br/> <b>NOTE:</b> The position must specify a vanilla <see cref="Achievements.Achievement"/> that is in the advisor otherwise an exception will be thrown. The <see href="https://github.com/tModLoader/tModLoader/wiki/Vanilla-Content-IDs#achievement-identifiers">wiki page</see> lists which vanilla achievements are used in the advisor and their order, which differs from the normal order. Use <see cref = "GetModdedConstraints"/> to order modded achievements.
 	/// <br/><br/> By default, this hook returns <see langword="null"/>, which indicates that this achievement will not be placed inside the advisor.
 	/// </summary>
 	public virtual Position GetAdvisorPosition() => null;
@@ -224,8 +225,8 @@ public abstract class ModAchievement : ModType<Achievement, ModAchievement>, ILo
 
 	public static Position BeforeFirstVanillaAchievement => new Before(AchievementManager.FirstVanillaAchievement);
 	public static Position AfterLastVanillaAchievement => new After(AchievementManager.LastVanillaAchievement);
-	public static Position BeforeFirstAdvisorAchievement => new Before(AchievementManager.FirstAdvisorAchievement);
-	public static Position AfterLastAdvisorAchievement => new After(AchievementManager.LastAdvisorAchievement);
+	public static Position BeforeFirstAdvisorAchievement => new Before(AchievementAdvisor.FirstAdvisorAchievement);
+	public static Position AfterLastAdvisorAchievement => new After(AchievementAdvisor.LastAdvisorAchievement);
 
 	public sealed class Default : Position { }
 

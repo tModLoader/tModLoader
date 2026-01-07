@@ -363,7 +363,7 @@ public static class ModContent
 		WallLoader.FinishSetup();
 		EmoteBubbleLoader.FinishSetup();
 		AchievementManager.FinishSetup();
-		Main.AchievementAdvisor.Initialize();
+		Main.AchievementAdvisor.FinishSetup();
 
 		MapLoader.FinishSetup();
 		PlantLoader.FinishSetup();

@@ -111,16 +111,14 @@
  	public Achievement GetAchievement(string achievementName)
  	{
  		if (_achievements.TryGetValue(achievementName, out var value))
-@@ -181,5 +_,100 @@
+@@ -181,5 +_,98 @@
  			return value;
  
  		return 0;
 +	}
 +
 +	internal static Achievement FirstVanillaAchievement => Main.Achievements.GetAchievement("TIMBER");
-+	internal static Achievement FirstAdvisorAchievement => Main.Achievements.GetAchievement("TIMBER");
 +	internal static Achievement LastVanillaAchievement => Main.Achievements.GetAchievement("TO_INFINITY_AND_BEYOND");
-+	internal static Achievement LastAdvisorAchievement => Main.Achievements.GetAchievement("CHAMPION_OF_TERRARIA");
 +	internal static readonly int DefaultAchievementCount = 115;
 +
 +	internal static void FinishSetup()

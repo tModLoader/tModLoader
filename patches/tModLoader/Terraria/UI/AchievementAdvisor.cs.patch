@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/UI/AchievementAdvisor.cs
 +++ src/tModLoader/Terraria/UI/AchievementAdvisor.cs
-@@ -1,9 +_,12 @@
+@@ -1,15 +_,19 @@
 +using System;
  using System.Collections.Generic;
  using System.Linq;
@@ -13,6 +13,13 @@
  
  namespace Terraria.UI;
  
+ public class AchievementAdvisor
+ {
+ 	private List<AchievementAdvisorCard> _cards = new List<AchievementAdvisorCard>();
++	private List<AchievementAdvisorCard> vanillaCards = new List<AchievementAdvisorCard>();
+ 	private Asset<Texture2D> _achievementsTexture;
+ 	private Asset<Texture2D> _achievementsBorderTexture;
+ 	private Asset<Texture2D> _achievementsBorderMouseHoverFatTexture;
 @@ -146,7 +_,10 @@
  
  		Rectangle frame = card.frame;
@@ -25,59 +32,33 @@
  		spriteBatch.Draw(_achievementsBorderTexture.Value, position + vector, null, color, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
  		if (hovered)
  			spriteBatch.Draw(value, position + vector2, null, Main.OurFavoriteColor, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
-@@ -167,45 +_,115 @@
- 		return list;
- 	}
- 
-+	internal static readonly int DefaultLayerCount = AchievementManager.DefaultAchievementCount;
-+	internal static readonly int AdvisorLayerCount = 36;
+@@ -170,6 +_,7 @@
  	public void Initialize()
  	{
-+		string[] orderedIds = {
-+			"TIMBER",
-+			"BENCHED",
-+			"OBTAIN_HAMMER",
-+			"NO_HOBO",
-+			"YOU_CAN_DO_IT",
-+			"OOO_SHINY",
-+			"HEAVY_METAL",
-+			"MATCHING_ATTIRE",
-+			"HEART_BREAKER",
-+			"I_AM_LOOT",
-+			"HOLD_ON_TIGHT",
-+			"STAR_POWER",
-+			"EYE_ON_YOU",
-+			"SMASHING_POPPET",
-+			"WHERES_MY_HONEY",
-+			"STING_OPERATION",
-+			"BONED",
-+			"DUNGEON_HEIST",
-+			"ITS_GETTING_HOT_IN_HERE",
-+			"MINER_FOR_FIRE",
-+			"STILL_HUNGRY",
-+			"ITS_HARD",
-+			"BEGONE_EVIL",
-+			"EXTRA_SHINY",
-+			"HEAD_IN_THE_CLOUDS",
-+			"BUCKETS_OF_BOLTS",
-+			"DRAX_ATTAX",
-+			"PHOTOSYNTHESIS",
-+			"GET_A_LIFE",
-+			"THE_GREAT_SOUTHERN_PLANTKILL",
-+			"TEMPLE_RAIDER",
-+			"LIHZAHRDIAN_IDOL",
-+			"ROBBING_THE_GRAVE",
-+			"OBSESSIVE_DEVOTION",
-+			"STAR_DESTROYER",
-+			"CHAMPION_OF_TERRARIA"
-+		};
-+		var achievementDict = Main.Achievements.CreateAchievementsList().ToDictionary(a => a.Name, a => a);
-+		var filteredAchievements = orderedIds.Where(id => achievementDict.ContainsKey(id)).Select(id => achievementDict[id]).ToList();
+ 		float num = 1f;
++		var _cards = vanillaCards; // Minimize maintenance and patches
+ 		_cards.Add(new AchievementAdvisorCard(Main.Achievements.GetAchievement("TIMBER"), num++));
+ 		_cards.Add(new AchievementAdvisorCard(Main.Achievements.GetAchievement("BENCHED"), num++));
+ 		_cards.Add(new AchievementAdvisorCard(Main.Achievements.GetAchievement("OBTAIN_HAMMER"), num++));
+@@ -207,5 +_,79 @@
+ 		_cards.Add(new AchievementAdvisorCard(Main.Achievements.GetAchievement("STAR_DESTROYER"), num++));
+ 		_cards.Add(new AchievementAdvisorCard(Main.Achievements.GetAchievement("CHAMPION_OF_TERRARIA"), num++));
+ 		_cards.OrderBy((AchievementAdvisorCard x) => x.order);
++	}
 +
++	internal static Achievement FirstAdvisorAchievement => Main.Achievements.GetAchievement("TIMBER");
++	internal static Achievement LastAdvisorAchievement => Main.Achievements.GetAchievement("CHAMPION_OF_TERRARIA");
++	internal static readonly int AdvisorAchievementCount = 36;
++
++	public void FinishSetup() { 
++		if (Main.dedServ)
++			return;
++
++		var filteredAchievements = vanillaCards.Select(x => x.achievement).ToList();
 +		var AchievementsInOrder = Main.Achievements.CreateAchievementsList();
-+		IEnumerable<ModAchievement> ModdedAchievements = AchievementsInOrder.Skip(DefaultLayerCount).Select(x => x.ModAchievement);
++		IEnumerable<ModAchievement> ModdedAchievements = AchievementsInOrder.Skip(AchievementManager.DefaultAchievementCount).Select(x => x.ModAchievement);
 +
-+		var sortingSlots = new List<Achievement>[AdvisorLayerCount + 1];
++		var sortingSlots = new List<Achievement>[AdvisorAchievementCount + 1];
 +		for (int i = 0; i < sortingSlots.Length; ++i)
 +			sortingSlots[i] = [];
 +
@@ -90,7 +71,7 @@
 +			switch (position) {
 +				case ModAchievement.After after: {
 +					int afterIndex = filteredAchievements.IndexOf(after.Achievement);
-+					if (afterIndex >= AdvisorLayerCount || afterIndex is -1)
++					if (afterIndex >= AdvisorAchievementCount || afterIndex is -1)
 +						throw BlameAchievementException(new ArgumentException($"ModAchievement {modAchievement.FullName} did not refer to a vanilla advisor achievement in GetAdvisorPosition()"));
 +
 +					sortingSlots[afterIndex + 1].Add(modAchievement.Achievement);
@@ -98,7 +79,7 @@
 +				}
 +				case ModAchievement.Before before: {
 +					int beforeIndex = filteredAchievements.IndexOf(before.Achievement);
-+					if (beforeIndex >= AdvisorLayerCount || beforeIndex is -1)
++					if (beforeIndex >= AdvisorAchievementCount || beforeIndex is -1)
 +						throw BlameAchievementException(new ArgumentException($"ModAchievement {modAchievement.FullName} did not refer to a vanilla advisor achievement in GetAdvisorPosition()"));
 +
 +					sortingSlots[beforeIndex].Add(modAchievement.Achievement);
@@ -120,7 +101,7 @@
 +
 +		List<Achievement> sortedAchievements = [];
 +
-+		for (int i = 0; i < AdvisorLayerCount + 1; i++) {
++		for (int i = 0; i < AdvisorAchievementCount + 1; i++) {
 +			var elements = sortingSlots[i];
 +			var sort = new TopoSort<Achievement>(elements,
 +				l => l.ModAchievement?.GetModdedConstraints()?.OfType<ModAchievement.After>().Select(a => a.Achievement).Where(elements.Contains) ?? [],
@@ -130,51 +111,12 @@
 +				sortedAchievements.Add(layer);
 +			}
 +
-+			if (i < AdvisorLayerCount)
++			if (i < AdvisorAchievementCount)
 +				sortedAchievements.Add(filteredAchievements[i]);
 +		}
 +		_cards.Clear();
- 		float num = 1f;
--		_cards.Add(new AchievementAdvisorCard(Main.Achievements.GetAchievement("TIMBER"), num++));
--		_cards.Add(new AchievementAdvisorCard(Main.Achievements.GetAchievement("BENCHED"), num++));
--		_cards.Add(new AchievementAdvisorCard(Main.Achievements.GetAchievement("OBTAIN_HAMMER"), num++));
--		_cards.Add(new AchievementAdvisorCard(Main.Achievements.GetAchievement("NO_HOBO"), num++));
--		_cards.Add(new AchievementAdvisorCard(Main.Achievements.GetAchievement("YOU_CAN_DO_IT"), num++));
--		_cards.Add(new AchievementAdvisorCard(Main.Achievements.GetAchievement("OOO_SHINY"), num++));
--		_cards.Add(new AchievementAdvisorCard(Main.Achievements.GetAchievement("HEAVY_METAL"), num++));
--		_cards.Add(new AchievementAdvisorCard(Main.Achievements.GetAchievement("MATCHING_ATTIRE"), num++));
--		_cards.Add(new AchievementAdvisorCard(Main.Achievements.GetAchievement("HEART_BREAKER"), num++));
--		_cards.Add(new AchievementAdvisorCard(Main.Achievements.GetAchievement("I_AM_LOOT"), num++));
--		_cards.Add(new AchievementAdvisorCard(Main.Achievements.GetAchievement("HOLD_ON_TIGHT"), num++));
--		_cards.Add(new AchievementAdvisorCard(Main.Achievements.GetAchievement("STAR_POWER"), num++));
--		_cards.Add(new AchievementAdvisorCard(Main.Achievements.GetAchievement("EYE_ON_YOU"), num++));
--		_cards.Add(new AchievementAdvisorCard(Main.Achievements.GetAchievement("SMASHING_POPPET"), num++));
--		_cards.Add(new AchievementAdvisorCard(Main.Achievements.GetAchievement("WHERES_MY_HONEY"), num++));
--		_cards.Add(new AchievementAdvisorCard(Main.Achievements.GetAchievement("STING_OPERATION"), num++));
--		_cards.Add(new AchievementAdvisorCard(Main.Achievements.GetAchievement("BONED"), num++));
--		_cards.Add(new AchievementAdvisorCard(Main.Achievements.GetAchievement("DUNGEON_HEIST"), num++));
--		_cards.Add(new AchievementAdvisorCard(Main.Achievements.GetAchievement("ITS_GETTING_HOT_IN_HERE"), num++));
--		_cards.Add(new AchievementAdvisorCard(Main.Achievements.GetAchievement("MINER_FOR_FIRE"), num++));
--		_cards.Add(new AchievementAdvisorCard(Main.Achievements.GetAchievement("STILL_HUNGRY"), num++));
--		_cards.Add(new AchievementAdvisorCard(Main.Achievements.GetAchievement("ITS_HARD"), num++));
--		_cards.Add(new AchievementAdvisorCard(Main.Achievements.GetAchievement("BEGONE_EVIL"), num++));
--		_cards.Add(new AchievementAdvisorCard(Main.Achievements.GetAchievement("EXTRA_SHINY"), num++));
--		_cards.Add(new AchievementAdvisorCard(Main.Achievements.GetAchievement("HEAD_IN_THE_CLOUDS"), num++));
--		_cards.Add(new AchievementAdvisorCard(Main.Achievements.GetAchievement("BUCKETS_OF_BOLTS"), num++));
--		_cards.Add(new AchievementAdvisorCard(Main.Achievements.GetAchievement("DRAX_ATTAX"), num++));
--		_cards.Add(new AchievementAdvisorCard(Main.Achievements.GetAchievement("PHOTOSYNTHESIS"), num++));
--		_cards.Add(new AchievementAdvisorCard(Main.Achievements.GetAchievement("GET_A_LIFE"), num++));
--		_cards.Add(new AchievementAdvisorCard(Main.Achievements.GetAchievement("THE_GREAT_SOUTHERN_PLANTKILL"), num++));
--		_cards.Add(new AchievementAdvisorCard(Main.Achievements.GetAchievement("TEMPLE_RAIDER"), num++));
--		_cards.Add(new AchievementAdvisorCard(Main.Achievements.GetAchievement("LIHZAHRDIAN_IDOL"), num++));
--		_cards.Add(new AchievementAdvisorCard(Main.Achievements.GetAchievement("ROBBING_THE_GRAVE"), num++));
--		_cards.Add(new AchievementAdvisorCard(Main.Achievements.GetAchievement("OBSESSIVE_DEVOTION"), num++));
--		_cards.Add(new AchievementAdvisorCard(Main.Achievements.GetAchievement("STAR_DESTROYER"), num++));
--		_cards.Add(new AchievementAdvisorCard(Main.Achievements.GetAchievement("CHAMPION_OF_TERRARIA"), num++));
--		_cards.OrderBy((AchievementAdvisorCard x) => x.order);
 +		for (int i = 0; i < sortedAchievements.Count; i++) {
-+			_cards.Add(new AchievementAdvisorCard(sortedAchievements[i], num++));
++			_cards.Add(new AchievementAdvisorCard(sortedAchievements[i], i + 1));
 +		}
  	}
-+
  }
