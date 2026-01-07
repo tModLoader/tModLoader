@@ -121,7 +121,7 @@
 +	internal static Achievement FirstAdvisorAchievement => Main.Achievements.GetAchievement("TIMBER");
 +	internal static Achievement LastVanillaAchievement => Main.Achievements.GetAchievement("TO_INFINITY_AND_BEYOND");
 +	internal static Achievement LastAdvisorAchievement => Main.Achievements.GetAchievement("CHAMPION_OF_TERRARIA");
-+	internal static readonly int DefaultLayerCount = 115;
++	internal static readonly int DefaultAchievementCount = 115;
 +
 +	internal static void FinishSetup()
 +	{
@@ -130,10 +130,10 @@
 +
 +		// Sort achievements by setting Achievement.Id:
 +		var AchievementsInOrder = Main.Achievements.CreateAchievementsList();
-+		IEnumerable<ModAchievement> ModdedAchievements = AchievementsInOrder.Skip(DefaultLayerCount).Select(x => x.ModAchievement);
++		IEnumerable<ModAchievement> ModdedAchievements = AchievementsInOrder.Skip(DefaultAchievementCount).Select(x => x.ModAchievement);
 +		AchievementsInOrder.Sort((x, y) => x.Id.CompareTo(y.Id));
 +
-+		var sortingSlots = new List<Achievement>[DefaultLayerCount + 1];
++		var sortingSlots = new List<Achievement>[DefaultAchievementCount + 1];
 +		for (int i = 0; i < sortingSlots.Length; ++i)
 +			sortingSlots[i] = [];
 +
@@ -148,7 +148,7 @@
 +			switch (position) {
 +				case ModAchievement.After after: {
 +					int afterIndex = AchievementsInOrder.IndexOf(after.Achievement);
-+					if (afterIndex >= DefaultLayerCount || afterIndex is -1)
++					if (afterIndex >= DefaultAchievementCount || afterIndex is -1)
 +						throw BlameAchievementException(new ArgumentException($"ModAchievement {modAchievement.FullName} did not refer to a vanilla achievement in GetDefaultPosition()"));
 +
 +					sortingSlots[afterIndex + 1].Add(modAchievement.Achievement);
@@ -156,7 +156,7 @@
 +				}
 +				case ModAchievement.Before before: {
 +					int beforeIndex = AchievementsInOrder.IndexOf(before.Achievement);
-+					if (beforeIndex >= DefaultLayerCount || beforeIndex is -1)
++					if (beforeIndex >= DefaultAchievementCount || beforeIndex is -1)
 +						throw BlameAchievementException(new ArgumentException($"ModAchievement {modAchievement.FullName} did not refer to a vanilla achievement in GetDefaultPosition()"));
 +
 +					sortingSlots[beforeIndex].Add(modAchievement.Achievement);
@@ -178,7 +178,7 @@
 +
 +		List<Achievement> sortedAchievements = [];
 +
-+		for (int i = 0; i < DefaultLayerCount + 1; i++) {
++		for (int i = 0; i < DefaultAchievementCount + 1; i++) {
 +			var elements = sortingSlots[i];
 +			var sort = new TopoSort<Achievement>(elements,
 +				l => l.ModAchievement?.GetModdedConstraints()?.OfType<ModAchievement.After>().Select(a => a.Achievement).Where(elements.Contains) ?? [],
@@ -188,7 +188,7 @@
 +				sortedAchievements.Add(layer);
 +			}
 +
-+			if (i < DefaultLayerCount)
++			if (i < DefaultAchievementCount)
 +				sortedAchievements.Add(AchievementsInOrder[i]);
 +		}
 +

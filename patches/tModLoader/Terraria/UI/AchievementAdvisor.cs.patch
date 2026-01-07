@@ -29,7 +29,7 @@
  		return list;
  	}
  
-+	internal static readonly int DefaultLayerCount = AchievementManager.DefaultLayerCount;
++	internal static readonly int DefaultLayerCount = AchievementManager.DefaultAchievementCount;
 +	internal static readonly int AdvisorLayerCount = 36;
  	public void Initialize()
  	{
