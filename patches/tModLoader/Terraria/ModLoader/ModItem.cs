@@ -188,7 +188,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	public virtual bool AllowPrefix(int pre) => true;
 
 	/// <summary>
-	/// Called immediately after <see cref="ModPrefix.Apply(Item)"/>
+	/// Called immediately after prefix stat changes are applied (as well as <see cref="ModPrefix.Apply(Item)"/>), facilitating item-specific tweaks to prefix effects.
 	/// </summary>
 	public virtual void ApplyPrefix(int pre) { }
 

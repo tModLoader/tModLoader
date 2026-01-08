@@ -81,7 +81,7 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	public virtual bool AllowPrefix(Item item, int pre) => true;
 
 	/// <summary>
-	/// Called immediately after <see cref="ModPrefix.Apply(Item)"/>
+	/// Called immediately after prefix stat changes are applied (as well as <see cref="ModPrefix.Apply(Item)"/>), facilitating item-specific tweaks to prefix effects.
 	/// </summary>
 	public virtual void ApplyPrefix(Item item, int pre) { }
 

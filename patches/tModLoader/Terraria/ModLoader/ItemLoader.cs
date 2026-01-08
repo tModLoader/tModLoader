@@ -281,7 +281,7 @@ public static class ItemLoader
 	{
 		item.ModItem?.ApplyPrefix(pre);
 		foreach (var g in HookApplyPrefix.Enumerate(item)) {
-			g.AllowPrefix(item, pre);
+			g.ApplyPrefix(item, pre);
 		}
 	}
 
