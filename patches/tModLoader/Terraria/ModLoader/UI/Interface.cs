@@ -58,6 +58,7 @@ internal static class Interface
 	internal const int exitID = 10026;
 	internal const int modConfigListID = 10027;
 	internal const int serverModsDifferMessageID = 10028;
+	internal const int switchBetaID = 10029;
 	internal static UIMods modsMenu = new UIMods();
 	internal static UILoadMods loadMods = new UILoadMods();
 	internal static UIModSources modSources = new UIModSources();
@@ -79,6 +80,7 @@ internal static class Interface
 	internal static UICreateMod createMod = new UICreateMod();
 	internal static UIProgress progress = new UIProgress();
 	internal static UIDownloadProgress downloadProgress = new UIDownloadProgress();
+	internal static UISwitchBeta switchBeta = new UISwitchBeta();
 
 	/// <summary> Collection of error messages that will be shown one at a time once the main menu is reached. Useful for error messages during player and world saving happening on another thread. </summary>
 	internal static Stack<string> pendingErrorMessages = new Stack<string>();
@@ -455,6 +457,10 @@ internal static class Interface
 		}
 		else if (Main.menuMode == serverModsDifferMessageID) {
 			Main.MenuUI.SetState(serverModsDifferMessage);
+			Main.menuMode = 888;
+		}
+		else if (Main.menuMode == switchBetaID) {
+			Main.MenuUI.SetState(switchBeta);
 			Main.menuMode = 888;
 		}
 		else if (Main.menuMode == exitID) {
