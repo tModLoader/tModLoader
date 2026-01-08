@@ -29,10 +29,7 @@ namespace ExampleMod.Content.Items.Weapons
 		}
 
 		// Since this weapon is a projectile (uses noUseGraphic), it isn't naturally considered a melee weapon for the purposes of prefixes. This allows the expected prefixes to be applied.
-		public override bool MeleePrefix() {
-			var old = base.MeleePrefix();
-			return true;
-		}
+		public override bool MeleePrefix() => true;
 
 		/* Here is an example of using ApplyPrefix to apply item-specific tweaks to a specific prefix.
 		public override void ApplyPrefix(int pre) {
