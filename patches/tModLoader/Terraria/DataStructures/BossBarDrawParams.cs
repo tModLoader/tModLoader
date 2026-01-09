@@ -17,7 +17,11 @@ public struct BossBarDrawParams
 	/// The screen position of the center of the bar.
 	/// </summary>
 	public Vector2 BarCenter;
-	//No barColor because it consists of 6 separate frames with different things on each frame. Easier to supply a custom texture.
+
+	/// <summary>
+	/// The tint of the Bar.
+	/// </summary>
+	public Color BarColor;
 
 	/// <summary>
 	/// The displayed icon texture.
@@ -69,10 +73,11 @@ public struct BossBarDrawParams
 	/// </summary>
 	public Vector2 TextOffset;
 
-	public BossBarDrawParams(Texture2D barTexture, Vector2 barCenter, Texture2D iconTexture, Rectangle iconFrame, Color iconColor, float life, float lifeMax, float shield = 0f, float shieldMax = 0f, float iconScale = 1f, bool showText = true, Vector2 textOffset = default)
+	public BossBarDrawParams(Texture2D barTexture, Vector2 barCenter, Texture2D iconTexture, Rectangle iconFrame, Color iconColor, float life, float lifeMax, Color? barColor = null, float shield = 0f, float shieldMax = 0f, float iconScale = 1f, bool showText = true, Vector2 textOffset = default)
 	{
 		BarTexture = barTexture;
 		BarCenter = barCenter;
+		BarColor = barColor is null ? Color.White : barColor.Value;
 		IconTexture = iconTexture;
 		IconFrame = iconFrame;
 		IconColor = iconColor;
@@ -85,10 +90,11 @@ public struct BossBarDrawParams
 		TextOffset = textOffset;
 	}
 
-	public void Deconstruct(out Texture2D barTexture, out Vector2 barCenter, out Texture2D iconTexture, out Rectangle iconFrame, out Color iconColor, out float life, out float lifeMax, out float shield, out float shieldMax, out float iconScale, out bool showText, out Vector2 textOffset)
+	public void Deconstruct(out Texture2D barTexture, out Vector2 barCenter, out Color barColor, out Texture2D iconTexture, out Rectangle iconFrame, out Color iconColor, out float life, out float lifeMax, out float shield, out float shieldMax, out float iconScale, out bool showText, out Vector2 textOffset)
 	{
 		barTexture = BarTexture;
 		barCenter = BarCenter;
+		barColor = BarColor;
 		iconTexture = IconTexture;
 		iconFrame = IconFrame;
 		iconColor = IconColor;
