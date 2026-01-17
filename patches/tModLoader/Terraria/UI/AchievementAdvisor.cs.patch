@@ -1,10 +1,25 @@
 --- src/TerrariaNetCore/Terraria/UI/AchievementAdvisor.cs
 +++ src/tModLoader/Terraria/UI/AchievementAdvisor.cs
-@@ -1,3 +_,4 @@
+@@ -1,15 +_,19 @@
 +using System;
  using System.Collections.Generic;
  using System.Linq;
  using Microsoft.Xna.Framework;
+ using Microsoft.Xna.Framework.Graphics;
+ using ReLogic.Content;
++using Terraria.Achievements;
+ using Terraria.GameInput;
++using Terraria.ModLoader;
+ 
+ namespace Terraria.UI;
+ 
+ public class AchievementAdvisor
+ {
+ 	private List<AchievementAdvisorCard> _cards = new List<AchievementAdvisorCard>();
++	private List<AchievementAdvisorCard> vanillaCards = new List<AchievementAdvisorCard>();
+ 	private Asset<Texture2D> _achievementsTexture;
+ 	private Asset<Texture2D> _achievementsBorderTexture;
+ 	private Asset<Texture2D> _achievementsBorderMouseHoverFatTexture;
 @@ -146,7 +_,10 @@
  
  		Rectangle frame = card.frame;
@@ -17,10 +32,91 @@
  		spriteBatch.Draw(_achievementsBorderTexture.Value, position + vector, null, color, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
  		if (hovered)
  			spriteBatch.Draw(value, position + vector2, null, Main.OurFavoriteColor, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
-@@ -207,5 +_,6 @@
+@@ -170,6 +_,7 @@
+ 	public void Initialize()
+ 	{
+ 		float num = 1f;
++		var _cards = vanillaCards; // Minimize maintenance and patches
+ 		_cards.Add(new AchievementAdvisorCard(Main.Achievements.GetAchievement("TIMBER"), num++));
+ 		_cards.Add(new AchievementAdvisorCard(Main.Achievements.GetAchievement("BENCHED"), num++));
+ 		_cards.Add(new AchievementAdvisorCard(Main.Achievements.GetAchievement("OBTAIN_HAMMER"), num++));
+@@ -207,5 +_,79 @@
  		_cards.Add(new AchievementAdvisorCard(Main.Achievements.GetAchievement("STAR_DESTROYER"), num++));
  		_cards.Add(new AchievementAdvisorCard(Main.Achievements.GetAchievement("CHAMPION_OF_TERRARIA"), num++));
  		_cards.OrderBy((AchievementAdvisorCard x) => x.order);
-+		// TODO: Consider supporting modded achievements in the AchievementAdvisor subset/ordering
++	}
++
++	internal static Achievement FirstAdvisorAchievement => Main.Achievements.GetAchievement("TIMBER");
++	internal static Achievement LastAdvisorAchievement => Main.Achievements.GetAchievement("CHAMPION_OF_TERRARIA");
++	internal static readonly int AdvisorAchievementCount = 36;
++
++	public void FinishSetup() { 
++		if (Main.dedServ)
++			return;
++
++		var filteredAchievements = vanillaCards.Select(x => x.achievement).ToList();
++		var AchievementsInOrder = Main.Achievements.CreateAchievementsList();
++		IEnumerable<ModAchievement> ModdedAchievements = AchievementsInOrder.Skip(AchievementManager.DefaultAchievementCount).Select(x => x.ModAchievement);
++
++		var sortingSlots = new List<Achievement>[AdvisorAchievementCount + 1];
++		for (int i = 0; i < sortingSlots.Length; ++i)
++			sortingSlots[i] = [];
++
++		foreach (ModAchievement modAchievement in ModdedAchievements) {
++			var position = modAchievement.GetAdvisorPosition();
++			if (position == null) {
++				continue;
++			}
++
++			switch (position) {
++				case ModAchievement.After after: {
++					int afterIndex = filteredAchievements.IndexOf(after.Achievement);
++					if (afterIndex >= AdvisorAchievementCount || afterIndex is -1)
++						throw BlameAchievementException(new ArgumentException($"ModAchievement {modAchievement.FullName} did not refer to a vanilla advisor achievement in GetAdvisorPosition()"));
++
++					sortingSlots[afterIndex + 1].Add(modAchievement.Achievement);
++					break;
++				}
++				case ModAchievement.Before before: {
++					int beforeIndex = filteredAchievements.IndexOf(before.Achievement);
++					if (beforeIndex >= AdvisorAchievementCount || beforeIndex is -1)
++						throw BlameAchievementException(new ArgumentException($"ModAchievement {modAchievement.FullName} did not refer to a vanilla advisor achievement in GetAdvisorPosition()"));
++
++					sortingSlots[beforeIndex].Add(modAchievement.Achievement);
++					break;
++				}
++				default: {
++					var ex = new ArgumentException($"ModAchievement {modAchievement.FullName} has unknown Position {position}");
++					throw BlameAchievementException(ex);
++				}
++			}
++
++			Exception BlameAchievementException(Exception ex)
++			{
++				if (modAchievement is ModAchievement moddedAchievement)
++					ex.Data["mod"] = moddedAchievement.Mod.Name;
++				return ex;
++			}
++		}
++
++		List<Achievement> sortedAchievements = [];
++
++		for (int i = 0; i < AdvisorAchievementCount + 1; i++) {
++			var elements = sortingSlots[i];
++			var sort = new TopoSort<Achievement>(elements,
++				l => l.ModAchievement?.GetModdedConstraints()?.OfType<ModAchievement.After>().Select(a => a.Achievement).Where(elements.Contains) ?? [],
++				l => l.ModAchievement?.GetModdedConstraints()?.OfType<ModAchievement.Before>().Select(b => b.Achievement).Where(elements.Contains) ?? []);
++
++			foreach (Achievement layer in sort.Sort()) {
++				sortedAchievements.Add(layer);
++			}
++
++			if (i < AdvisorAchievementCount)
++				sortedAchievements.Add(filteredAchievements[i]);
++		}
++		_cards.Clear();
++		for (int i = 0; i < sortedAchievements.Count; i++) {
++			_cards.Add(new AchievementAdvisorCard(sortedAchievements[i], i + 1));
++		}
  	}
  }

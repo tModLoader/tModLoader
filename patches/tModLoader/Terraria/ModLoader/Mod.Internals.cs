@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
 using Terraria.ModLoader.Exceptions;
@@ -46,6 +48,30 @@ partial class Mod
 	{
 		if (Code == null)
 			return;
+
+		// Load icon.png and icon_small.png
+		ModIcon = null;
+		SmallModIcon = null;
+
+		if (RequestAssetIfExists<Texture2D>("icon", out var iconAsset)) {
+			if (iconAsset.Size() == new Vector2(80)) {
+				ModIcon = iconAsset;
+			}
+			else {
+				Logger.Info("icon.png needs to be 80x80 pixels.");
+			}
+		}
+
+		if (RequestAssetIfExists<Texture2D>("icon_small", out var smallIconAsset)) {
+			if (smallIconAsset.Size() == new Vector2(30)) {
+				SmallModIcon = smallIconAsset;
+			}
+			else {
+				Logger.Info("icon_small.png needs to be 30x30 pixels.");
+			}
+		}
+
+		ModIcon ??= PlaceholderModIcon;
 
 		LocalizationLoader.Autoload(this);
 

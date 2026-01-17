@@ -155,7 +155,7 @@ public partial class WorkshopSocialModule
 		}
 
 		string name = buildData["displaynameclean"];
-		if (name.Length >= Steamworks.Constants.k_cchPublishedDocumentTitleMax) {
+		if (Encoding.UTF8.GetByteCount(name) >= Steamworks.Constants.k_cchPublishedDocumentTitleMax) {
 			IssueReporter.ReportInstantUploadProblem("tModLoader.TitleLengthExceedLimit");
 			return false;
 		}
@@ -338,9 +338,10 @@ public partial class WorkshopSocialModule
 
 		ModCompile.UpdateSubstitutedDescriptionValues(ref descriptionFinal, buildData["trueversion"], buildData["homepage"]);
 
-		if (descriptionFinal.Length >= Steamworks.Constants.k_cchPublishedDocumentDescriptionMax) {
+		int descriptionByteCount = Encoding.UTF8.GetByteCount(descriptionFinal);
+		if (descriptionByteCount >= Steamworks.Constants.k_cchPublishedDocumentDescriptionMax) {
 			//IssueReporter.ReportInstantUploadProblem("tModLoader.DescriptionLengthExceedLimit");
-			throw new Exception(Language.GetTextValue("tModLoader.DescriptionLengthExceedLimit", Steamworks.Constants.k_cchPublishedDocumentDescriptionMax));
+			throw new Exception(Language.GetTextValue("tModLoader.DescriptionLengthExceedLimit", Steamworks.Constants.k_cchPublishedDocumentDescriptionMax, descriptionByteCount - Steamworks.Constants.k_cchPublishedDocumentDescriptionMax));
 		}
 
 		// If the modder hasn't supplied any change notes, then we will provde some default ones for them

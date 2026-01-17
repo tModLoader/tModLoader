@@ -188,6 +188,11 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	public virtual bool AllowPrefix(int pre) => true;
 
 	/// <summary>
+	/// Called immediately after prefix stat changes are applied (as well as <see cref="ModPrefix.Apply(Item)"/>), facilitating item-specific tweaks to prefix effects.
+	/// </summary>
+	public virtual void ApplyPrefix(int pre) { }
+
+	/// <summary>
 	/// Returns whether or not this item can be used. By default returns true.
 	/// <para/> Called on local, server, and remote clients.
 	/// <br/><br/> The item may or not be used after this method is called, so logic in this method should have no side effects such as consuming items or resources.
@@ -1202,7 +1207,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 
 	/// <summary>
 	/// Allows you to draw things behind this item, or to modify the way this item is drawn in the world. Return false to stop the game from drawing the item (useful if you're manually drawing the item).
-	/// <para/> Note that items in the world are drawn centered horizontally sitting at the bottom of the item hitbox, not in the center of the hitbox. To replicate the normal drawing calculations, use the following and then use <see cref="SpriteBatch.DrawString(SpriteFont, string, Vector2, Color, float, Vector2, float, SpriteEffects, float)"/>:
+	/// <para/> Note that items in the world are drawn centered horizontally sitting at the bottom of the item hitbox, not in the center of the hitbox. To replicate the normal drawing calculations, use the following and then use the <paramref name="spriteBatch"/>:
 	/// <para/> Called on all clients.
 	/// <code>
 	/// Main.GetItemDrawFrame(Item.type, out var itemTexture, out var itemFrame);
@@ -1212,8 +1217,8 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// <para/> Returns true by default.
 	/// </summary>
 	/// <param name="spriteBatch">The sprite batch.</param>
-	/// <param name="lightColor">Color of the light.</param>
-	/// <param name="alphaColor">Color of the alpha.</param>
+	/// <param name="lightColor">The lighting color at the item's center.</param>
+	/// <param name="alphaColor">The final color used to draw the item, mixing its alpha and lighting.</param>
 	/// <param name="rotation">The item rotation. Items rotate slightly as they are thrown.</param>
 	/// <param name="scale">The draw scale. Items are usually drawn in the world at a scale of 1f but some effects like pulsing Soul items change this.</param>
 	/// <param name="whoAmI">The <see cref="Entity.whoAmI"/>.</param>
@@ -1225,7 +1230,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 
 	/// <summary>
 	/// Allows you to draw things in front of this item. This method is called even if PreDrawInWorld returns false.
-	/// <para/> Note that items in the world are drawn centered horizontally sitting at the bottom of the item hitbox, not in the center of the hitbox. To replicate the normal drawing calculations, use the following and then use <see cref="SpriteBatch.DrawString(SpriteFont, string, Vector2, Color, float, Vector2, float, SpriteEffects, float)"/>:
+	/// <para/> Note that items in the world are drawn centered horizontally sitting at the bottom of the item hitbox, not in the center of the hitbox. To replicate the normal drawing calculations, use the following and then use the <paramref name="spriteBatch"/>:
 	/// <para/> Called on all clients.
 	/// <code>
 	/// Main.GetItemDrawFrame(Item.type, out var itemTexture, out var itemFrame);
@@ -1234,8 +1239,8 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// </code>
 	/// </summary>
 	/// <param name="spriteBatch">The sprite batch.</param>
-	/// <param name="lightColor">Color of the light.</param>
-	/// <param name="alphaColor">Color of the alpha.</param>
+	/// <param name="lightColor">The lighting color at the item's center.</param>
+	/// <param name="alphaColor">The final color used to draw the item, mixing its alpha and lighting.</param>
 	/// <param name="rotation">The item rotation. Items rotate slightly as they are thrown.</param>
 	/// <param name="scale">The draw scale. Items are usually drawn in the world at a scale of 1f but some effects like pulsing Soul items change this.</param>
 	/// <param name="whoAmI">The <see cref="Entity.whoAmI"/>.</param>
@@ -1245,15 +1250,15 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 
 	/// <summary>
 	/// Allows you to draw things behind this item in the inventory. Return false to stop the game from drawing the item (useful if you're manually drawing the item).
-	/// <para/> Note that <paramref name="position"/> is the center of the inventory slot and <paramref name="origin"/> is the center of the texture <paramref name="frame"/> to be drawn, so the provided parameters can be passed into <see cref="SpriteBatch.DrawString(SpriteFont, string, Vector2, Color, float, Vector2, float, SpriteEffects, float)"/> to draw a texture in the typical manner.
+	/// <para/> Note that <paramref name="position"/> is the center of the inventory slot and <paramref name="origin"/> is the center of the texture <paramref name="frame"/> to be drawn, so the provided parameters can be passed into the <paramref name="spriteBatch"/> to draw a texture in the typical manner.
 	/// <para/> Called on the local client only.
 	/// <para/> Returns true by default.
 	/// </summary>
 	/// <param name="spriteBatch">The sprite batch.</param>
 	/// <param name="position">The screen position of the center of the inventory slot.</param>
 	/// <param name="frame">The frame of the item texture to be drawn.</param>
-	/// <param name="drawColor">Color of the draw.</param>
-	/// <param name="itemColor">Color of the item.</param>
+	/// <param name="drawColor">The primary color used to draw the item icon.</param>
+	/// <param name="itemColor">The item color usually used for tinting the item with a secondary draw call.</param>
 	/// <param name="origin">The draw origin, the center of the frame to be drawn.</param>
 	/// <param name="scale">The scale the item has been calculated to draw in to fit in the inventory slot.</param>
 	/// <returns></returns>
@@ -1265,14 +1270,14 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 
 	/// <summary>
 	/// Allows you to draw things in front of this item in the inventory. This method is called even if PreDrawInInventory returns false.
-	/// <para/> Note that <paramref name="position"/> is the center of the inventory slot and <paramref name="origin"/> is the center of the texture <paramref name="frame"/> to be drawn, so the provided parameters can be passed into <see cref="SpriteBatch.DrawString(SpriteFont, string, Vector2, Color, float, Vector2, float, SpriteEffects, float)"/> to draw a texture in the typical manner.
+	/// <para/> Note that <paramref name="position"/> is the center of the inventory slot and <paramref name="origin"/> is the center of the texture <paramref name="frame"/> to be drawn, so the provided parameters can be passed into the <paramref name="spriteBatch"/> to draw a texture in the typical manner.
 	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="spriteBatch">The sprite batch.</param>
 	/// <param name="position">The screen position of the center of the inventory slot.</param>
 	/// <param name="frame">The frame of the item texture to be drawn.</param>
-	/// <param name="drawColor">Color of the draw.</param>
-	/// <param name="itemColor">Color of the item.</param>
+	/// <param name="drawColor">The primary color used to draw the item icon.</param>
+	/// <param name="itemColor">The item color usually used for tinting the item with a secondary draw call.</param>
 	/// <param name="origin">The draw origin, the center of the frame to be drawn.</param>
 	/// <param name="scale">The scale of the item drawing to to fit in the inventory slot.</param>
 	public virtual void PostDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor,

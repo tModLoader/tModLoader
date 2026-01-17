@@ -275,6 +275,16 @@ public static class ItemLoader
 		return result;
 	}
 
+	private static HookList HookApplyPrefix = AddHook<Action<Item, int>>(g => g.ApplyPrefix);
+
+	public static void ApplyPrefix(Item item, int pre)
+	{
+		item.ModItem?.ApplyPrefix(pre);
+		foreach (var g in HookApplyPrefix.Enumerate(item)) {
+			g.ApplyPrefix(item, pre);
+		}
+	}
+
 	private static HookList HookCanUseItem = AddHook<Func<Item, Player, bool>>(g => g.CanUseItem);
 
 	public static bool CanUseItem(Item item, Player player)
