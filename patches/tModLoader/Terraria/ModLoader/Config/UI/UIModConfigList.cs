@@ -271,7 +271,7 @@ internal class UIModConfigList : UIState
 			var indicatorFrame = indicatorTexture.Frame(2, 1, config.Mode == ConfigScope.ServerSide ? 1 : 0, 0, -2);
 
 			float indicatorOffset = indicatorFrame.Width;
-			float indicatorPadding = 12;
+			float indicatorPadding = 8; // Supposed to be 12, but the icons have a lot of spare transparency on the sides which wastes space
 			configPanel.PaddingRight += indicatorOffset + indicatorPadding;
 
 			var sideIndicator = new UIImageFramed(indicatorTexture, indicatorFrame) {
