@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Timers;
+using ReLogic.Content;
 using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
@@ -30,9 +31,11 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 
 	// TODO: these can be deprecated/moved
 	// - UpdateCount can be replaced with GlobalTimeWrappedHourly
-	// - Tooltip can be directly used UICommon.TooltipMouseText
+	// - Tooltip can be set using Instance.Tooltip
 	public int UpdateCount { get; set; }
-	public static string Tooltip { get; set; }
+	// TODO: remove in future when we want breaking changes
+	public static string Tooltip { get => Instance.ConfigElementTooltip; set => Instance.ConfigElementTooltip = value; }
+	public string ConfigElementTooltip { get; set; }
 
 	public bool HasUnsavedChanges { get; private set; }
 	public bool HasDefaultValues { get; private set; }
@@ -58,7 +61,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 
 	private UIElement uiElement;
 	private UIPanel uiPanel;
-	private UITextPanel<string> headerTextPanel;
+	private UITextPanel<LocalizedText> headerTextPanel;
 
 	private UIButton<LocalizedText> backButton;
 	private UIButton<LocalizedText> saveConfigButton;
@@ -68,6 +71,8 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 	private UIList configElementList;
 	private UIScrollbar scrollbar;
 	private UIFocusInputTextField filterTextField;
+	private UIAutoScaleTextTextPanel<string> configNamePanel;
+	private UIImage smallModIcon;
 
 	// TODO: reimpl subpages
 
@@ -154,15 +159,35 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 		button.AltHoverBorderColor = button.BorderColor;
 	}
 
+	// TODO: temporary, will be moved in future
+	private Asset<Texture2D> GetSmallIcon(Mod mod)
+	{
+		if (mod.HasAsset("icon_small")) {
+			var asset = mod.Assets.Request<Texture2D>("icon_small");
+			if (asset.Size() == new Vector2(30)) {
+				return asset;
+			}
+			mod.Logger.Info("icon_small needs to be 30x30 pixels.");
+		}
+		return null;
+	}
+
 	private void CreatePanelContents()
 	{
-		var textBoxBackground = new UIPanel {
+		var listHeaderContainer = new UIElement {
 			Top = { Pixels = 15 },
+			Width = { Percent = 1f },
+			Height = {Pixels = 40 },
+		};
+		uiPanel.Append(listHeaderContainer);
+
+		var textBoxBackground = new UIPanel {
 			Width = { Pixels = 180 },
 			Height = { Pixels = 30 },
 			HAlign = 1f,
+			VAlign = 0.5f,
 		}.WithPadding(0);
-		uiPanel.Append(textBoxBackground);
+		listHeaderContainer.Append(textBoxBackground);
 
 		filterTextField = new UIFocusInputTextField(Language.GetText("tModLoader.ModConfigFilterOptions")) {
 			Top = { Pixels = 5 },
@@ -175,16 +200,30 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 		filterTextField.OnRightClick += (_, _) => filterTextField.SetText("");
 		textBoxBackground.Append(filterTextField);
 
+		smallModIcon = new UIImage(Asset<Texture2D>.Empty) {
+			VAlign = 0.5f,
+		};
+		// Gets appended in OnActivate
+
+		configNamePanel = new UIAutoScaleTextTextPanel<string>("") {
+			MaxWidth = { Pixels = 385 },
+			Height = { Pixels = 40 },
+			VAlign = 0.5f,
+			UseInnerDimensions = true,
+			ScalePanel = true,
+		}.WithPadding(6);
+		listHeaderContainer.Append(configNamePanel);
+
 		configElementList = new UIList {
 			Width =  { Pixels = -25, Percent = 1f },
-			Height = { Pixels = -55, Percent = 1f },
+			Height = { Pixels = -65, Percent = 1f },
 			VAlign = 1f,
 			ListPadding = 5f,
 		};
 		uiPanel.Append(configElementList);
 
 		scrollbar = new UIScrollbar {
-			Height = { Pixels = -55, Percent = 1f },
+			Height = { Pixels = -65, Percent = 1f },
 			HAlign = 1f,
 			VAlign = 1f,
 		}.WithView(100f, 1000f);
@@ -194,8 +233,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 
 	private void CreateHeaderPanel()
 	{
-		// No localization should be needed here, this text should never be seen since it is usually replaced by the config and mod name
-		headerTextPanel = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModConfigModConfig"), 0.8f, true) {
+		headerTextPanel = new UITextPanel<LocalizedText>(Language.GetText("tModLoader.ModConfigModConfig"), 0.8f, true) {
 			HAlign = 0.5f,
 			Top = { Pixels = -35 },
 			BackgroundColor = UICommon.DefaultUIBlue,
@@ -426,12 +464,13 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 
 	public override void Draw(SpriteBatch spriteBatch)
 	{
-		Tooltip = null;
+		ConfigElementTooltip = null;
 
 		base.Draw(spriteBatch);
 
-		if (!string.IsNullOrEmpty(Tooltip)) {
-			UICommon.TooltipMouseText(Tooltip);
+		// TODO: allow the tooltip to be displayed in a box instead, also why is this done in Draw not Update?
+		if (!string.IsNullOrEmpty(ConfigElementTooltip)) {
+			UICommon.TooltipMouseText(ConfigElementTooltip);
 		}
 
 		UILinkPointNavigator.Shortcuts.BackButtonCommand = 7;
@@ -442,18 +481,36 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 		// TODO: temporary, for development
 		RemoveAllChildren();
 		OnInitialize();
+		// END TODO
 
 		ResetUI();
 
 		Interface.modConfigList.ModToSelectOnOpen = mod;
 
-		// Set header panel name
-		string configDisplayName = modConfig.DisplayName.Value;
-		headerTextPanel.SetText(string.IsNullOrEmpty(configDisplayName) ? modConfig.Mod.DisplayName : modConfig.Mod.DisplayName + " - " + configDisplayName);
+		// Set mod name, config name, and small mod icon in the display panel
+		string configNamePanelContents = modConfig.Mod.DisplayName + " - " + modConfig.DisplayName.Value;
+		configNamePanel.SetText(configNamePanelContents);
+
+		var iconTexture = GetSmallIcon(modConfig.Mod);
+		configNamePanel.RemoveChild(smallModIcon);
+		if (smallModIcon is not null) {
+			float iconOffset = iconTexture.Width();
+			float iconPadding = 2;
+
+			smallModIcon.MarginTop = -2; // 40 - 30 is 10, padding is 6, so -2 would make 5 pixels top and bottom since VAlign is 0.5
+			smallModIcon.MarginLeft = -iconOffset - iconPadding;
+			smallModIcon.SetImage(iconTexture);
+			configNamePanel.PaddingLeft += iconOffset + iconPadding;
+			configNamePanel.Append(smallModIcon);
+		}
+		else {
+			configNamePanel.PaddingLeft = 6;
+		}
 
 		// Setup the config elements
 		int top = 0;
 		int order = 0;
+		// ReSharper disable once LoopCanBePartlyConvertedToQuery
 		foreach (PropertyFieldWrapper variable in ConfigManager.GetFieldsAndProperties(pendingConfig)) {
 			if (Attribute.IsDefined(variable.MemberInfo, typeof(JsonIgnoreAttribute)) && !Attribute.IsDefined(variable.MemberInfo, typeof(ShowDespiteJsonIgnoreAttribute)))
 				continue;
