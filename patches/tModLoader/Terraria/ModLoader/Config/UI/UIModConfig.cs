@@ -159,19 +159,6 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 		button.AltHoverBorderColor = button.BorderColor;
 	}
 
-	// TODO: temporary, will be moved in future
-	private Asset<Texture2D> GetSmallIcon(Mod mod)
-	{
-		if (mod.HasAsset("icon_small")) {
-			var asset = mod.Assets.Request<Texture2D>("icon_small");
-			if (asset.Size() == new Vector2(30)) {
-				return asset;
-			}
-			mod.Logger.Info("icon_small needs to be 30x30 pixels.");
-		}
-		return null;
-	}
-
 	private void CreatePanelContents()
 	{
 		var listHeaderContainer = new UIElement {
@@ -491,13 +478,14 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 		string configNamePanelContents = modConfig.Mod.DisplayName + " - " + modConfig.DisplayName.Value;
 		configNamePanel.SetText(configNamePanelContents);
 
-		var iconTexture = GetSmallIcon(modConfig.Mod);
+		var iconTexture = modConfig.Mod.SmallModIcon;
 		configNamePanel.RemoveChild(smallModIcon);
-		if (smallModIcon is not null) {
+		if (iconTexture is not null) {
+			// Same logic used in UIConfigList
 			float iconOffset = iconTexture.Width();
 			float iconPadding = 2;
 
-			smallModIcon.MarginTop = -2; // 40 - 30 is 10, padding is 6, so -2 would make 5 pixels top and bottom since VAlign is 0.5
+			smallModIcon.MarginTop = -2;
 			smallModIcon.MarginLeft = -iconOffset - iconPadding;
 			smallModIcon.SetImage(iconTexture);
 			configNamePanel.PaddingLeft += iconOffset + iconPadding;
