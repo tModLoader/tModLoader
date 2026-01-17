@@ -215,6 +215,17 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
+	/// Allows you to modify the player's health loss caused by a negative <see cref="Player.lifeRegenCount"/>, the damage and damage number displayed for each condition, and also modify the cause of death caused by a certain debuff.
+	/// <para/> The damage parameter is the number that appears above the Player's head if it takes damage over time.
+	/// <para/> Called on local, server, and remote clients.
+	/// </summary>
+	/// <param name="damage"></param>
+	/// <param name="damageSource">The source of the damage (debuff)</param>
+	public virtual void BadlLifeRegenHurt(ref int damage, ref PlayerDeathReason damageSource)
+	{
+	}
+
+	/// <summary>
 	/// Allows you to modify the player's stats while the game is paused due to the autopause setting being on.
 	/// This is called in single player only, some time before the player's tick update would happen when the game isn't paused.
 	/// </summary>
