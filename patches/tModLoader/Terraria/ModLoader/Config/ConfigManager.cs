@@ -425,10 +425,15 @@ public static class ConfigManager
 	/// </summary>
 	public static ModConfig GeneratePopulatedClone(ModConfig original)
 	{
-		string json = JsonConvert.SerializeObject(original, ConfigManager.serializerSettings);
 		ModConfig properClone = original.Clone();
-		JsonConvert.PopulateObject(json, properClone, ConfigManager.serializerSettings);
+		RevertConfigChanges(original, properClone);
 		return properClone;
+	}
+
+	internal static void RevertConfigChanges(ModConfig originalConfig, ModConfig pendingConfig)
+	{
+		string json = JsonConvert.SerializeObject(originalConfig, serializerSettings);
+		JsonConvert.PopulateObject(json, pendingConfig, serializerSettings);
 	}
 
 	public static object? AlternateCreateInstance(Type type)
