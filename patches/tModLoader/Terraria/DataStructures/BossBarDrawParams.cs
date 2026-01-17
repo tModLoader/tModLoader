@@ -1,3 +1,4 @@
+using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -90,11 +91,46 @@ public struct BossBarDrawParams
 		TextOffset = textOffset;
 	}
 
+	[Obsolete("BossBarDrawParams has added BarColor to modify the color of the bar")]
+	public BossBarDrawParams(Texture2D barTexture, Vector2 barCenter, Texture2D iconTexture, Rectangle iconFrame, Color iconColor, float life, float lifeMax, float shield = 0f, float shieldMax = 0f, float iconScale = 1f, bool showText = true, Vector2 textOffset = default)
+	{
+		BarTexture = barTexture;
+		BarCenter = barCenter;
+		BarColor = Color.White;
+		IconTexture = iconTexture;
+		IconFrame = iconFrame;
+		IconColor = iconColor;
+		Life = life;
+		LifeMax = lifeMax;
+		Shield = shield;
+		ShieldMax = shieldMax;
+		IconScale = iconScale;
+		ShowText = showText;
+		TextOffset = textOffset;
+	}
+
 	public void Deconstruct(out Texture2D barTexture, out Vector2 barCenter, out Color barColor, out Texture2D iconTexture, out Rectangle iconFrame, out Color iconColor, out float life, out float lifeMax, out float shield, out float shieldMax, out float iconScale, out bool showText, out Vector2 textOffset)
 	{
 		barTexture = BarTexture;
 		barCenter = BarCenter;
 		barColor = BarColor;
+		iconTexture = IconTexture;
+		iconFrame = IconFrame;
+		iconColor = IconColor;
+		life = Life;
+		lifeMax = LifeMax;
+		shield = Shield;
+		shieldMax = ShieldMax;
+		iconScale = IconScale;
+		showText = ShowText;
+		textOffset = TextOffset;
+	}
+
+	[Obsolete("BossBarDrawParams has added BarColor to modify the color of the bar")]
+	public void Deconstruct(out Texture2D barTexture, out Vector2 barCenter, out Texture2D iconTexture, out Rectangle iconFrame, out Color iconColor, out float life, out float lifeMax, out float shield, out float shieldMax, out float iconScale, out bool showText, out Vector2 textOffset)
+	{
+		barTexture = BarTexture;
+		barCenter = BarCenter;
 		iconTexture = IconTexture;
 		iconFrame = IconFrame;
 		iconColor = IconColor;

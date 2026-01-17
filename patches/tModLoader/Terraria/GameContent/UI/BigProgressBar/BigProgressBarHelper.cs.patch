@@ -38,10 +38,10 @@
 +			BossBarLoader.drawingInfo = null;
 +
 +			Vector2 barCenter = Main.ScreenSize.ToVector2() * new Vector2(0.5f, 1f) + new Vector2(0f, -50f);
-+			Color iconColor = Color.White;
++			Color iconColor = Color.White, BossBarColor = Color.White;
 +			float iconScale = 1f;
 +
-+			BossBarDrawParams drawParams = new BossBarDrawParams(value, barCenter, barIconTexture, barIconFrame, iconColor, lifeAmount, lifeMax, shieldCurrent, shieldMax, iconScale, info.showText, Vector2.Zero);
++			BossBarDrawParams drawParams = new BossBarDrawParams(value, barCenter, barIconTexture, barIconFrame, iconColor, lifeAmount, lifeMax, BossBarColor, shieldCurrent, shieldMax, iconScale, info.showText, Vector2.Zero);
 +
 +			bool skipped = !BossBarLoader.PreDraw(spriteBatch, info, ref drawParams);
 +			if (!skipped)
