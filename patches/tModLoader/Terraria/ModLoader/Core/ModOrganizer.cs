@@ -409,28 +409,67 @@ internal static class ModOrganizer
 	{
 		if (string.IsNullOrWhiteSpace(commandLineModPack))
 			return;
-
-		if (!commandLineModPack.EndsWith(".json"))
-			commandLineModPack += ".json";
-
-		string filePath = Path.Combine(UIModPacks.ModPacksDirectory, commandLineModPack);
-
+	
+		string modPackPath = commandLineModPack;
+		string modPacksDir = UIModPacks.ModPacksDirectory;
+	
 		try {
-			Directory.CreateDirectory(UIModPacks.ModPacksDirectory);
-			Logging.ServerConsoleLine(Language.GetTextValue("tModLoader.ModPackLoadingSpecifiedModPack", commandLineModPack));
-			var modSet = JsonConvert.DeserializeObject<HashSet<string>>(File.ReadAllText(filePath));
+			Directory.CreateDirectory(modPacksDir);
+	
+			// 1) Absolute or relative explicit file path
+			if (!Path.IsPathRooted(modPackPath))
+				modPackPath = Path.Combine(modPacksDir, modPackPath);
+	
+			string resolvedPath = null;
+	
+			// 2) Explicit JSON file (legacy or enabled.json)
+			if (File.Exists(modPackPath)) {
+				resolvedPath = modPackPath;
+			}
+			// 3) Folder-based modpack: <PackName>/Mods/enabled.json
+			else if (Directory.Exists(modPackPath)) {
+				string enabledJson = Path.Combine(modPackPath, "Mods", "enabled.json");
+				if (File.Exists(enabledJson))
+					resolvedPath = enabledJson;
+			}
+			// 4) Legacy implicit <PackName>.json
+			else if (!modPackPath.EndsWith(".json")) {
+				string legacyJson = modPackPath + ".json";
+				if (File.Exists(legacyJson))
+					resolvedPath = legacyJson;
+			}
+	
+			if (resolvedPath == null)
+				throw new FileNotFoundException("Modpack not found", modPackPath);
+	
+			Logging.ServerConsoleLine(
+				Language.GetTextValue(
+					"tModLoader.ModPackLoadingSpecifiedModPack",
+					Path.GetFileName(commandLineModPack)
+				)
+			);
+	
+			var modSet = JsonConvert.DeserializeObject<HashSet<string>>(
+				File.ReadAllText(resolvedPath)
+			);
+	
 			foreach (var mod in mods) {
 				mod.Enabled = modSet.Contains(mod.Name);
 			}
 		}
 		catch (Exception e) {
-			var msg = (e is FileNotFoundException) ? Language.GetTextValue("tModLoader.ModPackDoesNotExist", filePath) : Language.GetTextValue("tModLoader.ModPackMalformed", commandLineModPack);
+			var msg =
+				e is FileNotFoundException
+					? Language.GetTextValue("tModLoader.ModPackDoesNotExist", commandLineModPack)
+					: Language.GetTextValue("tModLoader.ModPackMalformed", commandLineModPack);
+	
 			throw new Exception(msg, e);
 		}
 		finally {
 			commandLineModPack = null;
 		}
 	}
+
 
 	//TODO: This duplicates some of the logic in UIModItem
 	internal static void EnableWithDeps(LocalMod mod, IEnumerable<LocalMod> availableMods)
