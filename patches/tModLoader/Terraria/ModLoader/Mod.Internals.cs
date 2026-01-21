@@ -58,7 +58,7 @@ partial class Mod
 				ModIcon = iconAsset;
 			}
 			else {
-				Logger.Info("icon.png needs to be 80x80 pixels.");
+				Logger.Error("icon.png needs to be 80x80 pixels.");
 			}
 		}
 
@@ -67,7 +67,7 @@ partial class Mod
 				SmallModIcon = smallIconAsset;
 			}
 			else {
-				Logger.Info("icon_small.png needs to be 30x30 pixels.");
+				Logger.Error("icon_small.png needs to be 30x30 pixels.");
 			}
 		}
 
