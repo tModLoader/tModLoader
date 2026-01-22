@@ -91,7 +91,7 @@ public struct BossBarDrawParams
 		TextOffset = textOffset;
 	}
 
-	[Obsolete("BossBarDrawParams has added BarColor to modify the color of the bar")]
+	[Obsolete("Use the updated method signature")]
 	public BossBarDrawParams(Texture2D barTexture, Vector2 barCenter, Texture2D iconTexture, Rectangle iconFrame, Color iconColor, float life, float lifeMax, float shield = 0f, float shieldMax = 0f, float iconScale = 1f, bool showText = true, Vector2 textOffset = default)
 	{
 		BarTexture = barTexture;
@@ -126,7 +126,7 @@ public struct BossBarDrawParams
 		textOffset = TextOffset;
 	}
 
-	[Obsolete("BossBarDrawParams has added BarColor to modify the color of the bar")]
+	[Obsolete("Use the updated method signature")]
 	public void Deconstruct(out Texture2D barTexture, out Vector2 barCenter, out Texture2D iconTexture, out Rectangle iconFrame, out Color iconColor, out float life, out float lifeMax, out float shield, out float shieldMax, out float iconScale, out bool showText, out Vector2 textOffset)
 	{
 		barTexture = BarTexture;
