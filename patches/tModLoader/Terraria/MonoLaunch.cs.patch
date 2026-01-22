@@ -26,7 +26,7 @@
 +
  #if NETCORE
 +		NativeLibraries.SetNativeLibraryPath(NativesDir);
- 		AssemblyLoadContext.Default.ResolvingUnmanagedDll += ResolveNativeLibrary;
+ 		AssemblyLoadContext.Default.ResolvingUnmanagedDll += static (a, n) => ResolveNativeLibrary(a, n);
  #else
  		AppDomain.CurrentDomain.AssemblyResolve += delegate (object sender, ResolveEventArgs sargs) {
 @@ -34,6 +_,35 @@
@@ -66,7 +66,7 @@
  	}
  
 @@ -53,7 +_,7 @@
- 	private static IntPtr ResolveNativeLibrary(Assembly assembly, string name)
+ 	private static IntPtr ResolveNativeLibrary(Assembly assembly, string name, string indent = null)
  	{
  		const string tab = "  ";
 -		static void LogLine(string message) => Console.WriteLine(message);

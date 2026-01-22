@@ -16,12 +16,12 @@
  	private static void Main(string[] args)
  	{
 +#if NETCORE
-+		AssemblyLoadContext.Default.ResolvingUnmanagedDll += ResolveNativeLibrary;
++		AssemblyLoadContext.Default.ResolvingUnmanagedDll += static (a, n) => ResolveNativeLibrary(a, n);
 +#else
  		AppDomain.CurrentDomain.AssemblyResolve += delegate (object sender, ResolveEventArgs sargs) {
  			string resourceName = new AssemblyName(sargs.Name).Name + ".dll";
  			string text = Array.Find(typeof(Program).Assembly.GetManifestResourceNames(), (string element) => element.EndsWith(resourceName));
-@@ -25,9 +_,73 @@
+@@ -25,9 +_,79 @@
  				return Assembly.Load(array);
  			}
  		};
@@ -44,7 +44,7 @@
 +
 +	// Note: AssemblyLoadContext.Default.ResolvingUnmanagedDll is only called if the dll is not found on PATH
 +	// In a production environment, you need to prepend to PATH prioritise your shipped libraries, making this logging mostly useless.
-+	private static IntPtr ResolveNativeLibrary(Assembly assembly, string name)
++	private static IntPtr ResolveNativeLibrary(Assembly assembly, string name, string indent = null)
 +	{
 +		const string tab = "  ";
 +		static void LogLine(string message) => Console.WriteLine(message);
@@ -54,8 +54,8 @@
 +			if (assemblies.TryGetValue(name, out var handle))
 +				return handle;
 +
-+			LogLine($"Native Resolve: '{name}' requested by '{assembly.FullName}'");
-+			string indent = tab;
++			LogLine($"{indent}Native Resolve: '{name}' requested by '{assembly.FullName}'");
++			indent = $"{tab}{indent}";
 +
 +			if (name.StartsWith("/tmp/"))
 +				return IntPtr.Zero;
@@ -79,6 +79,12 @@
 +			}
 +
 +			LogLine($"{indent}attempting load {path}");
++
++			// Preemptively load dependencies using our logic rather than the system's.
++			if (name is "FNA3D" or "FAudio" or "nfd") {
++				ResolveNativeLibrary(assembly, "SDL2", indent: indent);
++			}
++
 +			try {
 +				handle = NativeLibrary.Load(path);
 +			}
