@@ -65,50 +65,12 @@
  		Program.LaunchGame(args, monoArgs: true);
  	}
  
-@@ -57,29 +_,39 @@
- 			if (assemblies.TryGetValue(name, out var handle))
- 				return handle;
+@@ -53,7 +_,7 @@
+ 	private static IntPtr ResolveNativeLibrary(Assembly assembly, string name)
+ 	{
+ 		const string tab = "  ";
+-		static void LogLine(string message) => Console.WriteLine(message);
++		static void LogLine(string message) => Logging.tML.Debug(message);
  
--			Console.WriteLine($"Native Resolve: {assembly.FullName} -> {name}");
-+			Logging.tML.Debug($"Native Resolve: {assembly.FullName} -> {name}");
-+			if (name.StartsWith("/tmp/"))
-+				return IntPtr.Zero;
-+
- 			if (name.StartsWith("steam_api")) {
--				Console.WriteLine("\tdelegating to Steamworks.NET.AnyCPU resolver");
-+				Logging.tML.Debug("\tdelegating to Steamworks.NET.AnyCPU resolver");
- 				return assemblies[name] = IntPtr.Zero;
- 			}
- 
-+			string[] files;
-+			try {
--			var files = Directory.GetFiles(NativesDir, $"*{name}*", SearchOption.AllDirectories);
-+				files = Directory.GetFiles(NativesDir, $"*{name}*", SearchOption.AllDirectories);
-+			}
-+			catch {
-+				files = [];
-+			}
-+
- 			if (files.FirstOrDefault() is not string path) {
--				Console.WriteLine("\tnot found");
-+				Logging.tML.Debug("\tnot found");
- 				return IntPtr.Zero;
- 			}
- 
- 			// This method shouldn't be throwing exceptions, in case we're in a TryLoad scenario, but we still want exception info
--			Console.WriteLine($"\tattempting load {path}");
-+			Logging.tML.Debug($"\tattempting load {path}");
- 			try {
- 				handle = NativeLibrary.Load(path);
- 			}
- 			catch (Exception e) {
--				Console.WriteLine($"\t\tFailed to load {name}.\n{e}");
-+				Logging.tML.Debug($"\t\tFailed to load {name}.\n{e}");
- 				return IntPtr.Zero;
- 			}
- 
--			Console.WriteLine("\tsuccess");
-+			Logging.tML.Debug("\tsuccess");
- 			return assemblies[name] = handle;
- 		}
- 	}
+ 		// This method shouldn't be throwing exceptions, in case we're in a TryLoad scenario, but we still want exception info.
+ 		lock (resolverLock) {

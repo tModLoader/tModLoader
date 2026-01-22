@@ -21,7 +21,7 @@
  		AppDomain.CurrentDomain.AssemblyResolve += delegate (object sender, ResolveEventArgs sargs) {
  			string resourceName = new AssemblyName(sargs.Name).Name + ".dll";
  			string text = Array.Find(typeof(Program).Assembly.GetManifestResourceNames(), (string element) => element.EndsWith(resourceName));
-@@ -25,9 +_,59 @@
+@@ -25,9 +_,73 @@
  				return Assembly.Load(array);
  			}
  		};
@@ -46,34 +46,48 @@
 +	// In a production environment, you need to prepend to PATH prioritise your shipped libraries, making this logging mostly useless.
 +	private static IntPtr ResolveNativeLibrary(Assembly assembly, string name)
 +	{
-+		// This method shouldn't be throwing exceptions, in case we're in a TryLoad scenario.
++		const string tab = "  ";
++		static void LogLine(string message) => Console.WriteLine(message);
++
++		// This method shouldn't be throwing exceptions, in case we're in a TryLoad scenario, but we still want exception info.
 +		lock (resolverLock) {
 +			if (assemblies.TryGetValue(name, out var handle))
 +				return handle;
 +
-+			Console.WriteLine($"Native Resolve: {assembly.FullName} -> {name}");
++			LogLine($"Native Resolve: '{name}' requested by '{assembly.FullName}'");
++			string indent = tab;
++
++			if (name.StartsWith("/tmp/"))
++				return IntPtr.Zero;
++
 +			if (name.StartsWith("steam_api")) {
-+				Console.WriteLine("\tdelegating to Steamworks.NET.AnyCPU resolver");
++				LogLine($"{indent}delegating to Steamworks.NET.AnyCPU resolver");
 +				return assemblies[name] = IntPtr.Zero;
 +			}
 +
-+			var files = Directory.GetFiles(NativesDir, $"*{name}*", SearchOption.AllDirectories);
++			string[] files;
++			try {
++				files = Directory.GetFiles(NativesDir, $"*{name}*", SearchOption.AllDirectories);
++			}
++			catch {
++				files = [];
++			}
++
 +			if (files.FirstOrDefault() is not string path) {
-+				Console.WriteLine("\tnot found");
++				LogLine($"{indent}not found");
 +				return IntPtr.Zero;
 +			}
 +
-+			// This method shouldn't be throwing exceptions, in case we're in a TryLoad scenario, but we still want exception info
-+			Console.WriteLine($"\tattempting load {path}");
++			LogLine($"{indent}attempting load {path}");
 +			try {
 +				handle = NativeLibrary.Load(path);
 +			}
 +			catch (Exception e) {
-+				Console.WriteLine($"\t\tFailed to load {name}.\n{e}");
++				LogLine($"{indent}{tab}Failed to load {name}.\n{e}");
 +				return IntPtr.Zero;
 +			}
 +
-+			Console.WriteLine("\tsuccess");
++			LogLine($"{indent}success");
 +			return assemblies[name] = handle;
 +		}
 +	}
