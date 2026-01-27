@@ -26,11 +26,13 @@ namespace Terraria.ModLoader.Setup.Core
 
 			private readonly PEFile baseModule;
 			private readonly UniversalAssemblyResolver _resolver;
+			private readonly IReadOnlyList<string> extraSearchDirs;
 			private readonly Dictionary<string, PEFile> cache = new();
 
 			public TerrariaAssemblyResolver(PEFile baseModule, string targetFramework, IEnumerable<string> extraSearchDirs)
 			{
 				this.baseModule = baseModule;
+				this.extraSearchDirs = extraSearchDirs.ToList();
 				// pass mainAssemblyFileName: null so we can control the order of the search paths. We need to search the framework directory before the Terraria.exe folder on Mono platforms 
 				_resolver = new UniversalAssemblyResolver(mainAssemblyFileName: null, throwOnError: true, targetFramework, streamOptions: PEStreamOptions.PrefetchMetadata);
 
@@ -46,6 +48,17 @@ namespace Terraria.ModLoader.Setup.Core
 				{
 					if (cache.TryGetValue(name.FullName, out var module))
 						return module;
+
+					if (name.Name == "mscorlib") {
+						foreach (string dir in extraSearchDirs) {
+							string path = Path.Combine(dir, "mscorlib.dll");
+							if (File.Exists(path)) {
+								module = new PEFile(path);
+								cache[name.FullName] = module;
+								return module;
+							}
+						}
+					}
 
 					//look in the base module's embedded resources
 					var resName = name.Name + ".dll";

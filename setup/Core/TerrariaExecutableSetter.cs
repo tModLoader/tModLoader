@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices;
 using Terraria.ModLoader.Setup.Core.Abstractions;
 using Terraria.ModLoader.Setup.Core.Utilities;
 
@@ -35,7 +36,7 @@ public class TerrariaExecutableSetter
 			return;
 		}
 
-		string terrariaExecutablePath = Path.Combine(terrariaDirectory, "Terraria.exe");
+		string terrariaExecutablePath = GetTerrariaExecutablePath(terrariaDirectory);
 
 		if (File.Exists(terrariaExecutablePath)) {
 			SetTerrariaDirectory(terrariaDirectory, tmlDevSteamDirectoryOverride);
@@ -43,7 +44,10 @@ public class TerrariaExecutableSetter
 		}
 
 		if (!string.IsNullOrWhiteSpace(terrariaSteamDirectoryOverride)) {
-			throw new InvalidOperationException($"Directory '{terrariaSteamDirectoryOverride}' does not contain 'Terraria.exe'.");
+			string expectedName = RuntimeInformation.IsOSPlatform(OSPlatform.OSX)
+				? "Terraria.app/Contents/MacOS/Terraria.bin.osx"
+				: "Terraria.exe";
+			throw new InvalidOperationException($"Directory '{terrariaSteamDirectoryOverride}' does not contain '{expectedName}'.");
 		}
 
 		await FindTerrariaDirectory(tmlDevSteamDirectoryOverride, cancellationToken);
@@ -66,14 +70,33 @@ public class TerrariaExecutableSetter
 			string executablePath = await terrariaExecutableSelectionPrompt.Prompt(cancellationToken);
 
 			string errorText;
-			if (Path.GetFileName(executablePath) != "Terraria.exe") {
-				errorText = "File must be named Terraria.exe";
-			}
-			else if (!File.Exists(Path.Combine(Path.GetDirectoryName(executablePath)!, "TerrariaServer.exe"))) {
-				errorText = "TerrariaServer.exe does not exist in the same directory";
+			if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX)) {
+				if (Path.GetFileName(executablePath) != "Terraria.bin.osx") {
+					errorText = "File must be named Terraria.bin.osx";
+				}
+				else {
+					string? macOsDir = Path.GetDirectoryName(executablePath);
+					string? contentsDir = macOsDir != null ? Directory.GetParent(macOsDir)?.FullName : null;
+					string? appDir = contentsDir != null ? Directory.GetParent(contentsDir)?.FullName : null;
+					string? rootDir = appDir != null ? Directory.GetParent(appDir)?.FullName : null;
+
+					if (rootDir != null) {
+						return rootDir;
+					}
+
+					errorText = "Unable to resolve Terraria install directory from selected file";
+				}
 			}
 			else {
-				return Path.GetDirectoryName(executablePath)!;
+				if (Path.GetFileName(executablePath) != "Terraria.exe") {
+					errorText = "File must be named Terraria.exe";
+				}
+				else if (!File.Exists(Path.Combine(Path.GetDirectoryName(executablePath)!, "TerrariaServer.exe"))) {
+					errorText = "TerrariaServer.exe does not exist in the same directory";
+				}
+				else {
+					return Path.GetDirectoryName(executablePath)!;
+				}
 			}
 
 			if (!userPrompt.Prompt(
@@ -105,5 +128,12 @@ public class TerrariaExecutableSetter
 	private void SetTerrariaDirectory(string terrariaSteamDirectory, string? tmlDevSteamDirectoryOverride)
 	{
 		workspaceInfo.UpdatePaths(terrariaSteamDirectory, tmlDevSteamDirectoryOverride);
+	}
+
+	private static string GetTerrariaExecutablePath(string terrariaDirectory)
+	{
+		return RuntimeInformation.IsOSPlatform(OSPlatform.OSX)
+			? Path.Combine(terrariaDirectory, "Terraria.app", "Contents", "MacOS", "Terraria.bin.osx")
+			: Path.Combine(terrariaDirectory, "Terraria.exe");
 	}
 }

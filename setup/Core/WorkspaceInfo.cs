@@ -1,4 +1,5 @@
 using System.Xml.Linq;
+using System.Runtime.InteropServices;
 using Terraria.ModLoader.Setup.Core.Utilities;
 
 namespace Terraria.ModLoader.Setup.Core;
@@ -67,7 +68,10 @@ public sealed class WorkspaceInfo
 		}
 	}
 
-	public string TerrariaPath => Path.Combine(TerrariaSteamDirectory, "Terraria.exe");
+	public string TerrariaPath =>
+		RuntimeInformation.IsOSPlatform(OSPlatform.OSX)
+			? Path.Combine(TerrariaSteamDirectory, "Terraria.app", "Contents", "MacOS", "Terraria.bin.osx")
+			: Path.Combine(TerrariaSteamDirectory, "Terraria.exe");
 
 	public string TerrariaServerPath => Path.Combine(TerrariaSteamDirectory, "TerrariaServer.exe");
 

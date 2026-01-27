@@ -34,11 +34,27 @@ internal sealed class TerrariaDecompileExecutableProvider
 		async Task DecryptTerrariaExe(string destinationPath)
 		{
 			if (key == null) {
-				CheckVersion(workspaceInfo.TerrariaPath, ClientVersion);
+				var proofPaths = GetProofOfOwnershipPaths();
+				string? proofPathUsed = null;
+				foreach (string proofPath in proofPaths) {
+					if (!File.Exists(proofPath)) {
+						continue;
+					}
 
-				if (!Secrets.TryDeriveKey(workspaceInfo.TerrariaPath, out key)) {
+					if (Path.GetExtension(proofPath).Equals(".exe", StringComparison.OrdinalIgnoreCase)) {
+						CheckVersion(proofPath, ClientVersion);
+					}
+
+					if (Secrets.TryDeriveKey(proofPath, out key)) {
+						proofPathUsed = proofPath;
+						break;
+					}
+				}
+
+				if (key == null) {
+					string attemptedPaths = string.Join(", ", proofPaths.Select(p => $"'{p}'"));
 					throw new InvalidOperationException(
-						$"Failed to derive key from '{workspaceInfo.TerrariaPath}'. Cannot decrypt Terraria Windows executable.");
+						$"Failed to derive key from {attemptedPaths}. Cannot decrypt Terraria Windows executable.");
 				}
 			}
 
@@ -102,13 +118,33 @@ internal sealed class TerrariaDecompileExecutableProvider
 		}
 	}
 
+	private IReadOnlyList<string> GetProofOfOwnershipPaths()
+	{
+		var paths = new List<string>();
+
+		if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX)) {
+			paths.Add(Path.Combine(workspaceInfo.TerrariaSteamDirectory, "Terraria.app", "Contents", "Resources", "Terraria.exe"));
+		}
+
+		paths.Add(workspaceInfo.TerrariaPath);
+
+		return paths;
+	}
+
 	public async Task<IReadOnlyCollection<string>> RetrieveExtraReferences(ITaskProgress taskProgress, CancellationToken cancellationToken = default)
 	{
 		var paths = new List<string>();
-		if (File.Exists(Path.Combine(workspaceInfo.TerrariaSteamDirectory, "mscorlib.dll")))
+		string? resourcesDirectory = GetTerrariaResourcesDirectory();
+		bool hasMscorlib = File.Exists(Path.Combine(workspaceInfo.TerrariaSteamDirectory, "mscorlib.dll"))
+			|| (resourcesDirectory != null && File.Exists(Path.Combine(resourcesDirectory, "mscorlib.dll")));
+		if (hasMscorlib)
 			paths.Add(await RetrieveFrameworkRefs(taskProgress, cancellationToken));
 
+		if (resourcesDirectory != null)
+			paths.Add(resourcesDirectory);
+
 		if (File.Exists(Path.Combine(workspaceInfo.TerrariaSteamDirectory, "FNA.dll"))
+			|| (resourcesDirectory != null && File.Exists(Path.Combine(resourcesDirectory, "FNA.dll")))
 			|| UniversalAssemblyResolver.GetAssemblyInGac(AssemblyNameReference.Parse("Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553")) is null)
 			paths.Add(Path.Combine("setup", "xna_redist"));
 
@@ -137,5 +173,16 @@ internal sealed class TerrariaDecompileExecutableProvider
 		}
 
 		return path;
+	}
+
+	private string? GetTerrariaResourcesDirectory()
+	{
+		if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX)) {
+			string resourcesPath = Path.Combine(workspaceInfo.TerrariaSteamDirectory, "Terraria.app", "Contents", "Resources");
+			if (Directory.Exists(resourcesPath))
+				return resourcesPath;
+		}
+
+		return null;
 	}
 }
