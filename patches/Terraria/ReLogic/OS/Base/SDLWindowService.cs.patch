@@ -1,20 +1,15 @@
 --- src/decompiled/ReLogic/OS/Base/SDLWindowService.cs
 +++ src/Terraria/ReLogic/OS/Base/SDLWindowService.cs
-@@ -1,8 +_,13 @@
+@@ -1,5 +_,8 @@
  using System;
  using Microsoft.Xna.Framework;
 +#if FNA
-+using SDL2;
++using SDL3;
 +#endif
  
  namespace ReLogic.OS.Base;
  
-+// TODO: Needs additional work to support SDL2/SDL3.
-+
- public abstract class SDLWindowService : IWindowService
- {
- 	public float GetScaling() => 1f;
-@@ -26,19 +_,48 @@
+@@ -26,19 +_,40 @@
  
  	public void Activate(GameWindow window)
  	{
@@ -46,18 +41,10 @@
  	public Rectangle GetBounds(GameWindow window)
  	{
 +#if FNA
-+		// SDL3:
-+		/*
 +		if ((bool)SDL.SDL_GetWindowPosition(window.Handle, out var x, out var y) && (bool)SDL.SDL_GetWindowSize(window.Handle, out var w, out var h))
 +			return new Rectangle(x, y, w, h);
 +
 +		return default(Rectangle);
-+		*/
-+
-+		// SDL2:
-+		SDL.SDL_GetWindowPosition(window.Handle, out var x, out var y);
-+		SDL.SDL_GetWindowSize(window.Handle, out var w, out var h);
-+		return new Rectangle(x, y, w, h);
 +#else
  		throw new PlatformNotSupportedException();
 +#endif

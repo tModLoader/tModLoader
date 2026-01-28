@@ -1,11 +1,12 @@
 --- src/decompiled/Terraria/Utilities/PlatformUtilities.cs
 +++ src/Terraria/Terraria/Utilities/PlatformUtilities.cs
-@@ -1,12 +_,52 @@
+@@ -1,12 +_,66 @@
  using System;
  using System.IO;
 +#if FNA
 +using System.Runtime.InteropServices;
-+using SDL2;
++using Microsoft.Xna.Framework.Graphics;
++using SDL3;
 +#endif
  
  namespace Terraria.Utilities;
@@ -13,6 +14,18 @@
  public static class PlatformUtilities
  {
 +#if FNA
++	// TODO: Update once 1.4.5.1 comes out
++	public unsafe static void SavePng(Stream stream, int width, int height, int imgWidth, int imgHeight, byte[] data)
++	{
++		if (width * height * 4 > data.Length)
++			throw new IndexOutOfRangeException();
++
++		fixed (byte* ptr = data) {
++			FNA3D.WritePNGStream(stream, width, height, imgWidth, imgHeight, (IntPtr)ptr);
++		}
++	}
++
++	/*
 +	private unsafe static IntPtr INTERNAL_getScaledSurface(byte[] data, int srcW, int srcH, int dstW, int dstH)
 +	{
 +		IntPtr intPtr = SDL.SDL_CreateRGBSurface(0u, srcW, srcH, 32, 255u, 65280u, 16711680u, 4278190080u);
@@ -46,6 +59,7 @@
 +		_ = array[36];
 +		stream.Write(array, 0, array.Length);
 +	}
++	*/
 +#else
  	public static void SavePng(Stream stream, int width, int height, int imgWidth, int imgHeight, byte[] data)
  	{

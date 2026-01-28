@@ -42,13 +42,3 @@
  			base.Content.RootDirectory = "Content";
  		}
  	}
-@@ -41061,6 +_,9 @@
- 
- 		Assets.TransferCompletedAssets();
- 		Exit();
-+#if MAC && !SERVER
-+		SDL2.SDL.SDL_DestroyWindow(base.Window.Handle);
-+#endif
- 	}
- 
- 	private void Main_Exiting(object sender, EventArgs e)
