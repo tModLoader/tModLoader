@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/Terraria.csproj
 +++ src/TerrariaNetCore/Terraria/Terraria.csproj
-@@ -1,90 +_,122 @@
+@@ -1,91 +_,122 @@
  <Project Sdk="Microsoft.NET.Sdk">
 +
  	<Import Project="../Configuration.targets" />
@@ -11,9 +11,9 @@
  	<PropertyGroup>
 -		<OutputType>WinExe</OutputType>
 +		<OutputType>Exe</OutputType>
- 		<Version>1.4.4.9</Version>
+ 		<Version>1.4.5.0</Version>
  		<Company>Re-Logic</Company>
- 		<Copyright>Copyright © 2022 Re-Logic</Copyright>
+ 		<Copyright>Copyright © 2023 Re-Logic</Copyright>
  		<RootNamespace>Terraria</RootNamespace>
 -		<OutputName>Terraria</OutputName>
 +		<AssemblyName>Terraria</AssemblyName>
@@ -57,6 +57,7 @@
  		<Reference Include="Ionic.Zip.CF" />
 -		<Reference Include="MP3Sharp" Condition="$(DefineConstants.Contains('CLIENT'))" />
 -		<Reference Include="Microsoft.Xna.Framework" Condition="$(DefineConstants.Contains('XNA'))" />
+-		<Reference Include="Microsoft.Xna.Framework.Content.Pipeline" Condition="$(DefineConstants.Contains('XNA'))" />
 -		<Reference Include="Microsoft.Xna.Framework.Game" Condition="$(DefineConstants.Contains('XNA'))" />
 -		<Reference Include="Microsoft.Xna.Framework.Graphics" Condition="$(DefineConstants.Contains('XNA'))" />
 -		<Reference Include="Microsoft.Xna.Framework.Xact" Condition="$(DefineConstants.Contains('XNA'))" />

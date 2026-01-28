@@ -1,6 +1,6 @@
 --- src/Terraria/ReLogic/ReLogic.csproj
 +++ src/TerrariaNetCore/ReLogic/ReLogic.csproj
-@@ -8,17 +_,10 @@
+@@ -8,16 +_,9 @@
  		<RootNamespace>ReLogic</RootNamespace>
  	</PropertyGroup>
  	<ItemGroup>
@@ -19,5 +19,4 @@
 -		<Reference Include="System.Drawing" />
 -		<Reference Include="System.Windows.Forms" />
  	</ItemGroup>
- 	<ItemGroup>
- 		<EmbeddedResource Include="Microsoft/**" />
+ 	<ItemGroup />

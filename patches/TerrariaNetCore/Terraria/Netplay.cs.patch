@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/Netplay.cs
 +++ src/TerrariaNetCore/Terraria/Netplay.cs
-@@ -4,9 +_,7 @@
+@@ -5,9 +_,7 @@
  using System.Net;
  using System.Net.Sockets;
  using System.Threading;
@@ -10,7 +10,7 @@
  using ReLogic.OS;
  using Terraria.Audio;
  using Terraria.Localization;
-@@ -44,10 +_,8 @@
+@@ -48,11 +_,9 @@
  	public static bool SpamCheck = false;
  	public static bool HasClients;
  	private static Thread _serverThread;
@@ -22,8 +22,9 @@
 -#endif
  	public static MessageBuffer fullBuffer = new MessageBuffer();
  	private static int _currentRequestId;
+ 	private static long swTicksLast;
  	private static UdpClient BroadcastClient = null;
-@@ -122,10 +_,12 @@
+@@ -123,10 +_,12 @@
  
  	private static void OpenPort(int port)
  	{
@@ -38,7 +39,7 @@
  			_mappings = _upnpnat.StaticPortMappingCollection;
  		}
  
-@@ -140,12 +_,13 @@
+@@ -141,12 +_,13 @@
  
  		if (!flag)
  			_mappings.Add(port, "TCP", port, localIPAddress, bEnabled: true, "Terraria Server");
@@ -54,7 +55,7 @@
  		string localIPAddress = GetLocalIPAddress();
  		bool flag = false;
  		if (_mappings == null)
-@@ -158,7 +_,6 @@
+@@ -159,7 +_,6 @@
  
  		if (!flag)
  			_mappings.Remove(port, "TCP");
@@ -62,7 +63,7 @@
  	}
  
  	private static void ServerFullWriteCallBack(object state)
-@@ -703,6 +_,8 @@
+@@ -716,6 +_,8 @@
  	public static int GetSectionX(int x) => x / 200;
  	public static int GetSectionY(int y) => y / 150;
  
@@ -71,7 +72,7 @@
  	private static void BroadcastThread()
  	{
  		BroadcastClient = new UdpClient();
-@@ -733,7 +_,11 @@
+@@ -746,7 +_,11 @@
  			array = memoryStream.ToArray();
  		}
  
@@ -83,7 +84,7 @@
  			int num2 = 0;
  			for (int i = 0; i < 255; i++) {
  				if (Main.player[i].active)
-@@ -756,6 +_,7 @@
+@@ -769,6 +_,7 @@
  		if (broadcastThread != null)
  			StopBroadCasting();
  
@@ -91,7 +92,7 @@
  		broadcastThread = new Thread(BroadcastThread);
  		broadcastThread.Start();
  	}
-@@ -763,7 +_,16 @@
+@@ -776,7 +_,16 @@
  	public static void StopBroadCasting()
  	{
  		if (broadcastThread != null) {

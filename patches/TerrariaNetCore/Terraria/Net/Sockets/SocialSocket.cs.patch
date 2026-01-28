@@ -18,7 +18,7 @@
  	}
  
  	private void ReadCallback(byte[] data, int offset, int size, SocketReceiveCallback callback, object state)
-@@ -52,7 +_,11 @@
+@@ -52,6 +_,10 @@
  
  	void ISocket.AsyncReceive(byte[] data, int offset, int size, SocketReceiveCallback callback, object state)
  	{
@@ -29,4 +29,3 @@
 +#endif
  	}
  
- 	void ISocket.SendQueuedPackets()

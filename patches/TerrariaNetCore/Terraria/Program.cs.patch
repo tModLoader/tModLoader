@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/Program.cs
 +++ src/TerrariaNetCore/Terraria/Program.cs
-@@ -160,7 +_,15 @@
+@@ -161,7 +_,15 @@
  		SavePath = (LaunchParameters.ContainsKey("-savedirectory") ? LaunchParameters["-savedirectory"] : Platform.Get<IPathService>().GetStoragePath("Terraria"));
  #if SERVER
  		Main.dedServ = true;
@@ -16,7 +16,7 @@
  		ThreadPool.SetMinThreads(8, 8);
  		InitializeConsoleOutput();
  		SetupLogging();
-@@ -185,8 +_,8 @@
+@@ -196,8 +_,8 @@
  			Main.OnEnginePreload += StartForceLoad;
  			if (Main.dedServ)
  				main.DedServ();
