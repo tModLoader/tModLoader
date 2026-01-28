@@ -1,6 +1,15 @@
 --- src/decompiled/Terraria/Program.cs
 +++ src/Terraria/Terraria/Program.cs
-@@ -17,10 +_,15 @@
+@@ -12,15 +_,24 @@
+ using Terraria.Localization;
+ using Terraria.Social;
+ using Terraria.Utilities;
++#if FNA
++using Microsoft.Xna.Framework.Graphics;
++using SDL3;
++#endif
+ 
+ namespace Terraria;
  
  public static class Program
  {
@@ -38,3 +47,18 @@
  		ThreadPool.SetMinThreads(8, 8);
  		InitializeConsoleOutput();
  		SetupLogging();
+@@ -196,6 +_,14 @@
+ 
+ 	private static void TrySettingDefaultFNADriver(string[] args)
+ 	{
++#if FNA
++		Console.WriteLine(("SDL v" + SDL.SDL_GetVersion() + "." + SDL.SDL_GetRevision()) ?? "");
++		uint num = FNA3D.FNA3D_LinkedVersion();
++		Console.WriteLine(("FNA3D v" + num / 10000 + "." + num / 100 % 100 + "." + num % 100) ?? "");
++		uint num2 = FAudio.FAudioLinkedVersion();
++		Console.WriteLine(("FAudio v" + num2 / 10000 + "." + num2 / 100 % 100 + "." + num2 % 100) ?? "");
++#endif
++
+ 		bool flag = false;
+ 		for (int i = 0; i < args.Length; i++) {
+ 			if (args[i].Contains("gldevice")) {
