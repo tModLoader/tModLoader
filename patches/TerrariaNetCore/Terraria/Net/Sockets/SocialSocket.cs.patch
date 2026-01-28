@@ -18,7 +18,7 @@
  	}
  
  	private void ReadCallback(byte[] data, int offset, int size, SocketReceiveCallback callback, object state)
-@@ -52,6 +_,10 @@
+@@ -52,7 +_,11 @@
  
  	void ISocket.AsyncReceive(byte[] data, int offset, int size, SocketReceiveCallback callback, object state)
  	{
@@ -29,3 +29,4 @@
 +#endif
  	}
  
+ 	bool ISocket.IsDataAvailable() => SocialAPI.Network.IsDataAvailable(_remoteAddress);

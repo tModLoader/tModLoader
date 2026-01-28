@@ -11,9 +11,9 @@
  	<PropertyGroup>
 -		<OutputType>WinExe</OutputType>
 +		<OutputType>Exe</OutputType>
- 		<Version>1.4.5.0</Version>
+ 		<Version>1.4.5.1</Version>
  		<Company>Re-Logic</Company>
- 		<Copyright>Copyright © 2023 Re-Logic</Copyright>
+ 		<Copyright>Copyright © 2026 Re-Logic</Copyright>
  		<RootNamespace>Terraria</RootNamespace>
 -		<OutputName>Terraria</OutputName>
 +		<AssemblyName>Terraria</AssemblyName>

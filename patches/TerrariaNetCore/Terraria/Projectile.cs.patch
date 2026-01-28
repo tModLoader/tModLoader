@@ -38,8 +38,8 @@
  		else if (type == 501) {
  			width = 14;
  			height = 14;
-@@ -8963,9 +_,26 @@
- 			drawLayer = 4;
+@@ -8996,9 +_,26 @@
+ 			penetrate = -1;
  		}
  		else {
 +			return false;

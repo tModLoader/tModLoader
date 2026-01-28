@@ -1,20 +1,18 @@
 --- src/Terraria/Terraria/Utilities/PlatformUtilities.cs
 +++ src/TerrariaNetCore/Terraria/Utilities/PlatformUtilities.cs
-@@ -2,7 +_,8 @@
- using System.IO;
+@@ -1,6 +_,7 @@
+ using System;
  #if FNA
- using System.Runtime.InteropServices;
- using Microsoft.Xna.Framework.Graphics;
+ using System.IO;
 +using Microsoft.Xna.Framework.Graphics;
  using SDL3;
  #endif
  
-@@ -10,7 +_,17 @@
+@@ -8,7 +_,17 @@
  
  public static class PlatformUtilities
  {
 -#if FNA
- 	// TODO: Update once 1.4.5.1 comes out
 +#if NETCORE
 +	// Use FNA3D.WritePNGStream to avoid SDL_image dependency
 +	public unsafe static void SavePng(Stream stream, int width, int height, int imgWidth, int imgHeight, byte[] data)
@@ -26,5 +24,6 @@
 +			FNA3D.WritePNGStream(stream, width, height, imgWidth, imgHeight, (IntPtr)ptr);
 +	}
 +#elif FNA
- 	public unsafe static void SavePng(Stream stream, int width, int height, int imgWidth, int imgHeight, byte[] data)
+ 	public unsafe static void SavePng(string path, int width, int height, byte[] data)
  	{
+ 		if (width * height * 4 > data.Length)

@@ -1,6 +1,6 @@
 --- src/Terraria/ReLogic/ReLogic.csproj
 +++ src/TerrariaNetCore/ReLogic/ReLogic.csproj
-@@ -8,16 +_,9 @@
+@@ -8,17 +_,10 @@
  		<RootNamespace>ReLogic</RootNamespace>
  	</PropertyGroup>
  	<ItemGroup>
@@ -20,3 +20,4 @@
 -		<Reference Include="System.Windows.Forms" />
  	</ItemGroup>
  	<ItemGroup />
+ </Project>
