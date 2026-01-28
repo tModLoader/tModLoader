@@ -31,18 +31,3 @@
  		}
  		catch (Exception e) {
  			DisplayException(e);
-@@ -214,8 +_,14 @@
- 			}
- 		}
- 
-+		// TODO: Use non-NETCORE options if/when FNA is updated.
-+#if NETCORE
-+		if (!flag)
-+			Environment.SetEnvironmentVariable("FNA3D_FORCE_DRIVER", "OpenGL");
-+#else
- 		if (!flag)
- 			Environment.SetEnvironmentVariable("FNA3D_FORCE_DRIVER", Platform.IsWindows ? "D3D12" : (Platform.IsOSX ? "Metal" : "Vulkan"));
-+#endif
- 	}
- 
- 	private static void DisplayException(Exception e)
