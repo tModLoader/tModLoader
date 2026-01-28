@@ -1,18 +1,20 @@
 --- src/Terraria/Terraria/Utilities/PlatformUtilities.cs
 +++ src/TerrariaNetCore/Terraria/Utilities/PlatformUtilities.cs
-@@ -2,6 +_,7 @@
+@@ -2,7 +_,8 @@
  using System.IO;
  #if FNA
  using System.Runtime.InteropServices;
+ using Microsoft.Xna.Framework.Graphics;
 +using Microsoft.Xna.Framework.Graphics;
- using SDL2;
+ using SDL3;
  #endif
  
-@@ -9,7 +_,17 @@
+@@ -10,7 +_,17 @@
  
  public static class PlatformUtilities
  {
 -#if FNA
+ 	// TODO: Update once 1.4.5.1 comes out
 +#if NETCORE
 +	// Use FNA3D.WritePNGStream to avoid SDL_image dependency
 +	public unsafe static void SavePng(Stream stream, int width, int height, int imgWidth, int imgHeight, byte[] data)
@@ -24,6 +26,5 @@
 +			FNA3D.WritePNGStream(stream, width, height, imgWidth, imgHeight, (IntPtr)ptr);
 +	}
 +#elif FNA
- 	private unsafe static IntPtr INTERNAL_getScaledSurface(byte[] data, int srcW, int srcH, int dstW, int dstH)
+ 	public unsafe static void SavePng(Stream stream, int width, int height, int imgWidth, int imgHeight, byte[] data)
  	{
- 		IntPtr intPtr = SDL.SDL_CreateRGBSurface(0u, srcW, srcH, 32, 255u, 65280u, 16711680u, 4278190080u);

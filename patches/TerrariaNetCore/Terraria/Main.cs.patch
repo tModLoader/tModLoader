@@ -72,7 +72,7 @@
  
  			if (!DebugOptions.noPause) {
  				if (!hasFocus && netMode == 0) {
-@@ -44969,6 +_,7 @@
+@@ -44966,6 +_,7 @@
  		return result;
  	}
  
@@ -80,7 +80,7 @@
  	private static void SetDisplayModeAsBorderless(ref int width, ref int height, Form form)
  	{
  		if (screenBorderless && !graphics.IsFullScreen && screenBorderlessPendingResizes > 0) {
-@@ -44997,6 +_,7 @@
+@@ -44994,6 +_,7 @@
  		form.Location = new System.Drawing.Point(0, 0);
  		form.FormBorderStyle = FormBorderStyle.None;
  	}
@@ -88,7 +88,7 @@
  
  	public static void OpenCharacterSelectUI()
  	{
-@@ -57007,6 +_,9 @@
+@@ -57004,6 +_,9 @@
  	public static void SetDisplayMode(int width, int height, bool fullscreen)
  	{
  		bool flag = false;
@@ -98,7 +98,7 @@
  		Form form = null;
  		if (Platform.IsWindows) {
  			form = (Form)Control.FromHandle(instance.Window.Handle);
-@@ -57021,6 +_,8 @@
+@@ -57018,6 +_,8 @@
  		else {
  			screenMaximized = false;
  		}
@@ -107,7 +107,7 @@
  
  		bool flag2 = false;
  		int num3;
-@@ -57036,11 +_,13 @@
+@@ -57033,11 +_,13 @@
  				}
  			}
  
@@ -121,7 +121,7 @@
  
  			if (width > maxScreenW) {
  				float num = (float)height / (float)width;
-@@ -57068,6 +_,7 @@
+@@ -57065,6 +_,7 @@
  		}
  		else {
  			PlayerInput.RawMouseScale = Vector2.One;
@@ -129,7 +129,7 @@
  			if (Platform.IsWindows) {
  				form.MinimumSize = new Size(minScreenW, minScreenH);
  				if (flag) {
-@@ -57075,6 +_,7 @@
+@@ -57072,6 +_,7 @@
  					height = displayHeight[0];
  				}
  			}
@@ -137,7 +137,7 @@
  
  			width = Math.Min(width, maxScreenW);
  			height = Math.Min(height, maxScreenH);
-@@ -57083,6 +_,7 @@
+@@ -57080,6 +_,7 @@
  			flag2 = graphics.PreferredBackBufferWidth != graphics.GraphicsDevice.Viewport.Width || graphics.PreferredBackBufferHeight != graphics.GraphicsDevice.Viewport.Height;
  		}
  
@@ -145,7 +145,7 @@
  		if (Platform.IsWindows && !fullscreen && !flag2) {
  			if (form.ClientSize.Width < graphics.PreferredBackBufferWidth) {
  				width = form.ClientSize.Width;
-@@ -57094,9 +_,13 @@
+@@ -57091,9 +_,13 @@
  				flag2 = true;
  			}
  		}
@@ -159,7 +159,7 @@
  		width = Math.Max(width, minScreenW);
  		height = Math.Max(height, minScreenH);
  		if (graphics.IsFullScreen != fullscreen) {
-@@ -57124,6 +_,7 @@
+@@ -57121,6 +_,7 @@
  			PendingResolutionWidth = screenWidth;
  			PendingResolutionHeight = screenHeight;
  			PlayerInput.CacheOriginalScreenDimensions();
@@ -167,7 +167,7 @@
  			if (Platform.IsWindows && !fullscreen) {
  				if (screenBorderless) {
  					ApplyBorderlessResolution(form);
-@@ -57136,6 +_,7 @@
+@@ -57133,6 +_,7 @@
  				form.SendToBack();
  				form.BringToFront();
  			}

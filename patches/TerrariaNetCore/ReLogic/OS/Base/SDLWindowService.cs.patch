@@ -1,8 +1,8 @@
 --- src/Terraria/ReLogic/OS/Base/SDLWindowService.cs
 +++ src/TerrariaNetCore/ReLogic/OS/Base/SDLWindowService.cs
-@@ -8,7 +_,7 @@
+@@ -6,7 +_,7 @@
  
- // TODO: Needs additional work to support SDL2/SDL3.
+ namespace ReLogic.OS.Base;
  
 -public abstract class SDLWindowService : IWindowService
 +public class SDLWindowService : IWindowService

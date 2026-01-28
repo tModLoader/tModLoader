@@ -1,6 +1,7 @@
 using System;
 using System.Runtime.InteropServices;
 using System.Text;
+using Microsoft.Xna.Framework.Input;
 using ReLogic.Localization.IME.WinImm32;
 using ReLogic.OS.Windows;
 using NativeMethods = ReLogic.Localization.IME.WinImm32.NativeMethods;
@@ -10,7 +11,6 @@ namespace ReLogic.Localization.IME;
 internal class WinImm32Ime : PlatformIme, IMessageFilter
 {
 	private IntPtr _hWnd;
-	private IntPtr _hImc;
 	private bool _isFocused;
 	private WindowsMessageHook _wndProcHook;
 	private bool _disposedValue;
@@ -33,8 +33,6 @@ internal class WinImm32Ime : PlatformIme, IMessageFilter
 	{
 		_wndProcHook = wndProcHook;
 		_hWnd = hWnd;
-		_hImc = NativeMethods.ImmGetContext(_hWnd);
-		NativeMethods.ImmReleaseContext(_hWnd, _hImc);
 		_isFocused = ReLogic.OS.Windows.NativeMethods.GetForegroundWindow() == _hWnd;
 		_wndProcHook.AddMessageFilter(this);
 		SetEnabled(false);
@@ -42,7 +40,10 @@ internal class WinImm32Ime : PlatformIme, IMessageFilter
 
 	private void SetEnabled(bool bEnable)
 	{
-		NativeMethods.ImmAssociateContext(_hWnd, bEnable ? _hImc : IntPtr.Zero);
+		if (bEnable)
+			TextInputEXT.StartTextInput();
+		else
+			TextInputEXT.StopTextInput();
 	}
 
 	private void FinalizeString(bool bSend = false)
@@ -202,7 +203,6 @@ internal class WinImm32Ime : PlatformIme, IMessageFilter
 				Disable();
 
 			_wndProcHook.RemoveMessageFilter(this);
-			NativeMethods.ImmAssociateContext(_hWnd, _hImc);
 			_disposedValue = true;
 		}
 	}
