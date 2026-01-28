@@ -22,13 +22,30 @@
  	private void OnCharCallback(char key)
  	{
  		if (base.IsEnabled)
-@@ -31,6 +_,11 @@
+@@ -22,15 +_,28 @@
+ 
+ 	protected override void OnEnable()
+ 	{
++#if FNA
++		TextInputEXT.StartTextInput();
++#endif
+ 	}
+ 
+ 	protected override void OnDisable()
+ 	{
++#if FNA
++		TextInputEXT.StopTextInput();
++#endif
+ 	}
+ 
  	protected override void Dispose(bool disposing)
  	{
  		if (!_disposedValue) {
 +#if FNA
-+			if (disposing)
++			if (disposing) {
 +				TextInputEXT.TextInput -= OnCharCallback;
++				TextInputEXT.StopTextInput();
++			}
 +#endif
 +
  			if (base.IsEnabled)
