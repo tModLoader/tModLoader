@@ -25,7 +25,7 @@ internal class WinImm32Ime : PlatformIme, IMessageFilter
 
 	public override bool IsCandidateListVisible => CandidateCount > 0;
 
-	public override uint SelectedCandidate => _candSelection % _candPageSize;
+	public override uint? SelectedCandidate => _candSelection % _candPageSize;
 
 	public override uint CandidateCount => Math.Min((uint)_candList.Length - SelectedPage * _candPageSize, _candPageSize);
 

@@ -1,0 +1,11 @@
+--- src/Terraria/ReLogic/OS/Windows/WindowsMouseNotifier.cs
++++ src/TerrariaNetCore/ReLogic/OS/Windows/WindowsMouseNotifier.cs
+@@ -1,6 +_,8 @@
+ using System;
+ using System.Runtime.InteropServices;
++#if !NETCORE
+ using System.Windows.Forms;
++#endif
+ 
+ namespace ReLogic.OS.Windows;
+ 

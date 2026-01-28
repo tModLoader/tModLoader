@@ -1,0 +1,11 @@
+--- src/Terraria/Terraria/IO/WorldFile.cs
++++ src/TerrariaNetCore/Terraria/IO/WorldFile.cs
+@@ -135,7 +_,7 @@
+ 			using BinaryReader binaryReader = new BinaryReader(stream);
+ 			int num = binaryReader.ReadInt32();
+ 			if (num > 315)
+-				return WorldFileData.FromInvalidWorld(file, cloudSave, StatusID.LaterVersion, new FileFormatException("File is from a later version of Terraria. '" + file + "'"));
++				return WorldFileData.FromInvalidWorld(file, cloudSave, StatusID.LaterVersion, new IOException("File is from a later version of Terraria. '" + file + "'"));
+ 
+ 			WorldFileData worldFileData = new WorldFileData(file, cloudSave);
+ 			if (num >= 135)

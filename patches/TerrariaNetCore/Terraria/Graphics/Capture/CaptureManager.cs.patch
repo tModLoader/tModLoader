@@ -5,7 +5,7 @@
  public class CaptureManager : IDisposable
  {
 -	public static CaptureManager Instance = new CaptureManager();
-+	// Client initialization has been moved to Main.LoadContent to prevent FNA deadlocks
++	// Client initialization has been moved to Main.ClientInitialize to prevent FNA deadlocks
 +	public static CaptureManager Instance = Main.dedServ ? new CaptureManager() : null;
  	private CaptureInterface _interface;
  	private CaptureCamera _camera;

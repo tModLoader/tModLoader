@@ -48,23 +48,23 @@
  	{
  		instance = this;
  		UnpausedUpdateSeed = (ulong)Guid.NewGuid().GetHashCode();
-@@ -9705,7 +_,8 @@
- 		if (SocialAPI.Workshop != null)
- 			SocialAPI.Workshop.LoadEarlyContent();
+@@ -9564,6 +_,7 @@
+ 		});
  
+ 		base.Window.AllowUserResizing = true;
 +		CaptureManager.Instance = new CaptureManager(); // Move instance creation from class constructor to main thread to avoid deadlocks from content loading on JIT thread with FNA
- 		AssetSourceController.UseResourcePacks(AssetInitializer.CreateResourcePackList(base.Services));
- 		LoadContent_Shaders();
- 		AssetInitializer.LoadSplashAssets();
- 		ChromaInitializer.Load();
-@@ -14606,5 +_,6 @@
+ 		LoadSettings();
+ 		PreventUpdatingTargets = false;
+ 		SetDisplayMonitor();
+@@ -14605,6 +_,7 @@
+ 				reforgeCooldown--;
  
  			hasFocus = base.IsActive || DebugOptions.noPause;
 +#if !NETCORE
  			if (Platform.IsWindows) {
  				Form form = Control.FromHandle(base.Window.Handle) as Form;
  				bool num3 = form.WindowState == FormWindowState.Minimized;
-@@ -14613,7 +_,8 @@
+@@ -14613,6 +_,7 @@
  				if (num3)
  					hasFocus = false;
  			}
@@ -72,7 +72,6 @@
  
  			if (!DebugOptions.noPause) {
  				if (!hasFocus && netMode == 0) {
- 					if (!Platform.IsOSX)
 @@ -44969,6 +_,7 @@
  		return result;
  	}

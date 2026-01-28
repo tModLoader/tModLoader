@@ -13,7 +13,7 @@
  internal class CaptureCamera : IDisposable
  {
 +#if NETCORE
-+	enum ImageFormat { Png }
++	public enum ImageFormat { Png }
 +#endif
 +
  	private class CaptureChunk

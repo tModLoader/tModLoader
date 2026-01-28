@@ -1,6 +1,23 @@
 --- src/Terraria/ReLogic/OS/Windows/WindowService.cs
 +++ src/TerrariaNetCore/ReLogic/OS/Windows/WindowService.cs
-@@ -11,7 +_,11 @@
+@@ -1,17 +_,28 @@
+ using System;
++#if !NETCORE
+ using System.Drawing;
+ using System.Runtime.InteropServices;
+ using System.Windows.Forms;
++#endif
+ using Microsoft.Xna.Framework;
++using ReLogic.OS.Base;
+ 
+ namespace ReLogic.OS.Windows;
+ 
+ internal class WindowService : IWindowService
+ {
++#if NETCORE
++	private readonly SDLWindowService sdlService = new SDLWindowService();
++#endif
++
  	public float GetScaling()
  	{
  		try {
@@ -12,8 +29,11 @@
  			int deviceCaps = NativeMethods.GetDeviceCaps(hdc, NativeMethods.DeviceCap.VertRes);
  			return (float)NativeMethods.GetDeviceCaps(hdc, NativeMethods.DeviceCap.DesktopVertRes) / (float)deviceCaps;
  		}
-@@ -31,11 +_,15 @@
+@@ -29,13 +_,18 @@
+ 		}
+ 	}
  
++	// TODO: Why not just use SDLWindowService?
  	public void SetUnicodeTitle(GameWindow window, string title)
  	{
 +#if NETCORE
@@ -28,3 +48,46 @@
  	}
  
  	public void StartFlashingIcon(GameWindow window)
+@@ -52,26 +_,42 @@
+ 
+ 	public void Activate(GameWindow window)
+ 	{
++#if NETCORE
++		sdlService.Activate(window);
++#else
+ 		((Form)Control.FromHandle(window.Handle)).Activate();
++#endif
+ 	}
+ 
+ 	public bool IsSizeable(GameWindow window)
+ 	{
++#if NETCORE
++		return sdlService.IsSizeable(window);
++#else
+ 		Form form = (Form)Control.FromHandle(window.Handle);
+ 		if (form.WindowState == FormWindowState.Normal)
+ 			return form.FormBorderStyle == FormBorderStyle.Sizable;
+ 
+ 		return false;
++#endif
+ 	}
+ 
+ 	public void SetPosition(GameWindow window, int x, int y)
+ 	{
++#if NETCORE
++		sdlService.SetPosition(window, x, y);
++#else
+ 		((Form)Control.FromHandle(window.Handle)).Location = new System.Drawing.Point(x, y);
++#endif
+ 	}
+ 
+ 	public Microsoft.Xna.Framework.Rectangle GetBounds(GameWindow window)
+ 	{
++#if NETCORE
++		return sdlService.GetBounds(window);
++#else
+ 		Form form = (Form)Control.FromHandle(window.Handle);
+ 		return new Microsoft.Xna.Framework.Rectangle(form.Bounds.X, form.Bounds.Y, form.Bounds.Width, form.Bounds.Height);
++#endif
+ 	}
+ }

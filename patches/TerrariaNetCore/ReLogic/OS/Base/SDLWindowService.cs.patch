@@ -1,0 +1,11 @@
+--- src/Terraria/ReLogic/OS/Base/SDLWindowService.cs
++++ src/TerrariaNetCore/ReLogic/OS/Base/SDLWindowService.cs
+@@ -8,7 +_,7 @@
+ 
+ // TODO: Needs additional work to support SDL2/SDL3.
+ 
+-public abstract class SDLWindowService : IWindowService
++public class SDLWindowService : IWindowService
+ {
+ 	public float GetScaling() => 1f;
+ 
