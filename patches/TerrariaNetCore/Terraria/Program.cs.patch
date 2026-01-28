@@ -31,3 +31,19 @@
  		}
  		catch (Exception e) {
  			DisplayException(e);
+@@ -214,8 +_,15 @@
+ 			}
+ 		}
+ 
++		// TODO: Do we always want to default to SDLGPU? Should OpenGL be
++		// preferred on some systems?
++#if NETCORE
++		if (!flag)
++			Environment.SetEnvironmentVariable("FNA3D_FORCE_DRIVER", "SDLGPU");
++#else
+ 		if (!flag)
+ 			Environment.SetEnvironmentVariable("FNA3D_FORCE_DRIVER", Platform.IsWindows ? "D3D12" : (Platform.IsOSX ? "Metal" : "Vulkan"));
++#endif
+ 	}
+ 
+ 	private static void DisplayException(Exception e)
