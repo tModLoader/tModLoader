@@ -1,9 +1,7 @@
 --- src/decompiled/ReLogic/OS/Base/SDLWindowService.cs
 +++ src/Terraria/ReLogic/OS/Base/SDLWindowService.cs
-@@ -1,8 +_,15 @@
-+#if !FNA
+@@ -1,8 +_,13 @@
  using System;
-+#endif
  using Microsoft.Xna.Framework;
 +#if FNA
 +using SDL2;

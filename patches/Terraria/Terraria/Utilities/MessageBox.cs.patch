@@ -1,13 +1,12 @@
 --- src/decompiled/Terraria/Utilities/MessageBox.cs
 +++ src/Terraria/Terraria/Utilities/MessageBox.cs
-@@ -1,8 +_,134 @@
+@@ -1,8 +_,133 @@
 +using System;
 +using System.Linq;
 +using System.Runtime.InteropServices;
 +using System.Text;
-+#if !FNA
  using System.Windows.Forms;
-+#else
++#if FNA
 +using SDL2;
 +#endif
  
