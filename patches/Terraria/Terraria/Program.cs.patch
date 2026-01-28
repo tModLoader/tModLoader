@@ -1,6 +1,6 @@
 --- src/decompiled/Terraria/Program.cs
 +++ src/Terraria/Terraria/Program.cs
-@@ -18,10 +_,15 @@
+@@ -17,10 +_,15 @@
  
  public static class Program
  {
@@ -17,7 +17,7 @@
  	public static Dictionary<string, string> LaunchParameters = new Dictionary<string, string>();
  	public static string SavePath;
  	public const string TerrariaSaveFolderPath = "Terraria";
-@@ -153,6 +_,9 @@
+@@ -152,6 +_,9 @@
  
  		LaunchParameters = Utils.ParseArguements(args);
  		SavePath = (LaunchParameters.ContainsKey("-savedirectory") ? LaunchParameters["-savedirectory"] : Platform.Get<IPathService>().GetStoragePath("Terraria"));

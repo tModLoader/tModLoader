@@ -1,10 +1,8 @@
 --- src/decompiled/Terraria/Graphics/TileBatch.cs
 +++ src/Terraria/Terraria/Graphics/TileBatch.cs
-@@ -1,10 +_,14 @@
+@@ -1,11 +_,12 @@
  using System;
-+#if FNA
-+using System.Collections.Generic;
-+#endif
+ using System.Collections.Generic;
  using System.Runtime.CompilerServices;
  using Microsoft.Xna.Framework;
  using Microsoft.Xna.Framework.Graphics;
@@ -15,28 +13,28 @@
  public class TileBatch
  {
  	private struct SpriteData
-@@ -323,8 +_,17 @@
+@@ -461,9 +_,18 @@
  				}
  			}
  
+ 			FillVertexBuffer(texture, sprites, offset, num, 0);
 +			//TODO:
 +			// Decompilation bugfix.
 +			// Remove this change whenever ICSharpCode.Decompiler 8.0.0 or 8.0.0.*-preview3 releases.
 +
 +			/*
  			int offsetInBytes = _vertexBufferPosition * System.Runtime.CompilerServices.Unsafe.SizeOf<VertexPositionColorTexture>() * 4;
- 			_vertexBuffer.SetData(offsetInBytes, _vertices, 0, num3 * 4, System.Runtime.CompilerServices.Unsafe.SizeOf<VertexPositionColorTexture>(), options);
+ 			_vertexBuffer.SetData(offsetInBytes, _vertices, 0, num * 4, System.Runtime.CompilerServices.Unsafe.SizeOf<VertexPositionColorTexture>(), options);
 +			*/
 +			int offsetInBytes = _vertexBufferPosition * sizeof(VertexPositionColorTexture) * 4;
 +			_vertexBuffer.SetData(offsetInBytes, _vertices, 0, num3 * 4, sizeof(VertexPositionColorTexture), options);
 +
  			int minVertexIndex = _vertexBufferPosition * 4;
- 			int numVertices = num3 * 4;
+ 			int numVertices = num * 4;
  			int startIndex = _vertexBufferPosition * 6;
-@@ -336,3 +_,383 @@
+@@ -476,2 +_,382 @@
  		}
  	}
- }
 +#else
 +public class TileBatch : IDisposable
 +{

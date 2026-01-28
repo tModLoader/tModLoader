@@ -1,6 +1,6 @@
 --- src/decompiled/Terraria/Main.cs
 +++ src/Terraria/Terraria/Main.cs
-@@ -75,7 +_,21 @@
+@@ -79,5 +_,19 @@
  
  namespace Terraria;
  
@@ -20,9 +20,7 @@
  public class Main : Game
 +#endif
  {
- 	public delegate void OnPlayerSelected(PlayerFileData player);
- 
-@@ -4969,7 +_,7 @@
+@@ -5359,7 +_,7 @@
  		if (!dedServ) {
  			Map = new WorldMap(maxTilesX, maxTilesY);
  			Configuration.Load();
@@ -31,7 +29,7 @@
  			base.Content.RootDirectory = "Content";
  		}
  	}
-@@ -39052,6 +_,9 @@
+@@ -41061,6 +_,9 @@
  
  		Assets.TransferCompletedAssets();
  		Exit();
