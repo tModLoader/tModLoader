@@ -6,7 +6,7 @@ using Terraria.ModLoader.Setup.Core.Abstractions;
 
 namespace Terraria.ModLoader.Setup.Core;
 
-internal sealed class TerrariaDecompileExecutableProvider
+public sealed class TerrariaDecompileExecutableProvider
 {
 	private static readonly Version ClientVersion = new("1.4.4.9");
 	private static readonly Version ServerVersion = new("1.4.4.9");
@@ -20,7 +20,7 @@ internal sealed class TerrariaDecompileExecutableProvider
 		httpClient = new HttpClient();
 	}
 
-	private delegate Task FinalRetrievalAction(string destinationFileName);
+	private delegate Task FallbackRetrievalMethod(string destinationFileName);
 
 	public async Task<string> RetrieveClientExecutable(
 		byte[]? key,
@@ -33,18 +33,15 @@ internal sealed class TerrariaDecompileExecutableProvider
 
 		async Task DecryptTerrariaExe(string destinationPath)
 		{
-			if (key == null) {
-				CheckVersion(workspaceInfo.TerrariaPath, ClientVersion);
-
-				if (!Secrets.TryDeriveKey(workspaceInfo.TerrariaPath, out key)) {
-					throw new InvalidOperationException(
-						$"Failed to derive key from '{workspaceInfo.TerrariaPath}'. Cannot decrypt Terraria Windows executable.");
-				}
-			}
+			if (key == null && !Secrets.TryDeriveKey(workspaceInfo.TerrariaPath, out key))
+				throw new InvalidOperationException(
+					$"Failed to derive key from '{workspaceInfo.TerrariaPath}'. Cannot decrypt Terraria Windows executable.");
 
 			byte[] decryptedFile = new Secrets(key).ReadFile(Path.GetFileName(destinationPath));
 			Directory.CreateDirectory(Path.GetDirectoryName(destinationPath)!);
 			await File.WriteAllBytesAsync(destinationPath, decryptedFile, cancellationToken);
+
+			CheckVersion(destinationPath, ClientVersion);
 		}
 	}
 
@@ -66,40 +63,40 @@ internal sealed class TerrariaDecompileExecutableProvider
 		}
 	}
 
-	private async Task<string> Retrieve(string fileNameWithoutExtension, Version version, FinalRetrievalAction finalRetrievalAction)
+	public string GetVersionedExeBackupPath(string fileNameWithoutExtension, Version version)
 	{
 		string expectedExeName = $"{fileNameWithoutExtension}_v{version}_win.exe";
-		string expectedExePath = Path.Combine(workspaceInfo.TerrariaSteamDirectory, expectedExeName);
+		return Path.Combine(workspaceInfo.TerrariaSteamDirectory, $"{fileNameWithoutExtension}_v{version}_win.exe");
+	}
+
+	private async Task<string> Retrieve(string fileNameWithoutExtension, Version version, FallbackRetrievalMethod fallbackRetrievalMethod)
+	{
+		string expectedExePath = GetVersionedExeBackupPath(fileNameWithoutExtension, version);
 		string originalExePath = Path.Combine(workspaceInfo.TerrariaSteamDirectory, $"{fileNameWithoutExtension}.exe");
 		if (File.Exists(expectedExePath)) {
 			return expectedExePath;
 		}
 
-		if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) {
-			if (File.Exists(Path.Combine(workspaceInfo.TerrariaSteamDirectory, $"{fileNameWithoutExtension}_v{version}.exe"))) {
-				File.Move(Path.Combine(workspaceInfo.TerrariaSteamDirectory, $"{fileNameWithoutExtension}_v{version}.exe"), expectedExePath);
-				return expectedExePath;
-			}
-
-			if (File.Exists(originalExePath)) {
-				CheckVersion(originalExePath, version);
-				File.Copy(originalExePath, expectedExePath);
-				return expectedExePath;
-			}
+		if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) && File.Exists(originalExePath) && TryCheckVersion(originalExePath, version, out _)) {
+			File.Copy(originalExePath, expectedExePath);
+			return expectedExePath;
 		}
 
-		await finalRetrievalAction(expectedExePath);
-
+		await fallbackRetrievalMethod(expectedExePath);
 		return expectedExePath;
+	}
+
+	public static bool TryCheckVersion(string filePath, Version expectedVersion, out Version? actualVersion)
+	{
+		actualVersion = AssemblyName.GetAssemblyName(filePath).Version;
+		return actualVersion == expectedVersion;
 	}
 
 	private static void CheckVersion(string filePath, Version expectedVersion)
 	{
-		AssemblyName assemblyName = AssemblyName.GetAssemblyName(filePath);
-		if (assemblyName.Version != expectedVersion) {
+		if (!TryCheckVersion(filePath, expectedVersion, out var actualVersion))
 			throw new InvalidOperationException(
-				$"{Path.GetFileName(filePath)} has unsupported version {assemblyName.Version}. Version {expectedVersion} was expected.");
-		}
+				$"{Path.GetFileName(filePath)} has unsupported version {actualVersion}. Version {expectedVersion} was expected.");
 	}
 
 	public async Task<IReadOnlyCollection<string>> RetrieveExtraReferences(ITaskProgress taskProgress, CancellationToken cancellationToken = default)
