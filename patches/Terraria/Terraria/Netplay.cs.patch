@@ -10,7 +10,7 @@
  using ReLogic.OS;
  using Terraria.Audio;
  using Terraria.Localization;
-@@ -45,7 +_,11 @@
+@@ -45,6 +_,10 @@
  	public static bool SpamCheck = false;
  	public static bool HasClients;
  	private static Thread _serverThread;
@@ -21,7 +21,6 @@
  	public static MessageBuffer fullBuffer = new MessageBuffer();
  	private static int _currentRequestId;
  	private static long swTicksLast;
- 	private static UdpClient BroadcastClient = null;
 @@ -116,10 +_,43 @@
  
  	private static void OpenPort(int port)

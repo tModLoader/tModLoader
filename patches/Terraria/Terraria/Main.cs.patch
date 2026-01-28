@@ -22,7 +22,7 @@
  {
  	public static class CurrentFrameFlags
  	{
-@@ -3812,8 +_,10 @@
+@@ -3821,8 +_,10 @@
  			_windowMover.TryMovingToScreen(screenDeviceName);
  			ThrottleWhenInactive = configuration.Get("ThrottleWhenInactive", defaultValue: true);
  			UnpinFromCore0 = configuration.Get("UnpinFromCore0", defaultValue: false);
@@ -33,7 +33,7 @@
  		}
  
  		if (!flag)
-@@ -5359,7 +_,7 @@
+@@ -5368,7 +_,7 @@
  		if (!dedServ) {
  			Map = new WorldMap(maxTilesX, maxTilesY);
  			Configuration.Load();

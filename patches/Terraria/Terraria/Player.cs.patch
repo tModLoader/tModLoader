@@ -1,6 +1,6 @@
 --- src/decompiled/Terraria/Player.cs
 +++ src/Terraria/Terraria/Player.cs
-@@ -22443,10 +_,12 @@
+@@ -22458,10 +_,12 @@
  		if ((Main.netMode != 2 && whoAmI == Main.myPlayer) || whoAmI == Main.LocalPlayer.spectating)
  			ActiveSections.CheckSection(position);
  
