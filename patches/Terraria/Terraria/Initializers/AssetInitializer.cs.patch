@@ -4,7 +4,7 @@
  		AssetReaderCollection assetReaderCollection = new AssetReaderCollection();
  		assetReaderCollection.RegisterReader(new PngReader(services.Get<IGraphicsDeviceService>().GraphicsDevice), ".png");
  		assetReaderCollection.RegisterReader(new XnbReader(services), ".xnb");
-+#if !FNA
++#if XNA && !SERVER
  		assetReaderCollection.RegisterReader(new FxReader(services.Get<IGraphicsDeviceService>().GraphicsDevice), ".fx");
 +#endif
  		AsyncAssetLoader asyncAssetLoader = new AsyncAssetLoader(assetReaderCollection, 20);

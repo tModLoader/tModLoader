@@ -17,6 +17,17 @@
  	public static Dictionary<string, string> LaunchParameters = new Dictionary<string, string>();
  	public static string SavePath;
  	public const string TerrariaSaveFolderPath = "Terraria";
+@@ -127,8 +_,10 @@
+ 
+ 	private static void InitializeConsoleOutput()
+ 	{
++#if !SERVER
+ 		if (Debugger.IsAttached)
+ 			return;
++#endif
+ 
+ 		try {
+ 			Console.OutputEncoding = Encoding.UTF8;
 @@ -152,6 +_,9 @@
  
  		LaunchParameters = Utils.ParseArguements(args);
