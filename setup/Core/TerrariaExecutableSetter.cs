@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices;
 using Terraria.ModLoader.Setup.Core.Abstractions;
 using Terraria.ModLoader.Setup.Core.Utilities;
 
@@ -95,11 +96,23 @@ public class TerrariaExecutableSetter
 			terrariaFolderPath = await PromptForTerrariaDirectory(cancellationToken);
 		}
 
+		if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+			terrariaFolderPath = AppendMacOsTerrariaResourcesPath(terrariaFolderPath);
+
 		SetTerrariaDirectory(terrariaFolderPath, tmlDevSteamDirectoryOverride);
 	}
 
 	private void SetTerrariaDirectory(string terrariaSteamDirectory, string? tmlDevSteamDirectoryOverride)
 	{
 		workspaceInfo.UpdatePaths(terrariaSteamDirectory, tmlDevSteamDirectoryOverride);
+	}
+
+	private static string AppendMacOsTerrariaResourcesPath(string terrariaDirectory)
+	{
+		if (terrariaDirectory.EndsWith(Path.Combine("Terraria.app", "Contents", "Resources"), StringComparison.Ordinal))
+			return terrariaDirectory;
+
+		string resourcesPath = Path.Combine(terrariaDirectory, "Terraria.app", "Contents", "Resources");
+		return Directory.Exists(resourcesPath) ? resourcesPath : terrariaDirectory;
 	}
 }

@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices;
 using System.Xml.Linq;
 using Terraria.ModLoader.Setup.Core.Utilities;
 
@@ -112,10 +113,18 @@ public sealed class WorkspaceInfo
 		ArgumentException.ThrowIfNullOrWhiteSpace(terrariaSteamDirectory);
 
 		TerrariaSteamDirectory = PathUtils.GetCrossPlatformFullPath(terrariaSteamDirectory);
-		TMLDevSteamDirectory = PathUtils.GetCrossPlatformFullPath(
-			string.IsNullOrWhiteSpace(tMLDevSteamDirectory)
-				? Path.Combine(terrariaSteamDirectory, "..", "tModLoaderDev")
-				: tMLDevSteamDirectory);
+
+		string tmlDevDirectory = tMLDevSteamDirectory ?? "";
+		if (string.IsNullOrWhiteSpace(tmlDevDirectory)) {
+			if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX) && IsMacOsTerrariaResourcesPath(TerrariaSteamDirectory)) {
+				tmlDevDirectory = Path.Combine(GetMacOsSteamAppsCommonDirectory(TerrariaSteamDirectory), "tModLoaderDev");
+			}
+			else {
+				tmlDevDirectory = Path.Combine(terrariaSteamDirectory, "..", "tModLoaderDev");
+			}
+		}
+
+		TMLDevSteamDirectory = PathUtils.GetCrossPlatformFullPath(tmlDevDirectory);
 
 		Directory.CreateDirectory(TMLDevSteamDirectory);
 
@@ -130,5 +139,21 @@ public sealed class WorkspaceInfo
 	private void WriteToFile()
 	{
 		document.Save(FilePath);
+	}
+
+	private static bool IsMacOsTerrariaResourcesPath(string terrariaSteamDirectory)
+	{
+		return terrariaSteamDirectory.EndsWith(Path.Combine("Terraria.app", "Contents", "Resources"), StringComparison.Ordinal);
+	}
+
+	private static string GetMacOsSteamAppsCommonDirectory(string terrariaSteamDirectory)
+	{
+		var resourcesDir = new DirectoryInfo(terrariaSteamDirectory);
+		var contentsDir = resourcesDir.Parent;
+		var appDir = contentsDir?.Parent;
+		var terrariaDir = appDir?.Parent;
+		var commonDir = terrariaDir?.Parent;
+
+		return commonDir?.FullName ?? Path.Combine(terrariaSteamDirectory, "..", "..", "..", "..");
 	}
 }
