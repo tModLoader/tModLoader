@@ -1,0 +1,29 @@
+--- src/TerrariaNetCore/Terraria/MessageBuffer.cs
++++ src/Unified/Terraria/MessageBuffer.cs
+@@ -1127,7 +_,7 @@
+ 				BitsByte bitsByte5 = (byte)0;
+ 				BitsByte bitsByte6 = (byte)0;
+ 				BitsByte bitsByte7 = (byte)0;
+-				Tile tile4 = null;
++				Tile tile4 = default;
+ 				for (int l = num62; l < num62 + num64; l++) {
+ 					for (int m = num63; m < num63 + num65; m++) {
+ 						if (Main.tile[l, m] == null)
+@@ -2064,7 +_,7 @@
+ 				if (Main.tile[num14, num15] == null)
+ 					Main.tile[num14, num15] = new Tile();
+ 
+-				lock (Main.tile[num14, num15]) {
++				// lock (Main.tile[num14, num15]) {
+ 					Main.tile[num14, num15].liquid = b3;
+ 					Main.tile[num14, num15].liquidType(liquidType);
+ 					if (Main.netMode == 2) {
+@@ -2074,7 +_,7 @@
+ 					}
+ 
+ 					break;
+-				}
++				// }
+ 			}
+ 			case 49:
+ 				if (Netplay.Connection.State == 6) {

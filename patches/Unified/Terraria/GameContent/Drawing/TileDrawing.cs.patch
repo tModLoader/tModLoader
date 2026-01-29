@@ -1,0 +1,18 @@
+--- src/TerrariaNetCore/Terraria/GameContent/Drawing/TileDrawing.cs
++++ src/Unified/Terraria/GameContent/Drawing/TileDrawing.cs
+@@ -426,8 +_,15 @@
+ 			TileType = -1
+ 		};
+ 
++		// tModLoader - Swapped loop iteration order to improve memory access
++		// linearity.  Minor perf improvement, may cause slight visual
++		// discrepancies with tiles that overdraw.
++		/*
+ 		for (int i = firstTileY; i < lastTileY + 4; i++) {
+ 			for (int j = firstTileX - 2; j < lastTileX + 2; j++) {
++		*/
++		for (int j = firstTileX - 2; j < lastTileX + 2; j++) {
++			for (int i = firstTileY; i < lastTileY + 4; i++) {
+ 				Tile tile = Main.tile[j, i];
+ 				if (tile == null) {
+ 					tile = new Tile();

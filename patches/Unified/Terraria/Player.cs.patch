@@ -1,0 +1,23 @@
+--- src/TerrariaNetCore/Terraria/Player.cs
++++ src/Unified/Terraria/Player.cs
+@@ -18821,7 +_,7 @@
+ 
+ 	public static Tile GetFloorTile(int x, int y)
+ 	{
+-		Tile result = null;
++		Tile result = default;
+ 		if (Main.tile[x - 1, y] == null)
+ 			Main.tile[x - 1, y] = new Tile();
+ 
+@@ -18841,7 +_,11 @@
+ 		return result;
+ 	}
+ 
++	/*
+ 	public static int GetFloorTileType(int x, int y) => ((int?)GetFloorTile(x, y)?.type) ?? (-1);
++	*/
++
++	public static int GetFloorTileType(int x, int y) => GetFloorTile(x, y).type;
+ 
+ 	private void MakeFloorDust(bool Falling, int type, int frameX, int frameY, int paintColor)
+ 	{

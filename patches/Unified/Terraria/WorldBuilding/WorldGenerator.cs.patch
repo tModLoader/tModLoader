@@ -1,0 +1,11 @@
+--- src/TerrariaNetCore/Terraria/WorldBuilding/WorldGenerator.cs
++++ src/Unified/Terraria/WorldBuilding/WorldGenerator.cs
+@@ -433,7 +_,7 @@
+ 		_hashTime.Start();
+ 		uint[] line_hashes = new uint[Main.maxTilesX];
+ 		FastParallel.For(0, Main.maxTilesX, delegate (int x0, int x1, object _) {
+-			Tile[,] tile = Main.tile;
++			Tilemap tile = Main.tile;
+ 			int maxTilesY = Main.maxTilesY;
+ 			for (int j = x0; j < x1; j++) {
+ 				uint num3 = 0u;

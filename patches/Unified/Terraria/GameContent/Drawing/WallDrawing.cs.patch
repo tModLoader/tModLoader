@@ -1,0 +1,27 @@
+--- src/TerrariaNetCore/Terraria/GameContent/Drawing/WallDrawing.cs
++++ src/Unified/Terraria/GameContent/Drawing/WallDrawing.cs
+@@ -11,7 +_,7 @@
+ {
+ 	public static bool QuickPaintLookup = true;
+ 	private static VertexColors _glowPaintColors = new VertexColors(Color.White);
+-	private Tile[,] _tileArray;
++	private Tilemap _tileArray;
+ 	private TilePaintSystemV2 _paintSystem;
+ 	private bool _shouldShowInvisibleWalls;
+ 	private TilePaintSystemV2.WallVariationKey _lastPaintLookupKey;
+@@ -64,8 +_,15 @@
+ 		Rectangle value = new Rectangle(0, 0, 32, 32);
+ 		int underworldLayer = Main.UnderworldLayer;
+ 		_lastPaintLookupKey = default(TilePaintSystemV2.WallVariationKey);
++		// tModLoader - Swapped loop iteration order to improve memory access
++		// linearity.  Minor perf improvement, may cause slight visual
++		// discrepancies with tiles that overdraw.
++		/*
+ 		for (int i = firstTileY; i < lastTileY; i++) {
+ 			for (int j = firstTileX; j < lastTileX; j++) {
++		*/
++		for (int j = firstTileX; j < lastTileX; j++) {
++			for (int i = firstTileY; i < lastTileY; i++) {
+ 				Tile tile = _tileArray[j, i];
+ 				if (tile == null) {
+ 					tile = new Tile();

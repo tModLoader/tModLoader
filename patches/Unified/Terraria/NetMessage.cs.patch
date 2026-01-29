@@ -1,0 +1,32 @@
+--- src/TerrariaNetCore/Terraria/NetMessage.cs
++++ src/Unified/Terraria/NetMessage.cs
+@@ -1720,7 +_,7 @@
+ 		int num6 = 0;
+ 		byte b = 0;
+ 		byte[] array = new byte[16];
+-		Tile tile = null;
++		Tile tile = default;
+ 		for (int i = yStart; i < yStart + height; i++) {
+ 			for (int j = xStart; j < xStart + width; j++) {
+ 				Tile tile2 = Main.tile[j, i];
+@@ -2002,16 +_,19 @@
+ 
+ 	public static void DecompressTileBlock_Inner(BinaryReader reader, int xStart, int yStart, int width, int height)
+ 	{
+-		Tile tile = null;
++		Tile tile = default;
+ 		int num = 0;
+ 		for (int i = yStart; i < yStart + height; i++) {
+ 			for (int j = xStart; j < xStart + width; j++) {
+ 				if (num != 0) {
+ 					num--;
++					/*
+ 					if (Main.tile[j, i] == null)
+ 						Main.tile[j, i] = new Tile(tile);
+ 					else
+ 						Main.tile[j, i].CopyFrom(tile);
++					*/
++					Main.tile[j, i].CopyFrom(tile);
+ 
+ 					continue;
+ 				}

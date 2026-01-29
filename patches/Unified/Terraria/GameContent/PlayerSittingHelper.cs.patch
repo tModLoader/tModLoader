@@ -1,0 +1,11 @@
+--- src/TerrariaNetCore/Terraria/GameContent/PlayerSittingHelper.cs
++++ src/Unified/Terraria/GameContent/PlayerSittingHelper.cs
+@@ -27,7 +_,7 @@
+ 
+ 	public bool TryGetSittingBlock(Player player, out Tile tile)
+ 	{
+-		tile = null;
++		tile = default;
+ 		if (!isSitting)
+ 			return false;
+ 

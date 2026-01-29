@@ -1,0 +1,11 @@
+--- src/TerrariaNetCore/Terraria/Testing/DebugOptions.cs
++++ src/Unified/Terraria/Testing/DebugOptions.cs
+@@ -5,7 +_,7 @@
+ 
+ public static class DebugOptions
+ {
+-	public static bool enableDebugCommands = false;
++	public static bool enableDebugCommands = true;
+ 	public static bool Shared_ReportCommandUsage = true;
+ 	public static int Shared_ServerPing = 0;
+ 	public static double UpdateWaitInMs = 0.0;
