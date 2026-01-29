@@ -56,6 +56,8 @@ public static class Program
 					.WithDescription("Diffs src/TerrariaNetCore against src/Terraria");
 				x.AddCommand<DiffTModLoaderCommand>("tml")
 					.WithDescription("Diffs src/tModLoader against src/TerrariaNetCore. Use this after making changes and then commit the patches to git.");
+				x.AddCommand<DiffUnifiedCommand>("unified")
+					.WithDescription("Diffs src/TerrariaNetCore against src/Unified. Use this after making changes and then commit the patches to git.");
 			});
 
 			config.AddBranch("patch", x => {
@@ -67,6 +69,8 @@ public static class Program
 					.WithDescription("Patches source in src/TerrariaNetCore");
 				x.AddCommand<PatchTModLoaderCommand>("tml")
 					.WithDescription("Patches source in src/tModLoader. Edit the source code in src/tModLoader after this phase.");
+				x.AddCommand<PatchUnifiedCommand>("unified")
+					.WithDescription("Patches source in src/Unified. Edit the source code in src/Unified after this phase.");
 			});
 
 			config.AddCommand<RegenSourceCommand>("regen-source")

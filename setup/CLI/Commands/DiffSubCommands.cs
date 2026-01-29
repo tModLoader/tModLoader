@@ -32,6 +32,13 @@ public sealed class DiffTModLoaderCommand(TaskRunner taskRunner, ProgramSettings
 		DiffTaskParameters.ForTModLoader(programSettings);
 }
 
+public sealed class DiffUnifiedCommand(TaskRunner taskRunner, ProgramSettings programSettings)
+	: DiffBaseCommand(taskRunner, programSettings)
+{
+	protected override DiffTaskParameters GetDiffTaskParameters(ProgramSettings programSettings) =>
+		DiffTaskParameters.ForUnified(programSettings);
+}
+
 public abstract class DiffBaseCommand : CancellableAsyncCommand<DiffCommandSettings>
 {
 	private readonly TaskRunner taskRunner;

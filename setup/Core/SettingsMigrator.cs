@@ -44,6 +44,7 @@ public static class SettingsMigrator
 			new(x => programSettings.TerrariaDiffCutoff = x, "TerrariaDiffCutoff"),
 			new(x => programSettings.TerrariaNetCoreDiffCutoff = x, "TerrariaNetCoreDiffCutoff"),
 			new(x => programSettings.TModLoaderDiffCutoff = x, "tModLoaderDiffCutoff"),
+			new(x => programSettings.UnifiedDiffCutoff = x, "UnifiedDiffCutoff"),
 		];
 
 		foreach (Migration<DateTime> migration in dateTimeMigrations) {

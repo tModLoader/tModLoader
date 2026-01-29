@@ -49,8 +49,13 @@ namespace Terraria.ModLoader.Setup.GUI
 			taskButtons[buttonDiffTerrariaNetCore] = () => new DiffTask(DiffTaskParameters.ForTerrariaNetCore(programSettings));
 			taskButtons[buttonPatchTerrariaNetCore] = () => new PatchTask(PatchTaskParameters.ForTerrariaNetCore(programSettings), serviceProvider);
 			// tModLoader
+			/*
 			taskButtons[buttonDiffModLoader] = () => new DiffTask(DiffTaskParameters.ForTModLoader(programSettings));
 			taskButtons[buttonPatchModLoader] = () => new PatchTask(PatchTaskParameters.ForTModLoader(programSettings), serviceProvider);
+			*/
+			// Unified
+			taskButtons[buttonDiffModLoader] = () => new DiffTask(DiffTaskParameters.ForUnified(programSettings));
+			taskButtons[buttonPatchModLoader] = () => new PatchTask(PatchTaskParameters.ForUnified(programSettings), serviceProvider);
 
 			taskButtons[buttonRegenSource] = () => new RegenSourceTask(serviceProvider);
 
@@ -89,6 +94,7 @@ namespace Terraria.ModLoader.Setup.GUI
 			programSettings.TerrariaDiffCutoff = cutoffDate;
 			programSettings.TerrariaNetCoreDiffCutoff = cutoffDate;
 			programSettings.TModLoaderDiffCutoff = cutoffDate;
+			programSettings.UnifiedDiffCutoff = cutoffDate;
 			programSettings.Save();
 		}
 

@@ -39,4 +39,14 @@ public sealed record DiffTaskParameters
 			Cutoff = new ProgramSetting<DateTime?>(x => x.TModLoaderDiffCutoff, programSettings),
 		};
 	}
+
+	public static DiffTaskParameters ForUnified(ProgramSettings programSettings)
+	{
+		return new DiffTaskParameters {
+			BaseDir = PathConstants.TerrariaNetCoreSourceFolder,
+			PatchedDir = PathConstants.UnifiedSourceFolder,
+			PatchDir = PathConstants.UnifiedPatchesFolder,
+			Cutoff = new ProgramSetting<DateTime?>(x => x.UnifiedDiffCutoff, programSettings),
+		};
+	}
 }

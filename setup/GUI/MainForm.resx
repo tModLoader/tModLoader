@@ -61,8 +61,8 @@
     <value>17, 17</value>
   </metadata>
   <data name="buttonDiffModLoader.ToolTip" xml:space="preserve">
-    <value>Recalculates the tModLoader patches
-Diffs the src/Terraria and src/tModLoader directories
+    <value>Recalculates the Unified patches
+Diffs the src/Terraria and src/Unified directories
 Use this after making changes then commit the patches directory to the git
 Internally formats the Terraria sources before diffing
 

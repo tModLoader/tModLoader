@@ -25,6 +25,8 @@ public sealed class ProgramSettings
 
 	public DateTime? TModLoaderDiffCutoff { get; set; }
 
+	public DateTime? UnifiedDiffCutoff { get; set; }
+
 	public Patcher.Mode PatchMode { get; set; }
 
 	public bool FormatAfterDecompiling { get; set; } = true;

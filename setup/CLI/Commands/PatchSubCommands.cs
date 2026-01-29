@@ -37,6 +37,13 @@ public sealed class PatchTModLoaderCommand(TaskRunner taskRunner, ProgramSetting
 		PatchTaskParameters.ForTModLoader(programSettings);
 }
 
+public sealed class PatchUnifiedCommand(TaskRunner taskRunner, ProgramSettings programSettings, IServiceProvider serviceProvider)
+	: PatchBaseCommand(taskRunner, programSettings, serviceProvider)
+{
+	protected override PatchTaskParameters GetPatchTaskParameters(ProgramSettings programSettings) =>
+		PatchTaskParameters.ForUnified(programSettings);
+}
+
 public abstract class PatchBaseCommand : CancellableAsyncCommand<PatchCommandSettings>
 {
 	private readonly TaskRunner taskRunner;
