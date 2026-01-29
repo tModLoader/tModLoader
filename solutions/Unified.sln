@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 18
+VisualStudioVersion = 18.3.11312.210 d18.3
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Terraria", "..\src\Unified\Terraria\Terraria.csproj", "{2723ACB3-6289-BEF0-22D2-9035A47C36ED}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReLogic", "..\src\Unified\ReLogic\ReLogic.csproj", "{3AA11929-CF36-D9D3-FA65-2BFC8B49F803}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tModLoader.BuildTasks", "..\tModBuildTasks\tModLoader.BuildTasks.csproj", "{05F0F3D5-6AE5-D968-6568-EB596E0E8DC6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FNA.Core", "..\FNA\FNA.Core.csproj", "{B955E668-3D04-C971-D3D3-26D12AA164FE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2723ACB3-6289-BEF0-22D2-9035A47C36ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2723ACB3-6289-BEF0-22D2-9035A47C36ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2723ACB3-6289-BEF0-22D2-9035A47C36ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2723ACB3-6289-BEF0-22D2-9035A47C36ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3AA11929-CF36-D9D3-FA65-2BFC8B49F803}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3AA11929-CF36-D9D3-FA65-2BFC8B49F803}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3AA11929-CF36-D9D3-FA65-2BFC8B49F803}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3AA11929-CF36-D9D3-FA65-2BFC8B49F803}.Release|Any CPU.Build.0 = Release|Any CPU
+		{05F0F3D5-6AE5-D968-6568-EB596E0E8DC6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{05F0F3D5-6AE5-D968-6568-EB596E0E8DC6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{05F0F3D5-6AE5-D968-6568-EB596E0E8DC6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{05F0F3D5-6AE5-D968-6568-EB596E0E8DC6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B955E668-3D04-C971-D3D3-26D12AA164FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B955E668-3D04-C971-D3D3-26D12AA164FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B955E668-3D04-C971-D3D3-26D12AA164FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B955E668-3D04-C971-D3D3-26D12AA164FE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
