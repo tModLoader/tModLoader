@@ -29,7 +29,7 @@
  	private LightMaskMode[] _mask;
  	private FastRandom _random = FastRandom.CreateWithRandomSeed();
  	private const int DEFAULT_WIDTH = 203;
-@@ -29,12 +_,25 @@
+@@ -29,13 +_,28 @@
  	public Vector3 LightDecayThroughHoney { get; set; }
  
  	public Vector3 this[int x, int y] {
@@ -53,9 +53,12 @@
 +			p.B = value.Z;
 +		}
  	}
++
++	private readonly Vector128<float>[] decayTable;
  
  	public LightMap()
-@@ -44,27 +_,41 @@
+ 	{
+@@ -44,27 +_,51 @@
  		LightDecayThroughCrackedBrick = 0.8f;
  		LightDecayThroughWater = new Vector3(0.88f, 0.96f, 1.015f) * 0.91f;
  		LightDecayThroughHoney = new Vector3(0.75f, 0.7f, 0.6f) * 0.91f;
@@ -67,6 +70,16 @@
 +		*/
 +
 +		SetSize(203, 203);
++
++		if (Vector128<float>.IsSupported && Sse.IsSupported) {
++			decayTable = [
++				 Vector128.Create(LightDecayThroughAir, LightDecayThroughAir, LightDecayThroughAir, 0f),
++				 Vector128.Create(LightDecayThroughSolid, LightDecayThroughSolid, LightDecayThroughSolid, 0f),
++				 Vector128.Create(LightDecayThroughWater.X, LightDecayThroughWater.Y, LightDecayThroughWater.Z, 0f),
++				 Vector128.Create(LightDecayThroughHoney.X, LightDecayThroughHoney.Y, LightDecayThroughHoney.Z, 0f),
++				 Vector128.Create(LightDecayThroughCrackedBrick, LightDecayThroughCrackedBrick, LightDecayThroughCrackedBrick, 0f),
++			];
++		}
  	}
  
  	public void GetLight(int x, int y, out Vector3 color)
@@ -144,7 +157,7 @@
  		Vector3 zero = Vector3.Zero;
  		bool flag = false;
  		bool flag2 = false;
-@@ -187,15 +_,216 @@
+@@ -187,15 +_,217 @@
  					break;
  			}
  		}
@@ -264,6 +277,8 @@
 +			LightPixel[] colors = _colors;
 +			LightMaskMode[] mask = _mask;
 +
++			var vWater = decayTable[(int)LightMaskMode.Water];
++
 +			fixed (LightPixel* pColors = colors)
 +			fixed (LightMaskMode* pMask = mask) {
 +				LightPixel* p = pColors + startIndex;
@@ -274,59 +289,58 @@
 +				var carriedLight = Vector128<float>.Zero;
 +				var vCutoff = Vector128.Create(cutoff);
 +
-+				var vAir = Vector128.Create(LightDecayThroughAir, LightDecayThroughAir, LightDecayThroughAir, 0f);
-+				var vSolid = Vector128.Create(LightDecayThroughSolid, LightDecayThroughSolid, LightDecayThroughSolid, 0f);
-+				var vCrack = Vector128.Create(LightDecayThroughCrackedBrick, LightDecayThroughCrackedBrick, LightDecayThroughCrackedBrick, 0f);
-+
-+				Vector3 water = LightDecayThroughWater;
-+				Vector3 honey = LightDecayThroughHoney;
-+
-+				var vHoney = Vector128.Create(honey.X, honey.Y, honey.Z, 0f);
-+
 +				while (p != pEnd) {
 +					var cur = Sse.LoadVector128((float*)p);
 +
 +					carriedLight = Sse.Max(carriedLight, cur);
 +					Sse.Store((float*)p, carriedLight);
 +
++					/*
 +					var aliveMask = Sse.CompareGreaterThan(carriedLight, vCutoff);
 +					if (Sse.MoveMask(aliveMask) == 0) {
 +						p += step;
 +						continue;
 +					}
++					*/
 +
 +					Vector128<float> decay;
-+					switch (pMask[p - pColors]) {
-+						default:
-+						case LightMaskMode.None:
-+							decay = vAir;
-+							break;
++					var theMask = pMask[p - pColors];
++					if (theMask == LightMaskMode.Water) {
++						/*
++						var modifier = (ulong)(p - pColors);
++						var s = ((modifier * 25214903917UL + 11UL) & 0xFFFFFFFFFFFFUL) ^_random.Seed;
++						s = (s * 25214903917UL + 11UL) & 0xFFFFFFFFFFFFUL;
++						float n = ((int)(s >> 47) + 98) * 0.01f;
++						// float n = (s >> 47 != 0) ? 0.99f : 0.98f;
++						// float n = _random.WithModifier((ulong)(p - pColors)).Next(98, 100) * 0.01f;
++						*/
++						ulong m = (ulong)(p - pColors);
++						m ^= m >> 16;
++						m *= 0x7FEB352D;
++						m ^= m >> 15;
++						m *= 0x846CA68B;
++						m ^= m >> 16;
++						float n = ((m & 1UL) != 0) ? 0.99f : 0.98f;
 +
-+						case LightMaskMode.Solid:
-+							decay = vSolid;
-+							break;
-+
-+						case LightMaskMode.CrackedBricks:
-+							decay = vCrack;
-+							break;
-+
-+						case LightMaskMode.Honey:
-+							decay = vHoney;
-+							break;
-+
-+						case LightMaskMode.Water: {
-+							float n = _random.WithModifier((ulong)(p - pColors)).Next(98, 100) * 0.01f;
-+							decay = Vector128.Create(water.X * n, water.Y * n, water.Z * n, 0f);
-+							break;
-+						}
++						decay = vWater * n;
++					}
++					else {
++						decay = decayTable[(int)theMask];
 +					}
 +
++					carriedLight *= decay;
++
++					var aliveMask = Sse.CompareGreaterThan(carriedLight, vCutoff);
++					carriedLight = Sse.And(carriedLight, aliveMask);
++
++					/*
 +					Vector128<float> decayed = Sse.Multiply(carriedLight, decay);
 +
 +					carriedLight = Sse.Or(
 +						Sse.And(aliveMask, decayed),
 +						Sse.AndNot(aliveMask, carriedLight)
 +					);
++					*/
 +
 +					p += step;
 +				}
