@@ -51,7 +51,8 @@ namespace Terraria.ModLoader.Setup.Core
 			return [
 				new PatchTask(PatchTaskParameters.ForTerraria(programSettings), serviceProvider),
 				new PatchTask(PatchTaskParameters.ForTerrariaNetCore(programSettings), serviceProvider),
-				new PatchTask(PatchTaskParameters.ForTModLoader(programSettings), serviceProvider),
+				// new PatchTask(PatchTaskParameters.ForTModLoader(programSettings), serviceProvider),
+				new PatchTask(PatchTaskParameters.ForUnified(programSettings), serviceProvider),
 			];
 		}
 	}
