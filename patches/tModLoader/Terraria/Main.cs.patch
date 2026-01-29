@@ -1991,6 +1991,17 @@
  		SoundEngine.Initialize();
  		if (base.Services.Get<IAssetRepository>() == null)
  			AssetInitializer.CreateAssetServices(base.Services);
+@@ -9065,7 +_,10 @@
+ 		Assets = base.Services.Get<IAssetRepository>();
+ 		Assets.AssetLoadFailHandler = OnceFailedLoadingAnAsset;
+ 		mapSectionTexture = new RenderTarget2D(base.GraphicsDevice, 200, 150);
++		/*
+ 		ShaderContentManager = new ContentManager(base.Content.ServiceProvider, base.Content.RootDirectory);
++		*/
++		ShaderContentManager = Main.instance.Content; // Use TMLContentManager to properly fallback shaders.
+ 		PixelShaderRef.Value = ShaderContentManager.Load<Effect>("PixelShader");
+ 		VertexPixelShaderRef.Value = ShaderContentManager.Load<Effect>("PixelShader");
+ 		TileShaderRef.Value = ShaderContentManager.Load<Effect>("TileShader");
 @@ -9081,7 +_,10 @@
  			audioSystem = new DisabledAudioSystem();
  
