@@ -1,0 +1,26 @@
+--- src/TerrariaNetCore/Terraria/Projectile.cs
++++ src/Unified/Terraria/Projectile.cs
+@@ -12825,7 +_,7 @@
+ 		if (localAI[0] == 1f && GetStormLightningExplosionRect().Intersects(targetRect))
+ 			return true;
+ 
+-		if (StormLightningLiquidCollisionCheck(targetRect.Center()))
++		if (StormLightningLiquidCollisionCheck(targetRect.Center.ToVector2()))
+ 			return true;
+ 
+ 		if (_lightningCollisionBounds != null && _lightningCollisionBounds.Intersects(targetRect))
+@@ -41778,10 +_,12 @@
+ 		int num2 = 2;
+ 		int num3 = 0;
+ 		while (num3 <= num) {
++			int pY = p.Y;
+ 			if (flag)
+-				FindBlockCeiling(p.X, ref p.Y, 10, 10);
++				FindBlockCeiling(p.X, ref pY, 10, 10);
+ 			else
+-				FindBlockSurface(p.X, ref p.Y, 10, 10);
++				FindBlockSurface(p.X, ref pY, 10, 10);
++			p.Y = pY;
+ 
+ 			if (WorldGen.ActiveAndWalkableTile(p.X, p.Y)) {
+ 				Vector2 vector = p.ToWorldCoordinates(8f, 0f);

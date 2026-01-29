@@ -1,0 +1,26 @@
+--- src/TerrariaNetCore/Terraria/WorldBuilding/Shapes.cs
++++ src/Unified/Terraria/WorldBuilding/Shapes.cs
+@@ -129,19 +_,19 @@
+ 
+ 	public class Rectangle : GenShape
+ 	{
+-		private Microsoft.Xna.Framework.Rectangle _area;
++		private System.Drawing.Rectangle _area;
+ 
+-		public Rectangle(Microsoft.Xna.Framework.Rectangle area)
++		public Rectangle(System.Drawing.Rectangle area)
+ 		{
+ 			_area = area;
+ 		}
+ 
+ 		public Rectangle(int width, int height)
+ 		{
+-			_area = new Microsoft.Xna.Framework.Rectangle(0, 0, width, height);
++			_area = new System.Drawing.Rectangle(0, 0, width, height);
+ 		}
+ 
+-		public void SetArea(Microsoft.Xna.Framework.Rectangle area)
++		public void SetArea(System.Drawing.Rectangle area)
+ 		{
+ 			_area = area;
+ 		}

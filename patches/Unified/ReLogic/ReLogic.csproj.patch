@@ -1,0 +1,34 @@
+--- src/TerrariaNetCore/ReLogic/ReLogic.csproj
++++ src/Unified/ReLogic/ReLogic.csproj
+@@ -1,5 +_,7 @@
+ <Project Sdk="Microsoft.NET.Sdk">
++	
+ 	<Import Project="../Configuration.targets" />
++	
+ 	<PropertyGroup>
+ 		<OutputType>Library</OutputType>
+ 		<Version>1.0.0.0</Version>
+@@ -7,11 +_,21 @@
+ 		<Copyright>Copyright © Re-Logic 2017</Copyright>
+ 		<RootNamespace>ReLogic</RootNamespace>
+ 	</PropertyGroup>
++	
+ 	<ItemGroup>
+ 		<Reference Include="../Terraria/Libraries/Common/Ionic.Zip.CF.dll" />
+-		<ProjectReference Include="../../../FNA/FNA.Core.csproj" />
++        <ProjectReference Include="../../../FNA2/src/FNA/FNA.csproj" />
+ 		<Reference Include="../Terraria/Libraries/Common/Newtonsoft.Json.dll" />
+ 		<Reference Include="../Terraria/Libraries/Common/SteelSeriesEngineWrapper.dll" />
++
++		<Using Alias="Vector2" Include="System.Numerics.Vector2"/>
++		<Using Alias="Vector3" Include="System.Numerics.Vector3"/>
++		<Using Alias="Vector4" Include="System.Numerics.Vector4"/>
++		<Using Alias="Quaternion" Include="System.Numerics.Quaternion"/>
++		<Using Alias="Point" Include="System.Drawing.Point"/>
++		<Using Alias="Rectangle" Include="System.Drawing.Rectangle"/>
++		<Using Alias="Matrix" Include="System.Numerics.Matrix4x4"/>
++		<Using Static="true" Include="Microsoft.Xna.Framework.NumericsExtensions"/>
+ 	</ItemGroup>
+-	<ItemGroup />
++
+ </Project>

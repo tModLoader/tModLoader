@@ -1,0 +1,18 @@
+--- src/TerrariaNetCore/ReLogic/OS/Windows/WindowService.cs
++++ src/Unified/ReLogic/OS/Windows/WindowService.cs
+@@ -97,13 +_,13 @@
+ #endif
+ 	}
+ 
+-	public Microsoft.Xna.Framework.Rectangle GetBounds(GameWindow window)
++	public Rectangle GetBounds(GameWindow window)
+ 	{
+ #if NETCORE
+ 		return sdlService.GetBounds(window);
+ #else
+ 		Form form = (Form)Control.FromHandle(window.Handle);
+-		return new Microsoft.Xna.Framework.Rectangle(form.Bounds.X, form.Bounds.Y, form.Bounds.Width, form.Bounds.Height);
++		return new System.Drawing.Rectangle(form.Bounds.X, form.Bounds.Y, form.Bounds.Width, form.Bounds.Height);
+ #endif
+ 	}
+ }

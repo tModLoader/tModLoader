@@ -4,3 +4,6 @@
 [submodule "FNA"]
 	path = FNA
 	url = https://github.com/tModLoader/FNA.git
+[submodule "FNA2"]
+	path = FNA2
+	url = https://github.com/gold-meridian/FNA

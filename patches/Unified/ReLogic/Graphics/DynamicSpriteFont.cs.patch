@@ -1,0 +1,11 @@
+--- src/TerrariaNetCore/ReLogic/Graphics/DynamicSpriteFont.cs
++++ src/Unified/ReLogic/Graphics/DynamicSpriteFont.cs
+@@ -148,7 +_,7 @@
+ 			if (charOffsets != null)
+ 				position += charOffsets[i];
+ 
+-			Vector2.Transform(ref position, ref matrix, out position);
++			position = Vector2.Transform(position, matrix);
+ 			position += startPosition;
+ 			spriteBatch.Draw(characterData.Texture, position, characterData.Glyph, color2, num, Vector2.Zero, scale, spriteEffects, depth);
+ 			zero.X += (kerning.Y + kerning.Z) * scale.X * one.X;

@@ -1,0 +1,17 @@
+--- src/TerrariaNetCore/Terraria/WorldBuilding/WorldUtils.cs
++++ src/Unified/Terraria/WorldBuilding/WorldUtils.cs
+@@ -100,10 +_,12 @@
+ 		Point point = start;
+ 		Point point2 = end;
+ 		if (end.X < start.X)
+-			Utils.Swap(ref end.X, ref start.X);
++			// Utils.Swap(ref end.X, ref start.X);
++			(end.X, start.X) = (start.X, end.X);
+ 
+ 		if (end.Y < start.Y)
+-			Utils.Swap(ref end.Y, ref start.Y);
++			// Utils.Swap(ref end.Y, ref start.Y);
++			(end.Y, start.Y) = (start.Y, end.Y);
+ 
+ 		for (int i = start.X; i <= end.X; i++) {
+ 			WorldGen.PlaceWire(i, point.Y);

@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReLogic", "..\src\Unified\R
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tModLoader.BuildTasks", "..\tModBuildTasks\tModLoader.BuildTasks.csproj", "{05F0F3D5-6AE5-D968-6568-EB596E0E8DC6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FNA.Core", "..\FNA\FNA.Core.csproj", "{B955E668-3D04-C971-D3D3-26D12AA164FE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FNA", "..\FNA2\src\FNA\FNA.csproj", "{60F686F7-E218-43DD-D4DE-977A0EFB40BB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,12 +29,15 @@ Global
 		{05F0F3D5-6AE5-D968-6568-EB596E0E8DC6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{05F0F3D5-6AE5-D968-6568-EB596E0E8DC6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{05F0F3D5-6AE5-D968-6568-EB596E0E8DC6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B955E668-3D04-C971-D3D3-26D12AA164FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B955E668-3D04-C971-D3D3-26D12AA164FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B955E668-3D04-C971-D3D3-26D12AA164FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B955E668-3D04-C971-D3D3-26D12AA164FE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{60F686F7-E218-43DD-D4DE-977A0EFB40BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{60F686F7-E218-43DD-D4DE-977A0EFB40BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{60F686F7-E218-43DD-D4DE-977A0EFB40BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{60F686F7-E218-43DD-D4DE-977A0EFB40BB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {49641D84-48E4-4E48-9F42-EF5164C822AF}
 	EndGlobalSection
 EndGlobal

@@ -1,0 +1,11 @@
+--- src/TerrariaNetCore/Terraria/Utils.cs
++++ src/Unified/Terraria/Utils.cs
+@@ -1101,7 +_,7 @@
+ 	public static Vector2D TopRightDouble(this Rectangle r) => new Vector2D(r.X + r.Width, r.Y);
+ 	public static Vector2D BottomLeftDouble(this Rectangle r) => new Vector2D(r.X, r.Y + r.Height);
+ 	public static Vector2D BottomRightDouble(this Rectangle r) => new Vector2D(r.X + r.Width, r.Y + r.Height);
+-	public static Vector2 Center(this Rectangle r) => new Vector2(r.X + r.Width / 2, r.Y + r.Height / 2);
++	// public static Vector2 Center(this Rectangle r) => new Vector2(r.X + r.Width / 2, r.Y + r.Height / 2);
+ 	public static Vector2 Size(this Rectangle r) => new Vector2(r.Width, r.Height);
+ 
+ 	public static float Distance(this Rectangle r, Vector2 point)

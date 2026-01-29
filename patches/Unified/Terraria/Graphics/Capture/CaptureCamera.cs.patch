@@ -1,0 +1,52 @@
+--- src/TerrariaNetCore/Terraria/Graphics/Capture/CaptureCamera.cs
++++ src/Unified/Terraria/Graphics/Capture/CaptureCamera.cs
+@@ -21,10 +_,10 @@
+ 
+ 	private class CaptureChunk
+ 	{
+-		public readonly Microsoft.Xna.Framework.Rectangle Area;
+-		public readonly Microsoft.Xna.Framework.Rectangle ScaledArea;
++		public readonly System.Drawing.Rectangle Area;
++		public readonly System.Drawing.Rectangle ScaledArea;
+ 
+-		public CaptureChunk(Microsoft.Xna.Framework.Rectangle area, Microsoft.Xna.Framework.Rectangle scaledArea)
++		public CaptureChunk(System.Drawing.Rectangle area, System.Drawing.Rectangle scaledArea)
+ 		{
+ 			Area = area;
+ 			ScaledArea = scaledArea;
+@@ -106,7 +_,7 @@
+ 
+ 	private void _Capture()
+ 	{
+-		Microsoft.Xna.Framework.Rectangle area = _activeSettings.Area;
++		System.Drawing.Rectangle area = _activeSettings.Area;
+ 		float num = 1f;
+ 		if (_activeSettings.UseScaling) {
+ 			if (area.Width * 16 > 4096)
+@@ -136,7 +_,7 @@
+ 				int height = (int)Math.Floor(num * (float)(num4 * 16));
+ 				int x = (int)Math.Floor(num * (float)((i - area.X) * 16));
+ 				int y = (int)Math.Floor(num * (float)((j - area.Y) * 16));
+-				_renderQueue.Enqueue(new CaptureChunk(new Microsoft.Xna.Framework.Rectangle(i, j, num3, num4), new Microsoft.Xna.Framework.Rectangle(x, y, width, height)));
++				_renderQueue.Enqueue(new CaptureChunk(new System.Drawing.Rectangle(i, j, num3, num4), new System.Drawing.Rectangle(x, y, width, height)));
+ 			}
+ 		}
+ 	}
+@@ -159,7 +_,7 @@
+ 				_graphics.SetRenderTarget(_scaledFrameBuffer);
+ 				_graphics.Clear(Microsoft.Xna.Framework.Color.Transparent);
+ 				_spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, _downscaleSampleState, DepthStencilState.Default, RasterizerState.CullNone);
+-				_spriteBatch.Draw(_frameBuffer, new Microsoft.Xna.Framework.Rectangle(0, 0, _scaledFrameBuffer.Width, _scaledFrameBuffer.Height), Microsoft.Xna.Framework.Color.White);
++				_spriteBatch.Draw(_frameBuffer, new System.Drawing.Rectangle(0, 0, _scaledFrameBuffer.Width, _scaledFrameBuffer.Height), Microsoft.Xna.Framework.Color.White);
+ 				_spriteBatch.End();
+ 				_graphics.SetRenderTarget(null);
+ 				_scaledFrameBuffer.GetData(_scaledFrameData, 0, _scaledFrameBuffer.Width * _scaledFrameBuffer.Height * 4);
+@@ -196,7 +_,7 @@
+ 			Filters.Scene.EndCapture(_frameBuffer, _filterFrameBuffer1, _filterFrameBuffer2, screenSize, sceneSize, sceneOffset);
+ 	}
+ 
+-	private unsafe void DrawBytesToBuffer(byte[] sourceBuffer, byte[] destinationBuffer, int sourceBufferWidth, int destinationBufferWidth, Microsoft.Xna.Framework.Rectangle area)
++	private unsafe void DrawBytesToBuffer(byte[] sourceBuffer, byte[] destinationBuffer, int sourceBufferWidth, int destinationBufferWidth, System.Drawing.Rectangle area)
+ 	{
+ 		fixed (byte* ptr3 = &destinationBuffer[0]) {
+ 			fixed (byte* ptr = &sourceBuffer[0]) {

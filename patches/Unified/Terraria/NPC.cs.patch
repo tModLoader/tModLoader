@@ -1,0 +1,13 @@
+--- src/TerrariaNetCore/Terraria/NPC.cs
++++ src/Unified/Terraria/NPC.cs
+@@ -60434,8 +_,10 @@
+ 					break;
+ 				}
+ 				if (velocity.X == 0f) {
++					/*
+ 					ref int y2 = ref frame.Y;
+ 					y2 = y2;
++					*/
+ 					frameCounter = 0.0;
+ 					break;
+ 				}
