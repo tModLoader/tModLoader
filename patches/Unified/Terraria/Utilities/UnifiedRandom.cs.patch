@@ -1,0 +1,75 @@
+--- src/TerrariaNetCore/Terraria/Utilities/UnifiedRandom.cs
++++ src/Unified/Terraria/Utilities/UnifiedRandom.cs
+@@ -8,8 +_,7 @@
+ 	private const int MBIG = int.MaxValue;
+ 	private const int MSEED = 161803398;
+ 	private const int MZ = 0;
+-	private int inext;
++	private uint inext;
+-	private int inextp;
+ 	private int[] SeedArray = new int[56];
+ 
+ 	public UnifiedRandom()
+@@ -51,13 +_,13 @@
+ 		}
+ 
+ 		inext = 0;
+-		inextp = 21;
+ 	}
+ 
+ 	protected double Sample() => (double)InternalSample() * 4.656612875245797E-10;
+ 
+ 	private int InternalSample()
+ 	{
++		/*
+ 		int num = inext;
+ 		int num2 = inextp;
+ 		if (++num >= 56)
+@@ -77,9 +_,47 @@
+ 		inext = num;
+ 		inextp = num2;
+ 		return num3;
++		*/
++
++		var array = SeedArray;
++
++		uint locINext = inext + 1;
++		if (locINext > 55) {
++			locINext = 1;
++		}
++
++		uint locINextp = locINext + 21;
++		if (locINextp > 55) {
++			locINextp -= 55;
++		}
++
++		int retVal = array[locINext] - array[locINextp];
++		if (retVal == int.MaxValue) {
++			retVal--;
++		}
++
++		retVal += (retVal >> 31) & int.MaxValue;
++
++		array[locINext] = retVal;
++		inext = locINext;
++		return retVal;
+ 	}
+ 
++	/*
+ 	public int Peek() => SeedArray[inext] - SeedArray[inextp];
++	*/
++
++	public int Peek()
++	{
++		// NEW IN 1.4.5: return SeedArray[inext] - SeedArray[inextp];
++		// Since inextp was removed, this we reuse logic from InternalSample:
++		uint inextp = inext + 21;
++		if (inextp > 55) {
++			inextp -= 55;
++		}
++		return SeedArray[inext] - SeedArray[inextp];
++	}
++
+ 	public int Next() => InternalSample();
+ 
+ 	private double GetSampleForLargeRange()
