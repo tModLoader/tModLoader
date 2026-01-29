@@ -1,15 +1,19 @@
 --- src/TerrariaNetCore/Terraria/Graphics/Light/LightMap.cs
 +++ src/Unified/Terraria/Graphics/Light/LightMap.cs
-@@ -1,3 +_,6 @@
+@@ -1,12 +_,25 @@
+-using Microsoft.Xna.Framework;
 +using System;
 +using System.Runtime.CompilerServices;
 +using System.Runtime.InteropServices;
- using Microsoft.Xna.Framework;
++using System.Runtime.Intrinsics;
++using System.Runtime.Intrinsics.X86;
  using ReLogic.Threading;
  using Terraria.Utilities;
-@@ -6,7 +_,16 @@
  
- public class LightMap
+ namespace Terraria.Graphics.Light;
+ 
+-public class LightMap
++public sealed class LightMap
  {
 +	[StructLayout(LayoutKind.Sequential)]
 +	public struct LightPixel
@@ -133,124 +137,199 @@
 +		});
  	}
  
- 	private void BlurLine(int startIndex, int endIndex, int stride)
+-	private void BlurLine(int startIndex, int endIndex, int stride)
++	private unsafe void BlurLine(int startIndex, int endIndex, int stride)
  	{
 +		/*
  		Vector3 zero = Vector3.Zero;
  		bool flag = false;
  		bool flag2 = false;
-@@ -187,15 +_,142 @@
+@@ -187,15 +_,216 @@
  					break;
  			}
  		}
 +		*/
 +
-+		float zr = 0f;
-+		float zg = 0f;
-+		float zb = 0f;
-+
-+		bool fr = false;
-+		bool fg = false;
-+		bool fb = false;
-+
-+		float air = LightDecayThroughAir;
-+		float solid = LightDecayThroughSolid;
-+		float crack = LightDecayThroughCrackedBrick;
-+
-+		Vector3 water = LightDecayThroughWater;
-+		Vector3 honey = LightDecayThroughHoney;
-+
 +		const float cutoff = 0.0185f;
 +
-+		for (int i = startIndex; i != endIndex + stride; i += stride) {
-+			ref var p = ref _colors[i];
++		if (!Vector128<float>.IsSupported || !Sse.IsSupported) {
++			float zr = 0f;
++			float zg = 0f;
++			float zb = 0f;
 +
-+			// R
-+			if (zr < p.R) {
-+				zr = p.R;
-+				fr = false;
-+			}
-+			else if (!fr) {
-+				if (zr < cutoff)
-+					fr = true;
-+				else
-+					p.R = zr;
-+			}
++			bool fr = false;
++			bool fg = false;
++			bool fb = false;
 +
-+			// G
-+			if (zg < p.G) {
-+				zg = p.G;
-+				fg = false;
-+			}
-+			else if (!fg) {
-+				if (zg < cutoff)
-+					fg = true;
-+				else
-+					p.G = zg;
-+			}
++			float air = LightDecayThroughAir;
++			float solid = LightDecayThroughSolid;
++			float crack = LightDecayThroughCrackedBrick;
 +
-+			// B
-+			if (zb < p.B) {
-+				zb = p.B;
-+				fb = false;
-+			}
-+			else if (!fb) {
-+				if (zb < cutoff)
-+					fb = true;
-+				else
-+					p.B = zb;
-+			}
++			Vector3 water = LightDecayThroughWater;
++			Vector3 honey = LightDecayThroughHoney;
 +
-+			if (fr & fg & fb)
-+				continue;
++			for (int i = startIndex; i != endIndex + stride; i += stride) {
++				ref var p = ref _colors[i];
 +
-+			switch (_mask[i]) {
-+				case LightMaskMode.None:
-+					if (!fr)
-+						zr *= air;
-+					if (!fg)
-+						zg *= air;
-+					if (!fb)
-+						zb *= air;
-+					break;
-+
-+				case LightMaskMode.Solid:
-+					if (!fr)
-+						zr *= solid;
-+					if (!fg)
-+						zg *= solid;
-+					if (!fb)
-+						zb *= solid;
-+					break;
-+
-+				case LightMaskMode.CrackedBricks:
-+					if (!fr)
-+						zr *= crack;
-+					if (!fg)
-+						zg *= crack;
-+					if (!fb)
-+						zb *= crack;
-+					break;
-+
-+				case LightMaskMode.Water: {
-+					float n = (float)_random.WithModifier((ulong)i).Next(98, 100) * 0.01f;
-+					if (!fr)
-+						zr *= water.X * n;
-+					if (!fg)
-+						zg *= water.Y * n;
-+					if (!fb)
-+						zb *= water.Z * n;
-+					break;
++				// R
++				if (zr < p.R) {
++					zr = p.R;
++					fr = false;
++				}
++				else if (!fr) {
++					if (zr < cutoff)
++						fr = true;
++					else
++						p.R = zr;
 +				}
 +
-+				case LightMaskMode.Honey:
-+					if (!fr)
-+						zr *= honey.X;
-+					if (!fg)
-+						zg *= honey.Y;
-+					if (!fb)
-+						zb *= honey.Z;
-+					break;
++				// G
++				if (zg < p.G) {
++					zg = p.G;
++					fg = false;
++				}
++				else if (!fg) {
++					if (zg < cutoff)
++						fg = true;
++					else
++						p.G = zg;
++				}
++
++				// B
++				if (zb < p.B) {
++					zb = p.B;
++					fb = false;
++				}
++				else if (!fb) {
++					if (zb < cutoff)
++						fb = true;
++					else
++						p.B = zb;
++				}
++
++				if (fr & fg & fb)
++					continue;
++
++				switch (_mask[i]) {
++					case LightMaskMode.None:
++						if (!fr)
++							zr *= air;
++						if (!fg)
++							zg *= air;
++						if (!fb)
++							zb *= air;
++						break;
++
++					case LightMaskMode.Solid:
++						if (!fr)
++							zr *= solid;
++						if (!fg)
++							zg *= solid;
++						if (!fb)
++							zb *= solid;
++						break;
++
++					case LightMaskMode.CrackedBricks:
++						if (!fr)
++							zr *= crack;
++						if (!fg)
++							zg *= crack;
++						if (!fb)
++							zb *= crack;
++						break;
++
++					case LightMaskMode.Water: {
++						float n = _random.WithModifier((ulong)i).Next(98, 100) * 0.01f;
++						if (!fr)
++							zr *= water.X * n;
++						if (!fg)
++							zg *= water.Y * n;
++						if (!fb)
++							zb *= water.Z * n;
++						break;
++					}
++
++					case LightMaskMode.Honey:
++						if (!fr)
++							zr *= honey.X;
++						if (!fg)
++							zg *= honey.Y;
++						if (!fb)
++							zb *= honey.Z;
++						break;
++				}
++			}
++		}
++		else {
++			LightPixel[] colors = _colors;
++			LightMaskMode[] mask = _mask;
++
++			fixed (LightPixel* pColors = colors)
++			fixed (LightMaskMode* pMask = mask) {
++				LightPixel* p = pColors + startIndex;
++				LightPixel* pEnd = pColors + endIndex + stride;
++
++				int step = stride;
++
++				var carriedLight = Vector128<float>.Zero;
++				var vCutoff = Vector128.Create(cutoff);
++
++				var vAir = Vector128.Create(LightDecayThroughAir, LightDecayThroughAir, LightDecayThroughAir, 0f);
++				var vSolid = Vector128.Create(LightDecayThroughSolid, LightDecayThroughSolid, LightDecayThroughSolid, 0f);
++				var vCrack = Vector128.Create(LightDecayThroughCrackedBrick, LightDecayThroughCrackedBrick, LightDecayThroughCrackedBrick, 0f);
++
++				Vector3 water = LightDecayThroughWater;
++				Vector3 honey = LightDecayThroughHoney;
++
++				var vHoney = Vector128.Create(honey.X, honey.Y, honey.Z, 0f);
++
++				while (p != pEnd) {
++					var cur = Sse.LoadVector128((float*)p);
++
++					carriedLight = Sse.Max(carriedLight, cur);
++					Sse.Store((float*)p, carriedLight);
++
++					var aliveMask = Sse.CompareGreaterThan(carriedLight, vCutoff);
++					if (Sse.MoveMask(aliveMask) == 0) {
++						p += step;
++						continue;
++					}
++
++					Vector128<float> decay;
++					switch (pMask[p - pColors]) {
++						default:
++						case LightMaskMode.None:
++							decay = vAir;
++							break;
++
++						case LightMaskMode.Solid:
++							decay = vSolid;
++							break;
++
++						case LightMaskMode.CrackedBricks:
++							decay = vCrack;
++							break;
++
++						case LightMaskMode.Honey:
++							decay = vHoney;
++							break;
++
++						case LightMaskMode.Water: {
++							float n = _random.WithModifier((ulong)(p - pColors)).Next(98, 100) * 0.01f;
++							decay = Vector128.Create(water.X * n, water.Y * n, water.Z * n, 0f);
++							break;
++						}
++					}
++
++					Vector128<float> decayed = Sse.Multiply(carriedLight, decay);
++
++					carriedLight = Sse.Or(
++						Sse.And(aliveMask, decayed),
++						Sse.AndNot(aliveMask, carriedLight)
++					);
++
++					p += step;
++				}
 +			}
 +		}
  	}
