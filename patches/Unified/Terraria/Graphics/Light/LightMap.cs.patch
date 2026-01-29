@@ -1,0 +1,284 @@
+--- src/TerrariaNetCore/Terraria/Graphics/Light/LightMap.cs
++++ src/Unified/Terraria/Graphics/Light/LightMap.cs
+@@ -1,3 +_,6 @@
++using System;
++using System.Runtime.CompilerServices;
++using System.Runtime.InteropServices;
+ using Microsoft.Xna.Framework;
+ using ReLogic.Threading;
+ using Terraria.Utilities;
+@@ -6,7 +_,16 @@
+ 
+ public class LightMap
+ {
++	[StructLayout(LayoutKind.Sequential)]
++	public struct LightPixel
++	{
++		public float R;
++		public float G;
++		public float B;
++		private float pad;
++	}
++
+-	private Vector3[] _colors;
++	private LightPixel[] _colors;
+ 	private LightMaskMode[] _mask;
+ 	private FastRandom _random = FastRandom.CreateWithRandomSeed();
+ 	private const int DEFAULT_WIDTH = 203;
+@@ -29,12 +_,25 @@
+ 	public Vector3 LightDecayThroughHoney { get; set; }
+ 
+ 	public Vector3 this[int x, int y] {
++		/*
+ 		get {
+ 			return _colors[IndexOf(x, y)];
+ 		}
+ 		set {
+ 			_colors[IndexOf(x, y)] = value;
+ 		}
++		*/
++
++		get {
++			ref var p = ref _colors[IndexOf(x, y)];
++			return new Vector3(p.R, p.G, p.B);
++		}
++		set {
++			ref var p = ref _colors[IndexOf(x, y)];
++			p.R = value.X;
++			p.G = value.Y;
++			p.B = value.Z;
++		}
+ 	}
+ 
+ 	public LightMap()
+@@ -44,27 +_,41 @@
+ 		LightDecayThroughCrackedBrick = 0.8f;
+ 		LightDecayThroughWater = new Vector3(0.88f, 0.96f, 1.015f) * 0.91f;
+ 		LightDecayThroughHoney = new Vector3(0.75f, 0.7f, 0.6f) * 0.91f;
++		/*
+ 		Width = 203;
+ 		Height = 203;
+ 		_colors = new Vector3[41209];
+ 		_mask = new LightMaskMode[41209];
++		*/
++
++		SetSize(203, 203);
+ 	}
+ 
+ 	public void GetLight(int x, int y, out Vector3 color)
+ 	{
++		/*
+ 		color = _colors[IndexOf(x, y)];
++		*/
++
++		ref var p = ref _colors[IndexOf(x, y)];
++		color = new Vector3(p.R, p.G, p.B);
+ 	}
+ 
+ 	public LightMaskMode GetMask(int x, int y) => _mask[IndexOf(x, y)];
+ 
+ 	public void Clear()
+ 	{
++		/*
+ 		for (int i = 0; i < _colors.Length; i++) {
+ 			_colors[i].X = 0f;
+ 			_colors[i].Y = 0f;
+ 			_colors[i].Z = 0f;
+ 			_mask[i] = LightMaskMode.None;
+ 		}
++		*/
++
++		Array.Clear(_colors);
++		Array.Clear(_mask);
+ 	}
+ 
+ 	public void SetMaskAt(int x, int y, LightMaskMode mode)
+@@ -81,6 +_,7 @@
+ 
+ 	private void BlurPass()
+ 	{
++		/*
+ 		FastParallel.For(0, Width, delegate (int start, int end, object context) {
+ 			for (int j = start; j < end; j++) {
+ 				BlurLine(IndexOf(j, 0), IndexOf(j, Height - 1 - NonVisiblePadding), 1);
+@@ -94,10 +_,37 @@
+ 				BlurLine(IndexOf(Width - 1, i), IndexOf(NonVisiblePadding, i), -Height);
+ 			}
+ 		});
++		*/
++
++		int w = Width;
++		int h = Height;
++		int pad = NonVisiblePadding;
++
++		FastParallel.For(0, w, (start, end, _) => {
++			for (int x = start; x < end; x++) {
++				int top = x;
++				int bottom = x + (h - 1 - pad) * w;
++				BlurLine(top, bottom, w);
++
++				int top2 = x + (h - 1) * w;
++				int bottom2 = x + pad * w;
++				BlurLine(top2, bottom2, -w);
++			}
++		});
++
++		FastParallel.For(0, h, (start, end, _) => {
++			for (int y = start; y < end; y++) {
++				int row = y * w;
++
++				BlurLine(row, row + (w - 1 - pad), 1);
++				BlurLine(row + (w - 1), row + pad, -1);
++			}
++		});
+ 	}
+ 
+ 	private void BlurLine(int startIndex, int endIndex, int stride)
+ 	{
++		/*
+ 		Vector3 zero = Vector3.Zero;
+ 		bool flag = false;
+ 		bool flag2 = false;
+@@ -187,15 +_,142 @@
+ 					break;
+ 			}
+ 		}
++		*/
++
++		float zr = 0f;
++		float zg = 0f;
++		float zb = 0f;
++
++		bool fr = false;
++		bool fg = false;
++		bool fb = false;
++
++		float air = LightDecayThroughAir;
++		float solid = LightDecayThroughSolid;
++		float crack = LightDecayThroughCrackedBrick;
++
++		Vector3 water = LightDecayThroughWater;
++		Vector3 honey = LightDecayThroughHoney;
++
++		const float cutoff = 0.0185f;
++
++		for (int i = startIndex; i != endIndex + stride; i += stride) {
++			ref var p = ref _colors[i];
++
++			// R
++			if (zr < p.R) {
++				zr = p.R;
++				fr = false;
++			}
++			else if (!fr) {
++				if (zr < cutoff)
++					fr = true;
++				else
++					p.R = zr;
++			}
++
++			// G
++			if (zg < p.G) {
++				zg = p.G;
++				fg = false;
++			}
++			else if (!fg) {
++				if (zg < cutoff)
++					fg = true;
++				else
++					p.G = zg;
++			}
++
++			// B
++			if (zb < p.B) {
++				zb = p.B;
++				fb = false;
++			}
++			else if (!fb) {
++				if (zb < cutoff)
++					fb = true;
++				else
++					p.B = zb;
++			}
++
++			if (fr & fg & fb)
++				continue;
++
++			switch (_mask[i]) {
++				case LightMaskMode.None:
++					if (!fr)
++						zr *= air;
++					if (!fg)
++						zg *= air;
++					if (!fb)
++						zb *= air;
++					break;
++
++				case LightMaskMode.Solid:
++					if (!fr)
++						zr *= solid;
++					if (!fg)
++						zg *= solid;
++					if (!fb)
++						zb *= solid;
++					break;
++
++				case LightMaskMode.CrackedBricks:
++					if (!fr)
++						zr *= crack;
++					if (!fg)
++						zg *= crack;
++					if (!fb)
++						zb *= crack;
++					break;
++
++				case LightMaskMode.Water: {
++					float n = (float)_random.WithModifier((ulong)i).Next(98, 100) * 0.01f;
++					if (!fr)
++						zr *= water.X * n;
++					if (!fg)
++						zg *= water.Y * n;
++					if (!fb)
++						zb *= water.Z * n;
++					break;
++				}
++
++				case LightMaskMode.Honey:
++					if (!fr)
++						zr *= honey.X;
++					if (!fg)
++						zg *= honey.Y;
++					if (!fb)
++						zb *= honey.Z;
++					break;
++			}
++		}
+ 	}
+ 
++	/*
+ 	private int IndexOf(int x, int y) => x * Height + y;
++	*/
++
++	[MethodImpl(MethodImplOptions.AggressiveInlining)]
++	private int IndexOf(int x, int y) => y * Width + x;
+ 
+ 	public void SetSize(int width, int height)
+ 	{
++		/*
+ 		if (width * height > _colors.Length) {
+ 			_colors = new Vector3[width * height];
+ 			_mask = new LightMaskMode[width * height];
++		}
++
++		Width = width;
++		Height = height;
++		*/
++
++		int size = width * height;
++
++		if (_colors == null || size > _colors.Length) {
++			_colors = new LightPixel[size];
++			_mask = new LightMaskMode[size];
+ 		}
+ 
+ 		Width = width;
