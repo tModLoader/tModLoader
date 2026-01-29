@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tModLoader.BuildTasks", "..
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FNA", "..\FNA2\src\FNA\FNA.csproj", "{60F686F7-E218-43DD-D4DE-977A0EFB40BB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnifiedTests", "..\UnifiedTests\UnifiedTests.csproj", "{A0709050-A2EF-439D-8B8C-EAADC0F6995A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{60F686F7-E218-43DD-D4DE-977A0EFB40BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{60F686F7-E218-43DD-D4DE-977A0EFB40BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{60F686F7-E218-43DD-D4DE-977A0EFB40BB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A0709050-A2EF-439D-8B8C-EAADC0F6995A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A0709050-A2EF-439D-8B8C-EAADC0F6995A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A0709050-A2EF-439D-8B8C-EAADC0F6995A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A0709050-A2EF-439D-8B8C-EAADC0F6995A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

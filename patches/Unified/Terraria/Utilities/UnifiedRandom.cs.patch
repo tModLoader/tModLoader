@@ -1,6 +1,12 @@
 --- src/TerrariaNetCore/Terraria/Utilities/UnifiedRandom.cs
 +++ src/Unified/Terraria/Utilities/UnifiedRandom.cs
-@@ -8,8 +_,11 @@
+@@ -3,13 +_,16 @@
+ namespace Terraria.Utilities;
+ 
+ [Serializable]
+-public class UnifiedRandom
++public sealed class UnifiedRandom
+ {
  	private const int MBIG = int.MaxValue;
  	private const int MSEED = 161803398;
  	private const int MZ = 0;
@@ -29,7 +35,7 @@
  		int num = inext;
  		int num2 = inextp;
  		if (++num >= 56)
-@@ -77,9 +_,47 @@
+@@ -77,9 +_,50 @@
  		inext = num;
  		inextp = num2;
  		return num3;
@@ -63,6 +69,8 @@
  	public int Peek() => SeedArray[inext] - SeedArray[inextp];
 +	*/
 +
++	// Fixed implementation of Peek, but the method is unused.
++	/*
 +	public int Peek()
 +	{
 +		// NEW IN 1.4.5: return SeedArray[inext] - SeedArray[inextp];
@@ -73,6 +81,7 @@
 +		}
 +		return SeedArray[inext] - SeedArray[inextp];
 +	}
++	*/
 +
  	public int Next() => InternalSample();
  
