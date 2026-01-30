@@ -1,11 +1,12 @@
 --- src/TerrariaNetCore/Terraria/Terraria.csproj
 +++ src/Unified/Terraria/Terraria.csproj
-@@ -15,8 +_,6 @@
+@@ -15,8 +_,7 @@
  		<ApplicationIcon>Icon.ico</ApplicationIcon>
  
  		<!-- Avoid overwriting Terraria.exe (if it's not Debug it's release) -->
 -		<AssemblyName Condition="$(Configuration.Contains('Debug'))">$(AssemblyName)Debug</AssemblyName>
 -		<AssemblyName Condition="!$(Configuration.Contains('Debug'))">$(AssemblyName)Release</AssemblyName>
++		<AssemblyName>$(AssemblyName)Unified</AssemblyName>
  		<OutputName>$(AssemblyName)</OutputName>
  	</PropertyGroup>
  
