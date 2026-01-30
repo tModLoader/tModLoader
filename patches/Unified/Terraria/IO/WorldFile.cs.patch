@@ -1,0 +1,21 @@
+--- src/TerrariaNetCore/Terraria/IO/WorldFile.cs
++++ src/Unified/Terraria/IO/WorldFile.cs
+@@ -2267,8 +_,18 @@
+ 
+ 				while (num3 > 0) {
+ 					j++;
++					/*
+ 					Main.tile[i, j].CopyFrom(tile);
++					*/
+ 					num3--;
++
++					var tile2 = Main.tile[i, j];
++
++					tile2.Get<LiquidData>() = tile.Get<LiquidData>();
++					tile2.Get<WallTypeData>() = tile.Get<WallTypeData>();
++					tile2.Get<TileTypeData>() = tile.Get<TileTypeData>();
++					tile2.Get<TileWallWireStateData>() = tile.Get<TileWallWireStateData>();
++					tile2.Get<TileWallBrightnessInvisibilityData>() = tile.Get<TileWallBrightnessInvisibilityData>();
+ 				}
+ 			}
+ 		}
