@@ -67,7 +67,7 @@ jobs:
           fi
           version="$oldate.$feature.$patch"
           echo "New version is '$version'"
-          echo "::set-output name=new_version::$version"
+          echo "new_version=$version" >> $GITHUB_OUTPUT
         env:
           branch: ${{github.ref}}
           
@@ -105,7 +105,7 @@ jobs:
           fi
           
           echo "stable is '$stable'"
-          echo "::set-output name=stable_version::$stable"
+          echo "stable_version=$stableVer" >> $GITHUB_OUTPUT
       
       - name: Re:Check out base branch
         uses: actions/checkout@v4
@@ -258,14 +258,14 @@ jobs:
           STABLEVERSION: ${{ steps.stable.outputs.stable_version }}
                     
       - name: Upload Debug Build Artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: Debug Build
           path: |
             ./artifacts/Debug/
             
       - name: Upload Release Build Artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: Release Build
           path: |
@@ -273,7 +273,7 @@ jobs:
            
       - name: Upload temporary encrypted src artifact
         if: github.event_name == 'push' && (github.ref == 'refs/heads/1.4.3-legacy')
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: temporary-src
           path: tModLoader.zip.gpg
@@ -339,7 +339,7 @@ jobs:
           TMLVERSION: ${{ steps.version.outputs.new_version }}
           
       - name: Upload ExampleMod Build Artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: ExampleMod Build
           path: |
@@ -382,7 +382,7 @@ jobs:
           persist-credentials: false
           fetch-depth: 0
       - name: Download temporary encrypted src artifact from build job
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
           name: temporary-src
       - name: Restore tModLoader folder from artifact
@@ -477,7 +477,7 @@ jobs:
           done
           
       - name: Download build artifact from build job
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
           # Change this next line to switch between uploading Release and Debug if desired. 
           name: Release Build
@@ -525,7 +525,7 @@ jobs:
           echo "Attempting get current version id"
           version=$(git describe --tags --abbrev=0)
           echo "Current Version is: $version"
-          echo "::set-output name=new_version::$version"
+          echo "new_version=$version" >> $GITHUB_OUTPUT
         env:
           branch: ${{github.ref}}
       
@@ -559,7 +559,7 @@ jobs:
           
       - name: Download ExampleMod build artifact from build job
         # This should hopefully always work since this job shouldn't even run if the build job failed due to ExampleMod not compiling.
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
           name: ExampleMod Build
           path: artifacts/ExampleMod
