@@ -15,7 +15,8 @@ namespace Terraria.ModLoader.Engine
 		private int loadedAssets = 0;
 
 		public TMLContentManager(IServiceProvider serviceProvider, string rootDirectory, TMLContentManager alternateContentManager) : base(serviceProvider, rootDirectory) {
-			TryFixFileCasings(rootDirectory);
+			if (alternateContentManager != null) // Only need to check vanilla content directory.
+				TryFixFileCasings(rootDirectory);
 
 			this.alternateContentManager = alternateContentManager;
 
