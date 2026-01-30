@@ -5,7 +5,7 @@
  	public const int MaxWorldViewSizeWidth = 1920;
  	public const int MaxWorldViewSizeHeight = 1200;
 -	public static readonly Microsoft.Xna.Framework.Point MaxWorldViewSize = new Microsoft.Xna.Framework.Point(1920, 1200);
-+	public static readonly System.Drawing.Point MaxWorldViewSize = new System.Drawing.Point(1920, 1200);
++	public static readonly System.Drawing.Point MaxWorldViewSize = new System.Drawing.Point(8192, 8192);
  	public static int maxScreenW = 1920;
  	public static int maxScreenH = 1200;
  	public static int minScreenW = 800;
