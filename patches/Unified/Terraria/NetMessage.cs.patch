@@ -1,14 +1,19 @@
 --- src/TerrariaNetCore/Terraria/NetMessage.cs
 +++ src/Unified/Terraria/NetMessage.cs
-@@ -1720,7 +_,7 @@
+@@ -1720,11 +_,11 @@
  		int num6 = 0;
  		byte b = 0;
  		byte[] array = new byte[16];
 -		Tile tile = null;
-+		Tile tile = default;
++		Tile? tile = null;
  		for (int i = yStart; i < yStart + height; i++) {
  			for (int j = xStart; j < xStart + width; j++) {
  				Tile tile2 = Main.tile[j, i];
+-				if (tile2.isTheSameAs(tile) && TileID.Sets.AllowsSaveCompressionBatching[tile2.type]) {
++				if (tile.HasValue && tile2.isTheSameAs(tile.Value) && TileID.Sets.AllowsSaveCompressionBatching[tile2.type]) {
+ 					num4 = (short)(num4 + 1);
+ 					continue;
+ 				}
 @@ -2002,16 +_,19 @@
  
  	public static void DecompressTileBlock_Inner(BinaryReader reader, int xStart, int yStart, int width, int height)
