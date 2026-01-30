@@ -3602,6 +3602,39 @@
  		}
  
  		spriteBatch.End();
+@@ -44714,6 +_,8 @@
+ 		Netplay.HostToken = NewToken();
+ 		text = text + " -hosttoken " + Netplay.HostToken;
+ 		tServer = new Process();
++
++		/*
+ 		if (Platform.IsLinux)
+ 			tServer.StartInfo.FileName = "TerrariaServer";
+ 		else if (Platform.IsOSX)
+@@ -44722,13 +_,23 @@
+ 			tServer.StartInfo.FileName = "TerrariaServer.exe";
+ 
+ 		tServer.StartInfo.Arguments = text;
++		*/
++
++		tServer.StartInfo.FileName = Environment.ProcessPath;
++		tServer.StartInfo.Arguments = $"Terraria.dll -server {text}";
++
+ 		if (libPath != "") {
+ 			ProcessStartInfo startInfo = tServer.StartInfo;
+ 			startInfo.Arguments = startInfo.Arguments + " -loadlib " + libPath;
+ 		}
+ 
++		/*
+ 		tServer.StartInfo.UseShellExecute = false;
+ 		tServer.StartInfo.CreateNoWindow = true;
++		*/
++
++		tServer.StartInfo.UseShellExecute = true;
++
+ 		if (SocialAPI.Network != null)
+ 			SocialAPI.Network.LaunchLocalServer(tServer, MenuServerMode);
+ 		else
 @@ -44950,13 +_,13 @@
  		dualDungeonsSeed = false;
  	}
