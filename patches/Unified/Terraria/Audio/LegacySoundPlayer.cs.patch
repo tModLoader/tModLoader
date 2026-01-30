@@ -1,0 +1,11 @@
+--- src/TerrariaNetCore/Terraria/Audio/LegacySoundPlayer.cs
++++ src/Unified/Terraria/Audio/LegacySoundPlayer.cs
+@@ -306,7 +_,7 @@
+ 				float num4 = vector.Length();
+ 				if (num4 < SoundAttenuationDistance) {
+ 					flag = true;
+-					num3 = MathHelper.Clamp(vector.X / ((float)Main.MaxWorldViewSize.X * 0.5f), -1f, 1f);
++					num3 = MathHelper.Clamp(vector.X / ((float)Main.MaxGameplayViewSize.X * 0.5f), -1f, 1f);
+ 					num2 = 1f - num4 / SoundAttenuationDistance;
+ 				}
+ 			}

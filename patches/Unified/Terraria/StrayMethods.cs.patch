@@ -1,0 +1,11 @@
+--- src/TerrariaNetCore/Terraria/StrayMethods.cs
++++ src/Unified/Terraria/StrayMethods.cs
+@@ -74,7 +_,7 @@
+ 	public static void CheckArenaScore(Vector2 arenaCenter, out Point xLeftEnd, out Point xRightEnd, int walkerWidthInTiles = 5, int walkerHeightInTiles = 10)
+ 	{
+ 		bool flag = false;
+-		int maxDistance = Main.MaxWorldViewSize.X / 16;
++		int maxDistance = Main.MaxGameplayViewSize.X / 16;
+ 		Point point = arenaCenter.ToTileCoordinates();
+ 		xLeftEnd = (xRightEnd = point);
+ 		Collision.ExpandVertically(point.X, point.Y, out var _, out var bottomY, 0, 4);

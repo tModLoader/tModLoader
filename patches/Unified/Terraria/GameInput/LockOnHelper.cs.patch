@@ -1,0 +1,11 @@
+--- src/TerrariaNetCore/Terraria/GameInput/LockOnHelper.cs
++++ src/Unified/Terraria/GameInput/LockOnHelper.cs
+@@ -282,7 +_,7 @@
+ 	private static void RefreshTargets(Vector2 position, float radius)
+ 	{
+ 		_targets.Clear();
+-		Rectangle rectangle = Utils.CenteredRectangle(Main.player[Main.myPlayer].Center, Main.MaxWorldViewSize.ToVector2());
++		Rectangle rectangle = Utils.CenteredRectangle(Main.player[Main.myPlayer].Center, Main.MaxGameplayViewSize.ToVector2());
+ 		_ = Main.player[Main.myPlayer].Center;
+ 		Main.player[Main.myPlayer].DirectionTo(Main.MouseWorld);
+ 		for (int i = 0; i < Main.npc.Length; i++) {

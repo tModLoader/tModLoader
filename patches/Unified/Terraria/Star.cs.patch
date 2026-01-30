@@ -1,0 +1,27 @@
+--- src/TerrariaNetCore/Terraria/Star.cs
++++ src/Unified/Terraria/Star.cs
+@@ -46,7 +_,7 @@
+ 		starFallCount++;
+ 		int num = -1;
+ 		float num2 = -1f;
+-		float num3 = positionX / Main.rightWorld * (float)Main.MaxWorldViewSize.X;
++		float num3 = positionX / Main.rightWorld * (float)Main.MaxRenderingViewSize.X;
+ 		for (int i = 0; i < Main.numStars; i++) {
+ 			if (!Main.star[i].hidden && !Main.star[i].falling) {
+ 				float num4 = Math.Abs(Main.star[i].position.X - num3);
+@@ -244,13 +_,13 @@
+ 			if (Main.star[k].position.X < 0f)
+ 				Main.star[k].velocity.X = Math.Abs(Main.star[k].velocity.X);
+ 
+-			if (Main.star[k].position.X > (float)Main.MaxWorldViewSize.X)
++			if (Main.star[k].position.X > (float)Main.MaxRenderingViewSize.X)
+ 				Main.star[k].velocity.X = 0f - Math.Abs(Main.star[k].velocity.X);
+ 
+ 			if (Main.star[k].position.Y < 0f)
+ 				Main.star[k].velocity.Y = Math.Abs(Main.star[k].velocity.Y);
+ 
+-			if (Main.star[k].position.Y > (float)Main.MaxWorldViewSize.Y)
++			if (Main.star[k].position.Y > (float)Main.MaxRenderingViewSize.Y)
+ 				Main.star[k].velocity.Y = 0f - Math.Abs(Main.star[k].velocity.Y);
+ 		}
+ 	}

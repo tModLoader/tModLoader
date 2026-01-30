@@ -9,6 +9,15 @@
  			return true;
  
  		if (_lightningCollisionBounds != null && _lightningCollisionBounds.Intersects(targetRect))
+@@ -16033,7 +_,7 @@
+ 	{
+ 		byte b = Player.FindClosest(position, width, height);
+ 		closestPlayer = Main.player[b];
+-		playArea = Utils.CenteredRectangle(closestPlayer.Center, Main.MaxWorldViewSize.ToVector2());
++		playArea = Utils.CenteredRectangle(closestPlayer.Center, Main.MaxGameplayViewSize.ToVector2());
+ 		closeToMe = Utils.CenteredRectangle(base.Center, new Vector2(300f, 150f));
+ 	}
+ 
 @@ -41778,10 +_,12 @@
  		int num2 = 2;
  		int num3 = 0;
@@ -24,3 +33,12 @@
  
  			if (WorldGen.ActiveAndWalkableTile(p.X, p.Y)) {
  				Vector2 vector = p.ToWorldCoordinates(8f, 0f);
+@@ -63734,7 +_,7 @@
+ 
+ 					if (type == 109) {
+ 						int num1109 = Player.FindClosest(position, width, height);
+-						if ((double)(base.Center - Main.player[num1109].Center).Length() > (double)Main.MaxWorldViewSize.X * 0.75) {
++						if ((double)(base.Center - Main.player[num1109].Center).Length() > (double)Main.MaxGameplayViewSize.X * 0.75) {
+ 							num1107 = -1;
+ 							num1108 = 593;
+ 						}

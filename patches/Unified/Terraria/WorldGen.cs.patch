@@ -111,6 +111,15 @@
  				}
  			}
  		}
+@@ -3811,7 +_,7 @@
+ 			return false;
+ 
+ 		Rectangle hitbox = Main.LocalPlayer.Hitbox;
+-		hitbox.Inflate(Main.MaxWorldViewSize.X / 2, Main.MaxWorldViewSize.Y / 2);
++		hitbox.Inflate(Main.MaxGameplayViewSize.X / 2, Main.MaxGameplayViewSize.Y / 2);
+ 		NPC nPC = Main.npc[n];
+ 		Rectangle value = new Rectangle(nPC.homeTileX * 16, nPC.homeTileY * 16, 16, 16);
+ 		return hitbox.Intersects(value);
 @@ -5805,6 +_,7 @@
  		Main.treeStyle[3] = 0;
  		Liquid.numLiquid = 0;
@@ -161,6 +170,24 @@
  		if (tile == null)
  			return false;
  
+@@ -60115,7 +_,7 @@
+ 				continue;
+ 
+ 			Rectangle tileRectangle = Utils.CenteredRectangle(player.Center.ToTileCoordinates(), Point.Zero);
+-			tileRectangle.Inflate(Main.MaxWorldViewSize.X / 32, Main.MaxWorldViewSize.Y / 32);
++			tileRectangle.Inflate(Main.MaxGameplayViewSize.X / 32, Main.MaxGameplayViewSize.Y / 32);
+ 			tileRectangle = WorldUtils.ClampToWorld(tileRectangle, 10);
+ 			for (int j = 0; j < 300; j++) {
+ 				Point point = Main.rand.NextFromRectangle(tileRectangle);
+@@ -60344,7 +_,7 @@
+ 
+ 			Point point2 = player2.Center.ToTileCoordinates();
+ 			Rectangle value3 = new Rectangle(point2.X, point2.Y, 1, 1);
+-			value3.Inflate(Main.MaxWorldViewSize.X / 32, Main.MaxWorldViewSize.Y / 32);
++			value3.Inflate(Main.MaxGameplayViewSize.X / 32, Main.MaxGameplayViewSize.Y / 32);
+ 			value3 = Rectangle.Intersect(value3, value);
+ 			if (value3.Width == 0 || value3.Height == 0)
+ 				continue;
 @@ -68133,8 +_,12 @@
  								break;
  						}

@@ -1,0 +1,11 @@
+--- src/TerrariaNetCore/Terraria/Audio/ActiveSound.cs
++++ src/Unified/Terraria/Audio/ActiveSound.cs
+@@ -124,7 +_,7 @@
+ 		float num = 1f;
+ 		if (!IsGlobal) {
+ 			Vector2 vector = Position - Main.Camera.Center;
+-			Sound.Pan = MathHelper.Clamp(vector.X / ((float)Main.MaxWorldViewSize.X * 0.5f), -1f, 1f);
++			Sound.Pan = MathHelper.Clamp(vector.X / ((float)Main.MaxGameplayViewSize.X * 0.5f), -1f, 1f);
+ 			num = MathHelper.Clamp(1f - vector.Length() / LegacySoundPlayer.SoundAttenuationDistance, 0f, 1f);
+ 		}
+ 

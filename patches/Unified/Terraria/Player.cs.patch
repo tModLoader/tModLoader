@@ -1,5 +1,14 @@
 --- src/TerrariaNetCore/Terraria/Player.cs
 +++ src/Unified/Terraria/Player.cs
+@@ -17621,7 +_,7 @@
+ 			Hurt(PlayerDeathReason.LegacyDefault(), attackDamage_ScaledByDifficulty, Main.npc[Main.wofNPCIndex].direction);
+ 		}
+ 
+-		if (!gross && position.Y > (float)((Main.maxTilesY - 250) * 16) && position.X > num - (float)Main.MaxWorldViewSize.X && position.X < num + (float)Main.MaxWorldViewSize.X) {
++		if (!gross && position.Y > (float)((Main.maxTilesY - 250) * 16) && position.X > num - (float)Main.MaxGameplayViewSize.X && position.X < num + (float)Main.MaxGameplayViewSize.X) {
+ 			AddBuff(37, 10);
+ 			SoundEngine.PlaySound(4, (int)Main.npc[Main.wofNPCIndex].position.X, (int)Main.npc[Main.wofNPCIndex].position.Y, 10);
+ 		}
 @@ -18821,7 +_,7 @@
  
  	public static Tile GetFloorTile(int x, int y)
@@ -30,14 +39,34 @@
  			if (!WorldGen.InWorld(num2, num3, 4))
  				flag = true;
  			else if (Main.tile[num2, num3] == null)
-@@ -19440,6 +_,10 @@
- 			else if (Main.tile[num2, num3 - 3] == null)
+@@ -19441,6 +_,10 @@
  				flag = true;
  			else if (Main.tile[num2, num3 + 3] == null)
-+				flag = true;
+ 				flag = true;
 +			*/
 +
 +			if (Main.netMode == NetmodeID.MultiplayerClient && !Main.sectionManager.TilesLoaded(num2 - 3, num3 - 3, num2 + 3, num3 + 3))
- 				flag = true;
++				flag = true;
  
  			if (flag) {
+ 				outOfRange = true;
+@@ -33812,8 +_,8 @@
+ 	public void HorsemansBlade_SpawnPumpkin(int npcIndex, int dmg, float kb)
+ 	{
+ 		Vector2 center = Main.npc[npcIndex].Center;
+-		int y = Main.MaxWorldViewSize.Y;
++		int y = Main.MaxGameplayViewSize.Y;
+-		int x = Main.MaxWorldViewSize.X;
++		int x = Main.MaxGameplayViewSize.X;
+ 		int num = Main.rand.Next(100, 300);
+ 		int num2 = Main.rand.Next(100, 300);
+ 		num = ((Main.rand.Next(2) != 0) ? (num + (x / 2 - num)) : (num - (x / 2 + num)));
+@@ -36618,7 +_,7 @@
+ 
+ 	public void LimitPointToPlayerReachableArea(ref Vector2 pointPosition)
+ 	{
+-		Rectangle worldRect = Utils.CenteredRectangle(base.Center, Main.MaxWorldViewSize.ToVector2());
++		Rectangle worldRect = Utils.CenteredRectangle(base.Center, Main.MaxGameplayViewSize.ToVector2());
+ 		worldRect = WorldUtils.ClampToWorldBorders(worldRect);
+ 		Vector2 vector = worldRect.Center.ToVector2();
+ 		Vector2 vector2 = pointPosition - vector;

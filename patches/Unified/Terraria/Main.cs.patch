@@ -1,11 +1,18 @@
 --- src/TerrariaNetCore/Terraria/Main.cs
 +++ src/Unified/Terraria/Main.cs
-@@ -481,7 +_,7 @@
+@@ -481,7 +_,14 @@
  	public static int desiredWorldTilesUpdateRate = 1;
  	public const int MaxWorldViewSizeWidth = 1920;
  	public const int MaxWorldViewSizeHeight = 1200;
 -	public static readonly Microsoft.Xna.Framework.Point MaxWorldViewSize = new Microsoft.Xna.Framework.Point(1920, 1200);
-+	public static readonly System.Drawing.Point MaxWorldViewSize = new System.Drawing.Point(8192, 8192);
++	// For non-rendering cases, like relative sound effect influence or valid
++	// projectile distance checks.
++	public static readonly Point MaxGameplayViewSize = new(1920, 1200);
++	// Purely for rendering cases, primarily deciding what can be rendered to
++	// the screen.
++	public static readonly Point MaxRenderingViewSize = new(8192, 8192);
++	[Obsolete("Use MaxGameplayViewSize or MaxRenderingViewSize", error: true)]
++	public static readonly System.Drawing.Point MaxWorldViewSize = MaxGameplayViewSize;
  	public static int maxScreenW = 1920;
  	public static int maxScreenH = 1200;
  	public static int minScreenW = 800;
@@ -108,6 +115,22 @@
  	{
  		if (player[myPlayer].gravDir != -1f)
  			return box;
+@@ -3156,6 +_,7 @@
+ 		return true;
+ 	}
+ 
++	/*
+ 	public static void SetGraphicsProfile(GraphicsProfile profile, bool forceSet)
+ 	{
+ 		if (_currentGraphicsProfile != profile || forceSet) {
+@@ -3194,6 +_,7 @@
+ 
+ 		instance.EnsureRenderTargetContent();
+ 	}
++	*/
+ 
+ 	private static void TrySupporting8K()
+ 	{
 @@ -3364,12 +_,12 @@
  
  	public static bool InSmartCursorHighlightArea(int x, int y, out bool actuallySelected)
@@ -123,15 +146,69 @@
  
  		return false;
  	}
-@@ -3662,7 +_,7 @@
+@@ -3591,6 +_,10 @@
+ 
+ 	protected void CheckBunny()
+ 	{
++		// TODO: Can emulate on Linux with some path stuff.
++		if (!OperatingSystem.IsWindows())
++			return;
++
+ 		try {
+ 			RegistryKey currentUser = Registry.CurrentUser;
+ 			currentUser = currentUser.CreateSubKey("Software\\Terraria");
+@@ -3662,7 +_,13 @@
  		int currentValue3 = graphics.PreferredBackBufferHeight;
  		configuration.Get("DisplayWidth", ref currentValue2);
  		configuration.Get("DisplayHeight", ref currentValue3);
++
++		// TODO: Can we probe for a better value?
++		maxScreenW = MaxRenderingViewSize.X;
++		maxScreenH = MaxRenderingViewSize.Y;
++		_renderTargetMaxSize = MaxRenderingViewSize.X;
++
 -		LastLoadedResolution = new Microsoft.Xna.Framework.Point(currentValue2, currentValue3);
 +		LastLoadedResolution = new System.Drawing.Point(currentValue2, currentValue3);
  		if (!startFullscreen) {
  			if (PendingBorderlessState)
  				screenBorderlessPendingResizes = 1;
+@@ -5393,6 +_,9 @@
+ 			Configuration.Load();
+ 			graphics = new GraphicsDeviceManager(((object)this) as Game);
+ 			base.Content.RootDirectory = "Content";
++
++			// Force the game to always use HiDef.
++			graphics.GraphicsProfile = GraphicsProfile.HiDef;
+ 		}
+ 	}
+ 
+@@ -5520,7 +_,10 @@
+ 			return;
+ 		}
+ 
++		/*
+ 		LoadContent_TryEnteringHiDef();
++		*/
++
+ 		ClientInitialize();
+ 		base.Initialize();
+ 	}
+@@ -9739,6 +_,7 @@
+ 		ScreenShaderRef = Assets.Request<Effect>("ScreenShader");
+ 	}
+ 
++	/*
+ 	private void LoadContent_TryEnteringHiDef()
+ 	{
+ 		Configuration.Load();
+@@ -9753,6 +_,7 @@
+ 		else if (Program.IsFna)
+ 			SetGraphicsProfile(GraphicsProfile.HiDef, forceSet: true);
+ 	}
++	*/
+ 
+ 	protected IEnumerator LoadContent_Deferred()
+ 	{
 @@ -10397,7 +_,7 @@
  		bool flag16 = false;
  		bool flag17 = false;
@@ -3651,6 +3728,17 @@
  	{
  		float uiScaleWanted = _uiScaleWanted;
  		float num = (float)screenHeight / 900f;
+@@ -45274,8 +_,8 @@
+ 
+ 	private void DrawSplash_LoadingFlower(Microsoft.Xna.Framework.Color splashColor)
+ 	{
+-		float val = (float)screenWidth / (float)MaxWorldViewSize.X;
++		float val = (float)screenWidth / (float)MaxRenderingViewSize.X;
+-		float val2 = (float)screenHeight / (float)MaxWorldViewSize.Y;
++		float val2 = (float)screenHeight / (float)MaxRenderingViewSize.Y;
+ 		float num = Math.Max(Math.Max(1f, val), val2);
+ 		Texture2D value = TextureAssets.LoadingSunflower.Value;
+ 		int num2 = 3;
 @@ -45285,7 +_,7 @@
  		if (num4 >= num3)
  			num4 = 0;
@@ -4436,7 +4524,20 @@
  				int num11 = 2048;
  				float num12 = MathHelper.Clamp((float)rectangle.Height * 16f / (float)num11, 1f, 3f);
  				screenWidth = (int)Math.Ceiling((float)(rectangle.Width * 16) / num12);
-@@ -48960,7 +_,7 @@
+@@ -48949,18 +_,18 @@
+ 				float num13 = (float)maxTilesY * 0.15f;
+ 				verticalParallaxOverride = (float)Utils.Remap(screenPosition.Y, worldSurface * 16.0, num13 * 16f, -1.0, -0.5);
+ 				int num14 = -120;
+-				int y = MaxWorldViewSize.Y;
++				int y = MaxRenderingViewSize.Y;
+ 				float val5 = Math.Max(0f, (float)screenHeight - ((float)y * (2f + verticalParallaxOverride.Value) + (float)num14));
+ 				float num15 = Math.Min(num13 * 16f * 0.75f - screenPosition.Y, rectangle.Height * 16);
+ 				float val6 = (float)Math.Pow(Utils.Remap(screenPosition.Y, num13 * 16f, 0f, 0f, 1f), 2.0) * num15 / num12;
+ 				float toMax = Math.Max(val5, val6);
+ 				float toMin = ComputeScAdj(screenPosition.Y, num8);
+-				scAdj = Utils.Remap(settings.Area.Height * 16, MaxWorldViewSize.Y, num11, toMin, toMax);
++				scAdj = Utils.Remap(settings.Area.Height * 16, MaxRenderingViewSize.Y, num11, toMin, toMax);
+ 				transform = Matrix.CreateScale(num12) * Matrix.CreateTranslation((screenPosition - vector4).ToVector3()) * transform;
  				screenPosition.Y += (rectangle.Height * 16 - screenHeight) / 2;
  			}
  
@@ -4445,7 +4546,7 @@
  			worldRect.Inflate(Math.Max(0, minScreenW - screenWidth) / 2, Math.Max(0, minScreenH - screenHeight) / 2);
  			worldRect = WorldUtils.ClampToWorldBorders(worldRect);
  			transform = Matrix.CreateTranslation((worldRect.TopLeft() - screenPosition).ToVector3()) * transform;
-@@ -48994,8 +_,8 @@
+@@ -48994,9 +_,9 @@
  				DrawUnderworldBackground(GameZoomTarget);
  			}
  			else {
@@ -4453,9 +4554,11 @@
 +				System.Drawing.Rectangle value = new System.Drawing.Rectangle(0, UnderworldLayer, maxTilesX, maxTilesY - UnderworldLayer);
 -				Microsoft.Xna.Framework.Rectangle rectangle2 = Microsoft.Xna.Framework.Rectangle.Intersect(settings.Area, value);
 +				System.Drawing.Rectangle rectangle2 = System.Drawing.Rectangle.Intersect(settings.Area, value);
- 				int y2 = MaxWorldViewSize.Y;
+-				int y2 = MaxWorldViewSize.Y;
++				int y2 = MaxRenderingViewSize.Y;
  				int num16 = Utils.Clamp(rectangle2.Center.Y * 16, value.Top * 16 + y2 / 2, value.Bottom * 16 - y2 / 2);
  				screenPosition.Y = num16 - y2 / 2;
+ 				screenPosition.X = rectangle2.Left * 16;
 @@ -49471,7 +_,7 @@
  
  		if (!drawToScreen && !isBackground) {
@@ -4583,6 +4686,17 @@
  			}
  		}
  
+@@ -50038,8 +_,8 @@
+ 			UpdateDisplaySettings();
+ 
+ 		ReleaseTargets();
+-		int num = Math.Min(base.GraphicsDevice.PresentationParameters.BackBufferWidth, MaxWorldViewSize.X);
++		int num = Math.Min(base.GraphicsDevice.PresentationParameters.BackBufferWidth, MaxRenderingViewSize.X);
+-		int num2 = Math.Min(base.GraphicsDevice.PresentationParameters.BackBufferHeight, MaxWorldViewSize.Y);
++		int num2 = Math.Min(base.GraphicsDevice.PresentationParameters.BackBufferHeight, MaxRenderingViewSize.Y);
+ 		offScreenRange = 192;
+ 		if (num + offScreenRange * 2 > _renderTargetMaxSize)
+ 			offScreenRange = (_renderTargetMaxSize - num) / 2;
 @@ -50078,7 +_,7 @@
  	protected void DrawWires()
  	{
@@ -4868,6 +4982,17 @@
  			}
  		}
  
+@@ -53372,8 +_,8 @@
+ 		if (DebugOptions.DrawWaitInMs > 0.0)
+ 			ThreadUtilities.HighPrecisionSleep(DebugOptions.DrawWaitInMs);
+ 
+-		float val = (float)screenWidth / (float)MaxWorldViewSize.X;
++		float val = (float)screenWidth / (float)MaxRenderingViewSize.X;
+-		float val2 = (float)screenHeight / (float)MaxWorldViewSize.Y;
++		float val2 = (float)screenHeight / (float)MaxRenderingViewSize.Y;
+ 		ForcedMinimumZoom = Math.Max(Math.Max(1f, val), val2);
+ 		GameViewMatrix.Effects = ((!gameMenu && player[myPlayer].gravDir != 1f) ? SpriteEffects.FlipVertically : SpriteEffects.None);
+ 		BackgroundViewMatrix.Effects = GameViewMatrix.Effects;
 @@ -53431,7 +_,7 @@
  				TimeLogger.StartTimestamp fromTimestamp5 = TimeLogger.Start();
  				spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, DefaultSamplerState, DepthStencilState.None, Rasterizer, null, matrix);

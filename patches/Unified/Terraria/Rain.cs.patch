@@ -1,0 +1,11 @@
+--- src/TerrariaNetCore/Terraria/Rain.cs
++++ src/Unified/Terraria/Rain.cs
+@@ -25,7 +_,7 @@
+ 		if (Main.netMode == 2 || Main.gamePaused || Main.gameMenu || !Main.SceneMetrics.ZoneRain || Main.shimmerAlpha > 0f)
+ 			return;
+ 
+-		float num = (float)Main.screenWidth / (float)Main.MaxWorldViewSize.X;
++		float num = (float)Main.screenWidth / (float)Main.MaxRenderingViewSize.X;
+ 		num *= 25f;
+ 		num *= 0.25f + 1f * Main.cloudAlpha;
+ 		if (NPC.AnyDanger(quickBossNPCCheck: true)) {

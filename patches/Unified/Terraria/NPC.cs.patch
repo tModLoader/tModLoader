@@ -1,5 +1,16 @@
 --- src/TerrariaNetCore/Terraria/NPC.cs
 +++ src/Unified/Terraria/NPC.cs
+@@ -4255,8 +_,8 @@
+ 
+ 		public static void SlimeRainSpawns(Player player)
+ 		{
+-			int y = Main.MaxWorldViewSize.Y;
++			int y = Main.MaxGameplayViewSize.Y;
+-			int x = Main.MaxWorldViewSize.X;
++			int x = Main.MaxGameplayViewSize.X;
+ 			float num = 15f;
+ 			if ((double)player.position.Y > Main.worldSurface * 16.0 + (double)(y / 2) || player.nearbyActiveNPCs > num)
+ 				return;
 @@ -44959,8 +_,13 @@
  			}
  		}
