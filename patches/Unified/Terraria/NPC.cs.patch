@@ -1,5 +1,19 @@
 --- src/TerrariaNetCore/Terraria/NPC.cs
 +++ src/Unified/Terraria/NPC.cs
+@@ -44959,8 +_,13 @@
+ 			}
+ 		}
+ 
++		/*
+ 		if (!WorldGen.InWorld(num6, num7) || Main.tile[num6, num7] == null)
+ 			return;
++		*/
++
++		if (!WorldGen.InWorld(num6, num7) || Main.netMode == 1 && !Main.sectionManager.TileLoaded(num6, num7))
++			return;
+ 
+ 		if (Main.tile[num6, num7].type == 666)
+ 			AddBuff(120, 180);
 @@ -60434,8 +_,10 @@
  					break;
  				}
@@ -11,3 +25,23 @@
  					frameCounter = 0.0;
  					break;
  				}
+@@ -75777,6 +_,8 @@
+ 			bool flag = false;
+ 			int num4 = (int)(position.X + (float)(width / 2)) / 16;
+ 			int num5 = (int)(position.Y + (float)(height / 2)) / 16;
++
++			/*
+ 			try {
+ 				if (num4 >= 4 && num4 <= Main.maxTilesX - 4 && num5 >= 4 && num5 <= Main.maxTilesY - 4) {
+ 					if (Main.tile[num4, num5] == null)
+@@ -75796,6 +_,10 @@
+ 			}
+ 
+ 			if (flag)
++				return;
++			*/
++
++			if (!Main.sectionManager.TilesLoaded(num4 - 3, num5 - 3, num4 + 3, num5 + 3))
+ 				return;
+ 		}
+ 

@@ -21,3 +21,23 @@
  
  	private void MakeFloorDust(bool Falling, int type, int frameX, int frameY, int paintColor)
  	{
+@@ -19429,6 +_,8 @@
+ 		if (whoAmI != Main.myPlayer) {
+ 			int num2 = (int)(position.X + (float)(width / 2)) / 16;
+ 			int num3 = (int)(position.Y + (float)(height / 2)) / 16;
++
++			/*
+ 			if (!WorldGen.InWorld(num2, num3, 4))
+ 				flag = true;
+ 			else if (Main.tile[num2, num3] == null)
+@@ -19440,6 +_,10 @@
+ 			else if (Main.tile[num2, num3 - 3] == null)
+ 				flag = true;
+ 			else if (Main.tile[num2, num3 + 3] == null)
++				flag = true;
++			*/
++
++			if (Main.netMode == NetmodeID.MultiplayerClient && !Main.sectionManager.TilesLoaded(num2 - 3, num3 - 3, num2 + 3, num3 + 3))
+ 				flag = true;
+ 
+ 			if (flag) {
