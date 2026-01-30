@@ -4,7 +4,7 @@
 @ECHO off
 :: Compile/Build exe 
 echo "Building Release"
-set tModLoaderVersion=v0.11.8.9
+set tModLoaderVersion=v0.11.8.10
 call buildRelease.bat
 
 set destinationFolder=.\tModLoader %tModLoaderVersion% Release
@@ -64,8 +64,8 @@ copy ..\src\tModLoader\bin\WindowsServerRelease\net45\tModLoaderServer.pdb "%win
 
 :: Windows Steam
 robocopy /s "%win%" "%winsteam%"
-del "%win%\steam_api.dll"
-del "%win%\CSteamworks.dll"
+::del "%win%\steam_api.dll"
+::del "%win%\CSteamworks.dll"
 
 call python ZipAndMakeExecutable.py "%win%" "%win%.zip"
 
@@ -101,10 +101,10 @@ copy ReleaseExtras\tModLoader-kick "%lnx%\tModLoaderServer" /y
 
 :: Linux Steam
 robocopy /s "%lnx%" "%lnxsteam%"
-del "%lnx%\lib\libsteam_api.so"
-del "%lnx%\lib64\libsteam_api.so"
-del "%lnx%\lib\libCSteamworks.so"
-del "%lnx%\lib64\libCSteamworks.so"
+::del "%lnx%\lib\libsteam_api.so"
+::del "%lnx%\lib64\libsteam_api.so"
+::del "%lnx%\lib\libCSteamworks.so"
+::del "%lnx%\lib64\libCSteamworks.so"
 
 call python ZipAndMakeExecutable.py "%lnx%" "%lnx%.tar.gz"
 call python ZipAndMakeExecutable.py "%lnx%" "%lnx%.zip"
@@ -127,8 +127,8 @@ copy ReleaseExtras\tModLoader-kick "%macReal%\tModLoaderServer" /y
 
 :: Mac Steam
 robocopy /s "%mac%" "%macsteam%"
-del "%macReal%\osx\libsteam_api.dylib"
-del "%macReal%\osx\CSteamworks"
+::del "%macReal%\osx\libsteam_api.dylib"
+::del "%macReal%\osx\CSteamworks"
 
 call python ZipAndMakeExecutable.py "%mac%" "%mac%.zip"
 

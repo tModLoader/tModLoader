@@ -10,7 +10,7 @@
 *.force
 installer2/*.class
 installer2/*.jar
-solutions/ReleaseExtras/JourneysEndCompatibilityContent/Images
+solutions/ReleaseExtras/JourneysEndCompatibilityContent
 solutions/ReleaseExtras/LinuxFiles
 solutions/ReleaseExtras/LinuxMacSharedFiles
 solutions/ReleaseExtras/MacFiles
