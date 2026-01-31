@@ -152,7 +152,7 @@
  
  		for (int n = 0; n < Main.countsAsHostForGameplay.Length; n++) {
  			Main.countsAsHostForGameplay[n] = false;
-@@ -24183,7 +_,7 @@
+@@ -24188,7 +_,7 @@
  	{
  		int treeHeight = 1;
  		int passStyle = -1;
@@ -161,7 +161,7 @@
  		for (int num = -1; num > -100; num--) {
  			Tile tile = Main.tile[x, y + num];
  			if (!tile.active() || !TileID.Sets.GetsCheckedForLeaves[tile.type])
-@@ -52034,7 +_,7 @@
+@@ -52039,7 +_,7 @@
  			return false;
  
  		Tile tile = Main.tile[i, j];
@@ -170,7 +170,7 @@
  		if (tile == null)
  			return false;
  
-@@ -60115,7 +_,7 @@
+@@ -60120,7 +_,7 @@
  				continue;
  
  			Rectangle tileRectangle = Utils.CenteredRectangle(player.Center.ToTileCoordinates(), Point.Zero);
@@ -179,16 +179,16 @@
  			tileRectangle = WorldUtils.ClampToWorld(tileRectangle, 10);
  			for (int j = 0; j < 300; j++) {
  				Point point = Main.rand.NextFromRectangle(tileRectangle);
-@@ -60344,7 +_,7 @@
- 
- 			Point point2 = player2.Center.ToTileCoordinates();
- 			Rectangle value3 = new Rectangle(point2.X, point2.Y, 1, 1);
--			value3.Inflate(Main.MaxWorldViewSize.X / 32, Main.MaxWorldViewSize.Y / 32);
-+			value3.Inflate(Main.MaxGameplayViewSize.X / 32, Main.MaxGameplayViewSize.Y / 32);
- 			value3 = Rectangle.Intersect(value3, value);
- 			if (value3.Width == 0 || value3.Height == 0)
- 				continue;
-@@ -68133,8 +_,12 @@
+@@ -60368,7 +_,7 @@
+ 	private static void SpawnStormLightningNearPlayer(List<Rectangle> safespots, Player player)
+ 	{
+ 		Rectangle tileRectangle = Utils.CenteredRectangle(player.Center.ToTileCoordinates(), Point.Zero);
+-		tileRectangle.Inflate(Main.MaxWorldViewSize.X / 32, Main.MaxWorldViewSize.Y / 32);
++		tileRectangle.Inflate(Main.MaxGameplayViewSize.X / 32, Main.MaxGameplayViewSize.Y / 32);
+ 		tileRectangle = WorldUtils.ClampToWorld(tileRectangle, 10);
+ 		if (tileRectangle.Width == 0 || tileRectangle.Height == 0)
+ 			return;
+@@ -68169,8 +_,12 @@
  								break;
  						}
  
@@ -201,7 +201,7 @@
  						bool flag = false;
  						switch (num) {
  							default:
-@@ -68165,8 +_,12 @@
+@@ -68201,8 +_,12 @@
  						if (up == 165 && flag && flag3)
  							up = num;
  
