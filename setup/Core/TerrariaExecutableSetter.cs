@@ -10,6 +10,8 @@ public class TerrariaExecutableSetter
 	private readonly ITerrariaExecutableSelectionPrompt terrariaExecutableSelectionPrompt;
 	private readonly IUserPrompt userPrompt;
 
+	public WorkspaceInfo WorkspaceInfo => workspaceInfo;
+
 	public TerrariaExecutableSetter(
 		ITerrariaExecutableSelectionPrompt terrariaExecutableSelectionPrompt,
 		IUserPrompt userPrompt,
@@ -47,12 +49,6 @@ public class TerrariaExecutableSetter
 		}
 
 		await FindTerrariaDirectory(tmlDevSteamDirectoryOverride, cancellationToken);
-	}
-
-	public async Task<string> CheckTerrariaExecutablePathsAndPromptIfNecessary(CancellationToken cancellationToken = default)
-	{
-		await FindAndSetTerrariaDirectoryIfNecessary(cancellationToken: cancellationToken);
-		return workspaceInfo.TerrariaPath;
 	}
 
 	public async Task SelectAndSetTerrariaDirectory(CancellationToken cancellationToken = default)
