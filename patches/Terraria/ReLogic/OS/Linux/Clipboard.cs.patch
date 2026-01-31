@@ -1,0 +1,29 @@
+--- src/decompiled/ReLogic/OS/Linux/Clipboard.cs
++++ src/Terraria/ReLogic/OS/Linux/Clipboard.cs
+@@ -1,5 +_,8 @@
+ using System;
+ using ReLogic.OS.Base;
++#if FNA
++using SDL3;
++#endif
+ 
+ namespace ReLogic.OS.Linux;
+ 
+@@ -7,10 +_,17 @@
+ {
+ 	protected override string GetClipboard()
+ 	{
++#if FNA
++		return SDL.SDL_GetClipboardText();
++#else
+ 		throw new PlatformNotSupportedException();
++#endif
+ 	}
+ 
+ 	protected override void SetClipboard(string text)
+ 	{
++#if FNA
++		SDL.SDL_SetClipboardText(text);
++#endif
+ 	}
+ }
