@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/Program.cs
 +++ src/TerrariaNetCore/Terraria/Program.cs
-@@ -165,7 +_,19 @@
+@@ -163,7 +_,19 @@
  		SavePath = (LaunchParameters.ContainsKey("-savedirectory") ? LaunchParameters["-savedirectory"] : Platform.Get<IPathService>().GetStoragePath("Terraria"));
  #if SERVER
  		Main.dedServ = true;
@@ -20,7 +20,7 @@
  		ThreadPool.SetMinThreads(8, 8);
  		InitializeConsoleOutput();
  		SetupLogging();
-@@ -200,8 +_,8 @@
+@@ -198,8 +_,8 @@
  			Main.OnEnginePreload += StartForceLoad;
  			if (Main.dedServ)
  				main.DedServ();
@@ -31,19 +31,3 @@
  		}
  		catch (Exception e) {
  			DisplayException(e);
-@@ -226,8 +_,15 @@
- 			}
- 		}
- 
-+		// TODO: Do we always want to default to SDLGPU? Should OpenGL be
-+		// preferred on some systems?
-+#if NETCORE
-+		if (!flag)
-+			Environment.SetEnvironmentVariable("FNA3D_FORCE_DRIVER", "SDLGPU");
-+#else
- 		if (!flag)
- 			Environment.SetEnvironmentVariable("FNA3D_FORCE_DRIVER", Platform.IsWindows ? "D3D12" : (Platform.IsOSX ? "Metal" : "Vulkan"));
-+#endif
- 	}
- 
- 	private static void DisplayException(Exception e)

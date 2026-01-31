@@ -16,3 +16,13 @@
  		}
  
  		return audioTrack;
+@@ -101,6 +_,9 @@
+ 	public LegacyAudioSystem()
+ 	{
+ 		Engine = new AudioEngine("Content\\TerrariaMusic.xgs");
++#if FNA
++		Console.WriteLine("SDL Audio Driver: " + SDL3.SDL.SDL_GetCurrentAudioDriver());
++#endif
+ 		SoundBank = new SoundBank(Engine, "Content\\Sound Bank.xsb");
+ 		Engine.Update();
+ 		WaveBank = new WaveBank(Engine, "Content\\Wave Bank.xwb", 0, 512);

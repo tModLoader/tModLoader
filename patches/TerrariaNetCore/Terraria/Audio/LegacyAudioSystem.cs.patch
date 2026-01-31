@@ -1,7 +1,7 @@
 --- src/Terraria/Terraria/Audio/LegacyAudioSystem.cs
 +++ src/TerrariaNetCore/Terraria/Audio/LegacyAudioSystem.cs
-@@ -105,7 +_,7 @@
- 		Engine = new AudioEngine("Content\\TerrariaMusic.xgs");
+@@ -108,7 +_,7 @@
+ #endif
  		SoundBank = new SoundBank(Engine, "Content\\Sound Bank.xsb");
  		Engine.Update();
 -		WaveBank = new WaveBank(Engine, "Content\\Wave Bank.xwb", 0, 512);

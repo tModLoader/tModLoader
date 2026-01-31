@@ -37,8 +37,8 @@
  
  		try {
  			Console.OutputEncoding = Encoding.UTF8;
-@@ -152,6 +_,9 @@
- 
+@@ -150,6 +_,9 @@
+ 		LogFNANativeLibVersions();
  		LaunchParameters = Utils.ParseArguements(args);
  		SavePath = (LaunchParameters.ContainsKey("-savedirectory") ? LaunchParameters["-savedirectory"] : Platform.Get<IPathService>().GetStoragePath("Terraria"));
 +#if SERVER
@@ -47,9 +47,9 @@
  		ThreadPool.SetMinThreads(8, 8);
  		InitializeConsoleOutput();
  		SetupLogging();
-@@ -196,6 +_,14 @@
+@@ -194,6 +_,13 @@
  
- 	private static void TrySettingDefaultFNADriver(string[] args)
+ 	private static void LogFNANativeLibVersions()
  	{
 +#if FNA
 +		Console.WriteLine(("SDL v" + SDL.SDL_GetVersion() + "." + SDL.SDL_GetRevision()) ?? "");
@@ -58,7 +58,6 @@
 +		uint num2 = FAudio.FAudioLinkedVersion();
 +		Console.WriteLine(("FAudio v" + num2 / 10000 + "." + num2 / 100 % 100 + "." + num2 % 100) ?? "");
 +#endif
-+
- 		bool flag = false;
- 		for (int i = 0; i < args.Length; i++) {
- 			if (args[i].Contains("gldevice")) {
+ 	}
+ 
+ 	private static void DisplayException(Exception e)
