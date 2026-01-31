@@ -93,7 +93,7 @@ internal static class ContentSources
 			SetAssetNames(resourceNames);
 		}
 
-		public override Stream OpenStream(string assetName) => assembly.GetManifestResourceStream(rootPath + assetName);
+		public override Stream OpenStream(string assetName) => assembly.GetManifestResourceStream(rootPath + assetName + GetExtension(assetName));
 	}
 
 	public static AssetRepository ManifestAssets { get; set; }

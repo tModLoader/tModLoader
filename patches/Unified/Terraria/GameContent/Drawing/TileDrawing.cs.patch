@@ -1,9 +1,11 @@
 --- src/TerrariaNetCore/Terraria/GameContent/Drawing/TileDrawing.cs
 +++ src/Unified/Terraria/GameContent/Drawing/TileDrawing.cs
-@@ -426,8 +_,15 @@
+@@ -426,8 +_,17 @@
  			TileType = -1
  		};
  
++		bool liquidSlopeFix = LiquidEdgeRenderer.Active;
++
 +		// tModLoader - Swapped loop iteration order to improve memory access
 +		// linearity.  Minor perf improvement, may cause slight visual
 +		// discrepancies with tiles that overdraw.
@@ -16,3 +18,14 @@
  				Tile tile = Main.tile[j, i];
  				if (tile == null) {
  					tile = new Tile();
+@@ -438,7 +_,10 @@
+ 					if (!tile.active() || IsTileDrawLayerSolid(tile.type) != solidLayer || (DebugOptions.ShowUnbreakableWall && tile.wall == 350))
+ 						continue;
+ 
++					/*
+ 					if (solidLayer) {
++					*/
++					if (solidLayer && !liquidSlopeFix) {
+ 						Main.tileBatch.SetLayer(Layer_LiquidBehindTiles, 0);
+ 						DrawTile_LiquidBehindTile(solidLayer, waterStyleOverride, unscaledPosition, drawOffSet, j, i, tile);
+ 					}

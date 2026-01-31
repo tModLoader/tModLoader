@@ -24,22 +24,26 @@
  	public static int maxScreenW = 1920;
  	public static int maxScreenH = 1200;
  	public static int minScreenW = 800;
-@@ -533,13 +_,13 @@
+@@ -533,13 +_,23 @@
  	public static int wofDrawAreaBottom;
  	public static int wofDrawFrameIndex;
  	public static int offScreenRange = 200;
--	private static WorldSceneLayerTarget backWaterTarget;
++	/*
+ 	private static WorldSceneLayerTarget backWaterTarget;
++	*/
 +	public static WorldSceneLayerTarget backWaterTarget;
  	public static WorldSceneLayerTarget waterTarget;
--	private static WorldSceneLayerTarget tileTarget;
++	/*
+ 	private static WorldSceneLayerTarget tileTarget;
+ 	private static WorldSceneLayerTarget tile2Target;
+ 	private static WorldSceneLayerTarget wallTarget;
+ 	private static WorldSceneLayerTarget backgroundTarget;
+ 	private static WorldSceneLayerTarget backgroundTargetSwap;
++	*/
 +	public static WorldSceneLayerTarget tileTarget;
--	private static WorldSceneLayerTarget tile2Target;
 +	public static WorldSceneLayerTarget tile2Target;
--	private static WorldSceneLayerTarget wallTarget;
 +	public static WorldSceneLayerTarget wallTarget;
--	private static WorldSceneLayerTarget backgroundTarget;
 +	public static WorldSceneLayerTarget backgroundTarget;
--	private static WorldSceneLayerTarget backgroundTargetSwap;
 +	public static WorldSceneLayerTarget backgroundTargetSwap;
  	private static bool backgroundTargetSwapPending;
  	public static RenderTarget2D skyTarget;
@@ -53,11 +57,13 @@
  	public static int mapTimeMax = 30;
  	public static int mapTime = mapTimeMax;
  	public static bool clearMap;
-@@ -957,7 +_,7 @@
+@@ -957,7 +_,10 @@
  	public static HairstyleUnlocksHelper Hairstyles = new HairstyleUnlocksHelper();
  	public static bool tilesLoaded = false;
  	public static WorldMap Map;
--	public static Tile[,] tile = new Tile[maxTilesX, maxTilesY];
++	/*
+ 	public static Tile[,] tile = new Tile[maxTilesX, maxTilesY];
++	*/
 +	public static Tilemap tile = new Tilemap((ushort)maxTilesX, (ushort)maxTilesY);
  	public static Dust[] dust = new Dust[6001];
  	public static Star[] star = new Star[400];
@@ -1484,7 +1490,7 @@
  				int num150 = TextureAssets.Projectile[proj.type].Height() / projFrames[proj.type];
  				int y9 = num150 * proj.frame;
 -				EntitySpriteDraw(TextureAssets.Projectile[proj.type].Value, new Vector2(proj.position.X - screenPosition.X + num145 + (float)num144 - num147, proj.position.Y - screenPosition.Y + (float)(proj.height / 2) + proj.gfxOffY - num148), new Microsoft.Xna.Framework.Rectangle(0, y9, TextureAssets.Projectile[proj.type].Width(), num150), alpha, proj.rotation, new Vector2(num145, proj.height / 2 + num143), proj.scale, dir);
-+				EntitySpriteDraw(TextureAssets.Projectile[proj.type].Value, new Vector2(proj.position.X - screenPosition.X + num145 + (float)num141 - num147, proj.position.Y - screenPosition.Y + (float)(proj.height / 2) + proj.gfxOffY - num148), new System.Drawing.Rectangle(0, y9, TextureAssets.Projectile[proj.type].Width(), num150), alpha, proj.rotation, new Vector2(num145, proj.height / 2 + num143), proj.scale, dir);
++				EntitySpriteDraw(TextureAssets.Projectile[proj.type].Value, new Vector2(proj.position.X - screenPosition.X + num145 + (float)num144 - num147, proj.position.Y - screenPosition.Y + (float)(proj.height / 2) + proj.gfxOffY - num148), new System.Drawing.Rectangle(0, y9, TextureAssets.Projectile[proj.type].Width(), num150), alpha, proj.rotation, new Vector2(num145, proj.height / 2 + num143), proj.scale, dir);
  			}
  		}
  
@@ -1866,7 +1872,7 @@
 -				EntitySpriteDraw(value66, position18, new Microsoft.Xna.Framework.Rectangle(0, y16, value66.Width, num273), proj.GetAlpha(projectileColor), proj.rotation, new Vector2((float)value66.Width / 2f, (float)num273 / 2f), proj.scale, dir);
 +				EntitySpriteDraw(value66, position18, new System.Drawing.Rectangle(0, y16, value66.Width, num273), proj.GetAlpha(projectileColor), proj.rotation, new Vector2((float)value66.Width / 2f, (float)num273 / 2f), proj.scale, dir);
 -				EntitySpriteDraw(TextureAssets.GlowMask[37].Value, position18, new Microsoft.Xna.Framework.Rectangle(0, y16, value66.Width, num273), new Microsoft.Xna.Framework.Color(255, 255, 255, 0) * (1f - (float)proj.alpha / 255f), proj.rotation, new Vector2((float)value66.Width / 2f, (float)num273 / 2f), proj.scale, dir);
-+				EntitySpriteDraw(TextureAssets.GlowMask[37].Value, position18, new System.Drawing.Rectangle(0, y16, value66.Width, num270), new Microsoft.Xna.Framework.Color(255, 255, 255, 0) * (1f - (float)proj.alpha / 255f), proj.rotation, new Vector2((float)value66.Width / 2f, (float)num273 / 2f), proj.scale, dir);
++				EntitySpriteDraw(TextureAssets.GlowMask[37].Value, position18, new System.Drawing.Rectangle(0, y16, value66.Width, num273), new Microsoft.Xna.Framework.Color(255, 255, 255, 0) * (1f - (float)proj.alpha / 255f), proj.rotation, new Vector2((float)value66.Width / 2f, (float)num273 / 2f), proj.scale, dir);
  				return;
  			}
  
@@ -4782,13 +4788,12 @@
  		bool flag = ShouldShowInvisibleBlocksAndWalls();
  		for (int i = firstTileY; i < lastTileY; i++) {
  			bool flag2 = i >= UnderworldLayer;
-@@ -50133,6 +_,11 @@
+@@ -50133,6 +_,10 @@
  					Tile tile = Main.tile[j, i];
  					float num4 = Lighting.Brightness(j, i);
  					num4 = (float)Math.Floor(num4 * 255f) / 255f;
 +
-+					// TML(liquid-slopes): Avoid drawing over liquid edges.
-+					if (liquidSlopeFix && LiquidRenderer.Instance.HasFullWater(j, i) && ((tile.Slope != SlopeType.Solid || tile.IsHalfBlock) && num8 >= (5f / 255f) || num8 > (5f / 255f)))
++					if (liquidSlopeFix && LiquidRenderer.Instance.HasFullWater(j, i) && ((tile.Slope != SlopeType.Solid || tile.IsHalfBlock) && num4 >= (5f / 255f) || num4 > (5f / 255f)))
 +						break;
 +
  					byte b = tile.liquid;

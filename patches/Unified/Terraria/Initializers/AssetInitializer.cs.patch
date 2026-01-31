@@ -1,9 +1,43 @@
 --- src/TerrariaNetCore/Terraria/Initializers/AssetInitializer.cs
 +++ src/Unified/Terraria/Initializers/AssetInitializer.cs
-@@ -18,9 +_,11 @@
+@@ -1,5 +_,7 @@
+ using System;
++using System.Diagnostics;
+ using System.IO;
++using System.Threading.Tasks;
+ using Microsoft.Xna.Framework;
+ using Microsoft.Xna.Framework.Graphics;
+ using Newtonsoft.Json.Linq;
+@@ -18,14 +_,45 @@
  
  public static class AssetInitializer
  {
++	public class FxcReader : IAssetReader
++	{
++		private readonly GraphicsDevice _graphicsDevice;
++
++		public FxcReader(GraphicsDevice graphicsDevice)
++		{
++			_graphicsDevice = graphicsDevice;
++		}
++
++		public T FromStream<T>(Stream stream) where T : class
++		{
++			if (typeof(T) != typeof(Effect))
++				throw AssetLoadException.FromInvalidReader<FxcReader, T>();
++
++			var ms = new MemoryStream();
++			stream.CopyTo(ms);
++
++			/*
++			await mainThreadCtx;
++			Debug.Assert(mainThreadCtx.IsCompleted);
++			*/
++
++			return new Effect(_graphicsDevice, ms.ToArray()) as T;
++		}
++	}
++
 +	internal static AssetReaderCollection assetReaderCollection;
 +
  	public static void CreateAssetServices(GameServiceContainer services)
@@ -13,3 +47,11 @@
  		assetReaderCollection.RegisterReader(new PngReader(services.Get<IGraphicsDeviceService>().GraphicsDevice), ".png");
  		assetReaderCollection.RegisterReader(new XnbReader(services), ".xnb");
  #if XNA && !SERVER
+ 		assetReaderCollection.RegisterReader(new FxReader(services.Get<IGraphicsDeviceService>().GraphicsDevice), ".fx");
+ #endif
++
++		assetReaderCollection.RegisterReader(new FxcReader(Main.instance.Services.Get<IGraphicsDeviceService>().GraphicsDevice), ".fxc");
++
+ 		AsyncAssetLoader asyncAssetLoader = new AsyncAssetLoader(assetReaderCollection, 20);
+ 		asyncAssetLoader.RequireTypeCreationOnTransfer(typeof(Texture2D));
+ 		asyncAssetLoader.RequireTypeCreationOnTransfer(typeof(DynamicSpriteFont));
