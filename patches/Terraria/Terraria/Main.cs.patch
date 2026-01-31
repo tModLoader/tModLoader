@@ -40,7 +40,7 @@
 -			graphics = new GraphicsDeviceManager(this as Game);
 +			graphics = new GraphicsDeviceManager(((object)this) as Game);
 +#if FNA
-+			Console.WriteLine("SDL Video Driver: " + SDL.SDL_GetCurrentVideoDriver());
++			Console.WriteLine("SDL Video Driver: " + SDL3.SDL.SDL_GetCurrentVideoDriver());
 +#endif
  			base.Content.RootDirectory = "Content";
  		}
