@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Terraria.DataStructures;
 using Terraria.ID;
+using Terraria.Unified;
 
 namespace Terraria.GameContent.Liquid;
 
@@ -37,14 +38,14 @@ public static class LiquidEdgeRenderer
 	/// <summary>
 	/// Turns all pixels with alpha above zero white, and all others transparent.
 	/// </summary>
-	public static Effect MaskShader => (maskShaderAsset ??= ModLoader.ModLoader.ManifestAssets.Request<Effect>("Terraria.GameContent.Liquid.LiquidMask", AssetRequestMode.ImmediateLoad)).Value;
+	public static Effect MaskShader => (maskShaderAsset ??= ContentSources.ManifestAssets.Request<Effect>("Terraria.GameContent.Liquid.LiquidMask", AssetRequestMode.ImmediateLoad)).Value;
 
 	private static Asset<Effect>? maskShaderAsset;
 
 	/// <summary>
 	/// The default liquid mask tile for tiles in <see cref="TileID.Sets.BlocksWaterDrawingBehindSelf"/>.
 	/// </summary>
-	public static Texture2D DefaultLiquidMask => (_defaultLiquidMask ??= ModLoader.ModLoader.ManifestAssets.Request<Texture2D>("Terraria.GameContent.Liquid.DefaultTileLiquidMask", AssetRequestMode.ImmediateLoad)).Value;
+	public static Texture2D DefaultLiquidMask => (_defaultLiquidMask ??= ContentSources.ManifestAssets.Request<Texture2D>("Terraria.GameContent.Liquid.DefaultTileLiquidMask", AssetRequestMode.ImmediateLoad)).Value;
 
 	private static Asset<Texture2D>? _defaultLiquidMask;
 
@@ -74,7 +75,7 @@ public static class LiquidEdgeRenderer
 		edgeSpans.Clear();
 	}
 
-	public static void DrawTileMask(SpriteBatch spriteBatch, RenderTarget2D tileTarget, Vector2 tileTargetOffset)
+	public static void DrawTileMask(SpriteBatch spriteBatch, Texture2D tileTarget, Vector2 tileTargetOffset)
 	{
 		spriteBatch.End();
 		spriteBatch.Begin(SpriteSortMode.Deferred, MaskingBlendState, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, MaskShader);

@@ -2082,15 +2082,17 @@
  					origin23 = rectangle21.Size() / 2f;
  					Vector2 vector89 = new Vector2(0f, -720f).RotatedBy(proj.velocity.ToRotation());
  					float num353 = proj.ai[0] % 45f / 45f;
-@@ -28418,7 +_,7 @@
+@@ -28418,8 +_,8 @@
  				}
  				else if (proj.type == 1023) {
  					Texture2D value100 = TextureAssets.GlowMask[356].Value;
 -					Microsoft.Xna.Framework.Rectangle rectangle22 = value100.Frame();
 +					System.Drawing.Rectangle rectangle22 = value100.Frame();
- 					EntitySpriteDraw(origin: rectangle22.Center(), color: new Microsoft.Xna.Framework.Color(255, 255, 255, 100) * proj.Opacity, texture: value100, position: vector75, sourceRectangle: rectangle22, rotation: num327, scale: vector76, effects: dir);
+-					EntitySpriteDraw(origin: rectangle22.Center(), color: new Microsoft.Xna.Framework.Color(255, 255, 255, 100) * proj.Opacity, texture: value100, position: vector75, sourceRectangle: rectangle22, rotation: num327, scale: vector76, effects: dir);
++					EntitySpriteDraw(origin: rectangle22.Center.ToVector2(), color: new Microsoft.Xna.Framework.Color(255, 255, 255, 100) * proj.Opacity, texture: value100, position: vector75, sourceRectangle: rectangle22, rotation: num327, scale: vector76, effects: dir);
  				}
  				else if (proj.type == 616) {
+ 					value91 = TextureAssets.GlowMask[193].Value;
 @@ -28436,7 +_,7 @@
  				else if (proj.type == 707 || proj.type == 708) {
  					float num356 = 0.5f;
@@ -4643,6 +4645,26 @@
  			LiquidRenderer.Instance.PrepareDraw(drawArea);
  		}
  
+@@ -49714,6 +_,10 @@
+ 		}
+ 
+ 		DrawLiquid(isBackground, waterStyle, flag ? liquidAlpha[waterStyle] : 1f);
++
++		if (LiquidEdgeRenderer.Active && !drawToScreen)
++			LiquidEdgeRenderer.DrawTileMask(spriteBatch, tileTarget.Texture, tileTarget.Position - screenPosition + new Vector2(drawToScreen ? 0 : offScreenRange));
++
+ 		if (isBackground)
+ 			TimeLogger.DrawBackgroundWaterTiles.AddTime(fromTimestamp);
+ 		else
+@@ -49728,7 +_,7 @@
+ 		}
+ 
+ 		Vector2 drawOffset = (drawToScreen ? Vector2.Zero : new Vector2(offScreenRange, offScreenRange)) - screenPosition;
+-		if (bg)
++		if (bg && !LiquidEdgeRenderer.Active)
+ 			TilesRenderer.DrawLiquidBehindTiles(waterStyle);
+ 
+ 		LiquidRenderer.Instance.DrawNormalLiquids(spriteBatch, drawOffset, waterStyle, Alpha, bg, waterOnly);
 @@ -49746,7 +_,7 @@
  			if (WorldGen.SolidTile(x, y - 1) && num > 8)
  				num = 8;
@@ -4752,6 +4774,26 @@
  				}
  			}
  		}
+@@ -50115,6 +_,7 @@
+ 			}
+ 		}
+ 
++		bool liquidSlopeFix = LiquidEdgeRenderer.Active;
+ 		bool flag = ShouldShowInvisibleBlocksAndWalls();
+ 		for (int i = firstTileY; i < lastTileY; i++) {
+ 			bool flag2 = i >= UnderworldLayer;
+@@ -50133,6 +_,11 @@
+ 					Tile tile = Main.tile[j, i];
+ 					float num4 = Lighting.Brightness(j, i);
+ 					num4 = (float)Math.Floor(num4 * 255f) / 255f;
++
++					// TML(liquid-slopes): Avoid drawing over liquid edges.
++					if (liquidSlopeFix && LiquidRenderer.Instance.HasFullWater(j, i) && ((tile.Slope != SlopeType.Solid || tile.IsHalfBlock) && num8 >= (5f / 255f) || num8 > (5f / 255f)))
++						break;
++
+ 					byte b = tile.liquid;
+ 					bool num5 = num4 <= num2 && ((!flag2 && b < 250) || WorldGen.SolidTile(tile) || (b >= 200 && num4 == 0f));
+ 					bool flag3 = tile.active() && tileBlockLight[tile.type] && (!tile.invisibleBlock() || flag);
 @@ -50142,7 +_,7 @@
  				}
  

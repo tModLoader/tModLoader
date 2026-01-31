@@ -17,6 +17,8 @@ internal static class ContentSources
 
 		public RejectedAssetCollection Rejections { get; } = new();
 
+		public string FileWatcherPath => null;
+
 		protected string[] assetPaths;
 		protected Dictionary<string, string> assetExtensions = new();
 
@@ -44,6 +46,25 @@ internal static class ContentSources
 		public string GetExtension(string assetName) => assetExtensions.TryGetValue(AssetPathHelper.CleanPath(assetName), out var ext) ? ext : null;
 
 		public abstract Stream OpenStream(string fullAssetName);
+
+		public bool HasAsset(string assetName) => !Rejections.IsRejected(assetName) && GetExtension(assetName) != null;
+
+		public List<string> GetAllAssetsStartingWith(string assetNameStart) => GetAllAssetsStartingWith(assetNameStart, ignoreCase: false).ToList();
+
+		IEnumerable<string> GetAllAssetsStartingWith(string assetNameStart, bool ignoreCase = false)
+		{
+			var comparison = ignoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal;
+
+			return EnumerateAssets().Where(s => s.StartsWith(assetNameStart, comparison));
+		}
+
+		public void Refresh() { }
+
+		public void RejectAsset(string assetName, IRejectionReason reason) { }
+
+		public void ClearRejections() { }
+
+		public bool TryGetRejections(List<string> rejectionReasons) { return false;  }
 	}
 
 	public sealed class AssemblyResourcesContentSource : AbstractContentSource
@@ -86,8 +107,9 @@ internal static class ContentSources
 			excludedStartingPaths: []
 		);
 
-		ManifestAssets = new AssetRepository(AssetInitializer.assetReaderCollection, [ManifestContentSource]) {
-			AssetLoadFailHandler = Main.OnceFailedLoadingAnAsset,
+		ManifestAssets = new AssetRepository(new AssetLoader(AssetInitializer.assetReaderCollection), new AsyncAssetLoader(AssetInitializer.assetReaderCollection, 20)) {
+			AssetLoadFailHandler = Main.instance.OnceFailedLoadingAnAsset,
 		};
+		ManifestAssets.SetSources([ManifestContentSource]);
 	}
 }

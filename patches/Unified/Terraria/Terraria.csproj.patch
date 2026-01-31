@@ -19,7 +19,7 @@
  		<ProjectReference Include="../ReLogic/ReLogic.csproj" />
  		<EmbeddedResource Include="../ReLogic/bin/$(Configuration)/$(TargetFramework)/ReLogic.dll">
  			<Link>Libraries/ReLogic/ReLogic.dll</Link>
-@@ -46,6 +_,15 @@
+@@ -46,10 +_,20 @@
  		<Reference Include="SteelSeriesEngineWrapper" />
  
  		<PackageReference Include="Steamworks.NET.AnyCPU" Version="2025.162.4" />
@@ -35,3 +35,8 @@
  	</ItemGroup>
  
  	<!-- Embedded Resources -->
+ 	<ItemGroup>
++		<EmbeddedResource Include="**\*.fxc" />
+ 		<EmbeddedResource Include="GameContent/Creative/Content/*" />
+ 		<EmbeddedResource Include="GameContent/Metadata/MaterialData/*" />
+ 		<EmbeddedResource Include="GameContent/WorldBuilding/*" />
