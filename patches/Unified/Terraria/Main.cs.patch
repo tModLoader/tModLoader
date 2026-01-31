@@ -1,5 +1,13 @@
 --- src/TerrariaNetCore/Terraria/Main.cs
 +++ src/Unified/Terraria/Main.cs
+@@ -74,6 +_,7 @@
+ using Terraria.UI;
+ using Terraria.UI.Chat;
+ using Terraria.UI.Gamepad;
++using Terraria.Unified;
+ using Terraria.Utilities;
+ using Terraria.WorldBuilding;
+ 
 @@ -481,7 +_,14 @@
  	public static int desiredWorldTilesUpdateRate = 1;
  	public const int MaxWorldViewSizeWidth = 1920;
@@ -16,6 +24,26 @@
  	public static int maxScreenW = 1920;
  	public static int maxScreenH = 1200;
  	public static int minScreenW = 800;
+@@ -523,13 +_,13 @@
+ 	public static int wofDrawAreaBottom;
+ 	public static int wofDrawFrameIndex;
+ 	public static int offScreenRange = 200;
+-	private static WorldSceneLayerTarget backWaterTarget;
++	public static WorldSceneLayerTarget backWaterTarget;
+ 	public static WorldSceneLayerTarget waterTarget;
+-	private static WorldSceneLayerTarget tileTarget;
++	public static WorldSceneLayerTarget tileTarget;
+-	private static WorldSceneLayerTarget tile2Target;
++	public static WorldSceneLayerTarget tile2Target;
+-	private static WorldSceneLayerTarget wallTarget;
++	public static WorldSceneLayerTarget wallTarget;
+-	private static WorldSceneLayerTarget backgroundTarget;
++	public static WorldSceneLayerTarget backgroundTarget;
+-	private static WorldSceneLayerTarget backgroundTargetSwap;
++	public static WorldSceneLayerTarget backgroundTargetSwap;
+ 	private static bool backgroundTargetSwapPending;
+ 	public static RenderTarget2D skyTarget;
+ 	public static RenderTarget2D screenTarget;
 @@ -540,7 +_,7 @@
  	public static bool loadMapLock;
  	public static bool loadMap;
@@ -192,6 +220,25 @@
 +
  		ClientInitialize();
  		base.Initialize();
+ 	}
+@@ -9667,7 +_,7 @@
+ 	{
+ 	}
+ 
+-	private void OnceFailedLoadingAnAsset(string assetPath, Exception e)
++	public void OnceFailedLoadingAnAsset(string assetPath, Exception e)
+ 	{
+ 		FancyErrorPrinter.ShowFailedToLoadAssetError(e, assetPath);
+ 	}
+@@ -9728,6 +_,9 @@
+ 		AssetInitializer.LoadSplashAssets();
+ 		ChromaInitializer.Load();
+ 		_gameContentLoadProcess = LoadContent_Deferred();
++
++		ContentSources.PrepareAssets();
++
+ 		if (Setting_AssetFileWatcherEnabled)
+ 			Assets.EnableAssetWatcher();
  	}
 @@ -9739,6 +_,7 @@
  		ScreenShaderRef = Assets.Request<Effect>("ScreenShader");

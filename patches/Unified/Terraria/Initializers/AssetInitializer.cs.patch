@@ -1,0 +1,15 @@
+--- src/TerrariaNetCore/Terraria/Initializers/AssetInitializer.cs
++++ src/Unified/Terraria/Initializers/AssetInitializer.cs
+@@ -18,9 +_,11 @@
+ 
+ public static class AssetInitializer
+ {
++	internal static AssetReaderCollection assetReaderCollection;
++
+ 	public static void CreateAssetServices(GameServiceContainer services)
+ 	{
+-		AssetReaderCollection assetReaderCollection = new AssetReaderCollection();
++		assetReaderCollection = new AssetReaderCollection();
+ 		assetReaderCollection.RegisterReader(new PngReader(services.Get<IGraphicsDeviceService>().GraphicsDevice), ".png");
+ 		assetReaderCollection.RegisterReader(new XnbReader(services), ".xnb");
+ #if XNA && !SERVER
