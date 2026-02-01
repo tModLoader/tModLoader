@@ -37,6 +37,7 @@ var class_mod_tile =
     [ "MouseOver", "class_mod_tile.html#a90c48cdd752e4c50655d07cbe44e22ad", null ],
     [ "MouseOverFar", "class_mod_tile.html#a0724d779606ce78efa790344f8434678", null ],
     [ "NearbyEffects", "class_mod_tile.html#a5d51258e65d17bdb13cfe225fd44aea9", null ],
+    [ "OnTileConverted", "class_mod_tile.html#a53ee2132a28fa96d4799e5bbaf7b65b0", null ],
     [ "PostDrawPlacementPreview", "class_mod_tile.html#aaa2a64dc375af68dead00ce40cd4a0a2", null ],
     [ "PostSetDefaults", "class_mod_tile.html#a225cb3ba315b70347fd305b049ffa497", null ],
     [ "PostSetupTileMerge", "class_mod_tile.html#a3f80b7cf1635e81f45a31d7ca4d3d98a", null ],

@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.11</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.12</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -99,6 +99,8 @@ $(document).ready(function(){initNavTree('class_world_gen.html',''); initResizab
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_world_gen_1_1_check_tree_settings.html">CheckTreeSettings</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><b>ConversionRecursion</b></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_world_gen_1_1_grow_tree_settings.html">GrowTreeSettings</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1480,6 +1482,9 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>SolidOrSlopedT
 <tr class="separator:a58839bde6dc00d6ea9cee15322c687c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa81fb84fd5cbe1bcdc0bbfa466094b53"><td class="memItemLeft" align="right" valign="top"><a id="aa81fb84fd5cbe1bcdc0bbfa466094b53" name="aa81fb84fd5cbe1bcdc0bbfa466094b53"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>SolidTile</b> (int i, int j, bool noDoors=false)</td></tr>
+<tr class="memdesc:aa81fb84fd5cbe1bcdc0bbfa466094b53"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if the tile at the given tile coordinates: <a class="el" href="struct_tile.html#aac570981af830aa51c5a5280d624697d" title="Whether there is a tile at this position. Check this whenever you are accessing data from a tile to a...">Tile.HasTile</a>, is <a class="el" href="class_main.html#a318715449b8dcab5d25000103d330491" title="If true, this tile will be solid (unless tileSolidTop is also true). Projectiles will collide with it...">Main.tileSolid</a>, isn't <a class="el" href="class_main.html#abb9f20241fec0d772d4f6fcb72fea998" title="If true, this tile can be stood on despite not being tileSolid. The player can pass down through the ...">Main.tileSolidTop</a>, isn't sloped/halfblock/hammered (<a class="el" href="struct_tile.html#ab6cf8461c7e10d7d62865f171535fea7" title="The slope shape of the tile, which can be changed by hammering.  Used by WorldGen....">Tile.Slope</a> and <a class="el" href="struct_tile.html#ad5d360fe8a3e53dd509e0ff3eff3b4e5" title="Whether a tile is a half block shape, which can be changed by hammering.  Used by WorldGen....">Tile.IsHalfBlock</a>), and isn't actuated (<a class="el" href="struct_tile.html#a168c0ee5adf37634712c9d1415272286" title="Whether the tile at this position is actuated by an actuator.  Legacy/vanilla equivalent is inActive(...">Tile.IsActuated</a>). <br  />
+<br  />
+ If <em>noDoors</em>  is true, also checks that the tile isn't a closed door tile. <br /></td></tr>
 <tr class="separator:aa81fb84fd5cbe1bcdc0bbfa466094b53"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8a20c3eeba9e5fc0ba0e977ec029bb43"><td class="memItemLeft" align="right" valign="top"><a id="a8a20c3eeba9e5fc0ba0e977ec029bb43" name="a8a20c3eeba9e5fc0ba0e977ec029bb43"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>SolidTile</b> (Point p)</td></tr>

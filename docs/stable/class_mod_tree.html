@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.11</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.12</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -124,9 +124,21 @@ abstract Asset&lt; Texture2D &gt;&#160;</td><td class="memItemRight" valign="bot
 <tr class="separator:ab1aec4f01de33343d20e438361764c6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1bc1c683852b737d317aa54bad0f7325"><td class="memItemLeft" align="right" valign="top">abstract void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_tree.html#a1bc1c683852b737d317aa54bad0f7325">SetStaticDefaults</a> ()</td></tr>
 <tr class="separator:a1bc1c683852b737d317aa54bad0f7325"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a75937cfe38bcb8f183069336448936a5"><td class="memItemLeft" align="right" valign="top"><a id="a75937cfe38bcb8f183069336448936a5" name="a75937cfe38bcb8f183069336448936a5"></a>
-abstract void&#160;</td><td class="memItemRight" valign="bottom"><b>SetTreeFoliageSettings</b> (<a class="el" href="struct_tile.html">Tile</a> tile, ref int xoffset, ref int treeFrame, ref int floorY, ref int topTextureFrameWidth, ref int topTextureFrameHeight)</td></tr>
-<tr class="separator:a75937cfe38bcb8f183069336448936a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4c6b74ec578f102f1954cb233f04ecd1"><td class="memItemLeft" align="right" valign="top"><a id="a4c6b74ec578f102f1954cb233f04ecd1" name="a4c6b74ec578f102f1954cb233f04ecd1"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>SetTreeFoliageSettings</b> (int i, int j, <a class="el" href="struct_tile.html">Tile</a> tile, int xoffset, ref int treeFrame, int floorY, ref int topTextureFrameWidth, ref int topTextureFrameHeight)</td></tr>
+<tr class="memdesc:a4c6b74ec578f102f1954cb233f04ecd1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows customization of various tree foliage drawing parameters. These control how leafy branches and the tree top are drawn at the <em>i</em>  and <em>j</em>  coordinates. <br  />
+<br  />
+ <em>treeFrame</em>  indicates which option for tree top or branch will be drawn. Hallow trees use this to provide many more options (various colors) than the default 3 options by adjusting based on <em>i</em> . <br  />
+<br  />
+ <em>floorY</em>  is the y tile coordinate of the tile this tree is grown on. <br  />
+<br  />
+ <em>topTextureFrameWidth</em>  and <em>topTextureFrameHeight</em>  dictate the size of the sprite for the tree top. The tree top will be drawn centered above the top tile of the tree. These default to 80 and should be consistent between each tree top option. Branches are 40x40 and are not customizable. <br  />
+<br  />
+ <em>xoffset</em>  will be 0 for tree tops, 1 for a left branch, and -1 for a right branch. Can be combined with <em>i</em>  and <em>floorY</em>  to calculate the coordinates of the tile this tree is grown on. <br /></td></tr>
+<tr class="separator:a4c6b74ec578f102f1954cb233f04ecd1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6243312a2128788cefee1cd25145b2b1"><td class="memItemLeft" align="right" valign="top"><a id="a6243312a2128788cefee1cd25145b2b1" name="a6243312a2128788cefee1cd25145b2b1"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>SetTreeFoliageSettings</b> (<a class="el" href="struct_tile.html">Tile</a> tile, ref int xoffset, ref int treeFrame, ref int floorY, ref int topTextureFrameWidth, ref int topTextureFrameHeight)</td></tr>
+<tr class="separator:a6243312a2128788cefee1cd25145b2b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a70f2e0bb1e09ebfc1a8d3f9c0b795a1c"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_tree.html#a70f2e0bb1e09ebfc1a8d3f9c0b795a1c">Shake</a> (int x, int y, ref bool createLeaves)</td></tr>
 <tr class="memdesc:a70f2e0bb1e09ebfc1a8d3f9c0b795a1c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Executed on tree shake, return false to skip vanilla tree shake drops.<br  />
  The x and y coordinates correspond to the top of the tree, where items usually spawn.  <a href="class_mod_tree.html#a70f2e0bb1e09ebfc1a8d3f9c0b795a1c">More...</a><br /></td></tr>

@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.11</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.12</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -1398,8 +1398,9 @@ float&#160;</td><td class="memItemRight" valign="bottom"><b>teleportTime</b></td
 <tr class="memitem:a388b872e4f94ab3e7a482d7db1e4bc5e"><td class="memItemLeft" align="right" valign="top"><a id="a388b872e4f94ab3e7a482d7db1e4bc5e" name="a388b872e4f94ab3e7a482d7db1e4bc5e"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>tentacleSpiked</b></td></tr>
 <tr class="separator:a388b872e4f94ab3e7a482d7db1e4bc5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad1dc41e935373f0a30980e06b60e823b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_n_p_c.html#ad1dc41e935373f0a30980e06b60e823b">timeLeft</a></td></tr>
-<tr class="memdesc:ad1dc41e935373f0a30980e06b60e823b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Despawn timer in charge of determining when an <a class="el" href="class_n_p_c.html">NPC</a> that is offscreen but not far away enough to immediately despawn will despawn naturally. Gets set to <a class="el" href="class_n_p_c.html#a8914d2e4ca5a42c9473581607901981e" title="Default despawn time. Set to 750 or 12.5 seconds. Use to update timeLeft when the NPC is close to any...">activeTime</a> when near any player and decreases each update otherwise. The <a class="el" href="class_n_p_c.html">NPC</a> despawning wiki pagehas more information. <a class="el" href="class_mod_n_p_c.html#a8690e744dc2cd66099c9d52799f00366" title="Whether or not to run the code for checking whether this NPC will remain active. Return false to stop...">ModNPC.CheckActive</a> can be used to prevent an <a class="el" href="class_n_p_c.html">NPC</a> outside the immediate despawn range from despawning.  <a href="class_n_p_c.html#ad1dc41e935373f0a30980e06b60e823b">More...</a><br /></td></tr>
+<tr class="memitem:ad1dc41e935373f0a30980e06b60e823b"><td class="memItemLeft" align="right" valign="top"><a id="ad1dc41e935373f0a30980e06b60e823b" name="ad1dc41e935373f0a30980e06b60e823b"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>timeLeft</b></td></tr>
+<tr class="memdesc:ad1dc41e935373f0a30980e06b60e823b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Despawn timer in charge of determining when an <a class="el" href="class_n_p_c.html">NPC</a> that is offscreen but not far away enough to immediately despawn will despawn naturally. Gets set to <a class="el" href="class_n_p_c.html#a8914d2e4ca5a42c9473581607901981e" title="Default despawn time. Set to 750 or 12.5 seconds. Use to update timeLeft when the NPC is close to any...">activeTime</a> when near any player and decreases each update otherwise. The <a class="el" href="class_n_p_c.html">NPC</a> despawning wiki pagehas more information. <a class="el" href="class_mod_n_p_c.html#a8690e744dc2cd66099c9d52799f00366" title="Whether or not to run the code for checking whether this NPC will remain active. Return false to stop...">ModNPC.CheckActive</a> can be used to prevent an <a class="el" href="class_n_p_c.html">NPC</a> outside the immediate despawn range from despawning. <br /></td></tr>
 <tr class="separator:ad1dc41e935373f0a30980e06b60e823b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ada99030b93a11b2198ddde81afa1fffe"><td class="memItemLeft" align="right" valign="top"><a id="ada99030b93a11b2198ddde81afa1fffe" name="ada99030b93a11b2198ddde81afa1fffe"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>townNPC</b></td></tr>
@@ -3412,24 +3413,6 @@ This particular overload returns the actual <a class="el" href="class_n_p_c.html
 <div class="line">        0</div>
 <div class="line">    }</div>
 </div><!-- fragment -->
-</div>
-</div>
-<a id="ad1dc41e935373f0a30980e06b60e823b" name="ad1dc41e935373f0a30980e06b60e823b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad1dc41e935373f0a30980e06b60e823b">&#9670;&nbsp;</a></span>timeLeft</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int NPC.timeLeft</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Despawn timer in charge of determining when an <a class="el" href="class_n_p_c.html">NPC</a> that is offscreen but not far away enough to immediately despawn will despawn naturally. Gets set to <a class="el" href="class_n_p_c.html#a8914d2e4ca5a42c9473581607901981e" title="Default despawn time. Set to 750 or 12.5 seconds. Use to update timeLeft when the NPC is close to any...">activeTime</a> when near any player and decreases each update otherwise. The <a class="el" href="class_n_p_c.html">NPC</a> despawning wiki pagehas more information. <a class="el" href="class_mod_n_p_c.html#a8690e744dc2cd66099c9d52799f00366" title="Whether or not to run the code for checking whether this NPC will remain active. Return false to stop...">ModNPC.CheckActive</a> can be used to prevent an <a class="el" href="class_n_p_c.html">NPC</a> outside the immediate despawn range from despawning. </p>
-<p ><br  />
- </p>
-
 </div>
 </div>
 <a id="acf886c9366b1f1ce9e2a278c21a9c78b" name="acf886c9366b1f1ce9e2a278c21a9c78b"></a>

@@ -1,5 +1,7 @@
 var NAVTREEINDEX11 =
 {
+"class_mod_accessory_slot.html#a6f1e619acde87e981174555821fa5932":[3,0,785,9],
+"class_mod_accessory_slot.html#a83e676a07276c9c742abb77fd70e0071":[3,0,785,11],
 "class_mod_accessory_slot.html#a8e8f1dd77f37ee279d21169747f9f268":[3,0,785,2],
 "class_mod_accessory_slot.html#a9bb2d012491a3bdae1cd18a68a7c26d3":[3,0,785,12],
 "class_mod_accessory_slot.html#aa390402f3cadc98ac3eb38712e15563e":[3,0,785,5],
@@ -247,7 +249,5 @@ var NAVTREEINDEX11 =
 "class_mod_emote_bubble.html#a123e15509944ab533699ffa1b5c2fc94":[3,0,807,12],
 "class_mod_emote_bubble.html#a1805a2caa1cbef69b953b5c61ff92def":[3,0,807,6],
 "class_mod_emote_bubble.html#a23c94e078a4557e3e6178cf2eea92c4e":[3,0,807,3],
-"class_mod_emote_bubble.html#a390ca33e885788af25161bec5f23c534":[3,0,807,9],
-"class_mod_emote_bubble.html#a3a50f93e925c659cd327a8d2741c9663":[3,0,807,8],
-"class_mod_emote_bubble.html#a3a540048f33a4eca81069c3f6d91dad0":[3,0,807,0]
+"class_mod_emote_bubble.html#a390ca33e885788af25161bec5f23c534":[3,0,807,9]
 };

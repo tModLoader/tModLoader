@@ -1,5 +1,11 @@
 var NAVTREEINDEX26 =
 {
+"functions_func_t.html":[3,3,1,19],
+"functions_func_u.html":[3,3,1,20],
+"functions_func_v.html":[3,3,1,21],
+"functions_func_w.html":[3,3,1,22],
+"functions_g.html":[3,3,0,6],
+"functions_h.html":[3,3,0,7],
 "functions_i.html":[3,3,0,8],
 "functions_j.html":[3,3,0,9],
 "functions_k.html":[3,3,0,10],
@@ -243,11 +249,5 @@ var NAVTREEINDEX26 =
 "struct_buff_draw_params.html":[3,0,119],
 "struct_buff_draw_params.html#a1541d4d1f549602785ee3c547d4e1033":[3,0,119,2],
 "struct_buff_draw_params.html#a23153311248df2a8b45a30c7b13b80b5":[3,0,119,1],
-"struct_buff_draw_params.html#a43659c7022826121c3e60b4a8110b267":[3,0,119,3],
-"struct_buff_draw_params.html#a8a31fa564f587ad7df1bb7d1466188c5":[3,0,119,5],
-"struct_buff_draw_params.html#a94dc35a5f9b9e8add7539b27946b26a6":[3,0,119,4],
-"struct_buff_draw_params.html#a99ce7cd8ff4b6dc56d8cae3b6a6b09d4":[3,0,119,0],
-"struct_builder_toggle_draw_params.html":[3,0,124],
-"struct_builder_toggle_draw_params.html#a1424fd8327ccdc2133e5fcd68298e0ee":[3,0,124,2],
-"struct_builder_toggle_draw_params.html#a826edec2b2ea262b8a3d9a2dfa6aaf9e":[3,0,124,4]
+"struct_buff_draw_params.html#a43659c7022826121c3e60b4a8110b267":[3,0,119,3]
 };

@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.11</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.12</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -898,10 +898,7 @@ const long&#160;</td><td class="memItemRight" valign="bottom"><b>MaxCoins</b> = 
 </div><div class="memdoc">
 
 <p>Linearly interpolates between several values denoting a continuous piecewise linear function (Piecewise linear function wikipedia page). This can be used to interpolate between several values, providing finer control over the transition between values. </p>
-<p ><code> floats parameter→ 0 4 1 Range Values ↓ / \ 3 <br  />
- / \ 2 <br  />
- / 1 / 0 percent input→ 0 .25 .5 .75 1 output→ 0 2 4 3 2 <br  />
- </code> </p>
+<p ><code> floats parameter→ 0 4 1 Range Values ↓ / \ 3 / \ 2 / 1 / 0 percent input→ 0 .25 .5 .75 1 output→ 0 2 4 3 2 </code> </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">percent</td><td></td></tr>
@@ -1248,11 +1245,7 @@ It will not return <em>maxValue</em> . </p>
 </div><div class="memdoc">
 
 <p>Remaps a provided value from 0-&gt;1 to 0-&gt;1-&gt;0, essentially turning a sawtooth pattern into a triangle wave pattern: </p>
-<p ><code> Original: Remap: Range Values ↓ <br  />
- / / \ 1 <br  />
- / / \ 0.5 <br  />
- / / \ 0 <br  />
- Input→ 0 .5 1 0 .5 1 Output→ 0 .5 1 0 1 0 </code> This is useful when using repeating timers to drive effects that should return linearly to their initial value before repeating rather than reset abruptly. </p>
+<p ><code> Original: Remap: Range Values ↓ / / \ 1 / / \ 0.5 / / \ 0 Input→ 0 .5 1 0 .5 1 Output→ 0 .5 1 0 1 0 </code> This is useful when using repeating timers to drive effects that should return linearly to their initial value before repeating rather than reset abruptly. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">value</td><td></td></tr>
