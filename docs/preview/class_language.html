@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.12</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2026.01</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -143,8 +143,10 @@ static string&#160;</td><td class="memItemRight" valign="bottom"><b>GetTextValue
 <tr class="memitem:ac8d9b980c93eddf3589cc778348bf8cd"><td class="memItemLeft" align="right" valign="top"><a id="ac8d9b980c93eddf3589cc778348bf8cd" name="ac8d9b980c93eddf3589cc778348bf8cd"></a>
 static string&#160;</td><td class="memItemRight" valign="bottom"><b>GetTextValueWith</b> (string key, object obj)</td></tr>
 <tr class="separator:ac8d9b980c93eddf3589cc778348bf8cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a867ec68e23424ba016f30543940a81dc"><td class="memItemLeft" align="right" valign="top"><a id="a867ec68e23424ba016f30543940a81dc" name="a867ec68e23424ba016f30543940a81dc"></a>
-static <a class="el" href="class_localized_text.html">LocalizedText</a>&#160;</td><td class="memItemRight" valign="bottom"><b>RandomFromCategory</b> (string categoryName, <a class="el" href="class_unified_random.html">UnifiedRandom</a> random=null)</td></tr>
+<tr class="memitem:a867ec68e23424ba016f30543940a81dc"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_localized_text.html">LocalizedText</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_language.html#a867ec68e23424ba016f30543940a81dc">RandomFromCategory</a> (string categoryName, <a class="el" href="class_unified_random.html">UnifiedRandom</a> random=null)</td></tr>
+<tr class="memdesc:a867ec68e23424ba016f30543940a81dc"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>This method is not suitable for modded localization keys.</b> <br  />
+<br  />
+ To select a random <a class="el" href="class_localized_text.html" title="Contains the localization value corresponding to a key for the current game language....">LocalizedText</a> from all entries that share the same "category"/prefix, use <a class="el" href="class_lang.html#abdccb61a9ff6b0703222929ccd04425f" title="Filters LocalizedText objects by checking if their key starts with the provided startsWith  parameter...">Lang.CreateDialogFilter(string)</a> and <a class="el" href="class_language.html#a888a684fddaa7e720e28ea0e88d9595b" title="Selects a single random LocalizedText that satisfies the filter  parameter. Typically used with Lang....">SelectRandom(LanguageSearchFilter, UnifiedRandom)</a> together instead of this method:  <a href="class_language.html#a867ec68e23424ba016f30543940a81dc">More...</a><br /></td></tr>
 <tr class="separator:a867ec68e23424ba016f30543940a81dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a888a684fddaa7e720e28ea0e88d9595b"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_localized_text.html">LocalizedText</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_language.html#a888a684fddaa7e720e28ea0e88d9595b">SelectRandom</a> (LanguageSearchFilter filter, <a class="el" href="class_unified_random.html">UnifiedRandom</a> random=null)</td></tr>
 <tr class="memdesc:a888a684fddaa7e720e28ea0e88d9595b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Selects a single random <a class="el" href="class_localized_text.html" title="Contains the localization value corresponding to a key for the current game language....">LocalizedText</a> that satisfies the <em>filter</em>  parameter. Typically used with <a class="el" href="class_lang.html#abdccb61a9ff6b0703222929ccd04425f" title="Filters LocalizedText objects by checking if their key starts with the provided startsWith  parameter...">Lang.CreateDialogFilter(string)</a> or <a class="el" href="class_lang.html#a191b0ff78330db4dd879322a6291f774" title="Filters LocalizedText objects by checking if their key starts with the provided startsWith  parameter...">Lang.CreateDialogFilter(string, object)</a> as the <em>filter</em>  argument to find a random <a class="el" href="class_localized_text.html" title="Contains the localization value corresponding to a key for the current game language....">LocalizedText</a> that has a specific key prefix and satisfies the provided conditions.  <a href="class_language.html#a888a684fddaa7e720e28ea0e88d9595b">More...</a><br /></td></tr>
@@ -351,6 +353,47 @@ If no existing localization exists for the key, it will be defined so it can be 
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
+<a id="a867ec68e23424ba016f30543940a81dc" name="a867ec68e23424ba016f30543940a81dc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a867ec68e23424ba016f30543940a81dc">&#9670;&nbsp;</a></span>RandomFromCategory()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="class_localized_text.html">LocalizedText</a> Language.RandomFromCategory </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>categoryName</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_unified_random.html">UnifiedRandom</a>&#160;</td>
+          <td class="paramname"><em>random</em> = <code>null</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p><b>This method is not suitable for modded localization keys.</b> <br  />
+<br  />
+ To select a random <a class="el" href="class_localized_text.html" title="Contains the localization value corresponding to a key for the current game language....">LocalizedText</a> from all entries that share the same "category"/prefix, use <a class="el" href="class_lang.html#abdccb61a9ff6b0703222929ccd04425f" title="Filters LocalizedText objects by checking if their key starts with the provided startsWith  parameter...">Lang.CreateDialogFilter(string)</a> and <a class="el" href="class_language.html#a888a684fddaa7e720e28ea0e88d9595b" title="Selects a single random LocalizedText that satisfies the filter  parameter. Typically used with Lang....">SelectRandom(LanguageSearchFilter, UnifiedRandom)</a> together instead of this method: </p>
+<p ><code><a class="el" href="class_localized_text.html" title="Contains the localization value corresponding to a key for the current game language....">LocalizedText</a> randomOption = <a class="el" href="class_language.html#a888a684fddaa7e720e28ea0e88d9595b" title="Selects a single random LocalizedText that satisfies the filter  parameter. Typically used with Lang....">Language.SelectRandom</a>(<a class="el" href="class_lang.html#a191b0ff78330db4dd879322a6291f774" title="Filters LocalizedText objects by checking if their key starts with the provided startsWith  parameter...">Lang.CreateDialogFilter</a>(this.GetLocalizationKey("Options.")));</code> </p>
 
 </div>
 </div>

@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.12</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2026.01</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -126,6 +126,10 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>AllowPrefix</
 <br  />
  Return false to prevent application of the BuffID.PotionSickness buff and setting <a class="el" href="class_player.html#a201c52749d7defd7d0732d8271ca270c" title="The potion sickness delay, in ticks. This value mirrors the remaining time for the BuffID....">Player.potionDelay</a>.  <a href="class_mod_item.html#a63531310b0bf57da2fe387e0857ca0a1">More...</a><br /></td></tr>
 <tr class="separator:a63531310b0bf57da2fe387e0857ca0a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae1c95e33e55764c74d162cf3e59d2bc6"><td class="memItemLeft" align="right" valign="top"><a id="ae1c95e33e55764c74d162cf3e59d2bc6" name="ae1c95e33e55764c74d162cf3e59d2bc6"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>ApplyPrefix</b> (int pre)</td></tr>
+<tr class="memdesc:ae1c95e33e55764c74d162cf3e59d2bc6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called immediately after prefix stat changes are applied (as well as <a class="el" href="class_mod_prefix.html#a1bfd97f29841bac5f8e5097b5405c6de" title="Applies the custom data stats set in SetStats to the given item.">ModPrefix.Apply(Item)</a>), facilitating item-specific tweaks to prefix effects. <br /></td></tr>
+<tr class="separator:ae1c95e33e55764c74d162cf3e59d2bc6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a49449f0a9d7ac05c2e19e8ecfc655dfc"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_item.html#a49449f0a9d7ac05c2e19e8ecfc655dfc">ArmorArmGlowMask</a> (<a class="el" href="class_player.html">Player</a> drawPlayer, float shadow, ref int glowMask, ref Color color)</td></tr>
 <tr class="memdesc:a49449f0a9d7ac05c2e19e8ecfc655dfc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify which glow mask and in what color is drawn on the player's arms. Note that this is only called for body armor. Also note that this hook is only ever called through this item's associated equipment texture. Called on local and remote clients.  <a href="class_mod_item.html#a49449f0a9d7ac05c2e19e8ecfc655dfc">More...</a><br /></td></tr>
 <tr class="separator:a49449f0a9d7ac05c2e19e8ecfc655dfc"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -395,10 +399,10 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>OnSpawn</b> (
 <tr class="memdesc:ac1dd6ef05783b496685b5e14c2c33d9e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify various properties of the projectile created by a weapon based on the ammo it is using. This hook is called on the ammo. Called on local and remote clients when a player picking ammo but only on the local client when held projectiles are picking ammo.  <a href="class_mod_item.html#ac1dd6ef05783b496685b5e14c2c33d9e">More...</a><br /></td></tr>
 <tr class="separator:ac1dd6ef05783b496685b5e14c2c33d9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9e84f5f526f4747a2d1f1756d0cb8201"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_item.html#a9e84f5f526f4747a2d1f1756d0cb8201">PostDrawInInventory</a> (SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)</td></tr>
-<tr class="memdesc:a9e84f5f526f4747a2d1f1756d0cb8201"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to draw things in front of this item in the inventory. This method is called even if PreDrawInInventory returns false. Note that <em>position</em>  is the center of the inventory slot and <em>origin</em>  is the center of the texture <em>frame</em>  to be drawn, so the provided parameters can be passed into SpriteBatch.DrawString(SpriteFont, string, Vector2, Color, float, Vector2, float, SpriteEffects, float) to draw a texture in the typical manner. Called on the local client only.  <a href="class_mod_item.html#a9e84f5f526f4747a2d1f1756d0cb8201">More...</a><br /></td></tr>
+<tr class="memdesc:a9e84f5f526f4747a2d1f1756d0cb8201"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to draw things in front of this item in the inventory. This method is called even if PreDrawInInventory returns false. Note that <em>position</em>  is the center of the inventory slot and <em>origin</em>  is the center of the texture <em>frame</em>  to be drawn, so the provided parameters can be passed into the <em>spriteBatch</em>  to draw a texture in the typical manner. Called on the local client only.  <a href="class_mod_item.html#a9e84f5f526f4747a2d1f1756d0cb8201">More...</a><br /></td></tr>
 <tr class="separator:a9e84f5f526f4747a2d1f1756d0cb8201"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aabc6c15b324d791a0d0119a6b063fe23"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_item.html#aabc6c15b324d791a0d0119a6b063fe23">PostDrawInWorld</a> (SpriteBatch spriteBatch, Color lightColor, Color alphaColor, float rotation, float scale, int whoAmI)</td></tr>
-<tr class="memdesc:aabc6c15b324d791a0d0119a6b063fe23"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to draw things in front of this item. This method is called even if PreDrawInWorld returns false. Note that items in the world are drawn centered horizontally sitting at the bottom of the item hitbox, not in the center of the hitbox. To replicate the normal drawing calculations, use the following and then use SpriteBatch.DrawString(SpriteFont, string, Vector2, Color, float, Vector2, float, SpriteEffects, float): Called on all clients.  <a href="class_mod_item.html#aabc6c15b324d791a0d0119a6b063fe23">More...</a><br /></td></tr>
+<tr class="memdesc:aabc6c15b324d791a0d0119a6b063fe23"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to draw things in front of this item. This method is called even if PreDrawInWorld returns false. Note that items in the world are drawn centered horizontally sitting at the bottom of the item hitbox, not in the center of the hitbox. To replicate the normal drawing calculations, use the following and then use the <em>spriteBatch</em> : Called on all clients.  <a href="class_mod_item.html#aabc6c15b324d791a0d0119a6b063fe23">More...</a><br /></td></tr>
 <tr class="separator:aabc6c15b324d791a0d0119a6b063fe23"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abe97a43f0e957ffa8e2615872710ee99"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_item.html#abe97a43f0e957ffa8e2615872710ee99">PostDrawTooltip</a> (ReadOnlyCollection&lt; <a class="el" href="class_drawable_tooltip_line.html">DrawableTooltipLine</a> &gt; lines)</td></tr>
 <tr class="memdesc:abe97a43f0e957ffa8e2615872710ee99"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to do things after this item's tooltip is drawn. The lines contain draw information as this is ran after drawing the tooltip. Called on the local client only.  <a href="class_mod_item.html#abe97a43f0e957ffa8e2615872710ee99">More...</a><br /></td></tr>
@@ -415,10 +419,10 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>PostUpdate</b
 <tr class="memdesc:a192ecf51da3d364954e9df7c5c9655d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make things happen when this item is lying in the world. This will always be called, even when it is being grabbed by a player. This hook should be used for adding light, or for increasing the age of less valuable items. Called on all clients and the server. <br /></td></tr>
 <tr class="separator:a192ecf51da3d364954e9df7c5c9655d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a06c3b0bbc1f0e264ce0123bf45faa001"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_item.html#a06c3b0bbc1f0e264ce0123bf45faa001">PreDrawInInventory</a> (SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)</td></tr>
-<tr class="memdesc:a06c3b0bbc1f0e264ce0123bf45faa001"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to draw things behind this item in the inventory. Return false to stop the game from drawing the item (useful if you're manually drawing the item). Note that <em>position</em>  is the center of the inventory slot and <em>origin</em>  is the center of the texture <em>frame</em>  to be drawn, so the provided parameters can be passed into SpriteBatch.DrawString(SpriteFont, string, Vector2, Color, float, Vector2, float, SpriteEffects, float) to draw a texture in the typical manner. Called on the local client only. Returns true by default.  <a href="class_mod_item.html#a06c3b0bbc1f0e264ce0123bf45faa001">More...</a><br /></td></tr>
+<tr class="memdesc:a06c3b0bbc1f0e264ce0123bf45faa001"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to draw things behind this item in the inventory. Return false to stop the game from drawing the item (useful if you're manually drawing the item). Note that <em>position</em>  is the center of the inventory slot and <em>origin</em>  is the center of the texture <em>frame</em>  to be drawn, so the provided parameters can be passed into the <em>spriteBatch</em>  to draw a texture in the typical manner. Called on the local client only. Returns true by default.  <a href="class_mod_item.html#a06c3b0bbc1f0e264ce0123bf45faa001">More...</a><br /></td></tr>
 <tr class="separator:a06c3b0bbc1f0e264ce0123bf45faa001"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a23122128caeed03d25204a4fb4c2078b"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_item.html#a23122128caeed03d25204a4fb4c2078b">PreDrawInWorld</a> (SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI)</td></tr>
-<tr class="memdesc:a23122128caeed03d25204a4fb4c2078b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to draw things behind this item, or to modify the way this item is drawn in the world. Return false to stop the game from drawing the item (useful if you're manually drawing the item). Note that items in the world are drawn centered horizontally sitting at the bottom of the item hitbox, not in the center of the hitbox. To replicate the normal drawing calculations, use the following and then use SpriteBatch.DrawString(SpriteFont, string, Vector2, Color, float, Vector2, float, SpriteEffects, float): Called on all clients.  <a href="class_mod_item.html#a23122128caeed03d25204a4fb4c2078b">More...</a><br /></td></tr>
+<tr class="memdesc:a23122128caeed03d25204a4fb4c2078b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to draw things behind this item, or to modify the way this item is drawn in the world. Return false to stop the game from drawing the item (useful if you're manually drawing the item). Note that items in the world are drawn centered horizontally sitting at the bottom of the item hitbox, not in the center of the hitbox. To replicate the normal drawing calculations, use the following and then use the <em>spriteBatch</em> : Called on all clients.  <a href="class_mod_item.html#a23122128caeed03d25204a4fb4c2078b">More...</a><br /></td></tr>
 <tr class="separator:a23122128caeed03d25204a4fb4c2078b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6b2a9022af802e7e85f3bd30bd6c464a"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_item.html#a6b2a9022af802e7e85f3bd30bd6c464a">PreDrawTooltip</a> (ReadOnlyCollection&lt; <a class="el" href="class_tooltip_line.html">TooltipLine</a> &gt; lines, ref int x, ref int y)</td></tr>
 <tr class="memdesc:a6b2a9022af802e7e85f3bd30bd6c464a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to do things before this item's tooltip is drawn. Called on the local client only.  <a href="class_mod_item.html#a6b2a9022af802e7e85f3bd30bd6c464a">More...</a><br /></td></tr>
@@ -3923,14 +3927,14 @@ Can be called on both server and client. </p>
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to draw things in front of this item in the inventory. This method is called even if PreDrawInInventory returns false. Note that <em>position</em>  is the center of the inventory slot and <em>origin</em>  is the center of the texture <em>frame</em>  to be drawn, so the provided parameters can be passed into SpriteBatch.DrawString(SpriteFont, string, Vector2, Color, float, Vector2, float, SpriteEffects, float) to draw a texture in the typical manner. Called on the local client only. </p>
+<p>Allows you to draw things in front of this item in the inventory. This method is called even if PreDrawInInventory returns false. Note that <em>position</em>  is the center of the inventory slot and <em>origin</em>  is the center of the texture <em>frame</em>  to be drawn, so the provided parameters can be passed into the <em>spriteBatch</em>  to draw a texture in the typical manner. Called on the local client only. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">spriteBatch</td><td>The sprite batch.</td></tr>
     <tr><td class="paramname">position</td><td>The screen position of the center of the inventory slot.</td></tr>
     <tr><td class="paramname">frame</td><td>The frame of the item texture to be drawn.</td></tr>
-    <tr><td class="paramname">drawColor</td><td>Color of the draw.</td></tr>
-    <tr><td class="paramname">itemColor</td><td>Color of the item.</td></tr>
+    <tr><td class="paramname">drawColor</td><td>The primary color used to draw the item icon.</td></tr>
+    <tr><td class="paramname">itemColor</td><td>The item color usually used for tinting the item with a secondary draw call.</td></tr>
     <tr><td class="paramname">origin</td><td>The draw origin, the center of the frame to be drawn.</td></tr>
     <tr><td class="paramname">scale</td><td>The scale of the item drawing to to fit in the inventory slot.</td></tr>
   </table>
@@ -3997,13 +4001,13 @@ Can be called on both server and client. </p>
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to draw things in front of this item. This method is called even if PreDrawInWorld returns false. Note that items in the world are drawn centered horizontally sitting at the bottom of the item hitbox, not in the center of the hitbox. To replicate the normal drawing calculations, use the following and then use SpriteBatch.DrawString(SpriteFont, string, Vector2, Color, float, Vector2, float, SpriteEffects, float): Called on all clients. </p>
+<p>Allows you to draw things in front of this item. This method is called even if PreDrawInWorld returns false. Note that items in the world are drawn centered horizontally sitting at the bottom of the item hitbox, not in the center of the hitbox. To replicate the normal drawing calculations, use the following and then use the <em>spriteBatch</em> : Called on all clients. </p>
 <p ><code> <a class="el" href="class_main.html#ac41141bb762df80522765eb5e7d44020" title="Gets the texture and frame of the given item type (Item.type).">Main.GetItemDrawFrame</a>(<a class="el" href="class_item.html#af79ba8b09813fd867fa3da24a4e31e51" title="The Item ID of this item. The Item ID is a unique number assigned to each Item loaded into the game....">Item.type</a>, out var itemTexture, out var itemFrame); Vector2 drawOrigin = itemFrame.Size() / 2f; Vector2 drawPosition = Item.Bottom - <a class="el" href="class_main.html#a766fa818b5f5e63bea931f820c5d463b" title="The position of the top left corner of the screen in world coordinates. Modify in ModSystem....">Main.screenPosition</a> - new Vector2(0, drawOrigin.Y); </code> </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">spriteBatch</td><td>The sprite batch.</td></tr>
-    <tr><td class="paramname">lightColor</td><td>Color of the light.</td></tr>
-    <tr><td class="paramname">alphaColor</td><td>Color of the alpha.</td></tr>
+    <tr><td class="paramname">lightColor</td><td>The lighting color at the item's center.</td></tr>
+    <tr><td class="paramname">alphaColor</td><td>The final color used to draw the item, mixing its alpha and lighting.</td></tr>
     <tr><td class="paramname">rotation</td><td>The item rotation. Items rotate slightly as they are thrown.</td></tr>
     <tr><td class="paramname">scale</td><td>The draw scale. Items are usually drawn in the world at a scale of 1f but some effects like pulsing Soul items change this.</td></tr>
     <tr><td class="paramname">whoAmI</td><td>The <a class="el" href="class_entity.html#a0fe3075b1852d0fc8e9e6d24f4bfa3db" title="The index of this Entity within its specific array. These arrays track the entities in the world....">Entity.whoAmI</a>.</td></tr>
@@ -4145,14 +4149,14 @@ Can be called on both server and client. </p>
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to draw things behind this item in the inventory. Return false to stop the game from drawing the item (useful if you're manually drawing the item). Note that <em>position</em>  is the center of the inventory slot and <em>origin</em>  is the center of the texture <em>frame</em>  to be drawn, so the provided parameters can be passed into SpriteBatch.DrawString(SpriteFont, string, Vector2, Color, float, Vector2, float, SpriteEffects, float) to draw a texture in the typical manner. Called on the local client only. Returns true by default. </p>
+<p>Allows you to draw things behind this item in the inventory. Return false to stop the game from drawing the item (useful if you're manually drawing the item). Note that <em>position</em>  is the center of the inventory slot and <em>origin</em>  is the center of the texture <em>frame</em>  to be drawn, so the provided parameters can be passed into the <em>spriteBatch</em>  to draw a texture in the typical manner. Called on the local client only. Returns true by default. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">spriteBatch</td><td>The sprite batch.</td></tr>
     <tr><td class="paramname">position</td><td>The screen position of the center of the inventory slot.</td></tr>
     <tr><td class="paramname">frame</td><td>The frame of the item texture to be drawn.</td></tr>
-    <tr><td class="paramname">drawColor</td><td>Color of the draw.</td></tr>
-    <tr><td class="paramname">itemColor</td><td>Color of the item.</td></tr>
+    <tr><td class="paramname">drawColor</td><td>The primary color used to draw the item icon.</td></tr>
+    <tr><td class="paramname">itemColor</td><td>The item color usually used for tinting the item with a secondary draw call.</td></tr>
     <tr><td class="paramname">origin</td><td>The draw origin, the center of the frame to be drawn.</td></tr>
     <tr><td class="paramname">scale</td><td>The scale the item has been calculated to draw in to fit in the inventory slot.</td></tr>
   </table>
@@ -4220,14 +4224,14 @@ Can be called on both server and client. </p>
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to draw things behind this item, or to modify the way this item is drawn in the world. Return false to stop the game from drawing the item (useful if you're manually drawing the item). Note that items in the world are drawn centered horizontally sitting at the bottom of the item hitbox, not in the center of the hitbox. To replicate the normal drawing calculations, use the following and then use SpriteBatch.DrawString(SpriteFont, string, Vector2, Color, float, Vector2, float, SpriteEffects, float): Called on all clients. </p>
+<p>Allows you to draw things behind this item, or to modify the way this item is drawn in the world. Return false to stop the game from drawing the item (useful if you're manually drawing the item). Note that items in the world are drawn centered horizontally sitting at the bottom of the item hitbox, not in the center of the hitbox. To replicate the normal drawing calculations, use the following and then use the <em>spriteBatch</em> : Called on all clients. </p>
 <p ><code> <a class="el" href="class_main.html#ac41141bb762df80522765eb5e7d44020" title="Gets the texture and frame of the given item type (Item.type).">Main.GetItemDrawFrame</a>(<a class="el" href="class_item.html#af79ba8b09813fd867fa3da24a4e31e51" title="The Item ID of this item. The Item ID is a unique number assigned to each Item loaded into the game....">Item.type</a>, out var itemTexture, out var itemFrame); Vector2 drawOrigin = itemFrame.Size() / 2f; Vector2 drawPosition = Item.Bottom - <a class="el" href="class_main.html#a766fa818b5f5e63bea931f820c5d463b" title="The position of the top left corner of the screen in world coordinates. Modify in ModSystem....">Main.screenPosition</a> - new Vector2(0, drawOrigin.Y); </code> </p>
 <p >Returns true by default. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">spriteBatch</td><td>The sprite batch.</td></tr>
-    <tr><td class="paramname">lightColor</td><td>Color of the light.</td></tr>
-    <tr><td class="paramname">alphaColor</td><td>Color of the alpha.</td></tr>
+    <tr><td class="paramname">lightColor</td><td>The lighting color at the item's center.</td></tr>
+    <tr><td class="paramname">alphaColor</td><td>The final color used to draw the item, mixing its alpha and lighting.</td></tr>
     <tr><td class="paramname">rotation</td><td>The item rotation. Items rotate slightly as they are thrown.</td></tr>
     <tr><td class="paramname">scale</td><td>The draw scale. Items are usually drawn in the world at a scale of 1f but some effects like pulsing Soul items change this.</td></tr>
     <tr><td class="paramname">whoAmI</td><td>The <a class="el" href="class_entity.html#a0fe3075b1852d0fc8e9e6d24f4bfa3db" title="The index of this Entity within its specific array. These arrays track the entities in the world....">Entity.whoAmI</a>.</td></tr>

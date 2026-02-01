@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.12</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2026.01</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -433,7 +433,7 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsCloneable</
     <tr><td class="paramname">j</td><td>The y position in tile coordinates.</td></tr>
     <tr><td class="paramname">type</td><td>Type of the wall being framed</td></tr>
     <tr><td class="paramname">randomizeFrame</td><td>True if the calling code intends that the frameNumber be randomly changed, such as when placing the wall initially or loading the world, but not when updating due to nearby tile or wall placements</td></tr>
-    <tr><td class="paramname">style</td><td>The style or orientation that will be applied</td></tr>
+    <tr><td class="paramname">style</td><td>The style or orientation that will be applied. Think of this like a bitmask, adding together the neighbors: 0 for no neighbors, 1 for left, 2 for right, 4 for below, and 8 for above. Additional style variety is added for walls with all 4 neighbors to avoid repeating patterns, meaning values from 15 to 19 all correspond to a wall with all 4 neighbors.</td></tr>
     <tr><td class="paramname">frameNumber</td><td>The random style that will be applied</td></tr>
   </table>
   </dd>

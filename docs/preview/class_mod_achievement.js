@@ -28,6 +28,7 @@ var class_mod_achievement =
     [ "AddTileDestroyedCondition", "class_mod_achievement.html#a99cd0512732e89bba10d79830a725f25", null ],
     [ "AddTileDestroyedCondition", "class_mod_achievement.html#acf901bf51150781a559a10e4d3fa8560", null ],
     [ "AutoStaticDefaults", "class_mod_achievement.html#aa77510b0a5fb574d08a299d7cd622e82", null ],
+    [ "GetAdvisorPosition", "class_mod_achievement.html#a5e1e39f06ed78921e18db56b24f693ef", null ],
     [ "GetDefaultPosition", "class_mod_achievement.html#a10e91554632d692341fc06e4db1b4ed9", null ],
     [ "GetModdedConstraints", "class_mod_achievement.html#a1673781463c714f323da672a4d9d0229", null ],
     [ "OnCompleted", "class_mod_achievement.html#a13506d84654baa3d4251b54e36e1334c", null ],

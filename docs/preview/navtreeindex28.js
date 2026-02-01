@@ -1,5 +1,10 @@
 var NAVTREEINDEX28 =
 {
+"struct_player_1_1_overhead_message.html":[3,0,980,9],
+"struct_player_1_1_rabbit_order_frame_helper.html":[3,0,980,10],
+"struct_player_1_1_set_match_request.html":[3,0,980,14],
+"struct_player_draw_set.html":[3,0,989],
+"struct_player_draw_set.html#aca6f0fbea669312c5bb625a30aefc3ad":[3,0,989,0],
 "struct_player_eye_helper.html":[3,0,990],
 "struct_player_eye_helper.html#a2b46fc8c646ce30c5413a7b6c6b98dcc":[3,0,990,0],
 "struct_player_eye_helper.html#a2b46fc8c646ce30c5413a7b6c6b98dcca17a534ce8bc354776ba2bf6bd4050095":[3,0,990,0,7],

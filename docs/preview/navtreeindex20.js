@@ -1,5 +1,9 @@
 var NAVTREEINDEX20 =
 {
+"class_proj_a_i_style_i_d.html#abe99399ea58795f72f9de75c0c5ef495":[3,0,1035,193],
+"class_proj_a_i_style_i_d.html#abf81c594118ceea84b83f8351e5d361d":[3,0,1035,102],
+"class_proj_a_i_style_i_d.html#ac08c102e49830a9f2f1ed2400a2f056f":[3,0,1035,39],
+"class_proj_a_i_style_i_d.html#ac0d8b5b077439b8936d712e34d701237":[3,0,1035,50],
 "class_proj_a_i_style_i_d.html#ac2012c60f2cc1e5948055b4078b25b17":[3,0,1035,88],
 "class_proj_a_i_style_i_d.html#ac24e1d9f6d93e08e14a8f2cb0a6af9b3":[3,0,1035,68],
 "class_proj_a_i_style_i_d.html#ac287843cf5b25787ef769668964daaf5":[3,0,1035,117],
@@ -245,9 +249,5 @@ var NAVTREEINDEX20 =
 "class_recipe_1_1_consumption_rules.html":[3,0,1061,0],
 "class_recipe_1_1_ingredient_quantity_rules.html":[3,0,1061,1],
 "class_recipe_1_1_ingredient_quantity_rules.html#af3d0bc5426faddfb36c7faa8958f44d4":[3,0,1061,1,0],
-"class_recipe_exception.html":[3,0,1062],
-"class_recipe_group.html":[3,0,1063],
-"class_recipe_group_i_d.html":[3,0,1064],
-"class_recipe_item_creation_context.html":[3,0,1065],
-"class_recipe_item_creation_context.html#a60773124af2c51df837b7691e6d393d3":[3,0,1065,1]
+"class_recipe_exception.html":[3,0,1062]
 };

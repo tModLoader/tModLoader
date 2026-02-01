@@ -5,6 +5,7 @@ var class_mod_item =
     [ "AltFunctionUse", "class_mod_item.html#a0d3d79e855102eb25e0075daffcb13ab", null ],
     [ "AnglerQuestChat", "class_mod_item.html#a58947194035a754982f2025aefd232e1", null ],
     [ "ApplyPotionDelay", "class_mod_item.html#a63531310b0bf57da2fe387e0857ca0a1", null ],
+    [ "ApplyPrefix", "class_mod_item.html#ae1c95e33e55764c74d162cf3e59d2bc6", null ],
     [ "ArmorArmGlowMask", "class_mod_item.html#a49449f0a9d7ac05c2e19e8ecfc655dfc", null ],
     [ "ArmorSetShadows", "class_mod_item.html#ae53fe554e6e87541253e1557d4831793", null ],
     [ "AutoDefaults", "class_mod_item.html#ac29f8c5a4b65ea061cfad410adbae53a", null ],

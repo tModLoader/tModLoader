@@ -1,6 +1,7 @@
 var struct_boss_bar_draw_params =
 [
     [ "BarCenter", "struct_boss_bar_draw_params.html#a0f4c99ca0b7ecb15fd2db3b7bb39eb9a", null ],
+    [ "BarColor", "struct_boss_bar_draw_params.html#a77ff67cbfc6f723bd458af217e55cca1", null ],
     [ "BarTexture", "struct_boss_bar_draw_params.html#a8a64708b0e9fe06bc0eb39b409fda748", null ],
     [ "IconColor", "struct_boss_bar_draw_params.html#a7769b9eff262cd868ea50ebd2e18d592", null ],
     [ "IconFrame", "struct_boss_bar_draw_params.html#ad93c078b16e1f6f208430d05992d0036", null ],
