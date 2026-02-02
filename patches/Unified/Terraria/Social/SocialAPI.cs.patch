@@ -1,0 +1,30 @@
+--- src/TerrariaNetCore/Terraria/Social/SocialAPI.cs
++++ src/Unified/Terraria/Social/SocialAPI.cs
+@@ -4,6 +_,7 @@
+ using Terraria.Social.Base;
+ using Terraria.Social.Steam;
+ using Terraria.Social.WeGame;
++using Terraria.Unified;
+ 
+ namespace Terraria.Social;
+ 
+@@ -26,12 +_,19 @@
+ 	{
+ 		if (!mode.HasValue) {
+ 			mode = SocialMode.None;
++
++			/*
+ 			if (Main.dedServ) {
+ 				if (Program.LaunchParameters.ContainsKey("-steam"))
+ 					mode = SocialMode.Steam;
+ 			}
+ 			else {
+ 				mode = SocialMode.Steam;
++			}
++			*/
++
++			if (LaunchHelper.TryGetSocialMode(out SocialMode resolvedMode)) {
++				mode = resolvedMode;
+ 			}
+ 		}
+ 

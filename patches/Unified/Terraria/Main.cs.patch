@@ -215,10 +215,15 @@
  		if (!startFullscreen) {
  			if (PendingBorderlessState)
  				screenBorderlessPendingResizes = 1;
-@@ -5416,6 +_,9 @@
+@@ -5415,7 +_,14 @@
+ #if FNA
  			Console.WriteLine("SDL Video Driver: " + SDL3.SDL.SDL_GetCurrentVideoDriver());
  #endif
++			/*
  			base.Content.RootDirectory = "Content";
++			*/
++
++			Content.RootDirectory = LaunchHelper.GetContentDirectory();
 +
 +			// Force the game to always use HiDef.
 +			graphics.GraphicsProfile = GraphicsProfile.HiDef;
