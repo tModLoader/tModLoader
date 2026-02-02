@@ -1,12 +1,13 @@
 --- src/TerrariaNetCore/Terraria/Initializers/LinkButtonsInitializer.cs
 +++ src/Unified/Terraria/Initializers/LinkButtonsInitializer.cs
-@@ -18,6 +_,9 @@
+@@ -18,6 +_,10 @@
  		titleLinks.Add(MakeSimpleButton("TitleLinks.Forums", "https://forums.terraria.org/index.php", 4));
  		titleLinks.Add(MakeSimpleButton("TitleLinks.Merch", "https://terraria.org/store", 5));
  		titleLinks.Add(MakeSimpleButton("TitleLinks.Wiki", "https://terraria.wiki.gg/", 6));
 +
 +		titleLinks = Main.UnifiedLinks;
 +		titleLinks.Add(MakeSimpleButton("TitleLinks.Discord", "https://discord.gg/yog", 0));
++		titleLinks.Add(MakeSimpleButton("TitleLinks.Patreon", "https://patreon.com/steviegt6", 0));
  	}
  
  	private static TitleLinkButton MakeSimpleButton(string textKey, string linkUrl, int horizontalFrameIndex)
