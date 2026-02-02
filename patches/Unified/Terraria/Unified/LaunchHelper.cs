@@ -90,27 +90,6 @@ internal static class LaunchHelper
 		return false;
 	}
 
-	private static string SocialModeToString(SocialMode mode)
-	{
-		return mode switch {
-			SocialMode.None => "none",
-			SocialMode.Steam => "steam",
-			SocialMode.WeGame => "wegame",
-			_ => throw new ArgumentOutOfRangeException(nameof(mode)),
-		};
-	}
-
-	private static SocialMode StringToSocialMode(string mode)
-	{
-		mode = mode.ToLower();
-		return mode switch {
-			"none" => SocialMode.None,
-			"steam" => SocialMode.Steam,
-			"wegame" => SocialMode.WeGame,
-			_ => throw new InvalidOperationException($"Mode '{mode}' does not correspond to a known social mode."),
-		};
-	}
-
 	private static IEnumerable<string> ResolveSteamContentDirectories()
 	{
 		if (OperatingSystem.IsWindows()) {

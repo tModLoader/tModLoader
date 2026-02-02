@@ -1,0 +1,21 @@
+--- src/TerrariaNetCore/Terraria/Properties/launchSettings.json
++++ src/Unified/Terraria/Properties/launchSettings.json
+@@ -1,15 +_,11 @@
+ {
+   "profiles": {
+     "Terraria": {
+-      "commandName": "Executable",
++      "commandName": "Project"
+-      "executablePath": "$(TerrariaSteamPath)/$(OutputName).exe",
+-      "workingDirectory": "$(TerrariaSteamPath)"
+     },
+     "Terraria Server": {
+-      "commandName": "Executable",
+-      "executablePath": "dotnet",
+-      "commandLineArgs": "$(OutputName).dll -server",
+-      "workingDirectory": "$(TerrariaSteamPath)"
++      "commandName": "Project",
++      "commandLineArgs": "-server"
+     }
+   }
+ }
