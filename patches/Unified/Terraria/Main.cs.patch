@@ -8,6 +8,15 @@
  using Terraria.Utilities;
  using Terraria.WorldBuilding;
  
+@@ -92,7 +_,7 @@
+ #if SERVER
+ public class Main : Terraria.Server.Game
+ #else
+-public class Main : Game
++public partial class Main : Game
+ #endif
+ {
+ 	public static class CurrentFrameFlags
 @@ -491,7 +_,14 @@
  	public static int desiredWorldTilesUpdateRate = 1;
  	public const int MaxWorldViewSizeWidth = 1920;
@@ -3795,6 +3804,36 @@
  		if (SocialAPI.Network != null)
  			SocialAPI.Network.LaunchLocalServer(tServer, MenuServerMode);
  		else
+@@ -45020,6 +_,16 @@
+ 			titleLinks[i].Draw(spriteBatch, anchorPosition);
+ 			anchorPosition.X += 30f;
+ 		}
++
++		if (!UnifiedBranding) {
++			return;
++		}
++
++		anchorPosition = new Vector2(18f, 26f * 3f);
++		for (int i = 0; i < UnifiedLinks.Count; i++) {
++			UnifiedLinks[i].Draw(spriteBatch, anchorPosition);
++			anchorPosition.X += 30f;
++		}
+ 	}
+ 
+ 	private static void DrawVersionNumber(Microsoft.Xna.Framework.Color menuColor, float upBump)
+@@ -45053,6 +_,12 @@
+ 				num2 = 2;
+ 
+ 			spriteBatch.DrawString(FontAssets.MouseText.Value, text, new Vector2(origin.X + (float)num + 10f, (float)screenHeight - origin.Y + (float)num2 - 2f - upBump), color, 0f, origin, 1f, SpriteEffects.None, 0f);
++
++			if (!UnifiedBranding)
++				continue;
++
++			spriteBatch.DrawString(FontAssets.MouseText.Value, $"Terraria Unified v{UnifiedVersion}", new Vector2(origin.X + num + 10f, origin.Y * 2f + num2 - 2f), color, 0f, origin, 1f, SpriteEffects.None, 0f);
++			spriteBatch.DrawString(FontAssets.MouseText.Value, $".NET {Environment.Version} / x{(Environment.Is64BitProcess ? "64" : "86")}", new Vector2(origin.X + num + 10f, origin.Y * 2f + num2 - 2f + 26f), color, 0f, origin, 1f, SpriteEffects.None, 0f);
+ 		}
+ 	}
+ 
 @@ -45180,13 +_,13 @@
  		dualDungeonsSeed = false;
  	}
