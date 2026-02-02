@@ -1,0 +1,16 @@
+--- src/TerrariaNetCore/Terraria/Graphics/Light/ILightingEngine.cs
++++ src/Unified/Terraria/Graphics/Light/ILightingEngine.cs
+@@ -10,7 +_,13 @@
+ 
+ 	void ProcessArea(Rectangle area);
+ 
++	// Lighting engines no longer expose an API for getting the light color.
++	// They expose the lightmap and its bounds (see GetExport).
++	/*
+ 	Vector3 GetColor(int x, int y);
++	*/
+ 
+ 	void Clear();
++
++	LightingEngineExport GetExport();
+ }

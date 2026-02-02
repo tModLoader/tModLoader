@@ -1,0 +1,59 @@
+--- src/TerrariaNetCore/Terraria/Lighting.cs
++++ src/Unified/Terraria/Lighting.cs
+@@ -1,4 +_,5 @@
+ using System;
++using System.Runtime.CompilerServices;
+ using Microsoft.Xna.Framework;
+ using Terraria.Graphics;
+ using Terraria.Graphics.Light;
+@@ -7,8 +_,32 @@
+ 
+ namespace Terraria;
+ 
++public readonly record struct LightingEngineExport(LightMap WorkingMap, Rectangle Area)
++{
++	public Vector3 GetColor(int x, int y)
++	{
++		if (!Area.Contains(x, y)) {
++			return Vector3.Zero;
++		}
++
++		x -= Area.X;
++		y -= Area.Y;
++		return WorkingMap[x, y];
++	}
++}
++
+-public class Lighting
++public static class Lighting
+ {
++	extension(ILightingEngine engine)
++	{
++		// Mostly hoping for inlining to remove the engine parameter.
++		[MethodImpl(MethodImplOptions.AggressiveInlining)]
++		private Vector3 GetColor(int x, int y)
++		{
++			return EngineExport.GetColor(x, y);
++		}
++	}
++
+ 	private const float DEFAULT_GLOBAL_BRIGHTNESS = 1.2f;
+ 	private const float BLIND_GLOBAL_BRIGHTNESS = 1f;
+ 	[Old]
+@@ -18,6 +_,8 @@
+ 	private static readonly LegacyLighting LegacyEngine = new LegacyLighting(Main.Camera);
+ 	private static ILightingEngine _activeEngine;
+ 
++	public static LightingEngineExport EngineExport { get; private set; }
++
+ 	public static float GlobalBrightness { get; set; }
+ 
+ 	public static LightMode Mode {
+@@ -86,6 +_,7 @@
+ 		Main.render = true;
+ 		UpdateGlobalBrightness();
+ 		_activeEngine.ProcessArea(area);
++		EngineExport = _activeEngine.GetExport();
+ 		TimeLogger.Lighting.AddTime(fromTimestamp);
+ 	}
+ 

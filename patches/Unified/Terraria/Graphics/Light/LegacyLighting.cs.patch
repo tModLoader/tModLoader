@@ -1,0 +1,83 @@
+--- src/TerrariaNetCore/Terraria/Graphics/Light/LegacyLighting.cs
++++ src/Unified/Terraria/Graphics/Light/LegacyLighting.cs
+@@ -133,6 +_,9 @@
+ 	private static FastRandom _swipeRandom = FastRandom.CreateWithRandomSeed();
+ 	private LightMap _lightMap = new LightMap();
+ 
++	// This purely contains a copy of the _states data.
++	private LightMap exposedLightMap = new LightMap();
++
+ 	public int Mode { get; set; }
+ 
+ 	public bool IsColorOrWhiteMode => Mode < 2;
+@@ -142,6 +_,7 @@
+ 		_camera = camera;
+ 	}
+ 
++	/*
+ 	public Vector3 GetColor(int x, int y)
+ 	{
+ 		if (x < _expandedRectLeft || x >= _expandedRectRight || y < _expandedRectTop || y >= _expandedRectBottom)
+@@ -150,6 +_,12 @@
+ 		LightingState lightingState = _states[x - _expandedRectLeft][y - _expandedRectTop];
+ 		return new Vector3(lightingState.R, lightingState.G, lightingState.B);
+ 	}
++	*/
++
++	public LightingEngineExport GetExport()
++	{
++		return new LightingEngineExport(exposedLightMap, new Rectangle(_expandedRectLeft, _expandedRectTop, _expandedRectRight - _expandedRectLeft, _expandedRectBottom - _expandedRectTop));
++	}
+ 
+ 	public void Rebuild()
+ 	{
+@@ -165,6 +_,7 @@
+ 		int num = (int)_camera.UnscaledSize.X / 16 + 90 + 10;
+ 		int num2 = (int)_camera.UnscaledSize.Y / 16 + 90 + 10;
+ 		_lightMap.SetSize(num, num2);
++		exposedLightMap.SetSize(num, num2);
+ 		if (_states != null && _states.Length >= num && _states[0].Length >= num2)
+ 			return;
+ 
+@@ -362,6 +_,8 @@
+ 					if (lightingState.B < _skyColor)
+ 						lightingState.B = tileB;
+ 				}
++
++				exposedLightMap[i - _expandedRectLeft, j - _expandedRectBottom] = lightingState.ToVector3();
+ 			}
+ 		}
+ 	}
+@@ -420,6 +_,7 @@
+ 				obj.R = lightingState.R;
+ 				obj.G = lightingState.G;
+ 				obj.B = lightingState.B;
++				exposedLightMap[i, j] = obj.ToVector3();
+ 			}
+ 		}
+ 	}
+@@ -467,6 +_,7 @@
+ 					obj.R = lightingState.R2;
+ 					obj.G = lightingState.G2;
+ 					obj.B = lightingState.B2;
++					exposedLightMap[i, j] = obj.ToVector3();
+ 				}
+ 			}
+ 
+@@ -490,6 +_,7 @@
+ 				obj2.R = lightingState2.R2;
+ 				obj2.G = lightingState2.R2;
+ 				obj2.B = lightingState2.R2;
++				exposedLightMap[k, l] = obj2.ToVector3();
+ 			}
+ 		}
+ 	}
+@@ -513,6 +_,8 @@
+ 				}
+ 			}
+ 		}
++
++		exposedLightMap.Clear();
+ 	}
+ 
+ 	private void PreRenderPhase()
