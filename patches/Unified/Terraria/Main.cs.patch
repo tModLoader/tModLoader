@@ -1,5 +1,17 @@
 --- src/TerrariaNetCore/Terraria/Main.cs
 +++ src/Unified/Terraria/Main.cs
+@@ -3,10 +_,10 @@
+ using System.Collections.Concurrent;
+ using System.Collections.Generic;
+ using System.Diagnostics;
+-using System.Drawing;
+ using System.IO;
+ using System.Linq;
+ using System.Reflection;
++using System.Runtime.CompilerServices;
+ using System.Runtime.InteropServices;
+ using System.Security.Cryptography;
+ using System.Text;
 @@ -74,6 +_,7 @@
  using Terraria.UI;
  using Terraria.UI.Chat;
@@ -4824,6 +4836,131 @@
  				}
  			}
  		}
+@@ -50083,8 +_,124 @@
+ 		drewLava = true;
+ 	}
+ 
++	private static byte[] blackMask = new byte[maxTilesX * maxTilesY];
++	private static byte[] lightingCache = new byte[maxTilesX * maxTilesY];
++
++	[MethodImpl(MethodImplOptions.AggressiveInlining)]
++	private static int GetBlackMaskIndex(int x, int y)
++	{
++		return y * maxTilesX + x;
++	}
++
++	private static void BuildLightingBrightnessCache(int startX, int endX, int startY, int endY)
++	{
++		/*
++		for (int y = startY; y < endY; y++) {
++			for (int x = startX; x < endX; x++) {
++				lightingCache[GetBlackMaskIndex(x, y)] = (byte)MathF.Floor(Lighting.Brightness(x, y) * 255f);
++			}
++		}
++		*/
++
++		Parallel.For(startX, endX, x => {
++			for (int y = startY; y < endY; y++) {
++				lightingCache[GetBlackMaskIndex(x, y)] = (byte)MathF.Floor(Lighting.Brightness(x, y) * 255f);
++			}
++		});
++	}
++
++	private const byte underworld_threshold = (byte)(0.2f * 255f);
++
++	private static void BuildBlackMask(int startX, int endX, int startY, int endY, byte baseThreshold, bool force)
++	{
++		bool showInvisible = ShouldShowInvisibleBlocksAndWalls();
++		bool liquidSlopeFix = LiquidEdgeRenderer.Active;
++
++		Parallel.For(startY, endY, y => {
++			bool underworld = y >= UnderworldLayer;
++			byte threshold = underworld ? underworld_threshold : baseThreshold;
++
++			for (int x = startX; x < endX; x++) {
++				var idx = GetBlackMaskIndex(x, y);
++
++				/*
++				if (!WorldGen.InWorld(x, y)) {
++					blackMask[idx] = 0;
++					continue;
++				}
++				*/
++
++				var t = tile.UnsafeGet(x, y);
++				byte brightness = lightingCache[idx];
++
++				bool hasFullWater = LiquidRenderer.Instance.HasFullWater(x, y);
++				if (liquidSlopeFix && hasFullWater && ((t.Slope != SlopeType.Solid || t.IsHalfBlock) ? brightness >= 5 : brightness > 5)) {
++					blackMask[idx] = 0;
++					continue;
++				}
++
++				byte liquid = t.LiquidAmount;
++				bool darkEnough = brightness <= threshold && ((!underworld && liquid < 250) || WorldGen.SolidTile(t) || (liquid >= 200 && brightness == 0));
++				if (!darkEnough) {
++					blackMask[idx] = 0;
++					continue;
++				}
++
++				bool blocksLight = t.HasTile && tileBlockLight[t.TileType] && (!t.IsTileInvisible || showInvisible);
++				bool wallBlocks = !WallID.Sets.Transparent[t.WallType] && (!t.IsWallInvisible || showInvisible);
++				if (!blocksLight && !wallBlocks) {
++					blackMask[idx] = 0;
++					continue;
++				}
++
++				if (!drawToScreen && hasFullWater && t.WallType == 0 && !t.IsHalfBlock && y <= worldSurface) {
++					blackMask[idx] = 0;
++					continue;
++				}
++
++				blackMask[idx] = 1;
++			}
++		});
++	}
++
++	private static void DrawBlackMask(int startX, int endX, int startY, int endY, Vector2 drawOffset)
++	{
++		for (int y = startY; y < endY; y++) {
++			int runStart = -1;
++
++			for (int x = startX; x < endX; x++) {
++				bool black = blackMask[GetBlackMaskIndex(x, y)] != 0;
++
++				if (black) {
++					if (runStart < 0) {
++						runStart = x;
++					}
++				}
++				else if (runStart >= 0) {
++					spriteBatch.Draw(
++						TextureAssets.BlackTile.Value,
++						new Vector2(runStart << 4, y << 4) - screenPosition + drawOffset,
++						new Rectangle(0, 0, (x - runStart) << 4, 16),
++						Color.Black
++					);
++					runStart = -1;
++				}
++			}
++
++			if (runStart >= 0) {
++				spriteBatch.Draw(
++					TextureAssets.BlackTile.Value,
++					new Vector2(runStart << 4, y << 4) - screenPosition + drawOffset,
++					new Rectangle(0, 0, (endX - runStart) << 4, 16),
++					Color.Black
++				);
++			}
++		}
++	}
++
+ 	protected void DrawBlack(bool intoRenderTargets = false, bool force = false)
+ 	{
++		/*
+ 		if (shimmerAlpha == 1f)
+ 			return;
+ 
 @@ -50115,6 +_,7 @@
  			}
  		}
@@ -4843,7 +4980,7 @@
  					byte b = tile.liquid;
  					bool num5 = num4 <= num2 && ((!flag2 && b < 250) || WorldGen.SolidTile(tile) || (b >= 200 && num4 == 0f));
  					bool flag3 = tile.active() && tileBlockLight[tile.type] && (!tile.invisibleBlock() || flag);
-@@ -50142,7 +_,7 @@
+@@ -50142,12 +_,79 @@
  				}
  
  				if (j - num3 > 0)
@@ -4852,6 +4989,78 @@
  			}
  		}
  
+ 		spriteBatch.End();
+ 		TimeLogger.DrawBlackTiles.AddTime(fromTimestamp);
++		*/
++
++		if (shimmerAlpha == 1f) {
++			return;
++		}
++
++		var totalDrawTs = TimeLogger.Start();
++
++		int size = maxTilesX * maxTilesY;
++		if (blackMask.Length < size) {
++			blackMask = new byte[size];
++		}
++
++		if (lightingCache.Length < size) {
++			lightingCache = new byte[size];
++		}
++
++		// Already guarantees the coordinates will be within max bounds.
++		TileDrawing.GetScreenDrawArea(
++			!drawToScreen,
++			out var drawOffset,
++			out int startX,
++			out int endX,
++			out int startY,
++			out int endY
++		);
++
++		if (!force) {
++			if (startY < maxTilesY / 2) {
++				startY = Math.Min(startY, (int)worldSurface + 1);
++				endY = Math.Min(endY, (int)worldSurface + 1);
++			}
++			else {
++				startY = Math.Max(startY, UnderworldLayer);
++				endY = Math.Max(endY, UnderworldLayer);
++			}
++		}
++
++		int avg = (tileColor.R + tileColor.G + tileColor.B) / 3;
++		byte threshold = Lighting.Mode switch {
++			LightMode.Retro => (byte)MathF.Max(tileColor.R - 55, 0),
++			LightMode.Trippy => (byte)MathF.Max(avg - 55, 0),
++			_ => (byte)(avg * 0.4f),
++		};
++
++		var buildMaskTs = TimeLogger.Start();
++		BuildLightingBrightnessCache(startX, endX, startY, endY);
++		BuildBlackMask(startX, endX, startY, endY, threshold, force);
++		TimeLogger.BuildBlackMask.AddTime(buildMaskTs);
++
++		var drawMaskTs = TimeLogger.Start();
++		spriteBatch.Begin(
++			SpriteSortMode.Deferred,
++			BlendState.AlphaBlend,
++			DefaultSamplerState,
++			DepthStencilState.None,
++			intoRenderTargets ? RasterizerState.CullCounterClockwise : Rasterizer,
++			null,
++			intoRenderTargets ? Matrix.Identity : Transform
++		);
++
++		DrawBlackMask(startX, endX, startY, endY, drawOffset);
++
++		spriteBatch.End();
++		TimeLogger.DrawBlackMask.AddTime(drawMaskTs);
++
++		TimeLogger.DrawBlackTiles.AddTime(totalDrawTs);
+ 	}
+ 
+ 	public static bool ShouldShowInvisibleBlocksAndWalls()
 @@ -50268,8 +_,8 @@
  			UpdateDisplaySettings();
  

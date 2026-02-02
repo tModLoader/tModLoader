@@ -1,0 +1,29 @@
+--- src/TerrariaNetCore/Terraria/TimeLogger.cs
++++ src/Unified/Terraria/TimeLogger.cs
+@@ -202,6 +_,8 @@
+ 	public static TimeLogData FlushNonSolidTiles;
+ 	public static TimeLogData NonSolidDrawCalls;
+ 	public static TimeLogData DrawBlackTiles;
++	public static TimeLogData BuildBlackMask;
++	public static TimeLogData DrawBlackMask;
+ 	public static TimeLogData DrawWallTiles;
+ 	public static TimeLogData FlushWallTiles;
+ 	public static TimeLogData WallDrawCalls;
+@@ -317,6 +_,8 @@
+ 		FlushNonSolidTiles = NewEntry("Flush Non-Solid Tiles");
+ 		NonSolidDrawCalls = NewCounterEntry("Non-Solid Draw Calls", 200);
+ 		DrawBlackTiles = NewEntry("Draw Black Tiles");
++		BuildBlackMask = NewEntry("Build Black Tile Mask");
++		DrawBlackMask = NewEntry("Draw Black Tile Mask");
+ 		DrawWallTiles = NewEntry("Draw Wall Tiles");
+ 		FlushWallTiles = NewEntry("Flush Wall Tiles");
+ 		WallDrawCalls = NewCounterEntry("Wall Draw Calls", 200);
+@@ -573,6 +_,8 @@
+ 			DrawEntry(TotalDrawByRenderCount[3], ref num);
+ 			DrawEntry(RenderBlacksAndWalls, ref num, 1);
+ 			DrawEntry(DrawBlackTiles, ref num, 2);
++			DrawEntry(BuildBlackMask, ref num, 3);
++			DrawEntry(DrawBlackMask, ref num, 3);
+ 			DrawEntry(DrawWallTiles, ref num, 2);
+ 			DrawEntry(FlushWallTiles, ref num, 3);
+ 			DrawEntry(WallDrawCalls, ref num, 4);
