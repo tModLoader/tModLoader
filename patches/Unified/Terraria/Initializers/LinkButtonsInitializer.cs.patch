@@ -1,13 +1,48 @@
 --- src/TerrariaNetCore/Terraria/Initializers/LinkButtonsInitializer.cs
 +++ src/Unified/Terraria/Initializers/LinkButtonsInitializer.cs
-@@ -18,6 +_,10 @@
+@@ -3,6 +_,7 @@
+ using Microsoft.Xna.Framework.Graphics;
+ using ReLogic.Content;
+ using Terraria.DataStructures;
++using Terraria.Unified;
+ 
+ namespace Terraria.Initializers;
+ 
+@@ -18,13 +_,37 @@
  		titleLinks.Add(MakeSimpleButton("TitleLinks.Forums", "https://forums.terraria.org/index.php", 4));
  		titleLinks.Add(MakeSimpleButton("TitleLinks.Merch", "https://terraria.org/store", 5));
  		titleLinks.Add(MakeSimpleButton("TitleLinks.Wiki", "https://terraria.wiki.gg/", 6));
 +
 +		titleLinks = Main.UnifiedLinks;
 +		titleLinks.Add(MakeSimpleButton("TitleLinks.Discord", "https://discord.gg/yog", 0));
-+		titleLinks.Add(MakeSimpleButton("TitleLinks.Patreon", "https://patreon.com/c/steviegt6", 0));
++		titleLinks.Add(MakeSimpleButton("TitleLinks.Patreon", "https://patreon.com/c/steviegt6", 7));
++		titleLinks.Add(MakeSimpleButton("TitleLinks.KoFi", "https://ko-fi.com/steviegt6", 8));
  	}
  
  	private static TitleLinkButton MakeSimpleButton(string textKey, string linkUrl, int horizontalFrameIndex)
+ 	{
++		/*
+ 		Asset<Texture2D> asset = Main.Assets.Request<Texture2D>("Images/UI/TitleLinkButtons");
+ 		Rectangle value = asset.Frame(7, 2, horizontalFrameIndex);
+ 		Rectangle value2 = asset.Frame(7, 2, horizontalFrameIndex, 1);
++		*/
++
++		const int max_vanilla_frames = 7;
++		Asset<Texture2D> asset;
++		Rectangle value;
++		Rectangle value2;
++		if (horizontalFrameIndex < max_vanilla_frames) {
++			asset = Main.Assets.Request<Texture2D>("Images/UI/TitleLinkButtons");
++			value = asset.Frame(7, 2, horizontalFrameIndex);
++			value2 = asset.Frame(7, 2, horizontalFrameIndex, 1);
++		}
++		else {
++			horizontalFrameIndex -= max_vanilla_frames;
++			asset = ContentSources.ManifestAssets.Request<Texture2D>("Terraria.Unified.Assets.TitleLinkButtons");
++			value = asset.Frame(2, 2, horizontalFrameIndex);
++			value2 = asset.Frame(2, 2, horizontalFrameIndex, 1);
++		}
++
+ 		value.Width--;
+ 		value.Height--;
+ 		value2.Width--;

@@ -1,0 +1,12 @@
+--- src/TerrariaNetCore/Terraria/Localization/Content/en-US/Main.json
++++ src/Unified/Terraria/Localization/Content/en-US/Main.json
+@@ -3740,6 +_,8 @@
+ 		"Twitter": "Twitter",
+ 		"Forums": "Forums",
+ 		"Merch": "Store",
+-		"Wiki": "Wiki"
++		"Wiki": "Wiki",
++		"Patreon": "Patreon",
++		"KoFi": "Ko-Fi"
+ 	}
+ }
