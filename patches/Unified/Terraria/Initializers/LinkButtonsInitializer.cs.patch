@@ -7,7 +7,7 @@
 +
 +		titleLinks = Main.UnifiedLinks;
 +		titleLinks.Add(MakeSimpleButton("TitleLinks.Discord", "https://discord.gg/yog", 0));
-+		titleLinks.Add(MakeSimpleButton("TitleLinks.Patreon", "https://patreon.com/steviegt6", 0));
++		titleLinks.Add(MakeSimpleButton("TitleLinks.Patreon", "https://patreon.com/c/steviegt6", 0));
  	}
  
  	private static TitleLinkButton MakeSimpleButton(string textKey, string linkUrl, int horizontalFrameIndex)
