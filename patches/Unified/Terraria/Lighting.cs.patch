@@ -6,40 +6,29 @@
  using Microsoft.Xna.Framework;
  using Terraria.Graphics;
  using Terraria.Graphics.Light;
-@@ -7,8 +_,32 @@
+@@ -7,7 +_,21 @@
  
  namespace Terraria;
  
-+public readonly record struct LightingEngineExport(LightMap WorkingMap, Rectangle Area)
+-public class Lighting
++public sealed class LightingEngineExport(LightMap workingMap, Rectangle area)
 +{
 +	public Vector3 GetColor(int x, int y)
 +	{
-+		if (!Area.Contains(x, y)) {
++		if (!area.Contains(x, y)) {
 +			return Vector3.Zero;
 +		}
 +
-+		x -= Area.X;
-+		y -= Area.Y;
-+		return WorkingMap[x, y];
++		x -= area.X;
++		y -= area.Y;
++		return workingMap[x, y];
 +	}
 +}
 +
--public class Lighting
 +public static class Lighting
  {
-+	extension(ILightingEngine engine)
-+	{
-+		// Mostly hoping for inlining to remove the engine parameter.
-+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-+		private Vector3 GetColor(int x, int y)
-+		{
-+			return EngineExport.GetColor(x, y);
-+		}
-+	}
-+
  	private const float DEFAULT_GLOBAL_BRIGHTNESS = 1.2f;
  	private const float BLIND_GLOBAL_BRIGHTNESS = 1f;
- 	[Old]
 @@ -18,6 +_,8 @@
  	private static readonly LegacyLighting LegacyEngine = new LegacyLighting(Main.Camera);
  	private static ILightingEngine _activeEngine;
@@ -57,3 +46,159 @@
  		TimeLogger.Lighting.AddTime(fromTimestamp);
  	}
  
+@@ -98,7 +_,7 @@
+ 
+ 	public static float Brightness(int x, int y)
+ 	{
+-		Vector3 color = _activeEngine.GetColor(x, y);
++		Vector3 color = EngineExport.GetColor(x, y);
+ 		return GlobalBrightness * (color.X + color.Y + color.Z) / 3f;
+ 	}
+ 
+@@ -108,10 +_,10 @@
+ 		Vector2 vector2 = new Vector2(vector.X % 1f, vector.Y % 1f);
+ 		int num = (int)vector.X;
+ 		int num2 = (int)vector.Y;
+-		Vector3 color = _activeEngine.GetColor(num, num2);
++		Vector3 color = EngineExport.GetColor(num, num2);
+-		Vector3 color2 = _activeEngine.GetColor(num + 1, num2);
++		Vector3 color2 = EngineExport.GetColor(num + 1, num2);
+-		Vector3 color3 = _activeEngine.GetColor(num, num2 + 1);
++		Vector3 color3 = EngineExport.GetColor(num, num2 + 1);
+-		Vector3 color4 = _activeEngine.GetColor(num + 1, num2 + 1);
++		Vector3 color4 = EngineExport.GetColor(num + 1, num2 + 1);
+ 		Vector3 value = Vector3.Lerp(color, color2, vector2.X);
+ 		Vector3 value2 = Vector3.Lerp(color3, color4, vector2.X);
+ 		return Vector3.Lerp(value, value2, vector2.Y);
+@@ -164,7 +_,7 @@
+ 		if (Main.gameMenu)
+ 			return Color.White;
+ 
+-		return new Color(_activeEngine.GetColor(tileCoords.X, tileCoords.Y) * GlobalBrightness);
++		return new Color(EngineExport.GetColor(tileCoords.X, tileCoords.Y) * GlobalBrightness);
+ 	}
+ 
+ 	public static Color GetColor(Point tileCoords, Color originalColor)
+@@ -172,7 +_,7 @@
+ 		if (Main.gameMenu)
+ 			return originalColor;
+ 
+-		return new Color(_activeEngine.GetColor(tileCoords.X, tileCoords.Y) * originalColor.ToVector3());
++		return new Color(EngineExport.GetColor(tileCoords.X, tileCoords.Y) * originalColor.ToVector3());
+ 	}
+ 
+ 	public static Color GetColor(int x, int y, Color oldColor)
+@@ -180,7 +_,7 @@
+ 		if (Main.gameMenu)
+ 			return oldColor;
+ 
+-		return new Color(_activeEngine.GetColor(x, y) * oldColor.ToVector3());
++		return new Color(EngineExport.GetColor(x, y) * oldColor.ToVector3());
+ 	}
+ 
+ 	public static Color GetColorClamped(int x, int y, Color oldColor)
+@@ -188,7 +_,7 @@
+ 		if (Main.gameMenu)
+ 			return oldColor;
+ 
+-		Vector3 color = _activeEngine.GetColor(x, y);
++		Vector3 color = EngineExport.GetColor(x, y);
+ 		color = Vector3.Min(Vector3.One, color);
+ 		return new Color(color * oldColor.ToVector3());
+ 	}
+@@ -199,7 +_,7 @@
+ 			return Color.White;
+ 
+ 		Color result = default(Color);
+-		Vector3 color = _activeEngine.GetColor(x, y);
++		Vector3 color = EngineExport.GetColor(x, y);
+ 		float num = GlobalBrightness * 255f;
+ 		int num2 = (int)(color.X * num);
+ 		int num3 = (int)(color.Y * num);
+@@ -224,7 +_,7 @@
+ 		int num = 0;
+ 		for (int i = centerX - 1; i <= centerX + 1; i++) {
+ 			for (int j = centerY - 1; j <= centerY + 1; j++) {
+-				Vector3 color = _activeEngine.GetColor(i, j);
++				Vector3 color = EngineExport.GetColor(i, j);
+ 				int num2 = (int)(255f * color.X * GlobalBrightness);
+ 				int num3 = (int)(255f * color.Y * GlobalBrightness);
+ 				int num4 = (int)(255f * color.Z * GlobalBrightness);
+@@ -249,29 +_,29 @@
+ 
+ 	public static void GetColor9Slice(int x, int y, ref Vector3[] slices)
+ 	{
+-		slices[0] = _activeEngine.GetColor(x - 1, y - 1) * GlobalBrightness;
++		slices[0] = EngineExport.GetColor(x - 1, y - 1) * GlobalBrightness;
+-		slices[3] = _activeEngine.GetColor(x - 1, y) * GlobalBrightness;
++		slices[3] = EngineExport.GetColor(x - 1, y) * GlobalBrightness;
+-		slices[6] = _activeEngine.GetColor(x - 1, y + 1) * GlobalBrightness;
++		slices[6] = EngineExport.GetColor(x - 1, y + 1) * GlobalBrightness;
+-		slices[1] = _activeEngine.GetColor(x, y - 1) * GlobalBrightness;
++		slices[1] = EngineExport.GetColor(x, y - 1) * GlobalBrightness;
+-		slices[4] = _activeEngine.GetColor(x, y) * GlobalBrightness;
++		slices[4] = EngineExport.GetColor(x, y) * GlobalBrightness;
+-		slices[7] = _activeEngine.GetColor(x, y + 1) * GlobalBrightness;
++		slices[7] = EngineExport.GetColor(x, y + 1) * GlobalBrightness;
+-		slices[2] = _activeEngine.GetColor(x + 1, y - 1) * GlobalBrightness;
++		slices[2] = EngineExport.GetColor(x + 1, y - 1) * GlobalBrightness;
+-		slices[5] = _activeEngine.GetColor(x + 1, y) * GlobalBrightness;
++		slices[5] = EngineExport.GetColor(x + 1, y) * GlobalBrightness;
+-		slices[8] = _activeEngine.GetColor(x + 1, y + 1) * GlobalBrightness;
++		slices[8] = EngineExport.GetColor(x + 1, y + 1) * GlobalBrightness;
+ 	}
+ 
+ 	public static void GetCornerColors(int centerX, int centerY, out VertexColors vertices, float scale = 1f)
+ 	{
+ 		vertices = default(VertexColors);
+-		Vector3 color = _activeEngine.GetColor(centerX, centerY);
++		Vector3 color = EngineExport.GetColor(centerX, centerY);
+-		Vector3 color2 = _activeEngine.GetColor(centerX, centerY - 1);
++		Vector3 color2 = EngineExport.GetColor(centerX, centerY - 1);
+-		Vector3 color3 = _activeEngine.GetColor(centerX, centerY + 1);
++		Vector3 color3 = EngineExport.GetColor(centerX, centerY + 1);
+-		Vector3 color4 = _activeEngine.GetColor(centerX - 1, centerY);
++		Vector3 color4 = EngineExport.GetColor(centerX - 1, centerY);
+-		Vector3 color5 = _activeEngine.GetColor(centerX + 1, centerY);
++		Vector3 color5 = EngineExport.GetColor(centerX + 1, centerY);
+-		Vector3 color6 = _activeEngine.GetColor(centerX - 1, centerY - 1);
++		Vector3 color6 = EngineExport.GetColor(centerX - 1, centerY - 1);
+-		Vector3 color7 = _activeEngine.GetColor(centerX + 1, centerY - 1);
++		Vector3 color7 = EngineExport.GetColor(centerX + 1, centerY - 1);
+-		Vector3 color8 = _activeEngine.GetColor(centerX - 1, centerY + 1);
++		Vector3 color8 = EngineExport.GetColor(centerX - 1, centerY + 1);
+-		Vector3 color9 = _activeEngine.GetColor(centerX + 1, centerY + 1);
++		Vector3 color9 = EngineExport.GetColor(centerX + 1, centerY + 1);
+ 		float num = GlobalBrightness * scale * 63.75f;
+ 		int num2 = (int)((color2.X + color6.X + color4.X + color.X) * num);
+ 		int num3 = (int)((color2.Y + color6.Y + color4.Y + color.Y) * num);
+@@ -337,10 +_,10 @@
+ 
+ 	public static void GetColor4Slice(int centerX, int centerY, ref Color[] slices)
+ 	{
+-		Vector3 color = _activeEngine.GetColor(centerX, centerY - 1);
++		Vector3 color = EngineExport.GetColor(centerX, centerY - 1);
+-		Vector3 color2 = _activeEngine.GetColor(centerX, centerY + 1);
++		Vector3 color2 = EngineExport.GetColor(centerX, centerY + 1);
+-		Vector3 color3 = _activeEngine.GetColor(centerX - 1, centerY);
++		Vector3 color3 = EngineExport.GetColor(centerX - 1, centerY);
+-		Vector3 color4 = _activeEngine.GetColor(centerX + 1, centerY);
++		Vector3 color4 = EngineExport.GetColor(centerX + 1, centerY);
+ 		float num = color.X + color.Y + color.Z;
+ 		float num2 = color2.X + color2.Y + color2.Z;
+ 		float num3 = color4.X + color4.Y + color4.Z;
+@@ -472,10 +_,10 @@
+ 
+ 	public static void GetColor4Slice(int x, int y, ref Vector3[] slices)
+ 	{
+-		Vector3 color = _activeEngine.GetColor(x, y - 1);
++		Vector3 color = EngineExport.GetColor(x, y - 1);
+-		Vector3 color2 = _activeEngine.GetColor(x, y + 1);
++		Vector3 color2 = EngineExport.GetColor(x, y + 1);
+-		Vector3 color3 = _activeEngine.GetColor(x - 1, y);
++		Vector3 color3 = EngineExport.GetColor(x - 1, y);
+-		Vector3 color4 = _activeEngine.GetColor(x + 1, y);
++		Vector3 color4 = EngineExport.GetColor(x + 1, y);
+ 		float num = color.X + color.Y + color.Z;
+ 		float num2 = color2.X + color2.Y + color2.Z;
+ 		float num3 = color4.X + color4.Y + color4.Z;
