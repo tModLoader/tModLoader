@@ -4836,17 +4836,18 @@
  				}
  			}
  		}
-@@ -50083,8 +_,124 @@
+@@ -50083,8 +_,125 @@
  		drewLava = true;
  	}
  
-+	private static byte[] blackMask = new byte[maxTilesX * maxTilesY];
-+	private static byte[] lightingCache = new byte[maxTilesX * maxTilesY];
++	private static byte[] blackMask = [];
++	private static byte[] lightingCache = [];
++	private static int blackMaskWidth = 0;
 +
 +	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 +	private static int GetBlackMaskIndex(int x, int y)
 +	{
-+		return y * maxTilesX + x;
++		return y * blackMaskWidth + x;
 +	}
 +
 +	private static void BuildLightingBrightnessCache(int startX, int endX, int startY, int endY)
@@ -4861,7 +4862,7 @@
 +
 +		Parallel.For(startX, endX, x => {
 +			for (int y = startY; y < endY; y++) {
-+				lightingCache[GetBlackMaskIndex(x, y)] = (byte)MathF.Floor(Lighting.Brightness(x, y) * 255f);
++				lightingCache[GetBlackMaskIndex(x - startX, y - startY)] = (byte)Math.Clamp(MathF.Floor(Lighting.Brightness(x, y) * 255f), 0, 255);
 +			}
 +		});
 +	}
@@ -4878,7 +4879,7 @@
 +			byte threshold = underworld ? underworld_threshold : baseThreshold;
 +
 +			for (int x = startX; x < endX; x++) {
-+				var idx = GetBlackMaskIndex(x, y);
++				var idx = GetBlackMaskIndex(x - startX, y - startY);
 +
 +				/*
 +				if (!WorldGen.InWorld(x, y)) {
@@ -4926,7 +4927,7 @@
 +			int runStart = -1;
 +
 +			for (int x = startX; x < endX; x++) {
-+				bool black = blackMask[GetBlackMaskIndex(x, y)] != 0;
++				bool black = blackMask[GetBlackMaskIndex(x - startX, y - startY)] != 0;
 +
 +				if (black) {
 +					if (runStart < 0) {
@@ -4969,7 +4970,14 @@
  		bool flag = ShouldShowInvisibleBlocksAndWalls();
  		for (int i = firstTileY; i < lastTileY; i++) {
  			bool flag2 = i >= UnderworldLayer;
-@@ -50133,6 +_,10 @@
+@@ -50130,9 +_,17 @@
+ 					if (Main.tile[j, i] == null)
+ 						Main.tile[j, i] = new Tile();
+ 
++					if (Main.tile[Main.MouseWorld.ToTileCoordinates()].HasTile && Main.MouseWorld.ToTileCoordinates().X == j && Main.MouseWorld.ToTileCoordinates().Y == i) {
++						;
++					}
++
  					Tile tile = Main.tile[j, i];
  					float num4 = Lighting.Brightness(j, i);
  					num4 = (float)Math.Floor(num4 * 255f) / 255f;
@@ -4999,15 +5007,6 @@
 +
 +		var totalDrawTs = TimeLogger.Start();
 +
-+		int size = maxTilesX * maxTilesY;
-+		if (blackMask.Length < size) {
-+			blackMask = new byte[size];
-+		}
-+
-+		if (lightingCache.Length < size) {
-+			lightingCache = new byte[size];
-+		}
-+
 +		// Already guarantees the coordinates will be within max bounds.
 +		TileDrawing.GetScreenDrawArea(
 +			!drawToScreen,
@@ -5027,6 +5026,15 @@
 +				startY = Math.Max(startY, UnderworldLayer);
 +				endY = Math.Max(endY, UnderworldLayer);
 +			}
++		}
++
++		int size = (blackMaskWidth = endX - startX) * (endY - startY);
++		if (blackMask.Length < size) {
++			blackMask = new byte[size];
++		}
++
++		if (lightingCache.Length < size) {
++			lightingCache = new byte[size];
 +		}
 +
 +		int avg = (tileColor.R + tileColor.G + tileColor.B) / 3;
