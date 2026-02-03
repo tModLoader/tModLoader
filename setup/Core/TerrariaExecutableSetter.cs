@@ -1,4 +1,3 @@
-using System.Runtime.InteropServices;
 using Terraria.ModLoader.Setup.Core.Abstractions;
 using Terraria.ModLoader.Setup.Core.Utilities;
 
