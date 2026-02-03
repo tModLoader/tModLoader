@@ -56,6 +56,15 @@
  	{
  		instance = this;
  		UnpausedUpdateSeed = (ulong)Guid.NewGuid().GetHashCode();
+@@ -5695,7 +_,7 @@
+ 		ChatInitializer.Load();
+ 		LucyAxeMessage.Initialize();
+ 		if (Platform.IsWindows && !dedServ) {
+-			IntPtr systemMenu = GetSystemMenu(base.Window.Handle, bRevert: false);
++			IntPtr systemMenu = GetSystemMenu(Platform.SdlHandleToWindowsHandle(base.Window.Handle), bRevert: false);
+ 			int menuItemCount = GetMenuItemCount(systemMenu);
+ 			RemoveMenu(systemMenu, menuItemCount - 1, 1024);
+ 		}
 @@ -9597,6 +_,7 @@
  		});
  

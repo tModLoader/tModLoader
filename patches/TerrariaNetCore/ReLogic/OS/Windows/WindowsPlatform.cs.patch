@@ -1,20 +1,10 @@
 --- src/Terraria/ReLogic/OS/Windows/WindowsPlatform.cs
 +++ src/TerrariaNetCore/ReLogic/OS/Windows/WindowsPlatform.cs
-@@ -1,5 +_,6 @@
- using System;
- using ReLogic.Localization.IME;
-+using SDL3;
- 
- namespace ReLogic.OS.Windows;
- 
-@@ -19,10 +_,16 @@
+@@ -19,10 +_,13 @@
  
  	public override void InitializeClientServices(IntPtr windowHandle)
  	{
-+		// Window.handle from FNAPlatform.CreateWindow() points to an SDL window instead of Win32 window
-+		// Need to convert it to Win32 window
-+		uint props = SDL.SDL_GetWindowProperties(windowHandle);
-+		windowHandle = SDL.SDL_GetPointerProperty(props, "SDL.window.win32.hwnd", 0);
++		windowHandle = Platform.SdlHandleToWindowsHandle(windowHandle);
 +
  		if (_wndProcHook == null)
  			_wndProcHook = new WindowsMessageHook(windowHandle);

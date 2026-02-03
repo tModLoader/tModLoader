@@ -44,7 +44,7 @@
  	public void SetUnicodeTitle(GameWindow window, string title)
  	{
  		NativeMethods.WndProcCallback wndProcCallback = NativeMethods.DefWindowProc;
-@@ -37,19 +_,21 @@
+@@ -37,19 +_,23 @@
  		NativeMethods.SetWindowLong(window.Handle, -4, dwNewLong);
  		GC.KeepAlive(wndProcCallback);
  	}
@@ -53,14 +53,18 @@
 -	public void StartFlashingIcon(GameWindow window)
 +	public override void StartFlashingIcon(GameWindow window)
  	{
- 		NativeMethods.FlashInfo flashInfo = NativeMethods.FlashInfo.CreateStart(window.Handle);
++		nint handle = Platform.SdlHandleToWindowsHandle(window.Handle);
+-		NativeMethods.FlashInfo flashInfo = NativeMethods.FlashInfo.CreateStart(window.Handle);
++		NativeMethods.FlashInfo flashInfo = NativeMethods.FlashInfo.CreateStart(handle);
  		NativeMethods.FlashWindowEx(ref flashInfo);
  	}
  
 -	public void StopFlashingIcon(GameWindow window)
 +	public override void StopFlashingIcon(GameWindow window)
  	{
- 		NativeMethods.FlashInfo flashInfo = NativeMethods.FlashInfo.CreateStop(window.Handle);
++		nint handle = Platform.SdlHandleToWindowsHandle(window.Handle);
+-		NativeMethods.FlashInfo flashInfo = NativeMethods.FlashInfo.CreateStop(window.Handle);
++		NativeMethods.FlashInfo flashInfo = NativeMethods.FlashInfo.CreateStop(handle);
  		NativeMethods.FlashWindowEx(ref flashInfo);
  	}
  
