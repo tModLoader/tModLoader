@@ -392,6 +392,12 @@ public static partial class Program
 			return;
 
 		// Move DPI detection before early return.
+		if (Platform.IsWindows) {
+			[System.Runtime.InteropServices.DllImport("user32.dll")]
+			static extern bool SetProcessDPIAware();
+
+			SetProcessDPIAware();
+		}
 		SDL2.SDL.SDL_VideoInit(null);
 		SDL2.SDL.SDL_GetDisplayDPI(0, out var ddpi, out float hdpi, out float vdpi);
 		Logging.tML.Info($"Display DPI: Diagonal DPI is {ddpi}. Vertical DPI is {vdpi}. Horizontal DPI is {hdpi}");
@@ -404,13 +410,6 @@ public static partial class Program
 			}
 		}
 		
-		if (Platform.IsWindows) {
-			[System.Runtime.InteropServices.DllImport("user32.dll")]
-			static extern bool SetProcessDPIAware();
-
-			SetProcessDPIAware();
-		}
-
 		if (ddpi >= HighDpiThreshold || hdpi >= HighDpiThreshold || vdpi >= HighDpiThreshold) {
 			Environment.SetEnvironmentVariable("FNA_GRAPHICS_ENABLE_HIGHDPI", "1");
 			Logging.tML.Info($"High DPI Display detected: setting FNA to highdpi mode");
