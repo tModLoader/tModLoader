@@ -10,7 +10,28 @@
  
  namespace Terraria.Net.Sockets;
  
-@@ -38,6 +_,9 @@
+@@ -23,7 +_,10 @@
+ 
+ 	public TcpSocket()
+ 	{
+-		_connection = new TcpClient {
++		_connection = new TcpClient(AddressFamily.InterNetworkV6) {
++			Client = {
++				DualMode = true
++			},
+ 			NoDelay = true
+ 		};
+ 	}
+@@ -33,11 +_,17 @@
+ 		_connection = tcpClient;
+ 		_connection.NoDelay = true;
+ 		IPEndPoint iPEndPoint = (IPEndPoint)tcpClient.Client.RemoteEndPoint;
++		IPAddress address = iPEndPoint.Address;
++		if (address.IsIPv4MappedToIPv6)
++			address = address.MapToIPv4();
+-		_remoteAddress = new TcpAddress(iPEndPoint.Address, iPEndPoint.Port);
++		_remoteAddress = new TcpAddress(address, iPEndPoint.Port);
+ 	}
  
  	void ISocket.Close()
  	{
@@ -57,6 +78,27 @@
  		if (!Platform.IsWindows) {
  			byte[] array = LegacyNetBufferPool.RequestBuffer(data, offset, size);
  			_connection.GetStream().BeginWrite(array, 0, size, SendCallback, new object[2] {
+@@ -119,14 +_,17 @@
+ 
+ 	bool ISocket.StartListening(SocketConnectionAccepted callback)
+ 	{
+-		IPAddress address = IPAddress.Any;
++		IPAddress address = IPAddress.IPv6Any;
+ 		if (Program.LaunchParameters.TryGetValue("-ip", out var value) && !IPAddress.TryParse(value, out address))
+-			address = IPAddress.Any;
++			address = IPAddress.IPv6Any;
+ 
+ 		_isListening = true;
+ 		_listenerCallback = callback;
+-		if (_listener == null)
++		if (_listener == null) {
+ 			_listener = new TcpListener(address, Netplay.ListenPort);
++			if (address == IPAddress.IPv6Any)
++				_listener.Server.DualMode = true;
++		}
+ 
+ 		try {
+ 			_listener.Start();
 @@ -152,7 +_,10 @@
  		while (_isListening && !Netplay.Disconnect) {
  			try {
