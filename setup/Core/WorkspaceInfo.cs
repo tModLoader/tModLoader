@@ -114,17 +114,17 @@ public sealed class WorkspaceInfo
 
 		TerrariaSteamDirectory = PathUtils.GetCrossPlatformFullPath(terrariaSteamDirectory);
 
-		string tmlDevDirectory = tMLDevSteamDirectory ?? "";
-		if (string.IsNullOrWhiteSpace(tmlDevDirectory)) {
-			if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX) && IsMacOsTerrariaResourcesPath(TerrariaSteamDirectory)) {
-				tmlDevDirectory = Path.Combine(GetMacOsSteamAppsCommonDirectory(TerrariaSteamDirectory), "tModLoaderDev");
+		if (string.IsNullOrWhiteSpace(tMLDevSteamDirectory)) {
+			var steamappsCommonDirectory = TerrariaSteamDirectory;
+			if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX) &&
+					steamappsCommonDirectory.EndsWith(Path.Combine("Terraria.app", "Contents", "Resources"), StringComparison.Ordinal)) {
+				steamappsCommonDirectory = Path.Combine(steamappsCommonDirectory, "..", "..", "..");
 			}
-			else {
-				tmlDevDirectory = Path.Combine(terrariaSteamDirectory, "..", "tModLoaderDev");
-			}
+			
+			tMLDevSteamDirectory = Path.Combine(steamappsCommonDirectory, "..", "tModLoaderDev");
 		}
 
-		TMLDevSteamDirectory = PathUtils.GetCrossPlatformFullPath(tmlDevDirectory);
+		TMLDevSteamDirectory = PathUtils.GetCrossPlatformFullPath(tMLDevSteamDirectory);
 
 		Directory.CreateDirectory(TMLDevSteamDirectory);
 
@@ -139,21 +139,5 @@ public sealed class WorkspaceInfo
 	private void WriteToFile()
 	{
 		document.Save(FilePath);
-	}
-
-	private static bool IsMacOsTerrariaResourcesPath(string terrariaSteamDirectory)
-	{
-		return terrariaSteamDirectory.EndsWith(Path.Combine("Terraria.app", "Contents", "Resources"), StringComparison.Ordinal);
-	}
-
-	private static string GetMacOsSteamAppsCommonDirectory(string terrariaSteamDirectory)
-	{
-		var resourcesDir = new DirectoryInfo(terrariaSteamDirectory);
-		var contentsDir = resourcesDir.Parent;
-		var appDir = contentsDir?.Parent;
-		var terrariaDir = appDir?.Parent;
-		var commonDir = terrariaDir?.Parent;
-
-		return commonDir?.FullName ?? Path.Combine(terrariaSteamDirectory, "..", "..", "..", "..");
 	}
 }
