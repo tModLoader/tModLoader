@@ -8,5 +8,7 @@ partial class Main
 	internal static string UnifiedVersion => "0.1.0";
 	internal static bool UnifiedBranding => true;
 
+	public static bool Vsync { get; set; } = true;
+
 	internal static List<TitleLinkButton> UnifiedLinks { get; } = [];
 }

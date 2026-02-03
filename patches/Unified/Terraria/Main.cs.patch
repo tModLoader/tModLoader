@@ -351,6 +351,25 @@
  	{
  		switch (Style) {
  			case 0: {
+@@ -14505,12 +_,18 @@
+ 			Chroma.Update(GlobalTimeWrappedHourly);
+ 			if (FrameSkipMode == FrameSkipMode.Off || FrameSkipMode == FrameSkipMode.Subtle) {
+ 				base.IsFixedTimeStep = ThrottleWhenInactive && !base.IsActive;
++				/*
+ 				graphics.SynchronizeWithVerticalRetrace = true;
++				*/
+ 			}
+ 			else {
+ 				base.IsFixedTimeStep = true;
++				/*
+ 				graphics.SynchronizeWithVerticalRetrace = true;
++				*/
+ 			}
++
++			graphics.SynchronizeWithVerticalRetrace = Vsync;
+ 
+ 			base.InactiveSleepTime = (ThrottleWhenInactive ? TimeSpan.FromMilliseconds(20.0) : TimeSpan.Zero);
+ 			if (showSplash)
 @@ -14921,7 +_,7 @@
  			PlayerInput.SetZoom_UI();
  			int num5 = (screenWidth - num4 - 280) / num2;
@@ -5471,5 +5490,21 @@
 -				spriteBatch.Draw(TextureAssets.FlameRing.Value, player[i].Center - screenPosition, new Microsoft.Xna.Framework.Rectangle(0, 400 * j, 400, 400), new Microsoft.Xna.Framework.Color(num5, num5, num5, num5 / 2f), player[i].flameRingRot + (float)Math.PI / 3f * (float)j, new Vector2(200f, 200f), num4, SpriteEffects.None, 0f);
 +				spriteBatch.Draw(TextureAssets.FlameRing.Value, player[i].Center - screenPosition, new System.Drawing.Rectangle(0, 400 * j, 400, 400), new Microsoft.Xna.Framework.Color(num5, num5, num5, num5 / 2f), player[i].flameRingRot + (float)Math.PI / 3f * (float)j, new Vector2(200f, 200f), num4, SpriteEffects.None, 0f);
  			}
+ 		}
+ 	}
+@@ -57414,8 +_,15 @@
+ 			Console.WriteLine(Language.GetTextValue("Misc.ResolutionChanged", width, height));
+ 		}
+ 
++		/*
+ 		if (!graphics.SynchronizeWithVerticalRetrace) {
+ 			graphics.SynchronizeWithVerticalRetrace = true;
++			graphics.ApplyChanges();
++		}
++		*/
++
++		if (graphics.SynchronizeWithVerticalRetrace != Vsync) {
++			graphics.SynchronizeWithVerticalRetrace = Vsync;
+ 			graphics.ApplyChanges();
  		}
  	}
