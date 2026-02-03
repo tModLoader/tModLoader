@@ -44,7 +44,7 @@
  						lightingState.B = tileB;
  				}
 +
-+				exposedLightMap[i - _expandedRectLeft, j - _expandedRectBottom] = lightingState.ToVector3();
++				exposedLightMap[i - _expandedRectLeft, j - _expandedRectTop] = lightingState.ToVector3();
  			}
  		}
  	}

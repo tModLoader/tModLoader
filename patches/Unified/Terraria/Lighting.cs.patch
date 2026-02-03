@@ -1,18 +1,19 @@
 --- src/TerrariaNetCore/Terraria/Lighting.cs
 +++ src/Unified/Terraria/Lighting.cs
-@@ -1,4 +_,5 @@
- using System;
-+using System.Runtime.CompilerServices;
- using Microsoft.Xna.Framework;
+@@ -3,11 +_,38 @@
  using Terraria.Graphics;
  using Terraria.Graphics.Light;
-@@ -7,7 +_,21 @@
+ using Terraria.ID;
++using Terraria.Unified;
+ using Terraria.Utilities;
  
  namespace Terraria;
  
 -public class Lighting
 +public sealed class LightingEngineExport(LightMap workingMap, Rectangle area)
 +{
++	public Rectangle Area => area;
++
 +	public Vector3 GetColor(int x, int y)
 +	{
 +		if (!area.Contains(x, y)) {
@@ -22,6 +23,16 @@
 +		x -= area.X;
 +		y -= area.Y;
 +		return workingMap[x, y];
++	}
++
++	public Vector3 GetColorUnsafe(int x, int y)
++	{
++		return workingMap[x - area.X, y - area.Y];
++	}
++
++	public Vector3 GetColorLocalUnsafe(int localX, int localY)
++	{
++		return workingMap[localX, localY];
 +	}
 +}
 +
@@ -115,7 +126,11 @@
  		float num = GlobalBrightness * 255f;
  		int num2 = (int)(color.X * num);
  		int num3 = (int)(color.Y * num);
-@@ -224,7 +_,7 @@
+@@ -221,10 +_,11 @@
+ 
+ 	public static void GetColor9Slice(int centerX, int centerY, ref Color[] slices)
+ 	{
++		/*
  		int num = 0;
  		for (int i = centerX - 1; i <= centerX + 1; i++) {
  			for (int j = centerY - 1; j <= centerY + 1; j++) {
@@ -124,10 +139,31 @@
  				int num2 = (int)(255f * color.X * GlobalBrightness);
  				int num3 = (int)(255f * color.Y * GlobalBrightness);
  				int num4 = (int)(255f * color.Z * GlobalBrightness);
-@@ -249,29 +_,29 @@
+@@ -245,33 +_,66 @@
+ 
+ 			num -= 8;
+ 		}
++		*/
++
++		var globalBrightness = GlobalBrightness;
++
++		var colors = (Span<Vector3>)stackalloc Vector3[9];
++		ColorBuffer.GetSquare(centerX, centerY, colors);
++
++		slices[0] = new Color(colors[0] * globalBrightness);
++		slices[1] = new Color(colors[1] * globalBrightness);
++		slices[2] = new Color(colors[2] * globalBrightness);
++		slices[3] = new Color(colors[3] * globalBrightness);
++		slices[4] = new Color(colors[4] * globalBrightness);
++		slices[5] = new Color(colors[5] * globalBrightness);
++		slices[6] = new Color(colors[6] * globalBrightness);
++		slices[7] = new Color(colors[7] * globalBrightness);
++		slices[8] = new Color(colors[8] * globalBrightness);
+ 	}
  
  	public static void GetColor9Slice(int x, int y, ref Vector3[] slices)
  	{
++		/*
 -		slices[0] = _activeEngine.GetColor(x - 1, y - 1) * GlobalBrightness;
 +		slices[0] = EngineExport.GetColor(x - 1, y - 1) * GlobalBrightness;
 -		slices[3] = _activeEngine.GetColor(x - 1, y) * GlobalBrightness;
@@ -146,6 +182,22 @@
 +		slices[5] = EngineExport.GetColor(x + 1, y) * GlobalBrightness;
 -		slices[8] = _activeEngine.GetColor(x + 1, y + 1) * GlobalBrightness;
 +		slices[8] = EngineExport.GetColor(x + 1, y + 1) * GlobalBrightness;
++		*/
++
++		var globalBrightness = GlobalBrightness;
++
++		var colors = (Span<Vector3>)stackalloc Vector3[9];
++		ColorBuffer.GetSquare(x, y, colors);
++
++		slices[0] = colors[0] * globalBrightness;
++		slices[1] = colors[1] * globalBrightness;
++		slices[2] = colors[2] * globalBrightness;
++		slices[3] = colors[3] * globalBrightness;
++		slices[4] = colors[4] * globalBrightness;
++		slices[5] = colors[5] * globalBrightness;
++		slices[6] = colors[6] * globalBrightness;
++		slices[7] = colors[7] * globalBrightness;
++		slices[8] = colors[8] * globalBrightness;
  	}
  
  	public static void GetCornerColors(int centerX, int centerY, out VertexColors vertices, float scale = 1f)
@@ -172,10 +224,11 @@
  		float num = GlobalBrightness * scale * 63.75f;
  		int num2 = (int)((color2.X + color6.X + color4.X + color.X) * num);
  		int num3 = (int)((color2.Y + color6.Y + color4.Y + color.Y) * num);
-@@ -337,10 +_,10 @@
+@@ -337,10 +_,11 @@
  
  	public static void GetColor4Slice(int centerX, int centerY, ref Color[] slices)
  	{
++		/*
 -		Vector3 color = _activeEngine.GetColor(centerX, centerY - 1);
 +		Vector3 color = EngineExport.GetColor(centerX, centerY - 1);
 -		Vector3 color2 = _activeEngine.GetColor(centerX, centerY + 1);
@@ -187,10 +240,36 @@
  		float num = color.X + color.Y + color.Z;
  		float num2 = color2.X + color2.Y + color2.Z;
  		float num3 = color4.X + color4.Y + color4.Z;
-@@ -472,10 +_,10 @@
+@@ -468,14 +_,36 @@
+ 
+ 			slices[3] = new Color((byte)num26, (byte)num27, (byte)num28, 255);
+ 		}
++		*/
++
++		var globalBrightness = GlobalBrightness;
++
++		var colors = (Span<Vector3>)stackalloc Vector3[4];
++		ColorBuffer.GetPlus(centerX, centerY, colors);
++
++		var color = colors[0];
++		var color2 = colors[1];
++		var color3 = colors[2];
++		var color4 = colors[3];
++
++		var total1 = color.X + color.Y + color.Z;
++		var total2 = color2.X + color2.Y + color2.Z;
++		var total3 = color4.X + color4.Y + color4.Z;
++		var total4 = color3.X + color3.Y + color3.Z;
++
++		slices[0] = new Color((total1 >= total4 ? color3 : color) * globalBrightness);
++		slices[1] = new Color((total1 >= total3 ? color4 : color) * globalBrightness);
++		slices[2] = new Color((total2 >= total4 ? color3 : color2) * globalBrightness);
++		slices[3] = new Color((total2 >= total3 ? color4 : color2) * globalBrightness);
+ 	}
  
  	public static void GetColor4Slice(int x, int y, ref Vector3[] slices)
  	{
++		/*
 -		Vector3 color = _activeEngine.GetColor(x, y - 1);
 +		Vector3 color = EngineExport.GetColor(x, y - 1);
 -		Vector3 color2 = _activeEngine.GetColor(x, y + 1);
@@ -202,3 +281,30 @@
  		float num = color.X + color.Y + color.Z;
  		float num2 = color2.X + color2.Y + color2.Z;
  		float num3 = color4.X + color4.Y + color4.Z;
+@@ -499,5 +_,26 @@
+ 			slices[3] = color4 * GlobalBrightness;
+ 		else
+ 			slices[3] = color2 * GlobalBrightness;
++		*/
++
++		var globalBrightness = GlobalBrightness;
++
++		var colors = (Span<Vector3>)stackalloc Vector3[4];
++		ColorBuffer.GetPlus(x, y, colors);
++
++		var color = colors[0];
++		var color2 = colors[1];
++		var color3 = colors[2];
++		var color4 = colors[3];
++
++		var total1 = color.X + color.Y + color.Z;
++		var total2 = color2.X + color2.Y + color2.Z;
++		var total3 = color4.X + color4.Y + color4.Z;
++		var total4 = color3.X + color3.Y + color3.Z;
++
++		slices[0] = (total1 >= total4 ? color3 : color) * globalBrightness;
++		slices[1] = (total1 >= total3 ? color4 : color) * globalBrightness;
++		slices[2] = (total2 >= total4 ? color3 : color2) * globalBrightness;
++		slices[3] = (total2 >= total3 ? color4 : color2) * globalBrightness;
+ 	}
+ }
