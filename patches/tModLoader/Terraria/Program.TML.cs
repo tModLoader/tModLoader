@@ -391,6 +391,11 @@ public static partial class Program
 		if (isServer)
 			return;
 
+		// Move DPI detection before early return.
+		SDL2.SDL.SDL_VideoInit(null);
+		SDL2.SDL.SDL_GetDisplayDPI(0, out var ddpi, out float hdpi, out float vdpi);
+		Logging.tML.Info($"Display DPI: Diagonal DPI is {ddpi}. Vertical DPI is {vdpi}. Horizontal DPI is {hdpi}");
+
 		// Only affect OSX path
 		if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX)) {
 			if (!GetEnableHighDpiOverride()) {
@@ -406,9 +411,6 @@ public static partial class Program
 			SetProcessDPIAware();
 		}
 
-		SDL2.SDL.SDL_VideoInit(null);
-		SDL2.SDL.SDL_GetDisplayDPI(0, out var ddpi, out float hdpi, out float vdpi);
-		Logging.tML.Info($"Display DPI: Diagonal DPI is {ddpi}. Vertical DPI is {vdpi}. Horizontal DPI is {hdpi}");
 		if (ddpi >= HighDpiThreshold || hdpi >= HighDpiThreshold || vdpi >= HighDpiThreshold) {
 			Environment.SetEnvironmentVariable("FNA_GRAPHICS_ENABLE_HIGHDPI", "1");
 			Logging.tML.Info($"High DPI Display detected: setting FNA to highdpi mode");
