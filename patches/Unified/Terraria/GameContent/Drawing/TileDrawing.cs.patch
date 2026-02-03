@@ -29,3 +29,158 @@
  						Main.tileBatch.SetLayer(Layer_LiquidBehindTiles, 0);
  						DrawTile_LiquidBehindTile(solidLayer, waterStyleOverride, unscaledPosition, drawOffSet, j, i, tile);
  					}
+@@ -729,7 +_,14 @@
+ 
+ 	private void DrawSingleTile(Vector2 screenPosition, Vector2 screenOffset, int tileX, int tileY)
+ 	{
++		var colorSlices = (Span<Vector3>)stackalloc Vector3[9];
++		DrawSingleTile(screenPosition, screenOffset, tileX, tileY, colorSlices);
++	}
++
++	private void DrawSingleTile(Vector2 screenPosition, Vector2 screenOffset, int tileX, int tileY, Span<Vector3> colorSlices)
++	{
+ 		TileDrawInfo tileDrawInfo = new TileDrawInfo();
++		tileDrawInfo.colorSlices = colorSlices;
+ 		tileDrawInfo.tileCache = Main.tile[tileX, tileY];
+ 		tileDrawInfo.typeCache = tileDrawInfo.tileCache.type;
+ 		tileDrawInfo.tileFrameX = tileDrawInfo.tileCache.frameX;
+@@ -829,7 +_,7 @@
+ 
+ 		flag &= IsVisible(tileDrawInfo.tileCache);
+ 		CacheSpecialDraws_Part1(tileX, tileY, tileDrawInfo.typeCache, tileDrawInfo.tileFrameX, tileDrawInfo.tileFrameY, !flag);
+-		CacheSpecialDraws_Part2(tileX, tileY, tileDrawInfo, !flag);
++		CacheSpecialDraws_Part2(tileX, tileY, ref tileDrawInfo, !flag);
+ 		if (tileDrawInfo.typeCache == 72 && tileDrawInfo.tileFrameX >= 36) {
+ 			int num4 = 0;
+ 			if (tileDrawInfo.tileFrameY == 18)
+@@ -982,11 +_,11 @@
+ 		}
+ 
+ 		if (tileDrawInfo.typeCache == 314)
+-			DrawTile_MinecartTrack(screenPosition, screenOffset, tileX, tileY, tileDrawInfo);
++			DrawTile_MinecartTrack(screenPosition, screenOffset, tileX, tileY, ref tileDrawInfo);
+ 		else if (tileDrawInfo.typeCache == 171)
+-			DrawXmasTree(screenPosition, screenOffset, tileX, tileY, tileDrawInfo);
++			DrawXmasTree(screenPosition, screenOffset, tileX, tileY, ref tileDrawInfo);
+ 		else
+-			DrawBasicTile(screenPosition, screenOffset, tileX, tileY, tileDrawInfo, rectangle, vector);
++			DrawBasicTile(screenPosition, screenOffset, tileX, tileY, ref tileDrawInfo, rectangle, vector);
+ 
+ 		if (Main.tileGlowMask[tileDrawInfo.tileCache.type] != -1) {
+ 			short num9 = Main.tileGlowMask[tileDrawInfo.tileCache.type];
+@@ -1285,12 +_,12 @@
+ 		return TextureAssets.CageTop[key.CageStyle].Value;
+ 	}
+ 
+-	private void DrawBasicTile(Vector2 screenPosition, Vector2 screenOffset, int tileX, int tileY, TileDrawInfo drawData, Rectangle normalTileRect, Vector2 normalTilePosition)
++	private void DrawBasicTile(Vector2 screenPosition, Vector2 screenOffset, int tileX, int tileY, ref TileDrawInfo drawData, Rectangle normalTileRect, Vector2 normalTilePosition)
+ 	{
+ 		bool flag = !TileID.Sets.DontDrawTileSliced[drawData.tileCache.type];
+ 		bool flag2 = !TileID.Sets.DontDrawTileSlopes[drawData.tileCache.type];
+ 		if (drawData.typeCache == 380 || TileID.Sets.Platforms[drawData.typeCache])
+-			DrawTile_BackRope(screenPosition, screenOffset, tileX, tileY, drawData);
++			DrawTile_BackRope(screenPosition, screenOffset, tileX, tileY, ref drawData);
+ 
+ 		if (flag2 && drawData.tileCache.slope() > 0) {
+ 			if (TileID.Sets.Platforms[drawData.tileCache.type]) {
+@@ -1396,7 +_,7 @@
+ 		}
+ 
+ 		if (flag && Lighting.NotRetro && _tileSolid[drawData.typeCache] && !drawData.tileCache.halfBrick()) {
+-			DrawSingleTile_SlicedBlock(normalTilePosition, tileX, tileY, drawData);
++			DrawSingleTile_SlicedBlock(normalTilePosition, tileX, tileY, ref drawData);
+ 			return;
+ 		}
+ 
+@@ -1471,7 +_,7 @@
+ 			Main.tileBatch.Draw(drawData.drawTexture, normalTilePosition, normalTileRect, drawData.finalColor, _zero, 1f, drawData.tileSpriteEffect);
+ 		}
+ 
+-		DrawSingleTile_Flames(screenPosition, screenOffset, tileX, tileY, drawData);
++		DrawSingleTile_Flames(screenPosition, screenOffset, tileX, tileY, ref drawData);
+ 	}
+ 
+ 	private int GetPalmTreeBiome(int tileX, int tileY)
+@@ -2399,7 +_,7 @@
+ 		}
+ 	}
+ 
+-	private void DrawSingleTile_Flames(Vector2 screenPosition, Vector2 screenOffset, int tileX, int tileY, TileDrawInfo drawData)
++	private void DrawSingleTile_Flames(Vector2 screenPosition, Vector2 screenOffset, int tileX, int tileY, ref TileDrawInfo drawData)
+ 	{
+ 		if (drawData.typeCache == 548 && drawData.tileFrameX / 54 > 6)
+ 			Main.tileBatch.Draw(TextureAssets.GlowMask[297].Value, new Vector2((float)(tileX * 16 - (int)screenPosition.X) - ((float)drawData.tileWidth - 16f) / 2f, tileY * 16 - (int)screenPosition.Y + drawData.tileTop) + screenOffset, new Rectangle(drawData.tileFrameX + drawData.addFrX, drawData.tileFrameY + drawData.addFrY, drawData.tileWidth, drawData.tileHeight), Color.White, _zero, 1f, drawData.tileSpriteEffect);
+@@ -3131,7 +_,7 @@
+ 		return num;
+ 	}
+ 
+-	private void DrawSingleTile_SlicedBlock(Vector2 normalTilePosition, int tileX, int tileY, TileDrawInfo drawData)
++	private void DrawSingleTile_SlicedBlock(Vector2 normalTilePosition, int tileX, int tileY, ref TileDrawInfo drawData)
+ 	{
+ 		Color color = default(Color);
+ 		Vector2 origin = default(Vector2);
+@@ -3139,8 +_,8 @@
+ 		Vector3 tileLight = default(Vector3);
+ 		Vector2 position = default(Vector2);
+ 		if (drawData.tileLight.R > _highQualityLightingRequirement.R || drawData.tileLight.G > _highQualityLightingRequirement.G || drawData.tileLight.B > _highQualityLightingRequirement.B) {
+-			Vector3[] slices = drawData.colorSlices;
++			var slices = drawData.colorSlices;
+-			Lighting.GetColor9Slice(tileX, tileY, ref slices);
++			Lighting.GetColor9Slice(tileX, tileY, slices);
+ 			Vector3 vector = drawData.tileLight.ToVector3();
+ 			Vector3 tint = drawData.colorTint.ToVector3();
+ 			if (drawData.tileCache.fullbrightBlock())
+@@ -3216,8 +_,8 @@
+ 			}
+ 		}
+ 		else if (drawData.tileLight.R > _mediumQualityLightingRequirement.R || drawData.tileLight.G > _mediumQualityLightingRequirement.G || drawData.tileLight.B > _mediumQualityLightingRequirement.B) {
+-			Vector3[] slices2 = drawData.colorSlices;
++			var slices2 = drawData.colorSlices;
+-			Lighting.GetColor4Slice(tileX, tileY, ref slices2);
++			Lighting.GetColor4Slice(tileX, tileY, slices2);
+ 			Vector3 vector2 = drawData.tileLight.ToVector3();
+ 			Vector3 tint2 = drawData.colorTint.ToVector3();
+ 			if (drawData.tileCache.fullbrightBlock())
+@@ -3272,7 +_,7 @@
+ 		}
+ 	}
+ 
+-	private void DrawXmasTree(Vector2 screenPosition, Vector2 screenOffset, int tileX, int tileY, TileDrawInfo drawData)
++	private void DrawXmasTree(Vector2 screenPosition, Vector2 screenOffset, int tileX, int tileY, ref TileDrawInfo drawData)
+ 	{
+ 		int num = 2;
+ 		if (tileY - drawData.tileFrameY > 0 && drawData.tileFrameY == 7 && Main.tile[tileX, tileY - drawData.tileFrameY] != null) {
+@@ -3357,7 +_,7 @@
+ 		}
+ 	}
+ 
+-	private void DrawTile_BackRope(Vector2 screenPosition, Vector2 screenOffset, int tileX, int tileY, TileDrawInfo drawData)
++	private void DrawTile_BackRope(Vector2 screenPosition, Vector2 screenOffset, int tileX, int tileY, ref TileDrawInfo drawData)
+ 	{
+ 		if (!WorldGen.InWorld(tileX, tileY, 1))
+ 			return;
+@@ -3374,13 +_,13 @@
+ 		}
+ 	}
+ 
+-	private void DrawTile_MinecartTrack(Vector2 screenPosition, Vector2 screenOffset, int tileX, int tileY, TileDrawInfo drawData)
++	private void DrawTile_MinecartTrack(Vector2 screenPosition, Vector2 screenOffset, int tileX, int tileY, ref TileDrawInfo drawData)
+ 	{
+ 		drawData.tileLight = GetFinalLight(drawData.tileCache, drawData.typeCache, drawData.tileLight, drawData.colorTint);
+ 		Minecart.TrackColors(tileX, tileY, drawData.tileCache, out var frontColor, out var backColor);
+ 		drawData.drawTexture = GetTileDrawTexture(drawData.tileCache.type, frontColor);
+ 		Texture2D tileDrawTexture = GetTileDrawTexture(drawData.tileCache.type, backColor);
+-		DrawTile_BackRope(screenPosition, screenOffset, tileX, tileY, drawData);
++		DrawTile_BackRope(screenPosition, screenOffset, tileX, tileY, ref drawData);
+ 		if (drawData.tileFrameY != -1)
+ 			Main.tileBatch.Draw(tileDrawTexture, new Vector2(tileX * 16 - (int)screenPosition.X, tileY * 16 - (int)screenPosition.Y) + screenOffset, Minecart.GetSourceRect(drawData.tileFrameY, Main.tileFrame[314]), drawData.tileLight, default(Vector2), 1f, drawData.tileSpriteEffect);
+ 
+@@ -3803,7 +_,7 @@
+ 		}
+ 	}
+ 
+-	private void CacheSpecialDraws_Part2(int tileX, int tileY, TileDrawInfo drawData, bool skipDraw)
++	private void CacheSpecialDraws_Part2(int tileX, int tileY, ref TileDrawInfo drawData, bool skipDraw)
+ 	{
+ 		if (TileID.Sets.BasicChest[drawData.typeCache]) {
+ 			Point key = new Point(tileX, tileY);

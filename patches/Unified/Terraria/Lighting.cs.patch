@@ -139,7 +139,7 @@
  				int num2 = (int)(255f * color.X * GlobalBrightness);
  				int num3 = (int)(255f * color.Y * GlobalBrightness);
  				int num4 = (int)(255f * color.Z * GlobalBrightness);
-@@ -245,33 +_,66 @@
+@@ -245,33 +_,71 @@
  
  			num -= 8;
  		}
@@ -184,6 +184,11 @@
 +		slices[8] = EngineExport.GetColor(x + 1, y + 1) * GlobalBrightness;
 +		*/
 +
++		GetColor9Slice(x, y, slices.AsSpan());
++	}
++
++	public static void GetColor9Slice(int x, int y, Span<Vector3> slices)
++	{
 +		var globalBrightness = GlobalBrightness;
 +
 +		var colors = (Span<Vector3>)stackalloc Vector3[9];
@@ -281,12 +286,17 @@
  		float num = color.X + color.Y + color.Z;
  		float num2 = color2.X + color2.Y + color2.Z;
  		float num3 = color4.X + color4.Y + color4.Z;
-@@ -499,5 +_,26 @@
+@@ -499,5 +_,31 @@
  			slices[3] = color4 * GlobalBrightness;
  		else
  			slices[3] = color2 * GlobalBrightness;
 +		*/
 +
++		GetColor4Slice(x, y, slices.AsSpan());
++	}
++
++	public static void GetColor4Slice(int x, int y, Span<Vector3> slices)
++	{
 +		var globalBrightness = GlobalBrightness;
 +
 +		var colors = (Span<Vector3>)stackalloc Vector3[4];
