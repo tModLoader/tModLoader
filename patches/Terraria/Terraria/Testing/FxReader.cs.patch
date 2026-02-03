@@ -1,7 +1,7 @@
 --- src/decompiled/Terraria/Testing/FxReader.cs
 +++ src/Terraria/Terraria/Testing/FxReader.cs
 @@ -1,3 +_,4 @@
-+#if !FNA
++#if XNA && !SERVER
  using System;
  using System.IO;
  using Microsoft.Xna.Framework.Content.Pipeline;

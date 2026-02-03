@@ -1,6 +1,6 @@
 --- src/Terraria/ReLogic/OS/Windows/WindowService.cs
 +++ src/TerrariaNetCore/ReLogic/OS/Windows/WindowService.cs
-@@ -1,17 +_,28 @@
+@@ -1,17 +_,24 @@
  using System;
 +#if !NETCORE
  using System.Drawing;
@@ -12,13 +12,11 @@
  
  namespace ReLogic.OS.Windows;
  
- internal class WindowService : IWindowService
+-internal class WindowService : IWindowService
++internal class WindowService : SDLWindowService
  {
-+#if NETCORE
-+	private readonly SDLWindowService sdlService = new SDLWindowService();
-+#endif
-+
- 	public float GetScaling()
+-	public float GetScaling()
++	public override float GetScaling()
  	{
  		try {
 +#if NETCORE
@@ -29,65 +27,54 @@
  			int deviceCaps = NativeMethods.GetDeviceCaps(hdc, NativeMethods.DeviceCap.VertRes);
  			return (float)NativeMethods.GetDeviceCaps(hdc, NativeMethods.DeviceCap.DesktopVertRes) / (float)deviceCaps;
  		}
-@@ -29,13 +_,18 @@
+@@ -20,7 +_,7 @@
  		}
  	}
  
-+	// TODO: Why not just use SDLWindowService?
+-	public void SetQuickEditEnabled(bool enabled)
++	public override void SetQuickEditEnabled(bool enabled)
+ 	{
+ 		IntPtr stdHandle = NativeMethods.GetStdHandle(NativeMethods.StdHandleType.Input);
+ 		if (NativeMethods.GetConsoleMode(stdHandle, out var lpMode)) {
+@@ -29,6 +_,7 @@
+ 		}
+ 	}
+ 
++	/*
  	public void SetUnicodeTitle(GameWindow window, string title)
  	{
-+#if NETCORE
-+		SDL3.SDL.SDL_SetWindowTitle(window.Handle, title);
-+#else
  		NativeMethods.WndProcCallback wndProcCallback = NativeMethods.DefWindowProc;
- 		int dwNewLong = NativeMethods.SetWindowLong(window.Handle, -4, (int)Marshal.GetFunctionPointerForDelegate((Delegate)wndProcCallback));
- 		window.Title = title;
+@@ -37,19 +_,23 @@
  		NativeMethods.SetWindowLong(window.Handle, -4, dwNewLong);
  		GC.KeepAlive(wndProcCallback);
-+#endif
+ 	}
++	*/
+ 
+-	public void StartFlashingIcon(GameWindow window)
++	public override void StartFlashingIcon(GameWindow window)
+ 	{
++		nint handle = Platform.SdlHandleToWindowsHandle(window.Handle);
+-		NativeMethods.FlashInfo flashInfo = NativeMethods.FlashInfo.CreateStart(window.Handle);
++		NativeMethods.FlashInfo flashInfo = NativeMethods.FlashInfo.CreateStart(handle);
+ 		NativeMethods.FlashWindowEx(ref flashInfo);
  	}
  
- 	public void StartFlashingIcon(GameWindow window)
-@@ -52,26 +_,42 @@
+-	public void StopFlashingIcon(GameWindow window)
++	public override void StopFlashingIcon(GameWindow window)
+ 	{
++		nint handle = Platform.SdlHandleToWindowsHandle(window.Handle);
+-		NativeMethods.FlashInfo flashInfo = NativeMethods.FlashInfo.CreateStop(window.Handle);
++		NativeMethods.FlashInfo flashInfo = NativeMethods.FlashInfo.CreateStop(handle);
+ 		NativeMethods.FlashWindowEx(ref flashInfo);
+ 	}
  
++	/*
  	public void Activate(GameWindow window)
  	{
-+#if NETCORE
-+		sdlService.Activate(window);
-+#else
  		((Form)Control.FromHandle(window.Handle)).Activate();
-+#endif
- 	}
- 
- 	public bool IsSizeable(GameWindow window)
- 	{
-+#if NETCORE
-+		return sdlService.IsSizeable(window);
-+#else
- 		Form form = (Form)Control.FromHandle(window.Handle);
- 		if (form.WindowState == FormWindowState.Normal)
- 			return form.FormBorderStyle == FormBorderStyle.Sizable;
- 
- 		return false;
-+#endif
- 	}
- 
- 	public void SetPosition(GameWindow window, int x, int y)
- 	{
-+#if NETCORE
-+		sdlService.SetPosition(window, x, y);
-+#else
- 		((Form)Control.FromHandle(window.Handle)).Location = new System.Drawing.Point(x, y);
-+#endif
- 	}
- 
- 	public Microsoft.Xna.Framework.Rectangle GetBounds(GameWindow window)
- 	{
-+#if NETCORE
-+		return sdlService.GetBounds(window);
-+#else
+@@ -74,4 +_,5 @@
  		Form form = (Form)Control.FromHandle(window.Handle);
  		return new Microsoft.Xna.Framework.Rectangle(form.Bounds.X, form.Bounds.Y, form.Bounds.Width, form.Bounds.Height);
-+#endif
  	}
++	*/
  }

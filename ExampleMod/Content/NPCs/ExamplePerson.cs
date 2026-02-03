@@ -66,8 +66,6 @@ namespace ExampleMod.Content.NPCs
 			NPCID.Sets.HatOffsetY[Type] = 4; // For when a party is active, the party hat spawns at a Y offset.
 			NPCID.Sets.ShimmerTownTransform[Type] = true; // This set says that the Town NPC has a Shimmered form. Otherwise, the Town NPC will become transparent when touching Shimmer like other enemies.
 
-			NPCID.Sets.ShimmerTownTransform[Type] = true; // Allows for this NPC to have a different texture after touching the Shimmer liquid.
-
 			// Connects this NPC with a custom emote.
 			// This makes it when the NPC is in the world, other NPCs will "talk about him".
 			// By setting this you don't have to override the PickEmote method for the emote to appear.
