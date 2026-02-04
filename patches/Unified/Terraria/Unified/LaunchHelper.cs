@@ -13,7 +13,8 @@ internal static class LaunchHelper
 {
 	public static string GetContentDirectory()
 	{
-		TryGetSocialMode(out SocialMode mode);
+		var mode = SocialAPI.Mode;
+
 		List<string> contentDirectories = [];
 
 		contentDirectories.Add("Content");
