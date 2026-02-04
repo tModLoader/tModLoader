@@ -2,18 +2,24 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Microsoft.Extensions.Logging;
 using Microsoft.Win32;
 using rail;
 using Steamworks;
 using Terraria.Social;
 
-namespace Terraria.Unified;
+namespace Terraria.Unified.Startup;
 
-internal static class LaunchHelper
+public interface IContentDirectoryResolver
 {
-	public static string GetContentDirectory()
+	string GetContentDirectory();
+}
+
+internal sealed class ContentDirectoryResolver(ILogger<ContentDirectoryResolver> logger) : IContentDirectoryResolver
+{
+	string IContentDirectoryResolver.GetContentDirectory()
 	{
-		var mode = SocialAPI.Mode;
+		logger.LogInformation("Resolving content directory...");
 
 		List<string> contentDirectories = [];
 
@@ -21,26 +27,36 @@ internal static class LaunchHelper
 		contentDirectories.Add(Path.Combine("..", "Content"));
 		contentDirectories.Add(Path.Combine("..", "Terraria", "Content"));
 
-		switch (mode) {
+		switch (SocialAPI.Mode) {
 			case SocialMode.Steam:
-				contentDirectories.AddRange(ResolveSteamContentDirectories().Where(x => !string.IsNullOrWhiteSpace(x)).Select(x => Path.Combine(x, "Content")));
+				contentDirectories.AddRange(LaunchHelper.ResolveSteamContentDirectories().Where(x => !string.IsNullOrWhiteSpace(x)).Select(x => Path.Combine(x, "Content")));
 				break;
 			case SocialMode.WeGame:
-				contentDirectories.AddRange(ResolveWeGameContentDirectories().Where(x => !string.IsNullOrWhiteSpace(x)).Select(x => Path.Combine(x, "Content")));
+				contentDirectories.AddRange(LaunchHelper.ResolveWeGameContentDirectories().Where(x => !string.IsNullOrWhiteSpace(x)).Select(x => Path.Combine(x, "Content")));
 				break;
 			case SocialMode.None:
-				contentDirectories.AddRange(ResolveGogContentDirectories().Where(x => !string.IsNullOrWhiteSpace(x)).Select(x => Path.Combine(x, "Content")));
+				contentDirectories.AddRange(LaunchHelper.ResolveGogContentDirectories().Where(x => !string.IsNullOrWhiteSpace(x)).Select(x => Path.Combine(x, "Content")));
 				break;
 		}
 
 		foreach (string directory in contentDirectories) {
-			if (Directory.Exists(directory))
+			logger.LogInformation("    {0}", directory);
+
+			if (Directory.Exists(directory)) {
+				logger.LogInformation("        ...valid content directory!");
+
+				logger.LogInformation("Using content directory: {0}", directory);
 				return directory;
+			}
 		}
 
+		logger.LogError("Failed to find a valid content directory!");
 		return "Content";
 	}
+}
 
+internal static class LaunchHelper
+{
 	public static bool TryGetSocialMode(out SocialMode mode)
 	{
 		// Check possible launch arguments we've added that are used in
@@ -91,10 +107,11 @@ internal static class LaunchHelper
 		return false;
 	}
 
-	private static IEnumerable<string> ResolveSteamContentDirectories()
+	public static IEnumerable<string> ResolveSteamContentDirectories()
 	{
 		if (OperatingSystem.IsWindows()) {
 			yield return Registry.GetValue("HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\Steam App 105600", "PATH", "") as string;
+			yield return Registry.GetValue("HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\Steam App 105600", "Install Location", "") as string;
 			string steamPath = Registry.GetValue("HKEY_CURRENT_USER\\SOFTWARE\\Valve\\Steam", "SteamPath", "") as string;
 			yield return Path.Combine(steamPath, "steamapps", "common", "Terraria");
 			yield return "C:\\Program Files\\Steam\\steamapps\\common\\Terraria";
@@ -108,13 +125,13 @@ internal static class LaunchHelper
 		}
 	}
 
-	private static IEnumerable<string> ResolveWeGameContentDirectories()
+	public static IEnumerable<string> ResolveWeGameContentDirectories()
 	{
 		// TODO: WeGame content directory support.
 		yield break;
 	}
 
-	private static IEnumerable<string> ResolveGogContentDirectories()
+	public static IEnumerable<string> ResolveGogContentDirectories()
 	{
 		if (!OperatingSystem.IsWindows()) {
 			string home = Environment.GetEnvironmentVariable("HOME");

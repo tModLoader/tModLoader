@@ -90,6 +90,7 @@ public static class GameLaunch
 				services.AddSingleton<IEngineBackendInitializer, EngineBackendInitializer>();
 				services.AddSingleton<IEngineRunner, EngineRunner>();
 				services.AddSingleton<IPreJitPolicy, DefaultPreJitPolicy>();
+				services.AddSingleton<IContentDirectoryResolver, ContentDirectoryResolver>();
 			})
 			.Build();
 
