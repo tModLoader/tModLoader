@@ -20,13 +20,19 @@
  		<ProjectReference Include="../ReLogic/ReLogic.csproj" />
  		<EmbeddedResource Include="../ReLogic/bin/$(Configuration)/$(TargetFramework)/ReLogic.dll">
  			<Link>Libraries/ReLogic/ReLogic.dll</Link>
-@@ -45,11 +_,24 @@
+@@ -45,11 +_,30 @@
  		<Reference Include="RailSDK.Net" />
  		<Reference Include="SteelSeriesEngineWrapper" />
  
 +		<PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.2" />
 +		<PackageReference Include="Microsoft.Extensions.Logging" Version="10.0.2" />
  		<PackageReference Include="Steamworks.NET.AnyCPU" Version="2025.162.4" />
++
++		<PackageReference Include="Krafs.Publicizer" Version="2.3.0">
++			<PrivateAssets>all</PrivateAssets>
++			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
++		</PackageReference>
++		<Publicize Include="Microsoft.Extensions.Logging.Console" IncludeCompilerGeneratedMembers="false" IncludeVirtualMembers="false" />
 +
 +		<Using Alias="Vector2" Include="System.Numerics.Vector2" />
 +		<Using Alias="Vector3" Include="System.Numerics.Vector3" />
