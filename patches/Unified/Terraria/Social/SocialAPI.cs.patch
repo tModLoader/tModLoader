@@ -1,14 +1,19 @@
 --- src/TerrariaNetCore/Terraria/Social/SocialAPI.cs
 +++ src/Unified/Terraria/Social/SocialAPI.cs
-@@ -4,6 +_,7 @@
+@@ -1,9 +_,12 @@
+ using System;
+ using System.Collections.Generic;
++using Microsoft.Extensions.Logging;
+ using ReLogic.OS;
  using Terraria.Social.Base;
  using Terraria.Social.Steam;
  using Terraria.Social.WeGame;
 +using Terraria.Unified;
++using Terraria.Unified.Startup;
  
  namespace Terraria.Social;
  
-@@ -26,12 +_,19 @@
+@@ -26,12 +_,25 @@
  	{
  		if (!mode.HasValue) {
  			mode = SocialMode.None;
@@ -23,8 +28,14 @@
 +			}
 +			*/
 +
++			var logger = GameLaunch.Instance.GameLogger;
++			logger.LogDebug("Attempting to resolve social mode...");
 +			if (LaunchHelper.TryGetSocialMode(out SocialMode resolvedMode)) {
 +				mode = resolvedMode;
++				logger.LogInformation("Resolved social mode: {0}", resolvedMode);
++			}
++			else {
++				logger.LogInformation("Failed to automatically resolve social mode; defaulting to None");
  			}
  		}
  
