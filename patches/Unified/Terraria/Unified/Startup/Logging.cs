@@ -157,8 +157,14 @@ internal static class Logging
 	{
 		logging.ClearProviders();
 
+		logging.SetMinimumLevel(LogLevel.Debug);
+
 		logging.AddProvider(new FileLoggerProvider(LogLevel.Debug));
-		logging.AddConsole();
+		logging.AddSimpleConsole(options => {
+			options.IncludeScopes = true;
+			options.SingleLine = true;
+			options.TimestampFormat = "HH:mm:ss ";
+		});
 
 		CrashWatcher.Inititialize();
 		CrashWatcher.DumpOnException = GameLaunch.LaunchParameters.ContainsKey("-minidump");
