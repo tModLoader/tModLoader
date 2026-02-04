@@ -1,3 +1,0 @@
-This is an example of a custom changelog.
-Example Mod v{ModVersion} has been published to {tMLBuildPurpose} tML v{tMLVersion}.
-Learn more at the [url={ModHomepage}]homepage[/url]
