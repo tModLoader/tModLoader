@@ -2,3 +2,7 @@ largeaddresstool/dumpbin.exe
 largeaddresstool/editbin.exe
 largeaddresstool/link.exe
 largeaddresstool/mspdb140.dll
+ReLogic/IO/ConsoleOutputMirror.cs
+Terraria/MonoLaunch.cs
+Terraria/Program.cs
+Terraria/WindowsLaunch.cs

@@ -44,7 +44,9 @@ public readonly struct Tilemap
 			return new Tile((uint)(y + (x * Height)));
 		}
 		internal set {
+			/*
 			throw new InvalidOperationException("Cannot set Tilemap tiles. Only used to init null tiles in Vanilla (which don't exist anymore)");
+			*/
 		}
 	}
 

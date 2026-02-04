@@ -15,3 +15,17 @@
  
  		for (int i = start.X; i <= end.X; i++) {
  			WorldGen.PlaceWire(i, point.Y);
+@@ -120,6 +_,7 @@
+ 		Main.NewText("World Regen Complete.");
+ 	}
+ 
++	/*
+ 	public static void DebugRotate()
+ 	{
+ 		int num = 0;
+@@ -139,4 +_,5 @@
+ 			num += maxTilesY;
+ 		}
+ 	}
++	*/
+ }

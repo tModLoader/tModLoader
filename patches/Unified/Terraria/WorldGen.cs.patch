@@ -152,6 +152,16 @@
  
  		for (int n = 0; n < Main.countsAsHostForGameplay.Length; n++) {
  			Main.countsAsHostForGameplay[n] = false;
+@@ -19628,7 +_,9 @@
+ 			}
+ 
+ 			for (int j = num3; j < Main.maxTilesY; j++) {
++				/*
+ 				Main.tile[i, j] = new Tile();
++				*/
+ 				Main.tile[i, j].active(active: true);
+ 				Main.tile[i, j].type = 57;
+ 			}
 @@ -24188,7 +_,7 @@
  	{
  		int treeHeight = 1;
