@@ -111,7 +111,7 @@ internal static class LaunchHelper
 	{
 		if (OperatingSystem.IsWindows()) {
 			yield return Registry.GetValue("HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\Steam App 105600", "PATH", "") as string;
-			yield return Registry.GetValue("HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\Steam App 105600", "Install Location", "") as string;
+			yield return Registry.GetValue("HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\Steam App 105600", "InstallLocation", "") as string;
 			string steamPath = Registry.GetValue("HKEY_CURRENT_USER\\SOFTWARE\\Valve\\Steam", "SteamPath", "") as string;
 			yield return Path.Combine(steamPath, "steamapps", "common", "Terraria");
 			yield return "C:\\Program Files\\Steam\\steamapps\\common\\Terraria";
