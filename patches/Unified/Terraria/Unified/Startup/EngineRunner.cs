@@ -39,14 +39,15 @@ internal sealed class EngineRunner(ILogger<EngineRunner> logger, IPreJitPolicy p
 			};
 		}
 
-		logger.LogDebug("Initializing game engine...");
-		using var main = new Main();
 		try {
-			logger.LogDebug("Initializing legacy localization maps...");
-			Lang.InitializeLegacyLocalization();
-
 			logger.LogDebug("Initializing social API...");
 			SocialAPI.Initialize();
+
+			logger.LogDebug("Initializing game engine...");
+			using var main = new Main();
+
+			logger.LogDebug("Initializing legacy localization maps...");
+			Lang.InitializeLegacyLocalization();
 
 			logger.LogDebug("Loading launch parameters...");
 			LaunchInitializer.LoadParameters(main);
