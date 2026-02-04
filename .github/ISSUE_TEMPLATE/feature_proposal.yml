@@ -1,14 +1,14 @@
 name: Feature Proposal
-description: Propose a new feature/change for tModLoader
+description: Propose a new feature/change for Terraria Unified
 labels: ["Type: Change/Feature Request", "NEW ISSUE"] 
 body:
 - type: markdown
   attributes:
     value: |
-      Please keep in mind that the tModLoader software is built by the community.
-      By submitting your proposal you agree that it may become part of tModLoader as a whole, or partially.
-      The development time it takes for your proposal may vary, the TML Team can give no expected time when your proposal will be addressed or implemented.
-      The TML Team reserves their right to take ideas from your proposal but are not required to necessarily accept your proposal. 
+      Please keep in mind that the Terraria Unified software is built by the community.
+      By submitting your proposal you agree that it may become part of Terraria Unified as a whole, or partially.
+      The development time it takes for your proposal may vary, the team can give no expected time when your proposal will be addressed or implemented.
+      The team reserves their right to take ideas from your proposal but are not required to necessarily accept your proposal. 
 - type: markdown
   attributes:
     value: |
@@ -25,19 +25,7 @@ body:
       - 'Yes'
       - 'No'
   validations:
-    required: true
-- type: dropdown
-  id: requestor
-  attributes:
-    label: I would like to see this change made to improve my experience with
-    description: In order to help understand the issue, we would like to know if the primary use case for this change is to help you create mods, improve experience playing TML, or improve codebase of TML itself as a maintainer
-    multiple: false
-    options:
-      - 'Mod capability as a Modder'
-      - 'Gameplay as a Player'
-      - 'tModLoader code as a Contributor/Maintainer'
-  validations:
-    required: true    
+    required: true   
 - type: textarea
   id: description
   attributes:
@@ -45,16 +33,15 @@ body:
     description: |
       Describe your proposal. 
     placeholder: |
-      A new hook called HookName could allow modders to...
+      A useful configuration option would be....
 - type: textarea
   id: why
   attributes:
     label: What does this proposal attempt to solve or improve?
     description: |
-      Describe how your proposal is beneficial for the tModLoader software. Please list an example use case for the new feature, such as describing an example of how a mod would use the new feature. 
+      Describe how your proposal is beneficial for the Terraria Unified software. Please list an example use case for the new feature, such as describing an example of how a mod would use the new feature. 
     placeholder: |
-      It is currently impossible to program a mod to do...
-      This new feature would allow a mod to implement...
+      Many users would benefit from being able to disable...
 - type: textarea
   id: alternatives
   attributes:

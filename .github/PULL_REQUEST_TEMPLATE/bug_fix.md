@@ -1,4 +1,4 @@
-### What is the bug?
+### What is the bug? Is this in Vanilla?
 
 ### How did you fix the bug?
 
