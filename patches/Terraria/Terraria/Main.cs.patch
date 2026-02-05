@@ -1,6 +1,6 @@
 --- src/decompiled/Terraria/Main.cs
 +++ src/Terraria/Terraria/Main.cs
-@@ -79,7 +_,21 @@
+@@ -80,7 +_,21 @@
  
  namespace Terraria;
  
@@ -22,18 +22,7 @@
  {
  	public static class CurrentFrameFlags
  	{
-@@ -3840,8 +_,10 @@
- 			_windowMover.TryMovingToScreen(screenDeviceName);
- 			ThrottleWhenInactive = configuration.Get("ThrottleWhenInactive", defaultValue: true);
- 			UnpinFromCore0 = configuration.Get("UnpinFromCore0", defaultValue: false);
-+#if !SERVER
- 			if (UnpinFromCore0 && Platform.IsWindows)
- 				WindowsPerformanceDiagnostics.UnpinFromCore0();
-+#endif
- 		}
- 
- 		if (!flag)
-@@ -5388,7 +_,10 @@
+@@ -5401,7 +_,10 @@
  		if (!dedServ) {
  			Map = new WorldMap(maxTilesX, maxTilesY);
  			Configuration.Load();
