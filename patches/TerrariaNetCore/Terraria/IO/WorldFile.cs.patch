@@ -3,7 +3,7 @@
 @@ -135,7 +_,7 @@
  			using BinaryReader binaryReader = new BinaryReader(stream);
  			int num = binaryReader.ReadInt32();
- 			if (num > 316)
+ 			if (num > 317)
 -				return WorldFileData.FromInvalidWorld(file, cloudSave, StatusID.LaterVersion, new FileFormatException("File is from a later version of Terraria. '" + file + "'"));
 +				return WorldFileData.FromInvalidWorld(file, cloudSave, StatusID.LaterVersion, new IOException("File is from a later version of Terraria. '" + file + "'"));
  

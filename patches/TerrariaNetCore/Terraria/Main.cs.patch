@@ -8,7 +8,7 @@
  using Microsoft.Win32;
  using Microsoft.Xna.Framework;
  using Microsoft.Xna.Framework.Graphics;
-@@ -79,7 +_,7 @@
+@@ -80,7 +_,7 @@
  
  namespace Terraria;
  
@@ -17,7 +17,7 @@
  class Control
  {
  	internal static Form FromHandle(IntPtr handle)
-@@ -3658,6 +_,7 @@
+@@ -3661,6 +_,7 @@
  
  		PendingBorderlessState = screenBorderless;
  		screenBorderlessPendingResizes = (screenBorderless ? 6 : 0);
@@ -25,7 +25,7 @@
  		if (Platform.IsWindows && !dedServ) {
  			Form form = (Form)Control.FromHandle(instance.Window.Handle);
  			if (screenBorderless) {
-@@ -3673,6 +_,7 @@
+@@ -3676,6 +_,7 @@
  
  			form.BringToFront();
  		}
@@ -33,7 +33,7 @@
  
  		int currentValue2 = graphics.PreferredBackBufferWidth;
  		int currentValue3 = graphics.PreferredBackBufferHeight;
-@@ -4052,8 +_,13 @@
+@@ -4065,8 +_,13 @@
  				if (num >= 2)
  					binaryReader.ReadBoolean();
  
@@ -47,7 +47,7 @@
  
  				if (num >= 4) {
  					int width = binaryReader.ReadInt32();
-@@ -5396,7 +_,7 @@
+@@ -5409,7 +_,7 @@
  		}
  	}
  
@@ -56,7 +56,7 @@
  	{
  		instance = this;
  		UnpausedUpdateSeed = (ulong)Guid.NewGuid().GetHashCode();
-@@ -5695,7 +_,7 @@
+@@ -5708,7 +_,7 @@
  		ChatInitializer.Load();
  		LucyAxeMessage.Initialize();
  		if (Platform.IsWindows && !dedServ) {
@@ -65,7 +65,7 @@
  			int menuItemCount = GetMenuItemCount(systemMenu);
  			RemoveMenu(systemMenu, menuItemCount - 1, 1024);
  		}
-@@ -9597,6 +_,7 @@
+@@ -9610,6 +_,7 @@
  		});
  
  		base.Window.AllowUserResizing = true;
@@ -73,23 +73,23 @@
  		LoadSettings();
  		PreventUpdatingTargets = false;
  		SetDisplayMonitor();
-@@ -14639,6 +_,7 @@
+@@ -14653,6 +_,7 @@
  				reforgeCooldown--;
  
  			hasFocus = base.IsActive || DebugOptions.noPause;
 +#if !NETCORE
  			if (Platform.IsWindows) {
  				Form form = Control.FromHandle(base.Window.Handle) as Form;
- 				bool num3 = form.WindowState == FormWindowState.Minimized;
-@@ -14647,6 +_,7 @@
- 				if (num3)
+ 				bool num4 = form.WindowState == FormWindowState.Minimized;
+@@ -14661,6 +_,7 @@
+ 				if (num4)
  					hasFocus = false;
  			}
 +#endif
  
  			if (!DebugOptions.noPause) {
  				if (!hasFocus && netMode == 0) {
-@@ -45206,6 +_,7 @@
+@@ -45238,6 +_,7 @@
  		return result;
  	}
  
@@ -97,7 +97,7 @@
  	private static void SetDisplayModeAsBorderless(ref int width, ref int height, Form form)
  	{
  		if (screenBorderless && !graphics.IsFullScreen && screenBorderlessPendingResizes > 0) {
-@@ -45234,6 +_,7 @@
+@@ -45266,6 +_,7 @@
  		form.Location = new System.Drawing.Point(0, 0);
  		form.FormBorderStyle = FormBorderStyle.None;
  	}
@@ -105,7 +105,7 @@
  
  	public static void OpenCharacterSelectUI()
  	{
-@@ -57244,6 +_,9 @@
+@@ -57272,6 +_,9 @@
  	public static void SetDisplayMode(int width, int height, bool fullscreen)
  	{
  		bool flag = false;
@@ -115,7 +115,7 @@
  		Form form = null;
  		if (Platform.IsWindows) {
  			form = (Form)Control.FromHandle(instance.Window.Handle);
-@@ -57258,6 +_,8 @@
+@@ -57286,6 +_,8 @@
  		else {
  			screenMaximized = false;
  		}
@@ -124,7 +124,7 @@
  
  		bool flag2 = false;
  		int num3;
-@@ -57273,11 +_,13 @@
+@@ -57301,11 +_,13 @@
  				}
  			}
  
@@ -138,7 +138,7 @@
  
  			if (width > maxScreenW) {
  				float num = (float)height / (float)width;
-@@ -57305,6 +_,7 @@
+@@ -57333,6 +_,7 @@
  		}
  		else {
  			PlayerInput.RawMouseScale = Vector2.One;
@@ -146,7 +146,7 @@
  			if (Platform.IsWindows) {
  				form.MinimumSize = new Size(minScreenW, minScreenH);
  				if (flag) {
-@@ -57312,6 +_,7 @@
+@@ -57340,6 +_,7 @@
  					height = displayHeight[0];
  				}
  			}
@@ -154,7 +154,7 @@
  
  			width = Math.Min(width, maxScreenW);
  			height = Math.Min(height, maxScreenH);
-@@ -57320,6 +_,7 @@
+@@ -57348,6 +_,7 @@
  			flag2 = graphics.PreferredBackBufferWidth != graphics.GraphicsDevice.Viewport.Width || graphics.PreferredBackBufferHeight != graphics.GraphicsDevice.Viewport.Height;
  		}
  
@@ -162,7 +162,7 @@
  		if (Platform.IsWindows && !fullscreen && !flag2) {
  			if (form.ClientSize.Width < graphics.PreferredBackBufferWidth) {
  				width = form.ClientSize.Width;
-@@ -57331,9 +_,13 @@
+@@ -57359,9 +_,13 @@
  				flag2 = true;
  			}
  		}
@@ -176,7 +176,7 @@
  		width = Math.Max(width, minScreenW);
  		height = Math.Max(height, minScreenH);
  		if (graphics.IsFullScreen != fullscreen) {
-@@ -57361,6 +_,7 @@
+@@ -57389,6 +_,7 @@
  			PendingResolutionWidth = screenWidth;
  			PendingResolutionHeight = screenHeight;
  			PlayerInput.CacheOriginalScreenDimensions();
@@ -184,7 +184,7 @@
  			if (Platform.IsWindows && !fullscreen) {
  				if (screenBorderless) {
  					ApplyBorderlessResolution(form);
-@@ -57373,6 +_,7 @@
+@@ -57401,6 +_,7 @@
  				form.SendToBack();
  				form.BringToFront();
  			}
