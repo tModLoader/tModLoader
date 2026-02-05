@@ -67,6 +67,11 @@ internal static class ModOrganizer
 		Directory.CreateDirectory(ModLoader.ModPath);
 		DeleteTemporaryFiles();
 
+		// Handle command line modpack before loading mods, so frozen mods from modpack are included
+		if (!string.IsNullOrWhiteSpace(commandLineModPack)) {
+			InitializeCommandLineModPack();
+		}
+
 		var mods = new List<LocalMod>();
 
 		// Active Modpack
@@ -405,27 +410,90 @@ internal static class ModOrganizer
 		return modsToLoad;
 	}
 
+	/// <summary>
+	/// Initializes ModPackActive from command line argument at the start of FindAllMods.
+	/// This ensures frozen mods from modern modpacks are loaded.
+	/// </summary>
+	private static void InitializeCommandLineModPack()
+	{
+		if (string.IsNullOrWhiteSpace(commandLineModPack))
+			return;
+
+		// Validate modpack name to prevent path traversal attacks
+		if (!UIModPacks.IsValidModpackName(commandLineModPack)) {
+			Logging.tML.Warn($"Invalid modpack name rejected: {commandLineModPack}");
+			commandLineModPack = null;
+			return;
+		}
+
+		Directory.CreateDirectory(UIModPacks.ModPacksDirectory);
+
+		// Check for modern modpack format (folder with Mods/enabled.json)
+		string folderPath = Path.Combine(UIModPacks.ModPacksDirectory, commandLineModPack);
+		string enabledJsonPath = Path.Combine(folderPath, "Mods", "enabled.json");
+
+		if (Directory.Exists(folderPath) && File.Exists(enabledJsonPath)) {
+			// Modern modpack - set ModPackActive so frozen mods are loaded
+			ModPackActive = folderPath;
+			Logging.tML.Info($"Command line modpack '{commandLineModPack}' initialized (modern format)");
+		}
+		else {
+			// Not a modern format - will be handled by CommandLineModPackOverride for legacy format
+			Logging.tML.Debug($"Modpack '{commandLineModPack}' not found as modern format, will try legacy format");
+		}
+	}
+
 	private static void CommandLineModPackOverride(IEnumerable<LocalMod> mods)
 	{
 		if (string.IsNullOrWhiteSpace(commandLineModPack))
 			return;
 
-		if (!commandLineModPack.EndsWith(".json"))
-			commandLineModPack += ".json";
+		// Validate modpack name to prevent path traversal attacks
+		if (!UIModPacks.IsValidModpackName(commandLineModPack)) {
+			Logging.tML.Warn($"Invalid modpack name rejected: {commandLineModPack}");
+			commandLineModPack = null;
+			return;
+		}
 
-		string filePath = Path.Combine(UIModPacks.ModPacksDirectory, commandLineModPack);
+		Directory.CreateDirectory(UIModPacks.ModPacksDirectory);
 
 		try {
-			Directory.CreateDirectory(UIModPacks.ModPacksDirectory);
-			Logging.ServerConsoleLine(Language.GetTextValue("tModLoader.ModPackLoadingSpecifiedModPack", commandLineModPack));
-			var modSet = JsonConvert.DeserializeObject<HashSet<string>>(File.ReadAllText(filePath));
+			HashSet<string> modSet;
+
+			// Check for modern modpack format first (folder with Mods/enabled.json)
+			string folderPath = Path.Combine(UIModPacks.ModPacksDirectory, commandLineModPack);
+			string enabledJsonPath = Path.Combine(folderPath, "Mods", "enabled.json");
+
+			if (Directory.Exists(folderPath) && File.Exists(enabledJsonPath)) {
+				// Modern modpack format
+				Logging.ServerConsoleLine(Language.GetTextValue("tModLoader.ModPackLoadingSpecifiedModPack", commandLineModPack));
+				modSet = JsonConvert.DeserializeObject<HashSet<string>>(File.ReadAllText(enabledJsonPath))
+					?? new HashSet<string>();
+			}
+			else {
+				// Try legacy modpack format (.json file)
+				string legacyPath = commandLineModPack.EndsWith(".json", StringComparison.OrdinalIgnoreCase)
+					? Path.Combine(UIModPacks.ModPacksDirectory, commandLineModPack)
+					: Path.Combine(UIModPacks.ModPacksDirectory, commandLineModPack + ".json");
+
+				if (!File.Exists(legacyPath)) {
+					throw new FileNotFoundException(Language.GetTextValue("tModLoader.ModPackDoesNotExist", commandLineModPack));
+				}
+
+				Logging.ServerConsoleLine(Language.GetTextValue("tModLoader.ModPackLoadingSpecifiedModPack", commandLineModPack));
+				modSet = JsonConvert.DeserializeObject<HashSet<string>>(File.ReadAllText(legacyPath))
+					?? new HashSet<string>();
+			}
+
 			foreach (var mod in mods) {
 				mod.Enabled = modSet.Contains(mod.Name);
 			}
 		}
+		catch (FileNotFoundException ex) {
+			throw new Exception(Language.GetTextValue("tModLoader.ModPackDoesNotExist", commandLineModPack), ex);
+		}
 		catch (Exception e) {
-			var msg = (e is FileNotFoundException) ? Language.GetTextValue("tModLoader.ModPackDoesNotExist", filePath) : Language.GetTextValue("tModLoader.ModPackMalformed", commandLineModPack);
-			throw new Exception(msg, e);
+			throw new Exception(Language.GetTextValue("tModLoader.ModPackMalformed", commandLineModPack), e);
 		}
 		finally {
 			commandLineModPack = null;
