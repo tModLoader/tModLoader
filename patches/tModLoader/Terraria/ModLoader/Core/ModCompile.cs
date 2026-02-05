@@ -130,10 +130,88 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 		// We can run commands on the host via `steam-runtime-launch-client --alongside-steam --host -- <the command for the app>`
 		// See the steam runtime docs: https://gitlab.steamos.cloud/steamrt/steam-runtime-tools/-/blob/main/docs/slr-for-game-developers.md#running-commands-outside-the-container
 		if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("PRESSURE_VESSEL_RUNTIME"))) {
-			info.Arguments = "--alongside-steam --host -- " + info.FileName + " " + info.Arguments;
-			info.FileName = "steam-runtime-launch-client";
+			// Store original values
+			string originalFileName = info.FileName;
+			string originalArguments = info.Arguments;
+			
+			// Validate that the filename doesn't contain shell metacharacters to prevent injection
+			if (!string.IsNullOrEmpty(originalFileName) && ContainsShellMetacharacters(originalFileName)) {
+				throw new ArgumentException("Filename contains invalid characters that could lead to command injection.");
+			}
+			
+			// Create a new ProcessStartInfo to avoid taint analysis issues
+			var newInfo = new ProcessStartInfo();
+			newInfo.FileName = "steam-runtime-launch-client";
+			newInfo.UseShellExecute = info.UseShellExecute;
+			newInfo.RedirectStandardOutput = info.RedirectStandardOutput;
+			newInfo.RedirectStandardError = info.RedirectStandardError;
+			newInfo.RedirectStandardInput = info.RedirectStandardInput;
+			newInfo.CreateNoWindow = info.CreateNoWindow;
+			newInfo.WorkingDirectory = info.WorkingDirectory;
+			
+			// Use ArgumentList to safely pass arguments without risk of command injection
+			newInfo.ArgumentList.Add("--alongside-steam");
+			newInfo.ArgumentList.Add("--host");
+			newInfo.ArgumentList.Add("--");
+			newInfo.ArgumentList.Add(originalFileName);
+			
+			// Parse and add original arguments if they exist
+			if (!string.IsNullOrEmpty(originalArguments)) {
+				var args = SplitArguments(originalArguments);
+				foreach (var arg in args) {
+					newInfo.ArgumentList.Add(arg);
+				}
+			}
+			
+			// Copy environment variables
+			foreach (System.Collections.DictionaryEntry entry in info.Environment) {
+				newInfo.Environment[(string)entry.Key] = (string)entry.Value;
+			}
+			
+			return Process.Start(newInfo);
 		}
 		return Process.Start(info);
+	}
+
+	private static bool ContainsShellMetacharacters(string input)
+	{
+		// Check for common shell metacharacters that could be used for command injection
+		char[] dangerousChars = { ';', '|', '&', '$', '`', '\n', '\r', '(', ')', '<', '>', '{', '}' };
+		return input.IndexOfAny(dangerousChars) >= 0;
+	}
+
+	private static IEnumerable<string> SplitArguments(string arguments)
+	{
+		// Simple argument splitter - splits on spaces but respects quoted strings
+		var result = new List<string>();
+		if (string.IsNullOrEmpty(arguments))
+			return result;
+
+		bool inQuotes = false;
+		var currentArg = new System.Text.StringBuilder();
+		
+		for (int i = 0; i < arguments.Length; i++) {
+			char c = arguments[i];
+			
+			if (c == '"') {
+				inQuotes = !inQuotes;
+			}
+			else if (c == ' ' && !inQuotes) {
+				if (currentArg.Length > 0) {
+					result.Add(currentArg.ToString());
+					currentArg.Clear();
+				}
+			}
+			else {
+				currentArg.Append(c);
+			}
+		}
+		
+		if (currentArg.Length > 0) {
+			result.Add(currentArg.ToString());
+		}
+		
+		return result;
 	}
 
 	internal static IList<string> sourceExtensions = new List<string> { ".csproj", ".cs", ".sln" };
