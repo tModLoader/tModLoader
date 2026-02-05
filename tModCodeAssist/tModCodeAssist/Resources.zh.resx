@@ -117,4 +117,49 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="BadIDTypeDescription" xml:space="preserve">
+    <value>在使用错误的 ID 类型时会产生错误</value>
+  </data>
+  <data name="BadIDTypeMessageFormat" xml:space="preserve">
+    <value>表达式“{0}”与 {1} 类型不相符</value>
+  </data>
+  <data name="BadIDTypeTitle" xml:space="preserve">
+    <value>使用了错误的 ID 类型</value>
+  </data>
+  <data name="ChangeMagicNumberToIDDescription" xml:space="preserve">
+    <value>将魔法数字替换为合适的 ID</value>
+  </data>
+  <data name="ChangeMagicNumberToIDMessageFormat" xml:space="preserve">
+    <value>魔法数字 {0} 应替换为 {1} 以提高可读性</value>
+  </data>
+  <data name="ChangeMagicNumberToIDTitle" xml:space="preserve">
+    <value>将魔法数字替换为合适的 ID</value>
+  </data>
+  <data name="CommonCollisionNameTitle" xml:space="preserve">
+    <value>常见类型命名冲突</value>
+  </data>
+  <data name="CommonCollisionNameMessageFormat" xml:space="preserve">
+    <value>来自“{1}”的类名或命名空间“{0}”与现有的 Terraria 类型发生冲突</value>
+  </data>
+  <data name="CommonCollisionNameDescription" xml:space="preserve">
+    <value>当类名或命名空间与现有的 Terraria 类型名称冲突时会产生错误</value>
+  </data>
+  <data name="SimplifyLocalPlayerDescription" xml:space="preserve">
+    <value>简化 LocalPlayer 的访问方式</value>
+  </data>
+  <data name="SimplifyLocalPlayerMessageFormat" xml:space="preserve">
+    <value>表达式“{0}”可以简化以提高可读性</value>
+  </data>
+  <data name="SimplifyLocalPlayerTitle" xml:space="preserve">
+    <value>简化 LocalPlayer 的访问方式</value>
+  </data>
+  <data name="SimplifyUnifiedRandomDescription" xml:space="preserve">
+    <value>简化 UnifiedRandom 的使用方式</value>
+  </data>
+  <data name="SimplifyUnifiedRandomMessageFormat" xml:space="preserve">
+    <value>表达式“{0}”可以简化以提高可读性</value>
+  </data>
+  <data name="SimplifyUnifiedRandomTitle" xml:space="preserve">
+    <value>简化 UnifiedRandom 的使用方式</value>
+  </data>
 </root>
