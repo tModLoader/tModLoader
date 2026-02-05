@@ -402,39 +402,14 @@ public static partial class Program
 		SDL2.SDL.SDL_GetDisplayDPI(0, out var ddpi, out float hdpi, out float vdpi);
 		Logging.tML.Info($"Display DPI: Diagonal DPI is {ddpi}. Vertical DPI is {vdpi}. Horizontal DPI is {hdpi}");
 
-		// Only affect OSX path
+		// Only affect OSX path, see dicussion on https://github.com/tModLoader/tModLoader/pull/4951 for the reason.
 		if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX)) {
-			if (!GetEnableHighDpiOverride()) {
-				Logging.tML.Info($"Will not set FNA highdpi mode due to /enablehighdpi:0");
-				return;
-			}
+			return; // Let FNA decide by /enablehighdpi command-line argument, default: 0
 		}
 		
 		if (ddpi >= HighDpiThreshold || hdpi >= HighDpiThreshold || vdpi >= HighDpiThreshold) {
 			Environment.SetEnvironmentVariable("FNA_GRAPHICS_ENABLE_HIGHDPI", "1");
 			Logging.tML.Info($"High DPI Display detected: setting FNA to highdpi mode");
 		}
-	}
-
-	//Check FNA enablehighdpi command-line argument (/enablehighdpi:0)
-	private static bool GetEnableHighDpiOverride()
-	{
-		string[] args = Environment.GetCommandLineArgs();
-		for (int i = 1; i < args.Length; i++) {
-			string arg = args[i];
-			if (arg.StartsWith("/enablehighdpi", StringComparison.OrdinalIgnoreCase)) {
-				string? parsed = null;
-				int colonIndex = arg.IndexOf(':');
-				if (colonIndex >= 0 && colonIndex + 1 < arg.Length) {
-					parsed = arg.Substring(colonIndex + 1);
-				}
-			
-				if (string.IsNullOrWhiteSpace(parsed))
-					return true;
-
-				return parsed != "0";
-			}
-		}
-		return false;
 	}
 }
