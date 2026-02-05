@@ -1,12 +1,14 @@
 --- src/TerrariaNetCore/Terraria/UI/AchievementAdvisor.cs
 +++ src/tModLoader/Terraria/UI/AchievementAdvisor.cs
-@@ -1,15 +_,19 @@
+@@ -1,17 +_,21 @@
 +using System;
  using System.Collections.Generic;
  using System.Linq;
  using Microsoft.Xna.Framework;
  using Microsoft.Xna.Framework.Graphics;
  using ReLogic.Content;
+ using Terraria.Audio;
+ using Terraria.Enums;
 +using Terraria.Achievements;
  using Terraria.GameInput;
 +using Terraria.ModLoader;
@@ -20,7 +22,7 @@
  	private Asset<Texture2D> _achievementsTexture;
  	private Asset<Texture2D> _achievementsBorderTexture;
  	private Asset<Texture2D> _achievementsBorderMouseHoverFatTexture;
-@@ -146,7 +_,10 @@
+@@ -135,7 +_,10 @@
  
  		Rectangle frame = card.frame;
  		frame.X += 528;
@@ -32,7 +34,7 @@
  		spriteBatch.Draw(_achievementsBorderTexture.Value, position + vector, null, color, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
  		if (hovered)
  			spriteBatch.Draw(value, position + vector2, null, Main.OurFavoriteColor, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
-@@ -170,6 +_,7 @@
+@@ -159,6 +_,7 @@
  	public void Initialize()
  	{
  		float num = 1f;
@@ -40,7 +42,7 @@
  		_cards.Add(new AchievementAdvisorCard(Main.Achievements.GetAchievement("TIMBER"), num++));
  		_cards.Add(new AchievementAdvisorCard(Main.Achievements.GetAchievement("BENCHED"), num++));
  		_cards.Add(new AchievementAdvisorCard(Main.Achievements.GetAchievement("OBTAIN_HAMMER"), num++));
-@@ -207,5 +_,79 @@
+@@ -196,5 +_,79 @@
  		_cards.Add(new AchievementAdvisorCard(Main.Achievements.GetAchievement("STAR_DESTROYER"), num++));
  		_cards.Add(new AchievementAdvisorCard(Main.Achievements.GetAchievement("CHAMPION_OF_TERRARIA"), num++));
  		_cards.OrderBy((AchievementAdvisorCard x) => x.order);

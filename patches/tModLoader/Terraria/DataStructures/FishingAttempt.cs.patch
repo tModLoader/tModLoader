@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/DataStructures/FishingAttempt.cs
 +++ src/tModLoader/Terraria/DataStructures/FishingAttempt.cs
-@@ -3,26 +_,122 @@
+@@ -3,27 +_,123 @@
  public struct FishingAttempt
  {
  	public PlayerFishingConditions playerFishingConditions;
@@ -49,6 +49,7 @@
 +	/// If <see langword="true"/>, this fishing attempt can catch crates.
 +	/// </summary>
  	public bool crate;
+ 	public bool junk;
 +
 +	/// <summary>
 +	/// If <see langword="true"/>, this fishing attempt is in lava.

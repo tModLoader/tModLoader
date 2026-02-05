@@ -1,12 +1,12 @@
 --- src/TerrariaNetCore/Terraria/GameContent/ShimmerTransforms.cs
 +++ src/tModLoader/Terraria/GameContent/ShimmerTransforms.cs
-@@ -1,4 +_,5 @@
+@@ -2,4 +_,5 @@
  using Terraria.ID;
 +using Terraria.ModLoader;
  
  namespace Terraria.GameContent;
  
-@@ -12,6 +_,7 @@
+@@ -13,6 +_,7 @@
  
  	public static int GetDecraftingRecipeIndex(int type)
  	{
@@ -14,7 +14,7 @@
  		int num = ItemID.Sets.IsCrafted[type];
  		if (num < 0)
  			return -1;
-@@ -23,6 +_,14 @@
+@@ -24,6 +_,14 @@
  			return ItemID.Sets.IsCraftedCorruption[type];
  
  		return num;
@@ -29,13 +29,13 @@
  	}
  
  	public static bool IsItemTransformLocked(int type)
-@@ -35,6 +_,9 @@
+@@ -45,6 +_,9 @@
  			return true;
  
- 		if (!NPC.downedGolemBoss && RecipeSets.PostGolem[decraftingRecipeIndex])
+ 		if (!NPC.downedGolemBoss && RecipeSets.PostGolem[recipeIndex])
 +			return true;
 +
-+		if (!RecipeLoader.DecraftAvailable(Main.recipe[decraftingRecipeIndex]))
++		if (!RecipeLoader.DecraftAvailable(Main.recipe[recipeIndex]))
  			return true;
  
  		return false;

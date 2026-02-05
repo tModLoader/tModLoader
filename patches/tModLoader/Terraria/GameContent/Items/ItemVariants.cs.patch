@@ -49,8 +49,8 @@
 +	private static ItemVariantCondition RemixWorld;
 -	public static ItemVariantCondition GetGoodWorld;
 +	private static ItemVariantCondition GetGoodWorld;
--	public static ItemVariantCondition EverythingWorld;
-+	private static ItemVariantCondition EverythingWorld;
+-	public static ItemVariantCondition MechdusaWorld;
++	private static ItemVariantCondition MechdusaWorld;
  
 +	/// <summary>
 +	/// Gets all of the <see cref="ItemVariant"/>s associated with <paramref name="itemId"/>.
@@ -114,12 +114,12 @@
 +		RemixWorld = new ItemVariantCondition(Language.GetText("ItemVariantCondition.RemixWorld"), () => Main.remixWorld);
 -		GetGoodWorld = new ItemVariantCondition(NetworkText.FromKey("ItemVariantCondition.GetGoodWorld"), () => Main.getGoodWorld);
 +		GetGoodWorld = new ItemVariantCondition(Language.GetText("ItemVariantCondition.GetGoodWorld"), () => Main.getGoodWorld);
--		EverythingWorld = new ItemVariantCondition(NetworkText.FromKey("ItemVariantCondition.EverythingWorld"), () => Main.getGoodWorld && Main.remixWorld);
-+		EverythingWorld = new ItemVariantCondition(Language.GetText("ItemVariantCondition.EverythingWorld"), () => Main.getGoodWorld && Main.remixWorld);
+-		MechdusaWorld = new ItemVariantCondition(NetworkText.FromKey("ItemVariantCondition.MechdusaWorld"), () => SpecialSeedFeatures.Mechdusa);
++		MechdusaWorld = new ItemVariantCondition(Language.GetText("ItemVariantCondition.MechdusaWorld"), () => SpecialSeedFeatures.Mechdusa);
 +		*/
 +		RemixWorld = Condition.RemixWorld;
 +		GetGoodWorld = Condition.ForTheWorthyWorld;
-+		EverythingWorld = Condition.ZenithWorld;
++		MechdusaWorld = Condition.ZenithWorld;
 +
  		AddVariant(112, StrongerVariant, RemixWorld);
  		AddVariant(157, StrongerVariant, RemixWorld);

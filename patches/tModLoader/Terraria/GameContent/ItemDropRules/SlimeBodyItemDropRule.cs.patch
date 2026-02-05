@@ -3,7 +3,7 @@
 @@ -15,7 +_,7 @@
  	public bool CanDrop(DropAttemptInfo info)
  	{
- 		if (info.npc.type == 1 && info.npc.ai[1] > 0f)
+ 		if (NPCID.Sets.SlimeCanContainItems[info.npc.type] && info.npc.ai[1] > 0f)
 -			return info.npc.ai[1] < (float)ItemID.Count;
 +			return info.npc.ai[1] < (float)Terraria.ModLoader.ItemLoader.ItemCount;
  
@@ -26,7 +26,7 @@
  			case 11:
  			case 12:
  			case 13:
-@@ -58,6 +_,7 @@
+@@ -66,6 +_,7 @@
  				amountDroppedMinimum = 3;
  				amountDroppedMaximum = 13;
  				break;
@@ -34,7 +34,7 @@
  			case 71:
  				amountDroppedMinimum = 50;
  				amountDroppedMaximum = 99;
-@@ -75,6 +_,10 @@
+@@ -109,6 +_,10 @@
  				amountDroppedMinimum = 2;
  				amountDroppedMaximum = 5;
  				break;

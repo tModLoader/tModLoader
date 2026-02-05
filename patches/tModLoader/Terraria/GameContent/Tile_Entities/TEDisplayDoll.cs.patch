@@ -1,46 +1,45 @@
 --- src/TerrariaNetCore/Terraria/GameContent/Tile_Entities/TEDisplayDoll.cs
 +++ src/tModLoader/Terraria/GameContent/Tile_Entities/TEDisplayDoll.cs
-@@ -4,11 +_,13 @@
+@@ -6,10 +_,12 @@
  using Terraria.Audio;
  using Terraria.DataStructures;
  using Terraria.GameInput;
+ using Terraria.Graphics.Renderers;
 +using Terraria.ModLoader;
 +using Terraria.ModLoader.IO;
  using Terraria.UI;
  
  namespace Terraria.GameContent.Tile_Entities;
  
--public class TEDisplayDoll : TileEntity, IFixLoadedData
-+public sealed partial class TEDisplayDoll : TileEntity, IFixLoadedData
+-public class TEDisplayDoll : TileEntityType<TEDisplayDoll>, IFixLoadedData
++public sealed partial class TEDisplayDoll : TileEntityType<TEDisplayDoll>, IFixLoadedData
  {
- 	private static byte _myEntityID;
- 	private const int MyTileID = 470;
-@@ -118,8 +_,8 @@
- 		for (int i = 0; i < 8; i++) {
- 			Item item = _items[i];
+@@ -168,8 +_,8 @@
+ 		Item[] equip = _equip;
+ 		foreach (Item item in equip) {
  			if (!item.IsAir) {
--				writer.Write((short)item.netID);
+-				writer.Write((short)item.type);
 -				writer.Write(item.prefix);
 +				ItemIO.WriteShortVanillaID(item, writer);
 +				ItemIO.WriteByteVanillaPrefix(item, writer);
  				writer.Write((short)item.stack);
  			}
  		}
-@@ -127,8 +_,8 @@
- 		for (int j = 0; j < 8; j++) {
- 			Item item2 = _dyes[j];
+@@ -177,8 +_,8 @@
+ 		equip = _dyes;
+ 		foreach (Item item2 in equip) {
  			if (!item2.IsAir) {
--				writer.Write((short)item2.netID);
+-				writer.Write((short)item2.type);
 -				writer.Write(item2.prefix);
 +				ItemIO.WriteShortVanillaID(item2, writer);
 +				ItemIO.WriteByteVanillaPrefix(item2, writer);
  				writer.Write((short)item2.stack);
  			}
  		}
-@@ -187,11 +_,14 @@
+@@ -278,11 +_,14 @@
  			return;
  
- 		Kill(num, num2);
+ 		TileEntityType<TEDisplayDoll>.Kill(num, num2);
 +		if (!TileLoader.Drop(callX, callY, 470))
 +			goto skipDrops;
  		if (Main.tile[callX, callY].frameX / 72 != 1)
@@ -52,33 +51,32 @@
  		WorldGen.destroyObject = true;
  		for (int k = num; k < num + 2; k++) {
  			for (int l = num2; l < num2 + 3; l++) {
-@@ -468,6 +_,9 @@
- 		if (dye)
- 			item = _dyes[itemIndex];
- 
+@@ -671,18 +_,28 @@
+ 	public void WriteItem(int itemIndex, BinaryWriter writer, Item[] collection)
+ 	{
+ 		Item item = collection[itemIndex];
++		
 +		ItemIO.Send(item, writer, writeStack: true);
 +		return;
-+
- 		writer.Write((ushort)item.netID);
++		
+ 		writer.Write((ushort)item.type);
  		writer.Write((ushort)item.stack);
  		writer.Write(item.prefix);
-@@ -475,12 +_,19 @@
+ 	}
  
- 	public void ReadItem(int itemIndex, BinaryReader reader, bool dye)
+ 	public void ReadItem(int itemIndex, BinaryReader reader, Item[] collection)
  	{
-+		Item item = (dye ? _dyes : _items)[itemIndex];
-+
-+		ItemIO.Receive(item, reader, readStack: true);
-+		return;
-+
- 		int defaults = reader.ReadUInt16();
++		/*
+ 		int num = reader.ReadUInt16();
  		int stack = reader.ReadUInt16();
  		int prefixWeWant = reader.ReadByte();
-+		/*
- 		Item item = _items[itemIndex];
- 		if (dye)
- 			item = _dyes[itemIndex];
 +		*/
- 
- 		item.SetDefaults(defaults);
- 		item.stack = stack;
+ 		if (itemIndex < collection.Length) {
+ 			Item obj = collection[itemIndex];
++			
++			ItemIO.Receive(item, reader, readStack: true);
++			return;
++			
+ 			obj.SetDefaults(num);
+ 			obj.stack = stack;
+ 			obj.Prefix(prefixWeWant);

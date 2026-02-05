@@ -13,7 +13,7 @@
  {
  	public delegate void MouseEvent(UIMouseEvent evt, UIElement listeningElement);
  
-@@ -19,27 +_,56 @@
+@@ -21,28 +_,57 @@
  	public delegate void UIElementAction(UIElement element);
  
  	protected readonly List<UIElement> Elements = new List<UIElement>();
@@ -38,6 +38,7 @@
 +	/// If true, this element will be ignored for mouse interactions. This can be used to allow UIElement placed over other  UIElement to not be the target of mouse clicks. Defaults to false.
 +	/// </summary>
  	public bool IgnoresMouseInteraction;
+ 	public bool PassThroughMouseInteraction;
  	public bool OverflowHidden;
  	public SamplerState OverrideSamplerState;
 +	/// <summary>
@@ -70,7 +71,7 @@
  	public float VAlign;
  	private CalculatedStyle _innerDimensions;
  	private CalculatedStyle _dimensions;
-@@ -52,12 +_,19 @@
+@@ -55,12 +_,19 @@
  	private SnapPoint _snapPoint;
  	private static int _idCounter = 0;
  
@@ -90,7 +91,7 @@
  	public bool IsMouseHovering { get; private set; }
  
  	public event MouseEvent OnLeftMouseDown;
-@@ -68,10 +_,15 @@
+@@ -71,11 +_,16 @@
  	public event MouseEvent OnRightMouseUp;
  	public event MouseEvent OnRightClick;
  	public event MouseEvent OnRightDoubleClick;
@@ -101,12 +102,13 @@
  	public event ScrollWheelEvent OnScrollWheel;
 +	/// <summary> Called at the start of <see cref="Update(GameTime)"/>. Use this event instead of inheritance if suitable. </summary>
  	public event ElementEvent OnUpdate;
+ 	public event DrawEvent OnDraw;
 +	/// <summary> Called at the start of <see cref="Draw(SpriteBatch)"/>. Use this event instead of inheritance if suitable. </summary>
 +	public event ElementEvent OnDraw;
  
  	public UIElement()
  	{
-@@ -106,10 +_,14 @@
+@@ -110,10 +_,14 @@
  		}
  	}
  
@@ -121,7 +123,7 @@
  	protected virtual void DrawChildren(SpriteBatch spriteBatch)
  	{
  		foreach (UIElement element in Elements) {
-@@ -117,6 +_,9 @@
+@@ -121,6 +_,9 @@
  		}
  	}
  
@@ -131,7 +133,7 @@
  	public void Append(UIElement element)
  	{
  		element.Remove();
-@@ -146,8 +_,14 @@
+@@ -150,11 +_,14 @@
  		Elements.Clear();
  	}
  
@@ -140,13 +142,13 @@
 +	/// </summary>
  	public virtual void Draw(SpriteBatch spriteBatch)
  	{
-+		if (this.OnDraw != null)
-+			this.OnDraw(this);
-+
+ 		if (this.OnDraw != null)
+ 			this.OnDraw(this, spriteBatch);
+ 
  		bool overflowHidden = OverflowHidden;
  		bool useImmediateMode = UseImmediateMode;
  		RasterizerState rasterizerState = spriteBatch.GraphicsDevice.RasterizerState;
-@@ -167,13 +_,22 @@
+@@ -174,13 +_,22 @@
  		if (overflowHidden) {
  			spriteBatch.End();
  			Rectangle clippingRectangle = GetClippingRectangle(spriteBatch);
@@ -169,7 +171,7 @@
  			spriteBatch.End();
  			spriteBatch.GraphicsDevice.ScissorRectangle = scissorRectangle;
  			spriteBatch.GraphicsDevice.RasterizerState = rasterizerState;
-@@ -181,6 +_,7 @@
+@@ -188,6 +_,7 @@
  		}
  	}
  
@@ -177,7 +179,7 @@
  	public virtual void Update(GameTime gameTime)
  	{
  		if (this.OnUpdate != null)
-@@ -296,6 +_,9 @@
+@@ -304,6 +_,9 @@
  
  	public virtual Rectangle GetViewCullingArea() => _dimensions.ToRectangle();
  
@@ -187,7 +189,7 @@
  	public void SetPadding(float pixels)
  	{
  		PaddingBottom = pixels;
-@@ -311,8 +_,15 @@
+@@ -319,8 +_,15 @@
  		}
  	}
  
@@ -203,7 +205,7 @@
  	public CalculatedStyle GetOuterDimensions() => _outerDimensions;
  
  	public void CopyStyle(UIElement element)
-@@ -334,6 +_,11 @@
+@@ -342,6 +_,11 @@
  		Recalculate();
  	}
  
@@ -215,7 +217,7 @@
  	public virtual void LeftMouseDown(UIMouseEvent evt)
  	{
  		if (this.OnLeftMouseDown != null)
-@@ -406,6 +_,12 @@
+@@ -414,6 +_,12 @@
  			Parent.RightDoubleClick(evt);
  	}
  
@@ -228,7 +230,7 @@
  	public virtual void MouseOver(UIMouseEvent evt)
  	{
  		IsMouseHovering = true;
-@@ -416,6 +_,11 @@
+@@ -424,6 +_,11 @@
  			Parent.MouseOver(evt);
  	}
  
@@ -240,7 +242,7 @@
  	public virtual void MouseOut(UIMouseEvent evt)
  	{
  		IsMouseHovering = false;
-@@ -446,6 +_,9 @@
+@@ -454,6 +_,9 @@
  		}
  	}
  
@@ -250,7 +252,7 @@
  	public virtual void OnActivate()
  	{
  	}
-@@ -485,9 +_,19 @@
+@@ -493,9 +_,19 @@
  		_isInitialized = true;
  	}
  

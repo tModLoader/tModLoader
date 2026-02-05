@@ -1,9 +1,10 @@
 --- src/TerrariaNetCore/Terraria/DataStructures/TileEntity.cs
 +++ src/tModLoader/Terraria/DataStructures/TileEntity.cs
-@@ -4,24 +_,32 @@
+@@ -4,27 +_,35 @@
  using Microsoft.Xna.Framework.Graphics;
  using Terraria.Audio;
  using Terraria.GameInput;
+ using Terraria.UI;
 +using Terraria.ModLoader;
  
  namespace Terraria.DataStructures;
@@ -14,6 +15,7 @@
  	public static TileEntitiesManager manager;
  	public const int MaxEntitiesPerChunk = 1000;
  	public static object EntityCreationLock = new object();
+ 	public static List<TileEntity> UpdateEntities = new List<TileEntity>();
 +	/// <summary> Maps <see cref="ID"/> to TileEntity instances. </summary>
  	public static Dictionary<int, TileEntity> ByID = new Dictionary<int, TileEntity>();
 +	/// <summary> Maps tile coordinate locations to the TileEntity at that location. </summary>
@@ -24,6 +26,7 @@
 +	/// <summary> The tile coordinate location of this TileEntity. Will typically be the top left corner of the corresponding multitile, but not necessarily. </summary>
  	public Point16 Position;
  	public byte type;
+ 	public bool RequiresUpdates;
  
  	public static event Action _UpdateStart;
  	public static event Action _UpdateEnd;
@@ -34,7 +37,7 @@
  	public static int AssignNewID() => TileEntitiesNextID++;
  
  	public static void Clear()
-@@ -47,6 +_,8 @@
+@@ -110,6 +_,8 @@
  	{
  		manager = new TileEntitiesManager();
  		manager.RegisterAll();
@@ -43,8 +46,8 @@
  	}
  
  	public static void PlaceEntityNet(int x, int y, int type)
-@@ -55,42 +_,70 @@
- 			manager.NetPlaceEntity(type, x, y);
+@@ -136,42 +_,70 @@
+ 		return result != null;
  	}
  
 +	/// <summary>
@@ -69,16 +72,16 @@
 +		ent.WriteInner(writer, networkSend, lightSend);
  	}
  
--	public static TileEntity Read(BinaryReader reader, bool networkSend = false)
-+	public static TileEntity Read(BinaryReader reader, bool networkSend = false, bool lightSend = false)
+-	public static TileEntity Read(BinaryReader reader, int gameVersion, bool networkSend = false)
++	public static TileEntity Read(BinaryReader reader, int gameVersion, bool networkSend = false, bool lightSend = false)
  	{
 +		lightSend &= networkSend;
 +
  		byte id = reader.ReadByte();
  		TileEntity tileEntity = manager.GenerateInstance(id);
  		tileEntity.type = id;
--		tileEntity.ReadInner(reader, networkSend);
-+		tileEntity.ReadInner(reader, networkSend, lightSend);
+-		tileEntity.ReadInner(reader, gameVersion, networkSend);
++		tileEntity.ReadInner(reader, gameVersion, networkSend, lightSend);
  		return tileEntity;
  	}
  
@@ -103,8 +106,8 @@
 +		WriteExtraData(writer, lightSend);
  	}
  
--	private void ReadInner(BinaryReader reader, bool networkSend)
-+	private void ReadInner(BinaryReader reader, bool networkSend, bool lightSend)
+-	private void ReadInner(BinaryReader reader, int gameVersion, bool networkSend)
++	private void ReadInner(BinaryReader reader, int gameVersion, bool networkSend, bool lightSend)
  	{
 -		if (!networkSend)
 +		if (!lightSend)
@@ -119,8 +122,8 @@
 +			return;
 +		}
 +
--		ReadExtraData(reader, networkSend);
-+		ReadExtraData(reader, lightSend);
+-		ReadExtraData(reader, gameVersion, networkSend);
++		ReadExtraData(reader, gameVersion, lightSend);
  	}
  
  	public virtual void WriteExtraData(BinaryWriter writer, bool networkSend)

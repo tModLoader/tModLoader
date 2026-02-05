@@ -41,35 +41,35 @@
  		_database = new PersonalityDatabase();
  		new PersonalityDatabasePopulator().Populate(_database);
  	}
-@@ -137,7 +_,7 @@
- 				_currentPriceAdjustment *= 0.95f;
- 			}
+@@ -125,7 +_,7 @@
+ 			_currentPriceAdjustment *= 0.95f;
+ 		}
  
--			bool[] array = new bool[NPCID.Count];
-+			bool[] array = new bool[NPCLoader.NPCCount];
- 			foreach (NPC item in nearbyResidentNPCs) {
- 				array[item.type] = true;
- 			}
-@@ -148,10 +_,17 @@
- 			helperInfo.NearbyNPCs = nearbyResidentNPCs;
- 			helperInfo.nearbyNPCsByType = array;
- 			HelperInfo info = helperInfo;
--			foreach (IShopPersonalityTrait shopModifier in _database.GetByNPCID(npc.type).ShopModifiers) {
+-		bool[] array = new bool[NPCID.Count];
++		bool[] array = new bool[NPCLoader.NPCCount];
+ 		foreach (NPC item in nearbyResidentNPCs) {
+ 			array[item.type] = true;
+ 		}
+@@ -136,10 +_,17 @@
+ 		helperInfo.NearbyNPCs = nearbyResidentNPCs;
+ 		helperInfo.nearbyNPCsByType = array;
+ 		HelperInfo info = helperInfo;
+-		foreach (IShopPersonalityTrait shopModifier in _database.GetByNPCID(npc.type).ShopModifiers) {
 +
-+			if (!_database.TryGetProfileByNPCID(npc.type, out var personalityProfile)) {
-+				goto SkipModifierEnumeration;
-+			}
++		if (!_database.TryGetProfileByNPCID(npc.type, out var personalityProfile)) {
++			goto SkipModifierEnumeration;
++		}
 +
-+			foreach (IShopPersonalityTrait shopModifier in personalityProfile.ShopModifiers) {
- 				shopModifier.ModifyShopPrice(info, this);
- 			}
++		foreach (IShopPersonalityTrait shopModifier in personalityProfile.ShopModifiers) {
+ 			shopModifier.ModifyShopPrice(info, this);
+ 		}
  
-+			SkipModifierEnumeration:
++		SkipModifierEnumeration:
 +
- 			new AllPersonalitiesModifier().ModifyShopPrice(info, this);
- 			if (_currentHappiness == "")
- 				AddHappinessReportText("Content");
-@@ -167,11 +_,19 @@
+ 		new AllPersonalitiesModifier().ModifyShopPrice(info, this);
+ 		if (_currentHappiness == "")
+ 			AddHappinessReportText("Content");
+@@ -154,11 +_,19 @@
  		return priceAdjustment;
  	}
  
@@ -91,7 +91,7 @@
  		if (_currentNPCBeingTalkedTo.type == 633 && _currentNPCBeingTalkedTo.altTexture == 2)
  			text += "Transformed";
  
-@@ -179,6 +_,35 @@
+@@ -166,6 +_,35 @@
  		_currentHappiness = _currentHappiness + textValueWith + " ";
  	}
  
@@ -127,7 +127,7 @@
  	public void LikeBiome(string nameKey)
  	{
  		AddHappinessReportText("LikeBiome", new {
-@@ -223,25 +_,38 @@
+@@ -210,25 +_,38 @@
  
  		_currentPriceAdjustment *= 0.94f;
  	}
@@ -170,7 +170,7 @@
  	public void LoveNPC(int npcType)
  	{
  		AddHappinessReportText("LoveNPC", new {
-@@ -268,6 +_,7 @@
+@@ -255,6 +_,7 @@
  
  		_currentPriceAdjustment *= 1.12f;
  	}
@@ -178,7 +178,7 @@
  
  	private List<NPC> GetNearbyResidentNPCs(NPC npc, out int npcsWithinHouse, out int npcsWithinVillage)
  	{
-@@ -325,7 +_,8 @@
+@@ -312,7 +_,8 @@
  	private bool IsPlayerInEvilBiomes(Player player)
  	{
  		for (int i = 0; i < _dangerousBiomes.Length; i++) {
@@ -188,7 +188,7 @@
  			if (aShoppingBiome.IsInBiome(player)) {
  				AddHappinessReportText("HateBiome", new {
  					BiomeName = BiomeNameByKey(aShoppingBiome.NameKey)
-@@ -341,7 +_,10 @@
+@@ -328,7 +_,10 @@
  	private bool IsNotReallyTownNPC(NPC npc)
  	{
  		int type = npc.type;

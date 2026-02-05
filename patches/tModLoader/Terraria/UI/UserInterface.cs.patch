@@ -18,8 +18,8 @@
 +		XButton2Mouse.Clear();
  	}
  
- 	public void ResetLasts()
-@@ -113,6 +_,9 @@
+ 	public bool MouseCaptured()
+@@ -125,6 +_,9 @@
  	{
  		LeftMouse.WasDown = Main.mouseLeft;
  		RightMouse.WasDown = Main.mouseRight;
@@ -29,13 +29,13 @@
  	}
  
  	private void ResetState()
-@@ -143,6 +_,21 @@
- 		UIElement uIElement = (Main.hasFocus ? _currentState.GetElementAt(MousePosition) : null);
+@@ -159,6 +_,21 @@
+ 		UIElement uIElement = (flag ? _currentState.GetElementAt(MousePosition) : null);
  		_clickDisabledTimeRemaining = Math.Max(0.0, _clickDisabledTimeRemaining - time.ElapsedGameTime.TotalMilliseconds);
  		bool num = _clickDisabledTimeRemaining > 0.0;
 +
 +		try {
-+			Update_Inner(time, uIElement, ref num);
++			Update_Inner(time, uIElement, flag, ref num);
 +		}
 +		catch {
 +			throw;
@@ -46,18 +46,18 @@
 +	}
 +
 +	// A split to add a try-catch-finally block without indentation issues.
-+	private void Update_Inner(GameTime time, UIElement uIElement, ref bool num)
++	private void Update_Inner(GameTime time, UIElement uIElement, bool flag, ref bool num)
 +	{
  		if (uIElement != _lastElementHover) {
  			if (_lastElementHover != null)
  				_lastElementHover.MouseOut(new UIMouseEvent(_lastElementHover, MousePosition));
-@@ -154,13 +_,23 @@
+@@ -170,13 +_,23 @@
  		if (!num) {
- 			HandleClick(LeftMouse, time, Main.mouseLeft && Main.hasFocus, uIElement);
- 			HandleClick(RightMouse, time, Main.mouseRight && Main.hasFocus, uIElement);
-+			HandleClick(MiddleMouse, time, Main.mouseMiddle && Main.hasFocus, uIElement);
-+			HandleClick(XButton1Mouse, time, Main.mouseXButton1 && Main.hasFocus, uIElement);
-+			HandleClick(XButton2Mouse, time, Main.mouseXButton2 && Main.hasFocus, uIElement);
+ 			HandleClick(LeftMouse, time, Main.mouseLeft && flag, uIElement);
+ 			HandleClick(RightMouse, time, Main.mouseRight && flag, uIElement);
++			HandleClick(MiddleMouse, time, Main.mouseMiddle && flag, uIElement);
++			HandleClick(XButton1Mouse, time, Main.mouseXButton1 && flag, uIElement);
++			HandleClick(XButton2Mouse, time, Main.mouseXButton2 && flag, uIElement);
  		}
  
  		if (PlayerInput.ScrollWheelDeltaForUI != 0) {

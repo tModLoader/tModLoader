@@ -8,7 +8,7 @@
  
  namespace Terraria;
  
-@@ -1030,7 +_,7 @@
+@@ -1206,7 +_,7 @@
  		if (tile == null || !tile.active() || tile.inActive() || !Main.tileSolid[tile.type])
  			return false;
  
@@ -17,7 +17,7 @@
  			return false;
  
  		int num = tile.blockType();
-@@ -2228,7 +_,25 @@
+@@ -2677,7 +_,25 @@
  		return false;
  	}
  
@@ -43,7 +43,7 @@
  	{
  		int num = (int)(Position.X / 16f) - 1;
  		int num2 = (int)((Position.X + (float)Width) / 16f) + 2;
-@@ -2253,13 +_,18 @@
+@@ -2702,13 +_,18 @@
  					continue;
  
  				int type = Main.tile[i, j].type;
@@ -63,15 +63,15 @@
  					if (objType == 4) {
  						float r1StartX = 0f;
  						float r1StartY = 0f;
-@@ -2322,6 +_,7 @@
- 					}
+@@ -2768,6 +_,7 @@
+ 				}
  
- 					int num5 = Main.tile[i, j].frameY / 18;
-+					if (TileID.Sets.PressurePlate[type] >= 0) num5 = TileID.Sets.PressurePlate[type];
- 					bool flag2 = true;
- 					if ((num5 == 4 || num5 == 2 || num5 == 3 || num5 == 6 || num5 == 7) && objType != 1)
- 						flag2 = false;
-@@ -2348,6 +_,7 @@
+ 				int num5 = Main.tile[i, j].frameY / 18;
++				if (TileID.Sets.PressurePlate[type] >= 0) num5 = TileID.Sets.PressurePlate[type];
+ 				bool flag2 = true;
+ 				if ((num5 == 4 || num5 == 2 || num5 == 3 || num5 == 6 || num5 == 7) && objType != 5)
+ 					flag2 = false;
+@@ -2796,6 +_,7 @@
  		return false;
  	}
  
@@ -79,7 +79,7 @@
  	public bool SwitchTilesNew(Vector2 Position, int Width, int Height, Vector2 oldPosition, int objType)
  	{
  		Point point = Position.ToTileCoordinates();
-@@ -2614,7 +_,10 @@
+@@ -3086,7 +_,10 @@
  			tile = Main.tile[num2, num3];
  			tile2 = Main.tile[num2, num3 - 1];
  			if (specialChecksMode == 1)
@@ -90,7 +90,7 @@
  
  			flag4 = flag4 && ((tile.nactive() && (!tile.topSlope() || (tile.slope() == 1 && position.X + (float)(width / 2) < (float)(num2 * 16)) || (tile.slope() == 2 && position.X + (float)(width / 2) > (float)(num2 * 16 + 16))) && (!tile.topSlope() || position.Y + (float)height > (float)(num3 * 16)) && ((Main.tileSolid[tile.type] && !Main.tileSolidTop[tile.type]) || (holdsMatching && ((Main.tileSolidTop[tile.type] && tile.frameY == 0) || TileID.Sets.Platforms[tile.type]) && (!Main.tileSolid[tile2.type] || !tile2.nactive()) && flag5))) || (tile2.halfBrick() && tile2.nactive()));
  			flag4 &= !Main.tileSolidTop[tile.type] || !Main.tileSolidTop[tile2.type];
-@@ -2694,7 +_,7 @@
+@@ -3166,7 +_,7 @@
  			if (tile.active()) {
  				if (Main.tileSolid[tile.type]) {
  					int num5 = tile.blockType();

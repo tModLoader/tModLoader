@@ -10,7 +10,7 @@
  	<PropertyGroup>
 @@ -11,59 +_,99 @@
  		<Company>Re-Logic</Company>
- 		<Copyright>Copyright © 2022 Re-Logic</Copyright>
+ 		<Copyright>Copyright © 2026 Re-Logic</Copyright>
  		<RootNamespace>Terraria</RootNamespace>
 -		<AssemblyName>Terraria</AssemblyName>
 +		<AssemblyName>tModLoader</AssemblyName>

@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Enums/AnchorType.cs
 +++ src/tModLoader/Terraria/Enums/AnchorType.cs
-@@ -6,15 +_,26 @@
+@@ -6,16 +_,27 @@
  public enum AnchorType
  {
  	None = 0,
@@ -25,5 +25,6 @@
 +	/// <summary> <see cref="ID.TileID.PlanterBox"/> only. </summary>
  	PlanterBox = 0x200,
 +	/// <summary> Similar to <see cref="Platform"/> (Any <see cref="ID.TileID.Sets.Platforms"/> tile), except it doesn't allow for hammered platforms. This rules out situations where a hammered platform tile is next to an un-hammered platform tile. This should be used for banners wider than 1 tile. </summary>
- 	PlatformNonHammered = 0x400
+ 	PlatformNonHammered = 0x400,
+ 	AllFlatHeight = 0x800
  }

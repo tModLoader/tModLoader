@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Dust.cs
 +++ src/tModLoader/Terraria/Dust.cs
-@@ -1,35 +_,100 @@
+@@ -1,36 +_,101 @@
  using System;
  using Microsoft.Xna.Framework;
 +using Terraria.DataStructures;
@@ -54,6 +54,7 @@
 +	/// </summary>
  	public bool noLight;
  	public bool noLightEmittence;
+ 	public bool fullBright;
  	public bool active;
 +	/// <summary>
 +	/// The Dust ID of this dust. The Dust ID will be equal to either a <see cref="DustID"/> entry or <see cref="ModContent.DustType{T}"/>.
@@ -101,7 +102,7 @@
  	public static Dust NewDustPerfect(Vector2 Position, int Type, Vector2? Velocity = null, int Alpha = 0, Color newColor = default(Color), float Scale = 1f)
  	{
  		Dust dust = Main.dust[NewDust(Position, 0, 0, Type, 0f, 0f, Alpha, newColor, Scale)];
-@@ -40,6 +_,20 @@
+@@ -41,6 +_,20 @@
  		return dust;
  	}
  
@@ -122,7 +123,7 @@
  	public static Dust NewDustDirect(Vector2 Position, int Width, int Height, int Type, float SpeedX = 0f, float SpeedY = 0f, int Alpha = 0, Color newColor = default(Color), float Scale = 1f)
  	{
  		Dust dust = Main.dust[NewDust(Position, Width, Height, Type, SpeedX, SpeedY, Alpha, newColor, Scale)];
-@@ -49,6 +_,19 @@
+@@ -50,6 +_,19 @@
  		return dust;
  	}
  
@@ -142,7 +143,7 @@
  	public static int NewDust(Vector2 Position, int Width, int Height, int Type, float SpeedX = 0f, float SpeedY = 0f, int Alpha = 0, Color newColor = default(Color), float Scale = 1f)
  	{
  		if (Main.gameMenu)
-@@ -168,6 +_,8 @@
+@@ -193,6 +_,8 @@
  			if (dust.type == 80)
  				dust.alpha = 50;
  
@@ -151,7 +152,7 @@
  			if (dust.type == 34 || dust.type == 35 || dust.type == 152) {
  				dust.velocity *= 0.1f;
  				dust.velocity.Y = -0.5f;
-@@ -207,7 +_,9 @@
+@@ -232,6 +_,8 @@
  		return obj;
  	}
  
@@ -160,8 +161,7 @@
 +	/// <inheritdoc cref="Dust.QuickDust(Vector2, Color)"/>
  	public static Dust QuickDust(Point tileCoords, Color color) => QuickDust(tileCoords.ToWorldCoordinates(), color);
  
- 	public static void QuickBox(Vector2 topLeft, Vector2 bottomRight, int divisions, Color color, Action<Dust> manipulator)
-@@ -237,6 +_,12 @@
+@@ -290,6 +_,12 @@
  		}
  	}
  
@@ -174,7 +174,7 @@
  	public static Dust QuickDust(Vector2 pos, Color color)
  	{
  		Dust obj = Main.dust[NewDust(pos, 0, 0, 267)];
-@@ -272,6 +_,9 @@
+@@ -325,6 +_,9 @@
  
  	public static int dustWater()
  	{
@@ -184,7 +184,7 @@
  		switch (Main.waterStyle) {
  			case 2:
  				return 98;
-@@ -312,6 +_,16 @@
+@@ -368,6 +_,16 @@
  					continue;
  
  				dCount += 1f;
@@ -201,28 +201,31 @@
  				if (dust.scale > 10f)
  					dust.active = false;
  
-@@ -1650,7 +_,7 @@
+@@ -1735,7 +_,7 @@
  
- 					Lighting.AddLight((int)(dust.position.X / 16f), (int)(dust.position.Y / 16f), num104 * 0.7f, num104, num104 * 0.8f);
+ 					Lighting.AddLight((int)(dust.position.X / 16f), (int)(dust.position.Y / 16f), num108 * 0.7f, num108, num108 * 0.8f);
  				}
 -				else if (dust.type != 304) {
 +				else if (dust.type != 304 && (modDust == null || !modDust.MidUpdate(dust))) {
  					dust.velocity.X *= 0.99f;
  				}
  
-@@ -1875,6 +_,8 @@
+@@ -1966,6 +_,8 @@
  
- 				if (dust.scale < num113)
+ 				if (dust.scale < num117)
  					dust.active = false;
 +
 +				DustLoader.TakeDownUpdateType(dust);
  			}
  			else {
  				dust.active = false;
-@@ -1898,6 +_,14 @@
+@@ -1989,9 +_,17 @@
  
  	public Color GetAlpha(Color newColor)
  	{
+ 		if (fullBright)
+ 			return Color.White;
+ 
 +		ModDust modDust = DustLoader.GetDust(type);
 +
 +		if (modDust != null) {

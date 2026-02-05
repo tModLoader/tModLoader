@@ -78,9 +78,9 @@
 +	/// </remarks>
  	public void ClearTile()
  	{
- 		slope(0);
-@@ -122,8 +_,15 @@
- 		inActive(inActive: false);
+ 		ClearSlope();
+@@ -133,8 +_,15 @@
+ 		ClearBlockPaintAndCoating();
  	}
  
 +	/// <summary>
@@ -95,7 +95,7 @@
  		type = from.type;
  		wall = from.wall;
  		liquid = from.liquid;
-@@ -133,10 +_,40 @@
+@@ -144,10 +_,40 @@
  		bTileHeader3 = from.bTileHeader3;
  		frameX = from.frameX;
  		frameY = from.frameY;
@@ -137,7 +137,7 @@
  		if (compTile == null)
  			return false;
  
-@@ -165,13 +_,19 @@
+@@ -176,13 +_,19 @@
  			return false;
  		}
  
@@ -158,7 +158,7 @@
  	{
  		if (halfBrick())
  			return 1;
-@@ -183,6 +_,7 @@
+@@ -194,6 +_,7 @@
  		return num;
  	}
  
@@ -166,7 +166,7 @@
  	public void liquidType(int liquidType)
  	{
  		switch (liquidType) {
-@@ -210,9 +_,20 @@
+@@ -221,9 +_,20 @@
  
  		return false;
  	}
@@ -187,7 +187,7 @@
  		liquid = 0;
  		sTileHeader = 32;
  		bTileHeader = 0;
-@@ -221,10 +_,16 @@
+@@ -232,10 +_,16 @@
  		frameX = 0;
  		frameY = 0;
  		this.type = type;
@@ -204,7 +204,7 @@
  		liquid = 0;
  		sTileHeader = 0;
  		bTileHeader = 0;
-@@ -232,9 +_,10 @@
+@@ -243,9 +_,10 @@
  		bTileHeader3 = 0;
  		frameX = 0;
  		frameY = 0;
@@ -216,7 +216,7 @@
  	{
  		if (!inActive())
  			return oldColor;
-@@ -243,13 +_,17 @@
+@@ -254,13 +_,17 @@
  		return new Color((byte)(num * (double)(int)oldColor.R), (byte)(num * (double)(int)oldColor.G), (byte)(num * (double)(int)oldColor.B), oldColor.A);
  	}
  
@@ -236,7 +236,7 @@
  	{
  		byte b = slope();
  		if (b != 1)
-@@ -258,7 +_,11 @@
+@@ -269,7 +_,11 @@
  		return true;
  	}
  
@@ -249,7 +249,7 @@
  	{
  		byte b = slope();
  		if (b != 3)
-@@ -267,7 +_,11 @@
+@@ -278,7 +_,11 @@
  		return true;
  	}
  
@@ -262,7 +262,7 @@
  	{
  		byte b = slope();
  		if (b != 2)
-@@ -276,7 +_,11 @@
+@@ -287,7 +_,11 @@
  		return true;
  	}
  
@@ -275,7 +275,7 @@
  	{
  		byte b = slope();
  		if (b != 1)
-@@ -285,7 +_,9 @@
+@@ -296,7 +_,9 @@
  		return true;
  	}
  
@@ -285,9 +285,10 @@
  	public byte wallColor() => (byte)(bTileHeader & 0x1Fu);
  
  	public void wallColor(byte wallColor)
-@@ -504,7 +_,12 @@
- 		else
- 			sTileHeader = (ushort)(sTileHeader & 0xFFFF7FFFu);
+@@ -556,8 +_,13 @@
+ 			return (bTileHeader & 0x80) != 0;
+ 
+ 		return true;
  	}
 +	*/
  
@@ -298,7 +299,7 @@
  	public void Clear(TileDataType types)
  	{
  		if ((types & TileDataType.Tile) != 0) {
-@@ -550,6 +_,13 @@
+@@ -603,6 +_,13 @@
  		}
  	}
  
@@ -312,7 +313,7 @@
  	public static void SmoothSlope(int x, int y, bool applyToNeighbors = true, bool sync = false)
  	{
  		if (applyToNeighbors) {
-@@ -615,6 +_,11 @@
+@@ -668,6 +_,11 @@
  		}
  	}
  
@@ -324,7 +325,7 @@
  	public void CopyPaintAndCoating(Tile other)
  	{
  		color(other.color());
-@@ -622,6 +_,10 @@
+@@ -675,6 +_,10 @@
  		fullbrightBlock(other.fullbrightBlock());
  	}
  
@@ -335,7 +336,7 @@
  	public TileColorCache BlockColorAndCoating()
  	{
  		TileColorCache result = default(TileColorCache);
-@@ -631,6 +_,10 @@
+@@ -684,6 +_,10 @@
  		return result;
  	}
  
@@ -346,7 +347,7 @@
  	public TileColorCache WallColorAndCoating()
  	{
  		TileColorCache result = default(TileColorCache);
-@@ -640,16 +_,27 @@
+@@ -693,16 +_,27 @@
  		return result;
  	}
  
@@ -374,7 +375,7 @@
  	public void ClearBlockPaintAndCoating()
  	{
  		color(0);
-@@ -657,6 +_,9 @@
+@@ -710,6 +_,9 @@
  		invisibleBlock(invisibleBlock: false);
  	}
  

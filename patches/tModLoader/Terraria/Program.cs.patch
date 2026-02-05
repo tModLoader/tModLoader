@@ -8,7 +8,7 @@
  using System.Reflection;
  using System.Runtime.CompilerServices;
  using System.Text;
-@@ -11,12 +_,16 @@
+@@ -10,16 +_,20 @@
  using ReLogic.OS;
  using Terraria.Initializers;
  using Terraria.Localization;
@@ -18,6 +18,10 @@
 +using Terraria.ModLoader.Exceptions;
  using Terraria.Social;
  using Terraria.Utilities;
+ #if FNA
+ using Microsoft.Xna.Framework.Graphics;
+ using SDL3;
+ #endif
  
  namespace Terraria;
  
@@ -26,7 +30,7 @@
  {
  #if XNA
  	public static bool IsXna = true;
-@@ -35,6 +_,10 @@
+@@ -38,6 +_,10 @@
  	public static bool LoadedEverything;
  	public static IntPtr JitForcedMethodCache;
  
@@ -37,7 +41,7 @@
  	public static float LoadedPercentage {
  		get {
  			if (ThingsToLoad == 0)
-@@ -62,6 +_,7 @@
+@@ -65,6 +_,7 @@
  		LoadedEverything = true;
  	}
  
@@ -45,7 +49,7 @@
  	private static void ForceJITOnAssembly(Assembly assembly)
  	{
  		Type[] types = assembly.GetTypes();
-@@ -79,6 +_,20 @@
+@@ -82,6 +_,20 @@
  			ThingsLoaded++;
  		}
  	}
@@ -66,7 +70,7 @@
  
  	private static void ForceStaticInitializers(Assembly assembly)
  	{
-@@ -91,8 +_,14 @@
+@@ -94,8 +_,14 @@
  
  	private static void ForceLoadAssembly(Assembly assembly, bool initializeStaticMembers)
  	{
@@ -81,9 +85,10 @@
  		if (initializeStaticMembers)
  			ForceStaticInitializers(assembly);
  	}
-@@ -136,6 +_,10 @@
+@@ -140,7 +_,11 @@
  		if (Debugger.IsAttached)
  			return;
+ #endif
  
 +		// Hide the console on clients unless a special parameter was passed down.
 +		if (!Main.dedServ && !LaunchParameters.ContainsKey("-console"))
@@ -92,7 +97,7 @@
  		try {
  			Console.OutputEncoding = Encoding.UTF8;
  			if (Platform.IsWindows)
-@@ -147,9 +_,15 @@
+@@ -152,9 +_,15 @@
  		}
  	}
  
@@ -109,7 +114,7 @@
  		if (monoArgs)
  			args = Utils.ConvertMonoArgsToDotNet(args);
  
-@@ -164,6 +_,28 @@
+@@ -167,7 +_,29 @@
  		// Unify server and client dll via launch param
  		Main.dedServ = LaunchParameters.ContainsKey("-server");
  #endif
@@ -136,9 +141,10 @@
 +			// Anything beyond this point will not be executed
 +			ModCompile.BuildModCommandLine(build);
  
- 		if (Main.dedServ) { // Remove bad environment variables that might be set by other app installs
+ 		// Remove bad environment variables that might be set by other app installs
+ 		if (Main.dedServ) {
  			Environment.SetEnvironmentVariable("FNA_PLATFORM_BACKEND", "NONE");
-@@ -171,7 +_,9 @@
+@@ -178,7 +_,9 @@
  
  		ThreadPool.SetMinThreads(8, 8);
  		InitializeConsoleOutput();
@@ -148,7 +154,7 @@
  		Platform.Get<IWindowService>().SetQuickEditEnabled(enabled: false);
  		RunGame();
  	}
-@@ -185,8 +_,13 @@
+@@ -202,8 +_,13 @@
  			};
  		}
  
@@ -163,7 +169,7 @@
  			Lang.InitializeLegacyLocalization();
  			SocialAPI.Initialize();
  			LaunchInitializer.LoadParameters(main);
-@@ -197,10 +_,14 @@
+@@ -214,18 +_,22 @@
  				main.Run();
  		}
  		catch (Exception e) {
@@ -174,11 +180,19 @@
  		}
  	}
  
-+	/*
- 	private static void TrySettingFNAToOpenGL(string[] args)
+ 	private static void LogFNANativeLibVersions()
  	{
- 		bool flag = false;
-@@ -241,4 +_,5 @@
+ #if FNA
+ 		Console.WriteLine(("SDL v" + SDL.SDL_GetVersion() + "." + SDL.SDL_GetRevision()) ?? "");
+ 		uint num = FNA3D.FNA3D_LinkedVersion();
+ 		Console.WriteLine(("FNA3D v" + num / 10000 + "." + num / 100 % 100 + "." + num % 100) ?? "");
+ 		uint num2 = FAudio.FAudioLinkedVersion();
+ 		Console.WriteLine(("FAudio v" + num2 / 10000 + "." + num2 / 100 % 100 + "." + num2 % 100) ?? "");
+ #endif
+ 	}
+ 
++	/*
+@@ -255,4 +_,5 @@
  		catch {
  		}
  	}

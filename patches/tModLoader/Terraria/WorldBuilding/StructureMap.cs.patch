@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/WorldBuilding/StructureMap.cs
 +++ src/tModLoader/Terraria/WorldBuilding/StructureMap.cs
-@@ -5,14 +_,27 @@
+@@ -6,16 +_,29 @@
  
  namespace Terraria.WorldBuilding;
  
@@ -13,7 +13,9 @@
 +/// </summary>
  public class StructureMap
  {
+ 	[JsonProperty]
  	private readonly List<Rectangle> _structures = new List<Rectangle>(2048);
+ 	[JsonProperty]
  	private readonly List<Rectangle> _protectedStructures = new List<Rectangle>(2048);
  	private readonly object _lock = new object();
  
@@ -28,7 +30,7 @@
  	public bool CanPlace(Rectangle area, bool[] validTiles, int padding = 0)
  	{
  		lock (_lock) {
-@@ -51,6 +_,7 @@
+@@ -54,6 +_,7 @@
  		}
  	}
  
@@ -36,7 +38,7 @@
  	public void AddStructure(Rectangle area, int padding = 0)
  	{
  		lock (_lock) {
-@@ -59,6 +_,9 @@
+@@ -62,6 +_,9 @@
  		}
  	}
  

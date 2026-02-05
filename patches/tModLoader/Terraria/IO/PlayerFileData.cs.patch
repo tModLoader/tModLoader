@@ -19,7 +19,7 @@
  	public Player Player {
  		get {
  			return _player;
-@@ -69,6 +_,8 @@
+@@ -71,7 +_,9 @@
  		if (!FileUtilities.MoveToCloud(base.Path, playerPathFromName))
  			return;
  
@@ -27,8 +27,9 @@
 +
  		string fileName = GetFileName(includeExtension: false);
  		string path = Main.PlayerPath + System.IO.Path.DirectorySeparatorChar + fileName + System.IO.Path.DirectorySeparatorChar;
+ 		string text = playerPathFromName.Substring(0, playerPathFromName.Length - 4);
  		if (Directory.Exists(path)) {
-@@ -94,6 +_,8 @@
+@@ -97,6 +_,8 @@
  		if (!FileUtilities.MoveToLocal(base.Path, playerPathFromName))
  			return;
  
@@ -37,7 +38,7 @@
  		string fileName = GetFileName(includeExtension: false);
  		string mapPath = System.IO.Path.Combine(Main.CloudPlayerPath, fileName);
  		foreach (string item in (from path in SocialAPI.Cloud.GetFiles().ToList()
-@@ -111,7 +_,9 @@
+@@ -114,7 +_,9 @@
  
  	private bool MapBelongsToPath(string mapPath, string filePath)
  	{

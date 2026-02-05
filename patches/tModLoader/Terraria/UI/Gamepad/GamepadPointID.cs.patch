@@ -1,9 +1,9 @@
 --- src/TerrariaNetCore/Terraria/UI/Gamepad/GamepadPointID.cs
 +++ src/tModLoader/Terraria/UI/Gamepad/GamepadPointID.cs
-@@ -166,7 +_,7 @@
+@@ -165,7 +_,7 @@
+ 	public const int ChestActRestock = 503;
  	public const int ChestActRenameChest = 504;
  	public const int ChestSort = 505;
- 	public const int ChestToggleVacuum = 506;
 -	public const int NPCHousing0 = 600;
 +	public const int NPCHousing0 = 600; // Update Note: Changed from 600-650 to 600-698 for ModNPC compatibility.
  	public const int CraftsBig = 700;

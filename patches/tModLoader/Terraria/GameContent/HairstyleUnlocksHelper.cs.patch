@@ -15,10 +15,11 @@
  	}
  
  	private void RebuildList()
-@@ -102,5 +_,7 @@
+@@ -107,6 +_,8 @@
  
- 		if (_defeatedMartians && _defeatedMoonlord)
- 			availableHairstyles.Add(133);
+ 			if (_defeatedMartians && _defeatedMoonlord)
+ 				availableHairstyles.Add(133);
+ 		}
 +
 +		HairLoader.UpdateUnlocks(this, _isAtCharacterCreation);
  	}

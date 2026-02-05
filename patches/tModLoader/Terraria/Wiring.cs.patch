@@ -1,9 +1,10 @@
 --- src/TerrariaNetCore/Terraria/Wiring.cs
 +++ src/tModLoader/Terraria/Wiring.cs
-@@ -7,36 +_,42 @@
+@@ -8,35 +_,41 @@
  using Terraria.GameContent.UI;
  using Terraria.ID;
  using Terraria.Localization;
+ using Terraria.UI;
 +using Terraria.ModLoader;
  
  namespace Terraria;
@@ -54,9 +55,7 @@
 -	private static int _currentWireColor;
 +	public static int _currentWireColor;
  	private static int CurrentUser = 255;
- 
- 	public static void SetCurrentUser(int plr = -1)
-@@ -75,11 +_,17 @@
+@@ -81,11 +_,17 @@
  		_mechTime = new int[1000];
  	}
  
@@ -74,7 +73,7 @@
  	public static void SkipWire(Point16 point)
  	{
  		_wireSkip[point] = true;
-@@ -193,11 +_,26 @@
+@@ -208,11 +_,26 @@
  		}
  	}
  
@@ -101,7 +100,7 @@
  		if (Main.tile[i, j].type == 135 || Main.tile[i, j].type == 314 || Main.tile[i, j].type == 423 || Main.tile[i, j].type == 428 || Main.tile[i, j].type == 442 || Main.tile[i, j].type == 476) {
  			SoundEngine.PlaySound(28, i * 16, j * 16, 0);
  			TripWire(i, j, 1, 1);
-@@ -349,7 +_,14 @@
+@@ -367,7 +_,14 @@
  		}
  	}
  
@@ -117,7 +116,7 @@
  	{
  		for (int k = 0; k < _numMechs; k++) {
  			if (_mechX[k] == i && _mechY[k] == j)
-@@ -410,7 +_,14 @@
+@@ -428,7 +_,14 @@
  		}
  	}
  
@@ -133,7 +132,7 @@
  	{
  		if (Main.netMode == 1)
  			return;
-@@ -827,6 +_,9 @@
+@@ -845,6 +_,9 @@
  		if (!tile.active())
  			return;
  
@@ -143,7 +142,7 @@
  		switch (type) {
  			case 144:
  				HitSwitch(i, j);
-@@ -1192,14 +_,14 @@
+@@ -1234,14 +_,14 @@
  			return;
  		}
  
@@ -169,7 +168,7 @@
  				ToggleTorch(i, j, tile, forcedStateWhereTrueIsOn);
  				break;
  			case 429: {
-@@ -1678,6 +_,7 @@
+@@ -1733,6 +_,7 @@
  			}
  			case 35:
  			case 139:
@@ -257,7 +256,7 @@
  							}
  
  							break;
-@@ -2202,10 +_,14 @@
+@@ -2260,9 +_,13 @@
  				break;
  			case 557:
  				tile.type = 546;
@@ -271,8 +270,7 @@
 +		TileLoader.HitWire(i, j, type);
  	}
  
- 	public static void ToggleHolidayLight(int i, int j, Tile tileCache, bool? forcedStateWhereTrueIsOn)
-@@ -2523,7 +_,7 @@
+@@ -2824,7 +_,7 @@
  		return false;
  	}
  
@@ -281,7 +279,7 @@
  	{
  		if (!Main.tile[i, j].active() || (Main.tile[i, j].type == 226 && (double)j > Main.worldSurface && !NPC.downedPlantBoss))
  			return;
-@@ -2541,7 +_,7 @@
+@@ -2850,7 +_,7 @@
  		}
  	}
  
@@ -290,12 +288,12 @@
  	{
  		Main.tile[i, j].inActive(inActive: false);
  		WorldGen.SquareTileFrame(i, j, resetFrame: false);
-@@ -2625,7 +_,11 @@
+@@ -2934,7 +_,11 @@
  		if (!flag)
  			MassWireOperationStep(user, pe, toolMode, ref wireCount, ref actuatorCount);
  
 +		/*
- 		EntitySource_ByItemSourceId reason = new EntitySource_ByItemSourceId(user, 5);
+ 		EntitySource_ByItemSourceId reason = new EntitySource_ByItemSourceId(user, ItemSourceID.GrandDesignOrMultiColorWrench);
 +		*/
 +		var reason = user.GetSource_Misc(ItemSourceID.ToContextString(ItemSourceID.GrandDesignOrMultiColorWrench));
 +
