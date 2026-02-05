@@ -11,11 +11,12 @@
  using Terraria;
  
  namespace Terraria;
-@@ -13,6 +_,9 @@
+@@ -13,6 +_,10 @@
  
  	private static void Main(string[] args)
  	{
 +#if NETCORE
++		NativeLibraries.SetNativeLibraryPath(NativesDir);
 +		AssemblyLoadContext.Default.ResolvingUnmanagedDll += ResolveNativeLibrary;
 +#else
  		AppDomain.CurrentDomain.AssemblyResolve += delegate (object sender, ResolveEventArgs sargs) {
