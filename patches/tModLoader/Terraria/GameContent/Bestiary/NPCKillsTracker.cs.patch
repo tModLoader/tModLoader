@@ -1,13 +1,14 @@
 --- src/TerrariaNetCore/Terraria/GameContent/Bestiary/NPCKillsTracker.cs
 +++ src/tModLoader/Terraria/GameContent/Bestiary/NPCKillsTracker.cs
-@@ -1,5 +_,6 @@
+@@ -1,6 +_,7 @@
  using System.Collections.Generic;
  using System.IO;
+ using Terraria.GameContent.Achievements;
 +using System.Linq;
  using Terraria.GameContent.NetModules;
  using Terraria.ID;
  using Terraria.Net;
-@@ -52,8 +_,12 @@
+@@ -53,8 +_,12 @@
  	public void Save(BinaryWriter writer)
  	{
  		lock (_killCountsByNpcId) {

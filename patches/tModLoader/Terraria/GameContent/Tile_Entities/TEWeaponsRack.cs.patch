@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/GameContent/Tile_Entities/TEWeaponsRack.cs
 +++ src/tModLoader/Terraria/GameContent/Tile_Entities/TEWeaponsRack.cs
-@@ -1,10 +_,13 @@
+@@ -1,9 +_,12 @@
  using System.IO;
 +using Microsoft.Xna.Framework;
  using Terraria.DataStructures;
@@ -10,23 +10,22 @@
  
  namespace Terraria.GameContent.Tile_Entities;
  
--public class TEWeaponsRack : TileEntity, IFixLoadedData
-+public sealed partial class TEWeaponsRack : TileEntity, IFixLoadedData
+-public class TEWeaponsRack : TileEntityType<TEWeaponsRack>, IFixLoadedData
++public sealed partial class TEWeaponsRack : TileEntityType<TEWeaponsRack>, IFixLoadedData
  {
- 	private static byte _myEntityID;
  	public Item item;
-@@ -88,8 +_,8 @@
+@@ -48,8 +_,8 @@
  
  	public override void WriteExtraData(BinaryWriter writer, bool networkSend)
  	{
--		writer.Write((short)item.netID);
+-		writer.Write((short)item.type);
 -		writer.Write(item.prefix);
 +		ItemIO.WriteShortVanillaID(item, writer);
 +		ItemIO.WriteByteVanillaPrefix(item, writer);
  		writer.Write((short)item.stack);
  	}
  
-@@ -135,6 +_,7 @@
+@@ -94,6 +_,7 @@
  		}
  
  		WorldGen.destroyObject = true;
@@ -34,59 +33,58 @@
  		for (int k = num3; k < num3 + num; k++) {
  			for (int l = num4; l < num4 + num2; l++) {
  				if (Main.tile[k, l].active() && Main.tile[k, l].type == 471)
-@@ -142,7 +_,8 @@
+@@ -101,7 +_,8 @@
  			}
  		}
  
 +		if(drop)
 -		Item.NewItem(new EntitySource_TileBreak(num3, num4), num3 * 16, num4 * 16, 48, 48, 2699);
 +			Item.NewItem(new EntitySource_TileBreak(num3, num4), num3 * 16, num4 * 16, 48, 48, 2699);
- 		Kill(num3, num4);
+ 		TileEntityType<TEWeaponsRack>.Kill(num3, num4);
  		WorldGen.destroyObject = false;
  	}
-@@ -150,21 +_,24 @@
+@@ -109,20 +_,23 @@
  	public void DropItem()
  	{
  		if (Main.netMode != 1)
--			Item.NewItem(new EntitySource_TileBreak(Position.X, Position.Y), Position.X * 16, Position.Y * 16, 32, 32, item.netID, 1, noBroadcast: false, item.prefix);
+-			Item.NewItem(new EntitySource_TileBreak(Position.X, Position.Y), Position.X * 16, Position.Y * 16, 32, 32, item.type, 1, noBroadcast: false, item.prefix);
 +			Item.NewItem(new EntitySource_TileBreak(Position.X, Position.Y), Position.X * 16, Position.Y * 16, 32, 32, item, noBroadcast: false);
  
  		item = new Item();
  	}
  
--	public static void TryPlacing(int x, int y, int netid, int prefix, int stack)
+-	public static void TryPlacing(int x, int y, int type, int prefix, int stack)
 +	public static void TryPlacing(int x, int y, Item item, int stack)
  	{
  		WorldGen.RangeFrame(x, y, x + 3, y + 3);
- 		int num = Find(x, y);
- 		if (num == -1) {
+ 		if (!TileEntity.TryGetAt<TEWeaponsRack>(x, y, out var result)) {
 +			/*
- 			int num2 = Item.NewItem(new EntitySource_TileBreak(x, y), x * 16, y * 16, 32, 32, 1);
- 			Main.item[num2].netDefaults(netid);
- 			Main.item[num2].Prefix(prefix);
- 			Main.item[num2].stack = stack;
- 			NetMessage.SendData(21, -1, -1, null, num2);
+ 			int num = Item.NewItem(new EntitySource_TileBreak(x, y), x * 16, y * 16, 32, 32, 1);
+ 			Main.item[num].SetDefaults(type);
+ 			Main.item[num].Prefix(prefix);
+ 			Main.item[num].stack = stack;
+ 			NetMessage.SendData(21, -1, -1, null, num);
 +			*/
 +			Item.NewItem(new EntitySource_TileBreak(x, y), new Rectangle(x * 16, y * 16, 16, 16), item);
  			return;
  		}
  
-@@ -172,10 +_,14 @@
- 		if (tEWeaponsRack.item.stack > 0)
- 			tEWeaponsRack.DropItem();
+@@ -129,10 +_,14 @@
+ 		if (result.item.stack > 0)
+ 			result.DropItem();
  
 +		/*
- 		tEWeaponsRack.item = new Item();
- 		tEWeaponsRack.item.netDefaults(netid);
- 		tEWeaponsRack.item.Prefix(prefix);
- 		tEWeaponsRack.item.stack = stack;
+ 		result.item = new Item();
+ 		result.item.SetDefaults(type);
+ 		result.item.Prefix(prefix);
+ 		result.item.stack = stack;
 +		*/
-+		tEWeaponsRack.item = ItemLoader.TransferWithLimit(item, stack);
++		result.item = ItemLoader.TransferWithLimit(item, stack);
 +
- 		NetMessage.SendData(86, -1, -1, null, tEWeaponsRack.ID, x, y);
+ 		NetMessage.SendData(86, -1, -1, null, result.ID, x, y);
  	}
  
-@@ -229,16 +_,20 @@
+@@ -183,16 +_,20 @@
  				NetMessage.SendData(17, -1, -1, null, 0, Player.tileTargetX, y, 1f);
  		}
  
@@ -96,14 +94,14 @@
 +			ItemLoader.TransferWithLimit(player.inventory[player.selectedItem], 1);
 +		}
  		else
--			TryPlacing(x, y, player.inventory[player.selectedItem].netID, player.inventory[player.selectedItem].prefix, 1);
+-			TryPlacing(x, y, player.inventory[player.selectedItem].type, player.inventory[player.selectedItem].prefix, 1);
 +			TryPlacing(x, y, player.inventory[player.selectedItem], 1);
  
 +		/*
  		player.inventory[player.selectedItem].stack--;
  		if (player.inventory[player.selectedItem].stack <= 0) {
- 			player.inventory[player.selectedItem].SetDefaults();
- 			Main.mouseItem.SetDefaults();
+ 			player.inventory[player.selectedItem].SetDefaults(0);
+ 			Main.mouseItem.SetDefaults(0);
  		}
 +		*/
  

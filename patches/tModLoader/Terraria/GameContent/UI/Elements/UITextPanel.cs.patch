@@ -1,26 +1,25 @@
 --- src/TerrariaNetCore/Terraria/GameContent/UI/Elements/UITextPanel.cs
 +++ src/tModLoader/Terraria/GameContent/UI/Elements/UITextPanel.cs
-@@ -1,6 +_,8 @@
+@@ -1,7 +_,8 @@
  using Microsoft.Xna.Framework;
  using Microsoft.Xna.Framework.Graphics;
-+using ReLogic.Graphics;
+ using ReLogic.Graphics;
  using Terraria.UI;
 +using Terraria.UI.Chat;
  
  namespace Terraria.GameContent.UI.Elements;
  
-@@ -74,7 +_,14 @@
- 
- 	public virtual void SetText(T text, float textScale, bool large)
- 	{
-+		/*
- 		Vector2 textSize = new Vector2((large ? FontAssets.DeathText.Value : FontAssets.MouseText.Value).MeasureString(text.ToString()).X, large ? 32f : 16f) * textScale;
-+		*/
-+
-+		DynamicSpriteFont dynamicSpriteFont = large ? FontAssets.DeathText.Value : FontAssets.MouseText.Value;
-+		Vector2 textSize = ChatManager.GetStringSize(dynamicSpriteFont, text.ToString(), new Vector2(textScale));
-+		textSize.Y = (large ? 32f : 16f) * textScale;
-+
+@@ -101,7 +_,13 @@
  		_text = text;
  		_textScale = textScale;
- 		_textSize = textSize;
+ 		_isLarge = large;
++		/*
+ 		_textSize = new Vector2(Font.MeasureString(text.ToString()).X, large ? 32f : 16f) * textScale;
++		*/
++
++		_textSize = ChatManager.GetStringSize(Font, text.ToString(), new Vector2(textScale));
++		_textSize.Y = (large ? 32f : 16f) * textScale;
++
+ 		MinWidth.Set(_textSize.X + PaddingLeft + PaddingRight, 0f);
+ 		MinHeight.Set(_textSize.Y + PaddingTop + PaddingBottom, 0f);
+ 	}

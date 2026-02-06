@@ -1,29 +1,29 @@
 --- src/TerrariaNetCore/Terraria/GameContent/Tile_Entities/TETeleportationPylon.cs
 +++ src/tModLoader/Terraria/GameContent/Tile_Entities/TETeleportationPylon.cs
-@@ -1,8 +_,9 @@
+@@ -1,7 +_,8 @@
  using Terraria.DataStructures;
 +using Terraria.ModLoader;
  
  namespace Terraria.GameContent.Tile_Entities;
  
--public class TETeleportationPylon : TileEntity
-+public sealed class TETeleportationPylon : TileEntity, IPylonTileEntity
+-public class TETeleportationPylon : TileEntityType<TETeleportationPylon>
++public sealed class TETeleportationPylon : TileEntityType<TETeleportationPylon>, IPylonTileEntity
  {
- 	private static byte _myEntityID;
  	private const int MyTileID = 597;
-@@ -23,7 +_,8 @@
- 			return;
- 		}
- 
--		if (Main.PylonSystem.HasPylonOfType(pylonType)) {
-+		bool canPlace = PylonLoader.PreCanPlacePylon(x, y, MyTileID, pylonType) ?? !Main.PylonSystem.HasPylonOfType(pylonType);
-+		if (!canPlace) {
+@@ -11,9 +_,9 @@
+ 	public override void NetPlaceEntityAttempt(int x, int y)
+ 	{
+ 		if (!TryGetPylonTypeFromTileCoords(x, y, out var pylonType))
  			RejectPlacementFromNet(x, y);
- 			return;
- 		}
-@@ -98,7 +_,8 @@
+-		else if (Main.PylonSystem.HasPylonOfType(pylonType))
++		else if (!(PylonLoader.PreCanPlacePylon(x, y, MyTileID, pylonType) ?? !Main.PylonSystem.HasPylonOfType(pylonType)))
+ 			RejectPlacementFromNet(x, y);
+ 		else
+ 			base.NetPlaceEntityAttempt(x, y);
+ 	}
+@@ -70,7 +_,8 @@
  
- 		Kill(num, num2);
+ 		TileEntityType<TETeleportationPylon>.Kill(num, num2);
  		int pylonItemTypeFromTileStyle = GetPylonItemTypeFromTileStyle(pylonStyleFromTile);
 +		if (TileLoader.Drop(callX, callY, 470))
 -		Item.NewItem(new EntitySource_TileBreak(num, num2), num * 16, num2 * 16, 48, 64, pylonItemTypeFromTileStyle);
@@ -31,7 +31,7 @@
  		WorldGen.destroyObject = true;
  		for (int k = num; k < num + 3; k++) {
  			for (int l = num2; l < num2 + 4; l++) {
-@@ -157,6 +_,9 @@
+@@ -133,6 +_,9 @@
  
  	public static int PlacementPreviewHook_CheckIfCanPlace(int x, int y, int type = 597, int style = 0, int direction = 1, int alternate = 0)
  	{

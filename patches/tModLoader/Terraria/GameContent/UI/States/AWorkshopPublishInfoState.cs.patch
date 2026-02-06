@@ -60,33 +60,11 @@
  		int num5 = 6 + num4;
  		UIList uiList = AddUIList(uIPanel, num5);
  		FillUIList(uiList);
-@@ -76,17 +_,28 @@
+@@ -76,5 +_,6 @@
  		uIElement.Append(uIPanel);
  		Append(uIElement);
  		SetDefaultOptions();
 +		AddPublishButton(num, uIElement);
- 	}
- 
- 	private void SetDefaultOptions()
- 	{
-+		// Moved from below.
-+		SetTagsFromFoundEntry();
-+
-+		// Seemingly moved to SetTagsFromFoundEntry
-+		/*
- 		_optionPublicity = WorkshopItemPublicSettingId.Public;
-+		*/
-+
- 		GroupOptionButton<WorkshopItemPublicSettingId>[] publicityOptions = _publicityOptions;
- 		for (int i = 0; i < publicityOptions.Length; i++) {
- 			publicityOptions[i].SetCurrentOption(_optionPublicity);
- 		}
- 
-+		/*
- 		SetTagsFromFoundEntry();
-+		*/
-+
- 		UpdateImagePreview();
  	}
  
 @@ -100,6 +_,13 @@
@@ -134,22 +112,7 @@
  		if (info.tags != null) {
  			foreach (GroupOptionButton<WorkshopTagOption> tagOption in _tagOptions) {
  				bool flag = info.tags.Contains(tagOption.OptionValue.InternalNameForAPIs);
-@@ -169,10 +_,14 @@
- 			}
- 		}
- 
-+		/*
- 		GroupOptionButton<WorkshopItemPublicSettingId>[] publicityOptions = _publicityOptions;
- 		for (int i = 0; i < publicityOptions.Length; i++) {
- 			publicityOptions[i].SetCurrentOption(info.publicity);
- 		}
-+		*/
-+
-+		_optionPublicity = info.publicity;
- 	}
- 
- 	protected abstract bool TryFindingTags(out FoundWorkshopEntryInfo info);
-@@ -328,41 +_,46 @@
+@@ -329,41 +_,46 @@
  	private UIElement CreatePublicSettingsRow(float accumulatedHeight, float height, string tagGroup)
  	{
  		CreateStylizedCategoryPanel(height, "Workshop.CategoryTitlePublicity", out var entirePanel, out var innerPanel);
@@ -207,7 +170,7 @@
  			groupOptionButton.HAlign = (float)i / (float)(array6.Length - 1);
  			groupOptionButton.Left = StyleDimension.FromPercent((1f - num) * (1f - groupOptionButton.HAlign * 2f));
  			groupOptionButton.Top.Set(accumulatedHeight, 0f);
-@@ -382,22 +_,47 @@
+@@ -383,22 +_,47 @@
  	{
  		List<WorkshopTagOption> tagsToShow = GetTagsToShow();
  		int num = 3;
@@ -258,7 +221,7 @@
  			groupOptionButton.OnLeftMouseDown += ClickTagOption;
  			groupOptionButton.OnMouseOver += ShowOptionDescription;
  			groupOptionButton.OnMouseOut += ClearOptionDescription;
-@@ -593,7 +_,8 @@
+@@ -594,7 +_,8 @@
  
  	private void AddPublishButton(int backButtonYLift, UIElement outerContainer)
  	{
@@ -268,7 +231,7 @@
  		uITextPanel.Width.Set(-10f, 0.5f);
  		uITextPanel.Height.Set(50f, 0f);
  		uITextPanel.VAlign = 1f;
-@@ -643,7 +_,9 @@
+@@ -644,7 +_,9 @@
  			UsedTags = (from x in _tagOptions
  						where x.IsSelected
  						select x.OptionValue).ToArray(),
@@ -279,7 +242,7 @@
  		};
  	}
  
-@@ -653,6 +_,7 @@
+@@ -654,6 +_,7 @@
  			new ExtensionFilter("Image files", "png", "jpg", "jpeg")
  		};
  
@@ -287,7 +250,7 @@
  		string text = FileBrowser.OpenFilePanel("Open icon", extensions);
  		if (text != null) {
  			_previewImagePath = text;
-@@ -680,14 +_,15 @@
+@@ -681,14 +_,15 @@
  		return path;
  	}
  

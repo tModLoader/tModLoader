@@ -4,8 +4,8 @@
  
  namespace Terraria.GameContent.Tile_Entities;
  
--public class TETrainingDummy : TileEntity
-+public sealed class TETrainingDummy : TileEntity
+-public class TETrainingDummy : TileEntityType<TETrainingDummy>
++public sealed class TETrainingDummy : TileEntityType<TETrainingDummy>
  {
- 	private static Dictionary<int, Rectangle> playerBox = new Dictionary<int, Rectangle>();
+ 	private static List<Rectangle> playerBoxes = new List<Rectangle>();
  	private static bool playerBoxFilled;

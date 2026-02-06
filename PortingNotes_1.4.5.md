@@ -23,6 +23,7 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Consider updating FlexibleTileWand.Reload
 - NPCID.Sets.IsGoldCritter has been added, seems to be an exact clone of GoldCrittersCollection. Link each other in documentation?
 - Move NPCID.Sets.SpawnFromLastEmptySlot docs to SearchSpawnSlotsInReverse and delete from .TML.cs
+- https://github.com/tModLoader/tModLoader/pull/1675 seemed to fix a bug that is apparently now fixed in vanilla. Patches in AWorkshopPublishInfoState deleted. Verify that existing workshop publicity still correctly updates UI without requiring a click.
 
 # New Fields that might need more documentation
 
@@ -38,6 +39,7 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - FlexibleTileWand is now used to place many other tiles that used to rely solely on RandomStyleRange. We should add an example of a custom FlexibleTileWand item/tile and document when to use it.
 - NPCID.Sets.NPCPortraits
 - NPCID.Sets: SpawnOnPlayerCanSpawnInMidairOnSkyblock, DontDropDungeonKeysOrSouls, HunterPotionFriendlyOverride, others.
+- UIScrollbar.AutoHide and CanScroll
 
 # Changes that need to be communicated to modders
 
@@ -46,6 +48,7 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Entity.active removed, active field added to Player, Projectile, WorldItem
 - WorldItem added, represents an Item in the world
 - Item no longer inherits from Entity
+- Item and Entity implement IEntitySourceTarget. All Entity fields in IEntitySource are now IEntitySourceTarget
 - Entity.Center changed, taking into account 0.5 from odd widths and heights now instead of using integer division
 	new Vector2(position.X + (float)(width / 2), position.Y + (float)(height / 2)); 
 	to 
@@ -60,6 +63,7 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - UnifiedRandom.Next methods are no longer virtual
 - ICameraModifier now has a IsAScreenShake property to support the user's screen shake accesibility setting (Main.UseScreenShake). Update your ICameraModifier and other camera movements to support Main.UseScreenShake.
 - TownNPC can now have portraits. Use the following to implement: NPCID.Sets.NPCPortraits (todo, example)
+- UIWrappedSearchBar, is it useful to modders?
 
 # tModPorter TODOs
 
@@ -80,6 +84,7 @@ These are simple changes that we'd like Terraria to implement, mainly to reduce 
 - Typo: SmartCursorHelper.IsHoveringOverAnInteractibleTileThatBlocksSmartCursor -> Interactable
 - In Step_Torch, change "bool flag = !ItemID.Sets.WaterTorches[type];" to "bool flag = !ItemID.Sets.WaterTorches[providedInfo.player.BiomeTorchHoldStyle(providedInfo.item.type)];" to "Allow underwater biome torches to work" (Coral Torches don't work while in the ocean)
 - Typo: UsesNewTargetting -> UsesNewTargeting
+- AWorkshopPublishInfoState.UpdateImagePreview -> Fixed icon file handles lingering - https://github.com/tModLoader/tModLoader/pull/4424/changes/8d63f808c90715cb4fda5b4f6ea56af691ad5d75
 
 # Longer Patch issues:
 

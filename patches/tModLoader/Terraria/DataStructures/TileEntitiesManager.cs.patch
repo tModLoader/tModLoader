@@ -16,10 +16,10 @@
  
  	private bool InvalidEntityID(int id)
  	{
-@@ -28,6 +_,7 @@
- 		Register(new TEHatRack());
- 		Register(new TEFoodPlatter());
- 		Register(new TETeleportationPylon());
+@@ -31,6 +_,7 @@
+ 		Register(new TEDeadCellsDisplayJar());
+ 		Register(new TEKiteAnchor());
+ 		Register(new TECritterAnchor());
 +		VanillaTypeCount = _nextEntityID;
  	}
  

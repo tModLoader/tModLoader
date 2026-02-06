@@ -9,7 +9,7 @@
  
  namespace Terraria.GameContent;
  
-@@ -63,12 +_,12 @@
+@@ -64,11 +_,11 @@
  		protected void PrepareShader(int paintColor, TreePaintingSettings settings)
  		{
  			Effect tileShader = Main.tileShader;
@@ -27,8 +27,7 @@
 +			tileShader.Parameters["invertSpecialGroupResult"]?.SetValue(settings.InvertSpecialGroupResult);
  			int index = Main.ConvertPaintIdToTileShaderIndex(paintColor, settings.UseSpecialGroups, settings.UseWallShaderHacks);
  			tileShader.CurrentTechnique.Passes[index].Apply();
- 		}
-@@ -80,7 +_,38 @@
+@@ -83,7 +_,38 @@
  
  		public override void Prepare()
  		{
@@ -67,7 +66,7 @@
  			PrepareTextureIfNecessary(asset.Value);
  		}
  
-@@ -96,7 +_,24 @@
+@@ -99,7 +_,24 @@
  
  		public override void Prepare()
  		{
@@ -92,7 +91,7 @@
  			PrepareTextureIfNecessary(asset.Value);
  		}
  
-@@ -112,7 +_,23 @@
+@@ -115,7 +_,23 @@
  
  		public override void Prepare()
  		{
@@ -116,7 +115,7 @@
  			PrepareTextureIfNecessary(asset.Value);
  		}
  
-@@ -128,7 +_,10 @@
+@@ -146,7 +_,10 @@
  
  		public override void Prepare()
  		{

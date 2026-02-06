@@ -5,8 +5,9 @@
  using Microsoft.Xna.Framework;
  using Microsoft.Xna.Framework.Graphics;
  using ReLogic.Content;
-@@ -6,12 +_,15 @@
+@@ -6,13 +_,16 @@
  using Terraria.GameContent.UI.States;
+ using Terraria.ID;
  using Terraria.IO;
  using Terraria.Localization;
 +using Terraria.Utilities;
@@ -22,17 +23,19 @@
  {
  	private Asset<Texture2D> _dividerTexture;
  	private Asset<Texture2D> _innerPanelTexture;
-@@ -37,6 +_,9 @@
+@@ -42,8 +_,11 @@
  		_orderInList = orderInList;
  		_data = data;
  		_canBePlayed = canBePlayed;
+ 		_hasBeenPlayedByActivePlayer = hasBeenPlayedByActivePlayer;
+ 		_isNewlyGenerated = isNewlyGenerated;
 +
 +		InitializeTmlFields(data);
 +
  		LoadTextures();
  		InitializeAppearance();
  		_worldIcon = GetIconElement();
-@@ -97,6 +_,8 @@
+@@ -115,6 +_,8 @@
  			num += 24f;
  		}
  
@@ -41,16 +44,16 @@
  		UIImageButton uIImageButton5 = new UIImageButton(_buttonRenameTexture);
  		uIImageButton5.VAlign = 1f;
  		uIImageButton5.Left.Set(num, 0f);
-@@ -148,6 +_,8 @@
- 		_buttonSeedTexture = Main.Assets.Request<Texture2D>("Images/UI/ButtonSeed");
- 		_buttonRenameTexture = Main.Assets.Request<Texture2D>("Images/UI/ButtonRename");
+@@ -199,6 +_,8 @@
  		_buttonDeleteTexture = Main.Assets.Request<Texture2D>("Images/UI/ButtonDelete");
+ 		_hasBeenPlayedByActivePlayerTexture = Main.Assets.Request<Texture2D>("Images/UI/IconPlayedBefore");
+ 		_isNewlyGeneratedTexture = Main.Assets.Request<Texture2D>("Images/UI/IconNewlyGenerated");
 +
 +		LoadTmlTextures();
  	}
  
  	private void InitializeAppearance()
-@@ -195,8 +_,12 @@
+@@ -246,8 +_,12 @@
  	{
  		if (_data.IsCloudSave)
  			_buttonLabel.SetText(Language.GetTextValue("UI.MoveOffCloud"));
@@ -65,7 +68,7 @@
  	}
  
  	private void PlayMouseOver(UIMouseEvent evt, UIElement listeningElement)
-@@ -231,8 +_,15 @@
+@@ -292,8 +_,15 @@
  	{
  		if (_data.IsCloudSave)
  			_data.MoveToLocal();
@@ -82,17 +85,7 @@
  
  		((UIImageButton)evt.Target).SetImage(_data.IsCloudSave ? _buttonCloudActiveTexture : _buttonCloudInactiveTexture);
  		if (_data.IsCloudSave)
-@@ -255,6 +_,9 @@
- 
- 	private void PlayGame(UIMouseEvent evt, UIElement listeningElement)
- 	{
-+		if (!_data.IsValid)
-+			return;
-+
- 		if (listeningElement == evt.Target && !TryMovingToRejectionMenuIfNeeded(_data.GameMode)) {
- 			_data.SetAsActive();
- 			SoundEngine.PlaySound(10);
-@@ -281,6 +_,9 @@
+@@ -342,6 +_,9 @@
  			return true;
  		}
  
@@ -100,9 +93,9 @@
 +			return false;
 +
  		bool flag = Main.ActivePlayerFileData.Player.difficulty == 3;
- 		bool isJourneyMode = value.IsJourneyMode;
- 		if (flag && !isJourneyMode) {
-@@ -297,6 +_,13 @@
+ 		bool flag2 = worldGameMode == 3;
+ 		if (flag && !flag2) {
+@@ -358,6 +_,13 @@
  			return true;
  		}
  
@@ -116,7 +109,7 @@
  		return false;
  	}
  
-@@ -351,6 +_,9 @@
+@@ -411,6 +_,9 @@
  	{
  		if (obj is UIWorldListItem uIWorldListItem)
  			return _orderInList.CompareTo(uIWorldListItem._orderInList);

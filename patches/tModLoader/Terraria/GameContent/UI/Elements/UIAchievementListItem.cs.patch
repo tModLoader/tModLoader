@@ -50,27 +50,27 @@
  		_locked = !_achievement.IsCompleted;
 @@ -82,6 +_,11 @@
  		float num3 = innerDimensions.Width - dimensions.Width + 1f - (float)(num * 2);
- 		Vector2 baseScale = new Vector2(0.85f);
- 		Vector2 baseScale2 = new Vector2(0.92f);
+ 		Vector2 scale = new Vector2(0.85f);
+ 		Vector2 vector3 = new Vector2(0.92f);
 +
 +		if (_achievement.Hidden && _locked) {
 +			_achievement.Description = _achievement.FriendlyName = new LocalizedText(null, "???");
 +		}
 +
- 		string text = FontAssets.ItemStack.Value.CreateWrappedText(_achievement.Description.Value, (num3 - 20f) * (1f / baseScale2.X), Language.ActiveCulture.CultureInfo);
- 		Vector2 stringSize = ChatManager.GetStringSize(FontAssets.ItemStack.Value, text, baseScale2, num3);
+ 		string text = FontAssets.ItemStack.Value.CreateWrappedText(_achievement.Description.Value, (num3 - 20f) * (1f / vector3.X), Language.ActiveCulture.CultureInfo);
+ 		Vector2 stringSize = ChatManager.GetStringSize(FontAssets.ItemStack.Value, text, vector3, num3);
  		if (!_large)
 @@ -105,6 +_,13 @@
- 		vector3.X += 4f;
- 		vector3.X += 17f;
- 		ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.ItemStack.Value, _achievement.FriendlyName.Value, vector3, value, 0f, Vector2.Zero, baseScale, num3);
+ 		vector4.X += 4f;
+ 		vector4.X += 17f;
+ 		ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.ItemStack.Value, _achievement.FriendlyName.Value, vector4, value, 0f, Vector2.Zero, scale, num3);
 +
 +		string ModName = this._achievement.ModAchievement?.Mod.DisplayNameClean ?? "Terraria";
-+		Vector2 ModNameStringSize = ChatManager.GetStringSize(FontAssets.ItemStack.Value, ModName, baseScale);
-+		Vector2 ModNameLocation = new Vector2(vector2.X + num3 - ModNameStringSize.X, vector3.Y);
-+		ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.ItemStack.Value, ModName, ModNameLocation, value, 0f, Vector2.Zero, baseScale, num3);
-+		vector3.X -= ModNameStringSize.X + 8;
++		Vector2 ModNameStringSize = ChatManager.GetStringSize(FontAssets.ItemStack.Value, ModName, scale);
++		Vector2 ModNameLocation = new Vector2(vector2.X + num3 - ModNameStringSize.X, vector4.Y);
++		ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.ItemStack.Value, ModName, ModNameLocation, value, 0f, Vector2.Zero, scale, num3);
++		vector4.X -= ModNameStringSize.X + 8;
 +
- 		vector3.X -= 17f;
+ 		vector4.X -= 17f;
  		Vector2 position = vector2 + Vector2.UnitY * 27f + vector;
  		DrawPanelBottom(spriteBatch, position, num3, color);

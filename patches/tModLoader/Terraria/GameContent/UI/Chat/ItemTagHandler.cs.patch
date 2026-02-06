@@ -1,24 +1,22 @@
 --- src/TerrariaNetCore/Terraria/GameContent/UI/Chat/ItemTagHandler.cs
 +++ src/tModLoader/Terraria/GameContent/UI/Chat/ItemTagHandler.cs
-@@ -1,7 +_,10 @@
+@@ -1,6 +_,9 @@
 +using System.Linq;
  using Microsoft.Xna.Framework;
  using Microsoft.Xna.Framework.Graphics;
- using ReLogic.Graphics;
  using Terraria.ID;
 +using Terraria.ModLoader;
 +using Terraria.ModLoader.IO;
  using Terraria.UI;
  using Terraria.UI.Chat;
  
-@@ -25,6 +_,7 @@
+@@ -24,5 +_,6 @@
  			Main.instance.MouseText(_item.Name, _item.rare, 0);
  		}
  
 +		//TODO: Possibly allow modders to custom draw here
  		public override bool UniqueDraw(bool justCheckingString, out Vector2 size, SpriteBatch spriteBatch, Vector2 position = default(Vector2), Color color = default(Color), float scale = 1f)
  		{
- 			float num = 1f;
 @@ -38,19 +_,25 @@
  					value.Frame();
  			}
@@ -49,17 +47,17 @@
  			return true;
  		}
  
-@@ -60,20 +_,30 @@
+@@ -45,20 +_,30 @@
  	TextSnippet ITagHandler.Parse(string text, Color baseColor, string options)
  	{
  		Item item = new Item();
 -		if (int.TryParse(text, out var result))
 +		if (int.TryParse(text, out var result) && result < ItemLoader.ItemCount)
-+			item.netDefaults(result);
++			item.SetDefaults(result);
 +
 +		// Add support for [i:ModItem.FullName] ([i:ExampleMod/ExampleItem]). Coincidentally support [i:ItemID.FieldName] ([i:GoldBar])
 +		if (ID.ItemID.Search.TryGetId(text, out result))
- 			item.netDefaults(result);
+ 			item.SetDefaults(result);
  
  		if (item.type <= 0)
  			return new TextSnippet(text);
@@ -81,7 +79,7 @@
  					case 's':
  					case 'x': {
  						if (int.TryParse(array[i].Substring(1), out var result3))
-@@ -83,7 +_,7 @@
+@@ -68,7 +_,7 @@
  					}
  					case 'p': {
  						if (int.TryParse(array[i].Substring(1), out var result2))
@@ -90,7 +88,7 @@
  
  						break;
  					}
-@@ -102,14 +_,27 @@
+@@ -87,14 +_,27 @@
  		};
  	}
  
@@ -116,5 +114,5 @@
 +
 +		End:
  
- 		return text + ":" + I.netID + "]";
+ 		return text + ":" + I.type + "]";
  	}

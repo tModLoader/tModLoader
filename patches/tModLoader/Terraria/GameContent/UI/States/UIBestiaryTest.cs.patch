@@ -1,15 +1,14 @@
 --- src/TerrariaNetCore/Terraria/GameContent/UI/States/UIBestiaryTest.cs
 +++ src/tModLoader/Terraria/GameContent/UI/States/UIBestiaryTest.cs
-@@ -34,7 +_,7 @@
- 	private string _searchString;
+@@ -31,6 +_,6 @@
+ 	private UIText _filteringText;
  	private BestiaryUnlockProgressReport _progressReport;
  	private UIText _progressPercentText;
 -	private UIColoredSliderSimple _unlocksProgressBar;
 +	private ModLoader.UI.UIBestiaryBar _unlocksProgressBar; //TML: Type changed from 'UIColoredSliderSimple'.
- 	private bool _didClickSomething;
- 	private bool _didClickSearchBar;
+ 	private UILinkPoint searchButtonLink;
  
-@@ -145,16 +_,25 @@
+@@ -148,16 +_,25 @@
  		};
  
  		_progressPercentText = progressPercentText;
@@ -35,7 +34,7 @@
  		_unlocksProgressBar = uIColoredSliderSimple;
  		container.Append(uIColoredSliderSimple);
  	}
-@@ -533,7 +_,11 @@
+@@ -410,7 +_,11 @@
  		_progressReport = GetUnlockProgress();
  		string completionPercentText = GetCompletionPercentText();
  		_progressPercentText.SetText(completionPercentText);
