@@ -20,9 +20,9 @@
  		_layers.Add(layer);
  		return this;
 @@ -16,7 +_,18 @@
- 	public void Draw(Vector2 mapPosition, Vector2 mapOffset, Rectangle? clippingRect, float mapScale, float drawScale, ref string text)
+ 	public void Draw(Vector2 mapPosition, Vector2 mapOffset, Rectangle? clippingRect, float mapScale, float drawScale, int alpha, ref string text)
  	{
- 		MapOverlayDrawContext context = new MapOverlayDrawContext(mapPosition, mapOffset, clippingRect, mapScale, drawScale);
+ 		MapOverlayDrawContext context = new MapOverlayDrawContext(mapPosition, mapOffset, clippingRect, mapScale, drawScale, (float)alpha / 255f);
 +
 +		// Reset layer visibility.
 +		foreach (var layer in _layers) {

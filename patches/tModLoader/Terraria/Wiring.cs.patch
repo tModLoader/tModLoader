@@ -159,15 +159,6 @@
  			int num67 = 1;
  			if (Main.rand.Next(2) == 0)
  				num67 = -1;
-@@ -1287,7 +_,7 @@
- 
- 				break;
- 			}
--			case 4:
-+			case int _ when TileID.Sets.Torch[type]:
- 				ToggleTorch(i, j, tile, forcedStateWhereTrueIsOn);
- 				break;
- 			case 429: {
 @@ -1733,6 +_,7 @@
  			}
  			case 35:
@@ -176,83 +167,81 @@
  				WorldGen.SwitchMB(i, j);
  				break;
  			case 207:
-@@ -2083,14 +_,30 @@
+@@ -2142,14 +_,30 @@
  								break;
  
- 							int num120 = 50;
+ 							int num150 = 50;
 +
 +							/*
- 							int[] array2 = new int[num120];
+ 							int[] array2 = new int[num150];
 +							*/
-+							var array2 = new List<int>(num120);
++							var array2 = new List<int>(num150);
 +
- 							int num121 = 0;
- 							for (int num122 = 0; num122 < 200; num122++) {
+ 							int num151 = 0;
+ 							for (int num152 = 0; num152 < Main.maxNPCs; num152++) {
 +								bool vanillaCanGo = false;
- 								if (Main.npc[num122].active && (Main.npc[num122].type == 17 || Main.npc[num122].type == 19 || Main.npc[num122].type == 22 || Main.npc[num122].type == 38 || Main.npc[num122].type == 54 || Main.npc[num122].type == 107 || Main.npc[num122].type == 108 || Main.npc[num122].type == 142 || Main.npc[num122].type == 160 || Main.npc[num122].type == 207 || Main.npc[num122].type == 209 || Main.npc[num122].type == 227 || Main.npc[num122].type == 228 || Main.npc[num122].type == 229 || Main.npc[num122].type == 368 || Main.npc[num122].type == 369 || Main.npc[num122].type == 550 || Main.npc[num122].type == 441 || Main.npc[num122].type == 588)) {
+ 								if (Main.npc[num152].active && (Main.npc[num152].type == 17 || Main.npc[num152].type == 19 || Main.npc[num152].type == 22 || Main.npc[num152].type == 38 || Main.npc[num152].type == 54 || Main.npc[num152].type == 107 || Main.npc[num152].type == 108 || Main.npc[num152].type == 142 || Main.npc[num152].type == 160 || Main.npc[num152].type == 207 || Main.npc[num152].type == 209 || Main.npc[num152].type == 227 || Main.npc[num152].type == 228 || Main.npc[num152].type == 229 || Main.npc[num152].type == 368 || Main.npc[num152].type == 369 || Main.npc[num152].type == 550 || Main.npc[num152].type == 441 || Main.npc[num152].type == 588)) {
 +									vanillaCanGo = true;
 +								}
 +
 +								if (Main.npc[num122].active && (NPCLoader.CanGoToStatue(Main.npc[num122], toKingStatue: true) ?? vanillaCanGo)) {
 +									/*
- 									array2[num121] = num122;
+ 									array2[num151] = num152;
 +									*/
-+									array2.Add(num122);
- 									num121++;
++									array2.Add(num152);
+ 									num151++;
 +
 +									/*
- 									if (num121 >= num120)
+ 									if (num151 >= num150)
  										break;
 +									*/
  								}
  							}
  
-@@ -2099,6 +_,8 @@
- 								Main.npc[num123].position.X = num112 - Main.npc[num123].width / 2;
- 								Main.npc[num123].position.Y = num113 - Main.npc[num123].height - 1;
- 								NetMessage.SendData(23, -1, -1, null, num123);
+@@ -2156,6 +_,8 @@
+ 							if (num151 > 0) {
+ 								int num153 = array2[Main.rand.Next(num151)];
+ 								Main.npc[num153].Teleport(new Vector2(num142 - Main.npc[num153].width / 2, num143 - Main.npc[num153].height - 1), 14);
 +
-+								NPCLoader.OnGoToStatue(Main.npc[num123], toKingStatue: true);
++								NPCLoader.OnGoToStatue(Main.npc[num153], toKingStatue: true);
  							}
  
  							break;
-@@ -2108,14 +_,30 @@
+@@ -2165,14 +_,30 @@
  								break;
  
- 							int num116 = 50;
+ 							int num146 = 50;
 +
 +							/*
- 							int[] array = new int[num116];
+ 							int[] array = new int[num146];
 +							*/
-+							var array = new List<int>(num116);
++							var array = new List<int>(num146);
 +
- 							int num117 = 0;
- 							for (int num118 = 0; num118 < 200; num118++) {
+ 							int num147 = 0;
+ 							for (int num148 = 0; num148 < Main.maxNPCs; num148++) {
 +								bool vanillaCanGo = false;
- 								if (Main.npc[num118].active && (Main.npc[num118].type == 18 || Main.npc[num118].type == 20 || Main.npc[num118].type == 124 || Main.npc[num118].type == 178 || Main.npc[num118].type == 208 || Main.npc[num118].type == 353 || Main.npc[num118].type == 633 || Main.npc[num118].type == 663)) {
+ 								if (Main.npc[num148].active && (Main.npc[num148].type == 18 || Main.npc[num148].type == 20 || Main.npc[num148].type == 124 || Main.npc[num148].type == 178 || Main.npc[num148].type == 208 || Main.npc[num148].type == 353 || Main.npc[num148].type == 633 || Main.npc[num148].type == 663)) {
 +									vanillaCanGo = true;
 +								}
 +
 +								if (Main.npc[num118].active && (NPCLoader.CanGoToStatue(Main.npc[num118], toKingStatue: false) ?? vanillaCanGo)) {
 +									/*
- 									array[num117] = num118;
+ 									array[num147] = num148;
 +									*/
-+									array.Add(num118);
- 									num117++;
++									array.Add(num148);
+ 									num147++;
 +
 +									/*
- 									if (num117 >= num116)
+ 									if (num147 >= num146)
  										break;
 +									*/
  								}
  							}
  
-@@ -2124,6 +_,8 @@
- 								Main.npc[num119].position.X = num112 - Main.npc[num119].width / 2;
- 								Main.npc[num119].position.Y = num113 - Main.npc[num119].height - 1;
- 								NetMessage.SendData(23, -1, -1, null, num119);
+@@ -2181,4 +_,6 @@
+ 								Main.npc[num149].Teleport(new Vector2(num142 - Main.npc[num149].width / 2, num143 - Main.npc[num149].height - 1), 14);
 +
-+								NPCLoader.OnGoToStatue(Main.npc[num119], toKingStatue: false);
++								NPCLoader.OnGoToStatue(Main.npc[num149], toKingStatue: false);
  							}
  
  							break;

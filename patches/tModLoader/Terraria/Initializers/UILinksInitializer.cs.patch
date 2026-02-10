@@ -1,8 +1,9 @@
 --- src/TerrariaNetCore/Terraria/Initializers/UILinksInitializer.cs
 +++ src/tModLoader/Terraria/Initializers/UILinksInitializer.cs
-@@ -6,6 +_,9 @@
+@@ -9,7 +_,10 @@
  using Terraria.GameContent.UI.States;
  using Terraria.GameInput;
+ using Terraria.Localization;
  using Terraria.Social;
 +using Terraria.ModLoader;
 +using Terraria.ModLoader.UI;
@@ -10,59 +11,41 @@
  using Terraria.UI;
  using Terraria.UI.Gamepad;
  
-@@ -668,7 +_,8 @@
- 			return PlayerInput.BuildCommand(Lang.misc[56].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["Inventory"]) + PlayerInput.BuildCommand(Lang.misc[64].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["HotbarMinus"], PlayerInput.ProfileGamepadUI.KeyStatus["HotbarPlus"]) + PlayerInput.BuildCommand(Lang.misc[70].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["Grapple"]) + PlayerInput.BuildCommand(Lang.misc[69].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["SmartSelect"]) + (flag6 ? PlayerInput.BuildCommand("Evict", false, PlayerInput.ProfileGamepadUI.KeyStatus["MouseRight"]) : "");
+@@ -772,7 +_,8 @@
+ 			return text3;
  		};
  
 +		// Increased (600 -> 698) for modded TownNPC support. #461
 -		for (int num14 = 600; num14 <= 650; num14++) {
 +		for (int num14 = 600; num14 <= 698; num14++) {
  			UILinkPoint value13 = new UILinkPoint(num14, enabled: true, num14 + 10, num14 - 10, num14 - 1, num14 + 1);
- 			cp14.LinkMap.Add(num14, value13);
+ 			cp15.LinkMap.Add(num14, value13);
  		}
-@@ -678,7 +_,8 @@
+@@ -782,7 +_,8 @@
  			if (num58 == 0)
  				num58 = 100;
  
 +			// Increased (50 -> 98) for modded TownNPC support. #461
 -			for (int num59 = 0; num59 < 50; num59++) {
 +			for (int num59 = 0; num59 < 98; num59++) {
- 				cp14.LinkMap[600 + num59].Up = ((num59 % num58 == 0) ? (-1) : (600 + num59 - 1));
- 				if (cp14.LinkMap[600 + num59].Up == -1) {
+ 				cp15.LinkMap[600 + num59].Up = ((num59 % num58 == 0) ? (-1) : (600 + num59 - 1));
+ 				if (cp15.LinkMap[600 + num59].Up == -1) {
  					if (num59 >= num58 * 2)
-@@ -692,6 +_,11 @@
- 				cp14.LinkMap[600 + num59].Down = (((num59 + 1) % num58 == 0 || num59 == UILinkPointNavigator.Shortcuts.NPCS_IconsTotal - 1) ? 308 : (600 + num59 + 1));
- 				cp14.LinkMap[600 + num59].Left = ((num59 < UILinkPointNavigator.Shortcuts.NPCS_IconsTotal - num58) ? (600 + num59 + num58) : (-3));
- 				cp14.LinkMap[600 + num59].Right = ((num59 < num58) ? (-4) : (600 + num59 - num58));
+@@ -796,6 +_,11 @@
+ 				cp15.LinkMap[600 + num59].Down = (((num59 + 1) % num58 == 0 || num59 == UILinkPointNavigator.Shortcuts.NPCS_IconsTotal - 1) ? 308 : (600 + num59 + 1));
+ 				cp15.LinkMap[600 + num59].Left = ((num59 < UILinkPointNavigator.Shortcuts.NPCS_IconsTotal - num58) ? (600 + num59 + num58) : (-3));
+ 				cp15.LinkMap[600 + num59].Right = ((num59 < num58) ? (-4) : (600 + num59 - num58));
 +				// Avoid navigating to crafting menu when a lot of TownNPC. #4790
-+				if (cp14.LinkMap[600 + num59].Down >= 698)
-+					cp14.LinkMap[600 + num59].Down = 308;
-+				if (cp14.LinkMap[600 + num59].Left >= 698)
-+					cp14.LinkMap[600 + num59].Left = -3;
++				if (cp15.LinkMap[600 + num59].Down >= 698)
++					cp15.LinkMap[600 + num59].Down = 308;
++				if (cp15.LinkMap[600 + num59].Left >= 698)
++					cp15.LinkMap[600 + num59].Left = -3;
  			}
  		};
  
-@@ -906,10 +_,16 @@
- 			}
- 
- 			bool flag4 = Main.mouseItem.stack <= 0;
-+			/*
- 			if (flag4 || (Main.mouseItem.type == createItem.type && Main.mouseItem.stack < Main.mouseItem.maxStack))
-+			*/
-+			if (flag4 || (Main.mouseItem.type == createItem.type && Main.mouseItem.stack < Main.mouseItem.maxStack && ItemLoader.CanStack(Main.mouseItem, createItem)))
- 				text2 = ((!flag4) ? (text2 + PlayerInput.BuildCommand(Lang.misc[72].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["MouseLeft"])) : (text2 + PlayerInput.BuildCommand(Lang.misc[72].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["MouseLeft"], PlayerInput.ProfileGamepadUI.KeyStatus["MouseRight"])));
- 
-+			/*
- 			if (!flag4 && Main.mouseItem.type == createItem.type && Main.mouseItem.stack < Main.mouseItem.maxStack)
-+			*/
-+			if (!flag4 && Main.mouseItem.type == createItem.type && Main.mouseItem.stack < Main.mouseItem.maxStack && ItemLoader.CanStack(Main.mouseItem, createItem))
- 				text2 += PlayerInput.BuildCommand(Lang.misc[93].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["MouseRight"]);
- 
- 			if (flag3)
-@@ -1486,8 +_,19 @@
- 
- 		cp3.OnSpecialInteracts += () => PlayerInput.BuildCommand(Lang.misc[53].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["MouseLeft"]) + PlayerInput.BuildCommand(Lang.misc[82].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["Inventory"]) + FancyUISpecialInstructions();
- 		cp3.UpdateEvent += delegate {
+@@ -1555,5 +_,16 @@
+ 		cp4.OnSpecialInteracts += () => (Main.InGameUI.CurrentState is UIBestiaryTest) ? (PlayerInput.BuildCommand(Lang.misc[82].Value, PlayerInput.ProfileGamepadUI.KeyStatus["Inventory"]) + PlayerInput.BuildCommand(Language.GetText("UI.SwitchPage").Value, PlayerInput.ProfileGamepadUI.KeyStatus["HotbarMinus"], PlayerInput.ProfileGamepadUI.KeyStatus["HotbarPlus"]) + PlayerInput.BuildCommand(Lang.misc[53].Value, PlayerInput.ProfileGamepadUI.KeyStatus["MouseLeft"]) + FancyUISpecialInstructions()) : (PlayerInput.BuildCommand(Lang.misc[53].Value, PlayerInput.ProfileGamepadUI.KeyStatus["MouseLeft"]) + PlayerInput.BuildCommand(Lang.misc[82].Value, PlayerInput.ProfileGamepadUI.KeyStatus["Inventory"]) + FancyUISpecialInstructions());
+ 		cp4.UpdateEvent += delegate {
 +			bool flag11 = PlayerInput.Triggers.JustPressed.Inventory;
 +			if (Main.inputTextEscape) {
 +				Main.inputTextEscape = false;
@@ -72,14 +55,12 @@
 +			if (CanExecuteInputCommand() && flag11)
 +				FancyExit();
 +
-+			/* Above: Copied over Main.inputTextEscape bypass from MainMenu (1000) to FancyUI (1004) because tModLoader has some FancyUI/UIState menus that have text input.
++			/* Above: Copied over Main.inputTextEscape bypass from MainMenu (1000) to FancyUI (1004)
  			if (CanExecuteInputCommand() && PlayerInput.Triggers.JustPressed.Inventory)
  				FancyExit();
 +			*/
- 
- 			UILinkPointNavigator.Shortcuts.BackButtonInUse = false;
  		};
-@@ -1632,6 +_,12 @@
+@@ -1808,6 +_,12 @@
  				if (Main.MenuUI.CurrentState is IHaveBackButtonCommand haveBackButtonCommand)
  					haveBackButtonCommand.HandleBackButtonUsage();
  				break;

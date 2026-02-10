@@ -1,15 +1,16 @@
 --- src/TerrariaNetCore/Terraria/Map/MapHelper.cs
 +++ src/tModLoader/Terraria/Map/MapHelper.cs
-@@ -6,6 +_,8 @@
+@@ -6,7 +_,9 @@
  using Microsoft.Xna.Framework;
  using Terraria.ID;
  using Terraria.IO;
 +using Terraria.ModLoader;
 +using Terraria.ModLoader.IO;
  using Terraria.Social;
+ using Terraria.Testing;
  using Terraria.Utilities;
  
-@@ -134,7 +_,8 @@
+@@ -131,7 +_,8 @@
  	private static ushort dirtPosition;
  	private static ushort rockPosition;
  	private static ushort hellPosition;
@@ -19,51 +20,40 @@
  	private static ushort[] snowTypes;
  	private static ushort wallRangeStart;
  	private static ushort wallRangeEnd;
-@@ -1604,6 +_,7 @@
+@@ -1707,6 +_,7 @@
  
- 		hellPosition = num20;
- 		colorLookup[num20] = color10;
-+		modPosition = (ushort)(num20 + 1); // Added by TML.
+ 		hellPosition = num22;
+ 		colorLookup[num22] = color11;
++		modPosition = (ushort)(num22 + 1); // Added by TML.
  		snowTypes = new ushort[6];
  		snowTypes[0] = tileLookup[147];
  		snowTypes[1] = tileLookup[161];
-@@ -1749,7 +_,7 @@
- 				int num5 = tile.liquidType();
- 				num3 = liquidPosition + num5;
- 			}
--			else if (!tile.invisibleWall() && tile.wall > 0 && tile.wall < WallID.Count) {
-+			else if (!tile.invisibleWall() && tile.wall > 0 && tile.wall < WallLoader.WallCount) {
- 				int wall = tile.wall;
- 				num3 = wallLookup[wall];
- 				num = tile.wallColor();
-@@ -1778,6 +_,7 @@
- 		if (num3 == 0) {
- 			if ((double)j < Main.worldSurface) {
- 				if (Main.remixWorld) {
-+					// Patch note: num2, used below.
- 					num2 = 5;
- 					num3 = 100;
- 				}
-@@ -1821,12 +_,18 @@
- 
- 				num3 = ((!((double)j < Main.rockLayer)) ? (rockPosition + b) : (dirtPosition + b));
- 			}
+@@ -1813,8 +_,14 @@
+ 			newLight = Light;
 +			// Extra patch context.
- 			else {
- 				num3 = hellPosition;
- 			}
+ 			baseType = ((backgroundOverride == 0) ? GetBackgroundType(i, j, ref newLight) : backgroundOverride);
  		}
  
 +		/*
- 		return MapTile.Create((ushort)(num3 + baseOption), (byte)num2, (byte)num);
+ 		return MapTile.Create((ushort)(baseType + baseOption), (byte)newLight, (byte)newColor);
 +		*/
-+		ushort mapType = (ushort)(num3 + baseOption);
++		ushort mapType = (ushort)(baseType + baseOption);
 +		MapLoader.ModMapOption(ref mapType, i, j);
-+		return MapTile.Create(mapType, (byte)num2, (byte)num);
++		return MapTile.Create(mapType, (byte)newLight, (byte)newColor);
  	}
  
- 	public static void GetTileBaseOption(int x, int y, int tileType, Tile tileCache, ref int baseOption)
-@@ -2603,7 +_,10 @@
+ 	private static void GetTileType(int i, int j, Tile tileCache, ref int newColor, ref int newLight, ref int baseType, ref int baseOption)
+@@ -1874,8 +_,8 @@
+ 		if (tileCache.liquid > 32) {
+ 			int num = tileCache.liquidType();
+ 			baseType = liquidPosition + num;
+ 		}
+-		else if (!tileCache.invisibleWall() && tileCache.wall > 0 && tileCache.wall < WallID.Count) {
++		else if (!tileCache.invisibleWall() && tileCache.wall > 0 && tileCache.wall < WallLoader.WallCount) {
+ 			int wall = tileCache.wall;
+ 			baseType = wallLookup[wall];
+ 			newColor = tileCache.wallColor();
+@@ -2716,7 +_,10 @@
  					byte b6 = 0;
  					int num7;
  					ushort num8;
@@ -74,7 +64,7 @@
  						flag2 = false;
  						flag = false;
  						num7 = 0;
-@@ -2761,6 +_,8 @@
+@@ -2869,6 +_,8 @@
  
  			deflateStream.Dispose();
  			FileUtilities.WriteAllBytes(text, memoryStream.ToArray(), isCloudSave);
@@ -83,7 +73,7 @@
  		}
  
  		noStatusText = false;
-@@ -2768,6 +_,7 @@
+@@ -3105,6 +_,7 @@
  
  	public static void LoadMapVersion1(BinaryReader fileIO, int release)
  	{

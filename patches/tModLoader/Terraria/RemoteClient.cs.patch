@@ -1,14 +1,15 @@
 --- src/TerrariaNetCore/Terraria/RemoteClient.cs
 +++ src/tModLoader/Terraria/RemoteClient.cs
-@@ -1,6 +_,7 @@
+@@ -1,7 +_,8 @@
  using System;
  using Microsoft.Xna.Framework;
+ using Terraria.DataStructures;
  using Terraria.Localization;
 +using Terraria.ModLoader;
  using Terraria.Net.Sockets;
  
  namespace Terraria;
-@@ -11,7 +_,10 @@
+@@ -12,7 +_,10 @@
  	public int Id;
  	public string Name = "Anonymous";
  	public bool IsActive;
@@ -20,7 +21,7 @@
  	public bool PendingTerminationApproved;
  	public bool IsAnnouncementCompleted;
  	public int State;
-@@ -20,6 +_,10 @@
+@@ -21,8 +_,12 @@
  	public string StatusText2;
  	public int StatusCount;
  	public int StatusMax;
@@ -29,11 +30,17 @@
 +	/// <br/><br/> <b>Only accessible on Server!</b>
 +	/// </summary>
  	public bool[,] TileSections = new bool[Main.maxTilesX / 200 + 1, Main.maxTilesY / 150 + 1];
+ 	public uint[,] TileSectionsCheckTime = new uint[Main.maxTilesX / 200 + 1, Main.maxTilesY / 150 + 1];
+ 	public bool CheckingSections;
  	public byte[] ReadBuffer;
  	public float SpamProjectile;
-@@ -32,6 +_,13 @@
+@@ -35,10 +_,17 @@
  	public float SpamWaterMax = 50f;
  	private volatile bool _isReading;
+ 
+ 	public bool ReadBufferFull => NetMessage.buffer[Id].RemainingReadBufferLength < ReadBuffer.Length;
+ 
+ 	public static event Action<int, Point> NetSectionActivated;
  
 +	// Added by TML to log a reason for terminating clients
 +	internal void SetPendingTermination(string reason)
@@ -45,7 +52,7 @@
  	public bool IsConnected()
  	{
  		if (Socket != null)
-@@ -87,6 +_,11 @@
+@@ -94,5 +_,10 @@
  		SpamWater = 0f;
  	}
  
@@ -56,8 +63,7 @@
 +	/// </summary>
  	public static void CheckSection(int playerIndex, Vector2 position, int fluff = 1)
  	{
- 		int sectionX = Netplay.GetSectionX((int)(position.X / 16f));
-@@ -199,7 +_,7 @@
+@@ -232,7 +_,7 @@
  			}
  		}
  		catch {
@@ -66,7 +72,7 @@
  		}
  	}
  
-@@ -207,7 +_,7 @@
+@@ -240,7 +_,7 @@
  	{
  		if (!Netplay.Disconnect) {
  			if (length == 0) {
@@ -75,7 +81,7 @@
  			}
  			else {
  				try {
-@@ -250,7 +_,7 @@
+@@ -283,7 +_,7 @@
  				StatusText = Language.GetTextValue("Net.ClientPlaying", Socket.GetRemoteAddress(), Name);
  			}
  			catch (Exception) {

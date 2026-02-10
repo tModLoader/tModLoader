@@ -11,7 +11,7 @@
 +	/// <param name="y"></param>
  	public static void KillSign(int x, int y)
  	{
- 		for (int i = 0; i < 1000; i++) {
+ 		for (int i = 0; i < 32000; i++) {
 @@ -15,6 +_,10 @@
  		}
  	}

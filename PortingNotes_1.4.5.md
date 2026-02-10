@@ -3,6 +3,8 @@
 Once all patches are fixed, these items need to be fixed or double checked:
 
 - GameModeData.cs no longer exists, patches need to be redistributed
+- NPCSpawnParams.gameModeData no longer exists. This was potentially used in IBestiaryInfoElement.
+- NPCSpawnParams.strengthMultiplierOverride renamed to difficultyOverride. Investigate if behavior changed.
 - RecipeGroupID.cs no longer exists, need to adjust documentation accordingly.
 - NPCHitCount = 58 --> (and others) needs comment explaining what the value should be. Why is it 1 more when no sound 0?
 - Remove all Obsolete methods, including hooks and vanilla changes.
@@ -24,6 +26,11 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - NPCID.Sets.IsGoldCritter has been added, seems to be an exact clone of GoldCrittersCollection. Link each other in documentation?
 - Move NPCID.Sets.SpawnFromLastEmptySlot docs to SearchSpawnSlotsInReverse and delete from .TML.cs
 - https://github.com/tModLoader/tModLoader/pull/1675 seemed to fix a bug that is apparently now fixed in vanilla. Patches in AWorkshopPublishInfoState deleted. Verify that existing workshop publicity still correctly updates UI without requiring a click.
+- RecipeGroup has changed dramatically. We'll need to adjust how modded groups merge and document the new behaviors and new ctors. The tml added methods might also be superfluous now. 
+- AmmoID.SEts.IsArrow/IsBullet/IsSpecialist can be removed from .TML.cs and docs moved over.
+- Mount.Dismount now has a ignoreEffect parameter, this might duplicate the skipDust variable used in MountLoader.Dismount. Adjust patches (and docs) accordingly if they should be the same. When is it set? Do modded mounts need to care about when ignoreEffect was true or false?
+- Need to add `mountedPlayer.allDamage += 0.1f;` patch to `Mount.UpdateEffects` for Mounts 62 and 63 (Chillet)
+- Check for new `XDamage += ` results and fix them all to use `allDamage`.
 
 # New Fields that might need more documentation
 
@@ -64,6 +71,9 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - ICameraModifier now has a IsAScreenShake property to support the user's screen shake accesibility setting (Main.UseScreenShake). Update your ICameraModifier and other camera movements to support Main.UseScreenShake.
 - TownNPC can now have portraits. Use the following to implement: NPCID.Sets.NPCPortraits (todo, example)
 - UIWrappedSearchBar, is it useful to modders?
+- Main.sign length changed from 1000 to 32000. (Adjust docs.)
+- Lots of new methods in Utils. Check if any duplicate TML.cs methods.
+- Various text rendering methods have been changed or improved. Investigate new functionality and previous bug fixes.
 
 # tModPorter TODOs
 
@@ -85,12 +95,17 @@ These are simple changes that we'd like Terraria to implement, mainly to reduce 
 - In Step_Torch, change "bool flag = !ItemID.Sets.WaterTorches[type];" to "bool flag = !ItemID.Sets.WaterTorches[providedInfo.player.BiomeTorchHoldStyle(providedInfo.item.type)];" to "Allow underwater biome torches to work" (Coral Torches don't work while in the ocean)
 - Typo: UsesNewTargetting -> UsesNewTargeting
 - AWorkshopPublishInfoState.UpdateImagePreview -> Fixed icon file handles lingering - https://github.com/tModLoader/tModLoader/pull/4424/changes/8d63f808c90715cb4fda5b4f6ea56af691ad5d75
+- de-DE/Main.json has a lot of fixes in it, should some of these fixes be brought into Terraria? Are they actually correct? Some English.
+- https://github.com/tModLoader/tModLoader/commit/fced57a0725a6fabc171616487adf5166cbb89ef has several changes similar to `new MemoryStream(FileUtilities.ReadAllBytes(text, isCloudSave));` -> `FileUtilities.ReadAllBytes(text, isCloudSave).ToMemoryStream();`, to "Fix bug where BinaryIO failed to access the buffer of non-public MemoryStream". Do these need to be fixed in Terraria as well?
+- https://github.com/tModLoader/tModLoader/commit/a532a537df39d3787829299e0835a3e29263fe7d has a fix for "Fix map saving if loading corrupted map file.". Check if this is still the case and suggest a fix in Terraria.
+- https://github.com/tModLoader/tModLoader/commit/a532a537df39d3787829299e0835a3e29263fe7d has a fix for "Fix map saving if loading old map file.". Check if this is still the case and suggest a fix in Terraria.
 
 # Longer Patch issues:
 
 Longer TODOs that would clutter above
 
 - See what happens when a worldgen step fails now with the new world generator code. We removed this patch since the new code seems to handle it, but maybe we need to restore the error reporting (Utils.ShowFancyErrorMessage)
+```diff
 @@ -42,7 +42,24 @@
  			Main.rand = new UnifiedRandom(_seed);
  			stopwatch.Start();
@@ -117,3 +132,67 @@ Longer TODOs that would clutter above
  			progress.End();
  			stopwatch.Reset();
  		}
+```
+
+- This patch no longer has a place in Utils.WordwrapStringSmart. Need to check what it did and if the issue it fixed is fixed in vanilla.
+```diff
+@@ -375,6 +426,14 @@
+ 							num2 -= 16;
+ 
+ 						int num3 = Math.Min(list3[l].Text.Length, num2 / 8);
++
++						// Loop added by TML. Explain what this is?
++						for (int i = 0; i < list3[l].Text.Length; i++) {
++							// TODO: hypen?, more efficient, binary search?, use ChatManager.GetStringSize to support other tags better.
++							if (font.MeasureString(list3[l].Text.Substring(0, i)).X * list3[l].Scale < num2)
++								num3 = i;
++						}
++
+ 						if (num3 < 0)
+ 							num3 = 0;
+```
+
+- Need to restore this patch. The code has been moved into ItemSorting.AddSortingPrioritiesBasedOnPlayerDamage and DamageTypeSortingLayerEntry is also new:
+```diff
+ 	{
+ 		Player player = Main.player[Main.myPlayer];
+ 		_layerList.Clear();
+-		List<float> list = new List<float> {
++		List<StatModifier> list = new List<StatModifier> {
+ 			player.meleeDamage,
+ 			player.rangedDamage,
+ 			player.magicDamage,
+ 			player.minionDamage
+ 		};
+ 
++
++		/*
+ 		list.Sort((float x, float y) => y.CompareTo(x));
++		*/
++		list.Sort((x, y) => (y.Additive * y.Multiplicative).CompareTo(x.Additive * x.Multiplicative));
++
+ 		for (int i = 0; i < 5; i++) {
+ 			if (!_layerList.Contains(ItemSortingLayers.WeaponsMelee) && player.meleeDamage == list[0]) {
+ 				list.RemoveAt(0);
+```
+
+- This patch needs to be applied to: cp12.LinkMap[1501].OnSpecialInteracts += () => ItemSlot.GetCraftSlotGamepadInstructions();  It was originally in UILinksInitializer directly.
+```diff
+@@ -906,10 +916,16 @@
+ 			}
+ 
+ 			bool flag4 = Main.mouseItem.stack <= 0;
++			/*
+ 			if (flag4 || (Main.mouseItem.type == createItem.type && Main.mouseItem.stack < Main.mouseItem.maxStack))
++			*/
++			if (flag4 || (Main.mouseItem.type == createItem.type && Main.mouseItem.stack < Main.mouseItem.maxStack && ItemLoader.CanStack(Main.mouseItem, createItem)))
+ 				text2 = ((!flag4) ? (text2 + PlayerInput.BuildCommand(Lang.misc[72].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["MouseLeft"])) : (text2 + PlayerInput.BuildCommand(Lang.misc[72].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["MouseLeft"], PlayerInput.ProfileGamepadUI.KeyStatus["MouseRight"])));
+ 
++			/*
+ 			if (!flag4 && Main.mouseItem.type == createItem.type && Main.mouseItem.stack < Main.mouseItem.maxStack)
++			*/
++			if (!flag4 && Main.mouseItem.type == createItem.type && Main.mouseItem.stack < Main.mouseItem.maxStack && ItemLoader.CanStack(Main.mouseItem, createItem))
+ 				text2 += PlayerInput.BuildCommand(Lang.misc[93].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["MouseRight"]);
+ 
+ 			if (flag3)
+```

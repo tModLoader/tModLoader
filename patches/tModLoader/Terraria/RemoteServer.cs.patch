@@ -1,14 +1,13 @@
 --- src/TerrariaNetCore/Terraria/RemoteServer.cs
 +++ src/tModLoader/Terraria/RemoteServer.cs
-@@ -1,6 +_,7 @@
+@@ -1,5 +_,6 @@
  using System;
  using System.IO;
- using Terraria.Localization;
 +using Terraria.ModLoader;
  using Terraria.Net.Sockets;
  
  namespace Terraria;
-@@ -58,6 +_,7 @@
+@@ -67,6 +_,7 @@
  		}
  		catch (Exception value) {
  			try {

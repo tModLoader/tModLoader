@@ -1,28 +1,29 @@
 --- src/TerrariaNetCore/Terraria/Map/WorldMap.cs
 +++ src/tModLoader/Terraria/Map/WorldMap.cs
-@@ -1,6 +_,7 @@
+@@ -1,7 +_,8 @@
  using System;
  using System.IO;
  using Terraria.IO;
 +using Terraria.ModLoader.IO;
  using Terraria.Social;
+ using Terraria.Testing;
  using Terraria.Utilities;
  
-@@ -86,11 +_,12 @@
- 		}
+@@ -152,11 +_,12 @@
+ 			return;
  
- 		if (!FileUtilities.Exists(text, isCloudSave)) {
-+			// Patch note: text ^, used below.
+ 		if (!TryGetMapPath(Main.ActivePlayerFileData, Main.ActiveWorldFileData, out var mapPath)) {
++			// Patch note: mapPath ^, used below.
  			Main.MapFileMetadata = FileMetadata.FromCurrentSettings(FileType.Map);
  			return;
  		}
  
--		using MemoryStream input = new MemoryStream(FileUtilities.ReadAllBytes(text, isCloudSave));
-+		using MemoryStream input = FileUtilities.ReadAllBytes(text, isCloudSave).ToMemoryStream();
+-		using MemoryStream input = new MemoryStream(FileUtilities.ReadAllBytes(mapPath, isCloudSave));
++		using MemoryStream input = FileUtilities.ReadAllBytes(mapPath, isCloudSave).ToMemoryStream();
  		using BinaryReader binaryReader = new BinaryReader(input);
  		try {
  			int num = binaryReader.ReadInt32();
-@@ -100,12 +_,17 @@
+@@ -170,12 +_,17 @@
  				else
  					MapHelper.LoadMapVersion2(binaryReader, num);
  
@@ -40,8 +41,8 @@
  		}
  		catch (Exception value) {
  			using (StreamWriter streamWriter = new StreamWriter("client-crashlog.txt", append: true)) {
-@@ -118,6 +_,7 @@
- 				File.Copy(text, text + ".bad", overwrite: true);
+@@ -188,6 +_,7 @@
+ 				File.Copy(mapPath, mapPath + ".bad", overwrite: true);
  
  			Clear();
 +			Main.MapFileMetadata = FileMetadata.FromCurrentSettings(FileType.Map); // TML fix. Fix map saving if loading corrupted map file.

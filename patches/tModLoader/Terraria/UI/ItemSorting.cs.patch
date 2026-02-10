@@ -8,36 +8,6 @@
  
  namespace Terraria.UI;
  
-@@ -815,7 +_,7 @@
- 		list.Add(ItemSortingLayers.LastTilesCommon);
- 		list.Add(ItemSortingLayers.LastNotTrash);
- 		list.Add(ItemSortingLayers.LastTrash);
--		for (int i = -48; i < ItemID.Count; i++) {
-+		for (int i = -48; i < ItemLoader.ItemCount; i++) {
- 			Item item = new Item();
- 			item.netDefaults(i);
- 			list2.Add(item);
-@@ -838,14 +_,19 @@
- 	{
- 		Player player = Main.player[Main.myPlayer];
- 		_layerList.Clear();
--		List<float> list = new List<float> {
-+		List<StatModifier> list = new List<StatModifier> {
- 			player.meleeDamage,
- 			player.rangedDamage,
- 			player.magicDamage,
- 			player.minionDamage
- 		};
- 
-+
-+		/*
- 		list.Sort((float x, float y) => y.CompareTo(x));
-+		*/
-+		list.Sort((x, y) => (y.Additive * y.Multiplicative).CompareTo(x.Additive * x.Multiplicative));
-+
- 		for (int i = 0; i < 5; i++) {
- 			if (!_layerList.Contains(ItemSortingLayers.WeaponsMelee) && player.meleeDamage == list[0]) {
- 				list.RemoveAt(0);
 @@ -928,6 +_,10 @@
  
  				Item item3 = inv[list[k]];
@@ -57,6 +27,25 @@
  					if (item3.stack == 0) {
  						inv[list[k]] = new Item();
  						list.Remove(list[k]);
+@@ -1121,7 +_,7 @@
+ 		list.Add(ItemSortingLayers.LastTilesCommon);
+ 		list.Add(ItemSortingLayers.LastNotTrash);
+ 		list.Add(ItemSortingLayers.LastTrash);
+-		for (int i = -48; i < ItemID.Count; i++) {
++		for (int i = -48; i < ItemLoader.ItemCount; i++) {
+ 			Item item = new Item();
+ 			item.netDefaults(i);
+ 			list2.Add(item);
+@@ -1162,8 +_,9 @@
+ 	private static int Descending(DamageTypeSortingLayerEntry x, DamageTypeSortingLayerEntry y)
+ 	{
++		// TODO: Restore list.Sort((x, y) => (y.Additive * y.Multiplicative).CompareTo(x.Additive * x.Multiplicative)); patch
+ 		int num = y.Multiplier.CompareTo(x.Multiplier);
+ 		if (num == 0)
+ 			num = x.Index.CompareTo(y.Index);
+ 
+ 		return num;
+ 	}
 @@ -1214,6 +_,11 @@
  		for (int i = loopStartIndex; i < loopEndIndex; i++) {
  			Item item = inv[i];
@@ -69,7 +58,7 @@
  				int num2 = item.stack;
  				if (num2 > num)
  					num2 = num;
-@@ -1221,6 +_,8 @@
+@@ -1564,6 +_,8 @@
  				num -= num2;
  				itemToRefill.stack += num2;
  				item.stack -= num2;
