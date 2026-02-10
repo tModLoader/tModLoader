@@ -12,9 +12,9 @@
  	public SoundEffectInstance SoundInstancePixie;
  	public Asset<SoundEffect>[] SoundItem = new Asset<SoundEffect>[SoundID.ItemSoundCount];
  	public SoundEffectInstance[] SoundInstanceItem = new SoundEffectInstance[SoundID.ItemSoundCount];
--	public Asset<SoundEffect>[] SoundNpcHit = new Asset<SoundEffect>[58];
+-	public Asset<SoundEffect>[] SoundNpcHit = new Asset<SoundEffect>[59];
 +	public Asset<SoundEffect>[] SoundNpcHit = new Asset<SoundEffect>[SoundID.NPCHitCount];
--	public SoundEffectInstance[] SoundInstanceNpcHit = new SoundEffectInstance[58];
+-	public SoundEffectInstance[] SoundInstanceNpcHit = new SoundEffectInstance[59];
 +	public SoundEffectInstance[] SoundInstanceNpcHit = new SoundEffectInstance[SoundID.NPCHitCount];
  	public Asset<SoundEffect>[] SoundNpcKilled = new Asset<SoundEffect>[SoundID.NPCDeathCount];
  	public SoundEffectInstance[] SoundInstanceNpcKilled = new SoundEffectInstance[SoundID.NPCDeathCount];
@@ -27,7 +27,7 @@
  	public Asset<SoundEffect>[] SoundZombie = new Asset<SoundEffect>[131];
  	public SoundEffectInstance[] SoundInstanceZombie = new SoundEffectInstance[131];
  	public Asset<SoundEffect>[] SoundRoar = new Asset<SoundEffect>[3];
-@@ -99,6 +_,7 @@
+@@ -100,6 +_,7 @@
  
  	private void LoadAll()
  	{
@@ -60,7 +60,7 @@
  	}
  
  	private SoundEffectInstance CreateInstance(Asset<SoundEffect> asset)
-@@ -470,6 +_,7 @@
+@@ -467,6 +_,7 @@
  							case 103:
  							case 156:
  							case 162:

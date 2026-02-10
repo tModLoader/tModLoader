@@ -12,17 +12,19 @@
  	public static SoundPlayer SoundPlayer;
  	public static bool AreSoundsPaused;
  
-@@ -17,6 +_,9 @@
- 	public static void Initialize()
- 	{
- 		IsAudioSupported = TestAudioSupport();
-+
+@@ -24,6 +_,11 @@
+ 		catch (Exception) {
+ 			IsAudioSupported = false;
+ 		}
+ 
++		/* TODO: Is this still necessary?
 +		if (!IsAudioSupported)
 +			Utils.ShowFancyErrorMessage(Localization.Language.GetTextValue("tModLoader.AudioNotSupported"), ModLoader.UI.Interface.loadModsID);
++		*/
++
+ 		return new DisabledAudioSystem();
  	}
- 
- 	public static void Load(IServiceProvider services)
-@@ -29,6 +_,15 @@
+@@ -38,6 +_,15 @@
  
  	public static void Update()
  	{
@@ -38,7 +40,7 @@
  		if (IsAudioSupported) {
  			if (Main.audioSystem != null)
  				Main.audioSystem.UpdateAudioEngine();
-@@ -36,7 +_,7 @@
+@@ -45,7 +_,7 @@
  			SoundInstanceGarbageCollector.Update();
  			bool flag = (!Main.hasFocus || Main.gamePaused) && Main.netMode == 0;
  			if (!AreSoundsPaused && flag)
@@ -47,31 +49,18 @@
  			else if (AreSoundsPaused && !flag)
  				SoundPlayer.ResumeAll();
  
-@@ -56,6 +_,8 @@
+@@ -65,6 +_,8 @@
  		}
  	}
  
 +	//TML: See SoundEngine.TML.cs for new PlaySound overloads
 +	/*
- 	public static void PlaySound(int type, Vector2 position, int style = 1)
+ 	public static void PlaySound(int type, Vector2 position, int style = 1, float pitchOffset = 0f)
  	{
- 		PlaySound(type, (int)position.X, (int)position.Y, style);
-@@ -87,12 +_,12 @@
- 		return SoundPlayer.GetActiveSound(id);
- 	}
- 
--	public static SlotId PlayTrackedSound(SoundStyle style, Vector2 position)
-+	public static SlotId PlayTrackedSound(SoundStyle style, Vector2? position = null)
- 	{
+ 		PlaySound(type, (int)position.X, (int)position.Y, style, 1f, pitchOffset);
+@@ -120,8 +_,9 @@
  		if (Main.dedServ || !IsAudioSupported)
  			return SlotId.Invalid;
- 
--		return SoundPlayer.Play(style, position);
-+		return SoundPlayer.Play(in style, position);
- 	}
- 
- 	public static SlotId PlayTrackedLoopedSound(SoundStyle style, Vector2 position, ActiveSound.LoopedPlayCondition loopingCondition = null)
-@@ -110,6 +_,7 @@
  
  		return SoundPlayer.Play(style);
  	}
@@ -79,7 +68,7 @@
  
  	public static void StopTrackedSounds()
  	{
-@@ -117,6 +_,8 @@
+@@ -129,6 +_,8 @@
  			SoundPlayer.StopAll();
  	}
  
@@ -88,7 +77,7 @@
  	public static SoundEffect GetTrackableSoundByStyleId(int id)
  	{
  		if (Main.dedServ || !IsAudioSupported)
-@@ -124,6 +_,7 @@
+@@ -136,6 +_,7 @@
  
  		return LegacySoundPlayer.GetTrackableSoundByStyleId(id);
  	}
@@ -96,7 +85,7 @@
  
  	public static void StopAmbientSounds()
  	{
-@@ -131,7 +_,7 @@
+@@ -143,7 +_,7 @@
  			LegacySoundPlayer.StopAmbientSounds();
  	}
  
@@ -105,7 +94,7 @@
  	{
  		if (Main.dedServ || !IsAudioSupported)
  			return null;
-@@ -315,7 +_,7 @@
+@@ -327,7 +_,7 @@
  			SoundEffect.FromStream(stream);
  		}
  		catch (NoAudioHardwareException) {

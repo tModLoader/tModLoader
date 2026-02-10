@@ -12,7 +12,7 @@
  
  namespace Terraria.Audio;
  
-@@ -68,17 +_,19 @@
+@@ -70,17 +_,19 @@
  
  #if !SERVER
  			string extension = contentSource.GetExtension(assetPath);
@@ -35,11 +35,14 @@
  						break;
  				}
  
-@@ -100,10 +_,13 @@
+@@ -102,13 +_,13 @@
  
  	public LegacyAudioSystem()
  	{
 -		Engine = new AudioEngine("Content\\TerrariaMusic.xgs");
+-#if FNA
+-		Console.WriteLine("SDL Audio Driver: " + SDL3.SDL.SDL_GetCurrentAudioDriver());
+-#endif
 -		SoundBank = new SoundBank(Engine, "Content\\Sound Bank.xsb");
 +		var contentManager = (TMLContentManager)Main.instance.Content;
 +
@@ -52,7 +55,7 @@
  		Engine.Update();
  		AudioTracks = new IAudioTrack[Main.maxMusic];
  		TrackNamesByIndex = new Dictionary<int, string>();
-@@ -118,6 +_,10 @@
+@@ -125,6 +_,10 @@
  		}
  	}
  
@@ -63,14 +66,18 @@
  	public void LoadCue(int cueIndex, string cueName)
  	{
  		CueAudioTrack cueAudioTrack = new CueAudioTrack(SoundBank, cueName);
-@@ -245,18 +_,19 @@
- 					MusicReplayDelay = Main.rand.Next(14400, 21601);
+@@ -245,19 +_,19 @@
+ 			tempFade = 1f;
  
- 				AudioTracks[i].Reuse();
--				AudioTracks[i].SetVariable("Volume", totalVolume);
-+				AudioTracks[i].SetVariable(MusicID.Sets.SkipsVolumeRemap[i] ? "VolumeDirect" : "Volume", totalVolume);
- 				AudioTracks[i].Play();
- 			}
+ 		if (!AudioTracks[i].IsPlaying && active) {
+ 			AudioTracks[i].Reuse();
+-			AudioTracks[i].SetVariable("Volume", totalVolume);
++			AudioTracks[i].SetVariable(MusicID.Sets.SkipsVolumeRemap[i] ? "VolumeDirect" : "Volume", totalVolume);
+ 			AudioTracks[i].Play();
+ 			if (PlayCallbacks[i] != null)
+ 				PlayCallbacks[i](i, TrackLoopCounts[i]);
+ 
+ 			TrackLoopCounts[i]++;
  		}
  		else {
 -			AudioTracks[i].SetVariable("Volume", totalVolume);
@@ -80,14 +87,10 @@
  
  	public void UpdateCommonTrackTowardStopping(int i, float totalVolume, ref float tempFade, bool isMainTrackAudible)
  	{
--		if (!WaveBank.IsPrepared)
-+		// Track should never really be null, save for some in-between loading if music is forced to play before mod loading is complete
-+		if (!WaveBank.IsPrepared || AudioTracks[i] is null)
- 			return;
- 
- 		if (AudioTracks[i].IsPlaying || !AudioTracks[i].IsStopped) {
-@@ -271,7 +_,7 @@
+ 		if (!WaveBank.IsPrepared || AudioTracks[i] == null)
+@@ -275,8 +_,8 @@
  				AudioTracks[i].Stop(AudioStopOptions.Immediate);
+ 				TrackLoopCounts[i] = 0;
  			}
  			else {
 -				AudioTracks[i].SetVariable("Volume", totalVolume);

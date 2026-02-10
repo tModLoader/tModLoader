@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/PopupTextContext.cs
 +++ src/tModLoader/Terraria/PopupTextContext.cs
-@@ -1,11 +_,37 @@
+@@ -1,12 +_,38 @@
  namespace Terraria;
  
 +/// <summary>
@@ -36,5 +36,6 @@
 +	/// <summary>
 +	/// Used for all other <see cref="PopupText"/>s.
 +	/// </summary>
- 	Advanced
+ 	Advanced,
+ 	ItemReforge_Best
  }

@@ -14,6 +14,7 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Test if https://github.com/tModLoader/tModLoader/pull/4626 is fixed in vanilla. I think you need to test with non-player chat to test properly, or maybe another player?
 - ItemSourceID is now static readonly, not a const. Do any other IDs change?
 - Need to update ItemID.Sets.OreDropsFromSlime with new entries.
+  - Also AI_001_Slimes_GenerateItemInsideBody has additional logic now for skyblock that adjusts the drops. Investigate these and see if tmod needs more support or a TODO.
 - Need to update TileID.Sets.DisableSmartInteract with new entries from BlockBecauseYouAreOverAnImportantTile.ShouldBlockSmartInteract. Remove torches/4 and update docs. Add 698, 720, 721, 725, 725, 733. (TileID.Sets.Torches checked separately.)
 - We need to add ModItem.SummonPrefix(), add ModPrefix.Summon
 - ShimmerTransforms.IsItemTransformLocked seems to have been split, need to verify RecipeLoader.DecraftAvailable and other logic still applies.
@@ -31,6 +32,22 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Mount.Dismount now has a ignoreEffect parameter, this might duplicate the skipDust variable used in MountLoader.Dismount. Adjust patches (and docs) accordingly if they should be the same. When is it set? Do modded mounts need to care about when ignoreEffect was true or false?
 - Need to add `mountedPlayer.allDamage += 0.1f;` patch to `Mount.UpdateEffects` for Mounts 62 and 63 (Chillet)
 - Check for new `XDamage += ` results and fix them all to use `allDamage`.
+- NPC now has various spawn flags like ZoneSnow, ZoneDungeon, etc. What are they for?
+- Use InitData.MaxNPCs instead of Main.maxNPCs? Or not? When to use one or the other?
+- NPCLoader.BuffTownNPC will need to be reworked to facilitate new functionality. "Defeating a boss now also gives each villager a 1.5% attack speed bonus." is a new vanilla effect. Similarly the Advanced Combat Techniques increases health by 250. Dryad immortal on infectedSeed.
+- Check for any remaining TML added ID sets that aren't in TML.cs files.
+- BelongsToInvasionPirate now has 492, 252, 662
+- VelongsToInvasionMartianMadness now has 394, 520
+- BuffLoader.ReApply (NPC) logic seems changed, likely to fix desync issues. The server sync for MessageID.NPCBuffs when !quiet now happens after the reapply logic. Modded ReApply will need doc updates or maybe new parameters to properly adjust to these changes. Maybe a ref time parameter instead?
+- NPC.TryAddingRepeatedBuff added. Might be useful to document and make public.
+- Recipe.requiredTile no longer supports multiple tiles. Only a single crafting station is the new approach. Should we restore the old functionality? Is this necessary for the new crafting menu features?
+- Zone calculations seem to have been reorganized a bit. Verify functionality of hooks (TileCountsAvailable, ResetNearbyTileEffects, UpdateSceneEffect)
+- TileObjectData.addSubTileRange needs to be public. TryGetTileBounds needs docs. DrawFrameOffsets needs docs and maybe example, not sure what it is for yet.
+- FileUtilities.Copy and Move no longer have an `overwrite` parameter.
+- LegacyAudioSystem now has TrackLoopCounts and PlayCallbacks. They seem to involve counting how many times a specific music has looped. Investigate. Modders might be interested. Used with RainbowBoulderMusicPlayCallback
+- SoundEngine.Initialize now returns the IAudioSystem. We should test if it is still necessary to show an error message for !IsAudioSupported. 1.4.5 change log claims "Terraria no longer fails to launch when it fails to detect an available audio device.", we should see if tModLoader can work without audio support too.
+- Commented out SoundEngine.PlaySound methods now have a new pitchOffset optional parameter. We may need to adjust SoundStyle or SoundID entries to account for this.
+- SoundPlayOverrides is also new (used in PlayTrackedSound and SoundPlayer.Play), contains an override volume. Will also need to be accounted for in our unified approach.
 
 # New Fields that might need more documentation
 
@@ -47,6 +64,8 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - NPCID.Sets.NPCPortraits
 - NPCID.Sets: SpawnOnPlayerCanSpawnInMidairOnSkyblock, DontDropDungeonKeysOrSouls, HunterPotionFriendlyOverride, others.
 - UIScrollbar.AutoHide and CanScroll
+- NPC.defLifeMax
+- NPC.DelBuff has new quiet parameter
 
 # Changes that need to be communicated to modders
 
@@ -90,7 +109,7 @@ These are simple changes that we'd like Terraria to implement, mainly to reduce 
 - Add Entity to SwitchTiles -> public static bool SwitchTiles(Entity entity, Vector2 Position, int Width, int Height, Vector2 oldPosition, int objType)
 - public static bool[] IgnoredByNpcStepUp = Factory.CreateBoolSet(14, 16, 18, 134, 469); // or (Tables, Anvils, WorkBenches, MythrilAnvil, Tables2)
 - Use BlockBecauseYouAreOverAnImportantTile.ShouldBlockSmartInteract to make TileID.Sets.DisableSmartInteract
-- Use SmartCursorHelper.IsHoveringOverAnInteractibleTileThatBlocksSmartCursor to make TileID.Sets.DisableSmartInteract
+- Use SmartCursorHelper.IsHoveringOverAnInteractibleTileThatBlocksSmartCursor to make TileID.Sets.DisableSmartCursor
 - Typo: SmartCursorHelper.IsHoveringOverAnInteractibleTileThatBlocksSmartCursor -> Interactable
 - In Step_Torch, change "bool flag = !ItemID.Sets.WaterTorches[type];" to "bool flag = !ItemID.Sets.WaterTorches[providedInfo.player.BiomeTorchHoldStyle(providedInfo.item.type)];" to "Allow underwater biome torches to work" (Coral Torches don't work while in the ocean)
 - Typo: UsesNewTargetting -> UsesNewTargeting
@@ -99,6 +118,8 @@ These are simple changes that we'd like Terraria to implement, mainly to reduce 
 - https://github.com/tModLoader/tModLoader/commit/fced57a0725a6fabc171616487adf5166cbb89ef has several changes similar to `new MemoryStream(FileUtilities.ReadAllBytes(text, isCloudSave));` -> `FileUtilities.ReadAllBytes(text, isCloudSave).ToMemoryStream();`, to "Fix bug where BinaryIO failed to access the buffer of non-public MemoryStream". Do these need to be fixed in Terraria as well?
 - https://github.com/tModLoader/tModLoader/commit/a532a537df39d3787829299e0835a3e29263fe7d has a fix for "Fix map saving if loading corrupted map file.". Check if this is still the case and suggest a fix in Terraria.
 - https://github.com/tModLoader/tModLoader/commit/a532a537df39d3787829299e0835a3e29263fe7d has a fix for "Fix map saving if loading old map file.". Check if this is still the case and suggest a fix in Terraria.
+- NPC.catchItem, change from short to int?
+- Add `Color color = new Color(175, 75, 255);` to the start of `DoDeathEvents_CelebrateBossDeath` and use it in all the ChatHelper.BroadcastChatMessage and Main.NewText method calls. (Big patches)
 
 # Longer Patch issues:
 
@@ -134,24 +155,6 @@ Longer TODOs that would clutter above
  		}
 ```
 
-- This patch no longer has a place in Utils.WordwrapStringSmart. Need to check what it did and if the issue it fixed is fixed in vanilla.
-```diff
-@@ -375,6 +426,14 @@
- 							num2 -= 16;
- 
- 						int num3 = Math.Min(list3[l].Text.Length, num2 / 8);
-+
-+						// Loop added by TML. Explain what this is?
-+						for (int i = 0; i < list3[l].Text.Length; i++) {
-+							// TODO: hypen?, more efficient, binary search?, use ChatManager.GetStringSize to support other tags better.
-+							if (font.MeasureString(list3[l].Text.Substring(0, i)).X * list3[l].Scale < num2)
-+								num3 = i;
-+						}
-+
- 						if (num3 < 0)
- 							num3 = 0;
-```
-
 - Need to restore this patch. The code has been moved into ItemSorting.AddSortingPrioritiesBasedOnPlayerDamage and DamageTypeSortingLayerEntry is also new:
 ```diff
  	{
@@ -176,23 +179,33 @@ Longer TODOs that would clutter above
  				list.RemoveAt(0);
 ```
 
-- This patch needs to be applied to: cp12.LinkMap[1501].OnSpecialInteracts += () => ItemSlot.GetCraftSlotGamepadInstructions();  It was originally in UILinksInitializer directly.
+- NPC.killCount no longer exists? Need to update docs and examples.
 ```diff
-@@ -906,10 +916,16 @@
- 			}
- 
- 			bool flag4 = Main.mouseItem.stack <= 0;
-+			/*
- 			if (flag4 || (Main.mouseItem.type == createItem.type && Main.mouseItem.stack < Main.mouseItem.maxStack))
-+			*/
-+			if (flag4 || (Main.mouseItem.type == createItem.type && Main.mouseItem.stack < Main.mouseItem.maxStack && ItemLoader.CanStack(Main.mouseItem, createItem)))
- 				text2 = ((!flag4) ? (text2 + PlayerInput.BuildCommand(Lang.misc[72].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["MouseLeft"])) : (text2 + PlayerInput.BuildCommand(Lang.misc[72].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["MouseLeft"], PlayerInput.ProfileGamepadUI.KeyStatus["MouseRight"])));
- 
-+			/*
- 			if (!flag4 && Main.mouseItem.type == createItem.type && Main.mouseItem.stack < Main.mouseItem.maxStack)
-+			*/
-+			if (!flag4 && Main.mouseItem.type == createItem.type && Main.mouseItem.stack < Main.mouseItem.maxStack && ItemLoader.CanStack(Main.mouseItem, createItem))
- 				text2 += PlayerInput.BuildCommand(Lang.misc[93].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["MouseRight"]);
- 
- 			if (flag3)
++	/// <summary>
++	/// Indexed by BannerIDs, counts how many kills a specific enemy (or group of enemies with a shared BannerID) has in this world. Kill counts are stored on the world and are synced in multiplayer. Used by the <see cref="ItemID.TallyCounter"/> and for dropping banners. See also <see cref="ItemID.Sets.KillsToBanner"/>.
++	/// <para/> Note that Bestiary kill counts are tracked separately and per each NPC type instead of sharing a kill count with all other NPC types using the same BannerID.
++	/// </summary>
+ 	public static int[] killCount = new int[NPCID.Count];
+```
+
+- NPC.netUpdate field moved, need to restore this patch in a new patch after patches fixed.
+```diff
++	/// <summary>
++	/// Set to true in <see cref="ModNPC.AI"/> or other suitable places to trigger the NPC syncing code (<see cref="MessageID.SyncNPC"/>). This will sync position, life, and other data about this NPC from the server to the clients. Modded data from <see cref="ModNPC.SendExtraAI(System.IO.BinaryWriter)"/> and <see cref="GlobalNPC.SendExtraAI(NPC, ModLoader.IO.BitWriter, System.IO.BinaryWriter)"/> will be included.
++	/// <para/> Use this to sync changes so that the client's NPC instances stay in sync with the server's. Only changes that are non-Deterministic on the client's side, such as random decisions or code only running on the server, need to be synced. The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Netcode">Basic Netcode wiki page</see> goes into more details and links to examples.
++	/// <para/> As the server is in charge of NPC, changes to NPC data should only happen on the server in multiplayer.
++	/// </summary>
+ 	public bool netUpdate;
+ 	public bool netUpdate2;
+```
+
+- These buffimmune change are new and likely need to be used to update TML-specific sets.
+```cs
+		if (buffImmune[20]) {
+			buffImmune[30] = true;
+			buffImmune[375] = buffImmune[30];
+		}
+
+		if (buffImmune[69])
+			buffImmune[36] = true;
 ```

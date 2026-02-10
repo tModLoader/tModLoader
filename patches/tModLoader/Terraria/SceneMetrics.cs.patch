@@ -1,38 +1,36 @@
 --- src/TerrariaNetCore/Terraria/SceneMetrics.cs
 +++ src/tModLoader/Terraria/SceneMetrics.cs
-@@ -2,6 +_,7 @@
- using System.Collections.Generic;
- using Microsoft.Xna.Framework;
+@@ -3,6 +_,7 @@
+ using Terraria.GameContent;
+ using Terraria.GameContent.Events;
  using Terraria.ID;
 +using Terraria.ModLoader;
  using Terraria.WorldBuilding;
  
  namespace Terraria;
-@@ -27,14 +_,21 @@
- 	public static int GraveyardTileMin = 16;
- 	public static int GraveyardTileThreshold = 28;
+@@ -70,14 +_,20 @@
+ 	public bool InTorchGodMinigame;
+ 	public static int NPCEventZoneRadius = 4000;
  	public bool CanPlayCreditsRoll;
 +	/// <summary>
-+	/// Indexed by BannerIDs, indicates which enemies are currently subject to the banner damage bonus. Set to true in conjunction with <see cref="NPCBannerBuff"/>.
++	/// Indexed by BannerIDs, indicates which enemies are currently subject to the banner damage bonus. Set to true in conjunction with <see cref="hasBanner"/>.
 +	/// </summary>
- 	public bool[] NPCBannerBuff = new bool[290];
+ 	public bool[] NPCBannerBuff = new bool[BannerSystem.MaxBannerTypes];
 +	/// <summary>
 +	/// Indicates that the player is in range of a buff providing Banner tile and should receive the <see cref="BuffID.MonsterBanner"/> buff. Set to true in conjunction with <see cref="NPCBannerBuff"/>.
 +	/// </summary>
  	public bool hasBanner;
+ 	public Vector2[] ClosestNPCPosition = new Vector2[NPCID.Count];
+ 	private static Player _dummyPlayer = new Player();
 -	private readonly int[] _tileCounts = new int[TileID.Count];
 +	internal int[] _tileCounts = new int[TileLoader.TileCount];
  	private readonly int[] _liquidCounts = new int[LiquidID.Count];
- 	private readonly List<Point> _oreFinderTileLocations = new List<Point>(512);
- 	public int bestOre;
  
-+	//TML: Made setters public for the following properties
--	public Point? ClosestOrePosition { get; private set; }
-+	public Point? ClosestOrePosition { get; set; }
+ 	public uint LastScanTime { get; private set; }
  
- 	public int ShimmerTileCount { get; set; }
+ 	public Vector2 Center { get; private set; }
  
-@@ -46,55 +_,55 @@
+@@ -113,67 +_,67 @@
  
  	public int ActiveMusicBox { get; set; }
  
@@ -105,76 +103,76 @@
 -	public int ShimmerMonolithState { get; private set; }
 +	public int ShimmerMonolithState { get; set; }
  
+-	public bool CRTMonolith { get; private set; }
++	public bool CRTMonolith { get; set; }
+ 
+-	public bool RetroMonolith { get; private set; }
++	public bool RetroMonolith { get; set; }
+ 
+-	public bool NoirMonolith { get; private set; }
++	public bool NoirMonolith { get; set; }
+ 
+-	public bool RadioThingMonolith { get; private set; }
++	public bool RadioThingMonolith { get; set; }
+ 
 -	public bool HasCatBast { get; private set; }
 +	public bool HasCatBast { get; set; }
  
 -	public int GraveyardTileCount { get; private set; }
 +	public int GraveyardTileCount { get; set; }
  
+-	public int DesertSandTileCount { get; private set; }
++	public int DesertSandTileCount { get; set; }
+ 
+-	public int OceanSandTileCount { get; private set; }
++	public int OceanSandTileCount { get; set; }
+ 
  	public bool EnoughTilesForShimmer => ShimmerTileCount >= ShimmerTileThreshold;
  
-@@ -130,6 +_,8 @@
- 		if (settings.ScanOreFinderData)
- 			_oreFinderTileLocations.Clear();
- 
-+		SystemLoader.ResetNearbyTileEffects();
+@@ -251,2 +_,5 @@
+ 			TileCenter = Center.ToTileCoordinates().ClampedInWorld();
 +
- 		if (settings.BiomeScanCenterPositionInWorld.HasValue) {
- 			Point point = settings.BiomeScanCenterPositionInWorld.Value.ToTileCoordinates();
- 			Rectangle tileRectangle = new Rectangle(point.X - Main.buffScanAreaWidth / 2, point.Y - Main.buffScanAreaHeight / 2, Main.buffScanAreaWidth, Main.buffScanAreaHeight);
-@@ -194,6 +_,8 @@
- 
- 					if (settings.ScanOreFinderData && Main.tileOreFinderPriority[tile.type] != 0)
- 						_oreFinderTileLocations.Add(new Point(i, j));
++			SystemLoader.ResetNearbyTileEffects();
 +
-+					TileLoader.NearbyEffects(i, j, tile.type, false);
- 				}
- 			}
+ 			ScanTiles();
+@@ -264,5 +_,7 @@
+ 			CanPlayCreditsRoll = ActiveMusicBox == 85;
++
++			SystemLoader.TileCountsAvailable(_tileCounts);
  		}
-@@ -206,7 +_,7 @@
- 					if (tile2 == null || !tile2.active())
- 						continue;
- 
--					if (tile2.type == 104)
-+					if (TileID.Sets.Clock[tile2.type])
- 						HasClock = true;
- 
- 					switch (tile2.type) {
-@@ -267,16 +_,24 @@
- 							if (tile2.frameY >= 54)
- 								BloodMoonMonolith = true;
- 							break;
-+						// Extra extra patch context.
- 						case 657:
- 							if (tile2.frameY >= 54)
- 								EchoMonolith = true;
- 							break;
-+						// Extra patch context.
- 						case 658: {
- 							int shimmerMonolithState = tile2.frameY / 54;
- 							ShimmerMonolithState = shimmerMonolithState;
- 							break;
- 						}
- 					}
-+
-+					// This does not use TileLoader.IsModMusicBox because it needs the *exact* frameY for the second dict lookup
-+					if (MusicLoader.tileToMusic.ContainsKey(tile2.type) && MusicLoader.tileToMusic[tile2.type].ContainsKey(tile2.frameY) && tile2.frameX == 36)
-+						ActiveMusicBox = MusicLoader.tileToMusic[tile2.type][tile2.frameY];
-+
-+					TileLoader.NearbyEffects(k, l, tile2.type, true);
- 				}
- 			}
- 		}
-@@ -288,6 +_,8 @@
- 		CanPlayCreditsRoll = ActiveMusicBox == 85;
- 		if (settings.ScanOreFinderData)
- 			UpdateOreFinderData();
-+
-+		SystemLoader.TileCountsAvailable(_tileCounts);
  	}
  
- 	private void ExportTileCountsToMain()
-@@ -300,6 +_,7 @@
+ 	private void ScanTiles()
+@@ -343,4 +_,6 @@
+ 
+ 				UpdateOreFinder(new Point(i, j), tile);
++
++				TileLoader.NearbyEffects(i, j, tile.type, false);
+ 			}
+ 		}
+@@ -355,7 +_,7 @@
+ 				if (tile == null || !tile.active())
+ 					continue;
+ 
+-				if (tile.type == 104)
++				if (TileID.Sets.Clock[tile.type])
+ 					HasClock = true;
+ 
+ 				switch (tile.type) {
+@@ -442,6 +_,12 @@
+ 							RadioThingMonolith = true;
+ 						break;
+ 				}
++
++				// This does not use TileLoader.IsModMusicBox because it needs the *exact* frameY for the second dict lookup
++				if (MusicLoader.tileToMusic.ContainsKey(tile.type) && MusicLoader.tileToMusic[tile.type].ContainsKey(tile.frameY) && tile.frameX == 36)
++					ActiveMusicBox = MusicLoader.tileToMusic[tile.type][tile.frameY];
++
++				TileLoader.NearbyEffects(i, j, tile.type, true);
+ 			}
+ 		}
+ 	}
+@@ -460,6 +_,7 @@
  
  		ShimmerTileCount = _liquidCounts[3];
  		HoneyBlockCount = _tileCounts[229];
@@ -182,7 +180,7 @@
  		HolyTileCount = _tileCounts[109] + _tileCounts[492] + _tileCounts[110] + _tileCounts[113] + _tileCounts[117] + _tileCounts[116] + _tileCounts[164] + _tileCounts[403] + _tileCounts[402];
  		SnowTileCount = _tileCounts[147] + _tileCounts[148] + _tileCounts[161] + _tileCounts[162] + _tileCounts[164] + _tileCounts[163] + _tileCounts[200];
  		if (Main.remixWorld) {
-@@ -314,12 +_,18 @@
+@@ -474,12 +_,18 @@
  		}
  
  		MushroomTileCount = _tileCounts[70] + _tileCounts[71] + _tileCounts[72] + _tileCounts[528];
@@ -201,7 +199,7 @@
  		if (_tileCounts[27] > 0)
  			HasSunflower = true;
  
-@@ -355,6 +_,8 @@
+@@ -623,7 +_,9 @@
  
  	public int GetTileCount(ushort tileId) => _tileCounts[tileId];
  
@@ -209,14 +207,13 @@
 +
  	public void Reset()
  	{
+ 		LastScanTime = uint.MaxValue;
  		Array.Clear(_tileCounts, 0, _tileCounts.Length);
-@@ -388,6 +_,9 @@
- 		Array.Clear(NPCBannerBuff, 0, NPCBannerBuff.Length);
- 		hasBanner = false;
- 		CanPlayCreditsRoll = false;
+@@ -707,4 +_,7 @@
+ 		TownNPCCount = 0;
+ 		PerspectivePlayer = _dummyPlayer;
 +
 +		if (NPCBannerBuff.Length < ModLoader.NPCLoader.NPCCount)
 +			Array.Resize(ref NPCBannerBuff, ModLoader.NPCLoader.NPCCount);
  	}
  
- 	private void UpdateOreFinderData()
