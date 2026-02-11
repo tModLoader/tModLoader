@@ -1,13 +1,5 @@
 --- src/Terraria/Terraria/Social/WeGame/CoreSocialModule.cs
 +++ src/TerrariaNetCore/Terraria/Social/WeGame/CoreSocialModule.cs
-@@ -1,7 +_,6 @@
- using System;
- using System.Runtime.InteropServices;
- using System.Threading;
--using System.Windows.Forms;
- using rail;
- using ReLogic.OS;
- using Terraria.Utilities;
 @@ -63,12 +_,15 @@
  
  	public void Shutdown()

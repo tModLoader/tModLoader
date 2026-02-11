@@ -1,13 +1,5 @@
 --- src/Terraria/Terraria/Initializers/ChromaInitializer.cs
 +++ src/TerrariaNetCore/Terraria/Initializers/ChromaInitializer.cs
-@@ -2,7 +_,6 @@
- using System.Collections.Generic;
- using System.Diagnostics;
- using System.Linq;
--using System.Windows.Forms;
- using Microsoft.Xna.Framework;
- using ReLogic.Graphics;
- using ReLogic.OS;
 @@ -520,8 +_,10 @@
  
  		LoadSpecialRulesForDevices();

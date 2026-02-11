@@ -1,10 +1,5 @@
 --- src/Terraria/Terraria/FocusHelper.cs
 +++ src/TerrariaNetCore/Terraria/FocusHelper.cs
-@@ -1,4 +_,3 @@
--using System.Windows.Forms;
- using ReLogic.OS;
- 
- namespace Terraria;
 @@ -117,6 +_,8 @@
  		wantsToPause = false;
  		bool flag = !Main.SettingPlayWhenUnfocused;
