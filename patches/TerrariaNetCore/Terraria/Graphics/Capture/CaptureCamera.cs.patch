@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/Graphics/Capture/CaptureCamera.cs
 +++ src/TerrariaNetCore/Terraria/Graphics/Capture/CaptureCamera.cs
-@@ -1,7 +_,6 @@
+@@ -1,10 +_,10 @@
  using System;
  using System.Collections.Generic;
  using System.Drawing;
@@ -8,29 +8,18 @@
  using System.IO;
  using System.Runtime.InteropServices;
  using System.Threading;
-@@ -15,6 +_,10 @@
- 
- internal class CaptureCamera : IDisposable
- {
-+#if NETCORE
-+	public enum ImageFormat { Png }
-+#endif
-+
- 	private class CaptureChunk
- 	{
- 		public readonly Microsoft.Xna.Framework.Rectangle Area;
-@@ -233,8 +_,11 @@
- 			return false;
- 
- 		try {
-+#if !NETCORE
++using System.Windows.Forms;
+ using Microsoft.Xna.Framework;
+ using Microsoft.Xna.Framework.Graphics;
+ using Terraria.Graphics.Effects;
+@@ -236,6 +_,7 @@
  			if (Program.IsFna) {
-+#endif
  				PlatformUtilities.SavePng(filename, width, height, data);
-+#if !NETCORE
  			}
++#if !NETCORE
  			else {
  				using Bitmap bitmap = new Bitmap(width, height);
+ 				System.Drawing.Rectangle rect = new System.Drawing.Rectangle(0, 0, width, height);
 @@ -246,6 +_,7 @@
  				bitmap.Save(filename, imageFormat);
  				bitmap.Dispose();
@@ -39,24 +28,14 @@
  
  			return true;
  		}
-@@ -262,7 +_,9 @@
- 		if (!Utils.TryCreatingDirectory(text))
- 			return;
- 
-+#if !NETCORE
- 		if (Program.IsFna) {
-+#endif
- 			int elementCount = texture.Width * texture.Height * 4;
- 			texture.GetData(_outputData, 0, elementCount);
- 			int num = 0;
-@@ -281,6 +_,7 @@
- 			}
- 
- 			PlatformUtilities.SavePng(text2, width, height, _outputData);
-+#if !NETCORE
+@@ -284,6 +_,7 @@
  			return;
  		}
  
++#if !NETCORE
+ 		using Bitmap bitmap = new Bitmap(width, height);
+ 		System.Drawing.Rectangle rect = new System.Drawing.Rectangle(0, 0, width, height);
+ 		int elementCount2 = texture.Width * texture.Height * 4;
 @@ -309,6 +_,7 @@
  		Marshal.Copy(_outputData, 0, scan, width * height * 4);
  		bitmap.UnlockBits(bitmapData);
