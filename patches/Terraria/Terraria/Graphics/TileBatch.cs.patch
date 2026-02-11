@@ -1,12 +1,5 @@
 --- src/decompiled/Terraria/Graphics/TileBatch.cs
 +++ src/Terraria/Terraria/Graphics/TileBatch.cs
-@@ -1,6 +_,5 @@
- using System;
- using System.Collections.Generic;
--using System.Runtime.CompilerServices;
- using Microsoft.Xna.Framework;
- using Microsoft.Xna.Framework.Graphics;
- 
 @@ -444,7 +_,7 @@
  		_queuedSpriteCount = 0;
  	}
@@ -21,9 +14,9 @@
  
  			FillVertexBuffer(texture, sprites, offset, num, 0);
 +
-+			//TODO:
-+			// Decompilation bugfix.
-+			// Remove this change whenever ICSharpCode.Decompiler 8.0.0 or 8.0.0.*-preview3 releases.
++			// Decompiler bug: change Unsafe.SizeOf<T> calls to unsafe
++			// sizeof(T) expressions.  Also requires making the containing
++			// method unsafe.
 +
 +			/*
  			int offsetInBytes = _vertexBufferPosition * System.Runtime.CompilerServices.Unsafe.SizeOf<VertexPositionColorTexture>() * 4;
