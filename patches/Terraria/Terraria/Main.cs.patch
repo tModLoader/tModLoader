@@ -22,7 +22,7 @@
  {
  	public static class CurrentFrameFlags
  	{
-@@ -5401,7 +_,10 @@
+@@ -5407,7 +_,10 @@
  		if (!dedServ) {
  			Map = new WorldMap(maxTilesX, maxTilesY);
  			Configuration.Load();
