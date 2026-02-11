@@ -109,8 +109,6 @@ public sealed class TerrariaDecompileExecutableProvider
 			|| UniversalAssemblyResolver.GetAssemblyInGac(AssemblyNameReference.Parse("Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553")) is null)
 			paths.Add(Path.Combine("setup", "xna_redist"));
 
-		paths.Add("patches/Terraria/Terraria/Libraries/Common"); // For SteelSeriesEngineWrapper.dll which was accidentally not shipped as an embedded ref in 1.4.4, and embeded in 1.4.5
-
 		return paths;
 	}
 
