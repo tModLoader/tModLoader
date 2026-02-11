@@ -23,6 +23,6 @@
 +			// tML: Added IsMouseHovering to account for obstructing UI elements such as popups
 -			_isHoveringOverHandle = handleRectangle.Contains(new Point((int)mousePosition.X, (int)mousePosition.Y));
 +			_isHoveringOverHandle = IsMouseHovering && handleRectangle.Contains(new Point((int)mousePosition.X, (int)mousePosition.Y));
- 			if (!isHoveringOverHandle && _isHoveringOverHandle && Main.hasFocus)
+ 			if (!isHoveringOverHandle && _isHoveringOverHandle && FocusHelper.AllowUIInputs)
  				SoundEngine.PlaySound(12);
  

@@ -1,27 +1,31 @@
 --- src/TerrariaNetCore/Terraria/GameContent/Creative/ItemsSacrificedUnlocksTracker.cs
 +++ src/tModLoader/Terraria/GameContent/Creative/ItemsSacrificedUnlocksTracker.cs
-@@ -1,5 +_,6 @@
+@@ -2,5 +_,6 @@
  using System.Collections.Generic;
  using System.IO;
 +using System.Linq;
  using Terraria.ID;
  
  namespace Terraria.GameContent.Creative;
-@@ -7,8 +_,8 @@
+@@ -8,11 +_,11 @@
  public class ItemsSacrificedUnlocksTracker : IPersistentPerWorldContent, IOnPlayerJoining
  {
  	public const int POSITIVE_SACRIFICE_COUNT_CAP = 9999;
 -	private Dictionary<string, int> _sacrificeCountByItemPersistentId;
 +	internal Dictionary<string, int> _sacrificeCountByItemPersistentId;
 -	private Dictionary<int, int> _sacrificesCountByItemIdCache;
+ 	private Dictionary<int, string> _unlockedByTeammate;
+ 	private HashSet<int> _newlyUnlocked;
+ 	public bool AnyNewUnlocksFromTeammates;
 +	internal Dictionary<int, int> _sacrificesCountByItemIdCache;
  
  	public int LastEditId { get; private set; }
  
-@@ -76,7 +_,11 @@
+@@ -127,8 +_,12 @@
  
  	public void Save(BinaryWriter writer)
  	{
+ 		writer.Write(value: false);
 -		Dictionary<string, int> dictionary = new Dictionary<string, int>(_sacrificeCountByItemPersistentId);
 +		// Only include vanilla items in the dictionary.
 +		Dictionary<string, int> dictionary = _sacrificeCountByItemPersistentId

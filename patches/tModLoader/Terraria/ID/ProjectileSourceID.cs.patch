@@ -13,10 +13,10 @@
  {
  	public const int None = 0;
  	public const int SetBonus_SolarExplosion_WhenTakingDamage = 1;
-@@ -21,4 +_,25 @@
- 	public const int SetBonus_GhostHurt = 16;
- 	public const int VampireKnives = 18;
- 	public static readonly int Count = 19;
+@@ -23,4 +_,29 @@
+ 	public const int MeteorShower = 21;
+ 	public const int StormLightning = 22;
+ 	public static readonly int Count = 23;
 +
 +	public static string? ToContextString(int itemSourceId) => itemSourceId switch {
 +		SetBonus_SolarExplosion_WhenTakingDamage => nameof(SetBonus_SolarExplosion_WhenTakingDamage),
@@ -36,6 +36,10 @@
 +		SetBonus_GhostHurt => nameof(SetBonus_GhostHurt),
 +		VampireKnives => nameof(VampireKnives),
 +		TorchGod => nameof(TorchGod),
++		BoulderRain => nameof(BoulderRain),
++		MeteorRain => nameof(MeteorRain),
++		MeteorShower => nameof(MeteorShower),
++		StormLightning => nameof(StormLightning),
 +		_ => null,
 +	};
  }

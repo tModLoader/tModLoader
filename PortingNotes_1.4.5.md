@@ -48,6 +48,10 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - SoundEngine.Initialize now returns the IAudioSystem. We should test if it is still necessary to show an error message for !IsAudioSupported. 1.4.5 change log claims "Terraria no longer fails to launch when it fails to detect an available audio device.", we should see if tModLoader can work without audio support too.
 - Commented out SoundEngine.PlaySound methods now have a new pitchOffset optional parameter. We may need to adjust SoundStyle or SoundID entries to account for this.
 - SoundPlayOverrides is also new (used in PlayTrackedSound and SoundPlayer.Play), contains an override volume. Will also need to be accounted for in our unified approach.
+- tModLoaderTitleLinkButtonsTexture.png needs to be adjusted with new bluesky link
+- Update https://github.com/tModLoader/tModLoader/wiki/Vanilla-Content-IDs#achievement-identifiers with new achievements
+- https://github.com/tModLoader/tModLoader/pull/3500 seems to have changed ItemSourceID.PlayerDropItemCheck to ThrowItem. In 1.4.5 it was renamed to PlayerDrop and there is a new InventoryOverflow. Double check that the #3500 logic applies to the fixed 1.4.5 code. Maybe see if ThrowItem is a better name than PlayerDrop and can be fixed in Terraria, otherwise tModPorter it or double check that it is patched everywhere to use the new names.
+- Also, ItemSourceID.SortingWithNoSpace has been removed.
 
 # New Fields that might need more documentation
 
@@ -66,6 +70,7 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - UIScrollbar.AutoHide and CanScroll
 - NPC.defLifeMax
 - NPC.DelBuff has new quiet parameter
+- TileID.Sets.DontDrawTileSlopes.
 
 # Changes that need to be communicated to modders
 
@@ -96,23 +101,26 @@ Once all patches are fixed, these items need to be fixed or double checked:
 
 # tModPorter TODOs
 
-- TileID.Sets.WallsMergeWith changed to vanilla added TileID.Sets.TruncatesWalls (TODO: New set contains several new vanilla tiles, does that make sense? tModPorter?)
+- TileID.Sets.WallsMergeWith usages in Framing.WallFrame changed to newly added TileID.Sets.TruncatesWalls (TODO: New set contains several new vanilla tiles, does that make sense? tModPorter?)
 - Main.ShouldShowInvisibleWalls changed to Main.ShouldShowInvisibleBlocksAndWalls
 - ItemVariants.EverythingWorld renamed to MechdusaWorld
 - NPCID.Sets.SpawnFromLastEmptySlot renamed to SearchSpawnSlotsInReverse
 - NPCID.Sets.ShouldBeCountedAsBossForBestiary renamed to ShouldBeCountedAsBoss (TODO: Verify where it is now used and update docs if necessary)
+- TileID.Sets.InteractibleByNPCs renamed to InteractableByNPCs
+- TileID.Sets.Torch renamed to Torches
+- TileID.Sets.Campfire renamed to Campfires
+- TileID.Sets.IsATrigger changed to TileID.Sets.Wiring.IsATrigger
+- TileID.Sets.IsAMechanism changed to TileID.Sets.Wiring.IsAMechanism. The function of the set might have changed, investigate and update docs
+- NPCID.Sets.UsesNewTargetting renamed to UsesNewTargeting
 
 # Terraria update requests
 
 These are simple changes that we'd like Terraria to implement, mainly to reduce large or error-prone patches.
 
-- Add Entity to SwitchTiles -> public static bool SwitchTiles(Entity entity, Vector2 Position, int Width, int Height, Vector2 oldPosition, int objType)
-- public static bool[] IgnoredByNpcStepUp = Factory.CreateBoolSet(14, 16, 18, 134, 469); // or (Tables, Anvils, WorkBenches, MythrilAnvil, Tables2)
 - Use BlockBecauseYouAreOverAnImportantTile.ShouldBlockSmartInteract to make TileID.Sets.DisableSmartInteract
 - Use SmartCursorHelper.IsHoveringOverAnInteractibleTileThatBlocksSmartCursor to make TileID.Sets.DisableSmartCursor
 - Typo: SmartCursorHelper.IsHoveringOverAnInteractibleTileThatBlocksSmartCursor -> Interactable
 - In Step_Torch, change "bool flag = !ItemID.Sets.WaterTorches[type];" to "bool flag = !ItemID.Sets.WaterTorches[providedInfo.player.BiomeTorchHoldStyle(providedInfo.item.type)];" to "Allow underwater biome torches to work" (Coral Torches don't work while in the ocean)
-- Typo: UsesNewTargetting -> UsesNewTargeting
 - AWorkshopPublishInfoState.UpdateImagePreview -> Fixed icon file handles lingering - https://github.com/tModLoader/tModLoader/pull/4424/changes/8d63f808c90715cb4fda5b4f6ea56af691ad5d75
 - de-DE/Main.json has a lot of fixes in it, should some of these fixes be brought into Terraria? Are they actually correct? Some English.
 - https://github.com/tModLoader/tModLoader/commit/fced57a0725a6fabc171616487adf5166cbb89ef has several changes similar to `new MemoryStream(FileUtilities.ReadAllBytes(text, isCloudSave));` -> `FileUtilities.ReadAllBytes(text, isCloudSave).ToMemoryStream();`, to "Fix bug where BinaryIO failed to access the buffer of non-public MemoryStream". Do these need to be fixed in Terraria as well?
@@ -120,6 +128,7 @@ These are simple changes that we'd like Terraria to implement, mainly to reduce 
 - https://github.com/tModLoader/tModLoader/commit/a532a537df39d3787829299e0835a3e29263fe7d has a fix for "Fix map saving if loading old map file.". Check if this is still the case and suggest a fix in Terraria.
 - NPC.catchItem, change from short to int?
 - Add `Color color = new Color(175, 75, 255);` to the start of `DoDeathEvents_CelebrateBossDeath` and use it in all the ChatHelper.BroadcastChatMessage and Main.NewText method calls. (Big patches)
+- `private static readonly bool[] SafeDust` and `private static readonly bool[] SafeGore` being private and readonly, unlike every other set, is a bit odd.
 
 # Longer Patch issues:
 
@@ -208,4 +217,22 @@ Longer TODOs that would clutter above
 
 		if (buffImmune[69])
 			buffImmune[36] = true;
+```
+
+- Move this patch to PrepareAliases, or adjust ModCommand to use new system:
+```diff
+@@ -56,6 +58,13 @@
+ 			string name = EmoteID.Search.GetName(i);
+ 			string key = "EmojiCommand." + name;
+ 			ChatManager.Commands.AddAlias(Language.GetText(key), NetworkText.FromFormattable("{0} {1}", Language.GetText("ChatCommand.Emoji_1"), Language.GetText("EmojiName." + name)));
++		}
++
++		foreach (var modEmoteBubble in EmoteBubbleLoader.emoteBubbles)
++		{
++			// Vanilla uses 2 keys, one with the name and the other with /${namekey}. Since the name is only used for the command, we can avoid that for simplicity
++			var command = new LocalizedText(modEmoteBubble.Command.Key, $"/{modEmoteBubble.Command.Value.ToLower()}");
++			ChatManager.Commands.AddAlias(command, NetworkText.FromFormattable("{0} {1}", Language.GetText("ChatCommand.Emoji_1"), modEmoteBubble.Command));
+ 		}
+ 	}
+ }
 ```
