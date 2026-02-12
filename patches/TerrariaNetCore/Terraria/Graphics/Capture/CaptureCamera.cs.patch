@@ -12,6 +12,17 @@
  using Microsoft.Xna.Framework;
  using Microsoft.Xna.Framework.Graphics;
  using Terraria.Graphics.Effects;
+@@ -15,6 +_,10 @@
+ 
+ internal class CaptureCamera : IDisposable
+ {
++#if NETCORE
++	public enum ImageFormat { Png }
++#endif
++
+ 	private class CaptureChunk
+ 	{
+ 		public readonly Microsoft.Xna.Framework.Rectangle Area;
 @@ -236,6 +_,7 @@
  			if (Program.IsFna) {
  				PlatformUtilities.SavePng(filename, width, height, data);
