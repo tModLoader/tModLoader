@@ -8,6 +8,7 @@ using NativeMethods = ReLogic.Localization.IME.WinImm32.NativeMethods;
 
 namespace ReLogic.Localization.IME;
 
+#if NETCORE
 internal class WinImm32Ime : PlatformIme, IMessageFilter
 {
 	private IntPtr _hWnd;
@@ -212,3 +213,4 @@ internal class WinImm32Ime : PlatformIme, IMessageFilter
 		Dispose(disposing: false);
 	}
 }
+#endif

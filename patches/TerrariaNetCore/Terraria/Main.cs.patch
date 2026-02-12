@@ -1,15 +1,6 @@
 --- src/Terraria/Terraria/Main.cs
 +++ src/TerrariaNetCore/Terraria/Main.cs
-@@ -80,7 +_,7 @@
- 
- namespace Terraria;
- 
--#if !WINDOWS
-+#if FNA && !NETCORE
- class Control
- {
- 	internal static Form FromHandle(IntPtr handle)
-@@ -3663,6 +_,7 @@
+@@ -3653,6 +_,7 @@
  
  		PendingBorderlessState = screenBorderless;
  		screenBorderlessPendingResizes = (screenBorderless ? 6 : 0);
@@ -17,7 +8,7 @@
  		if (Platform.IsWindows && !dedServ) {
  			Form form = (Form)Control.FromHandle(instance.Window.Handle);
  			if (screenBorderless) {
-@@ -3678,6 +_,7 @@
+@@ -3668,6 +_,7 @@
  
  			form.BringToFront();
  		}
@@ -25,7 +16,7 @@
  
  		int currentValue2 = graphics.PreferredBackBufferWidth;
  		int currentValue3 = graphics.PreferredBackBufferHeight;
-@@ -4068,8 +_,13 @@
+@@ -4058,8 +_,13 @@
  				if (num >= 2)
  					binaryReader.ReadBoolean();
  
@@ -39,33 +30,41 @@
  
  				if (num >= 4) {
  					int width = binaryReader.ReadInt32();
-@@ -5413,7 +_,7 @@
+@@ -5403,7 +_,11 @@
  		}
  	}
  
--	public Main()
++#if NETCORE
 +	public Main() : base(headlessMode: dedServ)
++#else
+ 	public Main()
++#endif
  	{
  		instance = this;
  		UnpausedUpdateSeed = (ulong)Guid.NewGuid().GetHashCode();
-@@ -5712,7 +_,7 @@
+@@ -5702,7 +_,11 @@
  		ChatInitializer.Load();
  		LucyAxeMessage.Initialize();
  		if (Platform.IsWindows && !dedServ) {
--			IntPtr systemMenu = GetSystemMenu(base.Window.Handle, bRevert: false);
++#if NETCORE
 +			IntPtr systemMenu = GetSystemMenu(Platform.SdlHandleToWindowsHandle(base.Window.Handle), bRevert: false);
++#else
+ 			IntPtr systemMenu = GetSystemMenu(base.Window.Handle, bRevert: false);
++#endif
  			int menuItemCount = GetMenuItemCount(systemMenu);
  			RemoveMenu(systemMenu, menuItemCount - 1, 1024);
  		}
-@@ -9614,6 +_,7 @@
+@@ -9604,6 +_,9 @@
  		});
  
  		base.Window.AllowUserResizing = true;
++#if NETCORE
 +		CaptureManager.Instance = new CaptureManager(); // Move instance creation from class constructor to main thread to avoid deadlocks from content loading on JIT thread with FNA
++#endif
  		LoadSettings();
  		PreventUpdatingTargets = false;
  		SetDisplayMonitor();
-@@ -45230,6 +_,7 @@
+@@ -45220,6 +_,7 @@
  		return result;
  	}
  
@@ -73,7 +72,7 @@
  	private static void SetDisplayModeAsBorderless(ref int width, ref int height, Form form)
  	{
  		if (screenBorderless && !graphics.IsFullScreen && screenBorderlessPendingResizes > 0) {
-@@ -45258,6 +_,7 @@
+@@ -45248,6 +_,7 @@
  		form.Location = new System.Drawing.Point(0, 0);
  		form.FormBorderStyle = FormBorderStyle.None;
  	}
@@ -81,7 +80,7 @@
  
  	public static void OpenCharacterSelectUI()
  	{
-@@ -57246,6 +_,9 @@
+@@ -57236,6 +_,9 @@
  	public static void SetDisplayMode(int width, int height, bool fullscreen)
  	{
  		bool flag = false;
@@ -91,16 +90,15 @@
  		Form form = null;
  		if (Platform.IsWindows) {
  			form = (Form)Control.FromHandle(instance.Window.Handle);
-@@ -57260,6 +_,8 @@
+@@ -57250,6 +_,7 @@
  		else {
  			screenMaximized = false;
  		}
 +#endif
-+		screenMaximized = false;
  
  		bool flag2 = false;
  		int num3;
-@@ -57275,11 +_,13 @@
+@@ -57265,11 +_,13 @@
  				}
  			}
  
@@ -114,7 +112,7 @@
  
  			if (width > maxScreenW) {
  				float num = (float)height / (float)width;
-@@ -57307,6 +_,7 @@
+@@ -57297,6 +_,7 @@
  		}
  		else {
  			PlayerInput.RawMouseScale = Vector2.One;
@@ -122,7 +120,7 @@
  			if (Platform.IsWindows) {
  				form.MinimumSize = new Size(minScreenW, minScreenH);
  				if (flag) {
-@@ -57314,6 +_,7 @@
+@@ -57304,6 +_,7 @@
  					height = displayHeight[0];
  				}
  			}
@@ -130,7 +128,7 @@
  
  			width = Math.Min(width, maxScreenW);
  			height = Math.Min(height, maxScreenH);
-@@ -57322,6 +_,7 @@
+@@ -57312,6 +_,7 @@
  			flag2 = graphics.PreferredBackBufferWidth != graphics.GraphicsDevice.Viewport.Width || graphics.PreferredBackBufferHeight != graphics.GraphicsDevice.Viewport.Height;
  		}
  
@@ -138,21 +136,21 @@
  		if (Platform.IsWindows && !fullscreen && !flag2) {
  			if (form.ClientSize.Width < graphics.PreferredBackBufferWidth) {
  				width = form.ClientSize.Width;
-@@ -57333,9 +_,13 @@
+@@ -57323,9 +_,13 @@
  				flag2 = true;
  			}
  		}
 +#endif
  
 +		// Causes window maximization to not work.
-+		/*
++#if !NETCORE
  		width &= 0x7FFFFFFE;
  		height &= 0x7FFFFFFE;
-+		*/
++#endif
  		width = Math.Max(width, minScreenW);
  		height = Math.Max(height, minScreenH);
  		if (graphics.IsFullScreen != fullscreen) {
-@@ -57363,6 +_,7 @@
+@@ -57353,6 +_,7 @@
  			PendingResolutionWidth = screenWidth;
  			PendingResolutionHeight = screenHeight;
  			PlayerInput.CacheOriginalScreenDimensions();
@@ -160,7 +158,7 @@
  			if (Platform.IsWindows && !fullscreen) {
  				if (screenBorderless) {
  					ApplyBorderlessResolution(form);
-@@ -57375,6 +_,7 @@
+@@ -57365,6 +_,7 @@
  				form.SendToBack();
  				form.BringToFront();
  			}

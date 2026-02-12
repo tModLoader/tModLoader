@@ -1,11 +1,14 @@
 --- src/Terraria/Terraria/Utils.cs
 +++ src/TerrariaNetCore/Terraria/Utils.cs
-@@ -941,7 +_,7 @@
+@@ -941,7 +_,11 @@
  				});
  			}
  			else {
--				Process.Start(folderPath);
++#if NETCORE
 +				Process.Start(new ProcessStartInfo(folderPath) { UseShellExecute = true });
++#else
+ 				Process.Start(folderPath);
++#endif
  			}
  		}
  	}

@@ -1,6 +1,6 @@
 --- src/decompiled/Terraria/Program.cs
 +++ src/Terraria/Terraria/Program.cs
-@@ -12,15 +_,24 @@
+@@ -12,15 +_,23 @@
  using Terraria.Localization;
  using Terraria.Social;
  using Terraria.Utilities;
@@ -22,7 +22,6 @@
 +#endif
  	public static bool IsMono = Type.GetType("Mono.Runtime") != null;
 -	public const bool IsDebug = false;
-+	// public const bool IsDebug = false;
  	public static Dictionary<string, string> LaunchParameters = new Dictionary<string, string>();
  	public static string SavePath;
  	public const string TerrariaSaveFolderPath = "Terraria";

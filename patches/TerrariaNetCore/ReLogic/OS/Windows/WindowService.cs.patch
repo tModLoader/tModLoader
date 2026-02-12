@@ -1,6 +1,6 @@
 --- src/Terraria/ReLogic/OS/Windows/WindowService.cs
 +++ src/TerrariaNetCore/ReLogic/OS/Windows/WindowService.cs
-@@ -1,17 +_,24 @@
+@@ -1,17 +_,28 @@
  using System;
 +#if !NETCORE
  using System.Drawing;
@@ -12,8 +12,11 @@
  
  namespace ReLogic.OS.Windows;
  
--internal class WindowService : IWindowService
++#if NETCORE
 +internal class WindowService : SDLWindowService
++#else
+ internal class WindowService : IWindowService
++#endif
  {
 -	public float GetScaling()
 +	public override float GetScaling()
@@ -40,35 +43,41 @@
  		}
  	}
  
-+	/*
++#if !NETCORE
  	public void SetUnicodeTitle(GameWindow window, string title)
  	{
  		NativeMethods.WndProcCallback wndProcCallback = NativeMethods.DefWindowProc;
-@@ -37,19 +_,23 @@
+@@ -37,19 +_,31 @@
  		NativeMethods.SetWindowLong(window.Handle, -4, dwNewLong);
  		GC.KeepAlive(wndProcCallback);
  	}
-+	*/
++#endif
  
 -	public void StartFlashingIcon(GameWindow window)
 +	public override void StartFlashingIcon(GameWindow window)
  	{
++#if NETCORE
 +		nint handle = Platform.SdlHandleToWindowsHandle(window.Handle);
--		NativeMethods.FlashInfo flashInfo = NativeMethods.FlashInfo.CreateStart(window.Handle);
 +		NativeMethods.FlashInfo flashInfo = NativeMethods.FlashInfo.CreateStart(handle);
++#else
+ 		NativeMethods.FlashInfo flashInfo = NativeMethods.FlashInfo.CreateStart(window.Handle);
++#endif
  		NativeMethods.FlashWindowEx(ref flashInfo);
  	}
  
 -	public void StopFlashingIcon(GameWindow window)
 +	public override void StopFlashingIcon(GameWindow window)
  	{
++#if NETCORE
 +		nint handle = Platform.SdlHandleToWindowsHandle(window.Handle);
--		NativeMethods.FlashInfo flashInfo = NativeMethods.FlashInfo.CreateStop(window.Handle);
 +		NativeMethods.FlashInfo flashInfo = NativeMethods.FlashInfo.CreateStop(handle);
++#else
+ 		NativeMethods.FlashInfo flashInfo = NativeMethods.FlashInfo.CreateStop(window.Handle);
++#endif
  		NativeMethods.FlashWindowEx(ref flashInfo);
  	}
  
-+	/*
++#if !NETCORE
  	public void Activate(GameWindow window)
  	{
  		((Form)Control.FromHandle(window.Handle)).Activate();
@@ -76,5 +85,5 @@
  		Form form = (Form)Control.FromHandle(window.Handle);
  		return new Microsoft.Xna.Framework.Rectangle(form.Bounds.X, form.Bounds.Y, form.Bounds.Width, form.Bounds.Height);
  	}
-+	*/
++#endif
  }

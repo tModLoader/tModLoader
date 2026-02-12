@@ -1,3 +1,4 @@
+#if NETCORE
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -279,3 +280,4 @@ internal sealed class Gateway
 		("NewPortMappingIndex", portMappingIndex)
 	);
 }
+#endif

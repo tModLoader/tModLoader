@@ -2,6 +2,7 @@
 
 namespace ReLogic.Localization.IME.WinImm32;
 
+#if NETCORE
 [StructLayout(LayoutKind.Sequential)]
 public struct CandidateList
 {
@@ -13,3 +14,4 @@ public struct CandidateList
 	public uint dwPageSize;
 	public uint dwOffset;
 }
+#endif
