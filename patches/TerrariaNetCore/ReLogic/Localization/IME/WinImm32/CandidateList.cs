@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿#if NETCORE
+using System.Runtime.InteropServices;
 
 namespace ReLogic.Localization.IME.WinImm32;
 
@@ -13,3 +14,4 @@ public struct CandidateList
 	public uint dwPageSize;
 	public uint dwOffset;
 }
+#endif

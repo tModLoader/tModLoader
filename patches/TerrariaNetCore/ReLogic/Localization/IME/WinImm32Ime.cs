@@ -1,3 +1,4 @@
+#if NETCORE
 using System;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -212,3 +213,4 @@ internal class WinImm32Ime : PlatformIme, IMessageFilter
 		Dispose(disposing: false);
 	}
 }
+#endif
