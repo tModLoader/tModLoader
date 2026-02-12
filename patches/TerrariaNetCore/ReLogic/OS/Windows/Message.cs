@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if NETCORE
+using System;
 using System.Runtime.InteropServices;
 
 namespace ReLogic.OS.Windows;
@@ -21,3 +22,4 @@ public struct Message
 		Result = IntPtr.Zero
 	};
 }
+#endif

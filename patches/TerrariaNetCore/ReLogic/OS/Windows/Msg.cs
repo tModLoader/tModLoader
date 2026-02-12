@@ -1,3 +1,4 @@
+#if NETCORE
 namespace ReLogic.Localization.IME.WinImm32;
 
 internal static class Msg
@@ -13,3 +14,4 @@ internal static class Msg
 	public const int WM_IME_SETCONTEXT = 641;
 	public const int WM_IME_NOTIFY = 642;
 }
+#endif
