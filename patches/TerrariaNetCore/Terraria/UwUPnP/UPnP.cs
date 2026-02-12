@@ -1,4 +1,4 @@
-using System;
+#if NETCORE
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -6,7 +6,6 @@ using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
-using Terraria;
 
 namespace UwUPnP;
 
@@ -95,3 +94,4 @@ public static class UPnP
 		.Select(a => a.Address)
 		.Where(a => a.AddressFamily == AddressFamily.InterNetwork || a.AddressFamily == AddressFamily.InterNetworkV6);
 }
+#endif

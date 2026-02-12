@@ -30,29 +30,37 @@
  
  				if (num >= 4) {
  					int width = binaryReader.ReadInt32();
-@@ -5403,7 +_,7 @@
+@@ -5403,7 +_,11 @@
  		}
  	}
  
--	public Main()
++#if NETCORE
 +	public Main() : base(headlessMode: dedServ)
++#else
+ 	public Main()
++#endif
  	{
  		instance = this;
  		UnpausedUpdateSeed = (ulong)Guid.NewGuid().GetHashCode();
-@@ -5702,7 +_,7 @@
+@@ -5702,7 +_,11 @@
  		ChatInitializer.Load();
  		LucyAxeMessage.Initialize();
  		if (Platform.IsWindows && !dedServ) {
--			IntPtr systemMenu = GetSystemMenu(base.Window.Handle, bRevert: false);
++#if NETCORE
 +			IntPtr systemMenu = GetSystemMenu(Platform.SdlHandleToWindowsHandle(base.Window.Handle), bRevert: false);
++#else
+ 			IntPtr systemMenu = GetSystemMenu(base.Window.Handle, bRevert: false);
++#endif
  			int menuItemCount = GetMenuItemCount(systemMenu);
  			RemoveMenu(systemMenu, menuItemCount - 1, 1024);
  		}
-@@ -9604,6 +_,7 @@
+@@ -9604,6 +_,9 @@
  		});
  
  		base.Window.AllowUserResizing = true;
++#if NETCORE
 +		CaptureManager.Instance = new CaptureManager(); // Move instance creation from class constructor to main thread to avoid deadlocks from content loading on JIT thread with FNA
++#endif
  		LoadSettings();
  		PreventUpdatingTargets = false;
  		SetDisplayMonitor();
@@ -82,12 +90,11 @@
  		Form form = null;
  		if (Platform.IsWindows) {
  			form = (Form)Control.FromHandle(instance.Window.Handle);
-@@ -57250,6 +_,8 @@
+@@ -57250,6 +_,7 @@
  		else {
  			screenMaximized = false;
  		}
 +#endif
-+		screenMaximized = false;
  
  		bool flag2 = false;
  		int num3;
@@ -136,10 +143,10 @@
 +#endif
  
 +		// Causes window maximization to not work.
-+		/*
++#if !NETCORE
  		width &= 0x7FFFFFFE;
  		height &= 0x7FFFFFFE;
-+		*/
++#endif
  		width = Math.Max(width, minScreenW);
  		height = Math.Max(height, minScreenH);
  		if (graphics.IsFullScreen != fullscreen) {
