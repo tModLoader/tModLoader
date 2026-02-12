@@ -3,7 +3,7 @@
 @@ -1,6 +_,8 @@
  using System;
  using System.Runtime.InteropServices;
-+#if !NETCORE
++#if WINDOWS
  using System.Windows.Forms;
 +#endif
  

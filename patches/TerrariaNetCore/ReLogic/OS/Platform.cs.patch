@@ -32,17 +32,18 @@
  	public readonly PlatformType Type;
  	private TypeInstanceCollection<object> _services = new TypeInstanceCollection<object>();
  	private bool _disposedValue;
-@@ -70,5 +_,13 @@
- 	public void Dispose()
+@@ -71,4 +_,14 @@
  	{
  		Dispose(disposing: true);
-+	}
+ 	}
 +
++#if NETCORE
 +	public static nint SdlHandleToWindowsHandle(nint windowHandle)
 +	{
 +		// Window.handle from FNAPlatform.CreateWindow() points to an SDL window instead of Win32 window
 +		// Need to convert it to Win32 window
 +		uint props = SDL3.SDL.SDL_GetWindowProperties(windowHandle);
 +		return SDL3.SDL.SDL_GetPointerProperty(props, "SDL.window.win32.hwnd", 0);
- 	}
++	}
++#endif
  }

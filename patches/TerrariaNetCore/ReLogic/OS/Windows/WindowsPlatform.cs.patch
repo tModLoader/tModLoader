@@ -1,17 +1,21 @@
 --- src/Terraria/ReLogic/OS/Windows/WindowsPlatform.cs
 +++ src/TerrariaNetCore/ReLogic/OS/Windows/WindowsPlatform.cs
-@@ -19,10 +_,13 @@
+@@ -19,10 +_,18 @@
  
  	public override void InitializeClientServices(IntPtr windowHandle)
  	{
-+		windowHandle = Platform.SdlHandleToWindowsHandle(windowHandle);
++#if NETCORE
++		windowHandle = SdlHandleToWindowsHandle(windowHandle);
++#endif
 +
  		if (_wndProcHook == null)
  			_wndProcHook = new WindowsMessageHook(windowHandle);
  
-+		// NetCore change from WindowsIme to WinImm32Ime
--		RegisterService((IImeService)new WindowsIme(_wndProcHook, windowHandle));
++#if NETCORE
 +		RegisterService((IImeService)new WinImm32Ime(_wndProcHook, windowHandle));
++#else
+ 		RegisterService((IImeService)new WindowsIme(_wndProcHook, windowHandle));
++#endif
  		RegisterService((IMouseNotifier)new WindowsMouseNotifier(_wndProcHook));
  	}
  
