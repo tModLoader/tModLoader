@@ -391,16 +391,22 @@ public static partial class Program
 		if (isServer)
 			return;
 
+		// Move DPI detection before early return.
 		if (Platform.IsWindows) {
 			[System.Runtime.InteropServices.DllImport("user32.dll")]
 			static extern bool SetProcessDPIAware();
 
 			SetProcessDPIAware();
 		}
-
 		SDL2.SDL.SDL_VideoInit(null);
 		SDL2.SDL.SDL_GetDisplayDPI(0, out var ddpi, out float hdpi, out float vdpi);
 		Logging.tML.Info($"Display DPI: Diagonal DPI is {ddpi}. Vertical DPI is {vdpi}. Horizontal DPI is {hdpi}");
+
+		// Only affect OSX path, see dicussion on https://github.com/tModLoader/tModLoader/pull/4951 for the reason.
+		if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX)) {
+			return; // Let FNA decide by /enablehighdpi command-line argument, default: 0
+		}
+		
 		if (ddpi >= HighDpiThreshold || hdpi >= HighDpiThreshold || vdpi >= HighDpiThreshold) {
 			Environment.SetEnvironmentVariable("FNA_GRAPHICS_ENABLE_HIGHDPI", "1");
 			Logging.tML.Info($"High DPI Display detected: setting FNA to highdpi mode");
