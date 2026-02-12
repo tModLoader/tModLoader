@@ -1,9 +1,9 @@
-﻿#if NETCORE
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
 
 namespace ReLogic.OS.Windows;
 
+#if NETCORE
 [StructLayout(LayoutKind.Sequential)]
 public struct Message
 {

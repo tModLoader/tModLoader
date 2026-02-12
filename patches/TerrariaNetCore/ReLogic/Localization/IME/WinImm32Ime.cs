@@ -1,4 +1,3 @@
-#if NETCORE
 using System;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -9,6 +8,7 @@ using NativeMethods = ReLogic.Localization.IME.WinImm32.NativeMethods;
 
 namespace ReLogic.Localization.IME;
 
+#if NETCORE
 internal class WinImm32Ime : PlatformIme, IMessageFilter
 {
 	private IntPtr _hWnd;

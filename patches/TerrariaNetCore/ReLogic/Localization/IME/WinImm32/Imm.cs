@@ -1,6 +1,6 @@
-#if NETCORE
 namespace ReLogic.Localization.IME.WinImm32;
 
+#if NETCORE
 internal static class Imm
 {
 	public const int ISC_SHOWUICANDIDATEWINDOW = 1;

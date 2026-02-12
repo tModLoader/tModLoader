@@ -1,6 +1,6 @@
-﻿#if NETCORE
-namespace ReLogic.OS.Windows;
+﻿namespace ReLogic.OS.Windows;
 
+#if NETCORE
 public interface IMessageFilter
 {
 	bool PreFilterMessage(ref Message m);

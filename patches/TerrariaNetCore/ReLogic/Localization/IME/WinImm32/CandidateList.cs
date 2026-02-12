@@ -1,8 +1,8 @@
-﻿#if NETCORE
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 
 namespace ReLogic.Localization.IME.WinImm32;
 
+#if NETCORE
 [StructLayout(LayoutKind.Sequential)]
 public struct CandidateList
 {

@@ -1,6 +1,6 @@
-#if NETCORE
 namespace ReLogic.Localization.IME.WinImm32;
 
+#if NETCORE
 internal static class Msg
 {
 	public const int WM_SETFOCUS = 7;
