@@ -80,16 +80,20 @@
  		}
  
  		Apply();
-@@ -74,6 +_,12 @@
+@@ -111,8 +_,16 @@
  	public ArmorShaderData UseImage(string path)
  	{
- 		_uImage = Main.Assets.Request<Texture2D>(path);
+ 		if (!Main.dedServ)
+ 			_uImage = Main.Assets.Request<Texture2D>(path);
+ 
 +		return this;
 +	}
 +
 +	public ArmorShaderData UseImage(Asset<Texture2D> asset)
 +	{
-+		_uImage = asset;
++		if (!Main.dedServ)
++			_uImage = asset;
++
  		return this;
  	}
  

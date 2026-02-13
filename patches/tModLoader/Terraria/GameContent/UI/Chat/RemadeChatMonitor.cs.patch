@@ -1,9 +1,10 @@
 --- src/TerrariaNetCore/Terraria/GameContent/UI/Chat/RemadeChatMonitor.cs
 +++ src/tModLoader/Terraria/GameContent/UI/Chat/RemadeChatMonitor.cs
-@@ -32,6 +_,8 @@
+@@ -34,7 +_,9 @@
  
  	public void AddNewMessage(string text, Color color, int widthLimitInPixels = -1)
  	{
+ 		Trace.WriteLine("[chat] " + text);
 +		if (Main.dedServ) // TML: added to prevent Main.NewText causing exception on server
 +			return;
  		ChatMessageContainer chatMessageContainer = new ChatMessageContainer();

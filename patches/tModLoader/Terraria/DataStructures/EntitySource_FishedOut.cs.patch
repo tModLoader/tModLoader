@@ -10,17 +10,17 @@
 +/// </summary>
  public class EntitySource_FishedOut : IEntitySource
  {
--	public readonly Entity Entity;
+-	public readonly IEntitySourceTarget Entity;
 -
--	public EntitySource_FishedOut(Entity entity)
+-	public EntitySource_FishedOut(IEntitySourceTarget entity)
 +	/// <summary>
 +	/// The entity which was fishing. Normally a <see cref="Player"/>
 +	/// </summary>
-+	public Entity Fisher { get; }
++	public IEntitySourceTarget Fisher { get; }
 +
 +	public string? Context { get; }
 +
-+	public EntitySource_FishedOut(Entity fisher, string? context = null)
++	public EntitySource_FishedOut(IEntitySourceTarget fisher, string? context = null)
  	{
 -		Entity = entity;
 +		Fisher = fisher;

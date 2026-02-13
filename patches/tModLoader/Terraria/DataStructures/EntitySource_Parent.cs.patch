@@ -11,18 +11,18 @@
 +/// </summary>
  public class EntitySource_Parent : IEntitySource
  {
--	public readonly Entity Entity;
+-	public readonly IEntitySourceTarget Entity;
 -
--	public EntitySource_Parent(Entity entity)
+-	public EntitySource_Parent(IEntitySourceTarget entity)
 +	/// <summary>
 +	/// The entity which is the source of the effect or action.
 +	/// In many cases, it makes sense to consider buffs or effects applied to the parent entity, and make changes to the spawned entity.
 +	/// </summary>
-+	public Entity Entity { get; }
++	public IEntitySourceTarget Entity { get; }
 +
 +	public string? Context { get; }
 +
-+	public EntitySource_Parent(Entity entity, string? context = null)
++	public EntitySource_Parent(IEntitySourceTarget entity, string? context = null)
  	{
  		Entity = entity;
 +		Context = context;

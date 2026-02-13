@@ -61,16 +61,18 @@
  
  			Apply();
  		}
-@@ -67,6 +_,12 @@
- 	public HairShaderData UseImage(string path)
+@@ -99,6 +_,14 @@
  	{
- 		_uImage = Main.Assets.Request<Texture2D>(path);
+ 		if (!Main.dedServ)
+ 			_uImage = Main.Assets.Request<Texture2D>(path);
++
 +		return this;
 +	}
 +
 +	public HairShaderData UseImage(Asset<Texture2D> asset)
 +	{
-+		_uImage = asset;
++		if (!Main.dedServ)
++			_uImage = asset;
+ 
  		return this;
  	}
- 

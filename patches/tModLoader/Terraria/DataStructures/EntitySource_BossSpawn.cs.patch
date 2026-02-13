@@ -10,18 +10,18 @@
 +/// </summary>
  public class EntitySource_BossSpawn : IEntitySource
  {
--	public readonly Entity Entity;
+-	public readonly IEntitySourceTarget Entity;
 -
--	public EntitySource_BossSpawn(Entity entity)
+-	public EntitySource_BossSpawn(IEntitySourceTarget entity)
 +	/// <summary>
 +	/// The entity which this boss spawn on. <br/><br/>
 +	/// In the vast majority of cases, this will be a <see cref="Player"/>. Often <see cref="NPC.target"/> will be set to <c>Player.whoAmI</c>
 +	/// </summary>
-+	public Entity Target { get; }
++	public IEntitySourceTarget Target { get; }
 +
 +	public string? Context { get; }
 +
-+	public EntitySource_BossSpawn(Entity target, string? context = null)
++	public EntitySource_BossSpawn(IEntitySourceTarget target, string? context = null)
  	{
 -		Entity = entity;
 +		Target = target;

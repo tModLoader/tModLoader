@@ -1,45 +1,39 @@
 --- src/TerrariaNetCore/Terraria/GameContent/Drawing/WallDrawing.cs
 +++ src/tModLoader/Terraria/GameContent/Drawing/WallDrawing.cs
-@@ -3,13 +_,14 @@
+@@ -2,15 +_,16 @@
  using Microsoft.Xna.Framework.Graphics;
+ using Terraria.GameContent.Liquid;
  using Terraria.Graphics;
  using Terraria.ID;
+ using Terraria.Testing;
 +using Terraria.ModLoader;
  
  namespace Terraria.GameContent.Drawing;
  
- public class WallDrawing
+ public class WallDrawing : TileDrawingBase
  {
+ 	public static bool QuickPaintLookup = true;
  	private static VertexColors _glowPaintColors = new VertexColors(Color.White);
 -	private Tile[,] _tileArray;
 +	private Tilemap _tileArray;
  	private TilePaintSystemV2 _paintSystem;
  	private bool _shouldShowInvisibleWalls;
- 
-@@ -58,6 +_,7 @@
- 
- 		int num5 = (int)((screenPosition.X - vector.X) / 16f - 1f);
- 		int num6 = (int)((screenPosition.X + (float)screenWidth + vector.X) / 16f) + 2;
-+		// Patch note: These locals are used below.
- 		int num7 = (int)((screenPosition.Y - vector.Y) / 16f - 1f);
- 		int num8 = (int)((screenPosition.Y + (float)screenHeight + vector.Y) / 16f) + 5;
- 		int num9 = offScreenRange / 16;
-@@ -78,8 +_,12 @@
+@@ -64,8 +_,12 @@
  		Rectangle value = new Rectangle(0, 0, 32, 32);
  		int underworldLayer = Main.UnderworldLayer;
- 		Point screenOverdrawOffset = Main.GetScreenOverdrawOffset();
+ 		_lastPaintLookupKey = default(TilePaintSystemV2.WallVariationKey);
+-		for (int i = firstTileY; i < lastTileY; i++) {
+-			for (int j = firstTileX; j < lastTileX; j++) {
 +
 +		// TML:
 +		// Swapped loop iteration order to improve memory access linearity.
 +		// Minor perf improvement, may cause slight visual discrepancies with tiles that overdraw
--		for (int i = num7 - num10 + screenOverdrawOffset.Y; i < num8 + num10 - screenOverdrawOffset.Y; i++) {
-+		for (int j = num5 - num9 + screenOverdrawOffset.X; j < num6 + num9 - screenOverdrawOffset.X; j++) {
--			for (int j = num5 - num9 + screenOverdrawOffset.X; j < num6 + num9 - screenOverdrawOffset.X; j++) {
-+			for (int i = num7 - num10 + screenOverdrawOffset.Y; i < num8 + num10 - screenOverdrawOffset.Y; i++) {
++		for (int j = firstTileX; j < lastTileX; j++) {
++			for (int i = firstTileY; i < lastTileY; i++) {
  				Tile tile = _tileArray[j, i];
  				if (tile == null) {
  					tile = new Tile();
-@@ -87,9 +_,15 @@
+@@ -73,9 +_,15 @@
  				}
  
  				ushort wall = tile.wall;
@@ -55,9 +49,9 @@
  				Color color = Lighting.GetColor(j, i);
  				if (tile.fullbrightWall())
  					color = Color.White;
-@@ -159,6 +_,9 @@
+@@ -155,6 +_,9 @@
  					if (flag3)
- 						spriteBatch.Draw(TextureAssets.WallOutline.Value, new Vector2(j * 16 - (int)screenPosition.X, i * 16 - (int)screenPosition.Y + 14) + vector, new Rectangle(0, 14, 16, 2), color, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+ 						DrawOutline(TextureAssets.WallOutline.Value, new Vector2(j * 16 - (int)screenPosition.X, i * 16 - (int)screenPosition.Y + 14) + drawOffSet, new Rectangle(0, 14, 16, 2), color);
  				}
 +
 +				PostDraw:

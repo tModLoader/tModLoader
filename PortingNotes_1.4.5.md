@@ -52,6 +52,14 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Update https://github.com/tModLoader/tModLoader/wiki/Vanilla-Content-IDs#achievement-identifiers with new achievements
 - https://github.com/tModLoader/tModLoader/pull/3500 seems to have changed ItemSourceID.PlayerDropItemCheck to ThrowItem. In 1.4.5 it was renamed to PlayerDrop and there is a new InventoryOverflow. Double check that the #3500 logic applies to the fixed 1.4.5 code. Maybe see if ThrowItem is a better name than PlayerDrop and can be fixed in Terraria, otherwise tModPorter it or double check that it is patched everywhere to use the new names.
 - Also, ItemSourceID.SortingWithNoSpace has been removed.
+- TileLoader.IsTileDangerous (and other methods?) now takes `Main.SceneMetrics.PerspectivePlayer` as input, not necessarily the LocalPlayer. I think this means dangersense should work when spectating. Need docs updates.
+- TileLoader.IsTileSpelunkable also takes `Main.SceneMetrics.PerspectivePlayer`. These hooks now need a Player parameter, they don't currently have one.
+- TileLoader.IsTileBiomeSightable as well.
+- TileLoader.SpecialDraw (and other tile methods I assume) now takes a TileBatch instead of Main.spriteBatch. What does this affect? How will mods need to change? Why do some methods in TileDrawing still use Main.spriteBatch?
+- DuplicationMenuToolsFilter needs: 213, 5295, 5667
+- Make sure ItemFilters.MiscFilter is properly resizing.
+- Does the new `uLightSource.SetValue(Vector3.Zero);` (`EffectParameter` class) do what `base.Shader.Parameters["uLightSource"]?.SetValue(Vector3.Zero);` used to do? "Allow shaders to omit parameters they don't use, no longer throw exception" (https://github.com/tModLoader/tModLoader/commit/30b2b9b1e3347a1c98ebe6924811ba5e82391dc3). Check ReflectiveArmorShaderData and other usages.
+- ShaderData classes now have `if (Main.dedServ)` checks. Are these overzealous, or do we need to adjust other places or inform modders that shader code might attempt to run on servers.
 
 # New Fields that might need more documentation
 
@@ -112,6 +120,8 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - TileID.Sets.IsATrigger changed to TileID.Sets.Wiring.IsATrigger
 - TileID.Sets.IsAMechanism changed to TileID.Sets.Wiring.IsAMechanism. The function of the set might have changed, investigate and update docs
 - NPCID.Sets.UsesNewTargetting renamed to UsesNewTargeting
+- GoreID.Sets.LiquidDroplet renamed to IsDrip
+- WorldGen.gen renamed to isGeneratingOrLoadingWorld
 
 # Terraria update requests
 
@@ -121,7 +131,6 @@ These are simple changes that we'd like Terraria to implement, mainly to reduce 
 - Use SmartCursorHelper.IsHoveringOverAnInteractibleTileThatBlocksSmartCursor to make TileID.Sets.DisableSmartCursor
 - Typo: SmartCursorHelper.IsHoveringOverAnInteractibleTileThatBlocksSmartCursor -> Interactable
 - In Step_Torch, change "bool flag = !ItemID.Sets.WaterTorches[type];" to "bool flag = !ItemID.Sets.WaterTorches[providedInfo.player.BiomeTorchHoldStyle(providedInfo.item.type)];" to "Allow underwater biome torches to work" (Coral Torches don't work while in the ocean)
-- AWorkshopPublishInfoState.UpdateImagePreview -> Fixed icon file handles lingering - https://github.com/tModLoader/tModLoader/pull/4424/changes/8d63f808c90715cb4fda5b4f6ea56af691ad5d75
 - de-DE/Main.json has a lot of fixes in it, should some of these fixes be brought into Terraria? Are they actually correct? Some English.
 - https://github.com/tModLoader/tModLoader/commit/fced57a0725a6fabc171616487adf5166cbb89ef has several changes similar to `new MemoryStream(FileUtilities.ReadAllBytes(text, isCloudSave));` -> `FileUtilities.ReadAllBytes(text, isCloudSave).ToMemoryStream();`, to "Fix bug where BinaryIO failed to access the buffer of non-public MemoryStream". Do these need to be fixed in Terraria as well?
 - https://github.com/tModLoader/tModLoader/commit/a532a537df39d3787829299e0835a3e29263fe7d has a fix for "Fix map saving if loading corrupted map file.". Check if this is still the case and suggest a fix in Terraria.
@@ -129,6 +138,8 @@ These are simple changes that we'd like Terraria to implement, mainly to reduce 
 - NPC.catchItem, change from short to int?
 - Add `Color color = new Color(175, 75, 255);` to the start of `DoDeathEvents_CelebrateBossDeath` and use it in all the ChatHelper.BroadcastChatMessage and Main.NewText method calls. (Big patches)
 - `private static readonly bool[] SafeDust` and `private static readonly bool[] SafeGore` being private and readonly, unlike every other set, is a bit odd.
+- Typos: "editting" -> "editing". `UIVirtualKeyboard._edittingSign`, `UIVirtualKeyboard._edittingChest`, `PlayerInputProfile.AllowEditting`. Also, "Edittable" in input profiles.json, but probably don't fix that one since it'll break saved data.
+- More simple typos: GemTree_Sappphire, garenteeNewStyle, caveOpenningSize, IsTileReplacable, DrawUnderworldBackgroudLayer, Dodgable, MakeHairsylesMenu, `_requiredObjecsForCraftingText`, pointPoisition, "GameUI.PrecentFishingPower", GemTree_Sappphire, Sillouette->Silhouette, WhoAmIToTargettingIndex, Emittence->Emittance, actuatorsLeftToConstume
 
 # Longer Patch issues:
 

@@ -9,9 +9,11 @@
  
  namespace ReLogic.Content.Sources;
  
-@@ -7,17 +_,57 @@
+@@ -7,18 +_,58 @@
  {
  	IContentValidator ContentValidator { get; set; }
+ 
+ 	string FileWatcherPath { get; }
  
 +	/*
  	bool HasAsset(string assetName);
@@ -67,4 +69,3 @@
 +
 +		return EnumerateAssets().Where(s => s.StartsWith(assetNameStart, comparison));
 +	}
- }

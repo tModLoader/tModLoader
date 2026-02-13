@@ -9,7 +9,7 @@
  namespace Terraria.Chat.Commands;
  
 @@ -9,7 +_,8 @@
- public class EmojiCommand : IChatCommand
+ public class EmojiCommand : IChatCommand, ICommandAliasProvider
  {
  	public const int PlayerEmojiDuration = 360;
 +	// TML: Changed from private readonly to internal static so we can change it from LocalizationLoader
@@ -18,8 +18,8 @@
  
  	public EmojiCommand()
  	{
-@@ -34,7 +_,7 @@
- 	{
+@@ -47,7 +_,7 @@
+ 
  		int result = -1;
  		if (int.TryParse(message.Text, out result)) {
 -			if (result < 0 || result >= EmoteID.Count)

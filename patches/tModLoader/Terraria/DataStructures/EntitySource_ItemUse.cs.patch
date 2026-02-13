@@ -7,10 +7,10 @@
  
 -public class EntitySource_ItemUse : IEntitySource
 -{
--	public readonly Entity Entity;
+-	public readonly IEntitySourceTarget Entity;
 -	public readonly Item Item;
 -
--	public EntitySource_ItemUse(Entity entity, Item item)
+-	public EntitySource_ItemUse(IEntitySourceTarget entity, Item item)
 +/// <summary>
 +/// Used along with <see cref="EntitySource_Parent"/> to indicate that stats from the item should be transferred to spawned entities. <br/>
 +/// When used to spawn projectiles, a snapshot of the Player and Item stats will be stored on the projectile. See <see cref="Projectile.ApplyStatsFromSource"/> for implementation

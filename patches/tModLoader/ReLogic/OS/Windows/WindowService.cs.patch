@@ -1,17 +1,20 @@
 --- src/TerrariaNetCore/ReLogic/OS/Windows/WindowService.cs
 +++ src/tModLoader/ReLogic/OS/Windows/WindowService.cs
-@@ -1,5 +_,6 @@
+@@ -1,9 +_,10 @@
  using System;
+ #if !NETCORE
  using System.Drawing;
-+using System.IO;
  using System.Runtime.InteropServices;
+ using System.Windows.Forms;
+ #endif
  using Microsoft.Xna.Framework;
++using System.IO;
+ using ReLogic.OS.Base;
  
-@@ -54,5 +_,41 @@
- 	{
- 		NativeMethods.FlashInfo flashInfo = NativeMethods.FlashInfo.CreateStop(window.Handle);
- 		NativeMethods.FlashWindowEx(ref flashInfo);
-+	}
+@@ -99,4 +_,40 @@
+ 		return new Microsoft.Xna.Framework.Rectangle(form.Bounds.X, form.Bounds.Y, form.Bounds.Width, form.Bounds.Height);
+ 	}
+ #endif
 +
 +	// Added by TML.
 +	public void HideConsole()
@@ -47,5 +50,5 @@
 +		else {
 +			Console.WriteLine("Failed to allocate console.");
 +		}
- 	}
++	}
  }

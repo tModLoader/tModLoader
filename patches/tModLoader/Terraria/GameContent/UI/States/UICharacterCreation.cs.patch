@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/GameContent/UI/States/UICharacterCreation.cs
 +++ src/tModLoader/Terraria/GameContent/UI/States/UICharacterCreation.cs
-@@ -13,6 +_,7 @@
+@@ -15,6 +_,7 @@
  using Terraria.Initializers;
  using Terraria.IO;
  using Terraria.Localization;
@@ -8,7 +8,7 @@
  using Terraria.UI;
  using Terraria.UI.Gamepad;
  
-@@ -1054,6 +_,15 @@
+@@ -1536,7 +_,16 @@
  				break;
  		}
  
@@ -21,10 +21,11 @@
 +			};
 +		}
 +
+ 		_femaleArmor = (_maleArmor = default(ArmorAssignments));
  		Click_CharClothStyle(null, null);
  		UpdateSelectedGender();
  		UpdateColorPickers();
-@@ -1117,8 +_,14 @@
+@@ -1601,8 +_,14 @@
  		int num = 0;
  		byte difficulty = _player.difficulty;
  		if (difficulty == 3) {
@@ -39,7 +40,7 @@
  			_player.inventory[num].SetDefaults(6);
  			_player.inventory[num++].Prefix(-1);
  			_player.inventory[num].SetDefaults(1);
-@@ -1156,6 +_,10 @@
+@@ -1641,6 +_,10 @@
  
  		_player.savedPerPlayerFieldsThatArentInThePlayerClass = new Player.SavedPlayerDataWithAnnoyingRules();
  		CreativePowerManager.Instance.ResetDataForNewPlayer(_player);

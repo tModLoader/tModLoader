@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/GameContent/Creative/ItemFilters.cs
 +++ src/tModLoader/Terraria/GameContent/Creative/ItemFilters.cs
-@@ -5,6 +_,7 @@
+@@ -7,6 +_,7 @@
  using Terraria.DataStructures;
  using Terraria.GameContent.UI.Elements;
  using Terraria.ID;
@@ -41,23 +41,26 @@
  					return true;
  			}
  
-@@ -107,6 +_,7 @@
+@@ -111,8 +_,9 @@
  
  	public class Tools : IItemEntryFilter, IEntryFilter<Item>
  	{
 +		/* Replaced by ItemID.Sets.DuplicationMenuToolsFilter
  		private HashSet<int> _itemIdsThatAreAccepted = new HashSet<int> {
+ 			213,
+ 			5295,
  			509,
  			850,
-@@ -163,6 +_,7 @@
+@@ -169,7 +_,8 @@
  			4049,
- 			114
+ 			114,
+ 			5667
  		};
 +		*/
  
  		public bool FitsFilter(Item entry)
  		{
-@@ -181,7 +_,10 @@
+@@ -188,7 +_,10 @@
  			if (entry.tileWand != -1)
  				return true;
  
@@ -68,12 +71,13 @@
  				return true;
  
  			return false;
-@@ -354,7 +_,7 @@
+@@ -368,7 +_,8 @@
+ 		private readonly List<IItemEntryFilter> otherFiltersToCheckAgainst;
+-		private bool?[] _fitsFilterByItemType = new bool?[ItemID.Count];
++		private bool?[] _fitsFilterByItemType;
  
  		public MiscFallback(List<IItemEntryFilter> otherFiltersToCheckAgainst)
  		{
--			short count = ItemID.Count;
-+			int count = ItemLoader.ItemCount;
- 			_fitsFilterByItemType = new bool[count];
- 			for (int i = 1; i < count; i++) {
- 				_fitsFilterByItemType[i] = true;
+ 			this.otherFiltersToCheckAgainst = otherFiltersToCheckAgainst;
++			_fitsFilterByItemType = new bool?[ItemLoader.ItemCount];
+ 		}

@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/GameContent/UI/Elements/UICharacter.cs
 +++ src/tModLoader/Terraria/GameContent/UI/Elements/UICharacter.cs
-@@ -26,6 +_,9 @@
+@@ -28,6 +_,9 @@
  		if (useAClone) {
  			_player = player.SerializedClone();
  			_player.dead = false;
@@ -10,7 +10,7 @@
  			_player.PlayerFrame();
  		}
  
-@@ -45,7 +_,8 @@
+@@ -47,7 +_,8 @@
  	{
  		if (!_player.hideMisc[0]) {
  			Item item = _player.miscEquips[0];
@@ -20,17 +20,7 @@
  				int shoot = item.shoot;
  				_petProjectiles = new Projectile[1] {
  					PreparePetProjectiles_CreatePetProjectileDummy(shoot)
-@@ -64,6 +_,9 @@
- 
- 	public override void Update(GameTime gameTime)
- 	{
-+		// Override the current player reference until the end of this method.
-+		using var _currentPlr = new Main.CurrentPlayerOverride(_player);
-+
- 		_player.ResetEffects();
- 		_player.ResetVisibleAccessories();
- 		_player.UpdateMiscCounter();
-@@ -89,6 +_,9 @@
+@@ -86,6 +_,9 @@
  
  	protected override void DrawSelf(SpriteBatch spriteBatch)
  	{

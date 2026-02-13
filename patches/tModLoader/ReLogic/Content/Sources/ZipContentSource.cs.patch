@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/ReLogic/Content/Sources/ZipContentSource.cs
 +++ src/tModLoader/ReLogic/Content/Sources/ZipContentSource.cs
-@@ -7,18 +_,16 @@
+@@ -7,20 +_,18 @@
  
  namespace ReLogic.Content.Sources;
  
@@ -18,33 +18,24 @@
  
 -	public IContentValidator ContentValidator { get; set; }
 -
+ 	public string FileWatcherPath => null;
+ 
  	public ZipContentSource(string path)
  		: this(path, "")
  	{
-@@ -31,7 +_,8 @@
+@@ -38,5 +_,6 @@
  			throw new ArgumentException("Content directory cannot contain \"..\"", "contentDir");
  
  		_basePath = CleanZipPath(contentDir);
--		BuildExtensionFreeEntryList();
+-		Refresh();
 +
 +		BuildEntryList(); //BuildExtensionFreeEntryList();
  	}
- 
- 	public ZipContentSource(ZipFile zip, string contentDir)
-@@ -41,9 +_,11 @@
- 			throw new ArgumentException("Content directory cannot contain \"..\"", "contentDir");
- 
- 		_basePath = CleanZipPath(contentDir);
--		BuildExtensionFreeEntryList();
-+
-+		BuildEntryList(); //BuildExtensionFreeEntryList();
- 	}
- 
+@@ -44,2 +_,3 @@
 +	/*
  	public bool HasAsset(string assetName)
  	{
- 		if (!_entries.TryGetValue(assetName, out var _))
-@@ -73,28 +_,42 @@
+@@ -70,28 +_,42 @@
  
  		return Path.GetExtension(value.FileName) ?? "";
  	}
@@ -69,7 +60,7 @@
  	}
  
 +	//TML: Renamed from BuildExtensionFreeEntryList()
--	private void BuildExtensionFreeEntryList()
+-	public void Refresh()
 +	private void BuildEntryList()
  	{
  		_entries.Clear();
@@ -90,7 +81,7 @@
  	}
  
  	private static bool ZipPathContainsInvalidCharacters(string path)
-@@ -132,6 +_,7 @@
+@@ -129,6 +_,7 @@
  		Dispose(disposing: true);
  	}
  
@@ -98,7 +89,7 @@
  	public void RejectAsset(string assetName, IRejectionReason reason)
  	{
  		_rejections.Reject(assetName, reason);
-@@ -143,4 +_,5 @@
+@@ -140,4 +_,5 @@
  	}
  
  	public bool TryGetRejections(List<string> rejectionReasons) => _rejections.TryGetRejections(rejectionReasons);

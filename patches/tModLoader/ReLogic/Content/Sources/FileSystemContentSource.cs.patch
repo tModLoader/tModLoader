@@ -23,10 +23,10 @@
  
  	public int FileCount => _nameToAbsolutePath.Count;
  
-@@ -21,8 +_,17 @@
+@@ -23,8 +_,17 @@
  			_basePath += Path.DirectorySeparatorChar;
  
- 		BuildNameToAbsolutePathDictionary();
+ 		Refresh();
 +
 +		// Added by TML.
 +		SetAssetNames(_nameToAbsolutePath.Keys);
@@ -41,7 +41,7 @@
  	public bool HasAsset(string assetName)
  	{
  		if (_rejections.IsRejected(assetName))
-@@ -49,8 +_,9 @@
+@@ -51,8 +_,9 @@
  
  		return Path.GetExtension(value) ?? "";
  	}
@@ -52,7 +52,7 @@
  	{
  		if (!_nameToAbsolutePath.TryGetValue(assetName, out var value))
  			throw AssetLoadException.FromMissingAsset(assetName);
-@@ -72,14 +_,19 @@
+@@ -75,14 +_,19 @@
  			string[] files = Directory.GetFiles(_basePath, "*", SearchOption.AllDirectories);
  			for (int i = 0; i < files.Length; i++) {
  				string fullPath = Path.GetFullPath(files[i]);
@@ -72,7 +72,7 @@
  	public void RejectAsset(string assetName, IRejectionReason reason)
  	{
  		_rejections.Reject(assetName, reason);
-@@ -91,4 +_,5 @@
+@@ -94,4 +_,5 @@
  	}
  
  	public bool TryGetRejections(List<string> rejectionReasons) => _rejections.TryGetRejections(rejectionReasons);

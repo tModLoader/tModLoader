@@ -11,16 +11,16 @@
 +/// </summary>
  public class EntitySource_TileInteraction : AEntitySource_Tile
  {
--	public readonly Entity Entity;
+-	public readonly IEntitySourceTarget Entity;
 +	/// <summary>
 +	/// The entity interacting with the tile. <br/>
 +	/// Normally a <see cref="Player"/>
 +	/// </summary>
-+	public Entity Entity { get; }
++	public IEntitySourceTarget Entity { get; }
  
--	public EntitySource_TileInteraction(Entity entity, int tileCoordsX, int tileCoordsY)
+-	public EntitySource_TileInteraction(IEntitySourceTarget entity, int tileCoordsX, int tileCoordsY)
 -		: base(tileCoordsX, tileCoordsY)
-+	public EntitySource_TileInteraction(Entity entity, int tileCoordsX, int tileCoordsY, string? context = null) : base(tileCoordsX, tileCoordsY, context)
++	public EntitySource_TileInteraction(IEntitySourceTarget entity, int tileCoordsX, int tileCoordsY, string? context = null) : base(tileCoordsX, tileCoordsY, context)
  	{
  		Entity = entity;
  	}

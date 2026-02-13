@@ -139,10 +139,11 @@
  	public static int[] CoinsSplit(long count)
  	{
  		int[] array = new int[4];
-@@ -928,17 +_,32 @@
+@@ -928,18 +_,34 @@
  			return false;
  		}
  	}
++
 +	private static void OpenFolderXdg(string folderPath)
 +	{
 +		ProcessStartInfo processStartInfo = new ProcessStartInfo {
@@ -171,8 +172,9 @@
 +				OpenFolderXdg(folderPath);
  			}
  			else {
+ #if NETCORE
  				Process.Start(new ProcessStartInfo(folderPath) { UseShellExecute = true });
-@@ -956,6 +_,11 @@
+@@ -960,6 +_,11 @@
  		return array;
  	}
  
@@ -184,7 +186,7 @@
  	public static float NextFloat(this UnifiedRandom r) => (float)r.NextDouble();
  	public static float NextFloatDirection(this UnifiedRandom r) => (float)r.NextDouble() * 2f - 1f;
  	public static float NextFloat(this UnifiedRandom random, FloatRange range) => random.NextFloat() * (range.Maximum - range.Minimum) + range.Minimum;
-@@ -990,6 +_,7 @@
+@@ -1011,6 +_,7 @@
  		return asset.Value.Height;
  	}
  
@@ -192,7 +194,7 @@
  	public static Rectangle Frame(this Asset<Texture2D> tex, int horizontalFrames = 1, int verticalFrames = 1, int frameX = 0, int frameY = 0, int sizeOffsetX = 0, int sizeOffsetY = 0)
  	{
  		if (!tex.IsLoaded)
-@@ -1013,6 +_,10 @@
+@@ -1034,6 +_,10 @@
  		return tex.Value.Size();
  	}
  
@@ -203,7 +205,7 @@
  	public static Rectangle Frame(this Texture2D tex, int horizontalFrames = 1, int verticalFrames = 1, int frameX = 0, int frameY = 0, int sizeOffsetX = 0, int sizeOffsetY = 0)
  	{
  		int num = tex.Width / horizontalFrames;
-@@ -1288,8 +_,10 @@
+@@ -1309,8 +_,10 @@
  	public static Vector2 ToVector2(this Point16 p) => new Vector2(p.X, p.Y);
  	public static Vector3 ToVector3(this Vector2 v) => new Vector3(v.X, v.Y, 0f);
  	public static Vector2D ToVector2D(this Point p) => new Vector2D(p.X, p.Y);
@@ -214,7 +216,7 @@
  	public static Vector2 ToWorldCoordinates(this Point16 p, float autoAddX = 8f, float autoAddY = 8f) => p.ToVector2() * 16f + new Vector2(autoAddX, autoAddY);
  
  	public static Vector2 MoveTowards(this Vector2 currentPosition, Vector2 targetPosition, float maxAmountAllowedToMove)
-@@ -1314,15 +_,22 @@
+@@ -1335,15 +_,22 @@
  		return num2;
  	}
  
@@ -237,7 +239,7 @@
  	public static Vector2 SafeNormalize(this Vector2 v, Vector2 defaultValue)
  	{
  		if (v == Vector2.Zero || v.HasNaNs())
-@@ -1339,8 +_,9 @@
+@@ -1360,8 +_,9 @@
  		return Vector2D.Normalize(v);
  	}
  
@@ -247,7 +249,7 @@
  	public static Vector2 ClosestPointOnLine(this Vector2 P, Vector2 A, Vector2 B)
  	{
  		Vector2 value = P - A;
-@@ -1409,16 +_,24 @@
+@@ -1430,16 +_,24 @@
  	public static float DistanceSQ(this Vector2 Origin, Vector2 Target) => Vector2.DistanceSquared(Origin, Target);
  	public static Vector2 DirectionTo(this Vector2 Origin, Vector2 Target) => Vector2.Normalize(Target - Origin);
  	public static Vector2 DirectionFrom(this Vector2 Origin, Vector2 Target) => Vector2.Normalize(Origin - Target);
@@ -272,7 +274,7 @@
  	public static int ToDirectionInt(this bool value)
  	{
  		if (!value)
-@@ -1427,6 +_,7 @@
+@@ -1448,6 +_,7 @@
  		return 1;
  	}
  
@@ -280,7 +282,7 @@
  	public static int ToInt(this bool value)
  	{
  		if (!value)
-@@ -1539,6 +_,7 @@
+@@ -1560,6 +_,7 @@
  		return false;
  	}
  
@@ -288,7 +290,7 @@
  	public static List<int> GetTrueIndexes(this bool[] array)
  	{
  		List<int> list = new List<int>();
-@@ -1832,14 +_,26 @@
+@@ -1853,14 +_,26 @@
  			text.Substring(0, maxCharactersDisplayed);
  
  		DynamicSpriteFont value = FontAssets.DeathText.Value;

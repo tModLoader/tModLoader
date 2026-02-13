@@ -1,10 +1,9 @@
 --- src/TerrariaNetCore/ReLogic/OS/Linux/WindowService.cs
 +++ src/tModLoader/ReLogic/OS/Linux/WindowService.cs
-@@ -22,4 +_,24 @@
- 	public void SetQuickEditEnabled(bool enabled)
- 	{
- 	}
-+
+@@ -4,4 +_,23 @@
+ 
+ internal class WindowService : SDLWindowService
+ {
 +	// Added by TML.
 +	public void HideConsole()
 +	{

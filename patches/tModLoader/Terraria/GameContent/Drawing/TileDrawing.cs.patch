@@ -1,25 +1,24 @@
 --- src/TerrariaNetCore/Terraria/GameContent/Drawing/TileDrawing.cs
 +++ src/tModLoader/Terraria/GameContent/Drawing/TileDrawing.cs
-@@ -11,33 +_,48 @@
+@@ -9,32 +_,47 @@
  using Terraria.Graphics;
  using Terraria.Graphics.Capture;
+ using Terraria.Graphics.Effects;
  using Terraria.ID;
 +using Terraria.ModLoader;
- using Terraria.ObjectData;
+ using Terraria.Testing;
  using Terraria.UI;
  using Terraria.Utilities;
  
  namespace Terraria.GameContent.Drawing;
  
--public class TileDrawing
+-public class TileDrawing : TileDrawingBase
 +public partial class TileDrawing
  {
 -	private enum TileCounterType
 +	public enum TileCounterType
  	{
  		Tree,
- 		DisplayDoll,
- 		HatRack,
 +		/// <summary> Tile will sway as if anchored below (1x1 tile). Affected by wind and player interaction. Used automatically by tiles in <see cref="TileID.Sets.SwaysInWindBasic"/>. </summary>
  		WindyGrass,
 +		/// <summary> Tile will sway as if anchored below. Affected by wind but not player interaction. Used by <see cref="TileID.PlantDetritus"/>, <see cref="TileID.Sunflower"/>. Tiles need to assign <see cref="TileID.Sets.MultiTileSway"/> and use as directed.</summary>
@@ -52,18 +51,18 @@
  	{
  		public Texture2D flameTexture;
  		public ulong flameSeed;
-@@ -56,8 +_,8 @@
+@@ -57,8 +_,8 @@
  	private const float FORCE_FOR_MIN_WIND = 0.08f;
  	private const float FORCE_FOR_MAX_WIND = 1.2f;
  	private int _leafFrequency = 100000;
--	private int[] _specialsCount = new int[13];
+-	private int[] _specialsCount = new int[11];
 +	private int[] _specialsCount = new int[(int)TileCounterType.Count];
--	private Point[][] _specialPositions = new Point[13][];
+-	private Point[][] _specialPositions = new Point[11][];
 +	private Point[][] _specialPositions = new Point[(int)TileCounterType.Count][];
  	private Dictionary<Point, int> _displayDollTileEntityPositions = new Dictionary<Point, int>();
  	private Dictionary<Point, int> _hatRackTileEntityPositions = new Dictionary<Point, int>();
  	private Dictionary<Point, int> _trainingDummyTileEntityPositions = new Dictionary<Point, int>();
-@@ -69,10 +_,16 @@
+@@ -71,10 +_,16 @@
  	private int[] _specialTileX = new int[1000];
  	private int[] _specialTileY = new int[1000];
  	private UnifiedRandom _rand;
@@ -80,7 +79,7 @@
  	private WindGrid _windGrid = new WindGrid();
  	private bool _shouldShowInvisibleBlocks;
  	private bool _shouldShowInvisibleBlocks_LastFrame;
-@@ -114,7 +_,12 @@
+@@ -118,7 +_,12 @@
  
  	private Gore[] _gore => Main.gore;
  
@@ -107,7 +106,7 @@
  					switch (tile.type) {
  						case 5:
  							tileStyle = GetTreeBiome(j, i, tile.frameX, tile.frameY);
-@@ -179,12 +_,13 @@
+@@ -179,14 +_,15 @@
  				}
  
  				if (!prepareLazily)
@@ -115,6 +114,8 @@
 +					MakeExtraPreparations(tile, j, i, tileStyle);
  			}
  		}
+ 
+ 		TimeLogger.FindPaintedTiles.AddTime(fromTimestamp);
  	}
  
 +	//TML: Added tileStyle parameter.
@@ -123,7 +124,7 @@
  	{
  		switch (tile.type) {
  			case 5: {
-@@ -268,9 +_,24 @@
+@@ -270,9 +_,24 @@
  			}
  			case 323: {
  				int textureIndex = 15;
@@ -148,36 +149,55 @@
  				TilePaintSystemV2.TreeFoliageVariantKey treeFoliageVariantKey = default(TilePaintSystemV2.TreeFoliageVariantKey);
  				treeFoliageVariantKey.TextureIndex = textureIndex;
  				treeFoliageVariantKey.PaintColor = tile.color();
-@@ -321,7 +_,10 @@
- 			_specialsCount[9] = 0;
- 			_specialsCount[10] = 0;
- 			_specialsCount[11] = 0;
-+			_specialsCount[(int)TileCounterType.CustomNonSolid] = 0;
- 		}
-+		if(solidLayer && flag)
+@@ -315,19 +_,22 @@
+ 		bool flag = intoRenderTargets || Lighting.UpdateEveryFrame;
+ 		if (!solidLayer && flag)
+ 			ClearSpecialBlockCounts();
++		if (solidLayer && flag)
 +			_specialsCount[(int)TileCounterType.CustomSolid] = 0;
  	}
  
- 	public void PostDrawTiles(bool solidLayer, bool forRenderTargets, bool intoRenderTargets)
-@@ -338,12 +_,14 @@
+ 	public void ClearSpecialBlockCounts()
+ 	{
+ 		_specialsCount[3] = 0;
+ 		_specialsCount[2] = 0;
+ 		_specialsCount[6] = 0;
+ 		_specialsCount[4] = 0;
+ 		_specialsCount[1] = 0;
+ 		_specialsCount[10] = 0;
+ 		_specialsCount[0] = 0;
+ 		_specialsCount[7] = 0;
+ 		_specialsCount[8] = 0;
+ 		_specialsCount[9] = 0;
++		_specialsCount[(int)TileCounterType.CustomNonSolid] = 0;
+ 	}
+ 
+@@ -357,16 +_,18 @@
  			DrawTrees();
  			DrawVines();
  			DrawReverseVines();
 +			DrawCustom(solidLayer);
  			Main.spriteBatch.End();
+ 			TimeLogger.TileExtras.AddTime(fromTimestamp);
+ 			_natureRenderer.DrawAfterAllObjects(beginner);
  		}
  
- 		if (solidLayer && !intoRenderTargets) {
+ 		if (solidLayer) {
+ 			TimeLogger.StartTimestamp fromTimestamp2 = TimeLogger.Start();
  			DrawEntities_HatRacks();
  			DrawEntities_DisplayDolls();
+ 			TimeLogger.ClothingRacks.AddTime(fromTimestamp2);
 +			DrawCustom(solidLayer);
  		}
  	}
  
-@@ -396,8 +_,11 @@
+@@ -423,11 +_,14 @@
  		byte b = (byte)(100f + 150f * Main.martianLight);
  		_martianGlow = new Color(b, b, b, 0);
- 		TileDrawInfo value = _currentTileDrawInfo.Value;
+ 		_lastPaintLookupKey = new TilePaintSystemV2.TileVariationkey {
+ 			TileType = -1
+ 		};
+ 
 -		for (int i = firstTileY; i < lastTileY + 4; i++) {
 -			for (int j = firstTileX - 2; j < lastTileX + 2; j++) {
 +		bool liquidSlopeFix = LiquidEdgeRenderer.Active;
@@ -188,18 +208,18 @@
  				Tile tile = Main.tile[j, i];
  				if (tile == null) {
  					tile = new Tile();
-@@ -408,7 +_,9 @@
- 					if (!tile.active() || IsTileDrawLayerSolid(tile.type) != solidLayer)
+@@ -438,7 +_,9 @@
+ 					if (!tile.active() || IsTileDrawLayerSolid(tile.type) != solidLayer || (DebugOptions.ShowUnbreakableWall && tile.wall == 350))
  						continue;
  
--					if (solidLayer)
+-					if (solidLayer) {
 +					// TML(liquid-slopes): Behind-tile liquid rendering is now
 +					// handled as part of actual liquid rendering.
 +					if (solidLayer && !liquidSlopeFix)
- 						DrawTile_LiquidBehindTile(solidLayer, inFrontOfPlayers: false, waterStyleOverride, unscaledPosition, vector, j, i, tile);
- 
- 					ushort type = tile.type;
-@@ -417,6 +_,9 @@
+ 						Main.tileBatch.SetLayer(Layer_LiquidBehindTiles, 0);
+ 						DrawTile_LiquidBehindTile(solidLayer, waterStyleOverride, unscaledPosition, drawOffSet, j, i, tile);
+ 					}
+@@ -450,6 +_,9 @@
  					if (!TextureAssets.Tile[type].IsLoaded)
  						Main.instance.LoadTiles(type);
  
@@ -209,27 +229,18 @@
  					switch (type) {
  						case 52:
  						case 62:
-@@ -478,7 +_,7 @@
- 						case 233:
- 							if (frameY == 0 && frameX % 54 == 0 && flag)
- 								AddSpecialPoint(j, i, TileCounterType.MultiTileGrass);
--							if (frameY == 34 && frameX % 36 == 0 && flag)
-+							if (frameY == 36 && frameX % 36 == 0 && flag)
- 								AddSpecialPoint(j, i, TileCounterType.MultiTileGrass);
- 							continue;
- 						case 652:
-@@ -554,6 +_,9 @@
+@@ -596,6 +_,9 @@
  					}
  
- 					DrawSingleTile(value, solidLayer, waterStyleOverride, unscaledPosition, vector, j, i);
+ 					DrawSingleTile(unscaledPosition, drawOffSet, j, i);
 +
 +					PostDraw:
 +					TileLoader.PostDraw(j, i, type, Main.spriteBatch);
  				}
  			}
  		}
-@@ -575,12 +_,16 @@
- 			TimeLogger.DrawTime(1, stopwatch.Elapsed.TotalMilliseconds);
+@@ -615,8 +_,12 @@
+ 		}
  	}
  
 +	/// <summary>
@@ -242,12 +253,7 @@
  		int y = j;
  		for (int num = j - 1; num > 0; num--) {
  			Tile tile = Main.tile[i, num];
--			if (WorldGen.SolidTile(i, num) || !tile.active()) {
-+			if (WorldGen.BottomEdgeCanBeAttachedTo(i, num) || !tile.active()) {
- 				y = num + 1;
- 				break;
- 			}
-@@ -593,12 +_,16 @@
+@@ -633,7 +_,11 @@
  		}
  	}
  
@@ -260,57 +266,51 @@
  	{
  		int y = j;
  		for (int k = j; k < Main.maxTilesY; k++) {
- 			Tile tile = Main.tile[i, k];
--			if (WorldGen.SolidTile(i, k) || !tile.active()) {
-+			if (WorldGen.TopEdgeCanBeAttachedTo(i, k) || !tile.active()) {
- 				y = k - 1;
- 				break;
- 			}
-@@ -629,7 +_,7 @@
- 		if (TileID.Sets.HasOutlines[drawData.typeCache])
- 			GetTileOutlineInfo(tileX, tileY, drawData.typeCache, ref drawData.tileLight, ref highlightTexture, ref highlightColor);
+@@ -753,7 +_,7 @@
+ 		if (TileID.Sets.HasOutlines[tileDrawInfo.typeCache])
+ 			GetTileOutlineInfo(tileX, tileY, tileDrawInfo.typeCache, ref tileDrawInfo.tileLight, ref highlightTexture, ref highlightColor);
  
--		if (_localPlayer.dangerSense && IsTileDangerous(_localPlayer, drawData.tileCache, drawData.typeCache)) {
-+		if (_localPlayer.dangerSense && IsTileDangerous(tileX, tileY, _localPlayer, drawData.tileCache, drawData.typeCache)) {
- 			if (drawData.tileLight.R < byte.MaxValue)
- 				drawData.tileLight.R = byte.MaxValue;
+-		if (_perspectivePlayer.dangerSense && IsTileDangerous(_perspectivePlayer, tileDrawInfo.tileCache, tileDrawInfo.typeCache)) {
++		if (_perspectivePlayer.dangerSense && IsTileDangerous(tileX, tileY, _perspectivePlayer, tileDrawInfo.tileCache, tileDrawInfo.typeCache)) {
+ 			if (tileDrawInfo.tileLight.R < byte.MaxValue)
+ 				tileDrawInfo.tileLight.R = byte.MaxValue;
  
-@@ -648,7 +_,7 @@
+@@ -772,7 +_,7 @@
  			}
  		}
  
--		if (_localPlayer.findTreasure && Main.IsTileSpelunkable(drawData.typeCache, drawData.tileFrameX, drawData.tileFrameY)) {
-+		if (_localPlayer.findTreasure && Main.IsTileSpelunkable(tileX, tileY, drawData.typeCache, drawData.tileFrameX, drawData.tileFrameY)) {
- 			if (drawData.tileLight.R < 200)
- 				drawData.tileLight.R = 200;
+-		if (_perspectivePlayer.findTreasure && Main.IsTileSpelunkable(tileDrawInfo.typeCache, tileDrawInfo.tileFrameX, tileDrawInfo.tileFrameY)) {
++		if (_perspectivePlayer.findTreasure && Main.IsTileSpelunkable(tileX, tileY, tileDrawInfo.typeCache, tileDrawInfo.tileFrameX, tileDrawInfo.tileFrameY)) {
+ 			if (tileDrawInfo.tileLight.R < 200)
+ 				tileDrawInfo.tileLight.R = 200;
  
-@@ -665,7 +_,7 @@
+@@ -789,7 +_,7 @@
  
- 		if (_localPlayer.biomeSight) {
+ 		if (_perspectivePlayer.biomeSight) {
  			Color sightColor = Color.White;
--			if (Main.IsTileBiomeSightable(drawData.typeCache, drawData.tileFrameX, drawData.tileFrameY, ref sightColor)) {
-+			if (Main.IsTileBiomeSightable(tileX, tileY, drawData.typeCache, drawData.tileFrameX, drawData.tileFrameY, ref sightColor)) {
- 				if (drawData.tileLight.R < sightColor.R)
- 					drawData.tileLight.R = sightColor.R;
+-			if (Main.IsTileBiomeSightable(tileDrawInfo.typeCache, tileDrawInfo.tileFrameX, tileDrawInfo.tileFrameY, ref sightColor)) {
++			if (Main.IsTileBiomeSightable(tileX, tileY, tileDrawInfo.typeCache, tileDrawInfo.tileFrameX, tileDrawInfo.tileFrameY, ref sightColor)) {
+ 				if (tileDrawInfo.tileLight.R < sightColor.R)
+ 					tileDrawInfo.tileLight.R = sightColor.R;
  
-@@ -715,11 +_,16 @@
+@@ -846,11 +_,16 @@
+ 			num5 = 0f;
  
- 		Rectangle rectangle = new Rectangle(drawData.tileFrameX + drawData.addFrX, drawData.tileFrameY + drawData.addFrY, drawData.tileWidth, drawData.tileHeight - drawData.halfBrickHeight);
- 		Vector2 vector = new Vector2((float)(tileX * 16 - (int)screenPosition.X) - ((float)drawData.tileWidth - 16f) / 2f, tileY * 16 - (int)screenPosition.Y + drawData.tileTop + drawData.halfBrickHeight) + screenOffset;
+ 		Vector2 vector = new Vector2((float)(tileX * 16 - (int)screenPosition.X) - num5, tileY * 16 - (int)screenPosition.Y + tileDrawInfo.tileTop + tileDrawInfo.halfBrickHeight) + screenOffset;
 +		/*
  		if (!flag)
  			return;
 +		*/
  
- 		drawData.colorTint = Color.White;
- 		drawData.finalColor = GetFinalLight(drawData.tileCache, drawData.typeCache, drawData.tileLight, drawData.colorTint);
-+		TileLoader.DrawEffects(tileX, tileY, drawData.typeCache, Main.spriteBatch, ref drawData);
+ 		tileDrawInfo.colorTint = Color.White;
+ 		tileDrawInfo.finalColor = GetFinalLight(tileDrawInfo.tileCache, tileDrawInfo.typeCache, tileDrawInfo.tileLight, tileDrawInfo.colorTint);
++		TileLoader.DrawEffects(tileX, tileY, tileDrawInfo.typeCache, Main.spriteBatch, ref tileDrawInfo);
 +		if (!flag)
 +			return;
- 		switch (drawData.typeCache) {
- 			case 136:
- 				switch (drawData.tileFrameX / 18) {
-@@ -974,7 +_,13 @@
+ 		switch (tileDrawInfo.typeCache) {
+ 			case 751:
+ 				if (tileDrawInfo.tileFrameX != 0 || tileDrawInfo.tileCache.frameY != 0)
+@@ -1201,7 +_,13 @@
  		}
  	}
  
@@ -325,7 +325,7 @@
  	{
  		bool flag = tile.invisibleBlock();
  		switch (tile.type) {
-@@ -989,12 +_,12 @@
+@@ -1216,6 +_,6 @@
  		}
  
  		if (flag)
@@ -333,27 +333,19 @@
 +			return Main.instance.TilesRenderer._shouldShowInvisibleBlocks;
  
  		return true;
- 	}
- 
--	private Texture2D GetTileDrawTexture(Tile tile, int tileX, int tileY)
-+	public Texture2D GetTileDrawTexture(Tile tile, int tileX, int tileY)
- 	{
- 		Texture2D result = TextureAssets.Tile[tile.type].Value;
- 		int tileStyle = 0;
-@@ -1010,6 +_,25 @@
- 				if (IsAlchemyPlantHarvestable(tile.frameX / 18))
- 					num = 84;
- 				Main.instance.LoadTiles(num);
-+				break;
-+			case 80:
-+			case 227:
+@@ -1239,6 +_,25 @@
+ 				if (WorldGen.IsAlchemyPlantHarvestable(tile.frameX / 18, tileY))
+ 					key.TileType = 84;
+ 				break;
++			case TileID.Cactus:
++			case TileID.DyePlants:
 +				WorldGen.GetCactusType(tileX, tileY, tile.frameX, tile.frameY, out int sandType);
 +
 +				if (!TileLoader.CanGrowModCactus(sandType))
 +					break;
 +
-+				if (num == 80) {
-+					tileStyle = sandType + 1;
++				if (key.TileType == TileID.Cactus) {
++					key.TileStyle = sandType + 1;
 +					break;
 +				}
 +
@@ -363,54 +355,19 @@
 +						return asset.Value;
 +				}
 +
- 				break;
- 		}
- 
-@@ -1020,7 +_,7 @@
- 		return result;
- 	}
- 
--	private Texture2D GetTileDrawTexture(Tile tile, int tileX, int tileY, int paintOverride)
-+	public Texture2D GetTileDrawTexture(Tile tile, int tileX, int tileY, int paintOverride)
- 	{
- 		Texture2D result = TextureAssets.Tile[tile.type].Value;
- 		int tileStyle = 0;
-@@ -1036,6 +_,26 @@
- 				if (IsAlchemyPlantHarvestable(tile.frameX / 18))
- 					num = 84;
- 				Main.instance.LoadTiles(num);
 +				break;
-+			// Whole case below is TML code.
-+			case 80:
-+			case 227:
-+				WorldGen.GetCactusType(tileX, tileY, tile.frameX, tile.frameY, out int sandType);
-+
-+				if (!TileLoader.CanGrowModCactus(sandType))
-+					break;
-+
-+				if (num == 80) {
-+					tileStyle = sandType + 1;
-+					break;
-+				}
-+
-+				if (tile.frameX == 204 || tile.frameX == 202) {
-+					var asset = PlantLoader.GetCactusFruitTexture(sandType);
-+					if (asset != null)
-+						return asset.Value;
-+				}
-+
- 				break;
  		}
  
-@@ -1181,6 +_,7 @@
- 				value4 = normalTileRect;
+ 		return GetTileDrawTexture(key);
+@@ -1427,6 +_,7 @@
  				value4.Y = 0;
  				value4.Height = 10;
 +				value4.X %= num10 < 3 ? 108 : 54; // Added by TML. Accounts for tilesheets with multiple columns
- 				Main.spriteBatch.Draw(TextureAssets.CageTop[num10].Value, position, value4, drawData.finalColor, 0f, _zero, 1f, drawData.tileSpriteEffect, 0f);
- 			}
- 			else {
-@@ -1265,12 +_,21 @@
+ 				Texture2D texture = LookupCageTopDrawTexture(new TilePaintSystemV2.CageTopVariationkey {
+ 					CageStyle = num10,
+ 					PaintColor = drawData.tileCache.color()
+ 				});
+@@ -1545,36 +_,45 @@
  			case 662:
  				return 4;
  			default:
@@ -419,6 +376,31 @@
 +
  				return -1;
  		}
+ 	}
+ 
+ 	private Color GetFallenStarFurnitureFlameColor()
+ 	{
+ 		float num = Utils.WrappedLerp(0.5f, 1f, Main.GlobalTimeWrappedHourly % 2f / 2f);
+ 		int num2 = (int)(150f * num);
+ 		return new Color(150, num2, num2, 50);
+ 	}
+ 
+ 	private Color GetHallowedFurnitureFlameColor()
+ 	{
+ 		float num = Utils.WrappedLerp(0.5f, 1f, Main.GlobalTimeWrappedHourly % 2f / 2f);
+ 		int num2 = (int)(170f * num);
+ 		return new Color(170, num2, num2, 75);
+ 	}
+ 
+ 	private Color GetCloudFurnitureFlameColor() => GetWrappedFurnitureFlameColor(new Color(255, 255, 255, 0));
+ 	private Color GetLibrarianFurnitureFlameColor() => GetWrappedFurnitureFlameColor(new Color(255, 255, 255, 0), 0.25f);
+ 	private Color GetForbiddenFurnitureFlameColor() => GetWrappedFurnitureFlameColor(new Color(255, 255, 255, 0), 0.25f);
+ 	private Color GetBoulderFurnitureFlameColor() => GetWrappedFurnitureFlameColor(new Color(255, 255, 255, 0), 0.25f);
+ 
+ 	private Color GetWrappedFurnitureFlameColor(Color baseColor, float min = 0.75f, float max = 1f)
+ 	{
+ 		float num = Utils.WrappedLerp(min, max, Main.GlobalTimeWrappedHourly % 2f / 2f);
+ 		return baseColor * num;
  	}
  
 -	private TileFlameData GetTileFlameData(int tileX, int tileY, int type, int tileFrameY)
@@ -432,8 +414,7 @@
 +
  		switch (type) {
  			case 270: {
- 				TileFlameData tileFlameData = default(TileFlameData);
-@@ -2359,6 +_,9 @@
+@@ -3128,6 +_,9 @@
  		if (WorldGen.IsPalmOasisTree(x))
  			num += 4;
  
@@ -443,8 +424,8 @@
  		return num;
  	}
  
-@@ -2877,7 +_,8 @@
- 		vertices.TopRightColor *= num7;
+@@ -3677,7 +_,8 @@
+ 
  		bool flag7 = false;
  		if (flag6) {
 +			int totalCount = LoaderManager.Get<WaterStylesLoader>().TotalCount;
@@ -453,7 +434,7 @@
  				if (Main.IsLiquidStyleWater(i) && Main.liquidAlpha[i] > 0f && i != num2) {
  					DrawPartialLiquid(!solidLayer, tileCache, ref position, ref liquidSize, i, ref vertices);
  					flag7 = true;
-@@ -3112,7 +_,8 @@
+@@ -3924,7 +_,8 @@
  		}
  	}
  
@@ -463,7 +444,7 @@
  	{
  		bool flag = false || typeCache == 135 || typeCache == 137 || TileID.Sets.Boulders[typeCache] || typeCache == 141 || typeCache == 210 || typeCache == 442 || typeCache == 443 || typeCache == 444 || typeCache == 411 || typeCache == 485 || typeCache == 85 || typeCache == 654 || (typeCache == 314 && Minecart.IsPressurePlate(tileCache));
  		flag |= Main.getGoodWorld && typeCache == 230;
-@@ -3122,10 +_,14 @@
+@@ -3934,10 +_,14 @@
  			if (!localPlayer.fireWalk)
  				flag = flag || typeCache == 37 || typeCache == 58 || typeCache == 76;
  
@@ -478,7 +459,7 @@
  		return flag;
  	}
  
-@@ -3137,7 +_,7 @@
+@@ -3949,7 +_,7 @@
  		return _tileSolid[typeCache];
  	}
  
@@ -487,7 +468,7 @@
  	{
  		if (Main.InSmartCursorHighlightArea(x, y, out var actuallySelected)) {
  			int num = (tileLight.R + tileLight.G + tileLight.B) / 3;
-@@ -3148,7 +_,7 @@
+@@ -3960,7 +_,7 @@
  		}
  	}
  
@@ -496,7 +477,7 @@
  	{
  		int num = tileCache.slope();
  		bool flag = !TileID.Sets.BlocksWaterDrawingBehindSelf[tileCache.type];
-@@ -3177,9 +_,9 @@
+@@ -3989,9 +_,9 @@
  		}
  	}
  
@@ -508,7 +489,7 @@
  	{
  		tileTop = 0;
  		tileWidth = 16;
-@@ -3255,6 +_,10 @@
+@@ -4106,6 +_,10 @@
  				tileWidth = 20;
  				tileHeight = 20;
  				int treeBiome = GetTreeBiome(x, y, tileFrameX, tileFrameY);
@@ -519,7 +500,7 @@
  				tileFrameX += (short)(176 * (treeBiome + 1));
  				break;
  			}
-@@ -3279,6 +_,12 @@
+@@ -4130,6 +_,12 @@
  				tileWidth = 20;
  				tileHeight = 20;
  				int palmTreeBiome = GetPalmTreeBiome(x, y);
@@ -532,7 +513,7 @@
  				tileFrameY = (short)(22 * palmTreeBiome);
  				break;
  			}
-@@ -4848,9 +_,16 @@
+@@ -5797,9 +_,16 @@
  					glowColor = _meteorGlow;
  				}
  
@@ -549,7 +530,7 @@
  	}
  
  	private bool IsWindBlocked(int x, int y)
-@@ -4868,21 +_,21 @@
+@@ -5817,21 +_,21 @@
  		return false;
  	}
  
@@ -574,7 +555,7 @@
  	{
  		int num = x - tileFrameX / 18;
  		int num2 = y - tileFrameY / 18;
-@@ -4922,18 +_,36 @@
+@@ -5877,18 +_,36 @@
  		if (solidLayer) {
  			_displayDollTileEntityPositions.Clear();
  			_hatRackTileEntityPositions.Clear();
@@ -613,7 +594,7 @@
  		_specialTileX[_specialTilesCount] = x;
  		_specialTileY[_specialTilesCount] = y;
  		_specialTilesCount++;
-@@ -4949,7 +_,7 @@
+@@ -5905,7 +_,7 @@
  		_specialTilesCount = 0;
  	}
  
@@ -622,19 +603,19 @@
  	{
  		if (tileCache.fullbrightBlock())
  			return Color.White;
-@@ -4998,9 +_,10 @@
+@@ -5962,9 +_,10 @@
  		return tileLight;
  	}
  
 -	private void DrawTiles_EmitParticles(int j, int i, Tile tileCache, ushort typeCache, short tileFrameX, short tileFrameY, Color tileLight)
 +	public void DrawTiles_EmitParticles(int j, int i, Tile tileCache, ushort typeCache, short tileFrameX, short tileFrameY, Color tileLight)
  	{
- 		bool num = IsVisible(tileCache);
-+		TileLoader.EmitParticles(i, j, tileCache, typeCache, tileFrameX, tileFrameY, tileLight, num);
+ 		bool flag = IsVisible(tileCache);
++		TileLoader.EmitParticles(i, j, tileCache, typeCache, tileFrameX, tileFrameY, tileLight, flag);
  		int leafFrequency = _leafFrequency;
  		leafFrequency /= 4;
- 		if (typeCache == 244 && tileFrameX == 18 && tileFrameY == 18 && _rand.Next(2) == 0) {
-@@ -5544,14 +_,28 @@
+ 		if (typeCache == 718 && !Main.dayTime && _rand.Next(3) == 0 && !WorldGen.SolidTile3(i, j - 1)) {
+@@ -6696,14 +_,28 @@
  		}
  	}
  
@@ -665,7 +646,7 @@
  	{
  		Tile tile = Main.tile[x, y + 1];
  		if (!WorldGen.SolidTile(tile) && tile.liquid <= 0) {
-@@ -5561,7 +_,13 @@
+@@ -6713,7 +_,13 @@
  		}
  	}
  
@@ -680,18 +661,16 @@
  	{
  		int num = 0;
  		if (Main.WindForVisuals > 0.2f)
-@@ -5603,7 +_,10 @@
- 		rectangle.Y -= 100;
+@@ -6756,7 +_,7 @@
  		rectangle.Height = 400;
  		for (int k = 0; k < 600; k++) {
-+			/*
- 			if (_gore[k].active && ((_gore[k].type >= 706 && _gore[k].type <= 717) || _gore[k].type == 943 || _gore[k].type == 1147 || (_gore[k].type >= 1160 && _gore[k].type <= 1162))) {
-+			*/
-+			if (_gore[k].active && GoreID.Sets.LiquidDroplet[_gore[k].type]) {
- 				Rectangle value = new Rectangle((int)_gore[k].position.X, (int)_gore[k].position.Y, 16, 16);
+ 			Gore gore = _gore[k];
+-			if (gore.active && gore.type >= 0 && gore.type < GoreID.Count && GoreID.Sets.IsDrip[gore.type]) {
++			if (gore.active && gore.type >= 0 && GoreID.Sets.IsDrip[gore.type]) {
+ 				Rectangle value = new Rectangle((int)gore.position.X, (int)gore.position.Y, 16, 16);
  				if (rectangle.Intersects(value))
  					return;
-@@ -5618,6 +_,8 @@
+@@ -6771,6 +_,8 @@
  			type = 706;
  		else if (Main.waterStyle == 12)
  			type = 1147;
@@ -700,7 +679,7 @@
  		else if (Main.waterStyle > 1)
  			type = 706 + Main.waterStyle - 1;
  
-@@ -5643,7 +_,17 @@
+@@ -6799,7 +_,17 @@
  		_gore[num2].velocity *= 0f;
  	}
  
@@ -719,7 +698,7 @@
  	{
  		if (!Main.SettingsEnabled_TilesSwayInWind)
  			return 0f;
-@@ -5667,7 +_,22 @@
+@@ -6823,7 +_,22 @@
  		return num2 * lerpValue;
  	}
  
@@ -743,19 +722,19 @@
  	{
  		if (!Main.SettingsEnabled_TilesSwayInWind)
  			return false;
-@@ -5956,8 +_,11 @@
- 					Main.spriteBatch.Draw(value6, position2, value7, color6, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+@@ -7090,8 +_,11 @@
+ 					Main.tileBatch.Draw(value5, position2, value6, color5, Vector2.Zero, 1f, SpriteEffects.None);
  				}
  
 +				// Extra patch context.
- 				Main.spriteBatch.Draw(value6, vector, value7, new Color(255, 255, 255, 0) * 0.1f, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+ 				Main.tileBatch.Draw(value5, vector, value6, new Color(255, 255, 255, 0) * 0.1f, Vector2.Zero, 1f, SpriteEffects.None);
  			}
 +
-+			TileLoader.SpecialDraw(type, num, num2, Main.spriteBatch);
++			TileLoader.SpecialDraw(type, num, num2, Main.tileBatch);
  		}
  	}
  
-@@ -6209,6 +_,26 @@
+@@ -7343,6 +_,26 @@
  						num20 = 2;
  					}
  
@@ -782,7 +761,7 @@
  					int frameY2 = Main.tile[x, y].frameY;
  					byte tileColor4 = tile.color();
  					Texture2D treeTopTexture2 = GetTreeTopTexture(treeTextureIndex, palmTreeBiome, tileColor4);
-@@ -6234,8 +_,13 @@
+@@ -7368,8 +_,13 @@
  	private Texture2D GetTreeTopTexture(int treeTextureIndex, int treeTextureStyle, byte tileColor)
  	{
  		Texture2D texture2D = _paintSystem.TryGetTreeTopAndRequestIfNotReady(treeTextureIndex, treeTextureStyle, tileColor);
@@ -797,7 +776,7 @@
  
  		return texture2D;
  	}
-@@ -6243,8 +_,12 @@
+@@ -7377,8 +_,12 @@
  	private Texture2D GetTreeBranchTexture(int treeTextureIndex, int treeTextureStyle, byte tileColor)
  	{
  		Texture2D texture2D = _paintSystem.TryGetTreeBranchAndRequestIfNotReady(treeTextureIndex, treeTextureStyle, tileColor);
@@ -811,28 +790,28 @@
  
  		return texture2D;
  	}
-@@ -6392,9 +_,9 @@
+@@ -7524,9 +_,9 @@
  		}
  	}
  
 -	private void DrawAnimatedTile_AdjustForVisionChangers(int i, int j, Tile tileCache, ushort typeCache, short tileFrameX, short tileFrameY, ref Color tileLight, bool canDoDust)
 +	public void DrawAnimatedTile_AdjustForVisionChangers(int i, int j, Tile tileCache, ushort typeCache, short tileFrameX, short tileFrameY, ref Color tileLight, bool canDoDust)
  	{
--		if (_localPlayer.dangerSense && IsTileDangerous(_localPlayer, tileCache, typeCache)) {
-+		if (_localPlayer.dangerSense && IsTileDangerous(i, j, _localPlayer, tileCache, typeCache)) {
+-		if (_perspectivePlayer.dangerSense && IsTileDangerous(_perspectivePlayer, tileCache, typeCache)) {
++		if (_perspectivePlayer.dangerSense && IsTileDangerous(i, j, _perspectivePlayer, tileCache, typeCache)) {
  			if (tileLight.R < byte.MaxValue)
  				tileLight.R = byte.MaxValue;
  
-@@ -6413,7 +_,7 @@
+@@ -7545,7 +_,7 @@
  			}
  		}
  
--		if (_localPlayer.findTreasure && Main.IsTileSpelunkable(typeCache, tileFrameX, tileFrameY)) {
-+		if (_localPlayer.findTreasure && Main.IsTileSpelunkable(i, j, typeCache, tileFrameX, tileFrameY)) {
+-		if (_perspectivePlayer.findTreasure && Main.IsTileSpelunkable(typeCache, tileFrameX, tileFrameY)) {
++		if (_perspectivePlayer.findTreasure && Main.IsTileSpelunkable(i, j, typeCache, tileFrameX, tileFrameY)) {
  			if (tileLight.R < 200)
  				tileLight.R = 200;
  
-@@ -6432,7 +_,7 @@
+@@ -7564,7 +_,7 @@
  			return;
  
  		Color sightColor = Color.White;
@@ -841,7 +820,7 @@
  			if (tileLight.R < sightColor.R)
  				tileLight.R = sightColor.R;
  
-@@ -6453,7 +_,17 @@
+@@ -7585,7 +_,17 @@
  		}
  	}
  
@@ -860,7 +839,7 @@
  	{
  		_windGrid.GetWindTime(i, j, pushAnimationTimeTotal, out var windTimeLeft, out var directionX, out var _);
  		if (windTimeLeft >= pushAnimationTimeTotal / 2)
-@@ -6475,7 +_,18 @@
+@@ -7607,7 +_,18 @@
  		}
  	}
  
@@ -880,7 +859,7 @@
  	{
  		_windGrid.GetWindTime(i, j, pushAnimationTimeTotal, out var windTimeLeft, out var directionX, out var _);
  		float num = (float)windTimeLeft / (float)pushAnimationTimeTotal;
-@@ -6662,6 +_,15 @@
+@@ -7810,6 +_,15 @@
  						num4 = ClimbCatTail(x, num3);
  						num3 -= num4 - 1;
  						break;
@@ -896,9 +875,9 @@
  				}
  
  				DrawMultiTileGrassInWind(unscaledPosition, zero, x, num3, sizeX, num4);
-@@ -6738,6 +_,14 @@
- 						sizeX = 2;
- 						sizeY = 3;
+@@ -7890,6 +_,14 @@
+ 						sizeX = 1;
+ 						sizeY = 1;
  						break;
 +					default:
 +						if (TileID.Sets.MultiTileSway[tile.TileType]) {
@@ -911,16 +890,16 @@
  				}
  
  				DrawMultiTileVinesInWind(unscaledPosition, zero, x, y, sizeX, sizeY);
-@@ -6903,7 +_,7 @@
+@@ -8073,7 +_,7 @@
  			float num6 = (float)num2 * num3 * windCycle + num4;
- 			if (_localPlayer.biomeSight) {
+ 			if (_perspectivePlayer.biomeSight) {
  				Color sightColor = Color.White;
 -				if (Main.IsTileBiomeSightable(type, tileFrameX, tileFrameY, ref sightColor)) {
 +				if (Main.IsTileBiomeSightable(x, i, type, tileFrameX, tileFrameY, ref sightColor)) {
  					if (color.R < sightColor.R)
  						color.R = sightColor.R;
  
-@@ -7007,7 +_,11 @@
+@@ -8185,7 +_,11 @@
  		return num / (float)num2;
  	}
  
@@ -933,7 +912,7 @@
  	{
  		float result = 0f;
  		int num = int.MaxValue;
-@@ -7041,7 +_,19 @@
+@@ -8218,7 +_,19 @@
  		Vector2 vector2 = new Vector2(0f, -2f);
  		vector += vector2;
  		bool flag = false;
@@ -953,8 +932,8 @@
  			vector.Y -= 8f;
  			vector2.Y -= 8f;
  		}
-@@ -7209,6 +_,7 @@
- 				color = new Color(255, 255, 255, 0);
+@@ -8410,6 +_,7 @@
+ 				flag3 = true;
  				break;
  		}
 +		TileLoader.GetTile(type)?.AdjustMultiTileVineParameters(topLeftX, topLeftY, ref num3, ref num4, ref num5, ref flag2, ref num2, ref texture2D, ref color);

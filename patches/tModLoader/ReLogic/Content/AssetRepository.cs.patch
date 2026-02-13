@@ -188,7 +188,7 @@
  			if (_assets.TryGetValue(assetName, out var value))
  				asset = value as Asset<T>;
  
-@@ -66,21 +_,45 @@
+@@ -80,23 +_,47 @@
  				asset = new Asset<T>(assetName);
  				_assets[assetName] = asset;
  			}
@@ -236,20 +236,13 @@
 +				transferredAnything = true;
 +			}
  		}
+ 
+ 		UpdateWatchedAssetChanges();
 +
 +		return transferredAnything;
  	}
  
- 	private void ReloadAssetsIfSourceChanged(AssetRequestMode mode)
-@@ -90,7 +_,7 @@
- 			if (contentSource == null)
- 				ForceReloadAsset(item, AssetRequestMode.DoNotLoad);
- 			else if (item.Source != contentSource)
--				ForceReloadAsset(item, (item.State != 0) ? mode : AssetRequestMode.DoNotLoad);
-+				ForceReloadAsset(item, mode);
- 		}
- 	}
- 
+ 	public void EnableAssetWatcher()
 @@ -99,81 +_,148 @@
  		if (mode == AssetRequestMode.DoNotLoad)
  			return;
@@ -467,7 +460,16 @@
  		_typeSpecificReloadActions[asset.GetType()](asset, mode);
  	}
  
-@@ -185,11 +_,17 @@
+@@ -162,7 +_,7 @@
+ 			if (contentSource == null)
+ 				ForceReloadAsset(item, AssetRequestMode.DoNotLoad);
+ 			else if (item.Source != contentSource)
+-				ForceReloadAsset(item, (item.State != 0) ? mode : AssetRequestMode.DoNotLoad);
++				ForceReloadAsset(item, mode);
+ 		}
+ 	}
+ 
+@@ -280,32 +_,38 @@
  	private void ForceReloadAsset<T>(IAsset asset, AssetRequestMode mode) where T : class
  	{
  		Asset<T> asset2 = (Asset<T>)asset;
@@ -481,12 +483,33 @@
  		LoadAsset(asset2, mode);
  	}
  
+ 	private bool UpdateAssetValue(IAsset asset, IContentSource source, string extension, Func<Stream> getStream) => _typeSpecificUpdateActions[asset.GetType()](asset, source, extension, getStream);
+ 
+ 	private bool UpdateAssetValue<T>(IAsset asset, IContentSource source, string extension, Func<Stream> getStream) where T : class
+ 	{
+ 		if (!_loader.TryLoad<T>(extension, getStream, out var resultAsset))
+ 			return false;
+ 
+ 		IContentValidator contentValidator = source.ContentValidator;
+ 		if (contentValidator != null && !contentValidator.AssetIsValid(resultAsset, asset.Name, out var rejectionReason))
+ 			throw AssetLoadException.RejectedByValidator(rejectionReason);
+ 
+ 		SubmitLoadedContent((Asset<T>)asset, resultAsset, source);
+ 		return true;
+ 	}
+ 
+ 	private void SubmitLoadedContent<T>(Asset<T> asset, T value, IContentSource source) where T : class
+ 	{
+ 		asset.SubmitLoadedContent(value, source);
+ 		if (AssetValueUpdatedHandler != null)
+ 			AssetValueUpdatedHandler(asset, value);
+ 	}
+ 
 -	private IContentSource FindSourceForAsset(string assetName) => _sources.FirstOrDefault((IContentSource source) => source.HasAsset(assetName)) ?? throw AssetLoadException.FromMissingAsset(assetName);
 +	protected IContentSource FindSourceForAsset(string assetName) => _sources.FirstOrDefault((IContentSource source) => source.HasAsset(assetName)) ?? throw AssetLoadException.FromMissingAsset(assetName);
  
  	private void ThrowIfDisposed()
- 	{
-@@ -203,7 +_,6 @@
+@@ -320,7 +_,6 @@
  			return;
  
  		if (disposing) {
@@ -494,7 +517,7 @@
  			foreach (KeyValuePair<string, IAsset> asset in _assets) {
  				asset.Value.Dispose();
  			}
-@@ -214,6 +_,11 @@
+@@ -334,6 +_,11 @@
  
  	public void Dispose()
  	{

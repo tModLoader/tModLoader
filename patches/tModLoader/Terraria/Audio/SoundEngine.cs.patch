@@ -42,11 +42,11 @@
  				Main.audioSystem.UpdateAudioEngine();
 @@ -45,7 +_,7 @@
  			SoundInstanceGarbageCollector.Update();
- 			bool flag = (!Main.hasFocus || Main.gamePaused) && Main.netMode == 0;
- 			if (!AreSoundsPaused && flag)
+ 			bool pauseSounds = FocusHelper.PauseSounds;
+ 			if (!AreSoundsPaused && pauseSounds)
 -				SoundPlayer.PauseAll();
 +				SoundPlayer.PauseOrStopAll(); // Changed from PauseAll since vanilla effectively stops all because they are never actually resumed.
- 			else if (AreSoundsPaused && !flag)
+ 			else if (AreSoundsPaused && !pauseSounds)
  				SoundPlayer.ResumeAll();
  
 @@ -65,6 +_,8 @@
