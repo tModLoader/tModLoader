@@ -59,7 +59,6 @@ namespace ExampleMod.Content.Tiles.Furniture
 			TileObjectData.newTile.RandomStyleRange = 6;
 			TileObjectData.newTile.StyleHorizontal = true;
 			TileObjectData.newTile.StyleLineSkip = 2;
-			TileObjectData.newTile.DrawYOffset = +2;
 			TileObjectData.addTile(Type);
 
 			AddMapEntry(new Color(235, 166, 135), Language.GetText("MapObject.Chandelier"));
