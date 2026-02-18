@@ -980,7 +980,10 @@ public static class TileLoader
 					remainingFrameY -= tileData.CoordinateHeights[partY] + tileData.CoordinatePadding;
 				}
 				width = tileData.CoordinateWidth;
-				offsetY = tileData.DrawYOffset;
+				   bool usesVanillaRenderer = TileID.Sets.MultiTileSway[tile.type];
+            	if (!usesVanillaRenderer) {
+                offsetY = tileData.DrawYOffset;
+            	}
 				height = tileData.CoordinateHeights[partY];
 			}
 			GetTile(tile.type).SetDrawPositions(i, j, ref width, ref offsetY, ref height, ref tileFrameX, ref tileFrameY);
