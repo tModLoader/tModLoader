@@ -7,7 +7,7 @@ using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 using System.Windows.Forms.Integration;
-using DiffPatch;
+using CodeChicken.DiffPatch;
 using PatchReviewer;
 using Terraria.ModLoader.Setup.Core;
 using Terraria.ModLoader.Setup.Core.Abstractions;
