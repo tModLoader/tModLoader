@@ -60,6 +60,29 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Make sure ItemFilters.MiscFilter is properly resizing.
 - Does the new `uLightSource.SetValue(Vector3.Zero);` (`EffectParameter` class) do what `base.Shader.Parameters["uLightSource"]?.SetValue(Vector3.Zero);` used to do? "Allow shaders to omit parameters they don't use, no longer throw exception" (https://github.com/tModLoader/tModLoader/commit/30b2b9b1e3347a1c98ebe6924811ba5e82391dc3). Check ReflectiveArmorShaderData and other usages.
 - ShaderData classes now have `if (Main.dedServ)` checks. Are these overzealous, or do we need to adjust other places or inform modders that shader code might attempt to run on servers.
+- Player.voiceOverride. Currently an sbyte, might need to be an int like the other equipment slot IDs. Also an example would be nice.
+- Player.faceMask, another new equipment slot field. Will need to document ArmorIDs.Face.Sets.DrawInFaceMaskLayer as well
+- Player.revolverCritChanceBonus, is this a Stat? should it be a StatModifier?
+- Player.adjTile patches are weird. It shouldn't be necessary to resize, they should be correct when the Player is initialized anyway.
+- player.oldAdjTile has been removed. Did modders depend on this for any reason? Tracking previous frames?
+- Player.coat added. It might also need and EquipType
+- What is Player._pendingRefunds? Does it require modded item support?
+- Player.ApplyEquipVanity now calls RefreshInfoAccsFromItemType. Is this new behavior, will our existing hooks now call things multiple times by accident?
+- Player.meleeArmorPenetration is new, need to hook it up
+- Player.revolverCritChanceBonus is new, need to hook it up
+- Player.ApplyItemTime has been updated, we might not need as many patches?
+- Integrate new `private void SetItemAnimation(int baseFrames, float multiplier)` method into our usetime hooks. Make public.
+- Player.AddBuff parameters changed. Will need to adjust docs and maybe inform modders of any behavior changes.
+- What does `Main.item[num].OverrideWith(theItemWeDrop);` do differently than `Main.item[num] = theItemWeDrop;`? Do we need to document or adjust how modders interact with Main.item[]?
+- ProjectileLoader.CanUseGrapple can be reworked. The vanilla code now consolidates "max hooks" checks, so we should be able to make the logic for most modded grappling hooks easier by supplying those parameters to the hook or using a set.
+- https://github.com/tModLoader/tModLoader/issues/4494 should be easily fixable with the new QuickGrapple code organization
+- Should Ram Rune be a VanillaExtraJump? Adjust Player.isPerformingJump_DownDash if necessary. What is CanUseBootFlyingAbilities?
+- TileLoader.HasWalkDust and WalkDust never pass in the Tile or Frame values. New vanilla logic sometimes checks frameX/Y, so hook could be updated with more parameters to facilitate.
+- Collision.SwitchTiles `objType` parameter in Player.Update changed from 1 to 5. Why, isn't it still Player? Adjust docs accordingly after investigating.
+- Rename TileID.Sets.CountsAsXSource to CountsAsXForCrafting to match CountsAsWaterForCrafting.
+- Adjacent tiles are now contained in Recipe.TileCountsAs rather than hard-coded. Need to adjust TileLoader.AdjTiles hooks/docs/exampels to prioritize using Recipe.TileCountsAs
+  - Restore `TileLoader.AdjTiles(this, Main.tile[j, k].type);` patch to new Player.SetAdjTile method
+- Add 697 to TileID.Sets.CanPlaceNextToNonSolidTile
 
 # New Fields that might need more documentation
 
@@ -79,6 +102,9 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - NPC.defLifeMax
 - NPC.DelBuff has new quiet parameter
 - TileID.Sets.DontDrawTileSlopes.
+- Player.selectedItem is not a getter property instead of a field. We might need to document selectedItemState and other related new fields.
+- BuffID.Sets.AddBuffTimeAdditivelyToCap. Also need to update Mod/GlobalBuff.ReApply docs to mention AddBuffTimeAdditivelyToCap as a streamlined alternative for this use-case.
+- Mount.DismountOnItemUse and MountID.Sets.CanUseHooks
 
 # Changes that need to be communicated to modders
 
@@ -106,6 +132,8 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Main.sign length changed from 1000 to 32000. (Adjust docs.)
 - Lots of new methods in Utils. Check if any duplicate TML.cs methods.
 - Various text rendering methods have been changed or improved. Investigate new functionality and previous bug fixes.
+- Player.IsAllowedToHoldItems
+- All chairs give fishing bonus now, not just toilets.
 
 # tModPorter TODOs
 
@@ -122,6 +150,10 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - NPCID.Sets.UsesNewTargetting renamed to UsesNewTargeting
 - GoreID.Sets.LiquidDroplet renamed to IsDrip
 - WorldGen.gen renamed to isGeneratingOrLoadingWorld
+- Player.adjWater -> addWaterSource
+- Player.oldAdjWater -> oldAdjWaterSource
+- TileID.Sets.CountsAsWaterSource -> TileID.Sets.CountsAsWaterForCrafting (And TML added lava, shimmer, honey?)
+- Player.GetItem no longer has plr parameter
 
 # Terraria update requests
 
