@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.32319.34
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PatchReviewer", "PatchReviewer\PatchReviewer.csproj", "{699D3F3F-F974-4384-AAE2-AEF7B14F920E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PatchReviewer", "PatchReviewer\PatchReviewer\PatchReviewer.csproj", "{699D3F3F-F974-4384-AAE2-AEF7B14F920E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiffPatch", "PatchReviewer\DiffPatch\DiffPatch.csproj", "{6A990A34-DA3B-4AB0-BA1D-11551B3B4D87}"
 EndProject

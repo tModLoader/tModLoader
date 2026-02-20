@@ -1,7 +1,7 @@
 using System.Globalization;
 using System.Xml.Linq;
 using System.Xml.XPath;
-using DiffPatch;
+using CodeChicken.DiffPatch;
 
 namespace Terraria.ModLoader.Setup.Core;
 
