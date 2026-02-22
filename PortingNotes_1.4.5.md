@@ -83,6 +83,18 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Adjacent tiles are now contained in Recipe.TileCountsAs rather than hard-coded. Need to adjust TileLoader.AdjTiles hooks/docs/exampels to prioritize using Recipe.TileCountsAs
   - Restore `TileLoader.AdjTiles(this, Main.tile[j, k].type);` patch to new Player.SetAdjTile method
 - Add 697 to TileID.Sets.CanPlaceNextToNonSolidTile
+- Lang.AnglerQuestChat: obj was removed from this method
+- Fields Chest.chestItemSpawn, Chest.chestItemSpawn2 and Chest.dresserItemSpawn were removed
+- Chest.ServerPlaceItem(int plr, int slot) was removed
+- Chest.PutItemInNearbyChest(Item item, Vector2 position) was removed
+- Chest.FindChestByGuessing(int X, int Y) was removed
+- Related: https://github.com/tModLoader/tModLoader/commit/4a1aa0adccde03174881e89de799c3224c77411b
+    - Chest.SetupTravelShop() was changed, functions as expected? Missing `NPCLoader.SetupTravelShop(Main.travelShop, ref count)`
+    - Chest.SetupShop(int type) was changed, functions as expected? Missing `SetupShop(NPCShopDatabase.GetShopNameFromVanillaIndex(type), Main.LocalPlayer.TalkNPC)`
+    - Chest.VanillaSetupShop is missing, needs to be re-implemented
+- Fields Chest.x and Chest.y were changed to readonly
+- Chest.Chest(bool bank = false) was removed, previously used to create a new Chest with no name.
+
 
 # New Fields that might need more documentation
 
