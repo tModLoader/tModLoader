@@ -76,13 +76,14 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - What does `Main.item[num].OverrideWith(theItemWeDrop);` do differently than `Main.item[num] = theItemWeDrop;`? Do we need to document or adjust how modders interact with Main.item[]?
 - ProjectileLoader.CanUseGrapple can be reworked. The vanilla code now consolidates "max hooks" checks, so we should be able to make the logic for most modded grappling hooks easier by supplying those parameters to the hook or using a set.
 - https://github.com/tModLoader/tModLoader/issues/4494 should be easily fixable with the new QuickGrapple code organization
-- Should Ram Rune be a VanillaExtraJump? Adjust Player.isPerformingJump_DownDash if necessary. What is CanUseBootFlyingAbilities?
+- Should Ram Rune be a VanillaExtraJump? Adjust Player.isPerformingJump_DownDash if necessary. What is CanUseBootFlyingAbilities? Also double check CancelAllJumpVisualEffects logic
 - TileLoader.HasWalkDust and WalkDust never pass in the Tile or Frame values. New vanilla logic sometimes checks frameX/Y, so hook could be updated with more parameters to facilitate.
 - Collision.SwitchTiles `objType` parameter in Player.Update changed from 1 to 5. Why, isn't it still Player? Adjust docs accordingly after investigating.
 - Rename TileID.Sets.CountsAsXSource to CountsAsXForCrafting to match CountsAsWaterForCrafting.
 - Adjacent tiles are now contained in Recipe.TileCountsAs rather than hard-coded. Need to adjust TileLoader.AdjTiles hooks/docs/exampels to prioritize using Recipe.TileCountsAs
   - Restore `TileLoader.AdjTiles(this, Main.tile[j, k].type);` patch to new Player.SetAdjTile method
 - Add 697 to TileID.Sets.CanPlaceNextToNonSolidTile
+- ItemID.Sets.ExtractinatorMode entries seem to have changed a lot. There is also a new CanBeExtractinated set. Need to investigate and adjust things if necessary.
 
 # New Fields that might need more documentation
 
@@ -134,6 +135,7 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Various text rendering methods have been changed or improved. Investigate new functionality and previous bug fixes.
 - Player.IsAllowedToHoldItems
 - All chairs give fishing bonus now, not just toilets.
+- MountID.Sets.DoesNotOverrideLegFrames seems like something a lot of modded mounts might want to use.
 
 # tModPorter TODOs
 
@@ -278,4 +280,21 @@ Longer TODOs that would clutter above
  		}
  	}
  }
+```
+
+- PatchReviewer crashes when trying to move this patch "@@ -30673,9 +32745,14 @@":
+```
+	private void PlaceThing_Tiles_TryPlacing(int tileToCreate, bool? overrideCanPlace, int? forcedRandom, TileObject data, int placeStyle)
+	{
+		bool canPlace = false;
+		bool newObjectType = false;
++		PlantLoader.CheckAndInjectModSapling(tileTargetX, tileTargetY, ref tileToCreate, ref previewPlaceStyle);
+		if (overrideCanPlace.HasValue) {
+			canPlace = overrideCanPlace.Value;
+		}
++		else if (!TileLoader.CanPlace(tileTargetX, tileTargetY, tileToCreate)) {
++			canPlace = false;
++			// TODO: CanPlace hook that allows forcing canPlace to true, rather than just preventing placement.
++		}
+		else if (TileObjectData.CustomPlace(tileToCreate, placeStyle) && tileToCreate != 82 && tileToCreate != 227 && tileToCreate != 4) {
 ```
