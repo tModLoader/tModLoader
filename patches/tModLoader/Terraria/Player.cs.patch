@@ -4877,16 +4877,6 @@
  
  						bool crit = false;
  						if ((float)Main.rand.Next(1, 101) <= num78)
-@@ -22327,7 +_,8 @@
- 		}
- 	}
- 
--	public void WingFrame(bool wingFlap)
-+	//TML: Added 'isCustomWings' parameter.
-+	public void WingFrame(bool wingFlap, bool isCustomWings = false)
- 	{
- 		bool flag = wingsLogic != wings;
- 		if (wings == 4) {
 @@ -22417,11 +_,13 @@
  		if (vortexDebuff)
  			velocity.Y = velocity.Y * 0.8f + (float)Math.Cos(base.Center.X % 120f / 120f * ((float)Math.PI * 2f)) * 5f * 0.2f;
@@ -4945,16 +4935,6 @@
  			}
  		}
  	}
-@@ -22969,6 +_,9 @@
- 			num27 = 3;
- 		}
- 
-+		if (isCustomWings)
-+			return;
-+
- 		if (wings == 32)
- 			num27 = 3;
- 
 @@ -22998,9 +_,11 @@
  
  	private void CapAttackSpeeds()
@@ -4998,16 +4978,16 @@
  	}
  
  	private void RocketBootVisuals()
-@@ -23552,6 +_,9 @@
- 					break;
- 			}
+@@ -23394,7 +_,8 @@
+ 		canBoost = wingsToUse == 44 || wingsToUse == 45;
+ 	}
  
-+			if (!CombinedHooks.CanNPCHitPlayer(Main.npc[i], this, ref specialHitSetter))
-+				continue;
-+
- 			if ((specialHitSetter == -1 && immune) || (dash == 2 && i == eocHit && eocDash > 0) || npcTypeNoAggro[Main.npc[i].type])
- 				continue;
- 
+-	public void WingFrame(bool wingFlap)
++	//TML: Added 'isCustomWings' parameter.
++	public void WingFrame(bool wingFlap, bool isCustomWings = false)
+ 	{
+ 		bool flag = wingsLogic != wings;
+ 		if (wings == 4) {
 @@ -23583,10 +_,15 @@
  					num3 = 1;
  
@@ -5024,59 +5004,16 @@
  				bool flag3 = !immune;
  				if (specialHitSetter >= 0)
  					flag3 = hurtCooldowns[specialHitSetter] == 0;
-@@ -23694,6 +_,9 @@
- 
- 	public void ItemCheck_ManageRightClickFeatures()
- 	{
-+		// TODO: Reintegrate AltFunctionUse
-+		//ItemLoader.AltFunctionUse(this.inventory[this.selectedItem], this)
-+
- 		bool flag = selectedItem != 58 && controlUseTile && Main.myPlayer == whoAmI && !tileInteractionHappened && releaseUseItem && !controlUseItem && !mouseInterface && !CaptureManager.Instance.Active && !Main.HoveringOverAnNPC && !Main.SmartInteractShowingGenuine;
- 		bool flag2 = flag;
- 		if (!ItemID.Sets.ItemsThatAllowRepeatedRightClick[inventory[selectedItem].type] && !Main.mouseRightRelease)
-@@ -23814,11 +_,18 @@
- 			controlUseItem = true;
+@@ -24229,6 +_,9 @@
+ 			return;
  		}
  
-+		// Extra patch context.
- 		if (flag2 && altFunctionUse == 0 && inventory[selectedItem].shoot > 0 && ProjectileID.Sets.MinionTargettingFeature[inventory[selectedItem].shoot]) {
- 			altFunctionUse = 1;
- 			controlUseItem = true;
- 		}
- 
-+		// Added by TML
-+		if (flag2 && altFunctionUse == 0 && ItemLoader.AltFunctionUse(inventory[selectedItem], this)) {
-+			altFunctionUse = 1;
-+			controlUseItem = true;
-+		}
-+
- 		if (!controlUseItem && altFunctionUse == 1)
- 			altFunctionUse = 0;
- 
-@@ -23995,6 +_,12 @@
- 
- 	public void ScrollHotbar(int Offset)
- 	{
-+		//TML:
-+		// Disable hotbar scrolling when using auto select.
-+		// Previously it only worked when scrolling between 0 and 9, and made the sound.
-+		if (selectedItem >= 10)
++		if (isCustomWings)
 +			return;
 +
- 		Offset = ClampHotbarOffset(Offset);
- 		selectedItem += Offset;
- 		if (Offset != 0) {
-@@ -24450,7 +_,10 @@
- 				flag2 = true;
- 				GamepadEnableGrappleCooldown();
- 			}
-+			/*
- 			else if (Main.tile[myX, myY].type == 4 || Main.tile[myX, myY].type == 13 || (Main.tile[myX, myY].type == 50 && Main.tile[myX, myY].frameX == 90)) {
-+			*/
-+			else if (TileID.Sets.Torch[Main.tile[myX, myY].type] || Main.tile[myX, myY].type == 13 || (Main.tile[myX, myY].type == 50 && Main.tile[myX, myY].frameX == 90) || TileID.Sets.CanDropFromRightClick[Main.tile[myX, myY].type]) {
- 				WorldGen.KillTile(myX, myY);
- 				if (Main.netMode == 1)
- 					NetMessage.SendData(17, -1, -1, null, 0, myX, myY);
+ 		int num35 = 4;
+ 		int num36 = 4;
+ 		int num37 = 0;
 @@ -24770,7 +_,9 @@
  				if (!NPC.AnyNPCs(245) && Main.hardMode && NPC.downedPlantBoss) {
  					for (int m = 0; m < 58; m++) {
@@ -5117,26 +5054,16 @@
  			r = new Rectangle(chestPointX * 16, chestPointY * 16, 48, 32);
  
  		if (tile.type == 29)
-@@ -25004,7 +_,10 @@
- 				if (flag12)
- 					NetMessage.SendTileSquare(-1, num62, num63, 2, 2);
+@@ -25051,6 +_,9 @@
+ 					break;
  			}
-+			/*
- 			else if (TileID.Sets.BasicChest[Main.tile[myX, myY].type] || Main.tile[myX, myY].type == 29 || Main.tile[myX, myY].type == 97 || Main.tile[myX, myY].type == 463 || Main.tile[myX, myY].type == 491) {
-+			*/
-+			else if (TileID.Sets.BasicChest[Main.tile[myX, myY].type] && Main.tile[myX, myY].type < TileID.Count || Main.tile[myX, myY].type == 29 || Main.tile[myX, myY].type == 97 || Main.tile[myX, myY].type == 463 || Main.tile[myX, myY].type == 491) {
- 				flag2 = true;
- 				Main.mouseRightRelease = false;
- 				int num68 = 0;
-@@ -25046,7 +_,7 @@
- 					editedChestName = false;
- 				}
  
--				bool flag13 = Chest.IsLocked(Main.tile[num69, num70]);
-+				bool flag13 = Chest.IsLocked(num69, num70);
- 				if (Main.netMode == 1 && num68 == 0 && !flag13) {
- 					if (num69 == chestX && num70 == chestY && chest != -1) {
- 						chest = -1;
++			if (!CombinedHooks.CanNPCHitPlayer(Main.npc[i], this, ref specialHitSetter))
++				continue;
++
+ 			if ((specialHitSetter == ImmunityCooldownID.General && immune) || (dash == 2 && i == eocHit && eocDash > 0) || npcTypeNoAggro[Main.npc[i].type])
+ 				continue;
+ 
 @@ -25110,8 +_,11 @@
  					ApplyDamageToNPC(Main.npc[i], damage, knockback, -num3, crit: false);
  				}
@@ -5160,24 +5087,16 @@
  										if (inventory[num76].stack <= 0)
  											inventory[num76] = new Item();
  									}
-@@ -25190,13 +_,16 @@
- 				if (flag17)
- 					LaunchMinecartHook(myX, myY);
- 			}
-+
-+			if (TileLoader.RightClick(myX, myY))
-+				flag2 = true;
- 		}
+@@ -25195,6 +_,9 @@
  
- 		if (flag2)
- 			tileInteractionHappened = true;
- 	}
- 
--	private static bool IsHoveringOverABottomSideOfABed(int myX, int myY)
-+	public static bool IsHoveringOverABottomSideOfABed(int myX, int myY)
+ 	public void ItemCheck_ManageRightClickFeatures()
  	{
- 		short frameX = Main.tile[myX, myY].frameX;
- 		bool flag = frameX / 72 == 1;
++		// TODO: Reintegrate AltFunctionUse
++		//ItemLoader.AltFunctionUse(this.inventory[this.selectedItem], this)
++
+ 		bool flag = selectedItem != 58 && controlUseTile && Main.myPlayer == whoAmI && !tileInteractionHappened && releaseUseItem && !controlUseItem && !mouseInterface && !CaptureManager.Instance.Active && (!Main.mouseRightRelease || !Main.HoveringAnInteractable) && !Main.LocalPlayerHasPendingInventoryActions();
+ 		bool flag2 = flag;
+ 		if (!ItemID.Sets.ItemsThatAllowRepeatedRightClick[inventory[selectedItem].type] && !Main.mouseRightRelease)
 @@ -25243,6 +_,9 @@
  	{
  		NPC nPC = Main.npc[animalNpcIndex];
@@ -5196,22 +5115,25 @@
  
  		playerPositionWhenPetting = nPC.Bottom + new Vector2(-targetDirection * num, 0f);
  	}
-@@ -25345,7 +_,14 @@
- 			StopPettingAnimal();
- 	}
+@@ -25324,11 +_,18 @@
+ 			controlUseItem = true;
+ 		}
  
-+	/// <summary>
-+	/// Handles boilerplate for gamepad and UI when opening or closing a container.
-+	/// <br/>Sets <see cref="Player.chestX"/>, and <see cref="Player.chestY"/>, and <see cref="Player.chest"/> to the given coordinates.
-+	/// </summary>
-+	/// <param name="x">The top-left X coordinate of the container.</param>
-+	/// <param name="y">The top-left Y coordinate of the container.</param>
-+	/// <param name="newChest">The container index in <see cref="Main.chest"/> if opening, or -1 if closing.</param>
--	private void OpenChest(int x, int y, int newChest)
-+	public void OpenChest(int x, int y, int newChest)
- 	{
- 		if (chest != -1 && Main.myPlayer == whoAmI) {
- 			for (int i = 0; i < 40; i++) {
++		// Extra patch context.
+ 		if (flag2 && altFunctionUse == 0 && inventory[selectedItem].makeNPC > 0 && itemAnimation == 0 && ItemID.Sets.PlaceTileOnAltUse[inventory[selectedItem].type]) {
+ 			altFunctionUse = 1;
+ 			controlUseItem = true;
+ 		}
+ 
++		// Added by TML
++		if (flag2 && altFunctionUse == 0 && ItemLoader.AltFunctionUse(inventory[selectedItem], this)) {
++			altFunctionUse = 1;
++			controlUseItem = true;
++		}
++
+ 		if (!controlUseItem && altFunctionUse == 1)
+ 			altFunctionUse = 0;
+ 
 @@ -25694,10 +_,13 @@
  			int num7 = Sign.ReadSign(num5, num6, CreateIfMissing: false);
  			if (num7 != -1 && tileTargetX >= num5 && tileTargetY >= num6 && tileTargetX <= num5 + 1 && tileTargetY <= num6 + 1) {
@@ -5235,6 +5157,17 @@
  				flag2 = true;
  				SoundEngine.PlaySound(28, myX * 16, myY * 16, 0);
  				WorldGen.SwitchMB(myX, myY);
+@@ -25933,7 +_,10 @@
+ 				flag2 = true;
+ 				GamepadEnableGrappleCooldown();
+ 			}
++			/*
+ 			else if (TileID.Sets.Torches[Main.tile[myX, myY].type] || (Main.tile[myX, myY].type == 50 && Main.tile[myX, myY].frameX == 90)) {
++			*/
++			else if (TileID.Sets.Torches[Main.tile[myX, myY].type] || (Main.tile[myX, myY].type == 50 && Main.tile[myX, myY].frameX == 90) || TileID.Sets.CanDropFromRightClick[Main.tile[myX, myY].type]) {
+ 				WorldGen.KillTile(myX, myY);
+ 				if (Main.netMode == 1)
+ 					NetMessage.SendData(17, -1, -1, null, 0, myX, myY);
 @@ -26230,7 +_,10 @@
  			cursorItemIconID = 3747;
  		}
@@ -5279,15 +5212,87 @@
  				flag2 = true;
  				if (WorldGen.CloseDoor(myX, myY))
  					NetMessage.SendData(19, -1, -1, null, 1, myX, myY, direction);
-@@ -26824,6 +_,8 @@
- 			noThrow = 2;
+@@ -26482,7 +_,10 @@
+ 				if (flag12)
+ 					NetMessage.SendTileSquare(-1, num68, num69, 2, 2);
+ 			}
++			/*
+ 			else if (TileID.Sets.BasicChest[Main.tile[myX, myY].type] || Main.tile[myX, myY].type == 29 || Main.tile[myX, myY].type == 97 || Main.tile[myX, myY].type == 463 || Main.tile[myX, myY].type == 491) {
++			*/
++			else if (TileID.Sets.BasicChest[Main.tile[myX, myY].type] && Main.tile[myX, myY].type < TileID.Count || Main.tile[myX, myY].type == 29 || Main.tile[myX, myY].type == 97 || Main.tile[myX, myY].type == 463 || Main.tile[myX, myY].type == 491) {
+ 				flag2 = true;
+ 				Main.mouseRightRelease = false;
+ 				int num74 = 0;
+@@ -26524,7 +_,7 @@
+ 					editedChestName = false;
+ 				}
+ 
+-				bool flag13 = Chest.IsLocked(Main.tile[num75, num76]);
++				bool flag13 = Chest.IsLocked(num75, num76);
+ 				if (Main.netMode == 1 && num74 == 0 && !flag13) {
+ 					if (num75 == chestX && num76 == chestY && chest != -1) {
+ 						chest = -1;
+@@ -26672,40 +_,43 @@
+ 				AdjTiles();
+ 				InteractWithCraftingStation(craftingFilterForTile);
+ 			}
++
++			if (TileLoader.RightClick(myX, myY))
++				flag2 = true;
  		}
  
-+		TileLoader.MouseOver(myX, myY);
-+
- 		if (PlayerInput.UsingGamepad && cursorItemIconText.Length == 0) {
- 			cursorItemIconEnabled = false;
- 			cursorItemIconID = 0;
+ 		if (flag2)
+ 			tileInteractionHappened = true;
+ 	}
+ 
+ 	private static void InteractWithCraftingStation(NewCraftingUI.RecipeFilter craftingFilter)
+ 	{
+ 		if (Settings.CraftingGridControl == Settings.CraftingGridMode.Modern)
+ 			NewCraftingUI.OpenCloseFilter(craftingFilter);
+ 		else
+ 			Main.craftingUI.OpenCloseFilter(craftingFilter);
+ 	}
+ 
+ 	private static NewCraftingUI.RecipeFilter GetCraftingFilterForTile(int myX, int myY)
+ 	{
+ 		ushort type = Main.tile[myX, myY].type;
+ 		if (TileID.Sets.DoesNotOpenCraftingMenuOnInteract[type])
+ 			return null;
+ 
+ 		if (Recipe.TileUsedInRecipes[type]) {
+ 			int baseOption = 0;
+ 			MapHelper.GetTileBaseOption(myX, myY, type, Main.tile[myX, myY], ref baseOption);
+ 			return new NewCraftingUI.CraftStationRecipeFilter(type, baseOption);
+ 		}
+ 
+ 		if (TileID.Sets.CountsAsWaterForCrafting[type]) {
+ 			int baseOption2 = 0;
+ 			MapHelper.GetTileBaseOption(myX, myY, type, Main.tile[myX, myY], ref baseOption2);
+ 			return new NewCraftingUI.WaterSourceRecipeFilter(type, baseOption2);
+ 		}
+ 
+ 		return null;
+ 	}
+ 
+-	private static bool IsHoveringOverABottomSideOfABed(int myX, int myY)
++	public static bool IsHoveringOverABottomSideOfABed(int myX, int myY)
+ 	{
+@@ -26865,7 +_,14 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Handles boilerplate for gamepad and UI when opening or closing a container.
++	/// <br/>Sets <see cref="Player.chestX"/>, and <see cref="Player.chestY"/>, and <see cref="Player.chest"/> to the given coordinates.
++	/// </summary>
++	/// <param name="x">The top-left X coordinate of the container.</param>
++	/// <param name="y">The top-left Y coordinate of the container.</param>
++	/// <param name="newChest">The container index in <see cref="Main.chest"/> if opening, or -1 if closing.</param>
+-	private void OpenChest(int x, int y, int newChest)
++	public void OpenChest(int x, int y, int newChest)
+ 	{
+ 		chest = newChest;
+ 		if (chest != -1 && Main.myPlayer == whoAmI) {
 @@ -26967,11 +_,23 @@
  			if (!item.active || item.shimmerTime != 0f || item.noGrabDelay != 0 || item.playerIndexTheItemIsReservedFor != i || !CanAcceptItemIntoInventory(item) || (item.shimmered && !((double)item.velocity.Length() < 0.2)))
  				continue;
@@ -5354,64 +5359,15 @@
  			if (oldAdjTile[l] != adjTile[l]) {
  				flag = true;
  				break;
-@@ -27759,7 +_,7 @@
- 			waist = 0;
- 
- 		if (!dead && body >= 0) {
--			sbyte b = (sbyte)(Male ? ArmorIDs.Body.Sets.IncludedCapeBack : ArmorIDs.Body.Sets.IncludedCapeBackFemale)[body];
-+			int b = (Male ? ArmorIDs.Body.Sets.IncludedCapeBack : ArmorIDs.Body.Sets.IncludedCapeBackFemale)[body];
- 			if (b != -1) {
- 				if (ArmorIDs.Back.Sets.DrawInBackpackLayer[b]) {
- 					backpack = b;
-@@ -27775,7 +_,7 @@
- 				}
- 			}
- 
--			sbyte b2 = (sbyte)ArmorIDs.Body.Sets.IncludedCapeFront[body];
-+			int b2 = ArmorIDs.Body.Sets.IncludedCapeFront[body];
- 			if (b2 != -1 && front == -1) {
- 				front = b2;
- 				cFront = cBody;
-@@ -27785,7 +_,7 @@
- 			if (!includeCapeFrontAndBackInfo.Invalid && back == -1 && front == -1) {
- 				front = includeCapeFrontAndBackInfo.frontCape;
- 				cFront = cBody;
--				sbyte backCape = includeCapeFrontAndBackInfo.backCape;
-+				int backCape = includeCapeFrontAndBackInfo.backCape;
- 				if (ArmorIDs.Back.Sets.DrawInBackpackLayer[backCape]) {
- 					backpack = backCape;
- 					cBackpack = cBody;
-@@ -27870,6 +_,8 @@
- 			faceHead = -1;
+@@ -27978,6 +_,8 @@
+ 			cursorItemIconID = 3000;
  		}
  
-+		ItemLoader.PreUpdateVanitySet(this);
++		TileLoader.MouseOver(myX, myY);
 +
- 		if (head > 0 && face > 0) {
- 			if (ArmorIDs.Face.Sets.OverrideHelmet[face]) {
- 				head = -1;
-@@ -28028,7 +_,11 @@
- 
- 		Item.GetDrawHitbox(HeldItem.type, this);
- 		bool flag3 = CanVisuallyHoldItem(HeldItem);
--		bool flag4 = HeldItem.type != 4952;
-+		// bool flag4 = HeldItem.type != 4952;
-+		bool flag4 = HeldItem.useStyle != ItemUseStyleID.RaiseLamp; // TML: #RaiseLampAnimationFix
-+
-+		ItemLoader.UpdateVanitySet(this);
-+
- 		if (mount.Active) {
- 			legFrameCounter = 0.0;
- 			legFrame.Y = legFrame.Height * 6;
-@@ -28252,7 +_,7 @@
- 			else
- 				bodyFrame.Y = bodyFrame.Height * 2;
- 		}
--		else if (flag3 && inventory[selectedItem].holdStyle == 1 && (!wet || !inventory[selectedItem].noWet) && (!happyFunTorchTime || inventory[selectedItem].createTile != 4)) {
-+		else if (flag3 && inventory[selectedItem].holdStyle == 1 && (!wet || !inventory[selectedItem].noWet || ItemID.Sets.WaterTorches[BiomeTorchHoldStyle(inventory[selectedItem].type)]/*Allow biome torches underwater.*/) && (!happyFunTorchTime || inventory[selectedItem].createTile != 4)) {
- 			bodyFrame.Y = bodyFrame.Height * 3;
- 		}
- 		else if (flag3 && inventory[selectedItem].holdStyle == 2 && (!wet || !inventory[selectedItem].noWet)) {
+ 		if (PlayerInput.UsingGamepad && cursorItemIconText.Length == 0) {
+ 			cursorItemIconEnabled = false;
+ 			cursorItemIconID = 0;
 @@ -28308,9 +_,11 @@
  		if (ItemID.Sets.NebulaPickup[item.type])
  			num += 100;
@@ -5424,15 +5380,6 @@
  		return num;
  	}
  
-@@ -28403,6 +_,8 @@
- 
- 	private void CancelAllJumpVisualEffects()
- 	{
-+		ExtraJumpLoader.StopActiveJump(this, out _);
-+		/*
- 		isPerformingJump_Cloud = false;
- 		isPerformingJump_Sandstorm = false;
- 		isPerformingJump_Blizzard = false;
 @@ -28454,6 +_,10 @@
  		return true;
  	}
@@ -5528,6 +5475,37 @@
 +					// TODO: Move to SetAdjTile: TileLoader.AdjTiles(this, Main.tile[j, k].type);
  				}
  
+@@ -28893,9 +_,9 @@
+ 			waist = 0;
+ 
+ 		bool flag = false;
+ 		bool flag2 = false;
+ 		if (!dead && body >= 0) {
+-			sbyte b = (sbyte)(Male ? ArmorIDs.Body.Sets.IncludedCapeBack : ArmorIDs.Body.Sets.IncludedCapeBackFemale)[body];
++			int b = (Male ? ArmorIDs.Body.Sets.IncludedCapeBack : ArmorIDs.Body.Sets.IncludedCapeBackFemale)[body];
+ 			if (b != -1) {
+ 				if (ArmorIDs.Back.Sets.DrawInBackpackLayer[b]) {
+ 					backpack = b;
+@@ -28911,8 +_,8 @@
+ 				}
+ 			}
+ 
+-			sbyte b2 = (sbyte)ArmorIDs.Body.Sets.IncludedCapeFront[body];
++			int b2 = ArmorIDs.Body.Sets.IncludedCapeFront[body];
+ 			if (b2 != -1 && front == -1) {
+ 				flag = true;
+ 				front = b2;
+ 				cFront = cBody;
+@@ -28922,8 +_,8 @@
+ 			if (!includeCapeFrontAndBackInfo.Invalid && back == -1 && front == -1) {
+ 				flag = true;
+ 				front = includeCapeFrontAndBackInfo.frontCape;
+ 				cFront = cBody;
+-				sbyte backCape = includeCapeFrontAndBackInfo.backCape;
++				int backCape = includeCapeFrontAndBackInfo.backCape;
+ 				if (ArmorIDs.Back.Sets.DrawInBackpackLayer[backCape]) {
+ 					backpack = backCape;
+ 					cBackpack = cBody;
 @@ -29002,9 +_,14 @@
  			SetArmorEffectVisuals(this);
  		}
@@ -5556,6 +5534,15 @@
  			hermesStepSound.IntendedCooldown = 6;
  		}
  
+@@ -29025,6 +_,8 @@
+ 			faceHead = -1;
+ 		}
+ 
++		ItemLoader.PreUpdateVanitySet(this);
++
+ 		if (head > 0 && face > 0 && (head != 287 || face != 23)) {
+ 			if (ArmorIDs.Face.Sets.OverrideHelmet[face]) {
+ 				head = -1;
 @@ -29036,7 +_,7 @@
  		}
  
@@ -5575,6 +5562,20 @@
  		if (!isDisplayDollOrInanimate) {
  			if (((body == 68 && legs == 57 && head == 106) || (body == 74 && legs == 63 && head == 106)) && Main.rand.Next(10) == 0) {
  				int num3 = Dust.NewDust(new Vector2(position.X - velocity.X * 2f, position.Y - 2f - velocity.Y * 2f), width, height, 43, 0f, 0f, 100, new Color(255, 0, 255), 0.3f);
+@@ -29183,10 +_,13 @@
+ 
+ 		Item.GetDrawHitbox(HeldItem.type, this);
+ 		bool flag5 = CanVisuallyHoldItem(HeldItem);
+ 		bool flag6 = HeldItem.useStyle != 10 && HeldItem.useStyle != 14 && HeldItem.useStyle != 15;
+ 		bool flag7 = false;
++
++		ItemLoader.UpdateVanitySet(this);
++
+ 		if (mount.Active) {
+ 			if (!MountID.Sets.DoesNotOverrideLegFrames[mount.Type]) {
+ 				flag7 = true;
+ 				legFrameCounter = 0.0;
+ 				legFrame.Y = legFrame.Height * 6;
 @@ -29400,6 +_,8 @@
  					}
  				}
@@ -5584,6 +5585,15 @@
  		}
  		else if (pulley) {
  			if (pulleyDir == 2)
+@@ -29407,7 +_,7 @@
+ 			else
+ 				bodyFrame.Y = bodyFrame.Height * 2;
+ 		}
+-		else if (flag5 && inventory[selectedItem].holdStyle == 1 && (!wet || !inventory[selectedItem].noWet) && (!happyFunTorchTime || inventory[selectedItem].createTile != 4)) {
++		else if (flag5 && inventory[selectedItem].holdStyle == 1 && (!wet || !inventory[selectedItem].noWet || ItemID.Sets.WaterTorches[BiomeTorchHoldStyle(inventory[selectedItem].type)]/*Allow biome torches underwater.*/) && (!happyFunTorchTime || inventory[selectedItem].createTile != 4)) {
+ 			bodyFrame.Y = bodyFrame.Height * 3;
+ 		}
+ 		else if (flag5 && inventory[selectedItem].holdStyle == 2 && (!wet || !inventory[selectedItem].noWet)) {
 @@ -29505,14 +_,44 @@
  			frostArmor = true;
  	}
@@ -5724,6 +5734,13 @@
  				if (whoAmI == Main.myPlayer) {
  					Main.NotifyOfEvent(GameNotificationType.Damage);
  					if (hasFootball) {
+@@ -29563,4 +_,6 @@
+ 
++		ExtraJumpLoader.StopActiveJump(this, out _);
++		/*
+ 		isPerformingJump_Cloud = false;
+ 		isPerformingJump_Sandstorm = false;
+ 		isPerformingJump_Blizzard = false;
 @@ -29568,9 +_,10 @@
  		isPerformingJump_Sail = false;
  		isPerformingJump_Unicorn = false;
@@ -6178,17 +6195,6 @@
  		}
  
  		return false;
-@@ -30627,7 +_,9 @@
- 
- 			WorldGen.PlaceWall(num, num2, createWall);
- 			if (Main.tile[num, num2].wall == createWall) {
-+				if (ItemLoader.ConsumeItem(inventory[selectedItem], this))
--				inventory[selectedItem].stack--;
-+					inventory[selectedItem].stack--;
-+
- 				if (inventory[selectedItem].stack == 0)
- 					inventory[selectedItem].SetDefaults();
- 
 @@ -30673,9 +_,14 @@
  			int? forcedRandom = null;
  			TileObject objectData = default(TileObject);
@@ -6204,23 +6210,6 @@
  			else if (TileObjectData.CustomPlace(tileToCreate, previewPlaceStyle) && tileToCreate != 82 && tileToCreate != 227) {
  				newObjectType = true;
  				canPlace = TileObject.CanPlace(tileTargetX, tileTargetY, (ushort)tileToCreate, previewPlaceStyle, direction, out objectData, onlyCheck: false, forcedRandom);
-@@ -30757,9 +_,15 @@
- 			if (!WorldGen.IsTileReplacable(tileTargetX, tileTargetY))
- 				return false;
- 
-+			if (!TileLoader.CanReplace(tileTargetX, tileTargetY, tile.type, HeldItem.createTile))
-+				return false;
-+
-+			if (!TileLoader.CanPlace(tileTargetX, tileTargetY, HeldItem.createTile))
-+				return false;
-+
- 			if (0 == 0) {
- 				if (hitReplace.AddDamage(num, pickaxeDamage) < 100) {
--					int num2 = WorldGen.KillTile_GetTileDustAmount(fail: true, tile);
-+					int num2 = WorldGen.KillTile_GetTileDustAmount(fail: true, tile, tileTargetX, tileTargetY);
- 					for (int i = 0; i < num2; i++) {
- 						WorldGen.KillTile_MakeTileDust(tileTargetX, tileTargetY, tile);
- 					}
 @@ -30777,21 +_,22 @@
  				ClearMiningCacheAt(tileTargetX, tileTargetY, 1);
  			}
@@ -6250,19 +6239,6 @@
  			}
  		}
  
-@@ -30803,10 +_,10 @@
- 		int createTile = HeldItem.createTile;
- 		int num = HeldItem.placeStyle;
- 		if (UsingBiomeTorches && createTile == 4)
--			num = BiomeTorchPlaceStyle(num);
-+			BiomeTorchPlaceStyle(ref createTile, ref num);
- 
- 		if (UsingBiomeTorches && createTile == 215)
--			num = BiomeCampfirePlaceStyle(num);
-+			BiomeCampfirePlaceStyle(ref createTile, ref num);
- 
- 		Tile tile = Main.tile[tileTargetX, tileTargetY];
- 		if (WorldGen.WouldTileReplacementBeBlockedByLiquid(tileTargetX, tileTargetY, 1))
 @@ -30826,15 +_,17 @@
  				if (damageSource.TryGetCausingEntity(out entity))
  					spawnSource = GetProjectileSource_OnHurt(entity, 1);
@@ -6282,60 +6258,6 @@
  			beetleOrbs--;
  			for (int l = 0; l < maxBuffs; l++) {
  				if (buffType[l] >= 95 && buffType[l] <= 97)
-@@ -30833,11 +_,19 @@
- 		if (TileID.Sets.Platforms[tile.type] && tile.type == createTile)
- 			return tile.frameY != num * 18;
- 
-+		/*
- 		if (tile.type == 4 && tile.type == createTile)
- 			return tile.frameY != num * 22;
-+		*/
-+		if (TileID.Sets.Torch[tile.type] && TileID.Sets.Torch[createTile])
-+			return tile.type != createTile || tile.frameY != num * 22;
- 
-+		/*
- 		if (tile.type == 215 && tile.type == createTile)
- 			return tile.frameX / 54 != num;
-+		*/
-+		if (TileID.Sets.Campfire[tile.type] && TileID.Sets.Campfire[createTile])
-+			return tile.type != createTile || tile.frameX / 54 != num;
- 
- 		if (TileID.Sets.BasicChest[tile.type] && TileID.Sets.BasicChest[createTile]) {
- 			if (tile.frameX / 36 == num)
-@@ -30927,7 +_,8 @@
- 		if (!newObjectType)
- 			num = PlaceThing_Tiles_PlaceIt_GetLegacyTileStyle(num);
- 
--		int[,] typeCaches = PlaceThing_Tiles_GetAutoAccessoryCache();
-+		var topLeft = data.type == 0 ? new Point(tileTargetX, tileTargetY) : new Point(data.xCoord, data.yCoord);
-+		int[,] typeCaches = PlaceThing_Tiles_GetAutoAccessoryCache(TileObjectData.GetTileData(data.type, data.style, data.alternate), topLeft);
- 		bool forced = false;
- 		bool flag;
- 		if (newObjectType) {
-@@ -30938,7 +_,7 @@
- 		}
- 		else {
- 			if (UsingBiomeTorches && tileToCreate == 4 && num == 0)
--				num = BiomeTorchPlaceStyle(num);
-+				BiomeTorchPlaceStyle(ref tileToCreate, ref num);
- 
- 			flag = WorldGen.PlaceTile(tileTargetX, tileTargetY, tileToCreate, mute: false, forced, whoAmI, num);
- 		}
-@@ -30963,9 +_,13 @@
- 			PlaceThing_Tiles_PlaceIt_ConsumeFlexibleWandMaterial();
- 			PlaceThing_Tiles_PlaceIt_UnslopeForSolids();
- 			PlaceThing_Tiles_PlaceIt_KillGrassForSolids();
--			PlaceThing_Tiles_PlaceIt_AutoPaintAndActuate(typeCaches, tileToCreate);
-+			PlaceThing_Tiles_PlaceIt_AutoPaintAndActuate(typeCaches, tileToCreate, topLeft);
-+
-+			// Extra patch context.
- 			if (PlayerInput.UsingGamepad && ItemID.Sets.SingleUseInGamepad[inventory[selectedItem].type] && Main.myPlayer == whoAmI && !Main.SmartCursorIsUsed)
- 				Main.blockMouse = true;
-+
-+			TileLoader.PlaceInWorld(tileTargetX, tileTargetY, inventory[selectedItem]);
- 		}
- 
- 		return data;
 @@ -30966,7 +_,7 @@
  					else if (Main.expertMode)
  						num18 *= 2;
@@ -6345,17 +6267,6 @@
  				}
  			}
  
-@@ -30981,7 +_,10 @@
- 		}
- 	}
- 
-+	/* Added type to support modded tiletypes. Changed to ref, but kept int return to keep patches small.
- 	public int BiomeTorchPlaceStyle(int style)
-+	*/
-+	public int BiomeTorchPlaceStyle(ref int type, ref int style)
- 	{
- 		if (!UsingBiomeTorches || style != 0)
- 			return style;
 @@ -30990,7 +_,7 @@
  				else if (Main.expertMode)
  					num20 *= 1.5f;
@@ -6375,19 +6286,6 @@
  			double num22 = num2 / (double)statLifeMax2 * 100.0;
  			float num23 = 2 * hitDirection;
  			float num24 = 0f;
-@@ -31011,6 +_,12 @@
- 		else if (ZoneDesert && Main.remixWorld)
- 			style = 16;
- 
-+		if (CurrentSceneEffect.biomeTorchItemType.value > -1) {
-+			var item = ContentSamples.ItemsByType[CurrentSceneEffect.biomeTorchItemType.value];
-+			type = item.createTile;
-+			style = item.placeStyle;
-+		}
-+
- 		return style;
- 	}
- 
 @@ -31029,9 +_,12 @@
  				else {
  					Dust.NewDust(position, width, height, 5, num23 + (float)hitDirection * num24 * Main.rand.NextFloat(), -2f);
@@ -6412,83 +6310,6 @@
 +		*/
  	}
  
-@@ -31044,10 +_,17 @@
- 		else if (ZoneDesert && Main.remixWorld)
- 			style = 4383;
- 
-+		if (CurrentSceneEffect.biomeTorchItemType.value > -1) {
-+			style = CurrentSceneEffect.biomeTorchItemType.value;
-+		}
-+
- 		return style;
- 	}
- 
-+	/* Added type to support modded tiletypes. Changed to ref, but kept int return to keep patches small.
- 	public int BiomeCampfirePlaceStyle(int style)
-+	*/
-+	public int BiomeCampfirePlaceStyle(ref int type, ref int style)
- 	{
- 		if (!UsingBiomeTorches || style != 0)
- 			return style;
-@@ -31077,6 +_,12 @@
- 		else if (ZoneDesert && Main.remixWorld)
- 			style = 8;
- 
-+		if (CurrentSceneEffect.biomeCampfireItemType.value > -1) {
-+			var item = ContentSamples.ItemsByType[CurrentSceneEffect.biomeCampfireItemType.value];
-+			type = item.createTile;
-+			style = item.placeStyle;
-+		}
-+
- 		return style;
- 	}
- 
-@@ -31110,18 +_,33 @@
- 		else if (ZoneDesert && Main.remixWorld)
- 			itemType = 4689;
- 
-+		if (CurrentSceneEffect.biomeCampfireItemType.value > -1) {
-+			itemType = CurrentSceneEffect.biomeCampfireItemType.value;
-+		}
-+
- 		return itemType;
- 	}
- 
--	private int[,] PlaceThing_Tiles_GetAutoAccessoryCache()
-+	// #3222: Changed to return an exact 2d array of the tiles that will need painting/actuating
-+	private int[,] PlaceThing_Tiles_GetAutoAccessoryCache(TileObjectData data, Point topLeft)
- 	{
- 		int[,] array = null;
- 		if (autoPaint || autoActuator) {
-+			/*
- 			array = new int[11, 11];
- 			for (int i = 0; i < 11; i++) {
- 				for (int j = 0; j < 11; j++) {
- 					int num = tileTargetX - 5 + i;
- 					int num2 = tileTargetY - 5 + j;
-+			*/
-+			int width = data?.Width ?? 1;
-+			int height = data?.Height ?? 1;
-+
-+			array = new int[width, height];
-+			for (int i = 0; i < width; i++) {
-+				for (int j = 0; j < height; j++) {
-+					int num = topLeft.X + i;
-+					int num2 = topLeft.Y + j;
- 					if (Main.tile[num, num2].active())
- 						array[i, j] = Main.tile[num, num2].type;
- 					else
-@@ -31253,7 +_,9 @@
- 				int num7 = FindItem(849);
- 				if (num7 > -1 && WorldGen.PlaceActuator(num5, num6)) {
- 					NetMessage.SendData(17, -1, -1, null, 8, num5, num6);
-+					if (ItemLoader.ConsumeItem(inventory[num7], this))
--					inventory[num7].stack--;
-+						inventory[num7].stack--;
-+
- 					if (inventory[num7].stack <= 0)
- 						inventory[num7].SetDefaults();
- 				}
 @@ -31257,6 +_,14 @@
  			if (FileUtilities.Exists(Main.playerPathName + ".bak", isCloudSave))
  				FileUtilities.Delete(Main.playerPathName + ".bak", isCloudSave);
@@ -6617,6 +6438,54 @@
  			ApplyItemTime(inventory[selectedItem], wallSpeed);
  			if (Main.netMode == 1)
  				NetMessage.SendData(17, -1, -1, null, 3, tileTargetX, tileTargetY, inventory[selectedItem].createWall);
+@@ -31965,7 +_,9 @@
+ 
+ 			WorldGen.PlaceWall(num, num2, createWall);
+ 			if (Main.tile[num, num2].wall == createWall) {
++				if (ItemLoader.ConsumeItem(inventory[selectedItem], this))
+-				inventory[selectedItem].stack--;
++					inventory[selectedItem].stack--;
++
+ 				if (inventory[selectedItem].stack == 0)
+ 					inventory[selectedItem].SetDefaults(0);
+ 
+@@ -32114,9 +_,15 @@
+ 			if (!WorldGen.IsTileReplacable(tileTargetX, tileTargetY))
+ 				return false;
+ 
++			if (!TileLoader.CanReplace(tileTargetX, tileTargetY, tile.type, HeldItem.createTile))
++				return false;
++
++			if (!TileLoader.CanPlace(tileTargetX, tileTargetY, HeldItem.createTile))
++				return false;
++
+ 			if (0 == 0) {
+ 				if (hitReplace.AddDamage(num, num2) < 100) {
+-					int num3 = WorldGen.KillTile_GetTileDustAmount(fail: true, tile);
++					int num3 = WorldGen.KillTile_GetTileDustAmount(fail: true, tile, tileTargetX, tileTargetY);
+ 					for (int i = 0; i < num3; i++) {
+ 						WorldGen.KillTile_MakeTileDust(tileTargetX, tileTargetY, tile);
+ 					}
+@@ -32162,9 +_,9 @@
+ 		int type = HeldItem.createTile;
+ 		int style = HeldItem.placeStyle;
+ 		if (UsingBiomeTorches && type == 4)
+ 			BiomeTorchPlaceStyle(ref type, ref style);
+ 
+ 		if (UsingBiomeTorches && type == 215)
+ 			BiomeCampfirePlaceStyle(ref type, ref style);
+ 
+ 		Tile tile = Main.tile[tileTargetX, tileTargetY];
+@@ -32318,7 +_,8 @@
+ 		if (!newObjectType)
+ 			style = PlaceThing_Tiles_PlaceIt_GetLegacyTileStyle(style);
+ 
+-		Vector3[,] tileDataCaches = PlaceThing_Tiles_GetAutoAccessoryCache();
++		var topLeft = data.type == 0 ? new Point(tileTargetX, tileTargetY) : new Point(data.xCoord, data.yCoord);
++		Vector3[,] tileDataCaches = PlaceThing_Tiles_GetAutoAccessoryCache(TileObjectData.GetTileData(data.type, data.style, data.alternate), topLeft);
+ 		bool forced = false;
+ 		bool flag;
+ 		if (newObjectType) {
 @@ -32318,7 +_,9 @@
  		byte paint = targetItem.paint;
  		if (paintingAWall) {
@@ -6639,6 +6508,29 @@
  			if (targetItem.stack <= 0)
  				targetItem.SetDefaults();
  
+@@ -32329,7 +_,7 @@
+ 		}
+ 		else {
+ 			if (UsingBiomeTorches && tileToCreate == 4 && style == 0)
+ 				BiomeTorchPlaceStyle(ref tileToCreate, ref style);
+ 
+ 			flag = WorldGen.PlaceTile(tileTargetX, tileTargetY, tileToCreate, mute: false, forced, whoAmI, style);
+ 		}
+@@ -32357,9 +_,13 @@
+ 			PlaceThing_Tiles_PlaceIt_ConsumeFlexibleWandMaterial();
+ 			PlaceThing_Tiles_PlaceIt_UnslopeForSolids();
+ 			PlaceThing_Tiles_PlaceIt_KillGrassForSolids();
+-			PlaceThing_Tiles_PlaceIt_AutoPaintAndActuate(tileDataCaches, tileToCreate);
++			PlaceThing_Tiles_PlaceIt_AutoPaintAndActuate(tileDataCaches, tileToCreate, topLeft);
++
++			// Extra patch context.
+ 			if (PlayerInput.UsingGamepad && ItemID.Sets.SingleUseInGamepad[inventory[selectedItem].type] && Main.myPlayer == whoAmI && !Main.SmartCursorIsUsed)
+ 				Main.blockMouse = true;
++
++			TileLoader.PlaceInWorld(tileTargetX, tileTargetY, inventory[selectedItem]);
+ 		}
+ 
+ 		return data;
 @@ -32383,13 +_,19 @@
  		int num6 = -1;
  		int num7 = 1;
@@ -6670,6 +6562,75 @@
  				num = -1;
  				num2 = -1;
  				num3 = -1;
+@@ -32445,5 +_,11 @@
+ 			else if ((ZoneDesert && (double)position.Y < Main.worldSurface * 16.0) || ZoneUndergroundDesert)
+ 				style = 16;
+ 			else if (ZoneDesert && Main.remixWorld)
+ 				style = 16;
++
++			if (CurrentSceneEffect.biomeTorchItemType.value > -1) {
++				var item = ContentSamples.ItemsByType[CurrentSceneEffect.biomeTorchItemType.value];
++				type = item.createTile;
++				style = item.placeStyle;
++			}
+ 		}
+@@ -32479,6 +_,10 @@
+ 		else if (ZoneDesert && Main.remixWorld)
+ 			itemType = 4383;
+ 
++		if (CurrentSceneEffect.biomeTorchItemType.value > -1) {
++			itemType = CurrentSceneEffect.biomeTorchItemType.value;
++		}
++
+ 		return itemType;
+ 	}
+ 
+@@ -32509,6 +_,12 @@
+ 				style = 8;
+ 			else if (ZoneDesert && Main.remixWorld)
+ 				style = 8;
++				
++			if (CurrentSceneEffect.biomeCampfireItemType.value > -1) {
++				var item = ContentSamples.ItemsByType[CurrentSceneEffect.biomeCampfireItemType.value];
++				type = item.createTile;
++				style = item.placeStyle;
++			}
+ 		}
+ 	}
+ 
+@@ -32545,16 +_,31 @@
++		if (CurrentSceneEffect.biomeCampfireItemType.value > -1) {
++			itemType = CurrentSceneEffect.biomeCampfireItemType.value;
++		}
++
+ 		return itemType;
+ 	}
+ 
+-	private Vector3[,] PlaceThing_Tiles_GetAutoAccessoryCache()
++	// #3222: Changed to return an exact 2d array of the tiles that will need painting/actuating
++	private Vector3[,] PlaceThing_Tiles_GetAutoAccessoryCache(TileObjectData data, Point topLeft)
+ 	{
+ 		Vector3[,] array = null;
+ 		if (autoPaint || autoActuator) {
++			/*
+ 			array = new Vector3[11, 11];
+ 			for (int i = 0; i < 11; i++) {
+ 				for (int j = 0; j < 11; j++) {
+ 					int num = tileTargetX - 5 + i;
+ 					int num2 = tileTargetY - 5 + j;
+ 					Tile tile = Main.tile[num, num2];
++			*/
++			int width = data?.Width ?? 1;
++			int height = data?.Height ?? 1;
++
++			array = new Vector3[width, height];
++			for (int i = 0; i < width; i++) {
++				for (int j = 0; j < height; j++) {
++					int num = topLeft.X + i;
++					int num2 = topLeft.Y + j;
+ 					if (Main.tile[num, num2].active())
+ 						array[i, j] = new Vector3((int)tile.type, tile.frameX, tile.frameY);
+ 					else
 @@ -32646,7 +_,7 @@
  		}
  	}
@@ -6702,6 +6663,17 @@
  				if (!tile2.active() || tile2.type != tileToCreate)
  					continue;
  
+@@ -32704,7 +_,9 @@
+ 				int num10 = FindItem(849);
+ 				if (num10 > -1 && WorldGen.PlaceActuator(num5, num6)) {
+ 					NetMessage.SendData(17, -1, -1, null, 8, num5, num6);
++					if (ItemLoader.ConsumeItem(inventory[num10], this))
+-					inventory[num10].stack--;
++						inventory[num10].stack--;
++
+ 					if (inventory[num10].stack <= 0)
+ 						inventory[num10].SetDefaults(0);
+ 				}
 @@ -32800,7 +_,17 @@
  				position.X = num;
  				direction = dir;
@@ -6960,15 +6932,6 @@
  						if (item.stack > 0)
  							item.stack--;
  
-@@ -33770,6 +_,8 @@
- 		if (Main.myPlayer == whoAmI && itemAnimation == 0) {
- 			Tile targetTile = Main.tile[tileTargetX, tileTargetY];
- 			FigureOutWhatToPlace(targetTile, sItem, out var tileToCreate, out var previewPlaceStyle, out var overrideCanPlace, out var forcedRandom);
-+			PlantLoader.CheckAndInjectModSapling(tileTargetX, tileTargetY, ref tileToCreate, ref previewPlaceStyle);
-+
- 			if ((!overrideCanPlace.HasValue || overrideCanPlace.Value) && TileObjectData.CustomPlace(tileToCreate, previewPlaceStyle))
- 				TileObject.CanPlace(tileTargetX, tileTargetY, tileToCreate, previewPlaceStyle, direction, out var _, onlyCheck: true, forcedRandom);
- 		}
 @@ -33782,7 +_,7 @@
  		overrideCanPlace = null;
  		forcedRandom = null;
@@ -7179,19 +7142,6 @@
  			}
  		}
  	}
-@@ -34195,8 +_,12 @@
- 			NPC.ReleaseNPC((int)base.Center.X, (int)base.Bottom.Y, sItem.makeNPC, sItem.placeStyle, whoAmI);
- 		}
- 		else if (position.X / 16f - (float)tileRangeX - (float)sItem.tileBoost <= (float)tileTargetX && (position.X + (float)width) / 16f + (float)tileRangeX + (float)sItem.tileBoost - 1f >= (float)tileTargetX && position.Y / 16f - (float)tileRangeY - (float)sItem.tileBoost <= (float)tileTargetY && (position.Y + (float)height) / 16f + (float)tileRangeY + (float)sItem.tileBoost - 2f >= (float)tileTargetY) {
-+			/*
- 			int num = Main.mouseX + (int)Main.screenPosition.X;
- 			int num2 = Main.mouseY + (int)Main.screenPosition.Y;
-+			*/
-+			int num = (int)Main.MouseWorld.X;
-+			int num2 = (int)Main.MouseWorld.Y;
- 			int i = num / 16;
- 			int j = num2 / 16;
- 			if (!WorldGen.SolidTile(i, j)) {
 @@ -34275,12 +_,21 @@
  		return TextureAssets.Item[type].Frame();
  	}
@@ -7428,6 +7378,15 @@
  					num10 = (num10 - (float)itemTime) / num10;
  					float num11 = 44f;
  					float num12 = (float)Math.PI * 3f;
+@@ -34953,6 +_,8 @@
+ 			framesInMovementForPlacementPreview = Utils.Clamp(framesInMovementForPlacementPreview + num, 0, 33);
+ 			Tile targetTile = Main.tile[tileTargetX, tileTargetY];
+ 			FigureOutWhatToPlace(targetTile, sItem, out var tileToCreate, out var previewPlaceStyle, out var overrideCanPlace, out var forcedRandom);
++			PlantLoader.CheckAndInjectModSapling(tileTargetX, tileTargetY, ref tileToCreate, ref previewPlaceStyle);
++
+ 			if ((!overrideCanPlace.HasValue || overrideCanPlace.Value) && TileObjectData.CustomPlace(tileToCreate, previewPlaceStyle))
+ 				TileObject.CanPlace(tileTargetX, tileTargetY, tileToCreate, previewPlaceStyle, direction, out var _, onlyCheck: true, forcedRandom);
+ 		}
 @@ -35070,6 +_,10 @@
  		if (sItem.shoot > 0 && flag4)
  			ItemCheck_Shoot(whoAmI, sItem, weaponDamage);
