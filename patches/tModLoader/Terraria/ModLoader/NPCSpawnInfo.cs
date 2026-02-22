@@ -4,7 +4,7 @@ namespace Terraria.ModLoader;
 /// A struct that stores information regarding where an NPC is naturally spawning and the player it is spawning around. This serves to reduce the
 /// parameter count for ModNPC.CanSpawn and GlobalNPC.EditSpawnPool.
 /// </summary>
-public class NPCSpawnInfo
+public record class NPCSpawnInfo
 {
 	/// <summary> The x-coordinate of the tile the NPC will spawn above. </summary>
 	public int SpawnTileX { get; internal set; }
@@ -23,32 +23,84 @@ public class NPCSpawnInfo
 	/// (ZoneGranite, ZoneMarble, ZoneHive, ZoneGemCave are not actually proper spawning related checks, they are for visuals only (RGB), determined
 	/// by the backwall type)
 	/// <list type="bullet">
-	/// <item><description>ZoneDungeon</description></item>
-	/// <item><description>ZoneCorrupt</description></item>
-	/// <item><description>ZoneHallow</description></item>
-	/// <item><description>ZoneMeteor</description></item>
-	/// <item><description>ZoneJungle</description></item>
-	/// <item><description>ZoneSnow</description></item>
-	/// <item><description>ZoneCrimson</description></item>
-	/// <item><description>ZoneWaterCandle</description></item>
-	/// <item><description>ZonePeaceCandle</description></item>
-	/// <item><description>ZoneTowerSolar</description></item>
-	/// <item><description>ZoneTowerVortex</description></item>
-	/// <item><description>ZoneTowerNebula</description></item>
-	/// <item><description>ZoneTowerStardust</description></item>
-	/// <item><description>ZoneDesert</description></item>
-	/// <item><description>ZoneGlowshroom</description></item>
-	/// <item><description>ZoneUndergroundDesert</description></item>
-	/// <item><description>ZoneSkyHeight</description></item>
-	/// <item><description>ZoneOverworldHeight</description></item>
-	/// <item><description>ZoneDirtLayerHeight</description></item>
-	/// <item><description>ZoneRockLayerHeight</description></item>
-	/// <item><description>ZoneUnderworldHeight</description></item>
-	/// <item><description>ZoneBeach</description></item>
-	/// <item><description>ZoneRain</description></item>
-	/// <item><description>ZoneSandstorm</description></item>
-	/// <item><description>ZoneOldOneArmy</description></item>
-	/// <item><description>ZoneGraveyard</description></item>
+	/// <item>
+	/// <description> ZoneDungeon </description>
+	/// </item>
+	/// <item>
+	/// <description> ZoneCorrupt </description>
+	/// </item>
+	/// <item>
+	/// <description> ZoneHallow </description>
+	/// </item>
+	/// <item>
+	/// <description> ZoneMeteor </description>
+	/// </item>
+	/// <item>
+	/// <description> ZoneJungle </description>
+	/// </item>
+	/// <item>
+	/// <description> ZoneSnow </description>
+	/// </item>
+	/// <item>
+	/// <description> ZoneCrimson </description>
+	/// </item>
+	/// <item>
+	/// <description> ZoneWaterCandle </description>
+	/// </item>
+	/// <item>
+	/// <description> ZonePeaceCandle </description>
+	/// </item>
+	/// <item>
+	/// <description> ZoneTowerSolar </description>
+	/// </item>
+	/// <item>
+	/// <description> ZoneTowerVortex </description>
+	/// </item>
+	/// <item>
+	/// <description> ZoneTowerNebula </description>
+	/// </item>
+	/// <item>
+	/// <description> ZoneTowerStardust </description>
+	/// </item>
+	/// <item>
+	/// <description> ZoneDesert </description>
+	/// </item>
+	/// <item>
+	/// <description> ZoneGlowshroom </description>
+	/// </item>
+	/// <item>
+	/// <description> ZoneUndergroundDesert </description>
+	/// </item>
+	/// <item>
+	/// <description> ZoneSkyHeight </description>
+	/// </item>
+	/// <item>
+	/// <description> ZoneOverworldHeight </description>
+	/// </item>
+	/// <item>
+	/// <description> ZoneDirtLayerHeight </description>
+	/// </item>
+	/// <item>
+	/// <description> ZoneRockLayerHeight </description>
+	/// </item>
+	/// <item>
+	/// <description> ZoneUnderworldHeight </description>
+	/// </item>
+	/// <item>
+	/// <description> ZoneBeach </description>
+	/// </item>
+	/// <item>
+	/// <description> ZoneRain </description>
+	/// </item>
+	/// <item>
+	/// <description> ZoneSandstorm </description>
+	/// </item>
+	/// <item>
+	/// <description> ZoneOldOneArmy </description>
+	/// </item>
+	/// <item>
+	/// <description> ZoneGraveyard </description>
+	/// </item>
 	/// </list>
 	/// </summary>
 	public Player Player { get; internal set; }
@@ -117,7 +169,7 @@ public class NPCSpawnInfo
 
 	public int WallTileType { get; internal set; }
 
-	/// <summary> Set as Math.Abs(Main.windSpeedTarget) &gt;= 0.4f; </summary>
+	/// <summary> Set as Math.Abs(Main.windSpeedTarget) &gt;= 0.4f;. Affects stinkbugs, butterflies, </summary>
 	public bool TooWindyForButterflies { get; internal set; }
 
 	/// <summary>

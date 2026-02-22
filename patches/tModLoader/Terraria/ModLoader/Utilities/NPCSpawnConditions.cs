@@ -179,15 +179,11 @@ public sealed record class SubSpawnCondition(Func<NPCSpawnInfo, bool> Predicate,
 		public static readonly SubSpawnCondition FrostLegionCondition = InvasionIDHappening(InvasionID.SnowLegion);
 		public static readonly SubSpawnCondition PiratesCondition = InvasionIDHappening(InvasionID.PirateInvasion);
 		public static readonly SubSpawnCondition MartianMadnessCondition = InvasionIDHappening(InvasionID.MartianMadness);
-		/// <summary>
-		/// Allows spawning only if the current number of <see cref="NPC"/> with type <paramref name="npcID"/> is less than <paramref name="count"/>
-		/// </summary>
+		/// <summary> Allows spawning only if the current number of <see cref="NPC"/> with type <paramref name="npcID"/> is less than <paramref name="count"/> </summary>
 		public static SubSpawnCondition SpawnCap(int npcID, int count = 1)
 			=> new((info) => IsNPCCountUnder(npcID, count)) { MetaData = nameof(SpawnCap) + ":" + npcID + ":" + count };
 
-		/// <summary>
-		/// Faster variant checking <see cref="NPC.CountNPCS(int)"/>, exits early on false.
-		/// </summary>
+		/// <summary> Faster variant checking <see cref="NPC.CountNPCS(int)"/>, exits early on false. </summary>
 		/// <returns> True if the current number of active <see cref="NPC"/> with type <paramref name="npcID"/> is less than <paramref name="count"/> </returns>
 		private static bool IsNPCCountUnder(int npcID, int count)
 		{
@@ -210,9 +206,7 @@ public sealed record class SubSpawnCondition(Func<NPCSpawnInfo, bool> Predicate,
 
 		public static readonly SubSpawnCondition TimeDay = FromCondition(Condition.TimeDay);
 		public static readonly SubSpawnCondition TimeNight = FromCondition(Condition.TimeNight);
-		/// <summary>
-		/// Checks <see cref="Main.time"/>, note that <see cref="Main.time"/> is the time since the last day/night change.
-		/// </summary>
+		/// <summary> Checks <see cref="Main.time"/>, note that <see cref="Main.time"/> is the time since the last day/night change. </summary>
 		public static SubSpawnCondition TimeLessThan(double time)
 			=> new((info) => Main.time < time) { MetaData = nameof(TimeLessThan) + ":" + time };
 
@@ -225,7 +219,7 @@ public sealed record class SubSpawnCondition(Func<NPCSpawnInfo, bool> Predicate,
 		public static readonly SubSpawnCondition RemixWorld = new((info) => Main.remixWorld);
 		public static readonly SubSpawnCondition GetGoodWorld = new((info) => Main.getGoodWorld);
 
-		public static readonly SubSpawnCondition TooWindyForButterflies = new((info) => NPC.TooWindyForButterflies);
+		public static readonly SubSpawnCondition TooWindyForButterflies = new((info) => info.TooWindyForButterflies);
 
 		public static readonly SubSpawnCondition InfoWater = new((info) => info.Water);
 		public static readonly SubSpawnCondition OnWaterSurface = new(SpawnCondition.WaterSurface);
@@ -248,6 +242,9 @@ public sealed record class SubSpawnCondition(Func<NPCSpawnInfo, bool> Predicate,
 		public static readonly SubSpawnCondition InBeachDistance = new((info) => info.SpawnTileX < WorldGen.beachDistance || info.SpawnTileX > Main.maxTilesX - WorldGen.beachDistance);
 		public static readonly SubSpawnCondition NotInOceanDistance = new((info) => info.SpawnTileX > WorldGen.oceanDistance && info.SpawnTileX < Main.maxTilesX - WorldGen.oceanDistance);
 		public static readonly SubSpawnCondition InfoInnerThird = new(SpawnCondition.InnerThird);
+		// TODO: check this
+		/// <summary> Evaluates as: Math.Abs(info.SpawnTileX - Main.spawnTileX) &lt; Main.maxTilesX / 2 which seems a little redundant? </summary>
+		public static readonly SubSpawnCondition InfoInTheWorld = new((info) => SpawnCondition.MapInner(info, 2));
 		public static readonly SubSpawnCondition InfoOuterThird = new(SpawnCondition.OuterThird);
 		public static readonly SubSpawnCondition ProperGroundSand = new((info) => Main.tileSand[info.ProperGroundTileType]);
 
@@ -279,7 +276,9 @@ public sealed record class SubSpawnCondition(Func<NPCSpawnInfo, bool> Predicate,
 		public static readonly SubSpawnCondition InfoPlayerSafe = new((info) => info.PlayerSafe);
 
 		public static readonly SubSpawnCondition WorldGenCheckUnderground = new((info) => WorldGen.checkUnderground(info.SpawnTileX, info.SpawnTileY));
-
+		/// <summary> flag 24 is 0 </summary>
+		/// <param name="amount"> </param>
+		/// <returns> </returns>
 		public static SubSpawnCondition CloudAlphaAbove(float amount)
 			=> new((info) => Main.cloudAlpha > amount) { MetaData = nameof(CloudAlphaAbove) + ":" + amount };
 	}
@@ -381,8 +380,9 @@ public record class ConditionWrapper(CompareType CurrentCompare, IEnumerable<ISu
 			_ => throw new NotImplementedException("No valid not operation for: " + wrapper.CurrentCompare.ToString())
 		};
 
-	// AND => NOT AND => NOT (individual) OR IF all true, true => If all true, false => If any false, false !(A && B && C) == !A || !B || !C OR => NOT OR => NOT
-	// (individual) AND: If any true, true => If any true, false => If all false, false !(A || B || C) == !A && !B && !C To avoid multiple layers of not
+	// AND => NOT AND => NOT (individual) OR IF all true, true => If all true, false => If any false, false !(A && B && C) == !A || !B || !C OR => NOT
+	// OR => NOT (individual) AND: If any true, true => If any true, false => If all false, false !(A || B || C) == !A && !B && !C To avoid multiple
+	// layers of not
 	public ConditionWrapper GetNot() => !this;
 	ISubSpawnCondition ISubSpawnCondition.GetNot() => GetNot();
 	private static ConditionWrapper Operate(ConditionWrapper wrapper1, ConditionWrapper wrapper2, CompareType compareType)

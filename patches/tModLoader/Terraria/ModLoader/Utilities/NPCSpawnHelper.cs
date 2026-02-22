@@ -185,7 +185,7 @@ public class MultiEntrySum
 	/// <summary> For internal use with <see cref="AddAndReturn(ISpawnTreeItem)"/> only </summary>
 	internal MultiEntrySum()
 	{
-		items = Array.Empty<ISpawnTreeItem>();
+		items = [];
 	}
 
 	/// <summary> The sum of each elements <see cref="ISpawnTreeItem.Chance"/> </summary>
@@ -197,7 +197,7 @@ public class MultiEntrySum
 	/// </summary>
 	internal ISpawnTreeItem AddAndReturn(ISpawnTreeItem item)
 	{
-		items = items.Append(item);
+		items = [.. items, item];
 		return item;
 	}
 }
@@ -337,12 +337,19 @@ public static class SpawnCondition
 	public static readonly WeightedSpawnCondition Crimson;
 	public static readonly WeightedSpawnCondition Corruption;
 	public static readonly ConditionedSpawnTreeParent Overworld;
+	public static readonly WeightedSpawnCondition GraveyardCritters;
 	public static readonly WeightedSpawnCondition IceGolem;
 	public static readonly WeightedSpawnCondition RainbowSlime;
 	public static readonly WeightedSpawnCondition AngryNimbus;
 	public static readonly CalculatedSpawnCondition MartianProbe;
+
+	/// <summary> !InGraveyard & TimeDay </summary>
 	public static readonly ConditionedSpawnTreeParent OverworldDay;
+
+	private static readonly ConditionedSpawnTreeParent UNNAMED;
+
 	public static readonly WeightedSpawnCondition OverworldDaySnowCritter;
+	public static readonly CalculatedSpawnCondition OverworldDayStinkbug;
 	public static readonly WeightedSpawnCondition OverworldDayGrassCritter;
 	public static readonly WeightedSpawnCondition OverworldDaySandCritter;
 	public static readonly WeightedSpawnCondition OverworldMorningBirdCritter;
@@ -615,17 +622,22 @@ public static class SpawnCondition
 		baseCondition += Corruption = new((ProperGroundSpawnTile(TileID.Demonite) & InCorrupt) | ProperGroundSpawnTile(TileID.CorruptGrass, TileID.CorruptIce, TileID.Ebonstone, TileID.Ebonsand, TileID.CorruptJungleGrass)); // 62
 
 		// Overworld
-		baseCondition += Overworld = new(InfoOverWorld, new ISpawnTreeItem[] { // 63
+		baseCondition += Overworld = new(InfoOverWorld, [ // 63
 			// Overworld Misc
-			IceGolem = new(InSnow & HardMode & CloudAlphaAbove(0f) & SpawnCap(NPCID.IceGolem), 0.05f),
-			RainbowSlime = new(InHallow & HardMode & CloudAlphaAbove(0f) & SpawnCap(NPCID.RainbowSlime), 0.05f),
+			GraveyardCritters = new(InGraveyard & !InfoWater & SpawnTile(TileID.Plants, TileID.GolfGrass), 0.1f), //Line: 63790
+			IceGolem = new(InSnow & HardMode & CloudAlphaAbove(0f) & SpawnCap(NPCID.IceGolem), 0.05f), //Line: 63796
+			// TODO: find where RainbowSlime = new(InHallow & HardMode & CloudAlphaAbove(0f) & SpawnCap(NPCID.RainbowSlime), 0.05f),
+
 			AngryNimbus = new(!InSnow & HardMode & CloudAlphaAbove(0f) & SpawnCap(NPCID.AngryNimbus, 2), 0.1f),
 			MartianProbe = new(MartianProbePosition & HardMode & DownedGolem & SpawnCap(NPCID.MartianProbe),
 				(info) => 1f - (!NPC.downedMartians ? 399f / 400f * 0.99f : (399f / 400f))),
 
 			// Overworld Typical
-			OverworldDay = new(TimeDay, new ISpawnTreeItem[] {
-				OverworldDaySnowCritter = new(InfoInnerThird & TrueSpawnTile(TileID.SnowBlock, TileID.IceBlock), 1f / 15f),
+			OverworldDay = new(!InGraveyard & TimeDay, [
+				UNNAMED = new(!InfoWater & InfoInTheWorld & ProperGroundSpawnTile(TileID.Grass, TileID.GolfGrass, TileID.HallowedGrass, TileID.GolfGrassHallowed, TileID.SnowBlock, TileID.IceBlock), 1f/15f, [
+					OverworldDaySnowCritter = new(TrueSpawnTile(TileID.SnowBlock, TileID.IceBlock)),
+					OverworldDayStinkbug = new(!TooWindyForButterflies & !Raining /*& TimeDay & InfoOverWorld*/, (info) => 1f / NPC.stinkBugChance)
+				]),
 				OverworldDayGrassCritter = new(InfoInnerThird & TrueSpawnTile(TileID.Grass, TileID.HallowedGrass), 1f / 15f),
 				OverworldDaySandCritter = new(InfoInnerThird & TrueSpawnTile(TileID.Sand), 1f / 15f),
 				OverworldMorningBirdCritter = new(InfoInnerThird & TimeLessThan(18000.0) & TrueSpawnTile(TileID.Grass, TileID.HallowedGrass), 0.25f),
@@ -642,12 +654,12 @@ public static class SpawnCondition
 				// Overworld Typical
 				OverworldDayRain = new(Raining, 2f / 3f),
 				OverworldDaySlime = new()
-			}),
+			]),
 			OverworldNight = new(new ISpawnTreeItem[] {
 				OverworldFirefly = new(TrueSpawnTile(TileID.Grass, TileID.HallowedGrass), (info) => 1f / NPC.fireFlyChance),
 				OverworldNightMonster = new()
 			})
-		});
+		]);
 
 		// Underground
 		baseCondition += Underground = new(InfoUnderGround); // 64
@@ -655,21 +667,21 @@ public static class SpawnCondition
 
 		// Caverns
 
-		baseCondition += Cavern = new(new ISpawnTreeItem[] { // 66 => 93 //TODO: Make into Multi? Kinda unnecessary as overflow isn't an issue here
+		baseCondition += Cavern = new([ // 66 => 93 //TODO: Make into Multi? Kinda unnecessary as overflow isn't an issue here
 			RockGolem = new(RockGolemCondition),
 			DyeBeetle = new(1f / 60f),
 			ChaosElemental = new(HardMode & !InfoPlayerSafe & ProperGroundSpawnTile(TileID.Pearlsand, TileID.Pearlstone, TileID.HallowedIce), 1f / 8f),
 
 			Pigron = new(TrueSpawnTile(TileID.SnowBlock, TileID.IceBlock, TileID.BreakableIce, TileID.CorruptIce, TileID.HallowedIce, TileID.FleshIce)
-			& !InfoSafeRange & HardMode, 1f / 30f, new ISpawnTreeItem[] {
+			& !InfoSafeRange & HardMode, 1f / 30f, [
 				PurplePigron = new(InCorrupt),
 				BluePigron = new(InHallow),
 				PinkPigron = new(InCrimson),
-			}),
+			]),
 
 			IceTortoise = new(HardMode & InSnow, 0.1f),
-			DiggerWormFlinx = new(!InfoSafeRange & InHallow, 0.01f, new ISpawnTreeItem[] {
-				Flinx1 = new(HardMode & InSnow) }),
+			DiggerWormFlinx = new(!InfoSafeRange & InHallow, 0.01f, [
+				Flinx1 = new(HardMode & InSnow) ]),
 			Flinx2 = new(InSnow, 1f / 20f),
 			MotherSlimeBlueSlimeSpikedIceSlime = new((info) => Main.hardMode ? 1f / 20f : 1f / 10f),
 			JungleSlimeBlackSlimeSpikedIceSlime = new(HardMode, 0.25f),
@@ -693,7 +705,7 @@ public static class SpawnCondition
 			HalloweenSkeletons = new(Halloween, 0.5f),
 			ExpertSkeletons = new(ExpertMode, 1f / 3f),
 			NormalSkeletons = new()
-		});
+		]);
 	}
 
 	/// <summary>
@@ -763,9 +775,13 @@ public static class SpawnCondition
 	public static bool MartianProbeHelper(NPCSpawnInfo info)
 		=> MathF.Abs(info.SpawnTileX - (Main.maxTilesX / 2)) / (Main.maxTilesX / 2) > 0.33f && !NPC.AnyDanger();
 
+	/// <summary> Checks if the spawn tile is in the middle x of the map </summary>
+	public static bool MapInner(NPCSpawnInfo info, int innerAmount)
+		=> Math.Abs(info.SpawnTileX - Main.spawnTileX) < Main.maxTilesX / innerAmount;
+
 	/// <summary> Checks if the spawn tile is in the middle third of the map </summary>
 	public static bool InnerThird(NPCSpawnInfo info)
-		=> Math.Abs(info.SpawnTileX - Main.spawnTileX) < Main.maxTilesX / 3;
+		=> MapInner(info, 3);
 
 	/// <summary> Checks if the spawn tile is in either of the outer sixths of the map </summary>
 	public static bool OuterThird(NPCSpawnInfo info)
