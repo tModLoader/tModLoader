@@ -1,7 +1,7 @@
 --- src/TerrariaNetCore/Terraria/ID/BuffID.cs
 +++ src/tModLoader/Terraria/ID/BuffID.cs
-@@ -1,25 +_,87 @@
- using ReLogic.Reflection;
+@@ -4,19 +_,73 @@
+ using Terraria.DataStructures;
 +using Terraria.ModLoader;
  
  namespace Terraria.ID;
@@ -13,22 +13,6 @@
 +#if !TMLANALYZER
 +	public partial class Sets
  	{
-+		/// <summary>
-+		/// Stores data for mount buffs.
-+		/// </summary>
- 		public class BuffMountData
- 		{
-+			/// <summary>
-+			/// The mount type (<see cref="Mount.Type"/>) associated with this <see cref="BuffID"/>.
-+			/// </summary>
- 			public int mountID;
-+
-+			/// <summary>
-+			/// If <see langword="true"/>, then this <see cref="BuffID"/> is for the left-facing mount.
-+			/// </summary>
- 			public bool faceLeft;
- 		}
- 
 -		public static SetFactory Factory = new SetFactory(Count);
 +		public static SetFactory Factory = new SetFactory(BuffLoader.BuffCount, nameof(BuffID), Search);
 +
@@ -44,6 +28,7 @@
 +		/// <br/> Defaults to <see langword="false"/>.
 +		/// </summary>
  		public static bool[] IsFedState = Factory.CreateBoolSet(26, 206, 207, 332, 333, 334);
+ 		public static int[] SortingPriorityFoodBuffs = Factory.CreateIntSet(-1, 207, 4, 206, 3, 26, 2, 25, 1);
 +
 +		/// <summary>
 +		/// If <see langword="true"/> for a given <see cref="BuffID"/>, then that buff is not considered a typical debuff, but is a buff used to "tag" entities for other purposes.<br/><br/>
@@ -51,22 +36,22 @@
 +		/// Buffs in this set can be applied to all NPCs unless that NPC sets <see cref="NPCID.Sets.ImmuneToAllBuffs"/> to prevent it.<br/><br/>
 +		/// Defaults to <see langword="false"/>.
 +		/// </summary>
--		public static bool[] IsAnNPCWhipDebuff = Factory.CreateBoolSet(307, 313, 319, 316, 310, 309, 315, 326, 340);
-+		public static bool[] IsATagBuff = Factory.CreateBoolSet(307, 313, 319, 316, 310, 309, 315, 326, 340);
+-		public static bool[] IsAnNPCWhipDebuff = Factory.CreateBoolSet(310, 362);
++		public static bool[] IsATagBuff = Factory.CreateBoolSet(310, 362);
 +
 +		/// <summary>
 +		/// If <see langword="true"/> for a given <see cref="BuffID"/>, then that buff will never run out.
 +		/// <br/> Useful for buffs that are conditionally removed.
 +		/// <br/> Defaults to <see langword="false"/>.
 +		/// </summary>
- 		public static bool[] TimeLeftDoesNotDecrease = Factory.CreateBoolSet(28, 334, 29, 159, 150, 93, 348);
+ 		public static bool[] TimeLeftDoesNotDecrease = Factory.CreateBoolSet(28, 334, 29, 159, 150, 93, 348, 366);
 +
 +		/// <summary>
 +		/// If <see langword="true"/> for a given <see cref="BuffID"/>, then that buff can be removed from an NPC using <see cref="NPC.RequestBuffRemoval(int)"/>.
 +		/// <br/> Useful for "flag" buffs that should go away on hit, like the <see href="https://terraria.wiki.gg/wiki/Firecracker">Firecracker's</see> <see cref="FlameWhipEnemyDebuff"/>.
 +		/// <br/> Defaults to <see langword="false"/>.
 +		/// </summary>
- 		public static bool[] CanBeRemovedByNetMessage = Factory.CreateBoolSet(313);
+ 		public static bool[] CanBeRemovedByNetMessage = Factory.CreateBoolSet();
 +
 +		/// <summary>
 +		/// If <see langword="true"/> for a given <see cref="BuffID"/>, then that buff corresponds to a flask item.
@@ -79,22 +64,29 @@
  		public static bool[] IsAFlaskBuff = Factory.CreateBoolSet(71, 72, 73, 74, 75, 76, 77, 78, 79);
 +
 +		/// <summary>
++		/// If <see langword="true"/> for a given <see cref="BuffID"/>, then that buff will have a longer duration in <see cref="Main.expertMode"/>.
++		/// </summary>
++		/// <remarks>
++		/// The scale factor used is the debuff multiplier (<see cref="DataStructures.GameModeData.DebuffTimeMultiplier"/>) of <see cref="Main.GameModeInfo"/>.
++		/// <br/> Despite the name, this set applies to <em>all</em> buffs, not just debuffs.
++		/// </remarks>
+ 		public static bool[] BuffTimeIsExtendedWithGameDifficulty = Factory.CreateBoolSet(20, 22, 23, 24, 323, 30, 31, 32, 33, 35, 36, 39, 44, 324, 46, 47, 69, 70, 80);
+ 		public static bool[] BuffTimeIsExtendedByDeadCellsPotionStationBuff = Factory.CreateBoolSet(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 121, 122, 123, 124, 257, 343);
++
++		/// <summary>
 +		/// If <see langword="true"/> for a given <see cref="BuffID"/>, then that debuff cannot be removed by the Nurse.
 +		/// <br/> Defaults to <see langword="false"/>.
 +		/// </summary>
- 		public static bool[] NurseCannotRemoveDebuff = Factory.CreateBoolSet(28, 34, 87, 89, 21, 86, 199, 332, 333, 334, 165, 146, 48, 158, 157, 350, 215, 147);
+ 		public static bool[] NurseCannotRemoveDebuff = Factory.CreateBoolSet(28, 34, 87, 89, 21, 86, 199, 332, 333, 334, 165, 146, 48, 158, 157, 350, 215, 147, 321, 43);
+@@ -49,6 +_,13 @@
+ 		};
 +
 +		/// <summary>
-+		/// If not <see langword="null"/> for a given <see cref="BuffID"/>, then that buff is linked to a <see cref="Mount"/> and will forcibly mount the player if active.
++		/// If not <c>-1</c> for a given <see cref="BuffID"/>, then that buff is linked to a <see cref="Mount"/> and will forcibly mount the player if active.
 +		/// <br/> All entries in this set should have <see cref="Main.buffNoTimeDisplay"/> and <see cref="Main.buffNoSave"/> set to <see langword="true"/>.
-+		/// <br/> Defaults to <see langword="null"/>.
++		/// <br/> Defaults to <c>-1</c>.
 +		/// </summary>
- 		public static BuffMountData[] BasicMountData = Factory.CreateCustomSet<BuffMountData>(null, new object[108] {
- 			118,
- 			new BuffMountData {
-@@ -293,6 +_,7 @@
- 			}
- 		});
+ 		public static int[] MountType = Factory.CreateIntSet(-1, 118, 6, 184, 13, 166, 11, 208, 15, 210, 16, 220, 18, 222, 19, 224, 20, 226, 21, 228, 22, 231, 24, 233, 25, 235, 26, 237, 27, 239, 28, 241, 29, 243, 30, 245, 31, 247, 32, 249, 33, 251, 34, 253, 35, 255, 36, 269, 38, 272, 39, 338, 51, 346, 53, 90, 0, 128, 1, 129, 2, 130, 3, 131, 4, 132, 5, 168, 12, 141, 7, 142, 8, 143, 9, 162, 10, 193, 14, 212, 17, 230, 23, 265, 37, 275, 40, 276, 41, 277, 42, 278, 43, 279, 44, 280, 45, 281, 46, 282, 47, 283, 48, 305, 49, 318, 50, 342, 52, 370, 54, 374, 55, 377, 56, 378, 57, 379, 58, 380, 59, 381, 60, 384, 61, 387, 62, 388, 63);
  	}
 +#endif
  

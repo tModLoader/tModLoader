@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/GameContent/UI/States/UIWorldLoad.cs
 +++ src/tModLoader/Terraria/GameContent/UI/States/UIWorldLoad.cs
-@@ -15,6 +_,7 @@
+@@ -18,6 +_,7 @@
  	private UIGenProgressBar _progressBar = new UIGenProgressBar();
  	private UIHeader _progressMessage = new UIHeader();
  	private GenerationProgress _progress;
@@ -8,10 +8,12 @@
  
  	public UIWorldLoad()
  	{
-@@ -62,6 +_,11 @@
+@@ -75,8 +_,13 @@
  			overallProgress = (float)_progress.TotalProgress;
  			currentProgress = (float)_progress.Value;
  			text = _progress.Message;
+ 			if (WorldGenerator.CurrentController.QueuedAbort)
+ 				text = Language.GetTextValue("UI.Canceling");
 +		}
 +
 +		if (text != lastLoggedProgressMessage) {

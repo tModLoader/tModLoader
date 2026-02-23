@@ -66,21 +66,24 @@
 +				Social.Steam.SteamedWraps.BeginPlaytimeTracking();
 +			}
  
-@@ -484,8 +_,8 @@
- 	public int HotbarOffset;
- 	public bool GoingDownWithGrapple;
- 	public byte spelunkerTimer;
+@@ -631,7 +_,7 @@
+ 	public Minecart.Customization MinecartSettings;
+ 	public int emoteTime;
+ 	public CreativeUnlocksTracker creativeTracker;
+-	private static byte[] ENCRYPTION_KEY = new UnicodeEncoding().GetBytes("h3y_gUyZ");
++	internal static byte[] ENCRYPTION_KEY = new UnicodeEncoding().GetBytes("h3y_gUyZ");
+ 	public OverheadMessage chatOverhead;
+ 	public SelectionRadial DpadRadial = new SelectionRadial();
+ 	public SelectionRadial CircularRadial = new SelectionRadial(SelectionRadial.SelectionMode.RadialCircular);
+@@ -642,2 +_,2 @@
 -	public bool[] hideInfo = new bool[13];
 +	public bool[] hideInfo = new bool[InfoDisplayLoader.InfoDisplayCount];
 -	public int[] builderAccStatus = new int[BuilderAccToggleIDs.Count];
 +	public int[] builderAccStatus = new int[BuilderToggleLoader.BuilderToggleCount];
- 	public long lostCoins;
- 	public string lostCoinString = "";
+@@ -646,10 +_,18 @@
  	public int soulDrain;
-@@ -496,10 +_,18 @@
- 	private static float _blizzardSoundVolume;
- 	private static SlotId _strongBlizzardSound = SlotId.Invalid;
- 	private static SlotId _insideBlizzardSound = SlotId.Invalid;
+ 	public float drainBoost;
+ 	public bool dd2Accessory;
 +
 +	/// <summary>
 +	/// This player's displayed name.
@@ -98,15 +101,6 @@
  	public int numberOfDeathsPVE;
  	public int numberOfDeathsPVP;
  	public static int crystalLeafDamage = 100;
-@@ -631,7 +_,7 @@
- 	public Minecart.Customization MinecartSettings;
- 	public int emoteTime;
- 	public CreativeUnlocksTracker creativeTracker;
--	private static byte[] ENCRYPTION_KEY = new UnicodeEncoding().GetBytes("h3y_gUyZ");
-+	internal static byte[] ENCRYPTION_KEY = new UnicodeEncoding().GetBytes("h3y_gUyZ");
- 	public OverheadMessage chatOverhead;
- 	public SelectionRadial DpadRadial = new SelectionRadial();
- 	public SelectionRadial CircularRadial = new SelectionRadial(SelectionRadial.SelectionMode.RadialCircular);
 @@ -728,6 +_,7 @@
  	public int afkCounterForKiting;
  	public static int AFKTimeNeededForAutoKiting = 3600;
@@ -1520,17 +1514,6 @@
  	}
  
  	public void MatchItemTimeToItemAnimation()
-@@ -2753,6 +_,10 @@
- 
- 	public bool TeamChangeAllowed() => true;
- 
-+	/// <summary>
-+	/// Spawns a <see cref="CombatText"/> indicating the player healed <paramref name="healAmount"/> life and syncs it if <paramref name="broadcast"/> is true. <br/>
-+	/// Note that this doesn't actually heal the player, it only spawns the floating text. The <see cref="Heal(int)"/> method heals the player and calls this method and is more commonly used.
-+	/// </summary>
- 	public void HealEffect(int healAmount, bool broadcast = true)
- 	{
- 		CombatText.NewText(new Rectangle((int)position.X, (int)position.Y, width, height), CombatText.HealLife, healAmount);
 @@ -2753,7 +_,9 @@
  			Main.guideItem.position = base.Center;
  			Item item = GetItem(whoAmI, Main.guideItem, getItemInDropItemCheck);
@@ -1542,6 +1525,17 @@
  				Main.item[num].newAndShiny = false;
  				if (Main.netMode == 1)
  					NetMessage.SendData(21, -1, -1, null, num, 1f);
+@@ -2753,6 +_,10 @@
+ 
+ 	public bool TeamChangeAllowed() => true;
+ 
++	/// <summary>
++	/// Spawns a <see cref="CombatText"/> indicating the player healed <paramref name="healAmount"/> life and syncs it if <paramref name="broadcast"/> is true. <br/>
++	/// Note that this doesn't actually heal the player, it only spawns the floating text. The <see cref="Heal(int)"/> method heals the player and calls this method and is more commonly used.
++	/// </summary>
+ 	public void HealEffect(int healAmount, bool broadcast = true)
+ 	{
+ 		CombatText.NewText(new Rectangle((int)position.X, (int)position.Y, width, height), CombatText.HealLife, healAmount);
 @@ -2766,7 +_,9 @@
  			Main.reforgeItem.position = base.Center;
  			Item item2 = GetItem(whoAmI, Main.reforgeItem, getItemInDropItemCheck);
@@ -1575,17 +1569,6 @@
  				Main.item[num3].newAndShiny = false;
  				if (Main.netMode == 1)
  					NetMessage.SendData(21, -1, -1, null, num3, 1f);
-@@ -3039,7 +_,10 @@
- 	private int AddBuff_DetermineBuffTimeToAdd(int type, int time1)
- 	{
- 		int num = time1;
-+		/*
- 		if (Main.expertMode && whoAmI == Main.myPlayer && (type == 20 || type == 22 || type == 23 || type == 24 || type == 30 || type == 31 || type == 32 || type == 33 || type == 35 || type == 36 || type == 39 || type == 44 || type == 46 || type == 47 || type == 69 || type == 70 || type == 80)) {
-+		*/
-+		if (Main.expertMode && whoAmI == Main.myPlayer && BuffID.Sets.LongerExpertDebuff[type]) {
- 			float debuffTimeMultiplier = Main.GameModeInfo.DebuffTimeMultiplier;
- 			if (Main.GameModeInfo.IsJourneyMode) {
- 				if (Main.masterMode)
 @@ -3071,6 +_,9 @@
  		golferScoreAccumulated += num;
  	}
@@ -1629,39 +1612,6 @@
  			item.stack--;
  			if (item.stack <= 0)
  				item.TurnToAir();
-@@ -3186,13 +_,13 @@
- 	public Item QuickMana_GetItemToUse()
- 	{
- 		for (int i = 0; i < 58; i++) {
--			if (inventory[i].stack > 0 && inventory[i].type > 0 && inventory[i].healMana > 0 && (potionDelay == 0 || !inventory[i].potion))
-+			if (inventory[i].stack > 0 && inventory[i].type > 0 && inventory[i].healMana > 0 && (potionDelay == 0 || !inventory[i].potion) && CombinedHooks.CanUseItem(this, inventory[i]))
- 				return inventory[i];
- 		}
- 
- 		if (useVoidBag()) {
- 			for (int j = 0; j < 40; j++) {
--				if (bank4.item[j].stack > 0 && bank4.item[j].type > 0 && bank4.item[j].healMana > 0 && (potionDelay == 0 || !bank4.item[j].potion))
-+				if (bank4.item[j].stack > 0 && bank4.item[j].type > 0 && bank4.item[j].healMana > 0 && (potionDelay == 0 || !bank4.item[j].potion) && CombinedHooks.CanUseItem(this, bank4.item[j]))
- 					return bank4.item[j];
- 			}
- 		}
-@@ -3204,6 +_,7 @@
- 	{
- 		bool flag = itemTime > 0 || itemAnimation > 0;
- 		if ((whoAmI != Main.myPlayer || (!flag && !CCed && !dead)) && loadoutIndex != CurrentLoadoutIndex && loadoutIndex >= 0 && loadoutIndex < Loadouts.Length) {
-+			int oldLoadoutIndex = CurrentLoadoutIndex;
- 			Loadouts[CurrentLoadoutIndex].Swap(this);
- 			Loadouts[loadoutIndex].Swap(this);
- 			CurrentLoadoutIndex = loadoutIndex;
-@@ -3226,7 +_,7 @@
- 		if (cursed || CCed || dead)
- 			return;
- 
--		LegacySoundStyle legacySoundStyle = null;
-+		SoundStyle? legacySoundStyle = null;
- 		if (CountBuffs() == maxBuffs)
- 			return;
- 
 @@ -3256,8 +_,9 @@
  					continue;
  
@@ -1728,16 +1678,6 @@
  	public void AddBuff(int type, int time, bool fromNetPvP = false)
  	{
  		if (buffImmune[type])
-@@ -3412,6 +_,9 @@
- 			if (item != null && item.mountType != -1 && mount.CanMount(item.mountType, this) && ItemCheck_CheckCanUse(item)) {
- 				if (!QuickMinecartSnap()) {
- 					mount.SetMount(item.mountType, this);
-+
-+					ItemLoader.UseItem(item, this);
-+
- 					if (item.UseSound != null)
- 						SoundEngine.PlaySound(item.UseSound, base.Center);
- 				}
 @@ -3441,7 +_,8 @@
  			if (buffType[i] != type)
  				continue;
@@ -1783,6 +1723,22 @@
  		ApplyLifeAndOrMana(item);
  		if (item.type == 5)
  			TryToResetHungerToNeutral();
+@@ -3615,13 +_,13 @@
+ 	public Item QuickMana_GetItemToUse()
+ 	{
+ 		for (int i = 0; i < 58; i++) {
+-			if (inventory[i].stack > 0 && inventory[i].type > 0 && inventory[i].healMana > 0 && (potionDelay == 0 || !inventory[i].potion))
++			if (inventory[i].stack > 0 && inventory[i].type > 0 && inventory[i].healMana > 0 && (potionDelay == 0 || !inventory[i].potion) && CombinedHooks.CanUseItem(this, inventory[i]))
+ 				return inventory[i];
+ 		}
+ 
+ 		if (useVoidBag()) {
+ 			for (int j = 0; j < bank4.maxItems; j++) {
+-				if (bank4.item[j].stack > 0 && bank4.item[j].type > 0 && bank4.item[j].healMana > 0 && (potionDelay == 0 || !bank4.item[j].potion))
++				if (bank4.item[j].stack > 0 && bank4.item[j].type > 0 && bank4.item[j].healMana > 0 && (potionDelay == 0 || !bank4.item[j].potion) && CombinedHooks.CanUseItem(this, bank4.item[j]))
+ 					return bank4.item[j];
+ 			}
+ 		}
 @@ -3630,11 +_,13 @@
  		float shootSpeed = item.shootSpeed;
  		int damage = item.damage;
@@ -1798,6 +1754,13 @@
  					switch (Main.projectile[num8].type) {
  						case 13:
  						case 230:
+@@ -3645,5 +_,6 @@
+ 	{
+ 		if ((whoAmI != Main.myPlayer || (!UsingOrReusingItem && !CCed && !dead)) && loadoutIndex != CurrentLoadoutIndex && loadoutIndex >= 0 && loadoutIndex < Loadouts.Length) {
++			int oldLoadoutIndex = CurrentLoadoutIndex;
+ 			Loadouts[CurrentLoadoutIndex].Swap(this);
+ 			Loadouts[loadoutIndex].Swap(this);
+ 			CurrentLoadoutIndex = loadoutIndex;
 @@ -3651,6 +_,11 @@
  							Main.projectile[num8].Kill();
  							break;
@@ -1819,6 +1782,15 @@
  		}
  	}
  
+@@ -3666,7 +_,7 @@
+ 		if (Main.LocalPlayerHasPendingInventoryActions() || cursed || CCed || dead || spectating >= 0)
+ 			return;
+ 
+-		LegacySoundStyle legacySoundStyle = null;
++		SoundStyle? legacySoundStyle = null;
+ 		if (CountBuffs() == maxBuffs)
+ 			return;
+ 
 @@ -3680,8 +_,10 @@
  			if (num == 0)
  				num = 3600;
@@ -1831,21 +1803,16 @@
  				item.stack--;
  				if (item.stack <= 0)
  					item.TurnToAir();
-@@ -3721,11 +_,14 @@
- 					break;
- 				case -1:
- 				case 649:
-+					// Extra patch context.
- 					num7 = 646;
- 					break;
- 			}
- 		}
+@@ -3922,6 +_,9 @@
  
-+		ProjectileLoader.UseGrapple(this, ref num7);
+ 				if (flag) {
+ 					mount.SetMount(item.mountType, this);
 +
- 		Vector2 vector = new Vector2(position.X + (float)width * 0.5f, position.Y + (float)height * 0.5f);
- 		float num21 = (float)Main.mouseX + Main.screenPosition.X - vector.X;
- 		float num22 = (float)Main.mouseY + Main.screenPosition.Y - vector.Y;
++					ItemLoader.UseItem(item, this);
++
+ 					if (item.UseSound != null)
+ 						SoundEngine.PlaySound(item.UseSound, base.Center);
+ 				}
 @@ -3996,12 +_,20 @@
  	public Item QuickMount_GetItemToUse()
  	{
@@ -1887,30 +1854,21 @@
  		if (mount.Active && Mount.DismountsOnItemUse(mount.Type))
  			mount.TryEarlyDismount(this);
  
-@@ -4148,6 +_,9 @@
- 
- 	public void OpenPresent(int itemType)
- 	{
-+		DropFromItem(itemType);
-+
-+		/*
- 		IEntitySource itemSource_OpenItem = GetItemSource_OpenItem(itemType);
- 		if (Main.rand.Next(15) == 0 && Main.hardMode) {
- 			int number = Item.NewItem(itemSource_OpenItem, (int)position.X, (int)position.Y, width, height, 602);
-@@ -4372,10 +_,13 @@
- 				break;
+@@ -4178,11 +_,14 @@
+ 					break;
+ 				case -1:
+ 				case 649:
++					// Extra patch context.
+ 					num2 = 646;
+ 					break;
  			}
  		}
-+		*/
- 	}
  
- 	public void OpenLegacyPresent(int itemType)
- 	{
-+		DropFromItem(itemType);
-+		/*
- 		IEntitySource itemSource_OpenItem = GetItemSource_OpenItem(itemType);
- 		int num = Main.rand.Next(14);
- 		if (num == 0 && Main.hardMode) {
++		ProjectileLoader.UseGrapple(this, ref num2);
++
+ 		Vector2 vector = new Vector2(position.X + (float)width * 0.5f, position.Y + (float)height * 0.5f);
+ 		float num11 = (float)Main.mouseX + Main.screenPosition.X - vector.X;
+ 		float num12 = (float)Main.mouseY + Main.screenPosition.Y - vector.Y;
 @@ -4390,20 +_,41 @@
  		}
  		else {
@@ -1967,16 +1925,39 @@
  		bool flag = victim is NPC && (((NPC)victim).type == 488 || ((NPC)victim).SpawnedFromStatue);
  		if (titaniumStormCooldown > 0)
  			flag = true;
-@@ -4975,16 +_,20 @@
+@@ -4622,5 +_,8 @@
+ 
+ 	public void OpenPresent(int itemType)
+ 	{
++		DropFromItem(itemType);
++
++		/*
+ 		IEntitySource itemSource_OpenItem = GetItemSource_OpenItem(itemType);
+ 		if (Main.rand.Next(15) == 0 && Main.hardMode) {
+@@ -4717,10 +_,13 @@
+ 					break;
+ 			}
+ 		}
++		*/
+ 	}
+ 
+ 	public void OpenLegacyPresent(int itemType)
+ 	{
++		DropFromItem(itemType);
++		/*
+ 		IEntitySource itemSource_OpenItem = GetItemSource_OpenItem(itemType);
+ 		int num = Main.rand.Next(14);
+ 		if (num == 0 && Main.hardMode)
+@@ -5338,16 +_,20 @@
  			}
  
- 			int num15 = (int)value;
+ 			int num14 = (int)value;
 +			// Extra patch context for the below.
- 			if (num15 < 1)
- 				num15 = 1;
+ 			if (num14 < 1)
+ 				num14 = 1;
  
- 			value -= (float)num15;
- 			QuickSpawnItem(itemSource_OpenItem, 71, num15);
+ 			value -= (float)num14;
+ 			QuickSpawnItem(itemSource_OpenItem, 71, num14);
  		}
 +		*/
  	}
@@ -1987,7 +1968,7 @@
 +		ModLoader.Default.ModLoaderMod.TryGettingPatreonOrDevArmor(source, this);
 +
  		if (Main.rand.Next(Main.tenthAnniversaryWorld ? 8 : 16) == 0) {
- 			switch (Main.rand.Next(18)) {
+ 			switch (Main.rand.Next(21)) {
  				case 0:
 @@ -5489,6 +_,9 @@
  
@@ -1999,40 +1980,6 @@
  		IEntitySource itemSource_OpenItem = GetItemSource_OpenItem(crateItemID);
  		bool flag = ItemID.Sets.IsFishingCrateHardmode[crateItemID];
  		switch (crateItemID) {
-@@ -6465,12 +_,22 @@
- 					break;
- 			}
- 
-+			// Extra patch context for the below.
- 			int number72 = Item.NewItem(itemSource_OpenItem, (int)position.X, (int)position.Y, width, height, type49, stack42);
- 			if (Main.netMode == 1)
- 				NetMessage.SendData(21, -1, -1, null, number72, 1f);
- 		}
-+		*/
- 	}
- 
-+	/// <summary>
-+	/// Counts the total stack of the specified item type in this players <see cref="inventory"/>. <br/>
-+	/// Does not check Void Bag. <br/>
-+	/// Use <see cref="Player.HasItem(int)"/> to check if the player has the item at all. <br/>
-+	/// </summary>
-+	/// <param name="type">The item type to count</param>
-+	/// <param name="stopCountingAt">When to stop counting, useful to avoid unnecessary calculations</param>
-+	/// <returns>The total amount counted</returns>
- 	public int CountItem(int type, int stopCountingAt = 0)
- 	{
- 		int num = 0;
-@@ -6498,7 +_,9 @@
- 
- 		for (int i = num; i != num2; i += num3) {
- 			if (inventory[i].stack > 0 && inventory[i].type == type) {
-+				if (ItemLoader.ConsumeItem(inventory[i], this))
--				inventory[i].stack--;
-+					inventory[i].stack--;
-+
- 				if (inventory[i].stack <= 0)
- 					inventory[i].SetDefaults();
- 
 @@ -6551,15 +_,20 @@
  				NetMessage.SendData(21, -1, -1, null, number, 1f);
  
@@ -2076,61 +2023,27 @@
  		IEntitySource itemSource_OpenItem = GetItemSource_OpenItem(bagType);
  		int num = Main.rand.Next(2, 5);
  		if (Main.rand.Next(3) == 0)
-@@ -6656,25 +_,35 @@
- 			if (Main.rand.Next(3) == 0)
- 				num3 += Main.rand.Next(1, 5);
+@@ -6843,10 +_,20 @@
+ 					break;
+ 			}
  
 +			// Extra patch context for the below.
- 			int number = Item.NewItem(itemSource_OpenItem, (int)position.X, (int)position.Y, width, height, num2, num3);
- 			if (Main.netMode == 1)
- 				NetMessage.SendData(21, -1, -1, null, number, 1f);
+ 			QuickSpawnItem(itemSource_OpenItem, item40, stack32);
  		}
 +		*/
  	}
  
- 	public void OpenCanofWorms(int sourceItemType)
++	/// <summary>
++	/// Counts the total stack of the specified item type in this players <see cref="inventory"/>. <br/>
++	/// Does not check Void Bag. <br/>
++	/// Use <see cref="Player.HasItem(int)"/> to check if the player has the item at all. <br/>
++	/// </summary>
++	/// <param name="type">The item type to count</param>
++	/// <param name="stopCountingAt">When to stop counting, useful to avoid unnecessary calculations</param>
++	/// <returns>The total amount counted</returns>
+ 	public int CountItem(int type, int stopCountingAt = 0)
  	{
-+		DropFromItem(sourceItemType);
-+
-+		/*
- 		IEntitySource itemSource_OpenItem = GetItemSource_OpenItem(sourceItemType);
- 		QuickSpawnItem(itemSource_OpenItem, 2002, Main.rand.Next(5, 9));
- 		if (Main.rand.Next(10) < 3)
- 			QuickSpawnItem(itemSource_OpenItem, 3191, Main.rand.Next(1, 3));
- 
-+		// Extra patch context.
- 		if (Main.rand.Next(20) == 0)
- 			QuickSpawnItem(itemSource_OpenItem, 2895);
-+		*/
- 	}
- 
- 	public void OpenOyster(int sourceItemType)
- 	{
-+		DropFromItem(sourceItemType);
-+
-+		/*
- 		IEntitySource itemSource_OpenItem = GetItemSource_OpenItem(sourceItemType);
- 		if (Main.rand.Next(5) == 0) {
- 			if (Main.rand.Next(15) == 0)
-@@ -6683,13 +_,18 @@
- 				QuickSpawnItem(itemSource_OpenItem, 4413);
- 			else
- 				QuickSpawnItem(itemSource_OpenItem, 4412);
-+			// Extra patch context for the below.
- 		}
- 
- 		QuickSpawnItem(itemSource_OpenItem, 4411);
-+		*/
- 	}
- 
- 	public void OpenGoodieBag(int itemType)
- 	{
-+		DropFromItem(itemType);
-+
-+		/*
- 		IEntitySource itemSource_OpenItem = GetItemSource_OpenItem(itemType);
- 		if (Main.rand.Next(150) == 0) {
- 			int number = Item.NewItem(itemSource_OpenItem, (int)position.X, (int)position.Y, width, height, 1810);
+ 		int num = 0;
 @@ -6861,6 +_,16 @@
  		return num;
  	}
@@ -2148,6 +2061,17 @@
  	public bool ConsumeItem(int type, bool reverseOrder = false, bool includeVoidBag = false)
  	{
  		int num = 0;
+@@ -6874,7 +_,9 @@
+ 
+ 		for (int i = num; i != num2; i += num3) {
+ 			if (inventory[i].stack > 0 && inventory[i].type == type) {
++				if (ItemLoader.ConsumeItem(inventory[i], this))
+-				inventory[i].stack--;
++					inventory[i].stack--;
++
+ 				if (inventory[i].stack <= 0)
+ 					inventory[i].SetDefaults(0);
+ 
 @@ -6900,6 +_,9 @@
  
  	public void OpenShadowLockbox(int boxType)
@@ -2176,77 +2100,84 @@
  	}
  
  	public void UpdateDyes()
-@@ -7035,26 +_,26 @@
- 				cBack = dyeItem.dye;
+@@ -7026,23 +_,33 @@
+ 			if (Main.rand.Next(3) == 0)
+ 				num3 += Main.rand.Next(1, 5);
+ 
++			// Extra patch context for the below.
+ 			QuickSpawnItem(itemSource_OpenItem, num2, num3);
  		}
- 
--		if (armorItem.frontSlot > 0 && armorItem.frontSlot < ArmorIDs.Front.Count)
-+		if (armorItem.frontSlot > 0)
- 			cFront = dyeItem.dye;
- 
--		if (armorItem.shoeSlot > 0 && armorItem.shoeSlot < ArmorIDs.Shoe.Count) {
-+		if (armorItem.shoeSlot > 0) {
- 			if (armorItem.type == 4822 || armorItem.type == 4874)
- 				cFlameWaker = dyeItem.dye;
- 			else
- 				cShoe = dyeItem.dye;
- 		}
- 
--		if (armorItem.waistSlot > 0 && armorItem.waistSlot < ArmorIDs.Waist.Count)
-+		if (armorItem.waistSlot > 0)
- 			cWaist = dyeItem.dye;
- 
--		if (armorItem.shieldSlot > 0 && armorItem.shieldSlot < ArmorIDs.Shield.Count)
-+		if (armorItem.shieldSlot > 0)
- 			cShield = dyeItem.dye;
- 
--		if (armorItem.neckSlot > 0 && armorItem.neckSlot < ArmorIDs.Neck.Count)
-+		if (armorItem.neckSlot > 0)
- 			cNeck = dyeItem.dye;
- 
--		if (armorItem.faceSlot > 0 && armorItem.faceSlot < ArmorIDs.Face.Count) {
-+		if (armorItem.faceSlot > 0) {
- 			if (ArmorIDs.Face.Sets.DrawInFaceHeadLayer[armorItem.faceSlot])
- 				cFaceHead = dyeItem.dye;
- 			else if (ArmorIDs.Face.Sets.DrawInFaceFlowerLayer[armorItem.faceSlot])
-@@ -7112,12 +_,17 @@
- 		}
++		*/
  	}
  
-+	public IEntitySource GetSource_Buff(int buffIndex) => GetProjectileSource_Buff(buffIndex);
-+
-+	// made internal, public rename ^
--	public IEntitySource GetProjectileSource_Buff(int buffIndex)
-+	internal IEntitySource GetProjectileSource_Buff(int buffIndex)
+ 	public void OpenCanofWorms(int sourceItemType)
  	{
- 		int buffId = buffType[buffIndex];
- 		return new EntitySource_Buff(this, buffId, buffIndex);
++		DropFromItem(sourceItemType);
++
++		/*
+ 		IEntitySource itemSource_OpenItem = GetItemSource_OpenItem(sourceItemType);
+ 		QuickSpawnItem(itemSource_OpenItem, 2002, Main.rand.Next(5, 9));
+ 		if (Main.rand.Next(10) < 3)
+ 			QuickSpawnItem(itemSource_OpenItem, 3191, Main.rand.Next(1, 3));
+ 
++		// Extra patch context.
+ 		if (Main.rand.Next(20) == 0)
+ 			QuickSpawnItem(itemSource_OpenItem, 2895);
++		*/
  	}
  
-+	// Original vanilla methods:
-+	/*
- 	public IEntitySource GetProjectileSource_Item(Item item) => new EntitySource_ItemUse(this, item);
- 	public IEntitySource GetItemSource_OpenItem(int itemType) => new EntitySource_ItemOpen(this, itemType);
- 	public IEntitySource GetItemSource_Death() => new EntitySource_ByItemSourceId(this, 3);
-@@ -7162,8 +_,18 @@
- 				manaRegenDelayBonus += 0.5f;
- 				manaRegenBonus += 10;
- 			}
-+			// TML:
-+			// The changes to this block exist to fix the Sharpening Station's armor penetration bonus
-+			// being able to be applied to non-melee weapons (most notably summons) by holding a melee weapon.
-+			// - Thomas
-+			/*
- 			else if (buffType[j] == 159 && inventory[selectedItem].melee) {
-+			*/
-+			else if (buffType[j] == 159) {
-+				/*
- 				armorPenetration += 12;
-+				*/
-+				GetArmorPenetration(DamageClass.Melee) += 12;
- 			}
- 			else if (buffType[j] == 192) {
- 				pickSpeed -= 0.2f;
+ 	public void OpenOyster(int sourceItemType)
+ 	{
++		DropFromItem(sourceItemType);
++
++		/*
+ 		IEntitySource itemSource_OpenItem = GetItemSource_OpenItem(sourceItemType);
+ 		if (Main.rand.Next(4) == 0) {
+ 			if (Main.rand.Next(10) == 0)
+@@ -7051,34 +_,43 @@
+ 				QuickSpawnItem(itemSource_OpenItem, 4413);
+ 			else
+ 				QuickSpawnItem(itemSource_OpenItem, 4412);
++			// Extra patch context for the below.
+ 		}
+ 
+ 		QuickSpawnItem(itemSource_OpenItem, 4411);
++		*/
+ 	}
+ 
+ 	private void QuickSpawnItem_CostumeSet(IEntitySource source, int item1, int item2, int item3)
+ 	{
+ 		QuickSpawnItem(source, item1);
+ 		QuickSpawnItem(source, item2);
+ 		QuickSpawnItem(source, item3);
+ 	}
+ 
+ 	private void QuickSpawnItem_CostumeSet(IEntitySource source, int item1, int item2)
+ 	{
+ 		QuickSpawnItem(source, item1);
+ 		QuickSpawnItem(source, item2);
+ 	}
+ 
+ 	public void OpenChilletEgg(int itemType)
+ 	{
++		DropFromItem(itemType);
++
++		/*
+ 		IEntitySource itemSource_OpenItem = GetItemSource_OpenItem(itemType);
+ 		short item = 5665;
+ 		if (Main.rand.Next(2) == 0)
+ 			item = 5666;
+ 
+ 		QuickSpawnItem(itemSource_OpenItem, item);
++		*/
+ 	}
+ 
+ 	public void OpenGoodieBag(int itemType)
+ 	{
++		DropFromItem(itemType);
++
++		/*
+ 		IEntitySource itemSource_OpenItem = GetItemSource_OpenItem(itemType);
 @@ -7185,12 +_,19 @@
  				int num = i % 10;
  				UpdateItemDye(i < 10, hideVisibleAccessory[num], armor[i], dye[num]);
@@ -2290,6 +2221,44 @@
  			if (ArmorIDs.Back.Sets.DrawInBackpackLayer[armorItem.backSlot])
  				cBackpack = dyeItem.dye;
  			else if (ArmorIDs.Back.Sets.DrawInTailLayer[armorItem.backSlot])
+@@ -7219,31 +_,31 @@
+ 		}
+ 
+-		if (armorItem.frontSlot > 0 && armorItem.frontSlot < ArmorIDs.Front.Count)
++		if (armorItem.frontSlot > 0)
+ 			cFront = dyeItem.dye;
+ 
+-		if (armorItem.shoeSlot > 0 && armorItem.shoeSlot < ArmorIDs.Shoe.Count) {
++		if (armorItem.shoeSlot > 0) {
+ 			if (armorItem.type == 4874) {
+ 				cFlameWaker = dyeItem.dye;
+ 				cShoe = dyeItem.dye;
+ 			}
+ 			else if (armorItem.type == 4822) {
+ 				cFlameWaker = dyeItem.dye;
+ 			}
+ 			else {
+ 				cShoe = dyeItem.dye;
+ 			}
+ 		}
+ 
+-		if (armorItem.waistSlot > 0 && armorItem.waistSlot < ArmorIDs.Waist.Count)
++		if (armorItem.waistSlot > 0)
+ 			cWaist = dyeItem.dye;
+ 
+-		if (armorItem.shieldSlot > 0 && armorItem.shieldSlot < ArmorIDs.Shield.Count)
++		if (armorItem.shieldSlot > 0)
+ 			cShield = dyeItem.dye;
+ 
+-		if (armorItem.neckSlot > 0 && armorItem.neckSlot < ArmorIDs.Neck.Count)
++		if (armorItem.neckSlot > 0)
+ 			cNeck = dyeItem.dye;
+ 
+-		if (armorItem.faceSlot > 0 && armorItem.faceSlot < ArmorIDs.Face.Count) {
++		if (armorItem.faceSlot > 0) {
+ 			if (ArmorIDs.Face.Sets.DrawInFaceHeadLayer[armorItem.faceSlot])
+ 				cFaceHead = dyeItem.dye;
+ 			else if (ArmorIDs.Face.Sets.DrawInFaceMaskLayer[armorItem.faceSlot])
 @@ -7254,17 +_,17 @@
  				cFace = dyeItem.dye;
  		}
@@ -2311,6 +2280,26 @@
  			cWings = dyeItem.dye;
  
  		if (armorItem.type == 934)
+@@ -7306,13 +_,18 @@
+ 		}
+ 	}
+ 
++	public IEntitySource GetSource_Buff(int buffIndex) => GetProjectileSource_Buff(buffIndex);
++
++	// made internal, public rename ^
+-	public IEntitySource GetProjectileSource_Buff(int buffIndex)
++	internal IEntitySource GetProjectileSource_Buff(int buffIndex)
+ 	{
+ 		int buffId = buffType[buffIndex];
+ 		return new EntitySource_Buff(this, buffId, buffIndex);
+ 	}
+ 
++	// Original vanilla methods:
++	/*
+ 	public IEntitySource GetProjectileSource_Item(Item item) => new EntitySource_ItemUse(this, item);
+ 	public IEntitySource GetItemSource_Item(Item item) => new EntitySource_ItemUse(this, item);
+ 	public IEntitySource GetItemSource_OpenItem(int itemType) => new EntitySource_ItemOpen(this, itemType);
+ 	public IEntitySource GetItemSource_Death() => new EntitySource_ByItemSourceId(this, ItemSourceID.PlayerDeath);
 @@ -7328,9 +_,35 @@
  	public IEntitySource GetItemSource_TileInteraction(int tileCoordsX, int tileCoordsY) => new EntitySource_TileInteraction(this, tileCoordsX, tileCoordsY);
  	public IEntitySource GetNPCSource_TileInteraction(int tileCoordsX, int tileCoordsY) => new EntitySource_TileInteraction(this, tileCoordsX, tileCoordsY);
@@ -4001,17 +3990,6 @@
  				if (mount.Active && MountID.Sets.Cart[mount.Type])
  					position.Y -= 0.001f;
  
-@@ -16093,6 +_,10 @@
- 					if (sliding)
- 						velocity.X = 3 * -slideDir;
- 				}
-+				else if (attemptDoubleJumps && !blockExtraJumps) {
-+					ExtraJumpLoader.ProcessJumps(this);
-+				}
-+				/*
- 				else if (flag5) {
- 					isPerformingJump_Sandstorm = true;
- 					_ = height;
 @@ -16096,7 +_,7 @@
  		}
  
@@ -4087,6 +4065,20 @@
  
  				canRocket = false;
  				rocketRelease = false;
+@@ -16429,9 +_,13 @@
+ 					if (sliding)
+ 						velocity.X = 3 * -slideDir;
+ 				}
+ 				else if (flag13) {
+ 					velocity.Y = 16f * gravDir;
+ 				}
++				else if (attemptDoubleJumps && !blockExtraJumps) {
++					ExtraJumpLoader.ProcessJumps(this);
++				}
++				/*
+ 				else if (flag5) {
+ 					isPerformingJump_Sandstorm = true;
+ 					_ = height;
 @@ -16642,6 +_,7 @@
  					Main.gore[num28].velocity.X = Main.gore[num28].velocity.X * 0.1f - velocity.X * 0.1f;
  					Main.gore[num28].velocity.Y = Main.gore[num28].velocity.Y * 0.1f - velocity.Y * 0.05f;

@@ -84,6 +84,17 @@ Once all patches are fixed, these items need to be fixed or double checked:
   - Restore `TileLoader.AdjTiles(this, Main.tile[j, k].type);` patch to new Player.SetAdjTile method
 - Add 697 to TileID.Sets.CanPlaceNextToNonSolidTile
 - ItemID.Sets.ExtractinatorMode entries seem to have changed a lot. There is also a new CanBeExtractinated set. Need to investigate and adjust things if necessary.
+- Terraria added a CanConsumeConsumableItem stub method. Should it check item.consumable or only ItemLoader.ConsumeItem.
+- We'll need to check all bag drops and update the drop database.
+- A lot of the GetItemSettings presets have been renamed or removed. Might be something to document.
+- SystemLoader.ModifyLightingBrightness might need `_negLight3` parameter.
+- SystemLoader.ModifyLightingBrightness and LoaderManager.Get<WaterStylesLoader>().LightColorMultiplier might need perspectivePlayer parameter or docs to use Main.SceneMetrics.PerspectivePlayer. This is for supporting spectator mode I believe.
+- There seems to be a new `flag` we should add to TileLoader.ModifyLight. It seems to determine if paint should override the native light color from a tile.
+- What is ArmorIDs.Wing.Sets.AlwaysAnimated?
+- BiomeConversionID.PurificationPowder (8) and Chlorophyte (9) might not match up with Terraria-added values. Need to double check where these were used against the new ID values. Chlorophyte is now either 8/9/10 and PurificationPowder is 11.
+- Several MessageID were renamed. Should we keep the new vanilla name, or rename vanilla? Probably best to stay up to date with vanilla.
+- Lange.CreateDialogFilter now has a checkConditions parameter. It seems that there is a new system for object substitutions. We'll need to document these and make sure they work for modded substitutions. LocalizedText.CanFormatWith usages seem to be replaced with ConditionsMetWith. Some Language.GetTextValueWith usages changed to GetTextValue but still somehow support substitutions.
+- Should PlayerLoader.SyncPlayer in SyncOnePlayer be after syncing owner Projectiles?
 
 # New Fields that might need more documentation
 
@@ -106,6 +117,7 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Player.selectedItem is not a getter property instead of a field. We might need to document selectedItemState and other related new fields.
 - BuffID.Sets.AddBuffTimeAdditivelyToCap. Also need to update Mod/GlobalBuff.ReApply docs to mention AddBuffTimeAdditivelyToCap as a streamlined alternative for this use-case.
 - Mount.DismountOnItemUse and MountID.Sets.CanUseHooks
+- Add docs for new GetItemSettings parameters
 
 # Changes that need to be communicated to modders
 
@@ -135,7 +147,13 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Various text rendering methods have been changed or improved. Investigate new functionality and previous bug fixes.
 - Player.IsAllowedToHoldItems
 - All chairs give fishing bonus now, not just toilets.
-- MountID.Sets.DoesNotOverrideLegFrames seems like something a lot of modded mounts might want to use.
+- MountID.Sets.DoesNotOverrideLegFrames seems like something a lot of modded mounts might want to use. (All other new MountID.Sets sets as well)
+- BuffID.Sets.BasicMountData is now just BuffID.Sets.MountType. It no longer stores a `BuffID.Sets.BuffMountData` since mounts no longer "faceLeft" or right. It now just stores the MountID directly.
+- BuffID.IsAnNPCWhipDebuff, which tModLoader renamed to IsATagBuff, has changed a lot. Need to document the new behavior. Do we want to revert the name change? Also CanBeRemovedByNetMessage docs are now wrong.
+- ProjectileID.Sets.HeldProjDoesNotUsePlayerGfxOffY removed. How has this been fixed? I thought it wouldn't be fixed in vanilla.
+- ProjectileID.Sets.DontAttachHideToAlpha removed. What replaced it?
+- Need to determine if hooks need to act on ModItem or WorldItem. For example: `ItemIO.SendModData(item3, writer);`
+- The number3 parameter of the SyncEquipment message seems to have changed meaning. Docs needed.
 
 # tModPorter TODOs
 
@@ -156,6 +174,18 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Player.oldAdjWater -> oldAdjWaterSource
 - TileID.Sets.CountsAsWaterSource -> TileID.Sets.CountsAsWaterForCrafting (And TML added lava, shimmer, honey?)
 - Player.GetItem no longer has plr parameter
+- BuffID.Sets.LongerExpertDebuff -> BuffID.Sets.BuffTimeIsExtendedWithGameDifficulty. Docs remarks might also now be wrong. Also doc BuffTimeIsExtendedByDeadCellsPotionStationBuff
+- MessageID.TileSquare -> AreaTileChange
+- MessageID.ShotAnimationAndSound -> ItemRotationAndAnimation
+- MessageID.PlayerTeam -> TeamChange
+- MessageID.RequestReadSign -> OpenSignRequest
+- MessageID.ReadSign -> OpenSignResponse
+- MessageID.AddPlayerBuff -> AddPlayerBuffPvP
+- MessageID.PaintTile -> SyncTilePaintOrCoating
+- MessageID.PaintWall -> SyncWallPaintOrCoating
+- MessageID.NPCKillCountDeathTally -> Unused83 (Also deprecated)
+- MessageID.TEDisplayDollItemSync -> TEDisplayDollDataSync
+- MountID.Sets.FacePlayersVelocity removed. Now automatic for all minecarts
 
 # Terraria update requests
 

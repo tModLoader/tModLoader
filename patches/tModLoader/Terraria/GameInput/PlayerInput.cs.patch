@@ -1,9 +1,10 @@
 --- src/TerrariaNetCore/Terraria/GameInput/PlayerInput.cs
 +++ src/tModLoader/Terraria/GameInput/PlayerInput.cs
-@@ -8,13 +_,14 @@
+@@ -8,14 +_,15 @@
  using Terraria.GameContent.UI.Chat;
  using Terraria.GameContent.UI.States;
  using Terraria.ID;
+ using Terraria.Localization;
 +using Terraria.ModLoader;
  using Terraria.Social;
  using Terraria.UI;
@@ -16,7 +17,7 @@
  {
  	public class MiscSettingsTEMP
  	{
-@@ -464,10 +_,31 @@
+@@ -519,10 +_,31 @@
  		}
  	}
  
@@ -48,7 +49,7 @@
  		PlayerInputProfile playerInputProfile = new PlayerInputProfile("Redigit's Pick");
  		playerInputProfile.Initialize(PresetProfiles.Redigit);
  		Profiles.Add(playerInputProfile.Name, playerInputProfile);
-@@ -518,7 +_,9 @@
+@@ -573,7 +_,9 @@
  
  	public static void Load()
  	{
@@ -59,7 +60,7 @@
  		Dictionary<string, PlayerInputProfile> dictionary = new Dictionary<string, PlayerInputProfile>();
  		string currentValue = null;
  		Main.InputProfiles.Get("Selected Profile", ref currentValue);
-@@ -660,6 +_,10 @@
+@@ -715,6 +_,10 @@
  
  	public static void UpdateInput()
  	{
@@ -70,7 +71,7 @@
  		SettingsForUI.UpdateCounters();
  		Triggers.Reset();
  		ScrollWheelValueOld = ScrollWheelValue;
-@@ -691,6 +_,12 @@
+@@ -746,6 +_,12 @@
  		UpdateMainMouse();
  		Main.mouseLeft = Triggers.Current.MouseLeft;
  		Main.mouseRight = Triggers.Current.MouseRight;
@@ -83,7 +84,7 @@
  		CacheZoomableValues();
  		if (num != 0 && PlayerInput.OnActionableInput != null)
  			PlayerInput.OnActionableInput();
-@@ -903,6 +_,10 @@
+@@ -982,5 +_,9 @@
  			}
  		}
  
@@ -93,8 +94,7 @@
 +
  		bool flag5 = ItemID.Sets.GamepadWholeScreenUseRange[player.inventory[player.selectedItem].type] || player.scope;
  		Item item = player.inventory[player.selectedItem];
- 		int num3 = item.tileBoost + ItemID.Sets.GamepadExtraRange[item.type];
-@@ -1206,6 +_,10 @@
+@@ -1282,6 +_,10 @@
  
  	private static void FixDerpedRebinds()
  	{
@@ -105,7 +105,7 @@
  		List<string> list = new List<string> {
  			"MouseLeft",
  			"MouseRight",
-@@ -1396,7 +_,10 @@
+@@ -1478,7 +_,10 @@
  				if (DpadSnapCooldown[i] == 0) {
  					int num = 6;
  					if (ItemSlot.IsABuildingItem(player.inventory[player.selectedItem]))
@@ -116,7 +116,7 @@
  
  					DpadSnapCooldown[i] = num;
  					zero += vector;
-@@ -1649,6 +_,8 @@
+@@ -1719,6 +_,8 @@
  
  	public static void Reset(KeyConfiguration c, PresetProfiles style, InputMode mode)
  	{

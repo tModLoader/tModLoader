@@ -19,7 +19,7 @@
  		0.7f,
  		0.7f,
  		0.7f,
-@@ -179,6 +_,9 @@
+@@ -188,6 +_,9 @@
  		bool flag5 = SocialAPI.Network != null && SocialAPI.Network.CanInvite();
  		int num7 = (flag5 ? 1 : 0);
  		int num8 = 5 + num7 + 2;
@@ -29,7 +29,7 @@
  		Vector2 vector4 = new Vector2(vector3.X + vector2.X / 4f, vector3.Y + (float)(num3 * 5 / 2));
  		Vector2 vector5 = new Vector2(0f, vector2.Y - (float)(num3 * 5)) / (num8 + 1);
  		if (flag)
-@@ -249,6 +_,24 @@
+@@ -258,6 +_,24 @@
  			}
  		}
  
@@ -54,7 +54,7 @@
  		num10++;
  		if (flag5 && DrawLeftSide(sb, Lang.menu[147].Value, num10, vector4, vector5, leftScale)) {
  			leftHover = num10;
-@@ -280,6 +_,9 @@
+@@ -289,6 +_,9 @@
  		if (DrawLeftSide(sb, Lang.inter[35].Value, num10, vector4, vector5, leftScale)) {
  			leftHover = num10;
  			if (flag4) {
@@ -64,15 +64,15 @@
  				Close();
  				Main.menuMode = 10;
  				Main.gameMenu = true;
-@@ -305,6 +_,7 @@
+@@ -314,6 +_,7 @@
  				break;
  			case 1:
- 				num12 = 11;
+ 				num12 = 14;
 +				num12++; // Room for tModLoader BossBarStyle option.
  				num4 = 1f;
  				num5 = 1.001f;
  				num6 = 0.001f;
-@@ -667,6 +_,16 @@
+@@ -684,6 +_,16 @@
  			}
  
  			num16++;
@@ -86,23 +86,23 @@
 +			}
 +
 +			num16++;
- 			string textValue3 = Language.GetTextValue("UI.MinimapFrame_" + Main.MinimapFrameManagerInstance.ActiveSelectionKeyName);
- 			if (DrawRightSide(sb, Language.GetTextValue("UI.SelectMapBorder", textValue3), num16, vector6, vector7, rightScale[num16], (rightScale[num16] - num4) / (num5 - num4))) {
+ 			string textValue4 = Language.GetTextValue("UI.MinimapFrame_" + Main.MinimapFrameManagerInstance.ActiveSelectionKeyName);
+ 			if (DrawRightSide(sb, Language.GetTextValue("UI.SelectMapBorder", textValue4), num16, vector6, vector7, rightScale[num16], (rightScale[num16] - num4) / (num5 - num4))) {
  				rightHover = num16;
-@@ -708,8 +_,12 @@
+@@ -725,8 +_,12 @@
  
  			num16++;
  			vector6.X += num;
 +
 +			/*
  			string activeSetKeyName = Main.ResourceSetsManager.ActiveSetKeyName;
- 			string textValue4 = Language.GetTextValue("UI.HealthManaStyle_" + activeSetKeyName);
+ 			string textValue5 = Language.GetTextValue("UI.HealthManaStyle_" + activeSetKeyName);
 +			*/
-+			string textValue4 = Main.ResourceSetsManager.ActiveSet.DisplayedName;
- 			if (DrawRightSide(sb, Language.GetTextValue("UI.SelectHealthStyle", textValue4), num16, vector6, vector7, rightScale[num16], (rightScale[num16] - num4) / (num5 - num4))) {
++			string textValue5 = Main.ResourceSetsManager.ActiveSet.DisplayedName;
+ 			if (DrawRightSide(sb, Language.GetTextValue("UI.SelectHealthStyle", textValue5), num16, vector6, vector7, rightScale[num16], (rightScale[num16] - num4) / (num5 - num4))) {
  				rightHover = num16;
  				if (flag4)
-@@ -745,7 +_,11 @@
+@@ -812,7 +_,11 @@
  			num18++;
  			if (DrawRightSide(sb, Lang.menu[51].Value + ": " + Main.PendingResolutionWidth + "x" + Main.PendingResolutionHeight, num18, vector6, vector7, rightScale[num18], (rightScale[num18] - num4) / (num5 - num4))) {
  				rightHover = num18;
@@ -114,7 +114,7 @@
  					int num19 = 0;
  					for (int m = 0; m < Main.numDisplayModes; m++) {
  						if (Main.displayWidth[m] == Main.PendingResolutionWidth && Main.displayHeight[m] == Main.PendingResolutionHeight) {
-@@ -754,9 +_,12 @@
+@@ -821,9 +_,12 @@
  						}
  					}
  

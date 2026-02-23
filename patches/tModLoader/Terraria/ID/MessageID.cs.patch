@@ -150,8 +150,7 @@
 +	/// <br/> Forwarded to other clients
 +	/// <br/><br/> This is usually used through the <see cref="NetMessage.SendTileSquare(int, int, int, TileChangeType)"/> helper methods.
 +	/// </summary>
--	public const byte Unknown20 = 20;
-+	public const byte TileSquare = 20;
+ 	public const byte AreaTileChange = 20;
 +
 +	/// <summary>
 +	/// Syncs all info about an item in the world, includding modded data.
@@ -286,9 +285,8 @@
 +
 +	// Player.itemRotation, itemAnimation and channel
 +	// Forwarded to other clients
- 	public const byte ShotAnimationAndSound = 41;
+ 	public const byte ItemRotationAndAnimation = 41;
 -	public const byte Unknown42 = 42;
--	public const byte Unknown43 = 43;
 +
 +	// Player's current and maximum mana
 +	// Sent on change, and the major client and server sync
@@ -296,28 +294,25 @@
 +
 +	// Restores mana
 +	// Forwarded to other clients
-+	public const byte ManaEffect = 43;
+ 	public const byte ManaEffect = 43;
 +
 +	// Player.KillMe
 +	// Forwarded to other clients
  	[Old("Deprecated.")]
 -	public const byte Unknown44 = 44;
--	public const byte Unknown45 = 45;
--	public const byte Unknown46 = 46;
--	public const byte Unknown47 = 47;
 +	public const byte KillPlayer = 44;
 +
 +	// Forwarded to clients
 +	// Forwarding includes the chat message "{player} has joined the {team} party"
-+	public const byte PlayerTeam = 45;
+ 	public const byte TeamChange = 45;
 +
 +	// If the server finds a sign at the location, it replies with ReadSign
-+	public const byte RequestReadSign = 46;
+ 	public const byte OpenSignRequest = 46;
 +
 +	// SignIndex, x, y, text, player
 +	// If the text changes on the server, the packet is forwarded to other clients
 +	// Opens the sign gui and plays the sound on the client
-+	public const byte ReadSign = 47;
+ 	public const byte OpenSignResponse = 47;
 +
 +	// X, y, liquid, liquidType
 +	// If NetPlayer.spamCheck will kick the player if the placement position is more than 10 tiles from the player
@@ -368,7 +363,7 @@
 +
 +	// Server does nothing except forward the packet to the buffed player IF the buff is a pvpBuff
 +	// Client rejects packets for other players
- 	public const byte AddPlayerBuff = 55;
+ 	public const byte AddPlayerBuffPvP = 55;
 +
 +	// NPC.displayName for town NPCs and Skeleton Merchant
 +	// Client sends this after SetDefaults (npcNameLookup = 0) 'help I don't know what their name is'
@@ -413,8 +408,6 @@
 +	/// </summary>
  	public const byte SpawnBossUseLicenseStartEvent = 61;
 -	public const byte Unknown62 = 62;
--	public const byte Unknown63 = 63;
--	public const byte Unknown64 = 64;
 +
 +	// Player, dodgeType { NinjaDodge = 1, ShadowDodge = 2 }
 +	// Forwarded to other clients
@@ -422,11 +415,11 @@
 +
 +	// WorldGen.paintTile(x, y, color)
 +	// Forwarded to other clients
-+	public const byte PaintTile = 63;
+ 	public const byte SyncTilePaintOrCoating = 63;
 +
 +	// WorldGen.paintWall(x, y, color)
 +	// Forwarded to other clients
-+	public const byte PaintWall = 64;
+ 	public const byte SyncWallPaintOrCoating = 64;
 +
 +	// If PlayerToPlayer, the nearest player in 9999 units is found, and a chat message sent "{player} has teleported to {player2}"
 +	// Index is set to whoAmI on server, so NPC teleports cannot be sent from client
@@ -517,7 +510,8 @@
 +	// BannerID, killCount
 +	// Supports modded banners now that check for bannerID > Main.MaxBannerTypes removed
 +	// Sent to all clients whenever an npc with a banner is killed
- 	public const byte NPCKillCountDeathTally = 83;
+ 	[Old("Deprecated.")]
+ 	public const byte Unused83 = 83;
 +
  	public const byte PlayerStealth = 84;
 +
@@ -563,7 +557,7 @@
 +
  	public const byte SocialHandshake = 93;
 +
- 	public const byte Deprecated1 = 94;
+ 	public const byte DevCommands = 94;
 +
  	public const byte MurderSomeoneElsesPortal = 95;
 +
@@ -625,7 +619,7 @@
 +
  	public const byte Emoji = 120;
 +
- 	public const byte TEDisplayDollItemSync = 121;
+ 	public const byte TEDisplayDollDataSync = 121;
 +
  	public const byte RequestTileEntityInteraction = 122;
 +
@@ -691,5 +685,4 @@
 +	/// </summary>
  	public const byte SyncItemCannotBeTakenByEnemies = 148;
 +
- 	public static readonly byte Count = 149;
- }
+ 	public const byte DeadCellsDisplayJarTryPlacing = 149;

@@ -9,8 +9,8 @@
  using Microsoft.Xna.Framework;
  using Microsoft.Xna.Framework.Graphics;
  using Terraria.Audio;
-@@ -11,10 +_,12 @@
- using Terraria.Localization;
+@@ -12,11 +_,13 @@
+ using Terraria.Map;
  using Terraria.UI;
  using Terraria.UI.Gamepad;
 +using Terraria.ModLoader;
@@ -21,9 +21,10 @@
 -public class UIWorldSelect : UIState
 +public partial class UIWorldSelect : UIState
  {
+ 	public static WorldFileData NewlyGeneratedWorld;
  	private UIList _worldList;
  	private UITextPanel<LocalizedText> _backPanel;
-@@ -76,6 +_,7 @@
+@@ -77,6 +_,7 @@
  		uIElement.Append(uITextPanel3);
  		_newPanel = uITextPanel3;
  		Append(uIElement);
@@ -31,7 +32,7 @@
  	}
  
  	public override void Recalculate()
-@@ -126,6 +_,7 @@
+@@ -127,6 +_,7 @@
  	public override void OnActivate()
  	{
  		Main.LoadWorlds();
@@ -39,9 +40,10 @@
  		UpdateWorldsList();
  		if (PlayerInput.UsingGamepadUI)
  			UILinkPointNavigator.ChangePoint(3000 + ((_worldList.Count == 0) ? 1 : 2));
-@@ -141,13 +_,23 @@
+@@ -150,22 +_,32 @@
+ 		int num = 0;
  		foreach (WorldFileData item in orderedEnumerable) {
- 			_worldList.Add(new UIWorldListItem(item, num++, CanWorldBePlayed(item)));
+ 			_worldList.Add(new UIWorldListItem(item, num++, CanWorldBeJoinedByActivePlayer(item), HasWorldBeenPlayedByActivePlayer(item), IsNewlyGenerated(item)));
  		}
 +
 +		_worldList.Add(_migrationPanel);
@@ -51,8 +53,16 @@
 +		}
  	}
  
--	private bool CanWorldBePlayed(WorldFileData file)
-+	internal static bool CanWorldBePlayed(WorldFileData file)
+ 	private static bool IsNewlyGenerated(WorldFileData file)
+ 	{
+ 		if (NewlyGeneratedWorld != null && file.Path == NewlyGeneratedWorld.Path)
+ 			return file.IsCloudSave == NewlyGeneratedWorld.IsCloudSave;
+ 
+ 		return false;
+ 	}
+ 
+-	private static bool CanWorldBeJoinedByActivePlayer(WorldFileData file)
++	internal static bool CanWorldBeJoinedByActivePlayer(WorldFileData file)
  	{
  		bool num = Main.ActivePlayerFileData.Player.difficulty == 3;
  		bool flag = file.GameMode == 3;
@@ -63,4 +73,4 @@
 +		return (num == flag) && SystemLoader.CanWorldBePlayed(Main.ActivePlayerFileData, file, out var _);
  	}
  
- 	public override void Draw(SpriteBatch spriteBatch)
+ 	private static bool HasWorldBeenPlayedByActivePlayer(WorldFileData file)

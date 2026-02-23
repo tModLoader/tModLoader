@@ -1,22 +1,19 @@
 --- src/TerrariaNetCore/Terraria/Graphics/Light/LegacyLighting.cs
 +++ src/tModLoader/Terraria/Graphics/Light/LegacyLighting.cs
-@@ -4,6 +_,7 @@
+@@ -3,7 +_,8 @@
  using Microsoft.Xna.Framework;
  using ReLogic.Threading;
  using Terraria.DataStructures;
+ using Terraria.Graphics.Capture;
 +using Terraria.ModLoader;
  using Terraria.Utilities;
  
  namespace Terraria.Graphics.Light;
-@@ -584,6 +_,7 @@
- 			ScanOreFinderData = Main.LocalPlayer.accOreFinder
- 		});
- 
+@@ -583,2 +_,3 @@
+ 		Main.UpdateSceneMetrics();
 +		// Extra patch context.
  		_tileScanner.Update();
- 		_tileScanner.ExportTo(new Rectangle(num, num3, num2 - num, num4 - num3), _lightMap, new TileLightScannerOptions {
- 			DrawInvisibleWalls = Main.ShouldShowInvisibleWalls()
-@@ -591,6 +_,7 @@
+@@ -588,6 +_,7 @@
  
  		for (int m = num; m < num2; m++) {
  			LightingState[] array3 = _states[m - _expandedRectLeft];
@@ -24,7 +21,7 @@
  			for (int n = num3; n < num4; n++) {
  				LightingState lightingState2 = array3[n - _expandedRectTop];
  				Tile tile = Main.tile[m, n];
-@@ -760,6 +_,8 @@
+@@ -761,6 +_,8 @@
  						_wetLightB = 0f;
  						break;
  				}
@@ -33,18 +30,19 @@
  			}
  			else {
  				_negLight = 0.9f;
-@@ -786,6 +_,8 @@
- 				_negLight *= 0.85f;
+@@ -792,6 +_,8 @@
  				_negLight2 *= 0.85f;
+ 				_negLight3 *= 0.85f;
  			}
 +
-+			SystemLoader.ModifyLightingBrightness(ref _negLight, ref _negLight2);
++			SystemLoader.ModifyLightingBrightness(ref _negLight, ref _negLight2); // TODO: _negLight3
  		}
  		else {
  			_negLight = 0.04f;
-@@ -809,6 +_,8 @@
+@@ -819,7 +_,9 @@
  				_negLight += 0.09f;
  				_negLight2 += 0.18f;
+ 				_negLight3 += 0.18f;
  			}
 +
 +			SystemLoader.ModifyLightingBrightness(ref _negLight, ref _negLight2);

@@ -1,17 +1,20 @@
 --- src/TerrariaNetCore/Terraria/Graphics/Light/LightingEngine.cs
 +++ src/tModLoader/Terraria/Graphics/Light/LightingEngine.cs
-@@ -3,6 +_,7 @@
- using System.Diagnostics;
+@@ -2,8 +_,9 @@
+ using System.Collections.Generic;
  using Microsoft.Xna.Framework;
  using ReLogic.Threading;
+ using Terraria.Graphics.Capture;
+ using Terraria.Map;
 +using Terraria.ModLoader;
  
  namespace Terraria.Graphics.Light;
  
-@@ -171,6 +_,13 @@
+@@ -166,7 +_,14 @@
  				break;
  		}
  
+ 		Player perspectivePlayer = Main.SceneMetrics.PerspectivePlayer;
 +		float factor = 0.91f; // Taken from the constant at the start of the method.
 +		float throughWaterR = workingLightMap.LightDecayThroughWater.X;
 +		float throughWaterG = workingLightMap.LightDecayThroughWater.Y;
@@ -19,13 +22,13 @@
 +		LoaderManager.Get<WaterStylesLoader>().LightColorMultiplier(Main.waterStyle, factor, ref throughWaterR, ref throughWaterG, ref throughWaterB);
 +		workingLightMap.LightDecayThroughWater = new Vector3(throughWaterR, throughWaterG, throughWaterB);
 +
- 		if (Main.player[Main.myPlayer].nightVision) {
+ 		if (perspectivePlayer.nightVision) {
  			workingLightMap.LightDecayThroughAir *= 1.03f;
  			workingLightMap.LightDecayThroughSolid *= 1.03f;
-@@ -193,6 +_,15 @@
+@@ -189,6 +_,15 @@
  
- 		workingLightMap.LightDecayThroughAir *= Player.airLightDecay;
- 		workingLightMap.LightDecayThroughSolid *= Player.solidLightDecay;
+ 		workingLightMap.LightDecayThroughAir *= Main.SceneState.airLightDecay;
+ 		workingLightMap.LightDecayThroughSolid *= Main.SceneState.solidLightDecay;
 +
 +		//TML: Shouldn't this just ref to LightMap values instead?
 +		float throughAir = 1f;

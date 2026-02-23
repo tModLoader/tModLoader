@@ -8,7 +8,7 @@
  
  namespace Terraria.Graphics.Renderers;
  
-@@ -32,6 +_,7 @@
+@@ -33,6 +_,7 @@
  
  	public void DrawPlayerHead(Camera camera, Player drawPlayer, Vector2 position, float alpha = 1f, float scale = 1f, Color borderColor = default(Color))
  	{
@@ -16,7 +16,7 @@
  		if (!drawPlayer.ShouldNotDraw) {
  			_drawData.Clear();
  			_dust.Clear();
-@@ -50,6 +_,9 @@
+@@ -51,6 +_,9 @@
  			CreateOutlines(alpha, scale, borderColor);
  			PlayerDrawHeadLayers.DrawPlayer_RenderAllLayers(ref drawinfo);
  		}
@@ -26,7 +26,7 @@
  	}
  
  	private void CreateOutlines(float alpha, float scale, Color borderColor)
-@@ -114,6 +_,12 @@
+@@ -115,6 +_,12 @@
  
  	public void DrawPlayer(Camera camera, Player drawPlayer, Vector2 position, float rotation, Vector2 rotationOrigin, float shadow = 0f, float scale = 1f)
  	{
@@ -39,7 +39,7 @@
  		if (drawPlayer.ShouldNotDraw)
  			return;
  
-@@ -121,12 +_,36 @@
+@@ -122,12 +_,36 @@
  		_drawData.Clear();
  		_dust.Clear();
  		_gore.Clear();
@@ -49,7 +49,7 @@
 +			goto SkipBoringSetup;
 +		}
 +
- 		drawInfo.BoringSetup(drawPlayer, _drawData, _dust, _gore, position, shadow, rotation, rotationOrigin);
+ 		drawInfo.BoringSetup(drawPlayer, _drawData, _dust, _gore, position, shadow, rotation, rotationOrigin, OverrideHeldProjectile);
 +		SkipBoringSetup:
 +
 +		/*
@@ -74,14 +74,13 @@
 +		PlayerLoader.TransformDrawData(ref drawInfo);
 +
  		PlayerDrawLayers.DrawPlayer_RenderAllLayers(ref drawInfo);
- 		if (!drawInfo.drawPlayer.mount.Active || !drawInfo.drawPlayer.UsingSuperCart)
+ 		if (!drawInfo.drawPlayer.mount.Active || !drawInfo.drawPlayer.UsingSuperCart || OverrideHeldProjectile != null)
  			return;
-@@ -263,6 +_,8 @@
- 					}
- 				}
- 			}
+@@ -252,4 +_,7 @@
+ 		else {
+ 			PrepareDrawForFrame(drawPlayer);
 +
 +			PlayerLoader.DrawPlayer(drawPlayer, camera);
- 
++
  			if (drawPlayer.armorEffectDrawShadowEOCShield) {
  				int num = drawPlayer.eocDash / 4;

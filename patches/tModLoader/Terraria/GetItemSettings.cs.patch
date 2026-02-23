@@ -12,12 +12,12 @@
 +/// </summary>
  public struct GetItemSettings
  {
- 	public static GetItemSettings InventoryEntityToPlayerInventorySettings = new GetItemSettings(LongText: false, NoText: true);
-@@ -18,6 +_,7 @@
- 	public readonly bool CanGoIntoVoidVault;
+ 	public static GetItemSettings GiftRecieved = new GetItemSettings(LongText: true);
+@@ -21,6 +_,7 @@
+ 	public readonly bool NoCoinMerge;
  	public readonly Action<Item> StepAfterHandlingSlotNormally;
  
 +	/// <inheritdoc cref="GetItemSettings"/>
- 	public GetItemSettings(bool LongText = false, bool NoText = false, bool CanGoIntoVoidVault = false, Action<Item> StepAfterHandlingSlotNormally = null)
+ 	public GetItemSettings(bool LongText = false, bool NoText = false, bool CanGoIntoVoidVault = false, bool NoSound = false, Action<Item> StepAfterHandlingSlotNormally = null, bool NoCoinMerge = false)
  	{
  		this.LongText = LongText;
