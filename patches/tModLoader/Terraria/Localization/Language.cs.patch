@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Localization/Language.cs
 +++ src/tModLoader/Terraria/Localization/Language.cs
-@@ -1,23 +_,66 @@
+@@ -1,24 +_,67 @@
 +using System;
  using System.Text.RegularExpressions;
  using Terraria.Utilities;
@@ -67,4 +67,5 @@
 +	/// <code>LocalizedText randomOption = Language.SelectRandom(Lang.CreateDialogFilter(this.GetLocalizationKey("Options.")));</code>
 +	/// </summary>
  	public static LocalizedText RandomFromCategory(string categoryName, UnifiedRandom random = null) => LanguageManager.Instance.RandomFromCategory(categoryName, random);
+ 	public static bool TryGetVariation(string key, string variant, out string value) => LanguageManager.Instance.TryGetVariation(key, variant, out value);
  }

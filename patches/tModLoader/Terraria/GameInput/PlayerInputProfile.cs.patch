@@ -20,7 +20,7 @@
  
  	public void CopyGameplaySettingsFrom(PlayerInputProfile profile, InputMode mode)
  	{
--		string[] keysToCopy = new string[23] {
+-		string[] keysToCopy = new string[27] {
 +		string[] keysToCopy = new string[] {
  			"MouseLeft",
  			"MouseRight",

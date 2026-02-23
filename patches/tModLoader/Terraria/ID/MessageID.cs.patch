@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/ID/MessageID.cs
 +++ src/tModLoader/Terraria/ID/MessageID.cs
-@@ -1,163 +_,673 @@
+@@ -1,177 +_,699 @@
  using Terraria.Utilities;
 +using Terraria.ModLoader;
  
@@ -150,7 +150,7 @@
 +	/// <br/> Forwarded to other clients
 +	/// <br/><br/> This is usually used through the <see cref="NetMessage.SendTileSquare(int, int, int, TileChangeType)"/> helper methods.
 +	/// </summary>
--	public const byte Unknown20 = 20;
+-	public const byte AreaTileChange = 20;
 +	public const byte TileSquare = 20;
 +
 +	/// <summary>
@@ -286,9 +286,10 @@
 +
 +	// Player.itemRotation, itemAnimation and channel
 +	// Forwarded to other clients
- 	public const byte ShotAnimationAndSound = 41;
+-	public const byte ItemRotationAndAnimation = 41;
++	public const byte ShotAnimationAndSound = 41;
 -	public const byte Unknown42 = 42;
--	public const byte Unknown43 = 43;
+-	public const byte ManaEffect = 43;
 +
 +	// Player's current and maximum mana
 +	// Sent on change, and the major client and server sync
@@ -302,9 +303,9 @@
 +	// Forwarded to other clients
  	[Old("Deprecated.")]
 -	public const byte Unknown44 = 44;
--	public const byte Unknown45 = 45;
--	public const byte Unknown46 = 46;
--	public const byte Unknown47 = 47;
+-	public const byte TeamChange = 45;
+-	public const byte OpenSignRequest = 46;
+-	public const byte OpenSignResponse = 47;
 +	public const byte KillPlayer = 44;
 +
 +	// Forwarded to clients
@@ -368,7 +369,8 @@
 +
 +	// Server does nothing except forward the packet to the buffed player IF the buff is a pvpBuff
 +	// Client rejects packets for other players
- 	public const byte AddPlayerBuff = 55;
+-	public const byte AddPlayerBuffPvP = 55;
++	public const byte AddPlayerBuff = 55;
 +
 +	// NPC.displayName for town NPCs and Skeleton Merchant
 +	// Client sends this after SetDefaults (npcNameLookup = 0) 'help I don't know what their name is'
@@ -413,8 +415,8 @@
 +	/// </summary>
  	public const byte SpawnBossUseLicenseStartEvent = 61;
 -	public const byte Unknown62 = 62;
--	public const byte Unknown63 = 63;
--	public const byte Unknown64 = 64;
+-	public const byte SyncTilePaintOrCoating = 63;
+-	public const byte SyncWallPaintOrCoating = 64;
 +
 +	// Player, dodgeType { NinjaDodge = 1, ShadowDodge = 2 }
 +	// Forwarded to other clients
@@ -517,7 +519,9 @@
 +	// BannerID, killCount
 +	// Supports modded banners now that check for bannerID > Main.MaxBannerTypes removed
 +	// Sent to all clients whenever an npc with a banner is killed
- 	public const byte NPCKillCountDeathTally = 83;
+-	[Old("Deprecated.")]
+-	public const byte Unused83 = 83;
++	public const byte NPCKillCountDeathTally = 83;
 +
  	public const byte PlayerStealth = 84;
 +
@@ -563,7 +567,8 @@
 +
  	public const byte SocialHandshake = 93;
 +
- 	public const byte Deprecated1 = 94;
+-	public const byte DevCommands = 94;
++	public const byte Deprecated1 = 94;
 +
  	public const byte MurderSomeoneElsesPortal = 95;
 +
@@ -625,7 +630,8 @@
 +
  	public const byte Emoji = 120;
 +
- 	public const byte TEDisplayDollItemSync = 121;
+-	public const byte TEDisplayDollDataSync = 121;
++	public const byte TEDisplayDollItemSync = 121;
 +
  	public const byte RequestTileEntityInteraction = 122;
 +
@@ -691,5 +697,31 @@
 +	/// </summary>
  	public const byte SyncItemCannotBeTakenByEnemies = 148;
 +
- 	public static readonly byte Count = 149;
+ 	public const byte DeadCellsDisplayJarTryPlacing = 149;
++
+ 	public const byte SpectatePlayer = 150;
++
+ 	public const byte SyncItemDespawn = 151;
++
+ 	public const byte ItemUseSound = 152;
++
+ 	public const byte NPCDebuffDamage = 153;
++
+ 	public const byte Ping = 154;
++
+ 	public const byte SyncChestSize = 155;
++
+ 	public const byte TELeashedEntityAnchorPlaceItem = 156;
++
+ 	public const byte TeamChangeFromUI = 157;
++
+ 	public const byte ExtraSpawnSectionLoaded = 158;
++
+ 	public const byte RequestSection = 159;
++
+ 	public const byte ItemPosition = 160;
++
+ 	public const byte HostToken = 161;
++
+ 	public static readonly byte Count = 162;
  }

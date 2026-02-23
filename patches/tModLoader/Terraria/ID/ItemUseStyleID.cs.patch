@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/ID/ItemUseStyleID.cs
 +++ src/tModLoader/Terraria/ID/ItemUseStyleID.cs
-@@ -1,20 +_,65 @@
+@@ -1,22 +_,67 @@
 +using ReLogic.Reflection;
 +
  namespace Terraria.ID;
@@ -63,6 +63,8 @@
 +	/// <br/> Used by Nightglow.
 +	/// </summary>
  	public const int RaiseLamp = 14;
-+	public const int Count = 15;
+ 	public const int HoldOrb = 15;
+ 	public const int PlaySound = 16;
++	public const int Count = 17;
 +	public static readonly IdDictionary Search = IdDictionary.Create<ItemUseStyleID, int>(); // Added by TML
  }

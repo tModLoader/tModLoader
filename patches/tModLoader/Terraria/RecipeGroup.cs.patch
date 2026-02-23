@@ -1,32 +1,34 @@
 --- src/TerrariaNetCore/Terraria/RecipeGroup.cs
 +++ src/tModLoader/Terraria/RecipeGroup.cs
-@@ -13,6 +_,8 @@
- 	public static Dictionary<string, int> recipeGroupIDs = new Dictionary<string, int>();
+@@ -16,6 +_,8 @@
+ 	public static Dictionary<int, RecipeGroup> recipeGroups = new Dictionary<int, RecipeGroup>();
  	public static int nextRecipeGroupIndex;
  
 +	internal bool[] ValidItemsLookup; // Added by TML.
 +
- 	public RecipeGroup(Func<string> getName, params int[] validItems)
- 	{
- 		GetText = getName;
-@@ -22,11 +_,20 @@
+ 	public int RegisteredId { get; private set; }
  
- 	public static int RegisterGroup(string name, RecipeGroup rec)
- 	{
+ 	private static Func<string> WithDefaultCombineFormat(string key)
+@@ -56,6 +_,14 @@
+ 		if (RegisteredId >= 0)
+ 			throw new Exception("Already registered");
+ 
 +		// TML: Handle registering to an existing group by merging items and keeping the original group.
-+		if (recipeGroupIDs.TryGetValue(name, out int existingRecipeGroup)) {
-+			recipeGroups[existingRecipeGroup].ValidItems.UnionWith(rec.ValidItems);
-+			return existingRecipeGroup;
++		foreach (var kvp in recipeGroups) {
++			if (kvp.Value.GetType() == this.GetType() && ReferenceEquals(kvp.Value.GetText, this.GetText)) {
++				kvp.Value.ValidItems.UnionWith(this.ValidItems);
++				return kvp.Value;
++			}
 +		}
 +
- 		int num = (rec.RegisteredId = nextRecipeGroupIndex++);
- 		recipeGroups.Add(num, rec);
- 		recipeGroupIDs.Add(name, num);
- 		return num;
- 	}
+ 		int key = (RegisteredId = nextRecipeGroupIndex++);
+ 		recipeGroups.Add(key, this);
+ 		return this;
+@@ -76,4 +_,7 @@
+ 	public int GetGroupFakeItemId() => RegisteredId + FakeItemIdOffset;
+ 	public bool Contains(int itemType) => ValidItems.Contains(itemType);
+ 	public int GetPlaceholderItemType() => Items[0];
 +
 +	// Added by TML.
 +	public bool ContainsItem(int type) => ValidItemsLookup?[type] ?? ValidItems.Contains(type);
- 
- 	public int CountUsableItems(Dictionary<int, int> itemStacksAvailable)
- 	{
+ }

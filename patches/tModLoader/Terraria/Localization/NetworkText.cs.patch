@@ -70,5 +70,5 @@
 +		_ => FromLiteral(o.ToString())
 +	};
  
- 	public int GetMaxSerializedSize()
+ 	public void Serialize(BinaryWriter writer)
  	{

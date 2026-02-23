@@ -4,7 +4,7 @@
  			_prepared = true;
  			int num = _widthLimitInPixels;
  			if (num == -1)
--				num = Main.screenWidth - 320;
+-				num = Main.ChatLineWidthLimit;
 +				num = (int)(Main.screenWidth / Main.UIScale - 320); // TML fix: scale NewText by UIScale.
  
  			List<List<TextSnippet>> list = Utils.WordwrapStringSmart(OriginalText, _color, FontAssets.MouseText.Value, num, 10);

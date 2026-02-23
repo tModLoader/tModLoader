@@ -1,11 +1,12 @@
 --- src/TerrariaNetCore/Terraria/Initializers/AssetInitializer.cs
 +++ src/tModLoader/Terraria/Initializers/AssetInitializer.cs
-@@ -11,22 +_,46 @@
+@@ -11,27 +_,49 @@
  using Terraria.GameContent;
  using Terraria.ID;
  using Terraria.IO;
 +using Terraria.ModLoader.Assets;
 +using Terraria.ModLoader.UI;
+ using Terraria.Testing;
  using Terraria.Utilities;
  
  namespace Terraria.Initializers;
@@ -30,6 +31,9 @@
 +		assetReaderCollection.RegisterReader(new OggReader(), ".ogg");
 +
 +		/*
+ #if XNA && !SERVER
+ 		assetReaderCollection.RegisterReader(new FxReader(services.Get<IGraphicsDeviceService>().GraphicsDevice), ".fx");
+ #endif
  		AsyncAssetLoader asyncAssetLoader = new AsyncAssetLoader(assetReaderCollection, 20);
  		asyncAssetLoader.RequireTypeCreationOnTransfer(typeof(Texture2D));
  		asyncAssetLoader.RequireTypeCreationOnTransfer(typeof(DynamicSpriteFont));
@@ -42,11 +46,13 @@
 +		AssetRepository.SetMainThread();
 +
 +		/*
- 		IAssetRepository provider = new AssetRepository(new AssetLoader(assetReaderCollection), asyncAssetLoader);
+-		IAssetRepository assetRepository = new AssetRepository(new AssetLoader(assetReaderCollection), asyncAssetLoader);
+-		assetRepository.AssetValueUpdatedHandler = (AssetValueUpdated)Delegate.Combine(assetRepository.AssetValueUpdatedHandler, new AssetValueUpdated(TagAsset));
 +		*/
 +		var provider = new AssetRepository(assetReaderCollection);
  		services.AddService(typeof(AssetReaderCollection), assetReaderCollection);
- 		services.AddService(typeof(IAssetRepository), provider);
+-		services.AddService(typeof(IAssetRepository), assetRepository);
++		services.AddService(typeof(IAssetRepository), provider);
  	}
 @@ -614,6 +_,8 @@
  		Main.ResourceSetsManager.LoadContent(mode);

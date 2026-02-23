@@ -114,7 +114,7 @@
  		if (monoArgs)
  			args = Utils.ConvertMonoArgsToDotNet(args);
  
-@@ -167,7 +_,29 @@
+@@ -166,8 +_,30 @@
  		// Unify server and client dll via launch param
  		Main.dedServ = LaunchParameters.ContainsKey("-server");
  #endif
@@ -141,6 +141,7 @@
 +			// Anything beyond this point will not be executed
 +			ModCompile.BuildModCommandLine(build);
  
+ #if NETCORE
  		// Remove bad environment variables that might be set by other app installs
  		if (Main.dedServ) {
  			Environment.SetEnvironmentVariable("FNA_PLATFORM_BACKEND", "NONE");
@@ -169,8 +170,13 @@
  			Lang.InitializeLegacyLocalization();
  			SocialAPI.Initialize();
  			LaunchInitializer.LoadParameters(main);
-@@ -214,18 +_,22 @@
+@@ -214,23 +_,27 @@
+ #if NETCORE
+ 			else
  				main.Run();
+ #else
+ 			main.Run();
+ #endif
  		}
  		catch (Exception e) {
 +			ErrorReporting.FatalExit("Main engine crash", e);
@@ -192,7 +198,7 @@
  	}
  
 +	/*
-@@ -255,4 +_,5 @@
+@@ -259,4 +_,5 @@
  		catch {
  		}
  	}
