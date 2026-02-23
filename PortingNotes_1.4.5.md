@@ -151,6 +151,7 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - TileID.Sets.IsAMechanism changed to TileID.Sets.Wiring.IsAMechanism. The function of the set might have changed, investigate and update docs
 - NPCID.Sets.UsesNewTargetting renamed to UsesNewTargeting
 - GoreID.Sets.LiquidDroplet renamed to IsDrip
+- LocalizedText.CanFormatWith renamed to ConditionsMetWith
 - WorldGen.gen renamed to isGeneratingOrLoadingWorld
 - Player.adjWater -> addWaterSource
 - Player.oldAdjWater -> oldAdjWaterSource
