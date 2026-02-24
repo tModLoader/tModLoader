@@ -21,37 +21,6 @@
 -public class NPC : Entity
 +public partial class NPC : Entity
  {
-@@ -99,6 +_,13 @@
- 	public static int deerclopsBoss = -1;
- 	public int netSkip;
- 	public bool netAlways;
-+
-+	/// <summary>
-+	/// Stores the index (the <see cref="Entity.whoAmI"/>) of a single NPC. This NPC will then share a health pool with that NPC.<br/>
-+	/// Used for the Destroyer's various segments and the Wall of Flesh's eyes and mouth.<br/>
-+	/// This is useful for worm enemies. All the segments will point to the same npc, usually the "head" of the npc, and the head and all other non-multi-part NPCs will have the default value of -1 still.
-+	/// <br/> Defaults to -1.
-+	/// </summary>
- 	public int realLife = -1;
- 	private string _givenName = "";
- 	public static int sWidth = 1920;
-@@ -286,10 +_,16 @@
- 	public bool homeless;
- 	public int homeTileX = -1;
- 	public int homeTileY = -1;
-+	/// <summary> Set to 1 for pets to allow them to share a house with a normal Town NPC. Defaults to 0. </summary>
- 	public int housingCategory;
- 	public bool oldHomeless;
- 	public int oldHomeTileX = -1;
- 	public int oldHomeTileY = -1;
-+	/// <summary>
-+	/// Indicates that an NPC is friendly to players. If true, a player won't damage the NPC and the NPC won't deal contact damage to players, unless otherwise forced. <br/>
-+	/// Mostly set to true for town npc and rescuable town npc. <br/>
-+	/// Naturally spawned critter NPC that are <see cref="Main.npcCatchable"/> will automatically be friendly for 1.5 seconds after spawning. <br/>
-+	/// </summary>
- 	public bool friendly;
- 	public bool closeDoor;
- 	public int doorX;
 @@ -4373,6 +_,12 @@
  	public const float nameOverIncrement = 0.025f;
  	public const float nameOverDistance = 350f;
@@ -116,6 +85,14 @@
  	public bool teleporting;
  	private static int maxAttack = 20;
  	private static int[] attackNPC = new int[maxAttack];
+@@ -4424,1 +_,7 @@
++	/// <summary>
++	/// Stores the index (the <see cref="Entity.whoAmI"/>) of a single NPC. This NPC will then share a health pool with that NPC.<br/>
++	/// Used for the Destroyer's various segments and the Wall of Flesh's eyes and mouth.<br/>
++	/// This is useful for worm enemies. All the segments will point to the same npc, usually the "head" of the npc, and the head and all other non-multi-part NPCs will have the default value of -1 still.
++	/// <br/> Defaults to -1.
++	/// </summary>
+ 	public int realLife = -1;
 @@ -4428,10 +_,19 @@
 +	/// <summary> The X distance from the player determining the active range governing instant NPC despawning </summary>
  	private static int activeRangeX = (int)((double)sWidth * 2.1);
@@ -560,6 +537,23 @@
  	public int netID;
  	public int statsAreScaledForThisManyPlayers;
  	public float difficulty = 1f;
+@@ -4612,10 +_,16 @@
+ 	public static readonly int KickOutLookForHomeTimeout = 3600;
+ 	public int homeTileX = -1;
+ 	public int homeTileY = -1;
++	/// <summary> Set to 1 for pets to allow them to share a house with a normal Town NPC. Defaults to 0. </summary>
+ 	public int housingCategory;
+ 	public bool oldHomeless;
+ 	public int oldHomeTileX = -1;
+ 	public int oldHomeTileY = -1;
++	/// <summary>
++	/// Indicates that an NPC is friendly to players. If true, a player won't damage the NPC and the NPC won't deal contact damage to players, unless otherwise forced. <br/>
++	/// Mostly set to true for town npc and rescuable town npc. <br/>
++	/// Naturally spawned critter NPC that are <see cref="Main.npcCatchable"/> will automatically be friendly for 1.5 seconds after spawning. <br/>
++	/// </summary>
+ 	public bool friendly;
+ 	public bool closeDoor;
+ 	public int doorX;
 @@ -4709,7 +_,9 @@
  	private static bool EoCKilledToday;
  	private static bool WoFKilledToday;
@@ -1117,15 +1111,6 @@
  		if (aiStyle == 0) {
  			if (Main.netMode != 1) {
  				for (int i = 0; i < 255; i++) {
-@@ -19686,7 +_,7 @@
- 				num567 = Main.player[target].position.Y + (float)(Main.player[target].height / 2) - vector69.Y;
- 				num568 = (float)Math.Sqrt(num566 * num566 + num567 * num567);
- 				rotation = (float)Math.Atan2(num567, num566) - 1.57f;
--				if (Main.netMode == 1) {
-+				if (Main.netMode != NetmodeID.MultiplayerClient) { // TML: Fix inverted netmode check
- 					localAI[0] += 1f;
- 					if (localAI[0] > 80f) {
- 						localAI[0] = 0f;
 @@ -37044,7 +_,7 @@
  			timeLeft = 86400;
  		}
@@ -1160,31 +1145,6 @@
  			if (Main.expertMode)
  				num46 = (int)((float)num46 * Main.GameModeInfo.TownNPCDamageMultiplier);
  
-@@ -40723,17 +_,24 @@
- 			velocity.X *= 0.8f;
- 			ai[1] -= 1f;
- 			localAI[3] += 1f;
-+			// Patch note: num48 - attackDelay.
- 			if (localAI[3] == (float)num48 && Main.netMode != 1) {
- 				Vector2 vec2 = Vector2.Zero;
- 				if (num52 != -1)
- 					vec2 = DirectionTo(Main.npc[num52].Center + new Vector2(0f, -num50));
- 
-+				// Patch note: num50 - gravityCorrection.
- 				if (vec2.HasNaNs() || Math.Sign(vec2.X) != spriteDirection)
- 					vec2 = new Vector2(spriteDirection, 0f);
- 
-+				// Patch note: num47 - projectile speed multiplier.
- 				vec2 *= num47;
-+				// Patch note: num51 - projectile speed randomOffset.
- 				vec2 += Utils.RandomVector2(Main.rand, 0f - num51, num51);
- 				int num53 = 1000;
-+				// Patch note: num45 - projType.
-+				// Patch note: num46 - damage.
-+				// Patch note: knockBack2 - knockback;
- 				num53 = ((type != 227) ? Projectile.NewProjectile(GetSpawnSource_ForProjectile(), base.Center.X + (float)(spriteDirection * 16), base.Center.Y - 2f, vec2.X, vec2.Y, num45, num46, knockBack2, Main.myPlayer) : Projectile.NewProjectile(GetSpawnSource_ForProjectile(), base.Center.X + (float)(spriteDirection * 16), base.Center.Y - 2f, vec2.X, vec2.Y, num45, num46, knockBack2, Main.myPlayer, 0f, (float)Main.rand.Next(12) / 6f));
- 				Main.projectile[num53].npcProj = true;
- 				Main.projectile[num53].noDropItem = true;
 @@ -40851,6 +_,12 @@
  				knockBack3 = 3f;
  			}
@@ -1432,6 +1392,31 @@
  					flag28 = true;
  				}
  
+@@ -46093,17 +_,24 @@
+ 			velocity.X *= 0.8f;
+ 			ai[1] -= 1f;
+ 			localAI[3] += 1f;
++			// Patch note: num54 - attackDelay.
+ 			if (localAI[3] == (float)num54 && Main.netMode != 1) {
+ 				Vector2 vec2 = Vector2.Zero;
+ 				if (num58 != -1)
+ 					vec2 = DirectionTo(Main.npc[num58].Center + new Vector2(0f, -num56));
+ 
++				// Patch note: num56 - gravityCorrection.
+ 				if (vec2.HasNaNs() || Math.Sign(vec2.X) != spriteDirection)
+ 					vec2 = new Vector2(spriteDirection, 0f);
+ 
++				// Patch note: num53 - projectile speed multiplier.
+ 				vec2 *= num53;
++				// Patch note: num57 - projectile speed randomOffset.
+ 				vec2 += Utils.RandomVector2(Main.rand, 0f - num57, num57);
+ 				int num59 = 1000;
++				// Patch note: num51 - projType.
++				// Patch note: num52 - damage.
++				// Patch note: knockBack2 - knockback;
+ 				num59 = ((type != 227) ? Projectile.NewProjectile(GetSpawnSource_ForProjectile(), base.Center.X + (float)(spriteDirection * 16), base.Center.Y - 2f, vec2.X, vec2.Y, num51, num52, knockBack2, Main.myPlayer) : Projectile.NewProjectile(GetSpawnSource_ForProjectile(), base.Center.X + (float)(spriteDirection * 16), base.Center.Y - 2f, vec2.X, vec2.Y, num51, num52, knockBack2, Main.myPlayer, 0f, (float)Main.rand.Next(12) / 6f));
+ 				Main.projectile[num59].npcProj = true;
+ 				Main.projectile[num59].noDropItem = true;
 @@ -46117,6 +_,8 @@
  
  			if (ai[1] <= 0f && 0 == 0) {

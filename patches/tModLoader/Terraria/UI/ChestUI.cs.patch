@@ -1,15 +1,15 @@
 --- src/TerrariaNetCore/Terraria/UI/ChestUI.cs
 +++ src/tModLoader/Terraria/UI/ChestUI.cs
-@@ -7,6 +_,8 @@
+@@ -10,6 +_,8 @@
  using Terraria.GameContent;
+ using Terraria.GameContent.UI;
  using Terraria.GameInput;
- using Terraria.Localization;
 +using Terraria.ID;
 +using Terraria.ModLoader;
  using Terraria.UI.Chat;
  using Terraria.UI.Gamepad;
  
-@@ -109,6 +_,8 @@
+@@ -97,6 +_,8 @@
  					text = Lang.chestType2[tile.frameX / 36].Value;
  				else if (tile.type == 88)
  					text = Lang.dresserType[tile.frameX / 54].Value;

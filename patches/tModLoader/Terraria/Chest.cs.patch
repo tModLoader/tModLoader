@@ -1,13 +1,14 @@
 --- src/TerrariaNetCore/Terraria/Chest.cs
 +++ src/tModLoader/Terraria/Chest.cs
-@@ -1,3 +_,4 @@
+@@ -2,3 +_,4 @@
 +using System;
  using System.Collections.Generic;
  using Microsoft.Xna.Framework;
  using Terraria.Audio;
-@@ -8,34 +_,130 @@
+@@ -9,47 +_,127 @@
  using Terraria.GameContent.Drawing;
  using Terraria.GameContent.Events;
+ using Terraria.Graphics.Renderers;
  using Terraria.ID;
 +using Terraria.Localization;
 +using Terraria.ModLoader;
@@ -20,6 +21,24 @@
 +/// </summary>
  public class Chest : IFixLoadedData
  {
+ 	public struct ItemTransferVisualizationSettings
+ 	{
+ 		public bool RandomizeStartPosition;
+ 		public bool RandomizeEndPosition;
+ 		public bool TransitionIn;
+ 		public bool Fullbright;
+ 		public static ItemTransferVisualizationSettings PlayerToChest = new ItemTransferVisualizationSettings {
+ 			RandomizeStartPosition = true,
+ 			RandomizeEndPosition = true,
+ 			TransitionIn = true,
+ 			Fullbright = true
+ 		};
+ 		public static ItemTransferVisualizationSettings Hopper = new ItemTransferVisualizationSettings {
+ 			RandomizeEndPosition = true
+ 		};
+ 	}
+ 
++	
 +	/// <summary>
 +	/// The maximum distance, in world coordinates, that a player can quick-stack items into chests.
 +	/// </summary>
@@ -37,49 +56,34 @@
  	public static int[] chestTypeToIcon = new int[52];
 +
 +	/// <summary>
-+	/// Associates a <see cref="TileID.Containers"/> style with the item type (<see cref="Item.type"/>) that is dropped when the chest is destroyed.
-+	/// <br/> <see cref="maxChestTypes"/> elements long.
-+	/// </summary>
- 	public static int[] chestItemSpawn = new int[52];
-+
-+	/// <summary>
 +	/// The number of vanilla chest styles contained in <see cref="TileID.Containers2"/>.
 +	/// </summary>
- 	public const int maxChestTypes2 = 17;
+ 	public const int maxChestTypes2 = 38;
 +
 +	/// <summary>
 +	/// Associates a <see cref="TileID.Containers2"/> style with the item type (<see cref="Item.type"/>) that is shown when the chest is moused over.
 +	/// <br/> <see cref="maxChestTypes2"/> elements long. Differs from <see cref="chestItemSpawn2"/> to show key items for locked chest styles.
 +	/// </summary>
- 	public static int[] chestTypeToIcon2 = new int[17];
-+
-+	/// <summary>
-+	/// Associates a <see cref="TileID.Containers2"/> style with the item type (<see cref="Item.type"/>) that is dropped when the chest is destroyed.
-+	/// <br/> <see cref="maxChestTypes2"/> elements long.
-+	/// </summary>
- 	public static int[] chestItemSpawn2 = new int[17];
+ 	public static int[] chestTypeToIcon2 = new int[38];
 +
 +	/// <summary>
 +	/// The number of vanilla dresser styles contained in <see cref="TileID.Dressers"/>.
 +	/// </summary>
- 	public const int maxDresserTypes = 43;
+ 	public const int maxDresserTypes = 65;
 +
 +	/// <summary>
 +	/// Associates a <see cref="TileID.Dressers"/> style with the item type (<see cref="Item.type"/>) that is shown when the dresser is moused over.
 +	/// <br/> <see cref="maxDresserTypes"/> elements long.
 +	/// </summary>
- 	public static int[] dresserTypeToIcon = new int[43];
+ 	public static int[] dresserTypeToIcon = new int[65];
 +
-+	/// <summary>
-+	/// Associates a <see cref="TileID.Dressers"/> style with the item type (<see cref="Item.type"/>) that is dropped when the dresser is destroyed.
-+	/// <br/> <see cref="maxDresserTypes"/> elements long.
-+	/// </summary>
- 	public static int[] dresserItemSpawn = new int[43];
+ 	public const int DefaultMaxItems = 40;
+ 	public const int AbsoluteMaxItemsWeCanEverReachInAChestForNow = 200;
 +
 +	/// <summary>
 +	/// The maximum number of items chests can contain.
 +	/// </summary>
- 	public const int maxItems = 40;
+ 	public int maxItems;
 +
 +	/// <summary>
 +	/// The maximum length that <see cref="name"/> is allowed to be.
@@ -96,12 +100,13 @@
 +	/// <summary>
 +	/// The x-coordinate of this chest in the world, in tile coordinates. (Top left corner tile)
 +	/// </summary>
- 	public int x;
+ 	public readonly int x;
 +
 +	/// <summary>
 +	/// The y-coordinate of this chest in the world, in tile coordinates. (Top left corner tile)
 +	/// </summary>
- 	public int y;
+ 	public readonly int y;
+ 	public readonly int index;
 +
 +	/// <summary>
 +	/// <strong>Unused.</strong>
@@ -129,15 +134,7 @@
 +	/// <br/> The eating animation plays when an item is quick-stacked into this chest.
 +	/// </summary>
  	public int eatingAnimationTime;
- 	private static HashSet<int> _chestInUse = new HashSet<int>();
- 
-+	/// <summary>
-+	/// Create a new <see cref="Chest"/> with no name.
-+	/// </summary>
- 	public Chest(bool bank = false)
- 	{
- 		item = new Item[40];
-@@ -195,6 +_,11 @@
+@@ -209,6 +_,11 @@
  		return false;
  	}
  
@@ -149,7 +146,7 @@
  	public static List<int> GetCurrentlyOpenChests()
  	{
  		List<int> list = new List<int>();
-@@ -206,13 +_,27 @@
+@@ -220,13 +_,27 @@
  		return list;
  	}
  
@@ -179,79 +176,8 @@
  		if (t.type == 21 && ((t.frameX >= 72 && t.frameX <= 106) || (t.frameX >= 144 && t.frameX <= 178) || (t.frameX >= 828 && t.frameX <= 1006) || (t.frameX >= 1296 && t.frameX <= 1330) || (t.frameX >= 1368 && t.frameX <= 1402) || (t.frameX >= 1440 && t.frameX <= 1474)))
  			return true;
  
-@@ -222,6 +_,20 @@
+@@ -236,7 +_,15 @@
  		return false;
- 	}
- 
-+	/// <summary>
-+	/// Attempts to move the item in <paramref name="plr"/>'s inventory or Void Vault into nearby chests.
-+	/// <br/> Only called on <see cref="NetmodeID.Server"/>.
-+	/// </summary>
-+	/// <param name="plr">The index of the <see cref="Player"/> in <see cref="Main.player"/> to try moving an item for.</param>
-+	/// <param name="slot">
-+	/// The <see cref="PlayerItemSlotID"/> to move an item from.
-+	/// <br/> If <c><paramref name="slot"/> &lt; 58</c>, then that slot of <paramref name="plr"/>'s inventory is moved.
-+	/// <br/> If <c><paramref name="slot"/> >= <see cref="PlayerItemSlotID.Bank4_0"/> &amp;&amp; <paramref name="slot"/> &lt; <see cref="PlayerItemSlotID.Bank4_0"/> + 40</c>, then that slot (minus <see cref="PlayerItemSlotID.Bank4_0"/>) of <paramref name="plr"/>'s Void Vault is moved.
-+	/// <br/> Otherwise, no item is moved.
-+	/// </param>
-+	/// <remarks>
-+	/// It's recommended to use <see cref="Player.QuickStackAllChests"/> to handle this automatically.
-+	/// </remarks>
- 	public static void ServerPlaceItem(int plr, int slot)
- 	{
- 		if (slot >= PlayerItemSlotID.Bank4_0 && slot < PlayerItemSlotID.Bank4_0 + 40) {
-@@ -235,6 +_,15 @@
- 		}
- 	}
- 
-+	/// <summary>
-+	/// Attempts to move the given item into any chests near the given position. Cannot place items into a chest if <see cref="IsPlayerInChest(int)"/> or  if that chest <see cref="IsLocked(int, int)"/>
-+	/// </summary>
-+	/// <param name="item">The item to attempt moving.</param>
-+	/// <param name="position">The position to attempt moving from.</param>
-+	/// <returns>
-+	/// If on <see cref="NetmodeID.MultiplayerClient"/>, <paramref name="item"/> without modification.
-+	/// <br/> Otherwise, <paramref name="item"/> after being quick-stacked into any nearby chests. May be <see cref="Item.IsAir"/>.
-+	/// </returns>
- 	public static Item PutItemInNearbyChest(Item item, Vector2 position)
- 	{
- 		if (Main.netMode == 1)
-@@ -257,6 +_,19 @@
- 				}
- 				else if (item.IsTheSameAs(Main.chest[i].item[j])) {
- 					flag2 = true;
-+					// flag set above means "item of same type found in chest, able to be put into an empty slot later", which means we have to respect it before TryStackItems
-+					if (!ItemLoader.TryStackItems(Main.chest[i].item[j], item, out int numTransfered))
-+						continue;
-+
-+					if(numTransfered > 0)
-+						VisualizeChestTransfer(position, vector, item, numTransfered);
-+
-+					if (item.stack <= 0) {
-+						item.SetDefaults();
-+						return item;
-+					}
-+
-+					/* #OnStackHook
- 					int num = Main.chest[i].item[j].maxStack - Main.chest[i].item[j].stack;
- 					if (num > 0) {
- 						if (num > item.stack)
-@@ -268,11 +_,13 @@
- 							Main.chest[i].item[j].stack += num;
- 						}
- 
-+						// Extra context.
- 						if (item.stack <= 0) {
- 							item.SetDefaults();
- 							return item;
- 						}
- 					}
-+					*/
- 				}
- 				else {
- 					flag3 = true;
-@@ -298,6 +_,14 @@
- 		return item;
  	}
  
 +	/// <summary>
@@ -262,10 +188,11 @@
 +	/// <param name="chestPosition">The position of the destination chest in world coordinates.</param>
 +	/// <param name="item">The item to move. Only <see cref="Item.type"/> is read.</param>
 +	/// <param name="amountMoved"><strong>Unused.</strong></param>
- 	public static void VisualizeChestTransfer(Vector2 position, Vector2 chestPosition, Item item, int amountMoved)
+ 	public static void VisualizeChestTransfer(Vector2 position, Vector2 chestPosition, int itemType, ItemTransferVisualizationSettings settings)
  	{
+ 		BitsByte bitsByte = new BitsByte(settings.RandomizeStartPosition, settings.RandomizeEndPosition, settings.TransitionIn, settings.Fullbright);
  		ParticleOrchestrator.BroadcastOrRequestParticleSpawn(ParticleOrchestraType.ItemTransfer, new ParticleOrchestraSettings {
-@@ -307,6 +_,13 @@
+@@ -246,6 +_,13 @@
  		});
  	}
  
@@ -276,10 +203,10 @@
 +	/// <param name="position">The original position of the coins in world coordinates.</param>
 +	/// <param name="chestPosition">The position of the destination chest in world coordinates.</param>
 +	/// <param name="coinsMoved">The value of the coins moved in copper coins.</param>
- 	public static void VisualizeChestTransfer_CoinsBatch(Vector2 position, Vector2 chestPosition, long coinsMoved)
+ 	public static void VisualizeChestTransfer_CoinsBatch(Vector2 position, Vector2 chestPosition, long coinsMoved, ItemTransferVisualizationSettings settings)
  	{
  		int[] array = Utils.CoinsSplit(coinsMoved);
-@@ -323,6 +_,12 @@
+@@ -257,6 +_,12 @@
  
  	public object Clone() => MemberwiseClone();
  
@@ -292,7 +219,7 @@
  	public static bool Unlock(int X, int Y)
  	{
  		if (Main.tile[X, Y] == null || Main.tile[X + 1, Y] == null || Main.tile[X, Y + 1] == null || Main.tile[X + 1, Y + 1] == null)
-@@ -333,6 +_,24 @@
+@@ -267,6 +_,24 @@
  		Tile tileSafely = Framing.GetTileSafely(X, Y);
  		int type2 = tileSafely.type;
  		int num2 = tileSafely.frameX / 36;
@@ -317,7 +244,7 @@
  		switch (type2) {
  			case 21:
  				switch (num2) {
-@@ -379,13 +_,19 @@
+@@ -313,13 +_,19 @@
  				return false;
  		}
  
@@ -337,7 +264,7 @@
  					for (int k = 0; k < 4; k++) {
  						Dust.NewDust(new Vector2(i * 16, j * 16), 16, 16, type);
  					}
-@@ -396,6 +_,12 @@
+@@ -330,6 +_,12 @@
  		return true;
  	}
  
@@ -350,7 +277,7 @@
  	public static bool Lock(int X, int Y)
  	{
  		if (Main.tile[X, Y] == null || Main.tile[X + 1, Y] == null || Main.tile[X, Y + 1] == null || Main.tile[X + 1, Y + 1] == null)
-@@ -405,6 +_,21 @@
+@@ -339,6 +_,21 @@
  		Tile tileSafely = Framing.GetTileSafely(X, Y);
  		int type = tileSafely.type;
  		int num2 = tileSafely.frameX / 36;
@@ -372,7 +299,7 @@
  		switch (type) {
  			case 21:
  				switch (num2) {
-@@ -444,13 +_,17 @@
+@@ -378,13 +_,17 @@
  				return false;
  		}
  
@@ -390,7 +317,7 @@
  				}
  			}
  		}
-@@ -458,6 +_,11 @@
+@@ -392,6 +_,11 @@
  		return true;
  	}
  
@@ -402,7 +329,7 @@
  	public static int UsingChest(int i)
  	{
  		if (Main.chest[i] != null) {
-@@ -470,6 +_,15 @@
+@@ -404,5 +_,14 @@
  		return -1;
  	}
  
@@ -417,19 +344,7 @@
 +	/// </remarks>
  	public static int FindChest(int X, int Y)
  	{
- 		for (int i = 0; i < 8000; i++) {
-@@ -480,6 +_,10 @@
- 		return -1;
- 	}
- 
-+	/// <summary>
-+	/// Similar to <see cref="FindChest(int, int)"/> except it also succeeds for tile coordinates directly above or to the left of the Chest location.
-+	/// <br/><br/> <b>The logic in this method is incorrect and this method should not be used.</b> It is recommended to use <see cref="FindChest(int, int)"/> with <see cref="TileObjectData.TopLeft(int, int)"/> if you do not have the top left tile coordinate.
-+	/// </summary>
- 	public static int FindChestByGuessing(int X, int Y)
- 	{
- 		for (int i = 0; i < 8000; i++) {
-@@ -490,6 +_,19 @@
+@@ -412,6 +_,19 @@
  		return -1;
  	}
  
@@ -449,7 +364,7 @@
  	public static int FindEmptyChest(int x, int y, int type = 21, int style = 0, int direction = 1, int alternate = 0)
  	{
  		int num = -1;
-@@ -507,6 +_,12 @@
+@@ -429,6 +_,12 @@
  		return num;
  	}
  
@@ -462,7 +377,7 @@
  	public static bool NearOtherChests(int x, int y)
  	{
  		for (int i = x - 25; i < x + 25; i++) {
-@@ -520,6 +_,19 @@
+@@ -442,6 +_,19 @@
  		return false;
  	}
  
@@ -482,7 +397,7 @@
  	public static int AfterPlacement_Hook(int x, int y, int type = 21, int style = 0, int direction = 1, int alternate = 0)
  	{
  		Point16 baseCoords = new Point16(x, y);
-@@ -540,21 +_,47 @@
+@@ -455,21 +_,47 @@
  		}
  		else {
  			switch (type) {
@@ -530,7 +445,7 @@
  	public static int CreateChest(int X, int Y, int id = -1)
  	{
  		int num = id;
-@@ -577,6 +_,12 @@
+@@ -486,5 +_,11 @@
  		return num;
  	}
  
@@ -542,8 +457,7 @@
 +	/// <returns><see langword="false"/> if a chest exists at (<paramref name="X"/>, <paramref name="Y"/>) and if any element in that chest's <see cref="item"/> array is not <see cref="Item.IsAir"/>. Otherwise, returns <see langword="true"/>.</returns>
  	public static bool CanDestroyChest(int X, int Y)
  	{
- 		for (int i = 0; i < 8000; i++) {
-@@ -595,6 +_,12 @@
+@@ -499,5 +_,11 @@
  		return true;
  	}
  
@@ -555,8 +469,7 @@
 +	/// <returns><see langword="false"/> if a chest exists at (<paramref name="X"/>, <paramref name="Y"/>) and if any element in that chest's <see cref="item"/> array is not <see cref="Item.IsAir"/>. Otherwise, returns <see langword="true"/>.</returns>
  	public static bool DestroyChest(int X, int Y)
  	{
- 		for (int i = 0; i < 8000; i++) {
-@@ -618,6 +_,13 @@
+@@ -517,6 +_,13 @@
  		return true;
  	}
  
@@ -570,7 +483,7 @@
  	public static void DestroyChestDirect(int X, int Y, int id)
  	{
  		if (id < 0 || id >= Main.chest.Length)
-@@ -637,23 +_,44 @@
+@@ -534,23 +_,44 @@
  		}
  	}
  
@@ -618,8 +531,8 @@
 +		return 0;
  	}
  
- 	public static void SetupTravelShop_AddToShop(int it, ref int added, ref int count)
-@@ -1077,6 +_,9 @@
+ 	public static void SetupTravelShop_AddToShop(int itemID, ref int added, ref int count)
+@@ -998,6 +_,9 @@
  		}
  	}
  
@@ -628,8 +541,8 @@
 +	/// </summary>
  	public static void SetupTravelShop()
  	{
- 		for (int i = 0; i < 40; i++) {
-@@ -1164,10 +_,17 @@
+ 		for (int i = 0; i < Main.travelShop.Length; i++) {
+@@ -1076,10 +_,17 @@
  				break;
  			}
  		}
@@ -644,10 +557,10 @@
 +
 +	internal void VanillaSetupShop(int type)
 +	{
- 		bool flag = Main.LocalPlayer.currentShoppingSettings.PriceAdjustment <= 0.8999999761581421;
+ 		_ = Main.LocalPlayer.currentShoppingSettings;
  		Item[] array = item;
- 		for (int i = 0; i < 40; i++) {
-@@ -2313,12 +_,12 @@
+ 		for (int i = 0; i < maxItems; i++) {
+@@ -2264,12 +_,12 @@
  				num++;
  				array[num].SetDefaults(1979);
  				num++;
@@ -662,7 +575,7 @@
  					array[num].SetDefaults(1978);
  					num++;
  				}
-@@ -2996,7 +_,30 @@
+@@ -2980,7 +_,30 @@
  		}
  	}
  
@@ -694,7 +607,7 @@
  	{
  		if (!DidDiscoverBestiaryEntry(585))
  			return false;
-@@ -3012,6 +_,11 @@
+@@ -2996,6 +_,11 @@
  
  	private static bool DidDiscoverBestiaryEntry(int npcId) => Main.BestiaryDB.FindEntryByNPCID(npcId).UIInfoProvider.GetEntryUICollectionInfo().UnlockState > BestiaryEntryUnlockState.NotKnownAtAll_0;
  
@@ -706,8 +619,8 @@
  	public static void AskForChestToEatItem(Vector2 worldPosition, int duration)
  	{
  		Point point = worldPosition.ToTileCoordinates();
-@@ -3020,6 +_,10 @@
- 			Main.chest[num].eatingAnimationTime = duration;
+@@ -3028,6 +_,10 @@
+ 		}
  	}
  
 +	/// <summary>
@@ -717,7 +630,7 @@
  	public static void UpdateChestFrames()
  	{
  		int num = 8000;
-@@ -3063,6 +_,9 @@
+@@ -3071,6 +_,9 @@
  		}
  	}
  

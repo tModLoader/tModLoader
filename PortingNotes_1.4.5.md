@@ -36,7 +36,7 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Use InitData.MaxNPCs instead of Main.maxNPCs? Or not? When to use one or the other?
 - NPCLoader.BuffTownNPC will need to be reworked to facilitate new functionality. "Defeating a boss now also gives each villager a 1.5% attack speed bonus." is a new vanilla effect. Similarly the Advanced Combat Techniques increases health by 250. Dryad immortal on infectedSeed.
 - Check for any remaining TML added ID sets that aren't in TML.cs files.
-- BelongsToInvasionPirate now has 492, 252, 662
+- BelongsToInvasionPirate now has 492, 252, 662 (492 present in NPC, but not in Main.UpdateAudio_DecideOnNewMusic. Is this an oversight or intentional?)
 - VelongsToInvasionMartianMadness now has 394, 520
 - BuffLoader.ReApply (NPC) logic seems changed, likely to fix desync issues. The server sync for MessageID.NPCBuffs when !quiet now happens after the reapply logic. Modded ReApply will need doc updates or maybe new parameters to properly adjust to these changes. Maybe a ref time parameter instead?
 - NPC.TryAddingRepeatedBuff added. Might be useful to document and make public.
@@ -95,6 +95,16 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Several MessageID were renamed. Should we keep the new vanilla name, or rename vanilla? Probably best to stay up to date with vanilla.
 - Lange.CreateDialogFilter now has a checkConditions parameter. It seems that there is a new system for object substitutions. We'll need to document these and make sure they work for modded substitutions. LocalizedText.CanFormatWith usages seem to be replaced with ConditionsMetWith. Some Language.GetTextValueWith usages changed to GetTextValue but still somehow support substitutions.
 - Should PlayerLoader.SyncPlayer in SyncOnePlayer be after syncing owner Projectiles?
+- ItemID.ItemSpawnDecaySpeed gone. IsBasicFish added. IsQuestFish added (adjust ModItem.IsQuestFish?)
+- TEDeadCellsDisplayJar and associated net messages need to be updated. Are there other new TEs?
+- ItemID's #endif needs to be moved down.
+- ItemID.BannerEffect changed, might need an example. Docs need to be updated for LinearCurve.
+- Chest.maxItems no longer const. DefaultMaxItems/AbsoluteMaxItemsWeCanEverReachInAChestForNow added. Might need to find for loops to 40 and change if we want to support this. Chest ctors changed.
+- Verify that https://github.com/tModLoader/tModLoader/issues/4383 is fixed: `if (Language.GetText("CLI.NewWorld_Command").EqualsCommand(text3))` in vanilla replaced `if (text2 == "n" || text2 == "N" || string.Equals(text2, Language.GetTextValue("CLI.NewWorld_Command"), StringComparison.CurrentCultureIgnoreCase))` fix in tmod. (New world command)
+- Main.ExecuteCommand changed, doesn't have both a lowercase and raw input string anymore. Double check how capitalization is handled now, such as in CommandLoader.HandleCommand. 
+- Main menu music logic now checks Main.titleMusicStyle and titleMusicStyleRandom, document and adjust ModMenu logic if necessary.
+- Projectile draw code now supports an OverridePlayer. What is it used for in vanilla? (why not owner?) Hooks probably will need it. ModifyFishingLine as well
+- Projectile.drawLayer will simplify Projectile.hide and ProjectileLoader.DrawBehind usage
 
 # New Fields that might need more documentation
 
@@ -118,6 +128,8 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - BuffID.Sets.AddBuffTimeAdditivelyToCap. Also need to update Mod/GlobalBuff.ReApply docs to mention AddBuffTimeAdditivelyToCap as a streamlined alternative for this use-case.
 - Mount.DismountOnItemUse and MountID.Sets.CanUseHooks
 - Add docs for new GetItemSettings parameters
+- Main.menuChat
+- Need to fix documentation for various secret and special seeds, like Main.specialSeedWorld. Need to change secret to special in most cases, and fix wiki links.
 
 # Changes that need to be communicated to modders
 
@@ -151,7 +163,7 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - BuffID.Sets.BasicMountData is now just BuffID.Sets.MountType. It no longer stores a `BuffID.Sets.BuffMountData` since mounts no longer "faceLeft" or right. It now just stores the MountID directly.
 - BuffID.IsAnNPCWhipDebuff, which tModLoader renamed to IsATagBuff, has changed a lot. Need to document the new behavior. Do we want to revert the name change? Also CanBeRemovedByNetMessage docs are now wrong.
 - ProjectileID.Sets.HeldProjDoesNotUsePlayerGfxOffY removed. How has this been fixed? I thought it wouldn't be fixed in vanilla.
-- ProjectileID.Sets.DontAttachHideToAlpha removed. What replaced it?
+- ProjectileID.Sets.DontAttachHideToAlpha removed. What replaced it? Is it usesOwnerLight? Update Projectile.hide docs as well.
 - Need to determine if hooks need to act on ModItem or WorldItem. For example: `ItemIO.SendModData(item3, writer);`
 - The number3 parameter of the SyncEquipment message seems to have changed meaning. Docs needed.
 
@@ -186,6 +198,8 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - MessageID.NPCKillCountDeathTally -> Unused83 (Also deprecated)
 - MessageID.TEDisplayDollItemSync -> TEDisplayDollDataSync
 - MountID.Sets.FacePlayersVelocity removed. Now automatic for all minecarts
+- ItemID.Sets.SortingPriorityBossSpawns renamed to SortingPriorityMiscImportants
+- ItemID.Sets.BonusAttackSpeedMultiplier renamed to BonusMeleeSpeedMultiplier (double check that this doesn't only apply to melee weapons. I think it isn't limited currently)
 
 # Terraria update requests
 
@@ -328,3 +342,34 @@ Longer TODOs that would clutter above
 +		}
 		else if (TileObjectData.CustomPlace(tileToCreate, placeStyle) && tileToCreate != 82 && tileToCreate != 227 && tileToCreate != 4) {
 ```
+
+- Banner syncing has changed. Check what `NetManager.Instance.SendToClient(BannerSystem.NetBannersModule.WriteFullState(), whoAmI);` does and make sure it supports modded bannerids.
+```diff
+@@ -745,7 +803,7 @@
+ 						NetMessage.TrySendData(27, whoAmI, -1, null, num90);
+ 				}
+ 
+-				for (int num91 = 0; num91 < 290; num91++) {
++				for (int num91 = 0; num91 < NPCLoader.NPCCount; num91++) {
+ 					NetMessage.TrySendData(83, whoAmI, -1, null, num91);
+ 				}
+ 
+```
+
+- Chest.chestItemSpawn/chestItemSpawn2/dresserItemSpawn removed. Document whatever replaced it.
++	/// <summary>
++	/// Associates a <see cref="TileID.Containers"/> style with the item type (<see cref="Item.type"/>) that is dropped when the chest is destroyed.
++	/// <br/> <see cref="maxChestTypes"/> elements long.
++	/// </summary>
++
++	/// <summary>
++	/// Associates a <see cref="TileID.Containers2"/> style with the item type (<see cref="Item.type"/>) that is dropped when the chest is destroyed.
++	/// <br/> <see cref="maxChestTypes2"/> elements long.
++	/// </summary>
++
++	/// <summary>
++	/// Associates a <see cref="TileID.Dressers"/> style with the item type (<see cref="Item.type"/>) that is dropped when the dresser is destroyed.
++	/// <br/> <see cref="maxDresserTypes"/> elements long.
++	/// </summary>
+
+

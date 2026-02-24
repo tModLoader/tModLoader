@@ -1,0 +1,18 @@
+@@ -745,7 +_,7 @@
+ 						NetMessage.TrySendData(27, whoAmI, -1, null, num90);
+ 				}
+ 
+-				for (int num91 = 0; num91 < 290; num91++) {
++				for (int num91 = 0; num91 < NPCLoader.NPCCount; num91++) {
+ 					NetMessage.TrySendData(83, whoAmI, -1, null, num91);
+ 				}
+ 
+@@ -2708,7 +_,7 @@
+ 				if (Main.netMode == 1) {
+ 					int num103 = reader.ReadInt16();
+ 					int num104 = reader.ReadInt32();
+-					if (num103 >= 0 && num103 < 290)
++					if (num103 >= 0) // upper bound check removed to support mod banner IDs
+ 						NPC.killCount[num103] = num104;
+ 				}
+ 				break;
