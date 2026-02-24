@@ -9,7 +9,7 @@
  using Microsoft.Xna.Framework;
  using Microsoft.Xna.Framework.Graphics;
  using Terraria.Audio;
-@@ -12,10 +_,12 @@
+@@ -12,11 +_,13 @@
  using Terraria.Map;
  using Terraria.UI;
  using Terraria.UI.Gamepad;
@@ -23,6 +23,7 @@
  {
  	public static WorldFileData NewlyGeneratedWorld;
  	private UIList _worldList;
+ 	private UITextPanel<LocalizedText> _backPanel;
 @@ -77,6 +_,7 @@
  		uIElement.Append(uITextPanel3);
  		_newPanel = uITextPanel3;
@@ -39,7 +40,8 @@
  		UpdateWorldsList();
  		if (PlayerInput.UsingGamepadUI)
  			UILinkPointNavigator.ChangePoint(3000 + ((_worldList.Count == 0) ? 1 : 2));
-@@ -151,6 +_,12 @@
+@@ -150,22 +_,32 @@
+ 		int num = 0;
  		foreach (WorldFileData item in orderedEnumerable) {
  			_worldList.Add(new UIWorldListItem(item, num++, CanWorldBeJoinedByActivePlayer(item), HasWorldBeenPlayedByActivePlayer(item), IsNewlyGenerated(item)));
  		}
@@ -52,13 +54,15 @@
  	}
  
  	private static bool IsNewlyGenerated(WorldFileData file)
-@@ -161,11 +_,17 @@
+ 	{
+ 		if (NewlyGeneratedWorld != null && file.Path == NewlyGeneratedWorld.Path)
+ 			return file.IsCloudSave == NewlyGeneratedWorld.IsCloudSave;
+ 
  		return false;
  	}
  
-+	internal static bool CanWorldBePlayed(WorldFileData file) => CanWorldBeJoinedByActivePlayer(file);
-+
- 	private static bool CanWorldBeJoinedByActivePlayer(WorldFileData file)
+-	private static bool CanWorldBeJoinedByActivePlayer(WorldFileData file)
++	internal static bool CanWorldBeJoinedByActivePlayer(WorldFileData file)
  	{
  		bool num = Main.ActivePlayerFileData.Player.difficulty == 3;
  		bool flag = file.GameMode == 3;
