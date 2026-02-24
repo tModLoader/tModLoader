@@ -39,22 +39,23 @@
  		if (drawPlayer.ShouldNotDraw)
  			return;
  
-@@ -122,12 +_,36 @@
+@@ -122,12 +_,35 @@
  		_drawData.Clear();
  		_dust.Clear();
  		_gore.Clear();
+-		drawInfo.BoringSetup(drawPlayer, _drawData, _dust, _gore, position, shadow, rotation, rotationOrigin, OverrideHeldProjectile);
+-		DrawPlayer_UseNormalLayers(ref drawInfo);
++			if (headOnly) {
++				drawInfo.HeadOnlySetup(drawPlayer, _drawData, _dust, _gore, position.X, position.Y, alpha, scale);
++				goto SkipBoringSetup;
++			}
 +
-+		if (headOnly) {
-+			drawInfo.HeadOnlySetup(drawPlayer, _drawData, _dust, _gore, position.X, position.Y, alpha, scale);
-+			goto SkipBoringSetup;
-+		}
++			drawInfo.BoringSetup(drawPlayer, _drawData, _dust, _gore, position, shadow, rotation, rotationOrigin, OverrideHeldProjectile);
++			SkipBoringSetup:
 +
- 		drawInfo.BoringSetup(drawPlayer, _drawData, _dust, _gore, position, shadow, rotation, rotationOrigin, OverrideHeldProjectile);
-+		SkipBoringSetup:
-+
-+		/*
- 		DrawPlayer_UseNormalLayers(ref drawInfo);
-+		*/
++			/*
++			DrawPlayer_UseNormalLayers(ref drawInfo);
++			*/
 +
 +		PlayerLoader.ModifyDrawInfo(ref drawInfo);
 +
@@ -76,11 +77,15 @@
  		PlayerDrawLayers.DrawPlayer_RenderAllLayers(ref drawInfo);
  		if (!drawInfo.drawPlayer.mount.Active || !drawInfo.drawPlayer.UsingSuperCart || OverrideHeldProjectile != null)
  			return;
-@@ -252,4 +_,7 @@
+@@ -250,8 +_,9 @@
+ 			DrawGhost(camera, drawPlayer, drawPlayer.position + drawPlayer.netOffset);
+ 		}
  		else {
- 			PrepareDrawForFrame(drawPlayer);
-+
-+			PlayerLoader.DrawPlayer(drawPlayer, camera);
-+
- 			if (drawPlayer.armorEffectDrawShadowEOCShield) {
+-			PrepareDrawForFrame(drawPlayer);
+-			if (drawPlayer.armorEffectDrawShadowEOCShield) {
++				PrepareDrawForFrame(drawPlayer);
++				PlayerLoader.DrawPlayer(drawPlayer, camera);
++				if (drawPlayer.armorEffectDrawShadowEOCShield) {
  				int num = drawPlayer.eocDash / 4;
+ 				if (num > 3)
+ 					num = 3;

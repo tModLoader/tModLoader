@@ -111,7 +111,7 @@
 -		drawPlayer.GetHairSettings(out fullHair, out hatHair, out hideHair, out var _, out helmetIsOverFullHair);
  		hairOffset = drawPlayer.GetHairDrawOffset(drawPlayer.hair, hatHair);
  		hairOffset.Y *= drawPlayer.Directions.Y;
- 		helmetOffset = drawPlayer.GetHelmetDrawOffset();
+ 		helmetOffset = drawPlayer.GetHelmetDrawOffset(minimap: true);
  		helmetOffset.Y *= drawPlayer.Directions.Y;
 +		drawPlayer.GetHairSettings(out fullHair, out hatHair, out hideHair, out backHairDraw, out drawsBackHairWithoutHeadgear);
 +		/*

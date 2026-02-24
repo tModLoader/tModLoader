@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Net/Sockets/TcpSocket.cs
 +++ src/tModLoader/Terraria/Net/Sockets/TcpSocket.cs
-@@ -4,7 +_,9 @@
+@@ -3,7 +_,9 @@
  using System.Net.Sockets;
  using System.Threading;
  using ReLogic.OS;
@@ -10,7 +10,7 @@
  
  namespace Terraria.Net.Sockets;
  
-@@ -38,6 +_,9 @@
+@@ -41,6 +_,9 @@
  
  	void ISocket.Close()
  	{
@@ -20,7 +20,7 @@
  		_remoteAddress = null;
  		_connection.Close();
  	}
-@@ -75,7 +_,17 @@
+@@ -83,7 +_,17 @@
  			tuple = (Tuple<SocketSendCallback, object>)obj[0];
  		}
  
@@ -35,10 +35,10 @@
 +			if (!_connection.Connected)
 +				return;
 +
- 			_connection.GetStream().EndWrite(result);
+ 			GetStream().EndWrite(result);
  			tuple.Item1(tuple.Item2);
  		}
-@@ -90,6 +_,18 @@
+@@ -94,6 +_,18 @@
  
  	void ISocket.AsyncSend(byte[] data, int offset, int size, SocketSendCallback callback, object state)
  	{
@@ -56,8 +56,8 @@
 +
  		if (!Platform.IsWindows) {
  			byte[] array = LegacyNetBufferPool.RequestBuffer(data, offset, size);
- 			_connection.GetStream().BeginWrite(array, 0, size, SendCallback, new object[2] {
-@@ -152,7 +_,10 @@
+ 			GetStream().BeginWrite(array, 0, size, SendCallback, new object[2] {
+@@ -156,7 +_,10 @@
  		while (_isListening && !Netplay.Disconnect) {
  			try {
  				ISocket socket = new TcpSocket(_listener.AcceptTcpClient());

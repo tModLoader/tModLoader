@@ -5,78 +5,115 @@
  using Microsoft.Xna.Framework;
  using Microsoft.Xna.Framework.Graphics;
  using ReLogic.Content;
-@@ -14,49 +_,54 @@
+@@ -14,86 +_,91 @@
  	private Asset<Texture2D> _uImage;
  	private Vector2 _uTargetPosition = Vector2.One;
+ 	private Effect _effect;
+ 	private EffectParameter<Vector3> uColor;
+ 	private EffectParameter<float> uSaturation;
+ 	private EffectParameter<Vector3> uSecondaryColor;
+ 	private EffectParameter<float> uTime;
+ 	private EffectParameter<float> uOpacity;
+ 	private EffectParameter<Vector2> uTargetPosition;
+ 	private EffectParameter<Vector4> uSourceRect;
+ 	private EffectParameter<Vector4> uLegacyArmorSourceRect;
+ 	private EffectParameter<Vector2> uLegacyArmorSheetSize;
+ 	private EffectParameter<Vector2> uDrawPosition;
+ 	private EffectParameter<float> uRotation;
+ 	private EffectParameter<float> uDirection;
+ 	private EffectParameter<Vector2> uImageSize0;
+ 	private EffectParameter<Vector2> uImageSize1;
  
 +	[Obsolete("Removed in 1.4.5. Use Asset<Effect> version instead. Asset version works with AsyncLoad")]
- 	public ArmorShaderData(Ref<Effect> shader, string passName)
- 		: base(shader, passName)
- 	{
- 	}
-+	public ArmorShaderData(Asset<Effect> shader, string passName)
++	public ArmorShaderData(Ref<Effect> shader, string passName)
 +		: base(shader, passName)
 +	{
 +	}
+ 	public ArmorShaderData(Asset<Effect> shader, string passName)
+ 		: base(shader, passName)
+ 	{
+ 	}
+ 
+ 	private void CheckCachedParameters()
+ 	{
+ 		if (_effect == null || _effect != base.Shader) {
+ 			_effect = base.Shader;
+ 			uColor = base.Shader.GetParameter<Vector3>("uColor");
+ 			uSaturation = base.Shader.GetParameter<float>("uSaturation");
+ 			uSecondaryColor = base.Shader.GetParameter<Vector3>("uSecondaryColor");
+ 			uTime = base.Shader.GetParameter<float>("uTime");
+ 			uOpacity = base.Shader.GetParameter<float>("uOpacity");
+ 			uTargetPosition = base.Shader.GetParameter<Vector2>("uTargetPosition");
+ 			uSourceRect = base.Shader.GetParameter<Vector4>("uSourceRect");
+ 			uLegacyArmorSourceRect = base.Shader.GetParameter<Vector4>("uLegacyArmorSourceRect");
+ 			uLegacyArmorSheetSize = base.Shader.GetParameter<Vector2>("uLegacyArmorSheetSize");
+ 			uDrawPosition = base.Shader.GetParameter<Vector2>("uDrawPosition");
+ 			uRotation = base.Shader.GetParameter<float>("uRotation");
+ 			uDirection = base.Shader.GetParameter<float>("uDirection");
+ 			uImageSize0 = base.Shader.GetParameter<Vector2>("uImageSize0");
+ 			uImageSize1 = base.Shader.GetParameter<Vector2>("uImageSize1");
+ 		}
+ 	}
  
  	public virtual void Apply(Entity entity, DrawData? drawData = null)
  	{
--		base.Shader.Parameters["uColor"].SetValue(_uColor);
-+		base.Shader.Parameters["uColor"]?.SetValue(_uColor);
--		base.Shader.Parameters["uSaturation"].SetValue(_uSaturation);
-+		base.Shader.Parameters["uSaturation"]?.SetValue(_uSaturation);
--		base.Shader.Parameters["uSecondaryColor"].SetValue(_uSecondaryColor);
-+		base.Shader.Parameters["uSecondaryColor"]?.SetValue(_uSecondaryColor);
--		base.Shader.Parameters["uTime"].SetValue(Main.GlobalTimeWrappedHourly);
-+		base.Shader.Parameters["uTime"]?.SetValue(Main.GlobalTimeWrappedHourly);
--		base.Shader.Parameters["uOpacity"].SetValue(_uOpacity);
-+		base.Shader.Parameters["uOpacity"]?.SetValue(_uOpacity);
--		base.Shader.Parameters["uTargetPosition"].SetValue(_uTargetPosition);
-+		base.Shader.Parameters["uTargetPosition"]?.SetValue(_uTargetPosition);
+ 		CheckCachedParameters();
+-		uColor.SetValue(_uColor);
++		uColor?.SetValue(_uColor);
+-		uSaturation.SetValue(_uSaturation);
++		uSaturation?.SetValue(_uSaturation);
+-		uSecondaryColor.SetValue(_uSecondaryColor);
++		uSecondaryColor?.SetValue(_uSecondaryColor);
+-		uTime.SetValue(Main.GlobalTimeWrappedHourly);
++		uTime?.SetValue(Main.GlobalTimeWrappedHourly);
+-		uOpacity.SetValue(_uOpacity);
++		uOpacity?.SetValue(_uOpacity);
+-		uTargetPosition.SetValue(_uTargetPosition);
++		uTargetPosition?.SetValue(_uTargetPosition);
  		if (drawData.HasValue) {
  			DrawData value = drawData.Value;
  			Vector4 value2 = ((!value.sourceRect.HasValue) ? new Vector4(0f, 0f, value.texture.Width, value.texture.Height) : new Vector4(value.sourceRect.Value.X, value.sourceRect.Value.Y, value.sourceRect.Value.Width, value.sourceRect.Value.Height));
--			base.Shader.Parameters["uSourceRect"].SetValue(value2);
-+			base.Shader.Parameters["uSourceRect"]?.SetValue(value2);
--			base.Shader.Parameters["uLegacyArmorSourceRect"].SetValue(value2);
-+			base.Shader.Parameters["uLegacyArmorSourceRect"]?.SetValue(value2);
--			base.Shader.Parameters["uWorldPosition"].SetValue(Main.screenPosition + value.position);
-+			base.Shader.Parameters["uWorldPosition"]?.SetValue(Main.screenPosition + value.position);
--			base.Shader.Parameters["uImageSize0"].SetValue(new Vector2(value.texture.Width, value.texture.Height));
-+			base.Shader.Parameters["uImageSize0"]?.SetValue(new Vector2(value.texture.Width, value.texture.Height));
--			base.Shader.Parameters["uLegacyArmorSheetSize"].SetValue(new Vector2(value.texture.Width, value.texture.Height));
-+			base.Shader.Parameters["uLegacyArmorSheetSize"]?.SetValue(new Vector2(value.texture.Width, value.texture.Height));
--			base.Shader.Parameters["uRotation"].SetValue(value.rotation * (value.effect.HasFlag(SpriteEffects.FlipHorizontally) ? (-1f) : 1f));
-+			base.Shader.Parameters["uRotation"]?.SetValue(value.rotation * (value.effect.HasFlag(SpriteEffects.FlipHorizontally) ? (-1f) : 1f));
--			base.Shader.Parameters["uDirection"].SetValue((!value.effect.HasFlag(SpriteEffects.FlipHorizontally)) ? 1 : (-1));
-+			base.Shader.Parameters["uDirection"]?.SetValue((!value.effect.HasFlag(SpriteEffects.FlipHorizontally)) ? 1 : (-1));
+-			uSourceRect.SetValue(value2);
++			uSourceRect?.SetValue(value2);
+-			uLegacyArmorSourceRect.SetValue(value2);
++			uLegacyArmorSourceRect?.SetValue(value2);
+-			uDrawPosition.SetValue(value.position);
++			uDrawPosition?.SetValue(value.position);
+-			uImageSize0.SetValue(new Vector2(value.texture.Width, value.texture.Height));
++			uImageSize0?.SetValue(new Vector2(value.texture.Width, value.texture.Height));
+-			uLegacyArmorSheetSize.SetValue(new Vector2(value.texture.Width, value.texture.Height));
++			uLegacyArmorSheetSize?.SetValue(new Vector2(value.texture.Width, value.texture.Height));
+-			uRotation.SetValue(value.rotation * (((value.effect & SpriteEffects.FlipHorizontally) != 0) ? (-1f) : 1f));
++			uRotation?.SetValue(value.rotation * (((value.effect & SpriteEffects.FlipHorizontally) != 0) ? (-1f) : 1f));
+-			uDirection.SetValue(((value.effect & SpriteEffects.FlipHorizontally) == 0) ? 1 : (-1));
++			uDirection?.SetValue(((value.effect & SpriteEffects.FlipHorizontally) == 0) ? 1 : (-1));
  		}
  		else {
  			Vector4 value3 = new Vector4(0f, 0f, 4f, 4f);
--			base.Shader.Parameters["uSourceRect"].SetValue(value3);
-+			base.Shader.Parameters["uSourceRect"]?.SetValue(value3);
--			base.Shader.Parameters["uLegacyArmorSourceRect"].SetValue(value3);
-+			base.Shader.Parameters["uLegacyArmorSourceRect"]?.SetValue(value3);
--			base.Shader.Parameters["uRotation"].SetValue(0f);
-+			base.Shader.Parameters["uRotation"]?.SetValue(0f);
+-			uSourceRect.SetValue(value3);
++			uSourceRect?.SetValue(value3);
+-			uLegacyArmorSourceRect.SetValue(value3);
++			uLegacyArmorSourceRect?.SetValue(value3);
+-			uRotation.SetValue(0f);
++			uRotation?.SetValue(0f);
  		}
  
  		if (_uImage != null) {
  			Main.graphics.GraphicsDevice.Textures[1] = _uImage.Value;
--			base.Shader.Parameters["uImageSize1"].SetValue(new Vector2(_uImage.Width(), _uImage.Height()));
-+			base.Shader.Parameters["uImageSize1"]?.SetValue(new Vector2(_uImage.Width(), _uImage.Height()));
+-			uImageSize1.SetValue(new Vector2(_uImage.Width(), _uImage.Height()));
++			uImageSize1?.SetValue(new Vector2(_uImage.Width(), _uImage.Height()));
  		}
  
  		if (entity != null)
--			base.Shader.Parameters["uDirection"].SetValue((float)entity.direction);
-+			base.Shader.Parameters["uDirection"]?.SetValue((float)entity.direction);
+-			uDirection.SetValue(entity.direction);
++			uDirection?.SetValue(entity.direction);
  
  		if (entity is Player player) {
  			Rectangle bodyFrame = player.bodyFrame;
--			base.Shader.Parameters["uLegacyArmorSourceRect"].SetValue(new Vector4(bodyFrame.X, bodyFrame.Y, bodyFrame.Width, bodyFrame.Height));
-+			base.Shader.Parameters["uLegacyArmorSourceRect"]?.SetValue(new Vector4(bodyFrame.X, bodyFrame.Y, bodyFrame.Width, bodyFrame.Height));
--			base.Shader.Parameters["uLegacyArmorSheetSize"].SetValue(new Vector2(40f, 1120f));
-+			base.Shader.Parameters["uLegacyArmorSheetSize"]?.SetValue(new Vector2(40f, 1120f));
+-			uLegacyArmorSourceRect.SetValue(new Vector4(bodyFrame.X, bodyFrame.Y, bodyFrame.Width, bodyFrame.Height));
++			uLegacyArmorSourceRect?.SetValue(new Vector4(bodyFrame.X, bodyFrame.Y, bodyFrame.Width, bodyFrame.Height));
+-			uLegacyArmorSheetSize.SetValue(new Vector2(40f, 1120f));
++			uLegacyArmorSheetSize?.SetValue(new Vector2(40f, 1120f));
  		}
  
  		Apply();

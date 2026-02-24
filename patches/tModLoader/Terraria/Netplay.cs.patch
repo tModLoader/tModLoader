@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Netplay.cs
 +++ src/tModLoader/Terraria/Netplay.cs
-@@ -7,8 +_,11 @@
+@@ -8,8 +_,11 @@
  using NATUPNPLib;
  using ReLogic.OS;
  using Terraria.Audio;
@@ -12,7 +12,16 @@
  using Terraria.Net;
  using Terraria.Net.Sockets;
  using Terraria.Social;
-@@ -78,6 +_,12 @@
+@@ -17,7 +_,7 @@
+ 
+ namespace Terraria;
+ 
+-public class Netplay
++public partial class Netplay
+ {
+ 	private class SetRemoteIPRequestInfo
+ 	{
+@@ -82,6 +_,12 @@
  		Main.ActiveNetDiagnosticsUI.Reset();
  	}
  
@@ -24,8 +33,8 @@
 +	/// </summary>
  	public static void ResetSections()
  	{
- 		for (int i = 0; i < 256; i++) {
-@@ -165,6 +_,8 @@
+ 		RemoteClient[] clients = Clients;
+@@ -166,6 +_,8 @@
  
  	private static void OnConnectionAccepted(ISocket client)
  	{
@@ -34,9 +43,9 @@
  		int num = FindNextOpenClientSlot();
  		if (num != -1) {
  			Clients[num].Reset();
-@@ -298,8 +_,13 @@
- 		for (int i = 0; i < 256; i++) {
+@@ -300,8 +_,13 @@
  			if (Clients[i].PendingTermination) {
+ 				num++;
  				if (Clients[i].PendingTerminationApproved) {
 -					Clients[i].Reset();
 +					// TML: Re-order to prevent RemoteClient.Reset from re-instantiating the player before
@@ -49,7 +58,7 @@
  				}
  
  				continue;
-@@ -312,7 +_,7 @@
+@@ -314,7 +_,7 @@
  			}
  
  			if (Clients[i].IsActive) {
@@ -58,7 +67,7 @@
  				Clients[i].PendingTerminationApproved = true;
  				continue;
  			}
-@@ -413,6 +_,12 @@
+@@ -415,6 +_,12 @@
  
  	private static void ClientLoopSetup(RemoteAddress address)
  	{
@@ -71,7 +80,7 @@
  		Connection.ResetSpecialFlags();
  		ResetNetDiag();
  		Main.ServerSideCharacter = false;
-@@ -429,11 +_,11 @@
+@@ -431,11 +_,11 @@
  		Main.netMode = 1;
  		Main.menuMode = 14;
  		if (!Main.autoPass)
@@ -85,8 +94,8 @@
  	}
  
  	private static void InnerClientLoop()
-@@ -453,6 +_,24 @@
- 						NetMessage.SendData(1);
+@@ -456,6 +_,24 @@
+ 						Ping.Reset();
  					}
  
 +					if (Connection.State == 1 && ModNet.NetReloadActive && Main.netMode == 0) {
@@ -110,29 +119,28 @@
  					if (Connection.State == 2 && num != Connection.State)
  						Main.statusText = Language.GetTextValue("Net.SendingPlayerData");
  
-@@ -472,6 +_,9 @@
+@@ -475,6 +_,7 @@
  						Main.cloudAlpha = Main.maxRaining;
  						Main.ToggleGameplayUpdates(state: false);
  						WorldGen.clearWorld();
-+
 +						SystemLoader.OnWorldLoad();
-+
  						if (Main.mapEnabled)
  							Main.Map.Load();
  					}
-@@ -523,6 +_,11 @@
+@@ -524,6 +_,12 @@
  			}
  
  			if (!Main.gameMenu) {
-+				// This is only called in case of kicks and other sudden disconnects.
-+				// The more common (client) call to this is in Main.SaveAndQuitCallback.
++				// TML: This is only called in case of kicks and other sudden disconnects.
++				// TML: The more common client call is in Main.SaveAndQuitCallback.
 +				string originalStatusText = Main.statusText;
++
 +				SystemLoader.OnWorldUnload();
 +
  				Main.gameMenu = true;
  				Main.SwitchNetMode(0);
  				MapHelper.noStatusText = true;
-@@ -532,6 +_,7 @@
+@@ -533,6 +_,7 @@
  				SoundEngine.StopTrackedSounds();
  				MapHelper.noStatusText = false;
  				Main.menuMode = 14;
@@ -140,24 +148,18 @@
  			}
  
  			NetMessage.buffer[256].Reset();
-@@ -589,7 +_,29 @@
+@@ -590,7 +_,22 @@
  		thread.Start();
  	}
  
-+	/*
- 	public static bool SetRemoteIP(string remoteAddress) => SetRemoteIPOld(remoteAddress);
-+	*/
-+
+-	public static bool SetRemoteIP(string remoteAddress) => SetRemoteIPOld(remoteAddress);
 +	public static bool SetRemoteIP(string remoteAddress)
 +	{
 +		if (remoteAddress.Contains(':')) {
 +			int colonInd = remoteAddress.LastIndexOf(':');
-+
 +			if (int.TryParse(remoteAddress.AsSpan(colonInd + 1), out int port)) {
 +				remoteAddress = remoteAddress.Substring(0, colonInd);
-+
 +				bool set = SetRemoteIPOld(remoteAddress);
-+
 +				if (set)
 +					ListenPort = port;
 +

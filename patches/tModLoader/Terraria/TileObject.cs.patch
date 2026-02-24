@@ -76,17 +76,18 @@
  								flag5 = true;
  							}
  						}
-@@ -373,7 +_,7 @@
- 					Tile tileSafely = Framing.GetTileSafely(num8 + num29, num9 + num28);
+@@ -375,8 +_,8 @@
+ 					Tile tileSafely = Framing.GetTileSafely(num8 + num31, num9 + num29);
  					bool flag6 = false;
  					if (tileSafely.nactive()) {
--						if (Main.tileSolid[tileSafely.type] && !Main.tileSolidTop[tileSafely.type] && !Main.tileNoAttach[tileSafely.type] && (tileData2.FlattenAnchors || tileSafely.blockType() == 0))
-+						if ((anchorBottom.type & AnchorType.SolidTile) == AnchorType.SolidTile && Main.tileSolid[tileSafely.type] && !Main.tileSolidTop[tileSafely.type] && !Main.tileNoAttach[tileSafely.type] && (tileData2.FlattenAnchors || tileSafely.blockType() == 0)) // AnchorTop
+-						if (Main.tileSolid[tileSafely.type] && !Main.tileSolidTop[tileSafely.type] && !Main.tileNoAttach[tileSafely.type] && (tileData2.FlattenAnchors || tileSafely.blockType() == 0)) {
++						if ((anchorBottom.type & AnchorType.SolidTile) == AnchorType.SolidTile && Main.tileSolid[tileSafely.type] && !Main.tileSolidTop[tileSafely.type] && !Main.tileNoAttach[tileSafely.type] && (tileData2.FlattenAnchors || tileSafely.blockType() == 0)) { // AnchorTop
  							flag6 = tileData2.isValidTileAnchor(tileSafely.type);
- 
- 						if (!flag6 && (anchorBottom.type & AnchorType.SolidBottom) == AnchorType.SolidBottom && ((Main.tileSolid[tileSafely.type] && (!Main.tileSolidTop[tileSafely.type] || (TileID.Sets.Platforms[tileSafely.type] && (tileSafely.halfBrick() || tileSafely.topSlope())))) || tileSafely.halfBrick() || tileSafely.topSlope()) && !TileID.Sets.NotReallySolid[tileSafely.type] && !tileSafely.bottomSlope())
-@@ -424,7 +_,7 @@
- 					Tile tileSafely = Framing.GetTileSafely(num8 + width, num9 + num30);
+ 							if (flag6)
+ 								num30 = 0;
+ 						}
+@@ -456,7 +_,7 @@
+ 					Tile tileSafely = Framing.GetTileSafely(num8 + width, num9 + num32);
  					bool flag7 = false;
  					if (tileSafely.nactive()) {
 -						if (Main.tileSolid[tileSafely.type] && !Main.tileSolidTop[tileSafely.type] && !Main.tileNoAttach[tileSafely.type] && (tileData2.FlattenAnchors || tileSafely.blockType() == 0))
@@ -94,8 +95,8 @@
  							flag7 = tileData2.isValidTileAnchor(tileSafely.type);
  
  						if (!flag7 && (anchorBottom.type & AnchorType.SolidSide) == AnchorType.SolidSide && Main.tileSolid[tileSafely.type] && !Main.tileSolidTop[tileSafely.type]) {
-@@ -492,7 +_,7 @@
- 					Tile tileSafely = Framing.GetTileSafely(num8 + num31, num9 + num32);
+@@ -524,7 +_,7 @@
+ 					Tile tileSafely = Framing.GetTileSafely(num8 + num33, num9 + num34);
  					bool flag8 = false;
  					if (tileSafely.nactive()) {
 -						if (Main.tileSolid[tileSafely.type] && !Main.tileSolidTop[tileSafely.type] && !Main.tileNoAttach[tileSafely.type] && (tileData2.FlattenAnchors || tileSafely.blockType() == 0))
@@ -103,44 +104,39 @@
  							flag8 = tileData2.isValidTileAnchor(tileSafely.type);
  
  						if (!flag8 && (anchorBottom.type & AnchorType.SolidSide) == AnchorType.SolidSide && Main.tileSolid[tileSafely.type] && !Main.tileSolidTop[tileSafely.type]) {
-@@ -565,6 +_,9 @@
- 			}
- 
- 			float num33 = num24 / num25;
-+			// Backport a fix for tiles with no anchors: if (totalAnchorCount == 0) anchorPercent = 1;
-+			if (num25 == 0)
-+				num33 = 1;
- 			float num34 = num22 / num23;
- 			if (num34 == 1f && num25 == 0f) {
- 				num23 = 1f;
-@@ -601,8 +_,13 @@
+@@ -634,10 +_,14 @@
+ 			if (TileObjectPreviewData.randomCache.Type == type) {
+ 				Point16 coordinates = TileObjectPreviewData.randomCache.Coordinates;
  				Point16 objectStart = TileObjectPreviewData.randomCache.ObjectStart;
- 				int num36 = coordinates.X + objectStart.X;
- 				int num37 = coordinates.Y + objectStart.Y;
-+				int num38 = x - tileObjectData.Origin.X;
-+				int num39 = y - tileObjectData.Origin.Y;
+ 				int num38 = coordinates.X + objectStart.X;
+ 				int num39 = coordinates.Y + objectStart.Y;
+-				int num40 = x - tileData.Origin.X;
+-				int num41 = y - tileData.Origin.Y;
+-				if (num38 != num40 || num39 != num41)
 +				/* Fix random cache not working with alternates with different origins (mistakenly cycles new random each update), it should use the alternates TOD, not the tile styles TOD
- 				int num38 = x - tileData.Origin.X;
- 				int num39 = y - tileData.Origin.Y;
++				int num40 = x - tileData.Origin.X;
++				int num41 = y - tileData.Origin.Y;
 +				*/
-+
- 				if (num36 != num38 || num37 != num39)
++				int num40 = x - tileObjectData.Origin.X;
++				int num41 = y - tileObjectData.Origin.Y;
++				if (num38 != num40 || num39 != num41)
  					flag9 = true;
  			}
-@@ -743,7 +_,16 @@
- 					if (op.Type == 114 && j == 1)
- 						num12 += 2;
- 
+@@ -817,7 +_,16 @@
+ 				}
+ 				else {
+-					sb.Draw(value, vector, rectangle, color, 0f, Vector2.Zero, 1f, spriteEffects, 0f);
 +					/*
- 					sb.Draw(sourceRectangle: new Rectangle(x, num8, coordinateWidth, num12), texture: value, position: new Vector2(num9 * 16 - (int)(position.X + (float)(coordinateWidth - 16) / 2f) + drawXOffset, num10 * 16 - (int)position.Y + num5), color: color, rotation: 0f, origin: Vector2.Zero, scale: 1f, effects: spriteEffects, layerDepth: 0f);
++					sb.Draw(value, vector, rectangle, color, 0f, Vector2.Zero, 1f, spriteEffects, 0f);
 +					*/
-+					var frame = new Rectangle(x, num8, coordinateWidth, num12);
-+					var drawPosition = new Vector2(num9 * 16 - (int)(position.X + (float)(coordinateWidth - 16) / 2f) + drawXOffset, num10 * 16 - (int)position.Y + num5);
++					var frame = rectangle;
++					var drawPosition = vector;
 +					bool validPlacement = num11 == 1;
 +					if (TileLoader.PreDrawPlacementPreview(num9, num10, op.Type, sb, ref frame, ref drawPosition, ref color, validPlacement, ref spriteEffects))
-+						sb.Draw(sourceRectangle: frame, texture: value, position: drawPosition, color: color, rotation: 0f, origin: Vector2.Zero, scale: 1f, effects: spriteEffects, layerDepth: 0f);
++						sb.Draw(value, drawPosition, frame, color, 0f, Vector2.Zero, 1f, spriteEffects, 0f);
 +
 +					TileLoader.PostDrawPlacementPreview(num9, num10, op.Type, sb, frame, drawPosition, color, validPlacement, spriteEffects);
- 					num8 += num12 + tileData.CoordinatePadding;
  				}
+ 
+ 				num8 += num12 + tileData.CoordinatePadding;
  			}

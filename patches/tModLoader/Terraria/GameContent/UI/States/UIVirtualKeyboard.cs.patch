@@ -1,11 +1,11 @@
 --- src/TerrariaNetCore/Terraria/GameContent/UI/States/UIVirtualKeyboard.cs
 +++ src/tModLoader/Terraria/GameContent/UI/States/UIVirtualKeyboard.cs
-@@ -359,7 +_,7 @@
+@@ -358,7 +_,7 @@
  		Append(uIText);
  		_label = uIText;
  		Append(uIElement);
--		int textMaxLength = (_edittingSign ? 1200 : 20);
-+		int textMaxLength = (_edittingSign ? 1200 : _edittingChest ? Chest.MaxNameLength : 20);
- 		_textBox.SetTextMaxLength(textMaxLength);
+-		_textBox.SetTextMaxLength(maxLength);
++		_textBox.SetTextMaxLength(_edittingChest ? Chest.MaxNameLength : maxLength);
  		Text = startingText;
  		if (Text.Length == 0)
+ 			SetKeyState(KeyState.Shift);

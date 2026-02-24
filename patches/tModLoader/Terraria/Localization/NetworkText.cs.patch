@@ -39,7 +39,7 @@
  	public static NetworkText FromFormattable(string text, params object[] substitutions)
  	{
  		return new NetworkText(text, Mode.Formattable) {
-@@ -44,14 +_,32 @@
+@@ -44,8 +_,19 @@
  		};
  	}
  
@@ -59,16 +59,31 @@
  	public static NetworkText FromKey(string key, params object[] substitutions)
  	{
  		return new NetworkText(key, Mode.LocalizationKey) {
- 			_substitutions = ConvertSubstitutionsToNetworkText(substitutions)
+@@ -53,6 +_,27 @@
  		};
  	}
-+
+ 
 +	// Added
 +	public static NetworkText From(object o) => o switch {
 +		NetworkText networkText => networkText,
 +		LocalizedText localizedText => localizedText.ToNetworkText(),
 +		_ => FromLiteral(o.ToString())
 +	};
- 
++
++	public int GetMaxSerializedSize()
++	{
++		int num = 0;
++		num++;
++		num += 4 + Encoding.UTF8.GetByteCount(_text);
++		if (_mode != 0) {
++			num++;
++			for (int i = 0; i < _substitutions.Length; i++) {
++				num += _substitutions[i].GetMaxSerializedSize();
++			}
++		}
++
++		return num;
++	}
  	public void Serialize(BinaryWriter writer)
  	{
+ 		writer.Write((byte)_mode);

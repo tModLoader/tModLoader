@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Map/TeleportPylonsMapLayer.cs
 +++ src/tModLoader/Terraria/Map/TeleportPylonsMapLayer.cs
-@@ -6,25 +_,52 @@
+@@ -7,66 +_,53 @@
  using Terraria.GameContent;
  using Terraria.GameContent.Tile_Entities;
  using Terraria.GameInput;
@@ -11,29 +11,61 @@
  
  public class TeleportPylonsMapLayer : IMapLayer
  {
+-	public const int BorderSize = 10;
+-
+-	public static void DrawLine(SpriteBatch spriteBatch, Vector2 start, Vector2 end, Color col, float width)
+-	{
+-		float num = Vector2.Distance(start, end);
+-		float rotation = (end - start).ToRotation();
+-		int num2 = Math.Min(5, (int)num);
+-		Rectangle value = TextureAssets.BlackTile.Value.Frame();
+-		for (int i = 0; i < num2; i++) {
+-			spriteBatch.Draw(TextureAssets.BlackTile.Value, Vector2.Lerp(start, end, (float)i / (float)num2), value, col, rotation, new Vector2(0f, (float)value.Width * 0.5f), new Vector2(num / (float)num2 / 16f, width / 16f), SpriteEffects.None, 0f);
+-		}
+-	}
 +	// Added by TML.
 +	public bool Visible { get; set; } = true;
-+
+ 
  	public void Draw(ref MapOverlayDrawContext context, ref string text)
  	{
 +		/*
  		List<TeleportPylonInfo> pylons = Main.PylonSystem.Pylons;
  		float num = 1f;
  		float scaleIfSelected = num * 2f;
+-		float scaleIfOffscreen = num * 0.5f;
 +		*/
 +		IReadOnlyList<TeleportPylonInfo> pylons = Main.PylonSystem.Pylons;
 +
  		Texture2D value = TextureAssets.Extra[182].Value;
- 		bool num2 = TeleportPylonsSystem.IsPlayerNearAPylon(Main.LocalPlayer) && (Main.DroneCameraTracker == null || !Main.DroneCameraTracker.IsInUse());
+-		Texture2D value2 = TextureAssets.Extra[299].Value;
++		bool num2 = TeleportPylonsSystem.IsPlayerNearAPylon(Main.LocalPlayer) && (Main.DroneCameraTracker == null || !Main.DroneCameraTracker.IsInUse());
 +
 +		/*
  		Color color = Color.White;
- 		if (!num2)
+ 		if (!TeleportPylonsSystem.IsPlayerNearAPylon(Main.LocalPlayer))
  			color = Color.Gray * 0.5f;
+-
+-		bool flag = false;
+-		int num2 = -1;
+-		if (Main.mapFullscreen && Main.MapPylonTile.X != -1 && Main.MapPylonTile.Y != -1) {
+-			Point center = context.GetUnclampedDrawRegion(value, Main.MapPylonTile.ToVector2() + new Vector2(1.5f, 2f), new SpriteFrame(11, 1, 0, 0) {
+-				PaddingY = 0
+-			}, num, Alignment.Center).Center;
+-
+-			for (int i = 0; i < pylons.Count; i++) {
+-				TeleportPylonInfo info = pylons[i];
+-				if (IsRevealed(info) && !(info.PositionInTiles == Main.MapPylonTile)) {
+-					Point center2 = context.GetUnclampedDrawRegion(value, info.PositionInTiles.ToVector2() + new Vector2(1.5f, 2f), new SpriteFrame(11, 1, 0, 0) {
+-						PaddingY = 0
+-					}, num, Alignment.Center).Center;
+-
+-					DrawLine(Main.spriteBatch, center.ToVector2(), center2.ToVector2(), Color.Black, 6f);
+-					DrawLine(Main.spriteBatch, center.ToVector2(), center2.ToVector2(), Color.White, 2f);
+-				}
 +		*/
- 
- 		for (int i = 0; i < pylons.Count; i++) {
- 			TeleportPylonInfo info = pylons[i];
++
++		for (int i = 0; i < pylons.Count; i++) {
++			TeleportPylonInfo info = pylons[i];
 +
 +			float num = 1f;
 +			float scaleIfSelected = num * 2f;
@@ -48,8 +80,19 @@
 +			if (info.ModPylon is ModPylon pylon) {
 +				pylon.DrawMapIcon(ref context, ref text, info, num2, color, num, scaleIfSelected);
 +				continue;
-+			}
-+
- 			if (context.Draw(value, info.PositionInTiles.ToVector2() + new Vector2(1.5f, 2f), color, new SpriteFrame(9, 1, (byte)info.TypeOfPylon, 0) {
+ 			}
+-		}
+-
+-		for (int j = 0; j < pylons.Count; j++) {
+-			TeleportPylonInfo info2 = pylons[j];
+-			if (!IsRevealed(info2))
+-				continue;
+ 
+-			bool onScreen = true;
+-			if (((!Main.mapFullscreen) ? context.Draw(value, info2.PositionInTiles.ToVector2() + new Vector2(1.5f, 2f), color, new SpriteFrame(11, 1, (byte)info2.TypeOfPylon, 0) {
++			if (context.Draw(value, info.PositionInTiles.ToVector2() + new Vector2(1.5f, 2f), color, new SpriteFrame(9, 1, (byte)info.TypeOfPylon, 0) {
+-				PaddingY = 0
+-			}, num, scaleIfSelected, Alignment.Center) : context.DrawClamped(value, value2, info2.PositionInTiles.ToVector2() + new Vector2(1.5f, 2f), color, new SpriteFrame(11, 1, (byte)info2.TypeOfPylon, 0) {
  				PaddingY = 0
- 			}, num, scaleIfSelected, Alignment.Center).IsMouseOver) {
+ 			}, num, scaleIfSelected, scaleIfOffscreen, Alignment.Center, 10, out onScreen)).IsMouseOver) {
+ 				Main.cancelWormHole = true;

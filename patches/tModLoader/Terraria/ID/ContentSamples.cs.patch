@@ -19,11 +19,10 @@
  public static class ContentSamples
  {
  	public static class DyeShaderIDs
-@@ -94,7 +_,15 @@
+@@ -94,7 +_,14 @@
  			public ItemGroupAndOrderInGroup(Item item)
  			{
  				ItemType = item.type;
-+
 +				try {
 -				Group = GetItemGroup(item, out OrderInGroup);
 +					Group = GetItemGroup(item, out OrderInGroup);
@@ -55,7 +54,7 @@
  				Item item = new Item();
  				item.SetDefaults(i);
  				list.Add(item);
-@@ -733,26 +_,87 @@
+@@ -733,26 +_,76 @@
  		public static int GetBestiaryStarsPriority(NPC npc) => NpcBestiaryRarityStars[npc.type];
  	}
  
@@ -64,17 +63,14 @@
 +	/// Note that these entries do not take into account game mode specific changes so they shouldn't be used for querying that data. <br/>
 +	/// </summary>
  	public static Dictionary<int, NPC> NpcsByNetId = new Dictionary<int, NPC>();
-+
 +	/// <summary>
 +	/// The default <see cref="Projectile"/> for a given projectile type (<see cref="Projectile.type"/>).
 +	/// </summary>
  	public static Dictionary<int, Projectile> ProjectilesByType = new Dictionary<int, Projectile>();
-+
 +	/// <summary>
 +	/// The default <see cref="Item"/> for a given item type (<see cref="Item.type"/>).
 +	/// </summary>
  	public static Dictionary<int, Item> ItemsByType = new Dictionary<int, Item>();
-+
 +	/// <summary>
 +	/// The item type (<see cref="Item.type"/>) for a given persistent ID.
 +	/// <br/> Vanilla persistent IDs are the names in <see cref="ItemID"/>. Modded persistent IDs are the value of <see cref="ModType.FullName"/>.
@@ -83,17 +79,14 @@
 +	/// You can get the persistent ID of a given item type using either <see cref="ItemPersistentIdsByNetIds"/> or <see cref="ItemID.Search"/>.
 +	/// </remarks>
  	public static Dictionary<string, int> ItemNetIdsByPersistentIds = new Dictionary<string, int>();
-+
 +	/// <summary>
 +	/// The persistent ID for a given item type (<see cref="Item.type"/>).
 +	/// </summary>
  	public static Dictionary<int, string> ItemPersistentIdsByNetIds = new Dictionary<int, string>();
-+
 +	/// <summary>
 +	/// Associates an item type (<see cref="Item.type"/>) with the item type it shares research values with.
 +	/// </summary>
  	public static Dictionary<int, int> CreativeResearchItemPersistentIdOverride = new Dictionary<int, int>();
-+
 +	/// <summary>
 +	/// The NPC type (<see cref="NPC.type"/>) for a given persistent ID.
 +	/// <br/> Vanilla persistent IDs are the names in <see cref="NPCID"/>. Modded persistent IDs are the value of <see cref="ModType.FullName"/>.
@@ -102,29 +95,24 @@
 +	/// You can get the persistent ID of a given NPC type using either <see cref="NpcPersistentIdsByNetIds"/> or <see cref="NPCID.Search"/>.
 +	/// </remarks>
  	public static Dictionary<string, int> NpcNetIdsByPersistentIds = new Dictionary<string, int>();
-+
 +	/// <summary>
 +	/// The persistent ID for a given NPC type (<see cref="NPC.type"/>).
 +	/// </summary>
  	public static Dictionary<int, string> NpcPersistentIdsByNetIds = new Dictionary<int, string>();
-+
 +	/// <summary>
 +	/// The entry number in the Bestiary for a given NPC type (<see cref="NPC.type"/>).
 +	/// </summary>
  	public static Dictionary<int, int> NpcBestiarySortingId = new Dictionary<int, int>();
-+
 +	/// <summary>
 +	/// The number of stars a given NPC type (<see cref="NPC.type"/>) shows in the Bestiary.
 +	/// <br/><br/> Defaults to the result of <see cref="GetNPCBestiaryRarityStarsCount"/>. Read the <see href="https://github.com/tModLoader/tModLoader/wiki/Bestiary-Stars">Bestiary Stars wiki page</see> to learn more about the default calculations.
 +	/// <br/><br/> Set in SetStaticDefaults to override that logic.
 +	/// </summary>
  	public static Dictionary<int, int> NpcBestiaryRarityStars = new Dictionary<int, int>();
-+
 +	/// <summary>
 +	/// Associates an NPC type (<see cref="NPC.type"/>) with the persistent ID used for the Bestiary.
 +	/// </summary>
  	public static Dictionary<int, string> NpcBestiaryCreditIdsByNpcNetIds = new Dictionary<int, string>();
-+
 +	/// <summary>
 +	/// Associates an item type (<see cref="Item.type"/>) with its <see cref="CreativeHelper.ItemGroup"/> and sorting order in the Research menu.
 +	/// </summary>

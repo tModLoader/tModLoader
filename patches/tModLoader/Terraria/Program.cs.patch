@@ -8,7 +8,7 @@
  using System.Reflection;
  using System.Runtime.CompilerServices;
  using System.Text;
-@@ -10,16 +_,20 @@
+@@ -10,6 +_,10 @@
  using ReLogic.OS;
  using Terraria.Initializers;
  using Terraria.Localization;
@@ -19,9 +19,7 @@
  using Terraria.Social;
  using Terraria.Utilities;
  #if FNA
- using Microsoft.Xna.Framework.Graphics;
- using SDL3;
- #endif
+@@ -19,7 +_,7 @@
  
  namespace Terraria;
  
@@ -30,18 +28,18 @@
  {
  #if XNA
  	public static bool IsXna = true;
-@@ -38,6 +_,10 @@
+@@ -37,6 +_,10 @@
  	public static bool LoadedEverything;
  	public static IntPtr JitForcedMethodCache;
  
-+	// Added by TML.
++	// TML: Main game thread tracking for thread-sensitive operations.
 +	public static Thread MainThread { get; private set; }
 +	public static bool IsMainThread => Thread.CurrentThread == MainThread;
 +
  	public static float LoadedPercentage {
  		get {
  			if (ThingsToLoad == 0)
-@@ -65,6 +_,7 @@
+@@ -64,6 +_,7 @@
  		LoadedEverything = true;
  	}
  
@@ -49,81 +47,70 @@
  	private static void ForceJITOnAssembly(Assembly assembly)
  	{
  		Type[] types = assembly.GetTypes();
-@@ -82,6 +_,20 @@
+@@ -81,6 +_,18 @@
  			ThingsLoaded++;
  		}
  	}
 +	*/
++
 +	private static void ForceJITOnAssembly(IEnumerable<Type> types)
 +	{
 +		var methodsToJIT = CollectMethodsToJIT(types);
 +
-+		if (Environment.ProcessorCount > 1) {
++		if (Environment.ProcessorCount > 1)
 +			methodsToJIT.AsParallel().AsUnordered().ForAll(ForceJITOnMethod);
-+		}
-+		else {
-+			foreach (var method in methodsToJIT) {
++		else
++			foreach (var method in methodsToJIT)
 +				ForceJITOnMethod(method);
-+			}
-+		}
 +	}
  
  	private static void ForceStaticInitializers(Assembly assembly)
  	{
-@@ -94,8 +_,14 @@
+@@ -93,8 +_,9 @@
  
  	private static void ForceLoadAssembly(Assembly assembly, bool initializeStaticMembers)
  	{
-+ 		/*
- 		ThingsToLoad = assembly.GetTypes().Length;
- 		ForceJITOnAssembly(assembly);
-+ 		*/
+-		ThingsToLoad = assembly.GetTypes().Length;
+-		ForceJITOnAssembly(assembly);
 +		var types = assembly.GetTypes();
 +		ThingsToLoad = types.Select(type => GetAllMethods(type).Count()).Sum();
 +		ForceJITOnAssembly(types);
-+
  		if (initializeStaticMembers)
  			ForceStaticInitializers(assembly);
  	}
-@@ -140,7 +_,11 @@
- 		if (Debugger.IsAttached)
+@@ -140,6 +_,10 @@
  			return;
  #endif
  
-+		// Hide the console on clients unless a special parameter was passed down.
++		// TML: Hide the console on clients unless explicitly requested.
 +		if (!Main.dedServ && !LaunchParameters.ContainsKey("-console"))
 +			Platform.Get<IWindowService>().HideConsole();
 +
  		try {
  			Console.OutputEncoding = Encoding.UTF8;
  			if (Platform.IsWindows)
-@@ -152,9 +_,15 @@
- 		}
- 	}
+@@ -153,19 +_,27 @@
  
-+	//IMPORTANT: We really want arg parsing, logging, and monomod initialized before static Main()
-+	// Moving all calls to Main to LaunchGame_() mitigates this risk
  	public static void LaunchGame(string[] args, bool monoArgs = false)
  	{
-+		// It's not the Entry Thread anymore, but it still is the base thread of FNA and Main
-+		MainThread = Thread.CurrentThread;
 -		Thread.CurrentThread.Name = "Main Thread";
+-		if (monoArgs)
+-			args = Utils.ConvertMonoArgsToDotNet(args);
+-
+-		LogFNANativeLibVersions();
+-		LaunchParameters = Utils.ParseArguements(args);
+-		SavePath = (LaunchParameters.ContainsKey("-savedirectory") ? LaunchParameters["-savedirectory"] : Platform.Get<IPathService>().GetStoragePath("Terraria"));
+-#if SERVER
+-		Main.dedServ = true;
+-#elif NETCORE
+-		// Unify server and client dll via launch param
+-		Main.dedServ = LaunchParameters.ContainsKey("-server");
+-#endif
++		MainThread = Thread.CurrentThread;
 +		MainThread.Name = "Main Thread";
 +
-+		/*
- 		if (monoArgs)
- 			args = Utils.ConvertMonoArgsToDotNet(args);
- 
-@@ -167,7 +_,29 @@
- 		// Unify server and client dll via launch param
- 		Main.dedServ = LaunchParameters.ContainsKey("-server");
- #endif
-+		*/
-+
 +		ProcessLaunchArgs(args, monoArgs, out bool isServer);
-+
 +		StartupSequenceTml(isServer);
-+
 +		LaunchGame_(isServer);
 +	}
 +
@@ -141,10 +128,9 @@
 +			// Anything beyond this point will not be executed
 +			ModCompile.BuildModCommandLine(build);
  
+ #if NETCORE
  		// Remove bad environment variables that might be set by other app installs
- 		if (Main.dedServ) {
- 			Environment.SetEnvironmentVariable("FNA_PLATFORM_BACKEND", "NONE");
-@@ -178,7 +_,9 @@
+@@ -179,7 +_,9 @@
  
  		ThreadPool.SetMinThreads(8, 8);
  		InitializeConsoleOutput();
@@ -154,7 +140,7 @@
  		Platform.Get<IWindowService>().SetQuickEditEnabled(enabled: false);
  		RunGame();
  	}
-@@ -202,8 +_,13 @@
+@@ -203,8 +_,12 @@
  			};
  		}
  
@@ -165,12 +151,11 @@
 +			ModLoader.ModLoader.EngineInit();
 +
 +			using Main main = new Main();
-+
  			Lang.InitializeLegacyLocalization();
  			SocialAPI.Initialize();
  			LaunchInitializer.LoadParameters(main);
-@@ -214,18 +_,22 @@
- 				main.Run();
+@@ -219,7 +_,10 @@
+ #endif
  		}
  		catch (Exception e) {
 +			ErrorReporting.FatalExit("Main engine crash", e);
@@ -180,21 +165,11 @@
  		}
  	}
  
- 	private static void LogFNANativeLibVersions()
- 	{
- #if FNA
- 		Console.WriteLine(("SDL v" + SDL.SDL_GetVersion() + "." + SDL.SDL_GetRevision()) ?? "");
- 		uint num = FNA3D.FNA3D_LinkedVersion();
- 		Console.WriteLine(("FNA3D v" + num / 10000 + "." + num / 100 % 100 + "." + num % 100) ?? "");
- 		uint num2 = FAudio.FAudioLinkedVersion();
- 		Console.WriteLine(("FAudio v" + num2 / 10000 + "." + num2 / 100 % 100 + "." + num2 % 100) ?? "");
+@@ -234,6 +_,7 @@
  #endif
  	}
  
 +	/*
-@@ -255,4 +_,5 @@
- 		catch {
- 		}
- 	}
-+	*/
- }
+ 	private static void DisplayException(Exception e)
+ 	{
+ 		try {

@@ -8,7 +8,7 @@
  using Terraria.UI;
  using Terraria.Utilities;
  
-@@ -42,17 +_,23 @@
+@@ -42,17 +_,21 @@
  	[Old("Lang arrays have been replaced with the new Language.GetText system.")]
  	public static LocalizedText[] chestType2 = new LocalizedText[38];
  	public static LocalizedText[] prefix = new LocalizedText[PrefixID.Count];
@@ -34,16 +34,18 @@
 +	internal static ItemTooltip[] _itemTooltipCache = new ItemTooltip[ItemID.Count];
 +
 -	private static LocalizedText[] _emojiNameCache = new LocalizedText[EmoteID.Count];
- 	private static Dictionary<string, Func<object>> _globalSubstitutions = new Dictionary<string, Func<object>>();
- 	private static LocalizedText _prefixFormatText = Language.GetText("CombineFormat.Prefix");
-+ 	internal static LocalizedText[] _emojiNameCache = new LocalizedText[EmoteID.Count];
++	internal static LocalizedText[] _emojiNameCache = new LocalizedText[EmoteID.Count];
+-	private static Dictionary<string, Func<object>> _globalSubstitutions = new Dictionary<string, Func<object>>();
+-	private static LocalizedText _prefixFormatText = Language.GetText("CombineFormat.Prefix");
  
  	public static string GetMapObjectName(int id)
  	{
-@@ -141,11 +_,13 @@
+@@ -140,12 +_,14 @@
+ 	}
  
  	[Old("dialog is deprecated. Please use Language.GetText instead.")]
- 	public static string dialog(int l, bool english = false) => Language.GetTextValue("LegacyDialog." + l);
+-	public static string dialog(int l, bool english = false) => Language.GetTextValue("LegacyDialog." + l);
++	public static string dialog(int l, bool english = false) => Language.GetTextValueWith("LegacyDialog." + l, CreateDialogSubstitutionObject());
 +	/// <summary> Gets the display name of the provided npc type (<see cref="NPC.type"/>) as a string. </summary>
  	public static string GetNPCNameValue(int netID) => GetNPCName(netID).Value;
  
@@ -55,13 +57,14 @@
  			return _npcNameCache[netID];
  
  		if (netID < 0 && -netID - 1 < _negativeNpcNameCache.Length)
-@@ -156,12 +_,13 @@
+@@ -156,12 +_,14 @@
  
  	public static ItemTooltip GetTooltip(int itemId) => _itemTooltipCache[itemId];
  
 +	/// <summary> Gets the display name of the provided item type (<see cref="Item.type"/>) as a <see cref="LocalizedText"/>. <para/> Note that modded item entries are not retrievable until after mod loading is complete. </summary>
  	public static LocalizedText GetItemName(int id)
  	{
++		// Check added by TML. FromNetId was always called in vanilla.
  		if (id < 0)
  			id = ItemID.FromNetId((short)id);
  
@@ -70,7 +73,7 @@
  			return _itemNameCache[id];
  
  		return LocalizedText.Empty;
-@@ -169,30 +_,33 @@
+@@ -169,29 +_,17 @@
  
  	public static LocalizedText GetEmojiName(int id)
  	{
@@ -83,32 +86,33 @@
  
 +	/// <summary> Gets the display name of the provided item type (<see cref="Item.type"/>) as a string. </summary>
  	public static string GetItemNameValue(int id) => GetItemName(id).Value;
- 
- 	public static string GetPrefixedItemName(int id, int prefixType)
- 	{
- 		LocalizedText itemName = GetItemName(id);
- 		LocalizedText localizedText = prefix[prefixType];
- 		string prefixName = localizedText.Value;
- 		if (Language.TryGetVariation(itemName.Key, "Gender", out var value) && Language.TryGetVariation(localizedText.Key, value, out var value2))
- 			prefixName = value2;
- 
- 		return _prefixFormatText.FormatWith(new ItemPrefixCombiner {
- 			PrefixName = prefixName,
- 			ItemName = itemName.Value
- 		});
- 	}
- 
+-
+-	public static string GetPrefixedItemName(int id, int prefixType)
+-	{
+-		LocalizedText itemName = GetItemName(id);
+-		LocalizedText localizedText = prefix[prefixType];
+-		string prefixName = localizedText.Value;
+-		if (Language.TryGetVariation(itemName.Key, "Gender", out var value) && Language.TryGetVariation(localizedText.Key, value, out var value2))
+-			prefixName = value2;
+-
+-		return _prefixFormatText.FormatWith(new ItemPrefixCombiner {
+-			PrefixName = prefixName,
+-			ItemName = itemName.Value
+-		});
+-	}
+-
 +	/// <summary> Gets the display name of the provided buff type (<see cref="BuffID"/>) as a string. </summary>
  	public static string GetBuffName(int id) => _buffNameCache[id].Value;
 +	/// <summary> Gets the description of the provided buff type (<see cref="BuffID"/>) as a string. </summary>
  	public static string GetBuffDescription(int id) => _buffDescriptionCache[id].Value;
  
  	public static string GetDryadWorldStatusDialog(out bool worldIsEntirelyPure)
- 	{
-@@ -335,7 +_,20 @@
+@@ -335,8 +_,21 @@
  		return npc.FullName;
  	}
  
+-	public static LanguageSearchFilter CreateDialogFilter(string startsWith, object substitutions) => (string key, LocalizedText text) => key.StartsWith(startsWith) && text.ConditionsMetWith(substitutions);
+-	public static LanguageSearchFilter CreateDialogFilter(string startsWith, bool checkConditions = true) => (string key, LocalizedText text) => key.StartsWith(startsWith) && (!checkConditions || text.ConditionsMet);
 +	/// <summary>
 +	/// Filters LocalizedText objects by checking if their key starts with the provided <paramref name="startsWith"/> parameter and if the conditions embedded into the LocalizedText are all satisfied by the data in <paramref name="substitutions"/>. See <see cref="LocalizedText.CanFormatWith(object)"/> for more information about conditions embedded in localization text. <br/><br/>
 +	/// When passed into <see cref="Language.FindAll(LanguageSearchFilter)"/>, all LocalizedText with keys starting with <paramref name="startsWith"/> that satisfy <paramref name="substitutions"/> will be returned. When passed into <see cref="Language.SelectRandom(LanguageSearchFilter, UnifiedRandom)"/>, a single random LocalizedText with key starting with <paramref name="startsWith"/> that satisfies <paramref name="substitutions"/> will be returned.<br/><br/>
@@ -116,16 +120,17 @@
 +	/// <param name="startsWith"></param>
 +	/// <param name="substitutions"></param>
 +	/// <returns></returns>
- 	public static LanguageSearchFilter CreateDialogFilter(string startsWith, object substitutions) => (string key, LocalizedText text) => key.StartsWith(startsWith) && text.ConditionsMetWith(substitutions);
++	public static LanguageSearchFilter CreateDialogFilter(string startsWith, object substitutions) => (string key, LocalizedText text) => key.StartsWith(startsWith) && text.CanFormatWith(substitutions);
 +	/// <summary>
 +	/// Filters LocalizedText objects by checking if their key starts with the provided <paramref name="startsWith"/> parameter.<br/><br/>
 +	/// When passed into <see cref="Language.FindAll(LanguageSearchFilter)"/>, all LocalizedText with keys starting with <paramref name="startsWith"/> will be returned. When passed into <see cref="Language.SelectRandom(LanguageSearchFilter, UnifiedRandom)"/>, a single random LocalizedText with key starting with <paramref name="startsWith"/> will be returned.<br/><br/>
 +	/// </summary>
 +	/// <param name="startsWith"></param>
 +	/// <returns></returns>
- 	public static LanguageSearchFilter CreateDialogFilter(string startsWith, bool checkConditions = true) => (string key, LocalizedText text) => key.StartsWith(startsWith) && (!checkConditions || text.ConditionsMet);
++	public static LanguageSearchFilter CreateDialogFilter(string startsWith) => (string key, LocalizedText text) => key.StartsWith(startsWith);
  
  	public static string AnglerQuestChat(bool turnIn = false)
+ 	{
 @@ -347,9 +_,14 @@
  			return Language.SelectRandom(CreateDialogFilter("AnglerQuestText.NoQuest_")).Value;
  
@@ -134,7 +139,8 @@
 +		if (ItemLoader.AnglerChat(id) is string modText)
 +			return modText;
 +
- 		return Language.GetTextValue("AnglerQuestText.Quest_" + ItemID.Search.GetName(id));
+-		return Language.GetTextValue("AnglerQuestText.Quest_" + ItemID.Search.GetName(id));
++		return Language.GetTextValueWith("AnglerQuestText.Quest_" + ItemID.Search.GetName(id), obj);
  	}
  
 +	/// <summary> Gets the display name of the provided projectile type (<see cref="Projectile.type"/>) as a <see cref="LocalizedText"/>. </summary>

@@ -1,20 +1,21 @@
 --- src/TerrariaNetCore/Terraria/Graphics/Light/LightingEngine.cs
 +++ src/tModLoader/Terraria/Graphics/Light/LightingEngine.cs
-@@ -2,8 +_,9 @@
+@@ -2,8 +_,7 @@
  using System.Collections.Generic;
  using Microsoft.Xna.Framework;
  using ReLogic.Threading;
- using Terraria.Graphics.Capture;
- using Terraria.Map;
+-using Terraria.Graphics.Capture;
+-using Terraria.Map;
 +using Terraria.ModLoader;
  
  namespace Terraria.Graphics.Light;
  
-@@ -166,7 +_,14 @@
+@@ -166,8 +_,14 @@
  				break;
  		}
  
- 		Player perspectivePlayer = Main.SceneMetrics.PerspectivePlayer;
+-		Player perspectivePlayer = Main.SceneMetrics.PerspectivePlayer;
+-		if (perspectivePlayer.nightVision) {
 +		float factor = 0.91f; // Taken from the constant at the start of the method.
 +		float throughWaterR = workingLightMap.LightDecayThroughWater.X;
 +		float throughWaterG = workingLightMap.LightDecayThroughWater.Y;
@@ -22,15 +23,20 @@
 +		LoaderManager.Get<WaterStylesLoader>().LightColorMultiplier(Main.waterStyle, factor, ref throughWaterR, ref throughWaterG, ref throughWaterB);
 +		workingLightMap.LightDecayThroughWater = new Vector3(throughWaterR, throughWaterG, throughWaterB);
 +
- 		if (perspectivePlayer.nightVision) {
++		if (Main.player[Main.myPlayer].nightVision) {
  			workingLightMap.LightDecayThroughAir *= 1.03f;
  			workingLightMap.LightDecayThroughSolid *= 1.03f;
-@@ -189,6 +_,15 @@
+ 		}
+@@ -187,8 +_,17 @@
+ 			workingLightMap.LightDecayThroughSolid *= 0.85f;
+ 		}
  
- 		workingLightMap.LightDecayThroughAir *= Main.SceneState.airLightDecay;
- 		workingLightMap.LightDecayThroughSolid *= Main.SceneState.solidLightDecay;
+-		workingLightMap.LightDecayThroughAir *= Main.SceneState.airLightDecay;
++		workingLightMap.LightDecayThroughAir *= Player.airLightDecay;
+-		workingLightMap.LightDecayThroughSolid *= Main.SceneState.solidLightDecay;
++		workingLightMap.LightDecayThroughSolid *= Player.solidLightDecay;
 +
-+		//TML: Shouldn't this just ref to LightMap values instead?
++		// TML: Shouldn't this just ref to LightMap values instead?
 +		float throughAir = 1f;
 +		float throughSolid = 1f;
 +

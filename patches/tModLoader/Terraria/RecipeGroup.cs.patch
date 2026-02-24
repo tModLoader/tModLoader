@@ -1,29 +1,61 @@
 --- src/TerrariaNetCore/Terraria/RecipeGroup.cs
 +++ src/tModLoader/Terraria/RecipeGroup.cs
-@@ -13,6 +_,8 @@
- 	public static Dictionary<string, int> recipeGroupIDs = new Dictionary<string, int>();
+@@ -17,18 +_,7 @@
+ 	public static Dictionary<int, RecipeGroup> recipeGroups = new Dictionary<int, RecipeGroup>();
  	public static int nextRecipeGroupIndex;
  
+-	public int RegisteredId { get; private set; }
+-
+-	private static Func<string> WithDefaultCombineFormat(string key)
+-	{
+-		LocalizedText text = Language.GetText(key);
+-		return () => DefaultCombineFormat.Format(text);
+-	}
+-
+-	public RecipeGroup(string groupDescriptorKey, params int[] validItems)
+-		: this(WithDefaultCombineFormat(groupDescriptorKey), validItems)
+-	{
+-	}
 +	internal bool[] ValidItemsLookup; // Added by TML.
-+
+ 
  	public RecipeGroup(Func<string> getName, params int[] validItems)
  	{
- 		GetText = getName;
-@@ -22,11 +_,20 @@
+@@ -41,27 +_,20 @@
  
- 	public static int RegisterGroup(string name, RecipeGroup rec)
+ 	public RecipeGroup Add(int itemID, Func<bool> isPreferred = null)
  	{
+-		ValidItems.Add(itemID);
+-		Items.Add(itemID);
+-		return this;
+-	}
+-
+-	internal void SortDecraftingEntries()
+-	{
+-		DecraftItemId = Items.OrderBy((int e) => ContentSamples.ItemsByType[e].value).First();
+-	}
+-
+-	public override string ToString() => GetText();
+-
+-	public RecipeGroup Register()
+-	{
+-		if (RegisteredId >= 0)
+-			throw new Exception("Already registered");
+-
+-		int key = (RegisteredId = nextRecipeGroupIndex++);
+-		recipeGroups.Add(key, this);
+-		return this;
+-	}
 +		// TML: Handle registering to an existing group by merging items and keeping the original group.
 +		if (recipeGroupIDs.TryGetValue(name, out int existingRecipeGroup)) {
 +			recipeGroups[existingRecipeGroup].ValidItems.UnionWith(rec.ValidItems);
 +			return existingRecipeGroup;
 +		}
 +
- 		int num = (rec.RegisteredId = nextRecipeGroupIndex++);
- 		recipeGroups.Add(num, rec);
- 		recipeGroupIDs.Add(name, num);
- 		return num;
- 	}
++		int num = (rec.RegisteredId = nextRecipeGroupIndex++);
++		recipeGroups.Add(num, rec);
++		recipeGroupIDs.Add(name, num);
++		return num;
++	}
 +
 +	// Added by TML.
 +	public bool ContainsItem(int type) => ValidItemsLookup?[type] ?? ValidItems.Contains(type);

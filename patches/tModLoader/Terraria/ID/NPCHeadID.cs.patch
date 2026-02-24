@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/ID/NPCHeadID.cs
 +++ src/tModLoader/Terraria/ID/NPCHeadID.cs
-@@ -1,8 +_,19 @@
+@@ -1,10 +_,21 @@
 +using ReLogic.Reflection;
 +using Terraria.ModLoader;
 +
@@ -21,6 +21,8 @@
 +		/// <br/> You can get an NPC's head ID using <see cref="GameContent.TownNPCProfiles.GetHeadIndexSafe(NPC)"/> and <see cref="ContentSamples.NpcsByNetId"/>.
 +		/// </remarks>
  		public static bool[] CannotBeDrawnInHousingUI = Factory.CreateBoolSet(21, 80);
+ 		public static int[] HeadListOrder = new int[81] {
+ 			0,
 @@ -173,4 +_,6 @@
  	public const int TavernkeepShimmered = 79;
  	public const int TravellingMerchantShimmered = 80;
