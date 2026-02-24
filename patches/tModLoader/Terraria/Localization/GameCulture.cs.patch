@@ -12,7 +12,7 @@
  public class GameCulture
  {
  	public enum CultureName
-@@ -24,6 +_,8 @@
+@@ -27,6 +_,8 @@
  	private static Dictionary<int, GameCulture> _legacyCultures;
  	public readonly CultureInfo CultureInfo;
  	public readonly int LegacyId;

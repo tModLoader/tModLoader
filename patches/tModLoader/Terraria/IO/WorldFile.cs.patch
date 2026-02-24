@@ -26,38 +26,60 @@
  	private static int _versionNumber;
  	private static bool _isWorldOnCloud;
  	private static bool _tempPartyGenuine;
-@@ -115,14 +_,14 @@
- 		_cachedMoonPhase = Main.moonPhase;
- 		_cachedBloodMoon = Main.bloodMoon;
- 		_cachedEclipse = Main.eclipse;
--		_cachedCultistDelay = CultistRitual.delay;
+@@ -91,7 +_,26 @@
+ 
+ 	public static void ReuseTempsForNextSave()
+ 	{
+-		_reuseTempsForNextSave = true;
++		_hasCache = true;
++		_cachedDayTime = Main.dayTime;
++		_cachedTime = Main.time;
++		_cachedMoonPhase = Main.moonPhase;
++		_cachedBloodMoon = Main.bloodMoon;
++		_cachedEclipse = Main.eclipse;
 +		_cachedCultistDelay = (int)CultistRitual.delay;
- 		_cachedPartyGenuine = BirthdayParty.GenuineParty;
- 		_cachedPartyManual = BirthdayParty.ManualParty;
- 		_cachedPartyDaysOnCooldown = BirthdayParty.PartyDaysOnCooldown;
- 		CachedCelebratingNPCs.Clear();
- 		CachedCelebratingNPCs.AddRange(BirthdayParty.CelebratingNPCs);
- 		_cachedSandstormHappening = Sandstorm.Happening;
--		_cachedSandstormTimeLeft = Sandstorm.TimeLeft;
++		_cachedPartyGenuine = BirthdayParty.GenuineParty;
++		_cachedPartyManual = BirthdayParty.ManualParty;
++		_cachedPartyDaysOnCooldown = BirthdayParty.PartyDaysOnCooldown;
++		CachedCelebratingNPCs.Clear();
++		CachedCelebratingNPCs.AddRange(BirthdayParty.CelebratingNPCs);
++		_cachedSandstormHappening = Sandstorm.Happening;
 +		_cachedSandstormTimeLeft = (int)Sandstorm.TimeLeft;
- 		_cachedSandstormSeverity = Sandstorm.Severity;
- 		_cachedSandstormIntendedSeverity = Sandstorm.IntendedSeverity;
- 		_cachedLanternNightCooldown = LanternNight.LanternNightsOnCooldown;
-@@ -384,10 +_,13 @@
- 				binaryReader.ReadBoolean();
- 				binaryReader.ReadBoolean();
- 				worldFileData.DefeatedMoonlord = binaryReader.ReadBoolean();
++		_cachedSandstormSeverity = Sandstorm.Severity;
++		_cachedSandstormIntendedSeverity = Sandstorm.IntendedSeverity;
++		_cachedLanternNightCooldown = LanternNight.LanternNightsOnCooldown;
++		_cachedLanternNightGenuine = LanternNight.GenuineLanterns;
++		_cachedLanternNightManual = LanternNight.ManualLanterns;
++		_cachedLanternNightNextNightIsGenuine = LanternNight.NextNightIsLanternNight;
+ 	}
+ 
+ 	public static void SetOngoingToTemps()
+@@ -444,8 +_,12 @@
+ 			if (num < 128)
+ 				return worldFileData;
+ 
+-			binaryReader.ReadBoolean();
+-			if (num < 131)
++				binaryReader.ReadBoolean();
++				binaryReader.ReadBoolean();
++				binaryReader.ReadBoolean();
++				worldFileData.DefeatedMoonlord = binaryReader.ReadBoolean();
 +
 +				WorldIO.ReadWorldHeader(worldFileData);
  				return worldFileData;
- 			}
+ 
+ 			binaryReader.ReadBoolean();
+@@ -454,8 +_,8 @@
+ 			worldFileData.DefeatedMoonlord = binaryReader.ReadBoolean();
+ 			return worldFileData;
  		}
--		catch (Exception) {
+-		catch (Exception exception) {
+-			return WorldFileData.FromInvalidWorld(file, cloudSave, StatusID.UnknownError, exception);
 +		catch (Exception e) {
 +			Logging.Terraria.Error($"Error reading WorldFileData: {file}, IsCloudSave={cloudSave}", e);
  		}
+ 	}
  
- 		return null;
 @@ -499,8 +_,13 @@
  	{
  		for (int i = 0; i < Main.maxTilesX; i++) {
@@ -72,20 +94,52 @@
  			}
  		}
  	}
-@@ -571,3 +_,7 @@
+@@ -514,14 +_,11 @@
+ 		_isWorldOnCloud = Main.ActiveWorldFileData.IsCloudSave;
+ 		Main.checkXMas();
+ 		Main.checkHalloween();
+-		if (_isWorldOnCloud && SocialAPI.Cloud == null) {
+-			LastThrownLoadException = new Exception("Cloud inaccessible");
+-			WorldGen.loadFailed = true;
+-			return;
+-		}
++		bool flag = loadFromCloud && SocialAPI.Cloud != null;
++		// Patch note: flag ^ is used in WorldIO call below.
+ 
+-		if (!FileUtilities.Exists(Main.worldPathName, _isWorldOnCloud) && Main.autoGen) {
++		if (!FileUtilities.Exists(Main.worldPathName, flag) && Main.autoGen) {
+-			if (!_isWorldOnCloud) {
++			if (!flag) {
+ 				for (int num = Main.worldPathName.Length - 1; num >= 0; num--) {
+ 					if (Main.worldPathName.Substring(num, 1) == (Path.DirectorySeparatorChar.ToString() ?? "")) {
+ 						Utils.TryCreatingDirectory(Main.worldPathName.Substring(0, num));
+@@ -570,13 +_,23 @@
+ 
  				binaryReader.Close();
  				memoryStream.Close();
+-				if (num3 != StatusID.Ok)
+-					throw new Exception("LoadWorld failed with status: " + StatusID.Search.GetName(num3));
 +
 +				SystemLoader.OnWorldLoad();
-+				WorldIO.Load(Main.worldPathName, _isWorldOnCloud);
++				WorldIO.Load(Main.worldPathName, flag);
 +
- 				if (num3 != StatusID.Ok)
-@@ -578,4 +_,5 @@
++				if (num3 != 0)
++					WorldGen.loadFailed = true;
++				else
++					WorldGen.loadSuccess = true;
++
++				if (WorldGen.loadFailed || !WorldGen.loadSuccess)
++					return;
+ 
+ 				CheckSavedOreTiers();
+ 				ConvertOldTileEntities();
  				ClearTempTiles();
 +				SystemLoader.PostWorldLoad();
- 				WorldGen.isGeneratingOrLoadingWorld = true;
+-				WorldGen.isGeneratingOrLoadingWorld = true;
++				WorldGen.gen = true;
  				GenVars.waterLine = Main.maxTilesY;
  				Liquid.QuickWater(2);
+ 				WorldGen.WaterCheck();
 @@ -716,6 +_,9 @@
  		if (Main.worldPathName == null)
  			return;
@@ -124,7 +178,7 @@
  	}
  
  	private static void DoRollingBackups(string backupWorldWritePath)
-@@ -754,18 +_,18 @@
+@@ -826,25 +_,50 @@
  		_tempMoonPhase = Main.moonPhase;
  		_tempBloodMoon = Main.bloodMoon;
  		_tempEclipse = Main.eclipse;
@@ -146,19 +200,46 @@
  		_tempMaxRain = Main.maxRaining;
  		_tempLanternNightCooldown = LanternNight.LanternNightsOnCooldown;
  		_tempLanternNightGenuine = LanternNight.GenuineLanterns;
-@@ -792,7 +_,7 @@
- 		_tempSandstormSeverity = _cachedSandstormSeverity.Value;
- 		_tempSandstormIntendedSeverity = _cachedSandstormIntendedSeverity.Value;
- 		_tempRaining = Main.raining;
--		_tempRainTime = Main.rainTime;
+ 		_tempLanternNightManual = LanternNight.ManualLanterns;
+ 		_tempLanternNightNextNightIsGenuine = LanternNight.NextNightIsLanternNight;
+-		_tempMeteorShowerCount = WorldGen.meteorShowerCount;
+-		_tempCoinRain = Main.coinRain;
++	}
++
++	private static void SetTempToCache()
++	{
++		_hasCache = false;
++		_tempDayTime = _cachedDayTime.Value;
++		_tempTime = _cachedTime.Value;
++		_tempMoonPhase = _cachedMoonPhase.Value;
++		_tempBloodMoon = _cachedBloodMoon.Value;
++		_tempEclipse = _cachedEclipse.Value;
++		_tempCultistDelay = _cachedCultistDelay.Value;
++		_tempPartyManual = _cachedPartyManual.Value;
++		_tempPartyGenuine = _cachedPartyGenuine.Value;
++		_tempPartyCooldown = _cachedPartyDaysOnCooldown.Value;
++		TempPartyCelebratingNPCs.Clear();
++		TempPartyCelebratingNPCs.AddRange(CachedCelebratingNPCs);
++		_tempSandstormHappening = _cachedSandstormHappening.Value;
++		_tempSandstormTimeLeft = _cachedSandstormTimeLeft.Value;
++		_tempSandstormSeverity = _cachedSandstormSeverity.Value;
++		_tempSandstormIntendedSeverity = _cachedSandstormIntendedSeverity.Value;
++		_tempRaining = Main.raining;
 +		_tempRainTime = (int)Main.rainTime;
- 		_tempMaxRain = Main.maxRaining;
- 		_tempLanternNightCooldown = _cachedLanternNightCooldown.Value;
- 		_tempLanternNightGenuine = _cachedLanternNightGenuine.Value;
-@@ -864,7 +_,7 @@
++		_tempMaxRain = Main.maxRaining;
++		_tempLanternNightCooldown = _cachedLanternNightCooldown.Value;
++		_tempLanternNightGenuine = _cachedLanternNightGenuine.Value;
++		_tempLanternNightManual = _cachedLanternNightManual.Value;
++		_tempLanternNightNextNightIsGenuine = _cachedLanternNightNextNightIsGenuine.Value;
+ 	}
+ 
+ 	private static void ConvertOldTileEntities()
+@@ -912,8 +_,8 @@
+ 				}
  			}
  
- 			if (TEWeaponsRack.Place(item2.X, item2.Y) != -1 && flag2)
+-			if (TileEntityType<TEWeaponsRack>.Place(item2.X, item2.Y) != -1 && flag2)
++			if (TEWeaponsRack.Place(item2.X, item2.Y) != -1 && flag2)
 -				TEWeaponsRack.TryPlacing(item2.X, item2.Y, num2, prefix, 1);
 +				TEWeaponsRack.TryPlacing(item2.X, item2.Y, new Item(num2, prefix: prefix), 1);
  		}
@@ -216,11 +297,13 @@
  					writer.Write((short)0);
  					continue;
  				}
-@@ -1399,7 +_,7 @@
+@@ -1398,8 +_,8 @@
+ 
  				writer.Write((short)item.stack);
  				if (item.stack > 0) {
- 					writer.Write(item.type);
+-					writer.Write(item.type);
 -					writer.Write(item.prefix);
++					writer.Write(item.netID);
 +					ItemIO.WriteByteVanillaPrefix(item, writer);
  				}
  			}

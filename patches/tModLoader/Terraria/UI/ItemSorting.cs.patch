@@ -8,25 +8,6 @@
  
  namespace Terraria.UI;
  
-@@ -928,6 +_,10 @@
- 
- 				Item item3 = inv[list[k]];
- 				if (item2.type == item3.type && item3.stack != item3.maxStack) {
-+					if (!ItemLoader.TryStackItems(item2, item3, out _))
-+						continue;
-+
-+					/* #OnStackHook
- 					int num2 = item3.stack;
- 					if (num < num2)
- 						num2 = num;
-@@ -935,6 +_,7 @@
- 					item2.stack += num2;
- 					item3.stack -= num2;
- 					num -= num2;
-+					*/
- 					if (item3.stack == 0) {
- 						inv[list[k]] = new Item();
- 						list.Remove(list[k]);
 @@ -1121,7 +_,7 @@
  		list.Add(ItemSortingLayers.LastTilesCommon);
  		list.Add(ItemSortingLayers.LastNotTrash);
@@ -36,20 +17,76 @@
  			Item item = new Item();
  			item.netDefaults(i);
  			list2.Add(item);
-@@ -1162,8 +_,9 @@
+@@ -1148,16 +_,30 @@
+ 	private static void AddSortingPrioritiesBasedOnPlayerDamage(List<ItemSortingLayer> list)
+ 	{
+ 		Player player = Main.player[Main.myPlayer];
+-		_damageRankings.Clear();
+-		_damageRankings.Add(new DamageTypeSortingLayerEntry(player.meleeDamage, ItemSortingLayers.WeaponsMelee, 0));
+-		_damageRankings.Add(new DamageTypeSortingLayerEntry(player.rangedDamage, ItemSortingLayers.WeaponsRanged, 1));
+-		_damageRankings.Add(new DamageTypeSortingLayerEntry(player.magicDamage, ItemSortingLayers.WeaponsMagic, 2));
+-		_damageRankings.Add(new DamageTypeSortingLayerEntry(player.minionDamage, ItemSortingLayers.WeaponsMinions, 3));
+-		_damageRankings.Sort(Descending);
+-		foreach (DamageTypeSortingLayerEntry damageRanking in _damageRankings) {
+-			list.Add(damageRanking.Layer);
+-		}
+-	}
++		_layerList.Clear();
++		List<StatModifier> list = new List<StatModifier> {
++			player.meleeDamage,
++			player.rangedDamage,
++			player.magicDamage,
++			player.minionDamage
++		};
++
++
++		/*
++		list.Sort((float x, float y) => y.CompareTo(x));
++		*/
++		list.Sort((x, y) => (y.Additive * y.Multiplicative).CompareTo(x.Additive * x.Multiplicative));
++
++		for (int i = 0; i < 5; i++) {
++			if (!_layerList.Contains(ItemSortingLayers.WeaponsMelee) && player.meleeDamage == list[0]) {
++				list.RemoveAt(0);
++				_layerList.Add(ItemSortingLayers.WeaponsMelee);
++			}
++
++			if (!_layerList.Contains(ItemSortingLayers.WeaponsRanged) && player.rangedDamage == list[0]) {
++				list.RemoveAt(0);
++				_layerList.Add(ItemSortingLayers.WeaponsRanged);
++			}
+ 
  	private static int Descending(DamageTypeSortingLayerEntry x, DamageTypeSortingLayerEntry y)
  	{
-+		// TODO: Restore list.Sort((x, y) => (y.Additive * y.Multiplicative).CompareTo(x.Additive * x.Multiplicative)); patch
- 		int num = y.Multiplier.CompareTo(x.Multiplier);
- 		if (num == 0)
- 			num = x.Index.CompareTo(y.Index);
+@@ -1249,8 +_,12 @@
+ 				if (j == k)
+ 					continue;
  
- 		return num;
- 	}
-@@ -1214,6 +_,11 @@
+-				Item item3 = inv[_sort_itemsToSort[k]];
++				Item item3 = inv[list[k]];
+-				if (Item.CanStack(item2, item3) && item3.stack != item3.maxStack) {
++				if (item2.type == item3.type && item3.stack != item3.maxStack) {
++					if (!ItemLoader.TryStackItems(item2, item3, out _))
++						continue;
++
++					/* #OnStackHook
+ 					int num2 = item3.stack;
+ 					if (num < num2)
+ 						num2 = num;
+@@ -1258,6 +_,7 @@
+ 					item2.stack += num2;
+ 					item3.stack -= num2;
+ 					num -= num2;
++					*/
+ 					if (item3.stack == 0) {
+ 						inv[_sort_itemsToSort[k]] = new Item();
+ 						_sort_itemsToSort.Remove(_sort_itemsToSort[k]);
+@@ -1556,7 +_,12 @@
+ 
  		for (int i = loopStartIndex; i < loopEndIndex; i++) {
  			Item item = inv[i];
- 			if (item.stack >= 1 && item.type == itemToRefill.type) {
+-			if (item.stack >= 1 && item.type == itemToRefill.type && !item.favorited) {
++			if (item.stack >= 1 && item.type == itemToRefill.type) {
 +				if (!ItemLoader.TryStackItems(itemToRefill, inv[i], out int numTransfered))
 +					continue;
 +

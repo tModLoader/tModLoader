@@ -1,14 +1,13 @@
 --- src/TerrariaNetCore/Terraria/Item.cs
 +++ src/tModLoader/Terraria/Item.cs
-@@ -1,6 +_,7 @@
+@@ -1,5 +_,6 @@
  using System;
- using System.Collections.Generic;
  using System.IO;
 +using System.Linq;
  using Microsoft.Xna.Framework;
  using Terraria.Audio;
  using Terraria.DataStructures;
-@@ -13,12 +_,14 @@
+@@ -10,12 +_,14 @@
  using Terraria.GameContent.UI;
  using Terraria.Graphics.Shaders;
  using Terraria.ID;
@@ -19,12 +18,12 @@
  
  namespace Terraria;
  
--public class Item : Entity
+-public class Item : IEntitySourceTarget
 +public partial class Item : Entity
  {
- 	private string _nameOverride;
- 	public const int luckPotionDuration1 = 18000;
-@@ -37,78 +_,473 @@
+ 	public int width;
+ 	public int height;
+@@ -40,69 +_,473 @@
  	private readonly int eclipsePrice = sellPrice(0, 7, 50);
  	private readonly int eclipsePostPlanteraPrice = sellPrice(0, 10);
  	private readonly int eclipseMothronPrice = sellPrice(0, 12, 50);
@@ -53,6 +52,7 @@
 +	/// <br/><br/> This value is never changed. For creating a Philosopher's Stone-like item, For creating a Philosopher's Stone-like item, see <see cref="Player.pStone"/> and <see cref="Player.PotionDelayModifier"/>.
 +	/// </summary>
  	public static int restorationDelay = 2700;
+-	public static int eggnogDelay = 2400;
 +
 +	/// <summary>
 +	/// The default cooldown, in ticks, of Mushrooms.
@@ -121,20 +121,20 @@
 +	/// Usually set to 100 (approximately 1.666... seconds) whenever an item is dropped.<br/>
 +	/// Set to 0 whenever an item drops from a projectile.<br/>
 +	/// </summary>
- 	public int noGrabDelay;
++	public int noGrabDelay;
 +
 +	/// <summary>
 +	/// If true, then this item is currently being grabbed by a player.<br/>
 +	/// Items being grabbed by the player cannot combine with nearby items, be picked up by enemies, burn in lava, or despawn.<br/>
 +	/// </summary>
- 	public bool beingGrabbed;
++	public bool beingGrabbed;
 +
 +	/// <summary>
 +	/// A value that increases every tick an item is in the world.<br/>
 +	/// Defaults to the value in <see cref="ItemID.Sets.OverflowProtectionTimeOffset"/> when an item is created, and increases by <see cref="ItemID.Sets.ItemSpawnDecaySpeed"/> every tick.<br/>
 +	/// When creating new items, items with a high <c>timeSinceItemSpawned</c> value will be replaced if no empty item slots are available.<br/>
 +	/// </summary>
- 	public int timeSinceItemSpawned;
++	public int timeSinceItemSpawned;
 +
 +	/// <summary>
 +	/// The numerical ID of the item this item consumes when used.<br/>
@@ -156,6 +156,7 @@
 +	/// Defaults to -1.<br/>
 +	/// </summary>
  	public int tooltipContext = -1;
+-	public int tooltipSlot = -1;
 -	public byte dye;
 +
 +	/// <summary>
@@ -181,30 +182,30 @@
 +	/// Defaults to 0.<br/>
 +	/// </summary>
  	public int bait;
+-	public short makeNPC;
 +
 +	/// <summary>
 +	/// The additional distance, in pixels, that coins may be grabbed from if the player has the Gold Ring or its upgrades (<see cref="Player.goldRing"/>).<br/>
 +	/// Applies to <see cref="ItemID.CopperCoin"/>, <see cref="ItemID.SilverCoin"/>, <see cref="ItemID.GoldCoin"/>, and <see cref="ItemID.PlatinumCoin"/>.<br/>
 +	/// </summary>
- 	public static int coinGrabRange = 350;
++	public static int coinGrabRange = 350;
 +
 +	/// <summary>
 +	/// The additional distance, in pixels, that mana stars may be grabbed from if the player has the Celestial Magnet or its upgrades (<see cref="Player.manaMagnet"/>).<br/>
 +	/// Applies to <see cref="ItemID.Star"/>, <see cref="ItemID.SoulCake"/>, and <see cref="ItemID.SugarPlum"/>.<br/>
 +	/// </summary>
- 	public static int manaGrabRange = 300;
++	public static int manaGrabRange = 300;
 +
 +	/// <summary>
 +	/// The additional distance, in pixels, that mana stars may be grabbed from if the player has consumed a Heartreach Potion (<see cref="Player.lifeMagnet"/>).<br/>
 +	/// Applies to <see cref="ItemID.Heart"/>, <see cref="ItemID.CandyApple"/>, and <see cref="ItemID.CandyCane"/>.<br/>
 +	/// </summary>
- 	public static int lifeGrabRange = 250;
++	public static int lifeGrabRange = 250;
 +
 +	/// <summary>
 +	/// The additional distance, in pixels, that items may be grabbed from if the player has equipped a Treasure Magnet (<see cref="Player.treasureMagnet"/>).<br/>
 +	/// </summary>
- 	public static int treasureGrabRange = 150;
--	public short makeNPC;
++	public static int treasureGrabRange = 150;
 +
 +	/// <summary>
 +	/// The numerical ID of the NPC that this item creates when used.<br/>
@@ -271,11 +272,11 @@
 +	/// - <see cref="MessageID.InstancedItem"/><br/>
 +	/// Defaults to <see langword="false"/>.<br/>
 +	/// </summary>
- 	public bool instanced;
- 	public int ownIgnore = -1;
- 	public int ownTime;
- 	public int keepTime;
- 	public int timeLeftInWhichTheItemCannotBeTakenByEnemies;
++	public bool instanced;
++	public int ownIgnore = -1;
++	public int ownTime;
++	public int keepTime;
++	public int timeLeftInWhichTheItemCannotBeTakenByEnemies;
 +
 +	/// <summary>
 +	/// The Item ID of this item. The Item ID is a unique number assigned to each Item loaded into the game. This will be equal to either an <see cref="ItemID"/> entry or <see cref="ModContent.ItemType{T}"/>, for example <see cref="ItemID.IronskinPotion"/> or ModContent.ItemType&lt;MyModItem&gt;(). To check if an Item instance is a specific Item, check <c>Item.type == ItemID.VanillaItemHere</c> or <c>Item.type == ModContent.ItemType&lt;ModdedItemHere&gt;()</c> in an <see langword="if"/> statement.
@@ -466,6 +467,7 @@
 +	/// </summary>
  	public float scale = 1f;
 -	public LegacySoundStyle UseSound;
+-	public float useSoundPitch;
 +
 +	/// <summary>
 +	/// The sound this item makes when used. Set this to an existing <see cref="SoundID"/> entry or assign to a new <see cref="SoundStyle"/> for a custom sound.
@@ -502,10 +504,11 @@
  	public sbyte handOnSlot = -1;
  	public sbyte handOffSlot = -1;
  	public sbyte backSlot = -1;
-@@ -121,49 +_,272 @@
+@@ -115,49 +_,272 @@
  	public sbyte faceSlot = -1;
  	public sbyte balloonSlot = -1;
  	public sbyte beardSlot = -1;
+-	public sbyte voiceSlot;
 +	*/
 +	/// <summary>
 +	/// The equipment slot for this item (See the entry in <see cref="ArmorIDs"/> for this EquipType). When this item is equipped, the corresponding <see cref="Player"/> field will be set to this value (for example, item.faceSlot will set player.face) and the corresponding equipment texture will be displayed on the player.
@@ -538,7 +541,7 @@
  	public int stringColor;
  	public ItemTooltip ToolTip;
  	public string BestiaryNotes;
- 	public int playerIndexTheItemIsReservedFor = 255;
++	public int playerIndexTheItemIsReservedFor = 255;
 +
 +	/// <summary>
 +	/// Indicates the rarity of an item. Assign to a <see cref="ItemRarityID"/> value. Vanilla values range from -1 to 13.
@@ -613,7 +616,7 @@
 +	/// <br/> Defaults to <see langword="false"/>.
 +	/// </summary>
  	public bool noMelee;
- 	public int timeSinceTheItemHasBeenReservedForSomeone;
++	public int timeSinceTheItemHasBeenReservedForSomeone;
 +
 +	/// <summary>
 +	/// The number of copper coins this item is worth (aka, cost to buy from a merchant). Setting it to <c>10462</c> would mean the item cost 1 gold, 4 silver, and 62 copper. The sell price of an item is one fifth of its value. Value also influences reforge costs with the goblin tinkerer.
@@ -703,7 +706,7 @@
 +	/// Defaults to <see langword="false"/>.<br/>
 +	/// </summary>
  	public bool DD2Summon;
- 	public int netID;
++	public int netID;
 +
 +	/// <summary>
 +	/// The base critical chance for this item. Remember that the player has a base crit chance of 4.
@@ -711,6 +714,8 @@
 +	/// <br/> Defaults to 0
 +	/// </summary>
  	public int crit;
+-	public int armorPenetration;
+-	public int bonusTagDamage;
 -	public byte prefix;
 -	public bool melee;
 -	public bool magic;
@@ -780,9 +785,9 @@
  	[Old("This is used to allow items to be discerned as vanity even if they didn't have visual slots to poll against")]
  	public bool hasVanityEffects;
  	private const int foodWidth = 22;
-@@ -173,8 +_,30 @@
- 	public bool shimmered;
- 	public float shimmerTime;
+@@ -169,8 +_,30 @@
+ 
+ 	public bool active => type != 0;
  
 +	// EntryFilter complains if item doesn't have a parameterless constructor (even when the parameter is optional).
 +	public Item() { }
@@ -811,7 +816,7 @@
  	public string HoverName {
  		get {
  			string text = AffixName();
-@@ -185,6 +_,9 @@
+@@ -181,6 +_,9 @@
  		}
  	}
  
@@ -821,10 +826,12 @@
  	public bool PaintOrCoating {
  		get {
  			if (paint <= 0)
-@@ -196,12 +_,24 @@
+@@ -190,12 +_,26 @@
+ 		}
+ 	}
  
- 	public bool FitsAccessoryVanitySlot => true;
- 
++	public bool FitsAccessoryVanitySlot => true;
++
 +	/*
  	public int OriginalRarity => ContentSamples.ItemsByType[type].rare;
  
@@ -846,10 +853,19 @@
  	public ItemVariant Variant { get; private set; }
  
  	public bool IsACoin {
-@@ -254,12 +_,27 @@
+@@ -248,21 +_,27 @@
  		}
  	}
  
+-	public static string GetHoverName(Item item, int stack)
+-	{
+-		string text = item.AffixName();
+-		if (stack > 1)
+-			text = text + " (" + stack + ")";
+-
+-		return text;
+-	}
+-
 +	/// <summary>
 +	/// Begins caching items spawns for a given item type (<see cref="Item.type"/>).
 +	/// <br/> Cached item types will not be spawned into the world when created with Item.NewItem().
@@ -874,7 +890,7 @@
  	public static void DropCache(IEntitySource reason, Vector2 pos, Vector2 spread, int t, bool stopCaching = true)
  	{
  		if (cachedItemSpawnsByType[t] == -1)
-@@ -279,12 +_,26 @@
+@@ -282,19 +_,66 @@
  		}
  	}
  
@@ -888,7 +904,9 @@
 +	*/
 +	internal IEntitySource GetItemSource_Misc(int itemSourceId) => GetSource_Misc(context: ItemSourceID.ToContextString(itemSourceId));
 +
- 	public override string ToString() => $"{{Name: \"{Name}\" NetID: {netID} Stack: {stack}";
+-	public override string ToString() => $"Name: \"{Name}\" Type: {type} Stack: {stack}";
++	public override string ToString() => $"{{Name: \"{Name}\" NetID: {netID} Stack: {stack}";
+-	public bool CanHavePrefixes() => GetRollablePrefixes() != null;
  
 +	/// <summary>
 +	/// Determines if this <see cref="Item"/> can receive prefixes.
@@ -896,17 +914,17 @@
 +	/// <returns>
 +	/// <see langword="true"/> if this <see cref="Item"/> is allowed to receive prefixes, <see langword="false"/> otherwise.
 +	/// </returns>
--	private bool CanHavePrefixes()
 +	public bool CanHavePrefixes()
- 	{
++	{
 +		/*
- 		if (type != 0 && maxStack == 1) {
- 			if (damage <= 0)
- 				return accessory;
-@@ -293,8 +_,36 @@
- 		}
- 
- 		return false;
++		if (type != 0 && maxStack == 1) {
++			if (damage <= 0)
++				return accessory;
++
++			return true;
++		}
++
++		return false;
 +		*/
 +
 +		return type != 0
@@ -914,8 +932,8 @@
 +			&& (maxStack == 1 || AllowReforgeForStackableItem)
 +			&& ammo == 0
 +			&& (damage > 0 || IsAPrefixableAccessory());
- 	}
- 
++	}
++
 +	/// <summary>
 +	/// Attempts to apply a prefix to this <see cref="Item"/>.
 +	/// </summary>
@@ -939,11 +957,27 @@
 +	/// </returns>
  	public bool Prefix(int prefixWeWant)
  	{
- 		if (!WorldGen.gen && Main.rand == null)
-@@ -306,7 +_,19 @@
+-		bool rolledPrefixIsTopTier;
+-		return Prefix(prefixWeWant, out rolledPrefixIsTopTier);
+-	}
+-
+-	public bool Prefix(int prefixWeWant, out bool rolledPrefixIsTopTier)
+-	{
+ 		if (!WorldGen.isGeneratingOrLoadingWorld && Main.rand == null)
+ 			Main.rand = new UnifiedRandom();
+ 
+@@ -305,14 +_,19 @@
  		if (!CanHavePrefixes())
  			return false;
  
+-		if (prefixWeWant == -3)
+-			return true;
+-
+-		float num = 0f;
+-		if (prefixWeWant == -2 || prefixWeWant == -1)
+-			num = BestPrefixValue();
+-
+-		UnifiedRandom unifiedRandom = (WorldGen.isGeneratingOrLoadingWorld ? WorldGen.genRand : Main.rand);
 +		if (prefixWeWant > 0 && !CanApplyPrefix(prefixWeWant))
 +			return false;
 +
@@ -951,7 +985,7 @@
 +		if (prefixWeWant == -1 && maxStack > 1)
 +			return false;
 +
- 		UnifiedRandom unifiedRandom = (WorldGen.gen ? WorldGen.genRand : Main.rand);
++		UnifiedRandom unifiedRandom = (WorldGen.gen ? WorldGen.genRand : Main.rand);
 +
 +		bool? applyPrefixOverride = ItemLoader.PrefixChance(this, prefixWeWant, unifiedRandom);
 +		if (applyPrefixOverride is false)
@@ -960,7 +994,7 @@
  		int rolledPrefix = prefixWeWant;
  		float dmg = 1f;
  		float kb = 1f;
-@@ -318,12 +_,20 @@
+@@ -327,20 +_,32 @@
  		bool flag = true;
  		while (flag) {
  			flag = false;
@@ -981,30 +1015,40 @@
  			if ((rolledPrefix == -1 || rolledPrefix == -2 || rolledPrefix == -3) && !RollAPrefix(unifiedRandom, ref rolledPrefix))
  				return false;
  
-@@ -331,8 +_,9 @@
- 				case -3:
- 					return true;
- 				case -1:
+-			if (prefixWeWant == -1 && PrefixID.Sets.ReducedNaturalChance[rolledPrefix] && unifiedRandom.Next(3) != 0)
+-				rolledPrefix = 0;
+-
+-			if (prefixWeWant == -4)
+-				rolledPrefix = 0;
++			switch (prefixWeWant) {
++				case -3:
++					return true;
++				case -1:
 +					if (applyPrefixOverride is true) { } else
- 					if (PrefixID.Sets.ReducedNaturalChance[rolledPrefix] && unifiedRandom.Next(3) != 0)
--						rolledPrefix = 0;
++					if (PrefixID.Sets.ReducedNaturalChance[rolledPrefix] && unifiedRandom.Next(3) != 0)
 +						return true; //rolledPrefix = 0;
- 					break;
- 			}
++					break;
++			}
  
-@@ -347,6 +_,8 @@
+ 			if (!TryGetPrefixStatMultipliersForItem(rolledPrefix, out dmg, out kb, out spd, out size, out shtspd, out mcst, out crt, out tagdmg, out arpen, out num2)) {
+ 				flag = true;
+@@ -353,7 +_,8 @@
  			}
  		}
  
+-		rolledPrefixIsTopTier = num2 == num;
 +		UndoItemAnimationCompensations();
 +
  		damage = (int)Math.Round((float)damage * dmg);
  		useAnimation = (int)Math.Round((float)useAnimation * spd);
  		useTime = (int)Math.Round((float)useTime * spd);
-@@ -356,6 +_,13 @@
+@@ -363,9 +_,32 @@
  		scale *= size;
  		shootSpeed *= shtspd;
  		crit += crt;
+-		bonusTagDamage += tagdmg;
+-		armorPenetration += arpen;
+-		if ((double)num2 >= 1.2)
 +
 +		if (rolledPrefix >= PrefixID.Count)
 +			PrefixLoader.GetPrefix(rolledPrefix)?.Apply(this);
@@ -1012,23 +1056,30 @@
 +
 +		ApplyItemAnimationCompensationsToVanillaItems();
 +
- 		float num = 1f * dmg * (2f - spd) * (2f - mcst) * size * kb * shtspd * (1f + (float)crt * 0.02f);
- 		if (rolledPrefix == 62 || rolledPrefix == 69 || rolledPrefix == 73 || rolledPrefix == 77)
- 			num *= 1.05f;
-@@ -369,6 +_,11 @@
- 		if (rolledPrefix == 65 || rolledPrefix == 72 || rolledPrefix == 76 || rolledPrefix == 80 || rolledPrefix == 68)
- 			num *= 1.2f;
- 
++		float num = 1f * dmg * (2f - spd) * (2f - mcst) * size * kb * shtspd * (1f + (float)crt * 0.02f);
++		if (rolledPrefix == 62 || rolledPrefix == 69 || rolledPrefix == 73 || rolledPrefix == 77)
++			num *= 1.05f;
++
++		if (rolledPrefix == 63 || rolledPrefix == 70 || rolledPrefix == 74 || rolledPrefix == 78 || rolledPrefix == 67)
++			num *= 1.1f;
++
++		if (rolledPrefix == 64 || rolledPrefix == 71 || rolledPrefix == 75 || rolledPrefix == 79 || rolledPrefix == 66)
++			num *= 1.15f;
++
++		if (rolledPrefix == 65 || rolledPrefix == 72 || rolledPrefix == 76 || rolledPrefix == 80 || rolledPrefix == 68)
++			num *= 1.2f;
++
 +		if (rolledPrefix >= PrefixID.Count)
 +			PrefixLoader.GetPrefix(rolledPrefix)?.ModifyValue(ref num);
 +
 +		int baseRarity = rare;
 +
- 		if ((double)num >= 1.2)
++		if ((double)num >= 1.2)
  			rare += 2;
- 		else if ((double)num >= 1.05)
-@@ -378,25 +_,37 @@
- 		else if ((double)num <= 0.95)
+ 		else if ((double)num2 >= 1.05)
+ 			rare++;
+@@ -374,22 +_,37 @@
+ 		else if ((double)num2 <= 0.95)
  			rare--;
  
 +		if (baseRarity >= ItemRarityID.Count)
@@ -1046,8 +1097,10 @@
 +				rare = RarityLoader.RarityCount - 1;
  		}
  
- 		num *= num;
- 		value = (int)((float)value * num);
+-		num2 *= num2;
++		num *= num;
+-		value = (int)((float)value * num2);
++		value = (int)((float)value * num);
 -		prefix = (byte)rolledPrefix;
 +		prefix = rolledPrefix;
  		return true;
@@ -1061,14 +1114,14 @@
 +	/// <remarks>Just because a prefix can be rolled does not mean it can be applied -- use <see cref="CanApplyPrefix(int)"/> to check for that.</remarks>
  	public bool CanRollPrefix(int prefix)
  	{
- 		if (!CanHavePrefixes())
- 			return false;
- 
++		if (!CanHavePrefixes())
++			return false;
++
 +		/*
  		int[] rollablePrefixes = GetRollablePrefixes();
  		if (rollablePrefixes == null)
  			return false;
-@@ -407,8 +_,16 @@
+@@ -400,9 +_,17 @@
  		}
  
  		return false;
@@ -1077,15 +1130,17 @@
 +		return PrefixLoader.CanRoll(this, prefix);
  	}
  
+-	public int GetVisualCritChance(Player player)
 +	/// <summary>
 +	/// Determines if this <see cref="Item"/> can receive the given prefix.
 +	/// </summary>
 +	/// <param name="prefix">The <see cref="PrefixID"/> to check.</param>
 +	/// <returns><see langword="true"/> if this <see cref="Item"/> can roll the given prefix (<see cref="CanRollPrefix(int)"/>) and if the applied prefix does not fail to modify any stat values.</returns>
- 	public bool CanApplyPrefix(int prefix)
++	public bool CanApplyPrefix(int prefix)
  	{
- 		if (!CanRollPrefix(prefix))
-@@ -706,6 +_,13 @@
+ 		int num = crit;
+ 		if (type == 2269 && player.revolverCritChanceBonus > 0)
+@@ -792,6 +_,13 @@
  				dmg = 1.05f;
  				crt = 2;
  				break;
@@ -1098,18 +1153,34 @@
 +				break;
  		}
  
- 		if (dmg != 1f && Math.Round((float)damage * dmg) == (double)damage)
-@@ -723,7 +_,8 @@
+ 		value = 1f * dmg * (2f - spd) * (2f - mcst) * size * kb * shtspd * (1f + (float)crt * 0.02f) * (1f + (float)arpen * 0.015f) * (1f + (float)tagdmg * 0.03f);
+@@ -822,23 +_,8 @@
  		return true;
  	}
  
-+	//TML: Made internal.
+-	public float BestPrefixValue()
+-	{
+-		int[] rollablePrefixes = GetRollablePrefixes();
+-		if (rollablePrefixes == null)
+-			return 0f;
+-
+-		float num = 0f;
+-		int[] array = rollablePrefixes;
+-		foreach (int rolledPrefix in array) {
+-			if (TryGetPrefixStatMultipliersForItem(rolledPrefix, out var _, out var _, out var _, out var _, out var _, out var _, out var _, out var _, out var _, out var val))
+-				num = Math.Max(num, val);
+-		}
+-
+-		return num;
+-	}
+-
 -	public int[] GetRollablePrefixes()
++	//TML: Made internal.
 +	internal int[] GetRollablePrefixes()
  	{
  		_ = type;
  		if (PrefixLegacy.ItemSets.SwordsHammersAxesPicks[type])
-@@ -750,16 +_,66 @@
+@@ -868,16 +_,66 @@
  		return null;
  	}
  
@@ -1176,48 +1247,73 @@
  	public bool IsAPrefixableAccessory()
  	{
  		if (accessory && !vanity)
-@@ -768,6 +_,10 @@
+@@ -886,7 +_,11 @@
  		return false;
  	}
  
+-	public bool CanBeEquipped()
 +	/// <summary>
 +	/// Gets the localized name of this <see cref="Item"/> including its prefix.
 +	/// </summary>
 +	/// <returns>The localized name of this <see cref="Item"/> including its prefix, or simply <see cref="Name"/> if the prefix doesn't exist or is an empty string.</returns>
- 	public string AffixName()
++	public string AffixName()
  	{
- 		if (prefix < 0 || prefix >= Lang.prefix.Length)
-@@ -789,8 +_,14 @@
- 			ToolTip = Lang.GetTooltip(netID);
- 	}
+ 		if (headSlot < 0 && bodySlot < 0 && legSlot < 0 && !accessory && (shoot <= 0 || !Main.projHook[shoot]) && mountType < 0) {
+ 			if (buffType > 0) {
+@@ -908,29 +_,31 @@
+ 		if (flag.HasValue)
+ 			return flag.Value;
  
+-		if (!consumable) {
+-			if (useStyle == 0)
+-				return CanBeEquipped();
 +	/// <summary>
 +	/// Gets this <see cref="Item"/>'s hitbox in the world. Equivalent to <see cref="Entity.Hitbox"/>.
 +	/// </summary>
 +	/// <returns>This <see cref="Item"/>'s hitbox in the world.</returns>
- 	public Rectangle getRect() => new Rectangle((int)position.X, (int)position.Y, width, height);
++	public Rectangle getRect() => new Rectangle((int)position.X, (int)position.Y, width, height);
  
 +	// Removed in favor of UpdateWhichItemsAreMaterials logic
 +	/*
- 	public bool checkMat()
- 	{
- 		if (type >= 71 && type <= 74) {
-@@ -839,9 +_,11 @@
- 
- 				material = false;
- 				return false;
-+				// Extra patch context.
- 			}
++	public bool checkMat()
++	{
++		if (type >= 71 && type <= 74) {
++			material = false;
+-			return true;
++			return false;
  		}
+ 
+ 		return false;
  	}
+ 
+-	public string AffixName()
+-	{
+-		if (prefix <= 0 || prefix >= Lang.prefix.Length)
+-			return Name;
+-
+-		return Lang.GetPrefixedItemName(type, prefix);
+-	}
+-
+-	public void RebuildTooltip()
+-	{
+-		if (type >= 0)
+-			ToolTip = Lang.GetTooltip(type);
+-	}
++				material = false;
++				return false;
++				// Extra patch context.
++			}
++		}
++	}
 +	*/
  
  	public void netDefaults(int type)
  	{
-@@ -998,8 +_,20 @@
+@@ -1087,10 +_,47 @@
  		}
  	}
  
+-	public bool FitsAmmoSlot()
 +	/// <summary>
 +	/// Converts a banner ID into the equivalent item type (<see cref="Item.type"/>).
 +	/// </summary>
@@ -1227,101 +1323,1089 @@
 +	/// <br/> <strong>This method will return the wrong item type if <paramref name="banner"/> is not a valid banner ID.</strong>
 +	/// </returns>
 +	/// <remarks>You can get the banner ID of an NPC using <see cref="NPCtoBanner(int)"/>.</remarks>
- 	public static int BannerToItem(int banner)
++	public static int BannerToItem(int banner)
  	{
+-		if ((type != 0 && ammo <= 0 && bait <= 0 && type != 530 && type != 849 && !PaintOrCoating) || notAmmo)
+-			return type == 353;
 +		if (NPCLoader.bannerToItem.TryGetValue(banner, out int result))
 +			return result;
 +
- 		int num = 0;
- 		if (banner == 289)
- 			return 5352;
-@@ -1037,6 +_,11 @@
- 		return 1615 + banner - 1;
++		int num = 0;
++		if (banner == 289)
++			return 5352;
++
++		if (banner >= 276)
++			return 4965 + banner - 276;
++
++		if (banner >= 274)
++			return 4687 + banner - 274;
++
++		if (banner == 273)
++			return 4602;
++
++		if (banner >= 267)
++			return 4541 + banner - 267;
++
++		if (banner >= 257)
++			return 3837 + banner - 257;
++
++		if (banner >= 252)
++			return 3789 + banner - 252;
++
++		if (banner == 251)
++			return 3780;
++
++		if (banner >= 249)
++			return 3593 + banner - 249;
+ 
+ 		return true;
+ 	}
+@@ -1103,7 +_,12 @@
+ 		return false;
  	}
  
+-	public void SetDefaults1(int type)
 +	/// <summary>
 +	/// Converts an NPC type (<see cref="NPC.type"/>) into the equivalent banner ID.
 +	/// </summary>
 +	/// <param name="i">The NPC type to convert.</param>
 +	/// <returns>The banner ID associated with the given NPC type, or <c>0</c> if the NPC type has no associated banner.</returns>
- 	public static int NPCtoBanner(int i)
++	public static int NPCtoBanner(int i)
  	{
- 		switch (i) {
-@@ -1771,15 +_,25 @@
- 				return 286;
- 			case 176:
- 				return 287;
+ 		switch (type) {
+ 			case 1:
+@@ -1219,16 +_,483 @@
+ 				value = 50;
+ 				break;
+ 			case 9:
+-				useStyle = 1;
+-				useTurn = true;
+-				useAnimation = 15;
+-				useTime = 10;
+-				autoReuse = true;
+-				consumable = true;
+-				createTile = 30;
+-				width = 8;
+-				height = 10;
+-				break;
++				return 104;
++			case 285:
++			case 286:
++				return 105;
++			case 52:
++				return 106;
++			case 71:
++				return 107;
++			case 288:
++				return 108;
++			case 350:
++				return 109;
++			case 347:
++				return 110;
++			case 251:
++				return 111;
++			case 352:
++				return 112;
++			case 316:
++				return 113;
++			case 93:
++				return 114;
++			case 289:
++				return 115;
++			case 152:
++				return 116;
++			case 342:
++				return 117;
++			case 111:
++				return 118;
++			case 315:
++				return 120;
++			case 277:
++			case 278:
++			case 279:
++			case 280:
++				return 121;
++			case 329:
++				return 122;
++			case 304:
++				return 123;
++			case 150:
++				return 124;
++			case 243:
++				return 125;
++			case 147:
++				return 126;
++			case 268:
++				return 127;
++			case 137:
++				return 128;
++			case 138:
++				return 129;
++			case 51:
++				return 130;
++			case 351:
++				return 132;
++			case 219:
++				return 133;
++			case 151:
++				return 134;
++			case 59:
++				return 135;
++			case 381:
++				return 136;
++			case 388:
++				return 137;
++			case 386:
++				return 138;
++			case 389:
++				return 139;
++			case 385:
++				return 140;
++			case 383:
++			case 384:
++				return 141;
++			case 382:
++				return 142;
++			case 390:
++				return 143;
++			case 387:
++				return 144;
++			case 144:
++				return 145;
++			case -5:
++			case 16:
++				return 146;
++			case 283:
++			case 284:
++				return 147;
++			case 348:
++			case 349:
++				return 148;
++			case 290:
++				return 149;
++			case 148:
++			case 149:
++				return 150;
++			case -4:
++				return 151;
++			case 330:
++				return 152;
++			case 140:
++				return 153;
++			case 341:
++				return 154;
++			case 281:
++			case 282:
++				return 156;
++			case 244:
++				return 157;
++			case 301:
++				return 158;
++			case 172:
++				return 160;
++			case 269:
++			case 270:
++			case 271:
++			case 272:
++				return 161;
++			case 305:
++			case 306:
++			case 307:
++			case 308:
++			case 309:
++			case 310:
++			case 311:
++			case 312:
++			case 313:
++			case 314:
++				return 162;
++			case 391:
++				return 163;
++			case 110:
++				return 164;
++			case 293:
++				return 165;
++			case 291:
++				return 166;
++			case -2:
++			case 121:
++				return 167;
++			case 56:
++				return 168;
++			case 145:
++				return 169;
++			case 143:
++				return 170;
++			case 184:
++				return 171;
++			case 204:
++				return 172;
++			case 326:
++				return 173;
++			case 221:
++				return 174;
++			case 292:
++				return 175;
++			case 53:
++				return 176;
++			case 45:
++			case 665:
++				return 177;
++			case 44:
++				return 178;
++			case 167:
++				return 179;
++			case 380:
++				return 180;
++			case 343:
++				return 184;
++			case 338:
++			case 339:
++			case 340:
++				return 185;
++			case -6:
++				return 90;
++			case -3:
++				return 119;
++			case -10:
++				return 131;
++			case -7:
++				return 155;
++			case -8:
++				return 159;
++			case -9:
++				return 183;
++			case 471:
++			case 472:
++				return 186;
++			case 498:
++			case 499:
++			case 500:
++			case 501:
++			case 502:
++			case 503:
++			case 504:
++			case 505:
++			case 506:
++				return 187;
++			case 496:
++			case 497:
++				return 188;
++			case 494:
++			case 495:
++				return 189;
++			case 462:
++				return 190;
++			case 461:
++				return 191;
++			case 468:
++				return 192;
++			case 477:
++			case 478:
++			case 479:
++				return 193;
++			case 469:
++				return 195;
++			case 460:
++				return 196;
++			case 466:
++				return 197;
++			case 467:
++				return 198;
++			case 463:
++				return 199;
++			case 480:
++				return 201;
++			case 481:
++				return 202;
++			case 483:
++				return 203;
++			case 482:
++				return 204;
++			case 489:
++				return 205;
++			case 490:
++				return 206;
++			case 513:
++			case 514:
++			case 515:
++				return 207;
++			case 510:
++			case 511:
++			case 512:
++				return 208;
++			case 509:
++			case 581:
++				return 209;
++			case 508:
++			case 580:
++				return 210;
++			case 524:
++			case 525:
++			case 526:
++			case 527:
++				return 211;
++			case 528:
++			case 529:
++				return 212;
++			case 533:
++				return 213;
++			case 532:
++				return 214;
++			case 530:
++			case 531:
++				return 215;
++			case 411:
++				return 216;
++			case 402:
++			case 403:
++			case 404:
++				return 217;
++			case 407:
++			case 408:
++				return 218;
++			case 409:
++			case 410:
++				return 219;
++			case 406:
++				return 220;
++			case 405:
++				return 221;
++			case 418:
++				return 222;
++			case 417:
++				return 223;
++			case 412:
++			case 413:
++			case 414:
++				return 224;
++			case 416:
++			case 518:
++				return 225;
++			case 415:
++			case 516:
++				return 226;
++			case 419:
++				return 227;
++			case 424:
++				return 228;
++			case 421:
++				return 229;
++			case 420:
++				return 230;
++			case 423:
++				return 231;
++			case 428:
++				return 232;
++			case 426:
++				return 233;
++			case 427:
++				return 234;
++			case 429:
++				return 235;
++			case 425:
++				return 236;
++			case 216:
++				return 237;
++			case 214:
++				return 238;
++			case 213:
++				return 239;
++			case 215:
++				return 240;
++			case 520:
++				return 241;
++			case 156:
++				return 242;
++			case 64:
++				return 243;
++			case 103:
++				return 244;
++			case 79:
++				return 245;
++			case 80:
++				return 246;
++			case 31:
++			case 294:
++			case 295:
++			case 296:
++				return 247;
++			case 154:
++				return 248;
++			case 537:
++				return 249;
++			case 220:
++				return 250;
++			case 541:
++				return 251;
++			case 542:
++				return 252;
++			case 543:
++				return 253;
++			case 544:
++				return 254;
++			case 545:
++				return 255;
++			case 546:
++				return 256;
++			case 555:
++			case 556:
++			case 557:
++				return 257;
++			case 552:
++			case 553:
++			case 554:
++				return 258;
++			case 566:
++			case 567:
++				return 259;
++			case 570:
++			case 571:
++				return 260;
++			case 574:
++			case 575:
++				return 261;
++			case 572:
++			case 573:
++				return 262;
++			case 568:
++			case 569:
++				return 263;
++			case 558:
++			case 559:
++			case 560:
++				return 264;
++			case 561:
++			case 562:
++			case 563:
++				return 265;
++			case 578:
++				return 266;
++			case 536:
++				return 267;
++			case 586:
++				return 268;
++			case 587:
++				return 269;
++			case 619:
++				return 270;
++			case 621:
++			case 622:
++			case 623:
++				return 271;
++			case 620:
++				return 272;
++			case 618:
++				return 273;
++			case 628:
++				return 274;
++			case 624:
++				return 275;
++			case 631:
++				return 276;
++			case 630:
++				return 277;
++			case 635:
++				return 278;
++			case 634:
++				return 279;
++			case 582:
++				return 280;
++			case 464:
++				return 281;
++			case 465:
++				return 282;
++			case 470:
++				return 283;
++			case 473:
++				return 284;
++			case 474:
++				return 285;
++			case 475:
++				return 286;
++			case 176:
++				return 287;
 +			// Extra patch context.
- 			case 133:
- 				return 288;
- 			case 676:
- 				return 289;
- 			default:
++			case 133:
++				return 288;
++			case 676:
++				return 289;
++			default:
 +				if (i >= NPCID.Count) // in NPCtoBanner method
 +					return NPCLoader.GetNPC(i).Banner;
 +
- 				return 0;
- 		}
- 	}
- 
++				return 0;
++		}
++	}
++
 +	/// <summary>
 +	/// Converts a BannerID into the equivalent NPC type (<see cref="NPC.type"/>). Used to determine a single NPC type from a BannerID for display purposes.
 +	/// Note that modded BannerIDs are the same number as their NPC type, and those BannerIDs might not actually be used.
 +	/// </summary>
 +	/// <param name="i">The banner ID to convert.</param>
 +	/// <returns>The NPC type associated with the given banner ID, or <see cref="NPCID.None"/> for an invalid banner ID.</returns>
- 	public static int BannerToNPC(int i)
- 	{
- 		switch (i) {
-@@ -2347,11 +_,15 @@
- 				return 475;
- 			case 287:
- 				return 176;
++	public static int BannerToNPC(int i)
++	{
++		switch (i) {
++			case 1:
++				return 102;
++			case 2:
++				return 250;
++			case 3:
++				return 257;
++			case 4:
++				return 69;
++			case 5:
++				return 157;
++			case 6:
++				return 77;
++			case 7:
++				return 49;
++			case 8:
++				return 74;
++			case 9:
++				return 163;
+ 			case 10:
+ 				useStyle = 1;
+ 				useTurn = true;
+@@ -1498,6 +_,536 @@
+ 				value = 300;
+ 				break;
+ 			case 34:
++				return 162;
++			case 35:
++				return 259;
++			case 36:
++				return 256;
++			case 37:
++				return 122;
++			case 38:
++				return 27;
++			case 39:
++				return 29;
++			case 40:
++				return 26;
++			case 41:
++				return 73;
++			case 42:
++				return 28;
++			case 43:
++				return 55;
++			case 44:
++				return 48;
++			case 45:
++				return 60;
++			case 46:
++				return 174;
++			case 47:
++				return 42;
++			case 48:
++				return 169;
++			case 49:
++				return 206;
++			case 50:
++				return 24;
++			case 51:
++				return 63;
++			case 52:
++				return 236;
++			case 53:
++				return 199;
++			case 54:
++				return 43;
++			case 55:
++				return 23;
++			case 56:
++				return 205;
++			case 57:
++				return 78;
++			case 58:
++				return 258;
++			case 59:
++				return 252;
++			case 60:
++				return 170;
++			case 61:
++				return 58;
++			case 62:
++				return 212;
++			case 63:
++				return 75;
++			case 64:
++				return 223;
++			case 65:
++				return 253;
++			case 66:
++				return 65;
++			case 67:
++				return 21;
++			case 68:
++				return 32;
++			case 69:
++				return 1;
++			case 70:
++				return 185;
++			case 71:
++				return 164;
++			case 72:
++				return 254;
++			case 73:
++				return 166;
++			case 74:
++				return 153;
++			case 75:
++				return 141;
++			case 76:
++				return 225;
++			case 77:
++				return 86;
++			case 78:
++				return 158;
++			case 79:
++				return 61;
++			case 80:
++				return 196;
++			case 81:
++				return 104;
++			case 82:
++				return 155;
++			case 83:
++				return 98;
++			case 84:
++				return 10;
++			case 85:
++				return 82;
++			case 86:
++				return 87;
++			case 87:
++				return 3;
++			case 88:
++				return 175;
++			case 89:
++				return 197;
++			case 91:
++				return 273;
++			case 92:
++				return 379;
++			case 93:
++				return 438;
++			case 95:
++				return 287;
++			case 96:
++				return 101;
++			case 97:
++				return 217;
++			case 98:
++				return 168;
++			case 99:
++				return 81;
++			case 100:
++				return 94;
++			case 101:
++				return 183;
++			case 102:
++				return 34;
++			case 103:
++				return 218;
++			case 104:
++				return 7;
++			case 105:
++				return 285;
++			case 106:
++				return 52;
++			case 107:
++				return 71;
++			case 108:
++				return 288;
++			case 109:
++				return 350;
++			case 110:
++				return 347;
++			case 111:
++				return 251;
++			case 112:
++				return 352;
++			case 113:
++				return 316;
++			case 114:
++				return 93;
++			case 115:
++				return 289;
++			case 116:
++				return 152;
++			case 117:
++				return 342;
++			case 118:
++				return 111;
++			case 120:
++				return 315;
++			case 121:
++				return 277;
++			case 122:
++				return 329;
++			case 123:
++				return 304;
++			case 124:
++				return 150;
++			case 125:
++				return 243;
++			case 126:
++				return 147;
++			case 127:
++				return 268;
++			case 128:
++				return 137;
++			case 129:
++				return 138;
++			case 130:
++				return 51;
++			case 132:
++				return 351;
++			case 133:
++				return 219;
++			case 134:
++				return 151;
++			case 135:
++				return 59;
++			case 136:
++				return 381;
++			case 137:
++				return 388;
++			case 138:
++				return 386;
++			case 139:
++				return 389;
++			case 140:
++				return 385;
++			case 141:
++				return 383;
++			case 142:
++				return 382;
++			case 143:
++				return 390;
++			case 144:
++				return 387;
++			case 145:
++				return 144;
++			case 146:
++				return 16;
++			case 147:
++				return 283;
++			case 148:
++				return 348;
++			case 149:
++				return 290;
++			case 150:
++				return 148;
++			case 151:
++				return -4;
++			case 152:
++				return 330;
++			case 153:
++				return 140;
++			case 154:
++				return 341;
++			case 156:
++				return 281;
++			case 157:
++				return 244;
++			case 158:
++				return 301;
++			case 160:
++				return 172;
++			case 161:
++				return 269;
++			case 162:
++				return 305;
++			case 163:
++				return 391;
++			case 164:
++				return 110;
++			case 165:
++				return 293;
++			case 166:
++				return 291;
++			case 167:
++				return 121;
++			case 168:
++				return 56;
++			case 169:
++				return 145;
++			case 170:
++				return 143;
++			case 171:
++				return 184;
++			case 172:
++				return 204;
++			case 173:
++				return 326;
++			case 174:
++				return 221;
++			case 175:
++				return 292;
++			case 176:
++				return 53;
++			case 177:
++				return 45;
++			case 178:
++				return 44;
++			case 179:
++				return 167;
++			case 180:
++				return 380;
++			case 184:
++				return 343;
++			case 185:
++				return 338;
++			case 90:
++				return -6;
++			case 119:
++				return -3;
++			case 131:
++				return -10;
++			case 155:
++				return -7;
++			case 159:
++				return -8;
++			case 183:
++				return -9;
++			case 186:
++				return 471;
++			case 187:
++				return 498;
++			case 188:
++				return 496;
++			case 189:
++				return 494;
++			case 190:
++				return 462;
++			case 191:
++				return 461;
++			case 192:
++				return 468;
++			case 193:
++				return 477;
++			case 195:
++				return 469;
++			case 196:
++				return 460;
++			case 197:
++				return 466;
++			case 198:
++				return 467;
++			case 199:
++				return 463;
++			case 201:
++				return 480;
++			case 202:
++				return 481;
++			case 203:
++				return 483;
++			case 204:
++				return 482;
++			case 205:
++				return 489;
++			case 206:
++				return 490;
++			case 207:
++				return 513;
++			case 208:
++				return 510;
++			case 209:
++				return 581;
++			case 210:
++				return 580;
++			case 211:
++				return 524;
++			case 212:
++				return 529;
++			case 213:
++				return 533;
++			case 214:
++				return 532;
++			case 215:
++				return 530;
++			case 216:
++				return 411;
++			case 217:
++				return 402;
++			case 218:
++				return 407;
++			case 219:
++				return 409;
++			case 220:
++				return 406;
++			case 221:
++				return 405;
++			case 222:
++				return 418;
++			case 223:
++				return 417;
++			case 224:
++				return 412;
++			case 225:
++				return 416;
++			case 226:
++				return 415;
++			case 227:
++				return 419;
++			case 228:
++				return 424;
++			case 229:
++				return 421;
++			case 230:
++				return 420;
++			case 231:
++				return 423;
++			case 232:
++				return 428;
++			case 233:
++				return 426;
++			case 234:
++				return 427;
++			case 235:
++				return 429;
++			case 236:
++				return 425;
++			case 237:
++				return 216;
++			case 238:
++				return 214;
++			case 239:
++				return 213;
++			case 240:
++				return 215;
++			case 241:
++				return 520;
++			case 242:
++				return 156;
++			case 243:
++				return 64;
++			case 244:
++				return 103;
++			case 245:
++				return 79;
++			case 246:
++				return 80;
++			case 247:
++				return 31;
++			case 248:
++				return 154;
++			case 249:
++				return 537;
++			case 250:
++				return 220;
++			case 251:
++				return 541;
++			case 252:
++				return 542;
++			case 253:
++				return 543;
++			case 254:
++				return 544;
++			case 255:
++				return 545;
++			case 256:
++				return 546;
++			case 257:
++				return 555;
++			case 258:
++				return 552;
++			case 259:
++				return 566;
++			case 260:
++				return 570;
++			case 261:
++				return 574;
++			case 262:
++				return 572;
++			case 263:
++				return 568;
++			case 264:
++				return 558;
++			case 265:
++				return 561;
++			case 266:
++				return 578;
++			case 267:
++				return 536;
++			case 268:
++				return 586;
++			case 269:
++				return 587;
++			case 270:
++				return 619;
++			case 271:
++				return 621;
++			case 272:
++				return 620;
++			case 273:
++				return 618;
++			case 274:
++				return 628;
++			case 275:
++				return 624;
++			case 276:
++				return 631;
++			case 277:
++				return 630;
++			case 278:
++				return 635;
++			case 279:
++				return 634;
++			case 280:
++				return 582;
++			case 281:
++				return 464;
++			case 282:
++				return 465;
++			case 283:
++				return 470;
++			case 284:
++				return 473;
++			case 285:
++				return 474;
++			case 286:
++				return 475;
++			case 287:
++				return 176;
 +			// Extra patch context.
- 			case 288:
- 				return 133;
- 			case 289:
- 				return 676;
- 			default:
++			case 288:
++				return 133;
++			case 289:
++				return 676;
++			default:
 +				if (i >= NPCID.Count) // in BannerToNPC method
 +					return i;
 +
- 				return 0;
- 		}
- 	}
-@@ -3269,6 +_,7 @@
- 				consumable = true;
- 				createTile = 330;
- 				noMelee = true;
-+				material = false;
- 				break;
- 			case 72:
- 				width = 10;
-@@ -3289,6 +_,7 @@
- 				consumable = true;
- 				createTile = 331;
- 				noMelee = true;
-+				material = false;
- 				break;
- 			case 73:
- 				width = 10;
-@@ -3309,6 +_,7 @@
- 				consumable = true;
- 				createTile = 332;
- 				noMelee = true;
-+				material = false;
- 				break;
- 			case 74:
- 				width = 12;
-@@ -3329,6 +_,7 @@
- 				consumable = true;
- 				createTile = 333;
- 				noMelee = true;
-+				material = false;
- 				break;
- 			case 75:
- 				width = 18;
-@@ -7679,6 +_,8 @@
++				return 0;
++		}
++	}
++
++	public bool FitsAmmoSlot()
++	{
++		if ((type != 0 && ammo <= 0 && bait <= 0 && type != 530 && type != 849 && !PaintOrCoating) || notAmmo)
++			return type == 353;
++
++		return true;
++	}
++
++	public bool CanFillEmptyAmmoSlot()
++	{
++		if (bait <= 0 && !PaintOrCoating && type != 353 && type != 849 && type != 169 && type != 75 && type != 23 && type != 408 && type != 370 && type != 1246)
++			return !notAmmo;
++
++		return false;
++	}
++
++	public void SetDefaults1(int type)
++	{
++		switch (type) {
++			case 1:
+ 				useStyle = 1;
+ 				useTurn = true;
+ 				useAnimation = 15;
+@@ -6181,6 +_,8 @@
  				value = 300;
  				break;
  			case 434:
@@ -1330,7 +2414,7 @@
  				autoReuse = true;
  				useStyle = 5;
  				useAnimation = 12;
-@@ -8651,6 +_,8 @@
+@@ -7103,6 +_,8 @@
  				rare = 2;
  				break;
  			case 506:
@@ -1339,31 +2423,7 @@
  				useStyle = 5;
  				autoReuse = true;
  				useAnimation = 30;
-@@ -9158,6 +_,7 @@
- 					consumable = true;
- 					useAnimation = 45;
- 					useTime = 45;
-+					material = false;
- 				}
- 				maxStack = CommonMaxStack;
- 				rare = 3;
-@@ -9294,6 +_,7 @@
- 					consumable = true;
- 					useAnimation = 45;
- 					useTime = 45;
-+					material = false;
- 				}
- 				maxStack = CommonMaxStack;
- 				rare = 3;
-@@ -9306,6 +_,7 @@
- 					consumable = true;
- 					useAnimation = 45;
- 					useTime = 45;
-+					material = false;
- 				}
- 				maxStack = CommonMaxStack;
- 				rare = 3;
-@@ -11396,6 +_,7 @@
+@@ -9545,6 +_,7 @@
  				knockBack = 6.5f;
  				melee = true;
  				value = sellPrice(0, 3);
@@ -1371,7 +2431,7 @@
  				break;
  			case 724:
  				autoReuse = true;
-@@ -12077,6 +_,8 @@
+@@ -10206,6 +_,8 @@
  				scale = 1f;
  				break;
  			case 779:
@@ -1380,7 +2440,7 @@
  				useStyle = 5;
  				autoReuse = true;
  				useAnimation = 30;
-@@ -22766,6 +_,8 @@
+@@ -20413,6 +_,8 @@
  				melee = true;
  				return;
  			case 1910:
@@ -1389,8 +2449,8 @@
  				useStyle = 5;
  				autoReuse = true;
  				useAnimation = 30;
-@@ -30150,6 +_,17 @@
- 			value = buyPrice(0, 2, 70);
+@@ -27228,6 +_,17 @@
+ 			value = 200;
  	}
  
 +	/// <summary>
@@ -1407,7 +2467,7 @@
  	public void DefaultToQuestFish()
  	{
  		questItem = true;
-@@ -35265,6 +_,7 @@
+@@ -32052,6 +_,7 @@
  				rare = 2;
  				UseSound = SoundID.Item64;
  				mech = true;
@@ -1415,34 +2475,226 @@
  				return;
  			case 3612:
  				useStyle = 1;
-@@ -36121,8 +_,12 @@
- 			case 3767:
- 			case 3768:
- 			case 3769:
--				SetDefaults(198);
--				this.type = type;
-+				useStyle = 1;
+@@ -37530,125 +_,50 @@
+ 				SetShopValues(ItemRarityColor.White0, 0);
+ 				width = 8;
+ 				height = 18;
+-				value = sellPrice(0, 0, 0, 60);
+-				noWet = true;
+-				break;
+-			case 4572:
+-				DefaultToPlaceableTile((ushort)15, 44);
+-				SetShopValues(ItemRarityColor.White0, 150);
+-				width = 12;
+-				height = 30;
+-				break;
+-			case 4573:
+-				DefaultToPlaceableTile((ushort)34, 45);
+-				SetShopValues(ItemRarityColor.White0, 3000);
+-				width = 26;
+-				height = 26;
+-				break;
+-			case 4574:
+-				DefaultToPlaceableTile((ushort)467, 11);
+-				SetShopValues(ItemRarityColor.White0, 500);
+-				width = 26;
+-				height = 22;
+-				break;
+-			case 4575:
+-				DefaultToPlaceableTile((ushort)104, 40);
+-				SetShopValues(ItemRarityColor.White0, 300);
+-				width = 20;
+-				height = 20;
+-				break;
+-			case 4576:
+-				DefaultToPlaceableTile((ushort)10, 45);
+-				SetShopValues(ItemRarityColor.White0, 200);
+-				width = 14;
+-				height = 28;
+-				break;
+-			case 4577:
+-				DefaultToPlaceableTile((ushort)93, 39);
+-				SetShopValues(ItemRarityColor.White0, 500);
+-				width = 10;
+-				height = 24;
+-				break;
+-			case 4578:
+-				DefaultToPlaceableTile((ushort)42, 45);
+-				SetShopValues(ItemRarityColor.White0, 150);
+-				width = 12;
+-				height = 28;
+-				break;
+-			case 4579:
+-				DefaultToPlaceableTile((ushort)87, 39);
+-				SetShopValues(ItemRarityColor.White0, 300);
+-				width = 20;
+-				height = 20;
+-				break;
+-			case 4580:
+-				DefaultToPlaceableTile((ushort)19, 44);
+-				SetShopValues(ItemRarityColor.White0, 0);
+-				width = 8;
+-				height = 10;
+-				break;
+-			case 4581:
+-				DefaultToPlaceableTile((ushort)172, 40);
+-				SetShopValues(ItemRarityColor.White0, 300);
+-				width = 20;
+-				height = 20;
+-				break;
+-			case 4582:
+-				DefaultToPlaceableTile((ushort)89, 42);
+-				SetShopValues(ItemRarityColor.White0, 300);
+-				width = 20;
+-				height = 20;
+-				break;
+-			case 4583:
+-				DefaultToPlaceableTile((ushort)469, 8);
+-				SetShopValues(ItemRarityColor.White0, 300);
+-				width = 26;
+-				height = 20;
+-				break;
+-			case 4584:
+-				DefaultToPlaceableTile((ushort)18, 40);
+-				SetShopValues(ItemRarityColor.White0, 150);
+-				width = 28;
+-				height = 14;
+-				break;
+-			case 4586:
+-				DefaultToPlaceableTile((ushort)497, 38);
+-				value = 150;
+-				break;
+-			case 4585:
+-				DefaultToPlaceableTile((ushort)468, 11);
+-				SetShopValues(ItemRarityColor.White0, 500);
+-				width = 26;
+-				height = 22;
+-				break;
+-			case 4554:
+-				DefaultToPlaceableTile((ushort)561, 0);
+-				break;
+-			case 4564:
+-				DefaultToPlaceableTile((ushort)562, 0);
+-				SetShopValues(ItemRarityColor.White0, buyPrice(0, 0, 1));
+-				break;
+-			case 4565:
+-				DefaultToPlaceableWall(312);
+-				break;
+-			case 4547:
+-				DefaultToPlaceableTile((ushort)563, 0);
+-				SetShopValues(ItemRarityColor.White0, sellPrice(0, 0, 0, 20));
+-				break;
+-			case 4548:
+-				DefaultToPlaceableWall(313);
+-				break;
+-			case 4607:
+-				damage = 41;
++				headSlot = 198;
++				value = sellPrice(0, 1);
++				vanity = true;
++				rare = 9;
++				return;
++			case 3764:
++			case 3765:
++			case 3766:
++			case 3767:
++			case 3768:
++			case 3769:
+ 				useStyle = 1;
 +				knockBack = 3f;
 +				width = 40;
 +				height = 40;
 +				UseSound = SoundID.Item15;
 +				melee = true;
- 				damage = 48;
- 				useTime = 16;
- 				useAnimation = 16;
-@@ -36886,6 +_,8 @@
- 				shootSpeed = 17f;
- 				return;
- 			case 3852:
++				damage = 48;
++				useTime = 16;
++				useAnimation = 16;
++				scale = 1f;
++				autoReuse = true;
++				useTurn = true;
++				rare = 4;
++				value = sellPrice(0, 1);
++				return;
++		}
++
++		switch (type) {
++			case 3770:
++				width = 18;
++				height = 14;
++				legSlot = 140;
++				value = sellPrice(0, 1);
++				rare = 4;
++				return;
+-				shootSpeed = 10f;
++			case 3771:
+-				shoot = 831;
++				useStyle = 4;
+-				buffType = 263;
++				channel = true;
+-				width = 26;
++				width = 34;
+-				height = 28;
++				height = 34;
+-				UseSound = SoundID.Item44;
++				UseSound = SoundID.Item25;
+-				useAnimation = 36;
++				useAnimation = 20;
+-				useTime = 36;
++				useTime = 20;
+ 				rare = 8;
+ 				noMelee = true;
+ 				knockBack = 4f;
+@@ -38328,18 +_,29 @@
+ 				useAnimation = 15;
+ 				useTime = 10;
+ 				autoReuse = true;
+-				consumable = true;
+-				createTile = 240;
+-				width = 30;
+-				height = 30;
+-				value = sellPrice(0, 0, 20);
+-				placeStyle = 71;
+-				break;
+-			case 4725:
+-				useStyle = 1;
+-				useTurn = true;
+-				useAnimation = 15;
+-				useTime = 10;
++				useTurn = false;
++				glowMask = 227;
++				shoot = 684;
++				shootSpeed = 17f;
++				return;
++			case 3852:
 +				useLimitPerAnimation = 4; // Added by TML.
 +
- 				useStyle = 5;
- 				useAnimation = 25;
- 				useTime = 3;
-@@ -38322,6 +_,26 @@
- 		}
- 	}
- 
++				useStyle = 5;
++				useAnimation = 25;
++				useTime = 3;
++				shootSpeed = 11f;
++				knockBack = 9f;
++				width = 16;
++				height = 16;
++				damage = 36;
++				UseSound = SoundID.DD2_BookStaffCast;
++				shoot = 712;
++				mana = 20;
++				rare = 5;
++				value = sellPrice(0, 1);
++				noMelee = true;
++				magic = true;
+ 				autoReuse = true;
+ 				consumable = true;
+ 				createTile = 242;
+@@ -39904,8 +_,55 @@
+ 			case 5030:
+ 				DefaultToMusicBox(74);
+ 				break;
+-			case 5031:
+-				DefaultToMusicBox(75);
++		}
++	}
++
 +	/// <summary>
 +	/// This method sets a variety of Item values common to golf ball items.<br/>
 +	/// Specifically:<code>
@@ -1463,72 +2715,245 @@
 +	/// </code>
 +	/// </summary>
 +	/// <param name="projid"></param>
- 	public void DefaultToGolfBall(int projid)
- 	{
- 		shoot = projid;
-@@ -38632,6 +_,7 @@
- 				width = 12;
- 				height = 12;
- 				value = 100000;
++	public void DefaultToGolfBall(int projid)
++	{
++		shoot = projid;
++		useStyle = 1;
++		shootSpeed = 12f;
++		width = 18;
++		height = 20;
++		maxStack = 1;
++		UseSound = SoundID.Item1;
++		useAnimation = 15;
++		useTime = 15;
++		noUseGraphic = true;
++		noMelee = true;
++		value = 0;
++		accessory = true;
++		SetShopValues(ItemRarityColor.Green2, buyPrice(0, 1));
++		hasVanityEffects = true;
++	}
++
++	public void SetDefaults5(int type)
++	{
++		switch (type) {
++			case 3990:
++				DefaultToAccessory(36, 28);
++				shoeSlot = 18;
++				SetShopValues(ItemRarityColor.Pink5, sellPrice(0, 2));
+ 				break;
+ 			case 5032:
+ 				DefaultToMusicBox(76);
+@@ -40250,11 +_,15 @@
+ 				useTime = 10;
+ 				autoReuse = true;
+ 				consumable = true;
+-				createTile = 242;
++				createTile = 491;
+-				width = 30;
++				width = 12;
+-				height = 30;
++				height = 12;
+-				value = sellPrice(0, 2);
+-				placeStyle = 45;
++				value = 100000;
 +				material = false;
++				break;
++			case 4091:
++				DefaultToPlaceableTile((ushort)496, 0);
++				SetShopValues(ItemRarityColor.White0, buyPrice(0, 0, 1));
  				break;
- 			case 4091:
- 				DefaultToPlaceableTile((ushort)496, 0);
-@@ -38769,6 +_,7 @@
- 				useTime = 28;
- 				rare = 3;
- 				value = sellPrice(0, 2);
-+				material = false;
- 				break;
- 			case 4132:
- 				width = 18;
-@@ -39568,8 +_,12 @@
- 				melee = true;
- 				break;
- 			case 4259:
--				SetDefaults(198);
--				this.type = type;
+ 			case 5086:
+ 				useStyle = 1;
+@@ -40385,6 +_,21 @@
+ 				headSlot = 275;
+ 				SetShopValues(ItemRarityColor.Blue1, sellPrice(0, 0, 50));
+ 				vanity = true;
++				value = sellPrice(0, 0, 50);
++				break;
++			case 4131:
++			case 5325:
 +				useStyle = 1;
++				shootSpeed = 4f;
++				shoot = 734;
++				width = 26;
++				height = 24;
++				UseSound = SoundID.Item130;
++				useAnimation = 28;
++				useTime = 28;
++				rare = 3;
++				value = sellPrice(0, 2);
++				material = false;
+ 				break;
+ 			case 5102:
+ 				width = 18;
+@@ -41140,22 +_,17 @@
+ 				if (type == 5222)
+ 					value = sellPrice(0, 2);
+ 				break;
+-			case 5234:
++			case 4259:
+-			case 5235:
+-			case 5236:
+-			case 5237:
+-			case 5238:
+-			case 5239:
+-			case 5240:
+-			case 5241:
+-			case 5242:
+-			case 5243:
+-			case 5244:
+-			case 5245:
+ 				useStyle = 1;
 +				knockBack = 3f;
 +				width = 40;
 +				height = 40;
 +				UseSound = SoundID.Item15;
+-				useTurn = true;
 +				melee = true;
- 				damage = 48;
- 				useTime = 16;
- 				useAnimation = 16;
-@@ -43082,6 +_,8 @@
- 				expert = true;
+-				useAnimation = 15;
++				damage = 48;
+-				useTime = 10;
++				useTime = 16;
++				useAnimation = 16;
++				scale = 1f;
+ 				autoReuse = true;
+ 				consumable = true;
+ 				createTile = 242;
+@@ -43896,20 +_,15 @@
+ 				wingSlot = 49;
+ 				accessory = true;
  				break;
- 			case 4952:
+-			case 5660:
+-				SetShopValues(ItemRarityColor.Pink5, sellPrice(0, 5));
+-				width = 18;
+-				height = 18;
+-				headSlot = 289;
+-				vanity = true;
+-				break;
+-			case 5661:
+-				SetShopValues(ItemRarityColor.Cyan9, sellPrice(0, 2, 50));
+-				width = 24;
+-				height = 8;
+-				break;
+-			case 5662:
+-				mountType = 61;
++			case 4952:
 +				useLimitPerAnimation = 4; // Added by TML.
 +
- 				autoReuse = true;
- 				useStyle = 14;
- 				holdStyle = 6;
-@@ -43103,6 +_,9 @@
- 				flame = true;
++				autoReuse = true;
++				useStyle = 14;
++				holdStyle = 6;
++				scale = 0.7f;
++				useAnimation = 36;
++				useTime = 2;
+ 				width = 36;
+ 				height = 26;
+ 				SetShopValues(ItemRarityColor.Yellow8, sellPrice(0, 5));
+@@ -43921,20 +_,10 @@
+ 				noMelee = true;
+ 				noUseGraphic = true;
  				break;
- 			case 4953:
+-			case 5663:
+-				damage = 9;
+-				shootSpeed = 10f;
+-				shoot = 1093;
+-				width = 26;
+-				height = 28;
+-				rare = 5;
+-				noMelee = true;
+-				knockBack = 2f;
+-				buffType = 385;
+-				value = sellPrice(0, 1);
+-				summon = true;
+-				autoReuse = true;
+-				reuseDelay = 2;
++			case 4953:
 +				useLimitPerAnimation = 5; // Added by TML.
 +				consumeAmmoOnLastShotOnly = true; // Added by TML.
 +
  				useStyle = 5;
- 				autoReuse = true;
- 				useAnimation = 30;
-@@ -44338,6 +_,8 @@
- 				value = sellPrice(0, 0, 50);
+ 				useTime = 15;
+ 				useAnimation = 15;
+@@ -45125,11 +_,23 @@
+ 				width = 8;
+ 				height = 10;
  				break;
- 			case 5134:
+-			case 5853:
+-				DefaultToPlaceableTile((ushort)172, 53);
+-				SetShopValues(ItemRarityColor.White0, 300);
+-				width = 20;
+-				height = 20;
++			case 5134:
 +				consumeAmmoOnLastShotOnly = true; // Added by TML
 +
- 				useStyle = 5;
- 				autoReuse = true;
- 				useAnimation = 30;
-@@ -46345,6 +_,20 @@
++				useStyle = 5;
++				autoReuse = true;
++				useAnimation = 30;
++				useTime = 5;
++				width = 50;
++				height = 18;
++				shoot = 145;
++				useAmmo = AmmoID.Solution;
++				UseSound = SoundID.Item34;
++				knockBack = 0.3f;
++				shootSpeed = 11f;
++				noMelee = true;
++				SetShopValues(ItemRarityColor.Green2, buyPrice(2));
++				rare = 10;
+ 				break;
+ 			case 5854:
+ 				DefaultToPlaceableTile((ushort)89, 56);
+@@ -46854,52 +_,20 @@
  		}
  	}
  
+-	public void DefaultToBanner(int tileStyleToPlace = 0)
+-	{
+-		SetShopValues(ItemRarityColor.Blue1, 1000);
+-		DefaultToPlaceableTile((ushort)91, tileStyleToPlace);
+-		width = 10;
+-		height = 24;
+-	}
+-
+-	public void DefaultToMonolith(int tileIDToPlace, int tileStyleToPlace = 0)
+-	{
+-		DefaultToPlaceableTile(tileIDToPlace, tileStyleToPlace);
+-		width = 22;
+-		height = 32;
+-		accessory = true;
+-		vanity = true;
+-	}
+-
+-	public void DefaultToBomb(int projectileID, float throwSpeed)
+-	{
+-		useStyle = 1;
+-		shootSpeed = throwSpeed;
+-		shoot = projectileID;
+-		width = 8;
+-		height = 28;
+-		consumable = true;
+-		UseSound = SoundID.Item1;
+-		useAnimation = 40;
+-		useTime = 40;
+-		noUseGraphic = true;
+-		noMelee = true;
+-	}
+-
+-	public void DefaultToVoiceOverrideAccessory(sbyte voiceOverrideID)
+-	{
+-		useStyle = 4;
+-		UseSound = null;
+-		useTurn = false;
+-		useAnimation = 17;
+-		useTime = 17;
+-		width = 24;
+-		height = 24;
+-		accessory = true;
+-		vanity = true;
+-		voiceSlot = voiceOverrideID;
+-	}
+-
 +	/// <summary>
 +	/// This method sets a variety of Item values common to Clentaminator ammo solution items.<br/>
 +	/// Specifically:<code>
@@ -1546,7 +2971,7 @@
  	public void DefaultToSolution(int projectileId)
  	{
  		shoot = projectileId - 145;
-@@ -46357,6 +_,30 @@
+@@ -46911,6 +_,30 @@
  		consumable = true;
  	}
  
@@ -1577,7 +3002,7 @@
  	public void DefaultToWhip(int projectileId, int dmg, float kb, float shootspeed, int animationTotalTime = 30)
  	{
  		autoReuse = false;
-@@ -46368,7 +_,10 @@
+@@ -46922,7 +_,10 @@
  		shoot = projectileId;
  		UseSound = SoundID.Item152;
  		noMelee = true;
@@ -1588,8 +3013,8 @@
  		noUseGraphic = true;
  		damage = dmg;
  		knockBack = kb;
-@@ -46387,6 +_,10 @@
- 		SetShopValues(ItemRarityColor.Blue1, buyPrice(0, 2));
+@@ -46941,6 +_,10 @@
+ 		createTile = 723;
  	}
  
 +	/// <summary>
@@ -1599,7 +3024,7 @@
  	public void ChangeItemType(int to)
  	{
  		bool flag = favorited;
-@@ -46422,7 +_,7 @@
+@@ -47032,7 +_,7 @@
  		return false;
  	}
  
@@ -1608,7 +3033,7 @@
  	{
  		useStyle = 1;
  		autoReuse = true;
-@@ -46456,7 +_,8 @@
+@@ -47065,7 +_,8 @@
  		}
  	}
  
@@ -1618,8 +3043,8 @@
  	{
  		useStyle = 1;
  		autoReuse = true;
-@@ -46471,6 +_,21 @@
- 		makeNPC = npcIdToSpawnOnUse;
+@@ -47080,6 +_,21 @@
+ 		createTile = 724;
  	}
  
 +	/// <summary>
@@ -1640,7 +3065,7 @@
  	public void DefaultToStaff(int projType, float pushForwardSpeed, int singleShotTime, int manaPerShot)
  	{
  		DefaultToMagicWeapon(projType, singleShotTime, pushForwardSpeed, hasAutoReuse: true);
-@@ -46480,6 +_,25 @@
+@@ -47089,6 +_,25 @@
  		UseSound = SoundID.Item43;
  	}
  
@@ -1666,7 +3091,7 @@
  	public void DefaultToSpear(int projType, float pushForwardSpeed, int animationTime)
  	{
  		useStyle = 5;
-@@ -46852,7 +_,24 @@
+@@ -47469,7 +_,24 @@
  		mountType = mount;
  	}
  
@@ -1692,7 +3117,7 @@
  	{
  		useStyle = 1;
  		useTurn = true;
-@@ -46866,6 +_,12 @@
+@@ -47482,6 +_,12 @@
  		height = 12;
  	}
  
@@ -1705,7 +3130,7 @@
  	public void SetWeaponValues(int dmg, float knockback, int bonusCritChance = 0)
  	{
  		damage = dmg;
-@@ -46873,6 +_,14 @@
+@@ -47489,6 +_,14 @@
  		crit = bonusCritChance;
  	}
  
@@ -1720,7 +3145,7 @@
  	public void DefaultToBow(int singleShotTime, float shotVelocity, bool hasAutoReuse = false)
  	{
  		DefaultToRangedWeapon(1, AmmoID.Arrow, singleShotTime, shotVelocity, hasAutoReuse);
-@@ -46881,6 +_,23 @@
+@@ -47497,6 +_,23 @@
  		UseSound = SoundID.Item5;
  	}
  
@@ -1744,7 +3169,7 @@
  	public void DefaultToMagicWeapon(int projType, int singleShotTime, float shotVelocity, bool hasAutoReuse = false)
  	{
  		autoReuse = hasAutoReuse;
-@@ -46893,6 +_,25 @@
+@@ -47509,6 +_,25 @@
  		magic = true;
  	}
  
@@ -1770,7 +3195,7 @@
  	public void DefaultToRangedWeapon(int baseProjType, int ammoID, int singleShotTime, float shotVelocity, bool hasAutoReuse = false)
  	{
  		autoReuse = hasAutoReuse;
-@@ -46906,6 +_,25 @@
+@@ -47522,6 +_,25 @@
  		ranged = true;
  	}
  
@@ -1796,8 +3221,8 @@
  	public void DefaultToThrownWeapon(int baseProjType, int singleShotTime, float shotVelocity, bool hasAutoReuse = false)
  	{
  		autoReuse = hasAutoReuse;
-@@ -46920,7 +_,36 @@
- 		maxStack = CommonMaxStack;
+@@ -47535,7 +_,36 @@
+ 		consumable = true;
  	}
  
 +	/// <summary>
@@ -1834,7 +3259,7 @@
  	{
  		flame = true;
  		noWet = !allowWaterPlacement;
-@@ -46939,11 +_,30 @@
+@@ -47553,11 +_,30 @@
  		useTime = 10;
  	}
  
@@ -1865,7 +3290,7 @@
  	public void DefaultToPlaceableTile(ushort tileIDToPlace, int tileStyleToPlace = 0)
  	{
  		createTile = tileIDToPlace;
-@@ -46959,6 +_,9 @@
+@@ -47572,6 +_,9 @@
  		consumable = true;
  	}
  
@@ -1875,7 +3300,7 @@
  	public void MakeUsableWithChlorophyteExtractinator()
  	{
  		useStyle = 1;
-@@ -46995,6 +_,27 @@
+@@ -47608,6 +_,27 @@
  		autoReuse = true;
  	}
  
@@ -1903,7 +3328,7 @@
  	public void DefaultToFood(int newwidth, int newheight, int foodbuff, int foodbuffduration, bool useGulpSound = false, int animationTime = 17)
  	{
  		if (useGulpSound)
-@@ -47035,12 +_,18 @@
+@@ -47646,12 +_,18 @@
  		healLife = healingAmount;
  	}
  
@@ -1922,7 +3347,7 @@
  	public void DefaultToHeadgear(int newwidth, int newheight, int helmetArtID)
  	{
  		width = newwidth;
-@@ -47065,7 +_,34 @@
+@@ -47696,7 +_,34 @@
  		useAnimation = (useTime = 12);
  	}
  
@@ -1958,10 +3383,16 @@
  	{
  		useStyle = 1;
  		useTurn = true;
-@@ -47088,6 +_,30 @@
- 		SetDefaults(Type, noMatCheck: false, null);
+@@ -47715,7 +_,36 @@
+ 		vanity = true;
  	}
  
+-	public void SetDefaults(int Type, ItemVariant variant = null)
++	public void SetDefaults(int Type = 0)
++	{
++		SetDefaults(Type, noMatCheck: false, null);
++	}
++
 +	// Added by TML.
 +	/// <summary>
 +	/// Call in <see cref="ModItem.SetDefaults"/> to clone all the default item property values of an existing item. This is useful for prototyping or making a variant of an existing item. Note that other changes made to the cloned item, such as if another mod changes a weapon's damage, will be applied when using this approach. This may or may not be desired.
@@ -1986,11 +3417,12 @@
 +		_globals = originalGlobals;
 +	}
 +
- 	public void SetDefaults(int Type, bool noMatCheck = false, ItemVariant variant = null)
++	public void SetDefaults(int Type, bool noMatCheck = false, ItemVariant variant = null)
  	{
  		if (Type < 0) {
-@@ -47101,8 +_,12 @@
- 			playerIndexTheItemIsReservedFor = Main.myPlayer;
+ 			netDefaults(Type);
+@@ -47723,8 +_,12 @@
+ 		}
  
  		ResetStats(Type);
 +		material = ItemID.Sets.IsAMaterial[type];
@@ -2002,9 +3434,9 @@
  
  		if (variant == null)
  			variant = ItemVariants.SelectVariant(Type);
-@@ -47133,7 +_,18 @@
+@@ -47748,7 +_,18 @@
+ 		else
  			SetDefaults5(type);
- 		}
  
 +		// Compensate for the change of itemAnimation getting reset at 0 instead of vanilla's 1.
 +		ApplyItemAnimationCompensationsToVanillaItems();
@@ -2022,25 +3454,30 @@
  		if (hairDye != 0)
  			hairDye = GameShaders.Hair.GetShaderIdFromItemId(type);
  
-@@ -47297,19 +_,24 @@
- 			maxStack = CommonMaxStack;
+@@ -47905,13 +_,31 @@
+ 		if (type >= 1803 && type <= 1807)
+ 			SetDefaults(1533 + type - 1803);
  
- 		netID = type;
--		if (!noMatCheck)
--			material = ItemID.Sets.IsAMaterial[type];
++		if (dye > 0)
++			maxStack = CommonMaxStack;
++
++		if (createTile == 19)
++			maxStack = CommonMaxStack;
++
++		netID = type;
 +
 +		ItemLoader.SetDefaults(this);
- 
++
  		RebuildTooltip();
--		if (type > 0 && type < ItemID.Count && ItemID.Sets.Deprecated[type]) {
+-		if (type > 0 && type < ItemID.Count && ItemID.Sets.Deprecated[type])
 +		if (type > 0 && ItemID.Sets.Deprecated[type]) {
 +			/*
- 			netID = 0;
- 			type = 0;
- 			stack = 0;
++			netID = 0;
++			type = 0;
++			stack = 0;
 +			*/
-+			TurnToAir();
- 		}
+ 			TurnToAir();
++		}
  	}
  
  	public void OnCreated(ItemCreationContext context)
@@ -2050,9 +3487,9 @@
  		if (type == 5437)
  			SetDefaults(5358);
  	}
-@@ -47318,14 +_,34 @@
- 	{
+@@ -47922,14 +_,35 @@
  		tooltipContext = -1;
+ 		tooltipSlot = -1;
  		BestiaryNotes = null;
 +
 +		// TML field initialization:
@@ -2082,10 +3519,11 @@
  		isAShopItem = false;
  		expertOnly = false;
 +		masterOnly = false; // Added by TML.
- 		instanced = false;
++		instanced = false;
  		questItem = false;
  		fishingPole = 0;
-@@ -47343,10 +_,14 @@
+ 		bait = 0;
+@@ -47947,10 +_,14 @@
  		mech = false;
  		flame = false;
  		reuseDelay = 0;
@@ -2100,16 +3538,15 @@
  		placeStyle = 0;
  		buffTime = 0;
  		buffType = 0;
-@@ -47366,7 +_,7 @@
+@@ -47966,6 +_,7 @@
  		noUseGraphic = false;
  		lifeRegen = 0;
  		shootSpeed = 0f;
--		active = true;
 +		active = Type != 0;
  		alpha = 0;
  		ammo = AmmoID.None;
  		useAmmo = AmmoID.None;
-@@ -47426,6 +_,9 @@
+@@ -48142,6 +_,9 @@
  
  	public Color GetAlpha(Color newColor)
  	{
@@ -2119,7 +3556,7 @@
  		if (ItemID.Sets.BossBag[type])
  			return Color.Lerp(newColor, Color.White, 0.4f);
  
-@@ -47623,6 +_,9 @@
+@@ -48347,6 +_,9 @@
  		return new Color(num, num2, num3, num4);
  	}
  
@@ -2129,7 +3566,7 @@
  	public static bool MechSpawn(float x, float y, int type)
  	{
  		int num = 0;
-@@ -47649,7 +_,18 @@
+@@ -48374,7 +_,18 @@
  		return true;
  	}
  
@@ -2147,50 +3584,121 @@
 +	/// <returns>The converted value.</returns>
  	public static int sellPrice(int platinum = 0, int gold = 0, int silver = 0, int copper = 0) => (copper + silver * 100 + gold * 100 * 100 + platinum * 100 * 100 * 100) * 5;
  
- 	public bool CanShimmer()
-@@ -47668,7 +_,7 @@
- 		if (type == 3461 || createTile == 139)
- 			flag = true;
+ 	public static int GetRandomVoiceItem()
+@@ -48420,7 +_,7 @@
+ 		if (shimmerEquivalentType == 560 && Main.slimeRain)
+ 			return false;
  
--		if (!flag && ItemID.Sets.ShimmerTransformToItem[shimmerEquivalentType] <= 0 && FindDecraftAmount() <= 0 && !ItemID.Sets.CommonCoin[type])
+-		if ((shimmerEquivalentType != 4986 || NPC.unlockedSlimeRainbowSpawn) && ShimmerTransforms.GetTransformToItem(shimmerEquivalentType) <= 0 && !ShimmerTransforms.IsItemDecraftableAndIsDecraftUnlocked(this) && !ItemID.Sets.CommonCoin[shimmerEquivalentType])
 +		if (!flag && ItemID.Sets.ShimmerTransformToItem[shimmerEquivalentType] <= 0 && FindDecraftAmount() <= 0 && ItemID.Sets.CoinLuckValue[type] <= 0)
  			return makeNPC > 0;
  
  		return true;
-@@ -47723,7 +_,9 @@
- 	{
- 		int shimmerEquivalentType = GetShimmerEquivalentType();
- 		int decraftingRecipeIndex = ShimmerTransforms.GetDecraftingRecipeIndex(shimmerEquivalentType);
--		if (ItemID.Sets.CommonCoin[shimmerEquivalentType]) {
+@@ -48446,6 +_,275 @@
+ 		return type;
+ 	}
+ 
++	private void GetShimmered()
++	{
++		int shimmerEquivalentType = GetShimmerEquivalentType();
++		int decraftingRecipeIndex = ShimmerTransforms.GetDecraftingRecipeIndex(shimmerEquivalentType);
 +		if (ItemID.Sets.CoinLuckValue[shimmerEquivalentType] > 0) {
 +			stack *= ItemID.Sets.CoinLuckValue[shimmerEquivalentType];
 +			/*
- 			switch (shimmerEquivalentType) {
- 				case 72:
- 					stack *= 100;
-@@ -47737,6 +_,8 @@
- 					stack *= 1000000;
- 					break;
- 			}
++			switch (shimmerEquivalentType) {
++				case 72:
++					stack *= 100;
++					break;
++				case 73:
++					stack *= 10000;
++					break;
++				case 74:
++					if (stack > 1)
++						stack = 1;
++					stack *= 1000000;
++					break;
++			}
 +			*/
 +			// patch context for CoinLuckValue
- 
- 			Main.player[Main.myPlayer].AddCoinLuck(base.Center, stack);
- 			NetMessage.SendData(146, -1, -1, null, 1, (int)base.Center.X, (int)base.Center.Y, stack);
-@@ -47808,10 +_,34 @@
- 			shimmered = true;
- 		}
- 		else if (ItemID.Sets.ShimmerTransformToItem[shimmerEquivalentType] > 0) {
++
++			Main.player[Main.myPlayer].AddCoinLuck(base.Center, stack);
++			NetMessage.SendData(146, -1, -1, null, 1, (int)base.Center.X, (int)base.Center.Y, stack);
++			type = 0;
++			stack = 0;
++		}
++		else if (shimmerEquivalentType == 1326 && NPC.downedMoonlord) {
++			int num = stack;
++			SetDefaults(5335);
++			stack = num;
++			shimmered = true;
++		}
++		else if (shimmerEquivalentType == 779 && NPC.downedMoonlord) {
++			int num2 = stack;
++			SetDefaults(5134);
++			stack = num2;
++			shimmered = true;
++		}
++		else if (shimmerEquivalentType == 3031 && NPC.downedMoonlord) {
++			int num3 = stack;
++			SetDefaults(5364);
++			stack = num3;
++			shimmered = true;
++		}
++		else if (shimmerEquivalentType == 5364 && NPC.downedMoonlord) {
++			int num4 = stack;
++			SetDefaults(3031);
++			stack = num4;
++			shimmered = true;
++		}
++		else if (shimmerEquivalentType == 3461) {
++			short num5 = 3461;
++			switch (Main.GetMoonPhase()) {
++				default:
++					num5 = 5406;
++					break;
++				case MoonPhase.QuarterAtRight:
++					num5 = 5407;
++					break;
++				case MoonPhase.HalfAtRight:
++					num5 = 5405;
++					break;
++				case MoonPhase.ThreeQuartersAtRight:
++					num5 = 5404;
++					break;
++				case MoonPhase.Full:
++					num5 = 5408;
++					break;
++				case MoonPhase.ThreeQuartersAtLeft:
++					num5 = 5401;
++					break;
++				case MoonPhase.HalfAtLeft:
++					num5 = 5403;
++					break;
++				case MoonPhase.QuarterAtLeft:
++					num5 = 5402;
++					break;
++			}
++
++			int num6 = stack;
++			SetDefaults(num5);
++			stack = num6;
++			shimmered = true;
++		}
++		else if (createTile == 139) {
++			int num7 = stack;
++			SetDefaults(576);
++			stack = num7;
++			shimmered = true;
++		}
++		else if (ItemID.Sets.ShimmerTransformToItem[shimmerEquivalentType] > 0) {
 +			// Since 1.4.5 seems to add item stacking (April 2024 state of the game) this is likely a temporary fix. All variables are renamed as such so I can read this later. (Copy paste + modify from decrafting code) - Kogsey
--			int num8 = stack;
 +			int stackSize = stack;
- 			SetDefaults(ItemID.Sets.ShimmerTransformToItem[shimmerEquivalentType]);
--			stack = num8;
++			SetDefaults(ItemID.Sets.ShimmerTransformToItem[shimmerEquivalentType]);
 +			stack = stackSize;
 +			if (stack > maxStack)
 +				stack = maxStack;
 +			stackSize -= stack;
- 			shimmered = true;
++			shimmered = true;
 +			int spawnCount = 0;
 +
 +			while (stackSize > 0) {
@@ -2211,119 +3719,823 @@
 +
 +				NetMessage.SendData(145, -1, -1, null, newItemIndex, 1f);
 +			}
- 		}
- 		else if (type == 4986) {
- 			if (NPC.unlockedSlimeRainbowSpawn)
-@@ -47857,7 +_,7 @@
- 			int num13 = FindDecraftAmount();
- 			Recipe recipe = Main.recipe[decraftingRecipeIndex];
- 			int num14 = 0;
--			bool flag = recipe.requiredItem[1].stack > 0;
++		}
++		else if (type == 4986) {
++			if (NPC.unlockedSlimeRainbowSpawn)
++				return;
++
++			NPC.unlockedSlimeRainbowSpawn = true;
++			NetMessage.SendData(7);
++			int num9 = NPC.NewNPC(GetNPCSource_FromThis(), (int)base.Center.X + 4, (int)base.Center.Y, 681);
++			if (num9 >= 0) {
++				NPC obj = Main.npc[num9];
++				obj.velocity = velocity;
++				obj.netUpdate = true;
++				obj.shimmerTransparency = 1f;
++				NetMessage.SendData(146, -1, -1, null, 2, num9);
++			}
++
++			WorldGen.CheckAchievement_RealEstateAndTownSlimes();
++			stack--;
++			if (stack <= 0)
++				type = 0;
++		}
++		else if (makeNPC > 0) {
++			int num10 = 50;
++			int highestNPCSlotIndexWeWillPick = 200;
++			int num11 = NPC.GetAvailableAmountOfNPCsToSpawnUpToSlot(stack, highestNPCSlotIndexWeWillPick);
++			while (num10 > 0 && num11 > 0 && stack > 0) {
++				num10--;
++				num11--;
++				stack--;
++				int num12 = -1;
++				num12 = ((NPCID.Sets.ShimmerTransformToNPC[makeNPC] < 0) ? NPC.ReleaseNPC((int)base.Center.X, (int)base.Bottom.Y, makeNPC, placeStyle, Main.myPlayer) : NPC.ReleaseNPC((int)base.Center.X, (int)base.Bottom.Y, NPCID.Sets.ShimmerTransformToNPC[makeNPC], 0, Main.myPlayer));
++				if (num12 >= 0) {
++					Main.npc[num12].shimmerTransparency = 1f;
++					NetMessage.SendData(146, -1, -1, null, 2, num12);
++				}
++			}
++
++			shimmered = true;
++			if (stack <= 0)
++				type = 0;
++		}
++		else if (decraftingRecipeIndex >= 0) {
++			int num13 = FindDecraftAmount();
++			Recipe recipe = Main.recipe[decraftingRecipeIndex];
++			int num14 = 0;
 +			bool flag = recipe.requiredItem.Count > 1;
- 			IEnumerable<Item> enumerable = recipe.requiredItem;
- 			if (recipe.customShimmerResults != null)
- 				enumerable = recipe.customShimmerResults;
-@@ -47869,17 +_,22 @@
- 
- 				num15++;
- 				int num16 = num13 * item2.stack;
++			IEnumerable<Item> enumerable = recipe.requiredItem;
++			if (recipe.customShimmerResults != null)
++				enumerable = recipe.customShimmerResults;
++
++			int num15 = 0;
++			foreach (Item item2 in enumerable) {
++				if (item2.type <= 0)
++					break;
++
++				num15++;
++				int num16 = num13 * item2.stack;
 +
 +				/* TML: Recipe.alchemy is removed due to being replaced by consume item hooks
- 				if (recipe.alchemy) {
- 					for (int num17 = num16; num17 > 0; num17--) {
- 						if (Main.rand.Next(3) == 0)
- 							num16--;
- 					}
- 				}
++				if (recipe.alchemy) {
++					for (int num17 = num16; num17 > 0; num17--) {
++						if (Main.rand.Next(3) == 0)
++							num16--;
++					}
++				}
 +				*/
 +
 +				RecipeLoader.ConsumeIngredient(recipe, item2.type, ref num16, true);
- 
- 				while (num16 > 0) {
- 					int num18 = num16;
--					if (num18 > 9999)
--						num18 = 9999;
++
++				while (num16 > 0) {
++					int num18 = num16;
 +					if (num18 > item2.maxStack)
 +						num18 = item2.maxStack;
++
++					num16 -= num18;
++					int num19 = NewItem(GetItemSource_Misc(8), (int)position.X, (int)position.Y, width, height, item2.type);
++					Item item = Main.item[num19];
++					item.stack = num18;
++					item.shimmerTime = 1f;
++					item.shimmered = true;
++					item.shimmerWet = true;
++					item.wet = true;
++					item.velocity *= 0.1f;
++					item.playerIndexTheItemIsReservedFor = Main.myPlayer;
++					if (flag) {
++						item.velocity.X = 1f * (float)num15;
++						item.velocity.X *= 1f + (float)num15 * 0.05f;
++						if (num14 % 2 == 0)
++							item.velocity.X *= -1f;
++					}
++
++					NetMessage.SendData(145, -1, -1, null, num19, 1f);
++				}
++			}
++
++			stack -= num13 * recipe.createItem.stack;
++			if (stack <= 0) {
++				stack = 0;
++				type = 0;
++			}
++		}
++
++		if (stack > 0)
++			shimmerTime = 1f;
++		else
++			shimmerTime = 0f;
++
++		shimmerWet = true;
++		wet = true;
++		velocity *= 0.1f;
++		if (Main.netMode == 0) {
++			ShimmerEffect(base.Center);
++		}
++		else {
++			NetMessage.SendData(146, -1, -1, null, 0, (int)base.Center.X, (int)base.Center.Y);
++			NetMessage.SendData(145, -1, -1, null, whoAmI, 1f);
++		}
++
++		AchievementsHelper.NotifyProgressionEvent(27);
++		if (stack == 0) {
++			makeNPC = -1;
++			active = false;
++		}
++	}
++
++	public static void ShimmerEffect(Vector2 shimmerPositon)
++	{
++		SoundEngine.PlaySound(SoundID.Item176, (int)shimmerPositon.X, (int)shimmerPositon.Y);
++		for (int i = 0; i < 20; i++) {
++			int num = Dust.NewDust(shimmerPositon, 1, 1, 309);
++			Main.dust[num].scale *= 1.2f;
++			switch (Main.rand.Next(6)) {
++				case 0:
++					Main.dust[num].color = new Color(255, 255, 210);
++					break;
++				case 1:
++					Main.dust[num].color = new Color(190, 245, 255);
++					break;
++				case 2:
++					Main.dust[num].color = new Color(255, 150, 255);
++					break;
++				default:
++					Main.dust[num].color = new Color(190, 175, 255);
++					break;
++			}
++		}
++	}
++
+ 	public void FixAgainstExploit()
+ 	{
+ 		if (ItemID.Sets.ItemsThatShouldNotBeInInventory[type]) {
+@@ -48460,6 +_,244 @@
+ 			ResetPrefix();
+ 	}
  
- 					num16 -= num18;
- 					int num19 = NewItem(GetItemSource_Misc(8), (int)position.X, (int)position.Y, width, height, item2.type);
-@@ -48004,7 +_,7 @@
- 		if (Main.netMode == 1) {
- 			int num = (int)(position.X + (float)(width / 2)) / 16;
- 			int num2 = (int)(position.Y + (float)(height / 2)) / 16;
--			if (num >= 0 && num2 >= 0 && num < Main.maxTilesX && num2 < Main.maxTilesY && Main.tile[num, num2] == null) {
++	public void UpdateItem(int i)
++	{
++		whoAmI = i;
++		if (Main.timeItemSlotCannotBeReusedFor[i] > 0) {
++			if (Main.netMode == 2) {
++				Main.timeItemSlotCannotBeReusedFor[i]--;
++				return;
++			}
++
++			Main.timeItemSlotCannotBeReusedFor[i] = 0;
++		}
++
++		if (!active)
++			return;
++
++		if (instanced) {
++			if (Main.netMode == 2) {
++				active = false;
++				return;
++			}
++
++			keepTime = 6000;
++			ownTime = 0;
++			noGrabDelay = 0;
++			playerIndexTheItemIsReservedFor = Main.myPlayer;
++		}
++
++		if (Main.netMode == 0)
++			playerIndexTheItemIsReservedFor = Main.myPlayer;
++
++		float gravity = 0.1f;
++		float maxFallSpeed = 7f;
++		if (Main.netMode == 1) {
++			int num = (int)(position.X + (float)(width / 2)) / 16;
++			int num2 = (int)(position.Y + (float)(height / 2)) / 16;
 +			if (num >= 0 && num2 >= 0 && num < Main.maxTilesX && num2 < Main.maxTilesY && !Main.sectionManager.TileLoaded(num, num2)) {
- 				gravity = 0f;
- 				velocity.X = 0f;
- 				velocity.Y = 0f;
-@@ -48124,6 +_,8 @@
- 			timeSinceItemSpawned += num7;
- 		}
- 
++				gravity = 0f;
++				velocity.X = 0f;
++				velocity.Y = 0f;
++			}
++		}
++
++		Vector2 wetVelocity = velocity * 0.5f;
++		if (shimmerWet) {
++			gravity = 0.065f;
++			maxFallSpeed = 4f;
++			wetVelocity = velocity * 0.375f;
++		}
++		else if (honeyWet) {
++			gravity = 0.05f;
++			maxFallSpeed = 3f;
++			wetVelocity = velocity * 0.25f;
++		}
++		else if (wet) {
++			gravity = 0.08f;
++			maxFallSpeed = 5f;
++		}
++
++		if (ownTime > 0)
++			ownTime--;
++		else
++			ownIgnore = -1;
++
++		if (keepTime > 0)
++			keepTime--;
++
++		if (!beingGrabbed) {
++			if (shimmered) {
++				if (Main.rand.Next(30) == 0) {
++					int num3 = Dust.NewDust(position, width, height, 309);
++					Main.dust[num3].position.X += Main.rand.Next(-8, 5);
++					Main.dust[num3].position.Y += Main.rand.Next(-8, 5);
++					Main.dust[num3].scale *= 1.1f;
++					Main.dust[num3].velocity *= 0.3f;
++					switch (Main.rand.Next(6)) {
++						case 0:
++							Main.dust[num3].color = new Color(255, 255, 210);
++							break;
++						case 1:
++							Main.dust[num3].color = new Color(190, 245, 255);
++							break;
++						case 2:
++							Main.dust[num3].color = new Color(255, 150, 255);
++							break;
++						default:
++							Main.dust[num3].color = new Color(190, 175, 255);
++							break;
++					}
++				}
++
++				Lighting.AddLight(base.Center, (1f - shimmerTime) * 0.8f, (1f - shimmerTime) * 0.8f, (1f - shimmerTime) * 0.8f);
++				gravity = 0f;
++				if (shimmerWet) {
++					if (velocity.Y > -4f)
++						velocity.Y -= 0.05f;
++				}
++				else {
++					int num4 = 2;
++					int num5 = (int)(base.Center.X / 16f);
++					int num6 = (int)(base.Center.Y / 16f);
++					bool flag = false;
++					for (int j = num6; j < num6 + num4; j++) {
++						if (WorldGen.InWorld(num5, j) && Main.tile[num5, j] != null && Main.tile[num5, j].shimmer() && Main.tile[num5, j].liquid > 0) {
++							flag = true;
++							break;
++						}
++					}
++
++					if (flag) {
++						if (velocity.Y > -4f)
++							velocity.Y -= 0.05f;
++					}
++					else {
++						velocity.Y *= 0.9f;
++					}
++				}
++			}
++
++			if (shimmerWet && !shimmered) {
++				Shimmering();
++			}
++			else if (shimmerTime > 0f) {
++				shimmerTime -= 0.01f;
++				if (shimmerTime < 0f)
++					shimmerTime = 0f;
++			}
++
++			if (shimmerTime == 0f)
++				TryCombiningIntoNearbyItems(i);
++
++			if (timeLeftInWhichTheItemCannotBeTakenByEnemies > 0)
++				timeLeftInWhichTheItemCannotBeTakenByEnemies--;
++
++			if (timeLeftInWhichTheItemCannotBeTakenByEnemies == 0 && Main.netMode != 2 && playerIndexTheItemIsReservedFor == Main.myPlayer) {
++				GetPickedUpByMonsters_Special(i);
++				if (Main.expertMode && IsACoin)
++					GetPickedUpByMonsters_Money(i);
++			}
++
++			MoveInWorld(gravity, maxFallSpeed, ref wetVelocity, i);
++			if (lavaWet)
++				CheckLavaDeath(i);
++
++			DespawnIfMeetingConditions(i);
++		}
++		else {
++			beingGrabbed = false;
++		}
++
++		UpdateItem_VisualEffects();
++		if (timeSinceItemSpawned < 2147483547) {
++			int num7 = ItemID.Sets.ItemSpawnDecaySpeed[type];
++			timeSinceItemSpawned += num7;
++		}
++
 +		ItemLoader.PostUpdate(this);
 +
- 		if (Main.netMode == 2 && playerIndexTheItemIsReservedFor != Main.myPlayer) {
- 			timeSinceTheItemHasBeenReservedForSomeone++;
- 			if (timeSinceTheItemHasBeenReservedForSomeone >= 300) {
-@@ -48274,7 +_,7 @@
- 
- 			NetMessage.SendData(21, -1, -1, null, i);
- 		}
--		else if (playerIndexTheItemIsReservedFor == Main.myPlayer && rare == 0 && type >= 0 && type < ItemID.Count && !ItemID.Sets.IsLavaImmuneRegardlessOfRarity[type]) {
-+		else if (playerIndexTheItemIsReservedFor == Main.myPlayer && rare == 0 && type >= 0 && !ItemID.Sets.IsLavaImmuneRegardlessOfRarity[type]) {
- 			active = false;
- 			type = 0;
- 			stack = 0;
-@@ -48285,6 +_,8 @@
- 
- 	private void MoveInWorld(float gravity, float maxFallSpeed, ref Vector2 wetVelocity, int i)
++		if (Main.netMode == 2 && playerIndexTheItemIsReservedFor != Main.myPlayer) {
++			timeSinceTheItemHasBeenReservedForSomeone++;
++			if (timeSinceTheItemHasBeenReservedForSomeone >= 300) {
++				timeSinceTheItemHasBeenReservedForSomeone = 0;
++				NetMessage.SendData(39, playerIndexTheItemIsReservedFor, -1, null, i);
++				playerIndexTheItemIsReservedFor = 255;
++			}
++		}
++
++		if (wet)
++			position += wetVelocity;
++		else
++			position += velocity;
++
++		if (noGrabDelay > 0)
++			noGrabDelay--;
++	}
++
++	private void DespawnIfMeetingConditions(int i)
++	{
++		if (type == 75 && Main.dayTime && !Main.remixWorld && !shimmered && !beingGrabbed) {
++			for (int j = 0; j < 10; j++) {
++				Dust.NewDust(position, width, height, 15, velocity.X, velocity.Y, 150, default(Color), 1.2f);
++			}
++
++			for (int k = 0; k < 3; k++) {
++				Gore.NewGore(position, new Vector2(velocity.X, velocity.Y), Main.rand.Next(16, 18));
++			}
++
++			active = false;
++			type = 0;
++			stack = 0;
++			if (Main.netMode == 2)
++				NetMessage.SendData(21, -1, -1, null, i);
++		}
++
++		if (type == 4143 && timeSinceItemSpawned > 300) {
++			for (int l = 0; l < 20; l++) {
++				Dust.NewDust(position, width, height, 15, velocity.X, velocity.Y, 150, Color.Lerp(Color.CornflowerBlue, Color.Indigo, Main.rand.NextFloat()), 1.2f);
++			}
++
++			active = false;
++			type = 0;
++			stack = 0;
++			if (Main.netMode == 2)
++				NetMessage.SendData(21, -1, -1, null, i);
++		}
++
++		if (type == 3822 && !DD2Event.Ongoing) {
++			int num = Main.rand.Next(18, 24);
++			for (int m = 0; m < num; m++) {
++				int num2 = Dust.NewDust(base.Center, 0, 0, 61, 0f, 0f, 0, default(Color), 1.7f);
++				Main.dust[num2].velocity *= 8f;
++				Main.dust[num2].velocity.Y -= 1f;
++				Main.dust[num2].position = Vector2.Lerp(Main.dust[num2].position, base.Center, 0.5f);
++				Main.dust[num2].noGravity = true;
++				Main.dust[num2].noLight = true;
++			}
++
++			active = false;
++			type = 0;
++			stack = 0;
++			if (Main.netMode == 2)
++				NetMessage.SendData(21, -1, -1, null, i);
++		}
++	}
++
++	public void TryCombiningIntoNearbyItems(int i)
++	{
++		bool flag = true;
++		int num = type;
++		if ((uint)(num - 71) <= 3u)
++			flag = false;
++
++		if (ItemID.Sets.NebulaPickup[type])
++			flag = false;
++
++		if (playerIndexTheItemIsReservedFor == Main.myPlayer && flag)
++			CombineWithNearbyItems(i);
++	}
++
+ 	public FlexibleTileWand GetFlexibleTileWand()
  	{
+ 		switch (type) {
+@@ -48508,10 +_,348 @@
+ 		}
+ 	}
+ 
+-	public bool TryAddStack(int itemType, ref int amountLeftToAdd)
+-	{
+-		if (amountLeftToAdd < 0)
+-			amountLeftToAdd = 0;
++	private void CheckLavaDeath(int i)
++	{
++		if (type == 267) {
++			if (Main.netMode == 1)
++				return;
++
++			int num = stack;
++			active = false;
++			type = 0;
++			stack = 0;
++			bool flag = false;
++			for (int j = 0; j < 200; j++) {
++				if (Main.npc[j].active && Main.npc[j].type == 22) {
++					int num2 = -Main.npc[j].direction;
++					if (Main.npc[j].IsNPCValidForBestiaryKillCredit())
++						Main.BestiaryTracker.Kills.RegisterKill(Main.npc[j]);
++
++					Main.npc[j].StrikeNPCNoInteraction(9999, 10f, -num2);
++					num--;
++					flag = true;
++					if (Main.netMode == 2)
++						NetMessage.SendData(28, -1, -1, null, j, 9999f, 10f, -num2);
++
++					NPC.SpawnWOF(position);
++				}
++			}
++
++			if (flag) {
++				List<int> list = new List<int>();
++				for (int k = 0; k < 200; k++) {
++					if (num <= 0)
++						break;
++
++					NPC nPC = Main.npc[k];
++					if (nPC.active && nPC.isLikeATownNPC)
++						list.Add(k);
++				}
++
++				while (num > 0 && list.Count > 0) {
++					int index = Main.rand.Next(list.Count);
++					int num3 = list[index];
++					list.RemoveAt(index);
++					int num4 = -Main.npc[num3].direction;
++					if (Main.npc[num3].IsNPCValidForBestiaryKillCredit())
++						Main.BestiaryTracker.Kills.RegisterKill(Main.npc[num3]);
++
++					Main.npc[num3].StrikeNPCNoInteraction(9999, 10f, -num4);
++					num--;
++					if (Main.netMode == 2)
++						NetMessage.SendData(28, -1, -1, null, num3, 9999f, 10f, -num4);
++				}
++			}
++
++			NetMessage.SendData(21, -1, -1, null, i);
++		}
++		else if (playerIndexTheItemIsReservedFor == Main.myPlayer && rare == 0 && type >= 0 && !ItemID.Sets.IsLavaImmuneRegardlessOfRarity[type]) {
++			active = false;
++			type = 0;
++			stack = 0;
++			if (Main.netMode != 0)
++				NetMessage.SendData(21, -1, -1, null, i);
++		}
++	}
++
++	private void MoveInWorld(float gravity, float maxFallSpeed, ref Vector2 wetVelocity, int i)
++	{
 +		ItemLoader.Update(this, ref gravity, ref maxFallSpeed);
 +
- 		if (!shimmered && ItemID.Sets.ItemNoGravity[type]) {
- 			velocity.X *= 0.95f;
- 			if ((double)velocity.X < 0.1 && (double)velocity.X > -0.1)
-@@ -48553,7 +_,7 @@
- 		Rectangle hitbox = base.Hitbox;
- 		for (int j = 0; j < 200; j++) {
- 			NPC nPC = Main.npc[j];
--			if (nPC.active && flag && nPC.type >= 0 && nPC.type < NPCID.Count && NPCID.Sets.CanConvertIntoCopperSlimeTownNPC[nPC.type] && hitbox.Intersects(nPC.Hitbox)) {
++		if (!shimmered && ItemID.Sets.ItemNoGravity[type]) {
++			velocity.X *= 0.95f;
++			if ((double)velocity.X < 0.1 && (double)velocity.X > -0.1)
++				velocity.X = 0f;
++
++			velocity.Y *= 0.95f;
++			if ((double)velocity.Y < 0.1 && (double)velocity.Y > -0.1)
++				velocity.Y = 0f;
++		}
++		else {
++			bool flag = false;
++			if (shimmered && active) {
++				int num = 50;
++				for (int j = 0; j < 400; j++) {
++					if (i == j || !Main.item[j].active || !Main.item[j].shimmered)
++						continue;
++
++					if (num-- <= 0)
++						break;
++
++					float num2 = (width + Main.item[j].width) / 2;
++					if (!(Math.Abs(base.Center.X - Main.item[j].Center.X) <= num2) || !(Math.Abs(base.Center.Y - Main.item[j].Center.Y) <= num2))
++						continue;
++
++					flag = true;
++					float num3 = Vector2.Distance(base.Center, Main.item[j].Center);
++					num2 /= num3;
++					if (num2 > 10f)
++						num2 = 10f;
++
++					if (base.Center.X < Main.item[j].Center.X) {
++						if (velocity.X > -3f * num2)
++							velocity.X -= 0.1f * num2;
++
++						if (Main.item[j].velocity.X < 3f)
++							Main.item[j].velocity.X += 0.1f * num2;
++					}
++					else if (base.Center.X > Main.item[j].Center.X) {
++						if (velocity.X < 3f * num2)
++							velocity.X += 0.1f * num2;
++
++						if (Main.item[j].velocity.X > -3f)
++							Main.item[j].velocity.X -= 0.1f * num2;
++					}
++					else if (i < j) {
++						if (velocity.X > -3f * num2)
++							velocity.X -= 0.1f * num2;
++
++						if (Main.item[j].velocity.X < 3f * num2)
++							Main.item[j].velocity.X += 0.1f * num2;
++					}
++				}
++			}
++
++			velocity.Y += gravity;
++			if (velocity.Y > maxFallSpeed)
++				velocity.Y = maxFallSpeed;
++
++			velocity.X *= 0.95f;
++			if ((double)velocity.X < 0.1 && (double)velocity.X > -0.1)
++				velocity.X = 0f;
++
++			if (flag)
++				velocity.X *= 0.8f;
++		}
++
++		bool flag2 = Collision.LavaCollision(position, width, height);
++		if (flag2)
++			lavaWet = true;
++
++		bool num4 = Collision.WetCollision(position, width, height);
++		if (Collision.honey)
++			honeyWet = true;
++
++		if (Collision.shimmer)
++			shimmerWet = true;
++
++		if (num4) {
++			if (!wet) {
++				if (wetCount == 0) {
++					wetCount = 20;
++					if (!flag2) {
++						if (shimmerWet) {
++							for (int k = 0; k < 10; k++) {
++								int num5 = Dust.NewDust(new Vector2(position.X - 6f, position.Y + (float)(height / 2) - 8f), width + 12, 24, 308);
++								Main.dust[num5].velocity.Y -= 4f;
++								Main.dust[num5].velocity.X *= 2.5f;
++								Main.dust[num5].scale = 0.8f;
++								Main.dust[num5].noGravity = true;
++								switch (Main.rand.Next(6)) {
++									case 0:
++										Main.dust[num5].color = new Color(255, 255, 210);
++										break;
++									case 1:
++										Main.dust[num5].color = new Color(190, 245, 255);
++										break;
++									case 2:
++										Main.dust[num5].color = new Color(255, 150, 255);
++										break;
++									default:
++										Main.dust[num5].color = new Color(190, 175, 255);
++										break;
++								}
++							}
++
++							SoundEngine.PlaySound(19, (int)position.X, (int)position.Y, 4);
++						}
++						else if (honeyWet) {
++							for (int l = 0; l < 5; l++) {
++								int num6 = Dust.NewDust(new Vector2(position.X - 6f, position.Y + (float)(height / 2) - 8f), width + 12, 24, 152);
++								Main.dust[num6].velocity.Y -= 1f;
++								Main.dust[num6].velocity.X *= 2.5f;
++								Main.dust[num6].scale = 1.3f;
++								Main.dust[num6].alpha = 100;
++								Main.dust[num6].noGravity = true;
++							}
++
++							SoundEngine.PlaySound(19, (int)position.X, (int)position.Y);
++						}
++						else {
++							for (int m = 0; m < 10; m++) {
++								int num7 = Dust.NewDust(new Vector2(position.X - 6f, position.Y + (float)(height / 2) - 8f), width + 12, 24, Dust.dustWater());
++								Main.dust[num7].velocity.Y -= 4f;
++								Main.dust[num7].velocity.X *= 2.5f;
++								Main.dust[num7].scale *= 0.8f;
++								Main.dust[num7].alpha = 100;
++								Main.dust[num7].noGravity = true;
++							}
++
++							SoundEngine.PlaySound(19, (int)position.X, (int)position.Y);
++						}
++					}
++					else {
++						for (int n = 0; n < 5; n++) {
++							int num8 = Dust.NewDust(new Vector2(position.X - 6f, position.Y + (float)(height / 2) - 8f), width + 12, 24, 35);
++							Main.dust[num8].velocity.Y -= 1.5f;
++							Main.dust[num8].velocity.X *= 2.5f;
++							Main.dust[num8].scale = 1.3f;
++							Main.dust[num8].alpha = 100;
++							Main.dust[num8].noGravity = true;
++						}
++
++						SoundEngine.PlaySound(19, (int)position.X, (int)position.Y);
++					}
++				}
++
++				wet = true;
++			}
++		}
++		else if (wet) {
++			wet = false;
++			if (wetCount == 0) {
++				wetCount = 20;
++				if (!lavaWet) {
++					if (shimmerWet) {
++						for (int num9 = 0; num9 < 10; num9++) {
++							int num10 = Dust.NewDust(new Vector2(position.X - 6f, position.Y + (float)(height / 2) - 8f), width + 12, 24, 308);
++							Main.dust[num10].velocity.Y -= 4f;
++							Main.dust[num10].velocity.X *= 2.5f;
++							Main.dust[num10].scale = 0.8f;
++							Main.dust[num10].noGravity = true;
++							switch (Main.rand.Next(6)) {
++								case 0:
++									Main.dust[num10].color = new Color(255, 255, 210);
++									break;
++								case 1:
++									Main.dust[num10].color = new Color(190, 245, 255);
++									break;
++								case 2:
++									Main.dust[num10].color = new Color(255, 150, 255);
++									break;
++								default:
++									Main.dust[num10].color = new Color(190, 175, 255);
++									break;
++							}
++						}
++
++						SoundEngine.PlaySound(19, (int)position.X, (int)position.Y, 5);
++					}
++					else if (honeyWet) {
++						for (int num11 = 0; num11 < 5; num11++) {
++							int num12 = Dust.NewDust(new Vector2(position.X - 6f, position.Y + (float)(height / 2) - 8f), width + 12, 24, 152);
++							Main.dust[num12].velocity.Y -= 1f;
++							Main.dust[num12].velocity.X *= 2.5f;
++							Main.dust[num12].scale = 1.3f;
++							Main.dust[num12].alpha = 100;
++							Main.dust[num12].noGravity = true;
++						}
++
++						SoundEngine.PlaySound(19, (int)position.X, (int)position.Y);
++					}
++					else {
++						for (int num13 = 0; num13 < 10; num13++) {
++							int num14 = Dust.NewDust(new Vector2(position.X - 6f, position.Y + (float)(height / 2)), width + 12, 24, Dust.dustWater());
++							Main.dust[num14].velocity.Y -= 4f;
++							Main.dust[num14].velocity.X *= 2.5f;
++							Main.dust[num14].scale *= 0.8f;
++							Main.dust[num14].alpha = 100;
++							Main.dust[num14].noGravity = true;
++						}
++
++						SoundEngine.PlaySound(19, (int)position.X, (int)position.Y);
++					}
++				}
++				else {
++					for (int num15 = 0; num15 < 5; num15++) {
++						int num16 = Dust.NewDust(new Vector2(position.X - 6f, position.Y + (float)(height / 2) - 8f), width + 12, 24, 35);
++						Main.dust[num16].velocity.Y -= 1.5f;
++						Main.dust[num16].velocity.X *= 2.5f;
++						Main.dust[num16].scale = 1.3f;
++						Main.dust[num16].alpha = 100;
++						Main.dust[num16].noGravity = true;
++					}
++
++					SoundEngine.PlaySound(19, (int)position.X, (int)position.Y);
++				}
++			}
++		}
++
++		if (!wet) {
++			lavaWet = false;
++			honeyWet = false;
++			shimmerWet = false;
++		}
++
++		if (wetCount > 0)
++			wetCount--;
++
++		if (wet) {
++			if (wet) {
++				Vector2 vector = velocity;
++				velocity = Collision.TileCollision(position, velocity, width, height);
++				if (velocity.X != vector.X)
++					wetVelocity.X = velocity.X;
++
++				if (velocity.Y != vector.Y)
++					wetVelocity.Y = velocity.Y;
++			}
++		}
++		else {
++			velocity = Collision.TileCollision(position, velocity, width, height);
++		}
++
++		Vector4 vector2 = Collision.SlopeCollision(position, velocity, width, height, gravity);
++		position.X = vector2.X;
++		position.Y = vector2.Y;
++		velocity.X = vector2.Z;
++		velocity.Y = vector2.W;
++		Collision.StepConveyorBelt(this, 1f);
++	}
++
++	private void GetPickedUpByMonsters_Special(int i)
++	{
++		bool flag = false;
++		bool flag2 = false;
++		int num = type;
++		if ((num == 89 || num == 3507) && !NPC.unlockedSlimeCopperSpawn) {
++			flag = true;
++			flag2 = true;
++		}
++
++		if (!flag2)
++			return;
++
++		bool flag3 = false;
++		Rectangle hitbox = base.Hitbox;
++		for (int j = 0; j < 200; j++) {
++			NPC nPC = Main.npc[j];
 +			if (nPC.active && flag && nPC.type >= 0 && NPCID.Sets.CanConvertIntoCopperSlimeTownNPC[nPC.type] && hitbox.Intersects(nPC.Hitbox)) {
- 				flag3 = true;
- 				NPC.TransformCopperSlime(j);
- 				break;
-@@ -48669,14 +_,26 @@
- 				num2 *= 2;
++				flag3 = true;
++				NPC.TransformCopperSlime(j);
++				break;
++			}
++		}
  
- 			if (num < (float)num2) {
+ 		if (IsAir) {
+ 			SetDefaults(itemType);
+@@ -48537,8 +_,59 @@
+ 
+ 	public bool CanPassivelyStackInWorld()
+ 	{
+-		if (maxStack == 1)
+-			return false;
++		if (!CanCombineStackInWorld() || stack >= maxStack)
++			return;
++
++		for (int i = myItemIndex + 1; i < 400; i++) {
++			Item item = Main.item[i];
++			if (!item.active || item.type != type || item.shimmered != shimmered || item.stack <= 0 || item.playerIndexTheItemIsReservedFor != playerIndexTheItemIsReservedFor)
++				continue;
++
++			float num = Math.Abs(position.X + (float)(width / 2) - (item.position.X + (float)(item.width / 2))) + Math.Abs(position.Y + (float)(height / 2) - (item.position.Y + (float)(item.height / 2)));
++			int num2 = 30;
++			if ((double)numberOfNewItems > 40.0)
++				num2 *= 2;
++
++			if ((double)numberOfNewItems > 80.0)
++				num2 *= 2;
++
++			if ((double)numberOfNewItems > 120.0)
++				num2 *= 2;
++
++			if ((double)numberOfNewItems > 160.0)
++				num2 *= 2;
++
++			if ((double)numberOfNewItems > 200.0)
++				num2 *= 2;
++
++			if ((double)numberOfNewItems > 240.0)
++				num2 *= 2;
++
++			if (num < (float)num2) {
 +				if (!ItemLoader.CanStack(this, item))
 +					continue;
 +
 +				if (!ItemLoader.CanStackInWorld(this, item))
 +					continue;
 +
- 				position = (position + item.position) / 2f;
- 				velocity = (velocity + item.velocity) / 2f;
++				position = (position + item.position) / 2f;
++				velocity = (velocity + item.velocity) / 2f;
 +
 +				ItemLoader.StackItems(this, item, out _);
 +
 +				/* #OnStackHook
- 				int num3 = item.stack;
- 				if (num3 > maxStack - stack)
- 					num3 = maxStack - stack;
- 
- 				item.stack -= num3;
- 				stack += num3;
++				int num3 = item.stack;
++				if (num3 > maxStack - stack)
++					num3 = maxStack - stack;
++
++				item.stack -= num3;
++				stack += num3;
 +				*/
 +
- 				if (item.stack <= 0) {
- 					item.SetDefaults();
- 					item.active = false;
-@@ -49077,21 +_,68 @@
++				if (item.stack <= 0) {
++					item.SetDefaults();
++					item.active = false;
++				}
+ 
+ 		bool? flag = ItemID.Sets.CanPassivelyStackInWorldOverride[type];
+ 		if (flag.HasValue)
+@@ -48581,19 +_,60 @@
  			case 4070:
  				return TextureAssets.Item[type].Frame(1, 4);
  			default:
+-				if (Main.itemAnimations[type] != null)
+-					return Main.itemAnimations[type].GetFrame(TextureAssets.Item[type].Value);
 +				/*
  				return TextureAssets.Item[type].Frame();
 +				*/
@@ -2338,20 +4550,27 @@
  		}
  	}
  
+-	public WorldItem ToWorldItem() => null;
+-	public static int NewItem(IEntitySource source, Vector2 pos, Vector2 randomBox, int Type, int Stack = 1, bool noBroadcast = false, int prefixGiven = 0, bool noGrabDelay = false) => NewItem(source, (int)pos.X, (int)pos.Y, (int)randomBox.X, (int)randomBox.Y, Type, Stack, noBroadcast, prefixGiven, noGrabDelay);
+-	public static int NewItem(IEntitySource source, Vector2 pos, int Width, int Height, int Type, int Stack = 1, bool noBroadcast = false, int prefixGiven = 0, bool noGrabDelay = false) => NewItem(source, (int)pos.X, (int)pos.Y, Width, Height, Type, Stack, noBroadcast, prefixGiven, noGrabDelay);
+-
+-	public static int NewItem(IEntitySource source, int X, int Y, int Width, int Height, int Type, int Stack = 1, bool noBroadcast = false, int pfix = 0, bool noGrabDelay = false)
+-	{
+-		if (WorldGen.isGeneratingOrLoadingWorld)
 +	/// <summary>
 +	/// <inheritdoc cref="Item.NewItem(IEntitySource, int, int, int, int, int, int, bool, int, bool, bool)"/>
 +	/// <br/><br/> This particular overload uses two Vector2 to determine the actual spawn position.
 +	/// </summary>
 +	/// <returns><inheritdoc cref="Item.NewItem(IEntitySource, int, int, int, int, int, int, bool, int, bool, bool)"/></returns>
- 	public static int NewItem(IEntitySource source, Vector2 pos, Vector2 randomBox, int Type, int Stack = 1, bool noBroadcast = false, int prefixGiven = 0, bool noGrabDelay = false, bool reverseLookup = false) => NewItem(source, (int)pos.X, (int)pos.Y, (int)randomBox.X, (int)randomBox.Y, Type, Stack, noBroadcast, prefixGiven, noGrabDelay, reverseLookup);
++	public static int NewItem(IEntitySource source, Vector2 pos, Vector2 randomBox, int Type, int Stack = 1, bool noBroadcast = false, int prefixGiven = 0, bool noGrabDelay = false, bool reverseLookup = false) => NewItem(source, (int)pos.X, (int)pos.Y, (int)randomBox.X, (int)randomBox.Y, Type, Stack, noBroadcast, prefixGiven, noGrabDelay, reverseLookup);
 +
 +	/// <summary>
 +	/// <inheritdoc cref="Item.NewItem(IEntitySource, int, int, int, int, int, int, bool, int, bool, bool)"/>
 +	/// <br/><br/> This particular overload uses a Vector2 instead of X and Y to determine the actual spawn position.
 +	/// </summary>
 +	/// <returns><inheritdoc cref="Item.NewItem(IEntitySource, int, int, int, int, int, int, bool, int, bool, bool)"/></returns>
- 	public static int NewItem(IEntitySource source, Vector2 pos, int Width, int Height, int Type, int Stack = 1, bool noBroadcast = false, int prefixGiven = 0, bool noGrabDelay = false, bool reverseLookup = false) => NewItem(source, (int)pos.X, (int)pos.Y, Width, Height, Type, Stack, noBroadcast, prefixGiven, noGrabDelay, reverseLookup);
- 
++	public static int NewItem(IEntitySource source, Vector2 pos, int Width, int Height, int Type, int Stack = 1, bool noBroadcast = false, int prefixGiven = 0, bool noGrabDelay = false, bool reverseLookup = false) => NewItem(source, (int)pos.X, (int)pos.Y, Width, Height, Type, Stack, noBroadcast, prefixGiven, noGrabDelay, reverseLookup);
++
 +	/// <summary>
 +	/// Spawns an item into the game world with the given type and stack size. The X, Y, Width, and Height parameters dictate a rectangle, the item will be spawned centered within that rectangle. Other overloads support passing in a position directly, or just use 0 for Width and Height if the center is passed in a X and Y.
 +	/// <br/><br/> This method should not be called on multiplayer clients. If you need to spawn items from client code, use <see cref="Player.QuickSpawnItem(IEntitySource, int, int)"/> instead, it handles the multiplayer syncing code needed.
@@ -2370,16 +4589,18 @@
 +	/// <param name="noGrabDelay"></param>
 +	/// <param name="reverseLookup"></param>
 +	/// <returns>The index of the item within <see cref="Main.item"/></returns>
- 	public static int NewItem(IEntitySource source, int X, int Y, int Width, int Height, int Type, int Stack = 1, bool noBroadcast = false, int pfix = 0, bool noGrabDelay = false, bool reverseLookup = false)
- 	{
++	public static int NewItem(IEntitySource source, int X, int Y, int Width, int Height, int Type, int Stack = 1, bool noBroadcast = false, int pfix = 0, bool noGrabDelay = false, bool reverseLookup = false)
++	{
 +		return Item.NewItem_Inner(source, X, Y, Width, Height, null, Type, Stack, noBroadcast, pfix, noGrabDelay, reverseLookup);
 +	}
 +
 +	private static int NewItem_Inner(IEntitySource source, int X, int Y, int Width, int Height, Item itemToClone, int Type, int Stack = 1, bool noBroadcast = false, int pfix = 0, bool noGrabDelay = false, bool reverseLookup = false)
 +	{
- 		if (WorldGen.gen)
++		if (WorldGen.gen)
  			return 0;
  
+ 		if (Stack <= 0)
+@@ -48602,6 +_,9 @@
  		if (Main.rand == null)
  			Main.rand = new UnifiedRandom();
  
@@ -2389,8 +4610,8 @@
  		if (Main.tenthAnniversaryWorld) {
  			if (Type == 58) {
  				Type = Main.rand.NextFromList(new short[3] {
-@@ -49126,7 +_,7 @@
- 				Type = 1868;
+@@ -48652,7 +_,7 @@
+ 			}
  		}
  
 -		if (Type > 0 && cachedItemSpawnsByType[Type] != -1) {
@@ -2398,10 +4619,24 @@
  			cachedItemSpawnsByType[Type] += Stack;
  			return 400;
  		}
-@@ -49139,9 +_,19 @@
+@@ -48662,18 +_,26 @@
+ 			NetMessage.SendData(151, -1, -1, null, num);
+ 
  		Main.timeItemSlotCannotBeReusedFor[num] = 0;
- 		Main.item[num] = new Item();
- 		Item item = Main.item[num];
+-		EmergencyStacking.ClearPendingTransfersInvolving(Main.item[num]);
+-		Main.item[num] = new WorldItem();
+-		WorldItem worldItem = Main.item[num];
+-		worldItem.SetDefaults(Type);
+-		worldItem.whoAmI = num;
+-		worldItem.Prefix(pfix);
+-		worldItem.stack = Stack;
+-		worldItem.position.X = X + Width / 2 - worldItem.width / 2;
+-		worldItem.position.Y = Y + Height / 2 - worldItem.height / 2;
+-		worldItem.wet = Collision.WetCollision(worldItem.position, worldItem.width, worldItem.height);
+-		worldItem.velocity.X = (float)Main.rand.Next(-30, 31) * 0.1f;
+-		worldItem.velocity.Y = (float)Main.rand.Next(-40, -15) * 0.1f;
++		Main.item[num] = new Item();
++		Item item = Main.item[num];
 +
 +		if (itemToClone != null) {
 +			Main.item[num] = itemToClone.Clone();
@@ -2410,46 +4645,76 @@
 +			goto skipItemCreation;
 +		}
 +
- 		item.SetDefaults(Type);
- 		item.Prefix(pfix);
- 		item.stack = Stack;
++		item.SetDefaults(Type);
++		item.Prefix(pfix);
++		item.stack = Stack;
 +		skipItemCreation:
 +
- 		item.position.X = X + Width / 2 - item.width / 2;
- 		item.position.Y = Y + Height / 2 - item.height / 2;
- 		item.wet = Collision.WetCollision(item.position, item.width, item.height);
-@@ -49161,6 +_,8 @@
- 		if (ItemSlot.Options.HighlightNewItems && item.type >= 0 && !ItemID.Sets.NeverAppearsAsNewInInventory[item.type])
- 			item.newAndShiny = true;
++		item.position.X = X + Width / 2 - item.width / 2;
++		item.position.Y = Y + Height / 2 - item.height / 2;
++		item.wet = Collision.WetCollision(item.position, item.width, item.height);
++		item.velocity.X = (float)Main.rand.Next(-30, 31) * 0.1f;
++		item.velocity.Y = (float)Main.rand.Next(-40, -15) * 0.1f;
+ 		if (Type == 859 || Type == 4743)
+ 			worldItem.velocity *= 0f;
+ 
+@@ -48686,6 +_,8 @@
+ 		if (ItemSlot.Options.HighlightNewItems && worldItem.type >= 0 && !ItemID.Sets.NeverAppearsAsNewInInventory[worldItem.type])
+ 			worldItem.newAndShiny = true;
  
 +		ItemLoader.OnSpawn(item, source);
 +
  		if (Main.netMode == 2 && !noBroadcast)
  			NetMessage.SendData(21, -1, -1, null, num, noGrabDelay.ToInt());
  		else if (Main.netMode == 0)
-@@ -49240,8 +_,9 @@
- 					continue;
+@@ -48727,11 +_,40 @@
+ 		if (num != 400)
+ 			return num;
  
- 				Player.ItemSpaceStatus status = player.ItemSpace(Main.item[whoAmI]);
--				if (player.CanPullItem(Main.item[whoAmI], status)) {
+-		int num5 = 0;
+-		for (int j = 0; j < 400; j++) {
+-			if (Main.timeItemSlotCannotBeReusedFor[j] == 0 && !Main.item[j].instanced && Main.item[j].timeSinceItemSpawned > num5) {
+-				num5 = Main.item[j].timeSinceItemSpawned;
+-				num = j;
++		if (shimmerTime > 0f) {
++			playerIndexTheItemIsReservedFor = 255;
++		}
++		else if (flag) {
++			float num2 = NPC.sWidth;
++			for (int i = 0; i < 255; i++) {
++				if (ownIgnore == i)
++					continue;
++
++				Player player = Main.player[i];
++				if (!player.active)
++					continue;
++
++				Player.ItemSpaceStatus status = player.ItemSpace(Main.item[whoAmI]);
 +				if (ItemLoader.CanPickup(Main.item[whoAmI], player) && player.CanPullItem(Main.item[whoAmI], status)) {
- 					float num3 = Math.Abs(player.position.X + (float)(player.width / 2) - position.X - (float)(width / 2)) + Math.Abs(player.position.Y + (float)(player.height / 2) - position.Y - (float)height);
++					float num3 = Math.Abs(player.position.X + (float)(player.width / 2) - position.X - (float)(width / 2)) + Math.Abs(player.position.Y + (float)(player.height / 2) - position.Y - (float)height);
 +					/*
- 					if (player.manaMagnet && (type == 184 || type == 1735 || type == 1868))
- 						num3 -= (float)manaGrabRange;
- 
-@@ -49250,6 +_,9 @@
- 
- 					if (type == 4143)
- 						num3 -= (float)manaGrabRange;
++					if (player.manaMagnet && (type == 184 || type == 1735 || type == 1868))
++						num3 -= (float)manaGrabRange;
++
++					if (player.lifeMagnet && (type == 58 || type == 1734 || type == 1867))
++						num3 -= (float)lifeGrabRange;
++
++					if (type == 4143)
++						num3 -= (float)manaGrabRange;
 +					*/
 +					// This will have grab range discrepancies with the above code due to this method having additional checks - Mutant
 +					num3 -= player.GetItemGrabRange(Main.item[whoAmI]);
- 
- 					if (num2 > num3) {
- 						num2 = num3;
-@@ -49266,10 +_,30 @@
++
++					if (num2 > num3) {
++						num2 = num3;
++						playerIndexTheItemIsReservedFor = i;
++					}
++				}
+ 			}
  		}
+ 
+@@ -48748,10 +_,30 @@
+ 		return num;
  	}
  
 +
@@ -2475,26 +4740,34 @@
 +	internal Item DeepClone() => Clone();
  
 +	// TML: Made internal so that modders will have to replace it with a more straightforward item.type == compareItem.type
--	public bool IsTheSameAs(Item compareItem)
+-	public bool IsNotTheSameAs(Item compareItem)
 +	internal bool IsTheSameAs(Item compareItem)
  	{
- 		if (netID == compareItem.netID)
- 			return type == compareItem.type;
-@@ -49277,7 +_,9 @@
- 		return false;
+ 		if (type == compareItem.type && stack == compareItem.stack)
+ 			return prefix != compareItem.prefix;
+@@ -48759,7 +_,9 @@
+ 		return true;
  	}
  
 +	// TML: Made internal + renamed in Item.TML.cs with more descriptive name (IsNotSameTypePrefixAndStack)
 +	// Many usages replaced with !IsNetStateEquivalent
--	public bool IsNotTheSameAs(Item compareItem)
+-	public bool IsNetStateDifferent(Item compareItem)
 +	internal bool IsNotTheSameAs(Item compareItem)
  	{
- 		if (netID == compareItem.netID && stack == compareItem.stack)
- 			return prefix != compareItem.prefix;
-@@ -49285,11 +_,19 @@
+ 		if (!IsNotTheSameAs(compareItem))
+ 			return favorited != compareItem.favorited;
+@@ -48767,19 +_,19 @@
  		return true;
  	}
  
+-	public static bool CanStack(Item item1, Item item2)
+-	{
+-		if (item1.type == item2.type)
+-			return item1.prefix == item2.prefix;
+-
+-		return false;
+-	}
+-
 +	/// <summary>
 +	/// Overrides the value of <see cref="Name"/> for this Item instance. This is used mainly to change the name shown on the item tooltip for recipe group ingredients to "Any RecipeGroupItemNameHere".
 +	/// <para/> This does not change the actual name of this item when shown elsewhere as text, for example, so it is not a suitable way to permanently change an item name. To do that a <see href="https://github.com/tModLoader/tModLoader/wiki/Localization#overwriting-existing-terraria-keys">localization file entry</see> should be used instead.
@@ -2511,7 +4784,7 @@
  	public void ClearNameOverride()
  	{
  		_nameOverride = null;
-@@ -49309,6 +_,10 @@
+@@ -48799,6 +_,10 @@
  		dye = 0;
  		shoot = 0;
  		mountType = -1;
@@ -2522,11 +4795,11 @@
  	}
  
  	public void OnPurchase(Item item)
-@@ -49330,9 +_,9 @@
+@@ -48820,9 +_,9 @@
  	public void Serialize(BinaryWriter writer, ItemSerializationContext context)
  	{
  		if (context == ItemSerializationContext.SavingAndLoading) {
--			writer.Write(netID);
+-			writer.Write(type);
 +			writer.Write(netID >= ItemID.Count ? 0 : netID);
  			writer.Write(stack);
 -			writer.Write(prefix);
@@ -2534,7 +4807,7 @@
  		}
  	}
  
-@@ -49344,7 +_,7 @@
+@@ -48834,7 +_,7 @@
  			Prefix(reader.ReadByte());
  		}
  
@@ -2543,7 +4816,7 @@
  			TurnToAir();
  	}
  
-@@ -49356,9 +_,19 @@
+@@ -48846,9 +_,19 @@
  		}
  	}
  
@@ -2562,8 +4835,8 @@
 +			/*
  			bool flag = favorited;
  			int num = stack;
- 			int num2 = netID;
-@@ -49367,6 +_,16 @@
+ 			int num2 = type;
+@@ -48857,6 +_,16 @@
  			Prefix(prefixWeWant);
  			stack = num;
  			favorited = flag;

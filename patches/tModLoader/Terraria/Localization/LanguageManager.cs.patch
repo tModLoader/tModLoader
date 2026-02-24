@@ -1,9 +1,9 @@
 --- src/TerrariaNetCore/Terraria/Localization/LanguageManager.cs
 +++ src/tModLoader/Terraria/Localization/LanguageManager.cs
-@@ -12,14 +_,15 @@
+@@ -13,18 +_,18 @@
+ using ReLogic.Content.Sources;
  using ReLogic.Graphics;
- using Terraria.GameContent;
- using Terraria.Initializers;
+ using ReLogic.Utilities;
 +using Terraria.ModLoader;
  using Terraria.Utilities;
  
@@ -16,62 +16,61 @@
 -	private readonly Dictionary<string, LocalizedText> _localizedTexts = new Dictionary<string, LocalizedText>();
 +	internal readonly Dictionary<string, LocalizedText> _localizedTexts = new Dictionary<string, LocalizedText>();
  	private readonly Dictionary<string, List<string>> _categoryGroupedKeys = new Dictionary<string, List<string>>();
+ 	private readonly Dictionary<string, Dictionary<string, string>> _textVariations = new Dictionary<string, Dictionary<string, string>>();
  	private GameCulture _fallbackCulture = GameCulture.DefaultCulture;
+-	private List<IContentSource> _contentSources = new List<IContentSource>();
+ 	public const char VariationSeparatorSign = '$';
  
-@@ -95,13 +_,17 @@
+ 	public GameCulture ActiveCulture { get; private set; }
+@@ -86,32 +_,31 @@
  	public void SetLanguage(GameCulture culture)
  	{
  		if (ActiveCulture != culture) {
-+			/*
- 			if (culture != _fallbackCulture && ActiveCulture != _fallbackCulture) {
- 				SetAllTextValuesToKeys();
- 				LoadLanguage(_fallbackCulture);
- 			}
- 
- 			LoadLanguage(culture);
-+			*/
-+
- 			ActiveCulture = culture;
++			ActiveCulture = culture;
 +			ReloadLanguage();
  			Thread.CurrentThread.CurrentCulture = culture.CultureInfo;
  			Thread.CurrentThread.CurrentUICulture = culture.CultureInfo;
- 			if (this.OnLanguageChanged != null)
-@@ -111,6 +_,7 @@
+-			ReloadLanguage(culture);
++			if (this.OnLanguageChanged != null)
++				this.OnLanguageChanged(this);
  		}
  	}
  
-+	/*
- 	private void LoadLanguage(GameCulture culture, bool processCopyCommands = true)
- 	{
- 		LoadFilesForCulture(culture);
-@@ -122,6 +_,26 @@
- 
- 		ChatInitializer.PrepareAliases();
- 	}
-+	*/
-+
-+	// Added by tML, replacement for commented code above
+-	private void ReloadLanguage(GameCulture targetCulture)
 +	internal void ReloadLanguage(bool resetValuesToKeysFirst = true)
-+	{
+ 	{
+-		if (ActiveCulture != _fallbackCulture) {
 +		if (resetValuesToKeysFirst)
-+			SetAllTextValuesToKeys();
-+
+ 			SetAllTextValuesToKeys();
+-			if (targetCulture != _fallbackCulture)
+-				LoadLanguage(_fallbackCulture);
+-		}
+ 
+-		LoadLanguage(targetCulture);
+-		if (this.OnLanguageChanged != null)
+-			this.OnLanguageChanged(this);
+-	}
+-
+-	private void LoadLanguage(GameCulture culture)
+-	{
+-		ActiveCulture = culture;
+ 		_textVariations.Clear();
+-		LoadFilesForCulture(culture);
+-		LoadFromContentSources();
 +		LoadFilesForCulture(_fallbackCulture);
 +		if (ActiveCulture != _fallbackCulture)
 +			LoadFilesForCulture(ActiveCulture);
 +
 +		LoadActiveCultureTranslationsFromSources();
 +
-+		ProcessCopyCommandsInTexts();
+ 		ProcessCopyCommandsInTexts();
 +		RecalculateBoundTextValues();
 +		ChatInitializer.PrepareAliases();
-+
 +		SystemLoader.OnLocalizationsLoaded();
-+	}
+ 	}
  
  	private void LoadFilesForCulture(GameCulture culture)
- 	{
-@@ -142,8 +_,12 @@
+@@ -136,8 +_,11 @@
  				break;
  			}
  		}
@@ -79,16 +78,11 @@
 +		LocalizationLoader.LoadModTranslations(culture);
  	}
  
-+	// Replaced by ProcessCopyCommandsInTexts implementation in LanguageManager.tML.cs
 +	/*
  	private void ProcessCopyCommandsInTexts()
  	{
  		Regex regex = new Regex("{\\$(\\w+\\.\\w+)}", RegexOptions.Compiled);
-@@ -155,21 +_,37 @@
- 					break;
- 
- 				value.SetValue(text);
-+				// patch context
+@@ -158,20 +_,26 @@
  			}
  		}
  	}
@@ -96,90 +90,95 @@
  
  	public void UseSources(List<IContentSource> sourcesFromLowestToHighest)
  	{
+-		_contentSources = sourcesFromLowestToHighest;
+-		ReloadLanguage(ActiveCulture);
 +		if (Enumerable.SequenceEqual(_contentSources, sourcesFromLowestToHighest))
 +			return;
 +
 +		_contentSources = sourcesFromLowestToHighest.ToArray();
 +		ReloadLanguage();
-+	}
-+
-+	// Method split from UseSources above
-+	private void LoadActiveCultureTranslationsFromSources() {
-+		var sourcesFromLowestToHighest = _contentSources;
-+
+ 	}
+ 
++	// TML: Method split from UseSources above.
+-	private void LoadFromContentSources()
++	private void LoadActiveCultureTranslationsFromSources()
+ 	{
  		string name = ActiveCulture.Name;
  		string assetNameStart = ("Localization" + Path.DirectorySeparatorChar + name).ToLower();
-+		/*
- 		LoadLanguage(ActiveCulture, processCopyCommands: false);
-+		*/
- 		foreach (IContentSource item in sourcesFromLowestToHighest) {
--			foreach (string item2 in item.GetAllAssetsStartingWith(assetNameStart)) {
--				string extension = item.GetExtension(item2);
-+			foreach (string item2 in item.GetAllAssetsStartingWith(assetNameStart, ignoreCase: true)) {
-+				// TODO: GetExtension doesn't work for ZipContentSource. Might work if we do the same workaround that FileSystemContentSource does for assetExtensions, but that seems hacky/wrong. We can wait for reworks of asset system to fix these inconsistencies. Zip resource packs are rare.
-+				string extension = item.GetExtension(item2) ?? "";
+ 		foreach (IContentSource contentSource in _contentSources) {
+-			foreach (string item in contentSource.GetAllAssetsStartingWith(assetNameStart)) {
+-				string extension = contentSource.GetExtension(item);
++			foreach (string item in contentSource.GetAllAssetsStartingWith(assetNameStart, ignoreCase: true)) {
++				// GetExtension can fail for ZipContentSource.
++				string extension = contentSource.GetExtension(item) ?? "";
  				if (!(extension == ".json") && !(extension == ".csv"))
  					continue;
--
-+				try {
- 				using Stream stream = item.OpenStream(item2);
- 				using StreamReader streamReader = new StreamReader(stream);
- 				string fileText = streamReader.ReadToEnd();
-@@ -178,11 +_,24 @@
  
- 				if (extension == ".csv")
- 					LoadLanguageFromFileTextCsv(fileText);
-+				} catch {
-+					Logging.Terraria.Error($"An error occurred loading the \"{item2}\" file from one of the enabled resource packs. The language changes contained within will not take effect.");
-+					string basePath = null;
-+					if(item is FileSystemContentSource fileSystemContentSource) {
-+						basePath = (string)typeof(FileSystemContentSource).GetField("_basePath", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(fileSystemContentSource);
-+						var resourcePack = Main.AssetSourceController.ActiveResourcePackList.EnabledPacks.FirstOrDefault(x => basePath.Contains(x.FileName));
-+						if (resourcePack != null) {
+@@ -185,11 +_,14 @@
+ 					if (extension == ".csv")
+ 						LoadLanguageFromFileTextCsv(fileText);
+ 				}
+-				catch (Exception innerException) {
+-					IAssetRepository assetRepository = Main.instance.Services.Get<IAssetRepository>();
+-					if (assetRepository != null && assetRepository.AssetLoadFailHandler != null) {
+-						string assetName = item + extension;
+-						assetRepository.AssetLoadFailHandler(assetName, AssetLoadException.FromAssetException(assetName, innerException));
++				catch {
++					Logging.Terraria.Error($"An error occurred loading the \"{item}\" file from one of the enabled resource packs. The language changes contained within will not take effect.");
++
++					if (contentSource is FileSystemContentSource fileSystemContentSource) {
++						string basePath = (string)typeof(FileSystemContentSource).GetField("_basePath", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(fileSystemContentSource);
++						ResourcePack resourcePack = Main.AssetSourceController.ActiveResourcePackList.EnabledPacks.FirstOrDefault(x => basePath.Contains(x.FileName));
++						if (resourcePack != null)
 +							Logging.Terraria.Error($"The resource pack that caused this error is \"{resourcePack.Name}\".");
-+						}
-+					}
-+				}
+ 					}
+ 				}
  			}
- 		}
+@@ -279,7 +_,7 @@
+ 		if (contentSource == null)
+ 			return false;
  
-+		/*
- 		ProcessCopyCommandsInTexts();
- 		ChatInitializer.PrepareAliases();
-+		*/
+-		ReloadLanguage(ActiveCulture);
++		ReloadLanguage();
+ 		return true;
  	}
  
- 	public void LoadLanguageFromFileTextCsv(string fileText)
-@@ -310,7 +_,9 @@
- 		if (!_categoryGroupedKeys.ContainsKey(categoryName))
+@@ -350,29 +_,40 @@
+ 
+ 	public LocalizedText RandomFromCategory(string categoryName, UnifiedRandom random = null)
+ 	{
+-		if (!_categoryGroupedKeys.TryGetValue(categoryName, out var value))
++		if (!_categoryGroupedKeys.ContainsKey(categoryName))
  			return new LocalizedText(categoryName + ".RANDOM", categoryName + ".RANDOM");
  
--		List<string> list = _categoryGroupedKeys[categoryName];
-+		//TML: Changed to a GetKeysInCategory call instead of direct dictionary access.
-+		var list = GetKeysInCategory(categoryName);
-+
- 		return GetText(categoryName + "." + list[(random ?? Main.rand).Next(list.Count)]);
++		// TML: Changed to a GetKeysInCategory call instead of direct dictionary access.
++		List<string> list = GetKeysInCategory(categoryName);
+-		return GetText(categoryName + "." + value[(random ?? Main.rand).Next(value.Count)]);
++		return GetText(categoryName + "." + list[(random ?? Main.rand).Next(list.Count)]);
  	}
  
-@@ -319,7 +_,9 @@
- 		if (!_categoryGroupedKeys.ContainsKey(categoryName))
+ 	public LocalizedText IndexedFromCategory(string categoryName, int index)
+ 	{
+-		if (!_categoryGroupedKeys.TryGetValue(categoryName, out var value))
++		if (!_categoryGroupedKeys.ContainsKey(categoryName))
  			return new LocalizedText(categoryName + ".INDEXED", categoryName + ".INDEXED");
  
--		List<string> list = _categoryGroupedKeys[categoryName];
-+		//TML: Changed to a GetKeysInCategory call instead of direct dictionary access.
-+		var list = GetKeysInCategory(categoryName);
-+
- 		int index2 = index % list.Count;
- 		return GetText(categoryName + "." + list[index2]);
++		// TML: Changed to a GetKeysInCategory call instead of direct dictionary access.
++		List<string> list = GetKeysInCategory(categoryName);
+-		int index2 = index % value.Count;
++		int index2 = index % list.Count;
+-		return GetText(categoryName + "." + value[index2]);
++		return GetText(categoryName + "." + list[index2]);
  	}
-@@ -328,10 +_,17 @@
+ 
+ 	public bool Exists(string key) => _localizedTexts.ContainsKey(key);
  
  	public LocalizedText GetText(string key)
  	{
--		if (!_localizedTexts.ContainsKey(key))
--			return new LocalizedText(key, key);
+-		if (_localizedTexts.TryGetValue(key, out var value))
+-			return value;
 -
--		return _localizedTexts[key];
+-		return _localizedTexts[key] = new LocalizedText(key, key);
 +		return _localizedTexts.TryGetValue(key, out var text) ? text : new LocalizedText(key, key);
 +	}
 +

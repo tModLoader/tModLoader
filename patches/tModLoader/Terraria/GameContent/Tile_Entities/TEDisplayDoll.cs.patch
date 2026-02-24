@@ -1,10 +1,10 @@
 --- src/TerrariaNetCore/Terraria/GameContent/Tile_Entities/TEDisplayDoll.cs
 +++ src/tModLoader/Terraria/GameContent/Tile_Entities/TEDisplayDoll.cs
-@@ -6,10 +_,12 @@
+@@ -6,12 +_,13 @@
  using Terraria.Audio;
  using Terraria.DataStructures;
  using Terraria.GameInput;
- using Terraria.Graphics.Renderers;
+-using Terraria.Graphics.Renderers;
 +using Terraria.ModLoader;
 +using Terraria.ModLoader.IO;
  using Terraria.UI;
@@ -12,8 +12,10 @@
  namespace Terraria.GameContent.Tile_Entities;
  
 -public class TEDisplayDoll : TileEntityType<TEDisplayDoll>, IFixLoadedData
-+public sealed partial class TEDisplayDoll : TileEntityType<TEDisplayDoll>, IFixLoadedData
++public sealed partial class TEDisplayDoll : TileEntity, IFixLoadedData
  {
+ 	public struct DisplayDollPose
+ 	{
 @@ -168,8 +_,8 @@
  		Item[] equip = _equip;
  		foreach (Item item in equip) {
@@ -36,10 +38,12 @@
  				writer.Write((short)item2.stack);
  			}
  		}
-@@ -278,11 +_,14 @@
+@@ -277,12 +_,15 @@
+ 		if (!flag)
  			return;
  
- 		TileEntityType<TEDisplayDoll>.Kill(num, num2);
+-		TileEntityType<TEDisplayDoll>.Kill(num, num2);
++		Kill(num, num2);
 +		if (!TileLoader.Drop(callX, callY, 470))
 +			goto skipDrops;
  		if (Main.tile[callX, callY].frameX / 72 != 1)
@@ -51,32 +55,53 @@
  		WorldGen.destroyObject = true;
  		for (int k = num; k < num + 2; k++) {
  			for (int l = num2; l < num2 + 3; l++) {
-@@ -671,18 +_,28 @@
- 	public void WriteItem(int itemIndex, BinaryWriter writer, Item[] collection)
- 	{
- 		Item item = collection[itemIndex];
-+		
+@@ -661,34 +_,29 @@
+ 		if (ItemSlot.HasIncompatibleAccessory(item, new ArraySegment<Item>(_equip, 3, 5), out var collisionSlot))
+ 			return collisionSlot;
+ 
+-		for (int i = 3; i < 6; i++) {
+-			if (_equip[i].IsAir)
+-				return i;
+-		}
+-
+-		return 3;
+-	}
+-
+-	public void WriteItem(int itemIndex, BinaryWriter writer, Item[] collection)
+-	{
+-		Item item = collection[itemIndex];
+-		writer.Write((ushort)item.type);
 +		ItemIO.Send(item, writer, writeStack: true);
 +		return;
-+		
- 		writer.Write((ushort)item.type);
++
++		writer.Write((ushort)item.netID);
  		writer.Write((ushort)item.stack);
  		writer.Write(item.prefix);
  	}
  
  	public void ReadItem(int itemIndex, BinaryReader reader, Item[] collection)
  	{
-+		/*
- 		int num = reader.ReadUInt16();
++		Item item = (dye ? _dyes : _items)[itemIndex];
++
++		ItemIO.Receive(item, reader, readStack: true);
++		return;
++
+-		int num = reader.ReadUInt16();
++		int defaults = reader.ReadUInt16();
  		int stack = reader.ReadUInt16();
  		int prefixWeWant = reader.ReadByte();
+-		if (itemIndex < collection.Length) {
+-			Item obj = collection[itemIndex];
+-			obj.SetDefaults(num);
+-			obj.stack = stack;
+-			obj.Prefix(prefixWeWant);
+-		}
+-	}
++		/*
++		Item item = _items[itemIndex];
++		if (dye)
++			item = _dyes[itemIndex];
 +		*/
- 		if (itemIndex < collection.Length) {
- 			Item obj = collection[itemIndex];
-+			
-+			ItemIO.Receive(item, reader, readStack: true);
-+			return;
-+			
- 			obj.SetDefaults(num);
- 			obj.stack = stack;
- 			obj.Prefix(prefixWeWant);
+ 
+ 	public void WriteData(int itemIndex, int command, BinaryWriter writer)
+ 	{

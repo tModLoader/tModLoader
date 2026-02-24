@@ -1,7 +1,8 @@
 --- src/TerrariaNetCore/Terraria/Localization/LocalizedText.cs
 +++ src/tModLoader/Terraria/Localization/LocalizedText.cs
-@@ -1,15 +_,30 @@
-+using System;
+@@ -1,11 +_,10 @@
+ using System;
+-using System.Collections.Generic;
  using System.ComponentModel;
  using System.Text.RegularExpressions;
  
@@ -12,28 +13,48 @@
  {
  	public static readonly LocalizedText Empty = new LocalizedText("", "");
  	private static Regex _substitutionRegex = new Regex("{(\\?(?:!)?)?([a-zA-Z][\\w\\.]*)}", RegexOptions.Compiled);
- 	public readonly string Key;
+@@ -13,27 +_,19 @@
+ 	private object _value;
+ 	private static Dictionary<Type, PropertyDescriptorCollection> _propertyLookupCache = new Dictionary<Type, PropertyDescriptorCollection>();
  
 +	/*
- 	public string Value { get; private set; }
++	public string Value { get; private set; }
 +	*/
 +	private string _value;
 +	/// <summary>
 +	/// Retrieves the text value. This is the actual text the user should see.
 +	/// </summary>
-+	public string Value {
+ 	public string Value {
+-		get {
+-			if (_value is VariableText variableText && variableText.TryFormat(Lang.GetGlobalSubstitution, out var formatted))
+-				return formatted;
+-
+-			return _value.ToString();
+-		}
+-	}
+-
+-	public string UnformattedValue => _value.ToString();
+-
+-	public string EnglishValue { get; private set; }
+-
+-	public bool HasValue => EnglishValue != Key;
+-
+-	public bool ConditionsMet {
+-		get {
+-			if (_value is VariableText variableText)
+-				return variableText.ConditionsMet(Lang.GetGlobalSubstitution);
+-
+-			return true;
 +		get => _value;
 +		private set {
 +			_value = value;
 +			_hasPlurals = null;
 +			BoundArgs = null;
-+		}
-+	}
+ 		}
+ 	}
  
- 	internal LocalizedText(string key, string text)
- 	{
-@@ -22,6 +_,13 @@
- 		Value = text;
+@@ -83,6 +_,13 @@
+ 		return true;
  	}
  
 +	/// <summary>
@@ -45,11 +66,12 @@
 +	/// <returns></returns>
  	public string FormatWith(object obj)
  	{
- 		string value = Value;
-@@ -36,6 +_,13 @@
- 		});
+ 		if (!TryFormatWith(obj, out var formatted))
+@@ -91,7 +_,14 @@
+ 		return formatted;
  	}
  
+-	public string FormatWith(Func<string, object> lookup)
 +	/// <summary>
 +	/// Checks if the conditions embedded in this LocalizedText are satisfied by the <paramref name="obj"/> argument.
 +	/// For example when used with <see cref="Lang.CreateDialogSubstitutionObject(NPC)"/> as the <paramref name="obj"/> argument, "{?Rain}" at the start of a LocalizedText value will cause false to be returned if it is not raining. "{?!Rain}" would do the opposite. If all conditions are satisfied, true is returned.<br/>
@@ -57,10 +79,11 @@
 +	/// </summary>
 +	/// <param name="obj"></param>
 +	/// <returns></returns>
- 	public bool CanFormatWith(object obj)
++	public bool CanFormatWith(object obj)
  	{
- 		PropertyDescriptorCollection properties = TypeDescriptor.GetProperties(obj);
-@@ -56,7 +_,12 @@
+ 		if (!TryFormatWith(lookup, out var formatted))
+ 			return Value;
+@@ -115,7 +_,12 @@
  		return true;
  	}
  
@@ -73,7 +96,7 @@
  	public NetworkText ToNetworkText(params object[] substitutions) => NetworkText.FromKey(Key, substitutions);
  
  	public static explicit operator string(LocalizedText text)
-@@ -64,9 +_,12 @@
+@@ -123,10 +_,13 @@
  		return text.Value;
  	}
  
@@ -85,4 +108,5 @@
 +	*/
 +
  	public override string ToString() => Value;
- }
+ 
+ 	public bool EqualsCommand(string text)

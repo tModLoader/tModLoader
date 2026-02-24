@@ -1,59 +1,139 @@
 --- src/TerrariaNetCore/Terraria/UI/Chat/ChatManager.cs
 +++ src/tModLoader/Terraria/UI/Chat/ChatManager.cs
-@@ -121,8 +_,15 @@
- 		foreach (TextSnippet textSnippet in snippets) {
- 			textSnippet.Update();
- 			num = textSnippet.Scale;
+@@ -127,8 +_,30 @@
+ 					line++;
+ 				}
+ 
+-				yield return new PositionedSnippet(snippet, i, line, pos, size2);
+-				pos.X += size2.X;
++	public static Vector2 GetStringSize(DynamicSpriteFont font, TextSnippet[] snippets, Vector2 baseScale, float maxWidth = -1f)
++	{
++		Vector2 vec = new Vector2(Main.mouseX, Main.mouseY);
++		Vector2 zero = Vector2.Zero;
++		Vector2 vector = zero;
++		Vector2 result = vector;
++		float x = font.MeasureString(" ").X;
++		float num = 1f;
++		float num2 = 0f;
++		foreach (TextSnippet textSnippet in snippets) {
++			textSnippet.Update();
++			num = textSnippet.Scale;
 +			/*
- 			if (textSnippet.UniqueDraw(justCheckingString: true, out var size, null)) {
++			if (textSnippet.UniqueDraw(justCheckingString: true, out var size, null)) {
 +			*/
 +			if (textSnippet.UniqueDraw(justCheckingString: true, out Vector2 size, null, scale: baseScale.X * num)) {
 +				/*
- 				vector.X += size.X * baseScale.X * num;
++				vector.X += size.X * baseScale.X * num;
 +				*/
 +				vector.X += size.X;
 +
- 				result.X = Math.Max(result.X, vector.X);
- 				result.Y = Math.Max(result.Y, vector.Y + size.Y);
- 				continue;
-@@ -156,7 +_,12 @@
- 					result.Y = Math.Max(result.Y, vector.Y + vector2.Y);
- 				}
++				result.X = Math.Max(result.X, vector.X);
++				result.Y = Math.Max(result.Y, vector.Y + size.Y);
++				continue;
+ 			}
+ 			else {
+ 				string text = font.CreateWrappedText(snippet.Text, scale.X, maxWidth, pos.X, Language.ActiveCulture.CultureInfo);
+@@ -146,10 +_,16 @@
+ 					if (sep < 0)
+ 						break;
  
+-					pos.X = 0f;
+-					pos.Y += (float)font.LineSpacing * scale.Y;
+-					line++;
+-					num = sep + 1;
 +				// Fix spacing with \n and chat tags, #2981
 +				// Skips last line from counting, so "text\ntext", wouldn't be measured as "text\ntext\n"
 +				/*
- 				if (array.Length > 1) {
++				if (array.Length > 1) {
 +				*/
 +				if (array.Length > 1 && j < array2.Length - 1) {
- 					vector.X = zero.X;
- 					vector.Y += (float)font.LineSpacing * num2 * baseScale.Y;
- 					result.Y = Math.Max(result.Y, vector.Y);
-@@ -192,11 +_,19 @@
- 				color = textSnippet.GetVisibleColor();
++					vector.X = zero.X;
++					vector.Y += (float)font.LineSpacing * num2 * baseScale.Y;
++					result.Y = Math.Max(result.Y, vector.Y);
++					num2 = 0f;
+ 				}
+ 			}
  
- 			num2 = textSnippet.Scale;
+@@ -174,9 +_,69 @@
+ 
+ 	public static void DrawColorCodedStringShadow(SpriteBatch spriteBatch, DynamicSpriteFont font, IEnumerable<TextSnippet> snippets, Vector2 position, Color shadowColor, float rotation, Vector2 origin, Vector2 scale, float maxWidth = -1f, float spread = 2f)
+ 	{
+-		List<PositionedSnippet> snippets2 = LayoutSnippets(font, snippets, scale, maxWidth).ToList();
+-		DrawColorCodedStringShadow(spriteBatch, font, snippets2, position, shadowColor, rotation, origin, scale, spread);
+-	}
++		int num = -1;
++		Vector2 vec = new Vector2(Main.mouseX, Main.mouseY);
++		Vector2 vector = position;
++		Vector2 result = vector;
++		float x = font.MeasureString(" ").X;
++		Color color = baseColor;
++		float num2 = 1f;
++		float num3 = 0f;
++		for (int i = 0; i < snippets.Length; i++) {
++			TextSnippet textSnippet = snippets[i];
++			textSnippet.Update();
++			if (!ignoreColors)
++				color = textSnippet.GetVisibleColor();
++
++			num2 = textSnippet.Scale;
 +
 +			/*
- 			if (textSnippet.UniqueDraw(justCheckingString: false, out var size, spriteBatch, vector, color, num2)) {
++			if (textSnippet.UniqueDraw(justCheckingString: false, out var size, spriteBatch, vector, color, num2)) {
 +			*/
 +			if (textSnippet.UniqueDraw(justCheckingString: false, out Vector2 size, spriteBatch, vector, color, baseScale.X * num2)) {
- 				if (vec.Between(vector, vector + size))
- 					num = i;
- 
++				if (vec.Between(vector, vector + size))
++					num = i;
++
 +				/*
- 				vector.X += size.X * baseScale.X * num2;
++				vector.X += size.X * baseScale.X * num2;
 +				*/
 +				vector.X += size.X;
 +
- 				result.X = Math.Max(result.X, vector.X);
- 				continue;
- 			}
-@@ -266,7 +_,15 @@
- 	public static Vector2 DrawColorCodedStringWithShadow(SpriteBatch spriteBatch, DynamicSpriteFont font, TextSnippet[] snippets, Vector2 position, float rotation, Color color, Vector2 origin, Vector2 baseScale, out int hoveredSnippet, float maxWidth = -1f, float spread = 2f)
++				result.X = Math.Max(result.X, vector.X);
++				continue;
++			}
++
++			string[] array = textSnippet.Text.Split('\n');
++			array = Regex.Split(textSnippet.Text, "(\n)");
++			bool flag = true;
++			foreach (string text in array) {
++				string[] array2 = Regex.Split(text, "( )");
++				array2 = text.Split(' ');
++				if (text == "\n") {
++					vector.Y += (float)font.LineSpacing * num3 * baseScale.Y;
++					vector.X = position.X;
++					result.Y = Math.Max(result.Y, vector.Y);
++					num3 = 0f;
++					flag = false;
++					continue;
++				}
++
++				for (int k = 0; k < array2.Length; k++) {
++					if (k != 0)
++						vector.X += x * baseScale.X * num2;
++
++					if (maxWidth > 0f) {
++						float num4 = font.MeasureString(array2[k]).X * baseScale.X * num2;
++						if (vector.X - position.X + num4 > maxWidth) {
++							vector.X = position.X;
++							vector.Y += (float)font.LineSpacing * num3 * baseScale.Y;
++							result.Y = Math.Max(result.Y, vector.Y);
++							num3 = 0f;
++						}
++					}
++
++					if (num3 < num2)
++						num3 = num2;
+ 
+ 	public static void DrawColorCodedStringShadow(SpriteBatch spriteBatch, DynamicSpriteFont font, List<PositionedSnippet> snippets, Vector2 position, Color shadowColor, float rotation, Vector2 origin, Vector2 scale, float spread = 2f)
  	{
- 		DrawColorCodedStringShadow(spriteBatch, font, snippets, position, Color.Black, rotation, origin, baseScale, maxWidth, spread);
--		return DrawColorCodedString(spriteBatch, font, snippets, position, color, rotation, origin, baseScale, out hoveredSnippet, maxWidth, ignoreColors: true);
+@@ -220,8 +_,16 @@
+ 
+ 	public static void DrawColorCodedStringWithShadow(SpriteBatch spriteBatch, DynamicSpriteFont font, TextSnippet[] snippets, Vector2 position, Color color, float rotation, Vector2 origin, Vector2 baseScale, out int hoveredSnippet, float maxWidth = -1f, float spread = 2f)
+ 	{
+-		DrawColorCodedStringShadow(spriteBatch, font, snippets, position, color.MultiplyRGBA(Color.Black), rotation, origin, baseScale, maxWidth, spread);
++		DrawColorCodedStringShadow(spriteBatch, font, snippets, position, Color.Black, rotation, origin, baseScale, maxWidth, spread);
+-		DrawColorCodedString(spriteBatch, font, snippets, position, color, rotation, origin, baseScale, out hoveredSnippet, maxWidth, ignoreColors: true);
 +		return DrawColorCodedString(spriteBatch, font, snippets, position, color, rotation, origin, baseScale, out hoveredSnippet, maxWidth /*, ignoreColors: true*/);
 +	}
 +
@@ -66,10 +146,10 @@
  	}
  
  	public static void DrawColorCodedStringShadow(SpriteBatch spriteBatch, DynamicSpriteFont font, string text, Vector2 position, Color baseColor, float rotation, Vector2 origin, Vector2 baseScale, float maxWidth = -1f, float spread = 2f)
-@@ -345,5 +_,15 @@
- 		DrawColorCodedStringShadow(spriteBatch, font, snippets, position, new Color(0, 0, 0, baseColor.A), rotation, origin, baseScale, maxWidth, spread);
- 		int hoveredSnippet;
- 		return DrawColorCodedString(spriteBatch, font, snippets, position, Color.White, rotation, origin, baseScale, out hoveredSnippet, maxWidth);
+@@ -311,5 +_,15 @@
+ 			DrawColorCodedStringShadow(spriteBatch, font, snippets2, position, color, rotation, origin, scale, spread);
+ 			DrawColorCodedString(spriteBatch, font, snippets2, position, rotation, origin, scale, out var _);
+ 		}
 +	}
 +
 +	// Overload with shadowColor param

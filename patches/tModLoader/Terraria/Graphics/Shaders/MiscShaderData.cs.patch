@@ -1,33 +1,53 @@
 --- src/TerrariaNetCore/Terraria/Graphics/Shaders/MiscShaderData.cs
 +++ src/tModLoader/Terraria/Graphics/Shaders/MiscShaderData.cs
-@@ -19,31 +_,37 @@
- 	private Vector4 _shaderSpecificData = Vector4.Zero;
- 	private SamplerState _customSamplerState;
+@@ -36,51 +_,37 @@
+ 	private EffectParameter<Vector2> uImageSize2;
+ 	private EffectParameter<Matrix> MatrixTransform;
  
 +	[Obsolete("Removed in 1.4.5. Use Asset<Effect> version instead. Asset version works with AsyncLoad")]
- 	public MiscShaderData(Ref<Effect> shader, string passName)
- 		: base(shader, passName)
- 	{
- 	}
- 
-+	public MiscShaderData(Asset<Effect> shader, string passName)
++	public MiscShaderData(Ref<Effect> shader, string passName)
 +		: base(shader, passName)
 +	{
 +	}
 +
+ 	public MiscShaderData(Asset<Effect> shader, string passName)
+ 		: base(shader, passName)
+ 	{
+ 	}
+ 
+-	private void CheckCachedParameters()
+-	{
+-		if (_effect == null || _effect != base.Shader) {
+-			_effect = base.Shader;
+-			uColor = base.Shader.GetParameter<Vector3>("uColor");
+-			uSaturation = base.Shader.GetParameter<float>("uSaturation");
+-			uSecondaryColor = base.Shader.GetParameter<Vector3>("uSecondaryColor");
+-			uTime = base.Shader.GetParameter<float>("uTime");
+-			uOpacity = base.Shader.GetParameter<float>("uOpacity");
+-			uShaderSpecificData = base.Shader.GetParameter<Vector4>("uShaderSpecificData");
+-			uSourceRect = base.Shader.GetParameter<Vector4>("uSourceRect");
+-			uDrawPosition = base.Shader.GetParameter<Vector2>("uDrawPosition");
+-			uImageSize0 = base.Shader.GetParameter<Vector2>("uImageSize0");
+-			uImageSize1 = base.Shader.GetParameter<Vector2>("uImageSize1");
+-			uImageSize2 = base.Shader.GetParameter<Vector2>("uImageSize2");
+-			MatrixTransform = base.Shader.GetParameter<Matrix>("MatrixTransform");
+-		}
+-	}
+-
  	public virtual void Apply(DrawData? drawData = null)
  	{
--		base.Shader.Parameters["uColor"].SetValue(_uColor);
+-		CheckCachedParameters();
+-		uColor.SetValue(_uColor);
+-		uSaturation.SetValue(_uSaturation);
+-		uSecondaryColor.SetValue(_uSecondaryColor);
+-		uTime.SetValue(Main.GlobalTimeWrappedHourly);
+-		uOpacity.SetValue(_uOpacity);
+-		uShaderSpecificData.SetValue(_shaderSpecificData);
 +		base.Shader.Parameters["uColor"]?.SetValue(_uColor);
--		base.Shader.Parameters["uSaturation"].SetValue(_uSaturation);
 +		base.Shader.Parameters["uSaturation"]?.SetValue(_uSaturation);
--		base.Shader.Parameters["uSecondaryColor"].SetValue(_uSecondaryColor);
 +		base.Shader.Parameters["uSecondaryColor"]?.SetValue(_uSecondaryColor);
--		base.Shader.Parameters["uTime"].SetValue(Main.GlobalTimeWrappedHourly);
 +		base.Shader.Parameters["uTime"]?.SetValue(Main.GlobalTimeWrappedHourly);
--		base.Shader.Parameters["uOpacity"].SetValue(_uOpacity);
 +		base.Shader.Parameters["uOpacity"]?.SetValue(_uOpacity);
--		base.Shader.Parameters["uShaderSpecificData"].SetValue(_shaderSpecificData);
 +		base.Shader.Parameters["uShaderSpecificData"]?.SetValue(_shaderSpecificData);
  		if (drawData.HasValue) {
  			DrawData value = drawData.Value;
@@ -35,47 +55,56 @@
  			if (drawData.Value.sourceRect.HasValue)
  				value2 = new Vector4(value.sourceRect.Value.X, value.sourceRect.Value.Y, value.sourceRect.Value.Width, value.sourceRect.Value.Height);
  
--			base.Shader.Parameters["uSourceRect"].SetValue(value2);
+-			uSourceRect.SetValue(value2);
+-			uDrawPosition.SetValue(value.position);
+-			uImageSize0.SetValue(new Vector2(value.texture.Width, value.texture.Height));
 +			base.Shader.Parameters["uSourceRect"]?.SetValue(value2);
--			base.Shader.Parameters["uWorldPosition"].SetValue(Main.screenPosition + value.position);
 +			base.Shader.Parameters["uWorldPosition"]?.SetValue(Main.screenPosition + value.position);
--			base.Shader.Parameters["uImageSize0"].SetValue(new Vector2(value.texture.Width, value.texture.Height));
 +			base.Shader.Parameters["uImageSize0"]?.SetValue(new Vector2(value.texture.Width, value.texture.Height));
  		}
  		else {
--			base.Shader.Parameters["uSourceRect"].SetValue(new Vector4(0f, 0f, 4f, 4f));
+-			uSourceRect.SetValue(new Vector4(0f, 0f, 4f, 4f));
 +			base.Shader.Parameters["uSourceRect"]?.SetValue(new Vector4(0f, 0f, 4f, 4f));
  		}
  
  		SamplerState value3 = SamplerState.LinearWrap;
-@@ -53,19 +_,19 @@
- 		if (_uImage0 != null) {
- 			Main.graphics.GraphicsDevice.Textures[0] = _uImage0.Value;
+@@ -91,24 +_,24 @@
+ 		if (texture != null) {
+ 			Main.graphics.GraphicsDevice.Textures[0] = texture;
  			Main.graphics.GraphicsDevice.SamplerStates[0] = value3;
--			base.Shader.Parameters["uImageSize0"].SetValue(new Vector2(_uImage0.Width(), _uImage0.Height()));
-+			base.Shader.Parameters["uImageSize0"]?.SetValue(new Vector2(_uImage0.Width(), _uImage0.Height()));
+-			if (texture is Texture2D)
+-				uImageSize0.SetValue(((Texture2D)texture).Size());
++			if (texture is Texture2D texture2D)
++				base.Shader.Parameters["uImageSize0"]?.SetValue(texture2D.Size());
  		}
  
- 		if (_uImage1 != null) {
- 			Main.graphics.GraphicsDevice.Textures[1] = _uImage1.Value;
+ 		texture = ((_uImage1 != null) ? _uImage1.Value : _uImage1Tex);
+ 		if (texture != null) {
+ 			Main.graphics.GraphicsDevice.Textures[1] = texture;
  			Main.graphics.GraphicsDevice.SamplerStates[1] = value3;
--			base.Shader.Parameters["uImageSize1"].SetValue(new Vector2(_uImage1.Width(), _uImage1.Height()));
-+			base.Shader.Parameters["uImageSize1"]?.SetValue(new Vector2(_uImage1.Width(), _uImage1.Height()));
+-			if (texture is Texture2D)
+-				uImageSize1.SetValue(((Texture2D)texture).Size());
++			if (texture is Texture2D texture2D)
++				base.Shader.Parameters["uImageSize1"]?.SetValue(texture2D.Size());
  		}
  
- 		if (_uImage2 != null) {
- 			Main.graphics.GraphicsDevice.Textures[2] = _uImage2.Value;
+ 		texture = ((_uImage2 != null) ? _uImage2.Value : _uImage2Tex);
+ 		if (texture != null) {
+ 			Main.graphics.GraphicsDevice.Textures[2] = texture;
  			Main.graphics.GraphicsDevice.SamplerStates[2] = value3;
--			base.Shader.Parameters["uImageSize2"].SetValue(new Vector2(_uImage2.Width(), _uImage2.Height()));
-+			base.Shader.Parameters["uImageSize2"]?.SetValue(new Vector2(_uImage2.Width(), _uImage2.Height()));
+-			if (texture is Texture2D)
+-				uImageSize2.SetValue(((Texture2D)texture).Size());
++			if (texture is Texture2D texture2D)
++				base.Shader.Parameters["uImageSize2"]?.SetValue(texture2D.Size());
  		}
  
- 		_ = _useProjectionMatrix;
-@@ -193,5 +_,35 @@
- 		_uImage2Tex = texture;
- 		_uImage2 = null;
- 		return this;
- 	}
+ 		if (_useProjectionMatrix)
+@@ -162,6 +_,36 @@
+ 
+ 		_uImage2Tex = null;
+ 		_uImage2 = Main.Assets.Request<Texture2D>(path);
++		return this;
++	}
 +
 +	public MiscShaderData UseImage0(Asset<Texture2D> asset)
 +	{
@@ -104,6 +133,6 @@
 +
 +		_uImage2Tex = null;
 +		_uImage2 = asset;
-+ 		return this;
-+	}
+ 		return this;
+ 	}
  

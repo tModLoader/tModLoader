@@ -1,8 +1,8 @@
 --- src/TerrariaNetCore/Terraria/GameContent/UI/GameTipsDisplay.cs
 +++ src/tModLoader/Terraria/GameContent/UI/GameTipsDisplay.cs
-@@ -4,11 +_,12 @@
+@@ -3,11 +_,12 @@
+ using Microsoft.Xna.Framework.Graphics;
  using ReLogic.Graphics;
- using Terraria.GameInput;
  using Terraria.Localization;
 +using Terraria.ModLoader;
  using Terraria.UI.Chat;
@@ -14,27 +14,35 @@
  {
  	private class GameTip
  	{
-@@ -71,6 +_,8 @@
- 		_tipsGamepad = Language.FindAll(Lang.CreateDialogFilter("LoadingTips_GamePad."));
- 		_tipsKeyboard = Language.FindAll(Lang.CreateDialogFilter("LoadingTips_Keyboard."));
- 		_lastTip = null;
+@@ -62,7 +_,12 @@
+ 
+ 	public GameTipsDisplay(ITipProvider tipProvider)
+ 	{
+-		_tipProvider = tipProvider;
++		_tipsDefault = Language.FindAll(Lang.CreateDialogFilter("LoadingTips_Default."));
++		_tipsGamepad = Language.FindAll(Lang.CreateDialogFilter("LoadingTips_GamePad."));
++		_tipsKeyboard = Language.FindAll(Lang.CreateDialogFilter("LoadingTips_Keyboard."));
++		_lastTip = null;
 +
 +		Initialize();
  	}
  
  	public void Update()
-@@ -147,6 +_,7 @@
+@@ -142,7 +_,31 @@
  	private void AddNewTip(double currentTime)
  	{
  		string textKey = "UI.Back";
+-		string key = _tipProvider.RollAvailableTip().Key;
 +		/*
- 		List<LocalizedText> list = new List<LocalizedText>();
- 		list.AddRange(_tipsDefault);
- 		if (PlayerInput.UsingGamepad)
-@@ -156,8 +_,21 @@
- 
- 		if (_lastTip != null)
- 			list.Remove(_lastTip);
++		List<LocalizedText> list = new List<LocalizedText>();
++		list.AddRange(_tipsDefault);
++		if (PlayerInput.UsingGamepad)
++			list.AddRange(_tipsGamepad);
++		else
++			list.AddRange(_tipsKeyboard);
++
++		if (_lastTip != null)
++			list.Remove(_lastTip);
 +		*/
 +
 +		var list = new List<GameTipData>(allTips);
@@ -48,8 +56,7 @@
 +			list.RemoveAll(tip => tip.TipText == _lastTip);
 +
 +		list.RemoveAll(tip => !tip.isVisible);
- 
--		string key = (_lastTip = ((list.Count != 0) ? list[Main.rand.Next(list.Count)] : LocalizedText.Empty)).Key;
++
 +		string key = (_lastTip = ((list.Count != 0) ? list[Main.rand.Next(list.Count)].TipText : LocalizedText.Empty)).Key;
  		if (Language.Exists(key))
  			textKey = key;
