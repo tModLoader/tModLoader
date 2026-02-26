@@ -161,7 +161,7 @@
 +	/// <inheritdoc cref="Dust.QuickDust(Vector2, Color)"/>
  	public static Dust QuickDust(Point tileCoords, Color color) => QuickDust(tileCoords.ToWorldCoordinates(), color);
  
-@@ -290,6 +_,12 @@
+@@ -298,6 +_,12 @@
  		}
  	}
  
@@ -174,7 +174,7 @@
  	public static Dust QuickDust(Vector2 pos, Color color)
  	{
  		Dust obj = Main.dust[NewDust(pos, 0, 0, 267)];
-@@ -325,6 +_,9 @@
+@@ -333,6 +_,9 @@
  
  	public static int dustWater()
  	{
@@ -184,7 +184,7 @@
  		switch (Main.waterStyle) {
  			case 2:
  				return 98;
-@@ -368,6 +_,16 @@
+@@ -376,6 +_,16 @@
  					continue;
  
  				dCount += 1f;
@@ -201,7 +201,7 @@
  				if (dust.scale > 10f)
  					dust.active = false;
  
-@@ -1735,7 +_,7 @@
+@@ -1743,7 +_,7 @@
  
  					Lighting.AddLight((int)(dust.position.X / 16f), (int)(dust.position.Y / 16f), num108 * 0.7f, num108, num108 * 0.8f);
  				}
@@ -210,7 +210,7 @@
  					dust.velocity.X *= 0.99f;
  				}
  
-@@ -1966,6 +_,8 @@
+@@ -1974,6 +_,8 @@
  
  				if (dust.scale < num117)
  					dust.active = false;
@@ -219,7 +219,7 @@
  			}
  			else {
  				dust.active = false;
-@@ -1989,9 +_,17 @@
+@@ -1997,9 +_,17 @@
  
  	public Color GetAlpha(Color newColor)
  	{
