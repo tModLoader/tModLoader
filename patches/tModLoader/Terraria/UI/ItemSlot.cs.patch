@@ -1,14 +1,15 @@
 --- src/TerrariaNetCore/Terraria/UI/ItemSlot.cs
 +++ src/tModLoader/Terraria/UI/ItemSlot.cs
-@@ -1,4 +_,5 @@
+@@ -1,5 +_,6 @@
  using System;
+ using System.Collections.Generic;
 +using System.Linq;
  using Microsoft.Xna.Framework;
  using Microsoft.Xna.Framework.Graphics;
  using Terraria.Audio;
-@@ -10,12 +_,14 @@
- using Terraria.GameInput;
+@@ -15,12 +_,14 @@
  using Terraria.ID;
+ using Terraria.Initializers;
  using Terraria.Localization;
 +using Terraria.ModLoader;
 +using Terraria.ModLoader.Default;
@@ -22,7 +23,7 @@
  {
  	public class Options
  	{
-@@ -26,6 +_,11 @@
+@@ -31,6 +_,11 @@
  
  	public class Context
  	{
@@ -34,26 +35,17 @@
  		public const int InventoryItem = 0;
  		public const int InventoryCoin = 1;
  		public const int InventoryAmmo = 2;
-@@ -86,7 +_,7 @@
+@@ -186,9 +_,9 @@
  
+ 	private static Dictionary<ItemDisplayKey, ulong> _nextTickDrawAvailable;
  	public static bool DrawGoldBGForCraftingMaterial;
+ 	public static bool DrawSelectionHighlightForGridSlot;
  	public static bool ShiftForcedOn;
 -	private static Item[] singleSlotArray;
 +	internal static Item[] singleSlotArray;
  	private static bool[] canFavoriteAt;
  	private static bool[] canShareAt;
- 	private static float[] inventoryGlowHue;
-@@ -261,6 +_,10 @@
- 		if (!PlayerInput.UsingGamepad)
- 			UILinkPointNavigator.SuggestUsage(GetGamepadPointForSlot(inv, context, slot));
- 
-+		if (PlayerLoader.HoverSlot(Main.player[Main.myPlayer], inv, context, slot)) {
-+			return;
-+		}
-+
- 		bool shiftForcedOn = ShiftForcedOn;
- 		if (NotUsingGamepad && Options.DisableLeftShiftTrashCan && !shiftForcedOn) {
- 			if (ControlInUse && !Options.DisableQuickTrash) {
+ 	private static bool[] canQuickDropAt;
 @@ -300,7 +_,7 @@
  						case 1:
  						case 2:
@@ -93,27 +85,18 @@
  		if (Main.cursorOverride == 2) {
  			if (ChatManager.AddChatText(FontAssets.MouseText.Value, ItemTagHandler.GenerateTag(item), Vector2.One))
  				SoundEngine.PlaySound(12);
-@@ -433,7 +_,7 @@
- 		}
+@@ -430,7 +_,11 @@
+ 	public static void OverrideHover(Item[] inv, int context = 0, int slot = 0)
+ 	{
+ 		if (!PlayerInput.UsingGamepad)
+ 			UILinkPointNavigator.SuggestUsage(GetGamepadPointForSlot(inv, context, slot));
  
- 		if (Main.cursorOverride == 3) {
--			if (!canFavoriteAt[context])
-+			if (!canFavoriteAt[Math.Abs(context)])
- 				return false;
- 
- 			item.favorited = !item.favorited;
-@@ -443,8 +_,11 @@
- 
- 		if (Main.cursorOverride == 7) {
- 			if (context == 29) {
-+				/*
- 				Item item2 = new Item();
- 				item2.SetDefaults(inv[slot].netID);
-+				*/
-+				Item item2 = inv[slot].Clone();
- 				item2.stack = item2.maxStack;
- 				item2.OnCreated(new JourneyDuplicationItemCreationContext());
- 				item2 = Main.player[Main.myPlayer].GetItem(Main.myPlayer, item2, GetItemSettings.InventoryEntityToPlayerInventorySettings);
++		if (PlayerLoader.HoverSlot(Main.player[Main.myPlayer], inv, context, slot)) {
++			return;
++		}
++
+ 		if (inv[slot].IsAir)
+ 			return;
 @@ -497,6 +_,9 @@
  		inv = singleSlotArray[0];
  	}
@@ -155,6 +138,15 @@
  						case 0:
  							AchievementsHelper.NotifyItemPickup(player, inv[slot]);
  							break;
+@@ -541,7 +_,7 @@
+ 		}
+ 
+ 		if (Main.cursorOverride == 3) {
+-			if (!canFavoriteAt[context])
++			if (!canFavoriteAt[Math.Abs(context)])
+ 				return false;
+ 
+ 			item.favorited = !item.favorited;
 @@ -547,8 +_,16 @@
  				if (inv[slot].type == 0 || inv[slot].stack < 1)
  					inv[slot] = new Item();
@@ -180,6 +172,16 @@
  					}
  				}
  				if (Main.mouseItem.type == 0 || Main.mouseItem.stack < 1)
+@@ -568,6 +_,9 @@
+ 		if (Main.cursorOverride == 7) {
+ 			if (context == 29) {
++				/*
+ 				Item item3 = new Item();
+ 				item3.SetDefaults(inv[slot].type);
++				*/
++				Item item3 = inv[slot].Clone();
+ 				item3.stack = (item3.OnlyNeedOneInInventory() ? 1 : item3.maxStack);
+ 				item3.OnCreated(new JourneyDuplicationItemCreationContext());
 @@ -573,10 +_,19 @@
  				break;
  			case 1:
@@ -232,15 +234,6 @@
  							case 0:
  								AchievementsHelper.NotifyItemPickup(player, inv[slot]);
  								break;
-@@ -659,7 +_,7 @@
- 					Utils.Swap(ref inv[slot], ref Main.mouseItem);
- 					SoundEngine.PlaySound(7);
- 					if (inv[slot].stack > 0) {
--						switch (context) {
-+						switch (Math.Abs(context)) {
- 							case 0:
- 								AchievementsHelper.NotifyItemPickup(player, inv[slot]);
- 								break;
 @@ -692,6 +_,7 @@
  					}
  				}
@@ -264,44 +257,15 @@
  							case 0:
  								AchievementsHelper.NotifyItemPickup(player, inv[slot]);
  								break;
-@@ -741,18 +_,25 @@
- 				HandleShopSlot(inv, slot, rightClickIsValid: false, leftClickIsValid: true);
- 				break;
- 			case 4: {
-+				if (!PlayerLoader.CanSellItem(player, player.TalkNPC, inv, Main.mouseItem))
-+					break;
-+
- 				Chest chest = Main.instance.shop[Main.npcShop];
- 				if (player.SellItem(Main.mouseItem)) {
--					chest.AddItemToShop(Main.mouseItem);
-+					int soldItemIndex = chest.AddItemToShop(Main.mouseItem);
- 					Main.mouseItem.SetDefaults();
- 					SoundEngine.PlaySound(18);
- 					AnnounceTransfer(new ItemTransferInfo(inv[slot], 21, 15));
-+
-+					PlayerLoader.PostSellItem(player, player.TalkNPC, chest.item, chest.item[soldItemIndex]);
- 				}
- 				else if (Main.mouseItem.value == 0) {
--					chest.AddItemToShop(Main.mouseItem);
-+					int soldItemIndex = chest.AddItemToShop(Main.mouseItem);
- 					Main.mouseItem.SetDefaults();
+@@ -746,7 +_,7 @@
+ 					Utils.Swap(ref inv[slot], ref Main.mouseItem);
  					SoundEngine.PlaySound(7);
- 					AnnounceTransfer(new ItemTransferInfo(inv[slot], 21, 15));
-+
-+					PlayerLoader.PostSellItem(player, player.TalkNPC, chest.item, chest.item[soldItemIndex]);
- 				}
- 
- 				Recipe.FindRecipes();
-@@ -762,7 +_,8 @@
- 			case 5:
- 				if (Main.mouseItem.IsAir) {
- 					SoundEngine.PlaySound(7);
--					Main.mouseItem.SetDefaults(inv[slot].netID);
-+					//Main.mouseItem.SetDefaults(inv[slot].netID);
-+					Main.mouseItem = inv[slot].Clone();
- 					Main.mouseItem.stack = Main.mouseItem.maxStack;
- 					Main.mouseItem.OnCreated(new JourneyDuplicationItemCreationContext());
- 					AnnounceTransfer(new ItemTransferInfo(inv[slot], 29, 21));
+ 					if (inv[slot].stack > 0) {
+-						switch (context) {
++						switch (Math.Abs(context)) {
+ 							case 0:
+ 								AchievementsHelper.NotifyItemPickup(player, inv[slot]);
+ 								break;
 @@ -788,7 +_,7 @@
  		bool result = false;
  		if (NotUsingGamepad && Options.DisableLeftShiftTrashCan) {
@@ -362,6 +326,43 @@
  				}
  			}
  		}
+@@ -903,17 +_,24 @@
+ 				HandleShopSlot(inv, slot, rightClickIsValid: false, leftClickIsValid: true);
+ 				break;
+ 			case 4: {
++				if (!PlayerLoader.CanSellItem(player, player.TalkNPC, inv, Main.mouseItem))
++					break;
++
+ 				Chest chest = Main.instance.shop[Main.npcShop];
+ 				if (player.SellItem(Main.mouseItem)) {
+-					chest.AddItemToShop(Main.mouseItem);
++					int soldItemIndex = chest.AddItemToShop(Main.mouseItem);
+ 					Main.mouseItem.SetDefaults(0);
+ 					SoundEngine.PlaySound(18);
+ 					AnnounceTransfer(new ItemTransferInfo(inv[slot], 21, 15));
++
++					PlayerLoader.PostSellItem(player, player.TalkNPC, chest.item, chest.item[soldItemIndex]);
+ 				}
+ 				else if (Main.mouseItem.value == 0) {
+-					chest.AddItemToShop(Main.mouseItem);
++					int soldItemIndex = chest.AddItemToShop(Main.mouseItem);
+ 					Main.mouseItem.SetDefaults(0);
+ 					SoundEngine.PlaySound(7);
+ 					AnnounceTransfer(new ItemTransferInfo(inv[slot], 21, 15));
++
++					PlayerLoader.PostSellItem(player, player.TalkNPC, chest.item, chest.item[soldItemIndex]);
+ 				}
+ 
+@@ -923,7 +_,8 @@
+ 			case 5:
+ 				if (Main.mouseItem.IsAir) {
+ 					SoundEngine.PlaySound(7);
+-					Main.mouseItem.SetDefaults(inv[slot].type);
++					//Main.mouseItem.SetDefaults(inv[slot].type);
++					Main.mouseItem = inv[slot].Clone();
+ 					Main.mouseItem.stack = (Main.mouseItem.OnlyNeedOneInInventory() ? 1 : Main.mouseItem.maxStack);
+ 					Main.mouseItem.OnCreated(new JourneyDuplicationItemCreationContext());
+ 					AnnounceTransfer(new ItemTransferInfo(inv[slot], 29, 21));
 @@ -974,7 +_,12 @@
  					result = 1;
  				break;
@@ -425,47 +426,6 @@
  							PickupItemIntoMouse(inv, context, slot, player);
  							SoundEngine.PlaySound(12);
  							RefreshStackSplitCooldown();
-@@ -1124,25 +_,39 @@
- 
- 	public static void PickupItemIntoMouse(Item[] inv, int context, int slot, Player player)
- 	{
-+		// Changes to this method (StackItems/TransferWithLimit) - #OnStackHook
- 		if (Main.mouseItem.type == 0) {
-+			/*
- 			Main.mouseItem = inv[slot].Clone();
-+			*/
- 			if (context == 29) {
--				Main.mouseItem.SetDefaults(Main.mouseItem.type);
-+				//Main.mouseItem.SetDefaults(Main.mouseItem.type);
-+				Main.mouseItem = inv[slot].Clone();
- 				Main.mouseItem.OnCreated(new JourneyDuplicationItemCreationContext());
- 			}
-+			else { // Added, replaces commented code above and below
-+				Main.mouseItem = ItemLoader.TransferWithLimit(inv[slot], 1);
-+			}
- 
-+			/*
- 			Main.mouseItem.stack = 0;
- 			if (inv[slot].favorited && inv[slot].stack == 1)
- 				Main.mouseItem.favorited = true;
- 			else
- 				Main.mouseItem.favorited = false;
-+			*/
- 
- 			AnnounceTransfer(new ItemTransferInfo(inv[slot], context, 21));
- 		}
-+		else {
-+			ItemLoader.StackItems(Main.mouseItem, inv[slot], out _, infiniteSource: context == Context.CreativeInfinite, 1);
-+		}
- 
-+		/*
- 		Main.mouseItem.stack++;
- 		if (context != 29)
- 			inv[slot].stack--;
-+		*/
- 
- 		if (inv[slot].stack <= 0)
- 			inv[slot] = new Item();
 @@ -1207,14 +_,22 @@
  		else if (item.type == 1869) {
  			player.OpenPresent(1869);
@@ -566,6 +526,47 @@
  
  			inv[slot].SetDefaults();
  			SoundEngine.PlaySound(7);
+@@ -1288,25 +_,39 @@
+ 
+ 	public static void PickupItemIntoMouse(Item[] inv, int context, int slot, Player player)
+ 	{
++		// Changes to this method (StackItems/TransferWithLimit) - #OnStackHook
+ 		if (Main.mouseItem.type == 0) {
++			/*
+ 			Main.mouseItem = inv[slot].Clone();
++			*/
+ 			if (context == 29) {
+-				Main.mouseItem.SetDefaults(Main.mouseItem.type);
++				//Main.mouseItem.SetDefaults(Main.mouseItem.type);
++				Main.mouseItem = inv[slot].Clone();
+ 				Main.mouseItem.OnCreated(new JourneyDuplicationItemCreationContext());
+ 			}
++			else { // Added, replaces commented code above and below
++				Main.mouseItem = ItemLoader.TransferWithLimit(inv[slot], 1);
++			}
+ 
++			/*
+ 			Main.mouseItem.stack = 0;
+ 			if (inv[slot].favorited && inv[slot].stack == 1)
+ 				Main.mouseItem.favorited = true;
+ 			else
+ 				Main.mouseItem.favorited = false;
++			*/
+ 
+ 			AnnounceTransfer(new ItemTransferInfo(inv[slot], context, 21));
+ 		}
++		else {
++			ItemLoader.StackItems(Main.mouseItem, inv[slot], out _, infiniteSource: context == Context.CreativeInfinite, 1);
++		}
+ 
++		/*
+ 		Main.mouseItem.stack++;
+ 		if (context != 29)
+ 			inv[slot].stack--;
++		*/
+ 
+ 		if (inv[slot].stack <= 0)
+ 			inv[slot] = new Item();
 @@ -1376,12 +_,19 @@
  
  		_ = Main.instance.shop[Main.npcShop];
@@ -632,7 +633,7 @@
  		}
  	}
  
-@@ -1508,6 +_,16 @@
+@@ -1692,6 +_,16 @@
  					value = TextureAssets.InventoryBack13.Value;
  					color2 = GetColorByLoadout(slot, context);
  					break;
@@ -649,53 +650,53 @@
  				case 3:
  					value = TextureAssets.InventoryBack5.Value;
  					break;
-@@ -1632,6 +_,16 @@
+@@ -1899,6 +_,16 @@
  			case 33:
- 				num9 = 1;
+ 				num15 = 1;
  				break;
 +			case Context.ModdedAccessorySlot:
-+				// 'num9' is the vertical frame of some texture?
-+				num9 = 11;
++				// 'num15' is the vertical frame of some texture?
++				num15 = 11;
 +				break;
 +			case Context.ModdedVanityAccessorySlot:
-+				num9 = 2;
++				num15 = 2;
 +				break;
 +			case Context.ModdedDyeSlot:
-+				num9 = 1;
++				num15 = 1;
 +				break;
  			case 16:
- 				num9 = 4;
+ 				num15 = 4;
  				break;
-@@ -1654,7 +_,14 @@
- 			Rectangle rectangle = value6.Frame(3, 6, num9 % 3, num9 / 3);
+@@ -1926,7 +_,14 @@
+ 			Rectangle rectangle = value6.Frame(3, 7, num15 % 3, num15 / 3);
  			rectangle.Width -= 2;
  			rectangle.Height -= 2;
 +
 +			if (context is Context.ModdedAccessorySlot or Context.ModdedVanityAccessorySlot or Context.ModdedDyeSlot) {
-+				LoaderManager.Get<AccessorySlotLoader>().DrawSlotTexture(value6, position + value.Size() / 2f * inventoryScale, rectangle, Color.White * 0.35f, 0f, rectangle.Size() / 2f, inventoryScale, SpriteEffects.None, 0f, slot, context);
++				LoaderManager.Get<AccessorySlotLoader>().DrawSlotTexture(value6, position + value.Size() / 2f * inventoryScale, rectangle, Color.White * (num16 * itemFade), 0f, rectangle.Size() / 2f, inventoryScale, SpriteEffects.None, 0f, slot, context);
 +				goto SkipVanillaDraw;
 +			}
 +
- 			spriteBatch.Draw(value6, position + value.Size() / 2f * inventoryScale, rectangle, Color.White * 0.35f, 0f, rectangle.Size() / 2f, inventoryScale, SpriteEffects.None, 0f);
+ 			spriteBatch.Draw(value6, position + value.Size() / 2f * inventoryScale, rectangle, Color.White * (num16 * itemFade), 0f, rectangle.Size() / 2f, inventoryScale, SpriteEffects.None, 0f);
 +			SkipVanillaDraw:;
  		}
  
  		Vector2 vector = value.Size() * inventoryScale;
-@@ -1713,7 +_,10 @@
+@@ -2007,7 +_,10 @@
  					int useAmmo = item.useAmmo;
- 					num10 = 0;
+ 					num19 = 0;
  					for (int j = 0; j < 58; j++) {
 +						/*
  						if (inv[j].ammo == useAmmo)
 +						*/
 +						if (inv[j].stack > 0 && ItemLoader.CanChooseAmmo(item, inv[j], player))
- 							num10 += inv[j].stack;
+ 							num19 += inv[j].stack;
  					}
  				}
-@@ -1759,13 +_,18 @@
- 				Vector2 position2 = position + value.Size() * inventoryScale / 2f - TextureAssets.Cd.Value.Size() * inventoryScale / 2f;
- 				Color color3 = item.GetAlpha(color) * ((float)player.potionDelay / (float)player.potionDelayTime);
- 				spriteBatch.Draw(TextureAssets.Cd.Value, position2, null, color3, 0f, default(Vector2), scale, SpriteEffects.None, 0f);
+@@ -2083,13 +_,18 @@
+ 				Vector2 position3 = position + value.Size() * inventoryScale / 2f - TextureAssets.Cd.Value.Size() * inventoryScale / 2f;
+ 				Color color6 = item.GetAlpha(color) * 0.5f;
+ 				spriteBatch.Draw(TextureAssets.Cd.Value, position3, null, color6, 0f, default(Vector2), scale, SpriteEffects.None, 0f);
 +
 +				// Extra context.
  			}
@@ -703,28 +704,74 @@
 -			if ((context == 10 || context == 18) && item.expertOnly && !Main.expertMode) {
 +			// TML: Added handling of the new 'masterOnly' item field.
 +			if ((Math.Abs(context) == 10 || context == 18) && ((item.expertOnly && !Main.expertMode) || (item.masterOnly && !Main.masterMode))) {
- 				Vector2 position3 = position + value.Size() * inventoryScale / 2f - TextureAssets.Cd.Value.Size() * inventoryScale / 2f;
+ 				Vector2 position4 = position + value.Size() * inventoryScale / 2f - TextureAssets.Cd.Value.Size() * inventoryScale / 2f;
  				Color white = Color.White;
- 				spriteBatch.Draw(TextureAssets.Cd.Value, position3, null, white, 0f, default(Vector2), scale, SpriteEffects.None, 0f);
+ 				spriteBatch.Draw(TextureAssets.Cd.Value, position4, null, white * itemFade, 0f, default(Vector2), scale, SpriteEffects.None, 0f);
  			}
 +
 +			// Extra context.
  		}
  		else if (context == 6) {
  			Texture2D value11 = TextureAssets.Trash.Value;
-@@ -1854,6 +_,10 @@
+@@ -2166,6 +_,7 @@
+ 		return true;
+ 	}
+ 
++	// Vanilla usages other than for tile entities acting like players replaced with AccCheck_ForLocalPlayer to support player-specific checks and hooks.
+ 	public static bool AccCheck(Item[] itemCollection, Item item, int slot)
+ 	{
+ 		if (isEquipLocked(item.type))
+@@ -2195,6 +_,7 @@
+ 		return false;
+ 	}
+ 
++	//TML: I (Solxan), have not been able to get this to ever run in-game. I suspect this code path is deprecated.
+ 	private static Item DyeSwap(Item item, out bool success)
+ 	{
+ 		success = false;
+@@ -2197,10 +_,14 @@
  		DrawItem_GetColorAndScale(item, scale, ref environmentColor, sizeLimit, ref frame, out var itemLight, out var finalDrawScale);
  		SpriteEffects effects = SpriteEffects.None;
+ 		if (flip)
+ 			effects = SpriteEffects.FlipHorizontally;
+ 
  		Vector2 origin = frame.Size() / 2f;
+ 		Color color = item.GetAlpha(itemLight).MultiplyRGBA(secondColor);
 +
 +		if (!ItemLoader.PreDrawInInventory(item, spriteBatch, screenPositionForItemCenter, frame, item.GetAlpha(itemLight), item.GetColor(environmentColor), origin, finalDrawScale))
 +			goto SkipVanillaItemDraw;
 +
- 		spriteBatch.Draw(value, screenPositionForItemCenter, frame, item.GetAlpha(itemLight), 0f, origin, finalDrawScale, effects, 0f);
+ 		spriteBatch.Draw(value, screenPositionForItemCenter, frame, color * itemFade, 0f, origin, finalDrawScale * num, effects, 0f);
  		if (item.color != Color.Transparent) {
  			Color newColor = environmentColor;
-@@ -1882,6 +_,9 @@
+@@ -2210,8 +_,13 @@
  			}
+ 		}
+ 
+-		if (dyeSlotCount >= 10)
++		if (dyeSlotCount >= 10) {
++			item2 = ModSlotDyeSwap(item, out success);
++			if (success)
++				return item2;
++
+ 			dyeSlotCount = 0;
++		}
+ 
+ 		if (dyeSlotCount < 0)
+ 			dyeSlotCount = 9;
+@@ -2254,6 +_,10 @@
+ 			player.armor[num + 2] = item.Clone();
+ 		}
+ 		else if (item.accessory) {
++			if (!AccessorySwap(player, item, ref result))
++				return result;
++
++			/*
+ 			int num2 = 3;
+ 			for (int i = 3; i < 10; i++) {
+ 				if (player.IsItemSlotUnlockedAndUsable(i)) {
+@@ -2259,6 +_,9 @@
+ 			spriteBatch.Draw(value2, screenPositionForItemCenter + vector4, rectangle2, environmentColor * itemFade, 0f, rectangle2.Size() / 2f, finalDrawScale * num, SpriteEffects.None, 0f);
  		}
  
 +		SkipVanillaItemDraw:
@@ -733,7 +780,22 @@
  		return finalDrawScale;
  	}
  
-@@ -1931,6 +_,27 @@
+@@ -2286,11 +_,14 @@
+ 			for (int k = 0; k < player.armor.Length; k++) {
+ 				if (item.IsTheSameAs(player.armor[k]))
+ 					num3 = k;
++
++				// Extra patch context.
+ 			}
+ 
+ 			result = player.armor[num3].Clone();
+ 			player.armor[num3] = item.Clone();
+ 			accSlotToSwapTo = 0;
++			*/
+ 		}
+ 
+ 		SoundEngine.PlaySound(7);
+@@ -2311,6 +_,27 @@
  				if (inv == localPlayer.miscDyes)
  					result = 185 + slot;
  				break;
@@ -761,78 +823,21 @@
  			case 19:
  				result = 180;
  				break;
-@@ -2132,7 +_,7 @@
- 			inv[slot] = ArmorSwap(inv[slot], out success);
+@@ -2594,7 +_,7 @@
  			if (success) {
  				Main.EquipPageSelected = 0;
--				AchievementsHelper.HandleOnEquip(player, item, item.accessory ? 10 : 8);
-+				AchievementsHelper.HandleOnEquip(player, item, (item.accessory ? 10 : 8) * Math.Sign(context));
+ 				Item item = player.armor[targetSlot2];
+-				AchievementsHelper.HandleOnEquip(player, item, num);
++				AchievementsHelper.HandleOnEquip(player, item, num * Math.Sign(context));
+ 				DisplayTransfer_TwoWay(inv, context, slot, player.armor, num, targetSlot2);
  			}
  		}
+@@ -2917,7 +_,7 @@
  
-@@ -2166,6 +_,7 @@
- 		return true;
- 	}
- 
-+	// Vanilla usages other than for tile entities acting like players replaced with AccCheck_ForLocalPlayer to support player-specific checks and hooks.
- 	public static bool AccCheck(Item[] itemCollection, Item item, int slot)
- 	{
- 		if (isEquipLocked(item.type))
-@@ -2195,6 +_,7 @@
- 		return false;
- 	}
- 
-+	//TML: I (Solxan), have not been able to get this to ever run in-game. I suspect this code path is deprecated.
- 	private static Item DyeSwap(Item item, out bool success)
- 	{
- 		success = false;
-@@ -2210,8 +_,13 @@
- 			}
- 		}
- 
--		if (dyeSlotCount >= 10)
-+		if (dyeSlotCount >= 10) {
-+			item2 = ModSlotDyeSwap(item, out success);
-+			if (success)
-+				return item2;
-+
- 			dyeSlotCount = 0;
-+		}
- 
- 		if (dyeSlotCount < 0)
- 			dyeSlotCount = 9;
-@@ -2254,6 +_,10 @@
- 			player.armor[num + 2] = item.Clone();
- 		}
- 		else if (item.accessory) {
-+			if (!AccessorySwap(player, item, ref result))
-+				return result;
-+
-+			/*
- 			int num2 = 3;
- 			for (int i = 3; i < 10; i++) {
- 				if (player.IsItemSlotUnlockedAndUsable(i)) {
-@@ -2286,11 +_,14 @@
- 			for (int k = 0; k < player.armor.Length; k++) {
- 				if (item.IsTheSameAs(player.armor[k]))
- 					num3 = k;
-+
-+				// Extra patch context.
- 			}
- 
- 			result = player.armor[num3].Clone();
- 			player.armor[num3] = item.Clone();
- 			accSlotToSwapTo = 0;
-+			*/
- 		}
- 
- 		SoundEngine.PlaySound(7);
-@@ -2392,7 +_,7 @@
- 
- 	public static Color GetItemLight(ref Color currentColor, ref float scale, int type, bool outInTheWorld = false)
+ 	public static Color GetItemLight(ref Color currentColor, ref float scale, int type, bool outInTheWorld = false, float lightScalar = 1f)
  	{
 -		if (type < 0 || type > ItemID.Count)
 +		if (type < 0)
  			return currentColor;
  
- 		if (type == 662 || type == 663 || type == 5444 || type == 5450) {
+ 		if (type == 662 || type == 663 || type == 5444 || type == 5450 || type == 5643) {

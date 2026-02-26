@@ -892,14 +892,6 @@
  		setFrameSize = false;
  		spawnNeedsSyncing = false;
  		realLife = -1;
-@@ -10823,6 +_,7 @@
- 		defDamage = damage;
- 		defDefense = defense;
- 		netID = type;
-+		/*
- 		if (NPCID.Sets.DebuffImmunitySets.TryGetValue(type, out var nPCDebuffImmunityData) && nPCDebuffImmunityData != null) {
- 			nPCDebuffImmunityData.ApplyToNPC(this);
- 		}
 @@ -11155,7 +_,9 @@
  			DeathSound = SoundID.NPCDeath1;
  			npcSlots = 0.1f;
@@ -920,15 +912,6 @@
  			catchItem = 2740;
  			npcSlots = 0.1f;
  		}
-@@ -11516,6 +_,8 @@
- 			}
- 		}
- 
-+		NPCLoader.ApplyDifficultyAndPlayerScaling(this, numPlayers, balance, bossAdjustment);
-+
- 		defDefense = defense;
- 		defDamage = damage;
- 		life = lifeMax;
 @@ -11861,7 +_,9 @@
  			lifeMax = 5;
  			HitSound = SoundID.NPCHit1;
@@ -1055,6 +1038,11 @@
  		if (spawnparams.sizeScaleOverride.HasValue) {
  			int num3 = (int)((float)width * scale);
  			int num4 = (int)((float)height * scale);
+@@ -15124,3 +_,4 @@
++		/*
+ 		if (NPCID.Sets.DebuffImmunitySets.TryGetValue(type, out var nPCDebuffImmunityData) && nPCDebuffImmunityData != null) {
+ 			nPCDebuffImmunityData.ApplyToNPC(this);
+ 		}
 @@ -15139,6 +_,7 @@
  			buffImmune[36] = true;
  
@@ -1075,6 +1063,16 @@
  		}
  
  		ScaleStats(spawnparams.playerCountForMultiplayerDifficultyOverride, spawnparams.difficultyOverride);
+@@ -15415,6 +_,9 @@
+ 			ScaleStats_ByDifficulty();
+ 			if (difficulty >= GameDifficultyLevel.Expert)
+ 				ScaleStats_ByPlayerCount(activePlayersCount.HasValue ? activePlayersCount.Value : GetActivePlayerCount());
+ 
++			// TODO: This is probably all wrong now, or needs to be split.
++			NPCLoader.ApplyDifficultyAndPlayerScaling(this, activePlayersCount.HasValue ? activePlayersCount.Value : GetActivePlayerCount(), balance, bossAdjustment);
++
+ 			if ((type < 0 || !NPCID.Sets.ProjectileNPC[type]) && lifeMax < 6)
+ 				lifeMax = 6;
 @@ -16281,6 +_,6 @@
  		}
  		else if (!unlockedSlimeCopperSpawn && Main.npc.IndexInRange(npcIndex)) {
@@ -1119,55 +1117,6 @@
 +		timeLeft -= Main.worldEventUpdates;
  		if (timeLeft < 0)
  			timeLeft = 0;
- 
-@@ -40465,6 +_,11 @@
- 				num41 = 10f;
- 			}
- 
-+			NPCLoader.TownNPCAttackStrength(this, damage: ref num37, knockback: ref knockBack);
-+			NPCLoader.TownNPCAttackCooldown(this, cooldown: ref num40, randExtraCooldown: ref maxValue);
-+			NPCLoader.TownNPCAttackProj(this, projType: ref num36, attackDelay: ref num39);
-+			NPCLoader.TownNPCAttackProjSpeed(this, multiplier: ref num38, gravityCorrection: ref num41, randomOffset: ref num43);
-+
- 			if (Main.expertMode)
- 				num37 = (int)((float)num37 * Main.GameModeInfo.TownNPCDamageMultiplier);
- 
-@@ -40716,6 +_,12 @@
- 				}
- 			}
- 
-+			NPCLoader.TownNPCAttackStrength(this, damage: ref num46, knockback: ref knockBack2);
-+			NPCLoader.TownNPCAttackCooldown(this, cooldown: ref num49, randExtraCooldown: ref maxValue2);
-+			NPCLoader.TownNPCAttackProj(this, projType: ref num45, attackDelay: ref num48);
-+			NPCLoader.TownNPCAttackProjSpeed(this, multiplier: ref num47, gravityCorrection: ref num50, randomOffset: ref num51);
-+			NPCLoader.TownNPCAttackShoot(this, inBetweenShots: ref flag24);
-+
- 			if (Main.expertMode)
- 				num46 = (int)((float)num46 * Main.GameModeInfo.TownNPCDamageMultiplier);
- 
-@@ -40851,6 +_,12 @@
- 				knockBack3 = 3f;
- 			}
- 
-+			NPCLoader.TownNPCAttackStrength(this, damage: ref num56, knockback: ref knockBack3);
-+			NPCLoader.TownNPCAttackCooldown(this, cooldown: ref num59, randExtraCooldown: ref maxValue3);
-+			NPCLoader.TownNPCAttackProj(this, projType: ref num55, attackDelay: ref num58);
-+			NPCLoader.TownNPCAttackProjSpeed(this, multiplier: ref num57, gravityCorrection: ref num60, randomOffset: ref num63);
-+			NPCLoader.TownNPCAttackMagic(this, auraLightMultiplier: ref num62);
-+
- 			if (Main.expertMode)
- 				num56 = (int)((float)num56 * Main.GameModeInfo.TownNPCDamageMultiplier);
- 
-@@ -40985,6 +_,10 @@
- 				num76 = 3f;
- 			}
- 
-+			NPCLoader.TownNPCAttackStrength(this, damage: ref num75, knockback: ref num76);
-+			NPCLoader.TownNPCAttackCooldown(this, cooldown: ref num74, randExtraCooldown: ref maxValue4);
-+			NPCLoader.TownNPCAttackSwing(this, itemWidth: ref num77, itemHeight: ref num78);
-+
- 			if (Main.expertMode)
- 				num75 = (int)((float)num75 * Main.GameModeInfo.TownNPCDamageMultiplier);
  
 @@ -44438,13 +_,18 @@
  
@@ -1335,9 +1284,18 @@
  					ai[1] = 0f;
  				else
  					Main.sittingManager.AddNPC(whoAmI, coords);
-@@ -45845,20 +_,27 @@
- 			velocity.X *= 0.8f;
- 			ai[1] -= 1f;
+@@ -45841,4 +_,10 @@
+ 				num47 = 10f;
+ 			}
+ 
++			// ai[0] == 10f
++			NPCLoader.TownNPCAttackStrength(this, damage: ref num43, knockback: ref knockBack);
++			NPCLoader.TownNPCAttackCooldown(this, cooldown: ref num46, randExtraCooldown: ref maxValue);
++			NPCLoader.TownNPCAttackProj(this, projType: ref num42, attackDelay: ref num45);
++			NPCLoader.TownNPCAttackProjSpeed(this, multiplier: ref num44, gravityCorrection: ref num47, randomOffset: ref num49);
++
+ 			num43 = GetAttackDamage_ForTownNPC((float)num43 * num2);
+@@ -45847,18 +_,25 @@
  			localAI[3] += 1f;
 +			// Patch note: num45 - attackDelay.
  			if (localAI[3] == (float)num45 && Main.netMode != 1) {
@@ -1392,6 +1350,18 @@
  					flag28 = true;
  				}
  
+@@ -46089,4 +_,11 @@
+ 				}
+ 			}
+ 
++			// ai[0] == 12
++			NPCLoader.TownNPCAttackStrength(this, damage: ref num52, knockback: ref knockBack2);
++			NPCLoader.TownNPCAttackCooldown(this, cooldown: ref num55, randExtraCooldown: ref maxValue2);
++			NPCLoader.TownNPCAttackProj(this, projType: ref num51, attackDelay: ref num54);
++			NPCLoader.TownNPCAttackProjSpeed(this, multiplier: ref num53, gravityCorrection: ref num56, randomOffset: ref num57);
++			NPCLoader.TownNPCAttackShoot(this, inBetweenShots: ref flag28);
++
+ 			num52 = GetAttackDamage_ForTownNPC((float)num52 * num2);
 @@ -46093,17 +_,24 @@
  			velocity.X *= 0.8f;
  			ai[1] -= 1f;
@@ -1426,6 +1396,20 @@
  				ai[1] = num55 + Main.rand.Next(maxValue2);
  				ai[2] = 0f;
  				localAI[1] = (localAI[3] = num55 / 2 + Main.rand.Next(maxValue2));
+@@ -46220,5 +_,13 @@
+ 				maxValue3 = 1;
+ 				knockBack3 = 3f;
+ 			}
++ 			
++			// ai[0] == 14f
++			NPCLoader.TownNPCAttackStrength(this, damage: ref num62, knockback: ref knockBack3);
++			NPCLoader.TownNPCAttackCooldown(this, cooldown: ref num65, randExtraCooldown: ref maxValue3);
++			NPCLoader.TownNPCAttackProj(this, projType: ref num61, attackDelay: ref num64);
++			NPCLoader.TownNPCAttackProjSpeed(this, multiplier: ref num63, gravityCorrection: ref num66, randomOffset: ref num69);
++			NPCLoader.TownNPCAttackMagic(this, auraLightMultiplier: ref num68);
++
+ 
+ 			num62 = GetAttackDamage_ForTownNPC((float)num62 * num2);
 @@ -46225,20 +_,27 @@
  			velocity.X *= 0.8f;
  			ai[1] -= 1f;
@@ -1470,6 +1454,15 @@
  				ai[1] = num65 + Main.rand.Next(maxValue3);
  				ai[2] = 0f;
  				localAI[1] = (localAI[3] = num65 / 2 + Main.rand.Next(maxValue3));
+@@ -46351,3 +_,8 @@
+ 				maxValue4 = 8;
+ 				num82 = 3f;
+ 			}
++			
++			NPCLoader.TownNPCAttackStrength(this, damage: ref num81, knockback: ref num82);
++			NPCLoader.TownNPCAttackCooldown(this, cooldown: ref num80, randExtraCooldown: ref maxValue4);
++			NPCLoader.TownNPCAttackSwing(this, itemWidth: ref num83, itemHeight: ref num84);
++
 @@ -46356,6 +_,8 @@
  			velocity.X *= 0.8f;
  			ai[1] -= 1f;
@@ -1641,16 +1634,6 @@
  					Asset<Texture2D> textureNPCShouldUse = profile.GetTextureNPCShouldUse(this);
  					if (textureNPCShouldUse.IsLoaded) {
  						num = textureNPCShouldUse.Height() / Main.npcFrameCount[type];
-@@ -58438,6 +_,9 @@
- 		if (!active || DoesntDespawnToInactivity())
- 			return;
- 
-+		if (!NPCLoader.CheckActive(this))
-+			return;
-+
- 		if (townNPC) {
- 			AddIntoPlayersTownNPCSlots();
- 			return;
 @@ -59211,11 +_,15 @@
  
  	public static void ResetKillCount()
@@ -1927,15 +1910,6 @@
  	public static void HealEffect(Rectangle r, int healAmount, bool broadcast = true)
  	{
  		if (broadcast && Main.netMode == 2)
-@@ -64313,7 +_,7 @@
- 
- 	private static int GetAvailableNPCSlot(int Type, int startIndex)
- 	{
--		bool num = Type == 222 || Type == 245;
-+		bool num = Type >= 0 && NPCID.Sets.SpawnFromLastEmptySlot[Type];
- 		int t = 200;
- 		int num2 = 1;
- 		if (num) {
 @@ -64430,7 +_,13 @@
  				if (Main.tile[x, y].type == 467)
  					number2 = 5;
@@ -2142,6 +2116,16 @@
  
  	public bool DoesntDespawnToInactivity()
  	{
+@@ -64783,6 +_,9 @@
+ 	public void CheckActive()
+ 	{
+ 		if (!active || (type == 690 && ai[0] == 0f) || DoesntDespawnToInactivity() || townNPC)
+ 			return;
+ 
++		if (!NPCLoader.CheckActive(this))
++			return;
++
+ 		bool flag = DoesntDespawnToInactivityAndCountsNPCSlots();
 @@ -64860,7 +_,7 @@
  		if (timeLeft <= 0)
  			flag2 = false;
@@ -2385,17 +2369,6 @@
  		}
  	}
  
-@@ -65805,7 +_,10 @@
- 			}
- 		}
- 
-+		/*
- 		if (type == 437 && dmg == 9999.0) {
-+		*/
-+		if (type == 437 && instantKill) {
- 			for (int num96 = 0; num96 < 6; num96++) {
- 				int num97 = Gore.NewGore(base.Center - new Vector2(10f), Vector2.UnitY.RotatedByRandom(6.2831854820251465) * 5f, 728 + num96);
- 			}
 @@ -66212,8 +_,11 @@
  		}
  
@@ -2629,6 +2602,17 @@
  
  				Gore.NewGore(position, velocity, num);
  			}
+@@ -68941,7 +_,10 @@
+ 			}
+ 		}
+ 
++		/*
+ 		if (type == 437 && dmg == 9999.0) {
++		*/
++		if (type == 437 && instantKill) {
+ 			for (int num97 = 0; num97 < 6; num97++) {
+ 				int num98 = Gore.NewGore(base.Center - new Vector2(10f), Vector2.UnitY.RotatedByRandom(6.2831854820251465) * 5f, 728 + num97);
+ 			}
 @@ -72448,7 +_,7 @@
  			if (NPCID.Sets.NoMultiplayerSmoothingByType[type]) {
  				netOffset *= 0f;
@@ -2794,15 +2778,6 @@
  		if (soundDelay > 0)
  			soundDelay--;
  
-@@ -75917,7 +_,7 @@
- 				TryRemovingWaterPerishableEffects(isInLava: false);
- 		}
- 
--		if (Main.netMode != 1 && !noTileCollide && lifeMax > 1 && Collision.SwitchTiles(position, width, height, oldPosition, 2) && (type == 46 || type == 148 || type == 149 || type == 303 || type == 361 || type == 362 || type == 364 || type == 366 || type == 367 || (type >= 442 && type <= 448) || type == 602 || type == 608 || type == 614 || type == 687)) {
-+		if (Main.netMode != 1 && !noTileCollide && lifeMax > 1 && Collision.SwitchTiles(this, position, width, height, oldPosition, 2) && (type == 46 || type == 148 || type == 149 || type == 303 || type == 361 || type == 362 || type == 364 || type == 366 || type == 367 || (type >= 442 && type <= 448) || type == 602 || type == 608 || type == 614 || type == 687)) {
- 			ai[0] = 1f;
- 			ai[1] = 400f;
- 			ai[2] = 0f;
 @@ -75948,19 +_,20 @@
  		}
  	}

@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Netplay.cs
 +++ src/tModLoader/Terraria/Netplay.cs
-@@ -7,8 +_,11 @@
+@@ -8,8 +_,11 @@
  using NATUPNPLib;
  using ReLogic.OS;
  using Terraria.Audio;
@@ -12,7 +12,7 @@
  using Terraria.Net;
  using Terraria.Net.Sockets;
  using Terraria.Social;
-@@ -78,6 +_,12 @@
+@@ -82,5 +_,11 @@
  		Main.ActiveNetDiagnosticsUI.Reset();
  	}
  
@@ -24,8 +24,7 @@
 +	/// </summary>
  	public static void ResetSections()
  	{
- 		for (int i = 0; i < 256; i++) {
-@@ -165,6 +_,8 @@
+@@ -166,6 +_,8 @@
  
  	private static void OnConnectionAccepted(ISocket client)
  	{
@@ -34,9 +33,10 @@
  		int num = FindNextOpenClientSlot();
  		if (num != -1) {
  			Clients[num].Reset();
-@@ -298,8 +_,13 @@
+@@ -299,9 +_,14 @@
  		for (int i = 0; i < 256; i++) {
  			if (Clients[i].PendingTermination) {
+ 				num++;
  				if (Clients[i].PendingTerminationApproved) {
 -					Clients[i].Reset();
 +					// TML: Re-order to prevent RemoteClient.Reset from re-instantiating the player before
@@ -49,7 +49,7 @@
  				}
  
  				continue;
-@@ -312,7 +_,7 @@
+@@ -314,7 +_,7 @@
  			}
  
  			if (Clients[i].IsActive) {
@@ -58,7 +58,7 @@
  				Clients[i].PendingTerminationApproved = true;
  				continue;
  			}
-@@ -413,6 +_,12 @@
+@@ -415,6 +_,12 @@
  
  	private static void ClientLoopSetup(RemoteAddress address)
  	{
@@ -71,7 +71,7 @@
  		Connection.ResetSpecialFlags();
  		ResetNetDiag();
  		Main.ServerSideCharacter = false;
-@@ -429,11 +_,11 @@
+@@ -431,11 +_,11 @@
  		Main.netMode = 1;
  		Main.menuMode = 14;
  		if (!Main.autoPass)
@@ -85,8 +85,9 @@
  	}
  
  	private static void InnerClientLoop()
-@@ -453,6 +_,24 @@
+@@ -455,7 +_,25 @@
  						NetMessage.SendData(1);
+ 						Ping.Reset();
  					}
  
 +					if (Connection.State == 1 && ModNet.NetReloadActive && Main.netMode == 0) {
@@ -110,7 +111,7 @@
  					if (Connection.State == 2 && num != Connection.State)
  						Main.statusText = Language.GetTextValue("Net.SendingPlayerData");
  
-@@ -472,6 +_,9 @@
+@@ -475,6 +_,9 @@
  						Main.cloudAlpha = Main.maxRaining;
  						Main.ToggleGameplayUpdates(state: false);
  						WorldGen.clearWorld();
@@ -120,7 +121,7 @@
  						if (Main.mapEnabled)
  							Main.Map.Load();
  					}
-@@ -523,6 +_,11 @@
+@@ -524,6 +_,11 @@
  			}
  
  			if (!Main.gameMenu) {
@@ -132,7 +133,7 @@
  				Main.gameMenu = true;
  				Main.SwitchNetMode(0);
  				MapHelper.noStatusText = true;
-@@ -532,6 +_,7 @@
+@@ -533,6 +_,7 @@
  				SoundEngine.StopTrackedSounds();
  				MapHelper.noStatusText = false;
  				Main.menuMode = 14;
@@ -140,7 +141,7 @@
  			}
  
  			NetMessage.buffer[256].Reset();
-@@ -589,7 +_,29 @@
+@@ -590,7 +_,29 @@
  		thread.Start();
  	}
  

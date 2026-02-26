@@ -318,17 +318,6 @@
  				projectile.ProjectileFixDesperation();
  				if (Main.netMode == 2)
  					NetMessage.TrySendData(27, -1, whoAmI, null, num230);
-@@ -1535,7 +_,10 @@
- 				}
- 
- 				if (num191 >= 0) {
-+					/*
- 					Main.npc[num190].StrikeNPC(num191, num192, num193, b10 == 1, noEffect: false, fromNet: true);
-+					*/
-+					Main.npc[num190].StrikeNPC(hit, fromNet: true);
- 				}
- 				else {
- 					Main.npc[num190].life = 0;
 @@ -1538,10 +_,29 @@
  			}
  			case 28: {
@@ -359,6 +348,17 @@
  				if (Main.netMode == 2) {
  					if (num212 < 0)
  						num212 = 0;
+@@ -1550,7 +_,10 @@
+ 				}
+ 
+ 				if (num212 >= 0) {
++					/*
+ 					Main.npc[num211].StrikeNPC(num212, num213, num214, b14 == 1, noEffect: false, fromNet: true, (Main.netMode == 2) ? whoAmI : 255);
++					*/
++					Main.npc[num211].StrikeNPC(hit, fromNet: true);
+ 				}
+ 				else {
+ 					Main.npc[num211].life = 0;
 @@ -1558,7 +_,11 @@
  					Main.npc[num211].active = false;
  				}
@@ -575,29 +575,19 @@
  						NetMessage.TrySendData(3, whoAmI);
  					}
  					else {
-@@ -1920,16 +_,25 @@
+@@ -1940,10 +_,15 @@
  				float itemRotation = reader.ReadSingle();
  				int itemAnimation = reader.ReadInt16();
- 				player15.itemRotation = itemRotation;
-+
+ 				player.itemRotation = itemRotation;
 +				// TML changes how item synchronization works, making it based on remote players' already-synchronized input.
 +				// Setting itemAnimation in this packet would interfere with that. #ItemTimeOnAllClients
 +				/*
- 				player15.itemAnimation = itemAnimation;
+ 				player.itemAnimation = itemAnimation;
 +				*/
-+
- 				player15.channel = player15.inventory[player15.selectedItem].channel;
++				
+ 				player.channel = player.inventory[player.selectedItem].channel;
  				if (Main.netMode == 2)
- 					NetMessage.TrySendData(41, -1, whoAmI, null, num226);
- 
-+				// Sound is played on animation start #ItemTimeOnAllClients
-+				/*
- 				if (Main.netMode == 1) {
- 					Item item6 = player15.inventory[player15.selectedItem];
- 					if (item6.UseSound != null)
- 						SoundEngine.PlaySound(item6.UseSound, player15.Center);
- 				}
-+				*/
+ 					NetMessage.TrySendData(41, -1, whoAmI, null, num33);
  
  				break;
  			}

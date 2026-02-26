@@ -9,7 +9,7 @@
  using Terraria.Net.Sockets;
  
  namespace Terraria.Net;
-@@ -45,6 +_,8 @@
+@@ -51,6 +_,8 @@
  
  	public void Broadcast(NetPacket packet, int ignoreClient = -1)
  	{
@@ -18,7 +18,7 @@
  		for (int i = 0; i < 256; i++) {
  			if (i != ignoreClient && Netplay.Clients[i].IsConnected())
  				SendData(Netplay.Clients[i].Socket, packet);
-@@ -53,6 +_,8 @@
+@@ -61,6 +_,8 @@
  
  	public void Broadcast(NetPacket packet, BroadcastCondition conditionToBroadcast, int ignoreClient = -1)
  	{
@@ -27,32 +27,31 @@
  		for (int i = 0; i < 256; i++) {
  			if (i != ignoreClient && Netplay.Clients[i].IsConnected() && conditionToBroadcast(i))
  				SendData(Netplay.Clients[i].Socket, packet);
-@@ -96,11 +_,13 @@
+@@ -108,13 +_,15 @@
  
  	public void SendToServer(NetPacket packet)
  	{
 +		LogSend(packet);
  		SendData(Netplay.Connection.Socket, packet);
+ 		packet.Recycle();
  	}
  
  	public void SendToClient(NetPacket packet, int playerId)
  	{
 +		LogSend(packet, toClient: playerId);
  		SendData(Netplay.Clients[playerId].Socket, packet);
+ 		packet.Recycle();
  	}
  
-@@ -112,6 +_,7 @@
- 				socket.AsyncSend(packet.Buffer.Data, 0, packet.Length, SendCallback, packet);
- 			}
- 			catch {
-+				Logging.ServerConsoleLine(Language.GetTextValue("Error.ExceptionNormal", Language.GetTextValue("Error.DataSentAfterConnectionLost")), Level.Warn);
- 			}
- 
- 			Main.ActiveNetDiagnosticsUI.CountSentModuleMessage(packet.Id, packet.Length);
-@@ -121,5 +_,12 @@
- 	public static void SendCallback(object state)
+@@ -137,4 +_,5 @@
+ 			socket.AsyncSend(packet.Buffer.Data, 0, packet.Length, EmptyCallback);
+ 		}
+ 		catch {
++			Logging.ServerConsoleLine(Language.GetTextValue("Error.ExceptionNormal", Language.GetTextValue("Error.DataSentAfterConnectionLost")), Level.Warn);
+ 		}
+@@ -143,4 +_,11 @@
+ 	private static void EmptyCallback(object state)
  	{
- 		((NetPacket)state).Recycle();
 +	}
 +
 +	// Added by TML.

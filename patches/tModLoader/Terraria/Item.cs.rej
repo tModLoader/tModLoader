@@ -1,0 +1,298 @@
+@@ -53,3 +_,20 @@
++
++	/// <summary>
++	/// The delay, in ticks, before players can pick up this item.<br/>
++	/// Usually set to 100 (approximately 1.666... seconds) whenever an item is dropped.<br/>
++	/// Set to 0 whenever an item drops from a projectile.<br/>
++	/// </summary>
+ 	public int noGrabDelay;
++
++	/// <summary>
++	/// If true, then this item is currently being grabbed by a player.<br/>
++	/// Items being grabbed by the player cannot combine with nearby items, be picked up by enemies, burn in lava, or despawn.<br/>
++	/// </summary>
+ 	public bool beingGrabbed;
++
++	/// <summary>
++	/// A value that increases every tick an item is in the world.<br/>
++	/// Defaults to the value in <see cref="ItemID.Sets.OverflowProtectionTimeOffset"/> when an item is created, and increases by <see cref="ItemID.Sets.ItemSpawnDecaySpeed"/> every tick.<br/>
++	/// When creating new items, items with a high <c>timeSinceItemSpawned</c> value will be replaced if no empty item slots are available.<br/>
++	/// </summary>
+ 	public int timeSinceItemSpawned;
+@@ -73,5 +_,17 @@
++
++	/// <summary>
++	/// If true, then the given item is instanced per-client.<br/>
++	/// Instanced items only appear on the client they were spawned on and are less likely to be replaced if a new item is spawned.<br/>
++	/// Instanced items do not exist on servers.<br/>
++	/// Vanilla uses this field for treasure bags and Defender Medals. tModLoader automatically handles this for modded treasure bags.<br/>
++	/// If you would like to make an instanced item, see any one of the following for examples:<br/>
++	/// - <see cref="NPC.DropItemInstanced"/><br/>
++	/// - <see cref="GameContent.ItemDropRules.CommonCode.DropItemLocalPerClientAndSetNPCMoneyTo0"/><br/>
++	/// - <see cref="MessageID.InstancedItem"/><br/>
++	/// Defaults to <see langword="false"/>.<br/>
++	/// </summary>
+ 	public bool instanced;
+ 	public int ownIgnore = -1;
+ 	public int ownTime;
+ 	public int keepTime;
+ 	public int timeLeftInWhichTheItemCannotBeTakenByEnemies;
+@@ -789,8 +_,14 @@
+ 			ToolTip = Lang.GetTooltip(netID);
+ 	}
+ 
++	/// <summary>
++	/// Gets this <see cref="Item"/>'s hitbox in the world. Equivalent to <see cref="Entity.Hitbox"/>.
++	/// </summary>
++	/// <returns>This <see cref="Item"/>'s hitbox in the world.</returns>
+ 	public Rectangle getRect() => new Rectangle((int)position.X, (int)position.Y, width, height);
+ 
++	// Removed in favor of UpdateWhichItemsAreMaterials logic
++	/*
+ 	public bool checkMat()
+ 	{
+ 		if (type >= 71 && type <= 74) {
+@@ -839,9 +_,11 @@
+ 
+ 				material = false;
+ 				return false;
++				// Extra patch context.
+ 			}
+ 		}
+ 	}
++	*/
+ 
+ 	public void netDefaults(int type)
+ 	{
+@@ -998,8 +_,20 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Converts a banner ID into the equivalent item type (<see cref="Item.type"/>).
++	/// </summary>
++	/// <param name="banner">The banner ID to convert.</param>
++	/// <returns>
++	/// The item type associated with the given banner ID.
++	/// <br/> <strong>This method will return the wrong item type if <paramref name="banner"/> is not a valid banner ID.</strong>
++	/// </returns>
++	/// <remarks>You can get the banner ID of an NPC using <see cref="NPCtoBanner(int)"/>.</remarks>
+ 	public static int BannerToItem(int banner)
+ 	{
++		if (NPCLoader.bannerToItem.TryGetValue(banner, out int result))
++			return result;
++
+ 		int num = 0;
+ 		if (banner == 289)
+ 			return 5352;
+@@ -1037,6 +_,11 @@
+ 		return 1615 + banner - 1;
+ 	}
+ 
++	/// <summary>
++	/// Converts an NPC type (<see cref="NPC.type"/>) into the equivalent banner ID.
++	/// </summary>
++	/// <param name="i">The NPC type to convert.</param>
++	/// <returns>The banner ID associated with the given NPC type, or <c>0</c> if the NPC type has no associated banner.</returns>
+ 	public static int NPCtoBanner(int i)
+ 	{
+ 		switch (i) {
+@@ -1771,15 +_,25 @@
+ 				return 286;
+ 			case 176:
+ 				return 287;
++			// Extra patch context.
+ 			case 133:
+ 				return 288;
+ 			case 676:
+ 				return 289;
+ 			default:
++				if (i >= NPCID.Count) // in NPCtoBanner method
++					return NPCLoader.GetNPC(i).Banner;
++
+ 				return 0;
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Converts a BannerID into the equivalent NPC type (<see cref="NPC.type"/>). Used to determine a single NPC type from a BannerID for display purposes.
++	/// Note that modded BannerIDs are the same number as their NPC type, and those BannerIDs might not actually be used.
++	/// </summary>
++	/// <param name="i">The banner ID to convert.</param>
++	/// <returns>The NPC type associated with the given banner ID, or <see cref="NPCID.None"/> for an invalid banner ID.</returns>
+ 	public static int BannerToNPC(int i)
+ 	{
+ 		switch (i) {
+@@ -2347,11 +_,15 @@
+ 				return 475;
+ 			case 287:
+ 				return 176;
++			// Extra patch context.
+ 			case 288:
+ 				return 133;
+ 			case 289:
+ 				return 676;
+ 			default:
++				if (i >= NPCID.Count) // in BannerToNPC method
++					return i;
++
+ 				return 0;
+ 		}
+ 	}
+@@ -47723,7 +_,9 @@
+ 	{
+ 		int shimmerEquivalentType = GetShimmerEquivalentType();
+ 		int decraftingRecipeIndex = ShimmerTransforms.GetDecraftingRecipeIndex(shimmerEquivalentType);
+-		if (ItemID.Sets.CommonCoin[shimmerEquivalentType]) {
++		if (ItemID.Sets.CoinLuckValue[shimmerEquivalentType] > 0) {
++			stack *= ItemID.Sets.CoinLuckValue[shimmerEquivalentType];
++			/*
+ 			switch (shimmerEquivalentType) {
+ 				case 72:
+ 					stack *= 100;
+@@ -47737,6 +_,8 @@
+ 					stack *= 1000000;
+ 					break;
+ 			}
++			*/
++			// patch context for CoinLuckValue
+ 
+ 			Main.player[Main.myPlayer].AddCoinLuck(base.Center, stack);
+ 			NetMessage.SendData(146, -1, -1, null, 1, (int)base.Center.X, (int)base.Center.Y, stack);
+@@ -47808,10 +_,34 @@
+ 			shimmered = true;
+ 		}
+ 		else if (ItemID.Sets.ShimmerTransformToItem[shimmerEquivalentType] > 0) {
++			// Since 1.4.5 seems to add item stacking (April 2024 state of the game) this is likely a temporary fix. All variables are renamed as such so I can read this later. (Copy paste + modify from decrafting code) - Kogsey
+-			int num8 = stack;
++			int stackSize = stack;
+ 			SetDefaults(ItemID.Sets.ShimmerTransformToItem[shimmerEquivalentType]);
+-			stack = num8;
++			stack = stackSize;
++			if (stack > maxStack)
++				stack = maxStack;
++			stackSize -= stack;
+ 			shimmered = true;
++			int spawnCount = 0;
++
++			while (stackSize > 0) {
++				spawnCount++;
++
++				int newItemIndex = NewItem(GetItemSource_Misc(8), (int)position.X, (int)position.Y, width, height, type);
++				Item item = Main.item[newItemIndex];
++				item.stack = stackSize;
++				if (item.stack > maxStack)
++					item.stack = maxStack;
++				stackSize -= item.stack;
++				item.shimmerTime = 1f;
++				item.shimmered = true;
++				item.shimmerWet = true;
++				item.wet = true;
++				item.velocity *= 0.1f;
++				item.playerIndexTheItemIsReservedFor = Main.myPlayer;
++
++				NetMessage.SendData(145, -1, -1, null, newItemIndex, 1f);
++			}
+ 		}
+ 		else if (type == 4986) {
+ 			if (NPC.unlockedSlimeRainbowSpawn)
+@@ -47857,7 +_,7 @@
+ 			int num13 = FindDecraftAmount();
+ 			Recipe recipe = Main.recipe[decraftingRecipeIndex];
+ 			int num14 = 0;
+-			bool flag = recipe.requiredItem[1].stack > 0;
++			bool flag = recipe.requiredItem.Count > 1;
+ 			IEnumerable<Item> enumerable = recipe.requiredItem;
+ 			if (recipe.customShimmerResults != null)
+ 				enumerable = recipe.customShimmerResults;
+@@ -47869,17 +_,22 @@
+ 
+ 				num15++;
+ 				int num16 = num13 * item2.stack;
++
++				/* TML: Recipe.alchemy is removed due to being replaced by consume item hooks
+ 				if (recipe.alchemy) {
+ 					for (int num17 = num16; num17 > 0; num17--) {
+ 						if (Main.rand.Next(3) == 0)
+ 							num16--;
+ 					}
+ 				}
++				*/
++
++				RecipeLoader.ConsumeIngredient(recipe, item2.type, ref num16, true);
+ 
+ 				while (num16 > 0) {
+ 					int num18 = num16;
+-					if (num18 > 9999)
+-						num18 = 9999;
++					if (num18 > item2.maxStack)
++						num18 = item2.maxStack;
+ 
+ 					num16 -= num18;
+ 					int num19 = NewItem(GetItemSource_Misc(8), (int)position.X, (int)position.Y, width, height, item2.type);
+@@ -48004,7 +_,7 @@
+ 		if (Main.netMode == 1) {
+ 			int num = (int)(position.X + (float)(width / 2)) / 16;
+ 			int num2 = (int)(position.Y + (float)(height / 2)) / 16;
+-			if (num >= 0 && num2 >= 0 && num < Main.maxTilesX && num2 < Main.maxTilesY && Main.tile[num, num2] == null) {
++			if (num >= 0 && num2 >= 0 && num < Main.maxTilesX && num2 < Main.maxTilesY && !Main.sectionManager.TileLoaded(num, num2)) {
+ 				gravity = 0f;
+ 				velocity.X = 0f;
+ 				velocity.Y = 0f;
+@@ -48124,6 +_,8 @@
+ 			timeSinceItemSpawned += num7;
+ 		}
+ 
++		ItemLoader.PostUpdate(this);
++
+ 		if (Main.netMode == 2 && playerIndexTheItemIsReservedFor != Main.myPlayer) {
+ 			timeSinceTheItemHasBeenReservedForSomeone++;
+ 			if (timeSinceTheItemHasBeenReservedForSomeone >= 300) {
+@@ -48274,7 +_,7 @@
+ 
+ 			NetMessage.SendData(21, -1, -1, null, i);
+ 		}
+-		else if (playerIndexTheItemIsReservedFor == Main.myPlayer && rare == 0 && type >= 0 && type < ItemID.Count && !ItemID.Sets.IsLavaImmuneRegardlessOfRarity[type]) {
++		else if (playerIndexTheItemIsReservedFor == Main.myPlayer && rare == 0 && type >= 0 && !ItemID.Sets.IsLavaImmuneRegardlessOfRarity[type]) {
+ 			active = false;
+ 			type = 0;
+ 			stack = 0;
+@@ -48285,6 +_,8 @@
+ 
+ 	private void MoveInWorld(float gravity, float maxFallSpeed, ref Vector2 wetVelocity, int i)
+ 	{
++		ItemLoader.Update(this, ref gravity, ref maxFallSpeed);
++
+ 		if (!shimmered && ItemID.Sets.ItemNoGravity[type]) {
+ 			velocity.X *= 0.95f;
+ 			if ((double)velocity.X < 0.1 && (double)velocity.X > -0.1)
+@@ -48553,7 +_,7 @@
+ 		Rectangle hitbox = base.Hitbox;
+ 		for (int j = 0; j < 200; j++) {
+ 			NPC nPC = Main.npc[j];
+-			if (nPC.active && flag && nPC.type >= 0 && nPC.type < NPCID.Count && NPCID.Sets.CanConvertIntoCopperSlimeTownNPC[nPC.type] && hitbox.Intersects(nPC.Hitbox)) {
++			if (nPC.active && flag && nPC.type >= 0 && NPCID.Sets.CanConvertIntoCopperSlimeTownNPC[nPC.type] && hitbox.Intersects(nPC.Hitbox)) {
+ 				flag3 = true;
+ 				NPC.TransformCopperSlime(j);
+ 				break;
+@@ -49240,8 +_,9 @@
+ 					continue;
+ 
+ 				Player.ItemSpaceStatus status = player.ItemSpace(Main.item[whoAmI]);
+-				if (player.CanPullItem(Main.item[whoAmI], status)) {
++				if (ItemLoader.CanPickup(Main.item[whoAmI], player) && player.CanPullItem(Main.item[whoAmI], status)) {
+ 					float num3 = Math.Abs(player.position.X + (float)(player.width / 2) - position.X - (float)(width / 2)) + Math.Abs(player.position.Y + (float)(player.height / 2) - position.Y - (float)height);
++					/*
+ 					if (player.manaMagnet && (type == 184 || type == 1735 || type == 1868))
+ 						num3 -= (float)manaGrabRange;
+ 
+@@ -49250,6 +_,9 @@
+ 
+ 					if (type == 4143)
+ 						num3 -= (float)manaGrabRange;
++					*/
++					// This will have grab range discrepancies with the above code due to this method having additional checks - Mutant
++					num3 -= player.GetItemGrabRange(Main.item[whoAmI]);
+ 
+ 					if (num2 > num3) {
+ 						num2 = num3;

@@ -69,14 +69,3 @@
  				}
  				else {
  					flag3 = true;
-@@ -480,6 +_,10 @@
- 		return -1;
- 	}
- 
-+	/// <summary>
-+	/// Similar to <see cref="FindChest(int, int)"/> except it also succeeds for tile coordinates directly above or to the left of the Chest location.
-+	/// <br/><br/> <b>The logic in this method is incorrect and this method should not be used.</b> It is recommended to use <see cref="FindChest(int, int)"/> with <see cref="TileObjectData.TopLeft(int, int)"/> if you do not have the top left tile coordinate.
-+	/// </summary>
- 	public static int FindChestByGuessing(int X, int Y)
- 	{
- 		for (int i = 0; i < 8000; i++) {

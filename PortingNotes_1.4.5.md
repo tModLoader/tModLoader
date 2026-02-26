@@ -105,6 +105,15 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Main menu music logic now checks Main.titleMusicStyle and titleMusicStyleRandom, document and adjust ModMenu logic if necessary.
 - Projectile draw code now supports an OverridePlayer. What is it used for in vanilla? (why not owner?) Hooks probably will need it. ModifyFishingLine as well
 - Projectile.drawLayer will simplify Projectile.hide and ProjectileLoader.DrawBehind usage
+- Move Item.instanced failed patch to WorldItem. Also noGrabDelay, beingGrabbed, timeSinceItemSpawned patch.
+- Item.armorPenetration added, should we keep tml-added ArmorPenetration property?
+- Vanilla CanHavePrefixes logic changed, might be able to use it rather than tml changes.
+- Item banner related methods moved to GameContent.BannerSystem. Need to move docs over.
+- Item Shimmer/Update/CheckLavaDeath/MoveInWorld/GetPickedUpByMonsters_Special/FindOwner/getRect/related methods have moved to World Item. Need to move docs/patches over.
+- ModPylon.DrawMapIcon needs to support new vanilla options (DrawClamped when fullscreen it seems.)
+- ItemSlot has new flip parameter, what is it used for? PreDrawInInventory needs flip parameter. (and itemFade parameter? And secondColor?)
+- "// Sound is played on animation start #ItemTimeOnAllClients" comments around "SoundEngine.PlaySound(item6.UseSound" in MessageBuffer's `ShotAnimationAndSound` code. ShotAnimationAndSound was renamed, we might need to verify that this is still fixed in tmod.
+- ApplyDifficultyAndPlayerScaling needs to be revisited.
 
 # New Fields that might need more documentation
 

@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Map/TeleportPylonsMapLayer.cs
 +++ src/tModLoader/Terraria/Map/TeleportPylonsMapLayer.cs
-@@ -6,25 +_,52 @@
+@@ -7,9 +_,12 @@
  using Terraria.GameContent;
  using Terraria.GameContent.Tile_Entities;
  using Terraria.GameInput;
@@ -13,6 +13,7 @@
  {
 +	// Added by TML.
 +	public bool Visible { get; set; } = true;
+@@ -29,11 +_,19 @@
 +
  	public void Draw(ref MapOverlayDrawContext context, ref string text)
  	{
@@ -21,25 +22,30 @@
  		float num = 1f;
  		float scaleIfSelected = num * 2f;
 +		*/
+ 		float scaleIfOffscreen = num * 0.5f;
 +		IReadOnlyList<TeleportPylonInfo> pylons = Main.PylonSystem.Pylons;
 +
  		Texture2D value = TextureAssets.Extra[182].Value;
- 		bool num2 = TeleportPylonsSystem.IsPlayerNearAPylon(Main.LocalPlayer) && (Main.DroneCameraTracker == null || !Main.DroneCameraTracker.IsInUse());
+ 		Texture2D value2 = TextureAssets.Extra[299].Value;
 +
 +		/*
  		Color color = Color.White;
- 		if (!num2)
+ 		if (!TeleportPylonsSystem.IsPlayerNearAPylon(Main.LocalPlayer))
  			color = Color.Gray * 0.5f;
 +		*/
+@@ -61,20 +_,36 @@
+ 		for (int j = 0; j < pylons.Count; j++) {
+ 			TeleportPylonInfo info2 = pylons[j];
+ 			if (!IsRevealed(info2))
+ 				continue;
  
- 		for (int i = 0; i < pylons.Count; i++) {
- 			TeleportPylonInfo info = pylons[i];
+ 			bool onScreen = true;
 +
 +			float num = 1f;
 +			float scaleIfSelected = num * 2f;
 +			Color color = Color.White;
 +
-+			if (!num2)
++			if (!TeleportPylonsSystem.IsPlayerNearAPylon(Main.LocalPlayer))
 +				color = Color.Gray * 0.5f;
 +
 +			if (!PylonLoader.PreDrawMapIcon(ref context, ref text, ref info, ref num2, ref color, ref num, ref scaleIfSelected))
@@ -50,6 +56,17 @@
 +				continue;
 +			}
 +
- 			if (context.Draw(value, info.PositionInTiles.ToVector2() + new Vector2(1.5f, 2f), color, new SpriteFrame(9, 1, (byte)info.TypeOfPylon, 0) {
+ 			if (((!Main.mapFullscreen) ? context.Draw(value, info2.PositionInTiles.ToVector2() + new Vector2(1.5f, 2f), color, new SpriteFrame(11, 1, (byte)info2.TypeOfPylon, 0) {
  				PaddingY = 0
- 			}, num, scaleIfSelected, Alignment.Center).IsMouseOver) {
+ 			}, num, scaleIfSelected, Alignment.Center) : context.DrawClamped(value, value2, info2.PositionInTiles.ToVector2() + new Vector2(1.5f, 2f), color, new SpriteFrame(11, 1, (byte)info2.TypeOfPylon, 0) {
+ 				PaddingY = 0
+ 			}, num, scaleIfSelected, scaleIfOffscreen, Alignment.Center, 10, out onScreen)).IsMouseOver) {
+ 				Main.cancelWormHole = true;
+ 				string itemNameValue = Lang.GetItemNameValue(TETeleportationPylon.GetPylonItemTypeFromTileStyle((int)info2.TypeOfPylon));
+ 				text = itemNameValue;
+ 				if (Main.mouseLeft && Main.mouseLeftRelease) {
+ 					flag = onScreen;
+ 					num2 = j;
+ 				}
+ 			}
+ 		}
