@@ -1,0 +1,45 @@
+@@ -2518,12 +_,20 @@
+ 	public static void SaveAndQuitCallBack(object threadContext)
+ 	{
+ 		int netMode = Main.netMode;
++
++		/*
+ 		try {
+ 			SoundEngine.PlaySound(34, -1, -1, 0);
+ 			SoundEngine.PlaySound(35, -1, -1, 0);
+ 		}
+ 		catch {
+ 		}
++		*/
++
++		// Properly stop waterfall/lavafall sounds.
++		// The above wouldn't do anything in the new sound system.
++		Main.ambientWaterfallStrength = 0f;
++		Main.ambientLavafallStrength = 0f;
+ 
+ 		if (netMode == 0)
+ 			WorldFile.CacheSaveTime();
+@@ -2535,6 +_,14 @@
+ 		Main.menuMode = 10;
+ 		Main.gameMenu = true;
+ 		SoundEngine.StopTrackedSounds();
++
++		try {
++			// Delay playing the "menu close" sound until AFTER all sounds have stopped
++			SoundEngine.PlaySound(11);
++		}
++		catch {
++		}
++
+ 		CaptureInterface.ResetFocus();
+ 		Main.ActivePlayerFileData.StopPlayTimer();
+ 		Player.SavePlayer(Main.ActivePlayerFileData);
+@@ -63276,7 +_,7 @@
+ 								if (!noTileActions && tile.active() && TileID.Sets.Falling[num])
+ 									SpawnFallingBlockProjectile(i, j, tile, tile2, tile3, num);
+ 
+-								if ((rectangle.X != frameX && rectangle.Y != frameY && frameX >= 0 && frameY >= 0) || flag14) {
++								if ((tile.frameX != frameX && tile.frameY != frameY && frameX >= 0 && frameY >= 0) || flag14) { // #4640 - Account for tile frameX/Y changes within TileLoader.PostTileFrame
+ 									tileReframeCount++;
+ 									if (tileReframeCount < 25) {
+ 										bool num50 = mergeUp;

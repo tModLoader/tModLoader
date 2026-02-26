@@ -1,8 +1,9 @@
 --- src/TerrariaNetCore/Terraria/PopupText.cs
 +++ src/tModLoader/Terraria/PopupText.cs
-@@ -1,36 +_,145 @@
- using System;
+@@ -2,48 +_,158 @@
  using Microsoft.Xna.Framework;
+ using Microsoft.Xna.Framework.Graphics;
+ using ReLogic.Graphics;
  using Terraria.GameContent;
 +using Terraria.ID;
  using Terraria.Localization;
@@ -16,6 +17,8 @@
 +/// </summary>
  public class PopupText
  {
+ 	public const int maxItemText = 20;
+ 	public static PopupText[] popupText = new PopupText[20];
 +	/// <summary>
 +	/// The position of this <see cref="PopupText"/> in world coordinates.
 +	/// </summary>
@@ -40,6 +43,7 @@
 +	/// The text displayed by this <see cref="PopupText"/>.
 +	/// </summary>
  	public string name;
+ 	public string displayText;
 +
 +	/// <summary>
 +	/// The optional stack size appended to <see cref="name"/>.
@@ -71,6 +75,7 @@
 +	/// The time in ticks this <see cref="PopupText"/> will remain for until it starts to disappear.
 +	/// </summary>
  	public int lifeTime;
+ 	public int framesSinceSpawn;
 +
 +	/// <summary>
 +	/// The default <see cref="lifeTime"/> of a <see cref="PopupText"/>.
@@ -133,12 +138,19 @@
 +	/// If <see langword="true"/>, this <see cref="PopupText"/> is not bound to an item or NPC.
 +	/// </summary>
  	public bool freeAdvanced;
- 
++
 +	// Added by TML.
 +	/// <summary>
 +	/// The <see cref="ItemRarityID"/> this <see cref="PopupText"/> uses for its main color.
 +	/// </summary>
 +	public int rarity;
+ 	public Vector2[] charOffsets;
+ 	public Color[] charColors;
+ 	public PopupEffectStyle effectStyle;
+ 	public int effectIntensity;
+ 
+ 	public bool AnyEffect => effectStyle != PopupEffectStyle.None;
+ 
 +
 +	/// <summary>
 +	/// If <see langword="true"/>, this <see cref="PopupText"/> is not for an item.
@@ -146,9 +158,10 @@
  	public bool notActuallyAnItem {
  		get {
  			if (npcNetID == 0)
-@@ -42,6 +_,10 @@
+ 				return freeAdvanced;
+@@ -54,6 +_,10 @@
  
- 	public static float TargetScale => Main.UIScale / Main.GameViewMatrix.Zoom.X;
+ 	public static float TargetScale => Main.UIScale / Main.GameViewMatrix.RenderZoom.X;
  
 +	/// <summary>
 +	/// Destroys the <see cref="PopupText"/> in <see cref="Main.popupText"/> at the index <see cref="sonarText"/> if that text has <see cref="sonar"/> set to <see langword="true"/>.
@@ -156,8 +169,8 @@
 +	/// </summary>
  	public static void ClearSonarText()
  	{
- 		if (sonarText >= 0 && Main.popupText[sonarText].sonar) {
-@@ -50,6 +_,10 @@
+ 		if (sonarText >= 0 && popupText[sonarText].sonar) {
+@@ -62,6 +_,10 @@
  		}
  	}
  
@@ -168,10 +181,13 @@
  	public static void ResetText(PopupText text)
  	{
  		text.NoStack = false;
-@@ -64,8 +_,20 @@
+@@ -76,11 +_,23 @@
  		text.rotation = 0f;
  		text.alpha = 1f;
  		text.alphaDir = -1;
+ 		text.framesSinceSpawn = 0;
+ 		text.effectStyle = PopupEffectStyle.None;
+ 		text.effectIntensity = 0;
 +		text.rarity = 0;
  	}
  
@@ -189,7 +205,7 @@
  	public static int NewText(AdvancedPopupRequest request, Vector2 position)
  	{
  		if (!Main.showItemText)
-@@ -94,6 +_,20 @@
+@@ -110,6 +_,20 @@
  		return num;
  	}
  
@@ -210,7 +226,7 @@
  	public static int NewText(PopupTextContext context, int npcNetID, Vector2 position, bool stay5TimesLonger)
  	{
  		if (!Main.showItemText)
-@@ -132,6 +_,19 @@
+@@ -150,6 +_,19 @@
  		return num;
  	}
  
@@ -227,26 +243,19 @@
 +	/// <inheritdoc cref="NewText(AdvancedPopupRequest, Vector2)"/>
 +	/// <br/> Also returns <c>-1</c> if <see cref="Item.Name"/> is <see langword="null"/>.
 +	/// </returns>
- 	public static int NewText(PopupTextContext context, Item newItem, int stack, bool noStack = false, bool longText = false)
+ 	public static int NewText(PopupTextContext context, Item newItem, Vector2 position, int stack, bool noStack = false, bool longText = false)
  	{
  		if (!Main.showItemText)
-@@ -256,10 +_,14 @@
- 				popupText2.color = new Color(5, 200, 255);
- 			else if (newItem.rare == 10)
- 				popupText2.color = new Color(255, 40, 100);
--			else if (newItem.rare >= 11)
-+			else if (newItem.rare == 11)
- 				popupText2.color = new Color(180, 40, 255);
-+			else if (newItem.rare >= ItemRarityID.Count)
-+				popupText2.color = RarityLoader.GetRarity(newItem.rare).RarityColor;
- 
+@@ -253,6 +_,8 @@
+ 			popupText2.active = true;
+ 			popupText2.position.X = position.X - vector2.X * 0.5f;
+ 			popupText2.position.Y = position.Y - vector2.Y * 0.5f;
 +			popupText2.rarity = newItem.rare; // Added by TML
- 			popupText2.expert = newItem.expert;
 +			popupText2.master = newItem.master; // Added by TML
  			popupText2.name = newItem.AffixName();
  			popupText2.stack = stack;
  			popupText2.velocity.Y = -7f;
-@@ -343,6 +_,10 @@
+@@ -434,6 +_,10 @@
  		return num;
  	}
  
@@ -257,8 +266,8 @@
  	public static void AssignAsSonarText(int sonarTextIndex)
  	{
  		sonarText = sonarTextIndex;
-@@ -350,6 +_,11 @@
- 			Main.popupText[sonarText].sonar = true;
+@@ -441,6 +_,11 @@
+ 			popupText[sonarText].sonar = true;
  	}
  
 +	/// <summary>
@@ -269,7 +278,7 @@
  	public static string ValueToName(long coinValue)
  	{
  		int num = 0;
-@@ -439,6 +_,10 @@
+@@ -530,6 +_,10 @@
  			name = name.Substring(0, name.Length - 1);
  	}
  
@@ -280,7 +289,7 @@
  	public void Update(int whoAmI)
  	{
  		if (!active)
-@@ -461,6 +_,9 @@
+@@ -553,6 +_,9 @@
  		else if (master)
  			color = new Color(255, (byte)(Main.masterColor * 200f), 0, Main.mouseTextColor);
  
@@ -290,7 +299,7 @@
  		bool flag = false;
  		Vector2 textHitbox = GetTextHitbox();
  		Rectangle rectangle = new Rectangle((int)(position.X - textHitbox.X / 2f), (int)(position.Y - textHitbox.Y / 2f), (int)textHitbox.X, (int)textHitbox.Y);
-@@ -528,6 +_,9 @@
+@@ -620,6 +_,9 @@
  		return result;
  	}
  
@@ -300,7 +309,7 @@
  	public static void UpdateItemText()
  	{
  		int num = 0;
-@@ -541,6 +_,9 @@
+@@ -633,6 +_,9 @@
  		numActive = num;
  	}
  
