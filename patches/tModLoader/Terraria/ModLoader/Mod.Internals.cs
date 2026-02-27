@@ -55,11 +55,23 @@ partial class Mod
 			var loadableTypes = AssemblyManager.GetLoadableTypes(Code)
 				.Where(t => !t.IsAbstract && !t.ContainsGenericParameters)
 				.Where(t => t.IsAssignableTo(typeof(ILoadable)))
-				.Where(t => t.GetConstructor(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, Type.EmptyTypes) != null) // has default constructor
+				.Where(t => t.GetConstructor(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, Type.EmptyTypes) != null || t.GetCustomAttribute<AutoloadWithDefaultValuesAttribute>() != null) // has default constructor
 				.Where(t => AutoloadAttribute.GetValue(t).NeedsAutoloading)
 				.OrderBy(type => type.FullName, StringComparer.InvariantCulture);
 
-			LoaderUtils.ForEachAndAggregateExceptions(loadableTypes, t => AddContent((ILoadable)Activator.CreateInstance(t, true)));
+			LoaderUtils.ForEachAndAggregateExceptions(loadableTypes, t => {
+				if (t.GetConstructor(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, Type.EmptyTypes) != null) {
+					AddContent((ILoadable)Activator.CreateInstance(t, true));
+					return;
+				}
+				ConstructorInfo constructor = t.GetConstructors(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)[0];
+				AddContent((ILoadable)constructor.Invoke([..constructor.GetParameters().Select((ParameterInfo parameter) => {
+					if (parameter.ParameterType.IsValueType)
+						return Activator.CreateInstance(parameter.ParameterType);
+
+					return null;
+				})]));
+			});
 		}
 
 		// Skip loading client assets if this is a dedicated server;
