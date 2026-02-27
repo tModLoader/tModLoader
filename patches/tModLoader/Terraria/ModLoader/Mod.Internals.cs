@@ -55,23 +55,20 @@ partial class Mod
 			var loadableTypes = AssemblyManager.GetLoadableTypes(Code)
 				.Where(t => !t.IsAbstract && !t.ContainsGenericParameters)
 				.Where(t => t.IsAssignableTo(typeof(ILoadable)))
-				.Where(t => t.GetConstructor(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, Type.EmptyTypes) != null || t.GetCustomAttribute<AutoloadWithDefaultValuesAttribute>() != null) // has default constructor
+				.Where(t => t.GetConstructor(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, Type.EmptyTypes) != null) // has default constructor
 				.Where(t => AutoloadAttribute.GetValue(t).NeedsAutoloading)
 				.OrderBy(type => type.FullName, StringComparer.InvariantCulture);
 
-			LoaderUtils.ForEachAndAggregateExceptions(loadableTypes, t => {
-				if (t.GetConstructor(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, Type.EmptyTypes) != null) {
-					AddContent((ILoadable)Activator.CreateInstance(t, true));
-					return;
-				}
-				ConstructorInfo constructor = t.GetConstructors(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)[0];
-				AddContent((ILoadable)constructor.Invoke([..constructor.GetParameters().Select((ParameterInfo parameter) => {
-					if (parameter.ParameterType.IsValueType)
-						return Activator.CreateInstance(parameter.ParameterType);
+			LoaderUtils.ForEachAndAggregateExceptions(loadableTypes, t => AddContent((ILoadable)Activator.CreateInstance(t, true)));
 
-					return null;
-				})]));
-			});
+			var customLoadableTypes = AssemblyManager.GetLoadableTypes(Code)
+				.Where(t => !t.IsAbstract && !t.ContainsGenericParameters)
+				.Where(t => t.IsAssignableTo(typeof(ICustomLoadable)))
+				.Where(t => AutoloadAttribute.GetValue(t).NeedsAutoloading)
+				.OrderBy(type => type.FullName, StringComparer.InvariantCulture);
+
+			MethodInfo doCustomLoad = typeof(Mod).GetMethod("DoCustomLoad", BindingFlags.NonPublic | BindingFlags.Static);
+			LoaderUtils.ForEachAndAggregateExceptions(customLoadableTypes, t => doCustomLoad.MakeGenericMethod(t).Invoke(null, [this, t]));
 		}
 
 		// Skip loading client assets if this is a dedicated server;
@@ -90,6 +87,7 @@ partial class Mod
 		if (BackgroundAutoloadingEnabled)
 			BackgroundTextureLoader.AutoloadBackgrounds(this);
 	}
+	static void DoCustomLoad<T>(Mod mod, Type type) where T : ICustomLoadable => T.CustomLoad(mod, type);
 
 	internal void PrepareAssets()
 	{
