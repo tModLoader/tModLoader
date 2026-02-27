@@ -34,10 +34,8 @@ public interface ILoadable : IAutoload<ILoadable.AutoloadImpl>
 	{
 		public static void Autoload(Mod mod, Type type)
 		{
-			if (type.GetConstructor(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, Type.EmptyTypes) == null)
-				return;
-
-			mod.AddContent((ILoadable)Activator.CreateInstance(type, true));
+			if (type.GetConstructor(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, Type.EmptyTypes) is { } ctor)
+				mod.AddContent((ILoadable)ctor.Invoke(null));
 		}
 	}
 }

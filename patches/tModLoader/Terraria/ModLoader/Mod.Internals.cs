@@ -81,8 +81,8 @@ partial class Mod
 	private static readonly MethodInfo _autoloadInvoker = typeof(Mod).GetMethod(nameof(AutoloadInvoker), BindingFlags.Static | BindingFlags.NonPublic);
 	public void TryAutoload(Type type)
 	{
-		var iAutoload = type.GetInterfaces().SingleOrDefault(t => t.IsGenericType && t.GetGenericTypeDefinition() == typeof(IAutoload<>));
-		if (iAutoload != null)
+		// IAutoload<> can be implemented multiple times with different generic args. Call all of them
+		foreach (var iAutoload in type.GetInterfaces().Where(t => t.IsGenericType && t.GetGenericTypeDefinition() == typeof(IAutoload<>)))
 			_autoloadInvoker.MakeGenericMethod(type, iAutoload.GetGenericArguments()[0]).Invoke(null, [this]);
 	}
 
