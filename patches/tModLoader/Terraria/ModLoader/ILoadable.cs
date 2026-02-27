@@ -1,3 +1,5 @@
+using System;
+using System.Reflection;
 using JetBrains.Annotations;
 
 namespace Terraria.ModLoader;
@@ -9,7 +11,7 @@ namespace Terraria.ModLoader;
 	ImplicitUseKindFlags.InstantiatedNoFixedConstructorSignature,
 	ImplicitUseTargetFlags.WithMembers | ImplicitUseTargetFlags.WithInheritors
 )]
-public interface ILoadable
+public interface ILoadable : IAutoload<ILoadable.AutoloadImpl>
 {
 	/// <summary>
 	/// Called when loading the type.
@@ -27,4 +29,15 @@ public interface ILoadable
 	/// Called during unloading when needed.
 	/// </summary>
 	public abstract void Unload();
+
+	public class AutoloadImpl : IAutoloader
+	{
+		public static void Autoload(Mod mod, Type type)
+		{
+			if (type.GetConstructor(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, Type.EmptyTypes) == null)
+				return;
+
+			mod.AddContent((ILoadable)Activator.CreateInstance(type, true));
+		}
+	}
 }
