@@ -1,4 +1,5 @@
 ﻿using System;
+using JetBrains.Annotations;
 
 namespace Terraria.ModLoader;
 
@@ -7,6 +8,10 @@ namespace Terraria.ModLoader;
 /// The corresponding <typeparamref name="TImpl"/>.<see cref="IAutoloader.Autoload(Mod, Type)"/> method will be called on all non-abstract subtypes which implement this interface
 /// </summary>
 /// <typeparam name="TImpl">Concrete type containing a static <see cref="IAutoloader.Autoload(Mod, Type)"/> implementation method</typeparam>
+[UsedImplicitly(
+	ImplicitUseKindFlags.InstantiatedNoFixedConstructorSignature,
+	ImplicitUseTargetFlags.WithMembers | ImplicitUseTargetFlags.WithInheritors
+)]
 public interface IAutoload<TImpl> where TImpl : IAutoloader
 {
 }
