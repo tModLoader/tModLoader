@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.12</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2026.01</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -196,6 +196,14 @@ Public Member Functions</h2></td></tr>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>AutoStaticDefaults</b> ()</td></tr>
 <tr class="memdesc:aa77510b0a5fb574d08a299d7cd622e82"><td class="mdescLeft">&#160;</td><td class="mdescRight">Automatically assigns an <a class="el" href="interface_i_achievement_tracker.html">IAchievementTracker</a> if not yet assigned. Override this if you need to skip this logic. <br /></td></tr>
 <tr class="separator:aa77510b0a5fb574d08a299d7cd622e82"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5e1e39f06ed78921e18db56b24f693ef"><td class="memItemLeft" align="right" valign="top"><a id="a5e1e39f06ed78921e18db56b24f693ef" name="a5e1e39f06ed78921e18db56b24f693ef"></a>
+virtual <a class="el" href="class_mod_achievement_1_1_position.html">Position</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetAdvisorPosition</b> ()</td></tr>
+<tr class="memdesc:a5e1e39f06ed78921e18db56b24f693ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Some of the vanilla achievements are showed next to the inventory to advise the player on what to do next. This hook allows you to place this achievement in the advisor before/after other vanilla advisor achievements. Make use of e.g. <a class="el" href="class_mod_achievement_1_1_before.html">Before</a>/<a class="el" href="class_mod_achievement_1_1_after.html">After</a>, and provide an achievement (for example <code>new <a class="el" href="class_mod_achievement_1_1_after.html">After</a>("EYE_ON_YOU")</code>). Consult the <a class="el" href="class_achievement.html">Achievement</a> Identifiers section of the Vanilla Content IDs wiki pageto look up the string to use with GetAchievement. You can also use BeforeFirstAdvisorAchievement or AfterLastAdvisorAchievement to put your achievement at the start/end of the vanilla advisor achievement order. <br  />
+<br  />
+ <b>NOTE:</b> The position must specify a vanilla Achievements.Achievement that is in the advisor otherwise an exception will be thrown. The wiki pagelists which vanilla achievements are used in the advisor and their order, which differs from the normal order. Use <a class="el" href="class_mod_achievement.html#a1673781463c714f323da672a4d9d0229" title="Modded achievements are placed between vanilla achievements via GetDefaultPosition and,...">GetModdedConstraints</a> to order modded achievements. <br  />
+<br  />
+ By default, this hook returns <code>null</code>, which indicates that this achievement will not be placed inside the advisor. <br /></td></tr>
+<tr class="separator:a5e1e39f06ed78921e18db56b24f693ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a10e91554632d692341fc06e4db1b4ed9"><td class="memItemLeft" align="right" valign="top"><a id="a10e91554632d692341fc06e4db1b4ed9" name="a10e91554632d692341fc06e4db1b4ed9"></a>
 virtual <a class="el" href="class_mod_achievement_1_1_position.html">Position</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetDefaultPosition</b> ()</td></tr>
 <tr class="memdesc:a10e91554632d692341fc06e4db1b4ed9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the achievement's default position in regard to vanilla's achievement ordering. Make use of e.g. <a class="el" href="class_mod_achievement_1_1_before.html">Before</a>/<a class="el" href="class_mod_achievement_1_1_after.html">After</a>, and provide an achievement (for example <code>new <a class="el" href="class_mod_achievement_1_1_after.html">After</a>("EYE_ON_YOU")</code>). Consult the <a class="el" href="class_achievement.html">Achievement</a> Identifiers section of the Vanilla Content IDs wiki pageto look up the string to use with GetAchievement. You can also use BeforeFirstVanillaAchievement or AfterLastVanillaAchievement to put your achievement at the start/end of the vanilla achievement order. <br  />
@@ -286,9 +294,15 @@ Properties</h2></td></tr>
 <a class="el" href="class_achievement.html">Achievement</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Achievement</b><code> [get]</code></td></tr>
 <tr class="memdesc:aba57eb51e06cfd855c97f6af43809841"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="class_achievement.html">Achievement</a> object that this <a class="el" href="class_mod_achievement.html" title="Defines a custom achievement and implements how it should act upon completion. An achievement consist...">ModAchievement</a> controls. <br /></td></tr>
 <tr class="separator:aba57eb51e06cfd855c97f6af43809841"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa7432b73ed74845d3ab3eacc1120b2ea"><td class="memItemLeft" align="right" valign="top"><a id="aa7432b73ed74845d3ab3eacc1120b2ea" name="aa7432b73ed74845d3ab3eacc1120b2ea"></a>
+static <a class="el" href="class_mod_achievement_1_1_position.html">Position</a>&#160;</td><td class="memItemRight" valign="bottom"><b>AfterLastAdvisorAchievement</b><code> [get]</code></td></tr>
+<tr class="separator:aa7432b73ed74845d3ab3eacc1120b2ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a506163249784d58eebdabdbd0dc68502"><td class="memItemLeft" align="right" valign="top"><a id="a506163249784d58eebdabdbd0dc68502" name="a506163249784d58eebdabdbd0dc68502"></a>
 static <a class="el" href="class_mod_achievement_1_1_position.html">Position</a>&#160;</td><td class="memItemRight" valign="bottom"><b>AfterLastVanillaAchievement</b><code> [get]</code></td></tr>
 <tr class="separator:a506163249784d58eebdabdbd0dc68502"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac38982aa2fd195adec444fd8669e2100"><td class="memItemLeft" align="right" valign="top"><a id="ac38982aa2fd195adec444fd8669e2100" name="ac38982aa2fd195adec444fd8669e2100"></a>
+static <a class="el" href="class_mod_achievement_1_1_position.html">Position</a>&#160;</td><td class="memItemRight" valign="bottom"><b>BeforeFirstAdvisorAchievement</b><code> [get]</code></td></tr>
+<tr class="separator:ac38982aa2fd195adec444fd8669e2100"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa8c724a4b3bf7aa166ff4a4186301c12"><td class="memItemLeft" align="right" valign="top"><a id="aa8c724a4b3bf7aa166ff4a4186301c12" name="aa8c724a4b3bf7aa166ff4a4186301c12"></a>
 static <a class="el" href="class_mod_achievement_1_1_position.html">Position</a>&#160;</td><td class="memItemRight" valign="bottom"><b>BeforeFirstVanillaAchievement</b><code> [get]</code></td></tr>
 <tr class="separator:aa8c724a4b3bf7aa166ff4a4186301c12"><td class="memSeparator" colspan="2">&#160;</td></tr>

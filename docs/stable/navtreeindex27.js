@@ -1,5 +1,10 @@
 var NAVTREEINDEX27 =
 {
+"struct_boss_bar_draw_params.html#af6e55f0ca5c415156d451126bbd0cf62":[3,0,113,7],
+"struct_buff_draw_params.html":[3,0,119],
+"struct_buff_draw_params.html#a1541d4d1f549602785ee3c547d4e1033":[3,0,119,2],
+"struct_buff_draw_params.html#a23153311248df2a8b45a30c7b13b80b5":[3,0,119,1],
+"struct_buff_draw_params.html#a43659c7022826121c3e60b4a8110b267":[3,0,119,3],
 "struct_buff_draw_params.html#a8a31fa564f587ad7df1bb7d1466188c5":[3,0,119,5],
 "struct_buff_draw_params.html#a94dc35a5f9b9e8add7539b27946b26a6":[3,0,119,4],
 "struct_buff_draw_params.html#a99ce7cd8ff4b6dc56d8cae3b6a6b09d4":[3,0,119,0],
@@ -244,10 +249,5 @@ var NAVTREEINDEX27 =
 "struct_player_1_1_hurt_modifiers.html#adb99914ce1426d17f09a31c2ce9af838":[3,0,980,6,10],
 "struct_player_1_1_hurt_modifiers.html#add7409a737d4956980fd698ac185cb71":[3,0,980,6,0],
 "struct_player_1_1_item_check_context.html":[3,0,980,7],
-"struct_player_1_1_item_space_status.html":[3,0,980,8],
-"struct_player_1_1_overhead_message.html":[3,0,980,9],
-"struct_player_1_1_rabbit_order_frame_helper.html":[3,0,980,10],
-"struct_player_1_1_set_match_request.html":[3,0,980,14],
-"struct_player_draw_set.html":[3,0,989],
-"struct_player_draw_set.html#aca6f0fbea669312c5bb625a30aefc3ad":[3,0,989,0]
+"struct_player_1_1_item_space_status.html":[3,0,980,8]
 };

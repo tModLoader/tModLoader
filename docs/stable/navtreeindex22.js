@@ -1,5 +1,9 @@
 var NAVTREEINDEX22 =
 {
+"class_t_e_food_platter.html":[3,0,1221],
+"class_t_e_food_platter.html#a29278af6ef66c1dee5612d9928dd2513":[3,0,1221,1],
+"class_t_e_food_platter.html#a78537f71602513a8949b03c9239c06be":[3,0,1221,0],
+"class_t_e_food_platter.html#ac0abf33a9212bc6d97fdc69e7c898b3a":[3,0,1221,3],
 "class_t_e_food_platter.html#acd418790b6b07d4219772b5f147b39d4":[3,0,1221,2],
 "class_t_e_hat_rack.html":[3,0,1222],
 "class_t_e_hat_rack.html#ab24487f6356d35cc7f9071224704ff36":[3,0,1222,3],
@@ -245,9 +249,5 @@ var NAVTREEINDEX22 =
 "class_tile_loader.html#a9e5a6496b43162b1885292a581ca97a0":[3,0,1259,11],
 "class_tile_loader.html#aa8236777f81075fbafb4005dafc07aef":[3,0,1259,1],
 "class_tile_loader.html#acf2cfd3a048f6b6c46ec666847aea14f":[3,0,1259,4],
-"class_tile_loader.html#ad3057a7f8fce273523a722ce3309de01":[3,0,1259,9],
-"class_tile_material.html":[3,0,1261],
-"class_tile_materials.html":[3,0,1262],
-"class_tile_object_alternates_module.html":[3,0,1264],
-"class_tile_object_base_module.html":[3,0,1265]
+"class_tile_loader.html#ad3057a7f8fce273523a722ce3309de01":[3,0,1259,9]
 };

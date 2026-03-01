@@ -5,6 +5,7 @@ var class_global_item =
     [ "AltFunctionUse", "class_global_item.html#aebdc39a8037326e04674e07c36d0be6f", null ],
     [ "AnglerChat", "class_global_item.html#a54190bad0f2674e5da71a21d59d564a0", null ],
     [ "ApplyPotionDelay", "class_global_item.html#a8fc05662db741f10ccb862926552ec8d", null ],
+    [ "ApplyPrefix", "class_global_item.html#aba10345878ca06dacba919c53ad2ff6a", null ],
     [ "ArmorArmGlowMask", "class_global_item.html#ac2f04a40a4dfa775c5629fbed02a16f3", null ],
     [ "ArmorSetShadows", "class_global_item.html#aa790959f61336c428207a6c0c9398ad8", null ],
     [ "CanAccessoryBeEquippedWith", "class_global_item.html#a8e0e0c8d0f28dcdca0b487c00601d70c", null ],

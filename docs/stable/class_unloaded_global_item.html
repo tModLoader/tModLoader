@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2025.12</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2026.01</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -129,6 +129,10 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>AnglerChat</b
 <br  />
  Return false to prevent application of the BuffID.PotionSickness buff and setting <a class="el" href="class_player.html#a201c52749d7defd7d0732d8271ca270c" title="The potion sickness delay, in ticks. This value mirrors the remaining time for the BuffID....">Player.potionDelay</a>.  <a href="class_global_item.html#a8fc05662db741f10ccb862926552ec8d">More...</a><br /></td></tr>
 <tr class="separator:a8fc05662db741f10ccb862926552ec8d inherit pub_methods_class_global_item"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aba10345878ca06dacba919c53ad2ff6a inherit pub_methods_class_global_item"><td class="memItemLeft" align="right" valign="top"><a id="aba10345878ca06dacba919c53ad2ff6a" name="aba10345878ca06dacba919c53ad2ff6a"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>ApplyPrefix</b> (<a class="el" href="class_item.html">Item</a> item, int pre)</td></tr>
+<tr class="memdesc:aba10345878ca06dacba919c53ad2ff6a inherit pub_methods_class_global_item"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called immediately after prefix stat changes are applied (as well as <a class="el" href="class_mod_prefix.html#a1bfd97f29841bac5f8e5097b5405c6de" title="Applies the custom data stats set in SetStats to the given item.">ModPrefix.Apply(Item)</a>), facilitating item-specific tweaks to prefix effects. <br /></td></tr>
+<tr class="separator:aba10345878ca06dacba919c53ad2ff6a inherit pub_methods_class_global_item"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac2f04a40a4dfa775c5629fbed02a16f3 inherit pub_methods_class_global_item"><td class="memItemLeft" align="right" valign="top"><a id="ac2f04a40a4dfa775c5629fbed02a16f3" name="ac2f04a40a4dfa775c5629fbed02a16f3"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>ArmorArmGlowMask</b> (int slot, <a class="el" href="class_player.html">Player</a> drawPlayer, float shadow, ref int glowMask, ref Color color)</td></tr>
 <tr class="memdesc:ac2f04a40a4dfa775c5629fbed02a16f3 inherit pub_methods_class_global_item"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify which glow mask and in what color is drawn on the player's arms. Note that this is only called for body armor. This method is not instanced. Called on local and remote clients. <br /></td></tr>
