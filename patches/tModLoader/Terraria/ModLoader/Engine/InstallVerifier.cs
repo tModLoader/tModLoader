@@ -48,7 +48,7 @@ internal static class InstallVerifier
 			}
 
 			vanillaSteamAPI = "steam_api.dll";
-			gogHash = ToByteArray("8e59dca45d8c988f94af02168812d693"); // Don't forget to update CheckExe above
+			gogHash = ToByteArray("8523861FD0E1A2F16EB347A8EF91F3C2"); // Don't forget to update CheckExe above
 			steamHash = ToByteArray("043716035c1a490f0c892d4cf31c09a9");
 		}
 		else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX)) {
