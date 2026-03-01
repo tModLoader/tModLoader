@@ -10,19 +10,28 @@ In addition, content owners in the tModLoader community are subject to additiona
 These rules apply to all modding content uploaded to the tModLoader community. This includes private and friends only content.
 
 Rule 1: Do not silently sabotage the user's experience
+
 \- Do not destroy the user's world/player/settings etc suddenly and without warning
+
 \- Do not intentionally make tML or other mods appear buggy
+
 \- Mods which are very clearly joke mods may be permitted, as long as it's clear when the joke is happening, and they must not actually destroy files
 
 Rule 2: File system and network access must be sensible
+
 \- Do not access or modify files outside of the tML save and config directories
+
 \- Do not launch external programs (This includes "joke" mods that launch other games)
+
 \- Do not instruct users to download external software
 
 Rule 3: No code obfuscation
+
 \- Also do not package or call into native libraries.
+
 \- Interpreting code written in other languages is only permitted if the script sandbox host API is limited to a select set of in-game functions.
 
 Rule 4: No Steam API abuse
+
 \- Do not interact with Steam on behalf of the user (outside the context of the tModLoader/Terraria game)
 
