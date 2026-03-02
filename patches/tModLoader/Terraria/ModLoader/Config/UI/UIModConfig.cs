@@ -306,9 +306,14 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 	// TODO: strange bugs with reference types that default to null (such as strings) when backspacing themselves
 	public void OnConfigModified()
 	{
+		CheckSaveAndRestoreConditions();
+		RefreshUI();
+	}
+
+	private void CheckSaveAndRestoreConditions()
+	{
 		HasUnsavedChanges = !ConfigManager.AreConfigsEqual(pendingConfig, modConfig);
 		HasDefaultValues = ConfigManager.AreConfigsEqual(pendingConfig, ConfigManager.GetLoadTimeConfig(mod, modConfig.Name));
-		RefreshUI();
 	}
 
 	// TODO: set message/notification popup in the corner of the screen
@@ -521,6 +526,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 		}
 
 		RefreshUI(delayRefresh: false);
+		CheckSaveAndRestoreConditions();
 	}
 
 	#endregion
