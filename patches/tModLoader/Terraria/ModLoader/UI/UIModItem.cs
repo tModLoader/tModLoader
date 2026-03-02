@@ -83,7 +83,7 @@ internal class UIModItem : UIPanel
 		base.OnInitialize();
 
 		string text = _mod.DisplayName + " v" + _mod.modFile.Version;
-		var modIcon = _mod.GetModIcon() ?? Mod.PlaceholderModIcon;
+		var modIcon = ModLoader.GetModIcon(_mod.modFile) ?? Mod.PlaceholderModIcon;
 		_modIconAdjust += 85;
 
 		_modIcon = new UIImage(modIcon) {
