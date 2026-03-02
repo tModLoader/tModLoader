@@ -2333,16 +2333,16 @@
  	}
  
 +	/// <summary>
-+	/// Spawns an NPC into the game world with the given type. <br/>
-+	/// This method should not be called on multiplayer clients. <br/>
-+	/// The X and Y parameters dictate the centered spawn position. <br/>
-+	/// <c>>ai0, ai1, ai2, ai3</c> will initialize the NPC.ai[] array with the supplied values. This can be used to pass in information to the NPC. The NPC AI code will have to be written to utilize those values. <br/>
++	/// Spawns an NPC into the game world with the given type. 
++	/// <br/><br/> This method should not be called on multiplayer clients.
++	/// <br/><br/> The X and Y parameters dictate the centered spawn position in world coordinates.
++	/// <br/><br/> <c>>ai0, ai1, ai2, ai3</c> will initialize the NPC.ai[] array with the supplied values. This can be used to pass in information to the NPC. The NPC AI code will have to be written to utilize those values.
 +	/// </summary>
 +	/// <param name="source"></param>
 +	/// <param name="X"></param>
 +	/// <param name="Y"></param>
 +	/// <param name="Type">Either an <see cref="NPCID"/> entry or <see cref="ModContent.NPCType{T}"/>, for example <see cref="NPCID.BabySlime"/> or <c>ModContent.NPCType&lt;MyModNPC&gt;()</c></param>
-+	/// <param name="Start">The lowest slot in which this NPC can spawn. This can be used to ensure that the spawned NPC draws behind an existing NPC. This is useful for bosses that spawn minions. </param>
++	/// <param name="Start">The lowest slot in which this NPC can spawn. This can be used to ensure that the spawned NPC draws behind an existing NPC. This is useful for multi-segment NPC or NPC that spawn minions. See also <see cref="NPCID.Sets.SpawnFromLastEmptySlot"/>. </param>
 +	/// <param name="ai0"></param>
 +	/// <param name="ai1"></param>
 +	/// <param name="ai2"></param>

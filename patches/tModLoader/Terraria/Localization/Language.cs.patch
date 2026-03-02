@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Localization/Language.cs
 +++ src/tModLoader/Terraria/Localization/Language.cs
-@@ -1,23 +_,61 @@
+@@ -1,23 +_,66 @@
 +using System;
  using System.Text.RegularExpressions;
  using Terraria.Utilities;
@@ -61,5 +61,10 @@
 +	/// <param name="random"></param>
 +	/// <returns></returns>
  	public static LocalizedText SelectRandom(LanguageSearchFilter filter, UnifiedRandom random = null) => LanguageManager.Instance.SelectRandom(filter, random);
++	/// <summary>
++	/// <b>This method is not suitable for modded localization keys.</b>
++	/// <br/><br/> To select a random LocalizedText from all entries that share the same "category"/prefix, use <see cref="Lang.CreateDialogFilter(string)"/> and <see cref="SelectRandom(LanguageSearchFilter, UnifiedRandom)"/> together instead of this method:
++	/// <code>LocalizedText randomOption = Language.SelectRandom(Lang.CreateDialogFilter(this.GetLocalizationKey("Options.")));</code>
++	/// </summary>
  	public static LocalizedText RandomFromCategory(string categoryName, UnifiedRandom random = null) => LanguageManager.Instance.RandomFromCategory(categoryName, random);
  }

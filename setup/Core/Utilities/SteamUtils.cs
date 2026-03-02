@@ -59,6 +59,14 @@ namespace Terraria.ModLoader.Setup.Core.Utilities
 					if (match.Success) {
 						path = Path.Combine(directory, "common", match.Groups[1].Value);
 
+						if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX)) {
+							string resourcesPath = Path.Combine(path, "Terraria.app", "Contents", "Resources");
+							if (Directory.Exists(resourcesPath)) {
+								path = resourcesPath;
+								return true;
+							}
+						}
+
 						if (Directory.Exists(path)) {
 							return true;
 						}
