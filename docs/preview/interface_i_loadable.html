@@ -85,17 +85,27 @@ $(document).ready(function(){initNavTree('interface_i_loadable.html',''); initRe
 
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="interface_i_loadable-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">ILoadable Interface Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div></div>
 </div><!--header-->
 <div class="contents">
 
-<p>Allows for implementing types to be loaded and unloaded.  
+<p>Works with <a class="el" href="class_mod.html#a065e9e5db3ac5ed00507a5b995c8bdcc" title="Call this to manually add the given content instance to the game.">Mod.AddContent</a> to provide Load and Unload callbacks.<br  />
+ All non-abstract types extending this class which have a default constructor will be autoloaded and passed to <a class="el" href="class_mod.html#a065e9e5db3ac5ed00507a5b995c8bdcc" title="Call this to manually add the given content instance to the game.">Mod.AddContent</a><br  />
+ For autoloading types which do not have a default constructor, see <a class="el" href="interface_i_custom_autoload.html" title="Provides a static abstract Autoload(Mod) method for mods to implement their own autoloading for types...">ICustomAutoload</a>  
  <a href="interface_i_loadable.html#details">More...</a></p>
+
+<p>Inherits <a class="el" href="interface_i_autoload.html">IAutoload&lt; ILoadable.AutoloadImpl &gt;</a>.</p>
 
 <p>Inherited by <a class="el" href="class_mod_type.html">ModType&lt; Achievement, ModAchievement &gt;</a>, <a class="el" href="class_mod_type.html">ModType&lt; EmoteBubble, ModEmoteBubble &gt;</a>, <a class="el" href="class_mod_type.html">ModType&lt; Item, ModItem &gt;</a>, <a class="el" href="class_mod_type.html">ModType&lt; Mount.MountData, ModMount &gt;</a>, <a class="el" href="class_mod_type.html">ModType&lt; NPC, ModNPC &gt;</a>, <a class="el" href="class_mod_type.html">ModType&lt; Player, ModPlayer &gt;</a>, <a class="el" href="class_mod_type.html">ModType&lt; Projectile, ModProjectile &gt;</a>, <a class="el" href="class_mod_type.html">ModType&lt; TEntity &gt;</a>, <a class="el" href="class_a_shopping_biome.html">AShoppingBiome</a>, <a class="el" href="interface_i_plant.html">IPlant</a>, <a class="el" href="class_mod_tile_entity.html">ModTileEntity</a>, and <a class="el" href="class_mod_type.html">ModType&lt; TEntity, TModType &gt;</a>.</p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_i_loadable_1_1_autoload_impl.html">AutoloadImpl</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a92a6276a1235d57c8e834508ba16ece1"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_i_loadable.html#a92a6276a1235d57c8e834508ba16ece1">IsLoadingEnabled</a> (<a class="el" href="class_mod.html">Mod</a> mod)</td></tr>
@@ -109,7 +119,9 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:aec1540dae35bd83a145bb336b6e981e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p >Allows for implementing types to be loaded and unloaded. </p>
+<div class="textblock"><p >Works with <a class="el" href="class_mod.html#a065e9e5db3ac5ed00507a5b995c8bdcc" title="Call this to manually add the given content instance to the game.">Mod.AddContent</a> to provide Load and Unload callbacks.<br  />
+ All non-abstract types extending this class which have a default constructor will be autoloaded and passed to <a class="el" href="class_mod.html#a065e9e5db3ac5ed00507a5b995c8bdcc" title="Call this to manually add the given content instance to the game.">Mod.AddContent</a><br  />
+ For autoloading types which do not have a default constructor, see <a class="el" href="interface_i_custom_autoload.html" title="Provides a static abstract Autoload(Mod) method for mods to implement their own autoloading for types...">ICustomAutoload</a> </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a92a6276a1235d57c8e834508ba16ece1" name="a92a6276a1235d57c8e834508ba16ece1"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a92a6276a1235d57c8e834508ba16ece1">&#9670;&nbsp;</a></span>IsLoadingEnabled()</h2>
