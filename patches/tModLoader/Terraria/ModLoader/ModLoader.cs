@@ -420,8 +420,10 @@ public static class ModLoader
 		Main.Configuration.Get("LiquidSlopeFix", ref LiquidEdgeRenderer.Enabled);
 	}
 
-	internal static Asset<Texture2D> GetModIcon(TmodFile modFile)
+	internal static Asset<Texture2D> GetModIcon(TmodFile modFile, out string error)
 	{
+		error = null;
+
 		if (modFile.HasFile("icon.png")) {
 			try {
 				using (modFile.Open())
@@ -431,6 +433,8 @@ public static class ModLoader
 					if (iconTexture.Width() == 80 && iconTexture.Height() == 80) {
 						return iconTexture;
 					}
+
+					error = "icon.png is not 80x80";
 				}
 			}
 			catch (Exception e) {
@@ -438,7 +442,13 @@ public static class ModLoader
 			}
 		}
 
+		error = "icon.png does not exist";
 		return null;
+	}
+
+	internal static Asset<Texture2D> GetModIcon(TmodFile modFile)
+	{
+		return GetModIcon(modFile, out string _);
 	}
 
 	internal static void MigrateSettings()

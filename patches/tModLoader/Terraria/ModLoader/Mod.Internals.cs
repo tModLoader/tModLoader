@@ -50,7 +50,7 @@ partial class Mod
 			return;
 
 		// Load icon.png and icon_small.png
-		ModIcon = ModLoader.GetModIcon(File);
+		ModIcon = ModLoader.GetModIcon(File, out string error) ?? throw new MissingResourceException($"Failed to load icon.png. Reason: {error}.");
 		SmallModIcon = null;
 
 		if (RequestAssetIfExists<Texture2D>("icon_small", out var smallIconAsset)) {
@@ -61,8 +61,6 @@ partial class Mod
 				Logger.Error("icon_small.png needs to be 30x30 pixels.");
 			}
 		}
-
-		ModIcon ??= PlaceholderModIcon;
 
 		LocalizationLoader.Autoload(this);
 
