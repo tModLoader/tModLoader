@@ -50,17 +50,8 @@ partial class Mod
 			return;
 
 		// Load icon.png and icon_small.png
-		ModIcon = null;
+		ModIcon = ModLoader.GetModIcon(File);
 		SmallModIcon = null;
-
-		if (RequestAssetIfExists<Texture2D>("icon", out var iconAsset)) {
-			if (iconAsset.Size() == new Vector2(80)) {
-				ModIcon = iconAsset;
-			}
-			else {
-				Logger.Error("icon.png needs to be 80x80 pixels.");
-			}
-		}
 
 		if (RequestAssetIfExists<Texture2D>("icon_small", out var smallIconAsset)) {
 			if (smallIconAsset.Size() == new Vector2(30)) {
