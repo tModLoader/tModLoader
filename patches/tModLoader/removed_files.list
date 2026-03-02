@@ -1,0 +1,14 @@
+ReLogic/Content/AssetLoader.cs
+ReLogic/Content/AsyncAssetLoader.cs
+ReLogic/Content/ContentRejectionFromFailedLoad_ByAssetExtensionType.cs
+ReLogic/Content/IAsyncAssetLoader.cs
+ReLogic/Content/Sources/XnaContentSource.cs
+Terraria/DataStructures/AEntitySource_OnHit.cs
+Terraria/DataStructures/EntitySource_ByItemSourceId.cs
+Terraria/DataStructures/EntitySource_ByProjectileSourceId.cs
+Terraria/DataStructures/EntitySource_OnHit_ByItemSourceID.cs
+Terraria/DataStructures/EntitySource_OnHit_ByProjectileSourceID.cs
+Terraria/Libraries/Common/Ionic.Zip.CF.dll
+Terraria/Libraries/FNA/FNA.dll
+Terraria/Libraries/Mono/Steamworks.NET.dll
+Terraria/Libraries/Mono/System.Windows.Forms.dll

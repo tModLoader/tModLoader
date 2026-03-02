@@ -15,6 +15,8 @@ internal class IntInputElement : ConfigElement
 	public int Max { get; set; } = 100;
 	public int Increment { get; set; } = 1;
 
+	private UIFocusInputTextField uIInputTextField;
+
 	public override void OnBind()
 	{
 		base.OnBind();
@@ -35,7 +37,7 @@ internal class IntInputElement : ConfigElement
 
 		UIPanel textBoxBackground = new UIPanel();
 		textBoxBackground.SetPadding(0);
-		UIFocusInputTextField uIInputTextField = new UIFocusInputTextField(Language.GetTextValue("tModLoader.ModConfigTypeHere"));
+		uIInputTextField = new UIFocusInputTextField(Language.GetTextValue("tModLoader.ModConfigTypeHere"));
 		textBoxBackground.Top.Set(0f, 0f);
 		textBoxBackground.Left.Set(-190, 1f);
 		textBoxBackground.Width.Set(180, 0f);
@@ -76,6 +78,15 @@ internal class IntInputElement : ConfigElement
 		Recalculate();
 	}
 
+	public override void RefreshUI()
+	{
+		// Stops fuckery while typing
+		if (uIInputTextField.Focused)
+			return;
+
+		uIInputTextField.SetText(GetValue().ToString());
+	}
+
 	protected virtual int GetValue() => (int)GetObject();
 
 	protected virtual void SetValue(int value) => SetObject(Utils.Clamp(value, Min, Max));
@@ -87,6 +98,8 @@ internal class LongElement : ConfigElement
 	public long Min { get; set; } = long.MinValue;
 	public long Max { get; set; } = long.MaxValue;
 	public long Increment { get; set; } = 1;
+
+	private UIFocusInputTextField uIInputTextField;
 
 	public override void OnBind()
 	{
@@ -108,7 +121,7 @@ internal class LongElement : ConfigElement
 
 		UIPanel textBoxBackground = new UIPanel();
 		textBoxBackground.SetPadding(0);
-		UIFocusInputTextField uIInputTextField = new UIFocusInputTextField(Language.GetTextValue("tModLoader.ModConfigTypeHere"));
+		uIInputTextField = new UIFocusInputTextField(Language.GetTextValue("tModLoader.ModConfigTypeHere"));
 		textBoxBackground.Top.Set(0f, 0f);
 		textBoxBackground.Left.Set(-190, 1f);
 		textBoxBackground.Width.Set(180, 0f);
@@ -152,6 +165,15 @@ internal class LongElement : ConfigElement
 		Recalculate();
 	}
 
+	public override void RefreshUI()
+	{
+		// Stops fuckery while typing
+		if (uIInputTextField.Focused)
+			return;
+
+		uIInputTextField.SetText(GetValue().ToString());
+	}
+
 	protected virtual long GetValue() => (long)GetObject();
 
 	protected virtual void SetValue(long value) => SetObject(Utils.Clamp(value, Min, Max));
@@ -163,6 +185,8 @@ internal class ULongElement : ConfigElement
 	public ulong Min { get; set; } = ulong.MinValue;
 	public ulong Max { get; set; } = ulong.MaxValue;
 	public ulong Increment { get; set; } = 1;
+
+	private UIFocusInputTextField uIInputTextField;
 
 	public override void OnBind()
 	{
@@ -184,7 +208,7 @@ internal class ULongElement : ConfigElement
 
 		UIPanel textBoxBackground = new UIPanel();
 		textBoxBackground.SetPadding(0);
-		UIFocusInputTextField uIInputTextField = new UIFocusInputTextField(Language.GetTextValue("tModLoader.ModConfigTypeHere"));
+		uIInputTextField = new UIFocusInputTextField(Language.GetTextValue("tModLoader.ModConfigTypeHere"));
 		textBoxBackground.Top.Set(0f, 0f);
 		textBoxBackground.Left.Set(-236, 1f);
 		textBoxBackground.Width.Set(226, 0f);
@@ -226,6 +250,15 @@ internal class ULongElement : ConfigElement
 		};
 		textBoxBackground.Append(upDownButton);
 		Recalculate();
+	}
+
+	public override void RefreshUI()
+	{
+		// Stops fuckery while typing
+		if (uIInputTextField.Focused)
+			return;
+
+		uIInputTextField.SetText(GetValue().ToString());
 	}
 
 	protected virtual ulong GetValue() => (ulong)GetObject();
