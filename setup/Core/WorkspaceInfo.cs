@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices;
 using System.Xml.Linq;
 using Terraria.ModLoader.Setup.Core.Utilities;
 
@@ -112,10 +113,18 @@ public sealed class WorkspaceInfo
 		ArgumentException.ThrowIfNullOrWhiteSpace(terrariaSteamDirectory);
 
 		TerrariaSteamDirectory = PathUtils.GetCrossPlatformFullPath(terrariaSteamDirectory);
-		TMLDevSteamDirectory = PathUtils.GetCrossPlatformFullPath(
-			string.IsNullOrWhiteSpace(tMLDevSteamDirectory)
-				? Path.Combine(terrariaSteamDirectory, "..", "tModLoaderDev")
-				: tMLDevSteamDirectory);
+
+		if (string.IsNullOrWhiteSpace(tMLDevSteamDirectory)) {
+			var steamappsCommonDirectory = TerrariaSteamDirectory;
+			if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX) &&
+					steamappsCommonDirectory.EndsWith(Path.Combine("Terraria.app", "Contents", "Resources"), StringComparison.Ordinal)) {
+				steamappsCommonDirectory = Path.Combine(steamappsCommonDirectory, "..", "..", "..");
+			}
+			
+			tMLDevSteamDirectory = Path.Combine(steamappsCommonDirectory, "..", "tModLoaderDev");
+		}
+
+		TMLDevSteamDirectory = PathUtils.GetCrossPlatformFullPath(tMLDevSteamDirectory);
 
 		Directory.CreateDirectory(TMLDevSteamDirectory);
 

@@ -6,6 +6,7 @@ using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
+using System;
 
 namespace ExampleMod.Common.GlobalBossBars
 {
@@ -15,6 +16,7 @@ namespace ExampleMod.Common.GlobalBossBars
 		public override bool PreDraw(SpriteBatch spriteBatch, NPC npc, ref BossBarDrawParams drawParams) {
 			if (npc.type == NPCID.EyeofCthulhu) {
 				drawParams.IconColor = Main.DiscoColor;
+				drawParams.BarColor = Color.Lerp(Color.White, Color.Transparent, (float)Math.Sin(Main.GameUpdateCount / 50f));
 			}
 
 			return true;

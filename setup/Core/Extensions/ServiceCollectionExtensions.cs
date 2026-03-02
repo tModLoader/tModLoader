@@ -22,6 +22,8 @@ public static class ServiceCollectionExtensions
 			.AddSingleton<TerrariaExecutableSetter>()
 			.AddSingleton(workspaceInfo)
 			.AddSingleton(programSettings)
-			.AddSingleton<TerrariaDecompileExecutableProvider>();
+			.AddSingleton<TerrariaDecompileExecutableProvider>()
+			.AddSingleton<SecretKeyProvider>()
+			;
 	}
 }

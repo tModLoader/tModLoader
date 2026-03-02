@@ -8,6 +8,7 @@ using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using ReLogic.OS;
 using Terraria.GameContent.Liquid;
@@ -417,6 +418,38 @@ public static class ModLoader
 			Interface.modsMenu.sortMode = modsMenuSortMode;
 
 		Main.Configuration.Get("LiquidSlopeFix", ref LiquidEdgeRenderer.Enabled);
+	}
+
+	internal static Asset<Texture2D> GetModIcon(TmodFile modFile, out string error)
+	{
+		error = null;
+
+		if (modFile.HasFile("icon.png")) {
+			try {
+				using (modFile.Open())
+				using (var s = modFile.GetStream("icon.png")) {
+					var iconTexture = Main.Assets.CreateUntracked<Texture2D>(s, ".png");
+
+					if (iconTexture.Width() == 80 && iconTexture.Height() == 80) {
+						return iconTexture;
+					}
+
+					error = "icon.png is not 80x80";
+					return null;
+				}
+			}
+			catch (Exception e) {
+				Logging.tML.Error("Unknown error", e);
+			}
+		}
+
+		error = "icon.png does not exist";
+		return null;
+	}
+
+	internal static Asset<Texture2D> GetModIcon(TmodFile modFile)
+	{
+		return GetModIcon(modFile, out string _);
 	}
 
 	internal static void MigrateSettings()

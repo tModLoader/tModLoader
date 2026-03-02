@@ -53,25 +53,19 @@ partial class Mod
 		ModIcon = null;
 		SmallModIcon = null;
 
-		if (RequestAssetIfExists<Texture2D>("icon", out var iconAsset)) {
-			if (iconAsset.Size() == new Vector2(80)) {
-				ModIcon = iconAsset;
-			}
-			else {
-				Logger.Info("icon.png needs to be 80x80 pixels.");
-			}
-		}
+		// The tModLoader embedded mod doesn't have File initialized
+		if (File != null)
+			ModIcon = ModLoader.GetModIcon(File, out string error)
+			       ?? throw new MissingResourceException($"Failed to load icon.png. Reason: {error}.");
 
 		if (RequestAssetIfExists<Texture2D>("icon_small", out var smallIconAsset)) {
 			if (smallIconAsset.Size() == new Vector2(30)) {
 				SmallModIcon = smallIconAsset;
 			}
 			else {
-				Logger.Info("icon_small.png needs to be 30x30 pixels.");
+				Logger.Error("icon_small.png needs to be 30x30 pixels.");
 			}
 		}
-
-		ModIcon ??= PlaceholderModIcon;
 
 		LocalizationLoader.Autoload(this);
 
