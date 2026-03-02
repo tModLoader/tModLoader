@@ -3,11 +3,13 @@ using Microsoft.Xna.Framework.Graphics;
 using Newtonsoft.Json;
 using ReLogic.Content;
 using System;
+using System.Collections.Generic;
 using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
 using Terraria.GameContent.UI.States;
 using Terraria.Localization;
 using Terraria.ModLoader.UI;
+using Terraria.UI;
 
 namespace Terraria.ModLoader.Config.UI;
 
@@ -257,6 +259,21 @@ internal class ObjectElement : ConfigElement<object>
 		}
 	}
 
+	public override void RefreshUI()
+	{
+		pendingChanges = true;
+
+		foreach (var wrappedElement in wrappedElements) {
+			if (wrappedElement.Item2 is not ConfigElement configElement)
+				return;
+
+			configElement.Item = Value;
+			configElement.RefreshUI();
+		}
+	}
+
+	private List<Tuple<UIElement, UIElement>> wrappedElements = [];
+
 	private void SetupList()
 	{
 		dataList.Clear();
@@ -278,6 +295,7 @@ internal class ObjectElement : ConfigElement<object>
 					UIModConfig.HandleHeader(dataList, ref top, ref order, variable);
 
 					var wrapped = UIModConfig.WrapIt(dataList, ref top, variable, data, order++);
+					wrappedElements.Add(wrapped);
 
 					if (List != null) {
 						//wrapped.Item1.Left.Pixels -= 20;
