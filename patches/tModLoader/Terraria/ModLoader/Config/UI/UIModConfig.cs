@@ -27,6 +27,7 @@ namespace Terraria.ModLoader.Config.UI;
 public class UIModConfig : UIState, IHaveBackButtonCommand
 {
 	// Public API for modders since Interface is internal
+	// TODO: what if mods supply their own modConfig state, either a UIModConfig or another one?
 	public static UIModConfig Instance => Interface.modConfig;
 
 	// TODO: these can be deprecated/moved
@@ -162,9 +163,8 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 	private void CreatePanelContents()
 	{
 		var listHeaderContainer = new UIElement {
-			Top = { Pixels = 15 },
 			Width = { Percent = 1f },
-			Height = {Pixels = 40 },
+			Height = { Pixels = 40 },
 		};
 		uiPanel.Append(listHeaderContainer);
 
@@ -193,7 +193,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 		// Gets appended in OnActivate
 
 		configNamePanel = new UIAutoScaleTextTextPanel<string>("") {
-			MaxWidth = { Pixels = 385 },
+			MaxWidth = { Pixels = 385, Percent = 0f },
 			Height = { Pixels = 40 },
 			VAlign = 0.5f,
 			UseInnerDimensions = true,
@@ -222,7 +222,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 	{
 		headerTextPanel = new UITextPanel<LocalizedText>(Language.GetText("tModLoader.ModConfigModConfig"), 0.8f, true) {
 			HAlign = 0.5f,
-			Top = { Pixels = -35 },
+			Top = { Pixels = -46 }, // -35 is common for most UIs, but UIWorkshopHub uses -46 to fit more content
 			BackgroundColor = UICommon.DefaultUIBlue,
 		}.WithPadding(15f);
 		uiElement.Append(headerTextPanel);
