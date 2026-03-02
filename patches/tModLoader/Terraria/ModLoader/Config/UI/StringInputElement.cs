@@ -6,13 +6,15 @@ namespace Terraria.ModLoader.Config.UI;
 
 internal class StringInputElement : ConfigElement<string>
 {
+	private UIFocusInputTextField uIInputTextField;
+
 	public override void OnBind()
 	{
 		base.OnBind();
 
 		UIPanel textBoxBackground = new UIPanel();
 		textBoxBackground.SetPadding(0);
-		UIFocusInputTextField uIInputTextField = new UIFocusInputTextField(Language.GetTextValue("tModLoader.ModConfigTypeHere"));
+		uIInputTextField = new UIFocusInputTextField(Language.GetTextValue("tModLoader.ModConfigTypeHere"));
 		textBoxBackground.Top.Set(0f, 0f);
 		textBoxBackground.Left.Set(-190, 1f);
 		textBoxBackground.Width.Set(180, 0f);
@@ -30,5 +32,10 @@ internal class StringInputElement : ConfigElement<string>
 		};
 
 		textBoxBackground.Append(uIInputTextField);
+	}
+
+	public override void RefreshUI()
+	{
+		uIInputTextField.CurrentString = Value ?? "";
 	}
 }

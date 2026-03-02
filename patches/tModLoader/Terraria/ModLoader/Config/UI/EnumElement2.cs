@@ -235,6 +235,11 @@ internal class EnumElement2 : ConfigElement
 		return options;
 	}
 
+	public override void RefreshUI()
+	{
+		UpdateNeeded = true;
+	}
+
 	private void DefaultSetValue(int index)
 	{
 		if (!MemberInfo.CanWrite)

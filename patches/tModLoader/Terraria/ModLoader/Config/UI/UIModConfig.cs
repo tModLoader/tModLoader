@@ -76,6 +76,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 	private UIImage smallModIcon;
 
 	// TODO: reimpl subpages
+	// TODO: add a tooltip to the back button when there are unsaved changes
 
 	#region UI Creation
 
@@ -203,14 +204,14 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 
 		configElementList = new UIList {
 			Width =  { Pixels = -25, Percent = 1f },
-			Height = { Pixels = -65, Percent = 1f },
+			Height = { Pixels = -listHeaderContainer.Height.Pixels - 5, Percent = 1f },
 			VAlign = 1f,
 			ListPadding = 5f,
 		};
 		uiPanel.Append(configElementList);
 
 		scrollbar = new UIScrollbar {
-			Height = { Pixels = -65, Percent = 1f },
+			Height = { Pixels = configElementList.Height.Pixels, Percent = 1f },
 			HAlign = 1f,
 			VAlign = 1f,
 		}.WithView(100f, 1000f);
@@ -302,32 +303,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 			scrollbar.ViewPosition = 0f;
 	}
 
-	private void RefreshUI(bool delayRefresh = true)
-	{
-		if (delayRefresh) {
-			refreshQueued = true;
-			return;
-		}
-
-		refreshQueued = false;
-
-		// Populate the config list
-		configElementList.Clear();
-		configElementList.AddRange(configElements.Where(item => {
-			if (item.Item2 is ConfigElement configElement) {
-				return configElement.TextDisplayFunction().Contains(filterTextField.CurrentString, StringComparison.OrdinalIgnoreCase);
-			}
-			return true;
-		}).Select(x => x.Item1));
-
-		// Set panel color
-		// TODO: in future, this should be done via hooks here rather than attributes
-		var backgroundColorAttribute = (BackgroundColorAttribute)Attribute.GetCustomAttribute(pendingConfig.GetType(), typeof(BackgroundColorAttribute));
-		uiPanel.BackgroundColor = backgroundColorAttribute?.Color ?? UICommon.MainPanelBackground;
-
-		Recalculate();
-	}
-
+	// TODO: strange bugs with reference types that default to null (such as strings) when backspacing themselves
 	public void OnConfigModified()
 	{
 		HasUnsavedChanges = !ConfigManager.AreConfigsEqual(pendingConfig, modConfig);
@@ -401,6 +377,43 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 
 	#region UI Updating
 
+	private void RefreshUI(bool delayRefresh = true)
+	{
+		if (delayRefresh) {
+			refreshQueued = true;
+			return;
+		}
+
+		refreshQueued = false;
+
+		// Refresh all of the config elements
+		// TODO: unfortunately, because of how ConfigElements currently handle changing values and because of reference types
+		// - nested elements require manual handling to make UI refresh on revert/restore
+		// - in future, this should be much easier, since things like the Item (the parent) won't be stored, and will instead be getters, based on a parent ConfigElement
+		foreach (var listItem in configElements) {
+			if (listItem.Item2 is ConfigElement configElement) {
+				configElement.RefreshUI();
+			}
+		}
+
+		// Populate the config list
+		configElementList.Clear();
+		configElementList.AddRange(configElements.Where(item => {
+			if (item.Item2 is ConfigElement configElement) {
+				// TODO: instead of using TextDisplayFunction, allow elements to define a "search string" so they can include things like sub-members and tooltips in their search info
+				return configElement.TextDisplayFunction().Contains(filterTextField.CurrentString, StringComparison.OrdinalIgnoreCase);
+			}
+			return true;
+		}).Select(x => x.Item1));
+
+		// Set panel color
+		// TODO: in future, this should be done via hooks here rather than attributes
+		var backgroundColorAttribute = (BackgroundColorAttribute)Attribute.GetCustomAttribute(pendingConfig.GetType(), typeof(BackgroundColorAttribute));
+		uiPanel.BackgroundColor = backgroundColorAttribute?.Color ?? UICommon.MainPanelBackground;
+
+		Recalculate();
+	}
+
 	public override void Update(GameTime gameTime)
 	{
 		if (refreshQueued)
@@ -455,7 +468,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 
 		base.Draw(spriteBatch);
 
-		// TODO: allow the tooltip to be displayed in a box instead, also why is this done in Draw not Update?
+		// TODO: allow the tooltip to be displayed in a box instead
 		if (!string.IsNullOrEmpty(ConfigElementTooltip)) {
 			UICommon.TooltipMouseText(ConfigElementTooltip);
 		}

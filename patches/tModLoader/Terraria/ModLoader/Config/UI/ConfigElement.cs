@@ -40,9 +40,9 @@ public abstract class ConfigElement : UIElement
 	// Provides access to the field/property contained in the item
 	protected internal PropertyFieldWrapper MemberInfo { get; set; }
 	// The object that contains the memberInfo. This is usually a ModConfig instance or an object instance contained within a ModConfig instance.
-	protected object Item { get; set; }
+	protected internal object Item { get; set; }
 	// If non-null, the memberInfo actually refers to the collection containing this item and array and index need to be used to assign this data
-	protected IList List { get; set; }
+	protected internal IList List { get; set; }
 	// Attributes
 	protected LabelKeyAttribute LabelAttribute;
 	protected string Label;
@@ -136,6 +136,12 @@ public abstract class ConfigElement : UIElement
 		return MemberInfo.GetValue(Item);
 	}
 
+	/// <summary>
+	/// Called when the config UI refreshes.<br/><br/>
+	/// Ensure the ConfigElement UI still reflects the value from GetObject(), as the config may have had changes reverted or it's default values restored.
+	/// </summary>
+	public virtual void RefreshUI() { }
+
 	protected override void DrawSelf(SpriteBatch spriteBatch)
 	{
 		base.DrawSelf(spriteBatch);
@@ -210,6 +216,7 @@ public abstract class ConfigElement : UIElement
 	}
 }
 
+// TODO: remember, this is used in the controls menu too
 internal class HeaderElement : UIElement
 {
 	private readonly string header;
