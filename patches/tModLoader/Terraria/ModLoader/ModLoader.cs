@@ -435,6 +435,7 @@ public static class ModLoader
 					}
 
 					error = "icon.png is not 80x80";
+					return null;
 				}
 			}
 			catch (Exception e) {
