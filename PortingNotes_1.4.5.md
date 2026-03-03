@@ -120,6 +120,11 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - WorldGen.StopWaterfallAmbienceAudio might be a better place for some existing patches. Need to verify save and quit stopping waterfall sounds properly.
 - TileLoader.DropCritterChance could be updated with LuckyClover chance. Also Lavafly/HellButterfly chance
 - TileID.Sets.SpreadsCrimson added. Need docs and possibly adjust biome spread logic. SpreadsHallow
+- OreRunner changed, new parameters should make the method more useful, need docs. Also in 1.4.4 OreRunner was missing a tileMoss check, so that might affect mods when fixed.
+- Update ExampleExposedGems.TileFrame to use the new CheckAndAdjustMultiDirectionalTile method. Document CheckAndAdjustMultiDirectionalTile as well.
+- NewProjectile now has a NewProjectileModifier parameter. How is it used? How should modders use it? Need to add it to Docs for each overload.
+- Code in Projectile claiming "// Moved to CombinedHooks.ModifyHitByProjectile" will need to be copied over again if that is still the intention. It seems that deadMansSweater is also nearby, should it also be commented?
+- Projectile.bonusCritChance added. Does this do the same as tml-added Projectile.CritChance? Double check if `if (DamageType.UseStandardCritCalcs && Main.rand.Next(100) < CritChance + num10)` in new code is double applying projectile crit chance or if it is correct.
 
 # New Fields that might need more documentation
 
@@ -181,6 +186,7 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - ProjectileID.Sets.DontAttachHideToAlpha removed. What replaced it? Is it usesOwnerLight? Update Projectile.hide docs as well.
 - Need to determine if hooks need to act on ModItem or WorldItem. For example: `ItemIO.SendModData(item3, writer);`
 - The number3 parameter of the SyncEquipment message seems to have changed meaning. Docs needed.
+- EntitySource_FishedOut will now apply to fishing item spawns instead of just npc spawns.
 
 # tModPorter TODOs
 
