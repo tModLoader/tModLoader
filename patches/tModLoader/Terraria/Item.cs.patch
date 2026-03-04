@@ -1429,19 +1429,6 @@
  	public void DefaultToSpear(int projType, float pushForwardSpeed, int animationTime)
  	{
  		useStyle = 5;
-@@ -47101,8 +_,12 @@
- 			playerIndexTheItemIsReservedFor = Main.myPlayer;
- 
- 		ResetStats(Type);
-+		material = ItemID.Sets.IsAMaterial[type];
-+
-+		/*
- 		if (type >= ItemID.Count)
- 			type = 0;
-+		*/
- 
- 		if (variant == null)
- 			variant = ItemVariants.SelectVariant(Type);
 @@ -47297,19 +_,24 @@
  			maxStack = CommonMaxStack;
  
@@ -1726,15 +1713,6 @@
  	public void DefaultToHeadgear(int newwidth, int newheight, int helmetArtID)
  	{
  		width = newwidth;
-@@ -47668,7 +_,7 @@
- 		if (type == 3461 || createTile == 139)
- 			flag = true;
- 
--		if (!flag && ItemID.Sets.ShimmerTransformToItem[shimmerEquivalentType] <= 0 && FindDecraftAmount() <= 0 && !ItemID.Sets.CommonCoin[type])
-+		if (!flag && ItemID.Sets.ShimmerTransformToItem[shimmerEquivalentType] <= 0 && FindDecraftAmount() <= 0 && ItemID.Sets.CoinLuckValue[type] <= 0)
- 			return makeNPC > 0;
- 
- 		return true;
 @@ -47696,7 +_,34 @@
  		useAnimation = (useTime = 12);
  	}
@@ -1802,6 +1780,17 @@
  	public void SetDefaults(int Type, ItemVariant variant = null)
  	{
  		if (Type < 0) {
+@@ -47723,8 +_,10 @@
+ 		}
+ 
+ 		ResetStats(Type);
++		/*
+ 		if (type >= ItemID.Count)
+ 			type = 0;
++		*/
+ 
+ 		if (variant == null)
+ 			variant = ItemVariants.SelectVariant(Type);
 @@ -47749,6 +_,17 @@
  			SetDefaults5(type);
  
@@ -1911,6 +1900,73 @@
  	public static int sellPrice(int platinum = 0, int gold = 0, int silver = 0, int copper = 0) => (copper + silver * 100 + gold * 100 * 100 + platinum * 100 * 100 * 100) * 5;
  
  	public static int GetRandomVoiceItem()
+@@ -48420,7 +_,7 @@
+ 		if (shimmerEquivalentType == 560 && Main.slimeRain)
+ 			return false;
+ 
+-		if ((shimmerEquivalentType != 4986 || NPC.unlockedSlimeRainbowSpawn) && ShimmerTransforms.GetTransformToItem(shimmerEquivalentType) <= 0 && !ShimmerTransforms.IsItemDecraftableAndIsDecraftUnlocked(this) && !ItemID.Sets.CommonCoin[shimmerEquivalentType])
++		if ((shimmerEquivalentType != 4986 || NPC.unlockedSlimeRainbowSpawn) && ShimmerTransforms.GetTransformToItem(shimmerEquivalentType) <= 0 && !ShimmerTransforms.IsItemDecraftableAndIsDecraftUnlocked(this) && ItemID.Sets.CoinLuckValue[shimmerEquivalentType] <= 0)
+ 			return makeNPC > 0;
+ 
+ 		return true;
+@@ -48588,20 +_,57 @@
+ 	}
+ 
+ 	public WorldItem ToWorldItem() => null;
++
++	/// <summary>
++	/// <inheritdoc cref="Item.NewItem(IEntitySource, int, int, int, int, int, int, bool, int, bool)"/>
++	/// <br/><br/> This particular overload uses two Vector2 to determine the actual spawn position.
++	/// </summary>
++	/// <returns><inheritdoc cref="Item.NewItem(IEntitySource, int, int, int, int, int, int, bool, int, bool)"/></returns>
+ 	public static int NewItem(IEntitySource source, Vector2 pos, Vector2 randomBox, int Type, int Stack = 1, bool noBroadcast = false, int prefixGiven = 0, bool noGrabDelay = false) => NewItem(source, (int)pos.X, (int)pos.Y, (int)randomBox.X, (int)randomBox.Y, Type, Stack, noBroadcast, prefixGiven, noGrabDelay);
++
++	/// <summary>
++	/// <inheritdoc cref="Item.NewItem(IEntitySource, int, int, int, int, int, int, bool, int, bool)"/>
++	/// <br/><br/> This particular overload uses a Vector2 instead of X and Y to determine the actual spawn position.
++	/// </summary>
++	/// <returns><inheritdoc cref="Item.NewItem(IEntitySource, int, int, int, int, int, int, bool, int, bool)"/></returns>
+ 	public static int NewItem(IEntitySource source, Vector2 pos, int Width, int Height, int Type, int Stack = 1, bool noBroadcast = false, int prefixGiven = 0, bool noGrabDelay = false) => NewItem(source, (int)pos.X, (int)pos.Y, Width, Height, Type, Stack, noBroadcast, prefixGiven, noGrabDelay);
+ 
++	/// <summary>
++	/// Spawns an item into the game world with the given type and stack size. The X, Y, Width, and Height parameters dictate a rectangle, the item will be spawned centered within that rectangle. Other overloads support passing in a position directly, or just use 0 for Width and Height if the center is passed in a X and Y.
++	/// <br/><br/> This method should not be called on multiplayer clients. If you need to spawn items from client code, use <see cref="Player.QuickSpawnItem(IEntitySource, int, int)"/> instead, it handles the multiplayer syncing code needed.
++	/// <br/><br/> See the <paramref name="noBroadcast"/> documentation if you need to customize attached ModItem or GlobalItem data prior to syncing.
++	/// <br/><br/> The source represents the entity causing this item to spawn. The return value is the index of the spawned Item within the <see cref="Main.item"/> array.
++	/// </summary>
++	/// <param name="source"></param>
++	/// <param name="X"></param>
++	/// <param name="Y"></param>
++	/// <param name="Width"></param>
++	/// <param name="Height"></param>
++	/// <param name="Type">Either an <see cref="ItemID"/> entry or <see cref="ModContent.ItemType{T}"/>, for example <see cref="ItemID.IronskinPotion"/> or ModContent.ItemType&lt;MyModItem&gt;()</param>
++	/// <param name="Stack">Item stack</param>
++	/// <param name="noBroadcast">Controls whether an item spawned on a server is synced using <see cref="NetMessage.SendData"/> and <see cref="MessageID.SyncItem"/>. If false, the item will be synced. If true, the calling code can modify the item instance and then sync the item with <see cref="MessageID.SyncItem"/>. Has no effect except on server. NewItem running on multiplayer clients always needs to manually sync, see <see cref="Player.QuickSpawnItem(IEntitySource, int, int)"/> source code for an example.</param>
++	/// <param name="pfix"></param>
++	/// <param name="noGrabDelay"></param>
++	/// <returns>The index of the item within <see cref="Main.item"/></returns>
+ 	public static int NewItem(IEntitySource source, int X, int Y, int Width, int Height, int Type, int Stack = 1, bool noBroadcast = false, int pfix = 0, bool noGrabDelay = false)
+ 	{
++		return Item.NewItem_Inner(source, X, Y, Width, Height, null, Type, Stack, noBroadcast, pfix, noGrabDelay);
++	}
++
++	private static int NewItem_Inner(IEntitySource source, int X, int Y, int Width, int Height, Item itemToClone, int Type, int Stack = 1, bool noBroadcast = false, int pfix = 0, bool noGrabDelay = false)
++	{
+ 		if (WorldGen.isGeneratingOrLoadingWorld)
+ 			return 0;
+ 
+ 		if (Stack <= 0)
+ 			return 400;
+ 
+ 		if (Main.rand == null)
+ 			Main.rand = new UnifiedRandom();
+ 
++		if (NPCLoader.blockLoot.Contains(Type) || newItemDisabled)
++			return Main.maxItems;
++
+ 		if (Main.tenthAnniversaryWorld) {
+ 			if (Type == 58) {
+ 				Type = Main.rand.NextFromList(new short[3] {
 @@ -48651,8 +_,8 @@
  					Type = 1868;
  			}
@@ -2045,75 +2101,6 @@
 +		shopSpecialCurrency = originalSpecialCurrency;
  	}
  }
-@@ -49077,21 +_,68 @@
- 			case 4070:
- 				return TextureAssets.Item[type].Frame(1, 4);
- 			default:
-+				/*
- 				return TextureAssets.Item[type].Frame();
-+				*/
-+
-+				// Notes:
-+				//   If the item doesn't have an animation, "Main.itemAnimations[type]" is just null, so the code will default to Asset<Texture2D>.Frame(), which will just be what vanilla does.
-+				//   However, if it does have an animation, then the source rect will be obtained from the animation instance, which is also what's used for displaying the animation
-+				//   source rect for items in the inventory and dropped items in the world.  This source rect will then be the basis for the use item's hitbox, rather than the entire
-+				//   spritesheet's size.
-+				//     - absoluteAquarian
-+				return Main.itemAnimations[type]?.GetFrame(TextureAssets.Item[type].Value) ?? TextureAssets.Item[type].Frame();
- 		}
- 	}
- 
-+	/// <summary>
-+	/// <inheritdoc cref="Item.NewItem(IEntitySource, int, int, int, int, int, int, bool, int, bool, bool)"/>
-+	/// <br/><br/> This particular overload uses two Vector2 to determine the actual spawn position.
-+	/// </summary>
-+	/// <returns><inheritdoc cref="Item.NewItem(IEntitySource, int, int, int, int, int, int, bool, int, bool, bool)"/></returns>
- 	public static int NewItem(IEntitySource source, Vector2 pos, Vector2 randomBox, int Type, int Stack = 1, bool noBroadcast = false, int prefixGiven = 0, bool noGrabDelay = false, bool reverseLookup = false) => NewItem(source, (int)pos.X, (int)pos.Y, (int)randomBox.X, (int)randomBox.Y, Type, Stack, noBroadcast, prefixGiven, noGrabDelay, reverseLookup);
-+
-+	/// <summary>
-+	/// <inheritdoc cref="Item.NewItem(IEntitySource, int, int, int, int, int, int, bool, int, bool, bool)"/>
-+	/// <br/><br/> This particular overload uses a Vector2 instead of X and Y to determine the actual spawn position.
-+	/// </summary>
-+	/// <returns><inheritdoc cref="Item.NewItem(IEntitySource, int, int, int, int, int, int, bool, int, bool, bool)"/></returns>
- 	public static int NewItem(IEntitySource source, Vector2 pos, int Width, int Height, int Type, int Stack = 1, bool noBroadcast = false, int prefixGiven = 0, bool noGrabDelay = false, bool reverseLookup = false) => NewItem(source, (int)pos.X, (int)pos.Y, Width, Height, Type, Stack, noBroadcast, prefixGiven, noGrabDelay, reverseLookup);
- 
-+	/// <summary>
-+	/// Spawns an item into the game world with the given type and stack size. The X, Y, Width, and Height parameters dictate a rectangle, the item will be spawned centered within that rectangle. Other overloads support passing in a position directly, or just use 0 for Width and Height if the center is passed in a X and Y.
-+	/// <br/><br/> This method should not be called on multiplayer clients. If you need to spawn items from client code, use <see cref="Player.QuickSpawnItem(IEntitySource, int, int)"/> instead, it handles the multiplayer syncing code needed.
-+	/// <br/><br/> See the <paramref name="noBroadcast"/> documentation if you need to customize attached ModItem or GlobalItem data prior to syncing.
-+	/// <br/><br/> The source represents the entity causing this item to spawn. The return value is the index of the spawned Item within the <see cref="Main.item"/> array.
-+	/// </summary>
-+	/// <param name="source"></param>
-+	/// <param name="X"></param>
-+	/// <param name="Y"></param>
-+	/// <param name="Width"></param>
-+	/// <param name="Height"></param>
-+	/// <param name="Type">Either an <see cref="ItemID"/> entry or <see cref="ModContent.ItemType{T}"/>, for example <see cref="ItemID.IronskinPotion"/> or ModContent.ItemType&lt;MyModItem&gt;()</param>
-+	/// <param name="Stack">Item stack</param>
-+	/// <param name="noBroadcast">Controls whether an item spawned on a server is synced using <see cref="NetMessage.SendData"/> and <see cref="MessageID.SyncItem"/>. If false, the item will be synced. If true, the calling code can modify the item instance and then sync the item with <see cref="MessageID.SyncItem"/>. Has no effect except on server. NewItem running on multiplayer clients always needs to manually sync, see <see cref="Player.QuickSpawnItem(IEntitySource, int, int)"/> source code for an example.</param>
-+	/// <param name="pfix"></param>
-+	/// <param name="noGrabDelay"></param>
-+	/// <param name="reverseLookup"></param>
-+	/// <returns>The index of the item within <see cref="Main.item"/></returns>
- 	public static int NewItem(IEntitySource source, int X, int Y, int Width, int Height, int Type, int Stack = 1, bool noBroadcast = false, int pfix = 0, bool noGrabDelay = false, bool reverseLookup = false)
- 	{
-+		return Item.NewItem_Inner(source, X, Y, Width, Height, null, Type, Stack, noBroadcast, pfix, noGrabDelay, reverseLookup);
-+	}
-+
-+	private static int NewItem_Inner(IEntitySource source, int X, int Y, int Width, int Height, Item itemToClone, int Type, int Stack = 1, bool noBroadcast = false, int pfix = 0, bool noGrabDelay = false, bool reverseLookup = false)
-+	{
- 		if (WorldGen.gen)
- 			return 0;
- 
- 		if (Main.rand == null)
- 			Main.rand = new UnifiedRandom();
- 
-+		if (NPCLoader.blockLoot.Contains(Type) || newItemDisabled)
-+			return Main.maxItems;
-+
- 		if (Main.tenthAnniversaryWorld) {
- 			if (Type == 58) {
- 				Type = Main.rand.NextFromList(new short[3] {
 @@ -49139,9 +_,19 @@
  		Main.timeItemSlotCannotBeReusedFor[num] = 0;
  		Main.item[num] = new Item();

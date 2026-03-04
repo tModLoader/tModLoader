@@ -1,9 +1,8 @@
 --- src/TerrariaNetCore/Terraria/Localization/LanguageManager.cs
 +++ src/tModLoader/Terraria/Localization/LanguageManager.cs
-@@ -12,14 +_,15 @@
+@@ -14,13 +_,14 @@
  using ReLogic.Graphics;
- using Terraria.GameContent;
- using Terraria.Initializers;
+ using ReLogic.Utilities;
 +using Terraria.ModLoader;
  using Terraria.Utilities;
  
@@ -16,8 +15,8 @@
 -	private readonly Dictionary<string, LocalizedText> _localizedTexts = new Dictionary<string, LocalizedText>();
 +	internal readonly Dictionary<string, LocalizedText> _localizedTexts = new Dictionary<string, LocalizedText>();
  	private readonly Dictionary<string, List<string>> _categoryGroupedKeys = new Dictionary<string, List<string>>();
+ 	private readonly Dictionary<string, Dictionary<string, string>> _textVariations = new Dictionary<string, Dictionary<string, string>>();
  	private GameCulture _fallbackCulture = GameCulture.DefaultCulture;
- 
 @@ -95,13 +_,17 @@
  	public void SetLanguage(GameCulture culture)
  	{

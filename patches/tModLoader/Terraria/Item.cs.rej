@@ -139,17 +139,6 @@
  				return 0;
  		}
  	}
-@@ -47723,7 +_,9 @@
- 	{
- 		int shimmerEquivalentType = GetShimmerEquivalentType();
- 		int decraftingRecipeIndex = ShimmerTransforms.GetDecraftingRecipeIndex(shimmerEquivalentType);
--		if (ItemID.Sets.CommonCoin[shimmerEquivalentType]) {
-+		if (ItemID.Sets.CoinLuckValue[shimmerEquivalentType] > 0) {
-+			stack *= ItemID.Sets.CoinLuckValue[shimmerEquivalentType];
-+			/*
- 			switch (shimmerEquivalentType) {
- 				case 72:
- 					stack *= 100;
 @@ -47737,6 +_,8 @@
  					stack *= 1000000;
  					break;
@@ -275,6 +264,23 @@
  				flag3 = true;
  				NPC.TransformCopperSlime(j);
  				break;
+@@ -49077,6 +_,16 @@
+ 			case 4070:
+ 				return TextureAssets.Item[type].Frame(1, 4);
+ 			default:
++				/*
+ 				return TextureAssets.Item[type].Frame();
++				*/
++
++				// Notes:
++				//   If the item doesn't have an animation, "Main.itemAnimations[type]" is just null, so the code will default to Asset<Texture2D>.Frame(), which will just be what vanilla does.
++				//   However, if it does have an animation, then the source rect will be obtained from the animation instance, which is also what's used for displaying the animation
++				//   source rect for items in the inventory and dropped items in the world.  This source rect will then be the basis for the use item's hitbox, rather than the entire
++				//   spritesheet's size.
++				//     - absoluteAquarian
++				return Main.itemAnimations[type]?.GetFrame(TextureAssets.Item[type].Value) ?? TextureAssets.Item[type].Frame();
+ 		}
+ 	}
 @@ -49240,8 +_,9 @@
  					continue;
  

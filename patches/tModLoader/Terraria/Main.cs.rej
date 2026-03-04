@@ -1,3 +1,15 @@
+@@ -560,9 +_,9 @@
+ 	public static bool clearMap;
+ 	public static int mapTargetX = 5;
+ 	public static int mapTargetY = 2;
+-	private RenderTarget2D[,] mapTarget = new RenderTarget2D[mapTargetX, mapTargetY];
++	public RenderTarget2D[,] mapTarget = new RenderTarget2D[mapTargetX, mapTargetY];
+-	private RenderTarget2D mapSectionTexture;
++	public RenderTarget2D mapSectionTexture;
+ 	public static bool[,] initMap = new bool[mapTargetX, mapTargetY];
+ 	public static bool[,] mapWasContentLost = new bool[mapTargetX, mapTargetY];
+ 	public const int numInfoIcons = 13;
+ 	public static Microsoft.Xna.Framework.Color OurFavoriteColor = new Microsoft.Xna.Framework.Color(255, 231, 69);
 @@ -9065,7 +_,10 @@
  		Assets = base.Services.Get<IAssetRepository>();
  		Assets.AssetLoadFailHandler = OnceFailedLoadingAnAsset;
@@ -9,6 +21,16 @@
  		PixelShaderRef.Value = ShaderContentManager.Load<Effect>("PixelShader");
  		VertexPixelShaderRef.Value = ShaderContentManager.Load<Effect>("PixelShader");
  		TileShaderRef.Value = ShaderContentManager.Load<Effect>("TileShader");
+@@ -13947,6 +_,9 @@
+ 					focusRecipe = 0;
+ 			}
+ 
++			noScrollOnLocked:
++			PlayerInput.MouseInModdedUI.Clear();
++
+ 			Main.player[myPlayer].dropItemCheck();
+ 		}
+ 
 @@ -30310,7 +_,7 @@
  				DrawCacheProjsBehindNPCs.Add(i);
  

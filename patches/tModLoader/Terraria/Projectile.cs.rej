@@ -1,0 +1,95 @@
+@@ -202,7 +_,7 @@
+ 
+ 	public static void ResetImmunity()
+ 	{
+-		for (int i = 0; i < ProjectileID.Count; i++) {
++		for (int i = 0; i < perIDStaticNPCImmunity.Length; i++) {
+ 			for (int j = 0; j < 200; j++) {
+ 				perIDStaticNPCImmunity[i][j] = 0u;
+ 			}
+@@ -8786,6 +_,8 @@
+ 		projectile.shimmerWet = Collision.shimmer;
+ 		Main.projectileIdentity[Owner, num] = num;
+ 		FindBannerToAssociateTo(spawnSource, projectile);
++
++
+ 		if (projectile.aiStyle == 1) {
+ 			while (projectile.velocity.X >= 16f || projectile.velocity.X <= -16f || projectile.velocity.Y >= 16f || projectile.velocity.Y < -16f) {
+ 				projectile.velocity.X *= 0.97f;
+@@ -8832,8 +_,11 @@
+ 			}
+ 		}
+ 
++		// Copied at the bottom. Gotos would be messy.
++		/*
+ 		if (Main.netMode != 0 && Owner == Main.myPlayer)
+ 			NetMessage.SendData(27, -1, -1, null, num);
++		*/
+ 
+ 		if (Owner == Main.myPlayer) {
+ 			if (ProjectileID.Sets.IsAGolfBall[Type] && Damage <= 0) {
+@@ -9766,5 +_,5 @@
+ 		Rectangle rectangle = Damage_GetHitbox();
+-		if (friendly && Main.getGoodWorld && aiStyle == 16 && Main.netMode == 1 && owner != Main.myPlayer && !npcProj) {
++		if (friendly && Main.getGoodWorld && (aiStyle == 16 || ProjectileID.Sets.Explosive[type]) && Main.netMode == 1 && owner != Main.myPlayer && !npcProj) {
+ 			BombsHurtPlayers(rectangle, Main.myPlayer);
+ 			return;
+ 		}
+@@ -10171,9 +_,12 @@
++									/*
+ 									float num13 = 1f;
+ 									if (type == 864)
+ 										num13 = 0.75f;
+ 
+ 									if (type == 688 || type == 689 || type == 690)
+ 										num13 /= 2f;
++									*/
++									float num13 = ProjectileID.Sets.SummonTagDamageMultiplier[type];
+ 
+ 									if (flag && (minion || ProjectileID.Sets.MinionShot[type] || sentry || ProjectileID.Sets.SentryShot[type])) {
+ 										bool flag14 = false;
+@@ -10264,6 +_,6 @@
+ 											int num17 = (int)((float)num5 * 1.75f);
+ 											int num18 = NewProjectile(GetProjectileSource_FromThis(), nPC.Center, Vector2.Zero, 918, num17, 0f, owner);
+ 											Main.projectile[num18].localNPCImmunity[i] = -1;
+-											num6 += num17;
++											modifiers.ScalingBonusDamage += 1.75f * num13; //num6 += num17;
+ 										}
+ 									}
+@@ -11354,6 +_,6 @@
+ 	private void BombsHurtPlayers(Rectangle projRectangle, int j)
+ 	{
+-		if (aiStyle != 16 || ProjectileID.Sets.RocketsSkipDamageForPlayers[type] || (timeLeft > 1 && type != 108 && type != 164 && type != 1002) || !Main.player[j].active || Main.player[j].dead || Main.player[j].immune || (ownerHitCheck && !CanHitWithMeleeWeapon(Main.player[j])))
++		if (!(aiStyle == 16 || ProjectileID.Sets.Explosive[type]) || ProjectileID.Sets.RocketsSkipDamageForPlayers[type] || (timeLeft > 1 && type != 108 && type != 164 && type != 1002) || !Main.player[j].active || Main.player[j].dead || Main.player[j].immune || (ownerHitCheck && !CanHitWithMeleeWeapon(Main.player[j])))
+ 			return;
+ 
+ 		Rectangle value = new Rectangle((int)Main.player[j].position.X, (int)Main.player[j].position.Y, Main.player[j].width, Main.player[j].height);
+@@ -17289,7 +_,11 @@
+ 						if (!(base.position.X + (float)width > vector15.X) || !(base.position.X < vector15.X + 16f) || !(base.position.Y + (float)height > vector15.Y) || !(base.position.Y < vector15.Y + 16f) || !Main.tile[num96, num97].active())
+ 							continue;
+ 
++						int tileType = Main.tile[num96, num97].type;
++						int wall = Main.tile[num96, num97].wall;
+ 						if (type == 10) {
++							if (!TileLoader.Convert(num96, num97, BiomeConversionID.PurificationPowder))
++								goto SkipPurificationConversion;
+ 							if (Main.tile[num96, num97].type == 23 || Main.tile[num96, num97].type == 199) {
+ 								Main.tile[num96, num97].type = 2;
+ 								WorldGen.SquareTileFrame(num96, num97);
+@@ -17348,6 +_,16 @@
+ 								WorldGen.Convert(num96, num97, 4, 1);
+ 						}
+ 
++						SkipPurificationConversion:
++
++						if (type == 10) {
++							if (tileType != Main.tile[num96, num97].type) {
++								TileLoader.OnTileConverted(num96, num97, tileType, Main.tile[num96, num97].type, BiomeConversionID.PurificationPowder);
++							}
++							if (wall != Main.tile[num96, num97].wall) {
++								WallLoader.OnWallConverted(num96, num97, wall, Main.tile[num96, num97].wall, BiomeConversionID.PurificationPowder);
++							}
++						}
+ 						if (!flag3)
+ 							continue;
+ 

@@ -11,7 +11,7 @@
  using System.IO;
  using System.Linq;
  using System.Reflection;
-@@ -64,9 +_,16 @@
+@@ -68,10 +_,17 @@
  using Terraria.IO;
  using Terraria.Localization;
  using Terraria.Map;
@@ -24,12 +24,13 @@
  using Terraria.Net;
  using Terraria.ObjectData;
  using Terraria.Social;
+ using Terraria.Testing;
 +using Terraria.Social.Steam;
  using Terraria.UI;
  using Terraria.UI.Chat;
  using Terraria.UI.Gamepad;
-@@ -86,9 +_,9 @@
- #endif
+@@ -81,8 +_,8 @@
+ namespace Terraria;
  
  #if SERVER
 -public class Main : Terraria.Server.Game
@@ -39,13 +40,12 @@
 +public partial class Main : Game
  #endif
  {
- 	public delegate void OnPlayerSelected(PlayerFileData player);
-@@ -103,6 +_,7 @@
+@@ -96,6 +_,7 @@
  		public static int ActivePlayersCount;
  		public static int SleepingPlayersCount;
  		public static bool AnyActiveBossNPC;
 +		/// <summary> Indicates that an interactable projectile exists in the world, allowing checks for interactable projectiles to execute. </summary>
- 		public static bool HadAnActiveInteractibleProjectile;
+ 		public static bool HadAnActiveInteractableProjectile;
  	}
  
 @@ -143,20 +_,31 @@
@@ -83,15 +83,13 @@
  			}
  		}
  	}
-@@ -248,17 +_,26 @@
- 	};
- 	private static bool? _overrideForExpertMode = null;
- 	private static bool? _overrideForMasterMode = null;
+@@ -234,2 +_,5 @@
 +	/// <summary> If true, the world was generated with the <see href="https://terraria.wiki.gg/wiki/Drunk_world">Drunk world</see> secret world seed. See also <see cref="WorldGen.drunkWorldGen"/>.
 +	/// <br/><br/> See <see cref="Main.swapMusic"/> for information about the Otherworld soundtrack toggle. </summary>
  	public static bool drunkWorld = false;
 +	/// <summary> If true, the world was generated with the <see href="https://terraria.wiki.gg/wiki/For_the_worthy">For the worthy</see> secret world seed. See also <see cref="WorldGen.getGoodWorldGen"/>. </summary>
  	public static bool getGoodWorld = false;
+@@ -236,6 +_,12 @@
 +	/// <summary> If true, the world was generated with the <see href="https://terraria.wiki.gg/wiki/Celebrationmk10">Celebrationmk10</see> secret world seed. See also <see cref="WorldGen.tenthAnniversaryWorldGen"/>. </summary>
  	public static bool tenthAnniversaryWorld = false;
 +	/// <summary> If true, the world was generated with the <see href="https://terraria.wiki.gg/wiki/The_Constant">The Constant</see> secret world seed. See also <see cref="WorldGen.dontStarveWorldGen"/>. </summary>
@@ -104,14 +102,10 @@
  	public static bool noTrapsWorld = false;
 +	/// <summary> If true, the world was generated with the <see href="https://terraria.wiki.gg/wiki/Get_fixed_boi">Get fixed boi (aka Zenith)</see> secret world seed. This seed combines multiple secret seeds. Note that the other secret world seed bools inherited by this seed will be set as well, so there is no need to specifically check both those bools and this bool. See also <see cref="WorldGen.everythingWorldGen"/>. </summary>
  	public static bool zenithWorld = false;
- 	public static Vector2 destroyerHB = new Vector2(0f, 0f);
- 	public static FavoritesFile LocalFavoriteData = new FavoritesFile(SavePath + "/favorites.json", isCloud: false);
+@@ -250,1 +_,1 @@
 -	public static FavoritesFile CloudFavoritesData = new FavoritesFile("favorites.json", isCloud: true);
 +	public static FavoritesFile CloudFavoritesData = new FavoritesFile("ModLoader/favorites.json", true); // Added "Modloader/" prefix
- 	public static FileMetadata WorldFileMetadata;
- 	public static FileMetadata MapFileMetadata;
- 	public static PingMapLayer Pings = new PingMapLayer();
-@@ -270,6 +_,10 @@
+@@ -261,6 +_,10 @@
  	private AchievementAdvisor _achievementAdvisor;
  	public static BigProgressBarSystem BigBossProgressBar = new BigProgressBarSystem();
  	public static UserInterface MenuUI = new UserInterface();
@@ -120,11 +114,13 @@
 +	/// <para/> Modders can use <see cref="IngameFancyUI.OpenUIState(UIState)"/> to easily display a fullscreen UI without needing to manage updating or drawing a <see cref="UserInterface"/>.
 +	/// </summary>
  	public static UserInterface InGameUI = new UserInterface();
- 	private static OnPlayerSelected _pendingCharacterSelect;
+ 	private static Action _pendingCharacterSelect;
  	public static bool drawBackGore;
-@@ -418,7 +_,15 @@
+@@ -406,9 +_,17 @@
  	public static int lastMouseX;
  	public static int lastMouseY;
+ 	public static CraftingUI craftingUI = new CraftingUI();
+ 	public static BannerClaimingUI bannerUI = new BannerClaimingUI();
  	private static ConcurrentQueue<Action> _mainThreadActions = new ConcurrentQueue<Action>();
 +	/// <summary>
 +	/// Indicates if the left mouse/"Use Item" control keybind is currently being pressed.
@@ -148,7 +144,7 @@
  	public static bool halloween;
  	public static bool forceXMasForToday;
  	public static bool forceHalloweenForToday;
-@@ -487,12 +_,17 @@
+@@ -479,15 +_,20 @@
  	public static bool showSplash = true;
  	public static bool ignoreErrors = true;
  	public static string defaultIP = "";
@@ -161,6 +157,9 @@
 +	public static double dayRate = 1;
 -	public static int desiredWorldTilesUpdateRate = 1;
 +	public static double desiredWorldTilesUpdateRate = 1;
+ 	public const int MaxWorldViewSizeWidth = 1920;
+ 	public const int MaxWorldViewSizeHeight = 1200;
+ 	public static readonly Microsoft.Xna.Framework.Point MaxWorldViewSize = new Microsoft.Xna.Framework.Point(1920, 1200);
  	public static int maxScreenW = 1920;
  	public static int maxScreenH = 1200;
  	public static int minScreenW = 800;
@@ -228,49 +227,24 @@
  	public static bool[] buffNoTimeDisplay = new bool[BuffID.Count];
  	public static bool[] buffDoubleApply = new bool[BuffID.Count];
  	public static int maxMP = 10;
-@@ -519,7 +_,7 @@
- 	public static int instantBGTransitionCounter = 2;
- 	public static int bgDelay;
- 	public static int bgStyle;
--	private const int BG_STYLES_COUNT = 14;
-+	internal const int BG_STYLES_COUNT = 14;
- 	public static float[] bgAlphaFrontLayer = new float[14];
- 	public static float[] bgAlphaFarBackLayer = new float[14];
- 	public static int[] bgFrame = new int[14];
-@@ -533,13 +_,13 @@
+@@ -525,11 +_,11 @@
  	public static int wofDrawAreaBottom;
  	public static int wofDrawFrameIndex;
  	public static int offScreenRange = 200;
--	private RenderTarget2D backWaterTarget;
-+	public RenderTarget2D backWaterTarget;
- 	public static RenderTarget2D waterTarget;
--	private RenderTarget2D tileTarget;
-+	public RenderTarget2D tileTarget;
--	private RenderTarget2D blackTarget;
-+	public RenderTarget2D blackTarget;
--	private RenderTarget2D tile2Target;
-+	public RenderTarget2D tile2Target;
--	private RenderTarget2D wallTarget;
-+	public RenderTarget2D wallTarget;
--	private RenderTarget2D backgroundTarget;
-+	public RenderTarget2D backgroundTarget;
- 	public static RenderTarget2D screenTarget;
- 	public static RenderTarget2D screenTargetSwap;
- 	public static int maxMapUpdates = 250000;
-@@ -560,14 +_,21 @@
- 	public static bool clearMap;
- 	public static int mapTargetX = 5;
- 	public static int mapTargetY = 2;
--	private RenderTarget2D[,] mapTarget = new RenderTarget2D[mapTargetX, mapTargetY];
-+	public RenderTarget2D[,] mapTarget = new RenderTarget2D[mapTargetX, mapTargetY];
--	private RenderTarget2D mapSectionTexture;
-+	public RenderTarget2D mapSectionTexture;
- 	public static bool[,] initMap = new bool[mapTargetX, mapTargetY];
- 	public static bool[,] mapWasContentLost = new bool[mapTargetX, mapTargetY];
- 	public const int numInfoIcons = 13;
- 	public static Microsoft.Xna.Framework.Color OurFavoriteColor = new Microsoft.Xna.Framework.Color(255, 231, 69);
- 	public static bool mapInit;
- 	public static bool mapEnabled = true;
+-	private static WorldSceneLayerTarget backWaterTarget;
++	public static WorldSceneLayerTarget backWaterTarget;
+ 	public static WorldSceneLayerTarget waterTarget;
+-	private static WorldSceneLayerTarget tileTarget;
++	public static WorldSceneLayerTarget tileTarget;
+-	private static WorldSceneLayerTarget tile2Target;
++	public static WorldSceneLayerTarget tile2Target;
+-	private static WorldSceneLayerTarget wallTarget;
++	public static WorldSceneLayerTarget wallTarget;
+-	private static WorldSceneLayerTarget backgroundTarget;
++	public static WorldSceneLayerTarget backgroundTarget;
+ 	private static WorldSceneLayerTarget backgroundTargetSwap;
+ 	private static bool backgroundTargetSwapPending;
+@@ -553,1 +_,8 @@
 +	/// <summary>
 +	/// Dictates how the non-<see cref="mapFullscreen"/> map is displayed.
 +	/// <para/> Can be one of the following values/modes:
@@ -279,18 +253,34 @@
 +	/// <br/><b>2:</b> The overlay map is visible.
 +	/// </summary>
  	public static int mapStyle = 1;
- 	public static float grabMapX;
- 	public static float grabMapY;
-@@ -580,6 +_,9 @@
+@@ -562,7 +_,10 @@
  	public static float mapMinimapAlpha = 1f;
  	public static float mapOverlayScale = 2.5f;
  	public static float mapOverlayAlpha = 0.35f;
+ 	public static Point16 MapPylonTile;
 +	/// <summary>
 +	/// If true, the map is currently in fullscreen mode. See also <see cref="Main.mapStyle"/>, note that the overlay map does not count as the fullscreen map.
 +	/// </summary>
  	public static bool mapFullscreen;
  	public static bool resetMapFull;
  	public static float mapFullscreenScale = 4f;
+@@ -574,12 +_,12 @@
+ 	private static uint _gameUpdateCount;
+ 	public static bool SkipAssemblyLoad;
+ 	private static bool Setting_AssetFileWatcherEnabled = true;
+-	private double bgParallax;
++	internal double bgParallax;
+-	private int bgStartX;
++	internal int bgStartX;
+-	private int bgLoops;
++	internal int bgLoops;
+ 	private int bgStartY;
+ 	private int bgLoopsY;
+-	private float bgTopY;
++	internal float bgTopY;
+ 	public static int renderCount = 99;
+ 	private const int MF_BYPOSITION = 1024;
+ 	public static GraphicsDeviceManager graphics;
 @@ -589,7 +_,7 @@
  	public static BasicDebugDrawer DebugDrawer;
  	public static SamplerState SamplerStateForCursor = SamplerState.LinearClamp;
@@ -300,23 +290,6 @@
  	private static Stopwatch saveTime = new Stopwatch();
  	public static KeyboardState keyState;
  	public static KeyboardState oldKeyState;
-@@ -592,12 +_,12 @@
- 	private int lastTileX;
- 	private int firstTileY;
- 	private int lastTileY;
--	private double bgParallax;
-+	internal double bgParallax;
--	private int bgStartX;
-+	internal int bgStartX;
--	private int bgLoops;
-+	internal int bgLoops;
- 	private int bgStartY;
- 	private int bgLoopsY;
--	private int bgTopY;
-+	internal int bgTopY;
- 	public static int renderCount = 99;
- 	private const int MF_BYPOSITION = 1024;
- 	public static GraphicsDeviceManager graphics;
 @@ -607,6 +_,9 @@
  	public static float armorAlpha = 1f;
  	public static float[] buffAlpha = new float[BuffID.Count];
@@ -1338,16 +1311,6 @@
  
  		IsInTheMiddleOfLoadingSettings = false;
  	}
-@@ -4087,6 +_,9 @@
- 	public void SetWorld(string world, bool cloud)
- 	{
- 		ActiveWorldFileData = WorldFile.GetAllMetadata(world, cloud);
-+
-+		//TML: Avoid nulls.
-+		ActiveWorldFileData ??= new();
- 	}
- 
- 	public void SetWorldName(string world)
 @@ -4139,9 +_,12 @@
  		try {
  			FileUtilities.Delete(PlayerList[i].Path, PlayerList[i].IsCloudSave);
@@ -1414,6 +1377,16 @@
 +
  				if (text2.Length >= 5 && text2.Substring(0, 5).ToLower() == "seed=")
  					AutogenSeedName = text2.Substring(5);
+@@ -4445,6 +_,9 @@
+ 	public void SetWorld(string world, bool cloud)
+ 	{
+ 		WorldFile.GetAllMetadata(world, cloud).SetAsActive();
++
++		//TML: Avoid nulls.
++		ActiveWorldFileData ??= new();
+ 	}
+ 
+ 	public void SetWorldName(string world)
 @@ -4468,20 +_,52 @@
  		autoPass = true;
  	}
@@ -1551,26 +1524,6 @@
  						Console.WriteLine("");
  						Console.WriteLine("1\t" + Language.GetTextValue("UI.Normal"));
  						Console.WriteLine("2\t" + Language.GetTextValue("UI.Expert"));
-@@ -4630,13 +_,18 @@
- 			WorldFile.SaveWorld();
- 		}
- 
-+		SystemLoader.OnWorldUnload();
-+
- 		YouCanSleepNow();
- 	}
- 
- 	private static void WriteFancyWorldLoadErrorToConsole()
- 	{
- 		Console.WriteLine();
-+		if(WorldFile.LastThrownLoadException != null)
--		Console.WriteLine(WorldFile.LastThrownLoadException.ToString());
-+			Console.WriteLine(WorldFile.LastThrownLoadException.ToString());
-+		else
-+			Console.WriteLine("The world failed to load. (Unknown reason)");
- 	}
- 
- 	public static void startDedInput()
 @@ -4663,7 +_,7 @@
  
  					flag2 = true;
@@ -1744,6 +1697,25 @@
  		}
  
  		if (Netplay.SaveOnServerExit) {
+@@ -5017,5 +_,7 @@
+ 			WorldFile.SaveWorld();
+ 		}
+ 
++		SystemLoader.OnWorldUnload();
++
+ 		YouCanSleepNow();
+ 	}
+@@ -5067,8 +_,10 @@
+ 	private static void WriteFancyWorldLoadErrorToConsole()
+ 	{
+ 		Console.WriteLine();
+ 		if (WorldFile.LastThrownLoadException != null)
+ 			Console.WriteLine(WorldFile.LastThrownLoadException.ToString());
++		else
++			Console.WriteLine("The world failed to load. (Unknown reason)");
+ 	}
+ 
+ 	public static void startDedInput()
 @@ -5082,7 +_,21 @@
  	public static void startDedInputCallBack()
  	{
@@ -1938,7 +1910,15 @@
  
  		teamColor[0] = Microsoft.Xna.Framework.Color.White;
  		teamColor[1] = new Microsoft.Xna.Framework.Color(218, 59, 59);
-@@ -7706,13 +_,24 @@
+@@ -7924,6 +_,7 @@
+ 		debuff[147] = true;
+ 		debuff[148] = true;
+ 		debuff[149] = true;
++		debuff[BuffID.ShadowFlame] = true; // TML: Fix vanilla omission (#4668)
+ 		debuff[156] = true;
+ 		debuff[157] = true;
+ 		debuff[350] = true;
+@@ -8198,13 +_,24 @@
  		persistentBuff[77] = true;
  		persistentBuff[78] = true;
  		persistentBuff[79] = true;
@@ -1950,8 +1930,9 @@
 +	// Split so it can be called by TML separately
 +	internal static void Initialize_BuffDataFromMountData()
 +	{
- 		for (int l = 0; l < BuffID.Sets.BasicMountData.Length; l++) {
- 			if (BuffID.Sets.BasicMountData[l] != null) {
+-		for (int l = 0; l < BuffID.Count; l++) {
++ 		for (int l = 0; l < BuffID.Sets.BasicMountData.Length; l++) {
+ 			if (BuffID.Sets.MountType[l] != -1) {
  				buffNoTimeDisplay[l] = true;
  				buffNoSave[l] = true;
  			}
@@ -1963,14 +1944,6 @@
  		vanityPet[40] = true;
  		vanityPet[41] = true;
  		vanityPet[42] = true;
-@@ -7924,6 +_,7 @@
- 		debuff[147] = true;
- 		debuff[148] = true;
- 		debuff[149] = true;
-+		debuff[BuffID.ShadowFlame] = true; // TML: Fix vanilla omission (#4668)
- 		debuff[156] = true;
- 		debuff[157] = true;
- 		debuff[350] = true;
 @@ -9051,13 +_,21 @@
  	{
  	}
@@ -2594,27 +2567,6 @@
  		if (ambientLavafallStrength > 0f) {
  			SoundEngine.PlaySound(35, (int)num3, (int)num4, (int)num5);
  			_isLavafallMusicPlaying = true;
-@@ -13907,6 +_,10 @@
- 		if (playerInventory) {
- 			Main.player[myPlayer].RefreshInfoAccs();
- 			Recipe.GetThroughDelayedFindRecipes();
-+
-+			if (PlayerInput.MouseInModdedUI.Count != 0)
-+				goto noScrollOnLocked;
-+
- 			int num = PlayerInput.ScrollWheelDelta / 120;
- 			bool flag = true;
- 			if (recBigList) {
-@@ -13947,6 +_,9 @@
- 					focusRecipe = 0;
- 			}
- 
-+			noScrollOnLocked:
-+			PlayerInput.MouseInModdedUI.Clear();
-+
- 			Main.player[myPlayer].dropItemCheck();
- 		}
- 
 @@ -14013,7 +_,7 @@
  		Player player = clientPlayer;
  		bool syncedAnyInventoryContents = false;
@@ -2773,6 +2725,13 @@
  			if (autoPause) {
  				flag |= playerInventory;
  				flag |= LocalPlayer.sign >= 0;
+@@ -14908,3 +_,6 @@
+ 	public static void DoScrollingInInventory()
+ 	{
++		if (PlayerInput.MouseInModdedUI.Count != 0)
++			return;
++
+ 		int num = PlayerInput.ScrollWheelDelta / 120;
 @@ -14981,8 +_,18 @@
  			InGameUI.Update(gameTime);
  
@@ -2945,23 +2904,6 @@
  			if (inputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Z) && !oldInputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Z)) {
  				text = "";
  			}
-@@ -15938,11 +_,16 @@
- 		MouseText(cursorText, null, rare, diff, hackedMouseX, hackedMouseY, hackedScreenWidth, hackedScreenHeight, pushWidthX, noOverride: true);
- 	}
- 
-+	/// <summary>
-+	/// Sets the tooltip text to be drawn next to the cursor. If used in conjunction with <see cref="Main.HoverItem"/>, an item tooltip will be shown, otherwise the text will be drawn as is with no background box. Similar to <see cref="Main.hoverItemName"/> except it will still show if an item is held on the mouse.
-+	/// <para/> Use <see cref="UICommon.TooltipMouseText(string)"/> instead to draw a non-item tooltip with the hover text background boxes, if that setting is not disabled by the user.
-+	/// </summary>
- 	public void MouseText(string cursorText, int rare = 0, byte diff = 0, int hackedMouseX = -1, int hackedMouseY = -1, int hackedScreenWidth = -1, int hackedScreenHeight = -1, int pushWidthX = 0)
- 	{
- 		MouseText(cursorText, null, rare, diff, hackedMouseX, hackedMouseY, hackedScreenWidth, hackedScreenHeight, pushWidthX);
- 	}
- 
-+	/// <inheritdoc cref="MouseText(string, int, byte, int, int, int, int, int)"/>
- 	public void MouseText(string cursorText, string buffTooltip, int rare = 0, byte diff = 0, int hackedMouseX = -1, int hackedMouseY = -1, int hackedScreenWidth = -1, int hackedScreenHeight = -1, int pushWidthX = 0, bool noOverride = false)
- 	{
- 		if (!_mouseTextCache.noOverride) {
 @@ -15989,15 +_,19 @@
  			X += 34;
  
@@ -3552,22 +3494,6 @@
  					numLines++;
  				}
  
-@@ -16691,6 +_,7 @@
- 						badPreFixLine[numLines] = true;
- 
- 					preFixLine[numLines] = true;
-+					toolTipNames[numLines] = "PrefixUseMana";
- 					numLines++;
- 				}
- 
-@@ -16707,6 +_,7 @@
- 						badPreFixLine[numLines] = true;
- 
- 					preFixLine[numLines] = true;
-+					toolTipNames[numLines] = "PrefixSize";
- 					numLines++;
- 				}
- 
 @@ -16723,6 +_,7 @@
  						badPreFixLine[numLines] = true;
  
@@ -3840,39 +3766,24 @@
  			if (Item.BannerToNPC(l) == 0 || !player[myPlayer].HasNPCBannerBuff(l))
  				continue;
  
-@@ -17015,12 +_,16 @@
- 					}
- 				}
- 
-+				// Extra patch context.
- 				spriteBatch.DrawString(FontAssets.MouseText.Value, text, new Vector2(num14, num15), color2, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
- 			}
- 
-+			// TODO: BuffLoader.DrawCustomBuffTip here? This is new to fix too many banner buffs I think.
- 			if (flag)
- 				break;
- 		}
-+
-+		BuffLoader.DrawCustomBuffTip(buffString, spriteBatch, X, Y + (int)FontAssets.MouseText.Value.MeasureString(buffString).Y);
+@@ -17045,8 +_,12 @@
+ 		MouseText(cursorText, null, rare, diff, hackedMouseX, hackedMouseY, hackedScreenWidth, hackedScreenHeight, pushWidthX, noOverride: true);
  	}
  
- 	protected void DrawFPS()
-@@ -17055,11 +_,13 @@
- 			float num = 35f;
- 			float num2 = 1f;
- 			Vector2 baseScale = new Vector2(num2);
-+
-+			// Adjust y position to prevent overlap with extra TML version text in main menu
- 			if (gameMenu)
--				num = 55f;
-+				num = 90f; //55f
++	/// <summary>
++	/// Sets the tooltip text to be drawn next to the cursor. If used in conjunction with <see cref="Main.HoverItem"/>, an item tooltip will be shown, otherwise the text will be drawn as is with no background box. Similar to <see cref="Main.hoverItemName"/> except it will still show if an item is held on the mouse.
++	/// <para/> Use <see cref="UICommon.TooltipMouseText(string)"/> instead to draw a non-item tooltip with the hover text background boxes, if that setting is not disabled by the user.
++	/// </summary>
+ 	public void MouseText(string cursorText, int rare = 0, byte diff = 0, int hackedMouseX = -1, int hackedMouseY = -1, int hackedScreenWidth = -1, int hackedScreenHeight = -1, int pushWidthX = 0)
+ 	{
+ 		MouseText(cursorText, null, rare, diff, hackedMouseX, hackedMouseY, hackedScreenWidth, hackedScreenHeight, pushWidthX);
+ 	}
  
- 			if (menuMode == 0)
--				num += 32f;
-+				num += 55f; //32f
- 
- 			Vector2 stringSize = ChatManager.GetStringSize(FontAssets.MouseText.Value, text, new Vector2(1f));
- 			float t = num2;
+@@ -17072,3 +_,4 @@
++	/// <inheritdoc cref="MouseText(string, int, byte, int, int, int, int, int)"/>
+ 	public void MouseText(string cursorText, string buffTooltip, int rare = 0, byte diff = 0, int hackedMouseX = -1, int hackedMouseY = -1, int hackedScreenWidth = -1, int hackedScreenHeight = -1, int pushWidthX = 0, bool noOverride = false)
+ 	{
+ 		if (!_mouseTextCache.noOverride) {
 @@ -17325,19 +_,25 @@
  				continue;
  
@@ -3980,6 +3891,20 @@
  	{
  		NPC rCurrentNPC = npc[iNPCIndex];
  		Vector2 screenPos = screenPosition;
+@@ -17811,5 +_,6 @@
+ 					toolTipLine[numLines] = num10 + Lang.tip[42].Value;
+ 
+ 				lineColors[numLines] = ((num10 > 0.0) ? color : color2);
++				toolTipNames[numLines] = "PrefixUseMana";
+ 				numLines++;
+ 			}
+@@ -17823,5 +_,6 @@
+ 				else
+ 					toolTipLine[numLines] = num11 + Lang.tip[43].Value;
+ 
+ 				lineColors[numLines] = ((num11 < 0.0) ? color : color2);
++				toolTipNames[numLines] = "PrefixSize";
+ 				numLines++;
 @@ -18095,11 +_,14 @@
  						break;
  					}
@@ -3995,6 +3920,39 @@
  		Vector2 zero = Vector2.Zero;
  		foreach (Vector2 item in list) {
  			if (zero.X < item.X)
+@@ -18183,12 +_,16 @@
+ 					}
+ 				}
+ 
++				// Extra patch context.
+ 				spriteBatch.DrawString(FontAssets.MouseText.Value, text, new Vector2(num14, num15), color2, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
+ 			}
+ 
++			// TODO: BuffLoader.DrawCustomBuffTip here? This is new to fix too many banner buffs I think.
+ 			if (flag)
+ 				break;
+ 		}
++
++		BuffLoader.DrawCustomBuffTip(buffString, spriteBatch, X, Y + (int)FontAssets.MouseText.Value.MeasureString(buffString).Y);
+ 	}
+ 
+ 	internal void DrawFPS()
+@@ -18234,11 +_,13 @@
+ 			float num = 35f;
+ 			float num2 = 1f;
+ 			Vector2 scale = new Vector2(num2);
++
++			// Adjust y position to prevent overlap with extra TML version text in main menu
+ 			if (gameMenu)
+-				num = 55f;
++				num = 90f; //55f
+ 
+ 			if (menuMode == 0)
+-				num += 32f;
++				num += 55f; //32f
+ 
+ 			Vector2 stringSize = ChatManager.GetStringSize(FontAssets.MouseText.Value, text, new Vector2(1f));
+ 			float t = num2;
 @@ -18456,10 +_,15 @@
  		}
  	}
@@ -4295,16 +4253,6 @@
  				if (proj.type == 312) {
  					ulong seed4 = TileFrameSeed;
  					for (int num492 = 0; num492 < 4; num492++) {
-@@ -30327,6 +_,9 @@
- 
- 			if (flag)
- 				DrawCacheProjsBehindProjectiles.Add(i);
-+
-+			PostProjDrawCache:
-+			ProjectileLoader.DrawBehind(projectile[i], i, DrawCacheProjsBehindNPCsAndTiles, DrawCacheProjsBehindNPCs, DrawCacheProjsBehindProjectiles, DrawCacheProjsOverPlayers, DrawCacheProjsOverWiresUI);
- 		}
- 	}
- 
 @@ -30452,6 +_,9 @@
  		if (type == 4442)
  			stringColor = new Microsoft.Xna.Framework.Color(100, 100, 200, 100);
@@ -4315,53 +4263,6 @@
  		stringColor = TryApplyingPlayerStringColor(theOwner.stringColor, stringColor);
  		float gravDir = theOwner.gravDir;
  		switch (type) {
-@@ -30847,6 +_,9 @@
- 			Microsoft.Xna.Framework.Rectangle rectangle = value.Frame();
- 			spriteBatch.Draw(value, vector3 + vector4 + frame.Size().RotatedBy(num) * 0.45f * item.scale, rectangle, currentColor, num, rectangle.Size() / 2f, 1f, SpriteEffects.None, 0f);
- 		}
-+
-+		PostDraw:
-+		ItemLoader.PostDrawInWorld(item, spriteBatch, color, currentColor, num, scale, whoami);
- 	}
- 
- 	public void DrawItems()
-@@ -30870,7 +_,18 @@
- 				if (shimmerAlpha > 0f)
- 					color *= 1f - shimmerAlpha;
- 
-+				if (rain.waterStyle >= maxLiquidTypes) {
-+					value2 = LoaderManager.Get<WaterStylesLoader>().Get(rain.waterStyle).GetRainTexture().Value;
-+					if (value2 == null)
-+						goto justUpdateRain;
-+				}
-+				else {
-+					value2 = TextureAssets.Rain.Value;
-+				}
-+
- 				spriteBatch.Draw(value2, rain.position - screenPosition, value, color, rain.rotation, zero, rain.scale, SpriteEffects.None, 0f);
-+
-+				justUpdateRain:
- 				if (flag)
- 					rain.Update();
- 			}
-@@ -31022,11 +_,17 @@
- 	private static void HelpText()
- 	{
- 		bool flag = false;
-+		/*
- 		if (player[myPlayer].statLifeMax > 100)
-+		*/
-+		if (player[myPlayer].ConsumedLifeCrystals > 0)
- 			flag = true;
- 
- 		bool flag2 = false;
-+		/*
- 		if (player[myPlayer].statManaMax > 20)
-+		*/
-+		if (player[myPlayer].ConsumedManaCrystals > 0)
- 			flag2 = true;
- 
- 		bool flag3 = true;
 @@ -31743,8 +_,12 @@
  			textValue = Language.GetTextValue("StardewTalk.PlayerHasColaAndIsHoldingIt");
  
@@ -4569,6 +4470,14 @@
  		}
  	}
  
+@@ -32851,6 +_,7 @@
+ 						DrawCacheFirstFractals.Add(i);
+ 						break;
+ 				}
+ 			}
++			ProjectileLoader.DrawBehind(projectile[i], i, DrawCacheProjsBehindNPCsAndTiles, DrawCacheProjsBehindNPCs, DrawCacheProjsBehindProjectiles, DrawCacheProjsOverPlayers, DrawCacheProjsOverWiresUI); // CacheProjDraws
+ 		}
+ 	}
 @@ -33145,17 +_,25 @@
  					if (num34 == 147)
  						bannerMouseOver = true;
@@ -4596,19 +4505,6 @@
  			int num35 = 4;
  			if (mouseX > screenWidth - 64 - 28 && mouseX < (int)((float)(screenWidth - 64 - 28) + 56f * inventoryScale) && mouseY > num20 && mouseY < (int)((float)num20 + 448f * inventoryScale) && !PlayerInput.IgnoreMouseInterface)
  				player[myPlayer].mouseInterface = true;
-@@ -33173,7 +_,12 @@
- 			Microsoft.Xna.Framework.Color color2 = new Microsoft.Xna.Framework.Color(80, 80, 80, 80);
- 			DrawLoadoutButtons(num20, flag5, flag6);
- 			int num39 = -1;
-+
-+			// Vanilla acc (not armor) slot drawing moved to AccessorySlotLoader.DrawAccSlots
-+			/*
- 			for (int num40 = 0; num40 < 10; num40++) {
-+			*/
-+			for (int num40 = 0; num40 < 3; num40++) {
- 				if ((num40 == 8 && !flag5) || (num40 == 9 && !flag6))
- 					continue;
- 
 @@ -33233,6 +_,7 @@
  		Vector2 vector = frame.Size() / 2f;
  		Vector2 vector2 = new Vector2((float)(item.width / 2) - vector.X, item.height - frame.Height);
@@ -4617,19 +4513,6 @@
  		float num = ((!item.onConveyor) ? (item.velocity.X * 0.2f) : 0f);
  		if (item.shimmered)
  			num = 0f;
-@@ -33247,7 +_,12 @@
- 				player[myPlayer].mouseInterface = true;
- 
- 			num39 = -1;
-+
-+			// Vanilla acc (not armor) slot drawing moved to AccessorySlotLoader.DrawAccSlots
-+			/*
- 			for (int num46 = 10; num46 < 20; num46++) {
-+			*/
-+			for (int num46 = 10; num46 < 13; num46++) {
- 				if ((num46 == 18 && !flag5) || (num46 == 19 && !flag6))
- 					continue;
- 
 @@ -33254,6 +_,10 @@
  		}
  
@@ -4703,6 +4586,35 @@
  					string text2 = "";
  					int num59 = 0;
  					int num60 = 0;
+@@ -33395,6 +_,9 @@
+ 			Microsoft.Xna.Framework.Rectangle rectangle = value.Frame();
+ 			spriteBatch.Draw(value, vector3 + spinningpoint.RotatedBy(num - (float)Math.PI / 2f) * item.scale, rectangle, currentColor, num, rectangle.Size() / 2f, 1f, SpriteEffects.None, 0f);
+ 		}
++
++		PostDraw:
++		ItemLoader.PostDrawInWorld(item, spriteBatch, color, currentColor, num, scale, whoami);
+ 	}
+ 
+ 	public void DrawItems()
+@@ -33422,7 +_,18 @@
+ 				if (shimmerAlpha > 0f)
+ 					color *= 1f - shimmerAlpha;
+ 
++				if (rain.waterStyle >= maxLiquidTypes) {
++					value2 = LoaderManager.Get<WaterStylesLoader>().Get(rain.waterStyle).GetRainTexture().Value;
++					if (value2 == null)
++						goto justUpdateRain;
++				}
++				else {
++					value2 = TextureAssets.Rain.Value;
++				}
++
+ 				spriteBatch.Draw(value2, rain.position - screenPosition, value, color, rain.rotation, zero, rain.scale, SpriteEffects.None, 0f);
++
++				justUpdateRain:
+ 				if (allowRain)
+ 					rain.Update();
+ 			}
 @@ -33431,11 +_,21 @@
  
  						mouseReforge = true;
@@ -4764,6 +4676,23 @@
  					if (recipe[availableRecipe[focusRecipe]].requiredItem[num72].type == 0) {
  						UILinkPointNavigator.Shortcuts.CRAFT_CurrentIngredientsCount = num72 + 1;
  						break;
+@@ -33580,10 +_,16 @@
+ 	public static void HelpText()
+ 	{
+ 		bool flag = false;
++		/*
+ 		if (player[myPlayer].statLifeMax > 100)
++		*/
++		if (player[myPlayer].ConsumedLifeCrystals > 0)
+ 			flag = true;
+ 
+ 		bool flag2 = false;
++		/*
+ 		if (player[myPlayer].statManaMax > 20)
++		*/
++		if (player[myPlayer].ConsumedManaCrystals > 0)
+ 			flag2 = true;
+ 
 @@ -33617,7 +_,13 @@
  					UILinkPointNavigator.Shortcuts.CRAFT_CurrentRecipeSmall = 1 + num72;
  					Microsoft.Xna.Framework.Color color5 = inventoryBack;
@@ -5250,6 +5179,19 @@
  		if (!PlayerInput.UsingGamepad)
  			DrawHotbarLockIcon(num, num2, pushSideToolsUp);
  
+@@ -35705,7 +_,12 @@
+ 			Microsoft.Xna.Framework.Color color2 = new Microsoft.Xna.Framework.Color(80, 80, 80, 80);
+ 			DrawLoadoutButtons(num20, flag4, flag5);
+ 			int num39 = -1;
++
++			// Vanilla acc (not armor) slot drawing moved to AccessorySlotLoader.DrawAccSlots
++			/*
+ 			for (int num40 = 0; num40 < 10; num40++) {
++			*/
++			for (int num40 = 0; num40 < 3; num40++) {
+ 				if ((num40 == 8 && !flag4) || (num40 == 9 && !flag5))
+ 					continue;
+ 
 @@ -35723,6 +_,8 @@
  					context2 = 10;
  				}
@@ -5267,6 +5209,17 @@
  
  				Texture2D value3 = TextureAssets.InventoryTickOn.Value;
  				if (player[myPlayer].hideVisibleAccessory[num40])
+@@ -35769,5 +_,10 @@
+ 				player[myPlayer].mouseInterface = true;
+ 
+ 			num39 = -1;
++
++			// Vanilla acc (not armor) slot drawing moved to AccessorySlotLoader.DrawAccSlots
++			/*
+ 			for (int num46 = 10; num46 < 20; num46++) {
++			*/
++			for (int num46 = 10; num46 < 13; num46++) {
+ 				if ((num46 != 18 || flag4) && (num46 != 19 || flag5)) {
 @@ -36393,10 +_,21 @@
  			SetupDrawInterfaceLayers();
  
@@ -5360,19 +5313,6 @@
  		spriteBatch.End();
  		spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp, null, null, null, GameViewMatrix.ZoomMatrix);
  		PlayerInput.SetZoom_UI();
-@@ -37306,6 +_,12 @@
- 					if (HealthBarDrawSettings == 2)
- 						num3 -= 34f;
- 
-+					if (!NPCLoader.DrawHealthBar(npc[num2], ref scale)) {
-+						npc[num2].position -= npc[num2].netOffset;
-+						continue;
-+					}
-+
-+					// Patch note: 'num2', used above, can be seen here:
- 					if ((!expertMode || type != 266) && ((type != 439 && type != 440) || npc[num2].ai[0] != 5f)) {
- 						if (type >= 134 && type <= 136) {
- 							scale = 1.5f;
 @@ -37338,6 +_,14 @@
  		return text;
  	}
@@ -5441,28 +5381,6 @@
  		int count = Hairstyles.AvailableHairstyles.Count;
  		int num = screenHeight / 2 + 60;
  		int num2 = screenWidth / 2 - TextureAssets.HairStyleBack.Width() / 2;
-@@ -38175,7 +_,10 @@
- 
- 				flag4 = true;
- 			}
-+			/*
- 			else if (player[myPlayer].accOreFinder && !flag10 && (!player[myPlayer].hideInfo[10] || playerInventory)) {
-+			*/
-+			else if (info == InfoDisplay.MetalDetector) {
- 				num = 10;
- 				text3 = Lang.inter[104].Value;
- 				if (SceneMetrics.bestOre <= 0) {
-@@ -38271,7 +_,10 @@
- 					text2 = Lang.GetNPCNameValue(Item.BannerToNPC(lastCreatureHit)) + ": " + NPC.killCount[lastCreatureHit];
- 				}
- 			}
-+			/*
- 			else if (player[myPlayer].accDreamCatcher && !flag12 && (!player[myPlayer].hideInfo[12] || playerInventory)) {
-+			*/
-+			else if (info == InfoDisplay.DPSMeter) {
- 				num = 12;
- 				text3 = Lang.inter[106].Value;
- 				player[myPlayer].checkDPSTime();
 @@ -38346,27 +_,49 @@
  				text2 = text7 + " " + text6;
  				flag2 = true;
@@ -5669,14 +5587,19 @@
  
  		if (menuMode == 1212) {
  			array9[0] = Lang.menu[102].Value;
-@@ -40011,6 +_,7 @@
- 				SoundEngine.PlaySound(10);
- 				ClearPendingPlayerSelectCallbacks();
- 				menuMode = 1;
-+				PrepareLoadedModsAndConfigsForSingleplayer();
- 			}
+@@ -39595,6 +_,12 @@
+ 					if (HealthBarDrawSettings == 2)
+ 						num3 -= 34f;
  
- 			num11++;
++					if (!NPCLoader.DrawHealthBar(npc[num2], ref scale)) {
++						npc[num2].position -= npc[num2].netOffset;
++						continue;
++					}
++
++					// Patch note: 'num2', used above, can be seen here:
+ 					if ((!expertMode || type != 266) && type != 690 && ((type != 439 && type != 440) || npc[num2].ai[0] != 5f)) {
+ 						if (type >= 134 && type <= 136) {
+ 							scale = 1.5f;
 @@ -40029,7 +_,9 @@
  			}
  
@@ -5791,6 +5714,17 @@
  				bool flag13 = false;
  				num = 2;
  				text3 = Lang.inter[97].Value;
+@@ -40464,7 +_,10 @@
+ 
+ 				flag4 = true;
+ 			}
++			/*
+ 			else if (player[myPlayer].accOreFinder && !flag10 && (!player[myPlayer].hideInfo[10] || playerInventory)) {
++			*/
++			else if (info == InfoDisplay.MetalDetector) {
+ 				num = 10;
+ 				text3 = Lang.inter[104].Value;
+ 				if (PlayerSceneMetrics.BestOreType <= 0) {
 @@ -40488,7 +_,10 @@
  
  				flag10 = true;
@@ -5824,6 +5758,17 @@
  				flag7 = true;
  				num = 6;
  				text3 = Lang.inter[101].Value;
+@@ -40558,7 +_,10 @@
+ 					text2 = Lang.GetNPCNameValue(BannerSystem.BannerToNPC(lastCreatureHit)) + ": " + BannerSystem.GetKillCount(lastCreatureHit);
+ 				}
+ 			}
++			/*
+ 			else if (player[myPlayer].accDreamCatcher && !flag12 && (!player[myPlayer].hideInfo[12] || playerInventory)) {
++			*/
++			else if (info == InfoDisplay.DPSMeter) {
+ 				num = 12;
+ 				text3 = Lang.inter[106].Value;
+ 				player[myPlayer].checkDPSTime();
 @@ -40572,7 +_,10 @@
  					text2 = Language.GetTextValue("GameUI.DPS", player[myPlayer].getDPS());
  				}
@@ -6098,6 +6043,14 @@
  			if (selectedMenu == 2 || flag5) {
  				flag5 = false;
  				SoundEngine.PlaySound(11);
+@@ -42241,6 +_,7 @@
+ 				SoundEngine.PlaySound(10);
+ 				ClearPendingPlayerSelectCallbacks();
+ 				menuMode = 1;
++				PrepareLoadedModsAndConfigsForSingleplayer();
+ 			}
+ 
+ 			num12++;
 @@ -42539,6 +_,8 @@
  		if (!WorldGen.drunkWorldGen && menuMode == 0) {
  			DrawSocialMediaButtons(color, num110);

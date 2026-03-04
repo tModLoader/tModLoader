@@ -107,9 +107,10 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Projectile.drawLayer will simplify Projectile.hide and ProjectileLoader.DrawBehind usage
 - Move Item.instanced failed patch to WorldItem. Also noGrabDelay, beingGrabbed, timeSinceItemSpawned patch.
 - Item.armorPenetration added, should we keep tml-added ArmorPenetration property?
+  - "This is unused, replaced with this.ArmorPenetration." patch might be incorrect as well. Nearby switch table also changed a lot, might need to apply them elsewhere.
 - Vanilla CanHavePrefixes logic changed, might be able to use it rather than tml changes.
 - Item banner related methods moved to GameContent.BannerSystem. Need to move docs over.
-- Item Shimmer/Update/CheckLavaDeath/MoveInWorld/GetPickedUpByMonsters_Special/FindOwner/getRect/related methods have moved to World Item. Need to move docs/patches over.
+- Item Shimmer/Update/CheckLavaDeath/MoveInWorld/GetPickedUpByMonsters_Special/FindOwner/getRect/GetShimmered/related methods have moved to World Item. Need to move docs/patches over.
 - ModPylon.DrawMapIcon needs to support new vanilla options (DrawClamped when fullscreen it seems.)
 - ItemSlot has new flip parameter, what is it used for? PreDrawInInventory needs flip parameter. (and itemFade parameter? And secondColor?)
 - "// Sound is played on animation start #ItemTimeOnAllClients" comments around "SoundEngine.PlaySound(item6.UseSound" in MessageBuffer's `ShotAnimationAndSound` code. ShotAnimationAndSound was renamed, we might need to verify that this is still fixed in tmod.
@@ -125,6 +126,16 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - NewProjectile now has a NewProjectileModifier parameter. How is it used? How should modders use it? Need to add it to Docs for each overload.
 - Code in Projectile claiming "// Moved to CombinedHooks.ModifyHitByProjectile" will need to be copied over again if that is still the intention. It seems that deadMansSweater is also nearby, should it also be commented?
 - Projectile.bonusCritChance added. Does this do the same as tml-added Projectile.CritChance? Double check if `if (DamageType.UseStandardCritCalcs && Main.rand.Next(100) < CritChance + num10)` in new code is double applying projectile crit chance or if it is correct.
+- Not sure about the order for "VanillaOnHitEffectsResume:" and other labels. SpawnHitVisuals method added in between existing patches.
+- It seems like bomb damage logic has been reworked. Maybe many of our patches are no longer necessary or our explosive projectile examples need fixing. 
+- CombinedHooks.CanHitNPCWithProj patches might need to be reworked, it seems like they should be able to be simplified
+- Whip tag damage changed. Player.TagEffectState. Need to reapply "float num13 = ProjectileID.Sets.SummonTagDamageMultiplier[type];" patch somewhere.
+- Update ProjectileID.Sets.IsInteractable: 1093, 1094, 1098
+- Looks like we might want to split out the collision hitbox modification from TileCollideStyle. There is a new Projectile.GetCollisionParams method.
+- Biome conversion patches will need to be fixed, or maybe the vanilla changes will make it much easier to implement. Projectile, WorldGen
+- Double check new DoScrollingInInventory logic against PlayerInput.MouseInModdedUI
+- Patches checking ActiveWorldFileData being null and initializing it might be superfluous now. Seems like there were some vanilla changes.
+- MapRenderer class now contains what was Main.mapSectionTexture and mapTarget. Most static fields there should probably be public.
 
 # New Fields that might need more documentation
 
@@ -187,6 +198,7 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Need to determine if hooks need to act on ModItem or WorldItem. For example: `ItemIO.SendModData(item3, writer);`
 - The number3 parameter of the SyncEquipment message seems to have changed meaning. Docs needed.
 - EntitySource_FishedOut will now apply to fishing item spawns instead of just npc spawns.
+- Main.blackTarget removed. All other render targets are now static and WorldSceneLayerTarget instead of RenderTarget2D. (What does WorldSceneLayerTarget do?)
 
 # tModPorter TODOs
 
@@ -239,6 +251,7 @@ These are simple changes that we'd like Terraria to implement, mainly to reduce 
 - `private static readonly bool[] SafeDust` and `private static readonly bool[] SafeGore` being private and readonly, unlike every other set, is a bit odd.
 - Typos: "editting" -> "editing". `UIVirtualKeyboard._edittingSign`, `UIVirtualKeyboard._edittingChest`, `PlayerInputProfile.AllowEditting`. Also, "Edittable" in input profiles.json, but probably don't fix that one since it'll break saved data.
 - More simple typos: GemTree_Sappphire, garenteeNewStyle, caveOpenningSize, IsTileReplacable, DrawUnderworldBackgroudLayer, Dodgable, MakeHairsylesMenu, `_requiredObjecsForCraftingText`, pointPoisition, "GameUI.PrecentFishingPower", GemTree_Sappphire, Sillouette->Silhouette, WhoAmIToTargettingIndex, Emittence->Emittance, actuatorsLeftToConstume
+- DrawUnderworldBackgroudLayer -> DrawUnderworldBackgroundLayer
 
 # Longer Patch issues:
 
