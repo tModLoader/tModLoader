@@ -8,25 +8,6 @@
  
  namespace Terraria.UI;
  
-@@ -928,6 +_,10 @@
- 
- 				Item item3 = inv[list[k]];
- 				if (item2.type == item3.type && item3.stack != item3.maxStack) {
-+					if (!ItemLoader.TryStackItems(item2, item3, out _))
-+						continue;
-+
-+					/* #OnStackHook
- 					int num2 = item3.stack;
- 					if (num < num2)
- 						num2 = num;
-@@ -935,6 +_,7 @@
- 					item2.stack += num2;
- 					item3.stack -= num2;
- 					num -= num2;
-+					*/
- 					if (item3.stack == 0) {
- 						inv[list[k]] = new Item();
- 						list.Remove(list[k]);
 @@ -1121,7 +_,7 @@
  		list.Add(ItemSortingLayers.LastTilesCommon);
  		list.Add(ItemSortingLayers.LastNotTrash);
@@ -46,10 +27,29 @@
  
  		return num;
  	}
-@@ -1214,6 +_,11 @@
+@@ -1251,6 +_,10 @@
+ 
+ 				Item item3 = inv[_sort_itemsToSort[k]];
+ 				if (Item.CanStack(item2, item3) && item3.stack != item3.maxStack) {
++					if (!ItemLoader.TryStackItems(item2, item3, out _))
++						continue;
++
++					/* #OnStackHook
+ 					int num2 = item3.stack;
+ 					if (num < num2)
+ 						num2 = num;
+@@ -1258,6 +_,7 @@
+ 					item2.stack += num2;
+ 					item3.stack -= num2;
+ 					num -= num2;
++					*/
+ 					if (item3.stack == 0) {
+ 						inv[_sort_itemsToSort[k]] = new Item();
+ 						_sort_itemsToSort.Remove(_sort_itemsToSort[k]);
+@@ -1557,6 +_,11 @@
  		for (int i = loopStartIndex; i < loopEndIndex; i++) {
  			Item item = inv[i];
- 			if (item.stack >= 1 && item.type == itemToRefill.type) {
+ 			if (item.stack >= 1 && item.type == itemToRefill.type && !item.favorited) {
 +				if (!ItemLoader.TryStackItems(itemToRefill, inv[i], out int numTransfered))
 +					continue;
 +

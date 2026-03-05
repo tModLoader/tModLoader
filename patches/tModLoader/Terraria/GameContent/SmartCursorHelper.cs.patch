@@ -63,27 +63,29 @@
  							flag = false;
  					}
  				}
-@@ -1654,11 +_,13 @@
- 				if ((tile.active() && !Main.tileCut[tile.type] && !TileID.Sets.BreakableWhenPlacing[tile.type]) || (tile2.active() && !Main.tileCut[tile2.type] && !TileID.Sets.BreakableWhenPlacing[tile2.type]) || (tile4.active() && TileID.Sets.CommonSapling[tile4.type]) || (tile5.active() && TileID.Sets.CommonSapling[tile5.type]) || (tile6.active() && TileID.Sets.CommonSapling[tile6.type]) || (tile7.active() && TileID.Sets.CommonSapling[tile7.type]) || (tile8.active() && TileID.Sets.CommonSapling[tile8.type]) || (tile9.active() && TileID.Sets.CommonSapling[tile9.type]) || !tile3.active() || !WorldGen.SolidTile2(tile3))
+@@ -1758,13 +_,15 @@
+ 				if ((tile.active() && !Main.tileCut[tile.type] && !TileID.Sets.BreakableWhenPlacing[tile.type]) || (tile2.active() && !Main.tileCut[tile2.type] && !TileID.Sets.BreakableWhenPlacing[tile2.type]) || !tile3.active() || !WorldGen.SolidTile2(tile3))
  					continue;
  
+ 				bool flag = (tile4.active() && TileID.Sets.CommonSapling[tile4.type]) || (tile5.active() && TileID.Sets.CommonSapling[tile5.type]);
+ 				bool flag2 = flag || (tile6.active() && TileID.Sets.CommonSapling[tile6.type]) || (tile7.active() && TileID.Sets.CommonSapling[tile7.type]) || (tile8.active() && TileID.Sets.CommonSapling[tile8.type]) || (tile9.active() && TileID.Sets.CommonSapling[tile9.type]);
 +				bool tileTypeValid = false;
 +
  				switch (tile3.type) {
  					case 60:
- 						if (WorldGen.EmptyTileCheck(i - 2, i + 2, j - 20, j, 20))
- 							_targets.Add(new Tuple<int, int>(i, j));
+ 						if (!flag2 && WorldGen.EmptyTileCheck(i - 2, i + 2, j - num2 + 1, j, 20))
+ 							_targets.Add(new Point(i, j));
 -						break;
 +						continue;
  					case 2:
  					case 23:
- 					case 53:
-@@ -1673,19 +_,30 @@
- 					case 633:
- 					case 661:
- 					case 662:
--						if (tile4.liquid == 0 && tile.liquid == 0 && tile5.liquid == 0 && WorldGen.EmptyTileCheck(i - 2, i + 2, j - 20, j, 20))
--							_targets.Add(new Tuple<int, int>(i, j));
+ 					case 109:
+@@ -1782,19 +_,30 @@
+ 					case 112:
+ 					case 116:
+ 					case 234:
+-						if (!flag && tile.liquid == 0 && WorldGen.EmptyTileCheck(i, i, j - num3, j, 20))
+-							_targets.Add(new Point(i, j));
 +						tileTypeValid = true;
  						break;
  				}
@@ -98,13 +100,13 @@
  
  		_toRemove.Clear();
  		for (int k = 0; k < _targets.Count; k++) {
- 			bool flag = false;
+ 			bool flag3 = false;
 +
  			for (int l = -1; l < 2; l += 2) {
- 				Tile tile10 = Main.tile[_targets[k].Item1 + l, _targets[k].Item2 + 1];
+ 				Tile tile10 = Main.tile[_targets[k].X + l, _targets[k].Y + 1];
  				if (tile10.active()) {
 +					if (TileLoader.CanGrowModTree(tile10.type) || TileLoader.CanGrowModPalmTree(tile10.type)) {
-+						flag = true;
++						flag3 = true;
 +						continue;
 +					}
 +

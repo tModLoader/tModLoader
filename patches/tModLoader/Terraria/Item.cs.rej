@@ -37,6 +37,39 @@
  	public int ownTime;
  	public int keepTime;
  	public int timeLeftInWhichTheItemCannotBeTakenByEnemies;
+@@ -293,4 +_,11 @@
+ 		}
+ 
+ 		return false;
++		*/
++
++		return type != 0
++			&& ItemID.Sets.CanGetPrefixes[type]
++			&& (maxStack == 1 || AllowReforgeForStackableItem)
++			&& ammo == 0
++			&& (damage > 0 || IsAPrefixableAccessory());
+ 	}
+@@ -369,6 +_,11 @@
+ 		if (rolledPrefix == 65 || rolledPrefix == 72 || rolledPrefix == 76 || rolledPrefix == 80 || rolledPrefix == 68)
+ 			num *= 1.2f;
+ 
++		if (rolledPrefix >= PrefixID.Count)
++			PrefixLoader.GetPrefix(rolledPrefix)?.ModifyValue(ref num);
++
++		int baseRarity = rare;
++
+ 		if ((double)num >= 1.2)
+ 			rare += 2;
+ 		else if ((double)num >= 1.05)
+@@ -412,3 +_,8 @@
++	/// <summary>
++	/// Determines if this <see cref="Item"/> can receive the given prefix.
++	/// </summary>
++	/// <param name="prefix">The <see cref="PrefixID"/> to check.</param>
++	/// <returns><see langword="true"/> if this <see cref="Item"/> can roll the given prefix (<see cref="CanRollPrefix(int)"/>) and if the applied prefix does not fail to modify any stat values.</returns>
+ 	public bool CanApplyPrefix(int prefix)
+ 	{
+ 		if (!CanRollPrefix(prefix))
 @@ -789,8 +_,14 @@
  			ToolTip = Lang.GetTooltip(netID);
  	}
@@ -264,6 +297,33 @@
  				flag3 = true;
  				NPC.TransformCopperSlime(j);
  				break;
+@@ -48669,14 +_,26 @@
+ 				num2 *= 2;
+ 
+ 			if (num < (float)num2) {
++				if (!ItemLoader.CanStack(this, item))
++					continue;
++
++				if (!ItemLoader.CanStackInWorld(this, item))
++					continue;
++
+ 				position = (position + item.position) / 2f;
+ 				velocity = (velocity + item.velocity) / 2f;
++
++				ItemLoader.StackItems(this, item, out _);
++
++				/* #OnStackHook
+ 				int num3 = item.stack;
+ 				if (num3 > maxStack - stack)
+ 					num3 = maxStack - stack;
+ 
+ 				item.stack -= num3;
+ 				stack += num3;
++				*/
++
+ 				if (item.stack <= 0) {
+ 					item.SetDefaults();
+ 					item.active = false;
 @@ -49077,6 +_,16 @@
  			case 4070:
  				return TextureAssets.Item[type].Frame(1, 4);
@@ -302,3 +362,10 @@
  
  					if (num2 > num3) {
  						num2 = num3;
+@@ -49272,4 +_,5 @@
++	// TML: Made internal so that modders will have to replace it with a more straightforward item.type == compareItem.type
+-	public bool IsTheSameAs(Item compareItem)
++	internal bool IsTheSameAs(Item compareItem)
+ 	{
+ 		if (netID == compareItem.netID)
+ 			return type == compareItem.type;

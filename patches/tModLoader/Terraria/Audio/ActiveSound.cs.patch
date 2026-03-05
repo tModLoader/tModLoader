@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Audio/ActiveSound.cs
 +++ src/tModLoader/Terraria/Audio/ActiveSound.cs
-@@ -1,34 +_,60 @@
+@@ -1,16 +_,35 @@
  using Microsoft.Xna.Framework;
  using Microsoft.Xna.Framework.Audio;
 +using System;
@@ -38,38 +38,50 @@
  
 -	public SoundEffectInstance Sound { get; private set; }
 +	public SoundEffectInstance? Sound { get; private set; }
+@@ -20,25 +_,30 @@
+ 	public bool IsPlaying {
+ 		get {
+ 			if (Sound != null)
+-				return Sound.State == SoundState.Playing;
++				return Sound?.IsDisposed == false && Sound.State == SoundState.Playing; //TML: Made error-safe
  
- 	public SoundStyle Style { get; private set; }
+ 			return false;
+ 		}
+ 	}
  
--	public bool IsPlaying => Sound.State == SoundState.Playing;
--
--	public ActiveSound(SoundStyle style, Vector2 position)
-+	public bool IsPlaying => Sound?.IsDisposed == false && Sound.State == SoundState.Playing; //TML: Made error-safe
-+
 +	public bool IsPlayingOrPaused => Sound?.IsDisposed == false && Sound.State != SoundState.Stopped;
 +
+ 	private void UseOverrides(SoundPlayOverrides overrides)
+ 	{
+ 		if (overrides.Volume.HasValue)
+ 			Volume = overrides.Volume.Value;
+ 	}
+ 
 +	//TML: Position parameter made nullable, SoundUpdateCallback added with changed type.
-+	public ActiveSound(SoundStyle style, Vector2? position = null, SoundUpdateCallback? updateCallback = null)
+-	public ActiveSound(SoundStyle style, Vector2 position, SoundPlayOverrides overrides)
++	public ActiveSound(SoundStyle style, Vector2? position = null, SoundPlayOverrides overrides = null, SoundUpdateCallback? updateCallback = null)
  	{
  		Position = position;
  		Volume = 1f;
  		Pitch = style.PitchVariance;
 -		IsGlobal = false;
 -		Style = style;
+ 		UseOverrides(overrides);
 +		//IsGlobal = false;
 +		Style = style.WithSelectedVariant(style.SelectedVariant); // Select a variant if for some reason not set at this point.
 +		Callback = updateCallback;
 +
  		Play();
  	}
- 
+@@ -46,3 +_,5 @@
 +	//TML: Merged with the above constructor.
 +	/*
  	public ActiveSound(SoundStyle style)
  	{
  		Position = Vector2.Zero;
-@@ -48,18 +_,26 @@
+@@ -62,19 +_,27 @@
  		Style = style;
+ 		UseOverrides(overrides);
  		PlayLooped(condition);
  	}
 +	*/
@@ -81,23 +93,23 @@
 +			return;
 +		}
 +
--		SoundEffectInstance soundEffectInstance = Style.GetRandomSound().CreateInstance();
-+		SoundEffectInstance soundEffectInstance = Style.GetSoundEffect().CreateInstance();
- 		soundEffectInstance.Pitch += Style.GetRandomPitch();
- 		Pitch = soundEffectInstance.Pitch;
-+		soundEffectInstance.IsLooped = Style.IsLooped;
- 		soundEffectInstance.Play();
- 		SoundInstanceGarbageCollector.Track(soundEffectInstance);
- 		Sound = soundEffectInstance;
+-		SoundEffectInstance soundEffectInstance2 = (Sound = Style.GetRandomSound().CreateInstance());
++		SoundEffectInstance soundEffectInstance2 = (Sound = Style.GetSoundEffect().CreateInstance());
+ 		soundEffectInstance2.Pitch += Style.GetRandomPitch();
+ 		Pitch = soundEffectInstance2.Pitch;
+ 		soundEffectInstance2.Volume = DetermineIntendedVolume();
++		soundEffectInstance2.IsLooped = Style.IsLooped;
+ 		soundEffectInstance2.Play();
+ 		SoundInstanceGarbageCollector.Track(soundEffectInstance2);
  		Update();
  	}
  
 +	/*
  	private void PlayLooped(LoopedPlayCondition condition)
  	{
- 		SoundEffectInstance soundEffectInstance = Style.GetRandomSound().CreateInstance();
-@@ -72,21 +_,37 @@
- 		Sound = soundEffectInstance;
+ 		SoundEffectInstance soundEffectInstance2 = (Sound = Style.GetRandomSound().CreateInstance());
+@@ -86,21 +_,37 @@
+ 		SoundInstanceGarbageCollector.Track(soundEffectInstance2);
  		Update();
  	}
 +	*/
@@ -134,46 +146,35 @@
  		if (Sound != null && Sound.State == SoundState.Paused)
  			Sound.Resume();
  	}
-@@ -96,19 +_,34 @@
- 		if (Sound == null)
- 			return;
- 
--		if (Condition != null && !Condition()) {
-+		if (!Program.IsMainThread) {
-+			RunOnMainThreadAndWait(Update);
-+			return;
-+		}
+@@ -110,5 +_,13 @@
+ 		if (Sound != null) {
+-			if (Condition != null && !Condition()) {
++			if (!Program.IsMainThread) {
++				RunOnMainThreadAndWait(Update);
++				return;
++			}
 +
-+		if (Sound.IsDisposed)
-+			return;
++			if (Sound.IsDisposed)
++				return;
 +
-+		if (Callback?.Invoke(this) == false) {
- 			Sound.Stop(immediate: true);
- 			return;
- 		}
- 
- 		Vector2 value = Main.screenPosition + new Vector2(Main.screenWidth / 2, Main.screenHeight / 2);
++			if (Callback?.Invoke(this) == false) {
+ 				Sound.Stop(immediate: true);
+ 				return;
+ 			}
+@@ -122,8 +_,11 @@
+ 	private float DetermineIntendedVolume()
+ 	{
  		float num = 1f;
--		if (!IsGlobal) {
--			float value2 = (Position.X - value.X) / ((float)Main.screenWidth * 0.5f);
-+		//if (!IsGlobal) {
++		/*
+ 		if (!IsGlobal) {
++		*/
 +		if (Position.HasValue) {
-+			/*
-+			float value2 = (Position.Value.X - value.X) / ((float)Main.screenWidth * 0.5f);
- 			value2 = MathHelper.Clamp(value2, -1f, 1f);
- 			Sound.Pan = value2;
--			float num2 = Vector2.Distance(Position, value);
-+			float num2 = Vector2.Distance(Position.Value, value);
- 			num = 1f - num2 / ((float)Main.screenWidth * 1.5f);
-+			*/
-+			// forward port from 1.4.5
-+			var offset = Position.Value - Main.Camera.Center;
-+			Sound.Pan = MathHelper.Clamp(offset.X / (1920 * 0.5f), -1.0f, 1.0f);
-+			num = MathHelper.Clamp(1.0f - offset.Length() / 2500, 0, 1);
+-			Vector2 vector = Position - Main.Camera.Center;
++			Vector2 vector = Position.Value - Main.Camera.Center;
+ 			Sound.Pan = MathHelper.Clamp(vector.X / ((float)Main.MaxWorldViewSize.X * 0.5f), -1f, 1f);
+ 			num = MathHelper.Clamp(1f - vector.Length() / LegacySoundPlayer.SoundAttenuationDistance, 0f, 1f);
  		}
- 
- 		num *= Style.Volume * Volume;
-@@ -118,6 +_,12 @@
+@@ -135,6 +_,12 @@
  				break;
  			case SoundType.Ambient:
  				num *= Main.ambientVolume;
@@ -186,9 +187,8 @@
  				break;
  			case SoundType.Music:
  				num *= Main.musicVolume;
-@@ -128,4 +_,9 @@
- 		Sound.Volume = num;
- 		Sound.Pitch = Pitch;
+@@ -144,3 +_,8 @@
+ 		return MathHelper.Clamp(num, 0f, 1f);
  	}
 +
 +	// Added by TML.

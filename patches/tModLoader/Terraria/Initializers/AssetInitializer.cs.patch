@@ -1,9 +1,10 @@
 --- src/TerrariaNetCore/Terraria/Initializers/AssetInitializer.cs
 +++ src/tModLoader/Terraria/Initializers/AssetInitializer.cs
-@@ -11,22 +_,46 @@
+@@ -11,27 +_,51 @@
  using Terraria.GameContent;
  using Terraria.ID;
  using Terraria.IO;
+ using Terraria.Testing;
 +using Terraria.ModLoader.Assets;
 +using Terraria.ModLoader.UI;
  using Terraria.Utilities;
@@ -21,6 +22,9 @@
 +		assetReaderCollection = new AssetReaderCollection();
  		assetReaderCollection.RegisterReader(new PngReader(services.Get<IGraphicsDeviceService>().GraphicsDevice), ".png");
  		assetReaderCollection.RegisterReader(new XnbReader(services), ".xnb");
+ #if XNA && !SERVER
+ 		assetReaderCollection.RegisterReader(new FxReader(services.Get<IGraphicsDeviceService>().GraphicsDevice), ".fx");
+ #endif
 +
 +		// TML readers
 +		assetReaderCollection.RegisterReader(new RawImgReader(Main.instance.Services.Get<IGraphicsDeviceService>().GraphicsDevice), ".rawimg");
@@ -42,13 +46,14 @@
 +		AssetRepository.SetMainThread();
 +
 +		/*
- 		IAssetRepository provider = new AssetRepository(new AssetLoader(assetReaderCollection), asyncAssetLoader);
+ 		IAssetRepository assetRepository = new AssetRepository(new AssetLoader(assetReaderCollection), asyncAssetLoader);
 +		*/
-+		var provider = new AssetRepository(assetReaderCollection);
++		var assetRepository = new AssetRepository(assetReaderCollection);
+ 		assetRepository.AssetValueUpdatedHandler = (AssetValueUpdated)Delegate.Combine(assetRepository.AssetValueUpdatedHandler, new AssetValueUpdated(TagAsset));
  		services.AddService(typeof(AssetReaderCollection), assetReaderCollection);
- 		services.AddService(typeof(IAssetRepository), provider);
+ 		services.AddService(typeof(IAssetRepository), assetRepository);
  	}
-@@ -614,6 +_,8 @@
+@@ -645,6 +_,8 @@
  		Main.ResourceSetsManager.LoadContent(mode);
  		Main.MinimapFrameManagerInstance.LoadContent(mode);
  		Main.AchievementAdvisor.LoadContent();

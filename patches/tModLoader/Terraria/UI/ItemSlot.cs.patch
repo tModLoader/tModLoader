@@ -97,16 +97,11 @@
 +
  		if (inv[slot].IsAir)
  			return;
-@@ -497,6 +_,9 @@
- 		inv = singleSlotArray[0];
- 	}
- 
-+	// Helper added by TML
-+	private static bool IsAccessoryContext(int context) => Math.Abs(context) is Context.EquipAccessory or Context.EquipAccessoryVanity;
-+
- 	public static void LeftClick(Item[] inv, int context = 0, int slot = 0)
- 	{
- 		Player player = Main.player[Main.myPlayer];
+@@ -462,3 +_,3 @@
+ 		if (ControlInUse && !Options.DisableQuickTrash && flag) {
+-			if ((uint)context <= 4u || context == 7 || context == 32)
++			if ((uint)context <= 4u && context >= 0 || context == 7 || context == 32)
+ 				return AlternateClickAction.GetSellOrTrash(item);
 @@ -518,15 +_,29 @@
  			case 0:
  				if (context == 6 && Main.mouseItem.type != 0)
@@ -164,14 +159,6 @@
  						if (Main.mouseItem.stack + inv[slot].stack <= Main.mouseItem.maxStack) {
  							inv[slot].stack += Main.mouseItem.stack;
  							Main.mouseItem.stack = 0;
-@@ -560,6 +_,7 @@
- 							Main.mouseItem.stack -= num2;
- 							AnnounceTransfer(new ItemTransferInfo(inv[slot], 21, context, num2));
- 						}
-+						*/
- 					}
- 				}
- 				if (Main.mouseItem.type == 0 || Main.mouseItem.stack < 1)
 @@ -568,6 +_,9 @@
  		if (Main.cursorOverride == 7) {
  			if (context == 29) {
@@ -234,6 +221,11 @@
  							case 0:
  								AchievementsHelper.NotifyItemPickup(player, inv[slot]);
  								break;
+@@ -656,1 +_,4 @@
++	// Helper added by TML
++	private static bool IsAccessoryContext(int context) => Math.Abs(context) is Context.EquipAccessory or Context.EquipAccessoryVanity;
++
+ 	public static void LeftClick(Item[] inv, int context = 0, int slot = 0)
 @@ -692,6 +_,7 @@
  					}
  				}
@@ -257,6 +249,15 @@
  							case 0:
  								AchievementsHelper.NotifyItemPickup(player, inv[slot]);
  								break;
+@@ -722,7 +_,8 @@
+ 							Main.mouseItem.stack -= num2;
+ 							AnnounceTransfer(new ItemTransferInfo(inv[slot], 21, context, num2));
+ 						}
++						*/
+ 					}
+ 				}
+ 
+ 				if (Main.mouseItem.type == 0 || Main.mouseItem.stack < 1)
 @@ -746,7 +_,7 @@
  					Utils.Swap(ref inv[slot], ref Main.mouseItem);
  					SoundEngine.PlaySound(7);
@@ -266,15 +267,6 @@
  							case 0:
  								AchievementsHelper.NotifyItemPickup(player, inv[slot]);
  								break;
-@@ -788,7 +_,7 @@
- 		bool result = false;
- 		if (NotUsingGamepad && Options.DisableLeftShiftTrashCan) {
- 			if (!Options.DisableQuickTrash) {
--				if ((uint)context <= 4u || context == 7 || context == 32)
-+				if ((uint)context <= 4u && context >= 0 || context == 7 || context == 32)
- 					flag = true;
- 
- 				if (ControlInUse && flag) {
 @@ -798,7 +_,7 @@
  			}
  		}

@@ -1,0 +1,26 @@
+@@ -115,14 +_,14 @@
+ 		_cachedMoonPhase = Main.moonPhase;
+ 		_cachedBloodMoon = Main.bloodMoon;
+ 		_cachedEclipse = Main.eclipse;
+-		_cachedCultistDelay = CultistRitual.delay;
++		_cachedCultistDelay = (int)CultistRitual.delay;
+ 		_cachedPartyGenuine = BirthdayParty.GenuineParty;
+ 		_cachedPartyManual = BirthdayParty.ManualParty;
+ 		_cachedPartyDaysOnCooldown = BirthdayParty.PartyDaysOnCooldown;
+ 		CachedCelebratingNPCs.Clear();
+ 		CachedCelebratingNPCs.AddRange(BirthdayParty.CelebratingNPCs);
+ 		_cachedSandstormHappening = Sandstorm.Happening;
+-		_cachedSandstormTimeLeft = Sandstorm.TimeLeft;
++		_cachedSandstormTimeLeft = (int)Sandstorm.TimeLeft;
+ 		_cachedSandstormSeverity = Sandstorm.Severity;
+ 		_cachedSandstormIntendedSeverity = Sandstorm.IntendedSeverity;
+ 		_cachedLanternNightCooldown = LanternNight.LanternNightsOnCooldown;
+@@ -792,7 +_,7 @@
+ 		_tempSandstormSeverity = _cachedSandstormSeverity.Value;
+ 		_tempSandstormIntendedSeverity = _cachedSandstormIntendedSeverity.Value;
+ 		_tempRaining = Main.raining;
+-		_tempRainTime = Main.rainTime;
++		_tempRainTime = (int)Main.rainTime;
+ 		_tempMaxRain = Main.maxRaining;
+ 		_tempLanternNightCooldown = _cachedLanternNightCooldown.Value;
+ 		_tempLanternNightGenuine = _cachedLanternNightGenuine.Value;

@@ -839,13 +839,14 @@
  	public static void DropCache(IEntitySource reason, Vector2 pos, Vector2 spread, int t, bool stopCaching = true)
  	{
  		if (cachedItemSpawnsByType[t] == -1)
-@@ -279,12 +_,26 @@
+@@ -282,4 +_,5 @@
  		}
  	}
  
 +	// Internal, modders should use GetSource_FromThis
 -	public IEntitySource GetNPCSource_FromThis() => new EntitySource_Parent(this);
 +	internal IEntitySource GetNPCSource_FromThis() => new EntitySource_Parent(this);
+@@ -286,1 +_,7 @@
 +
 +	// Internal redirect
 +	/*
@@ -853,33 +854,26 @@
 +	*/
 +	internal IEntitySource GetItemSource_Misc(int itemSourceId) => GetSource_Misc(context: ItemSourceID.ToContextString(itemSourceId));
 +
- 	public override string ToString() => $"{{Name: \"{Name}\" NetID: {netID} Stack: {stack}";
- 
+@@ -288,1 +_,18 @@
++
 +	/// <summary>
 +	/// Determines if this <see cref="Item"/> can receive prefixes.
 +	/// </summary>
 +	/// <returns>
 +	/// <see langword="true"/> if this <see cref="Item"/> is allowed to receive prefixes, <see langword="false"/> otherwise.
 +	/// </returns>
--	private bool CanHavePrefixes()
++	/*
+ 	public bool CanHavePrefixes() => GetRollablePrefixes() != null;
++	*/
 +	public bool CanHavePrefixes()
- 	{
-+		/*
- 		if (type != 0 && maxStack == 1) {
- 			if (damage <= 0)
- 				return accessory;
-@@ -293,8 +_,36 @@
- 		}
- 
- 		return false;
-+		*/
-+
++ 	{
 +		return type != 0
 +			&& ItemID.Sets.CanGetPrefixes[type]
 +			&& (maxStack == 1 || AllowReforgeForStackableItem)
 +			&& ammo == 0
 +			&& (damage > 0 || IsAPrefixableAccessory());
- 	}
++	}
+@@ -295,4 +_,25 @@
  
 +	/// <summary>
 +	/// Attempts to apply a prefix to this <see cref="Item"/>.
@@ -902,12 +896,12 @@
 +	/// </list>
 +	/// Otherwise, return <see langword="true"/>.
 +	/// </returns>
- 	public bool Prefix(int prefixWeWant)
+ 	public bool Prefix(int prefixWeWant, out bool rolledPrefixIsTopTier)
  	{
- 		if (!WorldGen.gen && Main.rand == null)
-@@ -306,7 +_,19 @@
- 		if (!CanHavePrefixes())
- 			return false;
+ 		if (!WorldGen.isGeneratingOrLoadingWorld && Main.rand == null)
+@@ -312,7 +_,19 @@
+ 		if (prefixWeWant == -2 || prefixWeWant == -1)
+ 			num = BestPrefixValue();
  
 +		if (prefixWeWant > 0 && !CanApplyPrefix(prefixWeWant))
 +			return false;
@@ -916,7 +910,7 @@
 +		if (prefixWeWant == -1 && maxStack > 1)
 +			return false;
 +
- 		UnifiedRandom unifiedRandom = (WorldGen.gen ? WorldGen.genRand : Main.rand);
+ 		UnifiedRandom unifiedRandom = (WorldGen.isGeneratingOrLoadingWorld ? WorldGen.genRand : Main.rand);
 +
 +		bool? applyPrefixOverride = ItemLoader.PrefixChance(this, prefixWeWant, unifiedRandom);
 +		if (applyPrefixOverride is false)
@@ -946,17 +940,19 @@
  			if ((rolledPrefix == -1 || rolledPrefix == -2 || rolledPrefix == -3) && !RollAPrefix(unifiedRandom, ref rolledPrefix))
  				return false;
  
-@@ -331,8 +_,9 @@
- 				case -3:
- 					return true;
- 				case -1:
-+					if (applyPrefixOverride is true) { } else
- 					if (PrefixID.Sets.ReducedNaturalChance[rolledPrefix] && unifiedRandom.Next(3) != 0)
--						rolledPrefix = 0;
-+						return true; //rolledPrefix = 0;
- 					break;
- 			}
+@@ -339,5 +_,12 @@
++			/*
+ 			if (prefixWeWant == -1 && PrefixID.Sets.ReducedNaturalChance[rolledPrefix] && unifiedRandom.Next(3) != 0)
+ 				rolledPrefix = 0;
++			*/
++			if (prefixWeWant == -1) {
++				if (applyPrefixOverride is true) { } else
++				if (PrefixID.Sets.ReducedNaturalChance[rolledPrefix] && unifiedRandom.Next(3) != 0)
++					return true;
++			}
  
+ 			if (prefixWeWant == -4)
+ 				rolledPrefix = 0;
 @@ -353,7 +_,9 @@
  			}
  		}
@@ -967,10 +963,10 @@
  		damage = (int)Math.Round((float)damage * dmg);
  		useAnimation = (int)Math.Round((float)useAnimation * spd);
  		useTime = (int)Math.Round((float)useTime * spd);
-@@ -356,6 +_,13 @@
- 		scale *= size;
- 		shootSpeed *= shtspd;
+@@ -365,6 +_,18 @@
  		crit += crt;
+ 		bonusTagDamage += tagdmg;
+ 		armorPenetration += arpen;
 +
 +		if (rolledPrefix >= PrefixID.Count)
 +			PrefixLoader.GetPrefix(rolledPrefix)?.Apply(this);
@@ -978,27 +974,20 @@
 +
 +		ApplyItemAnimationCompensationsToVanillaItems();
 +
- 		float num = 1f * dmg * (2f - spd) * (2f - mcst) * size * kb * shtspd * (1f + (float)crt * 0.02f);
- 		if (rolledPrefix == 62 || rolledPrefix == 69 || rolledPrefix == 73 || rolledPrefix == 77)
- 			num *= 1.05f;
-@@ -369,6 +_,11 @@
- 		if (rolledPrefix == 65 || rolledPrefix == 72 || rolledPrefix == 76 || rolledPrefix == 80 || rolledPrefix == 68)
- 			num *= 1.2f;
- 
 +		if (rolledPrefix >= PrefixID.Count)
-+			PrefixLoader.GetPrefix(rolledPrefix)?.ModifyValue(ref num);
++			PrefixLoader.GetPrefix(rolledPrefix)?.ModifyValue(ref num2);
 +
 +		int baseRarity = rare;
 +
- 		if ((double)num >= 1.2)
+ 		if ((double)num2 >= 1.2)
  			rare += 2;
- 		else if ((double)num >= 1.05)
-@@ -378,25 +_,37 @@
- 		else if ((double)num <= 0.95)
+ 		else if ((double)num2 >= 1.05)
+@@ -374,22 +_,34 @@
+ 		else if ((double)num2 <= 0.95)
  			rare--;
  
 +		if (baseRarity >= ItemRarityID.Count)
-+			rare = RarityLoader.GetRarity(baseRarity).GetPrefixedRarity(rare - baseRarity, num);
++			rare = RarityLoader.GetRarity(baseRarity).GetPrefixedRarity(rare - baseRarity, num2);
 +		else if (rare > ItemRarityID.Purple)
 +			rare = ItemRarityID.Purple;
 +
@@ -1012,8 +1001,8 @@
 +				rare = RarityLoader.RarityCount - 1;
  		}
  
- 		num *= num;
- 		value = (int)((float)value * num);
+ 		num2 *= num2;
+ 		value = (int)((float)value * num2);
 -		prefix = (byte)rolledPrefix;
 +		prefix = rolledPrefix;
  		return true;
@@ -1027,14 +1016,11 @@
 +	/// <remarks>Just because a prefix can be rolled does not mean it can be applied -- use <see cref="CanApplyPrefix(int)"/> to check for that.</remarks>
  	public bool CanRollPrefix(int prefix)
  	{
- 		if (!CanHavePrefixes())
- 			return false;
- 
 +		/*
  		int[] rollablePrefixes = GetRollablePrefixes();
  		if (rollablePrefixes == null)
  			return false;
-@@ -407,8 +_,16 @@
+@@ -400,5 +_,8 @@
  		}
  
  		return false;
@@ -1043,25 +1029,6 @@
 +		return PrefixLoader.CanRoll(this, prefix);
  	}
  
-+	/// <summary>
-+	/// Determines if this <see cref="Item"/> can receive the given prefix.
-+	/// </summary>
-+	/// <param name="prefix">The <see cref="PrefixID"/> to check.</param>
-+	/// <returns><see langword="true"/> if this <see cref="Item"/> can roll the given prefix (<see cref="CanRollPrefix(int)"/>) and if the applied prefix does not fail to modify any stat values.</returns>
- 	public bool CanApplyPrefix(int prefix)
- 	{
- 		if (!CanRollPrefix(prefix))
-@@ -768,6 +_,10 @@
- 		return false;
- 	}
- 
-+	/// <summary>
-+	/// Gets the localized name of this <see cref="Item"/> including its prefix.
-+	/// </summary>
-+	/// <returns>The localized name of this <see cref="Item"/> including its prefix, or simply <see cref="Name"/> if the prefix doesn't exist or is an empty string.</returns>
- 	public string AffixName()
- 	{
- 		if (prefix < 0 || prefix >= Lang.prefix.Length)
 @@ -792,5 +_,12 @@
  				dmg = 1.05f;
  				crt = 2;
@@ -1152,6 +1119,17 @@
  	public bool IsAPrefixableAccessory()
  	{
  		if (accessory && !vanity)
+@@ -918,6 +_,10 @@
+ 		return false;
+ 	}
+ 
++	/// <summary>
++	/// Gets the localized name of this <see cref="Item"/> including its prefix.
++	/// </summary>
++	/// <returns>The localized name of this <see cref="Item"/> including its prefix, or simply <see cref="Name"/> if the prefix doesn't exist or is an empty string.</returns>
+ 	public string AffixName()
+ 	{
+ 		if (prefix <= 0 || prefix >= Lang.prefix.Length)
 @@ -6181,6 +_,8 @@
  				value = 300;
  				break;
@@ -1429,34 +1407,6 @@
  	public void DefaultToSpear(int projType, float pushForwardSpeed, int animationTime)
  	{
  		useStyle = 5;
-@@ -47297,19 +_,24 @@
- 			maxStack = CommonMaxStack;
- 
- 		netID = type;
--		if (!noMatCheck)
--			material = ItemID.Sets.IsAMaterial[type];
-+
-+		ItemLoader.SetDefaults(this);
- 
- 		RebuildTooltip();
--		if (type > 0 && type < ItemID.Count && ItemID.Sets.Deprecated[type]) {
-+		if (type > 0 && ItemID.Sets.Deprecated[type]) {
-+			/*
- 			netID = 0;
- 			type = 0;
- 			stack = 0;
-+			*/
-+			TurnToAir();
- 		}
- 	}
- 
- 	public void OnCreated(ItemCreationContext context)
- 	{
-+		ItemLoader.OnCreated(this, context);
-+
- 		if (type == 5437)
- 			SetDefaults(5358);
- 	}
 @@ -47469,7 +_,24 @@
  		mountType = mount;
  	}
@@ -1810,6 +1760,26 @@
  		if (hairDye != 0)
  			hairDye = GameShaders.Hair.GetShaderIdFromItemId(type);
  
+@@ -47905,8 +_,10 @@
+ 		if (type >= 1803 && type <= 1807)
+ 			SetDefaults(1533 + type - 1803);
+ 
++		ItemLoader.SetDefaults(this);
++
+ 		RebuildTooltip();
+-		if (type > 0 && type < ItemID.Count && ItemID.Sets.Deprecated[type])
++		if (type > 0 && ItemID.Sets.Deprecated[type]) {
+ 			TurnToAir();
+ 	}
+ 
+@@ -47913,5 +_,7 @@
+ 	public void OnCreated(ItemCreationContext context)
+ 	{
++		ItemLoader.OnCreated(this, context);
++
+ 		if (type == 5437)
+ 			SetDefaults(5358);
+ 	}
 @@ -47920,15 +_,35 @@
  	{
  		useSoundPitch = 0f;
@@ -1977,33 +1947,27 @@
  			cachedItemSpawnsByType[Type] += Stack;
  			return 400;
  		}
-@@ -48669,14 +_,26 @@
- 				num2 *= 2;
- 
- 			if (num < (float)num2) {
-+				if (!ItemLoader.CanStack(this, item))
-+					continue;
+@@ -48665,10 +_,20 @@
+ 		EmergencyStacking.ClearPendingTransfersInvolving(Main.item[num]);
+ 		Main.item[num] = new WorldItem();
+ 		WorldItem worldItem = Main.item[num];
 +
-+				if (!ItemLoader.CanStackInWorld(this, item))
-+					continue;
++		if (itemToClone != null) {
++			// TODO: Is setting inner enough, or do we need to call other WorldItem methods.
++			worldItem.inner = itemToClone.Clone();
++			Type = itemToClone.type; // just to be safe if IL edits change type swaps and velocity tweaks.
++			goto skipItemCreation;
++		}
 +
- 				position = (position + item.position) / 2f;
- 				velocity = (velocity + item.velocity) / 2f;
+ 		worldItem.SetDefaults(Type);
+ 		worldItem.whoAmI = num;
+ 		worldItem.Prefix(pfix);
+ 		worldItem.stack = Stack;
++		skipItemCreation:
 +
-+				ItemLoader.StackItems(this, item, out _);
-+
-+				/* #OnStackHook
- 				int num3 = item.stack;
- 				if (num3 > maxStack - stack)
- 					num3 = maxStack - stack;
- 
- 				item.stack -= num3;
- 				stack += num3;
-+				*/
-+
- 				if (item.stack <= 0) {
- 					item.SetDefaults();
- 					item.active = false;
+ 		worldItem.position.X = X + Width / 2 - worldItem.width / 2;
+ 		worldItem.position.Y = Y + Height / 2 - worldItem.height / 2;
+ 		worldItem.wet = Collision.WetCollision(worldItem.position, worldItem.width, worldItem.height);
 @@ -48686,6 +_,8 @@
  		if (ItemSlot.Options.HighlightNewItems && worldItem.type >= 0 && !ItemID.Sets.NeverAppearsAsNewInInventory[worldItem.type])
  			worldItem.newAndShiny = true;
@@ -2013,6 +1977,36 @@
  		if (Main.netMode == 2 && !noBroadcast)
  			NetMessage.SendData(21, -1, -1, null, num, noGrabDelay.ToInt());
  		else if (Main.netMode == 0)
+@@ -48748,5 +_,24 @@
+ 		return num;
+ 	}
+ 
++
++	/*
+ 	public Item Clone() => (Item)MemberwiseClone();
++	*/
++	public Item Clone()
++	{
++		if (cloningDisabled != null)
++			throw new Exception(cloningDisabled);
++
++		Item newItem = (Item)MemberwiseClone();
++
++		newItem.ModItem = ModItem?.Clone(newItem);
++		newItem._globals = _globals?.Select(g => g?.Clone(this, newItem)).ToArray();
++
++		return newItem;
++	}
++
++	/*
+ 	public Item DeepClone() => (Item)MemberwiseClone();
++	*/
++	internal Item DeepClone() => Clone();
+@@ -48754,1 +_,3 @@
++	// TML: Made internal + renamed in Item.TML.cs with more descriptive name (IsNotSameTypePrefixAndStack)
++	// Many usages replaced with !IsNetStateEquivalent
+-	public bool IsNotTheSameAs(Item compareItem)
++	internal bool IsNotTheSameAs(Item compareItem)
 @@ -48775,11 +_,19 @@
  		return false;
  	}
@@ -2101,66 +2095,3 @@
 +		shopSpecialCurrency = originalSpecialCurrency;
  	}
  }
-@@ -49139,9 +_,19 @@
- 		Main.timeItemSlotCannotBeReusedFor[num] = 0;
- 		Main.item[num] = new Item();
- 		Item item = Main.item[num];
-+
-+		if (itemToClone != null) {
-+			Main.item[num] = itemToClone.Clone();
-+			item = Main.item[num];
-+			Type = itemToClone.type; // just to be safe if IL edits change type swaps and velocity tweaks.
-+			goto skipItemCreation;
-+		}
-+
- 		item.SetDefaults(Type);
- 		item.Prefix(pfix);
- 		item.stack = Stack;
-+		skipItemCreation:
-+
- 		item.position.X = X + Width / 2 - item.width / 2;
- 		item.position.Y = Y + Height / 2 - item.height / 2;
- 		item.wet = Collision.WetCollision(item.position, item.width, item.height);
-@@ -49266,10 +_,30 @@
- 		}
- 	}
- 
-+
-+	/*
- 	public Item Clone() => (Item)MemberwiseClone();
-+	*/
-+	public Item Clone()
-+	{
-+		if (cloningDisabled != null)
-+			throw new Exception(cloningDisabled);
-+
-+		Item newItem = (Item)MemberwiseClone();
-+
-+		newItem.ModItem = ModItem?.Clone(newItem);
-+		newItem._globals = _globals?.Select(g => g?.Clone(this, newItem)).ToArray();
-+
-+		return newItem;
-+	}
-+
-+	/*
- 	public Item DeepClone() => (Item)MemberwiseClone();
-+	*/
-+	internal Item DeepClone() => Clone();
- 
-+	// TML: Made internal so that modders will have to replace it with a more straightforward item.type == compareItem.type
--	public bool IsTheSameAs(Item compareItem)
-+	internal bool IsTheSameAs(Item compareItem)
- 	{
- 		if (netID == compareItem.netID)
- 			return type == compareItem.type;
-@@ -49277,7 +_,9 @@
- 		return false;
- 	}
- 
-+	// TML: Made internal + renamed in Item.TML.cs with more descriptive name (IsNotSameTypePrefixAndStack)
-+	// Many usages replaced with !IsNetStateEquivalent
--	public bool IsNotTheSameAs(Item compareItem)
-+	internal bool IsNotTheSameAs(Item compareItem)
- 	{
- 		if (netID == compareItem.netID && stack == compareItem.stack)
- 			return prefix != compareItem.prefix;

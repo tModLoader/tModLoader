@@ -16,7 +16,7 @@
  	public List<int> Dust;
  	public List<int> Gore;
  	public Player drawPlayer;
-@@ -50,30 +_,46 @@
+@@ -51,30 +_,46 @@
  			return result;
  		}
  	}
@@ -66,7 +66,7 @@
  		cHead = drawPlayer.cHead;
  		cFace = drawPlayer.cFace;
  		cFaceHead = drawPlayer.cFaceHead;
-@@ -81,10 +_,12 @@
+@@ -83,10 +_,12 @@
  		cUnicornHorn = drawPlayer.cUnicornHorn;
  		cAngelHalo = drawPlayer.cAngelHalo;
  		cBeard = drawPlayer.cBeard;
@@ -80,7 +80,7 @@
  		colorEyeWhites = Main.quickAlpha(Color.White, Alpha);
  		colorEyes = Main.quickAlpha(drawPlayer.eyeColor, Alpha);
  		colorHair = Main.quickAlpha(drawPlayer.GetHairColor(useLighting: false), Alpha);
-@@ -100,14 +_,23 @@
+@@ -102,14 +_,23 @@
  			playerEffect = SpriteEffects.FlipHorizontally;
  
  		headVect = new Vector2((float)drawPlayer.legFrame.Width * 0.5f, (float)drawPlayer.legFrame.Height * 0.4f);
@@ -104,14 +104,14 @@
  		if (drawPlayer.head > 0 && drawPlayer.head < ArmorIDs.Head.Count) {
  			Main.instance.LoadArmorHead(drawPlayer.head);
  			int num = ArmorIDs.Head.Sets.FrontToBackID[drawPlayer.head];
-@@ -127,12 +_,14 @@
+@@ -132,12 +_,14 @@
  		if (drawPlayer.beard > 0 && drawPlayer.beard < ArmorIDs.Beard.Count)
  			Main.instance.LoadAccBeard(drawPlayer.beard);
  
 -		drawPlayer.GetHairSettings(out fullHair, out hatHair, out hideHair, out var _, out helmetIsOverFullHair);
  		hairOffset = drawPlayer.GetHairDrawOffset(drawPlayer.hair, hatHair);
  		hairOffset.Y *= drawPlayer.Directions.Y;
- 		helmetOffset = drawPlayer.GetHelmetDrawOffset();
+ 		helmetOffset = drawPlayer.GetHelmetDrawOffset(minimap: true);
  		helmetOffset.Y *= drawPlayer.Directions.Y;
 +		drawPlayer.GetHairSettings(out fullHair, out hatHair, out hideHair, out backHairDraw, out drawsBackHairWithoutHeadgear);
 +		/*

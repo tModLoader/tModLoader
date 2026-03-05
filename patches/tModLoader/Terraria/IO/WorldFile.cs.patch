@@ -26,38 +26,19 @@
  	private static int _versionNumber;
  	private static bool _isWorldOnCloud;
  	private static bool _tempPartyGenuine;
-@@ -115,14 +_,14 @@
- 		_cachedMoonPhase = Main.moonPhase;
- 		_cachedBloodMoon = Main.bloodMoon;
- 		_cachedEclipse = Main.eclipse;
--		_cachedCultistDelay = CultistRitual.delay;
-+		_cachedCultistDelay = (int)CultistRitual.delay;
- 		_cachedPartyGenuine = BirthdayParty.GenuineParty;
- 		_cachedPartyManual = BirthdayParty.ManualParty;
- 		_cachedPartyDaysOnCooldown = BirthdayParty.PartyDaysOnCooldown;
- 		CachedCelebratingNPCs.Clear();
- 		CachedCelebratingNPCs.AddRange(BirthdayParty.CelebratingNPCs);
- 		_cachedSandstormHappening = Sandstorm.Happening;
--		_cachedSandstormTimeLeft = Sandstorm.TimeLeft;
-+		_cachedSandstormTimeLeft = (int)Sandstorm.TimeLeft;
- 		_cachedSandstormSeverity = Sandstorm.Severity;
- 		_cachedSandstormIntendedSeverity = Sandstorm.IntendedSeverity;
- 		_cachedLanternNightCooldown = LanternNight.LanternNightsOnCooldown;
-@@ -384,10 +_,13 @@
- 				binaryReader.ReadBoolean();
- 				binaryReader.ReadBoolean();
- 				worldFileData.DefeatedMoonlord = binaryReader.ReadBoolean();
+@@ -452,9 +_,12 @@
+ 			binaryReader.ReadBoolean();
+ 			binaryReader.ReadBoolean();
+ 			worldFileData.DefeatedMoonlord = binaryReader.ReadBoolean();
 +
-+				WorldIO.ReadWorldHeader(worldFileData);
- 				return worldFileData;
- 			}
++			WorldIO.ReadWorldHeader(worldFileData);
+ 			return worldFileData;
  		}
--		catch (Exception) {
-+		catch (Exception e) {
-+			Logging.Terraria.Error($"Error reading WorldFileData: {file}, IsCloudSave={cloudSave}", e);
+ 		catch (Exception exception) {
++			Logging.Terraria.Error($"Error reading WorldFileData: {file}, IsCloudSave={cloudSave}", exception);
+ 			return WorldFileData.FromInvalidWorld(file, cloudSave, StatusID.UnknownError, exception);
  		}
- 
- 		return null;
+ 	}
 @@ -499,8 +_,13 @@
  	{
  		for (int i = 0; i < Main.maxTilesX; i++) {
@@ -124,7 +105,7 @@
  	}
  
  	private static void DoRollingBackups(string backupWorldWritePath)
-@@ -754,18 +_,18 @@
+@@ -826,17 +_,17 @@
  		_tempMoonPhase = Main.moonPhase;
  		_tempBloodMoon = Main.bloodMoon;
  		_tempEclipse = Main.eclipse;
@@ -145,20 +126,10 @@
 +		_tempRainTime = (int)Main.rainTime;
  		_tempMaxRain = Main.maxRaining;
  		_tempLanternNightCooldown = LanternNight.LanternNightsOnCooldown;
- 		_tempLanternNightGenuine = LanternNight.GenuineLanterns;
-@@ -792,7 +_,7 @@
- 		_tempSandstormSeverity = _cachedSandstormSeverity.Value;
- 		_tempSandstormIntendedSeverity = _cachedSandstormIntendedSeverity.Value;
- 		_tempRaining = Main.raining;
--		_tempRainTime = Main.rainTime;
-+		_tempRainTime = (int)Main.rainTime;
- 		_tempMaxRain = Main.maxRaining;
- 		_tempLanternNightCooldown = _cachedLanternNightCooldown.Value;
- 		_tempLanternNightGenuine = _cachedLanternNightGenuine.Value;
-@@ -864,7 +_,7 @@
+@@ -913,7 +_,7 @@
  			}
  
- 			if (TEWeaponsRack.Place(item2.X, item2.Y) != -1 && flag2)
+ 			if (TileEntityType<TEWeaponsRack>.Place(item2.X, item2.Y) != -1 && flag2)
 -				TEWeaponsRack.TryPlacing(item2.X, item2.Y, num2, prefix, 1);
 +				TEWeaponsRack.TryPlacing(item2.X, item2.Y, new Item(num2, prefix: prefix), 1);
  		}

@@ -1,8 +1,7 @@
 --- src/TerrariaNetCore/Terraria/GameContent/UI/GameTipsDisplay.cs
 +++ src/tModLoader/Terraria/GameContent/UI/GameTipsDisplay.cs
-@@ -4,11 +_,12 @@
+@@ -4,10 +_,11 @@
  using ReLogic.Graphics;
- using Terraria.GameInput;
  using Terraria.Localization;
 +using Terraria.ModLoader;
  using Terraria.UI.Chat;
