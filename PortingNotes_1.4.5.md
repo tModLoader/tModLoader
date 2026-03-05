@@ -136,6 +136,13 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Double check new DoScrollingInInventory logic against PlayerInput.MouseInModdedUI
 - Patches checking ActiveWorldFileData being null and initializing it might be superfluous now. Seems like there were some vanilla changes.
 - MapRenderer class now contains what was Main.mapSectionTexture and mapTarget. Most static fields there should probably be public.
+- New vanilla TooltipLine options. Need to add to docs and decide on name (is there a wiki page as well?): CommonItemTooltip.ItemUnlockedByTeammate, armorPenetration, bonusTagDamage, check for others.
+- DrawBlockReplacementIcon return changed from void to bool. Does that affect how the builders toggle works? Did vanilla behavior change? New state bool in logic, and DoStatefulTickSound
+- StartRain method now seems to be more controllable. Update docs accordingly. (StopRain as well)
+- New guns that use Player.spaceGun? See updated `toolTipNames[numLines] = "UseMana";` patch. Look into IsSpaceGun and GetManaCost, might need updates. 4347, 4348, 514
+- Double check PlayerLoader.ModifyZoom logic. Seems like there is only 1 callsite now, code was cleaned up?
+- What is Main.boulderLogo? Seems like MenuLoader needs to be updated with a new vanilla menu option?
+- There are new music tracks and some might have been moved. Update SceneEffectPriority enum docs and double check that they are correct for both methods.
 
 # New Fields that might need more documentation
 
@@ -252,6 +259,7 @@ These are simple changes that we'd like Terraria to implement, mainly to reduce 
 - Typos: "editting" -> "editing". `UIVirtualKeyboard._edittingSign`, `UIVirtualKeyboard._edittingChest`, `PlayerInputProfile.AllowEditting`. Also, "Edittable" in input profiles.json, but probably don't fix that one since it'll break saved data.
 - More simple typos: GemTree_Sappphire, garenteeNewStyle, caveOpenningSize, IsTileReplacable, DrawUnderworldBackgroudLayer, Dodgable, MakeHairsylesMenu, `_requiredObjecsForCraftingText`, pointPoisition, "GameUI.PrecentFishingPower", GemTree_Sappphire, Sillouette->Silhouette, WhoAmIToTargettingIndex, Emittence->Emittance, actuatorsLeftToConstume
 - DrawUnderworldBackgroudLayer -> DrawUnderworldBackgroundLayer
+- NPCInteraction.ShowExcalmation -> ShowExclamation
 
 # Longer Patch issues:
 
