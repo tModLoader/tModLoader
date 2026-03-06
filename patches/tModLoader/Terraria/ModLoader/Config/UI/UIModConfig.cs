@@ -115,6 +115,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 		backButton.UseAltColors = () => HasUnsavedChanges;
 		backButton.AltPanelColor = Color.Red * 0.7f;
 		backButton.AltHoverPanelColor = Color.Red;
+		backButton.AltHoverText = Language.GetText("tModLoader.ModConfigBackUnsavedChanges");
 		uiElement.Append(backButton);
 
 		saveConfigButton = CreateButton("tModLoader.ModConfigSaveConfig", 1f / 3f, SaveConfig);
@@ -246,7 +247,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 		if (HasUnsavedChanges) {
 			var confirmDialog = new UIConfirmDialog(
 				false,
-				Language.GetText("tModLoader.ModConfigBackUnsavedChanges"),
+				Language.GetText("tModLoader.ModConfigBackUnsavedChangesPopup"),
 				(_, _) => {
 					HasUnsavedChanges = false;
 					HandleBackButtonUsage();
