@@ -69,7 +69,7 @@ internal static class InstallVerifier
 			steamAPIPath = "libsteam_api.so";
 			steamAPIHash = ToByteArray("4b7a8cabaa354fcd25743aabfb4b1366");
 			vanillaSteamAPI = "libsteam_api.so";
-			gogHash = ToByteArray("694dd65ef9db3f50d09c438fa3687fdc");
+			gogHash = ToByteArray("95d8e8b92868b301eeeef0518edab2ce");
 			steamHash = ToByteArray("86637ceff3988c99e176cd8a4e40d71b");
 		}
 		else {
