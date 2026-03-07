@@ -86,15 +86,162 @@
  				syncedAnyInventoryContents = true;
  				NetMessage.SendData(5, -1, -1, null, myPlayer, slotOffset + i, (int)my[i].prefix);
  			}
-@@ -30310,7 +_,7 @@
- 				DrawCacheProjsBehindNPCs.Add(i);
+@@ -15840,7 +_,8 @@
+ 			text = "";
  
- 			if (projectile[i].type != 636 && projectile[i].type != 598 && projectile[i].type != 971)
--				continue;
-+				goto PostProjDrawCache;
+ 		bool flag = false;
+-		if (inputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.LeftControl) || inputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.RightControl)) {
++		// Old code prevented users from using AltGr modifier key. Needed to type chars such as []{}\| on many languages keyboard layouts. Windows interprets Ctrl + Alt as AltGr.
++		if ((inputText.IsKeyDown(Keys.LeftControl) || inputText.IsKeyDown(Keys.RightControl)) && !(inputText.IsKeyDown(Keys.LeftAlt) || inputText.IsKeyDown(Keys.RightAlt))) {
+ 			if (inputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Z) && !oldInputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Z)) {
+ 				text = "";
+ 			}
+@@ -16254,15 +_,24 @@
+ 							break;
+ 					}
  
- 			bool flag = true;
- 			if (projectile[i].ai[0] == 1f) {
++					/*
+ 					spriteBatch.Draw(TextureAssets.OneDropLogo.Value, new Vector2(num21, num22), null, color2, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
++					*/
++					Color drawColor2 = drawableLines[k].OverrideColor ?? drawableLines[k].Color;
++					spriteBatch.Draw(TextureAssets.OneDropLogo.Value, new Vector2(num21, num22), null, (l != 4) ? color2 : drawColor2, drawableLines[k].Rotation, drawableLines[k].Origin, (drawableLines[k].BaseScale.X + drawableLines[k].BaseScale.Y) / 2f, SpriteEffects.None, 0f);
+ 				}
+ 			}
+ 			else {
+ 				Microsoft.Xna.Framework.Color black = Microsoft.Xna.Framework.Color.Black;
+ 				black = new Microsoft.Xna.Framework.Color(num4, num4, num4, num4);
++				/*
+ 				if (k == 0) {
++				*/
++				if (drawableLines[k].Mod == "Terraria" && drawableLines[k].Name == "ItemName") {
++					/*
+ 					if (rare == -13)
+ 						black = new Microsoft.Xna.Framework.Color((byte)(255f * num4), (byte)(masterColor * 200f * num4), 0, a);
++					*/
+ 
+ 					if (rare == -11)
+ 						black = new Microsoft.Xna.Framework.Color((byte)(255f * num4), (byte)(175f * num4), (byte)(0f * num4), a);
+@@ -16300,9 +_,15 @@
+ 					if (rare == 10)
+ 						black = new Microsoft.Xna.Framework.Color((byte)(255f * num4), (byte)(40f * num4), (byte)(100f * num4), a);
+ 
++					/*
+ 					if (rare >= 11)
++					*/
++					if (rare == 11)
+ 						black = new Microsoft.Xna.Framework.Color((byte)(180f * num4), (byte)(40f * num4), (byte)(255f * num4), a);
+ 
++					if (rare > 11)
++						black = RarityLoader.GetRarity(rare).RarityColor * num4;
++
+ 					if (diff == 1)
+ 						black = new Microsoft.Xna.Framework.Color((byte)((float)(int)mcColor.R * num4), (byte)((float)(int)mcColor.G * num4), (byte)((float)(int)mcColor.B * num4), a);
+ 
+@@ -31743,8 +_,12 @@
+ 			textValue = Language.GetTextValue("StardewTalk.PlayerHasColaAndIsHoldingIt");
+ 
+ 		bool flag2 = player[myPlayer].talkNPC != -1;
++		/*
+ 		_textDisplayCache.PrepareCache(textValue);
+ 		string[] textLines = _textDisplayCache.TextLines;
++		*/
++		_textDisplayCache.PrepareCache(textValue, color2);
++		List<List<TextSnippet>> textLines = _textDisplayCache.TextLines;
+ 		int amountOfLines = _textDisplayCache.AmountOfLines;
+ 		bool flag3 = false;
+ 		if (editSign) {
+@@ -31758,16 +_,25 @@
+ 				textBlinkerCount = 0;
+ 			}
+ 
+-			if (textBlinkerState == 1)
++			if (textBlinkerState == 1) {
+ 				flag3 = true;
++
++				textLines[amountOfLines - 1].Add(new TextSnippet("|", Microsoft.Xna.Framework.Color.White, 1f));
++			}
+ 
+ 			instance.DrawWindowsIMEPanel(new Vector2(screenWidth / 2, 90f), 0.5f);
+ 		}
+ 
++		/*
+ 		amountOfLines++;
++		*/
+ 		spriteBatch.Draw(TextureAssets.ChatBack.Value, new Vector2(screenWidth / 2 - TextureAssets.ChatBack.Width() / 2, 100f), new Microsoft.Xna.Framework.Rectangle(0, 0, TextureAssets.ChatBack.Width(), (amountOfLines + 1) * 30), color, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
+ 		spriteBatch.Draw(TextureAssets.ChatBack.Value, new Vector2(screenWidth / 2 - TextureAssets.ChatBack.Width() / 2, 100 + (amountOfLines + 1) * 30), new Microsoft.Xna.Framework.Rectangle(0, TextureAssets.ChatBack.Height() - 30, TextureAssets.ChatBack.Width(), 30), color, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
++
++		// Fix all instances of drawing text to use TextSnippets instead of strings (#FixNPCChat)
++		TextSnippet hoveredSnippet = null;
+ 		for (int i = 0; i < amountOfLines; i++) {
++			/*
+ 			string text = textLines[i];
+ 			if (text != null) {
+ 				if (i == amountOfLines - 1 && flag3)
+@@ -31778,6 +_,23 @@
+ 				else
+ 					Utils.DrawBorderStringFourWay(spriteBatch, FontAssets.MouseText.Value, text, 170 + (screenWidth - 800) / 2, 120 + i * 30, color2, Microsoft.Xna.Framework.Color.Black, Vector2.Zero);
+ 			}
++			*/
++			List<TextSnippet> text = textLines[i];
++			ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.MouseText.Value, text.ToArray(), new Vector2(170 + (screenWidth - 800) / 2, 120 + i * 30), 0f, color2, Color.Black, Vector2.Zero, Vector2.One, out int hoveredSnippetNum);
++
++			if (hoveredSnippetNum > -1)
++				hoveredSnippet = text[hoveredSnippetNum];
++		}
++
++		if (flag3)
++			textLines[amountOfLines - 1].RemoveAt(textLines[amountOfLines - 1].Count - 1);
++
++		// Added on-hover and on-click callbacks as well
++		if (hoveredSnippet is not null) {
++			hoveredSnippet.OnHover();
++
++			if (mouseLeft && mouseLeftRelease)
++				hoveredSnippet.OnClick();
+ 		}
+ 
+ 		Microsoft.Xna.Framework.Rectangle rectangle = new Microsoft.Xna.Framework.Rectangle(screenWidth / 2 - TextureAssets.ChatBack.Width() / 2, 100, TextureAssets.ChatBack.Width(), (amountOfLines + 2) * 30);
+@@ -33572,7 +_,7 @@
+ 			if (numAvailableRecipes > 0) {
+ 				UILinkPointNavigator.Shortcuts.CRAFT_CurrentRecipeBig = -1;
+ 				UILinkPointNavigator.Shortcuts.CRAFT_CurrentRecipeSmall = -1;
+-				for (int num72 = 0; num72 < Recipe.maxRequirements; num72++) {
++				for (int num72 = 0; num72 < recipe[availableRecipe[focusRecipe]].requiredItem.Count; num72++) {
+ 					if (recipe[availableRecipe[focusRecipe]].requiredItem[num72].type == 0) {
+ 						UILinkPointNavigator.Shortcuts.CRAFT_CurrentIngredientsCount = num72 + 1;
+ 						break;
+@@ -33617,7 +_,13 @@
+ 					UILinkPointNavigator.Shortcuts.CRAFT_CurrentRecipeSmall = 1 + num72;
+ 					Microsoft.Xna.Framework.Color color5 = inventoryBack;
+ 					inventoryBack = new Microsoft.Xna.Framework.Color((byte)num75, (byte)num75, (byte)num75, (byte)num75);
++
++					//TML: Ref a local copy variable instead of the data in the array.
++					/*
+ 					ItemSlot.Draw(spriteBatch, ref recipe[availableRecipe[focusRecipe]].requiredItem[num72], 22, new Vector2(num73, num74));
++					*/
++					Item tempItem = recipe[availableRecipe[focusRecipe]].requiredItem[num72];
++					ItemSlot.Draw(spriteBatch, ref tempItem, 22, new Vector2(num73, num74));
+ 					inventoryBack = color5;
+ 				}
+ 			}
+@@ -34097,7 +_,7 @@
+ 		else {
+ 			text = Lang.inter[21].Value + " " + guideItem.Name;
+ 			Recipe recipe = Main.recipe[availableRecipe[focusRecipe]];
+-			for (int i = 0; i < Recipe.maxRequirements; i++) {
++			for (int i = 0; i < recipe.requiredTile.Count; i++) {
+ 				int num = recipe.requiredTile[i];
+ 				if (num == -1)
+ 					break;
+@@ -34159,7 +_,7 @@
+ 			spriteBatch.DrawString(FontAssets.MouseText.Value, Lang.inter[22].Value, new Vector2(inventoryX, inventoryY + 118), craftingTipColor, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
+ 			int num3 = focusRecipe;
+ 			int num4 = 0;
+-			for (int i = 0; i < Recipe.maxRequirements; i++) {
++			for (int i = 0; i < recipe[availableRecipe[num3]].requiredTile.Count; i++) {
+ 				int num5 = (i + 1) * 26;
+ 				if (recipe[availableRecipe[num3]].requiredTile[i] == -1) {
+ 					if (i == 0 && !recipe[availableRecipe[num3]].needWater && !recipe[availableRecipe[num3]].needHoney && !recipe[availableRecipe[num3]].needLava && !recipe[availableRecipe[num3]].needSnowBiome && !recipe[availableRecipe[num3]].needGraveyardBiome)
 @@ -37178,4 +_,6 @@
  		num22 = 240;
  		text9 = $"{upTimerMax:F2}ms";

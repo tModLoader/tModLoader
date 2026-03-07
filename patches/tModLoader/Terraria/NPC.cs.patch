@@ -21,6 +21,12 @@
 -public class NPC : Entity
 +public partial class NPC : Entity
  {
+@@ -3993,3 +_,3 @@
+-			if (tile.wall < 0 || tile.wall >= WallID.Count || !wallTypes[tile.wall]) {
++			if (tile.wall < 0 || !wallTypes[tile.wall]) {
+-				if (tile2.wall >= 0 && tile2.wall < WallID.Count)
++				if (tile2.wall >= 0)
+ 					return wallTypes[tile2.wall];
 @@ -4373,6 +_,12 @@
  	public const float nameOverIncrement = 0.025f;
  	public const float nameOverDistance = 350f;
@@ -1634,34 +1640,6 @@
  					Asset<Texture2D> textureNPCShouldUse = profile.GetTextureNPCShouldUse(this);
  					if (textureNPCShouldUse.IsLoaded) {
  						num = textureNPCShouldUse.Height() / Main.npcFrameCount[type];
-@@ -59211,11 +_,15 @@
- 
- 	public static void ResetKillCount()
- 	{
--		for (int i = 0; i < NPCID.Count; i++) {
-+		for (int i = 0; i < killCount.Length; i++) {
- 			killCount[i] = 0;
- 		}
- 	}
- 
-+	/// <summary>
-+	/// Returns true if any player has damaged this NPC. Individual player participation can be determined by checking <see cref="playerInteraction"/> directly. Use <see cref="GetWereThereAnyInteractions"/> if <see cref="realLife"/> might be in use.
-+	/// </summary>
-+	/// <returns></returns>
- 	public bool AnyInteractions()
- 	{
- 		if (Main.netMode == 0) {
-@@ -60465,8 +_,8 @@
- 		if (tile == null || tile2 == null)
- 			return false;
- 
--		if (tile.wall < 0 || tile.wall >= WallID.Count || !wallTypes[tile.wall]) {
--			if (tile2.wall >= 0 && tile2.wall < WallID.Count)
-+		if (tile.wall < 0 || !wallTypes[tile.wall]) {
-+			if (tile2.wall >= 0)
- 				return wallTypes[tile2.wall];
- 
- 			return false;
 @@ -60513,6 +_,8 @@
  			}
  		}
@@ -1865,30 +1843,6 @@
  			if (Main.npc[newNPC].type == 1 && Main.player[k].RollLuck(180) == 0)
  				Main.npc[newNPC].SetDefaults(-4);
  
-@@ -64272,6 +_,23 @@
- 			ChatHelper.BroadcastChatMessage(NetworkText.FromKey("Announcement.HasAwoken", Main.npc[num].GetTypeNetName()), new Color(175, 75, 255));
- 	}
- 
-+	/// <summary>
-+	/// Spawns an NPC into the game world with the given type. 
-+	/// <br/><br/> This method should not be called on multiplayer clients.
-+	/// <br/><br/> The X and Y parameters dictate the centered spawn position in world coordinates.
-+	/// <br/><br/> <c>>ai0, ai1, ai2, ai3</c> will initialize the NPC.ai[] array with the supplied values. This can be used to pass in information to the NPC. The NPC AI code will have to be written to utilize those values.
-+	/// </summary>
-+	/// <param name="source"></param>
-+	/// <param name="X"></param>
-+	/// <param name="Y"></param>
-+	/// <param name="Type">Either an <see cref="NPCID"/> entry or <see cref="ModContent.NPCType{T}"/>, for example <see cref="NPCID.BabySlime"/> or <c>ModContent.NPCType&lt;MyModNPC&gt;()</c></param>
-+	/// <param name="Start">The lowest slot in which this NPC can spawn. This can be used to ensure that the spawned NPC draws behind an existing NPC. This is useful for multi-segment NPC or NPC that spawn minions. See also <see cref="NPCID.Sets.SpawnFromLastEmptySlot"/>. </param>
-+	/// <param name="ai0"></param>
-+	/// <param name="ai1"></param>
-+	/// <param name="ai2"></param>
-+	/// <param name="ai3"></param>
-+	/// <param name="Target">Optionally, provide a <c>Player.whoAmI</c> to set <see cref="NPC.target"/> to a specific Player immediately on spawn.</param>
-+	/// <returns>The index of the spawned NPC within the <see cref="Main.npc"/> array</returns>
- 	public static int NewNPC(IEntitySource source, int X, int Y, int Type, int Start = 0, float ai0 = 0f, float ai1 = 0f, float ai2 = 0f, float ai3 = 0f, int Target = 255)
- 	{
- 		if (Main.getGoodWorld && Main.rand.Next(3) != 0) {
 @@ -64301,11 +_,20 @@
  		}
  	}
@@ -2275,6 +2229,15 @@
  				result = 4;
  				break;
  			case 338:
+@@ -65550,4 +_,8 @@
+ 
++	/// <summary>
++	/// Returns true if any player has damaged this NPC. Individual player participation can be determined by checking <see cref="playerInteraction"/> directly. Use <see cref="GetWereThereAnyInteractions"/> if <see cref="realLife"/> might be in use.
++	/// </summary>
++	/// <returns></returns>
+ 	public bool AnyInteractions()
+ 	{
+ 		if (Main.netMode == 0) {
 @@ -65645,7 +_,7 @@
  
  	public void NPCLoot()
@@ -2461,6 +2424,30 @@
  			switch (Type) {
  				case 583:
  				case 584:
+@@ -67259,6 +_,23 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Spawns an NPC into the game world with the given type. 
++	/// <br/><br/> This method should not be called on multiplayer clients.
++	/// <br/><br/> The X and Y parameters dictate the centered spawn position in world coordinates.
++	/// <br/><br/> <c>>ai0, ai1, ai2, ai3</c> will initialize the NPC.ai[] array with the supplied values. This can be used to pass in information to the NPC. The NPC AI code will have to be written to utilize those values.
++	/// </summary>
++	/// <param name="source"></param>
++	/// <param name="X"></param>
++	/// <param name="Y"></param>
++	/// <param name="Type">Either an <see cref="NPCID"/> entry or <see cref="ModContent.NPCType{T}"/>, for example <see cref="NPCID.BabySlime"/> or <c>ModContent.NPCType&lt;MyModNPC&gt;()</c></param>
++	/// <param name="Start">The lowest slot in which this NPC can spawn. This can be used to ensure that the spawned NPC draws behind an existing NPC. This is useful for multi-segment NPC or NPC that spawn minions. See also <see cref="NPCID.Sets.SpawnFromLastEmptySlot"/>. </param>
++	/// <param name="ai0"></param>
++	/// <param name="ai1"></param>
++	/// <param name="ai2"></param>
++	/// <param name="ai3"></param>
++	/// <param name="Target">Optionally, provide a <c>Player.whoAmI</c> to set <see cref="NPC.target"/> to a specific Player immediately on spawn.</param>
++	/// <returns>The index of the spawned NPC within the <see cref="Main.npc"/> array</returns>
+ 	public static int NewNPC(IEntitySource source, int X, int Y, int Type, int Start = 0, float ai0 = 0f, float ai1 = 0f, float ai2 = 0f, float ai3 = 0f, int Target = 255)
+ 	{
+ 		if (Main.getGoodWorld && Main.rand.Next(3) != 0) {
 @@ -67299,6 +_,8 @@
  					ChatHelper.BroadcastChatMessage(NetworkText.FromKey("Announcement.HasAwoken", nPC.GetTypeNetName()), new Color(175, 75, 255));
  			}

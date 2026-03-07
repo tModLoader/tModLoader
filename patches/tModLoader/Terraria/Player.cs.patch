@@ -5006,37 +5006,6 @@
  		int num35 = 4;
  		int num36 = 4;
  		int num37 = 0;
-@@ -24770,7 +_,9 @@
- 				if (!NPC.AnyNPCs(245) && Main.hardMode && NPC.downedPlantBoss) {
- 					for (int m = 0; m < 58; m++) {
- 						if (inventory[m].type == 1293) {
-+							if (ItemLoader.ConsumeItem(inventory[m], this))
--							inventory[m].stack--;
-+								inventory[m].stack--;
-+
- 							if (inventory[m].stack <= 0)
- 								inventory[m].SetDefaults();
- 
-@@ -24796,13 +_,18 @@
- 					for (int n = 0; n < 58; n++) {
- 						if (inventory[n].type == num43 && inventory[n].stack > 0) {
- 							flag9 = true;
-+							if (ItemLoader.ConsumeItem(inventory[n], this))
--							inventory[n].stack--;
-+								inventory[n].stack--;
-+
- 							if (inventory[n].stack <= 0)
- 								inventory[n] = new Item();
- 
- 							WorldGen.UnlockDoor(myX, myY);
- 							if (Main.netMode == 1)
- 								NetMessage.SendData(52, -1, -1, null, whoAmI, 2f, myX, myY);
-+
-+							// Added by TML.
-+							break;
- 						}
- 					}
- 
 @@ -24824,7 +_,7 @@
  		if (TileID.Sets.BasicChest[tile.type] || tile.type == 97)
  			r = new Rectangle(chestPointX * 16, chestPointY * 16, 32, 32);
@@ -5068,17 +5037,6 @@
  
  				if (flag && Hurt(dodgeable: Main.npc[i].IsDamageDodgeable(), damageSource: PlayerDeathReason.ByNPC(i), Damage: num4, hitDirection: num3, pvp: false, quiet: false, Crit: false, cooldownCounter: specialHitSetter) > 0.0 && !dead && !flag2)
  					StatusFromNPC(Main.npc[i]);
-@@ -25116,7 +_,9 @@
- 
- 									flag15 = true;
- 									if (flag16) {
-+										if (ItemLoader.ConsumeItem(inventory[num76], this))
--										inventory[num76].stack--;
-+											inventory[num76].stack--;
-+
- 										if (inventory[num76].stack <= 0)
- 											inventory[num76] = new Item();
- 									}
 @@ -25195,6 +_,9 @@
  
  	public void ItemCheck_ManageRightClickFeatures()
@@ -5171,6 +5129,16 @@
  			noThrow = 2;
  			cursorItemIconEnabled = true;
  			cursorItemIconID = inventory[selectedItem].type;
+@@ -26249,6 +_,8 @@
+ 				if (!NPC.AnyNPCs(245) && Main.hardMode && NPC.downedPlantBoss) {
+ 					for (int n = 0; n < 58; n++) {
+ 						if (inventory[n].type == 1293) {
++							if (ItemLoader.ConsumeItem(inventory[n], this))
+-							inventory[n].stack--;
++								inventory[n].stack--;
++
+ 							if (inventory[n].stack <= 0)
+ 								inventory[n].SetDefaults(0);
 @@ -26267,7 +_,7 @@
  						NetMessage.SendData(61, -1, -1, null, whoAmI, 245f);
  				}
@@ -5180,6 +5148,22 @@
  				flag2 = true;
  				if (WorldGen.IsLockedDoor(myX, myY)) {
  					int num48 = 1141;
+@@ -26275,12 +_,14 @@
+ 					for (int num49 = 0; num49 < 58; num49++) {
+ 						if (inventory[num49].type == num48 && inventory[num49].stack > 0) {
+ 							flag9 = true;
++							if (ItemLoader.ConsumeItem(inventory[num49], this))
+-							inventory[num49].stack--;
++								inventory[num49].stack--;
++
+ 							if (inventory[num49].stack <= 0)
+ 								inventory[num49] = new Item();
+ 
+ 							WorldGen.UnlockDoor(myX, myY);
+ 							if (Main.netMode == 1)
+ 								NetMessage.SendData(52, -1, -1, null, whoAmI, 2f, myX, myY);
+ 
+ 							break;
 @@ -26304,18 +_,20 @@
  					}
  				}
@@ -5224,6 +5208,16 @@
  				if (Main.netMode == 1 && num74 == 0 && !flag13) {
  					if (num75 == chestX && num76 == chestY && chest != -1) {
  						chest = -1;
+@@ -26594,6 +_,8 @@
+ 									flag15 = true;
+ 									if (flag16) {
++										if (ItemLoader.ConsumeItem(inventory[num82], this))
+-										inventory[num82].stack--;
++											inventory[num82].stack--;
++
+ 										if (inventory[num82].stack <= 0)
+ 											inventory[num82] = new Item();
+ 									}
 @@ -26672,40 +_,43 @@
  				AdjTiles();
  				InteractWithCraftingStation(craftingFilterForTile);
@@ -5285,63 +5279,6 @@
  	{
  		chest = newChest;
  		if (chest != -1 && Main.myPlayer == whoAmI) {
-@@ -26967,11 +_,23 @@
- 			if (!item.active || item.shimmerTime != 0f || item.noGrabDelay != 0 || item.playerIndexTheItemIsReservedFor != i || !CanAcceptItemIntoInventory(item) || (item.shimmered && !((double)item.velocity.Length() < 0.2)))
- 				continue;
- 
-+			if (!ItemLoader.CanPickup(item, this))
-+				continue;
-+
- 			int itemGrabRange = GetItemGrabRange(item);
- 			Rectangle hitbox = item.Hitbox;
- 			if (base.Hitbox.Intersects(hitbox)) {
--				if (i == Main.myPlayer && (inventory[selectedItem].type != 0 || itemAnimation <= 0))
-+				if (i == Main.myPlayer && (inventory[selectedItem].type != 0 || itemAnimation <= 0)) {
-+					if (!CombinedHooks.OnPickup(Main.item[j], this)) {
-+						Main.item[j] = new Item();
-+						if (Main.netMode == 1)
-+							NetMessage.SendData(21, -1, -1, null, j);
-+
-+						continue;
-+					}
-+
- 					item = PickupItem(i, j, item);
-+				}
- 			}
- 			else {
- 				if (!new Rectangle((int)position.X - itemGrabRange, (int)position.Y - itemGrabRange, width + itemGrabRange * 2, height + itemGrabRange * 2).Intersects(hitbox))
-@@ -26985,6 +_,7 @@
- 					if (difficulty == 3 && CreativePowerManager.Instance.GetPower<CreativePowers.FarPlacementRangePower>().IsEnabledForPlayer(whoAmI))
- 						flag = true;
- 
-+					if (ItemLoader.GrabStyle(item, this)) { } else
- 					if (flag)
- 						PullItem_Pickup(item, 7f, 1);
- 					else if (manaMagnet && (item.type == 184 || item.type == 1735 || item.type == 1868))
-@@ -27105,6 +_,10 @@
- 		return itemToPickUp;
- 	}
- 
-+	/// <summary>
-+	/// Heals the player for a certain amount.
-+	/// </summary>
-+	/// <param name="amount">The amount to heal the player by.</param>
- 	public void Heal(int amount)
- 	{
- 		statLife += amount;
-@@ -27115,6 +_,12 @@
- 			statLife = statLifeMax2;
- 	}
- 
-+	/// <summary>
-+	/// Fetches the range at which the given item begins to gravitate towards the player.<br/>
-+	/// This range, referred to as item grab range, is measured in pixels.
-+	/// </summary>
-+	/// <param name="item">The item whose grab range is being evaluated.</param>
-+	/// <returns>The item grab range of the player, in pixels.</returns>
- 	public int GetItemGrabRange(Item item)
- 	{
- 		int num = defaultItemGrabRange;
 @@ -27627,7 +_,7 @@
  			return;
  
@@ -5360,6 +5297,65 @@
  		if (PlayerInput.UsingGamepad && cursorItemIconText.Length == 0) {
  			cursorItemIconEnabled = false;
  			cursorItemIconID = 0;
+@@ -28134,11 +_,23 @@
+ 			if (!worldItem.active || worldItem.shimmerTime != 0f || worldItem.noGrabDelay != 0 || worldItem.playerIndexTheItemIsReservedFor != i || !CanAcceptItemIntoInventory(worldItem) || (worldItem.shimmered && !((double)worldItem.velocity.Length() < 0.2)))
+ 				continue;
+ 
++			if (!ItemLoader.CanPickup(worldItem, this))
++				continue;
++
+ 			int itemGrabRange = GetItemGrabRange(worldItem);
+ 			Rectangle hitbox = worldItem.Hitbox;
+ 			if (base.Hitbox.Intersects(hitbox)) {
+-				if (i == Main.myPlayer && (inventory[selectedItem].type != 0 || itemAnimation <= 0))
++				if (i == Main.myPlayer && (inventory[selectedItem].type != 0 || itemAnimation <= 0)) {
++					if (!CombinedHooks.OnPickup(Main.item[j], this)) {
++						Main.item[j] = new Item();
++						if (Main.netMode == 1)
++							NetMessage.SendData(21, -1, -1, null, j);
++
++						continue;
++					}
++
+ 					PickupItem(worldItem);
++				}
+ 			}
+ 			else {
+ 				if (!new Rectangle((int)position.X - itemGrabRange, (int)position.Y - itemGrabRange, width + itemGrabRange * 2, height + itemGrabRange * 2).Intersects(hitbox))
+@@ -28152,6 +_,7 @@
+ 					if (difficulty == 3 && CreativePowerManager.Instance.GetPower<CreativePowers.FarPlacementRangePower>().IsEnabledForPlayer(whoAmI))
+ 						flag = true;
+ 
++					if (ItemLoader.GrabStyle(item, this)) { } else
+ 					if (manaMagnet && (worldItem.type == 184 || worldItem.type == 1735 || worldItem.type == 1868))
+ 						PullItem_Pickup(worldItem, 12f, 5);
+ 					else if (lifeMagnet && (worldItem.type == 58 || worldItem.type == 1734 || worldItem.type == 1867))
+@@ -28272,6 +_,10 @@
+ 			NetMessage.SendData(21, -1, -1, null, itemToPickUp.whoAmI);
+ 	}
+ 
++	/// <summary>
++	/// Heals the player for a certain amount.
++	/// </summary>
++	/// <param name="amount">The amount to heal the player by.</param>
+ 	public void Heal(int amount)
+ 	{
+ 		statLife += amount;
+@@ -28282,8 +_,14 @@
+ 			statLife = statLifeMax2;
+ 	}
+ 
+ 	public int GetItemGrabRange(WorldItem item) => GetItemGrabRange(item.inner);
+ 
++	/// <summary>
++	/// Fetches the range at which the given item begins to gravitate towards the player.<br/>
++	/// This range, referred to as item grab range, is measured in pixels.
++	/// </summary>
++	/// <param name="item">The item whose grab range is being evaluated.</param>
++	/// <returns>The item grab range of the player, in pixels.</returns>
+ 	public int GetItemGrabRange(Item item)
+ 	{
+ 		int num = defaultItemGrabRange;
 @@ -28308,9 +_,11 @@
  		if (ItemID.Sets.NebulaPickup[item.type])
  			num += 100;
@@ -6065,15 +6061,6 @@
  	public void Teleport(Vector2 newPos, int Style = 0, int extraInfo = 0)
  	{
  		try {
-@@ -30208,7 +_,7 @@
- 		}
- 
- 		for (int k = 54; k < 58; k++) {
--			if (inventory[k].type > 0 && inventory[k].stack < inventory[k].maxStack && newItem.IsTheSameAs(inventory[k]))
-+			if (inventory[k].type > 0 && inventory[k].stack < inventory[k].maxStack && newItem.IsTheSameAs(inventory[k]) && ItemLoader.CanStack(inventory[k], newItem))
- 				return new ItemSpaceStatus(CanTakeItem: true);
- 		}
- 
 @@ -30240,7 +_,11 @@
  		if (theSlot.type == 0)
  			return true;
@@ -6378,6 +6365,14 @@
  		int num = 50;
  		if (newItem.IsACoin)
  			num = 54;
+@@ -31534,6 +_,6 @@
+ 		}
+ 
+ 		for (int k = 54; k < 58; k++) {
+-			if (inventory[k].type > 0 && inventory[k].stack < inventory[k].maxStack && Item.CanStack(newItem, inventory[k]))
++			if (inventory[k].type > 0 && inventory[k].stack < inventory[k].maxStack && ItemLoader.CanStack(inventory[k], newItem))
+ 				return new ItemSpaceStatus(CanTakeItem: true);
+ 		}
 @@ -31662,6 +_,16 @@
  		return GetItem(newItem.inner, settings);
  	}
@@ -6478,28 +6473,6 @@
  		bool forced = false;
  		bool flag;
  		if (newObjectType) {
-@@ -32318,7 +_,9 @@
- 		byte paint = targetItem.paint;
- 		if (paintingAWall) {
- 			if (Main.tile[x, y].wallColor() != paint && WorldGen.paintWall(x, y, paint, broadCast: true)) {
-+				if (ItemLoader.ConsumeItem(targetItem, this))
--				targetItem.stack--;
-+					targetItem.stack--;
-+
- 				if (targetItem.stack <= 0)
- 					targetItem.SetDefaults();
- 
-@@ -32327,7 +_,9 @@
- 			}
- 		}
- 		else if (Main.tile[x, y].color() != paint && WorldGen.paintTile(x, y, paint, broadCast: true)) {
-+			if (ItemLoader.ConsumeItem(targetItem, this))
--			targetItem.stack--;
-+				targetItem.stack--;
-+
- 			if (targetItem.stack <= 0)
- 				targetItem.SetDefaults();
- 
 @@ -32329,7 +_,7 @@
  		}
  		else {
@@ -6684,28 +6657,6 @@
  	}
  
  	public Rectangle getRect() => new Rectangle((int)position.X, (int)position.Y, width, height);
-@@ -32995,7 +_,9 @@
- 	{
- 		for (int i = 0; i < 58; i++) {
- 			if (inventory[i].type == 2997 && inventory[i].stack > 0) {
-+				if (ItemLoader.ConsumeItem(inventory[i], this))
--				inventory[i].stack--;
-+					inventory[i].stack--;
-+
- 				if (inventory[i].stack <= 0)
- 					inventory[i].SetDefaults();
- 
-@@ -33008,7 +_,9 @@
- 
- 		for (int j = 0; j < 40; j++) {
- 			if (bank4.item[j].type == 2997 && bank4.item[j].stack > 0) {
-+				if (ItemLoader.ConsumeItem(bank4.item[j], this))
--				bank4.item[j].stack--;
-+					bank4.item[j].stack--;
-+
- 				if (bank4.item[j].stack <= 0)
- 					bank4.item[j].SetDefaults();
- 
 @@ -33072,7 +_,7 @@
  			if (Main.tile[tileTargetX, tileTargetY].nactive() && Main.tile[tileTargetX, tileTargetY].type == 57)
  				canPlace = true;
@@ -6859,28 +6810,6 @@
  		if (itemAnimation > 0)
  			ItemCheck_ApplyUseStyle(heightOffsetHitboxCenter, item2, drawHitbox);
  		else
-@@ -33364,14 +_,19 @@
- 			ItemCheck_EmitHeldItemLight(item);
- 			ItemCheck_EmitFoodParticles(item);
- 			ItemCheck_EmitDrinkParticles(item);
--			if (whoAmI == Main.myPlayer)
-+
-+			// TML attempts to make ApplyItemTime calls run on remote players, so this check is removed. #ItemTimeOnAllClients
-+			if (whoAmI == Main.myPlayer || true)
- 				ItemCheck_OwnerOnlyCode(ref context, item, weaponDamage, drawHitbox);
- 
- 			if (ItemTimeIsZero && itemAnimation > 0) {
-+				if (ItemLoader.UseItem(item, this) == true)
-+					ApplyItemTime(item, callUseItem: false);
-+
- 				if (item.hairDye >= 0) {
- 					ApplyItemTime(item);
- 					if (whoAmI == Main.myPlayer) {
--						hairDye = (byte)item.hairDye;
-+						hairDye = item.hairDye;
- 						NetMessage.SendData(4, -1, -1, null, whoAmI);
- 					}
- 				}
 @@ -33703,11 +_,16 @@
  			}
  
@@ -6915,15 +6844,6 @@
  					if (item.IsACoin)
  						flag6 = true;
  
-@@ -33739,7 +_,7 @@
- 					if (flag7.HasValue)
- 						flag6 = flag7.Value;
- 
--					if (flag6) {
-+					if (flag6 && ItemLoader.ConsumeItem(item, this)) {
- 						if (item.stack > 0)
- 							item.stack--;
- 
 @@ -33782,7 +_,7 @@
  		overrideCanPlace = null;
  		forcedRandom = null;
@@ -6933,6 +6853,28 @@
  
  		if (targetTile != null && targetTile.active()) {
  			ushort type = targetTile.type;
+@@ -33791,7 +_,9 @@
+ 		byte paint = targetItem.paint;
+ 		if (paintingAWall) {
+ 			if (Main.tile[x, y].wallColor() != paint && WorldGen.paintWall(x, y, paint, broadCast: true)) {
++				if (ItemLoader.ConsumeItem(targetItem, this))
+-				targetItem.stack--;
++					targetItem.stack--;
++
+ 				if (targetItem.stack <= 0)
+ 					targetItem.SetDefaults(0);
+ 
+@@ -33800,7 +_,9 @@
+ 			}
+ 		}
+ 		else if (Main.tile[x, y].color() != paint && WorldGen.paintTile(x, y, paint, broadCast: true)) {
++			if (ItemLoader.ConsumeItem(targetItem, this))
+-			targetItem.stack--;
++				targetItem.stack--;
++
+ 			if (targetItem.stack <= 0)
+ 				targetItem.SetDefaults(0);
+ 
 @@ -33820,13 +_,18 @@
  			_spawnMuramasaCut = true;
  
@@ -7020,17 +6962,6 @@
  			itemRectangle = ItemCheck_CatchCritters(sItem, itemRectangle);
  
  		if (sItem.type == 3183 || sItem.type == 4821) {
-@@ -33916,7 +_,9 @@
- 
- 		if (sItem.damage > 0) {
- 			UpdateMeleeHitCooldowns();
--			float knockBack = sItem.knockBack;
-+			float knockBack = GetWeaponKnockback(sItem, sItem.knockBack);
-+			// Knockback glove, buff and psycho knife moved to UpdateEquips, Update
-+			/*
- 			float num = 1f;
- 			if (kbGlove)
- 				num += 1f;
 @@ -33927,6 +_,7 @@
  			knockBack *= num;
  			if (inventory[selectedItem].type == 3106)
@@ -7134,6 +7065,28 @@
  			}
  		}
  	}
+@@ -34070,7 +_,9 @@
+ 	{
+ 		for (int i = 0; i < 58; i++) {
+ 			if (inventory[i].type == 2997 && inventory[i].stack > 0) {
++				if (ItemLoader.ConsumeItem(inventory[i], this))
+-				inventory[i].stack--;
++					inventory[i].stack--;
++
+ 				if (inventory[i].stack <= 0)
+ 					inventory[i].SetDefaults(0);
+ 
+@@ -34083,7 +_,9 @@
+ 
+ 		for (int j = 0; j < bank4.maxItems; j++) {
+ 			if (bank4.item[j].type == 2997 && bank4.item[j].stack > 0) {
++				if (ItemLoader.ConsumeItem(bank4.item[j], this))
+-				bank4.item[j].stack--;
++					bank4.item[j].stack--;
++
+ 				if (bank4.item[j].stack <= 0)
+ 					bank4.item[j].SetDefaults(0);
+ 
 @@ -34275,12 +_,21 @@
  		return TextureAssets.Item[type].Frame();
  	}
@@ -7294,6 +7247,28 @@
  
  			SetMeleeHitCooldown(npcIndex, itemAnimation);
  			if (attempt.DidNPCDie())
+@@ -34481,14 +_,19 @@
+ 			ItemCheck_EmitHeldItemLight(item);
+ 			ItemCheck_EmitFoodParticles(item);
+ 			ItemCheck_EmitDrinkParticles(item);
+-			if (whoAmI == Main.myPlayer)
++
++			// TML attempts to make ApplyItemTime calls run on remote players, so this check is removed. #ItemTimeOnAllClients
++			if (whoAmI == Main.myPlayer || true)
+ 				ItemCheck_OwnerOnlyCode(ref context, item, weaponDamage, heldItemFrame);
+ 
+ 			if (ItemTimeIsZero && itemAnimation > 0) {
++				if (ItemLoader.UseItem(item, this) == true)
++					ApplyItemTime(item, callUseItem: false);
++
+ 				if (item.hairDye >= 0) {
+ 					ApplyItemTime(item);
+ 					if (whoAmI == Main.myPlayer) {
+-						hairDye = (byte)item.hairDye;
++						hairDye = item.hairDye;
+ 						NetMessage.SendData(4, -1, -1, null, whoAmI);
+ 					}
+ 				}
 @@ -34601,7 +_,7 @@
  				if (ItemTimeIsZero) {
  					ApplyItemTime(item);
@@ -7370,6 +7345,14 @@
  					num10 = (num10 - (float)itemTime) / num10;
  					float num11 = 44f;
  					float num12 = (float)Math.PI * 3f;
+@@ -34868,6 +_,6 @@
+ 					if (flag8.HasValue)
+ 						flag7 = flag8.Value;
+ 
+-					if (flag7) {
++					if (flag7 && ItemLoader.ConsumeItem(item, this)) {
+ 						if (item.stack > 0)
+ 							item.stack--;
 @@ -34953,6 +_,8 @@
  			framesInMovementForPlacementPreview = Utils.Clamp(framesInMovementForPlacementPreview + num, 0, 33);
  			Tile targetTile = Main.tile[tileTargetX, tileTargetY];
@@ -7399,6 +7382,16 @@
  		if (sItem.type == 1450 && Main.rand.Next(3) == 0) {
  			int num3 = -1;
  			float x = itemRectangle.X + Main.rand.Next(itemRectangle.Width);
+@@ -35156,6 +_,8 @@
+ 				if (sItem.damage > 0) {
+ 					UpdateMeleeHitCooldowns();
+-					float knockBack = sItem.knockBack;
++					float knockBack = GetWeaponKnockback(sItem, sItem.knockBack);
++					// Knockback glove, buff and psycho knife moved to UpdateEquips, Update
++					/*
+ 					float num4 = 1f;
+ 					if (kbGlove)
+ 						num4 += 1f;
 @@ -35483,15 +_,21 @@
  			if (i == whoAmI || !player.active || !player.hostile || player.immune || player.dead || (team != 0 && team == player.team) || !itemRectangle.Intersects(player.Hitbox) || !CanHit(player))
  				continue;

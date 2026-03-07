@@ -1,0 +1,9 @@
+@@ -59211,7 +_,7 @@
+ 
+ 	public static void ResetKillCount()
+ 	{
+-		for (int i = 0; i < NPCID.Count; i++) {
++		for (int i = 0; i < killCount.Length; i++) {
+ 			killCount[i] = 0;
+ 		}
+ 	}

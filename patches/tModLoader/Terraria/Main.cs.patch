@@ -2848,41 +2848,6 @@
  			}
  
  			netRelease = false;
-@@ -15840,7 +_,8 @@
- 			text = "";
- 
- 		bool flag = false;
--		if (inputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.LeftControl) || inputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.RightControl)) {
-+		// Old code prevented users from using AltGr modifier key. Needed to type chars such as []{}\| on many languages keyboard layouts. Windows interprets Ctrl + Alt as AltGr.
-+		if ((inputText.IsKeyDown(Keys.LeftControl) || inputText.IsKeyDown(Keys.RightControl)) && !(inputText.IsKeyDown(Keys.LeftAlt) || inputText.IsKeyDown(Keys.RightAlt))) {
- 			if (inputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Z) && !oldInputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Z)) {
- 				text = "";
- 			}
-@@ -16057,12 +_,24 @@
- 		if (num == 10)
- 			baseColor = new Microsoft.Xna.Framework.Color((byte)(255f * num2), (byte)(40f * num2), (byte)(100f * num2), mouseTextColor);
- 
-+		/*
- 		if (num >= 11)
-+		*/
-+		if (num == 11)
- 			baseColor = new Microsoft.Xna.Framework.Color((byte)(180f * num2), (byte)(40f * num2), (byte)(255f * num2), mouseTextColor);
- 
-+		// Mod rarities
-+		if (num > 11)
-+			baseColor = RarityLoader.GetRarity(num).RarityColor * num2;
-+
-+		// Expert
- 		if (HoverItem.expert || num == -12)
- 			baseColor = new Microsoft.Xna.Framework.Color((byte)((float)DiscoR * num2), (byte)((float)DiscoG * num2), (byte)((float)DiscoB * num2), mouseTextColor);
- 
-+		// Master (new item field)
-+		if (HoverItem.master || num == ItemRarityID.Master)
-+			baseColor = new Microsoft.Xna.Framework.Color((byte)(255f * num2), (byte)(masterColor * 200f * num2), 0, mouseTextColor);
-+
- 		if (diff == 1)
- 			baseColor = new Microsoft.Xna.Framework.Color((byte)((float)(int)mcColor.R * num2), (byte)((float)(int)mcColor.G * num2), (byte)((float)(int)mcColor.B * num2), mouseTextColor);
- 
 @@ -16095,6 +_,7 @@
  			hoverItem.knockBack *= 1f + (1f - player[myPlayer].stealth) * 0.5f;
  
@@ -2922,81 +2887,7 @@
  		int num12 = 0;
  		for (int j = 0; j < numLines; j++) {
  			Vector2 stringSize = ChatManager.GetStringSize(FontAssets.MouseText.Value, array[j], Vector2.One);
-@@ -16228,14 +_,32 @@
- 			Utils.DrawInvBG(spriteBatch, new Microsoft.Xna.Framework.Rectangle(X - num17, Y - num18, (int)zero.X + num17 * 2, (int)zero.Y + num18 + num18 / 2), new Microsoft.Xna.Framework.Color(23, 25, 81, 255) * 0.925f);
- 		}
- 
-+		bool globalCanDraw = ItemLoader.PreDrawTooltip(HoverItem, lines.AsReadOnly(), ref X, ref Y);
-+
- 		for (int k = 0; k < numLines; k++) {
-+			drawableLines[k].OriginalX = X;
-+			drawableLines[k].OriginalY = Y + num16;
-+
-+			/*
- 			if (k == yoyoLogo) {
-+			*/
-+			if (drawableLines[k].Mod == "Terraria" && drawableLines[k].Name == "OneDropLogo") {
- 				float num19 = 1f;
- 				int num20 = (int)((float)(int)mouseTextColor * num19);
- 				Microsoft.Xna.Framework.Color color2 = Microsoft.Xna.Framework.Color.Black;
-+
-+				drawableLines[k].Color = new Color(num20, num20, num20, num20);
-+				if (!ItemLoader.PreDrawTooltipLine(HoverItem, drawableLines[k], ref num12) || !globalCanDraw)
-+					goto PostDraw;
-+
- 				for (int l = 0; l < 5; l++) {
-+					/*
- 					int num21 = X;
- 					int num22 = Y + num16;
-+					*/
-+					int num21 = drawableLines[k].X;
-+					int num22 = drawableLines[k].Y;
-+
- 					if (l == 4)
- 						color2 = new Microsoft.Xna.Framework.Color(num20, num20, num20, num20);
- 
-@@ -16254,15 +_,24 @@
- 							break;
- 					}
- 
-+					/*
- 					spriteBatch.Draw(TextureAssets.OneDropLogo.Value, new Vector2(num21, num22), null, color2, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
-+					*/
-+					Color drawColor2 = drawableLines[k].OverrideColor ?? drawableLines[k].Color;
-+					spriteBatch.Draw(TextureAssets.OneDropLogo.Value, new Vector2(num21, num22), null, (l != 4) ? color2 : drawColor2, drawableLines[k].Rotation, drawableLines[k].Origin, (drawableLines[k].BaseScale.X + drawableLines[k].BaseScale.Y) / 2f, SpriteEffects.None, 0f);
- 				}
- 			}
- 			else {
- 				Microsoft.Xna.Framework.Color black = Microsoft.Xna.Framework.Color.Black;
- 				black = new Microsoft.Xna.Framework.Color(num4, num4, num4, num4);
-+				/*
- 				if (k == 0) {
-+				*/
-+				if (drawableLines[k].Mod == "Terraria" && drawableLines[k].Name == "ItemName") {
-+					/*
- 					if (rare == -13)
- 						black = new Microsoft.Xna.Framework.Color((byte)(255f * num4), (byte)(masterColor * 200f * num4), 0, a);
-+					*/
- 
- 					if (rare == -11)
- 						black = new Microsoft.Xna.Framework.Color((byte)(255f * num4), (byte)(175f * num4), (byte)(0f * num4), a);
-@@ -16300,9 +_,15 @@
- 					if (rare == 10)
- 						black = new Microsoft.Xna.Framework.Color((byte)(255f * num4), (byte)(40f * num4), (byte)(100f * num4), a);
- 
-+					/*
- 					if (rare >= 11)
-+					*/
-+					if (rare == 11)
- 						black = new Microsoft.Xna.Framework.Color((byte)(180f * num4), (byte)(40f * num4), (byte)(255f * num4), a);
- 
-+					if (rare > 11)
-+						black = RarityLoader.GetRarity(rare).RarityColor * num4;
-+
- 					if (diff == 1)
- 						black = new Microsoft.Xna.Framework.Color((byte)((float)(int)mcColor.R * num4), (byte)((float)(int)mcColor.G * num4), (byte)((float)(int)mcColor.B * num4), a);
- 
-@@ -16311,47 +_,93 @@
+@@ -16311,20 +_,50 @@
  
  					if (hoverItem.expert || rare == -12)
  						black = new Microsoft.Xna.Framework.Color((byte)((float)DiscoR * num4), (byte)((float)DiscoG * num4), (byte)((float)DiscoB * num4), a);
@@ -3048,54 +2939,6 @@
 +
 +		ItemLoader.PostDrawTooltip(HoverItem, drawableLines.AsReadOnly());
  	}
- 
--	public static void MouseText_DrawItemTooltip_GetLinesInfo(Item item, ref int yoyoLogo, ref int researchLine, float oldKB, ref int numLines, string[] toolTipLine, bool[] preFixLine, bool[] badPreFixLine)
-+	public static void MouseText_DrawItemTooltip_GetLinesInfo(Item item, ref int yoyoLogo, ref int researchLine, float oldKB, ref int numLines, string[] toolTipLine, bool[] preFixLine, bool[] badPreFixLine, string[] toolTipNames, out int prefixlineIndex)
- 	{
-+		prefixlineIndex = -1;
- 		toolTipLine[0] = item.HoverName;
-+		toolTipNames[0] = "ItemName";
- 		if (item.favorited) {
- 			toolTipLine[numLines++] = Lang.tip[56].Value;
-+			toolTipNames[numLines - 1] = "Favorite";
- 			toolTipLine[numLines++] = Lang.tip[57].Value;
-+			toolTipNames[numLines - 1] = "FavoriteDesc";
- 			if (LocalPlayer.chest != -1) {
- 				ChestUI.GetContainerUsageInfo(out var _, out var chestinv);
--				if (ChestUI.IsBlockedFromTransferIntoChest(item, chestinv))
-+				if (ChestUI.IsBlockedFromTransferIntoChest(item, chestinv)) {
- 					toolTipLine[numLines++] = Language.GetTextValue("UI.ItemCannotBePlacedInsideItself");
-+					toolTipNames[numLines - 1] = "NoTransfer";
-+				}
- 			}
- 		}
- 
- 		if (item.social) {
- 			toolTipLine[numLines] = Lang.tip[0].Value;
-+			toolTipNames[numLines] = "Social";
- 			numLines++;
- 			toolTipLine[numLines] = Lang.tip[1].Value;
-+			toolTipNames[numLines] = "SocialDesc";
- 			numLines++;
- 		}
- 		else {
--			if (item.damage > 0 && (!item.notAmmo || item.useStyle != 0) && (item.type < 71 || item.type > 74 || player[myPlayer].HasItem(905))) {
--				float num = 5E-06f;
--				int damage = item.damage;
-+			if (item.damage > 0 && (!item.notAmmo || item.useStyle != 0) && (item.type < 71 || item.type > 74 || player[myPlayer].HasItem(905)) && item.DamageType.ShowStatTooltipLine(player[myPlayer], "Damage")) {
-+				LocalizedText tip;
-+				if (item.DamageType != null) {
-+					bool addLeadingSpace = item.DamageType is not VanillaDamageClass;
-+					tip = new LocalizedText("", (addLeadingSpace ? " " : "") + item.DamageType.DisplayName);
-+				}
-+				else {
-+					tip = Lang.tip[55]; // No damage class
-+				}
-+				int damage = player[myPlayer].GetWeaponDamage(item, true);
-+				/*
- 				damage = (int)((float)damage * ItemID.Sets.ToolTipDamageMultiplier[item.type]);
- 				if (item.melee) {
- 					toolTipLine[numLines] = string.Concat((int)(LocalPlayer.meleeDamage * (float)damage + num));
 @@ -16360,6 +_,8 @@
  		if (tileFrameCounter[493] < 0)
  			tileFrameCounter[493] += 120;
@@ -3105,44 +2948,6 @@
  		AnimateTiles_CritterCages();
  	}
  
-@@ -16425,9 +_,37 @@
- 					else
- 						toolTipLine[numLines] = Lang.tip[13].Value;
- 
-+					toolTipNames[numLines] = "Speed";
- 					numLines++;
-+
-+					// TML:
-+					// These lines add a degree of transparency which vanilla doesn't provide by telling the player what
-+					// does and doesn't get affected by attack speed bonuses, as well as if the item in question has any
-+					// special scaling rules. they're TML-specific, and can be messed with at the will of the modder.
-+					//
-+					// As for why they're differently named: preparation for when that tooltip rework comes out.
-+					// - Thomas
-+					if (item.DamageType == DamageClass.MeleeNoSpeed || ItemID.Sets.BonusAttackSpeedMultiplier[item.type] == 0f) {
-+						if (ModLoader.ModLoader.attackSpeedScalingTooltipVisibility == 0) {
-+							toolTipLine[numLines] = Language.GetTextValue("tModLoader.NoAttackSpeedScaling");
-+							toolTipNames[numLines] = "NoSpeedScaling";
-+							numLines++;
-+						}
-+					}
-+					else if (ItemID.Sets.BonusAttackSpeedMultiplier[item.type] != 1f) {
-+						if (ModLoader.ModLoader.attackSpeedScalingTooltipVisibility <= 1) {
-+							int attackSpeedScaling = (int)(ItemID.Sets.BonusAttackSpeedMultiplier[item.type] * 100);
-+							toolTipLine[numLines] = Language.GetTextValue("tModLoader.SpecialAttackSpeedScaling", attackSpeedScaling);
-+							toolTipNames[numLines] = "SpecialSpeedScaling";
-+							numLines++;
-+						}
-+					}
- 				}
- 
-+				if (!item.DamageType.ShowStatTooltipLine(player[myPlayer], "Knockback"))
-+					goto SkipKnockbackTooltipLine;
-+
-+				/*
- 				float num6 = item.knockBack;
- 				if (item.summon)
- 					num6 += player[myPlayer].minionKB;
 @@ -16484,6 +_,8 @@
  		if (++wallFrameCounter[243] >= num2 * 8)
  			wallFrameCounter[243] = 0;
@@ -3206,6 +3011,58 @@
  
  		if (num == -12)
  			baseColor = new Microsoft.Xna.Framework.Color((byte)((float)DiscoR * num3), (byte)((float)DiscoG * num3), (byte)((float)DiscoB * num3), mouseTextColor);
+@@ -17187,8 +_,19 @@
+ 		if (num == 10)
+ 			baseColor = new Microsoft.Xna.Framework.Color((byte)(255f * num3), (byte)(40f * num3), (byte)(100f * num3), mouseTextColor);
+ 
++		/*
+ 		if (num >= 11)
++		*/
++		if (num == 11)
+ 			baseColor = new Microsoft.Xna.Framework.Color((byte)(180f * num3), (byte)(40f * num3), (byte)(255f * num3), mouseTextColor);
+ 
++		// Mod rarities
++		if (num > 11)
++			baseColor = RarityLoader.GetRarity(num).RarityColor * num3;
++
++		// Master (new item field)
++		if (HoverItem.master || num == ItemRarityID.Master)
++			baseColor = new Microsoft.Xna.Framework.Color((byte)(255f * num3), (byte)(masterColor * 200f * num3), 0, mouseTextColor);
++
+ 		if (diff == 1)
+ 			baseColor = new Microsoft.Xna.Framework.Color((byte)((float)(int)mcColor.R * num3), (byte)((float)(int)mcColor.G * num3), (byte)((float)(int)mcColor.B * num3), mouseTextColor);
+@@ -17277,13 +_,31 @@
+ 			mouseTextTooltipLine_Color[k] = new Microsoft.Xna.Framework.Color((byte)((float)(int)mouseTextTooltipLine_Color[k].R * num2), (byte)((float)(int)mouseTextTooltipLine_Color[k].G * num2), (byte)((float)(int)mouseTextTooltipLine_Color[k].B * num2), mouseTextColor);
+ 		}
+ 
++		bool globalCanDraw = ItemLoader.PreDrawTooltip(HoverItem, lines.AsReadOnly(), ref X, ref Y);
++
+ 		for (int l = 0; l < numLines; l++) {
++			drawableLines[l].OriginalX = X;
++			drawableLines[l].OriginalY = Y + num16;
++
++			/*
+ 			if (l == yoyoLogo) {
++			*/
++			if (drawableLines[l].Mod == "Terraria" && drawableLines[l].Name == "OneDropLogo") {
+ 				float num10 = 1f;
+ 				int num11 = (int)((float)(int)mouseTextColor * num10);
+ 				Microsoft.Xna.Framework.Color color = Microsoft.Xna.Framework.Color.Black;
++
++				drawableLines[l].Color = new Color(num20, num20, num20, num20);
++				if (!ItemLoader.PreDrawTooltipLine(HoverItem, drawableLines[l], ref num12) || !globalCanDraw)
++					goto PostDraw;
++
+ 				for (int m = 0; m < 5; m++) {
++					/*
+ 					int num12 = X;
+ 					int num13 = Y + num7;
++					*/
++					int num21 = drawableLines[l].X;
++					int num22 = drawableLines[l].Y;
++
+ 					if (m == 4)
+ 						color = new Microsoft.Xna.Framework.Color(num11, num11, num11, num11);
 @@ -17328,4 +_,5 @@
  		if (hoverItem.shopSpecialCurrency != -1) {
 +			tooltipNames[numLines] = "SpecialPrice";
@@ -3225,6 +3082,57 @@
 +			tooltipNames[numLines] = "Price";
  			numLines++;
  		}
+@@ -17465,15 +_,21 @@
+-	public static void MouseText_DrawItemTooltip_GetLinesInfo(Item item, ref int yoyoLogo, ref int researchLine, float oldKB, ref int numLines, string[] toolTipLine, Microsoft.Xna.Framework.Color[] lineColors)
++	public static void MouseText_DrawItemTooltip_GetLinesInfo(Item item, ref int yoyoLogo, ref int researchLine, float oldKB, ref int numLines, string[] toolTipLine, Microsoft.Xna.Framework.Color[] lineColors, string[] toolTipNames, out int prefixlineIndex)
+ 	{
+ 		int stack = ItemSlot.EstimateDisplayStack(item);
++		prefixlineIndex = -1;
+ 		toolTipLine[0] = Item.GetHoverName(item, stack);
+ 		Microsoft.Xna.Framework.Color color = new Microsoft.Xna.Framework.Color(190, 120, 120);
+ 		Microsoft.Xna.Framework.Color color2 = new Microsoft.Xna.Framework.Color(120, 190, 120);
++		toolTipNames[0] = "ItemName";
+ 		if (item.favorited) {
+ 			toolTipLine[numLines++] = Lang.tip[56].Value;
++			toolTipNames[numLines - 1] = "Favorite";
+ 			toolTipLine[numLines++] = Lang.tip[57].Value;
++			toolTipNames[numLines - 1] = "FavoriteDesc";
+ 			if (LocalPlayer.chest != -1) {
+ 				Item[] container = LocalPlayer.GetCurrentContainer().item;
+-				if (ChestUI.IsBlockedFromTransferIntoChest(item, container))
++				if (ChestUI.IsBlockedFromTransferIntoChest(item, container)) {
+ 					toolTipLine[numLines++] = Language.GetTextValue("UI.ItemCannotBePlacedInsideItself");
++					toolTipNames[numLines - 1] = "NoTransfer";
++				}
+ 			}
+ 		}
+@@ -17481,4 +_,6 @@
+ 		if (item.social && !item.vanity && !item.hasVanityEffects) {
+ 			toolTipLine[numLines] = Lang.tip[61].Value;
++			toolTipNames[numLines] = "Social";
++			//toolTipNames[numLines] = "SocialDesc";
+ 			numLines++;
+ 		}
+@@ -17486,6 +_,18 @@
+-		if (item.damage > 0 && (!item.notAmmo || item.useStyle != 0) && (item.type < 71 || item.type > 74 || player[myPlayer].HasItem(905))) {
++		if (item.damage > 0 && (!item.notAmmo || item.useStyle != 0) && (item.type < 71 || item.type > 74 || player[myPlayer].HasItem(905)) && item.DamageType.ShowStatTooltipLine(player[myPlayer], "Damage")) {
++			/*
+ 			float num = 5E-06f;
+ 			int damage = item.damage;
++			*/
++			LocalizedText tip;
++			if (item.DamageType != null) {
++				bool addLeadingSpace = item.DamageType is not VanillaDamageClass;
++				tip = new LocalizedText("", (addLeadingSpace ? " " : "") + item.DamageType.DisplayName);
++			}
++			else {
++				tip = Lang.tip[55]; // No damage class
++			}
++			int damage = player[myPlayer].GetWeaponDamage(item, true);
++			/*
+ 			damage = (int)((float)damage * ItemID.Sets.ToolTipDamageMultiplier[item.type]);
+ 			if (ItemID.Sets.RapidAttackBonusDamage[item.type])
+ 				damage = LocalPlayer.ApplyRapidAttackBonus(damage, item.type);
 @@ -17501,8 +_,12 @@
  				toolTipLine[numLines] += Lang.tip[53].Value;
  			else
@@ -3259,6 +3167,44 @@
  				if (item.useAnimation <= 8)
  					toolTipLine[numLines] = Lang.tip[6].Value;
  				else if (item.useAnimation <= 20)
+@@ -17537,9 +_,37 @@
+ 				else
+ 					toolTipLine[numLines] = Lang.tip[13].Value;
+ 
++				toolTipNames[numLines] = "Speed";
+ 				numLines++;
++
++				// TML:
++				// These lines add a degree of transparency which vanilla doesn't provide by telling the player what
++				// does and doesn't get affected by attack speed bonuses, as well as if the item in question has any
++				// special scaling rules. they're TML-specific, and can be messed with at the will of the modder.
++				//
++				// As for why they're differently named: preparation for when that tooltip rework comes out.
++				// - Thomas
++				if (item.DamageType == DamageClass.MeleeNoSpeed || ItemID.Sets.BonusAttackSpeedMultiplier[item.type] == 0f) {
++					if (ModLoader.ModLoader.attackSpeedScalingTooltipVisibility == 0) {
++						toolTipLine[numLines] = Language.GetTextValue("tModLoader.NoAttackSpeedScaling");
++						toolTipNames[numLines] = "NoSpeedScaling";
++						numLines++;
++					}
++				}
++				else if (ItemID.Sets.BonusAttackSpeedMultiplier[item.type] != 1f) {
++					if (ModLoader.ModLoader.attackSpeedScalingTooltipVisibility <= 1) {
++						int attackSpeedScaling = (int)(ItemID.Sets.BonusAttackSpeedMultiplier[item.type] * 100);
++						toolTipLine[numLines] = Language.GetTextValue("tModLoader.SpecialAttackSpeedScaling", attackSpeedScaling);
++						toolTipNames[numLines] = "SpecialSpeedScaling";
++						numLines++;
++					}
++				}
+ 			}
+ 
++			if (!item.DamageType.ShowStatTooltipLine(player[myPlayer], "Knockback"))
++				goto SkipKnockbackTooltipLine;
++
++			/*
+ 			float num5 = item.knockBack;
+ 			if (item.summon)
+ 				num5 += player[myPlayer].minionKB;
 @@ -17549,6 +_,8 @@
  
  			if (player[myPlayer].inventory[player[myPlayer].selectedItem].type == 3106 && item.type == 3106)
@@ -3292,7 +3238,7 @@
  			numLines++;
  		}
  
-@@ -17590,41 +_,49 @@
+@@ -17590,16 +_,19 @@
  			else
  				toolTipLine[numLines] = Lang.tip[23].Value;
  
@@ -3312,6 +3258,7 @@
  			numLines++;
  		}
  
+@@ -17606,25 +_,30 @@
  		if (item.vanity) {
  			toolTipLine[numLines] = Lang.tip[24].Value;
 +			toolTipNames[numLines] = "Vanity";
@@ -3349,7 +3296,7 @@
 +			toolTipNames[numLines] = "TileBoost";
  			numLines++;
  		}
-@@ -17645,38 +_,53 @@
+@@ -17645,25 +_,37 @@
  				toolTipLine[numLines] = Language.GetTextValue("CommonItemTooltip.RestoresLifeRange", healLife, num6);
  			}
  			else {
@@ -3389,6 +3336,7 @@
  				numLines++;
  			}
  		}
+@@ -17670,13 +_,16 @@
  		else if (item.ammo > 0 && !item.notAmmo) {
  			toolTipLine[numLines] = Lang.tip[34].Value;
 +			toolTipNames[numLines] = "Ammo";
@@ -4158,13 +4106,13 @@
  		SpriteEffects dir = SpriteEffects.None;
  		if (proj.spriteDirection == -1)
  			dir = SpriteEffects.FlipHorizontally;
-@@ -27659,10 +_,26 @@
+@@ -29611,9 +_,25 @@
  					}
  
- 					vector109 += (vector111 - vector110).SafeNormalize(Vector2.Zero) * num412;
-+					// Patch note: num136, num137, num138, num408, y27 - used below.
- 					EntitySpriteDraw(TextureAssets.Projectile[proj.type].Value, new Vector2(proj.position.X - screenPosition.X + num138 + (float)num137, proj.position.Y - screenPosition.Y + (float)(proj.height / 2) + proj.gfxOffY) + vector108, new Microsoft.Xna.Framework.Rectangle(0, num408, TextureAssets.Projectile[proj.type].Width(), num408 - 1), alpha12, proj.rotation, new Vector2(num138, proj.height / 2 + num136), proj.scale, dir);
- 					EntitySpriteDraw(TextureAssets.Projectile[proj.type].Value, new Vector2(proj.position.X - screenPosition.X + num138 + (float)num137, proj.position.Y - screenPosition.Y + (float)(proj.height / 2) + proj.gfxOffY) + vector108 + vector109, new Microsoft.Xna.Framework.Rectangle(0, num408 * 2, TextureAssets.Projectile[proj.type].Width(), num408 - 1), alpha12, proj.rotation, new Vector2(num138, proj.height / 2 + num136), proj.scale, dir);
+ 					vector120 += (vector122 - vector121).SafeNormalize(Vector2.Zero) * num465;
++					// Patch note: num143, num144, num145, num452, y24 - used below.
+ 					EntitySpriteDraw(TextureAssets.Projectile[proj.type].Value, new Vector2(proj.position.X - screenPosition.X + num145 + (float)num144, proj.position.Y - screenPosition.Y + (float)(proj.height / 2) + proj.gfxOffY) + vector119, new Microsoft.Xna.Framework.Rectangle(0, num452, TextureAssets.Projectile[proj.type].Width(), num452 - 1), alpha14, proj.rotation, new Vector2(num145, proj.height / 2 + num143), proj.scale, dir);
+ 					EntitySpriteDraw(TextureAssets.Projectile[proj.type].Value, new Vector2(proj.position.X - screenPosition.X + num145 + (float)num144, proj.position.Y - screenPosition.Y + (float)(proj.height / 2) + proj.gfxOffY) + vector119 + vector120, new Microsoft.Xna.Framework.Rectangle(0, num452 * 2, TextureAssets.Projectile[proj.type].Width(), num452 - 1), alpha14, proj.rotation, new Vector2(num145, proj.height / 2 + num143), proj.scale, dir);
  				}
  
 +				var modProjectile = proj.ModProjectile;
@@ -4173,18 +4121,17 @@
 +				if (modProjectile != null && ModContent.RequestIfExists<Texture2D>(modProjectile.GlowTexture, out var glowTexture, AssetRequestMode.ImmediateLoad)) {
 +					EntitySpriteDraw(
 +						glowTexture.Value,
-+						proj.position - screenPosition + new Vector2(num138 + num137, proj.height / 2 + proj.gfxOffY),
-+						new Rectangle(0, y27, TextureAssets.Projectile[proj.type].Width(), num408 - 1),
++						proj.position - screenPosition + new Vector2(num145 + num144, proj.height / 2 + proj.gfxOffY),
++						new Rectangle(0, y24, TextureAssets.Projectile[proj.type].Width(), num452 - 1),
 +						new Color(250, 250, 250, proj.alpha), proj.rotation,
-+						new Vector2(num138, proj.height / 2 + num136),
++						new Vector2(num145, proj.height / 2 + num143),
 +						proj.scale,
 +						dir
 +					);
 +				}
 +
  				if (proj.type == 335)
- 					EntitySpriteDraw(TextureAssets.Projectile[proj.type].Value, new Vector2(proj.position.X - screenPosition.X + num138 + (float)num137, proj.position.Y - screenPosition.Y + (float)(proj.height / 2) + proj.gfxOffY), new Microsoft.Xna.Framework.Rectangle(0, y27, TextureAssets.Projectile[proj.type].Width(), num408 - 1), new Microsoft.Xna.Framework.Color(100, 100, 100, 0), proj.rotation, new Vector2(num138, proj.height / 2 + num136), proj.scale, dir);
- 
+ 					EntitySpriteDraw(TextureAssets.Projectile[proj.type].Value, new Vector2(proj.position.X - screenPosition.X + num145 + (float)num144, proj.position.Y - screenPosition.Y + (float)(proj.height / 2) + proj.gfxOffY), new Microsoft.Xna.Framework.Rectangle(0, y24, TextureAssets.Projectile[proj.type].Width(), num452 - 1), new Microsoft.Xna.Framework.Color(100, 100, 100, 0), proj.rotation, new Vector2(num145, proj.height / 2 + num143), proj.scale, dir);
 @@ -29808,7 +_,7 @@
  			}
  
@@ -4230,103 +4177,6 @@
  		stringColor = TryApplyingPlayerStringColor(theOwner.stringColor, stringColor);
  		float gravDir = theOwner.gravDir;
  		switch (type) {
-@@ -31743,8 +_,12 @@
- 			textValue = Language.GetTextValue("StardewTalk.PlayerHasColaAndIsHoldingIt");
- 
- 		bool flag2 = player[myPlayer].talkNPC != -1;
-+		/*
- 		_textDisplayCache.PrepareCache(textValue);
- 		string[] textLines = _textDisplayCache.TextLines;
-+		*/
-+		_textDisplayCache.PrepareCache(textValue, color2);
-+		List<List<TextSnippet>> textLines = _textDisplayCache.TextLines;
- 		int amountOfLines = _textDisplayCache.AmountOfLines;
- 		bool flag3 = false;
- 		if (editSign) {
-@@ -31758,16 +_,25 @@
- 				textBlinkerCount = 0;
- 			}
- 
--			if (textBlinkerState == 1)
-+			if (textBlinkerState == 1) {
- 				flag3 = true;
-+
-+				textLines[amountOfLines - 1].Add(new TextSnippet("|", Microsoft.Xna.Framework.Color.White, 1f));
-+			}
- 
- 			instance.DrawWindowsIMEPanel(new Vector2(screenWidth / 2, 90f), 0.5f);
- 		}
- 
-+		/*
- 		amountOfLines++;
-+		*/
- 		spriteBatch.Draw(TextureAssets.ChatBack.Value, new Vector2(screenWidth / 2 - TextureAssets.ChatBack.Width() / 2, 100f), new Microsoft.Xna.Framework.Rectangle(0, 0, TextureAssets.ChatBack.Width(), (amountOfLines + 1) * 30), color, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
- 		spriteBatch.Draw(TextureAssets.ChatBack.Value, new Vector2(screenWidth / 2 - TextureAssets.ChatBack.Width() / 2, 100 + (amountOfLines + 1) * 30), new Microsoft.Xna.Framework.Rectangle(0, TextureAssets.ChatBack.Height() - 30, TextureAssets.ChatBack.Width(), 30), color, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
-+
-+		// Fix all instances of drawing text to use TextSnippets instead of strings (#FixNPCChat)
-+		TextSnippet hoveredSnippet = null;
- 		for (int i = 0; i < amountOfLines; i++) {
-+			/*
- 			string text = textLines[i];
- 			if (text != null) {
- 				if (i == amountOfLines - 1 && flag3)
-@@ -31778,6 +_,23 @@
- 				else
- 					Utils.DrawBorderStringFourWay(spriteBatch, FontAssets.MouseText.Value, text, 170 + (screenWidth - 800) / 2, 120 + i * 30, color2, Microsoft.Xna.Framework.Color.Black, Vector2.Zero);
- 			}
-+			*/
-+			List<TextSnippet> text = textLines[i];
-+			ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.MouseText.Value, text.ToArray(), new Vector2(170 + (screenWidth - 800) / 2, 120 + i * 30), 0f, color2, Color.Black, Vector2.Zero, Vector2.One, out int hoveredSnippetNum);
-+
-+			if (hoveredSnippetNum > -1)
-+				hoveredSnippet = text[hoveredSnippetNum];
-+		}
-+
-+		if (flag3)
-+			textLines[amountOfLines - 1].RemoveAt(textLines[amountOfLines - 1].Count - 1);
-+
-+		// Added on-hover and on-click callbacks as well
-+		if (hoveredSnippet is not null) {
-+			hoveredSnippet.OnHover();
-+
-+			if (mouseLeft && mouseLeftRelease)
-+				hoveredSnippet.OnClick();
- 		}
- 
- 		Microsoft.Xna.Framework.Rectangle rectangle = new Microsoft.Xna.Framework.Rectangle(screenWidth / 2 - TextureAssets.ChatBack.Width() / 2, 100, TextureAssets.ChatBack.Width(), (amountOfLines + 2) * 30);
-@@ -31820,13 +_,20 @@
- 		color2 = new Microsoft.Xna.Framework.Color(num, (int)((double)num / 1.1), num / 2, num);
- 		string focusText = "";
- 		string focusText2 = "";
-+		// Patch note: 'num5' used much below in PostNurseHeal call.
- 		int num5 = player[myPlayer].statLifeMax2 - player[myPlayer].statLife;
- 		for (int j = 0; j < Player.maxBuffs; j++) {
- 			int num6 = player[myPlayer].buffType[j];
--			if (debuff[num6] && player[myPlayer].buffTime[j] > 60 && (num6 < 0 || num6 >= BuffID.Count || !BuffID.Sets.NurseCannotRemoveDebuff[num6]))
-+			if (debuff[num6] && player[myPlayer].buffTime[j] > 60 && (num6 < 0 || !BuffID.Sets.NurseCannotRemoveDebuff[num6]))
- 				num5 += 100;
- 		}
- 
-+		// TML locals.
-+		int health = LocalPlayer.statLifeMax2 - LocalPlayer.statLife;
-+		bool removeDebuffs = true;
-+		string reason = "";
-+		bool canHeal = true;
-+
- 		if (NPC.downedGolemBoss)
- 			num5 *= 200;
- 		else if (NPC.downedPlantBoss)
-@@ -31997,6 +_,10 @@
- 			if (num16 > 0 && num16 < 1)
- 				num16 = 1;
- 
-+			reason = Language.GetTextValue("tModLoader.DefaultNurseCantHealChat");
-+			canHeal = PlayerLoader.ModifyNurseHeal(player[myPlayer], LocalPlayer.TalkNPC, ref health, ref removeDebuffs, ref reason);
-+			PlayerLoader.ModifyNursePrice(player[myPlayer], LocalPlayer.TalkNPC, health, removeDebuffs, ref num16);
-+
- 			if (num16 < 0)
- 				num16 = 0;
- 
 @@ -32047,8 +_,11 @@
  			else {
  				text5 = text5.Substring(0, text5.Length - 1);
@@ -4419,29 +4269,6 @@
  		int num2 = item.glowMask;
  		if (FocusHelper.AllowWorldItemsToEmitEffects && (item.IsACoin || item.type == 58 || item.type == 109) && color.R > 60 && (float)rand.Next(500) - (Math.Abs(item.velocity.X) + Math.Abs(item.velocity.Y)) * 10f < (float)((int)color.R / 50)) {
  			int type = 43;
-@@ -33369,11 +_,22 @@
- 				string text = Lang.inter[46].Value + ": ";
- 				if (reforgeItem.type > 0) {
- 					int num58 = reforgeItem.value;
-+					num58 *= reforgeItem.stack; // #StackablePrefixWeapons: scale with current stack size
-+
-+					bool canApplyDiscount = true;
-+					if (!ItemLoader.ReforgePrice(reforgeItem, ref num58, ref canApplyDiscount))
-+						goto skipVanillaPricing;
-+
-+					/*
- 					if (player[myPlayer].discountAvailable)
-+					*/
-+					if (canApplyDiscount && LocalPlayer.discountAvailable)
- 						num58 = (int)((double)num58 * 0.8);
- 
- 					num58 = (int)((double)num58 * player[myPlayer].currentShoppingSettings.PriceAdjustment);
- 					num58 /= 3;
-+					skipVanillaPricing:
-+
- 					string text2 = "";
- 					int num59 = 0;
- 					int num60 = 0;
 @@ -33395,6 +_,9 @@
  			Microsoft.Xna.Framework.Rectangle rectangle = value.Frame();
  			spriteBatch.Draw(value, vector3 + spinningpoint.RotatedBy(num - (float)Math.PI / 2f) * item.scale, rectangle, currentColor, num, rectangle.Size() / 2f, 1f, SpriteEffects.None, 0f);
@@ -4471,39 +4298,6 @@
  				if (allowRain)
  					rain.Update();
  			}
-@@ -33431,11 +_,21 @@
- 
- 						mouseReforge = true;
- 						player[myPlayer].mouseInterface = true;
-+
-+						/*
- 						if (mouseLeftRelease && mouseLeft && player[myPlayer].BuyItem(num58)) {
-+						*/
-+						if (mouseLeftRelease && mouseLeft && player[myPlayer].CanAfford(num58) && ItemLoader.CanReforge(reforgeItem)) {
-+							player[myPlayer].BuyItem(num58);
-+							ItemLoader.PreReforge(reforgeItem); // After BuyItem just in case
-+
- 							reforgeItem.ResetPrefix();
- 							reforgeItem.Prefix(-2);
- 							reforgeItem.position.X = player[myPlayer].position.X + (float)(player[myPlayer].width / 2) - (float)(reforgeItem.width / 2);
- 							reforgeItem.position.Y = player[myPlayer].position.Y + (float)(player[myPlayer].height / 2) - (float)(reforgeItem.height / 2);
-+
-+							ItemLoader.PostReforge(reforgeItem);
-+
- 							PopupText.NewText(PopupTextContext.ItemReforge, reforgeItem, reforgeItem.stack, noStack: true);
- 							SoundEngine.PlaySound(SoundID.Item37);
- 						}
-@@ -33490,6 +_,10 @@
- 
- 		CreativeMenu.Draw(spriteBatch);
- 		bool flag10 = CreativeMenu.Enabled && !CreativeMenu.Blocked;
-+
-+		// Added by TML.
-+		flag10 |= hidePlayerCraftingMenu;
-+
- 		if (!InReforgeMenu && !LocalPlayer.tileEntityAnchor.InUse && !flag10) {
- 			UILinkPointNavigator.Shortcuts.CRAFT_CurrentRecipeBig = -1;
- 			UILinkPointNavigator.Shortcuts.CRAFT_CurrentRecipeSmall = -1;
 @@ -33557,6 +_,18 @@
  				if (dust.type == 213)
  					scale = 1f;
@@ -4523,15 +4317,6 @@
  				spriteBatch.Draw(TextureAssets.Dust.Value, dust.position - screenPosition, dust.frame, newColor, dust.GetVisualRotation(), new Vector2(4f, 4f), scale, SpriteEffects.None, 0f);
  				if (dust.color.PackedValue != 0) {
  					Microsoft.Xna.Framework.Color color6 = dust.GetColor(newColor);
-@@ -33572,7 +_,7 @@
- 			if (numAvailableRecipes > 0) {
- 				UILinkPointNavigator.Shortcuts.CRAFT_CurrentRecipeBig = -1;
- 				UILinkPointNavigator.Shortcuts.CRAFT_CurrentRecipeSmall = -1;
--				for (int num72 = 0; num72 < Recipe.maxRequirements; num72++) {
-+				for (int num72 = 0; num72 < recipe[availableRecipe[focusRecipe]].requiredItem.Count; num72++) {
- 					if (recipe[availableRecipe[focusRecipe]].requiredItem[num72].type == 0) {
- 						UILinkPointNavigator.Shortcuts.CRAFT_CurrentIngredientsCount = num72 + 1;
- 						break;
 @@ -33580,10 +_,16 @@
  	public static void HelpText()
  	{
@@ -4549,30 +4334,6 @@
 +		if (player[myPlayer].ConsumedManaCrystals > 0)
  			flag2 = true;
  
-@@ -33617,7 +_,13 @@
- 					UILinkPointNavigator.Shortcuts.CRAFT_CurrentRecipeSmall = 1 + num72;
- 					Microsoft.Xna.Framework.Color color5 = inventoryBack;
- 					inventoryBack = new Microsoft.Xna.Framework.Color((byte)num75, (byte)num75, (byte)num75, (byte)num75);
-+
-+					//TML: Ref a local copy variable instead of the data in the array.
-+					/*
- 					ItemSlot.Draw(spriteBatch, ref recipe[availableRecipe[focusRecipe]].requiredItem[num72], 22, new Vector2(num73, num74));
-+					*/
-+					Item tempItem = recipe[availableRecipe[focusRecipe]].requiredItem[num72];
-+					ItemSlot.Draw(spriteBatch, ref tempItem, 22, new Vector2(num73, num74));
- 					inventoryBack = color5;
- 				}
- 			}
-@@ -33651,6 +_,9 @@
- 			}
- 		}
- 
-+		// Added by TML
-+		hidePlayerCraftingMenu = false;
-+
- 		if (recBigList && !flag10) {
- 			UILinkPointNavigator.Shortcuts.CRAFT_CurrentRecipeBig = -1;
- 			UILinkPointNavigator.Shortcuts.CRAFT_CurrentRecipeSmall = -1;
 @@ -34011,7 +_,10 @@
  				return;
  			}
@@ -4603,15 +4364,6 @@
  				npcChatText = Language.GetTextValue("GuideHelpTextSpecific.Help_1123");
  				return;
  			}
-@@ -34097,7 +_,7 @@
- 		else {
- 			text = Lang.inter[21].Value + " " + guideItem.Name;
- 			Recipe recipe = Main.recipe[availableRecipe[focusRecipe]];
--			for (int i = 0; i < Recipe.maxRequirements; i++) {
-+			for (int i = 0; i < recipe.requiredTile.Count; i++) {
- 				int num = recipe.requiredTile[i];
- 				if (num == -1)
- 					break;
 @@ -34105,7 +_,10 @@
  				return;
  			}
@@ -4693,15 +4445,6 @@
  				npcChatText = Lang.dialog(221);
  				return;
  			}
-@@ -34159,7 +_,7 @@
- 			spriteBatch.DrawString(FontAssets.MouseText.Value, Lang.inter[22].Value, new Vector2(inventoryX, inventoryY + 118), craftingTipColor, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
- 			int num3 = focusRecipe;
- 			int num4 = 0;
--			for (int i = 0; i < Recipe.maxRequirements; i++) {
-+			for (int i = 0; i < recipe[availableRecipe[num3]].requiredTile.Count; i++) {
- 				int num5 = (i + 1) * 26;
- 				if (recipe[availableRecipe[num3]].requiredTile[i] == -1) {
- 					if (i == 0 && !recipe[availableRecipe[num3]].needWater && !recipe[availableRecipe[num3]].needHoney && !recipe[availableRecipe[num3]].needLava && !recipe[availableRecipe[num3]].needSnowBiome && !recipe[availableRecipe[num3]].needGraveyardBiome)
 @@ -34170,12 +_,18 @@
  				return;
  			}
@@ -4743,22 +4486,39 @@
  				npcChatText = Language.GetTextValue("GuideHelpTextSpecific.Help_1149");
  				return;
  			}
-@@ -34264,6 +_,10 @@
- 		if (mouseItem.IsAir)
- 			return true;
+@@ -34345,6 +_,10 @@
+ 		if (num5 > 0 && num5 < 1)
+ 			num5 = 1;
  
-+		// #StackablePrefixWeapons: Gameplay impact: Prevent crafted prefix application by blocking crafting if mouse item is prefixed
-+		if (mouseItem.maxStack > 1 && mouseItem.AllowReforgeForStackableItem && mouseItem.prefix > 0)
-+			return false;
++		reason = Language.GetTextValue("tModLoader.DefaultNurseCantHealChat");
++		canHeal = PlayerLoader.ModifyNurseHeal(player[myPlayer], LocalPlayer.TalkNPC, ref health, ref removeDebuffs, ref reason);
++		PlayerLoader.ModifyNursePrice(player[myPlayer], LocalPlayer.TalkNPC, health, removeDebuffs, ref num5);
 +
- 		if (mouseItem.IsTheSameAs(currentRecipe.createItem) && mouseItem.stack + currentRecipe.createItem.stack <= mouseItem.maxStack)
- 			return true;
+ 		if (num5 < 0)
+ 			num5 = 0;
  
-@@ -34530,20 +_,43 @@
+@@ -34509,12 +_,19 @@
+ 	public static int GetNurseHealCost()
+ 	{
++		// Patch note: 'num' used much below in PostNurseHeal call.
+ 		int num = player[myPlayer].statLifeMax2 - player[myPlayer].statLife;
+ 		for (int i = 0; i < Player.maxBuffs; i++) {
+ 			int num2 = player[myPlayer].buffType[i];
+-			if (debuff[num2] && player[myPlayer].buffTime[i] > 60 && (num2 < 0 || num2 >= BuffID.Count || !BuffID.Sets.NurseCannotRemoveDebuff[num2]))
++			if (debuff[num2] && player[myPlayer].buffTime[i] > 60 && (num2 < 0 || !BuffID.Sets.NurseCannotRemoveDebuff[num2]))
+ 				num += 100;
+ 		}
  
- 		UILinkPointNavigator.SetPosition(6000 + gamepadPointOffset, vector + rectangle.Size() * 0.65f);
- 	}
-+	*/
++		// TML locals.
++		int health = LocalPlayer.statLifeMax2 - LocalPlayer.statLife;
++		bool removeDebuffs = true;
++		string reason = "";
++		bool canHeal = true;
++
+ 		if (NPC.downedGolemBoss)
+ 			num *= 200;
+ 		else if (NPC.downedPlantBoss)
+@@ -34533,17 +_,39 @@
  
  	public static void CraftItem(Recipe r)
  	{
@@ -4907,53 +4667,6 @@
  		UILinkPointNavigator.SetPosition(2503, vector2 + stringSize * 0.5f);
  		UILinkPointNavigator.Shortcuts.NPCCHAT_ButtonsRight2 = true;
  	}
-@@ -35079,13 +_,46 @@
- 			return drawBuffText;
- 
- 		Microsoft.Xna.Framework.Color color = new Microsoft.Xna.Framework.Color(buffAlpha[buffSlotOnPlayer], buffAlpha[buffSlotOnPlayer], buffAlpha[buffSlotOnPlayer], buffAlpha[buffSlotOnPlayer]);
-+
-+		/*
- 		spriteBatch.Draw(TextureAssets.Buff[num].Value, new Vector2(x, y), new Microsoft.Xna.Framework.Rectangle(0, 0, TextureAssets.Buff[num].Width(), TextureAssets.Buff[num].Height()), color, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
-+		*/
-+
-+		// Drawing made customizable through tML hooks
-+		Asset<Texture2D> buffAsset = TextureAssets.Buff[num];
-+		Texture2D texture = buffAsset.Value;
-+		Vector2 drawPosition = new Vector2(x, y);
-+		int width = buffAsset.Width();
-+		int height = buffAsset.Height();
-+		Vector2 textPosition = new Vector2(x, y + height);
-+		Rectangle sourceRectangle = new Rectangle(0, 0, width, height);
-+		Rectangle mouseRectangle = new Rectangle(x, y, width, height);
-+		Color drawColor = color;
-+
-+		BuffDrawParams drawParams = new BuffDrawParams(texture, drawPosition, textPosition, sourceRectangle, mouseRectangle, drawColor);
-+
-+		bool skipped = !BuffLoader.PreDraw(spriteBatch, num, buffSlotOnPlayer, ref drawParams);
-+
-+		(texture, drawPosition, textPosition, sourceRectangle, mouseRectangle, drawColor) = drawParams;
-+
-+		if (!skipped)
-+			spriteBatch.Draw(texture, drawPosition, sourceRectangle, drawColor, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
-+
-+		BuffLoader.PostDraw(spriteBatch, num, buffSlotOnPlayer, drawParams);
-+
- 		if (TryGetBuffTime(buffSlotOnPlayer, out var buffTimeValue) && buffTimeValue > 2) {
- 			string text = Lang.LocalizedDuration(new TimeSpan(0, 0, buffTimeValue / 60), abbreviated: true, showAllAvailableUnits: false);
-+
-+			/*
- 			spriteBatch.DrawString(FontAssets.ItemStack.Value, text, new Vector2(x, y + TextureAssets.Buff[num].Height()), color, 0f, default(Vector2), 0.8f, SpriteEffects.None, 0f);
-+			*/
-+			spriteBatch.DrawString(FontAssets.ItemStack.Value, text, textPosition, color, 0f, default(Vector2), 0.8f, SpriteEffects.None, 0f);
- 		}
- 
-+		/*
- 		if (mouseX < x + TextureAssets.Buff[num].Width() && mouseY < y + TextureAssets.Buff[num].Height() && mouseX > x && mouseY > y) {
-+		*/
-+		if (mouseRectangle.Contains(new Point(mouseX, mouseY))) {
- 			drawBuffText = buffSlotOnPlayer;
- 			buffAlpha[buffSlotOnPlayer] += 0.1f;
- 			bool flag = mouseRight && mouseRightRelease;
 @@ -35397,8 +_,12 @@
  			}
  		}
@@ -5071,6 +4784,69 @@
  		int num52 = (screenHeight - 600) / 2;
  		int middleY = (int)((float)screenHeight / 600f * 250f);
  		if (screenHeight < 700) {
+@@ -35867,11 +_,21 @@
+ 				string text = Lang.inter[46].Value + ": ";
+ 				if (reforgeItem.type > 0) {
+ 					long num55 = (long)reforgeItem.value * (long)reforgeItem.stack;
++
++					bool canApplyDiscount = true;
++					if (!ItemLoader.ReforgePrice(reforgeItem, ref num55, ref canApplyDiscount))
++						goto skipVanillaPricing;
++
++					/*
+ 					if (player[myPlayer].discountAvailable)
++					*/
++					if (canApplyDiscount && LocalPlayer.discountAvailable)
+ 						num55 = (long)((double)num55 * 0.8);
+ 
+ 					num55 = (long)((float)num55 * player[myPlayer].currentShoppingSettings.PriceAdjustment);
+ 					num55 /= 3;
++					skipVanillaPricing:
++
+ 					string text2 = "";
+ 					long num56 = 0L;
+ 					long num57 = 0L;
+@@ -35930,3 +_,8 @@
+ 						mouseReforge = true;
+ 						player[myPlayer].mouseInterface = true;
++
++						/*
+ 						if (mouseLeftRelease && mouseLeft && reforgeCooldown <= 0 && player[myPlayer].BuyItem(num55))
++						*/
++						if (mouseLeftRelease && mouseLeft && player[myPlayer].CanAfford(num55) && ItemLoader.CanReforge(reforgeItem)) {
++							player[myPlayer].BuyItem(num55);
+@@ -35973,3 +_,7 @@
+ 		CreativeMenu.Draw(spriteBatch);
+ 		bool flag9 = CreativeMenu.Enabled && !CreativeMenu.Blocked;
++
++		// Added by TML.
++		flag9 |= hidePlayerCraftingMenu;
++
+ 		if (NewCraftingUI.Visible) {
+@@ -35994,6 +_,9 @@
+ 			if (!InGuideCraftMenu)
+ 				bannerUI.DrawGridToggle(spriteBatch, num52);
+ 		}
+ 
++		// Added by TML
++		hidePlayerCraftingMenu = false;
++
+ 		if (PipsUseGrid && !flag9) {
+ 			if (InPipCrafting)
+@@ -36153,8 +_,13 @@
+ 
+ 	private static void ReforgeItemInReforgeSlot()
+ 	{
++		ItemLoader.PreReforge(reforgeItem); // After BuyItem just in case
++
+ 		reforgeItem.ResetPrefix();
+ 		reforgeItem.Prefix(-2, out var rolledPrefixIsTopTier);
++		
++		ItemLoader.PostReforge(reforgeItem);
++		
+ 		PopupText.NewText(rolledPrefixIsTopTier ? PopupTextContext.ItemReforge_Best : PopupTextContext.ItemReforge, reforgeItem, LocalPlayer.Center, reforgeItem.stack, noStack: true);
+ 		if (rolledPrefixIsTopTier) {
+ 			SoundEngine.PlaySound(SoundID.BestReforge);
 @@ -36251,8 +_,11 @@
  
  		for (int j = 0; j < maxNPCs; j++) {
@@ -5120,6 +4896,17 @@
  			if (num == item.type && TryGetAmmo(item, out var ammoItem, out var ammoColor, out var ammoScale, out var ammoOffset)) {
  				float scale = num2 * ammoScale;
  				int type = ammoItem.type;
+@@ -36527,6 +_,10 @@
+ 		if (item.IsAir)
+ 			return true;
+ 
++		// #StackablePrefixWeapons: Gameplay impact: Prevent crafted prefix application by blocking crafting if mouse item is prefixed
++		if (mouseItem.maxStack > 1 && mouseItem.AllowReforgeForStackableItem && mouseItem.prefix > 0)
++			return false;
++
+ 		if (!item.CanHavePrefixes() && Item.CanStack(item, currentRecipe.createItem) && item.stack + currentRecipe.createItem.stack <= item.maxStack)
+ 			return true;
+ 
 @@ -36556,6 +_,11 @@
  			inventoryScale = 0.755f;
  			num += 5;
@@ -5141,6 +4928,13 @@
  	private bool DrawBlockReplacementIcon(int pivotTopLeftX, int pivotTopLeftY, bool pushSideToolsUp, int gamepadPointOffset)
  	{
  		if (!playerInventory)
+@@ -36772,5 +_,6 @@
+ 		UILinkPointNavigator.SetPosition(6000 + gamepadPointOffset, vector + rectangle.Size() * 0.65f);
+ 		return flag2;
+ 	}
++	*/
+ 
+ 	public static bool LocalPlayerHasPendingInventoryActions()
 @@ -37010,6 +_,10 @@
  					if (item[i].expert)
  						rare = -12;
@@ -5259,6 +5053,57 @@
  	public static int DrawBuffIcon(int drawBuffText, int buffSlotOnPlayer, int x, int y)
  	{
  		int num = player[myPlayer].buffType[buffSlotOnPlayer];
+@@ -37360,18 +_,50 @@
++		if (num == 0)
+ 			return drawBuffText;
+ 
+ 		Microsoft.Xna.Framework.Color color = new Microsoft.Xna.Framework.Color(buffAlpha[buffSlotOnPlayer], buffAlpha[buffSlotOnPlayer], buffAlpha[buffSlotOnPlayer], buffAlpha[buffSlotOnPlayer]);
++
++		/*
+ 		spriteBatch.Draw(TextureAssets.Buff[num].Value, new Vector2(x, y), new Microsoft.Xna.Framework.Rectangle(0, 0, TextureAssets.Buff[num].Width(), TextureAssets.Buff[num].Height()), color, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
++		*/
+ 		string text = null;
+ 		if (BuffID.Sets.BuffTextHandlers.TryGetValue(num, out var value))
+ 			text = value.HandleBuffText();
+ 
++		// Drawing made customizable through tML hooks
++		Asset<Texture2D> buffAsset = TextureAssets.Buff[num];
++		Texture2D texture = buffAsset.Value;
++		Vector2 drawPosition = new Vector2(x, y);
++		int width = buffAsset.Width();
++		int height = buffAsset.Height();
++		Vector2 textPosition = new Vector2(x, y + height);
++		Rectangle sourceRectangle = new Rectangle(0, 0, width, height);
++		Rectangle mouseRectangle = new Rectangle(x, y, width, height);
++		Color drawColor = color;
++
++		BuffDrawParams drawParams = new BuffDrawParams(texture, drawPosition, textPosition, sourceRectangle, mouseRectangle, drawColor);
++
++		bool skipped = !BuffLoader.PreDraw(spriteBatch, num, buffSlotOnPlayer, ref drawParams);
++
++		(texture, drawPosition, textPosition, sourceRectangle, mouseRectangle, drawColor) = drawParams;
++
++		if (!skipped)
++			spriteBatch.Draw(texture, drawPosition, sourceRectangle, drawColor, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
++
++		BuffLoader.PostDraw(spriteBatch, num, buffSlotOnPlayer, drawParams);
++
+ 		if (text == null && TryGetBuffTime(buffSlotOnPlayer, out var buffTimeValue) && buffTimeValue > 2)
+ 			text = Lang.LocalizedDuration(new TimeSpan(0, 0, buffTimeValue / 60), abbreviated: true, showAllAvailableUnits: false);
+ 
+ 		if (text != null)
++			/*
+ 			spriteBatch.DrawString(FontAssets.ItemStack.Value, text, new Vector2(x, y + TextureAssets.Buff[num].Height()), color, 0f, default(Vector2), 0.8f, SpriteEffects.None, 0f);
++			*/
++			spriteBatch.DrawString(FontAssets.ItemStack.Value, text, textPosition, color, 0f, default(Vector2), 0.8f, SpriteEffects.None, 0f);
+ 
++		/*
+ 		if (mouseX < x + TextureAssets.Buff[num].Width() && mouseY < y + TextureAssets.Buff[num].Height() && mouseX > x && mouseY > y && !PlayerInput.IgnoreMouseInterface) {
++		*/
++		if (mouseRectangle.Contains(new Point(mouseX, mouseY)) && !PlayerInput.IgnoreMouseInterface) {
+ 			drawBuffText = buffSlotOnPlayer;
+ 			buffAlpha[buffSlotOnPlayer] += 0.1f;
+ 			bool flag = mouseRight && mouseRightRelease;
 @@ -37385,6 +_,9 @@
  			}
  
