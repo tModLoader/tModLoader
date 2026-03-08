@@ -1,23 +1,30 @@
 name: Build tModLoader
-#NOTE: this doesn't auto sync to other branches. 
+#NOTE: this doesn't auto sync to other branches.
 
 env:
-    DevBranch: 1.4.4
-    StableBranch: stable
-    PreviewBranch: preview
-    TERRARIA_VERSION: 1449
-    # Note that Is Release also has to be updated at the IF level for a Job. IE both documentation and steam push
-    IsRelease: ${{ github.event_name == 'push' && (endsWith(github.ref, 'preview') || endsWith(github.ref, 'stable')) }}
-    IsVersioned: ${{ github.event_name == 'push' && (endsWith(github.ref, 'preview') || endsWith(github.ref, 'stable') || endsWith(github.ref, '1.4.4'))  }}
-    RunDiscordHook: true
-    ForcedDotnetSdkVersion: 8.0.203
+  DevBranch: 1.4.4
+  StableBranch: stable
+  PreviewBranch: preview
+  TERRARIA_VERSION: 1449
+  # Note that Is Release also has to be updated at the IF level for a Job. IE both documentation and steam push
+  IsRelease: ${{ github.event_name == 'push' && (endsWith(github.ref, 'preview') || endsWith(github.ref, 'stable')) }}
+  IsVersioned: ${{ github.event_name == 'push' && (endsWith(github.ref, 'preview') || endsWith(github.ref, 'stable') || endsWith(github.ref, '1.4.4'))  }}
+  RunDiscordHook: true
+  ForcedDotnetSdkVersion: 8.0.203
 
-# Controls when the action will run. 
+# Controls when the action will run.
 on:
   # This workflow runs when a push to major branch happens, or when a label is added to a pull request targetting major branch.
   push:
     # note these cannot use the env.Branch variables
-    branches: [githubActionsMaintenanceCheckoutCacheUpdates, stable, preview, 1.4.4, feature/dotnet8]
+    branches:
+      [
+        githubActionsMaintenanceCheckoutCacheUpdates,
+        stable,
+        preview,
+        1.4.4,
+        feature/dotnet8,
+      ]
   pull_request_target:
     types: [labeled]
     branches: [preview, stable, 1.4.4]
@@ -31,7 +38,7 @@ jobs:
     # The type of runner that the job will run on
     runs-on: windows-latest
     # Make sure not to run this job on other labels
-    if: github.event_name == 'push' || contains(github.event.pull_request.labels.*.name, 'Safe to Test')
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch' || contains(github.event.pull_request.labels.*.name, 'Safe to Test')
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -39,65 +46,24 @@ jobs:
       - name: Check out base branch
         uses: actions/checkout@v4
         with:
-          ref: ${{github.ref}}
+          ref: "fix-hash"
           persist-credentials: false
           fetch-depth: 0
-      
-      # Re-calculate the versioning of tModLoader
-      - name: Update Versioning
+
+      # Fixed version constant
+      - name: Set fixed version
         id: version
-        if: env.IsVersioned == 'true'
         shell: bash
         run: |
-          echo "Attempting get previous version id"
-          version=$(git describe --tags --abbrev=0)
-          
-          echo "Get the latest version if there is multiple tags"
-          version=$(git tag --points-at $version | tail -1)
-          
-          echo "Previous Version is: $version"
-          regex="^v([0-9]+).([0-9]+).([0-9]+).([0-9]+)?$"
-          if [[ $version =~ $regex ]] ; then
-            year="${BASH_REMATCH[1]}"
-            month="${BASH_REMATCH[2]}"
-            feature="${BASH_REMATCH[3]}"
-            patch="${BASH_REMATCH[4]}"
-            oldate="$year.$month"
-          else
-            echo "Previous version '$version' is not a valid version"
-            exit 1
-          fi
-          
-          echo "Checking Version Updates"
-          newdt="$(date +%Y.%m)"
-          if [[ "refs/heads/${{env.DevBranch}}" = $branch && ! "$oldate" = "$newdt" ]] ; then
-            echo "Checking Version Updates for ${{env.DevBranch}}"
-            echo "Rolling Forward the Month... from '$oldate' to '$newdt'"
-            oldate="$newdt"
-            feature=1
-            patch=0
-          elif [[ "refs/heads/${{env.StableBranch}}" = $branch && $feature = 2 || "refs/heads/${{env.PreviewBranch}}" = $branch && $feature = 1 ]] ; then
-             echo "Checking Version Updates for Rollover"
-             ((++feature))
-             patch=0
-          else
-            echo "Rolling Forward the Patch #..."
-            ((++patch))
-          fi
-          
-          version="$oldate.$feature.$patch"
-          echo "New version is '$version'"
-          echo "new_version=$version" >> $GITHUB_OUTPUT
-        env:
-          branch: ${{github.ref}}
-        
+          echo "new_version=v2026.01.3.2" >> $GITHUB_OUTPUT
+
         # Apply new Tag for the current commit
       - uses: mathieudutour/github-tag-action@v6.2
-        if: ${{ steps.version.outputs.new_version != null}}
+        if: false
         with:
-           custom_tag: ${{ steps.version.outputs.new_version }}
-           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      
+          custom_tag: ${{ steps.version.outputs.new_version }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       # Grab a Copy of Stable for determining what is the current stable version
       - name: Check out ${{env.StableBranch}} branch
         uses: actions/checkout@v4
@@ -105,7 +71,7 @@ jobs:
           ref: "${{env.StableBranch}}"
           persist-credentials: false
           fetch-depth: 0
-      
+
       # Determine current stable version
       - name: Stable Version Fetch
         id: StableVer
@@ -114,7 +80,7 @@ jobs:
         run: |
           echo "Fetching the ${{env.StableBranch}} version of tmodloader"
           version=$(git describe --tags --abbrev=0) || version=v0.0.0.0
-          
+
           regex="^v([0-9]+).([0-9]+).([0-9]+).([0-9]+)?$"
           if [[ $version =~ $regex ]] ; then
             year="${BASH_REMATCH[1]}"
@@ -126,18 +92,18 @@ jobs:
             echo "Previous version '$version' is not a valid version"
             exit 1
           fi
-          
+
           echo "Stable Version is '$stableVer'"
           echo "stable_version=$stableVer" >> $GITHUB_OUTPUT
-      
+
       # Get the base branch for build steps
       - name: Re:Check out base branch
         uses: actions/checkout@v4
         with:
-          ref: ${{github.ref}}
+          ref: "fix-hash"
           persist-credentials: false
           fetch-depth: 0
-      
+
       - name: Check out pull request code to separate folder
         uses: actions/checkout@v4
         if: github.event_name == 'pull_request_target'
@@ -189,7 +155,7 @@ jobs:
       - name: Install .NET SDKs
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '${{env.ForcedDotnetSdkVersion}}'
+          dotnet-version: "${{env.ForcedDotnetSdkVersion}}"
 
       # Runs a set of commands using the runners shell
       - name: Build script
@@ -197,7 +163,7 @@ jobs:
         shell: bash
         run: |
           echo CI setup for Terraria v$TERRARIA_VERSION
-          
+
           echo Default .NET version:
           dotnet --version
           echo Default .NET 'build' version:
@@ -213,20 +179,18 @@ jobs:
           dotnet --version
           echo Default .NET 'build' version:
           dotnet build --version --nologo
-          
+
           echo Downloading Terraria Server zip
           curl -s -L https://terraria.org/api/download/pc-dedicated-server/terraria-server-$TERRARIA_VERSION.zip -o terrariaserver.zip
           unzip -q terrariaserver.zip
-          
+
           # Extra file needed for client decomp which isn't embedded in the Terraria.exe, will be embedded in 1.4.5
           cp patches/Terraria/Terraria/Libraries/Common/SteelSeriesEngineWrapper.dll ./$TERRARIA_VERSION/Windows/SteelSeriesEngineWrapper.dll
-          
+
           echo ::group::Running setup-cli.bat
-          if [ ${{github.ref}} = 'refs/heads/${{env.StableBranch}}' ] ; then
-            tmlVersionDefine=TML_$(cut -d '.' -f1 <<< $TMLVERSION)_$(cut -d '.' -f2 <<< $TMLVERSION)
-            echo "TMLVERSIONDefine: $tmlVersionDefine"
-            sed -i "s#<\!-- TML stable version define placeholder -->#<DefineConstants>\$(DefineConstants);$tmlVersionDefine</DefineConstants>#g" ./patches/tModLoader/Terraria/release_extras/tMLMod.targets
-          fi
+          tmlVersionDefine=TML_$(cut -d '.' -f1 <<< $TMLVERSION)_$(cut -d '.' -f2 <<< $TMLVERSION)
+          echo "TMLVERSIONDefine: $tmlVersionDefine"
+          sed -i "s#<\!-- TML stable version define placeholder -->#<DefineConstants>\$(DefineConstants);$tmlVersionDefine</DefineConstants>#g" ./patches/tModLoader/Terraria/release_extras/tMLMod.targets
 
           if [ ! -d "./src/decompiled" ]; then
             ./setup-cli.bat decompile --key $TERRARIA_OWNERSHIP_KEY --terraria-steam-dir ./$TERRARIA_VERSION/Windows --tml-dev-steam-dir steam_build --plain-progress -f --strict
@@ -237,25 +201,20 @@ jobs:
 
           ./setup-cli.bat regen-source --plain-progress -f --strict
           echo ::endgroup::
-          
+
           echo ::group::WorkspaceInfo.targets
           cat src/WorkspaceInfo.targets; echo
           echo ::endgroup::
-          
+
           echo ::group::Creating tModLoader cache zip file
           7z a tModLoader.zip ./src/tModLoader/
           gpg --quiet --batch --yes --symmetric --cipher-algo AES256 --passphrase="$SETUP_ASSETS_PASSPHRASE" tModLoader.zip
           echo ::endgroup::
-          
+
           echo ::group::Giving Purpose         
-          if [ ${{github.ref}} = 'refs/heads/${{env.StableBranch}}' ] ; then
-            export BUILDPURPOSE="Stable"
-          fi
-          if [ ${{github.ref}} = 'refs/heads/${{env.PreviewBranch}}' ] ; then
-            export BUILDPURPOSE="Preview"
-          fi
+          export BUILDPURPOSE="Stable"
           echo ::endgroup::
-          
+
           echo ::group::Building Release
           dotnet clean src/tModLoader/Terraria/Terraria.csproj -c Release --nologo -v q
           (
@@ -268,28 +227,28 @@ jobs:
             [[ $err -ne 0 ]] && echo Uploading msbuild.binlog && curl --upload-file ./msbuild.binlog http://transfer.sh/msbuild.binlog;
             exit $err
           )
-          
+
           mkdir -p artifacts/Release
           cp -r steam_build/. artifacts/Release
-          
+
           echo ::endgroup::
-          
+
           echo Cleaning up output directory in-between builds...
           rm -rf steam_build
-          
+
           echo ::group::Building Debug
           dotnet clean src/tModLoader/Terraria/Terraria.csproj -c Debug --nologo -v q
           dotnet build src/tModLoader/Terraria/Terraria.csproj -c Debug --nologo -v q
-          
+
           mkdir -p artifacts/Debug
           cp -r steam_build/. artifacts/Debug
           echo ::endgroup::
-          
+
           echo ::group::Creating decompiled cache zip file
           7z a decompiled.zip ./src/decompiled/
           gpg --quiet --batch --yes --symmetric --cipher-algo AES256 --passphrase="$SETUP_ASSETS_PASSPHRASE" decompiled.zip
           echo ::endgroup::
-          
+
           echo ::group::Creating RecentGitHubCommits.txt
           git log -10 --format=oneline
           git log -10 --format=oneline > artifacts/Debug/RecentGitHubCommits.txt
@@ -301,80 +260,80 @@ jobs:
           HEAD_SHA: ${{ github.event.pull_request.head.sha }}
           TMLVERSION: ${{ steps.version.outputs.new_version }}
           STABLEVERSION: ${{ steps.StableVer.outputs.stable_version }}
-                    
+
       #- name: Upload Debug Build Artifact
       #  uses: actions/upload-artifact@v4
       #  with:
       #    name: Debug Build
       #    path: |
       #      ./artifacts/Debug/
-            
+
       - name: Upload Release Build Artifact
         uses: actions/upload-artifact@v4
         with:
           name: Release Build
           path: |
             ./artifacts/Release/
-           
+
       - name: Upload temporary encrypted src artifact
         if: env.IsVersioned == 'true'
         uses: actions/upload-artifact@v4
         with:
           name: temporary-src
           path: tModLoader.zip.gpg
-      
+
       #Used for CI pushes of ExampleMod. Has to utilized during the build steps
       - name: Setup steamcmd
         id: setupsteam
         uses: CyberAndrii/setup-steamcmd@v1
-        
+
       - name: Build ExampleMod
         shell: bash
         run: |
           echo ::group::Getting current published ExampleMod
           publishid="2615761271"
           echo "attempting download ExampleMod"
-          
+
           steamapps=$(pwd)/ee
           steamapps=$(cygpath -w $steamapps)
-          
+
           ${{ steps.setupsteam.outputs.executable }} +force_install_dir $steamapps +login anonymous +workshop_download_item 1281930 $publishid +quit
           echo "downloaded ExampleMod"
-          
+
           publishedfolder=$steamapps/steamapps/workshop/content/1281930/$publishid
           echo "publishedModFiles are at:"
           echo $publishedfolder
-          
+
           if [ ! -d "$publishedfolder" ] ; then
             echo "Files not Found. Steam failed to download. Try again later."
             exit -12390
           fi
           echo ::endgroup::
-          
+
           echo Adding version info to ExampleMod
           echo -e "\nversion = ${{ steps.version.outputs.new_version }}" >> ./ExampleMod/build.txt
-          
+
           #pwd gives an absolute path, required for -tmlsavedirectory as the build command is executed from the steam/deployment dir          
           ModloaderDir=$(pwd)/local/ModLoader
           echo ModloaderDir is: $ModloaderDir
           mkdir -p $ModloaderDir
-          
+
           if [ ${{env.IsRelease}} = 'true' ] ; then
             ciprep="-ciprep \"Automatic update from GitHub for tModLoader v{tMLVersion}: ${{ github.event.compare }}\" -publishedmodfiles \"$(cygpath -w $publishedfolder)\" -uploadfolder \"/home/runner/work/tModLoader/tModLoader/artifacts/ExampleMod\""
           else
             ciprep=""
           fi
-          
+
           export ExtraBuildModFlags="$ciprep -tmlsavedirectory \"$(cygpath -w $ModloaderDir)\""
           echo ExtraBuildModFlags is: $ExtraBuildModFlags
-          
+
           echo ::group::Building ExampleMod
           dotnet build ExampleMod/ExampleMod.csproj --nologo
           echo ::endgroup::
-          
+
           mkdir -p artifacts/Mods
           cp -r $ModloaderDir/Mods/. artifacts/Mods
-          
+
           echo ::group::Testing Example Mod build from "Mod Sources" dir  
           cp -r ExampleMod "$ModloaderDir/ModSources/ExampleMod"
           cd "$ModloaderDir/ModSources/ExampleMod"
@@ -383,19 +342,19 @@ jobs:
           echo ::endgroup::
         env:
           TMLVERSION: ${{ steps.version.outputs.new_version }}
-          
+
       - name: Upload ExampleMod Build Artifact
         uses: actions/upload-artifact@v4
         with:
           name: ExampleMod Build
           path: |
             ./artifacts/Mods/
-            
+
       - name: List final directory and file structure
         if: always()
         shell: pwsh
         run: tree /f /a
-        
+
       - name: Post push report to 1-4-nightly-builds on Discord
         uses: sarisia/actions-status-discord@v1
         if: always() && github.event_name == 'push' && env.RunDiscordHook
@@ -428,12 +387,12 @@ jobs:
         with:
           persist-credentials: false
           fetch-depth: 0
-          
+
       - name: Download temporary encrypted src artifact from build job
         uses: actions/download-artifact@v4
         with:
           name: temporary-src
-          
+
       - name: Restore tModLoader folder from artifact
         shell: bash
         run: |
@@ -447,16 +406,16 @@ jobs:
           cd ..
         env:
           SETUP_ASSETS_PASSPHRASE: ${{ secrets.SETUP_ASSETS_PASSPHRASE }}
-          
+
       - name: Update version in Doxyfile
         shell: bash
         run: |
           echo "Attempting get previous version id"
           version=$(git describe --tags --abbrev=0)
-          
+
           echo "Get the latest version if there is multiple tags"
           version=$(git tag --points-at $version | tail -1)
-          
+
           echo "Current Version is: $version"
           regex="^v([0-9]+).([0-9]+).([0-9]+).([0-9]+)?$"
           if [[ $version =~ $regex ]] ; then
@@ -469,23 +428,23 @@ jobs:
         working-directory: solutions/documentation
         env:
           branch: ${{github.ref}}
-          
+
       - name: Generate Documentation
         uses: mattnotmitt/doxygen-action@v1.9.4
         with:
-          working-directory: 'solutions/documentation/'
-          doxyfile-path: 'Doxyfile'
-          
+          working-directory: "solutions/documentation/"
+          doxyfile-path: "Doxyfile"
+
       - name: View resulting files
         run: |
           echo pwd is: ${PWD}
           ls -alhR
         working-directory: solutions/documentation
-        
+
       - uses: geekyeggo/delete-artifact@v5
         with:
           name: temporary-src
-          
+
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
@@ -495,11 +454,9 @@ jobs:
           commit_message: "docs for ${{ github.ref }} commit:"
 
   deploy:
+    if: false # disabled, no Steam upload required
     needs: build
-    # We push a release only on push events to the stable/preview branch that build correctly
-    # Note this line doesn't have access to env variable yet since it is before the runner is established
-    if: ${{ github.event_name == 'push' && (endsWith(github.ref, 'preview') || endsWith(github.ref, 'stable')) }}
-    name: Deploy to Steam
+    name: (disabled) Deploy to Steam
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -508,51 +465,51 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          
+
       - name: Detect ExampleMod Changed Files
         id: changed-files-examplemod
         uses: tj-actions/changed-files@v46.0.3
         with:
           files: |
             ExampleMod
-            
+
       - name: List all changed ExampleMod files
         run: |
           for file in "${{ steps.changed-files-examplemod.outputs.all_modified_files }}"; do
             echo "$file was modified"
           done
-          
+
       - name: Detect patches Changed Files
         id: changed-files-patches
         uses: tj-actions/changed-files@v46.0.3
         with:
           files: |
             patches
-            
+
       - name: List all changed patches
         run: |
           for file in "${{ steps.changed-files-patches.outputs.all_modified_files }}"; do
             echo "$file was modified"
           done
-          
+
       - name: Download build artifact from build job
         uses: actions/download-artifact@v4
         with:
-          # Change this next line to switch between uploading Release and Debug if desired. 
+          # Change this next line to switch between uploading Release and Debug if desired.
           name: Release Build
           path: artifacts/Build
-          
+
       - name: View build artifact files
         run: |
           echo pwd is: ${PWD}
           ls -alhR
         working-directory: artifacts/Build
-        
+
         # needed for publishing tML, ExampleMod
       - name: Setup steamcmd
         id: setupsteam
         uses: CyberAndrii/setup-steamcmd@v1
-        
+
         # for logging in to Steam CMD
       - name: Setup Authentication Files
         shell: bash
@@ -577,35 +534,26 @@ jobs:
         env:
           STEAM_CONFIG_VDF: ${{ secrets.STEAM_CONFIG_VDF }}
           STEAMCMDDIR: ${{ steps.setupsteam.outputs.directory }}
-      
+
       # IF statements are for a bug with "git describe --tags --abbrev=0" returning the oldest of two tags on the same commit instead of newest
       # Needs a bug report to GIT ?
-      - name: Get Version tag for Release
+      - name: Set fixed release version
         id: version2
         shell: bash
         run: |
-          echo "Attempting get previous version id"
-          version=$(git describe --tags --abbrev=0)
-          
-          echo "Get the latest version if there is multiple tags"
-          version=$(git tag --points-at $version | tail -1)
-          
-          echo "Current Version is: $version"
-          echo "new_version=$version" >> $GITHUB_OUTPUT
-        env:
-          branch: ${{github.ref}}
-      
+          echo "new_version=v2026.01.3.2" >> $GITHUB_OUTPUT
+
       # Publish new version of tModLoader to Steam
       # If this step is failing for preview builds (Failed to commit build), we forgot to add a new branch for this month on Steam. (exit code 6)
       # If this step is failing with "Logging in user '***' to Steam Public...ERROR (License expired)", STEAM_CONFIG_VDF needs to be refreshed. (exit code 5)
-      - name: Attempt run_app_build_http 
+      - name: Attempt run_app_build_http
         shell: bash
         run: |
           echo "Downloading windows dotnet install zip"
           dotnet_version=$(sed -n 's/^.*"version": "\(.*\)"/\1/p' <./artifacts/Build/tModLoader.runtimeconfig.json)
           export dotnet_version=${dotnet_version%$'\r'}
           wget https://dotnetcli.azureedge.net/dotnet/Runtime/$dotnet_version/dotnet-runtime-$dotnet_version-win-x64.zip -O ./artifacts/Build/LaunchUtils/dotnet-runtime-$dotnet_version-win-x64.zip
-          
+
           mkdir artifacts/shared
           echo pwd is: ${PWD}
           echo "Listing manifests directory"
@@ -618,33 +566,33 @@ jobs:
             manifesto=$manifesto/${{env.PreviewBranch}}.vdf
             sed -i -e "s/1.4.4-preview/Preview-${version:0:8}/g" $manifesto
           fi
-          
+
           sed -i -e "s/Auto-Release/Auto-Release ($version)/g" $manifesto
           steamcmd +login "${{ secrets.STEAM_USERNAME }}" +run_app_build_http $manifesto +quit
           echo "Listing BuildOutput directory"
           ls -alhR ./BuildOutput
           echo "cat BuildOutput directory contents"
           cat BuildOutput/*.log
-          
+
           rm ./artifacts/Build/LaunchUtils/dotnet-runtime-$dotnet_version-win-x64.zip
         env:
           version: ${{ steps.version2.outputs.new_version }}
-          
+
       - name: Download ExampleMod build artifact from build job
         # This should hopefully always work since this job shouldn't even run if the build job failed due to ExampleMod not compiling.
         uses: actions/download-artifact@v4
         with:
           name: ExampleMod Build
           path: artifacts/ExampleMod
-          
+
       - name: View ExampleMod build artifact files
         run: |
           echo pwd is: ${PWD}
           ls -alhR
         working-directory: artifacts/ExampleMod
-        
+
         # Publish new version of ExampleMod using files from Build Output
-      - name: Attempt workshop_build_item 
+      - name: Attempt workshop_build_item
         shell: bash
         run: |
           echo Changes detected in ExampleMod folder, attempting to publish ExampleMod to workshop
@@ -656,26 +604,26 @@ jobs:
           cat publish.vdf
           echo workshop.json contents:
           cat Workshop/workshop.json
-          
+
           echo "Publishing ExampleMod"
           steamcmd +login "${{ secrets.STEAM_USERNAME }}" +workshop_build_item "${PWD}/publish.vdf" +quit
           echo publish.vdf contents:
           cat publish.vdf
           echo Done
         working-directory: artifacts/ExampleMod
-        
+
       # Zip for making a Release Zip
       - name: Install Zip
         if: env.IsRelease == 'true'
         uses: montudor/action-zip@v1
-      
+
       # Zip all files for Releases
       - name: Zip Artifacts
         working-directory: /home/runner/work/tModLoader/tModLoader/artifacts/
         run: |
           cd ExampleMod; zip -qq -r ../ExampleMod.zip .; cd ..
           cd Build; zip -qq -r ../tModLoader.zip .; cd ..
-      
+
       # Make a Release on Github
       - name: Make a release
         uses: ncipollo/release-action@v1
@@ -688,5 +636,4 @@ jobs:
           tag: ${{ steps.version2.outputs.new_version }}
           prerelease: ${{ contains(github.ref, 'preview') }}
           # No longer automatically make latest since we don't always release on Steam at the exact time, which can cause issues for manage-tModLoaderServer.sh servers. TML Team member will edit the GitHub release when Steam release goes live.
-          # makeLatest: ${{ contains(github.ref, 'stable') }} 
-          
+          # makeLatest: ${{ contains(github.ref, 'stable') }}
