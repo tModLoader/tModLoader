@@ -245,7 +245,11 @@ public static class ModNet
 		if (clientSideMods.Any())
 			Logging.tML.Debug($"Client Side mods: " + string.Join(", ", clientSideMods.Select(x => $"{x.Name} ({x.DisplayNameClean})")));
 
-		var toDisable = clientMods.Where(m => m.Side == ModSide.Both).Select(m => m.Name).Except(SyncModHeaders.Select(h => h.name));
+		var toDisableCache = clientMods.Where(m => m.Side == ModSide.Both).Select(m => m.Name).Except(SyncModHeaders.Select(h => h.name)).ToHashSet();
+		HashSet<string> toDisable = [.. toDisableCache];
+		foreach (var name in toDisableCache) {
+			ModLoader.CollectModAndDependents(modFiles, name, toDisable);
+		}
 		foreach (var name in toDisable) {
 			needsReload = true;
 			reloadRequiredExplanationEntries.Add(new ReloadRequiredExplanation(4, name, modFiles.Where(mod => mod.Name == name).OrderByDescending(mod => mod.Version).FirstOrDefault(), Language.GetTextValue("tModLoader.ReloadRequiredExplanationDisable", "FFA07A")));

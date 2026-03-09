@@ -192,18 +192,8 @@ public static class ModLoader
 				msg += "\n" + Language.GetTextValue("tModLoader.LoadErrorContentType", contentType.FullName);
 
 			foreach (var mod in responsibleMods) {
-				DisableModAndDependents(mod);
-			}
-			void DisableModAndDependents(string mod)
-			{
-				DisableMod(mod);
-
-				var dependents = availableMods
-					.Where(m => IsEnabled(m.Name) && m.properties.RefNames(includeWeak: false).Any(refName => refName.Equals(mod)))
-					.Select(m => m.Name);
-
-				foreach (var dependent in dependents) {
-					DisableModAndDependents(dependent);
+				foreach(string modAndDependent in CollectModAndDependents(availableMods, mod)) {
+					ModLoader.DisableMod(modAndDependent);
 				}
 			}
 
@@ -220,6 +210,26 @@ public static class ModLoader
 			//TODO: FUTURE
 			//GOGModUpdateChecker.CheckModUpdates();
 		}
+	}
+
+	internal static void CollectModAndDependents(LocalMod[] modFiles, string name, ISet<string> result) // Note: Recursive
+	{
+		result.Add(name);
+		var dependents = modFiles
+			.Where(m => ModLoader.IsEnabled(m.Name) &&
+					m.properties.RefNames(includeWeak: false).Any(refName => refName.Equals(name)))
+			.Select(m => m.Name);
+
+		foreach (var dependent in dependents) {
+			CollectModAndDependents(modFiles, dependent, result);
+		}
+	}
+
+	internal static HashSet<string> CollectModAndDependents(LocalMod[] modFiles, string name) // Note: Recursive
+	{
+		var set = new HashSet<string>(8);
+		CollectModAndDependents(modFiles, name, set);
+		return set;
 	}
 
 	internal static void Reload()
