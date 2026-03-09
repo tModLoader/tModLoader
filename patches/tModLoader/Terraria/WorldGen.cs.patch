@@ -3218,26 +3218,6 @@
  			double num21 = (double)Main.maxTilesX / 4200.0;
  			num21 *= (double)Star.starfallBoost;
  			if ((double)Main.rand.Next(8000) < 10.0 * num21) {
-@@ -60345,13 +_,19 @@
- 
- 								TileMergeAttempt(0, TileID.Sets.Dirt, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
- 								switch (num) {
-+									/*
- 									case 147:
-+									*/
-+									case int _ when TileID.Sets.Snow[num]:
- 										TileMergeAttempt(num, Main.tileBrick, TileID.Sets.Ices, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
- 										break;
-+									/*
- 									case 161:
- 									case 163:
- 									case 164:
- 									case 200:
-+									*/
-+									case int _ when TileID.Sets.Ices[num]:
- 										TileMergeAttempt(num, Main.tileBrick, TileID.Sets.Snow, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
- 										break;
- 									case 162:
 @@ -60348,8 +_,14 @@
  					num30 = (float)num22 / num30;
  					num28 *= num30;
@@ -3347,18 +3327,6 @@
  		int num = i - 1;
  		int num2 = i + 2;
  		int num3 = j - 1;
-@@ -61903,9 +_,9 @@
- 										}
- 									}
- 
--									if (num32 >= 0 && num32 < TileID.Count && TileID.Sets.Dirt[num32])
-+									if (num32 >= 0 && TileID.Sets.Dirt[num32])
- 										TileMergeAttempt(-2, TileID.Sets.Dirt, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
--									else if (num32 >= 0 && num32 < TileID.Count && TileID.Sets.Mud[num32])
-+									else if (num32 >= 0 && TileID.Sets.Mud[num32])
- 										TileMergeAttempt(-2, TileID.Sets.Mud, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
- 									else
- 										TileMergeAttempt(-2, num32, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
 @@ -63699,10 +_,12 @@
  
  			if (flag) {
@@ -3498,6 +3466,26 @@
  			if (Main.tileFrameImportant[type]) {
  				if (!noBreak || TileID.Sets.Torches[type] || TileID.Sets.FrameImportantEchoCulling[type])
  					TileFrameImportant(i, j, type, tile, resetFrame);
+@@ -68166,13 +_,19 @@
+ 
+ 						TileMergeAttempt(0, TileID.Sets.Dirt, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
+ 						switch (num) {
++							/*
+ 							case 147:
++							*/
++							case int _ when TileID.Sets.Snow[num]:
+ 								TileMergeAttempt(num, Main.tileBrick, TileID.Sets.DontMergeWithSnow, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
+ 								break;
++							/*
+ 							case 161:
+ 							case 163:
+ 							case 164:
+ 							case 200:
++							*/
++							case int _ when TileID.Sets.Ices[num]:
+ 								TileMergeAttempt(num, Main.tileBrick, TileID.Sets.Snow, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
+ 								break;
+ 							case 162:
 @@ -68187,10 +_,13 @@
  							default:
  								if (Main.tileBrick[num]) {
@@ -3614,6 +3602,18 @@
 +						TileLoader.ModifyFrameMerge(num, i, j, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
 +
  						bool flag7 = false;
+@@ -69782,9 +_,9 @@
+ 								}
+ 							}
+ 
+-							if (num11 >= 0 && num11 < TileID.Count && TileID.Sets.Dirt[num11])
++							if (num11 >= 0 && TileID.Sets.Dirt[num11])
+ 								TileMergeAttempt(-2, TileID.Sets.Dirt, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
+-							else if (num11 >= 0 && num11 < TileID.Count && TileID.Sets.Mud[num11])
++							else if (num11 >= 0 && TileID.Sets.Mud[num11])
+ 								TileMergeAttempt(-2, TileID.Sets.Mud, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
+ 							else
+ 								TileMergeAttempt(-2, num11, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
 @@ -70169,9 +_,12 @@
  										}
  									}

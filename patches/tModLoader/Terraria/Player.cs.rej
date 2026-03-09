@@ -1,3 +1,36 @@
+@@ -2753,7 +_,9 @@
+ 			Main.guideItem.position = base.Center;
+ 			Item item = GetItem(whoAmI, Main.guideItem, getItemInDropItemCheck);
+ 			if (item.stack > 0) {
++				//TODO: Replace with Item.DropItem?
+-				int num = Item.NewItem(GetItemSource_Misc(4), (int)position.X, (int)position.Y, width, height, item.type, item.stack, noBroadcast: false, Main.guideItem.prefix, noGrabDelay: true);
++				// int num = //Item.NewItem(GetItemSource_Misc(4), (int)position.X, (int)position.Y, width, height, item.type, item.stack, noBroadcast: false, Main.guideItem.prefix, noGrabDelay: true);
++				int num = Item.NewItem(new EntitySource_OverfullInventory(this), position, width, height, item, noGrabDelay: true);
+ 				Main.item[num].newAndShiny = false;
+ 				if (Main.netMode == 1)
+ 					NetMessage.SendData(21, -1, -1, null, num, 1f);
+@@ -2766,7 +_,9 @@
+ 			Main.reforgeItem.position = base.Center;
+ 			Item item2 = GetItem(whoAmI, Main.reforgeItem, getItemInDropItemCheck);
+ 			if (item2.stack > 0) {
++				//TODO: Replace with Item.DropItem?
+-				int num2 = Item.NewItem(GetItemSource_Misc(4), (int)position.X, (int)position.Y, width, height, item2.type, item2.stack, noBroadcast: false, Main.reforgeItem.prefix, noGrabDelay: true);
++				// int num2 = Item.NewItem(GetItemSource_Misc(4), (int)position.X, (int)position.Y, width, height, item2.type, item2.stack, noBroadcast: false, Main.reforgeItem.prefix, noGrabDelay: true);
++				int num2 = Item.NewItem(new EntitySource_OverfullInventory(this), position, width, height, item2, noGrabDelay: true);
+ 				Main.item[num2].newAndShiny = false;
+ 				if (Main.netMode == 1)
+ 					NetMessage.SendData(21, -1, -1, null, num2, 1f);
+@@ -2801,7 +_,9 @@
+ 			Main.mouseItem.position = base.Center;
+ 			Item item3 = GetItem(whoAmI, Main.mouseItem, getItemInDropItemCheck);
+ 			if (item3.stack > 0) {
++				//TODO: Replace with Item.DropItem?
+-				int num3 = Item.NewItem(GetItemSource_Misc(4), (int)position.X, (int)position.Y, width, height, item3.type, item3.stack, noBroadcast: false, Main.mouseItem.prefix, noGrabDelay: true);
++				int num3 = Item.NewItem(new EntitySource_OverfullInventory(this), (int)position.X, (int)position.Y, width, height, item3.type, item3.stack, noBroadcast: false, Main.mouseItem.prefix, noGrabDelay: true);
++				Main.item[num3] = item3.Clone(); // Added by TML.
+ 				Main.item[num3].newAndShiny = false;
+ 				if (Main.netMode == 1)
+ 					NetMessage.SendData(21, -1, -1, null, num3, 1f);
 @@ -3039,7 +_,10 @@
  	private int AddBuff_DetermineBuffTimeToAdd(int type, int time1)
  	{
@@ -9,6 +42,18 @@
  			float debuffTimeMultiplier = Main.GameModeInfo.DebuffTimeMultiplier;
  			if (Main.GameModeInfo.IsJourneyMode) {
  				if (Main.masterMode)
+@@ -3651,6 +_,11 @@
+ 							Main.projectile[num8].Kill();
+ 							break;
+ 					}
++					*/
++					if (!ProjectileID.Sets.SingleGrappleHook[Main.projectile[num8].type])
++						continue;
++
++					Main.projectile[num8].Kill();
+ 				}
+ 			}
+ 		}
 @@ -7162,8 +_,18 @@
  				manaRegenDelayBonus += 0.5f;
  				manaRegenBonus += 10;
@@ -28,6 +73,181 @@
  			}
  			else if (buffType[j] == 192) {
  				pickSpeed -= 0.2f;
+@@ -13580,7 +_,11 @@
+ 						SmartSelect_SelectItem(i);
+ 						return;
+ 					}
++
++					/*
+ 					if (type == 282 || type == 286 || type == 3002 || type == 3112 || type == 4776)
++					*/
++					if (ItemID.Sets.Glowsticks[type])
+ 						SmartSelect_SelectItem(i);
+ 					break;
+ 				case 1:
+@@ -13602,16 +_,26 @@
+ 					}
+ 					break;
+ 				case 4:
++					/*
+ 					if (inventory[i].type != 282 && inventory[i].type != 286 && inventory[i].type != 3002 && inventory[i].type != 3112 && inventory[i].type != 4776 && inventory[i].type != 930 && ItemID.Sets.Torches[type] && !ItemID.Sets.WaterTorches[type]) {
++					*/
++					if (inventory[i].type != 930 && ItemID.Sets.Torches[type] && !ItemID.Sets.WaterTorches[type] && !ItemID.Sets.Glowsticks[type]) {
+ 						if (nonTorch == -1)
+ 							nonTorch = selectedItem;
+ 
++						/*
+ 						if (inventory[selectedItem].createTile != 4)
++						*/
++						if (inventory[selectedItem].createTile < 0 || !TileID.Sets.Torch[inventory[selectedItem].createTile])
+ 							selectedItem = i;
+ 
+ 						break;
+ 					}
++
++					/*
+ 					if ((type == 282 || type == 286 || type == 3002 || type == 3112 || type == 4776) && wetTile) {
++					*/
++					if (ItemID.Sets.Glowsticks[type] && wetTile) {
+ 						SmartSelect_SelectItem(i);
+ 						return;
+ 					}
+@@ -13639,7 +_,7 @@
+ 						if (nonTorch == -1)
+ 							nonTorch = selectedItem;
+ 
+-						if (inventory[selectedItem].createTile != 4)
++						if (inventory[selectedItem].createTile < 0 || !TileID.Sets.Torch[inventory[selectedItem].createTile])
+ 							selectedItem = i;
+ 
+ 						break;
+@@ -13666,6 +_,7 @@
+ 						case 3002:
+ 						case 3112:
+ 						case 4776:
++						case int thisType when ItemID.Sets.Glowsticks[thisType]:
+ 							SmartSelect_SelectItem(i);
+ 							return;
+ 					}
+@@ -13887,7 +_,8 @@
+ 		for (int i = 0; i < numberOfTorchAttacksMade; i++) {
+ 			int num = unlitTorchX[i];
+ 			int num2 = unlitTorchY[i];
++
+-			if (Main.tile[num, num2].type == 4 && Main.tile[num, num2].frameX >= 66) {
++			if (TileID.Sets.Torch[Main.tile[num, num2].type] && Main.tile[num, num2].frameX >= 66) {
+ 				Main.tile[num, num2].frameX -= 66;
+ 				NetMessage.SendTileSquare(-1, num, num2);
+ 			}
+@@ -19323,8 +_,12 @@
+ 							DpadRadial.ChangeSelection(-1);
+ 							CircularRadial.ChangeSelection(-1);
+ 						}
+-
++						/*
+ 						if (controlTorch && flag7) {
++						*/
++						// TML: minor tweak, smart select item is held with controlUse even when item cannot be used right now.
++						// In any case where nonTorch has a value, we should be setting nonTorch instead of selectedItem
++						if (nonTorch != -1 && flag7) {
+ 							if (selectedItem != nonTorch)
+ 								SoundEngine.PlaySound(12);
+ 
+@@ -19397,10 +_,13 @@
+ 								if (Main.focusRecipe > Main.numAvailableRecipes - 1)
+ 									Main.focusRecipe = Main.numAvailableRecipes - 1;
+ 
++								// Extra patch context.
+ 								if (Main.focusRecipe < 0)
+ 									Main.focusRecipe = 0;
+ 							}
+ 						}
++
++						PlayerInput.MouseInModdedUI.Clear();
+ 					}
+ 				}
+ 				else {
+@@ -19407,51 +_,52 @@
+ 					bool flag10 = false;
+ 					if (!Main.drawingPlayerChat && selectedItem != 58 && !Main.editSign && !Main.editChest) {
+ 						int num15 = -1;
+-						if (Main.keyState.IsKeyDown(Keys.D1)) {
++						// TML: Fix for digit keys being incorrectly checked instead of Hotbar hotkeys. Should be fixed in 1.4.5.
++						if (PlayerInput.Triggers.Current.Hotbar1) {
+ 							num15 = 0;
+ 							flag10 = true;
+ 						}
+ 
+-						if (Main.keyState.IsKeyDown(Keys.D2)) {
++						if (PlayerInput.Triggers.Current.Hotbar2) {
+ 							num15 = 1;
+ 							flag10 = true;
+ 						}
+ 
+-						if (Main.keyState.IsKeyDown(Keys.D3)) {
++						if (PlayerInput.Triggers.Current.Hotbar3) {
+ 							num15 = 2;
+ 							flag10 = true;
+ 						}
+ 
+-						if (Main.keyState.IsKeyDown(Keys.D4)) {
++						if (PlayerInput.Triggers.Current.Hotbar4) {
+ 							num15 = 3;
+ 							flag10 = true;
+ 						}
+ 
+-						if (Main.keyState.IsKeyDown(Keys.D5)) {
++						if (PlayerInput.Triggers.Current.Hotbar5) {
+ 							num15 = 4;
+ 							flag10 = true;
+ 						}
+ 
+-						if (Main.keyState.IsKeyDown(Keys.D6)) {
++						if (PlayerInput.Triggers.Current.Hotbar6) {
+ 							num15 = 5;
+ 							flag10 = true;
+ 						}
+ 
+-						if (Main.keyState.IsKeyDown(Keys.D7)) {
++						if (PlayerInput.Triggers.Current.Hotbar7) {
+ 							num15 = 6;
+ 							flag10 = true;
+ 						}
+ 
+-						if (Main.keyState.IsKeyDown(Keys.D8)) {
++						if (PlayerInput.Triggers.Current.Hotbar8) {
+ 							num15 = 7;
+ 							flag10 = true;
+ 						}
+ 
+-						if (Main.keyState.IsKeyDown(Keys.D9)) {
++						if (PlayerInput.Triggers.Current.Hotbar9) {
+ 							num15 = 8;
+ 							flag10 = true;
+ 						}
+ 
+-						if (Main.keyState.IsKeyDown(Keys.D0)) {
++						if (PlayerInput.Triggers.Current.Hotbar10) {
+ 							num15 = 9;
+ 							flag10 = true;
+@@ -19461,14 +_,17 @@
+ 							if (num15 != nonTorch)
+ 								SoundEngine.PlaySound(12);
+ 
++							selectItemOnNextUse = true; // Added by TML
+ 							nonTorch = num15;
+ 						}
+ 					}
+ 				}
+ 			}
+ 
++			/* Moved into ItemCheck
+ 			if (selectedItem != 58)
+ 				SmartSelectLookup();
++			*/
+ 
+ 			if (stoned != lastStoned) {
+ 				if (whoAmI == Main.myPlayer && stoned) {
 @@ -23995,6 +_,12 @@
  
  	public void ScrollHotbar(int Offset)
@@ -41,6 +261,44 @@
  		Offset = ClampHotbarOffset(Offset);
  		selectedItem += Offset;
  		if (Offset != 0) {
+@@ -25243,6 +_,9 @@
+ 	{
+ 		NPC nPC = Main.npc[animalNpcIndex];
+ 		targetDirection = ((nPC.Center.X > base.Center.X) ? 1 : (-1));
++		int num = NPCID.Sets.PlayerDistanceWhilePetting[nPC.type];
++		isPetSmall = NPCID.Sets.IsPetSmallForPetting[nPC.type];
++		/*
+ 		int num = 36;
+ 		isPetSmall = false;
+ 		switch (nPC.type) {
+@@ -25272,6 +_,7 @@
+ 				num = 20;
+ 				break;
+ 		}
++		*/
+ 
+ 		playerPositionWhenPetting = nPC.Bottom + new Vector2(-targetDirection * num, 0f);
+ 	}
+@@ -26230,7 +_,10 @@
+ 			cursorItemIconID = 3747;
+ 		}
+ 
++		/*
+ 		if ((Main.tile[myX, myY].type == 219 || Main.tile[myX, myY].type == 642) && (inventory[selectedItem].type == 424 || inventory[selectedItem].type == 1103 || inventory[selectedItem].type == 2339 || inventory[selectedItem].type == 2338 || inventory[selectedItem].type == 2337)) {
++		*/
++		if ((Main.tile[myX, myY].type == 219 || Main.tile[myX, myY].type == 642) && ItemID.Sets.ExtractinatorMode[inventory[selectedItem].type] > -1) {
+ 			noThrow = 2;
+ 			cursorItemIconEnabled = true;
+ 			cursorItemIconID = inventory[selectedItem].type;
+@@ -27627,7 +_,7 @@
+ 			return;
+ 
+ 		bool flag = false;
+-		for (int l = 0; l < TileID.Count; l++) {
++		for (int l = 0; l < adjTile.Length; l++) {
+ 			if (oldAdjTile[l] != adjTile[l]) {
+ 				flag = true;
+ 				break;
 @@ -30833,11 +_,19 @@
  		if (TileID.Sets.Platforms[tile.type] && tile.type == createTile)
  			return tile.frameY != num * 18;
@@ -72,6 +330,75 @@
  	{
  		if (!UsingBiomeTorches || style != 0)
  			return style;
+@@ -32383,13 +_,19 @@
+ 		int num6 = -1;
+ 		int num7 = 1;
+ 		switch (extractType) {
++			/*
+ 			case 1:
++			*/
++			case ItemID.DesertFossil:
+ 				num /= 3;
+ 				num2 *= 2;
+ 				num3 = 20;
+ 				num4 = 10;
+ 				break;
++			/*
+ 			case 2:
++			*/
++			case ItemID.OldShoe:
+ 				num = -1;
+ 				num2 = -1;
+ 				num3 = -1;
+@@ -32397,7 +_,10 @@
+ 				num5 = 1;
+ 				num7 = -1;
+ 				break;
++			/*
+ 			case 3:
++			*/
++			case ItemID.LavaMoss:
+ 				num = -1;
+ 				num2 = -1;
+ 				num3 = -1;
+@@ -32800,7 +_,17 @@
+ 				position.X = num;
+ 				direction = dir;
+ 			}
++			// added by TML, forward port from 1.4.5
++			else {
++				return;
++			}
+ 		}
++
++		// Added by TML, forward port from 1.4.5
++		compositeBackArm.rotation *= -1;
++		compositeFrontArm.rotation *= -1;
++		itemRotation *= -1;
++		itemLocation.X = MountedCenter.X + (MountedCenter.X - itemLocation.X);
+ 	}
+ 
+ 	public Rectangle getRect() => new Rectangle((int)position.X, (int)position.Y, width, height);
+@@ -33782,7 +_,7 @@
+ 		overrideCanPlace = null;
+ 		forcedRandom = null;
+ 		if (UsingBiomeTorches && tileToCreate == 215 && previewPlaceStyle == 0)
+-			previewPlaceStyle = BiomeCampfirePlaceStyle(previewPlaceStyle);
++			BiomeCampfirePlaceStyle(ref tileToCreate, ref previewPlaceStyle);
+ 
+ 		if (targetTile != null && targetTile.active()) {
+ 			ushort type = targetTile.type;
+@@ -33898,7 +_,10 @@
+ 			Projectile.NewProjectile(GetProjectileSource_Accessory(boneGloveItem), center.X, center.Y, vector.X, vector.Y, 532, 25, 5f, whoAmI);
+ 		}
+ 
++		/*
+ 		if (((sItem.damage < 0 || sItem.type <= 0 || sItem.noMelee) && sItem.type != 1450 && sItem.type != 1991 && sItem.type != 3183 && sItem.type != 4821 && sItem.type != 3542 && sItem.type != 3779) || itemAnimation <= 0)
++		*/
++		if (((sItem.damage < 0 || sItem.type <= 0 || sItem.noMelee) && sItem.type != 1450 && !ItemID.Sets.CatchingTool[sItem.type] && sItem.type != 3542 && sItem.type != 3779) || itemAnimation <= 0)
+ 			return;
+ 
+ 		ItemCheck_GetMeleeHitbox(sItem, heldItemFrame, out var dontAttack, out var itemRectangle);
 @@ -34195,8 +_,12 @@
  			NPC.ReleaseNPC((int)base.Center.X, (int)base.Bottom.Y, sItem.makeNPC, sItem.placeStyle, whoAmI);
  		}
@@ -85,3 +412,124 @@
  			int i = num / 16;
  			int j = num2 / 16;
  			if (!WorldGen.SolidTile(i, j)) {
+@@ -39456,7 +_,7 @@
+ 			}
+ 			else if (sItem.type == 4262) {
+ 				itemRotation = 0f;
+-				itemLocation.X = base.Center.X + (float)(-heldItemFrame.Width) * 0.5f + (float)(direction * -6);
++				itemLocation.X = base.Center.X + (float)(direction * -6); // forward port from 1.4.5
+ 				itemLocation.Y = MountedCenter.Y - 6f;
+ 				if (Main.rand.Next(20) == 0) {
+ 					int num21 = Main.rand.Next(570, 573);
+@@ -39482,7 +_,7 @@
+ 				itemLocation += (itemRotation.ToRotationVector2() * num22 * direction).Floor();
+ 			}
+ 			else {
+-				itemLocation.X = position.X + (float)width * 0.5f - (float)heldItemFrame.Width * 0.5f - (float)(direction * 2);
++				itemLocation.X = position.X + (float)width * 0.5f - (float)(direction * 2); // forward port from 1.4.5
+ 				itemLocation.Y = MountedCenter.Y - (float)heldItemFrame.Height * 0.5f;
+ 			}
+ 
+@@ -43304,6 +_,9 @@
+ 			if ((settings.avoidWalls && tileSafely.wall > 0) || (settings.avoidAnyLiquid && Collision.WetCollision(vector, num4, height)) || (settings.avoidLava && Collision.LavaCollision(vector, num4, height)) || (settings.avoidHurtTiles && Collision.AnyHurtingTiles(vector, num4, height)) || Collision.SolidCollision(vector, num4, height) || num6 >= settings.maximumFallDistanceFromOrignalPoint - 1)
+ 				continue;
+ 
++			if (!CombinedHooks.CanBeTeleportedTo(this, vector, i, j, "CheckForGoodTeleportationSpot"))
++				continue;
++
+ 			Vector2 vector2 = Vector2.UnitX * 16f;
+ 			if (Collision.TileCollision(vector - vector2, vector2, width, height, fallThrough: false, fall2: false, (int)gravDir) != vector2)
+ 				continue;
+@@ -43489,11 +_,14 @@
+ 			if (Main.netMode == 1)
+ 				NetMessage.SendData(21, -1, -1, null, number, 1f);
+ 		}
++		*/
+ 
+ 		if (item.type == 2417) {
+ 			Item item3 = new Item();
+ 			Item item4 = new Item();
+ 			item3.SetDefaults(2418);
++			rewardItems.Add(item3);
++			/*
+ 			item3.position = base.Center;
+ 			item2 = GetItem(whoAmI, item3, anglerRewardSettings);
+ 			if (item2.stack > 0) {
+@@ -43501,15 +_,20 @@
+ 				if (Main.netMode == 1)
+ 					NetMessage.SendData(21, -1, -1, null, number2, 1f);
+ 			}
++			*/
+ 
+ 			item4.SetDefaults(2419);
++			rewardItems.Add(item4);
++			/*
+ 			item4.position = base.Center;
+ 			item2 = GetItem(whoAmI, item4, anglerRewardSettings);
++
+ 			if (item2.stack > 0) {
+ 				int number3 = Item.NewItem(source, (int)position.X, (int)position.Y, width, height, item2.type, item2.stack, noBroadcast: false, 0, noGrabDelay: true);
+ 				if (Main.netMode == 1)
+ 					NetMessage.SendData(21, -1, -1, null, number3, 1f);
+ 			}
++			*/
+ 		}
+ 		else {
+ 			if (item.type != 2498)
+@@ -43518,21 +_,29 @@
+ 			Item item5 = new Item();
+ 			Item item6 = new Item();
+ 			item5.SetDefaults(2499);
++			rewardItems.Add(item5);
++			/*
+ 			item5.position = base.Center;
+ 			item2 = GetItem(whoAmI, item5, anglerRewardSettings);
++
+ 			if (item2.stack > 0) {
+ 				int number4 = Item.NewItem(source, (int)position.X, (int)position.Y, width, height, item2.type, item2.stack, noBroadcast: false, 0, noGrabDelay: true);
+ 				if (Main.netMode == 1)
+ 					NetMessage.SendData(21, -1, -1, null, number4, 1f);
+ 			}
++			*/
+ 
+ 			item6.SetDefaults(2500);
++			rewardItems.Add(item6);
++			/*
+ 			item6.position = base.Center;
+ 			item2 = GetItem(whoAmI, item6, anglerRewardSettings);
++
+ 			if (item2.stack > 0) {
+ 				int number5 = Item.NewItem(source, (int)position.X, (int)position.Y, width, height, item2.type, item2.stack, noBroadcast: false, 0, noGrabDelay: true);
+ 				if (Main.netMode == 1)
+ 					NetMessage.SendData(21, -1, -1, null, number5, 1f);
+ 			}
++			*/
+ 		}
+ 	}
+@@ -43609,6 +_,8 @@
+ 		}
+ 
+ 		item.SetDefaults(defaults);
++		rewardItems.Add(item);
++		/*
+ 		item.position = base.Center;
+ 		Item item2 = GetItem(whoAmI, item, GetItemSettings.NPCEntityToPlayerInventorySettings);
+ 		if (item2.stack > 0) {
+@@ -43649,6 +_,8 @@
+ 		if (Main.rand.Next(250) <= questsDone)
+ 			item.stack++;
+ 
++		rewardItems.Add(item);
++		/*
+ 		item.position = base.Center;
+ 		Item item2 = GetItem(whoAmI, item, GetItemSettings.NPCEntityToPlayerInventorySettings);
+ 		if (item2.stack > 0) {
+@@ -43692,6 +_,8 @@
+ 			item.stack = num;
+ 		}
+ 
++		rewardItems.Add(item);
++		/*
+ 		item.position = base.Center;
+ 		Item item2 = GetItem(whoAmI, item, anglerRewardSettings);
+ 		if (item2.stack > 0) {
