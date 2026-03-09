@@ -8,8 +8,8 @@ namespace Terraria.ModLoader.Setup.Core;
 
 public sealed class TerrariaDecompileExecutableProvider
 {
-	private static readonly Version ClientVersion = new("1.4.5.5");
-	private static readonly Version ServerVersion = new("1.4.5.5");
+	private static readonly Version ClientVersion = new("1.4.5.6");
+	private static readonly Version ServerVersion = new("1.4.5.6");
 
 	private readonly WorkspaceInfo workspaceInfo;
 	private readonly HttpClient httpClient;

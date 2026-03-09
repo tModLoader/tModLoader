@@ -1,6 +1,6 @@
 --- src/decompiled/Terraria/Program.cs
 +++ src/Terraria/Terraria/Program.cs
-@@ -12,15 +_,23 @@
+@@ -12,13 +_,22 @@
  using Terraria.Localization;
  using Terraria.Social;
  using Terraria.Utilities;
@@ -21,11 +21,9 @@
 +	public static bool IsFna = true;
 +#endif
  	public static bool IsMono = Type.GetType("Mono.Runtime") != null;
--	public const bool IsDebug = false;
  	public static Dictionary<string, string> LaunchParameters = new Dictionary<string, string>();
  	public static string SavePath;
- 	public const string TerrariaSaveFolderPath = "Terraria";
-@@ -127,8 +_,10 @@
+@@ -126,8 +_,10 @@
  
  	private static void InitializeConsoleOutput()
  	{
@@ -36,7 +34,7 @@
  
  		try {
  			Console.OutputEncoding = Encoding.UTF8;
-@@ -150,6 +_,9 @@
+@@ -149,6 +_,9 @@
  		LogFNANativeLibVersions();
  		LaunchParameters = Utils.ParseArguements(args);
  		SavePath = (LaunchParameters.ContainsKey("-savedirectory") ? LaunchParameters["-savedirectory"] : Platform.Get<IPathService>().GetStoragePath("Terraria"));
@@ -46,7 +44,7 @@
  		ThreadPool.SetMinThreads(8, 8);
  		InitializeConsoleOutput();
  		SetupLogging();
-@@ -194,6 +_,13 @@
+@@ -193,6 +_,13 @@
  
  	private static void LogFNANativeLibVersions()
  	{

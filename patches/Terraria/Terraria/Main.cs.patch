@@ -12,7 +12,7 @@
  {
  	public static class CurrentFrameFlags
  	{
-@@ -5408,6 +_,9 @@
+@@ -5410,6 +_,9 @@
  			Map = new WorldMap(maxTilesX, maxTilesY);
  			Configuration.Load();
  			graphics = new GraphicsDeviceManager(this as Game);
