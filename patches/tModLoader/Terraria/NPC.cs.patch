@@ -863,7 +863,7 @@
  		return result;
  	}
  
-@@ -2105,9 +_,27 @@
+@@ -2105,19 +_,41 @@
  		defDamage = damage;
  		defDefense = defense;
  		if (flag) {
@@ -883,7 +883,7 @@
 +		var originalModNPC = ModNPC;
 +		var originalGlobals = _globals;
 +
-+		SetDefaultsKeepPlayerInteraction(Type);
++		SetDefaultsKeepPlayerInteraction(Type, new NPCSpawnParams() { gameModeData = GameModeData.NormalMode, strengthMultiplierOverride = 1f });
 +
 +		type = originalType;
 +		netID = originalNetID;
@@ -892,6 +892,21 @@
  	}
  
  	public void SetDefaultsKeepPlayerInteraction(int Type)
+ 	{
++		SetDefaultsKeepPlayerInteraction(Type, default(NPCSpawnParams));
++	}
++	public void SetDefaultsKeepPlayerInteraction(int Type, NPCSpawnParams spawnparams)
++	{
+ 		bool[] array = new bool[playerInteraction.Length];
+ 		for (int i = 0; i < playerInteraction.Length; i++) {
+ 			array[i] = playerInteraction[i];
+ 		}
+ 
+-		SetDefaults(Type);
++		SetDefaults(Type, spawnparams);
+ 		for (int j = 0; j < playerInteraction.Length; j++) {
+ 			playerInteraction[j] = array[j];
+ 		}
 @@ -2156,6 +_,15 @@
  			return;
  		}
