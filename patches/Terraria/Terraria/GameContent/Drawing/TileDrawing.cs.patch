@@ -1,6 +1,6 @@
 --- src/decompiled/Terraria/GameContent/Drawing/TileDrawing.cs
 +++ src/Terraria/Terraria/GameContent/Drawing/TileDrawing.cs
-@@ -6129,7 +_,8 @@
+@@ -6128,7 +_,8 @@
  			if (_rand.NextFloat() < lerpValue) {
  				bool flag2 = _rand.Next(600) == 0;
  				if (!flag2) {
