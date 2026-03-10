@@ -21,8 +21,8 @@
 +	internal TileObjectData _parent;
  	private bool _linkedAlternates;
  	private bool _usesCustomCanPlace;
- 	private TileObjectAlternatesModule _alternates;
-@@ -36,35 +_,69 @@
+ 	private bool _useGlobalLiquidChecks;
+@@ -37,38 +_,72 @@
  	private bool _hasOwnTileObjectDraw;
  	private bool _hasOwnTileObjectStyle;
  	private bool _hasOwnTileObjectCoords;
@@ -106,6 +106,9 @@
 +	public static TileObjectData Style5x4;
 +	/// <summary> Anchors to walls. </summary>
 -	private static TileObjectData Style3x3Wall;
+ 	private static TileObjectData Style1x1Drip;
+ 	private static TileObjectData Style1x1Plant_Height22;
+ 	private static TileObjectData Style1x1Plant_Height34;
 +	public static TileObjectData Style3x3Wall;
  
 -	private bool LinkedAlternates {
@@ -118,7 +121,7 @@
  		get {
  			return _linkedAlternates;
  		}
-@@ -79,6 +_,10 @@
+@@ -83,6 +_,10 @@
  		}
  	}
  
@@ -129,7 +132,7 @@
  	public bool UsesCustomCanPlace {
  		get {
  			return _usesCustomCanPlace;
-@@ -89,7 +_,7 @@
+@@ -103,7 +_,7 @@
  		}
  	}
  
@@ -138,7 +141,7 @@
  		get {
  			if (_alternates == null)
  				return _baseObject.Alternates;
-@@ -106,6 +_,10 @@
+@@ -120,6 +_,10 @@
  		}
  	}
  
@@ -149,7 +152,7 @@
  	public AnchorData AnchorTop {
  		get {
  			if (_anchor == null)
-@@ -132,6 +_,11 @@
+@@ -146,6 +_,11 @@
  		}
  	}
  
@@ -161,7 +164,7 @@
  	public AnchorData AnchorBottom {
  		get {
  			if (_anchor == null)
-@@ -158,6 +_,10 @@
+@@ -172,6 +_,10 @@
  		}
  	}
  
@@ -172,7 +175,7 @@
  	public AnchorData AnchorLeft {
  		get {
  			if (_anchor == null)
-@@ -184,6 +_,10 @@
+@@ -198,6 +_,10 @@
  		}
  	}
  
@@ -183,7 +186,7 @@
  	public AnchorData AnchorRight {
  		get {
  			if (_anchor == null)
-@@ -210,6 +_,9 @@
+@@ -224,6 +_,9 @@
  		}
  	}
  
@@ -193,7 +196,7 @@
  	public bool AnchorWall {
  		get {
  			if (_anchor == null)
-@@ -236,6 +_,9 @@
+@@ -250,6 +_,9 @@
  		}
  	}
  
@@ -203,7 +206,7 @@
  	public int[] AnchorValidTiles {
  		get {
  			if (_anchorTiles == null)
-@@ -267,6 +_,9 @@
+@@ -281,6 +_,9 @@
  		}
  	}
  
@@ -213,7 +216,7 @@
  	public int[] AnchorInvalidTiles {
  		get {
  			if (_anchorTiles == null)
-@@ -298,6 +_,9 @@
+@@ -312,6 +_,9 @@
  		}
  	}
  
@@ -223,7 +226,7 @@
  	public int[] AnchorAlternateTiles {
  		get {
  			if (_anchorTiles == null)
-@@ -329,6 +_,9 @@
+@@ -343,6 +_,9 @@
  		}
  	}
  
@@ -233,7 +236,7 @@
  	public int[] AnchorValidWalls {
  		get {
  			if (_anchorTiles == null)
-@@ -357,6 +_,11 @@
+@@ -371,6 +_,11 @@
  		}
  	}
  
@@ -245,7 +248,7 @@
  	public bool WaterDeath {
  		get {
  			if (_liquidDeath == null)
-@@ -383,6 +_,11 @@
+@@ -397,6 +_,11 @@
  		}
  	}
  
@@ -257,7 +260,7 @@
  	public bool LavaDeath {
  		get {
  			if (_liquidDeath == null)
-@@ -409,6 +_,11 @@
+@@ -423,6 +_,11 @@
  		}
  	}
  
@@ -269,7 +272,7 @@
  	public LiquidPlacement WaterPlacement {
  		get {
  			if (_liquidPlacement == null)
-@@ -435,6 +_,11 @@
+@@ -449,6 +_,11 @@
  		}
  	}
  
@@ -281,7 +284,7 @@
  	public LiquidPlacement LavaPlacement {
  		get {
  			if (_liquidPlacement == null)
-@@ -461,6 +_,9 @@
+@@ -475,6 +_,9 @@
  		}
  	}
  
@@ -291,7 +294,7 @@
  	public PlacementHook HookCheckIfCanPlace {
  		get {
  			if (_placementHooks == null)
-@@ -479,6 +_,7 @@
+@@ -493,6 +_,7 @@
  		}
  	}
  
@@ -299,7 +302,7 @@
  	public PlacementHook HookPostPlaceEveryone {
  		get {
  			if (_placementHooks == null)
-@@ -497,6 +_,9 @@
+@@ -511,6 +_,9 @@
  		}
  	}
  
@@ -309,7 +312,7 @@
  	public PlacementHook HookPostPlaceMyPlayer {
  		get {
  			if (_placementHooks == null)
-@@ -515,6 +_,9 @@
+@@ -529,6 +_,9 @@
  		}
  	}
  
@@ -319,7 +322,7 @@
  	public PlacementHook HookPlaceOverride {
  		get {
  			if (_placementHooks == null)
-@@ -533,7 +_,7 @@
+@@ -565,7 +_,7 @@
  		}
  	}
  
@@ -328,7 +331,7 @@
  		get {
  			if (_subTiles == null)
  				return _baseObject.SubTiles;
-@@ -553,6 +_,12 @@
+@@ -585,6 +_,12 @@
  		}
  	}
  
@@ -341,7 +344,7 @@
  	public int DrawYOffset {
  		get {
  			if (_tileObjectDraw == null)
-@@ -579,6 +_,11 @@
+@@ -611,6 +_,11 @@
  		}
  	}
  
@@ -353,7 +356,7 @@
  	public int DrawXOffset {
  		get {
  			if (_tileObjectDraw == null)
-@@ -605,6 +_,12 @@
+@@ -637,6 +_,12 @@
  		}
  	}
  
@@ -366,7 +369,7 @@
  	public bool DrawFlipHorizontal {
  		get {
  			if (_tileObjectDraw == null)
-@@ -631,6 +_,12 @@
+@@ -663,6 +_,12 @@
  		}
  	}
  
@@ -379,7 +382,7 @@
  	public bool DrawFlipVertical {
  		get {
  			if (_tileObjectDraw == null)
-@@ -657,6 +_,10 @@
+@@ -689,6 +_,10 @@
  		}
  	}
  
@@ -390,7 +393,7 @@
  	public int DrawStepDown {
  		get {
  			if (_tileObjectDraw == null)
-@@ -683,6 +_,11 @@
+@@ -715,6 +_,11 @@
  		}
  	}
  
@@ -402,7 +405,7 @@
  	public bool StyleHorizontal {
  		get {
  			if (_tileObjectStyle == null)
-@@ -709,6 +_,12 @@
+@@ -741,6 +_,12 @@
  		}
  	}
  
@@ -415,7 +418,7 @@
  	public int Style {
  		get {
  			if (_tileObjectStyle == null)
-@@ -735,6 +_,10 @@
+@@ -767,6 +_,10 @@
  		}
  	}
  
@@ -426,7 +429,7 @@
  	public int StyleWrapLimit {
  		get {
  			if (_tileObjectStyle == null)
-@@ -761,6 +_,7 @@
+@@ -793,6 +_,7 @@
  		}
  	}
  
@@ -434,7 +437,7 @@
  	public int? StyleWrapLimitVisualOverride {
  		get {
  			if (_tileObjectStyle == null)
-@@ -787,6 +_,7 @@
+@@ -819,6 +_,7 @@
  		}
  	}
  
@@ -442,7 +445,7 @@
  	public int? styleLineSkipVisualOverride {
  		get {
  			if (_tileObjectStyle == null)
-@@ -813,6 +_,10 @@
+@@ -845,6 +_,10 @@
  		}
  	}
  
@@ -453,7 +456,7 @@
  	public int StyleLineSkip {
  		get {
  			if (_tileObjectStyle == null)
-@@ -839,6 +_,11 @@
+@@ -871,6 +_,11 @@
  		}
  	}
  
@@ -465,7 +468,7 @@
  	public int StyleMultiplier {
  		get {
  			if (_tileObjectStyle == null)
-@@ -865,6 +_,11 @@
+@@ -897,6 +_,11 @@
  		}
  	}
  
@@ -477,7 +480,7 @@
  	public int Width {
  		get {
  			if (_tileObjectBase == null)
-@@ -896,6 +_,11 @@
+@@ -928,6 +_,11 @@
  		}
  	}
  
@@ -489,7 +492,7 @@
  	public int Height {
  		get {
  			if (_tileObjectBase == null)
-@@ -927,6 +_,11 @@
+@@ -959,6 +_,11 @@
  		}
  	}
  
@@ -501,7 +504,7 @@
  	public Point16 Origin {
  		get {
  			if (_tileObjectBase == null)
-@@ -953,6 +_,12 @@
+@@ -985,6 +_,12 @@
  		}
  	}
  
@@ -514,7 +517,7 @@
  	public TileObjectDirection Direction {
  		get {
  			if (_tileObjectBase == null)
-@@ -979,6 +_,15 @@
+@@ -1011,6 +_,15 @@
  		}
  	}
  
@@ -530,7 +533,7 @@
  	public int RandomStyleRange {
  		get {
  			if (_tileObjectBase == null)
-@@ -1005,6 +_,9 @@
+@@ -1037,6 +_,9 @@
  		}
  	}
  
@@ -540,7 +543,7 @@
  	public int[] SpecificRandomStyles {
  		get {
  			if (_tileObjectBase == null)
-@@ -1031,6 +_,11 @@
+@@ -1063,6 +_,11 @@
  		}
  	}
  
@@ -552,7 +555,7 @@
  	public bool FlattenAnchors {
  		get {
  			if (_tileObjectBase == null)
-@@ -1057,6 +_,12 @@
+@@ -1089,6 +_,12 @@
  		}
  	}
  
@@ -565,7 +568,7 @@
  	public int[] CoordinateHeights {
  		get {
  			if (_tileObjectCoords == null)
-@@ -1125,6 +_,11 @@
+@@ -1157,6 +_,11 @@
  		}
  	}
  
@@ -577,7 +580,7 @@
  	public int CoordinateWidth {
  		get {
  			if (_tileObjectCoords == null)
-@@ -1152,6 +_,12 @@
+@@ -1184,6 +_,12 @@
  		}
  	}
  
@@ -590,7 +593,7 @@
  	public int CoordinatePadding {
  		get {
  			if (_tileObjectCoords == null)
-@@ -1179,6 +_,10 @@
+@@ -1211,6 +_,10 @@
  		}
  	}
  
@@ -601,7 +604,7 @@
  	public Point16 CoordinatePaddingFix {
  		get {
  			if (_tileObjectCoords == null)
-@@ -1206,6 +_,11 @@
+@@ -1238,6 +_,11 @@
  		}
  	}
  
@@ -613,7 +616,7 @@
  	public int CoordinateFullWidth {
  		get {
  			if (_tileObjectCoords == null)
-@@ -1218,6 +_,11 @@
+@@ -1250,6 +_,11 @@
  		}
  	}
  
@@ -625,7 +628,7 @@
  	public int CoordinateFullHeight {
  		get {
  			if (_tileObjectCoords == null)
-@@ -1230,6 +_,11 @@
+@@ -1262,6 +_,11 @@
  		}
  	}
  
@@ -637,7 +640,7 @@
  	public int DrawStyleOffset {
  		get {
  			if (_tileObjectCoords == null)
-@@ -1281,6 +_,15 @@
+@@ -1314,6 +_,15 @@
  		}
  	}
  
@@ -653,7 +656,7 @@
  	public void CopyFrom(TileObjectData copy)
  	{
  		if (copy != null) {
-@@ -1295,14 +_,28 @@
+@@ -1329,14 +_,28 @@
  			_tileObjectDraw = copy._tileObjectDraw;
  			_tileObjectStyle = copy._tileObjectStyle;
  			_tileObjectCoords = copy._tileObjectCoords;
@@ -682,7 +685,7 @@
  	public void FullCopyFrom(TileObjectData copy)
  	{
  		if (copy != null) {
-@@ -1408,6 +_,19 @@
+@@ -1444,6 +_,19 @@
  			if (_liquidDeath.water)
  				WaterPlacement = LiquidPlacement.NotAllowed;
  		}
@@ -702,8 +705,8 @@
  	}
  
  	private void WriteCheck()
-@@ -1421,7 +_,8 @@
- 		readOnlyData = true;
+@@ -1463,7 +_,8 @@
+ 		UsesGlobalLiquidChecks = true;
  	}
  
 -	public bool LiquidPlace(Tile checkTile)
@@ -712,7 +715,7 @@
  	{
  		if (checkTile == null)
  			return false;
-@@ -1429,6 +_,9 @@
+@@ -1471,6 +_,9 @@
  		if (checkTile.liquid > 0) {
  			switch (checkTile.liquidType()) {
  				case 1:
@@ -722,7 +725,7 @@
  					if (LavaPlacement == LiquidPlacement.NotAllowed)
  						return false;
  					if (LavaPlacement == LiquidPlacement.OnlyInFullLiquid && checkTile.liquid != byte.MaxValue)
-@@ -1437,6 +_,9 @@
+@@ -1479,6 +_,9 @@
  				case 0:
  				case 2:
  				case 3:
@@ -732,7 +735,7 @@
  					if (WaterPlacement == LiquidPlacement.NotAllowed)
  						return false;
  					if (WaterPlacement == LiquidPlacement.OnlyInFullLiquid && checkTile.liquid != byte.MaxValue)
-@@ -1462,6 +_,9 @@
+@@ -1504,6 +_,9 @@
  		return true;
  	}
  
@@ -742,7 +745,7 @@
  	public bool isValidTileAnchor(int type)
  	{
  		int[] array;
-@@ -1511,6 +_,9 @@
+@@ -1553,6 +_,9 @@
  		return false;
  	}
  
@@ -752,7 +755,7 @@
  	public bool isValidAlternateAnchor(int type)
  	{
  		if (_anchorTiles == null)
-@@ -1528,6 +_,10 @@
+@@ -1570,6 +_,10 @@
  		return false;
  	}
  
@@ -763,7 +766,7 @@
  	public int CalculatePlacementStyle(int style, int alternate, int random)
  	{
  		int num = style * StyleMultiplier;
-@@ -1538,7 +_,10 @@
+@@ -1580,7 +_,10 @@
  		return num;
  	}
  
@@ -775,7 +778,7 @@
  	{
  		newTile.Calculate();
  		baseTile = newTile;
-@@ -1546,14 +_,18 @@
+@@ -1588,14 +_,18 @@
  		newTile = new TileObjectData(_baseObject);
  	}
  
@@ -796,7 +799,7 @@
  	{
  		newSubTile.Calculate();
  		foreach (int num in styles) {
-@@ -1606,6 +_,10 @@
+@@ -1648,6 +_,10 @@
  		newSubTile = new TileObjectData(_baseObject);
  	}
  
@@ -807,7 +810,7 @@
  	private static void addSubTile(int style)
  	{
  		newSubTile.Calculate();
-@@ -1629,7 +_,12 @@
+@@ -1671,7 +_,12 @@
  		newSubTile = new TileObjectData(_baseObject);
  	}
  
@@ -821,7 +824,7 @@
  	{
  		newAlternate.Calculate();
  		if (!newTile._hasOwnAlternates)
-@@ -3067,6 +_,11 @@
+@@ -3109,6 +_,11 @@
  		addTile(486);
  		newTile.CopyFrom(Style3x2);
  		newTile.LavaDeath = false;
@@ -833,7 +836,7 @@
  		addTile(488);
  		newTile.CopyFrom(Style3x2);
  		newTile.LavaDeath = false;
-@@ -4247,11 +_,13 @@
+@@ -4375,11 +_,13 @@
  		};
  
  		newTile.StyleHorizontal = true;
@@ -847,10 +850,10 @@
  
  		addTile(419);
  		newTile.CopyFrom(Style1x1);
-@@ -5060,7 +_,10 @@
- 		newTile.StyleMultiplier = 3;
- 		newTile.StyleHorizontal = true;
- 		addTile(615);
+@@ -5310,7 +_,10 @@
+ 		newSubTile.AnchorBottom = new AnchorData(AnchorType.SolidTile | AnchorType.SolidWithTop | AnchorType.SolidSide, newTile.Width, 0);
+ 		addSubTile(2);
+ 		addTile(165);
 +
 +		/*
  		readOnlyData = true;
@@ -858,7 +861,7 @@
  	}
  
  	public static bool CustomPlace(int type, int style)
-@@ -5129,6 +_,11 @@
+@@ -5401,6 +_,11 @@
  
  	public static int PlatformFrameWidth() => _data[19].CoordinateFullWidth;
  
@@ -870,7 +873,7 @@
  	public static TileObjectData GetTileData(int type, int style, int alternate = 0)
  	{
  		if (type < 0 || type >= _data.Count)
-@@ -5190,6 +_,10 @@
+@@ -5462,6 +_,10 @@
  		return true;
  	}
  
@@ -881,7 +884,7 @@
  	public static TileObjectData GetTileData(Tile getTile)
  	{
  		if (getTile == null || !getTile.active())
-@@ -5209,9 +_,14 @@
+@@ -5481,13 +_,18 @@
  		if (num3 == 0)
  			num3 = 1;
  
@@ -892,11 +895,15 @@
 +		*/
  		int num5 = num4 / tileObjectData.StyleMultiplier;
  		int num6 = num4 % tileObjectData.StyleMultiplier;
+ 		GetStyleMethod getStyleOverride = tileObjectData.GetStyleOverride;
+ 		if (getStyleOverride != null)
+ 			return getStyleOverride(getTile, tileObjectData);
+ 
 +		/*
  		int styleLineSkip = tileObjectData.StyleLineSkip;
  		if (styleLineSkip > 1) {
  			if (tileObjectData.StyleHorizontal) {
-@@ -5223,6 +_,7 @@
+@@ -5499,6 +_,7 @@
  				num6 = num % styleLineSkip;
  			}
  		}

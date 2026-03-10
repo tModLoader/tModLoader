@@ -59,7 +59,7 @@
  			writer.Write((byte)msgType);
  			switch (msgType) {
  				case 1:
--					writer.Write("Terraria" + 318);
+-					writer.Write("Terraria" + 319);
 +					writer.Write(ModNet.NetVersionString);
  					break;
  				case 2:
@@ -473,7 +473,7 @@
  
  		num3 = reader.ReadInt16();
  		for (int m = 0; m < num3; m++) {
--			TileEntity.Add(TileEntity.Read(reader, 318));
+-			TileEntity.Add(TileEntity.Read(reader, 319));
 +			TileEntity.Add(TileEntity.Read(reader, Main.curRelease, networkSend: true)); //TML: Made networkSend true, but lightSend should be false.
  		}
  

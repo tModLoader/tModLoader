@@ -73,6 +73,17 @@
  			}
  			else if (buffType[j] == 192) {
  				pickSpeed -= 0.2f;
+@@ -12926,6 +_,10 @@
+ 
+ 		bool flag9 = point.Y > Main.maxTilesY - 320;
+ 		bool flag10 = ZoneOverworldHeight && (point.X < 380 || point.X > Main.maxTilesX - 380);
++
++		//TODO: Are these flags a problem?
++		LoaderManager.Get<BiomeLoader>().UpdateBiomes(this);
++
+ 		ManageSpecialBiomeVisuals("Stardust", ZoneTowerStardust, vector4 - new Vector2(0f, 10f));
+ 		ManageSpecialBiomeVisuals("Nebula", ZoneTowerNebula, vector3 - new Vector2(0f, 10f));
+ 		ManageSpecialBiomeVisuals("Vortex", ZoneTowerVortex, vector2 - new Vector2(0f, 10f));
 @@ -13580,7 +_,11 @@
  						SmartSelect_SelectItem(i);
  						return;
@@ -299,6 +310,41 @@
  			if (oldAdjTile[l] != adjTile[l]) {
  				flag = true;
  				break;
+@@ -29626,6 +_,8 @@
+ 						AddBuff(95 + beetleOrbs - 1, 5, quiet: false);
+ 
+ 					beetleCounter = 0f;
++					/*
+ 					if (num2 < 1.0)
+ 						num2 = 1.0;
++					*/
+ 				}
+@@ -29821,6 +_,7 @@
+ 				}
+ 
+ 				StopVanityActions();
++				/*
+ 				if (flag2 && hitDirection != 0) {
+ 					if (!mount.Active || !mount.Cart) {
+ 						float num23 = 10.5f;
+@@ -29838,6 +_,12 @@
+ 				else if (!noKnockback && hitDirection != 0 && (!mount.Active || !mount.Cart)) {
+ 					velocity.X = 4.5f * (float)hitDirection;
+ 					velocity.Y = -3.5f;
++				}
++				*/
++
++				if (info.Knockback != 0 && hitDirection != 0 && (!mount.Active || !mount.Cart)) {
++					velocity.X = info.Knockback * hitDirection;
++					velocity.Y = info.Knockback * -7 / 9;
+ 					fallStart = (int)(position.Y / 16f);
+ 				}
+ 
+@@ -29844,3 +_,4 @@
++				if (info.SoundDisabled) { } else
+ 				if (stoned)
+ 					SoundEngine.PlaySound(0, (int)position.X, (int)position.Y);
+ 				else if (mount.Active && mount.Type == 52)
 @@ -30833,11 +_,19 @@
  		if (TileID.Sets.Platforms[tile.type] && tile.type == createTile)
  			return tile.frameY != num * 18;
@@ -319,6 +365,14 @@
  
  		if (TileID.Sets.BasicChest[tile.type] && TileID.Sets.BasicChest[createTile]) {
  			if (tile.frameX / 36 == num)
+@@ -30954,5 +_,7 @@
+ 			int damage = (int)(num2 * 0.25);
++			/*
+ 			if (player != null)
+ 				num2 = (int)(num2 * 0.75);
++			*/
+ 
+ 			if (player == Main.LocalPlayer && num7 < PaladinsShieldRange)
 @@ -30981,7 +_,10 @@
  		}
  	}
@@ -379,6 +433,15 @@
  	}
  
  	public Rectangle getRect() => new Rectangle((int)position.X, (int)position.Y, width, height);
+@@ -33072,7 +_,7 @@
+ 			if (Main.tile[tileTargetX, tileTargetY].nactive() && Main.tile[tileTargetX, tileTargetY].type == 57)
+ 				canPlace = true;
+ 		}
+-		else if (inventory[selectedItem].createTile == 4 || inventory[selectedItem].createTile == 136) {
++		else if (TileID.Sets.Torches[inventory[selectedItem].createTile] || inventory[selectedItem].createTile == 136) {
+ 			if (Main.tile[tileTargetX, tileTargetY].wall > 0) {
+ 				canPlace = true;
+ 			}
 @@ -33782,7 +_,7 @@
  		overrideCanPlace = null;
  		forcedRandom = null;

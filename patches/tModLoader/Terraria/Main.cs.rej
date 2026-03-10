@@ -45,6 +45,33 @@
  	public static bool[,] mapWasContentLost = new bool[mapTargetX, mapTargetY];
  	public const int numInfoIcons = 13;
  	public static Microsoft.Xna.Framework.Color OurFavoriteColor = new Microsoft.Xna.Framework.Color(255, 231, 69);
+@@ -2842,9 +_,25 @@
+ 			tileMerge[i] = new bool[count];
+ 		}
+ 
++		SetupAllBlockMerge();
++	}
++
++	// internal split to be called by TileLoader, to avoid tileMerge reset (handled by ResizeArrays)
++	internal static void SetupAllBlockMerge()
++	{
+-		for (int j = 0; j < TileID.Count; j++) {
++		for (int j = 0; j < TileLoader.TileCount; j++) {
++			// TML: moved these cases into BlockMergesWithMergeAllBlockOverride
+ 			bool flag = j == 10 || j == 387 || j == 541;
++			if (TileID.Sets.BlockMergesWithMergeAllBlockOverride[j] is bool mergeOverride) {
++				TileID.Sets.BlockMergesWithMergeAllBlock[j] = mergeOverride;
++				continue;
++			}
++
++			// TML: 10 is the closed door tile, so make modded closed doors also match. This code runs after they have set their OpenDoorID
++			if (TileLoader.IsClosedDoor(j))
++				flag = true;
++
+ 			TileID.Sets.BlockMergesWithMergeAllBlock[j] = !flag && tileSolid[j] && !tileSolidTop[j];
+ 		}
+ 	}
+ 
 @@ -3933,8 +_,10 @@
  						new FileInfo(text2);
  						autoGenFileLocation = text2;
@@ -96,6 +123,23 @@
  			if (inputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Z) && !oldInputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Z)) {
  				text = "";
  			}
+@@ -16095,6 +_,7 @@
+ 			hoverItem.knockBack *= 1f + (1f - player[myPlayer].stealth) * 0.5f;
+ 
+ 		int num2 = 30;
++		num2 += hoverItem.ToolTip?.Lines ?? 0; // Easy fix to #4772. A full fix would require rewrites of hooks.
+ 		int numLines = 1;
+ 		string[] array = new string[num2];
+ 		bool[] array2 = new bool[num2];
+@@ -16184,7 +_,8 @@
+ 			}
+ 			else if (hoverItem.type != 3817) {
+ 				array[numLines] = Lang.tip[51].Value;
++				tooltipNames[numLines] = "Price";
+ 				numLines++;
+ 				color = new Microsoft.Xna.Framework.Color((byte)(120f * num4), (byte)(120f * num4), (byte)(120f * num4), a);
+ 			}
+ 		}
 @@ -16254,15 +_,24 @@
  							break;
  					}
@@ -201,6 +245,57 @@
  		}
  
  		Microsoft.Xna.Framework.Rectangle rectangle = new Microsoft.Xna.Framework.Rectangle(screenWidth / 2 - TextureAssets.ChatBack.Width() / 2, 100, TextureAssets.ChatBack.Width(), (amountOfLines + 2) * 30);
+@@ -32047,8 +_,11 @@
+ 			else {
+ 				text5 = text5.Substring(0, text5.Length - 1);
+ 				focusText = Lang.inter[54].Value + " (" + text5 + ")";
++				// Extra patch context.
+ 			}
+ 		}
++
++		NPCLoader.SetChatButtons(ref focusText, ref focusText2);
+ 
+ 		if (!flag) {
+ 			DrawNPCChatButtons(num, color2, amountOfLines, focusText, focusText2);
+@@ -32083,11 +_,26 @@
+ 					SubmitSignText();
+ 				else
+ 					IngameFancyUI.OpenVirtualKeyboard(1);
++
++				// Added by TML.
++				return;
+ 			}
+ 			else if (NPCID.Sets.IsTownPet[npc[player[myPlayer].talkNPC].type]) {
+ 				player[myPlayer].PetAnimal(player[myPlayer].talkNPC);
++
++				// Added by TML.
++				return;
+ 			}
++			/*
+ 			else if (npc[player[myPlayer].talkNPC].type == 369) {
++			*/
++
++			if (!NPCLoader.PreChatButtonClicked(true))
++				return;
++
++			NPCLoader.OnChatButtonClicked(true);
++
++			if (npc[player[myPlayer].talkNPC].type == 369) {
+ 				npcChatCornerItem = 0;
+ 				SoundEngine.PlaySound(12);
+ 				bool flag4 = false;
+@@ -32321,6 +_,11 @@
+ 			if (!npcChatFocus3 || player[myPlayer].talkNPC < 0)
+ 				return;
+ 
++			if (!NPCLoader.PreChatButtonClicked(false))
++				return;
++
++			NPCLoader.OnChatButtonClicked(false);
++
+ 			if (npc[player[myPlayer].talkNPC].type == 20) {
+ 				SoundEngine.PlaySound(12);
+ 				npcChatText = Lang.GetDryadWorldStatusDialog(out var worldIsEntirelyPure);
 @@ -33572,7 +_,7 @@
  			if (numAvailableRecipes > 0) {
  				UILinkPointNavigator.Shortcuts.CRAFT_CurrentRecipeBig = -1;
@@ -242,6 +337,18 @@
  				int num5 = (i + 1) * 26;
  				if (recipe[availableRecipe[num3]].requiredTile[i] == -1) {
  					if (i == 0 && !recipe[availableRecipe[num3]].needWater && !recipe[availableRecipe[num3]].needHoney && !recipe[availableRecipe[num3]].needLava && !recipe[availableRecipe[num3]].needSnowBiome && !recipe[availableRecipe[num3]].needGraveyardBiome)
+@@ -36525,7 +_,11 @@
+ 		if (num > 0) {
+ 			int num3 = 10 + player[myPlayer].cursorItemIconPush;
+ 			instance.LoadItem(num);
++			Vector2 value = Item.GetDrawHitbox(num, null).Size() * num2 * 0.5f;
++			ItemSlot.DrawItemIcon(ContentSamples.ItemsByType[num], ItemSlot.Context.InWorld, Main.spriteBatch, new Vector2(Main.mouseX + num3, Main.mouseY + num3) + value, num2, 9999f, currentColor);
++			/* Fix item frame drawing not respecting default item.color
+ 			spriteBatch.Draw(TextureAssets.Item[num].Value, new Vector2(mouseX + num3, mouseY + num3), Item.GetDrawHitbox(num, null), currentColor, 0f, default(Vector2), num2, effects, 0f);
++			*/
+ 			if (num == item.type && TryGetAmmo(item, out var ammoItem, out var ammoColor, out var ammoScale, out var ammoOffset)) {
+ 				float scale = num2 * ammoScale;
+ 				int type = ammoItem.type;
 @@ -37178,4 +_,6 @@
  		num22 = 240;
  		text9 = $"{upTimerMax:F2}ms";
@@ -297,6 +404,88 @@
  				if (Main.OnRenderTargetsInitialized != null)
  					Main.OnRenderTargetsInitialized(base.GraphicsDevice.PresentationParameters.BackBufferWidth, base.GraphicsDevice.PresentationParameters.BackBufferHeight);
  			}
+@@ -48951,7 +_,10 @@
+ 					color.G = (byte)((float)(int)color.G * num9);
+ 					float num10 = cloud[i].position.Y * ((float)screenHeight / 600f);
+ 					num10 = cloud[i].position.Y + (float)(int)(num4 * 750.0 + 830.0) + (float)(int)scAdj + (float)num6;
++					DrawCloud(i, color * num7, num10);
++					/*
+ 					spriteBatch.Draw(TextureAssets.Cloud[cloud[i].type].Value, new Vector2(cloud[i].position.X + (float)TextureAssets.Cloud[cloud[i].type].Width() * 0.5f, num10 + (float)TextureAssets.Cloud[cloud[i].type].Height() * 0.5f), new Microsoft.Xna.Framework.Rectangle(0, 0, TextureAssets.Cloud[cloud[i].type].Width(), TextureAssets.Cloud[cloud[i].type].Height()), color * num7, cloud[i].rotation, new Vector2((float)TextureAssets.Cloud[cloud[i].type].Width() * 0.5f, (float)TextureAssets.Cloud[cloud[i].type].Height() * 0.5f), cloud[i].scale, cloud[i].spriteDir, 0f);
++					*/
+ 				}
+ 			}
+ 		}
+@@ -49067,8 +_,10 @@
+ 
+ 						if (gameMenu)
+ 							num16 = 1f;
+-
++						DrawCloud(l, color2 * num7, num15 + cTop + 200f);
++						/*
+ 						spriteBatch.Draw(TextureAssets.Cloud[cloud[l].type].Value, new Vector2(cloud[l].position.X + (float)TextureAssets.Cloud[cloud[l].type].Width() * 0.5f, num15 + (float)TextureAssets.Cloud[cloud[l].type].Height() * 0.5f + cTop + 200f), new Microsoft.Xna.Framework.Rectangle(0, 0, TextureAssets.Cloud[cloud[l].type].Width(), TextureAssets.Cloud[cloud[l].type].Height()), color2 * num7, cloud[l].rotation, new Vector2((float)TextureAssets.Cloud[cloud[l].type].Width() * 0.5f, (float)TextureAssets.Cloud[cloud[l].type].Height() * 0.5f), cloud[l].scale, cloud[l].spriteDir, 0f);
++						*/
+ 					}
+ 				}
+ 			}
+@@ -49149,7 +_,10 @@
+ 						if (gameMenu)
+ 							num20 = 1f;
+ 
++						DrawCloud(n, color4 * num7, num19 + cTop);
++						/*
+ 						spriteBatch.Draw(TextureAssets.Cloud[cloud[n].type].Value, new Vector2(cloud[n].position.X + (float)TextureAssets.Cloud[cloud[n].type].Width() * 0.5f, num19 + (float)TextureAssets.Cloud[cloud[n].type].Height() * 0.5f + cTop), new Microsoft.Xna.Framework.Rectangle(0, 0, TextureAssets.Cloud[cloud[n].type].Width(), TextureAssets.Cloud[cloud[n].type].Height()), color4 * num7, cloud[n].rotation, new Vector2((float)TextureAssets.Cloud[cloud[n].type].Width() * 0.5f, (float)TextureAssets.Cloud[cloud[n].type].Height() * 0.5f), cloud[n].scale, cloud[n].spriteDir, 0f);
++						*/
+ 					}
+ 				}
+ 			}
+@@ -49257,6 +_,22 @@
+ 
+ 		if (!mapFullscreen)
+ 			SkyManager.Instance.DrawRemainingDepth(spriteBatch);
++
++		void DrawCloud(int cloudIndex, Color color, float yOffset)
++		{
++			Cloud cloud = Main.cloud[cloudIndex];
++			Asset<Texture2D> texture = TextureAssets.Cloud[cloud.type];
++			Vector2 position = new Vector2(cloud.position.X + (float)texture.Width() * 0.5f, yOffset + (float)texture.Height() * 0.5f);
++			Rectangle sourceRectangle = new Rectangle(0, 0, texture.Width(), texture.Height());
++			float rotation = cloud.rotation;
++			Vector2 origin = new Vector2((float)texture.Width() * 0.5f, (float)texture.Height() * 0.5f);
++			float scale = cloud.scale;
++			SpriteEffects effects = cloud.spriteDir;
++			DrawData drawData = new DrawData(texture.Value, position, sourceRectangle, color, rotation, origin, scale, effects);
++			if (cloud.ModCloud?.Draw(spriteBatch, cloud, cloudIndex, ref drawData) == false)
++				return;
++			drawData.Draw(spriteBatch);
++		}
+ 	}
+ 
+ 	private static float DrawSurfaceBG_GetFogPower() => Math.Max(cloudAlpha, GraveyardVisualIntensity * 0.92f);
+@@ -50898,19 +_,22 @@
+ 				renderCount = 99;
+ 			}
+ 			else {
++				//TML: RenderTiles() is quite slow. ~30ms at peak; doesn't change with lighting modes
+ 				if (renderCount == 3) {
+ 					RenderTiles();
+ 					sceneTilePos.X = screenPosition.X - (float)offScreenRange;
+ 					sceneTilePos.Y = screenPosition.Y - (float)offScreenRange;
+ 				}
+ 
+-				if (renderCount == 3) {
++				//TML: Remapped from 3 to 2 to flatten per frame load for color lighting ( ~5ms peak).
++				if (renderCount == (Lighting.LegacyEngine.Mode == 0 ? 2 : 3)) {
+ 					RenderTiles2();
+ 					sceneTile2Pos.X = screenPosition.X - (float)offScreenRange;
+ 					sceneTile2Pos.Y = screenPosition.Y - (float)offScreenRange;
+ 				}
+ 
+-				if (renderCount == 3) {
++				//TML: Remapped from 3 to 0 to flatten per frame load for color lighting ( ~15ms peak).
++				if (renderCount == (Lighting.LegacyEngine.Mode == 0 ? 0 : 3)) {
+ 					RenderWalls();
+ 					sceneWallPos.X = screenPosition.X - (float)offScreenRange;
+ 					sceneWallPos.Y = screenPosition.Y - (float)offScreenRange;
 @@ -51709,8 +_,15 @@
  					if (num7 < 0)
  						num7 = 0;

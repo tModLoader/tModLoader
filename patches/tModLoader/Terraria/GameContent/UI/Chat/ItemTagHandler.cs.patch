@@ -10,44 +10,14 @@
  using Terraria.UI;
  using Terraria.UI.Chat;
  
-@@ -24,5 +_,6 @@
+@@ -31,5 +_,6 @@
  			Main.instance.MouseText(_item.Name, _item.rare, 0);
  		}
  
 +		//TODO: Possibly allow modders to custom draw here
  		public override bool UniqueDraw(bool justCheckingString, out Vector2 size, SpriteBatch spriteBatch, Vector2 position = default(Vector2), Color color = default(Color), float scale = 1f)
  		{
-@@ -38,19 +_,25 @@
- 					value.Frame();
- 			}
- 
-+
-+			/*
- 			num2 *= scale;
- 			num *= num2;
- 			if (num > 0.75f)
- 				num = 0.75f;
-+			*/
-+			num = scale * 0.75f;
- 
-+			// removed double application of scale from use of the above local below.
--			if (!justCheckingString && color != Color.Black) {
-+			// if (!justCheckingString && color != Color.Black) {
-+			if (!justCheckingString && (color.R != 0 || color.G != 0 || color.B != 0)) { // TML: One of the DrawColorCodedStringWithShadow overloads uses `new Color(0, 0, 0, baseColor.A)` rather than Black. Since I am not sure of the implications of changing that, change the check here to prevent item tags in item tooltips from drawing shadow versions.
- 				float inventoryScale = Main.inventoryScale;
--				Main.inventoryScale = scale * num;
-+				Main.inventoryScale = num;
--				ItemSlot.Draw(spriteBatch, ref _item, 14, position - new Vector2(10f) * scale * num, Color.White);
-+				ItemSlot.Draw(spriteBatch, ref _item, 14, position - new Vector2(10f) * num, Color.White);
- 				Main.inventoryScale = inventoryScale;
- 			}
- 
--			size = new Vector2(32f) * scale * num;
-+			size = new Vector2(32f) * num;
- 			return true;
- 		}
- 
-@@ -45,20 +_,30 @@
+@@ -52,20 +_,30 @@
  	TextSnippet ITagHandler.Parse(string text, Color baseColor, string options)
  	{
  		Item item = new Item();
@@ -79,7 +49,7 @@
  					case 's':
  					case 'x': {
  						if (int.TryParse(array[i].Substring(1), out var result3))
-@@ -68,7 +_,7 @@
+@@ -75,7 +_,7 @@
  					}
  					case 'p': {
  						if (int.TryParse(array[i].Substring(1), out var result2))
@@ -88,8 +58,8 @@
  
  						break;
  					}
-@@ -87,14 +_,27 @@
- 		};
+@@ -86,19 +_,32 @@
+ 		return new ItemSnippet(item);
  	}
  
 +	// We do not alter vanilla ways of doing things
@@ -97,6 +67,7 @@
  	public static string GenerateTag(Item I)
  	{
  		string text = "[i";
+ 		bool flag = false;
 +		// Assuming we have modded data, simply write the item as base64.
 +		// Do not write the other option, base64 holds all the info.
 +		// Yes, doubling up on SaveGlobals isn't the best for performance, but oh well
@@ -106,11 +77,15 @@
 +			goto End;
 +		}
 +
- 		if (I.prefix != 0)
- 			text = text + "/p" + I.prefix;
+ 		if (I.prefix != 0) {
+ 			text = text + (flag ? ",p" : "/p") + I.prefix;
+ 			flag = true;
+ 		}
  
- 		if (I.stack != 1)
- 			text = text + "/s" + I.stack;
+ 		if (I.stack != 1) {
+ 			text = text + (flag ? ",s" : "/s") + I.stack;
+ 			flag = true;
+ 		}
 +
 +		End:
  

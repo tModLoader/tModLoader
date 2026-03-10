@@ -33,6 +33,7 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Need to add `mountedPlayer.allDamage += 0.1f;` patch to `Mount.UpdateEffects` for Mounts 62 and 63 (Chillet)
 - Check for new `XDamage += ` results and fix them all to use `allDamage`.
 - NPC now has various spawn flags like ZoneSnow, ZoneDungeon, etc. What are they for?
+  - NPC.Spawner class is similar to our NPCSpawnInfo class. There are a lot of renames and less intuitive field names. Maybe we should restore many of the better names with redirects or vanilla edits.
 - Use InitData.MaxNPCs instead of Main.maxNPCs? Or not? When to use one or the other?
 - NPCLoader.BuffTownNPC will need to be reworked to facilitate new functionality. "Defeating a boss now also gives each villager a 1.5% attack speed bonus." is a new vanilla effect. Similarly the Advanced Combat Techniques increases health by 250. Dryad immortal on infectedSeed.
 - Check for any remaining TML added ID sets that aren't in TML.cs files.
@@ -157,6 +158,13 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Update TileID.Sets.NegatesFallDamage docs and entries. Mention that TileID.Sets.Clouds will have the same effect ase well and remove the cloud entries.
 - clientClone changed. I think the `_clientClone` field is no longer needed, or extraneous.
 - Player.nonTorch removed
+- Cloud rendering has moved, need to migrate modcloud patches from Main to HorizonRenderer I think.
+- What is ApplyRapidAttackBonus?
+- GameTipsDisplay patches need to be redone
+- Main.OpenPlayerSelectFromNet changed how our patches can be implemented for invite joining. Need to be reimplemented.
+- DrawColorCodedStringWithShadow methods no longer return Vector2 string size. Is this because of some reason? All patches in ChatManager need to be revisited.
+- Tooltip methods, like MouseText_DrawItemTooltip_GetLinesInfo, seemed to have changed a lot. Revisit patches.
+- Paladin shield patches might have been mixed up. Double Check.
 
 # New Fields that might need more documentation
 
@@ -260,20 +268,14 @@ Once all patches are fixed, these items need to be fixed or double checked:
 
 These are simple changes that we'd like Terraria to implement, mainly to reduce large or error-prone patches.
 
-- Use BlockBecauseYouAreOverAnImportantTile.ShouldBlockSmartInteract to make TileID.Sets.DisableSmartInteract
-- Use SmartCursorHelper.IsHoveringOverAnInteractibleTileThatBlocksSmartCursor to make TileID.Sets.DisableSmartCursor
-- Typo: SmartCursorHelper.IsHoveringOverAnInteractibleTileThatBlocksSmartCursor -> Interactable
 - In Step_Torch, change "bool flag = !ItemID.Sets.WaterTorches[type];" to "bool flag = !ItemID.Sets.WaterTorches[providedInfo.player.BiomeTorchHoldStyle(providedInfo.item.type)];" to "Allow underwater biome torches to work" (Coral Torches don't work while in the ocean)
 - de-DE/Main.json has a lot of fixes in it, should some of these fixes be brought into Terraria? Are they actually correct? Some English.
 - https://github.com/tModLoader/tModLoader/commit/fced57a0725a6fabc171616487adf5166cbb89ef has several changes similar to `new MemoryStream(FileUtilities.ReadAllBytes(text, isCloudSave));` -> `FileUtilities.ReadAllBytes(text, isCloudSave).ToMemoryStream();`, to "Fix bug where BinaryIO failed to access the buffer of non-public MemoryStream". Do these need to be fixed in Terraria as well?
 - https://github.com/tModLoader/tModLoader/commit/a532a537df39d3787829299e0835a3e29263fe7d has a fix for "Fix map saving if loading corrupted map file.". Check if this is still the case and suggest a fix in Terraria.
 - https://github.com/tModLoader/tModLoader/commit/a532a537df39d3787829299e0835a3e29263fe7d has a fix for "Fix map saving if loading old map file.". Check if this is still the case and suggest a fix in Terraria.
 - NPC.catchItem, change from short to int?
-- Add `Color color = new Color(175, 75, 255);` to the start of `DoDeathEvents_CelebrateBossDeath` and use it in all the ChatHelper.BroadcastChatMessage and Main.NewText method calls. (Big patches)
 - `private static readonly bool[] SafeDust` and `private static readonly bool[] SafeGore` being private and readonly, unlike every other set, is a bit odd.
-- Typos: "editting" -> "editing". `UIVirtualKeyboard._edittingSign`, `UIVirtualKeyboard._edittingChest`, `PlayerInputProfile.AllowEditting`. Also, "Edittable" in input profiles.json, but probably don't fix that one since it'll break saved data.
-- More simple typos: GemTree_Sappphire, garenteeNewStyle, caveOpenningSize, IsTileReplacable, DrawUnderworldBackgroudLayer, Dodgable, MakeHairsylesMenu, `_requiredObjecsForCraftingText`, pointPoisition, "GameUI.PrecentFishingPower", GemTree_Sappphire, Sillouette->Silhouette, WhoAmIToTargettingIndex, Emittence->Emittance, actuatorsLeftToConstume
-- DrawUnderworldBackgroudLayer -> DrawUnderworldBackgroundLayer
+- More simple typos: "GameUI.PrecentFishingPower"
 - NPCInteraction.ShowExcalmation -> ShowExclamation
 - PlayerDrawSet.missingHand and missingArm are the opposite of what they sound like apparently. tModLoader changes them as follows:
 ```diff

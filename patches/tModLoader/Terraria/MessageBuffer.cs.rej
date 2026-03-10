@@ -1,3 +1,18 @@
+@@ -438,10 +_,14 @@
+ 						}
+ 					}
+ 					else {
++						array3[num261] = ItemIO.Receive(reader, readStack: true);
++						/*
+ 						array3[num261] = new Item();
+ 						array3[num261].netDefaults(type16);
+ 						array3[num261].stack = stack7;
+ 						array3[num261].Prefix(num260);
++						*/
++
+ 						if (num258 == Main.myPlayer && !Main.ServerSideCharacter)
+ 							array4[num261] = array3[num261].Clone();
+ 					}
 @@ -745,7 +_,7 @@
  						NetMessage.TrySendData(27, whoAmI, -1, null, num90);
  				}

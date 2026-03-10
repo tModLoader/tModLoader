@@ -1,0 +1,19 @@
+@@ -158,7 +_,8 @@
+ 		bool result = false;
+ 		Tile tile = Main.tile[providedInfo.screenTargetX, providedInfo.screenTargetY];
+ 		if (tile.active()) {
+ 			switch (tile.type) {
++				/*
+ 				case 10:
+ 				case 11:
+ 				case 13:
+@@ -211,6 +_,9 @@
+ 				case 699:
+ 				case 707:
+ 					result = true;
++				*/
++				default:
++					result = TileID.Sets.DisableSmartCursor[tile.type];
+ 					break;
+ 				case 314:
+ 					if (providedInfo.player.gravDir == 1f)

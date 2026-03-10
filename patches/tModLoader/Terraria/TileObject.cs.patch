@@ -26,7 +26,7 @@
  	{
  		TileObjectData tileData = TileObjectData.GetTileData(type, style);
  		objectData = Empty;
-@@ -228,7 +_,7 @@
+@@ -229,7 +_,7 @@
  					num16--;
  
  				if (num16 < rectangle.Y) {
@@ -35,7 +35,7 @@
  					num11 += rectangle.Y - num16;
  					rectangle.Y = num16;
  				}
-@@ -246,12 +_,12 @@
+@@ -247,12 +_,12 @@
  				if (rectangle.X + rectangle.Width == tileData2.Width)
  					rectangle.Width++;
  
@@ -50,87 +50,80 @@
  					num11 += rectangle.Y - num19;
  					rectangle.Y = num19;
  				}
-@@ -283,7 +_,7 @@
+@@ -284,7 +_,7 @@
  			for (int i = 0; i < tileData2.Width; i++) {
  				for (int j = 0; j < tileData2.Height; j++) {
  					Tile tileSafely = Framing.GetTileSafely(num8 + i, num9 + j);
--					bool flag2 = !tileData2.LiquidPlace(tileSafely);
-+					bool flag2 = !tileData2.LiquidPlace(tileSafely, checkStay);
- 					bool flag3 = false;
+-					bool flag3 = !tileData2.LiquidPlace(tileSafely);
++					bool flag3 = !tileData2.LiquidPlace(tileSafely, checkStay);
+ 					bool flag4 = false;
  					if (tileData2.AnchorWall) {
  						num25 += 1f;
-@@ -294,7 +_,7 @@
+@@ -295,7 +_,7 @@
  					}
  
- 					bool flag4 = false;
+ 					bool flag5 = false;
 -					if (tileSafely.active() && (!Main.tileCut[tileSafely.type] || tileSafely.type == 484 || tileSafely.type == 654) && !TileID.Sets.BreakableWhenPlacing[tileSafely.type])
 +					if (tileSafely.active() && (!Main.tileCut[tileSafely.type] || tileSafely.type == 484 || tileSafely.type == 654) && !TileID.Sets.BreakableWhenPlacing[tileSafely.type] && !checkStay)
- 						flag4 = true;
+ 						flag5 = true;
  
- 					if (flag4 || flag2 || flag3) {
-@@ -330,6 +_,7 @@
- 									flag5 = true;
+ 					if (flag5 || flag3 || flag4) {
+@@ -331,6 +_,7 @@
+ 									flag6 = true;
  							}
  							else if (Main.tileSolid[tileSafely.type] && Main.tileSolidTop[tileSafely.type]) {
 +								// This is buggy since it doesn't check TopSlope and HalfBrick like WorldGen.SolidTileAllowBottomSlope does, causing issues with placing ontop of hammerable tiles like MetalBar. This bug left in until vanilla fix since it might be complicated.
- 								flag5 = true;
+ 								flag6 = true;
  							}
  						}
-@@ -373,7 +_,7 @@
- 					Tile tileSafely = Framing.GetTileSafely(num8 + num29, num9 + num28);
- 					bool flag6 = false;
+@@ -378,4 +_,4 @@
  					if (tileSafely.nactive()) {
--						if (Main.tileSolid[tileSafely.type] && !Main.tileSolidTop[tileSafely.type] && !Main.tileNoAttach[tileSafely.type] && (tileData2.FlattenAnchors || tileSafely.blockType() == 0))
-+						if ((anchorBottom.type & AnchorType.SolidTile) == AnchorType.SolidTile && Main.tileSolid[tileSafely.type] && !Main.tileSolidTop[tileSafely.type] && !Main.tileNoAttach[tileSafely.type] && (tileData2.FlattenAnchors || tileSafely.blockType() == 0)) // AnchorTop
- 							flag6 = tileData2.isValidTileAnchor(tileSafely.type);
- 
- 						if (!flag6 && (anchorBottom.type & AnchorType.SolidBottom) == AnchorType.SolidBottom && ((Main.tileSolid[tileSafely.type] && (!Main.tileSolidTop[tileSafely.type] || (TileID.Sets.Platforms[tileSafely.type] && (tileSafely.halfBrick() || tileSafely.topSlope())))) || tileSafely.halfBrick() || tileSafely.topSlope()) && !TileID.Sets.NotReallySolid[tileSafely.type] && !tileSafely.bottomSlope())
-@@ -424,7 +_,7 @@
- 					Tile tileSafely = Framing.GetTileSafely(num8 + width, num9 + num30);
- 					bool flag7 = false;
- 					if (tileSafely.nactive()) {
--						if (Main.tileSolid[tileSafely.type] && !Main.tileSolidTop[tileSafely.type] && !Main.tileNoAttach[tileSafely.type] && (tileData2.FlattenAnchors || tileSafely.blockType() == 0))
-+						if ((anchorBottom.type & AnchorType.SolidTile) == AnchorType.SolidTile && Main.tileSolid[tileSafely.type] && !Main.tileSolidTop[tileSafely.type] && !Main.tileNoAttach[tileSafely.type] && (tileData2.FlattenAnchors || tileSafely.blockType() == 0)) // AnchorRight
+-						if (Main.tileSolid[tileSafely.type] && !Main.tileSolidTop[tileSafely.type] && !Main.tileNoAttach[tileSafely.type] && (tileData2.FlattenAnchors || tileSafely.blockType() == 0)) {
++						if ((anchorBottom.type & AnchorType.SolidTile) == AnchorType.SolidTile && Main.tileSolid[tileSafely.type] && !Main.tileSolidTop[tileSafely.type] && !Main.tileNoAttach[tileSafely.type] && (tileData2.FlattenAnchors || tileSafely.blockType() == 0)) { // AnchorTop
  							flag7 = tileData2.isValidTileAnchor(tileSafely.type);
- 
- 						if (!flag7 && (anchorBottom.type & AnchorType.SolidSide) == AnchorType.SolidSide && Main.tileSolid[tileSafely.type] && !Main.tileSolidTop[tileSafely.type]) {
-@@ -492,7 +_,7 @@
- 					Tile tileSafely = Framing.GetTileSafely(num8 + num31, num9 + num32);
+ 							if (flag7)
+@@ -457,7 +_,7 @@
+ 					Tile tileSafely = Framing.GetTileSafely(num8 + width, num9 + num32);
  					bool flag8 = false;
  					if (tileSafely.nactive()) {
 -						if (Main.tileSolid[tileSafely.type] && !Main.tileSolidTop[tileSafely.type] && !Main.tileNoAttach[tileSafely.type] && (tileData2.FlattenAnchors || tileSafely.blockType() == 0))
-+						if ((anchorBottom.type & AnchorType.SolidTile) == AnchorType.SolidTile && Main.tileSolid[tileSafely.type] && !Main.tileSolidTop[tileSafely.type] && !Main.tileNoAttach[tileSafely.type] && (tileData2.FlattenAnchors || tileSafely.blockType() == 0)) // AnchorLeft
++						if ((anchorBottom.type & AnchorType.SolidTile) == AnchorType.SolidTile && Main.tileSolid[tileSafely.type] && !Main.tileSolidTop[tileSafely.type] && !Main.tileNoAttach[tileSafely.type] && (tileData2.FlattenAnchors || tileSafely.blockType() == 0)) // AnchorRight
  							flag8 = tileData2.isValidTileAnchor(tileSafely.type);
  
  						if (!flag8 && (anchorBottom.type & AnchorType.SolidSide) == AnchorType.SolidSide && Main.tileSolid[tileSafely.type] && !Main.tileSolidTop[tileSafely.type]) {
-@@ -601,8 +_,13 @@
+@@ -525,7 +_,7 @@
+ 					Tile tileSafely = Framing.GetTileSafely(num8 + num33, num9 + num34);
+ 					bool flag9 = false;
+ 					if (tileSafely.nactive()) {
+-						if (Main.tileSolid[tileSafely.type] && !Main.tileSolidTop[tileSafely.type] && !Main.tileNoAttach[tileSafely.type] && (tileData2.FlattenAnchors || tileSafely.blockType() == 0))
++						if ((anchorBottom.type & AnchorType.SolidTile) == AnchorType.SolidTile && Main.tileSolid[tileSafely.type] && !Main.tileSolidTop[tileSafely.type] && !Main.tileNoAttach[tileSafely.type] && (tileData2.FlattenAnchors || tileSafely.blockType() == 0)) // AnchorLeft
+ 							flag9 = tileData2.isValidTileAnchor(tileSafely.type);
+ 
+ 						if (!flag9 && (anchorBottom.type & AnchorType.SolidSide) == AnchorType.SolidSide && Main.tileSolid[tileSafely.type] && !Main.tileSolidTop[tileSafely.type]) {
+@@ -638,8 +_,13 @@
  				Point16 objectStart = TileObjectPreviewData.randomCache.ObjectStart;
- 				int num36 = coordinates.X + objectStart.X;
- 				int num37 = coordinates.Y + objectStart.Y;
-+				int num38 = x - tileObjectData.Origin.X;
-+				int num39 = y - tileObjectData.Origin.Y;
+ 				int num38 = coordinates.X + objectStart.X;
+ 				int num39 = coordinates.Y + objectStart.Y;
++				int num40 = x - tileObjectData.Origin.X;
++				int num41 = y - tileObjectData.Origin.Y;
 +				/* Fix random cache not working with alternates with different origins (mistakenly cycles new random each update), it should use the alternates TOD, not the tile styles TOD
- 				int num38 = x - tileData.Origin.X;
- 				int num39 = y - tileData.Origin.Y;
+ 				int num40 = x - tileData.Origin.X;
+ 				int num41 = y - tileData.Origin.Y;
 +				*/
 +
- 				if (num36 != num38 || num37 != num39)
- 					flag9 = true;
+ 				if (num38 != num40 || num39 != num41)
+ 					flag10 = true;
  			}
-@@ -743,7 +_,16 @@
- 					if (op.Type == 114 && j == 1)
- 						num12 += 2;
- 
-+					/*
- 					sb.Draw(sourceRectangle: new Rectangle(x, num8, coordinateWidth, num12), texture: value, position: new Vector2(num9 * 16 - (int)(position.X + (float)(coordinateWidth - 16) / 2f) + drawXOffset, num10 * 16 - (int)position.Y + num5), color: color, rotation: 0f, origin: Vector2.Zero, scale: 1f, effects: spriteEffects, layerDepth: 0f);
-+					*/
-+					var frame = new Rectangle(x, num8, coordinateWidth, num12);
-+					var drawPosition = new Vector2(num9 * 16 - (int)(position.X + (float)(coordinateWidth - 16) / 2f) + drawXOffset, num10 * 16 - (int)position.Y + num5);
-+					bool validPlacement = num11 == 1;
-+					if (TileLoader.PreDrawPlacementPreview(num9, num10, op.Type, sb, ref frame, ref drawPosition, ref color, validPlacement, ref spriteEffects))
-+						sb.Draw(sourceRectangle: frame, texture: value, position: drawPosition, color: color, rotation: 0f, origin: Vector2.Zero, scale: 1f, effects: spriteEffects, layerDepth: 0f);
-+
-+					TileLoader.PostDrawPlacementPreview(num9, num10, op.Type, sb, frame, drawPosition, color, validPlacement, spriteEffects);
- 					num8 += num12 + tileData.CoordinatePadding;
+@@ -818,5 +_,12 @@
+ 					}
  				}
- 			}
+ 				else {
++					/*
+ 					sb.Draw(value, vector, rectangle, color, 0f, Vector2.Zero, 1f, spriteEffects, 0f);
++					*/
++					bool validPlacement = num11 == 1;
++					if (TileLoader.PreDrawPlacementPreview(num9, num10, op.Type, sb, ref rectangle, ref vector, ref color, validPlacement, ref spriteEffects))
++						sb.Draw(sourceRectangle: rectangle, texture: value, position: vector, color: color, rotation: 0f, origin: Vector2.Zero, scale: 1f, effects: spriteEffects, layerDepth: 0f);
++
++					TileLoader.PostDrawPlacementPreview(num9, num10, op.Type, sb, rectangle, vector, color, validPlacement, spriteEffects);
+ 				}

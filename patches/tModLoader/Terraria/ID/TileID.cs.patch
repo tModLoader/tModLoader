@@ -24,7 +24,7 @@
  			public static bool[] Regrowth = Factory.CreateBoolSet(false, 3, 24, 52, 382, 61, 703, 62, 71, 73, 74, 82, 83, 84, 110, 113, 115, 184, 205, 201, 519, 518, 528, 529, 530, 705, 549, 637, 638, 636);
  		}
  
-@@ -148,28 +_,94 @@
+@@ -148,29 +_,95 @@
  		public static class Wiring
  		{
 +			/// <summary>
@@ -41,6 +41,7 @@
 -		public static SetFactory Factory = new SetFactory(Count);
 +		public static SetFactory Factory = new SetFactory(TileLoader.TileCount, nameof(TileID), Search);
  		public static bool[] SaveSlopes;
+ 		public static bool[] HitchIgnoresBecauseOfSingleBlockSizePlacement = Factory.CreateBoolSet(5, 72, 137, 314, 323, 380, 518, 519, 529, 549, 571, 583, 584, 585, 586, 587, 588, 589, 596, 616, 634, 726);
  		public static bool[] BreaksToys = Factory.CreateBoolSet(740);
  		public static bool[] MakesRubbleDust = Factory.CreateBoolSet(0, 668, 40, 59, 123, 224, 1, 25, 203, 117, 2, 60, 70, 23, 661, 199, 662, 109, 477, 492, 633, 53, 112, 234, 116, 397, 398, 399, 402, 396, 400, 401, 403, 57, 147, 161, 163, 200, 164, 539, 182, 180, 179, 534, 381, 183, 181, 625, 536, 627, 191, 192, 383, 384, 315, 367, 368, 495, 56, 666, 229, 230, 189, 196, 460, 717, 718, 719);
 +
@@ -120,7 +121,7 @@
  		public static bool[] CanBeDugByShovel = Factory.CreateBoolSet(false, 0, 668, 59, 57, 123, 224, 147, 2, 109, 23, 661, 199, 662, 60, 70, 477, 492, 53, 116, 112, 234, 40, 495, 633, 189, 196, 460, 717, 718, 719);
  		public static bool[] NonSolidSaveSlopes = Factory.CreateBoolSet(false, 131, 351, 336, 340, 342, 341, 343, 344);
  		public static bool[] ResetsHalfBrickPlacementAttempt = Factory.CreateBoolSet(true, 2, 23, 661, 60, 70, 199, 662, 109, 477, 492, 179, 512, 180, 513, 181, 514, 182, 515, 183, 516, 381, 517, 534, 535, 536, 537, 539, 540, 625, 626, 627, 628, 633);
-@@ -181,6 +_,10 @@
+@@ -182,6 +_,10 @@
  		public static bool[] DontMergeWithSnow = Factory.CreateBoolSet(161, 200, 163, 164, 224, 170, 738);
  		public static bool[] Boulders = Factory.CreateBoolSet(138, 484, 664, 665, 711, 712, 713, 714, 715, 716);
  		public static bool[] Clouds = Factory.CreateBoolSet(189, 196, 460, 717, 718, 719);
@@ -131,7 +132,7 @@
  		public static int[] CritterCageLidStyle = Factory.CreateIntSet(-1, 275, 0, 276, 0, 277, 0, 278, 0, 279, 0, 280, 0, 281, 0, 558, 0, 554, 0, 553, 0, 551, 0, 550, 0, 542, 0, 413, 0, 309, 0, 297, 0, 296, 0, 645, 0, 643, 0, 644, 0, 632, 0, 640, 0, 710, 0, 559, 1, 414, 1, 359, 1, 358, 1, 605, 2, 604, 2, 603, 2, 602, 2, 601, 2, 599, 2, 600, 2, 612, 2, 611, 2, 610, 2, 609, 2, 608, 2, 606, 2, 607, 2, 285, 3, 286, 3, 582, 3, 555, 3, 538, 3, 533, 3, 532, 3, 394, 3, 393, 3, 392, 3, 391, 3, 339, 3, 310, 3, 299, 3, 298, 3, 629, 3, 619, 3, 556, 4, 544, 4, 364, 4, 363, 4, 362, 4, 361, 4);
  		public static int[] SmartCursorPickaxePriorityOverride = Factory.CreateIntSet(0, 12, 1, 665, 1, 639, 1);
  		public static bool[] IgnoreSmartCursorPriorityAxe = Factory.CreateBoolSet(false, 488);
-@@ -189,6 +_,10 @@
+@@ -192,6 +_,10 @@
  		public static bool[] CanBeSatOnForPlayers = Factory.CreateBoolSet(false, 15, 497, 89, 102, 487);
  		public static bool[] CanBeSleptIn = Factory.CreateBoolSet(false, 79);
  		public static bool[] IgnoresTileReplacementDropCheckWhenBeingPlaced = Factory.CreateBoolSet(false, 158, 30);
@@ -142,7 +143,7 @@
  		public static bool?[] DrawTileInSolidLayer = Factory.CreateCustomSet<bool?>(null, new object[10] {
  			(ushort)11,
  			true,
-@@ -201,28 +_,76 @@
+@@ -204,28 +_,76 @@
  			(ushort)579,
  			true
  		});
@@ -219,7 +220,7 @@
  		public static bool[] HasOutlines = Factory.CreateBoolSet(10, 11, 15, 21, 29, 55, 79, 85, 88, 89, 97, 102, 104, 125, 132, 136, 139, 144, 207, 209, 212, 215, 216, 237, 287, 335, 338, 354, 356, 377, 386, 387, 388, 389, 410, 411, 425, 441, 455, 463, 467, 468, 470, 475, 487, 480, 494, 497, 509, 510, 511, 621, 464, 657, 658, 663, 699, 720, 721, 725, 733, 16, 17, 18, 26, 77, 86, 94, 96, 101, 106, 114, 133, 134, 217, 218, 220, 228, 243, 247, 283, 300, 301, 302, 303, 304, 305, 306, 307, 308, 412, 499, 622, 355, 172);
  		public static bool[] DoesNotOpenCraftingMenuOnInteract = Factory.CreateBoolSet(215, 207);
  		public static bool[] CountsAsWaterForCrafting = Factory.CreateBoolSet(172, 207);
-@@ -239,13 +_,33 @@
+@@ -242,13 +_,33 @@
  		public static bool[] HellSpecial = Factory.CreateBoolSet(58, 76, 75);
  		public static bool[] Leaves = Factory.CreateBoolSet(384, 192);
  		public static bool[] bonusCutTiles = Factory.CreateBoolSet(false, 233);
@@ -253,7 +254,7 @@
  		public static bool[] PreventsSlopesDuringGeneration = Factory.CreateBoolSet(false, 48, 137, 232, 191, 151, 274, 135, 442, 428);
  		public static List<int> CorruptCountCollection = new List<int> {
  			23,
-@@ -296,33 +_,80 @@
+@@ -299,33 +_,80 @@
  		public static bool[] UsesADifferentTileTypeForNPCSpawning = Factory.CreateBoolSet(false, 421, 422);
  		public static bool[] BlocksStairs = Factory.CreateBoolSet(386, 387, 54, 328, 459, 541);
 +		/// <summary>
@@ -334,7 +335,7 @@
  		public static bool[] SpreadOverground = Factory.CreateBoolSet(2, 23, 661, 32, 60, 70, 109, 199, 662, 352, 477, 492, 633, 226);
  		public static bool[] SpreadUnderground = Factory.CreateBoolSet(23, 661, 109, 199, 662, 60, 70, 633, 226);
 +#endif
-@@ -1093,5 +_,6 @@
+@@ -1096,5 +_,6 @@
  	public const ushort PalworldDigtoiseSleeping = 751;
  	public const ushort PalworldChilletEgg = 752;
  	public static readonly ushort Count = 753;

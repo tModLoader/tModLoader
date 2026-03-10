@@ -7,3 +7,101 @@
  			killCount[i] = 0;
  		}
  	}
+@@ -60513,6 +_,8 @@
+ 			}
+ 		}
+ 
++		NPCSpawnInfo spawnInfo = new NPCSpawnInfo();
++
+ 		float num6 = (int)((float)defaultMaxSpawns * (2f + 0.3f * (float)num4));
+ 		for (int k = 0; k < 255; k++) {
+ 			if (!Main.player[k].active || Main.player[k].dead)
+@@ -60535,6 +_,7 @@
+ 			bool flag11 = false;
+ 			bool flag12 = false;
+ 			bool flag13 = false;
++			// Patch note: flag14 is used below.
+ 			bool flag14 = downedPlantBoss && Main.hardMode;
+ 			bool isItAHappyWindyDay = Main.IsItAHappyWindyDay;
+ 			if (Main.player[k].active && Main.invasionType > 0 && Main.invasionDelay == 0 && Main.invasionSize > 0 && ((double)Main.player[k].position.Y < Main.worldSurface * 16.0 + (double)sHeight || Main.remixWorld)) {
+@@ -60555,14 +_,17 @@
+ 			}
+ 
+ 			if (Main.player[k].ZoneTowerSolar || Main.player[k].ZoneTowerNebula || Main.player[k].ZoneTowerVortex || Main.player[k].ZoneTowerStardust)
++				// Patch note: flag6 - Invasion.
+ 				flag6 = true;
+ 
+ 			int num8 = (int)(Main.player[k].position.X + (float)(Main.player[k].width / 2)) / 16;
+ 			int num9 = (int)(Main.player[k].position.Y + (float)(Main.player[k].height / 2)) / 16;
+ 			if (Main.wallHouse[Main.tile[num8, num9].wall])
++				//Patch note: flag5 - playerSafe
+ 				flag5 = true;
+ 
+ 			if (Main.tile[num8, num9].wall == 87)
++				//Patch note: flag4 - Lihzahrd
+ 				flag4 = true;
+ 
+ 			flag2 = false;
+@@ -60984,6 +_,7 @@
+ 							num = num20;
+ 							num2 = num21;
+ 							flag2 = true;
++							// Patch note: flag3 - Sky
+ 							flag3 = true;
+ 						}
+ 						else if (!flag6 && (double)num21 < Main.worldSurface * 0.44999998807907104 && !flag12 && Main.hardMode && Main.rand.Next(10) == 0) {
+@@ -61037,16 +_,19 @@
+ 											flag2 = false;
+ 											break;
+ 										}
++										// Extra patch context.
+ 
+ 										if (Main.tile[num26, num27].lava()) {
+ 											flag2 = false;
+ 											break;
+ 										}
++										// Extra patch context.
+ 									}
+ 								}
+ 							}
+ 
+ 							if (num >= num16 && num <= num17)
++								// Patch note: flag15 - safeRangeX
+ 								flag15 = true;
+ 						}
+ 					}
+@@ -61175,6 +_,7 @@
+ 						for (int num40 = num - num39; num40 < num + num39; num40++) {
+ 							for (int num41 = num2 - num39; num41 < num2 + num39; num41++) {
+ 								if (Main.tile[num40, num41].wall == 62)
++									// Patch note: flag11 - Spider wall
+ 									flag11 = true;
+ 							}
+ 						}
+@@ -61195,6 +_,7 @@
+ 						for (int num45 = num - num44; num45 < num + num44; num45++) {
+ 							for (int num46 = num2 - num44; num46 < num2 + num44; num46++) {
+ 								if (WallID.Sets.AllowsUndergroundDesertEnemiesToSpawn[Main.tile[num45, num46].wall])
++									// Patch note: flag13 - Desert cave
+ 									flag13 = true;
+ 							}
+ 						}
+@@ -63451,7 +_,8 @@
+ 			else if (Main.hardMode && (Main.remixWorld || (double)num2 > (Main.rockLayer + (double)Main.maxTilesY) / 2.0) && Main.rand.Next(200) == 0) {
+ 				newNPC = NewNPC(GetSpawnSourceForNaturalSpawn(), num * 16 + 8, num2 * 16, 172);
+ 			}
+-			else if ((Main.remixWorld || (double)num2 > (Main.rockLayer + (double)Main.maxTilesY) / 2.0) && (Main.rand.Next(200) == 0 || (Main.rand.Next(50) == 0 && (Main.player[k].armor[1].type == 4256 || (Main.player[k].armor[1].type >= 1282 && Main.player[k].armor[1].type <= 1287)) && Main.player[k].armor[0].type != 238))) {
++			// Uses flag added by TML to support modded gem robes for Tim spawn rate increase.
++			else if ((Main.remixWorld || (double)num2 > (Main.rockLayer + (double)Main.maxTilesY) / 2.0) && (Main.rand.Next(200) == 0 || (Main.rand.Next(50) == 0 && Main.player[k].hasGemRobe && Main.player[k].armor[0].type != 238))) {
+ 				newNPC = NewNPC(GetSpawnSourceForNaturalSpawn(), num * 16 + 8, num2 * 16, 45);
+ 			}
+ 			else if (flag10 && Main.rand.Next(4) != 0) {
+@@ -72448,7 +_,7 @@
+ 			if (NPCID.Sets.NoMultiplayerSmoothingByType[type]) {
+ 				netOffset *= 0f;
+ 			}
+-			else if (NPCID.Sets.NoMultiplayerSmoothingByAI[aiStyle]) {
++			else if (aiStyle >= 0 && aiStyle < NPCLoader.NPCCount && NPCID.Sets.NoMultiplayerSmoothingByAI[aiStyle]) { // TML: added bounds check
+ 				netOffset *= 0f;
+ 			}
+ 			else {

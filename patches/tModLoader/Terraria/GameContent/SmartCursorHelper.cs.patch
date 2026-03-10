@@ -8,26 +8,7 @@
  
  namespace Terraria.GameContent;
  
-@@ -158,7 +_,8 @@
- 		bool result = false;
- 		Tile tile = Main.tile[providedInfo.screenTargetX, providedInfo.screenTargetY];
- 		if (tile.active()) {
- 			switch (tile.type) {
-+				/*
- 				case 10:
- 				case 11:
- 				case 13:
-@@ -211,6 +_,9 @@
- 				case 699:
- 				case 707:
- 					result = true;
-+				*/
-+				default:
-+					result = TileID.Sets.DisableSmartCursor[tile.type];
- 					break;
- 				case 314:
- 					if (providedInfo.player.gravDir == 1f)
-@@ -278,7 +_,7 @@
+@@ -221,7 +_,7 @@
  			return;
  
  		int type = providedInfo.item.type;
@@ -36,7 +17,7 @@
  			return;
  
  		_targets.Clear();
-@@ -739,7 +_,7 @@
+@@ -682,7 +_,7 @@
  	private static void Step_BlocksLines(SmartCursorUsageInfo providedInfo, ref int focusedX, ref int focusedY)
  	{
  		int type = providedInfo.item.type;
@@ -45,7 +26,7 @@
  			return;
  
  		_targets.Clear();
-@@ -799,7 +_,7 @@
+@@ -742,7 +_,7 @@
  
  	private static void Step_Boulders(SmartCursorUsageInfo providedInfo, ref int focusedX, ref int focusedY)
  	{
@@ -54,7 +35,7 @@
  			return;
  
  		_targets.Clear();
-@@ -942,7 +_,7 @@
+@@ -885,7 +_,7 @@
  				for (int k = i; k <= i + 1; k++) {
  					for (int l = j - 1; l <= j; l++) {
  						Tile tile3 = Main.tile[k, l];
@@ -63,7 +44,7 @@
  							flag = false;
  					}
  				}
-@@ -1758,13 +_,15 @@
+@@ -1701,13 +_,15 @@
  				if ((tile.active() && !Main.tileCut[tile.type] && !TileID.Sets.BreakableWhenPlacing[tile.type]) || (tile2.active() && !Main.tileCut[tile2.type] && !TileID.Sets.BreakableWhenPlacing[tile2.type]) || !tile3.active() || !WorldGen.SolidTile2(tile3))
  					continue;
  
@@ -80,7 +61,7 @@
  					case 2:
  					case 23:
  					case 109:
-@@ -1782,19 +_,30 @@
+@@ -1725,19 +_,30 @@
  					case 112:
  					case 116:
  					case 234:
@@ -113,7 +94,7 @@
  					switch (tile10.type) {
  						case 2:
  						case 23:
-@@ -2291,7 +_,7 @@
+@@ -2234,7 +_,7 @@
  			return;
  
  		int type = providedInfo.item.type;
@@ -122,7 +103,7 @@
  			return;
  
  		int reachableStartX = providedInfo.reachableStartX;
-@@ -2377,12 +_,15 @@
+@@ -2320,12 +_,15 @@
  		int reachableEndY = providedInfo.reachableEndY;
  		_ = providedInfo.screenTargetX;
  		_ = providedInfo.screenTargetY;

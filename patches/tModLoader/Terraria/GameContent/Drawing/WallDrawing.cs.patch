@@ -18,9 +18,10 @@
 +	private Tilemap _tileArray;
  	private TilePaintSystemV2 _paintSystem;
  	private bool _shouldShowInvisibleWalls;
-@@ -64,8 +_,12 @@
+@@ -65,9 +_,13 @@
  		Rectangle value = new Rectangle(0, 0, 32, 32);
  		int underworldLayer = Main.UnderworldLayer;
+ 		drawBlackHelper = new DrawBlackHelper(0u, drawOffSet);
  		_lastPaintLookupKey = default(TilePaintSystemV2.WallVariationKey);
 -		for (int i = firstTileY; i < lastTileY; i++) {
 -			for (int j = firstTileX; j < lastTileX; j++) {
@@ -33,7 +34,7 @@
  				Tile tile = _tileArray[j, i];
  				if (tile == null) {
  					tile = new Tile();
-@@ -73,9 +_,15 @@
+@@ -75,9 +_,15 @@
  				}
  
  				ushort wall = tile.wall;
@@ -49,7 +50,7 @@
  				Color color = Lighting.GetColor(j, i);
  				if (tile.fullbrightWall())
  					color = Color.White;
-@@ -155,6 +_,9 @@
+@@ -164,6 +_,9 @@
  					if (flag3)
  						DrawOutline(TextureAssets.WallOutline.Value, new Vector2(j * 16 - (int)screenPosition.X, i * 16 - (int)screenPosition.Y + 14) + drawOffSet, new Rectangle(0, 14, 16, 2), color);
  				}

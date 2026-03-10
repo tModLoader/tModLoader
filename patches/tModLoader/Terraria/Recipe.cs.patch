@@ -1,13 +1,15 @@
 --- src/TerrariaNetCore/Terraria/Recipe.cs
 +++ src/tModLoader/Terraria/Recipe.cs
-@@ -1,13 +_,16 @@
+@@ -1,15 +_,18 @@
  using System;
  using System.Collections.Generic;
+ using System.Text;
 +using System.Linq;
  using Terraria.GameContent;
- using Terraria.GameContent.Achievements;
+ using Terraria.GameContent.UI;
  using Terraria.ID;
- using Terraria.Localization;
+ using Terraria.Map;
+ using Terraria.UI;
 +using Terraria.ModLoader;
 +using Terraria.ModLoader.Utilities;
  
@@ -16,7 +18,7 @@
 -public class Recipe
 +public sealed partial class Recipe
  {
- 	private struct RequiredItemEntry
+ 	public struct RequiredItemEntry
  	{
 @@ -15,40 +_,56 @@
  		public int stack;
@@ -107,21 +109,6 @@
  			if (acceptedGroups[i] == -1) {
  				acceptedGroups[i] = id;
  				break;
-@@ -68,12 +_,8 @@
- 
- 	public bool ProcessGroupsForText(int type, out string theText)
- 	{
--		for (int i = 0; i < maxRequirements; i++) {
--			int num = acceptedGroups[i];
--			if (num == -1)
--				break;
--
--			if (RecipeGroup.recipeGroups[num].ValidItems.Contains(type)) {
-+		foreach (int num in acceptedGroups) {
-+			if (RecipeGroup.recipeGroups[num].ContainsItem(type)) {
- 				theText = RecipeGroup.recipeGroups[num].GetText();
- 				return true;
- 			}
 @@ -85,7 +_,7 @@
  
  	public bool AcceptsGroup(int groupId)
@@ -154,18 +141,21 @@
  	{
  		if (customShimmerResults == null)
  			customShimmerResults = new List<Item>();
-@@ -120,9 +_,10 @@
- 		item.SetDefaults(itemType);
- 		item.stack = itemStack;
- 		customShimmerResults.Add(item);
--		return item;
-+		return this;
- 	}
+@@ -120,12 +_,8 @@
  
-+	/*
- 	public Recipe()
+ 	public bool ProcessGroupsForText(int type, out string theText)
  	{
- 		for (int i = 0; i < maxRequirements; i++) {
+-		for (int i = 0; i < maxRequirements; i++) {
+-			int num = acceptedGroups[i];
+-			if (num == -1)
+-				break;
+-
+-			if (RecipeGroup.recipeGroups[num].ValidItems.Contains(type)) {
++		foreach (int num in acceptedGroups) {
++			if (RecipeGroup.recipeGroups[num].ContainsItem(type)) {
+ 				theText = RecipeGroup.recipeGroups[num].GetText();
+ 				return true;
+ 			}
 @@ -131,18 +_,25 @@
  			acceptedGroups[i] = -1;
  		}
@@ -198,6 +188,18 @@
  			if (alchemy && Main.player[Main.myPlayer].alchemyTable) {
  				if (num > 1) {
  					int num2 = 0;
+@@ -144,9 +_,10 @@
+ 		item.SetDefaults(itemType);
+ 		item.stack = itemStack;
+ 		customShimmerResults.Add(item);
+-		return item;
++		return this;
+ 	}
+ 
++	/*
+ 	public Recipe()
+ 	{
+ 		for (int i = 0; i < maxRequirements; i++) {
 @@ -157,26 +_,38 @@
  					num = 0;
  				}
@@ -658,7 +660,7 @@
  			if (!Main.recipe[i].notDecraftable)
  				ItemID.Sets.IsCrafted[Main.recipe[i].createItem.type] = i;
  
-@@ -14604,7 +_,15 @@
+@@ -15108,7 +_,15 @@
  
  			if (Main.recipe[i].corruption)
  				ItemID.Sets.IsCraftedCorruption[Main.recipe[i].createItem.type] = i;

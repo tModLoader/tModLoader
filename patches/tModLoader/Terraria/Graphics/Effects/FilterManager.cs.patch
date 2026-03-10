@@ -1,9 +1,7 @@
 --- src/TerrariaNetCore/Terraria/Graphics/Effects/FilterManager.cs
 +++ src/tModLoader/Terraria/Graphics/Effects/FilterManager.cs
-@@ -194,4 +_,13 @@
- 
- 		return true;
- 	}
+@@ -185,1 +_,10 @@
+ 	public bool CanCapture() => HasActiveFilter();
 +
 +	// Added by TML.
 +	internal void DeactivateAll()
@@ -13,4 +11,3 @@
 +				this[key].Deactivate(Array.Empty<object>());
 +		}
 +	}
- }

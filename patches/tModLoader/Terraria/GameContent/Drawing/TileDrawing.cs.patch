@@ -79,7 +79,7 @@
  	private WindGrid _windGrid = new WindGrid();
  	private bool _shouldShowInvisibleBlocks;
  	private bool _shouldShowInvisibleBlocks_LastFrame;
-@@ -118,7 +_,12 @@
+@@ -119,7 +_,12 @@
  
  	private Gore[] _gore => Main.gore;
  
@@ -93,7 +93,7 @@
  	{
  		_specialPositions[(int)type][_specialsCount[(int)type]++] = new Point(x, y);
  	}
-@@ -151,11 +_,11 @@
+@@ -152,11 +_,11 @@
  				if (tile == null)
  					continue;
  
@@ -106,7 +106,7 @@
  					switch (tile.type) {
  						case 5:
  							tileStyle = GetTreeBiome(j, i, tile.frameX, tile.frameY);
-@@ -179,14 +_,15 @@
+@@ -180,14 +_,15 @@
  				}
  
  				if (!prepareLazily)
@@ -124,7 +124,7 @@
  	{
  		switch (tile.type) {
  			case 5: {
-@@ -270,9 +_,24 @@
+@@ -271,9 +_,24 @@
  			}
  			case 323: {
  				int textureIndex = 15;
@@ -149,16 +149,12 @@
  				TilePaintSystemV2.TreeFoliageVariantKey treeFoliageVariantKey = default(TilePaintSystemV2.TreeFoliageVariantKey);
  				treeFoliageVariantKey.TextureIndex = textureIndex;
  				treeFoliageVariantKey.PaintColor = tile.color();
-@@ -315,19 +_,22 @@
- 		bool flag = intoRenderTargets || Lighting.UpdateEveryFrame;
- 		if (!solidLayer && flag)
- 			ClearSpecialBlockCounts();
-+		if (solidLayer && flag)
-+			_specialsCount[(int)TileCounterType.CustomSolid] = 0;
- 	}
+@@ -307,17 +_,18 @@
  
  	public void ClearSpecialBlockCounts()
  	{
+ 		_vineRootsPositions.Clear();
+ 		_reverseVineRootsPositions.Clear();
  		_specialsCount[3] = 0;
  		_specialsCount[2] = 0;
  		_specialsCount[6] = 0;
@@ -172,7 +168,7 @@
 +		_specialsCount[(int)TileCounterType.CustomNonSolid] = 0;
  	}
  
-@@ -357,16 +_,18 @@
+@@ -347,16 +_,18 @@
  			DrawTrees();
  			DrawVines();
  			DrawReverseVines();
@@ -191,7 +187,7 @@
  		}
  	}
  
-@@ -423,11 +_,14 @@
+@@ -414,11 +_,14 @@
  		byte b = (byte)(100f + 150f * Main.martianLight);
  		_martianGlow = new Color(b, b, b, 0);
  		_lastPaintLookupKey = new TilePaintSystemV2.TileVariationkey {
@@ -208,7 +204,7 @@
  				Tile tile = Main.tile[j, i];
  				if (tile == null) {
  					tile = new Tile();
-@@ -438,7 +_,9 @@
+@@ -429,7 +_,9 @@
  					if (!tile.active() || IsTileDrawLayerSolid(tile.type) != solidLayer || (DebugOptions.ShowUnbreakableWall && tile.wall == 350))
  						continue;
  
@@ -219,7 +215,7 @@
  						Main.tileBatch.SetLayer(Layer_LiquidBehindTiles, 0);
  						DrawTile_LiquidBehindTile(solidLayer, waterStyleOverride, unscaledPosition, drawOffSet, j, i, tile);
  					}
-@@ -450,6 +_,9 @@
+@@ -441,6 +_,9 @@
  					if (!TextureAssets.Tile[type].IsLoaded)
  						Main.instance.LoadTiles(type);
  
@@ -229,7 +225,7 @@
  					switch (type) {
  						case 52:
  						case 62:
-@@ -596,6 +_,9 @@
+@@ -587,6 +_,9 @@
  					}
  
  					DrawSingleTile(unscaledPosition, drawOffSet, j, i);
@@ -239,7 +235,7 @@
  				}
  			}
  		}
-@@ -615,8 +_,12 @@
+@@ -607,8 +_,12 @@
  		}
  	}
  
@@ -253,7 +249,7 @@
  		int y = j;
  		for (int num = j - 1; num > 0; num--) {
  			Tile tile = Main.tile[i, num];
-@@ -633,7 +_,11 @@
+@@ -625,7 +_,11 @@
  		}
  	}
  
@@ -266,7 +262,7 @@
  	{
  		int y = j;
  		for (int k = j; k < Main.maxTilesY; k++) {
-@@ -753,7 +_,7 @@
+@@ -745,7 +_,7 @@
  		if (TileID.Sets.HasOutlines[tileDrawInfo.typeCache])
  			GetTileOutlineInfo(tileX, tileY, tileDrawInfo.typeCache, ref tileDrawInfo.tileLight, ref highlightTexture, ref highlightColor);
  
@@ -275,7 +271,7 @@
  			if (tileDrawInfo.tileLight.R < byte.MaxValue)
  				tileDrawInfo.tileLight.R = byte.MaxValue;
  
-@@ -772,7 +_,7 @@
+@@ -764,7 +_,7 @@
  			}
  		}
  
@@ -284,7 +280,7 @@
  			if (tileDrawInfo.tileLight.R < 200)
  				tileDrawInfo.tileLight.R = 200;
  
-@@ -789,7 +_,7 @@
+@@ -781,7 +_,7 @@
  
  		if (_perspectivePlayer.biomeSight) {
  			Color sightColor = Color.White;
@@ -293,7 +289,7 @@
  				if (tileDrawInfo.tileLight.R < sightColor.R)
  					tileDrawInfo.tileLight.R = sightColor.R;
  
-@@ -846,11 +_,16 @@
+@@ -844,11 +_,16 @@
  			num5 = 0f;
  
  		Vector2 vector = new Vector2((float)(tileX * 16 - (int)screenPosition.X) - num5, tileY * 16 - (int)screenPosition.Y + tileDrawInfo.tileTop + tileDrawInfo.halfBrickHeight) + screenOffset;
@@ -310,7 +306,7 @@
  		switch (tileDrawInfo.typeCache) {
  			case 751:
  				if (tileDrawInfo.tileFrameX != 0 || tileDrawInfo.tileCache.frameY != 0)
-@@ -1201,7 +_,13 @@
+@@ -1199,7 +_,13 @@
  		}
  	}
  
@@ -325,7 +321,7 @@
  	{
  		bool flag = tile.invisibleBlock();
  		switch (tile.type) {
-@@ -1216,6 +_,6 @@
+@@ -1214,6 +_,6 @@
  		}
  
  		if (flag)
@@ -333,7 +329,7 @@
 +			return Main.instance.TilesRenderer._shouldShowInvisibleBlocks;
  
  		return true;
-@@ -1239,6 +_,25 @@
+@@ -1237,6 +_,25 @@
  				if (WorldGen.IsAlchemyPlantHarvestable(tile.frameX / 18, tileY))
  					key.TileType = 84;
  				break;
@@ -359,7 +355,7 @@
  		}
  
  		return GetTileDrawTexture(key);
-@@ -1427,6 +_,7 @@
+@@ -1425,6 +_,7 @@
  				value4.Y = 0;
  				value4.Height = 10;
 +				value4.X %= num10 < 3 ? 108 : 54; // Added by TML. Accounts for tilesheets with multiple columns
@@ -367,7 +363,7 @@
  					CageStyle = num10,
  					PaintColor = drawData.tileCache.color()
  				});
-@@ -1545,36 +_,45 @@
+@@ -1543,36 +_,45 @@
  			case 662:
  				return 4;
  			default:
@@ -414,7 +410,7 @@
 +
  		switch (type) {
  			case 270: {
-@@ -3128,6 +_,9 @@
+@@ -3126,6 +_,9 @@
  		if (WorldGen.IsPalmOasisTree(x))
  			num += 4;
  
@@ -424,7 +420,7 @@
  		return num;
  	}
  
-@@ -3677,7 +_,8 @@
+@@ -3675,7 +_,8 @@
  
  		bool flag7 = false;
  		if (flag6) {
@@ -434,7 +430,7 @@
  				if (Main.IsLiquidStyleWater(i) && Main.liquidAlpha[i] > 0f && i != num2) {
  					DrawPartialLiquid(!solidLayer, tileCache, ref position, ref liquidSize, i, ref vertices);
  					flag7 = true;
-@@ -3924,7 +_,8 @@
+@@ -3922,7 +_,8 @@
  		}
  	}
  
@@ -444,9 +440,9 @@
  	{
  		bool flag = false || typeCache == 135 || typeCache == 137 || TileID.Sets.Boulders[typeCache] || typeCache == 141 || typeCache == 210 || typeCache == 442 || typeCache == 443 || typeCache == 444 || typeCache == 411 || typeCache == 485 || typeCache == 85 || typeCache == 654 || (typeCache == 314 && Minecart.IsPressurePlate(tileCache));
  		flag |= Main.getGoodWorld && typeCache == 230;
-@@ -3934,10 +_,14 @@
+@@ -3932,10 +_,14 @@
  			if (!localPlayer.fireWalk)
- 				flag = flag || typeCache == 37 || typeCache == 58 || typeCache == 76;
+ 				flag = flag || (typeCache >= 0 && TileID.Sets.TouchDamageHot[typeCache]);
  
 +			// Extra patch context.
  			if (!localPlayer.iceSkate)
@@ -459,7 +455,7 @@
  		return flag;
  	}
  
-@@ -3949,7 +_,7 @@
+@@ -3947,7 +_,7 @@
  		return _tileSolid[typeCache];
  	}
  
@@ -468,7 +464,7 @@
  	{
  		if (Main.InSmartCursorHighlightArea(x, y, out var actuallySelected)) {
  			int num = (tileLight.R + tileLight.G + tileLight.B) / 3;
-@@ -3960,7 +_,7 @@
+@@ -3958,7 +_,7 @@
  		}
  	}
  
@@ -477,7 +473,7 @@
  	{
  		int num = tileCache.slope();
  		bool flag = !TileID.Sets.BlocksWaterDrawingBehindSelf[tileCache.type];
-@@ -3989,9 +_,9 @@
+@@ -3987,9 +_,9 @@
  		}
  	}
  
@@ -489,7 +485,7 @@
  	{
  		tileTop = 0;
  		tileWidth = 16;
-@@ -4106,6 +_,10 @@
+@@ -4104,6 +_,10 @@
  				tileWidth = 20;
  				tileHeight = 20;
  				int treeBiome = GetTreeBiome(x, y, tileFrameX, tileFrameY);
@@ -500,7 +496,7 @@
  				tileFrameX += (short)(176 * (treeBiome + 1));
  				break;
  			}
-@@ -4130,6 +_,12 @@
+@@ -4128,6 +_,12 @@
  				tileWidth = 20;
  				tileHeight = 20;
  				int palmTreeBiome = GetPalmTreeBiome(x, y);
@@ -513,7 +509,7 @@
  				tileFrameY = (short)(22 * palmTreeBiome);
  				break;
  			}
-@@ -5797,9 +_,16 @@
+@@ -5795,9 +_,16 @@
  					glowColor = _meteorGlow;
  				}
  
@@ -530,7 +526,7 @@
  	}
  
  	private bool IsWindBlocked(int x, int y)
-@@ -5817,21 +_,21 @@
+@@ -5815,21 +_,21 @@
  		return false;
  	}
  
@@ -555,22 +551,15 @@
  	{
  		int num = x - tileFrameX / 18;
  		int num2 = y - tileFrameY / 18;
-@@ -5877,18 +_,36 @@
- 		if (solidLayer) {
+@@ -5876,6 +_,7 @@
  			_displayDollTileEntityPositions.Clear();
  			_hatRackTileEntityPositions.Clear();
-+			/*
- 			_vineRootsPositions.Clear();
- 			_reverseVineRootsPositions.Clear();
-+			*/
-+			return;
++			_specialsCount[(int)TileCounterType.CustomSolid] = 0;
  		}
-+
-+		//TML: Moved so positions get cleared and added in the same frame.
-+		_vineRootsPositions.Clear();
-+		_reverseVineRootsPositions.Clear();
- 	}
- 
+ 		else {
+ 			ClearSpecialBlockCounts();
+ 		}
+@@ -5884,10 +_,21 @@
 +	/// <inheritdoc cref="AddSpecialLegacyPoint(int, int)"/>
 -	private void AddSpecialLegacyPoint(Point p)
 +	public void AddSpecialLegacyPoint(Point p)
@@ -594,7 +583,7 @@
  		_specialTileX[_specialTilesCount] = x;
  		_specialTileY[_specialTilesCount] = y;
  		_specialTilesCount++;
-@@ -5905,7 +_,7 @@
+@@ -5904,7 +_,7 @@
  		_specialTilesCount = 0;
  	}
  
@@ -603,7 +592,7 @@
  	{
  		if (tileCache.fullbrightBlock())
  			return Color.White;
-@@ -5962,9 +_,10 @@
+@@ -5961,9 +_,10 @@
  		return tileLight;
  	}
  
@@ -615,7 +604,7 @@
  		int leafFrequency = _leafFrequency;
  		leafFrequency /= 4;
  		if (typeCache == 718 && !Main.dayTime && _rand.Next(3) == 0 && !WorldGen.SolidTile3(i, j - 1)) {
-@@ -6696,14 +_,28 @@
+@@ -6695,14 +_,28 @@
  		}
  	}
  
@@ -646,7 +635,7 @@
  	{
  		Tile tile = Main.tile[x, y + 1];
  		if (!WorldGen.SolidTile(tile) && tile.liquid <= 0) {
-@@ -6713,7 +_,13 @@
+@@ -6712,7 +_,13 @@
  		}
  	}
  
@@ -661,7 +650,7 @@
  	{
  		int num = 0;
  		if (Main.WindForVisuals > 0.2f)
-@@ -6756,7 +_,7 @@
+@@ -6755,7 +_,7 @@
  		rectangle.Height = 400;
  		for (int k = 0; k < 600; k++) {
  			Gore gore = _gore[k];
@@ -670,7 +659,7 @@
  				Rectangle value = new Rectangle((int)gore.position.X, (int)gore.position.Y, 16, 16);
  				if (rectangle.Intersects(value))
  					return;
-@@ -6771,6 +_,8 @@
+@@ -6770,6 +_,8 @@
  			type = 706;
  		else if (Main.waterStyle == 12)
  			type = 1147;
@@ -679,7 +668,7 @@
  		else if (Main.waterStyle > 1)
  			type = 706 + Main.waterStyle - 1;
  
-@@ -6799,7 +_,17 @@
+@@ -6798,7 +_,17 @@
  		_gore[num2].velocity *= 0f;
  	}
  
@@ -698,7 +687,7 @@
  	{
  		if (!Main.SettingsEnabled_TilesSwayInWind)
  			return 0f;
-@@ -6823,7 +_,22 @@
+@@ -6822,7 +_,22 @@
  		return num2 * lerpValue;
  	}
  
@@ -722,7 +711,7 @@
  	{
  		if (!Main.SettingsEnabled_TilesSwayInWind)
  			return false;
-@@ -7090,8 +_,11 @@
+@@ -7089,8 +_,11 @@
  					Main.tileBatch.Draw(value5, position2, value6, color5, Vector2.Zero, 1f, SpriteEffects.None);
  				}
  
@@ -734,7 +723,7 @@
  		}
  	}
  
-@@ -7343,6 +_,26 @@
+@@ -7342,6 +_,26 @@
  						num20 = 2;
  					}
  
@@ -761,7 +750,7 @@
  					int frameY2 = Main.tile[x, y].frameY;
  					byte tileColor4 = tile.color();
  					Texture2D treeTopTexture2 = GetTreeTopTexture(treeTextureIndex, palmTreeBiome, tileColor4);
-@@ -7368,8 +_,13 @@
+@@ -7367,8 +_,13 @@
  	private Texture2D GetTreeTopTexture(int treeTextureIndex, int treeTextureStyle, byte tileColor)
  	{
  		Texture2D texture2D = _paintSystem.TryGetTreeTopAndRequestIfNotReady(treeTextureIndex, treeTextureStyle, tileColor);
@@ -776,7 +765,7 @@
  
  		return texture2D;
  	}
-@@ -7377,8 +_,12 @@
+@@ -7376,8 +_,12 @@
  	private Texture2D GetTreeBranchTexture(int treeTextureIndex, int treeTextureStyle, byte tileColor)
  	{
  		Texture2D texture2D = _paintSystem.TryGetTreeBranchAndRequestIfNotReady(treeTextureIndex, treeTextureStyle, tileColor);
@@ -790,7 +779,7 @@
  
  		return texture2D;
  	}
-@@ -7524,9 +_,9 @@
+@@ -7523,9 +_,9 @@
  		}
  	}
  
@@ -802,7 +791,7 @@
  			if (tileLight.R < byte.MaxValue)
  				tileLight.R = byte.MaxValue;
  
-@@ -7545,7 +_,7 @@
+@@ -7544,7 +_,7 @@
  			}
  		}
  
@@ -811,7 +800,7 @@
  			if (tileLight.R < 200)
  				tileLight.R = 200;
  
-@@ -7564,7 +_,7 @@
+@@ -7563,7 +_,7 @@
  			return;
  
  		Color sightColor = Color.White;
@@ -820,7 +809,7 @@
  			if (tileLight.R < sightColor.R)
  				tileLight.R = sightColor.R;
  
-@@ -7585,7 +_,17 @@
+@@ -7584,7 +_,17 @@
  		}
  	}
  
@@ -839,7 +828,7 @@
  	{
  		_windGrid.GetWindTime(i, j, pushAnimationTimeTotal, out var windTimeLeft, out var directionX, out var _);
  		if (windTimeLeft >= pushAnimationTimeTotal / 2)
-@@ -7607,7 +_,18 @@
+@@ -7606,7 +_,18 @@
  		}
  	}
  
@@ -859,7 +848,7 @@
  	{
  		_windGrid.GetWindTime(i, j, pushAnimationTimeTotal, out var windTimeLeft, out var directionX, out var _);
  		float num = (float)windTimeLeft / (float)pushAnimationTimeTotal;
-@@ -7810,6 +_,15 @@
+@@ -7809,6 +_,15 @@
  						num4 = ClimbCatTail(x, num3);
  						num3 -= num4 - 1;
  						break;
@@ -875,7 +864,7 @@
  				}
  
  				DrawMultiTileGrassInWind(unscaledPosition, zero, x, num3, sizeX, num4);
-@@ -7890,6 +_,14 @@
+@@ -7889,6 +_,14 @@
  						sizeX = 1;
  						sizeY = 1;
  						break;
@@ -890,7 +879,7 @@
  				}
  
  				DrawMultiTileVinesInWind(unscaledPosition, zero, x, y, sizeX, sizeY);
-@@ -8073,7 +_,7 @@
+@@ -8072,7 +_,7 @@
  			float num6 = (float)num2 * num3 * windCycle + num4;
  			if (_perspectivePlayer.biomeSight) {
  				Color sightColor = Color.White;
@@ -899,7 +888,7 @@
  					if (color.R < sightColor.R)
  						color.R = sightColor.R;
  
-@@ -8185,7 +_,11 @@
+@@ -8184,7 +_,11 @@
  		return num / (float)num2;
  	}
  
@@ -912,7 +901,7 @@
  	{
  		float result = 0f;
  		int num = int.MaxValue;
-@@ -8218,7 +_,19 @@
+@@ -8217,7 +_,19 @@
  		Vector2 vector2 = new Vector2(0f, -2f);
  		vector += vector2;
  		bool flag = false;
@@ -932,7 +921,7 @@
  			vector.Y -= 8f;
  			vector2.Y -= 8f;
  		}
-@@ -8410,6 +_,7 @@
+@@ -8409,6 +_,7 @@
  				flag3 = true;
  				break;
  		}

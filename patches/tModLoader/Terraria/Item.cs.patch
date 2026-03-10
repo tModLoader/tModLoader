@@ -1236,7 +1236,7 @@
  	public void DefaultToGolfBall(int projid)
  	{
  		shoot = projid;
-@@ -39452,6 +_,8 @@
+@@ -39451,6 +_,8 @@
  				expert = true;
  				break;
  			case 4952:
@@ -1245,7 +1245,7 @@
  				autoReuse = true;
  				useStyle = 14;
  				holdStyle = 6;
-@@ -39473,6 +_,9 @@
+@@ -39472,6 +_,9 @@
  				flame = true;
  				break;
  			case 4953:
@@ -1255,7 +1255,7 @@
  				useStyle = 5;
  				autoReuse = true;
  				useAnimation = 30;
-@@ -40670,6 +_,8 @@
+@@ -40669,6 +_,8 @@
  				value = sellPrice(0, 0, 50);
  				break;
  			case 5134:
@@ -1264,7 +1264,7 @@
  				useStyle = 5;
  				autoReuse = true;
  				useAnimation = 30;
-@@ -46900,6 +_,20 @@
+@@ -46905,6 +_,20 @@
  		voiceSlot = voiceOverrideID;
  	}
  
@@ -1285,7 +1285,7 @@
  	public void DefaultToSolution(int projectileId)
  	{
  		shoot = projectileId - 145;
-@@ -46911,6 +_,30 @@
+@@ -46916,6 +_,30 @@
  		consumable = true;
  	}
  
@@ -1316,7 +1316,7 @@
  	public void DefaultToWhip(int projectileId, int dmg, float kb, float shootspeed, int animationTotalTime = 30)
  	{
  		autoReuse = false;
-@@ -46922,7 +_,10 @@
+@@ -46927,7 +_,10 @@
  		shoot = projectileId;
  		UseSound = SoundID.Item152;
  		noMelee = true;
@@ -1327,7 +1327,7 @@
  		noUseGraphic = true;
  		damage = dmg;
  		knockBack = kb;
-@@ -46940,7 +_,11 @@
+@@ -46945,7 +_,11 @@
  		SetShopValues(ItemRarityColor.Blue1, buyPrice(0, 2));
  		createTile = 723;
  	}
@@ -1339,7 +1339,7 @@
  	public void ChangeItemType(int to)
  	{
  		bool flag = favorited;
-@@ -47032,7 +_,7 @@
+@@ -47037,7 +_,7 @@
  		return false;
  	}
  
@@ -1348,7 +1348,7 @@
  	{
  		useStyle = 1;
  		autoReuse = true;
-@@ -47065,7 +_,8 @@
+@@ -47070,7 +_,8 @@
  		}
  	}
  
@@ -1358,7 +1358,7 @@
  	{
  		useStyle = 1;
  		autoReuse = true;
-@@ -47079,7 +_,22 @@
+@@ -47084,7 +_,22 @@
  		makeNPC = npcIdToSpawnOnUse;
  		createTile = 724;
  	}
@@ -1381,7 +1381,7 @@
  	public void DefaultToStaff(int projType, float pushForwardSpeed, int singleShotTime, int manaPerShot)
  	{
  		DefaultToMagicWeapon(projType, singleShotTime, pushForwardSpeed, hasAutoReuse: true);
-@@ -47089,6 +_,25 @@
+@@ -47094,6 +_,25 @@
  		UseSound = SoundID.Item43;
  	}
  
@@ -1407,7 +1407,7 @@
  	public void DefaultToSpear(int projType, float pushForwardSpeed, int animationTime)
  	{
  		useStyle = 5;
-@@ -47469,7 +_,24 @@
+@@ -47474,7 +_,24 @@
  		mountType = mount;
  	}
  
@@ -1433,7 +1433,7 @@
  	{
  		useStyle = 1;
  		useTurn = true;
-@@ -47482,6 +_,12 @@
+@@ -47487,6 +_,12 @@
  		height = 12;
  	}
  
@@ -1446,7 +1446,7 @@
  	public void SetWeaponValues(int dmg, float knockback, int bonusCritChance = 0)
  	{
  		damage = dmg;
-@@ -47489,6 +_,14 @@
+@@ -47494,6 +_,14 @@
  		crit = bonusCritChance;
  	}
  
@@ -1461,7 +1461,7 @@
  	public void DefaultToBow(int singleShotTime, float shotVelocity, bool hasAutoReuse = false)
  	{
  		DefaultToRangedWeapon(1, AmmoID.Arrow, singleShotTime, shotVelocity, hasAutoReuse);
-@@ -47497,6 +_,23 @@
+@@ -47502,6 +_,23 @@
  		UseSound = SoundID.Item5;
  	}
  
@@ -1485,7 +1485,7 @@
  	public void DefaultToMagicWeapon(int projType, int singleShotTime, float shotVelocity, bool hasAutoReuse = false)
  	{
  		autoReuse = hasAutoReuse;
-@@ -47509,6 +_,25 @@
+@@ -47514,6 +_,25 @@
  		magic = true;
  	}
  
@@ -1511,7 +1511,7 @@
  	public void DefaultToRangedWeapon(int baseProjType, int ammoID, int singleShotTime, float shotVelocity, bool hasAutoReuse = false)
  	{
  		autoReuse = hasAutoReuse;
-@@ -47522,6 +_,25 @@
+@@ -47527,6 +_,25 @@
  		ranged = true;
  	}
  
@@ -1537,7 +1537,7 @@
  	public void DefaultToThrownWeapon(int baseProjType, int singleShotTime, float shotVelocity, bool hasAutoReuse = false)
  	{
  		autoReuse = hasAutoReuse;
-@@ -47535,7 +_,36 @@
+@@ -47540,7 +_,36 @@
  		consumable = true;
  	}
  
@@ -1575,7 +1575,7 @@
  	{
  		flame = true;
  		noWet = !allowWaterPlacement;
-@@ -47553,11 +_,30 @@
+@@ -47558,11 +_,30 @@
  		useTime = 10;
  	}
  
@@ -1606,7 +1606,7 @@
  	public void DefaultToPlaceableTile(ushort tileIDToPlace, int tileStyleToPlace = 0)
  	{
  		createTile = tileIDToPlace;
-@@ -47572,6 +_,9 @@
+@@ -47577,6 +_,9 @@
  		consumable = true;
  	}
  
@@ -1616,7 +1616,7 @@
  	public void MakeUsableWithChlorophyteExtractinator()
  	{
  		useStyle = 1;
-@@ -47608,6 +_,27 @@
+@@ -47613,6 +_,27 @@
  		autoReuse = true;
  	}
  
@@ -1644,7 +1644,7 @@
  	public void DefaultToFood(int newwidth, int newheight, int foodbuff, int foodbuffduration, bool useGulpSound = false, int animationTime = 17)
  	{
  		if (useGulpSound)
-@@ -47646,12 +_,18 @@
+@@ -47651,12 +_,18 @@
  		healLife = healingAmount;
  	}
  
@@ -1663,7 +1663,7 @@
  	public void DefaultToHeadgear(int newwidth, int newheight, int helmetArtID)
  	{
  		width = newwidth;
-@@ -47696,7 +_,34 @@
+@@ -47701,7 +_,34 @@
  		useAnimation = (useTime = 12);
  	}
  
@@ -1699,7 +1699,7 @@
  	{
  		useStyle = 1;
  		useTurn = true;
-@@ -47715,6 +_,30 @@
+@@ -47720,6 +_,30 @@
  		vanity = true;
  	}
  
@@ -1730,7 +1730,7 @@
  	public void SetDefaults(int Type, ItemVariant variant = null)
  	{
  		if (Type < 0) {
-@@ -47723,8 +_,10 @@
+@@ -47728,8 +_,10 @@
  		}
  
  		ResetStats(Type);
@@ -1741,7 +1741,7 @@
  
  		if (variant == null)
  			variant = ItemVariants.SelectVariant(Type);
-@@ -47749,6 +_,17 @@
+@@ -47754,6 +_,17 @@
  			SetDefaults5(type);
  
 +		// Compensate for the change of itemAnimation getting reset at 0 instead of vanilla's 1.
@@ -1760,7 +1760,7 @@
  		if (hairDye != 0)
  			hairDye = GameShaders.Hair.GetShaderIdFromItemId(type);
  
-@@ -47905,8 +_,10 @@
+@@ -47910,8 +_,10 @@
  		if (type >= 1803 && type <= 1807)
  			SetDefaults(1533 + type - 1803);
  
@@ -1772,7 +1772,7 @@
  			TurnToAir();
  	}
  
-@@ -47913,5 +_,7 @@
+@@ -47918,5 +_,7 @@
  	public void OnCreated(ItemCreationContext context)
  	{
 +		ItemLoader.OnCreated(this, context);
@@ -1780,7 +1780,7 @@
  		if (type == 5437)
  			SetDefaults(5358);
  	}
-@@ -47920,15 +_,35 @@
+@@ -47925,15 +_,35 @@
  	{
  		useSoundPitch = 0f;
  		tooltipContext = -1;
@@ -1816,7 +1816,7 @@
 +		masterOnly = false; // Added by TML.
  		questItem = false;
  		fishingPole = 0;
-@@ -47947,10 +_,14 @@
+@@ -47952,10 +_,14 @@
  		mech = false;
  		flame = false;
  		reuseDelay = 0;
@@ -1831,7 +1831,7 @@
  		placeStyle = 0;
  		buffTime = 0;
  		buffType = 0;
-@@ -48142,6 +_,9 @@
+@@ -48147,6 +_,9 @@
  
  	public Color GetAlpha(Color newColor)
  	{
@@ -1841,7 +1841,7 @@
  		if (ItemID.Sets.BossBag[type])
  			return Color.Lerp(newColor, Color.White, 0.4f);
  
-@@ -48347,6 +_,9 @@
+@@ -48352,6 +_,9 @@
  		return new Color(num, num2, num3, num4);
  	}
  
@@ -1851,7 +1851,7 @@
  	public static bool MechSpawn(float x, float y, int type)
  	{
  		int num = 0;
-@@ -48374,7 +_,18 @@
+@@ -48379,7 +_,18 @@
  		return true;
  	}
  
@@ -1870,7 +1870,7 @@
  	public static int sellPrice(int platinum = 0, int gold = 0, int silver = 0, int copper = 0) => (copper + silver * 100 + gold * 100 * 100 + platinum * 100 * 100 * 100) * 5;
  
  	public static int GetRandomVoiceItem()
-@@ -48420,7 +_,7 @@
+@@ -48425,7 +_,7 @@
  		if (shimmerEquivalentType == 560 && Main.slimeRain)
  			return false;
  
@@ -1879,7 +1879,7 @@
  			return makeNPC > 0;
  
  		return true;
-@@ -48588,20 +_,57 @@
+@@ -48609,20 +_,57 @@
  	}
  
  	public WorldItem ToWorldItem() => null;
@@ -1937,7 +1937,7 @@
  		if (Main.tenthAnniversaryWorld) {
  			if (Type == 58) {
  				Type = Main.rand.NextFromList(new short[3] {
-@@ -48651,8 +_,8 @@
+@@ -48672,8 +_,8 @@
  					Type = 1868;
  			}
  		}
@@ -1947,7 +1947,7 @@
  			cachedItemSpawnsByType[Type] += Stack;
  			return 400;
  		}
-@@ -48665,10 +_,20 @@
+@@ -48686,10 +_,20 @@
  		EmergencyStacking.ClearPendingTransfersInvolving(Main.item[num]);
  		Main.item[num] = new WorldItem();
  		WorldItem worldItem = Main.item[num];
@@ -1968,7 +1968,7 @@
  		worldItem.position.X = X + Width / 2 - worldItem.width / 2;
  		worldItem.position.Y = Y + Height / 2 - worldItem.height / 2;
  		worldItem.wet = Collision.WetCollision(worldItem.position, worldItem.width, worldItem.height);
-@@ -48686,6 +_,8 @@
+@@ -48707,6 +_,8 @@
  		if (ItemSlot.Options.HighlightNewItems && worldItem.type >= 0 && !ItemID.Sets.NeverAppearsAsNewInInventory[worldItem.type])
  			worldItem.newAndShiny = true;
  
@@ -1977,7 +1977,7 @@
  		if (Main.netMode == 2 && !noBroadcast)
  			NetMessage.SendData(21, -1, -1, null, num, noGrabDelay.ToInt());
  		else if (Main.netMode == 0)
-@@ -48748,5 +_,24 @@
+@@ -48769,5 +_,24 @@
  		return num;
  	}
  
@@ -2002,12 +2002,12 @@
  	public Item DeepClone() => (Item)MemberwiseClone();
 +	*/
 +	internal Item DeepClone() => Clone();
-@@ -48754,1 +_,3 @@
+@@ -48775,1 +_,3 @@
 +	// TML: Made internal + renamed in Item.TML.cs with more descriptive name (IsNotSameTypePrefixAndStack)
 +	// Many usages replaced with !IsNetStateEquivalent
 -	public bool IsNotTheSameAs(Item compareItem)
 +	internal bool IsNotTheSameAs(Item compareItem)
-@@ -48775,11 +_,19 @@
+@@ -48796,11 +_,19 @@
  		return false;
  	}
  
@@ -2027,10 +2027,12 @@
  	public void ClearNameOverride()
  	{
  		_nameOverride = null;
-@@ -48799,6 +_,10 @@
+@@ -48820,8 +_,12 @@
  		dye = 0;
  		shoot = 0;
  		mountType = -1;
+ 		useStyle = 0;
+ 		holdStyle = 0;
 +		active = false;
 +
 +		ModItem = null;
@@ -2038,7 +2040,7 @@
  	}
  
  	public void OnPurchase(Item item)
-@@ -48820,8 +_,8 @@
+@@ -48843,8 +_,8 @@
  	public void Serialize(BinaryWriter writer, ItemSerializationContext context)
  	{
  		if (context == ItemSerializationContext.SavingAndLoading) {
@@ -2049,7 +2051,7 @@
 +			ItemIO.WriteByteVanillaPrefix(this, writer);
  		}
  	}
-@@ -48834,7 +_,7 @@
+@@ -48857,7 +_,7 @@
  			Prefix(reader.ReadByte());
  		}
  
@@ -2058,7 +2060,7 @@
  			TurnToAir();
  	}
  
-@@ -48846,9 +_,19 @@
+@@ -48869,9 +_,19 @@
  		}
  	}
  
@@ -2078,7 +2080,7 @@
  			bool flag = favorited;
  			int num = stack;
  			int num2 = type;
-@@ -48857,6 +_,16 @@
+@@ -48880,6 +_,16 @@
  			Prefix(prefixWeWant);
  			stack = num;
  			favorited = flag;

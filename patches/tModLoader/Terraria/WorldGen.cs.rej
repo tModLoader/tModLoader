@@ -34,6 +34,17 @@
  		CaptureInterface.ResetFocus();
  		Main.ActivePlayerFileData.StopPlayTimer();
  		Player.SavePlayer(Main.ActivePlayerFileData);
+@@ -59271,7 +_,10 @@
+ 							case 571:
+ 								CheckBamboo(i, j);
+ 								break;
++							/*
+ 							case 4:
++							*/
++							case int _ when TileID.Sets.Torch[num]:
+ 								CheckTorch(i, j);
+ 								break;
+ 							case 442:
 @@ -63276,7 +_,7 @@
  								if (!noTileActions && tile.active() && TileID.Sets.Falling[num])
  									SpawnFallingBlockProjectile(i, j, tile, tile2, tile3, num);
