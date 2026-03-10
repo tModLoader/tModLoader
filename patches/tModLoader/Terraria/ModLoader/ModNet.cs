@@ -245,10 +245,10 @@ public static class ModNet
 		if (clientSideMods.Any())
 			Logging.tML.Debug($"Client Side mods: " + string.Join(", ", clientSideMods.Select(x => $"{x.Name} ({x.DisplayNameClean})")));
 
-		var toDisableCache = clientMods.Where(m => m.Side == ModSide.Both).Select(m => m.Name).Except(SyncModHeaders.Select(h => h.name)).ToHashSet();
-		HashSet<string> toDisable = [.. toDisableCache];
-		foreach (var name in toDisableCache) {
-			ModLoader.CollectModAndDependents(modFiles, name, toDisable);
+		var missingSyncMods = clientMods.Where(m => m.Side == ModSide.Both).Select(m => m.Name).Except(SyncModHeaders.Select(h => h.name));
+		HashSet<string> toDisable = [];
+		foreach (var name in missingSyncMods) {
+			ModLoader.CollectEnabledDependents(modFiles, name, toDisable);
 		}
 		foreach (var name in toDisable) {
 			needsReload = true;
