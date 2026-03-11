@@ -1760,7 +1760,7 @@
  		if (hairDye != 0)
  			hairDye = GameShaders.Hair.GetShaderIdFromItemId(type);
  
-@@ -47910,8 +_,10 @@
+@@ -47910,7 +_,9 @@
  		if (type >= 1803 && type <= 1807)
  			SetDefaults(1533 + type - 1803);
  
@@ -1768,10 +1768,9 @@
 +
  		RebuildTooltip();
 -		if (type > 0 && type < ItemID.Count && ItemID.Sets.Deprecated[type])
-+		if (type > 0 && ItemID.Sets.Deprecated[type]) {
++		if (type > 0 && ItemID.Sets.Deprecated[type])
  			TurnToAir();
  	}
- 
 @@ -47918,5 +_,7 @@
  	public void OnCreated(ItemCreationContext context)
  	{

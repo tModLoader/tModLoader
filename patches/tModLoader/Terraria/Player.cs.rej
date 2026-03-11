@@ -310,6 +310,27 @@
  			if (oldAdjTile[l] != adjTile[l]) {
  				flag = true;
  				break;
+@@ -29591,3 +_,20 @@
+ 					}
+ 				}
++			}
++		}
++	}
+ 
++	private void ApplyVanillaHurtEffectModifiers(ref HurtModifiers modifiers)
++	{
++		{
++			modifiers.FinalDamage *= Math.Max(1 - endurance, 0);
++			if (setSolar && solarShields > 0)
++				modifiers.FinalDamage *= 0.8f;
++
++			if (beetleDefense && beetleOrbs > 0)
++				modifiers.FinalDamage *= 1 - 0.15f * beetleOrbs;
++
++			if (defendedByPaladin && whoAmI == Main.myPlayer && TeammateHasPalidinShieldAndCanTakeDamage())
++				modifiers.FinalDamage *= 0.75f;
++		}
++	}
 @@ -29626,6 +_,8 @@
  						AddBuff(95 + beetleOrbs - 1, 5, quiet: false);
  
@@ -319,6 +340,27 @@
  						num2 = 1.0;
 +					*/
  				}
+@@ -29666,7 +_,20 @@
+ 							}
+ 						}
+ 					}
++					/*
+ 					else {
++					*/
++				}
++			}
++		}
++	}
++
++	private bool TeammateHasPalidinShieldAndCanTakeDamage()
++	{
++		{
++			{
++				{
++					{
+ 						bool flag4 = false;
+ 						for (int n = 0; n < 255; n++) {
+ 							if (n != Main.myPlayer && Main.player[n].active && !Main.player[n].dead && !Main.player[n].immune && Main.player[n].hasPaladinShield && Main.player[n].team == team && (float)Main.player[n].statLife > (float)Main.player[n].statLifeMax2 * 0.25f) {
 @@ -29821,6 +_,7 @@
  				}
  
@@ -475,6 +517,17 @@
  			int i = num / 16;
  			int j = num2 / 16;
  			if (!WorldGen.SolidTile(i, j)) {
+@@ -36528,7 +_,9 @@
+ 		else if (sItem.type == 849 && sItem.stack > 0 && WorldGen.PlaceActuator(num, num2)) {
+ 			ApplyItemTime(sItem);
+ 			NetMessage.SendData(17, -1, -1, null, 8, tileTargetX, tileTargetY);
++			if (ItemLoader.ConsumeItem(sItem, this))
+-			sItem.stack--;
++				sItem.stack--;
++
+ 			if (sItem.stack <= 0)
+ 				sItem.SetDefaults();
+ 		}
 @@ -39456,7 +_,7 @@
  			}
  			else if (sItem.type == 4262) {
@@ -493,6 +546,106 @@
  				itemLocation.Y = MountedCenter.Y - (float)heldItemFrame.Height * 0.5f;
  			}
  
+@@ -40306,6 +_,11 @@
+ 		if (sItem.type == 3006)
+ 			flag2 = true;
+ 
++		if (sItem.type != ItemID.MedusaHead /*3269*/ && !CheckMana(sItem, pay:!flag2))
++			canUse = false;
++
++		return canUse; // TML: The below code was moved to CheckMana and GetManaCost in Player.TML.
++
+ 		if (sItem.type != 3269 && (!spaceGun || (sItem.type != 127 && sItem.type != 4347 && sItem.type != 4348))) {
+ 			if (statMana >= num) {
+ 				if (!flag2)
+@@ -41050,6 +_,7 @@
+ 		else {
+ 			Damage += item.damage;
+ 		}
++		*/
+ 
+ 		if ((sItem.useAmmo == AmmoID.Arrow || sItem.useAmmo == AmmoID.Stake) && archery) {
+ 			if (speed < 20f) {
+@@ -41058,5 +_,8 @@
+ 					speed = 20f;
+ 			}
+ 
++			//TML: Archery potion damage buff moved into arrowDamage stat modifier
++			/*
+ 			Damage = (int)((double)Damage * 1.1);
++			*/
+ 		}
+@@ -41775,30 +_,30 @@
+ 			if (i < armor.Length)
+-				player.armor[i] = armor[i].Clone();
++				armor[i].CopyNetStateTo(player.armor[i]);
+ 
+ 			if (i < dye.Length)
+-				player.dye[i] = dye[i].Clone();
++				dye[i].CopyNetStateTo(player.dye[i]);
+ 
+ 			if (i < miscEquips.Length)
+-				player.miscEquips[i] = miscEquips[i].Clone();
++				miscEquips[i].CopyNetStateTo(player.miscEquips[i]);
+ 
+ 			if (i < miscDyes.Length)
+-				player.miscDyes[i] = miscDyes[i].Clone();
++				miscDyes[i].CopyNetStateTo(player.miscDyes[i]);
+ 
+ 			if (i < bank.item.Length)
+-				player.bank.item[i] = bank.item[i].Clone();
++				bank.item[i].CopyNetStateTo(player.bank.item[i]);
+ 
+ 			if (i < bank2.item.Length)
+-				player.bank2.item[i] = bank2.item[i].Clone();
++				bank2.item[i].CopyNetStateTo(player.bank2.item[i]);
+ 
+ 			if (i < bank3.item.Length)
+-				player.bank3.item[i] = bank3.item[i].Clone();
++				bank3.item[i].CopyNetStateTo(player.bank3.item[i]);
+ 
+ 			if (i < bank4.item.Length)
+-				player.bank4.item[i] = bank4.item[i].Clone();
++				bank4.item[i].CopyNetStateTo(player.bank4.item[i]);
+ 		}
+ 
+ 		CloneLoadouts(player);
+-		player.trashItem = trashItem.Clone();
++		trashItem.CopyNetStateTo(player.trashItem);
+ 		for (int j = 0; j < maxBuffs; j++) {
+ 			player.buffType[j] = buffType[j];
+ 			player.buffTime[j] = buffTime[j];
+@@ -41814,26 +_,26 @@
+ 		Item[] array = armor;
+ 		Item[] array2 = clonePlayer.armor;
+ 		for (int i = 0; i < array.Length; i++) {
+-			array2[i] = array[i].Clone();
++			array[i].CopyNetStateTo(array2[i]);
+ 		}
+ 
+ 		array = dye;
+ 		array2 = clonePlayer.dye;
+ 		for (int j = 0; j < array.Length; j++) {
+-			array2[j] = array[j].Clone();
++			array[j].CopyNetStateTo(array2[j]);
+ 		}
+ 
+ 		for (int k = 0; k < Loadouts.Length; k++) {
+ 			array = Loadouts[k].Armor;
+ 			array2 = clonePlayer.Loadouts[k].Armor;
+ 			for (int l = 0; l < array.Length; l++) {
+-				array2[l] = array[l].Clone();
++				array[l].CopyNetStateTo(array2[l]);
+ 			}
+ 
+ 			array = Loadouts[k].Dye;
+ 			array2 = clonePlayer.Loadouts[k].Dye;
+ 			for (int m = 0; m < array.Length; m++) {
+-				array2[m] = array[m].Clone();
++				array[m].CopyNetStateTo(array2[m]);
+ 			}
+ 		}
+ 	}
 @@ -43304,6 +_,9 @@
  			if ((settings.avoidWalls && tileSafely.wall > 0) || (settings.avoidAnyLiquid && Collision.WetCollision(vector, num4, height)) || (settings.avoidLava && Collision.LavaCollision(vector, num4, height)) || (settings.avoidHurtTiles && Collision.AnyHurtingTiles(vector, num4, height)) || Collision.SolidCollision(vector, num4, height) || num6 >= settings.maximumFallDistanceFromOrignalPoint - 1)
  				continue;

@@ -165,6 +165,15 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - DrawColorCodedStringWithShadow methods no longer return Vector2 string size. Is this because of some reason? All patches in ChatManager need to be revisited.
 - Tooltip methods, like MouseText_DrawItemTooltip_GetLinesInfo, seemed to have changed a lot. Revisit patches.
 - Paladin shield patches might have been mixed up. Double Check.
+- Missing Actuator/849 ConsumeItem patch. Is this a vanilla bug or is the stack now consumed elsewhere?
+- New GetItemManaUsageDetails and ItemCheck_PayMana_X methods split mana costs into multiple methods. Should be able to remove a lot of Player.TML.cs patches and use them directly.
+- Test TryDroppingSingleItem with stacks (hardcore death). Modded data should be preserved with Item.NewItem overload taking Item instance, but not sure about how that handled stack in the past.
+- Vanilla now uses Player.clientCloneItem() instead of Item.Clone(). I think we can just use that instead of swapping them for CopyNetStateTo and adjust `clientCloneItem` with `NetStateVersion`, but this may need more testing.
+- Recipe Changes:
+  - anyX (anyWood, anySand, etc) all removed. We should no longer need to maintain those old recipe group approaches.
+  - useX (useWood, ext) also removed. Same.
+  - Need needTorchGodsFavor condition
+  - needEverythingSeed seems to be replaced by needMechdusa
 
 # New Fields that might need more documentation
 

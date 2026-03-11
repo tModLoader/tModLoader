@@ -1,0 +1,82 @@
+@@ -58,7 +_,7 @@
+ 
+ 	public void RequireGroup(int id)
+ 	{
+-		for (int i = 0; i < maxRequirements; i++) {
++		for (int i = 0; i < acceptedGroups.Count; i++) {
+ 			if (acceptedGroups[i] == -1) {
+ 				acceptedGroups[i] = id;
+ 				break;
+@@ -85,7 +_,7 @@
+ 
+ 	public bool AcceptsGroup(int groupId)
+ 	{
+-		for (int i = 0; i < maxRequirements; i++) {
++		for (int i = 0; i < acceptedGroups.Count; i++) {
+ 			int num = acceptedGroups[i];
+ 			if (num == -1)
+ 				break;
+@@ -99,14 +_,10 @@
+ 
+ 	public bool AcceptedByItemGroups(int invType, int reqType)
+ 	{
+-		for (int i = 0; i < maxRequirements; i++) {
+-			int num = acceptedGroups[i];
+-			if (num == -1)
+-				break;
+-
+-			if (RecipeGroup.recipeGroups[num].ValidItems.Contains(invType) && RecipeGroup.recipeGroups[num].ValidItems.Contains(reqType))
++		foreach (int num in acceptedGroups) {
++			if (RecipeGroup.recipeGroups[num].ContainsItem(invType) && RecipeGroup.recipeGroups[num].ContainsItem(reqType))
+ 				return true;
+ 		}
+ 
+ 		return false;
+ 	}
+@@ -398,7 +_,7 @@
+ 
+ 	public static bool CollectedEnoughItemsToCraftRecipeOld(Recipe tempRec)
+ 	{
+-		for (int i = 0; i < maxRequirements; i++) {
++		for (int i = 0; i < tempRec.requiredItem.Count; i++) {
+ 			Item item = tempRec.requiredItem[i];
+ 			if (item.type == 0)
+ 				break;
+@@ -441,7 +_,7 @@
+ 
+ 	private static bool PlayerMeetsEnvironmentConditions(Player player, Recipe tempRec)
+ 	{
+-		bool num = !tempRec.needWater || player.adjWater || player.adjTile[172];
++		bool num = !tempRec.needWater || player.adjWater /*|| player.adjTile[172]*/;
+ 		bool flag = !tempRec.needHoney || tempRec.needHoney == player.adjHoney;
+ 		bool flag2 = !tempRec.needLava || tempRec.needLava == player.adjLava;
+ 		bool flag3 = !tempRec.needSnowBiome || player.ZoneSnow;
+@@ -452,7 +_,7 @@
+ 
+ 	private static bool PlayerMeetsTileRequirements(Player player, Recipe tempRec)
+ 	{
+-		for (int i = 0; i < maxRequirements && tempRec.requiredTile[i] != -1; i++) {
++		for (int i = 0; i < tempRec.requiredTile.Count && tempRec.requiredTile[i] != -1; i++) {
+ 			if (!player.adjTile[tempRec.requiredTile[i]])
+ 				return false;
+ 		}
+@@ -628,4 +_,5 @@
+ 
++		/*
+ 		if (Main.remixWorld && Main.getGoodWorld) {
+ 			ItemID.Sets.IsAMaterial[544] = true;
+ 			ItemID.Sets.IsAMaterial[556] = true;
+@@ -636,6 +_,7 @@
+ 			ItemID.Sets.IsAMaterial[556] = false;
+ 			ItemID.Sets.IsAMaterial[557] = false;
+ 		}
++		*/
+ 	}
+ 
+ 	public static void SetupRecipes()
+@@ -14542,4 +_,5 @@
+ 	{
+ 		if (flag)
+ 			RequireGroup(groupId);
++		flag = false; // TML: wasn't being cleared
+ 	}

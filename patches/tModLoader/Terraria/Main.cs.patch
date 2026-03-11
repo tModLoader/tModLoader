@@ -2000,7 +2000,19 @@
  						num2 = 11;
  						break;
  					case 113:
-@@ -10527,6 +_,9 @@
+@@ -10516,17 +_,21 @@
+ 					case 264:
+ 						num2 = 6;
+ 						break;
++					/*
+ 					case 381:
+ 					case 382:
+ 					case 383:
+ 					case 385:
+ 					case 386:
+ 					case 388:
+ 					case 389:
+ 					case 390:
  					case 391:
  					case 395:
  					case 520:
@@ -2224,7 +2236,7 @@
  						num3 = 8;
  						break;
  					case 245:
-@@ -10977,6 +_,7 @@
+@@ -10977,20 +_,24 @@
  					case 264:
  						num3 = 6;
  						break;
@@ -2232,6 +2244,23 @@
  					case 381:
  					case 382:
  					case 383:
+ 					case 384:
+ 					case 385:
+ 					case 386:
+ 					case 387:
+ 					case 388:
+ 					case 389:
+ 					case 390:
+ 					case 391:
+ 					case 392:
+ 					case 395:
+ 					case 520:
++					*/
++					// No 387 tesla turret, handled via NoInvasionMusic below
++					case int _ when NPCID.Sets.BelongsToInvasionMartianMadness[npc[j].type] && NPCID.Sets.InvasionSlotCount[npc[j].type] > 0:
+ 						num3 = 9;
+ 						break;
+ 					case 398:
 @@ -11037,6 +_,9 @@
  				if (NPCID.Sets.BelongsToInvasionOldOnesArmy[npc[j].type])
  					num3 = 12;
@@ -2286,7 +2315,7 @@
 +				else {
 +					newMusic = MenuLoader.CurrentMenu.Music;
 +				}
-+				if (_isAsyncLoadComplete && newMusic == 50 && !audioSystem.IsTrackPlaying(50))
++				if (_isAsyncLoadComplete && newMusic == 50 && !audioSystem.IsTrackPlaying(50)) {
 +					newMusic = 51;
  					if (musicNoCrossFade[newMusic])
  						musicFade[newMusic] = 1f;
@@ -2796,7 +2825,7 @@
 +		/*
  		if (chatText != "" && !ChatManager.DebugCommands.Process((byte)myPlayer, chatText)) {
 +		*/
-+		if (chatText != "" && !(ChatManager.DebugCommands.Process((byte)myPlayer, chatText) || chatText.Length > 0 && chatText[0] == '/' && CommandLoader.HandleCommand(chatText, new ChatCommandCaller())) {
++		if (chatText != "" && !(ChatManager.DebugCommands.Process((byte)myPlayer, chatText) || chatText.Length > 0 && chatText[0] == '/' && CommandLoader.HandleCommand(chatText, new ChatCommandCaller()))) {
  			ChatMessage message = ChatManager.Commands.CreateOutgoingMessage(chatText);
  			if (netMode == 1)
  				ChatHelper.SendChatMessageFromClient(message);
@@ -2833,58 +2862,6 @@
  			}
  
  			netRelease = false;
-@@ -16311,20 +_,50 @@
- 
- 					if (hoverItem.expert || rare == -12)
- 						black = new Microsoft.Xna.Framework.Color((byte)((float)DiscoR * num4), (byte)((float)DiscoG * num4), (byte)((float)DiscoB * num4), a);
-+
-+					// Handle new master mode field.
-+					if (hoverItem.master || rare == -13)
-+						black = new Microsoft.Xna.Framework.Color((byte)(255f * num4), (byte)(masterColor * 200f * num4), 0, a);
- 				}
- 				else if (array2[k]) {
- 					black = ((!array3[k]) ? new Microsoft.Xna.Framework.Color((byte)(120f * num4), (byte)(190f * num4), (byte)(120f * num4), a) : new Microsoft.Xna.Framework.Color((byte)(190f * num4), (byte)(120f * num4), (byte)(120f * num4), a));
- 				}
-+				/*
- 				else if (k == numLines - 1) {
-+				*/
-+				else if (drawableLines[k].Mod == "Terraria" && drawableLines[k].Name == "Price") {
- 					black = color;
- 				}
- 
-+				/*
- 				if (k == researchLine)
-+				*/
-+				if (drawableLines[k].Mod == "Terraria" && drawableLines[k].Name == "JourneyResearch")
- 					black = Colors.JourneyMode;
- 
-+				/*
- 				ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.MouseText.Value, array[k], new Vector2(X, Y + num16), black, 0f, Vector2.Zero, Vector2.One);
-+				*/
-+				drawableLines[k].Color = black;
-+				Color realLineColor = black;
-+
-+				if (overrideColor[k].HasValue) {
-+					// TODO: Some way for mods to bypass mouseTextColor pulsing for a TooltipLine. Apply to UnloadedPrefix once implemented.
-+					realLineColor = overrideColor[k].Value * num4;
-+					drawableLines[k].OverrideColor = realLineColor;
-+				}
-+
-+				if (!ItemLoader.PreDrawTooltipLine(HoverItem, drawableLines[k], ref num12) || !globalCanDraw)
-+					goto PostDraw;
-+
-+				ChatManager.DrawColorCodedStringWithShadow(spriteBatch, drawableLines[k].Font, drawableLines[k].Text, new Vector2(drawableLines[k].X, drawableLines[k].Y), realLineColor, drawableLines[k].Rotation, drawableLines[k].Origin, drawableLines[k].BaseScale, drawableLines[k].MaxWidth, drawableLines[k].Spread);
- 			}
- 
-+			PostDraw:
-+			ItemLoader.PostDrawTooltipLine(HoverItem, drawableLines[k]);
-+
--			num16 += (int)(FontAssets.MouseText.Value.MeasureString(array[k]).Y + (float)num12);
-+			num16 += (int)(FontAssets.MouseText.Value.MeasureString(drawableLines[k].Text).Y + (float)num12);
- 		}
-+
-+		ItemLoader.PostDrawTooltip(HoverItem, drawableLines.AsReadOnly());
- 	}
 @@ -16378,6 +_,8 @@
  		if (tileFrameCounter[493] < 0)
  			tileFrameCounter[493] += 120;
@@ -3031,6 +3008,41 @@
 +
  					if (m == 4)
  						color = new Microsoft.Xna.Framework.Color(num11, num11, num11, num11);
+@@ -17328,10 +_,33 @@
+ 				Microsoft.Xna.Framework.Color baseColor = mouseTextTooltipLine_Color[l];
++				/*
+ 				if (l == researchLine)
++				*/
++				if (drawableLines[l].Mod == "Terraria" && drawableLines[k].Name == "JourneyResearch")
+ 					baseColor = Colors.JourneyMode;
+ 
++				/*
+ 				ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.MouseText.Value, mouseTextTooltipLine_Text[l], new Vector2(X, Y + num7), baseColor, 0f, Vector2.Zero, Vector2.One);
++				*/
++				drawableLines[l].Color = black;
++				Color realLineColor = black;
++
++				if (overrideColor[l].HasValue) {
++					// TODO: Some way for mods to bypass mouseTextColor pulsing for a TooltipLine. Apply to UnloadedPrefix once implemented.
++					realLineColor = overrideColor[l].Value * num2;
++					drawableLines[l].OverrideColor = realLineColor;
++				}
++
++				if (!ItemLoader.PreDrawTooltipLine(HoverItem, drawableLines[l], ref num12) || !globalCanDraw)
++					goto PostDraw;
++
++				ChatManager.DrawColorCodedStringWithShadow(spriteBatch, drawableLines[l].Font, drawableLines[l].Text, new Vector2(drawableLines[l].X, drawableLines[l].Y), realLineColor, drawableLines[l].Rotation, drawableLines[l].Origin, drawableLines[l].BaseScale, drawableLines[l].MaxWidth, drawableLines[l].Spread);
+ 			}
+ 
++			PostDraw:
++			ItemLoader.PostDrawTooltipLine(HoverItem, drawableLines[l]);
++
+-			num7 += (int)(FontAssets.MouseText.Value.MeasureString(mouseTextTooltipLine_Text[l]).Y + (float)num3);
++			num16 += (int)(FontAssets.MouseText.Value.MeasureString(drawableLines[l].Text).Y + (float)num3);
+ 		}
++
++		ItemLoader.PostDrawTooltip(HoverItem, drawableLines.AsReadOnly());
+ 	}
 @@ -17346,4 +_,5 @@
  		if (hoverItem.shopSpecialCurrency != -1) {
 +			tooltipNames[numLines] = "SpecialPrice";
@@ -3050,6 +3062,12 @@
 +			tooltipNames[numLines] = "Price";
  			numLines++;
  		}
+@@ -17428,3 +_,4 @@
+ 		Microsoft.Xna.Framework.Color result = Microsoft.Xna.Framework.Color.White;
+-		if (rare == -13)
++		// Handle new master mode field.
++		if (hoverItem.master || rare == -13)
+ 			result = new Microsoft.Xna.Framework.Color(255, (byte)(masterColor * 200f), 0);
 @@ -17483,15 +_,21 @@
 -	public static void MouseText_DrawItemTooltip_GetLinesInfo(Item item, ref int yoyoLogo, ref int researchLine, float oldKB, ref int numLines, string[] toolTipLine, Microsoft.Xna.Framework.Color[] lineColors)
 +	public static void MouseText_DrawItemTooltip_GetLinesInfo(Item item, ref int yoyoLogo, ref int researchLine, float oldKB, ref int numLines, string[] toolTipLine, Microsoft.Xna.Framework.Color[] lineColors, string[] toolTipNames, out int prefixlineIndex)
@@ -4435,46 +4453,6 @@
  		if (NPC.downedGolemBoss)
  			num *= 200;
  		else if (NPC.downedPlantBoss)
-@@ -34533,17 +_,39 @@
- 
- 	public static void CraftItem(Recipe r)
- 	{
-+		// #OnStackHook
-+		/*
- 		int stack = mouseItem.stack;
- 		mouseItem = r.createItem.Clone();
- 		mouseItem.stack += stack;
- 		mouseItem.OnCreated(new RecipeItemCreationContext(r));
- 		if (stack <= 0)
- 			mouseItem.Prefix(-1);
-+		*/
-+
-+		if (mouseItem.stack > 0 && !ItemLoader.CanStack(mouseItem, r.createItem))
-+			return;
-+
-+		Item crafted = r.createItem.Clone();
-+		crafted.Prefix(-1);
-+		r.Create();
-+		RecipeLoader.OnCraft(crafted, r, mouseItem);
-+
-+		if (mouseItem.stack > 0) {
-+			ItemLoader.StackItems(mouseItem, crafted, out _);
-+		}
-+		else {
-+			mouseItem = crafted;
-+		}
- 
- 		mouseItem.position.X = player[myPlayer].position.X + (float)(player[myPlayer].width / 2) - (float)(mouseItem.width / 2);
- 		mouseItem.position.Y = player[myPlayer].position.Y + (float)(player[myPlayer].height / 2) - (float)(mouseItem.height / 2);
- 		PopupText.NewText(PopupTextContext.ItemCraft, mouseItem, r.createItem.stack);
-+
-+		// Moved above
-+		/*
- 		r.Create();
-+		*/
- 		if (mouseItem.type > 0 || r.createItem.type > 0)
- 			SoundEngine.PlaySound(7);
- 	}
 @@ -34561,10 +_,19 @@
  	{
  		SoundEngine.PlaySound(12);
@@ -4723,7 +4701,7 @@
  					string text2 = "";
  					long num56 = 0L;
  					long num57 = 0L;
-@@ -35945,3 +_,8 @@
+@@ -35945,5 +_,11 @@
  						mouseReforge = true;
  						player[myPlayer].mouseInterface = true;
 +
@@ -4732,6 +4710,9 @@
 +						*/
 +						if (mouseLeftRelease && mouseLeft && player[myPlayer].CanAfford(num55) && ItemLoader.CanReforge(reforgeItem)) {
 +							player[myPlayer].BuyItem(num55);
+ 							ReforgeItemInReforgeSlot();
++						}
+ 					}
 @@ -35988,3 +_,7 @@
  		CreativeMenu.Draw(spriteBatch);
  		bool flag9 = CreativeMenu.Enabled && !CreativeMenu.Blocked;
@@ -6325,19 +6306,6 @@
  				}
  			}
  		}
-@@ -51628,8 +_,12 @@
- 		}
- 
- 		Vector2 value = screenPosition;
-+		screenPosition.X = Main.player[myPlayer].position.X + (float)Main.player[myPlayer].width * 0.5f - screenWidth / 2 * vector2.X + cameraX;
-+		screenPosition.Y = Main.player[myPlayer].position.Y + (float)Main.player[myPlayer].height - (float)num - screenHeight / 2 * vector2.Y + Main.player[myPlayer].gfxOffY;
-+		/* Fix #603. We allow odd screen resolutions, which potentially adds 0.5f here, which in turn draws the screen 1 pixel ahead due to how the game draws at whole pixel coordinates (pixel snapping).
- 		screenPosition.X = Main.player[myPlayer].position.X + (float)Main.player[myPlayer].width * 0.5f - (float)screenWidth * 0.5f * vector2.X + cameraX;
- 		screenPosition.Y = Main.player[myPlayer].position.Y + (float)Main.player[myPlayer].height - (float)num - (float)screenHeight * 0.5f * vector2.Y + Main.player[myPlayer].gfxOffY;
-+		*/
- 		Vector2 vector3 = Vector2.Zero;
- 		float num2 = 0f;
- 		float num3 = 0f;
 @@ -51756,11 +_,14 @@
  				DrawSurfaceBG_DrawBackMountainsLayer(24);
  		}
@@ -6407,64 +6375,6 @@
  			_isDrawingOrUpdating = false;
  		}
  	}
-@@ -53548,42 +_,45 @@
- 						StopRain();
- 					}
- 					else {
--						rainTime -= dayRate;
-+						rainTime -= desiredWorldEventsUpdateRate;
--						if (dayRate > 0) {
-+						if (desiredWorldEventsUpdateRate > 0) {
--							int num = 86400 / dayRate / 24;
-+							double num = 86400 / desiredWorldEventsUpdateRate / 24;
- 							if (rainTime <= 0)
- 								StopRain();
--							else if (rand.Next(num * 2) == 0)
-+							else if (rand.NextDouble() <= 1 / (num * 2))
- 								ChangeRain();
- 						}
- 					}
- 				}
- 			}
- 			else if (!slimeRain && !LanternNight.LanternsUp && !LanternNight.NextNightIsLanternNight) {
-+				/*
- 				int num2 = 86400;
- 				num2 /= ((dayRate == 0) ? 1 : dayRate);
-+				*/
-+				double num2 = 86400 / desiredWorldEventsUpdateRate;
--				if (!CreativePowerManager.Instance.GetPower<CreativePowers.FreezeRainPower>().Enabled && dayRate != 0) {
-+				if (!CreativePowerManager.Instance.GetPower<CreativePowers.FreezeRainPower>().Enabled && desiredWorldEventsUpdateRate != 0) {
--					if (rand.Next((int)((double)num2 * 5.75)) == 0)
-+					if (rand.NextDouble() <= 1 / (num2 * 5.75))
- 						StartRain();
--					else if (cloudBGActive >= 1f && rand.Next((int)((double)num2 * 4.25)) == 0)
-+					else if (cloudBGActive >= 1f && rand.NextDouble() <= 1 / (num2 * 4.25))
- 						StartRain();
--					else if (ladyBugRainBoost > 0 && rand.Next(num2) == 0)
-+					else if (ladyBugRainBoost > 0 && rand.NextDouble() <= 1 / num2)
- 						StartRain();
- 				}
- 
--				if (!raining && !NPC.BusyWithAnyInvasionOfSorts() && dayTime && time < 27000.0 && dayRate > 0) {
-+				if (!raining && !NPC.BusyWithAnyInvasionOfSorts() && dayTime && time < 27000.0 && desiredWorldEventsUpdateRate > 0) {
--					int num3 = (int)(450000.00000000006 / (double)dayRate);
-+					double num3 = 450000.00000000006 / desiredWorldEventsUpdateRate;
- 					if (!NPC.downedSlimeKing)
- 						num3 /= 2;
- 
- 					if (hardMode)
--						num3 = (int)((double)num3 * 1.5);
-+						num3 = num3 * 1.5;
- 
- 					bool flag = AnyPlayerReadyToFightKingSlime();
- 					if (!flag)
- 						num3 *= 5;
- 
--					if (num3 > 0 && (flag || expertMode) && rand.Next(num3) == 0)
-+					if (num3 > 0 && (flag || expertMode) && rand.NextDouble() <= 1 / num3)
- 						StartSlimeRain();
- 				}
- 			}
 @@ -53568,9 +_,12 @@
  			}
  		}
@@ -6478,13 +6388,12 @@
  
  		float num5 = 0.0005f * (float)num4;
  		if (gameMenu)
-@@ -53640,14 +_,21 @@
- 
+@@ -53641,13 +_,20 @@
  		float val = (float)screenWidth / (float)MaxWorldViewSize.X;
  		float val2 = (float)screenHeight / (float)MaxWorldViewSize.Y;
 +		if (ModLoader.ModLoader.removeForcedMinimumZoom) {
 +			val = screenWidth / 8192f;
-+			val2 = screenHeight / 8192f
++			val2 = screenHeight / 8192f;
 +		}
  		ForcedMinimumZoom = Math.Max(Math.Max(1f, val), val2);
  		if (SupportWideScreen)
@@ -6816,6 +6725,70 @@
 +				slimeRainTime += desiredWorldEventsUpdateRate;
  				if (slimeRainTime > 0.0)
  					slimeRainTime = 0.0;
+ 			}
+@@ -56098,14 +_,14 @@
+ 						StopRain();
+ 					}
+ 					else {
+-						rainTime -= dayRate;
++						rainTime -= desiredWorldEventsUpdateRate;
+-						if (dayRate > 0) {
++						if (desiredWorldEventsUpdateRate > 0) {
+-							int num = 86400 / dayRate / 24;
++							double num = 86400 / desiredWorldEventsUpdateRate / 24;
+ 							if (rainTime <= 0)
+ 								StopRain();
+-							else if (rand.Next(num * 2) == 0)
++							else if (rand.NextDouble() <= 1 / (num * 2))
+ 								ChangeRain();
+ 						}
+ 					}
+ 				}
+ 			}
+@@ -56112,3 +_,5 @@
+ 			else if (!slimeRain && !LanternNight.LanternsUp && !LanternNight.NextNightIsLanternNight) {
++				/*
+ 				int num2 = 86400;
+ 				num2 /= ((dayRate == 0) ? 1 : dayRate);
++				*/
+@@ -56129,9 +_,10 @@
++				double num2 = 86400 / desiredWorldEventsUpdateRate;
+-				if (flag) {
++				if (!CreativePowerManager.Instance.GetPower<CreativePowers.FreezeRainPower>().Enabled && desiredWorldEventsUpdateRate != 0) {
+-					if (rand.Next((int)((double)num2 * 5.75)) == 0)
++					if (rand.NextDouble() <= 1 / (num2 * 5.75))
+ 						StartRain();
+-					else if (cloudBGActive >= 1f && rand.Next((int)((double)num2 * 4.25)) == 0)
++					else if (cloudBGActive >= 1f && rand.NextDouble() <= 1 / (num2 * 4.25))
+ 						StartRain();
+-					else if (ladyBugRainBoost > 0 && rand.Next(num2) == 0)
++					else if (ladyBugRainBoost > 0 && rand.NextDouble() <= 1 / num2)
+ 						StartRain();
+ 				}
+ 
+@@ -56138,19 +_,19 @@
+-				if (!raining && !NPC.BusyWithAnyInvasionOfSorts() && dayTime && time < 27000.0 && dayRate > 0) {
++				if (!raining && !NPC.BusyWithAnyInvasionOfSorts() && dayTime && time < 27000.0 && desiredWorldEventsUpdateRate > 0) {
+-					int num3 = (int)(450000.00000000006 / (double)dayRate);
++					double num3 = 450000.00000000006 / desiredWorldEventsUpdateRate;
+ 					if (!NPC.downedSlimeKing) {
+ 						num3 /= 2;
+ 						if (WorldGen.Skyblock.lowTiles)
+ 							num3 /= 5;
+ 					}
+ 					else if (hardMode) {
+-						num3 = (int)((double)num3 * 1.5);
++						num3 = num3 * 1.5;
+ 					}
+ 
+ 					bool flag3 = AnyPlayerReadyToFightKingSlime();
+ 					if (!flag3)
+ 						num3 *= 5;
+ 
+-					if (num3 > 0 && (flag3 || expertMode) && rand.Next(num3) == 0)
++					if (num3 > 0 && (flag3 || expertMode) && rand.NextDouble() <= 1 / num3)
+ 						StartSlimeRain();
+ 				}
  			}
 @@ -56211,13 +_,17 @@
  					WorldGen.UnspawnTravelNPC();

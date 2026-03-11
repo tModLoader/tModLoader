@@ -181,6 +181,13 @@
  					if (diff == 1)
  						black = new Microsoft.Xna.Framework.Color((byte)((float)(int)mcColor.R * num4), (byte)((float)(int)mcColor.G * num4), (byte)((float)(int)mcColor.B * num4), a);
  
+@@ -16318,3 +_,6 @@
++				/*
+ 				else if (k == numLines - 1) {
++				*/
++				else if (drawableLines[k].Mod == "Terraria" && drawableLines[k].Name == "Price") {
+ 					black = color;
+ 				}
 @@ -31743,8 +_,12 @@
  			textValue = Language.GetTextValue("StardewTalk.PlayerHasColaAndIsHoldingIt");
  
@@ -337,6 +344,46 @@
  				int num5 = (i + 1) * 26;
  				if (recipe[availableRecipe[num3]].requiredTile[i] == -1) {
  					if (i == 0 && !recipe[availableRecipe[num3]].needWater && !recipe[availableRecipe[num3]].needHoney && !recipe[availableRecipe[num3]].needLava && !recipe[availableRecipe[num3]].needSnowBiome && !recipe[availableRecipe[num3]].needGraveyardBiome)
+@@ -34533,17 +_,39 @@
+ 
+ 	public static void CraftItem(Recipe r)
+ 	{
++		// #OnStackHook
++		/*
+ 		int stack = mouseItem.stack;
+ 		mouseItem = r.createItem.Clone();
+ 		mouseItem.stack += stack;
+ 		mouseItem.OnCreated(new RecipeItemCreationContext(r));
+ 		if (stack <= 0)
+ 			mouseItem.Prefix(-1);
++		*/
++
++		if (mouseItem.stack > 0 && !ItemLoader.CanStack(mouseItem, r.createItem))
++			return;
++
++		Item crafted = r.createItem.Clone();
++		crafted.Prefix(-1);
++		r.Create();
++		RecipeLoader.OnCraft(crafted, r, mouseItem);
++
++		if (mouseItem.stack > 0) {
++			ItemLoader.StackItems(mouseItem, crafted, out _);
++		}
++		else {
++			mouseItem = crafted;
++		}
+ 
+ 		mouseItem.position.X = player[myPlayer].position.X + (float)(player[myPlayer].width / 2) - (float)(mouseItem.width / 2);
+ 		mouseItem.position.Y = player[myPlayer].position.Y + (float)(player[myPlayer].height / 2) - (float)(mouseItem.height / 2);
+ 		PopupText.NewText(PopupTextContext.ItemCraft, mouseItem, r.createItem.stack);
++
++		// Moved above
++		/*
+ 		r.Create();
++		*/
+ 		if (mouseItem.type > 0 || r.createItem.type > 0)
+ 			SoundEngine.PlaySound(7);
+ 	}
 @@ -36525,7 +_,11 @@
  		if (num > 0) {
  			int num3 = 10 + player[myPlayer].cursorItemIconPush;
@@ -486,6 +533,19 @@
  					RenderWalls();
  					sceneWallPos.X = screenPosition.X - (float)offScreenRange;
  					sceneWallPos.Y = screenPosition.Y - (float)offScreenRange;
+@@ -51628,8 +_,12 @@
+ 		}
+ 
+ 		Vector2 value = screenPosition;
++		screenPosition.X = Main.player[myPlayer].position.X + (float)Main.player[myPlayer].width * 0.5f - screenWidth / 2 * vector2.X + cameraX;
++		screenPosition.Y = Main.player[myPlayer].position.Y + (float)Main.player[myPlayer].height - (float)num - screenHeight / 2 * vector2.Y + Main.player[myPlayer].gfxOffY;
++		/* Fix #603. We allow odd screen resolutions, which potentially adds 0.5f here, which in turn draws the screen 1 pixel ahead due to how the game draws at whole pixel coordinates (pixel snapping).
+ 		screenPosition.X = Main.player[myPlayer].position.X + (float)Main.player[myPlayer].width * 0.5f - (float)screenWidth * 0.5f * vector2.X + cameraX;
+ 		screenPosition.Y = Main.player[myPlayer].position.Y + (float)Main.player[myPlayer].height - (float)num - (float)screenHeight * 0.5f * vector2.Y + Main.player[myPlayer].gfxOffY;
++		*/
+ 		Vector2 vector3 = Vector2.Zero;
+ 		float num2 = 0f;
+ 		float num3 = 0f;
 @@ -51709,8 +_,15 @@
  					if (num7 < 0)
  						num7 = 0;
