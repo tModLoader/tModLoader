@@ -1,11 +1,11 @@
 --- src/TerrariaNetCore/ReLogic/Content/AssetRepository.cs
 +++ src/tModLoader/ReLogic/Content/AssetRepository.cs
-@@ -1,64 +_,152 @@
+@@ -1,7 +_,13 @@
  using System;
 +using System.Collections.Concurrent;
  using System.Collections.Generic;
 +using System.Diagnostics;
-+using System.IO;
+ using System.IO;
  using System.Linq;
 +using System.Runtime.CompilerServices;
 +using System.Threading;
@@ -14,6 +14,7 @@
  using ReLogic.Content.Sources;
  
  namespace ReLogic.Content;
+@@ -8,2 +_,17 @@
  
 +/// <summary>
 +/// Async loading has been fully integrated into AssetRepository
@@ -31,6 +32,7 @@
 +///
 +/// </summary>
  public class AssetRepository : IAssetRepository, IDisposable
+@@ -10,17 +_,74 @@
  {
 -	private readonly Dictionary<string, IAsset> _assets = new Dictionary<string, IAsset>();
 -	private IEnumerable<IContentSource> _sources = new IContentSource[0];
@@ -91,8 +93,10 @@
 +	protected readonly Dictionary<string, IAsset> _assets = new Dictionary<string, IAsset>();
 +	protected IContentSource[] _sources { get; private set; }
  	private readonly Dictionary<Type, Action<IAsset, AssetRequestMode>> _typeSpecificReloadActions = new Dictionary<Type, Action<IAsset, AssetRequestMode>>();
+ 	private readonly Dictionary<Type, Func<IAsset, IContentSource, string, Func<Stream>, bool>> _typeSpecificUpdateActions = new Dictionary<Type, Func<IAsset, IContentSource, string, Func<Stream>, bool>>();
 -	private readonly IAsyncAssetLoader _asyncLoader;
 -	private readonly IAssetLoader _loader;
+ 	private AssetChangeWatcher _changeWatcher;
 +	protected readonly AssetReaderCollection _readers;
  	private readonly object _requestLock = new object();
 +	internal readonly ConcurrentQueue<Action> _assetTransferQueue = new();
@@ -108,10 +112,12 @@
  
  	public int LoadedAssets { get; private set; }
  
+@@ -27,1 +_,1 @@
 -	public bool IsAsyncLoadingEnabled => _asyncLoader.IsRunning;
 +	public bool IsAsyncLoadingEnabled => true;
+@@ -36,43 +_,49 @@
  
- 	public FailedToLoadAssetCustomAction AssetLoadFailHandler { get; set; }
+ 	public ContentFileUpdated ContentFileUpdatedHandler { get; set; }
  
 -	public AssetRepository(IAssetLoader syncLoader, IAsyncAssetLoader asyncLoader)
 -	{
@@ -160,6 +166,9 @@
 +			_sources = sources.ToArray();
  			ReloadAssetsIfSourceChanged(mode);
 -		}
+-
+-		if (_changeWatcher != null)
+-			_changeWatcher.UpdateSources(sources);
 -	}
 -
 -	public Asset<T> Request<T>(string assetName, AssetRequestMode mode = AssetRequestMode.ImmediateLoad) where T : class
@@ -243,11 +252,20 @@
  	}
  
  	public void EnableAssetWatcher()
-@@ -99,81 +_,148 @@
+@@ -162,7 +_,7 @@
+ 			if (contentSource == null)
+ 				ForceReloadAsset(item, AssetRequestMode.DoNotLoad);
+ 			else if (item.Source != contentSource)
+-				ForceReloadAsset(item, (item.State != 0) ? mode : AssetRequestMode.DoNotLoad);
++				ForceReloadAsset(item, mode);
+ 		}
+ 	}
+ 
+@@ -171,17 +_,68 @@
  		if (mode == AssetRequestMode.DoNotLoad)
  			return;
  
--		EnsureReloadActionExistsForType<T>();
+-		EnsureTypeSpecificActionsExist<T>();
 -		TotalAssets++;
 -		asset.SetToLoadingState();
 +		var loadTask = LoadAssetWithPotentialAsync(asset, mode);
@@ -323,6 +341,7 @@
 -		}
 -	}
 -
+@@ -188,49 +_,0 @@
 -	private void TryLoadingAsset<T>(Asset<T> asset, AssetRequestMode mode) where T : class
 -	{
 -		IContentSource source = FindSourceForAsset(asset.Name);
@@ -330,17 +349,39 @@
 -			case AssetRequestMode.ImmediateLoad: {
 -				bool flag = true;
 -				IRejectionReason rejectionReason = null;
--				if (!_loader.TryLoad<T>(asset.Name, source, out var resultAsset)) {
--					source.RejectAsset(asset.Name, new ContentRejectionFromFailedLoad_ByAssetExtensionType());
--					TryLoadingAsset(asset, mode);
--					break;
+-				T resultAsset;
+-				try {
+-					if (!_loader.TryLoad<T>(asset.Name, source, out resultAsset)) {
+-						source.RejectAsset(asset.Name, new ContentRejectionFromFailedLoad_ByAssetExtensionType());
+-						TryLoadingAsset(asset, mode);
+-						break;
+-					}
+-				}
+-				catch (Exception ex) {
+-					bool flag2 = false;
+-					if (ex is UnauthorizedAccessException)
+-						flag2 = true;
+-
+-					if (ex is FileNotFoundException)
+-						flag2 = true;
+-
+-					if (ex is DirectoryNotFoundException)
+-						flag2 = true;
+-
+-					if (ex is AssetLoadException)
+-						flag2 = true;
+-
+-					if (flag2)
+-						throw;
+-
+-					throw AssetLoadException.FromAssetException(asset.Name, ex);
 -				}
 -
 -				if (source.ContentValidator != null)
 -					flag = source.ContentValidator.AssetIsValid(resultAsset, asset.Name, out rejectionReason);
 -
 -				if (flag) {
--					asset.SubmitLoadedContent(resultAsset, source);
+-					SubmitLoadedContent(asset, resultAsset, source);
 -					LoadedAssets++;
 -				}
 -				else {
@@ -350,6 +391,7 @@
 -
 -				break;
 -			}
+@@ -237,27 +_,10 @@
 -			case AssetRequestMode.AsyncLoad:
 -				_asyncLoader.Load(asset.Name, source, delegate (bool proper, T content) {
 -					if (!proper) {
@@ -357,13 +399,13 @@
 -						TryLoadingAsset(asset, mode);
 -					}
 -					else {
--						bool flag2 = true;
+-						bool flag3 = true;
 -						IRejectionReason rejectionReason2 = null;
 -						if (source.ContentValidator != null)
--							flag2 = source.ContentValidator.AssetIsValid(content, asset.Name, out rejectionReason2);
+-							flag3 = source.ContentValidator.AssetIsValid(content, asset.Name, out rejectionReason2);
 -
--						if (flag2) {
--							asset.SubmitLoadedContent(content, source);
+-						if (flag3) {
+-							SubmitLoadedContent(asset, content, source);
 -							int loadedAssets = LoadedAssets;
 -							LoadedAssets = loadedAssets + 1;
 -						}
@@ -387,6 +429,7 @@
 +		}
 +	}
 +
+@@ -264,10 +_,70 @@
 +	private void SafelyWaitForLoad<T>(Asset<T> asset, Task loadTask, bool tracked) where T : class
 +	{
 +		if (asset.State == AssetState.Loaded)
@@ -458,15 +501,6 @@
 -			LoadedAssets--;
 -
  		_typeSpecificReloadActions[asset.GetType()](asset, mode);
- 	}
- 
-@@ -162,7 +_,7 @@
- 			if (contentSource == null)
- 				ForceReloadAsset(item, AssetRequestMode.DoNotLoad);
- 			else if (item.Source != contentSource)
--				ForceReloadAsset(item, (item.State != 0) ? mode : AssetRequestMode.DoNotLoad);
-+				ForceReloadAsset(item, mode);
- 		}
  	}
  
 @@ -280,32 +_,38 @@

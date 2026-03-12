@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Localization/LocalizedText.cs
 +++ src/tModLoader/Terraria/Localization/LocalizedText.cs
-@@ -1,15 +_,30 @@
+@@ -3,7 +_,8 @@
 +using System;
  using System.ComponentModel;
  using System.Text.RegularExpressions;
@@ -10,42 +10,25 @@
 -public class LocalizedText
 +public partial class LocalizedText
  {
- 	public static readonly LocalizedText Empty = new LocalizedText("", "");
- 	private static Regex _substitutionRegex = new Regex("{(\\?(?:!)?)?([a-zA-Z][\\w\\.]*)}", RegexOptions.Compiled);
- 	public readonly string Key;
- 
-+	/*
- 	public string Value { get; private set; }
-+	*/
-+	private string _value;
+@@ -16,10 +_,18 @@
 +	/// <summary>
 +	/// Retrieves the text value. This is the actual text the user should see.
 +	/// </summary>
-+	public string Value {
-+		get => _value;
+ 	public string Value {
+ 		get {
+ 			if (_value is VariableText variableText && variableText.TryFormat(Lang.GetGlobalSubstitution, out var formatted))
+ 				return formatted;
+ 
+ 			return _value.ToString();
+ 		}
 +		private set {
 +			_value = value;
 +			_hasPlurals = null;
 +			BoundArgs = null;
 +		}
-+	}
- 
- 	internal LocalizedText(string key, string text)
- 	{
-@@ -36,6 +_,13 @@
- 		});
  	}
  
-+	/// <summary>
-+	/// Checks if the conditions embedded in this LocalizedText are satisfied by the <paramref name="obj"/> argument.
-+	/// For example when used with <see cref="Lang.CreateDialogSubstitutionObject(NPC)"/> as the <paramref name="obj"/> argument, "{?Rain}" at the start of a LocalizedText value will cause false to be returned if it is not raining. "{?!Rain}" would do the opposite. If all conditions are satisfied, true is returned.<br/>
-+	/// The method is typically used indirectly by using <see cref="Lang.CreateDialogFilter(string, object)"/>.
-+	/// </summary>
-+	/// <param name="obj"></param>
-+	/// <returns></returns>
- 	public bool CanFormatWith(object obj)
- 	{
- 		PropertyDescriptorCollection properties = TypeDescriptor.GetProperties(obj);
+ 	public string UnformattedValue => _value.ToString();
 @@ -83,5 +_,12 @@
  		return true;
  	}

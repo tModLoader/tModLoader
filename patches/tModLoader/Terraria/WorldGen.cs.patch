@@ -20,43 +20,6 @@
  {
  	public class SecretSeed
  	{
-@@ -2457,10 +_,23 @@
- 
- 	public static void worldGenCallback(object threadContext)
- 	{
-+		try {
-+			do_worldGenCallBack(threadContext);
-+		}
-+		catch (Exception e) {
-+			Utils.ShowFancyErrorMessage(Language.GetTextValue("tModLoader.WorldGenError") + "\n" + e, 0);
-+		}
-+	}
-+
-+	public static void do_worldGenCallBack(object threadContext)
-+	{
- 		SoundEngine.PlaySound(10);
- 		clearWorld();
- 		GenerateWorld(Main.ActiveWorldFileData.Seed, threadContext as GenerationProgress);
- 		WorldFile.SaveWorld(Main.ActiveWorldFileData.IsCloudSave, resetTime: true);
-+
-+		BackupIO.archiveLock = false;
-+
- 		if (Main.menuMode == 10 || Main.menuMode == 888)
- 			Main.menuMode = 6;
- 
-@@ -2674,6 +_,12 @@
- 		if (Main.netMode == 0 && Main.anglerWhoFinishedToday.Contains(Main.player[Main.myPlayer].name))
- 			Main.anglerQuestFinished = true;
- 
-+		// TML: Move rest of method to main thread to fix concurrent modification exceptions
-+		Main.QueueMainThreadAction(FinishPlayWorld);
-+	}
-+
-+	internal static void FinishPlayWorld()
-+	{
- 		Main.player[Main.myPlayer].Spawn(PlayerSpawnContext.SpawningIntoWorld);
- 		_lastSeed = Main.ActiveWorldFileData.Seed;
- 		WorldFile.SetOngoingToTemps();
 @@ -3341,7 +_,8 @@
  	public static readonly int oceanDistance = 250;
  	public static readonly int beachDistance = 380;
@@ -204,6 +167,29 @@
  	}
  
  	public static int GetWorldSize()
+@@ -5313,9 +_,22 @@
+ 	public static void worldGenCallback(GenerationProgress customProgressObject, WorldGenerator.Controller customGenController, WorldGenerationFinishCallback afterGeneration)
+ 	{
++		try {
++			do_worldGenCallBack(customProgressObject, customGenController, afterGeneration);
++		}
++		catch (Exception e) {
++			Utils.ShowFancyErrorMessage(Language.GetTextValue("tModLoader.WorldGenError") + "\n" + e, 0);
++		}
++	}
++
++	public static void do_worldGenCallBack(GenerationProgress customProgressObject, WorldGenerator.Controller customGenController, WorldGenerationFinishCallback afterGeneration)
++	{
+ 		SoundEngine.PlaySound(10);
+ 		bool flag = GenerateWorld(customProgressObject, customGenController);
+ 		if (flag)
+ 			WorldFile.SaveNewWorld();
+ 
++
++		BackupIO.archiveLock = false;
++
+ 		if (Main.menuMode == 10 || Main.menuMode == 888)
+ 			Main.menuMode = 6;
 @@ -5344,12 +_,20 @@
  
  	public static void JustQuit()
@@ -392,38 +378,6 @@
  		worldCleared = true;
  	}
  
-@@ -5970,8 +_,12 @@
- 			GenVars.desertHiveRight = x;
- 	}
- 
-+	// TML: split into GenerateWorld, AddGenPasses (called at loadtime now and stored in a list), AddGenPassesFromLoadTime (the replacement for AddGenPasses in GenerateWorld), and GenerateWorld_RunTasksAndFinish
- 	public static void GenerateWorld(int seed, GenerationProgress customProgressObject = null)
- 	{
-+		// For timing logging, used below.
-+		var generationStopwatch = Stopwatch.StartNew();
-+
- 		remixWorldGen = tempRemixWorldGen;
- 		tenthAnniversaryWorldGen = tempTenthAnniversaryWorldGen;
- 		drunkWorldGen = false;
-@@ -6097,9 +_,18 @@
- 		GenVars.logX = -1;
- 		GenVars.logY = -1;
- 		GenVars.dungeonLocation = 0;
-+
-+		SystemLoader.PreWorldGen();
-+
- 		if (everythingWorldGen)
- 			Main.starGame = true;
- 
-+		AddGenPassesFromLoadTime();
-+		GenerateWorld_RunTasksAndFinish(seed, generationStopwatch, customProgressObject);
-+	}
-+
-+	internal static void AddGenPasses()
-+	{
- 		AddGenerationPass("Reset", delegate (GenerationProgress progress, GameConfiguration passConfig) {
- 			if (genRand.Next(2) == 0)
- 				GenVars.crimsonLeft = false;
 @@ -8036,8 +_,17 @@
  		}
  	}
@@ -463,6 +417,14 @@
  	}
  
  	public static bool checkUnderground(int x, int y)
+@@ -9214,3 +_,7 @@
++	// TML: split into GenerateWorld, AddGenPasses (called at loadtime now and stored in a list), AddGenPassesFromLoadTime (the replacement for AddGenPasses in GenerateWorld), and GenerateWorld_RunTasksAndFinish
+ 	public static bool GenerateWorld(GenerationProgress customProgressObject = null, WorldGenerator.Controller customController = null)
+ 	{
++		// For timing logging, used below.
++		var generationStopwatch = Stopwatch.StartNew();
++
+ 		generatingWorld = true;
 @@ -9218,8 +_,11 @@
  		generatingWorldOnThisThread = true;
  		bool flag = false;
@@ -476,6 +438,44 @@
  			Hooks.ProcessWorldGenConfig(ref GenVars.configuration);
  			_generator = new WorldGenerator(Main.ActiveWorldFileData.Seed, GenVars.configuration, customProgressObject, customController);
  			clearWorld();
+@@ -9226,3 +_,6 @@
+ 			Reset();
++			/*
+ 			AddPasses();
++			*/
++			AddGenPassesFromLoadTime();
+ 			DisablePassesForSpecialSeeds(_generator._passes);
+@@ -9229,4 +_,10 @@
++
++			SystemLoader.ModifyWorldGenTasks(_generator._passes, ref _generator._totalLoadWeight);
++
+ 			flag = _generator.GenerateWorld();
++
++			SystemLoader.PostWorldGen();
++
+ 			Finish();
+ 			return flag;
+ 		}
+@@ -9346,4 +_,7 @@
+ 		GenVars.logX = -1;
+ 		GenVars.logY = -1;
++
++		SystemLoader.PreWorldGen();
++
+ 		if (everythingWorldGen)
+ 			Main.starGame = true;
+@@ -9591,3 +_,11 @@
+ 		if (!Main.gameMenu)
+ 			Main.QueueMainThreadAction(Main.sectionManager.SetAllSectionsLoaded);
+ 	}
++
++	private static void AddGenPassesFromLoadTime()
++	{
++		foreach (var pass in _vanillaGenPasses) {
++			pass.Value.Reset();
++			_generator.Append(pass.Value);
++		}
++	}
 @@ -13349,7 +_,8 @@
  								num698++;
 +								// Extra patch context.
@@ -486,42 +486,6 @@
 +								if (Main.tile[num699, num700].active() && TileID.Sets.Torches[Main.tile[num699, num700].type])
  									flag51 = true;
  							}
-@@ -13849,12 +_,35 @@
- 			skipFramingDuringGen = false;
- 			progress.Message = Lang.gen[87].Value;
- 		});
-+	}
-+
-+	private static void AddGenPassesFromLoadTime()
-+	{
-+		foreach (var pass in _vanillaGenPasses) {
-+			pass.Value.Reset();
-+			_generator.Append(pass.Value);
-+		}
-+	}
-+
-+	private static void GenerateWorld_RunTasksAndFinish(int seed, Stopwatch generationStopwatch, GenerationProgress customProgressObject)
-+	{
-+		SystemLoader.ModifyWorldGenTasks(_generator._passes, ref _generator._totalLoadWeight);
- 
- 		_generator.GenerateWorld(customProgressObject);
- 		ConsumePostGenActions(GenVars.structures);
-+
-+		SystemLoader.PostWorldGen();
-+
- 		Main.WorldFileMetadata = FileMetadata.FromCurrentSettings(FileType.World);
-+		Main.ActiveWorldFileData.modVersionsDuringWorldGen = ModLoader.ModLoader.Mods.ToDictionary(x => x.Name, x => x.Version);
- 		Main.NotifyOfEvent(GameNotificationType.WorldGen);
- 		drunkWorldGenText = false;
-+
-+		BackupIO.archiveLock = true;
-+
-+		generationStopwatch.Stop();
-+
-+		Logging.tML.Info($"Generation of {Main.maxTilesX}x{Main.maxTilesY} {(crimson ? "Crimson" : "Corruption")} world with seed {seed} completed in {generationStopwatch.Elapsed:m'm 's's 'fff'ms'}");
- 	}
- 
- 	private static Point GetAdjustedFloorPosition(int x, int y)
 @@ -17764,12 +_,17 @@
  							if (TileID.Sets.BasicChest[Main.tile[num85, num86].type]) {
  								int num125 = Main.tile[num85, num86].frameX / 18;
@@ -636,101 +600,13 @@
  					bool flag2 = TileID.Sets.Dirt[tile7.type];
  					if (notTheBees)
  						flag2 = flag2 || TileID.Sets.Mud[tile7.type];
-@@ -19325,6 +_,9 @@
- 
- 	public static void smCallBack(object threadContext)
- 	{
-+		// Parts of this method will be converted to tasks/passes.
-+		var hardmodeTasks = new List<GenPass>();
+@@ -18726,3 +_,6 @@
+ 		Main.WorldFileMetadata = FileMetadata.FromCurrentSettings(FileType.World);
++		Main.ActiveWorldFileData.modVersionsDuringWorldGen = ModLoader.ModLoader.Mods.ToDictionary(x => x.Name, x => x.Version);
+ 		Main.NotifyOfEvent(GameNotificationType.WorldGen);
+ 		drunkWorldGenText = false;
 +
- 		IsGeneratingHardMode = true;
- 		TryProtectingSpawnedItems();
- 		if (Main.rand == null)
-@@ -19358,7 +_,8 @@
- 			num3 = (int)((double)Main.maxTilesX * (1.0 - num2));
- 		}
- 
--		if (Main.remixWorld) {
-+		void HardmodeGoodRemixTask(GenerationProgress progress, GameConfiguration configuration)
-+		{
- 			int num7 = Main.maxTilesX / 7;
- 			int num8 = Main.maxTilesX / 14;
- 			if (Main.dungeonX < Main.maxTilesX / 2) {
-@@ -19382,11 +_,44 @@
- 				}
- 			}
- 		}
--		else {
-+
-+		void HardmodeGoodTask(GenerationProgress progress, GameConfiguration configuration)
-+		{
- 			GERunner(num3, 0, 3 * num5, 5.0);
-+		}
-+
-+		void HardmodeEvilTask(GenerationProgress progress, GameConfiguration configuration)
-+		{
- 			GERunner(num4, 0, 3 * -num5, 5.0, good: false);
- 		}
- 
-+		var HardmodeGoodRemixPass = new PassLegacy("Hardmode Good Remix", HardmodeGoodRemixTask);
-+		var HardmodeGoodPass = new PassLegacy("Hardmode Good", HardmodeGoodTask);
-+		var HardmodeEvilPass = new PassLegacy("Hardmode Evil", HardmodeEvilTask);
-+
-+		hardmodeTasks.Add(HardmodeGoodRemixPass);
-+		hardmodeTasks.Add(HardmodeGoodPass);
-+		hardmodeTasks.Add(HardmodeEvilPass);
-+
-+		// Main.remixWorld checks removed from Pass code, we want all passes present in the list no matter what and disable those that don't apply for consistency with other tModLoader approaches and modder expectations. #3606 discussion
-+		if (Main.remixWorld) {
-+			HardmodeGoodPass.Disable();
-+			HardmodeEvilPass.Disable();
-+		}
-+		else {
-+			HardmodeGoodRemixPass.Disable();
-+		}
-+
-+		hardmodeTasks.Add(new PassLegacy("Hardmode Walls", HardmodeWallsTask));
-+		hardmodeTasks.Add(new PassLegacy("Hardmode Announcement", HardmodeAnnouncementTask));
-+
-+		// Call the split end portion of the method.
-+		smCallback_End(hardmodeTasks);
-+	}
-+
-+	// Split from smCallback
-+	private static void HardmodeWallsTask(GenerationProgress progress, GameConfiguration configuration)
-+	{
- 		double num9 = (double)Main.maxTilesX / 4200.0;
- 		int num10 = (int)(25.0 * num9);
- 		ShapeData shapeData = new ShapeData();
-@@ -19416,13 +_,28 @@
- 				shapeData.Clear();
- 			}
- 		}
-+	}
- 
-+	// Split from smCallback
-+	private static void HardmodeAnnouncementTask(GenerationProgress progress, GameConfiguration configuration)
-+	{
- 		if (Main.netMode == 0)
- 			Main.NewText(Lang.misc[15].Value, 50, byte.MaxValue, 130);
- 		else if (Main.netMode == 2)
- 			ChatHelper.BroadcastChatMessage(NetworkText.FromKey(Lang.misc[15].Key), new Color(50, 255, 130));
- 
- 		AchievementsHelper.NotifyProgressionEvent(9);
-+	}
-+
-+	// Split from smCallback
-+	private static void smCallback_End(List<GenPass> hardmodeTasks)
-+	{
-+		SystemLoader.ModifyHardmodeTasks(hardmodeTasks);
-+
-+		foreach (GenPass task in hardmodeTasks) {
-+			task.Apply(null, null);
-+		}
-+
- 		if (Main.netMode == 2)
- 			Netplay.ResetSections();
- 
++		BackupIO.archiveLock = true;
 @@ -19640,4 +_,7 @@
  			for (int j = num3; j < Main.maxTilesY; j++) {
 +				/*
@@ -906,6 +782,80 @@
  
  					return false;
  				}
+@@ -26127,4 +_,7 @@
+ 
+ 	private static void initializeHardMode()
+ 	{
++		// Parts of this method will be converted to tasks/passes.
++		var hardmodeTasks = new List<GenPass>();
++
+ 		if (Main.rand == null)
+@@ -26162,8 +_,9 @@
+ 			num3 = (int)((double)Main.maxTilesX * (1.0 - num2));
+ 		}
+ 
+-		if (flag) {
+-			if (Main.remixWorld) {
++		void HardmodeGoodRemixTask(GenerationProgress progress, GameConfiguration configuration)
++		{
++			{
+ 				int num7 = Main.maxTilesX / 7;
+ 				int num8 = Main.maxTilesX / 14;
+ 				if (Main.dungeonX < Main.maxTilesX / 2) {
+@@ -26187,12 +_,52 @@
+ 					}
+ 				}
+ 			}
+-			else {
++		}
++
++		void HardmodeGoodTask(GenerationProgress progress, GameConfiguration configuration)
++		{
++			{
+ 				GERunner(num3, 0, 3 * num5, 5.0);
++			}
++		}
++
++		void HardmodeEvilTask(GenerationProgress progress, GameConfiguration configuration)
++		{
++			{
+ 				GERunner(num4, 0, 3 * -num5, 5.0, good: false);
+ 			}
+ 		}
+ 
++		var HardmodeGoodRemixPass = new PassLegacy("Hardmode Good Remix", HardmodeGoodRemixTask);
++		var HardmodeGoodPass = new PassLegacy("Hardmode Good", HardmodeGoodTask);
++		var HardmodeEvilPass = new PassLegacy("Hardmode Evil", HardmodeEvilTask);
++
++		hardmodeTasks.Add(HardmodeGoodRemixPass);
++		hardmodeTasks.Add(HardmodeGoodPass);
++		hardmodeTasks.Add(HardmodeEvilPass);
++
++		// Main.remixWorld and dualDungeonsSeed checks removed from Pass code, we want all passes present in the list no matter what and disable those that don't apply for consistency with other tModLoader approaches and modder expectations. #3606 discussion
++		if (Main.remixWorld || flag) {
++			HardmodeGoodPass.Disable();
++			HardmodeEvilPass.Disable();
++		}
++		else if (!Main.remixWorld || flag) {
++			HardmodeGoodRemixPass.Disable();
++		}
++
++		hardmodeTasks.Add(new PassLegacy("Hardmode Walls", HardmodeWallsTask));
++		hardmodeTasks.Add(new PassLegacy("Hardmode Announcement", HardmodeAnnouncementTask));
++
++		SystemLoader.ModifyHardmodeTasks(hardmodeTasks);
++
++		foreach (GenPass task in hardmodeTasks) {
++			task.Apply(null, null);
++		}
++	}
++
++	// Split from smCallback
++	private static void HardmodeWallsTask(GenerationProgress progress, GameConfiguration configuration)
++	{
+ 		double num9 = (double)Main.maxTilesX / 4200.0;
+ 		int num10 = (int)(25.0 * num9);
+ 		ShapeData shapeData = new ShapeData();
 @@ -26319,7 +_,7 @@
  
  		int frameX = Main.tile[i, j].frameX;
@@ -1073,26 +1023,6 @@
  
  		Item.NewItem(GetItemSource_FromTileBreak(x, y), x * 16, y * 16, 32, 32, 1873);
  		destroyObject = false;
-@@ -33829,7 +_,7 @@
- 			if (Main.tile[k, j - 1] == null)
- 				Main.tile[k, j - 1] = new Tile();
- 
--			if (Main.tile[k, j - 1].active() && (TileID.Sets.BasicChest[Main.tile[k, j - 1].type] || TileID.Sets.BasicChestFake[Main.tile[k, j - 1].type] || Main.tile[k, j - 1].type == 88 || Main.tile[k, j - 1].type == 470 || Main.tile[k, j - 1].type == 475 || Main.tile[k, j - 1].type == 597))
-+			if (Main.tile[k, j - 1].active() && (TileID.Sets.BasicChest[Main.tile[k, j - 1].type] || TileID.Sets.BasicChestFake[Main.tile[k, j - 1].type] || TileID.Sets.BasicDresser[Main.tile[k, j - 1].type]  || Main.tile[k, j - 1].type == 470 || Main.tile[k, j - 1].type == 475 || Main.tile[k, j - 1].type == 597))
- 				return;
- 
- 			if (!SolidTileAllowBottomSlope(k, j + 1))
-@@ -33909,7 +_,10 @@
- 						if (Main.tile[k, num8] != null && Main.tile[k, num8].active())
- 							num9 = Main.tile[k, num8].type;
- 
-+						/*
- 						if (num9 != 2 && num9 != 477 && num9 != 109 && num9 != 492)
-+						*/
-+						if (!TileObjectData.GetTileData(488, 0).AnchorValidTiles.Contains(num9))
- 							flag = true;
- 
- 						break;
 @@ -36656,7 +_,9 @@
  		if (!SolidTileAllowBottomSlope(x, num + 2) && !TileID.Sets.Platforms[Main.tile[x, num + 2].type])
  			flag = true;
@@ -1252,6 +1182,24 @@
  	{
  		if (!InWorld(x, y, 30))
  			return false;
+@@ -38634,3 +_,17 @@
+ 		return true;
+ 	}
+ 
++	[ThreadStatic]
++	private static int conversionRecursionDepth;
++	internal readonly struct ConversionRecursion : IDisposable
++	{
++		public ConversionRecursion() => conversionRecursionDepth++;
++		void IDisposable.Dispose() => conversionRecursionDepth--;
++	}
++
++	// legacy overload for abi compat, remove in 1.4.5
++	/// <inheritdoc cref="Convert(int, int, int, int, bool, bool)"/>
++	[OriginalOverload]
++	[Obsolete("Use Convert(int, int, int, int, bool, bool) instead")]
++	public static void Convert(int i, int j, int conversionType, int size) => Convert(i, j, conversionType, size, tiles: true, walls: true);
++
 @@ -38977,10 +_,12 @@
  			return;
  
@@ -1281,70 +1229,6 @@
  		Item.NewItem(GetItemSource_FromTileBreak(i, j), i * 16, j * 16, 32, 32, 498);
  		for (int m = 0; m <= 1; m++) {
  			for (int n = 0; n <= 2; n++) {
-@@ -39342,8 +_,42 @@
- 		return true;
- 	}
- 
-+	[ThreadStatic]
-+	private static int conversionRecursionDepth;
-+	internal readonly struct ConversionRecursion : IDisposable
-+	{
-+		public ConversionRecursion() => conversionRecursionDepth++;
-+		void IDisposable.Dispose() => conversionRecursionDepth--;
-+	}
-+
-+	// legacy overload for abi compat, remove in 1.4.5
-+	/// <inheritdoc cref="Convert(int, int, int, int, bool, bool)"/>
-+	[OriginalOverload]
-+	[Obsolete("Use Convert(int, int, int, int, bool, bool) instead")]
-+	public static void Convert(int i, int j, int conversionType, int size) => Convert(i, j, conversionType, size, tiles: true, walls: true);
-+
-+	/// <summary>
-+	/// Converts biome variant tiles and walls to a target biome.<br/>
-+	/// Converts a 9x9 square by default, but can be adjusted with the <paramref name="size"/> parameter.
-+	/// </summary>
-+	/// <remarks>
-+	/// For an easily-viewable usage example, refer to the code for projectile AI style 31 (used for the Clentaminator's solutions).
-+	/// </remarks>
-+	/// <param name="i">The X coordinate of the target tile.</param>
-+	/// <param name="j">The Y coordinate of the target tile.</param>
-+	/// <param name="conversionType">The biome that you wish to convert to. See <see cref="BiomeConversionID"/>
-+	/// Setting this to 0 (Purity) returns affected tiles to their default states (e.g. Ebonstone, Crimstone, and Pearlstone will be converted back into normal Stone Blocks).<br/>
-+	/// </param>
-+	/// <param name="size">
-+	/// When using this method to convert tiles, a square centered on the target tile is converted into those of the target biome.<br/>
-+	/// This optional parameter, which defaults to 4, determines the "radius" of that square in tiles, counting outward from the central tile.<br/>
-+	/// Set to 0 if you only want to convert a single tile. In other cases, use this parameter wisely.
-+	/// </param>
-+	/// <param name="tiles">If the conversion should affect tiles</param>
-+	/// <param name="walls">If the conversion should affect walls</param>
--	public static void Convert(int i, int j, int conversionType, int size = 4)
-+	public static void Convert(int i, int j, int conversionType, int size = 4, bool tiles = true, bool walls = true)
- 	{
-+		using var recursionCounter = new ConversionRecursion();
- 		for (int k = i - size; k <= i + size; k++) {
- 			for (int l = j - size; l <= j + size; l++) {
- 				if (!InWorld(k, l, 1) || Math.Abs(k - i) + Math.Abs(l - j) >= 6)
-@@ -39352,9 +_,18 @@
- 				Tile tile = Main.tile[k, l];
- 				int type = tile.type;
- 				int wall = tile.wall;
-+
-+				bool convertWall = walls && wall > 0 && WallLoader.Convert(k, l, conversionType);
-+				bool convertTile = tiles && tile.HasTile && TileLoader.Convert(k, l, conversionType);
-+				if (conversionType >= BiomeConversionID.Count)
-+					goto SkipTilePurityConversion;
-+
- 				switch (conversionType) {
- 					case 4:
--						if (type <= TileID.Count && wall <= WallID.Count) {
-+						if (true /* type <= TileID.Count && wall <= WallID.Count */) {
-+							if (!convertWall)
-+								goto SkipWallCrimsonConversion;
-+
- 							if (WallID.Sets.Conversion.Grass[wall] && wall != 81) {
- 								tile.wall = 81;
- 								SquareWallFrame(k, l);
 @@ -39365,6 +_,7 @@
  			return;
  
@@ -1362,40 +1246,6 @@
  			frameX = (short)(genRand.Next(3) * 18);
  
  		if (Main.tile[x, y - 1] == null)
-@@ -39396,6 +_,10 @@
- 								NetMessage.SendTileSquare(-1, k, l);
- 							}
- 
-+							SkipWallCrimsonConversion:
-+							if (!convertTile)
-+								goto SkipTileCrimsonConversion;
-+
- 							if ((Main.tileMoss[type] || TileID.Sets.Conversion.Stone[type]) && type != 203) {
- 								TryKillingTreesAboveIfTheyWouldBecomeInvalid(k, l, 203);
- 								tile.type = 203;
-@@ -39441,11 +_,21 @@
- 								SquareTileFrame(k, l);
- 								NetMessage.SendTileSquare(-1, k, l);
- 							}
-+
-+							SkipTileCrimsonConversion:
-+							;
- 						}
--						continue;
-+						goto SkipTilePurityConversion;
-+						//continue;
- 					case 2:
-+						/*
- 						if (type > TileID.Count || wall > WallID.Count)
- 							continue;
-+						*/
-+
-+						if (!convertWall)
-+							goto SkipWallHallowConversion;
-+
- 						if (WallID.Sets.Conversion.Grass[wall] && wall != 70) {
- 							tile.wall = 70;
- 							SquareWallFrame(k, l);
 @@ -39481,18 +_,20 @@
  		if (!flag)
  			return;
@@ -1417,18 +1267,6 @@
  
  		switch (type) {
  			case 42: {
-@@ -39486,6 +_,11 @@
- 							SquareWallFrame(k, l);
- 							NetMessage.SendTileSquare(-1, k, l);
- 						}
-+
-+						SkipWallHallowConversion:
-+						if (!convertTile)
-+							goto SkipTileHallowConversion;
-+
- 						if ((Main.tileMoss[type] || TileID.Sets.Conversion.Stone[type]) && type != 117) {
- 							TryKillingTreesAboveIfTheyWouldBecomeInvalid(k, l, 117);
- 							tile.type = 117;
 @@ -39524,6 +_,15 @@
  		destroyObject = false;
  	}
@@ -1445,59 +1283,6 @@
  	public static bool PlaceSmallPile(int i, int j, int pileStyle, int pileSize, ushort type = 185)
  	{
  		short frameY = (short)(pileSize * 18);
-@@ -39536,19 +_,27 @@
- 							SquareTileFrame(k, l);
- 							NetMessage.SendTileSquare(-1, k, l);
- 						}
--						continue;
-+
-+						SkipTileHallowConversion:
-+						goto SkipTilePurityConversion;
-+						//continue;
- 					case 1:
--						if (type <= TileID.Count && wall <= WallID.Count) {
-+						if (true /* type <= TileID.Count && wall <= WallID.Count */) {
-+							if (!convertWall)
-+								goto SkipWallCorruptionConversion;
-+
- 							if (WallID.Sets.Conversion.Grass[wall] && wall != 69) {
- 								tile.wall = 69;
- 								SquareWallFrame(k, l);
- 								NetMessage.SendTileSquare(-1, k, l);
- 							}
-+							/* #4744, Moved down below to after the SkipWallCorruptionConversion label, as this is a tile conversion, not a wall conversion. Fixed in vanilla.
- 							else if (TileID.Sets.Conversion.JungleGrass[type] && type != 661) {
- 								tile.type = 661;
- 								SquareTileFrame(k, l);
- 								NetMessage.SendTileSquare(-1, k, l);
- 							}
-+							*/
- 							else if (WallID.Sets.Conversion.Stone[wall] && wall != 3) {
- 								tile.wall = 3;
- 								SquareWallFrame(k, l);
-@@ -39585,12 +_,22 @@
- 								NetMessage.SendTileSquare(-1, k, l);
- 							}
- 
-+							SkipWallCorruptionConversion:
-+							if (!convertTile)
-+								goto SkipTileCorruptionConversion;
-+
- 							if ((Main.tileMoss[type] || TileID.Sets.Conversion.Stone[type]) && type != 25) {
- 								TryKillingTreesAboveIfTheyWouldBecomeInvalid(k, l, 25);
- 								tile.type = 25;
- 								SquareTileFrame(k, l);
- 								NetMessage.SendTileSquare(-1, k, l);
- 							}
-+							else if (TileID.Sets.Conversion.JungleGrass[type] && type != 661) { // #4744, Moved from above, fixed in vanilla.
-+								TryKillingTreesAboveIfTheyWouldBecomeInvalid(k, l, 661);
-+								tile.type = 661;
-+								SquareTileFrame(k, l);
-+								NetMessage.SendTileSquare(-1, k, l);
-+							}
- 							else if (TileID.Sets.Conversion.Grass[type] && type != 23) {
- 								TryKillingTreesAboveIfTheyWouldBecomeInvalid(k, l, 23);
- 								tile.type = 23;
 @@ -39602,7 +_,7 @@
  
  			int num = tile.frameX / 18;
@@ -1507,119 +1292,6 @@
  				return;
  
  			ushort type = tile2.type;
-@@ -39625,13 +_,24 @@
- 								NetMessage.SendTileSquare(-1, k, l);
- 							}
- 						}
--						continue;
-+
-+						SkipTileCorruptionConversion:
-+						goto SkipTilePurityConversion;
-+						//continue;
- 					case 3:
-+						if (!convertWall)
-+							goto SkipWallGlowingMushroomConversion;
-+
- 						if (WallID.Sets.CanBeConvertedToGlowingMushroom[wall]) {
- 							tile.wall = 80;
- 							SquareWallFrame(k, l);
- 							NetMessage.SendTileSquare(-1, k, l);
- 						}
-+
-+						SkipWallGlowingMushroomConversion:
-+						if (!convertTile)
-+							goto SkipTileGlowingMushroomConversion;
-+
- 						if (tile.type == 60) {
- 							TryKillingTreesAboveIfTheyWouldBecomeInvalid(k, l, 70);
- 							tile.type = 70;
-@@ -39643,10 +_,19 @@
- 							if (Main.netMode == 1)
- 								NetMessage.SendData(17, -1, -1, null, 0, k, l);
- 						}
--						continue;
-+
-+						SkipTileGlowingMushroomConversion:
-+						goto SkipTilePurityConversion;
-+						//continue;
- 					case 5:
-+						/*
- 						if (type < 0 || type > TileID.Count || wall < 0 || wall > WallID.Count)
- 							continue;
-+						*/
-+
-+						if (!convertWall)
-+							goto SkipWallDesertConversion;
-+
- 						if ((WallID.Sets.Conversion.Stone[wall] || WallID.Sets.Conversion.NewWall1[wall] || WallID.Sets.Conversion.NewWall2[wall] || WallID.Sets.Conversion.NewWall3[wall] || WallID.Sets.Conversion.NewWall4[wall] || WallID.Sets.Conversion.Ice[wall] || WallID.Sets.Conversion.Sandstone[wall]) && wall != 187) {
- 							tile.wall = 187;
- 							SquareWallFrame(k, l);
-@@ -39657,6 +_,11 @@
- 							SquareWallFrame(k, l);
- 							NetMessage.SendTileSquare(-1, k, l);
- 						}
-+
-+						SkipWallDesertConversion:
-+						if (!convertTile)
-+							goto SkipTileDesertConversion;
-+
- 						if ((TileID.Sets.Conversion.Grass[type] || TileID.Sets.Conversion.Sand[type] || TileID.Sets.Conversion.Snow[type] || TileID.Sets.Conversion.Dirt[type]) && type != 53) {
- 							int num = 53;
- 							if (BlockBelowMakesSandConvertIntoHardenedSand(k, l))
-@@ -39683,10 +_,19 @@
- 							if (Main.netMode == 1)
- 								NetMessage.SendData(17, -1, -1, null, 0, k, l);
- 						}
--						continue;
-+
-+						SkipTileDesertConversion:
-+						goto SkipTilePurityConversion;
-+						//continue;
- 					case 6:
-+						/*
- 						if (type < 0 || type > TileID.Count || wall < 0 || wall > WallID.Count)
- 							continue;
-+						*/
-+
-+						if (!convertWall)
-+							goto SkipWallSnowConversion;
-+
- 						if ((WallID.Sets.Conversion.Stone[wall] || WallID.Sets.Conversion.NewWall1[wall] || WallID.Sets.Conversion.NewWall2[wall] || WallID.Sets.Conversion.NewWall3[wall] || WallID.Sets.Conversion.NewWall4[wall] || WallID.Sets.Conversion.Ice[wall] || WallID.Sets.Conversion.Sandstone[wall]) && wall != 71) {
- 							tile.wall = 71;
- 							SquareWallFrame(k, l);
-@@ -39697,6 +_,11 @@
- 							SquareWallFrame(k, l);
- 							NetMessage.SendTileSquare(-1, k, l);
- 						}
-+
-+						SkipWallSnowConversion:
-+						if (!convertTile)
-+							goto SkipTileSnowConversion;
-+
- 						if ((TileID.Sets.Conversion.Grass[type] || TileID.Sets.Conversion.Sand[type] || TileID.Sets.Conversion.HardenedSand[type] || TileID.Sets.Conversion.Snow[type] || TileID.Sets.Conversion.Dirt[type]) && type != 147) {
- 							TryKillingTreesAboveIfTheyWouldBecomeInvalid(k, l, 147);
- 							tile.type = 147;
-@@ -39714,10 +_,19 @@
- 							if (Main.netMode == 1)
- 								NetMessage.SendData(17, -1, -1, null, 0, k, l);
- 						}
--						continue;
-+
-+						SkipTileSnowConversion:
-+						goto SkipTilePurityConversion;
-+						//continue;
- 					case 7:
-+						/*
- 						if (type < 0 || type > TileID.Count || wall < 0 || wall > WallID.Count)
- 							continue;
-+						*/
-+
-+						if (!convertWall)
-+							goto SkipWallForestConversion;
-+
- 						if ((WallID.Sets.Conversion.Stone[wall] || WallID.Sets.Conversion.Ice[wall] || WallID.Sets.Conversion.Sandstone[wall]) && wall != 1) {
- 							tile.wall = 1;
- 							SquareWallFrame(k, l);
 @@ -39720,7 +_,7 @@
  				}
  
@@ -1629,18 +1301,6 @@
  					continue;
  
  				ushort type2 = tile2.type;
-@@ -39748,6 +_,11 @@
- 							SquareWallFrame(k, l);
- 							NetMessage.SendTileSquare(-1, k, l);
- 						}
-+
-+						SkipWallForestConversion:
-+						if (!convertTile)
-+							goto SkipTileForestConversion;
-+
- 						if ((TileID.Sets.Conversion.Stone[type] || TileID.Sets.Conversion.Ice[type] || TileID.Sets.Conversion.Sandstone[type]) && type != 1) {
- 							TryKillingTreesAboveIfTheyWouldBecomeInvalid(k, l, 1);
- 							tile.type = 1;
 @@ -39758,11 +_,13 @@
  			frameX = Main.tile[num + 1, y].frameX;
  
@@ -1655,52 +1315,6 @@
  
  		if (type == 16) {
  			if (num3 == 1)
-@@ -39781,8 +_,14 @@
- 							if (Main.netMode == 1)
- 								NetMessage.SendData(17, -1, -1, null, 0, k, l);
- 						}
--						continue;
-+
-+						SkipTileForestConversion:
-+						goto SkipTilePurityConversion;
-+						//continue;
- 				}
-+
-+				if (!convertWall)
-+					goto SkipWallPurityConversion;
- 
- 				if (tile.wall == 69 || tile.wall == 70 || tile.wall == 81) {
- 					if ((double)l < Main.worldSurface) {
-@@ -39857,6 +_,10 @@
- 					NetMessage.SendTileSquare(-1, k, l);
- 				}
- 
-+				SkipWallPurityConversion:
-+				if (!convertTile)
-+					goto SkipTilePurityConversion;
-+
- 				if (tile.type == 492) {
- 					TryKillingTreesAboveIfTheyWouldBecomeInvalid(k, l, 477);
- 					tile.type = 477;
-@@ -39914,6 +_,18 @@
- 					if (Main.netMode == 1)
- 						NetMessage.SendData(17, -1, -1, null, 0, k, l);
- 				}
-+
-+				SkipTilePurityConversion:
-+				;
-+
-+				if (conversionRecursionDepth == 1) {
-+					if (type != tile.type) {
-+						TileLoader.OnTileConverted(k, l, type, tile.type, conversionType);
-+					}
-+					if (wall != tile.wall) {
-+						WallLoader.OnWallConverted(k, l, wall, tile.wall, conversionType);
-+					}
-+				}
- 			}
- 		}
- 	}
 @@ -40020,11 +_,13 @@
  			return;
  
@@ -1849,6 +1463,14 @@
  		for (int k = num5; k < num5 + 3; k++) {
  			for (int l = num; l < num8; l++) {
  				if (Main.tile[k, l] == null)
+@@ -41473,4 +_,7 @@
+ 						if (Main.tile[k, num8] != null && Main.tile[k, num8].active())
+ 							num9 = Main.tile[k, num8].type;
+ 
++						/*
+ 						bool flag3 = num9 == 2 || num9 == 477 || num9 == 109 || num9 == 492 || num9 == 147 || num9 == 53 || num9 == 60 || num9 == 70;
++						*/
++						bool flag3 = TileObjectData.GetTileData(488, 0).AnchorValidTiles.Contains(num9);
 @@ -41622,6 +_,7 @@
  					KillTile(num10, num11);
  			}
@@ -2206,6 +1828,30 @@
  			return false;
  
  		if (!InWorld(i, j, 2))
+@@ -46300,3 +_,23 @@
++	/// <summary>
++	/// Converts biome variant tiles and walls to a target biome.<br/>
++	/// Converts a 9x9 square by default, but can be adjusted with the <paramref name="size"/> parameter.
++	/// </summary>
++	/// <remarks>
++	/// For an easily-viewable usage example, refer to the code for projectile AI style 31 (used for the Clentaminator's solutions).
++	/// </remarks>
++	/// <param name="i">The X coordinate of the target tile.</param>
++	/// <param name="j">The Y coordinate of the target tile.</param>
++	/// <param name="conversionType">The biome that you wish to convert to. See <see cref="BiomeConversionID"/>
++	/// Setting this to 0 (Purity) returns affected tiles to their default states (e.g. Ebonstone, Crimstone, and Pearlstone will be converted back into normal Stone Blocks).<br/>
++	/// </param>
++	/// <param name="size">
++	/// When using this method to convert tiles, a square centered on the target tile is converted into those of the target biome.<br/>
++	/// This optional parameter, which defaults to 4, determines the "radius" of that square in tiles, counting outward from the central tile.<br/>
++	/// Set to 0 if you only want to convert a single tile. In other cases, use this parameter wisely.
++	/// </param>
++	/// <param name="tiles">If the conversion should affect tiles</param>
++	/// <param name="walls">If the conversion should affect walls</param>
+ 	public static void Convert(int i, int j, int conversionType, int size, bool tiles = true, bool walls = true)
+ 	{
++		using var recursionCounter = new ConversionRecursion();
+ 		if (!tiles && !walls)
 @@ -47356,6 +_,6 @@
  		if ((!Main.remixWorld || !((double)j > Main.worldSurface)) && num3 / 255 > cactusWaterLimit)
  			return;
@@ -2219,7 +1865,7 @@
  						}
  
 -						if (TileID.Sets.Conversion.Sand[Main.tile[m, n].type]) {
-+						if (TileID.Sets.Conversion.Sand[Main.tile[m, n].type] || TileLoader.CanGrowModCactus(Main.tile[m, n].type))
++						if (TileID.Sets.Conversion.Sand[Main.tile[m, n].type] || TileLoader.CanGrowModCactus(Main.tile[m, n].type)) {
  							num5++;
  							if (num5 > 10)
  								break;
@@ -2326,7 +1972,7 @@
  		if (i >= 0 && j >= 0 && i < Main.maxTilesX && j < Main.maxTilesY) {
 @@ -49721,4 +_,7 @@
  					}
-+					else if (TileID.Sets.TreeSapling[num])
++					else if (TileID.Sets.TreeSapling[num]) {
 +						return false;
 +					}
  					else if (num == 3 || num == 20 || num == 24 || num == 27 || num == 32 || num == 51 || num == 69 || num == 72 || num == 201 || num == 352 || num == 529 || num == 624 || num == 700 || num == 637 || num == 656 || num == 701 || num == 697) {
@@ -2447,50 +2093,6 @@
  			Item.NewItem(GetItemSource_FromWallBreak(i, j), i * 16, j * 16, 16, 16, num);
  	}
  
-@@ -50637,6 +_,19 @@
- 					if (!InWorld(num8, num9, 2) || !Main.tile[num8, num9].active())
- 						continue;
- 
-+					int preHookType = Main.tile[num8, num9].type;
-+					bool convertTile = TileLoader.Convert(num8, num9, BiomeConversionID.Chlorophyte);
-+
-+					if (preHookType != Main.tile[num8, num9].type) {
-+						flag = true;
-+						TileLoader.OnTileConverted(num8, num9, preHookType, Main.tile[num8, num9].type, BiomeConversionID.Chlorophyte);
-+
-+						continue;
-+					}
-+
-+					if (!convertTile)
-+						continue;
-+
- 					if (Main.tile[num8, num9].type == 661 || Main.tile[num8, num9].type == 662 || Main.tile[num8, num9].type == 23 || Main.tile[num8, num9].type == 199 || Main.tile[num8, num9].type == 2 || Main.tile[num8, num9].type == 477 || Main.tile[num8, num9].type == 492 || Main.tile[num8, num9].type == 109) {
- 						Main.tile[num8, num9].type = 60;
- 						SquareTileFrame(num8, num9);
-@@ -50692,14 +_,23 @@
- 
- 						flag = true;
- 					}
-+
-+					if (preHookType != Main.tile[num8, num9].type) {
-+						TileLoader.OnTileConverted(num8, num9, preHookType, Main.tile[num8, num9].type, BiomeConversionID.Chlorophyte);
-+					}
- 				}
- 			}
- 		}
- 
-+		/*
- 		if ((NPC.downedPlantBoss && genRand.Next(2) != 0) || !AllowedToSpreadInfections)
- 			return;
- 
- 		if (type == 23 || type == 25 || type == 32 || type == 112 || type == 163 || type == 400 || type == 398 || type == 636 || type == 661) {
-+		*/
-+		if (type == 23 || type == 25 || type == 32 || type == 112 || type == 163 || type == 400 || type == 398 || type == 636 || type == 661 || type == TileID.CorruptPlants) {
-+			SpreadInfectionToNearbyTile(i, j, BiomeConversionID.Corruption);
-+			/*
- 			bool flag2 = true;
- 			while (flag2) {
- 				flag2 = false;
 @@ -51950,9 +_,15 @@
  		if (tileCache.wall == 245)
  			num = 195;
@@ -2551,16 +2153,6 @@
  				if (!Chest.CanDestroyChest(i - tile.frameX / 18 % 3, j - tile.frameY / 18))
  					return false;
  				break;
-@@ -52101,6 +_,9 @@
- 			if (prioritizedTownNPCType != 37) {
- 				for (int i = 0; i < 200; i++) {
- 					if (Main.npc[i].active && Main.npc[i].homeless && Main.npc[i].townNPC && Main.npc[i].type != 368) {
-+						if (Main.npc[i].ModNPC?.TownNPCStayingHomeless is true)
-+							continue;
-+
- 						prioritizedTownNPCType = Main.npc[i].type;
- 						break;
- 					}
 @@ -52262,7 +_,7 @@
  				return true;
  		}
@@ -2788,27 +2380,6 @@
  	{
  		dropItem = 0;
  		dropItemStack = 1;
-@@ -54455,6 +_,20 @@
- 		}
- 
- 		if (num6.HasValue && Main.tile[num2, num3].wall != num6.Value) {
-+			int conversionType = -1;
-+			switch (num) {
-+				case 1:
-+					conversionType = BiomeConversionID.Corruption;
-+					break;
-+				case 2:
-+					conversionType = BiomeConversionID.Hallow;
-+					break;
-+				case 3:
-+					conversionType = BiomeConversionID.Crimson;
-+					break;
-+			}
-+			if(conversionType != -1)
-+				WallLoader.OnWallConverted(num2, num3, Main.tile[num2, num3].wall, num6.Value, conversionType);
- 			Main.tile[num2, num3].wall = num6.Value;
- 			if (Main.netMode == 2)
- 				NetMessage.SendTileSquare(-1, num2, num3);
 @@ -54747,12 +_,16 @@
  						case 234:
  							dropItem = 911;
@@ -3005,12 +2576,7 @@
  			int num = genRand.Next(4);
  			int num2 = 0;
  			int num3 = 0;
-@@ -58616,9 +_,12 @@
- 					}
- 				}
- 			}
-+			*/
- 		}
+@@ -58620,5 +_,7 @@
  
  		if (type >= 0 && TileID.Sets.SpreadsCrimson[type]) {
 +			SpreadInfectionToNearbyTile(i, j, BiomeConversionID.Crimson);
@@ -3041,27 +2607,6 @@
  	}
  
  	public static bool SolidTile(Tile testTile)
-@@ -58764,6 +_,8 @@
- 				}
- 				if (Main.tile[x, y - 1].active()) {
- 					switch (Main.tile[x, y - 1].type) {
-+						case var t when TileID.Sets.BasicChest[t] || TileID.Sets.BasicDresser[t] || TileID.Sets.PreventsTileHammeringIfOnTopOfIt[t]:
-+						/*
- 						case 21:
- 						case 26:
- 						case 77:
-@@ -58777,9 +_,11 @@
- 						case 475:
- 						case 488:
- 						case 597:
-+						*/
- 							return false;
- 					}
- 				}
-+				// TODO: I don't think this is correct, hammering tiles isn't killing them.
- 				return CanKillTile(x, y);
- 		}
- 	}
 @@ -58855,6 +_,10 @@
  
  	public static bool SolidTile(Point p) => SolidTile(p.X, p.Y);
@@ -3093,43 +2638,6 @@
  	public static bool SolidTileAllowBottomSlope(int i, int j)
  	{
  		try {
-@@ -59389,10 +_,10 @@
- 											if (tile5 != null && tile5.nactive() && !tile5.halfBrick() && !tile5.leftSlope())
- 												num18 = tile5.type;
- 
--											if (num17 == 10)
-+											if (TileLoader.IsClosedDoor(num17))
- 												num17 = -1;
- 
--											if (num18 == 10)
-+											if (TileLoader.IsClosedDoor(num18))
- 												num18 = -1;
- 
- 											short num19 = (short)(genRand.Next(3) * 18);
-@@ -59531,10 +_,10 @@
- 													Minecart.FrameTrack(i, j, pound: false);
- 													Tile tile2 = Main.tile[i, j - 1];
- 													Tile tile3 = Main.tile[i, j + 1];
--													if (tile2 != null && tile2.type >= 0 && tile2.type < TileID.Count && Main.tileRope[tile2.type])
-+													if (tile2 != null && tile2.type >= 0 && Main.tileRope[tile2.type])
- 														TileFrame(i, j - 1);
- 
--													if (tile3 != null && tile3.type >= 0 && tile3.type < TileID.Count && Main.tileRope[tile3.type])
-+													if (tile3 != null && tile3.type >= 0 && Main.tileRope[tile3.type])
- 														TileFrame(i, j + 1);
- 
- 													break;
-@@ -59868,7 +_,10 @@
- 																				CheckOnTable1x1(i, j, num);
- 																				return;
- 																			default:
-+																				/*
- 																				if (TileID.Sets.BasicChest[num]) {
-+																				*/
-+																				if (TileID.Sets.BasicChest[num] && num < TileID.Count) {
- 																					CheckChest(i, j, num);
- 																					return;
- 																				}
 @@ -60001,10 +_,21 @@
  
  	public static void UpdateWorld()
@@ -3162,6 +2670,13 @@
  		if (worldUpdateRate == 0)
  			return;
  
+@@ -60120,3 +_,6 @@
+ 			if (Main.npc[i].active && Main.npc[i].homeless && Main.npc[i].townNPC && Main.npc[i].lookForHomeTimeout == 0 && Main.npc[i].type != 368 && Main.npc[i].type != 160) {
++				if (Main.npc[i].ModNPC?.TownNPCStayingHomeless is true)
++					continue;
++
+ 				prioritizedTownNPCType = Main.npc[i].type;
+ 				break;
 @@ -60306,7 +_,10 @@
  		if (Main.dayTime && !Main.remixWorld)
  			return;
@@ -3188,27 +2703,6 @@
  			}
  		}
  	}
-@@ -60380,14 +_,20 @@
- 										break;
- 								}
- 
-+								/*
- 								if ((num == 1 || Main.tileMoss[num] || num == 117 || num == 25 || num == 203) && down == 165) {
-+								*/
-+								if ((TileID.Sets.Stone[num] || Main.tileMoss[num]) && down == 165) {
- 									if (tile3 != null && tile3.frameY == 72)
- 										down = num;
- 									else if (tile3 != null && tile3.frameY == 0)
- 										down = num;
- 								}
- 
-+								/*
- 								if ((num == 1 || Main.tileMoss[num] || num == 117 || num == 25 || num == 203) && up == 165) {
-+								*/
-+								if ((TileID.Sets.Stone[num] || Main.tileMoss[num]) && up == 165) {
- 									if (tile2 != null && tile2.frameY == 90)
- 										up = num;
- 									else if (tile2 != null && tile2.frameY == 54)
 @@ -60474,7 +_,8 @@
  
 +	//TML: Changed return value from 'int' to 'double'.
@@ -3230,25 +2724,6 @@
  		int num = i - 1;
  		int num2 = i + 2;
  		int num3 = j - 1;
-@@ -60848,11 +_,18 @@
- 									tileMergeCullCache.CullBottomRight |= tile7 != null && tile7.invisibleBlock() != flag2;
- 								}
- 
-+								/*
- 								if (num == 2 || num == 23 || num == 661 || num == 662 || num == 60 || num == 477 || num == 492 || num == 70 || num == 109 || num == 199 || Main.tileMoss[num] || TileID.Sets.NeedsGrassFraming[num] || TileID.Sets.tileMossBrick[num]) {
-+								*/
-+								if (TileID.Sets.Grass[num] || TileID.Sets.GrassSpecial[num] || Main.tileMoss[num] || TileID.Sets.NeedsGrassFraming[num] || TileID.Sets.tileMossBrick[num]) {
- 									flag = true;
- 									TileMergeAttemptWeird(num, -1, Main.tileSolid, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
- 									int num32 = TileID.Sets.NeedsGrassFramingDirt[num];
-+
-+									/*
- 									if (num == 60 || num == 70 || num == 661 || num == 662) {
-+									*/
-+									if (TileID.Sets.GrassSpecial[num]) {
- 										num32 = 59;
- 									}
- 									else if (Main.tileMoss[num]) {
 @@ -61204,3 +_,4 @@
 +	// TODO: TryToggleLight handles the feature where rain extinguishes light sources in The Constant worlds. It is currently unsupported for non-torch modded tiles. Modded lights with WaterDeath will be destroyed instead of extinguished.
  	public static bool TryToggleLight(int x, int y, bool? forcedState, bool skipWires)
@@ -3396,6 +2871,25 @@
  			case 48:
  			case 137:
  			case 232:
+@@ -67542,3 +_,4 @@
+ 				if (Main.tile[x, y - 1].active() && ForbidsSloping(x, y - 1))
+ 					return false;
++				// TODO: I don't think this is correct, hammering tiles isn't killing them.
+ 				return CanKillTile(x, y);
+@@ -67548,3 +_,5 @@
+ 	public static bool ForbidsSloping(int x, int y)
+ 	{
+ 		switch (Main.tile[x, y].type) {
++			case var t when TileID.Sets.BasicChest[t] || TileID.Sets.BasicDresser[t] || TileID.Sets.PreventsTileHammeringIfOnTopOfIt[t]:
++			/*
+@@ -67561,6 +_,7 @@
+ 			case 475:
+ 			case 488:
+ 			case 597:
++			*/ // ForbidsSloping
+ 				return true;
+ 			default:
+ 				return false;
 @@ -68034,6 +_,10 @@
  				return;
  
@@ -3441,10 +2935,13 @@
  											TileMergeAttempt(num, Main.tileBrick, TileID.Sets.Mud, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
  											break;
  										case 633:
-@@ -68255,10 +_,13 @@
+@@ -68254,12 +_,19 @@
++ 							/*
+ 							case 1:
  							case 25:
  							case 117:
  							case 147:
++							case int _ when TileID.Sets.Stone[num]:
 +							/*
  							case 161:
  							case 163:
@@ -3452,9 +2949,12 @@
  							case 200:
 +							*/
 +							case int _ when TileID.Sets.Ices[num]:
++							/*
  							case 203:
++							*/
  							case 225:
  								flag4 = true;
+ 								break;
 @@ -68387,7 +_,10 @@
  								if (mergeDown)
  									up = num;
@@ -3557,6 +3057,21 @@
 +						TileLoader.ModifyFrameMerge(num, i, j, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
 +
  						bool flag7 = false;
+@@ -68735,8 +_,14 @@
++						/*
+ 						if (num == 2 || num == 23 || num == 661 || num == 662 || num == 60 || num == 477 || num == 492 || num == 70 || num == 109 || num == 199 || Main.tileMoss[num] || TileID.Sets.NeedsGrassFraming[num] || TileID.Sets.tileMossBrick[num]) {
++						*/
++						if (TileID.Sets.Grass[num] || TileID.Sets.GrassSpecial[num] || Main.tileMoss[num] || TileID.Sets.NeedsGrassFraming[num] || TileID.Sets.tileMossBrick[num]) {
+ 							flag7 = true;
+ 							TileMergeAttemptWeird(num, -1, Main.tileSolid, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
+ 							int num11 = TileID.Sets.NeedsGrassFramingDirt[num];
++							/*
+ 							if (num == 60 || num == 70 || num == 661 || num == 662) {
++							*/
++							if (TileID.Sets.GrassSpecial[num]) {
+ 								num11 = 59;
+ 							}
+ 							else if (Main.tileMoss[num]) {
 @@ -69787,9 +_,9 @@
  								}
  							}
@@ -3621,6 +3136,17 @@
  									case 216:
  									case 338:
  									case 390:
+@@ -71784,7 +_,10 @@
+ 													CheckOnTable1x1(i, j, type);
+ 													return;
+ 												default:
++													/*
+ 													if (TileID.Sets.BasicChest[type]) {
++													*/
++													if (TileID.Sets.BasicChest[type] && type < TileID.Count) {
+ 														CheckChest(i, j, type);
+ 														return;
+ 													}
 @@ -71815,7 +_,7 @@
  															CheckXmasTree(i, j);
  															break;
@@ -3640,8 +3166,8 @@
  																					}
 +
 +																					//TODO: Test this. Not sure this is still correct.
-+																					TileLoader.CheckModTile(i, j, num);
-+																					TileLoader.PostTileFrame(num, i, j, 0, 0, 0, 0, 0, 0, 0, 0);
++																					TileLoader.CheckModTile(i, j, type);
++																					TileLoader.PostTileFrame(type, i, j, 0, 0, 0, 0, 0, 0, 0, 0);
  																					return;
 @@ -72185,7 +_,7 @@
  			currentMerge = -1;

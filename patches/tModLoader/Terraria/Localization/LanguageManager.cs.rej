@@ -1,0 +1,59 @@
+@@ -95,13 +_,17 @@
+ 	public void SetLanguage(GameCulture culture)
+ 	{
+ 		if (ActiveCulture != culture) {
++			/*
+ 			if (culture != _fallbackCulture && ActiveCulture != _fallbackCulture) {
+ 				SetAllTextValuesToKeys();
+ 				LoadLanguage(_fallbackCulture);
+ 			}
+ 
+ 			LoadLanguage(culture);
++			*/
++
+ 			ActiveCulture = culture;
++			ReloadLanguage();
+ 			Thread.CurrentThread.CurrentCulture = culture.CultureInfo;
+ 			Thread.CurrentThread.CurrentUICulture = culture.CultureInfo;
+ 			if (this.OnLanguageChanged != null)
+@@ -111,6 +_,7 @@
+ 		}
+ 	}
+ 
++	/*
+ 	private void LoadLanguage(GameCulture culture, bool processCopyCommands = true)
+ 	{
+ 		LoadFilesForCulture(culture);
+@@ -122,3 +_,4 @@
+ 
+ 		ChatInitializer.PrepareAliases();
+ 	}
++	*/
+@@ -163,4 +_,17 @@
+ 	{
++		if (Enumerable.SequenceEqual(_contentSources, sourcesFromLowestToHighest))
++			return;
++
++		_contentSources = sourcesFromLowestToHighest.ToArray();
++		ReloadLanguage();
++	}
++
++	// Method split from UseSources above
++	private void LoadActiveCultureTranslationsFromSources() {
++		var sourcesFromLowestToHighest = _contentSources;
++
+ 		string name = ActiveCulture.Name;
+ 		string assetNameStart = ("Localization" + Path.DirectorySeparatorChar + name).ToLower();
++		/*
+ 		LoadLanguage(ActiveCulture, processCopyCommands: false);
++		*/
+@@ -182,7 +_,9 @@
+ 		}
+ 
++		/*
+ 		ProcessCopyCommandsInTexts();
+ 		ChatInitializer.PrepareAliases();
++		*/
+ 	}
+ 
+ 	public void LoadLanguageFromFileTextCsv(string fileText)
