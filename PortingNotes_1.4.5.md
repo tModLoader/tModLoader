@@ -20,7 +20,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - ShimmerTransforms.IsItemTransformLocked seems to have been split, need to verify RecipeLoader.DecraftAvailable and other logic still applies.
 - Need to update TileID.Sets.DisableSmartCursor
 - Update ModPylon docs to removed danger check from check listing.
-- Need to add anyWire, water, anyWater, anyLava, anyHoney, anyShimmer to Tile.TML.VanillaRemapping, as well as new properly cased properties for each.
 - Remove totalWeight parameter from ModifyWorldGenTasks
 - WorldGenerator._seed needs to be internal again. The patch was lost
 - Consider updating FlexibleTileWand.Reload
