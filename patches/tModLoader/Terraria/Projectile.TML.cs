@@ -243,7 +243,7 @@ public partial class Projectile : IEntityWithGlobals<GlobalProjectile>
 
 		// Apply damage to the player.
 		if (targetPlayer.Hurt(damageSource, damageVariation, direction, pvp: true, quiet: false, Crit: false, -1, dodgeable: IsDamageDodgable(), armorPenetration: ArmorPenetration) > 0.0 && !targetPlayer.dead)
-			StatusPlayer(targetPlayer.whoAmI);
+			StatusPlayer(targetPlayer);
 
 		if (trap) {
 			targetPlayer.trapDebuffSource = true;

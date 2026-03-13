@@ -1342,9 +1342,9 @@
 +				/* Fix #4042 by referencing corresponding sonar popupText directly
  				PopupText.AssignAsSonarText(PopupText.NewText(PopupTextContext.SonarAlert, item, base.Center, 1, noStack: true));
 +				*/
-+				int sonarPopupText = PopupText.NewText(PopupTextContext.SonarAlert, item, 1, base.Center, noStack: true);
++				int sonarPopupText = PopupText.NewText(PopupTextContext.SonarAlert, item, base.Center, 1, noStack: true);
 +				if (sonarPopupText >= 0)
-+					Main.popupText[sonarPopupText].NoStack = true;
++					PopupText.popupText[sonarPopupText].NoStack = true;
 +				PopupText.AssignAsSonarText(sonarPopupText);
 +				localAI[2] = sonarPopupText + 1;
  				SoundEngine.PlaySound(SoundID.SonarPotion, position);
@@ -1842,8 +1842,8 @@
 +			// Fix #4042 by referencing corresponding sonar popupText directly
 +			if (localAI[2] >= 1) {
 +				int customSonarText = (int)(localAI[2] - 1);
-+				if (Main.popupText[customSonarText].sonar) {
-+					Main.popupText[customSonarText].active = false;
++				if (PopupText.popupText[customSonarText].sonar) {
++					PopupText.popupText[customSonarText].active = false;
 +				}
 +			}
 +			if (ai[1] > 0f)

@@ -1333,7 +1333,7 @@
  		noUseGraphic = true;
  		damage = dmg;
  		knockBack = kb;
-@@ -46946,6 +_,10 @@
+@@ -46946,10 +_,14 @@
  		createTile = 723;
  	}
  
@@ -1344,6 +1344,11 @@
  	public void ChangeItemType(int to)
  	{
  		bool flag = favorited;
+-		byte prefixWeWant = prefix;
++		int prefixWeWant = prefix;
+ 		int num = stack;
+ 		SetDefaults(to);
+ 		Prefix(prefixWeWant);
 @@ -47037,7 +_,7 @@
  		return false;
  	}
@@ -1703,7 +1708,7 @@
  	{
  		useStyle = 1;
  		useTurn = true;
-@@ -47720,6 +_,30 @@
+@@ -47720,6 +_,28 @@
  		vanity = true;
  	}
  
@@ -1717,7 +1722,6 @@
 +	public void CloneDefaults(int TypeToClone)
 +	{
 +		int originalType = type;
-+		int originalNetID = netID;
 +		var originalMaterial = material;
 +		var originalModItem = ModItem;
 +		var originalGlobals = _globals;
@@ -1725,7 +1729,6 @@
 +		SetDefaults(TypeToClone);
 +
 +		type = originalType;
-+		netID = originalNetID;
 +		material = originalMaterial;
 +		ModItem = originalModItem;
 +		_globals = originalGlobals;
@@ -2030,11 +2033,10 @@
  	public void ClearNameOverride()
  	{
  		_nameOverride = null;
-@@ -48822,6 +_,10 @@
+@@ -48822,6 +_,9 @@
  		mountType = -1;
  		useStyle = 0;
  		holdStyle = 0;
-+		active = false;
 +
 +		ModItem = null;
 +		_globals = null;
