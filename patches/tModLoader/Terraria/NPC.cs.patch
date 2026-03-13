@@ -61,7 +61,7 @@
  			int cattailX;
  			int cattailY;
 +
-+			int? spawnChoice = NPCLoader.ChooseSpawn(spawnInfo);
++			int? spawnChoice = NPCLoader.ChooseSpawn(this);
 +			if (!spawnChoice.HasValue)
 +				return;
 +

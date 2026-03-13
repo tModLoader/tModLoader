@@ -19,6 +19,33 @@
  {
  	public class SecretSeed
  	{
+@@ -306,7 +_,7 @@
+ 		public static SecretSeed dualDungeons = Register("SecretSeedDescription.dualDungeons", SoundID.MenuAccept, "ypBuvKpqKay//OvhG2COriSpGT7f4YY3");
+ 		public readonly string Localization;
+ 		private readonly string _code;
+-		private readonly LegacySoundStyle _sound;
++		private readonly SoundStyle _sound;
+ 		private string _plaintext;
+ 		public string TextThatWasUsedToUnlock;
+ 		private static int activeSecretSeedCount = 0;
+@@ -338,7 +_,7 @@
+ 			}
+ 		}
+ 
+-		private SecretSeed(string localization, LegacySoundStyle sound, string code)
++		private SecretSeed(string localization, SoundStyle sound, string code)
+ 		{
+ 			Localization = localization;
+ 			_sound = sound;
+@@ -358,7 +_,7 @@
+ 			return _code == text;
+ 		}
+ 
+-		public static SecretSeed Register(string localization, LegacySoundStyle sound, string code)
++		public static SecretSeed Register(string localization, SoundStyle sound, string code)
+ 		{
+ 			SecretSeed secretSeed = new SecretSeed(localization, sound, code);
+ 			AllSecretSeeds.Add(secretSeed);
 @@ -3341,6 +_,7 @@
  	public static readonly int oceanDistance = 250;
  	public static readonly int beachDistance = 380;

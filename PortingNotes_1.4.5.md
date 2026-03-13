@@ -179,6 +179,7 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - DyeSwap/ModSlotDyeSwap needs new approach
 - Pretty much all OnTileConverted and similar hooks/patches need to be reworked.
 - WorldGen.ValidAnchorForMultiDirectionalTile needs to check IsClosedDoor not tile type 10
+- Item192 uses Projectile.kiteSoundPitch. How do we do that?
 
 # New Fields that might need more documentation
 

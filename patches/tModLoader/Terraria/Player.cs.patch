@@ -1527,6 +1527,24 @@
  	public void InterruptItemUsageIfOverTile(int tileTypeToBeOver)
  	{
  		Tile tile = Main.tile[tileTargetX, tileTargetY];
+@@ -3081,7 +_,7 @@
+ 			return beardOffset;
+ 
+ 		if (mount.Type == 54) {
+-			sbyte b = beard;
++			int b = beard; // sbyte->int
+ 			if ((uint)(b - 1) <= 3u) {
+ 				beardOffset += new Vector2(8f, 4f) * Directions;
+ 				if (mount.Frame == 6)
+@@ -3115,7 +_,7 @@
+ 	public Vector2 GetFrontDrawOffset()
+ 	{
+ 		Vector2 result = Vector2.Zero;
+-		sbyte b = front;
++		int b = front; // sbyte->int
+ 		if (b == 13)
+ 			result = new Vector2(-2f, 0f) * Directions;
+ 
 @@ -3149,6 +_,9 @@
  		golferScoreAccumulated += num;
  	}

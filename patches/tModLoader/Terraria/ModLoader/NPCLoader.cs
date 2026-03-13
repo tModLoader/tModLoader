@@ -1041,7 +1041,7 @@ public static class NPCLoader
 
 	private static HookList HookEditSpawnPool = AddHook<Action<Dictionary<int, float>, NPCSpawnInfo>>(g => g.EditSpawnPool);
 
-	public static int? ChooseSpawn(NPCSpawnInfo spawnInfo)
+	public static int? ChooseSpawn(NPC.Spawner spawnInfo)
 	{
 		NPCSpawnHelper.Reset();
 		NPCSpawnHelper.DoChecks(spawnInfo);

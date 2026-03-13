@@ -99,6 +99,32 @@
  	public static readonly LegacySoundStyle AchievementComplete = CreateTrackable("achievement_complete");
  	public static readonly LegacySoundStyle BlizzardInsideBuildingLoop = CreateTrackable("blizzard_inside_building_loop", SoundType.Ambient);
  	public static readonly LegacySoundStyle BlizzardStrongLoop = CreateTrackable("blizzard_strong_loop", SoundType.Ambient).WithVolume(0.5f);
+@@ -511,8 +_,12 @@
+ 	public static readonly LegacySoundStyle DD2_SkyDragonsFuryCircle = CreateTrackable("dd2_sky_dragons_fury_circle", 3);
+ 	public static readonly LegacySoundStyle DD2_SkyDragonsFuryShot = CreateTrackable("dd2_sky_dragons_fury_shot", 3);
+ 	public static readonly LegacySoundStyle DD2_SkyDragonsFurySwing = CreateTrackable("dd2_sky_dragons_fury_swing", 4);
++	/*
+ 	public static readonly LegacySoundStyle PlayerHurt1 = new LegacySoundStyle(1, 1);
+ 	public static readonly LegacySoundStyle PlayerHurt2 = new LegacySoundStyle(20, 1);
++	*/
++	public static readonly LegacySoundStyle PlayerHurt1 = PlayerHit.WithSelectedVariant(1);
++	public static readonly LegacySoundStyle PlayerHurt2 = FemaleHit.WithSelectedVariant(1);
+ 	public static readonly LegacySoundStyle LucyTheAxeTalk = CreateTrackable("lucyaxe_talk", 5).WithVolume(0.4f).WithPitchVariance(0.1f);
+ 	public static readonly LegacySoundStyle DeerclopsHit = CreateTrackable("deerclops_hit", 3).WithVolume(0.3f);
+ 	public static readonly LegacySoundStyle DeerclopsDeath = CreateTrackable("deerclops_death");
+@@ -548,8 +_,12 @@
+ 	public static readonly LegacySoundStyle PalFoxparksAttack = CreateTrackable("pal_foxparks_attack").WithVolume(0.18f);
+ 	public static readonly LegacySoundStyle PalDigtoise = CreateTrackable("pal_digtoise").WithVolume(0.35f);
+ 	public static readonly LegacySoundStyle PalDigtoiseJoy = CreateTrackable("pal_digtoise_joy").WithVolume(0.35f);
++	/*
+ 	public static readonly LegacySoundStyle FoxparksFlame = new LegacySoundStyle(2, 34).WithVolume(0.15f);
+ 	public static readonly LegacySoundStyle LeafBlower = new LegacySoundStyle(2, 34).WithVolume(0.13f);
++	*/
++	public static readonly LegacySoundStyle FoxparksFlame = Item34.WithVolume(0.15f);
++	public static readonly LegacySoundStyle LeafBlower = Item34.WithVolume(0.13f);
+ 	public static readonly LegacySoundStyle DeadCellsBarrelLauncherFire = CreateTrackable("deadcells_barrel_launcher_fire").WithVolume(0.5f);
+ 	public static readonly LegacySoundStyle DeadCellsBarrelLauncherExplode = CreateTrackable("deadcells_barrel_launcher_explode").WithVolume(0.6f);
+ 	public static readonly LegacySoundStyle DeadCellsMushroomSummon = CreateTrackable("deadcells_mushroom_summon").WithVolume(0.35f);
 @@ -594,9 +_,10 @@
  	public static Dictionary<string, ushort> IndexByName = null;
  	public static Dictionary<ushort, LegacySoundStyle> SoundByIndex = null;

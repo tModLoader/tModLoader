@@ -194,6 +194,7 @@ partial class SoundID
 	public static readonly SoundStyle NPCHit55 = NPCHitSound(55) with { Volume = 0.5f };
 	public static readonly SoundStyle NPCHit56 = NPCHitSound(56) with { Volume = 0.5f };
 	public static readonly SoundStyle NPCHit57 = NPCHitSound(57) with { Volume = 0.6f, SoundLimitBehavior = IgnoreNew };
+	public static readonly SoundStyle NPCHit58 = NPCHitSound(58);
 	public static readonly SoundStyle NPCDeath1 = NPCDeathSound(1);
 	public static readonly SoundStyle NPCDeath2 = NPCDeathSound(2);
 	public static readonly SoundStyle NPCDeath3 = NPCDeathSound(3);
@@ -260,6 +261,8 @@ partial class SoundID
 	public static readonly SoundStyle NPCDeath64 = NPCDeathSound(64);
 	public static readonly SoundStyle NPCDeath65 = NPCDeathSound(65);
 	public static readonly SoundStyle NPCDeath66 = NPCDeathSound(66);
+	public static readonly SoundStyle NPCDeath67 = NPCDeathSound(67);
+	public static readonly SoundStyle NPCDeath68 = NPCDeathSound(68);
 	public static readonly SoundStyle Item1 = ItemSound(stackalloc int[] { 1, 18, 19 });
 	public static readonly SoundStyle Item2 = ItemSound(2);
 	public static readonly SoundStyle Item3 = ItemSound(3);
@@ -439,6 +442,27 @@ partial class SoundID
 	public static readonly SoundStyle Item176 = ItemSound(176) with { Volume = 0.9f };
 	public static readonly SoundStyle Item177 = ItemSound(177);
 	public static readonly SoundStyle Item178 = ItemSound(178);
+	public static readonly SoundStyle Item179 = ItemSound(179);
+	public static readonly SoundStyle Item180 = ItemSound(180);
+	public static readonly SoundStyle Item181 = ItemSound(181);
+	public static readonly SoundStyle Item182 = ItemSound(182);
+	public static readonly SoundStyle Item183 = ItemSound(183);
+	public static readonly SoundStyle Item184 = ItemSound(184);
+	public static readonly SoundStyle Item185 = ItemSound(185);
+	public static readonly SoundStyle Item186 = ItemSound(186);
+	public static readonly SoundStyle Item187 = ItemSound(187);
+	public static readonly SoundStyle Item188 = ItemSound(188);
+	public static readonly SoundStyle Item189 = ItemSound(189);
+	public static readonly SoundStyle Item190 = ItemSound(190);
+	public static readonly SoundStyle Item191 = ItemSound(191);
+	public static readonly SoundStyle Item192 = ItemSound(192);
+	public static readonly SoundStyle Item193 = ItemSound(193);
+	public static readonly SoundStyle Item194 = ItemSound(194);
+	public static readonly SoundStyle Item195 = ItemSound(195);
+	public static readonly SoundStyle Item196 = ItemSound(196);
+	public static readonly SoundStyle Item197 = ItemSound(197);
+	public static readonly SoundStyle Item198 = ItemSound(198);
+	public static readonly SoundStyle Item199 = ItemSound(199);
 	// ZombieX sound styles are new, and weren't present in vanilla neither as int nor SoundStyle fields. 
 	public static readonly SoundStyle Zombie1 = ZombieSound(1);
 	public static readonly SoundStyle Zombie2 = ZombieSound(2);

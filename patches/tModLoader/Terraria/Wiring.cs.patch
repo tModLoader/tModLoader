@@ -185,7 +185,7 @@
 +									vanillaCanGo = true;
 +								}
 +
-+								if (Main.npc[num122].active && (NPCLoader.CanGoToStatue(Main.npc[num122], toKingStatue: true) ?? vanillaCanGo)) {
++								if (Main.npc[num152].active && (NPCLoader.CanGoToStatue(Main.npc[num152], toKingStatue: true) ?? vanillaCanGo)) {
 +									/*
  									array2[num151] = num152;
 +									*/
@@ -224,7 +224,7 @@
 +									vanillaCanGo = true;
 +								}
 +
-+								if (Main.npc[num118].active && (NPCLoader.CanGoToStatue(Main.npc[num118], toKingStatue: false) ?? vanillaCanGo)) {
++								if (Main.npc[num148].active && (NPCLoader.CanGoToStatue(Main.npc[num148], toKingStatue: false) ?? vanillaCanGo)) {
 +									/*
  									array[num147] = num148;
 +									*/
