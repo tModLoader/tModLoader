@@ -1,7 +1,6 @@
 --- src/TerrariaNetCore/Terraria/WorldBuilding/GenVars.cs
 +++ src/tModLoader/Terraria/WorldBuilding/GenVars.cs
-@@ -11,7 +_,8 @@
- public static class GenVars
+@@ -12,6 +_,7 @@
  {
  	[JsonIgnore]
  	public static WorldGenConfiguration configuration;

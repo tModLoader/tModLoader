@@ -1,7 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Graphics/Light/LegacyLighting.cs
 +++ src/tModLoader/Terraria/Graphics/Light/LegacyLighting.cs
-@@ -3,7 +_,8 @@
- using Microsoft.Xna.Framework;
+@@ -4,6 +_,7 @@
  using ReLogic.Threading;
  using Terraria.DataStructures;
  using Terraria.Graphics.Capture;
@@ -9,10 +8,14 @@
  using Terraria.Utilities;
  
  namespace Terraria.Graphics.Light;
-@@ -583,2 +_,3 @@
+@@ -581,6 +_,7 @@
+ 		num3 = Utils.Clamp(_expandedRectTop, 5, Main.maxTilesY - 1);
+ 		num4 = Utils.Clamp(_expandedRectBottom, 5, Main.maxTilesY - 1);
  		Main.UpdateSceneMetrics();
 +		// Extra patch context.
  		_tileScanner.Update();
+ 		_tileScanner.ExportTo(new Rectangle(num, num3, num2 - num, num4 - num3), _lightMap, new TileLightScannerOptions {
+ 			DrawInvisibleWalls = Main.ShouldShowInvisibleBlocksAndWalls()
 @@ -588,6 +_,7 @@
  
  		for (int m = num; m < num2; m++) {
@@ -39,8 +42,7 @@
  		}
  		else {
  			_negLight = 0.04f;
-@@ -819,7 +_,9 @@
- 				_negLight += 0.09f;
+@@ -820,6 +_,8 @@
  				_negLight2 += 0.18f;
  				_negLight3 += 0.18f;
  			}

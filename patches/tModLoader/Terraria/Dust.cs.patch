@@ -152,7 +152,7 @@
  			if (dust.type == 34 || dust.type == 35 || dust.type == 152) {
  				dust.velocity *= 0.1f;
  				dust.velocity.Y = -0.5f;
-@@ -232,6 +_,8 @@
+@@ -232,7 +_,9 @@
  		return obj;
  	}
  
@@ -161,6 +161,7 @@
 +	/// <inheritdoc cref="Dust.QuickDust(Vector2, Color)"/>
  	public static Dust QuickDust(Point tileCoords, Color color) => QuickDust(tileCoords.ToWorldCoordinates(), color);
  
+ 	public void HackFrame(int Type)
 @@ -298,6 +_,12 @@
  		}
  	}
@@ -219,13 +220,11 @@
  			}
  			else {
  				dust.active = false;
-@@ -1997,9 +_,17 @@
- 
- 	public Color GetAlpha(Color newColor)
+@@ -1999,6 +_,14 @@
  	{
  		if (fullBright)
  			return Color.White;
- 
++
 +		ModDust modDust = DustLoader.GetDust(type);
 +
 +		if (modDust != null) {
@@ -233,7 +232,6 @@
 +			if (modColor.HasValue)
 +				return modColor.Value;
 +		}
-+
+ 
  		float num = (float)(255 - alpha) / 255f;
  		switch (type) {
- 			case 323:

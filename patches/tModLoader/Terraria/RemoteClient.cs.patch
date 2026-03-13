@@ -1,7 +1,6 @@
 --- src/TerrariaNetCore/Terraria/RemoteClient.cs
 +++ src/tModLoader/Terraria/RemoteClient.cs
-@@ -1,7 +_,8 @@
- using System;
+@@ -2,6 +_,7 @@
  using Microsoft.Xna.Framework;
  using Terraria.DataStructures;
  using Terraria.Localization;
@@ -21,7 +20,7 @@
  	public bool PendingTerminationApproved;
  	public bool IsAnnouncementCompleted;
  	public int State;
-@@ -21,8 +_,12 @@
+@@ -21,6 +_,10 @@
  	public string StatusText2;
  	public int StatusCount;
  	public int StatusMax;
@@ -32,13 +31,7 @@
  	public bool[,] TileSections = new bool[Main.maxTilesX / 200 + 1, Main.maxTilesY / 150 + 1];
  	public uint[,] TileSectionsCheckTime = new uint[Main.maxTilesX / 200 + 1, Main.maxTilesY / 150 + 1];
  	public bool CheckingSections;
- 	public byte[] ReadBuffer;
- 	public float SpamProjectile;
-@@ -35,10 +_,17 @@
- 	public float SpamWaterMax = 50f;
- 	private volatile bool _isReading;
- 
- 	public bool ReadBufferFull => NetMessage.buffer[Id].RemainingReadBufferLength < ReadBuffer.Length;
+@@ -39,6 +_,13 @@
  
  	public static event Action<int, Point> NetSectionActivated;
  
@@ -52,7 +45,7 @@
  	public bool IsConnected()
  	{
  		if (Socket != null)
-@@ -94,5 +_,10 @@
+@@ -94,6 +_,11 @@
  		SpamWater = 0f;
  	}
  
@@ -63,6 +56,7 @@
 +	/// </summary>
  	public static void CheckSection(int playerIndex, Vector2 position, int fluff = 1)
  	{
+ 		RemoteClient remoteClient = Netplay.Clients[playerIndex];
 @@ -232,7 +_,7 @@
  			}
  		}

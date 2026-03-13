@@ -66,8 +66,7 @@
  	public void LoadCue(int cueIndex, string cueName)
  	{
  		CueAudioTrack cueAudioTrack = new CueAudioTrack(SoundBank, cueName);
-@@ -245,19 +_,19 @@
- 			tempFade = 1f;
+@@ -246,7 +_,7 @@
  
  		if (!AudioTracks[i].IsPlaying && active) {
  			AudioTracks[i].Reuse();
@@ -76,7 +75,7 @@
  			AudioTracks[i].Play();
  			if (PlayCallbacks[i] != null)
  				PlayCallbacks[i](i, TrackLoopCounts[i]);
- 
+@@ -254,7 +_,7 @@
  			TrackLoopCounts[i]++;
  		}
  		else {
@@ -85,11 +84,7 @@
  		}
  	}
  
- 	public void UpdateCommonTrackTowardStopping(int i, float totalVolume, ref float tempFade, bool isMainTrackAudible)
- 	{
- 		if (!WaveBank.IsPrepared || AudioTracks[i] == null)
-@@ -275,8 +_,8 @@
- 				AudioTracks[i].Stop(AudioStopOptions.Immediate);
+@@ -276,7 +_,7 @@
  				TrackLoopCounts[i] = 0;
  			}
  			else {

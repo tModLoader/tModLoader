@@ -17,16 +17,14 @@
  			Item item = new Item();
  			item.netDefaults(i);
  			list2.Add(item);
-@@ -1162,8 +_,9 @@
+@@ -1161,6 +_,7 @@
+ 
  	private static int Descending(DamageTypeSortingLayerEntry x, DamageTypeSortingLayerEntry y)
  	{
 +		// TODO: Restore list.Sort((x, y) => (y.Additive * y.Multiplicative).CompareTo(x.Additive * x.Multiplicative)); patch
  		int num = y.Multiplier.CompareTo(x.Multiplier);
  		if (num == 0)
  			num = x.Index.CompareTo(y.Index);
- 
- 		return num;
- 	}
 @@ -1251,6 +_,10 @@
  
  				Item item3 = inv[_sort_itemsToSort[k]];

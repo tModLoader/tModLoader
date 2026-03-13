@@ -8,7 +8,7 @@
  
  namespace Terraria;
  
-@@ -321,6 +_,6 @@
+@@ -321,7 +_,7 @@
  		if (i <= 0 || j <= 0 || i >= Main.maxTilesX - 1 || j >= Main.maxTilesY - 1 || Main.tile[i, j] == null)
  			return;
  
@@ -16,6 +16,7 @@
 +		if (Main.tile[i, j].wall >= WallLoader.WallCount)
  			Main.tile[i, j].wall = 0;
  
+ 		Tile tile = Main.tile[i, j];
 @@ -379,6 +_,12 @@
  
  		if (num == 15)

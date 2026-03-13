@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Map/MapHelper.cs
 +++ src/tModLoader/Terraria/Map/MapHelper.cs
-@@ -6,7 +_,9 @@
+@@ -6,6 +_,8 @@
  using Microsoft.Xna.Framework;
  using Terraria.ID;
  using Terraria.IO;
@@ -9,7 +9,6 @@
  using Terraria.Social;
  using Terraria.Testing;
  using Terraria.Utilities;
- 
 @@ -131,7 +_,8 @@
  	private static ushort dirtPosition;
  	private static ushort rockPosition;
@@ -28,7 +27,9 @@
  		snowTypes = new ushort[6];
  		snowTypes[0] = tileLookup[147];
  		snowTypes[1] = tileLookup[161];
-@@ -1813,8 +_,14 @@
+@@ -1811,10 +_,16 @@
+ 		if (baseType == 0) {
+ 			newColor = 0;
  			newLight = Light;
 +			// Extra patch context.
  			baseType = ((backgroundOverride == 0) ? GetBackgroundType(i, j, ref newLight) : backgroundOverride);
@@ -43,8 +44,7 @@
  	}
  
  	private static void GetTileType(int i, int j, Tile tileCache, ref int newColor, ref int newLight, ref int baseType, ref int baseOption)
-@@ -1874,8 +_,8 @@
- 		if (tileCache.liquid > 32) {
+@@ -1875,7 +_,7 @@
  			int num = tileCache.liquidType();
  			baseType = liquidPosition + num;
  		}

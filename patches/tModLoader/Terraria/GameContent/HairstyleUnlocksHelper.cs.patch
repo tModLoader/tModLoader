@@ -15,8 +15,7 @@
  	}
  
  	private void RebuildList()
-@@ -107,6 +_,8 @@
- 
+@@ -108,5 +_,7 @@
  			if (_defeatedMartians && _defeatedMoonlord)
  				availableHairstyles.Add(133);
  		}

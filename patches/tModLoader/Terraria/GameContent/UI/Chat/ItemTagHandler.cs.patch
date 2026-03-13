@@ -10,13 +10,14 @@
  using Terraria.UI;
  using Terraria.UI.Chat;
  
-@@ -31,5 +_,6 @@
+@@ -31,6 +_,7 @@
  			Main.instance.MouseText(_item.Name, _item.rare, 0);
  		}
  
 +		//TODO: Possibly allow modders to custom draw here
  		public override bool UniqueDraw(bool justCheckingString, out Vector2 size, SpriteBatch spriteBatch, Vector2 position = default(Vector2), Color color = default(Color), float scale = 1f)
  		{
+ 			if (Main.netMode != 2 && !Main.dedServ)
 @@ -52,20 +_,30 @@
  	TextSnippet ITagHandler.Parse(string text, Color baseColor, string options)
  	{
@@ -58,7 +59,7 @@
  
  						break;
  					}
-@@ -86,19 +_,32 @@
+@@ -86,10 +_,21 @@
  		return new ItemSnippet(item);
  	}
  
@@ -80,9 +81,7 @@
  		if (I.prefix != 0) {
  			text = text + (flag ? ",p" : "/p") + I.prefix;
  			flag = true;
- 		}
- 
- 		if (I.stack != 1) {
+@@ -99,6 +_,8 @@
  			text = text + (flag ? ",s" : "/s") + I.stack;
  			flag = true;
  		}

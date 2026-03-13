@@ -72,7 +72,7 @@
  
  					array2[num3] = true;
  				}
-@@ -651,7 +_,11 @@
+@@ -651,8 +_,12 @@
  					if (num7 > num8)
  						num7 = num8;
  
@@ -84,6 +84,7 @@
 +					*/
  					if (array[item5.Key].stack == 0)
  						array[item5.Key] = new Item();
+ 
 @@ -760,12 +_,17 @@
  				if (!Item.CanStack(inventory[num2], item[i]) || ItemSlot.PickItemMovementAction(inventory, context, num2, item[i]) == -1)
  					continue;

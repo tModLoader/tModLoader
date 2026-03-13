@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/GameContent/Tile_Entities/TETeleportationPylon.cs
 +++ src/tModLoader/Terraria/GameContent/Tile_Entities/TETeleportationPylon.cs
-@@ -1,7 +_,8 @@
+@@ -1,8 +_,9 @@
  using Terraria.DataStructures;
 +using Terraria.ModLoader;
  
@@ -10,8 +10,8 @@
 +public sealed class TETeleportationPylon : TileEntityType<TETeleportationPylon>, IPylonTileEntity
  {
  	private const int MyTileID = 597;
-@@ -11,9 +_,9 @@
- 	public override void NetPlaceEntityAttempt(int x, int y)
+ 	public const int entityTileWidth = 3;
+@@ -12,7 +_,7 @@
  	{
  		if (!TryGetPylonTypeFromTileCoords(x, y, out var pylonType))
  			RejectPlacementFromNet(x, y);
@@ -20,7 +20,6 @@
  			RejectPlacementFromNet(x, y);
  		else
  			base.NetPlaceEntityAttempt(x, y);
- 	}
 @@ -70,7 +_,8 @@
  
  		TileEntityType<TETeleportationPylon>.Kill(num, num2);

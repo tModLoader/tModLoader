@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/GameContent/Tile_Entities/TEWeaponsRack.cs
 +++ src/tModLoader/Terraria/GameContent/Tile_Entities/TEWeaponsRack.cs
-@@ -1,9 +_,12 @@
+@@ -1,10 +_,13 @@
  using System.IO;
 +using Microsoft.Xna.Framework;
  using Terraria.DataStructures;
@@ -14,6 +14,7 @@
 +public sealed partial class TEWeaponsRack : TileEntityType<TEWeaponsRack>, IFixLoadedData
  {
  	public Item item;
+ 	private const int MyTileID = 471;
 @@ -48,8 +_,8 @@
  
  	public override void WriteExtraData(BinaryWriter writer, bool networkSend)
@@ -43,7 +44,7 @@
  		TileEntityType<TEWeaponsRack>.Kill(num3, num4);
  		WorldGen.destroyObject = false;
  	}
-@@ -109,20 +_,23 @@
+@@ -109,30 +_,37 @@
  	public void DropItem()
  	{
  		if (Main.netMode != 1)
@@ -69,7 +70,6 @@
  			return;
  		}
  
-@@ -129,10 +_,14 @@
  		if (result.item.stack > 0)
  			result.DropItem();
  

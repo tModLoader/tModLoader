@@ -8,7 +8,7 @@
  using Terraria.WorldBuilding;
  
  namespace Terraria;
-@@ -70,14 +_,20 @@
+@@ -70,11 +_,17 @@
  	public bool InTorchGodMinigame;
  	public static int NPCEventZoneRadius = 4000;
  	public bool CanPlayCreditsRoll;
@@ -27,9 +27,6 @@
  	private readonly int[] _liquidCounts = new int[LiquidID.Count];
  
  	public uint LastScanTime { get; private set; }
- 
- 	public Vector2 Center { get; private set; }
- 
 @@ -115,67 +_,67 @@
  
  	public bool MusicBoxSilence { get; set; }
@@ -129,27 +126,34 @@
  
  	public bool EnoughTilesForShimmer => ShimmerTileCount >= ShimmerTileThreshold;
  
-@@ -253,2 +_,5 @@
+@@ -251,6 +_,9 @@
+ 			LastScanTime = Main.GameUpdateCount;
+ 			Center = settings.BiomeScanCenterPositionInWorld;
  			TileCenter = Center.ToTileCoordinates().ClampedInWorld();
 +
 +			SystemLoader.ResetNearbyTileEffects();
 +
  			ScanTiles();
-@@ -266,5 +_,7 @@
+ 			if (settings.VisualScanArea.HasValue)
+ 				ScanOnScreenTiles(settings.VisualScanArea.Value);
+@@ -264,6 +_,8 @@
+ 				AddPlayerEffects(settings.PerspectivePlayer);
+ 
  			CanPlayCreditsRoll = ActiveMusicBox == 85;
 +
 +			SystemLoader.TileCountsAvailable(_tileCounts);
  		}
  	}
  
- 	private void ScanTiles()
-@@ -345,4 +_,6 @@
+@@ -344,6 +_,8 @@
+ 				}
  
  				UpdateOreFinder(new Point(i, j), tile);
 +
 +				TileLoader.NearbyEffects(i, j, tile.type, false);
  			}
  		}
+ 	}
 @@ -357,7 +_,7 @@
  				if (tile == null || !tile.active())
  					continue;
@@ -199,7 +203,7 @@
  		if (_tileCounts[27] > 0)
  			HasSunflower = true;
  
-@@ -633,7 +_,9 @@
+@@ -633,6 +_,8 @@
  
  	public int GetTileCount(ushort tileId) => _tileCounts[tileId];
  
@@ -208,8 +212,8 @@
  	public void Reset()
  	{
  		LastScanTime = uint.MaxValue;
- 		Array.Clear(_tileCounts, 0, _tileCounts.Length);
-@@ -718,4 +_,7 @@
+@@ -717,6 +_,9 @@
+ 		_bestOreDistSq = int.MaxValue;
  		TownNPCCount = 0;
  		PerspectivePlayer = _dummyPlayer;
 +
@@ -217,3 +221,4 @@
 +			Array.Resize(ref NPCBannerBuff, ModLoader.NPCLoader.NPCCount);
  	}
  
+ 	private void UpdateOreFinder(Point pos, Tile tile)

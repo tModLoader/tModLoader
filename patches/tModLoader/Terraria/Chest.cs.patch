@@ -1,12 +1,12 @@
 --- src/TerrariaNetCore/Terraria/Chest.cs
 +++ src/tModLoader/Terraria/Chest.cs
-@@ -2,3 +_,4 @@
+@@ -1,4 +_,5 @@
+ using System;
 +using System;
  using System.Collections.Generic;
  using Microsoft.Xna.Framework;
  using Terraria.Audio;
-@@ -9,47 +_,127 @@
- using Terraria.GameContent.Drawing;
+@@ -10,10 +_,15 @@
  using Terraria.GameContent.Events;
  using Terraria.Graphics.Renderers;
  using Terraria.ID;
@@ -22,19 +22,7 @@
  public class Chest : IFixLoadedData
  {
  	public struct ItemTransferVisualizationSettings
- 	{
- 		public bool RandomizeStartPosition;
- 		public bool RandomizeEndPosition;
- 		public bool TransitionIn;
- 		public bool Fullbright;
- 		public static ItemTransferVisualizationSettings PlayerToChest = new ItemTransferVisualizationSettings {
- 			RandomizeStartPosition = true,
- 			RandomizeEndPosition = true,
- 			TransitionIn = true,
- 			Fullbright = true
- 		};
- 		public static ItemTransferVisualizationSettings Hopper = new ItemTransferVisualizationSettings {
- 			RandomizeEndPosition = true
+@@ -33,25 +_,100 @@
  		};
  	}
  
@@ -134,6 +122,8 @@
 +	/// <br/> The eating animation plays when an item is quick-stacked into this chest.
 +	/// </summary>
  	public int eatingAnimationTime;
+ 	private bool _itemsGotSet;
+ 	private static Dictionary<Point, Chest> _chestsByCoords = new Dictionary<Point, Chest>();
 @@ -209,6 +_,11 @@
  		return false;
  	}
@@ -176,7 +166,7 @@
  		if (t.type == 21 && ((t.frameX >= 72 && t.frameX <= 106) || (t.frameX >= 144 && t.frameX <= 178) || (t.frameX >= 828 && t.frameX <= 1006) || (t.frameX >= 1296 && t.frameX <= 1330) || (t.frameX >= 1368 && t.frameX <= 1402) || (t.frameX >= 1440 && t.frameX <= 1474)))
  			return true;
  
-@@ -236,7 +_,15 @@
+@@ -236,6 +_,14 @@
  		return false;
  	}
  
@@ -191,7 +181,6 @@
  	public static void VisualizeChestTransfer(Vector2 position, Vector2 chestPosition, int itemType, ItemTransferVisualizationSettings settings)
  	{
  		BitsByte bitsByte = new BitsByte(settings.RandomizeStartPosition, settings.RandomizeEndPosition, settings.TransitionIn, settings.Fullbright);
- 		ParticleOrchestrator.BroadcastOrRequestParticleSpawn(ParticleOrchestraType.ItemTransfer, new ParticleOrchestraSettings {
 @@ -246,6 +_,13 @@
  		});
  	}
@@ -329,7 +318,7 @@
  	public static int UsingChest(int i)
  	{
  		if (Main.chest[i] != null) {
-@@ -404,5 +_,14 @@
+@@ -404,6 +_,15 @@
  		return -1;
  	}
  
@@ -344,6 +333,7 @@
 +	/// </remarks>
  	public static int FindChest(int X, int Y)
  	{
+ 		if (_chestsByCoords.TryGetValue(new Point(X, Y), out var value))
 @@ -412,6 +_,19 @@
  		return -1;
  	}
@@ -445,7 +435,7 @@
  	public static int CreateChest(int X, int Y, int id = -1)
  	{
  		int num = id;
-@@ -486,5 +_,11 @@
+@@ -486,6 +_,12 @@
  		return num;
  	}
  
@@ -457,7 +447,8 @@
 +	/// <returns><see langword="false"/> if a chest exists at (<paramref name="X"/>, <paramref name="Y"/>) and if any element in that chest's <see cref="item"/> array is not <see cref="Item.IsAir"/>. Otherwise, returns <see langword="true"/>.</returns>
  	public static bool CanDestroyChest(int X, int Y)
  	{
-@@ -499,5 +_,11 @@
+ 		if (!_chestsByCoords.TryGetValue(new Point(X, Y), out var value))
+@@ -499,6 +_,12 @@
  		return true;
  	}
  
@@ -469,6 +460,7 @@
 +	/// <returns><see langword="false"/> if a chest exists at (<paramref name="X"/>, <paramref name="Y"/>) and if any element in that chest's <see cref="item"/> array is not <see cref="Item.IsAir"/>. Otherwise, returns <see langword="true"/>.</returns>
  	public static bool DestroyChest(int X, int Y)
  	{
+ 		if (!_chestsByCoords.TryGetValue(new Point(X, Y), out var value))
 @@ -517,6 +_,13 @@
  		return true;
  	}
@@ -575,7 +567,7 @@
  					array[num].SetDefaults(1978);
  					num++;
  				}
-@@ -2980,7 +_,30 @@
+@@ -2986,7 +_,30 @@
  		}
  	}
  
@@ -607,7 +599,7 @@
  	{
  		if (!DidDiscoverBestiaryEntry(585))
  			return false;
-@@ -2996,6 +_,11 @@
+@@ -3002,6 +_,11 @@
  
  	private static bool DidDiscoverBestiaryEntry(int npcId) => Main.BestiaryDB.FindEntryByNPCID(npcId).UIInfoProvider.GetEntryUICollectionInfo().UnlockState > BestiaryEntryUnlockState.NotKnownAtAll_0;
  
@@ -619,7 +611,7 @@
  	public static void AskForChestToEatItem(Vector2 worldPosition, int duration)
  	{
  		Point point = worldPosition.ToTileCoordinates();
-@@ -3028,6 +_,10 @@
+@@ -3034,6 +_,10 @@
  		}
  	}
  
@@ -630,7 +622,7 @@
  	public static void UpdateChestFrames()
  	{
  		int num = 8000;
-@@ -3071,6 +_,9 @@
+@@ -3077,6 +_,9 @@
  		}
  	}
  

@@ -21,8 +21,7 @@
  		if (lightColor.Y < num2)
  			lightColor.Y = num2;
  
-@@ -2951,18 +_,22 @@
- 					G = 0.35f;
+@@ -2952,8 +_,11 @@
  					B = 0.15f;
  					break;
  			}
@@ -34,13 +33,11 @@
  		if (flag && tile.color() != 0) {
  			Color color2 = WorldGen.paintColor(tile.color());
  			R = (float)(int)color2.R / 255f;
- 			G = (float)(int)color2.G / 255f;
- 			B = (float)(int)color2.B / 255f;
- 		}
- 
+@@ -2964,6 +_,7 @@
  		if (lightColor.X < R)
  			lightColor.X = R;
  
 +		// Extra patch context.
  		if (lightColor.Y < G)
  			lightColor.Y = G;
+ 

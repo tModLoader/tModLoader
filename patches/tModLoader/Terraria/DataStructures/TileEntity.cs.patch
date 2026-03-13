@@ -1,7 +1,6 @@
 --- src/TerrariaNetCore/Terraria/DataStructures/TileEntity.cs
 +++ src/tModLoader/Terraria/DataStructures/TileEntity.cs
-@@ -4,27 +_,35 @@
- using Microsoft.Xna.Framework.Graphics;
+@@ -5,19 +_,24 @@
  using Terraria.Audio;
  using Terraria.GameInput;
  using Terraria.UI;
@@ -27,7 +26,7 @@
  	public Point16 Position;
  	public byte type;
  	public bool RequiresUpdates;
- 
+@@ -25,6 +_,9 @@
  	public static event Action _UpdateStart;
  	public static event Action _UpdateEnd;
  

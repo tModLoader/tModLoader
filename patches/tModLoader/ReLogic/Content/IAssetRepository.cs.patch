@@ -8,7 +8,7 @@
  using ReLogic.Content.Sources;
  
  namespace ReLogic.Content;
-@@ -24,6 +_,33 @@
+@@ -24,9 +_,36 @@
  
  	void SetSources(IEnumerable<IContentSource> sources, AssetRequestMode mode = AssetRequestMode.ImmediateLoad);
  
@@ -44,3 +44,6 @@
 +	// Exists to change the default parameter of 'mode' (from Immediate to Async) for modders, but not the base game.
 +	internal Asset<T> Request<T>(string assetName) where T : class
 +		=> Request<T>(assetName, AssetRequestMode.ImmediateLoad);
+ 
+ 	void EnableAssetWatcher();
+ }

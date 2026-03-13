@@ -1,6 +1,7 @@
 --- src/TerrariaNetCore/Terraria/GameContent/ShimmerTransforms.cs
 +++ src/tModLoader/Terraria/GameContent/ShimmerTransforms.cs
-@@ -2,4 +_,5 @@
+@@ -1,5 +_,6 @@
+ using Terraria.Enums;
  using Terraria.ID;
 +using Terraria.ModLoader;
  

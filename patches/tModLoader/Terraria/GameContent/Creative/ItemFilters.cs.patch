@@ -8,7 +8,7 @@
  using Terraria.UI;
  
  namespace Terraria.GameContent.Creative;
-@@ -22,18 +_,33 @@
+@@ -22,19 +_,34 @@
  		private int _unusedResearchLine;
  		private string _search;
  
@@ -43,7 +43,8 @@
 +				if (line.Text.ToLower().IndexOf(_search, StringComparison.OrdinalIgnoreCase) != -1)
  					return true;
  			}
-@@ -111,8 +_,9 @@
+ 
+@@ -111,6 +_,7 @@
  
  	public class Tools : IItemEntryFilter, IEntryFilter<Item>
  	{
@@ -51,10 +52,7 @@
  		private HashSet<int> _itemIdsThatAreAccepted = new HashSet<int> {
  			213,
  			5295,
- 			509,
- 			850,
-@@ -169,7 +_,8 @@
- 			4049,
+@@ -170,6 +_,7 @@
  			114,
  			5667
  		};
@@ -73,7 +71,9 @@
  				return true;
  
  			return false;
-@@ -368,7 +_,8 @@
+@@ -366,11 +_,12 @@
+ 	public class MiscFallback : IItemEntryFilter, IEntryFilter<Item>
+ 	{
  		private readonly List<IItemEntryFilter> otherFiltersToCheckAgainst;
 -		private bool?[] _fitsFilterByItemType = new bool?[ItemID.Count];
 +		private bool?[] _fitsFilterByItemType;
@@ -83,3 +83,5 @@
  			this.otherFiltersToCheckAgainst = otherFiltersToCheckAgainst;
 +			_fitsFilterByItemType = new bool?[ItemLoader.ItemCount];
  		}
+ 
+ 		public bool FitsFilter(Item entry)

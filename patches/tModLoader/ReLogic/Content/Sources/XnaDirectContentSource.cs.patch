@@ -37,7 +37,7 @@
  public class XnaDirectContentSource : IContentSource
  {
  	private readonly string _rootDirectory;
-@@ -73,3 +_,4 @@
+@@ -75,3 +_,4 @@
  
  	public bool TryGetRejections(List<string> rejectionReasons) => _rejections.TryGetRejections(rejectionReasons);
  }

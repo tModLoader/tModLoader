@@ -76,12 +76,15 @@
  								flag6 = true;
  							}
  						}
-@@ -378,4 +_,4 @@
+@@ -376,7 +_,7 @@
+ 					Tile tileSafely = Framing.GetTileSafely(num8 + num31, num9 + num29);
+ 					bool flag7 = false;
  					if (tileSafely.nactive()) {
 -						if (Main.tileSolid[tileSafely.type] && !Main.tileSolidTop[tileSafely.type] && !Main.tileNoAttach[tileSafely.type] && (tileData2.FlattenAnchors || tileSafely.blockType() == 0)) {
 +						if ((anchorBottom.type & AnchorType.SolidTile) == AnchorType.SolidTile && Main.tileSolid[tileSafely.type] && !Main.tileSolidTop[tileSafely.type] && !Main.tileNoAttach[tileSafely.type] && (tileData2.FlattenAnchors || tileSafely.blockType() == 0)) { // AnchorTop
  							flag7 = tileData2.isValidTileAnchor(tileSafely.type);
  							if (flag7)
+ 								num30 = 0;
 @@ -457,7 +_,7 @@
  					Tile tileSafely = Framing.GetTileSafely(num8 + width, num9 + num32);
  					bool flag8 = false;
@@ -114,7 +117,7 @@
  				if (num38 != num40 || num39 != num41)
  					flag10 = true;
  			}
-@@ -818,5 +_,12 @@
+@@ -818,7 +_,14 @@
  					}
  				}
  				else {
@@ -127,3 +130,5 @@
 +
 +					TileLoader.PostDrawPlacementPreview(num9, num10, op.Type, sb, rectangle, vector, color, validPlacement, spriteEffects);
  				}
+ 
+ 				num8 += num12 + tileData.CoordinatePadding;

@@ -1,7 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Mount.cs
 +++ src/tModLoader/Terraria/Mount.cs
-@@ -11,7 +_,8 @@
- using Terraria.GameContent.UI;
+@@ -12,6 +_,7 @@
  using Terraria.GameInput;
  using Terraria.Graphics.Shaders;
  using Terraria.ID;
@@ -9,7 +8,8 @@
  
  namespace Terraria;
  
-@@ -112,9 +_,13 @@
+@@ -111,10 +_,14 @@
+ 
  	public class MountData
  	{
 +		public ModMount ModMount { get; set; }
@@ -23,7 +23,7 @@
  		public Asset<Texture2D> frontTexture = Asset<Texture2D>.Empty;
  		public Asset<Texture2D> frontTextureGlow = Asset<Texture2D>.Empty;
  		public Asset<Texture2D> frontTextureExtra = Asset<Texture2D>.Empty;
-@@ -178,5 +_,15 @@
+@@ -178,6 +_,16 @@
  		public bool emitsLight;
  		public MountDelegatesData delegations = new MountDelegatesData();
  		public int playerXOffset;
@@ -39,6 +39,7 @@
 +		public int MinecartUpgradeJumpHeight = 15;
  	}
  
+ 	public enum DismountCheckResult
 @@ -198,7 +_,7 @@
  	public const int DrawBackExtra = 1;
  	public const int DrawFront = 2;
@@ -48,7 +49,7 @@
  	private static Vector2[] scutlixEyePositions;
  	private static Vector2 scutlixTextureSize;
  	public const int scutlixBaseDamage = 50;
-@@ -212,48 +_,54 @@
+@@ -212,34 +_,39 @@
  	public static int amountOfBeamsAtOnce = 2;
  	public const float maxDrillLength = 48f;
  	private static Vector2 santankTextureSize;
@@ -111,21 +112,14 @@
  	public static float SuperCartJumpSpeed = 5.15f;
  	private MountDelegatesData _defaultDelegatesData = new MountDelegatesData();
  	public static int[] idleFrames_Rat = new int[11] {
- 		0,
- 		1,
- 		3,
- 		2,
- 		3,
- 		2,
- 		3,
- 		2,
- 		1,
- 		0,
+@@ -256,6 +_,7 @@
  		0
  	};
  
 +	/// <summary> True if the player is currently using a mount. </summary>
  	public bool Active => _active;
+ 
+ 	public int Type => _type;
 @@ -331,7 +_,7 @@
  				return _data.runSpeed + 2f;
  
@@ -245,7 +239,7 @@
  				}
  				break;
  			case 8:
-@@ -3221,4 +_,7 @@
+@@ -3221,6 +_,9 @@
  
  	public void UpdateFrame(Player mountedPlayer, int state, Vector2 velocity)
  	{
@@ -253,6 +247,8 @@
 +			return;
 +
  		if (_frameState != state) {
+ 			if (_type == 56 && ((_frameState == 5 && (mountedPlayer.dash <= 0 || mountedPlayer.dashDelay >= 0)) || (_frameState != 5 && mountedPlayer.dash > 0 && mountedPlayer.dashDelay < 0)))
+ 				_frameCounter = 0f;
 @@ -4114,7 +_,7 @@
  
  		Tile tileSafely = Framing.GetTileSafely(p.X, p.Y);
@@ -322,7 +318,7 @@
  			if (texture2D2 != null) {
  				item = new DrawData(texture2D2, Position, value2, color * ((float)(int)drawColor.A / 255f), num9, origin, scale, spriteEffects);
  				item.shader = currentShader;
-@@ -5402,5 +_,9 @@
+@@ -5402,6 +_,10 @@
  		bool cart = Cart;
  		_active = false;
  		mountedPlayer.ClearBuff(_data.buff);
@@ -332,6 +328,7 @@
 +
  		_mountSpecificData = null;
  		int type = _type;
+ 		if ((uint)(type - 55) <= 1u && mountedPlayer.noItems && !mountedPlayer.cursed)
 @@ -5417,7 +_,7 @@
  		if (mountedPlayer.petting.isPetting && mountedPlayer.petting.mount)
  			mountedPlayer.StopPettingAnimal();
@@ -350,8 +347,7 @@
  			return;
  
  		if (_active) {
-@@ -5532,8 +_,16 @@
- 		if (_type == 54)
+@@ -5533,7 +_,15 @@
  			_mountSpecificData = new SelectiveFlyingMountData();
  
  		FinalizeMountData(m, mountedPlayer);

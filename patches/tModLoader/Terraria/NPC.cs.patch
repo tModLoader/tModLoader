@@ -7,8 +7,7 @@
  using Microsoft.Xna.Framework;
  using Microsoft.Xna.Framework.Graphics;
  using ReLogic.Content;
-@@ -21,11 +_,12 @@
- using Terraria.Graphics.Effects;
+@@ -22,12 +_,13 @@
  using Terraria.ID;
  using Terraria.Localization;
  using Terraria.Testing;
@@ -21,7 +20,12 @@
 -public class NPC : Entity
 +public partial class NPC : Entity
  {
-@@ -246,2 +_,9 @@
+ 	internal struct PlayerNetSyncState
+ 	{
+@@ -243,8 +_,15 @@
+ 			skyBehindPlayer = Main.wallLight[Main.tile[pX, pY].wall] || Main.tile[pX, pY].wall == 73;
+ 			livingTree = Main.tile[pX, pY].wall == 244;
+ 			inRemixStartingArea = Main.remixWorld && (double)(player.Center.X / 16f) > (double)Main.maxTilesX * 0.39 + 50.0 && (double)(player.Center.X / 16f) < (double)Main.maxTilesX * 0.61;
 + 			// Uses flag added by TML to support modded gem robes for Tim spawn rate increase.
 +			/*
  			offensiveToTim = (player.armor[1].type == 4256 || (player.armor[1].type >= 1282 && player.armor[1].type <= 1287)) && player.armor[0].type != 238;
@@ -31,6 +35,9 @@
  			playerHasStartingHealth = player.statLifeMax <= 100;
 +			*/
 +			playerHasStartingHealth = player.ConsumedLifeCrystals == 0;
+ 			if (ZoneShadowCandle) {
+ 				noWorms = false;
+ 				noGroundWorms = false;
 @@ -667,6 +_,8 @@
  				spawnRate = (int)((float)spawnRate * 0.85f);
  				maxSpawns = (int)((float)maxSpawns * 1.15f);
@@ -40,15 +47,17 @@
  		}
  
  		public static void GetSpawnArea(Player player, out Rectangle spawnArea, out Rectangle safeArea)
-@@ -691,5 +_,7 @@
- 				safeRangeX += (int)((double)(sWidth / 16) * 0.5 / (double)num3);
+@@ -692,6 +_,8 @@
  				safeRangeY += (int)((double)(sHeight / 16) * 0.5 / (double)num3);
  			}
  
 +			NPCLoader.EditSpawnRange(Main.player[k], ref num, ref num2, ref safeRangeX, ref safeRangeY);
 +
  			spawnArea = WorldUtils.ClampToWorld(Utils.CenteredRectangle(player.position.ToTileCoordinates(), new Point(num * 2, num2 * 2)));
-@@ -958,3 +_,12 @@
+ 			safeArea = Utils.CenteredRectangle(player.position.ToTileCoordinates(), new Point(safeRangeX * 2, safeRangeY * 2));
+ 			if (Main.dualDungeonsSeed && !player.ZoneOverworldHeight && !player.ZoneSkyHeight)
+@@ -957,6 +_,15 @@
+ 			bool flag = (double)Main.windSpeedTarget < -0.45 || (double)Main.windSpeedTarget > 0.45;
  			int cattailX;
  			int cattailY;
 +
@@ -61,6 +70,8 @@
 +				goto endVanillaSpawn;
 +
  			if (ZoneTowerNebula) {
+ 				bool flag2 = true;
+ 				int num2 = 0;
 @@ -3759,6 +_,10 @@
  					SpawnNPC(spawnTileX * 16 + 8, spawnTileY * 16, 49);
  				}
@@ -72,12 +83,17 @@
  		}
  
  		public NPC SpawnNPC(int X, int Y, int Type, int Start = 0, float ai0 = 0f, float ai1 = 0f, float ai2 = 0f, float ai3 = 0f, int Target = 255)
-@@ -3995,3 +_,3 @@
+@@ -3992,8 +_,8 @@
+ 			if (tile == null || tile2 == null)
+ 				return false;
+ 
 -			if (tile.wall < 0 || tile.wall >= WallID.Count || !wallTypes[tile.wall]) {
-+			if (tile.wall < 0 || !wallTypes[tile.wall]) {
 -				if (tile2.wall >= 0 && tile2.wall < WallID.Count)
++			if (tile.wall < 0 || !wallTypes[tile.wall]) {
 +				if (tile2.wall >= 0)
  					return wallTypes[tile2.wall];
+ 
+ 				return false;
 @@ -4420,6 +_,12 @@
  	public const float nameOverIncrement = 0.025f;
  	public const float nameOverDistance = 350f;
@@ -91,7 +107,8 @@
  	public bool SpawnedFromStatue;
  	public bool CanBeReplacedByOtherNPCs;
  	public bool dripping;
-@@ -4429,16 +_,49 @@
+@@ -4428,17 +_,50 @@
+ 	public static bool[] ShimmeredTownNPCs = new bool[NPCID.Count];
  	public int altTexture;
  	public int townNpcVariationIndex;
 -	public short catchItem;
@@ -142,7 +159,10 @@
  	public bool teleporting;
  	private static int maxAttack = 20;
  	private static int[] attackNPC = new int[maxAttack];
-@@ -4471,1 +_,7 @@
+@@ -4468,17 +_,32 @@
+ 	internal PlayerNetSyncState[] playerNetSyncState = new PlayerNetSyncState[255];
+ 	private bool needsUniqueInfoUpdate = true;
+ 	public Vector2 netOffset = Vector2.Zero;
 +	/// <summary>
 +	/// Stores the index (the <see cref="Entity.whoAmI"/>) of a single NPC. This NPC will then share a health pool with that NPC.<br/>
 +	/// Used for the Destroyer's various segments and the Wall of Flesh's eyes and mouth.<br/>
@@ -150,7 +170,9 @@
 +	/// <br/> Defaults to -1.
 +	/// </summary>
  	public int realLife = -1;
-@@ -4475,10 +_,19 @@
+ 	private string _givenName = "";
+ 	public static int safeRangeX = (int)((double)(sWidth / 16) * 0.52);
+ 	public static int safeRangeY = (int)((double)(sHeight / 16) * 0.52);
 +	/// <summary> The X distance from the player determining the active range governing instant NPC despawning </summary>
  	private static int activeRangeX = (int)((double)sWidth * 2.1);
 +	/// <summary> The Y distance from the player determining the active range governing instant NPC despawning </summary>
@@ -739,7 +761,7 @@
  				return true;
  		}
  
-@@ -5289,8 +_,8 @@
+@@ -5289,7 +_,7 @@
  	{
  		for (int i = 0; i < Main.maxNPCs; i++) {
  			NPC nPC = Main.npc[i];
@@ -748,7 +770,6 @@
  				npcsFoundForCheckActive[nPC.type] = true;
  		}
  	}
- 
 @@ -5325,10 +_,37 @@
  		return false;
  	}
@@ -890,7 +911,7 @@
  		return result;
  	}
  
-@@ -6398,5 +_,23 @@
+@@ -6398,6 +_,24 @@
  			ScaleStats(spawnparams.playerCountForMultiplayerDifficultyOverride, spawnparams.difficultyOverride);
  			life = lifeMax;
  		}
@@ -914,6 +935,7 @@
 +		_globals = originalGlobals;
  	}
  
+ 	public void SetDefaults_ForNetId(int Type, NPCSpawnParams spawnparams, float scaleOverride)
 @@ -6443,6 +_,15 @@
  			return;
  		}
@@ -1009,8 +1031,7 @@
  		}
  		else if (type == 607) {
  			noGravity = true;
-@@ -15135,15 +_,85 @@
- 			DeathSound = SoundID.PalFoxparksPain;
+@@ -15136,14 +_,84 @@
  			knockBackResist = 0.5f;
  			rarity = 1;
  		}
@@ -1095,7 +1116,10 @@
  		if (spawnparams.sizeScaleOverride.HasValue) {
  			int num3 = (int)((float)width * scale);
  			int num4 = (int)((float)height * scale);
-@@ -15171,3 +_,4 @@
+@@ -15168,6 +_,7 @@
+ 		defDefense = defense;
+ 		defLifeMax = lifeMax;
+ 		netID = type;
 +		/*
  		if (NPCID.Sets.DebuffImmunitySets.TryGetValue(type, out var nPCDebuffImmunityData) && nPCDebuffImmunityData != null) {
  			nPCDebuffImmunityData.ApplyToNPC(this);
@@ -1108,7 +1132,7 @@
  		if (Main.zenithWorld)
  			getZenithSeedAdjustmentsBeforeEverything();
  
-@@ -15194,9 +_,10 @@
+@@ -15194,8 +_,9 @@
  		else if (Main.tenthAnniversaryWorld)
  			getTenthAnniversaryAdjustments();
  
@@ -1119,9 +1143,7 @@
  			friendly = true;
  		}
  
- 		ScaleStats(spawnparams.playerCountForMultiplayerDifficultyOverride, spawnparams.difficultyOverride);
-@@ -15462,6 +_,9 @@
- 			ScaleStats_ByDifficulty();
+@@ -15463,6 +_,9 @@
  			if (difficulty >= GameDifficultyLevel.Expert)
  				ScaleStats_ByPlayerCount(activePlayersCount.HasValue ? activePlayersCount.Value : GetActivePlayerCount());
  
@@ -1130,7 +1152,8 @@
 +
  			if ((type < 0 || !NPCID.Sets.ProjectileNPC[type]) && lifeMax < 6)
  				lifeMax = 6;
-@@ -16328,6 +_,6 @@
+ 
+@@ -16328,7 +_,7 @@
  		}
  		else if (!unlockedSlimeCopperSpawn && Main.npc.IndexInRange(npcIndex)) {
  			NPC nPC = Main.npc[npcIndex];
@@ -1138,6 +1161,7 @@
 +			if (nPC.type >= 0 && NPCID.Sets.CanConvertIntoCopperSlimeTownNPC[nPC.type]) {
  				unlockedSlimeCopperSpawn = true;
  				NetMessage.SendData(7);
+ 				nPC.Transform(684);
 @@ -16379,7 +_,8 @@
  			if (flag)
  				vector3 = vector;
@@ -1217,10 +1241,7 @@
  
  		for (int j = 0; j < Main.maxNPCs; j++) {
  			if (Main.npc[j].active && Main.npc[j].aiStyle == 7 && Main.npc[j].townNPC && Main.npc[j].ai[0] == 5f && (Main.npc[j].Bottom + Vector2.UnitY * -2f).ToTileCoordinates() == point2)
-@@ -44559,12 +_,19 @@
- 	private void AI_007_TryForcingSitting(int homeFloorX, int homeFloorY)
- 	{
- 		if (!WorldGen.InWorld(homeFloorX, homeFloorY))
+@@ -44562,9 +_,16 @@
  			return;
  
  		Tile tile = Main.tile[homeFloorX, homeFloorY - 1];
@@ -1263,7 +1284,9 @@
  		bool flag = Main.raining;
  		if (!Main.dayTime)
  			flag = true;
-@@ -44821,9 +_,12 @@
+@@ -44819,10 +_,13 @@
+ 				num3 /= 3f;
+ 
  			if (tipsy) {
 + 				// Extra patch context.
  				defense = (int)((double)defense * 1.1);
@@ -1275,7 +1298,6 @@
  		}
  
  		if (type == 142 && Main.netMode != 1 && !Main.xMas) {
- 			StrikeNPCNoInteraction(9999, 0f, 0);
 @@ -44932,7 +_,7 @@
  			return;
  		}
@@ -1285,7 +1307,7 @@
  			TargetClosest();
  			if (position.X < Main.player[target].position.X) {
  				direction = 1;
-@@ -45050,6 +_,9 @@
+@@ -45050,7 +_,10 @@
  			}
  		}
  
@@ -1295,7 +1317,8 @@
 +		if (!WorldGen.InWorld(num6, num7) || Main.netMode == 1 && !Main.sectionManager.TileLoaded(num6, num7))
  			return;
  
-@@ -45113,5 +_,8 @@
+ 		if (Main.tile[num6, num7].type == 666 && Main.netMode != 1)
+@@ -45113,6 +_,9 @@
  				if (Main.npc[m].Distance(base.Center) >= num11)
  					continue;
  
@@ -1304,6 +1327,7 @@
 +
  				bool flag19 = Main.npc[m].CanBeChasedBy(this);
  				flag16 = true;
+ 				if (Main.npc[m].stinky)
 @@ -45395,7 +_,11 @@
  
  				if (closeDoor && ((position.X + (float)(width / 2)) / 16f > (float)(doorX + 2) || (position.X + (float)(width / 2)) / 16f < (float)(doorX - 2))) {
@@ -1341,7 +1365,7 @@
  					ai[1] = 0f;
  				else
  					Main.sittingManager.AddNPC(whoAmI, coords);
-@@ -45938,6 +_,12 @@
+@@ -45938,24 +_,37 @@
  				num48 = 10f;
  			}
  
@@ -1354,7 +1378,6 @@
  			num44 = GetAttackDamage_ForTownNPC((float)num44 * num2);
  			velocity.X *= 0.8f;
  			ai[1] -= 1f;
-@@ -45944,18 +_,25 @@
  			localAI[3] += 1f;
 +			// Patch note: num46 - attackDelay.
  			if (localAI[3] == (float)num46 && Main.netMode != 1) {
@@ -1380,7 +1403,8 @@
  				num51 = ((type == 124) ? Projectile.NewProjectile(GetSpawnSource_ForProjectile(), base.Center.X + (float)(spriteDirection * 16), base.Center.Y - 2f, vec.X, vec.Y, num43, num44, knockBack, Main.myPlayer, 0f, whoAmI, townNpcVariationIndex) : ((type != 142) ? Projectile.NewProjectile(GetSpawnSource_ForProjectile(), base.Center.X + (float)(spriteDirection * 16), base.Center.Y - 2f, vec.X, vec.Y, num43, num44, knockBack, Main.myPlayer) : Projectile.NewProjectile(GetSpawnSource_ForProjectile(), base.Center.X + (float)(spriteDirection * 16), base.Center.Y - 2f, vec.X, vec.Y, num43, num44, knockBack, Main.myPlayer, 0f, Main.rand.Next(5))));
  				Main.projectile[num51].npcProj = true;
  				Main.projectile[num51].noDropItem = true;
-@@ -45966,5 +_,7 @@
+@@ -45965,6 +_,8 @@
+ 
  			if (ai[1] <= 0f && 0 == 0) {
  				ai[0] = ((localAI[2] == 8f && flag16) ? 8 : 0);
 +				// Patch note: num47 - cooldown.
@@ -1408,7 +1432,7 @@
  					flag28 = true;
  				}
  
-@@ -46186,4 +_,11 @@
+@@ -46186,21 +_,35 @@
  				}
  			}
  
@@ -1420,7 +1444,6 @@
 +			NPCLoader.TownNPCAttackShoot(this, inBetweenShots: ref flag28);
 +
  			num53 = GetAttackDamage_ForTownNPC((float)num53 * num2);
-@@ -46190,17 +_,24 @@
  			velocity.X *= 0.8f;
  			ai[1] -= 1f;
  			localAI[3] += 1f;
@@ -1445,7 +1468,8 @@
  				num60 = ((type != 227) ? Projectile.NewProjectile(GetSpawnSource_ForProjectile(), base.Center.X + (float)(spriteDirection * 16), base.Center.Y - 2f, vec2.X, vec2.Y, num52, num53, knockBack2, Main.myPlayer) : Projectile.NewProjectile(GetSpawnSource_ForProjectile(), base.Center.X + (float)(spriteDirection * 16), base.Center.Y - 2f, vec2.X, vec2.Y, num52, num53, knockBack2, Main.myPlayer, 0f, (float)Main.rand.Next(12) / 6f));
  				Main.projectile[num60].npcProj = true;
  				Main.projectile[num60].noDropItem = true;
-@@ -46215,5 +_,7 @@
+@@ -46214,6 +_,8 @@
+ 
  			if (ai[1] <= 0f && 0 == 0) {
  				ai[0] = ((localAI[2] == 8f && flag16) ? 8 : 0);
 +				// Patch note: num56 - cooldown.
@@ -1453,7 +1477,7 @@
  				ai[1] = num56 + Main.rand.Next(maxValue2);
  				ai[2] = 0f;
  				localAI[1] = (localAI[3] = num56 / 2 + Main.rand.Next(maxValue2));
-@@ -46317,5 +_,13 @@
+@@ -46317,25 +_,40 @@
  				maxValue3 = 1;
  				knockBack3 = 3f;
  			}
@@ -1467,7 +1491,6 @@
 +
  
  			num63 = GetAttackDamage_ForTownNPC((float)num63 * num2);
-@@ -46322,20 +_,27 @@
  			velocity.X *= 0.8f;
  			ai[1] -= 1f;
  			localAI[3] += 1f;
@@ -1511,7 +1534,7 @@
  				ai[1] = num66 + Main.rand.Next(maxValue3);
  				ai[2] = 0f;
  				localAI[1] = (localAI[3] = num66 / 2 + Main.rand.Next(maxValue3));
-@@ -46448,3 +_,8 @@
+@@ -46448,11 +_,18 @@
  				maxValue4 = 8;
  				num83 = 3f;
  			}
@@ -1520,7 +1543,8 @@
 +			NPCLoader.TownNPCAttackCooldown(this, cooldown: ref num81, randExtraCooldown: ref maxValue4);
 +			NPCLoader.TownNPCAttackSwing(this, itemWidth: ref num84, itemHeight: ref num85);
 +
-@@ -46453,6 +_,8 @@
+ 
+ 			num82 = GetAttackDamage_ForTownNPC((float)num82 * num2);
  			velocity.X *= 0.8f;
  			ai[1] -= 1f;
  			if (Main.netMode != 1) {
@@ -1598,7 +1622,8 @@
  								bool flag29 = WorldGen.OpenDoor(num201, num202 - 1, direction);
  								if (!flag29) {
  									ai[3] = num58;
-@@ -51915,7 +_,10 @@
+@@ -51914,9 +_,12 @@
+ 							return 1106;
  					}
  				}
 +				return Main.rand.Next(System.Linq.Enumerable.ToList(ItemID.Sets.OreDropsFromSlime.Keys)); // TML
@@ -1609,6 +1634,7 @@
 +				*/
  			default:
  				num = Main.rand.Next(3);
+ 				if (WorldGen.Skyblock.lowTiles && Main.rand.Next(5) != 0)
 @@ -52211,7 +_,7 @@
  							Tile tileSafely = Framing.GetTileSafely(i, j);
  							bool flag2 = tileSafely.active() && Main.tileSolid[tileSafely.type] && !Main.tileFrameImportant[tileSafely.type];
@@ -1747,9 +1773,7 @@
  
  	public bool DoesntDespawnToInactivity()
  	{
-@@ -64884,6 +_,9 @@
- 	public void CheckActive()
- 	{
+@@ -64886,6 +_,9 @@
  		if (!active || (type == 690 && ai[0] == 0f) || DoesntDespawnToInactivity() || townNPC)
  			return;
  
@@ -1757,6 +1781,8 @@
 +			return;
 +
  		bool flag = DoesntDespawnToInactivityAndCountsNPCSlots();
+ 		bool flag2 = false;
+ 		Rectangle rectangle = new Rectangle((int)(position.X + (float)(width / 2) - (float)activeRangeX), (int)(position.Y + (float)(height / 2) - (float)activeRangeY), activeRangeX * 2, activeRangeY * 2);
 @@ -64961,7 +_,7 @@
  		if (timeLeft <= 0)
  			flag2 = false;
@@ -1858,7 +1884,7 @@
  			case 26:
  			case 27:
  			case 28:
-@@ -65240,24 +_,33 @@
+@@ -65240,13 +_,19 @@
  			case 111:
  			case 471:
  			case 472:
@@ -1878,9 +1904,7 @@
  			case 212:
  			case 213:
  			case 214:
- 			case 215:
- 			case 216:
- 			case 252:
+@@ -65256,8 +_,11 @@
  			case 491:
  			case 492:
  			case 662:
@@ -1892,9 +1916,7 @@
  			case 381:
  			case 382:
  			case 383:
-@@ -65269,8 +_,10 @@
- 			case 390:
- 			case 391:
+@@ -65271,6 +_,8 @@
  			case 394:
  			case 395:
  			case 520:
@@ -1903,7 +1925,9 @@
  				result = 4;
  				break;
  			case 338:
-@@ -65636,4 +_,8 @@
+@@ -65634,6 +_,10 @@
+ 		}
+ 	}
  
 +	/// <summary>
 +	/// Returns true if any player has damaged this NPC. Individual player participation can be determined by checking <see cref="playerInteraction"/> directly. Use <see cref="GetWereThereAnyInteractions"/> if <see cref="realLife"/> might be in use.
@@ -1921,7 +1945,7 @@
  			return;
  
  		Player closestPlayer = Main.player[Player.FindClosest(position, width, height)];
-@@ -65748,7 +_,13 @@
+@@ -65748,9 +_,15 @@
  		if ((SpawnedFromStatue && NPCID.Sets.NoEarlymodeLootWhenSpawnedFromStatue[type] && !Main.hardMode) || (SpawnedFromStatue && NPCID.Sets.StatueSpawnedDropRarity[type] != -1f && (Main.rand.NextFloat() >= NPCID.Sets.StatueSpawnedDropRarity[type] || !AnyInteractions())))
  			return;
  
@@ -1935,6 +1959,8 @@
 +		NPCLoader.OnKill(this);
 +
  		DoDeathEvents(closestPlayer);
+ 		if (SpecialSeedFeatures.Mechdusa) {
+ 			int num = type;
 @@ -65830,7 +_,8 @@
  		WoFKilledToday = false;
  	}
@@ -1958,8 +1984,8 @@
  		}
  	}
  
--	private void DoDeathEvents_CelebrateBossDeath()
 +	//TML: Added 'typeName' parameter.
+-	private void DoDeathEvents_CelebrateBossDeath()
 +	private void DoDeathEvents_CelebrateBossDeath(string typeName)
  	{
  		NPCDamageTracker.BossKilled(this);
@@ -2099,7 +2125,8 @@
  	public static int NewNPC(IEntitySource source, int X, int Y, int Type, int Start = 0, float ai0 = 0f, float ai1 = 0f, float ai2 = 0f, float ai3 = 0f, int Target = 255)
  	{
  		if (Main.getGoodWorld && Main.rand.Next(3) != 0) {
-@@ -67328,5 +_,7 @@
+@@ -67327,6 +_,8 @@
+ 			if (Type == 50)
  				ChatHelper.BroadcastChatMessage(NetworkText.FromKey("Announcement.HasAwoken", nPC.GetTypeNetName()), ChatColors.BossOrEvent);
  
 +			NPCLoader.OnSpawn(nPC, source);
@@ -2158,7 +2185,10 @@
  	}
  
  	public int KeyBrandStrike(int plr, int dmg, Vector2 bestSwordSpot)
-@@ -67684,21 +_,158 @@
+@@ -67681,24 +_,161 @@
+ 		return dmg;
+ 	}
+ 
 -	public double StrikeNPC(int Damage, float knockBack, int hitDirection, bool crit = false, bool noEffect = false, bool fromNet = false, int owner = -1)
 +	internal int StrikeNPC(int Damage, float knockBack, int hitDirection, bool crit = false, bool fromNet = false, bool noPlayerInteraction = false)
 +	{
@@ -2492,9 +2522,7 @@
  				if (buffTime[i] >= time)
  					return;
  
-@@ -75560,11 +_,16 @@
- 		buffTime[num] = time;
- 		if (!quiet && Main.netMode == 2)
+@@ -75562,9 +_,14 @@
  			NetMessage.SendData(54, -1, -1, null, whoAmI);
  	}
  
@@ -2535,7 +2563,7 @@
  	public bool CanBeChasedBy(object attacker = null, bool ignoreDontTakeDamage = false)
  	{
  		if (active && chaseable && lifeMax > 5 && (!dontTakeDamage || ignoreDontTakeDamage) && !friendly) {
-@@ -75758,9 +_,16 @@
+@@ -75758,10 +_,17 @@
  	public void UpdateNPC(int i)
  	{
  		whoAmI = i;
@@ -2543,16 +2571,17 @@
  		if (!active)
  			return;
  
+-		if (Main.netMode == 2 || offSetDelayTime > 0 || Main.multiplayerNPCSmoothingRange <= 0 || NPCID.Sets.NoMultiplayerSmoothingByType[type] || NPCID.Sets.NoMultiplayerSmoothingByAI[aiStyle] || (townNPC && ai[0] == 25f)) {
 +		using var _ = IEntitySource.PushFallback(thisEntitySourceCache);
 +		UpdateNPC_Inner(i);
 +	}
 +
 +	private void UpdateNPC_Inner(int i)
 +	{
--		if (Main.netMode == 2 || offSetDelayTime > 0 || Main.multiplayerNPCSmoothingRange <= 0 || NPCID.Sets.NoMultiplayerSmoothingByType[type] || NPCID.Sets.NoMultiplayerSmoothingByAI[aiStyle] || (townNPC && ai[0] == 25f)) {
 + 		if (Main.netMode == 2 || offSetDelayTime > 0 || Main.multiplayerNPCSmoothingRange <= 0 || NPCID.Sets.NoMultiplayerSmoothingByType[type] || (aiStyle >= 0 && aiStyle < NPCLoader.NPCCount && NPCID.Sets.NoMultiplayerSmoothingByAI[aiStyle]) || (townNPC && ai[0] == 25f)) { // TML: added bounds check
  			netOffset *= 0f;
  		}
+ 		else if (DebugOptions.FakeNetOffset != Vector2.Zero) {
 @@ -75815,6 +_,7 @@
  			bool flag = false;
  			int num4 = (int)(position.X + (float)(width / 2)) / 16;
@@ -2588,9 +2617,7 @@
  		if (soundDelay > 0)
  			soundDelay--;
  
-@@ -75976,19 +_,20 @@
- 		}
- 	}
+@@ -75978,17 +_,18 @@
  
  	private void SubAI_HandleTemporaryCatchableNPCPlayerInvulnerability()
  	{
@@ -2709,7 +2736,7 @@
  		lifeRegenCount += lifeRegen;
  		while (lifeRegenCount >= 120) {
  			lifeRegenCount -= 120;
-@@ -77356,11 +_,15 @@
+@@ -77356,12 +_,16 @@
  			if (buffType[i] == 324)
  				onFrostBurn2 = true;
  
@@ -2725,6 +2752,7 @@
 +			BuffLoader.Update(buffType[i], this, ref i);
  		}
  
+ 		if (dripping)
 @@ -77623,6 +_,9 @@
  			if (acceptableNPCIDs[nPC.type] && nPC.active && !nPC.friendly && nPC.damage > 0 && !NPCID.Sets.CritterThatCanTurnOnPlayers[nPC.type]) {
  				Rectangle npcRect = nPC.Hitbox;

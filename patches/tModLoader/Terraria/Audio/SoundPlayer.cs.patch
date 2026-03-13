@@ -102,9 +102,7 @@
  	public SlotId PlayLooped(SoundStyle style, Vector2 position, ActiveSound.LoopedPlayCondition loopingCondition, SoundPlayOverrides overrides = default(SoundPlayOverrides))
  	{
  		if (Main.dedServ || style == null || !style.IsTrackable)
-@@ -29,14 +_,18 @@
- 			return SlotId.Invalid;
- 
+@@ -31,12 +_,16 @@
  		ActiveSound value = new ActiveSound(style, position, loopingCondition, overrides);
  		return _trackedSounds.Add(value);
  	}
@@ -175,9 +173,7 @@
  					_trackedSounds.Remove(item.Id);
  			}
  			catch {
-@@ -101,9 +_,9 @@
- 		}
- 
+@@ -103,7 +_,7 @@
  		return num;
  	}
  

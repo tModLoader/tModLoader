@@ -1,6 +1,7 @@
 --- src/TerrariaNetCore/Terraria/GameContent/Creative/ItemsSacrificedUnlocksTracker.cs
 +++ src/tModLoader/Terraria/GameContent/Creative/ItemsSacrificedUnlocksTracker.cs
-@@ -2,5 +_,6 @@
+@@ -1,6 +_,7 @@
+ using System;
  using System.Collections.Generic;
  using System.IO;
 +using System.Linq;
@@ -21,8 +22,7 @@
  
  	public int LastEditId { get; private set; }
  
-@@ -127,8 +_,12 @@
- 
+@@ -128,7 +_,11 @@
  	public void Save(BinaryWriter writer)
  	{
  		writer.Write(value: false);

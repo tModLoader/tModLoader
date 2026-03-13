@@ -8,9 +8,7 @@
  
  	public UIWorldLoad()
  	{
-@@ -75,8 +_,13 @@
- 			overallProgress = (float)_progress.TotalProgress;
- 			currentProgress = (float)_progress.Value;
+@@ -77,6 +_,11 @@
  			text = _progress.Message;
  			if (WorldGenerator.CurrentController.QueuedAbort)
  				text = Language.GetTextValue("UI.Canceling");

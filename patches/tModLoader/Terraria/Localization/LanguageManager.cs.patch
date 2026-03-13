@@ -1,6 +1,7 @@
 --- src/TerrariaNetCore/Terraria/Localization/LanguageManager.cs
 +++ src/tModLoader/Terraria/Localization/LanguageManager.cs
-@@ -14,13 +_,14 @@
+@@ -13,14 +_,15 @@
+ using ReLogic.Content.Sources;
  using ReLogic.Graphics;
  using ReLogic.Utilities;
 +using Terraria.ModLoader;
@@ -17,8 +18,10 @@
  	private readonly Dictionary<string, List<string>> _categoryGroupedKeys = new Dictionary<string, List<string>>();
  	private readonly Dictionary<string, Dictionary<string, string>> _textVariations = new Dictionary<string, Dictionary<string, string>>();
  	private GameCulture _fallbackCulture = GameCulture.DefaultCulture;
-@@ -116,3 +_,22 @@
-+
+@@ -114,6 +_,25 @@
+ 		ProcessCopyCommandsInTexts();
+ 	}
+ 
 +	// Added by tML, replacement for commented code above
 +	internal void ReloadLanguage(bool resetValuesToKeysFirst = true)
 +	{
@@ -37,9 +40,10 @@
 +
 +		SystemLoader.OnLocalizationsLoaded();
 +	}
- 
++
  	private void LoadFilesForCulture(GameCulture culture)
  	{
+ 		string[] languageFilesForCulture = GetLanguageFilesForCulture(culture);
 @@ -136,8 +_,12 @@
  				break;
  			}
@@ -65,7 +69,9 @@
  
  	public void UseSources(List<IContentSource> sourcesFromLowestToHighest)
  	{
-@@ -172,10 +_,11 @@
+@@ -170,8 +_,9 @@
+ 		string name = ActiveCulture.Name;
+ 		string assetNameStart = ("Localization" + Path.DirectorySeparatorChar + name).ToLower();
  		foreach (IContentSource contentSource in _contentSources) {
 -			foreach (string item in contentSource.GetAllAssetsStartingWith(assetNameStart)) {
 -				string extension = contentSource.GetExtension(item);
@@ -75,10 +81,6 @@
  				if (!(extension == ".json") && !(extension == ".csv"))
  					continue;
  
- 				try {
- 					using Stream stream = contentSource.OpenStream(item);
- 					using StreamReader streamReader = new StreamReader(stream);
- 					string fileText = streamReader.ReadToEnd();
 @@ -186,6 +_,15 @@
  						LoadLanguageFromFileTextCsv(fileText);
  				}
@@ -115,7 +117,7 @@
  		int index2 = index % value.Count;
  		return GetText(categoryName + "." + value[index2]);
  	}
-@@ -372,4 +_,7 @@
+@@ -372,7 +_,20 @@
  		if (_localizedTexts.TryGetValue(key, out var value))
  			return value;
  
@@ -123,7 +125,6 @@
  		return _localizedTexts[key] = new LocalizedText(key, key);
 +		*/
 +		return new LocalizedText(key, key);
-@@ -376,3 +_,13 @@
 +	}
 +
 +	public LocalizedText GetOrRegister(string key, Func<string> makeDefaultValue = null)

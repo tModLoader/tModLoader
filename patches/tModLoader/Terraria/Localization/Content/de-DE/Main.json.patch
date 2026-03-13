@@ -1,21 +1,47 @@
 --- src/TerrariaNetCore/Terraria/Localization/Content/de-DE/Main.json
 +++ src/tModLoader/Terraria/Localization/Content/de-DE/Main.json
-@@ -8,1 +_,1 @@
+@@ -5,7 +_,7 @@
+ 		"ServerCrash": "Serverabsturz: {0}\n{1}\nBitte schicke crashlog.txt an support@terraria.org",
+ 		"LoadFailed": "Laden fehlgeschlagen!",
+ 		"LoadFailedNoBackup": "Laden fehlgeschlagen!  Kein Backup gefunden.",
 -		"InvalidLobbyFlag": "-lobby flag used without \"{0}\" or \"{1}\". Ignorier es einfach.",
 +		"InvalidLobbyFlag": "-lobby flag wurde ohne \"{0}\" or \"{1}\" benutzt. Ignorier es einfach.",
-@@ -128,1 +_,1 @@
+ 		"CaptureError": "Ein Fehler ist beim Speichern aufgetreten. Neuer Versuch ...",
+ 		"UnableToCapture": "Aufnahme nicht möglich.",
+ 		"UnableToWritePreferences": "Datei konnte nicht geschrieben werden unter: {0}",
+@@ -125,7 +_,7 @@
+ 		"DeleteWorld_Description": "Welt löschen",
+ 		"DeleteWorld_Command": "T",
+ 		"DeleteWorld_Example": "T <number>",
 -		"DeleteConfirmation": "{0} wirklich löschen?",
 +		"DeleteConfirmation": "Willst du {0} wirklich löschen?",
-@@ -153,1 +_,1 @@
+ 		"ChooseSize": "Größe wählen: ",
+ 		"ChooseDifficulty": "Schwierigkeitsstufe auswählen: ",
+ 		"ChooseEvil": "Wähle das Böse in der Welt: ",
+@@ -150,8 +_,8 @@
+ 		"Effects": "Effekte",
+ 		"LoadingCode": "Wird geladen:",
+ 		"Favorite": "Favorit",
 -		"Unfavorite": "Als Favorit löschen",
 +		"Unfavorite": "Als Favorit entfernen",
-@@ -154,1 +_,1 @@
 -		"MoveToCloud": "In Cloud speichern",
 +		"MoveToCloud": "Zur Wolke hin",
-@@ -193,1 +_,1 @@
+ 		"MoveOffCloud": "Aus Cloud entfernen",
+ 		"Play": "Spielen",
+ 		"Delete": "Löschen",
+@@ -190,7 +_,7 @@
+ 		"More": "mehr",
+ 		"CopySeed": "Seed kopieren: {0}",
+ 		"SeedCopied": "Seed kopiert",
 -		"EnterSeed": "Gib Seed ein (für Zufallsseed freilassen)",
 +		"EnterSeed": "Gib einen Seed ein (für zufälligen seed freilassen)",
-@@ -596,5 +_,5 @@
+ 		"BartenderHelp": "Eternia-Kristall",
+ 		"ZoomIn": "{$LegacyMenu.168}",
+ 		"ZoomOut": "{$LegacyMenu.169}",
+@@ -593,13 +_,13 @@
+ 		"Depth": "{0}'",
+ 		"WireModeForced": "Mechanische Anzeige: Gezwungen",
+ 		"WireModeNormal": "Mechanische Anzeige: Normal",
 -		"RulerOn": "Lineal EIN",
 +		"RulerOn": "Lineal AN",
  		"RulerOff": "Lineal AUS",
@@ -24,50 +50,119 @@
  		"MechanicalRulerOff": "Mechanisches Lineal AUS",
 -		"PaintSprayerOn": "Farbensprüher EIN",
 +		"PaintSprayerOn": "Farbensprüher AN",
-@@ -602,1 +_,1 @@
+ 		"PaintSprayerOff": "Farbensprüher AUS",
 -		"ActuationDeviceOn": "Aktuatoraparat EIN",
 +		"ActuationDeviceOn": "Aktuatoraparat AN",
-@@ -646,2 +_,2 @@
+ 		"ActuationDeviceOff": "Aktuatoraparat AUS",
+ 		"BlockReplacerOn": "Blocktausch ein",
+ 		"BlockReplacerOff": "Blocktausch aus",
+@@ -643,8 +_,8 @@
+ 		"ZoomCategory": "Zoom",
+ 		"Misc": "Sonstiges",
+ 		"Gameplay": "Gameplay",
 -		"LightingUpdateEveryFrameOn": "Rapid Lighting On",
 +		"LightingUpdateEveryFrameOn": "Rapid Lighting An",
-+		"LightingUpdateEveryFrameOff": "Rapid Lighting Aus",
 -		"LightingUpdateEveryFrameOff": "Rapid Lighting Off",
-@@ -697,2 +_,2 @@
++		"LightingUpdateEveryFrameOff": "Rapid Lighting Aus",
+ 		"MapScale": "Karten-Skala: {0}%",
+ 		"Emote": "Öffne das Emotefenster",
+ 		"HoverTextBoxesOn": "Schwebende Textfelder an",
+@@ -694,7 +_,7 @@
+ 	},
+ 	"Social": {
+ 		"StatusInGame": "Online spielen.",
 -		"StatusJoining": "Spiel beitreten.",
 +		"StatusJoining": "Wird beigetreten ...",
--		"JoiningFriend": "{0} wird beigetreten ...",
-+		"JoiningFriend": "{0} wird beigetreten ...",
-@@ -795,1 +_,1 @@
+ 		"JoiningFriend": "{0} wird beigetreten ...",
+ 		"Joining": "Wird beigetreten ..."
+ 	},
+@@ -792,11 +_,11 @@
+ 		"Dissected": "{0} wurde brutal seziert.",
+ 		"ExtremitiesDetached": "{0} ließ sich den Kopf wegreißen.",
+ 		"Mangled": "{0}s Körper wurde verstümmelt.",
 -		"Ruptured": "{0} lebensnotwendige Organe wurden zerfetzt.",
 +		"Ruptured": "{0}s lebensnotwendige Organe wurden zerfetzt.",
-@@ -799,1 +_,1 @@
+ 		"PileOfFlesh": "{0} hat sich in einen unansehnlichen Fleischhaufen verwandelt.",
+ 		"Removed": "{0} wurde aus {1} entfernt.",
+ 		"Snapped": "{0} wurde in zwei Teile geteilt.",
 -		"Cut": "{0} wurde in der Mittel durchgesäbelt.",
 +		"Cut": "{0} wurde in der Mitte durchgesäbelt.",
-@@ -983,1 +_,1 @@
+ 		"Chopped": "{0} wurde zerkleinert.",
+ 		"Plead": "{0}s Bitte um den Tod wurde erhört.",
+ 		"Ripped": "{0}s Fleisch wurde von den Knochen gerissen.",
+@@ -980,7 +_,7 @@
+ 		"CollectorCategory": "Sammler",
+ 		"ExplorerCategory": "Entdecker",
+ 		"SlayerCategory": "Schlächter",
 -		"NoCategory": "Keine",
 +		"NoCategory": "Keine Kategorie",
-@@ -1012,1 +_,1 @@
+ 		"Completed": "Erfolg erreicht! {0}",
+ 		"TIMBER_Name": "Holz!!!",
+ 		"TIMBER_Description": "Fälle deinen ersten Baum.",
+@@ -1009,7 +_,7 @@
+ 		"WORM_FODDER_Name": "Wurmfutter",
+ 		"WORM_FODDER_Description": "Besiege den Weltenfresser, einen gewaltigen Wurm, der im Verderben lebt.",
+ 		"MASTERMIND_Name": "Superhirn",
 -		"MASTERMIND_Description": "Besiege das Gehirn Cthulhus, ein riesiges Dämonenhirn, das das kriechende Purpur heimsucht.",
 +		"MASTERMIND_Description": "Besiege das Gehirn des Cthulhus, ein riesiges Dämonenhirn, das das kriechende Purpur heimsucht.",
-@@ -1021,1 +_,1 @@
+ 		"WHERES_MY_HONEY_Name": "Wo ist mein Honig?",
+ 		"WHERES_MY_HONEY_Description": "Entdecke einen großen Bienenstock mitten im Dschungel.",
+ 		"STING_OPERATION_Name": "Flotte Bienen",
+@@ -1018,7 +_,7 @@
+ 		"BONED_Description": "Besiege Skeletron, den verfluchten Wächter des Verlieses.",
+ 		"DUNGEON_HEIST_Name": "Verliesüberfall",
+ 		"DUNGEON_HEIST_Description": "Stiehl den untoten Verliesbewohnern einen Schlüssel und öffne damit eine ihrer wertvollen goldenen Truhen.",
 -		"ITS_GETTING_HOT_IN_HERE_Name": "It's Getting Hot in Here",
 +		"ITS_GETTING_HOT_IN_HERE_Name": "Es wird heiß hier",
-@@ -1104,1 +_,1 @@
+ 		"ITS_GETTING_HOT_IN_HERE_Description": "Geh tief genug auf Erkundungstour, um die geschmolzene Unterwelt zu erreichen.",
+ 		"MINER_FOR_FIRE_Name": "Feuerbergarbeiter",
+ 		"MINER_FOR_FIRE_Description": "Stelle eine geschmolzene Spitzhacke her, indem du nur die heißesten Materialien benutzt.",
+@@ -1101,7 +_,7 @@
+ 		"VEHICULAR_MANSLAUGHTER_Name": "Fahrlässige Tötung",
+ 		"VEHICULAR_MANSLAUGHTER_Description": "Besiege einen Gegner, indem du ihn mit einer Lore überfährst.",
+ 		"BULLDOZER_Name": "Bulldozer",
 -		"BULLDOZER_Description": "Zerstöre insgesamt 10.000 Felder.",
 +		"BULLDOZER_Description": "Zerstöre insgesamt 10.000 Blöcke.",
-@@ -1114,1 +_,1 @@
+ 		"THERE_ARE_SOME_WHO_CALL_HIM_Name": "Es gibt ein paar Leute, die nennen ihn ...",
+ 		"THERE_ARE_SOME_WHO_CALL_HIM_Description": "Töte Tim.",
+ 		"DECEIVER_OF_FOOLS_Name": "Täuscher der Narren",
+@@ -1111,7 +_,7 @@
+ 		"LUCKY_BREAK_Name": "Glück gehabt",
+ 		"LUCKY_BREAK_Description": "Überlebe einen langen Fall mit nur einem Körnchen Leben.",
+ 		"THROWING_LINES_Name": "Rund um die Welt",
 -		"THROWING_LINES_Description": "Wirf ein Jojo.",
 +		"THROWING_LINES_Description": "Wirf ein Yoyo.",
-@@ -1129,4 +_,4 @@
+ 		"DYE_HARD_Name": "Stirb mit Farbe",
+ 		"DYE_HARD_Description": "Rüste in jedem möglichen Farbstoff-Slot einen Farbstoff aus.",
+ 		"SICK_THROW_Name": "Mega-Wurf",
+@@ -1126,10 +_,10 @@
+ 		"TIL_DEATH_Description": "Töte den Bräutigam.",
+ 		"ARCHAEOLOGIST_Name": "Archäologe",
+ 		"ARCHAEOLOGIST_Description": "Töte Doktor Bones.",
 -		"PRETTY_IN_PINK_Name": "Pretty in Pink",
 +		"PRETTY_IN_PINK_Name": "Hübsch in pink",
  		"PRETTY_IN_PINK_Description": "Töte Pinky.",
  		"RAINBOWS_AND_UNICORNS_Name": "Regenbogen und Einhörner",
 -		"RAINBOWS_AND_UNICORNS_Description": "Feuere ein Regenbogengewehr ab, während du auf einem Einhorn reitest.",
 +		"RAINBOWS_AND_UNICORNS_Description": "Feuer ein Regenbogengewehr, während du auf einem Einhorn reitest.",
-@@ -1159,1 +_,1 @@
+ 		"YOU_AND_WHAT_ARMY_Name": "Du und welche Armee?",
+ 		"YOU_AND_WHAT_ARMY_Description": "Befehlige neun beschworene Günstlinge gleichzeitig.",
+ 		"PRISMANCER_Name": "Prismatiker",
+@@ -1156,7 +_,7 @@
+ 		"TOPPED_OFF_Description": "Erreiche maximale Lebenspunkte und maximales Mana ohne Accessoires und Buffs.",
+ 		"SLAYER_OF_WORLDS_Name": "Schlächter der Welten",
+ 		"SLAYER_OF_WORLDS_Description": "Besiege jeden Boss in Terraria.",
 -		"YOU_CAN_DO_IT_Name": "Du schaffst es!",
 +		"YOU_CAN_DO_IT_Name": "Du kannst es schaffen!",
-@@ -1291,1 +_,1 @@
+ 		"YOU_CAN_DO_IT_Description": "Überlebe die erste ganze Nacht deines Charakters.",
+ 		"MATCHING_ATTIRE_Name": "Passende Kleidung",
+ 		"MATCHING_ATTIRE_Description": "Rüste in allen drei Rüstungsslots Rüstung aus: Kopf, Brust, Füße.",
+@@ -1288,7 +_,7 @@
+ 		"InvasionLose": "Die Armee des Alten war siegreich",
+ 		"WaveComplete": "Welle abgeschlossen!",
+ 		"WaveCompleteFirst": "Welle abgeschlossen! Interagiere mit dem Kristall, um die nächste Welle zu beschleunigen!",
 -		"CantSummonTower": "It doesn't seem to work without an Etheria Crystal nearby...",
 +		"CantSummonTower": "Es scheint ohne einen Eternia-Kristall in der nähe nicht zu funktionieren...",
+ 		"BartenderWarning": "Der Eternia-Kristall sträubt sich gegen dieses Gebiet und teleportiert sich sofort weg. Der Tavernenwirt hatte erwähnt, dass er in einem großen, flachen und offenen Gebiet aufgestellt werden sollte ..."
+ 	},
+ 	"GameTitle": {

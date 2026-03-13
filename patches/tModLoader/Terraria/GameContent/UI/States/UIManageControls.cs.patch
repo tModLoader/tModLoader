@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/GameContent/UI/States/UIManageControls.cs
 +++ src/tModLoader/Terraria/GameContent/UI/States/UIManageControls.cs
-@@ -12,10 +_,12 @@
+@@ -12,12 +_,14 @@
  using Terraria.ID;
  using Terraria.Initializers;
  using Terraria.Localization;
@@ -14,6 +14,8 @@
 -public class UIManageControls : UIState
 +public partial class UIManageControls : UIState
  {
+ 	public class SpecialControls
+ 	{
 @@ -253,6 +_,10 @@
  		List<string> bindings = new List<string> {
  			"MouseLeft",

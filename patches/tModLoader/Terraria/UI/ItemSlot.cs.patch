@@ -35,9 +35,7 @@
  		public const int InventoryItem = 0;
  		public const int InventoryCoin = 1;
  		public const int InventoryAmmo = 2;
-@@ -186,9 +_,9 @@
- 
- 	private static Dictionary<ItemDisplayKey, ulong> _nextTickDrawAvailable;
+@@ -188,7 +_,7 @@
  	public static bool DrawGoldBGForCraftingMaterial;
  	public static bool DrawSelectionHighlightForGridSlot;
  	public static bool ShiftForcedOn;
@@ -46,9 +44,7 @@
  	private static bool[] canFavoriteAt;
  	private static bool[] canShareAt;
  	private static bool[] canQuickDropAt;
-@@ -430,7 +_,11 @@
- 	public static void OverrideHover(Item[] inv, int context = 0, int slot = 0)
- 	{
+@@ -432,6 +_,10 @@
  		if (!PlayerInput.UsingGamepad)
  			UILinkPointNavigator.SuggestUsage(GetGamepadPointForSlot(inv, context, slot));
  
@@ -58,12 +54,19 @@
 +
  		if (inv[slot].IsAir)
  			return;
-@@ -462,3 +_,3 @@
+ 
+@@ -460,7 +_,7 @@
+ 
+ 		bool flag = Options.DisableLeftShiftTrashCan && !PlayerInput.UsingGamepad;
  		if (ControlInUse && !Options.DisableQuickTrash && flag) {
 -			if ((uint)context <= 4u || context == 7 || context == 32)
 +			if ((uint)context <= 4u && context >= 0 || context == 7 || context == 32)
  				return AlternateClickAction.GetSellOrTrash(item);
-@@ -535,4 +_,10 @@
+ 		}
+ 		else if (ShiftInUse) {
+@@ -533,6 +_,12 @@
+ 			return true;
+ 
  		Item item = inv[slot];
 +
 +		// TODO: Make this more generalized.
@@ -83,7 +86,8 @@
  				return false;
  
  			item.favorited = !item.favorited;
-@@ -568,6 +_,9 @@
+@@ -567,8 +_,11 @@
+ 
  		if (Main.cursorOverride == 7) {
  			if (context == 29) {
 +				/*
@@ -93,7 +97,9 @@
 +				Item item3 = inv[slot].Clone();
  				item3.stack = (item3.OnlyNeedOneInInventory() ? 1 : item3.maxStack);
  				item3.OnCreated(new JourneyDuplicationItemCreationContext());
-@@ -635,17 +_,30 @@
+ 				Player.GetItemLogger.Start();
+@@ -634,17 +_,30 @@
+ 
  		if (Main.cursorOverride == 10) {
  			Chest chest = Main.instance.shop[Main.npcShop];
 +			if (!PlayerLoader.CanSellItem(player, player.TalkNPC, chest.item, item)) { } else
@@ -123,12 +129,16 @@
  			}
  
  			return true;
- 		}
-@@ -656,1 +_,4 @@
+@@ -652,6 +_,9 @@
+ 
+ 		return false;
+ 	}
++
 +	// Helper added by TML
 +	private static bool IsAccessoryContext(int context) => Math.Abs(context) is Context.EquipAccessory or Context.EquipAccessoryVanity;
-+
+ 
  	public static void LeftClick(Item[] inv, int context = 0, int slot = 0)
+ 	{
 @@ -679,14 +_,26 @@
  					inv[slot].SetDefaults(0);
  				}
@@ -157,8 +167,7 @@
  						case 0:
  							AchievementsHelper.NotifyItemPickup(player, inv[slot]);
  							break;
-@@ -708,9 +_,17 @@
- 				if (inv[slot].type == 0 || inv[slot].stack < 1)
+@@ -709,8 +_,16 @@
  					inv[slot] = new Item();
  
  				if (Item.CanStack(Main.mouseItem, inv[slot])) {
@@ -175,7 +184,7 @@
  						if (Main.mouseItem.stack + inv[slot].stack <= Main.mouseItem.maxStack) {
  							inv[slot].stack += Main.mouseItem.stack;
  							Main.mouseItem.stack = 0;
-@@ -722,7 +_,8 @@
+@@ -722,6 +_,7 @@
  							Main.mouseItem.stack -= num2;
  							AnnounceTransfer(new ItemTransferInfo(inv[slot], 21, context, num2));
  						}
@@ -183,8 +192,8 @@
  					}
  				}
  
- 				if (Main.mouseItem.type == 0 || Main.mouseItem.stack < 1)
-@@ -744,9 +_,18 @@
+@@ -743,10 +_,19 @@
+ 			}
  			case 1:
  				if (Main.mouseItem.stack == 1 && Main.mouseItem.type > 0 && inv[slot].type > 0 && inv[slot].IsNotTheSameAs(Main.mouseItem)) {
 +					if (IsAccessoryContext(context) && !ItemLoader.CanEquipAccessory(Main.mouseItem, slot, context < 0))
@@ -267,7 +276,7 @@
  							case 0:
  								AchievementsHelper.NotifyItemPickup(player, inv[slot]);
  								break;
-@@ -903,17 +_,24 @@
+@@ -903,18 +_,25 @@
  				HandleShopSlot(inv, slot, rightClickIsValid: false, leftClickIsValid: true);
  				break;
  			case 4: {
@@ -294,6 +303,7 @@
 +					PlayerLoader.PostSellItem(player, player.TalkNPC, chest.item, chest.item[soldItemIndex]);
  				}
  
+ 				Main.stackSplit = 9999;
 @@ -923,7 +_,8 @@
  			case 5:
  				if (Main.mouseItem.IsAir) {
@@ -335,8 +345,7 @@
  			case 25:
  			case 27:
  			case 33:
-@@ -1241,14 +_,23 @@
- 			if (!Main.mouseRight || context == 6 || context == 34)
+@@ -1242,14 +_,23 @@
  				return;
  
  			if (Main.mouseItem.IsAir || !Item.CanStack(inv[slot], Main.mouseItem)) {
@@ -360,6 +369,7 @@
 +				switch (Math.Abs(context)) {
  					case 9:
  					case 11:
+ 						if (Main.mouseRightRelease)
 @@ -1288,25 +_,39 @@
  
  	public static void PickupItemIntoMouse(Item[] inv, int context, int slot, Player player)
@@ -401,17 +411,18 @@
  
  		if (inv[slot].stack <= 0)
  			inv[slot] = new Item();
-@@ -1347,6 +_,8 @@
+@@ -1347,7 +_,9 @@
  		Player.GetItemLogger.Stop();
  		DisplayTransfer_GetItem(inv, context, slot);
  		if (num) {
--			item.stack--;
 +			if (ItemLoader.ConsumeItem(item, player)) // TryOpenContainer
+-			item.stack--;
 +				item.stack--;
 +
  			if (item.stack == 0)
  				item.SetDefaults(0);
-@@ -1395,10 +_,16 @@
+ 
+@@ -1395,26 +_,59 @@
  		else if (item.type == 1869) {
  			player.OpenPresent(1869);
  		}
@@ -424,13 +435,13 @@
 +		else if (item.type == 599 && item.type == 600 && item.type == 601) {
  			player.OpenLegacyPresent(item.type);
  		}
--
 +		else { // Added by TML.
 +			player.DropFromItem(item.type);
 +		}
-+
+ 
 +		ItemLoader.RightClickCallHooks(item, player);
-@@ -1407,7 +_,10 @@
+ 		return true;
+ 	}
  
  	private static void SwapVanityEquip(Item[] inv, int context, int slot, Player player)
  	{
@@ -442,11 +453,9 @@
  
 -		Item item = inv[slot - 10];
 +		Item item = inv[tSlot];
-@@ -1414,7 +_,31 @@
  		if ((inv[slot].IsAir && item.IsAir) || (context == 11 && ((!inv[slot].IsAir && !CanEquipAccessoryInSlot(inv[slot], new ArraySegment<Item>(Main.LocalPlayer.armor, 3, 7), slot - 10)) || (!item.IsAir && !CanEquipAccessoryInSlot(item, new ArraySegment<Item>(Main.LocalPlayer.armor, 13, 7), slot)))))
  			return;
  
--		Utils.Swap(ref inv[slot], ref inv[slot - 10]);
 +		if (flag && Math.Abs(context) == 11) {
 +			var accessories = AccessorySlotLoader.ModSlotPlayer(player).exAccessorySlot;
 +			for (int invNum = 0; invNum < 2; invNum++) {
@@ -471,14 +480,12 @@
 +		if (!flag || !ItemLoader.CanEquipAccessory(inv[slot], tSlot, context < 0))
 +			return;
 +
+-		Utils.Swap(ref inv[slot], ref inv[slot - 10]);
 +		Utils.Swap(ref inv[slot], ref inv[tSlot]);
  		SoundEngine.PlaySound(7);
  		if (inv[slot].stack > 0) {
  			switch (context) {
-@@ -1553,8 +_,11 @@
- 		int num = Main.superFastStack + 1;
- 		if (CanBulkBuy(inv[slot]))
- 			num *= GetBulkBuyAmount(inv[slot]);
+@@ -1556,6 +_,9 @@
  
  		Player localPlayer = Main.LocalPlayer;
  		for (int i = 0; i < num; i++) {
@@ -487,6 +494,7 @@
 +
  			if (Main.mouseItem.stack >= Main.mouseItem.maxStack && Main.mouseItem.type != 0)
  				continue;
+ 
 @@ -1570,23 +_,44 @@
  					SoundEngine.PlaySound(7);
  			}
@@ -612,11 +620,7 @@
  		}
  		else if (context == 6) {
  			Texture2D value11 = TextureAssets.Trash.Value;
-@@ -2197,10 +_,14 @@
- 		DrawItem_GetColorAndScale(item, scale, ref environmentColor, sizeLimit, ref frame, out var itemLight, out var finalDrawScale);
- 		SpriteEffects effects = SpriteEffects.None;
- 		if (flip)
- 			effects = SpriteEffects.FlipHorizontally;
+@@ -2201,6 +_,10 @@
  
  		Vector2 origin = frame.Size() / 2f;
  		Color color = item.GetAlpha(itemLight).MultiplyRGBA(secondColor);
@@ -674,10 +678,14 @@
  				DisplayTransfer_TwoWay(inv, context, slot, player.armor, num, targetSlot2);
  			}
  		}
-@@ -2725,2 +_,3 @@
+@@ -2722,6 +_,7 @@
+ 		return true;
+ 	}
+ 
 +	//TML: I (Solxan), have not been able to get this to ever run in-game. I suspect this code path is deprecated.
  	private static Item DyeSwap(Item item, out bool success, out int targetSlot)
  	{
+ 		targetSlot = -1;
 @@ -2917,7 +_,7 @@
  
  	public static Color GetItemLight(ref Color currentColor, ref float scale, int type, bool outInTheWorld = false, float lightScalar = 1f)

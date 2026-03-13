@@ -44,9 +44,7 @@
  							flag = false;
  					}
  				}
-@@ -1701,13 +_,15 @@
- 				if ((tile.active() && !Main.tileCut[tile.type] && !TileID.Sets.BreakableWhenPlacing[tile.type]) || (tile2.active() && !Main.tileCut[tile2.type] && !TileID.Sets.BreakableWhenPlacing[tile2.type]) || !tile3.active() || !WorldGen.SolidTile2(tile3))
- 					continue;
+@@ -1703,11 +_,13 @@
  
  				bool flag = (tile4.active() && TileID.Sets.CommonSapling[tile4.type]) || (tile5.active() && TileID.Sets.CommonSapling[tile5.type]);
  				bool flag2 = flag || (tile6.active() && TileID.Sets.CommonSapling[tile6.type]) || (tile7.active() && TileID.Sets.CommonSapling[tile7.type]) || (tile8.active() && TileID.Sets.CommonSapling[tile8.type]) || (tile9.active() && TileID.Sets.CommonSapling[tile9.type]);
@@ -103,8 +101,7 @@
  			return;
  
  		int reachableStartX = providedInfo.reachableStartX;
-@@ -2320,12 +_,15 @@
- 		int reachableEndY = providedInfo.reachableEndY;
+@@ -2321,11 +_,14 @@
  		_ = providedInfo.screenTargetX;
  		_ = providedInfo.screenTargetY;
  		int type = providedInfo.item.type;

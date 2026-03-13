@@ -17,7 +17,7 @@
  	public List<DrawData> DrawDataCache;
  	public List<int> DustCache;
  	public List<int> GoreCache;
-@@ -19,7 +_,18 @@
+@@ -19,8 +_,19 @@
  	public int projectileDrawPosition;
  	public Vector2 ItemLocation;
  	public int armorAdjust;
@@ -38,7 +38,8 @@
 +	// ]
  	public int skinVar;
  	public bool fullHair;
-@@ -137,7 +_,12 @@
+ 	public bool drawsBackHairWithoutHeadgear;
+@@ -137,8 +_,13 @@
  
  	public Vector2 Center => new Vector2(Position.X + (float)(drawPlayer.width / 2), Position.Y + (float)(drawPlayer.height / 2));
  
@@ -51,6 +52,7 @@
 +
  		DrawDataCache = drawData;
  		SelectedDrawnProjectile = null;
+ 		if (player.heldProj != -1)
 @@ -153,7 +_,14 @@
  		shadow = shadowOpacity;
  		this.rotation = rotation;
@@ -67,8 +69,7 @@
  		cHead = drawPlayer.cHead;
  		cBody = drawPlayer.cBody;
  		cLegs = drawPlayer.cLegs;
-@@ -186,7 +_,11 @@
- 		cBalloonFront = drawPlayer.cBalloonFront;
+@@ -187,6 +_,10 @@
  		cBeard = drawPlayer.cBeard;
  		cCoat = drawPlayer.cCoat;
  		isSitting = drawPlayer.sitting.isSitting;
@@ -99,7 +100,7 @@
  		if (drawPlayer.body == 77 || drawPlayer.body == 103 || drawPlayer.body == 41 || drawPlayer.body == 100 || drawPlayer.body == 10 || drawPlayer.body == 11 || drawPlayer.body == 12 || drawPlayer.body == 13 || drawPlayer.body == 14 || drawPlayer.body == 43 || drawPlayer.body == 15 || drawPlayer.body == 16 || drawPlayer.body == 20 || drawPlayer.body == 39 || drawPlayer.body == 50 || drawPlayer.body == 38 || drawPlayer.body == 40 || drawPlayer.body == 57 || drawPlayer.body == 44 || drawPlayer.body == 52 || drawPlayer.body == 53 || drawPlayer.body == 68 || drawPlayer.body == 81 || drawPlayer.body == 85 || drawPlayer.body == 88 || drawPlayer.body == 98 || drawPlayer.body == 86 || drawPlayer.body == 87 || drawPlayer.body == 99 || drawPlayer.body == 165 || drawPlayer.body == 166 || drawPlayer.body == 167 || drawPlayer.body == 171 || drawPlayer.body == 45 || drawPlayer.body == 168 || drawPlayer.body == 169 || drawPlayer.body == 42 || drawPlayer.body == 180 || drawPlayer.body == 181 || drawPlayer.body == 183 || drawPlayer.body == 186 || drawPlayer.body == 187 || drawPlayer.body == 188 || drawPlayer.body == 64 || drawPlayer.body == 189 || drawPlayer.body == 191 || drawPlayer.body == 192 || drawPlayer.body == 198 || drawPlayer.body == 199 || drawPlayer.body == 202 || drawPlayer.body == 203 || drawPlayer.body == 58 || drawPlayer.body == 59 || drawPlayer.body == 60 || drawPlayer.body == 61 || drawPlayer.body == 62 || drawPlayer.body == 63 || drawPlayer.body == 36 || drawPlayer.body == 104 || drawPlayer.body == 184 || drawPlayer.body == 74 || drawPlayer.body == 78 || drawPlayer.body == 185 || drawPlayer.body == 196 || drawPlayer.body == 197 || drawPlayer.body == 182 || drawPlayer.body == 87 || drawPlayer.body == 76 || drawPlayer.body == 209 || drawPlayer.body == 168 || drawPlayer.body == 210 || drawPlayer.body == 211 || drawPlayer.body == 213)
  			missingHand = true;
  
-@@ -241,4 +_,8 @@
+@@ -241,6 +_,10 @@
  			missingArm = false;
  		else
  			missingArm = true;
@@ -108,6 +109,8 @@
 +		armorHidesHands = drawPlayer.body > 0 && ArmorIDs.Body.Sets.HidesHands[drawPlayer.body];
 +		armorHidesArms = drawPlayer.body > 0 && ArmorIDs.Body.Sets.HidesArms[drawPlayer.body];
  
+ 		drawPlayer.GetHairSettings(out fullHair, out hatHair, out hideHair, out backHairDraw, out drawsBackHairWithoutHeadgear);
+ 		hairDyePacked = PlayerDrawHelper.PackShader(drawPlayer.hairDye, PlayerDrawHelper.ShaderConfiguration.HairShader);
 @@ -594,6 +_,11 @@
  			colorArmorLegs = drawPlayer.GetImmuneAlphaPure(new Color(b14, b14, b14, 255), shadow);
  		}
@@ -135,7 +138,7 @@
  				colorEyeWhites = drawPlayer.GetImmuneAlpha(Color.White, shadow);
  				colorEyes = drawPlayer.GetImmuneAlpha(drawPlayer.eyeColor, shadow);
  				colorHair = drawPlayer.GetImmuneAlpha(drawPlayer.GetHairColor(useLighting: false), shadow);
-@@ -1424,6 +_,13 @@
+@@ -1428,6 +_,13 @@
  			drawPlayer.headRotation = 0f;
  		}
  
@@ -149,7 +152,7 @@
  		Rectangle bodyFrame = drawPlayer.bodyFrame;
  		bodyFrame = drawPlayer.bodyFrame;
  		bodyFrame.Y -= 336;
-@@ -1440,14 +_,23 @@
+@@ -1444,14 +_,23 @@
  			int height = 26;
  			hairFrontFrame.Height = height;
  		}
@@ -174,7 +177,7 @@
  			if (ArmorIDs.Front.Sets.DrawsInNeckLayerRegardlessOfPlayerFrame[drawPlayer.front])
  				drawFrontAccInNeckAccLayer = true;
  			else if (drawPlayer.bodyFrame.Y / drawPlayer.bodyFrame.Height == 5 && ArmorIDs.Front.Sets.DrawsInNeckLayer[drawPlayer.front])
-@@ -1541,9 +_,9 @@
+@@ -1545,9 +_,9 @@
  	{
  		frontShoulderOffset = Vector2.Zero;
  		backShoulderOffset = Vector2.Zero;

@@ -7,7 +7,7 @@
  namespace Terraria.GameContent;
  
  public static class TreePaintSystemData
-@@ -214,6 +_,11 @@
+@@ -216,6 +_,11 @@
  			case 5:
  				switch (tileStyle) {
  					default:
@@ -19,7 +19,7 @@
  						return WoodPurity;
  					case 0:
  						return WoodCorruption;
-@@ -233,6 +_,11 @@
+@@ -235,6 +_,11 @@
  			case 323:
  				switch (tileStyle) {
  					default:
@@ -31,7 +31,7 @@
  						return WoodPurity;
  					case 0:
  					case 4:
-@@ -276,6 +_,27 @@
+@@ -278,6 +_,27 @@
  	{
  		switch (foliageIndex) {
  			default:

@@ -1,7 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Initializers/AssetInitializer.cs
 +++ src/tModLoader/Terraria/Initializers/AssetInitializer.cs
-@@ -11,27 +_,51 @@
- using Terraria.GameContent;
+@@ -12,25 +_,49 @@
  using Terraria.ID;
  using Terraria.IO;
  using Terraria.Testing;
@@ -52,7 +51,6 @@
  		assetRepository.AssetValueUpdatedHandler = (AssetValueUpdated)Delegate.Combine(assetRepository.AssetValueUpdatedHandler, new AssetValueUpdated(TagAsset));
  		services.AddService(typeof(AssetReaderCollection), assetReaderCollection);
  		services.AddService(typeof(IAssetRepository), assetRepository);
- 	}
 @@ -645,6 +_,8 @@
  		Main.ResourceSetsManager.LoadContent(mode);
  		Main.MinimapFrameManagerInstance.LoadContent(mode);

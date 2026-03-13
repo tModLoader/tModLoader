@@ -133,7 +133,7 @@
  	public void Append(UIElement element)
  	{
  		element.Remove();
-@@ -150,11 +_,14 @@
+@@ -150,6 +_,9 @@
  		Elements.Clear();
  	}
  
@@ -143,11 +143,6 @@
  	public virtual void Draw(SpriteBatch spriteBatch)
  	{
  		if (this.OnDraw != null)
- 			this.OnDraw(this, spriteBatch);
- 
- 		bool overflowHidden = OverflowHidden;
- 		bool useImmediateMode = UseImmediateMode;
- 		RasterizerState rasterizerState = spriteBatch.GraphicsDevice.RasterizerState;
 @@ -174,13 +_,22 @@
  		if (overflowHidden) {
  			spriteBatch.End();

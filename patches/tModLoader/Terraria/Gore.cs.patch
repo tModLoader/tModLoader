@@ -198,7 +198,7 @@
  		if (Main.gore[num].DeactivateIfOutsideOfWorld())
  			return 600;
  
-@@ -1212,4 +_,7 @@
+@@ -1212,6 +_,9 @@
  
  	public Color GetAlpha(Color newColor)
  	{
@@ -206,3 +206,5 @@
 +			return modColor;
 +
  		float num = (float)(255 - alpha) / 255f;
+ 		if (type == 16 || type == 17)
+ 			return new Color(255, 255, 255, 0);

@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/GameContent/FlexibleTileWand.cs
 +++ src/tModLoader/Terraria/GameContent/FlexibleTileWand.cs
-@@ -32,7 +_,10 @@
+@@ -32,8 +_,11 @@
  		public int TileStyleToPlace;
  	}
  
@@ -11,7 +11,10 @@
 +	/// <summary> Used by the Rubblemaker item to place fake versions of 3x2 rubble tiles. Technically it can place any size rubble. </summary>
  	public static FlexibleTileWand RubblePlacementLarge = CreateRubblePlacerLarge();
  	public static FlexibleTileWand MiteyTitey = CreateMiteyTitey();
-@@ -314,2 +_,10 @@
+ 	public static FlexibleTileWand SandCastleBucket = CreateSingleTileWand(169, 552, 0, 1, 2, 3).WithoutAmmoIcon();
+@@ -304,6 +_,14 @@
+ 		flexibleTileWand.AddVariationsWithOffset(3086, tileIdToPlace, offset, 24, 25, 26);
+ 		flexibleTileWand.AddVariationsWithOffset(3081, tileIdToPlace, offset, 27, 28, 29);
  		return flexibleTileWand;
 +	}
 +
@@ -22,3 +25,5 @@
 +		RubblePlacementLarge = CreateRubblePlacerLarge();
 +		// TODO: Do we want to support modifying the other new wands?
  	}
+ 
+ 	public static FlexibleTileWand CreatePortableKiln()

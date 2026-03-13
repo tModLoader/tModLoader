@@ -1,7 +1,6 @@
 --- src/TerrariaNetCore/Terraria/IO/WorldFileData.cs
 +++ src/tModLoader/Terraria/IO/WorldFileData.cs
-@@ -5,14 +_,15 @@
- using Terraria.Audio;
+@@ -7,12 +_,13 @@
  using Terraria.GameContent;
  using Terraria.ID;
  using Terraria.Localization;
@@ -16,8 +15,7 @@
  {
  	private const ulong GUID_IN_WORLD_FILE_VERSION = 777389080577uL;
  	public static readonly int MAX_USER_SEED_TEXT_LENGTH = 40;
- 	public DateTime CreationTime;
-@@ -350,6 +_,8 @@
+@@ -359,6 +_,8 @@
  		if (!base.IsCloudSave) {
  			string worldPathFromName = Main.GetWorldPathFromName(Name, cloudSave: true);
  			if (FileUtilities.MoveToCloud(base.Path, worldPathFromName)) {
@@ -26,7 +24,7 @@
  				Main.LocalFavoriteData.ClearEntry(this);
  				_isCloudSave = true;
  				_path = worldPathFromName;
-@@ -363,6 +_,8 @@
+@@ -372,6 +_,8 @@
  		if (base.IsCloudSave) {
  			string worldPathFromName = Main.GetWorldPathFromName(Name, cloudSave: false);
  			if (FileUtilities.MoveToLocal(base.Path, worldPathFromName)) {

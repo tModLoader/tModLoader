@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Social/Steam/NetServerSocialModule.cs
 +++ src/tModLoader/Terraria/Social/Steam/NetServerSocialModule.cs
-@@ -118,8 +_,12 @@
+@@ -123,8 +_,12 @@
  
  	private void OnLobbyCreated(LobbyCreated_t result, bool failure)
  	{
@@ -14,7 +14,7 @@
  	}
  
  	private bool OnPacketRead(byte[] data, int length, CSteamID userId)
-@@ -190,6 +_,10 @@
+@@ -195,6 +_,10 @@
  
  			_connectionStateMap[steamIDRemote] = ConnectionState.Authenticating;
  			_connectionAcceptedCallback(new SocialSocket(new SteamAddress(steamIDRemote)));

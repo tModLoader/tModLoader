@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/GameContent/Tile_Entities/TEItemFrame.cs
 +++ src/tModLoader/Terraria/GameContent/Tile_Entities/TEItemFrame.cs
-@@ -1,8 +_,12 @@
+@@ -1,9 +_,13 @@
  using System.IO;
 +using Microsoft.Xna.Framework;
  using Terraria.DataStructures;
@@ -14,6 +14,7 @@
 +public partial class TEItemFrame : TileEntityType<TEItemFrame>, IFixLoadedData
  {
  	public Item item;
+ 
 @@ -35,8 +_,8 @@
  
  	public override void WriteExtraData(BinaryWriter writer, bool networkSend)
@@ -25,7 +26,7 @@
  		writer.Write((short)item.stack);
  	}
  
-@@ -53,20 +_,23 @@
+@@ -53,30 +_,37 @@
  	public void DropItem()
  	{
  		if (Main.netMode != 1)
@@ -51,7 +52,6 @@
  			return;
  		}
  
-@@ -73,10 +_,14 @@
  		if (result.item.stack > 0)
  			result.DropItem();
  

@@ -19,7 +19,7 @@
  public class IngameFancyUI
  {
  	private static bool CoverForOneUIFrame;
-@@ -56,5 +_,9 @@
+@@ -56,6 +_,10 @@
  		OpenUIState(Main.ManageControlsMenu);
  	}
  
@@ -29,6 +29,7 @@
 +	/// <param name="uiState"></param>
  	public static void OpenUIState(UIState uiState)
  	{
+ 		OpenUIState(uiState, closeIngameWindows: true);
 @@ -99,6 +_,10 @@
  				else if (tile.type == 88)
  					Main.defaultChestName = Lang.dresserType[tile.frameX / 54].Value;

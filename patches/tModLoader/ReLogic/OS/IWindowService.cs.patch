@@ -5,7 +5,7 @@
  using Microsoft.Xna.Framework;
  
  namespace ReLogic.OS;
-@@ -13,3 +_,22 @@
+@@ -13,6 +_,25 @@
  	float GetScaling();
  
  	void SetQuickEditEnabled(bool enabled);
@@ -28,3 +28,6 @@
 +		IntPtr surface = SDL2.SDL.SDL_LoadBMP("Libraries/Native/tModLoader.bmp");
 +		SDL2.SDL.SDL_SetWindowIcon(window.Handle, surface);
 +	}
+ 
+ 	void Activate(GameWindow window);
+ 

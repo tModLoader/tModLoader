@@ -1,7 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Initializers/UILinksInitializer.cs
 +++ src/tModLoader/Terraria/Initializers/UILinksInitializer.cs
-@@ -9,7 +_,10 @@
- using Terraria.GameContent.UI.States;
+@@ -10,6 +_,9 @@
  using Terraria.GameInput;
  using Terraria.Localization;
  using Terraria.Social;
@@ -43,7 +42,8 @@
  			}
  		};
  
-@@ -1555,5 +_,16 @@
+@@ -1556,8 +_,19 @@
+ 
  		cp4.OnSpecialInteracts += () => (Main.InGameUI.CurrentState is UIBestiaryTest) ? (PlayerInput.BuildCommand(Lang.misc[82].Value, PlayerInput.ProfileGamepadUI.KeyStatus["Inventory"]) + PlayerInput.BuildCommand(Language.GetText("UI.SwitchPage").Value, PlayerInput.ProfileGamepadUI.KeyStatus["HotbarMinus"], PlayerInput.ProfileGamepadUI.KeyStatus["HotbarPlus"]) + PlayerInput.BuildCommand(Lang.misc[53].Value, PlayerInput.ProfileGamepadUI.KeyStatus["MouseLeft"]) + FancyUISpecialInstructions()) : (PlayerInput.BuildCommand(Lang.misc[53].Value, PlayerInput.ProfileGamepadUI.KeyStatus["MouseLeft"]) + PlayerInput.BuildCommand(Lang.misc[82].Value, PlayerInput.ProfileGamepadUI.KeyStatus["Inventory"]) + FancyUISpecialInstructions());
  		cp4.UpdateEvent += delegate {
 +			bool flag11 = PlayerInput.Triggers.JustPressed.Inventory;
@@ -60,7 +60,9 @@
  				FancyExit();
 +			*/
  		};
-@@ -1808,6 +_,12 @@
+ 
+ 		cp4.EnterEvent += delegate {
+@@ -1810,6 +_,12 @@
  				if (Main.MenuUI.CurrentState is IHaveBackButtonCommand haveBackButtonCommand)
  					haveBackButtonCommand.HandleBackButtonUsage();
  				break;

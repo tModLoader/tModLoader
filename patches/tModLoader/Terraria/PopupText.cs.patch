@@ -1,7 +1,6 @@
 --- src/TerrariaNetCore/Terraria/PopupText.cs
 +++ src/tModLoader/Terraria/PopupText.cs
-@@ -2,48 +_,158 @@
- using Microsoft.Xna.Framework;
+@@ -3,39 +_,145 @@
  using Microsoft.Xna.Framework.Graphics;
  using ReLogic.Graphics;
  using Terraria.GameContent;
@@ -147,7 +146,7 @@
  	public Vector2[] charOffsets;
  	public Color[] charColors;
  	public PopupEffectStyle effectStyle;
- 	public int effectIntensity;
+@@ -43,6 +_,10 @@
  
  	public bool AnyEffect => effectStyle != PopupEffectStyle.None;
  
@@ -158,7 +157,6 @@
  	public bool notActuallyAnItem {
  		get {
  			if (npcNetID == 0)
- 				return freeAdvanced;
 @@ -54,6 +_,10 @@
  
  	public static float TargetScale => Main.UIScale / Main.GameViewMatrix.RenderZoom.X;
@@ -181,10 +179,7 @@
  	public static void ResetText(PopupText text)
  	{
  		text.NoStack = false;
-@@ -76,11 +_,23 @@
- 		text.rotation = 0f;
- 		text.alpha = 1f;
- 		text.alphaDir = -1;
+@@ -79,8 +_,20 @@
  		text.framesSinceSpawn = 0;
  		text.effectStyle = PopupEffectStyle.None;
  		text.effectIntensity = 0;

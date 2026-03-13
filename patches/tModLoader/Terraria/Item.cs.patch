@@ -7,7 +7,7 @@
  using Microsoft.Xna.Framework;
  using Terraria.Audio;
  using Terraria.DataStructures;
-@@ -10,10 +_,12 @@
+@@ -10,18 +_,39 @@
  using Terraria.GameContent.UI;
  using Terraria.Graphics.Shaders;
  using Terraria.ID;
@@ -21,7 +21,8 @@
 -public class Item : IEntitySourceTarget
 +public partial class Item : IEntitySourceTarget
  {
-@@ -22,4 +_,23 @@
+ 	public int width;
+ 	public int height;
 +
 +	/// <summary>
 +	/// The additional distance, in pixels, that coins may be grabbed from if the player has the Gold Ring or its upgrades (<see cref="Player.goldRing"/>).<br/>
@@ -45,7 +46,12 @@
 +	/// The additional distance, in pixels, that items may be grabbed from if the player has equipped a Treasure Magnet (<see cref="Player.treasureMagnet"/>).<br/>
 +	/// </summary>
  	public static int treasureGrabRange = 150;
-@@ -43,14 +_,87 @@
+ 	private string _nameOverride;
+ 	public const int luckPotionDuration1 = 18000;
+@@ -40,69 +_,415 @@
+ 	private readonly int eclipsePrice = sellPrice(0, 7, 50);
+ 	private readonly int eclipsePostPlanteraPrice = sellPrice(0, 10);
+ 	private readonly int eclipseMothronPrice = sellPrice(0, 12, 50);
 +	/// <summary>
 +	/// The default stack size for stackable items: 9999
 +	/// </summary>
@@ -133,7 +139,6 @@
 +	/// Defaults to <see langword="false"/>.<br/>
 +	/// </summary>
  	public bool mech;
-@@ -57,7 +_,46 @@
 +
 +	/// <summary>
 +	/// The numerical ID of the item this item consumes when used.<br/>
@@ -181,7 +186,6 @@
 +	/// Defaults to 0.<br/>
 +	/// </summary>
  	public int bait;
-@@ -64,7 +_,53 @@
 -	public short makeNPC;
 +
 +	/// <summary>
@@ -237,7 +241,6 @@
 +	/// </summary>
  	public byte paint;
  	public byte paintCoating;
-@@ -71,38 +_,226 @@
 +
 +	/// <summary>
 +	/// The Item ID of this item. The Item ID is a unique number assigned to each Item loaded into the game. This will be equal to either an <see cref="ItemID"/> entry or <see cref="ModContent.ItemType{T}"/>, for example <see cref="ItemID.IronskinPotion"/> or ModContent.ItemType&lt;MyModItem&gt;(). To check if an Item instance is a specific Item, check <c>Item.type == ItemID.VanillaItemHere</c> or <c>Item.type == ModContent.ItemType&lt;ModdedItemHere&gt;()</c> in an <see langword="if"/> statement.
@@ -465,8 +468,7 @@
  	public sbyte handOnSlot = -1;
  	public sbyte handOffSlot = -1;
  	public sbyte backSlot = -1;
-@@ -115,49 +_,274 @@
- 	public sbyte faceSlot = -1;
+@@ -116,48 +_,273 @@
  	public sbyte balloonSlot = -1;
  	public sbyte beardSlot = -1;
  	public sbyte voiceSlot;
@@ -839,14 +841,13 @@
  	public static void DropCache(IEntitySource reason, Vector2 pos, Vector2 spread, int t, bool stopCaching = true)
  	{
  		if (cachedItemSpawnsByType[t] == -1)
-@@ -282,4 +_,5 @@
+@@ -282,10 +_,34 @@
  		}
  	}
  
 +	// Internal, modders should use GetSource_FromThis
 -	public IEntitySource GetNPCSource_FromThis() => new EntitySource_Parent(this);
 +	internal IEntitySource GetNPCSource_FromThis() => new EntitySource_Parent(this);
-@@ -286,1 +_,7 @@
 +
 +	// Internal redirect
 +	/*
@@ -854,7 +855,7 @@
 +	*/
 +	internal IEntitySource GetItemSource_Misc(int itemSourceId) => GetSource_Misc(context: ItemSourceID.ToContextString(itemSourceId));
 +
-@@ -288,1 +_,18 @@
+ 	public override string ToString() => $"Name: \"{Name}\" Type: {type} Stack: {stack}";
 +
 +	/// <summary>
 +	/// Determines if this <see cref="Item"/> can receive prefixes.
@@ -873,7 +874,12 @@
 +			&& ammo == 0
 +			&& (damage > 0 || IsAPrefixableAccessory());
 +	}
-@@ -295,4 +_,25 @@
+ 
+ 	public bool Prefix(int prefixWeWant)
+ 	{
+@@ -293,6 +_,27 @@
+ 		return Prefix(prefixWeWant, out rolledPrefixIsTopTier);
+ 	}
  
 +	/// <summary>
 +	/// Attempts to apply a prefix to this <see cref="Item"/>.
@@ -919,7 +925,7 @@
  		int rolledPrefix = prefixWeWant;
  		float dmg = 1f;
  		float kb = 1f;
-@@ -327,12 +_,20 @@
+@@ -327,17 +_,32 @@
  		bool flag = true;
  		while (flag) {
  			flag = false;
@@ -940,7 +946,6 @@
  			if ((rolledPrefix == -1 || rolledPrefix == -2 || rolledPrefix == -3) && !RollAPrefix(unifiedRandom, ref rolledPrefix))
  				return false;
  
-@@ -339,5 +_,12 @@
 +			/*
  			if (prefixWeWant == -1 && PrefixID.Sets.ReducedNaturalChance[rolledPrefix] && unifiedRandom.Next(3) != 0)
  				rolledPrefix = 0;
@@ -953,8 +958,7 @@
  
  			if (prefixWeWant == -4)
  				rolledPrefix = 0;
-@@ -353,7 +_,9 @@
- 			}
+@@ -354,6 +_,8 @@
  		}
  
  		rolledPrefixIsTopTier = num2 == num;
@@ -1020,7 +1024,7 @@
  		int[] rollablePrefixes = GetRollablePrefixes();
  		if (rollablePrefixes == null)
  			return false;
-@@ -400,5 +_,8 @@
+@@ -400,6 +_,9 @@
  		}
  
  		return false;
@@ -1029,7 +1033,8 @@
 +		return PrefixLoader.CanRoll(this, prefix);
  	}
  
-@@ -792,5 +_,12 @@
+ 	public int GetVisualCritChance(Player player)
+@@ -792,6 +_,13 @@
  				dmg = 1.05f;
  				crt = 2;
  				break;
@@ -1042,6 +1047,7 @@
 +				break;
  		}
  
+ 		value = 1f * dmg * (2f - spd) * (2f - mcst) * size * kb * shtspd * (1f + (float)crt * 0.02f) * (1f + (float)arpen * 0.015f) * (1f + (float)tagdmg * 0.03f);
 @@ -838,7 +_,8 @@
  		return num;
  	}
@@ -1327,8 +1333,7 @@
  		noUseGraphic = true;
  		damage = dmg;
  		knockBack = kb;
-@@ -46945,7 +_,11 @@
- 		SetShopValues(ItemRarityColor.Blue1, buyPrice(0, 2));
+@@ -46946,6 +_,10 @@
  		createTile = 723;
  	}
  
@@ -1358,8 +1363,7 @@
  	{
  		useStyle = 1;
  		autoReuse = true;
-@@ -47084,7 +_,22 @@
- 		makeNPC = npcIdToSpawnOnUse;
+@@ -47085,6 +_,21 @@
  		createTile = 724;
  	}
  
@@ -1741,7 +1745,8 @@
  
  		if (variant == null)
  			variant = ItemVariants.SelectVariant(Type);
-@@ -47754,6 +_,17 @@
+@@ -47753,7 +_,18 @@
+ 		else
  			SetDefaults5(type);
  
 +		// Compensate for the change of itemAnimation getting reset at 0 instead of vanilla's 1.
@@ -1760,7 +1765,7 @@
  		if (hairDye != 0)
  			hairDye = GameShaders.Hair.GetShaderIdFromItemId(type);
  
-@@ -47910,7 +_,9 @@
+@@ -47910,13 +_,17 @@
  		if (type >= 1803 && type <= 1807)
  			SetDefaults(1533 + type - 1803);
  
@@ -1771,7 +1776,7 @@
 +		if (type > 0 && ItemID.Sets.Deprecated[type])
  			TurnToAir();
  	}
-@@ -47918,5 +_,7 @@
+ 
  	public void OnCreated(ItemCreationContext context)
  	{
 +		ItemLoader.OnCreated(this, context);
@@ -1779,9 +1784,7 @@
  		if (type == 5437)
  			SetDefaults(5358);
  	}
-@@ -47925,15 +_,35 @@
- 	{
- 		useSoundPitch = 0f;
+@@ -47927,14 +_,34 @@
  		tooltipContext = -1;
  		tooltipSlot = -1;
  		BestiaryNotes = null;
@@ -1815,6 +1818,7 @@
 +		masterOnly = false; // Added by TML.
  		questItem = false;
  		fishingPole = 0;
+ 		bait = 0;
 @@ -47952,10 +_,14 @@
  		mech = false;
  		flame = false;
@@ -1878,7 +1882,7 @@
  			return makeNPC > 0;
  
  		return true;
-@@ -48609,20 +_,57 @@
+@@ -48609,11 +_,45 @@
  	}
  
  	public WorldItem ToWorldItem() => null;
@@ -1924,9 +1928,7 @@
  		if (WorldGen.isGeneratingOrLoadingWorld)
  			return 0;
  
- 		if (Stack <= 0)
- 			return 400;
- 
+@@ -48623,6 +_,9 @@
  		if (Main.rand == null)
  			Main.rand = new UnifiedRandom();
  
@@ -1936,8 +1938,7 @@
  		if (Main.tenthAnniversaryWorld) {
  			if (Type == 58) {
  				Type = Main.rand.NextFromList(new short[3] {
-@@ -48672,8 +_,8 @@
- 					Type = 1868;
+@@ -48673,7 +_,7 @@
  			}
  		}
  
@@ -1976,7 +1977,7 @@
  		if (Main.netMode == 2 && !noBroadcast)
  			NetMessage.SendData(21, -1, -1, null, num, noGrabDelay.ToInt());
  		else if (Main.netMode == 0)
-@@ -48769,5 +_,24 @@
+@@ -48769,10 +_,31 @@
  		return num;
  	}
  
@@ -2001,11 +2002,14 @@
  	public Item DeepClone() => (Item)MemberwiseClone();
 +	*/
 +	internal Item DeepClone() => Clone();
-@@ -48775,1 +_,3 @@
+ 
 +	// TML: Made internal + renamed in Item.TML.cs with more descriptive name (IsNotSameTypePrefixAndStack)
 +	// Many usages replaced with !IsNetStateEquivalent
 -	public bool IsNotTheSameAs(Item compareItem)
 +	internal bool IsNotTheSameAs(Item compareItem)
+ 	{
+ 		if (type == compareItem.type && stack == compareItem.stack)
+ 			return prefix != compareItem.prefix;
 @@ -48796,11 +_,19 @@
  		return false;
  	}
@@ -2026,9 +2030,7 @@
  	public void ClearNameOverride()
  	{
  		_nameOverride = null;
-@@ -48820,8 +_,12 @@
- 		dye = 0;
- 		shoot = 0;
+@@ -48822,6 +_,10 @@
  		mountType = -1;
  		useStyle = 0;
  		holdStyle = 0;
@@ -2039,7 +2041,7 @@
  	}
  
  	public void OnPurchase(Item item)
-@@ -48843,8 +_,8 @@
+@@ -48843,9 +_,9 @@
  	public void Serialize(BinaryWriter writer, ItemSerializationContext context)
  	{
  		if (context == ItemSerializationContext.SavingAndLoading) {
@@ -2050,6 +2052,7 @@
 +			ItemIO.WriteByteVanillaPrefix(this, writer);
  		}
  	}
+ 
 @@ -48857,7 +_,7 @@
  			Prefix(reader.ReadByte());
  		}

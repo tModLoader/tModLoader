@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/WorldBuilding/StructureMap.cs
 +++ src/tModLoader/Terraria/WorldBuilding/StructureMap.cs
-@@ -6,16 +_,29 @@
+@@ -6,6 +_,13 @@
  
  namespace Terraria.WorldBuilding;
  
@@ -14,8 +14,7 @@
  public class StructureMap
  {
  	[JsonProperty]
- 	private readonly List<Rectangle> _structures = new List<Rectangle>(2048);
- 	[JsonProperty]
+@@ -14,8 +_,14 @@
  	private readonly List<Rectangle> _protectedStructures = new List<Rectangle>(2048);
  	private readonly object _lock = new object();
  

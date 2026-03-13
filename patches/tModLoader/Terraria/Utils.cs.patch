@@ -1,7 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Utils.cs
 +++ src/tModLoader/Terraria/Utils.cs
-@@ -19,7 +_,8 @@
- using ReLogic.Utilities;
+@@ -20,6 +_,7 @@
  using Terraria.DataStructures;
  using Terraria.GameContent;
  using Terraria.Localization;
@@ -46,8 +45,7 @@
  
  		return dictionary;
  	}
-@@ -142,9 +_,29 @@
- 		return value;
+@@ -143,8 +_,28 @@
  	}
  
  	public static Rectangle Clamp(Rectangle r, Rectangle bounds) => new Rectangle(Clamp(r.X, bounds.Left, bounds.Right - r.Width), Clamp(r.Y, bounds.Top, bounds.Bottom - r.Height), r.Width, r.Height);
@@ -99,7 +97,7 @@
  	public static float MultiLerp(float percent, params float[] floats)
  	{
  		float num = 1f / ((float)floats.Length - 1f);
-@@ -228,4 +_,8 @@
+@@ -228,6 +_,10 @@
  		return (t - from) / (to - from);
  	}
  
@@ -108,6 +106,8 @@
 +	/// <para/> For example, an input of (1.5f, 1, 3, 20, 30) would result in 22.5 because 1.5 is 25% between 1 and 3 and 25% between 20 and 30 is 22.5.
 +	/// </summary>
  	public static float Remap(float fromValue, float fromMin, float fromMax, float toMin, float toMax, bool clamped = true) => MathHelper.Lerp(toMin, toMax, GetLerpValue(fromMin, fromMax, fromValue, clamped));
+ 	public static double Remap(double fromValue, double fromMin, double fromMax, double toMin, double toMax, bool clamped = true) => Lerp(toMin, toMax, GetLerpValue(fromMin, fromMax, fromValue, clamped));
+ 	public static double EaseOutBounce(double x) => BounceEaseOut(x, 4, 2.0);
 @@ -580,6 +_,10 @@
  		return (t - from) / (to - from);
  	}
@@ -139,11 +139,10 @@
  	public static int[] CoinsSplit(long count)
  	{
  		int[] array = new int[4];
-@@ -928,18 +_,34 @@
- 			return false;
+@@ -929,16 +_,32 @@
  		}
  	}
-+
+ 
 +	private static void OpenFolderXdg(string folderPath)
 +	{
 +		ProcessStartInfo processStartInfo = new ProcessStartInfo {
@@ -156,7 +155,7 @@
 +		processStartInfo.EnvironmentVariables["LD_LIBRARY_PATH"] = "/usr/lib:/lib";
 +		Process.Start(processStartInfo);
 +	}
- 
++
  	public static void OpenFolder(string folderPath)
  	{
  		if (TryCreatingDirectory(folderPath)) {
@@ -173,7 +172,6 @@
  			}
  			else {
  #if NETCORE
- 				Process.Start(new ProcessStartInfo(folderPath) { UseShellExecute = true });
 @@ -960,6 +_,11 @@
  		return array;
  	}
@@ -205,8 +203,7 @@
  	public static Rectangle Frame(this Texture2D tex, int horizontalFrames = 1, int verticalFrames = 1, int frameX = 0, int frameY = 0, int sizeOffsetX = 0, int sizeOffsetY = 0)
  	{
  		int num = tex.Width / horizontalFrames;
-@@ -1309,8 +_,10 @@
- 	public static Vector2 ToVector2(this Point16 p) => new Vector2(p.X, p.Y);
+@@ -1310,7 +_,9 @@
  	public static Vector3 ToVector3(this Vector2 v) => new Vector3(v.X, v.Y, 0f);
  	public static Vector2D ToVector2D(this Point p) => new Vector2D(p.X, p.Y);
  	public static Vector2D ToVector2D(this Point16 p) => new Vector2D(p.X, p.Y);
@@ -216,7 +213,7 @@
  	public static Vector2 ToWorldCoordinates(this Point16 p, float autoAddX = 8f, float autoAddY = 8f) => p.ToVector2() * 16f + new Vector2(autoAddX, autoAddY);
  
  	public static Vector2 MoveTowards(this Vector2 currentPosition, Vector2 targetPosition, float maxAmountAllowedToMove)
-@@ -1335,15 +_,22 @@
+@@ -1335,8 +_,10 @@
  		return num2;
  	}
  
@@ -227,7 +224,7 @@
  	public static Point ToTileCoordinates(this Vector2 vec) => new Point((int)vec.X >> 4, (int)vec.Y >> 4);
  	public static Point ToTileCoordinates(this Vector2D vec) => new Point((int)vec.X >> 4, (int)vec.Y >> 4);
  	public static Point ToPoint(this Vector2 v) => new Point((int)v.X, (int)v.Y);
- 	public static Point ToPoint(this Vector2D v) => new Point((int)v.X, (int)v.Y);
+@@ -1344,6 +_,11 @@
  	public static Vector2 ToVector2(this Vector2D v) => new Vector2((float)v.X, (float)v.Y);
  	public static Vector2D ToVector2D(this Vector2 v) => new Vector2D(v.X, v.Y);
  
@@ -239,9 +236,7 @@
  	public static Vector2 SafeNormalize(this Vector2 v, Vector2 defaultValue)
  	{
  		if (v == Vector2.Zero || v.HasNaNs())
-@@ -1360,8 +_,9 @@
- 		return Vector2D.Normalize(v);
- 	}
+@@ -1362,6 +_,7 @@
  
  	public static Point ClampedInWorld(this Point p, int fluff = 0) => new Point(Clamp(p.X, fluff, Main.maxTilesX - fluff - 1), Clamp(p.Y, fluff, Main.maxTilesX - fluff - 1));
  

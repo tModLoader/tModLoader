@@ -1,6 +1,9 @@
 --- src/TerrariaNetCore/Terraria/WorldBuilding/WorldGenerator.cs
 +++ src/tModLoader/Terraria/WorldBuilding/WorldGenerator.cs
-@@ -8,6 +_,10 @@
+@@ -5,8 +_,12 @@
+ using System.Linq;
+ using System.Threading;
+ using ReLogic.Threading;
 +using System;
  using Terraria.GameContent.UI.States;
  using Terraria.Testing;
@@ -10,4 +13,3 @@
  using Terraria.Utilities;
  
  namespace Terraria.WorldBuilding;
- 

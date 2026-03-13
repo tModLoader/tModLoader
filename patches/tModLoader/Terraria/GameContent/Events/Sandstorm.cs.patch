@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/GameContent/Events/Sandstorm.cs
 +++ src/tModLoader/Terraria/GameContent/Events/Sandstorm.cs
-@@ -10,6 +_,6 @@
+@@ -10,7 +_,7 @@
  	private const int SANDSTORM_DURATION_MINIMUM = 28800;
  	private const int SANDSTORM_DURATION_MAXIMUM = 86400;
  	public static bool Happening;
@@ -8,6 +8,7 @@
 +	public static double TimeLeft; //TML: Changed from int to double.
  	public static float Severity;
  	public static float IntendedSeverity;
+ 
 @@ -28,9 +_,10 @@
  				if (TimeLeft > 86400)
  					TimeLeft = 0;

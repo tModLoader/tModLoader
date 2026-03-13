@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/ReLogic/Content/Sources/ZipContentSource.cs
 +++ src/tModLoader/ReLogic/Content/Sources/ZipContentSource.cs
-@@ -7,20 +_,18 @@
+@@ -7,18 +_,16 @@
  
  namespace ReLogic.Content.Sources;
  
@@ -21,9 +21,7 @@
  	public string FileWatcherPath => null;
  
  	public ZipContentSource(string path)
- 		: this(path, "")
- 	{
-@@ -38,5 +_,6 @@
+@@ -38,9 +_,11 @@
  			throw new ArgumentException("Content directory cannot contain \"..\"", "contentDir");
  
  		_basePath = CleanZipPath(contentDir);
@@ -31,10 +29,11 @@
 +
 +		BuildEntryList(); //BuildExtensionFreeEntryList();
  	}
-@@ -44,2 +_,3 @@
+ 
 +	/*
  	public bool HasAsset(string assetName)
  	{
+ 		if (!_entries.TryGetValue(assetName, out var _))
 @@ -70,28 +_,42 @@
  
  		return Path.GetExtension(value.FileName) ?? "";
@@ -59,8 +58,8 @@
  		return memoryStream;
  	}
  
-+	//TML: Renamed from BuildExtensionFreeEntryList()
 -	public void Refresh()
++	//TML: Renamed from BuildExtensionFreeEntryList()
 +	private void BuildEntryList()
  	{
  		_entries.Clear();

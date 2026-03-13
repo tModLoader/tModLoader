@@ -1,6 +1,8 @@
 --- src/TerrariaNetCore/Terraria/Localization/LocalizedText.cs
 +++ src/tModLoader/Terraria/Localization/LocalizedText.cs
-@@ -3,7 +_,8 @@
+@@ -1,11 +_,12 @@
+ using System;
+ using System.Collections.Generic;
 +using System;
  using System.ComponentModel;
  using System.Text.RegularExpressions;
@@ -10,14 +12,19 @@
 -public class LocalizedText
 +public partial class LocalizedText
  {
-@@ -16,10 +_,18 @@
+ 	public static readonly LocalizedText Empty = new LocalizedText("", "");
+ 	private static Regex _substitutionRegex = new Regex("{(\\?(?:!)?)?([a-zA-Z][\\w\\.]*)}", RegexOptions.Compiled);
+@@ -13,6 +_,9 @@
+ 	private object _value;
+ 	private static Dictionary<Type, PropertyDescriptorCollection> _propertyLookupCache = new Dictionary<Type, PropertyDescriptorCollection>();
+ 
 +	/// <summary>
 +	/// Retrieves the text value. This is the actual text the user should see.
 +	/// </summary>
  	public string Value {
  		get {
  			if (_value is VariableText variableText && variableText.TryFormat(Lang.GetGlobalSubstitution, out var formatted))
- 				return formatted;
+@@ -20,6 +_,11 @@
  
  			return _value.ToString();
  		}
@@ -29,7 +36,7 @@
  	}
  
  	public string UnformattedValue => _value.ToString();
-@@ -83,5 +_,12 @@
+@@ -83,6 +_,13 @@
  		return true;
  	}
  
@@ -42,6 +49,7 @@
 +	/// <returns></returns>
  	public string FormatWith(object obj)
  	{
+ 		if (!TryFormatWith(obj, out var formatted))
 @@ -115,7 +_,12 @@
  		return true;
  	}
@@ -55,7 +63,7 @@
  	public NetworkText ToNetworkText(params object[] substitutions) => NetworkText.FromKey(Key, substitutions);
  
  	public static explicit operator string(LocalizedText text)
-@@ -123,8 +_,11 @@
+@@ -123,10 +_,13 @@
  		return text.Value;
  	}
  
@@ -67,3 +75,5 @@
 +	*/
 +
  	public override string ToString() => Value;
+ 
+ 	public bool EqualsCommand(string text)

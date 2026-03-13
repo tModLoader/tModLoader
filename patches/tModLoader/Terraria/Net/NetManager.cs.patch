@@ -27,7 +27,7 @@
  		for (int i = 0; i < 256; i++) {
  			if (i != ignoreClient && Netplay.Clients[i].IsConnected() && conditionToBroadcast(i))
  				SendData(Netplay.Clients[i].Socket, packet);
-@@ -108,13 +_,15 @@
+@@ -108,12 +_,14 @@
  
  	public void SendToServer(NetPacket packet)
  	{
@@ -42,14 +42,14 @@
  		SendData(Netplay.Clients[playerId].Socket, packet);
  		packet.Recycle();
  	}
- 
-@@ -137,4 +_,5 @@
+@@ -137,10 +_,18 @@
  			socket.AsyncSend(packet.Buffer.Data, 0, packet.Length, EmptyCallback);
  		}
  		catch {
 +			Logging.ServerConsoleLine(Language.GetTextValue("Error.ExceptionNormal", Language.GetTextValue("Error.DataSentAfterConnectionLost")), Level.Warn);
  		}
-@@ -143,4 +_,11 @@
+ 	}
+ 
  	private static void EmptyCallback(object state)
  	{
 +	}

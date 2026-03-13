@@ -8,7 +8,7 @@
  using Terraria.UI;
  using Terraria.UI.Gamepad;
  
-@@ -1536,7 +_,16 @@
+@@ -1536,6 +_,15 @@
  				break;
  		}
  
@@ -24,7 +24,6 @@
  		_femaleArmor = (_maleArmor = default(ArmorAssignments));
  		Click_CharClothStyle(null, null);
  		UpdateSelectedGender();
- 		UpdateColorPickers();
 @@ -1601,8 +_,14 @@
  		int num = 0;
  		byte difficulty = _player.difficulty;

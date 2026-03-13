@@ -23,7 +23,7 @@
  	private int wFallFrCounter;
  	private int regularFrame;
  	private int wFallFrCounter2;
-@@ -254,7 +_,7 @@
+@@ -255,7 +_,7 @@
  		}
  	}
  
@@ -32,7 +32,7 @@
  	{
  		Main.tileSolid[546] = false;
  		float num = 0f;
-@@ -555,8 +_,12 @@
+@@ -556,8 +_,12 @@
  					case 267:
  					case 268:
  						num12 = 15 + num34 - 262;
@@ -45,7 +45,7 @@
  
  				Color color5 = Lighting.GetColor(num13, num14);
  				if (k > 50)
-@@ -825,8 +_,12 @@
+@@ -826,8 +_,12 @@
  				num = 255f * alpha;
  				num2 = 255f * alpha;
  				num3 = 255f * alpha;
@@ -58,7 +58,7 @@
  
  		aColor = new Color((int)num, (int)num2, (int)num3, (int)num4);
  		return aColor;
-@@ -875,6 +_,9 @@
+@@ -876,6 +_,9 @@
  
  	private static void AddLight(int waterfallType, int x, int y)
  	{
@@ -68,7 +68,7 @@
  		switch (waterfallType) {
  			case 1: {
  				float r;
-@@ -1000,5 +_,7 @@
+@@ -1002,5 +_,7 @@
  
  		if (Main.liquidAlpha[13] > 0f)
  			DrawWaterfall(24, Main.liquidAlpha[13]);

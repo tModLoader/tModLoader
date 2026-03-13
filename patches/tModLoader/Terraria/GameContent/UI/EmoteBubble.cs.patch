@@ -228,7 +228,7 @@
  	}
  
  	private Vector2 GetPosition(out SpriteEffects effect)
-@@ -233,7 +_,11 @@
+@@ -233,6 +_,10 @@
  		}
  	}
  
@@ -239,7 +239,6 @@
  	public static void MakeLocalPlayerEmote(int emoteId)
  	{
  		if (Main.netMode == 2 || !Main.LocalPlayer.dead) {
- 			if (Main.netMode == 0) {
 @@ -290,7 +_,15 @@
  			ProbeCombat(list);
  		}

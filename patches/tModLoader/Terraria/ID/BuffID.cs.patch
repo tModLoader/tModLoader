@@ -1,6 +1,8 @@
 --- src/TerrariaNetCore/Terraria/ID/BuffID.cs
 +++ src/tModLoader/Terraria/ID/BuffID.cs
-@@ -4,19 +_,73 @@
+@@ -2,23 +_,77 @@
+ using System.Collections.Generic;
+ using ReLogic.Reflection;
  using Terraria.DataStructures;
 +using Terraria.ModLoader;
  
@@ -78,7 +80,11 @@
 +		/// <br/> Defaults to <see langword="false"/>.
 +		/// </summary>
  		public static bool[] NurseCannotRemoveDebuff = Factory.CreateBoolSet(28, 34, 87, 89, 21, 86, 199, 332, 333, 334, 165, 146, 48, 158, 157, 350, 215, 147, 321, 43);
-@@ -49,6 +_,13 @@
+ 		public static int[] AddBuffTimeAdditivelyToCap = Factory.CreateIntSet(0, 94, 600, 383, 43200);
+ 		public static Dictionary<int, IBuffTextHandler> BuffTextHandlers = new Dictionary<int, IBuffTextHandler> {
+@@ -47,8 +_,15 @@
+ 			{ 385, new CachedProjectileCounterBuffTextHandler(1093) },
+ 			{ 386, new CachedProjectileCounterBuffTextHandler(1094) }
  		};
 +
 +		/// <summary>

@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/GameContent/Tile_Entities/TEHatRack.cs
 +++ src/tModLoader/Terraria/GameContent/Tile_Entities/TEHatRack.cs
-@@ -4,10 +_,11 @@
+@@ -4,11 +_,12 @@
  using Terraria.Audio;
  using Terraria.DataStructures;
  using Terraria.GameInput;
@@ -13,6 +13,7 @@
 +public sealed partial class TEHatRack : TileEntityType<TEHatRack>, IFixLoadedData
  {
  	private const int MyTileID = 475;
+ 	public const int entityTileWidth = 3;
 @@ -58,8 +_,8 @@
  		for (int i = 0; i < 2; i++) {
  			Item item = _items[i];

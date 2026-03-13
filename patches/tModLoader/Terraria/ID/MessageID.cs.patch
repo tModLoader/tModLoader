@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/ID/MessageID.cs
 +++ src/tModLoader/Terraria/ID/MessageID.cs
-@@ -1,163 +_,673 @@
+@@ -1,165 +_,675 @@
  using Terraria.Utilities;
 +using Terraria.ModLoader;
  
@@ -286,10 +286,10 @@
 +	// Player.itemRotation, itemAnimation and channel
 +	// Forwarded to other clients
  	public const byte ItemRotationAndAnimation = 41;
--	public const byte Unknown42 = 42;
 +
 +	// Player's current and maximum mana
 +	// Sent on change, and the major client and server sync
+-	public const byte Unknown42 = 42;
 +	public const byte PlayerMana = 42;
 +
 +	// Restores mana
@@ -407,10 +407,10 @@
 +	/// <br/><br/> <b>Client->Server only</b>
 +	/// </summary>
  	public const byte SpawnBossUseLicenseStartEvent = 61;
--	public const byte Unknown62 = 62;
 +
 +	// Player, dodgeType { NinjaDodge = 1, ShadowDodge = 2 }
 +	// Forwarded to other clients
+-	public const byte Unknown62 = 62;
 +	public const byte Dodge = 62;
 +
 +	// WorldGen.paintTile(x, y, color)
@@ -686,3 +686,5 @@
  	public const byte SyncItemCannotBeTakenByEnemies = 148;
 +
  	public const byte DeadCellsDisplayJarTryPlacing = 149;
+ 	public const byte SpectatePlayer = 150;
+ 	public const byte SyncItemDespawn = 151;

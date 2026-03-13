@@ -8,8 +8,7 @@
  using Microsoft.Xna.Framework;
  using Microsoft.Xna.Framework.Graphics.PackedVector;
  using Terraria.Audio;
-@@ -16,11 +_,15 @@
- using Terraria.GameContent.UI;
+@@ -17,10 +_,14 @@
  using Terraria.ID;
  using Terraria.Localization;
  using Terraria.Map;
@@ -102,10 +101,7 @@
  				}
  				break;
  			case 3:
-@@ -217,9 +_,12 @@
- 					TrySendingItemArray(num91, player9.Loadouts[1].Dye, PlayerItemSlotID.Loadout2_Dye_0);
- 					TrySendingItemArray(num91, player9.Loadouts[2].Armor, PlayerItemSlotID.Loadout3_Armor_0);
- 					TrySendingItemArray(num91, player9.Loadouts[2].Dye, PlayerItemSlotID.Loadout3_Dye_0);
+@@ -220,6 +_,9 @@
  					if (!string.IsNullOrWhiteSpace(Netplay.HostToken))
  						NetMessage.TrySendData(161, -1, -1, NetworkText.FromLiteral(Netplay.HostToken));
  
@@ -115,7 +111,8 @@
  					NetMessage.TrySendData(6);
  					if (Netplay.Connection.State == 2)
  						Netplay.Connection.State = 3;
-@@ -246,10 +_,10 @@
+@@ -245,11 +_,11 @@
+ 
  				player18.voicePitchOffset = Utils.Clamp(player18.voicePitchOffset, -1f, 1f);
  				player18.hair = reader.ReadByte();
 -				if (player18.hair >= 228)
@@ -128,7 +125,9 @@
  				ReadAccessoryVisibility(reader, player18.hideVisibleAccessory);
  				player18.hideMisc = reader.ReadByte();
  				player18.hairColor = reader.ReadRGB();
-@@ -327,5 +_,7 @@
+@@ -325,9 +_,11 @@
+ 			case 5: {
+ 				int num35 = reader.ReadByte();
  				int num36 = reader.ReadInt16();
 +				/*
  				int stack3 = reader.ReadInt16();
@@ -136,7 +135,12 @@
  				int type4 = reader.ReadInt16();
 +				*/
  				BitsByte bitsByte3 = reader.ReadByte();
-@@ -344,5 +_,8 @@
+ 				bool favorited = bitsByte3[0];
+ 				bool flag2 = bitsByte3[1];
+@@ -341,10 +_,13 @@
+ 				lock (player2) {
+ 					PlayerItemSlotID.SlotReference slot = new PlayerItemSlotID.SlotReference(player2, num36);
+ 					PlayerItemSlotID.SlotReference slotReference = new PlayerItemSlotID.SlotReference(Main.clientPlayer, num36);
 +					Item item = ItemIO.Receive(reader, readStack: true);
 +					/*
  					Item item = new Item();
@@ -145,8 +149,9 @@
  					item.Prefix(prefixWeWant2);
 +					*/
  					item.favorited = favorited;
-@@ -550,7 +_,11 @@
- 					Main.invasionType = reader.ReadSByte();
+ 					slot.Item = item;
+ 					if (num35 == Main.myPlayer && !Main.ServerSideCharacter)
+@@ -551,6 +_,10 @@
  					Main.LobbyId = reader.ReadUInt64();
  					Sandstorm.IntendedSeverity = reader.ReadSingle();
  					ExtraSpawnPointManager.Read(reader, networking: true);
@@ -216,19 +221,22 @@
  					worldItem4.position = position4;
  					worldItem4.velocity = velocity3;
  					worldItem4.shimmered = shimmered;
-@@ -1254,5 +_,6 @@
+@@ -1254,6 +_,7 @@
  					itemSyncPersistentStats.PasteInto(worldItem4);
  				}
  				else {
 +					if (num201 == 400) Main.timeItemSlotCannotBeReusedFor[num201] = 0; // Fix #4372
  					if (Main.timeItemSlotCannotBeReusedFor[num201] > 0)
  						break;
-@@ -1279,4 +_,5 @@
+ 
+@@ -1278,6 +_,7 @@
+ 
  					worldItem4.Prefix(prefix4);
  					worldItem4.stack = stack7;
 +					ItemIO.ReceiveModData(worldItem4.inner, reader);
  					worldItem4.position = position4;
  					worldItem4.velocity = velocity3;
+ 					worldItem4.timeLeftInWhichTheItemCannotBeTakenByEnemies = timeLeftInWhichTheItemCannotBeTakenByEnemies;
 @@ -1434,11 +_,16 @@
  				if (num218 == 668)
  					NPC.deerclopsBoss = num215;
@@ -316,8 +324,7 @@
  				}
  				else {
  					Main.npc[num211].life = 0;
-@@ -1558,7 +_,11 @@
- 					Main.npc[num211].active = false;
+@@ -1559,7 +_,11 @@
  				}
  
  				if (Main.netMode == 2) {
@@ -328,7 +335,8 @@
 +
  					if (Main.npc[num211].life <= 0)
  						NetMessage.TrySendData(23, -1, -1, null, num211);
-@@ -1630,7 +_,12 @@
+ 
+@@ -1630,16 +_,26 @@
  			case 32: {
  				int num27 = reader.ReadInt16();
  				int num28 = reader.ReadByte();
@@ -341,7 +349,6 @@
 +				int prefixWeWant = -1;
 +				int type3 = -1;
  				if (num27 >= 0 && num27 < 8000 && Main.chest[num27] != null) {
-@@ -1637,9 +_,14 @@
  					if (Main.chest[num27].item[num28] == null)
  						Main.chest[num27].item[num28] = new Item();
  
@@ -378,26 +385,26 @@
  					switch (b2) {
 +						/*
  						case 0: {
--							int num8 = WorldGen.PlaceChest(num2, num3, 21, notNearOtherChests: false, num4);
 +						*/
 +						case byte _ when b2 % 100 == 0: {
 +							if (modType == 0)
 +								modType = TileID.Containers;
 +
 +							//TML: '21' -> 'modType'
+-							int num8 = WorldGen.PlaceChest(num2, num3, 21, notNearOtherChests: false, num4);
 +							int num8 = WorldGen.PlaceChest(num2, num3, modType, notNearOtherChests: false, num4);
 +
  							if (num8 == -1) {
--								NetMessage.TrySendData(34, whoAmI, -1, null, b2, num2, num3, num4, num8);
 +								//TML: Added 'modType' at the end.
+-								NetMessage.TrySendData(34, whoAmI, -1, null, b2, num2, num3, num4, num8);
 +								NetMessage.TrySendData(34, whoAmI, -1, null, b2, num2, num3, num4, num8, modType);
  								int itemDrop_Chests2 = WorldGen.GetItemDrop_Chests(num4, secondType: false);
  								if (itemDrop_Chests2 > 0)
  									Item.NewItem(new EntitySource_TileBreak(num2, num3), num2 * 16, num3 * 16, 32, 32, itemDrop_Chests2, 1, noBroadcast: true);
  							}
  							else {
--								NetMessage.TrySendData(34, -1, -1, null, b2, num2, num3, num4, num8);
 +								//TML: Added 'modType' at the end.
+-								NetMessage.TrySendData(34, -1, -1, null, b2, num2, num3, num4, num8);
 +								NetMessage.TrySendData(34, -1, -1, null, b2, num2, num3, num4, num8, modType);
  							}
  
@@ -526,7 +533,7 @@
  						NetMessage.TrySendData(3, whoAmI);
  					}
  					else {
-@@ -1940,10 +_,15 @@
+@@ -1940,7 +_,12 @@
  				float itemRotation = reader.ReadSingle();
  				int itemAnimation = reader.ReadInt16();
  				player.itemRotation = itemRotation;
@@ -539,9 +546,6 @@
  				player.channel = player.inventory[player.selectedItem].channel;
  				if (Main.netMode == 2)
  					NetMessage.TrySendData(41, -1, whoAmI, null, num33);
- 
- 				break;
- 			}
 @@ -2065,7 +_,11 @@
  				if (Main.tile[num14, num15] == null)
  					Main.tile[num14, num15] = new Tile();
@@ -563,14 +567,16 @@
  					if (!NPC.AnyNPCs(num260))
  						NPC.SpawnOnPlayer(num259, num260);
  				}
-@@ -2769,5 +_,6 @@
+@@ -2769,7 +_,8 @@
  						TileEntity.Remove(result3);
  				}
  				else {
-+					//TML: Made 'lightSend' true.
 -					TileEntity tileEntity = TileEntity.Read(reader, 319, networkSend: true);
++					//TML: Made 'lightSend' true.
 +					TileEntity tileEntity = TileEntity.Read(reader, Main.curRelease, networkSend: true, lightSend: true);
  					tileEntity.ID = num150;
+ 					TileEntity.Add(tileEntity);
+ 				}
 @@ -2843,10 +_,21 @@
  				if (Main.netMode == 2) {
  					short x = reader.ReadInt16();
@@ -593,7 +599,8 @@
  				}
  				break;
  			case 91: {
-@@ -2856,5 +_,12 @@
+@@ -2855,6 +_,13 @@
+ 
  				int num262 = reader.ReadInt32();
  				int num263 = reader.ReadByte();
 +
@@ -667,8 +674,7 @@
  					EmoteBubble.NewBubble(num272, new WorldUIAnchor(Main.player[num271]), 360);
  					EmoteBubble.CheckForNPCsToReactToEmoteBubble(num272, Main.player[num271]);
  				}
-@@ -3321,10 +_,20 @@
- 			case 123:
+@@ -3322,10 +_,20 @@
  				if (Main.netMode == 2) {
  					short x14 = reader.ReadInt16();
  					int y14 = reader.ReadInt16();
@@ -688,6 +694,7 @@
 +					TEWeaponsRack.TryPlacing(x14, y14, item, item.stack);
  				}
  				break;
+ 			case 124: {
 @@ -3453,25 +_,48 @@
  					ushort key = reader.ReadUInt16();
  					LegacySoundStyle legacySoundStyle = SoundID.SoundByIndex[key];

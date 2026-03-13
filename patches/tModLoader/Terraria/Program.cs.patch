@@ -8,7 +8,7 @@
  using System.Reflection;
  using System.Runtime.CompilerServices;
  using System.Text;
-@@ -10,16 +_,20 @@
+@@ -10,6 +_,10 @@
  using ReLogic.OS;
  using Terraria.Initializers;
  using Terraria.Localization;
@@ -19,9 +19,7 @@
  using Terraria.Social;
  using Terraria.Utilities;
  #if FNA
- using Microsoft.Xna.Framework.Graphics;
- using SDL3;
- #endif
+@@ -19,7 +_,7 @@
  
  namespace Terraria;
  
@@ -85,8 +83,7 @@
  		if (initializeStaticMembers)
  			ForceStaticInitializers(assembly);
  	}
-@@ -139,7 +_,11 @@
- 		if (Debugger.IsAttached)
+@@ -140,6 +_,10 @@
  			return;
  #endif
  
@@ -114,7 +111,7 @@
  		if (monoArgs)
  			args = Utils.ConvertMonoArgsToDotNet(args);
  
-@@ -166,8 +_,30 @@
+@@ -166,6 +_,28 @@
  		// Unify server and client dll via launch param
  		Main.dedServ = LaunchParameters.ContainsKey("-server");
  #endif
@@ -143,8 +140,6 @@
  
  #if NETCORE
  		// Remove bad environment variables that might be set by other app installs
- 		if (Main.dedServ) {
- 			Environment.SetEnvironmentVariable("FNA_PLATFORM_BACKEND", "NONE");
 @@ -179,7 +_,9 @@
  
  		ThreadPool.SetMinThreads(8, 8);
@@ -170,8 +165,7 @@
  			Lang.InitializeLegacyLocalization();
  			SocialAPI.Initialize();
  			LaunchInitializer.LoadParameters(main);
-@@ -218,19 +_,23 @@
- 			main.Run();
+@@ -219,7 +_,10 @@
  #endif
  		}
  		catch (Exception e) {
@@ -182,18 +176,14 @@
  		}
  	}
  
- 	private static void LogFNANativeLibVersions()
- 	{
- #if FNA
- 		Console.WriteLine(("SDL v" + SDL.SDL_GetVersion() + "." + SDL.SDL_GetRevision()) ?? "");
- 		uint num = FNA3D.FNA3D_LinkedVersion();
- 		Console.WriteLine(("FNA3D v" + num / 10000 + "." + num / 100 % 100 + "." + num % 100) ?? "");
- 		uint num2 = FAudio.FAudioLinkedVersion();
- 		Console.WriteLine(("FAudio v" + num2 / 10000 + "." + num2 / 100 % 100 + "." + num2 % 100) ?? "");
+@@ -234,6 +_,7 @@
  #endif
  	}
  
 +	/*
+ 	private static void DisplayException(Exception e)
+ 	{
+ 		try {
 @@ -260,4 +_,5 @@
  		catch {
  		}

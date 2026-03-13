@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/ReLogic/Content/AssetRepository.cs
 +++ src/tModLoader/ReLogic/Content/AssetRepository.cs
-@@ -1,7 +_,13 @@
+@@ -1,30 +_,108 @@
  using System;
 +using System.Collections.Concurrent;
  using System.Collections.Generic;
@@ -14,7 +14,6 @@
  using ReLogic.Content.Sources;
  
  namespace ReLogic.Content;
-@@ -8,2 +_,17 @@
  
 +/// <summary>
 +/// Async loading has been fully integrated into AssetRepository
@@ -32,7 +31,6 @@
 +///
 +/// </summary>
  public class AssetRepository : IAssetRepository, IDisposable
-@@ -10,17 +_,74 @@
  {
 -	private readonly Dictionary<string, IAsset> _assets = new Dictionary<string, IAsset>();
 -	private IEnumerable<IContentSource> _sources = new IContentSource[0];
@@ -112,9 +110,11 @@
  
  	public int LoadedAssets { get; private set; }
  
-@@ -27,1 +_,1 @@
 -	public bool IsAsyncLoadingEnabled => _asyncLoader.IsRunning;
 +	public bool IsAsyncLoadingEnabled => true;
+ 
+ 	public AssetValueUpdated AssetValueUpdatedHandler { get; set; }
+ 
 @@ -36,43 +_,49 @@
  
  	public ContentFileUpdated ContentFileUpdatedHandler { get; set; }
@@ -261,7 +261,7 @@
  		}
  	}
  
-@@ -171,17 +_,68 @@
+@@ -171,103 +_,148 @@
  		if (mode == AssetRequestMode.DoNotLoad)
  			return;
  
@@ -276,6 +276,22 @@
 +	{
  		try {
 -			TryLoadingAsset(asset, mode);
+-		}
+-		catch (Exception e) {
+-			if (AssetLoadFailHandler != null)
+-				AssetLoadFailHandler(asset.Name, e);
+-
+-			throw;
+-		}
+-	}
+-
+-	private void TryLoadingAsset<T>(Asset<T> asset, AssetRequestMode mode) where T : class
+-	{
+-		IContentSource source = FindSourceForAsset(asset.Name);
+-		switch (mode) {
+-			case AssetRequestMode.ImmediateLoad: {
+-				bool flag = true;
+-				IRejectionReason rejectionReason = null;
 +			// request lock is held until we move to another thread/delayed callback
 +			if (!Monitor.IsEntered(_requestLock))
 +				throw new Exception($"Asset load started without holding {nameof(_requestLock)}");
@@ -305,51 +321,7 @@
 +				if (Monitor.IsEntered(_requestLock) && !IsMainThread)
 +					await Task.Yield(); // Release the lock!
 +
-+				T resultAsset;
-+				using (var stream = source.OpenStream(asset.Name + extension)) {
-+					try {
-+						resultAsset = await reader.FromStream<T>(stream, mainThreadCtx);
-+					} catch (Exception e) {
-+						source.Rejections.Reject(asset.Name, new ContentRejectionAssetReaderException(e));
-+						continue;
-+					}
-+				}
-+
-+				// continuation may be running on main thread
-+				if (source.ContentValidator != null && !source.ContentValidator.AssetIsValid(resultAsset, asset.Name, out var rejectionReason)) {
-+					source.Rejections.Reject(asset.Name, rejectionReason);
-+					continue;
-+				}
-+
-+				// Could just attempt to acquire the request lock here, but we don't want assets loading part-way through a frame
-+				await mainThreadCtx;
-+				if (!Monitor.IsEntered(_requestLock)) // check async code is functioning as expected
-+					throw new Exception($"Asset transfer started without holding {nameof(_requestLock)}");
-+
-+				asset.SubmitLoadedContent(resultAsset, source);
-+				LoadedAssets++;
-+				return;
-+			}
-+
-+			throw AssetLoadException.FromMissingAsset(asset.Name);
- 		}
- 		catch (Exception e) {
--			if (AssetLoadFailHandler != null)
--				AssetLoadFailHandler(asset.Name, e);
--
--			throw;
--		}
--	}
--
-@@ -188,49 +_,0 @@
--	private void TryLoadingAsset<T>(Asset<T> asset, AssetRequestMode mode) where T : class
--	{
--		IContentSource source = FindSourceForAsset(asset.Name);
--		switch (mode) {
--			case AssetRequestMode.ImmediateLoad: {
--				bool flag = true;
--				IRejectionReason rejectionReason = null;
--				T resultAsset;
+ 				T resultAsset;
 -				try {
 -					if (!_loader.TryLoad<T>(asset.Name, source, out resultAsset)) {
 -						source.RejectAsset(asset.Name, new ContentRejectionFromFailedLoad_ByAssetExtensionType());
@@ -391,7 +363,6 @@
 -
 -				break;
 -			}
-@@ -237,27 +_,10 @@
 -			case AssetRequestMode.AsyncLoad:
 -				_asyncLoader.Load(asset.Name, source, delegate (bool proper, T content) {
 -					if (!proper) {
@@ -419,6 +390,34 @@
 -			default:
 -				throw new ArgumentOutOfRangeException("mode", mode, null);
 -		}
++				using (var stream = source.OpenStream(asset.Name + extension)) {
++					try {
++						resultAsset = await reader.FromStream<T>(stream, mainThreadCtx);
++					} catch (Exception e) {
++						source.Rejections.Reject(asset.Name, new ContentRejectionAssetReaderException(e));
++						continue;
++					}
++				}
++
++				// continuation may be running on main thread
++				if (source.ContentValidator != null && !source.ContentValidator.AssetIsValid(resultAsset, asset.Name, out var rejectionReason)) {
++					source.Rejections.Reject(asset.Name, rejectionReason);
++					continue;
++				}
++
++				// Could just attempt to acquire the request lock here, but we don't want assets loading part-way through a frame
++				await mainThreadCtx;
++				if (!Monitor.IsEntered(_requestLock)) // check async code is functioning as expected
++					throw new Exception($"Asset transfer started without holding {nameof(_requestLock)}");
++
++				asset.SubmitLoadedContent(resultAsset, source);
++				LoadedAssets++;
++				return;
++			}
++
++			throw AssetLoadException.FromMissingAsset(asset.Name);
++		}
++		catch (Exception e) {
 +			AssetLoadFailHandler?.Invoke(asset.Name, e);
 +
 +			if (mode == AssetRequestMode.ImmediateLoad)
@@ -429,7 +428,6 @@
 +		}
 +	}
 +
-@@ -264,10 +_,70 @@
 +	private void SafelyWaitForLoad<T>(Asset<T> asset, Task loadTask, bool tracked) where T : class
 +	{
 +		if (asset.State == AssetState.Loaded)
@@ -503,7 +501,7 @@
  		_typeSpecificReloadActions[asset.GetType()](asset, mode);
  	}
  
-@@ -280,32 +_,38 @@
+@@ -280,6 +_,12 @@
  	private void ForceReloadAsset<T>(IAsset asset, AssetRequestMode mode) where T : class
  	{
  		Asset<T> asset2 = (Asset<T>)asset;
@@ -516,26 +514,7 @@
  		asset2.Unload();
  		LoadAsset(asset2, mode);
  	}
- 
- 	private bool UpdateAssetValue(IAsset asset, IContentSource source, string extension, Func<Stream> getStream) => _typeSpecificUpdateActions[asset.GetType()](asset, source, extension, getStream);
- 
- 	private bool UpdateAssetValue<T>(IAsset asset, IContentSource source, string extension, Func<Stream> getStream) where T : class
- 	{
- 		if (!_loader.TryLoad<T>(extension, getStream, out var resultAsset))
- 			return false;
- 
- 		IContentValidator contentValidator = source.ContentValidator;
- 		if (contentValidator != null && !contentValidator.AssetIsValid(resultAsset, asset.Name, out var rejectionReason))
- 			throw AssetLoadException.RejectedByValidator(rejectionReason);
- 
- 		SubmitLoadedContent((Asset<T>)asset, resultAsset, source);
- 		return true;
- 	}
- 
- 	private void SubmitLoadedContent<T>(Asset<T> asset, T value, IContentSource source) where T : class
- 	{
- 		asset.SubmitLoadedContent(value, source);
- 		if (AssetValueUpdatedHandler != null)
+@@ -306,7 +_,7 @@
  			AssetValueUpdatedHandler(asset, value);
  	}
  
@@ -543,6 +522,7 @@
 +	protected IContentSource FindSourceForAsset(string assetName) => _sources.FirstOrDefault((IContentSource source) => source.HasAsset(assetName)) ?? throw AssetLoadException.FromMissingAsset(assetName);
  
  	private void ThrowIfDisposed()
+ 	{
 @@ -320,7 +_,6 @@
  			return;
  

@@ -8,8 +8,7 @@
  using System.Security.Cryptography;
  using System.Text;
  using Microsoft.Xna.Framework;
-@@ -28,7 +_,11 @@
- using Terraria.ID;
+@@ -29,6 +_,10 @@
  using Terraria.IO;
  using Terraria.Localization;
  using Terraria.Map;
@@ -33,7 +32,7 @@
  {
  	public static class BuilderAccToggleIDs
  	{
-@@ -250,18 +_,31 @@
+@@ -250,21 +_,34 @@
  		public static void PlayerConnect(int playerIndex)
  		{
  			PressurePlateHelper.ResetPlayer(playerIndex);
@@ -61,10 +60,13 @@
 -			if (playerIndex == Main.myPlayer)
 +			if (playerIndex == Main.myPlayer) {
  				Main.ToggleGameplayUpdates(state: true);
-+
+ 
 +				// Added by TML.
 +				Social.Steam.SteamedWraps.BeginPlaytimeTracking();
 +			}
++
+ 			if (playerIndex == Main.myPlayer)
+ 				_localMinionRespawner.Clear();
  
 @@ -634,7 +_,7 @@
  	public Minecart.Customization MinecartSettings;
@@ -75,12 +77,16 @@
  	public OverheadMessage chatOverhead;
  	public SelectionRadial DpadRadial = new SelectionRadial();
  	public SelectionRadial CircularRadial = new SelectionRadial(SelectionRadial.SelectionMode.RadialCircular);
-@@ -645,2 +_,2 @@
+@@ -642,17 +_,25 @@
+ 	public bool alchemyTable;
+ 	public bool GoingDownWithGrapple;
+ 	public byte spelunkerTimer;
 -	public bool[] hideInfo = new bool[13];
 +	public bool[] hideInfo = new bool[InfoDisplayLoader.InfoDisplayCount];
 -	public int[] builderAccStatus = new int[BuilderAccToggleIDs.Count];
 +	public int[] builderAccStatus = new int[BuilderToggleLoader.BuilderToggleCount];
-@@ -649,10 +_,18 @@
+ 	public long lostCoins;
+ 	public string lostCoinString = "";
  	public int soulDrain;
  	public float drainBoost;
  	public bool dd2Accessory;
@@ -314,7 +320,7 @@
  	public int townNPCs;
  	public double headFrameCounter;
  	public double bodyFrameCounter;
-@@ -918,9 +_,20 @@
+@@ -918,10 +_,21 @@
  	public float maxRegenDelay;
  	public int sign = -1;
  	public bool editedChestName;
@@ -335,6 +341,7 @@
 +	/// </summary>
  	public bool mouseInterface;
  	public bool lastMouseInterface;
+ 	public int noThrow;
 @@ -940,9 +_,19 @@
  	public const int miscSlotMount = 3;
  	public const int miscSlotHook = 4;
@@ -434,9 +441,7 @@
  	public readonly Chest bank4 = Chest.CreateBank(-5);
  	public BitsByte voidVaultInfo;
  	public float headRotation;
-@@ -1004,33 +_,60 @@
- 	public Vector2 legVelocity;
- 	public float fullRotation;
+@@ -1006,31 +_,58 @@
  	public Vector2 fullRotationOrigin = Vector2.Zero;
  	public int fartKartCloudDelay;
  	public const int fartKartCloudDelayMax = 20;
@@ -776,8 +781,7 @@
  	public bool noItems;
  	public bool cursed;
  	public bool hungry;
-@@ -1403,30 +_,91 @@
- 	public bool parryDamageBuff;
+@@ -1404,29 +_,90 @@
  	public bool ballistaPanic;
  	public bool JustDroppedAnItem;
  	public bool IsAllowedToHoldItems = true;
@@ -868,9 +872,7 @@
  	public int SpawnY = -1;
  	public Vector2? PotionOfReturnOriginalUsePosition;
  	public Vector2? PotionOfReturnHomePosition;
-@@ -1434,33 +_,93 @@
- 	public int[] spY = new int[200];
- 	public string[] spN = new string[200];
+@@ -1436,31 +_,91 @@
  	public int[] spI = new int[200];
  	public static readonly int DefaultTileRangeX = 5;
  	public static readonly int DefaultTileRangeY = 3;
@@ -940,9 +942,9 @@
  	public bool oldAdjWaterSource;
  	public bool oldAdjHoney;
  	public bool oldAdjLava;
--	public bool[] adjTile = new bool[TileID.Count];
 +	public bool oldAdjShimmer;
 +
+-	public bool[] adjTile = new bool[TileID.Count];
 +	private bool[] _adjTile = new bool[TileLoader.TileCount];
 +	/// <summary>
 +	/// An array indexed by tile type (<see cref="Tile.TileType"/>, <see cref="TileID"/>) indicating if the player is within crafting range of each tile type. Used to determine if a player satisfies crafting station requirements for recipes. Note that this includes tiles acting like other tiles (<see cref="ModTile.AdjTiles"/>, <see cref="Player.AdjTiles"/>), so the player might not actually be near specific tiles. For example a player near a <see cref="TileID.MythrilAnvil"/> tile will count as being near <see cref="TileID.Anvils"/>.
@@ -982,7 +984,7 @@
  	public int lastCreatureHit = -1;
  	public bool accThirdEye;
  	public byte accThirdEyeCounter;
-@@ -1510,14 +_,29 @@
+@@ -1510,7 +_,21 @@
  	public Item boneGloveItem;
  	public bool goldRing;
  	public bool accDivingHelm;
@@ -1005,14 +1007,14 @@
  	public bool deadCellsPotionStation;
  	public bool hasLuck_LuckyCoin;
  	public bool hasLuck_LuckyHorseshoe;
- 	public bool hasLuck_LuckyClover;
- 	public bool hasLuck_WiltedClover;
+@@ -1519,6 +_,7 @@
  	public bool hasLuck_RavenFeather;
  	public bool isPerformingJump_DownDash;
  	public int downDashTime;
 +	/*
  	public bool hasJumpOption_Cloud;
  	public bool canJumpAgain_Cloud;
+ 	public bool isPerformingJump_Cloud;
 @@ -1546,16 +_,42 @@
  	public bool hasJumpOption_Basilisk;
  	public bool canJumpAgain_Basilisk;
@@ -1138,8 +1140,7 @@
  	public int cLight;
  	public int cYorai;
  	public int cPortableStool;
-@@ -1681,8 +_,17 @@
- 	public int cMinion;
+@@ -1682,7 +_,16 @@
  	public int cLeinShampoo;
  	public int cFlameWaker;
  	public int cCoat;
@@ -1156,7 +1157,7 @@
  	public bool[] npcTypeNoAggro = new bool[NPCID.Count];
  	public int lastPortalColorIndex;
  	public int _portalPhysicsTime;
-@@ -1690,22 +_,52 @@
+@@ -1690,12 +_,39 @@
  	public int lastTeleportPylonStyleUsed;
  	public float MountFishronSpecialCounter;
  	public Vector2 MinionRestTargetPoint = Vector2.Zero;
@@ -1196,8 +1197,7 @@
  	public int itemTimeMax;
  	public int toolTime;
  	public static int BlockInteractionWithProjectiles = 3;
- 	public const int SafeItemAnimationTimeForPreventingExploits = 20;
- 	private Point FailedNoSpaceLocation;
+@@ -1704,8 +_,11 @@
  	private int FailedNoSpaceCount;
  	private HashSet<Point> _blackListedTileCoordsForGrappling = new HashSet<Point>();
  	private bool makeStrongBee;
@@ -1218,7 +1218,7 @@
  	public float luck;
  	public float luckMinimumCap = -0.7f;
  	public float luckMaximumCap = 1f;
-@@ -1793,8 +_,8 @@
+@@ -1793,7 +_,7 @@
  	private const int SaveSlotIndex_GuideItem = 2;
  	private const int SaveSlotIndex_TinkererItem = 3;
  	private const int SaveSlotIndexCount = 4;
@@ -1227,8 +1227,8 @@
  	private Item[] _pendingRefunds = new Item[0];
  	private static readonly PlayerFileData _visualCloneDummyData = new PlayerFileData();
  	private static readonly MemoryStream _visualCloneStream = new MemoryStream();
- 	private static readonly BinaryWriter _visualCloneWriter = new BinaryWriter(_visualCloneStream);
-@@ -1879,10 +_,13 @@
+@@ -1878,6 +_,9 @@
+ 
  	public float BaseHeight => height - HeightOffsetBoost;
  
 +	/// <summary>
@@ -1237,11 +1237,6 @@
  	public Vector2 MountedCenter {
  		get {
  			return new Vector2(position.X + (float)(width / 2), position.Y + BaseHeight / 2f + HeightOffsetHitboxCenter);
- 		}
- 		set {
- 			position = new Vector2(value.X - (float)(width / 2), value.Y - BaseHeight / 2f - HeightOffsetHitboxCenter);
- 		}
- 	}
 @@ -1910,6 +_,9 @@
  
  	public override Vector2 VisualPosition => position + new Vector2(0f, gfxOffY);
@@ -1345,7 +1340,7 @@
  	public bool UsingSuperCart {
  		get {
  			if (!unlockedSuperCart)
-@@ -2356,13 +_,15 @@
+@@ -2356,11 +_,13 @@
  		}
  	}
  
@@ -1359,8 +1354,6 @@
  
  	public bool CanUseBootFlyingAbilities => !isPerformingJump_DownDash;
  
- 	public bool CanUseWingAbilities {
- 		get {
 @@ -2388,6 +_,11 @@
  
  	public int talkNPC { get; private set; }
@@ -1465,7 +1458,7 @@
  	public void SetDummyItemTime(int frames)
  	{
  		itemAnimation = frames;
-@@ -2705,20 +_,21 @@
+@@ -2705,7 +_,7 @@
  		itemTimeMax = frames + 1;
  	}
  
@@ -1474,14 +1467,7 @@
  	{
  		itemAnimation = frames;
  		itemAnimationMax = frames;
- 	}
- 
- 	private void SetItemAnimation(int baseFrames, float multiplier)
- 	{
- 		int val = (int)((float)baseFrames * multiplier);
- 		if (baseFrames > 0)
- 			val = Math.Max(val, 1);
- 
+@@ -2720,8 +_,9 @@
  		SetItemAnimation(val);
  	}
  
@@ -1489,6 +1475,9 @@
 +	public void ApplyItemAnimation(Item sItem)
  	{
 +		/*
+ 		int num = 0;
+ 		if (sItem.autoReuse && sItem.reuseDelay == 0 && sItem.useTime <= sItem.useAnimation && sItem.shoot > 0 && sItem.useStyle == 5)
+ 			num = 1;
 @@ -2738,6 +_,26 @@
  			SetItemAnimation(sItem.useAnimation + num);
  
@@ -1548,7 +1537,7 @@
  	public static byte FindClosest(Vector2 Position, int Width, int Height)
  	{
  		byte result = 0;
-@@ -3357,6 +_,7 @@
+@@ -3357,7 +_,8 @@
  			if (whoAmI == Main.myPlayer && theItemWeDrop.type == 5095)
  				LucyAxeMessage.Create(LucyAxeMessage.MessageSource.ThrownAway, base.Top, new Vector2(direction * 7, -2f));
  
@@ -1557,6 +1546,7 @@
 +			int num = Item.NewItem(GetItemSource_Misc(ItemSourceID.PlayerDrop), position, width, height, theItemWeDrop);
  			Main.item[num].OverrideWith(theItemWeDrop);
  			theItemWeDrop = new Item();
+ 			if (slot == 58)
 @@ -3422,6 +_,14 @@
  		return -1;
  	}
@@ -1572,8 +1562,7 @@
  	public void AddBuff(int type, int time, bool fromNetPvP = false)
  	{
  		if (buffImmune[type])
-@@ -3519,7 +_,8 @@
- 			if (buffType[i] != type)
+@@ -3520,6 +_,7 @@
  				continue;
  
  			int num = BuffID.Sets.AddBuffTimeAdditivelyToCap[type];
@@ -1667,7 +1656,8 @@
  					return bank4.item[j];
  			}
  		}
-@@ -3723,5 +_,6 @@
+@@ -3722,6 +_,7 @@
+ 	public void TrySwitchingLoadout(int loadoutIndex)
  	{
  		if ((whoAmI != Main.myPlayer || (!UsingOrReusingItem && !CCed && !dead)) && loadoutIndex != CurrentLoadoutIndex && loadoutIndex >= 0 && loadoutIndex < Loadouts.Length) {
 +			int oldLoadoutIndex = CurrentLoadoutIndex;
@@ -1704,7 +1694,8 @@
  				item.stack--;
  				if (item.stack <= 0)
  					item.TurnToAir();
-@@ -3805,13 +_,15 @@
+@@ -3804,12 +_,14 @@
+ 
  	private void QuickBuff_UseItemForBuff(Item item, int btype)
  	{
 +		ItemLoader.UseItem(item, this);
@@ -1719,8 +1710,6 @@
  			item.stack--;
  			if (item.stack <= 0)
  				item.TurnToAir();
- 		}
- 	}
 @@ -3826,8 +_,9 @@
  			return false;
  
@@ -1775,7 +1764,8 @@
  					item = inventory[i];
  					break;
  				}
-@@ -4200,5 +_,8 @@
+@@ -4199,7 +_,10 @@
+ 		else if (num2 == 646) {
  			num7 = 4;
  		}
 + 		/*
@@ -1784,7 +1774,8 @@
 +		else if (ProjectileID.Sets.SingleGrappleHook[num2]) {
  			num7 = 1;
  			num8 = 1;
-@@ -4208,9 +_,19 @@
+ 		}
+@@ -4208,10 +_,20 @@
  			num8 = 2;
  		}
  
@@ -1804,6 +1795,7 @@
 +
  		if (mount.Active && Mount.DismountsOnItemUse(mount.Type))
  			mount.TryEarlyDismount(this);
+ 
 @@ -4256,11 +_,14 @@
  					break;
  				case -1:
@@ -1832,7 +1824,7 @@
  		bool flag = victim is NPC && (((NPC)victim).type == 488 || ((NPC)victim).SpawnedFromStatue);
  		if (titaniumStormCooldown > 0)
  			flag = true;
-@@ -4700,5 +_,8 @@
+@@ -4700,6 +_,9 @@
  
  	public void OpenPresent(int itemType)
  	{
@@ -1841,6 +1833,7 @@
 +		/*
  		IEntitySource itemSource_OpenItem = GetItemSource_OpenItem(itemType);
  		if (Main.rand.Next(15) == 0 && Main.hardMode) {
+ 			QuickSpawnItem(itemSource_OpenItem, 602);
 @@ -4795,10 +_,13 @@
  					break;
  			}
@@ -1855,13 +1848,13 @@
  		IEntitySource itemSource_OpenItem = GetItemSource_OpenItem(itemType);
  		int num = Main.rand.Next(14);
  		if (num == 0 && Main.hardMode)
-@@ -4807,4 +_,5 @@
+@@ -4807,9 +_,19 @@
  			QuickSpawnItem(itemSource_OpenItem, 586, Main.rand.Next(20, 50));
  		else
  			QuickSpawnItem(itemSource_OpenItem, 591, Main.rand.Next(20, 50));
 +		*/ // OpenLegacyPresent
  	}
-@@ -4812,10 +_,21 @@
+ 
 +	// Return value added by TML.
 +	/// <summary>
 +	/// Spawns an item into the world at this players position. This is a simpler alternative to <see cref="Item.NewItem(IEntitySource, int, int, int, int, int, int, bool, int, bool, bool)"/>. This method can be called from multiplayer client code without necessitating manually syncing the item.
@@ -1876,15 +1869,17 @@
  	{
  		if (stack > 0) {
  			Item item2 = new Item();
- 			item2.SetDefaults(item);
- 			item2.Prefix(-1);
+@@ -4818,6 +_,8 @@
  			item2.stack = stack;
  			QuickSpawnItem(source, item2);
  		}
 +
 +		return number;
  	}
-@@ -4846,5 +_,12 @@
+ 
+ 	public void QuickSpawnItem(IEntitySource source, Item item)
+@@ -4845,6 +_,13 @@
+ 
  	public void OpenBossBag(int type)
  	{
 +		DropFromItem(type);
@@ -1988,14 +1983,13 @@
  		bool flag = true;
  		IEntitySource itemSource_OpenItem = GetItemSource_OpenItem(boxType);
  		while (flag) {
-@@ -7003,5 +_,6 @@
- 			QuickSpawnItem(itemSource_OpenItem, item);
+@@ -7004,10 +_,14 @@
  			if (Main.rand.Next(5) == 0)
  				QuickSpawnItem(itemSource_OpenItem, 5010);
  		}
 +		*/
  	}
-@@ -7009,5 +_,8 @@
+ 
  	public void OpenLockBox(int lockboxItemType)
  	{
 +		DropFromItem(lockboxItemType);
@@ -2053,7 +2047,7 @@
  		IEntitySource itemSource_OpenItem = GetItemSource_OpenItem(sourceItemType);
  		if (Main.rand.Next(4) == 0) {
  			if (Main.rand.Next(10) == 0)
-@@ -7129,34 +_,43 @@
+@@ -7129,9 +_,11 @@
  				QuickSpawnItem(itemSource_OpenItem, 4413);
  			else
  				QuickSpawnItem(itemSource_OpenItem, 4412);
@@ -2065,17 +2059,7 @@
  	}
  
  	private void QuickSpawnItem_CostumeSet(IEntitySource source, int item1, int item2, int item3)
- 	{
- 		QuickSpawnItem(source, item1);
- 		QuickSpawnItem(source, item2);
- 		QuickSpawnItem(source, item3);
- 	}
- 
- 	private void QuickSpawnItem_CostumeSet(IEntitySource source, int item1, int item2)
- 	{
- 		QuickSpawnItem(source, item1);
- 		QuickSpawnItem(source, item2);
- 	}
+@@ -7149,16 +_,23 @@
  
  	public void OpenChilletEgg(int itemType)
  	{
@@ -2097,8 +2081,9 @@
 +
 +		/*
  		IEntitySource itemSource_OpenItem = GetItemSource_OpenItem(itemType);
-@@ -7238,7 +_,8 @@
- 			case 18:
+ 		if (Main.rand.Next(150) == 0) {
+ 			QuickSpawnItem(itemSource_OpenItem, 1810);
+@@ -7239,6 +_,7 @@
  				QuickSpawnItem_CostumeSet(itemSource_OpenItem, 1851, 1852);
  				break;
  		}
@@ -2149,7 +2134,8 @@
  			if (ArmorIDs.Back.Sets.DrawInBackpackLayer[armorItem.backSlot])
  				cBackpack = dyeItem.dye;
  			else if (ArmorIDs.Back.Sets.DrawInTailLayer[armorItem.backSlot])
-@@ -7297,31 +_,31 @@
+@@ -7296,10 +_,10 @@
+ 				cBack = dyeItem.dye;
  		}
  
 -		if (armorItem.frontSlot > 0 && armorItem.frontSlot < ArmorIDs.Front.Count)
@@ -2161,12 +2147,7 @@
  			if (armorItem.type == 4874) {
  				cFlameWaker = dyeItem.dye;
  				cShoe = dyeItem.dye;
- 			}
- 			else if (armorItem.type == 4822) {
- 				cFlameWaker = dyeItem.dye;
- 			}
- 			else {
- 				cShoe = dyeItem.dye;
+@@ -7312,16 +_,16 @@
  			}
  		}
  
@@ -2208,7 +2189,7 @@
  			cWings = dyeItem.dye;
  
  		if (armorItem.type == 934)
-@@ -7384,13 +_,18 @@
+@@ -7384,12 +_,17 @@
  		}
  	}
  
@@ -2227,7 +2208,6 @@
  	public IEntitySource GetProjectileSource_Item(Item item) => new EntitySource_ItemUse(this, item);
  	public IEntitySource GetItemSource_Item(Item item) => new EntitySource_ItemUse(this, item);
  	public IEntitySource GetItemSource_OpenItem(int itemType) => new EntitySource_ItemOpen(this, itemType);
- 	public IEntitySource GetItemSource_Death() => new EntitySource_ByItemSourceId(this, ItemSourceID.PlayerDeath);
 @@ -7406,9 +_,35 @@
  	public IEntitySource GetItemSource_TileInteraction(int tileCoordsX, int tileCoordsY) => new EntitySource_TileInteraction(this, tileCoordsX, tileCoordsY);
  	public IEntitySource GetNPCSource_TileInteraction(int tileCoordsX, int tileCoordsY) => new EntitySource_TileInteraction(this, tileCoordsX, tileCoordsY);
@@ -2318,7 +2298,7 @@
  
  				for (int l = 0; l < 255; l++) {
  					Player player = Main.player[l];
-@@ -7702,18 +_,21 @@
+@@ -7702,7 +_,7 @@
  						player.AddBuff(num2, 120);
  
  					if (flag) {
@@ -2327,7 +2307,7 @@
  						player.Hurt(playerDeathReason, damage, 0, pvp: true);
  						if (Main.netMode != 0)
  							NetMessage.SendPlayerHurt(l, playerDeathReason, damage, 0, critical: false, pvp: true, ImmunityCooldownID.General);
- 					}
+@@ -7710,10 +_,13 @@
  				}
  			}
  			else if (buffType[j] == 117) {
@@ -2536,7 +2516,7 @@
  	public void BuffHandle_SpawnPetIfNeededAndSetTime(int buffIndex, ref bool petBool, int petProjID, int buffTimeToGive = 18000)
  	{
  		buffTime[buffIndex] = buffTimeToGive;
-@@ -9491,24 +_,27 @@
+@@ -9491,9 +_,12 @@
  		accStopwatch = false;
  		accOreFinder = false;
  		accDreamCatcher = false;
@@ -2550,7 +2530,7 @@
  			if (type == 4131)
  				flag = true;
  		}
- 
+@@ -9501,15 +_,15 @@
  		for (int j = 0; j < 20; j++) {
  			if (IsItemSlotUnlockedAndUsable(j)) {
  				int type2 = armor[j].type;
@@ -2568,6 +2548,7 @@
 +					RefreshInfoAccsFromItemType(bank4.item[k]);
  			}
  		}
+ 
 @@ -9568,11 +_,20 @@
  
  				if (Main.player[i].hasLuck_LuckyCoin)
@@ -2590,7 +2571,7 @@
  	{
  		if (accType == 5574)
  			hasLuck_LuckyClover = true;
-@@ -9714,8 +_,11 @@
+@@ -9714,7 +_,10 @@
  		bool flag = false;
  		for (int j = 0; j < 58; j++) {
  			int type = inventory[j].type;
@@ -2602,7 +2583,6 @@
  			RefreshMechanicalAccsFromItemType(type);
  			RefreshAutoKitingFromItemTypeAndSlot(type, j);
  			if (type == 4743)
- 				hasFootball = true;
 @@ -9740,8 +_,10 @@
  		if (flag) {
  			for (int l = 0; l < bank4.maxItems; l++) {
@@ -2769,7 +2749,7 @@
  			moveSpeed += 0.1f;
  		}
  
-@@ -10181,15 +_,21 @@
+@@ -10181,16 +_,22 @@
  		}
  
  		if (armorPiece.type == 379) {
@@ -2791,6 +2771,7 @@
 +			*/
  		}
  
+ 		if (armorPiece.type == 2367 || armorPiece.type == 2368 || armorPiece.type == 2369 || armorPiece.type == 5591 || armorPiece.type == 5592 || armorPiece.type == 5593)
 @@ -10213,16 +_,22 @@
  		}
  
@@ -3076,7 +3057,7 @@
  	}
  
  	private void SpawnHallucination(Item item)
-@@ -10901,7 +_,13 @@
+@@ -10901,6 +_,12 @@
  
  	private void ApplyEquipVanity(int itemSlot, Item currentItem)
  	{
@@ -3089,7 +3070,6 @@
  		int type = currentItem.type;
  		RefreshInfoAccsFromItemType(type);
  		if (currentItem.wingSlot > 0)
- 			wings = currentItem.wingSlot;
 @@ -10940,6 +_,8 @@
  
  		if (currentItem.type == 5077)
@@ -3203,8 +3183,7 @@
  				SoundEngine.PlaySound(SoundID.Item166, base.Center);
  				int num3 = -1;
  				if (Main.curMusic == 1)
-@@ -12222,7 +_,9 @@
- 				else if (Main.curMusic == 104)
+@@ -12223,6 +_,8 @@
  					currentItem.SetDefaults(6144);
  				else if (Main.curMusic == 102 || Main.curMusic == 103)
  					currentItem.SetDefaults(6145);
@@ -3213,12 +3192,16 @@
  			}
  
  			ApplyMusicBox(currentItem);
-@@ -12478,2 +_,5 @@
+@@ -12477,6 +_,9 @@
+ 
  		if (currentItem.type == 6146)
  			musicBoxSilence = true;
 +
 +		if (MusicLoader.itemToMusic.TryGetValue(currentItem.type, out int modMusicBox))
 +			Main.musicBox2 = modMusicBox;
+ 	}
+ 
+ 	public void UpdateArmorSets(int i)
 @@ -12525,10 +_,13 @@
  
  		if (head == 112 && body == 75 && legs == 64) {
@@ -3251,7 +3234,7 @@
  			dashType = 5;
  		}
  
-@@ -12874,9 +_,14 @@
+@@ -12874,11 +_,16 @@
  			minionDamage += 0.15f;
  			whipRangeMultiplier += 0.3f;
  			float num = 1.15f;
@@ -3266,6 +3249,8 @@
 +
 +		ItemLoader.UpdateArmorSet(this, armor[0], armor[1], armor[2]);
  	}
+ 
+ 	private void UpdateArmorSets_Always_Vortex()
 @@ -13237,6 +_,8 @@
  			luckNeedsSync = true;
  			HasGardenGnomeNearby = SceneMetrics.HasGardenGnome;
@@ -3320,10 +3305,7 @@
  		ResetVisibleAccessories();
  		poisoned = false;
  		honey = false;
-@@ -13475,9 +_,12 @@
- 		leinforsHair = false;
- 		musicBox = -1;
- 		musicBoxSilence = false;
+@@ -13478,6 +_,9 @@
  		overrideFishingBobber = -1;
  		gravDir = 1f;
  		killingCardFireType = 0;
@@ -3333,13 +3315,17 @@
  		for (int i = 0; i < maxBuffs; i++) {
  			if (buffType[i] <= 0 || !Main.persistentBuff[buffType[i]]) {
  				buffTime[i] = 0;
-@@ -13855,2 +_,6 @@
+@@ -13854,6 +_,10 @@
+ 
  	public bool SmartSelectLookup(out int selectedSlot)
  	{
 +		// Added by TML to preserve mouse item with moved call location
 +		if (selectedItem == 58)
 +			return;
 +
+ 		if (!controlTorch) {
+ 			selectedSlot = -1;
+ 			_lastSmartCursorToolStrategy = -1;
 @@ -13873,6 +_,13 @@
  		}
  
@@ -3483,7 +3469,7 @@
  		hasFootball = false;
  		drawingFootball = false;
  		minionKB = 0f;
-@@ -14568,8 +_,8 @@
+@@ -14568,7 +_,7 @@
  		frogLegJumpBoost = false;
  		skyStoneEffects = false;
  		noFallDmg = false;
@@ -3492,8 +3478,7 @@
  		deadCellsPotionStation = false;
  		spawnMax = false;
  		spaceGun = false;
- 		killGuide = false;
-@@ -14594,19 +_,34 @@
+@@ -14594,18 +_,33 @@
  
  		honeyCombItem = null;
  		gravControl2 = false;
@@ -3527,7 +3512,6 @@
  		coolWhipBuff = false;
  		cobWhipBuff = false;
  		yoraiz0rEye = 0;
- 		yoraiz0rDarkness = false;
 @@ -14693,7 +_,9 @@
  		dangerSense = false;
  		endurance = 0f;
@@ -3558,7 +3542,10 @@
  		wingTimeMax = 0;
  		brokenArmor = false;
  		silence = false;
-@@ -14943,3 +_,6 @@
+@@ -14940,6 +_,9 @@
+ 		hasLuck_LuckyClover = false;
+ 		hasLuck_RavenFeather = false;
+ 		hasLuck_WiltedClover = false;
 +		blockExtraJumps = false;
 +		ExtraJumpLoader.ResetEnableFlags(this);
 +		/*
@@ -3754,7 +3741,6 @@
  		return num;
  	}
  
--	public void ApplyDamageToNPC(NPC npc, int damage, float knockback, int direction, bool crit)
 +	// Added by TML
 +	public void ApplyBannerOffenseBuff(NPC npc, ref NPC.HitModifiers modifiers) => ApplyBannerOffenseBuff(Item.NPCtoBanner(npc.BannerID()), ref modifiers);
 +
@@ -3795,6 +3781,7 @@
 +	/// <param name="crit">Whether or not the strike is a crit</param>
 +	/// <param name="damageType">Defaults to <see cref="DamageClass.Default"/></param>
 +	/// <param name="damageVariation">Whether to apply damage variation. Defaults to false.</param>
+-	public void ApplyDamageToNPC(NPC npc, int damage, float knockback, int direction, bool crit)
 +	public void ApplyDamageToNPC(NPC npc, int damage, float knockback, int direction, bool crit = false, DamageClass? damageType = null, bool damageVariation = false)
  	{
 +		if (!PlayerLoader.CanHitNPC(this, npc))
@@ -3877,7 +3864,7 @@
  			if (mount.Active && mount.IsConsideredASlimeMount && wetSlime > 0) {
  				wetSlime = 0;
  				flag = true;
-@@ -16427,6 +_,6 @@
+@@ -16427,7 +_,7 @@
  					}
  				}
  			}
@@ -3885,6 +3872,7 @@
 +			else if ((sliding || velocity.Y == 0f || flag || AnyExtraJumpUsable() || (hasDeadCellsDownDash && controlDown && velocity.Y != 0f && !isPerformingJump_DownDash && !mount.Active)) && (releaseJump || (autoJump && (velocity.Y == 0f || sliding)))) {
  				if (mount.Active && MountID.Sets.Cart[mount.Type])
  					position.Y -= 0.001f;
+ 
 @@ -16435,6 +_,7 @@
  					justJumped = true;
  
@@ -3904,10 +3892,7 @@
  
  				canRocket = false;
  				rocketRelease = false;
-@@ -16517,9 +_,13 @@
- 					if (sliding)
- 						velocity.X = 3 * -slideDir;
- 				}
+@@ -16520,6 +_,10 @@
  				else if (flag13) {
  					velocity.Y = 16f * gravDir;
  				}
@@ -3926,7 +3911,8 @@
  			}
  
  			releaseJump = false;
-@@ -16771,15 +_,23 @@
+@@ -16770,16 +_,24 @@
+ 					}
  
  					if (victimHitbox.Intersects(npcRect) && (nPC.noTileCollide || CanHit(nPC))) {
 +						/*
@@ -4105,8 +4091,7 @@
  	{
  		wingTime = wingTimeMax;
  		rocketTime = rocketTimeMax;
-@@ -18240,7 +_,8 @@
- 
+@@ -18241,6 +_,7 @@
  	private void RefreshDoubleJumps()
  	{
  		isPerformingJump_DownDash = false;
@@ -4188,8 +4173,7 @@
  		if (Main.tile[x - 1, y] == null)
  			Main.tile[x - 1, y] = new Tile();
  
-@@ -19016,7 +_,8 @@
- 			}, whoAmI);
+@@ -19017,6 +_,7 @@
  		}
  
  		bool flag2 = type == 19 && frameY / 18 == 49;
@@ -4242,9 +4226,7 @@
  
  			if (flag) {
  				outOfRange = true;
-@@ -19624,8 +_,11 @@
- 
- 		TagEffectState.Update();
+@@ -19626,6 +_,9 @@
  		IntentionGuesser.Update(this);
  		UpdateHairDyeDust();
  		UpdateMiscCounter();
@@ -4278,7 +4260,7 @@
  				}
  
  				if (itemAnimation == 0 && ItemTimeIsZero && reuseDelay == 0)
-@@ -20231,19 +_,25 @@
+@@ -20231,7 +_,10 @@
  						Tile tile = Main.tile[num14, num13];
  						if (tile != null && tile.active()) {
  							bool flag8 = tile.type == 19 && tile.frameY / 18 == 49;
@@ -4289,7 +4271,7 @@
  								num10 = 0;
  								break;
  							}
- 						}
+@@ -20239,11 +_,14 @@
  					}
  				}
  
@@ -4331,7 +4313,7 @@
  		}
  
  		if (yoraiz0rEye > 0)
-@@ -20379,7 +_,14 @@
+@@ -20379,9 +_,16 @@
  		if (petting.isPetting || sitting.isSitting || sleeping.isSleeping)
  			afkCounterForKiting = 0;
  
@@ -4346,6 +4328,8 @@
  		rangedCrit += inventory[selectedItem].crit;
 +		*/
  		if (whoAmI == Main.myPlayer) {
+ 			if (SceneMetrics.ZoneWaterCandle)
+ 				AddBuff(86, 2);
 @@ -20414,12 +_,21 @@
  				AddBuff(194, 2);
  		}
@@ -4546,7 +4530,7 @@
  			HorizontalMovement();
  			bool flag18 = !mount.Active;
  			if (forcedGravity > 0) {
-@@ -21402,15 +_,16 @@
+@@ -21402,12 +_,13 @@
  				CancelAllJumpVisualEffects();
  			}
  			else {
@@ -4561,9 +4545,6 @@
  				if (velocity.Y == 0f)
  					cartRampTime = 0;
  
- 				if (wingsLogic > 0 && rocketBoots != 0 && velocity.Y != 0f && rocketTime != 0) {
- 					int num40 = 6;
- 					int num41 = rocketTime * num40;
 @@ -21421,6 +_,7 @@
  					rocketTime = 0;
  				}
@@ -4608,7 +4589,7 @@
  
  						bool crit = false;
  						if ((float)Main.rand.Next(1, 101) <= num78)
-@@ -22503,11 +_,13 @@
+@@ -22503,6 +_,8 @@
  		if (vortexDebuff)
  			velocity.Y = velocity.Y * 0.8f + (float)Math.Cos(base.Center.X % 120f / 120f * ((float)Math.PI * 2f)) * 5f * 0.2f;
  
@@ -4617,12 +4598,7 @@
  		float num109 = 0.5f;
  		float num110 = 0.5f;
  		float movementSpeed = 0.25f;
- 		float num111 = 0.375f;
- 		UpdateNetOffset(fallThrough, flag29);
- 		if (tongued) {
- 			position += velocity;
- 			flag32 = false;
-@@ -22610,15 +_,20 @@
+@@ -22610,6 +_,9 @@
  		if (statMana > statManaMax2)
  			statMana = statManaMax2;
  
@@ -4632,17 +4608,15 @@
  		grappling[0] = -1;
  		grapCount = 0;
  		UpdateReleaseUseTile();
- 		UpdateAdvancedShadows();
- 		if ((Main.netMode != 2 && whoAmI == Main.myPlayer) || whoAmI == Main.LocalPlayer.spectating)
- 			ActiveSections.CheckSection(position);
- 
- 		if (DebugOptions.ShowSections && whoAmI == Main.myPlayer) {
+@@ -22621,6 +_,8 @@
  			Point point = new Point(Netplay.GetSectionX((int)position.X >> 4), Netplay.GetSectionY((int)position.Y >> 4));
  			DebugLineDraw.World.AddRectangle(new Vector2(point.X * 200 * 16, point.Y * 150 * 16), new Vector2((point.X + 1) * 200 * 16, (point.Y + 1) * 150 * 16), Color.Yellow);
  		}
 +
 +		PlayerLoader.PostUpdate(this);
  	}
+ 
+ 	private void Update_AdjustTileTargetForDisplayJars(int i)
 @@ -23018,15 +_,21 @@
  		return result;
  	}
@@ -4678,7 +4652,7 @@
  	}
  
  	private float TurnAttackSpeedToUseTimeMultiplier(float speed)
-@@ -23191,7 +_,10 @@
+@@ -23191,6 +_,9 @@
  
  	public void RecalculateLuck()
  	{
@@ -4688,10 +4662,7 @@
  		luck = GetLadyBugLuck() * 0.2f + torchLuck * 0.2f;
  		luck += (float)(int)luckPotion * 0.1f;
  		luck += (float)(int)kiteLuckLevel * 0.1f / 3f;
- 		if (usedGalaxyPearl)
-@@ -23208,7 +_,10 @@
- 
- 		luck += equipmentBasedLuckBonus;
+@@ -23210,6 +_,9 @@
  		luck += CalculateCoinLuck();
  		if (brokenMirrorBadLuck)
  			luck -= 0.25f;
@@ -4700,6 +4671,7 @@
 +		PlayerLoader.ModifyLuck(this, ref luck);
  	}
  
+ 	private void UpdateBrokenMirrorLuck()
 @@ -23348,6 +_,8 @@
  
  		if (wingsLogic == 45 && (float)timeSinceLastDashStarted >= 60f)
@@ -4838,7 +4810,7 @@
  				WorldGen.KillTile(myX, myY);
  				if (Main.netMode == 1)
  					NetMessage.SendData(17, -1, -1, null, 0, myX, myY);
-@@ -26338,6 +_,8 @@
+@@ -26338,7 +_,9 @@
  				if (!NPC.AnyNPCs(245) && Main.hardMode && NPC.downedPlantBoss) {
  					for (int n = 0; n < 58; n++) {
  						if (inventory[n].type == 1293) {
@@ -4848,6 +4820,7 @@
 +
  							if (inventory[n].stack <= 0)
  								inventory[n].SetDefaults(0);
+ 
 @@ -26356,7 +_,7 @@
  						NetMessage.SendData(61, -1, -1, null, whoAmI, 245f);
  				}
@@ -4857,7 +4830,7 @@
  				flag2 = true;
  				if (WorldGen.IsLockedDoor(myX, myY)) {
  					int num48 = 1141;
-@@ -26364,12 +_,14 @@
+@@ -26364,7 +_,9 @@
  					for (int num49 = 0; num49 < 58; num49++) {
  						if (inventory[num49].type == num48 && inventory[num49].stack > 0) {
  							flag9 = true;
@@ -4868,11 +4841,6 @@
  							if (inventory[num49].stack <= 0)
  								inventory[num49] = new Item();
  
- 							WorldGen.UnlockDoor(myX, myY);
- 							if (Main.netMode == 1)
- 								NetMessage.SendData(52, -1, -1, null, whoAmI, 2f, myX, myY);
- 
- 							break;
 @@ -26393,18 +_,20 @@
  					}
  				}
@@ -4917,7 +4885,8 @@
  				if (Main.netMode == 1 && num74 == 0 && !flag13) {
  					if (num75 == chestX && num76 == chestY && chest != -1) {
  						chest = -1;
-@@ -26683,6 +_,8 @@
+@@ -26682,7 +_,9 @@
+ 
  									flag15 = true;
  									if (flag16) {
 +										if (ItemLoader.ConsumeItem(inventory[num82], this))
@@ -4927,7 +4896,7 @@
  										if (inventory[num82].stack <= 0)
  											inventory[num82] = new Item();
  									}
-@@ -26761,40 +_,43 @@
+@@ -26761,6 +_,9 @@
  				AdjTiles();
  				InteractWithCraftingStation(craftingFilterForTile);
  			}
@@ -4937,41 +4906,15 @@
  		}
  
  		if (flag2)
- 			tileInteractionHappened = true;
- 	}
- 
- 	private static void InteractWithCraftingStation(NewCraftingUI.RecipeFilter craftingFilter)
- 	{
- 		if (Settings.CraftingGridControl == Settings.CraftingGridMode.Modern)
- 			NewCraftingUI.OpenCloseFilter(craftingFilter);
- 		else
- 			Main.craftingUI.OpenCloseFilter(craftingFilter);
- 	}
- 
- 	private static NewCraftingUI.RecipeFilter GetCraftingFilterForTile(int myX, int myY)
- 	{
- 		ushort type = Main.tile[myX, myY].type;
- 		if (TileID.Sets.DoesNotOpenCraftingMenuOnInteract[type])
- 			return null;
- 
- 		if (Recipe.TileUsedInRecipes[type]) {
- 			int baseOption = 0;
- 			MapHelper.GetTileBaseOption(myX, myY, type, Main.tile[myX, myY], ref baseOption);
- 			return new NewCraftingUI.CraftStationRecipeFilter(type, baseOption);
- 		}
- 
- 		if (TileID.Sets.CountsAsWaterForCrafting[type]) {
- 			int baseOption2 = 0;
- 			MapHelper.GetTileBaseOption(myX, myY, type, Main.tile[myX, myY], ref baseOption2);
- 			return new NewCraftingUI.WaterSourceRecipeFilter(type, baseOption2);
- 		}
- 
+@@ -26796,7 +_,7 @@
  		return null;
  	}
  
 -	private static bool IsHoveringOverABottomSideOfABed(int myX, int myY)
 +	public static bool IsHoveringOverABottomSideOfABed(int myX, int myY)
  	{
+ 		short frameX = Main.tile[myX, myY].frameX;
+ 		bool flag = frameX / 72 == 1;
 @@ -26954,7 +_,14 @@
  		}
  	}
@@ -5041,9 +4984,7 @@
  	public void Heal(int amount)
  	{
  		statLife += amount;
-@@ -28371,8 +_,14 @@
- 			statLife = statLifeMax2;
- 	}
+@@ -28373,6 +_,12 @@
  
  	public int GetItemGrabRange(WorldItem item) => GetItemGrabRange(item.inner);
  
@@ -5079,8 +5020,7 @@
  	public void RefreshItems(bool onlyIfVariantChanged = true)
  	{
  		if (onlyIfVariantChanged && whoAmI == Main.myPlayer)
-@@ -28558,7 +_,11 @@
- 		RefreshItems(bank3.item, onlyIfVariantChanged);
+@@ -28559,6 +_,10 @@
  		RefreshItems(bank4.item, onlyIfVariantChanged);
  		RefreshItems(_temporaryItemSlots, onlyIfVariantChanged);
  		RefreshItems(_pendingRefunds, onlyIfVariantChanged);
@@ -5144,14 +5084,18 @@
  		List<Item[]> list = new List<Item[]>();
  		Dictionary<int, List<int>> dictionary = new Dictionary<int, List<int>>();
  		List<Point> list2 = new List<Point>();
-@@ -28842,4 +_,6 @@
+@@ -28842,6 +_,8 @@
  		adjHoney = false;
  		oldAdjLava = adjLava;
  		adjLava = false;
 +		oldAdjShimmer = adjShimmer;
 +		adjShimmer = false;
  		alchemyTable = false;
-@@ -28854,3 +_,11 @@
+ 		Rectangle tileRegion = TileReachCheckSettings.Simple.GetTileRegion(this, ateArtisanBread ? 4 : 0);
+ 		tileRegion = WorldUtils.ClampToWorld(tileRegion);
+@@ -28852,6 +_,14 @@
+ 					SetAdjTile(tile.type);
+ 					if (TileID.Sets.CountsAsWaterForCrafting[tile.type])
  						adjWaterSource = true;
 +					if (TileID.Sets.CountsAsHoneyForCrafting[tile.type])
 +						adjHoney = true;
@@ -5163,9 +5107,8 @@
 +					// TODO: Move to SetAdjTile: TileLoader.AdjTiles(this, Main.tile[j, k].type);
  				}
  
-@@ -28982,9 +_,9 @@
- 			waist = 0;
- 
+ 				if (tile.liquid > 200 && tile.liquidType() == 0)
+@@ -28984,7 +_,7 @@
  		bool flag = false;
  		bool flag2 = false;
  		if (!dead && body >= 0) {
@@ -5174,7 +5117,7 @@
  			if (b != -1) {
  				if (ArmorIDs.Back.Sets.DrawInBackpackLayer[b]) {
  					backpack = b;
-@@ -29000,8 +_,8 @@
+@@ -29000,7 +_,7 @@
  				}
  			}
  
@@ -5183,9 +5126,7 @@
  			if (b2 != -1 && front == -1) {
  				flag = true;
  				front = b2;
- 				cFront = cBody;
-@@ -29011,8 +_,8 @@
- 			if (!includeCapeFrontAndBackInfo.Invalid && back == -1 && front == -1) {
+@@ -29012,7 +_,7 @@
  				flag = true;
  				front = includeCapeFrontAndBackInfo.frontCape;
  				cFront = cBody;
@@ -5250,9 +5191,7 @@
  		if (!isDisplayDollOrInanimate) {
  			if (((body == 68 && legs == 57 && head == 106) || (body == 74 && legs == 63 && head == 106)) && Main.rand.Next(10) == 0) {
  				int num3 = Dust.NewDust(new Vector2(position.X - velocity.X * 2f, position.Y - 2f - velocity.Y * 2f), width, height, 43, 0f, 0f, 100, new Color(255, 0, 255), 0.3f);
-@@ -29272,10 +_,13 @@
- 
- 		Item.GetDrawHitbox(HeldItem.type, this);
+@@ -29274,6 +_,9 @@
  		bool flag5 = CanVisuallyHoldItem(HeldItem);
  		bool flag6 = HeldItem.useStyle != 10 && HeldItem.useStyle != 14 && HeldItem.useStyle != 15;
  		bool flag7 = false;
@@ -5262,8 +5201,6 @@
  		if (mount.Active) {
  			if (!MountID.Sets.DoesNotOverrideLegFrames[mount.Type]) {
  				flag7 = true;
- 				legFrameCounter = 0.0;
- 				legFrame.Y = legFrame.Height * 6;
 @@ -29489,6 +_,8 @@
  					}
  				}
@@ -5293,7 +5230,9 @@
  		if (legs == 140) {
  			legFrameCounter = 0.0;
  			legFrame.Y = legFrame.Height * (velocity.Y != 0f).ToInt();
-@@ -29652,4 +_,6 @@
+@@ -29650,6 +_,8 @@
+ 		if (includeDownDash)
+ 			isPerformingJump_DownDash = false;
  
 +		ExtraJumpLoader.StopActiveJump(this, out _);
 +		/*
@@ -5357,7 +5296,7 @@
  	{
  		if (compositeBackArm.enabled && item.shieldSlot > 0)
  			return true;
-@@ -29843,10 +_,11 @@
+@@ -29843,7 +_,8 @@
  		return false;
  	}
  
@@ -5367,9 +5306,6 @@
  	{
  		if (item.type == 5540 || item.type == 5541)
  			stringColor = 29;
- 
- 		if (item.stringColor > 0)
- 			stringColor = item.stringColor;
 @@ -29879,7 +_,7 @@
  		if (item.shoeSlot > 0) {
  			shoe = item.shoeSlot;
@@ -5434,7 +5370,7 @@
  	public void Teleport(Vector2 newPos, int Style = 0, int extraInfo = 0)
  	{
  		try {
-@@ -30472,7 +_,11 @@
+@@ -30472,6 +_,10 @@
  			}
  
  			immune = true;
@@ -5445,8 +5381,7 @@
  			dead = false;
  			deadTime = 0;
  			immuneTime = 0;
- 		}
-@@ -30825,11 +_,41 @@
+@@ -30825,21 +_,83 @@
  		return false;
  	}
  
@@ -5489,7 +5424,9 @@
 +		if (PlayerLoader.ImmuneTo(this, damageSource, cooldownCounter, dodgeable))
 +			return 0.0;
 +
-@@ -30839,7 +_,39 @@
+ 		SetOrRequestSpectating(-1);
+ 		bool flag = ((cooldownCounter == ImmunityCooldownID.General) ? (!immune) : (hurtCooldowns[cooldownCounter] <= 0));
+ 		bool flag2 = whoAmI != Main.myPlayer && !pvp;
  		if (!flag && !ImmunityCooldownID.Sets.ImmuneTimerOnlyLimitsEffects[cooldownCounter] && !flag2)
  			return 0.0;
  
@@ -5596,14 +5533,16 @@
  		if (invis) {
  			for (int k = 0; k < maxBuffs; k++) {
  				if (buffType[k] == 10)
-@@ -30899,5 +_,5 @@
+@@ -30897,7 +_,7 @@
+ 		}
+ 
  		if (magicCuffs) {
 -			int num3 = num;
 +			int num3 = info.SourceDamage; //num;
  			statMana += num3;
  			if (statMana > statManaMax2)
  				statMana = statManaMax2;
-@@ -30906,10 +_,14 @@
+@@ -30906,25 +_,31 @@
  				ManaEffect(num3);
  		}
  
@@ -5618,7 +5557,6 @@
  			if (whoAmI == Main.myPlayer) {
  				IEntitySource spawnSource = GetProjectileSource_SetBonus(1);
  				Entity entity = null;
-@@ -30916,15 +_,17 @@
  				if (damageSource.TryGetCausingEntity(out entity))
  					spawnSource = GetProjectileSource_OnHurt(entity, 1);
  
@@ -5651,11 +5589,12 @@
  			if (player == Main.LocalPlayer && num7 < PaladinsShieldRange)
  				Main.LocalPlayer.Hurt(PlayerDeathReason.ByOther(20), damage, 0, pvp: false, quiet: false, Crit: false, ImmunityCooldownID.PaladinsShield, dodgeable: false);
  
-@@ -30963,13 +_,32 @@
+@@ -30962,14 +_,33 @@
+ 				PositionInWorld = new Vector2(whoAmI, player.whoAmI)
  			});
  		}
 + 	}
- 
++
 +	public void Hurt(HurtInfo info, bool quiet = false)
 +	{
 +		var damageSource = info.DamageSource;
@@ -5665,7 +5604,7 @@
 +		double num2 = info.Damage;
 +		bool Crit = false; // Crit has been removed, since it didn't work anyway
 +		bool flag2 = cooldownCounter == ImmunityCooldownID.DD2OgreKnockback;
-+
+ 
  		if (Main.netMode == 1 && whoAmI == Main.myPlayer && !quiet) {
 +			/*
  			if (!noKnockback && hitDirection != 0 && (!mount.Active || !mount.Cart))
@@ -5697,7 +5636,8 @@
  		if (whoAmI == Main.myPlayer && ImmunityCooldownID.Sets.Retaliate[cooldownCounter] && flag) {
  			if (brainOfConfusionItem != null && !brainOfConfusionItem.IsAir) {
  				for (int n = 0; n < Main.maxNPCs; n++) {
-@@ -31019,6 +_,6 @@
+@@ -31018,7 +_,7 @@
+ 					}
  				}
  
 -				Projectile.NewProjectile(GetProjectileSource_Accessory(brainOfConfusionItem), base.Center.X + (float)Main.rand.Next(-40, 40), base.Center.Y - (float)Main.rand.Next(20, 60), velocity.X * 0.3f, velocity.Y * 0.3f, 565, 0, 0f, whoAmI);
@@ -5741,8 +5681,8 @@
 +			fallStart = (int)(position.Y / 16f);
 +		}
  
--		PlayHurtSound();
 +		if (!info.SoundDisabled)
+-		PlayHurtSound();
 +			PlayHurtSound();
  		eyeHelper.BlinkBecausePlayerGotHurt();
  		if (statLife > 0) {
@@ -5752,8 +5692,7 @@
  			double num22 = num2 / (double)statLifeMax2 * 100.0;
  			float num23 = 2 * hitDirection;
  			float num24 = 0f;
-@@ -31119,9 +_,12 @@
- 				else {
+@@ -31120,6 +_,9 @@
  					Dust.NewDust(position, width, height, 5, num23 + (float)hitDirection * num24 * Main.rand.NextFloat(), -2f);
  				}
  			}
@@ -5763,9 +5702,8 @@
  		}
  		else {
  			statLife = 0;
- 			if (whoAmI == Main.myPlayer)
+@@ -31127,10 +_,12 @@
  				KillMe(damageSource, num2, hitDirection, pvp);
-@@ -31128,8 +_,10 @@
  		}
  
 +		/*
@@ -5776,6 +5714,7 @@
 +		*/
  	}
  
+ 	public void PlayHurtSound()
 @@ -31347,6 +_,14 @@
  			if (FileUtilities.Exists(Main.playerPathName + ".bak", isCloudSave))
  				FileUtilities.Delete(Main.playerPathName + ".bak", isCloudSave);
@@ -5818,7 +5757,9 @@
  		if (Main.tenthAnniversaryWorld) {
  			for (int i = 0; i < 85; i++) {
  				int type = Main.rand.Next(139, 143);
-@@ -31435,8 +_,14 @@
+@@ -31433,17 +_,26 @@
+ 		headVelocity.X = (float)Main.rand.Next(-20, 21) * 0.1f + (float)(2 * hitDirection);
+ 		bodyVelocity.X = (float)Main.rand.Next(-20, 21) * 0.1f + (float)(2 * hitDirection);
  		legVelocity.X = (float)Main.rand.Next(-20, 21) * 0.1f + (float)(2 * hitDirection);
 -		if (stoned) {
 +		if (stoned || !genGore) {
@@ -5834,7 +5775,9 @@
 +
 +		postGore:
 +
-@@ -31446,4 +_,7 @@
+ 		mount.Dismount(this);
+ 		dead = true;
+ 		SetOrRequestSpectating(-1);
  		respawnTimer = GetRespawnTime(pvp);
 +
 +		PlayerLoader.Kill(this, dmg, hitDirection, pvp, damageSource);
@@ -5852,7 +5795,7 @@
  		int num = 50;
  		if (newItem.IsACoin)
  			num = 54;
-@@ -31620,6 +_,6 @@
+@@ -31620,7 +_,7 @@
  		}
  
  		for (int k = 54; k < 58; k++) {
@@ -5860,6 +5803,7 @@
 +			if (inventory[k].type > 0 && inventory[k].stack < inventory[k].maxStack && ItemLoader.CanStack(inventory[k], newItem))
  				return new ItemSpaceStatus(CanTakeItem: true);
  		}
+ 
 @@ -31655,7 +_,11 @@
  		if (theSlot.favorited && theSlot.OnlyNeedOneInInventory())
  			return false;
@@ -5872,7 +5816,7 @@
  			return true;
  
  		return false;
-@@ -31690,10 +_,15 @@
+@@ -31690,9 +_,14 @@
  			if (inventory[i].type <= 0 || inventory[i].stack >= inventory[i].maxStack || !Item.CanStack(newItem, inventory[i]))
  				continue;
  
@@ -5887,7 +5831,6 @@
  			if (newItem.stack + inventory[i].stack <= inventory[i].maxStack) {
  				inventory[i].stack += newItem.stack;
  				GetItemLogger.Add(inventory, i, 2, newItem.stack);
- 				if (!settings.NoText)
 @@ -31717,6 +_,19 @@
  				DoCoins(i);
  
@@ -5925,7 +5868,7 @@
  	public Item GetItem(Item newItem, GetItemSettings settings)
  	{
  		bool isACoin = newItem.IsACoin;
-@@ -31836,10 +_,15 @@
+@@ -31836,9 +_,14 @@
  	private bool GetItem_FillIntoOccupiedSlot_VoidBag(Item[] inv, Item newItem, GetItemSettings settings, Item returnItem, int i)
  	{
  		if (inv[i].type > 0 && inv[i].stack < inv[i].maxStack && Item.CanStack(returnItem, inv[i])) {
@@ -5940,7 +5883,6 @@
  			if (returnItem.stack + inv[i].stack <= inv[i].maxStack) {
  				inv[i].stack += returnItem.stack;
  				GetItemLogger.Add(inv, i, 32, returnItem.stack);
- 				if (!settings.NoText)
 @@ -31859,6 +_,16 @@
  
  			inv[i].stack = inv[i].maxStack;
@@ -5958,7 +5900,7 @@
  		}
  
  		return false;
-@@ -31878,11 +_,17 @@
+@@ -31878,10 +_,16 @@
  	private bool GetItem_FillIntoOccupiedSlot(Item newItem, GetItemSettings settings, Item returnItem, int i)
  	{
  		if (inventory[i].type > 0 && inventory[i].stack < inventory[i].maxStack && CanItemSlotAcceptPickup(inventory[i], returnItem)) {
@@ -5975,7 +5917,6 @@
  				inventory[i].stack += returnItem.stack;
  				GetItemLogger.Add(inventory, i, GetFittingItemSlotContext(i), returnItem.stack);
  				if (!settings.NoText)
- 					PopupText.NewText(PopupTextContext.RegularItemPickup, newItem, base.Center, returnItem.stack, noStack: false, settings.LongText);
 @@ -31906,6 +_,19 @@
  				DoCoins(i);
  
@@ -6025,11 +5966,14 @@
  				if (inventory[selectedItem].stack == 0)
  					inventory[selectedItem].SetDefaults(0);
  
-@@ -32094,3 +_,4 @@
+@@ -32094,6 +_,7 @@
  			int? forcedRandom = null;
  			TileObject data = default(TileObject);
  			FigureOutWhatToPlace(tile, item, out tileToCreate, out var previewPlaceStyle, out overrideCanPlace, out forcedRandom);
 +			PlantLoader.CheckAndInjectModSapling(tileTargetX, tileTargetY, ref tileToCreate, ref previewPlaceStyle);
+ 			PlaceThing_Tiles_TryPlacing(tileToCreate, overrideCanPlace, forcedRandom, data, previewPlaceStyle);
+ 		}
+ 	}
 @@ -32113,6 +_,10 @@
  		if (overrideCanPlace.HasValue) {
  			canPlace = overrideCanPlace.Value;
@@ -6058,25 +6002,17 @@
  					for (int i = 0; i < num3; i++) {
  						WorldGen.KillTile_MakeTileDust(tileTargetX, tileTargetY, tile);
  					}
-@@ -32220,22 +_,23 @@
+@@ -32220,7 +_,8 @@
  				ClearMiningCacheAt(tileTargetX, tileTargetY, 1);
  			}
  
+-			Vector3[,] tileDataCaches = PlaceThing_Tiles_GetAutoAccessoryCache();
 +			var topLeft = TileObjectData.TopLeft(tileTargetX, tileTargetY).ToPoint();
 +			Vector3[,] tileDataCaches = PlaceThing_Tiles_GetAutoAccessoryCache(TileObjectData.GetTileData(HeldItem.createTile, HeldItem.placeStyle), topLeft);
--			Vector3[,] tileDataCaches = PlaceThing_Tiles_GetAutoAccessoryCache();
  			int type = HeldItem.createTile;
  			int style = HeldItem.placeStyle;
  			if (UsingBiomeTorches && type == 4)
- 				BiomeTorchPlaceStyle(ref type, ref style);
- 
- 			if (UsingBiomeTorches && type == 215)
- 				BiomeCampfirePlaceStyle(ref type, ref style);
- 
- 			if (WorldGen.ReplaceTile(tileTargetX, tileTargetY, type, style)) {
- 				canUse = false;
- 				NetMessage.SendData(17, -1, -1, null, 21, tileTargetX, tileTargetY, type, style);
- 				int num4 = (int)((float)bestPickaxe.useTime * pickSpeed);
+@@ -32236,7 +_,7 @@
  				int num5 = (int)((float)HeldItem.useTime * tileSpeed);
  				SetItemTime(num4 + num5);
  				SetItemAnimation(bestPickaxe.useTime, pickSpeed);
@@ -6084,16 +6020,7 @@
 +				PlaceThing_Tiles_PlaceIt_AutoPaintAndActuate(tileDataCaches, type, topLeft);
  			}
  		}
-@@ -32248,9 +_,9 @@
- 		int type = HeldItem.createTile;
- 		int style = HeldItem.placeStyle;
- 		if (UsingBiomeTorches && type == 4)
- 			BiomeTorchPlaceStyle(ref type, ref style);
  
- 		if (UsingBiomeTorches && type == 215)
- 			BiomeCampfirePlaceStyle(ref type, ref style);
- 
- 		Tile tile = Main.tile[tileTargetX, tileTargetY];
 @@ -32404,7 +_,8 @@
  		if (!newObjectType)
  			style = PlaceThing_Tiles_PlaceIt_GetLegacyTileStyle(style);
@@ -6104,14 +6031,6 @@
  		bool forced = false;
  		bool flag;
  		if (newObjectType) {
-@@ -32415,7 +_,7 @@
- 		}
- 		else {
- 			if (UsingBiomeTorches && tileToCreate == 4 && style == 0)
- 				BiomeTorchPlaceStyle(ref tileToCreate, ref style);
- 
- 			flag = WorldGen.PlaceTile(tileTargetX, tileTargetY, tileToCreate, mute: false, forced, whoAmI, style);
- 		}
 @@ -32443,9 +_,13 @@
  			PlaceThing_Tiles_PlaceIt_ConsumeFlexibleWandMaterial();
  			PlaceThing_Tiles_PlaceIt_UnslopeForSolids();
@@ -6127,8 +6046,7 @@
  		}
  
  		return data;
-@@ -32531,5 +_,11 @@
- 			else if ((ZoneDesert && (double)position.Y < Main.worldSurface * 16.0) || ZoneUndergroundDesert)
+@@ -32532,6 +_,12 @@
  				style = 16;
  			else if (ZoneDesert && Main.remixWorld)
  				style = 16;
@@ -6139,6 +6057,8 @@
 +				style = item.placeStyle;
 +			}
  		}
+ 	}
+ 
 @@ -32565,6 +_,10 @@
  		else if (ZoneDesert && Main.remixWorld)
  			itemType = 4383;
@@ -6163,7 +6083,10 @@
  		}
  	}
  
-@@ -32631,16 +_,31 @@
+@@ -32628,19 +_,34 @@
+ 		else if (ZoneDesert && Main.remixWorld)
+ 			itemType = 4689;
+ 
 +		if (CurrentSceneEffect.biomeCampfireItemType.value > -1) {
 +			itemType = CurrentSceneEffect.biomeCampfireItemType.value;
 +		}
@@ -6205,7 +6128,7 @@
  	{
  		if (!autoPaint && !autoActuator)
  			return;
-@@ -32750,11 +_,22 @@
+@@ -32750,10 +_,21 @@
  			num3 = (num4 = 6);
  		}
  
@@ -6227,7 +6150,6 @@
  				Tile tile2 = Main.tile[num5, num6];
  				if (!tile2.active() || tile2.type != tileToCreate)
  					continue;
- 
 @@ -32790,7 +_,9 @@
  				int num10 = FindItem(849);
  				if (num10 > -1 && WorldGen.PlaceActuator(num5, num6)) {
@@ -6282,7 +6204,7 @@
  		if (itemType > 0)
  			DropItemFromExtractinator(itemType, stack);
  	}
-@@ -33957,5 +_,9 @@
+@@ -33957,6 +_,10 @@
  			NetMessage.SendData(21, -1, -1, null, number, 1f);
  	}
  
@@ -6292,6 +6214,7 @@
 +	/// <param name="dir"></param>
  	public void ChangeDir(int dir)
  	{
+ 		if (dir == direction)
 @@ -34039,8 +_,13 @@
  	public PlayerFishingConditions GetFishingConditions()
  	{
@@ -6306,11 +6229,7 @@
  		if (result.BaitItemType == 2673)
  			return result;
  
-@@ -34054,16 +_,19 @@
- 		if (canFloatInWater && wet)
- 			num += 5;
- 
- 		if (sitting.TryGetSittingBlock(this, out var _))
+@@ -34058,12 +_,15 @@
  			num += 5;
  
  		int num2 = result.BaitPower + result.PolePower + fishingSkill + num;
@@ -6327,7 +6246,7 @@
  	{
  		float num = 1f;
  		if (Main.raining)
-@@ -34096,6 +_,7 @@
+@@ -34096,44 +_,46 @@
  		if (Main.bloodMoon)
  			num *= 1.1f;
  
@@ -6335,7 +6254,6 @@
  		return num;
  	}
  
-@@ -34102,24 +_,24 @@
 +	/*
  	private void Fishing_GetBait(out int baitPower, out int baitType)
 +	*/
@@ -6367,7 +6285,6 @@
  		}
  	}
  
-@@ -34126,14 +_,15 @@
 +	/*
  	private void Fishing_GetBestFishingPole(out int fishingPolePower, out int fishingPoleType)
 +	*/
@@ -6433,8 +6350,7 @@
  		return scale;
  	}
  
-@@ -34393,7 +_,15 @@
- 
+@@ -34394,6 +_,14 @@
  	public void ItemCheck()
  	{
  		pendingItemReuse = false;
@@ -6534,11 +6450,16 @@
  		ItemCheck_HandleMount();
  		int weaponDamage = GetWeaponDamage(item);
  		ItemCheck_AutoReuseLogic(item);
-@@ -34523,2 +_,2 @@
+@@ -34520,7 +_,7 @@
+ 			if (!flag3 && flag2 && whoAmI == Main.myPlayer && item.shoot == 1094 && TryUsingFoxsparksAbility())
+ 				flag4 = true;
+ 
 -			if (!flag4 && !flag3 && flag2 && whoAmI == Main.myPlayer && item.shoot >= 0 && item.shoot < ProjectileID.Count && (ProjectileID.Sets.LightPet[item.shoot] || Main.projPet[item.shoot]))
 +			if (!flag4 && !flag3 && flag2 && whoAmI == Main.myPlayer && item.shoot >= 0 && (ProjectileID.Sets.LightPet[item.shoot] || Main.projPet[item.shoot]))
  				FreeUpPetsAndMinions(item);
-@@ -34546,21 +_,33 @@
+ 
+ 			if (!flag4 && flag2)
+@@ -34546,7 +_,13 @@
  		if (itemAnimation > 0) {
  			if (item.mana > 0)
  				ItemCheck_ApplyManaRegenDelay(item);
@@ -6552,13 +6473,7 @@
  			itemAnimation--;
  			if (itemAnimation == 0 && whoAmI == Main.myPlayer)
  				PlayerInput.TryEndingFastUse();
- 
- 			if (itemAnimation == 0 && reuseDelay == 0 && controlUseItem && releaseUseItem)
- 				pendingItemReuse = true;
- 		}
- 
- 		if (itemAnimation == 0 && item.IsAir && item.type != 0) {
- 			item.TurnToAir();
+@@ -34560,7 +_,13 @@
  			pendingItemReuse = false;
  		}
  
@@ -6644,11 +6559,7 @@
  					num10 = (num10 - (float)itemTime) / num10;
  					float num11 = 44f;
  					float num12 = (float)Math.PI * 3f;
-@@ -34923,10 +_,12 @@
- 			}
- 
- 			if (whoAmI == Main.myPlayer) {
- 				if (!dontConsumeWand && itemTimeMax != 0 && itemTime == itemTimeMax && item.tileWand > 0) {
+@@ -34927,7 +_,9 @@
  					int tileWand = item.tileWand;
  					for (int num15 = 0; num15 < 58; num15++) {
  						if (tileWand == inventory[num15].type && inventory[num15].stack > 0) {
@@ -6658,7 +6569,8 @@
 +
  							if (inventory[num15].stack <= 0)
  								inventory[num15] = new Item();
-@@ -34952,5 +_,14 @@
+ 
+@@ -34952,6 +_,15 @@
  							flag7 = false;
  					}
  
@@ -6673,7 +6585,8 @@
 +
  					if (item.IsACoin)
  						flag7 = true;
-@@ -34962,6 +_,6 @@
+ 
+@@ -34962,7 +_,7 @@
  					if (flag8.HasValue)
  						flag7 = flag8.Value;
  
@@ -6681,7 +6594,9 @@
 +					if (flag7 && ItemLoader.ConsumeItem(item, this)) {
  						if (item.stack > 0)
  							item.stack--;
-@@ -35017,6 +_,11 @@
+ 
+@@ -35016,6 +_,11 @@
+ 		Rectangle drawHitbox = Item.GetDrawHitbox(item.type, this);
  		compositeFrontArm.enabled = false;
  		compositeBackArm.enabled = false;
 +		goto ReuseDelayAndAnimationStart;
@@ -6692,7 +6607,6 @@
  		if (itemAnimation > 0)
  			ItemCheck_ApplyUseStyle(mountOffset, item, drawHitbox);
  		else
- 			ItemCheck_ApplyHoldStyle(mountOffset, item, drawHitbox);
 @@ -35042,6 +_,8 @@
  			framesInMovementForPlacementPreview = Utils.Clamp(framesInMovementForPlacementPreview + num, 0, 33);
  			Tile targetTile = Main.tile[tileTargetX, tileTargetY];
@@ -6721,17 +6635,15 @@
  		if ((type == 4956 || type == 5669) && itemAnimation < itemAnimationMax - 3 * sItem.useTime)
  			flag = false;
  
-@@ -35117,12 +_,17 @@
+@@ -35116,6 +_,7 @@
+ 
  		if (type == 4953 && itemAnimation < itemAnimationMax - 10)
  			flag = false;
 +		*/
  
  		if (type == 5451 && ownedProjectileCounts[1020] > 0)
  			flag = false;
- 
- 		if (type == 5738 && ownedProjectileCounts[1105] > 0)
- 			flag = false;
- 
+@@ -35126,6 +_,10 @@
  		if (ItemID.Sets.ShootsOnUseRelease[sItem.type] && controlUseItem)
  			flag = false;
  
@@ -6739,6 +6651,9 @@
 +		if (sItem.useLimitPerAnimation != null && ItemUsesThisAnimation >= sItem.useLimitPerAnimation.Value)
 +			flag = false;
 +
+ 		bool flag2 = ItemID.Sets.PlaceTileOnAltUse[type];
+ 		bool flag3 = false;
+ 		if (altFunctionUse == 2 && flag2)
 @@ -35159,6 +_,10 @@
  		if (sItem.shoot > 0 && flag4)
  			ItemCheck_Shoot(whoAmI, sItem, weaponDamage);
@@ -6750,8 +6665,7 @@
  		ItemCheck_UseWiringTools(sItem);
  		ItemCheck_UseLawnMower(sItem);
  		ItemCheck_PlayInstruments(sItem);
-@@ -35169,7 +_,10 @@
- 		else {
+@@ -35170,7 +_,10 @@
  			toolTime--;
  			if (toolTime < 0) {
  				int num2 = sItem.useTime - 1;
@@ -6761,6 +6675,7 @@
 +				toolTime = CombinedHooks.TotalUseTime(sItem.useTime, this, sItem);
  			}
  		}
+ 
 @@ -35234,7 +_,10 @@
  			ItemCheck_GetMeleeHitbox(sItem, heldItemFrame, out var dontAttack2, out var itemRectangle2);
  			if (!dontAttack2) {
@@ -6772,7 +6687,8 @@
  					ItemCheck_CatchCritters(sItem, itemRectangle2);
  
  				if (sItem.type == 3183 || sItem.type == 4821) {
-@@ -35245,6 +_,8 @@
+@@ -35244,7 +_,9 @@
+ 
  				if (sItem.damage > 0) {
  					UpdateMeleeHitCooldowns();
 -					float knockBack = sItem.knockBack;
@@ -6905,7 +6821,7 @@
  			}
  
  			if (sItem.type == 3258) {
-@@ -35855,23 +_,44 @@
+@@ -35855,22 +_,43 @@
  			if (nPC.life > 5)
  				OnHit(nPC.Center.X, nPC.Center.Y, nPC);
  
@@ -6950,8 +6866,8 @@
  				addDPS(num5);
  
  			SetMeleeHitCooldown(npcIndex, itemAnimation);
- 			if (attempt.DidNPCDie())
-@@ -36143,10 +_,16 @@
+@@ -36142,11 +_,17 @@
+ 
  	private void ItemCheck_CatchCritters(Item sItem, Rectangle itemRectangle)
  	{
 +		//TML: Effectively replaced by ItemID.Sets.LavaproofCatchingTool
@@ -6976,9 +6892,7 @@
  		}
  	}
  
-@@ -36449,10 +_,12 @@
- 			float num28 = Main.rand.NextFloat();
- 			Main.dust[num27].color = Color.Lerp(new Color(0.9f, 0.7f, 1f), Color.White, num28 * num28 * num28);
+@@ -36451,6 +_,8 @@
  			if (mount.Type == 63)
  				Main.dust[num27].color = Color.Lerp(new Color(1f, 0.7f, 0.5f), Color.White, num28 * num28 * num28);
  		}
@@ -6987,9 +6901,8 @@
  	}
  
  	private void ItemCheck_GetMeleeHitboxParticles(Item sItem, Rectangle heldItemFrame)
- 	{
- 		if (sItem.type == 1450 && Main.rand.Next(3) == 0) {
-@@ -36571,6 +_,8 @@
+@@ -36570,6 +_,8 @@
+ 					itemRectangle.X += 10;
  			}
  		}
 +
@@ -6997,7 +6910,6 @@
  	}
  
  	private void ItemCheck_UseDemonHeart(Item sItem)
- 	{
 @@ -36645,29 +_,75 @@
  		releaseUseItem = false;
  	}
@@ -7096,7 +7008,7 @@
  
  			AchievementsHelper.HandleSpecialEvent(this, 0);
  		}
-@@ -36796,5 +_,9 @@
+@@ -36796,6 +_,10 @@
  		}
  	}
  
@@ -7106,6 +7018,7 @@
 +	/// </summary>
  	public void LimitPointToPlayerReachableArea(ref Vector2 pointPosition)
  	{
+ 		Rectangle worldRect = Utils.CenteredRectangle(base.Center, Main.MaxWorldViewSize.ToVector2());
 @@ -36852,6 +_,9 @@
  		if ((Main.tile[num, num2].wall == 87 && !NPC.downedPlantBoss && (Main.remixWorld || (double)num2 > Main.worldSurface)) || Collision.SolidCollision(pointPosition, width, height))
  			return;
@@ -7116,14 +7029,16 @@
  		Teleport(pointPosition, 1);
  		NetMessage.SendData(65, -1, -1, null, 0, whoAmI, pointPosition.X, pointPosition.Y, 1);
  		if (sItem.type != 1326)
-@@ -36884,4 +_,7 @@
- 	private bool IsTilePoundable(Tile targetTile)
+@@ -36885,6 +_,9 @@
  	{
  		if (Main.tileHammer[targetTile.type])
  			return false;
 +			
 +		if (TileID.Sets.CanBeSloped[tile.type])
 +			return true;
+ 
+ 		if (!Main.tileSolid[targetTile.type] && targetTile.type != 314 && targetTile.type != 424 && targetTile.type != 442 && targetTile.type != 351 && targetTile.type != 470)
+ 			return TileID.Sets.IsLivingFire[targetTile.type];
 @@ -36900,7 +_,10 @@
  			}
  		}
@@ -7161,7 +7076,7 @@
  				if (!WorldGen.CanKillTile(x, y))
  					num2 = 0;
  
-@@ -37017,11 +_,18 @@
+@@ -37017,10 +_,17 @@
  			}
  		}
  		else if (Main.tileAxe[tile.type]) {
@@ -7179,7 +7094,6 @@
  			if (sItem.axe > 0) {
  				IntentionGuesser.Track(this, x, y, GuessedPlayerIntention.HarvestTrees);
  				AchievementsHelper.CurrentlyMining = true;
- 				if (!WorldGen.CanKillTile(x, y))
 @@ -37052,7 +_,7 @@
  						NetMessage.SendData(17, -1, -1, null, 0, x, y);
  
@@ -7218,7 +7132,7 @@
  		if (!TileObject.CanPlace(tileTargetX, tileTargetY, type, style, direction, out var objectData))
  			return;
  
-@@ -37261,7 +_,8 @@
+@@ -37261,6 +_,7 @@
  		if (!poundRelease)
  			return;
  
@@ -7226,7 +7140,6 @@
  		if (Main.tile[x, y].type == 470) {
  			TEDisplayDoll.TryChangePose(x, y);
  		}
- 		else if (TileID.Sets.Platforms[Main.tile[x, y].type]) {
 @@ -37881,7 +_,9 @@
  			}
  
@@ -7358,7 +7271,7 @@
  		if (projToShoot == 17) {
  			pointPosition.X = (float)Main.mouseX + Main.screenPosition.X;
  			pointPosition.Y = (float)Main.mouseY + Main.screenPosition.Y;
-@@ -38362,5 +_,8 @@
+@@ -38362,6 +_,9 @@
  			LimitPointToPlayerReachableArea(ref pointPosition);
  		}
  
@@ -7367,6 +7280,7 @@
 +		ShootProj:
  		if (projToShoot == 76) {
  			projToShoot += Main.rand.Next(3);
+ 			float smallerScaledAxis = Main.Camera.SmallerScaledAxis;
 @@ -38389,7 +_,10 @@
  
  		if (sItem.type == 3029) {
@@ -7378,8 +7292,7 @@
  				if (Main.rand.Next(3) == 0)
  					num12--;
  			}
-@@ -38495,9 +_,10 @@
- 		}
+@@ -38496,8 +_,9 @@
  
  		if (sItem.type == 3053) {
  			bool flag3 = false;
@@ -7429,11 +7342,7 @@
  		for (int i = 0; i < 1000; i++) {
  			Projectile projectile = Main.projectile[i];
  			if (projectile.active && projectile.owner == Main.myPlayer && ProjectileID.Sets.TurretFeature[projectile.type])
-@@ -40419,16 +_,21 @@
- 	public void ItemCheck_EmitHeldItemLight(Item sItem)
- 	{
- 		float num = 1f;
- 		bool flag = stealth >= 1f;
+@@ -40423,12 +_,17 @@
  		Vector2? handPosition = HandPosition;
  		Vector2 pos = Vector2.Zero;
  		ApplyItemPositionOffsetFromMount(ref pos);
@@ -7460,7 +7369,8 @@
  
  		if ((sItem.type == 105 || sItem.type == 713) && !wet && !pulley) {
  			int maxValue2 = 20;
-@@ -40835,7 +_,13 @@
+@@ -40834,6 +_,12 @@
+ 
  	private void ItemCheck_ApplyHoldStyle(float mountOffset, Item sItem, Rectangle heldItemFrame)
  	{
 +		ItemCheck_ApplyHoldStyle_Inner(mountOffset, sItem, heldItemFrame);
@@ -7472,8 +7382,6 @@
  		bool flag = !isDisplayDollOrInanimate;
  		if (petting.isPetting) {
  			if (mount.Active && (mount.Type == 62 || mount.Type == 63)) {
- 				int num = miscCounter % 14 / 7;
- 				CompositeArmStretchAmount stretch = CompositeArmStretchAmount.ThreeQuarters;
 @@ -41126,7 +_,10 @@
  
  	private void ItemCheck_ApplyManaRegenDelay(Item sItem)
@@ -7574,7 +7482,8 @@
  		if (item.type == 3001) {
  			int healLife = item.healLife;
  			int num2 = 120;
-@@ -42252,4 +_,7 @@
+@@ -42251,6 +_,9 @@
+ 
  	private bool ItemCheck_CheckCanUse_Inner(Item sItem, bool ignoreCursed = false)
  	{
 +		if (sItem.IsAir || !CombinedHooks.CanUseItem(this, sItem))
@@ -7582,6 +7491,7 @@
 +
  		if (whoAmI == Main.myPlayer && Main.LocalPlayerHasPendingInventoryActions())
  			return false;
+ 
 @@ -42621,7 +_,7 @@
  		if (baitTypeUsed == 2673)
  			flag = true;
@@ -7591,10 +7501,7 @@
  			if (item.type == 4361 || item.type == 4362)
  				NPC.LadyBugKilled(base.Center, item.type == 4362);
  
-@@ -42912,9 +_,16 @@
- 
- 	private void ItemCheck_AutoReuseLogic(Item sItem)
- 	{
+@@ -42915,6 +_,13 @@
  		if (sItem.IsAir || (selectedItemState.HasBufferedChange && (sItem.shoot <= 0 || ItemTimeIsZero)))
  			return;
  
@@ -7715,7 +7622,7 @@
  		if (sItem.melee)
  			return meleeCrit;
  
-@@ -43340,4 +_,9 @@
+@@ -43340,6 +_,11 @@
  			return magicCrit;
  
  		return 0;
@@ -7725,7 +7632,11 @@
 +		CombinedHooks.ModifyWeaponCrit(this, sItem, ref crit);
 +		return (int)(crit + 5E-06f);
  	}
-@@ -43371,5 +_,7 @@
+ 
+ 	public float GetWeaponDamageMultiplier(Item item)
+@@ -43369,17 +_,53 @@
+ 		return 1f;
+ 	}
  
 -	public int GetWeaponDamage(Item sItem)
 +	//TML: Added 'forTooltip' parameter.
@@ -7734,7 +7645,6 @@
 +		/*
  		int damage = sItem.damage;
  		if (damage <= 0)
-@@ -43376,10 +_,44 @@
  			return damage;
  
  		return (int)((float)damage * GetWeaponDamageMultiplier(sItem) + 5E-06f);
@@ -7977,7 +7887,8 @@
  
  		if (AmmoID.Sets.IsArrow[item.ammo] && archery && speed < 20f) {
  			speed *= 1.2f;
-@@ -43511,6 +_,61 @@
+@@ -43510,7 +_,62 @@
+ 		}
  
  		KnockBack += item.knockBack;
 +
@@ -8086,7 +7997,8 @@
  		if (projToShoot == 85 && itemAnimation < itemAnimationMax - sItem.useTime)
  			flag2 = true;
  
-@@ -43589,5 +_,8 @@
+@@ -43588,6 +_,9 @@
+ 			if (item.stack <= 0)
  				item.TurnToAir();
  		}
 +		*/
@@ -8144,7 +8056,7 @@
  
  		if (tileTarget.type == 147 || tileTarget.type == 0 || tileTarget.type == 40 || tileTarget.type == 53 || tileTarget.type == 57 || tileTarget.type == 59 || tileTarget.type == 123 || tileTarget.type == 224 || tileTarget.type == 397)
  			num += pickPower;
-@@ -44077,10 +_,35 @@
+@@ -44077,12 +_,37 @@
  			return;
  		}
  
@@ -8180,7 +8092,9 @@
 +			if (item2.stack > 0)
 +				TryDroppingSingleItem(itemSource_Death, item2);
  		}
-@@ -44110,10 +_,30 @@
+ 
+ 		array = armor;
+@@ -44110,12 +_,32 @@
  			loadouts[i].TryDroppingItems(this, itemSource_Death);
  		}
  
@@ -8211,7 +8125,9 @@
 +	{
 +		PlayerLoader.SetStartInventory(this, startInventory);
  	}
-@@ -44126,14 +_,17 @@
+ 
+ 	public void TryDroppingSingleItem(IEntitySource source, Item theItem)
+@@ -44126,7 +_,10 @@
  	public void TryDroppingSingleItem(IEntitySource source, Item theItem, int stack)
  	{
  		if (stack > 0 && Main.netMode != 1) {
@@ -8222,13 +8138,6 @@
  			WorldItem obj = Main.item[num];
  			obj.velocity.Y = (float)Main.rand.Next(-20, 1) * 0.2f;
  			obj.velocity.X = (float)Main.rand.Next(-20, 21) * 0.2f;
- 			NetMessage.SendData(21, -1, -1, null, num);
- 		}
- 
- 		theItem.stack -= stack;
- 		if (theItem.stack <= 0)
- 			theItem.TurnToAir(fullReset: true);
- 	}
 @@ -44180,8 +_,13 @@
  		}
  	}
@@ -8253,7 +8162,7 @@
  		clonePlayer.extraAccessory = extraAccessory;
  		clonePlayer.MinionRestTargetPoint = MinionRestTargetPoint;
  		clonePlayer.MinionAttackTargetNPC = MinionAttackTargetNPC;
-@@ -44233,5 +_,8 @@
+@@ -44233,6 +_,9 @@
  		Array.Copy(buffTime, clonePlayer.buffTime, buffTime.Length);
  		DpadRadial.CopyTo(clonePlayer.DpadRadial);
  		CircularRadial.CopyTo(clonePlayer.CircularRadial);
@@ -8262,15 +8171,15 @@
 +
  		return clonePlayer;
  	}
-@@ -44246,7 +_,8 @@
- 	public static void clientCloneItem(Item from, Item to)
- 	{
- 		to.type = from.type;
+ 
+@@ -44249,6 +_,7 @@
  		to.stack = from.stack;
  		to.prefix = from.prefix;
  		to.favorited = from.favorited;
 +		to.NetStateVersion = from.NetStateVersion;
  	}
+ 
+ 	private void clientCloneLoadouts(Player clonePlayer)
 @@ -44278,7 +_,10 @@
  		if (Main.tile[x, y - 1] == null)
  			return false;
@@ -8362,7 +8271,7 @@
  	}
  
  	private static void Serialize(PlayerFileData playerFile, Player newPlayer, BinaryWriter fileIO)
-@@ -44450,9 +_,9 @@
+@@ -44450,8 +_,8 @@
  		fileIO.Write(newPlayer.name);
  		fileIO.Write(newPlayer.difficulty);
  		fileIO.Write(playerFile.GetPlayTime().Ticks);
@@ -8373,7 +8282,6 @@
  		fileIO.Write((byte)newPlayer.team);
  		BitsByte bitsByte = (byte)0;
  		for (int i = 0; i < 8; i++) {
- 			bitsByte[i] = newPlayer.hideVisibleAccessory[i];
 @@ -44468,9 +_,13 @@
  		fileIO.Write(newPlayer.hideMisc);
  		fileIO.Write((byte)newPlayer.skinVariant);
@@ -8607,8 +8515,7 @@
  				continue;
  
  			for (int j = i + 1; j < 10; j++) {
-@@ -45359,8 +_,30 @@
- 	private static void LoadPlayer_LastMinuteFixes(Player newPlayer)
+@@ -45360,7 +_,29 @@
  	{
  		newPlayer.skinVariant = (int)MathHelper.Clamp(newPlayer.skinVariant, 0f, PlayerVariantID.Count - 1);
  		newPlayer.voiceVariant = Utils.Clamp(newPlayer.voiceVariant, 1, 4);
@@ -8738,7 +8645,8 @@
  		width = 20;
  		height = 42;
  		name = string.Empty;
-@@ -45578,4 +_,7 @@
+@@ -45577,6 +_,9 @@
+ 		usedGalaxyPearl = false;
  		usedGummyWorm = false;
  		usedAmbrosia = false;
 +
@@ -8746,6 +8654,7 @@
 +
  		Array.Clear(adjTile, 0, adjTile.Length);
  		hitTile = new HitTile();
+ 		hitReplace = new HitTile();
 @@ -45777,10 +_,19 @@
  		int questsDone = anglerQuestsFinished;
  		float anglerRewardRarityMultiplier = GetAnglerRewardRarityMultiplier(questsDone);
@@ -8780,8 +8689,7 @@
  	{
  		Item item = new Item();
  		item.type = 0;
-@@ -45925,22 +_,37 @@
- 				break;
+@@ -45926,26 +_,42 @@
  			}
  		}
  
@@ -8818,9 +8726,9 @@
 +			rewardItems.Add(item5);
  		}
  	}
-@@ -45948,4 +_,5 @@
-+	//TML: Added 'rewardsItems' parameter.
+ 
 -	private void GetAnglerReward_Decoration(IEntitySource source, int questsDone, float rarityReduction)
++	//TML: Added 'rewardsItems' parameter.
 +	private void GetAnglerReward_Decoration(List<Item> rewardItems, IEntitySource source, int questsDone, float rarityReduction)
  	{
  		float value = 1f - rarityReduction;
@@ -8860,7 +8768,7 @@
  	{
  		Item item = new Item();
  		int num = (questsDone + 50) / 2;
-@@ -46086,5 +_,8 @@
+@@ -46086,7 +_,10 @@
  			item.stack = num;
  		}
  
@@ -8869,13 +8777,17 @@
  		QuickSpawnItem(source, item, GetItemSettings.GiftRecieved);
 +		*/
  	}
-@@ -46236,4 +_,6 @@
+ 
+ 	public bool DropAnglerAccByMissing(List<int> itemIdsOfAccsWeWant, float totalChance, out bool botheredRollingForADrop, out int itemIdToDrop)
+@@ -46236,6 +_,8 @@
  				list.Add(3024);
  		}
  
 +		PlayerLoader.GetDyeTraderReward(this, list);
 +
  		num = list[Main.rand.Next(list.Count)];
+ 		Item item = new Item();
+ 		item.SetDefaults(num);
 @@ -46277,6 +_,8 @@
  		if (keyDir != num)
  			return;

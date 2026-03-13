@@ -1,8 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Graphics/Light/LightingEngine.cs
 +++ src/tModLoader/Terraria/Graphics/Light/LightingEngine.cs
-@@ -2,8 +_,9 @@
- using System.Collections.Generic;
- using Microsoft.Xna.Framework;
+@@ -4,6 +_,7 @@
  using ReLogic.Threading;
  using Terraria.Graphics.Capture;
  using Terraria.Map;
@@ -10,8 +8,7 @@
  
  namespace Terraria.Graphics.Light;
  
-@@ -166,7 +_,14 @@
- 				break;
+@@ -167,6 +_,13 @@
  		}
  
  		Player perspectivePlayer = Main.SceneMetrics.PerspectivePlayer;

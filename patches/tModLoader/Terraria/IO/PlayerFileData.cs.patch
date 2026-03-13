@@ -19,7 +19,7 @@
  	public Player Player {
  		get {
  			return _player;
-@@ -71,7 +_,9 @@
+@@ -71,6 +_,8 @@
  		if (!FileUtilities.MoveToCloud(base.Path, playerPathFromName))
  			return;
  
@@ -28,7 +28,6 @@
  		string fileName = GetFileName(includeExtension: false);
  		string path = Main.PlayerPath + System.IO.Path.DirectorySeparatorChar + fileName + System.IO.Path.DirectorySeparatorChar;
  		string text = playerPathFromName.Substring(0, playerPathFromName.Length - 4);
- 		if (Directory.Exists(path)) {
 @@ -97,6 +_,8 @@
  		if (!FileUtilities.MoveToLocal(base.Path, playerPathFromName))
  			return;

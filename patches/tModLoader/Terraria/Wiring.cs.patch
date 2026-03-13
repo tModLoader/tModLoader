@@ -1,7 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Wiring.cs
 +++ src/tModLoader/Terraria/Wiring.cs
-@@ -8,35 +_,41 @@
- using Terraria.GameContent.UI;
+@@ -9,36 +_,42 @@
  using Terraria.ID;
  using Terraria.Localization;
  using Terraria.UI;
@@ -55,6 +54,8 @@
 -	private static int _currentWireColor;
 +	public static int _currentWireColor;
  	private static int CurrentUser = 255;
+ 	private static int cannonCoolDown = 0;
+ 	private static int bunnyCannonCoolDown = 0;
 @@ -81,11 +_,17 @@
  		_mechTime = new int[1000];
  	}
@@ -167,7 +168,7 @@
  				WorldGen.SwitchMB(i, j);
  				break;
  			case 207:
-@@ -2142,14 +_,30 @@
+@@ -2142,20 +_,38 @@
  								break;
  
  							int num150 = 50;
@@ -198,7 +199,6 @@
  								}
  							}
  
-@@ -2156,6 +_,8 @@
  							if (num151 > 0) {
  								int num153 = array2[Main.rand.Next(num151)];
  								Main.npc[num153].Teleport(new Vector2(num142 - Main.npc[num153].width / 2, num143 - Main.npc[num153].height - 1), 14);
@@ -207,7 +207,7 @@
  							}
  
  							break;
-@@ -2165,14 +_,30 @@
+@@ -2165,20 +_,38 @@
  								break;
  
  							int num146 = 50;
@@ -238,14 +238,15 @@
  								}
  							}
  
-@@ -2181,4 +_,6 @@
+ 							if (num147 > 0) {
+ 								int num149 = array[Main.rand.Next(num147)];
  								Main.npc[num149].Teleport(new Vector2(num142 - Main.npc[num149].width / 2, num143 - Main.npc[num149].height - 1), 14);
 +
 +								NPCLoader.OnGoToStatue(Main.npc[num149], toKingStatue: false);
  							}
  
  							break;
-@@ -2260,9 +_,13 @@
+@@ -2260,10 +_,14 @@
  				break;
  			case 557:
  				tile.type = 546;
@@ -259,6 +260,7 @@
 +		TileLoader.HitWire(i, j, type);
  	}
  
+ 	private static void Extractinator(int sourceX, int sourceY)
 @@ -2824,7 +_,7 @@
  		return false;
  	}

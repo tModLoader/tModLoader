@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/ID/MountID.cs
 +++ src/tModLoader/Terraria/ID/MountID.cs
-@@ -1,19 +_,31 @@
+@@ -1,22 +_,34 @@
 +using ReLogic.Reflection;
 +using Terraria.ModLoader;
 +
@@ -34,6 +34,9 @@
  		public static bool[] DontDismountWhenCCed = Factory.CreateBoolSet(55, 56, 61);
  	}
 +#endif
+ 
+ 	public const int None = -1;
+ 	public const int Rudolph = 0;
 @@ -84,4 +_,6 @@
  	public const int Chillet = 62;
  	public const int ChilletIgnis = 63;

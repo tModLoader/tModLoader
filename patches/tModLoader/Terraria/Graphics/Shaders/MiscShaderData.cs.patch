@@ -1,11 +1,9 @@
 --- src/TerrariaNetCore/Terraria/Graphics/Shaders/MiscShaderData.cs
 +++ src/tModLoader/Terraria/Graphics/Shaders/MiscShaderData.cs
-@@ -193,5 +_,35 @@
- 		_uImage2Tex = texture;
- 		_uImage2 = null;
+@@ -195,6 +_,36 @@
  		return this;
  	}
-+
+ 
 +	public MiscShaderData UseImage0(Asset<Texture2D> asset)
 +	{
 +		if (Main.dedServ)
@@ -35,4 +33,7 @@
 +		_uImage2 = asset;
 + 		return this;
 +	}
++
+ 	private static bool IsPowerOfTwo(int n) => (int)Math.Ceiling(Math.Log(n) / Math.Log(2.0)) == (int)Math.Floor(Math.Log(n) / Math.Log(2.0));
  
+ 	public MiscShaderData UseOpacity(float alpha)

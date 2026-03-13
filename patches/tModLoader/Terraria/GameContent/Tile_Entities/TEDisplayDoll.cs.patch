@@ -1,7 +1,6 @@
 --- src/TerrariaNetCore/Terraria/GameContent/Tile_Entities/TEDisplayDoll.cs
 +++ src/tModLoader/Terraria/GameContent/Tile_Entities/TEDisplayDoll.cs
-@@ -6,10 +_,12 @@
- using Terraria.Audio;
+@@ -7,11 +_,13 @@
  using Terraria.DataStructures;
  using Terraria.GameInput;
  using Terraria.Graphics.Renderers;
@@ -14,6 +13,8 @@
 -public class TEDisplayDoll : TileEntityType<TEDisplayDoll>, IFixLoadedData
 +public sealed partial class TEDisplayDoll : TileEntityType<TEDisplayDoll>, IFixLoadedData
  {
+ 	public struct DisplayDollPose
+ 	{
 @@ -168,8 +_,8 @@
  		Item[] equip = _equip;
  		foreach (Item item in equip) {
@@ -51,7 +52,7 @@
  		WorldGen.destroyObject = true;
  		for (int k = num; k < num + 2; k++) {
  			for (int l = num2; l < num2 + 3; l++) {
-@@ -671,18 +_,28 @@
+@@ -672,6 +_,10 @@
  	public void WriteItem(int itemIndex, BinaryWriter writer, Item[] collection)
  	{
  		Item item = collection[itemIndex];
@@ -62,7 +63,7 @@
  		writer.Write((ushort)item.type);
  		writer.Write((ushort)item.stack);
  		writer.Write(item.prefix);
- 	}
+@@ -679,11 +_,17 @@
  
  	public void ReadItem(int itemIndex, BinaryReader reader, Item[] collection)
  	{

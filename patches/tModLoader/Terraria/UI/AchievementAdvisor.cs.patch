@@ -1,11 +1,11 @@
 --- src/TerrariaNetCore/Terraria/UI/AchievementAdvisor.cs
 +++ src/tModLoader/Terraria/UI/AchievementAdvisor.cs
-@@ -1,17 +_,21 @@
+@@ -1,3 +_,4 @@
 +using System;
  using System.Collections.Generic;
  using System.Linq;
  using Microsoft.Xna.Framework;
- using Microsoft.Xna.Framework.Graphics;
+@@ -5,13 +_,16 @@
  using ReLogic.Content;
  using Terraria.Audio;
  using Terraria.Enums;

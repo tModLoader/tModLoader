@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/UI/NetDiagnosticsUI.cs
 +++ src/tModLoader/Terraria/UI/NetDiagnosticsUI.cs
-@@ -65,7 +_,11 @@
+@@ -65,6 +_,10 @@
  
  	public void CountReadMessage(int messageId, int messageLength)
  	{
@@ -11,4 +11,3 @@
  		Interlocked.Add(ref bytesRecv, messageLength);
  		_counterByMessageId[messageId].CountReadMessage(messageLength);
  	}
- 

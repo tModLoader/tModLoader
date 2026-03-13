@@ -1,12 +1,14 @@
 --- src/TerrariaNetCore/Terraria/GameContent/UI/Elements/UIScrollbar.cs
 +++ src/tModLoader/Terraria/GameContent/UI/Elements/UIScrollbar.cs
-@@ -6,5 +_,5 @@
+@@ -6,7 +_,7 @@
  
  namespace Terraria.GameContent.UI.Elements;
  
 -public class UIScrollbar : UIElement
 +public partial class UIScrollbar : UIElement
  {
+ 	public enum ColorTheme
+ 	{
 @@ -77,7 +_,7 @@
  		return new Rectangle((int)innerDimensions.X, (int)(innerDimensions.Y + innerDimensions.Height * (_viewPosition / _maxViewSize)) - 3, 20, (int)(innerDimensions.Height * (_viewSize / _maxViewSize)) + 7);
  	}

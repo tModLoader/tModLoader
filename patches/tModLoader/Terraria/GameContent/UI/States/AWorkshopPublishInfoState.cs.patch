@@ -60,13 +60,14 @@
  		int num5 = 6 + num4;
  		UIList uiList = AddUIList(uIPanel, num5);
  		FillUIList(uiList);
-@@ -76,5 +_,6 @@
+@@ -76,6 +_,7 @@
  		uIElement.Append(uIPanel);
  		Append(uIElement);
  		SetDefaultOptions();
 +		AddPublishButton(num, uIElement);
  	}
  
+ 	private void SetDefaultOptions()
 @@ -100,6 +_,13 @@
  		uIElement.SetPadding(0f);
  		uiList.Add(uIElement);
@@ -250,7 +251,7 @@
  		string text = FileBrowser.OpenFilePanel("Open icon", extensions);
  		if (text != null) {
  			_previewImagePath = text;
-@@ -681,8 +_,8 @@
+@@ -681,7 +_,7 @@
  		return path;
  	}
  
@@ -259,4 +260,3 @@
  	{
  		Texture2D texture2D = null;
  		string contents = PrettifyPath(_previewImagePath);
- 		_previewImagePathPlate.SetContents(contents);

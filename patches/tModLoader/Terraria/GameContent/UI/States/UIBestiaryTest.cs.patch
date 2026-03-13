@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/GameContent/UI/States/UIBestiaryTest.cs
 +++ src/tModLoader/Terraria/GameContent/UI/States/UIBestiaryTest.cs
-@@ -31,6 +_,6 @@
+@@ -31,7 +_,7 @@
  	private UIText _filteringText;
  	private BestiaryUnlockProgressReport _progressReport;
  	private UIText _progressPercentText;
@@ -8,6 +8,7 @@
 +	private ModLoader.UI.UIBestiaryBar _unlocksProgressBar; //TML: Type changed from 'UIColoredSliderSimple'.
  	private UILinkPoint searchButtonLink;
  
+ 	public UIBestiaryTest(BestiaryDatabase database)
 @@ -148,16 +_,25 @@
  		};
  

@@ -5,12 +5,11 @@
  using Microsoft.Xna.Framework;
  using Microsoft.Xna.Framework.Graphics;
  using ReLogic.Content;
-@@ -111,8 +_,16 @@
- 	public ArmorShaderData UseImage(string path)
+@@ -112,6 +_,14 @@
  	{
  		if (!Main.dedServ)
  			_uImage = Main.Assets.Request<Texture2D>(path);
- 
++
 +		return this;
 +	}
 +
@@ -18,7 +17,6 @@
 +	{
 +		if (!Main.dedServ)
 +			_uImage = asset;
-+
+ 
  		return this;
  	}
- 

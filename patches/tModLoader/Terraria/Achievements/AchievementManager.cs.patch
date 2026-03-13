@@ -76,7 +76,7 @@
  	public void Load()
  	{
  		Load(_savePath, _isCloudSave);
-@@ -131,6 +_,10 @@
+@@ -144,6 +_,10 @@
  			achievement.Value.ClearProgress();
  		}
  
@@ -87,7 +87,7 @@
  		Save();
  	}
  
-@@ -147,6 +_,13 @@
+@@ -160,6 +_,13 @@
  		achievement.OnCompleted += AchievementCompleted;
  	}
  
@@ -101,7 +101,7 @@
  	public void RegisterIconIndex(string achievementName, int iconIndex)
  	{
  		_achievementIconIndexes.Add(achievementName, iconIndex);
-@@ -157,6 +_,9 @@
+@@ -170,6 +_,9 @@
  		_achievements[achievementName].SetCategory(category);
  	}
  
@@ -111,7 +111,7 @@
  	public Achievement GetAchievement(string achievementName)
  	{
  		if (_achievements.TryGetValue(achievementName, out var value))
-@@ -181,5 +_,98 @@
+@@ -194,5 +_,98 @@
  			return value;
  
  		return 0;

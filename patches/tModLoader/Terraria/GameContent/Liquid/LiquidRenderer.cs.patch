@@ -95,7 +95,7 @@
  	private static readonly byte[] VISCOSITY_MASK = new byte[5] {
  		0,
  		200,
-@@ -84,21 +_,24 @@
+@@ -84,12 +_,13 @@
  		0,
  		0
  	};
@@ -111,8 +111,7 @@
  	private int _animationFrame;
  	private int _waterfallAnimationFrame;
  	private Rectangle _drawArea = new Rectangle(0, 0, 1, 1);
- 	private readonly UnifiedRandom _random = new UnifiedRandom();
- 	private Color[] _waveMask = new Color[1];
+@@ -98,7 +_,9 @@
  	private float _frameState;
  	private float _waterfallFrameState;
  
@@ -300,7 +299,7 @@
  		}
  
  		if (this.WaveFilters != null)
-@@ -575,13 +_,28 @@
+@@ -575,12 +_,27 @@
  	{
  		Rectangle drawArea = _drawArea;
  		Main.tileBatch.Restart();
@@ -328,7 +327,6 @@
  
  				Main.tileBatch.SetLayer(0u, 0);
  				Rectangle sourceRectangle = ptr2->SourceRectangle;
- 				if (ptr2->IsSurfaceLiquid)
 @@ -593,8 +_,10 @@
  				float val = ptr2->Opacity * (isBackgroundDraw ? 1f : 0.75f);
  				int num2 = 14;

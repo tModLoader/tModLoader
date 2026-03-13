@@ -12,8 +12,7 @@
  	public static SoundPlayer SoundPlayer;
  	public static bool AreSoundsPaused;
  
-@@ -24,6 +_,11 @@
- 		catch (Exception) {
+@@ -25,6 +_,11 @@
  			IsAudioSupported = false;
  		}
  
@@ -24,6 +23,7 @@
 +
  		return new DisabledAudioSystem();
  	}
+ 
 @@ -38,6 +_,15 @@
  
  	public static void Update()
@@ -58,9 +58,7 @@
  	public static void PlaySound(int type, Vector2 position, int style = 1, float pitchOffset = 0f)
  	{
  		PlaySound(type, (int)position.X, (int)position.Y, style, 1f, pitchOffset);
-@@ -120,8 +_,9 @@
- 		if (Main.dedServ || !IsAudioSupported)
- 			return SlotId.Invalid;
+@@ -122,6 +_,7 @@
  
  		return SoundPlayer.Play(style);
  	}

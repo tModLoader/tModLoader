@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/GameContent/Tile_Entities/TEFoodPlatter.cs
 +++ src/tModLoader/Terraria/GameContent/Tile_Entities/TEFoodPlatter.cs
-@@ -1,9 +_,12 @@
+@@ -1,10 +_,13 @@
  using System.IO;
 +using Microsoft.Xna.Framework;
  using Terraria.DataStructures;
@@ -14,6 +14,7 @@
 +public sealed partial class TEFoodPlatter : TileEntityType<TEFoodPlatter>, IFixLoadedData
  {
  	public Item item;
+ 
 @@ -36,8 +_,8 @@
  
  	public override void WriteExtraData(BinaryWriter writer, bool networkSend)
@@ -25,7 +26,7 @@
  		writer.Write((short)item.stack);
  	}
  
-@@ -54,20 +_,23 @@
+@@ -54,30 +_,38 @@
  	public void DropItem()
  	{
  		if (Main.netMode != 1)
@@ -51,7 +52,6 @@
  			return;
  		}
  
-@@ -74,10 +_,15 @@
  		if (result.item.stack > 0)
  			result.DropItem();
  

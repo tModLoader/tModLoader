@@ -1,6 +1,8 @@
 --- src/TerrariaNetCore/Terraria/ID/WallID.cs
 +++ src/tModLoader/Terraria/ID/WallID.cs
-@@ -3,7 +_,11 @@
+@@ -1,9 +_,13 @@
+ using ReLogic.Reflection;
+ 
 +using ReLogic.Reflection;
 +using Terraria.ModLoader;
 +
@@ -12,7 +14,7 @@
  	public static class Sets
  	{
  		public static class Conversion
-@@ -22,8 +_,8 @@
+@@ -22,7 +_,7 @@
  			public static bool[] NewWall4 = Factory.CreateBoolSet(191, 195, 203, 207, 215, 279, 283, 291, 295, 303);
  		}
  
@@ -21,7 +23,6 @@
  		public static bool[] DualDungeonsJungleBiomeWalls = Factory.CreateBoolSet(64, 204, 205, 206, 207, 15);
  		public static bool[] CanBeConvertedToGlowingMushroom = Factory.CreateBoolSet(64, 67, 15, 247);
  		public static bool[] AllowsUndergroundDesertEnemiesToSpawn = Factory.CreateBoolSet(187, 220, 222, 221, 216, 217, 219, 218, 223);
- 		public static bool[] Transparent = Factory.CreateBoolSet(0, 88, 89, 90, 91, 92, 241, 93);
 @@ -36,9 +_,13 @@
  		public static bool[] AllowsPlantsToGrow = Factory.CreateBoolSet(0, 150, 138, 145, 107, 152, 140, 139, 141, 106, 245, 315, 317, 63, 64, 65, 66, 67, 68, 69, 81, 70, 264, 268, 265, 74, 80);
  		public static bool[] CannotBeReplacedByWallSpread = Factory.CreateBoolSet(4, 40, 3, 83, 87, 244, 34);

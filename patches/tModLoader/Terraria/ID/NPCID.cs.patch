@@ -1,7 +1,6 @@
 --- src/TerrariaNetCore/Terraria/ID/NPCID.cs
 +++ src/tModLoader/Terraria/ID/NPCID.cs
-@@ -4,30 +_,112 @@
- using Microsoft.Xna.Framework.Graphics;
+@@ -5,29 +_,111 @@
  using ReLogic.Content;
  using ReLogic.Reflection;
  using Terraria.DataStructures;
@@ -184,9 +183,7 @@
  		public static List<int> TownNPCBestiaryPriority = new List<int> {
  			22,
  			17,
-@@ -5157,13 +_,47 @@
- 			37,
- 			687
+@@ -5159,11 +_,45 @@
  		};
  		public static bool[] SpawnOnPlayerCanSpawnInMidairOnSkyblock = Factory.CreateBoolSet(4, 266, 222, 125, 126, 127, 262, 551);
  		public static bool[] DontDropDungeonKeysOrSouls = Factory.CreateBoolSet(23);
@@ -232,8 +229,7 @@
  		public static List<int> GoldCrittersCollection = new List<int> {
  			443,
  			442,
-@@ -5180,13 +_,31 @@
- 			448,
+@@ -5181,12 +_,30 @@
  			539
  		};
  		public static bool[] IsGoldCritter = Factory.CreateBoolSet(false, 442, 443, 444, 445, 446, 447, 448, 539, 592, 593, 601, 605, 613, 627);

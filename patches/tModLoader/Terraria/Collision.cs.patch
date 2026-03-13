@@ -63,7 +63,7 @@
  				bool flag2 = true;
  				if ((num5 == 4 || num5 == 2 || num5 == 3 || num5 == 6 || num5 == 7) && objType != 5)
  					flag2 = false;
-@@ -3146,7 +_,7 @@
+@@ -3149,7 +_,7 @@
  			if (tile.active()) {
  				if (Main.tileSolid[tile.type]) {
  					int num5 = tile.blockType();

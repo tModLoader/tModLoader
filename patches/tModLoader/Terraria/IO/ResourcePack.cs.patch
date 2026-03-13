@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/IO/ResourcePack.cs
 +++ src/tModLoader/Terraria/IO/ResourcePack.cs
-@@ -94,7 +_,11 @@
+@@ -87,7 +_,11 @@
  			return _services.Get<IAssetRepository>().Request<Texture2D>("Images/UI/DefaultResourcePackIcon").Value;
  
  		using Stream stream = OpenStream("icon.png");

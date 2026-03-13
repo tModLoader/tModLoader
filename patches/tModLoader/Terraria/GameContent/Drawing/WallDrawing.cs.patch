@@ -1,8 +1,6 @@
 --- src/TerrariaNetCore/Terraria/GameContent/Drawing/WallDrawing.cs
 +++ src/tModLoader/Terraria/GameContent/Drawing/WallDrawing.cs
-@@ -2,15 +_,16 @@
- using Microsoft.Xna.Framework.Graphics;
- using Terraria.GameContent.Liquid;
+@@ -4,6 +_,7 @@
  using Terraria.Graphics;
  using Terraria.ID;
  using Terraria.Testing;
@@ -10,7 +8,7 @@
  
  namespace Terraria.GameContent.Drawing;
  
- public class WallDrawing : TileDrawingBase
+@@ -11,7 +_,7 @@
  {
  	public static bool QuickPaintLookup = true;
  	private static VertexColors _glowPaintColors = new VertexColors(Color.White);
@@ -18,18 +16,18 @@
 +	private Tilemap _tileArray;
  	private TilePaintSystemV2 _paintSystem;
  	private bool _shouldShowInvisibleWalls;
-@@ -65,9 +_,13 @@
- 		Rectangle value = new Rectangle(0, 0, 32, 32);
+ 	private DrawBlackHelper drawBlackHelper;
+@@ -66,8 +_,12 @@
  		int underworldLayer = Main.UnderworldLayer;
  		drawBlackHelper = new DrawBlackHelper(0u, drawOffSet);
  		_lastPaintLookupKey = default(TilePaintSystemV2.WallVariationKey);
--		for (int i = firstTileY; i < lastTileY; i++) {
--			for (int j = firstTileX; j < lastTileX; j++) {
 +
 +		// TML:
 +		// Swapped loop iteration order to improve memory access linearity.
 +		// Minor perf improvement, may cause slight visual discrepancies with tiles that overdraw
+-		for (int i = firstTileY; i < lastTileY; i++) {
 +		for (int j = firstTileX; j < lastTileX; j++) {
+-			for (int j = firstTileX; j < lastTileX; j++) {
 +			for (int i = firstTileY; i < lastTileY; i++) {
  				Tile tile = _tileArray[j, i];
  				if (tile == null) {

@@ -1,7 +1,6 @@
 --- src/TerrariaNetCore/Terraria/GameContent/ObjectInteractions/TileSmartInteractCandidateProvider.cs
 +++ src/tModLoader/Terraria/GameContent/ObjectInteractions/TileSmartInteractCandidateProvider.cs
-@@ -1,7 +_,8 @@
- using System;
+@@ -2,6 +_,7 @@
  using System.Collections.Generic;
  using Microsoft.Xna.Framework;
  using Terraria.ID;
@@ -9,7 +8,7 @@
  
  namespace Terraria.GameContent.ObjectInteractions;
  
-@@ -268,17 +_,20 @@
+@@ -268,6 +_,7 @@
  					num7 = 4;
  					num8 = 4;
  					break;
@@ -17,11 +16,7 @@
  				case 464:
  					num7 = 5;
  					num8 = 4;
- 					break;
- 			}
- 
- 			if (TileID.Sets.Campfires[tile.type]) {
- 				num7 = 3;
+@@ -279,6 +_,8 @@
  				num8 = 2;
  			}
  

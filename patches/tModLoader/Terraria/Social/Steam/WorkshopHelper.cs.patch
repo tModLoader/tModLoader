@@ -70,7 +70,7 @@
  			}
  
  			public bool Prepare(WorkshopIssueReporter issueReporter) => Refresh(issueReporter);
-@@ -63,6 +_,9 @@
+@@ -65,6 +_,9 @@
  
  				ResourcePackPaths.Clear();
  				WorldPaths.Clear();
@@ -80,7 +80,7 @@
  				foreach (string listOfSubscribedItemsPath in GetListOfSubscribedItemsPaths()) {
  					if (listOfSubscribedItemsPath == null)
  						continue;
-@@ -76,6 +_,8 @@
+@@ -78,6 +_,8 @@
  						if (!(text == "World")) {
  							if (text == "ResourcePack")
  								ResourcePackPaths.Add(listOfSubscribedItemsPath);
@@ -89,7 +89,7 @@
  						}
  						else {
  							WorldPaths.Add(listOfSubscribedItemsPath);
-@@ -159,19 +_,32 @@
+@@ -161,19 +_,32 @@
  
  			protected WorkshopItemPublicSettingId _publicity;
  			protected SteamWorkshopItem _entryData;
@@ -123,7 +123,7 @@
  				ERemoteStoragePublishedFileVisibility visibility = GetVisibility(publicity);
  				_entryData = new SteamWorkshopItem {
  					Title = itemTitle,
-@@ -179,9 +_,21 @@
+@@ -181,9 +_,21 @@
  					ContentFolderPath = contentFolderPath,
  					Tags = tags,
  					PreviewImagePath = previewImagePath,
@@ -146,7 +146,7 @@
  				ulong? num = null;
  				if (AWorkshopEntry.TryReadingManifest(contentFolderPath + Path.DirectorySeparatorChar + "workshop.json", out var info))
  					num = info.workshopEntryId;
-@@ -189,9 +_,23 @@
+@@ -191,9 +_,23 @@
  				if (num.HasValue && finder.HasItemOfId(num.Value)) {
  					_publishedFileID = new PublishedFileId_t(num.Value);
  					PreventUpdatingCertainThings();
@@ -170,7 +170,7 @@
  					CreateItem();
  				}
  			}
-@@ -211,19 +_,48 @@
+@@ -213,19 +_,48 @@
  						return ERemoteStoragePublishedFileVisibility.k_ERemoteStoragePublishedFileVisibilityFriendsOnly;
  					case WorkshopItemPublicSettingId.Public:
  						return ERemoteStoragePublishedFileVisibility.k_ERemoteStoragePublishedFileVisibilityPublic;
@@ -219,7 +219,7 @@
  				if (param.m_bUserNeedsToAcceptWorkshopLegalAgreement) {
  					_issueReporter.ReportDelayedUploadProblem("Workshop.ReportIssue_FailedToPublish_UserDidNotAcceptWorkshopTermsOfService");
  					_endAction(this);
-@@ -236,12 +_,36 @@
+@@ -238,12 +_,36 @@
  					_issueReporter.ReportDelayedUploadProblemWithoutKnownReason("Workshop.ReportIssue_FailedToPublish_WithoutKnownReason", param.m_eResult.ToString());
  					_endAction(this);
  				}
@@ -256,7 +256,7 @@
  			private void UpdateItem()
  			{
  				string headerText = GetHeaderText();
-@@ -249,8 +_,15 @@
+@@ -251,8 +_,15 @@
  					_endAction(this);
  					return;
  				}
@@ -272,7 +272,7 @@
  				UGCUpdateHandle_t uGCUpdateHandle_t = SteamUGC.StartItemUpdate(SteamUtils.GetAppID(), _publishedFileID);
  				if (_entryData.Title != null)
  					SteamUGC.SetItemTitle(uGCUpdateHandle_t, _entryData.Title);
-@@ -265,23 +_,61 @@
+@@ -267,23 +_,61 @@
  
  				if (_entryData.Visibility.HasValue)
  					SteamUGC.SetItemVisibility(uGCUpdateHandle_t, _entryData.Visibility.Value);
@@ -336,7 +336,7 @@
  					case EResult.k_EResultOK:
  						SteamFriends.ActivateGameOverlayToWebPage("steam://url/CommunityFilePage/" + _publishedFileID.m_PublishedFileId);
  						break;
-@@ -305,6 +_,11 @@
+@@ -307,6 +_,11 @@
  						break;
  				}
  
@@ -348,7 +348,7 @@
  				_endAction(this);
  			}
  
-@@ -320,6 +_,19 @@
+@@ -322,6 +_,19 @@
  					_issueReporter.ReportManifestCreationProblem("Workshop.ReportIssue_CouldNotCreateResourcePackManifestFile", exception);
  					return false;
  				}

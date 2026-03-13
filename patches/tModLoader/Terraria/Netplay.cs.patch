@@ -12,7 +12,7 @@
  using Terraria.Net;
  using Terraria.Net.Sockets;
  using Terraria.Social;
-@@ -82,5 +_,11 @@
+@@ -82,6 +_,12 @@
  		Main.ActiveNetDiagnosticsUI.Reset();
  	}
  
@@ -24,6 +24,7 @@
 +	/// </summary>
  	public static void ResetSections()
  	{
+ 		RemoteClient[] clients = Clients;
 @@ -166,6 +_,8 @@
  
  	private static void OnConnectionAccepted(ISocket client)
@@ -33,8 +34,7 @@
  		int num = FindNextOpenClientSlot();
  		if (num != -1) {
  			Clients[num].Reset();
-@@ -299,9 +_,14 @@
- 		for (int i = 0; i < 256; i++) {
+@@ -300,8 +_,13 @@
  			if (Clients[i].PendingTermination) {
  				num++;
  				if (Clients[i].PendingTerminationApproved) {
@@ -85,8 +85,7 @@
  	}
  
  	private static void InnerClientLoop()
-@@ -455,7 +_,25 @@
- 						NetMessage.SendData(1);
+@@ -456,6 +_,24 @@
  						Ping.Reset();
  					}
  

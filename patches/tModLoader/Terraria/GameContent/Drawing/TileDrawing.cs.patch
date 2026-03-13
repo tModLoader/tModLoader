@@ -1,7 +1,6 @@
 --- src/TerrariaNetCore/Terraria/GameContent/Drawing/TileDrawing.cs
 +++ src/tModLoader/Terraria/GameContent/Drawing/TileDrawing.cs
-@@ -9,32 +_,47 @@
- using Terraria.Graphics;
+@@ -10,31 +_,46 @@
  using Terraria.Graphics.Capture;
  using Terraria.Graphics.Effects;
  using Terraria.ID;
@@ -149,26 +148,15 @@
  				TilePaintSystemV2.TreeFoliageVariantKey treeFoliageVariantKey = default(TilePaintSystemV2.TreeFoliageVariantKey);
  				treeFoliageVariantKey.TextureIndex = textureIndex;
  				treeFoliageVariantKey.PaintColor = tile.color();
-@@ -307,17 +_,18 @@
- 
- 	public void ClearSpecialBlockCounts()
- 	{
- 		_vineRootsPositions.Clear();
- 		_reverseVineRootsPositions.Clear();
- 		_specialsCount[3] = 0;
- 		_specialsCount[2] = 0;
- 		_specialsCount[6] = 0;
- 		_specialsCount[4] = 0;
- 		_specialsCount[1] = 0;
- 		_specialsCount[10] = 0;
- 		_specialsCount[0] = 0;
+@@ -319,6 +_,7 @@
  		_specialsCount[7] = 0;
  		_specialsCount[8] = 0;
  		_specialsCount[9] = 0;
 +		_specialsCount[(int)TileCounterType.CustomNonSolid] = 0;
  	}
  
-@@ -347,16 +_,18 @@
+ 	private void DrawNature(Texture2D texture, Vector2 position, Rectangle sourceRectangle, Color color, float rotation, Vector2 origin, float scale, SpriteEffects effects, float layerDepth, SideFlags seams = SideFlags.None)
+@@ -347,6 +_,7 @@
  			DrawTrees();
  			DrawVines();
  			DrawReverseVines();
@@ -176,10 +164,7 @@
  			Main.spriteBatch.End();
  			TimeLogger.TileExtras.AddTime(fromTimestamp);
  			_natureRenderer.DrawAfterAllObjects(beginner);
- 		}
- 
- 		if (solidLayer) {
- 			TimeLogger.StartTimestamp fromTimestamp2 = TimeLogger.Start();
+@@ -357,6 +_,7 @@
  			DrawEntities_HatRacks();
  			DrawEntities_DisplayDolls();
  			TimeLogger.ClothingRacks.AddTime(fromTimestamp2);
@@ -187,10 +172,7 @@
  		}
  	}
  
-@@ -414,11 +_,14 @@
- 		byte b = (byte)(100f + 150f * Main.martianLight);
- 		_martianGlow = new Color(b, b, b, 0);
- 		_lastPaintLookupKey = new TilePaintSystemV2.TileVariationkey {
+@@ -417,8 +_,11 @@
  			TileType = -1
  		};
  
@@ -235,7 +217,7 @@
  				}
  			}
  		}
-@@ -607,8 +_,12 @@
+@@ -607,7 +_,11 @@
  		}
  	}
  
@@ -248,7 +230,6 @@
  	{
  		int y = j;
  		for (int num = j - 1; num > 0; num--) {
- 			Tile tile = Main.tile[i, num];
 @@ -625,7 +_,11 @@
  		}
  	}
@@ -321,7 +302,7 @@
  	{
  		bool flag = tile.invisibleBlock();
  		switch (tile.type) {
-@@ -1214,6 +_,6 @@
+@@ -1214,7 +_,7 @@
  		}
  
  		if (flag)
@@ -329,6 +310,7 @@
 +			return Main.instance.TilesRenderer._shouldShowInvisibleBlocks;
  
  		return true;
+ 	}
 @@ -1237,6 +_,25 @@
  				if (WorldGen.IsAlchemyPlantHarvestable(tile.frameX / 18, tileY))
  					key.TileType = 84;
@@ -355,15 +337,15 @@
  		}
  
  		return GetTileDrawTexture(key);
-@@ -1425,6 +_,7 @@
+@@ -1424,6 +_,7 @@
+ 
  				value4.Y = 0;
  				value4.Height = 10;
 +				value4.X %= num10 < 3 ? 108 : 54; // Added by TML. Accounts for tilesheets with multiple columns
  				Texture2D texture = LookupCageTopDrawTexture(new TilePaintSystemV2.CageTopVariationkey {
  					CageStyle = num10,
  					PaintColor = drawData.tileCache.color()
- 				});
-@@ -1543,36 +_,45 @@
+@@ -1543,6 +_,9 @@
  			case 662:
  				return 4;
  			default:
@@ -373,29 +355,7 @@
  				return -1;
  		}
  	}
- 
- 	private Color GetFallenStarFurnitureFlameColor()
- 	{
- 		float num = Utils.WrappedLerp(0.5f, 1f, Main.GlobalTimeWrappedHourly % 2f / 2f);
- 		int num2 = (int)(150f * num);
- 		return new Color(150, num2, num2, 50);
- 	}
- 
- 	private Color GetHallowedFurnitureFlameColor()
- 	{
- 		float num = Utils.WrappedLerp(0.5f, 1f, Main.GlobalTimeWrappedHourly % 2f / 2f);
- 		int num2 = (int)(170f * num);
- 		return new Color(170, num2, num2, 75);
- 	}
- 
- 	private Color GetCloudFurnitureFlameColor() => GetWrappedFurnitureFlameColor(new Color(255, 255, 255, 0));
- 	private Color GetLibrarianFurnitureFlameColor() => GetWrappedFurnitureFlameColor(new Color(255, 255, 255, 0), 0.25f);
- 	private Color GetForbiddenFurnitureFlameColor() => GetWrappedFurnitureFlameColor(new Color(255, 255, 255, 0), 0.25f);
- 	private Color GetBoulderFurnitureFlameColor() => GetWrappedFurnitureFlameColor(new Color(255, 255, 255, 0), 0.25f);
- 
- 	private Color GetWrappedFurnitureFlameColor(Color baseColor, float min = 0.75f, float max = 1f)
- 	{
- 		float num = Utils.WrappedLerp(min, max, Main.GlobalTimeWrappedHourly % 2f / 2f);
+@@ -1572,8 +_,14 @@
  		return baseColor * num;
  	}
  
@@ -410,6 +370,7 @@
 +
  		switch (type) {
  			case 270: {
+ 				TileFlameData tileFlameData = default(TileFlameData);
 @@ -3126,6 +_,9 @@
  		if (WorldGen.IsPalmOasisTree(x))
  			num += 4;
@@ -551,7 +512,8 @@
  	{
  		int num = x - tileFrameX / 18;
  		int num2 = y - tileFrameY / 18;
-@@ -5876,6 +_,7 @@
+@@ -5875,19 +_,31 @@
+ 		if (solidLayer) {
  			_displayDollTileEntityPositions.Clear();
  			_hatRackTileEntityPositions.Clear();
 +			_specialsCount[(int)TileCounterType.CustomSolid] = 0;
@@ -559,7 +521,8 @@
  		else {
  			ClearSpecialBlockCounts();
  		}
-@@ -5884,10 +_,21 @@
+ 	}
+ 
 +	/// <inheritdoc cref="AddSpecialLegacyPoint(int, int)"/>
 -	private void AddSpecialLegacyPoint(Point p)
 +	public void AddSpecialLegacyPoint(Point p)

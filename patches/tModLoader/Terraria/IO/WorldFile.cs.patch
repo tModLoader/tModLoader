@@ -17,7 +17,7 @@
  using Terraria.Social;
  using Terraria.UI;
  using Terraria.Utilities;
-@@ -69,7 +_,7 @@
+@@ -68,7 +_,7 @@
  	private static bool _tempBloodMoon = Main.bloodMoon;
  	private static bool _tempEclipse = Main.eclipse;
  	private static int _tempMoonPhase = Main.moonPhase;
@@ -26,7 +26,7 @@
  	private static int _versionNumber;
  	private static bool _isWorldOnCloud;
  	private static bool _tempPartyGenuine;
-@@ -452,9 +_,12 @@
+@@ -446,9 +_,12 @@
  			binaryReader.ReadBoolean();
  			binaryReader.ReadBoolean();
  			worldFileData.DefeatedMoonlord = binaryReader.ReadBoolean();
@@ -39,7 +39,7 @@
  			return WorldFileData.FromInvalidWorld(file, cloudSave, StatusID.UnknownError, exception);
  		}
  	}
-@@ -499,8 +_,13 @@
+@@ -493,8 +_,13 @@
  	{
  		for (int i = 0; i < Main.maxTilesX; i++) {
  			for (int j = 0; j < Main.maxTilesY; j++) {
@@ -53,7 +53,8 @@
  			}
  		}
  	}
-@@ -571,3 +_,7 @@
+@@ -564,12 +_,17 @@
+ 
  				binaryReader.Close();
  				memoryStream.Close();
 +
@@ -61,13 +62,16 @@
 +				WorldIO.Load(Main.worldPathName, _isWorldOnCloud);
 +
  				if (num3 != StatusID.Ok)
-@@ -578,4 +_,5 @@
+ 					throw new Exception("LoadWorld failed with status: " + StatusID.Search.GetName(num3));
+ 
+ 				CheckSavedOreTiers();
+ 				ConvertOldTileEntities();
  				ClearTempTiles();
 +				SystemLoader.PostWorldLoad();
  				WorldGen.isGeneratingOrLoadingWorld = true;
  				GenVars.waterLine = Main.maxTilesY;
  				Liquid.QuickWater(2);
-@@ -716,6 +_,9 @@
+@@ -721,6 +_,9 @@
  		if (Main.worldPathName == null)
  			return;
  
@@ -77,7 +81,7 @@
  		new Stopwatch().Start();
  		int num;
  		byte[] array;
-@@ -735,6 +_,7 @@
+@@ -740,6 +_,7 @@
  		FileUtilities.Write(Main.worldPathName, array, num, useCloudSaving);
  		array = FileUtilities.ReadAllBytes(Main.worldPathName, useCloudSaving);
  		string text = null;
@@ -85,7 +89,7 @@
  		using (MemoryStream input = new MemoryStream(array, 0, num, writable: false)) {
  			using BinaryReader fileIO = new BinaryReader(input);
  			if (!Main.validateSaves || ValidateWorld(fileIO)) {
-@@ -746,12 +_,19 @@
+@@ -751,12 +_,19 @@
  				DoRollingBackups(text);
  			}
  			else {
@@ -105,7 +109,7 @@
  	}
  
  	private static void DoRollingBackups(string backupWorldWritePath)
-@@ -826,17 +_,17 @@
+@@ -831,18 +_,18 @@
  		_tempMoonPhase = Main.moonPhase;
  		_tempBloodMoon = Main.bloodMoon;
  		_tempEclipse = Main.eclipse;
@@ -126,7 +130,8 @@
 +		_tempRainTime = (int)Main.rainTime;
  		_tempMaxRain = Main.maxRaining;
  		_tempLanternNightCooldown = LanternNight.LanternNightsOnCooldown;
-@@ -913,7 +_,7 @@
+ 		_tempLanternNightGenuine = LanternNight.GenuineLanterns;
+@@ -918,7 +_,7 @@
  			}
  
  			if (TileEntityType<TEWeaponsRack>.Place(item2.X, item2.Y) != -1 && flag2)
@@ -135,7 +140,7 @@
  		}
  	}
  
-@@ -1092,7 +_,9 @@
+@@ -1097,7 +_,9 @@
  		}
  
  		writer.Write(NPC.savedAngler);
@@ -146,7 +151,7 @@
  		writer.Write(NPC.savedStylist);
  		writer.Write(NPC.savedTaxCollector);
  		writer.Write(NPC.savedGolfer);
-@@ -1203,7 +_,7 @@
+@@ -1208,7 +_,7 @@
  				byte b3;
  				byte b4 = (b3 = (b2 = (b = 0)));
  				bool flag = false;
@@ -155,7 +160,7 @@
  					flag = true;
  
  				if (flag) {
-@@ -1217,9 +_,11 @@
+@@ -1222,9 +_,11 @@
  					}
  
  					if (Main.tileFrameImportant[tile.type]) {
@@ -169,7 +174,7 @@
  						num3++;
  						array[num3] = (byte)((uint)tile.frameY & 0xFFu);
  						num3++;
-@@ -1234,7 +_,7 @@
+@@ -1239,7 +_,7 @@
  					}
  				}
  
@@ -178,7 +183,7 @@
  					b4 = (byte)(b4 | 4u);
  					array[num3] = (byte)tile.wall;
  					num3++;
-@@ -1388,7 +_,7 @@
+@@ -1393,7 +_,7 @@
  			writer.Write(chest.maxItems);
  			for (int l = 0; l < chest.maxItems; l++) {
  				Item item = chest.item[l];
@@ -187,7 +192,7 @@
  					writer.Write((short)0);
  					continue;
  				}
-@@ -1399,7 +_,7 @@
+@@ -1404,7 +_,7 @@
  				writer.Write((short)item.stack);
  				if (item.stack > 0) {
  					writer.Write(item.type);
@@ -196,7 +201,7 @@
  				}
  			}
  		}
-@@ -1431,7 +_,10 @@
+@@ -1436,7 +_,10 @@
  
  	public static int SaveNPCs(BinaryWriter writer)
  	{
@@ -207,7 +212,7 @@
  		writer.Write(array.Count(value: true));
  		for (int i = 0; i < array.Length; i++) {
  			if (array[i])
-@@ -1441,6 +_,9 @@
+@@ -1446,6 +_,9 @@
  		for (int j = 0; j < Main.npc.Length; j++) {
  			NPC nPC = Main.npc[j];
  			if (nPC.active && nPC.townNPC && nPC.type != 368) {
@@ -217,7 +222,7 @@
  				writer.Write(nPC.active);
  				writer.Write(nPC.netID);
  				writer.Write(nPC.GivenName);
-@@ -1463,6 +_,9 @@
+@@ -1468,6 +_,9 @@
  		for (int k = 0; k < Main.npc.Length; k++) {
  			NPC nPC2 = Main.npc[k];
  			if (nPC2.active && NPCID.Sets.SavesAndLoads[nPC2.type]) {
@@ -227,7 +232,7 @@
  				writer.Write(nPC2.active);
  				writer.Write(nPC2.netID);
  				writer.WriteVector2(nPC2.position);
-@@ -2268,8 +_,21 @@
+@@ -2273,8 +_,21 @@
  
  				while (num3 > 0) {
  					j++;
@@ -249,7 +254,7 @@
  				}
  			}
  		}
-@@ -2382,7 +_,11 @@
+@@ -2387,7 +_,11 @@
  			int num3 = reader.ReadInt32();
  			Tile tile = Main.tile[num2, num3];
  			Sign sign;
@@ -261,7 +266,7 @@
  				sign = new Sign();
  				sign.text = text;
  				sign.x = num2;
-@@ -2719,6 +_,8 @@
+@@ -2724,6 +_,8 @@
  			return result;
  		}
  		catch (Exception value) {
@@ -270,7 +275,7 @@
  			using (StreamWriter streamWriter = new StreamWriter("client-crashlog.txt", append: true)) {
  				streamWriter.WriteLine(DateTime.Now);
  				streamWriter.WriteLine(value);
-@@ -2791,8 +_,9 @@
+@@ -2796,8 +_,9 @@
  	public static int SaveTileEntities(BinaryWriter writer)
  	{
  		lock (TileEntity.EntityCreationLock) {

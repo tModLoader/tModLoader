@@ -5,8 +5,7 @@
  using Microsoft.Xna.Framework;
  using Microsoft.Xna.Framework.Graphics;
  using ReLogic.Content;
-@@ -6,13 +_,16 @@
- using Terraria.GameContent.UI.States;
+@@ -7,12 +_,15 @@
  using Terraria.ID;
  using Terraria.IO;
  using Terraria.Localization;
@@ -23,9 +22,7 @@
  {
  	private Asset<Texture2D> _dividerTexture;
  	private Asset<Texture2D> _innerPanelTexture;
-@@ -42,8 +_,11 @@
- 		_orderInList = orderInList;
- 		_data = data;
+@@ -44,6 +_,9 @@
  		_canBePlayed = canBePlayed;
  		_hasBeenPlayedByActivePlayer = hasBeenPlayedByActivePlayer;
  		_isNewlyGenerated = isNewlyGenerated;

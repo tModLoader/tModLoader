@@ -53,16 +53,16 @@
 +	/// <para/> Alternate placements allow each style to be placed in multiple ways, using alternate sprites or alternate anchors.  Mostly useful for tiles that can anchor in multiple ways, such as how torches can anchor to tiles to the left, right, or bottom as well as to walls.
 +	/// The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Tile#newalternate---alternate-placement-styles">newAlternate section of the Tile wiki page</see> has more information about alternate placements.
 +	/// <para/> Calling <see cref="addAlternate(int)"/> registers the alternate placement.
-+	/// <para/> If there are subtiles (<see cref="addSubTile(int)"/>) for this tile, make sure to do those after alternates are registered and to set <see cref="LinkedAlternates"/> to true on newSubTile after copying the base tile.
 -	private static TileObjectData newTile;
-+	/// </summary>
++	/// <para/> If there are subtiles (<see cref="addSubTile(int)"/>) for this tile, make sure to do those after alternates are registered and to set <see cref="LinkedAlternates"/> to true on newSubTile after copying the base tile.
 -	private static TileObjectData newSubTile;
-+	public static TileObjectData newAlternate;
++	/// </summary>
 -	private static TileObjectData newAlternate;
-+	public static TileObjectData StyleSwitch;
++	public static TileObjectData newAlternate;
 -	private static TileObjectData StyleSwitch;
-+	public static TileObjectData StyleTorch;
++	public static TileObjectData StyleSwitch;
 -	private static TileObjectData StyleTorch;
++	public static TileObjectData StyleTorch;
 +	/// <summary> Has left and right alternate placements. </summary>
 -	private static TileObjectData Style4x2;
 +	public static TileObjectData Style4x2;
@@ -104,19 +104,19 @@
 +	public static TileObjectData Style4x4;
 -	private static TileObjectData Style5x4;
 +	public static TileObjectData Style5x4;
-+	/// <summary> Anchors to walls. </summary>
 -	private static TileObjectData Style3x3Wall;
++	/// <summary> Anchors to walls. </summary>
  	private static TileObjectData Style1x1Drip;
  	private static TileObjectData Style1x1Plant_Height22;
  	private static TileObjectData Style1x1Plant_Height34;
 +	public static TileObjectData Style3x3Wall;
  
--	private bool LinkedAlternates {
 +	/// <summary>
 +	/// Call on <see cref="newSubTile"/> only. If set to true, this subtile will be populated with its own copy of the <see cref="Alternates"/> data. This will allow changes made to this subtile to apply to alternate placements of this tile style as well.
 +	/// <para/> This must be set to true after <c>TileObjectData.newSubTile.CopyFrom(TileObjectData.newTile);</c> and before adjusting any other properties. This should always be set for any subtile of a tile that has alternate placements.
 +	/// <para/> Defaults to false.
 +	/// </summary>
+-	private bool LinkedAlternates {
 +	public bool LinkedAlternates {
  		get {
  			return _linkedAlternates;

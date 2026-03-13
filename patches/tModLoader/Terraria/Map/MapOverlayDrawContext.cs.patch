@@ -9,8 +9,7 @@
  {
  	public struct DrawResult
  	{
-@@ -34,8 +_,10 @@
- 		_drawScale = drawScale;
+@@ -35,8 +_,10 @@
  		_opacity = opacity;
  	}
  
@@ -20,7 +19,9 @@
 +	/// <inheritdoc cref="Draw(Texture2D, Vector2, Color, SpriteFrame, float, float, Alignment)"/>
  	public DrawResult Draw(Texture2D texture, Vector2 position, SpriteFrame frame, Alignment alignment)
  	{
-@@ -207,6 +_,14 @@
+ 		if (_opacity == 0f)
+@@ -206,7 +_,15 @@
+ 		return new DrawResult(flag);
  	}
  
 +	/// <inheritdoc cref="Draw(Texture2D, Vector2, Color, SpriteFrame, float, float, Alignment, SpriteEffects)"/>

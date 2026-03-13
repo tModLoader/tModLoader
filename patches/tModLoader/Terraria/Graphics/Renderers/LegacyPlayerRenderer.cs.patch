@@ -76,7 +76,8 @@
  		PlayerDrawLayers.DrawPlayer_RenderAllLayers(ref drawInfo);
  		if (!drawInfo.drawPlayer.mount.Active || !drawInfo.drawPlayer.UsingSuperCart || OverrideHeldProjectile != null)
  			return;
-@@ -252,4 +_,7 @@
+@@ -251,6 +_,9 @@
+ 		}
  		else {
  			PrepareDrawForFrame(drawPlayer);
 +
@@ -84,3 +85,4 @@
 +
  			if (drawPlayer.armorEffectDrawShadowEOCShield) {
  				int num = drawPlayer.eocDash / 4;
+ 				if (num > 3)

@@ -1,6 +1,9 @@
 --- src/TerrariaNetCore/Terraria/UI/ItemTooltip.cs
 +++ src/tModLoader/Terraria/UI/ItemTooltip.cs
-@@ -29,6 +_,13 @@
+@@ -26,12 +_,22 @@
+ 	{
+ 	}
+ 
 +	// Added by TML
 +	private ItemTooltip(LocalizedText text)
 +	{
@@ -15,7 +18,6 @@
 +	// TML: Made internal
 -	public static ItemTooltip FromLanguageKey(string key) => new ItemTooltip(key);
 +	internal static ItemTooltip FromLanguageKey(string key) => new ItemTooltip(key);
-@@ -35,3 +_,6 @@
 +
 +	// Added by TML
 +	public static ItemTooltip FromLocalization(LocalizedText text) => new(text);

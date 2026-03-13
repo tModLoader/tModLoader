@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Map/TeleportPylonsMapLayer.cs
 +++ src/tModLoader/Terraria/Map/TeleportPylonsMapLayer.cs
-@@ -7,9 +_,12 @@
+@@ -7,12 +_,15 @@
  using Terraria.GameContent;
  using Terraria.GameContent.Tile_Entities;
  using Terraria.GameInput;
@@ -13,7 +13,13 @@
  {
 +	// Added by TML.
 +	public bool Visible { get; set; } = true;
-@@ -29,11 +_,19 @@
+ 	public const int BorderSize = 10;
+ 
+ 	public static void DrawLine(SpriteBatch spriteBatch, Vector2 start, Vector2 end, Color col, float width)
+@@ -26,17 +_,25 @@
+ 		}
+ 	}
+ 
 +
  	public void Draw(ref MapOverlayDrawContext context, ref string text)
  	{
@@ -33,10 +39,10 @@
  		if (!TeleportPylonsSystem.IsPlayerNearAPylon(Main.LocalPlayer))
  			color = Color.Gray * 0.5f;
 +		*/
-@@ -61,20 +_,36 @@
- 		for (int j = 0; j < pylons.Count; j++) {
- 			TeleportPylonInfo info2 = pylons[j];
- 			if (!IsRevealed(info2))
+ 
+ 		bool flag = false;
+ 		int num2 = -1;
+@@ -64,6 +_,22 @@
  				continue;
  
  			bool onScreen = true;
@@ -59,14 +65,3 @@
  			if (((!Main.mapFullscreen) ? context.Draw(value, info2.PositionInTiles.ToVector2() + new Vector2(1.5f, 2f), color, new SpriteFrame(11, 1, (byte)info2.TypeOfPylon, 0) {
  				PaddingY = 0
  			}, num, scaleIfSelected, Alignment.Center) : context.DrawClamped(value, value2, info2.PositionInTiles.ToVector2() + new Vector2(1.5f, 2f), color, new SpriteFrame(11, 1, (byte)info2.TypeOfPylon, 0) {
- 				PaddingY = 0
- 			}, num, scaleIfSelected, scaleIfOffscreen, Alignment.Center, 10, out onScreen)).IsMouseOver) {
- 				Main.cancelWormHole = true;
- 				string itemNameValue = Lang.GetItemNameValue(TETeleportationPylon.GetPylonItemTypeFromTileStyle((int)info2.TypeOfPylon));
- 				text = itemNameValue;
- 				if (Main.mouseLeft && Main.mouseLeftRelease) {
- 					flag = onScreen;
- 					num2 = j;
- 				}
- 			}
- 		}

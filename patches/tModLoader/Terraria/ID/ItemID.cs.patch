@@ -1,7 +1,6 @@
 --- src/TerrariaNetCore/Terraria/ID/ItemID.cs
 +++ src/tModLoader/Terraria/ID/ItemID.cs
-@@ -2,20 +_,51 @@
- using Microsoft.Xna.Framework;
+@@ -3,19 +_,50 @@
  using ReLogic.Reflection;
  using Terraria.DataStructures;
  using Terraria.GameContent.Items;
@@ -413,7 +412,7 @@
  		public static Color[][] DrinkParticleColors = Factory.CreateCustomSet(new Color[0], (short)28, new Color[3] {
  			new Color(164, 16, 47),
  			new Color(246, 34, 79),
-@@ -972,60 +_,286 @@
+@@ -972,31 +_,159 @@
  			new Color(251, 126, 73)
  		});
  		private static BannerEffect DD2BannerEffect = BannerEffect.Reduced;
@@ -574,14 +573,7 @@
  		public static bool[] gunProj = Factory.CreateBoolSet(3475, 3540, 3854, 3930);
  		public static int[] SortingPriorityMiscAcorns = Factory.CreateIntSet(-1, 5518, 1, 5438, 2, 4857, 3, 4856, 4, 4855, 5, 4854, 6, 4853, 7, 4851, 8, 4852, 9, 4907, 10, 4871, 11, 27, 12);
  		public static int[] SortingPriorityMiscGems = Factory.CreateIntSet(-1, 999, 1, 182, 2, 178, 3, 179, 4, 177, 5, 180, 6, 181, 7);
- 		public static int[] SortingPriorityMiscHerbsAndSeeds = Factory.CreateIntSet(-1, 276, 1, 318, 2, 312, 3, 316, 4, 310, 5, 2358, 6, 2357, 7, 314, 8, 308, 9, 313, 10, 307, 11, 317, 12, 311, 13, 315, 14, 309, 15);
- 		public static int[] SortingPriorityMiscBossBags = Factory.CreateIntSet(-1, 3318, 1, 3319, 2, 3320, 3, 3321, 4, 3323, 5, 3322, 6, 5111, 7, 3324, 8, 4957, 9, 3325, 10, 3326, 11, 3327, 12, 3328, 13, 3329, 14, 3330, 15, 4782, 16, 3331, 17, 3332, 18, 3861, 19, 3862, 20, 3860, 21);
- 		public static int[] SortingPriorityToolsInstruments = Factory.CreateIntSet(-1, 508, 1, 494, 2, 507, 3, 1305, 4, 4057, 5, 4372, 6, 4715, 7, 4673, 8, 4063, 9);
- 		public static int[] SortingPriorityToolsFishing = Factory.CreateIntSet(-1, 4608, 1);
- 		public static int[] SortingPriorityToolsGolf = Factory.CreateIntSet(-1, 4595, 1, 4598, 2, 4597, 3, 4596, 4, 4591, 5, 4594, 6, 4593, 7, 4592, 8, 4039, 9, 4094, 10, 4093, 11, 4092, 12, 4587, 13, 4590, 14, 4589, 15, 4588, 16, 4095, 17);
- 		public static int[] SortingPriorityToolsKites = Factory.CreateIntSet(-1, 4367, 1, 4368, 2, 4369, 3, 4370, 4, 4371, 5, 4379, 6, 4610, 7, 4611, 8, 4612, 9, 4613, 10, 4648, 11, 4649, 12, 4650, 13, 4651, 14, 4669, 15, 4670, 16, 4671, 17, 4674, 18, 4675, 19, 4676, 20, 4677, 21, 4681, 22, 4683, 23, 4684, 24);
- 		public static int[] SortingPriorityToolsKeys = Factory.CreateIntSet(-1, 327, 1, 329, 2, 3092, 3, 3091, 4, 1141, 5, 1533, 6, 4714, 7, 1537, 8, 1534, 9, 1535, 10, 1536, 11);
- 		public static int[] SortingPriorityToolsMisc = Factory.CreateIntSet(-1, 1326, 1, 5335, 2, 3384, 3, 1299, 4, 2272, 5, 2610, 6, 5495, 7, 1000, 8, 1450, 9, 114, 10, 5451, 11, 5738, 12, 5644, 13, 3213, 20, 4131, 21, 5325, 22, 4767, 23, 5453, 24, 5309, 25, 5454, 26, 5323, 27, 5455, 28, 4346, 29, 5391, 30, 282, 40, 286, 41, 3112, 42, 3002, 43, 4776, 44, 5643, 45, 5574, 51, 5575, 52, 5576, 53);
+@@ -1011,22 +_,120 @@
  		public static int[] SortingPriorityWeaponsRanged = Factory.CreateIntSet(-1, 905, 1);
  		public static int[] SortingPriorityPotionsBuffs = Factory.CreateIntSet(-1, 678, 1, 2350, 2, 2997, 3, 4870, 4, 2351, 5, 2756, 6, 2352, 7, 2353, 8);
  		public static int[] SortingPriorityPotionsDyeMaterial = Factory.CreateIntSet(-1, 1115, 1, 1114, 2, 1110, 3, 1112, 4, 1108, 5, 1107, 6, 1116, 7, 1109, 8, 1111, 9, 1118, 10, 1117, 11, 1113, 12, 1119, 13);
@@ -701,6 +693,7 @@
 +		/// </summary>
  		public static float?[] LockOnAimCompensation = Factory.CreateCustomSet<float?>(null, new object[10] {
  			(short)1336,
+ 			0.2f,
 @@ -1039,11 +_,47 @@
  			(short)160,
  			0.4f
@@ -749,7 +742,7 @@
  		public static short[] Workbenches = new short[44] {
  			36,
  			635,
-@@ -1090,5 +_,20 @@
+@@ -1090,8 +_,23 @@
  			5187,
  			5208
  		};
@@ -770,6 +763,9 @@
 +		/// </remarks>
  		public static bool[] OpenableBag = Factory.CreateBoolSet(3318, 3319, 3320, 3321, 3322, 3323, 3324, 3325, 3326, 3327, 3328, 3329, 3330, 3331, 3332, 3860, 3861, 3862, 4782, 4957, 5111, 2334, 2335, 2336, 3203, 3204, 3205, 3206, 3207, 3208, 4405, 4407, 4877, 5002, 3979, 3980, 3981, 3982, 3983, 3984, 3985, 3986, 3987, 4406, 4408, 4878, 5003, 3093, 4345, 4410, 1774, 6142, 3085, 4879, 1869, 599, 600, 601);
 +#endif
+ 		public static bool[] HasItemSwap = Factory.CreateBoolSet(5325, 4131, 5060, 5059, 5324, 5329, 5330, 4346, 5391, 5323, 5455, 4767, 5453, 5309, 5454, 5358, 5360, 5361, 5359, 5437, 2611, 5526);
+ 		public static bool[] RecoverableImportantItem = Factory.CreateBoolSet(3318, 3319, 3320, 3321, 3322, 3323, 3324, 3325, 3326, 3327, 3328, 3329, 3330, 3331, 3332, 3860, 3861, 3862, 4782, 4957, 5111);
+ 		public static bool?[] OnlyNeedOneInInventoryOverride = Factory.CreateCustomSet<bool?>(null, new object[52] {
 @@ -7485,6 +_,7 @@
  	public const short MusicBoxRainbowBoulder = 6145;
  	public const short MusicBoxSilence = 6146;

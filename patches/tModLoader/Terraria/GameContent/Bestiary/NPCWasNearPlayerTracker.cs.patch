@@ -1,13 +1,12 @@
 --- src/TerrariaNetCore/Terraria/GameContent/Bestiary/NPCWasNearPlayerTracker.cs
 +++ src/tModLoader/Terraria/GameContent/Bestiary/NPCWasNearPlayerTracker.cs
-@@ -1,6 +_,7 @@
+@@ -1,5 +_,6 @@
  using System.Collections.Generic;
  using System.IO;
 +using System.Linq;
  using Microsoft.Xna.Framework;
  using Terraria.GameContent.Achievements;
  using Terraria.GameContent.NetModules;
- using Terraria.ID;
 @@ -54,8 +_,12 @@
  	public void Save(BinaryWriter writer)
  	{

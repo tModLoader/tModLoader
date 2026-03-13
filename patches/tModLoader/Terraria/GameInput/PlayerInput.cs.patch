@@ -1,7 +1,6 @@
 --- src/TerrariaNetCore/Terraria/GameInput/PlayerInput.cs
 +++ src/tModLoader/Terraria/GameInput/PlayerInput.cs
-@@ -8,14 +_,15 @@
- using Terraria.GameContent.UI.Chat;
+@@ -9,13 +_,14 @@
  using Terraria.GameContent.UI.States;
  using Terraria.ID;
  using Terraria.Localization;
@@ -84,7 +83,7 @@
  		CacheZoomableValues();
  		if (num != 0 && PlayerInput.OnActionableInput != null)
  			PlayerInput.OnActionableInput();
-@@ -982,5 +_,9 @@
+@@ -982,6 +_,10 @@
  			}
  		}
  
@@ -94,6 +93,7 @@
 +
  		bool flag5 = ItemID.Sets.GamepadWholeScreenUseRange[player.inventory[player.selectedItem].type] || player.scope;
  		Item item = player.inventory[player.selectedItem];
+ 		bool flag6 = false;
 @@ -1282,6 +_,10 @@
  
  	private static void FixDerpedRebinds()

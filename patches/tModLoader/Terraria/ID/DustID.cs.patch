@@ -10,7 +10,7 @@
  {
  	public const short Dirt = 0;
  	public const short Stone = 1;
-@@ -183,4 +_,6 @@
+@@ -206,4 +_,6 @@
  	public const short GemRuby = 90;
  	public const short GemDiamond = 91;
  	public const short GemAmber = 138;
