@@ -514,6 +514,25 @@
  		asset2.Unload();
  		LoadAsset(asset2, mode);
  	}
+@@ -288,8 +_,18 @@
+ 
+ 	private bool UpdateAssetValue<T>(IAsset asset, IContentSource source, string extension, Func<Stream> getStream) where T : class
+ 	{
++		/*
+ 		if (!_loader.TryLoad<T>(extension, getStream, out var resultAsset))
+ 			return false;
++		*/
++		if (!_readers.TryGetReader(extension, out var reader))
++			throw AssetLoadException.FromMissingReader(extension);
++
++		var typedAsset = (Asset<T>)asset;
++		var loadTask = LoadUntracked(getStream(), reader, typedAsset, AssetRequestMode.ImmediateLoad);
++		typedAsset.Wait = () => SafelyWaitForLoad(typedAsset, loadTask, tracked: false);
++		typedAsset.Wait();
++		var resultAsset = typedAsset.Value;
+ 
+ 		IContentValidator contentValidator = source.ContentValidator;
+ 		if (contentValidator != null && !contentValidator.AssetIsValid(resultAsset, asset.Name, out var rejectionReason))
 @@ -306,7 +_,7 @@
  			AssetValueUpdatedHandler(asset, value);
  	}
