@@ -6,22 +6,22 @@
  	}
 +
 +	// Added by TML.
-+	public void HideConsole()
++	public virtual void HideConsole()
 +	{
 +	}
 +
 +	// Added by TML.
-+	public void ShowConsole()
++	public virtual void ShowConsole()
 +	{
 +	}
 +
 +	// Added by TML.
-+	public void ReleaseConsole()
++	public virtual void ReleaseConsole()
 +	{
 +	}
 +
 +	// Added by TML.
-+	public void CreateAndRedirectConsole()
++	public virtual void CreateAndRedirectConsole()
 +	{
 +	}
  }
