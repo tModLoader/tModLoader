@@ -14,22 +14,22 @@
  #endif
 +
 +	// Added by TML.
-+	public void HideConsole()
++	public override void HideConsole()
 +	{
 +		NativeMethods.HideConsole();
 +	}
 +
-+	public void ShowConsole()
++	public override void ShowConsole()
 +	{
 +		NativeMethods.ShowConsole();
 +	}
 +
-+	public void ReleaseConsole()
++	public override void ReleaseConsole()
 +	{
 +		NativeMethods.FreeConsole();
 +	}
 +
-+	public void CreateAndRedirectConsole()
++	public override void CreateAndRedirectConsole()
 +	{
 +		// Allocate a new console window
 +		if (NativeMethods.AllocConsole()) {
