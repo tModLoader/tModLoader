@@ -45,6 +45,8 @@
  
  	bool TryGetRejections(List<string> rejectionReasons);
 +	*/
+ 
+ 	void Refresh();
 +
 +	// Added by TML.
 +	/// <summary>
@@ -67,6 +69,4 @@
 +
 +		return EnumerateAssets().Where(s => s.StartsWith(assetNameStart, comparison));
 +	}
- 
- 	void Refresh();
  }
