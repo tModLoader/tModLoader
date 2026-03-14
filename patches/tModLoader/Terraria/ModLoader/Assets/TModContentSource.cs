@@ -11,10 +11,21 @@ public class TModContentSource : ContentSource
 {
 	private readonly TmodFile file;
 
+	// TODO: tModLoader will eventually want to support hot reloading for mod
+	// assets.
+	public override string FileWatcherPath => null;
+
 	public TModContentSource(TmodFile file)
 	{
 		this.file = file ?? throw new ArgumentNullException(nameof(file));
 
+		Refresh();
+	}
+
+	public override Stream OpenStream(string assetName) => file.GetStream(assetName, newFileStream: true); //todo, might be sloww
+
+	public override void Refresh()
+	{
 		// Skip loading assets if this is a dedicated server
 		if (Main.dedServ)
 			return;
@@ -26,6 +37,4 @@ public class TModContentSource : ContentSource
 			.Select(fileEntry => fileEntry.Name)
 			.Where(name => AssetInitializer.assetReaderCollection.TryGetReader(Path.GetExtension(name), out _)));
 	}
-
-	public override Stream OpenStream(string assetName) => file.GetStream(assetName, newFileStream: true); //todo, might be sloww
 }
