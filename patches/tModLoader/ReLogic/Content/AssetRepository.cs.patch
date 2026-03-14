@@ -205,7 +205,7 @@
 -				return asset;
 +
 +			if (asset.State == AssetState.NotLoaded) {
-+				EnsureReloadActionExistsForType<T>();
++				EnsureTypeSpecificActionsExist<T>();
 +				LoadAsset(asset, mode);
  			}
 +		}
