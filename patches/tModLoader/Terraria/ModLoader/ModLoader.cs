@@ -181,7 +181,7 @@ public static class ModLoader
 					SteamedWraps.QueueForceValidateSteamInstall();
 
 				if (e is Exceptions.JITException)
-					msg += "\n" + $"The mod will need to be updated to match the current tModLoader version, or may be incompatible with the version of some of your other mods. Click the '{Language.GetTextValue("tModLoader.OpenWebHelp")}' button to learn more.";
+					msg += "\n" + Language.GetTextValue("tModLoader.LoadErrorLikelyOutdated");
 			}
 
 			if (responsibleMods.Count > 0)
