@@ -246,7 +246,7 @@
  					nPC5.releaseOwner = reader.ReadByte();
  
 +				// Extra AI is read into a temporary buffer for parity with ProjectileLoader code, and to avoid exceptions causing underreads.
-+				if (bitsByte12[3])
++				if (bitsByte21[5])
 +					NPCLoader.ReceiveExtraAI(nPC5, NPCLoader.ReadExtraAI(reader));
 +
  				break;
@@ -372,7 +372,7 @@
  						name = reader.ReadString();
  					else if (num43 != 255)
  						num43 = 0;
-@@ -1707,24 +_,45 @@
+@@ -1707,24 +_,48 @@
  				if (Main.netMode == 2)
  					num5 = 0;
  
@@ -398,7 +398,10 @@
 +								//TML: Added 'modType' at the end.
 -								NetMessage.TrySendData(34, whoAmI, -1, null, b2, num2, num3, num4, num8);
 +								NetMessage.TrySendData(34, whoAmI, -1, null, b2, num2, num3, num4, num8, modType);
++								/*
  								int itemDrop_Chests2 = WorldGen.GetItemDrop_Chests(num4, secondType: false);
++								*/
++								int itemDrop_Chests2 = b2 < 100 ? WorldGen.GetItemDrop_Chests(num4, secondType: false) : TileLoader.GetItemDropFromTypeAndStyle(modType, num4);
  								if (itemDrop_Chests2 > 0)
  									Item.NewItem(new EntitySource_TileBreak(num2, num3), num2 * 16, num3 * 16, 32, 32, itemDrop_Chests2, 1, noBroadcast: true);
  							}
@@ -444,7 +447,7 @@
 +										/*
  										Item.NewItem(new EntitySource_TileBreak(num2, num3), num2 * 16, num3 * 16, 32, 32, WorldGen.GetItemDrop_Dressers(num4), 1, noBroadcast: true);
 +										*/
-+										int itemSpawn = b2 < 100 ? Chest.dresserItemSpawn[num4] : TileLoader.GetItemDropFromTypeAndStyle(modType, num4);
++										int itemSpawn = b2 < 100 ? WorldGen.GetItemDrop_Dressers(num4) : TileLoader.GetItemDropFromTypeAndStyle(modType, num4);
 +										if (itemSpawn > 0)
 +											Item.NewItem(new EntitySource_TileBreak(num2, num3), num2 * 16, num3 * 16, 32, 32, itemSpawn, 1, noBroadcast: true);
  									}
@@ -715,7 +718,7 @@
 +					if (bitsByte11[2])
 +						legacySoundStyle.Pitch = MathHelper.Clamp(reader.ReadSingle(), 0f, 1f);
 +
-+					SoundEngine.PlaySound(legacySoundStyle, point.ToVector2());
++					SoundEngine.PlaySound(legacySoundStyle, point2.ToVector2());
  				}
  				break;
  			case 133:

@@ -15,10 +15,8 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - ItemSourceID is now static readonly, not a const. Do any other IDs change?
 - Need to update ItemID.Sets.OreDropsFromSlime with new entries.
   - Also AI_001_Slimes_GenerateItemInsideBody has additional logic now for skyblock that adjusts the drops. Investigate these and see if tmod needs more support or a TODO.
-- Need to update TileID.Sets.DisableSmartInteract with new entries from BlockBecauseYouAreOverAnImportantTile.ShouldBlockSmartInteract. Remove torches/4 and update docs. Add 698, 720, 721, 725, 725, 733. (TileID.Sets.Torches checked separately.)
 - We need to add ModItem.SummonPrefix(), add ModPrefix.Summon
 - ShimmerTransforms.IsItemTransformLocked seems to have been split, need to verify RecipeLoader.DecraftAvailable and other logic still applies.
-- Need to update TileID.Sets.DisableSmartCursor
 - Update ModPylon docs to removed danger check from check listing.
 - Remove totalWeight parameter from ModifyWorldGenTasks
 - WorldGenerator._seed needs to be internal again. The patch was lost
@@ -143,9 +141,7 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Double check PlayerLoader.ModifyZoom logic. Seems like there is only 1 callsite now, code was cleaned up?
 - What is Main.boulderLogo? Seems like MenuLoader needs to be updated with a new vanilla menu option?
 - There are new music tracks and some might have been moved. Update SceneEffectPriority enum docs and double check that they are correct for both methods.
-- ArmorIDs.Legs.Sets.OverridesLegs needs 55, 63
 - DrawPlayer_14_2_GlassSlipperSparkles gone?
-- ArmorIDs.Body.Sets.HidesBottomSkin needs 216, 214, 215
 - Need to find where ProjectileLoader.DrawHeldProjInFrontOfHeldItemAndArms (ModProjectile.DrawHeldProjInFrontOfHeldItemAndArms) should go. PlayerDrawSet removed heldProjOverHand and there are new fields as well. Seems like `SelectedDrawnProjectile.drawLayer == 8` replaced it in DrawPlayer_31_ProjectileOverArm? ProjectileDrawLayerID.HeldProjOverHand exists.
 - SoundID.TML: NPCHit58, NPCDeath67, NPCDeath68, Item179-199
 - CreateTrackable now has maxInstances parameter, need to make sure they are applied to our changes.
@@ -172,14 +168,17 @@ Once all patches are fixed, these items need to be fixed or double checked:
   - anyX (anyWood, anySand, etc) all removed. We should no longer need to maintain those old recipe group approaches.
   - useX (useWood, ext) also removed. Same.
   - Need needTorchGodsFavor condition
-  - needEverythingSeed seems to be replaced by needMechdusa
+  - needEverythingSeed seems to be replaced by needMechdusa. TODo: Rename Condition.ZenithWorld?
   - Recipe item consumption seems to be in another class now, patches need to be moved. GetIngredientCraftingDiscount also needs to be tweaked to work again for modded RecipeLoader.ConsumeIngredient
   - RecipeGroup.Register merge feature needs to be reworked to look up correct GetPlaceholderItemType and merge missing items with Add instead of Union.
+    - Done, but since RecipeGroups no longer have names, the logic currently just checks the 1st item (GetPlaceholderItemType).
 - ItemSlot flow changed a lot. AccCheck no longer exists, replaced by CanEquipAccessoryInSlot?
 - DyeSwap/ModSlotDyeSwap needs new approach
 - Pretty much all OnTileConverted and similar hooks/patches need to be reworked.
 - WorldGen.ValidAnchorForMultiDirectionalTile needs to check IsClosedDoor not tile type 10
 - Item192 uses Projectile.kiteSoundPitch. How do we do that?
+- New AmmoID.Sets.IsSpecialist doesn't contain Sand anymore. Is that expected?
+- QuickSpawnItem can now go directly into player inventory. Before it would return Item.NewItem index int. Mods sometimes want to modify the resulting item when spawning. This is more difficult now.
 
 # New Fields that might need more documentation
 
@@ -247,6 +246,7 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - HardmodeAnnouncementTask is no longer a HardmodeTask.
 - AssetRepository a huge mess of patches. _changeWatcher patch might need to be restored.
 - LanguageManager.GetText changed, now it stores on miss. Before it didn't and we kept that behavior. Do we want the old behavior still?
+- Recipe.FindRecipes gone. Probably not needed anymore
 
 # tModPorter TODOs
 
@@ -313,6 +313,7 @@ These are simple changes that we'd like Terraria to implement, mainly to reduce 
 +	}
 +	// ]
 ```
+- There are still several TileID.Sets.Torches missing: TorchAttack (x2), UpdateTorchLuck_ConsumeCountersAndCalculate, TryRecalculatingTorchLuck, PlaceTile
 
 # Longer Patch issues:
 

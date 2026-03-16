@@ -1,6 +1,8 @@
 --- src/TerrariaNetCore/Terraria/ID/AmmoID.cs
 +++ src/tModLoader/Terraria/ID/AmmoID.cs
-@@ -2,11 +_,16 @@
+@@ -1,12 +_,18 @@
+ using System.Collections.Generic;
++using Terraria.ModLoader;
  
  namespace Terraria.ID;
  
@@ -10,7 +12,8 @@
 -	public class Sets
 +	public partial class Sets
  	{
- 		public static SetFactory Factory = new SetFactory(ItemID.Count);
+-		public static SetFactory Factory = new SetFactory(ItemID.Count);
++		public static SetFactory Factory = new(ItemLoader.ItemCount, nameof(AmmoID), ItemID.Search);
 +		/// <summary>
 +		/// Associates a weapon's item type (<see cref="Item.type"/>) and an ammo's item type (<see cref="Item.type"/>) to the projectile type (<see cref="Projectile.type"/>) they will shoot when used together. This is used in vanilla Terraria exclusively by items using rocket ammo but will work for any type of weapon that wants "variant projectiles" for specific ammo.
 +		/// <para/> For example, a <see cref="ItemID.SnowmanCannon"/> used with a <see cref="ItemID.MiniNukeI"/> will fire the <see cref="ProjectileID.MiniNukeSnowmanRocketI"/>.
@@ -19,6 +22,27 @@
  		public static Dictionary<int, Dictionary<int, int>> SpecificLauncherAmmoProjectileMatches = new Dictionary<int, Dictionary<int, int>> {
  			{
  				759,
+@@ -94,8 +_,20 @@
+ 				}
+ 			}
+ 		};
++		/// <summary>
++		/// If <see langword="true"/> for a given item type (<see cref="Item.type"/>), then items of that type are counted as arrows for the purposes of <see cref="Player.arrowDamage"/> and the <see cref="ItemID.MagicQuiver"/>.
++		/// <br/> Defaults to <see langword="false"/>.
++		/// </summary>
+ 		public static bool[] IsArrow = Factory.CreateBoolSet(Arrow, Stake);
++		/// <summary>
++		/// If <see langword="true"/> for a given item type (<see cref="Item.type"/>), then items of that type are counted as bullets for the purposes of <see cref="Player.bulletDamage"/>.
++		/// <br/> Defaults to <see langword="false"/>.
++		/// </summary>
+ 		public static bool[] IsBullet = Factory.CreateBoolSet(Bullet, CandyCorn);
++		/// <summary>
++		/// If <see langword="true"/> for a given item type (<see cref="Item.type"/>), then items of that type are counted as specialist ammo for the purposes of <see cref="Player.specialistDamage"/>.
++		/// <br/> Defaults to <see langword="false"/>.
++		/// </summary>
+ 		public static bool[] IsSpecialist = Factory.CreateBoolSet(Rocket, StyngerBolt, JackOLantern, NailFriendly, Coin, Flare, Dart, Snowball, FallenStar, Gel);
+ 	}
+ 
 @@ -105,6 +_,7 @@
  	public static int Coin = 71;
  	public static int FallenStar = 75;

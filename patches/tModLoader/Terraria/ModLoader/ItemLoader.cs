@@ -1468,19 +1468,17 @@ public static class ItemLoader
 	/// 5. Plays the item-grabbing sound
 	/// 6. Sets Main.stackSplit to 30
 	/// 7. Sets Main.mouseRightRelease to false
-	/// 8. Calls Recipe.FindRecipes.
 	/// </summary>
 	public static void RightClick(Item item, Player player)
 	{
 		RightClickCallHooks(item, player);
 
 		if (ConsumeItem(item, player) && --item.stack == 0)
-			item.SetDefaults();
+			item.SetDefaults(0);
 
 		SoundEngine.PlaySound(7);
 		Main.stackSplit = 30;
 		Main.mouseRightRelease = false;
-		Recipe.FindRecipes();
 	}
 
 	internal static void RightClickCallHooks(Item item, Player player)
@@ -2258,14 +2256,12 @@ public static class ItemLoader
 
 	private static HookList HookModifyTooltips = AddHook<Action<Item, List<TooltipLine>>>(g => g.ModifyTooltips);
 
-	public static List<TooltipLine> ModifyTooltips(Item item, ref int numTooltips, string[] names, ref string[] text, ref bool[] modifier, ref bool[] badModifier, ref int oneDropLogo, out Color?[] overrideColor, int prefixlineIndex)
+	public static List<TooltipLine> ModifyTooltips(Item item, ref int numTooltips, string[] names, ref string[] text, ref Color[] lineColors, ref int oneDropLogo, out Color?[] overrideColor, int prefixlineIndex)
 	{
 		var tooltips = new List<TooltipLine>();
 
 		for (int k = 0; k < numTooltips; k++) {
 			TooltipLine tooltip = new TooltipLine(names[k], text[k]);
-			tooltip.IsModifier = modifier[k];
-			tooltip.IsModifierBad = badModifier[k];
 
 			if (k == oneDropLogo) {
 				tooltip.OneDropLogo = true;
@@ -2296,15 +2292,11 @@ public static class ItemLoader
 
 		numTooltips = tooltips.Count;
 		text = new string[numTooltips];
-		modifier = new bool[numTooltips];
-		badModifier = new bool[numTooltips];
 		oneDropLogo = -1;
 		overrideColor = new Color?[numTooltips];
 
 		for (int k = 0; k < numTooltips; k++) {
 			text[k] = tooltips[k].Text;
-			modifier[k] = tooltips[k].IsModifier;
-			badModifier[k] = tooltips[k].IsModifierBad;
 
 			if (tooltips[k].OneDropLogo) {
 				oneDropLogo = k;

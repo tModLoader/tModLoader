@@ -81,6 +81,24 @@
  	public bool DoesNotNeedTileOrLiquid {
  		get {
  			if (requiredTile < 0 && !needHoney && !needWater)
+@@ -89,7 +_,7 @@
+ 	{
+ 		StringBuilder stringBuilder = new StringBuilder();
+ 		stringBuilder.AppendLine(createItem.ToString());
+-		Item[] array = requiredItem;
++		var array = requiredItem;
+ 		foreach (Item item in array) {
+ 			if (item.IsAir)
+ 				break;
+@@ -97,7 +_,7 @@
+ 			stringBuilder.AppendLine("  " + item.ToString());
+ 		}
+ 
+-		int[] array2 = acceptedGroups;
++		var array2 = acceptedGroups;
+ 		foreach (int num in array2) {
+ 			if (num < 0)
+ 				break;
 @@ -108,9 +_,9 @@
  		return stringBuilder.ToString();
  	}
@@ -104,7 +122,7 @@
 -
 -			if (RecipeGroup.recipeGroups[num].ValidItems.Contains(type)) {
 +		foreach (int num in acceptedGroups) {
-+			if (RecipeGroup.recipeGroups[num].ContainsItem(type)) {
++			if (RecipeGroup.recipeGroups[num].Contains(type)) {
  				theText = RecipeGroup.recipeGroups[num].GetText();
  				return true;
  			}
@@ -392,7 +410,7 @@
  	{
  		if (ingredients.Length == 1) {
  			ingredients = new int[2] {
-@@ -16789,22 +_,90 @@
+@@ -16789,22 +_,83 @@
  		}
  	}
  
@@ -419,7 +437,7 @@
 +		*/
 +
 +		//TML: The whole method is rewritten.
-+		if (currentRecipe.requiredTile.Count > 0 && currentRecipe.requiredTile[0] == TileID.Bottles)
++		if (currentRecipe.requiredTile == TileID.Bottles)
 +			currentRecipe.AddConsumeIngredientCallback(IngredientQuantityRules.Alchemy);
 +
 +		static void ReplaceCondition(ref bool field, Condition cond)
@@ -443,19 +461,12 @@
 +		ReplaceCondition(ref currentRecipe.needWater, Condition.NearWater);
 +		ReplaceCondition(ref currentRecipe.needLava, Condition.NearLava);
 +		ReplaceCondition(ref currentRecipe.needHoney, Condition.NearHoney);
-+		ReplaceCondition(ref currentRecipe.needEverythingSeed, Condition.ZenithWorld);
++		ReplaceCondition(ref currentRecipe.needMechdusa, Condition.ZenithWorld);
 +
 +		ReplaceDecraftCondition(ref currentRecipe.crimson, Condition.CrimsonWorld);
 +		ReplaceDecraftCondition(ref currentRecipe.corruption, Condition.CorruptWorld);
 +
-+		currentRecipe.ReplaceItemUseFlagWithGroup(ref currentRecipe.anyWood, RecipeGroupID.Wood);
-+		currentRecipe.ReplaceItemUseFlagWithGroup(ref currentRecipe.anySand, RecipeGroupID.Sand);
-+		currentRecipe.ReplaceItemUseFlagWithGroup(ref currentRecipe.anyPressurePlate, RecipeGroupID.PressurePlate);
-+		currentRecipe.ReplaceItemUseFlagWithGroup(ref currentRecipe.anyIronBar, RecipeGroupID.IronBar);
-+		currentRecipe.ReplaceItemUseFlagWithGroup(ref currentRecipe.anyFragment, RecipeGroupID.Fragment);
-+
 +		currentRecipe.requiredItem.RemoveAll(item => item.IsAir);
-+		currentRecipe.requiredTile.RemoveAll(tile => tile == -1);
 +		currentRecipe.acceptedGroups.RemoveAll(group => group == -1);
 +
 +		Main.recipe[numRecipes] = currentRecipe;
@@ -474,7 +485,7 @@
 +	{
 +		currentRecipe = new Recipe {
 +			requiredItem = new List<Item>(),
-+			requiredTile = Enumerable.Repeat(-1, maxVanillaRequirements).ToList(),
++			requiredTile = -1,
 +			acceptedGroups = Enumerable.Repeat(-1, maxVanillaRequirements).ToList()
 +		};
 +

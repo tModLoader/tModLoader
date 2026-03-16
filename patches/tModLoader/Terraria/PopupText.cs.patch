@@ -195,7 +195,7 @@
 +	/// <param name="position">The position of the new <see cref="PopupText"/> in world coordinates.</param>
 +	/// <returns>
 +	/// <c>-1</c> if a new <see cref="PopupText"/> could not be made, if <c><see cref="Main.netMode"/> == <see cref="NetmodeID.Server"/></c>, or if the current player has item text disabled (<see cref="Main.showItemText"/>).
-+	/// <br/> Otherwise, return the index in <see cref="Main.popupText"/> of the new <see cref="PopupText"/>
++	/// <br/> Otherwise, return the index in <see cref="PopupText.popupText"/> of the new <see cref="PopupText"/>
 +	/// </returns>
  	public static int NewText(AdvancedPopupRequest request, Vector2 position)
  	{
@@ -205,14 +205,14 @@
  	}
  
 +	/// <summary>
-+	/// Creates a new <see cref="PopupText"/> in <see cref="Main.popupText"/> at <paramref name="position"/> bound to a given <paramref name="npcNetID"/>.
++	/// Creates a new <see cref="PopupText"/> in <see cref="PopupText.popupText"/> at <paramref name="position"/> bound to a given <paramref name="npcNetID"/>.
 +	/// </summary>
 +	/// <param name="context">
 +	/// The <see cref="PopupTextContext"/> in which this <see cref="PopupText"/> was created.
 +	/// <br/> If <c><paramref name="context"/> == <see cref="PopupTextContext.SonarAlert"/></c>, then <see cref="color"/> will be a shade of red.
 +	/// </param>
 +	/// <param name="npcNetID">The <see cref="NPCID"/> this <see cref="PopupText"/> represents.</param>
-+	/// <param name="position"></param>
++	/// <param name="position">The position of the new <see cref="PopupText"/> in world coordinates.</param>
 +	/// <param name="stay5TimesLonger">If <see langword="true"/>, then this <see cref="PopupText"/> will spawn with <c><see cref="lifeTime"/> == 5 * 60</c>.</param>
 +	/// <returns>
 +	/// <inheritdoc cref="NewText(AdvancedPopupRequest, Vector2)"/>
@@ -221,16 +221,17 @@
  	public static int NewText(PopupTextContext context, int npcNetID, Vector2 position, bool stay5TimesLonger)
  	{
  		if (!Main.showItemText)
-@@ -150,6 +_,19 @@
+@@ -150,6 +_,20 @@
  		return num;
  	}
  
 +	/// <summary>
-+	/// Creates a new <see cref="PopupText"/> in <see cref="Main.popupText"/> at the center of the picked-up <paramref name="newItem"/>.
++	/// Creates a new <see cref="PopupText"/> in <see cref="PopupText.popupText"/> at the center of the picked-up <paramref name="newItem"/>.
 +	/// <br/> If a <see cref="PopupText"/> already exists with the <see cref="Item.AffixName"/> of <paramref name="newItem"/>, that text will instead be modified unless <paramref name="noStack"/> is <see langword="true"/>.
 +	/// </summary>
 +	/// <param name="context">The <see cref="PopupTextContext"/> in which this <see cref="PopupText"/> was created.</param>
 +	/// <param name="newItem">The <see cref="Item"/> to create the new text from.</param>
++	/// <param name="position">The position of the new <see cref="PopupText"/> in world coordinates.</param>
 +	/// <param name="stack">The stack of <paramref name="newItem"/>.</param>
 +	/// <param name="noStack">If <see langword="true"/>, always create a new <see cref="PopupText"/> instead of modifying an existing one.</param>
 +	/// <param name="longText">If <see langword="true"/>, then this <see cref="PopupText"/> will spawn with <c><see cref="lifeTime"/> == 5 * 60</c>.</param>

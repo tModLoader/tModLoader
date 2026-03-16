@@ -1,0 +1,19 @@
+--- src/TerrariaNetCore/Terraria/WorldItem.cs
++++ src/tModLoader/Terraria/WorldItem.cs
+@@ -77,7 +_,7 @@
+ 		}
+ 	}
+ 
+-	public short makeNPC {
++	public int makeNPC { // TML: short->int
+ 		get {
+ 			return inner.makeNPC;
+ 		}
+@@ -119,6 +_,7 @@
+ 	public int glowMask => inner.glowMask;
+ 
+ 	public bool expert => inner.expert;
++	public bool master => inner.master;
+ 
+ 	public string Name => inner.Name;
+ 

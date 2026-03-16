@@ -98,9 +98,11 @@
  				item3.stack = (item3.OnlyNeedOneInInventory() ? 1 : item3.maxStack);
  				item3.OnCreated(new JourneyDuplicationItemCreationContext());
  				Player.GetItemLogger.Start();
-@@ -634,17 +_,30 @@
+@@ -633,18 +_,32 @@
+ 		}
  
  		if (Main.cursorOverride == 10) {
++			Player player = Main.player[Main.myPlayer];
  			Chest chest = Main.instance.shop[Main.npcShop];
 +			if (!PlayerLoader.CanSellItem(player, player.TalkNPC, chest.item, item)) { } else
  			if (Main.LocalPlayer.SellItem(item)) {
@@ -229,13 +231,12 @@
  					if (Main.mouseItem.stack == 1) {
  						Utils.Swap(ref inv[slot], ref Main.mouseItem);
  						if (inv[slot].type == 0 || inv[slot].stack < 1)
-@@ -792,9 +_,13 @@
+@@ -792,9 +_,12 @@
  						inv[slot].stack = 1;
  						SoundEngine.PlaySound(7);
  					}
 +					*/
 +					inv[slot] = ItemLoader.TransferWithLimit(Main.mouseItem, 1);
-+					Recipe.FindRecipes();
 +					SoundEngine.PlaySound(7);
  
  					if (inv[slot].stack > 0) {
@@ -261,13 +262,12 @@
  					if (Main.mouseItem.stack == 1) {
  						Utils.Swap(ref inv[slot], ref Main.mouseItem);
  						if (inv[slot].type == 0 || inv[slot].stack < 1)
-@@ -873,9 +_,13 @@
+@@ -873,9 +_,12 @@
  						inv[slot].SetDefaults(Main.mouseItem.type);
  						SoundEngine.PlaySound(7);
  					}
 +					*/
 +					inv[slot] = ItemLoader.TransferWithLimit(Main.mouseItem, 1);
-+					Recipe.FindRecipes();
 +					SoundEngine.PlaySound(7);
  
  					if (inv[slot].stack > 0) {
@@ -358,7 +358,7 @@
 +				if (!PlayerInput.UsingGamepadUI && context == 0 && ItemLoader.CanRightClick(inv[slot])) {
 +					if (Main.mouseRightRelease) {
 +						if (Main.ItemDropsDB.GetRulesForItemID(inv[slot].type).Any())
-+							TryOpenContainer(inv[slot], player);
++							TryOpenContainer(inv, context, slot, player);
 +						else
 +							ItemLoader.RightClick(inv[slot], player);
 +					}

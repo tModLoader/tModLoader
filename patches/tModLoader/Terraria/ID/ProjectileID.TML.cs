@@ -21,16 +21,6 @@ partial class ProjectileID
 		/// </summary>
 		public static bool[] MinionCannotBeFreed = Factory.CreateBoolSet(false, StardustGuardian, StardustDragon1, StardustDragon4);
 
-		/// <summary>
-		/// Used to scale down summon tag damage for fast hitting minions and sentries.
-		/// </summary>
-		public static float[] SummonTagDamageMultiplier = Factory.CreateFloatSet(1f,
-			ProjectileID.Smolstar, 0.75f,
-			ProjectileID.DD2LightningAuraT1, 0.5f,
-			ProjectileID.DD2LightningAuraT2, 0.5f,
-			ProjectileID.DD2LightningAuraT3, 0.5f
-		);
-
 		/// <summary>Used in <see cref="FallingBlockTileItem"/>.</summary>
 		public class FallingBlockTileItemInfo
 		{

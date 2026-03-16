@@ -483,7 +483,7 @@ public static partial class SystemLoader
 		}
 	}
 
-	public static void ModifyWorldGenTasks(List<GenPass> passes, ref double totalWeight)
+	public static void ModifyWorldGenTasks(List<GenPass> passes)
 	{
 		foreach (var system in HookModifyWorldGenTasks.Enumerate()) {
 			try {

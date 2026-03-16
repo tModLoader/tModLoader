@@ -73,7 +73,7 @@
 +					tileTypeValid = TileLoader.CanGrowModTree(tile3.type) || TileLoader.CanGrowModPalmTree(tile3.type);
 +
 +				if (tileTypeValid && tile4.liquid == 0 && tile.liquid == 0 && tile5.liquid == 0 && WorldGen.EmptyTileCheck(i - 2, i + 2, j - 20, j, 20))
-+					_targets.Add(new Tuple<int, int>(i, j));
++					_targets.Add(new Point(i, j));
  			}
  		}
  

@@ -1,10 +1,11 @@
 --- src/TerrariaNetCore/Terraria/GameContent/Drawing/TileDrawing.cs
 +++ src/tModLoader/Terraria/GameContent/Drawing/TileDrawing.cs
-@@ -10,31 +_,46 @@
+@@ -10,31 +_,47 @@
  using Terraria.Graphics.Capture;
  using Terraria.Graphics.Effects;
  using Terraria.ID;
 +using Terraria.ModLoader;
++using Terraria.ObjectData;
  using Terraria.Testing;
  using Terraria.UI;
  using Terraria.Utilities;
@@ -12,7 +13,7 @@
  namespace Terraria.GameContent.Drawing;
  
 -public class TileDrawing : TileDrawingBase
-+public partial class TileDrawing
++public partial class TileDrawing : TileDrawingBase
  {
 -	private enum TileCounterType
 +	public enum TileCounterType
@@ -193,7 +194,7 @@
 -					if (solidLayer) {
 +					// TML(liquid-slopes): Behind-tile liquid rendering is now
 +					// handled as part of actual liquid rendering.
-+					if (solidLayer && !liquidSlopeFix)
++					if (solidLayer && !liquidSlopeFix) { 
  						Main.tileBatch.SetLayer(Layer_LiquidBehindTiles, 0);
  						DrawTile_LiquidBehindTile(solidLayer, waterStyleOverride, unscaledPosition, drawOffSet, j, i, tile);
  					}

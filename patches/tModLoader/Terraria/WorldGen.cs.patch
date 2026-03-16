@@ -454,18 +454,15 @@
  	}
  
  	public static bool checkUnderground(int x, int y)
-@@ -9211,22 +_,38 @@
+@@ -9211,6 +_,7 @@
  		WorldFileData.TryApplyingCopiedSeed(Main.ActiveWorldFileData.GetFullSeedText(), playSound: false, out var _, out var _, out var _);
  	}
  
 +	// TML: split into GenerateWorld, AddGenPasses (called at loadtime now and stored in a list), AddGenPassesFromLoadTime (the replacement for AddGenPasses in GenerateWorld), and GenerateWorld_RunTasksAndFinish
  	public static bool GenerateWorld(GenerationProgress customProgressObject = null, WorldGenerator.Controller customController = null)
  	{
-+		// For timing logging, used below.
-+		var generationStopwatch = Stopwatch.StartNew();
-+
  		generatingWorld = true;
- 		isGeneratingOrLoadingWorld = true;
+@@ -9218,15 +_,27 @@
  		generatingWorldOnThisThread = true;
  		bool flag = false;
  		try {
@@ -485,7 +482,7 @@
 +			AddGenPassesFromLoadTime();
  			DisablePassesForSpecialSeeds(_generator._passes);
 +
-+			SystemLoader.ModifyWorldGenTasks(_generator._passes, ref _generator._totalLoadWeight);
++			SystemLoader.ModifyWorldGenTasks(_generator._passes);
 +
  			flag = _generator.GenerateWorld();
 +
@@ -867,7 +864,7 @@
  				int num7 = Main.maxTilesX / 7;
  				int num8 = Main.maxTilesX / 14;
  				if (Main.dungeonX < Main.maxTilesX / 2) {
-@@ -26187,12 +_,52 @@
+@@ -26187,12 +_,51 @@
  					}
  				}
  			}
@@ -906,7 +903,6 @@
 +		}
 +
 +		hardmodeTasks.Add(new PassLegacy("Hardmode Walls", HardmodeWallsTask));
-+		hardmodeTasks.Add(new PassLegacy("Hardmode Announcement", HardmodeAnnouncementTask));
 +
 +		SystemLoader.ModifyHardmodeTasks(hardmodeTasks);
 +
@@ -956,7 +952,7 @@
  						for (int k = num6 - 8; k < num6 + 8; k++) {
  							for (int l = num7 - 8; l < num7 + 8; l++) {
 -								if (Main.tile[k, l].active() && Main.tile[k, l].type == 4) {
-+								if (Main.tile[k, l].active() && TileID.Sets.Torch[Main.tile[k, l].type]) {
++								if (Main.tile[k, l].active() && TileID.Sets.Torches[Main.tile[k, l].type]) {
  									flag2 = true;
  									break;
  								}
@@ -1109,7 +1105,7 @@
  				case 633:
  					num6 = 10;
  					break;
-+				case int _ when TileLoader.SaplingGrowthType(type2, ref newType, ref num6):
++				case ushort _ when TileLoader.SaplingGrowthType(type2, ref newType, ref num6):
 +					break;
  				default:
  					flag = true;
@@ -2068,7 +2064,7 @@
  					}
  				}
 -				else if (num == 4) {
-+				else if (TileID.Sets.Torch[num]) {
++				else if (TileID.Sets.Torches[num]) {
  					if (Main.tile[i - 1, j] == null)
  						Main.tile[i - 1, j] = new Tile();
  
@@ -2429,9 +2425,9 @@
 -	private static Player GetPlayerForTile(int x, int y) => Main.player[Player.FindClosest(new Vector2(x, y) * 16f, 16, 16)];
 +	public static Player GetPlayerForTile(int x, int y) => Main.player[Player.FindClosest(new Vector2(x, y) * 16f, 16, 16)];
  
-+	// made internal, added includeAllModdedLargeObjectDrops param
 -	public static void KillTile_DropItems(int x, int y, Tile tileCache, bool includeLargeObjectDrops = false)
-+ 	internal static void KillTile_DropItems(int x, int y, Tile tileCache, bool includeLargeObjectDrops = false) 	
++	// made internal, added includeAllModdedLargeObjectDrops param
++ 	internal static void KillTile_DropItems(int x, int y, Tile tileCache, bool includeLargeObjectDrops = false, bool includeAllModdedLargeObjectDrops = false) 	
  	{
 +		if (!TileLoader.Drop(x, y, Main.tile[x, y].type, includeLargeObjectDrops))
 +			return;
@@ -3024,7 +3020,31 @@
  											TileMergeAttempt(num, Main.tileBrick, TileID.Sets.Mud, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
  											break;
  										case 633:
-@@ -68251,15 +_,22 @@
+@@ -68212,8 +_,12 @@
+ 								break;
+ 						}
+ 
++						/*
+ 						int num2 = tile2?.frameY ?? (-1);
+ 						int num3 = tile?.frameY ?? (-1);
++						*/
++						int num2 = tile2.frameY;
++						int num3 = tile.frameY;
+ 						bool flag = false;
+ 						switch (num) {
+ 							default:
+@@ -68244,22 +_,33 @@
+ 						if (up == 165 && flag && flag3)
+ 							up = num;
+ 
++						/*
+ 						int num4 = tile2?.frameY ?? (-1);
+ 						int num5 = tile?.frameY ?? (-1);
++						*/
++						int num4 = tile2.frameY;
++						int num5 = tile.frameY;
+ 						bool flag4 = false;
+ 						switch (num) {
  							default:
  								flag4 = false;
  								break;

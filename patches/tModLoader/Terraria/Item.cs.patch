@@ -1975,7 +1975,7 @@
  		if (ItemSlot.Options.HighlightNewItems && worldItem.type >= 0 && !ItemID.Sets.NeverAppearsAsNewInInventory[worldItem.type])
  			worldItem.newAndShiny = true;
  
-+		ItemLoader.OnSpawn(item, source);
++		ItemLoader.OnSpawn(worldItem, source);
 +
  		if (Main.netMode == 2 && !noBroadcast)
  			NetMessage.SendData(21, -1, -1, null, num, noGrabDelay.ToInt());

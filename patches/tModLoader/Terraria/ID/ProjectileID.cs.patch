@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/ID/ProjectileID.cs
 +++ src/tModLoader/Terraria/ID/ProjectileID.cs
-@@ -1,29 +_,85 @@
+@@ -1,29 +_,88 @@
  using Microsoft.Xna.Framework;
  using ReLogic.Reflection;
  using Terraria.DataStructures;
@@ -53,6 +53,9 @@
 +		/// </summary>
 +		/// <remarks>You can adjust whip settings using <see cref="Projectile.WhipSettings"/>.</remarks>
  		public static bool[] IsAWhip = Factory.CreateBoolSet(false, 847, 841, 848, 849, 912, 913, 914, 915, 952, 1028, 1029, 1030, 1031, 1032, 1033, 1034, 1035, 1104);
++		/// <summary>
++		/// Used to scale down summon tag damage for fast hitting minions and sentries.
++		/// </summary>
  		public static float[] SummonTagDamageMultiplier = Factory.CreateFloatSet(1f, 688f, 0.5f, 689f, 0.5f, 690f, 0.5f);
 +
 +		/// <summary>

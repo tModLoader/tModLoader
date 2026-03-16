@@ -30,13 +30,6 @@ partial class ItemID
 		);
 
 		/// <summary>
-		/// If <see langword="true"/> for a given item type (<see cref="Item.type"/>), then that item is a glowstick.
-		/// <br/> Glowsticks work underwater and will be auto-selected by Smart Cursor when the cursor is far away from the player.
-		/// <br/> Defaults to <see langword="false"/>.
-		/// </summary>
-		public static bool[] Glowsticks = Factory.CreateBoolSet(282, 286, 3002, 3112, 4776);
-
-		/// <summary>
 		/// Set for pre-hardmode boss bags, except it also contains the Queen Slime's Boss Bag. Affects the way dev armor drops function, making it only drop in special world seeds.
 		/// <br/> Don't forget to use the <see cref="BossBag"/> set in conjunction with this one.
 		/// </summary>
@@ -162,14 +155,6 @@ partial class ItemID
 			SilverCoin,	  100,
 			GoldCoin,	  10000,
 			PlatinumCoin, 1000000
-		);
-
-		/// <summary>
-		/// If true, the item counts as a specialist weapon.<br/>
-		/// Used for Shroomite Helmet damage buffs (and other effects that will affect <see cref="Player.specialistDamage"/>).<br/>
-		/// </summary>
-		public static bool[] IsRangedSpecialistWeapon = Factory.CreateBoolSet(
-			PiranhaGun, PainterPaintballGun, Toxikarp, Harpoon, AleThrowingGlove
 		);
 
 		/// <summary>

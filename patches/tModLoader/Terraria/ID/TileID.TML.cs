@@ -60,34 +60,8 @@ partial class TileID
 			ShellPile, new FallingBlockProjectileInfo(ProjectileID.ShellPileFalling)
 		);
 
-		/// <summary>
-		/// Whether or not the tile will be ignored for automatic step up regarding town NPC collision.
-		/// <br>Only checked when <see cref="Collision.StepUp"/> with specialChecksMode set to 1 is called</br>
-		/// </summary>
-		public static bool[] IgnoredByNpcStepUp = Factory.CreateBoolSet(14, 16, 18, 134, 469);
-
-		/// <summary>
-		/// Whether or not the smart cursor function is disabled when the cursor hovers above this tile. Used by tiles frequently right click interacted with to help prevent accidental tile placement when the player accidentally left clicks on it with smart cursor enabled, such as doors and containers.
-		/// <para/> Defaults to <see langword="false"/>.
-		/// </summary>
-		// Maybe this should be a hook instead?
-		public static bool[] DisableSmartCursor = Factory.CreateBoolSet(4, 10, 11, 13, 21, 29, 33, 49, 50, 55, 79, 85, 88, 97, 104, 125, 132, 136, 139, 144, 174, 207, 209, 212, 216, 219, 237, 287, 334, 335, 338, 354, 386, 387, 388, 389, 411, 425, 441, 463, 467, 468, 491, 494, 510, 511, 573, 621, 642);
-
-		/// <summary>
-		/// Whether or not the smart tile interaction function is disabled when the cursor hovers above this tile. Used by tiles interactable by right click that do not use smart interact, such as torches and candles.
-		/// <para/> Defaults to <see langword="false"/>.
-		/// </summary>
-		public static bool[] DisableSmartInteract = Factory.CreateBoolSet(4, 33, 334, 395, 410, 455, 471, 480, 509, 520, 657, 658);
-
 		/// <summary> Whether or not this tile is a valid spawn point. </summary>
 		public static bool[] IsValidSpawnPoint = Factory.CreateBoolSet(Beds);
-
-		/// <summary> Whether or not this tile behaves like a torch. If you are making a torch tile, then setting this to true is necessary in order for tile placement, tile framing, and the item's smart selection to work properly. Each item that places torch tiles should also set <see cref="ItemID.Sets.Torches"/>.</summary>
-		public static bool[] Torch = Factory.CreateBoolSet(TileID.Torches);
-
-		/// <summary> Whether or not this tile behaves like a campfire. Campfires must be 3x2 and need to follow the vanilla layout with the on state being at the top of the texture. Padding must also be present in the same manner, resulting in a 54x36 section for each style. The animation, however, can be done with a separate flame texture if desired. <br/>
-		/// Necessary for block swap and Marshmallow on a Stick features.</summary>
-		public static bool[] Campfire = Factory.CreateBoolSet(TileID.Campfire);
 
 		/// <summary> Whether or not this tile is a clock. </summary>
 		public static bool[] Clock = Factory.CreateBoolSet(GrandfatherClocks);

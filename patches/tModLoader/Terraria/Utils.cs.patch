@@ -129,6 +129,16 @@
  				if (text != "") {
  					arrayList.Add(text);
  					text = "";
+@@ -747,6 +_,9 @@
+ 	public static Rectangle CenteredRectangle(Vector2 center, Vector2 size) => new Rectangle((int)(center.X - size.X / 2f), (int)(center.Y - size.Y / 2f), (int)size.X, (int)size.Y);
+ 	public static Rectangle CenteredRectangle(Point center, Point size) => new Rectangle(center.X - size.X / 2, center.Y - size.Y / 2, size.X, size.Y);
+ 
++	/// <summary>
++	/// Expands the provided <paramref name="rect"/> to include <paramref name="point"/> and returns the newly expanded <see cref="Rectangle"/>.
++	/// </summary>
+ 	public static Rectangle Including(this Rectangle rect, Point point)
+ 	{
+ 		int num = Math.Min(rect.Left, point.X);
 @@ -833,6 +_,9 @@
  		return num;
  	}
@@ -290,7 +300,7 @@
  
  		DynamicSpriteFont value = FontAssets.DeathText.Value;
 +
-+		TextSnippet[] snippets = ChatManager.ParseMessage(text, color).ToArray();
++		List<TextSnippet> snippets = ChatManager.ParseMessage(text, color);
 +		ChatManager.ConvertNormalSnippets(snippets);
 +		Vector2 textSize = ChatManager.GetStringSize(value, snippets, Vector2.One);
 +

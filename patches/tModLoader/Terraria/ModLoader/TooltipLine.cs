@@ -28,16 +28,6 @@ public class TooltipLine
 	public string Text;
 
 	/// <summary>
-	/// Whether or not this tooltip gives prefix information. This will make it so that the tooltip is colored either green or red.
-	/// </summary>
-	public bool IsModifier;
-
-	/// <summary>
-	/// If isModifier is true, this determines whether the tooltip is colored green or red.
-	/// </summary>
-	public bool IsModifierBad;
-
-	/// <summary>
 	/// This completely overrides the color the tooltip is drawn in. If it is set to null (the default value) then the tooltip's color will not be overridden.
 	/// </summary>
 	public Color? OverrideColor;

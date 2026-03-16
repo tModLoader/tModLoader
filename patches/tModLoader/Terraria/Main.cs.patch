@@ -1779,7 +1779,7 @@
  			if (!dedServ)
  				Lighting.Clear();
  		};
-+		WorldGen.AddGenPasses();
++		WorldGen.AddPasses();
 +		ModContent.RunEarlyClassConstructors();
  
  		DontStarveSeed.Initialize();
@@ -1852,7 +1852,7 @@
 +	internal static void Initialize_BuffDataFromMountData()
 +	{
 -		for (int l = 0; l < BuffID.Count; l++) {
-+ 		for (int l = 0; l < BuffID.Sets.BasicMountData.Length; l++) {
++ 		for (int l = 0; l < BuffID.Sets.MountType.Length; l++) {
  			if (BuffID.Sets.MountType[l] != -1) {
  				buffNoTimeDisplay[l] = true;
  				buffNoSave[l] = true;
@@ -2042,7 +2042,7 @@
  		}
  
  		_ = (screenPosition.X + (float)(screenWidth / 2)) / 16f;
-@@ -10645,6 +_,30 @@
+@@ -10645,15 +_,45 @@
  			newMusic = 0;
  			return;
  		}
@@ -2073,16 +2073,22 @@
  
  		float num3 = (float)maxTilesX / 4200f;
  		num3 *= num3;
-@@ -10655,12 +_,18 @@
+ 		float num4 = (float)((double)((screenPosition.Y + (float)(screenHeight / 2)) / 16f - (65f + 10f * num3)) / (worldSurface / 5.0));
+ 		int num5 = (int)(SceneMetrics.Center.X / 16f);
+ 		int num6 = (int)(SceneMetrics.Center.Y / 16f);
++		/*
+ 		Tile tile = (WorldGen.InWorld(num5, num6) ? Main.tile[num5, num6] : null);
++		*/
++		Tile tile = (WorldGen.InWorld(num5, num6) ? Main.tile[num5, num6] : Main.tile[0, 0]);
  		if (CreditsRollEvent.IsEventOngoing) {
  			newMusic = 89;
- 		}
++		}
 +		else if (modPriority >= SceneEffectPriority.BossHigh) {
 +			newMusic = modMusic;
-+		}
+ 		}
  		else if (SceneMetrics.InTorchGodMinigame) {
  			newMusic = 87;
- 		}
+@@ -10661,6 +_,9 @@
  		else if (flag8) {
  			newMusic = 84;
  		}
@@ -2289,16 +2295,23 @@
  					if (musicNoCrossFade[newMusic])
  						musicFade[newMusic] = 1f;
  				}
-@@ -11200,12 +_,18 @@
+@@ -11196,9 +_,15 @@
+ 		float num5 = (float)((double)((screenPosition.Y + (float)(screenHeight / 2)) / 16f - (65f + 10f * num4)) / (worldSurface / 5.0));
+ 		int num6 = (int)(SceneMetrics.Center.X / 16f);
+ 		int num7 = (int)(SceneMetrics.Center.Y / 16f);
++		/*
+ 		Tile tile = (WorldGen.InWorld(num6, num7) ? Main.tile[num6, num7] : null);
++		*/
++		Tile tile = (WorldGen.InWorld(num6, num7) ? Main.tile[num6, num7] : Main.tile[0, 0]);
  		if (CreditsRollEvent.IsEventOngoing) {
  			newMusic = 89;
- 		}
++		}
 +		else if (modPriority >= SceneEffectPriority.BossHigh) { // Should this be before credits or nah?
 +			newMusic = modMusic;
-+		}
+ 		}
  		else if (SceneMetrics.InTorchGodMinigame) {
  			newMusic = 101;
- 		}
+@@ -11206,6 +_,9 @@
  		else if (flag8) {
  			newMusic = 38;
  		}
@@ -2908,15 +2921,16 @@
 +		string[] tooltipNames = new string[mouseTextTooltipLine_Text.Length];
 +
 -		MouseText_DrawItemTooltip_GetLinesInfo(hoverItem, ref yoyoLogo, ref researchLine, knockBack, ref numLines, mouseTextTooltipLine_Text, mouseTextTooltipLine_Color);
-+		MouseText_DrawItemTooltip_GetLinesInfo(hoverItem, ref yoyoLogo, ref researchLine, knockBack, ref numLines, mouseTextTooltipLine_Text, mouseTextTooltipLine_Color, tooltipNames);
- 		MouseText_DrawItemTooltip_AddShopLines(hoverItem, ref numLines, mouseTextTooltipLine_Text, mouseTextTooltipLine_Color);
++		MouseText_DrawItemTooltip_GetLinesInfo(hoverItem, ref yoyoLogo, ref researchLine, knockBack, ref numLines, mouseTextTooltipLine_Text, mouseTextTooltipLine_Color, tooltipNames, out int prefixlineIndex);
+-		MouseText_DrawItemTooltip_AddShopLines(hoverItem, ref numLines, mouseTextTooltipLine_Text, mouseTextTooltipLine_Color);
++		MouseText_DrawItemTooltip_AddShopLines(hoverItem, ref numLines, mouseTextTooltipLine_Text, mouseTextTooltipLine_Color, toolTipNames);
  		if (NewCraftingUI.Visible)
  			NewCraftingUI.AddTooltipLines(hoverItem, ref numLines, mouseTextTooltipLine_Text, mouseTextTooltipLine_Color);
  
  		Vector2 zero = Vector2.Zero;
 +
 +		// TML's abstractions over tooltip arrays.
-+		List<TooltipLine> lines = ItemLoader.ModifyTooltips(HoverItem, ref numLines, tooltipNames, ref array, ref array2, ref array3, ref yoyoLogo, out Color?[] overrideColor, prefixlineIndex);
++		List<TooltipLine> lines = ItemLoader.ModifyTooltips(HoverItem, ref numLines, tooltipNames, ref mouseTextTooltipLine_Text, ref mouseTextTooltipLine_Color, ref yoyoLogo, out Color?[] overrideColor, prefixlineIndex);
 +		List<DrawableTooltipLine> drawableLines = lines.Select((TooltipLine x, int i) => new DrawableTooltipLine(x, i, 0, 0, Color.White)).ToList();
 +
  		int num3 = 0;
@@ -2955,14 +2969,14 @@
  					if (m == 4)
  						color = new Microsoft.Xna.Framework.Color(num11, num11, num11, num11);
  
-@@ -17326,14 +_,37 @@
+@@ -17326,17 +_,40 @@
  			}
  			else {
  				Microsoft.Xna.Framework.Color baseColor = mouseTextTooltipLine_Color[l];
 +				/*
  				if (l == researchLine)
 +				*/
-+				if (drawableLines[l].Mod == "Terraria" && drawableLines[k].Name == "JourneyResearch")
++				if (drawableLines[l].Mod == "Terraria" && drawableLines[l].Name == "JourneyResearch")
  					baseColor = Colors.JourneyMode;
  
 +				/*
@@ -2993,7 +3007,11 @@
 +		ItemLoader.PostDrawTooltip(HoverItem, drawableLines.AsReadOnly());
  	}
  
- 	private static void MouseText_DrawItemTooltip_AddShopLines(Item hoverItem, ref int numLines, string[] lineText, Microsoft.Xna.Framework.Color[] lineColors)
+-	private static void MouseText_DrawItemTooltip_AddShopLines(Item hoverItem, ref int numLines, string[] lineText, Microsoft.Xna.Framework.Color[] lineColors)
++	private static void MouseText_DrawItemTooltip_AddShopLines(Item hoverItem, ref int numLines, string[] lineText, Microsoft.Xna.Framework.Color[] lineColors, string[] toolTipNames)
+ 	{
+ 		if (npcShop <= 0 || hoverItem.value < 0 || (hoverItem.type >= 71 && hoverItem.type <= 74))
+ 			return;
 @@ -17344,6 +_,7 @@
  		LocalPlayer.GetItemExpectedPrice(hoverItem, out var calcForSelling, out var calcForBuying);
  		long num = ((hoverItem.isAShopItem || hoverItem.buyOnce) ? calcForBuying : calcForSelling);
@@ -3887,16 +3905,15 @@
  	public static void GetItemDrawFrame(int item, out Texture2D itemTexture, out Microsoft.Xna.Framework.Rectangle itemFrame)
  	{
  		instance.LoadItem(item);
-@@ -23332,6 +_,9 @@
- 			vector.X += num7 * num5;
- 			vector.X += 4 * num5;
- 			vector *= n.scale;
-+
-+			NPCLoader.PartyHatPosition(n, ref vector, ref spriteEffects);
-+
- 			bottom += vector;
- 			SpriteEffects spriteEffects = npcSpriteEffect;
+@@ -23337,6 +_,8 @@
  			if (NPCID.Sets.IsTownSlime[n.type])
+ 				spriteEffects ^= SpriteEffects.FlipHorizontally;
+ 
++			NPCLoader.PartyHatPosition(n, ref bottom, ref spriteEffects);
++
+ 			float num8 = 1f;
+ 			if (n.shimmerTransparency > 0f)
+ 				num8 *= 1f - n.shimmerTransparency;
 @@ -23407,6 +_,7 @@
  					if (n.ai[2] < -0.1f)
  						num11 = 28;
@@ -3939,7 +3956,7 @@
 +		DrawProj_Inner(proj, player);
 +	}
 +
-+	private void DrawProj_DrawVoidLens(Projectile proj, ref bool earlyReturn)
++	private void DrawProj_DrawVoidLens(Projectile proj, Player player, ref bool earlyReturn)
 +	{
  		if (proj.type == 734) {
  			VoidLensHelper voidLensHelper = new VoidLensHelper(proj);
@@ -3961,14 +3978,14 @@
  			mountedCenter += new Vector2(player.direction * 14, -10f);
  
 +		if (ProjectileLoader.PreDrawExtras(proj)) {
-+			DrawProj_DrawYoyoString(proj, mountedCenter);
-+			DrawProj_DrawExtras(proj, mountedCenter, ref polePosX, ref polePosY);
++			DrawProj_DrawYoyoString(proj, player, mountedCenter);
++			DrawProj_DrawExtras(proj, player, mountedCenter, ref polePosX, ref polePosY);
 +		}
 +
-+		DrawProj_Inner_DoDrawProj(proj, mountedCenter, polePosX, polePosY);
++		DrawProj_Inner_DoDrawProj(proj, player, mountedCenter, polePosX, polePosY);
 +	}
 +
-+	private void DrawProj_DrawYoyoString(Projectile proj, Vector2 mountedCenter)
++	private void DrawProj_DrawYoyoString(Projectile proj, Player player, Vector2 mountedCenter)
 +	{
  		if (proj.aiStyle == 99 && proj.ai[0] != -2f) {
  			Vector2 pos = mountedCenter;
@@ -3980,7 +3997,7 @@
 +		}
 +	}
 +
-+	private void DrawProj_DrawSpecialProjs(Projectile proj, ref bool earlyReturn)
++	private void DrawProj_DrawSpecialProjs(Projectile proj, Player player, ref bool earlyReturn)
 +	{
 +		{
  			if (proj.aiStyle == 160) {
@@ -4004,7 +4021,7 @@
  		}
 +	}
  
-+	private void DrawProj_Inner_DoDrawProj(Projectile proj, Vector2 mountedCenter, float polePosX, float polePosY)
++	private void DrawProj_Inner_DoDrawProj(Projectile proj, Player player, Vector2 mountedCenter, float polePosX, float polePosY)
 +	{
  		Microsoft.Xna.Framework.Color projectileColor = Lighting.GetColor((int)((double)proj.position.X + (double)proj.width * 0.5) / 16, (int)(((double)proj.position.Y + (double)proj.height * 0.5) / 16.0));
  		if (proj.usesOwnerLight)
@@ -4015,23 +4032,23 @@
  
 +		if (ProjectileLoader.PreDraw(proj, ref projectileColor)) {
 +			bool earlyReturn = true;
-+			DrawProj_DrawVoidLens(proj, ref earlyReturn);
++			DrawProj_DrawVoidLens(proj, player, ref earlyReturn);
 +			if (earlyReturn)
 +				goto PostDraw;
 +
 +			earlyReturn = true;
-+			DrawProj_DrawSpecialProjs(proj, ref earlyReturn);
++			DrawProj_DrawSpecialProjs(proj, player, ref earlyReturn);
 +			if (earlyReturn)
 +				goto PostDraw;
 +
-+			DrawProj_DrawNormalProjs(proj, polePosX, polePosY, mountedCenter, ref projectileColor);
++			DrawProj_DrawNormalProjs(proj, player, polePosX, polePosY, mountedCenter, ref projectileColor);
 +		}
 +
 +		PostDraw:
 +		ProjectileLoader.PostDraw(proj, projectileColor);
 +	}
 +
-+	private void DrawProj_DrawNormalProjs(Projectile proj, float polePosX, float polePosY, Vector2 mountedCenter, ref Color projectileColor)
++	private void DrawProj_DrawNormalProjs(Projectile proj, Player player, float polePosX, float polePosY, Vector2 mountedCenter, ref Color projectileColor)
 +	{
  		int num143 = 0;
  		int num144 = 0;
@@ -4100,7 +4117,7 @@
 +						new Rectangle(0, 0, TextureAssets.Projectile[proj.type].Width(), TextureAssets.Projectile[proj.type].Height()),
 +						new Color(250, 250, 250, proj.alpha),
 +						proj.rotation,
-+						new Vector2(num138, proj.height / 2 + num143),
++						new Vector2(num145, proj.height / 2 + num143),
 +						proj.scale,
 +						dir
 +					);
@@ -5946,23 +5963,23 @@
  		if (SceneMetrics.ZoneBeach) {
  			num2 = (SceneMetrics.ZoneCorrupt ? 19 : (SceneMetrics.ZoneCrimson ? 21 : ((!SceneMetrics.ZoneHallow) ? 18 : 20)));
  		}
-@@ -46906,6 +_,16 @@
+@@ -46829,6 +_,16 @@
  		if (SceneMetrics.ZoneGlowshroom)
- 			num11 = 2;
+ 			num2 = 2;
  
 +		if (priority >= SceneEffectPriority.BiomeHigh) {
-+			num11 = modBG;
++			num2 = modBG;
 +		}
 +
 +		if (GlobalBackgroundStyleLoader.loaded) {
 +			foreach (var hook in GlobalBackgroundStyleLoader.HookChooseUndergroundBackgroundStyle) {
-+				hook(ref num11);
++				hook(ref num2);
 +			}
 +		}
 +
- 		if (num11 != undergroundBackground) {
- 			oldUndergroundBackground = undergroundBackground;
- 			undergroundBackground = num11;
+ 		return num2;
+ 	}
+ 
 @@ -46921,6 +_,7 @@
  		int[] array = new int[6];
  		int[] array2 = new int[6];
@@ -6035,7 +6052,7 @@
 +						/*
  						text = Lang.GetMapObjectName(type);
 +						*/
-+						text = Lang._mapLegendCache.FromTile(Map[num89, num90], num89, num90);
++						text = Lang._mapLegendCache.FromTile(Map[num59, num60], num59, num60);
 +						// Patch note: 'text' is also used in a patch below.
  					}
  				}
@@ -6260,7 +6277,7 @@
  						DrawSurfaceBG_DrawChangeOverlay(11);
  					}
 +
-+					if (l >= BG_STYLES_COUNT) {
++					if (l >= SurfaceBackgroundID.Count) {
 +						LoaderManager.Get<SurfaceBackgroundStylesLoader>().DrawCloseBackground(l);
 +					}
  				}
@@ -6512,7 +6529,7 @@
  				DrawBG_ModifyBGFarBackLayerAlpha(value, null, transitionAmountOverride);
  				break;
  			default:
-+				if (value >= BG_STYLES_COUNT) {
++				if (value >= SurfaceBackgroundID.Count) {
 +					DrawBG_ModifyBGFarBackLayerAlpha(value, null, transitionAmountOverride);
 +					break;
 +				}

@@ -118,7 +118,6 @@ public partial class ItemSlot
 		dyes[dyeSlotCount] = item.Clone();
 
 		SoundEngine.PlaySound(7);
-		Recipe.FindRecipes();
 		success = true;
 		return item2;
 	}

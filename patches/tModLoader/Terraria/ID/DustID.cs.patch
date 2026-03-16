@@ -10,6 +10,14 @@
  {
  	public const short Dirt = 0;
  	public const short Stone = 1;
+@@ -76,6 +_,7 @@
+ 	public const short HeatRay = 162;
+ 	public const short PlanteraPetal = 166;
+ 	public const short PlanteraGrass = 167;
++	/// <summary> Lingers and scales with gravity enabled </summary>
+ 	public const short PlanteraBulb = 168;
+ 	public const short IchorTorch = 169;
+ 	public const short IchorSplash = 170;
 @@ -206,4 +_,6 @@
  	public const short GemRuby = 90;
  	public const short GemDiamond = 91;

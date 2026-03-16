@@ -766,6 +766,17 @@
  		public static bool[] HasItemSwap = Factory.CreateBoolSet(5325, 4131, 5060, 5059, 5324, 5329, 5330, 4346, 5391, 5323, 5455, 4767, 5453, 5309, 5454, 5358, 5360, 5361, 5359, 5437, 2611, 5526);
  		public static bool[] RecoverableImportantItem = Factory.CreateBoolSet(3318, 3319, 3320, 3321, 3322, 3323, 3324, 3325, 3326, 3327, 3328, 3329, 3330, 3331, 3332, 3860, 3861, 3862, 4782, 4957, 5111);
  		public static bool?[] OnlyNeedOneInInventoryOverride = Factory.CreateCustomSet<bool?>(null, new object[52] {
+@@ -1171,6 +_,10 @@
+ 			(short)530,
+ 			true
+ 		});
++		/// <summary>
++		/// If true, the item counts as a specialist weapon.<br/>
++		/// Used for Shroomite Helmet damage buffs (and other effects that will affect <see cref="Player.specialistDamage"/>).<br/>
++		/// </summary>
+ 		public static bool[] IsRangedSpecialistWeapon = Factory.CreateBoolSet(1156, 3350, 3210, 160, 266, 5629, 3821, 5460);
+ 		public static UniqueTagEffect[] UniqueTagEffects = Factory.CreateCustomSet<UniqueTagEffect>(null, new object[38] {
+ 			(short)5688,
 @@ -7485,6 +_,7 @@
  	public const short MusicBoxRainbowBoulder = 6145;
  	public const short MusicBoxSilence = 6146;

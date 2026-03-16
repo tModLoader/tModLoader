@@ -122,7 +122,7 @@
  		public static bool[] CanBeDugByShovel = Factory.CreateBoolSet(false, 0, 668, 59, 57, 123, 224, 147, 2, 109, 23, 661, 199, 662, 60, 70, 477, 492, 53, 116, 112, 234, 40, 495, 633, 189, 196, 460, 717, 718, 719);
  		public static bool[] NonSolidSaveSlopes = Factory.CreateBoolSet(false, 131, 351, 336, 340, 342, 341, 343, 344);
  		public static bool[] ResetsHalfBrickPlacementAttempt = Factory.CreateBoolSet(true, 2, 23, 661, 60, 70, 199, 662, 109, 477, 492, 179, 512, 180, 513, 181, 514, 182, 515, 183, 516, 381, 517, 534, 535, 536, 537, 539, 540, 625, 626, 627, 628, 633);
-@@ -182,6 +_,10 @@
+@@ -182,16 +_,36 @@
  		public static bool[] DontMergeWithSnow = Factory.CreateBoolSet(161, 200, 163, 164, 224, 170, 738);
  		public static bool[] Boulders = Factory.CreateBoolSet(138, 484, 664, 665, 711, 712, 713, 714, 715, 716);
  		public static bool[] Clouds = Factory.CreateBoolSet(189, 196, 460, 717, 718, 719);
@@ -133,7 +133,22 @@
  		public static int[] CritterCageLidStyle = Factory.CreateIntSet(-1, 275, 0, 276, 0, 277, 0, 278, 0, 279, 0, 280, 0, 281, 0, 558, 0, 554, 0, 553, 0, 551, 0, 550, 0, 542, 0, 413, 0, 309, 0, 297, 0, 296, 0, 645, 0, 643, 0, 644, 0, 632, 0, 640, 0, 710, 0, 559, 1, 414, 1, 359, 1, 358, 1, 605, 2, 604, 2, 603, 2, 602, 2, 601, 2, 599, 2, 600, 2, 612, 2, 611, 2, 610, 2, 609, 2, 608, 2, 606, 2, 607, 2, 285, 3, 286, 3, 582, 3, 555, 3, 538, 3, 533, 3, 532, 3, 394, 3, 393, 3, 392, 3, 391, 3, 339, 3, 310, 3, 299, 3, 298, 3, 629, 3, 619, 3, 556, 4, 544, 4, 364, 4, 363, 4, 362, 4, 361, 4);
  		public static int[] SmartCursorPickaxePriorityOverride = Factory.CreateIntSet(0, 12, 1, 665, 1, 639, 1);
  		public static bool[] IgnoreSmartCursorPriorityAxe = Factory.CreateBoolSet(false, 488);
-@@ -192,6 +_,10 @@
++		/// <summary>
++		/// Whether or not the smart cursor function is disabled when the cursor hovers above this tile. Used by tiles frequently right click interacted with to help prevent accidental tile placement when the player accidentally left clicks on it with smart cursor enabled, such as doors and containers.
++		/// <para/> Defaults to <see langword="false"/>.
++		/// </summary>
+ 		public static bool[] DisableSmartCursor = Factory.CreateBoolSet(4, 104, 79, 209, 511, 510, 216, 335, 338, 219, 212, 21, 467, 13, 29, 463, 491, 97, 33, 49, 174, 50, 707, 139, 207, 55, 85, 237, 88, 10, 11, 125, 621, 354, 699, 287, 132, 136, 144, 334, 386, 387, 411, 389, 388, 425, 441, 468, 494, 573, 464, 642);
++		/// <summary>
++		/// Whether or not the smart tile interaction function is disabled when the cursor hovers above this tile. Used by tiles interactable by right click that do not use smart interact, such as torches and candles.
++		/// <para/> Defaults to <see langword="false"/>.
++		/// </summary>
+ 		public static bool[] DisableSmartInteract = Factory.CreateBoolSet(4, 410, 480, 509, 657, 658, 720, 721, 725, 733, 395, 698, 334, 33, 455, 471, 520);
++		/// <summary>
++		/// Whether or not the tile will be ignored for automatic step up regarding town NPC collision.
++		/// <br>Only checked when <see cref="Collision.StepUp"/> with specialChecksMode set to 1 is called</br>
++		/// </summary>
+ 		public static bool[] IgnoredByNpcStepUp = Factory.CreateBoolSet(14, 469, 18, 16, 134);
+ 		public static bool[] CanBeSatOnForNPCs = Factory.CreateBoolSet(false, 15, 497);
  		public static bool[] CanBeSatOnForPlayers = Factory.CreateBoolSet(false, 15, 497, 89, 102, 487);
  		public static bool[] CanBeSleptIn = Factory.CreateBoolSet(false, 79);
  		public static bool[] IgnoresTileReplacementDropCheckWhenBeingPlaced = Factory.CreateBoolSet(false, 158, 30);
@@ -263,7 +278,7 @@
  		public static bool[] NotReallySolid = Factory.CreateBoolSet(387, 388, 10);
  		public static bool[] BlocksWaterDrawingBehindSelf = Factory.CreateBoolSet(false, 54, 541, 328, 459, 470);
  		public static bool[] AllowLightInWater = Factory.CreateBoolSet(false, 54, 541, 328, 459, 748, 750);
-@@ -306,29 +_,73 @@
+@@ -306,29 +_,76 @@
  		public static bool[] NeedsGrassFraming = Factory.CreateBoolSet(633);
  		public static int[] NeedsGrassFramingDirt = Factory.CreateIntSet(0, 633, 57);
  		public static bool[] ChecksForMerge = Factory.CreateBoolSet(0, 668, 2, 661, 60, 70, 199, 662, 109, 477, 492, 633, 747, 57, 58, 75, 76, 684, 147, 161, 164, 163, 200, 162, 189, 196, 460, 717, 718, 719, 170, 738, 224, 191, 383, 211, 225, 59, 226, 396, 397, 398, 399, 402, 400, 401, 403, 404, 234, 112, 407);
@@ -319,7 +334,10 @@
 +		/// Indicates that the tile is an ore. Used in worldgen code for various purposes and by Fairies.
 +		/// </summary>
  		public static bool[] Ore = Factory.CreateBoolSet(7, 166, 6, 167, 9, 168, 8, 169, 22, 204, 37, 58, 107, 221, 108, 222, 111, 223, 211);
++		/// <summary> Whether or not this tile behaves like a torch. If you are making a torch tile, then setting this to true is necessary in order for tile placement, tile framing, and the item's smart selection to work properly. Each item that places torch tiles should also set <see cref="ItemID.Sets.Torches"/>.</summary>
  		public static bool[] Torches = Factory.CreateBoolSet(4);
++		/// <summary> Whether or not this tile behaves like a campfire. Campfires must be 3x2 and need to follow the vanilla layout with the on state being at the top of the texture. Padding must also be present in the same manner, resulting in a 54x36 section for each style. The animation, however, can be done with a separate flame texture if desired. <br/>
++		/// Necessary for block swap and Marshmallow on a Stick features.</summary>
  		public static bool[] Campfires = Factory.CreateBoolSet(215);
 +		/// <summary>
 +		/// Indicates that this tile contains items. All chests and dressers should set this. <see cref="Main.tileContainer"/> should also be set in tandem.

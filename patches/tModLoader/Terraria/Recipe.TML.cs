@@ -5,6 +5,8 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Exceptions;
+using Terraria.UI;
+
 
 #pragma warning disable IDE0060 //Remove unused parameter.
 
@@ -156,7 +158,7 @@ public partial class Recipe
 
 		RecipeGroup rec = RecipeGroup.recipeGroups[recipeGroupId];
 
-		AddIngredient(rec.IconicItemId, stack);
+		AddIngredient(rec.GetPlaceholderItemType(), stack);
 		AddGroup(recipeGroupId);
 
 		return this;
@@ -416,7 +418,7 @@ public partial class Recipe
 		clone.createItem = createItem.Clone();
 
 		clone.requiredItem = new List<Item>(requiredItem.Select(x => x.Clone()).ToArray());
-		clone.requiredTile = new List<int>(requiredTile.ToArray());
+		clone.requiredTile = requiredTile;
 		clone.acceptedGroups = new List<int>(acceptedGroups.ToArray());
 		clone.notDecraftable = notDecraftable;
 		clone.crimson = crimson;
@@ -426,14 +428,9 @@ public partial class Recipe
 		clone.needHoney = needHoney;
 		clone.needWater = needWater;
 		clone.needLava = needLava;
-		clone.anyWood = anyWood;
-		clone.anyIronBar = anyIronBar;
-		clone.anyPressurePlate = anyPressurePlate;
-		clone.anySand = anySand;
-		clone.anyFragment = anyFragment;
 		clone.needSnowBiome = needSnowBiome;
 		clone.needGraveyardBiome = needGraveyardBiome;
-		clone.needEverythingSeed = needEverythingSeed;
+		clone.needMechdusa = needMechdusa;
 
 		clone.OnCraftHooks = OnCraftHooks;
 		clone.ConsumeIngredientHooks = ConsumeIngredientHooks;
@@ -447,7 +444,7 @@ public partial class Recipe
 
 		// A subsequent call to Register() will re-add this hook if Bottles is a required tile, so we remove
 		// it here to not have multiple duplicate hooks.
-		if (clone.requiredTile.Contains(TileID.Bottles))
+		if (clone.requiredTile == TileID.Bottles)
 			clone.ConsumeIngredientHooks -= IngredientQuantityRules.Alchemy;
 
 		return clone;
@@ -465,7 +462,7 @@ public partial class Recipe
 		if (RecipeIndex >= 0)
 			throw new RecipeException("There was an attempt to register an already registered recipe.");
 
-		if (requiredTile.Contains(TileID.Bottles))
+		if (requiredTile == TileID.Bottles)
 			AddConsumeIngredientCallback(IngredientQuantityRules.Alchemy);
 
 		if (numRecipes >= maxRecipes) {
@@ -473,11 +470,11 @@ public partial class Recipe
 
 			Array.Resize(ref Main.recipe, maxRecipes);
 			Array.Resize(ref Main.availableRecipe, maxRecipes);
-			Array.Resize(ref Main.availableRecipeY, maxRecipes);
+			Array.Resize(ref CraftingUI.availableRecipeY, maxRecipes);
 
 			for (int k = numRecipes; k < maxRecipes; k++) {
 				Main.recipe[k] = new Recipe();
-				Main.availableRecipeY[k] = 65f * k;
+				CraftingUI.availableRecipeY[k] = 65f * k;
 			}
 		}
 

@@ -1633,12 +1633,18 @@
  			item.stack--;
  			if (item.stack <= 0)
  				item.TurnToAir();
-@@ -3647,7 +_,13 @@
+@@ -3642,12 +_,18 @@
+ 		return bestItem;
+ 	}
+ 
+-	private static void QuickHeal_GetItemToUse_TryChoosingItem(int lifeDifference, ref Item bestItem, ref int bestDifference, Item nextItem)
++	private void QuickHeal_GetItemToUse_TryChoosingItem(int lifeDifference, ref Item bestItem, ref int bestDifference, Item nextItem)
+ 	{
  		if (nextItem.stack <= 0 || nextItem.type <= 0 || !nextItem.potion || nextItem.healLife <= 0)
  			return;
  
 +		if (!CombinedHooks.CanUseItem(this, nextItem))
-+			continue;
++			return;
 +
 +		/*
  		int num = nextItem.healLife - lifeDifference;
@@ -3216,7 +3222,7 @@
  			musicBoxSilence = true;
 +
 +		if (MusicLoader.itemToMusic.TryGetValue(currentItem.type, out int modMusicBox))
-+			Main.musicBox2 = modMusicBox;
++			musicBox = modMusicBox;
  	}
  
  	public void UpdateArmorSets(int i)
@@ -3373,7 +3379,7 @@
  					return;
  
 +				if (tile.type >= TileID.Count) {
-+					if (tile.active() && TileID.Sets.Torch[tile.type]) {
++					if (tile.active() && TileID.Sets.Torches[tile.type]) {
 +						NearbyModTorch.Add(tile.type);
 +						if (tile.frameX < 66)
 +							nearbyTorches++;
@@ -3390,7 +3396,7 @@
  			for (int j = value3; j <= value4; j++) {
  				Tile tile = Main.tile[i, j];
 -				if (tile != null && (tile.active() & (tile.type == 4)) && tile.frameX < 66) {
-+				if (tile != null && (tile.active() & (TileID.Sets.Torch[tile.type])) && tile.frameX < 66) {
++				if (tile != null && (tile.active() & (TileID.Sets.Torches[tile.type])) && tile.frameX < 66) {
  					_torchAttackPosX[num] = i;
  					_torchAttackPosY[num] = j;
  					num++;
@@ -3408,7 +3414,7 @@
  			int num5 = _torchAttackPosX[num4];
  			int num6 = _torchAttackPosY[num4];
 -			if (Main.tile[num5, num6].type == 4 && Main.tile[num5, num6].frameX < 66) {
-+			if (TileID.Sets.Torch[Main.tile[num5, num6].type] && Main.tile[num5, num6].frameX < 66) {
++			if (TileID.Sets.Torches[Main.tile[num5, num6].type] && Main.tile[num5, num6].frameX < 66) {
  				float num7 = 8f;
  				int num8 = 20;
  				if (num8 < 10)
@@ -3423,7 +3429,7 @@
  		if (inventory[selectedItem].createTile == 4 && inventory[selectedItem].placeStyle < TorchID.Count)
  			nearbyTorch[inventory[selectedItem].placeStyle] = true;
  
-+		if (TileLoader.GetTile(inventory[selectedItem].createTile) is ModTile modTile && TileID.Sets.Torch[modTile.Type])
++		if (TileLoader.GetTile(inventory[selectedItem].createTile) is ModTile modTile && TileID.Sets.Torches[modTile.Type])
 +			NearbyModTorch.Add(modTile.Type);
 +
  		float num = 0f;
@@ -3871,6 +3877,15 @@
  
  					nPC.immune[whoAmI] = 10;
  					velocity.Y = -10f;
+@@ -16347,7 +_,7 @@
+ 
+ 				Rectangle rect4 = nPC2.getRect();
+ 				if (rect3.Intersects(rect4) && (nPC2.noTileCollide || Collision.CanHit(position, width, height, nPC2.position, nPC2.width, nPC2.height))) {
+-					float num3 = 40f * minionDamage;
++					float num3 = GetTotalDamage(DamageClass.Summon).ApplyTo(40f);
+ 					float knockback2 = 5f;
+ 					int num4 = direction;
+ 					if (velocity.X < 0f)
 @@ -16402,8 +_,10 @@
  				autoJump = false;
  
@@ -5849,7 +5864,7 @@
  			if (newItem.stack + inventory[i].stack <= inventory[i].maxStack) {
  				inventory[i].stack += newItem.stack;
  				GetItemLogger.Add(inventory, i, 2, newItem.stack);
-@@ -31717,6 +_,19 @@
+@@ -31717,6 +_,17 @@
  				DoCoins(i);
  
  			settings.HandlePostAction(inventory[i]);
@@ -5859,8 +5874,6 @@
 +				PopupText.NewText(PopupTextContext.RegularItemPickup, newItem, numTransfered);
 +
 +			DoCoins(i);
-+			if (plr == Main.myPlayer)
-+				Recipe.FindRecipes();
 +
 +			settings.HandlePostAction(inventory[i]);
 +
@@ -5869,7 +5882,7 @@
  		}
  
  		if (newItem.CanFillEmptyAmmoSlot()) {
-@@ -31748,6 +_,16 @@
+@@ -31748,6 +_,15 @@
  		return GetItem(newItem.inner, settings);
  	}
  
@@ -5879,7 +5892,6 @@
 +	/// <para/> The return value is an Item instance containing the overflow. If the full stack of <paramref name="newItem"/> is placed into the inventory successfully, the return value will be an empty item instance. If the inventory is full or if only a partial stack of <paramref name="newItem"/> fit in the inventory, the return value will be the Item that didn't fit. If the returned <see cref="Item"/> isn't <see cref="Item.IsAir"/>, that will have to be handled by the calling code, typically by spawning the item in the world as a drop or leaving it where <paramref name="newItem"/> came from.
 +	/// <para/> Make sure to test code using this method with a full inventory. Consulting vanilla code to match similar usages is recommended to implement specific item movement and popup text behavior the user would expect.
 +	/// </summary>
-+	/// <param name="plr"></param>
 +	/// <param name="newItem"></param>
 +	/// <param name="settings"></param>
 +	/// <returns></returns>
@@ -5935,7 +5947,7 @@
  				inventory[i].stack += returnItem.stack;
  				GetItemLogger.Add(inventory, i, GetFittingItemSlotContext(i), returnItem.stack);
  				if (!settings.NoText)
-@@ -31906,6 +_,19 @@
+@@ -31906,6 +_,17 @@
  				DoCoins(i);
  
  			settings.HandlePostAction(inventory[i]);
@@ -5945,8 +5957,6 @@
 +				PopupText.NewText(PopupTextContext.RegularItemPickup, newItem, numTransfered, noStack: false, settings.LongText);
 +
 +			DoCoins(i);
-+			if (plr == Main.myPlayer)
-+				Recipe.FindRecipes();
 +
 +			AchievementsHelper.NotifyItemPickup(this, returnItem);
 +			settings.HandlePostAction(inventory[i]);
@@ -7052,7 +7062,7 @@
  		if (Main.tileHammer[targetTile.type])
  			return false;
 +			
-+		if (TileID.Sets.CanBeSloped[tile.type])
++		if (TileID.Sets.CanBeSloped[targetTile.type])
 +			return true;
  
  		if (!Main.tileSolid[targetTile.type] && targetTile.type != 314 && targetTile.type != 424 && targetTile.type != 442 && targetTile.type != 351 && targetTile.type != 470)
@@ -7905,7 +7915,7 @@
  
  		if (AmmoID.Sets.IsArrow[item.ammo] && archery && speed < 20f) {
  			speed *= 1.2f;
-@@ -43510,7 +_,62 @@
+@@ -43510,7 +_,61 @@
  		}
  
  		KnockBack += item.knockBack;
@@ -7917,7 +7927,6 @@
 +			CombinedHooks.OnConsumeAmmo(this, sItem, item);
 +			item.stack--;
 +			if (item.stack <= 0) {
-+				item.active = false;
 +				item.TurnToAir();
 +			}
 +		}
@@ -8083,10 +8092,10 @@
 +		var startCounts = new Dictionary<int, int>();
 +
 +		foreach (Item item in startInventory) {
-+			if (!startCounts.ContainsKey(item.netID))
-+				startCounts[item.netID] = 0;
++			if (!startCounts.ContainsKey(item.type))
++				startCounts[item.type] = 0;
 +
-+			startCounts[item.netID] += item.stack;
++			startCounts[item.type] += item.stack;
 +		}
 +
 +		startCounts[ModContent.ItemType<ModLoader.Default.StartBag>()] = 1;
@@ -8102,10 +8111,10 @@
  			else
  				TryDroppingSingleItem(itemSource_Death, item2);
 +			*/
-+			if (startCounts.TryGetValue(type, out int startCount)) {
++			if (startCounts.TryGetValue(item2.type, out int startCount)) {
 +				int n = Math.Min(item2.stack, startCount);
 +				item2.stack -= n;
-+				startCounts[type] -= n;
++				startCounts[item2.type] -= n;
 +			}
 +			if (item2.stack > 0)
 +				TryDroppingSingleItem(itemSource_Death, item2);
