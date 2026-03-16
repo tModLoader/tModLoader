@@ -19,6 +19,16 @@
  	private readonly Dictionary<string, List<string>> _categoryGroupedKeys = new Dictionary<string, List<string>>();
  	private readonly Dictionary<string, Dictionary<string, string>> _textVariations = new Dictionary<string, Dictionary<string, string>>();
  	private GameCulture _fallbackCulture = GameCulture.DefaultCulture;
+@@ -85,6 +_,9 @@
+ 
+ 	public void SetLanguage(GameCulture culture)
+ 	{
++		if (ActiveCulture != null) // Log selected language, but skip logging initial DefaultCulture.
++			Logging.tML.Info($"Language: {culture.Name}");
++
+ 		if (ActiveCulture != culture) {
+ 			Thread.CurrentThread.CurrentCulture = culture.CultureInfo;
+ 			Thread.CurrentThread.CurrentUICulture = culture.CultureInfo;
 @@ -114,6 +_,25 @@
  		ProcessCopyCommandsInTexts();
  	}
