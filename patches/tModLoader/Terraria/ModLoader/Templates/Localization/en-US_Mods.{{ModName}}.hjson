@@ -1,4 +1,5 @@
 # This file will automatically update with entries for new content after a build and reload.
+# Please read https://github.com/tModLoader/tModLoader/wiki/Localization to learn more about localization and these files.
 
 {{#IncludeItem}}
 Items: {
