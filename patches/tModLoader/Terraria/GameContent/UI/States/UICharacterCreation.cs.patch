@@ -8,6 +8,19 @@
  using Terraria.UI;
  using Terraria.UI.Gamepad;
  
+@@ -127,6 +_,12 @@
+ 	private UIGamepadHelper _helper;
+ 	private List<int> _foundPoints = new List<int>();
+ 
++	// Added by TML.
++	public UIState PreviousUIState {
++		get => throw new NotSupportedException();
++		set => throw new NotSupportedException();
++	}
++
+ 	public UICharacterCreation(Player player)
+ 	{
+ 		_player = player;
 @@ -1536,6 +_,15 @@
  				break;
  		}

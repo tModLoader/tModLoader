@@ -1,0 +1,15 @@
+--- src/TerrariaNetCore/Terraria/GameContent/UI/States/UIWorldCreation.cs
++++ src/tModLoader/Terraria/GameContent/UI/States/UIWorldCreation.cs
+@@ -118,6 +_,12 @@
+ 		ResetSpecialSeedRing();
+ 	}
+ 
++	// Added by TML.
++	public UIState PreviousUIState {
++		get => _goBackTarget;
++		set => _goBackTarget = value;
++	}
++
+ 	public void SetGoBackTarget(UIState state)
+ 	{
+ 		_goBackTarget = state;

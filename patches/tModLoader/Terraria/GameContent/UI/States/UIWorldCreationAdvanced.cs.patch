@@ -1,0 +1,15 @@
+--- src/TerrariaNetCore/Terraria/GameContent/UI/States/UIWorldCreationAdvanced.cs
++++ src/tModLoader/Terraria/GameContent/UI/States/UIWorldCreationAdvanced.cs
+@@ -36,6 +_,12 @@
+ 	private bool _allowScrolling;
+ 	private UIGamepadHelper _helper;
+ 
++	// Added by TML.
++	public UIState PreviousUIState {
++		get => throw new NotSupportedException();
++		set => throw new NotSupportedException();
++	}
++
+ 	public UIWorldCreationAdvanced(UIWorldCreation state, bool allowScrolling = false)
+ 	{
+ 		_creationState = state;
