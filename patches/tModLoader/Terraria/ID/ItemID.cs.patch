@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/ID/ItemID.cs
 +++ src/tModLoader/Terraria/ID/ItemID.cs
-@@ -3,19 +_,50 @@
+@@ -3,19 +_,48 @@
  using ReLogic.Reflection;
  using Terraria.DataStructures;
  using Terraria.GameContent.Items;
@@ -28,14 +28,12 @@
  		public static readonly BannerEffect Reduced = new BannerEffect(0.2f);
 +
 +		/// <summary>
-+		/// The percent of damage dealt to the NPC this banner represents in Normal Mode.
-+		/// The percent of damage dealt to the NPC this banner represents in Expert Mode or higher.
++		/// Difficulty based multiplier for damage dealt to NPCs represented by this banner
 +		/// </summary>
  		public readonly GameDifficultyData.LinearCurve DamageDealt;
 +
 +		/// <summary>
-+		/// The percent of damage dealt to players by the NPC this banner represents in Normal Mode.
-+		/// The percent of damage dealt to players by the NPC this banner represents in Expert Mode or higher.
++		/// Difficulty based multiplier for damage dealt to players by the NPCs represented by this banner
 +		/// </summary>
  		public readonly GameDifficultyData.LinearCurve DamageReceived;
 +
@@ -57,7 +55,7 @@
  		}
  
 +		/// <summary>
-+		/// Creates a new <see cref="BannerEffect"/> with <see cref="NormalDamageDealt"/>, <see cref="ExpertDamageDealt"/>, <see cref="NormalDamageReceived"/>, and <see cref="ExpertDamageReceived"/> set to the provided values.
++		/// Creates a new <see cref="BannerEffect"/> with custom damage curves
 +		/// </summary>
 +		/// <remarks>This banner always has <see cref="Enabled"/> set to <see langword="true"/>, even if all provided values are <c>0f</c>.</remarks>
  		public BannerEffect(GameDifficultyData.LinearCurve damageDealt, GameDifficultyData.LinearCurve damageReceived)
