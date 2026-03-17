@@ -166,7 +166,7 @@ public abstract class ModTileEntity : TileEntity, IModType, ILoadable
 	/// Should never be called on ModTileEntity. Replaced by NetReceive and LoadData
 	/// Would make the base method internal if not for patch size
 	/// </summary>
-	public sealed override void ReadExtraData(BinaryReader reader, bool networkSend)
+	public sealed override void ReadExtraData(BinaryReader reader, int gameVersion, bool networkSend)
 	{
 		throw new NotImplementedException();
 	}

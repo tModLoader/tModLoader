@@ -2006,13 +2006,34 @@
 +	*/
 +	internal Item DeepClone() => Clone();
  
-+	// TML: Made internal + renamed in Item.TML.cs with more descriptive name (IsNotSameTypePrefixAndStack)
++	// TML: Made internal + given more descriptive name (IsNotSameTypePrefixAndStack)
 +	// Many usages replaced with !IsNetStateEquivalent
 -	public bool IsNotTheSameAs(Item compareItem)
 +	internal bool IsNotTheSameAs(Item compareItem)
  	{
  		if (type == compareItem.type && stack == compareItem.stack)
  			return prefix != compareItem.prefix;
+@@ -48780,10 +_,19 @@
+ 		return true;
+ 	}
+ 
++	/// <summary>
++	/// returns false if and only if type, stack and prefix match<br/>
++	/// <seealso cref="IsNetStateDifferent(Item)"/>
++	/// </summary>
++	public bool IsNotSameTypePrefixAndStack(Item compareItem) => IsNotTheSameAs(compareItem);
++
++	/// <summary>
++	/// Returns true if these items are different and there is a need to re-sync them
++	/// </summary>
+ 	public bool IsNetStateDifferent(Item compareItem)
+ 	{
+ 		if (!IsNotTheSameAs(compareItem))
+-			return favorited != compareItem.favorited;
++			return favorited != compareItem.favorited || NetStateVersion != compareItem.NetStateVersion; // TML added || NetStateVersion
+ 
+ 		return true;
+ 	}
 @@ -48796,11 +_,19 @@
  		return false;
  	}

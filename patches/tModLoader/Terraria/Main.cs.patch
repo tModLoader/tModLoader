@@ -2534,6 +2534,28 @@
  		for (int i = 0; i < itemAnimationsRegistered.Count; i++) {
  			int num = itemAnimationsRegistered[i];
  			if (itemAnimations[num] != null)
+@@ -14366,6 +_,10 @@
+ 		_mainThreadActions.Enqueue(action);
+ 	}
+ 
++	/// <summary>
++	/// Wait for an action to be performed on the main thread.
++	/// </summary>
++	/// <param name="action"></param>
+ 	public static Task RunOnMainThread(Action action)
+ 	{
+ 		return RunOnMainThread((Func<object>)delegate {
+@@ -14374,6 +_,10 @@
+ 		});
+ 	}
+ 
++	/// <summary>
++	/// Wait for an action to be performed on the main thread.
++	/// </summary>
++	/// <param name="func"></param>
+ 	public static Task<T> RunOnMainThread<T>(Func<T> func)
+ 	{
+ 		TaskCompletionSource<T> tcs = new TaskCompletionSource<T>();
 @@ -14403,7 +_,15 @@
  		if (!_isDrawingOrUpdating) {
  			_isDrawingOrUpdating = true;

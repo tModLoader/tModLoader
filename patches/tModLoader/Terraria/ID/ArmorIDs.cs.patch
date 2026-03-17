@@ -383,7 +383,7 @@
 +		public partial class Sets
  		{
 -			public static SetFactory Factory = new SetFactory(Count);
-+			public static SetFactory Factory = EquipLoader.nextEquip[EquipType.Wings], $"{nameof(ArmorIDs)}.{nameof(Wing)}", Search);
++			public static SetFactory Factory = new SetFactory(EquipLoader.nextEquip[EquipType.Wings], $"{nameof(ArmorIDs)}.{nameof(Wing)}", Search);
 +
 +			/// <summary>
 +			/// Determines the flight stats for a given <see cref="Wing"/>.

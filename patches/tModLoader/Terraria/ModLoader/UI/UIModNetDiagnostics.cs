@@ -183,4 +183,6 @@ public class UIModNetDiagnostics : INetDiagnosticsUI
 	// Not needed
 	public void CountReadModuleMessage(int moduleMessageId, int messageLength) => throw new NotImplementedException();
 	public void CountSentModuleMessage(int moduleMessageId, int messageLength) => throw new NotImplementedException();
+	public void RotateSendRecvCounters() => throw new NotImplementedException();
+	public void GetLastSentRecvBytes(out int sent, out int recv) => throw new NotImplementedException();
 }

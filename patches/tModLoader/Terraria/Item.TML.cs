@@ -171,17 +171,6 @@ public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>
 		=> DamageClassLoader.effectInheritanceCache[DamageType.Type, damageClass.Type];
 
 	/// <summary>
-	/// returns false if and only if type, stack and prefix match<br/>
-	/// <seealso cref="IsNetStateDifferent(Item)"/>
-	/// </summary>
-	public bool IsNotSameTypePrefixAndStack(Item compareItem) => type != compareItem.type || stack != compareItem.stack || prefix != compareItem.prefix;
-
-	/// <summary>
-	/// Returns true if these items are different and there is a need to re-sync them
-	/// </summary>
-	public bool IsNetStateDifferent(Item compareItem) => type != compareItem.type || stack != compareItem.stack || prefix != compareItem.prefix || NetStateVersion != compareItem.NetStateVersion;
-
-	/// <summary>
 	/// Use this instead of <see cref="Clone"/> for much faster state snapshotting and change sync detection.<br/>
 	/// Note!! <see cref="SetDefaults(int)"/> will NOT be called. The target item will remain as it was (most likely air), except for type, stack, prefix and netStateVersion
 	/// </summary>
@@ -190,6 +179,7 @@ public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>
 		target.type = type;
 		target.stack = stack;
 		target.prefix = prefix;
+		target.favorited = favorited;
 		target.NetStateVersion = NetStateVersion;
 	}
 

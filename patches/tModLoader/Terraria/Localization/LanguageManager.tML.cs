@@ -8,7 +8,6 @@ namespace Terraria.Localization;
 
 public partial class LanguageManager
 {
-	private IContentSource[] _contentSources = Array.Empty<IContentSource>();
 	private HashSet<string> _moddedKeys = new();
 
 	public List<string> GetKeysInCategory(string categoryName) => _categoryGroupedKeys[categoryName];

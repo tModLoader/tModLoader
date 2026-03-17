@@ -157,7 +157,7 @@ public partial class Main
 	/// </code>
 	/// Note that if the index of the Item in the <see cref="Main.item"/> array is needed, <see cref="Entity.whoAmI"/> can <b>not</b> be used. This will be fixed in 1.4.5, but for now the for loop approach would have to be used instead.
 	/// </summary>
-	public static ActiveEntityIterator<Item> ActiveItems => new(item.AsSpan(0, maxItems));
+	public static ActiveEntityIterator<WorldItem> ActiveItems => new(item.AsSpan(0, maxItems));
 
 	/// <summary>
 	/// Checks if a tile at the given coordinates counts towards tile coloring from the Spelunker buff, and is detected by various pets.
@@ -529,33 +529,6 @@ public partial class Main
 			titleLinks[i].Draw(spriteBatch, anchorPosition);
 			anchorPosition.X += 30f;
 		}
-	}
-
-	/// <summary>
-	/// Wait for an action to be performed on the main thread.
-	/// </summary>
-	/// <param name="action"></param>
-	public static Task RunOnMainThread(Action action)
-	{
-		var tcs = new TaskCompletionSource();
-
-		QueueMainThreadAction(() => {
-			action();
-			tcs.SetResult();
-		});
-
-		return tcs.Task;
-	}
-
-	/// <summary>
-	/// Wait for an action to be performed on the main thread.
-	/// </summary>
-	/// <param name="func"></param>
-	public static Task<T> RunOnMainThread<T>(Func<T> func)
-	{
-		var tcs = new TaskCompletionSource<T>();
-		QueueMainThreadAction(() => tcs.SetResult(func()));
-		return tcs.Task;
 	}
 
 	private static PosixSignalRegistration SIGINTHandler;

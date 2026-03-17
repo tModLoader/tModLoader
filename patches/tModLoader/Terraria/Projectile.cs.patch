@@ -1654,29 +1654,31 @@
  				flag = false;
  
  			if (flag) {
-@@ -42269,13 +_,19 @@
+@@ -42267,7 +_,7 @@
+ 		}
+ 	}
  
- 	private bool AI_007_GrapplingHooks_CanTileBeLatchedOnTo(Tile theTile)
+-	private bool AI_007_GrapplingHooks_CanTileBeLatchedOnTo(Tile theTile)
++	private bool AI_007_GrapplingHooks_CanTileBeLatchedOnTo_Vanilla(Tile theTile)
  	{
-+		bool vanilla = true;
  		if (!theTile.nactive())
--			return false;
-+			vanilla = false;
+ 			return false;
+@@ -42278,6 +_,15 @@
+ 		return Main.tileSolid[theTile.type] | (theTile.type == 314) | (type == 865 && TileID.Sets.IsATreeTrunk[theTile.type]) | (type == 865 && theTile.type == 323);
+ 	}
  
- 		if (type == 403 && theTile.type != 314)
--			return false;
-+			vanilla = false;
- 
--		return Main.tileSolid[theTile.type] | (theTile.type == 314) | (type == 865 && TileID.Sets.IsATreeTrunk[theTile.type]) | (type == 865 && theTile.type == 323);
-+		vanilla &= return Main.tileSolid[theTile.type] | (theTile.type == 314) | (type == 865 && TileID.Sets.IsATreeTrunk[theTile.type]) | (type == 865 && theTile.type == 323);
-+
++	// Call sites changed to pass (x, y) instead of tile
++	private bool AI_007_GrapplingHooks_CanTileBeLatchedOnTo(int x, int y)
++	{
 +		if (ProjectileLoader.GrappleCanLatchOnTo(this, Main.player[owner], x, y) is bool modOverride)
 +			return modOverride;
 +
-+		return vanilla;
- 	}
- 
++		return AI_007_GrapplingHooks_CanTileBeLatchedOnTo_Vanilla(Main.tile[x, y]);
++	}
++
  	private void AI_147_Celeb2Rocket()
+ 	{
+ 		int num = 0;
 @@ -42460,7 +_,7 @@
  			return;
  		}
