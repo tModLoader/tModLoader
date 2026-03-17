@@ -10,7 +10,14 @@
  {
  	public const short Dirt = 0;
  	public const short Stone = 1;
-@@ -76,6 +_,7 @@
+@@ -70,12 +_,13 @@
+ 	public const short TintablePaint = 143;
+ 	public const short Honey = 152;
+ 	public const short UltraBrightTorch = 156;
+-	public const short Chlorophyte = 157;
++	public const short Chlorophyte_New_Vanilla = 157; // TODO: tModPorter? Advise modders? Overwrite vanilla name? (Used by CrystalLeafShot and ChlorophyteOrb)
+ 	public const short OrangeTorch = 158;
+ 	public const short BlueGreenElectricity = 160;
  	public const short HeatRay = 162;
  	public const short PlanteraPetal = 166;
  	public const short PlanteraGrass = 167;

@@ -10,7 +10,22 @@ namespace Microsoft.Xna.Framework
 	file class Dummy { }
 }
 
+namespace Microsoft.Xna.Framework.Graphics
+{
+	file class Dummy { }
+}
+
+namespace ReLogic.Content
+{
+	file class Dummy { }
+}
+
 namespace Terraria.DataStructures
+{
+	file class Dummy { }
+}
+
+namespace Terraria.GameContent.Items
 {
 	file class Dummy { }
 }
