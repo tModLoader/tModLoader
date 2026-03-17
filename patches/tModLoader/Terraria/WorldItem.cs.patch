@@ -1,5 +1,59 @@
 --- src/TerrariaNetCore/Terraria/WorldItem.cs
 +++ src/tModLoader/Terraria/WorldItem.cs
+@@ -12,24 +_,52 @@
+ 
+ namespace Terraria;
+ 
+-public class WorldItem : Entity
++public partial class WorldItem : Entity
+ {
+ 	public Item inner = new Item();
+ 	public int ownTime;
+ 	public int playerIndexTheItemIsReservedFor = 255;
++	/// <summary>
++	/// The delay, in ticks, before players can pick up this item.<br/>
++	/// Usually set to 100 (approximately 1.666... seconds) whenever an item is dropped.<br/>
++	/// Set to 0 whenever an item drops from a projectile.<br/>
++	/// </summary>
+ 	public int noGrabDelay;
+ 	public bool shimmered;
+ 	public float shimmerTime;
++	/// <summary>
++	/// If true, then the given item is instanced per-client.<br/>
++	/// Instanced items only appear on the client they were spawned on and are less likely to be replaced if a new item is spawned.<br/>
++	/// Instanced items do not exist on servers.<br/>
++	/// Vanilla uses this field for treasure bags and Defender Medals. tModLoader automatically handles this for modded treasure bags.<br/>
++	/// If you would like to make an instanced item, see any one of the following for examples:<br/>
++	/// - <see cref="NPC.DropItemInstanced"/><br/>
++	/// - <see cref="GameContent.ItemDropRules.CommonCode.DropItemLocalPerClientAndSetNPCMoneyTo0"/><br/>
++	/// - <see cref="MessageID.InstancedItem"/><br/>
++	/// Defaults to <see langword="false"/>.<br/>
++	/// </summary>
+ 	public bool instanced;
+ 	public int ownIgnore = -1;
+ 	public int timeSinceTheItemHasBeenReservedForSomeone;
+ 	public int timeLeftInWhichTheItemCannotBeTakenByEnemies;
++	/// <summary>
++	/// A value that increases every tick an item is in the world.<br/>
++	/// Defaults to the value in <see cref="ItemID.Sets.OverflowProtectionTimeOffset"/> when an item is created, and increases by <see cref="ItemID.Sets.ItemSpawnDecaySpeed"/> every tick.<br/>
++	/// When creating new items, items with a high <c>timeSinceItemSpawned</c> value will be replaced if no empty item slots are available.<br/>
++	/// </summary>
+ 	public int timeSinceItemSpawned;
++	/// <summary>
++	/// If true, then this item is currently being grabbed by a player.<br/>
++	/// Items being grabbed by the player cannot combine with nearby items, be picked up by enemies, burn in lava, or despawn.<br/>
++	/// </summary>
+ 	public bool beingGrabbed;
+ 	public bool onConveyor;
+ 	public int keepTime;
+ 	private static SceneMetrics _sceneMetrics;
+ 
++	/// <summary>
++	/// If true, the WorldItem actually exists within the game world. Within <see cref="Main.item"/>, if active is false, the WorldItem is junk data. Always check active if iterating over <see cref="Main.item"/>. Another option for iterating is to use <see cref="Main.ActiveItems"/> instead for simpler code.
++	/// </summary>
+ 	public bool active => inner.active;
+ 
+ 	public int type {
 @@ -77,7 +_,7 @@
  		}
  	}
@@ -9,11 +63,12 @@
  		get {
  			return inner.makeNPC;
  		}
-@@ -119,6 +_,7 @@
- 	public int glowMask => inner.glowMask;
+@@ -377,7 +_,7 @@
+ 				if (WorldGen.InWorld(num, num2) && WallID.Sets.AllowsWind[Main.tile[num, num2].wall]) {
+ 					int num3 = 600;
+ 					if (Main.dayRate > 0 && Main.dayRate < num3)
+-						num3 /= Main.dayRate;
++						num3 = (int)(num3 / Main.dayRate); //num3 /= Main.dayRate;
  
- 	public bool expert => inner.expert;
-+	public bool master => inner.master;
- 
- 	public string Name => inner.Name;
- 
+ 					if (Main.rand.Next(num3) == 0 && Main.rand.NextFloat() < Main.maxRaining) {
+ 						int num4 = stack;

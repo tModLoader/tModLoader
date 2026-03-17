@@ -159,7 +159,7 @@
  		public static bool?[] DrawTileInSolidLayer = Factory.CreateCustomSet<bool?>(null, new object[10] {
  			(ushort)11,
  			true,
-@@ -204,28 +_,76 @@
+@@ -204,30 +_,79 @@
  			(ushort)579,
  			true
  		});
@@ -235,7 +235,10 @@
 +		/// </summary>
  		public static bool[] HasOutlines = Factory.CreateBoolSet(10, 11, 15, 21, 29, 55, 79, 85, 88, 89, 97, 102, 104, 125, 132, 136, 139, 144, 207, 209, 212, 215, 216, 237, 287, 335, 338, 354, 356, 377, 386, 387, 388, 389, 410, 411, 425, 441, 455, 463, 467, 468, 470, 475, 487, 480, 494, 497, 509, 510, 511, 621, 464, 657, 658, 663, 699, 720, 721, 725, 733, 16, 17, 18, 26, 77, 86, 94, 96, 101, 106, 114, 133, 134, 217, 218, 220, 228, 243, 247, 283, 300, 301, 302, 303, 304, 305, 306, 307, 308, 412, 499, 622, 355, 172);
  		public static bool[] DoesNotOpenCraftingMenuOnInteract = Factory.CreateBoolSet(215, 207);
++		/// <summary> Whether or not this tile counts as a water source for crafting purposes. </summary>
  		public static bool[] CountsAsWaterForCrafting = Factory.CreateBoolSet(172, 207);
+ 		public static bool[] AllTiles = Factory.CreateBoolSet(true);
+ 		public static bool[] Dirt = Factory.CreateBoolSet(0, 668);
 @@ -243,11 +_,31 @@
  		public static bool[] Leaves = Factory.CreateBoolSet(384, 192);
  		public static bool[] bonusCutTiles = Factory.CreateBoolSet(false, 233);

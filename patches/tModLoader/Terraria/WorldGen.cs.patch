@@ -467,7 +467,7 @@
  		bool flag = false;
  		try {
 -			Console.WriteLine("Creating world - Seed: {0}, Width: {1}, Height: {2}, Evil: {3}, Difficulty: {4}", Main.ActiveWorldFileData.SeedText, Main.maxTilesX, Main.maxTilesY, WorldGenParam_Evil, Main.GameMode);
-+			Utils.LogAndConsoleInfoMessageFormat("Creating world - Seed: {0} Width: {1}, Height: {2}, Evil: {3}, IsExpert: {4}", seed, Main.maxTilesX, Main.maxTilesY, WorldGenParam_Evil, Main.expertMode);
++			Utils.LogAndConsoleInfoMessageFormat("Creating world - Seed: {0} Width: {1}, Height: {2}, Evil: {3}, IsExpert: {4}", Main.ActiveWorldFileData.SeedText, Main.maxTilesX, Main.maxTilesY, WorldGenParam_Evil, Main.expertMode);
  			GenVars.configuration = WorldGenConfiguration.FromEmbeddedPath("Terraria.GameContent.WorldBuilding.Configuration.json");
 +
 +			Logging.Terraria.InfoFormat("Generating World: {0}", Main.ActiveWorldFileData.Name);
@@ -956,25 +956,34 @@
  									flag2 = true;
  									break;
  								}
-@@ -29652,6 +_,18 @@
+@@ -29652,12 +_,27 @@
  		}
  	}
  
++	/// <inheritdoc cref="AddBuriedChest(int, int, out Point, int, bool, int, bool, ushort)"/>
+ 	public static bool AddBuriedChest(int i, int j, int mainItemInChest = 0, bool notNearOtherChests = false, int chestStyle = -1, bool trySlope = false, ushort chestTileType = 0)
+ 	{
+ 		Point chestLocation = Point.Zero;
+ 		return AddBuriedChest(i, j, out chestLocation, mainItemInChest, notNearOtherChests, chestStyle, trySlope, chestTileType);
+ 	}
+ 
 +	/// <summary>
-+	/// Attempts to place a chest and fill it with typical loot according to the style (<paramref name="Style"/>) and depth. Without any parameters, a regular, gold, or locked shadow chest will be created, depending on the depth. You can pass in an item type (<paramref name="contain"/>) and the first item in the chest will be that item. Unlike <see cref="PlaceChest(int, int, ushort, bool, int)"/>, the resulting chest will be placed with the bottom right corner at the given coordinates (<paramref name="i"/>, <paramref name="j"/>). In addition, if the given <paramref name="j"/> coordinate isn't suitable, AddBuriedChest will search down from the given coordinate to find the first solid tile it encounters and attempt to place there. This method returns true if a chest was successfully placed, but be aware that the chest might not be exactly at the coordinates you provide. This makes further adjusting the chest contents directly difficult.
++	/// Attempts to place a chest and fill it with typical loot according to the style (<paramref name="chestStyle"/>) and depth. Without any parameters, a regular, gold, or locked shadow chest will be created, depending on the depth. You can pass in an item type (<paramref name="mainItemInChest"/>) and the first item in the chest will be that item. Unlike <see cref="PlaceChest(int, int, ushort, bool, int)"/>, the resulting chest will be placed with the bottom right corner at the given coordinates (<paramref name="i"/>, <paramref name="j"/>). In addition, if the given <paramref name="j"/> coordinate isn't suitable, AddBuriedChest will search down from the given coordinate to find the first solid tile it encounters and attempt to place there. This method returns true if a chest was successfully placed, but be aware that the chest might not be exactly at the coordinates you provide. This makes further adjusting the chest contents directly difficult.
++	/// <br/><br/> If you use the overload with the <c>chestLocation</c> parameter, that location is the final location of the placed chest.
 +	/// <para/> A video guide can be found on the <see href="https://github.com/tModLoader/tModLoader/wiki/World-Generation#terrariaworldgen-public-static-void-tilerunnerint-i-int-j-double-strength-int-steps-int-type-bool-addtile--false-float-speedx--0f-float-speedy--0f-bool-noychange--false-bool-override--true">World Generation wiki page</see>. It shows an example of running the method with the default parameters <c>WorldGen.AddBuriedChest(x, y);</c>. Notice how the chest style changes according to depth and how the chest is placed on the floor directly below the provided coordinates if possible.
 +	/// </summary>
 +	/// <param name="i"></param>
 +	/// <param name="j"></param>
-+	/// <param name="contain"></param>
++	/// <param name="chestLocation"></param>
++	/// <param name="mainItemInChest"></param>
 +	/// <param name="notNearOtherChests"></param>
-+	/// <param name="Style"></param>
++	/// <param name="chestStyle"></param>
 +	/// <param name="trySlope"></param>
 +	/// <param name="chestTileType"></param>
 +	/// <returns></returns>
- 	public static bool AddBuriedChest(int i, int j, int mainItemInChest = 0, bool notNearOtherChests = false, int chestStyle = -1, bool trySlope = false, ushort chestTileType = 0)
+ 	public static bool AddBuriedChest(int i, int j, out Point chestLocation, int mainItemInChest = 0, bool notNearOtherChests = false, int chestStyle = -1, bool trySlope = false, ushort chestTileType = 0)
  	{
- 		Point chestLocation = Point.Zero;
+ 		chestLocation = Point.Zero;
 @@ -31178,9 +_,10 @@
  			Main.tile[i, j] = new Tile();
  
@@ -1480,19 +1489,26 @@
  
  		int num14 = 0;
  		switch (type) {
-@@ -41148,6 +_,15 @@
+@@ -41148,6 +_,22 @@
  		return true;
  	}
  
 +	/// <summary>
-+	/// Similar to <see cref="TileRunner(int, int, double, int, int, bool, double, double, bool, bool, int)"/>, but without many of the options. OreRunner places small splotches of the specified tile (<paramref name="type"/>) starting at the coordinates (<paramref name="i"/> and <paramref name="j"/> in tile coordinates). OreRunner only replaces active tiles (<see cref="Tile.HasTile"/>) that are either <see cref="TileID.Sets.CanBeClearedDuringOreRunner"/> or <see cref="Main.tileMoss"/>, making it suitable to be used even after FrameImportant tiles (<see cref="Main.tileFrameImportant"/>) exist in the world.
++	/// Similar to <see cref="TileRunner(int, int, double, int, int, bool, double, double, bool, bool, int)"/>, but without many of the options. OreRunner places small splotches of the specified tile (<paramref name="tileType"/>) starting at the coordinates (<paramref name="i"/> and <paramref name="j"/> in tile coordinates). OreRunner only replaces active tiles (<see cref="Tile.HasTile"/>) that are either <see cref="TileID.Sets.CanBeClearedDuringOreRunner"/> or <see cref="Main.tileMoss"/>, making it suitable to be used even after FrameImportant tiles (<see cref="Main.tileFrameImportant"/>) exist in the world.
 +	/// <para/> If you have a tile that should be susceptible to being replaced when additional ores are spawned in the world, set <see cref="TileID.Sets.CanBeClearedDuringOreRunner"/> to true for that ModTile. Vanilla code only uses this method when spawning hardmode ores. This method is suitable for use in-game and in multiplayer as it both frames and syncs tile changes.
++	/// <br/><br/> If <paramref name="onlyReplaceTileType"/> is set, only tiles of the specified type will be replaced.
++	/// <br/><br/> If <paramref name="wallType"/> is set, the specified wall will also be placed. <paramref name="onlyReplaceWallType"/> limits wall placement to only overriding the specified wall.
++	/// <br/><br/> <paramref name="stayInArea"/> limits tile and wall replacement to the designated area.
 +	/// </summary>
 +	/// <param name="i"></param>
 +	/// <param name="j"></param>
 +	/// <param name="strength"></param>
 +	/// <param name="steps"></param>
-+	/// <param name="type"></param>
++	/// <param name="tileType"></param>
++	/// <param name="wallType"></param>
++	/// <param name="stayInArea"></param>
++	/// <param name="onlyReplaceTileType"></param>
++	/// <param name="onlyReplaceWallType"></param>
  	public static void OreRunner(int i, int j, double strength, int steps, int tileType = -1, int wallType = -1, Rectangle? stayInArea = null, int onlyReplaceTileType = -1, int onlyReplaceWallType = -1)
  	{
  		double num = strength;
@@ -2935,7 +2951,7 @@
  	}
  
 +	/// <summary>
-+	/// Places small splotches of the specified tile starting at the designated coordinates. This should only be used early in world generation code. <see cref="OreRunner(int, int, double, int, ushort)"/> is a safer version that can be used anytime without corrupting tiles.
++	/// Places small splotches of the specified tile starting at the designated coordinates. This should only be used early in world generation code. <see cref="OreRunner"/> is a safer version that can be used anytime without corrupting tiles.
 +	/// <para/> More detailed information and a video guide can be found on the <see href="https://github.com/tModLoader/tModLoader/wiki/World-Generation#terrariaworldgen-public-static-void-tilerunnerint-i-int-j-double-strength-int-steps-int-type-bool-addtile--false-float-speedx--0f-float-speedy--0f-bool-noychange--false-bool-override--true">World Generation wiki page</see>
 +	/// </summary>
  	public static void TileRunner(int i, int j, double strength, int steps, int type, bool addTile = false, double speedX = 0.0, double speedY = 0.0, bool noYChange = false, bool overRide = true, int ignoreTileType = -1)

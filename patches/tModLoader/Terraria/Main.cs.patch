@@ -628,7 +628,7 @@
  	public static Star[] star = new Star[400];
 +	/// <summary>
 +	/// Contains all the <see cref="WorldItem"/>s in the game world. Items should only be spawned via <see cref="Item.NewItem(IEntitySource, int, int, int, int, int, int, bool, int, bool, bool)"/> or similar methods. <see cref="Player.QuickSpawnItem(IEntitySource, int, int)"/> is an option that is safe to call from client code.
-+	/// <para/> Only entries in this array that are <see cref="Entity.active"/> are relevant. The last entry is a dummy entry used for overflow and should not be accessed.
++	/// <para/> Only entries in this array that are <see cref="WorldItem.active"/> are relevant. The last entry is a dummy entry used for overflow and should not be accessed.
 +	/// <para/> Modders seeking to run logic on all items should use <see cref="ActiveItems"/> to iterate over the Main.item entries to easily account for inactive entries and the dummy entry.
 +	/// </summary>
  	public static WorldItem[] item = new WorldItem[401];
@@ -643,7 +643,7 @@
  	public static Rain[] rain = new Rain[maxRain + 1];
 +	/// <summary>
 +	/// Contains all the <see cref="Projectile"/>s in the game world. Projectiles should only be spawned via <see cref="Projectile.NewProjectile(IEntitySource, float, float, float, float, int, int, float, int, float, float, float)"/> or similar methods. Projectile ordering is <b>not</b> consistent between multiplayer clients.
-+	/// <para/> Only entries in this array that are <see cref="Entity.active"/> are relevant. Each projectile has a <see cref="Entity.whoAmI"/> corresponding to their index within Main.projectile. The last entry is a dummy entry used for overflow and should not be accessed.
++	/// <para/> Only entries in this array that are <see cref="Projectile.active"/> are relevant. Each projectile has a <see cref="Entity.whoAmI"/> corresponding to their index within Main.projectile. The last entry is a dummy entry used for overflow and should not be accessed.
 +	/// <para/> Modders seeking to run logic on all projectiles should use <see cref="ActiveProjectiles"/> to iterate over the Main.projectile entries to easily account for inactive entries and the dummy entry.
 +	/// </summary>
  	public static Projectile[] projectile = new Projectile[1001];
@@ -732,7 +732,7 @@
  	public static int myPlayer;
 +	/// <summary>
 +	/// Contains all the <see cref="Player"/>s in the game world.
-+	/// <para/> Only entries in this array that are <see cref="Entity.active"/> are relevant. Each player has a <see cref="Entity.whoAmI"/> corresponding to their index within Main.player. <see cref="myPlayer"/> is the index of the local player as well. The last entry is a dummy entry used for server operations and should not be accessed.
++	/// <para/> Only entries in this array that are <see cref="Player.active"/> are relevant. Each player has a <see cref="Entity.whoAmI"/> corresponding to their index within Main.player. <see cref="myPlayer"/> is the index of the local player as well. The last entry is a dummy entry used for server operations and should not be accessed.
 +	/// <para/> Modders seeking to run logic on all players should use <see cref="ActivePlayers"/> to iterate over the Main.player entries to easily account for inactive entries and the dummy entry.
 +	/// </summary>
  	public static Player[] player = new Player[256];
@@ -2209,11 +2209,12 @@
  					case 212:
  					case 213:
  					case 214:
-@@ -10964,6 +_,8 @@
+@@ -10964,6 +_,9 @@
  					case 252:
  					case 491:
  					case 662:
 +					*/
++					// Note: 492 isn't here but is in BelongsToInvasionPirate
 +					case int _ when NPCID.Sets.BelongsToInvasionPirate[npc[j].type] && NPCID.Sets.InvasionSlotCount[npc[j].type] > 0:
  						num3 = 8;
  						break;
@@ -2945,7 +2946,7 @@
 -		MouseText_DrawItemTooltip_GetLinesInfo(hoverItem, ref yoyoLogo, ref researchLine, knockBack, ref numLines, mouseTextTooltipLine_Text, mouseTextTooltipLine_Color);
 +		MouseText_DrawItemTooltip_GetLinesInfo(hoverItem, ref yoyoLogo, ref researchLine, knockBack, ref numLines, mouseTextTooltipLine_Text, mouseTextTooltipLine_Color, tooltipNames, out int prefixlineIndex);
 -		MouseText_DrawItemTooltip_AddShopLines(hoverItem, ref numLines, mouseTextTooltipLine_Text, mouseTextTooltipLine_Color);
-+		MouseText_DrawItemTooltip_AddShopLines(hoverItem, ref numLines, mouseTextTooltipLine_Text, mouseTextTooltipLine_Color, toolTipNames);
++		MouseText_DrawItemTooltip_AddShopLines(hoverItem, ref numLines, mouseTextTooltipLine_Text, mouseTextTooltipLine_Color, tooltipNames);
  		if (NewCraftingUI.Visible)
  			NewCraftingUI.AddTooltipLines(hoverItem, ref numLines, mouseTextTooltipLine_Text, mouseTextTooltipLine_Color);
  
@@ -2966,7 +2967,7 @@
 +
  		for (int l = 0; l < numLines; l++) {
 +			drawableLines[l].OriginalX = X;
-+			drawableLines[l].OriginalY = Y + num16;
++			drawableLines[l].OriginalY = Y + num7;
 +
 +			/*
  			if (l == yoyoLogo) {
@@ -2976,8 +2977,8 @@
  				int num11 = (int)((float)(int)mouseTextColor * num10);
  				Microsoft.Xna.Framework.Color color = Microsoft.Xna.Framework.Color.Black;
 +
-+				drawableLines[l].Color = new Color(num20, num20, num20, num20);
-+				if (!ItemLoader.PreDrawTooltipLine(HoverItem, drawableLines[l], ref num12) || !globalCanDraw)
++				drawableLines[l].Color = new Color(num11, num11, num11, num11);
++				if (!ItemLoader.PreDrawTooltipLine(HoverItem, drawableLines[l], ref num3) || !globalCanDraw)
 +					goto PostDraw;
 +
  				for (int m = 0; m < 5; m++) {
@@ -2985,11 +2986,24 @@
  					int num12 = X;
  					int num13 = Y + num7;
 +					*/
-+					int num21 = drawableLines[l].X;
-+					int num22 = drawableLines[l].Y;
++					int num12 = drawableLines[l].X;
++					int num13 = drawableLines[l].Y;
 +
  					if (m == 4)
  						color = new Microsoft.Xna.Framework.Color(num11, num11, num11, num11);
+ 
+@@ -17314,10 +_,10 @@
+ 							num12++;
+ 							break;
+ 						case 2:
+-							num13--;
++							num12--;
+ 							break;
+ 						case 3:
+-							num13++;
++							num12++;
+ 							break;
+ 					}
  
 @@ -17326,17 +_,40 @@
  			}
@@ -3004,8 +3018,8 @@
 +				/*
  				ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.MouseText.Value, mouseTextTooltipLine_Text[l], new Vector2(X, Y + num7), baseColor, 0f, Vector2.Zero, Vector2.One);
 +				*/
-+				drawableLines[l].Color = black;
-+				Color realLineColor = black;
++				drawableLines[l].Color = baseColor;
++				Color realLineColor = baseColor;
 +
 +				if (overrideColor[l].HasValue) {
 +					// TODO: Some way for mods to bypass mouseTextColor pulsing for a TooltipLine. Apply to UnloadedPrefix once implemented.
@@ -3013,7 +3027,7 @@
 +					drawableLines[l].OverrideColor = realLineColor;
 +				}
 +
-+				if (!ItemLoader.PreDrawTooltipLine(HoverItem, drawableLines[l], ref num12) || !globalCanDraw)
++				if (!ItemLoader.PreDrawTooltipLine(HoverItem, drawableLines[l], ref num3) || !globalCanDraw)
 +					goto PostDraw;
 +
 +				ChatManager.DrawColorCodedStringWithShadow(spriteBatch, drawableLines[l].Font, drawableLines[l].Text, new Vector2(drawableLines[l].X, drawableLines[l].Y), realLineColor, drawableLines[l].Rotation, drawableLines[l].Origin, drawableLines[l].BaseScale, drawableLines[l].MaxWidth, drawableLines[l].Spread);
@@ -3023,7 +3037,7 @@
 +			ItemLoader.PostDrawTooltipLine(HoverItem, drawableLines[l]);
 +
 -			num7 += (int)(FontAssets.MouseText.Value.MeasureString(mouseTextTooltipLine_Text[l]).Y + (float)num3);
-+			num16 += (int)(FontAssets.MouseText.Value.MeasureString(drawableLines[l].Text).Y + (float)num3);
++			num7 += (int)(FontAssets.MouseText.Value.MeasureString(drawableLines[l].Text).Y + (float)num3);
  		}
 +
 +		ItemLoader.PostDrawTooltip(HoverItem, drawableLines.AsReadOnly());
@@ -3038,7 +3052,7 @@
  		LocalPlayer.GetItemExpectedPrice(hoverItem, out var calcForSelling, out var calcForBuying);
  		long num = ((hoverItem.isAShopItem || hoverItem.buyOnce) ? calcForBuying : calcForSelling);
  		if (hoverItem.shopSpecialCurrency != -1) {
-+			tooltipNames[numLines] = "SpecialPrice";
++			toolTipNames[numLines] = "SpecialPrice";
  			long price = num * ItemSlot.EstimateDisplayStack(hoverItem);
  			CustomCurrencyManager.GetPriceText(hoverItem.shopSpecialCurrency, lineText, ref numLines, price);
  			lineColors[numLines - 1] = new Microsoft.Xna.Framework.Color(255, 255, 255);
@@ -3046,13 +3060,13 @@
  			else if (num5 > 0)
  				lineColors[numLines] = new Microsoft.Xna.Framework.Color(246, 138, 96);
  
-+			tooltipNames[numLines] = "Price";
++			toolTipNames[numLines] = "Price";
  			numLines++;
  		}
  		else if (hoverItem.type != 3817) {
  			lineText[numLines] = Lang.tip[51].Value;
  			lineColors[numLines] = new Microsoft.Xna.Framework.Color(120, 120, 120);
-+			tooltipNames[numLines] = "Price";
++			toolTipNames[numLines] = "Price";
  			numLines++;
  		}
  	}
@@ -3062,7 +3076,7 @@
  		Microsoft.Xna.Framework.Color result = Microsoft.Xna.Framework.Color.White;
 -		if (rare == -13)
 +		// Handle new master mode field.
-+		if (hoverItem.master || rare == -13)
++		if (HoverItem.master || rare == -13)
  			result = new Microsoft.Xna.Framework.Color(255, (byte)(masterColor * 200f), 0);
  
  		if (rare == -12)
@@ -4176,7 +4190,7 @@
  						break;
  				}
  			}
-+			ProjectileLoader.DrawBehind(projectile[i], i, DrawCacheProjsBehindNPCsAndTiles, DrawCacheProjsBehindNPCs, DrawCacheProjsBehindProjectiles, DrawCacheProjsOverPlayers, DrawCacheProjsOverWiresUI); // CacheProjDraws
++			ProjectileLoader.DrawBehind(projectile, i, DrawCacheProjsBehindNPCsAndTiles, DrawCacheProjsBehindNPCs, DrawCacheProjsBehindProjectiles, DrawCacheProjsOverPlayers, DrawCacheProjsOverWiresUI); // CacheProjDraws
  		}
  	}
  
@@ -5905,7 +5919,7 @@
 +
 +				spriteBatch.DrawString(font, patreonShortURL, new Vector2(patreonOrigin.X + num + 10f, screenHeight - patreonOrigin.Y + num2 - 2f - (int)upBump), color, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
 +
-+				if (i == 4 && mouseLeftRelease && mouseLeft && new Microsoft.Xna.Framework.Rectangle((int)patreonOrigin.X + 10, screenHeight - (int)urlSize.Y - 2 - (int)upBump, (int)urlSize.X, (int)patreonOrigin.Y).Contains(new Microsoft.Xna.Framework.Point(mouseX, mouseY)) && hasFocus) {
++				if (i == 4 && mouseLeftRelease && mouseLeft && new Microsoft.Xna.Framework.Rectangle((int)patreonOrigin.X + 10, screenHeight - (int)urlSize.Y - 2 - (int)upBump, (int)urlSize.X, (int)patreonOrigin.Y).Contains(new Microsoft.Xna.Framework.Point(mouseX, mouseY)) && FocusHelper.AllowUIInputs) {
 +					SoundEngine.PlaySound(SoundID.MenuOpen);
 +					Utils.OpenToURL("https://www.patreon.com/tModLoader");
 +				}
@@ -6822,6 +6836,15 @@
  					int num8 = 0;
  					for (int j = 0; j < maxNPCs; j++) {
  						if (npc[j].active && npc[j].townNPC && npc[j].type != 37 && npc[j].type != 453)
+@@ -56237,7 +_,7 @@
+ 				WorldGen.UnspawnHomelessNPC();
+ 			}
+ 			else if (!IsFastForwardingTime() && dayTime && time < 27000.0) {
+-				int num9 = dayRate;
++				double num9 = dayRate; // TML: int->double
+ 				if (num9 < 1)
+ 					num9 = 1;
+ 
 @@ -56344,7 +_,10 @@
  	public static bool AnyPlayerReadyToFightKingSlime()
  	{

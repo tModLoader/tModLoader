@@ -1,0 +1,18 @@
+--- src/TerrariaNetCore/Terraria/ID/SurfaceBackgroundID.cs
++++ src/tModLoader/Terraria/ID/SurfaceBackgroundID.cs
+@@ -6,7 +_,7 @@
+ {
+ 	public static class Sets
+ 	{
+-		public static SetFactory Factory = new SetFactory(16);
++		public static SetFactory Factory = new SetFactory(SurfaceBackgroundID.Count, nameof(SurfaceBackgroundID), Search);
+ 		public static bool[] IsDesertVariant = Factory.CreateBoolSet(false, 2, 5, 13, 14);
+ 		public static bool[] IsForest = Factory.CreateBoolSet(false, 0, 10, 11, 12);
+ 	}
+@@ -28,5 +_,6 @@
+ 	public const int CrimsonDesert = 14;
+ 	public const int Empty = 15;
+ 	public const int Count = 16;
++	/// <inheritdoc cref="IdDictionary"/>
+ 	public static readonly IdDictionary Search = IdDictionary.Create<SurfaceBackgroundID, int>();
+ }

@@ -69,17 +69,14 @@ partial class TileID
 		/// <summary> Whether or not this tile is a sapling, which can grow into a tree based on the soil it's placed on. Be sure to set <see cref="CommonSapling"/> with this too. </summary>
 		public static bool[] TreeSapling = Factory.CreateBoolSet(Saplings);
 
-		/// <summary> Whether or not this tile counts as a water source for crafting purposes. </summary>
-		public static bool[] CountsAsWaterSource = Factory.CreateBoolSet(172);
-
 		/// <summary> Whether or not this tile counts as a honey source for crafting purposes. </summary>
-		public static bool[] CountsAsHoneySource = Factory.CreateBoolSet();
+		public static bool[] CountsAsHoneyForCrafting = Factory.CreateBoolSet();
 
 		/// <summary> Whether or not this tile counts as a lava source for crafting purposes. </summary>
-		public static bool[] CountsAsLavaSource = Factory.CreateBoolSet();
+		public static bool[] CountsAsLavaForCrafting = Factory.CreateBoolSet();
 
 		/// <summary> Whether or not this tile counts as a shimmer source for crafting purposes. </summary>
-		public static bool[] CountsAsShimmerSource = Factory.CreateBoolSet();
+		public static bool[] CountsAsShimmerForCrafting = Factory.CreateBoolSet();
 
 		/// <summary> Whether or not saplings count this tile as empty when trying to grow. </summary>
 		public static bool[] IgnoredByGrowingSaplings = Factory.CreateBoolSet(3, 24, 32, 61, 62, 69, 71, 73, 74, 82, 83, 84, 110, 113, 184, 201, 233, 352, 485, 529, 530, 637, 655);

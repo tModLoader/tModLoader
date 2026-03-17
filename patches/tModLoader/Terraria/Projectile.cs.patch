@@ -19,7 +19,15 @@
  {
  	private class NPCDistanceByIndexComparator : IComparer<Tuple<int, float>>
  	{
-@@ -66,91 +_,370 @@
+@@ -61,96 +_,378 @@
+ 		public Rectangle GetBulletHitbox(int bulletIndex, Vector2 centerPoint) => Utils.CenteredRectangle(GetBulletPosition(bulletIndex, centerPoint), BulletSize);
+ 	}
+ 
++	/// <summary>
++	/// If true, the Projectile actually exists within the game world. Within <see cref="Main.projectile"/>, if active is false, the projectile is junk data. Always check active if iterating over <see cref="Main.projectile"/>. Another option for iterating is to use <see cref="Main.ActiveProjectiles"/> instead for simpler code.
++	/// </summary>
+ 	public bool active;
+ 	public static uint[][] perIDStaticNPCImmunity = new uint[ProjectileID.Count][];
  	public const int SentryLifeTime = 36000;
  	public const int ArrowLifeTime = 1200;
  	public float ownerHitCheckDistance = 1000f;

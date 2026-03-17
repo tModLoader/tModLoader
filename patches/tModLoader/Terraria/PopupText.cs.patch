@@ -82,7 +82,7 @@
  	public static int activeTime = 60;
 +
 +	/// <summary>
-+	/// The number of <see cref="active"/> <see cref="PopupText"/>s in <see cref="Main.popupText"/>.
++	/// The number of <see cref="active"/> <see cref="PopupText"/>s in <see cref="PopupText.popupText"/>.
 +	/// <br/> Assigned after <see cref="UpdateItemText"/> runs.
 +	/// </summary>
  	public static int numActive;
@@ -103,7 +103,7 @@
  	public long coinValue;
 +
 +	/// <summary>
-+	/// The index in <see cref="Main.popupText"/> of the last known sonar text.
++	/// The index in <see cref="PopupText.popupText"/> of the last known sonar text.
 +	/// <br/> Assign and clear using <see cref="AssignAsSonarText(int)"/> and <see cref="ClearSonarText"/>.
 +	/// </summary>
  	public static int sonarText = -1;
@@ -162,7 +162,7 @@
  	public static float TargetScale => Main.UIScale / Main.GameViewMatrix.RenderZoom.X;
  
 +	/// <summary>
-+	/// Destroys the <see cref="PopupText"/> in <see cref="Main.popupText"/> at the index <see cref="sonarText"/> if that text has <see cref="sonar"/> set to <see langword="true"/>.
++	/// Destroys the <see cref="PopupText"/> in <see cref="PopupText.popupText"/> at the index <see cref="sonarText"/> if that text has <see cref="sonar"/> set to <see langword="true"/>.
 +	/// <para/> Note that multiple fishing lures is a common feature of many popular mods, so this method won't clear all PopupText in that situation because only 1 index is tracked. The Projectile.localAI[2] of a bobber projectile is used to store the index of its sonar PopupText. That stored value is offset by +1.
 +	/// </summary>
  	public static void ClearSonarText()
@@ -187,7 +187,7 @@
  	}
  
 +	/// <summary>
-+	/// Creates a new <see cref="PopupText"/> in <see cref="Main.popupText"/> at <paramref name="position"/> using the settings from <paramref name="request"/>.
++	/// Creates a new <see cref="PopupText"/> in <see cref="PopupText.popupText"/> at <paramref name="position"/> using the settings from <paramref name="request"/>.
 +	/// <br/> The new <see cref="PopupText"/> is not bound to a specific <see cref="Item"/> or <see cref="NPCID"/>.
 +	/// <br/> All <see cref="PopupText"/>s created using this method have <c><see cref="context"/> == <see cref="PopupTextContext.Advanced"/></c> and <see cref="freeAdvanced"/> set to <see langword="true"/>.
 +	/// </summary>
@@ -256,7 +256,7 @@
  	}
  
 +	/// <summary>
-+	/// Marks the <see cref="PopupText"/> in <see cref="Main.popupText"/> at <paramref name="sonarTextIndex"/> as sonar text, assigning <see cref="sonarText"/> and setting <see cref="sonar"/> to <see langword="true"/>.
++	/// Marks the <see cref="PopupText"/> in <see cref="PopupText.popupText"/> at <paramref name="sonarTextIndex"/> as sonar text, assigning <see cref="sonarText"/> and setting <see cref="sonar"/> to <see langword="true"/>.
 +	/// </summary>
 +	/// <param name="sonarTextIndex"></param>
  	public static void AssignAsSonarText(int sonarTextIndex)
@@ -281,7 +281,7 @@
 +	/// <summary>
 +	/// Updates this <see cref="PopupText"/>.
 +	/// </summary>
-+	/// <param name="whoAmI">The index in <see cref="Main.popupText"/> of this <see cref="PopupText"/>.</param>
++	/// <param name="whoAmI">The index in <see cref="PopupText.popupText"/> of this <see cref="PopupText"/>.</param>
  	public void Update(int whoAmI)
  	{
  		if (!active)
@@ -300,7 +300,7 @@
  	}
  
 +	/// <summary>
-+	/// Calls <see cref="Update(int)"/> on all <see cref="active"/> <see cref="PopupText"/>s in <see cref="Main.popupText"/> and assigns  <see cref="numActive"/>.
++	/// Calls <see cref="Update(int)"/> on all <see cref="active"/> <see cref="PopupText"/>s in <see cref="PopupText.popupText"/> and assigns  <see cref="numActive"/>.
 +	/// </summary>
  	public static void UpdateItemText()
  	{
@@ -310,7 +310,7 @@
  	}
  
 +	/// <summary>
-+	/// Sets all <see cref="PopupText"/>s in <see cref="Main.popupText"/> to a new instance and assigns <see cref="numActive"/> to <c>0</c>.
++	/// Sets all <see cref="PopupText"/>s in <see cref="PopupText.popupText"/> to a new instance and assigns <see cref="numActive"/> to <c>0</c>.
 +	/// </summary>
  	public static void ClearAll()
  	{

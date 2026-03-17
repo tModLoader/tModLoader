@@ -13,7 +13,7 @@ public sealed record Condition(LocalizedText Description, Func<bool> Predicate)
 	public bool IsMet() => Predicate();
 
 	// Near Liquids
-	public static readonly Condition NearWater =			new("Conditions.NearWater",				() => Main.LocalPlayer.adjWater || Main.LocalPlayer.adjTile[TileID.Sinks]);
+	public static readonly Condition NearWater =			new("Conditions.NearWater",				() => Main.LocalPlayer.adjWaterSource || Main.LocalPlayer.adjTile[TileID.Sinks]);
 	public static readonly Condition NearLava =				new("Conditions.NearLava",				() => Main.LocalPlayer.adjLava);
 	public static readonly Condition NearHoney =			new("Conditions.NearHoney",				() => Main.LocalPlayer.adjHoney);
 	public static readonly Condition NearShimmer =			new("Conditions.NearShimmer",			() => Main.LocalPlayer.adjShimmer);
@@ -68,7 +68,7 @@ public sealed record Condition(LocalizedText Description, Func<bool> Predicate)
 	public static readonly Condition InClassicMode =		new("Conditions.InClassicMode",			() => !Main.expertMode);
 	public static readonly Condition InExpertMode =			new("Conditions.InExpertMode",			() => Main.expertMode);
 	public static readonly Condition InMasterMode =			new("Conditions.InMasterMode",			() => Main.masterMode);
-	public static readonly Condition InJourneyMode =		new("Conditions.InJourneyMode",			() => Main.GameModeInfo.IsJourneyMode);
+	public static readonly Condition InJourneyMode =		new("Conditions.InJourneyMode",			() => Main.IsJourneyMode);
 	// World Flags
 	public static readonly Condition Hardmode =				new("Conditions.InHardmode",			() => Main.hardMode);
 	public static readonly Condition PreHardmode =			new("Conditions.PreHardmode",			() => !Main.hardMode);

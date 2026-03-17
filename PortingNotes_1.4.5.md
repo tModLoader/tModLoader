@@ -25,22 +25,17 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Move NPCID.Sets.SpawnFromLastEmptySlot docs to SearchSpawnSlotsInReverse and delete from .TML.cs
 - https://github.com/tModLoader/tModLoader/pull/1675 seemed to fix a bug that is apparently now fixed in vanilla. Patches in AWorkshopPublishInfoState deleted. Verify that existing workshop publicity still correctly updates UI without requiring a click.
 - RecipeGroup has changed dramatically. We'll need to adjust how modded groups merge and document the new behaviors and new ctors. The tml added methods might also be superfluous now. 
-- AmmoID.SEts.IsArrow/IsBullet/IsSpecialist can be removed from .TML.cs and docs moved over.
 - Mount.Dismount now has a ignoreEffect parameter, this might duplicate the skipDust variable used in MountLoader.Dismount. Adjust patches (and docs) accordingly if they should be the same. When is it set? Do modded mounts need to care about when ignoreEffect was true or false?
-- Need to add `mountedPlayer.allDamage += 0.1f;` patch to `Mount.UpdateEffects` for Mounts 62 and 63 (Chillet)
-- Check for new `XDamage += ` results and fix them all to use `allDamage`.
 - NPC now has various spawn flags like ZoneSnow, ZoneDungeon, etc. What are they for?
   - NPC.Spawner class is similar to our NPCSpawnInfo class. There are a lot of renames and less intuitive field names. Maybe we should restore many of the better names with redirects or vanilla edits.
 - Use InitData.MaxNPCs instead of Main.maxNPCs? Or not? When to use one or the other?
 - NPCLoader.BuffTownNPC will need to be reworked to facilitate new functionality. "Defeating a boss now also gives each villager a 1.5% attack speed bonus." is a new vanilla effect. Similarly the Advanced Combat Techniques increases health by 250. Dryad immortal on infectedSeed.
 - Check for any remaining TML added ID sets that aren't in TML.cs files.
-- BelongsToInvasionPirate now has 492, 252, 662 (492 present in NPC, but not in Main.UpdateAudio_DecideOnNewMusic. Is this an oversight or intentional?)
-- VelongsToInvasionMartianMadness now has 394, 520
 - BuffLoader.ReApply (NPC) logic seems changed, likely to fix desync issues. The server sync for MessageID.NPCBuffs when !quiet now happens after the reapply logic. Modded ReApply will need doc updates or maybe new parameters to properly adjust to these changes. Maybe a ref time parameter instead?
 - NPC.TryAddingRepeatedBuff added. Might be useful to document and make public.
 - Recipe.requiredTile no longer supports multiple tiles. Only a single crafting station is the new approach. Should we restore the old functionality? Is this necessary for the new crafting menu features?
 - Zone calculations seem to have been reorganized a bit. Verify functionality of hooks (TileCountsAvailable, ResetNearbyTileEffects, UpdateSceneEffect)
-- TileObjectData.addSubTileRange needs to be public. TryGetTileBounds needs docs. DrawFrameOffsets needs docs and maybe example, not sure what it is for yet.
+- TryGetTileBounds needs docs. DrawFrameOffsets needs docs and maybe example, not sure what it is for yet.
 - FileUtilities.Copy and Move no longer have an `overwrite` parameter.
 - LegacyAudioSystem now has TrackLoopCounts and PlayCallbacks. They seem to involve counting how many times a specific music has looped. Investigate. Modders might be interested. Used with RainbowBoulderMusicPlayCallback
 - SoundEngine.Initialize now returns the IAudioSystem. We should test if it is still necessary to show an error message for !IsAudioSupported. 1.4.5 change log claims "Terraria no longer fails to launch when it fails to detect an available audio device.", we should see if tModLoader can work without audio support too.
@@ -54,12 +49,11 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - TileLoader.IsTileSpelunkable also takes `Main.SceneMetrics.PerspectivePlayer`. These hooks now need a Player parameter, they don't currently have one.
 - TileLoader.IsTileBiomeSightable as well.
 - TileLoader.SpecialDraw (and other tile methods I assume) now takes a TileBatch instead of Main.spriteBatch. What does this affect? How will mods need to change? Why do some methods in TileDrawing still use Main.spriteBatch?
-- DuplicationMenuToolsFilter needs: 213, 5295, 5667
 - Make sure ItemFilters.MiscFilter is properly resizing.
 - Does the new `uLightSource.SetValue(Vector3.Zero);` (`EffectParameter` class) do what `base.Shader.Parameters["uLightSource"]?.SetValue(Vector3.Zero);` used to do? "Allow shaders to omit parameters they don't use, no longer throw exception" (https://github.com/tModLoader/tModLoader/commit/30b2b9b1e3347a1c98ebe6924811ba5e82391dc3). Check ReflectiveArmorShaderData and other usages.
 - ShaderData classes now have `if (Main.dedServ)` checks. Are these overzealous, or do we need to adjust other places or inform modders that shader code might attempt to run on servers.
 - Player.voiceOverride. Currently an sbyte, might need to be an int like the other equipment slot IDs. Also an example would be nice.
-- Player.faceMask, another new equipment slot field. Will need to document ArmorIDs.Face.Sets.DrawInFaceMaskLayer as well
+- Need to document ArmorIDs.Face.Sets.DrawInFaceMaskLayer as well
 - Player.revolverCritChanceBonus, is this a Stat? should it be a StatModifier?
 - Player.adjTile patches are weird. It shouldn't be necessary to resize, they should be correct when the Player is initialized anyway.
 - player.oldAdjTile has been removed. Did modders depend on this for any reason? Tracking previous frames?
@@ -77,7 +71,7 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Should Ram Rune be a VanillaExtraJump? Adjust Player.isPerformingJump_DownDash if necessary. What is CanUseBootFlyingAbilities? Also double check CancelAllJumpVisualEffects logic
 - TileLoader.HasWalkDust and WalkDust never pass in the Tile or Frame values. New vanilla logic sometimes checks frameX/Y, so hook could be updated with more parameters to facilitate.
 - Collision.SwitchTiles `objType` parameter in Player.Update changed from 1 to 5. Why, isn't it still Player? Adjust docs accordingly after investigating.
-- Rename TileID.Sets.CountsAsXSource to CountsAsXForCrafting to match CountsAsWaterForCrafting.
+  - Seems to control MessageID.PlayerControls being sent but I don't know why. 1 is unused.
 - Adjacent tiles are now contained in Recipe.TileCountsAs rather than hard-coded. Need to adjust TileLoader.AdjTiles hooks/docs/exampels to prioritize using Recipe.TileCountsAs
   - Restore `TileLoader.AdjTiles(this, Main.tile[j, k].type);` patch to new Player.SetAdjTile method
 - Add 697 to TileID.Sets.CanPlaceNextToNonSolidTile
@@ -247,6 +241,9 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - AssetRepository a huge mess of patches. _changeWatcher patch might need to be restored.
 - LanguageManager.GetText changed, now it stores on miss. Before it didn't and we kept that behavior. Do we want the old behavior still?
 - Recipe.FindRecipes gone. Probably not needed anymore
+- MusicID entries have changed. I have a diff prepared, need to add to wiki or handle it somehow.
+- ProjAIStyleID and NPCAIStyleID will need to be regenerated (jopo has script)
+- Replace Main.hasFocus with FocusHelper.AllowUIInputs (or another property)
 
 # tModPorter TODOs
 

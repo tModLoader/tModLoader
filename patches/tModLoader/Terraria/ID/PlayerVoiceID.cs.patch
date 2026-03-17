@@ -1,0 +1,25 @@
+--- src/TerrariaNetCore/Terraria/ID/PlayerVoiceID.cs
++++ src/tModLoader/Terraria/ID/PlayerVoiceID.cs
+@@ -1,4 +_,6 @@
+ using Microsoft.Xna.Framework;
++using ReLogic.Reflection;
++using Terraria.ModLoader;
+ 
+ namespace Terraria.ID;
+ 
+@@ -6,7 +_,7 @@
+ {
+ 	public static class Sets
+ 	{
+-		public static SetFactory Factory = new SetFactory(4);
++		public static SetFactory Factory = new SetFactory(PlayerVoiceID.Count, nameof(PlayerVoiceID), Search);
+ 		public static Color[] Colors = Factory.CreateCustomSet(Color.White, 1, Color.CornflowerBlue, 2, Color.HotPink, 3, Color.LimeGreen);
+ 	}
+ 
+@@ -20,4 +_,6 @@
+ 	public const int Female = 2;
+ 	public const int Other = 3;
+ 	public const int Count = 4;
++	/// <inheritdoc cref="IdDictionary"/>
++	public static readonly IdDictionary Search = IdDictionary.Create<PlayerVoiceID, int>();
+ }

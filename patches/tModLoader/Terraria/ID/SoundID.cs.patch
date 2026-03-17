@@ -125,6 +125,17 @@
  	public static readonly LegacySoundStyle DeadCellsBarrelLauncherFire = CreateTrackable("deadcells_barrel_launcher_fire").WithVolume(0.5f);
  	public static readonly LegacySoundStyle DeadCellsBarrelLauncherExplode = CreateTrackable("deadcells_barrel_launcher_explode").WithVolume(0.6f);
  	public static readonly LegacySoundStyle DeadCellsMushroomSummon = CreateTrackable("deadcells_mushroom_summon").WithVolume(0.35f);
+@@ -569,7 +_,10 @@
+ 	public static readonly LegacySoundStyle StatueMimicLaugh = CreateTrackable("statuemimic_laugh", 3).WithVolume(0.8f).WithPitchVariance(0.1f);
+ 	public const float playerVoicePitchVariance = 0.4f;
+ 	public static readonly LegacySoundStyle DefaultPlayerHurt = CreateTrackable("player_hit_default").WithVolume(0.9f).WithPitchVariance(0.2f);
++	/*
+ 	public static readonly LegacySoundStyle BellHurt = new LegacySoundStyle(2, 35).WithPitchVariance(0.4f);
++	*/
++	public static readonly LegacySoundStyle BellHurt = Item35.WithPitchVariance(0.4f);
+ 	public static readonly LegacySoundStyle ChickenHurt = CreateTrackable("player_hit_chicken").WithVolume(0.8f).WithPitchVariance(0.4f);
+ 	public static readonly LegacySoundStyle ChickenHurtRare = CreateTrackable("player_hit_chicken_rare").WithVolume(0.5f).WithPitchVariance(0.4f);
+ 	public static readonly LegacySoundStyle FrogHurt = CreateTrackable("player_hit_frog").WithVolume(0.5f).WithPitchVariance(0.4f);
 @@ -594,9 +_,10 @@
  	public static Dictionary<string, ushort> IndexByName = null;
  	public static Dictionary<ushort, LegacySoundStyle> SoundByIndex = null;

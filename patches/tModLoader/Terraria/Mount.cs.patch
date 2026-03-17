@@ -1,10 +1,11 @@
 --- src/TerrariaNetCore/Terraria/Mount.cs
 +++ src/tModLoader/Terraria/Mount.cs
-@@ -12,6 +_,7 @@
+@@ -12,6 +_,8 @@
  using Terraria.GameInput;
  using Terraria.Graphics.Shaders;
  using Terraria.ID;
 +using Terraria.ModLoader;
++using static Terraria.ModLoader.BackupIO;
  
  namespace Terraria;
  
@@ -268,6 +269,20 @@
  		if (_shouldSuperCart) {
  			CastSuperCartLaser(mountedPlayer);
  			float num = 1f + Math.Abs(mountedPlayer.velocity.X) / RunSpeed * 2.5f;
+@@ -4238,10 +_,13 @@
+ 		switch (_type) {
+ 			case 62:
+ 			case 63:
++				mountedPlayer.allDamage += 0.1f;
++				/*
+ 				mountedPlayer.meleeDamage += 0.1f;
+ 				mountedPlayer.rangedDamage += 0.1f;
+ 				mountedPlayer.magicDamage += 0.1f;
+ 				mountedPlayer.minionDamage += 0.1f;
++				*/
+ 				break;
+ 			case 23: {
+ 				Vector2 pos3 = mountedPlayer.Center + GetWitchBroomTrinketOriginOffset(mountedPlayer) + (GetWitchBroomTrinketRotation(mountedPlayer) + (float)Math.PI / 2f).ToRotationVector2() * 11f;
 @@ -4395,10 +_,13 @@
  					else
  						Lighting.AddLight(mountedPlayer.Center + Vector2.UnitX * mountedPlayer.direction * 20f, vector10.X, vector10.Y, vector10.Z);

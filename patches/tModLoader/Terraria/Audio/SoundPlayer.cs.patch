@@ -34,7 +34,7 @@
 +			return SlotId.Invalid;
 +
 +		// Handle PlayOnlyIfFocused
-+		if (style.PlayOnlyIfFocused && !Main.hasFocus)
++		if (style.PlayOnlyIfFocused && !FocusHelper.AllowUIInputs)
 +			return SlotId.Invalid;
 +
 +		// If not on the main thread - queue a main thread action, and wait for it to complete

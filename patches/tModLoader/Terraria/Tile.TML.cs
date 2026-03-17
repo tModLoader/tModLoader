@@ -73,7 +73,7 @@ public readonly partial struct Tile
 
 	/// <summary>
 	/// The slope shape of the tile, which can be changed by hammering.<br/>
-	/// Used by <see cref="WorldGen.SlopeTile(int, int, int, bool)"/> and <see cref="BlockType"/>.<br/>
+	/// Used by <see cref="WorldGen.SlopeTile(int, int, int, bool, bool)"/> and <see cref="BlockType"/>.<br/>
 	/// Legacy/vanilla equivalent is <see cref="slope()"/> or <see cref="slope(byte)"/>.
 	/// </summary>
 	public SlopeType Slope { get => Get<TileWallWireStateData>().Slope; set => Get<TileWallWireStateData>().Slope = value; }

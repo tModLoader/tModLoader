@@ -51,7 +51,7 @@
  				safeRangeY += (int)((double)(sHeight / 16) * 0.5 / (double)num3);
  			}
  
-+			NPCLoader.EditSpawnRange(Main.player[k], ref num, ref num2, ref safeRangeX, ref safeRangeY);
++			NPCLoader.EditSpawnRange(player, ref num, ref num2, ref safeRangeX, ref safeRangeY);
 +
  			spawnArea = WorldUtils.ClampToWorld(Utils.CenteredRectangle(player.position.ToTileCoordinates(), new Point(num * 2, num2 * 2)));
  			safeArea = Utils.CenteredRectangle(player.position.ToTileCoordinates(), new Point(safeRangeX * 2, safeRangeY * 2));
@@ -94,6 +94,16 @@
  					return wallTypes[tile2.wall];
  
  				return false;
+@@ -4393,6 +_,9 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// If true, the NPC actually exists within the game world. Within <see cref="Main.npc"/>, if active is false, the NPC is junk data. Always check active if iterating over <see cref="Main.npc"/>. Another option for iterating is to use <see cref="Main.ActiveNPCs"/> instead for simpler code.
++	/// </summary>
+ 	public bool active;
+ 	private const int NPC_TARGETS_START = 300;
+ 	public bool IsABestiaryIconDummy;
 @@ -4420,6 +_,12 @@
  	public const float nameOverIncrement = 0.025f;
  	public const float nameOverDistance = 350f;
@@ -2555,7 +2565,7 @@
  
 +	/// <summary>
 +	/// Returns true if this NPC should be considered an enemy to attack. Used by various player, projectile, mount, and town npc logic. For example homing projectiles like Chlorophyte bullet won't target friendly NPC, critters, or NPC that are currently flagged as invulnerable. Note that the <paramref name="attacker"/> parameter is unused.
-+	/// <para/> The logic checks that the NPC meets all of the following criteria: <see cref="Entity.active"/>, <see cref="chaseable"/>, <see cref="lifeMax"/> > 5 (to ignore critters), <see cref="dontTakeDamage"/> (unless <paramref name="ignoreDontTakeDamage"/>) is true), not <see cref="friendly"/>, and not <see cref="immortal"/>.
++	/// <para/> The logic checks that the NPC meets all of the following criteria: <see cref="NPC.active"/>, <see cref="chaseable"/>, <see cref="lifeMax"/> > 5 (to ignore critters), <see cref="dontTakeDamage"/> (unless <paramref name="ignoreDontTakeDamage"/>) is true), not <see cref="friendly"/>, and not <see cref="immortal"/>.
 +	/// </summary>
 +	/// <param name="attacker"></param>
 +	/// <param name="ignoreDontTakeDamage"></param>

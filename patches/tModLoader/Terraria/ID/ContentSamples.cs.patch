@@ -40,7 +40,7 @@
  						return ItemGroup.Torches;
  					}
  
-+					if (TileID.Sets.Torch[item.createTile])
++					if (TileID.Sets.Torches[item.createTile])
 +						return ItemGroup.Torches;
 +
  					if (item.createTile == 178) {

@@ -799,6 +799,16 @@
  	{
  		newSubTile.Calculate();
  		foreach (int num in styles) {
+@@ -1621,7 +_,8 @@
+ 		newSubTile = new TileObjectData(_baseObject);
+ 	}
+ 
++	/// <inheritdoc cref="addSubTile(int)"/>
+-	private static void addSubTileRange(int startStyle, int styleCount)
++	public static void addSubTileRange(int startStyle, int styleCount)
+ 	{
+ 		newSubTile.Calculate();
+ 		for (int i = 0; i < styleCount; i++) {
 @@ -1648,6 +_,10 @@
  		newSubTile = new TileObjectData(_baseObject);
  	}

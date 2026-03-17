@@ -43,6 +43,8 @@ partial class ItemID
 		/// <br/> See the code of <see cref="GameContent.Creative.ItemFilters.Tools.FitsFilter(Item)"/> to check if your item meets the automatic criteria.
 		/// </summary>
 		public static bool[] DuplicationMenuToolsFilter = Factory.CreateBoolSet(
+			213,
+			5295,
 			509,
 			850,
 			851,
@@ -96,7 +98,8 @@ partial class ItemID
 			1299,
 			4711,
 			4049,
-			114
+			114,
+			5667
 		);
 
 		/// <summary>

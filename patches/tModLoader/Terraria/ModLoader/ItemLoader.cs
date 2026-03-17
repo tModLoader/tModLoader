@@ -1526,7 +1526,7 @@ public static class ItemLoader
 		return destination.ModItem?.CanStack(source) ?? true;
 	}
 
-	private static HookList HookCanStackInWorld = AddHook<Func<Item, Item, bool>>(g => g.CanStackInWorld);
+	private static HookList HookCanStackInWorld = AddHook<Func<WorldItem, WorldItem, bool>>(g => g.CanStackInWorld);
 
 	/// <summary>
 	/// Calls all GlobalItem.CanStackInWorld hooks until one returns false then ModItem.CanStackInWorld. Returns whether any of the hooks returned false.
@@ -1534,7 +1534,7 @@ public static class ItemLoader
 	/// <param name="destination">The item instance that <paramref name="source"/> will attempt to stack onto</param>
 	/// <param name="source">The item instance being stacked onto <paramref name="destination"/></param>
 	/// <returns>Whether or not the items are allowed to stack</returns>
-	public static bool CanStackInWorld(Item destination, Item source)
+	public static bool CanStackInWorld(WorldItem destination, WorldItem source)
 	{
 		foreach (var g in HookCanStackInWorld.Enumerate(destination)) {
 			if (!g.CanStackInWorld(destination, source))
@@ -1856,13 +1856,13 @@ public static class ItemLoader
 		return retVal ?? false;
 	}
 
-	private delegate void DelegateUpdate(Item item, ref float gravity, ref float maxFallSpeed);
+	private delegate void DelegateUpdate(WorldItem item, ref float gravity, ref float maxFallSpeed);
 	private static HookList HookUpdate = AddHook<DelegateUpdate>(g => g.Update);
 
 	/// <summary>
 	/// Calls ModItem.Update, then all GlobalItem.Update hooks.
 	/// </summary>
-	public static void Update(Item item, ref float gravity, ref float maxFallSpeed)
+	public static void Update(WorldItem item, ref float gravity, ref float maxFallSpeed)
 	{
 		item.ModItem?.Update(ref gravity, ref maxFallSpeed);
 
@@ -1871,12 +1871,12 @@ public static class ItemLoader
 		}
 	}
 
-	private static HookList HookPostUpdate = AddHook<Action<Item>>(g => g.PostUpdate);
+	private static HookList HookPostUpdate = AddHook<Action<WorldItem>>(g => g.PostUpdate);
 
 	/// <summary>
 	/// Calls ModItem.PostUpdate and all GlobalItem.PostUpdate hooks.
 	/// </summary>
-	public static void PostUpdate(Item item)
+	public static void PostUpdate(WorldItem item)
 	{
 		item.ModItem?.PostUpdate();
 
@@ -1885,13 +1885,13 @@ public static class ItemLoader
 		}
 	}
 
-	private delegate void DelegateGrabRange(Item item, Player player, ref int grabRange);
+	private delegate void DelegateGrabRange(WorldItem item, Player player, ref int grabRange);
 	private static HookList HookGrabRange = AddHook<DelegateGrabRange>(g => g.GrabRange);
 
 	/// <summary>
 	/// Calls ModItem.GrabRange, then all GlobalItem.GrabRange hooks.
 	/// </summary>
-	public static void GrabRange(Item item, Player player, ref int grabRange)
+	public static void GrabRange(WorldItem item, Player player, ref int grabRange)
 	{
 		item.ModItem?.GrabRange(player, ref grabRange);
 
@@ -1973,13 +1973,13 @@ public static class ItemLoader
 		return item.ModItem?.GetAlpha(lightColor);
 	}
 
-	private delegate bool DelegatePreDrawInWorld(Item item, SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI);
+	private delegate bool DelegatePreDrawInWorld(WorldItem item, SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI);
 	private static HookList HookPreDrawInWorld = AddHook<DelegatePreDrawInWorld>(g => g.PreDrawInWorld);
 
 	/// <summary>
 	/// Returns the "and" operator on the results of ModItem.PreDrawInWorld and all GlobalItem.PreDrawInWorld hooks.
 	/// </summary>
-	public static bool PreDrawInWorld(Item item, SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI)
+	public static bool PreDrawInWorld(WorldItem item, SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI)
 	{
 		bool flag = true;
 		if (item.ModItem != null)
@@ -1992,12 +1992,12 @@ public static class ItemLoader
 		return flag;
 	}
 
-	private static HookList HookPostDrawInWorld = AddHook<Action<Item, SpriteBatch, Color, Color, float, float, int>>(g => g.PostDrawInWorld);
+	private static HookList HookPostDrawInWorld = AddHook<Action<WorldItem, SpriteBatch, Color, Color, float, float, int>>(g => g.PostDrawInWorld);
 
 	/// <summary>
 	/// Calls ModItem.PostDrawInWorld, then all GlobalItem.PostDrawInWorld hooks.
 	/// </summary>
-	public static void PostDrawInWorld(Item item, SpriteBatch spriteBatch, Color lightColor, Color alphaColor, float rotation, float scale, int whoAmI)
+	public static void PostDrawInWorld(WorldItem item, SpriteBatch spriteBatch, Color lightColor, Color alphaColor, float rotation, float scale, int whoAmI)
 	{
 		item.ModItem?.PostDrawInWorld(spriteBatch, lightColor, alphaColor, rotation, scale, whoAmI);
 

@@ -1,0 +1,11 @@
+--- src/TerrariaNetCore/Terraria/UI/Chat/ChatManager.cs
++++ src/tModLoader/Terraria/UI/Chat/ChatManager.cs
+@@ -13,7 +_,7 @@
+ 
+ namespace Terraria.UI.Chat;
+ 
+-public static class ChatManager
++public static partial class ChatManager
+ {
+ 	public static class Regexes
+ 	{

@@ -859,7 +859,7 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	/// <param name="destination">The item instance that <paramref name="source"/> will attempt to stack onto</param>
 	/// <param name="source">The item instance being stacked onto <paramref name="destination"/></param>
 	/// <returns>Whether or not the items are allowed to stack</returns>
-	public virtual bool CanStackInWorld(Item destination, Item source)
+	public virtual bool CanStackInWorld(WorldItem destination, WorldItem source)
 	{
 		return true;
 	}
@@ -982,7 +982,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// Allows you to customize an item's movement when lying in the world. Note that this will not be called if the item is currently being grabbed by a player.
 	/// <para/> Called on all clients and the server.
 	/// </summary>
-	public virtual void Update(Item item, ref float gravity, ref float maxFallSpeed)
+	public virtual void Update(WorldItem item, ref float gravity, ref float maxFallSpeed)
 	{
 	}
 
@@ -990,7 +990,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// Allows you to make things happen when an item is lying in the world. This will always be called, even when the item is being grabbed by a player. This hook should be used for adding light, or for increasing the age of less valuable items.
 	/// <para/> Called on all clients and the server.
 	/// </summary>
-	public virtual void PostUpdate(Item item)
+	public virtual void PostUpdate(WorldItem item)
 	{
 	}
 
@@ -998,7 +998,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// Allows you to modify how close an item must be to the player in order to move towards the player.
 	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
-	public virtual void GrabRange(Item item, Player player, ref int grabRange)
+	public virtual void GrabRange(WorldItem item, Player player, ref int grabRange)
 	{
 	}
 
@@ -1050,7 +1050,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// <summary>
 	/// <inheritdoc cref="ModItem.PreDrawInWorld(SpriteBatch, Color, Color, ref float, ref float, int)"/>
 	/// </summary>
-	public virtual bool PreDrawInWorld(Item item, SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI)
+	public virtual bool PreDrawInWorld(WorldItem item, SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI)
 	{
 		return true;
 	}
@@ -1058,7 +1058,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// <summary>
 	/// <inheritdoc cref="ModItem.PostDrawInWorld(SpriteBatch, Color, Color, float, float, int)"/>
 	/// </summary>
-	public virtual void PostDrawInWorld(Item item, SpriteBatch spriteBatch, Color lightColor, Color alphaColor, float rotation, float scale, int whoAmI)
+	public virtual void PostDrawInWorld(WorldItem item, SpriteBatch spriteBatch, Color lightColor, Color alphaColor, float rotation, float scale, int whoAmI)
 	{
 	}
 
