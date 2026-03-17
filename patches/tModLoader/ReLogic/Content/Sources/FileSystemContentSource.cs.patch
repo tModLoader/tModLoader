@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/ReLogic/Content/Sources/FileSystemContentSource.cs
 +++ src/tModLoader/ReLogic/Content/Sources/FileSystemContentSource.cs
-@@ -1,16 +_,21 @@
+@@ -1,20 +_,25 @@
  using System;
  using System.Collections.Generic;
  using System.IO;
@@ -23,13 +23,15 @@
  
  	public int FileCount => _nameToAbsolutePath.Count;
  
-@@ -23,8 +_,17 @@
+-	public string FileWatcherPath => _basePath;
++	public override string FileWatcherPath => _basePath;
+ 
+ 	public FileSystemContentSource(string basePath)
+ 	{
+@@ -23,8 +_,14 @@
  			_basePath += Path.DirectorySeparatorChar;
  
  		Refresh();
-+
-+		// Added by TML.
-+		SetAssetNames(_nameToAbsolutePath.Keys);
 +
 +		// #2617 - Allow using paths with extensions in GetExtension calls, because we happen to return such paths in EnumerateAssets().
 +		foreach (var pair in assetExtensions.ToArray()) {
@@ -52,7 +54,15 @@
  	{
  		if (!_nameToAbsolutePath.TryGetValue(assetName, out var value))
  			throw AssetLoadException.FromMissingAsset(assetName);
-@@ -75,14 +_,19 @@
+@@ -68,21 +_,29 @@
+ 		}
+ 	}
+ 
+-	public void Refresh()
++	public override void Refresh()
+ 	{
+ 		_nameToAbsolutePath.Clear();
+ 		if (Directory.Exists(_basePath)) {
  			string[] files = Directory.GetFiles(_basePath, "*", SearchOption.AllDirectories);
  			for (int i = 0; i < files.Length; i++) {
  				string fullPath = Path.GetFullPath(files[i]);
@@ -66,6 +76,9 @@
  				_nameToAbsolutePath[path] = fullPath;
  			}
  		}
++
++		// Added by TML.
++		SetAssetNames(_nameToAbsolutePath.Keys);
  	}
  
 +	/*
