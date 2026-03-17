@@ -4653,6 +4653,19 @@
  	}
  
  	private void Update_AdjustTileTargetForDisplayJars(int i)
+@@ -22708,9 +_,12 @@
+ 		float lerpValue = Utils.GetLerpValue(0f, 120f, sunScorchCounter, clamped: true);
+ 		ActiveSound activeSound = SoundEngine.GetActiveSound(_sizzleAudioHandle);
+ 		if (activeSound == null && lerpValue != 0f) {
++			/*
+ 			SoundPlayOverrides overrides = default(SoundPlayOverrides);
+ 			overrides.Volume = lerpValue;
+ 			_sizzleAudioHandle = SoundEngine.PlayTrackedLoopedSound(SoundID.VampireSizzle, base.Center, new VampireSizzleTracker(whoAmI).IsActiveAndInGame, overrides);
++			*/
++			_sizzleAudioHandle = SoundEngine.PlayTrackedLoopedSound(SoundID.VampireSizzle.WithVolume(lerpValue), base.Center, new VampireSizzleTracker(whoAmI).IsActiveAndInGame);
+ 			activeSound = SoundEngine.GetActiveSound(_sizzleAudioHandle);
+ 		}
+ 
 @@ -23018,15 +_,21 @@
  		return result;
  	}

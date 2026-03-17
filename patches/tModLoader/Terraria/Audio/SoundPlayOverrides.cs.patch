@@ -1,0 +1,12 @@
+--- src/TerrariaNetCore/Terraria/Audio/SoundPlayOverrides.cs
++++ src/tModLoader/Terraria/Audio/SoundPlayOverrides.cs
+@@ -1,6 +_,9 @@
+ namespace Terraria.Audio;
+ 
++// Use SoundStyle.WithVolume
++/*
+ public struct SoundPlayOverrides
+ {
+ 	public float? Volume;
+ }
++*/
