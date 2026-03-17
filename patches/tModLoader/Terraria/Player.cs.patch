@@ -7585,15 +7585,16 @@
  		if (Main.dedServ)
  			return;
  
-@@ -42020,7 +_,7 @@
- 		if (sItem.pick > 0 || sItem.axe > 0 || sItem.hammer > 0 || flag)
- 			toolTime = 1;
- 
--		if (grappling[0] > -1) {
-+		if (grappling[0] > -1 || sItem.useTurnOnAnimationStart) { // useTurnOnAnimationStart check added by tML
+@@ -42023,6 +_,9 @@
+ 		if (grappling[0] > -1) {
  			pulley = false;
  			pulleyDir = 1;
++		}
++
++		if (grappling[0] > -1 || sItem.useTurnOnAnimationStart) { // useTurnOnAnimationStart check added by tML
  			if (controlRight)
+ 				direction = 1;
+ 			else if (controlLeft)
 @@ -42044,7 +_,10 @@
  				NetMessage.SendData(152, -1, -1, null, whoAmI);
  
