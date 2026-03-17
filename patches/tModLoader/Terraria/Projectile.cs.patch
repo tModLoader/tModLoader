@@ -19,7 +19,7 @@
  {
  	private class NPCDistanceByIndexComparator : IComparer<Tuple<int, float>>
  	{
-@@ -66,85 +_,362 @@
+@@ -66,91 +_,370 @@
  	public const int SentryLifeTime = 36000;
  	public const int ArrowLifeTime = 1200;
  	public float ownerHitCheckDistance = 1000f;
@@ -385,6 +385,15 @@
  	public int idStaticNPCHitCooldown = -1;
  	public int bannerIdToRespondTo;
  	public int tagEffectType;
+ 	public int bonusTagDamage;
+-	public int armorPenetration;
++	private int armorPenetration; // Changed to private, TML provides a public ArmorPenetration wrapper
++	/* Removed in favor of tML CritChance
+ 	public int bonusCritChance;
++	*/
+ 	public GameDifficultyData.LinearCurve hostileDamageScaling = GameDifficultyData.HostileProjectileDamageMultiplier;
+ 	private static Conditions.IsSolid _cachedConditions_solid = new Conditions.IsSolid();
+ 	private static Conditions.NotNull _cachedConditions_notNull = new Conditions.NotNull();
 @@ -176,7 +_,14 @@
  	private static List<int> _ai156_blacklistedTargets = new List<int>();
  	private static float[] _CompanionCubeScreamCooldown = new float[255];
@@ -490,6 +499,16 @@
  		ownerHitCheck = false;
  		drawLayer = 0;
  		usesOwnerLight = false;
+@@ -382,7 +_,9 @@
+ 		tagEffectType = 0;
+ 		bonusTagDamage = 0;
+ 		armorPenetration = 0;
++		/*
+ 		bonusCritChance = 0;
++		*/
+ 		hostileDamageScaling = GameDifficultyData.HostileProjectileDamageMultiplier;
+ 		frame = 0;
+ 		frameCounter = 0;
 @@ -1152,6 +_,8 @@
  			magic = true;
  		}
@@ -749,6 +768,90 @@
  		return num;
  	}
  
+@@ -9403,26 +_,81 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Transfers stat modifiers from the spawn source to the projectile. <br/>
++	/// Adds <see cref="CritChance"/> and <see cref="ArmorPenetration"/> bonuses from players (<see cref="EntitySource_Parent"/>), weapons (<see cref="EntitySource_ItemUse"/>)<br/>
++	/// If the source is a <see cref="EntitySource_Parent"/> projectile, <c>CritChance</c> and <c>ArmorPenetration</c> from the parent will be added, in order to transfer the original item/player bonus values.<br/><br/>
++	/// <br/>
++	/// To support minions, sentries and <see cref="ContinuouslyUpdateDamageStats"/>, <see cref="OriginalCritChance"/> and <see cref="OriginalArmorPenetration"/> are also copied from item sources and parent projectiles.
++	/// </summary>
++	/// <param name="spawnSource"></param>
+-	private void ApplyStatsFromSource(IEntitySource spawnSource)
++	public void ApplyStatsFromSource(IEntitySource spawnSource)
+ 	{
++		originalDamage = damage;
++		OriginalCritChance = CritChance;
++		OriginalArmorPenetration = ArmorPenetration;
++
++		/*
+ 		if (spawnSource is EntitySource_ItemUse entitySource_ItemUse) {
+ 			Item item = entitySource_ItemUse.Item;
++		*/
++		if (spawnSource is IEntitySource_WithStatsFromItem { Player: Player player, Item: Item item }) {
+ 			if (ItemID.Sets.UniqueTagEffects[item.type] != null)
+ 				tagEffectType = item.type;
+ 
+ 			bonusTagDamage += item.bonusTagDamage;
+ 			armorPenetration += item.armorPenetration;
+-			if (item.type == 2269 && entitySource_ItemUse.Entity is Player) {
++			if (item.type == 2269/* && entitySource_ItemUse.Entity is Player*/) {
++				/*
+ 				Player player = (Player)entitySource_ItemUse.Entity;
+ 				bonusCritChance += player.revolverCritChanceBonus;
++				*/
++				CritChance += player.revolverCritChanceBonus;
+ 			}
++
++			// TML added:
++			// Apply the weapon and player bonuses to the base stats
++			CritChance += player.GetWeaponCrit(item);
++			ArmorPenetration += player.GetWeaponArmorPenetration(item);
++
++			// Apply original stats, so that ContinuouslyUpdateDamageStats can correctly scale the base values
++			// originalDamage is set to item.damage as a convenience.
++			if (item.damage >= 0)
++				originalDamage = item.damage;
++
++			OriginalCritChance += item.crit;
++			OriginalArmorPenetration += item.ArmorPenetration;
++		}
++		else if (spawnSource is EntitySource_Parent { Entity: Player pplayer }) {
++			// TML added:
++			// Apply player bonuses to the base stats
++			CritChance += (int)(pplayer.GetTotalCritChance(DamageType) + 5E-06f);
++			ArmorPenetration += (int)(pplayer.GetTotalArmorPenetration(DamageType) + 5E-06f);
+ 		}
+ 
+ 		if (spawnSource is EntitySource_Parent entitySource_Parent && entitySource_Parent.Entity is Projectile projectile) {
+ 			tagEffectType = projectile.tagEffectType;
+ 			bonusTagDamage += projectile.bonusTagDamage;
+ 			armorPenetration += projectile.armorPenetration;
++			/*
+ 			bonusCritChance += projectile.bonusCritChance;
++			*/
++
++			// TML added:
++			// This doesn't offer enough control, there's no way to determine if the parent originalDamage property should overwrite the child or not.
++			// In the case of parent.originalDamage = item.damage, it could be helpful, but the caller of NewProjectile could also just pass originalDamage as the dmg param and get the same effective result.
++			// In general, it is the responsibility of the creator of a minion or ContinuouslyUpdateDamageStats projectile to configure the child correctly.
++			// originalDamage = parentProjectile.originalDamage;
++
++			// To ensure snapshotted bonuses are passed on from parent to child, we just stack any parent CritChance/ArmorPenetration with the child default values
++			// This is a pattern that mods can safely follow for their own stats, matches vanilla non-snapshotting behavior, and is easy to use.
++			CritChance += projectile.CritChance;
++			ArmorPenetration += projectile.ArmorPenetration;
++
++			// In case this projectile is a minion or continuously updates damage (long running projectiles spawned by minions or sentries perhaps, maybe a laser for eg)
++			// We want to pass on the OriginalCrit and OriginalArmorPenetration values from the parent, so that item.crit and item.ArmorPenetration can affect the child.
++			OriginalCritChance += projectile.OriginalCritChance;
++			OriginalArmorPenetration += projectile.OriginalArmorPenetration;
+ 		}
+ 	}
+ 
 @@ -10348,6 +_,16 @@
  
  	private bool Damage_CanDealDamage()
@@ -858,7 +961,7 @@
  			float value = (scale - 1f) * 100f;
  			value = Utils.Clamp(value, 0f, 50f);
  			num4 = (int)((float)num4 * (1f + value * 0.23f));
-@@ -10636,21 +_,32 @@
+@@ -10636,9 +_,10 @@
  		}
  
  		if (ownedBySomeone && type == 189 && Main.player[owner].strongBees)
@@ -866,11 +969,11 @@
 +			modifiers.SourceDamage.Base += 5; //num4 += 5;
  
  		if (ownedBySomeone) {
++			/*
  			int num10 = 0;
  			if (bonusCritChance > 0)
  				num10 += bonusCritChance;
- 
-+			/*
+@@ -10646,11 +_,21 @@
  			if (melee && Main.rand.Next(1, 101) <= Main.player[owner].meleeCrit + num10)
  				crit = true;
  
@@ -887,7 +990,7 @@
 +			// On top of this, the change from using the player's class crit to using the projectile's crit chance is important.
 +			// It's a part of the fix for the infamous "crit swap" exploit, as well as of a larger overall fix to crit chance.
 +			// - Thomas
-+			if (DamageType.UseStandardCritCalcs && Main.rand.Next(100) < CritChance + num10)
++			if (DamageType.UseStandardCritCalcs && Main.rand.Next(100) < CritChance)
 +				crit = true;
  
  			int num11 = type;

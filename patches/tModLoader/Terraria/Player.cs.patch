@@ -781,7 +781,7 @@
  	public bool noItems;
  	public bool cursed;
  	public bool hungry;
-@@ -1404,29 +_,90 @@
+@@ -1404,29 +_,93 @@
  	public bool ballistaPanic;
  	public bool JustDroppedAnItem;
  	public bool IsAllowedToHoldItems = true;
@@ -824,11 +824,14 @@
 +
 +	/*
  	public float minionKB;
- 	public int revolverCritChanceBonus;
- 	public float meleeSpeed = 1f;
 +	*/
 +	internal ref StatModifier allKB => ref GetKnockback(DamageClass.Generic); //TML: New.
 +	internal ref float minionKB => ref GetKnockback(DamageClass.Summon).Base;
++	
+ 	public int revolverCritChanceBonus;
++	/*
+ 	public float meleeSpeed = 1f;
++	*/
 +	internal ref float meleeSpeed => ref GetAttackSpeed(DamageClass.Melee);
 +	// TML: meleeSpeed is now a damage multiplier, so inverseMeleeSpeed is the useTime multiplier.
 +	// By using GetTotalAttackSpeed we also incorporate anyone that adds attackSpeed to the Generic damage class.
