@@ -115,7 +115,7 @@
  
  	public AssetValueUpdated AssetValueUpdatedHandler { get; set; }
  
-@@ -36,43 +_,49 @@
+@@ -36,43 +_,52 @@
  
  	public ContentFileUpdated ContentFileUpdatedHandler { get; set; }
  
@@ -166,22 +166,21 @@
 +			_sources = sources.ToArray();
  			ReloadAssetsIfSourceChanged(mode);
 -		}
--
--		if (_changeWatcher != null)
--			_changeWatcher.UpdateSources(sources);
--	}
--
--	public Asset<T> Request<T>(string assetName, AssetRequestMode mode = AssetRequestMode.ImmediateLoad) where T : class
 +
 +			if (mode == AssetRequestMode.ImmediateLoad && _Remaining > 0)
 +				throw new Exception("Some assets loaded asynchronously, despite AssetRequestMode.ImmediateLoad on main thread");
 + 		}
+ 
+ 		if (_changeWatcher != null)
+ 			_changeWatcher.UpdateSources(sources);
 + 	}
 +
 +	// Exists to change the default parameter of 'mode' (from Immediate to Async) for modders, but not the base game.
 +	internal Asset<T> Request<T>(string assetName) where T : class
+-	}
 +		=> Request<T>(assetName, AssetRequestMode.ImmediateLoad);
-+
+ 
+-	public Asset<T> Request<T>(string assetName, AssetRequestMode mode = AssetRequestMode.ImmediateLoad) where T : class
 +	public virtual Asset<T> Request<T>(string assetName, AssetRequestMode mode = AssetRequestMode.AsyncLoad) where T : class
  	{
 +		// Skip loading assets if this is a dedicated server
@@ -261,7 +260,7 @@
  		}
  	}
  
-@@ -171,103 +_,148 @@
+@@ -171,103 +_,154 @@
  		if (mode == AssetRequestMode.DoNotLoad)
  			return;
  
@@ -410,7 +409,7 @@
 +				if (!Monitor.IsEntered(_requestLock)) // check async code is functioning as expected
 +					throw new Exception($"Asset transfer started without holding {nameof(_requestLock)}");
 +
-+				asset.SubmitLoadedContent(resultAsset, source);
++				SubmitLoadedContent(asset, resultAsset, source);
 +				LoadedAssets++;
 +				return;
 +			}
@@ -418,6 +417,12 @@
 +			throw AssetLoadException.FromMissingAsset(asset.Name);
 +		}
 +		catch (Exception e) {
++			// We don't need this 1.4.5 code meant to guard against read errors bubbling up from resource packs to game code in ImmediateLoad
++			/*
++			if (e is not UnauthorizedAccessException or FileNotFoundException or DirectoryNotFoundException or AssetLoadException)
++				e = AssetLoadException.FromAssetException(asset.Name, e);
++			*/
++
 +			AssetLoadFailHandler?.Invoke(asset.Name, e);
 +
 +			if (mode == AssetRequestMode.ImmediateLoad)
@@ -514,7 +519,7 @@
  		asset2.Unload();
  		LoadAsset(asset2, mode);
  	}
-@@ -288,8 +_,18 @@
+@@ -288,8 +_,24 @@
  
  	private bool UpdateAssetValue<T>(IAsset asset, IContentSource source, string extension, Func<Stream> getStream) where T : class
  	{
@@ -525,11 +530,17 @@
 +		if (!_readers.TryGetReader(extension, out var reader))
 +			throw AssetLoadException.FromMissingReader(extension);
 +
-+		var typedAsset = (Asset<T>)asset;
-+		var loadTask = LoadUntracked(getStream(), reader, typedAsset, AssetRequestMode.ImmediateLoad);
-+		typedAsset.Wait = () => SafelyWaitForLoad(typedAsset, loadTask, tracked: false);
-+		typedAsset.Wait();
-+		var resultAsset = typedAsset.Value;
++		if (!IsMainThread)
++			throw new NotSupportedException($"{nameof(UpdateAssetValue)} can only be called on the main thread");
++
++		T resultAsset;
++		using (var stream = getStream()) {
++			var readTask = reader.FromStream<T>(stream, mainThreadCtx: default);
++			if (!readTask.IsCompleted)
++				throw new Exception($"({reader.GetType()}) reading ({asset.Name}.{extension}) returned unfinished async task despite being on main thread.");
++
++			resultAsset = readTask.Result;
++		}
  
  		IContentValidator contentValidator = source.ContentValidator;
  		if (contentValidator != null && !contentValidator.AssetIsValid(resultAsset, asset.Name, out var rejectionReason))
