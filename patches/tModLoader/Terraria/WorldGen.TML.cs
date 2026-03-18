@@ -53,7 +53,7 @@ public partial class WorldGen
 		if (tile.type == (ushort)newType)
 			return;
 
-		TryKillingTreesAboveIfTheyWouldBecomeInvalid(i, j, newType);
+		TryConvertingOrKillingTreesAboveIfTheyWouldBecomeInvalid(i, j, newType);
 
 		tile.type = (ushort)newType;
 		SquareTileFrame(i, j);
@@ -123,4 +123,18 @@ public partial class WorldGen
 		}
 	}
 
+	private static void SwapTileData(Tile tile, Tile tile2)
+	{
+		var tileHasTile = tile.HasTile;
+		var tileTileType = tile.TileType;
+		var tileTileColor = tile.TileColor;
+		var tileIsTileFullbright = tile.IsTileFullbright;
+		var tileIsTileInvisible = tile.IsTileInvisible;
+		tile.CopyFrom(tile2);
+		tile2.HasTile = tileHasTile;
+		tile2.TileType = tileTileType;
+		tile2.TileColor = tileTileColor;
+		tile2.IsTileFullbright = tileIsTileFullbright;
+		tile2.IsTileInvisible = tileIsTileInvisible;
+	}
 }

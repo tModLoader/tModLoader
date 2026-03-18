@@ -186,6 +186,9 @@ public static class ItemLoader
 	internal static bool MagicPrefix(Item item)
 		=> item.ModItem != null && item.ModItem.MagicPrefix();
 
+	internal static bool SummonPrefix(Item item)
+		=> item.ModItem != null && item.ModItem.SummonPrefix();
+
 	internal static void SetDefaults(Item item, bool createModItem = true)
 	{
 		if (IsModItem(item.type) && createModItem)
@@ -197,9 +200,9 @@ public static class ItemLoader
 		});
 	}
 
-	private static HookList HookOnSpawn = AddHook<Action<Item, IEntitySource>>(g => g.OnSpawn);
+	private static HookList HookOnSpawn = AddHook<Action<WorldItem, IEntitySource>>(g => g.OnSpawn);
 
-	internal static void OnSpawn(Item item, IEntitySource source)
+	internal static void OnSpawn(WorldItem item, IEntitySource source)
 	{
 		item.ModItem?.OnSpawn(source);
 
@@ -1659,7 +1662,7 @@ public static class ItemLoader
 		source.stack -= numToTransfer;
 	}
 
-	private delegate bool DelegateReforgePrice(Item item, ref int reforgePrice, ref bool canApplyDiscount);
+	private delegate bool DelegateReforgePrice(Item item, ref long reforgePrice, ref bool canApplyDiscount);
 	private static HookList HookReforgePrice = AddHook<DelegateReforgePrice>(g => g.ReforgePrice);
 
 	/// <summary>
@@ -1669,7 +1672,7 @@ public static class ItemLoader
 	/// <param name="reforgePrice"></param>
 	/// <param name="canApplyDiscount"></param>
 	/// <returns></returns>
-	public static bool ReforgePrice(Item item, ref int reforgePrice, ref bool canApplyDiscount)
+	public static bool ReforgePrice(Item item, ref long reforgePrice, ref bool canApplyDiscount)
 	{
 		bool b = item.ModItem?.ReforgePrice(ref reforgePrice, ref canApplyDiscount) ?? true;
 
@@ -1900,12 +1903,12 @@ public static class ItemLoader
 		}
 	}
 
-	private static HookList HookGrabStyle = AddHook<Func<Item, Player, bool>>(g => g.GrabStyle);
+	private static HookList HookGrabStyle = AddHook<Func<WorldItem, Player, bool>>(g => g.GrabStyle);
 
 	/// <summary>
 	/// Calls all GlobalItem.GrabStyle hooks then ModItem.GrabStyle, until one of them returns true. Returns whether any of the hooks returned true.
 	/// </summary>
-	public static bool GrabStyle(Item item, Player player)
+	public static bool GrabStyle(WorldItem item, Player player)
 	{
 		foreach (var g in HookGrabStyle.Enumerate(item)) {
 			if (g.GrabStyle(item, player))
@@ -1915,9 +1918,9 @@ public static class ItemLoader
 		return item.ModItem != null && item.ModItem.GrabStyle(player);
 	}
 
-	private static HookList HookCanPickup = AddHook<Func<Item, Player, bool>>(g => g.CanPickup);
+	private static HookList HookCanPickup = AddHook<Func<WorldItem, Player, bool>>(g => g.CanPickup);
 
-	public static bool CanPickup(Item item, Player player)
+	public static bool CanPickup(WorldItem item, Player player)
 	{
 		foreach (var g in HookCanPickup.Enumerate(item)) {
 			if (!g.CanPickup(item, player))
@@ -1927,12 +1930,12 @@ public static class ItemLoader
 		return item.ModItem?.CanPickup(player) ?? true;
 	}
 
-	private static HookList HookOnPickup = AddHook<Func<Item, Player, bool>>(g => g.OnPickup);
+	private static HookList HookOnPickup = AddHook<Func<WorldItem, Player, bool>>(g => g.OnPickup);
 
 	/// <summary>
 	/// Calls all GlobalItem.OnPickup hooks then ModItem.OnPickup, until one of the returns false. Returns true if all of the hooks return true.
 	/// </summary>
-	public static bool OnPickup(Item item, Player player)
+	public static bool OnPickup(WorldItem item, Player player)
 	{
 		foreach (var g in HookOnPickup.Enumerate(item)) {
 			if (!g.OnPickup(item, player))

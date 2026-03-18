@@ -79,7 +79,7 @@
 +			endVanillaSpawn:
 +
 +			if (spawn != 0)
-+				newNPC = NPCLoader.SpawnNPC(spawn, spawnTileX, spawnTileY);
++				NPCLoader.SpawnNPC(spawn, spawnTileX, spawnTileY);
  		}
  
  		public NPC SpawnNPC(int X, int Y, int Type, int Start = 0, float ai0 = 0f, float ai1 = 0f, float ai2 = 0f, float ai3 = 0f, int Target = 255)
@@ -921,28 +921,12 @@
  		return result;
  	}
  
-@@ -6398,6 +_,24 @@
+@@ -6398,6 +_,8 @@
  			ScaleStats(spawnparams.playerCountForMultiplayerDifficultyOverride, spawnparams.difficultyOverride);
  			life = lifeMax;
  		}
 +
 +		NPCLoader.SetDefaultsFromNetId(this);
-+	}
-+
-+	// Added by TML.
-+	public void CloneDefaults(int Type)
-+	{
-+		int originalType = type;
-+		int originalNetID = netID;
-+		var originalModNPC = ModNPC;
-+		var originalGlobals = _globals;
-+
-+		SetDefaultsKeepPlayerInteraction(Type);
-+
-+		type = originalType;
-+		netID = originalNetID;
-+		ModNPC = originalModNPC;
-+		_globals = originalGlobals;
  	}
  
  	public void SetDefaults_ForNetId(int Type, NPCSpawnParams spawnparams, float scaleOverride)
@@ -2095,7 +2079,7 @@
  				new Item().SetDefaults(Main.npc[i].catchItem);
  				Item.NewItem(GetSpawnSource_NPCCatch(who), (int)Main.player[who].Center.X, (int)Main.player[who].Center.Y, 0, 0, Main.npc[i].catchItem, 1, noBroadcast: false, 0, noGrabDelay: true);
 +				*/
-+				int itemWhoAmI = Item.NewItem(GetSpawnSource_NPCCatch(who, Main.npc[i]), (int)Main.player[who].Center.X, (int)Main.player[who].Center.Y, 0, 0, Main.npc[i].catchItem, 1, true, 0, true, false);
++				int itemWhoAmI = Item.NewItem(GetSpawnSource_NPCCatch(who, Main.npc[i]), (int)Main.player[who].Center.X, (int)Main.player[who].Center.Y, 0, 0, Main.npc[i].catchItem, 1, noBroadcast: true, 0, noGrabDelay: true);
 +
 +				NetMessage.SendData(MessageID.SyncItem, -1, -1, null, itemWhoAmI, 1f); // NewItem above changed to noBroadcast, number2 is 1 for noGrabDelay effect.
 +
@@ -2176,7 +2160,7 @@
  	public int checkArmorPenetration(int armorPenetration, float armorPenetrationPercent)
  	{
  		if (ichor)
-@@ -67658,13 +_,17 @@
+@@ -67658,21 +_,31 @@
  
  		return armorPenetration / 2;
  	}
@@ -2194,7 +2178,21 @@
 +		return StrikeNPC(Damage, knockBack, hitDirection, noPlayerInteraction: true);
  	}
  
++	/*
  	public int KeyBrandStrike(int plr, int dmg, Vector2 bestSwordSpot)
++	*/
++	public float KeyBrandStrike(int plr, float dmg, Vector2 bestSwordSpot)
+ 	{
+ 		float t = (float)life / (float)lifeMax;
+ 		float lerpValue = Utils.GetLerpValue(1f, 0.1f, t, clamped: true);
+ 		float num = 1f * lerpValue;
++		/*
+ 		dmg = (int)((float)dmg * (1f + num));
++		*/
++		dmg = (dmg * (1f + num));
+ 		Vector2 positionInWorld = base.Hitbox.ClosestPointInRect(bestSwordSpot);
+ 		ParticleOrchestrator.RequestParticleSpawn(clientOnly: false, ParticleOrchestraType.Keybrand, new ParticleOrchestraSettings {
+ 			PositionInWorld = positionInWorld
 @@ -67681,24 +_,161 @@
  		return dmg;
  	}
@@ -2327,7 +2325,7 @@
 +	/// <param name="fromNet">true if this strike came from another client over the network. Just changes the combat text to be darker in color.</param>
 +	/// <param name="noPlayerInteraction">Prevents <see cref="PlayerInteraction(int)"/> from being called in single player. In multiplayer, player interaction is handled by the server.</param>
 +	/// <returns>The actual health lost by the NPC. Normally this is <see cref="HitInfo.Damage"/> but it is capped at the current health of the NPC, and represents the actual damage dealt in the case of <see cref="HitInfo.InstantKill"/> </returns>
-+	public int StrikeNPC(HitInfo hit, bool fromNet = false, bool noPlayerInteraction = false)
++	public int StrikeNPC(HitInfo hit, bool fromNet = false, bool noPlayerInteraction = false, int owner = -1)
  	{
  		if (owner < 0)
  			owner = Main.myPlayer;
@@ -2369,6 +2367,17 @@
  			if (friendly) {
  				Color color = (crit ? CombatText.DamagedFriendlyCrit : CombatText.DamagedFriendly);
  				CombatText.NewText(new Rectangle((int)position.X, (int)position.Y, width, height), color, (int)num, crit);
+@@ -67820,7 +_,10 @@
+ 				localAI[0] = 1f;
+ 
+ 			if (!immortal) {
++				/*
+ 				bool flag2 = Damage >= 9999 && owner == 255;
++				*/
++				bool flag2 = hit.InstantKill && owner == 255;
+ 				if (Main.netMode != 1 && !flag2)
+ 					NPCDamageTracker.AddDamage(this, owner, (int)num);
+ 
 @@ -67833,11 +_,14 @@
  					life -= (int)num;
  				}

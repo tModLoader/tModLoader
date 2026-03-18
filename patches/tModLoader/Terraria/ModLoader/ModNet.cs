@@ -569,7 +569,7 @@ public static class ModNet
 			Player.GetFileData(path, isCloudSave).SetAsActive();
 			//from Netplay.ClientLoopSetup
 			Main.player[Main.myPlayer].hostile = false;
-			Main.clientPlayer = (Player)Main.player[Main.myPlayer].clientClone();
+			Main.player[Main.myPlayer].clientClone(Main.clientPlayer);
 
 			if (!Netplay.Connection.Socket.IsConnected()) {
 				Main.menuMode = MenuID.Error;

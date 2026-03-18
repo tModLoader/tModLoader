@@ -141,7 +141,7 @@ public static class LiquidEdgeRenderer
 		Vector2 position = new Vector2(span.X * 16, span.YStart * 16) + new Vector2(Main.drawToScreen ? 0 : Main.offScreenRange) - Main.screenPosition;
 
 		var offset = Main.sceneTilePos;
-		spriteBatch.Draw(Main.instance.tileTarget, position, new Rectangle(span.X * 16 - (int)offset.X, span.YStart * 16 - (int)offset.Y, 16, 16 * span.Height), Color.White, 0f, Vector2.Zero, 1f, 0, 0f);
+		spriteBatch.Draw(Main.tileTarget, position, new Rectangle(span.X * 16 - (int)offset.X, span.YStart * 16 - (int)offset.Y, 16, 16 * span.Height), Color.White, 0f, Vector2.Zero, 1f, 0, 0f);
 	}
 
 	public static unsafe void CollectEdgeData(LiquidRenderer.LiquidCache* pCache, Tile tileCache, int tileX, int tileY)

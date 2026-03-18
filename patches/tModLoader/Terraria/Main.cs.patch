@@ -975,7 +975,7 @@
  
  			_uiScaleUsed = value;
  			_uiScaleMatrix = Matrix.CreateScale(value, value, 1f);
-+			chatMonitor.OnResolutionChange(); // TML fix: scale NewText by UIScale.
++			//chatMonitor.OnResolutionChange(); // TML fix: scale NewText by UIScale.
  		}
  	}
  
@@ -3182,16 +3182,16 @@
 +				//
 +				// As for why they're differently named: preparation for when that tooltip rework comes out.
 +				// - Thomas
-+				if (item.DamageType == DamageClass.MeleeNoSpeed || ItemID.Sets.BonusAttackSpeedMultiplier[item.type] == 0f) {
++				if (item.DamageType == DamageClass.MeleeNoSpeed || ItemID.Sets.BonusMeleeSpeedMultiplier[item.type] == 0f) {
 +					if (ModLoader.ModLoader.attackSpeedScalingTooltipVisibility == 0) {
 +						toolTipLine[numLines] = Language.GetTextValue("tModLoader.NoAttackSpeedScaling");
 +						toolTipNames[numLines] = "NoSpeedScaling";
 +						numLines++;
 +					}
 +				}
-+				else if (ItemID.Sets.BonusAttackSpeedMultiplier[item.type] != 1f) {
++				else if (ItemID.Sets.BonusMeleeSpeedMultiplier[item.type] != 1f) {
 +					if (ModLoader.ModLoader.attackSpeedScalingTooltipVisibility <= 1) {
-+						int attackSpeedScaling = (int)(ItemID.Sets.BonusAttackSpeedMultiplier[item.type] * 100);
++						int attackSpeedScaling = (int)(ItemID.Sets.BonusMeleeSpeedMultiplier[item.type] * 100);
 +						toolTipLine[numLines] = Language.GetTextValue("tModLoader.SpecialAttackSpeedScaling", attackSpeedScaling);
 +						toolTipNames[numLines] = "SpecialSpeedScaling";
 +						numLines++;
@@ -4431,20 +4431,12 @@
  				npcChatText = Language.GetTextValue("GuideHelpTextSpecific.Help_1149");
  				return;
  			}
-@@ -34363,6 +_,10 @@
- 		if (num5 > 0 && num5 < 1)
- 			num5 = 1;
+@@ -34524,12 +_,13 @@
+ 		DoNPCPortraitHop();
+ 	}
  
-+		reason = Language.GetTextValue("tModLoader.DefaultNurseCantHealChat");
-+		canHeal = PlayerLoader.ModifyNurseHeal(player[myPlayer], LocalPlayer.TalkNPC, ref health, ref removeDebuffs, ref reason);
-+		PlayerLoader.ModifyNursePrice(player[myPlayer], LocalPlayer.TalkNPC, health, removeDebuffs, ref num5);
-+
- 		if (num5 < 0)
- 			num5 = 0;
- 
-@@ -34526,12 +_,19 @@
- 
- 	public static int GetNurseHealCost()
+-	public static int GetNurseHealCost()
++	public static int GetNurseHealCost(ref int health, ref bool removeDebuffs, ref string reason, ref bool canHeal)
  	{
 +		// Patch note: 'num' used much below in PostNurseHeal call.
  		int num = player[myPlayer].statLifeMax2 - player[myPlayer].statLife;
@@ -4454,16 +4446,25 @@
 +			if (debuff[num2] && player[myPlayer].buffTime[i] > 60 && (num2 < 0 || !BuffID.Sets.NurseCannotRemoveDebuff[num2]))
  				num += 100;
  		}
-+
-+		// TML locals.
-+		int health = LocalPlayer.statLifeMax2 - LocalPlayer.statLife;
-+		bool removeDebuffs = true;
-+		string reason = "";
-+		bool canHeal = true;
  
- 		if (NPC.downedGolemBoss)
- 			num *= 200;
-@@ -34561,10 +_,19 @@
+@@ -34554,17 +_,35 @@
+ 		if (LocalPlayer.discountAvailable)
+ 			num = (int)((float)num * 0.8f);
+ 
++		/*
+ 		return (int)((float)num * LocalPlayer.currentShoppingSettings.PriceAdjustment);
++		*/
++		int cost = (int)((float)num * LocalPlayer.currentShoppingSettings.PriceAdjustment);
++
++		reason = Language.GetTextValue("tModLoader.DefaultNurseCantHealChat");
++		canHeal = PlayerLoader.ModifyNurseHeal(player[myPlayer], LocalPlayer.TalkNPC, ref health, ref removeDebuffs, ref reason);
++		PlayerLoader.ModifyNursePrice(player[myPlayer], LocalPlayer.TalkNPC, health, removeDebuffs, ref cost);
++
++		return cost;
+ 	}
+ 
+-	public static void NPCChatText_DoNurseHeal(int healCost)
++	public static void NPCChatText_DoNurseHeal(int healCost, int health, bool removeDebuffs, string reason, bool canHeal)
  	{
  		SoundEngine.PlaySound(12);
  		if (healCost > 0) {
@@ -4504,7 +4505,7 @@
  				}
 +
 +				SkipDebuffRemoval:
-+				PlayerLoader.PostNurseHeal(LocalPlayer, LocalPlayer.TalkNPC, health, removeDebuffs, num5);
++				PlayerLoader.PostNurseHeal(LocalPlayer, LocalPlayer.TalkNPC, health, removeDebuffs, healCost);
  			}
  			else {
  				int num2 = rand.Next(3);

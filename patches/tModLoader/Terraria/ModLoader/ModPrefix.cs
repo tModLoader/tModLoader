@@ -19,6 +19,7 @@ public enum PrefixCategory
 	/// Can modify the mana usage of the weapon
 	/// </summary>
 	Magic,
+	Summon,
 	AnyWeapon,
 	Accessory,
 	/// <summary>

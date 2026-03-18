@@ -517,153 +517,14 @@
  		hostileDamageScaling = GameDifficultyData.HostileProjectileDamageMultiplier;
  		frame = 0;
  		frameCounter = 0;
-@@ -1152,6 +_,8 @@
- 			magic = true;
- 		}
- 		else if (type == 85) {
-+			ArmorPenetration = 15; // Added by TML
-+
- 			width = 6;
- 			height = 6;
- 			aiStyle = 193;
-@@ -1825,6 +_,8 @@
- 			ignoreWater = true;
- 		}
- 		else if (type == 150 || type == 151 || type == 152) {
-+			ArmorPenetration = 10; // Added by TML.
-+
- 			width = 28;
- 			height = 28;
- 			aiStyle = 4;
-@@ -2156,6 +_,9 @@
+@@ -2156,6 +_,7 @@
  			trap = true;
  		}
  		else if (type == 189) {
 +			// There's some custom code in Damage that adds an extra 5 armor pen on-hit if the owner has strongBees at time of hit
-+			ArmorPenetration = 10; // Added by TML.
-+
  			width = 8;
  			height = 8;
  			aiStyle = 36;
-@@ -4097,6 +_,10 @@
- 			ignoreWater = true;
- 		}
- 		else if (type == 410) {
-+			// Added by TML.
-+			if (Main.remixWorld)
-+				ArmorPenetration = 20;
-+
- 			width = 14;
- 			height = 14;
- 			aiStyle = 72;
-@@ -4772,6 +_,8 @@
- 			netImportant = true;
- 		}
- 		else if (type == 493 || type == 494) {
-+			ArmorPenetration = 10; // Added by TML.
-+
- 			width = 32;
- 			height = 32;
- 			aiStyle = 4;
-@@ -5065,6 +_,8 @@
- 			}
- 		}
- 		else if (type == 532) {
-+			ArmorPenetration = 25; // Added by TML.
-+
- 			width = 16;
- 			height = 16;
- 			aiStyle = 1;
-@@ -5467,6 +_,8 @@
- 			extraUpdates = 2;
- 		}
- 		else if (type == 595) {
-+			ArmorPenetration = 20; // Added by TML.
-+
- 			width = 68;
- 			height = 64;
- 			aiStyle = 75;
-@@ -6574,6 +_,8 @@
- 			hide = true;
- 		}
- 		else if (type == 723 || type == 724 || type == 725 || type == 726) {
-+			ArmorPenetration = 25; // Added by TML.
-+
- 			width = 24;
- 			height = 24;
- 			aiStyle = 5;
-@@ -7143,6 +_,8 @@
- 			ranged = true;
- 		}
- 		else if (type == 864) {
-+			ArmorPenetration = 25; // Added by TML.
-+
- 			netImportant = true;
- 			width = 10;
- 			height = 10;
-@@ -7497,6 +_,8 @@
- 				coldDamage = true;
- 		}
- 		else if (type == 916) {
-+			ArmorPenetration = 50; // Added by TML.
-+
- 			width = 18;
- 			height = 18;
- 			aiStyle = 176;
-@@ -7520,6 +_,8 @@
- 			height = 96;
- 		}
- 		else if (type == 917) {
-+			ArmorPenetration = 30; // Added by TML.
-+
- 			width = 30;
- 			height = 30;
- 			aiStyle = 177;
-@@ -7910,6 +_,8 @@
- 			alpha = 255;
- 		}
- 		else if (type == 964) {
-+			ArmorPenetration = 20; // Added by TML.
-+
- 			width = 40;
- 			height = 40;
- 			aiStyle = 187;
-@@ -7948,6 +_,8 @@
- 			alpha = 255;
- 		}
- 		else if (type == 969) {
-+			ArmorPenetration = 10; // Added by TML.
-+
- 			width = 56;
- 			height = 64;
- 			aiStyle = 177;
-@@ -7984,6 +_,8 @@
- 			drawLayer = 3;
- 		}
- 		else if (type == 977) {
-+			ArmorPenetration = 5; // Added by TML
-+
- 			width = 20;
- 			height = 20;
- 			aiStyle = 152;
-@@ -8011,6 +_,8 @@
- 			coldDamage = true;
- 		}
- 		else if (type == 974) {
-+			ArmorPenetration = 5; // Added by TML
-+
- 			width = 20;
- 			height = 20;
- 			aiStyle = 188;
-@@ -8042,6 +_,8 @@
- 			timeLeft = 30;
- 		}
- 		else if (type == 976) {
-+			ArmorPenetration = 20; // Added by TML
-+
- 			width = 20;
- 			height = 20;
- 			aiStyle = 152;
 @@ -9033,13 +_,21 @@
  			// Dummy block for a nice patch.
  		}
@@ -883,9 +744,9 @@
  	{
 +	
 +		bool canHitFlag = false;
-+		if (CombinedHooks.CanHitNPCWithProj(this, Main.npc[i]) is bool b) {
++		if (CombinedHooks.CanHitNPCWithProj(this, targetNPC) is bool b) {
 +			if (!b)
-+				continue;
++				return;
 +
 +			canHitFlag = true;
 +		}
@@ -920,7 +781,7 @@
  		if (flag4 || (!targetNPC.noTileCollide && ownerHitCheck && !CanHitWithMeleeWeapon(targetNPC)))
  			return;
  
-@@ -10576,9 +_,17 @@
+@@ -10576,10 +_,18 @@
  		if (type == 604)
  			Main.player[owner].Counterweight(targetNPC.Center, damage, knockBack);
  
@@ -935,9 +796,11 @@
 +		// TML:
 +		// This is unused, replaced with this.ArmorPenetration.
 +		// Make sure to keep ArmorPenetration values in sync with the switch table below.
- 		int num3 = Main.player[owner].GetArmorPenetration(melee) + armorPenetration;
+-		int num3 = Main.player[owner].GetArmorPenetration(melee) + armorPenetration;
++		//int num3 = Main.player[owner].GetArmorPenetration(melee) + armorPenetration;
  		bool flag7 = false;
  		switch (type) {
+ 			case 442:
 @@ -10587,7 +_,7 @@
  				break;
  			case 189:
@@ -1010,7 +873,7 @@
 -		int damageDealt = num4;
 +		modifiers.SourceDamage *= num4 / 1000;
 +		// set this just so that summon procs which scale with this value can spawn correctly
-+		int damageDealt = modifiers.SourceDamage.ApplyTo(damage);
++		float damageDealt = modifiers.SourceDamage.ApplyTo(damage);
  		Main.player[owner].TagEffectState.ModifyHit(this, targetNPC, ref damageDealt, ref crit);
 +		/*
  		int num12 = ((!ownedBySomeone) ? Main.DamageVar(damageDealt) : Main.DamageVar(damageDealt, Main.player[owner].luck));
@@ -1030,15 +893,14 @@
  			if (timeLeft > 3)
  				timeLeft = 3;
  
-@@ -10974,7 +_,11 @@
+@@ -10974,7 +_,10 @@
  		}
  
  		if (Main.netMode != 2 && ownedBySomeone && Main.player[owner].GetBannerBuffEffect(targetNPC, out var effect))
 +			/*
  			num12 = (int)((float)num12 * effect.DamageDealt.Sample(Main.Difficulty));
 +			*/
-+			// Helper method necessary? Main.player[owner].ApplyBannerOffenseBuff(targetNPC, ref modifiers);
-+			modifiers.TargetDamageMultiplier *= effect.DamageDealt.Sample(Main.Difficulty);
++			Main.player[owner].ApplyBannerOffenseBuff(effect, ref modifiers);
  
  		if (Main.expertMode) {
  			if ((type == 30 || type == 397 || type == 517 || type == 28 || type == 37 || type == 516 || type == 29 || type == 470 || type == 637 || type == 1086 || type == 1087 || type == 108 || type == 281 || type == 588 || type == 519 || type == 773 || type == 183 || type == 181 || type == 566 || type == 1002) && targetNPC.type >= 13 && targetNPC.type <= 15)
@@ -1160,7 +1022,7 @@
  		if (type == 710)
  			BetsySharpnel(victimIndex);
  
-+		CombinedHooks.OnHitNPCWithProj(this, nPC, strike, num28); // see addDPS above for patch context of num28
++		CombinedHooks.OnHitNPCWithProj(this, targetNPC, strike, num28); // see addDPS above for patch context of num28
 +
  		if (penetrate > 0 && type != 317 && type != 866) {
  			if (type == 357)
@@ -1289,6 +1151,19 @@
  	{
  		ParticleOrchestrator.RequestParticleSpawn(clientOnly: false, ParticleOrchestraType.BlackLightningHit, new ParticleOrchestraSettings {
  			PositionInWorld = position
+@@ -12274,10 +_,10 @@
+ 		NewProjectile(GetProjectileSource_FromThis(), vector2, vector, 700, damage, 0f, owner);
+ 	}
+ 
+-	private void ModifyStellarTuneDamage(ref int damage)
++	private void ModifyStellarTuneDamage(ref float damage)
+ 	{
+ 		if (type == 856 && owner >= 0 && owner < 255 && !Collision.CanHit(this, Main.player[owner]))
+-			damage = (int)((double)damage * 0.75);
++			damage = damage * 0.75f;
+ 	}
+ 
+ 	private void CutTiles()
 @@ -12377,13 +_,19 @@
  					WorldGen.KillTile(i, j);
  					if (Main.netMode != 0)
@@ -1364,23 +1239,24 @@
  		if (player.frostBurn && (melee || ranged) && friendly && !hostile && !noEnchantments && Main.rand.Next(2 * (1 + extraUpdates)) == 0) {
  			int num = Dust.NewDust(boxPosition, boxWidth, boxHeight, 135, velocity.X * 0.2f + (float)(direction * 3), velocity.Y * 0.2f, 100, default(Color), 2f);
  			Main.dust[num].noGravity = true;
-@@ -14060,8 +_,22 @@
+@@ -14059,9 +_,23 @@
+ 
  			Vector2 lastVelocity = velocity;
  			GetCollisionParams(out var resizeAnchor, out var colWidth, out var colHeight);
++			bool bypass = !ProjectileLoader.TileCollideStyle(this, ref colWidth, ref colHeight, ref flag6, ref resizeAnchor);
  			Vector2 vector = base.Center - new Vector2(colWidth, colHeight) * resizeAnchor;
-+			Vector2 hitboxCenterFrac = vector ?? new Vector2(0.5f);
 +
-+			if (!ProjectileLoader.TileCollideStyle(this, ref colWidth, ref colHeight, ref flag6, ref hitboxCenterFrac)) { } else
++			if (bypass) { } else
  			if (((type != 440 && type != 449 && type != 606) || ai[1] != 1f) && (type != 466 || localAI[1] != 1f) && (type != 580 || !(localAI[1] > 0f)) && (type != 640 || !(localAI[1] > 0f))) {
 +				//TML: base.Center isn't correct due to snapping, we have to calculate it without that.
-+				Vector2 center = base.position + new Vector2(base.width, base.height) * 0.5f;
-+				Vector2 vector2 = center - new Vector2(colWidth, colHeight) * hitboxCenterFrac;
++				//Vector2 center = base.position + new Vector2(base.width, base.height) * 0.5f;
++				//Vector2 vector2 = center - new Vector2(colWidth, colHeight) * hitboxCenterFrac;
 +
  				if (aiStyle == 10) {
-+					velocity = Collision.TileCollision(vector2, base.velocity, colWidth, colHeight, flag6, flag6);
++					velocity = Collision.TileCollision(position, base.velocity, colWidth, colHeight, flag6, flag6);
 +
 +					if (type >= ProjectileID.CopperCoinsFalling && type <= ProjectileID.PlatinumCoinsFalling)
-+						velocity = Collision.AnyCollisionWithSpecificTiles(vector2, base.velocity, num2, num3, TileID.Sets.Falling, evenActuated: true);
++						velocity = Collision.AnyCollisionWithSpecificTiles(position, base.velocity, colWidth, colHeight, TileID.Sets.Falling, evenActuated: true);
 +
 +					//TML: This section was rewritten above so it is affected by ProjectileLoader.TileCollideStyle
 +					/*
@@ -1570,6 +1446,36 @@
  								float num997 = Distance(new Vector2(num994 * 16 + 8, num995 * 16 + 8));
  								if (num997 < num990 || num990 == -1f) {
  									num990 = num997;
+@@ -30897,7 +_,7 @@
+ 					if (extraUpdates > 0)
+ 						soundDelay *= extraUpdates + 1;
+ 
+-					SoundEngine.PlaySound(SoundID.Item7, position, -0.33f);
++					SoundEngine.PlaySound(SoundID.Item7.WithPitchOffset(-0.33f), position);
+ 				}
+ 			}
+ 			else {
+@@ -31089,7 +_,7 @@
+ 					rotation += 0.4f * (float)direction;
+ 					if (type == 1074) {
+ 						if (soundDelay == 0) {
+-							SoundEngine.PlaySound(SoundID.Item7, position, -0.3f);
++							SoundEngine.PlaySound(SoundID.Item7.WithPitchOffset(-0.3f), position);
+ 							soundDelay = 11;
+ 						}
+ 					}
+@@ -31303,9 +_,9 @@
+ 				if (localAI[0] <= 0f) {
+ 					if (type == 1074) {
+ 						if (localAI[0] < 0f)
+-							SoundEngine.PlaySound(SoundID.Item182, position, -0.2f);
++							SoundEngine.PlaySound(SoundID.Item182.WithPitchOffset(-0.2f), position);
+ 						else
+-							SoundEngine.PlaySound(SoundID.Item7, position, -0.5f);
++							SoundEngine.PlaySound(SoundID.Item7.WithPitchOffset(-0.5f), position);
+ 					}
+ 					else {
+ 						SoundEngine.PlaySound(SoundID.Item15, position);
 @@ -32637,8 +_,11 @@
  				NetMessage.SendData(32, -1, -1, null, chestIndex, num);
  		}
@@ -1703,6 +1609,17 @@
  	}
  
  	private bool AI_016_CanAcornPlant(out Point plantPoint)
+@@ -38095,7 +_,10 @@
+ 			FillWhipControlPoints(this, WhipPointsForCollision);
+ 			Vector2 vector2 = WhipPointsForCollision[WhipPointsForCollision.Count - 1];
+ 			if (type == 1029)
++				/*
+ 				SoundEngine.PlaySound(SoundID.NPCDeath1, vector2, 0f, 0.6f);
++				*/
++				SoundEngine.PlaySound(SoundID.NPCDeath1.WithPitchOffset(0.6f), vector2);
+ 			else if (type == 1030)
+ 				SoundEngine.PlaySound(SoundID.NPCHit9, vector2);
+ 			else if (type == 1033)
 @@ -38652,6 +_,13 @@
  		if (proj.isAPreviewDisplayDoll)
  			timeToFlyOut = 60f;

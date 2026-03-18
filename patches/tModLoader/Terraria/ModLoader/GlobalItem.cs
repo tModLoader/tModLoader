@@ -48,7 +48,7 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	/// Gets called when any item spawns in world
 	/// <para/> Called on the local client or the server where Item.NewItem is called.
 	/// </summary>
-	public virtual void OnSpawn(Item item, IEntitySource source)
+	public virtual void OnSpawn(WorldItem item, IEntitySource source)
 	{
 	}
 
@@ -896,7 +896,7 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	/// The passed reforge price equals the item.value. Vanilla pricing will apply 20% discount if applicable and then price the reforge at a third of that value.
 	/// <para/> Called on the local client only.
 	/// </summary>
-	public virtual bool ReforgePrice(Item item, ref int reforgePrice, ref bool canApplyDiscount)
+	public virtual bool ReforgePrice(Item item, ref long reforgePrice, ref bool canApplyDiscount)
 	{
 		return true;
 	}
@@ -1006,7 +1006,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// Allows you to modify the way an item moves towards the player. Return false to allow the vanilla grab style to take place. Returns false by default.
 	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
-	public virtual bool GrabStyle(Item item, Player player)
+	public virtual bool GrabStyle(WorldItem item, Player player)
 	{
 		return false;
 	}
@@ -1015,7 +1015,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// Allows you to determine whether or not the item can be picked up
 	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
-	public virtual bool CanPickup(Item item, Player player)
+	public virtual bool CanPickup(WorldItem item, Player player)
 	{
 		return true;
 	}
@@ -1024,7 +1024,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// Allows you to make special things happen when the player picks up an item. Return false to stop the item from being added to the player's inventory; returns true by default.
 	/// <para/> Called on the local client only.
 	/// </summary>
-	public virtual bool OnPickup(Item item, Player player)
+	public virtual bool OnPickup(WorldItem item, Player player)
 	{
 		return true;
 	}

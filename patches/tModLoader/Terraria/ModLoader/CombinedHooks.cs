@@ -184,7 +184,7 @@ public static class CombinedHooks
 
 		if (!projectile.reflected && !ProjectileID.Sets.PlayerHurtDamageIgnoresDifficultyScaling[projectile.type]) {
 			float damageMult = Main.GameModeInfo.EnemyDamageMultiplier;
-			if (Main.GameModeInfo.IsJourneyMode) {
+			if (Main.IsJourneyMode) {
 				var power = CreativePowerManager.Instance.GetPower<CreativePowers.DifficultySliderPower>();
 				if (power.GetIsUnlocked())
 					damageMult = power.StrengthMultiplierToGiveNPCs;
@@ -323,7 +323,7 @@ public static class CombinedHooks
 		EquipLoader.EquipFrameEffects(player);
 	}
 
-	public static bool OnPickup(Item item, Player player)
+	public static bool OnPickup(WorldItem item, Player player)
 	{
 		return ItemLoader.OnPickup(item, player) && PlayerLoader.OnPickup(player, item);
 	}

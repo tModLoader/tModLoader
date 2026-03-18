@@ -748,6 +748,17 @@
  				float torchLuck = reader.ReadSingle();
  				byte luckPotion = reader.ReadByte();
  				bool hasGardenGnomeNearby = reader.ReadBoolean();
+@@ -3652,7 +_,10 @@
+ 					Player player3 = Main.player[num39];
+ 					Item item2 = player3.inventory[player3.selectedItem];
+ 					if (item2.UseSound != null)
++						/*
+ 						SoundEngine.PlaySound(item2.UseSound, player3.Center, item2.useSoundPitch);
++						*/
++						SoundEngine.PlaySound(item2.UseSound, player3.Center);
+ 				}
+ 
+ 				break;
 @@ -3713,6 +_,35 @@
  				Main.player[whoAmI].host = !string.IsNullOrWhiteSpace(Netplay.HostToken) && Netplay.HostToken == text;
  				break;

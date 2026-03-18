@@ -1,0 +1,16 @@
+--- src/TerrariaNetCore/Terraria/GameContent/Items/UniqueTagEffect.cs
++++ src/tModLoader/Terraria/GameContent/Items/UniqueTagEffect.cs
+@@ -30,11 +_,11 @@
+ 	{
+ 	}
+ 
+-	public virtual void OnTaggedHit(Player owner, Projectile optionalProjectile, NPC npcHit, int calcDamage)
++	public virtual void OnTaggedHit(Player owner, Projectile optionalProjectile, NPC npcHit, float calcDamage)
+ 	{
+ 	}
+ 
+-	public virtual void OnProcHit(Player owner, Projectile optionalProjectile, NPC npcHit, int calcDamage)
++	public virtual void OnProcHit(Player owner, Projectile optionalProjectile, NPC npcHit, float calcDamage)
+ 	{
+ 	}
+ }

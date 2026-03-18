@@ -46,6 +46,68 @@
  		{
  			SecretSeed secretSeed = new SecretSeed(localization, sound, code);
  			AllSecretSeeds.Add(secretSeed);
+@@ -787,6 +_,8 @@
+ 					continue;
+ 				}
+ 
++				SwapTileData(Main.tile[num6, num7], Main.tile[num8, num9]);
++				/*
+ 				Tile tile = new Tile(Main.tile[num6, num7]);
+ 				Tile tile2 = new Tile(Main.tile[num8, num9]);
+ 				Main.tile[num6, num7].active(tile2.active());
+@@ -799,6 +_,7 @@
+ 				Main.tile[num8, num9].color(tile.color());
+ 				Main.tile[num8, num9].fullbrightBlock(tile.fullbrightBlock());
+ 				Main.tile[num8, num9].invisibleBlock(tile.invisibleBlock());
++				*/
+ 			}
+ 
+ 			num3 = Main.maxTilesX / 2 / Variations.errorWorldAdjustment(1.0);
+@@ -860,6 +_,8 @@
+ 
+ 				for (int num17 = 0; num17 < num10; num17++) {
+ 					for (int num18 = 0; num18 < num11; num18++) {
++						SwapTileData(Main.tile[num12 + num17, num13 + num18], Main.tile[num14 + num17, num15 + num18]);
++						/*
+ 						Tile tile3 = new Tile(Main.tile[num12 + num17, num13 + num18]);
+ 						Tile tile4 = new Tile(Main.tile[num14 + num17, num15 + num18]);
+ 						Main.tile[num12 + num17, num13 + num18].active(tile4.active());
+@@ -872,6 +_,7 @@
+ 						Main.tile[num14 + num17, num15 + num18].color(tile3.color());
+ 						Main.tile[num14 + num17, num15 + num18].fullbrightBlock(tile3.fullbrightBlock());
+ 						Main.tile[num14 + num17, num15 + num18].invisibleBlock(tile3.invisibleBlock());
++						*/
+ 					}
+ 				}
+ 			}
+@@ -902,20 +_,27 @@
+ 				int num22 = genRand.Next(5, 21);
+ 				int num23 = num20;
+ 				int num24 = num21;
++				/*
+ 				Tile tile5 = new Tile(Main.tile[num20, num21]);
++				*/
++				Tile tile5 = Main.tile[num20, num21];
+ 				for (int num25 = 0; num25 < num22; num25++) {
+ 					num23 += (int)vector2D.X;
+ 					num24 += (int)vector2D.Y;
+ 					if (Main.tile[num23, num24].active())
+ 						break;
+ 
++					/*
+ 					Main.tile[num20, num21].slope(0);
+ 					Main.tile[num20, num21].halfBrick(halfBrick: false);
++					*/
+ 					Main.tile[num23, num24].active(tile5.active());
+ 					Main.tile[num23, num24].type = tile5.type;
+ 					Main.tile[num23, num24].color(tile5.color());
+ 					Main.tile[num23, num24].fullbrightBlock(tile5.fullbrightBlock());
+ 					Main.tile[num23, num24].invisibleBlock(tile5.invisibleBlock());
++					tile5.Slope = SlopeType.Solid;
++					tile5.IsHalfBlock = false;
+ 				}
+ 			}
+ 		}
 @@ -3341,6 +_,7 @@
  	public static readonly int oceanDistance = 250;
  	public static readonly int beachDistance = 380;
@@ -1347,12 +1409,12 @@
  	}
  
 +	/// <summary>
-+	/// Places <see cref="TileID.SmallPiles"/> tiles. This tile is special and doesn't follow the normal style rules and won't place with PlaceTile. i and j are the coordinates. X and Y are the count and row indexes of the specific tile in the texture file. Indexes count from left to right and start at 0. So for example the Sapphire Stash would have Y=1 (second row) and X=21 (22nd 2x1 tile).
++	/// Places <see cref="TileID.SmallPiles"/> tiles. This tile is special and doesn't follow the normal style rules and won't place with PlaceTile. i and j are the coordinates. pileStyle and pileSize are the count and row indexes of the specific tile in the texture file. Indexes count from left to right and start at 0. So for example the Sapphire Stash would have pileSize=1 (second row) and pileStyle=21 (22nd 2x1 tile).
 +	/// </summary>
 +	/// <param name="i"></param>
 +	/// <param name="j"></param>
-+	/// <param name="X"></param>
-+	/// <param name="Y"></param>
++	/// <param name="pileStyle"></param>
++	/// <param name="pileSize"></param>
 +	/// <param name="type"></param>
 +	/// <returns></returns>
  	public static bool PlaceSmallPile(int i, int j, int pileStyle, int pileSize, ushort type = 185)
@@ -2507,7 +2569,7 @@
  			if (Main.netMode != 1) {
  				if (genRand.Next(2) == 0) {
 -					if (TreeTypeDropsAcorns(GetTreeType(i, j))) {
-+					if (TreeTypeDropsAcorns(GetTreeType(i, j)) || TileLoader.CanDropAcorn(tile.type)) {
++					if (TreeTypeDropsAcorns(GetTreeType(i, j)) || TileLoader.CanDropAcorn(tileCache.type)) {
  						dropItem = 9;
  						secondaryItem = 27;
  					}
@@ -2758,6 +2820,15 @@
  		if (worldUpdateRate == 0)
  			return;
  
+@@ -60040,7 +_,7 @@
+ 		double num2 = 6E-05f * (float)worldUpdateRate;
+ 		double num3 = 1.5E-05f * (float)worldUpdateRate;
+ 		double num4 = 2.5E-05f * (float)worldUpdateRate;
+-		npcSpawnPeriod = 20 * worldUpdateRate;
++		npcSpawnPeriod = (int)(20 * worldUpdateRate); // TML: Cast to int
+ 		UpdatePrioritizedTownNPC();
+ 		CheckForHousesNearAPlayer();
+ 		if (Main.isThereAWorldSurface) {
 @@ -60118,6 +_,9 @@
  
  		for (int i = 0; i < Main.maxNPCs; i++) {

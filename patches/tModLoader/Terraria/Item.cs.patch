@@ -431,7 +431,8 @@
 +	/// </summary>
  	public float scale = 1f;
 -	public LegacySoundStyle UseSound;
- 	public float useSoundPitch;
+-	public float useSoundPitch;
++	//public float useSoundPitch;
 +
 +	/// <summary>
 +	/// The sound this item makes when used. Set this to an existing <see cref="SoundID"/> entry or assign to a new <see cref="SoundStyle"/> for a custom sound.
@@ -1058,7 +1059,7 @@
  	{
  		_ = type;
  		if (PrefixLegacy.ItemSets.SwordsHammersAxesPicks[type])
-@@ -868,16 +_,66 @@
+@@ -868,16 +_,70 @@
  		return null;
  	}
  
@@ -1076,8 +1077,11 @@
 +		if (PrefixLegacy.ItemSets.GunsBows[type] || ItemLoader.RangedPrefix(this))
 +			return PrefixCategory.Ranged;
 +
-+		if (PrefixLegacy.ItemSets.MagicAndSummon[type] || ItemLoader.MagicPrefix(this))
++		if (PrefixLegacy.ItemSets.Magic[type] || ItemLoader.MagicPrefix(this))
 +			return PrefixCategory.Magic;
++
++		if (PrefixLegacy.ItemSets.Summon[type] || ItemLoader.SummonPrefix(this))
++			return PrefixCategory.Summon;
 +
 +		if (PrefixLegacy.ItemSets.SpearsMacesChainsawsDrillsPunchCannon[type] || PrefixLegacy.ItemSets.BoomerangsChakrams[type] || PrefixLegacy.ItemSets.ItemsThatCanHaveLegendary2[type] || ItemLoader.WeaponPrefix(this))
 +			return PrefixCategory.AnyWeapon;
@@ -1097,7 +1101,8 @@
 +	public static int[] GetVanillaPrefixes(PrefixCategory category) => category switch {
 +		PrefixCategory.Melee => PrefixLegacy.Prefixes.PrefixesForSwords,
 +		PrefixCategory.Ranged => PrefixLegacy.Prefixes.PrefixesForGunsBows,
-+		PrefixCategory.Magic => PrefixLegacy.Prefixes.PrefixesForMagicAndSummons,
++		PrefixCategory.Magic => PrefixLegacy.Prefixes.PrefixesForMagic,
++		PrefixCategory.Summon => PrefixLegacy.Prefixes.PrefixesForSummons,
 +		PrefixCategory.AnyWeapon => PrefixLegacy.Prefixes.PrefixesForSpears,
 +		PrefixCategory.Accessory => PrefixLegacy.Prefixes.PrefixesForAccessories,
 +		_ => Array.Empty<int>(),
@@ -1171,6 +1176,18 @@
  				useStyle = 5;
  				autoReuse = true;
  				useAnimation = 30;
+@@ -18189,8 +_,11 @@
+ 				knockBack = 9f;
+ 				width = 14;
+ 				height = 28;
++				/*
+ 				UseSound = SoundID.Item1;
+ 				useSoundPitch = -0.5f;
++				*/
++				UseSound = SoundID.Item1.WithPitchOffset(-0.5f);
+ 				useAnimation = 15;
+ 				useTime = 15;
+ 				noUseGraphic = true;
 @@ -20413,6 +_,8 @@
  				melee = true;
  				return;
@@ -1768,7 +1785,7 @@
  		if (hairDye != 0)
  			hairDye = GameShaders.Hair.GetShaderIdFromItemId(type);
  
-@@ -47910,13 +_,17 @@
+@@ -47910,31 +_,55 @@
  		if (type >= 1803 && type <= 1807)
  			SetDefaults(1533 + type - 1803);
  
@@ -1787,7 +1804,11 @@
  		if (type == 5437)
  			SetDefaults(5358);
  	}
-@@ -47927,14 +_,34 @@
+ 
+ 	public void ResetStats(int Type)
+ 	{
+-		useSoundPitch = 0f;
++		//useSoundPitch = 0f;
  		tooltipContext = -1;
  		tooltipSlot = -1;
  		BestiaryNotes = null;

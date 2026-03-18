@@ -1,0 +1,30 @@
+--- src/TerrariaNetCore/Terraria/GameContent/NPCInteractions.cs
++++ src/tModLoader/Terraria/GameContent/NPCInteractions.cs
+@@ -191,12 +_,25 @@
+ 
+ 			public override void Interact()
+ 			{
+-				Main.NPCChatText_DoNurseHeal(Main.GetNurseHealCost());
++				// TML locals.
++				int health = LocalPlayer.statLifeMax2 - LocalPlayer.statLife;
++				bool removeDebuffs = true;
++				string reason = "";
++				bool canHeal = true;
++
++				int healCost = Main.GetNurseHealCost(ref health, ref removeDebuffs, ref reason, ref canHeal);
++				Main.NPCChatText_DoNurseHeal(healCost, health, removeDebuffs, reason, canHeal);
+ 			}
+ 
+ 			public override bool TryAddCoins(ref Color chatColor, out int coinValue)
+ 			{
+-				coinValue = Main.GetNurseHealCost();
++				// TML locals.
++				int health = LocalPlayer.statLifeMax2 - LocalPlayer.statLife;
++				bool removeDebuffs = true;
++				string reason = "";
++				bool canHeal = true;
++
++				coinValue = Main.GetNurseHealCost(ref health, ref removeDebuffs, ref reason, ref canHeal);
+ 				Main.GetCoinValueText_Nurse(ref chatColor, ref coinValue);
+ 				return coinValue > 0;
+ 			}

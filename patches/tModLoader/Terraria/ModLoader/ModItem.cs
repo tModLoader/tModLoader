@@ -166,6 +166,9 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	public virtual bool MagicPrefix()
 		=> Item.DamageType.GetsPrefixesFor(DamageClass.Magic);
 
+	public virtual bool SummonPrefix()
+		=> Item.DamageType.GetsPrefixesFor(DamageClass.Summon);
+
 	/// <summary>
 	/// To prevent putting the item in the tinkerer slot, return false when pre is -3.
 	/// To prevent rolling of a prefix on spawn, return false when pre is -1.
@@ -994,7 +997,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	/// </summary>
 	/// <param name="source">The item instance being stacked onto this item</param>
 	/// <returns>Whether or not the item is allowed to stack</returns>
-	public virtual bool CanStackInWorld(Item source)
+	public virtual bool CanStackInWorld(WorldItem source)
 	{
 		return true;
 	}
@@ -1027,7 +1030,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	/// The passed reforge price equals the Item.value. Vanilla pricing will apply 20% discount if applicable and then price the reforge at a third of that value.
 	/// <para/> Called on the local client only.
 	/// </summary>
-	public virtual bool ReforgePrice(ref int reforgePrice, ref bool canApplyDiscount)
+	public virtual bool ReforgePrice(ref long reforgePrice, ref bool canApplyDiscount)
 	{
 		return true;
 	}

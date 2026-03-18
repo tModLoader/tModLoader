@@ -21,7 +21,7 @@
 -	public static readonly int PlayerDeath = 3;
 +	public const int PlayerDeath = 3;
 -	public static readonly int PlayerDrop = 4;
-+	public const int ThrowItem = 4;
++	public const int PlayerDrop = 4; // TODO: 1.4.4 vanilla was PlayerDropItemCheck, tml changed to ThrowItem. Is PlayerDrop fine?
 -	public static readonly int GrandDesignOrMultiColorWrench = 5;
 +	public const int GrandDesignOrMultiColorWrench = 5;
 -	public static readonly int TorchGod = 6;

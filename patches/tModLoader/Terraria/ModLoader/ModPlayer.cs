@@ -1405,7 +1405,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// </summary>
 	/// <param name="item">The item being picked up</param>
 	/// <returns></returns>
-	public virtual bool OnPickup(Item item)
+	public virtual bool OnPickup(WorldItem item)
 	{
 		return true;
 	}

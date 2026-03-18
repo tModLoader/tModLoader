@@ -613,7 +613,7 @@
  	public int availableAdvancedShadowsCount;
  	private EntityShadowInfo[] _advancedShadows = new EntityShadowInfo[60];
  	private int _lastAddedAvancedShadow;
-@@ -1153,39 +_,126 @@
+@@ -1153,39 +_,127 @@
  	public int golferScoreAccumulated;
  	public int bartenderQuestLog;
  	public bool downedDD2EventAnyDifficulty;
@@ -624,6 +624,7 @@
  	public int statDefense;
 +	*/
 +	internal ref float armorPenetration => ref GetArmorPenetration(DamageClass.Generic);
++	internal ref float meleeArmorPenetration => ref GetArmorPenetration(DamageClass.Melee);
 +
 +	/// <summary>
 +	/// The defense value of this player.<br/>
@@ -757,6 +758,15 @@
  	public bool enabledSuperCart = true;
  	public bool suspiciouslookingTentacle;
  	public bool crimsonHeart;
+@@ -1231,7 +_,7 @@
+ 	public bool penguin;
+ 	public bool HasGardenGnomeNearby;
+ 	public bool brokenMirrorBadLuck;
+-	public int brokenMirrorBadLuckTime;
++	public double brokenMirrorBadLuckTime; // TML: int->double
+ 	public bool magicLantern;
+ 	public bool rabid;
+ 	public bool sunflower;
 @@ -1254,6 +_,12 @@
  	public bool cartFlip;
  	public float trackBoost;
@@ -1424,7 +1434,21 @@
  	public EntityShadowInfo GetAdvancedShadow(int shadowIndex)
  	{
  		if (shadowIndex > availableAdvancedShadowsCount)
-@@ -2658,6 +_,7 @@
+@@ -2645,6 +_,7 @@
+ 		compositeBackArm = new CompositeArmData(enabled, stretch, rotation);
+ 	}
+ 
++	/*
+ 	public int GetArmorPenetration(bool melee)
+ 	{
+ 		int num = armorPenetration;
+@@ -2653,11 +_,13 @@
+ 
+ 		return num;
+ 	}
++	*/
+ 
+ 	public void SetTalkNPC(int npcIndex)
  	{
  		talkNPC = npcIndex;
  		if (Main.netMode != 1 && npcIndex >= 0 && npcIndex < Main.maxNPCs)
@@ -1883,33 +1907,31 @@
  		IEntitySource itemSource_OpenItem = GetItemSource_OpenItem(itemType);
  		int num = Main.rand.Next(14);
  		if (num == 0 && Main.hardMode)
-@@ -4807,9 +_,19 @@
+@@ -4807,8 +_,18 @@
  			QuickSpawnItem(itemSource_OpenItem, 586, Main.rand.Next(20, 50));
  		else
  			QuickSpawnItem(itemSource_OpenItem, 591, Main.rand.Next(20, 50));
 +		*/ // OpenLegacyPresent
  	}
  
-+	// Return value added by TML.
++	// TODO: Return value added by TML.
 +	/// <summary>
-+	/// Spawns an item into the world at this players position. This is a simpler alternative to <see cref="Item.NewItem(IEntitySource, int, int, int, int, int, int, bool, int, bool, bool)"/>. This method can be called from multiplayer client code without necessitating manually syncing the item.
++	/// Spawns an item into the world at this players position. This is a simpler alternative to <see cref="Item.NewItem(IEntitySource, int, int, int, int, int, int, bool, int, bool)"/>. This method can be called from multiplayer client code without necessitating manually syncing the item.
 +	/// <br/> Use <see cref="QuickSpawnItem(IEntitySource, Item, int)"/> if a specific instance of an Item needs to be spawned into the world to preserve modded data.
 +	/// </summary>
 +	/// <param name="source"></param>
 +	/// <param name="item"></param>
 +	/// <param name="stack"></param>
 +	/// <returns>The index of the item within <see cref="Main.item"/></returns>
--	public void QuickSpawnItem(IEntitySource source, int item, int stack = 1)
-+	public int QuickSpawnItem(IEntitySource source, int item, int stack = 1)
+ 	public void QuickSpawnItem(IEntitySource source, int item, int stack = 1)
  	{
  		if (stack > 0) {
- 			Item item2 = new Item();
 @@ -4818,6 +_,8 @@
  			item2.stack = stack;
  			QuickSpawnItem(source, item2);
  		}
 +
-+		return number;
++		//return number;
  	}
  
  	public void QuickSpawnItem(IEntitySource source, Item item)
@@ -3350,13 +3372,15 @@
  		for (int i = 0; i < maxBuffs; i++) {
  			if (buffType[i] <= 0 || !Main.persistentBuff[buffType[i]]) {
  				buffTime[i] = 0;
-@@ -13854,6 +_,10 @@
+@@ -13854,6 +_,12 @@
  
  	public bool SmartSelectLookup(out int selectedSlot)
  	{
 +		// Added by TML to preserve mouse item with moved call location
-+		if (selectedItem == 58)
-+			return;
++		if (selectedItem == 58) {
++			selectedSlot = -1;
++			return false;
++		}
 +
  		if (!controlTorch) {
  			selectedSlot = -1;
@@ -3368,8 +3392,8 @@
 +
 +		int modSelect = TileLoader.AutoSelect(tX, tY, this);
 +		if (modSelect >= 0) {
-+			SmartSelect_SelectItem(modSelect);
-+			return;
++			selectedSlot = modSelect;
++			return true;
 +		}
 +
  		selectedSlot = SmartSelect_PickToolForStrategy(tX, tY, toolStrategy, wetTile);
@@ -3467,6 +3491,28 @@
  		if (torchLuck < 0f)
  			torchLuck = 0f;
  
+@@ -14474,7 +_,10 @@
+ 	public static float GetClosestRollBadLuck(Vector2 position, int range) => Main.player[FindClosest(position, 1, 1)].RollBadLuck(range);
+ 	public static float GetClosestRollBadLuck(int x, int y, int range) => Main.player[FindClosest(new Vector2(x * 16, y * 16), 1, 1)].RollBadLuck(range);
+ 
++	/*
+ 	public int ApplyRapidAttackBonus(int damage, int itemType, bool increaseBonus = false)
++	*/
++	public float ApplyRapidAttackBonus(float damage, int itemType, bool increaseBonus = false)
+ 	{
+ 		if (!ItemID.Sets.RapidAttackBonusDamage[itemType])
+ 			return damage;
+@@ -14491,7 +_,10 @@
+ 				rapidAttackBonus = num + num2;
+ 		}
+ 
++		return (damage * (1f + num3));
++		/*
+ 		return (int)((float)damage * (1f + num3));
++		*/
+ 	}
+ 
+ 	public void ResetEffects()
 @@ -14531,11 +_,17 @@
  		arcticDivingGear = false;
  		noBuilding = false;
@@ -3772,36 +3818,11 @@
  
  				nPC.immune[whoAmI] = NPCImmuneTime;
  				GiveImmuneTimeForCollisionAttack(PlayerImmuneTime);
-@@ -16225,20 +_,96 @@
+@@ -16225,20 +_,71 @@
  		return num;
  	}
  
-+	// Added by TML
-+	public void ApplyBannerOffenseBuff(NPC npc, ref NPC.HitModifiers modifiers) => ApplyBannerOffenseBuff(Item.NPCtoBanner(npc.BannerID()), ref modifiers);
-+
-+	// Added by TML
-+	public void ApplyBannerOffenseBuff(int bannerId, ref NPC.HitModifiers modifiers)
-+	{
-+		if (!HasNPCBannerBuff(bannerId))
-+			return;
-+
-+		var effect = ItemID.Sets.BannerStrength[Item.BannerToItem(bannerId)];
-+		modifiers.TargetDamageMultiplier *= Main.expertMode ? effect.ExpertDamageDealt : effect.NormalDamageDealt;
-+	}
-+
-+	// Added by TML
-+	public void ApplyBannerDefenseBuff(NPC npc, ref Player.HurtModifiers modifiers) => ApplyBannerDefenseBuff(Item.NPCtoBanner(npc.BannerID()), ref modifiers);
-+
-+	// Added by TML
-+	public void ApplyBannerDefenseBuff(int bannerId, ref Player.HurtModifiers modifiers)
-+	{
-+		if (!HasNPCBannerBuff(bannerId))
-+			return;
-+
-+		var effect = ItemID.Sets.BannerStrength[Item.BannerToItem(bannerId)];
-+		modifiers.IncomingDamageMultiplier *= Main.expertMode ? effect.ExpertDamageReceived : effect.NormalDamageReceived;
-+	}
-+
+-	public void ApplyDamageToNPC(NPC npc, int damage, float knockback, int direction, bool crit)
 +	/// <summary>
 +	/// Deals damage to an NPC (and syncs the hit in multiplayer). <br/>
 +	/// The damage will be affected by modifiers, armor pen, enemy resistances etc. <br/>
@@ -3816,7 +3837,6 @@
 +	/// <param name="crit">Whether or not the strike is a crit</param>
 +	/// <param name="damageType">Defaults to <see cref="DamageClass.Default"/></param>
 +	/// <param name="damageVariation">Whether to apply damage variation. Defaults to false.</param>
--	public void ApplyDamageToNPC(NPC npc, int damage, float knockback, int direction, bool crit)
 +	public void ApplyDamageToNPC(NPC npc, int damage, float knockback, int direction, bool crit = false, DamageClass? damageType = null, bool damageVariation = false)
  	{
 +		if (!PlayerLoader.CanHitNPC(this, npc))
@@ -3829,7 +3849,8 @@
 +		var modifiers = npc.GetIncomingStrikeModifiers(damageType ?? DamageClass.Default, direction);
 +		PlayerLoader.ModifyHitNPC(this, npc, ref modifiers);
  
-+		ApplyBannerOffenseBuff(npc, ref modifiers);
++		if (GetBannerBuffEffect(npc, out var effect))
++			ApplyBannerOffenseBuff(effect, ref modifiers);
 +
 +		// most instances of this damage in vanilla are not scaling but they still use generic armor penetration bonus
 +		modifiers.ArmorPenetration += GetTotalArmorPenetration(damageType ?? DamageClass.Generic);
@@ -4856,6 +4877,15 @@
  	}
  
  	private void TileInteractionsUse(int myX, int myY)
+@@ -25859,7 +_,7 @@
+ 				num12 -= tileSafely.frameY / 18 % 4;
+ 				Main.MapPylonTile = new Point16(num11, num12);
+ 				Rectangle rect = new Rectangle(Main.MapPylonTile.X, Main.MapPylonTile.Y, 0, 0);
+-				List<TeleportPylonInfo> pylons = Main.PylonSystem.Pylons;
++				var pylons = Main.PylonSystem.Pylons;
+ 				for (int i = 0; i < pylons.Count; i++) {
+ 					TeleportPylonInfo info = pylons[i];
+ 					if (TeleportPylonsMapLayer.IsRevealed(info))
 @@ -25892,7 +_,7 @@
  				Wiring.HitSwitch(myX, myY);
  				NetMessage.SendData(59, -1, -1, null, myX, myY);
@@ -5006,7 +5036,7 @@
  		if (PlayerInput.UsingGamepad && cursorItemIconText.Length == 0) {
  			cursorItemIconEnabled = false;
  			cursorItemIconID = 0;
-@@ -28223,11 +_,23 @@
+@@ -28223,11 +_,17 @@
  			if (!worldItem.active || worldItem.shimmerTime != 0f || worldItem.noGrabDelay != 0 || worldItem.playerIndexTheItemIsReservedFor != i || !CanAcceptItemIntoInventory(worldItem) || (worldItem.shimmered && !((double)worldItem.velocity.Length() < 0.2)))
  				continue;
  
@@ -5018,13 +5048,7 @@
  			if (base.Hitbox.Intersects(hitbox)) {
 -				if (i == Main.myPlayer && (inventory[selectedItem].type != 0 || itemAnimation <= 0))
 +				if (i == Main.myPlayer && (inventory[selectedItem].type != 0 || itemAnimation <= 0)) {
-+					if (!CombinedHooks.OnPickup(Main.item[j], this)) {
-+						Main.item[j] = new Item();
-+						if (Main.netMode == 1)
-+							NetMessage.SendData(21, -1, -1, null, j);
-+
-+						continue;
-+					}
++					
 +
  					PickupItem(worldItem);
 +				}
@@ -5035,10 +5059,24 @@
  					if (difficulty == 3 && CreativePowerManager.Instance.GetPower<CreativePowers.FarPlacementRangePower>().IsEnabledForPlayer(whoAmI))
  						flag = true;
  
-+					if (ItemLoader.GrabStyle(item, this)) { } else
++					if (ItemLoader.GrabStyle(worldItem, this)) { } else
  					if (manaMagnet && (worldItem.type == 184 || worldItem.type == 1735 || worldItem.type == 1868))
  						PullItem_Pickup(worldItem, 12f, 5);
  					else if (lifeMagnet && (worldItem.type == 58 || worldItem.type == 1734 || worldItem.type == 1867))
+@@ -28313,6 +_,13 @@
+ 
+ 	private void PickupItem(WorldItem itemToPickUp)
+ 	{
++		if (!CombinedHooks.OnPickup(itemToPickUp, this)) {
++			int stack = itemToPickUp.stack;
++			Item item = GetItem(itemToPickUp, GetItemSettings.PickupItemFromWorld);
++			itemToPickUp.OverrideWith(item);
++			if (item.stack == stack)
++				return;
++		} else
+ 		if (ItemID.Sets.NebulaPickup[itemToPickUp.type]) {
+ 			SoundEngine.PlaySound(7, (int)position.X, (int)position.Y);
+ 			int num = itemToPickUp.buffType;
 @@ -28361,6 +_,10 @@
  			NetMessage.SendData(21, -1, -1, null, itemToPickUp.whoAmI);
  	}
@@ -5532,7 +5570,7 @@
  			if (blackBelt && Main.rand.Next(10) == 0) {
  				NinjaDodge();
  				return 0.0;
-@@ -30854,19 +_,49 @@
+@@ -30854,19 +_,36 @@
  				ShadowDodge();
  				return 0.0;
  			}
@@ -5544,25 +5582,12 @@
 +		Hurt(info, quiet);
 +		return info.Damage;
 +	}
-+	
-+	private void ApplyVanillaHurtEffectModifiers(ref HurtModifiers modifiers)
-+	{
-+		{
-+			modifiers.FinalDamage *= Math.Max(1 - endurance, 0);
-+			if (setSolar && solarShields > 0)
-+				modifiers.FinalDamage *= 0.8f;
-+
-+			if (beetleDefense && beetleOrbs > 0)
-+				modifiers.FinalDamage *= 1 - 0.15f * beetleOrbs;
-+
-+			if (defendedByPaladin && whoAmI == Main.myPlayer && TeammateHasPalidinShieldAndCanTakeDamage())
-+				modifiers.FinalDamage *= 0.75f;
-+		}
-+	}
 +
 +	private void OnHurt_Part1(HurtInfo info)
 +	{
 +		int hitDirection = info.HitDirection;
++		int cooldownCounter = info.CooldownCounter;
++		var damageSource = info.DamageSource;
  		if (whoAmI == Main.myPlayer && panic)
  			AddBuff(63, 480);
  
@@ -5655,7 +5680,7 @@
  			if (player == Main.LocalPlayer && num7 < PaladinsShieldRange)
  				Main.LocalPlayer.Hurt(PlayerDeathReason.ByOther(20), damage, 0, pvp: false, quiet: false, Crit: false, ImmunityCooldownID.PaladinsShield, dodgeable: false);
  
-@@ -30962,14 +_,33 @@
+@@ -30962,14 +_,34 @@
  				PositionInWorld = new Vector2(whoAmI, player.whoAmI)
  			});
  		}
@@ -5669,7 +5694,8 @@
 +		bool pvp = info.PvP;
 +		double num2 = info.Damage;
 +		bool Crit = false; // Crit has been removed, since it didn't work anyway
-+		bool flag2 = cooldownCounter == ImmunityCooldownID.DD2OgreKnockback;
++		bool flag = ((cooldownCounter == ImmunityCooldownID.General) ? (!immune) : (hurtCooldowns[cooldownCounter] <= 0));
++		bool flag2 = cooldownCounter == ImmunityCooldownID.LegacyUnused2;
  
  		if (Main.netMode == 1 && whoAmI == Main.myPlayer && !quiet) {
 +			/*
@@ -5685,23 +5711,11 @@
 +
 +		PlayerLoader.OnHurt(this, info);
 +		OnHurt_Part1(info);
-+		OnHurt_Part2(info);
-+		OnHurt_Part3(info);
++		//OnHurt_Part2(info);
++		//OnHurt_Part3(info);
  
  		if (num2 < 1.0)
  			num2 = 1.0;
-@@ -30991,6 +_,11 @@
- 		if (sourceProjectileType.HasValue && ProjectileID.Sets.DismountsPlayersOnHit.IndexInRange(sourceProjectileType.Value) && ProjectileID.Sets.DismountsPlayersOnHit[sourceProjectileType.Value] && mount.Active)
- 			mount.TryDismount(this);
- 
-+	}
-+
-+	private void OnHurt_Part3(HurtInfo info)
-+	{
-+		double num2 = info.Damage;
- 		if (whoAmI == Main.myPlayer && ImmunityCooldownID.Sets.Retaliate[cooldownCounter] && flag) {
- 			if (brainOfConfusionItem != null && !brainOfConfusionItem.IsAir) {
- 				for (int n = 0; n < Main.maxNPCs; n++) {
 @@ -31018,7 +_,7 @@
  					}
  				}
@@ -5781,6 +5795,31 @@
  	}
  
  	public void PlayHurtSound()
+@@ -31260,6 +_,7 @@
+ 		float num = 0.7f;
+ 		float pitchOffset = Utils.Remap(voicePitchOffset, -1f, 1f, 0f - num, num);
+ 		switch (voiceVariant) {
++			/*
+ 			case 1:
+ 				SoundEngine.PlaySound(1, vector, 1, pitchOffset);
+ 				break;
+@@ -31269,6 +_,16 @@
+ 			case 3:
+ 				SoundEngine.PlaySound(SoundID.DefaultPlayerHurt, vector, pitchOffset);
+ 				break;
++			*/
++			case 1:
++				SoundEngine.PlaySound(SoundID.PlayerHit.WithPitchOffset(pitchOffset), vector);
++				break;
++			case 2:
++				SoundEngine.PlaySound(SoundID.FemaleHit.WithPitchOffset(pitchOffset), vector);
++				break;
++			case 3:
++				SoundEngine.PlaySound(SoundID.DefaultPlayerHurt.WithPitchOffset(pitchOffset), vector);
++				break;
+ 		}
+ 	}
+ 
 @@ -31347,6 +_,14 @@
  			if (FileUtilities.Exists(Main.playerPathName + ".bak", isCloudSave))
  				FileUtilities.Delete(Main.playerPathName + ".bak", isCloudSave);
@@ -5809,6 +5848,15 @@
  		if (pvp)
  			pvpDeath = true;
  
+@@ -31372,7 +_,7 @@
+ 		if (whoAmI == Main.myPlayer)
+ 			Main.NotifyOfEvent(GameNotificationType.SpawnOrDeath);
+ 
+-		if (whoAmI != Main.myPlayer && team == Main.LocalPlayer.team && damageSource.SourceProjectileType.HasValue && ProjectileID.Sets.IsAGravestone[damageSource.SourceProjectileType.Value])
++		if (whoAmI != Main.myPlayer && team == Main.LocalPlayer.team && damageSource.SourceProjectileType != 0 && ProjectileID.Sets.IsAGravestone[damageSource.SourceProjectileType])
+ 			AchievementsHelper.NotifyProgressionEvent(36);
+ 
+ 		if (pvpDeath)
 @@ -31400,7 +_,13 @@
  		if (Main.myPlayer == whoAmI && difficulty == 2)
  			HardcoreDeathPenalty();
@@ -5904,7 +5952,7 @@
 +			*/
 +
 +			if (!settings.NoText)
-+				PopupText.NewText(PopupTextContext.RegularItemPickup, newItem, numTransfered);
++				PopupText.NewText(PopupTextContext.RegularItemPickup, newItem, base.Center, numTransfered);
 +
 +			DoCoins(i);
 +
@@ -5953,7 +6001,7 @@
 +			*/
 +
 +			if (!settings.NoText)
-+				PopupText.NewText(PopupTextContext.ItemPickupToVoidContainer, newItem, numTransfered, noStack: false, settings.LongText);
++				PopupText.NewText(PopupTextContext.ItemPickupToVoidContainer, newItem, base.Center, numTransfered, noStack: false, settings.LongText);
 +
 +			AchievementsHelper.NotifyItemPickup(this, returnItem);
 +			settings.HandlePostAction(inv[i]);
@@ -5987,7 +6035,7 @@
 +			*/
 +
 +			if (!settings.NoText)
-+				PopupText.NewText(PopupTextContext.RegularItemPickup, newItem, numTransfered, noStack: false, settings.LongText);
++				PopupText.NewText(PopupTextContext.RegularItemPickup, newItem, base.Center, numTransfered, noStack: false, settings.LongText);
 +
 +			DoCoins(i);
 +
@@ -6144,7 +6192,7 @@
  		}
  	}
  
-@@ -32628,19 +_,34 @@
+@@ -32628,18 +_,33 @@
  		else if (ZoneDesert && Main.remixWorld)
  			itemType = 4689;
  
@@ -6167,7 +6215,6 @@
  				for (int j = 0; j < 11; j++) {
  					int num = tileTargetX - 5 + i;
  					int num2 = tileTargetY - 5 + j;
- 					Tile tile = Main.tile[num, num2];
 +			*/
 +			int width = data?.Width ?? 1;
 +			int height = data?.Height ?? 1;
@@ -6177,9 +6224,9 @@
 +				for (int j = 0; j < height; j++) {
 +					int num = topLeft.X + i;
 +					int num2 = topLeft.Y + j;
+ 					Tile tile = Main.tile[num, num2];
  					if (Main.tile[num, num2].active())
  						array[i, j] = new Vector3((int)tile.type, tile.frameX, tile.frameY);
- 					else
 @@ -32732,7 +_,7 @@
  		}
  	}
@@ -6853,11 +6900,11 @@
  
 +			skipStandardCritCalcs:
 +
-+			/*
  			if (GetBannerBuffEffect(nPC, out var effect))
++				ApplyBannerOffenseBuff(effect, ref modifiers);
++				/*
  				damage = (int)((float)damage * effect.DamageDealt.Sample(Main.Difficulty));
-+			*/
-+			ApplyBannerOffenseBuff(nPC, ref modifiers);
++				*/
  
  			if (parryDamageBuff && sItem.melee) {
 -				damage *= 5;
@@ -7201,6 +7248,34 @@
  		if (Main.tile[x, y].type == 470) {
  			TEDisplayDoll.TryChangePose(x, y);
  		}
+@@ -37816,6 +_,7 @@
+ 		if (RollOnlyBadLuckExtreme(10) == 0)
+ 			pitchOffset = (float)Main.rand.Next(-50, 51) * 0.01f;
+ 
++		/*
+ 		if (range > num2 * 5f)
+ 			SoundEngine.PlaySound(49, base.Center, 1, pitchOffset);
+ 		else if (range > num2 * 4f)
+@@ -37828,6 +_,19 @@
+ 			SoundEngine.PlaySound(52, base.Center, 1, pitchOffset);
+ 		else
+ 			SoundEngine.PlaySound(50, base.Center, 1, pitchOffset);
++		*/
++		if (range > num2 * 5f)
++			SoundEngine.PlaySound(SoundID.GuitarEm.WithPitchOffset(pitchOffset), base.Center);
++		else if (range > num2 * 4f)
++			SoundEngine.PlaySound(SoundID.GuitarD.WithPitchOffset(pitchOffset), base.Center);
++		else if (range > num2 * 3f)
++			SoundEngine.PlaySound(SoundID.GuitarC.WithPitchOffset(pitchOffset), base.Center);
++		else if (range > num2 * 2f)
++			SoundEngine.PlaySound(SoundID.GuitarBm.WithPitchOffset(pitchOffset), base.Center);
++		else if (range > num2 * 1f)
++			SoundEngine.PlaySound(SoundID.GuitarAm.WithPitchOffset(pitchOffset), base.Center);
++		else
++			SoundEngine.PlaySound(SoundID.GuitarG.WithPitchOffset(pitchOffset), base.Center);
+ 	}
+ 
+ 	public void PlayDrums(float range)
 @@ -37881,7 +_,9 @@
  			}
  
@@ -7476,6 +7551,17 @@
  			pulley = false;
  			pulleyDir = 1;
  			if (controlRight)
+@@ -42044,7 +_,10 @@
+ 				NetMessage.SendData(152, -1, -1, null, whoAmI);
+ 
+ 			if (whoAmI == Main.myPlayer || !flag3)
++				/*
+ 				SoundEngine.PlaySound(sItem.UseSound, base.Center, sItem.useSoundPitch);
++				*/
++				SoundEngine.PlaySound(sItem.UseSound, base.Center);
+ 		}
+ 	}
+ 
 @@ -42104,11 +_,17 @@
  			}
  
@@ -7683,7 +7769,7 @@
  		if (sItem.melee)
  			return meleeCrit;
  
-@@ -43340,6 +_,11 @@
+@@ -43340,8 +_,14 @@
  			return magicCrit;
  
  		return 0;
@@ -7694,10 +7780,15 @@
 +		return (int)(crit + 5E-06f);
  	}
  
++	/*
  	public float GetWeaponDamageMultiplier(Item item)
-@@ -43369,17 +_,53 @@
+ 	{
+ 		if (item.melee)
+@@ -43368,18 +_,55 @@
+ 
  		return 1f;
  	}
++	*/
  
 -	public int GetWeaponDamage(Item sItem)
 +	//TML: Added 'forTooltip' parameter.
@@ -8194,21 +8285,17 @@
 +			/*
  			int num = Item.NewItem(source, (int)position.X, (int)position.Y, width, height, theItem.type, stack, noBroadcast: true, theItem.prefix);
 +			*/
-+			int num = Item.NewItem(source, (int)position.X, (int)position.Y, width, height, theItem, stack, noBroadcast: true, theItem.prefix);
++			int num = Item.NewItem(source, (int)position.X, (int)position.Y, width, height, theItem, noBroadcast: true);
  			WorldItem obj = Main.item[num];
  			obj.velocity.Y = (float)Main.rand.Next(-20, 1) * 0.2f;
  			obj.velocity.X = (float)Main.rand.Next(-20, 21) * 0.2f;
-@@ -44180,8 +_,13 @@
- 		}
- 	}
+@@ -44182,6 +_,9 @@
  
-+	private Player _clientClone;
  	public Player clientClone(Player clonePlayer)
  	{
 +		// Disable cloning until the end of the method.
 +		using var _disableItemCLone = new Item.DisableCloneMethod("Item.Clone is bad for performance, and should not be called during Player.clientClone or ModPlayer.CopyClientStateTo. Use Item.CopyNetStateTo instead");
 +
-+		Player clonePlayer = _clientClone ??= new Player();
  		clonePlayer.zone1 = zone1;
  		clonePlayer.zone2 = zone2;
  		clonePlayer.zone3 = zone3;
@@ -8461,10 +8548,10 @@
  
 +		var plrData = FileUtilities.ReadAllBytes(playerPath, cloudSave);
 +		var tplrData = PlayerIO.ReadDataBytes(playerPath, cloudSave);
-+		return LoadPlayerFromStream(playerFileData, plrData, tplrData);
++		return LoadPlayerFromStream(playerFileData, plrData, tplrData, cloudSave);
 +	}
 +
-+	public static PlayerFileData LoadPlayerFromStream(PlayerFileData playerFileData, byte[] plrData, byte[] tplrData)
++	public static PlayerFileData LoadPlayerFromStream(PlayerFileData playerFileData, byte[] plrData, byte[] tplrData, bool cloudSave)
 +	{
 +		string playerPath = playerFileData.Path;
 +

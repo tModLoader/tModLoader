@@ -1,8 +1,9 @@
-using Microsoft.Xna.Framework;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria.DataStructures;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.GameContent.UI;
@@ -152,6 +153,7 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 		Main.ItemDropSolver.TryDropping(info);
 	}
 
+	/*
 	/// <summary>
 	/// Will spawn an item like <see cref="Player.QuickSpawnItem(IEntitySource, int, int)"/>, but clones it (handy when you need to retain item infos)
 	/// </summary>
@@ -190,6 +192,7 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 	/// <returns>Returns the Item instance</returns>
 	public Item QuickSpawnItemDirect(IEntitySource source, int type, int stack = 1)
 		=> Main.item[QuickSpawnItem(source, type, stack)];
+	*/
 
 	/// <summary> Returns whether or not this Player currently has a (de)buff of the provided type. </summary>
 	public bool HasBuff(int type) => FindBuffIndex(type) != -1;
@@ -385,7 +388,7 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 	{
 		float attackSpeed = GetTotalAttackSpeed(sItem.DamageType);
 		// apply a scale based on the set. It's not recommended for mods to use this, but vanilla does for super fast melee weapons so here we are
-		attackSpeed = 1 + ((attackSpeed - 1) * ItemID.Sets.BonusAttackSpeedMultiplier[sItem.type]);
+		attackSpeed = 1 + ((attackSpeed - 1) * ItemID.Sets.BonusMeleeSpeedMultiplier[sItem.type]);
 		return attackSpeed;
 	}
 
@@ -686,4 +689,52 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 
 		return false;
 	}
+
+	private void ApplyVanillaHurtEffectModifiers(ref HurtModifiers modifiers)
+	{
+		{
+			modifiers.FinalDamage *= Math.Max(1 - endurance, 0);
+			if (setSolar && solarShields > 0)
+				modifiers.FinalDamage *= 0.8f;
+
+			if (beetleDefense && beetleOrbs > 0)
+				modifiers.FinalDamage *= 1 - 0.15f * beetleOrbs;
+
+			if (defendedByPaladin && whoAmI == Main.myPlayer && TeammateHasPalidinShieldAndCanTakeDamage())
+				modifiers.FinalDamage *= 0.75f;
+		}
+	}
+
+	public void ApplyBannerOffenseBuff(ItemID.BannerEffect effect, ref NPC.HitModifiers modifiers)
+	{
+		modifiers.TargetDamageMultiplier *= effect.DamageDealt.Sample(Main.Difficulty);
+	}
+
+	/*
+	// Added by TML
+	public void ApplyBannerOffenseBuff(NPC npc, ref NPC.HitModifiers modifiers) => ApplyBannerOffenseBuff(Item.NPCtoBanner(npc.BannerID()), ref modifiers);
+
+	// Added by TML
+	public void ApplyBannerOffenseBuff(int bannerId, ref NPC.HitModifiers modifiers)
+	{
+		if (!HasNPCBannerBuff(bannerId))
+			return;
+
+		var effect = ItemID.Sets.BannerStrength[Item.BannerToItem(bannerId)];
+		modifiers.TargetDamageMultiplier *= Main.expertMode ? effect.ExpertDamageDealt : effect.NormalDamageDealt;
+	}
+
+	// Added by TML
+	public void ApplyBannerDefenseBuff(NPC npc, ref Player.HurtModifiers modifiers) => ApplyBannerDefenseBuff(Item.NPCtoBanner(npc.BannerID()), ref modifiers);
+
+	// Added by TML
+	public void ApplyBannerDefenseBuff(int bannerId, ref Player.HurtModifiers modifiers)
+	{
+		if (!HasNPCBannerBuff(bannerId))
+			return;
+
+		var effect = ItemID.Sets.BannerStrength[Item.BannerToItem(bannerId)];
+		modifiers.IncomingDamageMultiplier *= Main.expertMode ? effect.ExpertDamageReceived : effect.NormalDamageReceived;
+	}
+	*/
 }

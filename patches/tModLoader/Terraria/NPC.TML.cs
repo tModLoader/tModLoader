@@ -320,4 +320,32 @@ public partial class NPC : IEntityWithGlobals<GlobalNPC>
 		if (Main.netMode == 2)
 			NetMessage.SendData(54, -1, -1, null, whoAmI);
 	}
+
+	public void CloneDefaults(int Type)
+	{
+		int originalType = type;
+		int originalNetID = netID;
+		var originalModNPC = ModNPC;
+		var originalGlobals = _globals;
+
+		SetDefaultsKeepPlayerInteraction(Type);
+
+		type = originalType;
+		netID = originalNetID;
+		ModNPC = originalModNPC;
+		_globals = originalGlobals;
+	}
+
+	public void SetDefaultsKeepPlayerInteraction(int Type)
+	{
+		bool[] array = new bool[playerInteraction.Length];
+		for (int i = 0; i < playerInteraction.Length; i++) {
+			array[i] = playerInteraction[i];
+		}
+
+		SetDefaults(Type);
+		for (int j = 0; j < playerInteraction.Length; j++) {
+			playerInteraction[j] = array[j];
+		}
+	}
 }

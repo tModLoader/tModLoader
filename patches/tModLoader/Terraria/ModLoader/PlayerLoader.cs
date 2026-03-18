@@ -154,7 +154,7 @@ public static class PlayerLoader
 				if (k < items.Count)
 					player.inventory[k] = items[k];
 				else
-					player.inventory[k].SetDefaults();
+					player.inventory[k].SetDefaults(0);
 		}
 		else {
 			for (int k = 0; k < 49; k++) {
@@ -1474,9 +1474,9 @@ public static class PlayerLoader
 		}
 	}
 
-	private static HookList HookOnPickup = AddHook<Func<Item, bool>>(p => p.OnPickup);
+	private static HookList HookOnPickup = AddHook<Func<WorldItem, bool>>(p => p.OnPickup);
 
-	public static bool OnPickup(Player player, Item item)
+	public static bool OnPickup(Player player, WorldItem item)
 	{
 		foreach (var modPlayer in HookOnPickup.Enumerate(player)) {
 			if (!modPlayer.OnPickup(item)) {
