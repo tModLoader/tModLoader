@@ -9,7 +9,7 @@ namespace Terraria.ModLoader.Engine;
 
 internal class Steam
 {
-	public const uint TMLAppID = 1281930; //431960; //for Wallpaper Engine while testing EULA code;
+	public const uint TMLAppID = 1281930;
 	public const uint TerrariaAppID = 105600;
 
 	public static AppId_t TMLAppID_t => new AppId_t(TMLAppID);
