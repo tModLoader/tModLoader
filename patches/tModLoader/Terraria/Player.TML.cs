@@ -153,47 +153,6 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 		Main.ItemDropSolver.TryDropping(info);
 	}
 
-	/*
-	/// <summary>
-	/// Will spawn an item like <see cref="Player.QuickSpawnItem(IEntitySource, int, int)"/>, but clones it (handy when you need to retain item infos)
-	/// </summary>
-	/// <param name="source">The spawn context</param>
-	/// <param name="item">The item you want to be cloned</param>
-	/// <param name="stack">The stack to give the item. Note that this will override maxStack if it's higher.</param>
-	// TODO: 1.4.4, delete this and move code to Player.QuickSpawnItem(IEntitySource source, Item item, int stack).
-	[Obsolete("Use Player.QuickSpawnItem(IEntitySource source, Item item, int stack) instead.")]
-	public int QuickSpawnClonedItem(IEntitySource source, Item item, int stack = 1)
-	{
-		int index = Item.NewItem(source, getRect(), item, false, false, false);
-		Main.item[index].stack = stack;
-
-		// Sync the item for mp
-		if (Main.netMode == NetmodeID.MultiplayerClient)
-			NetMessage.SendData(MessageID.SyncItem, -1, -1, null, index, 1f, 0f, 0f, 0, 0, 0);
-
-		return index;
-	}
-
-	/// <inheritdoc cref="QuickSpawnClonedItem"/>
-	public int QuickSpawnItem(IEntitySource source, Item item, int stack = 1)
-		=> QuickSpawnClonedItem(source, item, stack);
-
-	/// <summary><inheritdoc cref="QuickSpawnClonedItem"/></summary>
-	/// <returns>Returns the Item instance</returns>
-	public Item QuickSpawnClonedItemDirect(IEntitySource source, Item item, int stack = 1)
-		=> Main.item[QuickSpawnClonedItem(source, item, stack)];
-
-	/// <summary><inheritdoc cref="QuickSpawnClonedItem"/></summary>
-	/// <returns>Returns the Item instance</returns>
-	public Item QuickSpawnItemDirect(IEntitySource source, Item item, int stack = 1)
-		=> Main.item[QuickSpawnClonedItem(source, item, stack)];
-
-	/// <summary><inheritdoc cref="QuickSpawnItem(IEntitySource, int, int)"/></summary>
-	/// <returns>Returns the Item instance</returns>
-	public Item QuickSpawnItemDirect(IEntitySource source, int type, int stack = 1)
-		=> Main.item[QuickSpawnItem(source, type, stack)];
-	*/
-
 	/// <summary> Returns whether or not this Player currently has a (de)buff of the provided type. </summary>
 	public bool HasBuff(int type) => FindBuffIndex(type) != -1;
 

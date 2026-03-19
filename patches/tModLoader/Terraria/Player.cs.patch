@@ -1907,34 +1907,66 @@
  		IEntitySource itemSource_OpenItem = GetItemSource_OpenItem(itemType);
  		int num = Main.rand.Next(14);
  		if (num == 0 && Main.hardMode)
-@@ -4807,8 +_,18 @@
+@@ -4807,8 +_,16 @@
  			QuickSpawnItem(itemSource_OpenItem, 586, Main.rand.Next(20, 50));
  		else
  			QuickSpawnItem(itemSource_OpenItem, 591, Main.rand.Next(20, 50));
 +		*/ // OpenLegacyPresent
  	}
  
-+	// TODO: Return value added by TML.
 +	/// <summary>
-+	/// Spawns an item into the world at this players position. This is a simpler alternative to <see cref="Item.NewItem(IEntitySource, int, int, int, int, int, int, bool, int, bool)"/>. This method can be called from multiplayer client code without necessitating manually syncing the item.
-+	/// <br/> Use <see cref="QuickSpawnItem(IEntitySource, Item, int)"/> if a specific instance of an Item needs to be spawned into the world to preserve modded data.
++	/// <inheritdoc cref="QuickSpawnItem(IEntitySource, Item, GetItemSettings)"/><br/>
++	/// Uses a random prefix
 +	/// </summary>
-+	/// <param name="source"></param>
++	/// <param name="source">A source for the item, passed to <see cref="Item.OnCreated"/> with a <see cref="GivePlayerCreationContext"/></param>
 +	/// <param name="item"></param>
 +	/// <param name="stack"></param>
-+	/// <returns>The index of the item within <see cref="Main.item"/></returns>
  	public void QuickSpawnItem(IEntitySource source, int item, int stack = 1)
  	{
  		if (stack > 0) {
-@@ -4818,6 +_,8 @@
- 			item2.stack = stack;
- 			QuickSpawnItem(source, item2);
+@@ -4820,22 +_,42 @@
  		}
-+
-+		//return number;
  	}
  
++	/// <summary>
++	/// <inheritdoc cref="QuickSpawnItem(IEntitySource, Item, GetItemSettings)"/>
++	/// </summary>
++	/// <param name="source">A source for the item, passed to <see cref="Item.OnCreated"/> with a <see cref="GivePlayerCreationContext"/></param>
++	/// <param name="item"></param>
  	public void QuickSpawnItem(IEntitySource source, Item item)
+ 	{
+ 		QuickSpawnItem(source, item, GetItemSettings.PickupItemFromWorld);
+ 	}
+ 
++	/// <summary>
++	/// <b>This function has changed since 1.4.4!</b><br/>
++	/// <inheritdoc cref="GetOrDropItem(Item, GetItemSettings)"/>
++	/// </summary>
++	/// <param name="source">A source for the item, passed to <see cref="Item.OnCreated"/> with a <see cref="GivePlayerCreationContext"/></param>
++	/// <param name="item"></param>
++	/// <param name="settings"></param>
+ 	public void QuickSpawnItem(IEntitySource source, Item item, GetItemSettings settings)
+ 	{
+ 		item.newAndShiny = ItemSlot.Options.HighlightNewItems && !ItemID.Sets.NeverAppearsAsNewInInventory[item.type];
++		item.OnCreated(new GivePlayerCreationContext(source));
+ 		GetOrDropItem(item, settings);
+ 	}
+ 
++	/// <summary>
++	/// Adds/returns an item to the player's inventory, and drops the remainder in the world if space runs out.<br/>
++	/// See also <seealso cref="GetItem(Item, GetItemSettings)"/>
++	/// </summary>
+ 	public void GetOrDropItem(Item item, GetItemSettings settings)
+ 	{
+ 		Item item2 = GetItem(item, settings);
+ 		if (!item2.IsAir) {
++			/*
+ 			int num = Item.NewItem(GetItemSource_InventoryOverflow(), (int)position.X, (int)position.Y, width, height, item2.type, item2.stack, noBroadcast: false, item2.prefix, noGrabDelay: true);
++			*/
++			int num = Item.NewItem(GetItemSource_InventoryOverflow(), (int)position.X, (int)position.Y, width, height, item2, noBroadcast: false, noGrabDelay: true);
+ 			Main.item[num].newAndShiny = item.newAndShiny;
+ 			settings.HandlePostAction(Main.item[num].inner);
+ 			if (Main.netMode == 1)
 @@ -4845,6 +_,13 @@
  
  	public void OpenBossBag(int type)
@@ -2265,7 +2297,7 @@
  	public IEntitySource GetProjectileSource_Item(Item item) => new EntitySource_ItemUse(this, item);
  	public IEntitySource GetItemSource_Item(Item item) => new EntitySource_ItemUse(this, item);
  	public IEntitySource GetItemSource_OpenItem(int itemType) => new EntitySource_ItemOpen(this, itemType);
-@@ -7406,9 +_,35 @@
+@@ -7406,9 +_,36 @@
  	public IEntitySource GetItemSource_TileInteraction(int tileCoordsX, int tileCoordsY) => new EntitySource_TileInteraction(this, tileCoordsX, tileCoordsY);
  	public IEntitySource GetNPCSource_TileInteraction(int tileCoordsX, int tileCoordsY) => new EntitySource_TileInteraction(this, tileCoordsX, tileCoordsY);
  	public IEntitySource GetItemSource_OnHit(Entity victim, int itemSourceId) => new EntitySource_OnHit_ByItemSourceID(this, victim, itemSourceId);
@@ -2275,6 +2307,7 @@
 +	internal IEntitySource GetProjectileSource_Item(Item item) => GetSource_ItemUse(item);
 +	internal IEntitySource GetItemSource_OpenItem(int itemType) => GetSource_OpenItem(itemType);
 +	internal IEntitySource GetItemSource_Death() => GetSource_Death();
++	internal IEntitySource GetItemSource_InventoryOverflow() => GetItemSource_Misc(ItemSourceID.InventoryOverflow);
 +	internal IEntitySource GetItemSource_Misc(int itemSourceId) => GetSource_Misc(context: ItemSourceID.ToContextString(itemSourceId));
 +	internal IEntitySource GetProjectileSource_Item_WithPotentialAmmo(Item item, int ammoItemId) => GetSource_ItemUse_WithPotentialAmmo(item, ammoItemId);
 +	internal IEntitySource GetProjectileSource_OnHit(Entity victim, int projectileSourceId) => GetSource_OnHit(victim, context: ProjectileSourceID.ToContextString(projectileSourceId));
