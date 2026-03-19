@@ -1,0 +1,14 @@
+--- src/TerrariaNetCore/Terraria/Graphics/Capture/CaptureCamera.cs
++++ src/tModLoader/Terraria/Graphics/Capture/CaptureCamera.cs
+@@ -131,8 +_,9 @@
+ 		Monitor.Enter(_captureLock);
+ 		if (_activeSettings == null)
+ 			return;
+-
+-		bool notRetro = Lighting.NotRetro;
++		
++		// Always allow capturing with screen shaders.
++		bool notRetro = true;
+ 		if (_renderQueue.Count > 0) {
+ 			CaptureChunk captureChunk = _renderQueue.Dequeue();
+ 			_graphics.SetRenderTarget(null);
