@@ -1,4 +1,5 @@
 using ExampleMod.Common.Configs;
+using System;
 using System.Linq;
 using Terraria;
 using Terraria.DataStructures;
@@ -42,6 +43,19 @@ namespace ExampleMod.Content.Items.Accessories
 			maxCanAscendMultiplier = 1f;
 			maxAscentMultiplier = 3f;
 			constantAscend = 0.135f;
+		}
+
+		public override bool WingGlidingSpeeds(Player player, ref float gravityMultiplier, ref float maxSpeedMultiplier) {
+			if (player.controlUp) {
+				float descent = player.velocity.Y * 0.02f;
+				player.velocity.Y -= descent;
+				player.velocity.X += player.direction * Math.Abs(descent) * 3;
+				player.velocity.X *= 0.996f;
+				return player.velocity.Y < player.maxFallSpeed * maxSpeedMultiplier;
+			}
+			gravityMultiplier *= 0.5f;
+			maxSpeedMultiplier *= 3f;
+			return base.WingGlidingSpeeds(player, ref gravityMultiplier, ref maxSpeedMultiplier);
 		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
