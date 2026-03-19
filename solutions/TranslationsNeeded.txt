@@ -1,4 +1,3 @@
-zh-Hans 2
 ru-RU 1
 pt-BR 42
 pl-PL 39
