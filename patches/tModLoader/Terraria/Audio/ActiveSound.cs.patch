@@ -186,7 +186,7 @@
  				num *= Main.ambientVolume;
 +
 +				// Added by TML to mimic the behavior of the LegacySoundPlayer code.
-+				if (Main.gameInactive) {
++				if (FocusHelper.QuietAmbientSounds) {
 +					num = 0f;
 +				}
 +

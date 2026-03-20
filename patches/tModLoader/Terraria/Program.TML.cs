@@ -348,7 +348,7 @@ public static partial class Program
 			AttemptSupportHighDPI(isServer); // Can run anytime
 
 		    if (!isServer) {
-		    	NativeLibraries.CheckNativeFAudioDependencies();
+		    	ModLoader.Engine.NativeLibraries.CheckNativeFAudioDependencies();
 		       	FNALogging.RedirectLogs(); // Needs to run after CheckDependencies
 		    }
 		}

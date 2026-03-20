@@ -121,6 +121,7 @@ public partial class Recipe
 	public Recipe AddIngredient<T>(int stack = 1) where T : ModItem
 		=> AddIngredient(ModContent.ItemType<T>(), stack);
 
+	/*
 	/// <summary>
 	/// Adds a recipe group ingredient to this recipe with the given RecipeGroup name and stack size.
 	/// <br/> Recipe groups allow a recipe to use alternate ingredients without making multiple recipes. For example the "IronBar" group accepts either <see cref="ItemID.IronBar"/> or <see cref="ItemID.LeadBar"/>. The <see href="https://github.com/tModLoader/tModLoader/wiki/Intermediate-Recipes#recipe-groups">Recipe Groups wiki guide</see> has more information.
@@ -142,6 +143,7 @@ public partial class Recipe
 
 		return this;
 	}
+	*/
 
 	/// <summary>
 	/// Adds a recipe group ingredient to this recipe with the given RecipeGroupID and stack size.
@@ -171,7 +173,7 @@ public partial class Recipe
 	/// <param name="stack"></param>
 	public Recipe AddRecipeGroup(RecipeGroup recipeGroup, int stack = 1)
 	{
-		AddIngredient(recipeGroup.IconicItemId, stack);
+		AddIngredient(recipeGroup.GetPlaceholderItemType(), stack);
 		AddGroup(recipeGroup.RegisteredId);
 
 		return this;
@@ -187,7 +189,7 @@ public partial class Recipe
 		if (tileID < 0 || tileID >= TileLoader.TileCount)
 			throw new RecipeException($"No tile has ID '{tileID}'.");
 
-		requiredTile.Add(tileID);
+		requiredTile = tileID;
 
 		return this;
 	}
@@ -502,7 +504,7 @@ public partial class Recipe
 		ArgumentNullException.ThrowIfNull(RecipeLoader.CurrentMod);
 		var recipe = new Recipe(RecipeLoader.CurrentMod);
 
-		recipe.createItem.SetDefaults(result, false);
+		recipe.createItem.SetDefaults(result);
 		recipe.createItem.stack = amount;
 
 		return recipe;

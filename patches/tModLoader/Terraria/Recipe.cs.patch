@@ -25,7 +25,7 @@
  	}
  
 -	public static int maxRequirements = 15;
-+	private static int maxVanillaRequirements = 15;
++	internal static int maxVanillaRequirements = 15;
  	public static int maxRecipes = 3600;
  	public static int numRecipes;
  	public static bool[] TileUsedInRecipes = new bool[TileID.Count];
@@ -40,7 +40,7 @@
 -	public int[] acceptedGroups = new int[maxRequirements];
 -	public RequiredItemEntry[] requiredItemQuickLookup = new RequiredItemEntry[maxRequirements];
 +	public List<int> acceptedGroups = new();
-+	private RequiredItemEntry[] requiredItemQuickLookup;
++	internal RequiredItemEntry[] requiredItemQuickLookup; // TML private->internal
  	public List<Item> customShimmerResults;
 +
 +	// Following fields made internal, automatically replaced with corresponding Conditions
@@ -163,7 +163,7 @@
  	public void GetIngredientsForOneCraft(Player player, List<RequiredItemEntry> ingredients)
  	{
 -		for (int i = 0; i < maxRequirements; i++) {
-+		for (int i = 0; i < recipe.requiredItem.Count; i++) {
++		for (int i = 0; i < ingredients.Count; i++) {
  			RequiredItemEntry requiredItemEntry = requiredItemQuickLookup[i];
  			if (requiredItemEntry.itemIdOrRecipeGroup != 0) {
  				requiredItemEntry.stack -= GetIngredientCraftingDiscount(player, requiredItemEntry);
@@ -182,7 +182,7 @@
  				AddToAvailableRecipes(i);
  		}
  
-@@ -297,9 +_,33 @@
+@@ -297,9 +_,35 @@
  		CollectItems(player.inventory, 58);
  		CollectItemsFromChests(player);
  		AddFakeCountsForItemGroups();
@@ -195,9 +195,10 @@
  	}
  
 +	// Added by TML. Replaces multiple vanilla crafting code.
++	/*
 +	private bool ConsumeForCraft(Item item, Item requiredItem, ref int stackRequired)
 +	{
-+		if (item.stack == 0 || !item.IsTheSameAs(requiredItem) && !AcceptedByItemGroups(item.type, requiredItem.type))
++		if (item.stack == 0 || item.IsNotTheSameAs(requiredItem) && !AcceptedByItemGroups(item.type, requiredItem.type))
 +			return false;
 +
 +		var consumed = item.Clone();
@@ -212,6 +213,7 @@
 +
 +		return true;
 +	}
++	*/
 +
  	private static void CollectItemsFromChests(Player player)
  	{

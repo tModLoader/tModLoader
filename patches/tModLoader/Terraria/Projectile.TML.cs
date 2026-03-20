@@ -189,7 +189,7 @@ public partial class Projectile : IEntityWithGlobals<GlobalProjectile>
 		PlayerDeathReason damageSource = PlayerDeathReason.ByProjectile(owner, whoAmI); // Get the death message.
 
 		// Apply damage to the player.
-		if (targetPlayer.Hurt(damageSource, damageVariation, direction, pvp: true, quiet: false, Crit: false, -1, dodgeable: IsDamageDodgable(), armorPenetration: ArmorPenetration) > 0.0 && !targetPlayer.dead)
+		if (targetPlayer.Hurt(damageSource, damageVariation, direction, pvp: true, quiet: false, Crit: false, -1, dodgeable: IsDamageDodgeable(), armorPenetration: ArmorPenetration) > 0.0 && !targetPlayer.dead)
 			StatusPlayer(targetPlayer);
 
 		if (trap) {

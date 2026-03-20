@@ -6195,13 +6195,15 @@
  			if (IsLiquidStyleWater(j) && liquidAlpha[j] > 0f && j != waterStyle) {
  				DrawLiquid(isBackground, j, isBackground ? 1f : liquidAlpha[j], waterOnly: true);
  				flag = true;
-@@ -49753,9 +_,12 @@
+@@ -49753,9 +_,14 @@
  			TimeLogger.DrawBackgroundWaterTiles.AddTime(fromTimestamp);
  		else
  			TimeLogger.DrawWaterTiles.AddTime(fromTimestamp);
 +
++		/* TODO: What is sceneTilePos now?
 +		if (LiquidEdgeRenderer.Active && !drawToScreen)
 +			LiquidEdgeRenderer.DrawTileMask(spriteBatch, tileTarget, sceneTilePos - screenPosition + new Vector2(drawToScreen ? 0 : offScreenRange));
++		*/
  	}
  
 -	protected void DrawLiquid(bool bg, int waterStyle, float Alpha = 1f, bool waterOnly = false)

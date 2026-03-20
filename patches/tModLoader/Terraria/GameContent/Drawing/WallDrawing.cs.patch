@@ -41,7 +41,7 @@
  				if (wall <= 0 || FullTile(j, i) || (wall == 318 && !_shouldShowInvisibleWalls) || (tile.invisibleWall() && !_shouldShowInvisibleWalls))
  					continue;
  
-+				if (!WallLoader.PreDraw(j, i, wall, spriteBatch)) {
++				if (!WallLoader.PreDraw(j, i, wall, Main.spriteBatch)) {
 +					goto PostDraw;
 +				}
 +
@@ -54,7 +54,7 @@
  				}
 +
 +				PostDraw:
-+				WallLoader.PostDraw(j, i, wall, spriteBatch);
++				WallLoader.PostDraw(j, i, wall, Main.spriteBatch);
  			}
  		}
  

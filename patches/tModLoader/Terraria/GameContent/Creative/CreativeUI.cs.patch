@@ -31,7 +31,7 @@
  		if (!Main.ServerSideCharacter)
  			Main.LocalPlayerCreativeTracker.ItemSacrifices.RegisterItemSacrifice(item.type, num2);
 +
-+		ItemLoader.OnResearched(item, num3);
++		ItemLoader.OnResearched(item, flag);
  
  		item.stack -= num2;
  		if (item.stack <= 0)

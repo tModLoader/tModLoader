@@ -6,6 +6,7 @@ namespace Terraria.UI;
 
 public partial class ItemSlot
 {
+	/* TODO: Restore functionality in ArmorSwap. Try new approach rather than just fixing compile issues.
 	private static bool AccessorySwap(Player player, Item item, ref Item result)
 	{
 		//TML: Rewrote ArmorSwap for accessories under the PR #1299 so it was actually readable. No vanilla functionality lost in transition
@@ -89,6 +90,7 @@ public partial class ItemSlot
 
 		return true;
 	}
+	*/
 
 	/// <summary>
 	/// Alters the ItemSlot.DyeSwap method for modded slots;

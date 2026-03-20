@@ -1,0 +1,11 @@
+--- src/TerrariaNetCore/Terraria/UI/CraftingUI.cs
++++ src/tModLoader/Terraria/UI/CraftingUI.cs
+@@ -189,7 +_,7 @@
+ 
+ 		UILinkPointNavigator.Shortcuts.CRAFT_CurrentRecipeBig = -1;
+ 		UILinkPointNavigator.Shortcuts.CRAFT_CurrentRecipeSmall = -1;
+-		for (int j = 0; j < Recipe.maxRequirements; j++) {
++		for (int j = 0; j < Recipe.maxVanillaRequirements; j++) {
+ 			Recipe recipe = Main.recipe[Main.availableRecipe[focusRecipe]];
+ 			Item inv = recipe.requiredItem[j];
+ 			if (inv.type == 0) {

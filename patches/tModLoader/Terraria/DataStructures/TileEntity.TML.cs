@@ -38,7 +38,7 @@ public partial class TileEntity
 	/// <para/> Only called on the client.
 	/// </summary>
 	/// <param name="reader">The reader.</param>
-	public virtual void NetReceive(BinaryReader reader) => ReadExtraData(reader, true);
+	public virtual void NetReceive(BinaryReader reader) => ReadExtraData(reader, Main.curRelease, true);
 
 	/// <summary>
 	/// Attempts to retrieve the TileEntity at the given coordinates of the specified Type (<typeparamref name="T"/>). Works with any provided coordinate belonging to the multitile. Note that this method assumes the TileEntity is placed in the top left corner of the multitile.

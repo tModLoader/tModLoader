@@ -62,7 +62,7 @@
  		result.item.stack = stack;
 +		*/
 +
-+		tEFoodPlatter.item = ItemLoader.TransferWithLimit(item, stack);
++		result.item = ItemLoader.TransferWithLimit(item, stack);
 +
  		NetMessage.SendData(86, -1, -1, null, result.ID, x, y);
  	}

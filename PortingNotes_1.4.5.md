@@ -174,6 +174,8 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - New AmmoID.Sets.IsSpecialist doesn't contain Sand anymore. Is that expected?
 - TileID.Sets.RoomNeeds.CountsAsX is not a Set, but there is also a CountsAsXTypes int[] similar to the old approach. We'll probably want to make the non-set ones private and adjust logic for consistency.
 - Everything in NPCSpawnHelper will need to be checked against any 1.4.5 changes, as well as any new conditions that are still missing.
+- TileSnapshot will need more thought to restore functionality. Commented out erroring code for now.
+- Vanilla now has a NativeLibraries class, conflicting with our own.
 
 # New Fields that might need more documentation
 
@@ -244,6 +246,7 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Replace Main.hasFocus with FocusHelper.AllowUIInputs (or another property)
 - Player.QuickSpawnItem no longer returns an int indicating the index of the item in Main.item. This is because the spawned item can now potentially go directly into player inventory.
 - Item.width and height no longer have any relation to the in-world hitbox of dropped items. All items now have a 16x16 hitbox in the game world.
+- NPC.killCount is now BannerSystem.killCount
 
 # tModPorter TODOs
 

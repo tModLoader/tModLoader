@@ -26,7 +26,7 @@
  				else
  					MapHelper.LoadMapVersion2(binaryReader, num);
  
-+				MapIO.ReadModFile(text, isCloudSave);
++				MapIO.ReadModFile(mapPath, isCloudSave);
 +
  				ClearEdges();
  				Main.clearMap = true;
@@ -35,7 +35,7 @@
  				Main.refreshMap = false;
  			}
 +			else {
-+				throw new Exception($"Map release version too high ({num}), the map file \'{text}\' is either corrupted or from a future version of Terraria."); // TML fix. Fix map saving if loading corrupted map file with higher release version number.
++				throw new Exception($"Map release version too high ({num}), the map file \'{mapPath}\' is either corrupted or from a future version of Terraria."); // TML fix. Fix map saving if loading corrupted map file with higher release version number.
 +			}
  		}
  		catch (Exception value) {

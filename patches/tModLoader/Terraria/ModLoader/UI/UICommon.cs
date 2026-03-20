@@ -98,7 +98,7 @@ public static class UICommon
 	{
 		if (Main.SettingsEnabled_OpaqueBoxBehindTooltips) {
 			Item fakeItem = new Item();
-			fakeItem.SetDefaults(0, noMatCheck: true);
+			fakeItem.SetDefaults(0);
 			fakeItem.SetNameOverride(text);
 			fakeItem.type = 1;
 			fakeItem.scale = 0f;

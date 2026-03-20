@@ -2872,6 +2872,18 @@
  					int damage = 50;
  					if (Main.masterMode)
  						damage = 35;
+@@ -60292,7 +_,10 @@
+ 						num19 = num18 * 100 * 100;
+ 					}
+ 
++					//TML: Added context below
++					const string Context = "CoinRain";
++
+-					int num20 = Item.NewItem(GetItemSource_FromCoinRain(num15, num16), num15, num16, 16, 16, type, num18);
++					int num20 = Item.NewItem(new EntitySource_CoinRain(num15, num16, Context), num15, num16, 16, 16, type, num18);
+ 					Main.coinRain -= num19;
+ 					if (num20 > 390)
+ 						Main.coinRain = 0;
 @@ -60306,7 +_,10 @@
  		if (Main.dayTime && !Main.remixWorld)
  			return;

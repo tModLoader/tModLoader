@@ -6,6 +6,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using Terraria.Chat;
+using Terraria.GameContent;
 using Terraria.GameContent.Events;
 using Terraria.ID;
 using Terraria.IO;
@@ -324,7 +325,7 @@ internal static class WorldIO
 	{
 		var list = new List<TagCompound>();
 		for (int type = NPCID.Count; type < NPCLoader.NPCCount; type++) {
-			int killCount = NPC.killCount[type];
+			int killCount = BannerSystem.killCount[type];
 			if (killCount <= 0)
 				continue;
 
@@ -342,7 +343,7 @@ internal static class WorldIO
 	{
 		foreach (var tag in list) {
 			if (ModContent.TryFind(tag.GetString("mod"), tag.GetString("name"), out ModNPC modNpc)) {
-				NPC.killCount[modNpc.Type] = tag.GetInt("count");
+				BannerSystem.killCount[modNpc.Type] = tag.GetInt("count");
 			}
 			else {
 				ModContent.GetInstance<UnloadedSystem>().unloadedKillCounts.Add(tag);

@@ -659,8 +659,10 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 			if (beetleDefense && beetleOrbs > 0)
 				modifiers.FinalDamage *= 1 - 0.15f * beetleOrbs;
 
+			/*
 			if (defendedByPaladin && whoAmI == Main.myPlayer && TeammateHasPalidinShieldAndCanTakeDamage())
 				modifiers.FinalDamage *= 0.75f;
+			*/
 		}
 	}
 

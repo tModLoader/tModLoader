@@ -1,0 +1,16 @@
+--- src/TerrariaNetCore/Terraria/DataStructures/EntitySource_CoinRain.cs
++++ src/tModLoader/Terraria/DataStructures/EntitySource_CoinRain.cs
+@@ -1,9 +_,11 @@
++#nullable enable
++
+ namespace Terraria.DataStructures;
+ 
+ public class EntitySource_CoinRain : AEntitySource_Tile
+ {
+-	public EntitySource_CoinRain(int tileCoordsX, int tileCoordsY)
+-		: base(tileCoordsX, tileCoordsY)
++	public EntitySource_CoinRain(int tileCoordsX, int tileCoordsY, string? context = null)
++		: base(tileCoordsX, tileCoordsY, context)
+ 	{
+ 	}
+ }

@@ -72,3 +72,15 @@
  
  					if (Main.rand.Next(num3) == 0 && Main.rand.NextFloat() < Main.maxRaining) {
  						int num4 = stack;
+@@ -1413,7 +_,11 @@
+ 	}
+ 
+ 	public IEntitySource GetNPCSource_FromThis() => new EntitySource_Parent(this);
++	// Internal redirect
++	/*
+ 	public IEntitySource GetItemSource_Misc(int itemSourceId) => new EntitySource_ByItemSourceId(this, itemSourceId);
++	*/
++	internal IEntitySource GetItemSource_Misc(int itemSourceId) => GetSource_Misc(context: ItemSourceID.ToContextString(itemSourceId));
+ 
+ 	public static void ShimmerEffect(Vector2 shimmerPositon)
+ 	{
