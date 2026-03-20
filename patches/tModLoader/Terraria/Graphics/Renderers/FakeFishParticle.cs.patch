@@ -1,0 +1,13 @@
+--- src/TerrariaNetCore/Terraria/Graphics/Renderers/FakeFishParticle.cs
++++ src/tModLoader/Terraria/Graphics/Renderers/FakeFishParticle.cs
+@@ -201,7 +_,10 @@
+ 				Main.dust[num5].noGravity = true;
+ 			}
+ 
++			/*
+ 			SoundEngine.PlaySound(SoundID.FishSplash, (int)vector.X, (int)vector.Y, 1f);
++			*/
++			SoundEngine.PlaySound(SoundID.FishSplash, (int)vector.X, (int)vector.Y);
+ 		}
+ 		else {
+ 			for (int l = 0; l < 10; l++) {

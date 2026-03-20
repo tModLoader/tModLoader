@@ -3,6 +3,7 @@ namespace Terraria.ModLoader;
 /// <summary>
 /// A struct that stores information regarding where an NPC is naturally spawning and the player it is spawning around. This serves to reduce the parameter count for ModNPC.CanSpawn and GlobalNPC.EditSpawnPool.
 /// </summary>
+/* TODO: Replace with NPC.Spawner. NPC.Spawner might need to be adjusted to provide the same features as before.
 public struct NPCSpawnInfo
 {
 	/// <summary>
@@ -117,3 +118,4 @@ public struct NPCSpawnInfo
 	/// </summary>
 	public bool SafeRangeX;
 }
+*/

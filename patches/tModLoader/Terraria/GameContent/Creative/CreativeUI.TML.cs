@@ -7,7 +7,8 @@ public partial class CreativeUI
 		if (!CreativeItemSacrificesCatalog.Instance.TryGetSacrificeCountCapToUnlockInfiniteItems(type, out int amountNeeded))
 			return ItemSacrificeResult.CannotSacrifice;
 
-		return SacrificeItem(new Item(type, amountNeeded), out _);
+		var item = new Item(type, amountNeeded);
+		return Main.CreativeMenu.SacrificeItem(ref item, out _);
 	}
 
 	/// <summary>

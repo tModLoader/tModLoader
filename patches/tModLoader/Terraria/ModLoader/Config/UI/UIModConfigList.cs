@@ -281,7 +281,7 @@ internal class UIModConfigList : UIState
 				MarginRight = -indicatorOffset - indicatorPadding + 4, // 4 for alignment
 			};
 
-			sideIndicator.OnDraw += delegate (UIElement affectedElement) {
+			sideIndicator.OnDraw += delegate (UIElement affectedElement, SpriteBatch spriteBatch) {
 				if (sideIndicator.IsMouseHovering) {
 					string hoverText = Language.GetTextValue(config.Mode == ConfigScope.ServerSide ? "tModLoader.ModConfigServerSide" : "tModLoader.ModConfigClientSide");
 					UICommon.TooltipMouseText(hoverText);

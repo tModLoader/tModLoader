@@ -79,7 +79,33 @@
  	public void ClearTile()
  	{
  		ClearSlope();
-@@ -133,8 +_,15 @@
+@@ -121,20 +_,41 @@
+ 		inActive(inActive: false);
+ 	}
+ 
++	/// <summary>
++	/// Resets the tile slope data at this position.<br/>
++	/// Sets the <see cref="BlockType"/> to <see cref="ID.BlockType.Solid"/>, causing the tile to no longer be sloped or half-blocked.
++	/// </summary>
++	/// <remarks>
++	/// Does not reset data related to walls, wires, or anything else. For that, use <see cref="ClearEverything"/>.
++	/// </remarks>
+ 	public void ClearSlope()
+ 	{
+ 		slope(0);
+ 		halfBrick(halfBrick: false);
+ 	}
+ 
++	/// <summary>
++	/// Resets the tile data at this position.<br/>
++	/// Sets <see cref="HasTile"/> and <see cref="IsActuated"/> to <see langword="false"/>, sets the <see cref="BlockType"/> to <see cref="ID.BlockType.Solid"/>, and clears any paint or coating.
++	/// </summary>
++	/// <remarks>
++	/// Does not reset data related to walls, wires, or anything else. For that, use <see cref="ClearEverything"/>.
++	/// </remarks>
+ 	public void ClearTileAndPaint()
+ 	{
+ 		ClearTile();
  		ClearBlockPaintAndCoating();
  	}
  

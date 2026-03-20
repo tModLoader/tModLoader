@@ -605,7 +605,7 @@ public static class TileLoader
 		else if (includeAllModdedLargeObjectDrops)
 			needDrops = true;
 		else if (includeLargeObjectDrops) {
-			if (TileID.Sets.BasicChest[tileCache.type] || TileID.Sets.BasicDresser[tileCache.type] || TileID.Sets.Campfire[tileCache.type]) {
+			if (TileID.Sets.BasicChest[tileCache.type] || TileID.Sets.BasicDresser[tileCache.type] || TileID.Sets.Campfires[tileCache.type]) {
 				needDrops = true;
 			}
 		}
@@ -769,7 +769,7 @@ public static class TileLoader
 			RegisterConversion(toType, BiomeConversionID.Purity, Purify);
 			RegisterConversion(toType, BiomeConversionID.PurificationPowder, Purify);
 			if (conversionType != BiomeConversionID.Hallow)
-				RegisterConversion(toType, BiomeConversionID.Chlorophyte, Purify);
+				RegisterConversion(toType, BiomeConversionID.ChlorophyteSpread, Purify); //TODO: Not sure about this ID.
 		}
 	}
 

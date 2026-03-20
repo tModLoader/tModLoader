@@ -403,7 +403,7 @@ public abstract partial class ModSystem : ModType
 	/// To disable or hide generation passes, please use <see cref="GenPass.Disable"/> and defensive coding.
 	/// <para/> See the <see href="https://github.com/tModLoader/tModLoader/wiki/World-Generation#determining-a-suitable-index">"Determining a suitable index" section of the World Generation wiki guide</see> for more information about how to properly use this for adding new world generation passes.
 	/// </summary>
-	public virtual void ModifyWorldGenTasks(List<GenPass> tasks, ref double totalWeight) { }
+	public virtual void ModifyWorldGenTasks(List<GenPass> tasks) { }
 
 	/// <summary>
 	/// Use this method to place tiles in the world after world generation is complete.

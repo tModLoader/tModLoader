@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using Terraria.GameContent;
 using Terraria.Graphics.Effects;
+using Terraria.ID;
 using Terraria.Localization;
 
 namespace Terraria.ModLoader;
@@ -146,7 +147,7 @@ public class SurfaceBackgroundStylesLoader : SceneEffectLoader<ModSurfaceBackgro
 
 	public SurfaceBackgroundStylesLoader()
 	{
-		Initialize(Main.BG_STYLES_COUNT);
+		Initialize(SurfaceBackgroundID.Count);
 	}
 
 	internal override void ResizeArrays()

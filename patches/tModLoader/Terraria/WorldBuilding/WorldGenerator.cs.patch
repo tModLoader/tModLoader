@@ -13,3 +13,14 @@
  using Terraria.Utilities;
  
  namespace Terraria.WorldBuilding;
+@@ -433,7 +_,10 @@
+ 		_hashTime.Start();
+ 		uint[] line_hashes = new uint[Main.maxTilesX];
+ 		FastParallel.For(0, Main.maxTilesX, delegate (int x0, int x1, object _) {
++			/*
+ 			Tile[,] tile = Main.tile;
++			*/
++			var tile = Main.tile;
+ 			int maxTilesY = Main.maxTilesY;
+ 			for (int j = x0; j < x1; j++) {
+ 				uint num3 = 0u;

@@ -63,7 +63,7 @@
  		writer.Write((ushort)item.type);
  		writer.Write((ushort)item.stack);
  		writer.Write(item.prefix);
-@@ -679,11 +_,17 @@
+@@ -679,14 +_,22 @@
  
  	public void ReadItem(int itemIndex, BinaryReader reader, Item[] collection)
  	{
@@ -75,9 +75,14 @@
  		if (itemIndex < collection.Length) {
  			Item obj = collection[itemIndex];
 +			
-+			ItemIO.Receive(item, reader, readStack: true);
++			ItemIO.Receive(obj, reader, readStack: true);
 +			return;
-+			
++
++			/*
  			obj.SetDefaults(num);
  			obj.stack = stack;
  			obj.Prefix(prefixWeWant);
++			*/
+ 		}
+ 	}
+ 

@@ -1039,23 +1039,23 @@ public static class NPCLoader
 		}
 	}
 
-	private static HookList HookEditSpawnPool = AddHook<Action<Dictionary<int, float>, NPCSpawnInfo>>(g => g.EditSpawnPool);
+	private static HookList HookEditSpawnPool = AddHook<Action<Dictionary<int, float>, NPC.Spawner>>(g => g.EditSpawnPool);
 
-	public static int? ChooseSpawn(NPC.Spawner spawnInfo)
+	public static int? ChooseSpawn(NPC.Spawner spawner)
 	{
 		NPCSpawnHelper.Reset();
-		NPCSpawnHelper.DoChecks(spawnInfo);
+		NPCSpawnHelper.DoChecks(spawner);
 
 		IDictionary<int, float> pool = new Dictionary<int, float>();
 		pool[0] = 1f;
 		foreach (ModNPC npc in npcs) {
-			float weight = npc.SpawnChance(spawnInfo);
+			float weight = npc.SpawnChance(spawner);
 			if (weight > 0f) {
 				pool[npc.NPC.type] = weight;
 			}
 		}
 		foreach (var g in HookEditSpawnPool.Enumerate()) {
-			g.EditSpawnPool(pool, spawnInfo);
+			g.EditSpawnPool(pool, spawner);
 		}
 		float totalWeight = 0f;
 		foreach (int type in pool.Keys) {

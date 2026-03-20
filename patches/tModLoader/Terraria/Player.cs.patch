@@ -2297,7 +2297,7 @@
  	public IEntitySource GetProjectileSource_Item(Item item) => new EntitySource_ItemUse(this, item);
  	public IEntitySource GetItemSource_Item(Item item) => new EntitySource_ItemUse(this, item);
  	public IEntitySource GetItemSource_OpenItem(int itemType) => new EntitySource_ItemOpen(this, itemType);
-@@ -7406,9 +_,36 @@
+@@ -7406,9 +_,37 @@
  	public IEntitySource GetItemSource_TileInteraction(int tileCoordsX, int tileCoordsY) => new EntitySource_TileInteraction(this, tileCoordsX, tileCoordsY);
  	public IEntitySource GetNPCSource_TileInteraction(int tileCoordsX, int tileCoordsY) => new EntitySource_TileInteraction(this, tileCoordsX, tileCoordsY);
  	public IEntitySource GetItemSource_OnHit(Entity victim, int itemSourceId) => new EntitySource_OnHit_ByItemSourceID(this, victim, itemSourceId);
@@ -2305,6 +2305,7 @@
 +
 +	// Internal redirects:
 +	internal IEntitySource GetProjectileSource_Item(Item item) => GetSource_ItemUse(item);
++	internal IEntitySource GetItemSource_Item(Item item) => GetSource_ItemUse(item);
 +	internal IEntitySource GetItemSource_OpenItem(int itemType) => GetSource_OpenItem(itemType);
 +	internal IEntitySource GetItemSource_Death() => GetSource_Death();
 +	internal IEntitySource GetItemSource_InventoryOverflow() => GetItemSource_Misc(ItemSourceID.InventoryOverflow);
@@ -3979,6 +3980,17 @@
  				if (wet && accFlipper) {
  					if (swimTime == 0)
  						swimTime = 30;
+@@ -16450,7 +_,9 @@
+ 				bool flag10 = false;
+ 				bool flag11 = false;
+ 				bool flag12 = false;
+-				bool flag13 = false;
++				*/
++				bool flag13 = false; // TODO: isPerformingJump_DownDash needs integration.
++				/*
+ 				if (!flag2 && !flag) {
+ 					if (canJumpAgain_Basilisk) {
+ 						flag12 = true;
 @@ -16491,6 +_,10 @@
  						canJumpAgain_Cloud = false;
  					}
@@ -5121,19 +5133,28 @@
  	public void Heal(int amount)
  	{
  		statLife += amount;
-@@ -28373,6 +_,12 @@
+@@ -28371,10 +_,21 @@
+ 			statLife = statLifeMax2;
+ 	}
  
++	/*
  	public int GetItemGrabRange(WorldItem item) => GetItemGrabRange(item.inner);
  
+ 	public int GetItemGrabRange(Item item)
++	*/
++
 +	/// <summary>
 +	/// Fetches the range at which the given item begins to gravitate towards the player.<br/>
 +	/// This range, referred to as item grab range, is measured in pixels.
 +	/// </summary>
 +	/// <param name="item">The item whose grab range is being evaluated.</param>
 +	/// <returns>The item grab range of the player, in pixels.</returns>
- 	public int GetItemGrabRange(Item item)
++	public int GetItemGrabRange(WorldItem worldItem)
  	{
++		Item item = worldItem.inner;
  		int num = defaultItemGrabRange;
+ 		if (goldRing && item.IsACoin)
+ 			num += Item.coinGrabRange;
 @@ -28397,9 +_,11 @@
  		if (ItemID.Sets.NebulaPickup[item.type])
  			num += 100;
@@ -5142,7 +5163,7 @@
  		if (difficulty == 3 && CreativePowerManager.Instance.GetPower<CreativePowers.FarPlacementRangePower>().IsEnabledForPlayer(whoAmI))
  			num += 240;
  
-+		ItemLoader.GrabRange(item, this, ref num);
++		ItemLoader.GrabRange(worldItem, this, ref num);
  		return num;
  	}
  
@@ -5699,6 +5720,17 @@
  			beetleOrbs--;
  			for (int l = 0; l < maxBuffs; l++) {
  				if (buffType[l] >= 95 && buffType[l] <= 97)
+@@ -30937,7 +_,10 @@
+ 			beetleCounter = 0f;
+ 		}
+ 
++		/*
+ 		if (defendedByPaladin && ImmunityCooldownID.Sets.TeamDamageShare[cooldownCounter] && num2 >= 4.0 && Damage < 9999) {
++		*/
++		if (defendedByPaladin && ImmunityCooldownID.Sets.TeamDamageShare[cooldownCounter] && info.Damage >= 4.0 && info.SourceDamage < 9999) { // TODO: Should this be checking InstantKill?
+ 			Player player = null;
+ 			float num7 = float.MaxValue;
+ 			for (int m = 0; m < 255; m++) {
 @@ -30951,10 +_,13 @@
  				}
  			}
@@ -5709,7 +5741,7 @@
  				num2 = (int)(num2 * 0.75);
 +			*/
  
-+			int damage = info.Damage / 3; // Damage has already been reduced by 1/4 when applying to target player, so dividing by 3 gives us the correct value
++		int damage = info.Damage / 3; // Damage has already been reduced by 1/4 when applying to target player, so dividing by 3 gives us the correct value
  			if (player == Main.LocalPlayer && num7 < PaladinsShieldRange)
  				Main.LocalPlayer.Hurt(PlayerDeathReason.ByOther(20), damage, 0, pvp: false, quiet: false, Crit: false, ImmunityCooldownID.PaladinsShield, dodgeable: false);
  
@@ -6578,7 +6610,7 @@
 +			selectItemOnNextUse = false;
 +
 +			int oldSelect = selectedItem;
-+			SmartSelectLookup();
++			SmartSelectLookup(out oldSelect);
 +			if (selectedItem != oldSelect) {
 +				item = inventory[selectedItem];
 +				// TML feature, allow the item to be instantly used
@@ -6628,7 +6660,15 @@
  		if (itemTime > 0) {
  			itemTime--;
  			if (ItemTimeIsZero && whoAmI == Main.myPlayer && !JustDroppedAnItem && IsAllowedToHoldItems) {
-@@ -34575,14 +_,19 @@
+@@ -34570,19 +_,27 @@
+ 			}
+ 		}
+ 
++		goto ReuseDelayAndAnimationStart;
++
++		HoldAndUseStyle:
+ 		Rectangle heldItemFrame = AnimatePlayerAndGetItemFrame(heightOffsetHitboxCenter, item);
+ 		if (!JustDroppedAnItem && IsAllowedToHoldItems) {
  			ItemCheck_EmitHeldItemLight(item);
  			ItemCheck_EmitFoodParticles(item);
  			ItemCheck_EmitDrinkParticles(item);
@@ -6736,13 +6776,11 @@
  						if (item.stack > 0)
  							item.stack--;
  
-@@ -35016,6 +_,11 @@
+@@ -35016,6 +_,9 @@
  		Rectangle drawHitbox = Item.GetDrawHitbox(item.type, this);
  		compositeFrontArm.enabled = false;
  		compositeBackArm.enabled = false;
-+		goto ReuseDelayAndAnimationStart;
 +
-+		HoldAndUseStyle:
 +		ItemLoader.HoldItem(item, this);
 +
  		if (itemAnimation > 0)
@@ -6987,7 +7025,7 @@
 +			// num was pre-variation and post buffs. Equivalent to strike.SourceDamage.
 +			// num6 is post-variation and armor pen, only used by bees and muramasa.
 +			// By switching to strike.SourceDamage for num6, we introduce a slight vanilla discrepancy, but we remove the double damage randomization, and armor penetration
-+			ApplyNPCOnHitEffects(sItem, itemRectangle, strike.SourceDamage, strike.Knockback, npcIndex, strike.SourceDamage, dmgDone);
++			ApplyNPCOnHitEffects(sItem, itemRectangle, strike.SourceDamage, strike.Knockback, npcIndex, strike.SourceDamage, num5);
  			int num6 = BannerSystem.NPCtoBanner(nPC.BannerID());
  			if (num6 >= 0)
  				lastCreatureHit = num6;
@@ -7681,6 +7719,17 @@
  			if (item.type == 4361 || item.type == 4362)
  				NPC.LadyBugKilled(base.Center, item.type == 4362);
  
+@@ -42754,7 +_,10 @@
+ 		if (sItem.type == 3269)
+ 			return true;
+ 
++		/*
+ 		if (spaceGun && (sItem.type == 127 || sItem.type == 4347 || sItem.type == 4348 || sItem.type == 514))
++		*/
++		if (spaceGun && ItemID.Sets.IsSpaceGun[sItem.type])
+ 			return true;
+ 
+ 		if (sItem.shoot > 0 && ProjectileID.Sets.TurretFeature[sItem.shoot] && altFire)
 @@ -42915,6 +_,13 @@
  		if (sItem.IsAir || (selectedItemState.HasBufferedChange && (sItem.shoot <= 0 || ItemTimeIsZero)))
  			return;
@@ -8352,11 +8401,18 @@
  		return clonePlayer;
  	}
  
-@@ -44249,6 +_,7 @@
+@@ -44245,10 +_,14 @@
+ 
+ 	public static void clientCloneItem(Item from, Item to)
+ 	{
++		/*
+ 		to.type = from.type;
  		to.stack = from.stack;
  		to.prefix = from.prefix;
  		to.favorited = from.favorited;
 +		to.NetStateVersion = from.NetStateVersion;
++		*/
++		from.CopyNetStateTo(to);
  	}
  
  	private void clientCloneLoadouts(Player clonePlayer)

@@ -1,0 +1,36 @@
+--- src/TerrariaNetCore/Terraria/GameContent/Items/WhipTagEffect.cs
++++ src/tModLoader/Terraria/GameContent/Items/WhipTagEffect.cs
+@@ -18,6 +_,8 @@
+ 
+ 	public override bool CanApplyTagToNPC(int npcType)
+ 	{
++		return true; // TODO: Whip debuffs don't exist anymore. Need to rework things.
++		/*
+ 		if (!NPCID.Sets.DebuffImmunitySets.TryGetValue(npcType, out var value))
+ 			return true;
+ 
+@@ -25,6 +_,7 @@
+ 			return !value.ImmuneToWhips;
+ 
+ 		return true;
++		*/
+ 	}
+ 
+ 	public override void OnRemovedFromPlayer(Player player)
+@@ -45,10 +_,16 @@
+ 			player.AddBuff(PlayerBuffId, PlayerBuffTime);
+ 	}
+ 
++	/*
+ 	public override void ModifyTaggedHit(Player owner, Projectile optionalProjectile, NPC npcHit, ref int damageDealt, ref bool crit)
++	*/
++	public override void ModifyTaggedHit(Player owner, Projectile optionalProjectile, NPC npcHit, ref NPC.HitModifiers damageDealt, ref bool crit)
+ 	{
+ 		if (optionalProjectile != null)
++			/*
+ 			damageDealt += (int)((float)(TagDamage + optionalProjectile.bonusTagDamage) * ProjectileID.Sets.SummonTagDamageMultiplier[optionalProjectile.type]);
++			*/
++			damageDealt.FlatBonusDamage += (TagDamage + optionalProjectile.bonusTagDamage) * ProjectileID.Sets.SummonTagDamageMultiplier[optionalProjectile.type];
+ 
+ 		if (Main.rand.Next(100) < CritChance)
+ 			crit = true;

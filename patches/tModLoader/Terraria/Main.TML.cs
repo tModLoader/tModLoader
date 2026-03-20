@@ -588,7 +588,7 @@ public partial class Main
 				var newsColor = newsMouseOver && newsURL != null ? highVersionColor : menuColor;
 				ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.MouseText.Value, latestNewsText, newsPosition - newsSize, newsColor, 0f, Vector2.Zero, newsScales);
 
-				if (newsMouseOver && mouseLeftRelease && mouseLeft && hasFocus && newsURL != null) {
+				if (newsMouseOver && mouseLeftRelease && mouseLeft && FocusHelper.AllowUIInputs && newsURL != null) {
 					SoundEngine.PlaySound(SoundID.MenuOpen);
 					Utils.OpenToURL(newsURL);
 					newsIsNew = false;

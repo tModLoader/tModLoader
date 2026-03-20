@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Dust.cs
 +++ src/tModLoader/Terraria/Dust.cs
-@@ -1,36 +_,101 @@
+@@ -1,36 +_,108 @@
  using System;
  using Microsoft.Xna.Framework;
 +using Terraria.DataStructures;
@@ -50,10 +50,17 @@
 +	/// </summary>
  	public float rotation;
 +	/// <summary>
-+	/// If true, the dust will not emit light. The specific behavior depends on the dust type, as many dust might not emit light or honor <see cref="noLight"/>. Defaults to <see langword="false"/>.
++	/// If true, the dust will not emit light. The specific behavior depends on the dust type, as many dust might not emit light or honor <see cref="noLight"/>. <see cref="noLightEmittance"/> is similar and might need to be used instead or together. Defaults to <see langword="false"/>.
 +	/// </summary>
  	public bool noLight;
++	/// <summary>
++	/// If true, the dust will not emit light. The specific behavior depends on the dust type, as many dust might not emit light or honor <see cref="noLightEmittance"/>. <see cref="noLight"/> is similar and might need to be used instead or together. Defaults to <see langword="false"/>.
++	/// </summary>
  	public bool noLightEmittance;
++	/// <summary>
++	/// If true, this dust will draw in full brightness (Color.White) rather that using the color provided in <see cref="GetAlpha"/>.
++	/// Defaults to <see langword="false"/>.
++	/// </summary>
  	public bool fullBright;
  	public bool active;
 +	/// <summary>
@@ -152,7 +159,7 @@
  			if (dust.type == 34 || dust.type == 35 || dust.type == 152) {
  				dust.velocity *= 0.1f;
  				dust.velocity.Y = -0.5f;
-@@ -232,7 +_,9 @@
+@@ -232,9 +_,16 @@
  		return obj;
  	}
  
@@ -161,7 +168,14 @@
 +	/// <inheritdoc cref="Dust.QuickDust(Vector2, Color)"/>
  	public static Dust QuickDust(Point tileCoords, Color color) => QuickDust(tileCoords.ToWorldCoordinates(), color);
  
++	/// <summary>
++	/// Sets <see cref="frame"/> values to match the sprite of an existing vanilla Dust type (<see cref="DustID"/>). This can be used to re-use the sprite of an existing dust while giving the dust unique other behaviors.
++	/// <br/><br/> This can be used in <see cref="ModDust.OnSpawn(Dust)"/> to create a visual clone of an existing dust with custom logic or after spawning Dust with <c>Dust.NewDust</c> methods to give an instance of existing dust the sprite of another dust.
++	/// </summary>
++	/// <param name="Type">A <see cref="DustID"/> entry</param>
  	public void HackFrame(int Type)
+ 	{
+ 		frame.X = 10 * Type;
 @@ -298,6 +_,12 @@
  		}
  	}

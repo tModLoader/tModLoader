@@ -80,6 +80,7 @@ public abstract class ModDust : ModTexturedType
 
 	/// <summary>
 	/// Allows you to override the color this dust will draw in. Return null to draw it in the normal light color; returns null by default. Note that the dust.noLight field makes the dust ignore lighting and draw in full brightness, and can be set in OnSpawn instead of having to return Color.White here.
+	/// <br/><br/> <see cref="Dust.fullBright"/> will also force this dust to use a value of Color.White and will skip this method.
 	/// </summary>
 	public virtual Color? GetAlpha(Dust dust, Color lightColor) => null;
 }

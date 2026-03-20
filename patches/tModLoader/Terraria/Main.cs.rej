@@ -33,45 +33,6 @@
  			}
  		}
  	}
-@@ -560,9 +_,9 @@
- 	public static bool clearMap;
- 	public static int mapTargetX = 5;
- 	public static int mapTargetY = 2;
--	private RenderTarget2D[,] mapTarget = new RenderTarget2D[mapTargetX, mapTargetY];
-+	public RenderTarget2D[,] mapTarget = new RenderTarget2D[mapTargetX, mapTargetY];
--	private RenderTarget2D mapSectionTexture;
-+	public RenderTarget2D mapSectionTexture;
- 	public static bool[,] initMap = new bool[mapTargetX, mapTargetY];
- 	public static bool[,] mapWasContentLost = new bool[mapTargetX, mapTargetY];
- 	public const int numInfoIcons = 13;
- 	public static Microsoft.Xna.Framework.Color OurFavoriteColor = new Microsoft.Xna.Framework.Color(255, 231, 69);
-@@ -2842,9 +_,25 @@
- 			tileMerge[i] = new bool[count];
- 		}
- 
-+		SetupAllBlockMerge();
-+	}
-+
-+	// internal split to be called by TileLoader, to avoid tileMerge reset (handled by ResizeArrays)
-+	internal static void SetupAllBlockMerge()
-+	{
--		for (int j = 0; j < TileID.Count; j++) {
-+		for (int j = 0; j < TileLoader.TileCount; j++) {
-+			// TML: moved these cases into BlockMergesWithMergeAllBlockOverride
- 			bool flag = j == 10 || j == 387 || j == 541;
-+			if (TileID.Sets.BlockMergesWithMergeAllBlockOverride[j] is bool mergeOverride) {
-+				TileID.Sets.BlockMergesWithMergeAllBlock[j] = mergeOverride;
-+				continue;
-+			}
-+
-+			// TML: 10 is the closed door tile, so make modded closed doors also match. This code runs after they have set their OpenDoorID
-+			if (TileLoader.IsClosedDoor(j))
-+				flag = true;
-+
- 			TileID.Sets.BlockMergesWithMergeAllBlock[j] = !flag && tileSolid[j] && !tileSolidTop[j];
- 		}
- 	}
- 
 @@ -3933,8 +_,10 @@
  						new FileInfo(text2);
  						autoGenFileLocation = text2;
@@ -131,15 +92,6 @@
  		int numLines = 1;
  		string[] array = new string[num2];
  		bool[] array2 = new bool[num2];
-@@ -16184,7 +_,8 @@
- 			}
- 			else if (hoverItem.type != 3817) {
- 				array[numLines] = Lang.tip[51].Value;
-+				tooltipNames[numLines] = "Price";
- 				numLines++;
- 				color = new Microsoft.Xna.Framework.Color((byte)(120f * num4), (byte)(120f * num4), (byte)(120f * num4), a);
- 			}
- 		}
 @@ -16254,15 +_,24 @@
  							break;
  					}

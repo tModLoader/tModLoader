@@ -871,10 +871,11 @@
  		}
  
 -		int damageDealt = num4;
+-		Main.player[owner].TagEffectState.ModifyHit(this, targetNPC, ref damageDealt, ref crit);
 +		modifiers.SourceDamage *= num4 / 1000;
 +		// set this just so that summon procs which scale with this value can spawn correctly
-+		float damageDealt = modifiers.SourceDamage.ApplyTo(damage);
- 		Main.player[owner].TagEffectState.ModifyHit(this, targetNPC, ref damageDealt, ref crit);
++		//float damageDealt = modifiers.SourceDamage.ApplyTo(damage);
++		Main.player[owner].TagEffectState.ModifyHit(this, targetNPC, ref modifiers, ref crit);
 +		/*
  		int num12 = ((!ownedBySomeone) ? Main.DamageVar(damageDealt) : Main.DamageVar(damageDealt, Main.player[owner].luck));
 +		*/
@@ -1059,7 +1060,7 @@
  				if (timeLeft > 3)
  					timeLeft = 3;
  
-@@ -11825,8 +_,10 @@
+@@ -11825,13 +_,22 @@
  				timeLeft = 1;
  
  			bool flag2 = false;
@@ -1071,6 +1072,18 @@
  
  			int num = Main.DamageVar((int)((float)damage * projectileSpecificDamageMultiplier), Main.player[owner].luck);
  			bool dodgeable = IsDamageDodgeable();
++			/*
+ 			if (type == 856)
+ 				ModifyStellarTuneDamage(ref num);
++			*/
++			if (type == 856) {
++				float numAsFloat = (int)num;
++				ModifyStellarTuneDamage(ref numAsFloat);
++				num = (int)numAsFloat;
++			}
+ 
+ 			if ((type == 476 || type == 950) && !npcProj) {
+ 				float x = Main.player[owner].Center.X;
 @@ -11945,10 +_,14 @@
  			case 919:
  			case 923:
@@ -1620,12 +1633,16 @@
  			else if (type == 1030)
  				SoundEngine.PlaySound(SoundID.NPCHit9, vector2);
  			else if (type == 1033)
-@@ -38652,6 +_,13 @@
+@@ -38652,6 +_,17 @@
  		if (proj.isAPreviewDisplayDoll)
  			timeToFlyOut = 60f;
  
 +		segments = proj.WhipSettings.Segments;
 +		rangeMultiplier = proj.WhipSettings.RangeMultiplier;
++
++		// Moved from below
++		if (proj.type == 1035 && proj.ai[2] >= 10f)
++			timeToFlyOut = 30 * proj.MaxUpdates;
 +	}
 +
 +	//TML: Method split, called from DefaultToWhip now.
@@ -1634,6 +1651,17 @@
  		segments = 20;
  		rangeMultiplier = 1f;
  		switch (proj.type) {
+@@ -38716,8 +_,10 @@
+ 			case 1035:
+ 				segments = 30;
+ 				rangeMultiplier *= 2.2f;
++				/*
+ 				if (proj.ai[2] >= 10f)
+ 					timeToFlyOut = 30 * proj.MaxUpdates;
++				*/
+ 				break;
+ 		}
+ 	}
 @@ -42095,6 +_,9 @@
  				if (num3 > (float)num9)
  					ai[0] = 1f;

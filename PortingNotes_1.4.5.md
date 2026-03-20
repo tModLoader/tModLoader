@@ -131,7 +131,7 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - New vanilla TooltipLine options. Need to add to docs and decide on name (is there a wiki page as well?): CommonItemTooltip.ItemUnlockedByTeammate, armorPenetration, bonusTagDamage, check for others. Seems like "Social" and "SocialDesc" logic changed, compare tooltips to 1.4.4 and adjust.
 - DrawBlockReplacementIcon return changed from void to bool. Does that affect how the builders toggle works? Did vanilla behavior change? New state bool in logic, and DoStatefulTickSound
 - StartRain method now seems to be more controllable. Update docs accordingly. (StopRain as well)
-- New guns that use Player.spaceGun? See updated `toolTipNames[numLines] = "UseMana";` patch. Look into IsSpaceGun and GetManaCost, might need updates. 4347, 4348, 514
+- See updated `toolTipNames[numLines] = "UseMana";` patch. Look into IsSpaceGun and GetManaCost, might need updates. 
 - Double check PlayerLoader.ModifyZoom logic. Seems like there is only 1 callsite now, code was cleaned up?
 - What is Main.boulderLogo? Seems like MenuLoader needs to be updated with a new vanilla menu option?
 - There are new music tracks and some might have been moved. Update SceneEffectPriority enum docs and double check that they are correct for both methods.
@@ -172,7 +172,8 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - WorldGen.ValidAnchorForMultiDirectionalTile needs to check IsClosedDoor not tile type 10
 - Item192 uses Projectile.kiteSoundPitch. How do we do that?
 - New AmmoID.Sets.IsSpecialist doesn't contain Sand anymore. Is that expected?
-- QuickSpawnItem can now go directly into player inventory. Before it would return Item.NewItem index int. Mods sometimes want to modify the resulting item when spawning. This is more difficult now.
+- TileID.Sets.RoomNeeds.CountsAsX is not a Set, but there is also a CountsAsXTypes int[] similar to the old approach. We'll probably want to make the non-set ones private and adjust logic for consistency.
+- Everything in NPCSpawnHelper will need to be checked against any 1.4.5 changes, as well as any new conditions that are still missing.
 
 # New Fields that might need more documentation
 
@@ -181,10 +182,7 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - TileEntity.RequiresUpdates (and static List<TileEntity> UpdateEntities) added -> Do all mods need to update their TEs? What is the default? What are Add and Remove methods? ModTileEntity will likely require updates.
 - TileEntity.Read now has a gameversion parameter. For modded tiles, I don't think this affects anything. Vanilla TEs have updated save and load code, need to verify poses and other changes work with modded items.
 - AnchorType.AllFlatHeight added -> What is it used for, what does it represent? Which tiles use it that didn't before?
-- Dust.fullBright added -> Seems to force GetAlpha to return White
-- Dust.HackFrame added -> Seems to retrieve a vanilla dust frame value from a dustID, similar to ExampleCustomDrawDust.OnSpawn logic.
 - UserInterface.MouseCaptured -> could be useful
-- Tile.ClearSlope and ClearTileAndPaint
 - FlexibleTileWand is now used to place many other tiles that used to rely solely on RandomStyleRange. We should add an example of a custom FlexibleTileWand item/tile and document when to use it.
 - NPCID.Sets.NPCPortraits
 - NPCID.Sets: SpawnOnPlayerCanSpawnInMidairOnSkyblock, DontDropDungeonKeysOrSouls, HunterPotionFriendlyOverride, others.
@@ -222,7 +220,7 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - ICameraModifier now has a IsAScreenShake property to support the user's screen shake accesibility setting (Main.UseScreenShake). Update your ICameraModifier and other camera movements to support Main.UseScreenShake.
 - TownNPC can now have portraits. Use the following to implement: NPCID.Sets.NPCPortraits (todo, example)
 - UIWrappedSearchBar, is it useful to modders?
-- Main.sign length changed from 1000 to 32000. (Adjust docs.)
+- Main.sign length changed from 1000 to 32000.
 - Lots of new methods in Utils. Check if any duplicate TML.cs methods.
 - Various text rendering methods have been changed or improved. Investigate new functionality and previous bug fixes.
 - Player.IsAllowedToHoldItems
@@ -244,6 +242,8 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - MusicID entries have changed. I have a diff prepared, need to add to wiki or handle it somehow.
 - ProjAIStyleID and NPCAIStyleID will need to be regenerated (jopo has script)
 - Replace Main.hasFocus with FocusHelper.AllowUIInputs (or another property)
+- Player.QuickSpawnItem no longer returns an int indicating the index of the item in Main.item. This is because the spawned item can now potentially go directly into player inventory.
+- Item.width and height no longer have any relation to the in-world hitbox of dropped items. All items now have a 16x16 hitbox in the game world.
 
 # tModPorter TODOs
 

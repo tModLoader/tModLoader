@@ -22,6 +22,69 @@
  {
  	internal struct PlayerNetSyncState
  	{
+@@ -35,7 +_,7 @@
+ 		public byte streamCounter;
+ 	}
+ 
+-	public class Spawner
++	public partial class Spawner
+ 	{
+ 		public static int spawnSpaceX = 2;
+ 		public static int spawnSpaceY = 3;
+@@ -48,18 +_,18 @@
+ 		public bool dayTime;
+ 		public bool raining;
+ 		public int townNPCs;
+-		public bool skyMob;
++		private bool skyMob;
+-		public bool noWorms;
++		private bool noWorms;
+ 		public bool noGroundWorms;
+-		public bool invaders;
++		private bool invaders;
+ 		public bool spawnFriendly;
+ 		public bool ignoreSafeWalls;
+-		public bool waterTile;
++		private bool waterTile;
+-		public bool nearGranite;
++		private bool nearGranite;
+-		public bool nearMarble;
++		private bool nearMarble;
+-		public bool spawnSpider;
++		private bool spawnSpider;
+ 		public bool surfaceSpawn;
+-		public bool spawnUndergroundDesert;
++		private bool spawnUndergroundDesert;
+ 		public bool hardDungeon;
+ 		public bool deeperThanRockLayer;
+ 		public bool underGround;
+@@ -147,6 +_,9 @@
+ 
+ 			if (!FindSpawnTile(player, out var spawnTileX, out var spawnTileY, out var xRange))
+ 				return false;
++			SpawnTileX = spawnTileX; // TML
++			SpawnTileY = spawnTileY; // TML
++			SafeRangeX = xRange; // TML
+ 
+ 			if (!CheckNotSpawningOnScreen(spawnTileX, spawnTileY))
+ 				return false;
+@@ -154,6 +_,8 @@
+ 			int spawnTileType = 0;
+ 			int spawnWallType = 0;
+ 			GetProperGroundSpawnTileTypeAndWallType(spawnTileX, spawnTileY, out spawnTileType, out spawnWallType);
++			SpawnTileType = spawnTileType; // TML
++			SpawnWallType = spawnWallType; // TML
+ 			if (!PostCheckChosenSpawnTile(spawnTileX, spawnTileY, spawnTileType, spawnWallType))
+ 				return false;
+ 
+@@ -195,6 +_,7 @@
+ 
+ 		private void SetSpawnFlags(Player player)
+ 		{
++			Player = player; // TML
+ 			pX = (int)player.Center.X / 16;
+ 			pY = (int)player.Center.Y / 16;
+ 			luck = player.luck;
 @@ -243,8 +_,15 @@
  			skyBehindPlayer = Main.wallLight[Main.tile[pX, pY].wall] || Main.tile[pX, pY].wall == 73;
  			livingTree = Main.tile[pX, pY].wall == 244;
@@ -1137,15 +1200,16 @@
  			friendly = true;
  		}
  
-@@ -15463,6 +_,9 @@
- 			if (difficulty >= GameDifficultyLevel.Expert)
- 				ScaleStats_ByPlayerCount(activePlayersCount.HasValue ? activePlayersCount.Value : GetActivePlayerCount());
+@@ -15911,6 +_,10 @@
+ 			}
+ 		}
  
-+			// TODO: This is probably all wrong now, or needs to be split.
-+			NPCLoader.ApplyDifficultyAndPlayerScaling(this, activePlayersCount.HasValue ? activePlayersCount.Value : GetActivePlayerCount(), balance, bossAdjustment);
++		// TODO: This is probably all wrong now, or needs to be split.
++		float bossAdjustment = 1f; // Wrong, just for compilation.
++		NPCLoader.ApplyDifficultyAndPlayerScaling(this, numPlayers, balance, bossAdjustment);
 +
- 			if ((type < 0 || !NPCID.Sets.ProjectileNPC[type]) && lifeMax < 6)
- 				lifeMax = 6;
+ 		lifeMax = (int)Math.Round((double)lifeMax * num);
+ 	}
  
 @@ -16328,7 +_,7 @@
  		}

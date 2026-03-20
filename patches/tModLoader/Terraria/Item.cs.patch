@@ -854,7 +854,7 @@
 +	/*
  	public IEntitySource GetItemSource_Misc(int itemSourceId) => new EntitySource_ByItemSourceId(this, itemSourceId);
 +	*/
-+	internal IEntitySource GetItemSource_Misc(int itemSourceId) => GetSource_Misc(context: ItemSourceID.ToContextString(itemSourceId));
++	internal IEntitySource GetItemSource_Misc(int itemSourceId) => new EntitySource_Misc(context: ItemSourceID.ToContextString(itemSourceId));
 +
  	public override string ToString() => $"Name: \"{Name}\" Type: {type} Stack: {stack}";
 +
@@ -906,12 +906,14 @@
  	public bool Prefix(int prefixWeWant, out bool rolledPrefixIsTopTier)
  	{
  		if (!WorldGen.isGeneratingOrLoadingWorld && Main.rand == null)
-@@ -312,7 +_,19 @@
+@@ -312,7 +_,21 @@
  		if (prefixWeWant == -2 || prefixWeWant == -1)
  			num = BestPrefixValue();
  
++		/* TODO: CanApplyPrefix method no longer exists.
 +		if (prefixWeWant > 0 && !CanApplyPrefix(prefixWeWant))
 +			return false;
++		*/
 +
 +		//#StackablePrefixWeapons: Stackable items will not spawn with a prefix on craft/generate. Only when deliberately reforged.
 +		if (prefixWeWant == -1 && maxStack > 1)
@@ -1035,14 +1037,16 @@
  	}
  
  	public int GetVisualCritChance(Player player)
-@@ -792,6 +_,13 @@
+@@ -792,6 +_,15 @@
  				dmg = 1.05f;
  				crt = 2;
  				break;
 +			// Handle mod prefixes.
 +			case int pre when PrefixLoader.GetPrefix(pre) is ModPrefix modPrefix:
-+				if (!modPrefix.AllStatChangesHaveEffectOn(this))
++				if (!modPrefix.AllStatChangesHaveEffectOn(this)) {
++					value = 1f;
 +					return false;
++				}
 +
 +				modPrefix.SetStats(ref dmg, ref kb, ref spd, ref size, ref shtspd, ref mcst, ref crt);
 +				break;

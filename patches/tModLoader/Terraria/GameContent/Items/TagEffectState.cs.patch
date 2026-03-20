@@ -1,5 +1,16 @@
 --- src/TerrariaNetCore/Terraria/GameContent/Items/TagEffectState.cs
 +++ src/tModLoader/Terraria/GameContent/Items/TagEffectState.cs
+@@ -242,7 +_,10 @@
+ 		}
+ 	}
+ 
++	/*
+ 	public void ModifyHit(Projectile optionalProjectile, NPC npcHit, ref int damageDealt, ref bool crit)
++	*/
++	public void ModifyHit(Projectile optionalProjectile, NPC npcHit, ref NPC.HitModifiers damageDealt, ref bool crit)
+ 	{
+ 		if (_effect != null && IsNPCTagged(npcHit.whoAmI) && _effect.CanRunHitEffects(_owner, optionalProjectile, npcHit)) {
+ 			_effect.ModifyTaggedHit(_owner, optionalProjectile, npcHit, ref damageDealt, ref crit);
 @@ -251,7 +_,7 @@
  		}
  	}

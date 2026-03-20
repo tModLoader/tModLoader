@@ -275,7 +275,10 @@ public class WorkshopPublishInfoStateForMods : AWorkshopPublishInfoState<TmodFil
 		using var srcStream = File.OpenRead(srcImagePath);
 		Texture2D.TextureDataFromStreamEXT(srcStream, out int srcWidth, out int srcHeight, out byte[] srcBytes);
 
+		/*
 		using var dstStream = File.OpenWrite(dstImagePath);
 		PlatformUtilities.SavePng(dstStream, srcWidth, srcHeight, dstWidth, dstHeight, srcBytes);
+		*/
+		PlatformUtilities.SavePng(dstImagePath, srcWidth, srcHeight, srcBytes);
 	}
 }

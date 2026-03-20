@@ -16,11 +16,11 @@ internal static class NPCSpawnHelper
 		}
 	}
 
-	internal static void DoChecks(NPCSpawnInfo info)
+	internal static void DoChecks(NPC.Spawner spawner)
 	{
 		float weight = 1f;
 		foreach (SpawnCondition cond in conditions) {
-			cond.Check(info, ref weight);
+			cond.Check(spawner, ref weight);
 			if (Math.Abs(weight) < 5E-6) {
 				break;
 			}
@@ -34,7 +34,7 @@ internal static class NPCSpawnHelper
 /// </summary>
 public class SpawnCondition
 {
-	private Func<NPCSpawnInfo, bool> condition;
+	private Func<NPC.Spawner, bool> condition;
 	private List<SpawnCondition> children;
 	private float blockWeight;
 	internal Func<float> WeightFunc;
@@ -48,7 +48,7 @@ public class SpawnCondition
 	public float Chance => chance;
 	public bool Active => active;
 
-	internal SpawnCondition(Func<NPCSpawnInfo, bool> condition, float blockWeight = 1f)
+	internal SpawnCondition(Func<NPC.Spawner, bool> condition, float blockWeight = 1f)
 	{
 		this.condition = condition;
 		this.children = new List<SpawnCondition>();
@@ -56,7 +56,7 @@ public class SpawnCondition
 		NPCSpawnHelper.conditions.Add(this);
 	}
 
-	internal SpawnCondition(SpawnCondition parent, Func<NPCSpawnInfo, bool> condition, float blockWeight = 1f)
+	internal SpawnCondition(SpawnCondition parent, Func<NPC.Spawner, bool> condition, float blockWeight = 1f)
 	{
 		this.condition = condition;
 		this.children = new List<SpawnCondition>();
@@ -73,17 +73,17 @@ public class SpawnCondition
 		}
 	}
 
-	internal void Check(NPCSpawnInfo info, ref float remainingWeight)
+	internal void Check(NPC.Spawner spawner, ref float remainingWeight)
 	{
 		if (WeightFunc != null) {
 			blockWeight = WeightFunc();
 		}
 		active = true;
-		if (condition(info)) {
+		if (condition(spawner)) {
 			chance = remainingWeight * blockWeight;
 			float childWeight = chance;
 			foreach (SpawnCondition child in children) {
-				child.Check(info, ref childWeight);
+				child.Check(spawner, ref childWeight);
 				if (Math.Abs(childWeight) < 5E-6) {
 					break;
 				}
@@ -288,7 +288,7 @@ public class SpawnCondition
 		SurfaceJungle = new SpawnCondition((info) => info.SpawnTileType == TileID.JungleGrass, 11f / 32f);
 		SandstormEvent = new SpawnCondition((info) => Sandstorm.Happening && info.Player.ZoneSandstorm
 			&& TileID.Sets.Conversion.Sand[info.SpawnTileType]
-			&& NPC.Spawning_SandstoneCheck(info.SpawnTileX, info.SpawnTileY));
+			&& NPC.Spawner.Spawning_SandstoneCheck(info.SpawnTileX, info.SpawnTileY));
 		Mummy = new SpawnCondition((info) => Main.hardMode && info.SpawnTileType == TileID.Sand, 1f / 3f);
 		DarkMummy = new SpawnCondition((info) => Main.hardMode && (info.SpawnTileType == TileID.Ebonsand
 			|| info.SpawnTileType == TileID.Crimsand), 0.5f);
@@ -358,12 +358,12 @@ public class SpawnCondition
 		Cavern = new SpawnCondition((info) => true);
 	}
 
-	private static Tile GetTile(NPCSpawnInfo info)
+	private static Tile GetTile(NPC.Spawner info)
 	{
 		return Main.tile[info.SpawnTileX, info.SpawnTileY];
 	}
 
-	private static bool WaterSurface(NPCSpawnInfo info)
+	private static bool WaterSurface(NPC.Spawner info)
 	{
 		if (info.SafeRangeX) {
 			return false;
@@ -377,18 +377,18 @@ public class SpawnCondition
 		return false;
 	}
 
-	private static bool MartianProbeHelper(NPCSpawnInfo info)
+	private static bool MartianProbeHelper(NPC.Spawner info)
 	{
 		return (float)Math.Abs(info.SpawnTileX - Main.maxTilesX / 2) / (float)(Main.maxTilesX / 2) > 0.33f
 			&& !NPC.AnyDanger();
 	}
 
-	private static bool InnerThird(NPCSpawnInfo info)
+	private static bool InnerThird(NPC.Spawner info)
 	{
 		return Math.Abs(info.SpawnTileX - Main.spawnTileX) < Main.maxTilesX / 3;
 	}
 
-	private static bool OuterThird(NPCSpawnInfo info)
+	private static bool OuterThird(NPC.Spawner info)
 	{
 		return Math.Abs(info.SpawnTileX - Main.spawnTileX) > Main.maxTilesX / 3;
 	}

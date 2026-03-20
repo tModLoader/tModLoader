@@ -49,7 +49,7 @@ partial class SystemLoader
 
 	private delegate void DelegateModifyTimeRate(ref double timeRate, ref double tileUpdateRate, ref double eventUpdateRate);
 
-	private delegate void DelegateModifyWorldGenTasks(List<GenPass> passes, ref double totalWeight);
+	private delegate void DelegateModifyWorldGenTasks(List<GenPass> passes);
 
 	private delegate bool DelegateHijackGetData(ref byte messageType, ref BinaryReader reader, int playerNumber);
 

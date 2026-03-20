@@ -8,6 +8,24 @@
  
  namespace Terraria.UI;
  
+@@ -985,11 +_,17 @@
+ 
+ 	private struct DamageTypeSortingLayerEntry
+ 	{
++		/*
+ 		public float Multiplier;
++		*/
++		public StatModifier Multiplier;
+ 		public ItemSortingLayer Layer;
+ 		public int Index;
+ 
++		/*
+ 		public DamageTypeSortingLayerEntry(float multiplier, ItemSortingLayer layer, int index)
++		*/
++		public DamageTypeSortingLayerEntry(StatModifier multiplier, ItemSortingLayer layer, int index)
+ 		{
+ 			Multiplier = multiplier;
+ 			Layer = layer;
 @@ -1121,7 +_,7 @@
  		list.Add(ItemSortingLayers.LastTilesCommon);
  		list.Add(ItemSortingLayers.LastNotTrash);
@@ -17,14 +35,17 @@
  			Item item = new Item();
  			item.netDefaults(i);
  			list2.Add(item);
-@@ -1161,6 +_,7 @@
+@@ -1161,7 +_,10 @@
  
  	private static int Descending(DamageTypeSortingLayerEntry x, DamageTypeSortingLayerEntry y)
  	{
-+		// TODO: Restore list.Sort((x, y) => (y.Additive * y.Multiplicative).CompareTo(x.Additive * x.Multiplicative)); patch
++		/*
  		int num = y.Multiplier.CompareTo(x.Multiplier);
++		*/
++		int num = (y.Multiplier.Additive * y.Multiplier.Multiplicative).CompareTo(x.Multiplier.Additive * x.Multiplier.Multiplicative);
  		if (num == 0)
  			num = x.Index.CompareTo(y.Index);
+ 
 @@ -1251,6 +_,10 @@
  
  				Item item3 = inv[_sort_itemsToSort[k]];

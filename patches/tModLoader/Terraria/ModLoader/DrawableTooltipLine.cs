@@ -111,8 +111,6 @@ public sealed class DrawableTooltipLine : TooltipLine
 	/// <param name="color">The color the tooltip would be drawn in</param>
 	public DrawableTooltipLine(TooltipLine parent, int index, int x, int y, Color color) : base(parent.Mod, parent.Name, parent.Text)
 	{
-		IsModifier = parent.IsModifier;
-		IsModifierBad = parent.IsModifierBad;
 		OverrideColor = parent.OverrideColor;
 		OneDropLogo = parent.OneDropLogo;
 		Text = parent.Text;

@@ -2701,7 +2701,7 @@
 +/*
  		if (Main.remixWorld)
 +*/
-+		if (Main.remixWorld && TileLoader.Convert(x, y, BiomeConversionID.Chlorophyte))
++		if (Main.remixWorld && TileLoader.Convert(x, y, BiomeConversionID.ChlorophyteDefenseWhenEvilSpreads))
  			Convert(x, y, 10);
  	}
  
@@ -2839,6 +2839,39 @@
  				prioritizedTownNPCType = Main.npc[i].type;
  				break;
  			}
+@@ -60190,7 +_,10 @@
+ 					float value = Main.windSpeedCurrent * 16f;
+ 					value = Utils.Clamp(value, -16f, 16f);
+ 					float speedY = 8f;
++					/*
+ 					EntitySource_ByProjectileSourceId spawnSource = new EntitySource_ByProjectileSourceId(19);
++					*/
++					var spawnSource = new EntitySource_Misc(nameof(ProjectileSourceID.BoulderRain));
+ 					if (Main.rand.Next(50) == 0)
+ 						Projectile.NewProjectile(spawnSource, position.X, position.Y, value, speedY, 1013, 70, 10f, Main.myPlayer, 0f, num4, 0f, NewProjectileModifiers.RainHazard);
+ 					else
+@@ -60213,7 +_,10 @@
+ 				int num7 = -1;
+ 				if (!Collision.SolidCollision(position2, 32, 32)) {
+ 					Vector2 spinninpoint = new Vector2(Utils.Clamp(Main.windSpeedCurrent * 16f, -16f, 16f), 8f);
++					/*
+ 					EntitySource_ByProjectileSourceId spawnSource2 = new EntitySource_ByProjectileSourceId(20);
++					*/
++					var spawnSource2 = new EntitySource_Misc(nameof(ProjectileSourceID.MeteorRain));
+ 					spinninpoint = spinninpoint.RotatedByRandom(0.13089969754219055);
+ 					Projectile.NewProjectile(spawnSource2, position2.X, position2.Y, spinninpoint.X, spinninpoint.Y, 1049, 70, 10f, Main.myPlayer, 0f, num7, 0f, NewProjectileModifiers.RainHazard);
+ 				}
+@@ -60247,7 +_,10 @@
+ 					num14 = (float)num8 / num14;
+ 					num12 *= num14;
+ 					num13 *= num14;
++					/*
+ 					EntitySource_ByProjectileSourceId spawnSource3 = new EntitySource_ByProjectileSourceId(21);
++					*/
++					var spawnSource3 = new EntitySource_Misc(nameof(ProjectileSourceID.MeteorShower));
+ 					int damage = 50;
+ 					if (Main.masterMode)
+ 						damage = 35;
 @@ -60306,7 +_,10 @@
  		if (Main.dayTime && !Main.remixWorld)
  			return;
@@ -2864,7 +2897,14 @@
  				}
  			}
  		}
-@@ -60472,9 +_,10 @@
+@@ -60468,13 +_,17 @@
+ 		if (!LightningGenerator.StormLightning.CanHitTarget((uint)num, vector))
+ 			return false;
+ 
++		/*
+ 		Projectile.NewProjectile(new EntitySource_ByProjectileSourceId(22), vector, Vector2.Zero, 1091, 500, 0f, Main.myPlayer, -1f, 0f, num);
++		*/
++		Projectile.NewProjectile(new EntitySource_Misc(nameof(ProjectileSourceID.StormLightning)), vector, Vector2.Zero, 1091, 500, 0f, Main.myPlayer, -1f, 0f, num);
  		return true;
  	}
  

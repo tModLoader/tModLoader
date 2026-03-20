@@ -201,7 +201,7 @@
 +					if (IsAccessoryContext(context) && !ItemLoader.CanEquipAccessory(Main.mouseItem, slot, context < 0))
 +						break;
 +
-+					if (Math.Abs(context) == Context.EquipAccessoryVanity && !Main.mouseItem.FitsAccessoryVanitySlot)
++					if (Math.Abs(context) == Context.EquipAccessoryVanity && false)
 +						break;
 +
 +					if (context < 0 && !LoaderManager.Get<AccessorySlotLoader>().CanAcceptItem(slot, Main.mouseItem, context))
@@ -222,7 +222,7 @@
 +					if (IsAccessoryContext(context) && !ItemLoader.CanEquipAccessory(Main.mouseItem, slot, context < 0))
 +						break;
 +
-+					if (Math.Abs(context) == Context.EquipAccessoryVanity && !Main.mouseItem.FitsAccessoryVanitySlot)
++					if (Math.Abs(context) == Context.EquipAccessoryVanity && false)
 +						break;
 +
 +					if (context < 0 && !LoaderManager.Get<AccessorySlotLoader>().CanAcceptItem(slot, Main.mouseItem, context))
@@ -422,7 +422,7 @@
  			if (item.stack == 0)
  				item.SetDefaults(0);
  
-@@ -1395,26 +_,59 @@
+@@ -1395,26 +_,60 @@
  		else if (item.type == 1869) {
  			player.OpenPresent(1869);
  		}
@@ -456,7 +456,8 @@
  		if ((inv[slot].IsAir && item.IsAir) || (context == 11 && ((!inv[slot].IsAir && !CanEquipAccessoryInSlot(inv[slot], new ArraySegment<Item>(Main.LocalPlayer.armor, 3, 7), slot - 10)) || (!item.IsAir && !CanEquipAccessoryInSlot(item, new ArraySegment<Item>(Main.LocalPlayer.armor, 13, 7), slot)))))
  			return;
  
-+		if (flag && Math.Abs(context) == 11) {
++		bool flag = true;
++		if (Math.Abs(context) == 11) {
 +			var accessories = AccessorySlotLoader.ModSlotPlayer(player).exAccessorySlot;
 +			for (int invNum = 0; invNum < 2; invNum++) {
 +				var checkInv = player.armor;

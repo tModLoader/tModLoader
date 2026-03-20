@@ -487,7 +487,7 @@ public static partial class SystemLoader
 	{
 		foreach (var system in HookModifyWorldGenTasks.Enumerate()) {
 			try {
-				system.ModifyWorldGenTasks(passes, ref totalWeight);
+				system.ModifyWorldGenTasks(passes);
 			}
 			catch (Exception e) {
 				string message = string.Join(

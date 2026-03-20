@@ -36,7 +36,7 @@
 +	public static string? ToContextString(int itemSourceId) => itemSourceId switch {
 +		SetBonus_Nebula => nameof(SetBonus_Nebula),
 +		LuckyCoin => nameof(LuckyCoin),
-+		ThrowItem => nameof(ThrowItem),
++		PlayerDrop => nameof(PlayerDrop),
 +		GrandDesignOrMultiColorWrench => nameof(GrandDesignOrMultiColorWrench),
 +		//SortingWithNoSpace => nameof(SortingWithNoSpace),
 +		Shimmer => nameof(Shimmer),

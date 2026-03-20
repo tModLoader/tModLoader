@@ -16,7 +16,7 @@
  	public const int BorderSize = 10;
  
  	public static void DrawLine(SpriteBatch spriteBatch, Vector2 start, Vector2 end, Color col, float width)
-@@ -26,17 +_,25 @@
+@@ -26,17 +_,27 @@
  		}
  	}
  
@@ -25,7 +25,9 @@
  	{
 +		/*
  		List<TeleportPylonInfo> pylons = Main.PylonSystem.Pylons;
++		*/
  		float num = 1f;
++		/*
  		float scaleIfSelected = num * 2f;
 +		*/
  		float scaleIfOffscreen = num * 0.5f;
@@ -42,23 +44,29 @@
  
  		bool flag = false;
  		int num2 = -1;
-@@ -64,6 +_,22 @@
+@@ -64,6 +_,28 @@
  				continue;
  
  			bool onScreen = true;
 +
-+			float num = 1f;
++			num = 1f;
 +			float scaleIfSelected = num * 2f;
 +			Color color = Color.White;
 +
-+			if (!TeleportPylonsSystem.IsPlayerNearAPylon(Main.LocalPlayer))
-+				color = Color.Gray * 0.5f;
 +
-+			if (!PylonLoader.PreDrawMapIcon(ref context, ref text, ref info, ref num2, ref color, ref num, ref scaleIfSelected))
++			bool isNearPylon = TeleportPylonsSystem.IsPlayerNearAPylon(Main.LocalPlayer);
++			/*
++			if (!TeleportPylonsSystem.IsPlayerNearAPylon(Main.LocalPlayer))
++			*/
++			if (!isNearPylon) {
++				color = Color.Gray * 0.5f;
++			}
++
++			if (!PylonLoader.PreDrawMapIcon(ref context, ref text, ref info2, ref isNearPylon, ref color, ref num, ref scaleIfSelected))
 +				continue;
 +
-+			if (info.ModPylon is ModPylon pylon) {
-+				pylon.DrawMapIcon(ref context, ref text, info, num2, color, num, scaleIfSelected);
++			if (info2.ModPylon is ModPylon pylon) {
++				pylon.DrawMapIcon(ref context, ref text, info2, isNearPylon, color, num, scaleIfSelected);
 +				continue;
 +			}
 +

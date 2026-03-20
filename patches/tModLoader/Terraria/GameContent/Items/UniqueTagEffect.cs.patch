@@ -1,15 +1,33 @@
 --- src/TerrariaNetCore/Terraria/GameContent/Items/UniqueTagEffect.cs
 +++ src/tModLoader/Terraria/GameContent/Items/UniqueTagEffect.cs
-@@ -30,11 +_,11 @@
+@@ -22,19 +_,31 @@
+ 
+ 	public virtual bool CanRunHitEffects(Player owner, Projectile optionalProjectile, NPC npcHit) => true;
+ 
++	/*
+ 	public virtual void ModifyTaggedHit(Player owner, Projectile optionalProjectile, NPC npcHit, ref int damageDealt, ref bool crit)
++	*/
++	public virtual void ModifyTaggedHit(Player owner, Projectile optionalProjectile, NPC npcHit, ref NPC.HitModifiers damageDealt, ref bool crit)
  	{
  	}
  
--	public virtual void OnTaggedHit(Player owner, Projectile optionalProjectile, NPC npcHit, int calcDamage)
++	/*
+ 	public virtual void ModifyProcHit(Player owner, Projectile optionalProjectile, NPC npcHit, ref int damageDealt, ref bool crit)
++	*/
++	public virtual void ModifyProcHit(Player owner, Projectile optionalProjectile, NPC npcHit, ref NPC.HitModifiers damageDealt, ref bool crit)
+ 	{
+ 	}
+ 
++	/*
+ 	public virtual void OnTaggedHit(Player owner, Projectile optionalProjectile, NPC npcHit, int calcDamage)
++	*/
 +	public virtual void OnTaggedHit(Player owner, Projectile optionalProjectile, NPC npcHit, float calcDamage)
  	{
  	}
  
--	public virtual void OnProcHit(Player owner, Projectile optionalProjectile, NPC npcHit, int calcDamage)
++	/*
+ 	public virtual void OnProcHit(Player owner, Projectile optionalProjectile, NPC npcHit, int calcDamage)
++	*/
 +	public virtual void OnProcHit(Player owner, Projectile optionalProjectile, NPC npcHit, float calcDamage)
  	{
  	}

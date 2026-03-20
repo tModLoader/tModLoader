@@ -298,7 +298,7 @@
 +				NPC.HitInfo hit = default;
 +				if (num212 >= 0) {
 +					hit = new NPC.HitInfo {
-+						Damage = num191,
++						Damage = num212,
 +						SourceDamage = reader.Read7BitEncodedInt(),
 +						DamageType = DamageClassLoader.DamageClasses[reader.Read7BitEncodedInt()],
 +						HitDirection = reader.ReadSByte(),

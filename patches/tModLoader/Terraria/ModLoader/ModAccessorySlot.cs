@@ -127,7 +127,7 @@ public abstract class ModAccessorySlot : ModType
 	public virtual bool CanAcceptItem(Item checkItem, AccessorySlotType context)
 	{
 		if (context == AccessorySlotType.VanitySlot) {
-			return checkItem.FitsAccessoryVanitySlot;
+			return true;
 		}
 
 		return true;

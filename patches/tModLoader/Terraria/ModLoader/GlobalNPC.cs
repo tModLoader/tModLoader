@@ -652,7 +652,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// </summary>
 	/// <param name="pool"></param>
 	/// <param name="spawnInfo"></param>
-	public virtual void EditSpawnPool(IDictionary<int, float> pool, NPCSpawnInfo spawnInfo)
+	public virtual void EditSpawnPool(IDictionary<int, float> pool, NPC.Spawner spawner)
 	{
 	}
 

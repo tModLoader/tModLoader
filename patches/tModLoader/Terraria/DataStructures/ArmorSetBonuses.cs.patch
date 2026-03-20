@@ -1,5 +1,17 @@
 --- src/TerrariaNetCore/Terraria/DataStructures/ArmorSetBonuses.cs
 +++ src/tModLoader/Terraria/DataStructures/ArmorSetBonuses.cs
+@@ -119,8 +_,11 @@
+ 			player.minionDamage += 0.15f;
+ 			player.whipRangeMultiplier += 0.3f;
+ 			float num = 1.15f;
++			/*
+ 			float num2 = 1f / num;
+ 			player.whipUseTimeMultiplier *= num2;
++			*/
++			player.summonerWeaponSpeedBonus += num - 1; //TML: Obsidian armor changed to additive.
+ 		}
+ 
+ 		public static void ChlorophyteMelee(Player player)
 @@ -234,6 +_,9 @@
  
  		public static void CrystalAssassin(Player player)

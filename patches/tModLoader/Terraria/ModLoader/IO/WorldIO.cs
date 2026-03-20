@@ -626,7 +626,7 @@ internal static class WorldIO
 	{
 		path = Path.ChangeExtension(path, ".twld");
 		if (FileUtilities.Exists(path + ".bak", cloudSave)) {
-			FileUtilities.Move(path + ".bak", path, cloudSave, true);
+			FileUtilities.Move(path + ".bak", path, cloudSave);
 		}
 	}
 	//in Terraria.WorldGen.do_playWorldCallback add this after moving .bak file
@@ -634,10 +634,10 @@ internal static class WorldIO
 	{
 		path = Path.ChangeExtension(path, ".twld");
 		if (FileUtilities.Exists(path, cloudSave)) {
-			FileUtilities.Copy(path, path + ".bad", cloudSave, true);
+			FileUtilities.Copy(path, path + ".bad", cloudSave);
 		}
 		if (FileUtilities.Exists(path + ".bak", cloudSave)) {
-			FileUtilities.Copy(path + ".bak", path, cloudSave, true);
+			FileUtilities.Copy(path + ".bak", path, cloudSave);
 			FileUtilities.Delete(path + ".bak", cloudSave);
 		}
 	}
@@ -646,10 +646,10 @@ internal static class WorldIO
 	{
 		path = Path.ChangeExtension(path, ".twld");
 		if (FileUtilities.Exists(path, cloudSave)) {
-			FileUtilities.Copy(path, path + ".bak", cloudSave, true);
+			FileUtilities.Copy(path, path + ".bak", cloudSave);
 		}
 		if (FileUtilities.Exists(path + ".bad", cloudSave)) {
-			FileUtilities.Copy(path + ".bad", path, cloudSave, true);
+			FileUtilities.Copy(path + ".bad", path, cloudSave);
 			FileUtilities.Delete(path + ".bad", cloudSave);
 		}
 	}
