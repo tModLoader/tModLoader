@@ -74,7 +74,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
   - Seems to control MessageID.PlayerControls being sent but I don't know why. 1 is unused.
 - Adjacent tiles are now contained in Recipe.TileCountsAs rather than hard-coded. Need to adjust TileLoader.AdjTiles hooks/docs/exampels to prioritize using Recipe.TileCountsAs
   - Restore `TileLoader.AdjTiles(this, Main.tile[j, k].type);` patch to new Player.SetAdjTile method
-- Add 697 to TileID.Sets.CanPlaceNextToNonSolidTile
 - ItemID.Sets.ExtractinatorMode entries seem to have changed a lot. There is also a new CanBeExtractinated set. Need to investigate and adjust things if necessary.
 - Terraria added a CanConsumeConsumableItem stub method. Should it check item.consumable or only ItemLoader.ConsumeItem.
 - We'll need to check all bag drops and update the drop database.
@@ -108,7 +107,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - "// Sound is played on animation start #ItemTimeOnAllClients" comments around "SoundEngine.PlaySound(item6.UseSound" in MessageBuffer's `ShotAnimationAndSound` code. ShotAnimationAndSound was renamed, we might need to verify that this is still fixed in tmod.
 - ApplyDifficultyAndPlayerScaling needs to be revisited.
 - Need to restore rejected PopupText.rare patch logic in Item.GetPopupRarityColor
-- Add 26 to TileID.Sets.AvoidedByMeteorLanding
 - Check for ` = new Tile();` not gated by null checks. These will all throw exception. Change to `Tile.Clear(TileDataType.All);`
 - WorldGen.StopWaterfallAmbienceAudio might be a better place for some existing patches. Need to verify save and quit stopping waterfall sounds properly.
 - TileLoader.DropCritterChance could be updated with LuckyClover chance. Also Lavafly/HellButterfly chance
@@ -122,7 +120,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - It seems like bomb damage logic has been reworked. Maybe many of our patches are no longer necessary or our explosive projectile examples need fixing. 
 - CombinedHooks.CanHitNPCWithProj patches might need to be reworked, it seems like they should be able to be simplified
 - Whip tag damage changed. Player.TagEffectState. Need to reapply "float num13 = ProjectileID.Sets.SummonTagDamageMultiplier[type];" patch somewhere.
-- Update ProjectileID.Sets.IsInteractable: 1093, 1094, 1098
 - Looks like we might want to split out the collision hitbox modification from TileCollideStyle. There is a new Projectile.GetCollisionParams method.
 - Biome conversion patches will need to be fixed, or maybe the vanilla changes will make it much easier to implement. Projectile, WorldGen
 - Double check new DoScrollingInInventory logic against PlayerInput.MouseInModdedUI

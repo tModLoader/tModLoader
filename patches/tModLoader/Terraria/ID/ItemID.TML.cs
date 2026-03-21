@@ -145,7 +145,8 @@ partial class ItemID
 			MonkStaffT2,
 			MonkStaffT3,
 			ChlorophytePartisan,
-			NorthPole
+			NorthPole,
+			SlimeSpear
 		);
 
 		/// <summary>

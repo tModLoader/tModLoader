@@ -825,4 +825,44 @@ public class ProjAIStyleID
 	/// Used by: <see cref="ProjectileID.JimsDrone"/>
 	/// </summary>
 	public const short JimsDrone = 195;
+	/// <summary>
+	/// Used by: <see cref="ProjectileID.FlowerWhipPetal"/>
+	/// </summary>
+	public const short Petal = 196;
+	/// <summary>
+	/// Used by: <see cref="ProjectileID.DeadCellsBarnacle"/>
+	/// </summary>
+	public const short CeilingAndHoverTurret = 197;
+	/// <summary>
+	/// Used by: <see cref="ProjectileID.DeadCellsFlint"/>
+	/// </summary>
+	public const short Flint = 198;
+	/// <summary>
+	/// Used by: <see cref="ProjectileID.MeteorOre"/>
+	/// </summary>
+	public const short MeteorOre = 199;
+	/// <summary>
+	/// Used by: <see cref="ProjectileID.BirdDroppings"/>
+	/// </summary>
+	public const short BirdDroppings = 200;
+	/// <summary>
+	/// Used by: <see cref="ProjectileID.AntlionClaw"/> and <see cref="ProjectileID.StylistKilLaKillScissorsIWish"/>
+	/// </summary>
+	public const short ThrownMelee = 201;
+	/// <summary>
+	/// Used by: <see cref="ProjectileID.TorchGodHelper"/>
+	/// </summary>
+	public const short TorchGodHelper = 202;
+	/// <summary>
+	/// Used by: <see cref="ProjectileID.StormLightning"/>
+	/// </summary>
+	public const short StormLightning = 203;
+	/// <summary>
+	/// Used by: <see cref="ProjectileID.PalworldDigtoise"/>
+	/// </summary>
+	public const short Digtoise = 204;
+	/// <summary>
+	/// Used by: <see cref="ProjectileID.RemoteControlCar"/>
+	/// </summary>
+	public const short RemoteControlCar = 205;
 }
