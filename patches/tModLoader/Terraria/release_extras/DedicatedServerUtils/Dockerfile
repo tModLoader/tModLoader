@@ -20,10 +20,14 @@ ARG GID
 RUN addgroup -g $GID tml \
  && adduser tml -u $UID -G tml -h /home/tml -D
 
+# Fix permissions for tml's home directory due to the creation of `/home/tml/server/tModLoader-Logs/Natives.log`
+WORKDIR /home/tml
+RUN chown -R tml:tml /home/tml
+RUN chmod 755 /home/tml
+
 USER tml
 ENV USER tml
 ENV HOME /home/tml
-WORKDIR $HOME
 
 # Update SteamCMD and verify latest version
 RUN steamcmd +quit
