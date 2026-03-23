@@ -119,7 +119,7 @@ public static class ItemLoader
 
 	internal static void FinishSetup()
 	{
-		GlobalLoaderUtils<GlobalItem, Item>.BuildTypeLookups(new Item().SetDefaults);
+		GlobalLoaderUtils<GlobalItem, Item>.BuildTypeLookups((type) => new Item().SetDefaults(type));
 		UpdateHookLists();
 		GlobalTypeLookups<GlobalItem>.LogStats();
 
@@ -206,7 +206,7 @@ public static class ItemLoader
 	{
 		item.ModItem?.OnSpawn(source);
 
-		foreach (GlobalItem g in HookOnSpawn.Enumerate(item)) {
+		foreach (GlobalItem g in HookOnSpawn.Enumerate(item.inner)) {
 			g.OnSpawn(item, source);
 		}
 	}
@@ -1539,7 +1539,7 @@ public static class ItemLoader
 	/// <returns>Whether or not the items are allowed to stack</returns>
 	public static bool CanStackInWorld(WorldItem destination, WorldItem source)
 	{
-		foreach (var g in HookCanStackInWorld.Enumerate(destination)) {
+		foreach (var g in HookCanStackInWorld.Enumerate(destination.inner)) {
 			if (!g.CanStackInWorld(destination, source))
 				return false;
 		}
@@ -1869,7 +1869,8 @@ public static class ItemLoader
 	{
 		item.ModItem?.Update(ref gravity, ref maxFallSpeed);
 
-		foreach (var g in HookUpdate.Enumerate(item)) {
+
+		foreach (var g in HookUpdate.Enumerate(item.inner)) {
 			g.Update(item, ref gravity, ref maxFallSpeed);
 		}
 	}
@@ -1883,7 +1884,7 @@ public static class ItemLoader
 	{
 		item.ModItem?.PostUpdate();
 
-		foreach (var g in HookPostUpdate.Enumerate(item)) {
+		foreach (var g in HookPostUpdate.Enumerate(item.inner)) {
 			g.PostUpdate(item);
 		}
 	}
@@ -1898,7 +1899,7 @@ public static class ItemLoader
 	{
 		item.ModItem?.GrabRange(player, ref grabRange);
 
-		foreach (var g in HookGrabRange.Enumerate(item)) {
+		foreach (var g in HookGrabRange.Enumerate(item.inner)) {
 			g.GrabRange(item, player, ref grabRange);
 		}
 	}
@@ -1910,7 +1911,7 @@ public static class ItemLoader
 	/// </summary>
 	public static bool GrabStyle(WorldItem item, Player player)
 	{
-		foreach (var g in HookGrabStyle.Enumerate(item)) {
+		foreach (var g in HookGrabStyle.Enumerate(item.inner)) {
 			if (g.GrabStyle(item, player))
 				return true;
 		}
@@ -1922,7 +1923,7 @@ public static class ItemLoader
 
 	public static bool CanPickup(WorldItem item, Player player)
 	{
-		foreach (var g in HookCanPickup.Enumerate(item)) {
+		foreach (var g in HookCanPickup.Enumerate(item.inner)) {
 			if (!g.CanPickup(item, player))
 				return false;
 		}
@@ -1937,7 +1938,7 @@ public static class ItemLoader
 	/// </summary>
 	public static bool OnPickup(WorldItem item, Player player)
 	{
-		foreach (var g in HookOnPickup.Enumerate(item)) {
+		foreach (var g in HookOnPickup.Enumerate(item.inner)) {
 			if (!g.OnPickup(item, player))
 				return false;
 		}
@@ -1988,7 +1989,7 @@ public static class ItemLoader
 		if (item.ModItem != null)
 			flag &= item.ModItem.PreDrawInWorld(spriteBatch, lightColor, alphaColor, ref rotation, ref scale, whoAmI);
 
-		foreach (var g in HookPreDrawInWorld.Enumerate(item)) {
+		foreach (var g in HookPreDrawInWorld.Enumerate(item.inner)) {
 			flag &= g.PreDrawInWorld(item, spriteBatch, lightColor, alphaColor, ref rotation, ref scale, whoAmI);
 		}
 
@@ -2004,7 +2005,7 @@ public static class ItemLoader
 	{
 		item.ModItem?.PostDrawInWorld(spriteBatch, lightColor, alphaColor, rotation, scale, whoAmI);
 
-		foreach (var g in HookPostDrawInWorld.Enumerate(item)) {
+		foreach (var g in HookPostDrawInWorld.Enumerate(item.inner)) {
 			g.PostDrawInWorld(item, spriteBatch, lightColor, alphaColor, rotation, scale, whoAmI);
 		}
 	}

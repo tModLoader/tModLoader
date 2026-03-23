@@ -370,7 +370,7 @@ public static class ModContent
 		RarityLoader.FinishSetup();
 		Config.ConfigManager.FinishSetup();
 
-		SystemLoader.ModifyGameTipVisibility(Main.gameTips.allTips);
+		SystemLoader.ModifyGameTipVisibility(Main.gameTipsProvider.allTips);
 
 		PlayerInput.reinitialize = true;
 		SetupBestiary();

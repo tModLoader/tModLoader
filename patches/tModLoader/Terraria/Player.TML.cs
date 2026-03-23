@@ -684,18 +684,22 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 		var effect = ItemID.Sets.BannerStrength[Item.BannerToItem(bannerId)];
 		modifiers.TargetDamageMultiplier *= Main.expertMode ? effect.ExpertDamageDealt : effect.NormalDamageDealt;
 	}
+	*/
 
-	// Added by TML
-	public void ApplyBannerDefenseBuff(NPC npc, ref Player.HurtModifiers modifiers) => ApplyBannerDefenseBuff(Item.NPCtoBanner(npc.BannerID()), ref modifiers);
+	public void ApplyBannerDefenseBuff(NPC npc, ref Player.HurtModifiers modifiers)
+	{
+		if (GetBannerBuffEffect(npc, out var effect))
+			ApplyBannerDefenseBuff(effect, ref modifiers);
+	}
 
-	// Added by TML
+	public void ApplyBannerDefenseBuff(ItemID.BannerEffect effect, ref Player.HurtModifiers modifiers)
+	{
+		modifiers.IncomingDamageMultiplier *= effect.DamageReceived.Sample(Main.Difficulty);
+	}
+
 	public void ApplyBannerDefenseBuff(int bannerId, ref Player.HurtModifiers modifiers)
 	{
-		if (!HasNPCBannerBuff(bannerId))
-			return;
-
-		var effect = ItemID.Sets.BannerStrength[Item.BannerToItem(bannerId)];
-		modifiers.IncomingDamageMultiplier *= Main.expertMode ? effect.ExpertDamageReceived : effect.NormalDamageReceived;
+		if (GetBannerBuffEffect(bannerId, out var effect))
+			ApplyBannerDefenseBuff(effect, ref modifiers);
 	}
-	*/
 }

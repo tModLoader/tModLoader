@@ -135,11 +135,13 @@ public partial class ItemSlot
 	/// </summary>
 	internal static bool AccCheck_ForPlayer(Player player, Item[] itemCollection, Item item, int slot)
 	{
+		/*
 		if (isEquipLocked(item.type))
 			return true;
+		*/
 
 		if (slot != -1) {
-			if (itemCollection[slot].IsTheSameAs(item))
+			if (!itemCollection[slot].IsNotTheSameAs(item))
 				return false;
 
 			if (itemCollection[slot].wingSlot > 0 && item.wingSlot > 0 || !ItemLoader.CanAccessoryBeEquippedWith(player, itemCollection[slot], item))
@@ -161,7 +163,7 @@ public partial class ItemSlot
 		}
 
 		for (int i = 0; i < itemCollection.Length; i++) {
-			if (item.IsTheSameAs(itemCollection[i]))
+			if (!item.IsNotTheSameAs(itemCollection[i]))
 				return true;
 		}
 

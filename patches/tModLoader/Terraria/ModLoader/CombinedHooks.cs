@@ -183,14 +183,7 @@ public static class CombinedHooks
 			modifiers.IncomingDamageMultiplier *= 0.7f;
 
 		if (!projectile.reflected && !ProjectileID.Sets.PlayerHurtDamageIgnoresDifficultyScaling[projectile.type]) {
-			float damageMult = Main.GameModeInfo.EnemyDamageMultiplier;
-			if (Main.IsJourneyMode) {
-				var power = CreativePowerManager.Instance.GetPower<CreativePowers.DifficultySliderPower>();
-				if (power.GetIsUnlocked())
-					damageMult = power.StrengthMultiplierToGiveNPCs;
-			}
-
-			modifiers.SourceDamage *= damageMult;
+			modifiers.SourceDamage *= GameDifficultyData.EnemyDamageMultiplier.Sample(Main.Difficulty);
 		}
 	}
 

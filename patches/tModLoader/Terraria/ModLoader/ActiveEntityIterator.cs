@@ -23,8 +23,10 @@ public readonly ref struct ActiveEntityIterator<T> where T : Entity
 		public bool MoveNext()
 		{
 			while (enumerator.MoveNext()) {
+				/* TODO: Entity.active no longer exists....
 				if (enumerator.Current.active)
 					return true;
+				*/
 			}
 
 			return false;

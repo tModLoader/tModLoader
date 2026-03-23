@@ -877,7 +877,7 @@
  	private bool boulderLogo;
  	private static TitleMusicStyle titleMusicStyle = TitleMusicStyle.Current;
  	private static TitleMusicStyle titleMusicStyleRandom = TitleMusicStyle.Current;
-@@ -2004,8 +_,11 @@
+@@ -2004,12 +_,16 @@
  	public static float ambientLavaY = -1f;
  	public static float ambientLavaStrength;
  	public static int ambientCounter;
@@ -889,6 +889,11 @@
  	public static IChatMonitor chatMonitor = new RemadeChatMonitor();
  	public static int ProjectileUpdateLoopIndex = -1;
  	public static readonly double TARGET_FRAME_TIME = 0.01666666753590107;
+ 	public static GameTipsDisplay gameTips;
++	public static GameTipsProvider gameTipsProvider; // TML
+ 	private Stopwatch _worldUpdateTimeTester = new Stopwatch();
+ 	public SpelunkerProjectileHelper SpelunkerProjectileHelper = new SpelunkerProjectileHelper();
+ 	public ChumBucketProjectileHelper ChumBucketProjectileHelper = new ChumBucketProjectileHelper();
 @@ -2028,10 +_,10 @@
  	private int selectedMenu2 = -1;
  	public static int selectedPlayer = 0;
@@ -1800,6 +1805,15 @@
  		musicFade[50] = 1f;
  		if (dedServ)
  			netMode = 2;
+@@ -5529,7 +_,7 @@
+ 		_windowMover = new WindowStateController();
+ 		sittingManager = new AnchoredEntitiesCollection();
+ 		sleepingManager = new AnchoredEntitiesCollection();
+-		gameTips = new GameTipsDisplay(new GameTipsProvider());
++		gameTips = new GameTipsDisplay(gameTipsProvider = new GameTipsProvider());
+ 		if (player[myPlayer] == null)
+ 			player[myPlayer] = new Player();
+ 
 @@ -5542,6 +_,8 @@
  			if (!dedServ)
  				Lighting.Clear();

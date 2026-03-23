@@ -1,17 +1,18 @@
 --- src/TerrariaNetCore/Terraria/Recipe.cs
 +++ src/tModLoader/Terraria/Recipe.cs
-@@ -1,15 +_,18 @@
+@@ -1,15 +_,19 @@
  using System;
  using System.Collections.Generic;
- using System.Text;
 +using System.Linq;
+ using System.Text;
  using Terraria.GameContent;
  using Terraria.GameContent.UI;
  using Terraria.ID;
  using Terraria.Map;
- using Terraria.UI;
 +using Terraria.ModLoader;
++using Terraria.ModLoader.IO;
 +using Terraria.ModLoader.Utilities;
+ using Terraria.UI;
  
  namespace Terraria;
  
@@ -167,6 +168,24 @@
  			RequiredItemEntry requiredItemEntry = requiredItemQuickLookup[i];
  			if (requiredItemEntry.itemIdOrRecipeGroup != 0) {
  				requiredItemEntry.stack -= GetIngredientCraftingDiscount(player, requiredItemEntry);
+@@ -174,12 +_,17 @@
+ 	private int GetIngredientCraftingDiscount(Player player, RequiredItemEntry req)
+ 	{
+ 		int num = 0;
++		/*
+ 		if (alchemy && player.alchemyTable) {
+ 			for (int i = 0; i < req.stack; i++) {
+ 				if (Main.rand.Next(3) == 0)
+ 					num++;
+ 			}
+ 		}
++		*/
++		int count = req.stack;
++		RecipeLoader.ConsumeIngredient(this, req.itemIdOrRecipeGroup, ref count, false);
++		num = req.stack - count;
+ 
+ 		return num;
+ 	}
 @@ -204,7 +_,14 @@
  			if (recipe.createItem.type == 0)
  				break;

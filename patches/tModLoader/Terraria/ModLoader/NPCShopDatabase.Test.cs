@@ -68,7 +68,8 @@ public static partial class NPCShopDatabase
 		// Main.moonPhase = (Main.moonPhase + 1) % 8;
 		// Main.LocalPlayer.golferScoreAccumulated = 2001;
 
-		var chest = new Chest();
+		Chest.CreateChest(0, 0, 0);
+		var chest = Main.chest[0];
 		string ChestToString() => string.Join(" ", chest.item.Select(item => item.type));
 
 		bool allPass = true;

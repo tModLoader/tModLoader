@@ -163,6 +163,7 @@ Once all patches are fixed, these items need to be fixed or double checked:
   - Recipe item consumption seems to be in another class now, patches need to be moved. GetIngredientCraftingDiscount also needs to be tweaked to work again for modded RecipeLoader.ConsumeIngredient
   - RecipeGroup.Register merge feature needs to be reworked to look up correct GetPlaceholderItemType and merge missing items with Add instead of Union.
     - Done, but since RecipeGroups no longer have names, the logic currently just checks the 1st item (GetPlaceholderItemType).
+  - CraftViaRequest complicates `RecipeItemCreationContext.DestinationStack` I think. Removed for compile, restore if possible. OnCraftHooks also not hooked up.
 - ItemSlot flow changed a lot. AccCheck no longer exists, replaced by CanEquipAccessoryInSlot?
 - DyeSwap/ModSlotDyeSwap needs new approach
 - Pretty much all OnTileConverted and similar hooks/patches need to be reworked.
@@ -173,6 +174,11 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Everything in NPCSpawnHelper will need to be checked against any 1.4.5 changes, as well as any new conditions that are still missing.
 - TileSnapshot will need more thought to restore functionality. Commented out erroring code for now.
 - Vanilla now has a NativeLibraries class, conflicting with our own.
+- Modded tip logic might need changes. There can now be player creation specific tips in UICharacterCreation._tips (a GameTipsDisplay class with a different `ITipProvider`. Supporting this would require more thought.
+- How do we update ProjectileID.Sets.PlayerHurtDamageIgnoresDifficultyScaling? Needs dev comment and to be updated.
+- LiquidEdgeRenderer.DrawScreenTargetSlices patch needs to be fixed if still needed.
+- ActiveEntityIterator needs to be fixed now that Entity.active no longer exists.
+- SurfaceBackgroundStylesLoader.DrawCloseBackground needs to be fixed or recreated from new vanilla logic/math
 
 # New Fields that might need more documentation
 
@@ -230,6 +236,7 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - ProjectileID.Sets.HeldProjDoesNotUsePlayerGfxOffY removed. How has this been fixed? I thought it wouldn't be fixed in vanilla.
 - ProjectileID.Sets.DontAttachHideToAlpha removed. What replaced it? Is it usesOwnerLight? Update Projectile.hide docs as well.
 - Need to determine if hooks need to act on ModItem or WorldItem. For example: `ItemIO.SendModData(item3, writer);`
+  - `public EntityGlobalsEnumerator<TGlobal> Enumerate(IEntityWithGlobals<TGlobal> entity) => new(ForType(entity.Type), entity);` doesn't work as-is for hooks that are now WorldItem. I've changed them to `.Enumerate(item.inner)`, but I'm not positive what design we want for these hooks now. (WorldItem points to Item, but Item doesn't point to WorldItem.)
 - The number3 parameter of the SyncEquipment message seems to have changed meaning. Docs needed.
 - EntitySource_FishedOut will now apply to fishing item spawns instead of just npc spawns.
 - Main.blackTarget removed. All other render targets are now static and WorldSceneLayerTarget instead of RenderTarget2D. (What does WorldSceneLayerTarget do?)

@@ -24,7 +24,7 @@ public static class LocalizationLoader
 			var text = lang.GetOrRegister(key); // adds the key but leaves it untranslated for now.
 
 			if (key.StartsWith(gameTipPrefix))
-				Main.gameTips.allTips.Add(new GameTipData(text, mod));
+				Main.gameTipsProvider.allTips.Add(new GameTipData(text, mod));
 		}
 	}
 

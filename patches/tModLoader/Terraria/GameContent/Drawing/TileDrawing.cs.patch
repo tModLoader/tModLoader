@@ -683,7 +683,7 @@
  				Main.tileBatch.Draw(value5, vector, value6, new Color(255, 255, 255, 0) * 0.1f, Vector2.Zero, 1f, SpriteEffects.None);
  			}
 +
-+			TileLoader.SpecialDraw(type, num, num2, Main.tileBatch);
++			TileLoader.SpecialDraw(type, num, num2, Main.spriteBatch);
  		}
  	}
  

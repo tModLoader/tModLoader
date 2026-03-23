@@ -1,6 +1,11 @@
 --- src/TerrariaNetCore/Terraria/WorldItem.cs
 +++ src/tModLoader/Terraria/WorldItem.cs
-@@ -12,24 +_,52 @@
+@@ -9,27 +_,57 @@
+ using Terraria.GameContent.Drawing;
+ using Terraria.GameContent.Events;
+ using Terraria.ID;
++using Terraria.ModLoader;
++using Terraria.ModLoader.IO;
  
  namespace Terraria;
  
@@ -84,3 +89,19 @@
  
  	public static void ShimmerEffect(Vector2 shimmerPositon)
  	{
+@@ -1538,12 +_,15 @@
+ 				num7++;
+ 				int num8 = num6 * item.stack;
+ 				int num9 = (item.IsRecipeGroup ? item.RecipeGroup.DecraftItemId : item.itemIdOrRecipeGroup);
++				/*
+ 				if (recipe.alchemy) {
+ 					for (int num10 = num8; num10 > 0; num10--) {
+ 						if (Main.rand.Next(3) == 0)
+ 							num8--;
+ 					}
+ 				}
++				*/
++				RecipeLoader.ConsumeIngredient(recipe, num9, ref num8, true);
+ 
+ 				while (num8 > 0) {
+ 					int num11 = num8;
