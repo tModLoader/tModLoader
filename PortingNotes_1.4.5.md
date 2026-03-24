@@ -161,9 +161,11 @@ Once all patches are fixed, these items need to be fixed or double checked:
   - Need needTorchGodsFavor condition
   - needEverythingSeed seems to be replaced by needMechdusa. TODo: Rename Condition.ZenithWorld?
   - Recipe item consumption seems to be in another class now, patches need to be moved. GetIngredientCraftingDiscount also needs to be tweaked to work again for modded RecipeLoader.ConsumeIngredient
+    - Hook needs rework to use `Recipe.RequiredItemEntry`
   - RecipeGroup.Register merge feature needs to be reworked to look up correct GetPlaceholderItemType and merge missing items with Add instead of Union.
     - Done, but since RecipeGroups no longer have names, the logic currently just checks the 1st item (GetPlaceholderItemType).
   - CraftViaRequest complicates `RecipeItemCreationContext.DestinationStack` I think. Removed for compile, restore if possible. OnCraftHooks also not hooked up.
+    - In theory it can be restored, since the `_pendingCrafts` queue remains on the client, and changes to `Main.mouseItem` are forbidden while a craft is pending. Documentation needs to note that the craft could be refunded though, so we likely need `OnCraft` hoook to be in `CraftItem_GrantItem`
 - ItemSlot flow changed a lot. AccCheck no longer exists, replaced by CanEquipAccessoryInSlot?
 - DyeSwap/ModSlotDyeSwap needs new approach
 - Pretty much all OnTileConverted and similar hooks/patches need to be reworked.

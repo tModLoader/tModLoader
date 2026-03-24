@@ -164,28 +164,28 @@
  	public void GetIngredientsForOneCraft(Player player, List<RequiredItemEntry> ingredients)
  	{
 -		for (int i = 0; i < maxRequirements; i++) {
-+		for (int i = 0; i < ingredients.Count; i++) {
++		for (int i = 0; i < requiredItem.Count; i++) {
  			RequiredItemEntry requiredItemEntry = requiredItemQuickLookup[i];
  			if (requiredItemEntry.itemIdOrRecipeGroup != 0) {
  				requiredItemEntry.stack -= GetIngredientCraftingDiscount(player, requiredItemEntry);
-@@ -174,12 +_,17 @@
+@@ -173,6 +_,7 @@
+ 
  	private int GetIngredientCraftingDiscount(Player player, RequiredItemEntry req)
  	{
- 		int num = 0;
 +		/*
+ 		int num = 0;
  		if (alchemy && player.alchemyTable) {
  			for (int i = 0; i < req.stack; i++) {
- 				if (Main.rand.Next(3) == 0)
- 					num++;
- 			}
+@@ -182,6 +_,9 @@
  		}
-+		*/
-+		int count = req.stack;
-+		RecipeLoader.ConsumeIngredient(this, req.itemIdOrRecipeGroup, ref count, false);
-+		num = req.stack - count;
  
  		return num;
++		*/
++
++		return 0; // TODO, reimplement crafting discounts in terms of RequiredItemEntry
  	}
+ 
+ 	public static void UpdateRecipeList()
 @@ -204,7 +_,14 @@
  			if (recipe.createItem.type == 0)
  				break;
