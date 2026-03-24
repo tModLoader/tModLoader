@@ -6345,6 +6345,17 @@
  			if (Main.tile[tileTargetX + 1, tileTargetY].active() || Main.tile[tileTargetX + 1, tileTargetY].wall > 0 || Main.tile[tileTargetX - 1, tileTargetY].active() || Main.tile[tileTargetX - 1, tileTargetY].wall > 0 || Main.tile[tileTargetX, tileTargetY + 1].active() || Main.tile[tileTargetX, tileTargetY + 1].wall > 0 || Main.tile[tileTargetX, tileTargetY - 1].active() || Main.tile[tileTargetX, tileTargetY - 1].wall > 0)
  				canPlace = true;
  		}
+@@ -33483,7 +_,10 @@
+ 				}
+ 
+ 				num3++;
++				/*
+ 				if (Main.tile[num4, num3 + 1] == null) {
++				*/
++				if (Main.netMode == 1 && !Main.sectionManager.TileLoaded(num4, num3 + 1)) {
+ 					if (controlUseItem)
+ 						NetMessage.SendData(159, -1, -1, null, num4 / 200, (num3 + 1) / 150);
+ 
 @@ -33880,7 +_,9 @@
  		byte paint = targetItem.paint;
  		if (paintingAWall) {

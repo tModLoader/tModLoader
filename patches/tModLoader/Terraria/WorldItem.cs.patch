@@ -68,6 +68,17 @@
  		get {
  			return inner.makeNPC;
  		}
+@@ -338,7 +_,10 @@
+ 		float maxFallSpeed = 7f;
+ 		if (Main.netMode == 1) {
+ 			Point p = base.Bottom.ToTileCoordinates();
++			/*
+ 			if (WorldGen.InWorld(p) && Main.tile[p.X, p.Y] == null) {
++			*/
++			if (WorldGen.InWorld(p) && Main.netMode == 1 && !Main.sectionManager.TileLoaded(p.X, p.Y)) {
+ 				gravity = 0f;
+ 				velocity = Vector2.Zero;
+ 				if (instanced && Main.GameUpdateCount % 10u == 0)
 @@ -377,7 +_,7 @@
  				if (WorldGen.InWorld(num, num2) && WallID.Sets.AllowsWind[Main.tile[num, num2].wall]) {
  					int num3 = 600;
