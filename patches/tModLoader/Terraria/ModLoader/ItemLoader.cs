@@ -1,14 +1,15 @@
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent;
+using Terraria.GameContent.Items;
 using Terraria.GameContent.Prefixes;
 using Terraria.ID;
 using Terraria.Localization;
@@ -84,6 +85,7 @@ public static class ItemLoader
 		LoaderUtils.ResetStaticMembers(typeof(ItemID));
 		LoaderUtils.ResetStaticMembers(typeof(AmmoID));
 		LoaderUtils.ResetStaticMembers(typeof(PrefixLegacy.ItemSets));
+		LoaderUtils.ResetStaticMembers(typeof(ItemVariants));
 		if (unloading)
 			LoaderUtils.ResetStaticMembers(typeof(ItemUseStyleID));
 

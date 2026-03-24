@@ -173,34 +173,37 @@ public static class TileLoader
 		Array.Resize(ref Main.tileSolidTop, nextTile);
 		Array.Resize(ref Main.tileSolid, nextTile);
 		Array.Resize(ref Main.tileBouncy, nextTile);
+		Array.Resize(ref Main.tileOreFinderPriority, nextTile);
 		Array.Resize(ref Main.tileLargeFrames, nextTile);
 		Array.Resize(ref Main.tileRope, nextTile);
 		Array.Resize(ref Main.tileBrick, nextTile);
 		Array.Resize(ref Main.tileMoss, nextTile);
 		Array.Resize(ref Main.tileNoAttach, nextTile);
 		Array.Resize(ref Main.tileNoFail, nextTile);
+		Array.Resize(ref Main.tileCracked, nextTile);
 		Array.Resize(ref Main.tileObsidianKill, nextTile);
 		Array.Resize(ref Main.tileFrameImportant, nextTile);
 		Array.Resize(ref Main.tilePile, nextTile);
 		Array.Resize(ref Main.tileBlendAll, nextTile);
+		Array.Resize(ref Main.tileGlowMask, nextTile);
 		Array.Resize(ref Main.tileContainer, nextTile);
 		Array.Resize(ref Main.tileSign, nextTile);
+		Array.Resize(ref Main.tileMerge, nextTile);
 		Array.Resize(ref Main.tileSand, nextTile);
 		Array.Resize(ref Main.tileFlame, nextTile);
 		Array.Resize(ref Main.tileFrame, nextTile);
 		Array.Resize(ref Main.tileFrameCounter, nextTile);
-		Array.Resize(ref Main.tileMerge, nextTile);
-		Array.Resize(ref Main.tileOreFinderPriority, nextTile);
-		Array.Resize(ref Main.tileGlowMask, nextTile);
-		Array.Resize(ref Main.tileCracked, nextTile);
 
 		Array.Resize(ref WorldGen.tileCounts, nextTile);
 		Array.Resize(ref WorldGen.houseTile, nextTile);
+		Array.Resize(ref WorldGen.Skyblock.hasTile, nextTile);
 		//Array.Resize(ref GameContent.Biomes.CaveHouseBiome._blacklistedTiles, nextTile);
 		Array.Resize(ref GameContent.Biomes.CorruptionPitBiome.ValidTiles, nextTile);
 		Array.Resize(ref GameContent.Metadata.TileMaterials.MaterialsByTileId, nextTile);
 		Array.Resize(ref HouseUtils.BlacklistedTiles, nextTile);
 		Array.Resize(ref HouseUtils.BeelistedTiles, nextTile);
+		Array.Resize(ref Recipe.TileUsedInRecipes, nextTile);
+		Array.Resize(ref Recipe.TileCountsAs, nextTile);
 
 		for (int i = 0; i < nextTile; i++) { //oh dear
 			Array.Resize(ref Main.tileMerge[i], nextTile);

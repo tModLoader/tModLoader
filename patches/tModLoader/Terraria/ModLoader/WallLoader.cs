@@ -99,6 +99,7 @@ public static class WallLoader
 		Array.Resize(ref Main.wallLargeFrames, nextWall);
 		Array.Resize(ref Main.wallFrame, nextWall);
 		Array.Resize(ref Main.wallFrameCounter, nextWall);
+		Array.Resize(ref WorldGen.Skyblock.hasWall, nextWall);
 
 		wallConversionDelegates = new List<ConvertWall>[nextWall][];
 		wallConversionFallbacks = new int[nextWall][];
