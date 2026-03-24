@@ -1195,20 +1195,15 @@
  			RegistryKey currentUser = Registry.CurrentUser;
  			currentUser = currentUser.CreateSubKey("Software\\Terraria");
  			if (currentUser != null && currentUser.GetValue("Bunny") != null && currentUser.GetValue("Bunny").ToString() == "1")
-@@ -3677,14 +_,40 @@
+@@ -3677,14 +_,35 @@
  		int currentValue3 = graphics.PreferredBackBufferHeight;
  		configuration.Get("DisplayWidth", ref currentValue2);
  		configuration.Get("DisplayHeight", ref currentValue3);
 +
-+		//Solxan: This is for properly settings the Screen Max Width & Max Height for large displays.
-+		// Iterates to find the largest display and assumes that is allowed.
-+		for (int i = 0; i < SDL2.SDL.SDL_GetNumVideoDisplays(); i++) {
-+			int displayModeIndex = 0;
-+			while (SDL2.SDL.SDL_GetDisplayMode(displayModeIndex++, i, out var sdlMode) == 0) {
-+				maxScreenW = Math.Max(sdlMode.w, maxScreenW);
-+				maxScreenH = Math.Max(sdlMode.h, maxScreenH);
-+			}
-+		}
++		// Solxan: This is for properly settings the Screen Max Width & Max Height for large displays.
++		GetLargestDisplaySize(out int maxDisplayW, out int maxDisplayH);
++		maxScreenW = Math.Max(maxDisplayH, maxScreenW);
++		maxScreenH = Math.Max(maxDisplayH, maxScreenH);
 +
 +		Logging.tML.Info($"Maximum Resolution is {maxScreenW} x {maxScreenH}");
 +
@@ -1245,7 +1240,7 @@
  		PlayerInput.Load();
  		if (currentValue < 165) {
  			try {
-@@ -4012,8 +_,16 @@
+@@ -4012,12 +_,36 @@
  		mouseColorSlider.SetHSL(mouseColor);
  		mouseBorderColorSlider.SetHSL(MouseBorderColor);
  		mouseBorderColorSlider.Alpha = (float)(int)MouseBorderColor.A / 255f;
@@ -1263,6 +1258,26 @@
  
  		IsInTheMiddleOfLoadingSettings = false;
  	}
+ 
++	private unsafe void GetLargestDisplaySize(out int maxDisplayW, out int maxDisplayH)
++	{
++		maxDisplayW = 0;
++		maxDisplayH = 0;
++
++		var displayIds = new Span<uint>((void*)SDL3.SDL.SDL_GetDisplays(out int numDisplays), numDisplays);
++		foreach (var id in displayIds) {
++			var pModes = (SDL3.SDL.SDL_DisplayMode**)SDL3.SDL.SDL_GetFullscreenDisplayModes(id, out int modeCount);
++			for (int i = 0; i<modeCount; i++) {
++				var pMode = pModes[i];
++				maxDisplayW = Math.Max(maxDisplayW, pMode->w);
++				maxDisplayH = Math.Max(maxDisplayH, pMode->h);
++			}
++		}
++   }
++
+ 	protected void OpenLegacySettings()
+ 	{
+ 		try {
 @@ -4141,9 +_,12 @@
  		try {
  			FileUtilities.Delete(PlayerList[i].Path, PlayerList[i].IsCloudSave);

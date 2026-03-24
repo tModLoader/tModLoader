@@ -345,8 +345,6 @@ public static partial class Program
 
 			SetSavePath();
 
-			AttemptSupportHighDPI(isServer); // Can run anytime
-
 		    if (!isServer) {
 		    	ModLoader.Engine.NativeLibraries.CheckNativeFAudioDependencies();
 		       	FNALogging.RedirectLogs(); // Needs to run after CheckDependencies
@@ -380,30 +378,6 @@ public static partial class Program
 		}
 		catch (Exception e) {
 			ErrorReporting.FatalExit("Unhandled Issue with Launch Arguments. Please verify sources such as Steam Launch Options, cli-ArgsConfig, and VS profiles", e);
-		}
-	}
-
-	private const int HighDpiThreshold = 96; // Rando internet value that Solxan couldn't refind the sauce for.
-
-	// Add Support for High DPI displays, such as Mac M1 laptops. Must run before Game constructor.
-	private static void AttemptSupportHighDPI(bool isServer)
-	{
-		if (isServer)
-			return;
-
-		if (Platform.IsWindows) {
-			[System.Runtime.InteropServices.DllImport("user32.dll")]
-			static extern bool SetProcessDPIAware();
-
-			SetProcessDPIAware();
-		}
-
-		SDL2.SDL.SDL_VideoInit(null);
-		SDL2.SDL.SDL_GetDisplayDPI(0, out var ddpi, out float hdpi, out float vdpi);
-		Logging.tML.Info($"Display DPI: Diagonal DPI is {ddpi}. Vertical DPI is {vdpi}. Horizontal DPI is {hdpi}");
-		if (ddpi >= HighDpiThreshold || hdpi >= HighDpiThreshold || vdpi >= HighDpiThreshold) {
-			Environment.SetEnvironmentVariable("FNA_GRAPHICS_ENABLE_HIGHDPI", "1");
-			Logging.tML.Info($"High DPI Display detected: setting FNA to highdpi mode");
 		}
 	}
 }
