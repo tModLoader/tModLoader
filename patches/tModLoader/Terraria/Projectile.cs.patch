@@ -743,29 +743,29 @@
  	private void Damage_PVE_Inner(int victimIndex, NPC targetNPC, Rectangle projRectangle, float projectileSpecificDamageMultiplier, int[] immuneArray, ref bool keepIterating)
  	{
 +	
-+		bool canHitFlag = false;
++		bool forceHit = false;
 +		if (CombinedHooks.CanHitNPCWithProj(this, targetNPC) is bool b) {
 +			if (!b)
 +				return;
 +
-+			canHitFlag = true;
++			forceHit = true;
 +		}
 +
 +
  		bool ownedBySomeone = OwnedBySomeone;
  		bool flag = !targetNPC.friendly;
  		flag |= type == 318;
-@@ -10446,10 +_,14 @@
+@@ -10446,10 +_,15 @@
  			flag = false;
  
  		bool flag2 = targetNPC.friendly && !targetNPC.dontTakeDamageFromHostiles;
--		if ((!friendly || (!flag && !NPCID.Sets.ZappingJellyfish[targetNPC.type])) && !(hostile && flag2))
-+		if (!canHitFlag || (!friendly || (!flag && !NPCID.Sets.ZappingJellyfish[targetNPC.type])) && !(hostile && flag2))
++		if (forceHit) { } else
+ 		if ((!friendly || (!flag && !NPCID.Sets.ZappingJellyfish[targetNPC.type])) && !(hostile && flag2))
  			return;
  
  		bool flag3 = maxPenetrate == 1 && !usesLocalNPCImmunity && !usesIDStaticNPCImmunity;
 +
-+		if (canHitFlag)
++		if (forceHit)
 +			flag3 = true;
 +		
  		if (!(owner < 0 || targetNPC.immune[owner] == 0 || flag3))
@@ -775,7 +775,7 @@
  		else if (targetNPC.immortal && npcProj)
  			flag4 = true;
  
-+		if (canHitFlag)
++		if (forceHit)
 +			flag4 = false;
 +
  		if (flag4 || (!targetNPC.noTileCollide && ownerHitCheck && !CanHitWithMeleeWeapon(targetNPC)))
