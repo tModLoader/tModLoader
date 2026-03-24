@@ -26,6 +26,7 @@ public sealed class AssemblyResourcesContentSource : ContentSource
 		this.rootPath = rootPath ?? "";
 		this.assembly = assembly;
 		this.excludedStartingPaths = excludedStartingPaths?.ToArray() ?? [];
+		Refresh();
 	}
 
 	public override Stream OpenStream(string assetName) => assembly.GetManifestResourceStream(rootPath + assetName);

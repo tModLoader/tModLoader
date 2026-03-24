@@ -3356,18 +3356,19 @@
  								TileMergeAttempt(num, -2, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
  								tileMergeCulling.Cull(ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
  							}
-@@ -71079,7 +_,10 @@
+@@ -71079,6 +_,12 @@
  
  						tileCache.frameX = (short)rectangle.X;
  						tileCache.frameY = (short)rectangle.Y;
--						if (rectangle.X != frameX && rectangle.Y != frameY && frameX >= 0 && frameY >= 0) {
 +
 +						TileLoader.PostTileFrame(num, i, j, up, down, left, right, upLeft, upRight, downLeft, downRight);
 +
++						/* TODO: This fix now prevents a world from loading somehow
 +						if (tile.frameX != frameX && tile.frameY != frameY && frameX >= 0 && frameY >= 0) { // #4640 - Account for tile frameX/Y changes within TileLoader.PostTileFrame
++						*/
+ 						if (rectangle.X != frameX && rectangle.Y != frameY && frameX >= 0 && frameY >= 0) {
  							tileReframeCount++;
  							if (tileReframeCount < 25) {
- 								bool num24 = mergeUp;
 @@ -71434,7 +_,7 @@
  
  				Tile tile30 = Main.tile[i, j + 1];

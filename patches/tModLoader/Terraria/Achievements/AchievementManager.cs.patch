@@ -119,7 +119,7 @@
 +
 +	internal static Achievement FirstVanillaAchievement => Main.Achievements.GetAchievement("TIMBER");
 +	internal static Achievement LastVanillaAchievement => Main.Achievements.GetAchievement("TO_INFINITY_AND_BEYOND");
-+	internal static readonly int DefaultAchievementCount = 115;
++	internal static readonly int DefaultAchievementCount = 137;
 +
 +	internal static void FinishSetup()
 +	{

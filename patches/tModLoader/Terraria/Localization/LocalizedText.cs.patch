@@ -14,7 +14,7 @@
  {
  	public static readonly LocalizedText Empty = new LocalizedText("", "");
  	private static Regex _substitutionRegex = new Regex("{(\\?(?:!)?)?([a-zA-Z][\\w\\.]*)}", RegexOptions.Compiled);
-@@ -13,6 +_,9 @@
+@@ -13,13 +_,23 @@
  	private object _value;
  	private static Dictionary<Type, PropertyDescriptorCollection> _propertyLookupCache = new Dictionary<Type, PropertyDescriptorCollection>();
  
@@ -23,8 +23,10 @@
 +	/// </summary>
  	public string Value {
  		get {
++			/* TODO: Crashes at launch
  			if (_value is VariableText variableText && variableText.TryFormat(Lang.GetGlobalSubstitution, out var formatted))
-@@ -20,6 +_,11 @@
+ 				return formatted;
++			*/
  
  			return _value.ToString();
  		}

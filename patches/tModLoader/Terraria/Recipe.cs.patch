@@ -287,15 +287,24 @@
  				array[j].Refresh();
  			}
  		}
-@@ -15023,10 +_,18 @@
+@@ -497,6 +_,7 @@
+ 
+ 	public static void SetupRecipes()
+ 	{
++		Recipe.SetupRecipeGroups(); // TML
+ 		Array.Clear(TileUsedInRecipes, 0, TileUsedInRecipes.Length);
+ 		SetupTileInheritance();
+ 		int num = 5;
+@@ -15022,11 +_,19 @@
+ 		AddRecipe();
  		CreateReverseWallRecipes();
  		CreateReversePlatformRecipes();
- 		CreateRequiredItemQuickLookups();
 +
 +		RecipeLoader.AddRecipes();
 +		RecipeLoader.PostAddRecipes();
 +		RecipeLoader.OrderRecipes();
 +
+ 		CreateRequiredItemQuickLookups();
  		UpdateWhichItemsAreMaterials();
  		UpdateWhichItemsAreCrafted();
  		UpdateInheritedTilesUsedInRecipes();

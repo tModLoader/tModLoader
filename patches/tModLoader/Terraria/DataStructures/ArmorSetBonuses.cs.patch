@@ -1,5 +1,13 @@
 --- src/TerrariaNetCore/Terraria/DataStructures/ArmorSetBonuses.cs
 +++ src/tModLoader/Terraria/DataStructures/ArmorSetBonuses.cs
+@@ -2,6 +_,7 @@
+ using System.Linq;
+ using Terraria.GameContent.Achievements;
+ using Terraria.ID;
++using Terraria.ModLoader;
+ 
+ namespace Terraria.DataStructures;
+ 
 @@ -119,8 +_,11 @@
  			player.minionDamage += 0.15f;
  			player.whipRangeMultiplier += 0.3f;
@@ -44,3 +52,12 @@
  		}
  
  		public static void Platinum(Player player)
+@@ -564,7 +_,7 @@
+ 	public static void BuildLookup()
+ 	{
+ 		ArmorSetBonus[] array = new ArmorSetBonus[0];
+-		SetsContaining = new ArmorSetBonus[ItemID.Count][];
++		SetsContaining = new ArmorSetBonus[ItemLoader.ItemCount][];
+ 		for (int i = 0; i < SetsContaining.Length; i++) {
+ 			SetsContaining[i] = array;
+ 		}

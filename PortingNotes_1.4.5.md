@@ -179,6 +179,11 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - LiquidEdgeRenderer.DrawScreenTargetSlices patch needs to be fixed if still needed.
 - ActiveEntityIterator needs to be fixed now that Entity.active no longer exists.
 - SurfaceBackgroundStylesLoader.DrawCloseBackground needs to be fixed or recreated from new vanilla logic/math
+- The "#4640"/PostTileFrame fix caused the game to get stuck on settling liquids 50%, it has been commented out.
+- Initialize_AlmostEverything has many new methods we'll likely need to integrate into mod reloading. We might want to see if there is a "cleaner" way than just copying over specific method calls into ModContent.Load.
+  - For example: ArmorSetBonuses.BuildLookup, ItemID.Sets.PostSetupContent
+  - Someone should "find all references" on each XID.Count field to find any remaining content arrays that need to be resized.
+- LocalizedText.Value not working currently. `if (_value is VariableText variableText && variableText.TryFormat(Lang.GetGlobalSubstitution, out var formatted))` was crashing. Text substitutions will need to be reinstated as well as merging tml localization features (pluralization) with new 1.4.5 localization features.
 
 # New Fields that might need more documentation
 

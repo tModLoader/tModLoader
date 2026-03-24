@@ -381,6 +381,11 @@ public static class ModContent
 		ItemSorting.SetupWhiteLists();
 		LocalizationLoader.FinishSetup();
 
+		ArmorSetBonuses.Initialize();
+		ArmorSetBonuses.BuildLookup();
+		ItemID.Sets.PostSetupContent();
+		TileID.Sets.PostSetupContent();
+
 		MenuLoader.GotoSavedModMenu();
 		BossBarLoader.GotoSavedStyle();
 
