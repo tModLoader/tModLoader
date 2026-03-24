@@ -9,7 +9,7 @@ namespace ExampleMod.Common.Systems
 	// This example shows spawning rubble tiles during world generation.
 	public class RubbleWorldGen : ModSystem
 	{
-		public override void ModifyWorldGenTasks(List<GenPass> tasks, ref double totalWeight) {
+		public override void ModifyWorldGenTasks(List<GenPass> tasks) {
 			// Add a GenPass immediately after the "Piles" pass. ExampleOreSystem explains this approach in more detail.
 			int PilesIndex = tasks.FindIndex(genpass => genpass.Name.Equals("Piles"));
 

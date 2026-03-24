@@ -133,7 +133,7 @@ namespace ExampleMod.Content.NPCs
 				new FlavorTextBestiaryInfoElement("Mods.ExampleMod.Bestiary.ExampleCritterNPC"));
 		}
 
-		public override float SpawnChance(NPCSpawnInfo spawnInfo) {
+		public override float SpawnChance(NPC.Spawner spawner) {
 			return SpawnCondition.Underworld.Chance * 0.1f;
 		}
 

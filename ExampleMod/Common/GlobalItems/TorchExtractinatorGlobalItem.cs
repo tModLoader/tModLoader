@@ -35,7 +35,7 @@ namespace ExampleMod.Common.GlobalItems
 
 			for (int i = 0; i < ItemLoader.ItemCount; i++) {
 				int createTile = ContentSamples.ItemsByType[i].createTile;
-				if (createTile != -1 && TileID.Sets.Torch[createTile] && ItemID.Sets.ExtractinatorMode[i] == -1) {
+				if (createTile != -1 && TileID.Sets.Torches[createTile] && ItemID.Sets.ExtractinatorMode[i] == -1) {
 					ItemID.Sets.ExtractinatorMode[i] = ItemID.Torch;
 					TorchItems.Add(i);
 				}

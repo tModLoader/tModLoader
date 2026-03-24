@@ -1,8 +1,11 @@
-﻿using static tModPorter.Rewriters.RenameRewriter;
+﻿using System;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using tModPorter.Rewriters;
+using static tModPorter.Rewriters.AddComment;
 using static tModPorter.Rewriters.InvokeRewriter;
 using static tModPorter.Rewriters.MemberUseRewriter;
-using static tModPorter.Rewriters.AddComment;
-using System;
+using static tModPorter.Rewriters.RenameRewriter;
 
 namespace tModPorter;
 
@@ -262,6 +265,56 @@ public static partial class Config
 		RenameInstanceField("Terraria.DataStructures.EntitySource_FishedOut", "Entity", "Fisher");
 		RenameInstanceField("Terraria.DataStructures.EntitySource_OnHit", "EntityStriking", "Attacker");
 		RenameInstanceField("Terraria.DataStructures.EntitySource_OnHit", "EntityStruck", "Victim");
+
+		// 1.4.5                
+		RenameStaticField("Terraria.ID.BuffID.Sets", from: "LongerExpertDebuff", to: "BuffTimeIsExtendedWithGameDifficulty");
+		RenameStaticField("Terraria.ID.GoreID.Sets", from: "LiquidDroplet", to: "IsDrip");
+		RenameStaticField("Terraria.ID.ItemID.Sets", from: "SortingPriorityBossSpawns", to: "SortingPriorityMiscImportants");
+		RenameStaticField("Terraria.ID.ItemID.Sets", from: "BonusAttackSpeedMultiplier", to: "BonusMeleeSpeedMultiplier");
+		RenameStaticField("Terraria.ID.MessageID", from: "TileSquare", to: "AreaTileChange");
+		RenameStaticField("Terraria.ID.MessageID", from: "ShotAnimationAndSound", to: "ItemRotationAndAnimation");
+		RenameStaticField("Terraria.ID.MessageID", from: "PlayerTeam", to: "TeamChange");
+		RenameStaticField("Terraria.ID.MessageID", from: "RequestReadSign", to: "OpenSignRequest");
+		RenameStaticField("Terraria.ID.MessageID", from: "ReadSign", to: "OpenSignResponse");
+		RenameStaticField("Terraria.ID.MessageID", from: "AddPlayerBuff", to: "AddPlayerBuffPvP");
+		RenameStaticField("Terraria.ID.MessageID", from: "PaintTile", to: "SyncTilePaintOrCoating");
+		RenameStaticField("Terraria.ID.MessageID", from: "PaintWall", to: "SyncWallPaintOrCoating");
+		RenameStaticField("Terraria.ID.MessageID", from: "NPCKillCountDeathTally", to: "Unused83");
+		RenameStaticField("Terraria.ID.MessageID", from: "TEDisplayDollItemSync", to: "TEDisplayDollDataSync");
+		RenameStaticField("Terraria.ID.NPCID.Sets", from: "UsesNewTargetting", to: "UsesNewTargeting");
+		RenameStaticField("Terraria.ID.NPCID.Sets", from: "ShouldBeCountedAsBossForBestiary", to: "ShouldBeCountedAsBoss");
+		RenameStaticField("Terraria.ID.NPCID.Sets", from: "SpawnFromLastEmptySlot", to: "SearchSpawnSlotsInReverse");
+		RenameStaticField("Terraria.ID.TileID.Sets", from: "CountsAsWaterSource", to: "CountsAsWaterForCrafting");
+		RenameStaticField("Terraria.ID.TileID.Sets", from: "CountsAsHoneySource", to: "CountsAsHoneyForCrafting");
+		RenameStaticField("Terraria.ID.TileID.Sets", from: "CountsAsLavaSource", to: "CountsAsLavaForCrafting");
+		RenameStaticField("Terraria.ID.TileID.Sets", from: "CountsAsShimmerSource", to: "CountsAsShimmerForCrafting");
+		RenameStaticField("Terraria.ID.TileID.Sets", from: "IsATrigger", to: "IsATrigger", "Terraria.TileID.Sets.Wiring");
+		RenameStaticField("Terraria.ID.TileID.Sets", from: "IsAMechanism", to: "IsAMechanism", "Terraria.TileID.Sets.Wiring");
+		RenameStaticField("Terraria.ID.TileID.Sets", from: "InteractibleByNPCs", to: "InteractableByNPCs");
+		RenameStaticField("Terraria.ID.TileID.Sets", from: "Torch", to: "Torches");
+		RenameStaticField("Terraria.ID.TileID.Sets", from: "Campfire", to: "Campfires");
+		RenameStaticField("Terraria.Main", "gameInactive", "GameplayActive", "Terraria.FocusHelper").FollowBy(InvertBool);
+		RenameStaticField("Terraria.NPC", "killCount", "killCount", "Terraria.GameContent.BannerSystem");
+		RenameStaticField("Terraria.WorldGen", from: "gen", to: "isGeneratingOrLoadingWorld");
+
+		RenameInstanceField("Terraria.Player", from: "adjWater", to: "addWaterSource");
+		RenameInstanceField("Terraria.Player", from: "oldAdjWater", to: "oldAdjWaterSource");
+
+		RenameMethod("Terraria.Item", "BannerToItem", "BannerToItem", "Terraria.GameContent.BannerSystem");
+		RenameMethod("Terraria.Item", "BannerToNPC", "BannerToNPC", "Terraria.GameContent.BannerSystem");
+		RenameMethod("Terraria.Item", "NPCtoBanner", "NPCtoBanner", "Terraria.GameContent.BannerSystem");
+		RenameMethod("Terraria.Main", "ShouldShowInvisibleWalls", "ShouldShowInvisibleBlocksAndWalls");
+
+		RefactorStaticMember("Terraria.ID.MountID.Sets", "FacePlayersVelocity", Removed("Now automatic for all minecarts"));
+		RefactorStaticMember("Terraria.Item", "whoAmI", Removed("Moved to WorldItem"));
+		RefactorStaticMember("Terraria.Item", "beingGrabbed", Removed("Moved to WorldItem"));
+
+		RefactorInstanceMethodCall("Terraria.Tile", "water", GetterSetterToProperty("LiquidType", "Terraria.ID.LiquidID", "Water"));
+		RefactorInstanceMethodCall("Terraria.Tile", "anyWater", GetterToProperty("HasWater"));
+		RefactorInstanceMethodCall("Terraria.Tile", "anyLava", GetterToProperty("HasLava"));
+		RefactorInstanceMethodCall("Terraria.Tile", "anyHoney", GetterToProperty("HasHoney"));
+		RefactorInstanceMethodCall("Terraria.Tile", "anyShimmer", GetterToProperty("HasShimmer"));
+		RefactorInstanceMethodCall("Terraria.Tile", "anyWire", GetterToProperty("AnyWire"));
 	}
 
 	private static void AddTextureRenames() {

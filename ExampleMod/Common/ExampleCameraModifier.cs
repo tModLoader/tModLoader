@@ -17,6 +17,7 @@ namespace ExampleMod.Common
 		// This makes sure that other modifiers of the same identity don't run at the same time
 		public string UniqueIdentity { get; private set; }
 		public bool Finished { get; private set; }
+		public bool IsAScreenShake => false;
 
 		public ExampleCameraModifier(Vector2 position, int frames, string uniqueIdentity = null) {
 			targetPosition = position - new Vector2(Main.screenWidth / 2, Main.screenHeight / 2);

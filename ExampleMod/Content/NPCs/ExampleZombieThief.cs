@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework;
 using System;
 using System.IO;
 using Terraria;
+using Terraria.GameContent;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.UI;
 using Terraria.ID;
@@ -43,8 +44,8 @@ namespace ExampleMod.Content.NPCs
 
 			AIType = NPCID.Zombie; // Use vanilla zombie's type when executing AI code. (This also means it will try to despawn during daytime)
 			AnimationType = NPCID.Zombie; // Use vanilla zombie's type when executing animation code. Important to also match Main.npcFrameCount[NPC.type] in SetStaticDefaults.
-			Banner = Item.NPCtoBanner(NPCID.Zombie); // Makes this NPC get affected by the normal zombie banner.
-			BannerItem = Item.BannerToItem(Banner); // Makes kills of this NPC go towards dropping the banner it's associated with.
+			Banner = BannerSystem.NPCtoBanner(NPCID.Zombie); // Makes this NPC get affected by the normal zombie banner.
+			BannerItem = BannerSystem.BannerToItem(Banner); // Makes kills of this NPC go towards dropping the banner it's associated with.
 			SpawnModBiomes = [ModContent.GetInstance<ExampleSurfaceBiome>().Type]; // Associates this NPC with the ExampleSurfaceBiome in Bestiary
 		}
 
@@ -65,13 +66,13 @@ namespace ExampleMod.Content.NPCs
 			}
 
 			Rectangle hitbox = NPC.Hitbox;
-			foreach (Item item in Main.item) {
+			foreach (WorldItem worldItem in Main.item) {
 				// Pickup the items only if the NPC touches them and they aren't already being grabbed by a player
-				if (item.active && !item.beingGrabbed && item.type == ModContent.ItemType<ExampleItem>() && hitbox.Intersects(item.Hitbox)) {
-					item.active = false;
-					StolenItems += item.stack;
+				if (worldItem.active && !worldItem.beingGrabbed && worldItem.type == ModContent.ItemType<ExampleItem>() && hitbox.Intersects(worldItem.Hitbox)) {
+					StolenItems += worldItem.stack;
+					worldItem.TurnToAir(fullReset: true);
 
-					NetMessage.SendData(MessageID.SyncItem, number: item.whoAmI);
+					NetMessage.SendData(MessageID.SyncItem, number: worldItem.whoAmI);
 
 					// Show emote when stealing an example item
 					EmoteBubble.NewBubble(ModContent.EmoteBubbleType<ExampleItemEmote>(), new WorldUIAnchor(NPC), 90);
@@ -101,9 +102,9 @@ namespace ExampleMod.Content.NPCs
 			}
 		}
 
-		public override float SpawnChance(NPCSpawnInfo spawnInfo) {
+		public override float SpawnChance(NPC.Spawner spawner) {
 			// Can only spawn in the ExampleSurfaceBiome and if there are no other ExampleZombieThiefs
-			if (spawnInfo.Player.InModBiome(ModContent.GetInstance<ExampleSurfaceBiome>()) && !NPC.AnyNPCs(Type)) {
+			if (spawner.Player.InModBiome(ModContent.GetInstance<ExampleSurfaceBiome>()) && !NPC.AnyNPCs(Type)) {
 				return SpawnCondition.OverworldNightMonster.Chance * 0.1f; // Spawn with 1/10th the chance of a regular zombie.
 			}
 

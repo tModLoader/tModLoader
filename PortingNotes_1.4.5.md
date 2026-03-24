@@ -186,6 +186,11 @@ Once all patches are fixed, these items need to be fixed or double checked:
   - For example: ArmorSetBonuses.BuildLookup, ItemID.Sets.PostSetupContent
   - Someone should "find all references" on each XID.Count field to find any remaining content arrays that need to be resized (CB done ItemID, TileID, WallID).
 - LocalizedText.Value not working currently. `if (_value is VariableText variableText && variableText.TryFormat(Lang.GetGlobalSubstitution, out var formatted))` was crashing. Text substitutions will need to be reinstated as well as merging tml localization features (pluralization) with new 1.4.5 localization features.
+- Make a checklist of all TML hooks and have others QC each method behavior?
+- TileID.Sets.IsAMechanism changed to TileID.Sets.Wiring.IsAMechanism. tModPorter done. The function of the set might have changed, investigate and update docs.
+- NPCID.Sets.ShouldBeCountedAsBossForBestiary renamed to ShouldBeCountedAsBoss. tModPorter done. (TODO: Verify where it is now used and update docs if necessary)
+- BuffID.Sets.LongerExpertDebuff -> BuffID.Sets.BuffTimeIsExtendedWithGameDifficulty. tModPorter done. Docs remarks might also now be wrong. Also doc BuffTimeIsExtendedByDeadCellsPotionStationBuff
+- ItemID.Sets.BonusAttackSpeedMultiplier renamed to BonusMeleeSpeedMultiplier. tModPorter done. (double check that this doesn't only apply to melee weapons. I think it isn't limited currently)
 
 # New Fields that might need more documentation
 
@@ -229,7 +234,7 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Item.SetDefaults(int Type = 0) no longer exists
 - Item.SetDefaults(int Type, bool noMatCheck = false, ItemVariant variant = null) change to SetDefaults(int Type, ItemVariant variant = null) (noMatCheck parameter removed)
 - UnifiedRandom.Next methods are no longer virtual
-- ICameraModifier now has a IsAScreenShake property to support the user's screen shake accesibility setting (Main.UseScreenShake). Update your ICameraModifier and other camera movements to support Main.UseScreenShake.
+- ICameraModifier now has a IsAScreenShake property to support the user's screen shake accessibility setting (Main.UseScreenShake). Update your ICameraModifier and other camera movements to support Main.UseScreenShake.
 - TownNPC can now have portraits. Use the following to implement: NPCID.Sets.NPCPortraits (todo, example)
 - UIWrappedSearchBar, is it useful to modders?
 - Main.sign length changed from 1000 to 32000.
@@ -257,41 +262,16 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Replace Main.hasFocus with FocusHelper.AllowUIInputs (or another property)
 - Player.QuickSpawnItem no longer returns an int indicating the index of the item in Main.item. This is because the spawned item can now potentially go directly into player inventory.
 - Item.width and height no longer have any relation to the in-world hitbox of dropped items. All items now have a 16x16 hitbox in the game world.
-- NPC.killCount is now BannerSystem.killCount
+- NPC.killCount, Item.BannerToItem, Item.BannerToNPC, Item.NPCtoBanner are now all in GameContent.BannerSystem
 
 # tModPorter TODOs
 
 - TileID.Sets.WallsMergeWith usages in Framing.WallFrame changed to newly added TileID.Sets.TruncatesWalls (TODO: New set contains several new vanilla tiles, does that make sense? tModPorter?)
-- Main.ShouldShowInvisibleWalls changed to Main.ShouldShowInvisibleBlocksAndWalls
 - ItemVariants.EverythingWorld renamed to MechdusaWorld
-- NPCID.Sets.SpawnFromLastEmptySlot renamed to SearchSpawnSlotsInReverse
-- NPCID.Sets.ShouldBeCountedAsBossForBestiary renamed to ShouldBeCountedAsBoss (TODO: Verify where it is now used and update docs if necessary)
-- TileID.Sets.InteractibleByNPCs renamed to InteractableByNPCs
-- TileID.Sets.Torch renamed to Torches
-- TileID.Sets.Campfire renamed to Campfires
-- TileID.Sets.IsATrigger changed to TileID.Sets.Wiring.IsATrigger
-- TileID.Sets.IsAMechanism changed to TileID.Sets.Wiring.IsAMechanism. The function of the set might have changed, investigate and update docs
-- NPCID.Sets.UsesNewTargetting renamed to UsesNewTargeting
-- GoreID.Sets.LiquidDroplet renamed to IsDrip
-- WorldGen.gen renamed to isGeneratingOrLoadingWorld
-- Player.adjWater -> addWaterSource
-- Player.oldAdjWater -> oldAdjWaterSource
-- TileID.Sets.CountsAsWaterSource -> TileID.Sets.CountsAsWaterForCrafting (And TML added lava, shimmer, honey?)
 - Player.GetItem no longer has plr parameter
-- BuffID.Sets.LongerExpertDebuff -> BuffID.Sets.BuffTimeIsExtendedWithGameDifficulty. Docs remarks might also now be wrong. Also doc BuffTimeIsExtendedByDeadCellsPotionStationBuff
-- MessageID.TileSquare -> AreaTileChange
-- MessageID.ShotAnimationAndSound -> ItemRotationAndAnimation
-- MessageID.PlayerTeam -> TeamChange
-- MessageID.RequestReadSign -> OpenSignRequest
-- MessageID.ReadSign -> OpenSignResponse
-- MessageID.AddPlayerBuff -> AddPlayerBuffPvP
-- MessageID.PaintTile -> SyncTilePaintOrCoating
-- MessageID.PaintWall -> SyncWallPaintOrCoating
-- MessageID.NPCKillCountDeathTally -> Unused83 (Also deprecated)
-- MessageID.TEDisplayDollItemSync -> TEDisplayDollDataSync
-- MountID.Sets.FacePlayersVelocity removed. Now automatic for all minecarts
-- ItemID.Sets.SortingPriorityBossSpawns renamed to SortingPriorityMiscImportants
-- ItemID.Sets.BonusAttackSpeedMultiplier renamed to BonusMeleeSpeedMultiplier (double check that this doesn't only apply to melee weapons. I think it isn't limited currently)
+
+# ExampleMod TODOs
+- Verify that ExampleZombieThief still works with changes
 
 # Terraria update requests
 

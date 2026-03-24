@@ -546,5 +546,9 @@ public static partial class Config
 		HookRemoved("Terraria.ModLoader.ModProjectile", "ModifyFishingLine", "Use ModItem.ModifyFishingLine");
 		HookRemoved("Terraria.ModLoader.BuilderToggle", "DisplayColorTexture", "Use BuilderToggle.Draw");
 		ChangeHookSignature("Terraria.ModLoader.ModTree", "SetTreeFoliageSettings");
+
+		// 1.4.5
+		ChangeHookSignature("Terraria.ModLoader.ModNPC", "SpawnChance");
+		ChangeHookSignature("Terraria.ModLoader.GlobalNPC", "EditSpawnPool");
 	}
 }

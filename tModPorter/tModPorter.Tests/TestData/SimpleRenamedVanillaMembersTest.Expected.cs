@@ -1,5 +1,6 @@
 using Terraria;
 using Terraria.Chat;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
@@ -76,6 +77,8 @@ public class SimpleRenamedVanillaMembersTest
 #endif
 
 		int dustFire = DustID.Torch;
+		int readSign = MessageID.OpenSignResponse;
+		int killCount = MessageID.Unused83;
 
 		int water = LiquidID.Water;
 		int honey = LiquidID.Honey;
@@ -167,5 +170,10 @@ public class SimpleRenamedVanillaMembersTest
 #if COMPILE_ERROR
 		Utils.PerLinePoint cut = DelegateMethods.CutTiles;
 #endif
+
+		_ = BannerSystem.killCount[10];
+		int Banner = BannerSystem.NPCtoBanner(NPCID.Zombie);
+		_ = BannerSystem.BannerToItem(Banner);
+		_ = BannerSystem.BannerToNPC(Banner);
 	}
 }

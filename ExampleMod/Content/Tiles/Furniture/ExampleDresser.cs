@@ -25,7 +25,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 			TileID.Sets.DisableSmartCursor[Type] = true;
 			TileID.Sets.BasicDresser[Type] = true;
 			TileID.Sets.AvoidedByNPCs[Type] = true;
-			TileID.Sets.InteractibleByNPCs[Type] = true;
+			TileID.Sets.InteractableByNPCs[Type] = true;
 			TileID.Sets.IsAContainer[Type] = true;
 			AddToArray(ref TileID.Sets.RoomNeeds.CountsAsTable);
 

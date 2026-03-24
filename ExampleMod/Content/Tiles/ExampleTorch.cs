@@ -29,7 +29,7 @@ namespace ExampleMod.Content.Tiles
 			TileID.Sets.FramesOnKillWall[Type] = true;
 			TileID.Sets.DisableSmartCursor[Type] = true;
 			TileID.Sets.DisableSmartInteract[Type] = true;
-			TileID.Sets.Torch[Type] = true;
+			TileID.Sets.Torches[Type] = true;
 
 			DustType = ModContent.DustType<Sparkle>();
 			AdjTiles = [TileID.Torches];

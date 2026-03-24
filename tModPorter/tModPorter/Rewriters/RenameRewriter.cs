@@ -208,4 +208,9 @@ public class RenameRewriter : BaseRewriter {
 		rw.RegisterAction<ExpressionSyntax>(elemAccess,
 			n => ElementAccessExpression(n.WithoutTrivia(), buffIdShimmer).WithTriviaFrom(n));
 	};
+
+	public static void InvertBool(RenameRewriter rw, SyntaxToken node)
+	{
+		// TODO: Prepend or remove ! from result
+	}
 }

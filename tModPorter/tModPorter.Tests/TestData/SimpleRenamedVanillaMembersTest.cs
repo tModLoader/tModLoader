@@ -65,6 +65,8 @@ public class SimpleRenamedVanillaMembersTest
 		if (Main.fastForwardTime) { }
 
 		int dustFire = DustID.Fire;
+		int readSign = MessageID.ReadSign;
+		int killCount = MessageID.NPCKillCountDeathTally;
 
 		int water = Tile.Liquid_Water;
 		int honey = Tile.Liquid_Honey;
@@ -122,5 +124,10 @@ public class SimpleRenamedVanillaMembersTest
 		npc.damage = (int)(80f * Main.damageMultiplier); // int cast matches return type
 
 		Utils.PerLinePoint cut = DelegateMethods.CutTiles;
+
+		_ = NPC.killCount[10];
+		int Banner = Item.NPCtoBanner(NPCID.Zombie);
+		_ = Item.BannerToItem(Banner);
+		_ = Item.BannerToNPC(Banner);
 	}
 }

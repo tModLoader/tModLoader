@@ -59,7 +59,7 @@ namespace ExampleMod.Content.Tiles
 
 			TileObjectData.addTile(Type);
 
-			TileID.Sets.InteractibleByNPCs[Type] = true;
+			TileID.Sets.InteractableByNPCs[Type] = true;
 			TileID.Sets.PreventsSandfall[Type] = true;
 
 			AddToArray(ref TileID.Sets.CountsAsPylon);

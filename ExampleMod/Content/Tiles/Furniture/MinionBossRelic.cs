@@ -39,7 +39,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 		public override void SetStaticDefaults() {
 			Main.tileShine[Type] = 400; // Responsible for golden particles
 			Main.tileFrameImportant[Type] = true; // Any multitile requires this
-			TileID.Sets.InteractibleByNPCs[Type] = true; // Town NPCs will palm their hand at this tile
+			TileID.Sets.InteractableByNPCs[Type] = true; // Town NPCs will palm their hand at this tile
 
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style3x4); // Relics are 3x4
 			TileObjectData.newTile.LavaDeath = false; // Does not break when lava touches it
