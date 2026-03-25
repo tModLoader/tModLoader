@@ -651,7 +651,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// <para/> Called in single player or on the server only.
 	/// </summary>
 	/// <param name="pool"></param>
-	/// <param name="spawnInfo"></param>
+	/// <param name="spawner"></param>
 	public virtual void EditSpawnPool(IDictionary<int, float> pool, NPC.Spawner spawner)
 	{
 	}

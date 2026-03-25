@@ -73,6 +73,10 @@ public class ModNPCTest : ModNPC
 		closeness = 10;
 	}
 
+	public override float SpawnChance(NPCSpawnInfo spawnInfo) {
+		return spawnInfo.water ? 0f : 1f;
+	}
+
 	public override void SetStaticDefaults() {
 		NPCID.Sets.DebuffImmunitySets.Add(Type, new NPCDebuffImmunityData {
 			SpecificallyImmuneTo = new int[] {

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
@@ -57,6 +58,15 @@ public class GlobalNPCTest : GlobalNPC
 	public override void DrawTownAttackGun(NPC npc, ref Texture2D item, ref Rectangle itemFrame, ref float scale, ref int horizontalHoldoutOffset)/* tModPorter Note: closeness is now horizontalHoldoutOffset, use 'horizontalHoldoutOffset = Main.DrawPlayerItemPos(1f, itemtype) - originalClosenessValue' to adjust to the change. See docs for how to use hook with an item type. */ {
 #if COMPILE_ERROR
 		closeness = 20;
+#endif
+	}
+
+	public override void EditSpawnPool(IDictionary<int, float> pool, NPC.Spawner spawner) {
+		// not-yet-implemented
+		if (spawner.Water) { }
+		// instead-expect
+#if COMPILE_ERROR
+		if (spawnInfo.water) { }
 #endif
 	}
 }

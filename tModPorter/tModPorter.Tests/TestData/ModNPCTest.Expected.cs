@@ -95,6 +95,15 @@ public class ModNPCTest : ModNPC
 #endif
 	}
 
+	public override float SpawnChance(NPC.Spawner spawner) {
+		// not-yet-implemented
+		return spawner.Water ? 0f : 1f;
+		// instead-expect
+#if COMPILE_ERROR
+		return spawnInfo.water ? 0f : 1f;
+#endif
+	}
+
 	public override void SetStaticDefaults() {
 #if COMPILE_ERROR
 		NPCID.Sets.DebuffImmunitySets/* tModPorter Removed: See the porting notes in https://github.com/tModLoader/tModLoader/pull/3453 */.Add(Type, new NPCDebuffImmunityData {

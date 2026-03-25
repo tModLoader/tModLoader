@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
@@ -46,5 +47,9 @@ public class GlobalNPCTest : GlobalNPC
 	public override void DrawTownAttackSwing(NPC npc, ref Texture2D item, ref int itemSize, ref float scale, ref Vector2 offset) { }
 	public override void DrawTownAttackGun(NPC npc, ref float scale, ref int item, ref int closeness) {
 		closeness = 20;
+	}
+
+	public override void EditSpawnPool(IDictionary<int, float> pool, NPCSpawnInfo spawnInfo) {
+		if (spawnInfo.water) { }
 	}
 }
