@@ -100,6 +100,7 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Item.armorPenetration added, should we keep tml-added ArmorPenetration property?
   - "This is unused, replaced with this.ArmorPenetration." patch might be incorrect as well. Nearby switch table also changed a lot, might need to apply them elsewhere.
 - Vanilla CanHavePrefixes logic changed, might be able to use it rather than tml changes.
+  - #StackablePrefixWeapons needs to be searched for and removed
 - Item banner related methods moved to GameContent.BannerSystem. Need to move docs over.
 - Item Shimmer/Update/CheckLavaDeath/MoveInWorld/GetPickedUpByMonsters_Special/FindOwner/getRect/GetShimmered/CombineWithNearbyItems/related methods have moved to World Item. Need to move docs/patches over.
 - ModPylon.DrawMapIcon needs to support new vanilla options (DrawClamped when fullscreen it seems.)
