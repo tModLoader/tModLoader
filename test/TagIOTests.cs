@@ -82,7 +82,7 @@ namespace Terraria.ModLoader
 			else if (o1 is Item) {
 				var item1 = (Item)o1;
 				var item2 = (Item)o2;
-				Assert.IsTrue(item1.netID == item2.netID);
+				Assert.IsTrue(item1.type == item2.type);
 				Assert.IsTrue(item1.stack == item2.stack);
 				Assert.IsTrue(item1.prefix == item2.prefix);
 				Assert.IsTrue(item1.favorited == item2.favorited);
@@ -680,19 +680,19 @@ namespace Terraria.ModLoader
 				["item1"] = new TagCompound {
 					["<type>"] = typeof(Item).FullName,
 					["mod"] = "Terraria",
-					["id"] = item1.netID,
+					["id"] = item1.type,
 					["fav"] = true
 				},
 				["item2"] = new TagCompound {
 					["<type>"] = typeof(Item).FullName,
 					["mod"] = "Terraria",
-					["id"] = item2.netID,
+					["id"] = item2.type,
 					["stack"] = 25
 				},
 				["item3"] = new TagCompound {
 					["<type>"] = typeof(Item).FullName,
 					["mod"] = "Terraria",
-					["id"] = item3.netID,
+					["id"] = item3.type,
 					["prefix"] = (byte)4
 				}
 			};
@@ -710,7 +710,7 @@ namespace Terraria.ModLoader
 		[TestMethod]
 		public void TestItemSerializerCompatibility() {
 			var item = new Item();
-			item.SetDefaults(ItemID.Meowmere, true);
+			item.SetDefaults(ItemID.Meowmere);
 			item.prefix = 4;
 			item.stack = 25;
 			item.favorited = true;
@@ -868,7 +868,7 @@ namespace Terraria.ModLoader
 				Assert.AreEqual(e.Message, @"NBT Deserialization (type=Terraria.ModLoader.TagIOTests+A,entry=object ""a"" {
   string ""<type>"" = ""Terraria.ModLoader.TagIOTests+A""
 })".ReplaceLineEndings());
-				Assert.AreEqual(e.InnerException.Message, "Missing deserializer for type 'Terraria.ModLoader.TagIOTests+A'.");
+				Assert.AreEqual(e.InnerException.Message, "Missing deserializer for type 'Terraria.ModLoader.TagIOTests+A'");
 			}
 		}
 
