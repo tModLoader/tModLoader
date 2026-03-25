@@ -680,10 +680,6 @@ internal static class ModOrganizer
 		if (tmods.Length <= 3)
 			return;
 
-		// Solxan: We want to keep 4 copies of the mod. A Preview version, a Stable Version, and a Legacy version in case
-		// we need to rollback to the last stable due to a significant bug.
-		// We also keep a 1.4.3 version from version 2022.9 prior
-
 		var information = AnalyzeWorkshopTmods(repo);
 		if (information == null || information.Count() <= 3)
 			return;

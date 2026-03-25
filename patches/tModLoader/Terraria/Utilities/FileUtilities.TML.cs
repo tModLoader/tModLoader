@@ -115,6 +115,7 @@ public static partial class FileUtilities
 			(path: Path.Combine(Main.SavePath, "..", Program.PreviewFolder, $"{folderName}"), "Click to copy \"{0}\" over from preview", 2),
 			(path: Path.Combine(Main.SavePath, "..", Program.DevFolder, $"{folderName}"), "Click to copy \"{0}\" over from dev", 3),
 			(path: Path.Combine(Main.SavePath, "..", Program.Legacy143Folder, $"{folderName}"), "Click to copy \"{0}\" over from 1.4.3-Legacy", 0),
+			(path: Path.Combine(Main.SavePath, "..", Program.Legacy144Folder, $"{folderName}"), "Click to copy \"{0}\" over from 1.4.4-Legacy", 0),
 		};
 	}
 

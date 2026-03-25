@@ -47,6 +47,8 @@ public static partial class Program
 	public const string ReleaseFolder = "tModLoader";
 	public const string DevFolder = "tModLoader-dev";
 	public const string Legacy143Folder = "tModLoader-1.4.3";
+	public const string Legacy144Folder = "tModLoader-1.4.4";
+
 	public static string SaveFolderName => BuildInfo.IsStable ? ReleaseFolder : BuildInfo.IsPreview ? PreviewFolder : DevFolder;
 
 	private static void PortOldSaveDirectories(string savePath)
@@ -132,6 +134,7 @@ public static partial class Program
 
 		// Backwards compat line for 1.4.3-legacy, intended for use when is not Atomic Lockable
 		string portFilePath = Path.Combine(superSavePath, destination, maxVersionOfSource == "2022.9" ? $"143ported_{cloudName}.txt" : $"{maxVersionOfSource}{destination}ported_{cloudName}.txt");
+		// 1.4.5_RELEASE_FLAG
 
 		if (isAtomicLockable && Directory.Exists(newFolderPath) || !isAtomicLockable && File.Exists(portFilePath))
 			return;
@@ -206,6 +209,7 @@ public static partial class Program
 			return;
 		}
 
+		// 1.4.5_RELEASE_FLAG
 		// Copy all current stable player files to 1.4.3-legacy during transition period. Skip ModSources & Workshop shared folders
 		Logging.tML.Info($"Cloning current {source} files to {destination} save folder. Porting {cloudName}." +
 			$"\nThis may take a few minutes for a large amount of files.");
@@ -248,6 +252,7 @@ public static partial class Program
 				int result = ErrorReporting.ShowMessageBoxWithChoices(
 					title: "Failed to read config.json configuration file",
 					message: "Your config.json file is incomplete.\n\nPlease select one of the following options and the game will resume loading:\n\nWhat is the highest version of tModLoader that you have launched?",
+					// 1.4.5_RELEASE_FLAG
 					buttonLabels: new string[] { "1.4.4", "1.4.3", "Cancel" }
 				);
 				if (result == 0)
@@ -275,6 +280,8 @@ public static partial class Program
 			PortFilesFromXtoY(savePath, PreviewFolder, ReleaseFolder, maxVersionOfSource: "2023.6", isCloud, isAtomicLockable: false, migrationDay: new DateTime(2023, 9, 1));
 			// Local: Files and destination folder likely exist, copying in new files is expected/desired. Rely on already migrated file (canary file) to determine if migration should happen
 			// Steam: Move files if canary file doesn't exist.
+
+		// 1.4.5_RELEASE_FLAG
 	}
 
 	private static void SetSavePath()
