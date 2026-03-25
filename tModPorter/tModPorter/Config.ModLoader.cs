@@ -548,7 +548,7 @@ public static partial class Config
 		ChangeHookSignature("Terraria.ModLoader.ModTree", "SetTreeFoliageSettings");
 
 		// 1.4.5
-		ChangeHookSignature("Terraria.ModLoader.ModNPC", "SpawnChance");
-		ChangeHookSignature("Terraria.ModLoader.GlobalNPC", "EditSpawnPool");
+		ChangeHookSignature("Terraria.ModLoader.ModNPC", "SpawnChance").RenameParameter("spawnInfo", "spawner");
+		ChangeHookSignature("Terraria.ModLoader.GlobalNPC", "EditSpawnPool").RenameParameter("spawnInfo", "spawner");
 	}
 }

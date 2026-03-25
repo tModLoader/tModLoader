@@ -62,11 +62,6 @@ public class GlobalNPCTest : GlobalNPC
 	}
 
 	public override void EditSpawnPool(IDictionary<int, float> pool, NPC.Spawner spawner) {
-		// not-yet-implemented
 		if (spawner.Water) { }
-		// instead-expect
-#if COMPILE_ERROR
-		if (spawnInfo.water) { }
-#endif
 	}
 }

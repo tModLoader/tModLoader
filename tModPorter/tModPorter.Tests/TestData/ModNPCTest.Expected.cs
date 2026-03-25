@@ -96,12 +96,7 @@ public class ModNPCTest : ModNPC
 	}
 
 	public override float SpawnChance(NPC.Spawner spawner) {
-		// not-yet-implemented
 		return spawner.Water ? 0f : 1f;
-		// instead-expect
-#if COMPILE_ERROR
-		return spawnInfo.water ? 0f : 1f;
-#endif
 	}
 
 	public override void SetStaticDefaults() {

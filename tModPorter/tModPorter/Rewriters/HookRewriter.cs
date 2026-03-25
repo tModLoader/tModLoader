@@ -20,6 +20,13 @@ public class HookRewriter : BaseRewriter
 		public string comment { get; init; }
 
 		public bool removed;
+		public Dictionary<string, string> parameterRenames;
+
+		public RefactorEntry RenameParameter(string from, string to) {
+			parameterRenames ??= new();
+			parameterRenames[from] = to;
+			return this;
+		}
 	}
 
 	private static List<RefactorEntry> refactors = new();
@@ -30,7 +37,7 @@ public class HookRewriter : BaseRewriter
 		return entry;
 	}
 
-	public static void ChangeHookSignature(string type, string member, string comment = null) => AddRefactor(type, member, comment);
+	public static RefactorEntry ChangeHookSignature(string type, string member, string comment = null) => AddRefactor(type, member, comment);
 	public static void HookRemoved(string type, string member, string comment) => AddRefactor(type, member, "Note: Removed. " + comment).removed = true;
 
 	private static bool SelectRefactor(ISymbol sym, out RefactorEntry refactor) {
@@ -64,6 +71,7 @@ public class HookRewriter : BaseRewriter
 
 	public override SyntaxNode VisitMethodDeclaration(MethodDeclarationSyntax node) {
 		var sym = model.GetDeclaredSymbol(node);
+		RegisterParameterRenames(sym, node);
 		node = (MethodDeclarationSyntax)base.VisitMethodDeclaration(node);
 		if (!SelectRefactor(sym, out var refactor))
 			return node;
@@ -72,6 +80,29 @@ public class HookRewriter : BaseRewriter
 			node = node.WithParameterList(node.ParameterList.WithBlockComment(refactor.comment));
 
 		return node;
+	}
+
+	private void RegisterParameterRenames(IMethodSymbol sym, MethodDeclarationSyntax node) {
+		if (!SelectRefactor(sym, out var refactor) || refactor.removed || refactor.parameterRenames == null)
+			return;
+
+		var renames = new Dictionary<IParameterSymbol, string>(SymbolEqualityComparer.Default);
+		foreach (var param in sym.Parameters) {
+			if (refactor.parameterRenames.TryGetValue(param.Name, out var newName))
+				renames[param] = newName;
+		}
+
+		if (renames.Count == 0)
+			return;
+
+		var body = (SyntaxNode)node.Body ?? node.ExpressionBody;
+		if (body == null)
+			return;
+
+		foreach (var nameSyntax in body.DescendantNodes().OfType<IdentifierNameSyntax>()) {
+			if (model.GetSymbolInfo(nameSyntax).Symbol is IParameterSymbol param && renames.TryGetValue(param, out var newName))
+				RegisterAction<IdentifierNameSyntax>(nameSyntax, n => n.WithIdentifier(newName));
+		}
 	}
 
 	private bool AccessibilityMismatch(ISymbol sym, ISymbol baseSym) =>

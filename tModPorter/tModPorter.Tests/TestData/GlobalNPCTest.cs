@@ -50,6 +50,6 @@ public class GlobalNPCTest : GlobalNPC
 	}
 
 	public override void EditSpawnPool(IDictionary<int, float> pool, NPCSpawnInfo spawnInfo) {
-		if (spawnInfo.water) { }
+		if (spawnInfo.Water) { }
 	}
 }
