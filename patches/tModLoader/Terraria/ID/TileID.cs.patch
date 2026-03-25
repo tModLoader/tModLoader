@@ -1,6 +1,7 @@
 --- src/TerrariaNetCore/Terraria/ID/TileID.cs
 +++ src/tModLoader/Terraria/ID/TileID.cs
-@@ -1,11 +_,13 @@
+@@ -1,11 +_,14 @@
++using System;
  using System.Collections.Generic;
  using ReLogic.Reflection;
 +using Terraria.ModLoader;
@@ -24,8 +25,31 @@
  			public static bool[] Regrowth = Factory.CreateBoolSet(false, 3, 24, 52, 382, 61, 703, 62, 71, 73, 74, 82, 83, 84, 110, 113, 115, 184, 205, 201, 519, 518, 528, 529, 530, 705, 549, 637, 638, 636);
  		}
  
-@@ -147,30 +_,96 @@
+@@ -72,7 +_,7 @@
+ 			public static bool[] ClosedDoors = Factory.CreateBoolSet(10, 388);
+ 		}
  
+-		public static class RoomNeeds
++		internal static class RoomNeeds_Vanilla
+ 		{
+ 			public static int[] CountsAsChairTypes = new int[6] {
+ 				15,
+@@ -145,32 +_,110 @@
+ 			public static bool[] CountsAsDoor = Factory.CreateBoolSet(CountsAsDoorTypes);
+ 		}
+ 
++		public static class RoomNeeds
++		{
++			public static ReadOnlySpan<int> CountsAsChairTypes => CountsAsChair;
++			public static BoolListSet CountsAsChair = Factory.CreateBoolListSet(RoomNeeds_Vanilla.CountsAsChairTypes);
++			public static ReadOnlySpan<int> CountsAsTableTypes => CountsAsTable;
++			public static BoolListSet CountsAsTable = Factory.CreateBoolListSet(RoomNeeds_Vanilla.CountsAsTableTypes);
++			public static ReadOnlySpan<int> CountsAsTorchTypes => CountsAsTorch;
++			public static BoolListSet CountsAsTorch = Factory.CreateBoolListSet(RoomNeeds_Vanilla.CountsAsTorchTypes);
++			public static ReadOnlySpan<int> CountsAsDoorTypes => CountsAsDoor;
++			public static BoolListSet CountsAsDoor = Factory.CreateBoolListSet(RoomNeeds_Vanilla.CountsAsDoorTypes);
++		}
++
  		public static class Wiring
  		{
 +			/// <summary>

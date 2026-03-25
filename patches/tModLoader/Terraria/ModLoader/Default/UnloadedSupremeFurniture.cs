@@ -23,11 +23,6 @@ public class UnloadedSupremeFurniture : UnloadedTile
 		Main.tileTable[Type] = true;
 		Main.tileNoAttach[Type] = true;
 
-		AddToArray(ref TileID.Sets.RoomNeeds.CountsAsChairTypes);
-		AddToArray(ref TileID.Sets.RoomNeeds.CountsAsTableTypes);
-		AddToArray(ref TileID.Sets.RoomNeeds.CountsAsDoorTypes);
-		AddToArray(ref TileID.Sets.RoomNeeds.CountsAsTorchTypes);
-
 		TileID.Sets.RoomNeeds.CountsAsChair[Type] = true;
 		TileID.Sets.RoomNeeds.CountsAsTable[Type] = true;
 		TileID.Sets.RoomNeeds.CountsAsDoor[Type] = true;

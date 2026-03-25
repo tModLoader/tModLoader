@@ -47,10 +47,6 @@ public static class TileLoader
 	internal static List<ConvertTile>[][] tileConversionDelegates = null;
 	internal static int[][] tileConversionFallbacks = null;
 	private static bool loaded = false;
-	private static readonly int vanillaChairCount = TileID.Sets.RoomNeeds.CountsAsChair.Length;
-	private static readonly int vanillaTableCount = TileID.Sets.RoomNeeds.CountsAsTable.Length;
-	private static readonly int vanillaTorchCount = TileID.Sets.RoomNeeds.CountsAsTorch.Length;
-	private static readonly int vanillaDoorCount = TileID.Sets.RoomNeeds.CountsAsDoor.Length;
 
 	private static Func<int, int, int, bool, bool>[] HookKillSound;
 	private delegate void DelegateNumDust(int i, int j, int type, bool fail, ref int num);
@@ -298,11 +294,6 @@ public static class TileLoader
 		Main.QueueMainThreadAction(() => {
 			Main.instance.TilePaintSystem.Reset();
 		});
-
-		Array.Resize(ref TileID.Sets.RoomNeeds.CountsAsChair, vanillaChairCount);
-		Array.Resize(ref TileID.Sets.RoomNeeds.CountsAsTable, vanillaTableCount);
-		Array.Resize(ref TileID.Sets.RoomNeeds.CountsAsTorch, vanillaTorchCount);
-		Array.Resize(ref TileID.Sets.RoomNeeds.CountsAsDoor, vanillaDoorCount);
 
 		while (TileObjectData._data.Count > TileID.Count) {
 			TileObjectData._data.RemoveAt(TileObjectData._data.Count - 1);
