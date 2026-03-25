@@ -211,6 +211,23 @@ public class RenameRewriter : BaseRewriter {
 
 	public static void InvertBool(RenameRewriter rw, SyntaxToken node)
 	{
-		// TODO: Prepend or remove ! from result
+		if (node.Parent is not IdentifierNameSyntax nameSyntax)
+			return;
+
+		ExpressionSyntax usage = nameSyntax.Parent is MemberAccessExpressionSyntax memberAccess
+			? memberAccess
+			: nameSyntax;
+
+		if (usage.Parent is AssignmentExpressionSyntax assign && assign.Left == usage)
+			return;
+
+		if (usage.Parent is PrefixUnaryExpressionSyntax notExpr && notExpr.IsKind(SyntaxKind.LogicalNotExpression)) {
+			rw.RegisterAction<PrefixUnaryExpressionSyntax>(notExpr,
+				n => n.Operand.WithTriviaFrom(n));
+		}
+		else {
+			rw.RegisterAction<ExpressionSyntax>(usage,
+				n => PrefixUnaryExpression(SyntaxKind.LogicalNotExpression, n.WithoutTrivia()).WithTriviaFrom(n));
+		}
 	}
 }
