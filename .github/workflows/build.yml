@@ -5,7 +5,7 @@ env:
     DevBranch: 1.4.4
     StableBranch: stable
     PreviewBranch: preview
-    TERRARIA_VERSION: 1449
+    TERRARIA_VERSION: 1456
     # Note that Is Release also has to be updated at the IF level for a Job. IE both documentation and steam push
     IsRelease: ${{ github.event_name == 'push' && (endsWith(github.ref, 'preview') || endsWith(github.ref, 'stable')) }}
     IsVersioned: ${{ github.event_name == 'push' && (endsWith(github.ref, 'preview') || endsWith(github.ref, 'stable') || endsWith(github.ref, '1.4.4'))  }}
@@ -17,7 +17,7 @@ on:
   # This workflow runs when a push to major branch happens, or when a label is added to a pull request targetting major branch.
   push:
     # note these cannot use the env.Branch variables
-    branches: [githubActionsMaintenanceCheckoutCacheUpdates, stable, preview, 1.4.4, feature/dotnet8]
+    branches: [githubActionsMaintenanceCheckoutCacheUpdates, stable, preview, 1.4.4, feature/dotnet8, 1.4.5]
   pull_request_target:
     types: [labeled]
     branches: [preview, stable, 1.4.4]
@@ -168,7 +168,7 @@ jobs:
         with:
           path: decompiled.zip.gpg
           # update key with new Terraria releases and when ilspy or ilspy decompile settings are updated
-          key: 1449-A
+          key: 1456-A
 
       - name: Restore decompiled folder from cache
         if: steps.cache-decompiled.outputs.cache-hit == 'true'
@@ -219,7 +219,7 @@ jobs:
           unzip -q terrariaserver.zip
           
           # Extra file needed for client decomp which isn't embedded in the Terraria.exe, will be embedded in 1.4.5
-          cp patches/Terraria/Terraria/Libraries/Common/SteelSeriesEngineWrapper.dll ./$TERRARIA_VERSION/Windows/SteelSeriesEngineWrapper.dll
+          #cp patches/Terraria/Terraria/Libraries/Common/SteelSeriesEngineWrapper.dll ./$TERRARIA_VERSION/Windows/SteelSeriesEngineWrapper.dll
           
           echo ::group::Running setup-cli.bat
           if [ ${{github.ref}} = 'refs/heads/${{env.StableBranch}}' ] ; then
@@ -328,68 +328,68 @@ jobs:
         id: setupsteam
         uses: CyberAndrii/setup-steamcmd@v1
         
-      - name: Build ExampleMod
-        shell: bash
-        run: |
-          echo ::group::Getting current published ExampleMod
-          publishid="2615761271"
-          echo "attempting download ExampleMod"
-          
-          steamapps=$(pwd)/ee
-          steamapps=$(cygpath -w $steamapps)
-          
-          ${{ steps.setupsteam.outputs.executable }} +force_install_dir $steamapps +login anonymous +workshop_download_item 1281930 $publishid +quit
-          echo "downloaded ExampleMod"
-          
-          publishedfolder=$steamapps/steamapps/workshop/content/1281930/$publishid
-          echo "publishedModFiles are at:"
-          echo $publishedfolder
-          
-          if [ ! -d "$publishedfolder" ] ; then
-            echo "Files not Found. Steam failed to download. Try again later."
-            exit -12390
-          fi
-          echo ::endgroup::
-          
-          echo Adding version info to ExampleMod
-          echo -e "\nversion = ${{ steps.version.outputs.new_version }}" >> ./ExampleMod/build.txt
-          
-          #pwd gives an absolute path, required for -tmlsavedirectory as the build command is executed from the steam/deployment dir          
-          ModloaderDir=$(pwd)/local/ModLoader
-          echo ModloaderDir is: $ModloaderDir
-          mkdir -p $ModloaderDir
-          
-          if [ ${{env.IsRelease}} = 'true' ] ; then
-            ciprep="-ciprep \"Automatic update from GitHub for tModLoader v{tMLVersion}: ${{ github.event.compare }}\" -publishedmodfiles \"$(cygpath -w $publishedfolder)\" -uploadfolder \"/home/runner/work/tModLoader/tModLoader/artifacts/ExampleMod\""
-          else
-            ciprep=""
-          fi
-          
-          export ExtraBuildModFlags="$ciprep -tmlsavedirectory \"$(cygpath -w $ModloaderDir)\""
-          echo ExtraBuildModFlags is: $ExtraBuildModFlags
-          
-          echo ::group::Building ExampleMod
-          dotnet build ExampleMod/ExampleMod.csproj --nologo
-          echo ::endgroup::
-          
-          mkdir -p artifacts/Mods
-          cp -r $ModloaderDir/Mods/. artifacts/Mods
-          
-          echo ::group::Testing Example Mod build from "Mod Sources" dir  
-          cp -r ExampleMod "$ModloaderDir/ModSources/ExampleMod"
-          cd "$ModloaderDir/ModSources/ExampleMod"
-          unset ExtraBuildModFlags
-          dotnet build ExampleMod.csproj --nologo
-          echo ::endgroup::
-        env:
-          TMLVERSION: ${{ steps.version.outputs.new_version }}
-          
-      - name: Upload ExampleMod Build Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: ExampleMod Build
-          path: |
-            ./artifacts/Mods/
+#      - name: Build ExampleMod
+#        shell: bash
+#        run: |
+#          echo ::group::Getting current published ExampleMod
+#          publishid="2615761271"
+#          echo "attempting download ExampleMod"
+#          
+#          steamapps=$(pwd)/ee
+#          steamapps=$(cygpath -w $steamapps)
+#          
+#          ${{ steps.setupsteam.outputs.executable }} +force_install_dir $steamapps +login anonymous +workshop_download_item 1281930 $publishid +quit
+#          echo "downloaded ExampleMod"
+#          
+#          publishedfolder=$steamapps/steamapps/workshop/content/1281930/$publishid
+#          echo "publishedModFiles are at:"
+#          echo $publishedfolder
+#          
+#          if [ ! -d "$publishedfolder" ] ; then
+#            echo "Files not Found. Steam failed to download. Try again later."
+#            exit -12390
+#          fi
+#          echo ::endgroup::
+#          
+#          echo Adding version info to ExampleMod
+#          echo -e "\nversion = ${{ steps.version.outputs.new_version }}" >> ./ExampleMod/build.txt
+#          
+#          #pwd gives an absolute path, required for -tmlsavedirectory as the build command is executed from the steam/deployment dir          
+#          ModloaderDir=$(pwd)/local/ModLoader
+#          echo ModloaderDir is: $ModloaderDir
+#          mkdir -p $ModloaderDir
+#          
+#          if [ ${{env.IsRelease}} = 'true' ] ; then
+#            ciprep="-ciprep \"Automatic update from GitHub for tModLoader v{tMLVersion}: ${{ github.event.compare }}\" -publishedmodfiles \"$(cygpath -w $publishedfolder)\" -uploadfolder \"/home/runner/work/tModLoader/tModLoader/artifacts/ExampleMod\""
+#          else
+#            ciprep=""
+#          fi
+#          
+#          export ExtraBuildModFlags="$ciprep -tmlsavedirectory \"$(cygpath -w $ModloaderDir)\""
+#          echo ExtraBuildModFlags is: $ExtraBuildModFlags
+#          
+#          echo ::group::Building ExampleMod
+#          dotnet build ExampleMod/ExampleMod.csproj --nologo
+#          echo ::endgroup::
+#          
+#          mkdir -p artifacts/Mods
+#          cp -r $ModloaderDir/Mods/. artifacts/Mods
+#          
+#          echo ::group::Testing Example Mod build from "Mod Sources" dir  
+#          cp -r ExampleMod "$ModloaderDir/ModSources/ExampleMod"
+#          cd "$ModloaderDir/ModSources/ExampleMod"
+#          unset ExtraBuildModFlags
+#          dotnet build ExampleMod.csproj --nologo
+#          echo ::endgroup::
+#        env:
+#          TMLVERSION: ${{ steps.version.outputs.new_version }}
+#          
+#      - name: Upload ExampleMod Build Artifact
+#        uses: actions/upload-artifact@v4
+#        with:
+#          name: ExampleMod Build
+#          path: |
+#            ./artifacts/Mods/
             
       - name: List final directory and file structure
         if: always()
@@ -498,7 +498,8 @@ jobs:
     needs: build
     # We push a release only on push events to the stable/preview branch that build correctly
     # Note this line doesn't have access to env variable yet since it is before the runner is established
-    if: ${{ github.event_name == 'push' && (endsWith(github.ref, 'preview') || endsWith(github.ref, 'stable')) }}
+#    if: ${{ github.event_name == 'push' && (endsWith(github.ref, 'preview') || endsWith(github.ref, 'stable')) }}
+    if: ${{ github.event_name == 'push' && endsWith(github.ref, '1.4.5') }}
     name: Deploy to Steam
     runs-on: ubuntu-latest
     strategy:
@@ -619,6 +620,8 @@ jobs:
             sed -i -e "s/1.4.4-preview/Preview-${version:0:8}/g" $manifesto
           fi
           
+          manifesto=$manifesto/dev.vdf
+          
           sed -i -e "s/Auto-Release/Auto-Release ($version)/g" $manifesto
           steamcmd +login "${{ secrets.STEAM_USERNAME }}" +run_app_build_http $manifesto +quit
           echo "Listing BuildOutput directory"
@@ -630,63 +633,63 @@ jobs:
         env:
           version: ${{ steps.version2.outputs.new_version }}
           
-      - name: Download ExampleMod build artifact from build job
-        # This should hopefully always work since this job shouldn't even run if the build job failed due to ExampleMod not compiling.
-        uses: actions/download-artifact@v4
-        with:
-          name: ExampleMod Build
-          path: artifacts/ExampleMod
-          
-      - name: View ExampleMod build artifact files
-        run: |
-          echo pwd is: ${PWD}
-          ls -alhR
-        working-directory: artifacts/ExampleMod
-        
-        # Publish new version of ExampleMod using files from Build Output
-      - name: Attempt workshop_build_item 
-        shell: bash
-        run: |
-          echo Changes detected in ExampleMod folder, attempting to publish ExampleMod to workshop
-          echo "Warning: This manual publish approach bypasses version and other checks, so updating build.txt is not necessary currently and this approach shouldn't be used by modders"
-          echo pwd is: ${PWD}
-                 
-          echo "Review Contents for publish ExampleMod"
-          echo publish.vdf contents:
-          cat publish.vdf
-          echo workshop.json contents:
-          cat Workshop/workshop.json
-          
-          echo "Publishing ExampleMod"
-          steamcmd +login "${{ secrets.STEAM_USERNAME }}" +workshop_build_item "${PWD}/publish.vdf" +quit
-          echo publish.vdf contents:
-          cat publish.vdf
-          echo Done
-        working-directory: artifacts/ExampleMod
-        
-      # Zip for making a Release Zip
-      - name: Install Zip
-        if: env.IsRelease == 'true'
-        uses: montudor/action-zip@v1
-      
-      # Zip all files for Releases
-      - name: Zip Artifacts
-        working-directory: /home/runner/work/tModLoader/tModLoader/artifacts/
-        run: |
-          cd ExampleMod; zip -qq -r ../ExampleMod.zip .; cd ..
-          cd Build; zip -qq -r ../tModLoader.zip .; cd ..
-      
-      # Make a Release on Github
-      - name: Make a release
-        uses: ncipollo/release-action@v1
-        with:
-          artifacts: "/home/runner/work/tModLoader/tModLoader/artifacts/ExampleMod.zip, /home/runner/work/tModLoader/tModLoader/artifacts/tModLoader.zip"
-          token: ${{ secrets.GITHUB_TOKEN }}
-          generateReleaseNotes: true
-          name: "1.4.4-${{github.ref}} Version Update: ${{ steps.version2.outputs.new_version }}"
-          body: "Monthly Github Auto-release for ${{github.ref}}"
-          tag: ${{ steps.version2.outputs.new_version }}
-          prerelease: ${{ contains(github.ref, 'preview') }}
-          # No longer automatically make latest since we don't always release on Steam at the exact time, which can cause issues for manage-tModLoaderServer.sh servers. TML Team member will edit the GitHub release when Steam release goes live.
-          # makeLatest: ${{ contains(github.ref, 'stable') }} 
-          
+#      - name: Download ExampleMod build artifact from build job
+#        # This should hopefully always work since this job shouldn't even run if the build job failed due to ExampleMod not compiling.
+#        uses: actions/download-artifact@v4
+#        with:
+#          name: ExampleMod Build
+#          path: artifacts/ExampleMod
+#          
+#      - name: View ExampleMod build artifact files
+#        run: |
+#          echo pwd is: ${PWD}
+#          ls -alhR
+#        working-directory: artifacts/ExampleMod
+#        
+#        # Publish new version of ExampleMod using files from Build Output
+#      - name: Attempt workshop_build_item 
+#        shell: bash
+#        run: |
+#          echo Changes detected in ExampleMod folder, attempting to publish ExampleMod to workshop
+#          echo "Warning: This manual publish approach bypasses version and other checks, so updating build.txt is not necessary currently and this approach shouldn't be used by modders"
+#          echo pwd is: ${PWD}
+#                 
+#          echo "Review Contents for publish ExampleMod"
+#          echo publish.vdf contents:
+#          cat publish.vdf
+#          echo workshop.json contents:
+#          cat Workshop/workshop.json
+#          
+#          echo "Publishing ExampleMod"
+#          steamcmd +login "${{ secrets.STEAM_USERNAME }}" +workshop_build_item "${PWD}/publish.vdf" +quit
+#          echo publish.vdf contents:
+#          cat publish.vdf
+#          echo Done
+#        working-directory: artifacts/ExampleMod
+#        
+#      # Zip for making a Release Zip
+#      - name: Install Zip
+#        if: env.IsRelease == 'true'
+#        uses: montudor/action-zip@v1
+#      
+#      # Zip all files for Releases
+#      - name: Zip Artifacts
+#        working-directory: /home/runner/work/tModLoader/tModLoader/artifacts/
+#        run: |
+#          cd ExampleMod; zip -qq -r ../ExampleMod.zip .; cd ..
+#          cd Build; zip -qq -r ../tModLoader.zip .; cd ..
+#      
+#      # Make a Release on Github
+#      - name: Make a release
+#        uses: ncipollo/release-action@v1
+#        with:
+#          artifacts: "/home/runner/work/tModLoader/tModLoader/artifacts/ExampleMod.zip, /home/runner/work/tModLoader/tModLoader/artifacts/tModLoader.zip"
+#          token: ${{ secrets.GITHUB_TOKEN }}
+#          generateReleaseNotes: true
+#          name: "1.4.4-${{github.ref}} Version Update: ${{ steps.version2.outputs.new_version }}"
+#          body: "Monthly Github Auto-release for ${{github.ref}}"
+#          tag: ${{ steps.version2.outputs.new_version }}
+#          prerelease: ${{ contains(github.ref, 'preview') }}
+#          # No longer automatically make latest since we don't always release on Steam at the exact time, which can cause issues for manage-tModLoaderServer.sh servers. TML Team member will edit the GitHub release when Steam release goes live.
+#          # makeLatest: ${{ contains(github.ref, 'stable') }} 
+#          
