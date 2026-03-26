@@ -295,6 +295,7 @@ public static partial class Config
 		RenameStaticField("Terraria.ID.TileID.Sets", from: "InteractibleByNPCs", to: "InteractableByNPCs");
 		RenameStaticField("Terraria.ID.TileID.Sets", from: "Torch", to: "Torches");
 		RenameStaticField("Terraria.ID.TileID.Sets", from: "Campfire", to: "Campfires");
+		RenameStaticField("Terraria.Main", from: "DisableIntenseVisualEffects", to: "FlashyEffectsWorld").FollowBy(InvertBool);
 		RenameStaticField("Terraria.Main", "gameInactive", "GameplayActive", "Terraria.FocusHelper").FollowBy(InvertBool);
 		RenameStaticField("Terraria.NPC", "killCount", "killCount", "Terraria.GameContent.BannerSystem");
 		RenameStaticField("Terraria.WorldGen", from: "gen", to: "isGeneratingOrLoadingWorld");
@@ -303,6 +304,7 @@ public static partial class Config
 		RenameInstanceField("Terraria.Item", from: "netID", to: "type");
 		RenameInstanceField("Terraria.Player", from: "adjWater", to: "adjWaterSource");
 		RenameInstanceField("Terraria.Player", from: "oldAdjWater", to: "oldAdjWaterSource");
+		RenameInstanceField("Terraria.Player", from: "isPettingAnimal", to: "petting.isPetting");
 		RenameInstanceField("Terraria.NPC.Spawner", from: "Sky",          to: "skyMob");
 		RenameInstanceField("Terraria.NPC.Spawner", from: "Lihzahrd",     to: "ZoneLihzhardTemple");
 		RenameInstanceField("Terraria.NPC.Spawner", from: "PlayerSafe",   to: "noWorms");
@@ -329,6 +331,7 @@ public static partial class Config
 		RefactorInstanceMethodCall("Terraria.Tile", "anyHoney", GetterToProperty("HasHoney"));
 		RefactorInstanceMethodCall("Terraria.Tile", "anyShimmer", GetterToProperty("HasShimmer"));
 		RefactorInstanceMethodCall("Terraria.Tile", "anyWire", GetterToProperty("HasWire"));
+		RefactorInstanceMethodCall("Terraria.NPC", "ShouldBestiaryGirlBeLycantrope", ToStaticMethodCall("Terraria.NPC", "ShouldBestiaryGirlBeLycantrope"));
 	}
 
 	private static void AddTextureRenames() {
