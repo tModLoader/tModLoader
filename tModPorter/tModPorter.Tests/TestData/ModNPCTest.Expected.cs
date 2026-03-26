@@ -96,7 +96,7 @@ public class ModNPCTest : ModNPC
 	}
 
 	public override float SpawnChance(NPC.Spawner spawner) {
-		return spawner.Water ? 0f : 1f;
+		return spawner.waterTile ? 0f : 1f;
 	}
 
 	public override void SetStaticDefaults() {

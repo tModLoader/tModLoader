@@ -153,9 +153,9 @@ namespace ExampleMod.Content.NPCs
 			};
 		}
 
-		public override float SpawnChance(NPCSpawnInfo spawnInfo) {
+		public override float SpawnChance(NPC.Spawner spawner) {
 			// If any player is underground and has an example item in their inventory, the example bone merchant will have a slight chance to spawn.
-			if (spawnInfo.Player.ZoneDirtLayerHeight && spawnInfo.Player.inventory.Any(item => item.type == ModContent.ItemType<ExampleItem>())) {
+			if (spawner.Player.ZoneDirtLayerHeight && spawner.Player.inventory.Any(item => item.type == ModContent.ItemType<ExampleItem>())) {
 				return 0.34f;
 			}
 

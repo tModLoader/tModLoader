@@ -47,7 +47,7 @@ namespace ExampleMod.Common
 			cameraInfo.CameraPosition = Vector2.Lerp(cameraInfo.CameraPosition, targetPosition, lerpAmount);
 
 			// Pauses the effect if the game is tabbed out or paused
-			if (!Main.gameInactive && !Main.gamePaused) {
+			if (FocusHelper.GameplayActive && !Main.gamePaused) {
 				framesElapsed++;
 			}
 

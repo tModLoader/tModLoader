@@ -240,7 +240,7 @@ public readonly partial struct Tile
 	/// Whether there is any wire at this position.<br/>
 	/// Legacy/vanilla equivalent is <see cref="anyWire()"/>.
 	/// </summary>
-	public bool AnyWire => Get<TileWallWireStateData>().WireData > 0;
+	public bool HasWire => Get<TileWallWireStateData>().WireData > 0;
 
 	// Invisibility
 

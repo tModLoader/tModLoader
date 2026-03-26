@@ -53,7 +53,7 @@ public class TileTest
 		tile.BlueWire = !tile.BlueWire;
 		tile.GreenWire = !tile.GreenWire;
 		tile.YellowWire = !tile.YellowWire;
-		bool anyWire = tile.AnyWire;
+		bool anyWire = tile.HasWire;
 		tile.CheckingLiquid = !tile.CheckingLiquid;
 		tile.SkipLiquid = !tile.SkipLiquid;
 

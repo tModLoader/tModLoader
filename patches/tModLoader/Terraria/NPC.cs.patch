@@ -31,33 +31,61 @@
  	{
  		public static int spawnSpaceX = 2;
  		public static int spawnSpaceY = 3;
-@@ -48,18 +_,18 @@
+@@ -48,17 +_,44 @@
  		public bool dayTime;
  		public bool raining;
  		public int townNPCs;
--		public bool skyMob;
-+		private bool skyMob;
--		public bool noWorms;
-+		private bool noWorms;
++		/// <summary>
++		/// Whether or not the player is in the sky biome, where harpies and wyverns spawn.
++		/// </summary>
+ 		public bool skyMob;
++		/// <summary>
++		/// Whether or not the player is in front of a player-placed wall or in a large town. If this is true, enemies that can attack through walls should not spawn (unless an invasion is in progress).
++		/// </summary>
+ 		public bool noWorms;
  		public bool noGroundWorms;
--		public bool invaders;
-+		private bool invaders;
++		/// <summary>
++		/// Whether or not there is an invasion going on and the player is near it.
++		/// </summary>
+ 		public bool invaders;
++		/// <summary>
++		/// Whether or not the player is in a town. This is used for spawning critters instead of monsters.
++		/// </summary>
  		public bool spawnFriendly;
  		public bool ignoreSafeWalls;
--		public bool waterTile;
-+		private bool waterTile;
--		public bool nearGranite;
-+		private bool nearGranite;
--		public bool nearMarble;
-+		private bool nearMarble;
--		public bool spawnSpider;
-+		private bool spawnSpider;
++		/// <summary>
++		/// Whether or not the tile the NPC will spawn in contains water.
++		/// </summary>
+ 		public bool waterTile;
++		/// <summary>
++		/// Whether or not the NPC will spawn on a granite block or the player is near a granite biome.
++		/// </summary>
+ 		public bool nearGranite;
++		/// <summary>
++		/// Whether or not the NPC will spawn on a marble block or the player is near a marble biome.
++		/// </summary>
+ 		public bool nearMarble;
++		/// <summary>
++		/// Whether or not the player is in a spider cave or the NPC will spawn near one.
++		/// </summary>
+ 		public bool spawnSpider;
  		public bool surfaceSpawn;
--		public bool spawnUndergroundDesert;
-+		private bool spawnUndergroundDesert;
++		/// <summary>
++		/// Whether or not the player is in front of a desert wall or the NPC will spawn near one.
++		/// </summary>
+ 		public bool spawnUndergroundDesert;
  		public bool hardDungeon;
  		public bool deeperThanRockLayer;
- 		public bool underGround;
+@@ -83,6 +_,9 @@
+ 		public bool ZoneMeteor;
+ 		public bool ZoneGraveyard;
+ 		public bool ZoneDungeon;
++		/// <summary>
++		/// Whether or not the player is inside the jungle temple, where Lihzahrds spawn.
++		/// </summary>
+ 		public bool ZoneLihzhardTemple;
+ 		public bool ZoneGranite;
+ 		public bool ZoneMarble;
 @@ -147,6 +_,9 @@
  
  			if (!FindSpawnTile(player, out var spawnTileX, out var spawnTileY, out var xRange))

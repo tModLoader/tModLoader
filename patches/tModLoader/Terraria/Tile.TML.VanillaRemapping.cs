@@ -231,8 +231,8 @@ public readonly partial struct Tile
 	/// <inheritdoc cref="wire3()"/>
 	internal void wire3(bool wire3) => GreenWire = wire3;
 
-	/// <summary> Legacy code, use <c>tile.AnyWire</c> instead. </summary>
-	internal bool anyWire() => AnyWire;
+	/// <summary> Legacy code, use <c>tile.HasWire</c> instead. </summary>
+	internal bool anyWire() => HasWire;
 
 	/// <summary>
 	/// Legacy code, use <see cref="YellowWire"/> instead.

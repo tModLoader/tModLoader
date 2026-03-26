@@ -297,8 +297,18 @@ public static partial class Config
 		RenameStaticField("Terraria.NPC", "killCount", "killCount", "Terraria.GameContent.BannerSystem");
 		RenameStaticField("Terraria.WorldGen", from: "gen", to: "isGeneratingOrLoadingWorld");
 
-		RenameInstanceField("Terraria.Player", from: "adjWater", to: "addWaterSource");
+		RenameInstanceField("Terraria.Player", from: "adjWater", to: "adjWaterSource");
 		RenameInstanceField("Terraria.Player", from: "oldAdjWater", to: "oldAdjWaterSource");
+		RenameInstanceField("Terraria.NPC.Spawner", from: "Sky",          to: "skyMob");
+		RenameInstanceField("Terraria.NPC.Spawner", from: "Lihzahrd",     to: "ZoneLihzhardTemple");
+		RenameInstanceField("Terraria.NPC.Spawner", from: "PlayerSafe",   to: "noWorms");
+		RenameInstanceField("Terraria.NPC.Spawner", from: "Invasion",     to: "invaders");
+		RenameInstanceField("Terraria.NPC.Spawner", from: "Water",        to: "waterTile");
+		RenameInstanceField("Terraria.NPC.Spawner", from: "Granite",      to: "nearGranite");
+		RenameInstanceField("Terraria.NPC.Spawner", from: "Marble",       to: "nearMarble");
+		RenameInstanceField("Terraria.NPC.Spawner", from: "SpiderCave",   to: "spawnSpider");
+		RenameInstanceField("Terraria.NPC.Spawner", from: "PlayerInTown", to: "spawnFriendly");
+		RenameInstanceField("Terraria.NPC.Spawner", from: "DesertCave",   to: "spawnUndergroundDesert");
 
 		RenameMethod("Terraria.Item", "BannerToItem", "BannerToItem", "Terraria.GameContent.BannerSystem");
 		RenameMethod("Terraria.Item", "BannerToNPC", "BannerToNPC", "Terraria.GameContent.BannerSystem");
@@ -314,7 +324,7 @@ public static partial class Config
 		RefactorInstanceMethodCall("Terraria.Tile", "anyLava", GetterToProperty("HasLava"));
 		RefactorInstanceMethodCall("Terraria.Tile", "anyHoney", GetterToProperty("HasHoney"));
 		RefactorInstanceMethodCall("Terraria.Tile", "anyShimmer", GetterToProperty("HasShimmer"));
-		RefactorInstanceMethodCall("Terraria.Tile", "anyWire", GetterToProperty("AnyWire"));
+		RefactorInstanceMethodCall("Terraria.Tile", "anyWire", GetterToProperty("HasWire"));
 	}
 
 	private static void AddTextureRenames() {
