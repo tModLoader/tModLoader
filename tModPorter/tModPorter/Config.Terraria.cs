@@ -269,6 +269,7 @@ public static partial class Config
 		// 1.4.5                
 		RenameStaticField("Terraria.ID.BuffID.Sets", from: "LongerExpertDebuff", to: "BuffTimeIsExtendedWithGameDifficulty");
 		RenameStaticField("Terraria.ID.GoreID.Sets", from: "LiquidDroplet", to: "IsDrip");
+		RenameStaticField("Terraria.ID.ImmunityCooldownID", from: "Bosses", to: "BossNoCheese");
 		RenameStaticField("Terraria.ID.ItemID.Sets", from: "SortingPriorityBossSpawns", to: "SortingPriorityMiscImportants");
 		RenameStaticField("Terraria.ID.ItemID.Sets", from: "BonusAttackSpeedMultiplier", to: "BonusMeleeSpeedMultiplier");
 		RenameStaticField("Terraria.ID.MessageID", from: "TileSquare", to: "AreaTileChange");
@@ -284,6 +285,7 @@ public static partial class Config
 		RenameStaticField("Terraria.ID.NPCID.Sets", from: "UsesNewTargetting", to: "UsesNewTargeting");
 		RenameStaticField("Terraria.ID.NPCID.Sets", from: "ShouldBeCountedAsBossForBestiary", to: "ShouldBeCountedAsBoss");
 		RenameStaticField("Terraria.ID.NPCID.Sets", from: "SpawnFromLastEmptySlot", to: "SearchSpawnSlotsInReverse");
+		RenameStaticField("Terraria.ID.ProjectileID.Sets", from: "MinionTargettingFeature", to: "MinionTargetingFeature");
 		RenameStaticField("Terraria.ID.TileID.Sets", from: "CountsAsWaterSource", to: "CountsAsWaterForCrafting");
 		RenameStaticField("Terraria.ID.TileID.Sets", from: "CountsAsHoneySource", to: "CountsAsHoneyForCrafting");
 		RenameStaticField("Terraria.ID.TileID.Sets", from: "CountsAsLavaSource", to: "CountsAsLavaForCrafting");
@@ -297,6 +299,8 @@ public static partial class Config
 		RenameStaticField("Terraria.NPC", "killCount", "killCount", "Terraria.GameContent.BannerSystem");
 		RenameStaticField("Terraria.WorldGen", from: "gen", to: "isGeneratingOrLoadingWorld");
 
+		RenameInstanceField("Terraria.Dust", from: "noLightEmittence", to: "noLightEmittance");
+		RenameInstanceField("Terraria.Item", from: "netID", to: "type");
 		RenameInstanceField("Terraria.Player", from: "adjWater", to: "adjWaterSource");
 		RenameInstanceField("Terraria.Player", from: "oldAdjWater", to: "oldAdjWaterSource");
 		RenameInstanceField("Terraria.NPC.Spawner", from: "Sky",          to: "skyMob");
