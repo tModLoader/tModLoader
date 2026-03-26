@@ -9,6 +9,7 @@ namespace ExampleMod.Content.Items.Weapons
 {
 	// ExampleCustomSwingSword is an example of a sword with a custom swing using a held projectile
 	// This is great if you want to make melee weapons with complex swing behavior
+	// A separate Example, ExampleCustomUseStyleWeapon, showcases implementing a custom swing using custom use style code rather than a held projectile.
 	public class ExampleCustomSwingSword : ModItem
 	{
 		public int attackType = 0; // keeps track of which attack it is
@@ -22,7 +23,7 @@ namespace ExampleMod.Content.Items.Weapons
 			Item.rare = ItemRarityID.Green;
 
 			// Use Properties
-			// Note that useTime and useAnimation for this item don't actually affect the behavior because the held projectile handles that. 
+			// Note that useTime and useAnimation for this item don't actually affect the behavior because the held projectile handles that.
 			// Each attack takes a different amount of time to execute
 			// Conforming to the item useTime and useAnimation makes it much harder to design
 			// It does, however, affect the item tooltip, so don't leave it out.

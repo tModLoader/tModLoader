@@ -1,23 +1,28 @@
-using log4net;
-using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Reflection;
-using Terraria.ID;
-using Terraria.Localization;
-using Terraria.ModLoader.Core;
-using Terraria.ModLoader.Exceptions;
 using System.Linq;
-using Terraria.ModLoader.Config;
+using System.Reflection;
+using JetBrains.Annotations;
+using log4net;
+using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using ReLogic.Content.Sources;
+using Terraria.ID;
+using Terraria.Localization;
+using Terraria.ModLoader.Config;
+using Terraria.ModLoader.Core;
+using Terraria.ModLoader.Exceptions;
 
 namespace Terraria.ModLoader;
 
 /// <summary>
 /// Mod is an abstract class that you will override. It serves as a central place from which the mod's contents are stored. It provides methods for you to use or override.
 /// </summary>
+[UsedImplicitly(
+	ImplicitUseKindFlags.InstantiatedNoFixedConstructorSignature,
+	ImplicitUseTargetFlags.WithMembers | ImplicitUseTargetFlags.WithInheritors
+)]
 public partial class Mod
 {
 	/// <summary>
@@ -50,6 +55,11 @@ public partial class Mod
 	public List<string> TranslationForMods { get; internal set; }
 
 	/// <summary>
+	/// The path to the source folder the mod was built from.
+	/// </summary>
+	public string SourceFolder { get; internal set; }
+
+	/// <summary>
 	/// Whether or not this mod will autoload content by default. Autoloading content means you do not need to manually add content through methods.
 	/// </summary>
 	public bool ContentAutoloadingEnabled { get; init; } = true;
@@ -66,6 +76,10 @@ public partial class Mod
 	/// </summary>
 	public bool MusicAutoloadingEnabled { get; init; } = true;
 	/// <summary>
+	/// Whether or not all music loaded by this mod will automatically have <see cref="MusicID.Sets.SkipsVolumeRemap"/> set to true.
+	/// </summary>
+	public bool MusicSkipsVolumeRemap { get; init; } = false;
+	/// <summary>
 	/// Whether or not this mod will automatically add images in the "Backgrounds" folder as background textures to the game. This means you do not need to manually call <see cref="BackgroundTextureLoader.AddBackgroundTexture(Mod, string)"/>.
 	/// </summary>
 	public bool BackgroundAutoloadingEnabled { get; init; } = true;
@@ -79,7 +93,7 @@ public partial class Mod
 	/// The display name of this mod in the Mods menu.
 	/// </summary>
 	public string DisplayName { get; internal set; }
-	
+
 	private string displayNameClean;
 	/// <summary>
 	/// Same as DisplayName, but chat tags are removed. This can be used for more readable logging and console output. It is also useful for code that searches or filters by mod name.
@@ -98,6 +112,7 @@ public partial class Mod
 
 	internal short netID = -1;
 	public short NetID => netID;
+	/// <summary> If true, this mod has a <see cref="NetID"/> assigned. This is mainly useful for checking if a <see cref="ModSide.NoSync"/> mod is present on the server from a client to determine if a <see cref="ModPacket"/> can be sent to the server or not. </summary>
 	public bool IsNetSynced => netID >= 0;
 
 	private IDisposable fileHandle;
@@ -215,11 +230,12 @@ public partial class Mod
 	public int AddNPCHeadTexture(int npcType, string texture)
 	{
 		if (!loading)
-			throw new Exception("AddNPCHeadTexture can only be called from Mod.Load or Mod.Autoload");
+			throw new Exception(Language.GetTextValue("tModLoader.LoadErrorNotLoading"));
 
 		int slot = NPCHeadLoader.ReserveHeadSlot();
 
 		NPCHeadLoader.heads[texture] = slot;
+		NPCHeadID.Search.Add(texture, slot);
 
 		if (!Main.dedServ) {
 			ModContent.Request<Texture2D>(texture);
@@ -242,7 +258,7 @@ public partial class Mod
 	public int AddBossHeadTexture(string texture, int npcType = -1)
 	{
 		if (!loading)
-			throw new Exception("AddBossHeadTexture can only be called from Mod.Load or Mod.Autoload");
+			throw new Exception(Language.GetTextValue("tModLoader.LoadErrorNotLoading"));
 
 		int slot = NPCHeadLoader.ReserveBossHeadSlot(texture);
 		NPCHeadLoader.bossHeads[texture] = slot;
@@ -306,15 +322,19 @@ public partial class Mod
 	}
 
 	/// <summary>
-	/// Creates a ModPacket object that you can write to and then send between servers and clients.
+	/// Creates a <see cref="ModPacket"/> object that you can write to and then send between servers and clients.
 	/// </summary>
 	/// <param name="capacity">The capacity.</param>
 	/// <returns></returns>
 	/// <exception cref="System.Exception">Cannot get packet for " + Name + " because it does not exist on the other side</exception>
 	public ModPacket GetPacket(int capacity = 256)
 	{
-		if (netID < 0)
-			throw new Exception("Cannot get packet for " + Name + " because it does not exist on the other side");
+		if (netID < 0) {
+			if (Main.netMode == NetmodeID.SinglePlayer)
+				throw new Exception("GetPacket should only be called during multiplayer");
+			else
+				throw new Exception($"Cannot get packet for {Name} because it does not exist on the {(Main.dedServ ? "client": "server")}. GetPacket should not be called for server-side or client-side mods.");
+		}
 
 		var p = new ModPacket(MessageID.ModPacket, capacity + 5);
 		if (ModNet.NetModCount < 256)

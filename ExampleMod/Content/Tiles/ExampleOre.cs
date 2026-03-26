@@ -15,6 +15,7 @@ namespace ExampleMod.Content.Tiles
 	{
 		public override void SetStaticDefaults() {
 			TileID.Sets.Ore[Type] = true;
+			TileID.Sets.FriendlyFairyCanLureTo[Type] = true;
 			Main.tileSpelunker[Type] = true; // The tile will be affected by spelunker highlighting
 			Main.tileOreFinderPriority[Type] = 410; // Metal Detector value, see https://terraria.wiki.gg/wiki/Metal_Detector
 			Main.tileShine2[Type] = true; // Modifies the draw color slightly.
@@ -26,7 +27,8 @@ namespace ExampleMod.Content.Tiles
 			LocalizedText name = CreateMapEntryName();
 			AddMapEntry(new Color(152, 171, 198), name);
 
-			DustType = 84;
+			DustType = DustID.Platinum;
+			VanillaFallbackOnModDeletion = TileID.Silver;
 			HitSound = SoundID.Tink;
 			// MineResist = 4f;
 			// MinPick = 200;
@@ -68,7 +70,7 @@ namespace ExampleMod.Content.Tiles
 					ChatHelper.BroadcastChatMessage(BlessedWithExampleOreMessage.ToNetworkText(), new Color(50, 255, 130));
 				}
 
-				// 100 controls how many splotches of ore are spawned into the world, scaled by world size. For comparison, the first 3 times altars are smashed about 275, 190, or 120 splotches of the respective hardmode ores are spawned. 
+				// 100 controls how many splotches of ore are spawned into the world, scaled by world size. For comparison, the first 3 times altars are smashed about 275, 190, or 120 splotches of the respective hardmode ores are spawned.
 				int splotches = (int)(100 * (Main.maxTilesX / 4200f));
 				int highestY = (int)Utils.Lerp(Main.rockLayer, Main.UnderworldLayer, 0.5);
 				for (int iteration = 0; iteration < splotches; iteration++) {

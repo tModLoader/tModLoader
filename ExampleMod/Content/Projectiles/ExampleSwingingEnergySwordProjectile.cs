@@ -71,8 +71,8 @@ namespace ExampleMod.Content.Projectiles
 			float adjustedRotation = MathHelper.Pi * direction * percentageOfLife + velocityRotation + direction * MathHelper.Pi + player.fullRotation;
 			Projectile.rotation = adjustedRotation; // Set the rotation to our to the new rotation we calculated.
 
-			float scaleMulti = 0.6f; // Excalibur, Terra Blade, and The Horseman's Blade is 0.6f; True Excalibur is 1f; default is 0.2f 
-			float scaleAdder = 1f; // Excalibur, Terra Blade, and The Horseman's Blade is 1f; True Excalibur is 1.2f; default is 1f 
+			float scaleMulti = 0.6f; // Excalibur, Terra Blade, and The Horseman's Blade is 0.6f; True Excalibur is 1f; default is 0.2f
+			float scaleAdder = 1f; // Excalibur, Terra Blade, and The Horseman's Blade is 1f; True Excalibur is 1.2f; default is 1f
 
 			Projectile.Center = player.RotatedRelativePoint(player.MountedCenter) - Projectile.velocity;
 			Projectile.scale = scaleAdder + percentageOfLife * scaleMulti;
@@ -242,7 +242,7 @@ namespace ExampleMod.Content.Projectiles
 
 		// Copied from Main.DrawPrettyStarSparkle() which is private
 		private static void DrawPrettyStarSparkle(float opacity, SpriteEffects dir, Vector2 drawPos, Color drawColor, Color shineColor, float flareCounter, float fadeInStart, float fadeInEnd, float fadeOutStart, float fadeOutEnd, float rotation, Vector2 scale, Vector2 fatness) {
-			Texture2D sparkleTexture = TextureAssets.Extra[98].Value;
+			Texture2D sparkleTexture = TextureAssets.Extra[ExtrasID.SharpTears].Value;
 			Color bigColor = shineColor * opacity * 0.5f;
 			bigColor.A = 0;
 			Vector2 origin = sparkleTexture.Size() / 2f;

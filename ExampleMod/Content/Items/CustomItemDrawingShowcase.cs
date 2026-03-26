@@ -3,8 +3,10 @@ using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Terraria;
 using Terraria.GameContent;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.UI;
 
@@ -36,9 +38,17 @@ namespace ExampleMod.Content.Items
 		private const int DrawModeRockingRotation = 4;
 		private const int Count = 5;
 
+		public static LocalizedText RightClickText { get; private set; }
+		public static LocalizedText[] DrawModeText { get; private set; }
+
 		public override void Load() {
 			backTexture = ModContent.Request<Texture2D>(Texture + "_Back");
 			frontTexture = ModContent.Request<Texture2D>(Texture + "_Front");
+		}
+
+		public override void SetStaticDefaults() {
+			RightClickText = this.GetLocalization("RightClick");
+			DrawModeText = Enumerable.Range(0, 5).Select(i => this.GetLocalization($"DrawMode_{i}")).ToArray();
 		}
 
 		public override void SetDefaults() {
@@ -53,22 +63,14 @@ namespace ExampleMod.Content.Items
 
 		public override void RightClick(Player player) {
 			drawMode = (drawMode + 1) % Count;
-			Main.NewText($"Switching to drawMode #{drawMode}: {GetMessageForDrawMode()}");
+			Main.NewText(RightClickText.Format(drawMode, GetMessageForDrawMode()));
 		}
 
 		private string GetMessageForDrawMode() {
-			switch (drawMode) {
-				case DrawModeGlowmask:
-					return "Draw an overlay/glowmask";
-				case DrawModePulse:
-					return "Scale drawing to make a pulse effect similar to Soul items";
-				case DrawModeBehindTexture:
-					return "Draw a texture behind the item";
-				case DrawModeHighlightAfterImageEffect:
-					return "Draw a highlight border similar to the Boss Bag visual effect";
-				case DrawModeRockingRotation:
-					return "Draws the item rocking left and right";
+			if (DrawModeText.IndexInRange(drawMode)) {
+				return DrawModeText[drawMode].Value;
 			}
+
 			return "Unknown mode";
 		}
 
@@ -112,7 +114,7 @@ namespace ExampleMod.Content.Items
 		public override bool PreDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI) {
 			Main.GetItemDrawFrame(Item.type, out var itemTexture, out var itemFrame);
 			Vector2 drawOrigin = itemFrame.Size() / 2f;
-			// Items in the world are drawn centered horizontally sitting at the bottom of the item hitbox, not in the center. 
+			// Items in the world are drawn centered horizontally sitting at the bottom of the item hitbox, not in the center.
 			Vector2 drawPosition = Item.Bottom - Main.screenPosition - new Vector2(0, drawOrigin.Y);
 
 			if (drawMode == DrawModePulse) {
@@ -122,7 +124,7 @@ namespace ExampleMod.Content.Items
 				return false; // Since we drew the texture, return false so the item isn't drawn twice.
 			}
 			else if (drawMode == DrawModeBehindTexture) {
-				// CustomItemDrawingShowcase_Back.png has different dimensions than CustomItemDrawingShowcase.png, so we need to calculate values for the origin and sourceRectangle parameters to draw correctly 
+				// CustomItemDrawingShowcase_Back.png has different dimensions than CustomItemDrawingShowcase.png, so we need to calculate values for the origin and sourceRectangle parameters to draw correctly
 
 				int backFrameNumber = (int)(Main.GameUpdateCount % 60 / 30);
 				var backSourceRectangle = backTexture.Frame(verticalFrames: 2, frameY: backFrameNumber);

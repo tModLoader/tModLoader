@@ -23,8 +23,11 @@
 		"ShowNewUpdatedModsInfoMessage": "Os mods a seguir foram adicionados ou atualizados desde o último lançamento (você pode desativar esta mensagem nas configurações):\n",
 		"ShowNewUpdatedModsInfoMessageNewMods": "\nNovos mods:",
 		"ShowNewUpdatedModsInfoMessageUpdatedMods": "\nMods atualizados:",
+		// "ShowRemovedModsInfoMessageUpdatedMods": "\nRemoved Mods since last session. If any of these were removed in error, please click 'Redownload Mods' to have the option to redownload",
 		"DependenciesNeededForOtherMods": "\nAlgumas dependências estão ausentes:",
 		"InstallDependencies": "Instalar Dependências",
+		// "RedownloadMods": "Redownload Mods",
+		// "InstallDependenciesAndRedownloadMods": "Install Dependencies and Redownload Mods",
 		"ContinueAnyway": "Continue Mesmo Assim",
 		"ModUpdatedSinceLastLaunchMessage": "Este mod foi atualizado desde o último lançamento da versão {0}",
 		"ModAddedSinceLastLaunchMessage": "Este mod foi adicionado desde o último lançamento",
@@ -75,6 +78,8 @@
 		"BetaModCantPublishError": "Você não pode publicar um mod construído em uma versão beta do tModLoader",
 		"ModDescriptionMissing": "O arquivo {0} não existe. Certifique-se de que haja uma descrição válida para seu mod.",
 		"ModDescriptionLengthTooShort": "A descrição do mod é muito curta. Crie uma descrição válida para seu mod modificando o arquivo {0}.",
+		// "ModDescriptionInvalid": "Mod description is equal to or too similar to the description template, please create a valid description for your mod by modifying {0}.",
+		// "ModWorkshopDescriptionInvalid": "Workshop description is equal to or too similar to the description template, please create a valid description for your workshop page by modifying {0}. You can also delete {0} if you wish to use {1} as the description of your workshop page.",
 		"ModWorkshopIconResizeWarning": "Será redimensionado de {0} para {1}.",
 		"ModUsesDefaultIcon": "Crie um ícone personalizado para seu mod modificando o arquivo {0}.",
 		"OutdatedModCantPublishError": "Você não pode publicar um mod construído em uma versão antiga do tModLoader",
@@ -138,9 +143,12 @@
 		"ModConfigNotification": "Notificação: ",
 		"ModConfigModConfig": "Config. do Mod",
 		"ModConfigSaveConfig": "Salvar Config.",
+		// "ModConfigConfigSaved": "Config Saved",
 		"ModConfigBack": "Voltar",
 		"ModConfigRevertChanges": "Reverter Mudanças",
+		// "ModConfigChangesReverted": "Changes Reverted",
 		"ModConfigRestoreDefaults": "Restaurar Padrões",
+		// "ModConfigDefaultsRestored": "Defaults Restored",
 		"ModConfigAskingServerToAcceptChanges": "Solicitando ao servidor para aceitar as mudanças...",
 		"ModConfigCantSaveBecauseChangesWouldRequireAReload": "Não foi possível salvar pois as mudanças exigiriam um recarregamento",
 		"ModConfigServerSide": "Config. do Servidor",
@@ -166,6 +174,12 @@
 		"BossBarStyle": "Estilo da Barra de Chefe: {0}",
 		"BossBarStyleNoOptions": "Nenhuma Opção",
 
+		// Achievements
+		// "AchievementsReset": "Reset",
+		// "AchievementsResetConfirm": "Are you sure?",
+		// "AchievementsResetConfirmTooltip": "Resetting your achievements means you'll lose them permanently, are you sure you want to continue?",
+		// "AchievementsOnlyShowModded": "Only show modded achievements",
+
 		// Workshop
 		"WorkshopDisclaimer": "Ao enviar este item, você concorda com os Termos de Serviço do tModLoader.",
 		"NonModOwnerPublishWarning": "Um mod com o nome \"{0}\" já foi publicado à oficina por outro criador de mods. Se você não é um contribuidor desse mod, não é possível publicá-lo. Se este mod é seu, verifique se está logado na conta correta do Steam. Cada mod deve possuir um nome interno único.",
@@ -186,7 +200,12 @@
 		"PublishUpdateButton": "Atualizar Existente",
 		"PublishNewButton": "Publicar como Novo",
 		"DownloadProgress": "Download {0}% concluído",
-		"DescriptionLengthExceedLimit": "A descrição da oficina deste mod excede o limite imposto pela Steam de {0} caracteres",
+		"DescriptionLengthExceedLimit": "A descrição da oficina deste mod excede o limite imposto pela Steam de {0} caracteres (by {1} bytes)",
+		// "TitleLengthExceedLimit": "The mod name exceeds the Steam Limit of 128 bytes",
+		// "CommandLinePublishNeedsSteam": "Command line publishing requires steam to be loaded (-steam command line option)",
+		// "CommandLinePublishOnlyUsableWithServerSideMods": "Command line publishing can only be used to publish server-side mods at this time.",
+		// "WorkshopTagNotFound": "The supplied tag '{0}' is not a valid option for -publishtags.",
+		// "TestServerModLoadingNotification": "This window is testing that a server-side mod loads without errors\nDo not close to allow testing to complete.",
 
 		// Mod Errors
 		"LoadError": "Ocorreu um erro ao carregar {0}",
@@ -195,7 +214,8 @@
 		"LoadErrorContentType": "Esse erro foi causado pela classe \"{0}\".",
 		"LoadErrorMissingModQualifier": "O caminho do recurso \"{0}\" está sem o qualificador de mod. Os caminhos de recursos devem iniciar com o nome do mod ou \"Terraria\" seguido por uma barra (\"/\").",
 		"LoadErrorModNotFoundDuringAsset": "Um mod chamado \"{0}\" não foi encontrado ao carregar o recurso com o caminho \"{1}\". Verifique se esse caminho inicia com o nome do mod correto.",
-		"LoadErrorVersionMessage": "Foi detectado que este mod foi desenvolvido para o tModLoader v{0}\nNo entanto, você está usando {1}",
+		// "LoadErrorVersionMessage": "Note for developers only: This mod was built for tModLoader v{0}, but '{1}' is being used.",
+		// "LoadErrorLikelyOutdated": "The mod will either need to be updated to match the current tModLoader version, or may be incompatible with the version of some of your other mods. Click the '{$tModLoader.OpenWebHelp}' button to learn more.",
 		"LoadErrorDotNet45Required": ".NET Framework 4.5 ou mais recente é necessário para usar mods. Por favor, baixe o .NET Framework mais recente.",
 		"LoadErrorDependencyMissing": "Mod não encontrado: {0} necessário por {1}",
 		"LoadErrorErrorReadingModFile": "Erro ao ler o arquivo de mod {0}",
@@ -230,6 +250,8 @@
 		"LoadErrorEffectFailedToLoad": "O arquivo de efeito em {0} falhou ao carregar",
 		"LoadErrorUnknownXNBFileHint": "Arquivo xnb {0} desconhecido. Talvez ele deva estar em Fonts/ ou Effects/",
 		"LoadErrorCannotLoadCompressedEffects": "Não é possível carregar efeitos compactados.",
+		// "LoadErrorCallDuringLoad": "{0} may only be called after content has Loaded. Please move the offending code from a Load() hook into a SetStaticDefaults() or PostSetupContent() hook.",
+		// "LoadErrorEquipTextureMissingParameters": "AddEquipTexture requires either an item or a name be provided, but neither were found.",
 
 		"LoadErrorNotLoading": "Mod.AddContent só pode ser chamado durante o carregamento",
 		"LoadErrorDuplicateName": "Não é possível adicionar dois {0} com o mesmo nome: {1}. Talvez 2 classes compartilham um nome de classe, mas em namespaces diferentes durante o carregamento automático, ou você chamou manualmente AddContent com 2 {0} do mesmo nome.",
@@ -300,6 +322,12 @@
 		"MPServerModsCantDownloadReasonSigned": "porque você só aceita mods assinados pelo Navegador de Mods",
 		"MPServerModsCantDownloadReasonAutomaticDownloadDisabled": "porque você desativou o download automático de mods",
 		"MPServerModsCantDownloadChangeSettingsHint": "Você precisará alterar suas configurações ou adquirir os mods do proprietário do servidor.",
+		// "MPServerModsDownloadFromServerWarning": "Mods may contain malicious code. Only download them if you trust the server host.",
+		// "MPServerModAvailableOnWorkshop": "Available on the workshop",
+		// "MPServerModAvailableOnWorkshopLowSubscriberCount": "Low subscriber count. Do you trust the server host?",
+		// "MPServerModBannedOnWorkshop": "This mod has been banned from the workshop and is likely dangerous.",
+		// "MPServerModCustomBuild": "Custom build that has not been published on the workshop. Do you trust the server host?",
+		// "MPServerModUnableToVerify": "This mod was unable to be verified. Unable to access Steam Workshop.",
 		"MPShowServerConsoleYes": "Mostrar Console do Servidor: Ligado",
 		"MPShowServerConsoleNo": "Mostrar Console do Servidor: Desligado",
 		"MPErrorModHashMismatch": "Hash incompatível",
@@ -498,6 +526,7 @@
 		"MSModSourcesCantHaveSpaces": "(Pastas de Fontes de Mod não podem ter espaços)",
 		"MSLastBuilt": "Construído pela última vez: {0}",
 		"MSCreateMod": "Criar Mod",
+		// "MSOpenCustomSourceFolder": "Open custom source folder: {0}",
 		"VersionUpgrade": "Aprenda sobre a Migração de Mods",
 		"WikiLink": "Explore o wiki",
 		"ExampleModLink": "Confira o Example Mod",
@@ -509,6 +538,8 @@
 		"MSNetSDKNotFound": "A criação de mods para o tModLoader no Visual Studio agora requer a instalação do SDK do .NET {0}. Isto é instalado mais facilmente instalando o Visual Studio 2022.\n\nO Guia de Migração encontrado no Github ensinará as alterações de código necessárias para portar mods para 1.4. O guia também ensina como usar o tModPorter para migrar uma grande parte do mod para você.",
 		"DownloadNetSDK": "Baixar SDK do .NET",
 		"DevModsInSandbox": "tModLoader não consegue desenvolver mods quando executado em um sandbox (como Flatpak). Certifique-se de instalar o Steam diretamente no seu sistema.",
+		// "MSSourceIssue": "Mod Source Issue",
+		// "MSSourceIssueMessage": "The following error was found with the {0} mod's source code: {1}",
 
 		// Create Mod
 		"CreateModName": "Nome do Mod (sem espaços)",
@@ -556,6 +587,10 @@
 		"CommandModListSyncedMods": "Mods sincronizados:",
 		"CommandModListClientMods": "Mods do cliente:",
 		"CommandModListModlist": "Lista de mods:",
+		// "CommandCustomSetsDescription": "Displays a list of named ID sets.",
+		// "CommandCustomSetsUsage": "/customsets [ModName|SetKey|SearchTerm] [-v (output values)] [-o (open logs folder)]",
+		// "CommandPurgeUnloadedDescription": "Removes unloaded tiles and walls from the world",
+		// "CommandPurgeUnloadedUsage": "/purgeunloaded [ModName] [-t (purge tiles)] [-w (purge walls)] [-p (confirm purge action)]",
 
 		// Mod Building
 		"Building": "Construindo: {0}",
@@ -611,6 +646,9 @@
 		"slotStack": "Empilhar",
 		"slotScroll": "Rolar",
 		"PressXToClose": "Pressione {0} para fechar",
+		// "SharedAccessorySlotConflictMessage": "One or more shared accessory conflicts with the accessories in this loadout, they have been disabled.",
+		// "SharedAccessorySlotConflictTooltip": "This shared accessory slot is disabled since it conflicts with other accessories in this loadout",
+		// "ModAccessorySlotNoLongerSharedItemsRemoved": "Some items have been moved from accessory slots to inventory due to HasEquipmentLoadoutSupport changing to true.",
 
 		// Misc
 		"OK": "OK",
@@ -656,6 +694,8 @@
 		"TagsUtilityDescription": "Adiciona conteúdo ou recursos relacionados a utilidades",
 		"TagsLibrary": "Biblioteca",
 		"TagsLibraryDescription": "Fornece APIs e recursos adicionais úteis para desenvolvedores de mods",
+		// "TagsTranslation": "Translation",
+		// "TagsTranslationDescription": "Provides a translation for another mod. (translationMod = true in build.txt)",
 		"TagsQoL": "Qualidade de Vida",
 		"TagsQoLDescription": "Recursos ou alterações que reduzem o tempo gasto em tarefas normalmente menos divertidas.",
 		"TagsGameplay": "Ajustes de Jogatina",
@@ -720,6 +760,7 @@
 
 		"PercentChanceToSaveAmmo": "{0}% de chance de economizar munição",
 		"PercentReducedManaCost": "{0}% de redução no custo de mana",
+		"ReducesHealingPotionCooldownByPercent": "Reduz o tempo de recarga das poções de cura em {0}%",
 
 		"PercentIncreasedMiningSpeed": "Aumento de {0}% na velocidade de mineração",
 		"PercentIncreasedMovementSpeed": "{0}% de aumento na velocidade dos movimentos",

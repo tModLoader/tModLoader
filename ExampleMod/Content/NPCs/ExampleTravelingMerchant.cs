@@ -46,8 +46,12 @@ namespace ExampleMod.Content.NPCs
 			{
 				// Here we despawn the NPC and send a message stating that the NPC has despawned
 				// LegacyMisc.35 is {0) has departed!
-				if (Main.netMode == NetmodeID.SinglePlayer) Main.NewText(Language.GetTextValue("LegacyMisc.35", NPC.FullName), 50, 125, 255);
-				else ChatHelper.BroadcastChatMessage(NetworkText.FromKey("LegacyMisc.35", NPC.GetFullNetName()), new Color(50, 125, 255));
+				if (Main.netMode == NetmodeID.SinglePlayer) {
+					Main.NewText(Language.GetTextValue("LegacyMisc.35", NPC.FullName), 50, 125, 255);
+				}
+				else {
+					ChatHelper.BroadcastChatMessage(NetworkText.FromKey("LegacyMisc.35", NPC.GetFullNetName()), new Color(50, 125, 255));
+				}
 				NPC.active = false;
 				NPC.netSkip = -1;
 				NPC.life = 0;
@@ -135,8 +139,12 @@ namespace ExampleMod.Content.NPCs
 				spawnTime = double.MaxValue;
 
 				// Announce that the traveler has spawned in!
-				if (Main.netMode == NetmodeID.SinglePlayer) Main.NewText(Language.GetTextValue("Announcement.HasArrived", traveler.FullName), 50, 125, 255);
-				else ChatHelper.BroadcastChatMessage(NetworkText.FromKey("Announcement.HasArrived", traveler.GetFullNetName()), new Color(50, 125, 255));
+				if (Main.netMode == NetmodeID.SinglePlayer) {
+					Main.NewText(Language.GetTextValue("Announcement.HasArrived", traveler.FullName), 50, 125, 255);
+				}
+				else {
+					ChatHelper.BroadcastChatMessage(NetworkText.FromKey("Announcement.HasArrived", traveler.GetFullNetName()), new Color(50, 125, 255));
+				}
 			}
 		}
 
@@ -208,7 +216,7 @@ namespace ExampleMod.Content.NPCs
 			NPC.friendly = true;
 			NPC.width = 18;
 			NPC.height = 40;
-			NPC.aiStyle = 7;
+			NPC.aiStyle = NPCAIStyleID.Passive;
 			NPC.damage = 10;
 			NPC.defense = 15;
 			NPC.lifeMax = 250;
@@ -221,20 +229,20 @@ namespace ExampleMod.Content.NPCs
 
 		public override void OnSpawn(IEntitySource source) {
 			shopItems.Clear();
-   			shopItems.AddRange(Shop.GenerateNewInventoryList());
+			shopItems.AddRange(Shop.GenerateNewInventoryList());
 
 			// In multi player, ensure the shop items are synced with clients (see TravelingMerchantSystem.cs)
 			if (Main.netMode == NetmodeID.Server) {
 				// We recommend modders avoid sending WorldData too often, or filling it with too much data, lest too much bandwidth be consumed sending redundant data repeatedly
-				// Consider sending a custom packet instead of WorldData if you have a significant amount of data to synchronise
+				// Consider sending a custom packet instead of WorldData if you have a significant amount of data to synchronize
 				NetMessage.SendData(MessageID.WorldData);
-   			}
+			}
 		}
 
 		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry) {
-			bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
+			bestiaryEntry.Info.AddRange([
 				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Surface
-			});
+			]);
 		}
 
 		public override void HitEffect(NPC.HitInfo hit) {
@@ -248,12 +256,13 @@ namespace ExampleMod.Content.NPCs
 				// Retrieve the gore types. This NPC has shimmer variants for head, arm, and leg gore. It also has a custom hat gore. (7 gores)
 				// This NPC will spawn either the assigned party hat or a custom hat gore when not shimmered. When shimmered the top hat is part of the head and no hat gore is spawned.
 				int hatGore = NPC.GetPartyHatGore();
-				// If not wearing a party hat, and not shimmered, retrieve the custom hat gore 
+				// If not wearing a party hat, and not shimmered, retrieve the custom hat gore
 				if (hatGore == 0 && !NPC.IsShimmerVariant) {
 					hatGore = Mod.Find<ModGore>($"{Name}_Gore_Hat").Type;
 				}
 				string variant = "";
-				if (NPC.IsShimmerVariant) variant += "_Shimmer";
+				if (NPC.IsShimmerVariant)
+					variant += "_Shimmer";
 				int headGore = Mod.Find<ModGore>($"{Name}_Gore{variant}_Head").Type;
 				int armGore = Mod.Find<ModGore>($"{Name}_Gore{variant}_Arm").Type;
 				int legGore = Mod.Find<ModGore>($"{Name}_Gore{variant}_Leg").Type;
@@ -320,7 +329,7 @@ namespace ExampleMod.Content.NPCs
 		}
 
 		public override void SetChatButtons(ref string button, ref string button2) {
-			button = Language.GetTextValue("LegacyInterface.28");
+			button = Language.GetTextValue("LegacyInterface.28"); // This is the key to the word "Shop"
 		}
 
 		public override void OnChatButtonClicked(bool firstButton, ref string shop) {
@@ -329,7 +338,7 @@ namespace ExampleMod.Content.NPCs
 			}
 		}
 
-		public override void AI() { 
+		public override void AI() {
 			NPC.homeless = true; // Make sure it stays homeless
 		}
 
@@ -355,7 +364,7 @@ namespace ExampleMod.Content.NPCs
 			Main.GetItemDrawFrame(ModContent.ItemType<ExampleSword>(), out item, out itemFrame);
 			itemSize = 40;
 			// This adjustment draws the swing the way town npcs usually do.
-			if (NPC.ai[1] > NPCID.Sets.AttackTime[NPC.type] * 0.66f) {
+			if (NPC.ai[1] > NPCID.Sets.AttackTime[Type] * 0.66f) {
 				offset.Y = 12f;
 			}
 		}
@@ -364,7 +373,7 @@ namespace ExampleMod.Content.NPCs
 	// You have the freedom to implement custom shops however you want
 	// This example uses a 'pool' concept where items will be randomly selected from a pool with equal weight
 	// We copy a bunch of code from NPCShop and NPCShop.Entry, allowing this shop to be easily adjusted by other mods.
-	// 
+	//
 	// This uses some fairly advanced C# to avoid being excessively long, so make sure you learn the language before trying to adapt it significantly
 	public class ExampleTravelingMerchantShop : AbstractNPCShop
 	{

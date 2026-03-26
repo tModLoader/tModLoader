@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
+using Terraria.ID;
 
 namespace Terraria.ModLoader;
 
@@ -24,6 +25,7 @@ public abstract class ModGore : ModTexturedType
 	{
 		ModTypeLookup<ModGore>.Register(this);
 		GoreLoader.RegisterModGore(this);
+		GoreID.Search.Add(FullName, Type);
 	}
 
 	public sealed override void SetupContent() => SetStaticDefaults();

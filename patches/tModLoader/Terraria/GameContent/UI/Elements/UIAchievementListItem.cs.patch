@@ -1,0 +1,76 @@
+--- src/TerrariaNetCore/Terraria/GameContent/UI/Elements/UIAchievementListItem.cs
++++ src/tModLoader/Terraria/GameContent/UI/Elements/UIAchievementListItem.cs
+@@ -1,9 +_,11 @@
+ using System;
++using log4net.Repository.Hierarchy;
+ using Microsoft.Xna.Framework;
+ using Microsoft.Xna.Framework.Graphics;
+ using ReLogic.Content;
+ using Terraria.Achievements;
+ using Terraria.Localization;
++using Terraria.ModLoader;
+ using Terraria.UI;
+ using Terraria.UI.Chat;
+ 
+@@ -29,6 +_,8 @@
+ 
+ 	public UIAchievementListItem(Achievement achievement, bool largeForOtherLanguages)
+ 	{
++		ModAchievement modAchievement = achievement.ModAchievement;
++
+ 		_large = largeForOtherLanguages;
+ 		BackgroundColor = new Color(26, 40, 89) * 0.8f;
+ 		BorderColor = new Color(13, 20, 44) * 0.8f;
+@@ -44,9 +_,15 @@
+ 		_iconFrameUnlocked = new Rectangle(num4 % 8 * 66, num4 / 8 * 66, 64, 64);
+ 		_iconFrameLocked = _iconFrameUnlocked;
+ 		_iconFrameLocked.X += 528;
++		if (modAchievement != null) {
++			_iconFrameUnlocked = new Rectangle(0, num4 * 66, 64, 64);
++			_iconFrameLocked = new Rectangle(66, num4 * 66, 64, 64);
++		}
+ 		_iconFrame = _iconFrameLocked;
+ 		UpdateIconFrame();
++
+-		_achievementIcon = new UIImageFramed(Main.Assets.Request<Texture2D>("Images/UI/Achievements"), _iconFrame);
++		_achievementIcon = new UIImageFramed(modAchievement?.Texture ?? Main.Assets.Request<Texture2D>("Images/UI/Achievements"), _iconFrame);
++
+ 		_achievementIcon.Left.Set(num2, 0f);
+ 		_achievementIcon.Top.Set(num3, 0f);
+ 		Append(_achievementIcon);
+@@ -66,6 +_,9 @@
+ 	protected override void DrawSelf(SpriteBatch spriteBatch)
+ 	{
+ 		base.DrawSelf(spriteBatch);
++
++		var _achievement = (this._achievement.Description, this._achievement.FriendlyName, this._achievement.Hidden, this._achievement.Category, this._achievement.IsCompleted);
++
+ 		int num = _large.ToInt() * 6;
+ 		Vector2 vector = new Vector2(num, 0f);
+ 		_locked = !_achievement.IsCompleted;
+@@ -82,6 +_,11 @@
+ 		float num3 = innerDimensions.Width - dimensions.Width + 1f - (float)(num * 2);
+ 		Vector2 baseScale = new Vector2(0.85f);
+ 		Vector2 baseScale2 = new Vector2(0.92f);
++
++		if (_achievement.Hidden && _locked) {
++			_achievement.Description = _achievement.FriendlyName = new LocalizedText(null, "???");
++		}
++
+ 		string text = FontAssets.ItemStack.Value.CreateWrappedText(_achievement.Description.Value, (num3 - 20f) * (1f / baseScale2.X), Language.ActiveCulture.CultureInfo);
+ 		Vector2 stringSize = ChatManager.GetStringSize(FontAssets.ItemStack.Value, text, baseScale2, num3);
+ 		if (!_large)
+@@ -105,6 +_,13 @@
+ 		vector3.X += 4f;
+ 		vector3.X += 17f;
+ 		ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.ItemStack.Value, _achievement.FriendlyName.Value, vector3, value, 0f, Vector2.Zero, baseScale, num3);
++
++		string ModName = this._achievement.ModAchievement?.Mod.DisplayNameClean ?? "Terraria";
++		Vector2 ModNameStringSize = ChatManager.GetStringSize(FontAssets.ItemStack.Value, ModName, baseScale);
++		Vector2 ModNameLocation = new Vector2(vector2.X + num3 - ModNameStringSize.X, vector3.Y);
++		ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.ItemStack.Value, ModName, ModNameLocation, value, 0f, Vector2.Zero, baseScale, num3);
++		vector3.X -= ModNameStringSize.X + 8;
++
+ 		vector3.X -= 17f;
+ 		Vector2 position = vector2 + Vector2.UnitY * 27f + vector;
+ 		DrawPanelBottom(spriteBatch, position, num3, color);

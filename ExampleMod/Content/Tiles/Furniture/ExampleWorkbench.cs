@@ -20,17 +20,18 @@ namespace ExampleMod.Content.Tiles.Furniture
 			TileID.Sets.IgnoredByNpcStepUp[Type] = true; // This line makes NPCs not try to step up this tile during their movement. Only use this for furniture with solid tops.
 
 			DustType = ModContent.DustType<Dusts.Sparkle>();
-			AdjTiles = new int[] { TileID.WorkBenches };
+			AdjTiles = [TileID.WorkBenches];
 
 			// Placement
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style2x1);
-			TileObjectData.newTile.CoordinateHeights = new[] { 18 };
+			TileObjectData.newTile.CoordinateHeights = [18];
 			TileObjectData.addTile(Type);
 
 			AddToArray(ref TileID.Sets.RoomNeeds.CountsAsTable);
 
 			// Etc
-			AddMapEntry(new Color(200, 200, 200), Language.GetText("ItemName.WorkBench"));
+			LocalizedText name = CreateMapEntryName();
+			AddMapEntry(new Color(200, 200, 200), name);
 		}
 
 		public override void NumDust(int x, int y, bool fail, ref int num) {

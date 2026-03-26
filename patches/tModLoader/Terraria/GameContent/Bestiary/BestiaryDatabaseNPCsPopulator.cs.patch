@@ -17,7 +17,7 @@
 +			// Modifications by TML:
 +			.Concat(
 +				ModLoader.ModLoader.Mods
-+				.Where(mod => NPCLoader.npcs.Any(npc => npc.Mod == mod))
++				.Where(mod => NPCLoader.npcs.Any(npc => npc.Mod == mod && (!NPCID.Sets.NPCBestiaryDrawOffset.TryGetValue(npc.Type, out var drawModifiers) || !drawModifiers.Hide)))
 +				.Select(mod => mod.ModSourceBestiaryInfoElement)
 +			)
 +			.Concat(
@@ -48,7 +48,7 @@
  	{
 +		// Town NPCs are loaded automatically now so it just returns.
 +		return;
-+		
++
 +		/*
  		Register(BestiaryEntry.TownNPC(22));
  		Register(BestiaryEntry.TownNPC(17));

@@ -102,6 +102,8 @@ public static class NPCLoader
 			Main.npcFrameCount[k] = 1;
 			Lang._npcNameCache[k] = LocalizedText.Empty;
 		}
+
+		ContentSamples.NpcBestiaryRarityStars.Clear();
 	}
 
 	internal static void FinishSetup()
@@ -368,7 +370,7 @@ public static class NPCLoader
 		foreach (var g in HookSendExtraAI.Enumerate(npc)) {
 			g.SendExtraAI(npc, bitWriter, binaryWriter);
 		}
-	
+
 		bitWriter.Flush(modWriter);
 		modWriter.Write(bufferedStream.ToArray());
 
@@ -565,6 +567,7 @@ public static class NPCLoader
 	public static void BossLoot(NPC npc, ref string name, ref int potionType)
 	{
 		npc.ModNPC?.BossLoot(ref name, ref potionType);
+		npc.ModNPC?.BossLoot(ref potionType);
 	}
 
 	private static HookList HookCanFallThroughPlatforms = AddHook<Func<NPC, bool?>>(g => g.CanFallThroughPlatforms);
@@ -628,9 +631,9 @@ public static class NPCLoader
 			g.OnCaughtBy(npc, player, item, failed);
 		}
 	}
-		
+
 	private static HookList HookPickEmote = AddHook<Func<NPC, Player, List<int>, WorldUIAnchor, int?>>(g => g.PickEmote);
-		
+
 	public static int? PickEmote(NPC npc, Player closestPlayer, List<int> emoteList, WorldUIAnchor anchor) {
 		int? result = null;
 
@@ -1146,6 +1149,18 @@ public static class NPCLoader
 		}
 	}
 
+	private delegate bool DelegatePreHoverInteract(NPC npc, bool mouseIntersects);
+	private static HookList HookPreHoverInteract = AddHook<DelegatePreHoverInteract>(g => g.PreHoverInteract);
+	public static bool PreHoverInteract(NPC npc, bool mouseIntersects)
+	{
+		foreach (var g in HookPreHoverInteract.Enumerate(npc)) {
+			if (!g.PreHoverInteract(npc, mouseIntersects))
+				return false;
+		}
+
+		return npc.ModNPC?.PreHoverInteract(mouseIntersects) ?? true;
+	}
+
 	private static HookList HookModifyNPCNameList = AddHook<Action<NPC, List<string>>>(g => g.ModifyNPCNameList);
 	public static List<string> ModifyNPCNameList(NPC npc, List<string> nameList)
 	{
@@ -1323,6 +1338,20 @@ public static class NPCLoader
 			g.BuffTownNPC(ref damageMult, ref defense);
 		}
 	}
+
+	private delegate bool DelegateModifyDeathMessage(NPC npc, ref NetworkText custom, ref Color color);
+	private static HookList HookModifyDeathMessage = AddHook<DelegateModifyDeathMessage>(g => g.ModifyDeathMessage);
+
+	public static bool ModifyDeathMessage(NPC npc, ref NetworkText customText, ref Color color)
+	{
+		foreach (var g in HookModifyDeathMessage.Enumerate()) {
+			if (!g.ModifyDeathMessage(npc, ref customText, ref color))
+				return true;
+		}
+
+		return !npc.ModNPC?.ModifyDeathMessage(ref customText, ref color) ?? false;
+	}
+
 	//attack type 0 = throwing
 	//  num405 = type, num406 = damage, knockBack, scaleFactor7 = speed multiplier, num407 = attack delay
 	//  num408 = unknown, maxValue3 = unknown, num409 = gravity correction factor, num411 = random speed offset

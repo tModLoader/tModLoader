@@ -1,16 +1,17 @@
-﻿using Terraria;
-using Terraria.ID;
-using Terraria.Enums;
-using Terraria.ModLoader;
-using Terraria.DataStructures;
-using ExampleMod.Content.Items;
-using ExampleMod.Content.Projectiles;
+﻿using ExampleMod.Content.Items;
 using ExampleMod.Content.NPCs;
+using ExampleMod.Content.Projectiles;
 using ExampleMod.Content.Tiles;
+using Terraria;
+using Terraria.DataStructures;
+using Terraria.Enums;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace ExampleMod.Common.GlobalTiles
 {
-	public class GlobalShakeTrees : GlobalTile {
+	public class GlobalShakeTrees : GlobalTile
+	{
 		// With this hook, we can determine the item drop when a tree is shaken.
 		// See ExampleSourceDependentItemTweaks for another example for tree shaking.
 		public override bool ShakeTree(int x, int y, TreeTypes treeType) {
@@ -71,7 +72,7 @@ namespace ExampleMod.Common.GlobalTiles
 			}
 
 			// This prevents acorns from dropping from normal forest trees during the night
-			if(treeType == TreeTypes.Forest && !Main.dayTime) {
+			if (treeType == TreeTypes.Forest && !Main.dayTime) {
 				NPCLoader.blockLoot.Add(ItemID.Acorn);
 			}
 		}

@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using Microsoft.Build.Framework;
 using Terraria.UI.Chat;
 using Microsoft.Xna.Framework;
+using Terraria.Social.Base;
 
 namespace Terraria.ModLoader.UI;
 
@@ -132,9 +133,9 @@ internal static class Interface
 				infoMessage.Show(Language.GetTextValue("tModLoader.FirstLaunchWelcomeMessage"), Main.menuMode);
 			}
 
-			else if (SteamedWraps.FamilyShared && !ModLoader.WarnedFamilyShare) {
+			else if (SteamedWraps.FamilyShared && !ModLoader.WarnedFamilyShare && !ModLoader.WarnedFamilyShareDontShowAgain) {
 				ModLoader.WarnedFamilyShare = true;
-				infoMessage.Show(Language.GetTextValue("tModLoader.SteamFamilyShareWarning"), Main.menuMode);
+				infoMessage.Show(Language.GetTextValue("tModLoader.SteamFamilyShareWarning"), Main.menuMode, altButtonText: Language.GetTextValue("tModLoader.DontShowAgain"), altButtonAction: () => { ModLoader.WarnedFamilyShareDontShowAgain = true; Main.SaveSettings(); } );
 			}
 
 			/* For Major Updates that span multi-month
@@ -190,37 +191,93 @@ internal static class Interface
 
 				// Find dependencies that need to be downloaded.
 				var missingDeps = ModOrganizer.IdentifyMissingWorkshopDependencies().ToList();
-				bool promptDepDownloads = missingDeps.Count != 0;
 
-				string message = $"{ModOrganizer.DetectModChangesForInfoMessage()}";
-				if (promptDepDownloads) {
+				string message = $"{ModOrganizer.DetectModChangesForInfoMessage(out IEnumerable<string> removedMods)}";
+				if (missingDeps.Any()) {
 					message += $"{Language.GetTextValue("tModLoader.DependenciesNeededForOtherMods")}\n  {string.Join("\n  ", missingDeps)}";
 				}
 				message = message.Trim('\n');
 
+				bool anyMissingDependency = missingDeps.Any();
+				bool anyRemovedMod = removedMods.Any();
+				bool promptDepDownloads = anyMissingDependency || anyRemovedMod;
 
 				string cancelButton = promptDepDownloads ? Language.GetTextValue("tModLoader.ContinueAnyway") : null;
-				string continueButton = promptDepDownloads ? Language.GetTextValue("tModLoader.InstallDependencies") : "";
+				string continueButton = "";
+				if (anyMissingDependency && anyRemovedMod)
+					continueButton = Language.GetTextValue("tModLoader.InstallDependenciesAndRedownloadMods");
+				else if (anyMissingDependency)
+					continueButton = Language.GetTextValue("tModLoader.InstallDependencies");
+				else if (anyRemovedMod)
+					continueButton = Language.GetTextValue("tModLoader.RedownloadMods");
 
 				Action downloadAction = async () => {
 					HashSet<ModDownloadItem> downloads = new();
 					foreach (var slug in missingDeps) {
-						if (!WorkshopHelper.TryGetModDownloadItem(slug, out var item) || item == null) {
-							Logging.tML.Error($"Could not find required mod dependency on Workshop: {slug}");
+						var state = WorkshopHelper.QueryHelper.AQueryInstance.TryGetModDownloadItem(slug, out var item);
+						if (state == WorkshopHelper.WorkshopSearchReturnState.SearchFailed)
+							break;
+
+						if (state != WorkshopHelper.WorkshopSearchReturnState.Success) {
+							Logging.tML.Error($"Could not find required mod dependency on Workshop: {slug}; Error State {state}");
+							continue;
+						}
+
+						if (item.Banned) {
+							Logging.tML.Error($"The missing dependency {item.DisplayName} with ID:{item.PublishId} is Banned on Workshop.");
 							continue;
 						}
 
 						downloads.Add(item);
 					}
 
-					await UIModBrowser.DownloadMods(
-						downloads,
-						loadModsID);
+					if (downloads.Any()) {
+						await UIModBrowser.DownloadMods(
+							downloads,
+							loadModsID);
+					}
 
-					Main.QueueMainThreadAction(() => {
-						Main.menuMode = Interface.loadModsID;
-						Main.MenuUI.SetState(null);
-					});
+					//TODO: This code was added hastily in response to a popular mod being transferred ownership by reuploading it.
+					// Revisit this code at a later date. Its not apparent how well the interaction of both dependencies and removed mods will play out in terms of UX
+					HashSet<ModPubId_t> removedDownloads = new();
+					foreach (var slug in removedMods) {
+						var state = WorkshopHelper.QueryHelper.AQueryInstance.TryGetModDownloadItem(slug, out var item);
+						if (state == WorkshopHelper.WorkshopSearchReturnState.SearchFailed)
+							break;
+
+						if (state != WorkshopHelper.WorkshopSearchReturnState.Success) {
+							Logging.tML.Error($"Could not find removed mod on Workshop: {slug}; Error State {state}");
+							continue;
+						}
+
+						if (item.Banned) {
+							Logging.tML.Error($"The removed mod {item.DisplayName} with ID:{item.PublishId} is Banned on Workshop.");
+							continue;
+						}
+
+						removedDownloads.Add(item.PublishId);
+					}
+
+					if (removedDownloads.Any()) {
+						modBrowser.Activate();
+						modBrowser.FilterTextBox.Text = "";
+						modBrowser.SpecialModPackFilter = removedDownloads.ToList();
+						modBrowser.SpecialModPackFilterTitle = Language.GetTextValue("tModLoader.MBFilterModlist");// Too long: " + modListItem.modName.Text;
+						modBrowser.UpdateFilterMode = UpdateFilter.All; // Set to 'All' so all mods from ModPack are visible
+						modBrowser.ModSideFilterMode = ModSideFilter.All;
+						modBrowser.ResetTagFilters();
+						SoundEngine.PlaySound(SoundID.MenuOpen);
+
+						modBrowser.reloadOnExit = true;
+						modBrowser.PreviousUIState = null;
+						Main.menuMode = modBrowserID;
+					}
+					else {
+						Main.QueueMainThreadAction(() => {
+							Main.menuMode = Interface.loadModsID;
+							Main.MenuUI.SetState(null);
+						});
+					}
 				};
 
 				if (!string.IsNullOrWhiteSpace(message)) {
@@ -295,7 +352,7 @@ internal static class Interface
 		else if (Main.menuMode == tModLoaderSettingsID) {
 			offY = 210;
 			spacing = 42;
-			numButtons = 9;
+			numButtons = 8;
 			buttonVerticalSpacing[numButtons - 1] = 18;
 			for (int i = 0; i < numButtons; i++) {
 				buttonScales[i] = 0.75f;
@@ -307,12 +364,14 @@ internal static class Interface
 				ModNet.downloadModsFromServers = !ModNet.downloadModsFromServers;
 			}
 
+			/*
 			buttonIndex++;
 			buttonNames[buttonIndex] = (ModLoader.autoReloadAndEnableModsLeavingModBrowser ? Language.GetTextValue("tModLoader.AutomaticallyReloadAndEnableModsLeavingModBrowserYes") : Language.GetTextValue("tModLoader.AutomaticallyReloadAndEnableModsLeavingModBrowserNo"));
 			if (selectedMenu == buttonIndex) {
 				SoundEngine.PlaySound(SoundID.MenuTick);
 				ModLoader.autoReloadAndEnableModsLeavingModBrowser = !ModLoader.autoReloadAndEnableModsLeavingModBrowser;
 			}
+			*/
 
 
 			buttonIndex++;
@@ -464,7 +523,7 @@ internal static class Interface
 					WriteColoredLine(ConsoleColor.Yellow, Language.GetTextValue("tModLoader.DedErrorNoConfig"));
 				}
 				else {
-					// We are acting on the actual configs rather than a clone because a reload will be forced anyway. If changing configs during server play is implemented later this will need to adjust to the clone approach.  
+					// We are acting on the actual configs rather than a clone because a reload will be forced anyway. If changing configs during server play is implemented later this will need to adjust to the clone approach.
 					ConfigureMod(mod, configs);
 				}
 			}

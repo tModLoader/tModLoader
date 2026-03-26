@@ -49,8 +49,8 @@ namespace ExampleMod.Content.Projectiles
 
 		public override void SetStaticDefaults() {
 			// These lines facilitate the trail drawing
-			ProjectileID.Sets.TrailCacheLength[Projectile.type] = 6;
-			ProjectileID.Sets.TrailingMode[Projectile.type] = 2;
+			ProjectileID.Sets.TrailCacheLength[Type] = 6;
+			ProjectileID.Sets.TrailingMode[Type] = 2;
 
 			ProjectileID.Sets.HeldProjDoesNotUsePlayerGfxOffY[Type] = true;
 		}
@@ -68,7 +68,7 @@ namespace ExampleMod.Content.Projectiles
 			// Vanilla flails all use aiStyle 15, but the code isn't customizable so an adaption of that aiStyle is used in the AI method
 		}
 
-		// This AI code was adapted from vanilla code: Terraria.Projectile.AI_015_Flails() 
+		// This AI code was adapted from vanilla code: Terraria.Projectile.AI_015_Flails()
 		public override void AI() {
 			Player player = Main.player[Projectile.owner];
 			// Kill the projectile if the player dies or gets crowd controlled
@@ -191,8 +191,8 @@ namespace ExampleMod.Content.Projectiles
 						}
 						break;
 					}
-				case AIState.UnusedState: // Projectile.ai[0] == 3; This case is actually unused, but maybe a Terraria update will add it back in, or maybe it is useless, so I left it here.
-					{
+				// Projectile.ai[0] == 3; This case is actually unused, but maybe a Terraria update will add it back in, or maybe it is useless, so I left it here.
+				case AIState.UnusedState: {
 						if (!player.controlUseItem) {
 							CurrentAIState = AIState.ForcedRetracting; // Move to super retracting mode if the player taps
 							StateTimer = 0f;
@@ -228,8 +228,7 @@ namespace ExampleMod.Content.Projectiles
 						player.ChangeDir((player.Center.X < Projectile.Center.X).ToDirectionInt());
 						break;
 					}
-				case AIState.ForcedRetracting:
-					{
+				case AIState.ForcedRetracting: {
 						Projectile.tileCollide = false;
 						Vector2 unitVectorTowardsPlayer = Projectile.DirectionTo(mountedCenter).SafeNormalize(Vector2.Zero);
 						if (Projectile.Distance(mountedCenter) <= maxForcedRetractSpeed) {
@@ -303,7 +302,7 @@ namespace ExampleMod.Content.Projectiles
 
 			Projectile.timeLeft = 2; // Makes sure the flail doesn't die (good when the flail is resting on the ground)
 			player.heldProj = Projectile.whoAmI;
-			player.SetDummyItemTime(2); //Add a delay so the player can't button mash the flail
+			player.SetDummyItemTime(2); // Add a delay so the player can't button mash the flail
 			player.itemRotation = Projectile.DirectionFrom(mountedCenter).ToRotation();
 			if (Projectile.Center.X < mountedCenter.X) {
 				player.itemRotation += (float)Math.PI;
@@ -441,7 +440,7 @@ namespace ExampleMod.Content.Projectiles
 
 			Rectangle? chainSourceRectangle = null;
 			// Drippler Crippler customizes sourceRectangle to cycle through sprite frames: sourceRectangle = asset.Frame(1, 6);
-			float chainHeightAdjustment = 0f; // Use this to adjust the chain overlap. 
+			float chainHeightAdjustment = 0f; // Use this to adjust the chain overlap.
 
 			Vector2 chainOrigin = chainSourceRectangle.HasValue ? (chainSourceRectangle.Value.Size() / 2f) : (chainTexture.Size() / 2f);
 			Vector2 chainDrawPosition = Projectile.Center;

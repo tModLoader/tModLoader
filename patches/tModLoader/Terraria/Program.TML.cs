@@ -88,7 +88,7 @@ public static partial class Program
 		// Only create and port config files from stable if needed.
 		if (BuildInfo.IsStable)
 			return;
-		
+
 		var releasePath = Path.Combine(savePath, ReleaseFolder);
 		var newPath = Path.Combine(savePath, SaveFolderName);
 		if (Directory.Exists(releasePath) && !Directory.Exists(newPath)) {
@@ -307,7 +307,7 @@ public static partial class Program
 			}
 			catch (Exception e) {
 				bool controlledFolderAccessMightBeRelevant = (e is COMException || e is FileNotFoundException) && ControlledFolderAccessSupport.ControlledFolderAccessDetected;
-				
+
 				ErrorReporting.FatalExit("An error occurred migrating files and folders to the new structure" + (controlledFolderAccessMightBeRelevant ? $"\n\nControlled Folder Access feature detected, this might be the cause of this error.\n\nMake sure to add \"{Environment.ProcessPath}\" to the \"Allow an app through Controlled folder access\" menu found in the \"Ransomware protection\" menu." : ""), e);
 			}
 		}
@@ -344,9 +344,6 @@ public static partial class Program
 			Logging.LogStartup(isServer); // Should run as early as is possible. Want as complete a log file as possible
 
 			SetSavePath();
-		
-			if (ModLoader.Core.ModCompile.DeveloperMode) // Needs to run after SetSavePath, as the static ctor depends on SavePath
-				Logging.tML.Info("Developer mode enabled");
 
 			AttemptSupportHighDPI(isServer); // Can run anytime
 
@@ -394,20 +391,25 @@ public static partial class Program
 		if (isServer)
 			return;
 
+		// Move DPI detection before early return.
 		if (Platform.IsWindows) {
 			[System.Runtime.InteropServices.DllImport("user32.dll")]
 			static extern bool SetProcessDPIAware();
 
 			SetProcessDPIAware();
 		}
-
 		SDL2.SDL.SDL_VideoInit(null);
 		SDL2.SDL.SDL_GetDisplayDPI(0, out var ddpi, out float hdpi, out float vdpi);
 		Logging.tML.Info($"Display DPI: Diagonal DPI is {ddpi}. Vertical DPI is {vdpi}. Horizontal DPI is {hdpi}");
+
+		// Only affect OSX path, see dicussion on https://github.com/tModLoader/tModLoader/pull/4951 for the reason.
+		if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX)) {
+			return; // Let FNA decide by /enablehighdpi command-line argument, default: 0
+		}
+		
 		if (ddpi >= HighDpiThreshold || hdpi >= HighDpiThreshold || vdpi >= HighDpiThreshold) {
 			Environment.SetEnvironmentVariable("FNA_GRAPHICS_ENABLE_HIGHDPI", "1");
 			Logging.tML.Info($"High DPI Display detected: setting FNA to highdpi mode");
 		}
-			
 	}
 }

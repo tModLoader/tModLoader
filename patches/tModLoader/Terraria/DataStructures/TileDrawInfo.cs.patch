@@ -1,0 +1,56 @@
+--- src/TerrariaNetCore/Terraria/DataStructures/TileDrawInfo.cs
++++ src/tModLoader/Terraria/DataStructures/TileDrawInfo.cs
+@@ -1,22 +_,53 @@
+ using Microsoft.Xna.Framework;
+ using Microsoft.Xna.Framework.Graphics;
++using Terraria.ModLoader;
+ 
+ namespace Terraria.DataStructures;
+ 
++/// <summary>
++/// Contains info about a tile to be drawn. Tiles aren't necessarily drawn using the <see cref="Tile.TileFrameX"/> and <see cref="Tile.TileFrameY"/> values directly.
++/// <para/> The values contained are a result of changes made by various ModTile methods (<see cref="ModTile.SetDrawPositions(int, int, ref int, ref int, ref int, ref short, ref short)"/>, <see cref="ModTile.AnimateTile(ref int, ref int)"/>, <see cref="ModTile.AnimateIndividualTile(int, int, int, ref int, ref int)"/>, <see cref="ModTile.SetSpriteEffects(int, int, ref SpriteEffects)"/>, and finally <see cref="ModTile.DrawEffects(int, int, SpriteBatch, ref Terraria.DataStructures.TileDrawInfo)"/>).
++/// </summary>
+ public class TileDrawInfo
+ {
++	/// <summary> The Tile to be drawn </summary>
+ 	public Tile tileCache;
++	/// <summary> The <see cref="Tile.TileType"/> of this tile </summary>
+ 	public ushort typeCache;
++	/// <summary>
++	/// The X value for the frame of this tile to be drawn. Derived from <see cref="Tile.TileFrameX"/> and further changed by the tileFrameX parameter of <see cref="ModTile.SetDrawPositions(int, int, ref int, ref int, ref int, ref short, ref short)"/>
++	/// </summary>
+ 	public short tileFrameX;
++	/// <summary>
++	/// The Y value for the frame of this tile to be drawn. Derived from <see cref="Tile.TileFrameY"/> and further changed by the tileFrameY parameter of <see cref="ModTile.SetDrawPositions(int, int, ref int, ref int, ref int, ref short, ref short)"/>
++	/// </summary>
+ 	public short tileFrameY;
+ 	public Texture2D drawTexture;
+ 	public Color tileLight;
++	/// <summary>
++	/// Offsets the drawing of the tile vertically. Derived from <see cref="ObjectData.TileObjectData.DrawYOffset"/> and further changed by the offsetY parameter of <see cref="ModTile.SetDrawPositions(int, int, ref int, ref int, ref int, ref short, ref short)"/>.
++	/// </summary>
+ 	public int tileTop;
++	/// <summary>
++	/// The width for the frame of this tile to be drawn. Derived from <see cref="ObjectData.TileObjectData.CoordinateWidth"/> and further changed by the width parameter of <see cref="ModTile.SetDrawPositions(int, int, ref int, ref int, ref int, ref short, ref short)"/>.
++	/// </summary>
+ 	public int tileWidth;
++	/// <summary>
++	/// The height for the frame of this tile to be drawn. Derived from <see cref="ObjectData.TileObjectData.CoordinateHeights"/> and further changed by the height parameter of <see cref="ModTile.SetDrawPositions(int, int, ref int, ref int, ref int, ref short, ref short)"/>.
++	/// </summary>
+ 	public int tileHeight;
+ 	public int halfBrickHeight;
++	/// <summary>
++	/// An additional offset to <see cref="tileFrameX"/> corresponding to the animation of the tile. Defaults to 0 and further changed by the frameXOffset parameter of <see cref="ModTile.AnimateIndividualTile(int, int, int, ref int, ref int)"/>.
++	/// </summary>
+ 	public int addFrY;
++	/// <summary>
++	/// An additional offset to <see cref="tileFrameY"/> corresponding to the animation of the tile. Defaults to <c>modTile.AnimationFrameHeight * Main.tileFrame[type]</c> (which itself is set in <see cref="ModTile.AnimateTile(ref int, ref int)"/>) and further changed by the frameXOffset parameter of <see cref="ModTile.AnimateIndividualTile(int, int, int, ref int, ref int)"/>.
++	/// </summary>
+ 	public int addFrX;
++	/// <summary>
++	/// If the tile should be drawn flipped or not. Defaults to <see cref="SpriteEffects.None"/> and changed by the spriteEffects parameter of <see cref="ModTile.SetSpriteEffects(int, int, ref SpriteEffects)"/>.
++	/// </summary>
+ 	public SpriteEffects tileSpriteEffect;
+ 	public Texture2D glowTexture;
+ 	public Rectangle glowSourceRect;

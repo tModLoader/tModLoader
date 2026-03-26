@@ -27,12 +27,13 @@ public static class AssemblyManager
 		public readonly TmodFile modFile;
 		public readonly BuildProperties properties;
 
-		public List<ModLoadContext> dependencies = new List<ModLoadContext>();
+		public List<ModLoadContext> dependencies = [];
+		public List<ModLoadContext> dependents;
 
 		public Assembly assembly;
-		public IDictionary<string, Assembly> assemblies = new Dictionary<string, Assembly>();
-		public IDictionary<string, byte[]> assemblyBytes = new Dictionary<string, byte[]>();
-		public IDictionary<Assembly, Type[]> loadableTypes = new Dictionary<Assembly, Type[]>();
+		public Dictionary<string, Assembly> assemblies = [];
+		public Dictionary<string, byte[]> assemblyBytes = [];
+		public Dictionary<Assembly, Type[]> loadableTypes;
 		public long bytesLoaded = 0;
 
 		public ModLoadContext(LocalMod mod) : base(mod.Name, true)
@@ -47,6 +48,7 @@ public static class AssemblyManager
 		{
 			// required for this to actually unload
 			dependencies = null;
+			dependents = null;
 			assembly = null;
 			assemblies = null;
 			loadableTypes = null;
@@ -152,6 +154,7 @@ public static class AssemblyManager
 			["tModLoader"] = Assembly.GetExecutingAssembly(), // Unsure if still needed, but lets us ignore versioning when mods resolve
 			["FNA"] = typeof(Vector2).Assembly, // Unsure if still needed, but lets us ignore versioning when mods resolve
 			["Ionic.Zip.Reduced"] = typeof(ZipFile).Assembly, // Assembly name changed to DotNetZip
+			["Steamworks.NET"] = typeof(Steamworks.SteamApps).Assembly, // Version can change
 		};
 
 		private static Hook _hook = new Hook(
@@ -209,7 +212,8 @@ public static class AssemblyManager
 			m.Side = mod.properties.side;
 			m.DisplayName = mod.properties.displayName;
 			m.TModLoaderVersion = mod.properties.buildVersion;
-			m.TranslationForMods = mod.properties.translationMod ? mod.properties.RefNames(true).ToList() : null; 
+			m.TranslationForMods = mod.properties.translationMod ? mod.properties.RefNames(true).ToList() : null;
+			m.SourceFolder = Directory.Exists(mod.properties.modSource) ? mod.properties.modSource : "";
 			return m;
 		}
 		catch (Exception e) {
@@ -331,18 +335,38 @@ public static class AssemblyManager
 	/// <returns></returns>
 	public static Type[] GetLoadableTypes(Assembly assembly) => AssemblyLoadContext.GetLoadContext(assembly) is ModLoadContext mlc ? mlc.loadableTypes[assembly] : assembly.GetTypes();
 
-	private static IDictionary<Assembly, Type[]> GetLoadableTypes(ModLoadContext mod, MetadataLoadContext mlc)
+	private static Dictionary<Assembly, Type[]> GetLoadableTypes(ModLoadContext mod, MetadataLoadContext mlc)
 	{
 		try {
 			return mod.Assemblies.ToDictionary(a => a, asm =>
 				mlc.LoadFromAssemblyName(asm.GetName()).GetTypes()
 					.Where(mType => IsLoadable(mod, mType))
-					.Select(mType => asm.GetType(mType.FullName, throwOnError: true, ignoreCase: false))
+					.Select(mType => GetType(asm, mType))
 					.ToArray());
 		}
 		catch (Exception e) {
+			Type type = (Type)e.Data["type"];
+			if (type != null) {
+				foreach (MethodInfo method in type.GetMethods()) {
+					// Check if it is an abstract method which is not overridden
+					if (method.IsAbstract && method.DeclaringType != null && method.DeclaringType != type) {
+						if (method.DeclaringType.Assembly.FullName == Assembly.GetExecutingAssembly().FullName)	{
+							throw new Exception(
+								"This mod seems to contain a class which inherits from a tModLoader class but does not implement required abstract methods. Use tModPorter to update required methods." + "\n\n" + $"The method \"{method.Name}\" in the class \"{type.FullName}\" caused this error.\n\n" + e.Message,
+								e
+							);
+						}
+
+						throw new Exception(
+							"This mod seems to contain a class which inherits from a class in another mod but does not implement required abstract methods." + "\n\n" + $"The method \"{method.Name}\" in the class \"{type.FullName}\" caused this error.\n\n" + e.Message,
+							e
+						);
+					}
+				}
+			}
+
 			throw new Exceptions.GetLoadableTypesException(
-				"This mod seems to inherit from classes in another mod. Use the [ExtendsFromMod] attribute to allow this mod to load when that mod is not enabled." + "\n\n" + (e.Data["type"] is Type type ? $"The \"{type.FullName}\" class caused this error.\n\n" : "") + e.Message,
+				"This mod seems to inherit from classes in another mod. Use the [ExtendsFromMod] attribute to allow this mod to load when that mod is not enabled." + "\n\n" + (type != null? $"The \"{type.FullName}\" class caused this error.\n\n" : "") + e.Message,
 				e
 			);
 		}
@@ -372,6 +396,24 @@ public static class AssemblyManager
 			throw;
 		}
 	}
+
+	/// <summary>
+	/// Gets and validates the <see cref="Type"/> from the given <see cref="Assembly"/>.
+	/// </summary>
+	/// <param name="assembly">Assembly to load type from</param>
+	/// <param name="type">Target type to get</param>
+	/// <returns></returns>
+	#nullable enable
+	private static Type? GetType(Assembly assembly, Type type) {
+		try {
+			return assembly.GetType(type.FullName, throwOnError: true, ignoreCase: false);
+		}
+		catch (TypeLoadException e)	{
+			e.Data["type"] = type;
+			throw;
+		}
+	}
+	#nullable disable
 
 	internal static Task JITModAsync(Mod mod, CancellationToken token) => JITAssembliesAsync(GetModAssemblies(mod.Name), mod.PreJITFilter, token);
 	internal static void JITMod(Mod mod) => JITAssemblies(GetModAssemblies(mod.Name), mod.PreJITFilter);
@@ -404,8 +446,9 @@ public static class AssemblyManager
 				ForceJITOnMethod(method);
 			}
 			catch (Exception e) {
-				if (AssemblyManager.GetAssemblyOwner(method.DeclaringType.Assembly, out string modName))
+				if (GetAssemblyOwner(method.DeclaringType.Assembly, out string modName))
 					e.Data["mod"] = modName;
+
 				exceptions.Enqueue((e, method));
 			}
 		}, token).ConfigureAwait(false);
@@ -470,5 +513,52 @@ public static class AssemblyManager
 				throw new Exception($"{method} overrides a method which doesn't exist in any base class");
 		}
 	}
+
+	/// <summary>
+	/// Searches the assembly dependency tree for a subtype of <paramref name="parentType"/> with <see cref="Type.FullName"/> = <paramref name="name"/>
+	/// </summary>
+	public static Type FindSubtype(Type parentType, string name)
+	{
+		return FindTypes(parentType.Assembly, name).Where(t => t.IsAssignableTo(parentType)).FirstOrDefault();
+	}
+
+	/// <summary>
+	/// Searches the assembly dependency tree of <paramref name="referencedAssembly"/> for a type with <see cref="Type.FullName"/> = <paramref name="name"/>
+	/// </summary>
+	public static IEnumerable<Type> FindTypes(Assembly referencedAssembly, string name)
+	{
+		if (referencedAssembly.GetType(name) is Type type)
+			yield return type;
+
+		foreach (var assembly in EnumerateDependents(referencedAssembly))
+			if (assembly.GetType(name) is Type type2)
+				yield return type2;
+	}
+
+	private static IEnumerable<Assembly> EnumerateDependents(Assembly referencedAssembly)
+	{
+		var hostAlc = AssemblyLoadContext.GetLoadContext(referencedAssembly);
+
+		var deps = GetDependents(hostAlc).SelectMany(alc => alc.Assemblies);
+
+		var root = GetRoot(hostAlc);
+		if (referencedAssembly != root)
+			deps = deps.Concat(hostAlc.Assemblies.Where(a => a != referencedAssembly));
+
+		return deps;
+	}
+
+	private static AssemblyLoadContext tMLAlc = AssemblyLoadContext.GetLoadContext(Assembly.GetExecutingAssembly());
+	private static Assembly GetRoot(AssemblyLoadContext alc) => alc switch {
+		ModLoadContext mlc => mlc.assembly,
+		_ when alc == tMLAlc => Assembly.GetExecutingAssembly(),
+		_ => throw new NotSupportedException()
+	};
+
+	private static IEnumerable<AssemblyLoadContext> GetDependents(AssemblyLoadContext alc) => alc switch {
+		ModLoadContext mlc => mlc.dependents ??= new TopoSort<ModLoadContext>(loadedModContexts.Values, c => c.dependencies).AllDependendents(mlc).ToList(),
+		_ when alc == tMLAlc => loadedModContexts.Values,
+		_ => throw new NotSupportedException()
+	};
 }
 #endif

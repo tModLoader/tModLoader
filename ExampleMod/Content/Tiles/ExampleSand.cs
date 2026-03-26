@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Tiles
 {
-	// ExampleSand is a sand tile. Sand tiles are unique in how they cascade down. 
+	// ExampleSand is a sand tile. Sand tiles are unique in how they cascade down.
 	// When a sand tile determines that no tile is below it, it destroys itself and spawns a falling projectile (ExampleSandBallFallingProjectile) in its place.
 	// When that projectile hits another tile, it creates the sand tile at that location.
 	public class ExampleSand : ModTile
@@ -41,6 +41,14 @@ namespace ExampleMod.Content.Tiles
 
 		public override void WalkDust(ref int dustType, ref bool makeDust, ref Color color) {
 			dustType = DustID.Sand;
+		}
+		// This code is called when the game attempts to convert our example tile into a new biome
+		public override void Convert(int i, int j, int conversionType) {
+			switch (conversionType) {
+				case BiomeConversionID.Sand: // Yellow (desert) solution also converts tiles back into purity, so don't forget that check!
+					WorldGen.ConvertTile(i, j, TileID.Sand);
+					return;
+			}
 		}
 	}
 }

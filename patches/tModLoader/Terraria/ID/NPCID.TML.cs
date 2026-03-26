@@ -16,10 +16,18 @@ public partial class NPCID
 
 		//IDs taken from start of NPC.NewNPC when determining num
 		/// <summary>
-		/// Whether or not the spawned NPC will start looking for a suitable slot from the end of <seealso cref="Main.npc"/>, ignoring the Start parameter of <see cref="NPC.NewNPC"/>.
-		/// Useful if you have a multi-segmented boss and want its parts to draw over the main body (body will be in this set).
+		/// Whether or not the spawned NPC will be assigned an empty slot in <see cref="NPC.NewNPC"/> by searching from the end of <seealso cref="Main.npc"/> rather than the start.
+		/// <br/><br/> This will result in the NPC drawing behind most other NPC because NPC are drawn in reverse slot order.
+		/// <br/><br/> Useful if you have a multi-segmented boss and want its parts to draw over the main body (body will be in this set). Also useful for bosses that spawn minions, to keep the minions visible. Used by <see cref="Golem"/> and <see cref="QueenBee"/>.
 		/// </summary>
 		public static bool[] SpawnFromLastEmptySlot = Factory.CreateBoolSet(222, 245);
+
+		/// <summary>
+		/// If true, the given Town NPC won't drop a tombstone on death in hardcore mode and will have the "NPC has left!" death message unless specified otherwise by <see cref="ModNPC.DeathMessage"/>.
+		/// <br/> This does NOT affect the gore spawned when the NPC dies.
+		/// <para/> Defaults to <see langword="false"/>.
+		/// </summary>
+		public static bool[] IsTownChild = Factory.CreateBoolSet(Angler, Princess);
 
 		//Default ID is the skeleton merchant
 		/// <summary>
@@ -175,5 +183,10 @@ public partial class NPCID
 		/// <para/> Defaults to false.
 		/// </summary>
 		public static bool[] NeverDropsResourcePickups = Factory.CreateBoolSet(MotherSlime, CorruptSlime, Slimer);
+
+		/// <summary>
+		/// This NPC will not despawn due to being far offscreen, but will still count towards <see cref="Player.nearbyActiveNPCs"/>. Unlike returning false in <see cref="ModNPC.CheckActive"/>, this NPC still counts towards spawn limits. 
+		/// </summary>
+		public static bool[] DoesntDespawnToInactivityAndCountsNPCSlots = Factory.CreateBoolSet(Deerclops);
 	}
 }

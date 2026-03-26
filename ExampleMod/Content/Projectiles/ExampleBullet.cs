@@ -12,14 +12,14 @@ namespace ExampleMod.Content.Projectiles
 	public class ExampleBullet : ModProjectile
 	{
 		public override void SetStaticDefaults() {
-			ProjectileID.Sets.TrailCacheLength[Projectile.type] = 5; // The length of old position to be recorded
-			ProjectileID.Sets.TrailingMode[Projectile.type] = 0; // The recording mode
+			ProjectileID.Sets.TrailCacheLength[Type] = 5; // The length of old position to be recorded
+			ProjectileID.Sets.TrailingMode[Type] = 0; // The recording mode
 		}
 
 		public override void SetDefaults() {
 			Projectile.width = 8; // The width of projectile hitbox
 			Projectile.height = 8; // The height of projectile hitbox
-			Projectile.aiStyle = 1; // The ai style of the projectile, please reference the source code of Terraria
+			Projectile.aiStyle = ProjAIStyleID.Arrow; // The ai style of the projectile, please reference the source code of Terraria
 			Projectile.friendly = true; // Can the projectile deal damage to enemies?
 			Projectile.hostile = false; // Can the projectile deal damage to the player?
 			Projectile.DamageType = DamageClass.Ranged; // Is the projectile shoot by a ranged weapon?

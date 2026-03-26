@@ -31,6 +31,7 @@ public abstract partial class ModSceneEffect : ModType
 
 	/// <SharedSummary>
 	/// The music that will play. -1 for letting other music play, 0 for no music, >0 for the given music to play (using <see cref="MusicLoader.GetMusicSlot(Mod, string)"/> or <see cref="ID.MusicID"/>).
+	/// <br/><br/> See <see cref="Main.swapMusic"/> for information about playing alternate music when the Otherworld soundtrack is enabled.
 	/// </SharedSummary>
 	/// <summary>
 	/// <inheritdoc cref="Music" path="/SharedSummary/node()"/>

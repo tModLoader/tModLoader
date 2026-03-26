@@ -22,7 +22,7 @@ public abstract class MemberJitAttribute : Attribute
 }
 
 /// <summary>
-/// Excludes a class, method, or property from the load time JIT. 
+/// Excludes a class, method, or property from the load time JIT.
 /// </summary>
 public class NoJITAttribute : MemberJitAttribute
 {

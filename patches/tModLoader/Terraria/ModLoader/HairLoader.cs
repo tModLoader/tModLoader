@@ -3,6 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using Terraria.GameContent;
 using Terraria.ID;
+using Terraria.ModLoader.Core;
 
 namespace Terraria.ModLoader;
 
@@ -35,7 +36,8 @@ public static class HairLoader
 	{
 		Array.Resize(ref TextureAssets.PlayerHair, Count);
 		Array.Resize(ref TextureAssets.PlayerHairAlt, Count);
-		Array.Resize(ref HairID.Sets.DrawBackHair, Count);
+
+		LoaderUtils.ResetStaticMembers(typeof(HairID));
 	}
 
 	internal static void Unload()

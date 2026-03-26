@@ -25,6 +25,8 @@ public abstract class TEModdedPylon : ModTileEntity, IPylonTileEntity
 		}
 
 		int ID = Place(x, y);
+		ModTileEntity newEntity = (ModTileEntity)ByID[ID];
+		newEntity.OnNetPlace();
 		NetMessage.SendData(MessageID.TileEntitySharing, number: ID, number2: x, number3: y);
 	}
 
@@ -85,7 +87,7 @@ public abstract class TEModdedPylon : ModTileEntity, IPylonTileEntity
 
 		if (PylonLoader.PreCanPlacePylon(x, y, type, pylon.PylonType) is bool value)
 			return value ? 0 : 1;
-		
+
 		return pylon.CanPlacePylon() ? 0 : 1;
 	}
 

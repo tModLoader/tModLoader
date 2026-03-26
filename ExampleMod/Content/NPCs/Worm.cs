@@ -30,10 +30,10 @@ namespace ExampleMod.NPCs
 	public abstract class Worm : ModNPC
 	{
 		/*  ai[] usage:
-		 *  
+		 *
 		 *  ai[0] = "follower" segment, the segment that's following this segment
 		 *  ai[1] = "following" segment, the segment that this segment is following
-		 *  
+		 *
 		 *  localAI[0] = used when syncing changes to collision detection
 		 *  localAI[1] = checking if Init() was called
 		 */
@@ -157,7 +157,7 @@ namespace ExampleMod.NPCs
 		public virtual int MaxDistanceForUsingTileCollision => 1000;
 
 		/// <summary>
-		/// Whether the NPC uses 
+		/// Whether the NPC uses
 		/// </summary>
 		public virtual bool HasCustomBodySegments => false;
 

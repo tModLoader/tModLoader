@@ -1,0 +1,73 @@
+--- src/TerrariaNetCore/Terraria/Achievements/Achievement.cs
++++ src/tModLoader/Terraria/Achievements/Achievement.cs
+@@ -1,7 +_,9 @@
++using System;
+ using System.Collections.Generic;
+ using Newtonsoft.Json;
+ using Newtonsoft.Json.Linq;
+ using Terraria.Localization;
++using Terraria.ModLoader;
+ using Terraria.Social;
+ 
+ namespace Terraria.Achievements;
+@@ -13,14 +_,18 @@
+ 
+ 	private static int _totalAchievements;
+ 	public readonly string Name;
+-	public readonly LocalizedText FriendlyName;
+-	public readonly LocalizedText Description;
+-	public readonly int Id = _totalAchievements++;
++	public LocalizedText FriendlyName;
++	public LocalizedText Description;
++	public int Id = _totalAchievements++; // Determines sort order
+ 	private AchievementCategory _category;
+ 	private IAchievementTracker _tracker;
+ 	[JsonProperty("Conditions")]
+-	private Dictionary<string, AchievementCondition> _conditions = new Dictionary<string, AchievementCondition>();
++	internal Dictionary<string, AchievementCondition> _conditions = new Dictionary<string, AchievementCondition>();
+ 	private int _completedCount;
++	public bool Hidden => ModAchievement?.Hidden ?? false;
++	public ModAchievement ModAchievement;
++
++	public override string ToString() => Name; // Needed for error messages
+ 
+ 	public AchievementCategory Category => _category;
+ 
+@@ -32,8 +_,9 @@
+ 
+ 	public IAchievementTracker GetTracker() => _tracker;
+ 
+-	public Achievement(string name)
++	public Achievement(string name, ModAchievement modAchievement = null)
+ 	{
++		ModAchievement = modAchievement;
+ 		Name = name;
+ 		FriendlyName = Language.GetText("Achievements." + name + "_Name");
+ 		Description = Language.GetText("Achievements." + name + "_Description");
+@@ -52,6 +_,7 @@
+ 
+ 	public void Load(Dictionary<string, JObject> conditions)
+ 	{
++		_completedCount = 0;
+ 		foreach (KeyValuePair<string, JObject> condition in conditions) {
+ 			if (_conditions.TryGetValue(condition.Key, out var value)) {
+ 				value.Load(condition.Value);
+@@ -66,6 +_,9 @@
+ 
+ 	public void AddCondition(AchievementCondition condition)
+ 	{
++		if (_conditions.ContainsKey(condition.Name))
++			throw new Exception($"Cannot add two conditions with the same name: {condition.Name}");
++
+ 		_conditions[condition.Name] = condition;
+ 		condition.OnComplete += OnConditionComplete;
+ 	}
+@@ -82,7 +_,7 @@
+ 		}
+ 	}
+ 
+-	private void UseTracker(IAchievementTracker tracker)
++	public void UseTracker(IAchievementTracker tracker)
+ 	{
+ 		tracker.ReportAs("STAT_" + Name);
+ 		_tracker = tracker;

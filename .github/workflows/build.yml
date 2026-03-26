@@ -219,7 +219,7 @@ jobs:
           unzip -q terrariaserver.zip
           
           # Extra file needed for client decomp which isn't embedded in the Terraria.exe, will be embedded in 1.4.5
-          cp patches/TerrariaNetCore/Terraria/Libraries/Common/SteelSeriesEngineWrapper.dll ./$TERRARIA_VERSION/Windows/SteelSeriesEngineWrapper.dll
+          cp patches/Terraria/Terraria/Libraries/Common/SteelSeriesEngineWrapper.dll ./$TERRARIA_VERSION/Windows/SteelSeriesEngineWrapper.dll
           
           echo ::group::Running setup-cli.bat
           if [ ${{github.ref}} = 'refs/heads/${{env.StableBranch}}' ] ; then
@@ -260,6 +260,9 @@ jobs:
           dotnet clean src/tModLoader/Terraria/Terraria.csproj -c Release --nologo -v q
           (
             set +e;
+            # For some reason tModCodeAssist dlls are not copied to bin unless built first or the Terraria project is built a 2nd time
+            dotnet build tModCodeAssist/tModCodeAssist/tModCodeAssist.csproj -c Release --nologo -v q;
+            dotnet build tModCodeAssist/tModCodeAssist.CodeFixes/tModCodeAssist.CodeFixes.csproj -c Release --nologo -v q;
             dotnet build src/tModLoader/Terraria/Terraria.csproj -c Release --nologo -v q -bl;
             err=$?;
             [[ $err -ne 0 ]] && echo Uploading msbuild.binlog && curl --upload-file ./msbuild.binlog http://transfer.sh/msbuild.binlog;
@@ -448,8 +451,12 @@ jobs:
       - name: Update version in Doxyfile
         shell: bash
         run: |
-          echo "Attempting get current version id"
+          echo "Attempting get previous version id"
           version=$(git describe --tags --abbrev=0)
+          
+          echo "Get the latest version if there is multiple tags"
+          version=$(git tag --points-at $version | tail -1)
+          
           echo "Current Version is: $version"
           regex="^v([0-9]+).([0-9]+).([0-9]+).([0-9]+)?$"
           if [[ $version =~ $regex ]] ; then
@@ -504,7 +511,7 @@ jobs:
           
       - name: Detect ExampleMod Changed Files
         id: changed-files-examplemod
-        uses: tj-actions/changed-files@v41
+        uses: tj-actions/changed-files@v46.0.3
         with:
           files: |
             ExampleMod
@@ -517,7 +524,7 @@ jobs:
           
       - name: Detect patches Changed Files
         id: changed-files-patches
-        uses: tj-actions/changed-files@v41
+        uses: tj-actions/changed-files@v46.0.3
         with:
           files: |
             patches
@@ -577,13 +584,11 @@ jobs:
         id: version2
         shell: bash
         run: |
-          echo "Attempting get current version id"
-          if [ ${{github.ref}} = 'refs/heads/${{env.StableBranch}}' ] ; then
-            version=$(git describe --tags --abbrev=0 --exclude v????.??.2*)
-          fi
-          if [ ${{github.ref}} = 'refs/heads/${{env.PreviewBranch}}' ] ; then
-            version=$(git describe --tags --abbrev=0 --exclude v????.??.1*)
-          fi
+          echo "Attempting get previous version id"
+          version=$(git describe --tags --abbrev=0)
+          
+          echo "Get the latest version if there is multiple tags"
+          version=$(git tag --points-at $version | tail -1)
           
           echo "Current Version is: $version"
           echo "new_version=$version" >> $GITHUB_OUTPUT
@@ -591,6 +596,8 @@ jobs:
           branch: ${{github.ref}}
       
       # Publish new version of tModLoader to Steam
+      # If this step is failing for preview builds (Failed to commit build), we forgot to add a new branch for this month on Steam. (exit code 6)
+      # If this step is failing with "Logging in user '***' to Steam Public...ERROR (License expired)", STEAM_CONFIG_VDF needs to be refreshed. (exit code 5)
       - name: Attempt run_app_build_http 
         shell: bash
         run: |
@@ -680,5 +687,6 @@ jobs:
           body: "Monthly Github Auto-release for ${{github.ref}}"
           tag: ${{ steps.version2.outputs.new_version }}
           prerelease: ${{ contains(github.ref, 'preview') }}
-          makeLatest: ${{ contains(github.ref, 'stable') }}
+          # No longer automatically make latest since we don't always release on Steam at the exact time, which can cause issues for manage-tModLoaderServer.sh servers. TML Team member will edit the GitHub release when Steam release goes live.
+          # makeLatest: ${{ contains(github.ref, 'stable') }} 
           

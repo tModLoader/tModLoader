@@ -1,0 +1,52 @@
+--- src/TerrariaNetCore/Terraria/Graphics/Capture/CaptureInterface.cs
++++ src/tModLoader/Terraria/Graphics/Capture/CaptureInterface.cs
+@@ -867,6 +_,7 @@
+ 	{
+ 		HoveredMode = -1;
+ 		bool flag = !Main.graphics.IsFullScreen;
++		flag = true; // Fullscreen restriction removed (no longer exclusive fullscreen)
+ 		int num = 9;
+ 		for (int i = 0; i < num; i++) {
+ 			if (!new Rectangle(24 + 46 * i, 24, 42, 42).Contains(mouse.ToPoint()))
+@@ -955,6 +_,9 @@
+ 
+ 	private void DrawButtons(SpriteBatch sb)
+ 	{
++		sb.End();
++		sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.UIScaleMatrix); // #4578 vanilla fix
++
+ 		new Vector2(Main.mouseX, Main.mouseY);
+ 		int num = 9;
+ 		for (int i = 0; i < num; i++) {
+@@ -1006,8 +_,10 @@
+ 						flag = true;
+ 					break;
+ 				case 7:
++					/* Fullscreen restriction removed (no longer exclusive fullscreen)
+ 					if (Main.graphics.IsFullScreen)
+ 						flag = true;
++					*/
+ 					break;
+ 				case 5:
+ 					if (!Main.mapEnabled)
+@@ -1061,8 +_,10 @@
+ 					text = text + "\n" + Lang.inter[112].Value;
+ 				break;
+ 			case 7:
++				/* Fullscreen restriction removed (no longer exclusive fullscreen)
+ 				if (Main.graphics.IsFullScreen)
+ 					text = text + "\n" + Lang.inter[113].Value;
++				*/
+ 				break;
+ 			case 5:
+ 				if (!Main.mapEnabled)
+@@ -1072,6 +_,9 @@
+ 
+ 		if (text != "")
+ 			Main.instance.MouseText(text, 0, 0);
++
++		sb.End();
++		sb.Begin(SpriteSortMode.Deferred, null, null, null, null, null, Main.UIScaleMatrix); // #4578 vanilla fix
+ 	}
+ 
+ 	private static bool GetMapCoords(int PinX, int PinY, int Goal, out Point result)

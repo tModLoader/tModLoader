@@ -1,10 +1,18 @@
 --- src/TerrariaNetCore/Terraria/TileObject.cs
 +++ src/tModLoader/Terraria/TileObject.cs
+@@ -4,6 +_,7 @@
+ using Terraria.Enums;
+ using Terraria.GameContent;
+ using Terraria.ID;
++using Terraria.ModLoader;
+ using Terraria.ObjectData;
+ 
+ namespace Terraria;
 @@ -14,6 +_,7 @@
  	public int yCoord;
  	public int type;
  	public int style;
-+	/// <summary> Note: The index of the alternate within the <see cref="TileObjectData.Alternates"/>, not the alternate placement style offset (<see cref="TileObjectData.Style"/>) </summary>
++	/// <summary> Note: The index of the alternate within the <see cref="TileObjectData.Alternates"/>, not the alternate placement style offset (<see cref="TileObjectData.Style"/>). This counts from 1, a value of 0 means it is not an alternate. </summary>
  	public int alternate;
  	public int random;
  	public static TileObject Empty = default(TileObject);
@@ -18,6 +26,30 @@
  	{
  		TileObjectData tileData = TileObjectData.GetTileData(type, style);
  		objectData = Empty;
+@@ -228,7 +_,7 @@
+ 					num16--;
+ 
+ 				if (num16 < rectangle.Y) {
+-					rectangle.Width += rectangle.Y - num16;
++					rectangle.Height += rectangle.Y - num16; // Fix issue (OOB exception) with partial right and left anchors.
+ 					num11 += rectangle.Y - num16;
+ 					rectangle.Y = num16;
+ 				}
+@@ -246,12 +_,12 @@
+ 				if (rectangle.X + rectangle.Width == tileData2.Width)
+ 					rectangle.Width++;
+ 
+-				int num19 = tileData2.AnchorLeft.checkStart;
++				int num19 = tileData2.AnchorRight.checkStart; 
+ 				if ((tileData2.AnchorRight.type & AnchorType.Tree) == AnchorType.Tree)
+ 					num19--;
+ 
+ 				if (num19 < rectangle.Y) {
+-					rectangle.Width += rectangle.Y - num19;
++					rectangle.Height += rectangle.Y - num19; // Fix issue (OOB exception) with partial right and left anchors.
+ 					num11 += rectangle.Y - num19;
+ 					rectangle.Y = num19;
+ 				}
 @@ -283,7 +_,7 @@
  			for (int i = 0; i < tileData2.Width; i++) {
  				for (int j = 0; j < tileData2.Height; j++) {
@@ -36,6 +68,14 @@
  						flag4 = true;
  
  					if (flag4 || flag2 || flag3) {
+@@ -330,6 +_,7 @@
+ 									flag5 = true;
+ 							}
+ 							else if (Main.tileSolid[tileSafely.type] && Main.tileSolidTop[tileSafely.type]) {
++								// This is buggy since it doesn't check TopSlope and HalfBrick like WorldGen.SolidTileAllowBottomSlope does, causing issues with placing ontop of hammerable tiles like MetalBar. This bug left in until vanilla fix since it might be complicated.
+ 								flag5 = true;
+ 							}
+ 						}
 @@ -373,7 +_,7 @@
  					Tile tileSafely = Framing.GetTileSafely(num8 + num29, num9 + num28);
  					bool flag6 = false;
@@ -79,11 +119,28 @@
  				int num37 = coordinates.Y + objectStart.Y;
 +				int num38 = x - tileObjectData.Origin.X;
 +				int num39 = y - tileObjectData.Origin.Y;
-+				/* Fix random cache not working with alternates with different origins (mistakenly cycles new random each update), it should use the alternates TOD, not the tile styles TOD 
++				/* Fix random cache not working with alternates with different origins (mistakenly cycles new random each update), it should use the alternates TOD, not the tile styles TOD
  				int num38 = x - tileData.Origin.X;
  				int num39 = y - tileData.Origin.Y;
 +				*/
 +
  				if (num36 != num38 || num37 != num39)
  					flag9 = true;
+ 			}
+@@ -743,7 +_,16 @@
+ 					if (op.Type == 114 && j == 1)
+ 						num12 += 2;
+ 
++					/*
+ 					sb.Draw(sourceRectangle: new Rectangle(x, num8, coordinateWidth, num12), texture: value, position: new Vector2(num9 * 16 - (int)(position.X + (float)(coordinateWidth - 16) / 2f) + drawXOffset, num10 * 16 - (int)position.Y + num5), color: color, rotation: 0f, origin: Vector2.Zero, scale: 1f, effects: spriteEffects, layerDepth: 0f);
++					*/
++					var frame = new Rectangle(x, num8, coordinateWidth, num12);
++					var drawPosition = new Vector2(num9 * 16 - (int)(position.X + (float)(coordinateWidth - 16) / 2f) + drawXOffset, num10 * 16 - (int)position.Y + num5);
++					bool validPlacement = num11 == 1;
++					if (TileLoader.PreDrawPlacementPreview(num9, num10, op.Type, sb, ref frame, ref drawPosition, ref color, validPlacement, ref spriteEffects))
++						sb.Draw(sourceRectangle: frame, texture: value, position: drawPosition, color: color, rotation: 0f, origin: Vector2.Zero, scale: 1f, effects: spriteEffects, layerDepth: 0f);
++
++					TileLoader.PostDrawPlacementPreview(num9, num10, op.Type, sb, frame, drawPosition, color, validPlacement, spriteEffects);
+ 					num8 += num12 + tileData.CoordinatePadding;
+ 				}
  			}

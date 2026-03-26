@@ -10,7 +10,7 @@
  
  	public int itemId;
 -	public Parameters parameters;
-+	
++
 +	//TML: Turned from a field into an autoproperty.
 +	public Parameters parameters { get; private init; }
  

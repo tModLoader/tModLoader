@@ -118,7 +118,7 @@ partial class ItemID
 
 		/// <summary>
 		/// Set for catching tools which can catch the Underworld's lava critters.<br></br>
-		/// Don't forget to use the <see cref="CatchingTool"/> set in conjunction with this one. 
+		/// Don't forget to use the <see cref="CatchingTool"/> set in conjunction with this one.
 		/// </summary>
 		public static bool[] LavaproofCatchingTool = Factory.CreateBoolSet(
 			GoldenBugNet,
@@ -145,7 +145,9 @@ partial class ItemID
 			ObsidianSwordfish,
 			Gungnir,
 			MushroomSpear,
+			MonkStaffT1,
 			MonkStaffT2,
+			MonkStaffT3,
 			ChlorophytePartisan,
 			NorthPole
 		);
@@ -209,5 +211,11 @@ partial class ItemID
 		/// Set to <see langword="true"/> to make this Item set its mana cost to 0 whenever <see cref="Player.spaceGun"/> is set to <see langword="true"/>.
 		/// </summary>
 		public static bool[] IsSpaceGun = Factory.CreateBoolSet(false, SpaceGun, ZapinatorGray, ZapinatorOrange);
+
+		// Values taken from KillTile_ShouldDropSeeds
+		/// <summary>
+		/// Set to <see langword="true"/> to have seeds drop whenever grass breaks with this Item in the player's inventory.
+		/// </summary>
+		public static bool[] DropSeedsIfInInventory = Factory.CreateBoolSet(false, Blowpipe, Blowgun);
 	}
 }

@@ -72,11 +72,13 @@ public partial class Main
 	// Tracks whether the Stylist has had her hairstyle list updated for the current interaction.
 	private static bool hairstylesUpdatedForThisInteraction; // TML: Track whether hairstyle cache needs refreshing for Stylist UI.
 
+	[ThreadStatic]
 	private static Player _currentPlayerOverride;
 
 	/// <summary>
-	/// A replacement for `Main.LocalPlayer` which respects whichever player is currently running hooks on the main thread.
-	/// This works in the player select screen, and in multiplayer (when other players are updating)
+	/// A replacement for <see cref="Main.LocalPlayer"/> which respects whichever player is currently running hooks on the main thread.
+	/// This works in the player select screen, and in multiplayer (when other players are updating).
+	/// <br/><br/> <see cref="CurrentPlayerOverride"/> can be used to temporarily override CurrentPlayer.
 	/// </summary>
 	public static Player CurrentPlayer => _currentPlayerOverride ?? LocalPlayer;
 
@@ -252,7 +254,7 @@ public partial class Main
 				spriteBatch.Draw(TextureAssets.InfoIcon[13].Value, buttonPosition - Vector2.One * 2f, null, OurFavoriteColor, 0f, default, 1f, SpriteEffects.None, 0f);
 		}
 	}
-	
+
 	public static void BuilderTogglePageHandler(int startY, int activeToggles, out bool moveDownForButton, out int startIndex, out int endIndex) {
 		startIndex = 0;
 		endIndex = activeToggles;
@@ -449,6 +451,10 @@ public partial class Main
 		}
 	}
 
+	/// <summary>
+	/// Overrides <see cref="Main.CurrentPlayer"/>. For example, <c>using var _currentPlr = new Main.CurrentPlayerOverride(player);</c> would result in Main.CurrentPlayer returning the specified player until the end of the current scope.
+	/// <br/><br/> Used internally to make <see cref="ModAccessorySlot"/> access a specific player rather than <see cref="Main.LocalPlayer"/>.
+	/// </summary>
 	public ref struct CurrentPlayerOverride
 	{
 		private Player _prevPlayer;
@@ -481,7 +487,7 @@ public partial class Main
 		}
 		// Explicitly path if we are family shared using the old logic from prior to #4018; Temporary Hotfix - Solxan
 		// Maybe replace with a call to get InstallDir from TerrariaSteamClient? Or change Steam.GetInstallDir to be 'FamilyShare' safe?
-		// Also left as a generic fallback 
+		// Also left as a generic fallback
 		else /*if (Social.Steam.SteamedWraps.FamilyShared)*/ {
 			vanillaContentFolder = Platform.IsOSX ? "../Terraria/Terraria.app/Contents/Resources/Content" : "../Terraria/Content"; // Side-by-Side Manual Install
 
@@ -489,19 +495,19 @@ public partial class Main
 				vanillaContentFolder = Platform.IsOSX ? "../Terraria.app/Contents/Resources/Content" : "../Content"; // Nested Manual Install
 			}
 		}
-		
+
 
 		if (!Directory.Exists(vanillaContentFolder)) {
 			ErrorReporting.FatalExit(Language.GetTextValue("tModLoader.ContentFolderNotFound"));
 		}
 
 		// Canary file for legacy Terraria branches.
-		if (!File.Exists(Path.Combine(vanillaContentFolder, "Images", "Projectile_112.xnb"))) {
+		if (!File.Exists(Path.Combine(vanillaContentFolder, "Images", "Projectile_651.xnb"))) {
 			Utils.OpenToURL("https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Usage-FAQ#terraria-is-out-of-date-or-terraria-is-on-a-legacy-version");
 			ErrorReporting.FatalExit(Language.GetTextValue("tModLoader.TerrariaLegacyBranchMessage"));
 		}
 
-		// Canary file, ensures that Terraria has updated to at least the version this tModLoader was built for. Alternate check to BuildID check in TerrariaSteamClient for non-Steam launches 
+		// Canary file, ensures that Terraria has updated to at least the version this tModLoader was built for. Alternate check to BuildID check in TerrariaSteamClient for non-Steam launches
 		if (!File.Exists(Path.Combine(vanillaContentFolder, "Images", "Projectile_981.xnb"))) {
 			Utils.OpenToURL("https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Usage-FAQ#terraria-is-out-of-date-or-terraria-is-on-a-legacy-version");
 			ErrorReporting.FatalExit(Language.GetTextValue("tModLoader.TerrariaOutOfDateMessage"));
@@ -514,7 +520,7 @@ public partial class Main
 
 		base.Content = new TMLContentManager(Content.ServiceProvider, vanillaContentFolder, localOverrideContentManager);
 	}
-	
+
 	private static void DrawtModLoaderSocialMediaButtons(Microsoft.Xna.Framework.Color menuColor, float upBump)
 	{
 		List<TitleLinkButton> titleLinks = tModLoaderTitleLinks;
@@ -578,7 +584,7 @@ public partial class Main
 				newsChecked = true;
 				// Download latest news, save to config.json.
 				// https://partner.steamgames.com/doc/webapi/ISteamNews
-				client.GetStringAsync("https://api.steampowered.com/ISteamNews/GetNewsForApp/v2/?appid=1281930&count=1").ContinueWith(response => {
+				client.GetStringAsync("https://api.steampowered.com/ISteamNews/GetNewsForApp/v2/?appid=1281930&count=1&feeds=steam_community_announcements").ContinueWith(response => {
 					if (!response.IsCompletedSuccessfully || response.Exception != null) {
 						newsText = Language.GetTextValue("tModLoader.LatestNewsOffline");
 						return;
@@ -643,7 +649,7 @@ public partial class Main
 			}
 		}
 
-		// If reload is required, show message. Back action should leave current ModConfig instances unchanged 
+		// If reload is required, show message. Back action should leave current ModConfig instances unchanged
 		if (needsReload) {
 			string continueButtonText = Language.GetTextValue("tModLoader.ReloadRequiredReloadAndContinue");
 			Interface.serverModsDifferMessage.Show(Language.GetTextValue("tModLoader.ReloadRequiredSinglePlayerMessage", continueButtonText),

@@ -9,7 +9,7 @@ namespace ExampleMod.Content.Clouds
 	// This class showcases advanced usage of a modded cloud. A ModCloud class is only needed for clouds with custom logic.
 	// Typical clouds can be autoloaded automatically from any "Clouds" folder or manually loaded via CloudLoader.AddCloudFromTexture method for greater control.
 	public class AdvancedExampleCloud : ModCloud
-    {
+	{
 		public override bool RareCloud => true;
 
 		public override float SpawnChance() {

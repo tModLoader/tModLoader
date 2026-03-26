@@ -45,14 +45,17 @@ namespace ExampleMod.Content.Items.Armor
 
 		public override void ArmorSetShadows(Player player) {
 			var exampleArmorSetBonusPlayer = player.GetModPlayer<ExampleArmorSetBonusPlayer>();
-			if(exampleArmorSetBonusPlayer.ShadowStyle == 1) {
+			if (exampleArmorSetBonusPlayer.ShadowStyle == 1) {
 				player.armorEffectDrawShadow = true;
 			}
-			else if(exampleArmorSetBonusPlayer.ShadowStyle == 2) {
+			else if (exampleArmorSetBonusPlayer.ShadowStyle == 2) {
 				player.armorEffectDrawOutlines = true;
 			}
 			else if (exampleArmorSetBonusPlayer.ShadowStyle == 3) {
 				player.armorEffectDrawOutlinesForbidden = true;
+			}
+			else if (exampleArmorSetBonusPlayer.ShadowStyle == 4) {
+				exampleArmorSetBonusPlayer.CustomShadow = true;
 			}
 		}
 

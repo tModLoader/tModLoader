@@ -6,13 +6,13 @@ using Terraria.Localization;
 namespace Terraria.ModLoader.Engine;
 
 /// <summary>
-/// This class handles displaying errors that require a OS-provided modal message box. Fatal errors and errors that happen in situations where a suitable place to display an error doesn't exist (such as when initially loading). 
+/// This class handles displaying errors that require a OS-provided modal message box. Fatal errors and errors that happen in situations where a suitable place to display an error doesn't exist (such as when initially loading).
 /// </summary>
 internal class ErrorReporting
 {
 	internal static void MessageBoxShow(string message, bool fatal = false)
 	{
-		var title = ModLoader.versionedName + (fatal ? " Error" : " Fatal Error");
+		var title = ModLoader.versionedName + (fatal ? " Fatal Error" : " Error");
 
 		string logDir = Path.GetFullPath(Logging.LogDir);
 		var logFileName = Logging.LogPath == null ? "Natives.log" : Path.GetFileName(Logging.LogPath);

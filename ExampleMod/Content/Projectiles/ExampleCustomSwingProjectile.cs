@@ -75,6 +75,7 @@ namespace ExampleMod.Content.Projectiles
 
 		public override void SetStaticDefaults() {
 			ProjectileID.Sets.HeldProjDoesNotUsePlayerGfxOffY[Type] = true;
+			ProjectileID.Sets.AllowsContactDamageFromJellyfish[Type] = true;
 		}
 
 		public override void SetDefaults() {
@@ -115,7 +116,7 @@ namespace ExampleMod.Content.Projectiles
 		}
 
 		public override void SendExtraAI(BinaryWriter writer) {
-			// Projectile.spriteDirection for this projectile is derived from the mouse position of the owner in OnSpawn, as such it needs to be synced. spriteDirection is not one of the fields automatically synced over the network. All Projectile.ai slots are used already, so we will sync it manually. 
+			// Projectile.spriteDirection for this projectile is derived from the mouse position of the owner in OnSpawn, as such it needs to be synced. spriteDirection is not one of the fields automatically synced over the network. All Projectile.ai slots are used already, so we will sync it manually.
 			writer.Write((sbyte)Projectile.spriteDirection);
 		}
 
@@ -216,6 +217,12 @@ namespace ExampleMod.Content.Projectiles
 			// Set composite arm allows you to set the rotation of the arm and stretch of the front and back arms independently
 			Owner.SetCompositeArmFront(true, Player.CompositeArmStretchAmount.Full, Projectile.rotation - MathHelper.ToRadians(90f)); // set arm position (90 degree offset since arm starts lowered)
 			Vector2 armPosition = Owner.GetFrontHandPosition(Player.CompositeArmStretchAmount.Full, Projectile.rotation - (float)Math.PI / 2); // get position of hand
+
+			// Adjust the position for reversed gravity.
+			if (Owner.gravDir == -1f) {
+				Projectile.rotation = 0f - Projectile.rotation;
+				armPosition.Y = Owner.Bottom.Y + (Owner.position.Y - armPosition.Y);
+			}
 
 			armPosition.Y += Owner.gfxOffY;
 			Projectile.Center = armPosition; // Set projectile to arm position

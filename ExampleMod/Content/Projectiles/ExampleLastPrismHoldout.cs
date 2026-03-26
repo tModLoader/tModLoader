@@ -59,11 +59,11 @@ namespace ExampleMod.Content.Projectiles
 		}
 
 		public override void SetStaticDefaults() {
-			Main.projFrames[Projectile.type] = NumAnimationFrames;
+			Main.projFrames[Type] = NumAnimationFrames;
 
 			// Signals to Terraria that this Projectile requires a unique identifier beyond its index in the Projectile array.
 			// This prevents the issue with the vanilla Last Prism where the beams are invisible in multiplayer.
-			ProjectileID.Sets.NeedsUUID[Projectile.type] = true;
+			ProjectileID.Sets.NeedsUUID[Type] = true;
 
 			// Prevents jitter when stepping up and down blocks and half blocks
 			ProjectileID.Sets.HeldProjDoesNotUsePlayerGfxOffY[Type] = true;
@@ -73,6 +73,9 @@ namespace ExampleMod.Content.Projectiles
 			// Use CloneDefaults to clone all basic Projectile statistics from the vanilla Last Prism.
 			Projectile.CloneDefaults(ProjectileID.LastPrism);
 		}
+
+		// Held projectiles should set this to false otherwise they will deal contact damage.
+		public override bool? CanDamage() => false;
 
 		public override void AI() {
 			Player player = Main.player[Projectile.owner];
@@ -228,7 +231,7 @@ namespace ExampleMod.Content.Projectiles
 		public override bool PreDraw(ref Color lightColor) {
 			SpriteEffects effects = Projectile.spriteDirection == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
 			Texture2D texture = TextureAssets.Projectile[Type].Value;
-			int frameHeight = texture.Height / Main.projFrames[Projectile.type];
+			int frameHeight = texture.Height / Main.projFrames[Type];
 			int spriteSheetOffset = frameHeight * Projectile.frame;
 			Vector2 sheetInsertPosition = (Projectile.Center + Vector2.UnitY * Projectile.gfxOffY - Main.screenPosition).Floor();
 

@@ -14,6 +14,10 @@ public abstract class ModAccessorySlot : ModType
 {
 	public int Type { get; internal set; }
 
+	/// <summary>
+	/// The player that this ModAccessorySlot is currently accessing, equivalent to <see cref="Main.CurrentPlayer"/>. ModAccessorySlot are singletons, the behavior of properties like <see cref="FunctionalItem"/> depends on the current player.
+	/// <br/><br/> <b>Main.CurrentPlayer documentation:</b><br/> <inheritdoc cref="Main.CurrentPlayer"/>
+	/// </summary>
 	public static Player Player => Main.CurrentPlayer;
 
 	public ModAccessorySlotPlayer ModSlotPlayer => AccessorySlotLoader.ModSlotPlayer(Player);
@@ -36,22 +40,49 @@ public abstract class ModAccessorySlot : ModType
 	public virtual bool DrawVanitySlot => true;
 	public virtual bool DrawDyeSlot => true;
 
+	/// <summary>
+	/// Gets or sets a value indicating whether this slot supports equipment loadouts. If <see langword="false"/>,
+	/// the slot's item is shared between all loadouts.
+	/// <br/><br/> Defaults to <see langword="true"/>.
+	/// <br/><br/> Changing this value requires a reload. This value is not allowed to be different between multiplayer clients or issues will occur.
+	/// <br/><br/> Changing the value from <see langword="true"/> to <see langword="false"/> will cause the extra items to be spawned on the player when they enter the world.
+	/// <br/> Changing the value from <see langword="false"/> to <see langword="true"/> will result in the currently selected loadout holding the items.
+	/// <br/><br/> Slots that don't support loadouts will appear with the default green background texture, as if they were an accessory in loadout #1 or from before loadout support was added to the game.
+	/// </summary>
+	public virtual bool HasEquipmentLoadoutSupport => true;
+
 	// Get/Set Properties for fetching slot information
+	/// <summary>
+	/// The functional item of this equipment slot.
+	/// <br/><br/> This property always accesses the equipment of the current player, see <see cref="Player"/> for more info.
+	/// </summary>
 	public Item FunctionalItem {
 		get => ModSlotPlayer.exAccessorySlot[Type];
 		set => ModSlotPlayer.exAccessorySlot[Type] = value;
 	}
 
+	/// <summary>
+	/// The vanity item of this equipment slot.
+	/// <br/><br/> This property always accesses the equipment of the current player, see <see cref="Player"/> for more info.
+	/// </summary>
 	public Item VanityItem {
 		get => ModSlotPlayer.exAccessorySlot[Type + ModSlotPlayer.SlotCount];
 		set => ModSlotPlayer.exAccessorySlot[Type + ModSlotPlayer.SlotCount] = value;
 	}
 
+	/// <summary>
+	/// The dye item of this equipment slot.
+	/// <br/><br/> This property always accesses the equipment of the current player, see <see cref="Player"/> for more info.
+	/// </summary>
 	public Item DyeItem {
 		get => ModSlotPlayer.exDyesAccessory[Type];
 		set => ModSlotPlayer.exDyesAccessory[Type] = value;
 	}
 
+	/// <summary>
+	/// Indicates if the corresponding <see cref="FunctionalItem"/> is set to be hidden or not.
+	/// <br/><br/> This property always accesses the equipment of the current player, see <see cref="Player"/> for more info.
+	/// </summary>
 	public bool HideVisuals {
 		get => ModSlotPlayer.exHideAccessory[Type];
 		set => ModSlotPlayer.exHideAccessory[Type] = value;
@@ -132,4 +163,10 @@ public abstract class ModAccessorySlot : ModType
 	/// Allows you to do stuff while the player is hovering over this slot.
 	/// </summary>
 	public virtual void OnMouseHover(AccessorySlotType context) { }
+
+	/// <summary>
+	/// Allows customizing the background texture draw color.
+	/// <br/><br/> For <see cref="HasEquipmentLoadoutSupport"/> slots without a custom texture, the color will already have been adjusted for the current loadout (ItemSlot.GetColorByLoadout), otherwise the color will be <see cref="Main.inventoryBack"/>, which will oscillate all values between 180 and 240.
+	/// </summary>
+	public virtual void BackgroundDrawColor(AccessorySlotType context, ref Color color) { }
 }

@@ -1,0 +1,26 @@
+--- src/TerrariaNetCore/Terraria/UI/InGamePopups.cs
++++ src/tModLoader/Terraria/UI/InGamePopups.cs
+@@ -58,6 +_,12 @@
+ 			int num = (_iconIndex = Main.Achievements.GetIconIndex(achievement.Name));
+ 			_achievementIconFrame = new Rectangle(num % 8 * 66, num / 8 * 66, 64, 64);
+ 			_achievementTexture = Main.Assets.Request<Texture2D>("Images/UI/Achievements", AssetRequestMode.AsyncLoad);
++
++			if (achievement.ModAchievement != null) {
++				_achievementIconFrame = new Rectangle(0, num * 66, 64, 64);
++				_achievementTexture = achievement.ModAchievement?.Texture;
++			}
++
+ 			_achievementBorderTexture = Main.Assets.Request<Texture2D>("Images/UI/Achievement_Borders", AssetRequestMode.AsyncLoad);
+ 		}
+ 
+@@ -87,7 +_,10 @@
+ 				float num3 = num * 0.3f;
+ 				Vector2 vector = r.Right() - Vector2.UnitX * num * (12f + num3 * (float)_achievementIconFrame.Width);
+ 				sb.Draw(_achievementTexture.Value, vector, _achievementIconFrame, Color.White * opacity, 0f, new Vector2(0f, _achievementIconFrame.Height / 2), num3, SpriteEffects.None, 0f);
++				/*
+ 				sb.Draw(_achievementBorderTexture.Value, vector, null, Color.White * opacity, 0f, new Vector2(0f, _achievementIconFrame.Height / 2), num3, SpriteEffects.None, 0f);
++				*/
++				sb.Draw(_achievementBorderTexture.Value, vector, null, Color.White * opacity, 0f, new Vector2(4f, _achievementBorderTexture.Height() / 2), num3, SpriteEffects.None, 0f); // Fix vanilla border/achievement drawing alignment bug.
+ 				Utils.DrawBorderString(color: new Color(Main.mouseTextColor, Main.mouseTextColor, (int)Main.mouseTextColor / 5, Main.mouseTextColor) * opacity, sb: sb, text: _title, pos: vector - Vector2.UnitX * 10f, scale: num * 0.9f, anchorx: 1f, anchory: 0.4f);
+ 				if (num2)
+ 					OnMouseOver();

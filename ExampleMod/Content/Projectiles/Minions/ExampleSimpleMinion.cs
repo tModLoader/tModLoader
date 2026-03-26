@@ -40,10 +40,10 @@ namespace ExampleMod.Content.Projectiles.Minions
 	public class ExampleSimpleMinionItem : ModItem
 	{
 		public override void SetStaticDefaults() {
-			ItemID.Sets.GamepadWholeScreenUseRange[Item.type] = true; // This lets the player target anywhere on the whole screen while using a controller
-			ItemID.Sets.LockOnIgnoresCollision[Item.type] = true;
+			ItemID.Sets.GamepadWholeScreenUseRange[Type] = true; // This lets the player target anywhere on the whole screen while using a controller
+			ItemID.Sets.LockOnIgnoresCollision[Type] = true;
 
-			ItemID.Sets.StaffMinionSlotsRequired[Type] = 1f; // The default value is 1, but other values are supported. See the docs for more guidance. 
+			ItemID.Sets.StaffMinionSlotsRequired[Type] = 1f; // The default value is 1, but other values are supported. See the docs for more guidance.
 		}
 
 		public override void SetDefaults() {
@@ -68,20 +68,16 @@ namespace ExampleMod.Content.Projectiles.Minions
 		}
 
 		public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
-			// Here you can change where the minion is spawned. Most vanilla minions spawn at the cursor position
+			// Here you can change where the minion is spawned. Most vanilla minions spawn at the cursor position, limited by the gameplay range
 			position = Main.MouseWorld;
+			player.LimitPointToPlayerReachableArea(ref position);
 		}
 
 		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 			// This is needed so the buff that keeps your minion alive and allows you to despawn it properly applies
 			player.AddBuff(Item.buffType, 2);
 
-			// Minions have to be spawned manually, then have originalDamage assigned to the damage of the summon item
-			var projectile = Projectile.NewProjectileDirect(source, position, velocity, type, damage, knockback, Main.myPlayer);
-			projectile.originalDamage = Item.damage;
-
-			// Since we spawned the projectile manually already, we do not need the game to spawn it for ourselves anymore, so return false
-			return false;
+			return true; // The minion projectile will be spawned by the game since we return true.
 		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
@@ -101,14 +97,14 @@ namespace ExampleMod.Content.Projectiles.Minions
 	{
 		public override void SetStaticDefaults() {
 			// Sets the amount of frames this minion has on its spritesheet
-			Main.projFrames[Projectile.type] = 4;
+			Main.projFrames[Type] = 4;
 			// This is necessary for right-click targeting
-			ProjectileID.Sets.MinionTargettingFeature[Projectile.type] = true;
+			ProjectileID.Sets.MinionTargettingFeature[Type] = true;
 
-			Main.projPet[Projectile.type] = true; // Denotes that this projectile is a pet or minion
+			Main.projPet[Type] = true; // Denotes that this projectile is a pet or minion
 
-			ProjectileID.Sets.MinionSacrificable[Projectile.type] = true; // This is needed so your minion can properly spawn when summoned and replaced when other minions are summoned
-			ProjectileID.Sets.CultistIsResistantTo[Projectile.type] = true; // Make the cultist resistant to this projectile, as it's resistant to all homing projectiles.
+			ProjectileID.Sets.MinionSacrificable[Type] = true; // This is needed so your minion can properly spawn when summoned and replaced when other minions are summoned
+			ProjectileID.Sets.CultistIsResistantTo[Type] = true; // Make the cultist resistant to this projectile, as it's resistant to all homing projectiles.
 		}
 
 		public sealed override void SetDefaults() {
@@ -314,7 +310,7 @@ namespace ExampleMod.Content.Projectiles.Minions
 				Projectile.frameCounter = 0;
 				Projectile.frame++;
 
-				if (Projectile.frame >= Main.projFrames[Projectile.type]) {
+				if (Projectile.frame >= Main.projFrames[Type]) {
 					Projectile.frame = 0;
 				}
 			}

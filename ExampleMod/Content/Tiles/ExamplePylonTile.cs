@@ -45,6 +45,8 @@ namespace ExampleMod.Content.Tiles
 			Main.tileLighted[Type] = true;
 			Main.tileFrameImportant[Type] = true;
 
+			VanillaFallbackOnModDeletion = TileID.TeleportationPylon;
+
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style3x4);
 			TileObjectData.newTile.LavaDeath = false;
 			TileObjectData.newTile.DrawYOffset = 2;
@@ -64,7 +66,7 @@ namespace ExampleMod.Content.Tiles
 			// Adds functionality for proximity of pylons; if this is true, then being near this tile will count as being near a pylon for the teleportation process.
 			AddToArray(ref TileID.Sets.CountsAsPylon);
 
-			LocalizedText pylonName = CreateMapEntryName(); //Name is in the localization file
+			LocalizedText pylonName = CreateMapEntryName(); // Name is in the localization file
 			AddMapEntry(Color.White, pylonName);
 		}
 
