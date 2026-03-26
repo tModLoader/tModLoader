@@ -296,7 +296,9 @@ public static partial class Config
 		RenameStaticField("Terraria.Main", "gameInactive", "GameplayActive", "Terraria.FocusHelper").FollowBy(InvertBool);
 		RenameStaticField("Terraria.NPC", "killCount", "killCount", "Terraria.GameContent.BannerSystem");
 		RenameStaticField("Terraria.WorldGen", from: "gen", to: "isGeneratingOrLoadingWorld");
-
+		RenameStaticField("Terraria.Main", from: "DisableIntenseVisualEffects", to: "FlashyEffectsWorld").FollowBy(InvertBool);
+		RenameStaticField("Terraria.ID.ProjectileID.Sets", from: "MinionTargettingFeature", to: "MinionTargetingFeature");
+		
 		RenameInstanceField("Terraria.Player", from: "adjWater", to: "adjWaterSource");
 		RenameInstanceField("Terraria.Player", from: "oldAdjWater", to: "oldAdjWaterSource");
 		RenameInstanceField("Terraria.NPC.Spawner", from: "Sky",          to: "skyMob");
@@ -309,6 +311,8 @@ public static partial class Config
 		RenameInstanceField("Terraria.NPC.Spawner", from: "SpiderCave",   to: "spawnSpider");
 		RenameInstanceField("Terraria.NPC.Spawner", from: "PlayerInTown", to: "spawnFriendly");
 		RenameInstanceField("Terraria.NPC.Spawner", from: "DesertCave",   to: "spawnUndergroundDesert");
+		RenameInstanceField("Terraria.Dust", from: "noLightEmittence",   to: "noLightEmittance");
+		RenameInstanceField("Terraria.Player", from: "isPettingAnimal", to: "petting.isPetting");
 
 		RenameMethod("Terraria.Item", "BannerToItem", "BannerToItem", "Terraria.GameContent.BannerSystem");
 		RenameMethod("Terraria.Item", "BannerToNPC", "BannerToNPC", "Terraria.GameContent.BannerSystem");
@@ -325,6 +329,7 @@ public static partial class Config
 		RefactorInstanceMethodCall("Terraria.Tile", "anyHoney", GetterToProperty("HasHoney"));
 		RefactorInstanceMethodCall("Terraria.Tile", "anyShimmer", GetterToProperty("HasShimmer"));
 		RefactorInstanceMethodCall("Terraria.Tile", "anyWire", GetterToProperty("HasWire"));
+		RefactorInstanceMethodCall("Terraria.NPC", "ShouldBestiaryGirlBeLycantrope", ToStaticMethodCall("Terraria.NPC", "ShouldBestiaryGirlBeLycantrope"));
 	}
 
 	private static void AddTextureRenames() {

@@ -550,5 +550,7 @@ public static partial class Config
 		// 1.4.5
 		ChangeHookSignature("Terraria.ModLoader.ModNPC", "SpawnChance").RenameParameter("spawnInfo", "spawner");
 		ChangeHookSignature("Terraria.ModLoader.GlobalNPC", "EditSpawnPool").RenameParameter("spawnInfo", "spawner");
+		ChangeHookSignature("Terraria.ModLoader.GlobalItem", "PostDrawInWorld");
+		ChangeHookSignature("Terraria.ModLoader.GlobalItem", "PreDrawInWorld");
 	}
 }
