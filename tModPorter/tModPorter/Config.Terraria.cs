@@ -300,6 +300,8 @@ public static partial class Config
 		RenameStaticField("Terraria.NPC", "killCount", "killCount", "Terraria.GameContent.BannerSystem");
 		RenameStaticField("Terraria.WorldGen", from: "gen", to: "isGeneratingOrLoadingWorld");
 		
+		RenameInstanceField("Terraria.Dust", from: "noLightEmittence", to: "noLightEmittance");
+		RenameInstanceField("Terraria.Item", from: "netID", to: "type");
 		RenameInstanceField("Terraria.Player", from: "adjWater", to: "adjWaterSource");
 		RenameInstanceField("Terraria.Player", from: "oldAdjWater", to: "oldAdjWaterSource");
 		RenameInstanceField("Terraria.Player", from: "isPettingAnimal", to: "petting.isPetting");
