@@ -10,6 +10,7 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Engine;
+using Terraria.Utilities;
 
 namespace Terraria;
 
@@ -249,11 +250,14 @@ public static partial class Program
 			if (string.IsNullOrEmpty(lastLaunchedTml)) {
 				// If the config.json is missing LastLaunchedTModLoaderVersion entry, we can ask the user. (Most likely the user copied Terraria/config.json over)
 				// We can't localized these the normal way because localization isn't loaded at this point.
-				int result = ErrorReporting.ShowMessageBoxWithChoices(
+				int result = MessageBox.Show(
 					title: "Failed to read config.json configuration file",
 					message: "Your config.json file is incomplete.\n\nPlease select one of the following options and the game will resume loading:\n\nWhat is the highest version of tModLoader that you have launched?",
 					// 1.4.5_RELEASE_FLAG
-					buttonLabels: new string[] { "1.4.4", "1.4.3", "Cancel" }
+					buttonLabels: ["1.4.4", "1.4.3", "Cancel"],
+					returnButtonIndex: 0,
+					cancelButtonIndex: 2,
+					icon: MessageBoxIcon.Warning
 				);
 				if (result == 0)
 					lastLaunchedTml = BuildInfo.tMLVersion.ToString();

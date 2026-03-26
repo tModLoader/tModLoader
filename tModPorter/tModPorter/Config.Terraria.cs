@@ -269,6 +269,7 @@ public static partial class Config
 		// 1.4.5                
 		RenameStaticField("Terraria.ID.BuffID.Sets", from: "LongerExpertDebuff", to: "BuffTimeIsExtendedWithGameDifficulty");
 		RenameStaticField("Terraria.ID.GoreID.Sets", from: "LiquidDroplet", to: "IsDrip");
+		RenameStaticField("Terraria.ID.ImmunityCooldownID", from: "Bosses", to: "BossNoCheese");
 		RenameStaticField("Terraria.ID.ItemID.Sets", from: "SortingPriorityBossSpawns", to: "SortingPriorityMiscImportants");
 		RenameStaticField("Terraria.ID.ItemID.Sets", from: "BonusAttackSpeedMultiplier", to: "BonusMeleeSpeedMultiplier");
 		RenameStaticField("Terraria.ID.MessageID", from: "TileSquare", to: "AreaTileChange");
@@ -284,6 +285,7 @@ public static partial class Config
 		RenameStaticField("Terraria.ID.NPCID.Sets", from: "UsesNewTargetting", to: "UsesNewTargeting");
 		RenameStaticField("Terraria.ID.NPCID.Sets", from: "ShouldBeCountedAsBossForBestiary", to: "ShouldBeCountedAsBoss");
 		RenameStaticField("Terraria.ID.NPCID.Sets", from: "SpawnFromLastEmptySlot", to: "SearchSpawnSlotsInReverse");
+		RenameStaticField("Terraria.ID.ProjectileID.Sets", from: "MinionTargettingFeature", to: "MinionTargetingFeature");
 		RenameStaticField("Terraria.ID.TileID.Sets", from: "CountsAsWaterSource", to: "CountsAsWaterForCrafting");
 		RenameStaticField("Terraria.ID.TileID.Sets", from: "CountsAsHoneySource", to: "CountsAsHoneyForCrafting");
 		RenameStaticField("Terraria.ID.TileID.Sets", from: "CountsAsLavaSource", to: "CountsAsLavaForCrafting");
@@ -293,14 +295,14 @@ public static partial class Config
 		RenameStaticField("Terraria.ID.TileID.Sets", from: "InteractibleByNPCs", to: "InteractableByNPCs");
 		RenameStaticField("Terraria.ID.TileID.Sets", from: "Torch", to: "Torches");
 		RenameStaticField("Terraria.ID.TileID.Sets", from: "Campfire", to: "Campfires");
+		RenameStaticField("Terraria.Main", from: "DisableIntenseVisualEffects", to: "FlashyEffectsWorld").FollowBy(InvertBool);
 		RenameStaticField("Terraria.Main", "gameInactive", "GameplayActive", "Terraria.FocusHelper").FollowBy(InvertBool);
 		RenameStaticField("Terraria.NPC", "killCount", "killCount", "Terraria.GameContent.BannerSystem");
 		RenameStaticField("Terraria.WorldGen", from: "gen", to: "isGeneratingOrLoadingWorld");
-		RenameStaticField("Terraria.Main", from: "DisableIntenseVisualEffects", to: "FlashyEffectsWorld").FollowBy(InvertBool);
-		RenameStaticField("Terraria.ID.ProjectileID.Sets", from: "MinionTargettingFeature", to: "MinionTargetingFeature");
 		
 		RenameInstanceField("Terraria.Player", from: "adjWater", to: "adjWaterSource");
 		RenameInstanceField("Terraria.Player", from: "oldAdjWater", to: "oldAdjWaterSource");
+		RenameInstanceField("Terraria.Player", from: "isPettingAnimal", to: "petting.isPetting");
 		RenameInstanceField("Terraria.NPC.Spawner", from: "Sky",          to: "skyMob");
 		RenameInstanceField("Terraria.NPC.Spawner", from: "Lihzahrd",     to: "ZoneLihzhardTemple");
 		RenameInstanceField("Terraria.NPC.Spawner", from: "PlayerSafe",   to: "noWorms");
@@ -311,8 +313,6 @@ public static partial class Config
 		RenameInstanceField("Terraria.NPC.Spawner", from: "SpiderCave",   to: "spawnSpider");
 		RenameInstanceField("Terraria.NPC.Spawner", from: "PlayerInTown", to: "spawnFriendly");
 		RenameInstanceField("Terraria.NPC.Spawner", from: "DesertCave",   to: "spawnUndergroundDesert");
-		RenameInstanceField("Terraria.Dust", from: "noLightEmittence",   to: "noLightEmittance");
-		RenameInstanceField("Terraria.Player", from: "isPettingAnimal", to: "petting.isPetting");
 
 		RenameMethod("Terraria.Item", "BannerToItem", "BannerToItem", "Terraria.GameContent.BannerSystem");
 		RenameMethod("Terraria.Item", "BannerToNPC", "BannerToNPC", "Terraria.GameContent.BannerSystem");
