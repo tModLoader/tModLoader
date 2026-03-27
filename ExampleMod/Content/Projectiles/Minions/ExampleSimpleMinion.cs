@@ -99,7 +99,7 @@ namespace ExampleMod.Content.Projectiles.Minions
 			// Sets the amount of frames this minion has on its spritesheet
 			Main.projFrames[Type] = 4;
 			// This is necessary for right-click targeting
-			ProjectileID.Sets.MinionTargettingFeature[Type] = true;
+			ProjectileID.Sets.MinionTargetingFeature[Type] = true;
 
 			Main.projPet[Type] = true; // Denotes that this projectile is a pet or minion
 

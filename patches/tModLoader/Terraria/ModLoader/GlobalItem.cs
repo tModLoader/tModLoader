@@ -1048,7 +1048,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	}
 
 	/// <summary>
-	/// <inheritdoc cref="ModItem.PreDrawInWorld(SpriteBatch, Color, Color, ref float, ref float, int)"/>
+	/// <inheritdoc cref="ModItem.PreDrawInWorld(WorldItem, SpriteBatch, Color, Color, ref float, ref float, int)"/>
 	/// </summary>
 	public virtual bool PreDrawInWorld(WorldItem item, SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI)
 	{
@@ -1056,7 +1056,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	}
 
 	/// <summary>
-	/// <inheritdoc cref="ModItem.PostDrawInWorld(SpriteBatch, Color, Color, float, float, int)"/>
+	/// <inheritdoc cref="ModItem.PostDrawInWorld(WorldItem, SpriteBatch, Color, Color, float, float, int)"/>
 	/// </summary>
 	public virtual void PostDrawInWorld(WorldItem item, SpriteBatch spriteBatch, Color lightColor, Color alphaColor, float rotation, float scale, int whoAmI)
 	{

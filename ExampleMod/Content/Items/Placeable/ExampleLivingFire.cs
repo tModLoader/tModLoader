@@ -21,7 +21,7 @@ namespace ExampleMod.Content.Items.Placeable
 			Item.height = 12;
 		}
 
-		public override void PostUpdate() {
+		public override void PostUpdate(WorldItem item) {
 			// Add some lighting when the item is dropped in the world.
 			// Curiously, only the regular Living Fire Block creates light.
 			Lighting.AddLight(Item.Center, LightColor);

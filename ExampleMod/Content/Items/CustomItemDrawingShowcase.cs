@@ -111,7 +111,7 @@ namespace ExampleMod.Content.Items
 			}
 		}
 
-		public override bool PreDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI) {
+		public override bool PreDrawInWorld(WorldItem item, SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI) {
 			Main.GetItemDrawFrame(Item.type, out var itemTexture, out var itemFrame);
 			Vector2 drawOrigin = itemFrame.Size() / 2f;
 			// Items in the world are drawn centered horizontally sitting at the bottom of the item hitbox, not in the center.
@@ -159,7 +159,7 @@ namespace ExampleMod.Content.Items
 			return true;
 		}
 
-		public override void PostDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, float rotation, float scale, int whoAmI) {
+		public override void PostDrawInWorld(WorldItem item, SpriteBatch spriteBatch, Color lightColor, Color alphaColor, float rotation, float scale, int whoAmI) {
 			Main.GetItemDrawFrame(Item.type, out var itemTexture, out var itemFrame);
 			Vector2 origin = itemFrame.Size() / 2f;
 			Vector2 drawPosition = Item.Bottom - Main.screenPosition - new Vector2(0, origin.Y);

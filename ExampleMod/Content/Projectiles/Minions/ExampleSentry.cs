@@ -23,7 +23,7 @@ namespace ExampleMod.Content.Projectiles.Minions
 
 		public override void SetStaticDefaults() {
 			Main.projFrames[Type] = 4;
-			ProjectileID.Sets.MinionTargettingFeature[Type] = true;
+			ProjectileID.Sets.MinionTargetingFeature[Type] = true;
 		}
 
 		public override void SetDefaults() {

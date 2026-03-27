@@ -101,7 +101,9 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	/// Gets called when your item spawns in world.
 	/// <para/> Called on the local client or the server where Item.NewItem is called.
 	/// </summary>
-	public virtual void OnSpawn(IEntitySource source)
+	/// <param name="item">The WorldItem instance of this item.</param>
+	/// <param name="source"></param>
+	public virtual void OnSpawn(WorldItem item, IEntitySource source)
 	{
 	}
 
@@ -995,9 +997,10 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	/// <para/> This is only called when attempting to stack with an item of the same type.
 	/// <para/> Called on the local client or server, depending on who the item is reserved for.
 	/// </summary>
-	/// <param name="source">The item instance being stacked onto this item</param>
+	/// <param name="destination">The WorldItem for this item</param>
+	/// <param name="source">The WorldItem instance being stacked onto this item</param>
 	/// <returns>Whether or not the item is allowed to stack</returns>
-	public virtual bool CanStackInWorld(WorldItem source)
+	public virtual bool CanStackInWorld(WorldItem destination, WorldItem source)
 	{
 		return true;
 	}
@@ -1130,9 +1133,10 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// Allows you to customize this item's movement when lying in the world. Note that this will not be called if this item is currently being grabbed by a player.
 	/// <para/> Called on all clients and the server.
 	/// </summary>
+	/// <param name="item">The WorldItem instance of this item.</param>
 	/// <param name="gravity">The gravity.</param>
 	/// <param name="maxFallSpeed">The maximum fall speed.</param>
-	public virtual void Update(ref float gravity, ref float maxFallSpeed)
+	public virtual void Update(WorldItem item, ref float gravity, ref float maxFallSpeed)
 	{
 	}
 
@@ -1140,7 +1144,8 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// Allows you to make things happen when this item is lying in the world. This will always be called, even when it is being grabbed by a player. This hook should be used for adding light, or for increasing the age of less valuable items.
 	/// <para/> Called on all clients and the server.
 	/// </summary>
-	public virtual void PostUpdate()
+	/// <param name="item">The WorldItem instance of this item.</param>
+	public virtual void PostUpdate(WorldItem item)
 	{
 	}
 
@@ -1148,9 +1153,10 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// Allows you to modify how close this item must be to the player in order to move towards the player.
 	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
+	/// <param name="item">The WorldItem instance of this item.</param>
 	/// <param name="player">The player.</param>
 	/// <param name="grabRange">The grab range.</param>
-	public virtual void GrabRange(Player player, ref int grabRange)
+	public virtual void GrabRange(WorldItem item, Player player, ref int grabRange)
 	{
 	}
 
@@ -1158,9 +1164,10 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// Allows you to modify the way this item moves towards the player. Return true if you override this hook; returning false will allow the vanilla grab style to take place. Returns false by default.
 	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
+	/// <param name="item">The WorldItem instance of this item.</param>
 	/// <param name="player">The player.</param>
 	/// <returns></returns>
-	public virtual bool GrabStyle(Player player)
+	public virtual bool GrabStyle(WorldItem item, Player player)
 	{
 		return false;
 	}
@@ -1169,8 +1176,9 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// Allows you to determine whether or not the item can be picked up
 	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
+	/// <param name="item">The WorldItem instance of this item.</param>
 	/// <param name="player">The player.</param>
-	public virtual bool CanPickup(Player player)
+	public virtual bool CanPickup(WorldItem item, Player player)
 	{
 		return true;
 	}
@@ -1179,9 +1187,10 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// Allows you to make special things happen when the player picks up this item. Return false to stop the item from being added to the player's inventory; returns true by default.
 	/// <para/> Called on the local client only.
 	/// </summary>
+	/// <param name="item">The WorldItem instance of this item.</param>
 	/// <param name="player">The player.</param>
 	/// <returns></returns>
-	public virtual bool OnPickup(Player player)
+	public virtual bool OnPickup(WorldItem item, Player player)
 	{
 		return true;
 	}
@@ -1219,6 +1228,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// </code>
 	/// <para/> Returns true by default.
 	/// </summary>
+	/// <param name="item">The WorldItem instance of this item.</param>
 	/// <param name="spriteBatch">The sprite batch.</param>
 	/// <param name="lightColor">The lighting color at the item's center.</param>
 	/// <param name="alphaColor">The final color used to draw the item, mixing its alpha and lighting.</param>
@@ -1226,7 +1236,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// <param name="scale">The draw scale. Items are usually drawn in the world at a scale of 1f but some effects like pulsing Soul items change this.</param>
 	/// <param name="whoAmI">The <see cref="Entity.whoAmI"/>.</param>
 	/// <returns></returns>
-	public virtual bool PreDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI)
+	public virtual bool PreDrawInWorld(WorldItem item, SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI)
 	{
 		return true;
 	}
@@ -1241,13 +1251,14 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// Vector2 drawPosition = Item.Bottom - Main.screenPosition - new Vector2(0, drawOrigin.Y);
 	/// </code>
 	/// </summary>
+	/// <param name="item">The WorldItem instance of this item.</param>
 	/// <param name="spriteBatch">The sprite batch.</param>
 	/// <param name="lightColor">The lighting color at the item's center.</param>
 	/// <param name="alphaColor">The final color used to draw the item, mixing its alpha and lighting.</param>
 	/// <param name="rotation">The item rotation. Items rotate slightly as they are thrown.</param>
 	/// <param name="scale">The draw scale. Items are usually drawn in the world at a scale of 1f but some effects like pulsing Soul items change this.</param>
 	/// <param name="whoAmI">The <see cref="Entity.whoAmI"/>.</param>
-	public virtual void PostDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, float rotation, float scale, int whoAmI)
+	public virtual void PostDrawInWorld(WorldItem item, SpriteBatch spriteBatch, Color lightColor, Color alphaColor, float rotation, float scale, int whoAmI)
 	{
 	}
 

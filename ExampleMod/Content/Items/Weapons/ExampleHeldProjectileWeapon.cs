@@ -62,7 +62,7 @@ namespace ExampleMod.Content.Items.Weapons
 			return true;
 		}
 
-		public override void PostDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, float rotation, float scale, int whoAmI) {
+		public override void PostDrawInWorld(WorldItem item, SpriteBatch spriteBatch, Color lightColor, Color alphaColor, float rotation, float scale, int whoAmI) {
 			// Draw the glow texture when in the game world.
 			Texture2D texture = glowTexture.Value;
 			spriteBatch.Draw

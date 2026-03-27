@@ -27,7 +27,7 @@ namespace ExampleMod.Content.Items
 			Item.rare = ItemRarityID.Orange;
 		}
 
-		public override void PostUpdate() {
+		public override void PostUpdate(WorldItem item) {
 			Lighting.AddLight(Item.Center, Color.WhiteSmoke.ToVector3() * 0.55f * Main.essScale); // Makes this item glow when thrown out of inventory.
 		}
 

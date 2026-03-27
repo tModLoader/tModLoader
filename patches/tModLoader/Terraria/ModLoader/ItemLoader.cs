@@ -206,7 +206,7 @@ public static class ItemLoader
 
 	internal static void OnSpawn(WorldItem item, IEntitySource source)
 	{
-		item.ModItem?.OnSpawn(source);
+		item.ModItem?.OnSpawn(item, source);
 
 		foreach (GlobalItem g in HookOnSpawn.Enumerate(item.inner)) {
 			g.OnSpawn(item, source);
@@ -1546,7 +1546,7 @@ public static class ItemLoader
 				return false;
 		}
 
-		return destination.ModItem?.CanStackInWorld(source) ?? true;
+		return destination.ModItem?.CanStackInWorld(destination, source) ?? true;
 	}
 
 	private static HookList HookOnStack = AddHook<Action<Item, Item, int>>(g => g.OnStack);
@@ -1869,7 +1869,7 @@ public static class ItemLoader
 	/// </summary>
 	public static void Update(WorldItem item, ref float gravity, ref float maxFallSpeed)
 	{
-		item.ModItem?.Update(ref gravity, ref maxFallSpeed);
+		item.ModItem?.Update(item, ref gravity, ref maxFallSpeed);
 
 
 		foreach (var g in HookUpdate.Enumerate(item.inner)) {
@@ -1884,7 +1884,7 @@ public static class ItemLoader
 	/// </summary>
 	public static void PostUpdate(WorldItem item)
 	{
-		item.ModItem?.PostUpdate();
+		item.ModItem?.PostUpdate(item);
 
 		foreach (var g in HookPostUpdate.Enumerate(item.inner)) {
 			g.PostUpdate(item);
@@ -1899,7 +1899,7 @@ public static class ItemLoader
 	/// </summary>
 	public static void GrabRange(WorldItem item, Player player, ref int grabRange)
 	{
-		item.ModItem?.GrabRange(player, ref grabRange);
+		item.ModItem?.GrabRange(item, player, ref grabRange);
 
 		foreach (var g in HookGrabRange.Enumerate(item.inner)) {
 			g.GrabRange(item, player, ref grabRange);
@@ -1918,7 +1918,7 @@ public static class ItemLoader
 				return true;
 		}
 
-		return item.ModItem != null && item.ModItem.GrabStyle(player);
+		return item.ModItem != null && item.ModItem.GrabStyle(item, player);
 	}
 
 	private static HookList HookCanPickup = AddHook<Func<WorldItem, Player, bool>>(g => g.CanPickup);
@@ -1930,7 +1930,7 @@ public static class ItemLoader
 				return false;
 		}
 
-		return item.ModItem?.CanPickup(player) ?? true;
+		return item.ModItem?.CanPickup(item, player) ?? true;
 	}
 
 	private static HookList HookOnPickup = AddHook<Func<WorldItem, Player, bool>>(g => g.OnPickup);
@@ -1945,7 +1945,7 @@ public static class ItemLoader
 				return false;
 		}
 
-		return item.ModItem?.OnPickup(player) ?? true;
+		return item.ModItem?.OnPickup(item, player) ?? true;
 	}
 
 	private static HookList HookItemSpace = AddHook<Func<Item, Player, bool>>(g => g.ItemSpace);
@@ -1989,7 +1989,7 @@ public static class ItemLoader
 	{
 		bool flag = true;
 		if (item.ModItem != null)
-			flag &= item.ModItem.PreDrawInWorld(spriteBatch, lightColor, alphaColor, ref rotation, ref scale, whoAmI);
+			flag &= item.ModItem.PreDrawInWorld(item, spriteBatch, lightColor, alphaColor, ref rotation, ref scale, whoAmI);
 
 		foreach (var g in HookPreDrawInWorld.Enumerate(item.inner)) {
 			flag &= g.PreDrawInWorld(item, spriteBatch, lightColor, alphaColor, ref rotation, ref scale, whoAmI);
@@ -2005,7 +2005,7 @@ public static class ItemLoader
 	/// </summary>
 	public static void PostDrawInWorld(WorldItem item, SpriteBatch spriteBatch, Color lightColor, Color alphaColor, float rotation, float scale, int whoAmI)
 	{
-		item.ModItem?.PostDrawInWorld(spriteBatch, lightColor, alphaColor, rotation, scale, whoAmI);
+		item.ModItem?.PostDrawInWorld(item, spriteBatch, lightColor, alphaColor, rotation, scale, whoAmI);
 
 		foreach (var g in HookPostDrawInWorld.Enumerate(item.inner)) {
 			g.PostDrawInWorld(item, spriteBatch, lightColor, alphaColor, rotation, scale, whoAmI);

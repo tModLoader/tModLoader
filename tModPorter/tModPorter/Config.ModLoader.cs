@@ -550,9 +550,25 @@ public static partial class Config
 		// 1.4.5
 		ChangeHookSignature("Terraria.ModLoader.ModNPC", "SpawnChance").RenameParameter("spawnInfo", "spawner");
 		ChangeHookSignature("Terraria.ModLoader.GlobalNPC", "EditSpawnPool").RenameParameter("spawnInfo", "spawner");
-		/* Hold off on these until we finalize how we want these hooks with WorldItem to behave
-		ChangeHookSignature("Terraria.ModLoader.GlobalItem", "PostDrawInWorld");
+		ChangeHookSignature("Terraria.ModLoader.ModItem", "OnSpawn");
+		ChangeHookSignature("Terraria.ModLoader.ModItem", "CanStackInWorld");
+		ChangeHookSignature("Terraria.ModLoader.ModItem", "Update");
+		ChangeHookSignature("Terraria.ModLoader.ModItem", "PostUpdate");
+		ChangeHookSignature("Terraria.ModLoader.ModItem", "GrabRange");
+		ChangeHookSignature("Terraria.ModLoader.ModItem", "GrabStyle");
+		ChangeHookSignature("Terraria.ModLoader.ModItem", "CanPickup");
+		ChangeHookSignature("Terraria.ModLoader.ModItem", "OnPickup");
+		ChangeHookSignature("Terraria.ModLoader.ModItem", "PreDrawInWorld");
+		ChangeHookSignature("Terraria.ModLoader.ModItem", "PostDrawInWorld");
+		ChangeHookSignature("Terraria.ModLoader.GlobalItem", "OnSpawn");
+		ChangeHookSignature("Terraria.ModLoader.GlobalItem", "CanStackInWorld");
+		ChangeHookSignature("Terraria.ModLoader.GlobalItem", "Update");
+		ChangeHookSignature("Terraria.ModLoader.GlobalItem", "PostUpdate");
+		ChangeHookSignature("Terraria.ModLoader.GlobalItem", "GrabRange");
+		ChangeHookSignature("Terraria.ModLoader.GlobalItem", "GrabStyle");
+		ChangeHookSignature("Terraria.ModLoader.GlobalItem", "CanPickup");
+		ChangeHookSignature("Terraria.ModLoader.GlobalItem", "OnPickup");
 		ChangeHookSignature("Terraria.ModLoader.GlobalItem", "PreDrawInWorld");
-		*/
+		ChangeHookSignature("Terraria.ModLoader.GlobalItem", "PostDrawInWorld");
 	}
 }

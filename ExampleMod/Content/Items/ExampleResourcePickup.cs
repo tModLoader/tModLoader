@@ -30,7 +30,7 @@ namespace ExampleMod.Content.Items
 			Item.width = 12;
 		}
 
-		public override bool OnPickup(Player player) {
+		public override bool OnPickup(WorldItem item, Player player) {
 			// When the item is picked up, heal the player's ExampleResource stat and spawn and sync the corresponding CombatText
 			player.GetModPlayer<ExampleResourcePlayer>().HealExampleResource(ExampleResourceHealAmount);
 
@@ -46,7 +46,7 @@ namespace ExampleMod.Content.Items
 		// We can override CanPickup to prevent attempting to pick up this item when at max ExampleResource, but hearts and stars do not do this so we won't either.
 
 		// GrabRange can be used to implement effects similar to Heartreach potion or Celestial Magnet.
-		public override void GrabRange(Player player, ref int grabRange) {
+		public override void GrabRange(WorldItem item, Player player, ref int grabRange) {
 			if (player.GetModPlayer<ExampleResourcePlayer>().exampleResourceMagnet) {
 				grabRange += ExampleResourcePlayer.exampleResourceMagnetGrabRange;
 			}
