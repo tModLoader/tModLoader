@@ -497,7 +497,7 @@ public static class WallLoader
 
 		if (tile.wall == type && TryGetConversionFallback(type, conversionType, out var fallback)) {
 			tile.wall = (ushort)fallback;
-			WorldGen.Convert(i, j, conversionType, size: 0, tiles: false);
+			WorldGen.Convert(i, j, conversionType, tiles: false);
 
 			if (tile.wall == fallback)
 				tile.wall = (ushort)type;
