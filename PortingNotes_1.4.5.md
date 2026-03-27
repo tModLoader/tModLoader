@@ -270,6 +270,9 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - TileID.Sets.WallsMergeWith usages in Framing.WallFrame changed to newly added TileID.Sets.TruncatesWalls (TODO: New set contains several new vanilla tiles, does that make sense? tModPorter?)
 - ItemVariants.EverythingWorld renamed to MechdusaWorld
 - Player.GetItem no longer has plr parameter
+- Main.GameModeInfo.IsJourneyMode -> Main.IsJourneyMode
+- Item.SetDefaults() -> Item.SetDefaults(0)
+- Item.SetDefaults(int, bool) -> Item.SetDefaults(int)
 
 # ExampleMod TODOs
 - Verify that ExampleZombieThief still works with changes

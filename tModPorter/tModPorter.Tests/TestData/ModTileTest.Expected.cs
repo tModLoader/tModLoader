@@ -64,6 +64,9 @@ public class ModTileTest : ModTile
 		TileID.Sets.TouchDamageOther/* tModPorter Suggestion: TouchDamageImmediate and possibly TouchDamageBleeding */[Type] = 99;
 		TileID.Sets.TouchDamageVines/* tModPorter Suggestion: TouchDamageImmediate and TouchDamageDestroyTile */[Type] = 10;
 #endif
+
+		TileID.Sets.Wiring.IsAMechanism[Type] = true;
+		TileID.Sets.Wiring.IsATrigger[Type] = true;
 	}
 
 #if COMPILE_ERROR

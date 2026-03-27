@@ -48,6 +48,9 @@ public class ModTileTest : ModTile
 		TileID.Sets.TouchDamageSands[Type] = 15;
 		TileID.Sets.TouchDamageOther[Type] = 99;
 		TileID.Sets.TouchDamageVines[Type] = 10;
+
+		TileID.Sets.IsAMechanism[Type] = true;
+		TileID.Sets.IsATrigger[Type] = true;
 	}
 
 	public override int SaplingGrowthType(ref int style) { return -1; }
