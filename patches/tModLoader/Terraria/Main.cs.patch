@@ -6759,24 +6759,32 @@
  	public static void NewText(string newText, byte R = byte.MaxValue, byte G = byte.MaxValue, byte B = byte.MaxValue)
  	{
  		chatMonitor.NewText(newText, R, G, B);
-@@ -55915,6 +_,10 @@
+@@ -55915,6 +_,13 @@
  		SoundEngine.PlaySound(12);
  	}
  
 +	/// <summary>
-+	/// Stops rain. Should be called on the server (netMode != client) - vanilla syncs it using <see cref="SyncRain"/>.
-+	/// <br>You can also call this on the client to update visuals immediately, assuming it was called serverside as well (Journey Mode rain slider does this).</br>
++	/// Stops rain. Should be called on the server (netMode != client).<br/>
++	/// Vanilla syncs the result to clients through <see cref="SyncRain"/>.<br/>
++	/// You can also call this on the client to update visuals immediately, assuming it was called serverside as well (Journey Mode rain slider does this).<br/>
++	/// Has no effect if <see cref="IsRainingForever"/> is <see langword="true"/>.<br/>
++	/// If <paramref name="instant"/> is <see langword="true"/>, <see cref="cloudAlpha"/> is snapped to 0f instead of fading out gradually.<br/>
 +	/// </summary>
  	public static void StopRain(bool instant = false)
  	{
  		if (!IsRainingForever) {
-@@ -55927,6 +_,10 @@
+@@ -55927,6 +_,15 @@
  		}
  	}
  
 +	/// <summary>
-+	/// Starts rain for a random amount of time. Should be called on the server (netMode != client) - vanilla syncs it using <see cref="SyncRain"/>.
-+	/// <br>You can also call this on the client to update visuals immediately, assuming it was/will be called serverside as well (Journey Mode rain slider does this).</br>
++	/// Starts rain for a random amount of time, optionally triggering a coin rain. Should be called on the server (netMode != client).<br/>
++	/// Vanilla syncs the result to clients through <see cref="SyncRain"/>.<br/>
++	/// You can also call this on the client to update visuals immediately, assuming it was/will be called server-side as well (Journey Mode rain slider does this).<br/>
++	/// Has no effect on <see cref="rainTime"/> if <see cref="IsRainingForever"/> is <see langword="true"/>.<br/>
++	/// If <paramref name="instant"/> is <see langword="true"/>, <see cref="cloudAlpha"/> jumps to the target rain strength immediately instead of fading in gradually.<br/>
++	/// <paramref name="strengthOverride"/> overrides the rain intensity written to <see cref="maxRaining"/>. When <see langword="null"/>, a random strength is chosen by <see cref="ChangeRain(bool, float?)"/>.<br/>
++	/// If <paramref name="garenteeCoinRain"/> is <see langword="true"/>, forces a coin rain event to start, bypassing the luck-based roll.<br/>
 +	/// </summary>
  	public static void StartRain(bool instant = false, float? strengthOverride = null, bool garenteeCoinRain = false)
  	{
