@@ -1,0 +1,71 @@
+--- src/TerrariaNetCore/Terraria/Localization/VariableText.cs
++++ src/tModLoader/Terraria/Localization/VariableText.cs
+@@ -1,11 +_,10 @@
+ using System;
+ using System.Collections.Generic;
+-using System.Text;
+ using System.Text.RegularExpressions;
+ 
+ namespace Terraria.Localization;
+ 
+-internal class VariableText
++internal partial class VariableText
+ {
+ 	private struct Condition
+ 	{
+@@ -14,17 +_,26 @@
+ 	}
+ 
+ 	private readonly string _original;
++	/*
+ 	private readonly string _format;
++	*/
+ 	private readonly Condition[] _conditions;
+ 	private readonly string[] _variables;
+ 	private readonly object[] _formatArgBuffer;
++	/*
+ 	private readonly StringBuilder _formatBuffer = new StringBuilder();
++	*/
++	private readonly CompositeText _compositeText; // TML added, replacement for _format and _formatBuffer
++
+ 	private static readonly Regex _substitutionRegex = new Regex("{(\\?!?)?([a-zA-Z][\\w\\.]*)}", RegexOptions.Compiled);
+ 
+ 	private VariableText(string original, string format, Condition[] conditions, string[] variables)
+ 	{
+ 		_original = original;
++		/*
+ 		_format = format;
++		*/
++		_compositeText = new CompositeText(format);
+ 		_conditions = conditions;
+ 		_variables = variables;
+ 		_formatArgBuffer = new object[variables.Length];
+@@ -32,6 +_,7 @@
+ 
+ 	public static bool TryCreate(string s, out VariableText text)
+ 	{
++		if (_namedPluralRegex.IsMatch(s)) { } else
+ 		if (!_substitutionRegex.IsMatch(s)) {
+ 			text = null;
+ 			return false;
+@@ -60,6 +_,7 @@
+ 			return "{" + num + "}";
+ 		});
+ 
++		format = ConvertNamedPlurals(format, variables); // Added by TML
+ 		text = new VariableText(s, format, conditions.ToArray(), variables.ToArray());
+ 		return true;
+ 	}
+@@ -93,9 +_,12 @@
+ 			return false;
+ 		}
+ 
++		/*
+ 		_formatBuffer.AppendFormat(_format, _formatArgBuffer);
+ 		formatted = _formatBuffer.ToString();
+ 		_formatBuffer.Clear();
++		*/
++		formatted = _compositeText.Format(_formatArgBuffer);
+ 		return true;
+ 	}
+ 

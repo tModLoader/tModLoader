@@ -48,11 +48,11 @@ public partial class LanguageManager
 			if (!processed.Add(text))
 				return; // Already processed, or a recursive reference.
 
-			var newValue = referenceRegex.Replace(text.Value, match => {
+			var newValue = referenceRegex.Replace(text.UnformattedValue, match => {
 				var refText = GetText(FindKeyInScope(match.Groups[1].Value, text.Key));
 				Process(refText);
 
-				var repl = refText.Value;
+				var repl = refText.UnformattedValue;
 				if (match.Groups[2].Success && int.TryParse(match.Groups[2].Value, out int offset))
 					repl = argRemappingRegex.Replace(repl, match => (int.Parse(match.Groups[1].Value) + offset).ToString());
 

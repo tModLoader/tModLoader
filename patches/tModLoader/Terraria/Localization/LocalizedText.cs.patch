@@ -1,11 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Localization/LocalizedText.cs
 +++ src/tModLoader/Terraria/Localization/LocalizedText.cs
-@@ -1,11 +_,12 @@
- using System;
- using System.Collections.Generic;
-+using System;
- using System.ComponentModel;
- using System.Text.RegularExpressions;
+@@ -5,7 +_,7 @@
  
  namespace Terraria.Localization;
  
@@ -14,44 +9,135 @@
  {
  	public static readonly LocalizedText Empty = new LocalizedText("", "");
  	private static Regex _substitutionRegex = new Regex("{(\\?(?:!)?)?([a-zA-Z][\\w\\.]*)}", RegexOptions.Compiled);
-@@ -13,13 +_,23 @@
+@@ -13,6 +_,10 @@
  	private object _value;
  	private static Dictionary<Type, PropertyDescriptorCollection> _propertyLookupCache = new Dictionary<Type, PropertyDescriptorCollection>();
  
 +	/// <summary>
-+	/// Retrieves the text value. This is the actual text the user should see.
++	/// Retrieves the text value. This is the actual text the user should see. <br/>
++	/// Automatically uses <see cref="Lang.GetGlobalSubstitution"/> on {Variable} placeholders (eg {InputTrigger_UseOrAttack} for the MouseLeft keybind)
 +	/// </summary>
  	public string Value {
  		get {
-+			/* TODO: Crashes at launch
  			if (_value is VariableText variableText && variableText.TryFormat(Lang.GetGlobalSubstitution, out var formatted))
- 				return formatted;
-+			*/
- 
- 			return _value.ToString();
+@@ -22,12 +_,23 @@
  		}
-+		private set {
-+			_value = value;
-+			_hasPlurals = null;
-+			BoundArgs = null;
-+		}
  	}
  
++	/// <summary>
++	/// The value with no {0} or {Variable} substitutions applied.
++	/// </summary>
  	public string UnformattedValue => _value.ToString();
-@@ -83,6 +_,13 @@
+ 
++	/// <summary>
++	/// Technically, this is UnformattedEnglishValue. Mostly used to allow commands to run in both the current language and english
++	/// </summary>
+ 	public string EnglishValue { get; private set; }
+ 
+ 	public bool HasValue => EnglishValue != Key;
+ 
++	/// <summary>
++	/// Checks if all of the conditional substitutions in the localized value are satisfied by the current values from <see cref="Lang.GetGlobalSubstitution"/><br/>
++	/// Eg, if the text contains {?Day} or {?!Day} then this method returns whether Main.dayTime is true or false accordingly.<br/>
++	/// Also checks whether all the substitutions have non-null values, eg a localization with {Nurse} requires the nurse to have spawned
++	/// </summary>
+ 	public bool ConditionsMet {
+ 		get {
+ 			if (_value is VariableText variableText)
+@@ -52,10 +_,29 @@
+ 		if (LanguageManager.Instance != null && LanguageManager.Instance.ActiveCulture == GameCulture.DefaultCulture)
+ 			EnglishValue = value;
+ 
++		// TML added below
++		BoundArgs = null;
++
++		try {
++			BuildFormatHelpers(value);
++		}
++		catch (Exception) { }
++	}
++
++	private void BuildFormatHelpers(string value) // TML method split
++	{
++		if (value.Contains("{$")) // Unprocessed reference to another loc string
++			return;
++
+ 		if (VariableText.TryCreate(value, out var text))
+ 			_value = text;
++		else if (CompositeText.TryCreate(value, out var ct)) // Added by TML
++			_value = ct;
+ 	}
+ 
++	/// <summary>
++	/// Wrapper for <see cref="TryFormatWith(Func{string, object}, out string)"/> using <seealso cref="Lang.GetGlobalSubstitution(string)"/> <br/>
++	/// </summary>
+ 	public bool GetValueIfConditionsMet(out string formatted)
+ 	{
+ 		if (_value is VariableText variableText)
+@@ -65,6 +_,9 @@
  		return true;
  	}
  
 +	/// <summary>
-+	/// Creates a string from this LocalizedText populated with data from the provided <paramref name="obj"/> parameter. The properties of the provided object are substituted by name into the placeholders of the original text. For example, when used with <see cref="Lang.CreateDialogSubstitutionObject(NPC)"/>, the text "{Nurse}" will be replaced with the first name of the Nurse in the world. Modded substitutions are not currently supported. <br/><br/>
-+	/// When used in conjunction with <see cref="Language.SelectRandom(LanguageSearchFilter, Utilities.UnifiedRandom)"/> and <see cref="Lang.CreateDialogFilter(string, object)"/>, simple boolean conditions expressed in each LocalizedText can be used to filter a collection of LocalizedText.  <br/><br/>
-+	/// <see cref="Format(object[])"/> is more commonly used to format LocalizedText placeholders. That method replaces placeholders such as "{0}", "{1}", etc with the string representation of the corresponding objects provided.
++	/// Version of <see cref="TryFormatWith(Func{string, object}, out string)"/> that uses the public properties of an object as the lookup function (eg new { Value = 10 })
 +	/// </summary>
-+	/// <param name="obj"></param>
-+	/// <returns></returns>
+ 	public bool TryFormatWith(object obj, out string formatted)
+ 	{
+ 		if (_value is VariableText variableText)
+@@ -74,6 +_,11 @@
+ 		return true;
+ 	}
+ 
++	/// <summary>
++	/// Attempts to format this text values from <paramref name="lookup"/><br/>
++	/// Eg {Value} placeholders will be replaced with <c>lookup("Value")</c>
++	/// Conditions and null values affect success (see <see cref="ConditionsMetWith(Func{string, object})"/>
++	/// </summary>
+ 	public bool TryFormatWith(Func<string, object> lookup, out string formatted)
+ 	{
+ 		if (_value is VariableText variableText)
+@@ -83,6 +_,9 @@
+ 		return true;
+ 	}
+ 
++	/// <summary>
++	/// Wrapper for <see cref="TryFormatWith(object, out string)"/>
++	/// </summary>
  	public string FormatWith(object obj)
  	{
  		if (!TryFormatWith(obj, out var formatted))
+@@ -91,6 +_,9 @@
+ 		return formatted;
+ 	}
+ 
++	/// <summary>
++	/// Wrapper for <see cref="TryFormatWith(Func{string, object}, out string)"/>
++	/// </summary>
+ 	public string FormatWith(Func<string, object> lookup)
+ 	{
+ 		if (!TryFormatWith(lookup, out var formatted))
+@@ -99,6 +_,9 @@
+ 		return formatted;
+ 	}
+ 
++	/// <summary>
++	/// Version of <see cref="ConditionsMetWith(Func{string, object})"/> that uses the public properties of an object as the lookup function (eg new { Value = 10 })
++	/// </summary>
+ 	public bool ConditionsMetWith(object obj)
+ 	{
+ 		if (_value is VariableText variableText)
+@@ -107,6 +_,11 @@
+ 		return true;
+ 	}
+ 
++	/// <summary>
++	/// Using the values from <paramref name="lookup"/>, checks if all of the conditional substitutions in the localized value are satisfied, and all other substitutions have non-null values<br/>
++	/// Eg, if the value contains {?Day} or {?!Day} then <c>lookup("Day")</c> must return true or false respectively.<br/>
++	/// If the value contains {Nurse} then <c>lookup("Nurse")</c> must be non null
++	/// </summary>
+ 	public bool ConditionsMetWith(Func<string, object> lookup)
+ 	{
+ 		if (_value is VariableText variableText)
 @@ -115,7 +_,12 @@
  		return true;
  	}
@@ -60,12 +146,12 @@
  	public NetworkText ToNetworkText() => NetworkText.FromKey(Key);
 +	*/
 +	/// <summary> Convert this <see cref="LocalizedText"/> to a <see cref="NetworkText"/> for use in various network code applications. Non-chat messages sent to other players should be sent as <see cref="NetworkText"/> to facilitate localization. </summary>
-+	public NetworkText ToNetworkText() => NetworkText.FromKey(Key, BoundArgs ?? Array.Empty<object>());
++	public NetworkText ToNetworkText() => NetworkText.FromKey(Key, BoundArgs ?? []);
 +	/// <inheritdoc cref="ToNetworkText()"/>
  	public NetworkText ToNetworkText(params object[] substitutions) => NetworkText.FromKey(Key, substitutions);
  
  	public static explicit operator string(LocalizedText text)
-@@ -123,10 +_,13 @@
+@@ -123,10 +_,33 @@
  		return text.Value;
  	}
  
@@ -75,6 +161,26 @@
  	public string Format(object arg0, object arg1, object arg2) => string.Format(Value, arg0, arg1, arg2);
  	public string Format(params object[] args) => string.Format(Value, args);
 +	*/
++
++	/// <summary>
++	/// Creates a string from this LocalizedText populated with data from the provided <paramref name="args"/> arguments. Formats the string in the same manner as <see href="https://learn.microsoft.com/en-us/dotnet/api/system.string.format?view=net-6.0">string.Format</see>. Placeholders such as "{0}", "{1}", etc will be replaced with the string representation of the corresponding objects provided.<br/>
++	/// Additionally, pluralization is supported as well. The <see href="https://github.com/tModLoader/tModLoader/wiki/Localization#string-formatting">Localization Guide</see> teaches more about placeholders and plural support.
++	///
++	/// </summary>
++	/// <param name="args"></param>
++	/// <returns></returns>
++	public string Format(params object[] args)
++	{
++		try {
++			if (_value is CompositeText ct)
++				return ct.Format(args);
++		}
++		catch (Exception e) {
++			throw new Exception($"The localization key:\n  \"{Key}\"\nwith a value of:\n  \"{UnformattedValue}\"\nfailed to be formatted with the inputs:\n  [{string.Join(", ", args)}]", e);
++		}
++
++		return Value;
++	} 
 +
  	public override string ToString() => Value;
  

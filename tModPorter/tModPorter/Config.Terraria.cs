@@ -323,6 +323,7 @@ public static partial class Config
 		RenameMethod("Terraria.Item", "BannerToNPC", "BannerToNPC", "Terraria.GameContent.BannerSystem");
 		RenameMethod("Terraria.Item", "NPCtoBanner", "NPCtoBanner", "Terraria.GameContent.BannerSystem");
 		RenameMethod("Terraria.Main", "ShouldShowInvisibleWalls", "ShouldShowInvisibleBlocksAndWalls");
+		RenameMethod("Terraria.Localization.LocalizedText", from: "CanFormatWith", to: "ConditionsMetWith");
 
 		RefactorStaticMember("Terraria.ID.BuffID.Sets", "BasicMountData", Removed("Replace with BuffID.Sets.MountType[Type] = ModContent.MountType<MyMount>();"));
 		RefactorStaticMember("Terraria.ID.MountID.Sets", "FacePlayersVelocity", Removed("Now automatic for all minecarts"));
