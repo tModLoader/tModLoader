@@ -264,6 +264,7 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Player.QuickSpawnItem no longer returns an int indicating the index of the item in Main.item. This is because the spawned item can now potentially go directly into player inventory.
 - Item.width and height no longer have any relation to the in-world hitbox of dropped items. All items now have a 16x16 hitbox in the game world.
 - NPC.killCount, Item.BannerToItem, Item.BannerToNPC, Item.NPCtoBanner are now all in GameContent.BannerSystem
+- Condition.DownedEarlygameBoss now includes King Slime and Deerclops (Now it's any pre-Hardmode boss or Hardmode).
 
 # tModPorter TODOs
 

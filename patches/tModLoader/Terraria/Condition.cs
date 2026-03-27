@@ -127,7 +127,7 @@ public sealed record Condition(LocalizedText Description, Func<bool> Predicate)
 	public static readonly Condition DownedSkeletron =			new("Conditions.DownedSkeletron",			() => NPC.downedBoss3);
 	public static readonly Condition DownedDeerclops =			new("Conditions.DownedDeerclops",			() => NPC.downedDeerclops);
 	public static readonly Condition DownedQueenSlime =			new("Conditions.DownedQueenSlime",			() => NPC.downedQueenSlime);
-	public static readonly Condition DownedEarlygameBoss =		new("Conditions.DownedEarlygameBoss",		() => NPC.downedBoss1 || NPC.downedBoss2 || NPC.downedBoss3 || NPC.downedQueenBee || Main.hardMode);
+	public static readonly Condition DownedEarlygameBoss =		new("Conditions.DownedEarlygameBoss",		() => NPC.downedSlimeKing || NPC.downedBoss1 || NPC.downedBoss2 || NPC.downedBoss3 || NPC.downedQueenBee || NPC.downedDeerclops || Main.hardMode);
 	public static readonly Condition DownedMechBossAny =		new("Conditions.DownedMechBossAny",			() => NPC.downedMechBossAny);
 	public static readonly Condition DownedTwins =				new("Conditions.DownedTwins",				() => NPC.downedMechBoss2);
 	public static readonly Condition DownedDestroyer =			new("Conditions.DownedDestroyer",			() => NPC.downedMechBoss1);
@@ -208,6 +208,8 @@ public sealed record Condition(LocalizedText Description, Func<bool> Predicate)
 	public static readonly Condition NotIsNpcShimmered =		new("Conditions.NotIsNpcShimmered",			() => !IsNpcShimmered.IsMet());
 	public static readonly Condition IsNpcHomeless =			new("Conditions.IsNpcHomeless",				() => Main.LocalPlayer.TalkNPC.homeless);
 	public static readonly Condition NotIsNpcHomeless =			new("Conditions.NotIsNpcHomeless",			() => !Main.LocalPlayer.TalkNPC.homeless);
+	/// <summary> Not Remix world, OR Celebration Mk10 AND not For the Worthy worlds.</summary>
+	public static readonly Condition BiomeSpreadingItems =		new("Conditions.BiomeSpreadingItems",		() => !Main.remixWorld || (Main.tenthAnniversaryWorld && !Main.getGoodWorld));
 
 	// Moon phases :( thanks to Chicken Bones for help with those
 	public static readonly Condition MoonPhaseFull =			new("Conditions.FullMoon",					() => Main.GetMoonPhase() == MoonPhase.Full);
@@ -226,6 +228,7 @@ public sealed record Condition(LocalizedText Description, Func<bool> Predicate)
 	public static readonly Condition MoonPhasesHalf1 =			new("Conditions.MoonPhasesHalf1",			() => Main.moonPhase / 4 == 1);
 	public static readonly Condition MoonPhasesEven =			new("Conditions.MoonPhasesEven",			() => Main.moonPhase % 2 == 0);
 	public static readonly Condition MoonPhasesOdd =			new("Conditions.MoonPhasesOdd",				() => Main.moonPhase % 2 == 1);
+	public static readonly Condition MoonPhasesNearFull =		new("Conditions.MoonPhasesNearFull",		() => Main.moonPhase == 7 || Main.moonPhase <= 1);
 	public static readonly Condition MoonPhasesNearNew =		new("Conditions.MoonPhasesNearNew",			() => Main.moonPhase >= 3 && Main.moonPhase <= 5);
 	public static readonly Condition MoonPhasesEvenQuarters =	new("Conditions.MoonPhasesEvenQuarters",	() => Main.moonPhase / 2 % 2 == 0);
 	public static readonly Condition MoonPhasesOddQuarters =	new("Conditions.MoonPhasesOddQuarters",		() => Main.moonPhase / 2 % 2 == 1);
@@ -233,6 +236,9 @@ public sealed record Condition(LocalizedText Description, Func<bool> Predicate)
 	public static readonly Condition MoonPhases15 =				new("Conditions.MoonPhases15",				() => Main.moonPhase % 4 == 1);
 	public static readonly Condition MoonPhases26 =				new("Conditions.MoonPhases26",				() => Main.moonPhase % 4 == 2);
 	public static readonly Condition MoonPhases37 =				new("Conditions.MoonPhases37",				() => Main.moonPhase % 4 == 3);
+	public static readonly Condition MoonPhases12 =				new("Conditions.MoonPhases12",				() => Main.moonPhase == 1 || Main.moonPhase == 2);
+	public static readonly Condition MoonPhases35 =				new("Conditions.MoonPhases35",				() => Main.moonPhase == 3 || Main.moonPhase == 5);
+	public static readonly Condition MoonPhases67 =				new("Conditions.MoonPhases67",				() => Main.moonPhase == 6 || Main.moonPhase == 7);
 
 	// Parameters
 	public static Condition PlayerCarriesItem(int itemId) => new(Language.GetText("Conditions.PlayerCarriesItem").WithFormatArgs(Lang.GetItemName(itemId)), () => Main.LocalPlayer.HasItem(itemId));
