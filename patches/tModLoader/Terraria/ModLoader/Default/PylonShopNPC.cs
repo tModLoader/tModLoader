@@ -32,8 +32,11 @@ public sealed class PylonShopNPC : GlobalNPC
 
 	public override void ModifyActiveShop(NPC npc, string shopName, Item[] items)
 	{
+		// 1.4.5.4: Tavernkeep no longer sells pylons at all.
+		/*
 		if (shopName == NPCShopDatabase.GetShopName(NPCID.DD2Bartender))
 			AddPylonsToBartenderShop(npc, items);
+		*/
 	}
 
 	private void AddPylonsToBartenderShop(NPC npc, Item[] items)

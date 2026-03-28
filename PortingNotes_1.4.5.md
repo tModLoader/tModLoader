@@ -231,6 +231,7 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - SlimeBodyItemDropRule can be applied to any NPCID.Sets.SlimeCanContainItems now and ItemID.Sets.OreDropsFromSlime has been updated to include the alternate ores as well as Hellstone and DesertFossil
 - Magic and Summon prefixes have been split into separate categories
 - Pylons no longer check for "danger". ModPylon.ValidTeleportCheck_AnyDanger removed.
+- Pylons no longer require happiness to be sold. Remove Condition.HappyEnoughToSellPylons from ModPylon.GetNPCShopEntry() to match vanilla.
 - Item.netID removed (tModPorter?)
 - Item.SetDefaults(int Type = 0) no longer exists
 - Item.SetDefaults(int Type, bool noMatCheck = false, ItemVariant variant = null) change to SetDefaults(int Type, ItemVariant variant = null) (noMatCheck parameter removed)

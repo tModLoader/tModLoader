@@ -97,7 +97,7 @@ public static partial class NPCShopDatabase
 	{
 		NoPylons.Add(GetShopName(NPCID.TravellingMerchant));
 		NoPylons.Add(GetShopName(NPCID.SkeletonMerchant));
-		NoPylons.Add(GetShopName(NPCID.DD2Bartender)); // Bartender sometimes can't fit pylons, but sometimes can. Special hack in PylonShopNPC to match vanilla for this
+		NoPylons.Add(GetShopName(NPCID.DD2Bartender)); // Bartender sometimes can't fit pylons, but sometimes can. Special hack in PylonShopNPC to match vanilla for this. -> 1.4.5.4: Tavernkeep no longer sells pylons at all.
 		NoPylons.Add(GetShopName(NPCID.SantaClaus)); // Got no space
 
 		RegisterMerchant();
@@ -105,7 +105,7 @@ public static partial class NPCShopDatabase
 		RegisterDryad();
 		RegisterDemolitionist();
 		RegisterClothier();
-		RegisterGoblin();
+		RegisterGoblinTinkerer();
 		RegisterWizard();
 		RegisterMechanic();
 		RegisterSantaClaus();
@@ -119,19 +119,19 @@ public static partial class NPCShopDatabase
 		RegisterPirate();
 		RegisterStylist();
 		RegisterSkeletonMerchant();
-		RegisterBartender();
+		RegisterTavernkeep();
 		RegisterGolfer();
 		RegisterZoologist();
 		RegisterPrincess();
-		RegisterTravellingMerchant();
+		RegisterTravelingMerchant();
 	}
 
 	public static IEnumerable<Entry> GetPylonEntries()
 	{
-		/*
-		bool num12 = type != 19 && type != 20;
-		bool flag3 = TeleportPylonsSystem.DoesPositionHaveEnoughNPCs(2, Main.LocalPlayer.Center.ToTileCoordinates16());
-		if (num12 && (flag || Main.remixWorld) && flag3 && !Main.player[Main.myPlayer].ZoneCorrupt && !Main.player[Main.myPlayer].ZoneCrimson) {
+		/* Chest.VanillaSetupShop
+		bool num12 = type != 19 && type != 20 && type != 21;
+		bool flag2 = TeleportPylonsSystem.DoesPositionHaveEnoughNPCs(2, Main.LocalPlayer.Center.ToTileCoordinates16());
+		if (num12 && flag2 && !Main.player[Main.myPlayer].ZoneCorrupt && !Main.player[Main.myPlayer].ZoneCrimson) {
 			if (!Main.player[Main.myPlayer].ZoneSnow && !Main.player[Main.myPlayer].ZoneDesert && !Main.player[Main.myPlayer].ZoneBeach && !Main.player[Main.myPlayer].ZoneJungle && !Main.player[Main.myPlayer].ZoneHallow && !Main.player[Main.myPlayer].ZoneGlowshroom) {
 				if (Main.remixWorld) {
 					if ((double)(Main.player[Main.myPlayer].Center.Y / 16f) > Main.rockLayer && Main.player[Main.myPlayer].Center.Y / 16f < (float)(Main.maxTilesY - 350) && num < 39)
@@ -148,7 +148,11 @@ public static partial class NPCShopDatabase
 			if (Main.player[Main.myPlayer].ZoneDesert && num < 39)
 				array[num++].SetDefaults(4919);
 
-			if (Main.remixWorld) {
+			if (Main.player[Main.myPlayer].ZoneUnderworldHeight) {
+				if (num < 39)
+					array[num++].SetDefaults(5652);
+			}
+			else if (Main.remixWorld) {
 				if (!Main.player[Main.myPlayer].ZoneSnow && !Main.player[Main.myPlayer].ZoneDesert && !Main.player[Main.myPlayer].ZoneBeach && !Main.player[Main.myPlayer].ZoneJungle && !Main.player[Main.myPlayer].ZoneHallow && (double)(Main.player[Main.myPlayer].Center.Y / 16f) >= Main.worldSurface && num < 39)
 					array[num++].SetDefaults(4917);
 			}
@@ -156,14 +160,14 @@ public static partial class NPCShopDatabase
 				array[num++].SetDefaults(4917);
 			}
 
-			bool flag4 = Main.player[Main.myPlayer].ZoneBeach && (double)Main.player[Main.myPlayer].position.Y < Main.worldSurface * 16.0;
+			bool flag3 = Main.player[Main.myPlayer].ZoneBeach && (double)Main.player[Main.myPlayer].position.Y < Main.worldSurface * 16.0;
 			if (Main.remixWorld) {
 				float num13 = Main.player[Main.myPlayer].position.X / 16f;
 				float num14 = Main.player[Main.myPlayer].position.Y / 16f;
-				flag4 |= ((double)num13 < (double)Main.maxTilesX * 0.43 || (double)num13 > (double)Main.maxTilesX * 0.57) && (double)num14 > Main.rockLayer && num14 < (float)(Main.maxTilesY - 350);
+				flag3 |= ((double)num13 < (double)Main.maxTilesX * 0.43 || (double)num13 > (double)Main.maxTilesX * 0.57) && (double)num14 > Main.rockLayer && num14 < (float)(Main.maxTilesY - 350);
 			}
 
-			if (flag4 && num < 39)
+			if (flag3 && num < 39)
 				array[num++].SetDefaults(4918);
 
 			if (Main.player[Main.myPlayer].ZoneJungle && num < 39)
@@ -187,7 +191,7 @@ public static partial class NPCShopDatabase
 		});
 
 		var cavernPylonCondition = new Condition("Conditions.UndergroundPylon", () =>
-			!Main.LocalPlayer.ZoneSnow && !Main.LocalPlayer.ZoneDesert && !Main.LocalPlayer.ZoneBeach && !Main.LocalPlayer.ZoneJungle && !Main.LocalPlayer.ZoneHallow && (Main.remixWorld || !Main.LocalPlayer.ZoneGlowshroom)
+			!Main.LocalPlayer.ZoneUnderworldHeight && !Main.LocalPlayer.ZoneSnow && !Main.LocalPlayer.ZoneDesert && !Main.LocalPlayer.ZoneBeach && !Main.LocalPlayer.ZoneJungle && !Main.LocalPlayer.ZoneHallow && (Main.remixWorld || !Main.LocalPlayer.ZoneGlowshroom)
 			&& Main.LocalPlayer.Center.Y / 16.0 >= Main.worldSurface
 		);
 
@@ -203,14 +207,16 @@ public static partial class NPCShopDatabase
 
 		var mushroomPylonCondition = new Condition("Conditions.InGlowshroom", () => Main.LocalPlayer.ZoneGlowshroom && (!Main.remixWorld || !Main.LocalPlayer.ZoneUnderworldHeight));
 
-		yield return new Entry(ItemID.TeleportationPylonPurity,        Condition.HappyEnoughToSellPylons, Condition.AnotherTownNPCNearby, Condition.NotInEvilBiome, forestPylonCondition).OrderLast();
-		yield return new Entry(ItemID.TeleportationPylonSnow,          Condition.HappyEnoughToSellPylons, Condition.AnotherTownNPCNearby, Condition.NotInEvilBiome, Condition.InSnow).OrderLast();
-		yield return new Entry(ItemID.TeleportationPylonDesert,        Condition.HappyEnoughToSellPylons, Condition.AnotherTownNPCNearby, Condition.NotInEvilBiome, Condition.InDesert).OrderLast();
-		yield return new Entry(ItemID.TeleportationPylonUnderground,   Condition.HappyEnoughToSellPylons, Condition.AnotherTownNPCNearby, Condition.NotInEvilBiome, cavernPylonCondition).OrderLast();
-		yield return new Entry(ItemID.TeleportationPylonOcean,         Condition.HappyEnoughToSellPylons, Condition.AnotherTownNPCNearby, Condition.NotInEvilBiome, oceanPylonCondition).OrderLast();
-		yield return new Entry(ItemID.TeleportationPylonJungle,        Condition.HappyEnoughToSellPylons, Condition.AnotherTownNPCNearby, Condition.NotInEvilBiome, Condition.InJungle).OrderLast();
-		yield return new Entry(ItemID.TeleportationPylonHallow,        Condition.HappyEnoughToSellPylons, Condition.AnotherTownNPCNearby, Condition.NotInEvilBiome, Condition.InHallow).OrderLast();
-		yield return new Entry(ItemID.TeleportationPylonMushroom,      Condition.HappyEnoughToSellPylons, Condition.AnotherTownNPCNearby, Condition.NotInEvilBiome, mushroomPylonCondition).OrderLast();
+		yield return new Entry(ItemID.TeleportationPylonPurity,        Condition.AnotherTownNPCNearby, Condition.NotInEvilBiome, forestPylonCondition).OrderLast();
+		yield return new Entry(ItemID.TeleportationPylonSnow,          Condition.AnotherTownNPCNearby, Condition.NotInEvilBiome, Condition.InSnow).OrderLast();
+		yield return new Entry(ItemID.TeleportationPylonDesert,        Condition.AnotherTownNPCNearby, Condition.NotInEvilBiome, Condition.InDesert).OrderLast();
+		yield return new Entry(ItemID.TeleportationPylonUnderworld,    Condition.AnotherTownNPCNearby, Condition.NotInEvilBiome, Condition.InUnderworld).OrderLast();
+		yield return new Entry(ItemID.TeleportationPylonUnderground,   Condition.AnotherTownNPCNearby, Condition.NotInEvilBiome, cavernPylonCondition).OrderLast();
+		yield return new Entry(ItemID.TeleportationPylonOcean,         Condition.AnotherTownNPCNearby, Condition.NotInEvilBiome, oceanPylonCondition).OrderLast();
+		yield return new Entry(ItemID.TeleportationPylonJungle,        Condition.AnotherTownNPCNearby, Condition.NotInEvilBiome, Condition.InJungle).OrderLast();
+		yield return new Entry(ItemID.TeleportationPylonHallow,        Condition.AnotherTownNPCNearby, Condition.NotInEvilBiome, Condition.InHallow).OrderLast();
+		yield return new Entry(ItemID.TeleportationPylonMushroom,      Condition.AnotherTownNPCNearby, Condition.NotInEvilBiome, mushroomPylonCondition).OrderLast();
+		// Aether Pylon is not sold, it is obtained by shimmer transmuted any other pylon.
 
 
 		foreach (ModPylon pylon in PylonLoader.modPylons) {
@@ -436,7 +442,7 @@ public static partial class NPCShopDatabase
 			.Register();
 	}
 
-	private static void RegisterGoblin()
+	private static void RegisterGoblinTinkerer()
 	{
 		new NPCShop(NPCID.GoblinTinkerer)
 			.Add(ItemID.RocketBoots)
@@ -892,7 +898,7 @@ public static partial class NPCShopDatabase
 			.Register();
 	}
 
-	private static void RegisterBartender()
+	private static void RegisterTavernkeep()
 	{
 		var shop = new NPCShop(NPCID.DD2Bartender).AllowFillingLastSlot();
 
@@ -1089,13 +1095,13 @@ public static partial class NPCShopDatabase
 			.Register();
 	}
 
-	private static void RegisterTravellingMerchant()
+	private static void RegisterTravelingMerchant()
 	{
 		var carriesAnyPals = new Condition(Language.GetText("Conditions.PlayerCarriesItem5")
 			.WithFormatArgs(Lang.GetItemName(ItemID.PalworldDigtoise), Lang.GetItemName(ItemID.PalworldMinionCattiva), Lang.GetItemName(ItemID.PalworldMinionFoxsparks), Lang.GetItemName(ItemID.PalworldPetChillet), Lang.GetItemName(ItemID.PalworldPetChilletIgnis)),
 			() => Main.LocalPlayer.HasItemInAnyInventory(ItemID.PalworldDigtoise) || Main.LocalPlayer.HasItemInAnyInventory(ItemID.PalworldMinionCattiva) || Main.LocalPlayer.HasItemInAnyInventory(ItemID.PalworldMinionFoxsparks) || Main.LocalPlayer.HasItemInAnyInventory(ItemID.PalworldPetChillet) || Main.LocalPlayer.HasItemInAnyInventory(ItemID.PalworldPetChilletIgnis));
 
-		new TravellingMerchantShop(NPCID.TravellingMerchant)
+		new TravelingMerchantShop(NPCID.TravellingMerchant)
 			// Theses two entries are not randomized. They will always be available if the condition is met.
 			.Add(ItemID.PalworldPalMetalArmorBody, carriesAnyPals)
 			.Add(ItemID.PalworldPalMetalArmorLegs, carriesAnyPals)
@@ -1170,16 +1176,49 @@ public static partial class NPCShopDatabase
 			.AddInfoEntry(ItemID.DPSMeter)
 			.AddInfoEntry(ItemID.LifeformAnalyzer)
 			.AddInfoEntry(ItemID.Stopwatch)
+			.AddInfoEntry(ItemID.PaintingWilson, Condition.DontStarveWorld)
+			.AddInfoEntry(ItemID.PaintingWillow, Condition.DontStarveWorld)
+			.AddInfoEntry(ItemID.PaintingWendy, Condition.DontStarveWorld)
+			.AddInfoEntry(ItemID.PaintingWolfgang, Condition.DontStarveWorld)
+			.AddInfoEntry(ItemID.MoonLordPainting, Condition.Hardmode, Condition.DownedMoonLord)
+			.AddInfoEntry(ItemID.PaintingCastleMarsberg, Condition.Hardmode, Condition.DownedMartians)
+			.AddInfoEntry(ItemID.PaintingMartiaLisa, Condition.Hardmode, Condition.DownedMartians)
+			.AddInfoEntry(ItemID.PaintingTheTruthIsUpThere, Condition.Hardmode, Condition.DownedMartians)
+			.AddInfoEntry(ItemID.PaintingAcorns, Condition.DownedFrostLegion)
+			.AddInfoEntry(ItemID.PaintingColdSnap, Condition.DownedFrostLegion)
+			.AddInfoEntry(ItemID.PaintingCursedSaint, Condition.DownedFrostLegion)
+			.AddInfoEntry(ItemID.PaintingSnowfellas, Condition.DownedFrostLegion)
+			.AddInfoEntry(ItemID.PaintingTheSeason, Condition.DownedFrostLegion)
+			.AddInfoEntry(ItemID.MoonmanandCompany, Condition.Hardmode, Condition.DownedMoonLord)
+			.AddInfoEntry(ItemID.StickmanVsTerrTerr)
+			.AddInfoEntry(ItemID.PaintingGermanZenith)
+			.AddInfoEntry(ItemID.PaintingGermanBeer)
+			.AddInfoEntry(ItemID.KargohsSummon)
+			.AddInfoEntry(ItemID.BennyWarhol)
+			.AddInfoEntry(ItemID.Duality)
+			.AddInfoEntry(ItemID.HoplitePizza)
+			.AddInfoEntry(ItemID.ParsecPals)
+			.AddInfoEntry(ItemID.DoNotEattheVileMushroom)
+			.AddInfoEntry(ItemID.SunshineofIsrapony)
+			.AddInfoEntry(ItemID.HeroesFromAnotherWorld)
+			.AddInfoEntry(ItemID.YuumaTheBlueTiger)
+			.AddInfoEntry(ItemID.CozyWindow)
 			.Register();
 	}
 }
 
-public class TravellingMerchantShop : AbstractNPCShop
+public class TravelingMerchantShop : AbstractNPCShop
 {
 	private new record Entry(Item Item, IEnumerable<Condition> Conditions) : AbstractNPCShop.Entry {
 		private readonly List<Condition> conditions = Conditions.ToList();
 
 		private Action<Item, NPC> shopOpenedHooks;
+
+		public Entry AddShopOpenedCallback(Action<Item, NPC> callback)
+		{
+			shopOpenedHooks += callback;
+			return this;
+		}
 
 		public void OnShopOpen(Item item, NPC npc)
 		{
@@ -1197,32 +1236,33 @@ public class TravellingMerchantShop : AbstractNPCShop
 		}
 	}
 
+	private List<Entry> _infoEntries = new();
 	private List<Entry> _entries = new();
-	private List<Entry> _nonRandomEntries = new();
 
 	public override IEnumerable<AbstractNPCShop.Entry> ActiveEntries => _entries;
+	public IEnumerable<AbstractNPCShop.Entry> ActiveInfoEntries => _infoEntries;
 
-	public TravellingMerchantShop(int npcType) : base(npcType) { }
+	public TravelingMerchantShop(int npcType) : base(npcType) { }
 
-	public TravellingMerchantShop AddInfoEntry(Item item, params Condition[] conditions)
+	public TravelingMerchantShop AddInfoEntry(Item item, params Condition[] conditions)
 	{
-		_entries.Add(new Entry(item, conditions.ToList()));
+		_infoEntries.Add(new Entry(item, conditions.ToList()));
 		return this;
 	}
 
-	private TravellingMerchantShop Add(params Entry[] entries)
+	private TravelingMerchantShop Add(params Entry[] entries)
 	{
-		_nonRandomEntries.AddRange(entries);
+		_entries.AddRange(entries);
 		return this;
 	}
 
-	public TravellingMerchantShop AddInfoEntry(int item, params Condition[] conditions) => AddInfoEntry(ContentSamples.ItemsByType[item], conditions);
-	public TravellingMerchantShop Add(Item item, params Condition[] condition) => Add(new Entry(item, condition));
-	public TravellingMerchantShop Add(int item, params Condition[] condition) => Add(new Entry(ContentSamples.ItemsByType[item], condition));
+	public TravelingMerchantShop AddInfoEntry(int item, params Condition[] conditions) => AddInfoEntry(ContentSamples.ItemsByType[item], conditions);
+	public TravelingMerchantShop Add(Item item, params Condition[] condition) => Add(new Entry(item, condition));
+	public TravelingMerchantShop Add(int item, params Condition[] condition) => Add(new Entry(ContentSamples.ItemsByType[item], condition));
 
 	public override void FillShop(ICollection<Item> items, NPC npc)
 	{
-		foreach (Entry entry in _nonRandomEntries) {
+		foreach (Entry entry in _entries) {
 			Item item;
 			if (entry.ConditionsMet()) {
 				item = entry.Item.Clone();
@@ -1245,10 +1285,9 @@ public class TravellingMerchantShop : AbstractNPCShop
 	{
 		overflow = false;
 
-		// int limit = FillLastSlot ? items.Length : items.Length - 1;
 		int limit = items.Length - 1;
 		int i = 0;
-		foreach (Entry entry in _nonRandomEntries) {
+		foreach (Entry entry in _entries) {
 			bool conditionsMet = entry.ConditionsMet();
 			if (!conditionsMet)
 				continue;
