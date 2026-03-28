@@ -201,7 +201,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - AnchorType.AllFlatHeight added -> What is it used for, what does it represent? Which tiles use it that didn't before?
 - UserInterface.MouseCaptured -> could be useful
 - FlexibleTileWand is now used to place many other tiles that used to rely solely on RandomStyleRange. We should add an example of a custom FlexibleTileWand item/tile and document when to use it.
-- NPCID.Sets.NPCPortraits
 - NPCID.Sets: SpawnOnPlayerCanSpawnInMidairOnSkyblock, DontDropDungeonKeysOrSouls, HunterPotionFriendlyOverride, others.
 - UIScrollbar.AutoHide and CanScroll
 - NPC.defLifeMax
@@ -235,7 +234,7 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Item.SetDefaults(int Type, bool noMatCheck = false, ItemVariant variant = null) change to SetDefaults(int Type, ItemVariant variant = null) (noMatCheck parameter removed)
 - UnifiedRandom.Next methods are no longer virtual
 - ICameraModifier now has a IsAScreenShake property to support the user's screen shake accessibility setting (Main.UseScreenShake). Update your ICameraModifier and other camera movements to support Main.UseScreenShake.
-- TownNPC can now have portraits. Use the following to implement: NPCID.Sets.NPCPortraits (todo, example)
+- TownNPC can now have portraits. Use NPCID.Sets.NPCPortraits to implement. See Example Person for details.
 - UIWrappedSearchBar, is it useful to modders?
 - Main.sign length changed from 1000 to 32000.
 - Lots of new methods in Utils. Check if any duplicate TML.cs methods.
