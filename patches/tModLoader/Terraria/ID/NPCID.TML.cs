@@ -1,3 +1,6 @@
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using Terraria.ModLoader;
 
 namespace Terraria.ID;
@@ -188,5 +191,68 @@ public partial class NPCID
 		/// This NPC will not despawn due to being far offscreen, but will still count towards <see cref="Player.nearbyActiveNPCs"/>. Unlike returning false in <see cref="ModNPC.CheckActive"/>, this NPC still counts towards spawn limits. 
 		/// </summary>
 		public static bool[] DoesntDespawnToInactivityAndCountsNPCSlots = Factory.CreateBoolSet(Deerclops);
+
+		/// <summary>
+		/// Creates a new Town NPC portrait with the image provided.
+		/// </summary>
+		/// <param name="texturePath">The path to the image without the file extension.</param>
+		public static BasicModTownNPCPortrait ModTownNPCPortrait(string texturePath) => new(texturePath);
+
+		/// <summary>
+		/// Creates a new Town NPC portrait with the image provided.
+		/// </summary>
+		/// <param name="texturePath">The path to the image without the file extension.</param>
+		/// <param name="horizontalFrames">If using a sprite sheet with multiple frames, this istThe number of horizontal frames in the sheet.</param>
+		/// <param name="verticalFrames">If using a sprite sheet with multiple frames, this istThe number of vertical frames in the sheet.</param>
+		/// <param name="paddingX">The number of additional pixels to move the selected frame left or right.</param>
+		/// <param name="paddingY">The number of additional pixels to move the selected frame up or down.</param>
+		/// <param name="frameX">The frame to select from left to right. The leftmost frame is frame 0.</param>
+		/// <param name="frameY">The frame to select from top to bottom. THe topmost frame is frame 0.</param>
+		public static BasicModTownNPCPortrait ModTownNPCPortrait(string texturePath, int horizontalFrames = 1, int verticalFrames = 1, int paddingX = 0, int paddingY = 0, int frameX = 0, int frameY = 0) => new(texturePath, horizontalFrames, verticalFrames, paddingX, paddingY, frameX, frameY);
+
+		/// <summary>
+		/// Similar to the vanilla BasicNPCPortrait, but with an extra constructor for frame data.
+		/// </summary>
+		public class BasicModTownNPCPortrait : NPCPortraitProvider
+		{
+			public string TexturePath;
+			public int HorizontalFrames;
+			public int VerticalFrames;
+			public int PaddingX;
+			public int PaddingY;
+			public int FrameX;
+			public int FrameY;
+			private Asset<Texture2D> _image;
+
+			public BasicModTownNPCPortrait(string texturePath)
+			{
+				TexturePath = texturePath;
+				HorizontalFrames = (VerticalFrames = 1);
+				PaddingX = (PaddingY = 0);
+				FrameX = (FrameY = 0);
+			}
+
+			public BasicModTownNPCPortrait(string texturePath, int horizontalFrames = 1, int verticalFrames = 1, int paddingX = 0, int paddingY = 0, int frameX = 0, int frameY = 0)
+			{
+				TexturePath = texturePath;
+				HorizontalFrames = horizontalFrames;
+				VerticalFrames = verticalFrames;
+				PaddingX = paddingX;
+				PaddingY = paddingY;
+				FrameX = frameX;
+				FrameY = frameY;
+			}
+
+			public virtual void GetDrawData(out Texture2D texture, out Rectangle drawFrame)
+			{
+				_image ??= ModContent.Request<Texture2D>(TexturePath, AssetRequestMode.ImmediateLoad);
+
+				texture = null;
+				if (_image.IsLoaded)
+					texture = _image.Value;
+
+				drawFrame = texture.Frame(HorizontalFrames, VerticalFrames, FrameX, FrameY, PaddingX, PaddingY);
+			}
+		}
 	}
 }

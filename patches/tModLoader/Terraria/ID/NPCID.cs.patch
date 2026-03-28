@@ -115,6 +115,39 @@
  			public NPCBestiaryDrawModifiers(int seriouslyWhyCantStructsHaveParameterlessConstructors)
  			{
  				Position = default(Vector2);
+@@ -83,6 +_,9 @@
+ 			}
+ 		}
+ 
++		/// <summary>
++		/// The draw information for the Town NPC portrait image for <see cref="NPCID.Sets.NPCPortraits"/>.
++		/// </summary>
+ 		public class NPCPortraitSelector : NPCPortraitProvider
+ 		{
+ 			public delegate bool SelectionCondition();
+@@ -95,6 +_,11 @@
+ 
+ 			private List<Entry> _entries = new List<Entry>();
+ 
++			/// <summary>
++			/// Add a portrait type with a condition.
++			/// </summary>
++			/// <param name="condition">When this portrait should be shown. See <see cref="ShimmeredPortraitCondition"/> or <see cref="VariantPortraitCondition"/></param>
++			/// <param name="portrait">The portrait to use. For example: <see cref="ModTownNPCPortrait(string)"/></param>
+ 			public NPCPortraitSelector With(SelectionCondition condition, NPCPortraitProvider portrait)
+ 			{
+ 				_entries.Add(new Entry {
+@@ -105,6 +_,10 @@
+ 				return this;
+ 			}
+ 
++			/// <summary>
++			/// The default portrait type to use if no other portrait conditions (Example: shimmer variant condition) are met.
++			/// </summary>
++			/// <param name="portrait">The portrait to use. For example: <see cref="ModTownNPCPortrait(string)"/></param>
+ 			public NPCPortraitSelector Default(NPCPortraitProvider portrait)
+ 			{
+ 				_entries.Add(new Entry {
 @@ -174,7 +_,13 @@
  			public const int Hemorrhage = 375;
  		}
@@ -130,6 +163,19 @@
  		public static Dictionary<int, int> SpecialSpawningRules = new Dictionary<int, int> {
  			{ 259, 0 },
  			{ 260, 0 },
+@@ -183,6 +_,12 @@
+ 			{ 56, 0 },
+ 			{ 101, 0 }
+ 		};
++
++		/// <summary>
++		/// Determines which portrait image to use for Town NPCs when the Portrait Style setting is set to detailed.
++		/// <br/> Example usage: <c>NPCID.Sets.NPCPortraits.Add(Type, NPCID.Sets.PrioritizedPortrait().With(NPCID.Sets.ShimmeredPortraitCondition, NPCID.Sets.ModTownNPCPortrait("YourMod/Path/YourNPC_Shimmer_Portrait")).Default(NPCID.Sets.ModTownNPCPortrait("YourMod/Path/YourNPC_Portrait")))</c>
++		/// </summary>
++		/// <remarks>See <see cref="NPCPortraitsCloseUpOffsets"/> and <see cref="NPCPortraitsFullBodyRetroOffsets"/> for the profile and retro portrait style settings.</remarks>
+ 		public static Dictionary<int, NPCPortraitProvider> NPCPortraits = new Dictionary<int, NPCPortraitProvider> {
+ 			{ 369, PrioritizedPortrait().With(ShimmeredPortraitCondition, BasicPortrait("Images/TownNPCs/Portraits/Portrait_Angler_shimmer")).Default(BasicPortrait("Images/TownNPCs/Portraits/Portrait_Angler")) },
+ 			{ 19, PrioritizedPortrait().With(ShimmeredPortraitCondition, BasicPortrait("Images/TownNPCs/Portraits/Portrait_ArmsDealer_shimmer")).Default(BasicPortrait("Images/TownNPCs/Portraits/Portrait_ArmsDealer")) },
 @@ -250,8 +_,18 @@
  					.Default(BasicPortrait("Images/TownNPCs/Portraits/Portrait_Bunny_Angora"))
  			}
@@ -260,6 +306,30 @@
  		public static Dictionary<int, int> RespawnEnemyID = new Dictionary<int, int> {
  			{ 492, 0 },
  			{ 491, 0 },
+@@ -5232,6 +_,11 @@
+ 			{ 622, 621 },
+ 			{ 623, 621 }
+ 		};
++		/// <summary>
++		/// Determines the offset to use for Town NPCs when the Portrait Style setting is set to profile so that the Town NPC's head is centered.
++		/// <br/> Example usage: <c>NPCID.Sets.NPCPortraits.Add(Type, new Vector2(0f, 0f))</c>
++		/// </summary>
++		/// <remarks>See <see cref="NPCPortraits"/> and <see cref="NPCPortraitsFullBodyRetroOffsets"/> for the detailed and retro portrait style settings.</remarks>
+ 		public static Dictionary<int, Vector2> NPCPortraitsCloseUpOffsets = new Dictionary<int, Vector2> {
+ 			{ 17, new Vector2(6f, 0f) },
+ 			{ 18, new Vector2(-6f, 0f) },
+@@ -5274,6 +_,11 @@
+ 			{ 683, new Vector2(-6f, 2f) },
+ 			{ 682, new Vector2(-3f, 2f) }
+ 		};
++		/// <summary>
++		/// Determines the offset to use for Town NPCs when the Portrait Style setting is set to retro so that the Town NPC's entire body is centered.
++		/// <br/> Example usage: <c>NPCID.Sets.NPCPortraits.Add(Type, new Vector2(0f, 0f))</c>
++		/// </summary>
++		/// <remarks>See <see cref="NPCPortraits"/> and <see cref="NPCPortraitsCloseUpOffsets"/> for the detailed and profile portrait style settings.</remarks>
+ 		public static Dictionary<int, Vector2> NPCPortraitsFullBodyRetroOffsets = new Dictionary<int, Vector2> {
+ 			{ 18, new Vector2(-3f, 0f) },
+ 			{ 20, new Vector2(-4f, 0f) },
 @@ -5297,63 +_,388 @@
  			{ 683, new Vector2(-6f, 0f) },
  			{ 682, new Vector2(-6f, 0f) }
@@ -652,7 +722,7 @@
  			new int[26] {
  				0,
  				0,
-@@ -5563,6 +_,9 @@
+@@ -5563,13 +_,28 @@
  				2,
  				4,
  				2
@@ -662,6 +732,26 @@
  			}
  		};
  
++		/// <summary>
++		/// Creates a new Town NPC portrait selector.
++		/// </summary>
+ 		public static NPCPortraitSelector PrioritizedPortrait() => new NPCPortraitSelector();
+-		public static BasicNPCPortrait BasicPortrait(string texturePath) => new BasicNPCPortrait(texturePath);
++		internal static BasicNPCPortrait BasicPortrait(string texturePath) => new BasicNPCPortrait(texturePath); // TML: Made internal. For modded Town NPCs, use NPCID.Sets.ModTownNPCPortrait
++		/// <summary>
++		/// The Town NPC portrait condition based on the NPC's <see cref="NPC.townNpcVariationIndex"/>.
++		/// </summary>
++		/// <param name="variantIndex">The index for the variant <see cref="NPC.townNpcVariationIndex"/> to check.</param>
++		/// <returns>True if the Town NPC is a matching variant.</returns>
+ 		public static NPCPortraitSelector.SelectionCondition VariantPortraitCondition(int variantIndex) => new NPCVariantChecker(variantIndex).Fits;
+ 
++		/// <summary>
++		/// The Town NPC portrait condition that the Town NPC is <see cref="NPC.IsShimmerVariant"/>.
++		/// </summary>
++		/// <returns>True if the Town NPC that the player is speaking to is a shimmer variant.</returns>
+ 		public static bool ShimmeredPortraitCondition()
+ 		{
+ 			int talkNPC = Main.LocalPlayer.talkNPC;
 @@ -5585,21 +_,34 @@
  			Dictionary<int, NPCBestiaryDrawModifiers> leinforsEntries = GetLeinforsEntries();
  			Dictionary<int, NPCBestiaryDrawModifiers> groxEntries = GetGroxEntries();

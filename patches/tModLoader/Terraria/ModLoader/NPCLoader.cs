@@ -93,6 +93,8 @@ public static class NPCLoader
 		Array.Resize(ref Lang._npcNameCache, NPCCount);
 		Array.Resize(ref EmoteBubble.CountNPCs, NPCCount);
 		Array.Resize(ref WorldGen.TownManager._hasRoom, NPCCount);
+		Array.Resize(ref Main.SceneMetrics.ClosestNPCPosition, NPCCount);
+		Array.Resize(ref ConditionalDialogue._registry, NPCCount);
 
 		foreach (var player in Main.player) {
 			Array.Resize(ref player.npcTypeNoAggro, NPCCount);
