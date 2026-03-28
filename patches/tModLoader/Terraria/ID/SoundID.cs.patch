@@ -120,8 +120,8 @@
  	public static readonly LegacySoundStyle FoxparksFlame = new LegacySoundStyle(2, 34).WithVolume(0.15f);
  	public static readonly LegacySoundStyle LeafBlower = new LegacySoundStyle(2, 34).WithVolume(0.13f);
 +	*/
-+	public static readonly LegacySoundStyle FoxparksFlame = Item34.WithVolume(0.15f);
-+	public static readonly LegacySoundStyle LeafBlower = Item34.WithVolume(0.13f);
++	public static readonly LegacySoundStyle FoxparksFlame = ItemSound(34).WithVolume(0.15f);
++	public static readonly LegacySoundStyle LeafBlower = ItemSound(34).WithVolume(0.13f);
  	public static readonly LegacySoundStyle DeadCellsBarrelLauncherFire = CreateTrackable("deadcells_barrel_launcher_fire").WithVolume(0.5f);
  	public static readonly LegacySoundStyle DeadCellsBarrelLauncherExplode = CreateTrackable("deadcells_barrel_launcher_explode").WithVolume(0.6f);
  	public static readonly LegacySoundStyle DeadCellsMushroomSummon = CreateTrackable("deadcells_mushroom_summon").WithVolume(0.35f);
@@ -132,7 +132,7 @@
 +	/*
  	public static readonly LegacySoundStyle BellHurt = new LegacySoundStyle(2, 35).WithPitchVariance(0.4f);
 +	*/
-+	public static readonly LegacySoundStyle BellHurt = Item35.WithPitchVariance(0.4f);
++	public static readonly LegacySoundStyle BellHurt = ItemSound(35).WithPitchVariance(0.4f);
  	public static readonly LegacySoundStyle ChickenHurt = CreateTrackable("player_hit_chicken").WithVolume(0.8f).WithPitchVariance(0.4f);
  	public static readonly LegacySoundStyle ChickenHurtRare = CreateTrackable("player_hit_chicken_rare").WithVolume(0.5f).WithPitchVariance(0.4f);
  	public static readonly LegacySoundStyle FrogHurt = CreateTrackable("player_hit_frog").WithVolume(0.5f).WithPitchVariance(0.4f);
