@@ -4,6 +4,7 @@
   <PropertyGroup>
     <AssemblyName>ExampleMod</AssemblyName>
     <LangVersion>latest</LangVersion>
+    <TargetFramework>net10.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="Old\**" />
