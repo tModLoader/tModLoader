@@ -1202,7 +1202,7 @@
 +
 +		// Solxan: This is for properly settings the Screen Max Width & Max Height for large displays.
 +		GetLargestDisplaySize(out int maxDisplayW, out int maxDisplayH);
-+		maxScreenW = Math.Max(maxDisplayH, maxScreenW);
++		maxScreenW = Math.Max(maxDisplayW, maxScreenW);
 +		maxScreenH = Math.Max(maxDisplayH, maxScreenH);
 +
 +		Logging.tML.Info($"Maximum Resolution is {maxScreenW} x {maxScreenH}");
