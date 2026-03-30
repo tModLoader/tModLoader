@@ -144,7 +144,6 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 			NPC.noGravity = true;
 			NPC.noTileCollide = true;
 			NPC.value = Item.buyPrice(gold: 5);
-			NPC.SpawnWithHigherTime(30);
 			NPC.boss = true;
 			NPC.npcSlots = 10f; // Take up open spawn slots, preventing random NPCs from spawning during the fight
 
