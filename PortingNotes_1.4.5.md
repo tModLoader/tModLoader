@@ -232,6 +232,7 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Magic and Summon prefixes have been split into separate categories
 - Pylons no longer check for "danger". ModPylon.ValidTeleportCheck_AnyDanger removed.
 - Pylons no longer require happiness to be sold. Remove Condition.HappyEnoughToSellPylons from ModPylon.GetNPCShopEntry() to match vanilla.
+- Removed Condition.HappyEnough and Condition.HappyEnoughToSellPylons. Replaced with Condition.CurrentPriceAdjustmentUnder(float priceModifier) and Condition.CurrentPriceAdjustmentOver(float priceModifier).
 - Item.netID removed (tModPorter?)
 - Item.SetDefaults(int Type = 0) no longer exists
 - Item.SetDefaults(int Type, bool noMatCheck = false, ItemVariant variant = null) change to SetDefaults(int Type, ItemVariant variant = null) (noMatCheck parameter removed)

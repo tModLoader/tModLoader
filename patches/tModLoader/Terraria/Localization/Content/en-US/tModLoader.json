@@ -885,7 +885,6 @@
 		"BloodMoon": "During a Blood Moon",
 		"NotSolarEclipse": "Not during a Solar Eclipse",
 		"NotBloodMoon": "Not during a Blood Moon",
-		"HappyEnough": "When the vendor is happy enough",
 
 		"DownedKingSlime": "After defeating King Slime",
 		"DownedEyeOfCthulhu": "After defeating the Eye of Cthulhu",
@@ -1004,7 +1003,8 @@
 		"NightAfterEvilOrHardmode": "During the night after defeating the Eater of Worlds or Brain of Cthulhu, or anytime in Hardmode",
 		"AnglerQuestsFinishedOver": "When the player has finished {0} Angler Quests or more",
 
-		"HappyEnoughForPylons": "When the vendor is happy enough to sell pylons",
+		"CurrentPriceAdjustmentUnder": "When the vendor's price modifier is {0} or less",
+		"CurrentPriceAdjustmentOver": "When the vendor's price modifier is {0} or more",
 		"AnotherTownNPCNearby": "When the vendor has another Town NPC nearby",
 		"ForestPylon": "On the surface and not in another pylon biome",
 		"UndergroundPylon": "Below the surface and not in another pylon biome",

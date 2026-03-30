@@ -201,8 +201,6 @@ public sealed record Condition(LocalizedText Description, Func<bool> Predicate)
 	public static readonly Condition NightOrEclipse =			new("Conditions.NightOrEclipse",			() => !Main.dayTime || Main.eclipse);
 
 	public static readonly Condition Multiplayer =				new("Conditions.InMultiplayer",				() => Main.netMode != NetmodeID.SinglePlayer);
-	public static readonly Condition HappyEnough =				new("Conditions.HappyEnough",				() => Main.LocalPlayer.currentShoppingSettings.PriceAdjustment <= 0.9);
-	public static readonly Condition HappyEnoughToSellPylons =	new("Conditions.HappyEnoughForPylons",		() => Main.remixWorld || HappyEnough.IsMet());
 	public static readonly Condition AnotherTownNPCNearby =		new("Conditions.AnotherTownNPCNearby",		() => TeleportPylonsSystem.DoesPositionHaveEnoughNPCs(2, Main.LocalPlayer.Center.ToTileCoordinates16()));
 	public static readonly Condition IsNpcShimmered =			new("Conditions.IsNpcShimmered",			() => Main.LocalPlayer.TalkNPC?.IsShimmerVariant ?? false);
 	public static readonly Condition NotIsNpcShimmered =		new("Conditions.NotIsNpcShimmered",			() => !IsNpcShimmered.IsMet());
@@ -251,5 +249,8 @@ public sealed record Condition(LocalizedText Description, Func<bool> Predicate)
 
 		return new(Language.GetText("Conditions.BestiaryPercentage").WithFormatArgs(percent), () => Main.GetBestiaryProgressReport().CompletionPercent >= percent / 100f);
 	}
+
+	public static Condition CurrentPriceAdjustmentUnder(float priceModifier) => new(Language.GetText("Conditions.CurrentPriceAdjustmentUnder").WithFormatArgs(priceModifier), () => Main.LocalPlayer.currentShoppingSettings.PriceAdjustment <= priceModifier);
+	public static Condition CurrentPriceAdjustmentOver(float priceModifier) => new(Language.GetText("Conditions.CurrentPriceAdjustmentOver").WithFormatArgs(priceModifier), () => Main.LocalPlayer.currentShoppingSettings.PriceAdjustment >= priceModifier);
 }
 			
