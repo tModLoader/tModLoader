@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -15,6 +16,11 @@ public class ModProjectileTest : ModProjectile
 		Console.Write(DrawOriginOffsetY);
 		Console.Write(DrawOriginOffsetX);
 		Console.Write(DrawHeldProjInFrontOfHeldItemAndArms);
+	}
+
+	public override void SetStaticDefaults()
+	{
+		ProjectileID.Sets.HeldProjDoesNotUsePlayerGfxOffY/* tModPorter Note: Removed. AI() should use master.RotatedRelativePoint(master.MountedCenter + ...) to position held projectiles */[Type] = true;
 	}
 
 	public override bool? CanDamage()/* tModPorter Suggestion: Return null instead of true */ { return false; }

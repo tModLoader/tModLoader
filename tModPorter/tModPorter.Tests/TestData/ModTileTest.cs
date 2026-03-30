@@ -51,6 +51,9 @@ public class ModTileTest : ModTile
 
 		TileID.Sets.IsAMechanism[Type] = true;
 		TileID.Sets.IsATrigger[Type] = true;
+
+		AddToArray(ref TileID.Sets.CountsAsPylon); // Shouldn't change
+		AddToArray(ref TileID.Sets.RoomNeeds.CountsAsTable);
 	}
 
 	public override int SaplingGrowthType(ref int style) { return -1; }

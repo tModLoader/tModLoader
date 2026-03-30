@@ -27,7 +27,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 			TileID.Sets.CanBeSatOnForPlayers[Type] = true; // Facilitates calling ModifySittingTargetInfo for Players
 			TileID.Sets.DisableSmartCursor[Type] = true;
 
-			AddToArray(ref TileID.Sets.RoomNeeds.CountsAsChair);
+			TileID.Sets.RoomNeeds.CountsAsChair[Type] = true;
 
 			DustType = ModContent.DustType<Sparkle>();
 			AdjTiles = [TileID.Toilets]; // Consider adding TileID.Chairs to AdjTiles to mirror "(regular) Toilet" and "Golden Toilet" behavior for crafting stations

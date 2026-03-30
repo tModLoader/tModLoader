@@ -27,7 +27,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 			TileID.Sets.AvoidedByNPCs[Type] = true;
 			TileID.Sets.InteractableByNPCs[Type] = true;
 			TileID.Sets.IsAContainer[Type] = true;
-			AddToArray(ref TileID.Sets.RoomNeeds.CountsAsTable);
+			TileID.Sets.RoomNeeds.CountsAsTable[Type] = true;
 
 			AdjTiles = [TileID.Dressers];
 			DustType = ModContent.DustType<Sparkle>();

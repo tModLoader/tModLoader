@@ -48,7 +48,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 			TileID.Sets.MultiTileSway[Type] = true;
 			TileID.Sets.IsAMechanism[Type] = true;
 
-			AddToArray(ref TileID.Sets.RoomNeeds.CountsAsTorch);
+			TileID.Sets.RoomNeeds.CountsAsTorch[Type] = true;
 
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style3x3);
 			TileObjectData.newTile.Origin = new Point16(1, 0);

@@ -570,5 +570,7 @@ public static partial class Config
 		ChangeHookSignature("Terraria.ModLoader.GlobalItem", "OnPickup");
 		ChangeHookSignature("Terraria.ModLoader.GlobalItem", "PreDrawInWorld");
 		ChangeHookSignature("Terraria.ModLoader.GlobalItem", "PostDrawInWorld");
+
+		RefactorInstanceMethodCall("Terraria.ModLoader.ModTile", "AddToArray", RewriteAddToArrayForRoomNeeds);
 	}
 }
