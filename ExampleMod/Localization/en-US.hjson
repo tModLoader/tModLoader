@@ -134,7 +134,6 @@ Mods: {
 
 			ExampleTownPet: {
 				DisplayName: Example Town Pet
-				TownNPCMood.NoHome: *Example Town Pet noises*?
 				Census.SpawnCondition: Use an [i:ExampleMod/ExampleTownPetLicense] Example Town Pet License. Purchased from the Zoologist at 50% Bestiary completetion.
 
 				Names: {
