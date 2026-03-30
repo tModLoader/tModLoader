@@ -411,7 +411,7 @@
 		"MBFilterDependencies": "依赖",
 		"MBFilterModlist": "模组列表",
 		"MBExceededBandwidth": "模组浏览器的服务器已超过每日的带宽分配，请前往该模组的主页进行备用下载，或稍后重试。",
-		"MBUnknownMBError": "未知模组浏览器错误，请稍后重试",
+		"MBUnknownMBError": "模组浏览器发生未知错误，请稍后重试",
 		"MBNoModsFound": "未找到模组",
 		"MBBrowserError": "模组浏览器发生错误",
 		"XSecondsAgo": "{0} 秒前",
@@ -535,7 +535,7 @@
 		"DocumentationLink": "查看文档",
 		"DiscordLink": "前往 Discord 群组寻求帮助",
 		"MSPortToLatest": "运行 tModPorter",
-		"MSFirstLaunchModderWelcomeMessage": "欢迎来到开发模组菜单。 此菜单是供模组制作者使用的。 您可以在这里构建模组。\n\n如果您刚接触模组制作，请点击下方按钮“在 GitHub 上查看”以访问我们的 Wiki 并浏览“我是新手（I am new to modding）”章节。 若您不便阅读英文或无法访问 GitHub，也可以访问中文教程网站 fs49.net，或在各中文社区搜索相关教程资源。",
+		"MSFirstLaunchModderWelcomeMessage": "欢迎来到开发模组菜单。 此菜单是供模组制作者使用的。 您可以在这里构建模组。\n\n如果您刚接触模组制作，请点击下方按钮“在 GitHub 上查看”以访问我们的 Wiki 并浏览“tModLoader 基础模组指南（Basic tModLoader Modding Guide）”章节。 若您不便阅读英文或无法访问 GitHub，也可以访问中文教程网站 fs49.net，或在各社区搜索相关教程资源。",
 		"MSNoModSourcesLinkToBasicModdingGuide": "这里还没有模组源码。\n\n如果你是新手，请点击这里查看“基本tModLoader模组制作指南”，它将指导你完成你的第一个模组。",
 		"MSNetSDKNotFound": "模组制作现在需要安装 .NET {0} SDK（不是运行时），但它并未被检测到。 点击下方按钮“下载 .NET {0} SDK”以获取安装指南。 安装完成后，您可能需要重启 tModLoader。",
 		"DownloadNetSDK": "下载 .NET SDK",
@@ -659,7 +659,7 @@
 		"PatreonSetTooltip": "感谢您的支持！",
 		"WorldGenError": "生成世界时遇到问题",
 		"WorldIODataException": "游戏遇到一个关于地图的模组数据问题",
-		"ServerCrash": "服务器崩溃：{0}\n{1}\n\n请检查[server.log]以确定是否由模组导致,否则请转到tModLoader Discord中的#support",
+		"ServerCrash": "服务器崩溃：{0}\n{1}\n\n请检查[server.log]以确定是否由模组导致，否则请转到tModLoader Discord中的#support",
 		"WatchLocalizationFileMessage": "下列本地化文件被修改并重新加载：\n{0}",
 
 		// MessageBox
