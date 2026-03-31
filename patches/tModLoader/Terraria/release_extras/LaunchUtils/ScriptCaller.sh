@@ -6,11 +6,23 @@
 cd "$(dirname "$0")"
 . ./BashUtils.sh
 
-echo "You are on platform: \"$_uname\" arch: \"$_arch\""
 
-# Check for -arm
+# Check for -arm/-arm64 and -x64/-x86_64 flags
 arm_flag=false
-for arg in "$@"; do [[ "$arg" == "-arm" || "$arg" == "-arm64" ]] && { arm_flag=true; break; }; done
+x64_flag=false
+for arg in "$@"; do
+	[[ "$arg" == "-arm" || "$arg" == "-arm64" ]] && { arm_flag=true; }
+	[[ "$arg" == "-x64" || "$arg" == "-x86_64" ]] && { x64_flag=true; }
+done
+
+# On macOS Apple Silicon, default to arm64 unless -x64 is explicitly passed
+if [ "$_uname" = Darwin ] && [ "$_arch" = "arm64" ] && [ "$x64_flag" = false ]; then
+	echo "Detected macOS with arm64 architecture, defaulting to native ARM64"
+	arm_flag=true
+fi
+
+echo "You are on platform: \"$_uname\" arch: \"$_arch\" arm_flag: $arm_flag x64_flag: $x64_flag"
+
 
 # Detect the presence of Rosetta (oahd running on the system is how the dotnet official install script does it)
 if [ "$(/usr/bin/pgrep oahd >/dev/null 2>&1;echo $?)" -eq 0 ]; then
@@ -74,6 +86,9 @@ else
 		rm -rf "$dotnet_dir"
 	elif [ "$_uname" = Darwin ] && [[ "$_arch" != "arm64" ]] && [[ "$(file "$dotnet_dir/dotnet")" == *"arm64"* ]]; then
 		echo "An arm64 install of dotnet was detected. Deleting dotnet_dir and resetting"  2>&1 | tee -a "$LogFile"
+		rm -rf "$dotnet_dir"
+	elif [ "$_uname" = Darwin ] && [[ "$_arch" == "arm64" ]] && [[ "$(file "$dotnet_dir/dotnet")" == *"x86_64"* ]] && [[ "$(file "$dotnet_dir/dotnet")" != *"arm64"* ]]; then
+		echo "An x86_64 install of dotnet was detected on arm64. Deleting dotnet_dir and resetting"  2>&1 | tee -a "$LogFile"
 		rm -rf "$dotnet_dir"
 	fi
 fi
