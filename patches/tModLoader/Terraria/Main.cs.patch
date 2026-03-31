@@ -5461,6 +5461,15 @@
  		}
  
  		if (!string.IsNullOrEmpty(text)) {
+@@ -40762,7 +_,7 @@
+ 
+ 	private void DrawInfoAccs_AdjustInfoTextColorsForNPC(NPC npc, ref Microsoft.Xna.Framework.Color infoTextColor, ref Microsoft.Xna.Framework.Color infoTextShadowColor)
+ 	{
+-		for (int i = 0; i < NPCID.Sets.GoldCrittersCollection.Count; i++) {
++		for (int i = 0; i < NPCID.Sets.GoldCrittersCollection.Length; i++) {
+ 			int num = NPCID.Sets.GoldCrittersCollection[i];
+ 			if (npc.type == num) {
+ 				infoTextColor = OurFavoriteColor;
 @@ -40783,8 +_,12 @@
  				Y += 261;
  		}

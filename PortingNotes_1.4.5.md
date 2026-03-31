@@ -21,7 +21,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Remove totalWeight parameter from ModifyWorldGenTasks
 - WorldGenerator._seed needs to be internal again. The patch was lost
 - Consider updating FlexibleTileWand.Reload
-- NPCID.Sets.IsGoldCritter has been added, seems to be an exact clone of GoldCrittersCollection. Link each other in documentation?
 - Move NPCID.Sets.SpawnFromLastEmptySlot docs to SearchSpawnSlotsInReverse and delete from .TML.cs
 - https://github.com/tModLoader/tModLoader/pull/1675 seemed to fix a bug that is apparently now fixed in vanilla. Patches in AWorkshopPublishInfoState deleted. Verify that existing workshop publicity still correctly updates UI without requiring a click.
 - RecipeGroup has changed dramatically. We'll need to adjust how modded groups merge and document the new behaviors and new ctors. The tml added methods might also be superfluous now. 

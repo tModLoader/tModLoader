@@ -283,6 +283,7 @@ public static partial class Config
 		RenameStaticField("Terraria.ID.MessageID", from: "NPCKillCountDeathTally", to: "Unused83");
 		RenameStaticField("Terraria.ID.MessageID", from: "TEDisplayDollItemSync", to: "TEDisplayDollDataSync");
 		RenameStaticField("Terraria.ID.NPCID.Sets", from: "UsesNewTargetting", to: "UsesNewTargeting");
+		RenameStaticField("Terraria.ID.NPCID.Sets", from: "GoldCrittersCollection", to: "IsGoldCritter").FollowBy(ConvertCollectionAddToSetTrue);
 		RenameStaticField("Terraria.ID.NPCID.Sets", from: "ShouldBeCountedAsBossForBestiary", to: "ShouldBeCountedAsBoss");
 		RenameStaticField("Terraria.ID.NPCID.Sets", from: "SpawnFromLastEmptySlot", to: "SearchSpawnSlotsInReverse");
 		RenameStaticField("Terraria.ID.ProjectileID.Sets", from: "MinionTargettingFeature", to: "MinionTargetingFeature");
