@@ -10,18 +10,16 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Remove all Obsolete methods, including hooks and vanilla changes.
 - Doublecheck methods marked as "Unused": SwitchTilesNew, AddStructure/AddProtectedStructure
 - Remove TileID.Sets.WallsMergeWith (see TileID.Sets.TruncatesWalls)
-- NetDiagnosticsUI Interlocked changes, should they include modded?
 - Test if https://github.com/tModLoader/tModLoader/pull/4626 is fixed in vanilla. I think you need to test with non-player chat to test properly, or maybe another player?
 - ItemSourceID is now static readonly, not a const. Do any other IDs change?
 - Need to update ItemID.Sets.OreDropsFromSlime with new entries.
   - Also AI_001_Slimes_GenerateItemInsideBody has additional logic now for skyblock that adjusts the drops. Investigate these and see if tmod needs more support or a TODO.
 - We need to add ModItem.SummonPrefix(), add ModPrefix.Summon
 - ShimmerTransforms.IsItemTransformLocked seems to have been split, need to verify RecipeLoader.DecraftAvailable and other logic still applies.
-- Update ModPylon docs to removed danger check from check listing.
+- Update ModPylon docs to removed danger check from check listing, and remove the ValidTeleportCheck_AnyDanger hook
 - Remove totalWeight parameter from ModifyWorldGenTasks
 - WorldGenerator._seed needs to be internal again. The patch was lost
 - Consider updating FlexibleTileWand.Reload
-- Move NPCID.Sets.SpawnFromLastEmptySlot docs to SearchSpawnSlotsInReverse and delete from .TML.cs
 - https://github.com/tModLoader/tModLoader/pull/1675 seemed to fix a bug that is apparently now fixed in vanilla. Patches in AWorkshopPublishInfoState deleted. Verify that existing workshop publicity still correctly updates UI without requiring a click.
 - RecipeGroup has changed dramatically. We'll need to adjust how modded groups merge and document the new behaviors and new ctors. The tml added methods might also be superfluous now. 
 - Mount.Dismount now has a ignoreEffect parameter, this might duplicate the skipDust variable used in MountLoader.Dismount. Adjust patches (and docs) accordingly if they should be the same. When is it set? Do modded mounts need to care about when ignoreEffect was true or false?

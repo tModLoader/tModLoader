@@ -111,5 +111,7 @@ public class ModNPCTest : ModNPC
 		NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Shimmer] = true;
 
 		NPCID.Sets.IsGoldCritter[Type] = true;
+
+		NPCID.Sets.SearchSpawnSlotsInReverse[Type] = true;
 	}
 }

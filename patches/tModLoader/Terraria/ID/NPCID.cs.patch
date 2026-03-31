@@ -269,7 +269,7 @@
  		public static Dictionary<int, int> RespawnEnemyID = new Dictionary<int, int> {
  			{ 492, 0 },
  			{ 491, 0 },
-@@ -5297,63 +_,388 @@
+@@ -5297,63 +_,393 @@
  			{ 683, new Vector2(-6f, 0f) },
  			{ 682, new Vector2(-6f, 0f) }
  		};
@@ -397,6 +397,11 @@
 +		/// </summary>
  		public static int[] TrailCacheLength = Factory.CreateIntSet(10, 402, 36, 519, 20, 522, 20, 620, 20, 677, 60, 685, 10);
 +
++		/// <summary>
++		/// Whether or not the spawned NPC will be assigned an empty slot in <see cref="NPC.NewNPC"/> by searching from the end of <seealso cref="Main.npc"/> rather than the start.
++		/// <br/><br/> This will result in the NPC drawing behind most other NPC because NPC are drawn in reverse slot order.
++		/// <br/><br/> Useful if you have a multi-segmented boss and want its parts to draw over the main body (body will be in this set). Also useful for bosses that spawn minions, to keep the minions visible. Used by <see cref="Golem"/> and <see cref="QueenBee"/>.
++		/// </summary>
  		public static bool[] SearchSpawnSlotsInReverse = Factory.CreateBoolSet(222, 245);
 +
  		public static bool[] CannotSpawnInSlot0 = Factory.CreateBoolSet(134, 135, 136, 7, 8, 9, 10, 11, 12, 13, 14, 15, 39, 40, 41, 87, 88, 89, 90, 91, 92, 95, 96, 97, 98, 99, 100, 117, 118, 119, 375, 402, 412, 413, 414, 454, 455, 456, 457, 458, 459, 510, 511, 512, 513, 514, 515, 621, 622, 623);
