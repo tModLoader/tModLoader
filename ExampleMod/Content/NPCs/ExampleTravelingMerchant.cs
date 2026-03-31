@@ -407,7 +407,11 @@ namespace ExampleMod.Content.NPCs
 
 		public ExampleTravelingMerchantShop(int npcType) : base(npcType) { }
 
-		public override IEnumerable<Entry> ActiveEntries => Pools.SelectMany(p => p.Entries).Where(e => !e.Disabled);
+		public override void RefreshItems(bool onlyIfVariantChanged = true)
+		{
+			foreach (var entry in Pools.SelectMany(p => p.Entries))
+				entry.Item.Refresh(onlyIfVariantChanged);
+		}
 
 		public Pool AddPool(string name, int slots) {
 			var pool = new Pool(name, slots, new List<Entry>());

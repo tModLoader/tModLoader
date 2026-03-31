@@ -5183,8 +5183,8 @@
  		RefreshItems(_temporaryItemSlots, onlyIfVariantChanged);
  		RefreshItems(_pendingRefunds, onlyIfVariantChanged);
 +
-+		foreach (Item item in NPCShopDatabase.AllShops.SelectMany(x => x.ActiveEntries).Select(x => x.Item)) {
-+			item.Refresh(onlyIfVariantChanged);
++		foreach (var shop in NPCShopDatabase.AllShops) {
++			shop.RefreshItems(onlyIfVariantChanged);
 +		}
  	}
  

@@ -85,9 +85,7 @@ public static partial class NPCShopDatabase
 		foreach (var shop in AllShops) {
 			shop.FinishSetup();
 			// NPCShopDatabase.Initialize(); seems intentionally run before SetupRecipes, where IsAMaterial is populated, so we need to fix entries here.
-			foreach (var entry in shop.ActiveEntries) {
-				entry.Item.Refresh(onlyIfVariantChanged: false);
-			}
+			shop.RefreshItems(onlyIfVariantChanged: false);
 		}
 
 		InitShopTestSystem();
@@ -1229,6 +1227,14 @@ public class TravelingMerchantShop : NPCShop
 	}
 
 	public TravelingMerchantShop AddInfoEntry(int item, params Condition[] conditions) => AddInfoEntry(ContentSamples.ItemsByType[item], conditions);
+
+	public override void RefreshItems(bool onlyIfVariantChanged = true)
+	{
+		base.RefreshItems(onlyIfVariantChanged);
+
+		foreach (var entry in _infoEntries)
+			entry.Item.Refresh(onlyIfVariantChanged);
+	}
 
 	public override void FillShop(ICollection<Item> items, NPC npc)
 	{
