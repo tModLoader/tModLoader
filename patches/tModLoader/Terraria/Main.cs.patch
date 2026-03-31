@@ -1240,7 +1240,7 @@
  		PlayerInput.Load();
  		if (currentValue < 165) {
  			try {
-@@ -4012,12 +_,36 @@
+@@ -4012,12 +_,37 @@
  		mouseColorSlider.SetHSL(mouseColor);
  		mouseBorderColorSlider.SetHSL(MouseBorderColor);
  		mouseBorderColorSlider.Alpha = (float)(int)MouseBorderColor.A / 255f;
@@ -1251,7 +1251,8 @@
 +		if (BuildInfo.IsPreview && ModLoader.ModLoader.LastPreviewFreezeNotificationSeen != BuildInfo.tMLVersion.MajorMinor()) {
 +			ModLoader.ModLoader.PreviewFreezeNotification = true;
 +		}
-+		if (currentValue != Main.curRelease || ModLoader.ModLoader.LastLaunchedTModLoaderVersion != BuildInfo.tMLVersion) {
++		bool isNewDevBuild = BuildInfo.IsDev && BuildInfo.stableVersion != new Version(0, 0) && BuildInfo.CommitSHA != ModLoader.ModLoader.LastLaunchedTModLoaderAlphaSha;
++		if (currentValue != Main.curRelease || ModLoader.ModLoader.LastLaunchedTModLoaderVersion != BuildInfo.tMLVersion || isNewDevBuild) {
 +			ModLoader.ModLoader.MigrateSettings();
  			SaveSettings();
 +		}
