@@ -712,9 +712,9 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 
 	/// <summary>
 	/// Allows you to modify existing shop. Be aware that this hook is called just one time during loading.
-	/// <para/> The traveling merchant shop is a <see cref="TravelingMerchantShop"/> instance which extends <see cref="NPCShop"/>. Use a type check to access traveling merchant specific methods like <see cref="TravelingMerchantShop.AddInfoEntry(int, Condition[])"/>.
+	/// <para/> The traveling merchant shop is passed here, but the per visit (info) entries cannot be modified here. Use <see cref="SetupTravelShop(int[], ref int)"/> instead.
 	/// </summary>
-	/// <param name="shop">A <seealso cref="NPCShop"/> instance (or <see cref="TravelingMerchantShop"/>).</param>
+	/// <param name="shop">A <seealso cref="NPCShop"/> instance.</param>
 	public virtual void ModifyShop(NPCShop shop)
 	{
 	}

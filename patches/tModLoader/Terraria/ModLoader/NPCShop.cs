@@ -7,10 +7,32 @@ namespace Terraria.ModLoader;
 
 public abstract class AbstractNPCShop
 {
-	public interface Entry
+	public class Entry(Item item, params Condition[] conditions)
 	{
-		public Item Item { get; }
-		public IEnumerable<Condition> Conditions { get; }
+		public Item Item { get; } = item;
+
+		private readonly List<Condition> _conditions = conditions.ToList();
+		public IEnumerable<Condition> Conditions => _conditions;
+
+		public bool Disabled { get; private set; }
+
+		public void Disable() => Disabled = true;
+
+		public void AddCondition(Condition condition)
+		{
+			ArgumentNullException.ThrowIfNull(condition, nameof(condition));
+			_conditions.Add(condition);
+		}
+
+		public bool ConditionsMet()
+		{
+			foreach (var c in _conditions) {
+				if (!c.IsMet())
+					return false;
+			}
+
+			return true;
+		}
 	}
 
 	public int NpcType { get; private init; }

@@ -1209,9 +1209,12 @@ public static partial class NPCShopDatabase
 
 public class TravelingMerchantShop : NPCShop
 {
-	private List<NPCShop.Entry> _infoEntries = new();
+	public class InfoEntry(Item item, params Condition[] conditions) : AbstractNPCShop.Entry(item, conditions)
+	{
+	}
 
-	public IEnumerable<NPCShop.Entry> ActiveInfoEntries => _infoEntries;
+	private List<InfoEntry> _infoEntries = [];
+	public IEnumerable<InfoEntry> InfoEntries => _infoEntries;
 
 	public TravelingMerchantShop(int npcType) : base(npcType) { }
 
@@ -1221,7 +1224,7 @@ public class TravelingMerchantShop : NPCShop
 
 	public TravelingMerchantShop AddInfoEntry(Item item, params Condition[] conditions)
 	{
-		_infoEntries.Add(new Entry(item, conditions));
+		_infoEntries.Add(new InfoEntry(item, conditions));
 		return this;
 	}
 
