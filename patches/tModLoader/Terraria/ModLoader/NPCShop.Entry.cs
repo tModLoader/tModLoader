@@ -4,7 +4,7 @@ using System;
 
 namespace Terraria.ModLoader;
 
-public sealed partial class NPCShop
+public partial class NPCShop
 {
 	public new sealed class Entry : AbstractNPCShop.Entry
 	{

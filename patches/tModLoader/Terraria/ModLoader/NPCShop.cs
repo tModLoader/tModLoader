@@ -45,7 +45,7 @@ public abstract class AbstractNPCShop
 	public virtual void FinishSetup() { }
 }
 
-public sealed partial class NPCShop : AbstractNPCShop
+public partial class NPCShop : AbstractNPCShop
 {
 	private List<Entry> _entries;
 

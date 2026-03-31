@@ -1207,73 +1207,29 @@ public static partial class NPCShopDatabase
 	}
 }
 
-public class TravelingMerchantShop : AbstractNPCShop
+public class TravelingMerchantShop : NPCShop
 {
-	private new record Entry(Item Item, IEnumerable<Condition> Conditions) : AbstractNPCShop.Entry {
-		private readonly List<Condition> conditions = Conditions.ToList();
+	private List<NPCShop.Entry> _infoEntries = new();
 
-		private Action<Item, NPC> shopOpenedHooks;
-
-		public Entry AddShopOpenedCallback(Action<Item, NPC> callback)
-		{
-			shopOpenedHooks += callback;
-			return this;
-		}
-
-		public void OnShopOpen(Item item, NPC npc)
-		{
-			shopOpenedHooks?.Invoke(item, npc);
-		}
-
-		public bool ConditionsMet()
-		{
-			for (int i = 0; i < conditions.Count; i++) {
-				if (!conditions[i].IsMet()) {
-					return false;
-				}
-			}
-			return true;
-		}
-	}
-
-	private List<Entry> _infoEntries = new();
-	private List<Entry> _entries = new();
-
-	public override IEnumerable<AbstractNPCShop.Entry> ActiveEntries => _entries;
-	public IEnumerable<AbstractNPCShop.Entry> ActiveInfoEntries => _infoEntries;
+	public IEnumerable<NPCShop.Entry> ActiveInfoEntries => _infoEntries;
 
 	public TravelingMerchantShop(int npcType) : base(npcType) { }
 
+	public new TravelingMerchantShop Add(Item item, params Condition[] condition) { base.Add(item, condition); return this; }
+	public new TravelingMerchantShop Add(int item, params Condition[] condition) { base.Add(item, condition); return this; }
+	public new TravelingMerchantShop Add<T>(params Condition[] condition) where T : ModItem { base.Add<T>(condition); return this; }
+
 	public TravelingMerchantShop AddInfoEntry(Item item, params Condition[] conditions)
 	{
-		_infoEntries.Add(new Entry(item, conditions.ToList()));
-		return this;
-	}
-
-	private TravelingMerchantShop Add(params Entry[] entries)
-	{
-		_entries.AddRange(entries);
+		_infoEntries.Add(new Entry(item, conditions));
 		return this;
 	}
 
 	public TravelingMerchantShop AddInfoEntry(int item, params Condition[] conditions) => AddInfoEntry(ContentSamples.ItemsByType[item], conditions);
-	public TravelingMerchantShop Add(Item item, params Condition[] condition) => Add(new Entry(item, condition));
-	public TravelingMerchantShop Add(int item, params Condition[] condition) => Add(new Entry(ContentSamples.ItemsByType[item], condition));
 
 	public override void FillShop(ICollection<Item> items, NPC npc)
 	{
-		foreach (Entry entry in _entries) {
-			Item item;
-			if (entry.ConditionsMet()) {
-				item = entry.Item.Clone();
-				entry.OnShopOpen(item, npc);
-			}
-			else {
-				continue;
-			}
-
-			items.Add(item);
-		}
+		base.FillShop(items, npc);
 
 		foreach (var itemId in Main.travelShop) {
 			if (itemId != 0)
@@ -1283,35 +1239,25 @@ public class TravelingMerchantShop : AbstractNPCShop
 
 	public override void FillShop(Item[] items, NPC npc, out bool overflow)
 	{
-		overflow = false;
+		base.FillShop(items, npc, out overflow);
+		if (overflow)
+			return;
+
+		int i = Array.IndexOf(items, null);
+		if (i < 0) {
+			overflow = true;
+			return;
+		}
 
 		int limit = items.Length - 1;
-		int i = 0;
-		foreach (Entry entry in _entries) {
-			bool conditionsMet = entry.ConditionsMet();
-			if (!conditionsMet)
+		foreach (var itemId in Main.travelShop) {
+			if (itemId == 0)
 				continue;
 
 			if (i == limit) {
 				overflow = true;
 				return;
 			}
-
-			Item item;
-			if (conditionsMet) {
-				item = entry.Item.Clone();
-				entry.OnShopOpen(item, npc);
-			}
-			else {
-				item = new Item(0);
-			}
-
-			items[i++] = item;
-		}
-
-		foreach (var itemId in Main.travelShop) {
-			if (itemId == 0)
-				continue;
 
 			items[i++] = new Item(itemId);
 		}
