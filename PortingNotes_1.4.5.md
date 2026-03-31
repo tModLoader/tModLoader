@@ -179,7 +179,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Modded tip logic might need changes. There can now be player creation specific tips in UICharacterCreation._tips (a GameTipsDisplay class with a different `ITipProvider`. Supporting this would require more thought.
 - How do we update ProjectileID.Sets.PlayerHurtDamageIgnoresDifficultyScaling? Needs dev comment and to be updated.
 - LiquidEdgeRenderer.DrawScreenTargetSlices patch needs to be fixed if still needed.
-- ActiveEntityIterator needs to be fixed now that Entity.active no longer exists.
 - SurfaceBackgroundStylesLoader.DrawCloseBackground needs to be fixed or recreated from new vanilla logic/math
 - The "#4640"/PostTileFrame fix caused the game to get stuck on settling liquids 50%, it has been commented out.
 - Initialize_AlmostEverything has many new methods we'll likely need to integrate into mod reloading. We might want to see if there is a "cleaner" way than just copying over specific method calls into ModContent.Load.
