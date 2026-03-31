@@ -204,6 +204,19 @@ internal static class ModOrganizer
 		return modPath.Contains(Path.Combine("workshop"), StringComparison.InvariantCultureIgnoreCase);
 	}
 
+	internal static HashSet<string> DetectAbnormalSteamWorkshopDownloads(out Action resolveAbnormalDownloads)
+	{
+		// During initialize it forces update of CachedInstalledModDownloadItems
+		WorkshopBrowserModule.Instance.Initialize();
+		var foundMDItems = WorkshopBrowserModule.Instance.CachedInstalledModDownloadItems;
+
+		var workshopDownloads = FindWorkshopMods();
+
+		// if workshopDownloads has a mod not in foundMDItems, then what
+
+		// if foundMDItems has a mod that is newer then those in workshopDownloads, then what
+	}
+
 	internal static HashSet<string> IdentifyMissingWorkshopDependencies()
 	{
 		var mods = FindWorkshopMods();

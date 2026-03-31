@@ -193,16 +193,19 @@ internal static class Interface
 				var missingDeps = ModOrganizer.IdentifyMissingWorkshopDependencies().ToList();
 
 				string message = $"{ModOrganizer.DetectModChangesForInfoMessage(out IEnumerable<string> removedMods)}";
+				message += ModOrganizer.DetectAbnormalSteamWorkshopDownloads(out Action resolveAbnormalDownloads);
+
 				if (missingDeps.Any()) {
 					message += $"{Language.GetTextValue("tModLoader.DependenciesNeededForOtherMods")}\n  {string.Join("\n  ", missingDeps)}";
 				}
 				message = message.Trim('\n');
 
 				bool anyMissingDependency = missingDeps.Any();
-				bool anyRemovedMod = removedMods.Any();
+				bool anyRemovedMod = removedMods.Any() || resolveAbnormalDownloads is not null;
 				bool promptDepDownloads = anyMissingDependency || anyRemovedMod;
 
 				string cancelButton = promptDepDownloads ? Language.GetTextValue("tModLoader.ContinueAnyway") : null;
+
 				string continueButton = "";
 				if (anyMissingDependency && anyRemovedMod)
 					continueButton = Language.GetTextValue("tModLoader.InstallDependenciesAndRedownloadMods");
@@ -236,6 +239,10 @@ internal static class Interface
 							downloads,
 							loadModsID);
 					}
+
+					//TODO: This code was added hastily in response to a reasonably popular mod being hit by a DMCA and reuploading it.
+					// Revisit this code at a later date. Its not apparent how well the interaction of both dependencies and removed mods will play out in terms of UX
+					resolveAbnormalDownloads?.Invoke();
 
 					//TODO: This code was added hastily in response to a popular mod being transferred ownership by reuploading it.
 					// Revisit this code at a later date. Its not apparent how well the interaction of both dependencies and removed mods will play out in terms of UX
