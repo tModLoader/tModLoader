@@ -84,10 +84,6 @@ public static partial class NPCShopDatabase
 	{
 		foreach (var shop in AllShops) {
 			shop.FinishSetup();
-			// NPCShopDatabase.Initialize(); seems intentionally run before SetupRecipes, where IsAMaterial is populated, so we need to fix entries here.
-			foreach (var entry in shop.ActiveEntries) {
-				entry.Item.Refresh(onlyIfVariantChanged: false);
-			}
 		}
 
 		InitShopTestSystem();
@@ -97,18 +93,18 @@ public static partial class NPCShopDatabase
 	{
 		NoPylons.Add(GetShopName(NPCID.TravellingMerchant));
 		NoPylons.Add(GetShopName(NPCID.SkeletonMerchant));
-		NoPylons.Add(GetShopName(NPCID.DD2Bartender)); // Bartender sometimes can't fit pylons, but sometimes can. Special hack in PylonShopNPC to match vanilla for this
+		NoPylons.Add(GetShopName(NPCID.DD2Bartender));
 		NoPylons.Add(GetShopName(NPCID.SantaClaus)); // Got no space
 
 		RegisterMerchant();
 		RegisterArmsDealer();
 		RegisterDryad();
-		RegisterBombGuy();
+		RegisterDemolitionist();
 		RegisterClothier();
-		RegisterGoblin();
+		RegisterGoblinTinkerer();
 		RegisterWizard();
 		RegisterMechanic();
-		RegisterSantaClaws();
+		RegisterSantaClaus();
 		RegisterTruffle();
 		RegisterSteampunker();
 		RegisterDyeTrader();
@@ -119,19 +115,19 @@ public static partial class NPCShopDatabase
 		RegisterPirate();
 		RegisterStylist();
 		RegisterSkeletonMerchant();
-		RegisterBartender();
+		RegisterTavernkeep();
 		RegisterGolfer();
 		RegisterZoologist();
 		RegisterPrincess();
-		RegisterTravellingMerchant();
+		RegisterTravelingMerchant();
 	}
 
 	public static IEnumerable<Entry> GetPylonEntries()
 	{
-		/*
-		bool num12 = type != 19 && type != 20;
-		bool flag3 = TeleportPylonsSystem.DoesPositionHaveEnoughNPCs(2, Main.LocalPlayer.Center.ToTileCoordinates16());
-		if (num12 && (flag || Main.remixWorld) && flag3 && !Main.player[Main.myPlayer].ZoneCorrupt && !Main.player[Main.myPlayer].ZoneCrimson) {
+		/* Chest.VanillaSetupShop
+		bool num12 = type != 19 && type != 20 && type != 21;
+		bool flag2 = TeleportPylonsSystem.DoesPositionHaveEnoughNPCs(2, Main.LocalPlayer.Center.ToTileCoordinates16());
+		if (num12 && flag2 && !Main.player[Main.myPlayer].ZoneCorrupt && !Main.player[Main.myPlayer].ZoneCrimson) {
 			if (!Main.player[Main.myPlayer].ZoneSnow && !Main.player[Main.myPlayer].ZoneDesert && !Main.player[Main.myPlayer].ZoneBeach && !Main.player[Main.myPlayer].ZoneJungle && !Main.player[Main.myPlayer].ZoneHallow && !Main.player[Main.myPlayer].ZoneGlowshroom) {
 				if (Main.remixWorld) {
 					if ((double)(Main.player[Main.myPlayer].Center.Y / 16f) > Main.rockLayer && Main.player[Main.myPlayer].Center.Y / 16f < (float)(Main.maxTilesY - 350) && num < 39)
@@ -148,7 +144,11 @@ public static partial class NPCShopDatabase
 			if (Main.player[Main.myPlayer].ZoneDesert && num < 39)
 				array[num++].SetDefaults(4919);
 
-			if (Main.remixWorld) {
+			if (Main.player[Main.myPlayer].ZoneUnderworldHeight) {
+				if (num < 39)
+					array[num++].SetDefaults(5652);
+			}
+			else if (Main.remixWorld) {
 				if (!Main.player[Main.myPlayer].ZoneSnow && !Main.player[Main.myPlayer].ZoneDesert && !Main.player[Main.myPlayer].ZoneBeach && !Main.player[Main.myPlayer].ZoneJungle && !Main.player[Main.myPlayer].ZoneHallow && (double)(Main.player[Main.myPlayer].Center.Y / 16f) >= Main.worldSurface && num < 39)
 					array[num++].SetDefaults(4917);
 			}
@@ -156,14 +156,14 @@ public static partial class NPCShopDatabase
 				array[num++].SetDefaults(4917);
 			}
 
-			bool flag4 = Main.player[Main.myPlayer].ZoneBeach && (double)Main.player[Main.myPlayer].position.Y < Main.worldSurface * 16.0;
+			bool flag3 = Main.player[Main.myPlayer].ZoneBeach && (double)Main.player[Main.myPlayer].position.Y < Main.worldSurface * 16.0;
 			if (Main.remixWorld) {
 				float num13 = Main.player[Main.myPlayer].position.X / 16f;
 				float num14 = Main.player[Main.myPlayer].position.Y / 16f;
-				flag4 |= ((double)num13 < (double)Main.maxTilesX * 0.43 || (double)num13 > (double)Main.maxTilesX * 0.57) && (double)num14 > Main.rockLayer && num14 < (float)(Main.maxTilesY - 350);
+				flag3 |= ((double)num13 < (double)Main.maxTilesX * 0.43 || (double)num13 > (double)Main.maxTilesX * 0.57) && (double)num14 > Main.rockLayer && num14 < (float)(Main.maxTilesY - 350);
 			}
 
-			if (flag4 && num < 39)
+			if (flag3 && num < 39)
 				array[num++].SetDefaults(4918);
 
 			if (Main.player[Main.myPlayer].ZoneJungle && num < 39)
@@ -187,7 +187,7 @@ public static partial class NPCShopDatabase
 		});
 
 		var cavernPylonCondition = new Condition("Conditions.UndergroundPylon", () =>
-			!Main.LocalPlayer.ZoneSnow && !Main.LocalPlayer.ZoneDesert && !Main.LocalPlayer.ZoneBeach && !Main.LocalPlayer.ZoneJungle && !Main.LocalPlayer.ZoneHallow && (Main.remixWorld || !Main.LocalPlayer.ZoneGlowshroom)
+			!Main.LocalPlayer.ZoneUnderworldHeight && !Main.LocalPlayer.ZoneSnow && !Main.LocalPlayer.ZoneDesert && !Main.LocalPlayer.ZoneBeach && !Main.LocalPlayer.ZoneJungle && !Main.LocalPlayer.ZoneHallow && (Main.remixWorld || !Main.LocalPlayer.ZoneGlowshroom)
 			&& Main.LocalPlayer.Center.Y / 16.0 >= Main.worldSurface
 		);
 
@@ -203,14 +203,16 @@ public static partial class NPCShopDatabase
 
 		var mushroomPylonCondition = new Condition("Conditions.InGlowshroom", () => Main.LocalPlayer.ZoneGlowshroom && (!Main.remixWorld || !Main.LocalPlayer.ZoneUnderworldHeight));
 
-		yield return new Entry(ItemID.TeleportationPylonPurity,        Condition.HappyEnoughToSellPylons, Condition.AnotherTownNPCNearby, Condition.NotInEvilBiome, forestPylonCondition).OrderLast();
-		yield return new Entry(ItemID.TeleportationPylonSnow,          Condition.HappyEnoughToSellPylons, Condition.AnotherTownNPCNearby, Condition.NotInEvilBiome, Condition.InSnow).OrderLast();
-		yield return new Entry(ItemID.TeleportationPylonDesert,        Condition.HappyEnoughToSellPylons, Condition.AnotherTownNPCNearby, Condition.NotInEvilBiome, Condition.InDesert).OrderLast();
-		yield return new Entry(ItemID.TeleportationPylonUnderground,   Condition.HappyEnoughToSellPylons, Condition.AnotherTownNPCNearby, Condition.NotInEvilBiome, cavernPylonCondition).OrderLast();
-		yield return new Entry(ItemID.TeleportationPylonOcean,         Condition.HappyEnoughToSellPylons, Condition.AnotherTownNPCNearby, Condition.NotInEvilBiome, oceanPylonCondition).OrderLast();
-		yield return new Entry(ItemID.TeleportationPylonJungle,        Condition.HappyEnoughToSellPylons, Condition.AnotherTownNPCNearby, Condition.NotInEvilBiome, Condition.InJungle).OrderLast();
-		yield return new Entry(ItemID.TeleportationPylonHallow,        Condition.HappyEnoughToSellPylons, Condition.AnotherTownNPCNearby, Condition.NotInEvilBiome, Condition.InHallow).OrderLast();
-		yield return new Entry(ItemID.TeleportationPylonMushroom,      Condition.HappyEnoughToSellPylons, Condition.AnotherTownNPCNearby, Condition.NotInEvilBiome, mushroomPylonCondition).OrderLast();
+		yield return new Entry(ItemID.TeleportationPylonPurity,        Condition.AnotherTownNPCNearby, Condition.NotInEvilBiome, forestPylonCondition).OrderLast();
+		yield return new Entry(ItemID.TeleportationPylonSnow,          Condition.AnotherTownNPCNearby, Condition.NotInEvilBiome, Condition.InSnow).OrderLast();
+		yield return new Entry(ItemID.TeleportationPylonDesert,        Condition.AnotherTownNPCNearby, Condition.NotInEvilBiome, Condition.InDesert).OrderLast();
+		yield return new Entry(ItemID.TeleportationPylonUnderworld,    Condition.AnotherTownNPCNearby, Condition.NotInEvilBiome, Condition.InUnderworld).OrderLast();
+		yield return new Entry(ItemID.TeleportationPylonUnderground,   Condition.AnotherTownNPCNearby, Condition.NotInEvilBiome, cavernPylonCondition).OrderLast();
+		yield return new Entry(ItemID.TeleportationPylonOcean,         Condition.AnotherTownNPCNearby, Condition.NotInEvilBiome, oceanPylonCondition).OrderLast();
+		yield return new Entry(ItemID.TeleportationPylonJungle,        Condition.AnotherTownNPCNearby, Condition.NotInEvilBiome, Condition.InJungle).OrderLast();
+		yield return new Entry(ItemID.TeleportationPylonHallow,        Condition.AnotherTownNPCNearby, Condition.NotInEvilBiome, Condition.InHallow).OrderLast();
+		yield return new Entry(ItemID.TeleportationPylonMushroom,      Condition.AnotherTownNPCNearby, Condition.NotInEvilBiome, mushroomPylonCondition).OrderLast();
+		// Aether Pylon is not sold, it is obtained by shimmer transmuted any other pylon.
 
 
 		foreach (ModPylon pylon in PylonLoader.modPylons) {
@@ -223,6 +225,7 @@ public static partial class NPCShopDatabase
 	{
 		var carriesFlareGun = Condition.PlayerCarriesItem(ItemID.FlareGun);
 		var drumSetCondition = new Condition("Conditions.DownedB2B3HM", () => NPC.downedBoss2 || NPC.downedBoss3 || Main.hardMode);
+		var furnaceCondition = new Condition("Conditions.JungleORCelebrationMk10ANDNotTheBeesANDNotRemix", () => Main.LocalPlayer.ZoneJungle || (Main.tenthAnniversaryWorld && Main.notTheBeesWorld && !Main.remixWorld));
 
 		new NPCShop(NPCID.Merchant)
 			.Add(ItemID.MiningHelmet)
@@ -232,6 +235,7 @@ public static partial class NPCShopDatabase
 			.Add(ItemID.CopperPickaxe)
 			.Add(ItemID.CopperAxe)
 			.Add(ItemID.Torch)
+			.Add(ItemID.JungleTorch,		Condition.NotTheBeesWorld, Condition.NotRemixWorld)
 			.Add(ItemID.LesserHealingPotion)
 			.Add(ItemID.HealingPotion,		Condition.Hardmode)
 			.Add(ItemID.LesserManaPotion)
@@ -240,10 +244,11 @@ public static partial class NPCShopDatabase
 			.Add(ItemID.Shuriken)
 			.Add(ItemID.Rope)
 			.Add(ItemID.Marshmallow,		Condition.InSnow)
-			.Add(ItemID.Furnace,			Condition.InJungle)
+			.Add(ItemID.Furnace,			furnaceCondition)
 			.Add(ItemID.PinWheel,			Condition.TimeDay, Condition.HappyWindyDay)
 			.Add(ItemID.ThrowingKnife,		Condition.BloodMoon)
 			.Add(ItemID.Glowstick,			Condition.TimeNight)
+			.Add(ItemID.RainbowGlowstick,	Condition.BirthdayParty)
 			.Add(ItemID.Safe,				Condition.DownedSkeletron)
 			.Add(ItemID.DiscoBall,			Condition.Hardmode)
 			.Add(ItemID.Flare,				carriesFlareGun)
@@ -284,14 +289,16 @@ public static partial class NPCShopDatabase
 
 	private static void RegisterDryad()
 	{
+		var notRemixORInfectedSeedORCelebrationmk10ANDNotForTheWorthy = new Condition("Conditions.BiomeSpreadingItemsWithInfectedSeed", () => !Main.remixWorld || Main.infectedSeed || (Main.tenthAnniversaryWorld && !Main.getGoodWorld));
+
 		new NPCShop(NPCID.Dryad)
-			.Add(ItemID.ViciousPowder,					Condition.BloodMoon, Condition.CrimsonWorld, Condition.NotRemixWorld)
+			.Add(ItemID.ViciousPowder,					Condition.BloodMoon, Condition.CrimsonWorld, Condition.BiomeSpreadingItems)
 			.Add(ItemID.CrimsonSeeds,					Condition.BloodMoon, Condition.CrimsonWorld)
 			.Add(ItemID.CrimsonGrassEcho,				Condition.BloodMoon, Condition.CrimsonWorld)
 			.Add(ItemID.VilePowder,						Condition.BloodMoon, Condition.CorruptWorld, Condition.NotRemixWorld)
 			.Add(ItemID.CorruptSeeds,					Condition.BloodMoon, Condition.CorruptWorld)
 			.Add(ItemID.CorruptGrassEcho,				Condition.BloodMoon, Condition.CorruptWorld)
-			.Add(ItemID.PurificationPowder,				Condition.NotBloodMoon, Condition.NotRemixWorld)
+			.Add(ItemID.PurificationPowder,				Condition.NotBloodMoon, notRemixORInfectedSeedORCelebrationmk10ANDNotForTheWorthy)
 			.Add(ItemID.GrassSeeds,						Condition.NotBloodMoon)
 			.Add(ItemID.Sunflower,						Condition.NotBloodMoon)
 			.Add(ItemID.GrassWall,						Condition.NotBloodMoon)
@@ -309,14 +316,14 @@ public static partial class NPCShopDatabase
 			.Add(ItemID.MushroomGrassSeeds,				Condition.NotInUnderworld, Condition.InGlowshroom)
 			.Add(ItemID.DryadCoverings,					Condition.Halloween)
 			.Add(ItemID.DryadLoincloth,					Condition.Halloween)
-			.Add(ItemID.DayBloomPlanterBox,				Condition.DownedKingSlime)
-			.Add(ItemID.MoonglowPlanterBox,				Condition.DownedQueenBee)
-			.Add(ItemID.BlinkrootPlanterBox,			Condition.DownedEyeOfCthulhu)
-			.Add(ItemID.CorruptPlanterBox,				Condition.DownedEaterOfWorlds)
-			.Add(ItemID.CrimsonPlanterBox,				Condition.DownedBrainOfCthulhu)
-			.Add(ItemID.WaterleafPlanterBox,			Condition.DownedSkeletron)
-			.Add(ItemID.ShiverthornPlanterBox,			Condition.DownedSkeletron)
-			.Add(ItemID.FireBlossomPlanterBox,			Condition.Hardmode)
+			.Add(ItemID.DayBloomPlanterBox)
+			.Add(ItemID.MoonglowPlanterBox)
+			.Add(ItemID.BlinkrootPlanterBox)
+			.Add(ItemID.CorruptPlanterBox,				Condition.CorruptWorld)
+			.Add(ItemID.CrimsonPlanterBox,				Condition.CrimsonWorld)
+			.Add(ItemID.WaterleafPlanterBox)
+			.Add(ItemID.ShiverthornPlanterBox)
+			.Add(ItemID.FireBlossomPlanterBox)
 			.Add(ItemID.FlowerPacketWhite)
 			.Add(ItemID.FlowerPacketYellow)
 			.Add(ItemID.FlowerPacketRed)
@@ -338,16 +345,22 @@ public static partial class NPCShopDatabase
 			.Add(ItemID.PottedForestBamboo,				Condition.Hardmode, Condition.MoonPhasesQuarter3)
 			.Add(ItemID.PottedJungleBamboo,				Condition.Hardmode, Condition.MoonPhasesQuarter3)
 			.Add(ItemID.PottedHallowBamboo,				Condition.Hardmode, Condition.MoonPhasesQuarter3)
+			.Add(ItemID.Torch,							Condition.PreHardmode, Condition.VampireSeed, Condition.InfectedSeed)
+			.Add(ItemID.CorruptTorch,					Condition.PreHardmode, Condition.CorruptWorld, Condition.VampireSeed, Condition.InfectedSeed)
+			.Add(ItemID.CrimsonTorch,					Condition.PreHardmode, Condition.CrimsonWorld, Condition.VampireSeed, Condition.InfectedSeed)
 			.Register();
 	}
 
-	private static void RegisterBombGuy()
+	private static void RegisterDemolitionist()
 	{
 		new NPCShop(NPCID.Demolitionist)
 			.Add(ItemID.Grenade)
 			.Add(ItemID.Bomb)
+			.Add(ItemID.FreezeBomb,			Condition.TimeNight, new Condition("DownedKingSlimeOrEoC", () => NPC.downedBoss1 || NPC.downedSlimeKing))
 			.Add(ItemID.Dynamite)
 			.Add(ItemID.HellfireArrow,		Condition.Hardmode)
+			.Add(ItemID.PortableKiln)
+			.Add(ItemID.MiteyTitey)
 			.Add(ItemID.LandMine,			Condition.Hardmode, Condition.DownedPlantera, Condition.DownedPirates)
 			.Add(ItemID.ExplosivePowder,	Condition.Hardmode)
 			.Add(ItemID.DryBomb,			Condition.PlayerCarriesItem(ItemID.DryBomb))
@@ -364,7 +377,8 @@ public static partial class NPCShopDatabase
 		new NPCShop(NPCID.Clothier)
 			.Add(ItemID.BlackThread)
 			.Add(ItemID.PinkThread)
-			.Add(ItemID.SummerHat,						Condition.TimeDay)
+			.Add(ItemID.PrettyMirror,					Condition.InGraveyard)
+			.Add(ItemID.SummerHat,						Condition.TimeDay, Condition.NotInGraveyard)
 			.Add(ItemID.PlumbersShirt,					Condition.MoonPhaseFull)
 			.Add(ItemID.PlumbersPants,					Condition.MoonPhaseFull)
 			.Add(ItemID.WhiteTuxedoShirt,				Condition.MoonPhaseFull, Condition.TimeNight)
@@ -420,10 +434,11 @@ public static partial class NPCShopDatabase
 			.Add(ItemID.FlowerBoyPants,					Condition.BirthdayParty)
 			.Add(ItemID.HunterCloak,					Condition.GolfScoreOver(2000))
 			.Add(ItemID.PlacePainting)
+			.Add(ItemID.PaintingRPlace2023)
 			.Register();
 	}
 
-	private static void RegisterGoblin()
+	private static void RegisterGoblinTinkerer()
 	{
 		new NPCShop(NPCID.GoblinTinkerer)
 			.Add(ItemID.RocketBoots)
@@ -432,7 +447,7 @@ public static partial class NPCShopDatabase
 			.Add(ItemID.GrapplingHook)
 			.Add(ItemID.Toolbelt)
 			.Add(ItemID.SpikyBall)
-			.Add(ItemID.RubblemakerSmall,	Condition.Hardmode)
+			.Add(ItemID.RubblemakerSmall)
 			.Register();
 	}
 
@@ -448,7 +463,8 @@ public static partial class NPCShopDatabase
 			.Add(ItemID.Book)
 			.Add(ItemID.MusicBox)
 			.Add(ItemID.EmptyDropper)
-			.Add(ItemID.WizardsHat,			Condition.Halloween)
+			.Add(ItemID.DeadCellsKillingDeck,	Condition.Hardmode, Condition.BloodMoon)
+			.Add(ItemID.WizardsHat,				Condition.Halloween)
 			.Register();
 	}
 
@@ -485,11 +501,12 @@ public static partial class NPCShopDatabase
 			.Add(ItemID.Timer1Second)
 			.Add(ItemID.TimerOneHalfSecond)
 			.Add(ItemID.TimerOneFourthSecond)
+			.Add(ItemID.SpectreGoggles, Condition.InGraveyard)
 			.Add(ItemID.MechanicsRod, Condition.NpcIsPresent(NPCID.Angler), Condition.MoonPhasesOdd)
 			.Register();
 	}
 
-	private static void RegisterSantaClaws()
+	private static void RegisterSantaClaus()
 	{
 		var shop = new NPCShop(NPCID.SantaClaus)
 			.Add(ItemID.SantaHat)
@@ -515,15 +532,16 @@ public static partial class NPCShopDatabase
 			.Add(ItemID.Autohammer,			Condition.DownedPlantera)
 			.Add(ItemID.StrangeGlowingMushroom)
 			.Add(ItemID.MySon)
-			.Add(ItemID.DarkBlueSolution,	Condition.NotRemixWorld)
+			.Add(ItemID.DarkBlueSolution,	Condition.BiomeSpreadingItems)
 			.Register();
 	}
 
 	private static void RegisterSteampunker()
 	{
 		var steampunkerOutfitCondition = new Condition("Conditions.MoonPhasesHalf0OrPreHardmode", () => Condition.PreHardmode.IsMet() || Condition.MoonPhasesHalf0.IsMet());
+
 		new NPCShop(NPCID.Steampunker)
-			.Add(ItemID.Clentaminator,		Condition.NotRemixWorld)
+			.Add(ItemID.Clentaminator,		Condition.BiomeSpreadingItems)
 			.Add(ItemID.SteampunkHat,		steampunkerOutfitCondition)
 			.Add(ItemID.SteampunkShirt,		steampunkerOutfitCondition)
 			.Add(ItemID.SteampunkPants,		steampunkerOutfitCondition)
@@ -547,16 +565,16 @@ public static partial class NPCShopDatabase
 			.Add(ItemID.LesionStation,		Condition.CorruptWorld)
 			.Add(ItemID.BoneWelder,			Condition.InGraveyard)
 			.Add(ItemID.HoneyDispenser,		Condition.InJungle)
+			.Add(ItemID.LihzahrdFurnace,	Condition.InJungle, Condition.DownedGolem)
 			.Add(ItemID.IceMachine,			Condition.InSnow)
 			.Add(ItemID.SkyMill,			Condition.InSpace)
-			.Add(ItemID.LivingLoom,			Condition.PlayerCarriesItem(ItemID.LivingWoodWand))
-			.Add(ItemID.RedSolution,		Condition.NotRemixWorld, Condition.EclipseOrBloodMoon, Condition.CrimsonWorld)
-			.Add(ItemID.PurpleSolution,		Condition.NotRemixWorld, Condition.EclipseOrBloodMoon, Condition.CorruptWorld)
-			.Add(ItemID.BlueSolution,		Condition.NotRemixWorld, Condition.NotEclipseAndNotBloodMoon, Condition.InHallow)
-			.Add(ItemID.GreenSolution,		Condition.NotRemixWorld, Condition.NotEclipseAndNotBloodMoon, Condition.NotInHallow)
-			.Add(ItemID.SandSolution,		Condition.NotRemixWorld, Condition.DownedMoonLord)
-			.Add(ItemID.SnowSolution,		Condition.NotRemixWorld, Condition.DownedMoonLord)
-			.Add(ItemID.DirtSolution,		Condition.NotRemixWorld, Condition.DownedMoonLord)
+			.Add(ItemID.RedSolution,		Condition.BiomeSpreadingItems, Condition.EclipseOrBloodMoon, Condition.CrimsonWorld)
+			.Add(ItemID.PurpleSolution,		Condition.BiomeSpreadingItems, Condition.EclipseOrBloodMoon, Condition.CorruptWorld)
+			.Add(ItemID.BlueSolution,		Condition.BiomeSpreadingItems, Condition.NotEclipseAndNotBloodMoon, Condition.InHallow)
+			.Add(ItemID.GreenSolution,		Condition.BiomeSpreadingItems, Condition.NotEclipseAndNotBloodMoon, Condition.NotInHallow)
+			.Add(ItemID.SandSolution,		Condition.BiomeSpreadingItems, Condition.DownedMoonLord)
+			.Add(ItemID.SnowSolution,		Condition.BiomeSpreadingItems, Condition.DownedMoonLord)
+			.Add(ItemID.DirtSolution,		Condition.BiomeSpreadingItems, Condition.DownedMoonLord)
 			.Add(ItemID.Cog,				Condition.Hardmode)
 			.Add(ItemID.SteampunkMinecart,	Condition.Hardmode)
 			.Add(ItemID.SteampunkGoggles,	Condition.Halloween)
@@ -566,12 +584,13 @@ public static partial class NPCShopDatabase
 	private static void RegisterDyeTrader()
 	{
 		new NPCShop(NPCID.DyeTrader)
-			.Add(ItemID.SilverDye)
-			.Add(ItemID.BrownDye)
 			.Add(ItemID.DyeVat)
-			.Add(ItemID.TeamDye,			Condition.Multiplayer)
+			.Add(ItemID.EasterBlock)
 			.Add(ItemID.DyeTraderTurban,	Condition.Halloween)
 			.Add(ItemID.DyeTraderRobe,		Condition.Halloween)
+			.Add(ItemID.SilverDye)
+			.Add(ItemID.BrownDye)
+			.Add(ItemID.TeamDye,			Condition.Multiplayer)
 			.Add(ItemID.ShadowDye,			Condition.MoonPhaseFull)
 			.Add(ItemID.NegativeDye,		Condition.MoonPhaseFull)
 			.Add(ItemID.BloodbathDye,		Condition.BloodMoon)
@@ -640,8 +659,11 @@ public static partial class NPCShopDatabase
 			.Add(ItemID.DryRocket,				Condition.Hardmode)
 			.Add(ItemID.ProximityMineLauncher,	Condition.Hardmode)
 			.Add(ItemID.Nanites,				Condition.Hardmode)
-			.Add(ItemID.JimsDrone,				Condition.Hardmode)
 			.Add(ItemID.JimsDroneVisor,			Condition.Hardmode)
+			.Add(ItemID.JimsDrone,				Condition.Hardmode)
+			.Add(ItemID.RemoteControlCar,		Condition.Hardmode)
+			.Add(ItemID.CRTMonolith)
+			.Add(ItemID.RetroMonolith)
 			.Add(ItemID.SpectreGoggles,			Condition.InGraveyard)
 			.Add(ItemID.EchoBlock,				Condition.InGraveyard)
 			.Add(ItemID.CyborgHelmet,			Condition.Halloween)
@@ -650,6 +672,7 @@ public static partial class NPCShopDatabase
 			.Add(ItemID.HiTekSunglasses,		Condition.DownedMartians)
 			.Add(ItemID.NightVisionHelmet,		Condition.DownedMartians)
 			.Add(ItemID.PortalGunStation,		portalGunStation)
+			.Add(ItemID.ToyBreakerBlock)
 			.Register();
 	}
 
@@ -678,7 +701,7 @@ public static partial class NPCShopDatabase
 			.Add(ItemID.ShadowPaint,		Condition.Hardmode)
 			.Add(ItemID.NegativePaint,		Condition.Hardmode)
 			.Add(ItemID.GlowPaint,			Condition.InGraveyard)
-			.Add(ItemID.EchoCoating,		Condition.InGraveyard, Condition.DownedPlantera)
+			.Add(ItemID.EchoCoating,		Condition.InGraveyard, new Condition(Language.GetText("Conditions.NpcIsPresentOrDownedPlantera").WithFormatArgs(Lang.GetNPCName(NPCID.Mechanic)), () => NPC.downedPlantBoss || NPC.AnyNPCs(NPCID.Mechanic)))
 			.Register();
 
 		new NPCShop(NPCID.Painter, "Decor") // Decor shop
@@ -712,6 +735,7 @@ public static partial class NPCShopDatabase
 			.Add(ItemID.LightlessChasms,			Condition.InCorrupt)
 			.Add(ItemID.TheLandofDeceivingLooks,	Condition.InHallow)
 			.Add(ItemID.DoNotStepontheGrass,		Condition.InJungle)
+			.Add(ItemID.WinterAtVaringskollen,		Condition.InSnow)
 			.Add(ItemID.ColdWatersintheWhiteLand,	Condition.InSnow)
 			.Add(ItemID.SecretoftheSands,			Condition.InDesert)
 			.Add(ItemID.EvilPresence,				Condition.BloodMoon)
@@ -773,6 +797,7 @@ public static partial class NPCShopDatabase
 			.Add(ItemID.PirateShirt)
 			.Add(ItemID.PiratePants)
 			.Add(ItemID.Sail)
+			.Add(ItemID.JellyfishBlock, Condition.InGraveyard)
 			.Add(ItemID.ParrotCracker,	beachCondition)
 			.Add(ItemID.BunnyCannon,	Condition.NpcIsPresent(NPCID.PartyGirl), Condition.Hardmode, Condition.DownedMechBossAny)
 			.Register();
@@ -854,18 +879,22 @@ public static partial class NPCShopDatabase
 			.Add(ItemID.RedCounterweight,		Condition.MoonPhases15)
 			.Add(ItemID.PurpleCounterweight,	Condition.MoonPhases26)
 			.Add(ItemID.GreenCounterweight,		Condition.MoonPhases37)
+			.Add(ItemID.RollerSkatesGreenMountItem, Condition.MoonPhases12)
+			.Add(ItemID.RollerSkatesClassicMountItem, Condition.MoonPhases35)
+			.Add(ItemID.RollerSkatesPartyMountItem, Condition.MoonPhases67)
 			.Add(ItemID.Bomb)
 			.Add(ItemID.Rope)
 			.Add(ItemID.Gradient,				Condition.Hardmode, Condition.MoonPhasesHalf0)
 			.Add(ItemID.FormatC,				Condition.Hardmode, Condition.MoonPhasesHalf1)
 			.Add(ItemID.YoYoGlove,				Condition.Hardmode)
+			.Add(ItemID.MagicString,			Condition.Hardmode, Condition.DownedMechBossAny)
 			.Add(ItemID.SlapHand,				Condition.Hardmode, Condition.BloodMoon)
 			.Add(ItemID.MagicLantern,			Condition.TimeNight, Condition.MoonPhaseFull)
 			.Add(ItemID.ArtisanLoaf,			artisanCondition, Condition.MoonPhasesNearNew)
 			.Register();
 	}
 
-	private static void RegisterBartender()
+	private static void RegisterTavernkeep()
 	{
 		var shop = new NPCShop(NPCID.DD2Bartender).AllowFillingLastSlot();
 
@@ -995,9 +1024,10 @@ public static partial class NPCShopDatabase
 		new NPCShop(NPCID.BestiaryGirl)
 			.Add(ItemID.FairyGlowstick,				new Condition("Conditions.BestiaryWinx", () => Chest.BestiaryGirl_IsFairyTorchAvailable()))
 			.Add(ItemID.DontHurtCrittersBook)
-			.Add(ItemID.SquirrelHook)
 			.Add(ItemID.TheWerewolf,				Condition.MoonPhaseFull, Condition.TimeNight)
-			.Add(ItemID.BlandWhip,					Condition.BestiaryFilledPercent(10))
+			.Add(ItemID.PaintingKaguya,				Condition.BestiaryFilledPercent(45))
+			.Add(ItemID.SquirrelHook,				Condition.BestiaryFilledPercent(10))
+			.Add(ItemID.BlandWhip,					Condition.BestiaryFilledPercent(3))
 			.Add(ItemID.LicenseCat)
 			.Add(ItemID.LicenseDog,					Condition.BestiaryFilledPercent(25))
 			.Add(ItemID.LicenseBunny,				Condition.BestiaryFilledPercent(45))
@@ -1011,7 +1041,7 @@ public static partial class NPCShopDatabase
 			.Add(ItemID.MajesticHorseSaddle,		Condition.BestiaryFilledPercent(30))
 			.Add(ItemID.DarkHorseSaddle,			Condition.BestiaryFilledPercent(30))
 			.Add(ItemID.JoustingLance,				Condition.BestiaryFilledPercent(30), Condition.Hardmode)
-			.Add(ItemID.DiggingMoleMinecart,		Condition.BestiaryFilledPercent(35))
+			.Add(ItemID.DiggingMoleMinecart,		Condition.BestiaryFilledPercent(25))
 			.Add(ItemID.RabbitOrder,				Condition.BestiaryFilledPercent(40))
 			.Add(ItemID.FullMoonSqueakyToy,			Condition.Hardmode, Condition.BloodMoon)
 			.Add(ItemID.MudBud,						Condition.DownedPlantera)
@@ -1021,6 +1051,7 @@ public static partial class NPCShopDatabase
 			.Add(ItemID.LightningCarrot,			Condition.BestiaryFilledPercent(50))
 			.Add(ItemID.BallOfFuseWire,				Condition.BestiaryFilledPercent(70))
 			.Add(ItemID.TeleportationPylonVictory,	Condition.BestiaryFilledPercent(100))
+			.Add(ItemID.DeadCellsSwarmGrenade,		Condition.BirthdayParty)
 			.Add(ItemID.DogEars,					Condition.MoonPhasesQuarter0)
 			.Add(ItemID.DogTail,					Condition.MoonPhasesQuarter0)
 			.Add(ItemID.FoxEars,					Condition.MoonPhasesQuarter1)
@@ -1029,6 +1060,7 @@ public static partial class NPCShopDatabase
 			.Add(ItemID.LizardTail,					Condition.MoonPhasesQuarter2)
 			.Add(ItemID.BunnyEars,					Condition.MoonPhasesQuarter3)
 			.Add(ItemID.BunnyTail,					Condition.MoonPhasesQuarter3)
+			.Add(ItemID.Torch,						Condition.VampireSeed, Condition.NotInfectedSeed)
 			.Register();
 	}
 
@@ -1059,9 +1091,17 @@ public static partial class NPCShopDatabase
 			.Register();
 	}
 
-	private static void RegisterTravellingMerchant()
+	private static void RegisterTravelingMerchant()
 	{
-		new TravellingMerchantShop(NPCID.TravellingMerchant)
+		var carriesAnyPals = new Condition(Language.GetText("Conditions.PlayerCarriesItem5")
+			.WithFormatArgs(Lang.GetItemName(ItemID.PalworldDigtoise), Lang.GetItemName(ItemID.PalworldMinionCattiva), Lang.GetItemName(ItemID.PalworldMinionFoxsparks), Lang.GetItemName(ItemID.PalworldPetChillet), Lang.GetItemName(ItemID.PalworldPetChilletIgnis)),
+			() => Main.LocalPlayer.HasItemInAnyInventory(ItemID.PalworldDigtoise) || Main.LocalPlayer.HasItemInAnyInventory(ItemID.PalworldMinionCattiva) || Main.LocalPlayer.HasItemInAnyInventory(ItemID.PalworldMinionFoxsparks) || Main.LocalPlayer.HasItemInAnyInventory(ItemID.PalworldPetChillet) || Main.LocalPlayer.HasItemInAnyInventory(ItemID.PalworldPetChilletIgnis));
+
+		new TravelingMerchantShop(NPCID.TravellingMerchant)
+			// Theses two entries are not randomized. They will always be available if the condition is met.
+			.Add(ItemID.PalworldPalMetalArmorBody, carriesAnyPals)
+			.Add(ItemID.PalworldPalMetalArmorLegs, carriesAnyPals)
+			// Normal Traveling Merchant randomized shop:
 			.AddInfoEntry(ItemID.BlackCounterweight)
 			.AddInfoEntry(ItemID.YellowCounterweight)
 			.AddInfoEntry(ItemID.AngelHalo)
@@ -1086,6 +1126,7 @@ public static partial class NPCShopDatabase
 			.AddInfoEntry(ItemID.BedazzledNectar)
 			.AddInfoEntry(ItemID.BambooLeaf)
 			.AddInfoEntry(ItemID.Pho)
+			.AddInfoEntry(ItemID.LilacDuskHead)
 			.AddInfoEntry(ItemID.Revolver, Condition.SmashedShadowOrb)
 			.AddInfoEntry(ItemID.Fez)
 			.AddInfoEntry(ItemID.MagicHat)
@@ -1105,10 +1146,11 @@ public static partial class NPCShopDatabase
 			.AddInfoEntry(ItemID.HeartHairpin)
 			.AddInfoEntry(ItemID.UnicornHornHat)
 			.AddInfoEntry(ItemID.PrettyPinkRibbon)
-			.AddInfoEntry(ItemID.ZapinatorGray, Condition.DownedEarlygameBoss)
+			.AddInfoEntry(ItemID.ZapinatorGray, Condition.DownedEarlygameBoss, Condition.PreHardmode)
 			.AddInfoEntry(ItemID.ZapinatorOrange, Condition.Hardmode)
 			.AddInfoEntry(ItemID.Code1, Condition.DownedEyeOfCthulhu)
 			.AddInfoEntry(ItemID.Code2, Condition.DownedMechBossAny)
+			.AddInfoEntry(ItemID.RollerSkatesBlueMountItem)
 			.AddInfoEntry(ItemID.PadThai)
 			.AddInfoEntry(ItemID.BrickLayer)
 			.AddInfoEntry(ItemID.ExtendoGrip)
@@ -1130,30 +1172,65 @@ public static partial class NPCShopDatabase
 			.AddInfoEntry(ItemID.DPSMeter)
 			.AddInfoEntry(ItemID.LifeformAnalyzer)
 			.AddInfoEntry(ItemID.Stopwatch)
+			.AddInfoEntry(ItemID.PaintingWilson, Condition.DontStarveWorld)
+			.AddInfoEntry(ItemID.PaintingWillow, Condition.DontStarveWorld)
+			.AddInfoEntry(ItemID.PaintingWendy, Condition.DontStarveWorld)
+			.AddInfoEntry(ItemID.PaintingWolfgang, Condition.DontStarveWorld)
+			.AddInfoEntry(ItemID.MoonLordPainting, Condition.Hardmode, Condition.DownedMoonLord)
+			.AddInfoEntry(ItemID.PaintingCastleMarsberg, Condition.Hardmode, Condition.DownedMartians)
+			.AddInfoEntry(ItemID.PaintingMartiaLisa, Condition.Hardmode, Condition.DownedMartians)
+			.AddInfoEntry(ItemID.PaintingTheTruthIsUpThere, Condition.Hardmode, Condition.DownedMartians)
+			.AddInfoEntry(ItemID.PaintingAcorns, Condition.DownedFrostLegion)
+			.AddInfoEntry(ItemID.PaintingColdSnap, Condition.DownedFrostLegion)
+			.AddInfoEntry(ItemID.PaintingCursedSaint, Condition.DownedFrostLegion)
+			.AddInfoEntry(ItemID.PaintingSnowfellas, Condition.DownedFrostLegion)
+			.AddInfoEntry(ItemID.PaintingTheSeason, Condition.DownedFrostLegion)
+			.AddInfoEntry(ItemID.MoonmanandCompany, Condition.Hardmode, Condition.DownedMoonLord)
+			.AddInfoEntry(ItemID.StickmanVsTerrTerr)
+			.AddInfoEntry(ItemID.PaintingGermanZenith)
+			.AddInfoEntry(ItemID.PaintingGermanBeer)
+			.AddInfoEntry(ItemID.KargohsSummon)
+			.AddInfoEntry(ItemID.BennyWarhol)
+			.AddInfoEntry(ItemID.Duality)
+			.AddInfoEntry(ItemID.HoplitePizza)
+			.AddInfoEntry(ItemID.ParsecPals)
+			.AddInfoEntry(ItemID.DoNotEattheVileMushroom)
+			.AddInfoEntry(ItemID.SunshineofIsrapony)
+			.AddInfoEntry(ItemID.HeroesFromAnotherWorld)
+			.AddInfoEntry(ItemID.YuumaTheBlueTiger)
+			.AddInfoEntry(ItemID.CozyWindow)
 			.Register();
 	}
 }
 
-public class TravellingMerchantShop : AbstractNPCShop
+public class TravelingMerchantShop : NPCShop
 {
-	private new record Entry(Item Item, IEnumerable<Condition> Conditions) : AbstractNPCShop.Entry { }
-
-	private List<Entry> _entries = new();
-
-	public override IEnumerable<AbstractNPCShop.Entry> ActiveEntries => _entries;
-
-	public TravellingMerchantShop(int npcType) : base(npcType) { }
-
-	public TravellingMerchantShop AddInfoEntry(Item item, params Condition[] conditions)
+	public class InfoEntry(Item item, params Condition[] conditions) : AbstractNPCShop.Entry(item, conditions)
 	{
-		_entries.Add(new Entry(item, conditions.ToList()));
+	}
+
+	private List<InfoEntry> _infoEntries = [];
+	public IEnumerable<InfoEntry> InfoEntries => _infoEntries;
+	protected override IEnumerable<AbstractNPCShop.Entry> AllEntries => base.AllEntries.Concat(InfoEntries);
+
+	public TravelingMerchantShop(int npcType) : base(npcType) { }
+
+	public new TravelingMerchantShop Add(Item item, params Condition[] condition) { base.Add(item, condition); return this; }
+	public new TravelingMerchantShop Add(int item, params Condition[] condition) { base.Add(item, condition); return this; }
+	public new TravelingMerchantShop Add<T>(params Condition[] condition) where T : ModItem { base.Add<T>(condition); return this; }
+
+	public TravelingMerchantShop AddInfoEntry(Item item, params Condition[] conditions)
+	{
+		_infoEntries.Add(new InfoEntry(item, conditions));
 		return this;
 	}
 
-	public TravellingMerchantShop AddInfoEntry(int item, params Condition[] conditions) => AddInfoEntry(ContentSamples.ItemsByType[item], conditions);
+	public TravelingMerchantShop AddInfoEntry(int item, params Condition[] conditions) => AddInfoEntry(ContentSamples.ItemsByType[item], conditions);
 
 	public override void FillShop(ICollection<Item> items, NPC npc)
 	{
+		base.FillShop(items, npc);
+
 		foreach (var itemId in Main.travelShop) {
 			if (itemId != 0)
 				items.Add(new Item(itemId));
@@ -1162,12 +1239,25 @@ public class TravellingMerchantShop : AbstractNPCShop
 
 	public override void FillShop(Item[] items, NPC npc, out bool overflow)
 	{
-		overflow = false;
+		base.FillShop(items, npc, out overflow);
+		if (overflow)
+			return;
 
-		int i = 0;
+		int i = Array.IndexOf(items, null);
+		if (i < 0) {
+			overflow = true;
+			return;
+		}
+
+		int limit = items.Length - 1;
 		foreach (var itemId in Main.travelShop) {
 			if (itemId == 0)
 				continue;
+
+			if (i == limit) {
+				overflow = true;
+				return;
+			}
 
 			items[i++] = new Item(itemId);
 		}
