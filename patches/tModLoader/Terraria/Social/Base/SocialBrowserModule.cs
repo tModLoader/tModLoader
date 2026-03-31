@@ -64,13 +64,17 @@ public interface SocialBrowserModule
 	public List<ModDownloadItem> DirectQueryInstalledMDItems(QueryParameters qParams = new QueryParameters()) {
 		var mods = GetInstalledMods();
 		var listIds = new List<ModPubId_t>();
+		var modSlugs = new List<string>();
 
 		foreach (var mod in mods) {
-			if (GetModIdFromLocalFiles(mod.modFile, out var id))
+			if (GetModIdFromLocalFiles(mod.modFile, out var id)) {
 				listIds.Add(id);
+				modSlugs.Add(mod.Name);
+			}
 		}
 
 		qParams.searchModIds = listIds.ToArray();
+		qParams.searchModSlugs = modSlugs.ToArray();
 
 		return DirectQueryItems(qParams, out _);
 	}

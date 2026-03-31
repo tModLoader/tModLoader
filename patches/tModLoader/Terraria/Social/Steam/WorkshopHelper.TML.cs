@@ -304,6 +304,7 @@ public partial class WorkshopHelper
 				for (int i = 0; i < numPages; i++) {
 					var pageIds = queryParameters.searchModIds.Take(new Range(i * Constants.kNumUGCResultsPerPage, Constants.kNumUGCResultsPerPage * (i + 1)));
 					var idArray = pageIds.Select(x => x.m_ModPubId).ToArray();
+					var checkReupload = new List<string>();
 
 					try {
 						WaitForQueryResult(SteamedWraps.GenerateDirectItemsQuery(idArray, queryParameters));
@@ -311,8 +312,20 @@ public partial class WorkshopHelper
 						for (int j = 0; j < _queryReturnCount; j++) {
 							var itemsIndex = j + i * Constants.kNumUGCResultsPerPage;
 							var match = TryGenerateModDownloadItem((uint)j, out var item);
-							if (match != WorkshopSearchReturnState.Success) {
 
+							// Check for reupload when searchModSlugs is provided
+							if ((item.Banned || match == WorkshopSearchReturnState.NotFound)
+								&& queryParameters.searchModSlugs?.Length == queryParameters.searchModIds.Length) {
+
+								// Currently, only known case is if a mod the user is subbed to is set to hidden & not deleted by the user
+								// Includes DMCA'd mods and banned mods
+								Logging.tML.Warn($"Unable to find Mod with ID {idArray[j]} on the Steam Workshop");
+								missingMods.Add(idArray[j]);
+								checkReupload.Add(queryParameters.searchModSlugs[itemsIndex]);
+								continue;
+							}
+
+							if (match != WorkshopSearchReturnState.Success) {		
 								// Currently, only known case is if a mod the user is subbed to is set to hidden & not deleted by the user
 								Logging.tML.Warn($"Unable to find Mod with ID {idArray[j]} on the Steam Workshop");
 								missingMods.Add(idArray[j]);
@@ -321,6 +334,19 @@ public partial class WorkshopHelper
 
 							item.UpdateInstallState();
 							items.Add(item);
+						}
+					}
+					finally {
+						ReleaseWorkshopQuery();
+					}
+
+					// Check if any of the mods flagged for reupload review are actually reuploaded or if the user has a now hidden mod
+					try {
+						foreach (var item in checkReupload) {
+							var match2 = TryGetModDownloadItem(item, out var reupload);
+							if (match2 == WorkshopSearchReturnState.Success) {
+								items.Add(reupload);
+							}
 						}
 					}
 					finally {
