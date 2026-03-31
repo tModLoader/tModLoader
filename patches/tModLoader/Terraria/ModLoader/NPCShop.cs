@@ -39,7 +39,15 @@ public abstract class AbstractNPCShop
 	public string Name { get; private init; }
 	public string FullName => NPCShopDatabase.GetShopName(NpcType, Name);
 
-	public abstract void RefreshItems(bool onlyIfVariantChanged = true);
+	protected abstract IEnumerable<Entry> AllEntries { get; }
+
+	public IEnumerable<Entry> ActiveEntries => AllEntries.Where(e => !e.Disabled);
+
+	public virtual void RefreshItems(bool onlyIfVariantChanged = true)
+	{
+		foreach (var entry in AllEntries)
+			entry.Item.Refresh(onlyIfVariantChanged);
+	}
 
 	public AbstractNPCShop(int npcType, string name = "Shop")
 	{
@@ -72,14 +80,9 @@ public partial class NPCShop : AbstractNPCShop
 	private List<Entry> _entries;
 
 	public IReadOnlyList<Entry> Entries => _entries;
+	protected override IEnumerable<AbstractNPCShop.Entry> AllEntries => Entries;
 
 	public bool FillLastSlot { get; private set; }
-
-	public override void RefreshItems(bool onlyIfVariantChanged = true)
-	{
-		foreach (var entry in _entries)
-			entry.Item.Refresh(onlyIfVariantChanged);
-	}
 
 	public NPCShop(int npcType, string name = "Shop") : base(npcType, name)
 	{

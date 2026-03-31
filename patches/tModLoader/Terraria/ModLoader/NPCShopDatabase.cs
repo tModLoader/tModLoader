@@ -1211,6 +1211,7 @@ public class TravelingMerchantShop : NPCShop
 
 	private List<InfoEntry> _infoEntries = [];
 	public IEnumerable<InfoEntry> InfoEntries => _infoEntries;
+	protected override IEnumerable<AbstractNPCShop.Entry> AllEntries => base.AllEntries.Concat(InfoEntries);
 
 	public TravelingMerchantShop(int npcType) : base(npcType) { }
 
@@ -1225,14 +1226,6 @@ public class TravelingMerchantShop : NPCShop
 	}
 
 	public TravelingMerchantShop AddInfoEntry(int item, params Condition[] conditions) => AddInfoEntry(ContentSamples.ItemsByType[item], conditions);
-
-	public override void RefreshItems(bool onlyIfVariantChanged = true)
-	{
-		base.RefreshItems(onlyIfVariantChanged);
-
-		foreach (var entry in _infoEntries)
-			entry.Item.Refresh(onlyIfVariantChanged);
-	}
 
 	public override void FillShop(ICollection<Item> items, NPC npc)
 	{

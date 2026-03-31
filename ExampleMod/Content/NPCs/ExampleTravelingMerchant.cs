@@ -405,13 +405,9 @@ namespace ExampleMod.Content.NPCs
 
 		public List<Pool> Pools { get; } = new();
 
-		public ExampleTravelingMerchantShop(int npcType) : base(npcType) { }
+		protected override IEnumerable<Entry> AllEntries => Pools.SelectMany(p => p.Entries);
 
-		public override void RefreshItems(bool onlyIfVariantChanged = true)
-		{
-			foreach (var entry in Pools.SelectMany(p => p.Entries))
-				entry.Item.Refresh(onlyIfVariantChanged);
-		}
+		public ExampleTravelingMerchantShop(int npcType) : base(npcType) { }
 
 		public Pool AddPool(string name, int slots) {
 			var pool = new Pool(name, slots, new List<Entry>());
