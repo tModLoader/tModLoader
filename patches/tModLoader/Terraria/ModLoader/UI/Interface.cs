@@ -193,6 +193,9 @@ internal static class Interface
 				var missingDeps = ModOrganizer.IdentifyMissingWorkshopDependencies().ToList();
 
 				string message = $"{ModOrganizer.DetectModChangesForInfoMessage(out IEnumerable<string> removedMods)}";
+				if (message.Length > 0)
+					message += "\n";
+
 				message += ModOrganizer.DetectAbnormalSteamWorkshopDownloads(out Action resolveAbnormalDownloads);
 
 				if (missingDeps.Any()) {
