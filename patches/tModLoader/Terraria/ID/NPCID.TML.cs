@@ -194,8 +194,8 @@ public partial class NPCID
 		/// Creates a new Town NPC portrait with the image provided.
 		/// </summary>
 		/// <param name="texturePath">The path to the image without the file extension.</param>
-		/// <param name="horizontalFrames">If using a sprite sheet with multiple frames, this istThe number of horizontal frames in the sheet.</param>
-		/// <param name="verticalFrames">If using a sprite sheet with multiple frames, this istThe number of vertical frames in the sheet.</param>
+		/// <param name="horizontalFrames">If using a sprite sheet with multiple frames, this is the number of horizontal frames in the sheet.</param>
+		/// <param name="verticalFrames">If using a sprite sheet with multiple frames, this is the number of vertical frames in the sheet.</param>
 		/// <param name="paddingX">The number of additional pixels to move the selected frame left or right.</param>
 		/// <param name="paddingY">The number of additional pixels to move the selected frame up or down.</param>
 		/// <param name="frameX">The frame to select from left to right. The leftmost frame is frame 0.</param>
