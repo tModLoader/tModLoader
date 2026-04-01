@@ -802,6 +802,231 @@ var hierarchy =
       [ "RawImgReader", "class_raw_img_reader.html", null ],
       [ "WavReader", "class_wav_reader.html", null ]
     ] ],
+    [ "IAutoload< TImpl >", "interface_i_autoload.html", null ],
+    [ "IAutoload< ICustomAutoload.AutoloadImpl >", "interface_i_autoload.html", [
+      [ "ICustomAutoload", "interface_i_custom_autoload.html", null ]
+    ] ],
+    [ "IAutoload< ILoadable.AutoloadImpl >", "interface_i_autoload.html", [
+      [ "ILoadable", "interface_i_loadable.html", [
+        [ "ModType< Achievement, ModAchievement >", "class_mod_type.html", [
+          [ "ModAchievement", "class_mod_achievement.html", null ]
+        ] ],
+        [ "ModType< EmoteBubble, ModEmoteBubble >", "class_mod_type.html", [
+          [ "ModEmoteBubble", "class_mod_emote_bubble.html", null ]
+        ] ],
+        [ "ModType< Item, ModItem >", "class_mod_type.html", [
+          [ "ModItem", "class_mod_item.html", [
+            [ "ModLoaderModItem", "class_mod_loader_mod_item.html", [
+              [ "StartBag", "class_start_bag.html", null ],
+              [ "UnloadedItem", "class_unloaded_item.html", null ]
+            ] ]
+          ] ]
+        ] ],
+        [ "ModType< Mount.MountData, ModMount >", "class_mod_type.html", [
+          [ "ModMount", "class_mod_mount.html", null ]
+        ] ],
+        [ "ModType< NPC, ModNPC >", "class_mod_type.html", [
+          [ "ModNPC", "class_mod_n_p_c.html", null ]
+        ] ],
+        [ "ModType< Player, ModPlayer >", "class_mod_type.html", [
+          [ "ModPlayer", "class_mod_player.html", [
+            [ "ModAccessorySlotPlayer", "class_mod_accessory_slot_player.html", null ],
+            [ "UnloadedPlayer", "class_unloaded_player.html", null ]
+          ] ]
+        ] ],
+        [ "ModType< Projectile, ModProjectile >", "class_mod_type.html", [
+          [ "ModProjectile", "class_mod_projectile.html", null ]
+        ] ],
+        [ "ModType< TEntity >", "class_mod_type.html", [
+          [ "ModType< TEntity, TModType >", "class_mod_type.html", [
+            [ "TagSerializer< bool, byte >", "class_tag_serializer.html", [
+              [ "BoolTagSerializer", "class_bool_tag_serializer.html", null ]
+            ] ],
+            [ "TagSerializer< Color, int >", "class_tag_serializer.html", [
+              [ "ColorSerializer", "class_color_serializer.html", null ]
+            ] ],
+            [ "TagSerializer< Array, TagCompound >", "class_tag_serializer.html", [
+              [ "MultiDimArraySerializer", "class_multi_dim_array_serializer.html", null ]
+            ] ],
+            [ "TagSerializer< Point16, TagCompound >", "class_tag_serializer.html", [
+              [ "Point16Serializer", "class_point16_serializer.html", null ]
+            ] ],
+            [ "TagSerializer< Point, TagCompound >", "class_tag_serializer.html", [
+              [ "PointSerializer", "class_point_serializer.html", null ]
+            ] ],
+            [ "TagSerializer< Rectangle, TagCompound >", "class_tag_serializer.html", [
+              [ "RectangleSerializer", "class_rectangle_serializer.html", null ]
+            ] ],
+            [ "TagSerializer< T, TagCompound >", "class_tag_serializer.html", null ],
+            [ "TagSerializer< uint, int >", "class_tag_serializer.html", [
+              [ "UIntTagSerializer", "class_u_int_tag_serializer.html", null ]
+            ] ],
+            [ "TagSerializer< ulong, long >", "class_tag_serializer.html", [
+              [ "ULongTagSerializer", "class_u_long_tag_serializer.html", null ]
+            ] ],
+            [ "TagSerializer< ushort, short >", "class_tag_serializer.html", [
+              [ "UShortTagSerializer", "class_u_short_tag_serializer.html", null ]
+            ] ],
+            [ "TagSerializer< Vector2, TagCompound >", "class_tag_serializer.html", [
+              [ "Vector2TagSerializer", "class_vector2_tag_serializer.html", null ]
+            ] ],
+            [ "TagSerializer< Vector3, TagCompound >", "class_tag_serializer.html", [
+              [ "Vector3TagSerializer", "class_vector3_tag_serializer.html", null ]
+            ] ],
+            [ "TagSerializer< Version, string >", "class_tag_serializer.html", [
+              [ "VersionSerializer", "class_version_serializer.html", null ]
+            ] ],
+            [ "DamageClass", "class_damage_class.html", [
+              [ "VanillaDamageClass", "class_vanilla_damage_class.html", [
+                [ "DefaultDamageClass", "class_default_damage_class.html", null ],
+                [ "GenericDamageClass", "class_generic_damage_class.html", null ],
+                [ "MagicDamageClass", "class_magic_damage_class.html", null ],
+                [ "MagicSummonHybridDamageClass", "class_magic_summon_hybrid_damage_class.html", null ],
+                [ "MeleeDamageClass", "class_melee_damage_class.html", null ],
+                [ "MeleeNoSpeedDamageClass", "class_melee_no_speed_damage_class.html", null ],
+                [ "RangedDamageClass", "class_ranged_damage_class.html", null ],
+                [ "SummonDamageClass", "class_summon_damage_class.html", null ],
+                [ "SummonMeleeSpeedDamageClass", "class_summon_melee_speed_damage_class.html", null ],
+                [ "ThrowingDamageClass", "class_throwing_damage_class.html", null ]
+              ] ]
+            ] ],
+            [ "ExtraJump", "class_extra_jump.html", [
+              [ "VanillaExtraJump", "class_vanilla_extra_jump.html", [
+                [ "BasiliskMountJump", "class_basilisk_mount_jump.html", null ],
+                [ "BlizzardInABottleJump", "class_blizzard_in_a_bottle_jump.html", null ],
+                [ "CloudInABottleJump", "class_cloud_in_a_bottle_jump.html", null ],
+                [ "FartInAJarJump", "class_fart_in_a_jar_jump.html", null ],
+                [ "FlipperJump", "class_flipper_jump.html", null ],
+                [ "GoatMountJump", "class_goat_mount_jump.html", null ],
+                [ "SandstormInABottleJump", "class_sandstorm_in_a_bottle_jump.html", null ],
+                [ "SantankMountJump", "class_santank_mount_jump.html", null ],
+                [ "TsunamiInABottleJump", "class_tsunami_in_a_bottle_jump.html", null ],
+                [ "UnicornMountJump", "class_unicorn_mount_jump.html", null ]
+              ] ]
+            ] ],
+            [ "GlobalBackgroundStyle", "class_global_background_style.html", null ],
+            [ "GlobalBlockType", "class_global_block_type.html", [
+              [ "GlobalTile", "class_global_tile.html", null ],
+              [ "GlobalWall", "class_global_wall.html", null ]
+            ] ],
+            [ "GlobalBossBar", "class_global_boss_bar.html", null ],
+            [ "GlobalBuff", "class_global_buff.html", null ],
+            [ "GlobalInfoDisplay", "class_global_info_display.html", null ],
+            [ "GlobalPylon", "class_global_pylon.html", null ],
+            [ "GlobalType< TEntity, TGlobal >", "class_global_type.html", null ],
+            [ "ModAccessorySlot", "class_mod_accessory_slot.html", [
+              [ "UnloadedAccessorySlot", "class_unloaded_accessory_slot.html", null ]
+            ] ],
+            [ "ModBackgroundStyle", "class_mod_background_style.html", [
+              [ "ModSurfaceBackgroundStyle", "class_mod_surface_background_style.html", null ],
+              [ "ModUndergroundBackgroundStyle", "class_mod_underground_background_style.html", null ]
+            ] ],
+            [ "ModBiomeConversion", "class_mod_biome_conversion.html", null ],
+            [ "ModBossBarStyle", "class_mod_boss_bar_style.html", null ],
+            [ "ModCommand", "class_mod_command.html", [
+              [ "HelpCommand", "class_help_command.html", null ]
+            ] ],
+            [ "ModMapLayer", "class_mod_map_layer.html", null ],
+            [ "ModMenu", "class_mod_menu.html", null ],
+            [ "ModPrefix", "class_mod_prefix.html", [
+              [ "UnloadedPrefix", "class_unloaded_prefix.html", null ]
+            ] ],
+            [ "ModRarity", "class_mod_rarity.html", null ],
+            [ "ModResourceDisplaySet", "class_mod_resource_display_set.html", null ],
+            [ "ModResourceOverlay", "class_mod_resource_overlay.html", null ],
+            [ "ModSceneEffect", "class_mod_scene_effect.html", [
+              [ "ModBiome", "class_mod_biome.html", null ]
+            ] ],
+            [ "ModSystem", "class_mod_system.html", [
+              [ "UnloadedSystem", "class_unloaded_system.html", null ]
+            ] ],
+            [ "ModTexturedType", "class_mod_textured_type.html", [
+              [ "BuilderToggle", "class_builder_toggle.html", null ],
+              [ "InfoDisplay", "class_info_display.html", [
+                [ "VanillaInfoDisplay", "class_vanilla_info_display.html", [
+                  [ "CompassInfoDisplay", "class_compass_info_display.html", null ],
+                  [ "DPSMeterInfoDisplay", "class_d_p_s_meter_info_display.html", null ],
+                  [ "DepthMeterInfoDisplay", "class_depth_meter_info_display.html", null ],
+                  [ "DummyInfoDisplay", "class_dummy_info_display.html", null ],
+                  [ "FishFinderInfoDisplay", "class_fish_finder_info_display.html", null ],
+                  [ "LifeformAnalyzerInfoDisplay", "class_lifeform_analyzer_info_display.html", null ],
+                  [ "MetalDetectorInfoDisplay", "class_metal_detector_info_display.html", null ],
+                  [ "RadarInfoDisplay", "class_radar_info_display.html", null ],
+                  [ "SextantInfoDisplay", "class_sextant_info_display.html", null ],
+                  [ "StopwatchInfoDisplay", "class_stopwatch_info_display.html", null ],
+                  [ "TallyCounterInfoDisplay", "class_tally_counter_info_display.html", null ],
+                  [ "WatchesInfoDisplay", "class_watches_info_display.html", null ],
+                  [ "WeatherRadioInfoDisplay", "class_weather_radio_info_display.html", null ]
+                ] ]
+              ] ],
+              [ "ModBlockType", "class_mod_block_type.html", [
+                [ "ModTile", "class_mod_tile.html", [
+                  [ "ModBannerTile", "class_mod_banner_tile.html", null ],
+                  [ "ModPylon", "class_mod_pylon.html", null ],
+                  [ "UnloadedTile", "class_unloaded_tile.html", [
+                    [ "UnloadedChest", "class_unloaded_chest.html", null ],
+                    [ "UnloadedDresser", "class_unloaded_dresser.html", null ],
+                    [ "UnloadedNonSolidTile", "class_unloaded_non_solid_tile.html", null ],
+                    [ "UnloadedSemiSolidTile", "class_unloaded_semi_solid_tile.html", null ],
+                    [ "UnloadedSolidTile", "class_unloaded_solid_tile.html", null ],
+                    [ "UnloadedSupremeFurniture", "class_unloaded_supreme_furniture.html", null ]
+                  ] ]
+                ] ],
+                [ "ModWall", "class_mod_wall.html", [
+                  [ "UnloadedWall", "class_unloaded_wall.html", null ]
+                ] ]
+              ] ],
+              [ "ModBossBar", "class_mod_boss_bar.html", null ],
+              [ "ModBuff", "class_mod_buff.html", null ],
+              [ "ModCloud", "class_mod_cloud.html", [
+                [ "SimpleModCloud", "class_simple_mod_cloud.html", null ]
+              ] ],
+              [ "ModDust", "class_mod_dust.html", null ],
+              [ "ModGore", "class_mod_gore.html", [
+                [ "SimpleModGore", "class_simple_mod_gore.html", null ]
+              ] ],
+              [ "ModHair", "class_mod_hair.html", null ],
+              [ "ModWaterStyle", "class_mod_water_style.html", null ],
+              [ "ModWaterfallStyle", "class_mod_waterfall_style.html", null ]
+            ] ],
+            [ "ModType< TEntity, TModType >", "class_mod_type.html", null ],
+            [ "PlayerDrawLayer", "class_player_draw_layer.html", null ],
+            [ "TagSerializer< T, S >", "class_tag_serializer.html", [
+              [ "TagSerializer< T, S >", "class_tag_serializer.html", null ]
+            ] ]
+          ] ]
+        ] ],
+        [ "AShoppingBiome", "class_a_shopping_biome.html", [
+          [ "CorruptionBiome", "class_corruption_biome.html", null ],
+          [ "CrimsonBiome", "class_crimson_biome.html", null ],
+          [ "DesertBiome", "class_desert_biome.html", null ],
+          [ "DungeonBiome", "class_dungeon_biome.html", null ],
+          [ "ForestBiome", "class_forest_biome.html", null ],
+          [ "HallowBiome", "class_hallow_biome.html", null ],
+          [ "JungleBiome", "class_jungle_biome.html", null ],
+          [ "MushroomBiome", "class_mushroom_biome.html", null ],
+          [ "OceanBiome", "class_ocean_biome.html", null ],
+          [ "SnowBiome", "class_snow_biome.html", null ],
+          [ "UndergroundBiome", "class_underground_biome.html", null ]
+        ] ],
+        [ "IPlant", "interface_i_plant.html", [
+          [ "ITree", "interface_i_tree.html", [
+            [ "ModPalmTree", "class_mod_palm_tree.html", null ],
+            [ "ModTree", "class_mod_tree.html", null ]
+          ] ],
+          [ "ModCactus", "class_mod_cactus.html", null ]
+        ] ],
+        [ "ModTileEntity", "class_mod_tile_entity.html", [
+          [ "TEModdedPylon", "class_t_e_modded_pylon.html", null ],
+          [ "UnloadedTileEntity", "class_unloaded_tile_entity.html", null ]
+        ] ],
+        [ "ModType< TEntity, TModType >", "class_mod_type.html", null ]
+      ] ]
+    ] ],
+    [ "IAutoloader", "interface_i_autoloader.html", [
+      [ "ICustomAutoload.AutoloadImpl", "class_i_custom_autoload_1_1_autoload_impl.html", null ],
+      [ "ILoadable.AutoloadImpl", "class_i_loadable_1_1_autoload_impl.html", null ]
+    ] ],
     [ "IBallContactListener", "interface_i_ball_contact_listener.html", [
       [ "GolfHelper.ContactListener", "class_golf_helper_1_1_contact_listener.html", null ]
     ] ],
@@ -1297,10 +1522,7 @@ var hierarchy =
       [ "UIWorkshopWorldImport", "class_u_i_workshop_world_import.html", null ]
     ] ],
     [ "IIndexed", "interface_i_indexed.html", [
-      [ "ModPlayer", "class_mod_player.html", [
-        [ "ModAccessorySlotPlayer", "class_mod_accessory_slot_player.html", null ],
-        [ "UnloadedPlayer", "class_unloaded_player.html", null ]
-      ] ]
+      [ "ModPlayer", "class_mod_player.html", null ]
     ] ],
     [ "IInGameNotification", "interface_i_in_game_notification.html", [
       [ "InGamePopups.AchievementUnlockedPopup", "class_in_game_popups_1_1_achievement_unlocked_popup.html", null ],
@@ -1343,218 +1565,6 @@ var hierarchy =
     [ "ILightingEngine", "interface_i_lighting_engine.html", [
       [ "LegacyLighting", "class_legacy_lighting.html", null ],
       [ "LightingEngine", "class_lighting_engine.html", null ]
-    ] ],
-    [ "ILoadable", "interface_i_loadable.html", [
-      [ "ModType< Achievement, ModAchievement >", "class_mod_type.html", [
-        [ "ModAchievement", "class_mod_achievement.html", null ]
-      ] ],
-      [ "ModType< EmoteBubble, ModEmoteBubble >", "class_mod_type.html", [
-        [ "ModEmoteBubble", "class_mod_emote_bubble.html", null ]
-      ] ],
-      [ "ModType< Item, ModItem >", "class_mod_type.html", [
-        [ "ModItem", "class_mod_item.html", [
-          [ "ModLoaderModItem", "class_mod_loader_mod_item.html", [
-            [ "StartBag", "class_start_bag.html", null ],
-            [ "UnloadedItem", "class_unloaded_item.html", null ]
-          ] ]
-        ] ]
-      ] ],
-      [ "ModType< Mount.MountData, ModMount >", "class_mod_type.html", [
-        [ "ModMount", "class_mod_mount.html", null ]
-      ] ],
-      [ "ModType< NPC, ModNPC >", "class_mod_type.html", [
-        [ "ModNPC", "class_mod_n_p_c.html", null ]
-      ] ],
-      [ "ModType< Player, ModPlayer >", "class_mod_type.html", [
-        [ "ModPlayer", "class_mod_player.html", null ]
-      ] ],
-      [ "ModType< Projectile, ModProjectile >", "class_mod_type.html", [
-        [ "ModProjectile", "class_mod_projectile.html", null ]
-      ] ],
-      [ "ModType< TEntity >", "class_mod_type.html", [
-        [ "ModType< TEntity, TModType >", "class_mod_type.html", [
-          [ "TagSerializer< bool, byte >", "class_tag_serializer.html", [
-            [ "BoolTagSerializer", "class_bool_tag_serializer.html", null ]
-          ] ],
-          [ "TagSerializer< Color, int >", "class_tag_serializer.html", [
-            [ "ColorSerializer", "class_color_serializer.html", null ]
-          ] ],
-          [ "TagSerializer< Array, TagCompound >", "class_tag_serializer.html", [
-            [ "MultiDimArraySerializer", "class_multi_dim_array_serializer.html", null ]
-          ] ],
-          [ "TagSerializer< Point16, TagCompound >", "class_tag_serializer.html", [
-            [ "Point16Serializer", "class_point16_serializer.html", null ]
-          ] ],
-          [ "TagSerializer< Point, TagCompound >", "class_tag_serializer.html", [
-            [ "PointSerializer", "class_point_serializer.html", null ]
-          ] ],
-          [ "TagSerializer< Rectangle, TagCompound >", "class_tag_serializer.html", [
-            [ "RectangleSerializer", "class_rectangle_serializer.html", null ]
-          ] ],
-          [ "TagSerializer< T, TagCompound >", "class_tag_serializer.html", null ],
-          [ "TagSerializer< uint, int >", "class_tag_serializer.html", [
-            [ "UIntTagSerializer", "class_u_int_tag_serializer.html", null ]
-          ] ],
-          [ "TagSerializer< ulong, long >", "class_tag_serializer.html", [
-            [ "ULongTagSerializer", "class_u_long_tag_serializer.html", null ]
-          ] ],
-          [ "TagSerializer< ushort, short >", "class_tag_serializer.html", [
-            [ "UShortTagSerializer", "class_u_short_tag_serializer.html", null ]
-          ] ],
-          [ "TagSerializer< Vector2, TagCompound >", "class_tag_serializer.html", [
-            [ "Vector2TagSerializer", "class_vector2_tag_serializer.html", null ]
-          ] ],
-          [ "TagSerializer< Vector3, TagCompound >", "class_tag_serializer.html", [
-            [ "Vector3TagSerializer", "class_vector3_tag_serializer.html", null ]
-          ] ],
-          [ "TagSerializer< Version, string >", "class_tag_serializer.html", [
-            [ "VersionSerializer", "class_version_serializer.html", null ]
-          ] ],
-          [ "DamageClass", "class_damage_class.html", [
-            [ "VanillaDamageClass", "class_vanilla_damage_class.html", [
-              [ "DefaultDamageClass", "class_default_damage_class.html", null ],
-              [ "GenericDamageClass", "class_generic_damage_class.html", null ],
-              [ "MagicDamageClass", "class_magic_damage_class.html", null ],
-              [ "MagicSummonHybridDamageClass", "class_magic_summon_hybrid_damage_class.html", null ],
-              [ "MeleeDamageClass", "class_melee_damage_class.html", null ],
-              [ "MeleeNoSpeedDamageClass", "class_melee_no_speed_damage_class.html", null ],
-              [ "RangedDamageClass", "class_ranged_damage_class.html", null ],
-              [ "SummonDamageClass", "class_summon_damage_class.html", null ],
-              [ "SummonMeleeSpeedDamageClass", "class_summon_melee_speed_damage_class.html", null ],
-              [ "ThrowingDamageClass", "class_throwing_damage_class.html", null ]
-            ] ]
-          ] ],
-          [ "ExtraJump", "class_extra_jump.html", [
-            [ "VanillaExtraJump", "class_vanilla_extra_jump.html", [
-              [ "BasiliskMountJump", "class_basilisk_mount_jump.html", null ],
-              [ "BlizzardInABottleJump", "class_blizzard_in_a_bottle_jump.html", null ],
-              [ "CloudInABottleJump", "class_cloud_in_a_bottle_jump.html", null ],
-              [ "FartInAJarJump", "class_fart_in_a_jar_jump.html", null ],
-              [ "FlipperJump", "class_flipper_jump.html", null ],
-              [ "GoatMountJump", "class_goat_mount_jump.html", null ],
-              [ "SandstormInABottleJump", "class_sandstorm_in_a_bottle_jump.html", null ],
-              [ "SantankMountJump", "class_santank_mount_jump.html", null ],
-              [ "TsunamiInABottleJump", "class_tsunami_in_a_bottle_jump.html", null ],
-              [ "UnicornMountJump", "class_unicorn_mount_jump.html", null ]
-            ] ]
-          ] ],
-          [ "GlobalBackgroundStyle", "class_global_background_style.html", null ],
-          [ "GlobalBlockType", "class_global_block_type.html", [
-            [ "GlobalTile", "class_global_tile.html", null ],
-            [ "GlobalWall", "class_global_wall.html", null ]
-          ] ],
-          [ "GlobalBossBar", "class_global_boss_bar.html", null ],
-          [ "GlobalBuff", "class_global_buff.html", null ],
-          [ "GlobalInfoDisplay", "class_global_info_display.html", null ],
-          [ "GlobalPylon", "class_global_pylon.html", null ],
-          [ "GlobalType< TEntity, TGlobal >", "class_global_type.html", null ],
-          [ "ModAccessorySlot", "class_mod_accessory_slot.html", [
-            [ "UnloadedAccessorySlot", "class_unloaded_accessory_slot.html", null ]
-          ] ],
-          [ "ModBackgroundStyle", "class_mod_background_style.html", [
-            [ "ModSurfaceBackgroundStyle", "class_mod_surface_background_style.html", null ],
-            [ "ModUndergroundBackgroundStyle", "class_mod_underground_background_style.html", null ]
-          ] ],
-          [ "ModBiomeConversion", "class_mod_biome_conversion.html", null ],
-          [ "ModBossBarStyle", "class_mod_boss_bar_style.html", null ],
-          [ "ModCommand", "class_mod_command.html", [
-            [ "HelpCommand", "class_help_command.html", null ]
-          ] ],
-          [ "ModMapLayer", "class_mod_map_layer.html", null ],
-          [ "ModMenu", "class_mod_menu.html", null ],
-          [ "ModPrefix", "class_mod_prefix.html", [
-            [ "UnloadedPrefix", "class_unloaded_prefix.html", null ]
-          ] ],
-          [ "ModRarity", "class_mod_rarity.html", null ],
-          [ "ModResourceDisplaySet", "class_mod_resource_display_set.html", null ],
-          [ "ModResourceOverlay", "class_mod_resource_overlay.html", null ],
-          [ "ModSceneEffect", "class_mod_scene_effect.html", [
-            [ "ModBiome", "class_mod_biome.html", null ]
-          ] ],
-          [ "ModSystem", "class_mod_system.html", [
-            [ "UnloadedSystem", "class_unloaded_system.html", null ]
-          ] ],
-          [ "ModTexturedType", "class_mod_textured_type.html", [
-            [ "BuilderToggle", "class_builder_toggle.html", null ],
-            [ "InfoDisplay", "class_info_display.html", [
-              [ "VanillaInfoDisplay", "class_vanilla_info_display.html", [
-                [ "CompassInfoDisplay", "class_compass_info_display.html", null ],
-                [ "DPSMeterInfoDisplay", "class_d_p_s_meter_info_display.html", null ],
-                [ "DepthMeterInfoDisplay", "class_depth_meter_info_display.html", null ],
-                [ "DummyInfoDisplay", "class_dummy_info_display.html", null ],
-                [ "FishFinderInfoDisplay", "class_fish_finder_info_display.html", null ],
-                [ "LifeformAnalyzerInfoDisplay", "class_lifeform_analyzer_info_display.html", null ],
-                [ "MetalDetectorInfoDisplay", "class_metal_detector_info_display.html", null ],
-                [ "RadarInfoDisplay", "class_radar_info_display.html", null ],
-                [ "SextantInfoDisplay", "class_sextant_info_display.html", null ],
-                [ "StopwatchInfoDisplay", "class_stopwatch_info_display.html", null ],
-                [ "TallyCounterInfoDisplay", "class_tally_counter_info_display.html", null ],
-                [ "WatchesInfoDisplay", "class_watches_info_display.html", null ],
-                [ "WeatherRadioInfoDisplay", "class_weather_radio_info_display.html", null ]
-              ] ]
-            ] ],
-            [ "ModBlockType", "class_mod_block_type.html", [
-              [ "ModTile", "class_mod_tile.html", [
-                [ "ModBannerTile", "class_mod_banner_tile.html", null ],
-                [ "ModPylon", "class_mod_pylon.html", null ],
-                [ "UnloadedTile", "class_unloaded_tile.html", [
-                  [ "UnloadedChest", "class_unloaded_chest.html", null ],
-                  [ "UnloadedDresser", "class_unloaded_dresser.html", null ],
-                  [ "UnloadedNonSolidTile", "class_unloaded_non_solid_tile.html", null ],
-                  [ "UnloadedSemiSolidTile", "class_unloaded_semi_solid_tile.html", null ],
-                  [ "UnloadedSolidTile", "class_unloaded_solid_tile.html", null ],
-                  [ "UnloadedSupremeFurniture", "class_unloaded_supreme_furniture.html", null ]
-                ] ]
-              ] ],
-              [ "ModWall", "class_mod_wall.html", [
-                [ "UnloadedWall", "class_unloaded_wall.html", null ]
-              ] ]
-            ] ],
-            [ "ModBossBar", "class_mod_boss_bar.html", null ],
-            [ "ModBuff", "class_mod_buff.html", null ],
-            [ "ModCloud", "class_mod_cloud.html", [
-              [ "SimpleModCloud", "class_simple_mod_cloud.html", null ]
-            ] ],
-            [ "ModDust", "class_mod_dust.html", null ],
-            [ "ModGore", "class_mod_gore.html", [
-              [ "SimpleModGore", "class_simple_mod_gore.html", null ]
-            ] ],
-            [ "ModHair", "class_mod_hair.html", null ],
-            [ "ModWaterStyle", "class_mod_water_style.html", null ],
-            [ "ModWaterfallStyle", "class_mod_waterfall_style.html", null ]
-          ] ],
-          [ "ModType< TEntity, TModType >", "class_mod_type.html", null ],
-          [ "PlayerDrawLayer", "class_player_draw_layer.html", null ],
-          [ "TagSerializer< T, S >", "class_tag_serializer.html", [
-            [ "TagSerializer< T, S >", "class_tag_serializer.html", null ]
-          ] ]
-        ] ]
-      ] ],
-      [ "AShoppingBiome", "class_a_shopping_biome.html", [
-        [ "CorruptionBiome", "class_corruption_biome.html", null ],
-        [ "CrimsonBiome", "class_crimson_biome.html", null ],
-        [ "DesertBiome", "class_desert_biome.html", null ],
-        [ "DungeonBiome", "class_dungeon_biome.html", null ],
-        [ "ForestBiome", "class_forest_biome.html", null ],
-        [ "HallowBiome", "class_hallow_biome.html", null ],
-        [ "JungleBiome", "class_jungle_biome.html", null ],
-        [ "MushroomBiome", "class_mushroom_biome.html", null ],
-        [ "OceanBiome", "class_ocean_biome.html", null ],
-        [ "SnowBiome", "class_snow_biome.html", null ],
-        [ "UndergroundBiome", "class_underground_biome.html", null ]
-      ] ],
-      [ "IPlant", "interface_i_plant.html", [
-        [ "ITree", "interface_i_tree.html", [
-          [ "ModPalmTree", "class_mod_palm_tree.html", null ],
-          [ "ModTree", "class_mod_tree.html", null ]
-        ] ],
-        [ "ModCactus", "class_mod_cactus.html", null ]
-      ] ],
-      [ "ModTileEntity", "class_mod_tile_entity.html", [
-        [ "TEModdedPylon", "class_t_e_modded_pylon.html", null ],
-        [ "UnloadedTileEntity", "class_unloaded_tile_entity.html", null ]
-      ] ],
-      [ "ModType< TEntity, TModType >", "class_mod_type.html", null ]
     ] ],
     [ "ILoader", "interface_i_loader.html", [
       [ "Loader< T >", "class_loader.html", [

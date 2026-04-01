@@ -94,13 +94,14 @@ var searchData=
   ['autoloadbosshead_91',['AutoloadBossHead',['../class_autoload_boss_head.html',1,'']]],
   ['autoloadequip_92',['AutoloadEquip',['../class_autoload_equip.html',1,'']]],
   ['autoloadhead_93',['AutoloadHead',['../class_autoload_head.html',1,'']]],
-  ['autopaintbuildertoggle_94',['AutoPaintBuilderToggle',['../class_auto_paint_builder_toggle.html',1,'']]],
-  ['aworkshopentry_95',['AWorkshopEntry',['../class_a_workshop_entry.html',1,'']]],
-  ['aworkshopprogressreporter_96',['AWorkshopProgressReporter',['../class_a_workshop_progress_reporter.html',1,'']]],
-  ['aworkshoppublishinfostate_97',['AWorkshopPublishInfoState',['../class_a_workshop_publish_info_state.html',1,'']]],
-  ['aworkshoppublishinfostate_3c_20resourcepack_20_3e_98',['AWorkshopPublishInfoState&lt; ResourcePack &gt;',['../class_a_workshop_publish_info_state.html',1,'']]],
-  ['aworkshoppublishinfostate_3c_20tmodfile_20_3e_99',['AWorkshopPublishInfoState&lt; TmodFile &gt;',['../class_a_workshop_publish_info_state.html',1,'']]],
-  ['aworkshoppublishinfostate_3c_20worldfiledata_20_3e_100',['AWorkshopPublishInfoState&lt; WorldFileData &gt;',['../class_a_workshop_publish_info_state.html',1,'']]],
-  ['aworkshoptagscollection_101',['AWorkshopTagsCollection',['../class_a_workshop_tags_collection.html',1,'']]],
-  ['aworldlistitem_102',['AWorldListItem',['../class_a_world_list_item.html',1,'']]]
+  ['autoloadimpl_94',['AutoloadImpl',['../class_i_custom_autoload_1_1_autoload_impl.html',1,'ICustomAutoload.AutoloadImpl'],['../class_i_loadable_1_1_autoload_impl.html',1,'ILoadable.AutoloadImpl']]],
+  ['autopaintbuildertoggle_95',['AutoPaintBuilderToggle',['../class_auto_paint_builder_toggle.html',1,'']]],
+  ['aworkshopentry_96',['AWorkshopEntry',['../class_a_workshop_entry.html',1,'']]],
+  ['aworkshopprogressreporter_97',['AWorkshopProgressReporter',['../class_a_workshop_progress_reporter.html',1,'']]],
+  ['aworkshoppublishinfostate_98',['AWorkshopPublishInfoState',['../class_a_workshop_publish_info_state.html',1,'']]],
+  ['aworkshoppublishinfostate_3c_20resourcepack_20_3e_99',['AWorkshopPublishInfoState&lt; ResourcePack &gt;',['../class_a_workshop_publish_info_state.html',1,'']]],
+  ['aworkshoppublishinfostate_3c_20tmodfile_20_3e_100',['AWorkshopPublishInfoState&lt; TmodFile &gt;',['../class_a_workshop_publish_info_state.html',1,'']]],
+  ['aworkshoppublishinfostate_3c_20worldfiledata_20_3e_101',['AWorkshopPublishInfoState&lt; WorldFileData &gt;',['../class_a_workshop_publish_info_state.html',1,'']]],
+  ['aworkshoptagscollection_102',['AWorkshopTagsCollection',['../class_a_workshop_tags_collection.html',1,'']]],
+  ['aworldlistitem_103',['AWorldListItem',['../class_a_world_list_item.html',1,'']]]
 ];
