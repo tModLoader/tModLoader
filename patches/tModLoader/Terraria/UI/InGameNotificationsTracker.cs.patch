@@ -34,3 +34,18 @@
  
  	public static void AddCompleted(Achievement achievement)
  	{
+@@ -85,6 +_,14 @@
+ 			_notifications[i].Update();
+ 			if (_notifications[i].ShouldBeRemoved) {
+ 				_notifications.Remove(_notifications[i]);
++				i--;
++			}
++		}
++		// Separate class?
++		for (int i = 0; i < menuNotifications.Count; i++) {
++			menuNotifications[i].Update();
++			if (menuNotifications[i].ShouldBeRemoved) {
++				menuNotifications.Remove(menuNotifications[i]);
+ 				i--;
+ 			}
+ 		}

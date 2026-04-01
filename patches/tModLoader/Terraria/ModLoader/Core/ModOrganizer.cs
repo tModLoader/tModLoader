@@ -86,7 +86,8 @@ internal static class ModOrganizer
 
 		// Workshop folders
 		WorkshopFileFinder.Refresh(new WorkshopIssueReporter());
-		foreach (string repo in WorkshopFileFinder.ModPaths) {
+		List<string> workshopModPaths = [.. WorkshopFileFinder.ModPaths]; // Avoid collection was modified
+		foreach (string repo in workshopModPaths) {
 			mods.AddRange(ReadModFiles(ModLocation.Workshop, Directory.GetFiles(repo, "*.tmod", SearchOption.AllDirectories)));
 		}
 

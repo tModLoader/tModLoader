@@ -91,6 +91,8 @@ internal class WorkshopBrowserModule : SocialBrowserModule
 	// assumes SteamAvailable
 	public void DownloadItem(ModDownloadItem item, IDownloadProgress uiProgress)
 	{
+		UIModBrowser.ActiveDownload = item;
+		ModOrganizer.LocalModsChanged([item.ModName], isDeletion: false);
 		item.UpdateInstallState();
 		if (item.Banned)
 			throw new BannedModException($"Attempted to Download a Banned Mod {item.DisplayName} with ID {item.PublishId}. Aborting...", item.DisplayName, item.PublishId.ToString());
@@ -101,6 +103,9 @@ internal class WorkshopBrowserModule : SocialBrowserModule
 		uiProgress?.DownloadStarted(item.DisplayName);
 		Utils.LogAndConsoleInfoMessage(Language.GetTextValue("tModLoader.BeginDownload", item.DisplayName));
 		new SteamedWraps.ModDownloadInstance().Download(publishId, uiProgress, forceUpdate);
+		ModOrganizer.LocalModsChanged([item.ModName], isDeletion: false);
+		item.UpdateInstallState(); // Need to update this specific ModDownloadItem instance, since they can be replaced
+		UIModBrowser.ActiveDownload = null;
 	}
 
 	// More Info for Items /////////////////////////
