@@ -339,7 +339,7 @@
  		public static Dictionary<int, Vector2> NPCPortraitsFullBodyRetroOffsets = new Dictionary<int, Vector2> {
  			{ 18, new Vector2(-3f, 0f) },
  			{ 20, new Vector2(-4f, 0f) },
-@@ -5297,63 +_,388 @@
+@@ -5297,63 +_,393 @@
  			{ 683, new Vector2(-6f, 0f) },
  			{ 682, new Vector2(-6f, 0f) }
  		};
