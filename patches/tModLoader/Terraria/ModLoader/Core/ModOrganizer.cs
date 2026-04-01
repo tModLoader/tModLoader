@@ -14,7 +14,6 @@ using Terraria.ModLoader.UI.DownloadManager;
 using Terraria.ModLoader.UI.ModBrowser;
 using Terraria.Social.Base;
 using Terraria.Social.Steam;
-using static Terraria.Social.Steam.WorkshopHelper.UGCBased;
 
 namespace Terraria.ModLoader.Core;
 
