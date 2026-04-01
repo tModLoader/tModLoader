@@ -379,29 +379,14 @@ namespace ExampleMod.Content.NPCs
 
 	// You have the freedom to implement custom shops however you want
 	// This example uses a 'pool' concept where items will be randomly selected from a pool with equal weight
-	// We copy a bunch of code from NPCShop and NPCShop.Entry, allowing this shop to be easily adjusted by other mods.
 	//
 	// This uses some fairly advanced C# to avoid being excessively long, so make sure you learn the language before trying to adapt it significantly
 	public class ExampleTravelingMerchantShop : AbstractNPCShop
 	{
-		public new record Entry(Item Item, List<Condition> Conditions) : AbstractNPCShop.Entry
-		{
-			IEnumerable<Condition> AbstractNPCShop.Entry.Conditions => Conditions;
-
-			public bool Disabled { get; private set; }
-
-			public Entry Disable() {
-				Disabled = true;
-				return this;
-			}
-
-			public bool ConditionsMet() => Conditions.All(c => c.IsMet());
-		}
-
 		public record Pool(string Name, int Slots, List<Entry> Entries)
 		{
 			public Pool Add(Item item, params Condition[] conditions) {
-				Entries.Add(new Entry(item, conditions.ToList()));
+				Entries.Add(new Entry(item, conditions));
 				return this;
 			}
 
@@ -427,9 +412,9 @@ namespace ExampleMod.Content.NPCs
 
 		public List<Pool> Pools { get; } = new();
 
-		public ExampleTravelingMerchantShop(int npcType) : base(npcType) { }
+		protected override IEnumerable<Entry> AllEntries => Pools.SelectMany(p => p.Entries);
 
-		public override IEnumerable<Entry> ActiveEntries => Pools.SelectMany(p => p.Entries).Where(e => !e.Disabled);
+		public ExampleTravelingMerchantShop(int npcType) : base(npcType) { }
 
 		public Pool AddPool(string name, int slots) {
 			var pool = new Pool(name, slots, new List<Entry>());

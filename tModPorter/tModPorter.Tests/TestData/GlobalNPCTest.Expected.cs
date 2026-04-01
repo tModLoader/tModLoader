@@ -62,6 +62,6 @@ public class GlobalNPCTest : GlobalNPC
 	}
 
 	public override void EditSpawnPool(IDictionary<int, float> pool, NPC.Spawner spawner) {
-		if (spawner.Water) { }
+		if (spawner.waterTile) { }
 	}
 }

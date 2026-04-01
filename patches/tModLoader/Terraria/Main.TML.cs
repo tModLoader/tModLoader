@@ -83,7 +83,7 @@ public partial class Main
 	public static Player CurrentPlayer => _currentPlayerOverride ?? LocalPlayer;
 
 	/// <summary>
-	/// Use to iterate over active players. Game logic is usually only interested in <see cref="Entity.active"/> elements, this iterator facilitates that usage and allows for simpler and more readable code.
+	/// Use to iterate over active players. Game logic is usually only interested in <see cref="Player.active"/> elements, this iterator facilitates that usage and allows for simpler and more readable code.
 	/// <para/> Typically used in a foreach statement:
 	/// <code>foreach (var player in Main.ActivePlayers) {
 	///     // Code
@@ -98,11 +98,11 @@ public partial class Main
 	///     // Code
 	/// }
 	/// </code>
-	/// Note that if the index of the Player in the <see cref="Main.player"/> array is needed, <see cref="Entity.whoAmI"/> can be used.
+	/// Note that if the index of the Player in the <see cref="player"/> array is needed, <see cref="Entity.whoAmI"/> can be used.
 	/// </summary>
-	public static ActiveEntityIterator<Player> ActivePlayers => new(player.AsSpan(0, maxPlayers));
+	public static ActivePlayerIterator ActivePlayers => new(player.AsSpan(0, maxPlayers));
 	/// <summary>
-	/// Use to iterate over active players. Game logic is usually only interested in <see cref="Entity.active"/> elements, this iterator facilitates that usage and allows for simpler and more readable code.
+	/// Use to iterate over active players. Game logic is usually only interested in <see cref="NPC.active"/> elements, this iterator facilitates that usage and allows for simpler and more readable code.
 	/// <para/> Typically used in a foreach statement:
 	/// <code>foreach (var npc in Main.ActiveNPCs) {
 	///     // Code
@@ -117,11 +117,11 @@ public partial class Main
 	///     // Code
 	/// }
 	/// </code>
-	/// Note that if the index of the NPC in the <see cref="Main.npc"/> array is needed, <see cref="Entity.whoAmI"/> can be used.
+	/// Note that if the index of the NPC in the <see cref="npc"/> array is needed, <see cref="Entity.whoAmI"/> can be used.
 	/// </summary>
-	public static ActiveEntityIterator<NPC> ActiveNPCs => new(npc.AsSpan(0, maxNPCs));
+	public static ActiveNPCIterator ActiveNPCs => new(npc.AsSpan(0, maxNPCs));
 	/// <summary>
-	/// Use to iterate over active projectiles. Game logic is usually only interested in <see cref="Entity.active"/> elements, this iterator facilitates that usage and allows for simpler and more readable code.
+	/// Use to iterate over active projectiles. Game logic is usually only interested in <see cref="Projectile.active"/> elements, this iterator facilitates that usage and allows for simpler and more readable code.
 	/// <para/> Typically used in a foreach statement:
 	/// <code>foreach (var projectile in Main.ActiveProjectiles) {
 	///     // Code
@@ -136,11 +136,11 @@ public partial class Main
 	///     // Code
 	/// }
 	/// </code>
-	/// Note that if the index of the Projectile in the <see cref="Main.projectile"/> array is needed, <see cref="Entity.whoAmI"/> can be used.
+	/// Note that if the index of the Projectile in the <see cref="projectile"/> array is needed, <see cref="Entity.whoAmI"/> can be used.
 	/// </summary>
-	public static ActiveEntityIterator<Projectile> ActiveProjectiles => new(projectile.AsSpan(0, maxProjectiles));
+	public static ActiveProjectileIterator ActiveProjectiles => new(projectile.AsSpan(0, maxProjectiles));
 	/// <summary>
-	/// Use to iterate over active items. Game logic is usually only interested in <see cref="Entity.active"/> elements, this iterator facilitates that usage and allows for simpler and more readable code.
+	/// Use to iterate over active items. Game logic is usually only interested in <see cref="Item.active"/> elements, this iterator facilitates that usage and allows for simpler and more readable code.
 	/// <para/> Typically used in a foreach statement:
 	/// <code>foreach (var item in Main.ActiveItems) {
 	///     // Code
@@ -155,9 +155,9 @@ public partial class Main
 	///     // Code
 	/// }
 	/// </code>
-	/// Note that if the index of the Item in the <see cref="Main.item"/> array is needed, <see cref="Entity.whoAmI"/> can <b>not</b> be used. This will be fixed in 1.4.5, but for now the for loop approach would have to be used instead.
+	/// Note that if the index of the Item in the <see cref="item"/> array is needed, <see cref="Entity.whoAmI"/> can <b>not</b> be used. This will be fixed in 1.4.5, but for now the for loop approach would have to be used instead.
 	/// </summary>
-	public static ActiveEntityIterator<WorldItem> ActiveItems => new(item.AsSpan(0, maxItems));
+	public static ActiveItemIterator ActiveItems => new(item.AsSpan(0, maxItems));
 
 	/// <summary>
 	/// Checks if a tile at the given coordinates counts towards tile coloring from the Spelunker buff, and is detected by various pets.

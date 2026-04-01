@@ -623,7 +623,7 @@ jobs:
           
           manifesto=$manifesto/dev.vdf
           
-          sed -i -e "s/Auto-Release/Auto-Release ($version)/g" $manifesto
+          sed -i -e "s/Auto-Release/Auto-Release (${{ github.sha }})/g" $manifesto
           steamcmd +login "${{ secrets.STEAM_USERNAME }}" +run_app_build_http $manifesto +quit
           echo "Listing BuildOutput directory"
           ls -alhR ./BuildOutput

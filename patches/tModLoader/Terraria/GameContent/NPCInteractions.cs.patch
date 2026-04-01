@@ -1,5 +1,13 @@
 --- src/TerrariaNetCore/Terraria/GameContent/NPCInteractions.cs
 +++ src/tModLoader/Terraria/GameContent/NPCInteractions.cs
+@@ -4,6 +_,7 @@
+ using Terraria.GameContent.Achievements;
+ using Terraria.ID;
+ using Terraria.Localization;
++using Terraria.ModLoader;
+ using Terraria.UI;
+ 
+ namespace Terraria.GameContent;
 @@ -191,12 +_,25 @@
  
  			public override void Interact()
@@ -28,3 +36,15 @@
  				Main.GetCoinValueText_Nurse(ref chatColor, ref coinValue);
  				return coinValue > 0;
  			}
+@@ -265,7 +_,10 @@
+ 					text = "Slime" + slimeType + "Chatter";
+ 				}
+ 
++				if (talkNPC.ModNPC is ModNPC modNPC)
++					Main.npcChatText = Language.GetTextValue(modNPC.GetLocalizationKey("TownNPCMood") + ".NoHome");
++				else
+-				Main.npcChatText = Language.GetTextValue(text + ".NoHome");
++					Main.npcChatText = Language.GetTextValue(text + ".NoHome");
+ 				Main.npcChatText += "\n\n";
+ 				if (talkNPC.type == 160) {
+ 					Main.npcChatText += Language.GetTextValueWith("HousingText.HousingRequirements_Truffle", new {

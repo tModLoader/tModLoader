@@ -712,7 +712,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 
 	/// <summary>
 	/// Allows you to modify existing shop. Be aware that this hook is called just one time during loading.
-	/// <para/> The traveling merchant shop is handled separately in <see cref="SetupTravelShop(int[], ref int)"/>.
+	/// <para/> The traveling merchant shop is passed here, but the per visit (info) entries cannot be modified here. Use <see cref="SetupTravelShop(int[], ref int)"/> instead.
 	/// </summary>
 	/// <param name="shop">A <seealso cref="NPCShop"/> instance.</param>
 	public virtual void ModifyShop(NPCShop shop)
@@ -722,7 +722,6 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// <summary>
 	/// Allows you to modify the contents of a shop whenever player opens it. <br/>
 	/// If possible, use <see cref="ModifyShop(NPCShop)"/> instead, to reduce mod conflicts and improve compatibility.
-	/// Note that for special shops like travelling merchant, the <paramref name="shopName"/> may not correspond to a <see cref="NPCShop"/> in the <see cref="NPCShopDatabase"/>
 	/// <para/> Also note that unused slots in <paramref name="items"/> are null while <see cref="Item.IsAir"/> entries are entries that have a reserved slot (<see cref="NPCShop.Entry.SlotReserved"/>) but did not have their conditions met. These should not be overwritten.
 	/// <para/> Called on the local client only.
 	/// </summary>

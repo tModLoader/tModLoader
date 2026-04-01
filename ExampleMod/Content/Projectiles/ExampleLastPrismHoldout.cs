@@ -66,7 +66,7 @@ namespace ExampleMod.Content.Projectiles
 			ProjectileID.Sets.NeedsUUID[Type] = true;
 
 			// Prevents jitter when stepping up and down blocks and half blocks
-			ProjectileID.Sets.HeldProjDoesNotUsePlayerGfxOffY[Type] = true;
+			ProjectileID.Sets.HeldProjDoesNotUsePlayerGfxOffY/* tModPorter Note: Removed. AI() should use master.RotatedRelativePoint(master.MountedCenter + ...) to position held projectiles */[Type] = true;
 		}
 
 		public override void SetDefaults() {

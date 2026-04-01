@@ -1459,36 +1459,6 @@
  								float num997 = Distance(new Vector2(num994 * 16 + 8, num995 * 16 + 8));
  								if (num997 < num990 || num990 == -1f) {
  									num990 = num997;
-@@ -30897,7 +_,7 @@
- 					if (extraUpdates > 0)
- 						soundDelay *= extraUpdates + 1;
- 
--					SoundEngine.PlaySound(SoundID.Item7, position, -0.33f);
-+					SoundEngine.PlaySound(SoundID.Item7.WithPitchOffset(-0.33f), position);
- 				}
- 			}
- 			else {
-@@ -31089,7 +_,7 @@
- 					rotation += 0.4f * (float)direction;
- 					if (type == 1074) {
- 						if (soundDelay == 0) {
--							SoundEngine.PlaySound(SoundID.Item7, position, -0.3f);
-+							SoundEngine.PlaySound(SoundID.Item7.WithPitchOffset(-0.3f), position);
- 							soundDelay = 11;
- 						}
- 					}
-@@ -31303,9 +_,9 @@
- 				if (localAI[0] <= 0f) {
- 					if (type == 1074) {
- 						if (localAI[0] < 0f)
--							SoundEngine.PlaySound(SoundID.Item182, position, -0.2f);
-+							SoundEngine.PlaySound(SoundID.Item182.WithPitchOffset(-0.2f), position);
- 						else
--							SoundEngine.PlaySound(SoundID.Item7, position, -0.5f);
-+							SoundEngine.PlaySound(SoundID.Item7.WithPitchOffset(-0.5f), position);
- 					}
- 					else {
- 						SoundEngine.PlaySound(SoundID.Item15, position);
 @@ -32637,8 +_,11 @@
  				NetMessage.SendData(32, -1, -1, null, chestIndex, num);
  		}
@@ -1622,17 +1592,6 @@
  	}
  
  	private bool AI_016_CanAcornPlant(out Point plantPoint)
-@@ -38095,7 +_,10 @@
- 			FillWhipControlPoints(this, WhipPointsForCollision);
- 			Vector2 vector2 = WhipPointsForCollision[WhipPointsForCollision.Count - 1];
- 			if (type == 1029)
-+				/*
- 				SoundEngine.PlaySound(SoundID.NPCDeath1, vector2, 0f, 0.6f);
-+				*/
-+				SoundEngine.PlaySound(SoundID.NPCDeath1.WithPitchOffset(0.6f), vector2);
- 			else if (type == 1030)
- 				SoundEngine.PlaySound(SoundID.NPCHit9, vector2);
- 			else if (type == 1033)
 @@ -38652,6 +_,17 @@
  		if (proj.isAPreviewDisplayDoll)
  			timeToFlyOut = 60f;

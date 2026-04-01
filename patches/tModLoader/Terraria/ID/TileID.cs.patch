@@ -40,13 +40,13 @@
  
 +		public static class RoomNeeds
 +		{
-+			public static ReadOnlySpan<int> CountsAsChairTypes => CountsAsChair;
++			internal static ReadOnlySpan<int> CountsAsChairTypes => CountsAsChair;
 +			public static BoolListSet CountsAsChair = Factory.CreateBoolListSet(RoomNeeds_Vanilla.CountsAsChairTypes);
-+			public static ReadOnlySpan<int> CountsAsTableTypes => CountsAsTable;
++			internal static ReadOnlySpan<int> CountsAsTableTypes => CountsAsTable;
 +			public static BoolListSet CountsAsTable = Factory.CreateBoolListSet(RoomNeeds_Vanilla.CountsAsTableTypes);
-+			public static ReadOnlySpan<int> CountsAsTorchTypes => CountsAsTorch;
++			internal static ReadOnlySpan<int> CountsAsTorchTypes => CountsAsTorch;
 +			public static BoolListSet CountsAsTorch = Factory.CreateBoolListSet(RoomNeeds_Vanilla.CountsAsTorchTypes);
-+			public static ReadOnlySpan<int> CountsAsDoorTypes => CountsAsDoor;
++			internal static ReadOnlySpan<int> CountsAsDoorTypes => CountsAsDoor;
 +			public static BoolListSet CountsAsDoor = Factory.CreateBoolListSet(RoomNeeds_Vanilla.CountsAsDoorTypes);
 +		}
 +

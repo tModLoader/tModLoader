@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -14,6 +15,11 @@ public class ModProjectileTest : ModProjectile
 		Console.Write(drawOriginOffsetY);
 		Console.Write(drawOriginOffsetX);
 		Console.Write(drawHeldProjInFrontOfHeldItemAndArms);
+	}
+
+	public override void SetStaticDefaults()
+	{
+		ProjectileID.Sets.HeldProjDoesNotUsePlayerGfxOffY[Type] = true;
 	}
 
 	public override bool CanDamage() { return false; }

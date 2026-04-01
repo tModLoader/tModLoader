@@ -85,5 +85,9 @@ public class ModNPCTest : ModNPC
 		});
 
 		NPCID.Sets.ShimmerImmunity[Type] = true;
+
+		NPCID.Sets.GoldCrittersCollection.Add(Type);
+
+		NPCID.Sets.SpawnFromLastEmptySlot[Type] = true;
 	}
 }

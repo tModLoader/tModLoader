@@ -229,7 +229,7 @@
  		public static List<int> TownNPCBestiaryPriority = new List<int> {
  			22,
  			17,
-@@ -5159,11 +_,45 @@
+@@ -5159,12 +_,43 @@
  		};
  		public static bool[] SpawnOnPlayerCanSpawnInMidairOnSkyblock = Factory.CreateBoolSet(4, 266, 222, 125, 126, 127, 262, 551);
  		public static bool[] DontDropDungeonKeysOrSouls = Factory.CreateBoolSet(23);
@@ -267,18 +267,27 @@
 +		/// <br/> Defaults to <see langword="false"/>.
 +		/// </summary>
  		public static bool[] CanConvertIntoCopperSlimeTownNPC = Factory.CreateBoolSet(1, 302, 335, 336, 333, 334);
+-		public static List<int> GoldCrittersCollection = new List<int> {
 +
-+		/// <summary>
-+		/// A list of all NPC types (<see cref="NPC.type"/>) categorized as gold critters.
-+		/// <br/> If a gold critter shows up on the Lifeform Analyzer, its name will be gold (<see cref="Main.DrawInfoAccs_AdjustInfoTextColorsForNPC(NPC, ref Color, ref Color)"/>).
-+		/// </summary>
- 		public static List<int> GoldCrittersCollection = new List<int> {
++		internal static ReadOnlySpan<int> GoldCrittersCollection => IsGoldCritter;
++		private static int[] GoldCrittersCollection_Vanilla = {
  			443,
  			442,
-@@ -5181,12 +_,30 @@
+ 			592,
+@@ -5180,13 +_,40 @@
+ 			448,
  			539
  		};
++
++		/// <summary>
++		/// If <see langword="true"/> for a given NPC type (<see cref="NPC.type"/>), then that NPC is categorized as a gold critter.
++		/// <br/> All gold critters share a bestiary entry.
++		/// <br/> If a gold critter shows up on the Lifeform Analyzer, its name will be gold (<see cref="Main.DrawInfoAccs_AdjustInfoTextColorsForNPC(NPC, ref Color, ref Color)"/>).
++		/// </summary>
++		public static BoolListSet IsGoldCritter = Factory.CreateBoolListSet(GoldCrittersCollection_Vanilla);
++		/*
  		public static bool[] IsGoldCritter = Factory.CreateBoolSet(false, 442, 443, 444, 445, 446, 447, 448, 539, 592, 593, 601, 605, 613, 627);
++		*/
 +
 +		/// <summary>
 +		/// If <see langword="true"/> for a given NPC type (<see cref="NPC.type"/>), then that NPC, if currently <see cref="NPC.dontTakeDamage"/>, will damage the player when hit with a melee attack, a whip, certain <see cref="ProjAIStyleID"/>s (<see cref="ProjAIStyleID.Spear"/>, <see cref="ProjAIStyleID.ShortSword"/>, <see cref="ProjAIStyleID.SleepyOctopod"/>, <see cref="ProjAIStyleID.HeldProjectile"/>), or by any projectile type (<see cref="Projectile.type"/>) in the <see cref="ProjectileID.Sets.AllowsContactDamageFromJellyfish"/> or <see cref="ProjectileID.Sets.IsAWhip"/> sets.
@@ -458,6 +467,11 @@
 +		/// </summary>
  		public static int[] TrailCacheLength = Factory.CreateIntSet(10, 402, 36, 519, 20, 522, 20, 620, 20, 677, 60, 685, 10);
 +
++		/// <summary>
++		/// Whether or not the spawned NPC will be assigned an empty slot in <see cref="NPC.NewNPC"/> by searching from the end of <seealso cref="Main.npc"/> rather than the start.
++		/// <br/><br/> This will result in the NPC drawing behind most other NPC because NPC are drawn in reverse slot order.
++		/// <br/><br/> Useful if you have a multi-segmented boss and want its parts to draw over the main body (body will be in this set). Also useful for bosses that spawn minions, to keep the minions visible. Used by <see cref="Golem"/> and <see cref="QueenBee"/>.
++		/// </summary>
  		public static bool[] SearchSpawnSlotsInReverse = Factory.CreateBoolSet(222, 245);
 +
  		public static bool[] CannotSpawnInSlot0 = Factory.CreateBoolSet(134, 135, 136, 7, 8, 9, 10, 11, 12, 13, 14, 15, 39, 40, 41, 87, 88, 89, 90, 91, 92, 95, 96, 97, 98, 99, 100, 117, 118, 119, 375, 402, 412, 413, 414, 454, 455, 456, 457, 458, 459, 510, 511, 512, 513, 514, 515, 621, 622, 623);

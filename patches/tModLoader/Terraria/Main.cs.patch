@@ -1202,7 +1202,7 @@
 +
 +		// Solxan: This is for properly settings the Screen Max Width & Max Height for large displays.
 +		GetLargestDisplaySize(out int maxDisplayW, out int maxDisplayH);
-+		maxScreenW = Math.Max(maxDisplayH, maxScreenW);
++		maxScreenW = Math.Max(maxDisplayW, maxScreenW);
 +		maxScreenH = Math.Max(maxDisplayH, maxScreenH);
 +
 +		Logging.tML.Info($"Maximum Resolution is {maxScreenW} x {maxScreenH}");
@@ -1240,7 +1240,7 @@
  		PlayerInput.Load();
  		if (currentValue < 165) {
  			try {
-@@ -4012,12 +_,36 @@
+@@ -4012,12 +_,37 @@
  		mouseColorSlider.SetHSL(mouseColor);
  		mouseBorderColorSlider.SetHSL(MouseBorderColor);
  		mouseBorderColorSlider.Alpha = (float)(int)MouseBorderColor.A / 255f;
@@ -1251,7 +1251,8 @@
 +		if (BuildInfo.IsPreview && ModLoader.ModLoader.LastPreviewFreezeNotificationSeen != BuildInfo.tMLVersion.MajorMinor()) {
 +			ModLoader.ModLoader.PreviewFreezeNotification = true;
 +		}
-+		if (currentValue != Main.curRelease || ModLoader.ModLoader.LastLaunchedTModLoaderVersion != BuildInfo.tMLVersion) {
++		bool isNewDevBuild = BuildInfo.IsDev && BuildInfo.stableVersion != new Version(0, 0) && BuildInfo.CommitSHA != ModLoader.ModLoader.LastLaunchedTModLoaderAlphaSha;
++		if (currentValue != Main.curRelease || ModLoader.ModLoader.LastLaunchedTModLoaderVersion != BuildInfo.tMLVersion || isNewDevBuild) {
 +			ModLoader.ModLoader.MigrateSettings();
  			SaveSettings();
 +		}
@@ -5460,6 +5461,15 @@
  		}
  
  		if (!string.IsNullOrEmpty(text)) {
+@@ -40762,7 +_,7 @@
+ 
+ 	private void DrawInfoAccs_AdjustInfoTextColorsForNPC(NPC npc, ref Microsoft.Xna.Framework.Color infoTextColor, ref Microsoft.Xna.Framework.Color infoTextShadowColor)
+ 	{
+-		for (int i = 0; i < NPCID.Sets.GoldCrittersCollection.Count; i++) {
++		for (int i = 0; i < NPCID.Sets.GoldCrittersCollection.Length; i++) {
+ 			int num = NPCID.Sets.GoldCrittersCollection[i];
+ 			if (npc.type == num) {
+ 				infoTextColor = OurFavoriteColor;
 @@ -40783,8 +_,12 @@
  				Y += 261;
  		}
@@ -6224,15 +6234,13 @@
  			if (IsLiquidStyleWater(j) && liquidAlpha[j] > 0f && j != waterStyle) {
  				DrawLiquid(isBackground, j, isBackground ? 1f : liquidAlpha[j], waterOnly: true);
  				flag = true;
-@@ -49753,9 +_,14 @@
+@@ -49753,9 +_,12 @@
  			TimeLogger.DrawBackgroundWaterTiles.AddTime(fromTimestamp);
  		else
  			TimeLogger.DrawWaterTiles.AddTime(fromTimestamp);
 +
-+		/* TODO: What is sceneTilePos now?
 +		if (LiquidEdgeRenderer.Active && !drawToScreen)
-+			LiquidEdgeRenderer.DrawTileMask(spriteBatch, tileTarget, sceneTilePos - screenPosition + new Vector2(drawToScreen ? 0 : offScreenRange));
-+		*/
++			LiquidEdgeRenderer.DrawTileMask(spriteBatch, tileTarget.Texture, tileTarget.Position - screenPosition + new Vector2(drawToScreen ? 0 : offScreenRange));
  	}
  
 -	protected void DrawLiquid(bool bg, int waterStyle, float Alpha = 1f, bool waterOnly = false)

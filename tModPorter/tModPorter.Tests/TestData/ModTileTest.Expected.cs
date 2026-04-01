@@ -67,6 +67,9 @@ public class ModTileTest : ModTile
 
 		TileID.Sets.Wiring.IsAMechanism[Type] = true;
 		TileID.Sets.Wiring.IsATrigger[Type] = true;
+
+		AddToArray(ref TileID.Sets.CountsAsPylon); // Shouldn't change
+		TileID.Sets.RoomNeeds.CountsAsTable[Type] = true;
 	}
 
 #if COMPILE_ERROR

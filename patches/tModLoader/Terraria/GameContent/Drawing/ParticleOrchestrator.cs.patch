@@ -1,16 +1,5 @@
 --- src/TerrariaNetCore/Terraria/GameContent/Drawing/ParticleOrchestrator.cs
 +++ src/tModLoader/Terraria/GameContent/Drawing/ParticleOrchestrator.cs
-@@ -472,7 +_,10 @@
- 		PunchCameraModifier modifier = new PunchCameraModifier(settings.PositionInWorld, (Main.rand.NextFloat() * ((float)Math.PI * 2f)).ToRotationVector2() * new Vector2(0.5f, 1f), MathHelper.Lerp(2f, 10f, Main.SceneState.outsideWeatherEffectIntensity), 3f, 45, 1500f, "StormLightning");
- 		Main.instance.CameraModifiers.Add(modifier);
- 		Main.NewLightning(instant: true, skipSound: true);
-+		/*
- 		SoundEngine.PlaySound(SoundID.InstantThunder, settings.PositionInWorld, 0f, MathHelper.Lerp(0.4f, 1f, Main.SceneState.outsideWeatherEffectIntensity));
-+		*/
-+		SoundEngine.PlaySound(SoundID.InstantThunder.WithPitchOffset(MathHelper.Lerp(0.4f, 1f, Main.SceneState.outsideWeatherEffectIntensity)), settings.PositionInWorld);
- 		Lighting.AddLight(settings.PositionInWorld, (float)(int)white.R / 255f, (float)(int)white.G / 255f, (float)(int)white.B / 255f);
- 		int num2 = 3;
- 		Point point = settings.PositionInWorld.ToTileCoordinates();
 @@ -482,7 +_,7 @@
  				if (!tileSafely.active())
  					continue;

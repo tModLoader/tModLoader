@@ -209,6 +209,30 @@ public class RenameRewriter : BaseRewriter {
 			n => ElementAccessExpression(n.WithoutTrivia(), buffIdShimmer).WithTriviaFrom(n));
 	};
 
+	public static void ConvertCollectionAddToSetTrue(RenameRewriter rw, SyntaxToken node)
+	{
+		// node.Add(...)
+		// ->
+		// node[...] = true
+
+		if (node is not { Parent: IdentifierNameSyntax { Parent: MemberAccessExpressionSyntax {
+				Parent: MemberAccessExpressionSyntax { Name.Identifier.Text: "Add", Parent: InvocationExpressionSyntax invoke } } } })
+			return;
+
+		if (invoke.ArgumentList.Arguments.Count != 1)
+			return;
+
+		rw.RegisterAction<InvocationExpressionSyntax>(invoke, n => {
+			var addAccess = (MemberAccessExpressionSyntax)n.Expression;
+			var arrayAccess = addAccess.Expression;
+			var arg = n.ArgumentList.Arguments[0].Expression;
+			return AssignmentExpression(
+				ElementAccessExpression(arrayAccess.WithoutTrivia(), arg.WithoutTrivia()),
+				LiteralExpression(SyntaxKind.TrueLiteralExpression)
+			).WithTriviaFrom(n);
+		});
+	}
+
 	public static void InvertBool(RenameRewriter rw, SyntaxToken node)
 	{
 		if (node.Parent is not IdentifierNameSyntax nameSyntax)

@@ -12,6 +12,12 @@ public class ModBuffTest : ModBuff
 #endif
 
 		BuffID.Sets.IsATagBuff[Type] = true;
+
+#if COMPILE_ERROR
+		BuffID.Sets.BasicMountData/* tModPorter Note: Removed. Replace with BuffID.Sets.MountType[Type] = ModContent.MountType<MyMount>(); */[Type] = new BuffID.Sets.BuffMountData() {
+			mountID = ModContent.MountType<ExampleMinecartMount>()
+		};
+#endif
 	}
 
 	public override void ModifyBuffText(ref string buffName, ref string tip, ref int rare) { }

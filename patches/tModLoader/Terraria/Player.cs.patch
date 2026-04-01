@@ -5183,8 +5183,8 @@
  		RefreshItems(_temporaryItemSlots, onlyIfVariantChanged);
  		RefreshItems(_pendingRefunds, onlyIfVariantChanged);
 +
-+		foreach (Item item in NPCShopDatabase.AllShops.SelectMany(x => x.ActiveEntries).Select(x => x.Item)) {
-+			item.Refresh(onlyIfVariantChanged);
++		foreach (var shop in NPCShopDatabase.AllShops) {
++			shop.RefreshItems(onlyIfVariantChanged);
 +		}
  	}
  
@@ -5860,31 +5860,6 @@
  	}
  
  	public void PlayHurtSound()
-@@ -31260,6 +_,7 @@
- 		float num = 0.7f;
- 		float pitchOffset = Utils.Remap(voicePitchOffset, -1f, 1f, 0f - num, num);
- 		switch (voiceVariant) {
-+			/*
- 			case 1:
- 				SoundEngine.PlaySound(1, vector, 1, pitchOffset);
- 				break;
-@@ -31269,6 +_,16 @@
- 			case 3:
- 				SoundEngine.PlaySound(SoundID.DefaultPlayerHurt, vector, pitchOffset);
- 				break;
-+			*/
-+			case 1:
-+				SoundEngine.PlaySound(SoundID.PlayerHit.WithPitchOffset(pitchOffset), vector);
-+				break;
-+			case 2:
-+				SoundEngine.PlaySound(SoundID.FemaleHit.WithPitchOffset(pitchOffset), vector);
-+				break;
-+			case 3:
-+				SoundEngine.PlaySound(SoundID.DefaultPlayerHurt.WithPitchOffset(pitchOffset), vector);
-+				break;
- 		}
- 	}
- 
 @@ -31347,6 +_,14 @@
  			if (FileUtilities.Exists(Main.playerPathName + ".bak", isCloudSave))
  				FileUtilities.Delete(Main.playerPathName + ".bak", isCloudSave);
@@ -7330,34 +7305,6 @@
  		if (Main.tile[x, y].type == 470) {
  			TEDisplayDoll.TryChangePose(x, y);
  		}
-@@ -37816,6 +_,7 @@
- 		if (RollOnlyBadLuckExtreme(10) == 0)
- 			pitchOffset = (float)Main.rand.Next(-50, 51) * 0.01f;
- 
-+		/*
- 		if (range > num2 * 5f)
- 			SoundEngine.PlaySound(49, base.Center, 1, pitchOffset);
- 		else if (range > num2 * 4f)
-@@ -37828,6 +_,19 @@
- 			SoundEngine.PlaySound(52, base.Center, 1, pitchOffset);
- 		else
- 			SoundEngine.PlaySound(50, base.Center, 1, pitchOffset);
-+		*/
-+		if (range > num2 * 5f)
-+			SoundEngine.PlaySound(SoundID.GuitarEm.WithPitchOffset(pitchOffset), base.Center);
-+		else if (range > num2 * 4f)
-+			SoundEngine.PlaySound(SoundID.GuitarD.WithPitchOffset(pitchOffset), base.Center);
-+		else if (range > num2 * 3f)
-+			SoundEngine.PlaySound(SoundID.GuitarC.WithPitchOffset(pitchOffset), base.Center);
-+		else if (range > num2 * 2f)
-+			SoundEngine.PlaySound(SoundID.GuitarBm.WithPitchOffset(pitchOffset), base.Center);
-+		else if (range > num2 * 1f)
-+			SoundEngine.PlaySound(SoundID.GuitarAm.WithPitchOffset(pitchOffset), base.Center);
-+		else
-+			SoundEngine.PlaySound(SoundID.GuitarG.WithPitchOffset(pitchOffset), base.Center);
- 	}
- 
- 	public void PlayDrums(float range)
 @@ -37881,7 +_,9 @@
  			}
  

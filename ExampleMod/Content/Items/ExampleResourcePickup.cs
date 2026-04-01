@@ -22,7 +22,6 @@ namespace ExampleMod.Content.Items
 			ItemID.Sets.ItemsThatShouldNotBeInInventory[Type] = true;
 			ItemID.Sets.IgnoresEncumberingStone[Type] = true;
 			ItemID.Sets.IsAPickup[Type] = true;
-			ItemID.Sets.ItemSpawnDecaySpeed[Type] = 4;
 		}
 
 		public override void SetDefaults() {

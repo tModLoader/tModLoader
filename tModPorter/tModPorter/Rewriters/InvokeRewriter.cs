@@ -270,5 +270,41 @@ public partial class InvokeRewriter : BaseRewriter
 		}
 	}
 	#endregion
+
+	public static SyntaxNode RewriteAddToArrayForRoomNeeds(InvokeRewriter rw, InvocationExpressionSyntax invoke, NameSyntax methodName)
+	{
+		// Should convert AddToArray(ref TileID.Sets.RoomNeeds.CountsAsTable); to TileID.Sets.RoomNeeds.CountsAsTable[Type] = true; if AddToArray is called with an array in TileID.Sets.RoomNeeds.
+
+		// Validate single ref argument
+		if (invoke.ArgumentList?.Arguments.Count != 1)
+			return invoke;
+
+		var arg = invoke.ArgumentList.Arguments[0];
+		if (!arg.RefKindKeyword.IsKind(SyntaxKind.RefKeyword))
+			return invoke;
+
+		var arrExpr = arg.Expression;
+		if (arrExpr == null)
+			return invoke;
+
+		// Try to resolve the symbol for the passed array-like member
+		var symInfo = rw.model.GetSymbolInfo(arrExpr).Symbol;
+		if (symInfo == null)
+			return invoke;
+
+		// Build a full name to detect TileID.Sets.RoomNeeds.* members
+		var containingType = symInfo.ContainingType;
+		var fullMemberName = containingType != null ? $"{containingType.ToString()}.{symInfo.Name}" : symInfo.ToString();
+
+		// Only handle members that are part of TileID.Sets.RoomNeeds
+		if (!fullMemberName.Contains("TileID.Sets.RoomNeeds") && !arrExpr.ToString().Contains("TileID.Sets.RoomNeeds"))
+			return invoke;
+
+		// Build the element access: <arrayExpr>[Type]
+		var elementAccess = ElementAccessExpression(arrExpr.WithoutTrivia(), IdentifierName("Type"));
+
+		var assign = AssignmentExpression(elementAccess, LiteralExpression(SyntaxKind.TrueLiteralExpression)).WithTriviaFrom(invoke);
+		return assign;
+	}
 }
 
