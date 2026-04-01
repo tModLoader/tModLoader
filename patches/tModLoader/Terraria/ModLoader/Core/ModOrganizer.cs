@@ -247,14 +247,14 @@ internal static class ModOrganizer
 		var messages = new StringBuilder();
 
 		if (abnormalWorkshopDownloads.Any()) {
-			messages.AppendLine("These mods were found installed by Steam but aren't visible on Workshop today. Delete?");
+			messages.AppendLine(Language.GetTextValue("tModLoader.RemovedWorkshopMods"));
 			foreach (var mod in abnormalWorkshopDownloads) {
 				messages.AppendLine($"  {mod.DisplayNameClean}");
 			}
 		}
 		
 		if (reuploadMDItems.Any()) {
-			messages.AppendLine("These mods were reuploaded to Steam under a new Publish ID. Transfer your subscription?");
+			messages.AppendLine(Language.GetTextValue("tModLoader.ReuploadedWorkshopMods"));
 			foreach (var mod in reuploadMDItems) {
 				messages.AppendLine($"  {mod.DisplayNameClean}");
 			}
