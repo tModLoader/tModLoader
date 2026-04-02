@@ -73,9 +73,9 @@
  		<Reference Include="NVorbis" />
  		<Reference Include="RailSDK.Net" />
  		<Reference Include="SteelSeriesEngineWrapper" />
-+		<Reference Include="log4net" />
 +		<Reference Include="TerrariaHooks" />
  
++		<PackageReference Include="log4net" Version="3.3.0" />
 +		<PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
 +		<PackageReference Include="DotNetZip" Version="1.16.0" NoWarn="NU1903" />
 +		<PackageReference Include="JetBrains.Annotations" Version="2025.2.4" />
