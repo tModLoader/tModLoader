@@ -7,7 +7,7 @@
   <Import Project="$(tModLoaderSteamPath)/tMLMod.targets" />
   <PropertyGroup>
     <AssemblyName>TestData</AssemblyName>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
