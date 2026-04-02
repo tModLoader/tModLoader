@@ -20,7 +20,7 @@ public static class Verifier
 			{
 				public Test(string testCode, string fixedCode, IEnumerable<DiagnosticResult> expected) : base()
 				{
-					ReferenceAssemblies = ReferenceAssemblies.Net.Net80;
+					ReferenceAssemblies = ReferenceAssemblies.Net.Net100;
 
 					TestCode = testCode.ReplaceLineEndings();
 					TestState.OutputKind = OutputKind.ConsoleApplication;
@@ -73,7 +73,7 @@ public static class Verifier
 		{
 			public Test(string testCode, IEnumerable<DiagnosticResult> expected) : base()
 			{
-				ReferenceAssemblies = ReferenceAssemblies.Net.Net80;
+				ReferenceAssemblies = ReferenceAssemblies.Net.Net100;
 
 				TestCode = testCode.ReplaceLineEndings();
 				TestState.OutputKind = OutputKind.ConsoleApplication;
