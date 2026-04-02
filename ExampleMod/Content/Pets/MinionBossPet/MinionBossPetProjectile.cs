@@ -64,7 +64,7 @@ namespace ExampleMod.Content.Pets.MinionBossPet
 			return Color.White * AlphaForVisuals * Projectile.Opacity;
 		}
 
-		public override void PostDraw(Color lightColor) {
+		public override void PostDraw(Player player, Color lightColor) {
 			// Draw surrounding eyes to mimic the boss
 			Texture2D eyeTexture = EyeAsset.Value;
 

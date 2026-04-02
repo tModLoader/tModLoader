@@ -4068,7 +4068,7 @@
  		if (player.mount.Active && player.mount.Type == 52)
  			mountedCenter += new Vector2(player.direction * 14, -10f);
  
-+		if (ProjectileLoader.PreDrawExtras(proj)) {
++		if (ProjectileLoader.PreDrawExtras(proj, player)) {
 +			DrawProj_DrawYoyoString(proj, player, mountedCenter);
 +			DrawProj_DrawExtras(proj, player, mountedCenter, ref polePosX, ref polePosY);
 +		}
@@ -4121,7 +4121,7 @@
  		if (proj.type == 14)
  			projectileColor = Microsoft.Xna.Framework.Color.White;
  
-+		if (ProjectileLoader.PreDraw(proj, ref projectileColor)) {
++		if (ProjectileLoader.PreDraw(proj, player, ref projectileColor)) {
 +			bool earlyReturn = true;
 +			DrawProj_DrawVoidLens(proj, player, ref earlyReturn);
 +			if (earlyReturn)
@@ -4136,7 +4136,7 @@
 +		}
 +
 +		PostDraw:
-+		ProjectileLoader.PostDraw(proj, projectileColor);
++		ProjectileLoader.PostDraw(proj, player, projectileColor);
 +	}
 +
 +	private void DrawProj_DrawNormalProjs(Projectile proj, Player player, float polePosX, float polePosY, Vector2 mountedCenter, ref Color projectileColor)
@@ -4222,7 +4222,7 @@
  			stringColor = new Microsoft.Xna.Framework.Color(100, 100, 200, 100);
  
 +		ProjectileLoader.ModifyFishingLine(proj, ref polePosX, ref polePosY, ref stringColor);
-+		ItemLoader.ModifyFishingLine(proj, ref polePosX, ref polePosY, ref stringColor);
++		ItemLoader.ModifyFishingLine(proj, theOwner, ref polePosX, ref polePosY, ref stringColor);
 +
  		stringColor = TryApplyingPlayerStringColor(theOwner.stringColor, stringColor);
  		float gravDir = theOwner.gravDir;

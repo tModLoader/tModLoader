@@ -27,11 +27,11 @@ public class ModProjectileTest : ModProjectile
 
 	public override bool TileCollideStyle(ref int width, ref int height, ref bool fallThrough, ref Vector2 hitboxCenterFrac) { return true; }
 
-	public override bool PreDrawExtras() { return true; }
+	public override bool PreDrawExtras(Player player)/* tModPorter Replace 'Main.player[Projectile.owner]' with 'player'. */ { return true; }
 
-	public override bool PreDraw(ref Color lightColor) { return true; }
+	public override bool PreDraw(Player player, ref Color lightColor)/* tModPorter Replace 'Main.player[Projectile.owner]' with 'player'. */ { return true; }
 
-	public override void PostDraw(Color lightColor) { /* Empty */ }
+	public override void PostDraw(Player player, Color lightColor)/* tModPorter Replace 'Main.player[Projectile.owner]' with 'player'. */ { /* Empty */ }
 
 	public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI) {
 		// not-yet-implemented

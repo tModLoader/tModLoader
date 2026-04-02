@@ -46,7 +46,7 @@ namespace ExampleMod.Content.Projectiles
 			behindProjectiles.Add(index); // This projectile draws behind other projectiles to not be in the way.
 		}
 
-		public override void PostDraw(Color lightColor) {
+		public override void PostDraw(Player player, Color lightColor) {
 			// We use PostDraw to draw the highlight texture over the normal texture.
 
 			// This logic replicates the vanilla projectile drawing logic:
