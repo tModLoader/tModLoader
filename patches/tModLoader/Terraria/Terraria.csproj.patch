@@ -69,14 +69,15 @@
  		<Reference Include="CsvHelper" />
 -		<Reference Include="Ionic.Zip.CF" />
  		<Reference Include="MP3Sharp" />
- 		<Reference Include="Newtonsoft.Json" />
+-		<Reference Include="Newtonsoft.Json" />
  		<Reference Include="NVorbis" />
  		<Reference Include="RailSDK.Net" />
  		<Reference Include="SteelSeriesEngineWrapper" />
 +		<Reference Include="log4net" />
 +		<Reference Include="TerrariaHooks" />
  
-+		<PackageReference Include="DotNetZip" Version="1.16.0" />
++		<PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
++		<PackageReference Include="DotNetZip" Version="1.16.0" NoWarn="NU1903" />
 +		<PackageReference Include="JetBrains.Annotations" Version="2025.2.4" />
  		<PackageReference Include="Steamworks.NET.AnyCPU" Version="2025.162.4" />
 +		<PackageReference Include="Basic.Reference.Assemblies.Net100" Version="1.8.4" />
