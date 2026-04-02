@@ -341,16 +341,14 @@ public partial class WorkshopHelper
 					}
 
 					// Check if any of the mods flagged for reupload review are actually reuploaded or if the user has a now hidden mod
-					try {
-						foreach (var item in checkReupload) {
-							var match2 = TryGetModDownloadItem(item, out var reupload);
-							if (match2 == WorkshopSearchReturnState.Success) {
-								items.Add(reupload);
-							}
+					foreach (var item in checkReupload) {
+						var match2 = TryGetModDownloadItem(item, out var reupload);
+						if (match2 == WorkshopSearchReturnState.Success) {
+							// We intentionally don't call UpdateInstallStatus here; this is to ensure we know that it has been reuploaded
+							// Specifically, although from a ModName/Slug standpoint it is installed, it is not installed from a PublishID standpoint.
+							reupload.UpdateInstallState();
+							items.Add(reupload);
 						}
-					}
-					finally {
-						ReleaseWorkshopQuery();
 					}
 				}
 
@@ -448,6 +446,12 @@ public partial class WorkshopHelper
 				return true;
 			}
 
+			/// <summary>
+			/// Only Use if we don't have a PublishID source.
+			/// This method does NOT guard against banned items. Plan usage accordingly.
+			/// This method does not call item.UpdateInstallState so item.Installed will be null until called;
+			/// Installed status can take some time, so it is left to downsteam callers
+			/// </summary>
 			internal static WorkshopSearchReturnState TryGetModDownloadItem(string modSlug, out ModDownloadItem item)
 			{
 				var query = new AQueryInstance(new QueryParameters() { queryType = QueryType.SearchDirect, returnDevMetadata = true });
@@ -466,7 +470,8 @@ public partial class WorkshopHelper
 
 			/// <summary>
 			/// Only Use if we don't have a PublishID source.
-			/// This method does NOT guard against banned items. Plan usage accordingly
+			/// This method does NOT guard against banned items. Plan usage accordingly.
+			/// This method does not call item.UpdateInstallState so item.Installed will be null until called. 
 			/// </summary>
 			private WorkshopSearchReturnState TrySearchByInternalName(string slug, out ModDownloadItem item)
 			{

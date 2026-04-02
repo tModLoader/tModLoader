@@ -213,7 +213,7 @@ internal static class ModOrganizer
 		var foundMDItems = WorkshopBrowserModule.Instance.CachedInstalledModDownloadItems;
 
 		// if found installed mod download item that is newer then those in workshopDownloads and under a different publish ID
-		var reuploadMDItems = foundMDItems.Where(a => a.Installed is null);
+		var reuploadMDItems = foundMDItems.Where(a => a.IsReupload());
 
 		// if a local mod is installed and it doesn't have a corresponding workshop publish item AND isn't the reupload case
 		var abnormalWorkshopDownloads = FindWorkshopMods().Except(foundMDItems.Select(a => a.Installed));
