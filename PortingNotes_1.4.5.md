@@ -247,7 +247,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - AssetRepository a huge mess of patches. _changeWatcher patch might need to be restored.
 - LanguageManager.GetText changed, now it stores on miss. Before it didn't and we kept that behavior. Do we want the old behavior still?
 - Recipe.FindRecipes gone. Probably not needed anymore
-- MusicID entries have changed. I have a diff prepared, need to add to wiki or handle it somehow.
 - ProjAIStyleID and NPCAIStyleID will need to be regenerated (jopo has script)
 - Replace Main.hasFocus with FocusHelper.AllowUIInputs (or another property)
 - Player.QuickSpawnItem no longer returns an int indicating the index of the item in Main.item. This is because the spawned item can now potentially go directly into player inventory.

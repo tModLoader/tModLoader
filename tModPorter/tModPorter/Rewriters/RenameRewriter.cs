@@ -1,9 +1,10 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Operations;
-using System.Collections.Generic;
-using System.Linq;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static tModPorter.Rewriters.SimpleSyntaxFactory;
 
@@ -37,6 +38,14 @@ public class RenameRewriter : BaseRewriter {
 
 	public static MemberRename RenameInstanceField(string type, string from, string to) => RenameMember(new() { type = type, from = from, to = to });
 	public static MemberRename RenameStaticField(string type, string from, string to) => RenameMember(new() { type = type, from = from, to = to });
+	public static void RenameStaticFields(string type, params string[] fromTo)
+	{
+		if (fromTo.Length % 2 != 0)
+			throw new Exception("You have a bad length for inputs on RenameStaticFields");
+		for (int i = 0; i < fromTo.Length; i += 2) {
+			RenameMember(new() { type = type, from = fromTo[i], to = fromTo[i + 1] });
+		}
+	}
 	public static MemberRename RenameMethod(string type, string from, string to) => RenameMember(new() { type = type, from = from, to = to, isMethod = true });
 	public static void RenameType(string from, string to) => typeRenames.Add((from, to));
 	public static void RenameNamespace(string from, string to) => namespaceRenames.Add(from, to);

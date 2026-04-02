@@ -79,6 +79,7 @@ public class SimpleRenamedVanillaMembersTest
 		int dustFire = DustID.Torch;
 		int readSign = MessageID.OpenSignResponse;
 		int killCount = MessageID.Unused83;
+		_ = MusicID.LunarPillars;
 
 		int water = LiquidID.Water;
 		int honey = LiquidID.Honey;
