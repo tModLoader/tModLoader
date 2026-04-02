@@ -8,7 +8,7 @@
  
  	<!-- General -->
  	<PropertyGroup>
-@@ -11,59 +_,97 @@
+@@ -11,59 +_,96 @@
  		<Company>Re-Logic</Company>
  		<Copyright>Copyright © 2026 Re-Logic</Copyright>
  		<RootNamespace>Terraria</RootNamespace>
@@ -77,7 +77,6 @@
  
 +		<PackageReference Include="log4net" Version="3.3.0" />
 +		<PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
-+		<PackageReference Include="DotNetZip" Version="1.16.0" NoWarn="NU1903" />
 +		<PackageReference Include="JetBrains.Annotations" Version="2025.2.4" />
  		<PackageReference Include="Steamworks.NET.AnyCPU" Version="2025.162.4" />
 +		<PackageReference Include="Basic.Reference.Assemblies.Net100" Version="1.8.4" />
