@@ -837,6 +837,10 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	{
 	}
 
+	public virtual void SetChatButtons2(ref bool skipCloseChat, ref bool skipReportHappiness, ref bool skipRequestHome)
+	{
+	}
+
 	/// <summary>
 	/// Allows you to make something happen whenever a button is clicked on this NPC's chat window. The firstButton parameter tells whether the first button or second button (button and button2 from SetChatButtons) was clicked. Set the shopName parameter to "Shop" to open this NPC's shop.
 	/// <para/> Called on the local client only.

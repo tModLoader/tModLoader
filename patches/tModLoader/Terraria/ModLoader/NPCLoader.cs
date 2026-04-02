@@ -1218,6 +1218,11 @@ public static class NPCLoader
 		Main.LocalPlayer.TalkNPC?.ModNPC?.SetChatButtons(ref button, ref button2);
 	}
 
+	public static void SetChatButtons2(int type, ref bool skipCloseChat, ref bool skipReportHappiness, ref bool skipRequestHome)
+	{
+		GetNPC(type)?.SetChatButtons2(ref skipCloseChat, ref skipReportHappiness, ref skipRequestHome);
+	}
+
 	private static HookList HookPreChatButtonClicked = AddHook<Func<NPC, bool, bool>>(g => g.PreChatButtonClicked);
 
 	public static bool PreChatButtonClicked(bool firstButton)

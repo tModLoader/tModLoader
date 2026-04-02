@@ -1,0 +1,30 @@
+--- src/TerrariaNetCore/Terraria/GameContent/UI/NPCChatPanel.cs
++++ src/tModLoader/Terraria/GameContent/UI/NPCChatPanel.cs
+@@ -55,7 +_,7 @@
+ 		Point point = new Point(500, 500);
+ 		Rectangle rectangle = new Rectangle(Main.screenWidth / 2 - point.X / 2, 100, point.X, 30);
+ 		rectangle.Height += 30 * _textDisplayCache.AmountOfLines;
+-		rectangle.Height += 30 * _neededInteractionLines + Math.Max(0, 2 * (_neededInteractionLines - 1));
++		rectangle.Height += 20 * Math.Min(_neededInteractionLines, 8) + Math.Max(0, 2 * (Math.Min(_neededInteractionLines, 8) - 1)); // TML: changed +30 to +20. Capped the _neededInteractionLines to 8 (32 buttons).
+ 		Utils.DrawInvBG(Main.spriteBatch, rectangle);
+ 		DrawText(color, rectangle);
+ 		Main.DrawNPCPortrait(chatBack, rectangle.TopLeft());
+@@ -71,13 +_,17 @@
+ 		UILinkPointNavigator.Shortcuts.NPCCHAT_ButtonsNew = true;
+ 		UILinkPointNavigator.Shortcuts.NPCCHAT_ButtonsCount = _interactions.Count;
+ 		DynamicSpriteFont value = FontAssets.MouseText.Value;
+-		Vector2 vector = panelArea.BottomLeft() + new Vector2(30f, -22 * _neededInteractionLines + Math.Max(0, 2 * (_neededInteractionLines - 1)) - 4);
++		Vector2 vector = panelArea.BottomLeft() + new Vector2(30f, -24 * Math.Min(_neededInteractionLines, 8) + Math.Max(0, 2 * (Math.Min(_neededInteractionLines, 8) - 1)) - 4); // TML: changed -22 to -24. Capped the _neededInteractionLines to 8 (32 buttons).
+ 		int num = -1;
+ 		int num2 = -1;
+ 		float num3 = 0.9f;
+ 		Rectangle rectangle = new Rectangle((int)vector.X, (int)vector.Y, 100, 22);
+ 		foreach (NPCInteraction interaction in _interactions) {
+ 			num++;
++			
++			if (num > 31) // Artificially capped at 32 buttons. It could go up to 100 if enough gamepad UILinkPoints are initialized.
++				continue;
++
+ 			byte b = mouseTextColor;
+ 			chatColor = new Color(b, (int)((double)(int)b / 1.1), (int)b / 2, b);
+ 			if (num % 4 == 0) {

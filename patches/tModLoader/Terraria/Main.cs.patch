@@ -4564,7 +4564,7 @@
  			}
  			else {
  				int num2 = rand.Next(3);
-@@ -34899,8 +_,9 @@
+@@ -34899,8 +_,20 @@
  		playerInventory = true;
  		stackSplit = 9999;
  		npcChatText = "";
@@ -4572,6 +4572,17 @@
 +		SetNPCShopIndex(1);
 -		shop[npcShop].SetupShop(npcShop);
 +		shop[npcShop].SetupShop(shopIndex);
++
++		SoundEngine.PlaySound(12);
++	}
++
++	public void OpenShop(string shopName)
++	{
++		playerInventory = true;
++		stackSplit = 9999;
++		npcChatText = "";
++		SetNPCShopIndex(1);
++		shop[npcShop].SetupShop(NPCShopDatabase.GetShopName(LocalPlayer.TalkNPC.type, shopName), LocalPlayer.TalkNPC);
 +
  		SoundEngine.PlaySound(12);
  	}
