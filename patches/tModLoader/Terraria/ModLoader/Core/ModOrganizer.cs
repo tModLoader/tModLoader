@@ -1,5 +1,3 @@
-using Microsoft.CodeAnalysis;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -7,10 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
+using Microsoft.CodeAnalysis;
+using Newtonsoft.Json;
 using Terraria.Localization;
 using Terraria.ModLoader.Exceptions;
 using Terraria.ModLoader.UI;
 using Terraria.ModLoader.UI.DownloadManager;
+using Terraria.ModLoader.UI.ModBrowser;
 using Terraria.Social.Base;
 using Terraria.Social.Steam;
 
@@ -202,6 +203,63 @@ internal static class ModOrganizer
 	internal static bool IsModFromSteam(string modPath)
 	{
 		return modPath.Contains(Path.Combine("workshop"), StringComparison.InvariantCultureIgnoreCase);
+	}
+
+	internal static string DetectAbnormalSteamWorkshopDownloads(out Action resolveAbnormalDownloads)
+	{
+		// During initialize it forces update of CachedInstalledModDownloadItems
+		WorkshopBrowserModule.Instance.Initialize();
+
+		var foundMDItems = WorkshopBrowserModule.Instance.CachedInstalledModDownloadItems;
+
+		// if found installed mod download item that is newer then those in workshopDownloads and under a different publish ID
+		var reuploadMDItems = foundMDItems.Where(a => a.IsReupload());
+
+		// if a local mod is installed and it doesn't have a corresponding workshop publish item AND isn't the reupload case
+		var installedWorkshopModsNotFoundOnWorkshop = FindWorkshopMods().Except(foundMDItems.Select(a => a.Installed));
+
+		if (!reuploadMDItems.Any() && !installedWorkshopModsNotFoundOnWorkshop.Any()) {
+			resolveAbnormalDownloads = null;
+			return string.Empty;
+		}
+
+		var toDeleteOldMods = installedWorkshopModsNotFoundOnWorkshop.Where(a => reuploadMDItems.Select(b => b.ModName).Contains(a.Name));
+		installedWorkshopModsNotFoundOnWorkshop = installedWorkshopModsNotFoundOnWorkshop.Where(a => !reuploadMDItems.Select(b => b.ModName).Contains(a.Name));
+
+		resolveAbnormalDownloads = async () => {
+			// Group 1: If the mod is Reuploaded, delete the old and sub to the new.
+			foreach (var mod in toDeleteOldMods)
+				DeleteMod(mod);
+
+			if (reuploadMDItems.Any()) {
+				await UIModBrowser.DownloadMods(
+					reuploadMDItems,
+					Interface.loadModsID);
+			}
+
+			// Group 2: Delete mods that originated from workshop but workshop doesn't have a replacement
+			foreach (var mod in installedWorkshopModsNotFoundOnWorkshop)
+				DeleteMod(mod);
+		};
+
+		// Messages for Users
+		var messages = new StringBuilder();
+
+		if (installedWorkshopModsNotFoundOnWorkshop.Any()) {
+			messages.AppendLine(Language.GetTextValue("tModLoader.RemovedWorkshopMods"));
+			foreach (var mod in installedWorkshopModsNotFoundOnWorkshop) {
+				messages.AppendLine($"  {mod.DisplayNameClean}");
+			}
+		}
+		
+		if (reuploadMDItems.Any()) {
+			messages.AppendLine(Language.GetTextValue("tModLoader.ReuploadedWorkshopMods"));
+			foreach (var mod in reuploadMDItems) {
+				messages.AppendLine($"  {mod.DisplayNameClean}");
+			}
+		}
+
+		return messages.Length > 0 ? messages.ToString() : null;
 	}
 
 	internal static HashSet<string> IdentifyMissingWorkshopDependencies()
