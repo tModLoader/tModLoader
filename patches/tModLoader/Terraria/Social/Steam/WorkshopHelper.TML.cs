@@ -332,7 +332,6 @@ public partial class WorkshopHelper
 								continue;
 							}
 
-							item.UpdateInstallState();
 							items.Add(item);
 						}
 					}
@@ -344,9 +343,6 @@ public partial class WorkshopHelper
 					foreach (var item in checkReupload) {
 						var match2 = TryGetModDownloadItem(item, out var reupload);
 						if (match2 == WorkshopSearchReturnState.Success) {
-							// We intentionally don't call UpdateInstallStatus here; this is to ensure we know that it has been reuploaded
-							// Specifically, although from a ModName/Slug standpoint it is installed, it is not installed from a PublishID standpoint.
-							reupload.UpdateInstallState();
 							items.Add(reupload);
 						}
 					}

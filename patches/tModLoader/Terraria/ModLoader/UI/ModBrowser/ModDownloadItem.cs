@@ -64,6 +64,8 @@ public class ModDownloadItem
 		ModloaderVersion = modloaderversion;
 		Banned = banned;
 		DevMetadata = devMetadata;
+
+		UpdateInstallState();
 	}
 
 	internal void UpdateInstallState()
@@ -75,6 +77,7 @@ public class ModDownloadItem
 		Installed = Interface.modBrowser.SocialBackend.IsItemInstalled(ModName);
 
 		NeedUpdate = Installed != null && Interface.modBrowser.SocialBackend.DoesItemNeedUpdate(PublishId, Installed, Version);
+		
 		// The below line is to identify the transient state where it isn't installed, but Steam considers it as such - Solxan
 		// Steam keeps a cache once a download starts, and doesn't clean up cache until game close, which gets very confusing.
 		AppNeedRestartToReinstall = Installed == null && Interface.modBrowser.SocialBackend.DoesAppNeedRestartToReinstallItem(PublishId);
@@ -82,6 +85,9 @@ public class ModDownloadItem
 
 	internal bool IsReupload()
 	{
+		if (Installed is null)
+			return false;
+
 		if (!WorkshopHelper.GetPublishIdLocal(Installed.modFile, out var localPublishId))
 			return false;
 
@@ -116,7 +122,6 @@ public class ModDownloadItem
 			if (item == null)
 				return false;
 
-			item.UpdateInstallState();
 			return !item.IsInstalled || item.NeedUpdate;
 		});
 	}
