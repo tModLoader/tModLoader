@@ -456,8 +456,6 @@ public partial class WorkshopHelper
 			/// <summary>
 			/// Only Use if we don't have a PublishID source.
 			/// This method does NOT guard against banned items. Plan usage accordingly.
-			/// This method does not call item.UpdateInstallState so item.Installed will be null until called;
-			/// Installed status can take some time, so it is left to downsteam callers
 			/// </summary>
 			internal static WorkshopSearchReturnState TryGetModDownloadItem(string modSlug, out ModDownloadItem item)
 			{
@@ -478,7 +476,6 @@ public partial class WorkshopHelper
 			/// <summary>
 			/// Only Use if we don't have a PublishID source.
 			/// This method does NOT guard against banned items. Plan usage accordingly.
-			/// This method does not call item.UpdateInstallState so item.Installed will be null until called. 
 			/// </summary>
 			private WorkshopSearchReturnState TrySearchByInternalName(string slug, out ModDownloadItem item)
 			{
