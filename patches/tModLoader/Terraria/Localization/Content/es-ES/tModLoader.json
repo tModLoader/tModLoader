@@ -25,6 +25,8 @@
 		"ShowNewUpdatedModsInfoMessageUpdatedMods": "\nMods actualizados:",
 		// "ShowRemovedModsInfoMessageUpdatedMods": "\nRemoved Mods since last session. If any of these were removed in error, please click 'Redownload Mods' to have the option to redownload",
 		"DependenciesNeededForOtherMods": "\nFaltan algunas dependencias:",
+		// "RemovedWorkshopMods": "These mods were found installed by Steam but aren't visible on Workshop today.\nThis could be anything from malware to DMCA to it simply being made private. Delete?",
+		// "ReuploadedWorkshopMods": "These mods were reuploaded to Steam under a new Publish ID. Transfer your subscription?",
 		"InstallDependencies": "Instalar dependencias",
 		// "RedownloadMods": "Redownload Mods",
 		// "InstallDependenciesAndRedownloadMods": "Install Dependencies and Redownload Mods",
