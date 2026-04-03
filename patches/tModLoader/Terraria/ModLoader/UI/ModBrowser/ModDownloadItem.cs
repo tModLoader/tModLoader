@@ -31,16 +31,9 @@ public class ModDownloadItem
 	public readonly string Homepage;
 	public readonly Version ModloaderVersion;
 
-	/// <summary>
-	/// WARNING: If UpdateInstallState() hasn't been called, then this will be null.
-	/// </summary>
 	internal LocalMod Installed { get; set; }
 	public bool NeedUpdate { get; private set; }
 	public bool AppNeedRestartToReinstall { get; private set; }
-
-	/// <summary>
-	/// WARNING: If UpdateInstallState() hasn't been called, then this will be false
-	/// </summary>
 	public bool IsInstalled => Installed != null;
 
 	public ModDownloadItem(string displayName, string name, Version version, string author, string modReferences, ModSide modSide, string modIconUrl, string publishId, int downloads, int hot, DateTime timeStamp, Version modloaderversion, string homepage, string ownerId, string[] referencesById, bool banned, DeveloperMetadata devMetadata)
@@ -76,7 +69,7 @@ public class ModDownloadItem
 		//TODO: This should assess the source of the ModDownloadItem and ensure matches with the active SocialBrowserModule instance for safety, but eh.
 		Installed = Interface.modBrowser.SocialBackend.IsItemInstalled(ModName);
 
-		NeedUpdate = Installed != null && Interface.modBrowser.SocialBackend.DoesItemNeedUpdate(PublishId, Installed, Version);
+		NeedUpdate = IsInstalled && Interface.modBrowser.SocialBackend.DoesItemNeedUpdate(PublishId, Installed, Version);
 		
 		// The below line is to identify the transient state where it isn't installed, but Steam considers it as such - Solxan
 		// Steam keeps a cache once a download starts, and doesn't clean up cache until game close, which gets very confusing.
