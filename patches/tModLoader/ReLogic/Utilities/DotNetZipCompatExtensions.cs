@@ -1,12 +1,10 @@
-using System.IO;
-
 namespace System.IO.Compression;
 
 /// <summary>
 /// Extension methods for <see cref="ZipArchive"/> and <see cref="ZipArchiveEntry"/> that provide
 /// API compatibility with Ionic.Zip (DotNetZip), reducing diffs against vanilla
 /// </summary>
-public static class DotNetZipCompatExtensions
+internal static class DotNetZipCompatExtensions
 {
 	public static bool ContainsEntry(this ZipArchive zip, string entryName) => zip.GetEntry(entryName) != null;
 
