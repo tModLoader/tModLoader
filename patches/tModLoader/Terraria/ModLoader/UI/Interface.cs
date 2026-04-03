@@ -189,6 +189,10 @@ internal static class Interface
 			else if (!ModLoader.DownloadedDependenciesOnStartup) { // Keep this at the end of the if/else chain since it doesn't necessarily change Main.menuMode
 				ModLoader.DownloadedDependenciesOnStartup = true;
 
+				// https://github.com/tModLoader/tModLoader/pull/5071#discussion_r3031162540
+				// The UI here needs some sort of refactor. There is 4 or 5 different systems now running through this UI.
+				// Fix before 1.4.5 release.
+
 				// Find dependencies that need to be downloaded.
 				var missingDeps = ModOrganizer.IdentifyMissingWorkshopDependencies().ToList();
 

@@ -216,15 +216,15 @@ internal static class ModOrganizer
 		var reuploadMDItems = foundMDItems.Where(a => a.IsReupload());
 
 		// if a local mod is installed and it doesn't have a corresponding workshop publish item AND isn't the reupload case
-		var abnormalWorkshopDownloads = FindWorkshopMods().Except(foundMDItems.Select(a => a.Installed));
+		var installedWorkshopModsNotFoundOnWorkshop = FindWorkshopMods().Except(foundMDItems.Select(a => a.Installed));
 
-		if (!reuploadMDItems.Any() && !abnormalWorkshopDownloads.Any()) {
+		if (!reuploadMDItems.Any() && !installedWorkshopModsNotFoundOnWorkshop.Any()) {
 			resolveAbnormalDownloads = null;
 			return string.Empty;
 		}
 
-		var toDeleteOldMods = abnormalWorkshopDownloads.Where(a => reuploadMDItems.Select(b => b.ModName).Contains(a.Name));
-		abnormalWorkshopDownloads = abnormalWorkshopDownloads.Where(a => !reuploadMDItems.Select(b => b.ModName).Contains(a.Name));
+		var toDeleteOldMods = installedWorkshopModsNotFoundOnWorkshop.Where(a => reuploadMDItems.Select(b => b.ModName).Contains(a.Name));
+		installedWorkshopModsNotFoundOnWorkshop = installedWorkshopModsNotFoundOnWorkshop.Where(a => !reuploadMDItems.Select(b => b.ModName).Contains(a.Name));
 
 		resolveAbnormalDownloads = async () => {
 			// Group 1: If the mod is Reuploaded, delete the old and sub to the new.
@@ -238,16 +238,16 @@ internal static class ModOrganizer
 			}
 
 			// Group 2: Delete mods that originated from workshop but workshop doesn't have a replacement
-			foreach (var mod in abnormalWorkshopDownloads)
+			foreach (var mod in installedWorkshopModsNotFoundOnWorkshop)
 				DeleteMod(mod);
 		};
 
 		// Messages for Users
 		var messages = new StringBuilder();
 
-		if (abnormalWorkshopDownloads.Any()) {
+		if (installedWorkshopModsNotFoundOnWorkshop.Any()) {
 			messages.AppendLine(Language.GetTextValue("tModLoader.RemovedWorkshopMods"));
-			foreach (var mod in abnormalWorkshopDownloads) {
+			foreach (var mod in installedWorkshopModsNotFoundOnWorkshop) {
 				messages.AppendLine($"  {mod.DisplayNameClean}");
 			}
 		}

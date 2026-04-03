@@ -66,6 +66,9 @@ public interface SocialBrowserModule
 		var listIds = new List<ModPubId_t>();
 		var modSlugs = new List<string>();
 
+		// We provide both the Mod Internal Name (Slug) and Publish ID
+		// This allows us to find a local mod on workshop that is no longer available under the original Publish ID (Author transfer / DMCA reupload)
+		// This recovery method works because Steam does not delete files from users during the 30 days of DMCA claim processing or when items are 'hidden' via incompatible flag
 		foreach (var mod in mods) {
 			if (GetModIdFromLocalFiles(mod.modFile, out var id)) {
 				listIds.Add(id);
