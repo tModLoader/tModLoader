@@ -67,6 +67,8 @@ public sealed class BackgroundTextureLoader : Loader
 		Array.Resize(ref TextureAssets.Background, TotalCount);
 		Array.Resize(ref Main.backgroundHeight, TotalCount);
 		Array.Resize(ref Main.backgroundWidth, TotalCount);
+		Array.Resize(ref SurfaceBackgroundID.Sets.IsForest, TotalCount);
+		Array.Resize(ref SurfaceBackgroundID.Sets.IsDesertVariant, TotalCount);
 
 		foreach (string texture in backgrounds.Keys) {
 			int slot = backgrounds[texture];

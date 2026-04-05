@@ -5,6 +5,54 @@
  using Microsoft.Xna.Framework;
  using Microsoft.Xna.Framework.Graphics;
  using ReLogic.Content;
+@@ -102,22 +_,22 @@
+ 	{
+ 		CheckCachedParameters();
+ 		Vector2 vector = new Vector2(Main.offScreenRange, Main.offScreenRange);
+-		uColor.SetValue(_uColor);
++		uColor?.SetValue(_uColor);
+-		uOpacity.SetValue(CombinedOpacity);
++		uOpacity?.SetValue(CombinedOpacity);
+-		uSecondaryColor.SetValue(_uSecondaryColor);
++		uSecondaryColor?.SetValue(_uSecondaryColor);
+-		uTime.SetValue(Main.GlobalTimeWrappedHourly);
++		uTime?.SetValue(Main.GlobalTimeWrappedHourly);
+-		uScreenResolution.SetValue(UnscaledScreenSize);
++		uScreenResolution?.SetValue(UnscaledScreenSize);
+-		uScreenPosition.SetValue(UnscaledScreenPosition - vector);
++		uScreenPosition?.SetValue(UnscaledScreenPosition - vector);
+-		uTargetPosition.SetValue(_uTargetPosition - vector);
++		uTargetPosition?.SetValue(_uTargetPosition - vector);
+-		uImageOffset.SetValue(_uImageOffset);
++		uImageOffset?.SetValue(_uImageOffset);
+-		uSceneSize.SetValue(_uSceneSize);
++		uSceneSize?.SetValue(_uSceneSize);
+-		uSceneOffset.SetValue(_uSceneOffset);
++		uSceneOffset?.SetValue(_uSceneOffset);
+-		uIntensity.SetValue(_uIntensity);
++		uIntensity?.SetValue(_uIntensity);
+-		uProgress.SetValue(_uProgress);
++		uProgress?.SetValue(_uProgress);
+-		uDirection.SetValue(_uDirection);
++		uDirection?.SetValue(_uDirection);
+-		uZoom.SetValue(Main.GameViewMatrix.RenderZoom);
++		uZoom?.SetValue(Main.GameViewMatrix.RenderZoom);
+-		uMultiChunkScene.SetValue(MultiChunkCapture);
++		uMultiChunkScene?.SetValue(MultiChunkCapture);
+-		uImageSize[0].SetValue(_uImageSize0);
++		uImageSize[0]?.SetValue(_uImageSize0);
+ 		for (int i = 0; i < _uAssetImages.Length; i++) {
+ 			Texture2D texture2D = _uCustomImages[i];
+ 			if (_uAssetImages[i] != null && _uAssetImages[i].IsLoaded)
+@@ -134,7 +_,7 @@
+ 				else
+ 					Main.graphics.GraphicsDevice.SamplerStates[i + 1] = SamplerState.AnisotropicClamp;
+ 
+-				uImageSize[i + 1].SetValue(new Vector2(width, height) * _imageScales[i]);
++				uImageSize[i + 1]?.SetValue(new Vector2(width, height) * _imageScales[i]);
+ 			}
+ 		}
+ 
 @@ -158,6 +_,14 @@
  	public ScreenShaderData UseProgress(float progress)
  	{
