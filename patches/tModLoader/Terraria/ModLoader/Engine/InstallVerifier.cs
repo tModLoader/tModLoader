@@ -109,16 +109,25 @@ internal static class InstallVerifier
 		DistributionPlatform = DetectPlatform(out string detectionDetails);
 		Logging.tML.Info($"Distribution Platform: {DistributionPlatform}. Detection method: {detectionDetails}");
 
+		//Logging.tML.Info("Oh it's for Windows ARM64 platform, sorry no Steam support for you :).");
+
 		if (DistributionPlatform == DistributionPlatform.GoG) {
 			CheckGoG();
 		}
 		else {
-			CheckSteam();
+			//CheckSteam();
+			Logging.tML.Fatal("Oh it's for Windows ARM64 platform, sorry no Steam support for you :)\nPlease install GoG Terraria and try again.");
+			ErrorReporting.FatalExit("Oh it's for Windows ARM64 platform, sorry no Steam support for you :)\nPlease install GoG Terraria and try again.");
 		}
 	}
 
 	private static DistributionPlatform DetectPlatform(out string detectionDetails)
 	{
+		if (ObtainVanillaExePath(out var vanillaSteamAPIDir, out vanillaExePath)) {
+			detectionDetails = $"{Path.GetFileName(vanillaExePath)} found, no steam files or directories nearby.";
+			return DistributionPlatform.GoG;
+		}
+
 		if (Program.LaunchParameters.ContainsKey("-steam")) {
 			detectionDetails = "-steam launch parameter";
 			return DistributionPlatform.Steam;
@@ -130,10 +139,10 @@ internal static class InstallVerifier
 		}
 
 		// If can't find a GoG folder, than assume it must be a Steam launch
-		if (!ObtainVanillaExePath(out var vanillaSteamAPIDir, out vanillaExePath)) {
+		/*if (!ObtainVanillaExePath(out var vanillaSteamAPIDir, out vanillaExePath)) {
 			detectionDetails = $"{VanillaExe} or {CheckExe} not found nearby";
 			return DistributionPlatform.Steam;
-		}
+		}*/
 
 		// Handle uniqueness of OSX installs. We want Terraria.app/Contents/MacOS/osx as the directory for steam_api file
 		if (Platform.IsOSX)
@@ -145,6 +154,7 @@ internal static class InstallVerifier
 			return DistributionPlatform.Steam;
 		}
 
+		// idk
 		detectionDetails = $"{Path.GetFileName(vanillaExePath)} found, no steam files or directories nearby.";
 		return DistributionPlatform.GoG;
 	}
@@ -214,6 +224,7 @@ internal static class InstallVerifier
 		return false;
 	}
 
+	// Not used
 	private static void CheckSteam()
 	{
 		if (IsSteamUnsupported)
@@ -253,15 +264,16 @@ internal static class InstallVerifier
 				break;
 			default:
 				throw new Exception("Unsupported result type: " + result);
+				break;
 		}
 	}
 
 	// Check if GOG install is correct
 	private static void CheckGoG()
 	{
-		if (!HashMatchesFile(vanillaExePath, gogHash) && !HashMatchesFile(vanillaExePath, steamHash)) {
+		/*if (!HashMatchesFile(vanillaExePath, gogHash) && !HashMatchesFile(vanillaExePath, steamHash)) {
 			ErrorReporting.FatalExit(Language.GetTextValue("tModLoader.GOGHashMismatch", vanillaExePath, TerrariaVersion, CheckExe));
-		}
+		}*/
 
 		if (Path.GetFileName(vanillaExePath) != CheckExe) {
 			string pathToCheckExe = Path.Combine(Path.GetDirectoryName(vanillaExePath), CheckExe);
