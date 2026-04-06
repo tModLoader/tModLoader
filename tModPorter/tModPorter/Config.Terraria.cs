@@ -4,6 +4,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using tModPorter.Rewriters;
 using static tModPorter.Rewriters.AddComment;
+using static tModPorter.Rewriters.MemberTypeRewriter;
 using static tModPorter.Rewriters.InvokeRewriter;
 using static tModPorter.Rewriters.MemberUseRewriter;
 using static tModPorter.Rewriters.RenameRewriter;
@@ -343,6 +344,9 @@ public static partial class Config
 		RefactorInstanceMethodCall("Terraria.Tile", "anyWire", GetterToProperty("HasWire"));
 		RefactorInstanceMethodCall("Terraria.NPC", "ShouldBestiaryGirlBeLycantrope", ToStaticMethodCall("Terraria.NPC", "ShouldBestiaryGirlBeLycantrope"));
 		RefactorInstanceMethodCall("Terraria.NPC", "SpawnWithHigherTime", Removed("No longer used."));
+
+		ChangeStaticFieldType("Terraria.Main", "item",        from: "Terraria.Item", to: "Terraria.WorldItem");
+		ChangeStaticFieldType("Terraria.Main", "ActiveItems", from: "Terraria.Item", to: "Terraria.WorldItem");
 	}
 
 	private static void AddTextureRenames() {
