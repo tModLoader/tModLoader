@@ -90,6 +90,9 @@ namespace Terraria.ModLoader.Setup.Core.Utilities
 				path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".local/share/Steam");
 				if (!Directory.Exists(path))
 					path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".steam/steam");
+
+                if (!Directory.Exists(path))
+					path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".steam/debian-installation");
 			}
 
 			return path != null && Directory.Exists(path);
