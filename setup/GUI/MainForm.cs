@@ -58,16 +58,15 @@ namespace Terraria.ModLoader.Setup.GUI
 
 			SetPatchMode(this.programSettings.PatchMode);
 			formatDecompiledOutputToolStripMenuItem.Checked = programSettings.FormatAfterDecompiling;
+		}
 
-			Closing += (sender, args) =>
-			{
-				if (buttonCancel.Enabled)
-				{
-					cancelSource.Cancel();
-					args.Cancel = true;
-					closeOnCancel = true;
-				}
-			};
+		protected override void OnFormClosing(FormClosingEventArgs e)
+		{
+			if (buttonCancel.Enabled) {
+				cancelSource.Cancel();
+				e.Cancel = true;
+				closeOnCancel = true;
+			}
 		}
 
 		private void buttonCancel_Click(object sender, EventArgs e)

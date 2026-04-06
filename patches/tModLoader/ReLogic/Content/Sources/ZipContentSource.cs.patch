@@ -1,6 +1,13 @@
 --- src/TerrariaNetCore/ReLogic/Content/Sources/ZipContentSource.cs
 +++ src/tModLoader/ReLogic/Content/Sources/ZipContentSource.cs
-@@ -7,19 +_,17 @@
+@@ -1,25 +_,27 @@
+ using System;
+ using System.Collections.Generic;
+ using System.IO;
++using System.IO.Compression;
+ using System.Linq;
+ using System.Text.RegularExpressions;
+-using Ionic.Zip;
  
  namespace ReLogic.Content.Sources;
  
@@ -8,8 +15,12 @@
 -public class ZipContentSource : IContentSource, IDisposable
 +public class ZipContentSource : ContentSource, IDisposable
  {
++	/*
  	private readonly ZipFile _zipFile;
  	private readonly Dictionary<string, ZipEntry> _entries = new Dictionary<string, ZipEntry>();
++	*/
++	private readonly ZipArchive _zipFile;
++	private readonly Dictionary<string, ZipArchiveEntry> _entries = new Dictionary<string, ZipArchiveEntry>();
  	private readonly string _basePath;
  	private bool _isDisposed;
 -	private readonly RejectedAssetCollection _rejections = new RejectedAssetCollection();
@@ -23,11 +34,21 @@
  
  	public ZipContentSource(string path)
  		: this(path, "")
-@@ -38,9 +_,11 @@
- 			throw new ArgumentException("Content directory cannot contain \"..\"", "contentDir");
+@@ -27,11 +_,11 @@
+ 	}
  
- 		_basePath = CleanZipPath(contentDir);
-+
+ 	public ZipContentSource(string path, string contentDir)
+-		: this(ZipFile.Read(path), contentDir)
++		: this(new ZipArchive(File.OpenRead(path), ZipArchiveMode.Read), contentDir)
+ 	{
+ 	}
+ 
+-	public ZipContentSource(ZipFile zip, string contentDir)
++	public ZipContentSource(ZipArchive zip, string contentDir)
+ 	{
+ 		_zipFile = zip;
+ 		if (ZipPathContainsInvalidCharacters(contentDir))
+@@ -41,6 +_,7 @@
  		Refresh();
  	}
  
@@ -47,11 +68,12 @@
  		if (!_entries.TryGetValue(assetName, out var value))
  			throw AssetLoadException.FromMissingAsset(assetName);
  
- 		MemoryStream memoryStream = new MemoryStream((int)value.UncompressedSize);
+-		MemoryStream memoryStream = new MemoryStream((int)value.UncompressedSize);
+-		value.Extract(memoryStream);
++		MemoryStream memoryStream = new MemoryStream((int)value.Length);
 +
 +		//TML: Wrapped call in this lock.
 +		lock (_zipFile) {
--		value.Extract(memoryStream);
 +			value.Extract(memoryStream);
 +		}
 +
@@ -63,8 +85,10 @@
 +	public override void Refresh()
  	{
  		_entries.Clear();
- 		foreach (ZipEntry item in _zipFile.Entries.Where((ZipEntry entry) => !entry.IsDirectory && entry.FileName.StartsWith(_basePath))) {
- 			string fileName = item.FileName;
+-		foreach (ZipEntry item in _zipFile.Entries.Where((ZipEntry entry) => !entry.IsDirectory && entry.FileName.StartsWith(_basePath))) {
++		foreach (var item in _zipFile.Entries.Where(entry => !entry.IsDirectory() && entry.FullName.StartsWith(_basePath))) {
+-			string fileName = item.FileName;
++			string fileName = item.FullName;
 +
 +			/*
  			string text = Path.GetExtension(fileName) ?? "";

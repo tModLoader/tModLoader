@@ -14,7 +14,6 @@ using Terraria.Localization;
 using Microsoft.Xna.Framework;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using Ionic.Zip;
 using MonoMod.RuntimeDetour;
 
 namespace Terraria.ModLoader.Core;
@@ -153,7 +152,6 @@ public static class AssemblyManager
 		private static Dictionary<string, Assembly> _redirects = new() {
 			["tModLoader"] = Assembly.GetExecutingAssembly(), // Unsure if still needed, but lets us ignore versioning when mods resolve
 			["FNA"] = typeof(Vector2).Assembly, // Unsure if still needed, but lets us ignore versioning when mods resolve
-			["Ionic.Zip.Reduced"] = typeof(ZipFile).Assembly, // Assembly name changed to DotNetZip
 			["Steamworks.NET"] = typeof(Steamworks.SteamApps).Assembly, // Version can change
 		};
 
