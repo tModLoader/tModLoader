@@ -189,7 +189,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 			if (Main.netMode == NetmodeID.MultiplayerClient && !isLocked) {
 				if (left == player.chestX && top == player.chestY && player.chest != -1) {
 					player.chest = -1;
-					Recipe.FindRecipes();
+					Recipe.FindRecipes()/* tModPorter Note: Removed. No longer used. */;
 					SoundEngine.PlaySound(SoundID.MenuClose);
 				}
 				else {
@@ -221,7 +221,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 							player.OpenChest(left, top, chest);
 						}
 
-						Recipe.FindRecipes();
+						Recipe.FindRecipes()/* tModPorter Note: Removed. No longer used. */;
 					}
 				}
 			}

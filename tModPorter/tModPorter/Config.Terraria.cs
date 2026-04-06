@@ -309,6 +309,8 @@ public static partial class Config
 
 		RenameInstanceField("Terraria.Dust", from: "noLightEmittence", to: "noLightEmittance");
 		RenameInstanceField("Terraria.Item", from: "netID", to: "type");
+		RenameInstanceField("Terraria.Main", from: "HasInteractibleObjectThatIsNotATile", to: "HasInteractableObjectThatIsNotATile");
+		RenameInstanceField("Terraria.Main.CurrentFrameFlags", from: "HadAnActiveInteractibleProjectile", to: "HadAnActiveInteractableProjectile");
 		RenameInstanceField("Terraria.Player", from: "adjWater", to: "adjWaterSource");
 		RenameInstanceField("Terraria.Player", from: "oldAdjWater", to: "oldAdjWaterSource");
 		RenameInstanceField("Terraria.Player", from: "isPettingAnimal", to: "petting.isPetting");
@@ -327,6 +329,7 @@ public static partial class Config
 		RenameMethod("Terraria.Item", "BannerToNPC", "BannerToNPC", "Terraria.GameContent.BannerSystem");
 		RenameMethod("Terraria.Item", "NPCtoBanner", "NPCtoBanner", "Terraria.GameContent.BannerSystem");
 		RenameMethod("Terraria.Main", "ShouldShowInvisibleWalls", "ShouldShowInvisibleBlocksAndWalls");
+		RenameMethod("Terraria.Player", "IsProjectileInteractibleAndInInteractionRange", "IsProjectileInteractableAndInInteractionRange");
 		RenameMethod("Terraria.Localization.LocalizedText", from: "CanFormatWith", to: "ConditionsMetWith");
 
 		RefactorStaticMember("Terraria.ID.BuffID.Sets", "BasicMountData", Removed("Replace with BuffID.Sets.MountType[Type] = ModContent.MountType<MyMount>();"));
@@ -344,6 +347,7 @@ public static partial class Config
 		RefactorInstanceMethodCall("Terraria.Tile", "anyWire", GetterToProperty("HasWire"));
 		RefactorInstanceMethodCall("Terraria.NPC", "ShouldBestiaryGirlBeLycantrope", ToStaticMethodCall("Terraria.NPC", "ShouldBestiaryGirlBeLycantrope"));
 		RefactorInstanceMethodCall("Terraria.NPC", "SpawnWithHigherTime", Removed("No longer used."));
+		RefactorInstanceMethodCall("Terraria.Recipe", "FindRecipes", Removed("No longer used."));
 
 		ChangeStaticFieldType("Terraria.Main", "item",        from: "Terraria.Item", to: "Terraria.WorldItem");
 		ChangeStaticFieldType("Terraria.Main", "ActiveItems", from: "Terraria.Item", to: "Terraria.WorldItem");
