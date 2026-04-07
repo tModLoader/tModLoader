@@ -99,7 +99,7 @@ namespace ExampleMod.Content.Projectiles
 		// Some advanced drawing because the texture image isn't centered or symmetrical
 		// If you don't want to manually draw you can use vanilla projectile rendering offsets
 		// Here you can check it https://github.com/tModLoader/tModLoader/wiki/Basic-Projectile#horizontal-sprite-example
-		public override bool PreDraw(ref Color lightColor) {
+		public override bool PreDraw(Player player, ref Color lightColor) {
 			// SpriteEffects helps to flip texture horizontally and vertically
 			SpriteEffects spriteEffects = SpriteEffects.None;
 			if (Projectile.spriteDirection == -1)

@@ -326,7 +326,8 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 	/// <para/> Called on local and remote clients.
 	/// </summary>
 	/// <param name="projectile"> The projectile. </param>
-	public virtual bool PreDrawExtras(Projectile projectile)
+	/// <param name="player"> The player associated with drawing this projectile. Not necessarily the same as player.owner for things like Mannequins. </param>
+	public virtual bool PreDrawExtras(Projectile projectile, Player player)
 	{
 		return true;
 	}
@@ -336,8 +337,9 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 	/// <para/> Called on local and remote clients.
 	/// </summary>
 	/// <param name="projectile"> The projectile. </param>
+	/// <param name="player"> The player associated with drawing this projectile. Not necessarily the same as player.owner for things like Mannequins. </param>
 	/// <param name="lightColor"> The color of the light at the projectile's center. </param>
-	public virtual bool PreDraw(Projectile projectile, ref Color lightColor)
+	public virtual bool PreDraw(Projectile projectile, Player player, ref Color lightColor)
 	{
 		return true;
 	}
@@ -347,8 +349,9 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 	/// <para/> Called on local and remote clients.
 	/// </summary>
 	/// <param name="projectile"> The projectile. </param>
+	/// <param name="player"> The player associated with drawing this projectile. Not necessarily the same as player.owner for things like Mannequins. </param>
 	/// <param name="lightColor"> The color of the light at the projectile's center, after being modified by vanilla and other mods. </param>
-	public virtual void PostDraw(Projectile projectile, Color lightColor)
+	public virtual void PostDraw(Projectile projectile, Player player, Color lightColor)
 	{
 	}
 

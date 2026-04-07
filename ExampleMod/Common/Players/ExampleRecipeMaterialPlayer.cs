@@ -65,7 +65,7 @@ namespace ExampleMod.Common.Players
 			// If the nearby chest changed, call FindRecipes to refresh available recipes
 			// Since FindRecipes takes a long time to run, we should try to avoid calling it frequently
 			if (oldChestIndex != _chestIndexNearby) {
-				Recipe.FindRecipes();
+				Recipe.FindRecipes()/* tModPorter Note: Removed. No longer used. */;
 			}
 		}
 

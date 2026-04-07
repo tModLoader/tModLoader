@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<TargetFramework>net8.0</TargetFramework>
+		<TargetFramework>net10.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<RootNamespace>Terraria.ModLoader.Setup.Core</RootNamespace>
@@ -20,13 +20,13 @@
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
 		<PackageReference Include="Microsoft.Build.Locator" Version="1.5.5" />
-		<PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="8.0.2" />
-		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
-		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.0" />
-		<PackageReference Include="MonoMod.Patcher" Version="25.0.0-prerelease.2" />
-		<PackageReference Include="MonoMod.RuntimeDetour" Version="25.1.2" />
-		<PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.3.1" />
-		<PackageReference Include="Microsoft.CodeAnalysis.Workspaces.MSBuild" Version="4.3.1" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="9.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.0" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.0" />
+		<PackageReference Include="MonoMod.Patcher" Version="25.0.1" />
+		<PackageReference Include="MonoMod.RuntimeDetour" Version="25.3.4" />
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="5.3.0" />
+		<PackageReference Include="Microsoft.CodeAnalysis.Workspaces.MSBuild" Version="5.3.0" />
 		<!-- Preview is needed for https://github.com/icsharpcode/ILSpy/commit/8dd721a -->
 		<!-- When updating, please remove the TODO patch from patches/Terraria/Terraria/Graphics/TileBatch.cs.patch, and this line. -->
 		<PackageReference Include="ICSharpCode.Decompiler" Version="8.0.0.7106-preview2" />

@@ -46,7 +46,7 @@ namespace ExampleMod.Content.Projectiles
 			behindProjectiles.Add(index); // This projectile draws behind other projectiles to not be in the way.
 		}
 
-		public override void PostDraw(Color lightColor) {
+		public override void PostDraw(Player player, Color lightColor) {
 			// We use PostDraw to draw the highlight texture over the normal texture.
 
 			// This logic replicates the vanilla projectile drawing logic:
@@ -93,7 +93,7 @@ namespace ExampleMod.Content.Projectiles
 			bool cursorHighlights = Main.SmartCursorIsUsed || PlayerInput.UsingGamepad;
 			Player localPlayer = Main.LocalPlayer;
 			Vector2 compareSpot = localPlayer.Center;
-			if (!localPlayer.IsProjectileInteractibleAndInInteractionRange(Projectile, ref compareSpot)) {
+			if (!localPlayer.IsProjectileInteractableAndInInteractionRange(Projectile, ref compareSpot)) {
 				return 0;
 			}
 
@@ -114,7 +114,7 @@ namespace ExampleMod.Content.Projectiles
 				}
 			}
 
-			Main.HasInteractibleObjectThatIsNotATile = true;
+			Main.HasInteractableObjectThatIsNotATile = true;
 			if (mouseDirectlyOver) {
 				localPlayer.noThrow = 2;
 				// Show the corresponding item icon on the cursor when directly over the interactable projectile.
@@ -155,7 +155,7 @@ namespace ExampleMod.Content.Projectiles
 			}
 
 			// Let the game know to check for interactable projectiles
-			Main.CurrentFrameFlags.HadAnActiveInteractibleProjectile = true;
+			Main.CurrentFrameFlags.HadAnActiveInteractableProjectile = true;
 
 			// Replace older projectiles when a new one is spawned.
 			if (Projectile.owner == Main.myPlayer) {

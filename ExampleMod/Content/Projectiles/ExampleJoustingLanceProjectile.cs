@@ -173,7 +173,7 @@ namespace ExampleMod.Content.Projectiles
 		}
 
 		// We need to draw the projectile manually. If you don't include this, the Jousting Lance will not be aligned with the player.
-		public override bool PreDraw(ref Color lightColor) {
+		public override bool PreDraw(Player player, ref Color lightColor) {
 
 			// SpriteEffects change which direction the sprite is drawn.
 			SpriteEffects spriteEffects = SpriteEffects.None;
@@ -198,8 +198,8 @@ namespace ExampleMod.Content.Projectiles
 				spriteEffects = SpriteEffects.FlipHorizontally;
 			}
 
-			// The position of the sprite. Not subtracting Main.player[Projectile.owner].gfxOffY will cause the sprite to bounce when walking up blocks.
-			Vector2 position = new(Projectile.Center.X, Projectile.Center.Y - Main.player[Projectile.owner].gfxOffY);
+			// The position of the sprite. Not subtracting player.gfxOffY will cause the sprite to bounce when walking up blocks.
+			Vector2 position = new(Projectile.Center.X, Projectile.Center.Y - player.gfxOffY);
 
 			// Apply lighting and draw our projectile
 			Color drawColor = Projectile.GetAlpha(lightColor);

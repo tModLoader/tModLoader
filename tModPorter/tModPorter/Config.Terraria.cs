@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Diagnostics.Metrics;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using tModPorter.Rewriters;
 using static tModPorter.Rewriters.AddComment;
+using static tModPorter.Rewriters.MemberTypeRewriter;
 using static tModPorter.Rewriters.InvokeRewriter;
 using static tModPorter.Rewriters.MemberUseRewriter;
 using static tModPorter.Rewriters.RenameRewriter;
@@ -282,6 +284,7 @@ public static partial class Config
 		RenameStaticField("Terraria.ID.MessageID", from: "PaintWall", to: "SyncWallPaintOrCoating");
 		RenameStaticField("Terraria.ID.MessageID", from: "NPCKillCountDeathTally", to: "Unused83");
 		RenameStaticField("Terraria.ID.MessageID", from: "TEDisplayDollItemSync", to: "TEDisplayDollDataSync");
+		RenameStaticFields("Terraria.ID.MusicID", "Night", "OverworldNight", "Title", "TitleClassic", "Jungle", "JungleDay", "TheHallow", "Hallow", "Space", "SpaceNight", "Boss4", "Golem", "AltOverworldDay", "OverworldDayAlt", "Ocean", "OceanDay", "RainSoundEffect", "RainAmbience", "Mushrooms", "Mushroom", "AltUnderground", "UndergroundAlt", "TheTowers", "LunarPillars", "Hell", "Underworld", "LunarBoss", "MoonLord", "GoblinInvasion", "GoblinArmy", "DayRemix", "OverworldDayRemix", "MenuMusic", "TitleJourneysBeginningWithIntro", "Monsoon", "Storm", "JungleUnderground", "UndergroundJungle", "ConsoleMenu", "TitleAlt", "OtherworldlyRain", "OtherworldRain", "OtherworldlyDay", "OtherworlddDay", "OtherworldlyNight", "OtherworldNight", "OtherworldlyUnderground", "OtherworldUnderground", "OtherworldlyDesert", "OtherworldDesert", "OtherworldlyOcean", "OtherworldOcean", "OtherworldlyMushrooms", "OtherworldMushroom", "OtherworldlyDungeon", "OtherworldDungeon", "OtherworldlySpace", "OtherworldSpace", "OtherworldlyUnderworld", "OtherworldUnderworld", "OtherworldlySnow", "OtherworldSnow", "OtherworldlyCorruption", "OtherworldCorruption", "OtherworldlyUGCorrption", "OtherworldUndergroundCorruption", "OtherworldlyCrimson", "OtherworldCrimson", "OtherworldlyUGCrimson", "OtherworldUndergroundCrimson", "OtherworldlyIce", "OtherworldIce", "OtherworldlyUGHallow", "OtherworldUndergroundHallow", "OtherworldlyEerie", "OtherworldEerie", "OtherworldlyBoss2", "OtherworldBoss2", "OtherworldlyBoss1", "OtherworldBoss1", "OtherworldlyInvasion", "OtherworldInvasion", "OtherworldlyTowers", "OtherworldLunarPillars", "OtherworldlyLunarBoss", "OtherworldMoonLord", "OtherworldlyPlantera", "OtherworldPlantera", "OtherworldlyJungle", "OtherworldJungle", "OtherworldlyWoF", "OtherworldWallOfFlesh", "OtherworldlyHallow", "OtherworldHallow", "Credits", "JourneysEnd", "Shimmer", "Aether");
 		RenameStaticField("Terraria.ID.NPCID.Sets", from: "UsesNewTargetting", to: "UsesNewTargeting");
 		RenameStaticField("Terraria.ID.NPCID.Sets", from: "GoldCrittersCollection", to: "IsGoldCritter").FollowBy(ConvertCollectionAddToSetTrue);
 		RenameStaticField("Terraria.ID.NPCID.Sets", from: "ShouldBeCountedAsBossForBestiary", to: "ShouldBeCountedAsBoss");
@@ -306,6 +309,8 @@ public static partial class Config
 
 		RenameInstanceField("Terraria.Dust", from: "noLightEmittence", to: "noLightEmittance");
 		RenameInstanceField("Terraria.Item", from: "netID", to: "type");
+		RenameInstanceField("Terraria.Main", from: "HasInteractibleObjectThatIsNotATile", to: "HasInteractableObjectThatIsNotATile");
+		RenameInstanceField("Terraria.Main.CurrentFrameFlags", from: "HadAnActiveInteractibleProjectile", to: "HadAnActiveInteractableProjectile");
 		RenameInstanceField("Terraria.Player", from: "adjWater", to: "adjWaterSource");
 		RenameInstanceField("Terraria.Player", from: "oldAdjWater", to: "oldAdjWaterSource");
 		RenameInstanceField("Terraria.Player", from: "isPettingAnimal", to: "petting.isPetting");
@@ -324,6 +329,7 @@ public static partial class Config
 		RenameMethod("Terraria.Item", "BannerToNPC", "BannerToNPC", "Terraria.GameContent.BannerSystem");
 		RenameMethod("Terraria.Item", "NPCtoBanner", "NPCtoBanner", "Terraria.GameContent.BannerSystem");
 		RenameMethod("Terraria.Main", "ShouldShowInvisibleWalls", "ShouldShowInvisibleBlocksAndWalls");
+		RenameMethod("Terraria.Player", "IsProjectileInteractibleAndInInteractionRange", "IsProjectileInteractableAndInInteractionRange");
 		RenameMethod("Terraria.Localization.LocalizedText", from: "CanFormatWith", to: "ConditionsMetWith");
 
 		RefactorStaticMember("Terraria.ID.BuffID.Sets", "BasicMountData", Removed("Replace with BuffID.Sets.MountType[Type] = ModContent.MountType<MyMount>();"));
@@ -341,6 +347,10 @@ public static partial class Config
 		RefactorInstanceMethodCall("Terraria.Tile", "anyWire", GetterToProperty("HasWire"));
 		RefactorInstanceMethodCall("Terraria.NPC", "ShouldBestiaryGirlBeLycantrope", ToStaticMethodCall("Terraria.NPC", "ShouldBestiaryGirlBeLycantrope"));
 		RefactorInstanceMethodCall("Terraria.NPC", "SpawnWithHigherTime", Removed("No longer used."));
+		RefactorInstanceMethodCall("Terraria.Recipe", "FindRecipes", Removed("No longer used."));
+
+		ChangeStaticFieldType("Terraria.Main", "item",        from: "Terraria.Item", to: "Terraria.WorldItem");
+		ChangeStaticFieldType("Terraria.Main", "ActiveItems", from: "Terraria.Item", to: "Terraria.WorldItem");
 	}
 
 	private static void AddTextureRenames() {

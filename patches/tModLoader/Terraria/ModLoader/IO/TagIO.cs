@@ -1,4 +1,4 @@
-using Ionic.Zlib;
+using System.IO.Compression;
 using System;
 using System.Collections;
 using System.Collections.Generic;

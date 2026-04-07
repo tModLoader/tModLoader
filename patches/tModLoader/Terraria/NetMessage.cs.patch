@@ -1,12 +1,14 @@
 --- src/TerrariaNetCore/Terraria/NetMessage.cs
 +++ src/tModLoader/Terraria/NetMessage.cs
-@@ -1,5 +_,6 @@
+@@ -1,6 +_,7 @@
  using System;
  using System.IO;
+-using Ionic.Zlib;
 +using System.Threading;
- using Ionic.Zlib;
++using System.IO.Compression;
  using Microsoft.Xna.Framework;
  using Microsoft.Xna.Framework.Graphics.PackedVector;
+ using Terraria.Chat;
 @@ -12,6 +_,8 @@
  using Terraria.ID;
  using Terraria.Localization;

@@ -163,7 +163,7 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 
 				// If you would like to play alternate music when the otherworld soundtrack enabled, use this logic.
 				if (!Main.swapMusic == Main.drunkWorld && !Main.remixWorld) {
-					Music = MusicID.OtherworldlyBoss1;
+					Music = MusicID.OtherworldBoss1;
 				}
 			}
 		}

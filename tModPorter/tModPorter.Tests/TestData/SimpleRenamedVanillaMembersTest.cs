@@ -67,6 +67,7 @@ public class SimpleRenamedVanillaMembersTest
 		int dustFire = DustID.Fire;
 		int readSign = MessageID.ReadSign;
 		int killCount = MessageID.NPCKillCountDeathTally;
+		_ = MusicID.TheTowers;
 
 		int water = Tile.Liquid_Water;
 		int honey = Tile.Liquid_Honey;

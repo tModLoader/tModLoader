@@ -228,7 +228,7 @@ namespace ExampleMod.Content.Projectiles
 		}
 
 		// Because the Prism is a holdout Projectile and stays glued to its user, it needs custom drawcode.
-		public override bool PreDraw(ref Color lightColor) {
+		public override bool PreDraw(Player player, ref Color lightColor) {
 			SpriteEffects effects = Projectile.spriteDirection == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
 			Texture2D texture = TextureAssets.Projectile[Type].Value;
 			int frameHeight = texture.Height / Main.projFrames[Type];
