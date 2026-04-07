@@ -89,7 +89,7 @@ public class RenameRewriter : BaseRewriter {
 	}
 
 	protected override SyntaxList<UsingDirectiveSyntax> VisitUsingList(SyntaxList<UsingDirectiveSyntax> usings) {
-		var renamed = usings.Where(u => namespaceRenames.ContainsKey(u.Name.ToString())).ToArray();
+		var renamed = usings.Where(u => u.Name != null && namespaceRenames.ContainsKey(u.Name.ToString())).ToArray();
 		if (renamed.Length == 0)
 			return usings;
 
