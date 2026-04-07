@@ -23,23 +23,21 @@ public partial class TEDisplayDoll
 
 	public override void NetSend(BinaryWriter writer)
 	{
-		BitsByte itemsBits = default;
-		BitsByte dyesBits = default;
-		BitsByte extraBits = default;
+		var bitWriter = new BitWriter();
 
-		for (int i = 0; i < 8; i++) {
-			itemsBits[i] = !_equip[i].IsAir;
-			dyesBits[i] = !_dyes[i].IsAir;
+		foreach (var item in _equip) {
+			bitWriter.WriteBit(!item.IsAir);
 		}
 
-		extraBits[0] = !_misc[0].IsAir;
-		extraBits[1] = !_equip[8].IsAir;
-		extraBits[2] = !_dyes[8].IsAir;
+		foreach (var item in _dyes) {
+			bitWriter.WriteBit(!item.IsAir);
+		}
 
-		writer.Write(itemsBits);
-		writer.Write(dyesBits);
-		writer.Write(_pose);
-		writer.Write(extraBits);
+		foreach (var item in _misc) {
+			bitWriter.WriteBit(!item.IsAir);
+		}
+
+		bitWriter.Flush(writer);
 
 		foreach (var item in _equip) {
 			if (!item.IsAir) {
@@ -58,25 +56,26 @@ public partial class TEDisplayDoll
 				ItemIO.Send(item, writer, true);
 			}
 		}
+
+		writer.Write(_pose);
 	}
 
 	public override void NetReceive(BinaryReader reader)
 	{
-		BitsByte presentItems = reader.ReadByte();
-		BitsByte presentDyes = reader.ReadByte();
-		_pose =  reader.ReadByte();
-		BitsByte extraBits = reader.ReadByte();
+		var bitReader = new BitReader(reader);
 
-		for (int i = 0; i < 8; i++) {
-			_equip[i] = presentItems[i] ? ItemIO.Receive(reader, true) : new Item();
+		for (int i = 0; i < _equip.Length; ++i) {
+			_equip[i] = bitReader.ReadBit() ? ItemIO.Receive(reader, true) : new Item();
 		}
-		_equip[8] = extraBits[1] ? ItemIO.Receive(reader, true) : new Item();
 
-		for (int i = 0; i < 8; i++) {
-			_dyes[i] = presentDyes[i] ? ItemIO.Receive(reader, true) : new Item();
+		for (int i = 0; i < _dyes.Length; ++i) {
+			_dyes[i] = bitReader.ReadBit() ? ItemIO.Receive(reader, true) : new Item();
 		}
-		_dyes[8] = extraBits[2] ? ItemIO.Receive(reader, true) : new Item();
 
-		_misc[0] = extraBits[0] ? ItemIO.Receive(reader, true) : new Item();
+		for (int i = 0; i < _misc.Length; ++i) {
+			_misc[i] = bitReader.ReadBit() ? ItemIO.Receive(reader, true) : new Item();
+		}
+
+		_pose = reader.ReadByte();
 	}
 }
