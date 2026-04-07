@@ -349,6 +349,8 @@ public static partial class Config
 		RefactorInstanceMethodCall("Terraria.NPC", "SpawnWithHigherTime", Removed("No longer used."));
 		RefactorInstanceMethodCall("Terraria.Recipe", "FindRecipes", Removed("No longer used."));
 
+		RefactorInstanceMethodCall("Terraria.Main", "GetPlayerArmPosition", AddParameter(1, "Terraria.Player", "Now expects a Player object, try 'player'."));
+
 		ChangeStaticFieldType("Terraria.Main", "item",        from: "Terraria.Item", to: "Terraria.WorldItem");
 		ChangeStaticFieldType("Terraria.Main", "ActiveItems", from: "Terraria.Item", to: "Terraria.WorldItem");
 	}

@@ -306,5 +306,47 @@ public partial class InvokeRewriter : BaseRewriter
 		var assign = AssignmentExpression(elementAccess, LiteralExpression(SyntaxKind.TrueLiteralExpression)).WithTriviaFrom(invoke);
 		return assign;
 	}
+
+	public static RewriteInvoke AddParameter(int parameterIndex, string parameterType, string comment) => (rw, invoke, methodName) => {
+		var argList = invoke.ArgumentList ?? ArgumentList();
+		var args = argList.Arguments;
+		int existingCount = args.Count;
+
+		// short helper to get short name from a fullname (e.g. "Terraria.Player" -> "Player")
+		static string ShortNameLocal(string fullname)
+		{
+			if (string.IsNullOrEmpty(fullname))
+				return fullname;
+			int i = fullname.LastIndexOf('.');
+			return i == -1 ? fullname : fullname[(i + 1)..];
+		}
+
+		// If the invocation already has an argument at parameterIndex with type already matches the requested type, do nothing.
+		if (existingCount > parameterIndex) {
+			var existingArg = args[parameterIndex];
+			var existingType = rw.model.GetTypeInfo(existingArg.Expression).Type;
+			if (existingType != null) {
+				var paramShort = ShortNameLocal(parameterType);
+				if (existingType.ToString() == parameterType || existingType.Name == parameterType || ShortNameLocal(existingType.ToString()) == paramShort)
+					return invoke;
+			}
+			// If it's null, it's likely the result of this code running previously.
+			if (existingType == null)
+				return invoke;
+		}
+
+		// Build new argument: `/* New parameter: ... */ null`
+		var nullExpr = LiteralExpression(SyntaxKind.DefaultLiteralExpression)
+			.WithLeadingTrivia(SyntaxFactory.Whitespace(" "))
+			.WithTrailingTrivia(SyntaxFactory.TriviaList(SyntaxFactory.Whitespace(" "), SyntaxFactory.Comment($"/* tModPorter Note: New parameter: {comment} */")));
+		var newArg = Argument(nullExpr);
+
+		// Insert new argument at requested position (or append if pos > existingCount)
+		int insertIndex = Math.Min(parameterIndex, existingCount);
+		var newArgs = args.Insert(insertIndex, newArg);
+		var newArgList = argList.WithArguments(newArgs).WithTriviaFrom(argList);
+
+		return invoke.WithArgumentList(newArgList);
+	};
 }
 
