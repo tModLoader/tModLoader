@@ -20,6 +20,7 @@ public class ModProjectileTest : ModProjectile
 	public override void SetStaticDefaults()
 	{
 		ProjectileID.Sets.HeldProjDoesNotUsePlayerGfxOffY[Type] = true;
+		ProjectileID.Sets.DontAttachHideToAlpha[Type] = true;
 	}
 
 	public override bool CanDamage() { return false; }

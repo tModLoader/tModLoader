@@ -38,6 +38,26 @@ The `Item` class has had the in-world functionality split into a new `WorldItem`
 
 Hooks that deal with items in the game world will now have a `WorldItem item` parameter as well. This will require modders to switch from `Item` to `item` in various `ModItem` classes if dealing with the fields that are now on `WorldItem`.
 
+### Projectile Draw Changes
+
+There have been several changes to projectile drawing in this update.
+
+To support drawing projectiles on Mannequins and other custom `Player` instances, `(ModProjectile|GlobalProjectile).PreDraw/PreDrawExtras/PostDraw` now has a `Player` parameter. Use this instead of `Main.player[Projectile.owner]` in those methods.
+
+Projectile draw ordering code has also been reworked. Previously, `Projectile.hide` would be used for projectiles that shouldn't be drawn at all, projectiles held by the player, and projectiles drawn with a different draw ordering using `DrawBehind`. Held projectiles and projectiles drawn with a different draw ordering are now handled by `Projectile.drawLayer`, leaving `Projectile.hide` to only indicated if the projectile shouldn't be drawn at all. `(ModProjectile|GlobalProjectile).DrawBehind` has been removed.
+
+Similarly, `Projectile.usesOwnerLight` has been added to indicate if a projectile should draw using lighting values at the player location rather than the projectile location. Previously, `Projectile.hide` being true and `ProjectileID.Sets.DontAttachHideToAlpha` being false would cause the projectile to have this behavior.
+
+Finally, `ProjectileID.Sets.HeldProjDoesNotUsePlayerGfxOffY` has been removed. `AI()` should use `master.RotatedRelativePoint(master.MountedCenter + ...)` to position held projectiles now. (TODO: More information, more samples)
+
+**Sample Migrations:**    
+* Projectile using `ModProjectile.DrawBehind`: Remove `DrawBehind` hook, remove `Projectile.hide = true;`, remove `ProjectileID.Sets.DontAttachHideToAlpha[Type] = true;`. Set `Projectile.drawLayer` in `ModProjectile.SetDefaults` to the `ProjectileDrawLayerID` entry matching the desired draw layer.
+  * If using `ModProjectile.DrawBehind` for a dynamic draw layer, such as "Bone Javelin"-style sticking projectiles, move that logic to `ModProjectile.AI` and use it to set `Projectile.drawLayer`.
+* Held projectile
+  * Held in hand: Remove `Projectile.hide = true;`. Set `Projectile.usesOwnerLight = true;` and `Projectile.drawLayer = ProjectileDrawLayerID.HeldProj;` (or `ProjectileDrawLayerID.HeldProjOverHand` if `ModProjectile.DrawHeldProjInFrontOfHeldItemAndArms` was used before) in `ModProjectile.SetDefaults`.
+  * Not held in hand (flail): Set `Projectile.drawLayer = ProjectileDrawLayerID.HeldProj;`
+* Projectile that shouldn't be drawn at all: No adjustments necessary.
+
 ## New Vanilla Features
 
 The [Terraria 1.4.5 changelog](https://terraria.wiki.gg/wiki/1.4.5.0) lists many vanilla changes made in the 1.4.5 update. A select portion of the changes relevant to modding will be detailed here as well.

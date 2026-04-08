@@ -27,7 +27,6 @@ namespace ExampleMod.Content.Projectiles
 
 		public override void SetStaticDefaults() {
 			ProjectileID.Sets.IsInteractable[Type] = true; // Facilitates smart cursor support
-			ProjectileID.Sets.DontAttachHideToAlpha[Type] = true; // Necessary for non-held projectiles using Projectile.hide
 			Main.projFrames[Type] = 5;
 		}
 
@@ -36,14 +35,10 @@ namespace ExampleMod.Content.Projectiles
 			Projectile.height = 24;
 			Projectile.tileCollide = false;
 			Projectile.timeLeft = 10800; // Stays active for 3 minutes, or 3 * 60 * 60 game updates
-			Projectile.hide = true;
+			Projectile.drawLayer = ProjectileDrawLayerID.BehindProjectiles;
 
 			// Draw the projectile higher to line up the hitbox with the body of the projectile, not the flapping wings.
 			DrawOriginOffsetY = -5;
-		}
-
-		public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)/* tModPorter Note: Removed. Set Projectile.drawLayer instead */{
-			behindProjectiles.Add(index); // This projectile draws behind other projectiles to not be in the way.
 		}
 
 		public override void PostDraw(Player player, Color lightColor) {

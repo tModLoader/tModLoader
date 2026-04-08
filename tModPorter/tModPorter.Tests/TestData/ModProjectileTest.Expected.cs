@@ -21,6 +21,7 @@ public class ModProjectileTest : ModProjectile
 	public override void SetStaticDefaults()
 	{
 		ProjectileID.Sets.HeldProjDoesNotUsePlayerGfxOffY/* tModPorter Note: Removed. AI() should use master.RotatedRelativePoint(master.MountedCenter + ...) to position held projectiles */[Type] = true;
+		ProjectileID.Sets.DontAttachHideToAlpha/* tModPorter Note: Removed. No longer used. */[Type] = true;
 	}
 
 	public override bool? CanDamage()/* tModPorter Suggestion: Return null instead of true */ { return false; }
