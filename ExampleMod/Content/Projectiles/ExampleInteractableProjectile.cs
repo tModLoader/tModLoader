@@ -42,7 +42,7 @@ namespace ExampleMod.Content.Projectiles
 			DrawOriginOffsetY = -5;
 		}
 
-		public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI) {
+		public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)/* tModPorter Note: Removed. Set Projectile.drawLayer instead */{
 			behindProjectiles.Add(index); // This projectile draws behind other projectiles to not be in the way.
 		}
 

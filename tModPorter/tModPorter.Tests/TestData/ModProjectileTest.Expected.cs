@@ -33,14 +33,14 @@ public class ModProjectileTest : ModProjectile
 
 	public override void PostDraw(Player player, Color lightColor)/* tModPorter Replace 'Main.player[Projectile.owner]' with 'player'. */ { /* Empty */ }
 
-	public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI) {
+#if COMPILE_ERROR
+	public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)/* tModPorter Note: Removed. Set Projectile.drawLayer instead */ {
 		// not-yet-implemented
 		behindNPCsAndTiles.Add(index);
 		behindNPCs.Add(index);
 		behindProjectiles.Add(index);
 		overWiresUI.Add(index);
 		// instead-expect
-#if COMPILE_ERROR
 		drawCacheProjsBehindNPCsAndTiles.Add(index);
 		drawCacheProjsBehindNPCs.Add(index);
 		drawCacheProjsBehindProjectiles.Add(index);
