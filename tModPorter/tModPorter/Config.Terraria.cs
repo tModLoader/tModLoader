@@ -294,8 +294,8 @@ public static partial class Config
 		RenameStaticField("Terraria.ID.TileID.Sets", from: "CountsAsHoneySource", to: "CountsAsHoneyForCrafting");
 		RenameStaticField("Terraria.ID.TileID.Sets", from: "CountsAsLavaSource", to: "CountsAsLavaForCrafting");
 		RenameStaticField("Terraria.ID.TileID.Sets", from: "CountsAsShimmerSource", to: "CountsAsShimmerForCrafting");
-		RenameStaticField("Terraria.ID.TileID.Sets", from: "IsATrigger", to: "IsATrigger", "Terraria.ID.TileID.Sets.Wiring");
-		RenameStaticField("Terraria.ID.TileID.Sets", from: "IsAMechanism", to: "IsAMechanism", "Terraria.ID.TileID.Sets.Wiring");
+		RenameStaticField("Terraria.ID.TileID.Sets", from: "IsATrigger", to: "Wiring.IsATrigger");
+		RenameStaticField("Terraria.ID.TileID.Sets", from: "IsAMechanism", to: "Wiring.IsAMechanism");
 		RenameStaticField("Terraria.ID.TileID.Sets", from: "InteractibleByNPCs", to: "InteractableByNPCs");
 		RenameStaticField("Terraria.ID.TileID.Sets", from: "Torch", to: "Torches");
 		RenameStaticField("Terraria.ID.TileID.Sets", from: "Campfire", to: "Campfires");
