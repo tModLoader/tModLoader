@@ -579,13 +579,6 @@ public static class ProjectileLoader
 		return projectile.ModProjectile?.Colliding(projHitbox, targetHitbox);
 	}
 
-	public static void DrawHeldProjInFrontOfHeldItemAndArms(Projectile projectile, ref bool flag)
-	{
-		if (projectile.ModProjectile != null) {
-			flag = projectile.ModProjectile.DrawHeldProjInFrontOfHeldItemAndArms;
-		}
-	}
-
 	[Obsolete($"Moved to ItemLoader. Fishing line position and color are now set by the pole used.")]
 	public static void ModifyFishingLine(Projectile projectile, ref float polePosX, ref float polePosY, ref Color lineColor)
 	{

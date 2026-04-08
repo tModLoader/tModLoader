@@ -15,7 +15,7 @@ public class ModProjectileTest : ModProjectile
 		Console.Write(DrawOffsetX);
 		Console.Write(DrawOriginOffsetY);
 		Console.Write(DrawOriginOffsetX);
-		Console.Write(DrawHeldProjInFrontOfHeldItemAndArms);
+		Console.Write(DrawHeldProjInFrontOfHeldItemAndArms/* tModPorter Note: Removed. Replace with Projectile.drawLayer = ProjectileDrawLayerID.HeldProjOverHand; */);
 	}
 
 	public override void SetStaticDefaults()
