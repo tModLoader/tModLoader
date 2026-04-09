@@ -1,0 +1,23 @@
+--- src/Terraria/Terraria/Properties/launchSettings.json
++++ src/TerrariaNetCore/Terraria/Properties/launchSettings.json
+@@ -10,6 +_,20 @@
+       "executablePath": "dotnet",
+       "commandLineArgs": "$(OutputName).dll -server",
+       "workingDirectory": "$(TerrariaSteamPath)"
++    },
++    "corerun jitlog": {
++      "commandName": "Executable",
++      "executablePath": "C:\\Programming\\dotnet\\artifacts\\bin\\coreclr\\windows.x64.Checked\\corerun.exe",
++      "commandLineArgs": "$(ProjectDir)\\$(OutputPath)\\$(OutputName).dll -server",
++      "workingDirectory": "$(TerrariaSteamPath)",
++      "environmentVariables": {
++        "CORE_LIBRARIES": "C:\\Program Files\\dotnet\\shared\\Microsoft.NETCore.App\\10.0.5",
++        "DOTNET_LogEnable": "1",
++        "DOTNET_LogToFile": "1",
++        "DOTNET_LogFile": "clr.log",
++        "DOTNET_LogFacility": "0x00000008",
++        "DOTNET_LogLevel": "4"
++      }
+     }
+   }
+ }

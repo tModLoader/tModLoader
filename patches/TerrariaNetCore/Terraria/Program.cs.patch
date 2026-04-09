@@ -22,6 +22,14 @@
  		ThreadPool.SetMinThreads(8, 8);
  		InitializeConsoleOutput();
  		SetupLogging();
+@@ -190,6 +_,7 @@
+ 		}
+ 
+ 		using Main main = new Main();
++		ForceLoadThread(null);
+ 		try {
+ 			Lang.InitializeLegacyLocalization();
+ 			SocialAPI.Initialize();
 @@ -197,8 +_,12 @@
  			Main.OnEnginePreload += StartForceLoad;
  			if (Main.dedServ)
