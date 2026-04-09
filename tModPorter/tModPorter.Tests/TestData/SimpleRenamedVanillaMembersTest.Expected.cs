@@ -58,6 +58,8 @@ public class SimpleRenamedVanillaMembersTest
 		var damageMultiplier = Main.GameModeInfo.EnemyDamageMultiplier;
 
 		bool isJourney = Main.IsJourneyMode;
+		_ = Main.PipsUseGrid;
+		_ = Main.PipsFastScroll;
 
 		int copperTierOreInt = WorldGen.SavedOreTiers.Copper;
 #if COMPILE_ERROR // ushort -> int

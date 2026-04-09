@@ -304,6 +304,8 @@ public static partial class Config
 		RenameStaticField("Terraria.ID.WallID.Sets", from: "Hallow", to: "SpreadsHallow");
 		RenameStaticField("Terraria.Main", from: "DisableIntenseVisualEffects", to: "FlashyEffectsWorld").FollowBy(InvertBool);
 		RenameStaticField("Terraria.Main", "gameInactive", "GameplayActive", "Terraria.FocusHelper").FollowBy(InvertBool);
+		RenameStaticField("Terraria.Main", "recBigList", "PipsUseGrid");
+		RenameStaticField("Terraria.Main", "recFastScroll", "PipsFastScroll");
 		RenameStaticField("Terraria.NPC", "killCount", "killCount", "Terraria.GameContent.BannerSystem");
 		RenameStaticField("Terraria.WorldGen", from: "gen", to: "isGeneratingOrLoadingWorld");
 

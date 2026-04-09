@@ -109,3 +109,19 @@ public class ModTileTest : ModTile
 	public override bool Drop(int i, int j)/* tModPorter Note: Removed. Use CanDrop to decide if an item should drop. Use GetItemDrops to decide which item drops. Item drops based on placeStyle are handled automatically now, so this method might be able to be removed altogether. */ { /* Empty */ }
 #endif
 }
+
+public static class TileHelpers
+{
+	static void SetSomeModTileProperties(this ModTile modTile)
+	{
+		modTile.MinPick = 0;
+		modTile.MineResist = 0;
+		modTile.AnimationFrameHeight = 0;
+
+		TileID.Sets.Wiring.IsAMechanism[modTile.Type] = true;
+		TileID.Sets.Wiring.IsATrigger[modTile.Type] = true;
+
+		modTile.AddToArray(ref TileID.Sets.CountsAsPylon); // Shouldn't change
+		TileID.Sets.RoomNeeds.CountsAsTable[modTile.Type] = true;
+	}
+}

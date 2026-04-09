@@ -300,8 +300,18 @@ public partial class InvokeRewriter : BaseRewriter
 		if (!fullMemberName.Contains("TileID.Sets.RoomNeeds") && !arrExpr.ToString().Contains("TileID.Sets.RoomNeeds"))
 			return invoke;
 
-		// Build the element access: <arrayExpr>[Type]
-		var elementAccess = ElementAccessExpression(arrExpr.WithoutTrivia(), IdentifierName("Type"));
+		// Determine index expression from the invocation target, e.g. `modTile.Type`
+		ExpressionSyntax indexExpr = IdentifierName("Type");
+		if (invoke.Expression is MemberAccessExpressionSyntax memberAccess) {
+			// use the expression part of the member access (the object the method is called on)
+			var targetExpr = memberAccess.Expression;
+			if (targetExpr != null) {
+				indexExpr = MemberAccessExpression(targetExpr.WithoutTrivia(), "Type");
+			}
+		}
+
+		// Build the element access: <arrayExpr>[<target>.Type]
+		var elementAccess = ElementAccessExpression(arrExpr.WithoutTrivia(), indexExpr);
 
 		var assign = AssignmentExpression(elementAccess, LiteralExpression(SyntaxKind.TrueLiteralExpression)).WithTriviaFrom(invoke);
 		return assign;
