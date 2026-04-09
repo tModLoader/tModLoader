@@ -53,7 +53,6 @@ namespace ExampleMod.Content.NPCs
 					ChatHelper.BroadcastChatMessage(NetworkText.FromKey("LegacyMisc.35", NPC.GetFullNetName()), new Color(50, 125, 255));
 				}
 				NPC.active = false;
-				NPC.netSkip = -1;
 				NPC.life = 0;
 				return false;
 			}

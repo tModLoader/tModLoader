@@ -49,6 +49,8 @@ public class SimpleRenamedVanillaMembersTest
 		var knockBackMultiplier = Main.knockBackMultiplier;
 		var damageMultiplier = Main.damageMultiplier;
 
+		bool isJourney = Main.GameModeInfo.IsJourneyMode;
+
 		int copperTierOreInt = WorldGen.CopperTierOre;
 		ushort copperTierOre = WorldGen.CopperTierOre;
 		ushort ironTierOre = WorldGen.IronTierOre;
@@ -123,6 +125,7 @@ public class SimpleRenamedVanillaMembersTest
 
 		NPC npc = new NPC();
 		npc.damage = (int)(80f * Main.damageMultiplier); // int cast matches return type
+		npc.netSkip = -1;
 
 		Utils.PerLinePoint cut = DelegateMethods.CutTiles;
 

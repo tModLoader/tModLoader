@@ -57,6 +57,8 @@ public class SimpleRenamedVanillaMembersTest
 		var knockBackMultiplier = Main.GameModeInfo.KnockbackToEnemiesMultiplier;
 		var damageMultiplier = Main.GameModeInfo.EnemyDamageMultiplier;
 
+		bool isJourney = Main.IsJourneyMode;
+
 		int copperTierOreInt = WorldGen.SavedOreTiers.Copper;
 #if COMPILE_ERROR // ushort -> int
 		ushort copperTierOre = WorldGen.SavedOreTiers.Copper;
@@ -164,6 +166,7 @@ public class SimpleRenamedVanillaMembersTest
 		npc.damage = (int)(80f * Main.GameModeInfo.EnemyDamageMultiplier); // int cast matches return type
 #if COMPILE_ERROR
 #endif
+		npc.netSkip/* tModPorter Note: Removed. No longer necessary when setting life <= 0 and was never necessary when setting active = false */ = -1;
 
 		// not-yet-implemented
 		Utils.TileActionAttempt cut = DelegateMethods.CutTiles;
