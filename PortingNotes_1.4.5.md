@@ -227,7 +227,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - MountID.Sets.DoesNotOverrideLegFrames seems like something a lot of modded mounts might want to use. (All other new MountID.Sets sets as well)
 - BuffID.IsAnNPCWhipDebuff, which tModLoader renamed to IsATagBuff, has changed a lot. Need to document the new behavior. Do we want to revert the name change? Also CanBeRemovedByNetMessage docs are now wrong.
 - ProjectileID.Sets.HeldProjDoesNotUsePlayerGfxOffY removed. How has this been fixed? I thought it wouldn't be fixed in vanilla.
-- ProjectileID.Sets.DontAttachHideToAlpha removed. What replaced it? Is it usesOwnerLight? Update Projectile.hide docs as well.
 - Need to determine if hooks need to act on ModItem or WorldItem. For example: `ItemIO.SendModData(item3, writer);`
   - `public EntityGlobalsEnumerator<TGlobal> Enumerate(IEntityWithGlobals<TGlobal> entity) => new(ForType(entity.Type), entity);` doesn't work as-is for hooks that are now WorldItem. I've changed them to `.Enumerate(item.inner)`, but I'm not positive what design we want for these hooks now. (WorldItem points to Item, but Item doesn't point to WorldItem.)
 - The number3 parameter of the SyncEquipment message seems to have changed meaning. Docs needed.
