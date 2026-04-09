@@ -316,5 +316,41 @@ public partial class InvokeRewriter : BaseRewriter
 		var assign = AssignmentExpression(elementAccess, LiteralExpression(SyntaxKind.TrueLiteralExpression)).WithTriviaFrom(invoke);
 		return assign;
 	}
+
+	public static RewriteInvoke RemoveParameter(int parameterIndex, string parameterName, string parameterType) => (rw, invoke, methodName) => {
+		if (invoke.ArgumentList == null)
+			return invoke;
+
+		var args = invoke.ArgumentList.Arguments.ToArray();
+		IArgumentOperation[] argOps = null;
+		if (rw.model.GetOperation(invoke) is IInvocationOperation invop)
+			argOps = invop.Arguments.ToArray();
+
+		// Try to remove by parameter name matching a named argument
+		for (int i = 0; i < args.Length; i++) {
+			var a = args[i];
+			if (a.NameColon != null && a.NameColon.Name.Identifier.Text == parameterName) {
+				var newArgs = args.Where((_, idx) => idx != i);
+				return invoke.WithArgumentList(ArgumentList(newArgs).WithTriviaFrom(invoke.ArgumentList));
+			}
+		}
+
+        // Syntactic check at the given index
+		if (parameterIndex >= 0 && parameterIndex < args.Length) {
+			var candidate = args[parameterIndex];
+			var expr = candidate.Expression;
+			var op = rw.model.GetOperation(expr);
+			var tname = op switch {
+				ILiteralOperation lit when lit.ConstantValue.HasValue && lit.ConstantValue.Value is null => "null",
+				_ => op?.Type?.ToString()
+			};
+			if (tname == parameterType) {
+				var newArgs = args.Where((_, idx) => idx != parameterIndex);
+				return invoke.WithArgumentList(ArgumentList(newArgs).WithTriviaFrom(invoke.ArgumentList));
+			}
+		}
+
+		return invoke;
+	};
 }
 

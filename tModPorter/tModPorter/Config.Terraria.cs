@@ -344,6 +344,7 @@ public static partial class Config
 		RefactorStaticMember("Terraria.Main", "GameModeInfo", RewriteIsJourneyMode);
 		RefactorStaticMember("Terraria.NPC", "netSkip", Removed("No longer necessary when setting life <= 0 and was never necessary when setting active = false"));
 
+		RefactorInstanceMethodCall("Terraria.Item", "SetDefaults", RemoveParameter(1, "noMatCheck", "bool"));
 		RefactorInstanceMethodCall("Terraria.Tile", "water", GetterSetterToProperty("LiquidType", "Terraria.ID.LiquidID", "Water"));
 		RefactorInstanceMethodCall("Terraria.Tile", "anyWater", GetterToProperty("HasWater"));
 		RefactorInstanceMethodCall("Terraria.Tile", "anyLava", GetterToProperty("HasLava"));
