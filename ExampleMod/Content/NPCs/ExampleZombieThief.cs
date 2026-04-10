@@ -66,13 +66,12 @@ namespace ExampleMod.Content.NPCs
 			}
 
 			Rectangle hitbox = NPC.Hitbox;
-			foreach (WorldItem worldItem in Main.item) {
+			foreach (WorldItem item in Main.item) {
 				// Pickup the items only if the NPC touches them and they aren't already being grabbed by a player
-				if (worldItem.active && !worldItem.beingGrabbed && worldItem.type == ModContent.ItemType<ExampleItem>() && hitbox.Intersects(worldItem.Hitbox)) {
-					StolenItems += worldItem.stack;
-					worldItem.TurnToAir(fullReset: true);
+				if (item.active && !item.beingGrabbed && item.type == ModContent.ItemType<ExampleItem>() && hitbox.Intersects(item.Hitbox)) {
+					StolenItems += item.stack;
 
-					NetMessage.SendData(MessageID.SyncItem, number: worldItem.whoAmI);
+					NetMessage.SendData(MessageID.SyncItem, number: item.whoAmI);
 
 					// Show emote when stealing an example item
 					EmoteBubble.NewBubble(ModContent.EmoteBubbleType<ExampleItemEmote>(), new WorldUIAnchor(NPC), 90);

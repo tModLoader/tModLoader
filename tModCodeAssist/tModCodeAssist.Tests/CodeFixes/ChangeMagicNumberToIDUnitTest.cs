@@ -51,6 +51,7 @@ public sealed class ChangeMagicNumberToIDUnitTest
 
 			var projectile = new Projectile();
 			projectile.aiStyle = [|1|];
+			projectile.drawLayer = [|3|];
 
 			Terraria.ModLoader.ModProjectile modProjectile = null;
 			modProjectile.AIType = [|93|];
@@ -103,6 +104,7 @@ public sealed class ChangeMagicNumberToIDUnitTest
 
 			var projectile = new Projectile();
 			projectile.aiStyle = ProjAIStyleID.Arrow;
+			projectile.drawLayer = ProjectileDrawLayerID.BehindProjectiles;
 
 			Terraria.ModLoader.ModProjectile modProjectile = null;
 			modProjectile.AIType = ProjectileID.MagicDagger;

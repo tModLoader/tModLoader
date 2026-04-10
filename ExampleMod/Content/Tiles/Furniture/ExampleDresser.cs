@@ -89,7 +89,6 @@ namespace ExampleMod.Content.Tiles.Furniture
 				if (Main.netMode == NetmodeID.MultiplayerClient) {
 					if (left == player.chestX && top == player.chestY && player.chest != -1) {
 						player.chest = -1;
-						Recipe.FindRecipes();
 						SoundEngine.PlaySound(SoundID.MenuClose);
 					}
 					else {
@@ -105,7 +104,6 @@ namespace ExampleMod.Content.Tiles.Furniture
 						Main.stackSplit = 600;
 						if (chestIndex == player.chest) {
 							player.chest = -1;
-							Recipe.FindRecipes();
 							SoundEngine.PlaySound(SoundID.MenuClose);
 						}
 						else if (chestIndex != player.chest && player.chest == -1) {
@@ -116,14 +114,12 @@ namespace ExampleMod.Content.Tiles.Furniture
 							player.OpenChest(left, top, chestIndex);
 							SoundEngine.PlaySound(SoundID.MenuTick);
 						}
-						Recipe.FindRecipes();
 					}
 				}
 			}
 			else {
 				Main.playerInventory = false;
 				player.chest = -1;
-				Recipe.FindRecipes();
 				player.SetTalkNPC(-1);
 				Main.npcChatCornerItem = 0;
 				Main.npcChatText = "";

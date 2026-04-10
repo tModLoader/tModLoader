@@ -57,12 +57,12 @@ public class tModPorter
 		MSBuildLocator.RegisterDefaults();
 
 		using MSBuildWorkspace workspace = MSBuildWorkspace.Create();
-		workspace.WorkspaceFailed += (o, e) => {
+		workspace.RegisterWorkspaceFailedHandler(e => {
 			if (e.Diagnostic.Kind == WorkspaceDiagnosticKind.Failure && !TreatErrorAsWarning(e.Diagnostic))
 				throw new Exception(e.Diagnostic.ToString());
 
 			updateProgress(new Warning(e.Diagnostic.ToString()));
-		};
+		});
 
 		var project = await workspace.OpenProjectAsync(projectPath, new ProjectLoadProgressAdapter(updateProgress));
 		var updatedProject = await Process(project, updateProgress);

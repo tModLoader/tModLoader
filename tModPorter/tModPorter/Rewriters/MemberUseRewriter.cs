@@ -106,4 +106,18 @@ public class MemberUseRewriter : BaseRewriter {
 
 		return memberName;
 	};
+
+	public static SyntaxNode RewriteIsJourneyMode(MemberUseRewriter rw, IOperation op, IdentifierNameSyntax memberName)
+	{
+		// memberName corresponds to the identifier "GameModeInfo" in an expression like Main.GameModeInfo.IsJourneyMode
+		if (memberName.Parent is MemberAccessExpressionSyntax innerAccess && innerAccess.Parent is MemberAccessExpressionSyntax outerAccess) {
+			if (outerAccess.Name.Identifier.Text == "IsJourneyMode") {
+				// Replace the outer access (Main.GameModeInfo.IsJourneyMode) with Main.IsJourneyMode
+				rw.RegisterAction<MemberAccessExpressionSyntax>(outerAccess, n =>
+					MemberAccessExpression(innerAccess.Expression.WithoutTrivia(), "IsJourneyMode").WithTriviaFrom(n)
+				);
+			}
+		}
+		return memberName;
+	}
 }

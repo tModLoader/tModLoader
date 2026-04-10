@@ -37,6 +37,17 @@
  				writer.Write((short)item2.stack);
  			}
  		}
+@@ -186,8 +_,8 @@
+ 		equip = _misc;
+ 		foreach (Item item3 in equip) {
+ 			if (!item3.IsAir) {
+-				writer.Write((short)item3.type);
+-				writer.Write(item3.prefix);
++				ItemIO.WriteShortVanillaID(item3, writer);
++				ItemIO.WriteByteVanillaPrefix(item3, writer);
+ 				writer.Write((short)item3.stack);
+ 			}
+ 		}
 @@ -278,11 +_,14 @@
  			return;
  

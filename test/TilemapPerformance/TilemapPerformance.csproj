@@ -2,7 +2,7 @@
   <Import Project="../../src/WorkspaceInfo.targets" />
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
 		<Platforms>x86;x64</Platforms>
 	</PropertyGroup>
@@ -17,7 +17,7 @@
 	</Target>
   <ItemGroup>
     <PackageReference Include="LargeAddressAware" Version="1.0.6" />
-    <PackageReference Include="MonoMod.RuntimeDetour" Version="25.1.0" />
+    <PackageReference Include="MonoMod.RuntimeDetour" Version="25.3.4" />
   </ItemGroup>
   <ItemGroup>
 	  <Reference Include="FNA" HintPath="$(tModLoaderSteamPath)\Libraries\FNA\1.0.0\FNA.dll" />

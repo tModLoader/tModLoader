@@ -19,7 +19,7 @@
  {
  	private class NPCDistanceByIndexComparator : IComparer<Tuple<int, float>>
  	{
-@@ -61,96 +_,378 @@
+@@ -61,96 +_,386 @@
  		public Rectangle GetBulletHitbox(int bulletIndex, Vector2 centerPoint) => Utils.CenteredRectangle(GetBulletPosition(bulletIndex, centerPoint), BulletSize);
  	}
  
@@ -287,13 +287,21 @@
  	public bool isAPreviewDummy;
  	public bool isAPreviewDisplayDoll;
  	public MinionSpawnInfo MinionSpawnInfo;
++	/// <summary>
++	/// Indicates the draw order of the projectile relative to tiles, npc, and players. By default projectiles are drawn in after (in front of) Tiles and NPC but before Players. Setting this will change that behavior.
++	/// <br/><br/> Defaults to 0 (<see cref="ProjectileDrawLayerID.None"/>).
++	/// </summary>
  	public int drawLayer;
++	/// <summary>
++	/// The projectile will draw using lighting information at the owning players's position rather than the projectile position.
++	/// <br/><br/> Defaults to <see langword="false"/>.
++	/// </summary>
  	public bool usesOwnerLight;
 +
 +	/// <summary>
-+	/// Projectile is not drawn normally. Held projectiles (<see cref="Player.heldProj"/>) and projectiles specified to be drawn at specific layers (<see cref="ModProjectile.DrawBehind(int, List{int}, List{int}, List{int}, List{int}, List{int})"/>)  use this.
-+	/// <para/> By default this will also influence the lighting of this projectile to match the players lighting, as if it were a held projectile. Projectiles that are not held by the player should set <see cref="ProjectileID.Sets.DontAttachHideToAlpha"/> to true in SetStaticDefaults: <c>ProjectileID.Sets.DontAttachHideToAlpha[Type] = true;</c>
-+	/// <para/> Defaults to <see langword="false"/>.
++	/// Projectile will not be drawn. One use-case for this is projectiles that are represented with only dust.
++	/// <br/><br/> Note: If <see cref="drawLayer"/> is set, this will be ignored.
++	/// <br/><br/> Defaults to <see langword="false"/>.
 +	/// </summary>
  	public bool hide;
 +
@@ -1235,6 +1243,36 @@
  			}
  
  			if (minion && numUpdates == -1 && type != 625 && type != 628) {
+@@ -13360,7 +_,9 @@
+ 			if (soundDelay > 0)
+ 				soundDelay--;
+ 
++			/* #VanillaNetUpdateBug - ignoring netUpdate = true statements outside Projectile.Update
+ 			netUpdate = false;
++			*/
+ 			if (active)
+ 				AI();
+ 
+@@ -13761,6 +_,9 @@
+ 				else {
+ 					netUpdate2 = true;
+ 				}
++
++				// #VanillaNetUpdateBug 
++				netUpdate = false;
+ 			}
+ 
+ 			if (netSpam > 0)
+@@ -13770,7 +_,9 @@
+ 		if (active && Main.netMode == 2)
+ 			RecheckSectionsForSkippedUpdates();
+ 
++		/* #VanillaNetUpdateBug - moved earlier, after a SyncProjectile is sent, or netUpdate2 is set
+ 		netUpdate = false;
++		*/
+ 	}
+ 
+ 	private void RecheckSectionsForSkippedUpdates()
 @@ -13831,9 +_,16 @@
  		}
  	}

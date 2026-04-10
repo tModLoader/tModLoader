@@ -17,7 +17,7 @@ namespace ExampleMod.Content.Tiles
 			// Indicates that this is a weighted pressure plate, which will cause HitSwitch (below) to be called when a player collides with it. Other pressure plate behaviors have different values indicated in TileID.Sets.PressurePlate documentation.
 			TileID.Sets.PressurePlate[Type] = -3;
 
-			TileID.Sets.IsATrigger[Type] = true;
+			TileID.Sets.Wiring.IsATrigger[Type] = true;
 			Main.tileFrameImportant[Type] = true;
 			Main.tileObsidianKill[Type] = true;
 

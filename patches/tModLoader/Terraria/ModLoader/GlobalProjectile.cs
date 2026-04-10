@@ -356,21 +356,6 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 	}
 
 	/// <summary>
-	/// When used in conjunction with "projectile.hide = true", allows you to specify that this projectile should be drawn behind certain elements. Add the index to one and only one of the lists. For example, the Nebula Arcanum projectile draws behind NPCs and tiles.
-	/// <para/> Called on local and remote clients.
-	/// </summary>
-	/// <param name="projectile"></param>
-	/// <param name="index"></param>
-	/// <param name="behindNPCsAndTiles"></param>
-	/// <param name="behindNPCs"></param>
-	/// <param name="behindProjectiles"></param>
-	/// <param name="overPlayers"></param>
-	/// <param name="overWiresUI"></param>
-	public virtual void DrawBehind(Projectile projectile, int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
-	{
-	}
-
-	/// <summary>
 	/// Whether or not a grappling hook that shoots this type of projectile can be used by the given player. Return null to use the default code (whether or not the player is in the middle of firing the grappling hook). Returns null by default.
 	/// <para/> Called on the local client only.
 	/// </summary>

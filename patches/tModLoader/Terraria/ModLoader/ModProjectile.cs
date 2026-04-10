@@ -44,9 +44,6 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 	/// <summary> The horizontal origin offset from the projectile's center when it is drawn. </summary>
 	public float DrawOriginOffsetX { get; set; }
 
-	/// <summary> If this projectile is held by the player, determines whether it is drawn in front of or behind the player's arms. Defaults to false. </summary>
-	public bool DrawHeldProjInFrontOfHeldItemAndArms { get; set; }
-
 	/// <summary>
 	/// The file name of this type's texture file in the mod loader's file space. <br/>
 	/// The resulting  Asset&lt;Texture2D&gt; can be retrieved using <see cref="TextureAssets.Projectile"/> indexed by <see cref="Type"/> if needed. <br/>
@@ -451,14 +448,6 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 	public virtual bool? GrappleCanLatchOnTo(Player player, int x, int y)
 	{
 		return null;
-	}
-
-	/// <summary>
-	/// When used in conjunction with <c>Projectile.hide = true</c> (<see cref="Projectile.hide"/>), allows you to specify that this projectile should be drawn behind certain elements. Add the index to one and only one of the lists. For example, the Nebula Arcanum projectile draws behind NPCs and tiles.
-	/// <para/> Called on local and remote clients.
-	/// </summary>
-	public virtual void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
-	{
 	}
 
 	/// <summary>
