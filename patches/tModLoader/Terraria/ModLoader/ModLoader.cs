@@ -41,6 +41,7 @@ public static class ModLoader
 	public static bool WarnedFamilyShareDontShowAgain;
 	public static Version LastPreviewFreezeNotificationSeen;
 	public static int LatestNewsTimestamp;
+	public static bool SeenNewUpdatedModsInfo;
 
 	// Update this name if doing an upgrade
 	public static bool BetaUpgradeWelcomed144;

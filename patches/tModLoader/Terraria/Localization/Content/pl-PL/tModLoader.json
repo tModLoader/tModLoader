@@ -30,6 +30,7 @@
 		"InstallDependencies": "Zainstaluj zależności",
 		// "RedownloadMods": "Redownload Mods",
 		// "InstallDependenciesAndRedownloadMods": "Install Dependencies and Redownload Mods",
+		// "ResolveAbnormalMods": "Delete or Transfer Mods",
 		"ContinueAnyway": "Kontynuuj mimo to",
 		"ModUpdatedSinceLastLaunchMessage": "Ten mod został zaktualizowany od czasu ostatniego uruchomienia gry {0}",
 		"ModAddedSinceLastLaunchMessage": "Ten mod został dodany od ostatniego uruchomienia",

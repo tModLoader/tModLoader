@@ -30,6 +30,7 @@
 		"InstallDependencies": "Установить зависимости",
 		"RedownloadMods": "Повторно скачать моды",
 		"InstallDependenciesAndRedownloadMods": "Установить зависимости и повторно скачать моды",
+		// "ResolveAbnormalMods": "Delete or Transfer Mods",
 		"ContinueAnyway": "Продолжить в любом случае",
 		"ModUpdatedSinceLastLaunchMessage": "Этот мод автоматически обновился с прошлого запуска с версии {0}",
 		"ModAddedSinceLastLaunchMessage": "Этот мод добавился с прошлого запуска",

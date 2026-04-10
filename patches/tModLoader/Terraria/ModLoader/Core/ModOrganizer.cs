@@ -259,7 +259,7 @@ internal static class ModOrganizer
 			}
 		}
 
-		return messages.Length > 0 ? messages.ToString() : null;
+		return messages.Length > 0 ? messages.ToString() : string.Empty;
 	}
 
 	internal static HashSet<string> IdentifyMissingWorkshopDependencies()
