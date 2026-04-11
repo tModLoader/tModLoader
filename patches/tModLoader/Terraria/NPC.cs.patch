@@ -2612,7 +2612,7 @@
  			}
  
  			if (HitSound != null)
-@@ -64818,10 +_,10 @@
+@@ -64818,11 +_,34 @@
  			else
  				checkDead();
  
@@ -2623,8 +2623,32 @@
 -		return 0.0;
 +		return 0;
  	}
++
++    ///<summary>
++    /// A helper method for an NPC striking another NPC
++    /// Handels modifiers, hit info, network, syncing, and hooks automatically.
++    ///</summary>
++    public void StrikeOtherNPC(NPC target, int damage, float knockback, int hitDirection, bool crit = false, bool randomizeDamage = true)
++    {
++        NPC.HitModifiers modifiers = target.GetIncomingStrikeModifiers(DamageClass.Default, hitDirection, default);
++        
++        NPCLoader.ModifyHitNPC(NPC, target, ref modifiers);
++
++        NPC.HitInfo hitInfo = modifiers.ToHitInfo(damage, crit, knockback, randomizeDamage);
++
++        target.StrikeNPC(hitInfo, false, true);
++
++        if(Main.netMode != 0)
++        {
++            NetMessage.SendStrikeNPC(target, hitInfo);
++        }
++
++        NPCLoader.OnHitNPC(this, target, hitInfo);
++        
++    }
  
  	public static void LadyBugKilled(Vector2 Position, bool GoldLadyBug = false)
+ 	{
 @@ -64897,7 +_,29 @@
  		}
  	}
