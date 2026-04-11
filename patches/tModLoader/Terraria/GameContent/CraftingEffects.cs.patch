@@ -1,0 +1,12 @@
+--- src/TerrariaNetCore/Terraria/GameContent/CraftingEffects.cs
++++ src/tModLoader/Terraria/GameContent/CraftingEffects.cs
+@@ -50,7 +_,8 @@
+ 	{
+ 	}
+ 
+-	private static bool RecipeUsesCraftingStation(Recipe recipe, int tileId) => recipe.requiredTile == tileId;
++	// private static bool RecipeUsesCraftingStation(Recipe recipe, int tileId) => recipe.requiredTile == tileId;
++	private static bool RecipeUsesCraftingStation(Recipe recipe, int tileId) => recipe.HasTile(tileId); // TML
+ 
+ 	public static CraftingEffectDetails GetEffectDetails(Item newItem)
+ 	{

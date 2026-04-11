@@ -4840,6 +4840,20 @@
  				value = TextureAssets.InventoryBack14.Value;
  				white = Microsoft.Xna.Framework.Color.White;
  			}
+@@ -36435,8 +_,11 @@
+ 	public static string GetRecipeRequirementsText(Recipe recipe, bool explicitNone)
+ 	{
+ 		_requiredObjectsForCraftingText.Clear();
+-		if (recipe.requiredTile >= 0)
++		/*if (recipe.requiredTile >= 0)
+-			_requiredObjectsForCraftingText.Add(Recipe.GetRequiredTileName(recipe.requiredTile));
++			_requiredObjectsForCraftingText.Add(Recipe.GetRequiredTileName(recipe.requiredTile)); */
++
++		foreach (int tile in recipe.requiredTiles) // TML
++			_requiredObjectsForCraftingText.Add(Recipe.GetRequiredTileName(tile));
+ 
+ 		if (recipe.needWater)
+ 			_requiredObjectsForCraftingText.Add(Lang.inter[53].Value);
 @@ -36456,6 +_,9 @@
  		if (recipe.needTorchGodsFavor)
  			_requiredObjectsForCraftingText.Add(Lang.inter[125].Value);

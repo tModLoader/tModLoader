@@ -28,7 +28,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Check for any remaining TML added ID sets that aren't in TML.cs files.
 - BuffLoader.ReApply (NPC) logic seems changed, likely to fix desync issues. The server sync for MessageID.NPCBuffs when !quiet now happens after the reapply logic. Modded ReApply will need doc updates or maybe new parameters to properly adjust to these changes. Maybe a ref time parameter instead?
 - NPC.TryAddingRepeatedBuff added. Might be useful to document and make public.
-- Recipe.requiredTile no longer supports multiple tiles. Only a single crafting station is the new approach. In theory it is possible to restore multiple required tiles, but we'd have to rule that recipes can show in the filtered crafting station UI if _any_ of their required tiles meet the filter.
 - Zone calculations seem to have been reorganized a bit. Verify functionality of hooks (TileCountsAvailable, ResetNearbyTileEffects, UpdateSceneEffect)
 - TryGetTileBounds needs docs. DrawFrameOffsets needs docs and maybe example, not sure what it is for yet.
 - FileUtilities.Copy and Move no longer have an `overwrite` parameter.

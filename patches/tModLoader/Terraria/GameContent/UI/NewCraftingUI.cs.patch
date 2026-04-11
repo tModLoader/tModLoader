@@ -1,5 +1,23 @@
 --- src/TerrariaNetCore/Terraria/GameContent/UI/NewCraftingUI.cs
 +++ src/tModLoader/Terraria/GameContent/UI/NewCraftingUI.cs
+@@ -144,8 +_,15 @@
+ 		public override bool Accepts(Recipe recipe)
+ 		{
+ 			if (!recipe.DoesNotNeedTileOrLiquid) {
+-				if (recipe.requiredTile >= 0)
++				/*if (recipe.requiredTile >= 0)
+-					return acceptTileTypes[recipe.requiredTile];
++					return acceptTileTypes[recipe.requiredTile];*/
++
++				// TML
++				foreach (int tile in recipe.requiredTiles) {
++					if (acceptTileTypes[tile]) {
++						return true;
++					}
++				}
+ 
+ 				return false;
+ 			}
 @@ -392,8 +_,11 @@
  				HandleCraftSlot(recipeEntry, 42);
  
