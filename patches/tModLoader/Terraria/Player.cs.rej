@@ -73,17 +73,6 @@
  			}
  			else if (buffType[j] == 192) {
  				pickSpeed -= 0.2f;
-@@ -12926,6 +_,10 @@
- 
- 		bool flag9 = point.Y > Main.maxTilesY - 320;
- 		bool flag10 = ZoneOverworldHeight && (point.X < 380 || point.X > Main.maxTilesX - 380);
-+
-+		//TODO: Are these flags a problem?
-+		LoaderManager.Get<BiomeLoader>().UpdateBiomes(this);
-+
- 		ManageSpecialBiomeVisuals("Stardust", ZoneTowerStardust, vector4 - new Vector2(0f, 10f));
- 		ManageSpecialBiomeVisuals("Nebula", ZoneTowerNebula, vector3 - new Vector2(0f, 10f));
- 		ManageSpecialBiomeVisuals("Vortex", ZoneTowerVortex, vector2 - new Vector2(0f, 10f));
 @@ -13580,7 +_,11 @@
  						SmartSelect_SelectItem(i);
  						return;
