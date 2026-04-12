@@ -341,7 +341,6 @@ public static partial class Config
 		RefactorStaticMember("Terraria.ID.ProjectileID.Sets", "DontAttachHideToAlpha", Removed("Removed. Now true by default. See Projectile.usesOwnerLight and Projectile.drawLayer for more details."));
 		RefactorStaticMember("Terraria.Item", "whoAmI", Removed("Moved to WorldItem"));
 		RefactorStaticMember("Terraria.Item", "beingGrabbed", Removed("Moved to WorldItem"));
-		RefactorStaticMember("Terraria.Main", "GameModeInfo", RewriteIsJourneyMode);
 		RefactorStaticMember("Terraria.NPC", "netSkip", Removed("No longer necessary when setting life <= 0 and was never necessary when setting active = false"));
 
 		RefactorInstanceMethodCall("Terraria.Item", "SetDefaults", RemoveParameter(1, "noMatCheck", "bool"));
@@ -552,4 +551,3 @@ public static partial class Config
 		RenameGenVar("StatuesWithTraps");
 	}
 }
-
