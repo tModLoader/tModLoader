@@ -9,9 +9,12 @@
  		Utils.DrawInvBG(Main.spriteBatch, rectangle);
  		DrawText(color, rectangle);
  		Main.DrawNPCPortrait(chatBack, rectangle.TopLeft());
-@@ -71,13 +_,17 @@
+@@ -69,15 +_,19 @@
+ 	private void DrawButtons(Rectangle panelArea, Color chatColor)
+ 	{
  		UILinkPointNavigator.Shortcuts.NPCCHAT_ButtonsNew = true;
- 		UILinkPointNavigator.Shortcuts.NPCCHAT_ButtonsCount = _interactions.Count;
+-		UILinkPointNavigator.Shortcuts.NPCCHAT_ButtonsCount = _interactions.Count;
++		UILinkPointNavigator.Shortcuts.NPCCHAT_ButtonsCount = _interactions.Count > 32 ? 32 : _interactions.Count; // Artificially capped at 32 buttons.
  		DynamicSpriteFont value = FontAssets.MouseText.Value;
 -		Vector2 vector = panelArea.BottomLeft() + new Vector2(30f, -22 * _neededInteractionLines + Math.Max(0, 2 * (_neededInteractionLines - 1)) - 4);
 +		Vector2 vector = panelArea.BottomLeft() + new Vector2(30f, -24 * Math.Min(_neededInteractionLines, 8) + Math.Max(0, 2 * (Math.Min(_neededInteractionLines, 8) - 1)) - 4); // TML: changed -22 to -24. Capped the _neededInteractionLines to 8 (32 buttons).

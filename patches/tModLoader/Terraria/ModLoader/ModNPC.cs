@@ -833,11 +833,25 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	/// </summary>
 	/// <param name="button"></param>
 	/// <param name="button2"></param>
+	[Obsolete("Use new method: SetChatButtons(ref bool skipCloseChat, ref bool skipReportHappiness, ref bool skipRequestHome)")]
 	public virtual void SetChatButtons(ref string button, ref string button2)
 	{
 	}
 
-	public virtual void SetChatButtons2(ref bool skipCloseChat, ref bool skipReportHappiness, ref bool skipRequestHome)
+	/// <summary>
+	/// Allows you to set the assign which chat buttons are registered for this NPC.
+	/// <br/>Use <see cref="NPCInteractions.Register"/> to register new buttons.
+	/// <br/><br/> The "Close", "Happiness", and "Housing" buttons will automatically be added after the buttons registered here, unless they are skipped.
+	/// </summary>
+	/// <param name="skipCloseChat">Set to true to skip the "Close" button being automatically added.
+	/// <br/>It can manually be added with <c>NPCInteractions.Register(new NPCInteractions.Actions.ModCloseChat(Type))</c></param>
+	/// <param name="skipReportHappiness">Set to true to skip the "Happiness" button being automatically added.
+	/// <br/>The "Happiness" button will not be shown on Town NPCs who are not affected by happiness.
+	/// <br/>It can manually be added with <c>NPCInteractions.Register(new NPCInteractions.Actions.ModReportHappiness(Type))</c></param>
+	/// <param name="skipRequestHome">Set to true to skip the "Housing" button being automatically added.
+	/// <br/>The "Housing" button will not be shown on Town NPCs who cannot be housed.
+	/// <br/>It can manually be added with <c>NPCInteractions.Register(new NPCInteractions.Actions.ModRequestHome(Type))</c></param>
+	public virtual void SetChatButtons(ref bool skipCloseChat, ref bool skipReportHappiness, ref bool skipRequestHome)
 	{
 	}
 

@@ -1217,14 +1217,15 @@ public static class NPCLoader
 		}
 	}
 
+	[Obsolete("Method signature changed")]
 	public static void SetChatButtons(ref string button, ref string button2)
 	{
 		Main.LocalPlayer.TalkNPC?.ModNPC?.SetChatButtons(ref button, ref button2);
 	}
 
-	public static void SetChatButtons2(int type, ref bool skipCloseChat, ref bool skipReportHappiness, ref bool skipRequestHome)
+	public static void SetChatButtons(int type, ref bool skipCloseChat, ref bool skipReportHappiness, ref bool skipRequestHome)
 	{
-		GetNPC(type)?.SetChatButtons2(ref skipCloseChat, ref skipReportHappiness, ref skipRequestHome);
+		GetNPC(type)?.SetChatButtons(ref skipCloseChat, ref skipReportHappiness, ref skipRequestHome);
 	}
 
 	private static HookList HookPreChatButtonClicked = AddHook<Func<NPC, bool, bool>>(g => g.PreChatButtonClicked);

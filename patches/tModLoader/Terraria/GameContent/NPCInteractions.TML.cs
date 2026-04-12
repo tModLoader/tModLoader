@@ -1,11 +1,7 @@
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
 using Terraria.Audio;
-using Terraria.GameContent.Achievements;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
-using Terraria.UI;
 
 namespace Terraria.GameContent;
 
@@ -13,13 +9,13 @@ public static partial class NPCInteractions
 {
 	public static partial class Actions
 	{
-		public class OpenShop2 : NPCInteraction
+		public class OpenShopByName : NPCInteraction
 		{
 			private string _shopName;
 			private int _npcType;
 			private string _customTextKey;
 
-			public OpenShop2(int npcType, string shopName, string customTextKey = null)
+			public OpenShopByName(int npcType, string shopName, string customTextKey = null)
 			{
 				_npcType = npcType;
 				_shopName = shopName;
@@ -83,7 +79,7 @@ public static partial class NPCInteractions
 			bool skipCloseChat = false;
 			bool skipReportHappiness = false;
 			bool skipRequestHome = false;
-			NPCLoader.SetChatButtons2(i, ref skipCloseChat, ref skipReportHappiness, ref skipRequestHome);
+			NPCLoader.SetChatButtons(i, ref skipCloseChat, ref skipReportHappiness, ref skipRequestHome);
 
 			if (!skipCloseChat)
 				Register(new Actions.ModCloseChat(i));
@@ -102,6 +98,6 @@ public static partial class NPCInteractions
 
 	public static void Shop(int npcType, string shopName, string customTextKey = null)
 	{
-		Register(new Actions.OpenShop2(npcType, shopName, customTextKey));
+		Register(new Actions.OpenShopByName(npcType, shopName, customTextKey));
 	}
 }
