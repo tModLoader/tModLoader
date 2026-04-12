@@ -316,10 +316,10 @@ public partial class WorkshopHelper
 							// Because we are directly querying the state of the mod via its publish ID, developers are able to see that it is banned.
 							// For regular users, they will see WorkshopState NotFound. The banned state includes DMCA and Malware, so its a mix bag
 							if (match == WorkshopSearchReturnState.Success && item.Banned) {
-								// Currently, only known case is if a mod the user is subbed to is set to hidden & not deleted by the user
-								// Includes 'Hide As Incompatible', Changes in Visibility (Friends-Only, Private), and as of April 2026 banned states (DMCA, Malware)
+								// Includes as of April 2026 banned states (DMCA, Malware)
 								Logging.tML.Warn($"Mod ID {idArray[j]} is banned on Steam Workshop. Consult a developer for more details");
 								missingMods.Add(idArray[j]);
+
 								//checkReupload.Add(queryParameters.searchModSlugs[itemsIndex]); // Enable this line if doing dev testing for NotFound state in DMCA
 								continue;
 							}
@@ -330,6 +330,7 @@ public partial class WorkshopHelper
 								// Includes 'Hide As Incompatible', Changes in Visibility (Friends-Only, Private), and as of April 2026 banned states (DMCA, Malware)
 								Logging.tML.Warn($"Mod ID {idArray[j]} Not Found on the Steam Workshop. Queuing for Search by Slug {queryParameters.searchModSlugs[itemsIndex]}");
 								missingMods.Add(idArray[j]);
+
 								checkReupload.Add(queryParameters.searchModSlugs[itemsIndex]);
 								continue;
 							}
@@ -542,6 +543,9 @@ public partial class WorkshopHelper
 					item = GenerateModDownloadItemFromQuery(index);
 					return WorkshopSearchReturnState.Success;
 				}
+				catch (UnauthorizedAccessException) {
+					return WorkshopSearchReturnState.NotFound;
+				}
 				catch (Exception) {
 					return WorkshopSearchReturnState.RetrievalFailed;
 				}
@@ -555,6 +559,15 @@ public partial class WorkshopHelper
 				PublishedFileId_t id = pDetails.m_nPublishedFileId;
 
 				if (pDetails.m_eResult != EResult.k_EResultOK) {
+					if (pDetails.m_eResult  == EResult.k_EResultAccessDenied) {
+						// When we directly query a particular publish ID, three scenarios can happen:
+						//	If it is a developer, then they will see the item exactly as is, regardless of visibility
+						//	If it is the modder who uploaded it, then they will see the same state as the developer
+						//	If it is a player, then if it is: hidden as incompatible, hidden via visibility (friends-only, private)
+						//		Then it will show as Access Denied to that player. Functionally, Access Denied is simply 'Not Found'.
+						throw new UnauthorizedAccessException($"Access to mod PublishId# {id} was denied. Returning 'not found'");
+					}
+
 					throw new SocialBrowserException("Unable to fetch mod PublishId#" + id + " information. " + pDetails.m_eResult);
 				}
 
