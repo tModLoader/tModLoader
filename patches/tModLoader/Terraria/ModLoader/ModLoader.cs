@@ -42,6 +42,7 @@ public static class ModLoader
 	public static Version LastPreviewFreezeNotificationSeen;
 	public static int LatestNewsTimestamp;
 	public static bool SeenNewUpdatedModsInfo;
+	public static bool ResolvedAbnormalModInstallStates;
 
 	// Update this name if doing an upgrade
 	public static bool BetaUpgradeWelcomed144;
