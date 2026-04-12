@@ -156,7 +156,7 @@ namespace ExampleMod.Common.Players
 
 				// Don't bother pinging the defending player and upsetting their immunity frames if the portion of damage we're taking rounds down to 0
 				if (damage > 0) {
-					localPlayer.Hurt(PlayerDeathReason.LegacyEmpty(), damage, 0);
+					localPlayer.Hurt(PlayerDeathReason.ByOther(16), damage, 0);
 				}
 			}
 		}

@@ -579,13 +579,6 @@ public static class ProjectileLoader
 		return projectile.ModProjectile?.Colliding(projHitbox, targetHitbox);
 	}
 
-	public static void DrawHeldProjInFrontOfHeldItemAndArms(Projectile projectile, ref bool flag)
-	{
-		if (projectile.ModProjectile != null) {
-			flag = projectile.ModProjectile.DrawHeldProjInFrontOfHeldItemAndArms;
-		}
-	}
-
 	[Obsolete($"Moved to ItemLoader. Fishing line position and color are now set by the pole used.")]
 	public static void ModifyFishingLine(Projectile projectile, ref float polePosX, ref float polePosY, ref Color lineColor)
 	{
@@ -771,17 +764,6 @@ public static class ProjectileLoader
 		}
 
 		return flag;
-	}
-
-	private static HookList HookDrawBehind = AddHook<Action<Projectile, int, List<int>, List<int>, List<int>, List<int>, List<int>>>(g => g.DrawBehind);
-
-	internal static void DrawBehind(Projectile projectile, int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
-	{
-		projectile.ModProjectile?.DrawBehind(index, behindNPCsAndTiles, behindNPCs, behindProjectiles, overPlayers, overWiresUI);
-
-		foreach (var g in HookDrawBehind.Enumerate(projectile)) {
-			g.DrawBehind(projectile, index, behindNPCsAndTiles, behindNPCs, behindProjectiles, overPlayers, overWiresUI);
-		}
 	}
 
 	private static HookList HookPrepareBombToBlow = AddHook<Action<Projectile>>(g => g.PrepareBombToBlow);

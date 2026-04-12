@@ -79,3 +79,19 @@ public class ModTileTest : ModTile
 
 	public override bool Drop(int i, int j) { /* Empty */ }
 }
+
+public static class TileHelpers
+{
+	static void SetSomeModTileProperties(this ModTile modTile)
+	{
+		modTile.minPick = 0;
+		modTile.mineResist = 0;
+		modTile.animationFrameHeight = 0;
+
+		TileID.Sets.IsAMechanism[modTile.Type] = true;
+		TileID.Sets.IsATrigger[modTile.Type] = true;
+
+		modTile.AddToArray(ref TileID.Sets.CountsAsPylon); // Shouldn't change
+		modTile.AddToArray(ref TileID.Sets.RoomNeeds.CountsAsTable);
+	}
+}

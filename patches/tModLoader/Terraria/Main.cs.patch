@@ -4241,14 +4241,6 @@
  		}
  	}
  
-@@ -32870,6 +_,7 @@
- 						break;
- 				}
- 			}
-+			ProjectileLoader.DrawBehind(projectile, i, DrawCacheProjsBehindNPCsAndTiles, DrawCacheProjsBehindNPCs, DrawCacheProjsBehindProjectiles, DrawCacheProjsOverPlayers, DrawCacheProjsOverWiresUI); // CacheProjDraws
- 		}
- 	}
- 
 @@ -33251,6 +_,7 @@
  		Vector2 vector = frame.Size() / 2f;
  		Vector2 vector2 = new Vector2((float)(item.width / 2) - vector.X, item.height - frame.Height);

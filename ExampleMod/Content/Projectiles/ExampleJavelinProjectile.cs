@@ -1,7 +1,6 @@
 ﻿using ExampleMod.Content.Dusts;
 using ExampleMod.Content.Items.Weapons;
 using Microsoft.Xna.Framework;
-using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -35,10 +34,6 @@ namespace ExampleMod.Content.Projectiles
 			set => Projectile.localAI[0] = value;
 		}
 
-		public override void SetStaticDefaults() {
-			ProjectileID.Sets.DontAttachHideToAlpha[Type] = true;
-		}
-
 		public override void SetDefaults() {
 			Projectile.width = 16; // The width of projectile hitbox
 			Projectile.height = 16; // The height of projectile hitbox
@@ -53,6 +48,7 @@ namespace ExampleMod.Content.Projectiles
 			Projectile.ignoreWater = true; // Does the projectile's speed be influenced by water?
 			Projectile.tileCollide = true; // Can the projectile collide with tiles?
 			Projectile.hide = true; // Makes the projectile completely invisible. We need this to draw our projectile behind enemies/tiles in DrawBehind()
+			Projectile.drawLayer = ProjectileDrawLayerID.BehindProjectiles;
 		}
 
 		private const int GravityDelay = 45;
@@ -67,6 +63,7 @@ namespace ExampleMod.Content.Projectiles
 			else {
 				NormalAI();
 			}
+			UpdateDrawLayer();
 		}
 
 		private void NormalAI() {
@@ -125,6 +122,25 @@ namespace ExampleMod.Content.Projectiles
 			else { // Otherwise, kill the projectile
 				Projectile.Kill();
 			}
+		}
+
+		private void UpdateDrawLayer() {
+			// If attached to an NPC, draw behind tiles (and the npc) if that NPC is behind tiles, otherwise just behind the NPC.
+			if (IsStickingToTarget) {
+				int npcIndex = TargetWhoAmI;
+				if (npcIndex >= 0 && npcIndex < 200 && Main.npc[npcIndex].active) {
+					if (Main.npc[npcIndex].behindTiles) {
+						Projectile.drawLayer = ProjectileDrawLayerID.BehindNPCsAndTiles;
+					}
+					else {
+						Projectile.drawLayer = ProjectileDrawLayerID.BehindNPCs;
+					}
+
+					return;
+				}
+			}
+			// Since we aren't attached, draw behind other projectiles only as normal.
+			Projectile.drawLayer = ProjectileDrawLayerID.BehindProjectiles;
 		}
 
 		public override void OnKill(int timeLeft) {
@@ -196,25 +212,6 @@ namespace ExampleMod.Content.Projectiles
 			}
 			// Return if the hitboxes intersects, which means the javelin collides or not
 			return projHitbox.Intersects(targetHitbox);
-		}
-
-		public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI) {
-			// If attached to an NPC, draw behind tiles (and the npc) if that NPC is behind tiles, otherwise just behind the NPC.
-			if (IsStickingToTarget) {
-				int npcIndex = TargetWhoAmI;
-				if (npcIndex >= 0 && npcIndex < 200 && Main.npc[npcIndex].active) {
-					if (Main.npc[npcIndex].behindTiles) {
-						behindNPCsAndTiles.Add(index);
-					}
-					else {
-						behindNPCsAndTiles.Add(index);
-					}
-
-					return;
-				}
-			}
-			// Since we aren't attached, add to this list
-			behindNPCsAndTiles.Add(index);
 		}
 
 		// Change this number if you want to alter how the alpha changes

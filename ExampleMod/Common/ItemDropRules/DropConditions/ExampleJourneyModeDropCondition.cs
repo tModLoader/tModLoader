@@ -14,11 +14,11 @@ namespace ExampleMod.Common.ItemDropRules.DropConditions
 		}
 
 		public bool CanDrop(DropAttemptInfo info) {
-			return Main.GameModeInfo.IsJourneyMode;
+			return Main.IsJourneyMode;
 		}
 
 		public bool CanShowItemDropInUI() {
-			return Main.GameModeInfo.IsJourneyMode; // We don't want players to see this drop listed while in normal worlds.
+			return Main.IsJourneyMode; // We don't want players to see this drop listed while in normal worlds.
 		}
 
 		public string GetConditionDescription() {

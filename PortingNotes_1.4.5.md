@@ -206,10 +206,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 
 - UIElement.OnDraw is now a DrawEvent not a ElementEvent (can this be tModPorted?)
 - Point16.X and Y are no longer readonly
-- Entity.active removed, active field added to Player, Projectile, WorldItem
-- WorldItem added, represents an Item in the world
-- Item no longer inherits from Entity
-- Item and Entity implement IEntitySourceTarget. All Entity fields in IEntitySource are now IEntitySourceTarget
 - Entity.Center changed, taking into account 0.5 from odd widths and heights now instead of using integer division
 	new Vector2(position.X + (float)(width / 2), position.Y + (float)(height / 2)); 
 	to 
@@ -220,23 +216,17 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Pylons no longer check for "danger". ModPylon.ValidTeleportCheck_AnyDanger removed.
 - Pylons no longer require happiness to be sold. Remove Condition.HappyEnoughToSellPylons from ModPylon.GetNPCShopEntry() to match vanilla.
 - Removed Condition.HappyEnough and Condition.HappyEnoughToSellPylons. Replaced with Condition.CurrentPriceAdjustmentUnder(float priceModifier) and Condition.CurrentPriceAdjustmentOver(float priceModifier).
-- Item.netID removed (tModPorter?)
 - Item.SetDefaults(int Type = 0) no longer exists
 - Item.SetDefaults(int Type, bool noMatCheck = false, ItemVariant variant = null) change to SetDefaults(int Type, ItemVariant variant = null) (noMatCheck parameter removed)
 - UnifiedRandom.Next methods are no longer virtual
-- ICameraModifier now has a IsAScreenShake property to support the user's screen shake accessibility setting (Main.UseScreenShake). Update your ICameraModifier and other camera movements to support Main.UseScreenShake.
 - TownNPC can now have portraits. Use the following to implement: NPCID.Sets.NPCPortraits (todo, example)
 - UIWrappedSearchBar, is it useful to modders?
-- Main.sign length changed from 1000 to 32000.
 - Lots of new methods in Utils. Check if any duplicate TML.cs methods.
 - Various text rendering methods have been changed or improved. Investigate new functionality and previous bug fixes.
 - Player.IsAllowedToHoldItems
-- All chairs give fishing bonus now, not just toilets.
 - MountID.Sets.DoesNotOverrideLegFrames seems like something a lot of modded mounts might want to use. (All other new MountID.Sets sets as well)
-- BuffID.Sets.BasicMountData is now just BuffID.Sets.MountType. It no longer stores a `BuffID.Sets.BuffMountData` since mounts no longer "faceLeft" or right. It now just stores the MountID directly.
 - BuffID.IsAnNPCWhipDebuff, which tModLoader renamed to IsATagBuff, has changed a lot. Need to document the new behavior. Do we want to revert the name change? Also CanBeRemovedByNetMessage docs are now wrong.
 - ProjectileID.Sets.HeldProjDoesNotUsePlayerGfxOffY removed. How has this been fixed? I thought it wouldn't be fixed in vanilla.
-- ProjectileID.Sets.DontAttachHideToAlpha removed. What replaced it? Is it usesOwnerLight? Update Projectile.hide docs as well.
 - Need to determine if hooks need to act on ModItem or WorldItem. For example: `ItemIO.SendModData(item3, writer);`
   - `public EntityGlobalsEnumerator<TGlobal> Enumerate(IEntityWithGlobals<TGlobal> entity) => new(ForType(entity.Type), entity);` doesn't work as-is for hooks that are now WorldItem. I've changed them to `.Enumerate(item.inner)`, but I'm not positive what design we want for these hooks now. (WorldItem points to Item, but Item doesn't point to WorldItem.)
 - The number3 parameter of the SyncEquipment message seems to have changed meaning. Docs needed.
@@ -246,12 +236,10 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - HardmodeAnnouncementTask is no longer a HardmodeTask.
 - AssetRepository a huge mess of patches. _changeWatcher patch might need to be restored.
 - LanguageManager.GetText changed, now it stores on miss. Before it didn't and we kept that behavior. Do we want the old behavior still?
-- Recipe.FindRecipes gone. Probably not needed anymore
 - ProjAIStyleID and NPCAIStyleID will need to be regenerated (jopo has script)
 - Replace Main.hasFocus with FocusHelper.AllowUIInputs (or another property)
 - Player.QuickSpawnItem no longer returns an int indicating the index of the item in Main.item. This is because the spawned item can now potentially go directly into player inventory.
 - Item.width and height no longer have any relation to the in-world hitbox of dropped items. All items now have a 16x16 hitbox in the game world.
-- NPC.killCount, Item.BannerToItem, Item.BannerToNPC, Item.NPCtoBanner are now all in GameContent.BannerSystem
 - Condition.DownedEarlygameBoss now includes King Slime and Deerclops (Now it's any pre-Hardmode boss or Hardmode).
 
 # tModPorter TODOs
@@ -355,15 +343,6 @@ Longer TODOs that would clutter above
  		for (int i = 0; i < 5; i++) {
  			if (!_layerList.Contains(ItemSortingLayers.WeaponsMelee) && player.meleeDamage == list[0]) {
  				list.RemoveAt(0);
-```
-
-- NPC.killCount no longer exists? Need to update docs and examples.
-```diff
-+	/// <summary>
-+	/// Indexed by BannerIDs, counts how many kills a specific enemy (or group of enemies with a shared BannerID) has in this world. Kill counts are stored on the world and are synced in multiplayer. Used by the <see cref="ItemID.TallyCounter"/> and for dropping banners. See also <see cref="ItemID.Sets.KillsToBanner"/>.
-+	/// <para/> Note that Bestiary kill counts are tracked separately and per each NPC type instead of sharing a kill count with all other NPC types using the same BannerID.
-+	/// </summary>
- 	public static int[] killCount = new int[NPCID.Count];
 ```
 
 - NPC.netUpdate field moved, need to restore this patch in a new patch after patches fixed.

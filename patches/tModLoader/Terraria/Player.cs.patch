@@ -3342,15 +3342,19 @@
  	}
  
  	private void UpdateArmorSets_Always_Vortex()
-@@ -13237,6 +_,8 @@
- 			luckNeedsSync = true;
+@@ -13238,6 +_,12 @@
  			HasGardenGnomeNearby = SceneMetrics.HasGardenGnome;
  		}
+ 
++		//TODO: Are these flags a problem?
++		LoaderManager.Get<BiomeLoader>().UpdateBiomes(this);
++
 +		// Added by TML.
 +		ZonePurity = InZonePurity();
- 
++
  		behindBackWall = Framing.GetTileSafely(base.Center).wall > 0;
  		if (!dead) {
+ 			Point point = base.Center.ToTileCoordinates();
 @@ -13268,10 +_,13 @@
  				AchievementsHelper.HandleSpecialEvent(this, 15);
  			else if (_funkytownAchievementCheckCooldown == 0 && ZoneGraveyard)
