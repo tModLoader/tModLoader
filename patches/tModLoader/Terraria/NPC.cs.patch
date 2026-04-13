@@ -2499,10 +2499,10 @@
 +	/// <param name="damageVariation">Whether to apply damage variation. Defaults to false.</param>
 +	/// <param name="luck">Luck modifier to produce weight damageVariation towards higher (positive) or lower (negative) values. Defaults to 0</param>
 +	/// <returns>A <see cref="HitInfo"/> for use with <see cref="StrikeNPC(HitInfo, bool, bool)"/> and <see cref="NetMessage.SendStrikeNPC"/></returns>
-+    ///<remarks>
-+    /// Note: This method doesn't include entity-related hit modifying hooks and shouldn't be used in normal contexts.
-+    /// Consider using <see cref="StrikeOtherNPC"/> instead.
-+    //</remarks>
++	/// <remarks>
++	/// Note: This method doesn't include entity-related hit modifying hooks and shouldn't be used in normal contexts.
++	/// <br/><br/> Consider using <see cref="StrikeOtherNPC"/> instead.
++	/// </remarks>
 +	public HitInfo CalculateHitInfo(int damage, int hitDirection, bool crit = false, float knockBack = 0f, DamageClass damageType = null, bool damageVariation = false, float luck = 0) {
 +		return GetIncomingStrikeModifiers(damageType, hitDirection).ToHitInfo(damage, crit, knockBack, damageVariation, luck);
 +	}
@@ -2616,7 +2616,7 @@
  			}
  
  			if (HitSound != null)
-@@ -64818,11 +_,34 @@
+@@ -64818,10 +_,31 @@
  			else
  				checkDead();
  
@@ -2626,33 +2626,30 @@
  
 -		return 0.0;
 +		return 0;
++	}
++
++	/// <summary>
++	/// A helper method for an NPC striking another NPC.
++	/// <br/><br/> Handles modifiers, hit info, network, and hooks automatically.
++	/// </summary>
++	public void StrikeOtherNPC(NPC target, int damage, float knockback, int hitDirection, bool crit = false, bool randomizeDamage = true)
++	{
++		NPC.HitModifiers modifiers = target.GetIncomingStrikeModifiers(DamageClass.Default, hitDirection, default);
++
++		NPCLoader.ModifyHitNPC(this, target, ref modifiers);
++
++		NPC.HitInfo hitInfo = modifiers.ToHitInfo(damage, crit, knockback, randomizeDamage);
++
++		target.StrikeNPC(hitInfo, false, true);
++
++		if (Main.netMode != 0) {
++			NetMessage.SendStrikeNPC(target, hitInfo);
++		}
++
++		NPCLoader.OnHitNPC(this, target, hitInfo);
  	}
-+
-+    ///<summary>
-+    /// A helper method for an NPC striking another NPC
-+    /// Handles modifiers, hit info, network, and hooks automatically.
-+    ///</summary>
-+    public void StrikeOtherNPC(NPC target, int damage, float knockback, int hitDirection, bool crit = false, bool randomizeDamage = true)
-+    {
-+        NPC.HitModifiers modifiers = target.GetIncomingStrikeModifiers(DamageClass.Default, hitDirection, default);
-+        
-+        NPCLoader.ModifyHitNPC(NPC, target, ref modifiers);
-+
-+        NPC.HitInfo hitInfo = modifiers.ToHitInfo(damage, crit, knockback, randomizeDamage);
-+
-+        target.StrikeNPC(hitInfo, false, true);
-+
-+        if(Main.netMode != 0)
-+        {
-+            NetMessage.SendStrikeNPC(target, hitInfo);
-+        }
-+
-+        NPCLoader.OnHitNPC(this, target, hitInfo);
-+        
-+    }
  
  	public static void LadyBugKilled(Vector2 Position, bool GoldLadyBug = false)
- 	{
 @@ -64897,7 +_,29 @@
  		}
  	}
