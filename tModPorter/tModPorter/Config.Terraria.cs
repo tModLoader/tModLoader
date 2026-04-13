@@ -552,4 +552,3 @@ public static partial class Config
 		RenameGenVar("StatuesWithTraps");
 	}
 }
-

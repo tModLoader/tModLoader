@@ -107,6 +107,12 @@ public abstract class BaseRewriter : CSharpSyntaxRewriter
 		switch (node.Parent) {
 			case MemberAccessExpressionSyntax memberAccess when node == memberAccess.Name && MemberReferenceInvalid(memberAccess, out op, out isInvoke):
 				targetType = model.GetTypeInfo(memberAccess.Expression).Type;
+
+				// With qualified member access expressions (such as Terraria.Main.field instead of Main.field), for some reason I can't get the correct Type unless we fallback to this.
+				var expressionSymbolInfo = model.GetSymbolInfo(memberAccess.Expression);
+				var expressionSymbol = expressionSymbolInfo.Symbol ?? (expressionSymbolInfo.CandidateSymbols.Length == 1 ? expressionSymbolInfo.CandidateSymbols[0] : null);
+				if (expressionSymbol is INamedTypeSymbol namedTypeSymbol)
+					targetType = namedTypeSymbol;
 				return true;
 
 			case MemberBindingExpressionSyntax memberBinding when MemberReferenceInvalid(memberBinding, out op, out isInvoke) && op.ChildOperations.First() is IConditionalAccessInstanceOperation target:
