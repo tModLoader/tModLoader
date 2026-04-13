@@ -2630,7 +2630,7 @@
 +
 +    ///<summary>
 +    /// A helper method for an NPC striking another NPC
-+    /// Handels modifiers, hit info, network, syncing, and hooks automatically.
++    /// Handels modifiers, hit info, network, and hooks automatically.
 +    ///</summary>
 +    public void StrikeOtherNPC(NPC target, int damage, float knockback, int hitDirection, bool crit = false, bool randomizeDamage = true)
 +    {
