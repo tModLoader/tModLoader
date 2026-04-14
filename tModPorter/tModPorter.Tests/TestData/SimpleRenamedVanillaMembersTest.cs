@@ -18,6 +18,7 @@ public class SimpleRenamedVanillaMembersTest
 		var worldRate = Main.worldRate;
 		var lightMode = Lighting.lightMode;
 		var technicallyABoss = NPCID.Sets.TechnicallyABoss;
+		var shouldBeCountedAsBoss = NPCID.Sets.ShouldBeCountedAsBoss;
 		var homing = ProjectileID.Sets.Homing;
 		var rasterizer = Main.instance.Rasterizer;
 
@@ -52,6 +53,13 @@ public class SimpleRenamedVanillaMembersTest
 		bool isJourney = Main.GameModeInfo.IsJourneyMode;
 		_ = Main.recBigList;
 		_ = Main.recFastScroll;
+
+		PopupText popupText = Main.popupText[0];
+
+		int logicCheckScreenHeight = Main.LogicCheckScreenHeight;
+		int logicCheckScreenWidth = Main.LogicCheckScreenWidth;
+
+		Main.musicBox2 = 87;
 
 		int copperTierOreInt = WorldGen.CopperTierOre;
 		ushort copperTierOre = WorldGen.CopperTierOre;

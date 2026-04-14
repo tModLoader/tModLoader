@@ -4390,7 +4390,7 @@
 +							/*
  							if (TileID.Sets.Clouds[tile.type] || tile.type == 666 || flag8) {
 +							*/
-+							if (TileID.Sets.Clouds[tile.type] || tile.type == 666 || flag8 || TileID.Sets.NegatesFallDamage[tile.type]) {
++							if (TileID.Sets.Clouds[tile.type] || TileID.Sets.NegatesFallDamage[tile.type] || flag8) {
  								num10 = 0;
  								break;
  							}

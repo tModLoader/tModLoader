@@ -97,15 +97,19 @@ All classes are in the `Terraria` or `Terraria.ID` namespaces unless otherwise i
 * ⚙️: `Main.ActiveItems` now iterates over `WorldItem` instead of `Item`.
 * ⚙️: `Main.GameModeInfo` removed. 
   * 🤖: `Main.GameModeInfo.IsJourneyMode` -> `Main.IsJourneyMode`
-* ⚙️: `Main.recBigList` -> `Main.PopsUseGrid`
-* ⚙️: `Main.recFastScroll` -> `Main.PipsFastScroll`
+* 🤖: `Main.LogicCheckScreenHeight` -> `Main.MaxWorldViewSize.Y`
+* 🤖: `Main.LogicCheckScreenWidth` -> `Main.MaxWorldViewSize.X`
+* ⚙️: `Main.musicBox2` removed. Use `Player.musicBox` instead.
+* 🤖: `Main.popupText` -> `PopupText.popupText`
+* 🤖: `Main.recBigList` -> `Main.PopsUseGrid`
+* 🤖: `Main.recFastScroll` -> `Main.PipsFastScroll`
 * ⚙️: `Main.item` is now `WorldItem[]` instead of `Item[]`.
 * 🤖: `MessageID` entry changes: `TileSquare` -> `AreaTileChange`, `ShotAnimationAndSound` -> `ItemRotationAndAnimation`, `PlayerTeam` -> `TeamChange`, `RequestReadSign` -> `OpenSignRequest`, `ReadSign` -> `OpenSignResponse`, `AddPlayerBuff` -> `AddPlayerBuffPvP`, `PaintTile` -> `SyncTilePaintOrCoating`, `PaintWall` -> `SyncWallPaintOrCoating`, `NPCKillCountDeathTally` -> `Unused83`, `TEDisplayDollItemSync` -> `TEDisplayDollDataSync`
 * ⚙️: `MountID.Sets.FacePlayersVelocity` removed. Now automatic for all minecarts.
 * 🤖: `MusicId` entry changes: `Night` -> `OverworldNight`, `Title` -> `TitleClassic`, `Jungle` -> `JungleDay`, `TheHallow` -> `Hallow`, `Space` -> `SpaceNight`, `Boss4` -> `Golem`, `AltOverworldDay` -> `OverworldDayAlt`, `Ocean` -> `OceanDay`, `RainSoundEffect` -> `RainAmbience`, `Mushrooms` -> `Mushroom`, `AltUnderground` -> `UndergroundAlt`, `TheTowers` -> `LunarPillars`, `Hell` -> `Underworld`, `LunarBoss` -> `MoonLord`, `GoblinInvasion` -> `GoblinArmy`, `DayRemix` -> `OverworldDayRemix`, `MenuMusic` -> `TitleJourneysBeginningWithIntro`, `Monsoon` -> `Storm`, `JungleUnderground` -> `UndergroundJungle`, `ConsoleMenu` -> `TitleAlt`, `OtherworldlyRain` -> `OtherworldRain`, `OtherworldlyDay` -> `OtherworlddDay`, `OtherworldlyNight` -> `OtherworldNight`, `OtherworldlyUnderground` -> `OtherworldUnderground`, `OtherworldlyDesert` -> `OtherworldDesert`, `OtherworldlyOcean` -> `OtherworldOcean`, `OtherworldlyMushrooms` -> `OtherworldMushroom`, `OtherworldlyDungeon` -> `OtherworldDungeon`, `OtherworldlySpace` -> `OtherworldSpace`, `OtherworldlyUnderworld` -> `OtherworldUnderworld`, `OtherworldlySnow` -> `OtherworldSnow`, `OtherworldlyCorruption` -> `OtherworldCorruption`, `OtherworldlyUGCorrption` -> `OtherworldUndergroundCorruption`, `OtherworldlyCrimson` -> `OtherworldCrimson`, `OtherworldlyUGCrimson` -> `OtherworldUndergroundCrimson`, `OtherworldlyIce` -> `OtherworldIce`, `OtherworldlyUGHallow` -> `OtherworldUndergroundHallow`, `OtherworldlyEerie` -> `OtherworldEerie`, `OtherworldlyBoss2` -> `OtherworldBoss2`, `OtherworldlyBoss1` -> `OtherworldBoss1`, `OtherworldlyInvasion` -> `OtherworldInvasion`, `OtherworldlyTowers` -> `OtherworldLunarPillars`, `OtherworldlyLunarBoss` -> `OtherworldMoonLord`, `OtherworldlyPlantera` -> `OtherworldPlantera`, `OtherworldlyJungle` -> `OtherworldJungle`, `OtherworldlyWoF` -> `OtherworldWallOfFlesh`, `OtherworldlyHallow` -> `OtherworldHallow`, `Credits` -> `JourneysEnd`, `Shimmer` -> `Aether`
 * 🤖: `NPCID.Sets.UsesNewTargetting` -> `NPCID.Sets.UsesNewTargeting`
 * 🤖: `NPCID.Sets.GoldCrittersCollection` -> `NPCID.Sets.IsGoldCritter`. Also changed from `List` to typical to typical ID set.
-* 🤖: `NPCID.Sets.ShouldBeCountedAsBossForBestiary` -> `NPCID.Sets.ShouldBeCountedAsBoss`
+* 🤖: `NPCID.Sets.ShouldBeCountedAsBoss` -> `NPCID.Sets.ShouldBeCountedAsBossForBestiary`
 * 🤖: `NPCID.Sets.SpawnFromLastEmptySlot` -> `NPCID.Sets.SearchSpawnSlotsInReverse`
 * 🤖: `ProjectileID.Web` -> `ProjectileID.WebSlingerHook`
 * ⚙️: `ProjectileID.Sets.DontAttachHideToAlpha` removed. Now true by default. See `Projectile.usesOwnerLight` and `Projectile.drawLayer` for more details.
@@ -115,7 +119,8 @@ All classes are in the `Terraria` or `Terraria.ID` namespaces unless otherwise i
 * 🤖: `TileID.Sets.CountsAsHoneySource` -> `TileID.Sets.CountsAsHoneyForCrafting`
 * 🤖: `TileID.Sets.CountsAsLavaSource` -> `TileID.Sets.CountsAsLavaForCrafting`
 * 🤖: `TileID.Sets.CountsAsShimmerSource` -> `TileID.Sets.CountsAsShimmerForCrafting`
-* 🤖: `TileID.Sets.IsAMechanism` -> `TileID.Sets.Wiring.IsAMechanism`
+* ⚙️: `TileID.Sets.IsAMechanism` -> `TileID.Sets.Wiring.IsAMechanism`
+  * 💀: The meaning of `IsAMechanism` has changed, it is now used for all wireable tiles and is how the items that place the tiles automatically get the "Wireable" tooltip. Add `TileID.Sets.Wiring.IsAMechanism[Type] = true;` to all tiles that do something when wired and add `TileID.Sets.Wiring.IgnoreWhenValidatingTraps[Type] = true;` to wireable tiles that aren't traps.
 * 🤖: `TileID.Sets.IsATrigger` -> `TileID.Sets.Wiring.IsATrigger`
 * 🤖: `TileID.Sets.InteractibleByNPCs` -> `TileID.Sets.InteractableByNPCs`
 * 🤖: `TileID.Sets.Torch` -> `TileID.Sets.Torches`

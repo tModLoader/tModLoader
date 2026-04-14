@@ -131,7 +131,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - RefreshInfoAccsFromItemType is now being called on vanity equipment too. Does this affect any of our changes? Is any slot now being checked twice? Do we need to adjust ModAccessorySlotPlayer for the same behavior?
 - `//TML: Eventide and nightglow handled by Item.useLimitPerAnimation.` comment now commenting out item 5669. Might need to make changes to that item similar to 4956
 - ItemLoader.UseItemHitbox callsite useStyle == 3 needs adjustment to call hook reliably.
-- Update TileID.Sets.NegatesFallDamage docs and entries. Mention that TileID.Sets.Clouds will have the same effect ase well and remove the cloud entries.
 - clientClone changed. I think the `_clientClone` field is no longer needed, or extraneous.
 - Player.nonTorch removed
 - Cloud rendering has moved, need to migrate modcloud patches from Main to HorizonRenderer I think.
@@ -174,8 +173,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
   - For example: ArmorSetBonuses.BuildLookup, ItemID.Sets.PostSetupContent
   - Someone should "find all references" on each XID.Count field to find any remaining content arrays that need to be resized (CB done ItemID, TileID, WallID).
 - Make a checklist of all TML hooks and have others QC each method behavior?
-- TileID.Sets.IsAMechanism changed to TileID.Sets.Wiring.IsAMechanism. tModPorter done. The function of the set might have changed, investigate and update docs.
-- NPCID.Sets.ShouldBeCountedAsBossForBestiary renamed to ShouldBeCountedAsBoss. tModPorter done. (TODO: Verify where it is now used and update docs if necessary)
 - BuffID.Sets.LongerExpertDebuff -> BuffID.Sets.BuffTimeIsExtendedWithGameDifficulty. tModPorter done. Docs remarks might also now be wrong. Also doc BuffTimeIsExtendedByDeadCellsPotionStationBuff
 - ItemID.Sets.BonusAttackSpeedMultiplier renamed to BonusMeleeSpeedMultiplier. tModPorter done. (double check that this doesn't only apply to melee weapons. I think it isn't limited currently)
 - Run NPCShopDatabase.Test tests.

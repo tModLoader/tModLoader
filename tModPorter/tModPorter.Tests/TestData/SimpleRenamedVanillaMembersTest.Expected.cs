@@ -20,7 +20,8 @@ public class SimpleRenamedVanillaMembersTest
 		var tileValue = Main.tileOreFinderPriority;
 		var worldRate = Main.desiredWorldTilesUpdateRate;
 		var lightMode = Lighting.LegacyEngine.Mode;
-		var technicallyABoss = NPCID.Sets.ShouldBeCountedAsBoss;
+		var technicallyABoss = NPCID.Sets.ShouldBeCountedAsBossForBestiary;
+		var shouldBeCountedAsBoss = NPCID.Sets.ShouldBeCountedAsBossForBestiary;
 		var homing = ProjectileID.Sets.CultistIsResistantTo;
 		// not-yet-implemented
 		var rasterizer = Main.Rasterizer;
@@ -60,6 +61,13 @@ public class SimpleRenamedVanillaMembersTest
 		bool isJourney = Main.IsJourneyMode;
 		_ = Main.PipsUseGrid;
 		_ = Main.PipsFastScroll;
+
+		PopupText popupText = PopupText.popupText[0];
+
+		int logicCheckScreenHeight = Main.MaxWorldViewSize.Y;
+		int logicCheckScreenWidth = Main.MaxWorldViewSize.X;
+
+		Main.musicBox2/* tModPorter Note: Removed. Use Player.musicBox instead */ = 87;
 
 		int copperTierOreInt = WorldGen.SavedOreTiers.Copper;
 #if COMPILE_ERROR // ushort -> int

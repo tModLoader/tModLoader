@@ -287,7 +287,7 @@ public static partial class Config
 		RenameStaticFields("Terraria.ID.MusicID", "Night", "OverworldNight", "Title", "TitleClassic", "Jungle", "JungleDay", "TheHallow", "Hallow", "Space", "SpaceNight", "Boss4", "Golem", "AltOverworldDay", "OverworldDayAlt", "Ocean", "OceanDay", "RainSoundEffect", "RainAmbience", "Mushrooms", "Mushroom", "AltUnderground", "UndergroundAlt", "TheTowers", "LunarPillars", "Hell", "Underworld", "LunarBoss", "MoonLord", "GoblinInvasion", "GoblinArmy", "DayRemix", "OverworldDayRemix", "MenuMusic", "TitleJourneysBeginningWithIntro", "Monsoon", "Storm", "JungleUnderground", "UndergroundJungle", "ConsoleMenu", "TitleAlt", "OtherworldlyRain", "OtherworldRain", "OtherworldlyDay", "OtherworlddDay", "OtherworldlyNight", "OtherworldNight", "OtherworldlyUnderground", "OtherworldUnderground", "OtherworldlyDesert", "OtherworldDesert", "OtherworldlyOcean", "OtherworldOcean", "OtherworldlyMushrooms", "OtherworldMushroom", "OtherworldlyDungeon", "OtherworldDungeon", "OtherworldlySpace", "OtherworldSpace", "OtherworldlyUnderworld", "OtherworldUnderworld", "OtherworldlySnow", "OtherworldSnow", "OtherworldlyCorruption", "OtherworldCorruption", "OtherworldlyUGCorrption", "OtherworldUndergroundCorruption", "OtherworldlyCrimson", "OtherworldCrimson", "OtherworldlyUGCrimson", "OtherworldUndergroundCrimson", "OtherworldlyIce", "OtherworldIce", "OtherworldlyUGHallow", "OtherworldUndergroundHallow", "OtherworldlyEerie", "OtherworldEerie", "OtherworldlyBoss2", "OtherworldBoss2", "OtherworldlyBoss1", "OtherworldBoss1", "OtherworldlyInvasion", "OtherworldInvasion", "OtherworldlyTowers", "OtherworldLunarPillars", "OtherworldlyLunarBoss", "OtherworldMoonLord", "OtherworldlyPlantera", "OtherworldPlantera", "OtherworldlyJungle", "OtherworldJungle", "OtherworldlyWoF", "OtherworldWallOfFlesh", "OtherworldlyHallow", "OtherworldHallow", "Credits", "JourneysEnd", "Shimmer", "Aether");
 		RenameStaticField("Terraria.ID.NPCID.Sets", from: "UsesNewTargetting", to: "UsesNewTargeting");
 		RenameStaticField("Terraria.ID.NPCID.Sets", from: "GoldCrittersCollection", to: "IsGoldCritter").FollowBy(ConvertCollectionAddToSetTrue);
-		RenameStaticField("Terraria.ID.NPCID.Sets", from: "ShouldBeCountedAsBossForBestiary", to: "ShouldBeCountedAsBoss");
+		RenameStaticField("Terraria.ID.NPCID.Sets", from: "ShouldBeCountedAsBoss", to: "ShouldBeCountedAsBossForBestiary");
 		RenameStaticField("Terraria.ID.NPCID.Sets", from: "SpawnFromLastEmptySlot", to: "SearchSpawnSlotsInReverse");
 		RenameStaticField("Terraria.ID.ProjectileID", from: "Web", to: "WebSlingerHook");
 		RenameStaticField("Terraria.ID.ProjectileID.Sets", from: "MinionTargettingFeature", to: "MinionTargetingFeature");
@@ -305,6 +305,9 @@ public static partial class Config
 		RenameStaticField("Terraria.ID.WallID.Sets", from: "Hallow", to: "SpreadsHallow");
 		RenameStaticField("Terraria.Main", from: "DisableIntenseVisualEffects", to: "FlashyEffectsWorld").FollowBy(InvertBool);
 		RenameStaticField("Terraria.Main", "gameInactive", "GameplayActive", "Terraria.FocusHelper").FollowBy(InvertBool);
+		RenameStaticField("Terraria.Main", "LogicCheckScreenHeight", "MaxWorldViewSize.Y");
+		RenameStaticField("Terraria.Main", "LogicCheckScreenWidth", "MaxWorldViewSize.X");
+		RenameStaticField("Terraria.Main", "popupText", "popupText", "Terraria.PopupText");
 		RenameStaticField("Terraria.Main", "recBigList", "PipsUseGrid");
 		RenameStaticField("Terraria.Main", "recFastScroll", "PipsFastScroll");
 		RenameStaticField("Terraria.NPC", "killCount", "killCount", "Terraria.GameContent.BannerSystem");
@@ -345,6 +348,7 @@ public static partial class Config
 		RefactorStaticMember("Terraria.Item", "whoAmI", Removed("Moved to WorldItem"));
 		RefactorStaticMember("Terraria.Item", "beingGrabbed", Removed("Moved to WorldItem"));
 		RefactorStaticMember("Terraria.Main", "GameModeInfo", RewriteIsJourneyMode);
+		RefactorStaticMember("Terraria.Main", "musicBox2", Removed("Use Player.musicBox instead"));
 		RefactorStaticMember("Terraria.NPC", "netSkip", Removed("No longer necessary when setting life <= 0 and was never necessary when setting active = false"));
 		RefactorStaticMember("Terraria.Player", "RandomTeleportationAttemptSettings", Removed("Use Utils.RandomTeleportationAttemptSettings instead and populate all the relevant new fields"));
 
