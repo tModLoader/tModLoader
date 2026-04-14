@@ -289,6 +289,7 @@ public static partial class Config
 		RenameStaticField("Terraria.ID.NPCID.Sets", from: "GoldCrittersCollection", to: "IsGoldCritter").FollowBy(ConvertCollectionAddToSetTrue);
 		RenameStaticField("Terraria.ID.NPCID.Sets", from: "ShouldBeCountedAsBossForBestiary", to: "ShouldBeCountedAsBoss");
 		RenameStaticField("Terraria.ID.NPCID.Sets", from: "SpawnFromLastEmptySlot", to: "SearchSpawnSlotsInReverse");
+		RenameStaticField("Terraria.ID.ProjectileID", from: "Web", to: "WebSlingerHook");
 		RenameStaticField("Terraria.ID.ProjectileID.Sets", from: "MinionTargettingFeature", to: "MinionTargetingFeature");
 		RenameStaticField("Terraria.ID.TileID.Sets", from: "CountsAsWaterSource", to: "CountsAsWaterForCrafting");
 		RenameStaticField("Terraria.ID.TileID.Sets", from: "CountsAsHoneySource", to: "CountsAsHoneyForCrafting");
@@ -333,6 +334,8 @@ public static partial class Config
 		RenameMethod("Terraria.Main", "ShouldShowInvisibleWalls", "ShouldShowInvisibleBlocksAndWalls");
 		RenameMethod("Terraria.Player", "IsProjectileInteractibleAndInInteractionRange", "IsProjectileInteractableAndInInteractionRange");
 		RenameMethod("Terraria.Localization.LocalizedText", from: "CanFormatWith", to: "ConditionsMetWith");
+		RenameMethod("Terraria.Utils", from: "PlotTileArea", to: "FloodFillTile"); // No longer returns bool
+		RenameMethod("Terraria.WorldGen", from: "CheckTight", to: "CheckStalactite");
 
 		RefactorStaticMember("Terraria.ID.BuffID.Sets", "BasicMountData", Removed("Replace with BuffID.Sets.MountType[Type] = ModContent.MountType<MyMount>();"));
 		RefactorStaticMember("Terraria.ID.ItemID.Sets", "ItemSpawnDecaySpeed", Removed("No longer used."));
@@ -343,6 +346,7 @@ public static partial class Config
 		RefactorStaticMember("Terraria.Item", "beingGrabbed", Removed("Moved to WorldItem"));
 		RefactorStaticMember("Terraria.Main", "GameModeInfo", RewriteIsJourneyMode);
 		RefactorStaticMember("Terraria.NPC", "netSkip", Removed("No longer necessary when setting life <= 0 and was never necessary when setting active = false"));
+		RefactorStaticMember("Terraria.Player", "RandomTeleportationAttemptSettings", Removed("Use Utils.RandomTeleportationAttemptSettings instead and populate all the relevant new fields"));
 
 		RefactorInstanceMethodCall("Terraria.Item", "SetDefaults", RemoveParameter(1, "noMatCheck", "bool"));
 		RefactorInstanceMethodCall("Terraria.Tile", "water", GetterSetterToProperty("LiquidType", "Terraria.ID.LiquidID", "Water"));
@@ -353,6 +357,7 @@ public static partial class Config
 		RefactorInstanceMethodCall("Terraria.Tile", "anyWire", GetterToProperty("HasWire"));
 		RefactorInstanceMethodCall("Terraria.NPC", "ShouldBestiaryGirlBeLycantrope", ToStaticMethodCall("Terraria.NPC", "ShouldBestiaryGirlBeLycantrope"));
 		RefactorInstanceMethodCall("Terraria.NPC", "SpawnWithHigherTime", Removed("No longer used."));
+		RefactorInstanceMethodCall("Terraria.Player", "CheckForGoodTeleportationSpot", Removed("Use Utils.CheckForGoodTeleportationSpot instead."));
 		RefactorInstanceMethodCall("Terraria.Recipe", "FindRecipes", Removed("No longer used."));
 
 		ChangeStaticFieldType("Terraria.Main", "item",        from: "Terraria.Item", to: "Terraria.WorldItem");

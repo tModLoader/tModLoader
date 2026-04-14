@@ -71,6 +71,7 @@ public class SimpleRenamedVanillaMembersTest
 		int oreTier1 = WorldGen.SavedOreTiers.Cobalt;
 		int oreTier2 = WorldGen.SavedOreTiers.Mythril;
 		int oreTier3 = WorldGen.SavedOreTiers.Adamantite;
+		WorldGen.CheckStalactite(1, 2);
 
 		float inverseLerp = Utils.GetLerpValue(0f, 1f, 0.1f, false);
 		Lighting.Clear();
@@ -84,6 +85,7 @@ public class SimpleRenamedVanillaMembersTest
 		int readSign = MessageID.OpenSignResponse;
 		int killCount = MessageID.Unused83;
 		_ = MusicID.LunarPillars;
+		_ = ProjectileID.WebSlingerHook;
 
 		int water = LiquidID.Water;
 		int honey = LiquidID.Honey;
@@ -141,6 +143,14 @@ public class SimpleRenamedVanillaMembersTest
 		Main.DrawPlayer(player, Vector2.Zero, 0f, Vector2.Zero, 1f);
 #endif
 
+#if COMPILE_ERROR
+		Player.RandomTeleportationAttemptSettings settings = new Player.RandomTeleportationAttemptSettings/* tModPorter Note: Removed. Use Utils.RandomTeleportationAttemptSettings instead and populate all the relevant new fields */ {
+			avoidLava = true,
+		};
+		bool canSpawn = false;
+		_ = player.CheckForGoodTeleportationSpot(ref canSpawn, 100, 200, 300, 400, settings)/* tModPorter Note: Removed. Use Utils.CheckForGoodTeleportationSpot instead. */;
+#endif
+
 		var item = new Item();
 		var owner = item.playerIndexTheItemIsReservedFor;
 		var vanity = item.hasVanityEffects;
@@ -181,5 +191,7 @@ public class SimpleRenamedVanillaMembersTest
 		int Banner = BannerSystem.NPCtoBanner(NPCID.Zombie);
 		_ = BannerSystem.BannerToItem(Banner);
 		_ = BannerSystem.BannerToNPC(Banner);
+
+		Utils.FloodFillTile(10, 20, DelegateMethods.SpreadLightOpen_StopForSolids);
 	}
 }

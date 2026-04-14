@@ -125,6 +125,11 @@ public abstract class BaseRewriter : CSharpSyntaxRewriter
 				targetType = parent.Type;
 				isInvoke = false;
 				return true;
+
+			case QualifiedNameSyntax qualifiedNameSyntax when node == qualifiedNameSyntax.Right && MemberReferenceInvalid(qualifiedNameSyntax, out op, out isInvoke):
+				// Not sure what the targetType should be, Left or Right. Currently only used for Terraria.Player.RandomTeleportationAttemptSettings inner class refactor, where we want to refactor the inner type directly, not a field or property of a type. Might need to change this and make a TypeRewriter class.
+				targetType = model.GetTypeInfo(qualifiedNameSyntax.Left).Type;
+				return true;
 		};
 
 		targetType = null;
@@ -147,6 +152,12 @@ public abstract class BaseRewriter : CSharpSyntaxRewriter
 			isInvoke = true;
 			op = model.GetOperation(invoke);
 			return IsInvalidOrObsolete(op) && invoke.ArgumentList.Arguments.All(arg => model.GetOperation(arg) is not IInvalidOperation);
+		}
+
+		if (memberRefExpr.Parent is ObjectCreationExpressionSyntax objectCreation && memberRefExpr == objectCreation.Type) {
+			isInvoke = false;
+			op = model.GetOperation(objectCreation);
+			return IsInvalidOrObsolete(op);
 		}
 
 		isInvoke = false;

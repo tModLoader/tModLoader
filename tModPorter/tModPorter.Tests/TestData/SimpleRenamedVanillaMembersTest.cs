@@ -61,6 +61,7 @@ public class SimpleRenamedVanillaMembersTest
 		int oreTier1 = WorldGen.oreTier1;
 		int oreTier2 = WorldGen.oreTier2;
 		int oreTier3 = WorldGen.oreTier3;
+		WorldGen.CheckTight(1, 2);
 
 		float inverseLerp = Utils.InverseLerp(0f, 1f, 0.1f, false);
 		Lighting.BlackOut();
@@ -72,6 +73,7 @@ public class SimpleRenamedVanillaMembersTest
 		int readSign = MessageID.ReadSign;
 		int killCount = MessageID.NPCKillCountDeathTally;
 		_ = MusicID.TheTowers;
+		_ = ProjectileID.Web;
 
 		int water = Tile.Liquid_Water;
 		int honey = Tile.Liquid_Honey;
@@ -113,6 +115,12 @@ public class SimpleRenamedVanillaMembersTest
 
 		Main.DrawPlayer(player, Vector2.Zero, 0f, Vector2.Zero, 1f);
 
+		Player.RandomTeleportationAttemptSettings settings = new Player.RandomTeleportationAttemptSettings {
+			avoidLava = true,
+		};
+		bool canSpawn = false;
+		_ = player.CheckForGoodTeleportationSpot(ref canSpawn, 100, 200, 300, 400, settings);
+
 		var item = new Item();
 		var owner = item.owner;
 		var vanity = item.canBePlacedInVanityRegardlessOfConditions;
@@ -135,5 +143,7 @@ public class SimpleRenamedVanillaMembersTest
 		int Banner = Item.NPCtoBanner(NPCID.Zombie);
 		_ = Item.BannerToItem(Banner);
 		_ = Item.BannerToNPC(Banner);
+
+		Utils.PlotTileArea(10, 20, DelegateMethods.SpreadLightOpen_StopForSolids);
 	}
 }
