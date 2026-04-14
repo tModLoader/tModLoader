@@ -294,7 +294,7 @@
 		"ModPackEnableOnlyThisList": "Activar solo esta lista",
 		"ModPackEnableOnlyThisListDesc": "Desactiva todos los mods y activa los del paquete\ncon las versiones más recientes disponibles en Steam Workshop",
 		"ModPackUpdateListWithEnabled": "Actualizar lista con mods activados",
-		"ModPackUpdateListWithEnabledDesc": "Actualiza el paquetec on la lista de mods\nactualmente activados",
+		"ModPackUpdateListWithEnabledDesc": "Actualiza el paquete con la lista de mods\nactualmente activados",
 		"ModPackViewModsInModBrowser": "Ver mods en el Navegador de Mods",
 		"ModPackViewModsInModBrowserDesc": "Consulta los mods incluidos en el paquete\n en el Navegador de Mods",
 		"ModPackModsAvailableStatus": "{0} totales, {1} activ., {2} desactiv., {3} faltante(s)",
