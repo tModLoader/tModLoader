@@ -204,6 +204,11 @@ public class RenameRewriter : BaseRewriter {
 		);
 	};
 
+	public static AdditionalRenameAction AddCommentToMethodInvocation(string comment) => (rw, node) => {
+		if (node.Parent.Parent.Parent is InvocationExpressionSyntax invoke)
+			rw.RegisterAction<InvocationExpressionSyntax>(invoke, newNode => newNode.WithArgumentList(newNode.ArgumentList.WithBlockComment(comment)));
+	};
+
 	public static AdditionalRenameAction AddCommentToOverride(string comment) => (rw, node) => {
 		if (node.Parent is MethodDeclarationSyntax decl)
 			rw.RegisterAction<MethodDeclarationSyntax>(decl, newNode => newNode.WithParameterList(newNode.ParameterList.WithBlockComment(comment)));

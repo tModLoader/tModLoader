@@ -200,6 +200,6 @@ public class SimpleRenamedVanillaMembersTest
 		_ = BannerSystem.BannerToItem(Banner);
 		_ = BannerSystem.BannerToNPC(Banner);
 
-		Utils.FloodFillTile(10, 20, DelegateMethods.SpreadLightOpen_StopForSolids);
+		Utils.FloodFillTile(10, 20, DelegateMethods.SpreadLightOpen_StopForSolids)/* tModPorter Parameters have changed */;
 	}
 }

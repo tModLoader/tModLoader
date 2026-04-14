@@ -80,7 +80,7 @@ TODO: More information
 ### Static Methods
 
 * 💀: `Main.GetPlayerArmPosition` now has a `Player` parameter.
-* 🤖: `Utils.PlotTileArea` -> `Utils.FloodFillTile`. Also no longer returns `bool`.
+* ⚙️: `Utils.PlotTileArea` -> `Utils.FloodFillTile`. No longer returns `bool` and parameters are now `Point point, float maxDist, TileActionAttempt plot` instead of `int x, int y, TileActionAttempt plot`.
 * 🤖: `WorldGen.CheckTight` -> `WorldGen.CheckStalactite`
 
 ### Static Fields / Constants / Properties
