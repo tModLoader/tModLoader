@@ -205,8 +205,11 @@ internal static class ModOrganizer
 		return modPath.Contains(Path.Combine("workshop"), StringComparison.InvariantCultureIgnoreCase);
 	}
 
-	internal static string DetectAbnormalSteamWorkshopDownloads(out Action resolveAbnormalDownloads)
+	internal static string DetectAbnormalSteamWorkshopDownloads(out Action resolveAbnormalDownloads, out string continueButton, out string cancelButton)
 	{
+		//TODO: What happens if this is run on GoG or Family Share where it is using SteamGameServer and 'Subscribed' doesn't exist?
+		// Not tested -- 90% sure it should work fine since this code doesn't rely on Steam Workshop Subscription status to work. -- Solxan
+
 		// During initialize it forces update of CachedInstalledModDownloadItems
 		WorkshopBrowserModule.Instance.Initialize();
 
@@ -218,7 +221,23 @@ internal static class ModOrganizer
 		// if a local mod is installed and it doesn't have a corresponding workshop publish item AND isn't the reupload case
 		var installedWorkshopModsNotFoundOnWorkshop = FindWorkshopMods().Except(foundMDItems.Select(a => a.Installed));
 
-		if (!reuploadMDItems.Any() && !installedWorkshopModsNotFoundOnWorkshop.Any()) {
+		// Determine the Button Titles
+		if (reuploadMDItems.Any() && installedWorkshopModsNotFoundOnWorkshop.Any()) {
+			cancelButton = Language.GetTextValue("tModLoader.KeepInstalled");
+			continueButton = Language.GetTextValue("tModLoader.ResolveAbnormalMods");
+		}
+		else if (reuploadMDItems.Any()) {
+			cancelButton = Language.GetTextValue("tModLoader.ContinueAnyway");
+			continueButton = Language.GetTextValue("tModLoader.ResolveAbnormalMods");
+		}
+		else if (installedWorkshopModsNotFoundOnWorkshop.Any()) {
+			cancelButton = Language.GetTextValue("tModLoader.KeepInstalled");
+			continueButton = Language.GetTextValue("tModLoader.DeleteMods");
+		}
+		else {
+			// Nothing to do/show
+			cancelButton = string.Empty;
+			continueButton = string.Empty;
 			resolveAbnormalDownloads = null;
 			return string.Empty;
 		}
@@ -255,7 +274,7 @@ internal static class ModOrganizer
 		if (reuploadMDItems.Any()) {
 			messages.AppendLine(Language.GetTextValue("tModLoader.ReuploadedWorkshopMods"));
 			foreach (var mod in reuploadMDItems) {
-				messages.AppendLine($"  {mod.DisplayNameClean}");
+				messages.AppendLine($"  {mod.Installed.DisplayNameClean} --> {mod.DisplayNameClean}");
 			}
 		}
 
