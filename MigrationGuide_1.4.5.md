@@ -73,12 +73,15 @@ TODO: More information
 * Fishing power bonus now applies to any chair, not just toilets.
 * `ICameraModifier` now has a `IsAScreenShake` property to support the user's screen shake accessibility setting (`Main.UseScreenShake`). Update your `ICameraModifier` and other camera movements to support `Main.UseScreenShake`.
 * `Main.sign` length changed from 1000 to 32000.
+* Shaders no longer need to declare every possible input, missing inputs will be ignored now.
 
 ## Renamed, Moved, or Removed Members
 
 ### Static Methods
 
 * 💀: `Main.GetPlayerArmPosition` now has a `Player` parameter.
+* 🤖: `Utils.PlotTileArea` -> `Utils.FloodFillTile`. Also no longer returns `bool`.
+* 🤖: `WorldGen.CheckTight` -> `WorldGen.CheckStalactite`
 
 ### Static Fields / Constants / Properties
 
@@ -92,6 +95,10 @@ All classes are in the `Terraria` or `Terraria.ID` namespaces unless otherwise i
 * 🤖: `ItemID.Sets.SortingPriorityBossSpawns` -> `ItemID.Sets.SortingPriorityMiscImportants`
 * 🤖: `ItemID.Sets.BonusAttackSpeedMultiplier` -> `ItemID.Sets.BonusMeleeSpeedMultiplier`
 * ⚙️: `Main.ActiveItems` now iterates over `WorldItem` instead of `Item`.
+* ⚙️: `Main.GameModeInfo` removed. 
+  * 🤖: `Main.GameModeInfo.IsJourneyMode` -> `Main.IsJourneyMode`
+* ⚙️: `Main.recBigList` -> `Main.PopsUseGrid`
+* ⚙️: `Main.recFastScroll` -> `Main.PipsFastScroll`
 * ⚙️: `Main.item` is now `WorldItem[]` instead of `Item[]`.
 * 🤖: `MessageID` entry changes: `TileSquare` -> `AreaTileChange`, `ShotAnimationAndSound` -> `ItemRotationAndAnimation`, `PlayerTeam` -> `TeamChange`, `RequestReadSign` -> `OpenSignRequest`, `ReadSign` -> `OpenSignResponse`, `AddPlayerBuff` -> `AddPlayerBuffPvP`, `PaintTile` -> `SyncTilePaintOrCoating`, `PaintWall` -> `SyncWallPaintOrCoating`, `NPCKillCountDeathTally` -> `Unused83`, `TEDisplayDollItemSync` -> `TEDisplayDollDataSync`
 * ⚙️: `MountID.Sets.FacePlayersVelocity` removed. Now automatic for all minecarts.
@@ -100,6 +107,8 @@ All classes are in the `Terraria` or `Terraria.ID` namespaces unless otherwise i
 * 🤖: `NPCID.Sets.GoldCrittersCollection` -> `NPCID.Sets.IsGoldCritter`. Also changed from `List` to typical to typical ID set.
 * 🤖: `NPCID.Sets.ShouldBeCountedAsBossForBestiary` -> `NPCID.Sets.ShouldBeCountedAsBoss`
 * 🤖: `NPCID.Sets.SpawnFromLastEmptySlot` -> `NPCID.Sets.SearchSpawnSlotsInReverse`
+* 🤖: `ProjectileID.Web` -> `ProjectileID.WebSlingerHook`
+* ⚙️: `ProjectileID.Sets.DontAttachHideToAlpha` removed. Now true by default. See `Projectile.usesOwnerLight` and `Projectile.drawLayer` for more details.
 * ⚙️: `ProjectileID.Sets.HeldProjDoesNotUsePlayerGfxOffY` removed. `AI()` should use `master.RotatedRelativePoint(master.MountedCenter + ...)` to position held projectiles.
 * 🤖: `ProjectileID.Sets.MinionTargettingFeature` -> `ProjectileID.Sets.MinionTargetingFeature`
 * 🤖: `TileID.Sets.CountsAsWaterSource` -> `TileID.Sets.CountsAsWaterForCrafting`
@@ -124,11 +133,13 @@ All classes are in the `Terraria` or `Terraria.ID` namespaces unless otherwise i
 * 🤖: `Item.BannerToItem` -> `Terraria.GameContent.BannerSystem.BannerToItem`
 * 🤖: `Item.BannerToNPC` -> `Terraria.GameContent.BannerSystem.BannerToNPC`
 * 🤖: `Item.NPCtoBanner` -> `Terraria.GameContent.BannerSystem.NPCtoBanner`
+* 🤖: `Item.SetDefaults` changed. The `noMatCheck` parameter has been removed.
 * 🤖: `Localization.LocalizedText.CanFormatWith` -> `Localization.LocalizedText.ConditionsMetWith`
 * 🤖: `Main.ShouldShowInvisibleWalls` -> `Main.ShouldShowInvisibleBlocksAndWalls`
 * 🤖: `NPC.ShouldBestiaryGirlBeLycantrope` now static.
 * ⚙️: `NPC.SpawnWithHigherTime` removed. No longer used.
 * 🤖: `Player.IsProjectileInteractibleAndInInteractionRange` -> `Player.IsProjectileInteractableAndInInteractionRange`
+* ⚙️: `Player.CheckForGoodTeleportationSpot` removed. Use `Utils.CheckForGoodTeleportationSpot` instead.
 * ⚙️: `Recipe.FindRecipes` removed. No longer used.
 
 ### Non-Static Fields / Constants / Properties
@@ -139,9 +150,13 @@ All classes are in the `Terraria` or `Terraria.ID` namespaces unless otherwise i
 * ⚙️: `Item` fields moved to `WorldItem`: `beingGrabbed`, `whoAmI`. Moved to `WorldItem`, relevant hooks will provide a `WorldItem` instance to use.
 * 🤖: `Main.HasInteractibleObjectThatIsNotATile` -> `Main.HasInteractableObjectThatIsNotATile`
 * 🤖: `Main.CurrentFrameFlags.HadAnActiveInteractibleProjectile` -> `Main.HadAnActiveInteractableProjectile`
+* ⚙️: `NPC.netSkip` removed. No longer necessary when setting `life <= 0` and was never necessary when setting `active = false`.
 * 🤖: `Player.adjWater` -> `Player.adjWaterSource`
 * 🤖: `Player.oldAdjWater` -> `Player.oldAdjWaterSource`
 * 🤖: `Player.isPettingAnimal` -> `Terraria.GameContent.PlayerPettingInfo.isPetting`. Just change `Player.isPettingAnimal` to `Player.petting.isPetting`.
+
+### Classes
+* ⚙️: `Player.RandomTeleportationAttemptSettings` is now `Utils.RandomTeleportationAttemptSettings`. Modder will need to populate all relevant new fields (`teleporteeSize,  `teleporteeVelocity`, `teleporteeGravityDirection`).
 
 ## tModLoader changes
 
