@@ -31,3 +31,15 @@
  			byte b = mouseTextColor;
  			chatColor = new Color(b, (int)((double)(int)b / 1.1), (int)b / 2, b);
  			if (num % 4 == 0) {
+@@ -125,7 +_,11 @@
+ 				num2 = num;
+ 				if (Main.mouseLeft && Main.mouseLeftRelease) {
+ 					Main.mouseLeftRelease = false;
++					if (!ModLoader.NPCLoader.PreChatButtonClicked(interaction))
++						return;
++
+ 					interaction.Interact();
++					ModLoader.NPCLoader.OnChatButtonClicked(interaction);
+ 				}
+ 			}
+ 		}

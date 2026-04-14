@@ -1228,14 +1228,16 @@ public static class NPCLoader
 		GetNPC(type)?.SetChatButtons(ref skipCloseChat, ref skipReportHappiness, ref skipRequestHome);
 	}
 
-	private static HookList HookPreChatButtonClicked = AddHook<Func<NPC, bool, bool>>(g => g.PreChatButtonClicked);
+	[Obsolete()]
+	private static HookList LegacyHookPreChatButtonClicked = AddHook<Func<NPC, bool, bool>>(g => g.PreChatButtonClicked);
 
+	[Obsolete("Method signature changed")]
 	public static bool PreChatButtonClicked(bool firstButton)
 	{
 		NPC npc = Main.LocalPlayer.TalkNPC;
 
 		bool result = true;
-		foreach (var g in HookPreChatButtonClicked.Enumerate(npc)) {
+		foreach (var g in LegacyHookPreChatButtonClicked.Enumerate(npc)) {
 			result &= g.PreChatButtonClicked(npc, firstButton);
 		}
 
@@ -1247,9 +1249,31 @@ public static class NPCLoader
 		return true;
 	}
 
-	private delegate void DelegateOnChatButtonClicked(NPC npc, bool firstButton);
-	private static HookList HookOnChatButtonClicked = AddHook<DelegateOnChatButtonClicked>(g => g.OnChatButtonClicked);
+	private static HookList HookPreChatButtonClicked = AddHook<Func<NPC, NPCInteraction, bool>>(g => g.PreChatButtonClicked);
 
+	public static bool PreChatButtonClicked(NPCInteraction interaction)
+	{
+		NPC npc = interaction.TalkNPC;
+
+		bool result = true;
+		foreach (var g in HookPreChatButtonClicked.Enumerate(npc)) {
+			result &= g.PreChatButtonClicked(npc, interaction);
+		}
+
+		if (!result) {
+			SoundEngine.PlaySound(SoundID.MenuTick);
+			return false;
+		}
+
+		return true;
+	}
+
+	[Obsolete()]
+	private delegate void LegacyDelegateOnChatButtonClicked(NPC npc, bool firstButton);
+	[Obsolete()]
+	private static HookList LegacyHookOnChatButtonClicked = AddHook<LegacyDelegateOnChatButtonClicked>(g => g.OnChatButtonClicked);
+
+	[Obsolete("Method signature changed")]
 	public static void OnChatButtonClicked(bool firstButton)
 	{
 		NPC npc = Main.LocalPlayer.TalkNPC;
@@ -1269,8 +1293,24 @@ public static class NPCLoader
 			}
 		}
 
-		foreach (var g in HookOnChatButtonClicked.Enumerate(npc)) {
+		foreach (var g in LegacyHookOnChatButtonClicked.Enumerate(npc)) {
 			g.OnChatButtonClicked(npc, firstButton);
+		}
+	}
+
+	private delegate void DelegateOnChatButtonClicked(NPC npc, NPCInteraction interaction);
+	private static HookList HookOnChatButtonClicked = AddHook<DelegateOnChatButtonClicked>(g => g.OnChatButtonClicked);
+
+	public static void OnChatButtonClicked(NPCInteraction interaction)
+	{
+		NPC npc = interaction.TalkNPC;
+
+		if (npc.ModNPC != null) {
+			npc.ModNPC.OnChatButtonClicked(interaction);
+		}
+
+		foreach (var g in HookOnChatButtonClicked.Enumerate(npc)) {
+			g.OnChatButtonClicked(npc, interaction);
 		}
 	}
 

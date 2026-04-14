@@ -1,0 +1,50 @@
+--- src/TerrariaNetCore/Terraria/GameContent/NPCInteraction.cs
++++ src/tModLoader/Terraria/GameContent/NPCInteraction.cs
+@@ -4,12 +_,25 @@
+ 
+ public abstract class NPCInteraction
+ {
++	/// <summary>
++	/// Set to true to display a small exclamation point next to the chat button as well as above the NPC's head when the player is nearby.
++	/// <br/>Defaults to false.
++	/// </summary>
+ 	public virtual bool ShowExcalmation => false;
+ 
++	/// <summary>
++	/// The local player instance of who is speaking to the NPC.
++	/// </summary>
+ 	public Player LocalPlayer => Main.LocalPlayer;
+ 
++	/// <summary>
++	/// The instance of the NPC the player is speaking to. Sort for <c>Main.npc[LocalPlayer.talkNPC]</c>
++	/// </summary>
+ 	public NPC TalkNPC => Main.npc[LocalPlayer.talkNPC];
+ 
++	/// <summary>
++	/// The NPC type of the NPC the player is speaking to. Will be 0 if the player is not speaking to any NPC.
++	/// </summary>
+ 	public int TalkNPCType {
+ 		get {
+ 			if (LocalPlayer.talkNPC == -1)
+@@ -19,10 +_,21 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Determines when this NPCInteraction can/will be shown.
++	/// </summary>
++	/// <returns></returns>
+ 	public abstract bool Condition();
+ 
++	/// <summary>
++	/// The text of the button.
++	/// </summary>
++	/// <returns></returns>
+ 	public abstract string GetText();
+ 
++	/// <summary>
++	/// The action that happens when the button is clicked such as opening a shop.
++	/// </summary>
+ 	public abstract void Interact();
+ 
+ 	public virtual bool TryAddCoins(ref Color chatColor, out int coinValue)

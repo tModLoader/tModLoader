@@ -861,7 +861,17 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	/// </summary>
 	/// <param name="firstButton"></param>
 	/// <param name="shopName"></param>
+	[Obsolete("Use new method: OnChatButtonClicked(NPCInteraction interaction)")]
 	public virtual void OnChatButtonClicked(bool firstButton, ref string shopName)
+	{
+	}
+
+	/// <summary>
+	/// Allows you to make something happen whenever a button is clicked on this NPC's chat window.
+	/// <para/> Called on the local client only.
+	/// </summary>
+	/// <param name="interaction">The type of interaction that was clicked.</param>
+	public virtual void OnChatButtonClicked(NPCInteraction interaction)
 	{
 	}
 
