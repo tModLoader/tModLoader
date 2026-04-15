@@ -1,0 +1,11 @@
+--- src/TerrariaNetCore/Terraria/Graphics/Shaders/ShaderData.cs
++++ src/tModLoader/Terraria/Graphics/Shaders/ShaderData.cs
+@@ -33,7 +_,7 @@
+ 		public static EffectParameter<T> Get(EffectParameter param)
+ 		{
+ 			if (param == null)
+-				return null;
++				return new(t => {}); // TML: changed from null, shaders without a given param will silently no-op on setting
+ 
+ 			return (EffectParameter<T>)_cachedParameters.GetValue(param, _Create);
+ 		}

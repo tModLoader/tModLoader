@@ -2314,9 +2314,8 @@ public static class ItemLoader
 		return tooltips;
 	}
 
-	public static void ModifyFishingLine(Projectile projectile, ref float polePosX, ref float polePosY, ref Color lineColor)
+	public static void ModifyFishingLine(Projectile projectile, Player player, ref float polePosX, ref float polePosY, ref Color lineColor)
 	{
-		Player player = Main.player[projectile.owner];
 		Item item = player.inventory[player.selectedItem];
 
 		if (item.ModItem == null)

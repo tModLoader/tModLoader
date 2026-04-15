@@ -163,6 +163,7 @@ public static class MagicNumberBindings
 			AddBinding<WallID>("Terraria.ID.WallID.Sets", "*", (ctx) => new FieldOrPropertyBinding(ctx));
 			AddBinding<WallID>("Terraria.ID.WallID.Sets.Conversion", "*", (ctx) => new FieldOrPropertyBinding(ctx));
 			AddBinding<MountID>("Terraria.ID.MountID.Sets", "*", (ctx) => new FieldOrPropertyBinding(ctx));
+			AddBinding<ProjectileDrawLayerID>("Terraria.Projectile", "drawLayer", (ctx) => new FieldOrPropertyBinding(ctx), typeof(int));
 		}
 	}
 

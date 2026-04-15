@@ -34,7 +34,7 @@ namespace ExampleMod.Content.Projectiles
 			AIType = ProjectileID.Bullet; // Act exactly like default Bullet
 		}
 
-		public override bool PreDraw(ref Color lightColor) {
+		public override bool PreDraw(Player player, ref Color lightColor) {
 			Texture2D texture = TextureAssets.Projectile[Type].Value;
 
 			// Redraw the projectile with the color not influenced by light

@@ -70,8 +70,8 @@ namespace ExampleMod.Content.Items.Weapons
 				texture,
 				new Vector2
 				(
-					Item.position.X - Main.screenPosition.X + Item.width * 0.5f,
-					Item.position.Y - Main.screenPosition.Y + Item.height - texture.Height * 0.5f
+					item.position.X - Main.screenPosition.X + Item.width * 0.5f,
+					item.position.Y - Main.screenPosition.Y + Item.height - texture.Height * 0.5f
 				),
 				new Rectangle(0, 0, texture.Width, texture.Height),
 				Color.White,

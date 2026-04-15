@@ -66,7 +66,7 @@ namespace ExampleMod.Content.Projectiles
 			ProjectileID.Sets.NeedsUUID[Type] = true;
 
 			// Prevents jitter when stepping up and down blocks and half blocks
-			ProjectileID.Sets.HeldProjDoesNotUsePlayerGfxOffY[Type] = true;
+			ProjectileID.Sets.HeldProjDoesNotUsePlayerGfxOffY/* tModPorter Note: Removed. AI() should use master.RotatedRelativePoint(master.MountedCenter + ...) to position held projectiles */[Type] = true;
 		}
 
 		public override void SetDefaults() {
@@ -228,7 +228,7 @@ namespace ExampleMod.Content.Projectiles
 		}
 
 		// Because the Prism is a holdout Projectile and stays glued to its user, it needs custom drawcode.
-		public override bool PreDraw(ref Color lightColor) {
+		public override bool PreDraw(Player player, ref Color lightColor) {
 			SpriteEffects effects = Projectile.spriteDirection == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
 			Texture2D texture = TextureAssets.Projectile[Type].Value;
 			int frameHeight = texture.Height / Main.projFrames[Type];

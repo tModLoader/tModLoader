@@ -44,9 +44,6 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 	/// <summary> The horizontal origin offset from the projectile's center when it is drawn. </summary>
 	public float DrawOriginOffsetX { get; set; }
 
-	/// <summary> If this projectile is held by the player, determines whether it is drawn in front of or behind the player's arms. Defaults to false. </summary>
-	public bool DrawHeldProjInFrontOfHeldItemAndArms { get; set; }
-
 	/// <summary>
 	/// The file name of this type's texture file in the mod loader's file space. <br/>
 	/// The resulting  Asset&lt;Texture2D&gt; can be retrieved using <see cref="TextureAssets.Projectile"/> indexed by <see cref="Type"/> if needed. <br/>
@@ -357,7 +354,8 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 	/// Allows you to draw things behind this projectile. Use the <c>Main.EntitySpriteDraw</c> method for drawing. Returns false to stop the game from drawing extras textures related to the projectile (for example, the chains for grappling hooks), useful if you're manually drawing the extras. Returns true by default.
 	/// <para/> Called on local and remote clients.
 	/// </summary>
-	public virtual bool PreDrawExtras()
+	/// <param name="player"> The player associated with drawing this projectile. Not necessarily the same as player.owner for things like Mannequins. </param>
+	public virtual bool PreDrawExtras(Player player)
 	{
 		return true;
 	}
@@ -366,8 +364,9 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 	/// Allows you to draw things behind this projectile, or to modify the way it is drawn. Use the <c>Main.EntitySpriteDraw</c> method for drawing. Return false to stop the vanilla projectile drawing code (useful if you're manually drawing the projectile). Returns true by default.
 	/// <para/> Called on local and remote clients.
 	/// </summary>
+	/// <param name="player"> The player associated with drawing this projectile. Not necessarily the same as player.owner for things like Mannequins. </param>
 	/// <param name="lightColor"> The color of the light at the projectile's center. </param>
-	public virtual bool PreDraw(ref Color lightColor)
+	public virtual bool PreDraw(Player player, ref Color lightColor)
 	{
 		return true;
 	}
@@ -376,8 +375,9 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 	/// Allows you to draw things in front of this projectile. Use the <c>Main.EntitySpriteDraw</c> method for drawing. This method is called even if PreDraw returns false.
 	/// <para/> Called on local and remote clients.
 	/// </summary>
+	/// <param name="player"> The player associated with drawing this projectile. Not necessarily the same as player.owner for things like Mannequins. </param>
 	/// <param name="lightColor"> The color of the light at the projectile's center, after being modified by vanilla and other mods. </param>
-	public virtual void PostDraw(Color lightColor)
+	public virtual void PostDraw(Player player, Color lightColor)
 	{
 	}
 
@@ -448,14 +448,6 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 	public virtual bool? GrappleCanLatchOnTo(Player player, int x, int y)
 	{
 		return null;
-	}
-
-	/// <summary>
-	/// When used in conjunction with <c>Projectile.hide = true</c> (<see cref="Projectile.hide"/>), allows you to specify that this projectile should be drawn behind certain elements. Add the index to one and only one of the lists. For example, the Nebula Arcanum projectile draws behind NPCs and tiles.
-	/// <para/> Called on local and remote clients.
-	/// </summary>
-	public virtual void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
-	{
 	}
 
 	/// <summary>

@@ -1,5 +1,13 @@
 --- src/TerrariaNetCore/Terraria/GameContent/BannerSystem.cs
 +++ src/tModLoader/Terraria/GameContent/BannerSystem.cs
+@@ -4,6 +_,7 @@
+ using Terraria.Chat;
+ using Terraria.ID;
+ using Terraria.Localization;
++using Terraria.ModLoader;
+ using Terraria.Net;
+ 
+ namespace Terraria.GameContent;
 @@ -99,7 +_,11 @@
  	}
  
@@ -13,3 +21,66 @@
  	private static ushort[] claimableBanners = new ushort[MaxBannerTypes];
  	public static bool AnyNewClaimableBanners;
  
+@@ -237,8 +_,20 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Converts a banner ID into the equivalent item type (<see cref="Item.type"/>).
++	/// </summary>
++	/// <param name="banner">The banner ID to convert.</param>
++	/// <returns>
++	/// The item type associated with the given banner ID.
++	/// <br/> <strong>This method will return the wrong item type if <paramref name="banner"/> is not a valid banner ID.</strong>
++	/// </returns>
++	/// <remarks>You can get the banner ID of an NPC using <see cref="NPCtoBanner(int)"/>.</remarks>
+ 	public static int BannerToItem(int banner)
+ 	{
++		if (NPCLoader.bannerToItem.TryGetValue(banner, out int result))
++			return result;
++
+ 		int num = 0;
+ 		if (banner == 292)
+ 			return 5673;
+@@ -285,6 +_,11 @@
+ 		return 1615 + banner - 1;
+ 	}
+ 
++	/// <summary>
++	/// Converts an NPC type (<see cref="NPC.type"/>) into the equivalent banner ID.
++	/// </summary>
++	/// <param name="i">The NPC type to convert.</param>
++	/// <returns>The banner ID associated with the given NPC type, or <c>0</c> if the NPC type has no associated banner.</returns>
+ 	public static int NPCtoBanner(int i)
+ 	{
+ 		switch (i) {
+@@ -1033,10 +_,19 @@
+ 			case 694:
+ 				return 292;
+ 			default:
++				if (i >= NPCID.Count) // in NPCtoBanner method
++					return NPCLoader.GetNPC(i).Banner;
++
+ 				return 0;
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Converts a BannerID into the equivalent NPC type (<see cref="NPC.type"/>). Used to determine a single NPC type from a BannerID for display purposes.
++	/// Note that modded BannerIDs are the same number as their NPC type, and those BannerIDs might not actually be used.
++	/// </summary>
++	/// <param name="i">The banner ID to convert.</param>
++	/// <returns>The NPC type associated with the given banner ID, or <see cref="NPCID.None"/> for an invalid banner ID.</returns>
+ 	public static int BannerToNPC(int i)
+ 	{
+ 		switch (i) {
+@@ -1615,6 +_,9 @@
+ 			case 292:
+ 				return 694;
+ 			default:
++				if (i >= NPCID.Count) // in BannerToNPC method
++					return i;
++
+ 				return 0;
+ 		}
+ 	}

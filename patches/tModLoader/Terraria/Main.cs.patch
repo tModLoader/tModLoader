@@ -1202,7 +1202,7 @@
 +
 +		// Solxan: This is for properly settings the Screen Max Width & Max Height for large displays.
 +		GetLargestDisplaySize(out int maxDisplayW, out int maxDisplayH);
-+		maxScreenW = Math.Max(maxDisplayH, maxScreenW);
++		maxScreenW = Math.Max(maxDisplayW, maxScreenW);
 +		maxScreenH = Math.Max(maxDisplayH, maxScreenH);
 +
 +		Logging.tML.Info($"Maximum Resolution is {maxScreenW} x {maxScreenH}");
@@ -1240,7 +1240,7 @@
  		PlayerInput.Load();
  		if (currentValue < 165) {
  			try {
-@@ -4012,12 +_,36 @@
+@@ -4012,12 +_,37 @@
  		mouseColorSlider.SetHSL(mouseColor);
  		mouseBorderColorSlider.SetHSL(MouseBorderColor);
  		mouseBorderColorSlider.Alpha = (float)(int)MouseBorderColor.A / 255f;
@@ -1251,7 +1251,8 @@
 +		if (BuildInfo.IsPreview && ModLoader.ModLoader.LastPreviewFreezeNotificationSeen != BuildInfo.tMLVersion.MajorMinor()) {
 +			ModLoader.ModLoader.PreviewFreezeNotification = true;
 +		}
-+		if (currentValue != Main.curRelease || ModLoader.ModLoader.LastLaunchedTModLoaderVersion != BuildInfo.tMLVersion) {
++		bool isNewDevBuild = BuildInfo.IsDev && BuildInfo.stableVersion != new Version(0, 0) && BuildInfo.CommitSHA != ModLoader.ModLoader.LastLaunchedTModLoaderAlphaSha;
++		if (currentValue != Main.curRelease || ModLoader.ModLoader.LastLaunchedTModLoaderVersion != BuildInfo.tMLVersion || isNewDevBuild) {
 +			ModLoader.ModLoader.MigrateSettings();
  			SaveSettings();
 +		}
@@ -4067,7 +4068,7 @@
  		if (player.mount.Active && player.mount.Type == 52)
  			mountedCenter += new Vector2(player.direction * 14, -10f);
  
-+		if (ProjectileLoader.PreDrawExtras(proj)) {
++		if (ProjectileLoader.PreDrawExtras(proj, player)) {
 +			DrawProj_DrawYoyoString(proj, player, mountedCenter);
 +			DrawProj_DrawExtras(proj, player, mountedCenter, ref polePosX, ref polePosY);
 +		}
@@ -4120,7 +4121,7 @@
  		if (proj.type == 14)
  			projectileColor = Microsoft.Xna.Framework.Color.White;
  
-+		if (ProjectileLoader.PreDraw(proj, ref projectileColor)) {
++		if (ProjectileLoader.PreDraw(proj, player, ref projectileColor)) {
 +			bool earlyReturn = true;
 +			DrawProj_DrawVoidLens(proj, player, ref earlyReturn);
 +			if (earlyReturn)
@@ -4135,7 +4136,7 @@
 +		}
 +
 +		PostDraw:
-+		ProjectileLoader.PostDraw(proj, projectileColor);
++		ProjectileLoader.PostDraw(proj, player, projectileColor);
 +	}
 +
 +	private void DrawProj_DrawNormalProjs(Projectile proj, Player player, float polePosX, float polePosY, Vector2 mountedCenter, ref Color projectileColor)
@@ -4221,7 +4222,7 @@
  			stringColor = new Microsoft.Xna.Framework.Color(100, 100, 200, 100);
  
 +		ProjectileLoader.ModifyFishingLine(proj, ref polePosX, ref polePosY, ref stringColor);
-+		ItemLoader.ModifyFishingLine(proj, ref polePosX, ref polePosY, ref stringColor);
++		ItemLoader.ModifyFishingLine(proj, theOwner, ref polePosX, ref polePosY, ref stringColor);
 +
  		stringColor = TryApplyingPlayerStringColor(theOwner.stringColor, stringColor);
  		float gravDir = theOwner.gravDir;
@@ -4237,14 +4238,6 @@
  			}
 +
 +			NPCLoader.DrawBehind(Main.npc[i], i);
- 		}
- 	}
- 
-@@ -32870,6 +_,7 @@
- 						break;
- 				}
- 			}
-+			ProjectileLoader.DrawBehind(projectile, i, DrawCacheProjsBehindNPCsAndTiles, DrawCacheProjsBehindNPCs, DrawCacheProjsBehindProjectiles, DrawCacheProjsOverPlayers, DrawCacheProjsOverWiresUI); // CacheProjDraws
  		}
  	}
  
@@ -5460,6 +5453,15 @@
  		}
  
  		if (!string.IsNullOrEmpty(text)) {
+@@ -40762,7 +_,7 @@
+ 
+ 	private void DrawInfoAccs_AdjustInfoTextColorsForNPC(NPC npc, ref Microsoft.Xna.Framework.Color infoTextColor, ref Microsoft.Xna.Framework.Color infoTextShadowColor)
+ 	{
+-		for (int i = 0; i < NPCID.Sets.GoldCrittersCollection.Count; i++) {
++		for (int i = 0; i < NPCID.Sets.GoldCrittersCollection.Length; i++) {
+ 			int num = NPCID.Sets.GoldCrittersCollection[i];
+ 			if (npc.type == num) {
+ 				infoTextColor = OurFavoriteColor;
 @@ -40783,8 +_,12 @@
  				Y += 261;
  		}
@@ -6224,15 +6226,13 @@
  			if (IsLiquidStyleWater(j) && liquidAlpha[j] > 0f && j != waterStyle) {
  				DrawLiquid(isBackground, j, isBackground ? 1f : liquidAlpha[j], waterOnly: true);
  				flag = true;
-@@ -49753,9 +_,14 @@
+@@ -49753,9 +_,12 @@
  			TimeLogger.DrawBackgroundWaterTiles.AddTime(fromTimestamp);
  		else
  			TimeLogger.DrawWaterTiles.AddTime(fromTimestamp);
 +
-+		/* TODO: What is sceneTilePos now?
 +		if (LiquidEdgeRenderer.Active && !drawToScreen)
-+			LiquidEdgeRenderer.DrawTileMask(spriteBatch, tileTarget, sceneTilePos - screenPosition + new Vector2(drawToScreen ? 0 : offScreenRange));
-+		*/
++			LiquidEdgeRenderer.DrawTileMask(spriteBatch, tileTarget.Texture, tileTarget.Position - screenPosition + new Vector2(drawToScreen ? 0 : offScreenRange));
  	}
  
 -	protected void DrawLiquid(bool bg, int waterStyle, float Alpha = 1f, bool waterOnly = false)
@@ -6759,24 +6759,32 @@
  	public static void NewText(string newText, byte R = byte.MaxValue, byte G = byte.MaxValue, byte B = byte.MaxValue)
  	{
  		chatMonitor.NewText(newText, R, G, B);
-@@ -55915,6 +_,10 @@
+@@ -55915,6 +_,13 @@
  		SoundEngine.PlaySound(12);
  	}
  
 +	/// <summary>
-+	/// Stops rain. Should be called on the server (netMode != client) - vanilla syncs it using <see cref="SyncRain"/>.
-+	/// <br>You can also call this on the client to update visuals immediately, assuming it was called serverside as well (Journey Mode rain slider does this).</br>
++	/// Stops rain. Should be called on the server (netMode != client).<br/>
++	/// Vanilla syncs the result to clients through <see cref="SyncRain"/>.<br/>
++	/// You can also call this on the client to update visuals immediately, assuming it was called serverside as well (Journey Mode rain slider does this).<br/>
++	/// Has no effect if <see cref="IsRainingForever"/> is <see langword="true"/>.<br/>
++	/// If <paramref name="instant"/> is <see langword="true"/>, <see cref="cloudAlpha"/> is snapped to 0f instead of fading out gradually.<br/>
 +	/// </summary>
  	public static void StopRain(bool instant = false)
  	{
  		if (!IsRainingForever) {
-@@ -55927,6 +_,10 @@
+@@ -55927,6 +_,15 @@
  		}
  	}
  
 +	/// <summary>
-+	/// Starts rain for a random amount of time. Should be called on the server (netMode != client) - vanilla syncs it using <see cref="SyncRain"/>.
-+	/// <br>You can also call this on the client to update visuals immediately, assuming it was/will be called serverside as well (Journey Mode rain slider does this).</br>
++	/// Starts rain for a random amount of time, optionally triggering a coin rain. Should be called on the server (netMode != client).<br/>
++	/// Vanilla syncs the result to clients through <see cref="SyncRain"/>.<br/>
++	/// You can also call this on the client to update visuals immediately, assuming it was/will be called server-side as well (Journey Mode rain slider does this).<br/>
++	/// Has no effect on <see cref="rainTime"/> if <see cref="IsRainingForever"/> is <see langword="true"/>.<br/>
++	/// If <paramref name="instant"/> is <see langword="true"/>, <see cref="cloudAlpha"/> jumps to the target rain strength immediately instead of fading in gradually.<br/>
++	/// <paramref name="strengthOverride"/> overrides the rain intensity written to <see cref="maxRaining"/>. When <see langword="null"/>, a random strength is chosen by <see cref="ChangeRain(bool, float?)"/>.<br/>
++	/// If <paramref name="garenteeCoinRain"/> is <see langword="true"/>, forces a coin rain event to start, bypassing the luck-based roll.<br/>
 +	/// </summary>
  	public static void StartRain(bool instant = false, float? strengthOverride = null, bool garenteeCoinRain = false)
  	{

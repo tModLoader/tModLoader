@@ -1,4 +1,4 @@
-using Ionic.Zip;
+using System.IO.Compression;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Newtonsoft.Json;
@@ -307,8 +307,7 @@ internal class UIModPacks : UIState, IHaveBackButtonCommand
 	{
 		string zipFilePath = Path.Combine(instancePath, "tModLoader.zip");
 
-		using (var zip = ZipFile.Read(zipFilePath))
-			zip.ExtractAll(instancePath);
+		ZipFile.ExtractToDirectory(zipFilePath, instancePath);
 
 		File.Delete(zipFilePath);
 	}

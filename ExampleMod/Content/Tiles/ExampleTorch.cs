@@ -35,7 +35,7 @@ namespace ExampleMod.Content.Tiles
 			AdjTiles = [TileID.Torches];
 			VanillaFallbackOnModDeletion = TileID.Torches;
 
-			AddToArray(ref TileID.Sets.RoomNeeds.CountsAsTorch);
+			TileID.Sets.RoomNeeds.CountsAsTorch[Type] = true;
 
 			// Placement
 			TileObjectData.newTile.CopyFrom(TileObjectData.GetTileData(TileID.Torches, 0));

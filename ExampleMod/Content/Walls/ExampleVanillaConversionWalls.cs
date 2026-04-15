@@ -14,7 +14,7 @@ namespace ExampleMod.Content.Walls
 	public class HallowedFossilWall : ModWall
 	{
 		public override void SetStaticDefaults() {
-			WallID.Sets.Hallow[Type] = true;
+			WallID.Sets.SpreadsHallow[Type] = true;
 			DustType = DustID.Pearlsand;
 			AddMapEntry(new Color(157, 76, 152));
 
@@ -30,7 +30,7 @@ namespace ExampleMod.Content.Walls
 	public class CorruptFossilWall : ModWall
 	{
 		public override void SetStaticDefaults() {
-			WallID.Sets.Corrupt[Type] = true;
+			WallID.Sets.SpreadsCorruption[Type] = true;
 			DustType = DustID.Corruption;
 			AddMapEntry(new Color(65, 48, 99));
 
@@ -42,7 +42,7 @@ namespace ExampleMod.Content.Walls
 	public class CrimsonFossilWall : ModWall
 	{
 		public override void SetStaticDefaults() {
-			WallID.Sets.Crimson[Type] = true;
+			WallID.Sets.SpreadsCrimson[Type] = true;
 			DustType = DustID.Crimstone;
 			AddMapEntry(new Color(112, 33, 32));
 

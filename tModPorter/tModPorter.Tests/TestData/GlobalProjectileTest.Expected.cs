@@ -10,20 +10,20 @@ public class GlobalProjectileTest : GlobalProjectile
 
 	public override bool TileCollideStyle(Projectile projectile, ref int width, ref int height, ref bool fallThrough, ref Vector2 hitboxCenterFrac) => true;
 
-	public override bool PreDrawExtras(Projectile projectile) { return true; }
+	public override bool PreDrawExtras(Projectile projectile, Player player)/* tModPorter Replace 'Main.player[Projectile.owner]' with 'player'. */ { return true; }
 
-	public override bool PreDraw(Projectile projectile, ref Color lightColor) { return true; }
+	public override bool PreDraw(Projectile projectile, Player player, ref Color lightColor)/* tModPorter Replace 'Main.player[Projectile.owner]' with 'player'. */ { return true; }
 
-	public override void PostDraw(Projectile projectile, Color lightColor) { /* Empty */ }
+	public override void PostDraw(Projectile projectile, Player player, Color lightColor)/* tModPorter Replace 'Main.player[Projectile.owner]' with 'player'. */ { /* Empty */ }
 
-	public override void DrawBehind(Projectile projectile, int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI) {
+#if COMPILE_ERROR
+	public override void DrawBehind(Projectile projectile, int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)/* tModPorter Note: Removed. Set Projectile.drawLayer instead */ {
 		// not-yet-implemented
 		behindNPCsAndTiles.Add(index);
 		behindNPCs.Add(index);
 		behindProjectiles.Add(index);
 		overWiresUI.Add(index);
 		// instead-expect
-#if COMPILE_ERROR
 		drawCacheProjsBehindNPCsAndTiles.Add(index);
 		drawCacheProjsBehindNPCs.Add(index);
 		drawCacheProjsBehindProjectiles.Add(index);

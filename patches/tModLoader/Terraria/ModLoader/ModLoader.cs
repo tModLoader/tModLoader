@@ -377,7 +377,7 @@ public static class ModLoader
 
 		Main.Configuration.Put("LastLaunchedTModLoaderVersion", BuildInfo.tMLVersion.ToString());
 		Main.Configuration.Put(nameof(BetaUpgradeWelcomed144), BetaUpgradeWelcomed144);
-		Main.Configuration.Put(nameof(LastLaunchedTModLoaderAlphaSha), BuildInfo.IsPreview && BuildInfo.CommitSHA != "unknown" ? BuildInfo.CommitSHA : LastLaunchedTModLoaderAlphaSha);
+		Main.Configuration.Put(nameof(LastLaunchedTModLoaderAlphaSha), (BuildInfo.IsPreview || BuildInfo.IsDev) && BuildInfo.CommitSHA != "unknown" ? BuildInfo.CommitSHA : LastLaunchedTModLoaderAlphaSha);
 		Main.Configuration.Put(nameof(LastPreviewFreezeNotificationSeen), LastPreviewFreezeNotificationSeen.ToString());
 		Main.Configuration.Put(nameof(ModOrganizer.ModPackActive), ModOrganizer.ModPackActive);
 		Main.Configuration.Put(nameof(LatestNewsTimestamp), LatestNewsTimestamp);
@@ -425,6 +425,10 @@ public static class ModLoader
 		if (BuildInfo.IsPreview && LastLaunchedTModLoaderVersion != BuildInfo.tMLVersion) {
 			ShowWhatsNew = true;
 			// TODO: Start retrieving what's new data from github here.
+		}
+		if(BuildInfo.IsDev && BuildInfo.stableVersion != new Version(0, 0) && BuildInfo.CommitSHA != LastLaunchedTModLoaderAlphaSha) {
+			// For official dev builds from the CI, the only difference is BuildInfo.stableVersion being set.
+			ShowWhatsNew = true;
 		}
 
 		if (LastLaunchedTModLoaderVersion == new Version(0, 0))

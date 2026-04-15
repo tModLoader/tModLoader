@@ -21,7 +21,6 @@ public class MemberUseRewriter : BaseRewriter {
 	public static void RefactorStaticMember(string type, string name, RewriteMemberUse handler) => handlers.Add((type, name, handler));
 	public static void RefactorStaticMember(string type, string name, AddComment comment) => RefactorStaticMember(type, name, (_, _, n) => comment.Apply(n));
 
-
 	public override SyntaxNode VisitIdentifierName(IdentifierNameSyntax node) {
 		if (!IdentifierNameInvalid(node, out var op, out var targetType, out bool isInvoke) || op == null || isInvoke)
 			return node;
@@ -106,4 +105,18 @@ public class MemberUseRewriter : BaseRewriter {
 
 		return memberName;
 	};
+
+	public static SyntaxNode RewriteIsJourneyMode(MemberUseRewriter rw, IOperation op, IdentifierNameSyntax memberName)
+	{
+		// memberName corresponds to the identifier "GameModeInfo" in an expression like Main.GameModeInfo.IsJourneyMode
+		if (memberName.Parent is MemberAccessExpressionSyntax innerAccess && innerAccess.Parent is MemberAccessExpressionSyntax outerAccess) {
+			if (outerAccess.Name.Identifier.Text == "IsJourneyMode") {
+				// Replace the outer access (Main.GameModeInfo.IsJourneyMode) with Main.IsJourneyMode
+				rw.RegisterAction<MemberAccessExpressionSyntax>(outerAccess, n =>
+					MemberAccessExpression(innerAccess.Expression.WithoutTrivia(), "IsJourneyMode").WithTriviaFrom(n)
+				);
+			}
+		}
+		return memberName;
+	}
 }

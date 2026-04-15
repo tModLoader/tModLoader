@@ -270,5 +270,87 @@ public partial class InvokeRewriter : BaseRewriter
 		}
 	}
 	#endregion
+
+	public static SyntaxNode RewriteAddToArrayForRoomNeeds(InvokeRewriter rw, InvocationExpressionSyntax invoke, NameSyntax methodName)
+	{
+		// Should convert AddToArray(ref TileID.Sets.RoomNeeds.CountsAsTable); to TileID.Sets.RoomNeeds.CountsAsTable[Type] = true; if AddToArray is called with an array in TileID.Sets.RoomNeeds.
+
+		// Validate single ref argument
+		if (invoke.ArgumentList?.Arguments.Count != 1)
+			return invoke;
+
+		var arg = invoke.ArgumentList.Arguments[0];
+		if (!arg.RefKindKeyword.IsKind(SyntaxKind.RefKeyword))
+			return invoke;
+
+		var arrExpr = arg.Expression;
+		if (arrExpr == null)
+			return invoke;
+
+		// Try to resolve the symbol for the passed array-like member
+		var symInfo = rw.model.GetSymbolInfo(arrExpr).Symbol;
+		if (symInfo == null)
+			return invoke;
+
+		// Build a full name to detect TileID.Sets.RoomNeeds.* members
+		var containingType = symInfo.ContainingType;
+		var fullMemberName = containingType != null ? $"{containingType.ToString()}.{symInfo.Name}" : symInfo.ToString();
+
+		// Only handle members that are part of TileID.Sets.RoomNeeds
+		if (!fullMemberName.Contains("TileID.Sets.RoomNeeds") && !arrExpr.ToString().Contains("TileID.Sets.RoomNeeds"))
+			return invoke;
+
+		// Determine index expression from the invocation target, e.g. `modTile.Type`
+		ExpressionSyntax indexExpr = IdentifierName("Type");
+		if (invoke.Expression is MemberAccessExpressionSyntax memberAccess) {
+			// use the expression part of the member access (the object the method is called on)
+			var targetExpr = memberAccess.Expression;
+			if (targetExpr != null) {
+				indexExpr = MemberAccessExpression(targetExpr.WithoutTrivia(), "Type");
+			}
+		}
+
+		// Build the element access: <arrayExpr>[<target>.Type]
+		var elementAccess = ElementAccessExpression(arrExpr.WithoutTrivia(), indexExpr);
+
+		var assign = AssignmentExpression(elementAccess, LiteralExpression(SyntaxKind.TrueLiteralExpression)).WithTriviaFrom(invoke);
+		return assign;
+	}
+
+	public static RewriteInvoke RemoveParameter(int parameterIndex, string parameterName, string parameterType) => (rw, invoke, methodName) => {
+		if (invoke.ArgumentList == null)
+			return invoke;
+
+		var args = invoke.ArgumentList.Arguments.ToArray();
+		IArgumentOperation[] argOps = null;
+		if (rw.model.GetOperation(invoke) is IInvocationOperation invop)
+			argOps = invop.Arguments.ToArray();
+
+		// Try to remove by parameter name matching a named argument
+		for (int i = 0; i < args.Length; i++) {
+			var a = args[i];
+			if (a.NameColon != null && a.NameColon.Name.Identifier.Text == parameterName) {
+				var newArgs = args.Where((_, idx) => idx != i);
+				return invoke.WithArgumentList(ArgumentList(newArgs).WithTriviaFrom(invoke.ArgumentList));
+			}
+		}
+
+        // Syntactic check at the given index
+		if (parameterIndex >= 0 && parameterIndex < args.Length) {
+			var candidate = args[parameterIndex];
+			var expr = candidate.Expression;
+			var op = rw.model.GetOperation(expr);
+			var tname = op switch {
+				ILiteralOperation lit when lit.ConstantValue.HasValue && lit.ConstantValue.Value is null => "null",
+				_ => op?.Type?.ToString()
+			};
+			if (tname == parameterType) {
+				var newArgs = args.Where((_, idx) => idx != parameterIndex);
+				return invoke.WithArgumentList(ArgumentList(newArgs).WithTriviaFrom(invoke.ArgumentList));
+			}
+		}
+
+		return invoke;
+	};
 }
 

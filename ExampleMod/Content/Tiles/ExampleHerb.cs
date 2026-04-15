@@ -82,7 +82,7 @@ namespace ExampleMod.Content.Tiles
 					if (Main.tileCut[tileType] || TileID.Sets.BreakableWhenPlacing[tileType] || tileType == TileID.WaterDrip || tileType == TileID.LavaDrip || tileType == TileID.HoneyDrip || tileType == TileID.SandDrip) {
 						bool foliageGrass = tileType == TileID.Plants || tileType == TileID.Plants2;
 						bool moddedFoliage = tileType >= TileID.Count && (Main.tileCut[tileType] || TileID.Sets.BreakableWhenPlacing[tileType]);
-						bool harvestableVanillaHerb = Main.tileAlch[tileType] && WorldGen.IsHarvestableHerbWithSeed(tileType, tile.TileFrameX / 18);
+						bool harvestableVanillaHerb = Main.tileAlch[tileType] && WorldGen.IsHarvestableHerbWithSeed(tileType, tile.TileFrameX / 18, j);
 
 						if (foliageGrass || moddedFoliage || harvestableVanillaHerb) {
 							WorldGen.KillTile(i, j);

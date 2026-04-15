@@ -10,14 +10,14 @@ env:
     IsRelease: ${{ github.event_name == 'push' && (endsWith(github.ref, 'preview') || endsWith(github.ref, 'stable')) }}
     IsVersioned: ${{ github.event_name == 'push' && (endsWith(github.ref, 'preview') || endsWith(github.ref, 'stable') || endsWith(github.ref, '1.4.4'))  }}
     RunDiscordHook: true
-    ForcedDotnetSdkVersion: 8.0.203
+    ForcedDotnetSdkVersion: 10.0.201
 
 # Controls when the action will run. 
 on:
   # This workflow runs when a push to major branch happens, or when a label is added to a pull request targetting major branch.
   push:
     # note these cannot use the env.Branch variables
-    branches: [githubActionsMaintenanceCheckoutCacheUpdates, stable, preview, 1.4.4, feature/dotnet8, 1.4.5]
+    branches: [githubActionsMaintenanceCheckoutCacheUpdates, stable, preview, 1.4.4, 1.4.5]
   pull_request_target:
     types: [labeled]
     branches: [preview, stable, 1.4.4]
@@ -220,6 +220,7 @@ jobs:
           
           # Extra file needed for client decomp which isn't embedded in the Terraria.exe, will be embedded in 1.4.5
           #cp patches/Terraria/Terraria/Libraries/Common/SteelSeriesEngineWrapper.dll ./$TERRARIA_VERSION/Windows/SteelSeriesEngineWrapper.dll
+          cp patches/Terraria/Terraria/Libraries/XNA/Microsoft.Xna.Framework.Content.Pipeline.dll ./$TERRARIA_VERSION/Windows/Microsoft.Xna.Framework.Content.Pipeline.dll
           
           echo ::group::Running setup-cli.bat
           if [ ${{github.ref}} = 'refs/heads/${{env.StableBranch}}' ] ; then
@@ -622,7 +623,7 @@ jobs:
           
           manifesto=$manifesto/dev.vdf
           
-          sed -i -e "s/Auto-Release/Auto-Release ($version)/g" $manifesto
+          sed -i -e "s/Auto-Release/Auto-Release (${{ github.sha }})/g" $manifesto
           steamcmd +login "${{ secrets.STEAM_USERNAME }}" +run_app_build_http $manifesto +quit
           echo "Listing BuildOutput directory"
           ls -alhR ./BuildOutput

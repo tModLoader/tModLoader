@@ -3342,15 +3342,19 @@
  	}
  
  	private void UpdateArmorSets_Always_Vortex()
-@@ -13237,6 +_,8 @@
- 			luckNeedsSync = true;
+@@ -13238,6 +_,12 @@
  			HasGardenGnomeNearby = SceneMetrics.HasGardenGnome;
  		}
+ 
++		//TODO: Are these flags a problem?
++		LoaderManager.Get<BiomeLoader>().UpdateBiomes(this);
++
 +		// Added by TML.
 +		ZonePurity = InZonePurity();
- 
++
  		behindBackWall = Framing.GetTileSafely(base.Center).wall > 0;
  		if (!dead) {
+ 			Point point = base.Center.ToTileCoordinates();
 @@ -13268,10 +_,13 @@
  				AchievementsHelper.HandleSpecialEvent(this, 15);
  			else if (_funkytownAchievementCheckCooldown == 0 && ZoneGraveyard)
@@ -4386,7 +4390,7 @@
 +							/*
  							if (TileID.Sets.Clouds[tile.type] || tile.type == 666 || flag8) {
 +							*/
-+							if (TileID.Sets.Clouds[tile.type] || tile.type == 666 || flag8 || TileID.Sets.NegatesFallDamage[tile.type]) {
++							if (TileID.Sets.Clouds[tile.type] || TileID.Sets.NegatesFallDamage[tile.type] || flag8) {
  								num10 = 0;
  								break;
  							}
@@ -5183,8 +5187,8 @@
  		RefreshItems(_temporaryItemSlots, onlyIfVariantChanged);
  		RefreshItems(_pendingRefunds, onlyIfVariantChanged);
 +
-+		foreach (Item item in NPCShopDatabase.AllShops.SelectMany(x => x.ActiveEntries).Select(x => x.Item)) {
-+			item.Refresh(onlyIfVariantChanged);
++		foreach (var shop in NPCShopDatabase.AllShops) {
++			shop.RefreshItems(onlyIfVariantChanged);
 +		}
  	}
  
@@ -5860,31 +5864,6 @@
  	}
  
  	public void PlayHurtSound()
-@@ -31260,6 +_,7 @@
- 		float num = 0.7f;
- 		float pitchOffset = Utils.Remap(voicePitchOffset, -1f, 1f, 0f - num, num);
- 		switch (voiceVariant) {
-+			/*
- 			case 1:
- 				SoundEngine.PlaySound(1, vector, 1, pitchOffset);
- 				break;
-@@ -31269,6 +_,16 @@
- 			case 3:
- 				SoundEngine.PlaySound(SoundID.DefaultPlayerHurt, vector, pitchOffset);
- 				break;
-+			*/
-+			case 1:
-+				SoundEngine.PlaySound(SoundID.PlayerHit.WithPitchOffset(pitchOffset), vector);
-+				break;
-+			case 2:
-+				SoundEngine.PlaySound(SoundID.FemaleHit.WithPitchOffset(pitchOffset), vector);
-+				break;
-+			case 3:
-+				SoundEngine.PlaySound(SoundID.DefaultPlayerHurt.WithPitchOffset(pitchOffset), vector);
-+				break;
- 		}
- 	}
- 
 @@ -31347,6 +_,14 @@
  			if (FileUtilities.Exists(Main.playerPathName + ".bak", isCloudSave))
  				FileUtilities.Delete(Main.playerPathName + ".bak", isCloudSave);
@@ -7330,34 +7309,6 @@
  		if (Main.tile[x, y].type == 470) {
  			TEDisplayDoll.TryChangePose(x, y);
  		}
-@@ -37816,6 +_,7 @@
- 		if (RollOnlyBadLuckExtreme(10) == 0)
- 			pitchOffset = (float)Main.rand.Next(-50, 51) * 0.01f;
- 
-+		/*
- 		if (range > num2 * 5f)
- 			SoundEngine.PlaySound(49, base.Center, 1, pitchOffset);
- 		else if (range > num2 * 4f)
-@@ -37828,6 +_,19 @@
- 			SoundEngine.PlaySound(52, base.Center, 1, pitchOffset);
- 		else
- 			SoundEngine.PlaySound(50, base.Center, 1, pitchOffset);
-+		*/
-+		if (range > num2 * 5f)
-+			SoundEngine.PlaySound(SoundID.GuitarEm.WithPitchOffset(pitchOffset), base.Center);
-+		else if (range > num2 * 4f)
-+			SoundEngine.PlaySound(SoundID.GuitarD.WithPitchOffset(pitchOffset), base.Center);
-+		else if (range > num2 * 3f)
-+			SoundEngine.PlaySound(SoundID.GuitarC.WithPitchOffset(pitchOffset), base.Center);
-+		else if (range > num2 * 2f)
-+			SoundEngine.PlaySound(SoundID.GuitarBm.WithPitchOffset(pitchOffset), base.Center);
-+		else if (range > num2 * 1f)
-+			SoundEngine.PlaySound(SoundID.GuitarAm.WithPitchOffset(pitchOffset), base.Center);
-+		else
-+			SoundEngine.PlaySound(SoundID.GuitarG.WithPitchOffset(pitchOffset), base.Center);
- 	}
- 
- 	public void PlayDrums(float range)
 @@ -37881,7 +_,9 @@
  			}
  
@@ -8300,6 +8251,18 @@
  
  		if (tileTarget.type == 147 || tileTarget.type == 0 || tileTarget.type == 40 || tileTarget.type == 53 || tileTarget.type == 57 || tileTarget.type == 59 || tileTarget.type == 123 || tileTarget.type == 224 || tileTarget.type == 397)
  			num += pickPower;
+@@ -44062,6 +_,11 @@
+ 		return num;
+ 	}
+ 
++	/// <summary>
++	/// Drops the player's items. Called when the player dies.
++	/// <br/><br/> <paramref name="gemsOnly"/> will be true for <see cref="PlayerDifficultyID.SoftCore"/> and <see cref="PlayerDifficultyID.Creative"/> players, causing only large gems (<see href="https://terraria.wiki.gg/wiki/Large_Gems"/>) to drop.
++	/// </summary>
++	/// <param name="gemsOnly">True if only large gems should drop.</param>
+ 	public void DropItems(bool gemsOnly)
+ 	{
+ 		trashItem.TurnToAir(fullReset: true);
 @@ -44077,12 +_,37 @@
  			return;
  		}

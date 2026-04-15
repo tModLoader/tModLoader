@@ -773,6 +773,16 @@
  		public static bool[] IsRangedSpecialistWeapon = Factory.CreateBoolSet(1156, 3350, 3210, 160, 266, 5629, 3821, 5460);
  		public static UniqueTagEffect[] UniqueTagEffects = Factory.CreateCustomSet<UniqueTagEffect>(null, new object[38] {
  			(short)5688,
+@@ -1266,6 +_,9 @@
+ 				TagDamage = 4
+ 			}
+ 		});
++		/// <summary>
++		/// These items will have the "Wireable" tooltip.
++		/// </summary>
+ 		public static bool[] IsWireableStatue = Factory.CreateBoolSet(441, 449, 466, 471, 3651, 3652, 3653, 3654, 3655, 3656, 3657, 3658, 3659, 3660, 3661, 3662, 3708, 3709, 3710, 3711, 3712, 3713, 3714, 3715, 3716, 3717, 3718, 3719, 3720, 4397, 4360, 4342, 4466, 5317, 5318, 5319, 440, 443, 444, 445, 446, 452, 454, 459, 463, 464, 478, 473, 2672, 438, 453, 476, 477, 470, 4355, 4276);
+ 
+ 		public static void PostSetupContent()
 @@ -1287,6 +_,7 @@
  			}
  		}

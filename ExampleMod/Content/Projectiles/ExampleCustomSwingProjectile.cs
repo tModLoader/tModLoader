@@ -74,7 +74,7 @@ namespace ExampleMod.Content.Projectiles
 		private Player Owner => Main.player[Projectile.owner];
 
 		public override void SetStaticDefaults() {
-			ProjectileID.Sets.HeldProjDoesNotUsePlayerGfxOffY[Type] = true;
+			ProjectileID.Sets.HeldProjDoesNotUsePlayerGfxOffY/* tModPorter Note: Removed. AI() should use master.RotatedRelativePoint(master.MountedCenter + ...) to position held projectiles */[Type] = true;
 			ProjectileID.Sets.AllowsContactDamageFromJellyfish[Type] = true;
 		}
 
@@ -154,7 +154,7 @@ namespace ExampleMod.Content.Projectiles
 			Timer++;
 		}
 
-		public override bool PreDraw(ref Color lightColor) {
+		public override bool PreDraw(Player player, ref Color lightColor) {
 			// Calculate origin of sword (hilt) based on orientation and offset sword rotation (as sword is angled in its sprite)
 			Vector2 origin;
 			float rotationOffset;

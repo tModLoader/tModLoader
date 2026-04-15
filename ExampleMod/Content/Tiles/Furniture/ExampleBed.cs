@@ -25,7 +25,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 			TileID.Sets.IsValidSpawnPoint[Type] = true;
 			TileID.Sets.DisableSmartCursor[Type] = true;
 
-			AddToArray(ref TileID.Sets.RoomNeeds.CountsAsChair); // Beds count as chairs for the purpose of suitable room creation
+			TileID.Sets.RoomNeeds.CountsAsChair[Type] = true; // Beds count as chairs for the purpose of suitable room creation
 
 			DustType = ModContent.DustType<Sparkle>();
 			AdjTiles = [TileID.Beds];

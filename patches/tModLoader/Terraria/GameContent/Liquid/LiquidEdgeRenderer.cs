@@ -74,7 +74,7 @@ public static class LiquidEdgeRenderer
 		edgeSpans.Clear();
 	}
 
-	public static void DrawTileMask(SpriteBatch spriteBatch, RenderTarget2D tileTarget, Vector2 tileTargetOffset)
+	public static void DrawTileMask(SpriteBatch spriteBatch, Texture2D tileTarget, Vector2 tileTargetOffset)
 	{
 		spriteBatch.End();
 		spriteBatch.Begin(SpriteSortMode.Deferred, MaskingBlendState, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, MaskShader);
@@ -138,12 +138,10 @@ public static class LiquidEdgeRenderer
 
 	private static void DrawScreenTargetSlices(SpriteBatch spriteBatch, EdgeSpan span)
 	{
-		/* TODO: Restore edits.
 		Vector2 position = new Vector2(span.X * 16, span.YStart * 16) + new Vector2(Main.drawToScreen ? 0 : Main.offScreenRange) - Main.screenPosition;
 
-		var offset = Main.sceneTilePos;
-		spriteBatch.Draw(Main.tileTarget, position, new Rectangle(span.X * 16 - (int)offset.X, span.YStart * 16 - (int)offset.Y, 16, 16 * span.Height), Color.White, 0f, Vector2.Zero, 1f, 0, 0f);
-		*/
+		var offset = Main.tileTarget.Position;
+		spriteBatch.Draw(Main.tileTarget.Texture, position, new Rectangle(span.X * 16 - (int)offset.X, span.YStart * 16 - (int)offset.Y, 16, 16 * span.Height), Color.White, 0f, Vector2.Zero, 1f, 0, 0f);
 	}
 
 	public static unsafe void CollectEdgeData(LiquidRenderer.LiquidCache* pCache, Tile tileCache, int tileX, int tileY)

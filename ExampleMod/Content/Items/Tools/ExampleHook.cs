@@ -126,8 +126,8 @@ namespace ExampleMod.Content.Items.Tools
 		}
 
 		// Draws the grappling hook's chain.
-		public override bool PreDrawExtras() {
-			Vector2 playerCenter = Main.player[Projectile.owner].MountedCenter;
+		public override bool PreDrawExtras(Player player) {
+			Vector2 playerCenter = player.MountedCenter;
 			Vector2 center = Projectile.Center;
 			Vector2 directionToPlayer = playerCenter - Projectile.Center;
 			float chainRotation = directionToPlayer.ToRotation() - MathHelper.PiOver2;

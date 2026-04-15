@@ -10,6 +10,7 @@ public partial class TEDisplayDoll
 	{
 		tag["items"] = PlayerIO.SaveInventory(_equip);
 		tag["dyes"] = PlayerIO.SaveInventory(_dyes);
+		tag["misc"] = PlayerIO.SaveInventory(_misc);
 	}
 
 	public override void LoadData(TagCompound tag)
@@ -17,49 +18,64 @@ public partial class TEDisplayDoll
 		// TML 1.4.4 saved as "items", 1.4.5 changed field from _items to _equip.
 		PlayerIO.LoadInventory(_equip, tag.GetList<TagCompound>("items"));
 		PlayerIO.LoadInventory(_dyes, tag.GetList<TagCompound>("dyes"));
+		PlayerIO.LoadInventory(_misc, tag.GetList<TagCompound>("misc"));
 	}
 
 	public override void NetSend(BinaryWriter writer)
 	{
-		BitsByte itemsBits = default;
-		BitsByte dyesBits = default;
+		var bitWriter = new BitWriter();
 
-		for (int i = 0; i < 8; i++) {
-			itemsBits[i] = !_equip[i].IsAir;
-			dyesBits[i] = !_dyes[i].IsAir;
+		foreach (var item in _equip) {
+			bitWriter.WriteBit(!item.IsAir);
 		}
 
-		writer.Write(itemsBits);
-		writer.Write(dyesBits);
+		foreach (var item in _dyes) {
+			bitWriter.WriteBit(!item.IsAir);
+		}
 
-		for (int i = 0; i < 8; i++) {
-			var item = _equip[i];
+		foreach (var item in _misc) {
+			bitWriter.WriteBit(!item.IsAir);
+		}
 
+		bitWriter.Flush(writer);
+
+		foreach (var item in _equip) {
 			if (!item.IsAir) {
 				ItemIO.Send(item, writer, true);
 			}
 		}
 
-		for (int i = 0; i < 8; i++) {
-			var dye = _dyes[i];
-
-			if (!dye.IsAir) {
-				ItemIO.Send(dye, writer, true);
+		foreach (var item in _dyes) {
+			if (!item.IsAir) {
+				ItemIO.Send(item, writer, true);
 			}
 		}
+
+		foreach (var item in _misc) {
+			if (!item.IsAir) {
+				ItemIO.Send(item, writer, true);
+			}
+		}
+
+		writer.Write(_pose);
 	}
 
 	public override void NetReceive(BinaryReader reader)
 	{
-		BitsByte presentItems = reader.ReadByte();
-		BitsByte presentDyes = reader.ReadByte();
+		var bitReader = new BitReader(reader);
 
-		for (int i = 0; i < 8; i++) {
-			_equip[i] = presentItems[i] ? ItemIO.Receive(reader, true) : new Item();
+		for (int i = 0; i < _equip.Length; ++i) {
+			_equip[i] = bitReader.ReadBit() ? ItemIO.Receive(reader, true) : new Item();
 		}
 
-		for (int i = 0; i < 8; i++) {
-			_dyes[i] = presentDyes[i] ? ItemIO.Receive(reader, true) : new Item();
+		for (int i = 0; i < _dyes.Length; ++i) {
+			_dyes[i] = bitReader.ReadBit() ? ItemIO.Receive(reader, true) : new Item();
 		}
+
+		for (int i = 0; i < _misc.Length; ++i) {
+			_misc[i] = bitReader.ReadBit() ? ItemIO.Receive(reader, true) : new Item();
+		}
+
+		_pose = reader.ReadByte();
 	}
 }

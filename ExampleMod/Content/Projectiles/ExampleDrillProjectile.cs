@@ -11,7 +11,7 @@ namespace ExampleMod.Content.Projectiles
 	{
 		public override void SetStaticDefaults() {
 			// Prevents jitter when stepping up and down blocks and half blocks
-			ProjectileID.Sets.HeldProjDoesNotUsePlayerGfxOffY[Type] = true;
+			ProjectileID.Sets.HeldProjDoesNotUsePlayerGfxOffY/* tModPorter Note: Removed. AI() should use master.RotatedRelativePoint(master.MountedCenter + ...) to position held projectiles */[Type] = true;
 		}
 
 		public override void SetDefaults() {
@@ -23,7 +23,8 @@ namespace ExampleMod.Content.Projectiles
 			Projectile.DamageType = DamageClass.Melee;
 			Projectile.ownerHitCheck = true;
 			Projectile.aiStyle = -1; // Replace with 20 if you do not want custom code
-			Projectile.hide = true; // Hides the projectile, so it will draw in the player's hand when we set the player's heldProj to this one.
+			Projectile.usesOwnerLight = true;
+			Projectile.drawLayer = ProjectileDrawLayerID.HeldProj;
 		}
 
 		// This code is adapted and simplified from aiStyle 20 to use a different dust and more noises. If you want to use aiStyle 20, you do not need to do any of this.

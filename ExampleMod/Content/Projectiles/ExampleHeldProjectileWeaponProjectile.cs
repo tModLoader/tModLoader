@@ -19,7 +19,7 @@ namespace ExampleMod.Content.Projectiles
 
 		public override void SetStaticDefaults() {
 			Main.projFrames[Type] = 6;
-			ProjectileID.Sets.HeldProjDoesNotUsePlayerGfxOffY[Type] = true;
+			ProjectileID.Sets.HeldProjDoesNotUsePlayerGfxOffY/* tModPorter Note: Removed. AI() should use master.RotatedRelativePoint(master.MountedCenter + ...) to position held projectiles */[Type] = true;
 		}
 
 		public override void SetDefaults() {
@@ -28,7 +28,8 @@ namespace ExampleMod.Content.Projectiles
 			Projectile.friendly = true;
 			Projectile.penetrate = -1;
 			Projectile.tileCollide = false;
-			Projectile.hide = true;
+			Projectile.usesOwnerLight = true;
+			Projectile.drawLayer = ProjectileDrawLayerID.HeldProj;
 			Projectile.DamageType = DamageClass.Ranged;
 			Projectile.ignoreWater = true;
 

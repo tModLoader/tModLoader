@@ -10,37 +10,30 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Remove all Obsolete methods, including hooks and vanilla changes.
 - Doublecheck methods marked as "Unused": SwitchTilesNew, AddStructure/AddProtectedStructure
 - Remove TileID.Sets.WallsMergeWith (see TileID.Sets.TruncatesWalls)
-- NetDiagnosticsUI Interlocked changes, should they include modded?
 - Test if https://github.com/tModLoader/tModLoader/pull/4626 is fixed in vanilla. I think you need to test with non-player chat to test properly, or maybe another player?
 - ItemSourceID is now static readonly, not a const. Do any other IDs change?
 - Need to update ItemID.Sets.OreDropsFromSlime with new entries.
   - Also AI_001_Slimes_GenerateItemInsideBody has additional logic now for skyblock that adjusts the drops. Investigate these and see if tmod needs more support or a TODO.
 - We need to add ModItem.SummonPrefix(), add ModPrefix.Summon
 - ShimmerTransforms.IsItemTransformLocked seems to have been split, need to verify RecipeLoader.DecraftAvailable and other logic still applies.
-- Update ModPylon docs to removed danger check from check listing.
+- Update ModPylon docs to removed danger check from check listing, and remove the ValidTeleportCheck_AnyDanger hook
 - Remove totalWeight parameter from ModifyWorldGenTasks
 - WorldGenerator._seed needs to be internal again. The patch was lost
 - Consider updating FlexibleTileWand.Reload
-- NPCID.Sets.IsGoldCritter has been added, seems to be an exact clone of GoldCrittersCollection. Link each other in documentation?
-- Move NPCID.Sets.SpawnFromLastEmptySlot docs to SearchSpawnSlotsInReverse and delete from .TML.cs
 - https://github.com/tModLoader/tModLoader/pull/1675 seemed to fix a bug that is apparently now fixed in vanilla. Patches in AWorkshopPublishInfoState deleted. Verify that existing workshop publicity still correctly updates UI without requiring a click.
 - RecipeGroup has changed dramatically. We'll need to adjust how modded groups merge and document the new behaviors and new ctors. The tml added methods might also be superfluous now. 
 - Mount.Dismount now has a ignoreEffect parameter, this might duplicate the skipDust variable used in MountLoader.Dismount. Adjust patches (and docs) accordingly if they should be the same. When is it set? Do modded mounts need to care about when ignoreEffect was true or false?
-- NPC now has various spawn flags like ZoneSnow, ZoneDungeon, etc. What are they for?
-  - NPC.Spawner class is similar to our NPCSpawnInfo class. There are a lot of renames and less intuitive field names. Maybe we should restore many of the better names with redirects or vanilla edits.
-- Use InitData.MaxNPCs instead of Main.maxNPCs? Or not? When to use one or the other?
+- NPC.Spawner class needs docs and hooks (similar to the old NPCSpawnInfo). The intent is that modders can intercept the various stages, and set/override flags to alter vanilla spawn logic.
 - NPCLoader.BuffTownNPC will need to be reworked to facilitate new functionality. "Defeating a boss now also gives each villager a 1.5% attack speed bonus." is a new vanilla effect. Similarly the Advanced Combat Techniques increases health by 250. Dryad immortal on infectedSeed.
 - Check for any remaining TML added ID sets that aren't in TML.cs files.
 - BuffLoader.ReApply (NPC) logic seems changed, likely to fix desync issues. The server sync for MessageID.NPCBuffs when !quiet now happens after the reapply logic. Modded ReApply will need doc updates or maybe new parameters to properly adjust to these changes. Maybe a ref time parameter instead?
 - NPC.TryAddingRepeatedBuff added. Might be useful to document and make public.
-- Recipe.requiredTile no longer supports multiple tiles. Only a single crafting station is the new approach. Should we restore the old functionality? Is this necessary for the new crafting menu features?
+- Recipe.requiredTile no longer supports multiple tiles. Only a single crafting station is the new approach. In theory it is possible to restore multiple required tiles, but we'd have to rule that recipes can show in the filtered crafting station UI if _any_ of their required tiles meet the filter.
 - Zone calculations seem to have been reorganized a bit. Verify functionality of hooks (TileCountsAvailable, ResetNearbyTileEffects, UpdateSceneEffect)
 - TryGetTileBounds needs docs. DrawFrameOffsets needs docs and maybe example, not sure what it is for yet.
 - FileUtilities.Copy and Move no longer have an `overwrite` parameter.
 - LegacyAudioSystem now has TrackLoopCounts and PlayCallbacks. They seem to involve counting how many times a specific music has looped. Investigate. Modders might be interested. Used with RainbowBoulderMusicPlayCallback
 - SoundEngine.Initialize now returns the IAudioSystem. We should test if it is still necessary to show an error message for !IsAudioSupported. 1.4.5 change log claims "Terraria no longer fails to launch when it fails to detect an available audio device.", we should see if tModLoader can work without audio support too.
-- Commented out SoundEngine.PlaySound methods now have a new pitchOffset optional parameter. We may need to adjust SoundStyle or SoundID entries to account for this.
-- SoundPlayOverrides is also new (used in PlayTrackedSound and SoundPlayer.Play), contains an override volume. Will also need to be accounted for in our unified approach.
 - tModLoaderTitleLinkButtonsTexture.png needs to be adjusted with new bluesky link
 - Update https://github.com/tModLoader/tModLoader/wiki/Vanilla-Content-IDs#achievement-identifiers with new achievements
 - https://github.com/tModLoader/tModLoader/pull/3500 seems to have changed ItemSourceID.PlayerDropItemCheck to ThrowItem. In 1.4.5 it was renamed to PlayerDrop and there is a new InventoryOverflow. Double check that the #3500 logic applies to the fixed 1.4.5 code. Maybe see if ThrowItem is a better name than PlayerDrop and can be fixed in Terraria, otherwise tModPorter it or double check that it is patched everywhere to use the new names.
@@ -54,14 +47,13 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - ShaderData classes now have `if (Main.dedServ)` checks. Are these overzealous, or do we need to adjust other places or inform modders that shader code might attempt to run on servers.
 - Player.voiceOverride. Currently an sbyte, might need to be an int like the other equipment slot IDs. Also an example would be nice.
 - Need to document ArmorIDs.Face.Sets.DrawInFaceMaskLayer as well
-- Player.revolverCritChanceBonus, is this a Stat? should it be a StatModifier?
+- Player.revolverCritChanceBonus needs a quick test now that it has been implemented as a Projectile.CritChance bonus. Need to hookup `Item.GetVisualCritChance`
 - Player.adjTile patches are weird. It shouldn't be necessary to resize, they should be correct when the Player is initialized anyway.
 - player.oldAdjTile has been removed. Did modders depend on this for any reason? Tracking previous frames?
 - Player.coat added. It might also need and EquipType
 - What is Player._pendingRefunds? Does it require modded item support?
 - Player.ApplyEquipVanity now calls RefreshInfoAccsFromItemType. Is this new behavior, will our existing hooks now call things multiple times by accident?
 - Player.meleeArmorPenetration is new, need to hook it up
-- Player.revolverCritChanceBonus is new, need to hook it up
 - Player.ApplyItemTime has been updated, we might not need as many patches?
 - Integrate new `private void SetItemAnimation(int baseFrames, float multiplier)` method into our usetime hooks. Make public.
 - Player.AddBuff parameters changed. Will need to adjust docs and maybe inform modders of any behavior changes.
@@ -88,7 +80,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Should PlayerLoader.SyncPlayer in SyncOnePlayer be after syncing owner Projectiles?
 - ItemID.ItemSpawnDecaySpeed gone. IsBasicFish added. IsQuestFish added (adjust ModItem.IsQuestFish?)
 - TEDeadCellsDisplayJar and associated net messages need to be updated. Are there other new TEs?
-- ItemID's #endif needs to be moved down.
 - ItemID.BannerEffect changed, might need an example. Docs need to be updated for LinearCurve.
 - Chest.maxItems no longer const. DefaultMaxItems/AbsoluteMaxItemsWeCanEverReachInAChestForNow added. Might need to find for loops to 40 and change if we want to support this. Chest ctors changed.
 - Verify that https://github.com/tModLoader/tModLoader/issues/4383 is fixed: `if (Language.GetText("CLI.NewWorld_Command").EqualsCommand(text3))` in vanilla replaced `if (text2 == "n" || text2 == "N" || string.Equals(text2, Language.GetTextValue("CLI.NewWorld_Command"), StringComparison.CurrentCultureIgnoreCase))` fix in tmod. (New world command)
@@ -116,7 +107,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Update ExampleExposedGems.TileFrame to use the new CheckAndAdjustMultiDirectionalTile method. Document CheckAndAdjustMultiDirectionalTile as well.
 - NewProjectile now has a NewProjectileModifier parameter. How is it used? How should modders use it? Need to add it to Docs for each overload.
 - Code in Projectile claiming "// Moved to CombinedHooks.ModifyHitByProjectile" will need to be copied over again if that is still the intention. It seems that deadMansSweater is also nearby, should it also be commented?
-- Projectile.bonusCritChance added. Does this do the same as tml-added Projectile.CritChance? Double check if `if (DamageType.UseStandardCritCalcs && Main.rand.Next(100) < CritChance + num10)` in new code is double applying projectile crit chance or if it is correct.
 - Not sure about the order for "VanillaOnHitEffectsResume:" and other labels. SpawnHitVisuals method added in between existing patches.
 - It seems like bomb damage logic has been reworked. Maybe many of our patches are no longer necessary or our explosive projectile examples need fixing. 
 - CombinedHooks.CanHitNPCWithProj patches might need to be reworked, it seems like they should be able to be simplified
@@ -128,7 +118,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - MapRenderer class now contains what was Main.mapSectionTexture and mapTarget. Most static fields there should probably be public.
 - New vanilla TooltipLine options. Need to add to docs and decide on name (is there a wiki page as well?): CommonItemTooltip.ItemUnlockedByTeammate, armorPenetration, bonusTagDamage, check for others. Seems like "Social" and "SocialDesc" logic changed, compare tooltips to 1.4.4 and adjust.
 - DrawBlockReplacementIcon return changed from void to bool. Does that affect how the builders toggle works? Did vanilla behavior change? New state bool in logic, and DoStatefulTickSound
-- StartRain method now seems to be more controllable. Update docs accordingly. (StopRain as well)
 - See updated `toolTipNames[numLines] = "UseMana";` patch. Look into IsSpaceGun and GetManaCost, might need updates. 
 - Double check PlayerLoader.ModifyZoom logic. Seems like there is only 1 callsite now, code was cleaned up?
 - What is Main.boulderLogo? Seems like MenuLoader needs to be updated with a new vanilla menu option?
@@ -142,7 +131,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - RefreshInfoAccsFromItemType is now being called on vanity equipment too. Does this affect any of our changes? Is any slot now being checked twice? Do we need to adjust ModAccessorySlotPlayer for the same behavior?
 - `//TML: Eventide and nightglow handled by Item.useLimitPerAnimation.` comment now commenting out item 5669. Might need to make changes to that item similar to 4956
 - ItemLoader.UseItemHitbox callsite useStyle == 3 needs adjustment to call hook reliably.
-- Update TileID.Sets.NegatesFallDamage docs and entries. Mention that TileID.Sets.Clouds will have the same effect ase well and remove the cloud entries.
 - clientClone changed. I think the `_clientClone` field is no longer needed, or extraneous.
 - Player.nonTorch removed
 - Cloud rendering has moved, need to migrate modcloud patches from Main to HorizonRenderer I think.
@@ -179,19 +167,15 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Vanilla now has a NativeLibraries class, conflicting with our own.
 - Modded tip logic might need changes. There can now be player creation specific tips in UICharacterCreation._tips (a GameTipsDisplay class with a different `ITipProvider`. Supporting this would require more thought.
 - How do we update ProjectileID.Sets.PlayerHurtDamageIgnoresDifficultyScaling? Needs dev comment and to be updated.
-- LiquidEdgeRenderer.DrawScreenTargetSlices patch needs to be fixed if still needed.
-- ActiveEntityIterator needs to be fixed now that Entity.active no longer exists.
 - SurfaceBackgroundStylesLoader.DrawCloseBackground needs to be fixed or recreated from new vanilla logic/math
 - The "#4640"/PostTileFrame fix caused the game to get stuck on settling liquids 50%, it has been commented out.
 - Initialize_AlmostEverything has many new methods we'll likely need to integrate into mod reloading. We might want to see if there is a "cleaner" way than just copying over specific method calls into ModContent.Load.
   - For example: ArmorSetBonuses.BuildLookup, ItemID.Sets.PostSetupContent
   - Someone should "find all references" on each XID.Count field to find any remaining content arrays that need to be resized (CB done ItemID, TileID, WallID).
-- LocalizedText.Value not working currently. `if (_value is VariableText variableText && variableText.TryFormat(Lang.GetGlobalSubstitution, out var formatted))` was crashing. Text substitutions will need to be reinstated as well as merging tml localization features (pluralization) with new 1.4.5 localization features.
 - Make a checklist of all TML hooks and have others QC each method behavior?
-- TileID.Sets.IsAMechanism changed to TileID.Sets.Wiring.IsAMechanism. tModPorter done. The function of the set might have changed, investigate and update docs.
-- NPCID.Sets.ShouldBeCountedAsBossForBestiary renamed to ShouldBeCountedAsBoss. tModPorter done. (TODO: Verify where it is now used and update docs if necessary)
 - BuffID.Sets.LongerExpertDebuff -> BuffID.Sets.BuffTimeIsExtendedWithGameDifficulty. tModPorter done. Docs remarks might also now be wrong. Also doc BuffTimeIsExtendedByDeadCellsPotionStationBuff
 - ItemID.Sets.BonusAttackSpeedMultiplier renamed to BonusMeleeSpeedMultiplier. tModPorter done. (double check that this doesn't only apply to melee weapons. I think it isn't limited currently)
+- Run NPCShopDatabase.Test tests.
 
 # New Fields that might need more documentation
 
@@ -219,10 +203,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 
 - UIElement.OnDraw is now a DrawEvent not a ElementEvent (can this be tModPorted?)
 - Point16.X and Y are no longer readonly
-- Entity.active removed, active field added to Player, Projectile, WorldItem
-- WorldItem added, represents an Item in the world
-- Item no longer inherits from Entity
-- Item and Entity implement IEntitySourceTarget. All Entity fields in IEntitySource are now IEntitySourceTarget
 - Entity.Center changed, taking into account 0.5 from odd widths and heights now instead of using integer division
 	new Vector2(position.X + (float)(width / 2), position.Y + (float)(height / 2)); 
 	to 
@@ -231,23 +211,19 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - SlimeBodyItemDropRule can be applied to any NPCID.Sets.SlimeCanContainItems now and ItemID.Sets.OreDropsFromSlime has been updated to include the alternate ores as well as Hellstone and DesertFossil
 - Magic and Summon prefixes have been split into separate categories
 - Pylons no longer check for "danger". ModPylon.ValidTeleportCheck_AnyDanger removed.
-- Item.netID removed (tModPorter?)
+- Pylons no longer require happiness to be sold. Remove Condition.HappyEnoughToSellPylons from ModPylon.GetNPCShopEntry() to match vanilla.
+- Removed Condition.HappyEnough and Condition.HappyEnoughToSellPylons. Replaced with Condition.CurrentPriceAdjustmentUnder(float priceModifier) and Condition.CurrentPriceAdjustmentOver(float priceModifier).
 - Item.SetDefaults(int Type = 0) no longer exists
 - Item.SetDefaults(int Type, bool noMatCheck = false, ItemVariant variant = null) change to SetDefaults(int Type, ItemVariant variant = null) (noMatCheck parameter removed)
 - UnifiedRandom.Next methods are no longer virtual
-- ICameraModifier now has a IsAScreenShake property to support the user's screen shake accessibility setting (Main.UseScreenShake). Update your ICameraModifier and other camera movements to support Main.UseScreenShake.
 - TownNPC can now have portraits. Use the following to implement: NPCID.Sets.NPCPortraits (todo, example)
 - UIWrappedSearchBar, is it useful to modders?
-- Main.sign length changed from 1000 to 32000.
 - Lots of new methods in Utils. Check if any duplicate TML.cs methods.
 - Various text rendering methods have been changed or improved. Investigate new functionality and previous bug fixes.
 - Player.IsAllowedToHoldItems
-- All chairs give fishing bonus now, not just toilets.
 - MountID.Sets.DoesNotOverrideLegFrames seems like something a lot of modded mounts might want to use. (All other new MountID.Sets sets as well)
-- BuffID.Sets.BasicMountData is now just BuffID.Sets.MountType. It no longer stores a `BuffID.Sets.BuffMountData` since mounts no longer "faceLeft" or right. It now just stores the MountID directly.
 - BuffID.IsAnNPCWhipDebuff, which tModLoader renamed to IsATagBuff, has changed a lot. Need to document the new behavior. Do we want to revert the name change? Also CanBeRemovedByNetMessage docs are now wrong.
 - ProjectileID.Sets.HeldProjDoesNotUsePlayerGfxOffY removed. How has this been fixed? I thought it wouldn't be fixed in vanilla.
-- ProjectileID.Sets.DontAttachHideToAlpha removed. What replaced it? Is it usesOwnerLight? Update Projectile.hide docs as well.
 - Need to determine if hooks need to act on ModItem or WorldItem. For example: `ItemIO.SendModData(item3, writer);`
   - `public EntityGlobalsEnumerator<TGlobal> Enumerate(IEntityWithGlobals<TGlobal> entity) => new(ForType(entity.Type), entity);` doesn't work as-is for hooks that are now WorldItem. I've changed them to `.Enumerate(item.inner)`, but I'm not positive what design we want for these hooks now. (WorldItem points to Item, but Item doesn't point to WorldItem.)
 - The number3 parameter of the SyncEquipment message seems to have changed meaning. Docs needed.
@@ -257,19 +233,20 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - HardmodeAnnouncementTask is no longer a HardmodeTask.
 - AssetRepository a huge mess of patches. _changeWatcher patch might need to be restored.
 - LanguageManager.GetText changed, now it stores on miss. Before it didn't and we kept that behavior. Do we want the old behavior still?
-- Recipe.FindRecipes gone. Probably not needed anymore
-- MusicID entries have changed. I have a diff prepared, need to add to wiki or handle it somehow.
 - ProjAIStyleID and NPCAIStyleID will need to be regenerated (jopo has script)
 - Replace Main.hasFocus with FocusHelper.AllowUIInputs (or another property)
 - Player.QuickSpawnItem no longer returns an int indicating the index of the item in Main.item. This is because the spawned item can now potentially go directly into player inventory.
 - Item.width and height no longer have any relation to the in-world hitbox of dropped items. All items now have a 16x16 hitbox in the game world.
-- NPC.killCount, Item.BannerToItem, Item.BannerToNPC, Item.NPCtoBanner are now all in GameContent.BannerSystem
+- Condition.DownedEarlygameBoss now includes King Slime and Deerclops (Now it's any pre-Hardmode boss or Hardmode).
 
 # tModPorter TODOs
 
 - TileID.Sets.WallsMergeWith usages in Framing.WallFrame changed to newly added TileID.Sets.TruncatesWalls (TODO: New set contains several new vanilla tiles, does that make sense? tModPorter?)
 - ItemVariants.EverythingWorld renamed to MechdusaWorld
 - Player.GetItem no longer has plr parameter
+- Main.GameModeInfo.IsJourneyMode -> Main.IsJourneyMode
+- Item.SetDefaults() -> Item.SetDefaults(0)
+- Item.SetDefaults(int, bool) -> Item.SetDefaults(int)
 
 # ExampleMod TODOs
 - Verify that ExampleZombieThief still works with changes
@@ -363,15 +340,6 @@ Longer TODOs that would clutter above
  		for (int i = 0; i < 5; i++) {
  			if (!_layerList.Contains(ItemSortingLayers.WeaponsMelee) && player.meleeDamage == list[0]) {
  				list.RemoveAt(0);
-```
-
-- NPC.killCount no longer exists? Need to update docs and examples.
-```diff
-+	/// <summary>
-+	/// Indexed by BannerIDs, counts how many kills a specific enemy (or group of enemies with a shared BannerID) has in this world. Kill counts are stored on the world and are synced in multiplayer. Used by the <see cref="ItemID.TallyCounter"/> and for dropping banners. See also <see cref="ItemID.Sets.KillsToBanner"/>.
-+	/// <para/> Note that Bestiary kill counts are tracked separately and per each NPC type instead of sharing a kill count with all other NPC types using the same BannerID.
-+	/// </summary>
- 	public static int[] killCount = new int[NPCID.Count];
 ```
 
 - NPC.netUpdate field moved, need to restore this patch in a new patch after patches fixed.

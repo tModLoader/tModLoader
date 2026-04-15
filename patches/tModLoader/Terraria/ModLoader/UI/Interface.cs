@@ -148,6 +148,7 @@ internal static class Interface
 
 			else if (ModLoader.ShowWhatsNew) {
 				ModLoader.ShowWhatsNew = false;
+				string compareToBranch = BuildInfo.IsDev ? "1.4.5" : "preview";
 				if (File.Exists("RecentGitHubCommits.txt")) {
 					bool LastLaunchedShaInRecentGitHubCommits = false;
 					var messages = new StringBuilder();
@@ -165,17 +166,17 @@ internal static class Interface
 							}
 						}
 					}
-					string compareUrl = $"{ModLoader.LastLaunchedTModLoaderAlphaSha}...preview";
+					string compareUrl = $"{ModLoader.LastLaunchedTModLoaderAlphaSha}...{compareToBranch}";
 					if (!LastLaunchedShaInRecentGitHubCommits) {
 						// If not seen, then too many commits since the last time user opened Preview
 						messages.Append("\n...and more");
-						compareUrl = $"stable...preview";
+						compareUrl = $"stable...{compareToBranch}";
 					}
 
 					infoMessage.Show(Language.GetTextValue("tModLoader.WhatsNewMessage") + messages.ToString(), Main.menuMode, null, Language.GetTextValue("tModLoader.ViewOnGitHub"), () => Utils.OpenToURL($"https://github.com/tModLoader/tModLoader/compare/{compareUrl}"));
 				}
 				else {
-					infoMessage.Show(Language.GetTextValue("tModLoader.WhatsNewMessage") + "Unknown, somehow RecentGitHubCommits.txt is missing.", Main.menuMode, null, Language.GetTextValue("tModLoader.ViewOnGitHub"), () => Utils.OpenToURL($"https://github.com/tModLoader/tModLoader/compare/stable...preview"));
+					infoMessage.Show(Language.GetTextValue("tModLoader.WhatsNewMessage") + "Unknown, somehow RecentGitHubCommits.txt is missing.", Main.menuMode, null, Language.GetTextValue("tModLoader.ViewOnGitHub"), () => Utils.OpenToURL($"https://github.com/tModLoader/tModLoader/compare/stable...{compareToBranch}"));
 				}
 			}
 

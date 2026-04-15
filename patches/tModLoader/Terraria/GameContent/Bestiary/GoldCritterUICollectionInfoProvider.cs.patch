@@ -1,0 +1,11 @@
+--- src/TerrariaNetCore/Terraria/GameContent/Bestiary/GoldCritterUICollectionInfoProvider.cs
++++ src/tModLoader/Terraria/GameContent/Bestiary/GoldCritterUICollectionInfoProvider.cs
+@@ -48,7 +_,7 @@
+ 
+ 	private bool TryFindingOneGoldCritterThatIsAlreadyUnlocked()
+ 	{
+-		for (int i = 0; i < NPCID.Sets.GoldCrittersCollection.Count; i++) {
++		for (int i = 0; i < NPCID.Sets.GoldCrittersCollection.Length; i++) {
+ 			int key = NPCID.Sets.GoldCrittersCollection[i];
+ 			string persistentId = ContentSamples.NpcBestiaryCreditIdsByNpcNetIds[key];
+ 			if (GetUnlockStateForCritter(persistentId) > BestiaryEntryUnlockState.NotKnownAtAll_0)

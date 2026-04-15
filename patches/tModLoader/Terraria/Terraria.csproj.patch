@@ -8,7 +8,7 @@
  
  	<!-- General -->
  	<PropertyGroup>
-@@ -11,59 +_,99 @@
+@@ -11,59 +_,96 @@
  		<Company>Re-Logic</Company>
  		<Copyright>Copyright © 2026 Re-Logic</Copyright>
  		<RootNamespace>Terraria</RootNamespace>
@@ -63,26 +63,24 @@
 -			<LogicalName>Terraria.Libraries.ReLogic.ReLogic.dll</LogicalName>
 -		</EmbeddedResource>
 +		<ProjectReference Include="../../../tModPorter/tModPorter/tModPorter.csproj" />
-+		<ProjectReference Include="../../../tModCodeAssist/tModCodeAssist/tModCodeAssist.csproj"
-+			ReferenceOutputAssembly="false" />
-+		<ProjectReference Include="../../../tModCodeAssist/tModCodeAssist.CodeFixes/tModCodeAssist.CodeFixes.csproj"
-+			ReferenceOutputAssembly="false" />
++		<ProjectReference Include="../../../tModCodeAssist/tModCodeAssist/tModCodeAssist.csproj" ReferenceOutputAssembly="false" />
++		<ProjectReference Include="../../../tModCodeAssist/tModCodeAssist.CodeFixes/tModCodeAssist.CodeFixes.csproj" ReferenceOutputAssembly="false" />
  
  		<Reference Include="CsvHelper" />
 -		<Reference Include="Ionic.Zip.CF" />
  		<Reference Include="MP3Sharp" />
- 		<Reference Include="Newtonsoft.Json" />
+-		<Reference Include="Newtonsoft.Json" />
  		<Reference Include="NVorbis" />
  		<Reference Include="RailSDK.Net" />
  		<Reference Include="SteelSeriesEngineWrapper" />
-+		<Reference Include="log4net" />
 +		<Reference Include="TerrariaHooks" />
  
-+		<PackageReference Include="DotNetZip" Version="1.16.0" />
++		<PackageReference Include="log4net" Version="3.3.0" />
++		<PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
 +		<PackageReference Include="JetBrains.Annotations" Version="2025.2.4" />
  		<PackageReference Include="Steamworks.NET.AnyCPU" Version="2025.162.4" />
-+		<PackageReference Include="Basic.Reference.Assemblies.Net80" Version="1.5.0" />
-+		<PackageReference Include="MonoMod.RuntimeDetour" Version="25.3.2" />
++		<PackageReference Include="Basic.Reference.Assemblies.Net100" Version="1.8.4" />
++		<PackageReference Include="MonoMod.RuntimeDetour" Version="25.3.4" />
 +		<PackageReference Include="Microsoft.Win32.Registry" Version="6.0.0-preview.5.21301.5 " />
 +		<PackageReference Include="Hjson" Version="3.0.0" />
 +		<PackageReference Include="System.Reflection.MetadataLoadContext" Version="8.0.0" />

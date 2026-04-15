@@ -1,6 +1,11 @@
 --- src/TerrariaNetCore/Terraria/Map/MapHelper.cs
 +++ src/tModLoader/Terraria/Map/MapHelper.cs
-@@ -6,6 +_,8 @@
+@@ -2,10 +_,12 @@
+ using System.Diagnostics;
+ using System.IO;
+ using System.Threading;
+-using Ionic.Zlib;
++using System.IO.Compression;
  using Microsoft.Xna.Framework;
  using Terraria.ID;
  using Terraria.IO;
@@ -19,6 +24,16 @@
  	private static ushort[] snowTypes;
  	private static ushort wallRangeStart;
  	private static ushort wallRangeEnd;
+@@ -139,7 +_,9 @@
+ 	public static float sceneSnowiness;
+ 	public static bool noStatusText = false;
+ 	public const int MapChunkSize = 64;
++	/*
+ 	private static ZlibCodec zlibDecompress = new ZlibCodec(CompressionMode.Decompress);
++	*/
+ 
+ 	public static void Initialize()
+ 	{
 @@ -1707,6 +_,7 @@
  
  		hellPosition = num22;
@@ -73,6 +88,33 @@
  		}
  
  		noStatusText = false;
+@@ -2877,6 +_,7 @@
+ 	public static void DecompressChunk(byte[] srcData, long srcLength, byte[] dstData, long dstLength, out long resultLength)
+ 	{
+ 		resultLength = 0L;
++		/*
+ 		ZlibCodec zlibCodec = zlibDecompress;
+ 		zlibCodec.InitializeInflate();
+ 		zlibCodec.InputBuffer = srcData;
+@@ -2888,6 +_,18 @@
+ 		int num = zlibCodec.Inflate(FlushType.Finish);
+ 		if ((num == 0 || 1 == num) && zlibCodec.TotalBytesOut > 0)
+ 			resultLength = zlibCodec.TotalBytesOut;
++		*/
++
++		// Untested, but should let us load legacy map files if anyone was to ever try that
++		using (var srcStream = new MemoryStream(srcData, 0, (int)srcLength))
++		using (var zlibStream = new ZLibStream(srcStream, CompressionMode.Decompress)) {
++			int totalRead = 0;
++			int bytesRead;
++			while ((bytesRead = zlibStream.Read(dstData, totalRead, dstData.Length - totalRead)) > 0) {
++				totalRead += bytesRead;
++			}
++			resultLength = totalRead;
++		}
+ 
+ 		for (int i = (int)resultLength; i < dstLength; i++) {
+ 			dstData[i] = 0;
 @@ -3105,6 +_,7 @@
  
  	public static void LoadMapVersion1(BinaryReader fileIO, int release)

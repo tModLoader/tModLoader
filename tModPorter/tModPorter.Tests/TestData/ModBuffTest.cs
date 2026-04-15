@@ -10,6 +10,10 @@ public class ModBuffTest : ModBuff
 		bool a = BuffLoader.CanBeCleared(0);
 
 		BuffID.Sets.IsAnNPCWhipDebuff[Type] = true;
+
+		BuffID.Sets.BasicMountData[Type] = new BuffID.Sets.BuffMountData() {
+			mountID = ModContent.MountType<ExampleMinecartMount>()
+		};
 	}
 
 	public override void ModifyBuffTip(ref string tip, ref int rare) { }

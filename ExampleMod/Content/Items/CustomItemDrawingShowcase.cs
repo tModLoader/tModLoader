@@ -115,7 +115,7 @@ namespace ExampleMod.Content.Items
 			Main.GetItemDrawFrame(Item.type, out var itemTexture, out var itemFrame);
 			Vector2 drawOrigin = itemFrame.Size() / 2f;
 			// Items in the world are drawn centered horizontally sitting at the bottom of the item hitbox, not in the center.
-			Vector2 drawPosition = Item.Bottom - Main.screenPosition - new Vector2(0, drawOrigin.Y);
+			Vector2 drawPosition = item.Bottom - Main.screenPosition - new Vector2(0, drawOrigin.Y);
 
 			if (drawMode == DrawModePulse) {
 				scale = scale * Main.essScale;
@@ -134,7 +134,7 @@ namespace ExampleMod.Content.Items
 			}
 			else if (drawMode == DrawModeHighlightAfterImageEffect) {
 				// This code is a copy of the ItemID.Sets.BossBag effect code from Main.DrawItem. We wouldn't want to use ItemID.Sets.BossBag to get this effect for this item since ItemID.Sets.BossBag has other effects as well that we don't want.
-				float counter = Item.timeSinceItemSpawned / 240f + Main.GlobalTimeWrappedHourly * 0.04f;
+				float counter = item.timeSinceItemSpawned / 240f + Main.GlobalTimeWrappedHourly * 0.04f;
 				float offsetScale = Main.GlobalTimeWrappedHourly;
 				offsetScale %= 4f;
 				offsetScale /= 2f;
@@ -162,7 +162,7 @@ namespace ExampleMod.Content.Items
 		public override void PostDrawInWorld(WorldItem item, SpriteBatch spriteBatch, Color lightColor, Color alphaColor, float rotation, float scale, int whoAmI) {
 			Main.GetItemDrawFrame(Item.type, out var itemTexture, out var itemFrame);
 			Vector2 origin = itemFrame.Size() / 2f;
-			Vector2 drawPosition = Item.Bottom - Main.screenPosition - new Vector2(0, origin.Y);
+			Vector2 drawPosition = item.Bottom - Main.screenPosition - new Vector2(0, origin.Y);
 
 			if (drawMode == DrawModeGlowmask) {
 				// For a glowmask that is the same dimensions as the item sprite, we can use all the provided parameters as is to draw the glowmask texture.

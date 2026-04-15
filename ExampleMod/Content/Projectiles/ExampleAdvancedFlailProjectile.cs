@@ -52,7 +52,7 @@ namespace ExampleMod.Content.Projectiles
 			ProjectileID.Sets.TrailCacheLength[Type] = 6;
 			ProjectileID.Sets.TrailingMode[Type] = 2;
 
-			ProjectileID.Sets.HeldProjDoesNotUsePlayerGfxOffY[Type] = true;
+			ProjectileID.Sets.HeldProjDoesNotUsePlayerGfxOffY/* tModPorter Note: Removed. AI() should use master.RotatedRelativePoint(master.MountedCenter + ...) to position held projectiles */[Type] = true;
 		}
 
 		public override void SetDefaults() {
@@ -432,11 +432,11 @@ namespace ExampleMod.Content.Projectiles
 		}
 
 		// PreDraw is used to draw a chain and trail before the projectile is drawn normally.
-		public override bool PreDraw(ref Color lightColor) {
-			Vector2 playerArmPosition = Main.GetPlayerArmPosition(Projectile);
+		public override bool PreDraw(Player player, ref Color lightColor) {
+			Vector2 playerArmPosition = Main.GetPlayerArmPosition(Projectile, player);
 
 			// This fixes a vanilla GetPlayerArmPosition bug causing the chain to draw incorrectly when stepping up slopes. The flail itself still draws incorrectly due to another similar bug. This should be removed once the vanilla bug is fixed.
-			playerArmPosition.Y -= Main.player[Projectile.owner].gfxOffY;
+			playerArmPosition.Y -= player.gfxOffY;
 
 			Rectangle? chainSourceRectangle = null;
 			// Drippler Crippler customizes sourceRectangle to cycle through sprite frames: sourceRectangle = asset.Frame(1, 6);
