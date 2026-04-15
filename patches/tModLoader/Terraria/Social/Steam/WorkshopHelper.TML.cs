@@ -262,10 +262,10 @@ namespace Terraria.Social.Steam
 
 			internal static void GetDependenciesRecursive(ulong publishedId, ref HashSet<ulong> set) {
 				var deps = GetDependencies(publishedId);
-				set.UnionWith(deps);
 
 				foreach (ulong dep in deps)
-					GetDependenciesRecursive(dep, ref set);
+					if(set.Add(dep))
+						GetDependenciesRecursive(dep, ref set);
 			}
 
 			internal static bool CheckWorkshopConnection() {
