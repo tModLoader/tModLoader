@@ -7,7 +7,7 @@
  using System.Runtime.InteropServices;
  using Microsoft.Xna.Framework;
  
-@@ -54,5 +_,41 @@
+@@ -54,5 +_,46 @@
  	{
  		NativeMethods.FlashInfo flashInfo = NativeMethods.FlashInfo.CreateStop(window.Handle);
  		NativeMethods.FlashWindowEx(ref flashInfo);
@@ -36,6 +36,11 @@
 +			// Redirect Console.Out to the new console's output stream
 +			IntPtr stdOutHandle = NativeMethods.GetStdHandle(0xFFFFFFF5);
 +			if (stdOutHandle != IntPtr.Zero) {
++				// Ensure the Code Page of the new console is UTF-8
++				// Since the streamwriter uses UTF-8 by default
++				NativeMethods.SetConsoleOutputCP(65001);
++				NativeMethods.SetConsoleCP(65001);
++
 +				// Reopen standard output stream to the new console
 +				TextWriter writer = new StreamWriter(Console.OpenStandardOutput()) { AutoFlush = true };
 +				Console.SetOut(writer);
