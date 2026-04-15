@@ -74,6 +74,8 @@ TODO: More information
 * `ICameraModifier` now has a `IsAScreenShake` property to support the user's screen shake accessibility setting (`Main.UseScreenShake`). Update your `ICameraModifier` and other camera movements to support `Main.UseScreenShake`.
 * `Main.sign` length changed from 1000 to 32000.
 * Shaders no longer need to declare every possible input, missing inputs will be ignored now.
+* Dungeon generation has changed. Multiple dungeons can now generate under some secret seeds. Most dungeon related fields that used to be static fields in `Terraria.WorldBuilding.GenVars` are now instance fields in `Terraria.GameContent.Generation.Dungeon.DungeonGenVars`, accessed through the `GenVars.CurrentDungeonGenVars` property to access the data for the currently generating dungeon index.
+  * For example: `GenVars.dungeonSide` -> `GenVars.CurrentDungeonGenVars.dungeonSide`. Many of the fields have been renamed or have changed meaning, it would be wise to study the decompiled code if in doubt about any of the changes.
 
 ## Renamed, Moved, or Removed Members
 
@@ -145,6 +147,7 @@ All classes are in the `Terraria` or `Terraria.ID` namespaces unless otherwise i
 * ⚙️: `NPC.SpawnWithHigherTime` removed. No longer used.
 * 🤖: `Player.IsProjectileInteractibleAndInInteractionRange` -> `Player.IsProjectileInteractableAndInInteractionRange`
 * ⚙️: `Player.CheckForGoodTeleportationSpot` removed. Use `Utils.CheckForGoodTeleportationSpot` instead.
+* 💀: `Player.DropItems` now has a `gemsOnly` parameter indicating a softcore or creative player that should only drop large gems.
 * ⚙️: `Recipe.FindRecipes` removed. No longer used.
 
 ### Non-Static Fields / Constants / Properties
