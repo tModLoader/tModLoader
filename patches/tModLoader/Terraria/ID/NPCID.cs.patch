@@ -170,7 +170,7 @@
 +
 +		/// <summary>
 +		/// Determines which portrait image to use for Town NPCs when the Portrait Style setting is set to detailed.
-+		/// <br/> Example usage: <c>NPCID.Sets.NPCPortraits.Add(Type, NPCID.Sets.PrioritizedPortrait().With(NPCID.Sets.ShimmeredPortraitCondition, NPCID.Sets.ModTownNPCPortrait("YourMod/Path/YourNPC_Shimmer_Portrait")).Default(NPCID.Sets.ModTownNPCPortrait("YourMod/Path/YourNPC_Portrait")))</c>
++		/// <br/><br/> Example usage: <c>NPCID.Sets.NPCPortraits.Add(Type, NPCID.Sets.PrioritizedPortrait().With(NPCID.Sets.ShimmeredPortraitCondition, NPCID.Sets.ModTownNPCPortrait("YourMod/Path/YourNPC_Shimmer_Portrait")).Default(NPCID.Sets.ModTownNPCPortrait("YourMod/Path/YourNPC_Portrait")))</c>
 +		/// </summary>
 +		/// <remarks>See <see cref="NPCPortraitsCloseUpOffsets"/> and <see cref="NPCPortraitsFullBodyRetroOffsets"/> for the profile and retro portrait style settings.</remarks>
  		public static Dictionary<int, NPCPortraitProvider> NPCPortraits = new Dictionary<int, NPCPortraitProvider> {
@@ -315,25 +315,27 @@
  		public static Dictionary<int, int> RespawnEnemyID = new Dictionary<int, int> {
  			{ 492, 0 },
  			{ 491, 0 },
-@@ -5232,6 +_,11 @@
+@@ -5232,6 +_,12 @@
  			{ 622, 621 },
  			{ 623, 621 }
  		};
 +		/// <summary>
 +		/// Determines the offset to use for Town NPCs when the Portrait Style setting is set to profile so that the Town NPC's head is centered.
-+		/// <br/> Example usage: <c>NPCID.Sets.NPCPortraits.Add(Type, new Vector2(0f, 0f))</c>
++		/// <br/><br/> Example usage: <c>NPCID.Sets.NPCPortraits.Add(Type, new Vector2(0f, 0f))</c>
++		/// <br/><br/> If not set, defaults to no offset (<c>Vector2.Zero</c>).
 +		/// </summary>
 +		/// <remarks>See <see cref="NPCPortraits"/> and <see cref="NPCPortraitsFullBodyRetroOffsets"/> for the detailed and retro portrait style settings.</remarks>
  		public static Dictionary<int, Vector2> NPCPortraitsCloseUpOffsets = new Dictionary<int, Vector2> {
  			{ 17, new Vector2(6f, 0f) },
  			{ 18, new Vector2(-6f, 0f) },
-@@ -5274,6 +_,11 @@
+@@ -5274,6 +_,12 @@
  			{ 683, new Vector2(-6f, 2f) },
  			{ 682, new Vector2(-3f, 2f) }
  		};
 +		/// <summary>
 +		/// Determines the offset to use for Town NPCs when the Portrait Style setting is set to retro so that the Town NPC's entire body is centered.
-+		/// <br/> Example usage: <c>NPCID.Sets.NPCPortraits.Add(Type, new Vector2(0f, 0f))</c>
++		/// <br/><br/> Example usage: <c>NPCID.Sets.NPCPortraits.Add(Type, new Vector2(0f, 0f))</c>
++		/// <br/><br/> If not set, defaults to no offset (<c>Vector2.Zero</c>).
 +		/// </summary>
 +		/// <remarks>See <see cref="NPCPortraits"/> and <see cref="NPCPortraitsCloseUpOffsets"/> for the detailed and profile portrait style settings.</remarks>
  		public static Dictionary<int, Vector2> NPCPortraitsFullBodyRetroOffsets = new Dictionary<int, Vector2> {

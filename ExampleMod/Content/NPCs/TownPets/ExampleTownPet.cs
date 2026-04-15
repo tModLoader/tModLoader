@@ -77,8 +77,8 @@ namespace ExampleMod.Content.NPCs.TownPets
 				.With(NPCID.Sets.VariantPortraitCondition(5), NPCID.Sets.ModTownNPCPortrait($"{Texture}_5_Portrait"))
 				.With(NPCID.Sets.VariantPortraitCondition(6), NPCID.Sets.ModTownNPCPortrait($"{Texture}_6_Portrait"))
 				.Default(NPCID.Sets.ModTownNPCPortrait($"{Texture}_Portrait"))); // The default portrait to use.
-			NPCID.Sets.NPCPortraitsCloseUpOffsets.Add(Type, new Vector2(0f, 0f)); // Here we can change the offsets of Town NPC when the portrait style setting is set to profile.
-			NPCID.Sets.NPCPortraitsFullBodyRetroOffsets.Add(Type, new Vector2(0f, 0f)); // Here we can change the offsets of Town NPC when the portrait style setting is set to retro.
+			NPCID.Sets.NPCPortraitsCloseUpOffsets.Add(Type, new Vector2(-24f, 16f)); // Here we can change the offsets of Town NPC when the portrait style setting is set to profile.
+			//NPCID.Sets.NPCPortraitsFullBodyRetroOffsets.Add(Type, new Vector2(0f, 0f)); // Here we can change the offsets of Town NPC when the portrait style setting is set to retro.
 		}
 
 		public override void SetDefaults() {
