@@ -1,11 +1,27 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using Terraria.ModLoader.Config;
 
 // This file defines a custom data type that can be used as a key in dictionary.
 namespace ExampleMod.Common.Configs.CustomDataTypes
 {
-	[TypeConverter(typeof(ToFromStringConverter<ClassUsedAsKey>))]
+	public class ClassUsedAsKeyConverter : TypeConverter
+	{
+		public override bool CanConvertFrom(ITypeDescriptorContext? context, Type sourceType) {
+			return sourceType == typeof(string);
+		}
+		public override bool CanConvertTo(ITypeDescriptorContext? context, [NotNullWhen(true)] Type? destinationType) {
+			return destinationType != typeof(string);
+		}
+		public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value) {
+			if (value is string v)
+				return ClassUsedAsKey.FromString(v);
+			return base.ConvertFrom(context, culture, value);
+		}
+	}
+	[TypeConverter("ExampleMod.Common.Configs.CustomDataTypes.ClassUsedAsKeyConverter")]
 	public class ClassUsedAsKey
 	{
 		// When you save data from a dictionary into a file (json), you need to represent the key as a string
