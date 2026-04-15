@@ -1972,7 +1972,7 @@
  			return false;
  
  		if (!InWorld(i, j, 2))
-@@ -46297,8 +_,28 @@
+@@ -46297,6 +_,25 @@
  			Main.tile[x + 1, y].type = (ushort)newType;
  	}
  
@@ -1997,10 +1997,32 @@
 +	/// <param name="walls">If the conversion should affect walls</param>
  	public static void Convert(int i, int j, int conversionType, int size, bool tiles = true, bool walls = true)
  	{
-+		using var recursionCounter = new ConversionRecursion();
  		if (!tiles && !walls)
+@@ -46321,6 +_,10 @@
+ 		if (!theTile.active() && wall <= 0)
  			return;
  
++		using var recursionCounter = new ConversionRecursion();
++		walls = walls && wall > 0 && WallLoader.Convert(i2, j2, conversionType);
++		tiles = tiles && theTile.HasTile && TileLoader.Convert(i2, j2, conversionType);
++
+ 		switch (conversionType) {
+ 			case 4:
+ 				if (walls) {
+@@ -47093,6 +_,13 @@
+ 				break;
+ 			}
+ 		}
++
++		if (conversionRecursionDepth == 1) {
++			if (type != theTile.TileType) 
++				TileLoader.OnTileConverted(i2, j2, type, theTile.type, conversionType);
++			if (wall != theTile.WallType) 
++				WallLoader.OnWallConverted(i2, j2, wall, theTile.wall, conversionType);
++		}
+ 	}
+ 
+ 	public static void Convert_ActuallyConvertTorch(int conversionType, int x, int y, ref Tile theTile, int newStyle)
 @@ -47356,7 +_,7 @@
  		if ((!Main.remixWorld || !((double)j > Main.worldSurface)) && num3 / 255 > cactusWaterLimit)
  			return;
@@ -2687,7 +2709,7 @@
  		return false;
  	}
  
-@@ -58347,9 +_,17 @@
+@@ -58347,6 +_,11 @@
  		return false;
  	}
  
@@ -2698,13 +2720,7 @@
 +	/// </summary>
  	public static void ChlorophyteDefense(int x, int y)
  	{
-+/*
  		if (Main.remixWorld)
-+*/
-+		if (Main.remixWorld && TileLoader.Convert(x, y, BiomeConversionID.ChlorophyteDefenseWhenEvilSpreads))
- 			Convert(x, y, 10);
- 	}
- 
 @@ -58397,7 +_,10 @@
  		return true;
  	}
