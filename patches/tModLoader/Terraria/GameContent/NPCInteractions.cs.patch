@@ -17,7 +17,31 @@
  	{
  		public class OpenSign : NPCInteraction
  		{
-@@ -191,12 +_,25 @@
+@@ -33,11 +_,12 @@
+ 			}
+ 		}
+ 
++		/* TML: Re-implemented in NPCInteractions.TML.cs
+ 		public class OpenShop : NPCInteraction
+ 		{
+-			private int _shopIndex;
++			internal int _shopIndex;
+-			private int _npcType;
++			internal int _npcType;
+-			private string _customTextKey;
++			internal string _customTextKey;
+ 
+ 			public OpenShop(int npcType, int shopIndex, string customTextKey = null)
+ 			{
+@@ -61,6 +_,7 @@
+ 				Main.instance.OpenShop(_shopIndex);
+ 			}
+ 		}
++		*/
+ 
+ 		public class StardewValleyBit : NPCInteraction
+ 		{
+@@ -191,20 +_,33 @@
  
  			public override void Interact()
  			{
@@ -45,31 +69,42 @@
  				Main.GetCoinValueText_Nurse(ref chatColor, ref coinValue);
  				return coinValue > 0;
  			}
-@@ -204,7 +_,7 @@
+ 		}
  
- 		public class CloseChat : NPCInteraction
+-		public class CloseChat : NPCInteraction
++		public class CloseChat(int type) : NPCInteraction // TML: Added int type
  		{
 -			public override bool Condition() => true;
-+			public override bool Condition() => Main.LocalPlayer.TalkNPC.type < NPCID.Count; // TML: Changed condition
++			public override bool Condition() => Main.LocalPlayer.TalkNPC.type == type; // TML: Changed condition
  			public override string GetText() => Lang.inter[52].Value;
  
  			public override void Interact()
-@@ -217,6 +_,9 @@
+@@ -213,10 +_,13 @@
+ 			}
+ 		}
+ 
+-		public class ReportHappiness : NPCInteraction
++		public class ReportHappiness(int type) : NPCInteraction // TML: Added int type
  		{
  			public override bool Condition()
  			{
-+				if (Main.LocalPlayer.TalkNPC.type >= NPCID.Count) // TML: Changed condition
++				if (Main.LocalPlayer.TalkNPC.type != type) // TML: Changed condition
 +					return false;
 +
  				if (NPC.CanShowHomelessText(Main.LocalPlayer.talkNPC))
  					return false;
  
-@@ -238,7 +_,7 @@
+@@ -234,11 +_,11 @@
+ 			}
+ 		}
+ 
+-		public class RequestHome : NPCInteraction
++		public class RequestHome(int type) : NPCInteraction // TML: Added int type
  		{
  			public override bool ShowExcalmation => true;
  
 -			public override bool Condition() => NPC.CanShowHomelessText(Main.LocalPlayer.talkNPC);
-+			public override bool Condition() => NPC.CanShowHomelessText(Main.LocalPlayer.talkNPC) && Main.LocalPlayer.TalkNPC.type < NPCID.Count; // TML: Changed condition
++			public override bool Condition() => NPC.CanShowHomelessText(Main.LocalPlayer.talkNPC) && Main.LocalPlayer.TalkNPC.type == type; // TML: Changed condition
  			public override string GetText() => Language.GetTextValue("UI.NPCHousing");
  
  			public override void Interact()
@@ -85,11 +120,40 @@
  				Main.npcChatText += "\n\n";
  				if (talkNPC.type == 160) {
  					Main.npcChatText += Language.GetTextValueWith("HousingText.HousingRequirements_Truffle", new {
-@@ -406,7 +_,7 @@
+@@ -383,7 +_,8 @@
+ 		Shop(227, 25, "GameUI.PainterDecor");
+ 		Register(new Actions.TaxCollectorCollectTaxes());
+ 		Register(new Actions.NurseHeal());
+-		Register(new Actions.CloseChat());
++		// Register(new Actions.CloseChat());
++		RegisterVanillaCloseButtons(); // TML: Moved to different method.
+ 		Register(new Actions.OpenSign());
+ 		Register(new Actions.StardewValleyBit());
+ 		Register(new Actions.DryadPurification());
+@@ -397,8 +_,10 @@
+ 		Register(new Actions.StylistHairWindow());
+ 		Register(new Actions.DyeTraderRarePlant());
+ 		Register(new Actions.TavernkeepAdvice());
+-		Register(new Actions.ReportHappiness());
+-		Register(new Actions.RequestHome());
++		// Register(new Actions.ReportHappiness());
++		RegisterVanillaHappinessButtons(); // TML: Moved to different method.
++		// Register(new Actions.RequestHome());
++		RegisterVanillaHousingButtons(); // TML: Moved to different method.
+ 	}
+ 
+ 	private static void Shop(int npcType, int shopIndex, string customTextKey = null)
+@@ -406,7 +_,13 @@
  		Register(new Actions.OpenShop(npcType, shopIndex, customTextKey));
  	}
  
 -	private static void Register(NPCInteraction interaction)
++	/// <summary>
++	/// Register a chat button to the NPC.
++	/// <br/> Example: <c>NPCInteractions.Register(new Actions.CloseChat(NPC.type))</c>
++	/// <br/> For registering shops, use the helper <see cref="NPCInteractions.Shop(int, string, string)"/>
++	/// </summary>
++	/// <param name="interaction">The type of chat button interaction.</param>
 +	public static void Register(NPCInteraction interaction) // TML: Made public
  	{
  		All.Add(interaction);

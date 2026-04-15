@@ -4556,25 +4556,20 @@
  			}
  			else {
  				int num2 = rand.Next(3);
-@@ -34899,8 +_,20 @@
+@@ -34894,13 +_,14 @@
+ 		return false;
+ 	}
+ 
+-	public void OpenShop(int shopIndex)
++	public void OpenShop(string shopName) // TML: Changed to use strings instead of integer indexes.
+ 	{
  		playerInventory = true;
  		stackSplit = 9999;
  		npcChatText = "";
 -		SetNPCShopIndex(shopIndex);
-+		SetNPCShopIndex(1);
 -		shop[npcShop].SetupShop(npcShop);
-+		shop[npcShop].SetupShop(shopIndex);
-+
-+		SoundEngine.PlaySound(12);
-+	}
-+
-+	public void OpenShop(string shopName)
-+	{
-+		playerInventory = true;
-+		stackSplit = 9999;
-+		npcChatText = "";
 +		SetNPCShopIndex(1);
-+		shop[npcShop].SetupShop(NPCShopDatabase.GetShopName(LocalPlayer.TalkNPC.type, shopName), LocalPlayer.TalkNPC);
++		shop[npcShop].SetupShop(shopName, LocalPlayer.TalkNPC); // Full shop names are pre-retrieved in NPCInteractions.Actions.OpenShop in NPCInteractions.TML.cs
 +
  		SoundEngine.PlaySound(12);
  	}

@@ -1223,9 +1223,15 @@ public static class NPCLoader
 		Main.LocalPlayer.TalkNPC?.ModNPC?.SetChatButtons(ref button, ref button2);
 	}
 
-	public static void SetChatButtons(int type, ref bool skipCloseChat, ref bool skipReportHappiness, ref bool skipRequestHome)
+	private delegate void DelegateSetChatButtons(int npcType);
+	private static HookList HookSetChatButtons = AddHook<DelegateSetChatButtons>(g => g.SetChatButtons);
+	public static void SetChatButtons(int npcType, ref bool skipCloseChat, ref bool skipReportHappiness, ref bool skipRequestHome)
 	{
-		GetNPC(type)?.SetChatButtons(ref skipCloseChat, ref skipReportHappiness, ref skipRequestHome);
+		GetNPC(npcType)?.SetChatButtons(ref skipCloseChat, ref skipReportHappiness, ref skipRequestHome);
+
+		foreach (var g in HookSetChatButtons.Enumerate(npcType)) {
+			g.SetChatButtons(npcType);
+		}
 	}
 
 	[Obsolete()]

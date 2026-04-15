@@ -714,6 +714,16 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	}
 
 	/// <summary>
+	/// Allows you to register additional chat buttons for an NPC.
+	/// <br/>Use <see cref="NPCInteractions.Register"/> to register new buttons.
+	/// <br/><br/> An NPC can only have 32 chat buttons shown at one time.
+	/// </summary>
+	/// <param name="npcType"></param>
+	public virtual void SetChatButtons(int npcType)
+	{
+	}
+
+	/// <summary>
 	/// Allows you to make something happen whenever a button is clicked on this NPC's chat window. The firstButton parameter tells whether the first button or second button (button and button2 from SetChatButtons) was clicked.
 	/// <para/> Called on the local client only.
 	/// </summary>

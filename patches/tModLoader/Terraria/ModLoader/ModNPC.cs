@@ -839,9 +839,10 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Allows you to set the assign which chat buttons are registered for this NPC.
+	/// Allows you to register chat buttons for this NPC.
 	/// <br/>Use <see cref="NPCInteractions.Register"/> to register new buttons.
 	/// <br/><br/> The "Close", "Happiness", and "Housing" buttons will automatically be added after the buttons registered here, unless they are skipped.
+	/// <br/><br/> An NPC can only have 32 chat buttons shown at one time.
 	/// </summary>
 	/// <param name="skipCloseChat">Set to true to skip the "Close" button being automatically added.
 	/// <br/>It can manually be added with <c>NPCInteractions.Register(new NPCInteractions.Actions.ModCloseChat(Type))</c></param>

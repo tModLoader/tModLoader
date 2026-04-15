@@ -380,6 +380,7 @@ public static class ModContent
 		ContentSamples.RebuildItemCreativeSortingIDsAfterRecipesAreSetUp();
 		ItemSorting.SetupWhiteLists();
 		LocalizationLoader.FinishSetup();
+		NPCInteractions.InitializeVanillaGlobal();
 		NPCInteractions.InitializeModded();
 
 		ArmorSetBonuses.Initialize();
