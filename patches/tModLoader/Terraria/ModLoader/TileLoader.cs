@@ -870,7 +870,7 @@ public static class TileLoader
 
 		if (tile.TileType == type && TryGetConversionFallback(type, conversionType, out var fallback)) {
 			tile.TileType = (ushort)fallback;
-			WorldGen.Convert(i, j, conversionType, size: 0, walls: false);
+			WorldGen.Convert(i, j, conversionType, walls: false);
 
 			if (tile.TileType == fallback)
 				tile.TileType = (ushort)type;

@@ -326,7 +326,8 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 	/// <para/> Called on local and remote clients.
 	/// </summary>
 	/// <param name="projectile"> The projectile. </param>
-	public virtual bool PreDrawExtras(Projectile projectile)
+	/// <param name="player"> The player associated with drawing this projectile. Not necessarily the same as player.owner for things like Mannequins. </param>
+	public virtual bool PreDrawExtras(Projectile projectile, Player player)
 	{
 		return true;
 	}
@@ -336,8 +337,9 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 	/// <para/> Called on local and remote clients.
 	/// </summary>
 	/// <param name="projectile"> The projectile. </param>
+	/// <param name="player"> The player associated with drawing this projectile. Not necessarily the same as player.owner for things like Mannequins. </param>
 	/// <param name="lightColor"> The color of the light at the projectile's center. </param>
-	public virtual bool PreDraw(Projectile projectile, ref Color lightColor)
+	public virtual bool PreDraw(Projectile projectile, Player player, ref Color lightColor)
 	{
 		return true;
 	}
@@ -347,23 +349,9 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 	/// <para/> Called on local and remote clients.
 	/// </summary>
 	/// <param name="projectile"> The projectile. </param>
+	/// <param name="player"> The player associated with drawing this projectile. Not necessarily the same as player.owner for things like Mannequins. </param>
 	/// <param name="lightColor"> The color of the light at the projectile's center, after being modified by vanilla and other mods. </param>
-	public virtual void PostDraw(Projectile projectile, Color lightColor)
-	{
-	}
-
-	/// <summary>
-	/// When used in conjunction with "projectile.hide = true", allows you to specify that this projectile should be drawn behind certain elements. Add the index to one and only one of the lists. For example, the Nebula Arcanum projectile draws behind NPCs and tiles.
-	/// <para/> Called on local and remote clients.
-	/// </summary>
-	/// <param name="projectile"></param>
-	/// <param name="index"></param>
-	/// <param name="behindNPCsAndTiles"></param>
-	/// <param name="behindNPCs"></param>
-	/// <param name="behindProjectiles"></param>
-	/// <param name="overPlayers"></param>
-	/// <param name="overWiresUI"></param>
-	public virtual void DrawBehind(Projectile projectile, int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
+	public virtual void PostDraw(Projectile projectile, Player player, Color lightColor)
 	{
 	}
 

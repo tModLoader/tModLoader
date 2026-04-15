@@ -20,6 +20,7 @@ public class ModProjectileTest : ModProjectile
 	public override void SetStaticDefaults()
 	{
 		ProjectileID.Sets.HeldProjDoesNotUsePlayerGfxOffY[Type] = true;
+		ProjectileID.Sets.DontAttachHideToAlpha[Type] = true;
 	}
 
 	public override bool CanDamage() { return false; }
@@ -32,7 +33,7 @@ public class ModProjectileTest : ModProjectile
 
 	public override void PostDraw(SpriteBatch spriteBatch, Color lightColor) { /* Empty */ }
 
-	public override void DrawBehind(int index, List<int> drawCacheProjsBehindNPCsAndTiles, List<int> drawCacheProjsBehindNPCs, List<int> drawCacheProjsBehindProjectiles, List<int> drawCacheProjsOverWiresUI) {
+	public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI) {
 		drawCacheProjsBehindNPCsAndTiles.Add(index);
 		drawCacheProjsBehindNPCs.Add(index);
 		drawCacheProjsBehindProjectiles.Add(index);

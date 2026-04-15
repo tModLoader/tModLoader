@@ -46,7 +46,8 @@ namespace ExampleMod.Content.Tiles.Furniture
 			// We don't set Main.tileFlame
 
 			TileID.Sets.MultiTileSway[Type] = true;
-			TileID.Sets.IsAMechanism[Type] = true;
+			TileID.Sets.Wiring.IsAMechanism[Type] = true;
+			TileID.Sets.Wiring.IgnoreWhenValidatingTraps[Type] = true;
 
 			TileID.Sets.RoomNeeds.CountsAsTorch[Type] = true;
 

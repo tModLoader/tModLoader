@@ -28,7 +28,8 @@ namespace ExampleMod.Content.Projectiles
 			Projectile.friendly = true;
 			Projectile.penetrate = -1;
 			Projectile.tileCollide = false;
-			Projectile.hide = true;
+			Projectile.usesOwnerLight = true;
+			Projectile.drawLayer = ProjectileDrawLayerID.HeldProj;
 			Projectile.DamageType = DamageClass.Ranged;
 			Projectile.ignoreWater = true;
 

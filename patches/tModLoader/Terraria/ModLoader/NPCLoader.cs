@@ -87,12 +87,16 @@ public static class NPCLoader
 		Array.Resize(ref Main.npcCatchable, NPCCount);
 		Array.Resize(ref Main.npcFrameCount, NPCCount);
 		Array.Resize(ref Main.SceneMetrics.NPCBannerBuff, NPCCount);
+		Array.Resize(ref Main.SceneMetrics.ClosestNPCPosition, NPCCount);
 		Array.Resize(ref BannerSystem.killCount, NPCCount);
 		Array.Resize(ref NPC.ShimmeredTownNPCs, NPCCount);
 		Array.Resize(ref NPC.npcsFoundForCheckActive, NPCCount);
 		Array.Resize(ref Lang._npcNameCache, NPCCount);
 		Array.Resize(ref EmoteBubble.CountNPCs, NPCCount);
 		Array.Resize(ref WorldGen.TownManager._hasRoom, NPCCount);
+		Array.Resize(ref NPCDamageTracker.CustomBossDefinitions, NPCCount);
+		Array.Resize(ref NPCDamageTracker.BossTypeForMob, NPCCount);
+		Array.Resize(ref ConditionalDialogue._registry, NPCCount);
 
 		foreach (var player in Main.player) {
 			Array.Resize(ref player.npcTypeNoAggro, NPCCount);

@@ -114,7 +114,7 @@ namespace ExampleMod.Content.Projectiles
 		}
 
 		// We need to draw the projectile manually. If you don't include this, the projectile will be facing the wrong direction when flying left.
-		public override bool PreDraw(ref Color lightColor) {
+		public override bool PreDraw(Player player, ref Color lightColor) {
 			// This is where we specify which way to flip the sprite. If the projectile is moving to the left, then flip it vertically.
 			SpriteEffects spriteEffects = ((Projectile.spriteDirection <= 0) ? SpriteEffects.FlipVertically : SpriteEffects.None);
 

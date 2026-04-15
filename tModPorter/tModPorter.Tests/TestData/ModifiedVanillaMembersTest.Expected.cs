@@ -1,9 +1,11 @@
-// not-yet-implemented
 using Terraria;
 
 public class ModifiedVanillaMembersTest
 {
 	void Method() {
+		Chest.FindChestByGuessing(100, 200)/* tModPorter Note: Removed. Use Chest.FindChest with the top left tile coordinate */;
+
+		// not-yet-implemented
 		var player = new Player();
 		player.SetTalkNPC(1); // set changed
 		int talkNPC = player.talkNPC; // get unchanged
@@ -17,5 +19,17 @@ public class ModifiedVanillaMembersTest
 
 		var height = Main.NPCAddHeight(123/* tModPorter Suggestion: use the NPC object instead of the NPC type */);
 #endif
+		// instead-expect
+		var player = new Player();
+		player.talkNPC = 1; // set changed
+		int talkNPC = player.talkNPC; // get unchanged
+
+		player.Spawn();
+
+		player.SporeSac();
+
+		ItemText.NewText(null, 0, false, false);
+
+		var height = Main.NPCAddHeight(123);
 	}
 }

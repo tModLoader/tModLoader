@@ -34,7 +34,7 @@
  		{
  			public static int[] CountsAsChairTypes = new int[6] {
  				15,
-@@ -145,32 +_,110 @@
+@@ -145,32 +_,115 @@
  			public static bool[] CountsAsDoor = Factory.CreateBoolSet(CountsAsDoorTypes);
  		}
  
@@ -53,13 +53,18 @@
  		public static class Wiring
  		{
 +			/// <summary>
-+			/// Indicates that the tile is an appropriate tile to be connected to a trigger tile (<see cref="IsATrigger"/>). Used during the "Remove Broken Traps" world generation step to remove wires and tiles in situations where the mechanism or trigger have been orphaned (not connected anymore).
++			/// Indicates that the tile is wireable and any item placing these tiles will have the "Wireable" tooltip.
++			/// <br/><br/> Unless <see cref="IgnoreWhenValidatingTraps"/> is also set, the "Remove Broken Traps" world generation step will remove tiles of this type (and connected wires) that are not connected to a trigger tile (<see cref="IsATrigger"/>).
 +			/// </summary>
  			public static bool[] IsAMechanism = Factory.CreateBoolSet(420, 419, 411, 4, 33, 100, 93, 42, 34, 215, 405, 92, 35, 126, 95, 149, 593, 594, 564, 10, 11, 387, 386, 388, 389, 137, 443, 141, 130, 131, 546, 557, 421, 422, 209, 212, 216, 338, 335, 497, 406, 244, 452, 565, 139, 506, 105, 349, 531, 429, 142, 143, 235, 210, 425, 21, 467, 219, 642, 356, 663, 255, 256, 257, 258, 259, 260, 261, 262, 263, 264, 265, 266, 267, 268, 207, 480, 455, 509, 657, 658, 720, 721, 725, 733, 314);
 +			/// <summary>
-+			/// Indicates that the tile is an appropriate tile to be connected to a mechanism tile (<see cref="IsAMechanism"/>). Used during the "Remove Broken Traps" world generation step to remove wires and tiles in situations where the mechanism or trigger have been orphaned (not connected anymore).
++			/// Indicates that the tile is an appropriate tile to be connected to a mechanism tile (<see cref="IsAMechanism"/>). Any item placing these tiles will have the "Wireable" tooltip. Used during the "Remove Broken Traps" world generation step to remove wires and tiles in situations where the mechanism or trigger have been orphaned (not connected anymore).
 +			/// </summary>
  			public static bool[] IsATrigger = Factory.CreateBoolSet(135, 136, 132, 144, 411, 423, 476, 440, 441, 468);
++			/// <summary>
++			/// Tiles in this set are ignored during the "Remove Broken Traps" world generation step despite being in <see cref="IsAMechanism"/> and won't be removed even if they are not connected to a trigger. Used for tiles that should have the "Wireable" tooltip but shouldn't be removed as traps, such as doors and other wireable furniture.
++			/// <br/><br/> Defaults to <see langword="false"/>.
++			/// </summary>
  			public static bool[] IgnoreWhenValidatingTraps = Factory.CreateBoolSet(411, 10, 11, 387, 386, 388, 389, 4, 215, 21, 467, 219, 642, 314);
  		}
  

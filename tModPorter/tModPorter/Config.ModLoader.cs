@@ -153,6 +153,7 @@ public static partial class Config
 		ChangeHookSignature("Terraria.ModLoader.GlobalNPC",			"CanHitNPC", comment: "Suggestion: Return true instead of null");
 		ChangeHookSignature("Terraria.ModLoader.ModNPC",			"ApplyDifficultyAndPlayerScaling", comment: "Note: bossLifeScale -> balance (bossAdjustment is different, see the docs for details)");
 		ChangeHookSignature("Terraria.ModLoader.GlobalNPC",			"ApplyDifficultyAndPlayerScaling", comment: "Note: bossLifeScale -> balance (bossAdjustment is different, see the docs for details)");
+		/* Updated once again in 1.4.5
 		ChangeHookSignature("Terraria.ModLoader.ModProjectile",		"PreDrawExtras");
 		ChangeHookSignature("Terraria.ModLoader.GlobalProjectile",	"PreDrawExtras");
 		ChangeHookSignature("Terraria.ModLoader.ModProjectile",		"PreDraw");
@@ -161,6 +162,7 @@ public static partial class Config
 		ChangeHookSignature("Terraria.ModLoader.GlobalProjectile",	"PostDraw");
 		ChangeHookSignature("Terraria.ModLoader.ModProjectile",		"DrawBehind");
 		ChangeHookSignature("Terraria.ModLoader.GlobalProjectile",	"DrawBehind");
+		*/
 		ChangeHookSignature("Terraria.ModLoader.ModProjectile",		"CanDamage", comment: "Suggestion: Return null instead of true");
 		ChangeHookSignature("Terraria.ModLoader.GlobalProjectile",	"CanDamage", comment: "Suggestion: Return null instead of true");
 		ChangeHookSignature("Terraria.ModLoader.ModProjectile",		"TileCollideStyle");
@@ -570,7 +572,19 @@ public static partial class Config
 		ChangeHookSignature("Terraria.ModLoader.GlobalItem", "OnPickup");
 		ChangeHookSignature("Terraria.ModLoader.GlobalItem", "PreDrawInWorld");
 		ChangeHookSignature("Terraria.ModLoader.GlobalItem", "PostDrawInWorld");
+		const string ProjectileDrawPlayerHint = "Replace 'Main.player[Projectile.owner]' with 'player'.";
+		ChangeHookSignature("Terraria.ModLoader.ModProjectile", "PreDrawExtras", ProjectileDrawPlayerHint);
+		ChangeHookSignature("Terraria.ModLoader.ModProjectile", "PreDraw", ProjectileDrawPlayerHint);
+		ChangeHookSignature("Terraria.ModLoader.ModProjectile", "PostDraw", ProjectileDrawPlayerHint);
+		ChangeHookSignature("Terraria.ModLoader.GlobalProjectile", "PreDrawExtras", ProjectileDrawPlayerHint);
+		ChangeHookSignature("Terraria.ModLoader.GlobalProjectile", "PreDraw", ProjectileDrawPlayerHint);
+		ChangeHookSignature("Terraria.ModLoader.GlobalProjectile", "PostDraw", ProjectileDrawPlayerHint);
 
 		RefactorInstanceMethodCall("Terraria.ModLoader.ModTile", "AddToArray", RewriteAddToArrayForRoomNeeds);
+
+		HookRemoved("Terraria.ModLoader.ModProjectile", "DrawBehind", "Set Projectile.drawLayer instead");
+		HookRemoved("Terraria.ModLoader.GlobalProjectile", "DrawBehind", "Set Projectile.drawLayer instead");
+
+		RefactorInstanceMember("Terraria.ModLoader.ModProjectile", "DrawHeldProjInFrontOfHeldItemAndArms", Removed("Replace with Projectile.drawLayer = ProjectileDrawLayerID.HeldProjOverHand;"));
 	}
 }

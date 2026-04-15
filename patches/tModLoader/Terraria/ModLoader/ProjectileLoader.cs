@@ -579,13 +579,6 @@ public static class ProjectileLoader
 		return projectile.ModProjectile?.Colliding(projHitbox, targetHitbox);
 	}
 
-	public static void DrawHeldProjInFrontOfHeldItemAndArms(Projectile projectile, ref bool flag)
-	{
-		if (projectile.ModProjectile != null) {
-			flag = projectile.ModProjectile.DrawHeldProjInFrontOfHeldItemAndArms;
-		}
-	}
-
 	[Obsolete($"Moved to ItemLoader. Fishing line position and color are now set by the pole used.")]
 	public static void ModifyFishingLine(Projectile projectile, ref float polePosX, ref float polePosY, ref Color lineColor)
 	{
@@ -625,49 +618,49 @@ public static class ProjectileLoader
 		}
 	}
 
-	private static HookList HookPreDrawExtras = AddHook<Func<Projectile, bool>>(g => g.PreDrawExtras);
+	private static HookList HookPreDrawExtras = AddHook<Func<Projectile, Player, bool>>(g => g.PreDrawExtras);
 
-	public static bool PreDrawExtras(Projectile projectile)
+	public static bool PreDrawExtras(Projectile projectile, Player player)
 	{
 		bool result = true;
 
 		foreach (var g in HookPreDrawExtras.Enumerate(projectile)) {
-			result &= g.PreDrawExtras(projectile);
+			result &= g.PreDrawExtras(projectile, player);
 		}
 
 		if (result && projectile.ModProjectile != null) {
-			return projectile.ModProjectile.PreDrawExtras();
+			return projectile.ModProjectile.PreDrawExtras(player);
 		}
 
 		return result;
 	}
 
-	private delegate bool DelegatePreDraw(Projectile projectile, ref Color lightColor);
+	private delegate bool DelegatePreDraw(Projectile projectile, Player player, ref Color lightColor);
 	private static HookList HookPreDraw = AddHook<DelegatePreDraw>(g => g.PreDraw);
 
-	public static bool PreDraw(Projectile projectile, ref Color lightColor)
+	public static bool PreDraw(Projectile projectile, Player player, ref Color lightColor)
 	{
 		bool result = true;
 
 		foreach (var g in HookPreDraw.Enumerate(projectile)) {
-			result &= g.PreDraw(projectile, ref lightColor);
+			result &= g.PreDraw(projectile, player, ref lightColor);
 		}
 
 		if (result && projectile.ModProjectile != null) {
-			return projectile.ModProjectile.PreDraw(ref lightColor);
+			return projectile.ModProjectile.PreDraw(player, ref lightColor);
 		}
 
 		return result;
 	}
 
-	private static HookList HookPostDraw = AddHook<Action<Projectile, Color>>(g => g.PostDraw);
+	private static HookList HookPostDraw = AddHook<Action<Projectile, Player, Color>>(g => g.PostDraw);
 
-	public static void PostDraw(Projectile projectile, Color lightColor)
+	public static void PostDraw(Projectile projectile, Player player, Color lightColor)
 	{
-		projectile.ModProjectile?.PostDraw(lightColor);
+		projectile.ModProjectile?.PostDraw(player, lightColor);
 
 		foreach (var g in HookPostDraw.Enumerate(projectile)) {
-			g.PostDraw(projectile, lightColor);
+			g.PostDraw(projectile, player, lightColor);
 		}
 	}
 
@@ -771,17 +764,6 @@ public static class ProjectileLoader
 		}
 
 		return flag;
-	}
-
-	private static HookList HookDrawBehind = AddHook<Action<Projectile, int, List<int>, List<int>, List<int>, List<int>, List<int>>>(g => g.DrawBehind);
-
-	internal static void DrawBehind(Projectile projectile, int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
-	{
-		projectile.ModProjectile?.DrawBehind(index, behindNPCsAndTiles, behindNPCs, behindProjectiles, overPlayers, overWiresUI);
-
-		foreach (var g in HookDrawBehind.Enumerate(projectile)) {
-			g.DrawBehind(projectile, index, behindNPCsAndTiles, behindNPCs, behindProjectiles, overPlayers, overWiresUI);
-		}
 	}
 
 	private static HookList HookPrepareBombToBlow = AddHook<Action<Projectile>>(g => g.PrepareBombToBlow);

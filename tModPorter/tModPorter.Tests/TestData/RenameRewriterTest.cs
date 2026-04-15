@@ -66,4 +66,11 @@ public class SimpleIdentifiersTest : Mod
 		Dummy item = new();
 		item.FieldA = 0;
 	}
+
+	public void QualifiedMemberAccess()
+	{
+		_ = Main.recBigList;
+		_ = Terraria.Main.recBigList;
+		_ = global::Terraria.Main.recBigList;
+	}
 }

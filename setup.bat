@@ -39,4 +39,4 @@ if NOT ["%errorlevel%"]==["0"] (
 	exit /b %errorlevel%
 )
 
-start "" "setup/GUI/bin/Release/net8.0-windows/setup-gui.exe" %*
+start "" "setup/GUI/bin/Release/net10.0-windows/setup-gui.exe" %*

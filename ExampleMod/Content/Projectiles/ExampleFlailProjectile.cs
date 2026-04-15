@@ -43,11 +43,12 @@ namespace ExampleMod.Content.Projectiles
 		}
 
 		// In PreDrawExtras, we trick the game into thinking the projectile is actually a Sunfury projectile. After PreDrawExtras, the Terraria code will draw the chain. Drawing the chain ourselves is quite complicated, ExampleAdvancedFlailProjectile has an example of that. Then, in PreDraw, we restore the Projectile.type back to normal so we don't break anything.
-		public override bool PreDrawExtras() {
+		public override bool PreDrawExtras(Player player) {
 			Projectile.type = ProjectileID.Sunfury;
-			return base.PreDrawExtras();
+			return base.PreDrawExtras(player);
 		}
-		public override bool PreDraw(ref Color lightColor) {
+
+		public override bool PreDraw(Player player, ref Color lightColor) {
 			Projectile.type = ModContent.ProjectileType<ExampleFlailProjectile>();
 
 			// This code handles the after images.
@@ -72,7 +73,7 @@ namespace ExampleMod.Content.Projectiles
 				}
 			}
 
-			return base.PreDraw(ref lightColor);
+			return base.PreDraw(player, ref lightColor);
 		}
 
 		// Another thing that won't automatically be inherited by using Projectile.aiStyle and AIType are effects that happen when the projectile hits something. Here we see the code responsible for applying the OnFire debuff to players and enemies.

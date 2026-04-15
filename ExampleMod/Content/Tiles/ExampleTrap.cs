@@ -15,7 +15,7 @@ namespace ExampleMod.Content.Tiles
 			TileID.Sets.DrawsWalls[Type] = true;
 			TileID.Sets.DontDrawTileSliced[Type] = true;
 			TileID.Sets.IgnoresNearbyHalfbricksWhenDrawn[Type] = true;
-			TileID.Sets.IsAMechanism[Type] = true;
+			TileID.Sets.Wiring.IsAMechanism[Type] = true;
 
 			Main.tileSolid[Type] = true;
 			Main.tileBlockLight[Type] = true;

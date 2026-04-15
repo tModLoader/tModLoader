@@ -1,10 +1,8 @@
 using System;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using Ionic.Zip;
-using Ionic.Zlib;
 using Terraria.Social;
 using Terraria.Utilities;
 
@@ -39,18 +37,16 @@ internal static class BackupIO
 	/// Run a given archiving task, which will archive to a backup .zip file
 	/// Zip entries added will be compressed
 	/// </summary>
-	private static void RunArchiving(Action<ZipFile, bool, string> saveAction, bool isCloudSave, string dir, string name, string path)
+	private static void RunArchiving(Action<ZipArchive, bool, string> saveAction, bool isCloudSave, string dir, string name, string path)
 	{
 		try {
 			Directory.CreateDirectory(dir);
 			DeleteOldArchives(dir, isCloudSave, name);
 
-			using (var zip = new ZipFile(Path.Combine(dir, TodaysBackup(name, isCloudSave)), Encoding.UTF8)) {
-				// use zip64 extensions if necessary for huge files
-				zip.UseZip64WhenSaving = Zip64Option.AsNecessary;
-				zip.ZipErrorAction = ZipErrorAction.Throw;
+			// ZipArchive uses Zip64 as necessary and throws on errors by default
+			using (var zip = new ZipArchive(File.Create(Path.Combine(dir, TodaysBackup(name, isCloudSave))), ZipArchiveMode.Create)) {
+				zip.Comment = $"Archived on ${DateTime.Now} by tModLoader";
 				saveAction(zip, isCloudSave, path);
-				zip.Save();
 			}
 		}
 		catch (Exception e) {
@@ -63,18 +59,23 @@ internal static class BackupIO
 	/// Will use the best compression level using Deflate
 	/// Some files are already compressed and will not be compressed further
 	/// </summary>
-	private static void AddZipEntry(this ZipFile zip, string path, bool isCloud = false)
+	private static void AddZipEntry(this ZipArchive zip, string path, bool isCloud = false)
 	{
-		zip.CompressionMethod = CompressionMethod.Deflate;
-		zip.CompressionLevel = CompressionLevel.BestCompression;
-		zip.Comment = $"Archived on ${DateTime.Now} by tModLoader";
-
 		if (!isCloud && (File.GetAttributes(path) & FileAttributes.Directory) == FileAttributes.Directory) {
-			zip.AddFiles(Directory.GetFiles(path), false, Path.GetFileNameWithoutExtension(path));
+			string dirName = Path.GetFileNameWithoutExtension(path);
+			foreach (var file in Directory.GetFiles(path)) {
+				zip.CreateEntryFromFile(file, dirName + "/" + Path.GetFileName(file), CompressionLevel.SmallestSize);
+			}
 		}
 		else {
-			if (isCloud) zip.AddEntry(Path.GetFileName(path), FileUtilities.ReadAllBytes(path, true));
-			else zip.AddFile(path, "");
+			string entryName = Path.GetFileName(path);
+			if (isCloud) {
+				using var stream = zip.CreateEntry(entryName, CompressionLevel.SmallestSize).Open();
+				stream.Write(FileUtilities.ReadAllBytes(path, true));
+			}
+			else {
+				zip.CreateEntryFromFile(path, entryName, CompressionLevel.SmallestSize);
+			}
 		}
 	}
 
@@ -149,7 +150,7 @@ internal static class BackupIO
 		internal static void ArchiveWorld(string path, bool isCloudSave)
 			=> RunArchiving(WriteArchive, isCloudSave, WorldBackupDir, Path.GetFileNameWithoutExtension(path), path);
 
-		private static void WriteArchive(ZipFile zip, bool isCloudSave, string path)
+		private static void WriteArchive(ZipArchive zip, bool isCloudSave, string path)
 		{
 			if (FileUtilities.Exists(path, isCloudSave)) zip.AddZipEntry(path, isCloudSave);
 			path = Path.ChangeExtension(path, ".twld");
@@ -171,7 +172,7 @@ internal static class BackupIO
 		/// <summary>
 		/// Write the archive. Writes the .plr and .tplr files, then writes the player directory
 		/// </summary>
-		private static void WriteArchive(ZipFile zip, bool isCloudSave, string path)
+		private static void WriteArchive(ZipArchive zip, bool isCloudSave, string path)
 		{
 			// Write .plr and .tplr files
 			if (FileUtilities.Exists(path, isCloudSave)) zip.AddZipEntry(path, isCloudSave);
@@ -186,7 +187,7 @@ internal static class BackupIO
 		/// <summary>
 		/// Write cloud files, which will get the relevant part of the path and write map &amp; tmap files
 		/// </summary>
-		private static void WriteCloudFiles(ZipFile zip, string path)
+		private static void WriteCloudFiles(ZipArchive zip, string path)
 		{
 			// Path is still equal to local path
 			var name = Path.GetFileNameWithoutExtension(path);
@@ -196,14 +197,16 @@ internal static class BackupIO
 			var cloudFiles = SocialAPI.Cloud.GetFiles().Where(p => p.StartsWith(path, StringComparison.CurrentCultureIgnoreCase)
 							 && (p.EndsWith(".map", StringComparison.CurrentCultureIgnoreCase) || p.EndsWith(".tmap", StringComparison.CurrentCultureIgnoreCase)));
 
-			foreach (string cloudPath in cloudFiles)
-				zip.AddEntry($"{name}/{Path.GetFileName(cloudPath)}", FileUtilities.ReadAllBytes(cloudPath, true));
+			foreach (string cloudPath in cloudFiles) {
+				using var stream = zip.CreateEntry($"{name}/{Path.GetFileName(cloudPath)}", CompressionLevel.SmallestSize).Open();
+				stream.Write(FileUtilities.ReadAllBytes(cloudPath, true));
+			}
 		}
 
 		/// <summary>
 		/// Write local files, which simply writes the entire player dir
 		/// </summary>
-		private static void WriteLocalFiles(ZipFile zip, string path)
+		private static void WriteLocalFiles(ZipArchive zip, string path)
 		{
 			// Write map files from plr dir
 			var plrDir = Path.Combine(Path.GetDirectoryName(path), Path.GetFileNameWithoutExtension(path));

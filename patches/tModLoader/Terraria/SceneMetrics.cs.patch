@@ -212,13 +212,16 @@
  	public void Reset()
  	{
  		LastScanTime = uint.MaxValue;
-@@ -717,6 +_,9 @@
+@@ -717,6 +_,12 @@
  		_bestOreDistSq = int.MaxValue;
  		TownNPCCount = 0;
  		PerspectivePlayer = _dummyPlayer;
 +
 +		if (NPCBannerBuff.Length < ModLoader.NPCLoader.NPCCount)
 +			Array.Resize(ref NPCBannerBuff, ModLoader.NPCLoader.NPCCount);
++
++		if (ClosestNPCPosition.Length < ModLoader.NPCLoader.NPCCount)
++			Array.Resize(ref ClosestNPCPosition, ModLoader.NPCLoader.NPCCount);
  	}
  
  	private void UpdateOreFinder(Point pos, Tile tile)
