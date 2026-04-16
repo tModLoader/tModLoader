@@ -2217,6 +2217,15 @@
  						switch (num) {
  							case 127:
  								SoundEngine.PlaySound(SoundID.Item30, i * 16, j * 16);
+@@ -50423,7 +_,7 @@
+ 
+ 	private static bool ValidAnchorForMultiDirectionalTile(int x, int y, Tile tileCache, int direction)
+ 	{
+-		if (tileCache != null && tileCache.type >= 0 && !TileID.Sets.Boulders[tileCache.type] && tileCache.type != 10) {
++		if (tileCache != null && tileCache.type >= 0 && !TileID.Sets.Boulders[tileCache.type] && !TileLoader.IsClosedDoor(tileCache.type)) {
+ 			if ((direction != 0 || !SolidTileAllowTopSlope(x, y)) && (direction != 1 || !SolidTileAllowBottomSlope(x, y)) && (direction != 2 || !SolidTileAllowLeftSlope(x, y))) {
+ 				if (direction == 3)
+ 					return SolidTileAllowRightSlope(x, y);
 @@ -50501,10 +_,15 @@
  			return;
  
