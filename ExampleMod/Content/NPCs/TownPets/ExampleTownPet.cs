@@ -69,14 +69,14 @@ namespace ExampleMod.Content.NPCs.TownPets
 
 			// Here we define which portrait to use for the Town NPC when the portrait style setting is set to detailed.
 			NPCID.Sets.NPCPortraits.Add(Type, NPCID.Sets.PrioritizedPortrait()
-				.With(NPCID.Sets.VariantPortraitCondition(0), NPCID.Sets.ModTownNPCPortrait($"{Texture}_Portrait")) // Each variant of Example Town Pet gets its own portrait.
-				.With(NPCID.Sets.VariantPortraitCondition(1), NPCID.Sets.ModTownNPCPortrait($"{Texture}_1_Portrait"))
-				.With(NPCID.Sets.VariantPortraitCondition(2), NPCID.Sets.ModTownNPCPortrait($"{Texture}_2_Portrait"))
-				.With(NPCID.Sets.VariantPortraitCondition(3), NPCID.Sets.ModTownNPCPortrait($"{Texture}_3_Portrait"))
-				.With(NPCID.Sets.VariantPortraitCondition(4), NPCID.Sets.ModTownNPCPortrait($"{Texture}_4_Portrait"))
-				.With(NPCID.Sets.VariantPortraitCondition(5), NPCID.Sets.ModTownNPCPortrait($"{Texture}_5_Portrait"))
-				.With(NPCID.Sets.VariantPortraitCondition(6), NPCID.Sets.ModTownNPCPortrait($"{Texture}_6_Portrait"))
-				.Default(NPCID.Sets.ModTownNPCPortrait($"{Texture}_Portrait"))); // The default portrait to use.
+				.With(NPCID.Sets.VariantPortraitCondition(0), NPCID.Sets.BasicPortrait($"{Texture}_Portrait")) // Each variant of Example Town Pet gets its own portrait.
+				.With(NPCID.Sets.VariantPortraitCondition(1), NPCID.Sets.BasicPortrait($"{Texture}_1_Portrait"))
+				.With(NPCID.Sets.VariantPortraitCondition(2), NPCID.Sets.BasicPortrait($"{Texture}_2_Portrait"))
+				.With(NPCID.Sets.VariantPortraitCondition(3), NPCID.Sets.BasicPortrait($"{Texture}_3_Portrait"))
+				.With(NPCID.Sets.VariantPortraitCondition(4), NPCID.Sets.BasicPortrait($"{Texture}_4_Portrait"))
+				.With(NPCID.Sets.VariantPortraitCondition(5), NPCID.Sets.BasicPortrait($"{Texture}_5_Portrait"))
+				.With(NPCID.Sets.VariantPortraitCondition(6), NPCID.Sets.BasicPortrait($"{Texture}_6_Portrait"))
+				.Default(NPCID.Sets.BasicPortrait($"{Texture}_Portrait"))); // The default portrait to use.
 			NPCID.Sets.NPCPortraitsCloseUpOffsets.Add(Type, new Vector2(-24f, 16f)); // Here we can change the offsets of Town NPC when the portrait style setting is set to profile.
 			//NPCID.Sets.NPCPortraitsFullBodyRetroOffsets.Add(Type, new Vector2(0f, 0f)); // Here we can change the offsets of Town NPC when the portrait style setting is set to retro.
 		}
