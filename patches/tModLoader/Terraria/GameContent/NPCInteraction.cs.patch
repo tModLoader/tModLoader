@@ -5,7 +5,7 @@
  public abstract class NPCInteraction
  {
 +	/// <summary>
-+	/// Set to true to display a small exclamation point next to the chat button as well as above the NPC's head when the player is nearby.
++	/// Set to true to display a small exclamation point next to the chat button.
 +	/// <br/>Defaults to false.
 +	/// </summary>
  	public virtual bool ShowExcalmation => false;
@@ -26,7 +26,7 @@
  	public int TalkNPCType {
  		get {
  			if (LocalPlayer.talkNPC == -1)
-@@ -19,10 +_,21 @@
+@@ -19,12 +_,32 @@
  		}
  	}
  
@@ -34,6 +34,9 @@
 +	/// Determines when this NPCInteraction can/will be shown.
 +	/// </summary>
 +	/// <returns></returns>
++	/// <remarks>Be sure to set the condition to only show on the Town NPCs you want it to show on, otherwise every Town NPC will receive the button.
++	/// <br/>Example: <c>TalkNPCType == ModContent.NPCType&lt;YourModNPCHere&gt;()</c>
++	/// </remarks>
  	public abstract bool Condition();
  
 +	/// <summary>
@@ -47,4 +50,12 @@
 +	/// </summary>
  	public abstract void Interact();
  
++	/// <summary>
++	/// Adds a coin counter display to the right of the button if set to true.
++	/// </summary>
++	/// <param name="chatColor">Allows for the color of the button to be changed.</param>
++	/// <param name="coinValue">The value of coins to display. The value can be negative and it will display properly.</param>
++	/// <returns></returns>
  	public virtual bool TryAddCoins(ref Color chatColor, out int coinValue)
+ 	{
+ 		coinValue = 0;

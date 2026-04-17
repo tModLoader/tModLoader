@@ -1375,8 +1375,13 @@
  
  	public bool CanUseBootFlyingAbilities => !isPerformingJump_DownDash;
  
-@@ -2388,6 +_,11 @@
+@@ -2386,8 +_,16 @@
+ 		}
+ 	}
  
++	/// <summary>
++	/// The index in <see cref="Main.npc"/> of the NPC the player is speaking to.
++	/// </summary>
  	public int talkNPC { get; private set; }
  
 +	/// <summary>

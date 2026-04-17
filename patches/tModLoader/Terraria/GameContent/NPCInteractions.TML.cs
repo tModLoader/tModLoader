@@ -1,4 +1,3 @@
-using Terraria.Audio;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -90,6 +89,34 @@ public static partial class NPCInteractions
 		Register(new Actions.OpenShop(npcType, shopName, customTextKey));
 	}
 
+	/// <summary>
+	/// A helper that registers a "Close" button to the npcType.
+	/// <br/>Short for <c>NPCInteractions.Register(new NPCInteractions.Actions.CloseChat(Type))</c>
+	/// </summary>
+	/// <param name="npcType">The NPC type to assign the button to. For your <see cref="ModNPC"/>, simply use <c>Type</c> or <see cref="NPC.type"/></param>
+	public static void CloseChat(int npcType)
+	{
+		Register(new Actions.CloseChat(npcType));
+	}
+	/// <summary>
+	/// A helper that registers a "Happiness" button to the npcType.
+	/// <br/>Short for <c>NPCInteractions.Register(new NPCInteractions.Actions.ReportHappiness(Type))</c> 
+	/// </summary>
+	/// <param name="npcType">The NPC type to assign the button to. For your <see cref="ModNPC"/>, simply use <c>Type</c> or <see cref="NPC.type"/></param>
+	public static void ReportHappiness(int npcType)
+	{
+		Register(new Actions.ReportHappiness(npcType));
+	}
+	/// <summary>
+	/// A helper that registers a "Housing" button to the npcType.
+	/// <br/>Short for <c>NPCInteractions.Register(new NPCInteractions.Actions.RequestHome(Type))</c> 
+	/// </summary>
+	/// <param name="npcType">The NPC type to assign the button to. For your <see cref="ModNPC"/>, simply use <c>Type</c> or <see cref="NPC.type"/></param>
+	public static void RequestHome(int npcType)
+	{
+		Register(new Actions.RequestHome(npcType));
+	}
+
 	public static void InitializeVanillaGlobal()
 	{
 		for (int i = 0; i < NPCID.Count; i++) {
@@ -125,118 +152,118 @@ public static partial class NPCInteractions
 
 	private static void RegisterVanillaCloseButtons()
 	{
-		Register(new Actions.CloseChat(NPCID.Guide));
-		Register(new Actions.CloseChat(NPCID.Merchant));
-		Register(new Actions.CloseChat(NPCID.Nurse));
-		Register(new Actions.CloseChat(NPCID.Demolitionist));
-		Register(new Actions.CloseChat(NPCID.DyeTrader));
-		Register(new Actions.CloseChat(NPCID.Angler));
-		Register(new Actions.CloseChat(NPCID.BestiaryGirl));
-		Register(new Actions.CloseChat(NPCID.Dryad));
-		Register(new Actions.CloseChat(NPCID.Painter));
-		Register(new Actions.CloseChat(NPCID.Golfer));
-		Register(new Actions.CloseChat(NPCID.ArmsDealer));
-		Register(new Actions.CloseChat(NPCID.DD2Bartender));
-		Register(new Actions.CloseChat(NPCID.Stylist));
-		Register(new Actions.CloseChat(NPCID.GoblinTinkerer));
-		Register(new Actions.CloseChat(NPCID.WitchDoctor));
-		Register(new Actions.CloseChat(NPCID.Clothier));
-		Register(new Actions.CloseChat(NPCID.Mechanic));
-		Register(new Actions.CloseChat(NPCID.PartyGirl));
-		Register(new Actions.CloseChat(NPCID.Wizard));
-		Register(new Actions.CloseChat(NPCID.TaxCollector));
-		Register(new Actions.CloseChat(NPCID.Truffle));
-		Register(new Actions.CloseChat(NPCID.Pirate));
-		Register(new Actions.CloseChat(NPCID.Steampunker));
-		Register(new Actions.CloseChat(NPCID.Cyborg));
-		Register(new Actions.CloseChat(NPCID.SantaClaus));
-		Register(new Actions.CloseChat(NPCID.Princess));
-		Register(new Actions.CloseChat(NPCID.TownCat));
-		Register(new Actions.CloseChat(NPCID.TownDog));
-		Register(new Actions.CloseChat(NPCID.TownBunny));
-		Register(new Actions.CloseChat(NPCID.TownSlimeCopper));
-		Register(new Actions.CloseChat(NPCID.TownSlimePurple));
-		Register(new Actions.CloseChat(NPCID.TownSlimeBlue));
-		Register(new Actions.CloseChat(NPCID.TownSlimeRed));
-		Register(new Actions.CloseChat(NPCID.TownSlimeYellow));
-		Register(new Actions.CloseChat(NPCID.TownSlimeOld));
-		Register(new Actions.CloseChat(NPCID.TownSlimeGreen));
-		Register(new Actions.CloseChat(NPCID.TownSlimeRainbow));
-		Register(new Actions.CloseChat(NPCID.OldMan));
-		Register(new Actions.CloseChat(NPCID.TravellingMerchant));
-		Register(new Actions.CloseChat(NPCID.SkeletonMerchant));
+		CloseChat(NPCID.Guide);
+		CloseChat(NPCID.Merchant);
+		CloseChat(NPCID.Nurse);
+		CloseChat(NPCID.Demolitionist);
+		CloseChat(NPCID.DyeTrader);
+		CloseChat(NPCID.Angler);
+		CloseChat(NPCID.BestiaryGirl);
+		CloseChat(NPCID.Dryad);
+		CloseChat(NPCID.Painter);
+		CloseChat(NPCID.Golfer);
+		CloseChat(NPCID.ArmsDealer);
+		CloseChat(NPCID.DD2Bartender);
+		CloseChat(NPCID.Stylist);
+		CloseChat(NPCID.GoblinTinkerer);
+		CloseChat(NPCID.WitchDoctor);
+		CloseChat(NPCID.Clothier);
+		CloseChat(NPCID.Mechanic);
+		CloseChat(NPCID.PartyGirl);
+		CloseChat(NPCID.Wizard);
+		CloseChat(NPCID.TaxCollector);
+		CloseChat(NPCID.Truffle);
+		CloseChat(NPCID.Pirate);
+		CloseChat(NPCID.Steampunker);
+		CloseChat(NPCID.Cyborg);
+		CloseChat(NPCID.SantaClaus);
+		CloseChat(NPCID.Princess);
+		CloseChat(NPCID.TownCat);
+		CloseChat(NPCID.TownDog);
+		CloseChat(NPCID.TownBunny);
+		CloseChat(NPCID.TownSlimeCopper);
+		CloseChat(NPCID.TownSlimePurple);
+		CloseChat(NPCID.TownSlimeBlue);
+		CloseChat(NPCID.TownSlimeRed);
+		CloseChat(NPCID.TownSlimeYellow);
+		CloseChat(NPCID.TownSlimeOld);
+		CloseChat(NPCID.TownSlimeGreen);
+		CloseChat(NPCID.TownSlimeRainbow);
+		CloseChat(NPCID.OldMan);
+		CloseChat(NPCID.TravellingMerchant);
+		CloseChat(NPCID.SkeletonMerchant);
 	}
 
 	private static void RegisterVanillaHappinessButtons()
 	{
-		Register(new Actions.ReportHappiness(NPCID.Guide));
-		Register(new Actions.ReportHappiness(NPCID.Merchant));
-		Register(new Actions.ReportHappiness(NPCID.Nurse));
-		Register(new Actions.ReportHappiness(NPCID.Demolitionist));
-		Register(new Actions.ReportHappiness(NPCID.DyeTrader));
-		Register(new Actions.ReportHappiness(NPCID.Angler));
-		Register(new Actions.ReportHappiness(NPCID.BestiaryGirl));
-		Register(new Actions.ReportHappiness(NPCID.Dryad));
-		Register(new Actions.ReportHappiness(NPCID.Painter));
-		Register(new Actions.ReportHappiness(NPCID.Golfer));
-		Register(new Actions.ReportHappiness(NPCID.ArmsDealer));
-		Register(new Actions.ReportHappiness(NPCID.DD2Bartender));
-		Register(new Actions.ReportHappiness(NPCID.Stylist));
-		Register(new Actions.ReportHappiness(NPCID.GoblinTinkerer));
-		Register(new Actions.ReportHappiness(NPCID.WitchDoctor));
-		Register(new Actions.ReportHappiness(NPCID.Clothier));
-		Register(new Actions.ReportHappiness(NPCID.Mechanic));
-		Register(new Actions.ReportHappiness(NPCID.PartyGirl));
-		Register(new Actions.ReportHappiness(NPCID.Wizard));
-		Register(new Actions.ReportHappiness(NPCID.TaxCollector));
-		Register(new Actions.ReportHappiness(NPCID.Truffle));
-		Register(new Actions.ReportHappiness(NPCID.Pirate));
-		Register(new Actions.ReportHappiness(NPCID.Steampunker));
-		Register(new Actions.ReportHappiness(NPCID.Cyborg));
-		Register(new Actions.ReportHappiness(NPCID.SantaClaus));
-		Register(new Actions.ReportHappiness(NPCID.Princess));
+		ReportHappiness(NPCID.Guide);
+		ReportHappiness(NPCID.Merchant);
+		ReportHappiness(NPCID.Nurse);
+		ReportHappiness(NPCID.Demolitionist);
+		ReportHappiness(NPCID.DyeTrader);
+		ReportHappiness(NPCID.Angler);
+		ReportHappiness(NPCID.BestiaryGirl);
+		ReportHappiness(NPCID.Dryad);
+		ReportHappiness(NPCID.Painter);
+		ReportHappiness(NPCID.Golfer);
+		ReportHappiness(NPCID.ArmsDealer);
+		ReportHappiness(NPCID.DD2Bartender);
+		ReportHappiness(NPCID.Stylist);
+		ReportHappiness(NPCID.GoblinTinkerer);
+		ReportHappiness(NPCID.WitchDoctor);
+		ReportHappiness(NPCID.Clothier);
+		ReportHappiness(NPCID.Mechanic);
+		ReportHappiness(NPCID.PartyGirl);
+		ReportHappiness(NPCID.Wizard);
+		ReportHappiness(NPCID.TaxCollector);
+		ReportHappiness(NPCID.Truffle);
+		ReportHappiness(NPCID.Pirate);
+		ReportHappiness(NPCID.Steampunker);
+		ReportHappiness(NPCID.Cyborg);
+		ReportHappiness(NPCID.SantaClaus);
+		ReportHappiness(NPCID.Princess);
 		// Town Pets, Town Slimes, Old Man, Traveling Merchant, and Skeleton Merchant are excluded.
 	}
 
 	private static void RegisterVanillaHousingButtons()
 	{
-		Register(new Actions.RequestHome(NPCID.Guide));
-		Register(new Actions.RequestHome(NPCID.Merchant));
-		Register(new Actions.RequestHome(NPCID.Nurse));
-		Register(new Actions.RequestHome(NPCID.Demolitionist));
-		Register(new Actions.RequestHome(NPCID.DyeTrader));
-		Register(new Actions.RequestHome(NPCID.Angler));
-		Register(new Actions.RequestHome(NPCID.BestiaryGirl));
-		Register(new Actions.RequestHome(NPCID.Dryad));
-		Register(new Actions.RequestHome(NPCID.Painter));
-		Register(new Actions.RequestHome(NPCID.Golfer));
-		Register(new Actions.RequestHome(NPCID.ArmsDealer));
-		Register(new Actions.RequestHome(NPCID.DD2Bartender));
-		Register(new Actions.RequestHome(NPCID.Stylist));
-		Register(new Actions.RequestHome(NPCID.GoblinTinkerer));
-		Register(new Actions.RequestHome(NPCID.WitchDoctor));
-		Register(new Actions.RequestHome(NPCID.Clothier));
-		Register(new Actions.RequestHome(NPCID.Mechanic));
-		Register(new Actions.RequestHome(NPCID.PartyGirl));
-		Register(new Actions.RequestHome(NPCID.Wizard));
-		Register(new Actions.RequestHome(NPCID.TaxCollector));
-		Register(new Actions.RequestHome(NPCID.Truffle));
-		Register(new Actions.RequestHome(NPCID.Pirate));
-		Register(new Actions.RequestHome(NPCID.Steampunker));
-		Register(new Actions.RequestHome(NPCID.Cyborg));
-		Register(new Actions.RequestHome(NPCID.SantaClaus));
-		Register(new Actions.RequestHome(NPCID.Princess));
-		Register(new Actions.RequestHome(NPCID.TownCat));
-		Register(new Actions.RequestHome(NPCID.TownDog));
-		Register(new Actions.RequestHome(NPCID.TownBunny));
-		Register(new Actions.RequestHome(NPCID.TownSlimeCopper));
-		Register(new Actions.RequestHome(NPCID.TownSlimePurple));
-		Register(new Actions.RequestHome(NPCID.TownSlimeBlue));
-		Register(new Actions.RequestHome(NPCID.TownSlimeRed));
-		Register(new Actions.RequestHome(NPCID.TownSlimeYellow));
-		Register(new Actions.RequestHome(NPCID.TownSlimeOld));
-		Register(new Actions.RequestHome(NPCID.TownSlimeGreen));
-		Register(new Actions.RequestHome(NPCID.TownSlimeRainbow));
+		RequestHome(NPCID.Guide);
+		RequestHome(NPCID.Merchant);
+		RequestHome(NPCID.Nurse);
+		RequestHome(NPCID.Demolitionist);
+		RequestHome(NPCID.DyeTrader);
+		RequestHome(NPCID.Angler);
+		RequestHome(NPCID.BestiaryGirl);
+		RequestHome(NPCID.Dryad);
+		RequestHome(NPCID.Painter);
+		RequestHome(NPCID.Golfer);
+		RequestHome(NPCID.ArmsDealer);
+		RequestHome(NPCID.DD2Bartender);
+		RequestHome(NPCID.Stylist);
+		RequestHome(NPCID.GoblinTinkerer);
+		RequestHome(NPCID.WitchDoctor);
+		RequestHome(NPCID.Clothier);
+		RequestHome(NPCID.Mechanic);
+		RequestHome(NPCID.PartyGirl);
+		RequestHome(NPCID.Wizard);
+		RequestHome(NPCID.TaxCollector);
+		RequestHome(NPCID.Truffle);
+		RequestHome(NPCID.Pirate);
+		RequestHome(NPCID.Steampunker);
+		RequestHome(NPCID.Cyborg);
+		RequestHome(NPCID.SantaClaus);
+		RequestHome(NPCID.Princess);
+		RequestHome(NPCID.TownCat);
+		RequestHome(NPCID.TownDog);
+		RequestHome(NPCID.TownBunny);
+		RequestHome(NPCID.TownSlimeCopper);
+		RequestHome(NPCID.TownSlimePurple);
+		RequestHome(NPCID.TownSlimeBlue);
+		RequestHome(NPCID.TownSlimeRed);
+		RequestHome(NPCID.TownSlimeYellow);
+		RequestHome(NPCID.TownSlimeOld);
+		RequestHome(NPCID.TownSlimeGreen);
+		RequestHome(NPCID.TownSlimeRainbow);
 		// Old Man, Traveling Merchant, and Skeleton Merchant are excluded.
 	}
 }
