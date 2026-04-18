@@ -2348,4 +2348,53 @@ public static class ItemLoader
 
 		return false;
 	}
+
+	public static void UseMiningTools(Item item, Player player, ref Player.SpecialToolUsageSettings usageSettings)
+	{
+		usageSettings.UsageCondition = MiningUsageCondition;
+		bool isAValidTool = IsAValidTool(item, player, usageSettings);
+		usageSettings.IsAValidTool = isAValidTool;
+		if (isAValidTool == true) { // Non-special tools do not append, otherwise the original logic is not executed
+			usageSettings.UsageAction += MiningUsage;
+		}
+	}
+
+	internal static HookList HookMiningUsage = AddHook<Action<Player, Item, int, int>>(g => g.MiningUsage);
+	public static void MiningUsage(Player player, Item item, int targetX, int targetY)
+	{
+		item.ModItem?.MiningUsage(player, targetX, targetY);
+		foreach (var g in HookMiningUsage.Enumerate()) {
+			g.MiningUsage(player, item, targetX, targetY);
+		}
+	}
+
+	internal static HookList HookMiningUsageCondition = AddHook<Func<Player, Item, int, int, bool, bool>>(g => g.MiningUsageCondition);
+	public static bool MiningUsageCondition(Player player, Item item, int targetX, int targetY)
+	{
+		bool orig = true;
+		orig &= item.ModItem?.MiningUsageCondition(player, targetX, targetY) ?? true; //vanilla is null default is true
+		bool tempFlag = orig;
+		foreach(var g in HookMiningUsageCondition.Enumerate()) {
+			orig &= g.MiningUsageCondition(player, item, targetX, targetY, tempFlag);
+		}
+		return orig;
+	}
+
+	internal static HookList HookIsAValidTool = AddHook<Func<Player, Item, bool, bool>>(g => g.IsAValidTool);
+	public static bool IsAValidTool(Item item, Player player, Player.SpecialToolUsageSettings usageSettings)
+	{
+		bool isAValidTool;
+		if (item.ModItem == null) { // item is vanilla
+			isAValidTool = usageSettings.IsAValidTool;
+		}
+		else { // item is mod
+			isAValidTool = item.ModItem.IsAValidTool(player);
+		}
+
+		bool tempFlag = isAValidTool;
+		foreach(var g in HookIsAValidTool.Enumerate()) {
+			isAValidTool &= g.IsAValidTool(player, item, tempFlag);
+		}
+		return isAValidTool;
+	}
 }

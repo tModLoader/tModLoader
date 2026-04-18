@@ -1437,4 +1437,36 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	public virtual void DrawPlayer(Camera camera)
 	{
 	}
+
+	/// <summary>
+	/// It can be used to modify the player's damage to tiles.
+	/// <br/>
+	///	For Item:
+	/// <code>
+	///	source is EntitySource_ItemUse
+	/// </code>
+	/// For Mount:
+	/// <code>
+	///	source is EntitySource_Mount
+	/// </code>
+	/// </summary>
+	public virtual void ModifyPickTile(IEntitySource source, int x, int y, ref int pick)
+	{
+	}
+
+	/// <summary>
+	/// It can be used to modify the damage dealt by the player to walls.
+	/// <br/>
+	///	For Item:
+	/// <code>
+	///	source is EntitySource_ItemUse
+	/// </code>
+	/// For Mount:
+	/// <code>
+	///	source is EntitySource_Mount
+	/// </code>
+	/// </summary>
+	public virtual void ModifyPickWall(IEntitySource source, int x, int y, ref int damage)
+	{
+	}
 }

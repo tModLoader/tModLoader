@@ -1508,4 +1508,49 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// <param name="amount">The stack -> how many result items given when the recipe is crafted. (eg. 1 wood -> 4 wood platform)</param>
 	/// <returns></returns>
 	public Recipe CreateRecipe(int amount = 1) => Recipe.Create(Type, amount);
+
+	/// <summary>
+	/// Called when the item is used as a tool, provided the following conditions are met:
+	/// <br/> 1. <see cref="IsAValidTool(Player)"/> returns true
+	/// <br/> 2. <see cref="MiningUsageCondition(Player, int, int)"/> returns true
+	/// </summary>
+	/// <param name="player">The player using the item.</param>
+	/// <param name="targetX"> The position of this Tile x </param>
+	/// <param name="targetY"> The position of this Tile y </param>
+	public virtual void MiningUsage(Player player, int targetX, int targetY)
+	{
+
+	}
+
+	/// <summary>
+	/// Called when <see cref="IsAValidTool(Player)"/> returns true.
+	/// Determines whether to execute <see cref="MiningUsage(Player, int, int)"/>.
+	/// <br/>
+	/// <br/>If this method returns false, <see cref="MiningUsage(Player, int, int)"/> will not be executed.
+	/// <br/>Note: The original tool usage is already skipped when <see cref="IsAValidTool(Player)"/> returns true.
+	/// </summary>
+	/// <param name="player">The player using the item.</param>
+	/// <param name="targetX"> The position of this Tile x </param>
+	/// <param name="targetY"> The position of this Tile y </param>
+	/// <returns>Whether the conditions for calling<see cref = "MiningUsage(Player, int, int)" /> are met, default is true.</returns>
+	public virtual bool MiningUsageCondition(Player player, int targetX, int targetY)
+	{
+		return true;
+	}
+
+	/// <summary>
+	/// Determines whether this item can be used as a tool without having <see cref="Item.axe"/>, <see cref="Item.hammer"/>, or <see cref="Item.pick"/>.
+	/// <br/>
+	/// <br/>If this method returns true:
+	/// <br/>- The original tool usage will be skipped
+	/// <br/>- <see cref="MiningUsageCondition(Player, int, int)"/> will be called to determine whether to execute <see cref="MiningUsage(Player, int, int)"/>
+	/// <br/>- If <see cref="MiningUsageCondition(Player, int, int)"/> returns true, <see cref="MiningUsage(Player, int, int)"/> will be executed
+	/// <br/>- If <see cref="MiningUsageCondition(Player, int, int)"/> returns false, no tool action will be performed
+	/// </summary>
+	/// <param name="player">The player using the item.</param>
+	/// <returns>Whether it is considered a tool, default false</returns>
+	public virtual bool IsAValidTool(Player player)
+	{
+		return false;
+	}
 }

@@ -1254,6 +1254,17 @@ Mods: {
 				// DisplayName: Example Gem
 				// Tooltip: ""
 			}
+
+			ExampleUseMiningTools: {
+				// DisplayName: Example Use Mining Tools
+				/* Tooltip:
+					'''
+					This item is used to demonstrate how to implement an effect similar to the Graverobber's Shovel.
+					Mining will only occur when the following conditions are met:
+					1. The player's current health is less than 200.
+					2. The pointed block is Stone.
+					''' */
+			}
 		}
 
 		# Projectile display names mainly show in chat when a player dies from it.

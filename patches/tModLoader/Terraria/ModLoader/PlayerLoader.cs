@@ -1532,4 +1532,22 @@ public static class PlayerLoader
 			modPlayer.DrawPlayer(camera);
 		}
 	}
+
+	private delegate void DelegatePickTile(IEntitySource source, int x, int y, ref int pick);
+	private static HookList HookPickTile = AddHook<DelegatePickTile>(p => p.ModifyPickTile);
+	public static void ModifyPickTile(Player player, IEntitySource source, int x, int y, ref int pick)
+	{
+		foreach (var modPlayer in HookPickTile.Enumerate(player)) {
+			try { modPlayer.ModifyPickTile(source, x, y, ref pick); } catch { }
+		}
+	}
+
+	private delegate void DelegatePickWall(IEntitySource source, int wX, int wY, ref int damage);
+	private static HookList HookPickWall = AddHook<DelegatePickWall>(p => p.ModifyPickWall);
+	public static void ModifyPickWall(Player player, IEntitySource source, int wX, int wY, ref int damage)
+	{
+		foreach (var modPlayer in HookPickWall.Enumerate(player)) {
+			try { modPlayer.ModifyPickWall(source, wX, wY, ref damage); } catch { }
+		}
+	}
 }

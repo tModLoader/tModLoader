@@ -1262,4 +1262,53 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	public virtual void NetReceive(Item item, BinaryReader reader)
 	{
 	}
+
+	/// <summary>
+	/// Called when the item is used as a tool, provided the following conditions are met:
+	/// <br/> 1. <see cref="MiningUsageCondition(Player, Item, int, int, bool)"/> returns true
+	/// <br/> 2. <see cref="IsAValidTool(Player, Item, bool)"/> returns true
+	/// </summary>
+	/// <param name="item">The item.</param>
+	/// <param name="player">The player using the item.</param>
+	/// <param name="targetX"> The position of this Tile x </param>
+	/// <param name="targetY"> The position of this Tile y </param>
+	public virtual void MiningUsage(Player player, Item item, int targetX, int targetY)
+	{
+
+	}
+
+	/// <summary>
+	/// Called when <see cref="IsAValidTool(Player, Item, bool)"/> returns true.
+	/// <br/> Determines whether to execute <see cref="MiningUsage(Player, Item, int, int)"/>.
+	/// <br/> If this method returns false, <see cref="MiningUsage(Player, Item, int, int)"/> will not be executed.
+	/// <br/> Note: The original tool usage is already skipped when <see cref="IsAValidTool(Player, Item, bool)"/> returns true.
+	/// </summary>
+	/// <param name="player">The player using the item.</param>
+	/// <param name="item"> the item </param>
+	/// <param name="targetX"> The position of this Tile x </param>
+	/// <param name="targetY"> The position of this Tile y </param>
+	/// <param name="origConditionValue"> Whether the original judgment is through the conditional judgment </param>
+	/// <returns>Whether the conditions for calling<see cref = "MiningUsage(Player, Item, int, int)" /> are met, default is <paramref name="origConditionValue"/>.</returns>
+	public virtual bool MiningUsageCondition(Player player, Item item, int targetX, int targetY, bool origConditionValue)
+	{
+		return origConditionValue;
+	}
+
+	/// <summary>
+	/// Determines whether this item can be used as a tool without having <see cref="Item.axe"/>, <see cref="Item.hammer"/>, or <see cref="Item.pick"/>.
+	/// <br/>
+	/// <br/>If this method returns true:
+	/// <br/>- The original tool usage will be skipped
+	/// <br/>- <see cref="MiningUsageCondition(Player, Item, int, int, bool)"/> will be called to determine whether to execute <see cref="MiningUsage(Player, Item, int, int)"/>
+	/// <br/>- If <see cref="MiningUsageCondition(Player, Item, int, int, bool)"/> returns true, <see cref="MiningUsage(Player, Item, int, int)"/> will be executed
+	/// <br/>- If <see cref="MiningUsageCondition(Player, Item, int, int, bool)"/> returns false, no tool action will be performed
+	/// </summary>
+	/// <param name="player">The player using the item.</param>
+	/// <param name="item">The item.</param>
+	/// <param name="isAValidTool"> The item orig IsAValidTool </param>
+	/// <returns>Whether it is considered a tool, default <paramref name="isAValidTool"/></returns>
+	public virtual bool IsAValidTool(Player player, Item item, bool isAValidTool)
+	{
+		return isAValidTool;
+	}
 }
