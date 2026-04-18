@@ -242,6 +242,17 @@ public static class PlayerLoader
 		}
 	}
 
+	private delegate void DelegateBadlLifeRegenHurt(ref int damage, ref PlayerDeathReason damageSource);
+	private static HookList HookBadlLifeRegenHurt = AddHook<DelegateBadlLifeRegenHurt>(p => p.BadlLifeRegenHurt);
+
+	public static void BadlLifeRegenHurt(Player player, ref int damage, ref PlayerDeathReason damageSource)
+	{
+		foreach (var modPlayer in HookBadlLifeRegenHurt.Enumerate(player)) {
+			try { modPlayer.BadlLifeRegenHurt(ref damage, ref damageSource); }
+			catch { }
+		}
+	}
+
 	private static HookList HookUpdateAutopause = AddHook<Action>(p => p.UpdateAutopause);
 
 	public static void UpdateAutopause(Player player)

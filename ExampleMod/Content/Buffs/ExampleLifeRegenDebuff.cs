@@ -1,4 +1,5 @@
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -44,6 +45,15 @@ namespace ExampleMod.Content.Buffs
 				// lifeRegen is measured in 1/2 life per second. Therefore, this effect causes 8 life lost per second
 				Player.lifeRegen -= 16;
 			}
+		}
+
+		// Allows you to modify the player's health loss caused by a negative Player.lifeRegenCount, the damage and damage number displayed for each condition,
+		// and also modify the cause of death caused by a certain debuff.
+		// The damage parameter is the number that appears above the Player's head if it takes damage over time.
+		public override void BadlLifeRegenHurt(ref int damage, ref PlayerDeathReason damageSource) {
+			// Modify both damage
+			if (lifeRegenDebuff)
+				damage = 8;
 		}
 	}
 }

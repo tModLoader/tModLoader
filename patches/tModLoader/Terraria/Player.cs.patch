@@ -3785,6 +3785,110 @@
  		float num7 = (float)statLifeMax2 / 400f * 0.85f + 0.15f;
  		num5 *= num7;
  		lifeRegen += (int)Math.Round(num5);
+@@ -15021,17 +_,26 @@
+ 		}
+ 
+ 		if (burned || suffocating || (tongued && Main.expertMode)) {
++			int damage = 5;
++			PlayerDeathReason damageSource = (suffocating, tongued) switch {
++				(true, _) => PlayerDeathReason.ByOther(7),
++				(false, true) => PlayerDeathReason.ByOther(12),
++				_ => PlayerDeathReason.ByOther(8)
++			};
++
++			PlayerLoader.BadlLifeRegenHurt(this, ref damage, ref damageSource);
++
++			if (lifeRegen <= -240 && damage < 2)
++				damage = 2;
++
++			int damage2 = 120 * damage;
++
+-			while (lifeRegenCount <= -600) {
++			while (lifeRegenCount <= -damage2) {
+-				lifeRegenCount += 600;
++				lifeRegenCount += damage2;
+-				statLife -= 5;
++				statLife -= damage;
+-				CombatText.NewText(new Rectangle((int)position.X, (int)position.Y, width, height), CombatText.LifeRegen, 5, dramatic: false, dot: true);
++				CombatText.NewText(new Rectangle((int)position.X, (int)position.Y, width, height), CombatText.LifeRegen, damage, dramatic: false, dot: true);
+ 				if (statLife <= 0 && whoAmI == Main.myPlayer) {
+-					if (suffocating)
+-						KillMe(PlayerDeathReason.ByOther(7), 10.0, 0);
+-					else if (tongued)
+-						KillMe(PlayerDeathReason.ByOther(12), 10.0, 0);
+-					else
+-						KillMe(PlayerDeathReason.ByOther(8), 10.0, 0);
++					KillMe(damageSource, 10.0, 0);
+ 				}
+ 			}
+ 
+@@ -15039,18 +_,51 @@
+ 		}
+ 
+ 		if (starving) {
++			PlayerDeathReason damageSource = PlayerDeathReason.ByOther(18);
+ 			int num12 = statLifeMax2 / 50;
+ 			if (num12 < 2)
+ 				num12 = 2;
+ 
+ 			int num13 = ((ZoneDesert || ZoneSnow) ? (num12 * 2) : num12);
++
++			PlayerLoader.BadlLifeRegenHurt(this, ref num13, ref damageSource);
++
++			if (lifeRegen <= -240 && num13 < 2)
++				num13 = 2;
++
+ 			int num14 = 120 * num12;
+ 			while (lifeRegenCount <= -num14) {
+ 				lifeRegenCount += num14;
+ 				statLife -= num13;
+ 				CombatText.NewText(new Rectangle((int)position.X, (int)position.Y, width, height), CombatText.LifeRegen, num13, dramatic: false, dot: true);
+ 				if (statLife <= 0 && whoAmI == Main.myPlayer)
+-					KillMe(PlayerDeathReason.ByOther(18), 10.0, 0);
++					KillMe(damageSource, 10.0, 0);
++			}
++
++			return;
++		}
++
++		int damage3 = 1;
++		PlayerDeathReason damageSource2 = (poisoned || venom, electrified) switch {
++			(true, _) => PlayerDeathReason.ByOther(9),
++			(false, true) => PlayerDeathReason.ByOther(10),
++			_ => PlayerDeathReason.ByOther(8)
++		};
++
++		PlayerLoader.BadlLifeRegenHurt(this, ref damage3, ref damageSource2);
++
++		if (lifeRegen <= -240 && damage3 < 2)
++			damage3 = 2;
++
++		if (damage3 > 1) {
++			while (lifeRegenCount <= -120 * damage3) {
++				lifeRegenCount += 120 * damage3;
++				statLife -= damage3;
++				CombatText.NewText(new Rectangle((int)position.X, (int)position.Y, width, height), CombatText.LifeRegen, damage3, dramatic: false, dot: true);
++
++				if (statLife <= 0 && whoAmI == Main.myPlayer) {
++					KillMe(damageSource2, 10.0, 0);
++				}
+ 			}
+ 
+ 			return;
+@@ -15079,12 +_,7 @@
+ 			}
+ 
+ 			if (statLife <= 0 && whoAmI == Main.myPlayer) {
+-				if (poisoned || venom)
+-					KillMe(PlayerDeathReason.ByOther(9), 10.0, 0);
+-				else if (electrified)
+-					KillMe(PlayerDeathReason.ByOther(10), 10.0, 0);
+-				else
+-					KillMe(PlayerDeathReason.ByOther(8), 10.0, 0);
++				KillMe(damageSource2, 10.0, 0);
+ 			}
+ 		}
+ 	}
 @@ -15166,8 +_,8 @@
  	public void UpdateJumpHeight()
  	{
