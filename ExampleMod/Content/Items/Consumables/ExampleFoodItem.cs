@@ -13,7 +13,7 @@ namespace ExampleMod.Content.Items.Consumables
 			Item.ResearchUnlockCount = 5;
 
 			// This is to show the correct frame in the inventory
-			// The MaxValue argument is for the animation speed, we want it to be stuck on frame 1
+			// The first argument is for the animation speed, we want it to be stuck on frame 1
 			// The second argument is the number of frames, which is 3
 			// The first frame is the inventory texture, the second frame is the holding texture,
 			// and the third frame is the placed texture
