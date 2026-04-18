@@ -14,12 +14,13 @@ namespace ExampleMod.Content.Items.Consumables
 
 			// This is to show the correct frame in the inventory
 			// The MaxValue argument is for the animation speed, we want it to be stuck on frame 1
-			// Setting it to max value will cause it to take 414 days to reach the next frame
-			// No one is going to have game open that long so this is fine
 			// The second argument is the number of frames, which is 3
 			// The first frame is the inventory texture, the second frame is the holding texture,
 			// and the third frame is the placed texture
-			Main.RegisterItemAnimation(Type, new DrawAnimationVertical(int.MaxValue, 3));
+			Main.RegisterItemAnimation(Type, new DrawAnimationVertical(-1, 3)
+			{
+				NotActuallyAnimating = true
+			});
 
 			// This allows you to change the color of the crumbs that are created when you eat.
 			// The numbers are RGB (Red, Green, and Blue) values which range from 0 to 255.
