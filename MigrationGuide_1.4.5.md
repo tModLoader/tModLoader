@@ -69,7 +69,10 @@ Town NPC now have portraits shown while talking to them. Modders will need to ma
 #### Detailed Portrait sprites
 The detailed portrait sprites are expected to be a resolution of 200x200 pixels. The background is 112x112 and the center 96x96 is where the head of the NPC should be. This means most portraits will only take up the center of the sprite and will have a lot of empty space around them. The head of the NPC should be facing forward and to the right to match the vanilla NPCs. Modders should create a portrait for both the normal and shimmered variant if applicable.
 
-TODO: Upload images of the sample portraits as well as the background for reference.
+Sample portraits
+<img width="200" height="200" alt="SampleMale_Portrait" src="https://github.com/user-attachments/assets/2deda86f-232f-4fa2-a63b-a95c4e3bc78d" />
+<img width="200" height="200" alt="SampleFemale_Portrait" src="https://github.com/user-attachments/assets/154a4194-9322-4720-8f44-8a2e0ecefb44" />
+Portrait window for reference <img width="112" height="112" alt="Portrait_Window" src="https://github.com/user-attachments/assets/73897b78-bb92-43ed-bdcd-7af9392159fa" />
 
 #### Detailed Portrait code
 To assign a portrait to an NPC, use `NPCID.Sets.NPCPortraits` dictionary in the NPC's `SetStaticDefaults()`.
