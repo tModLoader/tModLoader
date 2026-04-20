@@ -64,7 +64,7 @@ The [Terraria 1.4.5 changelog](https://terraria.wiki.gg/wiki/1.4.5.0) lists many
 
 ### NPC Portraits
 
-Town NPC now have portraits shown while talking to them. Modders will need to make portrait sprites for each Town NPC to support this feature. Adding a detailed portrait is technically optional. Do note that if a detailed portrait is not provided, the NPC will not display the profile nor retro portraits, either.
+Town NPC now have portraits shown while talking to them. Modders will need to make portrait sprites for each Town NPC to support this feature. Adding a detailed portrait is technically optional. Do note that if a detailed portrait is not provided, the NPC will display the profile portraits as a fallback if the detailed portrait setting is selected.
 
 #### Detailed Portrait sprites
 The detailed portrait sprites are expected to be a resolution of 200x200 pixels. The background is 112x112 and the center 96x96 is where the head of the NPC should be. This means most portraits will only take up the center of the sprite and will have a lot of empty space around them. The head of the NPC should be facing forward and to the right to match the vanilla NPCs. Modders should create a portrait for both the normal and shimmered variant if applicable.
@@ -122,7 +122,7 @@ When the portrait setting is set to profile, a close up of the NPC's normal spri
 * `NPCID.Sets.NPCPortraitsFullBodyRetroOffsets.Add(int key, Vector2 value)` for the Retro setting.
   * Example: `NPCID.Sets.NPCPortraitsFullBodyRetroOffsets.Add(Type, new Vector2(0f, 0f));`
   
-Note: as stated above, if a detailed portrait is not provided, the profile and retro portraits will not display.
+Note: As stated above, if a detailed portrait is not provided, the profile portrait will display if the user has the detailed portrait setting enabled.
 
 ## Other Changes
 

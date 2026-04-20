@@ -1456,6 +1456,15 @@
  			Main.BestiaryTracker.Chats.RegisterChatStartWith(Main.npc[npcIndex]);
  
  		if (talkNPC == -1)
+@@ -2672,6 +_,8 @@
+ 			Main.npcChatPortrait = null;
+ 			if (npcIndex >= 0 && npcIndex < Main.maxNPCs && NPCID.Sets.NPCPortraits.TryGetValue(Main.npc[npcIndex].type, out var value)) {
+ 				Main.npcChatPortrait = value;
++			}
++			if (npcIndex >= 0 && npcIndex < Main.maxNPCs) { // TML: Still do the portrait hop even if no detailed portrait is provided.
+ 				Main.DoNPCPortraitHop();
+ 			}
+ 		}
 @@ -2683,6 +_,7 @@
  		itemTimeMax = frames;
  	}
