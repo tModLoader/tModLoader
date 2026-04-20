@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/GameContent/NPCInteraction.cs
 +++ src/tModLoader/Terraria/GameContent/NPCInteraction.cs
-@@ -4,12 +_,25 @@
+@@ -4,12 +_,31 @@
  
  public abstract class NPCInteraction
  {
@@ -15,10 +15,17 @@
 +	/// </summary>
  	public Player LocalPlayer => Main.LocalPlayer;
  
+-	public NPC TalkNPC => Main.npc[LocalPlayer.talkNPC];
 +	/// <summary>
-+	/// The instance of the NPC the player is speaking to. Sort for <c>Main.npc[LocalPlayer.talkNPC]</c>
++	/// The instance of the NPC the player is speaking to. Short for <c>Main.npc[LocalPlayer.talkNPC]</c>
 +	/// </summary>
- 	public NPC TalkNPC => Main.npc[LocalPlayer.talkNPC];
++	public NPC TalkNPC { // TML: Changed to add the safety check. Otherwise it would silently error when opening signs.
++		get {
++			if (LocalPlayer.talkNPC == -1)
++				return null;
++			return Main.npc[LocalPlayer.talkNPC];
++		}
++	}
  
 +	/// <summary>
 +	/// The NPC type of the NPC the player is speaking to. Will be 0 if the player is not speaking to any NPC.
@@ -26,15 +33,14 @@
  	public int TalkNPCType {
  		get {
  			if (LocalPlayer.talkNPC == -1)
-@@ -19,12 +_,32 @@
+@@ -19,12 +_,29 @@
  		}
  	}
  
 +	/// <summary>
 +	/// Determines when this NPCInteraction can/will be shown.
 +	/// </summary>
-+	/// <returns></returns>
-+	/// <remarks>Be sure to set the condition to only show on the Town NPCs you want it to show on, otherwise every Town NPC will receive the button.
++	/// <remarks>Be sure to set the condition to only show on the Town NPCs you want it to show on, otherwise every Town NPC and signs will receive the button.
 +	/// <br/>Example: <c>TalkNPCType == ModContent.NPCType&lt;YourModNPCHere&gt;()</c>
 +	/// </remarks>
  	public abstract bool Condition();
@@ -42,7 +48,6 @@
 +	/// <summary>
 +	/// The text of the button.
 +	/// </summary>
-+	/// <returns></returns>
  	public abstract string GetText();
  
 +	/// <summary>
@@ -55,7 +60,6 @@
 +	/// </summary>
 +	/// <param name="chatColor">Allows for the color of the button to be changed.</param>
 +	/// <param name="coinValue">The value of coins to display. The value can be negative and it will display properly.</param>
-+	/// <returns></returns>
  	public virtual bool TryAddCoins(ref Color chatColor, out int coinValue)
  	{
  		coinValue = 0;

@@ -1260,6 +1260,8 @@ public static class NPCLoader
 	public static bool PreChatButtonClicked(NPCInteraction interaction)
 	{
 		NPC npc = interaction.TalkNPC;
+		if (npc == null) // Player is click buttons on a sign.
+			return true;
 
 		bool result = true;
 		foreach (var g in HookPreChatButtonClicked.Enumerate(npc)) {
@@ -1310,6 +1312,8 @@ public static class NPCLoader
 	public static void OnChatButtonClicked(NPCInteraction interaction)
 	{
 		NPC npc = interaction.TalkNPC;
+		if (npc == null) // Player is click buttons on a sign.
+			return;
 
 		if (npc.ModNPC != null) {
 			npc.ModNPC.OnChatButtonClicked(interaction);

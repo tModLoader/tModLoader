@@ -68,6 +68,17 @@ public static partial class NPCInteractions
 				}
 			}
 		}
+
+		public class CloseSign : NPCInteraction // TML: Created a special close button for signs only.
+		{
+			public override bool Condition() => LocalPlayer.sign != -1;
+			public override string GetText() => Lang.inter[52].Value;
+
+			public override void Interact()
+			{
+				Main.CloseNPCChatOrSign();
+			}
+		}
 	}
 
 	/// <summary>

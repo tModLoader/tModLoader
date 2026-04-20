@@ -17,22 +17,14 @@
  	{
  		public class OpenSign : NPCInteraction
  		{
-@@ -33,11 +_,12 @@
+@@ -33,6 +_,7 @@
  			}
  		}
  
 +		/* TML: Re-implemented in NPCInteractions.TML.cs
  		public class OpenShop : NPCInteraction
  		{
--			private int _shopIndex;
-+			internal int _shopIndex;
--			private int _npcType;
-+			internal int _npcType;
--			private string _customTextKey;
-+			internal string _customTextKey;
- 
- 			public OpenShop(int npcType, int shopIndex, string customTextKey = null)
- 			{
+ 			private int _shopIndex;
 @@ -61,6 +_,7 @@
  				Main.instance.OpenShop(_shopIndex);
  			}
@@ -41,7 +33,7 @@
  
  		public class StardewValleyBit : NPCInteraction
  		{
-@@ -191,20 +_,33 @@
+@@ -191,20 +_,38 @@
  
  			public override void Interact()
  			{
@@ -75,25 +67,30 @@
 +		public class CloseChat(int type) : NPCInteraction // TML: Added int type
  		{
 -			public override bool Condition() => true;
-+			public override bool Condition() => Main.LocalPlayer.TalkNPC.type == type; // TML: Changed condition
++			public override bool Condition() // TML: Changed condition. Added sign and NPC type check.
++			{
++				if (Main.LocalPlayer.sign != -1)
++					return false;
++				return Main.LocalPlayer.TalkNPC.type == type; 
++			}
  			public override string GetText() => Lang.inter[52].Value;
  
  			public override void Interact()
-@@ -213,10 +_,13 @@
+@@ -213,11 +_,11 @@
  			}
  		}
  
 -		public class ReportHappiness : NPCInteraction
 +		public class ReportHappiness(int type) : NPCInteraction // TML: Added int type
  		{
- 			public override bool Condition()
+-			public override bool Condition()
++			public override bool Condition() // TML: Changed condition. Added NPC type check.
  			{
-+				if (Main.LocalPlayer.TalkNPC.type != type) // TML: Changed condition
-+					return false;
-+
- 				if (NPC.CanShowHomelessText(Main.LocalPlayer.talkNPC))
+-				if (NPC.CanShowHomelessText(Main.LocalPlayer.talkNPC))
++				if (NPC.CanShowHomelessText(Main.LocalPlayer.talkNPC) && Main.LocalPlayer.TalkNPC.type != type)
  					return false;
  
+ 				return base.LocalPlayer.currentShoppingSettings.HappinessReport != "";
 @@ -234,11 +_,11 @@
  			}
  		}
@@ -120,12 +117,13 @@
  				Main.npcChatText += "\n\n";
  				if (talkNPC.type == 160) {
  					Main.npcChatText += Language.GetTextValueWith("HousingText.HousingRequirements_Truffle", new {
-@@ -383,7 +_,8 @@
+@@ -383,7 +_,9 @@
  		Shop(227, 25, "GameUI.PainterDecor");
  		Register(new Actions.TaxCollectorCollectTaxes());
  		Register(new Actions.NurseHeal());
--		Register(new Actions.CloseChat());
 +		// Register(new Actions.CloseChat());
+-		Register(new Actions.CloseChat());
++		Register(new Actions.CloseSign());
 +		RegisterVanillaCloseButtons(); // TML: Moved to different method.
  		Register(new Actions.OpenSign());
  		Register(new Actions.StardewValleyBit());

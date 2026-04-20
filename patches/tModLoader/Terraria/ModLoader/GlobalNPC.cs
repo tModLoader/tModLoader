@@ -708,6 +708,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// <param name="npc"></param>
 	/// <param name="interaction">The type of interaction that was clicked.</param>
 	/// <returns></returns>
+	/// <remarks>This hook does not run when interacting with signs.</remarks>
 	public virtual bool PreChatButtonClicked(NPC npc, NPCInteraction interaction)
 	{
 		return true;
@@ -740,6 +741,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// </summary>
 	/// <param name="npc"></param>
 	/// <param name="interaction">The type of interaction that was clicked.</param>
+	/// <remarks>This hook does not run when interacting with signs.</remarks>
 	public virtual void OnChatButtonClicked(NPC npc, NPCInteraction interaction)
 	{
 	}

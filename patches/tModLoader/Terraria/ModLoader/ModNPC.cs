@@ -845,13 +845,13 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	/// <br/><br/> An NPC can only have 32 chat buttons shown at one time.
 	/// </summary>
 	/// <param name="skipCloseChat">Set to true to skip the "Close" button being automatically added.
-	/// <br/>It can manually be added with <c>NPCInteractions.Register(new NPCInteractions.Actions.ModCloseChat(Type))</c></param>
+	/// <br/>It can manually be added with <c>NPCInteractions.CloseChat(Type)</c></param>
 	/// <param name="skipReportHappiness">Set to true to skip the "Happiness" button being automatically added.
 	/// <br/>The "Happiness" button will not be shown on Town NPCs who are not affected by happiness.
-	/// <br/>It can manually be added with <c>NPCInteractions.Register(new NPCInteractions.Actions.ModReportHappiness(Type))</c></param>
+	/// <br/>It can manually be added with <c>NPCInteractions.ReportHappiness(Type)</c></param>
 	/// <param name="skipRequestHome">Set to true to skip the "Housing" button being automatically added.
 	/// <br/>The "Housing" button will not be shown on Town NPCs who cannot be housed.
-	/// <br/>It can manually be added with <c>NPCInteractions.Register(new NPCInteractions.Actions.ModRequestHome(Type))</c></param>
+	/// <br/>It can manually be added with <c>NPCInteractions.RequestHome(Type)</c></param>
 	public virtual void SetChatButtons(ref bool skipCloseChat, ref bool skipReportHappiness, ref bool skipRequestHome)
 	{
 	}
