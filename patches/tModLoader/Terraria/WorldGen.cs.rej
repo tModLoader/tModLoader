@@ -100,43 +100,6 @@
  				return;
  
  			if (!SolidTileAllowBottomSlope(k, j + 1))
-@@ -59271,7 +_,10 @@
- 							case 571:
- 								CheckBamboo(i, j);
- 								break;
-+							/*
- 							case 4:
-+							*/
-+							case int _ when TileID.Sets.Torch[num]:
- 								CheckTorch(i, j);
- 								break;
- 							case 442:
-@@ -59389,10 +_,10 @@
- 											if (tile5 != null && tile5.nactive() && !tile5.halfBrick() && !tile5.leftSlope())
- 												num18 = tile5.type;
- 
--											if (num17 == 10)
-+											if (TileLoader.IsClosedDoor(num17))
- 												num17 = -1;
- 
--											if (num18 == 10)
-+											if (TileLoader.IsClosedDoor(num18))
- 												num18 = -1;
- 
- 											short num19 = (short)(genRand.Next(3) * 18);
-@@ -59531,10 +_,10 @@
- 													Minecart.FrameTrack(i, j, pound: false);
- 													Tile tile2 = Main.tile[i, j - 1];
- 													Tile tile3 = Main.tile[i, j + 1];
--													if (tile2 != null && tile2.type >= 0 && tile2.type < TileID.Count && Main.tileRope[tile2.type])
-+													if (tile2 != null && tile2.type >= 0 && Main.tileRope[tile2.type])
- 														TileFrame(i, j - 1);
- 
--													if (tile3 != null && tile3.type >= 0 && tile3.type < TileID.Count && Main.tileRope[tile3.type])
-+													if (tile3 != null && tile3.type >= 0 && Main.tileRope[tile3.type])
- 														TileFrame(i, j + 1);
- 
- 													break;
 @@ -60380,14 +_,20 @@
  										break;
  								}

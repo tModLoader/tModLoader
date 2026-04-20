@@ -158,7 +158,7 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - ItemSlot flow changed a lot. AccCheck no longer exists, replaced by CanEquipAccessoryInSlot?
 - DyeSwap/ModSlotDyeSwap needs new approach
 - Pretty much all OnTileConverted and similar hooks/patches need to be reworked.
-- WorldGen.ValidAnchorForMultiDirectionalTile needs to check IsClosedDoor not tile type 10
+- There are still a lot of places checking for TileID.ClosedDoor that need to be TileLoader.IsClosedDoor.
 - Item192 uses Projectile.kiteSoundPitch. How do we do that?
 - New AmmoID.Sets.IsSpecialist doesn't contain Sand anymore. Is that expected?
 - TileID.Sets.RoomNeeds.CountsAsX is not a Set, but there is also a CountsAsXTypes int[] similar to the old approach. We'll probably want to make the non-set ones private and adjust logic for consistency.
@@ -249,6 +249,8 @@ Once all patches are fixed, these items need to be fixed or double checked:
 
 # ExampleMod TODOs
 - Verify that ExampleZombieThief still works with changes
+- A temporary compile flag COMPILE_ERROR_TODOS has been added to allow building and testing ExampleMod while some remaining porting decisions need to be made. 
+  - It also is there for HeldProjDoesNotUsePlayerGfxOffY, we need to test each projectile and see if they are correct or if they need additional code.
 
 # Terraria update requests
 

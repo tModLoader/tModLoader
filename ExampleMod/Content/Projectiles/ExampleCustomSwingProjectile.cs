@@ -74,7 +74,9 @@ namespace ExampleMod.Content.Projectiles
 		private Player Owner => Main.player[Projectile.owner];
 
 		public override void SetStaticDefaults() {
+#if COMPILE_ERROR_TODOS
 			ProjectileID.Sets.HeldProjDoesNotUsePlayerGfxOffY/* tModPorter Note: Removed. AI() should use master.RotatedRelativePoint(master.MountedCenter + ...) to position held projectiles */[Type] = true;
+#endif
 			ProjectileID.Sets.AllowsContactDamageFromJellyfish[Type] = true;
 		}
 
