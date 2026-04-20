@@ -173,14 +173,10 @@ namespace ExampleMod.Content.NPCs
 			return chat; // chat is implicitly cast to a string.
 		}
 
-		public override void SetChatButtons(ref string button, ref string button2) { // What the chat buttons are when you open up the chat UI
-			button = Language.GetTextValue("LegacyInterface.28"); // This is the key to the word "Shop"
-		}
-
-		public override void OnChatButtonClicked(bool firstButton, ref string shop) {
-			if (firstButton) {
-				shop = "Shop";
-			}
+		public override void SetChatButtons(ref bool skipCloseChat, ref bool skipReportHappiness, ref bool skipRequestHome) {
+			NPCInteractions.Shop(Type); // Add the shop button. Since no shop name was specified, it will default to "Shop".
+			// The Close, button will automatically be added after any buttons we assign here.
+			// This Town NPC will not receive the Happiness nor Housing button because they are not affected by happiness nor can they be housed.
 		}
 
 		public override void AddShops() {

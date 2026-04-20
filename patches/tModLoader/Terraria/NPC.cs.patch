@@ -2944,6 +2944,15 @@
  		return result;
  	}
  
+@@ -80013,6 +_,8 @@
+ 			return false;
+ 
+ 		NPC nPC = Main.npc[npcIndex];
++		if (nPC.ModNPC != null && nPC.ModNPC.TownNPCStayingHomeless)
++			return false;
+ 		if (nPC.homeless && nPC.type != 37 && nPC.type != 368)
+ 			return nPC.type != 453;
+ 
 @@ -80118,6 +_,11 @@
  	public static void GetMeleeCollisionData(Rectangle victimHitbox, int enemyIndex, ref int specialHitSetter, ref float damageMultiplier, ref Rectangle npcRect)
  	{

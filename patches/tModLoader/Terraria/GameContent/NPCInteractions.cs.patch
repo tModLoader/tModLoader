@@ -69,7 +69,7 @@
 -			public override bool Condition() => true;
 +			public override bool Condition() // TML: Changed condition. Added sign and NPC type check.
 +			{
-+				if (Main.LocalPlayer.sign != -1)
++				if (Main.LocalPlayer.sign > -1)
 +					return false;
 +				return Main.LocalPlayer.TalkNPC.type == type; 
 +			}

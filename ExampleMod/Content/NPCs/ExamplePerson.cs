@@ -18,6 +18,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Terraria;
 using Terraria.Audio;
+using Terraria.Chat;
 using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.GameContent.Bestiary;
@@ -282,33 +283,70 @@ namespace ExampleMod.Content.NPCs
 			return chosenChat;
 		}
 
-		public override void SetChatButtons(ref string button, ref string button2) { // What the chat buttons are when you open up the chat UI
-			button = Language.GetTextValue("LegacyInterface.28"); // This is the key to the word "Shop"
-			button2 = "Awesomeify";
-			if (Main.LocalPlayer.HasItem(ItemID.HiveBackpack)) {
-				button = "Upgrade " + Lang.GetItemNameValue(ItemID.HiveBackpack);
+		public override void SetChatButtons(ref bool skipCloseChat, ref bool skipReportHappiness, ref bool skipRequestHome) {
+			// The Close, Happiness, and Housing buttons will automatically be added after any buttons we assign here.
+			// However, to match the vanilla Town NPCs, the Close button should be the second button.
+			skipCloseChat = true; // So, skip automatically assigning the Close button.
+			NPCInteractions.Shop(Type, ShopName); // Assign the shop. The name of the shop must match the name used for the NPCShop in AddShops().
+			NPCInteractions.CloseChat(Type); // Assign the close button here so it will be the second button.
+			// Here we are registering custom buttons that are defined below.
+			NPCInteractions.Register(new AwesomeifyButton());
+			NPCInteractions.Register(new UpgradeButton());
+			NPCInteractions.Register(new OpenShopOnlyAvailableDuringDay(Type, ShopName, "Day Only Shop"));
+		}
+
+		// Here is simple example of a custom button that is labeled "Awesomeify". It will only appear if the NPC is Example Person.
+		public class AwesomeifyButton : NPCInteraction {
+			// This is the label of the button. This points to a localization key that translates to "Awesomeify".
+			public override string GetText() => Language.GetTextValue("Mods.ExampleMod.NPCs.ExamplePerson.AwesomeifyButton");
+
+			// Here you can change when this button will show up.
+			// Important: Make sure the button only shows up on the NPCs you want it to show up on. It will show up on every NPC if this is not here.
+			public override bool Condition() => TalkNPCType == ModContent.NPCType<ExamplePerson>();
+
+			// When the button is clicked, this will run.
+			public override void Interact() {
+				Main.npcChatText = "Awesome!";
 			}
 		}
 
-		public override void OnChatButtonClicked(bool firstButton, ref string shop) {
-			if (firstButton) {
-				// We want 3 different functionalities for chat buttons, so we use HasItem to change button 1 between a shop and upgrade action.
+		// Here is another example of a custom button that only shows up if the player has a specific item in their inventory.
+		public class UpgradeButton : NPCInteraction {
+			public override string GetText() => "Upgrade " + Lang.GetItemNameValue(ItemID.HiveBackpack);
+			public override bool Condition() => TalkNPCType == ModContent.NPCType<ExamplePerson>() && LocalPlayer.HasItem(ItemID.HiveBackpack);
+			public override void Interact() {
+				SoundEngine.PlaySound(SoundID.Item37); // Reforge/Anvil sound
 
-				if (Main.LocalPlayer.HasItem(ItemID.HiveBackpack)) {
-					SoundEngine.PlaySound(SoundID.Item37); // Reforge/Anvil sound
+				Main.npcChatText = UpgradedText.Value;
 
-					Main.npcChatText = UpgradedText.Value;
+				int hiveBackpackItemIndex = LocalPlayer.FindItem(ItemID.HiveBackpack); // Find the location of the item in the player's inventory.
+				var entitySource = TalkNPC.GetSource_GiftOrReward();
 
-					int hiveBackpackItemIndex = Main.LocalPlayer.FindItem(ItemID.HiveBackpack);
-					var entitySource = NPC.GetSource_GiftOrReward();
+				int stack = LocalPlayer.inventory[hiveBackpackItemIndex].stack; // Remember how many items were in the stack.
+				LocalPlayer.inventory[hiveBackpackItemIndex].TurnToAir(); // Delete the original item.
+				LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<WaspNest>(), stack); // Spawn in the new item with the same stack size.
 
-					Main.LocalPlayer.inventory[hiveBackpackItemIndex].TurnToAir();
-					Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<WaspNest>());
+				// Alternate approach that only consumes one item and gives one item.
+				// LocalPlayer.ConsumeItem(ItemID.HiveBackpack);
+				// LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<WaspNest>());
+			}
+			public override bool ShowExcalmation => true; // This will show a little exclamation point next to the button.
+		}
 
-					return;
-				}
+		// Here is an example of inheriting an existing NPCInteraction and modifying the condition.
+		public class OpenShopOnlyAvailableDuringDay(int npcType, string shopName, string customTextKey) : NPCInteractions.Actions.OpenShop(npcType, shopName, customTextKey) {
+			public override bool Condition() {
+				// base.Condition() will run the base class' condition, which is TalkNPCType == npcType in this case.
+				// Then we also add && Main.dayTime to make this button only show up during the day time.
+				return base.Condition() && Main.dayTime;
+			}
+		}
 
-				shop = ShopName; // Name of the shop tab we want to open.
+		// With OnChatButtonClicked, we can do additional things when any chat button is clicked. The interaction is the type of button that was clicked.
+		public override void OnChatButtonClicked(NPCInteraction interaction) {
+			// Using pattern matching, we can check which type of button was pressed.
+			if (interaction is AwesomeifyButton) {
+				ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"{interaction.LocalPlayer.name} clicked on the Awesomeify button!"), Color.White);
 			}
 		}
 
