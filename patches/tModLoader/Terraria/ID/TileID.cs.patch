@@ -34,7 +34,7 @@
  		{
  			public static int[] CountsAsChairTypes = new int[6] {
  				15,
-@@ -145,32 +_,115 @@
+@@ -145,32 +_,117 @@
  			public static bool[] CountsAsDoor = Factory.CreateBoolSet(CountsAsDoorTypes);
  		}
  
@@ -105,6 +105,8 @@
 +		/// <summary>
 +		/// If <see langword="true"/> for a given tile type (<see cref="Tile.TileType"/>), then that tile is categorized as a tree trunk.
 +		/// <br/> Tree trunks are a type of tile anchor (<see cref="Enums.AnchorType.Tree"/>), targetable by axes, and are replanted when using the <see cref="ItemID.AcornAxe"/>.
++		/// /// <br/> Tiles in this set also get the "Tree" map text.
++		/// <br/> Some trees, such as <see cref="TileID.PalmTree"/>, are not included in this set because they curve and as such are not suitable for tile anchors.
 +		/// <br/> Defaults to <see langword="false"/>.
 +		/// </summary>
  		public static bool[] IsATreeTrunk = Factory.CreateBoolSet(false, 5, 72, 583, 584, 585, 586, 587, 588, 589, 596, 616, 634);
