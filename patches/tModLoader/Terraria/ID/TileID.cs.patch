@@ -24,7 +24,7 @@
  			public static bool[] Regrowth = Factory.CreateBoolSet(false, 3, 24, 52, 61, 62, 71, 73, 74, 82, 83, 84, 110, 113, 115, 184, 205, 201, 519, 518, 528, 529, 530, 549, 637, 638, 636);
  		}
  
-@@ -106,19 +_,79 @@
+@@ -106,19 +_,81 @@
  			};
  		}
  
@@ -59,6 +59,8 @@
 +		/// <summary>
 +		/// If <see langword="true"/> for a given tile type (<see cref="Tile.TileType"/>), then that tile is categorized as a tree trunk.
 +		/// <br/> Tree trunks are a type of tile anchor (<see cref="Enums.AnchorType.Tree"/>), targetable by axes, and are replanted when using the <see cref="ItemID.AcornAxe"/>.
++		/// <br/> Tiles in this set also get the "Tree" map text.
++		/// <br/> Some trees, such as <see cref="TileID.PalmTree"/>, are not included in this set because they curve and as such are not suitable for tile anchors.
 +		/// <br/> Defaults to <see langword="false"/>.
 +		/// </summary>
  		public static bool[] IsATreeTrunk = Factory.CreateBoolSet(false, 5, 72, 583, 584, 585, 586, 587, 588, 589, 596, 616, 634);
