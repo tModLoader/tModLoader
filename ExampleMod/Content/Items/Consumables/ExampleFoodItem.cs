@@ -13,12 +13,11 @@ namespace ExampleMod.Content.Items.Consumables
 			Item.ResearchUnlockCount = 5;
 
 			// This is to show the correct frame in the inventory
-			// The first argument is for the animation speed, we want it to be stuck on frame 1
+			// The first argument is for the animation speed, how many ticks to spend on each frame. Since we set NotActuallyAnimating, it will be stuck on frame 1 forever while in the inventory so we pass in -1 since the value doesn't matter.
 			// The second argument is the number of frames, which is 3
 			// The first frame is the inventory texture, the second frame is the holding texture,
 			// and the third frame is the placed texture
-			Main.RegisterItemAnimation(Type, new DrawAnimationVertical(-1, 3)
-			{
+			Main.RegisterItemAnimation(Type, new DrawAnimationVertical(-1, 3) {
 				NotActuallyAnimating = true
 			});
 
