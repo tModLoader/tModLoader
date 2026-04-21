@@ -22,12 +22,6 @@ static partial class NativeMethods
 	[DllImport("kernel32.dll")]
 	public static extern IntPtr GetStdHandle(uint nStdHandle);
 
-	[DllImport("kernel32.dll")]
-	public static extern uint SetConsoleCP(uint wCodePageID);
-
-	[DllImport("kernel32.dll")]
-	public static extern uint SetConsoleOutputCP(uint wCodePageID);
-
 	public static void HideConsole()
 	{
 		IntPtr hWnd = GetConsoleWindow();
