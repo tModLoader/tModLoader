@@ -1255,6 +1255,11 @@ Mods: {
 				// DisplayName: Example Gem
 				// Tooltip: ""
 			}
+
+			ExampleGemsparkBlock: {
+				// DisplayName: Example Gemspark Block
+				// Tooltip: ""
+			}
 		}
 
 		# Projectile display names mainly show in chat when a player dies from it.

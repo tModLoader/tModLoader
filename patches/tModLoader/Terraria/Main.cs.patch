@@ -442,7 +442,7 @@
  	public static bool allChestStackHover;
  	public static bool inventorySortMouseOver;
  	public static bool bestiaryMouseOver;
-@@ -823,44 +_,149 @@
+@@ -823,44 +_,152 @@
  	public static float ambientVolume = 1f;
  	public static float soundVolume = 1f;
  	public static ServerMode MenuServerMode = ServerMode.Lobby | ServerMode.FriendsCanJoin;
@@ -561,6 +561,9 @@
 +	/// </summary>
  	public static byte[] wallLargeFrames = new byte[WallID.Count];
  	public static bool[] tileRope = new bool[TileID.Count];
++	/// <summary>
++	/// If true, this tile is considered a typical brick for tile merging purposes. Most "terrain" tiles intended for building that aren't dirt or similar natural materials set this to true to allow seamless connections between the tiles. Most of these tiles cover the full 16x16 area unlike dirt which has rough edges.
++	/// </summary>
  	public static bool[] tileBrick = new bool[TileID.Count];
  	public static bool[] tileMoss = new bool[TileID.Count];
 +	/// <summary>
