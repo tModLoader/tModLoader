@@ -626,7 +626,7 @@
 
 		// Tooltip lines
 		"NoAttackSpeedScaling": "Не получает бонус от скорости атаки",
-		"SpecialAttackSpeedScaling": "Получает {0}% от суммарного бонуса скорости атаки",
+		"SpecialAttackSpeedScaling": "Получает {0}% от суммарного бонуса к скорости атаки",
 		"ModifiedByModsHoldSHIFT": "Изменён модом (удерживайте SHIFT для информации)",
 		"ModifiedByMods": "Изменён модами: ",
 		// "MagicSummonHybridDamageClass": " magic or summon damage",
@@ -741,19 +741,19 @@
 	},
 	"CommonItemTooltip": {
 		"IncreasesDefenseBy": "Увеличивает защиту на {0} ед.",
-		"IncreasesArmorPenBy": "Увеличивает пробивную способность на {0} ед.",
+		"IncreasesArmorPenBy": "Увеличивает пробивание брони на {0} ед.",
 
 		"IncreasesMaxLifeBy": "Увеличивает максимальный запас здоровья на {0} ед.",
 		"IncreasesMaxManaBy": "Увеличивает максимальный запас маны на {0} ед.",
 		"IncreasesMaxLifeByPercent": "Увеличивает максимальный запас здоровья на {0}%",
-		"IncreasesMaxManaByPercent": "Увеличивает максимум запас маны на {0}%",
+		"IncreasesMaxManaByPercent": "Увеличивает максимальный запас маны на {0}%",
 
 		"IncreasesBowDamageByPercent": "Увеличивает урон от луков на {0}%",
 		"IncreasesGunDamageByPercent": "Увеличивает урон от огнестрельного оружия на {0}%",
-		"IncreasesSpecialistDamageByPercent": "Увеличивает урон от особых видов оружия дальнего боя на {0}%",
+		"IncreasesSpecialistDamageByPercent": "Увеличивает урон от особых видов стрелкового оружия на {0}%",
 
-		"IncreasesWhipRangeByPercent": "Увеличивает дальность хлыста на {0}%",
-		"IncreasesMaxMinionsBy": "Увеличивает максимальное количество последователей на {0}",
+		"IncreasesWhipRangeByPercent": "Увеличивает дальность хлыстов на {0}%",
+		"IncreasesMaxMinionsBy": "Увеличивает максимальное количество миньонов на {0}",
 		"IncreasesMaxSentriesBy": "Увеличивает максимальное количество стражей на {0}",
 
 		"IncreasesFishingPowerBy": "Увеличивает навык рыбной ловли на {0} ед.",
@@ -761,36 +761,36 @@
 		"PermanentlyIncreasesMaxLifeBy": "Навсегда увеличивает максимальный запас здоровья на {0} ед.",
 		"PermanentlyIncreasesMaxManaBy": "Навсегда увеличивает максимальный запас маны на {0} ед.",
 
-		"ReducesDamageTakenByPercent": "Снижает получаемый урон на {0}%",
+		"ReducesDamageTakenByPercent": "Увеличивает сопротивление урону на {0}%",
 
-		"PercentChanceToSaveAmmo": "{0}%-ный шанс сэкономить боеприпасы",
-		"PercentReducedManaCost": "{0}%-ное снижение расхода маны",
-		"ReducesHealingPotionCooldownByPercent": "Уменьшает время восстановления лечебных зелий на {0} %",
+		"PercentChanceToSaveAmmo": "{0}% шанс не использовать боеприпасы",
+		"PercentReducedManaCost": "Снижает расход маны на {0}%",
+		"ReducesHealingPotionCooldownByPercent": "Вызывает на {0}% более короткую послезельевую болезнь",
 
-		"PercentIncreasedMiningSpeed": "{0}%-ное увеличение скорости добычи",
-		"PercentIncreasedMovementSpeed": "{0}%-ное увеличение скорости передвижения",
+		"PercentIncreasedMiningSpeed": "Увеличивает скорость добычи на {0}%",
+		"PercentIncreasedMovementSpeed": "Увеличивает скорость передвижения на {0}%",
 
-		"ArmorPenetration": "{0} ед. пробивной способности",
-		"PercentIncreasedDamage": "{0}%-ное увеличение урона",
-		"PercentIncreasedCritChance": "{0}-ное увеличение шанса нанести критический удар",
-		"PercentIncreasedDamageCritChance": "{0}%-ное увеличение урона и шанса нанести критический удар",
+		"ArmorPenetration": "Увеличивает пробивание брони на {0} ед.",
+		"PercentIncreasedDamage": "Увеличивает урон на {0}%",
+		"PercentIncreasedCritChance": "Увеличивает шанс критического удара на {0}%",
+		"PercentIncreasedDamageCritChance": "Увеличивает урон и шанс критического удара на {0}%",
 
-		"PercentIncreasedMagicDamage": "{0}%-ное увеличение магического урона",
-		"PercentIncreasedMagicCritChance": "{0}-ное увеличение шанса нанести критический удар магией",
-		"PercentIncreasedMagicDamageCritChance": "{0}%-ное увеличение магического урона и шанса нанести критический удар",
+		"PercentIncreasedMagicDamage": "Увеличивает магический урон на {0}%",
+		"PercentIncreasedMagicCritChance": "Увеличивает шанс магического критического удара на {0}%",
+		"PercentIncreasedMagicDamageCritChance": "Увеличивает магические урон и шанс критического удара на {0}%",
 
-		"PercentIncreasedMeleeDamage": "{0}%-ное увеличение урона в ближнем бою",
-		"PercentIncreasedMeleeCritChance": "{0}%-ное увеличение шанса нанести критический удар в ближнем бою",
-		"PercentIncreasedMeleeDamageCritChance": "{0}%-ное увеличение урона в ближнем бою и шанса нанести критический удар",
-		"PercentIncreasedMeleeSpeed": "{0}%-ное увеличение скорости ближнего боя",
+		"PercentIncreasedMeleeDamage": "Увеличивает урон ближнего боя на {0}%",
+		"PercentIncreasedMeleeCritChance": "Увеличивает шанс критического удара ближнего боя на {0}%",
+		"PercentIncreasedMeleeDamageCritChance": "Увеличивает урон и шанс критического удара ближнего боя на {0}%",
+		"PercentIncreasedMeleeSpeed": "Увеличивает скорость ближнего боя на {0}%",
 
-		"PercentIncreasedRangedDamage": "{0}%-ное увеличение урона в дальнем бою",
-		"PercentIncreasedRangedCritChance": "{0}%-ное увеличение шанса нанести критический удар в дальнем бою",
-		"PercentIncreasedRangedDamageCritChance": "{0}%-ное увеличение урона в дальнем бою и шанса нанести критический удар",
+		"PercentIncreasedRangedDamage": "Увеличивает стрелковый урон на {0}%",
+		"PercentIncreasedRangedCritChance": "Увеличивает шанс стрелкового критического удара на {0}%",
+		"PercentIncreasedRangedDamageCritChance": "Увеличивает стрелковые урон и шанс критического удара {0}%",
 
-		"PercentIncreasedSummonDamage": "{0}%-ное увеличение урона, наносимого последователями",
-		"SummonTagDamage": "{0} ед. дополнительного урона, наносимого последователями",
-		"PercentSummonTagCritChance": "{0}%-ное увеличение дополнительного шанса нанести критический удар последователями"
+		"PercentIncreasedSummonDamage": "Увеличивает урон призывателя на {0}%",
+		"SummonTagDamage": "{0} ед. урона от метки призывателя",
+		"PercentSummonTagCritChance": "{0}% шанс критического удара от метки призывателя"
 	},
 	"Bestiary_ItemDropConditions": {
 		"SimpleCondition": "Предметы: {0}"
@@ -824,7 +824,7 @@
 		"InOverworldHeight": "На поверхности",
 		"InDirtLayerHeight": "В подземелье, но выше уровня пещер",
 		"InRockLayerHeight": "В пещерах",
-		"InUnderworldHeight": "В аду",
+		"InUnderworldHeight": "В преисподней",
 		"InBeach": "В океане",
 		"InRain": "Во время дождя",
 		"InSandstorm": "Во время песчаной бури",
@@ -837,12 +837,12 @@
 		"InGraveyard": "На кладбище",
 		"InAether": "В эфире",
 		"InShoppingForest": "На поверхности и не в каком-либо крупном биоме",
-		"InBelowSurface": "В подземелье, пещерах или аду",
+		"InBelowSurface": "В подземелье, пещерах или преисподней",
 		"InEvilBiome": "В искажении или багрянце",
 		"NotInEvilBiome": "Не в биоме мирового зла",
 		"NotInHallow": "Не в освящении",
 		"NotInGraveyard": "Не на кладбище",
-		"NotInUnderworld": "Не в аду",
+		"NotInUnderworld": "Не в преисподней",
 
 		"InClassicMode": "В классическом режиме",
 		"InExpertMode": "В режиме эксперта",
