@@ -207,14 +207,14 @@ namespace ExampleMod.Content.Projectiles
 						behindNPCsAndTiles.Add(index);
 					}
 					else {
-						behindNPCsAndTiles.Add(index);
+						behindNPCs.Add(index);
 					}
 
 					return;
 				}
 			}
 			// Since we aren't attached, add to this list
-			behindNPCsAndTiles.Add(index);
+			behindProjectiles.Add(index);
 		}
 
 		// Change this number if you want to alter how the alpha changes
