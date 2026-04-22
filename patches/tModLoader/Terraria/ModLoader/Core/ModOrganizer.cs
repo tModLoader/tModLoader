@@ -222,17 +222,20 @@ internal static class ModOrganizer
 		var installedWorkshopModsNotFoundOnWorkshop = FindWorkshopMods().Except(foundMDItems.Select(a => a.Installed));
 
 		// Determine the Button Titles
+		/* This Code (& future related code) commented out as the UI for detecting installedModsNotOnWorkshop is underdeveloped
+		 * This code was added as a toss-in while doing PR 5071, but has too many extra complications to rush it compared to the needed reupload feature
+		 * To be re-added sometime after May 2026 -- Solxan
 		if (reuploadMDItems.Any() && installedWorkshopModsNotFoundOnWorkshop.Any()) {
 			cancelButton = Language.GetTextValue("tModLoader.KeepInstalled");
-			continueButton = Language.GetTextValue("tModLoader.ResolveAbnormalMods");
-		}
-		else if (reuploadMDItems.Any()) {
-			cancelButton = Language.GetTextValue("tModLoader.ContinueAnyway");
 			continueButton = Language.GetTextValue("tModLoader.ResolveAbnormalMods");
 		}
 		else if (installedWorkshopModsNotFoundOnWorkshop.Any()) {
 			cancelButton = Language.GetTextValue("tModLoader.KeepInstalled");
 			continueButton = Language.GetTextValue("tModLoader.DeleteMods");
+		}
+		else */ if (reuploadMDItems.Any()) {
+			cancelButton = Language.GetTextValue("tModLoader.ContinueAnyway");
+			continueButton = Language.GetTextValue("tModLoader.ResolveAbnormalMods");
 		}
 		else {
 			// Nothing to do/show
@@ -257,19 +260,23 @@ internal static class ModOrganizer
 			}
 
 			// Group 2: Delete mods that originated from workshop but workshop doesn't have a replacement
+			/*
 			foreach (var mod in installedWorkshopModsNotFoundOnWorkshop)
 				DeleteMod(mod);
-		};
+			*/
+	};
 
 		// Messages for Users
 		var messages = new StringBuilder();
 
+		/*
 		if (installedWorkshopModsNotFoundOnWorkshop.Any()) {
 			messages.AppendLine(Language.GetTextValue("tModLoader.RemovedWorkshopMods"));
 			foreach (var mod in installedWorkshopModsNotFoundOnWorkshop) {
 				messages.AppendLine($"  {mod.DisplayNameClean}");
 			}
 		}
+		*/
 		
 		if (reuploadMDItems.Any()) {
 			messages.AppendLine(Language.GetTextValue("tModLoader.ReuploadedWorkshopMods"));
