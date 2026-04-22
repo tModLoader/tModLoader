@@ -253,10 +253,9 @@ internal static class ModOrganizer
 			foreach (var mod in toDeleteOldMods)
 				DeleteMod(mod);
 
-			if (reuploadMDItems.Any()) {
-				await UIModBrowser.DownloadMods(
-					reuploadMDItems,
-					Interface.loadModsID);
+			if (reuploadMDItems.Any() && await UIModBrowser.DownloadMods(reuploadMDItems, Interface.loadModsID)) {
+				Main.menuMode = Interface.loadModsID;
+				Main.MenuUI.SetState(null);	
 			}
 
 			// Group 2: Delete mods that originated from workshop but workshop doesn't have a replacement
