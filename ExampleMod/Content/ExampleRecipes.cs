@@ -19,6 +19,7 @@ namespace ExampleMod.Content
 			ExampleRecipeGroup = null;
 		}
 
+#if COMPILE_ERROR_TODOS
 		public override void AddRecipeGroups() {
 			// Create a recipe group and store it
 			// Language.GetTextValue("LegacyMisc.37") is the word "Any" in English, and the corresponding word in other languages
@@ -42,6 +43,7 @@ namespace ExampleMod.Content
 			ItemID.SilverBar, ItemID.TungstenBar, ModContent.ItemType<Items.Placeable.ExampleBar>());
 			RecipeGroup.RegisterGroup(nameof(ItemID.SilverBar), SilverBarRecipeGroup);
 		}
+#endif
 
 		public override void AddRecipes() {
 			////////////////////////////////////////////////////////////////////////////////////
@@ -79,6 +81,7 @@ namespace ExampleMod.Content
 				// An alternate string-based approach to the above. Try to only use it for other mods' items, because it's slower.
 				.AddIngredient(Mod, "ExampleSword")
 
+#if COMPILE_ERROR_TODOS
 				// RecipeGroups allow you create a recipe that accepts items from a group of similar ingredients. For example, all varieties of Wood are in the vanilla "Wood" Group
 				// Check here for other vanilla groups: https://github.com/tModLoader/tModLoader/wiki/Intermediate-Recipes#using-existing-recipegroups
 				.AddRecipeGroup(RecipeGroupID.Wood)
@@ -89,6 +92,7 @@ namespace ExampleMod.Content
 				// An alternate string-based approach to the above. Try to only use it for other mods' groups, because it's slower.
 				.AddRecipeGroup("Wood")
 				.AddRecipeGroup("ExampleMod:ExampleItem", 2)
+#endif
 
 				// Adds a vanilla tile requirement.
 				// To specify a crafting station, specify a tile. Look up TileIDs: https://github.com/tModLoader/tModLoader/wiki/Vanilla-Tile-IDs

@@ -979,25 +979,27 @@
  		double num9 = (double)Main.maxTilesX / 4200.0;
  		int num10 = (int)(25.0 * num9);
  		ShapeData shapeData = new ShapeData();
-@@ -26319,7 +_,7 @@
+@@ -26319,7 +_,9 @@
  
  		int frameX = Main.tile[i, j].frameX;
  		Tile tile = Main.tile[i, j];
 -		if (tile.type != 11)
-+		if (TileLoader.CloseDoorID(Main.tile[i, j]) < 0)
++		var openDoorID = tile.TileType;
++		var closeDoorID = TileLoader.CloseDoorID(tile);
++		if (closeDoorID < 0)
  			return false;
  
  		int num4 = tile.frameY;
-@@ -26369,15 +_,18 @@
- 		if (!ValidateTileSquareIsActiveAndOfType(num7, num3, 2, 3, 11))
+@@ -26366,7 +_,7 @@
+ 			}
+ 		}
+ 
+-		if (!ValidateTileSquareIsActiveAndOfType(num7, num3, 2, 3, 11))
++		if (!ValidateTileSquareIsActiveAndOfType(num7, num3, 2, 3, openDoorID))
  			return false;
  
-+		ushort closeDoorID = (ushort)TileLoader.CloseDoorID(tile);
-+		ushort openDoorID = (ushort)TileLoader.OpenDoorID(tile);
-+
  		for (int l = num7; l < num7 + 2; l++) {
- 			for (int m = num3; m < num3 + 3; m++) {
- 				if (Main.tile[l, m] == null)
+@@ -26375,9 +_,9 @@
  					Main.tile[l, m] = new Tile();
  
  				Tile tile2 = Main.tile[l, m];
@@ -1005,7 +1007,7 @@
 + 				if (tile2.active() && tile2.type == openDoorID) {
  					if (l == num2) {
 -						tile2.type = 10;
-+						tile2.type = closeDoorID;
++						tile2.type = (ushort)closeDoorID;
  						tile2.frameX = (short)(genRand.Next(3) * 18 + num6);
  					}
  					else {
@@ -1046,29 +1048,37 @@
  	public static bool AddBuriedChest(int i, int j, out Point chestLocation, int mainItemInChest = 0, bool notNearOtherChests = false, int chestStyle = -1, bool trySlope = false, ushort chestTileType = 0)
  	{
  		chestLocation = Point.Zero;
-@@ -31178,9 +_,10 @@
+@@ -31178,9 +_,12 @@
  			Main.tile[i, j] = new Tile();
  
  		Tile tile = Main.tile[i, j];
 -		if (tile.type != 10)
-+		if (TileLoader.OpenDoorID(tile) < 0)
++		var closedDoorID = tile.TileType;
++		var openDoorID = TileLoader.OpenDoorID(tile); // All instances of type 11 are replaced with this below.
++		if (openDoorID < 0)
  			return false;
  
 +		// Extra patch context.
  		if (IsLockedDoor(tile))
  			return false;
  
-@@ -31246,8 +_,12 @@
+@@ -31200,7 +_,7 @@
+ 
+ 		num = j - num3 / 18;
+ 		int num6 = i;
+-		if (!ValidateTileSquareIsActiveAndOfType(num6, num, 1, 3, 10))
++		if (!ValidateTileSquareIsActiveAndOfType(num6, num, 1, 3, closedDoorID))
+ 			return false;
+ 
+ 		TileColorCache cache = Main.tile[num6, num].BlockColorAndCoating();
+@@ -31246,8 +_,9 @@
  
  		int num8 = num4 % 36 * 54;
  		SoundEngine.PlaySound(8, i * 16, j * 16);
 +
-+		// All instances of type 11 are replaced with this below.
-+		ushort openDoorID = (ushort)TileLoader.OpenDoorID(Main.tile[i, j]);
-+
  		Main.tile[num6, num].active(active: true);
 -		Main.tile[num6, num].type = 11;
-+		Main.tile[num6, num].type = openDoorID;
++		Main.tile[num6, num].type = (ushort)openDoorID;
  		Main.tile[num6, num].frameY = (short)num8;
  		Main.tile[num6, num].frameX = num2;
  		Main.tile[num6, num].UseBlockColors(cache);
@@ -1077,7 +1087,7 @@
  
  		Main.tile[num6 + 1, num].active(active: true);
 -		Main.tile[num6 + 1, num].type = 11;
-+		Main.tile[num6 + 1, num].type = openDoorID;
++		Main.tile[num6 + 1, num].type = (ushort)openDoorID;
  		Main.tile[num6 + 1, num].frameY = (short)num8;
  		Main.tile[num6 + 1, num].frameX = (short)(num2 + 18);
  		Main.tile[num6 + 1, num].UseBlockColors(cache);
@@ -1086,7 +1096,7 @@
  
  		Main.tile[num6, num + 1].active(active: true);
 -		Main.tile[num6, num + 1].type = 11;
-+		Main.tile[num6, num + 1].type = openDoorID;
++		Main.tile[num6, num + 1].type = (ushort)openDoorID;
  		Main.tile[num6, num + 1].frameY = (short)(num8 + 18);
  		Main.tile[num6, num + 1].frameX = num2;
  		Main.tile[num6, num + 1].UseBlockColors(cache2);
@@ -1095,7 +1105,7 @@
  
  		Main.tile[num6 + 1, num + 1].active(active: true);
 -		Main.tile[num6 + 1, num + 1].type = 11;
-+		Main.tile[num6 + 1, num + 1].type = openDoorID;
++		Main.tile[num6 + 1, num + 1].type = (ushort)openDoorID;
  		Main.tile[num6 + 1, num + 1].frameY = (short)(num8 + 18);
  		Main.tile[num6 + 1, num + 1].frameX = (short)(num2 + 18);
  		Main.tile[num6 + 1, num + 1].UseBlockColors(cache2);
@@ -1104,7 +1114,7 @@
  
  		Main.tile[num6, num + 2].active(active: true);
 -		Main.tile[num6, num + 2].type = 11;
-+		Main.tile[num6, num + 2].type = openDoorID;
++		Main.tile[num6, num + 2].type = (ushort)openDoorID;
  		Main.tile[num6, num + 2].frameY = (short)(num8 + 36);
  		Main.tile[num6, num + 2].frameX = num2;
  		Main.tile[num6, num + 2].UseBlockColors(cache3);
@@ -1113,7 +1123,7 @@
  
  		Main.tile[num6 + 1, num + 2].active(active: true);
 -		Main.tile[num6 + 1, num + 2].type = 11;
-+		Main.tile[num6 + 1, num + 2].type = openDoorID;
++		Main.tile[num6 + 1, num + 2].type = (ushort)openDoorID;
  		Main.tile[num6 + 1, num + 2].frameY = (short)(num8 + 36);
  		Main.tile[num6 + 1, num + 2].frameX = (short)(num2 + 18);
  		Main.tile[num6 + 1, num + 2].UseBlockColors(cache3);
@@ -1972,7 +1982,7 @@
  			return false;
  
  		if (!InWorld(i, j, 2))
-@@ -46297,8 +_,28 @@
+@@ -46297,6 +_,25 @@
  			Main.tile[x + 1, y].type = (ushort)newType;
  	}
  
@@ -1997,10 +2007,32 @@
 +	/// <param name="walls">If the conversion should affect walls</param>
  	public static void Convert(int i, int j, int conversionType, int size, bool tiles = true, bool walls = true)
  	{
-+		using var recursionCounter = new ConversionRecursion();
  		if (!tiles && !walls)
+@@ -46321,6 +_,10 @@
+ 		if (!theTile.active() && wall <= 0)
  			return;
  
++		using var recursionCounter = new ConversionRecursion();
++		walls = walls && wall > 0 && WallLoader.Convert(i2, j2, conversionType);
++		tiles = tiles && theTile.HasTile && TileLoader.Convert(i2, j2, conversionType);
++
+ 		switch (conversionType) {
+ 			case 4:
+ 				if (walls) {
+@@ -47093,6 +_,13 @@
+ 				break;
+ 			}
+ 		}
++
++		if (conversionRecursionDepth == 1) {
++			if (type != theTile.TileType) 
++				TileLoader.OnTileConverted(i2, j2, type, theTile.type, conversionType);
++			if (wall != theTile.WallType) 
++				WallLoader.OnWallConverted(i2, j2, wall, theTile.wall, conversionType);
++		}
+ 	}
+ 
+ 	public static void Convert_ActuallyConvertTorch(int conversionType, int x, int y, ref Tile theTile, int newStyle)
 @@ -47356,7 +_,7 @@
  		if ((!Main.remixWorld || !((double)j > Main.worldSurface)) && num3 / 255 > cactusWaterLimit)
  			return;
@@ -2195,6 +2227,15 @@
  						switch (num) {
  							case 127:
  								SoundEngine.PlaySound(SoundID.Item30, i * 16, j * 16);
+@@ -50423,7 +_,7 @@
+ 
+ 	private static bool ValidAnchorForMultiDirectionalTile(int x, int y, Tile tileCache, int direction)
+ 	{
+-		if (tileCache != null && tileCache.type >= 0 && !TileID.Sets.Boulders[tileCache.type] && tileCache.type != 10) {
++		if (tileCache != null && tileCache.type >= 0 && !TileID.Sets.Boulders[tileCache.type] && !TileLoader.IsClosedDoor(tileCache.type)) {
+ 			if ((direction != 0 || !SolidTileAllowTopSlope(x, y)) && (direction != 1 || !SolidTileAllowBottomSlope(x, y)) && (direction != 2 || !SolidTileAllowLeftSlope(x, y))) {
+ 				if (direction == 3)
+ 					return SolidTileAllowRightSlope(x, y);
 @@ -50501,10 +_,15 @@
  			return;
  
@@ -2687,7 +2728,7 @@
  		return false;
  	}
  
-@@ -58347,9 +_,17 @@
+@@ -58347,6 +_,11 @@
  		return false;
  	}
  
@@ -2698,13 +2739,7 @@
 +	/// </summary>
  	public static void ChlorophyteDefense(int x, int y)
  	{
-+/*
  		if (Main.remixWorld)
-+*/
-+		if (Main.remixWorld && TileLoader.Convert(x, y, BiomeConversionID.ChlorophyteDefenseWhenEvilSpreads))
- 			Convert(x, y, 10);
- 	}
- 
 @@ -58397,7 +_,10 @@
  		return true;
  	}

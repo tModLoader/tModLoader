@@ -131,7 +131,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - RefreshInfoAccsFromItemType is now being called on vanity equipment too. Does this affect any of our changes? Is any slot now being checked twice? Do we need to adjust ModAccessorySlotPlayer for the same behavior?
 - `//TML: Eventide and nightglow handled by Item.useLimitPerAnimation.` comment now commenting out item 5669. Might need to make changes to that item similar to 4956
 - ItemLoader.UseItemHitbox callsite useStyle == 3 needs adjustment to call hook reliably.
-- Update TileID.Sets.NegatesFallDamage docs and entries. Mention that TileID.Sets.Clouds will have the same effect ase well and remove the cloud entries.
 - clientClone changed. I think the `_clientClone` field is no longer needed, or extraneous.
 - Player.nonTorch removed
 - Cloud rendering has moved, need to migrate modcloud patches from Main to HorizonRenderer I think.
@@ -159,7 +158,7 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - ItemSlot flow changed a lot. AccCheck no longer exists, replaced by CanEquipAccessoryInSlot?
 - DyeSwap/ModSlotDyeSwap needs new approach
 - Pretty much all OnTileConverted and similar hooks/patches need to be reworked.
-- WorldGen.ValidAnchorForMultiDirectionalTile needs to check IsClosedDoor not tile type 10
+- There are still a lot of places checking for TileID.ClosedDoor that need to be TileLoader.IsClosedDoor.
 - Item192 uses Projectile.kiteSoundPitch. How do we do that?
 - New AmmoID.Sets.IsSpecialist doesn't contain Sand anymore. Is that expected?
 - TileID.Sets.RoomNeeds.CountsAsX is not a Set, but there is also a CountsAsXTypes int[] similar to the old approach. We'll probably want to make the non-set ones private and adjust logic for consistency.
@@ -174,8 +173,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
   - For example: ArmorSetBonuses.BuildLookup, ItemID.Sets.PostSetupContent
   - Someone should "find all references" on each XID.Count field to find any remaining content arrays that need to be resized (CB done ItemID, TileID, WallID).
 - Make a checklist of all TML hooks and have others QC each method behavior?
-- TileID.Sets.IsAMechanism changed to TileID.Sets.Wiring.IsAMechanism. tModPorter done. The function of the set might have changed, investigate and update docs.
-- NPCID.Sets.ShouldBeCountedAsBossForBestiary renamed to ShouldBeCountedAsBoss. tModPorter done. (TODO: Verify where it is now used and update docs if necessary)
 - BuffID.Sets.LongerExpertDebuff -> BuffID.Sets.BuffTimeIsExtendedWithGameDifficulty. tModPorter done. Docs remarks might also now be wrong. Also doc BuffTimeIsExtendedByDeadCellsPotionStationBuff
 - ItemID.Sets.BonusAttackSpeedMultiplier renamed to BonusMeleeSpeedMultiplier. tModPorter done. (double check that this doesn't only apply to melee weapons. I think it isn't limited currently)
 - Run NPCShopDatabase.Test tests.
@@ -189,7 +186,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - AnchorType.AllFlatHeight added -> What is it used for, what does it represent? Which tiles use it that didn't before?
 - UserInterface.MouseCaptured -> could be useful
 - FlexibleTileWand is now used to place many other tiles that used to rely solely on RandomStyleRange. We should add an example of a custom FlexibleTileWand item/tile and document when to use it.
-- NPCID.Sets.NPCPortraits
 - NPCID.Sets: SpawnOnPlayerCanSpawnInMidairOnSkyblock, DontDropDungeonKeysOrSouls, HunterPotionFriendlyOverride, others.
 - UIScrollbar.AutoHide and CanScroll
 - NPC.defLifeMax
@@ -219,7 +215,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Item.SetDefaults(int Type = 0) no longer exists
 - Item.SetDefaults(int Type, bool noMatCheck = false, ItemVariant variant = null) change to SetDefaults(int Type, ItemVariant variant = null) (noMatCheck parameter removed)
 - UnifiedRandom.Next methods are no longer virtual
-- TownNPC can now have portraits. Use the following to implement: NPCID.Sets.NPCPortraits (todo, example)
 - UIWrappedSearchBar, is it useful to modders?
 - Lots of new methods in Utils. Check if any duplicate TML.cs methods.
 - Various text rendering methods have been changed or improved. Investigate new functionality and previous bug fixes.
@@ -253,6 +248,8 @@ Once all patches are fixed, these items need to be fixed or double checked:
 
 # ExampleMod TODOs
 - Verify that ExampleZombieThief still works with changes
+- A temporary compile flag COMPILE_ERROR_TODOS has been added to allow building and testing ExampleMod while some remaining porting decisions need to be made. 
+  - It also is there for HeldProjDoesNotUsePlayerGfxOffY, we need to test each projectile and see if they are correct or if they need additional code.
 
 # Terraria update requests
 

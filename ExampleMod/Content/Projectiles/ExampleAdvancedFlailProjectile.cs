@@ -52,7 +52,9 @@ namespace ExampleMod.Content.Projectiles
 			ProjectileID.Sets.TrailCacheLength[Type] = 6;
 			ProjectileID.Sets.TrailingMode[Type] = 2;
 
+#if COMPILE_ERROR_TODOS
 			ProjectileID.Sets.HeldProjDoesNotUsePlayerGfxOffY/* tModPorter Note: Removed. AI() should use master.RotatedRelativePoint(master.MountedCenter + ...) to position held projectiles */[Type] = true;
+#endif
 		}
 
 		public override void SetDefaults() {
