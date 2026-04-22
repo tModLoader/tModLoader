@@ -18,16 +18,29 @@
  		ItemDropAttemptResult result = default(ItemDropAttemptResult);
  		result.State = ItemDropAttemptResultState.Success;
  		return result;
-@@ -50,4 +_,0 @@
--			case 11:
--			case 12:
--			case 13:
--			case 14:
-@@ -58,4 +_,0 @@
--			case 699:
--			case 700:
--			case 701:
--			case 702:
+@@ -47,18 +_,22 @@
+ 				amountDroppedMinimum = 20;
+ 				amountDroppedMaximum = 45;
+ 				break;
++			/*
+ 			case 11:
+ 			case 12:
+ 			case 13:
+ 			case 14:
++			*/
+ 			case 174:
+ 			case 364:
+ 			case 365:
+ 			case 366:
++			/*
+ 			case 699:
+ 			case 700:
+ 			case 701:
+ 			case 702:
++			*/
+ 			case 1104:
+ 			case 1105:
+ 			case 1106:
 @@ -109,6 +_,10 @@
  				amountDroppedMinimum = 2;
  				amountDroppedMaximum = 5;
