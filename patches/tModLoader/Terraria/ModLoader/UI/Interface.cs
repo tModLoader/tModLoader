@@ -301,10 +301,9 @@ internal static class Interface
 						downloads.Add(item);
 					}
 
-					if (downloads.Any()) {
-						await UIModBrowser.DownloadMods(
-							downloads,
-							loadModsID);
+					if (downloads.Any() && await UIModBrowser.DownloadMods(downloads, loadModsID)) {
+						Main.menuMode = loadModsID;
+						Main.MenuUI.SetState(null);
 					}
 				};
 
