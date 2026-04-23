@@ -137,7 +137,6 @@ public partial class Recipe
 
 	public bool RemoveIngredient(int itemID) => requiredItem.RemoveAll(x => x.type == itemID) > 0;
 
-
 	/* TML: unused
 	public bool RemoveTile(int tileID) {
 		requiredTile = -1;
