@@ -54,7 +54,9 @@ public partial class Recipe
 
 	public bool HasRecipeGroup(RecipeGroup group) => HasRecipeGroup(group.RegisteredId);
 
-	// public bool HasTile(int tileID) => requiredTile == tileID;
+	/*
+	public bool HasTile(int tileID) => requiredTile == tileID;
+	*/
 	public bool HasTile(int tileID) => requiredTiles.Contains(tileID); // TML
 
 	public bool HasTile(Mod mod, string tileName)
@@ -135,11 +137,13 @@ public partial class Recipe
 
 	public bool RemoveIngredient(int itemID) => requiredItem.RemoveAll(x => x.type == itemID) > 0;
 
-	// TML: unused
-	/* public bool RemoveTile(int tileID) {
+
+	/* TML: unused
+	public bool RemoveTile(int tileID) {
 		requiredTile = -1;
 		return true;
-	} */
+	}
+	*/
 
 	public bool RemoveRecipeGroup(int groupID) => acceptedGroups.Remove(groupID);
 

@@ -21,7 +21,7 @@
  {
  	public struct RequiredItemEntry
  	{
-@@ -50,35 +_,55 @@
+@@ -50,35 +_,59 @@
  		}
  	}
  
@@ -35,12 +35,13 @@
 +	private static Recipe currentRecipe;
  	public Item createItem = new Item();
 -	public Item[] requiredItem = new Item[maxRequirements];
--	public int requiredTile = -1;
--	public int[] acceptedGroups = new int[maxRequirements];
--	public RequiredItemEntry[] requiredItemQuickLookup = new RequiredItemEntry[maxRequirements];
 +	// required... changed from [maxRequirements] to List
 +	public List<Item> requiredItem = new();
-+	// public int requiredTile = -1;
++	/*
+ 	public int requiredTile = -1;
+-	public int[] acceptedGroups = new int[maxRequirements];
+-	public RequiredItemEntry[] requiredItemQuickLookup = new RequiredItemEntry[maxRequirements];
++	*/
 +	private int requiredTile { // TML
 +		// This field is written to hundreds of times, so we're just gonna do this
 +		set {
@@ -89,8 +90,9 @@
 +
  	public bool DoesNotNeedTileOrLiquid {
  		get {
--			if (requiredTile < 0 && !needHoney && !needWater)
-+			// if (requiredTile < 0 && !needHoney && !needWater)
++			/*
+ 			if (requiredTile < 0 && !needHoney && !needWater)
++			*/
 +			if (requiredTiles.Count == 0 && !needHoney && !needWater) // TML
  				return !needLava;
  
@@ -214,14 +216,14 @@
  				AddToAvailableRecipes(i);
  		}
  
-@@ -258,8 +_,10 @@
+@@ -258,8 +_,12 @@
  	public bool PlayerMeetsEnvironmentConditions(Player player, List<string> missingObjects = null)
  	{
  		bool flag = true;
--		if (requiredTile >= 0 && !player.adjTile[requiredTile])
-+		/* if (requiredTile >= 0 && !player.adjTile[requiredTile])
--			flag &= AddMissing(GetRequiredTileName(requiredTile), missingObjects);
-+			flag &= AddMissing(GetRequiredTileName(requiredTile), missingObjects); */
++		/*
+ 		if (requiredTile >= 0 && !player.adjTile[requiredTile])
+ 			flag &= AddMissing(GetRequiredTileName(requiredTile), missingObjects);
++		*/
 +
 +		flag &= PlayerMeetsTileRequirements(player, missingObjects); // TML
  
@@ -448,7 +450,7 @@
  				currentRecipe.requiredItem[0].SetDefaults(Main.recipe[i].createItem.type);
  				currentRecipe.requiredItem[0].stack = Main.recipe[i].createItem.stack;
 -				currentRecipe.requiredTile = Main.recipe[i].requiredTile;
-+				currentRecipe.requiredTiles = Main.recipe[i].requiredTiles;
++				currentRecipe.requiredTiles = new List<int>(Main.recipe[i].requiredTiles);
  				AddRecipe();
  				Recipe recipe = Main.recipe[numRecipes - 1];
  				for (int num2 = numRecipes - 2; num2 > i; num2--) {
@@ -473,7 +475,7 @@
  				currentRecipe.requiredItem[0].SetDefaults(Main.recipe[i].createItem.type);
  				currentRecipe.requiredItem[0].stack = Main.recipe[i].createItem.stack;
 -				currentRecipe.requiredTile = Main.recipe[i].requiredTile;
-+				currentRecipe.requiredTiles = Main.recipe[i].requiredTiles;
++				currentRecipe.requiredTiles = new List<int>(Main.recipe[i].requiredTiles);
  				AddRecipe();
  				Recipe recipe = Main.recipe[numRecipes - 1];
  				for (int num2 = numRecipes - 2; num2 > i; num2--) {
@@ -493,15 +495,14 @@
  	{
  		if (ingredients.Length == 1) {
  			ingredients = new int[2] {
-@@ -16789,22 +_,90 @@
+@@ -16789,22 +_,89 @@
  		}
  	}
  
 -	public void SetCraftingStation(int tileType)
 +	private void SetCraftingStation(int tileType) // TML: private
  	{
--		requiredTile = tileType;
-+		requiredTiles.Add(tileType);
+ 		requiredTile = tileType;
  	}
  
  	private static void AddRecipe()
@@ -512,7 +513,6 @@
  
  		Main.recipe[numRecipes] = currentRecipe;
 +		*/
-+
 +		/*
  		if (currentRecipe.requiredTile >= 0)
  			TileUsedInRecipes[currentRecipe.requiredTile] = true;
