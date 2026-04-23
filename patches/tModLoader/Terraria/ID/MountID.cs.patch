@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/ID/MountID.cs
 +++ src/tModLoader/Terraria/ID/MountID.cs
-@@ -1,22 +_,34 @@
+@@ -1,22 +_,67 @@
 +using ReLogic.Reflection;
 +using Terraria.ModLoader;
 +
@@ -15,22 +15,55 @@
 -		public static SetFactory Factory = new SetFactory(Count);
 +		public static SetFactory Factory = new SetFactory(MountLoader.MountCount, nameof(MountID), Search);
 +
++		/// <summary>
++		/// If <see langword="true"/>, the player can use grappling hooks without becoming dismounted.
++		/// <br/><br/> Some examples include <see cref="Velociraptor"/> and <see cref="RollerSkates"/>.
++		/// </summary>
  		public static bool[] CanUseHooks = Factory.CreateBoolSet(54, 57, 58, 59, 60);
++		/// <summary>
++		/// If <see langword="true"/>, the player can use dashes while mounted on this mount, either normal player dashes or mount specific dashes (<see cref="Chillet"/>).
++		/// <br/><br/> Some examples include <see cref="Bat"/>, <see cref="Pixie"/>, <see cref="Chillet"/> and <see cref="RollerSkates"/>.
++		/// </summary>
  		public static bool[] CanDash = Factory.CreateBoolSet(56, 57, 58, 59, 60, 61, 62, 63);
++		/// <summary>
++		/// If <see langword="true"/> for a given <see cref="MountID"/>, then that mount will not affect the player's body frames (<see cref="Player.bodyFrame"/>), meaning the body will animate as normal as if the player were not mounted.
++		/// <br/><br/> This is used by <see cref="RollerSkates"/> and similar mounts.
++		/// </summary>
  		public static bool[] DoesNotOverrideBodyFrames = Factory.CreateBoolSet(57, 58, 59, 60);
++		/// <summary>
++		/// If <see langword="true"/> for a given <see cref="MountID"/>, then that mount will not affect the player's leg frames (<see cref="Player.legFrame"/>), meaning the legs will animate as normal as if the player were not mounted.
++		/// <br/><br/> This is used by <see cref="RollerSkates"/> and similar mounts.
++		/// </summary>
  		public static bool[] DoesNotOverrideLegFrames = Factory.CreateBoolSet(57, 58, 59, 60);
++		/// <summary>
++		/// If <see langword="true"/> for a given <see cref="MountID"/>, then that mount will not disable the player's backpack drawing.
++		/// <br/><br/> This is used by <see cref="RollerSkates"/> and similar mounts.
++		/// </summary>
  		public static bool[] DoesNotOverrideBackpackDraw = Factory.CreateBoolSet(57, 58, 59, 60);
++		/// <summary>
++		/// This mount is a roller skates mount. Affects movement, animation, spawn dust, and more.
++		/// </summary>
  		public static bool[] IsRollerSkates = Factory.CreateBoolSet(57, 58, 59, 60);
-+
 +		/// <summary>
 +		/// If <see langword="true"/> for a given <see cref="MountID"/>, then that mount is categorized as a minecart.
 +		/// <br/> Minecarts have a dedicated equipment slot, will be auto-used if the player interacts with a <see cref="TileID.MinecartTrack"/>, and are buffed if <see cref="Player.UsingSuperCart"/> is <see langword="true"/>.
 +		/// <br/> Defaults to <see langword="false"/>.
 +		/// </summary>
  		public static bool[] Cart = Factory.CreateBoolSet(6, 13, 11, 15, 16, 18, 19, 20, 21, 22, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 38, 39, 51, 53);
++		/// <summary>
++		/// Unused, but seemingly indicates mounts that transform the player into a completely new visuals. See also <see cref="PlayerIsHidden"/>.
++		/// <br/><br/> Some examples include <see cref="Wolf"/>, <see cref="Velociraptor"/>, <see cref="Rat"/>, <see cref="Bat"/>, and <see cref="Pixie"/>.
++		/// </summary>
  		public static bool[] IsTransformationMount = Factory.CreateBoolSet(52, 54, 55, 56, 61);
++		/// <summary>
++		/// Indicates this mount hides the player visuals. This doesn't hide the player, instead <see cref="Terraria.DataStructures.PlayerDrawSet.hideEntirePlayer"/> needs to be set.
++		/// <br/><br/> Some examples include <see cref="Wolf"/>, <see cref="Velociraptor"/>, <see cref="Rat"/>, <see cref="Bat"/>, and <see cref="Pixie"/>.
++		/// </summary>
  		public static bool[] PlayerIsHidden = Factory.CreateBoolSet(52, 54, 55, 56, 61);
  		public static bool[] DontHoldItems = Factory.CreateBoolSet(55, 56, 61);
++		/// <summary>
++		/// The player will not be forecfully dismounted from this mount when they are "crowd controlled" (<see cref="Player.CCed"/>, such as stunned, frozen, etc). This is used by mounts that are meant to be transformations such as <see cref="Rat"/>, <see cref="Bat"/>, and <see cref="Pixie"/>.
++		/// </summary>
  		public static bool[] DontDismountWhenCCed = Factory.CreateBoolSet(55, 56, 61);
  	}
 +#endif

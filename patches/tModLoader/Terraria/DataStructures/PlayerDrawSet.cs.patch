@@ -39,7 +39,19 @@
  	public int skinVar;
  	public bool fullHair;
  	public bool drawsBackHairWithoutHeadgear;
-@@ -137,8 +_,13 @@
+@@ -131,14 +_,25 @@
+ 	public Vector2 hairOffset;
+ 	public Vector2 helmetOffset;
+ 	public Vector2 legsOffset;
++	/// <summary>
++	/// Hide all the player visuals by setting each body part to be drawn transparent. Used by transformation mounts like <see cref="MountID.Rat"/> or <see cref="MountID.Pixie"/>.
++	/// </summary>
+ 	public bool hideEntirePlayer;
++	/// <summary>
++	/// Hide all the player visuals except the helmet and face accessories by setting each body part to be drawn transparent. Used by  <see cref="MountID.Velociraptor"/>.
++	/// </summary>
+ 	public bool hideEntirePlayerExceptHelmetsAndFaceAccessories;
+ 	public Projectile SelectedDrawnProjectile;
  
  	public Vector2 Center => new Vector2(Position.X + (float)(drawPlayer.width / 2), Position.Y + (float)(drawPlayer.height / 2));
  

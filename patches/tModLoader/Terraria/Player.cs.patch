@@ -123,7 +123,7 @@
  	public int loadStatus;
  	public Vector2[] itemFlamePos = new Vector2[7];
  	public int itemFlameCount;
-@@ -754,20 +_,81 @@
+@@ -754,20 +_,82 @@
  	public int ropeCount;
  	public int manaRegenBonus;
  	public float manaRegenDelayBonus;
@@ -136,6 +136,7 @@
 +	/// 3 => Solar Flare armor set bonus<br/>
 +	/// 4 => Unused, though a dash for this value DOES exist<br/>
 +	/// 5 => Crystal Assassin set bonus<br/>
++	/// 6 => Chillet and Chillet Ignis<br/>
 +	/// </summary>
  	public int dashType;
 +
