@@ -58,6 +58,14 @@ Finally, `ProjectileID.Sets.HeldProjDoesNotUsePlayerGfxOffY` has been removed. `
   * Not held in hand (flail): Set `Projectile.drawLayer = ProjectileDrawLayerID.HeldProj;`
 * Projectile that shouldn't be drawn at all: No adjustments necessary.
 
+### Town NPC Chat Buttons
+
+Chat buttons for Town NPCs have changed significantly in 1.4.5. The new system uses an `NPCInteraction` to define what the button says, when it should be shown, and what happens when it is clicked. Town NPCs can now support up to 32 buttons visible at one time (no longer limited to firstButton and secondButton).
+
+#### Registering Chat Buttons
+
+#### Creating a Custom NPCInteraction
+
 ## New Vanilla Features
 
 The [Terraria 1.4.5 changelog](https://terraria.wiki.gg/wiki/1.4.5.0) lists many vanilla changes made in the 1.4.5 update. A select portion of the changes relevant to modding will be detailed here as well.
