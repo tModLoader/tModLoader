@@ -4556,6 +4556,35 @@
  			}
  			else {
  				int num2 = rand.Next(3);
+@@ -34758,13 +_,28 @@
+ 		if (dialoguePortraitPreference == DialoguePortraitDrawOption.Disabled)
+ 			return;
+ 
++		if (LocalPlayer.sign != -1) // TML: return if editing a sign. Main.editSign didn't work
++			return;
++
+ 		NPCID.Sets.NPCPortraitProvider nPCPortraitProvider = npcChatPortrait;
++		/*
+ 		if (nPCPortraitProvider == null)
+ 			return;
+ 
+ 		nPCPortraitProvider.GetDrawData(out var texture, out var drawFrame);
+ 		if (texture == null)
+ 			return;
++		*/
++		// TML: Instead of not drawing at all for ModNPC that haven't implemented portraits yet, just fallback to closeup.
++		Texture2D texture = null;
++		Rectangle drawFrame = Rectangle.Empty;
++		if (nPCPortraitProvider == null && dialoguePortraitPreference == DialoguePortraitDrawOption.Detailed)
++			dialoguePortraitPreference = DialoguePortraitDrawOption.CloseUp;
++		if (nPCPortraitProvider != null) {
++			nPCPortraitProvider.GetDrawData(out texture, out drawFrame);
++			if (texture == null)
++				return;
++		}
+ 
+ 		int num = npcChatPortraitFrameCounter++;
+ 		int num2 = 56;
 @@ -34899,8 +_,9 @@
  		playerInventory = true;
  		stackSplit = 9999;

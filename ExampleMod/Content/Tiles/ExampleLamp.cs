@@ -26,6 +26,8 @@ namespace ExampleMod.Content.Tiles
 			Main.tileWaterDeath[Type] = true;
 			Main.tileLavaDeath[Type] = true;
 			// Main.tileFlame[Type] = true; // Main.tileFlame is only useful for vanilla tiles. Modded tiles can manually draw flames in PostDraw.
+			TileID.Sets.Wiring.IsAMechanism[Type] = true;
+			TileID.Sets.Wiring.IgnoreWhenValidatingTraps[Type] = true;
 
 			// Placement
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style1xX);

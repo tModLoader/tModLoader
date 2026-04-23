@@ -180,7 +180,9 @@ namespace ExampleMod.Content.Items.Weapons
 			if (mode == 6) {
 				// This AddBuff is not quiet because it is affecting another player. This allows it to broadcast to all players that the target has a buff. (Main.pvpBuff must be set to true for other players to be able to give buffs to a player)
 				// Note that in PvP, it is possible to attack a player and see them take damage, but by the time the hit message arrives on the target client, they may have recharged a dodge. In this case, the target will not actually take damage, and their health will appear to restore. Because the attacking player applies the debuff, the target will receive the debuff regardless
+#if COMPILE_ERROR_TODOS
 				target.AddBuff(ModContent.BuffType<ExampleDefenseDebuff>(), 600, quiet: false);
+#endif
 			}
 			else if (mode == 7) {
 				var damageModificationPlayer = player.GetModPlayer<ExampleDamageModificationPlayer>();

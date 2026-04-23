@@ -1456,6 +1456,15 @@
  			Main.BestiaryTracker.Chats.RegisterChatStartWith(Main.npc[npcIndex]);
  
  		if (talkNPC == -1)
+@@ -2672,6 +_,8 @@
+ 			Main.npcChatPortrait = null;
+ 			if (npcIndex >= 0 && npcIndex < Main.maxNPCs && NPCID.Sets.NPCPortraits.TryGetValue(Main.npc[npcIndex].type, out var value)) {
+ 				Main.npcChatPortrait = value;
++			}
++			if (npcIndex >= 0 && npcIndex < Main.maxNPCs) { // TML: Still do the portrait hop even if no detailed portrait is provided.
+ 				Main.DoNPCPortraitHop();
+ 			}
+ 		}
 @@ -2683,6 +_,7 @@
  		itemTimeMax = frames;
  	}
@@ -3342,15 +3351,19 @@
  	}
  
  	private void UpdateArmorSets_Always_Vortex()
-@@ -13237,6 +_,8 @@
- 			luckNeedsSync = true;
+@@ -13238,6 +_,12 @@
  			HasGardenGnomeNearby = SceneMetrics.HasGardenGnome;
  		}
+ 
++		//TODO: Are these flags a problem?
++		LoaderManager.Get<BiomeLoader>().UpdateBiomes(this);
++
 +		// Added by TML.
 +		ZonePurity = InZonePurity();
- 
++
  		behindBackWall = Framing.GetTileSafely(base.Center).wall > 0;
  		if (!dead) {
+ 			Point point = base.Center.ToTileCoordinates();
 @@ -13268,10 +_,13 @@
  				AchievementsHelper.HandleSpecialEvent(this, 15);
  			else if (_funkytownAchievementCheckCooldown == 0 && ZoneGraveyard)
@@ -4386,7 +4399,7 @@
 +							/*
  							if (TileID.Sets.Clouds[tile.type] || tile.type == 666 || flag8) {
 +							*/
-+							if (TileID.Sets.Clouds[tile.type] || tile.type == 666 || flag8 || TileID.Sets.NegatesFallDamage[tile.type]) {
++							if (TileID.Sets.Clouds[tile.type] || TileID.Sets.NegatesFallDamage[tile.type] || flag8) {
  								num10 = 0;
  								break;
  							}
@@ -8247,6 +8260,18 @@
  
  		if (tileTarget.type == 147 || tileTarget.type == 0 || tileTarget.type == 40 || tileTarget.type == 53 || tileTarget.type == 57 || tileTarget.type == 59 || tileTarget.type == 123 || tileTarget.type == 224 || tileTarget.type == 397)
  			num += pickPower;
+@@ -44062,6 +_,11 @@
+ 		return num;
+ 	}
+ 
++	/// <summary>
++	/// Drops the player's items. Called when the player dies.
++	/// <br/><br/> <paramref name="gemsOnly"/> will be true for <see cref="PlayerDifficultyID.SoftCore"/> and <see cref="PlayerDifficultyID.Creative"/> players, causing only large gems (<see href="https://terraria.wiki.gg/wiki/Large_Gems"/>) to drop.
++	/// </summary>
++	/// <param name="gemsOnly">True if only large gems should drop.</param>
+ 	public void DropItems(bool gemsOnly)
+ 	{
+ 		trashItem.TurnToAir(fullReset: true);
 @@ -44077,12 +_,37 @@
  			return;
  		}
