@@ -4556,7 +4556,7 @@
  			}
  			else {
  				int num2 = rand.Next(3);
-@@ -34758,13 +_,30 @@
+@@ -34758,13 +_,28 @@
  		if (dialoguePortraitPreference == DialoguePortraitDrawOption.Disabled)
  			return;
  
@@ -4578,9 +4578,7 @@
 +		if (nPCPortraitProvider == null && dialoguePortraitPreference == DialoguePortraitDrawOption.Detailed)
 +			dialoguePortraitPreference = DialoguePortraitDrawOption.CloseUp;
 +		if (nPCPortraitProvider != null) {
-+			nPCPortraitProvider.GetDrawData(out var portraitTexture, out var portraitDrawFrame);
-+			texture = portraitTexture;
-+			drawFrame = portraitDrawFrame;
++			nPCPortraitProvider.GetDrawData(out texture, out drawFrame);
 +			if (texture == null)
 +				return;
 +		}
