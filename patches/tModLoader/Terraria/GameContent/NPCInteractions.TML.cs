@@ -16,15 +16,6 @@ public static partial class NPCInteractions
 			private int _npcType;
 			private string _customTextKey;
 
-			public OpenShop(int npcType, int shopIndex, string customTextKey = null)
-			{
-				_npcType = npcType;
-				_shopIndex = shopIndex;
-				_customTextKey = customTextKey;
-				_shopName = null;
-				_shopFullName = null;
-			}
-
 			public OpenShop(int npcType, string shopName, string customTextKey = null)
 			{
 				// Split the shopName by the / and assign _shopName to be the last part of the string.
@@ -40,6 +31,15 @@ public static partial class NPCInteractions
 				_customTextKey = customTextKey;
 				_shopName = splitName[^1];
 				_shopFullName = shopName;
+			}
+
+			public OpenShop(int npcType, int shopIndex, string customTextKey = null)
+			{
+				_npcType = npcType;
+				_shopIndex = shopIndex;
+				_customTextKey = customTextKey;
+				_shopName = null;
+				_shopFullName = null;
 			}
 
 			public override bool Condition() => base.TalkNPCType == _npcType;

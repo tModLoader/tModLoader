@@ -71,12 +71,12 @@
 +			{
 +				if (Main.LocalPlayer.sign > -1)
 +					return false;
-+				return Main.LocalPlayer.TalkNPC.type == type; 
++				return TalkNPCType == type; 
 +			}
  			public override string GetText() => Lang.inter[52].Value;
  
  			public override void Interact()
-@@ -213,11 +_,11 @@
+@@ -213,14 +_,14 @@
  			}
  		}
  
@@ -87,10 +87,15 @@
 +			public override bool Condition() // TML: Changed condition. Added NPC type check.
  			{
 -				if (NPC.CanShowHomelessText(Main.LocalPlayer.talkNPC))
-+				if (NPC.CanShowHomelessText(Main.LocalPlayer.talkNPC) && Main.LocalPlayer.TalkNPC.type != type)
- 					return false;
+-					return false;
++				if (TalkNPCType == type && !NPC.CanShowHomelessText(Main.LocalPlayer.talkNPC))
++					return base.LocalPlayer.currentShoppingSettings.HappinessReport != "";
  
- 				return base.LocalPlayer.currentShoppingSettings.HappinessReport != "";
+-				return base.LocalPlayer.currentShoppingSettings.HappinessReport != "";
++				return false;
+ 			}
+ 
+ 			public override string GetText() => Language.GetTextValue("UI.NPCCheckHappiness");
 @@ -234,11 +_,11 @@
  			}
  		}
@@ -101,7 +106,7 @@
  			public override bool ShowExcalmation => true;
  
 -			public override bool Condition() => NPC.CanShowHomelessText(Main.LocalPlayer.talkNPC);
-+			public override bool Condition() => NPC.CanShowHomelessText(Main.LocalPlayer.talkNPC) && Main.LocalPlayer.TalkNPC.type == type; // TML: Changed condition
++			public override bool Condition() => NPC.CanShowHomelessText(Main.LocalPlayer.talkNPC) && TalkNPCType == type; // TML: Changed condition
  			public override string GetText() => Language.GetTextValue("UI.NPCHousing");
  
  			public override void Interact()

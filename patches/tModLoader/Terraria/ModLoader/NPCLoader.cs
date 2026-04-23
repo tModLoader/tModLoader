@@ -1315,9 +1315,7 @@ public static class NPCLoader
 		if (npc == null) // Player is click buttons on a sign.
 			return;
 
-		if (npc.ModNPC != null) {
-			npc.ModNPC.OnChatButtonClicked(interaction);
-		}
+		npc.ModNPC?.OnChatButtonClicked(interaction);
 
 		foreach (var g in HookOnChatButtonClicked.Enumerate(npc)) {
 			g.OnChatButtonClicked(npc, interaction);

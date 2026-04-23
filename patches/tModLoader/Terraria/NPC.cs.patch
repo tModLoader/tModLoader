@@ -2948,7 +2948,7 @@
  			return false;
  
  		NPC nPC = Main.npc[npcIndex];
-+		if (nPC.ModNPC != null && nPC.ModNPC.TownNPCStayingHomeless)
++		if (nPC.homeless && nPC.ModNPC != null && nPC.ModNPC.TownNPCStayingHomeless)
 +			return false;
  		if (nPC.homeless && nPC.type != 37 && nPC.type != 368)
  			return nPC.type != 453;

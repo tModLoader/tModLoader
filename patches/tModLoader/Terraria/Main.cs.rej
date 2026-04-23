@@ -204,57 +204,6 @@
  		}
  
  		Microsoft.Xna.Framework.Rectangle rectangle = new Microsoft.Xna.Framework.Rectangle(screenWidth / 2 - TextureAssets.ChatBack.Width() / 2, 100, TextureAssets.ChatBack.Width(), (amountOfLines + 2) * 30);
-@@ -32047,8 +_,11 @@
- 			else {
- 				text5 = text5.Substring(0, text5.Length - 1);
- 				focusText = Lang.inter[54].Value + " (" + text5 + ")";
-+				// Extra patch context.
- 			}
- 		}
-+
-+		NPCLoader.SetChatButtons(ref focusText, ref focusText2);
- 
- 		if (!flag) {
- 			DrawNPCChatButtons(num, color2, amountOfLines, focusText, focusText2);
-@@ -32083,11 +_,26 @@
- 					SubmitSignText();
- 				else
- 					IngameFancyUI.OpenVirtualKeyboard(1);
-+
-+				// Added by TML.
-+				return;
- 			}
- 			else if (NPCID.Sets.IsTownPet[npc[player[myPlayer].talkNPC].type]) {
- 				player[myPlayer].PetAnimal(player[myPlayer].talkNPC);
-+
-+				// Added by TML.
-+				return;
- 			}
-+			/*
- 			else if (npc[player[myPlayer].talkNPC].type == 369) {
-+			*/
-+
-+			if (!NPCLoader.PreChatButtonClicked(true))
-+				return;
-+
-+			NPCLoader.OnChatButtonClicked(true);
-+
-+			if (npc[player[myPlayer].talkNPC].type == 369) {
- 				npcChatCornerItem = 0;
- 				SoundEngine.PlaySound(12);
- 				bool flag4 = false;
-@@ -32321,6 +_,11 @@
- 			if (!npcChatFocus3 || player[myPlayer].talkNPC < 0)
- 				return;
- 
-+			if (!NPCLoader.PreChatButtonClicked(false))
-+				return;
-+
-+			NPCLoader.OnChatButtonClicked(false);
-+
- 			if (npc[player[myPlayer].talkNPC].type == 20) {
- 				SoundEngine.PlaySound(12);
- 				npcChatText = Lang.GetDryadWorldStatusDialog(out var worldIsEntirelyPure);
 @@ -33572,7 +_,7 @@
  			if (numAvailableRecipes > 0) {
  				UILinkPointNavigator.Shortcuts.CRAFT_CurrentRecipeBig = -1;
