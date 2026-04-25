@@ -28,6 +28,8 @@ namespace ExampleMod.Content.Tiles
 			TileID.Sets.HasOutlines[Type] = true;
 			TileID.Sets.InteractableByNPCs[Type] = true;
 			TileID.Sets.Campfires[Type] = true;
+			TileID.Sets.Wiring.IsAMechanism[Type] = true;
+			TileID.Sets.Wiring.IgnoreWhenValidatingTraps[Type] = true;
 
 			DustType = -1; // No dust when mined.
 			AdjTiles = [TileID.Campfire];

@@ -7,18 +7,12 @@ using Terraria.ModLoader;
 namespace ExampleMod.Content.CustomModType
 {
 	// This class doesn't autoload because it has a non-default constructor, it is loaded manually 2 times in NonAutoloadVictoryPoseLoader.Load
-	public class NonAutoloadVictoryPose : ModVictoryPose
+	public class NonAutoloadVictoryPose : ModVictoryPose, ICustomAutoload
 	{
-		public class NonAutoloadVictoryPoseLoader : ILoadable
-		{
-			public void Load(Mod mod) {
-				// Manually load additional ModVictoryPose from this mod.
-				mod.AddContent(new NonAutoloadVictoryPose("ShortPose", 120));
-				mod.AddContent(new NonAutoloadVictoryPose("LongPose", 180));
-			}
-
-			public void Unload() {
-			}
+		public static void Autoload(Mod mod) {
+			// Manually load additional ModVictoryPose from this mod.
+			mod.AddContent(new NonAutoloadVictoryPose("ShortPose", 120));
+			mod.AddContent(new NonAutoloadVictoryPose("LongPose", 180));
 		}
 
 		private readonly string nameOverride;

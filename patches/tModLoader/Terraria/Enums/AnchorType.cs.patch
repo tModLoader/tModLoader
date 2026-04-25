@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Enums/AnchorType.cs
 +++ src/tModLoader/Terraria/Enums/AnchorType.cs
-@@ -6,16 +_,27 @@
+@@ -6,16 +_,28 @@
  public enum AnchorType
  {
  	None = 0,
@@ -26,5 +26,6 @@
  	PlanterBox = 0x200,
 +	/// <summary> Similar to <see cref="Platform"/> (Any <see cref="ID.TileID.Sets.Platforms"/> tile), except it doesn't allow for hammered platforms. This rules out situations where a hammered platform tile is next to an un-hammered platform tile. This should be used for banners wider than 1 tile. </summary>
  	PlatformNonHammered = 0x400,
++	/// <summary> Ensures that all anchors have the same vertical height. This only applies to platforms and only applies to the top anchor. This is used for hanging tiles wider than 1 tile, although it is not technically necessary since PlatformNonHammered and Platform anchor types already handle these cases. </summary>
  	AllFlatHeight = 0x800
  }

@@ -46,7 +46,7 @@ namespace ExampleMod.Content.Items.Placeable
 
 		public override void PostUpdate(WorldItem item) {
 			// Create a greenish (0.5, 1.5, 0.5) light when the item is in world, even if underwater.
-			Lighting.AddLight(Item.Center, 0.5f, 1.5f, 0.5f);
+			Lighting.AddLight(item.Center, 0.5f, 1.5f, 0.5f);
 		}
 
 		public override void AddRecipes() {
