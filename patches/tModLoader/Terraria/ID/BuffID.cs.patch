@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/ID/BuffID.cs
 +++ src/tModLoader/Terraria/ID/BuffID.cs
-@@ -2,23 +_,77 @@
+@@ -2,23 +_,81 @@
  using System.Collections.Generic;
  using ReLogic.Reflection;
  using Terraria.DataStructures;
@@ -66,13 +66,17 @@
  		public static bool[] IsAFlaskBuff = Factory.CreateBoolSet(71, 72, 73, 74, 75, 76, 77, 78, 79);
 +
 +		/// <summary>
-+		/// If <see langword="true"/> for a given <see cref="BuffID"/>, then that buff will have a longer duration in <see cref="Main.expertMode"/>.
++		/// If <see langword="true"/> for a given <see cref="BuffID"/>, then that buff will have a longer duration in higher game difficulties.
 +		/// </summary>
 +		/// <remarks>
-+		/// The scale factor used is the debuff multiplier (<see cref="DataStructures.GameModeData.DebuffTimeMultiplier"/>) of <see cref="Main.GameModeInfo"/>.
-+		/// <br/> Despite the name, this set applies to <em>all</em> buffs, not just debuffs.
++		/// The scale factor is determined by <see cref="GameDifficultyData.DebuffTimeMultiplier"/>.
++		/// <br/><br/> Despite the name, this set applies to <em>all</em> buffs, not just debuffs, and only applies when <see cref="Main.expertMode"/> is enabled.
 +		/// </remarks>
  		public static bool[] BuffTimeIsExtendedWithGameDifficulty = Factory.CreateBoolSet(20, 22, 23, 24, 323, 30, 31, 32, 33, 35, 36, 39, 44, 324, 46, 47, 69, 70, 80);
++
++		/// <summary>
++		/// If <see langword="true"/> for a given <see cref="BuffID"/>, then that buff will last 20% longer while the Dead Cells Potion Station buff is active.
++		/// </summary>
  		public static bool[] BuffTimeIsExtendedByDeadCellsPotionStationBuff = Factory.CreateBoolSet(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 121, 122, 123, 124, 257, 343);
 +
 +		/// <summary>
