@@ -6,6 +6,7 @@ public class ModBuffTest : ModBuff
 	public override void SetDefaults() {
 		canBeCleared = false;
 		longerExpertDebuff = true;
+		BuffID.Sets.LongerExpertDebuff[Type] = true;
 
 		bool a = BuffLoader.CanBeCleared(0);
 

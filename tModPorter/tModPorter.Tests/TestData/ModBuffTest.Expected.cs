@@ -7,7 +7,10 @@ public class ModBuffTest : ModBuff
 #if COMPILE_ERROR
 		canBeCleared/* tModPorter Note: Removed. Use BuffID.Sets.NurseCannotRemoveDebuff instead, and invert the logic */ = false;
 		longerExpertDebuff/* tModPorter Note: Removed. Use BuffID.Sets.BuffTimeIsExtendedWithGameDifficulty instead */ = true;
+#endif
+		BuffID.Sets.BuffTimeIsExtendedWithGameDifficulty[Type] = true;
 
+#if COMPILE_ERROR
 		bool a = BuffLoader.CanBeCleared(0)/* tModPorter Note: Removed. Use !BuffID.Sets.NurseCannotRemoveDebuff instead */;
 #endif
 
