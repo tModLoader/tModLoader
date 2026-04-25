@@ -48,7 +48,7 @@
 +	/// </summary>
  	public bool hideEntirePlayer;
 +	/// <summary>
-+	/// Hide all the player visuals except the helmet and face accessories by setting each body part to be drawn transparent. Used by  <see cref="MountID.Velociraptor"/>.
++	/// Hide all the player visuals except the helmet and face accessories by setting each body part to be drawn transparent. Used by <see cref="MountID.Velociraptor"/>.
 +	/// </summary>
  	public bool hideEntirePlayerExceptHelmetsAndFaceAccessories;
  	public Projectile SelectedDrawnProjectile;

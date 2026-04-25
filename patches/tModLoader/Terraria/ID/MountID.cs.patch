@@ -62,7 +62,7 @@
  		public static bool[] PlayerIsHidden = Factory.CreateBoolSet(52, 54, 55, 56, 61);
  		public static bool[] DontHoldItems = Factory.CreateBoolSet(55, 56, 61);
 +		/// <summary>
-+		/// The player will not be forecfully dismounted from this mount when they are "crowd controlled" (<see cref="Player.CCed"/>, such as stunned, frozen, etc). This is used by mounts that are meant to be transformations such as <see cref="Rat"/>, <see cref="Bat"/>, and <see cref="Pixie"/>.
++		/// The player will not be forcefully dismounted from this mount when they are "crowd controlled" (<see cref="Player.CCed"/>, such as stunned, frozen, etc). This is used by mounts that are meant to be transformations such as <see cref="Rat"/>, <see cref="Bat"/>, and <see cref="Pixie"/>.
 +		/// </summary>
  		public static bool[] DontDismountWhenCCed = Factory.CreateBoolSet(55, 56, 61);
  	}
