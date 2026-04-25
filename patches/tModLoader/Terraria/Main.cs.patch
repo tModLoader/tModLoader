@@ -1422,7 +1422,7 @@
  			string lpWindowName = (Console.Title = "terraria" + rand.Next(int.MaxValue));
  			if (Platform.IsWindows) {
  				IntPtr intPtr = FindWindow(null, lpWindowName);
-@@ -4517,17 +_,37 @@
+@@ -4517,17 +_,38 @@
  			}
  		}
  		else {
@@ -1434,6 +1434,7 @@
 +			// Make a new console and use it. I don't know why, but trying to start the server process will share the same console by default.
 +			Platform.Get<IWindowService>().ReleaseConsole();
 +			Platform.Get<IWindowService>().CreateAndRedirectConsole();
++			Program.InitializeConsoleEncoding();
  		}
  
  		dedServ = true;
