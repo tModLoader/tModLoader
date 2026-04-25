@@ -176,7 +176,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Make a checklist of all TML hooks and have others QC each method behavior?
 - TileID.Sets.IsAMechanism changed to TileID.Sets.Wiring.IsAMechanism. tModPorter done. The function of the set might have changed, investigate and update docs.
 - NPCID.Sets.ShouldBeCountedAsBossForBestiary renamed to ShouldBeCountedAsBoss. tModPorter done. (TODO: Verify where it is now used and update docs if necessary)
-- BuffID.Sets.LongerExpertDebuff -> BuffID.Sets.BuffTimeIsExtendedWithGameDifficulty. tModPorter done. Docs remarks might also now be wrong. Also doc BuffTimeIsExtendedByDeadCellsPotionStationBuff
 - ItemID.Sets.BonusAttackSpeedMultiplier renamed to BonusMeleeSpeedMultiplier. tModPorter done. (double check that this doesn't only apply to melee weapons. I think it isn't limited currently)
 - Run NPCShopDatabase.Test tests.
 
