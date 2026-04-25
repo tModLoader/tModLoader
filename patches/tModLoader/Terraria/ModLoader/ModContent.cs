@@ -380,8 +380,8 @@ public static class ModContent
 		ContentSamples.RebuildItemCreativeSortingIDsAfterRecipesAreSetUp();
 		ItemSorting.SetupWhiteLists();
 		LocalizationLoader.FinishSetup();
-		NPCInteractions.InitializeVanillaGlobal();
-		NPCInteractions.InitializeModded();
+		Main.NPCInteractionDB = new NPCInteractionDatabase();
+		Main.NPCInteractionDB.Populate();
 
 		ArmorSetBonuses.Initialize();
 		ArmorSetBonuses.BuildLookup();
@@ -600,8 +600,6 @@ public static class ModContent
 		ContentSamples.CreativeResearchItemPersistentIdOverride.Clear();
 		ContentSamples.Initialize();
 		SetupBestiary();
-
-		NPCInteractions.Unload();
 
 		LocalizationLoader.Unload();
 

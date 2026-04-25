@@ -8,6 +8,7 @@ using ExampleMod.Content.Items.Tools;
 using ExampleMod.Content.Items.Weapons;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria;
@@ -334,10 +335,8 @@ namespace ExampleMod.Content.NPCs
 			return dialogueLine;
 		}
 
-		public override void SetChatButtons(ref bool skipCloseChat, ref bool skipReportHappiness, ref bool skipRequestHome) {
-			NPCInteractions.Shop(Type, Shop.Name); // Add the shop button.
-			// The Close, button will automatically be added after any buttons we assign here.
-			// This Town NPC will not receive the Happiness nor Housing button because they are not affected by happiness nor can they be housed.
+		public override void RegisterChatButtons(NPCInteractionList interactions, NPCInteraction closeButton, NPCInteraction happinessButton, NPCInteraction housingButton) {
+			interactions.InsertBefore(NPCInteractions.Shop(Shop.Name), closeButton);
 		}
 
 		public override void AI() {

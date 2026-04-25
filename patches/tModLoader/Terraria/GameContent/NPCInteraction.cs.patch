@@ -33,16 +33,13 @@
  	public int TalkNPCType {
  		get {
  			if (LocalPlayer.talkNPC == -1)
-@@ -19,12 +_,29 @@
+@@ -19,12 +_,26 @@
  		}
  	}
  
 +	/// <summary>
 +	/// Determines when this NPCInteraction can/will be shown.
 +	/// </summary>
-+	/// <remarks>Be sure to set the condition to only show on the Town NPCs you want it to show on, otherwise every Town NPC and signs will receive the button.
-+	/// <br/>Example: <c>TalkNPCType == ModContent.NPCType&lt;YourModNPCHere&gt;()</c>
-+	/// </remarks>
  	public abstract bool Condition();
  
 +	/// <summary>

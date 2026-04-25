@@ -290,16 +290,18 @@ namespace ExampleMod.Content.NPCs
 			return chosenChat;
 		}
 
-		public override void SetChatButtons(ref bool skipCloseChat, ref bool skipReportHappiness, ref bool skipRequestHome) {
-			// The Close, Happiness, and Housing buttons will automatically be added after any buttons we assign here.
-			// However, to match the vanilla Town NPCs, the Close button should be the second button.
-			skipCloseChat = true; // So, skip automatically assigning the Close button.
-			NPCInteractions.Shop(Type, ShopName); // Assign the shop. The name of the shop must match the name used for the NPCShop in AddShops().
-			NPCInteractions.CloseChat(Type); // Assign the close button here so it will be the second button.
-			// Here we are registering custom buttons that are defined below.
-			NPCInteractions.Register(new AwesomeifyButton());
-			NPCInteractions.Register(new UpgradeButton());
-			NPCInteractions.Register(new OpenShopOnlyAvailableDuringDay(Type, ShopName, "Day Only Shop"));
+		public override void RegisterChatButtons(NPCInteractionList interactions, NPCInteraction closeButton, NPCInteraction happinessButton, NPCInteraction housingButton) {
+			interactions.InsertBefore(NPCInteractions.Shop(ShopName), closeButton);
+			interactions.InsertBefore(new AwesomeifyButton(), happinessButton);
+			interactions.InsertBefore(new UpgradeButton(), happinessButton);
+			interactions.InsertBefore(new OpenShopOnlyAvailableDuringDay(ShopName, "Day Only Shop"), happinessButton);
+
+			// Showcase of other things you can do
+			// NPCInteraction awesomeifyButton = interactions.InsertBefore(new AwesomeifyButton(), happinessButton); // Return the interaction instance
+			// interactions.InsertAt(new UpgradeButton(), 3); // Insert at index 3 (button 4)
+			// interactions.InsertAfter(new OpenShopOnlyAvailableDuringDay(ShopName, "Day Only Shop"), awesomeifyButton); // Insert after the instance we saved above.
+			// interactions.Prepend(NPCInteractions.Shop(ShopName)); // Insert at the beginning
+			// interactions.Append(NPCInteractions.Shop(ShopName)); // Insert at the end (after the happiness and housing buttons, too)
 		}
 
 		// Here is simple example of a custom button that is labeled "Awesomeify". It will only appear if the NPC is Example Person.
@@ -341,7 +343,7 @@ namespace ExampleMod.Content.NPCs
 		}
 
 		// Here is an example of inheriting an existing NPCInteraction and modifying the condition.
-		public class OpenShopOnlyAvailableDuringDay(int npcType, string shopName, string customTextKey) : NPCInteractions.Actions.OpenShop(npcType, shopName, customTextKey) {
+		public class OpenShopOnlyAvailableDuringDay(string shopName, string customTextKey) : NPCInteractions.Actions.OpenShop(shopName, customTextKey) {
 			public override bool Condition() {
 				// base.Condition() will run the base class' condition, which is TalkNPCType == npcType in this case.
 				// Then we also add && Main.dayTime to make this button only show up during the day time.

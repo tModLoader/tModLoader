@@ -43,3 +43,24 @@
  				}
  			}
  		}
+@@ -139,10 +_,20 @@
+ 	private void PrepareInteractions()
+ 	{
+ 		_interactions.Clear();
++		/*
+ 		foreach (NPCInteraction item in NPCInteractions.All) {
+ 			if (item.Condition())
+ 				_interactions.Add(item);
+ 		}
++		*/
++		int talkNPCNetID = 0;
++		if (Main.LocalPlayer.sign == -1) { // If the player is not talking to a sign, they are talking to an NPC.
++			talkNPCNetID = Main.LocalPlayer.TalkNPC.netID;
++		}
++
++		foreach (NPCInteraction item in Main.NPCInteractionDB.GetInteractionsForNPCID(talkNPCNetID))
++			if (item.Condition())
++				_interactions.Add(item);
+ 
+ 		int count = _interactions.Count;
+ 		_neededInteractionLines = (int)Math.Ceiling((float)count / 4f);
