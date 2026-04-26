@@ -551,7 +551,10 @@ public static partial class Config
 
 		// 1.4.5
 		ChangeHookSignature("Terraria.ModLoader.ModNPC", "SpawnChance").RenameParameter("spawnInfo", "spawner");
+		ChangeHookSignature("Terraria.ModLoader.ModNPC", "OnChatButtonClicked", comment: "Suggestion: Remove this hook. Previously it was needed to assign a shop to a button, but that is now all handled by RegisterChatButtons.");
 		ChangeHookSignature("Terraria.ModLoader.GlobalNPC", "EditSpawnPool").RenameParameter("spawnInfo", "spawner");
+		ChangeHookSignature("Terraria.ModLoader.GlobalNPC", "OnChatButtonClicked");
+		ChangeHookSignature("Terraria.ModLoader.GlobalNPC", "PreChatButtonClicked");
 		ChangeHookSignature("Terraria.ModLoader.ModItem", "OnSpawn");
 		ChangeHookSignature("Terraria.ModLoader.ModItem", "CanStackInWorld");
 		ChangeHookSignature("Terraria.ModLoader.ModItem", "Update");
@@ -584,6 +587,7 @@ public static partial class Config
 
 		HookRemoved("Terraria.ModLoader.ModProjectile", "DrawBehind", "Set Projectile.drawLayer instead");
 		HookRemoved("Terraria.ModLoader.GlobalProjectile", "DrawBehind", "Set Projectile.drawLayer instead");
+		HookRemoved("Terraria.ModLoader.ModNPC", "SetChatButtons", "Chat buttons are now set in RegisterChatButtons");
 
 		RefactorInstanceMember("Terraria.ModLoader.ModProjectile", "DrawHeldProjInFrontOfHeldItemAndArms", Removed("Replace with Projectile.drawLayer = ProjectileDrawLayerID.HeldProjOverHand;"));
 	}

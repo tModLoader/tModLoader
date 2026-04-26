@@ -52,4 +52,6 @@ public class GlobalNPCTest : GlobalNPC
 	public override void EditSpawnPool(IDictionary<int, float> pool, NPCSpawnInfo spawnInfo) {
 		if (spawnInfo.Water) { }
 	}
+	public override void OnChatButtonClicked(NPC npc, bool firstButton) { }
+	public override void PreChatButtonClicked(NPC npc, bool firstButton) { }
 }

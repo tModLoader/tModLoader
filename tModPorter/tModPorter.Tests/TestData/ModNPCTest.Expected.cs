@@ -67,6 +67,7 @@ public class ModNPCTest : ModNPC
 	}
 
 	public override void OnChatButtonClicked(bool firstButton, ref string shopName) { /* Empty */ }
+	public override void OnChatButtonClicked(NPCInteraction interaction) { /* Empty */ }
 	public override void ModifyActiveShop(string shopName, Item[] items) { }
 
 	public override void HitEffect(NPC.HitInfo hit) { }
