@@ -36,10 +36,30 @@ public readonly struct NPCInteractionList : INPCInteractionList
 	/// <param name="interaction">The interaction to search for.
 	/// <br/>Example: <c>new NPCInteractions.Actions.CloseChat()</c></param>
 	/// <param name="index">The index that the interaction was found at. -1 if not found.</param>
-	/// <returns><c>null</c> if not found</returns>
+	/// <returns><c>null</c> if not found.</returns>
 	public readonly NPCInteraction FindInteractionByType(NPCInteraction interaction, out int index)
 	{
 		return interactionDatabase.FindInteractionByType(npcNetId, interaction.GetType(), out index);
+	}
+
+	/// <summary>
+	/// Searches the registered interactions to find the specified interaction type and returns the instance if found.
+	/// <para>This method matches by the class type.
+	/// <br/>Example: <c>new NPCInteractions.Actions.CloseChat()</c> will find any other type of CloseChat buttons.
+	/// </para>
+	/// </summary>
+	/// <param name="searchInteraction">The interaction to search for.
+	/// <br/>Example: <c>new NPCInteractions.Actions.CloseChat()</c></param>
+	/// <param name="foundInteraction">The interaction that was found. <c>null</c> if not found.</param>
+	/// <param name="index">The index that the interaction was found at. -1 if not found.</param>
+	/// <returns>True if found.</returns>
+	public readonly bool TryFindInteractionByType(NPCInteraction searchInteraction, out NPCInteraction foundInteraction, out int index)
+	{
+		foundInteraction = interactionDatabase.FindInteractionByType(npcNetId, searchInteraction.GetType(), out index);
+		if (foundInteraction == null) {
+			return false;
+		}
+		return true;
 	}
 
 	/// <summary>
@@ -51,10 +71,30 @@ public readonly struct NPCInteractionList : INPCInteractionList
 	/// <param name="interaction">The interaction to search for.
 	/// <br/>Example: <c>typeof(NPCInteractions.Actions.CloseChat)</c></param>
 	/// <param name="index">The index that the interaction was found at. -1 if not found.</param>
-	/// <returns><c>null</c> if not found</returns>
+	/// <returns><c>null</c> if not found.</returns>
 	public readonly NPCInteraction FindInteractionByType(Type interaction, out int index)
 	{
 		return interactionDatabase.FindInteractionByType(npcNetId, interaction, out index);
+	}
+
+	/// <summary>
+	/// Searches the registered interactions to find the specified interaction type and returns the instance if found.
+	/// <para>This method matches by the class type.
+	/// <br/>Example: <c>typeof(NPCInteractions.Actions.CloseChat)</c> will find any other type of CloseChat buttons.
+	/// </para>
+	/// </summary>
+	/// <param name="searchInteraction">The interaction to search for.
+	/// <br/>Example: <c>typeof(NPCInteractions.Actions.CloseChat)</c></param>
+	/// <param name="foundInteraction">The interaction that was found. <c>null</c> if not found.</param>
+	/// <param name="index">The index that the interaction was found at. -1 if not found.</param>
+	/// <returns>True if found.</returns>
+	public readonly bool TryFindInteractionByType(Type searchInteraction, out NPCInteraction foundInteraction, out int index)
+	{
+		foundInteraction = interactionDatabase.FindInteractionByType(npcNetId, searchInteraction, out index);
+		if (foundInteraction == null) {
+			return false;
+		}
+		return true;
 	}
 
 	/// <summary>
@@ -65,10 +105,29 @@ public readonly struct NPCInteractionList : INPCInteractionList
 	/// </summary>
 	/// <param name="interaction">The interaction to search for.</param>
 	/// <param name="index">The index that the interaction was found at. -1 if not found.</param>
-	/// <returns><c>null</c> if not found</returns>
+	/// <returns><c>null</c> if not found.</returns>
 	public readonly NPCInteraction FindInteractionByInstance(NPCInteraction interaction, out int index)
 	{
 		return interactionDatabase.FindInteractionByInstance(npcNetId, interaction, out index);
+	}
+
+	/// <summary>
+	/// Searches the registered interactions to find the specified interaction instance and returns the instance if found.
+	/// <para>This method matches by the exact instance.
+	/// <br/>If you don't already have the instance, use <see cref="FindInteractionByType(NPCInteraction, out int)"/> or <see cref="FindInteractionByType(Type, out int)"/> instead.
+	/// </para>
+	/// </summary>
+	/// <param name="searchInteraction">The interaction to search for.</param>
+	/// <param name="foundInteraction">The interaction that was found. <c>null</c> if not found.</param>
+	/// <param name="index">The index that the interaction was found at. -1 if not found.</param>
+	/// <returns>True if found.</returns>
+	public readonly bool TryFindInteractionByInstance(NPCInteraction searchInteraction, out NPCInteraction foundInteraction, out int index)
+	{
+		foundInteraction = interactionDatabase.FindInteractionByInstance(npcNetId, searchInteraction, out index);
+		if (foundInteraction == null) {
+			return false;
+		}
+		return true;
 	}
 
 	/// <summary>
@@ -102,6 +161,7 @@ public readonly struct NPCInteractionList : INPCInteractionList
 	/// <param name="interactionToRegister">The NPCInteraction to register.</param>
 	/// <param name="interactionAfter">The NPCInteraction to search for.</param>
 	/// <returns>The supplied NPCInteraction</returns>
+	/// <remarks>If the <paramref name="interactionAfter"/> is not found, the <paramref name="interactionToRegister"/> will be added to the end of the list.</remarks>
 	public readonly NPCInteraction InsertAfter(NPCInteraction interactionToRegister, NPCInteraction interactionAfter)
 	{
 		interactionDatabase.RegisterAfter(npcNetId, interactionToRegister, interactionAfter);
@@ -117,6 +177,7 @@ public readonly struct NPCInteractionList : INPCInteractionList
 	/// <param name="interactionToRegister">The NPCInteraction to register.</param>
 	/// <param name="interactionBefore">The NPCInteraction to search for.</param>
 	/// <returns>The supplied NPCInteraction</returns>
+	/// <remarks>If the <paramref name="interactionBefore"/> is not found, the <paramref name="interactionToRegister"/> will be added to the end of the list.</remarks>
 	public readonly NPCInteraction InsertBefore(NPCInteraction interactionToRegister, NPCInteraction interactionBefore)
 	{
 		interactionDatabase.RegisterBefore(npcNetId, interactionToRegister, interactionBefore);

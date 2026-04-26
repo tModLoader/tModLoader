@@ -19,12 +19,16 @@ public class GlobalNPCInteractions : GlobalNPC
 			interactions.InsertBefore(NPCInteractions.Shop("Terraria/BestiaryGirl/Shop", "Shop"), closeButton);
 
 			// Here we are going to remove the Guide's tips button.
-			// First, find the tip button using interactions.FindInteractionByType(Type interaction, out int index);
+			// First, find the tip button using interactions.TryFindInteractionByType(Type searchInteraction, out NPCInteraction foundInteraction, out int index);
 			//   This will match the buttons based on their class type.
-			// There is also interactions.FindInteractionByInstance(NPCInteraction interaction, out int index)
+			// There is also interactions.TryFindInteractionByInstance(NPCInteraction searchInteraction, out NPCInteraction foundInteraction, out int index)
 			//   This will match the buttons based on the exact instance.
-			NPCInteraction guideTip = interactions.FindInteractionByType(typeof(NPCInteractions.Actions.GuideTip), out _);
-			interactions.Remove(guideTip);
+			if (interactions.TryFindInteractionByType(typeof(NPCInteractions.Actions.GuideTip), out NPCInteraction foundInteraction, out _)) {
+				interactions.Remove(foundInteraction);
+			}
+			// This is the same thing as above but doesn't have the built in null check that TryFind does.
+			// NPCInteraction guideTip = interactions.FindInteractionByType(typeof(NPCInteractions.Actions.GuideTip), out _);
+			// interactions.Remove(guideTip);
 		}
 	}
 

@@ -137,7 +137,7 @@
  		Shop(17, 1);
  		Shop(19, 2);
  		Shop(20, 3);
-@@ -403,7 +_,25 @@
+@@ -403,7 +_,26 @@
  
  	private static void Shop(int npcType, int shopIndex, string customTextKey = null)
  	{
@@ -147,6 +147,7 @@
 +
 +	/// <summary>
 +	/// Assigns a shop chat button to the npcType.
++	/// <br/>Short for <c>new NPCInteractions.Actions.Shop(shopName = "Shop", customTextKey = null)</c>
 +	/// </summary>
 +	/// <param name="shopName">The name of the shop to open.
 +	/// <br/>This string will need to match the string used to create the <see cref="NPCShop"/> in <see cref="ModNPC.AddShops"/>.

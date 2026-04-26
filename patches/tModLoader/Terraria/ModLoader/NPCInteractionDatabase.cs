@@ -28,11 +28,8 @@ public class NPCInteractionDatabase
 	{
 		index = -1;
 		if (_interactionDatabase.TryGetValue(npcNetId, out List<NPCInteraction> value)) {
-			Logging.tML.Debug($"  interaction {interaction}");
 			foreach (NPCInteraction item in value) {
-				Logging.tML.Debug($"  item {item}");
 				if (item.GetType() == interaction) { // Class types are the same.
-					Logging.tML.Debug($"  item equals interaction");
 					index = value.IndexOf(item);
 					return item;
 				}
@@ -46,11 +43,8 @@ public class NPCInteractionDatabase
 	{
 		index = -1;
 		if (_interactionDatabase.TryGetValue(npcNetId, out List<NPCInteraction> value)) {
-			Logging.tML.Debug($"  interaction {interaction}");
 			foreach (NPCInteraction item in value) {
-				Logging.tML.Debug($"  item {item}");
 				if (item.Equals(interaction)) { // Instances are the same.
-					Logging.tML.Debug($"  item equals interaction");
 					index = value.IndexOf(item);
 					return item;
 				}
@@ -66,17 +60,11 @@ public class NPCInteractionDatabase
 			_interactionDatabase[npcNetId] = new List<NPCInteraction>();
 
 		int index = _interactionDatabase[npcNetId].IndexOf(interactionAfter);
-		/*
-		// If index >= Count, set it to the count.
-		// If index == -1 (aka not found), set it to the count so it gets added to the end of the list.
-		// Else, index + 1
-		index = index >= _interactionDatabase[npcNetId].Count ? _interactionDatabase[npcNetId].Count : index == -1 ? _interactionDatabase[npcNetId].Count : index + 1;
-		_interactionDatabase[npcNetId].Insert(index, interactionToAdd);
-		*/
+
 		if (index is not -1) {
 			_interactionDatabase[npcNetId].Insert(index + 1, interactionToRegister);
 		}
-		else {
+		else { // If the interactionAfter is not found, add to the end of the list.
 			_interactionDatabase[npcNetId].Add(interactionToRegister);
 		}
 	}
@@ -88,16 +76,11 @@ public class NPCInteractionDatabase
 			_interactionDatabase[npcNetId] = new List<NPCInteraction>();
 
 		int index = _interactionDatabase[npcNetId].IndexOf(interactionBefore);
-		/*
-		// If index < 0 (aka not found), set it to 0 so it gets added to the beginning of the list.
-		// Else the index. No need to subtract 1 from the index. Insert it at that index and it will shift everything after it by one position.
-		index = index < 0 ? 0 : index;
-		_interactionDatabase[npcNetId].Insert(index, interactionToAdd);
-		*/
+
 		if (index is not -1) {
 			_interactionDatabase[npcNetId].Insert(index, interactionToRegister);
 		}
-		else {
+		else { // If the interactionAfter is not found, add to the end of the list.
 			_interactionDatabase[npcNetId].Add(interactionToRegister);
 		}
 	}

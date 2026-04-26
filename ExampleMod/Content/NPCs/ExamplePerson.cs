@@ -291,12 +291,24 @@ namespace ExampleMod.Content.NPCs
 		}
 
 		public override void RegisterChatButtons(NPCInteractionList interactions, NPCInteraction closeButton, NPCInteraction happinessButton, NPCInteraction housingButton) {
-			interactions.InsertBefore(NPCInteractions.Shop(ShopName), closeButton);
-			interactions.InsertBefore(new AwesomeifyButton(), happinessButton);
+			// Here is how to register chat buttons to your NPC.
+			// There are many method that you can use to change the order of the buttons.
+			// interactions.Append(NPCInteraction interaction)	This will add the button to the end of the list (after the Happiness and Housing buttons, too).
+			// interactions.Prepend(NPCInteraction interaction)	This will add the button to the beginning of the list.
+			// interactions.InsertAfter(NPCInteraction interactionToRegister, NPCInteraction interactionAfter)		This will add the button after another specified button.
+			// interactions.InsertBefore(NPCInteraction interactionToRegister, NPCInteraction interactionBefore)	This will add the button before another specified button.
+			// interactions.InsertAt(NPCInteraction interaction, int index)		This will add the button at a specific index (0 based, so index 0 is button 1).
+
+			// In this example we are registering our Shop button to before the Close button.
+			// The Close button instance is provided for us for convenvience.
+			interactions.InsertBefore(NPCInteractions.Shop(ShopName), closeButton); // NPCInteractions.Shop() is a helper that creates a Shop button.
+
+			// Next, add the rest of our buttons before the Happiness button (which is before the Housing button).
+			interactions.InsertBefore(new AwesomeifyButton(), happinessButton); // These are custom buttons that we've defined below.
 			interactions.InsertBefore(new UpgradeButton(), happinessButton);
 			interactions.InsertBefore(new OpenShopOnlyAvailableDuringDay(ShopName, "Day Only Shop"), happinessButton);
 
-			// Showcase of other things you can do
+			// Showcase of other things you can do:
 			// NPCInteraction awesomeifyButton = interactions.InsertBefore(new AwesomeifyButton(), happinessButton); // Return the interaction instance
 			// interactions.InsertAt(new UpgradeButton(), 3); // Insert at index 3 (button 4)
 			// interactions.InsertAfter(new OpenShopOnlyAvailableDuringDay(ShopName, "Day Only Shop"), awesomeifyButton); // Insert after the instance we saved above.
@@ -310,8 +322,10 @@ namespace ExampleMod.Content.NPCs
 			public override string GetText() => Language.GetTextValue("Mods.ExampleMod.NPCs.ExamplePerson.AwesomeifyButton");
 
 			// Here you can change when this button will show up.
-			// Important: Make sure the button only shows up on the NPCs you want it to show up on. It will show up on every NPC if this is not here.
-			public override bool Condition() => TalkNPCType == ModContent.NPCType<ExamplePerson>();
+			// We want the button to always be shown, so we return true.
+			// Chat buttons are assigned per NPC, so we don't have to worry about specifying this buttton should only show for our NPC.
+			// (No need to do something like this: TalkNPCType == ModContent.NPCType<ExamplePerson>();)
+			public override bool Condition() => true;
 
 			// When the button is clicked, this will run.
 			public override void Interact() {
@@ -322,7 +336,7 @@ namespace ExampleMod.Content.NPCs
 		// Here is another example of a custom button that only shows up if the player has a specific item in their inventory.
 		public class UpgradeButton : NPCInteraction {
 			public override string GetText() => "Upgrade " + Lang.GetItemNameValue(ItemID.HiveBackpack);
-			public override bool Condition() => TalkNPCType == ModContent.NPCType<ExamplePerson>() && LocalPlayer.HasItem(ItemID.HiveBackpack);
+			public override bool Condition() => LocalPlayer.HasItem(ItemID.HiveBackpack);
 			public override void Interact() {
 				SoundEngine.PlaySound(SoundID.Item37); // Reforge/Anvil sound
 
@@ -345,7 +359,7 @@ namespace ExampleMod.Content.NPCs
 		// Here is an example of inheriting an existing NPCInteraction and modifying the condition.
 		public class OpenShopOnlyAvailableDuringDay(string shopName, string customTextKey) : NPCInteractions.Actions.OpenShop(shopName, customTextKey) {
 			public override bool Condition() {
-				// base.Condition() will run the base class' condition, which is TalkNPCType == npcType in this case.
+				// base.Condition() will run the base class' condition, so we don't have to copy that ourselves.
 				// Then we also add && Main.dayTime to make this button only show up during the day time.
 				return base.Condition() && Main.dayTime;
 			}
