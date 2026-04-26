@@ -109,7 +109,7 @@
  				Main.GetCoinValueText_Nurse(ref chatColor, ref coinValue);
  				return coinValue > 0;
  			}
-@@ -265,7 +_,10 @@
+@@ -265,13 +_,22 @@
  					text = "Slime" + slimeType + "Chatter";
  				}
  
@@ -121,6 +121,18 @@
  				Main.npcChatText += "\n\n";
  				if (talkNPC.type == 160) {
  					Main.npcChatText += Language.GetTextValueWith("HousingText.HousingRequirements_Truffle", new {
+ 						NPCName = talkNPC.FullName
+ 					});
+ 				}
++				else if (talkNPC.ModNPC is ModNPC modNPC2 && Language.Exists($"{modNPC2.GetLocalizationKey("HousingText")}.HousingRequirements")) {
++					// If Mods.ModName.NPCs.NPCName.HousingText.HousingRequirements exists, use that as the text.
++					Main.npcChatText += Language.GetTextValueWith($"{modNPC2.GetLocalizationKey("HousingText")}.HousingRequirements", new {
++						NPCName = talkNPC.FullName
++					});
++				}
+ 				else {
+ 					Main.npcChatText += Language.GetTextValue("HousingText.HousingRequirements");
+ 				}
 @@ -352,10 +_,12 @@
  		}
  	}
