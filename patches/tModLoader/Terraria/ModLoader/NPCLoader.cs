@@ -1217,13 +1217,8 @@ public static class NPCLoader
 		}
 	}
 
-	[Obsolete("Method signature changed")]
-	public static void SetChatButtons(ref string button, ref string button2)
-	{
-		Main.LocalPlayer.TalkNPC?.ModNPC?.SetChatButtons(ref button, ref button2);
-	}
-
 	private static HookList HookRegisterChatButtons = AddHook<Action<NPC, NPCInteractionList, NPCInteraction, NPCInteraction, NPCInteraction>>(g => g.RegisterChatButtons);
+
 	public static void RegisterChatButtons(NPC npc, NPCInteractionList interactions, NPCInteraction closeButton, NPCInteraction happinessButton, NPCInteraction housingButton)
 	{
 		npc.ModNPC?.RegisterChatButtons(interactions, closeButton, happinessButton, housingButton);
@@ -1231,27 +1226,6 @@ public static class NPCLoader
 		foreach (var g in HookRegisterChatButtons.Enumerate(npc)) {
 			g.RegisterChatButtons(npc, interactions, closeButton, happinessButton, housingButton);
 		}
-	}
-
-	[Obsolete()]
-	private static HookList LegacyHookPreChatButtonClicked = AddHook<Func<NPC, bool, bool>>(g => g.PreChatButtonClicked);
-
-	[Obsolete("Method signature changed")]
-	public static bool PreChatButtonClicked(bool firstButton)
-	{
-		NPC npc = Main.LocalPlayer.TalkNPC;
-
-		bool result = true;
-		foreach (var g in LegacyHookPreChatButtonClicked.Enumerate(npc)) {
-			result &= g.PreChatButtonClicked(npc, firstButton);
-		}
-
-		if (!result) {
-			SoundEngine.PlaySound(SoundID.MenuTick);
-			return false;
-		}
-
-		return true;
 	}
 
 	private static HookList HookPreChatButtonClicked = AddHook<Func<NPC, NPCInteraction, bool>>(g => g.PreChatButtonClicked);
@@ -1273,36 +1247,6 @@ public static class NPCLoader
 		}
 
 		return true;
-	}
-
-	[Obsolete()]
-	private delegate void LegacyDelegateOnChatButtonClicked(NPC npc, bool firstButton);
-	[Obsolete()]
-	private static HookList LegacyHookOnChatButtonClicked = AddHook<LegacyDelegateOnChatButtonClicked>(g => g.OnChatButtonClicked);
-
-	[Obsolete("Method signature changed")]
-	public static void OnChatButtonClicked(bool firstButton)
-	{
-		NPC npc = Main.LocalPlayer.TalkNPC;
-		string shopName = null;
-
-		if (npc.ModNPC != null) {
-			npc.ModNPC.OnChatButtonClicked(firstButton, ref shopName);
-			SoundEngine.PlaySound(SoundID.MenuTick);
-
-			if (shopName != null) {
-				// Copied from Main.OpenShop
-				Main.playerInventory = true;
-				Main.stackSplit = 9999;
-				Main.npcChatText = "";
-				Main.SetNPCShopIndex(1);
-				Main.instance.shop[Main.npcShop].SetupShop(NPCShopDatabase.GetShopName(npc.type, shopName), npc);
-			}
-		}
-
-		foreach (var g in LegacyHookOnChatButtonClicked.Enumerate(npc)) {
-			g.OnChatButtonClicked(npc, firstButton);
-		}
 	}
 
 	private delegate void DelegateOnChatButtonClicked(NPC npc, NPCInteraction interaction);

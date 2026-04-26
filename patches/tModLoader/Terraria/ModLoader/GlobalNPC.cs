@@ -689,19 +689,6 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	}
 
 	/// <summary>
-	/// Allows you to determine if something can happen whenever a button is clicked on this NPC's chat window. The firstButton parameter tells whether the first button or second button (button and button2 from SetChatButtons) was clicked. Return false to prevent the normal code for this button from running. Returns true by default.
-	/// <para/> Called on the local client only.
-	/// </summary>
-	/// <param name="npc"></param>
-	/// <param name="firstButton"></param>
-	/// <returns></returns>
-	[Obsolete("Use new method: PreChatButtonClicked(NPC npc, NPCInteraction interaction)")]
-	public virtual bool PreChatButtonClicked(NPC npc, bool firstButton)
-	{
-		return true;
-	}
-
-	/// <summary>
 	/// Allows you to determine if something can happen whenever a button is clicked on this NPC's chat window. Return false to prevent the normal code for this button from running. Returns true by default.
 	/// <para/> Called on the local client only.
 	/// </summary>
@@ -716,17 +703,6 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 
 	/// <inheritdoc cref="ModNPC.RegisterChatButtons(NPCInteractionList, NPCInteraction, NPCInteraction, NPCInteraction)"/>
 	public virtual void RegisterChatButtons(NPC npc, NPCInteractionList interactions, NPCInteraction closeButton, NPCInteraction happinessButton, NPCInteraction housingButton)
-	{
-	}
-
-	/// <summary>
-	/// Allows you to make something happen whenever a button is clicked on this NPC's chat window. The firstButton parameter tells whether the first button or second button (button and button2 from SetChatButtons) was clicked.
-	/// <para/> Called on the local client only.
-	/// </summary>
-	/// <param name="npc"></param>
-	/// <param name="firstButton"></param>
-	[Obsolete("Use new method: OnChatButtonClicked(NPC npc, NPCInteraction interaction)")]
-	public virtual void OnChatButtonClicked(NPC npc, bool firstButton)
 	{
 	}
 

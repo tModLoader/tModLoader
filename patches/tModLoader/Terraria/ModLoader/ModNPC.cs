@@ -828,18 +828,6 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Allows you to set the text for the buttons that appear on this NPC's chat window. A parameter left as an empty string will not be included as a button on the chat window.
-	/// <br/><br/> The value <c>Language.GetTextValue("LegacyInterface.28")</c> should be used for the "Shop" button.
-	/// <br/><br/> Called on the local client only.
-	/// </summary>
-	/// <param name="button"></param>
-	/// <param name="button2"></param>
-	[Obsolete("Use new method: SetChatButtons(ref bool skipCloseChat, ref bool skipReportHappiness, ref bool skipRequestHome)")]
-	public virtual void SetChatButtons(ref string button, ref string button2)
-	{
-	}
-
-	/// <summary>
 	/// Allows you to register chat buttons for this NPC.
 	/// <br/>Use <paramref name="interactions"/> to register new buttons.
 	/// <br/><br/> The "Close", "Happiness", and "Housing" buttons will automatically be registered before the buttons registered here.
@@ -854,17 +842,6 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	/// <param name="happinessButton">The instance of the Happiness button, for convenience.</param>
 	/// <param name="housingButton">The instance of the Housing button, for convenience.</param>
 	public virtual void RegisterChatButtons(NPCInteractionList interactions, NPCInteraction closeButton, NPCInteraction happinessButton, NPCInteraction housingButton)
-	{
-	}
-
-	/// <summary>
-	/// Allows you to make something happen whenever a button is clicked on this NPC's chat window. The firstButton parameter tells whether the first button or second button (button and button2 from SetChatButtons) was clicked. Set the shopName parameter to "Shop" to open this NPC's shop.
-	/// <para/> Called on the local client only.
-	/// </summary>
-	/// <param name="firstButton"></param>
-	/// <param name="shopName"></param>
-	[Obsolete("Use new method: OnChatButtonClicked(NPCInteraction interaction)")]
-	public virtual void OnChatButtonClicked(bool firstButton, ref string shopName)
 	{
 	}
 
