@@ -31,6 +31,15 @@
  			byte b = mouseTextColor;
  			chatColor = new Color(b, (int)((double)(int)b / 1.1), (int)b / 2, b);
  			if (num % 4 == 0) {
+@@ -107,6 +_,8 @@
+ 			if (flag)
+ 				num2 = num;
+ 
++			interaction.TextColor(ref chatColor, ref baseColor, flag); // TML: Added interaction.TextColor
++
+ 			ChatManager.DrawColorCodedStringShadow(Main.spriteBatch, value, text, vector3, baseColor, 0f, origin, vector2 * num5);
+ 			ChatManager.DrawColorCodedString(Main.spriteBatch, value, text, vector3, chatColor, 0f, origin, vector2 * num5);
+ 			UILinkPointNavigator.SetPosition(2500 + num, rectangle.Center.ToVector2());
 @@ -125,7 +_,11 @@
  				num2 = num;
  				if (Main.mouseLeft && Main.mouseLeftRelease) {
@@ -43,3 +52,24 @@
  				}
  			}
  		}
+@@ -139,10 +_,20 @@
+ 	private void PrepareInteractions()
+ 	{
+ 		_interactions.Clear();
++		/*
+ 		foreach (NPCInteraction item in NPCInteractions.All) {
+ 			if (item.Condition())
+ 				_interactions.Add(item);
+ 		}
++		*/
++		int talkNPCNetID = 0;
++		if (Main.LocalPlayer.sign == -1) { // If the player is not talking to a sign, they are talking to an NPC.
++			talkNPCNetID = Main.LocalPlayer.TalkNPC.netID;
++		}
++
++		foreach (NPCInteraction item in Main.NPCInteractionDB.GetInteractionsForNPCID(talkNPCNetID))
++			if (item.Condition())
++				_interactions.Add(item);
+ 
+ 		int count = _interactions.Count;
+ 		_neededInteractionLines = (int)Math.Ceiling((float)count / 4f);

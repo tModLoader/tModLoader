@@ -840,19 +840,19 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to register chat buttons for this NPC.
-	/// <br/>Use <see cref="NPCInteractions.Register"/> to register new buttons.
-	/// <br/><br/> The "Close", "Happiness", and "Housing" buttons will automatically be added after the buttons registered here, unless they are skipped.
+	/// <br/>Use <paramref name="interactions"/> to register new buttons.
+	/// <br/><br/> The "Close", "Happiness", and "Housing" buttons will automatically be registered before the buttons registered here.
 	/// <br/><br/> An NPC can only have 32 chat buttons shown at one time.
 	/// </summary>
-	/// <param name="skipCloseChat">Set to true to skip the "Close" button being automatically added.
-	/// <br/>It can manually be added with <c>NPCInteractions.CloseChat(Type)</c></param>
-	/// <param name="skipReportHappiness">Set to true to skip the "Happiness" button being automatically added.
-	/// <br/>The "Happiness" button will not be shown on Town NPCs who are not affected by happiness.
-	/// <br/>It can manually be added with <c>NPCInteractions.ReportHappiness(Type)</c></param>
-	/// <param name="skipRequestHome">Set to true to skip the "Housing" button being automatically added.
-	/// <br/>The "Housing" button will not be shown on Town NPCs who cannot be housed.
-	/// <br/>It can manually be added with <c>NPCInteractions.RequestHome(Type)</c></param>
-	public virtual void SetChatButtons(ref bool skipCloseChat, ref bool skipReportHappiness, ref bool skipRequestHome)
+	/// <param name="interactions">Use this with one of the methods to register new buttons.
+	/// <para>Use <c>interactions.Prepend</c>, <c>interactions.Append</c>,
+	/// <br/><c>interactions.InsertAfter</c>, <c>interactions.InsertBefore</c>, or <c>interactions.InsertAt</c></para>
+	/// <para>Example: <c>interactions.InsertBefore(NPCInteractions.Shop(), closeButton)</c></para>
+	/// </param>
+	/// <param name="closeButton">The instance of the Close button, for convenience.</param>
+	/// <param name="happinessButton">The instance of the Happiness button, for convenience.</param>
+	/// <param name="housingButton">The instance of the Housing button, for convenience.</param>
+	public virtual void RegisterChatButtons(NPCInteractionList interactions, NPCInteraction closeButton, NPCInteraction happinessButton, NPCInteraction housingButton)
 	{
 	}
 

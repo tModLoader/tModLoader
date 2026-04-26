@@ -714,13 +714,8 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 		return true;
 	}
 
-	/// <summary>
-	/// Allows you to register additional chat buttons for an NPC.
-	/// <br/>Use <see cref="NPCInteractions.Register"/> to register new buttons.
-	/// <br/><br/> An NPC can only have 32 chat buttons shown at one time.
-	/// </summary>
-	/// <param name="npcType"></param>
-	public virtual void SetChatButtons(int npcType)
+	/// <inheritdoc cref="ModNPC.RegisterChatButtons(NPCInteractionList, NPCInteraction, NPCInteraction, NPCInteraction)"/>
+	public virtual void RegisterChatButtons(NPC npc, NPCInteractionList interactions, NPCInteraction closeButton, NPCInteraction happinessButton, NPCInteraction housingButton)
 	{
 	}
 

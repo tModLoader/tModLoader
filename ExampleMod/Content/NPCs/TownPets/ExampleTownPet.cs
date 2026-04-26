@@ -2,6 +2,7 @@ using ExampleMod.Common.Systems;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria;
@@ -163,9 +164,9 @@ namespace ExampleMod.Content.NPCs.TownPets
 			return chat;
 		}
 
-		// If NPCID.Sets.IsTownPet is set to true, the NPC will automatically receive the "Pet" button.
-		// public override void SetChatButtons(ref bool skipCloseChat, ref bool skipReportHappiness, ref bool skipRequestHome) {
-		//	NPCInteractions.Register(new NPCInteractions.Actions.PetAnimal());
+		// Setting NPCID.Sets.IsTownPet will automatically add the pet button, but here is how to do it if it weren't automatic.
+		// public override void RegisterChatButtons(NPCInteractionList interactions, NPCInteraction closeButton, NPCInteraction happinessButton, NPCInteraction housingButton) {
+		//	interactions.InsertAfter(new NPCInteractions.Actions.PetAnimal(), closeButton);
 		// }
 
 		public override bool PreAI() {

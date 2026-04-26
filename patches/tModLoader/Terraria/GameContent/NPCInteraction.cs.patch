@@ -1,6 +1,10 @@
 --- src/TerrariaNetCore/Terraria/GameContent/NPCInteraction.cs
 +++ src/tModLoader/Terraria/GameContent/NPCInteraction.cs
-@@ -4,12 +_,31 @@
+@@ -1,15 +_,36 @@
+ using Microsoft.Xna.Framework;
++using Terraria.ModLoader;
+ 
+ namespace Terraria.GameContent;
  
  public abstract class NPCInteraction
  {
@@ -17,7 +21,8 @@
  
 -	public NPC TalkNPC => Main.npc[LocalPlayer.talkNPC];
 +	/// <summary>
-+	/// The instance of the NPC the player is speaking to. Short for <c>Main.npc[LocalPlayer.talkNPC]</c>
++	/// The instance of the NPC the player is speaking to. Will return null if the player is not speaking to any NPC.
++	/// <br/>Short for <c><see cref="Main.npc"/>[<see cref="LocalPlayer"/>.talkNPC]</c>
 +	/// </summary>
 +	public NPC TalkNPC { // TML: Changed to add the safety check. Otherwise it would silently error when opening signs.
 +		get {
@@ -33,16 +38,13 @@
  	public int TalkNPCType {
  		get {
  			if (LocalPlayer.talkNPC == -1)
-@@ -19,12 +_,29 @@
+@@ -19,15 +_,46 @@
  		}
  	}
  
 +	/// <summary>
 +	/// Determines when this NPCInteraction can/will be shown.
 +	/// </summary>
-+	/// <remarks>Be sure to set the condition to only show on the Town NPCs you want it to show on, otherwise every Town NPC and signs will receive the button.
-+	/// <br/>Example: <c>TalkNPCType == ModContent.NPCType&lt;YourModNPCHere&gt;()</c>
-+	/// </remarks>
  	public abstract bool Condition();
  
 +	/// <summary>
@@ -52,14 +54,34 @@
  
 +	/// <summary>
 +	/// The action that happens when the button is clicked such as opening a shop.
++	/// <br/>If <see cref="GlobalNPC.PreChatButtonClicked(NPC, NPCInteraction)"/> returns false, this method will not be called.
 +	/// </summary>
  	public abstract void Interact();
  
 +	/// <summary>
 +	/// Adds a coin counter display to the right of the button if set to true.
 +	/// </summary>
-+	/// <param name="chatColor">Allows for the color of the button to be changed.</param>
++	/// <param name="chatColor">Allows for the color of the button to be changed.
++	/// <br/>For more control over the color of the button, use <see cref="NPCInteraction.TextColor(ref Color, ref Color, bool)"/></param>
 +	/// <param name="coinValue">The value of coins to display. The value can be negative and it will display properly.</param>
  	public virtual bool TryAddCoins(ref Color chatColor, out int coinValue)
  	{
  		coinValue = 0;
+ 		return false;
++	}
++
++	// Added by TML
++	/// <summary>
++	/// Allows for the color of button to be changed.
++	/// <br/> This runs after <see cref="NPCInteraction.TryAddCoins(ref Color, out int)"/> runs.
++	/// </summary>
++	/// <param name="chatColor">The color of the button's text.
++	/// <br/>Defaults to a pale yellow color that pulses between (190, 172, 95) and (255, 231, 127)
++	/// <br/>Multiply your color or its alpha by <c>(<see cref="Main.mouseTextColor"/> / 255f)</c> to achieve a similar pulsing effect.</param>
++	/// <param name="chatColorShadow">The color of the text's background shadow.
++	/// <br/>Defaults to <see cref="Color.Black"/> and <see cref="Color.Brown"/> while hovering over the button.</param>
++	/// <param name="hoveringOverButton">This will be true if the mouse is hovering over the button.</param>
++	public virtual void TextColor(ref Color chatColor, ref Color chatColorShadow, bool hoveringOverButton)
++	{
+ 	}
+ }
