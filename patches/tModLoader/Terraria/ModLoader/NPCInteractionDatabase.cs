@@ -9,7 +9,6 @@ public class NPCInteractionDatabase
 {
 	private readonly Dictionary<int, List<NPCInteraction>> _interactionDatabase = new Dictionary<int, List<NPCInteraction>>();
 
-
 	/// <summary>
 	/// Returns the full <c>List&lt;NPCInteraction&gt;</c> of the NPC.
 	/// </summary>

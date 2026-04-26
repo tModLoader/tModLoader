@@ -787,6 +787,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	/// <para/> Methods like <see cref="WorldGen.Housing_GetTestedRoomBounds(out int, out int, out int, out int)"/> and <see cref="WorldGen.CountTileTypesInArea(int[], int, int, int, int)"/> can facilitate implementing specific checks.
 	/// <para/> Return false to prevent the npc from spawning due to failed condition checks.
 	/// <para/> Called on the server and clients.
+	/// <para/> The hint text explaining what a valid house is in the Housing button can be customized by adding the localization key <c>Mods.YourModName.NPCs.YourNPCName.HousingText.HousingRequirements</c>
 	/// </summary>
 	public virtual bool CheckConditions(int left, int right, int top, int bottom)
 	{

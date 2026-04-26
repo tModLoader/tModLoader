@@ -1,11 +1,12 @@
 using System;
 using System.Collections.Generic;
-using System.Reflection;
-using Microsoft.VisualBasic;
 using Terraria.GameContent;
 
 namespace Terraria.ModLoader;
 
+/// <summary>
+/// Allows for <see cref="NPCInteraction"/> chat buttons to be assigned to an NPC.
+/// </summary>
 public readonly struct NPCInteractionList : INPCInteractionList
 {
 	private readonly int npcNetId;
