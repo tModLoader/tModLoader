@@ -1972,6 +1972,19 @@
  		vanityPet[40] = true;
  		vanityPet[41] = true;
  		vanityPet[42] = true;
+@@ -9040,6 +_,12 @@
+ 			}
+ 
+ 			if (flag) {
++				// 1.4.5 backport. Some users can have more than 99 SupportedDisplayModes
++				if (numDisplayModes >= displayWidth.Length) {
++					Array.Resize(ref displayWidth, numDisplayModes * 2);
++					Array.Resize(ref displayHeight, numDisplayModes * 2);
++				}
++
+ 				displayHeight[numDisplayModes] = supportedDisplayMode.Height;
+ 				displayWidth[numDisplayModes] = supportedDisplayMode.Width;
+ 				numDisplayModes++;
 @@ -9051,13 +_,21 @@
  	{
  	}
