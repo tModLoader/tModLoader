@@ -1,7 +1,7 @@
-ru-RU 1
-pt-BR 42
-pl-PL 39
-it-IT 990
-fr-FR 455
-es-ES 414
-de-DE 415
+ru-RU 2
+pt-BR 48
+pl-PL 45
+it-IT 996
+fr-FR 461
+es-ES 420
+de-DE 421

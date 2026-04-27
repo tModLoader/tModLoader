@@ -79,7 +79,7 @@ partial class UIWorldSelect
 			_ or BuildInfo.BuildPurpose.Dev => 3,
 		};
 
-		foreach (var (otherSaveFolderPath, message, stabilityLevel) in otherPaths) {
+		foreach (var (otherSaveFolderPath, releaseName, stabilityLevel) in otherPaths) {
 			if (stabilityLevel == currentStabilityLevel)
 				continue;
 
@@ -145,7 +145,7 @@ partial class UIWorldSelect
 					}
 				}
 
-				var migrateIndividualWorldText = new UIText(string.Format(message, fileData.Name));
+				var migrateIndividualWorldText = new UIText(Language.GetTextValue("tModLoader.ClickToCopyFileOverFromReleaseName", fileData.Name, releaseName));
 
 				migrateIndividualWorldText.Width.Set(-left, 1);
 				migrateIndividualWorldText.Left.Set(left, 0);

@@ -491,6 +491,7 @@
 		"MigrateIndividualPlayersHeader": "Migruj pojedynczych graczy do nowej wersji tModLoadera...",
 		"MigrateIndividualWorldsHeader": "Migruj pojedyncze światy do nowej wersji tModLoadera...",
 		"MigratingWorldsText": "Migrowanie...",
+		// "ClickToCopyFileOverFromReleaseName": "Click to copy \"{0}\" over from {1}",
 		"ModsDifferentSinceLastPlay": "Te mody zmieniły się od ostatniego razu: ",
 		"Missing1Mod": "Brakujący 1 mod",
 		"MissingXMods": "Brakujące mody: {0}",
