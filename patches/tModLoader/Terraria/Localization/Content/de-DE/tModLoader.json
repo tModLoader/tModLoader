@@ -491,6 +491,7 @@
 		"MigrateIndividualPlayersHeader": "Einzelne Spieler migrieren...",
 		"MigrateIndividualWorldsHeader": "Einzelne Welten migrieren...",
 		"MigratingWorldsText": "Übernehme Welten",
+		// "ClickToCopyFileOverFromReleaseName": "Click to copy \"{0}\" over from {1}",
 		"ModsDifferentSinceLastPlay": "Diese Mods sind anders, seit du das letzte Mal gespielt hast: ",
 		"Missing1Mod": "Ein Mod fehlt",
 		"MissingXMods": "Es fehlen {0} Mods",

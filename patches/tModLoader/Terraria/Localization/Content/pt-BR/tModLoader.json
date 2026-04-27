@@ -491,6 +491,7 @@
 		"MigrateIndividualPlayersHeader": "Migrar jogadores individuais...",
 		"MigrateIndividualWorldsHeader": "Migrar mundos individuais...",
 		"MigratingWorldsText": "Migrando...",
+		// "ClickToCopyFileOverFromReleaseName": "Click to copy \"{0}\" over from {1}",
 		"ModsDifferentSinceLastPlay": "Os seguintes mods são diferentes desde a última vez que você jogou: ",
 		"Missing1Mod": "1 mod não foi encontrado",
 		"MissingXMods": "{0} mods não foram encontrados",
