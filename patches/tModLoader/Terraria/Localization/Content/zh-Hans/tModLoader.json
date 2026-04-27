@@ -445,7 +445,7 @@
 		"PasteSteamID": "粘贴SteamID（Ctrl+V）",
 		"MBServerResponse": "模组浏览器服务器响应：\n\n{0}",
 		"SettingsPublicityUnlisted": "非公开",
-		"SettingsPublicityUnlistedDescription": "一经发布，你的内容将对所有人可见且可用\n但不会在搜索中或你的个人资料里显示，除非订阅。\n你随时可以相应的创意工坊页面调整内容的可见性设置。",
+		"SettingsPublicityUnlistedDescription": "一经发布，你的内容将对所有人可见且可用\n但不会在搜索中或你的个人资料里显示，除非通过链接访问或订阅页面。\n你随时可以相应的创意工坊页面调整内容的可见性设置。",
 
 		// TML Options
 		"DownloadFromServersYes": "从服务器下载模组：开启",
