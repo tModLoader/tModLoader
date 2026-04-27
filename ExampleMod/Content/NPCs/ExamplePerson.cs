@@ -300,7 +300,7 @@ namespace ExampleMod.Content.NPCs
 			// interactions.InsertAt(NPCInteraction interaction, int index)		This will add the button at a specific index (0 based, so index 0 is button 1).
 
 			// In this example we are registering our Shop button to before the Close button.
-			// The Close button instance is provided for us for convenvience.
+			// The Close button instance is provided for us for convenience.
 			interactions.InsertBefore(NPCInteractions.Shop(ShopName), closeButton); // NPCInteractions.Shop() is a helper that creates a Shop button.
 
 			// Next, add the rest of our buttons before the Happiness button (which is before the Housing button).
@@ -316,14 +316,14 @@ namespace ExampleMod.Content.NPCs
 			// interactions.Append(NPCInteractions.Shop(ShopName)); // Insert at the end (after the happiness and housing buttons, too)
 		}
 
-		// Here is simple example of a custom button that is labeled "Awesomeify". It will only appear if the NPC is Example Person.
+		// Here is simple example of a custom button that is labeled "Awesomeify".
 		public class AwesomeifyButton : NPCInteraction {
 			// This is the label of the button. This points to a localization key that translates to "Awesomeify".
 			public override string GetText() => Language.GetTextValue("Mods.ExampleMod.NPCs.ExamplePerson.AwesomeifyButton");
 
 			// Here you can change when this button will show up.
 			// We want the button to always be shown, so we return true.
-			// Chat buttons are assigned per NPC, so we don't have to worry about specifying this buttton should only show for our NPC.
+			// Chat buttons are assigned per NPC, so we don't have to worry about specifying this button should only show for our NPC.
 			// (No need to do something like this: TalkNPCType == ModContent.NPCType<ExamplePerson>();)
 			public override bool Condition() => true;
 
