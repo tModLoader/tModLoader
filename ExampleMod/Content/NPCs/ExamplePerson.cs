@@ -369,7 +369,8 @@ namespace ExampleMod.Content.NPCs
 		public override void OnChatButtonClicked(NPCInteraction interaction) {
 			// Using pattern matching, we can check which type of button was pressed.
 			if (interaction is AwesomeifyButton) {
-				ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"{interaction.LocalPlayer.name} clicked on the Awesomeify button!"), Color.White);
+				// OnChatButtonClicked only runs for the local player who clicked the button. Any multiplayer functionality will need to be synced with a packet.
+				Main.NewText($"{interaction.LocalPlayer.name} clicked on the Awesomeify button!");
 			}
 		}
 

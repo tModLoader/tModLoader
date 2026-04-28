@@ -36,7 +36,8 @@ public class GlobalNPCInteractions : GlobalNPC
 		// With OnChatButtonClicked, we can do additional things when any chat button is clicked. The interaction is the type of button that was clicked.
 		// We can use pattern matching to match the interaction type.
 		if (npc.type == NPCID.Guide && interaction is NPCInteractions.Actions.GuideReverseCrafting) {
-			ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"<{npc.FullName}> Simply place a material in the slot and I'll tell you everything you can craft with it!"), Color.LightGray);
+			// OnChatButtonClicked only runs for the local player who clicked the button. Any multiplayer functionality will need to be synced with a packet.
+			Main.NewText($"<{npc.FullName}> Simply place a material in the slot and I'll tell you everything you can craft with it!");
 		}
 	}
 
