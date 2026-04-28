@@ -529,7 +529,9 @@ public static partial class Config
 		RenameMethod("Terraria.ModLoader.ModNPC",		from: "SetupShop",	to: "ModifyActiveShop");
 		RenameMethod("Terraria.ModLoader.GlobalNPC",	from: "SetupShop",	to: "ModifyActiveShop");
 		RenameMethod("Terraria.ModLoader.ModPylon",		from: "IsPylonForSale", to: "GetNPCShopEntry").FollowBy(AddCommentToOverride("See ExamplePylonTile for an example. To register to specific NPC shops, use the new shop system directly in ModNPC.AddShop, GlobalNPC.ModifyShop or ModSystem.PostAddRecipes"));
+		/* Updated once again in 1.4.5
 		ChangeHookSignature("Terraria.ModLoader.ModNPC",	"OnChatButtonClicked");
+		*/
 		ChangeHookSignature("Terraria.ModLoader.ModNPC",	"ModifyActiveShop");
 		ChangeHookSignature("Terraria.ModLoader.GlobalNPC", "ModifyActiveShop");
 		ChangeHookSignature("Terraria.ModLoader.ModPylon",	"GetNPCShopEntry");
@@ -551,7 +553,7 @@ public static partial class Config
 
 		// 1.4.5
 		ChangeHookSignature("Terraria.ModLoader.ModNPC", "SpawnChance").RenameParameter("spawnInfo", "spawner");
-		ChangeHookSignature("Terraria.ModLoader.ModNPC", "OnChatButtonClicked", comment: "Suggestion: Remove this hook. Previously it was needed to assign a shop to a button, but that is now all handled by RegisterChatButtons.");
+		ChangeHookSignature("Terraria.ModLoader.ModNPC", "OnChatButtonClicked", comment: "Suggestion: Previously this was used to assign a shop to a button, but that is now handled by RegisterChatButtons. If that is all this was used for, remove this hook");
 		ChangeHookSignature("Terraria.ModLoader.GlobalNPC", "EditSpawnPool").RenameParameter("spawnInfo", "spawner");
 		ChangeHookSignature("Terraria.ModLoader.GlobalNPC", "OnChatButtonClicked");
 		ChangeHookSignature("Terraria.ModLoader.GlobalNPC", "PreChatButtonClicked");
