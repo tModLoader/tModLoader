@@ -195,14 +195,14 @@ public class OpenShopOnlyAvailableDuringDay(string shopName, string customTextKe
 
 	public override bool ShowExcalmation => true; // Show an exclamation point next to the button.
 
-	public override void TextColor(ref Color chatColor, ref Color chatColorShadow, bool hoveringOverButton) // Edit the color of the button.
-{
-	chatColor = Color.Black * (Main.mouseTextColor / 255f); // * (Main.mouseTextColor / 255f) makes it pulse like the normal buttons.
-	chatColorShadow = Color.LightGray;
-	if (hoveringOverButton)
-	{
-		chatColor = Color.DarkGray * (Main.mouseTextColor / 255f);
-		chatColorShadow = Color.White;
+	public override void TextColor(ref Color chatColor, ref Color chatColorShadow, bool hoveringOverButton) { // Edit the color of the button.
+		chatColor = Color.Black * (Main.mouseTextColor / 255f); // * (Main.mouseTextColor / 255f) makes it pulse like the normal buttons.
+		chatColorShadow = Color.LightGray;
+		if (hoveringOverButton)
+		{
+			chatColor = Color.DarkGray * (Main.mouseTextColor / 255f);
+			chatColorShadow = Color.White;
+		}
 	}
 }
 ```

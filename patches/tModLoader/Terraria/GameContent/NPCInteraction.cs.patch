@@ -41,12 +41,13 @@
  	public int TalkNPCType {
  		get {
  			if (LocalPlayer.talkNPC == -1)
-@@ -19,15 +_,47 @@
+@@ -19,15 +_,48 @@
  		}
  	}
  
 +	/// <summary>
 +	/// Determines when this NPCInteraction can/will be shown.
++	/// <br/><br/> Note that this will be checked every game update while the player is talking to the NPC.
 +	/// </summary>
  	public abstract bool Condition();
  

@@ -18,7 +18,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Terraria;
 using Terraria.Audio;
-using Terraria.Chat;
 using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.GameContent.Bestiary;
@@ -38,12 +37,17 @@ namespace ExampleMod.Content.NPCs
 	public class ExamplePerson : ModNPC
 	{
 		public const string ShopName = "Shop";
+		public const string DayOnlyShopName = "DayOnlyShop";
 		public int NumberOfTimesTalkedTo = 0;
 
 		private static int ShimmerHeadIndex;
 		private static Profiles.StackedNPCProfile NPCProfile;
 
-		public static LocalizedText UpgradedText { get; private set; }
+		public static LocalizedText UpgradeItemButtonText { get; private set; }
+		public static LocalizedText UpgradeItemResponseText { get; private set; }
+		public static LocalizedText AwesomeifyButtonText { get; private set; }
+		public static LocalizedText AwesomeifyResponseText { get; private set; }
+		public static LocalizedText DayOnlyShopButtonText { get; private set; }
 
 		// Sets a unique message when the NPC dies.
 		// See also NPCID.Sets.IsTownChild if you just want the message used by Angler and Princess.
@@ -109,7 +113,11 @@ namespace ExampleMod.Content.NPCs
 
 			ContentSamples.NpcBestiaryRarityStars[Type] = 3; // We can override the default bestiary star count calculation by setting this.
 
-			UpgradedText = this.GetLocalization("Upgraded");
+			UpgradeItemButtonText = this.GetLocalization("Interactions.UpgradeItemButton");
+			UpgradeItemResponseText = this.GetLocalization("Interactions.UpgradeItemResponse");
+			AwesomeifyButtonText = this.GetLocalization("Interactions.AwesomeifyButton");
+			AwesomeifyResponseText = this.GetLocalization("Interactions.AwesomeifyResponse");
+			DayOnlyShopButtonText = this.GetLocalization("Interactions.DayOnlyShopButton");
 		}
 
 		public override void SetDefaults() {
@@ -297,7 +305,7 @@ namespace ExampleMod.Content.NPCs
 			// interactions.Prepend(NPCInteraction interaction)	This will add the button to the beginning of the list.
 			// interactions.InsertAfter(NPCInteraction interactionToRegister, NPCInteraction interactionAfter)		This will add the button after another specified button.
 			// interactions.InsertBefore(NPCInteraction interactionToRegister, NPCInteraction interactionBefore)	This will add the button before another specified button.
-			// interactions.InsertAt(NPCInteraction interaction, int index)		This will add the button at a specific index (0 based, so index 0 is button 1).
+			// interactions.InsertAt(NPCInteraction interaction, int index)		This will add the button at a specific index (0 based, so index 0 is the first button).
 
 			// In this example we are registering our Shop button to before the Close button.
 			// The Close button instance is provided for us for convenience.
@@ -306,12 +314,12 @@ namespace ExampleMod.Content.NPCs
 			// Next, add the rest of our buttons before the Happiness button (which is before the Housing button).
 			interactions.InsertBefore(new AwesomeifyButton(), happinessButton); // These are custom buttons that we've defined below.
 			interactions.InsertBefore(new UpgradeButton(), happinessButton);
-			interactions.InsertBefore(new OpenShopOnlyAvailableDuringDay(ShopName, "Day Only Shop"), happinessButton);
+			interactions.InsertBefore(new OpenShopOnlyAvailableDuringDay(DayOnlyShopName, DayOnlyShopButtonText.Key), happinessButton);
 
 			// Showcase of other things you can do:
 			// NPCInteraction awesomeifyButton = interactions.InsertBefore(new AwesomeifyButton(), happinessButton); // Return the interaction instance
 			// interactions.InsertAt(new UpgradeButton(), 3); // Insert at index 3 (button 4)
-			// interactions.InsertAfter(new OpenShopOnlyAvailableDuringDay(ShopName, "Day Only Shop"), awesomeifyButton); // Insert after the instance we saved above.
+			// interactions.InsertAfter(new OpenShopOnlyAvailableDuringDay(ShopName, DayOnlyShopButtonText.Key), awesomeifyButton); // Insert after the instance we saved above.
 			// interactions.Prepend(NPCInteractions.Shop(ShopName)); // Insert at the beginning
 			// interactions.Append(NPCInteractions.Shop(ShopName)); // Insert at the end (after the happiness and housing buttons, too)
 		}
@@ -319,7 +327,7 @@ namespace ExampleMod.Content.NPCs
 		// Here is simple example of a custom button that is labeled "Awesomeify".
 		public class AwesomeifyButton : NPCInteraction {
 			// This is the label of the button. This points to a localization key that translates to "Awesomeify".
-			public override string GetText() => Language.GetTextValue("Mods.ExampleMod.NPCs.ExamplePerson.AwesomeifyButton");
+			public override string GetText() => AwesomeifyButtonText.Value;
 
 			// Here you can change when this button will show up.
 			// We want the button to always be shown, so we return true.
@@ -329,18 +337,18 @@ namespace ExampleMod.Content.NPCs
 
 			// When the button is clicked, this will run.
 			public override void Interact() {
-				Main.npcChatText = "Awesome!";
+				Main.npcChatText = AwesomeifyResponseText.Value;
 			}
 		}
 
 		// Here is another example of a custom button that only shows up if the player has a specific item in their inventory.
 		public class UpgradeButton : NPCInteraction {
-			public override string GetText() => "Upgrade " + Lang.GetItemNameValue(ItemID.HiveBackpack);
+			public override string GetText() => UpgradeItemResponseText.Value;
 			public override bool Condition() => LocalPlayer.HasItem(ItemID.HiveBackpack);
 			public override void Interact() {
 				SoundEngine.PlaySound(SoundID.Item37); // Reforge/Anvil sound
 
-				Main.npcChatText = UpgradedText.Value;
+				Main.npcChatText = UpgradeItemResponseText.Value;
 
 				int hiveBackpackItemIndex = LocalPlayer.FindItem(ItemID.HiveBackpack); // Find the location of the item in the player's inventory.
 				var entitySource = TalkNPC.GetSource_GiftOrReward();
@@ -367,7 +375,6 @@ namespace ExampleMod.Content.NPCs
 
 		// With OnChatButtonClicked, we can do additional things when any chat button is clicked. The interaction is the type of button that was clicked.
 		public override void OnChatButtonClicked(NPCInteraction interaction) {
-			// Using pattern matching, we can check which type of button was pressed.
 			if (interaction is AwesomeifyButton) {
 				// OnChatButtonClicked only runs for the local player who clicked the button. Any multiplayer functionality will need to be synced with a packet.
 				Main.NewText($"{interaction.LocalPlayer.name} clicked on the Awesomeify button!");
@@ -404,6 +411,13 @@ namespace ExampleMod.Content.NPCs
 				npcShop.Add(bloodTalisman.Type);
 			}
 			npcShop.Register(); // Name of this shop tab
+
+			// This is the 2nd shop, accessible only during the day. NPC can have multiple shops, but usually the main shop has the default name of "Shop" as seen above.
+			var dayOnlyShop = new NPCShop(Type, DayOnlyShopName)
+				.Add(ItemID.Sunglasses)
+				.Add(ItemID.AviatorSunglasses)
+				.Add(ItemID.HiTekSunglasses);
+			dayOnlyShop.Register();
 		}
 
 		public override void ModifyActiveShop(string shopName, Item[] items) {

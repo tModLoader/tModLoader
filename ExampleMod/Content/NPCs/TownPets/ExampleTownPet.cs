@@ -163,10 +163,11 @@ namespace ExampleMod.Content.NPCs.TownPets
 			return chat;
 		}
 
-		// Setting NPCID.Sets.IsTownPet will automatically add the pet button, but here is one way on how to do it if it weren't automatic.
-		// public override void RegisterChatButtons(NPCInteractionList interactions, NPCInteraction closeButton, NPCInteraction happinessButton, NPCInteraction housingButton) {
-		//	interactions.InsertAfter(new NPCInteractions.Actions.PetAnimal(), closeButton);
-		// }
+		/* Setting NPCID.Sets.IsTownPet will automatically add the pet button, but here is one way on how to do it if it weren't automatic.
+		public override void RegisterChatButtons(NPCInteractionList interactions, NPCInteraction closeButton, NPCInteraction happinessButton, NPCInteraction housingButton) {
+			interactions.InsertAfter(new NPCInteractions.Actions.PetAnimal(), closeButton);
+		}
+		*/
 
 		public override bool PreAI() {
 			// If your Town Pet can sit in chairs with NPCID.Sets.CannotSitOnFurniture[Type] = false

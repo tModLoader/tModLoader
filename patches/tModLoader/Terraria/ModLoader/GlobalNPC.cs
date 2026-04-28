@@ -689,7 +689,7 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	}
 
 	/// <summary>
-	/// Allows you to determine if something can happen whenever a button is clicked on this NPC's chat window. Return false to prevent the normal code for this button from running. Returns true by default.
+	/// Allows you to determine if something can happen whenever a button is clicked on this NPC's chat window. Return false to prevent the normal code for this button from running. Returns <see langword="true"/> by default.
 	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="npc"></param>
