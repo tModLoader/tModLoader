@@ -442,7 +442,7 @@
  	public static bool allChestStackHover;
  	public static bool inventorySortMouseOver;
  	public static bool bestiaryMouseOver;
-@@ -823,44 +_,149 @@
+@@ -823,44 +_,152 @@
  	public static float ambientVolume = 1f;
  	public static float soundVolume = 1f;
  	public static ServerMode MenuServerMode = ServerMode.Lobby | ServerMode.FriendsCanJoin;
@@ -561,6 +561,9 @@
 +	/// </summary>
  	public static byte[] wallLargeFrames = new byte[WallID.Count];
  	public static bool[] tileRope = new bool[TileID.Count];
++	/// <summary>
++	/// If true, this tile is considered a typical brick for tile merging purposes. Most "terrain" tiles intended for building that aren't dirt or similar natural materials set this to true to allow seamless connections between the tiles. Most of these tiles cover the full 16x16 area unlike dirt which has rough edges.
++	/// </summary>
  	public static bool[] tileBrick = new bool[TileID.Count];
  	public static bool[] tileMoss = new bool[TileID.Count];
 +	/// <summary>
@@ -1419,7 +1422,7 @@
  			string lpWindowName = (Console.Title = "terraria" + rand.Next(int.MaxValue));
  			if (Platform.IsWindows) {
  				IntPtr intPtr = FindWindow(null, lpWindowName);
-@@ -4517,17 +_,37 @@
+@@ -4517,17 +_,38 @@
  			}
  		}
  		else {
@@ -1431,6 +1434,7 @@
 +			// Make a new console and use it. I don't know why, but trying to start the server process will share the same console by default.
 +			Platform.Get<IWindowService>().ReleaseConsole();
 +			Platform.Get<IWindowService>().CreateAndRedirectConsole();
++			Program.InitializeConsoleEncoding();
  		}
  
  		dedServ = true;
@@ -4556,7 +4560,7 @@
  			}
  			else {
  				int num2 = rand.Next(3);
-@@ -34758,13 +_,30 @@
+@@ -34758,13 +_,28 @@
  		if (dialoguePortraitPreference == DialoguePortraitDrawOption.Disabled)
  			return;
  
@@ -4578,9 +4582,7 @@
 +		if (nPCPortraitProvider == null && dialoguePortraitPreference == DialoguePortraitDrawOption.Detailed)
 +			dialoguePortraitPreference = DialoguePortraitDrawOption.CloseUp;
 +		if (nPCPortraitProvider != null) {
-+			nPCPortraitProvider.GetDrawData(out var portraitTexture, out var portraitDrawFrame);
-+			texture = portraitTexture;
-+			drawFrame = portraitDrawFrame;
++			nPCPortraitProvider.GetDrawData(out texture, out drawFrame);
 +			if (texture == null)
 +				return;
 +		}

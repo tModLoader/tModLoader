@@ -2236,6 +2236,24 @@
  			if ((direction != 0 || !SolidTileAllowTopSlope(x, y)) && (direction != 1 || !SolidTileAllowBottomSlope(x, y)) && (direction != 2 || !SolidTileAllowLeftSlope(x, y))) {
  				if (direction == 3)
  					return SolidTileAllowRightSlope(x, y);
+@@ -50437,6 +_,17 @@
+ 		return false;
+ 	}
+ 
++	/// <summary>
++	/// Checks whether a multi-directional tile (such as <see cref="TileID.ExposedGems"/> or <see cref="TileID.Crystals"/>) at the specified coordinates can be anchored and returns the new direction the tile should face.
++	/// <paramref name="newFrameDirection"/> values are as follows:
++	/// <br/><br/> <paramref name="newFrameDirection"/> values indicate the direction the tile is now pointing, which is the opposite of the direction they are anchored to:
++	/// <br/> <b>0:</b> Up
++	/// <br/> <b>1:</b> Down
++	/// <br/> <b>2:</b> Right
++	/// <br/> <b>3:</b> Left
++	/// <br/><br/> If true is returned, adjust the tile's frame values to match the new direction.
++	/// <br/><br/> Returns false if no valid anchor exists, in which case the tile should be destroyed with <c>WorldGen.KillTile(i, j);</c>
++	/// </summary>
+ 	public static bool CheckAndAdjustMultiDirectionalTile(int i, int j, int type, out int newFrameDirection)
+ 	{
+ 		newFrameDirection = 0;
 @@ -50501,10 +_,15 @@
  			return;
  

@@ -40,24 +40,6 @@
 +	/// </summary>
 +	/// <returns>This <see cref="Item"/>'s hitbox in the world.</returns>
  	public Rectangle getRect() => new Rectangle((int)position.X, (int)position.Y, width, height);
- 
-+	// Removed in favor of UpdateWhichItemsAreMaterials logic
-+	/*
- 	public bool checkMat()
- 	{
- 		if (type >= 71 && type <= 74) {
-@@ -839,9 +_,11 @@
- 
- 				material = false;
- 				return false;
-+				// Extra patch context.
- 			}
- 		}
- 	}
-+	*/
- 
- 	public void netDefaults(int type)
- 	{
 @@ -47737,6 +_,8 @@
  					stack *= 1000000;
  					break;

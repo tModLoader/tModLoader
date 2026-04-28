@@ -54,7 +54,7 @@ echo "Verifying .NET...."  2>&1 | tee -a "$LogFile"
 echo "This may take a few moments."
 
 # Get Dotnet Version expecting to have installed
-source ./DotNetVersion.sh
+. ./DotNetVersion.sh
 
 # Attempt to fix first time Crash To Desktop due to dotnet install failure
 if [[ ! "$is_first_run" && ! -f "$LaunchLogs/client.log" && ! -f "$LaunchLogs/server.log" ]]; then

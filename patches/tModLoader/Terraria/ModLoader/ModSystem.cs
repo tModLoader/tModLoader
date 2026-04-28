@@ -249,7 +249,7 @@ public abstract partial class ModSystem : ModType
 
 	/// <summary>
 	/// Called after the Network got updated, this is the last hook that happens in an update.
-	/// <para/> Called in single player or on the server only.
+	/// <para/> Called on all clients and the server.
 	/// </summary>
 	public virtual void PostUpdateEverything() { }
 

@@ -414,6 +414,7 @@ public static class ModContent
 		RuntimeHelpers.RunClassConstructor(typeof(ArmorIDs.Shoe.Sets).TypeHandle);
 		RuntimeHelpers.RunClassConstructor(typeof(ArmorIDs.Waist.Sets).TypeHandle);
 		RuntimeHelpers.RunClassConstructor(typeof(ArmorIDs.Wing.Sets).TypeHandle);
+		RuntimeHelpers.RunClassConstructor(typeof(ArmorIDs.Neck.Sets).TypeHandle);
 		RuntimeHelpers.RunClassConstructor(typeof(ArmorIDs.Face.Sets).TypeHandle);
 		RuntimeHelpers.RunClassConstructor(typeof(ArmorIDs.Beard.Sets).TypeHandle);
 		RuntimeHelpers.RunClassConstructor(typeof(ArmorIDs.Balloon.Sets).TypeHandle);

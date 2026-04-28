@@ -782,7 +782,6 @@ public static class TileLoader
 
 		RegisterConversionFallback(TileID.CorruptJungleGrass, TileID.JungleGrass, BiomeConversionID.Corruption, BiomeConversionID.GlowingMushroom);
 		RegisterConversionFallback(TileID.CrimsonJungleGrass, TileID.JungleGrass, BiomeConversionID.Crimson, BiomeConversionID.GlowingMushroom);
-		RegisterConversionFallback(TileID.MushroomGrass, TileID.JungleGrass, BiomeConversionID.GlowingMushroom, BiomeConversionID.Corruption, BiomeConversionID.Crimson);
 
 		RegisterConversionFallback(TileID.CorruptIce, TileID.IceBlock, BiomeConversionID.Corruption);
 		RegisterConversionFallback(TileID.FleshIce, TileID.IceBlock, BiomeConversionID.Crimson);

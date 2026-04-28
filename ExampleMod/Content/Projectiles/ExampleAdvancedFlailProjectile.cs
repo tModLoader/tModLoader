@@ -158,7 +158,7 @@ namespace ExampleMod.Content.Projectiles
 							// This is where Drippler Crippler spawns its projectile
 							/*
 							if (Main.myPlayer == Projectile.owner)
-								Projectile.NewProjectile(Projectile.GetProjectileSource_FromThis(), Projectile.Center, Projectile.velocity, 928, Projectile.damage, Projectile.knockBack, Main.myPlayer);
+								Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.velocity, ProjectileID.DripplerFlailExtraBall, Projectile.damage, Projectile.knockBack, Main.myPlayer);
 							*/
 							break;
 						}
