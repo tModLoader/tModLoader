@@ -1,11 +1,42 @@
 --- src/TerrariaNetCore/Terraria/RecipeGroup.cs
 +++ src/tModLoader/Terraria/RecipeGroup.cs
-@@ -58,6 +_,16 @@
+@@ -6,7 +_,7 @@
+ 
+ namespace Terraria;
+ 
+-public class RecipeGroup
++public partial class RecipeGroup
+ {
+ 	public static readonly int FakeItemIdOffset = 1000000;
+ 	public static LocalizedText DefaultCombineFormat = Language.GetText("CombineFormat.RecipeGroup");
+@@ -25,12 +_,13 @@
+ 		return () => DefaultCombineFormat.Format(text);
+ 	}
+ 
++	// TML: ctors are now internal to force modders to use static factory method approach
+-	public RecipeGroup(string groupDescriptorKey, params int[] validItems)
++	internal RecipeGroup(string groupDescriptorKey, params int[] validItems)
+ 		: this(WithDefaultCombineFormat(groupDescriptorKey), validItems)
+ 	{
+ 	}
+ 
+-	public RecipeGroup(Func<string> getName, params int[] validItems)
++	internal RecipeGroup(Func<string> getName, params int[] validItems)
+ 	{
+ 		RegisteredId = -1;
+ 		GetText = getName;
+@@ -53,10 +_,20 @@
+ 
+ 	public override string ToString() => GetText();
+ 
+-	public RecipeGroup Register()
++	internal RecipeGroup Register()
+ 	{
  		if (RegisteredId >= 0)
  			throw new Exception("Already registered");
- 
++
 +		// TML: Handle registering to an existing group by merging items and keeping the original group.
-+		var existingRecipeGroup = recipeGroups.Values.FirstOrDefault(x => x.GetPlaceholderItemType() == this.GetPlaceholderItemType());
++		var existingRecipeGroup = recipeGroups.Values.FirstOrDefault(x => x.Key == Key);
 +		if (existingRecipeGroup != null) {
 +			foreach (var item in this.Items) {
 +				if(!existingRecipeGroup.ValidItems.Contains(item))
@@ -13,7 +44,6 @@
 +			}
 +			return existingRecipeGroup;
 +		}
-+
+ 
  		int key = (RegisteredId = nextRecipeGroupIndex++);
  		recipeGroups.Add(key, this);
- 		return this;

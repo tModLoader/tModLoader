@@ -1,0 +1,13 @@
+--- src/TerrariaNetCore/Terraria/ID/RecipeGroups.cs
++++ src/tModLoader/Terraria/ID/RecipeGroups.cs
+@@ -10,8 +_,10 @@
+ 	public static RecipeGroup Butterflies;
+ 	public static RecipeGroup Fireflies;
+ 	public static RecipeGroup Snails;
++	/* Never actually assigned, so commented out.
+ 	public static RecipeGroup FishForDinner;
+ 	public static RecipeGroup GoldenCritter;
++	*/
+ 	public static RecipeGroup Dragonflies;
+ 	public static RecipeGroup Turtles;
+ 	public static RecipeGroup Fruit;

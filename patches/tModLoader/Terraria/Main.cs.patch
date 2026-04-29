@@ -1871,6 +1871,16 @@
  		for (int i = 1; i < ProjectileID.Count; i++) {
  			Projectile obj = new Projectile();
  			obj.SetDefaults(i);
+@@ -5672,7 +_,9 @@
+ 				projHook[i] = true;
+ 		}
+ 
++		/* TML: Moved into Recipe.SetupRecipes();
+ 		Recipe.SetupRecipeGroups();
++		*/
+ 		ConditionalDialogue.Init();
+ 		ArmorSetBonuses.Initialize();
+ 		ArmorSetBonuses.BuildLookup();
 @@ -5698,11 +_,18 @@
  		}
  
