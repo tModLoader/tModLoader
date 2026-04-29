@@ -26,13 +26,13 @@ namespace ExampleMod.Content
 				ModContent.ItemType<Items.ExampleItem>(), ModContent.ItemType<Items.ExampleDataItem>());
 
 			// To avoid name collisions, when a modded items is the iconic or 1st item in a recipe group, name the recipe group: ModName:ItemName
-			RecipeGroup.RegisterGroup("ExampleMod:ExampleItem", ExampleRecipeGroup);
+			RecipeGroup.RegisterGroup("ExampleMod:ExampleItem", ExampleRecipeGroup)/* tModPorter Note: Removed. Replace this and "new RecipeGroup()" with RecipeGroup.Register */;
 
 			// Add an item to an existing Terraria recipeGroup. ExampleCritterItem isn't gold but it serves as an example for this.
-			RecipeGroup.recipeGroups[RecipeGroupID.GoldenCritter].ValidItems.Add(ModContent.ItemType<ExampleCritterItem>());
+			RecipeGroup.recipeGroups[RecipeGroups.GoldenCritter].ValidItems.Add(ModContent.ItemType<ExampleCritterItem>());
 
 			// We also add ExampleSand to the Sand group, which is used in the Glass and Magic Sand Dropper recipes
-			RecipeGroup.recipeGroups[RecipeGroupID.Sand].ValidItems.Add(ModContent.ItemType<ExampleSandBlock>());
+			RecipeGroup.recipeGroups[RecipeGroups.Sand].ValidItems.Add(ModContent.ItemType<ExampleSandBlock>());
 
 			// We can also add ExamplePressurePlate to the pressure plate group, allowing it to be used to craft weighted pressure plates and pressure plate track. Since ExamplePressurePlate is a weighed pressure plate, we'll leave this commented out.
 			//RecipeGroup.recipeGroups[RecipeGroupID.PressurePlate].ValidItems.Add(ModContent.ItemType<ExamplePressurePlate>());
@@ -40,7 +40,7 @@ namespace ExampleMod.Content
 			// While an "IronBar" group exists, "SilverBar" does not. tModLoader will merge recipe groups registered with the same name, so if you are registering a recipe group with a vanilla item as the 1st item, you can register it using just the internal item name if you anticipate other mods wanting to use this recipe group for the same concept. By doing this, multiple mods can add to the same group without extra effort. In this case we are adding a SilverBar group. Don't store the RecipeGroup instance, it might not be used, use the same nameof(ItemID.ItemName) or RecipeGroupID returned from RegisterGroup when using Recipe.AddRecipeGroup instead.
 			RecipeGroup SilverBarRecipeGroup = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} {Lang.GetItemNameValue(ItemID.SilverBar)}",
 			ItemID.SilverBar, ItemID.TungstenBar, ModContent.ItemType<Items.Placeable.ExampleBar>());
-			RecipeGroup.RegisterGroup(nameof(ItemID.SilverBar), SilverBarRecipeGroup);
+			RecipeGroup.RegisterGroup(nameof(ItemID.SilverBar), SilverBarRecipeGroup)/* tModPorter Note: Removed. Replace this and "new RecipeGroup()" with RecipeGroup.Register */;
 		}
 
 		public override void AddRecipes() {
@@ -81,9 +81,9 @@ namespace ExampleMod.Content
 
 				// RecipeGroups allow you create a recipe that accepts items from a group of similar ingredients. For example, all varieties of Wood are in the vanilla "Wood" Group
 				// Check here for other vanilla groups: https://github.com/tModLoader/tModLoader/wiki/Intermediate-Recipes#using-existing-recipegroups
-				.AddRecipeGroup(RecipeGroupID.Wood)
+				.AddRecipeGroup(RecipeGroups.Wood)
 				// Just like with AddIngredient, there's a stack parameter with a default value of 1.
-				.AddRecipeGroup(RecipeGroupID.IronBar, 2)
+				.AddRecipeGroup(RecipeGroups.IronBar, 2)
 				// Here is using a mod recipe group. Check out AddRecipeGroups() to see how to register a recipe group.
 				.AddRecipeGroup(ExampleRecipeGroup, 2)
 				// An alternate string-based approach to the above. Try to only use it for other mods' groups, because it's slower.
