@@ -290,55 +290,72 @@ public class NPCInteractionDatabase
 
 		RegisterAppend(NPCID.TownCat, closeButton);
 		RegisterAppend(NPCID.TownCat, new NPCInteractions.Actions.PetAnimal());
+		RegisterAppend(NPCID.TownCat, happinessButton); // Register the happiness button even though it'll never show up to match vanilla.
 		RegisterAppend(NPCID.TownCat, housingButton);
 
 		RegisterAppend(NPCID.TownDog, closeButton);
 		RegisterAppend(NPCID.TownDog, new NPCInteractions.Actions.PetAnimal());
+		RegisterAppend(NPCID.TownDog, happinessButton);
 		RegisterAppend(NPCID.TownDog, housingButton);
 
 		RegisterAppend(NPCID.TownBunny, closeButton);
 		RegisterAppend(NPCID.TownBunny, new NPCInteractions.Actions.PetAnimal());
+		RegisterAppend(NPCID.TownBunny, happinessButton);
 		RegisterAppend(NPCID.TownBunny, housingButton);
 
 		RegisterAppend(NPCID.TownSlimeCopper, closeButton);
 		RegisterAppend(NPCID.TownSlimeCopper, new NPCInteractions.Actions.PetAnimal());
+		RegisterAppend(NPCID.TownSlimeCopper, happinessButton);
 		RegisterAppend(NPCID.TownSlimeCopper, housingButton);
 
 		RegisterAppend(NPCID.TownSlimePurple, closeButton);
 		RegisterAppend(NPCID.TownSlimePurple, new NPCInteractions.Actions.PetAnimal());
+		RegisterAppend(NPCID.TownSlimePurple, happinessButton);
 		RegisterAppend(NPCID.TownSlimePurple, housingButton);
 
 		RegisterAppend(NPCID.TownSlimeBlue, closeButton);
 		RegisterAppend(NPCID.TownSlimeBlue, new NPCInteractions.Actions.PetAnimal());
+		RegisterAppend(NPCID.TownSlimeBlue, happinessButton);
 		RegisterAppend(NPCID.TownSlimeBlue, housingButton);
 
 		RegisterAppend(NPCID.TownSlimeRed, closeButton);
 		RegisterAppend(NPCID.TownSlimeRed, new NPCInteractions.Actions.PetAnimal());
+		RegisterAppend(NPCID.TownSlimeRed, happinessButton);
 		RegisterAppend(NPCID.TownSlimeRed, housingButton);
 
 		RegisterAppend(NPCID.TownSlimeYellow, closeButton);
 		RegisterAppend(NPCID.TownSlimeYellow, new NPCInteractions.Actions.PetAnimal());
+		RegisterAppend(NPCID.TownSlimeYellow, happinessButton);
 		RegisterAppend(NPCID.TownSlimeYellow, housingButton);
 
 		RegisterAppend(NPCID.TownSlimeOld, closeButton);
 		RegisterAppend(NPCID.TownSlimeOld, new NPCInteractions.Actions.PetAnimal());
+		RegisterAppend(NPCID.TownSlimeOld, happinessButton);
 		RegisterAppend(NPCID.TownSlimeOld, housingButton);
 
 		RegisterAppend(NPCID.TownSlimeGreen, closeButton);
 		RegisterAppend(NPCID.TownSlimeGreen, new NPCInteractions.Actions.PetAnimal());
+		RegisterAppend(NPCID.TownSlimeGreen, happinessButton);
 		RegisterAppend(NPCID.TownSlimeGreen, housingButton);
 
 		RegisterAppend(NPCID.TownSlimeRainbow, closeButton);
 		RegisterAppend(NPCID.TownSlimeRainbow, new NPCInteractions.Actions.PetAnimal());
+		RegisterAppend(NPCID.TownSlimeRainbow, happinessButton);
 		RegisterAppend(NPCID.TownSlimeRainbow, housingButton);
 
 		RegisterAppend(NPCID.OldMan, closeButton);
 		RegisterAppend(NPCID.OldMan, new NPCInteractions.Actions.OldManCurse());
+		RegisterAppend(NPCID.OldMan, happinessButton); // Register the happiness and housing buttons even though they'll never show up to match vanilla.
+		RegisterAppend(NPCID.OldMan, housingButton);
 
 		RegisterAppend(NPCID.TravellingMerchant, new NPCInteractions.Actions.OpenShop(19));
 		RegisterAppend(NPCID.TravellingMerchant, closeButton);
+		RegisterAppend(NPCID.TravellingMerchant, happinessButton);
+		RegisterAppend(NPCID.TravellingMerchant, housingButton);
 
-		RegisterAppend(NPCID.SkeletonMerchant, new NPCInteractions.Actions.OpenShop(10));
+		RegisterAppend(NPCID.SkeletonMerchant, new NPCInteractions.Actions.OpenShop(20));
 		RegisterAppend(NPCID.SkeletonMerchant, closeButton);
+		RegisterAppend(NPCID.SkeletonMerchant, happinessButton);
+		RegisterAppend(NPCID.SkeletonMerchant, housingButton);
 	}
 }
