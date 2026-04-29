@@ -204,25 +204,6 @@
  			if (!player.adjTile[tempRec.requiredTile[i]])
  				return false;
  		}
-@@ -603,13 +_,13 @@
- 		RecipeGroupID.Fruit = RecipeGroup.RegisterGroup("Fruit", rec);
- 		rec = new RecipeGroup(() => Lang.misc[37].Value + " " + Language.GetTextValue("Misc.Balloon"), 3738, 3736, 3737);
- 		RecipeGroupID.Balloons = RecipeGroup.RegisterGroup("Balloons", rec);
--		rec = new RecipeGroup(() => "replaceme wood", 9, 619, 620, 621, 911, 1729, 2504, 2503, 5215);
-+		rec = new RecipeGroup(() => Lang.misc[37].Value + " " + Lang.GetItemNameValue(ItemID.Wood), 9, 619, 620, 621, 911, 1729, 2504, 2503, 5215);
- 		RecipeGroupID.Wood = RecipeGroup.RegisterGroup("Wood", rec);
--		rec = new RecipeGroup(() => "replaceme sand", 169, 408, 1246, 370, 3272, 3338, 3274, 3275);
-+		rec = new RecipeGroup(() => Lang.misc[37].Value + " " + Lang.GetItemNameValue(ItemID.SandBlock), 169, 408, 1246, 370, 3272, 3338, 3274, 3275);
- 		RecipeGroupID.Sand = RecipeGroup.RegisterGroup("Sand", rec);
--		rec = new RecipeGroup(() => "replaceme ironbar", 22, 704);
-+		rec = new RecipeGroup(() => Lang.misc[37].Value + " " + Lang.GetItemNameValue(ItemID.IronBar), 22, 704);
- 		RecipeGroupID.IronBar = RecipeGroup.RegisterGroup("IronBar", rec);
--		rec = new RecipeGroup(() => "replaceme fragment", 3458, 3456, 3457, 3459);
-+		rec = new RecipeGroup(() => Lang.misc[37].Value + " " + Lang.misc[51].Value, 3458, 3456, 3457, 3459);
- 		RecipeGroupID.Fragment = RecipeGroup.RegisterGroup("Fragment", rec);
--		rec = new RecipeGroup(() => "replaceme pressureplate", 852, 543, 542, 541, 1151, 529, 853, 4261);
-+		rec = new RecipeGroup(() => Lang.misc[37].Value + " " + Lang.misc[38].Value, 852, 543, 542, 541, 1151, 529, 853, 4261);
- 		RecipeGroupID.PressurePlate = RecipeGroup.RegisterGroup("PressurePlate", rec);
 @@ -628,4 +_,5 @@
  
 +		/*

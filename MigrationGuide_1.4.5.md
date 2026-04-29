@@ -124,6 +124,44 @@ When the portrait setting is set to profile, a close up of the NPC's normal spri
   
 Note: As stated above, if a detailed portrait is not provided, the profile portrait will display if the user has the detailed portrait setting enabled.
 
+### RecipeGroup
+
+`RecipeGroup`s have changed. 
+* 🤖: There is no longer a `RecipeGroupID` class. Instead, the `RecipeGroups` class stores vanilla `RecipeGroup` objects.
+* ⚙️: Creating `RecipeGroup`s has also changed. 
+  * The `RecipeGroup` constructor and `RecipeGroup.RegisterGroup` have been removed. Creating and registering a `RecipeGroup` is now consolidated into the `RecipeGroup.Register` method.
+  * Rather than manually using "LegacyMisc.37" to create the string "Any ItemName", the default way of creating `RecipeGroup`s will now automatically generate that string from a passed in localization key. Custom recipe group display names are also still possible with the other `RecipeGroup.Register` overload.
+* There are several new vanilla `RecipeGroup`s. Replace custom groups with these vanilla groups: `Seashells`, `Stone`, `CobaltBar`, `MythrilBar`, `AdamantiteBar`, `GemCritter`, `MagicMirror`, and `Jellyfish`. If you were referencing vanilla groups by name/key, note that these no longer have spaces: `CloudBalloons`, `BlizzardBalloons, `SandstormBalloons`, `CritterGuides, and `NatureGuides`.
+
+Examples:
+```cs
+// Old
+CreateRecipe()
+	.AddRecipeGroup(RecipeGroupID.Wood, 9)
+	.Register();
+
+RecipeGroup.recipeGroups[RecipeGroupID.Sand].ValidItems.Add(ModContent.ItemType<ExampleSandBlock>());
+
+RecipeGroup SilverBarRecipeGroup = new RecipeGroup(
+	() => $"{Language.GetTextValue("LegacyMisc.37")} {Lang.GetItemNameValue(ItemID.SilverBar)}",
+	ItemID.SilverBar, ItemID.TungstenBar, ModContent.ItemType<Items.Placeable.ExampleBar>()
+);
+RecipeGroup.RegisterGroup(nameof(ItemID.SilverBar), SilverBarRecipeGroup);
+
+// New
+CreateRecipe()
+	.AddRecipeGroup(RecipeGroups.Wood, 9)
+	.Register();
+
+RecipeGroups.Sand.ValidItems.Add(ModContent.ItemType<ExampleSandBlock>());
+
+SilverBarRecipeGroup = RecipeGroup.Register(
+	nameof(ItemID.SilverBar),
+	"ItemName.SilverBar", // Lang.GetItemName(ItemID.SilverBar).Key would also work.
+	ItemID.SilverBar, ItemID.TungstenBar, ModContent.ItemType<ExampleBar>()
+);
+```
+
 ## Other Changes
 
 * Fishing power bonus now applies to any chair, not just toilets.
@@ -138,6 +176,7 @@ Note: As stated above, if a detailed portrait is not provided, the profile portr
 ### Static Methods
 
 * 💀: `Main.GetPlayerArmPosition` now has a `Player` parameter.
+* ⚙️: `RecipeGroup.RegisterGroup` removed. See [RecipeGroup](#recipegroup) for more information.
 * ⚙️: `Utils.PlotTileArea` -> `Utils.FloodFillTile`. No longer returns `bool` and parameters are now `Point point, float maxDist, TileActionAttempt plot` instead of `int x, int y, TileActionAttempt plot`.
 * 🤖: `WorldGen.CheckTight` -> `WorldGen.CheckStalactite`
 
@@ -174,6 +213,7 @@ All classes are in the `Terraria` or `Terraria.ID` namespaces unless otherwise i
 * ⚙️: `ProjectileID.Sets.DontAttachHideToAlpha` removed. Now true by default. See `Projectile.usesOwnerLight` and `Projectile.drawLayer` for more details.
 * ⚙️: `ProjectileID.Sets.HeldProjDoesNotUsePlayerGfxOffY` removed. `AI()` should use `master.RotatedRelativePoint(master.MountedCenter + ...)` to position held projectiles.
 * 🤖: `ProjectileID.Sets.MinionTargettingFeature` -> `ProjectileID.Sets.MinionTargetingFeature`
+* 🤖: `RecipeGroupID` removed. `RecipeGroup` instances are now stored directly in `RecipeGroups`.
 * 🤖: `TileID.Sets.CountsAsWaterSource` -> `TileID.Sets.CountsAsWaterForCrafting`
 * 🤖: `TileID.Sets.CountsAsHoneySource` -> `TileID.Sets.CountsAsHoneyForCrafting`
 * 🤖: `TileID.Sets.CountsAsLavaSource` -> `TileID.Sets.CountsAsLavaForCrafting`
@@ -206,6 +246,7 @@ All classes are in the `Terraria` or `Terraria.ID` namespaces unless otherwise i
 * ⚙️: `Player.CheckForGoodTeleportationSpot` removed. Use `Utils.CheckForGoodTeleportationSpot` instead.
 * 💀: `Player.DropItems` now has a `gemsOnly` parameter indicating a softcore or creative player that should only drop large gems.
 * ⚙️: `Recipe.FindRecipes` removed. No longer used.
+* ⚙️: `RecipeGroup` constructor removed. See [RecipeGroup](#recipegroup) for more information.
 
 ### Non-Static Fields / Constants / Properties
 

@@ -25,7 +25,7 @@
  	{
  		RegisteredId = -1;
  		GetText = getName;
-@@ -53,10 +_,20 @@
+@@ -53,10 +_,22 @@
  
  	public override string ToString() => GetText();
  
@@ -36,13 +36,15 @@
  			throw new Exception("Already registered");
 +
 +		// TML: Handle registering to an existing group by merging items and keeping the original group.
-+		var existingRecipeGroup = recipeGroups.Values.FirstOrDefault(x => x.Key == Key);
-+		if (existingRecipeGroup != null) {
-+			foreach (var item in this.Items) {
-+				if(!existingRecipeGroup.ValidItems.Contains(item))
-+					existingRecipeGroup.Add(item);
++		if (!string.IsNullOrWhiteSpace(Key)) {
++			var existingRecipeGroup = recipeGroups.Values.FirstOrDefault(x => x.Key == Key);
++			if (existingRecipeGroup != null) {
++				foreach (var item in this.Items) {
++					if (!existingRecipeGroup.ValidItems.Contains(item))
++						existingRecipeGroup.Add(item);
++				}
++				return existingRecipeGroup;
 +			}
-+			return existingRecipeGroup;
 +		}
  
  		int key = (RegisteredId = nextRecipeGroupIndex++);
