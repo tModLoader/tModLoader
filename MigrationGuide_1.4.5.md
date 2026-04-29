@@ -116,9 +116,9 @@ public override void RegisterChatButtons(NPCInteractionList interactions) {
 	interactions.Disable(NPCInteractionDatabase.HousingButton);
 
 	// Adding existing shops from other NPCs
-	interactions.InsertAt(NPCInteractions.Shop("Terraria/Painter/Shop", "Painter Shop"), 6);
-	interactions.InsertAt(NPCInteractions.Shop("Terraria/Painter/Decor", "Painter Decor"), 7);
-	interactions.InsertAt(NPCInteractions.Shop("ExampleMod/ExamplePerson/Shop", "Example Person"), 8);
+	interactions.Append(NPCInteractions.Shop("Terraria/Painter/Shop", "Painter Shop"));
+	interactions.Append(NPCInteractions.Shop("Terraria/Painter/Decor", "Painter Decor"));
+	interactions.Append(NPCInteractions.Shop("ExampleMod/ExamplePerson/Shop", "Example Person"));
 }
 ```
 
