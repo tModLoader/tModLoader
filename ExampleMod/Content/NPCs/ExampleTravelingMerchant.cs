@@ -334,12 +334,12 @@ namespace ExampleMod.Content.NPCs
 			return dialogueLine;
 		}
 
-		public override void RegisterChatButtons(NPCInteractionList interactions, NPCInteraction closeButton, NPCInteraction happinessButton, NPCInteraction housingButton) {
+		public override void RegisterChatButtons(NPCInteractionList interactions) {
 			// Here is one way to assign a Shop button to our NPC.
 			// In this example, we are assigning the button to be at the beginning of the list.
 			// The shop name we pass in NPCInteractions.Shop() needs to be the same name as what we use to register the NPCShop.
 			interactions.Prepend(NPCInteractions.Shop(Shop.Name));
-			// In this case, this is the same thing as: interactions.InsertBefore(NPCInteractions.Shop(Shop.Name), closeButton);
+			// In this case, this is the same thing as: interactions.InsertBefore(NPCInteractions.Shop(Shop.Name), NPCInteractionDatabase.CloseButton);
 		}
 
 		public override void AI() {

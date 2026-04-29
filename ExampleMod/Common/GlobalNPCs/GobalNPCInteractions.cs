@@ -8,25 +8,25 @@ namespace ExampleMod.Common.GlobalNPCs;
 // This example showcases adding additional buttons to existing NPC.
 public class GlobalNPCInteractions : GlobalNPC
 {
-	public override void RegisterChatButtons(NPC npc, NPCInteractionList interactions, NPCInteraction closeButton, NPCInteraction happinessButton, NPCInteraction housingButton) {
+	public override void RegisterChatButtons(NPC npc, NPCInteractionList interactions) {
 		// Here we can add additional chat buttons to Town NPCs.
 		if (npc.type == NPCID.Guide) {
 			// Add a shop button that open the Zoologist's shop.
 			// Vanilla shops can specified with "Terraria/NPCName/Shop" ("Decor" for the Painter's second shop)
 			// Modded shops can be specified with "ModName/NPCName/ShopName" (The ShopName is typically "Shop")
-			interactions.InsertBefore(NPCInteractions.Shop("Terraria/BestiaryGirl/Shop", "Shop"), closeButton);
+			interactions.InsertBefore(NPCInteractions.Shop("Terraria/BestiaryGirl/Shop", "Shop"), NPCInteractionDatabase.CloseButton);
 
-			// Here we are going to remove the Guide's tips button.
-			// First, find the tip button using interactions.TryFindInteractionByType(Type searchInteraction, out NPCInteraction foundInteraction, out int index);
+			// Here we are going to disable the Guide's tips button.
+			// First, find the tip button using interactions.TryFindInteractionByType(Type searchInteraction, out NPCInteractionList.Entry foundInteraction);
 			//   This will match the buttons based on their class type.
-			// There is also interactions.TryFindInteractionByInstance(NPCInteraction searchInteraction, out NPCInteraction foundInteraction, out int index)
+			// There is also interactions.TryFindInteractionByInstance(NPCInteraction searchInteraction, out NPCInteractionList.Entry foundInteraction)
 			//   This will match the buttons based on the exact instance.
-			if (interactions.TryFindInteractionByType(typeof(NPCInteractions.Actions.GuideTip), out NPCInteraction foundInteraction, out _)) {
-				interactions.Remove(foundInteraction);
+			if (interactions.TryFindInteractionByType(typeof(NPCInteractions.Actions.GuideTip), out NPCInteractionList.Entry foundInteraction)) {
+				interactions.Disable(foundInteraction);
 			}
 			// This is the same thing as above but doesn't have the built in null check that TryFind does.
-			// NPCInteraction guideTip = interactions.FindInteractionByType(typeof(NPCInteractions.Actions.GuideTip), out _);
-			// interactions.Remove(guideTip);
+			// NPCInteractionList.Entry guideTip = interactions.FindInteractionByType(typeof(NPCInteractions.Actions.GuideTip));
+			// interactions.Disable(guideTip);
 		}
 	}
 

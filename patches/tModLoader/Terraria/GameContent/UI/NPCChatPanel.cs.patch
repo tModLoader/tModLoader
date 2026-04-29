@@ -67,9 +67,9 @@
 +			talkNPCNetID = Main.LocalPlayer.TalkNPC.netID;
 +		}
 +
-+		foreach (NPCInteraction item in Main.NPCInteractionDB.GetInteractionsForNPCID(talkNPCNetID))
-+			if (item.Condition())
-+				_interactions.Add(item);
++		foreach (ModLoader.NPCInteractionList.Entry entry in Main.NPCInteractionDB.GetInteractionEntriesNPCID(talkNPCNetID))
++			if (entry.NPCInteraction.Condition() && entry.Enabled)
++				_interactions.Add(entry.NPCInteraction);
  
  		int count = _interactions.Count;
  		_neededInteractionLines = (int)Math.Ceiling((float)count / 4f);

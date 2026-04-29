@@ -1217,14 +1217,14 @@ public static class NPCLoader
 		}
 	}
 
-	private static HookList HookRegisterChatButtons = AddHook<Action<NPC, NPCInteractionList, NPCInteraction, NPCInteraction, NPCInteraction>>(g => g.RegisterChatButtons);
+	private static HookList HookRegisterChatButtons = AddHook<Action<NPC, NPCInteractionList>>(g => g.RegisterChatButtons);
 
-	public static void RegisterChatButtons(NPC npc, NPCInteractionList interactions, NPCInteraction closeButton, NPCInteraction happinessButton, NPCInteraction housingButton)
+	public static void RegisterChatButtons(NPC npc, NPCInteractionList interactions)
 	{
-		npc.ModNPC?.RegisterChatButtons(interactions, closeButton, happinessButton, housingButton);
+		npc.ModNPC?.RegisterChatButtons(interactions);
 
 		foreach (var g in HookRegisterChatButtons.Enumerate(npc)) {
-			g.RegisterChatButtons(npc, interactions, closeButton, happinessButton, housingButton);
+			g.RegisterChatButtons(npc, interactions);
 		}
 	}
 

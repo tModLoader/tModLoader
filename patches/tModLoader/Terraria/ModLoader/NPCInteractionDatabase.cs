@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Terraria.GameContent;
 using Terraria.ID;
@@ -7,355 +6,340 @@ namespace Terraria.ModLoader;
 
 public class NPCInteractionDatabase
 {
-	private readonly Dictionary<int, List<NPCInteraction>> _interactionDatabase = new Dictionary<int, List<NPCInteraction>>();
+	/// <summary> Predefined Close button for NPC chat buttons. </summary>
+	public static NPCInteraction CloseButton = new NPCInteractions.Actions.CloseChat();
+	/// <summary> Predefined Happiness button for NPC chat buttons. </summary>
+	public static NPCInteraction HappinessButton = new NPCInteractions.Actions.ReportHappiness();
+	/// <summary> Predefined Housing button for NPC chat buttons. </summary>
+	public static NPCInteraction HousingButton = new NPCInteractions.Actions.RequestHome();
+	/// <summary> Predefined Pet button for NPC chat buttons. </summary>
+	public static NPCInteraction PetButton = new NPCInteractions.Actions.PetAnimal();
+
+	// int Key: NPC Type
+	private readonly Dictionary<int, NPCInteractionList> _interactionDatabase = new Dictionary<int, NPCInteractionList>();
 
 	/// <summary>
-	/// Returns the full <c>List&lt;NPCInteraction&gt;</c> of the NPC.
+	/// Returns the NPCInteractionList of the NPC.
 	/// </summary>
 	/// <param name="npcNetId">The NPC to get the buttons for.</param>
-	/// <returns>An empty list if not found.</returns>
-	public List<NPCInteraction> GetInteractionsForNPCID(int npcNetId)
+	/// <returns>Registers the NPC with an empty list if not found.</returns>
+	public NPCInteractionList GetInteractionListForNPCID(int npcNetId)
 	{
-		List<NPCInteraction> list = new List<NPCInteraction>();
-		if (_interactionDatabase.TryGetValue(npcNetId, out List<NPCInteraction> value))
-			list.AddRange(value);
+		if (_interactionDatabase.TryGetValue(npcNetId, out NPCInteractionList value))
+			return value;
 
-		return list;
+		return RegisterNewNPC(npcNetId);
 	}
 
-	/// <inheritdoc cref="NPCInteractionList.FindInteractionByType(Type, out int)"/>
-	public NPCInteraction FindInteractionByType(int npcNetId, Type interaction, out int index)
+	/// <summary>
+	/// Returns the full <c>List&lt;NPCInteractionList.Entry&gt;</c> of the NPC.
+	/// </summary>
+	/// <param name="npcNetId">The NPC to get the buttons for.</param>
+	/// <returns>Registers the NPC with an empty list if not found.</returns>
+	public List<NPCInteractionList.Entry> GetInteractionEntriesNPCID(int npcNetId)
 	{
-		index = -1;
-		if (_interactionDatabase.TryGetValue(npcNetId, out List<NPCInteraction> value)) {
-			foreach (NPCInteraction item in value) {
-				if (item.GetType() == interaction) { // Class types are the same.
-					index = value.IndexOf(item);
-					return item;
-				}
-			}
-		}
-		return null;
+		if (_interactionDatabase.TryGetValue(npcNetId, out NPCInteractionList value))
+			return value.GetInteractionEntries();
+
+		return RegisterNewNPC(npcNetId).GetInteractionEntries();
 	}
 
-	/// <inheritdoc cref="NPCInteractionList.FindInteractionByInstance(NPCInteraction, out int)"/>
-	public NPCInteraction FindInteractionByInstance(int npcNetId, NPCInteraction interaction, out int index)
-	{
-		index = -1;
-		if (_interactionDatabase.TryGetValue(npcNetId, out List<NPCInteraction> value)) {
-			foreach (NPCInteraction item in value) {
-				if (item.Equals(interaction)) { // Instances are the same.
-					index = value.IndexOf(item);
-					return item;
-				}
-			}
-		}
-		return null;
-	}
-
-	/// <inheritdoc cref="NPCInteractionList.InsertAfter(NPCInteraction, NPCInteraction)"/>
-	public void RegisterAfter(int npcNetId, NPCInteraction interactionToRegister, NPCInteraction interactionAfter)
+	/// <summary>
+	/// Adds the NPC to the database and registers the provided interactions.
+	/// </summary>
+	/// <param name="npcNetId">The NPC to register.</param>
+	/// <param name="interactions">List of interactions to pre-register</param>
+	private NPCInteractionList RegisterNewNPC(int npcNetId, params NPCInteraction[] interactions)
 	{
 		if (!_interactionDatabase.ContainsKey(npcNetId))
-			_interactionDatabase[npcNetId] = new List<NPCInteraction>();
+			_interactionDatabase[npcNetId] = new NPCInteractionList(npcNetId);
 
-		int index = _interactionDatabase[npcNetId].IndexOf(interactionAfter);
-
-		if (index is not -1) {
-			_interactionDatabase[npcNetId].Insert(index + 1, interactionToRegister);
+		foreach (NPCInteraction interaction in interactions) {
+			_interactionDatabase[npcNetId].Append(interaction);
 		}
-		else { // If the interactionAfter is not found, add to the end of the list.
-			_interactionDatabase[npcNetId].Add(interactionToRegister);
-		}
+		return _interactionDatabase[npcNetId];
 	}
 
-	/// <inheritdoc cref="NPCInteractionList.InsertBefore(NPCInteraction, NPCInteraction)"/>
-	public void RegisterBefore(int npcNetId, NPCInteraction interactionToRegister, NPCInteraction interactionBefore)
+	internal void Populate()
 	{
-		if (!_interactionDatabase.ContainsKey(npcNetId))
-			_interactionDatabase[npcNetId] = new List<NPCInteraction>();
-
-		int index = _interactionDatabase[npcNetId].IndexOf(interactionBefore);
-
-		if (index is not -1) {
-			_interactionDatabase[npcNetId].Insert(index, interactionToRegister);
-		}
-		else { // If the interactionAfter is not found, add to the end of the list.
-			_interactionDatabase[npcNetId].Add(interactionToRegister);
-		}
-	}
-
-	/// <inheritdoc cref="NPCInteractionList.InsertAt(NPCInteraction, int)"/>
-	public void RegisterAt(int npcNetId, NPCInteraction interactionToAdd, int index)
-	{
-		if (!_interactionDatabase.ContainsKey(npcNetId))
-			_interactionDatabase[npcNetId] = new List<NPCInteraction>();
-
-		index = Math.Clamp(index, 0, _interactionDatabase[npcNetId].Count);
-		_interactionDatabase[npcNetId].Insert(index, interactionToAdd);
-	}
-
-	/// <inheritdoc cref="NPCInteractionList.Append(NPCInteraction)"/>
-	public void RegisterAppend(int npcNetId, NPCInteraction interaction)
-	{
-		if (!_interactionDatabase.ContainsKey(npcNetId))
-			_interactionDatabase[npcNetId] = new List<NPCInteraction>();
-
-		_interactionDatabase[npcNetId].Add(interaction);
-		//return interaction;
-	}
-
-	/// <inheritdoc cref="NPCInteractionList.Remove(NPCInteraction)"/>
-	public bool RemoveFromNPCNetId(int npcNetId, NPCInteraction interaction)
-	{
-		if (_interactionDatabase.TryGetValue(npcNetId, out List<NPCInteraction> value)) {
-			return value.Remove(interaction);
-		}
-		return false;
-	}
-
-	public void Populate()
-	{
-		// Use the same instance for all Town NPCs
-		NPCInteraction closeButton = new NPCInteractions.Actions.CloseChat();
-		NPCInteraction happinessButton =  new NPCInteractions.Actions.ReportHappiness();
-		NPCInteraction housingButton = new NPCInteractions.Actions.RequestHome();
-		RegisterSigns(closeButton);
-		RegisterVanilla(closeButton, happinessButton, housingButton);
+		RegisterSigns();
+		RegisterVanilla();
 
 		foreach (KeyValuePair<int, NPC> pair in ContentSamples.NpcsByNetId) {
 			// Only register buttons for NPCs who can be spoken to.
 			if (pair.Value.townNPC || (pair.Key > -1 && NPCID.Sets.ActsLikeTownNPC[pair.Key]) || (pair.Value.ModNPC != null && pair.Value.ModNPC.CanChat())) {
 				// Only pre-register these buttons for modded NPCs because they are already registered for vanilla NPCs in RegisterVanilla().
 				if (pair.Key >= NPCID.Count) {
-					RegisterAppend(pair.Key, closeButton);
+					NPCInteractionList interactionList = RegisterNewNPC(pair.Key, CloseButton);
 					if (pair.Key > -1 && NPCID.Sets.IsTownPet[pair.Key]) { // Automatically add the Pet button to Town Pets.
-						RegisterAppend(pair.Key, new NPCInteractions.Actions.PetAnimal());
+						interactionList.Append(PetButton);
 					}
-					RegisterAppend(pair.Key, happinessButton);
-					RegisterAppend(pair.Key, housingButton);
+					interactionList.Append(HappinessButton);
+					interactionList.Append(HousingButton);
+					NPCLoader.RegisterChatButtons(pair.Value, interactionList);
 				}
-				NPCLoader.RegisterChatButtons(pair.Value, new NPCInteractionList(pair.Key, this), closeButton, happinessButton, housingButton);
+				else {
+					NPCLoader.RegisterChatButtons(pair.Value, GetInteractionListForNPCID(pair.Key));
+				}
 			}
 		}
 	}
 
-	private void RegisterSigns(NPCInteraction closeButton)
+	private void RegisterSigns()
 	{
 		// 0 was chosen because NPCInteraction.TalkNPCType returns 0 if not speaking to an NPC.
-		RegisterAppend(0, closeButton);
-		RegisterAppend(0, new NPCInteractions.Actions.OpenSign());
+		RegisterNewNPC(0, CloseButton, new NPCInteractions.Actions.OpenSign());
 	}
 
-	public void RegisterVanilla(NPCInteraction closeButton, NPCInteraction happinessButton, NPCInteraction housingButton)
+	private void RegisterVanilla()
 	{
-		RegisterAppend(NPCID.Guide, closeButton);
-		RegisterAppend(NPCID.Guide, new NPCInteractions.Actions.GuideTip());
-		RegisterAppend(NPCID.Guide, new NPCInteractions.Actions.GuideReverseCrafting());
-		RegisterAppend(NPCID.Guide, happinessButton);
-		RegisterAppend(NPCID.Guide, housingButton);
+		RegisterNewNPC(NPCID.Guide,
+			CloseButton,
+			new NPCInteractions.Actions.GuideTip(),
+			new NPCInteractions.Actions.GuideReverseCrafting(),
+			HappinessButton,
+			HousingButton);
 
-		RegisterAppend(NPCID.Merchant, new NPCInteractions.Actions.OpenShop(1)); // Equivalent to NPCInteractions.Shop("Terraria/Merchant/Shop")
-		RegisterAppend(NPCID.Merchant, closeButton);
-		RegisterAppend(NPCID.Merchant, happinessButton);
-		RegisterAppend(NPCID.Merchant, housingButton);
+		RegisterNewNPC(NPCID.Merchant,
+			new NPCInteractions.Actions.OpenShop(1), // Equivalent to NPCInteractions.Shop("Terraria/Merchant/Shop")
+			CloseButton,
+			HappinessButton,
+			HousingButton);
 
-		RegisterAppend(NPCID.Nurse, new NPCInteractions.Actions.NurseHeal());
-		RegisterAppend(NPCID.Nurse, closeButton);
-		RegisterAppend(NPCID.Nurse, happinessButton);
-		RegisterAppend(NPCID.Nurse, housingButton);
+		RegisterNewNPC(NPCID.Nurse,
+			new NPCInteractions.Actions.NurseHeal(),
+			CloseButton,
+			HappinessButton,
+			HousingButton);
 
-		RegisterAppend(NPCID.Demolitionist, new NPCInteractions.Actions.OpenShop(4));
-		RegisterAppend(NPCID.Demolitionist, closeButton);
-		RegisterAppend(NPCID.Demolitionist, happinessButton);
-		RegisterAppend(NPCID.Demolitionist, housingButton);
+		RegisterNewNPC(NPCID.Demolitionist,
+			new NPCInteractions.Actions.OpenShop(4),
+			CloseButton,
+			HappinessButton,
+			HousingButton);
 
-		RegisterAppend(NPCID.DyeTrader, new NPCInteractions.Actions.OpenShop(12));
-		RegisterAppend(NPCID.DyeTrader, closeButton);
-		RegisterAppend(NPCID.DyeTrader, new NPCInteractions.Actions.DyeTraderRarePlant());
-		RegisterAppend(NPCID.DyeTrader, happinessButton);
-		RegisterAppend(NPCID.DyeTrader, housingButton);
+		RegisterNewNPC(NPCID.DyeTrader,
+			new NPCInteractions.Actions.OpenShop(12),
+			CloseButton,
+			new NPCInteractions.Actions.DyeTraderRarePlant(),
+			HappinessButton,
+			HousingButton);
 
-		RegisterAppend(NPCID.Angler, new NPCInteractions.Actions.AnglerQuest());
-		RegisterAppend(NPCID.Angler, closeButton);
-		RegisterAppend(NPCID.Angler, happinessButton);
-		RegisterAppend(NPCID.Angler, housingButton);
+		RegisterNewNPC(NPCID.Angler,
+			new NPCInteractions.Actions.AnglerQuest(),
+			CloseButton,
+			HappinessButton,
+			HousingButton);
 
-		RegisterAppend(NPCID.BestiaryGirl, new NPCInteractions.Actions.OpenShop(23));
-		RegisterAppend(NPCID.BestiaryGirl, closeButton);
-		RegisterAppend(NPCID.BestiaryGirl, happinessButton);
-		RegisterAppend(NPCID.BestiaryGirl, housingButton);
+		RegisterNewNPC(NPCID.BestiaryGirl,
+			new NPCInteractions.Actions.OpenShop(23),
+			CloseButton,
+			HappinessButton,
+			HousingButton);
 
-		RegisterAppend(NPCID.Dryad, new NPCInteractions.Actions.OpenShop(3));
-		RegisterAppend(NPCID.Dryad, closeButton);
-		RegisterAppend(NPCID.Dryad, new NPCInteractions.Actions.StardewValleyBit());
-		RegisterAppend(NPCID.Dryad, new NPCInteractions.Actions.DryadPurification());
-		RegisterAppend(NPCID.Dryad, happinessButton);
-		RegisterAppend(NPCID.Dryad, housingButton);
+		RegisterNewNPC(NPCID.Dryad,
+			new NPCInteractions.Actions.OpenShop(3),
+			CloseButton,
+			new NPCInteractions.Actions.StardewValleyBit(),
+			new NPCInteractions.Actions.DryadPurification(),
+			HappinessButton,
+			HousingButton);
 
-		RegisterAppend(NPCID.Painter, new NPCInteractions.Actions.OpenShop(15));
-		RegisterAppend(NPCID.Painter, new NPCInteractions.Actions.OpenShop(25, "GameUI.PainterDecor"));
-		RegisterAppend(NPCID.Painter, closeButton);
-		RegisterAppend(NPCID.Painter, happinessButton);
-		RegisterAppend(NPCID.Painter, housingButton);
+		RegisterNewNPC(NPCID.Painter,
+			new NPCInteractions.Actions.OpenShop(15),
+			new NPCInteractions.Actions.OpenShop(25, "GameUI.PainterDecor"),
+			CloseButton,
+			HappinessButton,
+			HousingButton);
 
-		RegisterAppend(NPCID.Golfer, new NPCInteractions.Actions.OpenShop(22));
-		RegisterAppend(NPCID.Golfer, closeButton);
-		RegisterAppend(NPCID.Golfer, happinessButton);
-		RegisterAppend(NPCID.Golfer, housingButton);
+		RegisterNewNPC(NPCID.Golfer,
+			new NPCInteractions.Actions.OpenShop(22),
+			CloseButton,
+			HappinessButton,
+			HousingButton);
 
-		RegisterAppend(NPCID.ArmsDealer, new NPCInteractions.Actions.OpenShop(2));
-		RegisterAppend(NPCID.ArmsDealer, closeButton);
-		RegisterAppend(NPCID.ArmsDealer, happinessButton);
-		RegisterAppend(NPCID.ArmsDealer, housingButton);
+		RegisterNewNPC(NPCID.ArmsDealer,
+			new NPCInteractions.Actions.OpenShop(2),
+			CloseButton,
+			HappinessButton,
+			HousingButton);
 
-		RegisterAppend(NPCID.DD2Bartender, new NPCInteractions.Actions.OpenShop(21));
-		RegisterAppend(NPCID.DD2Bartender, closeButton);
-		RegisterAppend(NPCID.DD2Bartender, new NPCInteractions.Actions.TavernkeepAdvice());
-		RegisterAppend(NPCID.DD2Bartender, happinessButton);
-		RegisterAppend(NPCID.DD2Bartender, housingButton);
+		RegisterNewNPC(NPCID.DD2Bartender,
+			new NPCInteractions.Actions.OpenShop(21),
+			CloseButton,
+			new NPCInteractions.Actions.TavernkeepAdvice(),
+			HappinessButton,
+			HousingButton);
 
-		RegisterAppend(NPCID.Stylist, new NPCInteractions.Actions.OpenShop(18));
-		RegisterAppend(NPCID.Stylist, closeButton);
-		RegisterAppend(NPCID.Stylist, new NPCInteractions.Actions.StylistHairWindow());
-		RegisterAppend(NPCID.Stylist, happinessButton);
-		RegisterAppend(NPCID.Stylist, housingButton);
+		RegisterNewNPC(NPCID.Stylist,
+			new NPCInteractions.Actions.OpenShop(18),
+			CloseButton,
+			new NPCInteractions.Actions.StylistHairWindow(),
+			HappinessButton,
+			HousingButton);
 
-		RegisterAppend(NPCID.GoblinTinkerer, new NPCInteractions.Actions.OpenShop(6));
-		RegisterAppend(NPCID.GoblinTinkerer, closeButton);
-		RegisterAppend(NPCID.GoblinTinkerer, new NPCInteractions.Actions.TinkererReforge());
-		RegisterAppend(NPCID.GoblinTinkerer, happinessButton);
-		RegisterAppend(NPCID.GoblinTinkerer, housingButton);
+		RegisterNewNPC(NPCID.GoblinTinkerer,
+			new NPCInteractions.Actions.OpenShop(6),
+			CloseButton,
+			new NPCInteractions.Actions.TinkererReforge(),
+			HappinessButton,
+			HousingButton);
 
-		RegisterAppend(NPCID.WitchDoctor, new NPCInteractions.Actions.OpenShop(16));
-		RegisterAppend(NPCID.WitchDoctor, closeButton);
-		RegisterAppend(NPCID.WitchDoctor, happinessButton);
-		RegisterAppend(NPCID.WitchDoctor, housingButton);
+		RegisterNewNPC(NPCID.WitchDoctor,
+			new NPCInteractions.Actions.OpenShop(16),
+			CloseButton,
+			HappinessButton,
+			HousingButton);
 
-		RegisterAppend(NPCID.Clothier, new NPCInteractions.Actions.OpenShop(5));
-		RegisterAppend(NPCID.Clothier, closeButton);
-		RegisterAppend(NPCID.Clothier, happinessButton);
-		RegisterAppend(NPCID.Clothier, housingButton);
+		RegisterNewNPC(NPCID.Clothier,
+			new NPCInteractions.Actions.OpenShop(5),
+			CloseButton,
+			HappinessButton,
+			HousingButton);
 
-		RegisterAppend(NPCID.Mechanic, new NPCInteractions.Actions.OpenShop(8));
-		RegisterAppend(NPCID.Mechanic, closeButton);
-		RegisterAppend(NPCID.Mechanic, happinessButton);
-		RegisterAppend(NPCID.Mechanic, housingButton);
+		RegisterNewNPC(NPCID.Mechanic,
+			new NPCInteractions.Actions.OpenShop(8),
+			CloseButton,
+			HappinessButton,
+			HousingButton);
 
-		RegisterAppend(NPCID.PartyGirl, new NPCInteractions.Actions.OpenShop(13));
-		RegisterAppend(NPCID.PartyGirl, closeButton);
-		RegisterAppend(NPCID.PartyGirl, new NPCInteractions.Actions.PartyGirlMusicSwap());
-		RegisterAppend(NPCID.PartyGirl, happinessButton);
-		RegisterAppend(NPCID.PartyGirl, housingButton);
+		RegisterNewNPC(NPCID.PartyGirl,
+			new NPCInteractions.Actions.OpenShop(13),
+			CloseButton,
+			new NPCInteractions.Actions.PartyGirlMusicSwap(),
+			HappinessButton,
+			HousingButton);
 
-		RegisterAppend(NPCID.Wizard, new NPCInteractions.Actions.OpenShop(7));
-		RegisterAppend(NPCID.Wizard, closeButton);
-		RegisterAppend(NPCID.Wizard, happinessButton);
-		RegisterAppend(NPCID.Wizard, housingButton);
+		RegisterNewNPC(NPCID.Wizard,
+			new NPCInteractions.Actions.OpenShop(7),
+			CloseButton,
+			HappinessButton,
+			HousingButton);
 
-		RegisterAppend(NPCID.TaxCollector, new NPCInteractions.Actions.TaxCollectorCollectTaxes());
-		RegisterAppend(NPCID.TaxCollector, closeButton);
-		RegisterAppend(NPCID.TaxCollector, happinessButton);
-		RegisterAppend(NPCID.TaxCollector, housingButton);
+		RegisterNewNPC(NPCID.TaxCollector,
+			new NPCInteractions.Actions.TaxCollectorCollectTaxes(),
+			CloseButton,
+			HappinessButton,
+			HousingButton);
 
-		RegisterAppend(NPCID.Truffle, new NPCInteractions.Actions.OpenShop(10));
-		RegisterAppend(NPCID.Truffle, closeButton);
-		RegisterAppend(NPCID.Truffle, happinessButton);
-		RegisterAppend(NPCID.Truffle, housingButton);
+		RegisterNewNPC(NPCID.Truffle,
+			new NPCInteractions.Actions.OpenShop(10),
+			CloseButton,
+			HappinessButton,
+			HousingButton);
 
-		RegisterAppend(NPCID.Pirate, new NPCInteractions.Actions.OpenShop(17));
-		RegisterAppend(NPCID.Pirate, closeButton);
-		RegisterAppend(NPCID.Pirate, happinessButton);
-		RegisterAppend(NPCID.Pirate, housingButton);
+		RegisterNewNPC(NPCID.Pirate,
+			new NPCInteractions.Actions.OpenShop(17),
+			CloseButton,
+			HappinessButton,
+			HousingButton);
 
-		RegisterAppend(NPCID.Steampunker, new NPCInteractions.Actions.OpenShop(11));
-		RegisterAppend(NPCID.Steampunker, closeButton);
-		RegisterAppend(NPCID.Steampunker, happinessButton);
-		RegisterAppend(NPCID.Steampunker, housingButton);
+		RegisterNewNPC(NPCID.Steampunker,
+			new NPCInteractions.Actions.OpenShop(11),
+			CloseButton,
+			HappinessButton,
+			HousingButton);
 
-		RegisterAppend(NPCID.Cyborg, new NPCInteractions.Actions.OpenShop(14));
-		RegisterAppend(NPCID.Cyborg, closeButton);
-		RegisterAppend(NPCID.Cyborg, happinessButton);
-		RegisterAppend(NPCID.Cyborg, housingButton);
+		RegisterNewNPC(NPCID.Cyborg,
+			new NPCInteractions.Actions.OpenShop(14),
+			CloseButton,
+			HappinessButton,
+			HousingButton);
 
-		RegisterAppend(NPCID.SantaClaus, new NPCInteractions.Actions.OpenShop(9));
-		RegisterAppend(NPCID.SantaClaus, closeButton);
-		RegisterAppend(NPCID.SantaClaus, happinessButton);
-		RegisterAppend(NPCID.SantaClaus, housingButton);
+		RegisterNewNPC(NPCID.SantaClaus,
+			new NPCInteractions.Actions.OpenShop(9),
+			CloseButton,
+			HappinessButton,
+			HousingButton);
 
-		RegisterAppend(NPCID.Princess, new NPCInteractions.Actions.OpenShop(24));
-		RegisterAppend(NPCID.Princess, closeButton);
-		RegisterAppend(NPCID.Princess, happinessButton);
-		RegisterAppend(NPCID.Princess, housingButton);
+		RegisterNewNPC(NPCID.Princess,
+			new NPCInteractions.Actions.OpenShop(24),
+			CloseButton,
+			HappinessButton,
+			HousingButton);
 
-		RegisterAppend(NPCID.TownCat, closeButton);
-		RegisterAppend(NPCID.TownCat, new NPCInteractions.Actions.PetAnimal());
-		RegisterAppend(NPCID.TownCat, happinessButton); // Register the happiness button even though it'll never show up to match vanilla.
-		RegisterAppend(NPCID.TownCat, housingButton);
+		RegisterNewNPC(NPCID.TownCat,
+			CloseButton,
+			new NPCInteractions.Actions.PetAnimal(),
+			HappinessButton, // Register the happiness button even though it'll never show up to match vanilla.
+			HousingButton);
 
-		RegisterAppend(NPCID.TownDog, closeButton);
-		RegisterAppend(NPCID.TownDog, new NPCInteractions.Actions.PetAnimal());
-		RegisterAppend(NPCID.TownDog, happinessButton);
-		RegisterAppend(NPCID.TownDog, housingButton);
+		RegisterNewNPC(NPCID.TownDog,
+			CloseButton,
+			new NPCInteractions.Actions.PetAnimal(),
+			HappinessButton,
+			HousingButton);
 
-		RegisterAppend(NPCID.TownBunny, closeButton);
-		RegisterAppend(NPCID.TownBunny, new NPCInteractions.Actions.PetAnimal());
-		RegisterAppend(NPCID.TownBunny, happinessButton);
-		RegisterAppend(NPCID.TownBunny, housingButton);
+		RegisterNewNPC(NPCID.TownBunny,
+			CloseButton,
+			new NPCInteractions.Actions.PetAnimal(),
+			HappinessButton,
+			HousingButton);
 
-		RegisterAppend(NPCID.TownSlimeCopper, closeButton);
-		RegisterAppend(NPCID.TownSlimeCopper, new NPCInteractions.Actions.PetAnimal());
-		RegisterAppend(NPCID.TownSlimeCopper, happinessButton);
-		RegisterAppend(NPCID.TownSlimeCopper, housingButton);
+		RegisterNewNPC(NPCID.TownSlimeCopper,
+			CloseButton,
+			new NPCInteractions.Actions.PetAnimal(),
+			HappinessButton,
+			HousingButton);
 
-		RegisterAppend(NPCID.TownSlimePurple, closeButton);
-		RegisterAppend(NPCID.TownSlimePurple, new NPCInteractions.Actions.PetAnimal());
-		RegisterAppend(NPCID.TownSlimePurple, happinessButton);
-		RegisterAppend(NPCID.TownSlimePurple, housingButton);
+		RegisterNewNPC(NPCID.TownSlimePurple,
+			CloseButton,
+			new NPCInteractions.Actions.PetAnimal(),
+			HappinessButton,
+			HousingButton);
 
-		RegisterAppend(NPCID.TownSlimeBlue, closeButton);
-		RegisterAppend(NPCID.TownSlimeBlue, new NPCInteractions.Actions.PetAnimal());
-		RegisterAppend(NPCID.TownSlimeBlue, happinessButton);
-		RegisterAppend(NPCID.TownSlimeBlue, housingButton);
+		RegisterNewNPC(NPCID.TownSlimeBlue,
+			CloseButton,
+			new NPCInteractions.Actions.PetAnimal(),
+			HappinessButton,
+			HousingButton);
 
-		RegisterAppend(NPCID.TownSlimeRed, closeButton);
-		RegisterAppend(NPCID.TownSlimeRed, new NPCInteractions.Actions.PetAnimal());
-		RegisterAppend(NPCID.TownSlimeRed, happinessButton);
-		RegisterAppend(NPCID.TownSlimeRed, housingButton);
+		RegisterNewNPC(NPCID.TownSlimeRed,
+			CloseButton,
+			new NPCInteractions.Actions.PetAnimal(),
+			HappinessButton,
+			HousingButton);
 
-		RegisterAppend(NPCID.TownSlimeYellow, closeButton);
-		RegisterAppend(NPCID.TownSlimeYellow, new NPCInteractions.Actions.PetAnimal());
-		RegisterAppend(NPCID.TownSlimeYellow, happinessButton);
-		RegisterAppend(NPCID.TownSlimeYellow, housingButton);
+		RegisterNewNPC(NPCID.TownSlimeYellow,
+			CloseButton,
+			new NPCInteractions.Actions.PetAnimal(),
+			HappinessButton,
+			HousingButton);
 
-		RegisterAppend(NPCID.TownSlimeOld, closeButton);
-		RegisterAppend(NPCID.TownSlimeOld, new NPCInteractions.Actions.PetAnimal());
-		RegisterAppend(NPCID.TownSlimeOld, happinessButton);
-		RegisterAppend(NPCID.TownSlimeOld, housingButton);
+		RegisterNewNPC(NPCID.TownSlimeOld,
+			CloseButton,
+			new NPCInteractions.Actions.PetAnimal(),
+			HappinessButton,
+			HousingButton);
 
-		RegisterAppend(NPCID.TownSlimeGreen, closeButton);
-		RegisterAppend(NPCID.TownSlimeGreen, new NPCInteractions.Actions.PetAnimal());
-		RegisterAppend(NPCID.TownSlimeGreen, happinessButton);
-		RegisterAppend(NPCID.TownSlimeGreen, housingButton);
+		RegisterNewNPC(NPCID.TownSlimeGreen,
+			CloseButton,
+			new NPCInteractions.Actions.PetAnimal(),
+			HappinessButton,
+			HousingButton);
 
-		RegisterAppend(NPCID.TownSlimeRainbow, closeButton);
-		RegisterAppend(NPCID.TownSlimeRainbow, new NPCInteractions.Actions.PetAnimal());
-		RegisterAppend(NPCID.TownSlimeRainbow, happinessButton);
-		RegisterAppend(NPCID.TownSlimeRainbow, housingButton);
+		RegisterNewNPC(NPCID.TownSlimeRainbow,
+			CloseButton,
+			new NPCInteractions.Actions.PetAnimal(),
+			HappinessButton,
+			HousingButton);
 
-		RegisterAppend(NPCID.OldMan, closeButton);
-		RegisterAppend(NPCID.OldMan, new NPCInteractions.Actions.OldManCurse());
-		RegisterAppend(NPCID.OldMan, happinessButton); // Register the happiness and housing buttons even though they'll never show up to match vanilla.
-		RegisterAppend(NPCID.OldMan, housingButton);
+		RegisterNewNPC(NPCID.OldMan,
+			CloseButton,
+			new NPCInteractions.Actions.OldManCurse(),
+			HappinessButton, // Register the happiness and housing buttons even though they'll never show up to match vanilla.
+			HousingButton);
 
-		RegisterAppend(NPCID.TravellingMerchant, new NPCInteractions.Actions.OpenShop(19));
-		RegisterAppend(NPCID.TravellingMerchant, closeButton);
-		RegisterAppend(NPCID.TravellingMerchant, happinessButton);
-		RegisterAppend(NPCID.TravellingMerchant, housingButton);
+		RegisterNewNPC(NPCID.TravellingMerchant,
+			new NPCInteractions.Actions.OpenShop(19),
+			CloseButton,
+			HappinessButton,
+			HousingButton);
 
-		RegisterAppend(NPCID.SkeletonMerchant, new NPCInteractions.Actions.OpenShop(20));
-		RegisterAppend(NPCID.SkeletonMerchant, closeButton);
-		RegisterAppend(NPCID.SkeletonMerchant, happinessButton);
-		RegisterAppend(NPCID.SkeletonMerchant, housingButton);
+		RegisterNewNPC(NPCID.SkeletonMerchant,
+			new NPCInteractions.Actions.OpenShop(20),
+			CloseButton,
+			HappinessButton,
+			HousingButton);
 	}
 }

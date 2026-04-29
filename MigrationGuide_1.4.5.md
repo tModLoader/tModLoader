@@ -66,19 +66,17 @@ Chat buttons for Town NPCs have changed significantly in 1.4.5. The new system u
 
 Chat buttons are now registered at mod load time instead of when interacting with the NPC. Registration implicitly assigns the button to the NPC.
 
-* `ModNPC.SetChatButtons` has been replaced with `ModNPC.RegisterChatButtons(NPCInteractionList interactions, NPCInteraction closeButton, NPCInteraction happinessButton, NPCInteraction housingButton)`
+* `ModNPC.SetChatButtons` has been replaced with `ModNPC.RegisterChatButtons(NPCInteractionList interactions)`
 * The Close, Happiness, and Housing buttons are automatically registered before RegisterChatButtons runs.
   * If the NPC is a Town Pet, the Pet button will be added, too.
-  * `closeButton`, `happinessButton`, and `housingButton` are supplied for convenience.
+  * The Close, Happiness, Housing, and Pet buttons are already predefined and can be used with `NPCInteractionDatabase.CloseButton`, etc.
 * Register buttons with the supplied `interactions` parameter.
   * `interactions.Append(NPCInteraction interaction)` or `interactions.Prepend(NPCInteraction interaction)`
     * Append will add the button to the end of the list (after the Happiness and Housing buttons, too).
 	* Prepend will add the button to the beginning of the list.
   * `interactions.InsertAfter(NPCInteraction interactionToRegister, NPCInteraction interactionAfter)` or `interactions.InsertBefore(NPCInteraction interactionToRegister, NPCInteraction interactionBefore)`
     * InsertAfter and InsertBefore will add the button after or before another specified button.
-  * `interactions.InsertAt(NPCInteraction interaction, int index)`
-    * InsertAt will add the button at a specific index (0 based, so index 0 is button 1).
-  * Each method returns the supplied `NPCInteraction` if caching the result is desired for use in another method.
+  * Each method returns the supplied `NPCInteraction` as an `NPCInteractionList.Entry` if caching the result is desired for use in another method.
 * Use `interactions.X(NPCInteractions.Shop(string shopName = "Shop", string customTextKey = null))` to assign shops.
   * The shopName must match the shopName for the `NPCShop`.
   * Example: ModNPC calling `interactions.Append(NPCInteractions.Shop())` will register a button for the shop "ModName/ModNPCName/Shop".
@@ -91,33 +89,31 @@ Previously, `ModNPC.OnChatButtonClicked` was used to assign a shop to a button. 
 
 Full example:
 ```cs
-public override void RegisterChatButtons(NPCInteractionList interactions, NPCInteraction closeButton, NPCInteraction happinessButton, NPCInteraction housingButton) {
+public override void RegisterChatButtons(NPCInteractionList interactions) {
 	// Here is how to register chat buttons to your NPC.
 	// There are many method that you can use to change the order of the buttons.
 	// interactions.Append(NPCInteraction interaction)	This will add the button to the end of the list (after the Happiness and Housing buttons, too).
 	// interactions.Prepend(NPCInteraction interaction)	This will add the button to the beginning of the list.
 	// interactions.InsertAfter(NPCInteraction interactionToRegister, NPCInteraction interactionAfter)		This will add the button after another specified button.
 	// interactions.InsertBefore(NPCInteraction interactionToRegister, NPCInteraction interactionBefore)	This will add the button before another specified button.
-	// interactions.InsertAt(NPCInteraction interaction, int index)		This will add the button at a specific index (0 based, so index 0 is button 1).
 	
 	// In this example we are registering our Shop button to before the Close button.
 	// The Close button instance is provided for us for convenience.
-	interactions.InsertBefore(NPCInteractions.Shop(ShopName), closeButton); // NPCInteractions.Shop() is a helper that creates a Shop button.
+	interactions.InsertBefore(NPCInteractions.Shop(ShopName), NPCInteractionDatabase.CloseButton); // NPCInteractions.Shop() is a helper that creates a Shop button.
 	
 	// Next, add the rest of our buttons before the Happiness button (which is before the Housing button).
-	interactions.InsertBefore(new AwesomeifyButton(), happinessButton); // These are custom buttons.
-	interactions.InsertBefore(new UpgradeButton(), happinessButton);
-	interactions.InsertBefore(new OpenShopOnlyAvailableDuringDay(ShopName, "Day Only Shop"), happinessButton);
+	interactions.InsertBefore(new AwesomeifyButton(), NPCInteractionDatabase.HappinessButton); // These are custom buttons.
+	interactions.InsertBefore(new UpgradeButton(), NPCInteractionDatabase.HappinessButton);
+	interactions.InsertBefore(new OpenShopOnlyAvailableDuringDay(ShopName, "Day Only Shop"), NPCInteractionDatabase.HappinessButton);
 
 	// Showcase of other things you can do
-	NPCInteraction awesomeifyButton = interactions.InsertBefore(new AwesomeifyButton(), happinessButton); // Return the interaction instance
-	interactions.InsertAt(new UpgradeButton(), 3); // Insert at index 3 (button 4)
+	NPCInteractionList.Entry awesomeifyButton = interactions.InsertBefore(new AwesomeifyButton(), NPCInteractionDatabase.HappinessButton); // Return the interaction instance
 	interactions.InsertAfter(new OpenShopOnlyAvailableDuringDay(ShopName, "Day Only Shop"), awesomeifyButton); // Insert after the instance we saved above.
 	interactions.Prepend(NPCInteractions.Shop(ShopName)); // Insert at the beginning
 	interactions.Append(NPCInteractions.Shop(ShopName)); // Insert at the end (after the happiness and housing buttons, too)
 	
-	// Don't want a close, happiness, or housing button? Just remove it!
-	interactions.Remove(housingButton);
+	// Don't want a close, happiness, or housing button? Just disable it!
+	interactions.Disable(NPCInteractionDatabase.HousingButton);
 
 	// Adding existing shops from other NPCs
 	interactions.InsertAt(NPCInteractions.Shop("Terraria/Painter/Shop", "Painter Shop"), 6);
@@ -130,25 +126,25 @@ public override void RegisterChatButtons(NPCInteractionList interactions, NPCInt
 
 ```cs
 // In GlobalNPC
-public override void RegisterChatButtons(NPC npc, NPCInteractionList interactions, NPCInteraction closeButton, NPCInteraction happinessButton, NPCInteraction housingButton) {
+public override void RegisterChatButtons(NPC npc, NPCInteractionList interactions) {
 	// Here we can add additional chat buttons to Town NPCs.
 	if (npc.type == NPCID.Guide) {
 		// Add a shop button that open the Zoologist's shop.
 		// Vanilla shops can specified with "Terraria/NPCName/Shop" ("Decor" for the Painter's second shop)
 		// Modded shops can be specified with "ModName/NPCName/ShopName"
-		interactions.InsertBefore(NPCInteractions.Shop("Terraria/BestiaryGirl/Shop", "Shop"), closeButton);
+		interactions.InsertBefore(NPCInteractions.Shop("Terraria/BestiaryGirl/Shop", "Shop"), NPCInteractionDatabase.CloseButton);
 
-		// Here we are going to remove the Guide's tips button.
-		// First, find the tip button using interactions.TryFindInteractionByType(Type searchInteraction, out NPCInteraction foundInteraction, out int index);
+		// Here we are going to disable the Guide's tips button.
+		// First, find the tip button using interactions.TryFindInteractionByType(Type searchInteraction, out NPCInteractionList.Entry foundInteraction);
 		//   This will match the buttons based on their class type.
-		// There is also interactions.TryFindInteractionByInstance(NPCInteraction searchInteraction, out NPCInteraction foundInteraction, out int index)
+		// There is also interactions.TryFindInteractionByInstance(NPCInteraction searchInteraction, out NPCInteractionList.Entry foundInteraction)
 		//   This will match the buttons based on the exact instance.
-		if (interactions.TryFindInteractionByType(typeof(NPCInteractions.Actions.GuideTip), out NPCInteraction foundInteraction, out _)) {
-			interactions.Remove(foundInteraction);
+		if (interactions.TryFindInteractionByType(typeof(NPCInteractions.Actions.GuideTip), out NPCInteractionList.Entry foundInteraction)) {
+			interactions.Disable(foundInteraction);
 		}
 		// This is the same thing as above but doesn't have the built in null check that TryFind does.
-		// NPCInteraction guideTip = interactions.FindInteractionByType(typeof(NPCInteractions.Actions.GuideTip), out _);
-		// interactions.Remove(guideTip);
+		// NPCInteractionList.Entry guideTip = interactions.FindInteractionByType(typeof(NPCInteractions.Actions.GuideTip));
+		// interactions.Disable(guideTip);
 	}
 }
 ```
@@ -385,6 +381,6 @@ All classes are in the `Terraria.ModLoader` or `Terraria` namespaces unless othe
 * 🤖: `ModTile.AddToArray` is no longer used for `TileID.Sets.RoomNeeds` entries since `TileID.Sets.RoomNeeds` fields have changed to typical ID sets.
 * 💀: `NPCSpawnInfo` is no longer used, it has been replaced by `NPC.Spawner` in functionality.
   * ⚙️: The following fields changed from `NPCSpawnInfo` to `NPC.Spawner`: `Sky` -> `skyMob`, `Lihzahrd` -> `ZoneLihzhardTemple`, `PlayerSafe` -> `noWorms`, `Invasion` -> `invaders`,`Water` -> `waterTile`, `Granite` -> `nearGranite`, `Marble` -> `nearMarble`, `SpiderCave` -> `spawnSpider`, `PlayerInTown` -> `spawnFriendly`, `DesertCave` -> `spawnUndergroundDesert`
-* ⚙️: `ModNPC.SetChatButtons` has been removed and replaced with `RegisterChatButtons(NPCInteractionList interactions, NPCInteraction closeButton, NPCInteraction happinessButton, NPCInteraction housingButton)`
+* ⚙️: `ModNPC.SetChatButtons` has been removed and replaced with `RegisterChatButtons(NPCInteractionList interactions)`
 * ⚙️: `ModNPC.OnChatButtonClicked` changed parameters. `(bool firstButton, ref string shop)` -> `(NPCInteraction interaction)`
 * ⚙️: `GlobalNPC.OnChatButtonClicked` and `GlobalNPC.PreChatButtonClicked` changed parameters. `(NPC npc, bool firstButton)` -> `(NPC npc, NPCInteraction interaction)`

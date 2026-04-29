@@ -298,27 +298,25 @@ namespace ExampleMod.Content.NPCs
 			return chosenChat;
 		}
 
-		public override void RegisterChatButtons(NPCInteractionList interactions, NPCInteraction closeButton, NPCInteraction happinessButton, NPCInteraction housingButton) {
+		public override void RegisterChatButtons(NPCInteractionList interactions) {
 			// Here is how to register chat buttons to your NPC.
 			// There are many method that you can use to change the order of the buttons.
 			// interactions.Append(NPCInteraction interaction)	This will add the button to the end of the list (after the Happiness and Housing buttons, too).
 			// interactions.Prepend(NPCInteraction interaction)	This will add the button to the beginning of the list.
 			// interactions.InsertAfter(NPCInteraction interactionToRegister, NPCInteraction interactionAfter)		This will add the button after another specified button.
 			// interactions.InsertBefore(NPCInteraction interactionToRegister, NPCInteraction interactionBefore)	This will add the button before another specified button.
-			// interactions.InsertAt(NPCInteraction interaction, int index)		This will add the button at a specific index (0 based, so index 0 is the first button).
 
 			// In this example we are registering our Shop button to before the Close button.
 			// The Close button instance is provided for us for convenience.
-			interactions.InsertBefore(NPCInteractions.Shop(ShopName), closeButton); // NPCInteractions.Shop() is a helper that creates a Shop button.
+			interactions.InsertBefore(NPCInteractions.Shop(ShopName), NPCInteractionDatabase.CloseButton); // NPCInteractions.Shop() is a helper that creates a Shop button.
 
 			// Next, add the rest of our buttons before the Happiness button (which is before the Housing button).
-			interactions.InsertBefore(new AwesomeifyButton(), happinessButton); // These are custom buttons that we've defined below.
-			interactions.InsertBefore(new UpgradeButton(), happinessButton);
-			interactions.InsertBefore(new OpenShopOnlyAvailableDuringDay(DayOnlyShopName, DayOnlyShopButtonText.Key), happinessButton);
+			interactions.InsertBefore(new AwesomeifyButton(), NPCInteractionDatabase.HappinessButton); // These are custom buttons that we've defined below.
+			interactions.InsertBefore(new UpgradeButton(), NPCInteractionDatabase.HappinessButton);
+			interactions.InsertBefore(new OpenShopOnlyAvailableDuringDay(DayOnlyShopName, DayOnlyShopButtonText.Key), NPCInteractionDatabase.HappinessButton);
 
 			// Showcase of other things you can do:
-			// NPCInteraction awesomeifyButton = interactions.InsertBefore(new AwesomeifyButton(), happinessButton); // Return the interaction instance
-			// interactions.InsertAt(new UpgradeButton(), 3); // Insert at index 3 (button 4)
+			// NPCInteractionList.Entry awesomeifyButton = interactions.InsertBefore(new AwesomeifyButton(), NPCInteractionDatabase.HappinessButton); // Return the interaction instance
 			// interactions.InsertAfter(new OpenShopOnlyAvailableDuringDay(ShopName, DayOnlyShopButtonText.Key), awesomeifyButton); // Insert after the instance we saved above.
 			// interactions.Prepend(NPCInteractions.Shop(ShopName)); // Insert at the beginning
 			// interactions.Append(NPCInteractions.Shop(ShopName)); // Insert at the end (after the happiness and housing buttons, too)

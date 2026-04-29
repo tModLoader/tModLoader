@@ -701,8 +701,8 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 		return true;
 	}
 
-	/// <inheritdoc cref="ModNPC.RegisterChatButtons(NPCInteractionList, NPCInteraction, NPCInteraction, NPCInteraction)"/>
-	public virtual void RegisterChatButtons(NPC npc, NPCInteractionList interactions, NPCInteraction closeButton, NPCInteraction happinessButton, NPCInteraction housingButton)
+	/// <inheritdoc cref="ModNPC.RegisterChatButtons(NPCInteractionList)"/>
+	public virtual void RegisterChatButtons(NPC npc, NPCInteractionList interactions)
 	{
 	}
 

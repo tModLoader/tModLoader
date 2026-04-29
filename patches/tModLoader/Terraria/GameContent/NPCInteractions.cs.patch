@@ -8,8 +8,11 @@
  using Terraria.UI;
  
  namespace Terraria.GameContent;
-@@ -35,18 +_,38 @@
+@@ -33,20 +_,41 @@
+ 			}
+ 		}
  
++		/// <summary> The helper method <see cref="NPCInteractions.Shop(string, string)"/> can be used instead of creating a new instance of this class.</summary>
  		public class OpenShop : NPCInteraction
  		{
 -			private int _shopIndex;
@@ -72,7 +75,15 @@
  			}
  		}
  
-@@ -191,12 +_,25 @@
+@@ -119,6 +_,7 @@
+ 			}
+ 		}
+ 
++		/// <summary> This interaction is predefined and can be used with <see cref="NPCInteractionDatabase.PetButton"/></summary>
+ 		public class PetAnimal : NPCInteraction
+ 		{
+ 			public override bool Condition() => NPCID.Sets.IsTownPet[base.TalkNPCType];
+@@ -191,17 +_,31 @@
  
  			public override void Interact()
  			{
@@ -100,6 +111,28 @@
  				Main.GetCoinValueText_Nurse(ref chatColor, ref coinValue);
  				return coinValue > 0;
  			}
+ 		}
+ 
++		/// <summary> This interaction is predefined and can be used with <see cref="NPCInteractionDatabase.CloseButton"/></summary>
+ 		public class CloseChat : NPCInteraction
+ 		{
+ 			public override bool Condition() => true;
+@@ -213,6 +_,7 @@
+ 			}
+ 		}
+ 
++		/// <summary> This interaction is predefined and can be used with <see cref="NPCInteractionDatabase.HappinessButton"/></summary>
+ 		public class ReportHappiness : NPCInteraction
+ 		{
+ 			public override bool Condition()
+@@ -234,6 +_,7 @@
+ 			}
+ 		}
+ 
++		/// <summary> This interaction is predefined and can be used with <see cref="NPCInteractionDatabase.HousingButton"/></summary>
+ 		public class RequestHome : NPCInteraction
+ 		{
+ 			public override bool ShowExcalmation => true;
 @@ -265,13 +_,22 @@
  					text = "Slime" + slimeType + "Chatter";
  				}
@@ -158,7 +191,7 @@
 +	/// <br/>Note: if the shop is not found, the button will open an empty shop.
 +	/// </para></param>
 +	/// <param name="customTextKey">The localization key for the display name of the button.
-+	/// <br/>If not set, the button will be translated to say "Shop". </param>
++	/// <br/>If not set, the button will be translated to say "Shop".</param>
 +	public static NPCInteraction Shop(string shopName = "Shop", string customTextKey = null)
 +	{
 +		return new Actions.OpenShop(shopName, customTextKey);

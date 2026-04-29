@@ -266,6 +266,7 @@
 		"RuntimeErrorSilentlyCaughtException": "Silently Caught Exception: ",
 		"RuntimeErrorSeeLogsForFullTrace": "(see {0} for full trace)",
 		"ShopOverflow": "Not all items could fit in the shop!",
+		"UnknownShop": "Unknown shop name: {0}",
 		"PlayerSaveFail": "An error occurred while saving the player",
 		"BackingUpPlayerFile": "Backing up player file",
 		"OpenLogs": "Open Logs",
