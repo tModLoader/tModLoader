@@ -233,9 +233,7 @@ namespace ExampleMod.Content.TileEntities
 
 		public override void AddRecipes() {
 			CreateRecipe()
-#if COMPILE_ERROR_TODOS
 				.AddRecipeGroup(RecipeGroupID.Wood, 9)
-#endif
 				.AddTile<Tiles.Furniture.ExampleWorkbench>()
 				.Register();
 		}

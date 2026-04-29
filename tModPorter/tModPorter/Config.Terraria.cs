@@ -353,6 +353,7 @@ public static partial class Config
 		RefactorStaticMember("Terraria.Player", "RandomTeleportationAttemptSettings", Removed("Use Utils.RandomTeleportationAttemptSettings instead and populate all the relevant new fields"));
 
 		RefactorStaticMethodCall("Terraria.Chest", "FindChestByGuessing", Removed("Use Chest.FindChest with the top left tile coordinate"));
+		RefactorStaticMethodCall("Terraria.RecipeGroup", "RegisterGroup", Removed("Replace this and \"new RecipeGroup()\" with RecipeGroup.Register"));
 
 		RefactorInstanceMethodCall("Terraria.Item", "SetDefaults", RemoveParameter(1, "noMatCheck", "bool"));
 		RefactorInstanceMethodCall("Terraria.Tile", "water", GetterSetterToProperty("LiquidType", "Terraria.ID.LiquidID", "Water"));
@@ -368,6 +369,8 @@ public static partial class Config
 
 		ChangeStaticFieldType("Terraria.Main", "item",        from: "Terraria.Item", to: "Terraria.WorldItem");
 		ChangeStaticFieldType("Terraria.Main", "ActiveItems", from: "Terraria.Item", to: "Terraria.WorldItem");
+
+		RenameType("Terraria.ID.RecipeGroupID", "Terraria.ID.RecipeGroups");
 	}
 
 	private static void AddTextureRenames() {
