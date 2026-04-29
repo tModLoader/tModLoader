@@ -86,9 +86,15 @@
  		public bool ZoneLihzhardTemple;
  		public bool ZoneGranite;
  		public bool ZoneMarble;
-@@ -141,0 +_,2 @@
+@@ -138,6 +_,8 @@
+ 		private bool TrySpawnAnNPC(Player player)
+ 		{
+ 			SetSpawnFlags(player);
 +			NPCLoader.EditSpawnFlags(this);
 +
+ 			GetSpawnRate(player, out var spawnRate, out var maxSpawns);
+ 			if (player.nearbyActiveNPCs >= (float)maxSpawns)
+ 				return false;
 @@ -147,6 +_,9 @@
  
  			if (!FindSpawnTile(player, out var spawnTileX, out var spawnTileY, out var xRange))
@@ -108,9 +114,15 @@
  			if (!PostCheckChosenSpawnTile(spawnTileX, spawnTileY, spawnTileType, spawnWallType))
  				return false;
  
-@@ -172,0 +_,2 @@
+@@ -169,6 +_,8 @@
+ 				}
+ 			}
+ 
 +			NPCLoader.EditSpawnInfo(this);
 +
+ 			SpawnAnNPC(spawnTileX, spawnTileY, spawnTileType, xRange, player.whoAmI);
+ 			if (Main.netMode == 2)
+ 				SyncNewlySpawnedNPCs();
 @@ -195,6 +_,7 @@
  
  		private void SetSpawnFlags(Player player)
