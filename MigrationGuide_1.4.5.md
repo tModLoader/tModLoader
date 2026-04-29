@@ -148,10 +148,13 @@ All classes are in the `Terraria` or `Terraria.ID` namespaces unless otherwise i
 All classes are in the `Terraria.ModLoader` or `Terraria` namespaces unless otherwise indicated.
 
 * ⚙️: `(ModItem|GlobalItem).OnSpawn/CanStackInWorld/Update/PostUpdate/GrabRange/GrabStyle/CanPickup/OnPickup/PreDrawInWorld/PostDrawInWorld` now has a `WorldItem` parameter. For `ModItem` code, switch from `Item` to `item` to access fields on the `WorldItem`. For `GlobalItem` code, you might need to access `item.inner` to access the underlying `Item` instance if accessing a field not exposed as a getter on `WorldItem.
-* ⚙️: `(ModNPC|GlobalNPC).SpawnChance` changed and renamed the parameter from `NPCSpawnInfo spawnInfo` to `NPC.Spawner spawner`.
+* ⚙️: `ModNPC.SpawnChance` and `GlobalNPC.EditSpawnPool` changed and renamed the parameter from `NPCSpawnInfo spawnInfo` to `NPC.Spawner spawner`.
+  * `GlobalNPC.EditSpawnFlags(NPC.Spawner spawner)` can be used to adjust player-level spawn flags before spawn rate, range, and tile selection.
+  * `GlobalNPC.EditSpawnInfo(NPC.Spawner spawner)` can be used to adjust spawn information after the spawn tile has been selected and before `SpawnChance` and `EditSpawnPool` are evaluated.
 * ⚙️: `(ModProjectile|GlobalProjectile).DrawBehind` has been removed. Set `Projectile.drawLayer` instead. 
 * ⚙️: `ModProjectile.DrawHeldProjInFrontOfHeldItemAndArms` has been removed. Set `Projectile.drawLayer` to `ProjectileDrawLayerID.HeldProjOverHand` instead. 
 * ⚙️: `(ModProjectile|GlobalProjectile).PreDraw/PreDrawExtras/PostDraw` now has a `Player` parameter. Use this instead of `Main.player[Projectile.owner]` to properly support rendering projectiles to custom `Player` instances, such as Mannequins.
 * 🤖: `ModTile.AddToArray` is no longer used for `TileID.Sets.RoomNeeds` entries since `TileID.Sets.RoomNeeds` fields have changed to typical ID sets.
 * 💀: `NPCSpawnInfo` is no longer used, it has been replaced by `NPC.Spawner` in functionality.
-  * ⚙️: The following fields changed from `NPCSpawnInfo` to `NPC.Spawner`: `Sky` -> `skyMob`, `Lihzahrd` -> `ZoneLihzhardTemple`, `PlayerSafe` -> `noWorms`, `Invasion` -> `invaders`,`Water` -> `waterTile`, `Granite` -> `nearGranite`, `Marble` -> `nearMarble`, `SpiderCave` -> `spawnSpider`, `PlayerInTown` -> `spawnFriendly`, `DesertCave` -> `spawnUndergroundDesert`
+  * ⚙️: The following fields changed from `NPCSpawnInfo` to `NPC.Spawner`: `Sky` -> `skyMob`, `Lihzahrd` -> `ZoneLihzhardTemple`, `PlayerSafe` -> `noWorms`, `Invasion` -> `invaders`, `Water` -> `waterTile`, `Granite` -> `nearGranite`, `Marble` -> `nearMarble`, `SpiderCave` -> `spawnSpider`, `PlayerInTown` -> `spawnFriendly`, `DesertCave` -> `spawnUndergroundDesert`
+  * 💀: `PlayerFloorX` and `PlayerFloorY` are no longer tracked by `NPC.Spawner`.

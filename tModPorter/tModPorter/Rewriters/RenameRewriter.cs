@@ -134,7 +134,7 @@ public class RenameRewriter : BaseRewriter {
 		RegisterAction(memberAccess, node => UseType(to));
 	}
 
-	private IdentifierNameSyntax RefactorSpeculative(IdentifierNameSyntax nameSyntax) {
+	private SyntaxNode RefactorSpeculative(IdentifierNameSyntax nameSyntax) {
 		var nameToken = nameSyntax.Identifier;
 
 		foreach (var entry in memberRenames) {
@@ -152,7 +152,7 @@ public class RenameRewriter : BaseRewriter {
 		return RefactorType(nameSyntax);
 	}
 
-	private IdentifierNameSyntax RefactorType(IdentifierNameSyntax nameSyntax) {
+	private TypeSyntax RefactorType(IdentifierNameSyntax nameSyntax) {
 		var nameToken = nameSyntax.Identifier;
 
 		foreach (var (from, to) in typeRenames) {
@@ -171,7 +171,7 @@ public class RenameRewriter : BaseRewriter {
 			}
 
 			if (IsUsingNamespace(qualifier[..^1])) {
-				return UseType(to).WithTriviaFrom(nameSyntax);
+				return UseTypeByMetadataName(to).WithTriviaFrom(nameSyntax);
 			}
 		}
 

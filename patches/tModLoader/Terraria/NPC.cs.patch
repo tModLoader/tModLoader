@@ -86,6 +86,9 @@
  		public bool ZoneLihzhardTemple;
  		public bool ZoneGranite;
  		public bool ZoneMarble;
+@@ -141,0 +_,2 @@
++			NPCLoader.EditSpawnFlags(this);
++
 @@ -147,6 +_,9 @@
  
  			if (!FindSpawnTile(player, out var spawnTileX, out var spawnTileY, out var xRange))
@@ -105,6 +108,9 @@
  			if (!PostCheckChosenSpawnTile(spawnTileX, spawnTileY, spawnTileType, spawnWallType))
  				return false;
  
+@@ -172,0 +_,2 @@
++			NPCLoader.EditSpawnInfo(this);
++
 @@ -195,6 +_,7 @@
  
  		private void SetSpawnFlags(Player player)
