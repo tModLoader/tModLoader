@@ -113,7 +113,10 @@ public override void RegisterChatButtons(NPCInteractionList interactions) {
 	interactions.Append(NPCInteractions.Shop(ShopName)); // Insert at the end (after the happiness and housing buttons, too)
 	
 	// Don't want a close, happiness, or housing button? Just disable it!
-	interactions.Disable(NPCInteractionDatabase.HousingButton);
+	if (interactions.TryFindInteractionByInstance(NPCInteractionDatabase.HousingButton, out NPCInteractionList.Entry foundInteraction))
+	{
+		interactions.Disable(foundInteraction);
+	}
 
 	// Adding existing shops from other NPCs
 	interactions.Append(NPCInteractions.Shop("Terraria/Painter/Shop", "Painter Shop"));

@@ -835,7 +835,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	/// </summary>
 	/// <param name="interactions">Use this with one of the methods to register new buttons.
 	/// <para>Use <c>interactions.Prepend</c>, <c>interactions.Append</c>,
-	/// <br/><c>interactions.InsertAfter</c>, <c>interactions.InsertBefore</c></para>
+	/// <br/><c>interactions.InsertAfter</c>, or <c>interactions.InsertBefore</c></para>
 	/// <br/>The Close, Happiness, Housing, and Pet buttons are already predefined and can be used with <see cref="NPCInteractionDatabase.CloseButton"/>, etc.
 	/// <para>Example: <c>interactions.InsertBefore(NPCInteractions.Shop(), NPCInteractionDatabase.CloseButton)</c></para>
 	/// </param>

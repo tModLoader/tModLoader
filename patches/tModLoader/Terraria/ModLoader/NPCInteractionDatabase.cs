@@ -4,6 +4,10 @@ using Terraria.ID;
 
 namespace Terraria.ModLoader;
 
+/// <summary>
+/// This holds and registers the <see cref="NPCInteractionList"/> data for each NPC.
+/// <br/>The Close, Happiness, Housing, and Pet buttons are already predefined and can be used with <see cref="NPCInteractionDatabase.CloseButton"/>, etc.
+/// </summary>
 public class NPCInteractionDatabase
 {
 	/// <summary> Predefined Close button for NPC chat buttons. </summary>
