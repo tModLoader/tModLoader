@@ -1,4 +1,5 @@
 ﻿using ExampleMod.Common;
+using ExampleMod.Content.Items;
 using ExampleMod.Content.Items.Placeable;
 using ExampleMod.Content.NPCs;
 using Terraria;
@@ -14,36 +15,40 @@ namespace ExampleMod.Content
 	{
 		// A place to store the recipe group so we can easily use it later
 		public static RecipeGroup ExampleRecipeGroup;
+		public static RecipeGroup SilverBarRecipeGroup;
 
 		public override void Unload() {
 			ExampleRecipeGroup = null;
+			SilverBarRecipeGroup = null;
 		}
 
-#if COMPILE_ERROR_TODOS
 		public override void AddRecipeGroups() {
-			// Create a recipe group and store it
-			// Language.GetTextValue("LegacyMisc.37") is the word "Any" in English, and the corresponding word in other languages
-			ExampleRecipeGroup = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} {Lang.GetItemNameValue(ModContent.ItemType<Items.ExampleItem>())}",
-				ModContent.ItemType<Items.ExampleItem>(), ModContent.ItemType<Items.ExampleDataItem>());
+			// Create a recipe group and store it in a static field so it can easily be used directly from other classes.
+			// The 1st parameter is the key. To avoid name collisions, when a modded items is the iconic or 1st item in a recipe group, name the recipe group: ModName:ItemName
+			// The next parameter is the localization key that will be used to make the "Any Something" display text for this recipe group. Using the item name of the most common item is typical, but sometimes a more generic custom name is appropriate.
+			// The last parameters are the item types that will be in this recipe group. The 1st item is the "icon" of the group, and the rest are just other items that can be used in place of it.
+			ExampleRecipeGroup = RecipeGroup.Register(
+				"ExampleMod:ExampleItem",
+				Lang.GetItemName(ModContent.ItemType<ExampleItem>()).Key,
+				ModContent.ItemType<ExampleItem>(), ModContent.ItemType<ExampleDataItem>()
+			);
 
-			// To avoid name collisions, when a modded items is the iconic or 1st item in a recipe group, name the recipe group: ModName:ItemName
-			RecipeGroup.RegisterGroup("ExampleMod:ExampleItem", ExampleRecipeGroup);
-
-			// Add an item to an existing Terraria recipeGroup. ExampleCritterItem isn't gold but it serves as an example for this.
-			RecipeGroup.recipeGroups[RecipeGroupID.GoldenCritter].ValidItems.Add(ModContent.ItemType<ExampleCritterItem>());
+			// Add an item to an existing Terraria recipe group. ExampleCritterItem isn't a bug but it serves as an example for this.
+			RecipeGroups.Bugs.ValidItems.Add(ModContent.ItemType<ExampleCritterItem>());
 
 			// We also add ExampleSand to the Sand group, which is used in the Glass and Magic Sand Dropper recipes
-			RecipeGroup.recipeGroups[RecipeGroupID.Sand].ValidItems.Add(ModContent.ItemType<ExampleSandBlock>());
+			RecipeGroups.Sand.ValidItems.Add(ModContent.ItemType<ExampleSandBlock>());
 
 			// We can also add ExamplePressurePlate to the pressure plate group, allowing it to be used to craft weighted pressure plates and pressure plate track. Since ExamplePressurePlate is a weighed pressure plate, we'll leave this commented out.
-			//RecipeGroup.recipeGroups[RecipeGroupID.PressurePlate].ValidItems.Add(ModContent.ItemType<ExamplePressurePlate>());
+			//RecipeGroups.PressurePlate.ValidItems.Add(ModContent.ItemType<ExamplePressurePlate>());
 
-			// While an "IronBar" group exists, "SilverBar" does not. tModLoader will merge recipe groups registered with the same name, so if you are registering a recipe group with a vanilla item as the 1st item, you can register it using just the internal item name if you anticipate other mods wanting to use this recipe group for the same concept. By doing this, multiple mods can add to the same group without extra effort. In this case we are adding a SilverBar group. Don't store the RecipeGroup instance, it might not be used, use the same nameof(ItemID.ItemName) or RecipeGroupID returned from RegisterGroup when using Recipe.AddRecipeGroup instead.
-			RecipeGroup SilverBarRecipeGroup = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} {Lang.GetItemNameValue(ItemID.SilverBar)}",
-			ItemID.SilverBar, ItemID.TungstenBar, ModContent.ItemType<Items.Placeable.ExampleBar>());
-			RecipeGroup.RegisterGroup(nameof(ItemID.SilverBar), SilverBarRecipeGroup);
+			// While an "IronBar" group exists, "SilverBar" does not. tModLoader will merge recipe groups registered with the same key/name, so if you are registering a recipe group with a vanilla item as the 1st item, you can register it using just the internal item name (ItemID name) if you anticipate other mods wanting to use this recipe group for the same concept. By doing this, multiple mods can add to the same group without extra effort put into cross-mod compatibility code. In this case we are adding a SilverBar group.
+			SilverBarRecipeGroup = RecipeGroup.Register(
+				nameof(ItemID.SilverBar),
+				"ItemName.SilverBar", // Lang.GetItemName(ItemID.SilverBar).Key would also work.
+				ItemID.SilverBar, ItemID.TungstenBar, ModContent.ItemType<ExampleBar>()
+			);
 		}
-#endif
 
 		public override void AddRecipes() {
 			////////////////////////////////////////////////////////////////////////////////////
@@ -81,18 +86,16 @@ namespace ExampleMod.Content
 				// An alternate string-based approach to the above. Try to only use it for other mods' items, because it's slower.
 				.AddIngredient(Mod, "ExampleSword")
 
-#if COMPILE_ERROR_TODOS
 				// RecipeGroups allow you create a recipe that accepts items from a group of similar ingredients. For example, all varieties of Wood are in the vanilla "Wood" Group
 				// Check here for other vanilla groups: https://github.com/tModLoader/tModLoader/wiki/Intermediate-Recipes#using-existing-recipegroups
-				.AddRecipeGroup(RecipeGroupID.Wood)
+				.AddRecipeGroup(RecipeGroups.Wood)
 				// Just like with AddIngredient, there's a stack parameter with a default value of 1.
-				.AddRecipeGroup(RecipeGroupID.IronBar, 2)
+				.AddRecipeGroup(RecipeGroups.IronBar, 2)
 				// Here is using a mod recipe group. Check out AddRecipeGroups() to see how to register a recipe group.
 				.AddRecipeGroup(ExampleRecipeGroup, 2)
 				// An alternate string-based approach to the above. Try to only use it for other mods' groups, because it's slower.
 				.AddRecipeGroup("Wood")
 				.AddRecipeGroup("ExampleMod:ExampleItem", 2)
-#endif
 
 				// Adds a vanilla tile requirement.
 				// To specify a crafting station, specify a tile. Look up TileIDs: https://github.com/tModLoader/tModLoader/wiki/Vanilla-Tile-IDs
