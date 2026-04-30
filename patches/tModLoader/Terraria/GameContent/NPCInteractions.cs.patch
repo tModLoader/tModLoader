@@ -8,7 +8,7 @@
  using Terraria.UI;
  
  namespace Terraria.GameContent;
-@@ -33,20 +_,41 @@
+@@ -33,20 +_,42 @@
  			}
  		}
  
@@ -18,9 +18,9 @@
 -			private int _shopIndex;
 -			private int _npcType;
 +			private int _shopIndex; // Vanilla shop index
++			// private int _npcType; // TML: Removed/Unused
 +			private string _shopName; // String shop name
 +			private string _shopFullName; // String full shop name, if set.
-+			// private int _npcType; TML: Removed
  			private string _customTextKey;
  
 +			/// <inheritdoc cref="NPCInteractions.Shop(string, string)"/>
@@ -44,6 +44,7 @@
 +			public OpenShop(int shopIndex, string customTextKey = null)
  			{
 -				_npcType = npcType;
++				// _npcType = npcType;
  				_shopIndex = shopIndex;
  				_customTextKey = customTextKey;
 +				_shopName = null;

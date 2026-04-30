@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Terraria.GameContent;
 using Terraria.ID;
@@ -26,26 +27,26 @@ public class NPCInteractionDatabase
 	/// Returns the NPCInteractionList of the NPC.
 	/// </summary>
 	/// <param name="npcNetId">The NPC to get the buttons for.</param>
-	/// <returns>Registers the NPC with an empty list if not found.</returns>
+	/// <returns><see langword="null"/> if not found.</returns>
 	public NPCInteractionList GetInteractionListForNPCID(int npcNetId)
 	{
 		if (_interactionDatabase.TryGetValue(npcNetId, out NPCInteractionList value))
 			return value;
 
-		return RegisterNewNPC(npcNetId);
+		return null;
 	}
 
 	/// <summary>
 	/// Returns the full <c>List&lt;NPCInteractionList.Entry&gt;</c> of the NPC.
 	/// </summary>
 	/// <param name="npcNetId">The NPC to get the buttons for.</param>
-	/// <returns>Registers the NPC with an empty list if not found.</returns>
-	public List<NPCInteractionList.Entry> GetInteractionEntriesNPCID(int npcNetId)
+	/// <returns><see langword="null"/> if not found.</returns>
+	public IReadOnlyList<NPCInteractionList.Entry> GetInteractionEntriesNPCID(int npcNetId)
 	{
 		if (_interactionDatabase.TryGetValue(npcNetId, out NPCInteractionList value))
-			return value.GetInteractionEntries();
+			return value.Entries;
 
-		return RegisterNewNPC(npcNetId).GetInteractionEntries();
+		return null;
 	}
 
 	/// <summary>
@@ -53,15 +54,17 @@ public class NPCInteractionDatabase
 	/// </summary>
 	/// <param name="npcNetId">The NPC to register.</param>
 	/// <param name="interactions">List of interactions to pre-register</param>
-	private NPCInteractionList RegisterNewNPC(int npcNetId, params NPCInteraction[] interactions)
+	private void RegisterNewNPC(int npcNetId, params NPCInteraction[] interactions)
 	{
-		if (!_interactionDatabase.ContainsKey(npcNetId))
+		if (!_interactionDatabase.ContainsKey(npcNetId)) {
 			_interactionDatabase[npcNetId] = new NPCInteractionList(npcNetId);
-
-		foreach (NPCInteraction interaction in interactions) {
-			_interactionDatabase[npcNetId].Append(interaction);
+			foreach (NPCInteraction interaction in interactions) {
+				_interactionDatabase[npcNetId].Append(interaction);
+			}
 		}
-		return _interactionDatabase[npcNetId];
+		else {
+			throw new Exception($"NPCInteractionDatabase NPC type {npcNetId} was already registered.");
+		}
 	}
 
 	internal void Populate()
@@ -74,13 +77,13 @@ public class NPCInteractionDatabase
 			if (pair.Value.townNPC || (pair.Key > -1 && NPCID.Sets.ActsLikeTownNPC[pair.Key]) || (pair.Value.ModNPC != null && pair.Value.ModNPC.CanChat())) {
 				// Only pre-register these buttons for modded NPCs because they are already registered for vanilla NPCs in RegisterVanilla().
 				if (pair.Key >= NPCID.Count) {
-					NPCInteractionList interactionList = RegisterNewNPC(pair.Key, CloseButton);
+					RegisterNewNPC(pair.Key, CloseButton);
 					if (pair.Key > -1 && NPCID.Sets.IsTownPet[pair.Key]) { // Automatically add the Pet button to Town Pets.
-						interactionList.Append(PetButton);
+						_interactionDatabase[pair.Key].Append(PetButton);
 					}
-					interactionList.Append(HappinessButton);
-					interactionList.Append(HousingButton);
-					NPCLoader.RegisterChatButtons(pair.Value, interactionList);
+					_interactionDatabase[pair.Key].Append(HappinessButton);
+					_interactionDatabase[pair.Key].Append(HousingButton);
+					NPCLoader.RegisterChatButtons(pair.Value, _interactionDatabase[pair.Key]);
 				}
 				else {
 					NPCLoader.RegisterChatButtons(pair.Value, GetInteractionListForNPCID(pair.Key));

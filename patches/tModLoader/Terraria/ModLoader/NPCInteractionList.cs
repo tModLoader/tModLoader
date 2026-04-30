@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Terraria.GameContent;
 
 namespace Terraria.ModLoader;
@@ -7,7 +8,7 @@ namespace Terraria.ModLoader;
 /// <summary>
 /// Allows for <see cref="NPCInteraction"/> chat buttons to be assigned to an NPC.
 /// </summary>
-public readonly struct NPCInteractionList(int npcNetId)
+public class NPCInteractionList(int npcNetId)
 {
 	/// <summary>
 	/// This contains the NPCInteraction as well as if the interaction is enabled.
@@ -30,27 +31,19 @@ public readonly struct NPCInteractionList(int npcNetId)
 		public override string ToString() => $"(NPCInteraction: {NPCInteraction}, Enabled: {Enabled})";
 	}
 
-	public readonly int NPCNetID => npcNetId;
+	public int Type => npcNetId;
 
-	private readonly List<Entry> _interactionEntries = new List<Entry>();
+	private readonly List<Entry> _entries = new List<Entry>();
 
 	/// <summary>
-	/// Returns the full <c>List&lt;NPCInteraction&gt;</c> of the NPC.
+	/// All of the NPCInteractions for the NPC.
 	/// </summary>
-	/// <returns>An empty list if not found.</returns>
-	public readonly List<NPCInteraction> GetInteractions()
-	{
-		List<NPCInteraction> list = new();
-		foreach (Entry entry in _interactionEntries) {
-			list.Add(entry.NPCInteraction);
-		}
-		return list;
-	}
+	public IEnumerable<NPCInteraction> Interactions => _entries.Select(e => e.NPCInteraction);
 
-	public readonly List<Entry> GetInteractionEntries()
-	{
-		return _interactionEntries;
-	}
+	/// <summary>
+	/// All of the entries for this NPC which includes the NPCInteraction and if it is Enabled.
+	/// </summary>
+	public IReadOnlyList<Entry> Entries => _entries;
 
 	/// <summary>
 	/// Searches the registered interactions to find the specified interaction type and returns the instance if found.
@@ -61,7 +54,7 @@ public readonly struct NPCInteractionList(int npcNetId)
 	/// <param name="interaction">The interaction to search for.
 	/// <br/>Example: <see cref="NPCInteractionDatabase.CloseButton"/> or <c>new NPCInteractions.Actions.CloseChat()</c></param>
 	/// <returns><see langword="null"/> if not found.</returns>
-	public readonly Entry FindInteractionByType(NPCInteraction interaction)
+	public Entry FindInteractionByType(NPCInteraction interaction)
 	{
 		return FindInteractionByType(interaction.GetType());
 	}
@@ -76,7 +69,7 @@ public readonly struct NPCInteractionList(int npcNetId)
 	/// <br/>Example: <see cref="NPCInteractionDatabase.CloseButton"/> or <c>new NPCInteractions.Actions.CloseChat()</c></param>
 	/// <param name="foundInteraction">The interaction that was found. <c>null</c> if not found.</param>
 	/// <returns><see langword="true"/> if found.</returns>
-	public readonly bool TryFindInteractionByType(NPCInteraction searchInteraction, out Entry foundInteraction)
+	public bool TryFindInteractionByType(NPCInteraction searchInteraction, out Entry foundInteraction)
 	{
 		foundInteraction = FindInteractionByType(searchInteraction.GetType());
 		if (foundInteraction == null) {
@@ -94,14 +87,9 @@ public readonly struct NPCInteractionList(int npcNetId)
 	/// <param name="interaction">The interaction to search for.
 	/// <br/>Example: <see cref="NPCInteractionDatabase.CloseButton"/> or <c>typeof(NPCInteractions.Actions.CloseChat)</c></param>
 	/// <returns><see langword="null"/> if not found.</returns>
-	public readonly Entry FindInteractionByType(Type interaction)
+	public Entry FindInteractionByType(Type interaction)
 	{
-		foreach (Entry entry in _interactionEntries) {
-			if (entry.NPCInteraction.GetType() == interaction) { // Class types are the same.
-				return entry;
-			}
-		}
-		return null;
+		return Entries.Where(e => e.NPCInteraction.GetType() == interaction).FirstOrDefault(); // Class types are the same.
 	}
 
 	/// <summary>
@@ -114,7 +102,7 @@ public readonly struct NPCInteractionList(int npcNetId)
 	/// <br/>Example: <see cref="NPCInteractionDatabase.CloseButton"/> or <c>typeof(NPCInteractions.Actions.CloseChat)</c></param>
 	/// <param name="foundInteraction">The interaction that was found. <c>null</c> if not found.</param>
 	/// <returns><see langword="true"/> if found.</returns>
-	public readonly bool TryFindInteractionByType(Type searchInteraction, out Entry foundInteraction)
+	public bool TryFindInteractionByType(Type searchInteraction, out Entry foundInteraction)
 	{
 		foundInteraction = FindInteractionByType(searchInteraction);
 		if (foundInteraction == null) {
@@ -131,14 +119,9 @@ public readonly struct NPCInteractionList(int npcNetId)
 	/// </summary>
 	/// <param name="interaction">The interaction to search for.</param>
 	/// <returns><see langword="null"/> if not found.</returns>
-	public readonly Entry FindInteractionByInstance(NPCInteraction interaction)
+	public Entry FindInteractionByInstance(NPCInteraction interaction)
 	{
-		foreach (Entry entry in _interactionEntries) {
-			if (entry.NPCInteraction.Equals(interaction)) { // Instances are the same.
-				return entry;
-			}
-		}
-		return null;
+		return Entries.Where(e => e.NPCInteraction.Equals(interaction)).FirstOrDefault(); // Instances are the same.
 	}
 
 	/// <summary>
@@ -150,7 +133,7 @@ public readonly struct NPCInteractionList(int npcNetId)
 	/// <param name="searchInteraction">The interaction to search for.</param>
 	/// <param name="foundInteraction">The interaction that was found. <c>null</c> if not found.</param>
 	/// <returns><see langword="true"/> if found.</returns>
-	public readonly bool TryFindInteractionByInstance(NPCInteraction searchInteraction, out Entry foundInteraction)
+	public bool TryFindInteractionByInstance(NPCInteraction searchInteraction, out Entry foundInteraction)
 	{
 		foundInteraction = FindInteractionByInstance(searchInteraction);
 		if (foundInteraction == null) {
@@ -164,10 +147,10 @@ public readonly struct NPCInteractionList(int npcNetId)
 	/// </summary>
 	/// <param name="interaction">The NPCInteraction to register.</param>
 	/// <returns>The supplied NPCInteraction as an NPCInteractionList.Entry</returns>
-	public readonly Entry Prepend(NPCInteraction interaction)
+	public Entry Prepend(NPCInteraction interaction)
 	{
 		Entry entry = new(interaction);
-		_interactionEntries.Insert(0, entry);
+		_entries.Insert(0, entry);
 		return entry;
 	}
 
@@ -176,10 +159,10 @@ public readonly struct NPCInteractionList(int npcNetId)
 	/// </summary>
 	/// <param name="interaction">The NPCInteraction to register.</param>
 	/// <returns>The supplied NPCInteraction as an NPCInteractionList.Entry</returns>
-	public readonly Entry Append(NPCInteraction interaction)
+	public Entry Append(NPCInteraction interaction)
 	{
 		Entry entry = new(interaction);
-		_interactionEntries.Add(entry);
+		_entries.Add(entry);
 		return entry;
 	}
 
@@ -194,28 +177,22 @@ public readonly struct NPCInteractionList(int npcNetId)
 	/// <param name="interactionAfter">The NPCInteraction to search for.</param>
 	/// <returns>The supplied NPCInteraction as an NPCInteractionList.Entry</returns>
 	/// <remarks>If the <paramref name="interactionAfter"/> is not found, the <paramref name="interactionToRegister"/> will be added to the end of the list.</remarks>
-	public readonly Entry InsertAfter(NPCInteraction interactionToRegister, NPCInteraction interactionAfter)
+	public Entry InsertAfter(NPCInteraction interactionToRegister, NPCInteraction interactionAfter)
 	{
 		Entry entry = new(interactionToRegister);
-		int index = -1;
-		foreach (Entry searchEntry in _interactionEntries) {
-			if (searchEntry.NPCInteraction.Equals(interactionAfter)) { // Instances are the same.
-				index = _interactionEntries.IndexOf(searchEntry);
-				break;
-			}
-		}
+		int index = _entries.FindIndex(e => e.NPCInteraction.Equals(interactionAfter)); // Instances are the same.
 
 		if (index is not -1) {
-			_interactionEntries.Insert(index + 1, entry);
+			_entries.Insert(index + 1, entry);
 		}
 		else { // If the interactionAfter is not found, add to the end of the list.
-			_interactionEntries.Add(entry);
+			_entries.Add(entry);
 		}
 		return entry;
 	}
 
 	/// <inheritdoc cref="InsertAfter(NPCInteraction, NPCInteraction)"/>
-	public readonly Entry InsertAfter(NPCInteraction interactionToRegister, Entry interactionAfter)
+	public Entry InsertAfter(NPCInteraction interactionToRegister, Entry interactionAfter)
 	{
 		return InsertAfter(interactionToRegister, interactionAfter.NPCInteraction);
 	}
@@ -231,28 +208,22 @@ public readonly struct NPCInteractionList(int npcNetId)
 	/// <param name="interactionBefore">The NPCInteraction to search for.</param>
 	/// <returns>The supplied NPCInteraction as an NPCInteractionList.Entry</returns>
 	/// <remarks>If the <paramref name="interactionBefore"/> is not found, the <paramref name="interactionToRegister"/> will be added to the end of the list.</remarks>
-	public readonly Entry InsertBefore(NPCInteraction interactionToRegister, NPCInteraction interactionBefore)
+	public Entry InsertBefore(NPCInteraction interactionToRegister, NPCInteraction interactionBefore)
 	{
 		Entry entry = new(interactionToRegister);
-		int index = -1;
-		foreach (Entry searchEntry in _interactionEntries) {
-			if (searchEntry.NPCInteraction.Equals(interactionBefore)) { // Instances are the same.
-				index = _interactionEntries.IndexOf(searchEntry);
-				break;
-			}
-		}
+		int index = _entries.FindIndex(e => e.NPCInteraction.Equals(interactionBefore)); // Instances are the same.
 
 		if (index is not -1) {
-			_interactionEntries.Insert(index, entry);
+			_entries.Insert(index, entry);
 		}
 		else { // If the interactionAfter is not found, add to the end of the list.
-			_interactionEntries.Add(entry);
+			_entries.Add(entry);
 		}
 		return entry;
 	}
 
 	/// <inheritdoc cref="InsertBefore(NPCInteraction, NPCInteraction)"/>
-	public readonly Entry InsertBefore(NPCInteraction interactionToRegister, Entry interactionBefore)
+	public Entry InsertBefore(NPCInteraction interactionToRegister, Entry interactionBefore)
 	{
 		return InsertBefore(interactionToRegister, interactionBefore.NPCInteraction);
 	}
@@ -265,23 +236,22 @@ public readonly struct NPCInteractionList(int npcNetId)
 	/// </para>
 	/// </summary>
 	/// <param name="interaction">The NPCInteractionList.Entry to disable.</param>
-	public readonly void Disable(Entry interaction) // Could be static, but left it instanced so you can use the instanced interactions parameter.
+	public void Disable(Entry interaction) // Could be static, but left it instanced so you can use the instanced interactions parameter.
 	{
 		interaction?.Enabled = false;
 	}
 
 	/// <summary>
-	/// Enables an interaction for the current NPC.
+	/// Disables an interaction for the current NPC.
 	/// <para>The <paramref name="interaction"/> needs to be the exact instance of the button.
 	/// <br/>The Close, Happiness, Housing, and Pet buttons are already predefined and can be used with <see cref="NPCInteractionDatabase.CloseButton"/>, etc.
 	/// <br/>If you don't already have the instance, use <see cref="FindInteractionByType(NPCInteraction)"/> or <see cref="FindInteractionByType(Type)"/> to get it.
 	/// </para>
 	/// </summary>
-	/// <param name="interaction">The NPCInteractionList.Entry to enable.</param>
-	/// <remarks>Interactions are enabled by default, so this is only needed if the interaction was disabled.</remarks>
-	public readonly void Enable(Entry interaction)
+	/// <param name="interaction">The NPCInteraction to disable.</param>
+	public void Disable(NPCInteraction interaction)
 	{
-		interaction?.Enabled = true;
+		_entries.FirstOrDefault(e => e.NPCInteraction.Equals(interaction))?.Enabled = true;
 	}
 
 	// Included this method even though if you already have the Entry, you could just do `interaction.Enabled`
@@ -290,8 +260,18 @@ public readonly struct NPCInteractionList(int npcNetId)
 	/// </summary>
 	/// <param name="interaction">The NPCInteractionList.Entry to check.</param>
 	/// <returns><see langword="true"/> if the button is enabled.</returns>
-	public readonly bool IsEnabled(Entry interaction)
+	public bool IsEnabled(Entry interaction)
 	{
 		return interaction.Enabled;
+	}
+
+	/// <summary>
+	/// If the interaction is enabled. Defaults to <see langword="true"/>.
+	/// </summary>
+	/// <param name="interaction">The NPCInteraction to check.</param>
+	/// <returns><see langword="true"/> if the button is enabled.</returns>
+	public bool IsEnabled(NPCInteraction interaction)
+	{
+		return _entries.FirstOrDefault(e  => e.NPCInteraction.Equals(interaction))?.Enabled ?? false;
 	}
 }
