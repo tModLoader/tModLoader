@@ -229,7 +229,7 @@
  
  		if (needWater && !player.adjWaterSource)
  			flag &= AddMissing(Lang.inter[53].Value, missingObjects);
-@@ -285,6 +_,20 @@
+@@ -285,6 +_,21 @@
  		return flag;
  	}
  
@@ -239,9 +239,10 @@
 +		bool flag = true;
 +
 +		foreach (int tile in requiredTiles) {
-+			if (!player.adjTile[tile])
++			if (!player.adjTile[tile]) {
 +				AddMissing(GetRequiredTileName(tile), missingObjects);
 +				flag = false;
++			}
 +		}
 +
 +		return flag;
