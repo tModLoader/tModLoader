@@ -15,10 +15,9 @@
 +		/// <summary> The helper method <see cref="NPCInteractions.Shop(string, string)"/> can be used instead of creating a new instance of this class.</summary>
  		public class OpenShop : NPCInteraction
  		{
--			private int _shopIndex;
+ 			private int _shopIndex;
 -			private int _npcType;
-+			private int _shopIndex; // Vanilla shop index
-+			// private int _npcType; // TML: Removed/Unused
++			// private int _npcType;
 +			private string _shopName; // String shop name
 +			private string _shopFullName; // String full shop name, if set.
  			private string _customTextKey;
