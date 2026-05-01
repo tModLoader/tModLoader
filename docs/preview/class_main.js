@@ -104,6 +104,7 @@ var class_main =
     [ "tileAxe", "class_main.html#aa844b5324096225533879d1901aa9afe", null ],
     [ "tileBlockLight", "class_main.html#abe2ddd285204e43fe773b6df014ca8b7", null ],
     [ "tileBouncy", "class_main.html#ad422149713840dfc947d37a1c90160d0", null ],
+    [ "tileBrick", "class_main.html#ac9281af0d63461d5ab27be07c65f4a0d", null ],
     [ "tileContainer", "class_main.html#a9292c59467fe80a77a55c82bec8be90d", null ],
     [ "tileCut", "class_main.html#a7e567c0a497197b2f49f009f2ba01f05", null ],
     [ "tileFlame", "class_main.html#abb7f16a068878aa07bcfb222d9002bed", null ],

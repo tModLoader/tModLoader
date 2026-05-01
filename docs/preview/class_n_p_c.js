@@ -35,6 +35,7 @@ var class_n_p_c =
     [ "SitDown", "class_n_p_c.html#a730d6d0e9d96e451fc08814adeb807ba", null ],
     [ "StrikeInstantKill", "class_n_p_c.html#a9628e88277c1abb2d7ebf19d6c2d024b", null ],
     [ "StrikeNPC", "class_n_p_c.html#a99d0dc536e4ca397859fcb73a9871a79", null ],
+    [ "StrikeOtherNPC", "class_n_p_c.html#a75796987b9b02a1d44758ac443321507", null ],
     [ "TargetClosest", "class_n_p_c.html#ace46ba11f1b49ba040e73aed0b05b1d9", null ],
     [ "TryGetGlobalNPC< T >", "class_n_p_c.html#ae6a243b739b2a8e89b1534131a219de1", null ],
     [ "TryGetGlobalNPC< T >", "class_n_p_c.html#a18f67f03259864860afd737f2cc7236d", null ],
