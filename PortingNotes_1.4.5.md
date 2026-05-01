@@ -14,7 +14,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - We need to add ModItem.SummonPrefix(), add ModPrefix.Summon
 - ShimmerTransforms.IsItemTransformLocked seems to have been split, need to verify RecipeLoader.DecraftAvailable and other logic still applies.
 - Update ModPylon docs to removed danger check from check listing, and remove the ValidTeleportCheck_AnyDanger hook
-- WorldGenerator._seed needs to be internal again. The patch was lost
 - Consider updating FlexibleTileWand.Reload
 - https://github.com/tModLoader/tModLoader/pull/1675 seemed to fix a bug that is apparently now fixed in vanilla. Patches in AWorkshopPublishInfoState deleted. Verify that existing workshop publicity still correctly updates UI without requiring a click.
 - Mount.Dismount now has a ignoreEffect parameter, this might duplicate the skipDust variable used in MountLoader.Dismount. Adjust patches (and docs) accordingly if they should be the same. When is it set? Do modded mounts need to care about when ignoreEffect was true or false?
