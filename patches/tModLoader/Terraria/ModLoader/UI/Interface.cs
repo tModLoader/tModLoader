@@ -253,17 +253,6 @@ internal static class Interface
 			}
 			else if (!ModLoader.ResolvedAbnormalModInstallStates) {
 				ModLoader.ResolvedAbnormalModInstallStates = true;
-
-				string message = ModOrganizer.DetectAbnormalSteamWorkshopDownloads(out Action resolveAbnormalDownloads, out string continueButton, out string cancelButton);
-
-				if (!string.IsNullOrWhiteSpace(message)) {
-					Logging.tML.Info($"Abnormal Mod States to Address:\n{message}");
-					infoMessage.Show(message, Main.menuMode, altButtonText: continueButton, altButtonAction: resolveAbnormalDownloads, okButtonText: cancelButton);
-				}
-				else {
-					// In order to ensure that the next information message actually shows when info message is not shown, we have to jump back to start of this If-Else Chain
-					goto InfoMessageChainStart;
-				}
 			}
 			else if (!ModLoader.DownloadedDependenciesOnStartup) { // Must be the last code to run since prior info messages may introduce new updates or new mods that may have dependencies.
 				ModLoader.DownloadedDependenciesOnStartup = true;
