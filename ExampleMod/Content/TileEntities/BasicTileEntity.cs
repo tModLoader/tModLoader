@@ -233,7 +233,7 @@ namespace ExampleMod.Content.TileEntities
 
 		public override void AddRecipes() {
 			CreateRecipe()
-				.AddRecipeGroup(RecipeGroupID.Wood, 9)
+				.AddRecipeGroup(RecipeGroups.Wood, 9)
 				.AddTile<Tiles.Furniture.ExampleWorkbench>()
 				.Register();
 		}

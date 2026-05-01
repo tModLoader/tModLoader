@@ -91,7 +91,6 @@ internal class WorkshopBrowserModule : SocialBrowserModule
 	// assumes SteamAvailable
 	public void DownloadItem(ModDownloadItem item, IDownloadProgress uiProgress)
 	{
-		item.UpdateInstallState();
 		if (item.Banned)
 			throw new BannedModException($"Attempted to Download a Banned Mod {item.DisplayName} with ID {item.PublishId}. Aborting...", item.DisplayName, item.PublishId.ToString());
 

@@ -52,7 +52,9 @@ namespace ExampleMod.Content.Projectiles
 			ProjectileID.Sets.TrailCacheLength[Type] = 6;
 			ProjectileID.Sets.TrailingMode[Type] = 2;
 
+#if COMPILE_ERROR_TODOS
 			ProjectileID.Sets.HeldProjDoesNotUsePlayerGfxOffY/* tModPorter Note: Removed. AI() should use master.RotatedRelativePoint(master.MountedCenter + ...) to position held projectiles */[Type] = true;
+#endif
 		}
 
 		public override void SetDefaults() {
@@ -156,7 +158,7 @@ namespace ExampleMod.Content.Projectiles
 							// This is where Drippler Crippler spawns its projectile
 							/*
 							if (Main.myPlayer == Projectile.owner)
-								Projectile.NewProjectile(Projectile.GetProjectileSource_FromThis(), Projectile.Center, Projectile.velocity, 928, Projectile.damage, Projectile.knockBack, Main.myPlayer);
+								Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.velocity, ProjectileID.DripplerFlailExtraBall, Projectile.damage, Projectile.knockBack, Main.myPlayer);
 							*/
 							break;
 						}

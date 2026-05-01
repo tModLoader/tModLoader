@@ -782,7 +782,6 @@ public static class TileLoader
 
 		RegisterConversionFallback(TileID.CorruptJungleGrass, TileID.JungleGrass, BiomeConversionID.Corruption, BiomeConversionID.GlowingMushroom);
 		RegisterConversionFallback(TileID.CrimsonJungleGrass, TileID.JungleGrass, BiomeConversionID.Crimson, BiomeConversionID.GlowingMushroom);
-		RegisterConversionFallback(TileID.MushroomGrass, TileID.JungleGrass, BiomeConversionID.GlowingMushroom, BiomeConversionID.Corruption, BiomeConversionID.Crimson);
 
 		RegisterConversionFallback(TileID.CorruptIce, TileID.IceBlock, BiomeConversionID.Corruption);
 		RegisterConversionFallback(TileID.FleshIce, TileID.IceBlock, BiomeConversionID.Crimson);
@@ -870,7 +869,7 @@ public static class TileLoader
 
 		if (tile.TileType == type && TryGetConversionFallback(type, conversionType, out var fallback)) {
 			tile.TileType = (ushort)fallback;
-			WorldGen.Convert(i, j, conversionType, size: 0, walls: false);
+			WorldGen.Convert(i, j, conversionType, walls: false);
 
 			if (tile.TileType == fallback)
 				tile.TileType = (ushort)type;

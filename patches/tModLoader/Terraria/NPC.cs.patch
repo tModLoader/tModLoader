@@ -2303,7 +2303,7 @@
  		Vector2 positionInWorld = base.Hitbox.ClosestPointInRect(bestSwordSpot);
  		ParticleOrchestrator.RequestParticleSpawn(clientOnly: false, ParticleOrchestraType.Keybrand, new ParticleOrchestraSettings {
  			PositionInWorld = positionInWorld
-@@ -67681,24 +_,161 @@
+@@ -67681,24 +_,165 @@
  		return dmg;
  	}
  
@@ -2386,6 +2386,10 @@
 +	/// <param name="damageVariation">Whether to apply damage variation. Defaults to false.</param>
 +	/// <param name="luck">Luck modifier to produce weight damageVariation towards higher (positive) or lower (negative) values. Defaults to 0</param>
 +	/// <returns>A <see cref="HitInfo"/> for use with <see cref="StrikeNPC(HitInfo, bool, bool)"/> and <see cref="NetMessage.SendStrikeNPC"/></returns>
++	/// <remarks>
++	/// Note: This method doesn't include entity-related hit modifying hooks and shouldn't be used in normal contexts.
++	/// <br/><br/> Consider using <see cref="StrikeOtherNPC"/> instead.
++	/// </remarks>
 +	public HitInfo CalculateHitInfo(int damage, int hitDirection, bool crit = false, float knockBack = 0f, DamageClass damageType = null, bool damageVariation = false, float luck = 0) {
 +		return GetIncomingStrikeModifiers(damageType, hitDirection).ToHitInfo(damage, crit, knockBack, damageVariation, luck);
 +	}
