@@ -88,7 +88,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - "// Sound is played on animation start #ItemTimeOnAllClients" comments around "SoundEngine.PlaySound(item6.UseSound" in MessageBuffer's `ShotAnimationAndSound` code. ShotAnimationAndSound was renamed, we might need to verify that this is still fixed in tmod.
 - ApplyDifficultyAndPlayerScaling needs to be revisited.
 - Need to restore rejected PopupText.rare patch logic in Item.GetPopupRarityColor
-- Check for ` = new Tile();` not gated by null checks. These will all throw exception. Change to `Tile.Clear(TileDataType.All);`
 - WorldGen.StopWaterfallAmbienceAudio might be a better place for some existing patches. Need to verify save and quit stopping waterfall sounds properly.
 - TileLoader.DropCritterChance could be updated with LuckyClover chance. Also Lavafly/HellButterfly chance
 - TileID.Sets.SpreadsCrimson added. Need docs and possibly adjust biome spread logic. SpreadsHallow
