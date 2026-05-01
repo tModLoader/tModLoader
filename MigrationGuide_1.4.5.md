@@ -80,8 +80,9 @@ Chat buttons are now registered at mod load time instead of when interacting wit
 * Use `interactions.X(NPCInteractions.Shop(string shopName = "Shop", string customTextKey = null))` to assign shops.
   * The shopName must match the shopName for the `NPCShop`.
   * Example: ModNPC calling `interactions.Append(NPCInteractions.Shop())` will register a button for the shop "ModName/ModNPCName/Shop".
-  * Vanilla shops can easily be added with the string "Terraria/Merchant/Shop". ("Decor" for the Painter's second shop)
+  * Vanilla shops can easily be added with the string "Terraria/Merchant/Shop". ("Decor" for the Painter's second shop).
   * Shops from other modded Town NPCs can be added with the string "ModName/ModNPCName/ShopName". For example: "ExampleMod/ExamplePerson/Shop".
+  * Alternatively, use `NPCShopDatabase.GetShopName(NPCID, "Shop")` to get the full shop name for an NPC.
 * Use `interactions.X(new NPCInteraction...)` to register other buttons.
   * Example: `interactions.Append(new NPCInteractions.Actions.CloseChat());`
 

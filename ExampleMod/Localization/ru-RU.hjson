@@ -116,6 +116,11 @@ Mods: {
 					// UpgradeItemResponse: I upgraded your {$ItemName.HiveBackpack} to a {$Mods.ExampleMod.Items.WaspNest.DisplayName}
 				}
 
+				# Town NPCs who are homeless have a "Housing" button that displays their "NoHome" dialogue as well as a hint on what valid housing is. The hint text can be customized through the localization file.
+				# Default hint:			(In order for a room to be considered a home, it needs to have a door, a chair, a table, and a light source.  Make sure the house has walls as well.)
+				# Hint for the truffle: (In order for {NPCName} to consider a home, it needs to be in Glowing Mushroom Fields and have a door, a chair, a table, and a light source.  Make sure the house has walls as well.)
+				# {NPCName} is a placeholder and will be replaced with the NPC's full name.
+				// HousingText.HousingRequirements: (In order for {NPCName} to consider a home, it needs to have an Example Door, Example Chair or Example Bed, Example Workbench, and a light source.  Make sure the house has walls as well made out of Example Walls and Example Blocks.)
 				# This key is generated and used when the "Census" mod is enabled: It allows the user to see the spawn condition of this town NPC in the Housing UI
 				// Census.SpawnCondition: Have either an {$Items.ExampleItem.DisplayName} [i:ExampleMod/ExampleItem] or an {$Items.ExampleBlock.DisplayName} [i:ExampleMod/ExampleBlock] in your inventory
 				// DeathMessage: "{0} is gone..."
