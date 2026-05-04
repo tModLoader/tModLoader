@@ -382,25 +382,21 @@
  		return num;
  	}
  
-@@ -3427,19 +_,14 @@
+@@ -3427,6 +_,7 @@
  			Main.tile[tileX, tileY + 1] = tile4;
  		}
  
--		if (tile.type == 379)
--			tile = new Tile();
--
--		if (tile2.type == 379)
--			tile2 = new Tile();
--
--		if (tile3.type == 379)
--			tile3 = new Tile();
--
--		if (tile4.type == 379)
--			tile4 = new Tile();
--
--		if (DebugOptions.hideWater || !tileCache.active() || tileCache.inActive() || _tileSolidTop[tileCache.type] || (tileCache.halfBrick() && (tile2.liquid > 160 || tile.liquid > 160) && Main.instance.waterfallManager.CheckForWaterfall(tileX, tileY)) || (TileID.Sets.BlocksWaterDrawingBehindSelf[tileCache.type] && tileCache.slope() == 0))
-+		// TML 1.4.5: Tile is now a struct; `= new Tile()` would point to TileId=0 (world pos 0,0) instead of an empty tile.
-+		// Instead, guard each liquid read below with a type != 379 check to preserve the original intent.
++		/*
+ 		if (tile.type == 379)
+ 			tile = new Tile();
+ 
+@@ -3440,6 +_,15 @@
+ 			tile4 = new Tile();
+ 
+ 		if (DebugOptions.hideWater || !tileCache.active() || tileCache.inActive() || _tileSolidTop[tileCache.type] || (tileCache.halfBrick() && (tile2.liquid > 160 || tile.liquid > 160) && Main.instance.waterfallManager.CheckForWaterfall(tileX, tileY)) || (TileID.Sets.BlocksWaterDrawingBehindSelf[tileCache.type] && tileCache.slope() == 0))
++		*/
++
++		// TML `new Tile()` would point to the tile at (0,0) instead of an empty tile. Reimplement the logic with separate bools instead of checking a tile coordinate that could potentially have garbage data in it.
 +		bool tile1IsSand = tile.type == 379;
 +		bool tile2IsSand = tile2.type == 379;
 +		bool tile3IsSand = tile3.type == 379;
