@@ -28,36 +28,7 @@ public partial class NPC
 
 		/// <summary>
 		/// The player that this NPC is spawning around.
-		/// For convenience, here are the player zones, which are also useful for determining NPC spawn:
-		/// (ZoneGranite, ZoneMarble, ZoneHive, ZoneGemCave are not actually proper spawning related checks, they are for visuals only (RGB), determined by the backwall type)
-		/// <list type="bullet">
-		/// <item><description>ZoneDungeon</description></item>
-		/// <item><description>ZoneCorrupt</description></item>
-		/// <item><description>ZoneHallow</description></item>
-		/// <item><description>ZoneMeteor</description></item>
-		/// <item><description>ZoneJungle</description></item>
-		/// <item><description>ZoneSnow</description></item>
-		/// <item><description>ZoneCrimson</description></item>
-		/// <item><description>ZoneWaterCandle</description></item>
-		/// <item><description>ZonePeaceCandle</description></item>
-		/// <item><description>ZoneTowerSolar</description></item>
-		/// <item><description>ZoneTowerVortex</description></item>
-		/// <item><description>ZoneTowerNebula</description></item>
-		/// <item><description>ZoneTowerStardust</description></item>
-		/// <item><description>ZoneDesert</description></item>
-		/// <item><description>ZoneGlowshroom</description></item>
-		/// <item><description>ZoneUndergroundDesert</description></item>
-		/// <item><description>ZoneSkyHeight</description></item>
-		/// <item><description>ZoneOverworldHeight</description></item>
-		/// <item><description>ZoneDirtLayerHeight</description></item>
-		/// <item><description>ZoneRockLayerHeight</description></item>
-		/// <item><description>ZoneUnderworldHeight</description></item>
-		/// <item><description>ZoneBeach</description></item>
-		/// <item><description>ZoneRain</description></item>
-		/// <item><description>ZoneSandstorm</description></item>
-		/// <item><description>ZoneOldOneArmy</description></item>
-		/// <item><description>ZoneGraveyard</description></item>
-		/// </list>
+		/// <para/> Note that there are many fields in <see cref="NPC.Spawner"/> like <see cref="ZoneJungle"/> that appear to be duplicates of Player fields, such as <see cref="Player.ZoneJungle"/>, but you should always used the <see cref="NPC.Spawner"/> fields if present for NPC spawning logic to properly account for custom NPC spawning logic. For example, the dual dungeons secret world seed affects those fields for custom spawning logic separately from the logic used for the Player fields, which would affect visuals and other things.
 		/// </summary>
 		public Player Player { get; private set; }
 

@@ -22,11 +22,15 @@
  {
  	internal struct PlayerNetSyncState
  	{
-@@ -35,7 +_,7 @@
+@@ -35,7 +_,11 @@
  		public byte streamCounter;
  	}
  
 -	public class Spawner
++	/// <summary>
++	/// Used for determining natural NPC spawns. Contains data pertaining to the spawn context, such as the <see cref="Player"/>, <see cref="SpawnTileType"/>, and more.
++	/// <br/><br/> Note that there are many fields in this class like <see cref="ZoneJungle"/> that appear to be duplicates of Player fields, such as <see cref="Player.ZoneJungle"/>, but you should always used the fields found in this class if present for NPC spawning logic to properly account for custom NPC spawning logic. For example, the dual dungeons secret world seed affects these fields for custom spawning logic separately from the logic used for the Player fields, which would affect visuals and other things.
++	/// </summary>
 +	public partial class Spawner
  	{
  		public static int spawnSpaceX = 2;
