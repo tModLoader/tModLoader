@@ -13,15 +13,6 @@
  using Terraria.Utilities;
  
  namespace Terraria.WorldBuilding;
-@@ -318,7 +_,7 @@
- 	}
- 
- 	internal readonly List<GenPass> _passes = new List<GenPass>();
--	private readonly int _seed;
-+	internal readonly int _seed;
- 	private readonly WorldGenConfiguration _configuration;
- 	private readonly GenerationProgress _progress;
- 	private readonly Controller _controller;
 @@ -433,7 +_,10 @@
  		_hashTime.Start();
  		uint[] line_hashes = new uint[Main.maxTilesX];
