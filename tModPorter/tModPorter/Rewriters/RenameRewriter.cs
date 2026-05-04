@@ -37,6 +37,12 @@ public class RenameRewriter : BaseRewriter {
 	}
 
 	public static MemberRename RenameInstanceField(string type, string from, string to) => RenameMember(new() { type = type, from = from, to = to });
+	public static void RenameInstanceFieldMultiple(string type, string[] froms, string to)
+	{
+		foreach (string from in froms) {
+			RenameMember(new() { type = type, from = from, to = to });
+		}
+	}
 	public static MemberRename RenameStaticField(string type, string from, string to) => RenameMember(new() { type = type, from = from, to = to });
 	public static void RenameStaticFields(string type, params string[] fromTo)
 	{
