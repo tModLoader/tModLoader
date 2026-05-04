@@ -2256,6 +2256,24 @@
  				nPC.townNpcVariationIndex = profile.RollVariation();
  				nPC.GivenName = profile.GetNameForVariant(nPC);
  			}
+@@ -67389,6 +_,9 @@
+ 	public PlayerPettingInfo GetPettingInfo(Player player)
+ 	{
+ 		int num = ((base.Center.X > player.Center.X) ? 1 : (-1));
++		int num2 = NPCID.Sets.PlayerDistanceWhilePetting[type];
++		bool isPetSmall = NPCID.Sets.IsPetSmallForPetting[type];
++		/*
+ 		int num2 = 36;
+ 		bool isPetSmall = false;
+ 		switch (type) {
+@@ -67418,6 +_,7 @@
+ 				num2 = 20;
+ 				break;
+ 		}
++		*/
+ 
+ 		return new PlayerPettingInfo(this, new Vector2(-num * num2, 0f), isPetSmall);
+ 	}
 @@ -67455,7 +_,7 @@
  
  	public bool RerollVariation()
