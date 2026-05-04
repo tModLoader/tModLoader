@@ -733,7 +733,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Whether or not this NPC can spawn with the given spawning conditions. Return the weight for the chance of this NPC to spawn compared to vanilla mobs. All vanilla mobs combined have a total weight of 1. Returns 0 by default, which disables natural spawning. Remember to always use <paramref name="spawner"/>.<see cref="NPC.Spawner.Player"/> and not <see cref="Main.LocalPlayer"/> when checking <see cref="Player"/> or <see cref="ModPlayer"/> fields, otherwise your mod won't work in Multiplayer.
+	/// Whether or not this NPC can spawn with the given spawning conditions. Return the weight for the chance of this NPC to spawn compared to vanilla mobs. All vanilla mobs combined have a total weight of 1. Returns 0 by default, which disables natural spawning. Remember to always use <see cref="NPC.Spawner.Player"/> and not <see cref="Main.LocalPlayer"/> when checking <see cref="Player"/> or <see cref="ModPlayer"/> fields, otherwise your mod won't work in Multiplayer.
 	/// <para/> Called in single player or on the server only.
 	/// </summary>
 	/// <param name="spawner"></param>
