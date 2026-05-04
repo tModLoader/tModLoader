@@ -382,6 +382,66 @@
  		return num;
  	}
  
+@@ -3427,6 +_,7 @@
+ 			Main.tile[tileX, tileY + 1] = tile4;
+ 		}
+ 
++		/*
+ 		if (tile.type == 379)
+ 			tile = new Tile();
+ 
+@@ -3440,6 +_,15 @@
+ 			tile4 = new Tile();
+ 
+ 		if (DebugOptions.hideWater || !tileCache.active() || tileCache.inActive() || _tileSolidTop[tileCache.type] || (tileCache.halfBrick() && (tile2.liquid > 160 || tile.liquid > 160) && Main.instance.waterfallManager.CheckForWaterfall(tileX, tileY)) || (TileID.Sets.BlocksWaterDrawingBehindSelf[tileCache.type] && tileCache.slope() == 0))
++		*/
++
++		// TML `new Tile()` would point to the tile at (0,0) instead of an empty tile. Reimplement the logic with separate bools instead of checking a tile coordinate that could potentially have garbage data in it.
++		bool tile1IsSand = tile.type == 379;
++		bool tile2IsSand = tile2.type == 379;
++		bool tile3IsSand = tile3.type == 379;
++		bool tile4IsSand = tile4.type == 379;
++
++		if (DebugOptions.hideWater || !tileCache.active() || tileCache.inActive() || _tileSolidTop[tileCache.type] || (tileCache.halfBrick() && ((!tile2IsSand && tile2.liquid > 160) || (!tile1IsSand && tile.liquid > 160)) && Main.instance.waterfallManager.CheckForWaterfall(tileX, tileY)) || (TileID.Sets.BlocksWaterDrawingBehindSelf[tileCache.type] && tileCache.slope() == 0))
+ 			return;
+ 
+ 		int num = 0;
+@@ -3499,7 +_,7 @@
+ 					num = tileCache.liquid;
+ 			}
+ 
+-			if (tile2.liquid > 0 && num3 != 1 && num3 != 3) {
++			if (!tile2IsSand && tile2.liquid > 0 && num3 != 1 && num3 != 3) {
+ 				flag = true;
+ 				switch (tile2.liquidType()) {
+ 					case 0:
+@@ -3520,7 +_,7 @@
+ 					num = tile2.liquid;
+ 			}
+ 
+-			if (tile.liquid > 0 && num3 != 2 && num3 != 4) {
++			if (!tile1IsSand && tile.liquid > 0 && num3 != 2 && num3 != 4) {
+ 				flag2 = true;
+ 				switch (tile.liquidType()) {
+ 					case 0:
+@@ -3541,7 +_,7 @@
+ 					num = tile.liquid;
+ 			}
+ 
+-			if (tile3.liquid > 0 && num3 != 3 && num3 != 4) {
++			if (!tile3IsSand && tile3.liquid > 0 && num3 != 3 && num3 != 4) {
+ 				flag3 = true;
+ 				switch (tile3.liquidType()) {
+ 					case 0:
+@@ -3559,7 +_,7 @@
+ 				}
+ 			}
+ 
+-			if (tile4.liquid > 0 && num3 != 1 && num3 != 2) {
++			if (!tile4IsSand && tile4.liquid > 0 && num3 != 1 && num3 != 2) {
+ 				if (tile4.liquid > 240)
+ 					flag4 = true;
+ 
 @@ -3675,7 +_,8 @@
  
  		bool flag7 = false;
