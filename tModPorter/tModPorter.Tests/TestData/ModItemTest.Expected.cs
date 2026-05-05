@@ -3,6 +3,7 @@ using System;
 using System.IO;
 using Terraria;
 using Terraria.DataStructures;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
@@ -29,7 +30,11 @@ public class ModItemTest : ModItem
 		/* Tooltip.SetDefault(
 			"This tooltip\n" +
 			"Has multiple lines"); */
-		Terraria.ID.AmmoID.Sets.IsSpecialist[Type] = true;
+		AmmoID.Sets.IsSpecialist[Type] = true;
+		/* Not working when qualified
+		ID.AmmoID.Sets.IsRocket[Type] = true;
+		Terraria.ID.AmmoID.Sets.IsRocket[Type] = true;
+		*/
 	}
 
 #if COMPILE_ERROR

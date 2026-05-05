@@ -622,6 +622,17 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	}
 
 	/// <summary>
+	/// Allows you to modify natural spawn flags for the given player before spawn rate, spawn range, and spawn tile are determined.
+	/// <para/> Use this for player-level spawn context that should affect those later steps, such as biome, safe wall, or invasion flags.
+	/// <para/> For example, a modded safe-zone effect could set <c>spawner.noWorms = true</c> before vanilla spawn logic uses that flag.
+	/// <para/> Called in single player or on the server only.
+	/// </summary>
+	/// <param name="spawner"></param>
+	public virtual void EditSpawnFlags(NPC.Spawner spawner)
+	{
+	}
+
+	/// <summary>
 	/// Allows you to modify the chance of NPCs spawning around the given player and the maximum number of NPCs that can spawn around the player. Lower spawnRates mean a higher chance for NPCs to spawn.
 	/// <para/> Called in single player or on the server only.
 	/// </summary>
@@ -643,6 +654,17 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// <param name="safeRangeY"></param>
 	public virtual void EditSpawnRange(Player player, ref int spawnRangeX, ref int spawnRangeY,
 		ref int safeRangeX, ref int safeRangeY)
+	{
+	}
+
+	/// <summary>
+	/// Allows you to modify natural spawn information after the spawn tile has been chosen and before the spawn pool is evaluated.
+	/// <para/> Use this for tile-level spawn context, such as water, granite, marble, spider cave, underground desert, spawn tile type, or spawn wall type.
+	/// <para/> For example, a modded tile could set <c>spawner.nearGranite = true</c> so later <see cref="ModNPC.SpawnChance"/> and <see cref="EditSpawnPool"/> logic sees the chosen tile as granite-like.
+	/// <para/> Called in single player or on the server only.
+	/// </summary>
+	/// <param name="spawner"></param>
+	public virtual void EditSpawnInfo(NPC.Spawner spawner)
 	{
 	}
 

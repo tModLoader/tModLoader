@@ -84,7 +84,9 @@ public abstract class BaseRewriter : CSharpSyntaxRewriter
 			: name;
 	}
 
-	public IdentifierNameSyntax UseType(string fullname) => (IdentifierNameSyntax)UseType(model.Compilation.GetTypeByMetadataName(fullname));
+	public IdentifierNameSyntax UseType(string fullname) => (IdentifierNameSyntax)UseTypeByMetadataName(fullname);
+
+	public TypeSyntax UseTypeByMetadataName(string fullname) => UseType(model.Compilation.GetTypeByMetadataName(fullname));
 
 	public TypeSyntax UseType(IArrayTypeSymbol arrayType) => ArrayTypeRank1(UseType(arrayType.ElementType));
 

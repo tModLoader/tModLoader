@@ -22,11 +22,15 @@
  {
  	internal struct PlayerNetSyncState
  	{
-@@ -35,7 +_,7 @@
+@@ -35,7 +_,11 @@
  		public byte streamCounter;
  	}
  
 -	public class Spawner
++	/// <summary>
++	/// Used for determining natural NPC spawns. Contains data pertaining to the spawn context, such as the <see cref="Player"/>, <see cref="SpawnTileType"/>, and more.
++	/// <br/><br/> Note that there are many fields in this class like <see cref="ZoneJungle"/> that appear to be duplicates of Player fields, such as <see cref="Player.ZoneJungle"/>, but you should always used the fields found in this class if present for NPC spawning logic to properly account for custom NPC spawning logic. For example, the dual dungeons secret world seed affects these fields for custom spawning logic separately from the logic used for the Player fields, which would affect visuals and other things.
++	/// </summary>
 +	public partial class Spawner
  	{
  		public static int spawnSpaceX = 2;
@@ -86,6 +90,15 @@
  		public bool ZoneLihzhardTemple;
  		public bool ZoneGranite;
  		public bool ZoneMarble;
+@@ -138,6 +_,8 @@
+ 		private bool TrySpawnAnNPC(Player player)
+ 		{
+ 			SetSpawnFlags(player);
++			NPCLoader.EditSpawnFlags(this);
++
+ 			GetSpawnRate(player, out var spawnRate, out var maxSpawns);
+ 			if (player.nearbyActiveNPCs >= (float)maxSpawns)
+ 				return false;
 @@ -147,6 +_,9 @@
  
  			if (!FindSpawnTile(player, out var spawnTileX, out var spawnTileY, out var xRange))
@@ -105,6 +118,15 @@
  			if (!PostCheckChosenSpawnTile(spawnTileX, spawnTileY, spawnTileType, spawnWallType))
  				return false;
  
+@@ -169,6 +_,8 @@
+ 				}
+ 			}
+ 
++			NPCLoader.EditSpawnInfo(this);
++
+ 			SpawnAnNPC(spawnTileX, spawnTileY, spawnTileType, xRange, player.whoAmI);
+ 			if (Main.netMode == 2)
+ 				SyncNewlySpawnedNPCs();
 @@ -195,6 +_,7 @@
  
  		private void SetSpawnFlags(Player player)
@@ -2234,6 +2256,24 @@
  				nPC.townNpcVariationIndex = profile.RollVariation();
  				nPC.GivenName = profile.GetNameForVariant(nPC);
  			}
+@@ -67389,6 +_,9 @@
+ 	public PlayerPettingInfo GetPettingInfo(Player player)
+ 	{
+ 		int num = ((base.Center.X > player.Center.X) ? 1 : (-1));
++		int num2 = NPCID.Sets.PlayerDistanceWhilePetting[type];
++		bool isPetSmall = NPCID.Sets.IsPetSmallForPetting[type];
++		/*
+ 		int num2 = 36;
+ 		bool isPetSmall = false;
+ 		switch (type) {
+@@ -67418,6 +_,7 @@
+ 				num2 = 20;
+ 				break;
+ 		}
++		*/
+ 
+ 		return new PlayerPettingInfo(this, new Vector2(-num * num2, 0f), isPetSmall);
+ 	}
 @@ -67455,7 +_,7 @@
  
  	public bool RerollVariation()

@@ -1021,6 +1021,15 @@ public static class NPCLoader
 		Main.instance.DrawHealthBar(position.X, position.Y, npc.life, npc.lifeMax, alpha, scale);
 	}
 
+	private static HookList HookEditSpawnFlags = AddHook<Action<NPC.Spawner>>(g => g.EditSpawnFlags);
+
+	public static void EditSpawnFlags(NPC.Spawner spawner)
+	{
+		foreach (var g in HookEditSpawnFlags.Enumerate()) {
+			g.EditSpawnFlags(spawner);
+		}
+	}
+
 	private delegate void DelegateEditSpawnRate(Player player, ref int spawnRate, ref int maxSpawns);
 	private static HookList HookEditSpawnRate = AddHook<DelegateEditSpawnRate>(g => g.EditSpawnRate);
 
@@ -1040,6 +1049,15 @@ public static class NPCLoader
 	{
 		foreach (var g in HookEditSpawnRange.Enumerate()) {
 			g.EditSpawnRange(player, ref spawnRangeX, ref spawnRangeY, ref safeRangeX, ref safeRangeY);
+		}
+	}
+
+	private static HookList HookEditSpawnInfo = AddHook<Action<NPC.Spawner>>(g => g.EditSpawnInfo);
+
+	public static void EditSpawnInfo(NPC.Spawner spawner)
+	{
+		foreach (var g in HookEditSpawnInfo.Enumerate()) {
+			g.EditSpawnInfo(spawner);
 		}
 	}
 

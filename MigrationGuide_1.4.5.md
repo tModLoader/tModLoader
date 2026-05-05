@@ -273,6 +273,44 @@ When the portrait setting is set to profile, a close up of the NPC's normal spri
   
 Note: As stated above, if a detailed portrait is not provided, the profile portrait will display if the user has the detailed portrait setting enabled.
 
+### RecipeGroup
+
+`RecipeGroup`s have changed. 
+* 🤖: There is no longer a `RecipeGroupID` class. Instead, the `RecipeGroups` class stores vanilla `RecipeGroup` objects.
+* ⚙️: Creating `RecipeGroup`s has also changed. 
+  * The `RecipeGroup` constructor and `RecipeGroup.RegisterGroup` have been removed. Creating and registering a `RecipeGroup` is now consolidated into the `RecipeGroup.Register` method.
+  * Rather than manually using "LegacyMisc.37" to create the string "Any ItemName", the default way of creating `RecipeGroup`s will now automatically generate that string from a passed in localization key. Custom recipe group display names are also still possible with the other `RecipeGroup.Register` overload.
+* There are several new vanilla `RecipeGroup`s. Replace custom groups with these vanilla groups: `Seashells`, `Stone`, `CobaltBar`, `MythrilBar`, `AdamantiteBar`, `GemCritter`, `MagicMirror`, and `Jellyfish`. If you were referencing vanilla groups by name/key, note that these no longer have spaces: `CloudBalloons`, `BlizzardBalloons, `SandstormBalloons`, `CritterGuides, and `NatureGuides`.
+
+Examples:
+```cs
+// Old
+CreateRecipe()
+	.AddRecipeGroup(RecipeGroupID.Wood, 9)
+	.Register();
+
+RecipeGroup.recipeGroups[RecipeGroupID.Sand].ValidItems.Add(ModContent.ItemType<ExampleSandBlock>());
+
+RecipeGroup SilverBarRecipeGroup = new RecipeGroup(
+	() => $"{Language.GetTextValue("LegacyMisc.37")} {Lang.GetItemNameValue(ItemID.SilverBar)}",
+	ItemID.SilverBar, ItemID.TungstenBar, ModContent.ItemType<Items.Placeable.ExampleBar>()
+);
+RecipeGroup.RegisterGroup(nameof(ItemID.SilverBar), SilverBarRecipeGroup);
+
+// New
+CreateRecipe()
+	.AddRecipeGroup(RecipeGroups.Wood, 9)
+	.Register();
+
+RecipeGroups.Sand.ValidItems.Add(ModContent.ItemType<ExampleSandBlock>());
+
+SilverBarRecipeGroup = RecipeGroup.Register(
+	nameof(ItemID.SilverBar),
+	"ItemName.SilverBar", // Lang.GetItemName(ItemID.SilverBar).Key would also work.
+	ItemID.SilverBar, ItemID.TungstenBar, ModContent.ItemType<ExampleBar>()
+);
+```
+
 ## Other Changes
 
 * Fishing power bonus now applies to any chair, not just toilets.
@@ -288,6 +326,7 @@ Note: As stated above, if a detailed portrait is not provided, the profile portr
 ### Static Methods
 
 * 💀: `Main.GetPlayerArmPosition` now has a `Player` parameter.
+* ⚙️: `RecipeGroup.RegisterGroup` removed. See [RecipeGroup](#recipegroup) for more information.
 * ⚙️: `Utils.PlotTileArea` -> `Utils.FloodFillTile`. No longer returns `bool` and parameters are now `Point point, float maxDist, TileActionAttempt plot` instead of `int x, int y, TileActionAttempt plot`.
 * 🤖: `WorldGen.CheckTight` -> `WorldGen.CheckStalactite`
 
@@ -324,6 +363,7 @@ All classes are in the `Terraria` or `Terraria.ID` namespaces unless otherwise i
 * ⚙️: `ProjectileID.Sets.DontAttachHideToAlpha` removed. Now true by default. See `Projectile.usesOwnerLight` and `Projectile.drawLayer` for more details.
 * ⚙️: `ProjectileID.Sets.HeldProjDoesNotUsePlayerGfxOffY` removed. `AI()` should use `master.RotatedRelativePoint(master.MountedCenter + ...)` to position held projectiles.
 * 🤖: `ProjectileID.Sets.MinionTargettingFeature` -> `ProjectileID.Sets.MinionTargetingFeature`
+* 🤖: `RecipeGroupID` removed. `RecipeGroup` instances are now stored directly in `RecipeGroups`.
 * 🤖: `TileID.Sets.CountsAsWaterSource` -> `TileID.Sets.CountsAsWaterForCrafting`
 * 🤖: `TileID.Sets.CountsAsHoneySource` -> `TileID.Sets.CountsAsHoneyForCrafting`
 * 🤖: `TileID.Sets.CountsAsLavaSource` -> `TileID.Sets.CountsAsLavaForCrafting`
@@ -356,6 +396,7 @@ All classes are in the `Terraria` or `Terraria.ID` namespaces unless otherwise i
 * ⚙️: `Player.CheckForGoodTeleportationSpot` removed. Use `Utils.CheckForGoodTeleportationSpot` instead.
 * 💀: `Player.DropItems` now has a `gemsOnly` parameter indicating a softcore or creative player that should only drop large gems.
 * ⚙️: `Recipe.FindRecipes` removed. No longer used.
+* ⚙️: `RecipeGroup` constructor removed. See [RecipeGroup](#recipegroup) for more information.
 
 ### Non-Static Fields / Constants / Properties
 
@@ -378,13 +419,19 @@ All classes are in the `Terraria` or `Terraria.ID` namespaces unless otherwise i
 All classes are in the `Terraria.ModLoader` or `Terraria` namespaces unless otherwise indicated.
 
 * ⚙️: `(ModItem|GlobalItem).OnSpawn/CanStackInWorld/Update/PostUpdate/GrabRange/GrabStyle/CanPickup/OnPickup/PreDrawInWorld/PostDrawInWorld` now has a `WorldItem` parameter. For `ModItem` code, switch from `Item` to `item` to access fields on the `WorldItem`. For `GlobalItem` code, you might need to access `item.inner` to access the underlying `Item` instance if accessing a field not exposed as a getter on `WorldItem.
-* ⚙️: `(ModNPC|GlobalNPC).SpawnChance` changed and renamed the parameter from `NPCSpawnInfo spawnInfo` to `NPC.Spawner spawner`.
+* 🤖: `ModNPC.SpawnChance` and `GlobalNPC.EditSpawnPool` changed and renamed the parameter from `NPCSpawnInfo spawnInfo` to `NPC.Spawner spawner`.
+  * `GlobalNPC.EditSpawnFlags(NPC.Spawner spawner)` can be used to adjust player-level spawn flags before spawn rate, range, and tile selection. Use this when the changed flags should affect those later spawn calculations, such as biome, safe wall, or invasion state. For example, a modded safe-zone effect could set `spawner.noWorms = true` before vanilla spawn logic uses that flag.
+  * `GlobalNPC.EditSpawnInfo(NPC.Spawner spawner)` can be used to adjust spawn information after the spawn tile has been selected and before `SpawnChance` and `EditSpawnPool` are evaluated. Use this for tile-level spawn context, such as water, granite, marble, spider cave, underground desert, spawn tile type, or spawn wall type. For example, a modded tile could set `spawner.nearGranite = true` so later spawn chance and spawn pool logic sees the chosen tile as granite-like.
 * ⚙️: `(ModProjectile|GlobalProjectile).DrawBehind` has been removed. Set `Projectile.drawLayer` instead. 
 * ⚙️: `ModProjectile.DrawHeldProjInFrontOfHeldItemAndArms` has been removed. Set `Projectile.drawLayer` to `ProjectileDrawLayerID.HeldProjOverHand` instead. 
 * ⚙️: `(ModProjectile|GlobalProjectile).PreDraw/PreDrawExtras/PostDraw` now has a `Player` parameter. Use this instead of `Main.player[Projectile.owner]` to properly support rendering projectiles to custom `Player` instances, such as Mannequins.
 * 🤖: `ModTile.AddToArray` is no longer used for `TileID.Sets.RoomNeeds` entries since `TileID.Sets.RoomNeeds` fields have changed to typical ID sets.
-* 💀: `NPCSpawnInfo` is no longer used, it has been replaced by `NPC.Spawner` in functionality.
-  * ⚙️: The following fields changed from `NPCSpawnInfo` to `NPC.Spawner`: `Sky` -> `skyMob`, `Lihzahrd` -> `ZoneLihzhardTemple`, `PlayerSafe` -> `noWorms`, `Invasion` -> `invaders`,`Water` -> `waterTile`, `Granite` -> `nearGranite`, `Marble` -> `nearMarble`, `SpiderCave` -> `spawnSpider`, `PlayerInTown` -> `spawnFriendly`, `DesertCave` -> `spawnUndergroundDesert`
+* ⚙️: `NPCSpawnInfo` is no longer used, it has been replaced by `NPC.Spawner` in functionality.
+  * 🤖: The following fields changed from `NPCSpawnInfo` to `NPC.Spawner`: `DesertCave` -> `spawnUndergroundDesert`, `Granite` -> `nearGranite`, `Invasion` -> `invaders`, `Lihzahrd` -> `ZoneLihzhardTemple`, `Marble` -> `nearMarble`, `PlayerInTown` -> `spawnFriendly`, `PlayerSafe` -> `noWorms`, `Sky` -> `skyMob`, `SpiderCave` -> `spawnSpider`, `Water` -> `waterTile`
+  * ⚙️: `PlanteraDefeated` removed, use `NPC.downedPlantBoss && Main.hardMode` instead.
+  * 💀: `PlayerFloorX` and `PlayerFloorY` are no longer tracked by `NPC.Spawner`. Vanilla code no longer uses player floor tiles for spawning logic.
+  * 💀: Using the `Player` fields such as `Player.ZoneJungle` is no longer recommended since `NPC.Spawner` contains its own version of those flags. These are used for custom spawning logic such as the dual dungeons secret seed. Failure to migrate to using these new fields will result in incorrect spawning logic.
+  * There are many other new fields in `NPC.Spawner` that might prove useful.
 * ⚙️: `ModNPC.SetChatButtons` has been removed and replaced with `RegisterChatButtons(NPCInteractionList interactions)`
 * ⚙️: `ModNPC.OnChatButtonClicked` changed parameters. `(bool firstButton, ref string shop)` -> `(NPCInteraction interaction)`
 * ⚙️: `GlobalNPC.OnChatButtonClicked` and `GlobalNPC.PreChatButtonClicked` changed parameters. `(NPC npc, bool firstButton)` -> `(NPC npc, NPCInteraction interaction)`

@@ -317,19 +317,27 @@ public static partial class Config
 		RenameInstanceField("Terraria.Item", from: "netID", to: "type");
 		RenameInstanceField("Terraria.Main", from: "HasInteractibleObjectThatIsNotATile", to: "HasInteractableObjectThatIsNotATile");
 		RenameInstanceField("Terraria.Main.CurrentFrameFlags", from: "HadAnActiveInteractibleProjectile", to: "HadAnActiveInteractableProjectile");
+		RenameInstanceFieldMultiple("Terraria.NPC.Spawner", froms: ["desertCave", "DesertCave"], to: "spawnUndergroundDesert");
+		RenameInstanceFieldMultiple("Terraria.NPC.Spawner", froms: ["granite", "Granite"], to: "nearGranite");
+		RenameInstanceFieldMultiple("Terraria.NPC.Spawner", froms: ["invasion", "Invasion"], to: "invaders");
+		RenameInstanceFieldMultiple("Terraria.NPC.Spawner", froms: ["lihzahrd", "Lihzahrd"], to: "ZoneLihzhardTemple");
+		RenameInstanceFieldMultiple("Terraria.NPC.Spawner", froms: ["marble", "Marble"], to: "nearMarble");
+		RenameInstanceFieldMultiple("Terraria.NPC.Spawner", froms: ["planteraDefeated"], to: "PlanteraDefeated");
+		RenameInstanceFieldMultiple("Terraria.NPC.Spawner", froms: ["player"], to: "Player");
+		RenameInstanceFieldMultiple("Terraria.NPC.Spawner", froms: ["playerFloorX"], to: "PlayerFloorX");
+		RenameInstanceFieldMultiple("Terraria.NPC.Spawner", froms: ["playerFloorY"], to: "PlayerFloorY");
+		RenameInstanceFieldMultiple("Terraria.NPC.Spawner", froms: ["playerInTown", "PlayerInTown"], to: "spawnFriendly");
+		RenameInstanceFieldMultiple("Terraria.NPC.Spawner", froms: ["playerSafe", "PlayerSafe"], to: "noWorms");
+		RenameInstanceFieldMultiple("Terraria.NPC.Spawner", froms: ["safeRangeX"], to: "SafeRangeX");
+		RenameInstanceFieldMultiple("Terraria.NPC.Spawner", froms: ["sky", "Sky"], to: "skyMob");
+		RenameInstanceFieldMultiple("Terraria.NPC.Spawner", froms: ["spawnTileType"], to: "SpawnTileType");
+		RenameInstanceFieldMultiple("Terraria.NPC.Spawner", froms: ["spawnTileX"], to: "SpawnTileX");
+		RenameInstanceFieldMultiple("Terraria.NPC.Spawner", froms: ["spawnTileY"], to: "SpawnTileY");
+		RenameInstanceFieldMultiple("Terraria.NPC.Spawner", froms: ["spiderCave", "SpiderCave"], to: "spawnSpider");
+		RenameInstanceFieldMultiple("Terraria.NPC.Spawner", froms: ["water", "Water"], to: "waterTile");
 		RenameInstanceField("Terraria.Player", from: "adjWater", to: "adjWaterSource");
 		RenameInstanceField("Terraria.Player", from: "oldAdjWater", to: "oldAdjWaterSource");
 		RenameInstanceField("Terraria.Player", from: "isPettingAnimal", to: "petting.isPetting");
-		RenameInstanceField("Terraria.NPC.Spawner", from: "Sky",          to: "skyMob");
-		RenameInstanceField("Terraria.NPC.Spawner", from: "Lihzahrd",     to: "ZoneLihzhardTemple");
-		RenameInstanceField("Terraria.NPC.Spawner", from: "PlayerSafe",   to: "noWorms");
-		RenameInstanceField("Terraria.NPC.Spawner", from: "Invasion",     to: "invaders");
-		RenameInstanceField("Terraria.NPC.Spawner", from: "Water",        to: "waterTile");
-		RenameInstanceField("Terraria.NPC.Spawner", from: "Granite",      to: "nearGranite");
-		RenameInstanceField("Terraria.NPC.Spawner", from: "Marble",       to: "nearMarble");
-		RenameInstanceField("Terraria.NPC.Spawner", from: "SpiderCave",   to: "spawnSpider");
-		RenameInstanceField("Terraria.NPC.Spawner", from: "PlayerInTown", to: "spawnFriendly");
-		RenameInstanceField("Terraria.NPC.Spawner", from: "DesertCave",   to: "spawnUndergroundDesert");
 
 		RenameMethod("Terraria.Item", "BannerToItem", "BannerToItem", "Terraria.GameContent.BannerSystem");
 		RenameMethod("Terraria.Item", "BannerToNPC", "BannerToNPC", "Terraria.GameContent.BannerSystem");
@@ -344,7 +352,7 @@ public static partial class Config
 		RefactorStaticMember("Terraria.ID.ItemID.Sets", "ItemSpawnDecaySpeed", Removed("No longer used."));
 		RefactorStaticMember("Terraria.ID.MountID.Sets", "FacePlayersVelocity", Removed("Now automatic for all minecarts"));
 		RefactorStaticMember("Terraria.ID.ProjectileID.Sets", "HeldProjDoesNotUsePlayerGfxOffY", Removed("AI() should use master.RotatedRelativePoint(master.MountedCenter + ...) to position held projectiles"));
-		RefactorStaticMember("Terraria.ID.ProjectileID.Sets", "DontAttachHideToAlpha", Removed("Removed. Now true by default. See Projectile.usesOwnerLight and Projectile.drawLayer for more details."));
+		RefactorStaticMember("Terraria.ID.ProjectileID.Sets", "DontAttachHideToAlpha", Removed("Now true by default. See Projectile.usesOwnerLight and Projectile.drawLayer for more details."));
 		RefactorStaticMember("Terraria.Item", "whoAmI", Removed("Moved to WorldItem"));
 		RefactorStaticMember("Terraria.Item", "beingGrabbed", Removed("Moved to WorldItem"));
 		RefactorStaticMember("Terraria.Main", "GameModeInfo", RewriteIsJourneyMode);
@@ -352,7 +360,12 @@ public static partial class Config
 		RefactorStaticMember("Terraria.NPC", "netSkip", Removed("No longer necessary when setting life <= 0 and was never necessary when setting active = false"));
 		RefactorStaticMember("Terraria.Player", "RandomTeleportationAttemptSettings", Removed("Use Utils.RandomTeleportationAttemptSettings instead and populate all the relevant new fields"));
 
+		RefactorInstanceMember("Terraria.NPC.Spawner", "PlanteraDefeated", Removed("Use (NPC.downedPlantBoss && Main.hardMode) instead"));
+		RefactorInstanceMember("Terraria.NPC.Spawner", "PlayerFloorX", Removed("Player floor coordinates are no longer tracked by NPC.Spawner"));
+		RefactorInstanceMember("Terraria.NPC.Spawner", "PlayerFloorY", Removed("Player floor coordinates are no longer tracked by NPC.Spawner"));
+
 		RefactorStaticMethodCall("Terraria.Chest", "FindChestByGuessing", Removed("Use Chest.FindChest with the top left tile coordinate"));
+		RefactorStaticMethodCall("Terraria.RecipeGroup", "RegisterGroup", Removed("Replace this and \"new RecipeGroup()\" with RecipeGroup.Register"));
 
 		RefactorInstanceMethodCall("Terraria.Item", "SetDefaults", RemoveParameter(1, "noMatCheck", "bool"));
 		RefactorInstanceMethodCall("Terraria.Tile", "water", GetterSetterToProperty("LiquidType", "Terraria.ID.LiquidID", "Water"));
@@ -368,6 +381,8 @@ public static partial class Config
 
 		ChangeStaticFieldType("Terraria.Main", "item",        from: "Terraria.Item", to: "Terraria.WorldItem");
 		ChangeStaticFieldType("Terraria.Main", "ActiveItems", from: "Terraria.Item", to: "Terraria.WorldItem");
+
+		RenameType("Terraria.ID.RecipeGroupID", "Terraria.ID.RecipeGroups");
 	}
 
 	private static void AddTextureRenames() {
