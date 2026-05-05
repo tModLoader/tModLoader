@@ -587,6 +587,7 @@ public static partial class Config
 		HookRemoved("Terraria.ModLoader.ModProjectile", "DrawBehind", "Set Projectile.drawLayer instead");
 		HookRemoved("Terraria.ModLoader.GlobalProjectile", "DrawBehind", "Set Projectile.drawLayer instead");
 
+		RefactorInstanceMember("Terraria.DataStructures.PlayerDrawSet", "heldProjOverHand", Removed("Automatically applied via Projectile.drawLayer value"));
 		RefactorInstanceMember("Terraria.ModLoader.ModProjectile", "DrawHeldProjInFrontOfHeldItemAndArms", Removed("Replace with Projectile.drawLayer = ProjectileDrawLayerID.HeldProjOverHand;"));
 
 		RenameType(from: "Terraria.ModLoader.NPCSpawnInfo", to: "Terraria.NPC+Spawner");

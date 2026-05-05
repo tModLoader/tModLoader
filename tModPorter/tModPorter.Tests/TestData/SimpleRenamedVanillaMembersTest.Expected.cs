@@ -69,7 +69,9 @@ public class SimpleRenamedVanillaMembersTest
 		int logicCheckScreenHeight = Main.MaxWorldViewSize.Y;
 		int logicCheckScreenWidth = Main.MaxWorldViewSize.X;
 
+#if COMPILE_ERROR
 		Main.musicBox2/* tModPorter Note: Removed. Use Player.musicBox instead */ = 87;
+#endif
 
 		int copperTierOreInt = WorldGen.SavedOreTiers.Copper;
 #if COMPILE_ERROR // ushort -> int
@@ -185,12 +187,14 @@ public class SimpleRenamedVanillaMembersTest
 
 		NPC npc = new NPC();
 		// not-yet-implemented
-		npc.damage = npc.GetAttackDamage_ScaledByStrength(80f); // int cast matches return type
-		// instead-expect
-		npc.damage = (int)(80f * Main.GameModeInfo.EnemyDamageMultiplier); // int cast matches return type
 #if COMPILE_ERROR
+		npc.damage = npc.GetAttackDamage_ScaledByStrength(80f); // int cast matches return type
 #endif
+		// instead-expect
+#if COMPILE_ERROR
+		npc.damage = (int)(80f * Main.GameModeInfo.EnemyDamageMultiplier); // int cast matches return type
 		npc.netSkip/* tModPorter Note: Removed. No longer necessary when setting life <= 0 and was never necessary when setting active = false */ = -1;
+#endif
 
 		// not-yet-implemented
 		Utils.TileActionAttempt cut = DelegateMethods.CutTiles;
@@ -204,6 +208,8 @@ public class SimpleRenamedVanillaMembersTest
 		_ = BannerSystem.BannerToItem(Banner);
 		_ = BannerSystem.BannerToNPC(Banner);
 
+#if COMPILE_ERROR
 		Utils.FloodFillTile(10, 20, DelegateMethods.SpreadLightOpen_StopForSolids)/* tModPorter Parameters have changed */;
+#endif
 	}
 }

@@ -16,7 +16,7 @@ public class RenamedNamespacesTest
 		GenPass[] tasks = null;
 		var a = new Terraria.WorldBuilding.Actions.Smooth();
 		a = new Actions.Smooth();
-		_ = new IsTile();
-		ActionsAlias.Smooth smooth = new ActionsAlias.Smooth();
+		//_ = new IsTile();
+		//ActionsAlias.Smooth smooth = new ActionsAlias.Smooth();
 	}
 }
