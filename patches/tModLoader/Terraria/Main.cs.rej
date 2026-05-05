@@ -84,14 +84,6 @@
  			if (inputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Z) && !oldInputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Z)) {
  				text = "";
  			}
-@@ -16095,6 +_,7 @@
- 			hoverItem.knockBack *= 1f + (1f - player[myPlayer].stealth) * 0.5f;
- 
- 		int num2 = 30;
-+		num2 += hoverItem.ToolTip?.Lines ?? 0; // Easy fix to #4772. A full fix would require rewrites of hooks.
- 		int numLines = 1;
- 		string[] array = new string[num2];
- 		bool[] array2 = new bool[num2];
 @@ -16254,15 +_,24 @@
  							break;
  					}

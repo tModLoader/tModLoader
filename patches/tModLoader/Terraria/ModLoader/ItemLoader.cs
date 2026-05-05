@@ -2300,6 +2300,10 @@ public static class ItemLoader
 		text = new string[numTooltips];
 		oneDropLogo = -1;
 		overrideColor = new Color?[numTooltips];
+		Array.Resize(ref lineColors, numTooltips); // Resize the mouseTextTooltipLine_Color array and assign a default white color to the new elements. Related to #4772 and Commit 6e7c00b
+		for (int i = 30; i < numTooltips; i++) { // 30 is the default size of the array. Main._mouseTextTooltip_MaxLines
+			lineColors[i] = new Color(255, 255, 255);
+		}
 
 		for (int k = 0; k < numTooltips; k++) {
 			text[k] = tooltips[k].Text;
