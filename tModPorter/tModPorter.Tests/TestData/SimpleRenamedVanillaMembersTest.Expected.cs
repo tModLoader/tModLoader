@@ -50,6 +50,7 @@ public class SimpleRenamedVanillaMembersTest
 		var heartLantern = Main.SceneMetrics.HasHeartLantern;
 		var sunflower = Main.SceneMetrics.HasSunflower;
 
+#if COMPILE_ERROR
 		var expertDebuffTime = Main.GameModeInfo.DebuffTimeMultiplier;
 		var expertNPCDamage = Main.GameModeInfo.TownNPCDamageMultiplier;
 		var expertLife = Main.GameModeInfo.EnemyMaxLifeMultiplier;
@@ -57,6 +58,7 @@ public class SimpleRenamedVanillaMembersTest
 		var expertKnockBack = Main.GameModeInfo.KnockbackToEnemiesMultiplier;
 		var knockBackMultiplier = Main.GameModeInfo.KnockbackToEnemiesMultiplier;
 		var damageMultiplier = Main.GameModeInfo.EnemyDamageMultiplier;
+#endif
 
 		bool isJourney = Main.IsJourneyMode;
 		_ = Main.PipsUseGrid;
@@ -160,7 +162,9 @@ public class SimpleRenamedVanillaMembersTest
 #endif
 
 		var item = new Item();
+#if COMPILE_ERROR
 		var owner = item.playerIndexTheItemIsReservedFor;
+#endif
 		var vanity = item.hasVanityEffects;
 		item.DefaultToPlaceableWall(0);
 

@@ -12,7 +12,7 @@ public class RecipeGroupTest : ModSystem
 		// not-yet-implemented
 		GelLike = RecipeGroup.Register("TestMod:Gels", "Gel-like items", ItemID.Gel, ItemID.GelDye);
 
-		RecipeGroup SilverBarRecipeGroup = RecipeGroup.Register(nameof(ItemID.SilverBar), Lang.GetItemNameValue(ItemID.SilverBar), ItemID.SilverBar, ItemID.TungstenBar, ModContent.ItemType<Items.Placeable.ExampleBar>());
+		RecipeGroup SilverBarRecipeGroup = RecipeGroup.Register(nameof(ItemID.SilverBar), Lang.GetItemNameValue(ItemID.SilverBar), ItemID.SilverBar, ItemID.TungstenBar, ModContent.ItemType<global::ModItemTest>());
 		// instead-expect
 #if COMPILE_ERROR
 		GelLike = new RecipeGroup(
@@ -22,7 +22,7 @@ public class RecipeGroupTest : ModSystem
 		RecipeGroup.RegisterGroup("TestMod:Gels", GelLike)/* tModPorter Note: Removed. Replace this and "new RecipeGroup()" with RecipeGroup.Register */;
 
 		RecipeGroup SilverBarRecipeGroup = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} {Lang.GetItemNameValue(ItemID.SilverBar)}",
-		ItemID.SilverBar, ItemID.TungstenBar, ModContent.ItemType<Items.Placeable.ExampleBar>());
+		ItemID.SilverBar, ItemID.TungstenBar, ModContent.ItemType<global::ModItemTest>());
 		RecipeGroup.RegisterGroup(nameof(ItemID.SilverBar), SilverBarRecipeGroup)/* tModPorter Note: Removed. Replace this and "new RecipeGroup()" with RecipeGroup.Register */;
 #endif
 

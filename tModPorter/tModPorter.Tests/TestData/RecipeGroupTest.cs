@@ -16,7 +16,7 @@ public class RecipeGroupTest : ModSystem
 		RecipeGroup.RegisterGroup("TestMod:Gels", GelLike);
 
 		RecipeGroup SilverBarRecipeGroup = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} {Lang.GetItemNameValue(ItemID.SilverBar)}",
-		ItemID.SilverBar, ItemID.TungstenBar, ModContent.ItemType<Items.Placeable.ExampleBar>());
+		ItemID.SilverBar, ItemID.TungstenBar, ModContent.ItemType<global::ModItemTest>());
 		RecipeGroup.RegisterGroup(nameof(ItemID.SilverBar), SilverBarRecipeGroup);
 
 		RecipeGroup.recipeGroups[RecipeGroupID.Sand].ValidItems.Add(ItemID.SandstoneBrick);

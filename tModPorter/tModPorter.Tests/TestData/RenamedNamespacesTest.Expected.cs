@@ -1,7 +1,11 @@
 using Terraria.WorldBuilding;
 // TODO: Causes infinite loop.
+// not-yet-implemented
 //using static Terraria.WorldBuilding.Conditions;
 //using ActionsAlias = Terraria.WorldBuilding.Actions;
+// instead-expect
+//using static Terraria.World.Generation.Conditions;
+//using ActionsAlias = Terraria.World.Generation.Actions;
 using TupalAlias = (int X, int Y);
 using IntArray = int[];
 

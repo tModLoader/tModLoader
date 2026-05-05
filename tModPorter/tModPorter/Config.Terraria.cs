@@ -352,7 +352,7 @@ public static partial class Config
 		RefactorStaticMember("Terraria.ID.ItemID.Sets", "ItemSpawnDecaySpeed", Removed("No longer used."));
 		RefactorStaticMember("Terraria.ID.MountID.Sets", "FacePlayersVelocity", Removed("Now automatic for all minecarts"));
 		RefactorStaticMember("Terraria.ID.ProjectileID.Sets", "HeldProjDoesNotUsePlayerGfxOffY", Removed("AI() should use master.RotatedRelativePoint(master.MountedCenter + ...) to position held projectiles"));
-		RefactorStaticMember("Terraria.ID.ProjectileID.Sets", "DontAttachHideToAlpha", Removed("Removed. Now true by default. See Projectile.usesOwnerLight and Projectile.drawLayer for more details."));
+		RefactorStaticMember("Terraria.ID.ProjectileID.Sets", "DontAttachHideToAlpha", Removed("Now true by default. See Projectile.usesOwnerLight and Projectile.drawLayer for more details."));
 		RefactorStaticMember("Terraria.Item", "whoAmI", Removed("Moved to WorldItem"));
 		RefactorStaticMember("Terraria.Item", "beingGrabbed", Removed("Moved to WorldItem"));
 		RefactorStaticMember("Terraria.Main", "GameModeInfo", RewriteIsJourneyMode);
