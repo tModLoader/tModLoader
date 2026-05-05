@@ -79,9 +79,9 @@ Chat buttons are now registered at mod load time instead of when interacting wit
   * Each method returns the supplied `NPCInteraction` as an `NPCInteractionList.Entry` if caching the result is desired for use in another method.
 * Use `interactions.X(NPCInteractions.Shop(string shopName = "Shop", string customTextKey = null))` to assign shops.
   * The shopName must match the shopName for the `NPCShop`.
-  * Example: ModNPC calling `interactions.Append(NPCInteractions.Shop())` will register a button for the shop "ModName/ModNPCName/Shop".
-  * Vanilla shops can easily be added with the string "Terraria/Merchant/Shop". ("Decor" for the Painter's second shop).
-  * Shops from other modded Town NPCs can be added with the string "ModName/ModNPCName/ShopName". For example: "ExampleMod/ExamplePerson/Shop".
+  * Example: ModNPC calling `interactions.Append(NPCInteractions.Shop())` will register a button for the shop with full name "ModName/ModNPCName/Shop".
+  * Vanilla shops can easily be added with the full name string "Terraria/Merchant/Shop". ("Decor" for the Painter's second shop).
+  * Shops from other modded Town NPCs can be added with the full name string "ModName/ModNPCName/ShopName". For example: "ExampleMod/ExamplePerson/Shop".
   * Alternatively, use `NPCShopDatabase.GetShopName(NPCID, "Shop")` to get the full shop name for an NPC.
 * Use `interactions.X(new NPCInteraction...)` to register other buttons.
   * Example: `interactions.Append(new NPCInteractions.Actions.CloseChat());`
@@ -114,10 +114,7 @@ public override void RegisterChatButtons(NPCInteractionList interactions) {
 	interactions.Append(NPCInteractions.Shop(ShopName)); // Insert at the end (after the happiness and housing buttons, too)
 	
 	// Don't want a close, happiness, or housing button? Just disable it!
-	if (interactions.TryFindInteractionByInstance(NPCInteractionDatabase.HousingButton, out NPCInteractionList.Entry foundInteraction))
-	{
-		interactions.Disable(foundInteraction);
-	}
+	interactions.Disable(NPCInteractionDatabase.HousingButton);
 
 	// Adding existing shops from other NPCs
 	interactions.Append(NPCInteractions.Shop("Terraria/Painter/Shop", "Painter Shop"));
@@ -139,16 +136,14 @@ public override void RegisterChatButtons(NPC npc, NPCInteractionList interaction
 		interactions.InsertBefore(NPCInteractions.Shop("Terraria/BestiaryGirl/Shop", "Shop"), NPCInteractionDatabase.CloseButton);
 
 		// Here we are going to disable the Guide's tips button.
-		// First, find the tip button using interactions.TryFindInteractionByType(Type searchInteraction, out NPCInteractionList.Entry foundInteraction);
-		//   This will match the buttons based on their class type.
-		// There is also interactions.TryFindInteractionByInstance(NPCInteraction searchInteraction, out NPCInteractionList.Entry foundInteraction)
-		//   This will match the buttons based on the exact instance.
-		if (interactions.TryFindInteractionByType(typeof(NPCInteractions.Actions.GuideTip), out NPCInteractionList.Entry foundInteraction)) {
-			interactions.Disable(foundInteraction);
-		}
-		// This is the same thing as above but doesn't have the built in null check that TryFind does.
-		// NPCInteractionList.Entry guideTip = interactions.FindInteractionByType(typeof(NPCInteractions.Actions.GuideTip));
-		// interactions.Disable(guideTip);
+		// This way matches the type of the interaction and returns the first that matches or null if not found.
+		// If the interaction wasn't found, nothing happens.
+		NPCInteraction guideTipNPCInteraction = interactions.Interactions.OfType<NPCInteractions.Actions.GuideTip>().FirstOrDefault();
+		interactions.Disable(guideTipNPCInteraction); // If the instance is null (aka not found), Disable won't do anything.
+
+		// Alternate way: this way does the same thing, but searches the Entries instead and returns the NPCInteractionList.Entry if found.
+		// NPCInteractionList.Entry guideTipEntry = interactions.Entries.Where(e => e.NPCInteraction.GetType() == typeof(NPCInteractions.Actions.GuideTip)).FirstOrDefault();
+		// interactions.Disable(guideTipEntry); // If the instance is null (aka not found), Disable won't do anything.
 	}
 }
 ```

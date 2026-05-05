@@ -315,6 +315,9 @@ namespace ExampleMod.Content.NPCs
 			interactions.InsertBefore(new UpgradeButton(), NPCInteractionDatabase.HappinessButton);
 			interactions.InsertBefore(new OpenShopOnlyAvailableDuringDay(DayOnlyShopName, DayOnlyShopButtonText.Key), NPCInteractionDatabase.HappinessButton);
 
+			// Don't want a close, happiness, or housing button? Just disable it!
+			// interactions.Disable(NPCInteractionDatabase.HousingButton);
+
 			// Showcase of other things you can do:
 			// NPCInteractionList.Entry awesomeifyButton = interactions.InsertBefore(new AwesomeifyButton(), NPCInteractionDatabase.HappinessButton); // Return the interaction instance
 			// interactions.InsertAfter(new OpenShopOnlyAvailableDuringDay(ShopName, DayOnlyShopButtonText.Key), awesomeifyButton); // Insert after the instance we saved above.
