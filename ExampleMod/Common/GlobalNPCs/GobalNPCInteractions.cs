@@ -1,3 +1,4 @@
+using System.Linq;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.ID;
@@ -17,16 +18,14 @@ public class GlobalNPCInteractions : GlobalNPC
 			interactions.InsertBefore(NPCInteractions.Shop("Terraria/BestiaryGirl/Shop", "Shop"), NPCInteractionDatabase.CloseButton);
 
 			// Here we are going to disable the Guide's tips button.
-			// First, find the tip button using interactions.TryFindInteractionByType(Type searchInteraction, out NPCInteractionList.Entry foundInteraction);
-			//   This will match the buttons based on their class type.
-			// There is also interactions.TryFindInteractionByInstance(NPCInteraction searchInteraction, out NPCInteractionList.Entry foundInteraction)
-			//   This will match the buttons based on the exact instance.
-			if (interactions.TryFindInteractionByType(typeof(NPCInteractions.Actions.GuideTip), out NPCInteractionList.Entry foundInteraction)) {
-				interactions.Disable(foundInteraction);
-			}
-			// This is the same thing as above but doesn't have the built in null check that TryFind does.
-			// NPCInteractionList.Entry guideTip = interactions.FindInteractionByType(typeof(NPCInteractions.Actions.GuideTip));
-			// interactions.Disable(guideTip);
+			// This way matches the type of the interaction and returns the first that matches or null if not found.
+			// If the interaction wasn't found, nothing happens.
+			NPCInteraction guideTipNPCInteraction = interactions.Interactions.OfType<NPCInteractions.Actions.GuideTip>().FirstOrDefault();
+			interactions.Disable(guideTipNPCInteraction); // If the instance is null (aka not found), Disable won't do anything.
+
+			// Alternate way: this way does the same thing, but searches the Entries instead and returns the NPCInteractionList.Entry if found.
+			// NPCInteractionList.Entry guideTipEntry = interactions.Entries.Where(e => e.NPCInteraction.GetType() == typeof(NPCInteractions.Actions.GuideTip)).FirstOrDefault();
+			// interactions.Disable(guideTipEntry); // If the instance is null (aka not found), Disable won't do anything.
 		}
 	}
 

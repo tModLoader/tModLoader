@@ -46,103 +46,6 @@ public class NPCInteractionList(int npcNetId)
 	public IReadOnlyList<Entry> Entries => _entries;
 
 	/// <summary>
-	/// Searches the registered interactions to find the specified interaction type and returns the instance if found.
-	/// <para>This method matches by the class type.
-	/// <br/>Example: <see cref="NPCInteractionDatabase.CloseButton"/> or <c>new NPCInteractions.Actions.CloseChat()</c> will find any other type of CloseChat buttons.
-	/// </para>
-	/// </summary>
-	/// <param name="interaction">The interaction to search for.
-	/// <br/>Example: <see cref="NPCInteractionDatabase.CloseButton"/> or <c>new NPCInteractions.Actions.CloseChat()</c></param>
-	/// <returns><see langword="null"/> if not found.</returns>
-	public Entry FindInteractionByType(NPCInteraction interaction)
-	{
-		return FindInteractionByType(interaction.GetType());
-	}
-
-	/// <summary>
-	/// Searches the registered interactions to find the specified interaction type and returns the instance if found.
-	/// <para>This method matches by the class type.
-	/// <br/>Example: <see cref="NPCInteractionDatabase.CloseButton"/> or <c>new NPCInteractions.Actions.CloseChat()</c> will find any other type of CloseChat buttons.
-	/// </para>
-	/// </summary>
-	/// <param name="searchInteraction">The interaction to search for.
-	/// <br/>Example: <see cref="NPCInteractionDatabase.CloseButton"/> or <c>new NPCInteractions.Actions.CloseChat()</c></param>
-	/// <param name="foundInteraction">The interaction that was found. <c>null</c> if not found.</param>
-	/// <returns><see langword="true"/> if found.</returns>
-	public bool TryFindInteractionByType(NPCInteraction searchInteraction, out Entry foundInteraction)
-	{
-		foundInteraction = FindInteractionByType(searchInteraction.GetType());
-		if (foundInteraction == null) {
-			return false;
-		}
-		return true;
-	}
-
-	/// <summary>
-	/// Searches the registered interactions to find the specified interaction type and returns the instance if found.
-	/// <para>This method matches by the class type.
-	/// <br/>Example: <see cref="NPCInteractionDatabase.CloseButton"/> or <c>typeof(NPCInteractions.Actions.CloseChat)</c> will find any other type of CloseChat buttons.
-	/// </para>
-	/// </summary>
-	/// <param name="interaction">The interaction to search for.
-	/// <br/>Example: <see cref="NPCInteractionDatabase.CloseButton"/> or <c>typeof(NPCInteractions.Actions.CloseChat)</c></param>
-	/// <returns><see langword="null"/> if not found.</returns>
-	public Entry FindInteractionByType(Type interaction)
-	{
-		return Entries.Where(e => e.NPCInteraction.GetType() == interaction).FirstOrDefault(); // Class types are the same.
-	}
-
-	/// <summary>
-	/// Searches the registered interactions to find the specified interaction type and returns the instance if found.
-	/// <para>This method matches by the class type.
-	/// <br/>Example: <see cref="NPCInteractionDatabase.CloseButton"/> or <c>typeof(NPCInteractions.Actions.CloseChat)</c> will find any other type of CloseChat buttons.
-	/// </para>
-	/// </summary>
-	/// <param name="searchInteraction">The interaction to search for.
-	/// <br/>Example: <see cref="NPCInteractionDatabase.CloseButton"/> or <c>typeof(NPCInteractions.Actions.CloseChat)</c></param>
-	/// <param name="foundInteraction">The interaction that was found. <c>null</c> if not found.</param>
-	/// <returns><see langword="true"/> if found.</returns>
-	public bool TryFindInteractionByType(Type searchInteraction, out Entry foundInteraction)
-	{
-		foundInteraction = FindInteractionByType(searchInteraction);
-		if (foundInteraction == null) {
-			return false;
-		}
-		return true;
-	}
-
-	/// <summary>
-	/// Searches the registered interactions to find the specified interaction instance and returns the instance if found.
-	/// <para>This method matches by the exact instance.
-	/// <br/>If you don't already have the instance, use <see cref="FindInteractionByType(NPCInteraction)"/> or <see cref="FindInteractionByType(Type)"/> instead.
-	/// </para>
-	/// </summary>
-	/// <param name="interaction">The interaction to search for.</param>
-	/// <returns><see langword="null"/> if not found.</returns>
-	public Entry FindInteractionByInstance(NPCInteraction interaction)
-	{
-		return Entries.Where(e => e.NPCInteraction.Equals(interaction)).FirstOrDefault(); // Instances are the same.
-	}
-
-	/// <summary>
-	/// Searches the registered interactions to find the specified interaction instance and returns the instance if found.
-	/// <para>This method matches by the exact instance.
-	/// <br/>If you don't already have the instance, use <see cref="FindInteractionByType(NPCInteraction)"/> or <see cref="FindInteractionByType(Type)"/> instead.
-	/// </para>
-	/// </summary>
-	/// <param name="searchInteraction">The interaction to search for.</param>
-	/// <param name="foundInteraction">The interaction that was found. <c>null</c> if not found.</param>
-	/// <returns><see langword="true"/> if found.</returns>
-	public bool TryFindInteractionByInstance(NPCInteraction searchInteraction, out Entry foundInteraction)
-	{
-		foundInteraction = FindInteractionByInstance(searchInteraction);
-		if (foundInteraction == null) {
-			return false;
-		}
-		return true;
-	}
-
-	/// <summary>
 	/// Registers a button at the beginning of the list.
 	/// </summary>
 	/// <param name="interaction">The NPCInteraction to register.</param>
@@ -170,7 +73,7 @@ public class NPCInteractionList(int npcNetId)
 	/// Registers a button right after another button.
 	/// <para>The <paramref name="interactionAfter"/> needs to be the exact instance of the button.
 	/// <br/>The Close, Happiness, Housing, and Pet buttons are already predefined and can be used with <see cref="NPCInteractionDatabase.CloseButton"/>, etc.
-	/// <br/>If you don't already have the instance, use <see cref="FindInteractionByType(NPCInteraction)"/> or <see cref="FindInteractionByType(Type)"/> to get it.
+	/// <br/>If you don't already have the instance, you can use <c>interactions.Interactions.OfType&lt;TheNPCInteractionYouWishToFind&gt;().FirstOrDefault()</c> or similar to get it.
 	/// </para>
 	/// </summary>
 	/// <param name="interactionToRegister">The NPCInteraction to register.</param>
@@ -201,7 +104,7 @@ public class NPCInteractionList(int npcNetId)
 	/// Registers a button right before another button.
 	/// <para>The <paramref name="interactionBefore"/> needs to be the exact instance of the button.
 	/// <br/>The Close, Happiness, Housing, and Pet buttons are already predefined and can be used with <see cref="NPCInteractionDatabase.CloseButton"/>, etc.
-	/// <br/>If you don't already have the instance, use <see cref="FindInteractionByType(NPCInteraction)"/> or <see cref="FindInteractionByType(Type)"/> to get it.
+	/// <br/>If you don't already have the instance, you can use <c>interactions.Interactions.OfType&lt;TheNPCInteractionYouWishToFind&gt;().FirstOrDefault()</c> or similar to get it.
 	/// </para>
 	/// </summary>
 	/// <param name="interactionToRegister">The NPCInteraction to register.</param>
@@ -232,7 +135,7 @@ public class NPCInteractionList(int npcNetId)
 	/// Disables an interaction for the current NPC.
 	/// <para>The <paramref name="interaction"/> needs to be the exact instance of the button.
 	/// <br/>The Close, Happiness, Housing, and Pet buttons are already predefined and can be used with <see cref="NPCInteractionDatabase.CloseButton"/>, etc.
-	/// <br/>If you don't already have the instance, use <see cref="FindInteractionByType(NPCInteraction)"/> or <see cref="FindInteractionByType(Type)"/> to get it.
+	/// <br/>If you don't already have the instance, use <see cref="Disable(NPCInteraction)"/> or search for the instance first.
 	/// </para>
 	/// </summary>
 	/// <param name="interaction">The NPCInteractionList.Entry to disable.</param>
@@ -245,13 +148,13 @@ public class NPCInteractionList(int npcNetId)
 	/// Disables an interaction for the current NPC.
 	/// <para>The <paramref name="interaction"/> needs to be the exact instance of the button.
 	/// <br/>The Close, Happiness, Housing, and Pet buttons are already predefined and can be used with <see cref="NPCInteractionDatabase.CloseButton"/>, etc.
-	/// <br/>If you don't already have the instance, use <see cref="FindInteractionByType(NPCInteraction)"/> or <see cref="FindInteractionByType(Type)"/> to get it.
+	/// <br/>This method will find the first NPCInteraction by instance that matches and mark it as disabled.
 	/// </para>
 	/// </summary>
 	/// <param name="interaction">The NPCInteraction to disable.</param>
 	public void Disable(NPCInteraction interaction)
 	{
-		_entries.FirstOrDefault(e => e.NPCInteraction.Equals(interaction))?.Enabled = true;
+		_entries.FirstOrDefault(e => e.NPCInteraction.Equals(interaction))?.Enabled = false;
 	}
 
 	// Included this method even though if you already have the Entry, you could just do `interaction.Enabled`
@@ -262,7 +165,7 @@ public class NPCInteractionList(int npcNetId)
 	/// <returns><see langword="true"/> if the button is enabled.</returns>
 	public bool IsEnabled(Entry interaction)
 	{
-		return interaction.Enabled;
+		return interaction?.Enabled ?? false;
 	}
 
 	/// <summary>
