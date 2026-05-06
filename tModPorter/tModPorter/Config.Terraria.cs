@@ -322,7 +322,7 @@ public static partial class Config
 		RenameInstanceFieldMultiple("Terraria.NPC.Spawner", froms: ["invasion", "Invasion"], to: "invaders");
 		RenameInstanceFieldMultiple("Terraria.NPC.Spawner", froms: ["lihzahrd", "Lihzahrd"], to: "ZoneLihzhardTemple");
 		RenameInstanceFieldMultiple("Terraria.NPC.Spawner", froms: ["marble", "Marble"], to: "nearMarble");
-		RenameInstanceFieldMultiple("Terraria.NPC.Spawner", froms: ["planteraDefeated"], to: "PlanteraDefeated");
+		RenameInstanceFieldMultiple("Terraria.NPC.Spawner", froms: ["planteraDefeated", "PlanteraDefeated"], to: "hardDungeon");
 		RenameInstanceFieldMultiple("Terraria.NPC.Spawner", froms: ["player"], to: "Player");
 		RenameInstanceFieldMultiple("Terraria.NPC.Spawner", froms: ["playerFloorX"], to: "PlayerFloorX");
 		RenameInstanceFieldMultiple("Terraria.NPC.Spawner", froms: ["playerFloorY"], to: "PlayerFloorY");
@@ -360,7 +360,6 @@ public static partial class Config
 		RefactorStaticMember("Terraria.NPC", "netSkip", Removed("No longer necessary when setting life <= 0 and was never necessary when setting active = false"));
 		RefactorStaticMember("Terraria.Player", "RandomTeleportationAttemptSettings", Removed("Use Utils.RandomTeleportationAttemptSettings instead and populate all the relevant new fields"));
 
-		RefactorInstanceMember("Terraria.NPC.Spawner", "PlanteraDefeated", Removed("Use (NPC.downedPlantBoss && Main.hardMode) instead"));
 		RefactorInstanceMember("Terraria.NPC.Spawner", "PlayerFloorX", Removed("Player floor coordinates are no longer tracked by NPC.Spawner"));
 		RefactorInstanceMember("Terraria.NPC.Spawner", "PlayerFloorY", Removed("Player floor coordinates are no longer tracked by NPC.Spawner"));
 
