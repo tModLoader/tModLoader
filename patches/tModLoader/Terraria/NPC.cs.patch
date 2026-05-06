@@ -35,7 +35,7 @@
  	{
  		public static int spawnSpaceX = 2;
  		public static int spawnSpaceY = 3;
-@@ -48,17 +_,44 @@
+@@ -48,18 +_,48 @@
  		public bool dayTime;
  		public bool raining;
  		public int townNPCs;
@@ -78,8 +78,12 @@
 +		/// Whether or not the player is in front of a desert wall or the NPC will spawn near one.
 +		/// </summary>
  		public bool spawnUndergroundDesert;
++		/// <summary>
++		/// Whether Plantera is defeated and the world is in hardmode.
++		/// </summary>
  		public bool hardDungeon;
  		public bool deeperThanRockLayer;
+ 		public bool underGround;
 @@ -83,6 +_,9 @@
  		public bool ZoneMeteor;
  		public bool ZoneGraveyard;

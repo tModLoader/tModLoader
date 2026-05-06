@@ -426,7 +426,7 @@ All classes are in the `Terraria.ModLoader` or `Terraria` namespaces unless othe
   * ⚙️: `PlanteraDefeated` removed, use `NPC.downedPlantBoss && Main.hardMode` instead.
   * 💀: `PlayerFloorX` and `PlayerFloorY` are no longer tracked by `NPC.Spawner`. Vanilla code no longer uses player floor tiles for spawning logic.
   * 💀: Using the `Player` fields such as `Player.ZoneJungle` is no longer recommended since `NPC.Spawner` contains its own version of those flags. These are used for custom spawning logic such as the dual dungeons secret seed. Failure to migrate to using these new fields will result in incorrect spawning logic.
-  * There are many other new fields in `NPC.Spawner` that might prove useful.
+  * There are many other new fields in `NPC.Spawner` that might prove useful, such as `hardDungeon`.
 * ⚙️: `ModNPC.SetChatButtons` has been removed and replaced with `RegisterChatButtons(NPCInteractionList interactions)`
 * ⚙️: `ModNPC.OnChatButtonClicked` changed parameters. `(bool firstButton, ref string shop)` -> `(NPCInteraction interaction)`
 * ⚙️: `GlobalNPC.OnChatButtonClicked` and `GlobalNPC.PreChatButtonClicked` changed parameters. `(NPC npc, bool firstButton)` -> `(NPC npc, NPCInteraction interaction)`
