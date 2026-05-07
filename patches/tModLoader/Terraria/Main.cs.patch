@@ -3004,6 +3004,20 @@
  		if (diff == 1)
  			baseColor = new Microsoft.Xna.Framework.Color((byte)((float)(int)mcColor.R * num3), (byte)((float)(int)mcColor.G * num3), (byte)((float)(int)mcColor.B * num3), mouseTextColor);
  
+@@ -17245,6 +_,13 @@
+ 		int numLines = 1;
+ 		string[] mouseTextTooltipLine_Text = _mouseTextTooltipLine_Text;
+ 		Microsoft.Xna.Framework.Color[] mouseTextTooltipLine_Color = _mouseTextTooltipLine_Color;
++
++		int expectedLineCount = _mouseTextTooltip_MaxLines + hoverItem.ToolTip?.Lines ?? 0; // Easy fix to #4772. A full fix would require rewrites of hooks.
++		if (mouseTextTooltipLine_Text.Length < expectedLineCount) {
++			Array.Resize(ref mouseTextTooltipLine_Text, expectedLineCount);
++			Array.Resize(ref mouseTextTooltipLine_Color, expectedLineCount);
++		}
++
+ 		_ = mouseTextColor;
+ 		float num2 = (float)(int)mouseTextColor / 255f;
+ 		for (int i = 0; i < mouseTextTooltipLine_Text.Length; i++) {
 @@ -17252,12 +_,21 @@
  		}
  
