@@ -76,6 +76,8 @@ public static class TileLoader
 	private delegate void DelegateSetSpriteEffects(int i, int j, int type, ref SpriteEffects spriteEffects);
 	private static DelegateSetSpriteEffects[] HookSetSpriteEffects;
 	private static Action[] HookAnimateTile;
+	private delegate void DelegateSetGlow(int i, int j, int type, int width, int offsetY, int height, short tileFrameX, short tileFrameY, ref Texture2D glowTexture, ref Rectangle glowSourceRect, ref Color glowColor);
+	private static DelegateSetGlow[] HookSetGlow;
 	private static Func<int, int, int, SpriteBatch, bool>[] HookPreDraw;
 	private delegate void DelegateDrawEffects(int i, int j, int type, SpriteBatch spriteBatch, ref TileDrawInfo drawData);
 	private static DelegateDrawEffects[] HookDrawEffects;
@@ -239,6 +241,7 @@ public static class TileLoader
 		ModLoader.BuildGlobalHook(ref HookIsTileSpelunkable, globalTiles, g => g.IsTileSpelunkable);
 		ModLoader.BuildGlobalHook<GlobalTile, DelegateSetSpriteEffects>(ref HookSetSpriteEffects, globalTiles, g => g.SetSpriteEffects);
 		ModLoader.BuildGlobalHook(ref HookAnimateTile, globalTiles, g => g.AnimateTile);
+		ModLoader.BuildGlobalHook(ref HookSetGlow, globalTiles, g => g.SetGlow);
 		ModLoader.BuildGlobalHook(ref HookPreDraw, globalTiles, g => g.PreDraw);
 		ModLoader.BuildGlobalHook<GlobalTile, DelegateDrawEffects>(ref HookDrawEffects, globalTiles, g => g.DrawEffects);
 		ModLoader.BuildGlobalHook(ref HookEmitParticles, globalTiles, g => g.EmitParticles);
@@ -1013,6 +1016,14 @@ public static class TileLoader
 		if (modTile != null) {
 			frameYOffset = modTile.AnimationFrameHeight * Main.tileFrame[type];
 			modTile.AnimateIndividualTile(type, i, j, ref frameXOffset, ref frameYOffset);
+		}
+	}
+
+	public static void SetGlow(int i, int j, int type, int width, int offsetY, int height, short tileFrameX, short tileFrameY, ref Texture2D glowTexture, ref Rectangle glowSourceRect, ref Color glowColor)
+	{
+		GetTile(type)?.SetGlow(i, j, type, width, offsetY, height, tileFrameX, tileFrameY, ref glowTexture, ref glowSourceRect, ref glowColor);
+		foreach (var hook in HookSetGlow) {
+			hook(i, j, type, width, offsetY, height, tileFrameX, tileFrameY, ref glowTexture, ref glowSourceRect, ref glowColor);
 		}
 	}
 
