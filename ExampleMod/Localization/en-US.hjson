@@ -1354,11 +1354,6 @@ Mods: {
 				Description: Leather seats, 4 cup holders
 			}
 
-			ExampleWhipDebuff: {
-				DisplayName: Example Whip Debuff
-				Description: ""
-			}
-
 			ExampleLightPetBuff: {
 				DisplayName: Annoying Light
 				Description: Ugh, soooo annoying
@@ -1389,11 +1384,6 @@ Mods: {
 				Description: "{0}% of damage taken will be redirected to another player"
 			}
 
-			ExampleWhipAdvancedDebuff: {
-				DisplayName: Example Whip Advanced Debuff
-				Description: ""
-			}
-
 			ExampleJavelinDebuff: {
 				DisplayName: Example Javelin Debuff
 				Description: Losing life
@@ -1402,6 +1392,11 @@ Mods: {
 			ExampleWeaponImbue: {
 				DisplayName: Example Weapon Imbue
 				Description: "{$Items.ExampleFlask.Tooltip}"
+			}
+
+			ExampleWhipBuff: {
+				DisplayName: Example Whippin'!
+				Description: Whip speed is increased
 			}
 		}
 
