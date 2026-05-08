@@ -1,4 +1,5 @@
 ﻿using Terraria;
+using Terraria.ID;
 //using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 
@@ -24,7 +25,8 @@ public class ItemToWorldItemTest
 		Terraria.Item e2 = Terraria.Main.item[index];
 		*/
 
-		// Verify that fields of Item that were moved to WorldItem don't get refactored when Item reference changed to WorldItem reference 
+		// Verify that fields of Item that were moved to WorldItem don't get refactored when Item reference changed to WorldItem reference
+		Rectangle hitbox = default;
 		foreach (Item item in Main.item) {
 			if (item.active && !item.beingGrabbed && hitbox.Intersects(item.Hitbox)) {
 				item.active = false;

@@ -22,16 +22,20 @@
  {
  	internal struct PlayerNetSyncState
  	{
-@@ -35,7 +_,7 @@
+@@ -35,7 +_,11 @@
  		public byte streamCounter;
  	}
  
 -	public class Spawner
++	/// <summary>
++	/// Used for determining natural NPC spawns. Contains data pertaining to the spawn context, such as the <see cref="Player"/>, <see cref="SpawnTileType"/>, and more.
++	/// <br/><br/> Note that there are many fields in this class like <see cref="ZoneJungle"/> that appear to be duplicates of Player fields, such as <see cref="Player.ZoneJungle"/>, but you should always used the fields found in this class if present for NPC spawning logic to properly account for custom NPC spawning logic. For example, the dual dungeons secret world seed affects these fields for custom spawning logic separately from the logic used for the Player fields, which would affect visuals and other things.
++	/// </summary>
 +	public partial class Spawner
  	{
  		public static int spawnSpaceX = 2;
  		public static int spawnSpaceY = 3;
-@@ -48,17 +_,44 @@
+@@ -48,18 +_,48 @@
  		public bool dayTime;
  		public bool raining;
  		public int townNPCs;
@@ -74,8 +78,12 @@
 +		/// Whether or not the player is in front of a desert wall or the NPC will spawn near one.
 +		/// </summary>
  		public bool spawnUndergroundDesert;
++		/// <summary>
++		/// Whether Plantera is defeated and the world is in hardmode.
++		/// </summary>
  		public bool hardDungeon;
  		public bool deeperThanRockLayer;
+ 		public bool underGround;
 @@ -83,6 +_,9 @@
  		public bool ZoneMeteor;
  		public bool ZoneGraveyard;
@@ -86,6 +94,15 @@
  		public bool ZoneLihzhardTemple;
  		public bool ZoneGranite;
  		public bool ZoneMarble;
+@@ -138,6 +_,8 @@
+ 		private bool TrySpawnAnNPC(Player player)
+ 		{
+ 			SetSpawnFlags(player);
++			NPCLoader.EditSpawnFlags(this);
++
+ 			GetSpawnRate(player, out var spawnRate, out var maxSpawns);
+ 			if (player.nearbyActiveNPCs >= (float)maxSpawns)
+ 				return false;
 @@ -147,6 +_,9 @@
  
  			if (!FindSpawnTile(player, out var spawnTileX, out var spawnTileY, out var xRange))
@@ -105,6 +122,15 @@
  			if (!PostCheckChosenSpawnTile(spawnTileX, spawnTileY, spawnTileType, spawnWallType))
  				return false;
  
+@@ -169,6 +_,8 @@
+ 				}
+ 			}
+ 
++			NPCLoader.EditSpawnInfo(this);
++
+ 			SpawnAnNPC(spawnTileX, spawnTileY, spawnTileType, xRange, player.whoAmI);
+ 			if (Main.netMode == 2)
+ 				SyncNewlySpawnedNPCs();
 @@ -195,6 +_,7 @@
  
  		private void SetSpawnFlags(Player player)
@@ -2234,6 +2260,24 @@
  				nPC.townNpcVariationIndex = profile.RollVariation();
  				nPC.GivenName = profile.GetNameForVariant(nPC);
  			}
+@@ -67389,6 +_,9 @@
+ 	public PlayerPettingInfo GetPettingInfo(Player player)
+ 	{
+ 		int num = ((base.Center.X > player.Center.X) ? 1 : (-1));
++		int num2 = NPCID.Sets.PlayerDistanceWhilePetting[type];
++		bool isPetSmall = NPCID.Sets.IsPetSmallForPetting[type];
++		/*
+ 		int num2 = 36;
+ 		bool isPetSmall = false;
+ 		switch (type) {
+@@ -67418,6 +_,7 @@
+ 				num2 = 20;
+ 				break;
+ 		}
++		*/
+ 
+ 		return new PlayerPettingInfo(this, new Vector2(-num * num2, 0f), isPetSmall);
+ 	}
 @@ -67455,7 +_,7 @@
  
  	public bool RerollVariation()
@@ -2285,7 +2329,7 @@
  		Vector2 positionInWorld = base.Hitbox.ClosestPointInRect(bestSwordSpot);
  		ParticleOrchestrator.RequestParticleSpawn(clientOnly: false, ParticleOrchestraType.Keybrand, new ParticleOrchestraSettings {
  			PositionInWorld = positionInWorld
-@@ -67681,24 +_,161 @@
+@@ -67681,24 +_,165 @@
  		return dmg;
  	}
  
@@ -2368,6 +2412,10 @@
 +	/// <param name="damageVariation">Whether to apply damage variation. Defaults to false.</param>
 +	/// <param name="luck">Luck modifier to produce weight damageVariation towards higher (positive) or lower (negative) values. Defaults to 0</param>
 +	/// <returns>A <see cref="HitInfo"/> for use with <see cref="StrikeNPC(HitInfo, bool, bool)"/> and <see cref="NetMessage.SendStrikeNPC"/></returns>
++	/// <remarks>
++	/// Note: This method doesn't include entity-related hit modifying hooks and shouldn't be used in normal contexts.
++	/// <br/><br/> Consider using <see cref="StrikeOtherNPC"/> instead.
++	/// </remarks>
 +	public HitInfo CalculateHitInfo(int damage, int hitDirection, bool crit = false, float knockBack = 0f, DamageClass damageType = null, bool damageVariation = false, float luck = 0) {
 +		return GetIncomingStrikeModifiers(damageType, hitDirection).ToHitInfo(damage, crit, knockBack, damageVariation, luck);
 +	}

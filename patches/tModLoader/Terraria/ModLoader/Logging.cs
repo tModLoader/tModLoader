@@ -212,7 +212,7 @@ public static partial class Logging
 	private static bool CanOpen(string fileName)
 	{
 		try {
-			using (new FileStream(fileName, FileMode.Append)) { };
+			using (new FileStream(fileName, FileMode.Append, FileAccess.Write, FileShare.None)) { };
 
 			return true;
 		}

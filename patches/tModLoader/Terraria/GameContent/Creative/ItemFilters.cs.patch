@@ -8,7 +8,7 @@
  using Terraria.UI;
  
  namespace Terraria.GameContent.Creative;
-@@ -22,19 +_,33 @@
+@@ -22,19 +_,34 @@
  		private int _unusedResearchLine;
  		private string _search;
  
@@ -21,9 +21,10 @@
  				return true;
  
 +			// Have to reinitialize because ItemLoader.ModifyTooltips resizes the arrays
-+			_toolTipNames = new string[30];
-+			_toolTipLines = new string[30];
-+			_unusedColor = new Color[30];
++			int tooltipCount = _tooltipMaxLines + entry.ToolTip?.Lines ?? 0; // Easy fix to #4772. A full fix would require rewrites of hooks.
++			_toolTipNames = new string[tooltipCount];
++			_toolTipLines = new string[tooltipCount];
++			_unusedColor = new Color[tooltipCount];
 +
  			int numLines = 1;
  			float knockBack = entry.knockBack;

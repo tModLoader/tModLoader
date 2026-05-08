@@ -87,7 +87,15 @@
  		public static List<int> ItemsThatAreProcessedAfterNormalContentSample = new List<int> {
  			1533,
  			1534,
-@@ -53,22 +_,90 @@
+@@ -49,26 +_,98 @@
+ 			1536,
+ 			1537
+ 		};
++		/// <summary>
++		/// Contains armor that can be equipped in both the armor and vanity equipment slots at the same time.
++		/// <br/><br/> Used by <see cref="ItemID.EmptyBucket"/>, <see cref="ItemID.BadgersHat"/>, and <see cref="ItemID.RabbitOrder"/>, all of which have special visuals showing the headpieces on top of itself on the players head when equipped in both slots.
++		/// </summary>
+ 		public static bool[] DualEquipArmor = Factory.CreateBoolSet(false, 205, 5004, 4955);
  		public static bool[] ReceivesDiagonalCorrectionAsFakeFish = Factory.CreateBoolSet(true, 2342);
  		public static bool[] ShootsOnUseRelease = Factory.CreateBoolSet(false, 198, 3764, 200, 3766, 4258, 4259, 201, 3767, 199, 3765, 203, 3769, 202, 3768, 5535, 5536, 5670, 5671, 671, 3772, 3352);
  		public static bool[] NoMeleeSpeedBonus = Factory.CreateBoolSet(false, 3821);
@@ -300,7 +308,7 @@
  		public static FlowerPacketInfo[] flowerPacketInfo = Factory.CreateCustomSet<FlowerPacketInfo>(null, new object[18] {
  			(short)4041,
  			new FlowerPacketInfo {
-@@ -317,18 +_,91 @@
+@@ -317,18 +_,90 @@
  				}
  			}
  		});
@@ -371,16 +379,15 @@
 +
 +		/// <summary>
 +		/// If <see langword="true"/> for a given item type (<see cref="Item.type"/>), then that item is food.
-+		/// <br/> Food items can be placed onto <see cref="TileID.FoodPlatter"/>s, have a <see cref="Item.holdStyle"/> of <see cref="ItemHoldStyleID.HoldFront"/>, hide shields (<see cref="Item.shieldSlot"/>) when held,
-+		/// <br/> Food item sprites must have 3 frames. The required framing code is automatically initialized.
-+		/// </summary>
-+		/// <remarks>
-+		/// The auto-initialized animation for  foods have 3 vertical frames.
++		/// <br/><br/> Food items can be placed onto <see cref="TileID.FoodPlatter"/>s, have a <see cref="Item.holdStyle"/> of <see cref="ItemHoldStyleID.HoldFront"/>, and hide shields (<see cref="Item.shieldSlot"/>) when held.
++		/// <br/><br/> Food item sprites must have 3 vertical frames. The <see cref="Main.RegisterItemAnimation(int, DrawAnimation)"/> code should set the animation to not animate in the inventory by setting <see cref="DrawAnimationVertical.NotActuallyAnimating"/>.
++		/// <br/><br/> The animation frames are as follows:
 +		/// <br/> 1. Inventory sprite
 +		/// <br/> 2. Held sprite
 +		/// <br/> 3. <see cref="TileID.FoodPlatter"/> sprite
-+		/// <br/> <see cref="Item.DefaultToFood(int, int, int, int, bool, int)"/> will set many common item values for food.
-+		/// </remarks>
++		/// <br/><br/> <see cref="Item.DefaultToFood(int, int, int, int, bool, int)"/> will set many common item values for food.
++		/// <br/><br/> See <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/Items/Consumables/ExampleFoodItem.cs">ExampleFoodItem.cs</see> for an example of how to set up a food item.
++		/// </summary>
  		public static bool[] IsFood = Factory.CreateBoolSet(353, 357, 1787, 1911, 1912, 1919, 1920, 2266, 2267, 2268, 2425, 2426, 2427, 3195, 3532, 4009, 4010, 4011, 4012, 4013, 4014, 4015, 4016, 4017, 4018, 4019, 4020, 4021, 4022, 4023, 4024, 4025, 4026, 4027, 4028, 4029, 4030, 4031, 4032, 4033, 4034, 4035, 4036, 4037, 967, 969, 4282, 4283, 4284, 4285, 4286, 4287, 4288, 4289, 4290, 4291, 4292, 4293, 4294, 4295, 4296, 4297, 4403, 4411, 4614, 4615, 4616, 4617, 4618, 4619, 4620, 4621, 4622, 4623, 4624, 4625, 5009, 5042, 5041, 5092, 5093, 5275, 5277, 5278, 5537, 5645);
 +
 +		/// <summary>
@@ -410,7 +417,7 @@
  		public static Color[][] DrinkParticleColors = Factory.CreateCustomSet(new Color[0], (short)28, new Color[3] {
  			new Color(164, 16, 47),
  			new Color(246, 34, 79),
-@@ -972,31 +_,159 @@
+@@ -972,31 +_,165 @@
  			new Color(251, 126, 73)
  		});
  		private static BannerEffect DD2BannerEffect = BannerEffect.Reduced;
@@ -446,6 +453,9 @@
 +		/// </summary>
  		public static bool[] IsLavaBait = Factory.CreateBoolSet(4849, 4845, 4847);
  		public static bool[] FakeFishInanimate = Factory.CreateBoolSet(false, 2423);
++		/// <summary>
++		/// Contains non-quest fish. Used for inventory sorting. See also <see cref="IsQuestFish"/>.
++		/// </summary>
  		public static bool[] IsBasicFish = Factory.CreateBoolSet(2303, 2299, 2290, 2436, 2317, 2305, 2304, 2313, 2318, 2312, 4401, 2306, 2308, 2437, 2319, 2314, 2302, 2315, 2438, 2307, 2310, 2301, 4402, 2298, 2316, 2309, 2321, 2297, 2300, 2311);
 +
 +		/// <summary>
@@ -465,6 +475,9 @@
 +		/// See <see cref="GameContent.Tile_Entities.TEWeaponsRack.FitsWeaponFrame(Item)"/> for the full conditions regarding weapon rack placement.
 +		/// </remarks>
  		public static bool[] CanBePlacedOnWeaponRacks = Factory.CreateBoolSet(3196, 166, 235, 3115, 167, 2896, 3547, 580, 937, 4423, 4824, 4825, 4826, 4827, 4908, 4909, 5594, 5595, 4094, 4039, 4092, 4093, 4587, 4588, 4589, 4590, 4591, 4592, 4593, 4594, 4595, 4596, 4597, 4598, 905, 1326, 5335, 2272, 2610, 5495, 3384, 3225, 2303, 2299, 2290, 2317, 2305, 2304, 2313, 2318, 2312, 2306, 2308, 2319, 2314, 2302, 2315, 2307, 2310, 2301, 2298, 2316, 2309, 2321, 2297, 2300, 2311, 2420, 2438, 2437, 2436, 4401, 4402, 2475, 2476, 2450, 2477, 2478, 2451, 2479, 2480, 2452, 2453, 2481, 2454, 2482, 2483, 2455, 2456, 2457, 2458, 2459, 2460, 2484, 2472, 2461, 2462, 2463, 2485, 2464, 2465, 2486, 2466, 2467, 2468, 2487, 2469, 2488, 2470, 2471, 2473, 2474, 4393, 4394);
++		/// <summary>
++		/// Contains quest fish. Unused, but the contents are a duplicate of <see cref="Main.anglerQuestItemNetIDs"/>. See also <see cref="IsBasicFish"/>.
++		/// </summary>
  		public static bool[] IsQuestFish = Factory.CreateBoolSet(2475, 2476, 2450, 2477, 2478, 2451, 2479, 2480, 2452, 2453, 2481, 2454, 2482, 2483, 2455, 2456, 2457, 2458, 2459, 2460, 2484, 2472, 2461, 2462, 2463, 2485, 2464, 2465, 2486, 2466, 2467, 2468, 2487, 2469, 2488, 2470, 2471, 2473, 2474, 4393, 4394);
 +
 +		/// <summary>
@@ -773,6 +786,16 @@
  		public static bool[] IsRangedSpecialistWeapon = Factory.CreateBoolSet(1156, 3350, 3210, 160, 266, 5629, 3821, 5460);
  		public static UniqueTagEffect[] UniqueTagEffects = Factory.CreateCustomSet<UniqueTagEffect>(null, new object[38] {
  			(short)5688,
+@@ -1266,6 +_,9 @@
+ 				TagDamage = 4
+ 			}
+ 		});
++		/// <summary>
++		/// These items will have the "Wireable" tooltip.
++		/// </summary>
+ 		public static bool[] IsWireableStatue = Factory.CreateBoolSet(441, 449, 466, 471, 3651, 3652, 3653, 3654, 3655, 3656, 3657, 3658, 3659, 3660, 3661, 3662, 3708, 3709, 3710, 3711, 3712, 3713, 3714, 3715, 3716, 3717, 3718, 3719, 3720, 4397, 4360, 4342, 4466, 5317, 5318, 5319, 440, 443, 444, 445, 446, 452, 454, 459, 463, 464, 478, 473, 2672, 438, 453, 476, 477, 470, 4355, 4276);
+ 
+ 		public static void PostSetupContent()
 @@ -1287,6 +_,7 @@
  			}
  		}

@@ -2297,6 +2297,10 @@ public static class ItemLoader
 		tooltips.RemoveAll(x => !x.Visible);
 
 		numTooltips = tooltips.Count;
+		Array.Resize(ref lineColors, numTooltips); // Resize the mouseTextTooltipLine_Color array and assign a default white color to the new elements. Related to #4772 and Commit 6e7c00b
+		for (int i = text.Length; i < numTooltips; i++) {
+			lineColors[i] = new Color(255, 255, 255);
+		}
 		text = new string[numTooltips];
 		oneDropLogo = -1;
 		overrideColor = new Color?[numTooltips];

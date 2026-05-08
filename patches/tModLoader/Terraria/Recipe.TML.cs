@@ -121,36 +121,29 @@ public partial class Recipe
 	public Recipe AddIngredient<T>(int stack = 1) where T : ModItem
 		=> AddIngredient(ModContent.ItemType<T>(), stack);
 
-	/*
 	/// <summary>
-	/// Adds a recipe group ingredient to this recipe with the given RecipeGroup name and stack size.
+	/// Adds a recipe group ingredient to this recipe with the given RecipeGroup key and stack size. This overload is intended for using modded recipe groups in situations where a reference to the <see cref="RecipeGroup"/> object itself isn't accessible, but it is usually safer to use the other overloads if at all possible.
 	/// <br/> Recipe groups allow a recipe to use alternate ingredients without making multiple recipes. For example the "IronBar" group accepts either <see cref="ItemID.IronBar"/> or <see cref="ItemID.LeadBar"/>. The <see href="https://github.com/tModLoader/tModLoader/wiki/Intermediate-Recipes#recipe-groups">Recipe Groups wiki guide</see> has more information.
-	/// <br/> To use a vanilla recipe group, use <see cref="AddRecipeGroup(int, int)"/> using a <see cref="RecipeGroupID"/> entry instead.
+	/// <br/> To use a vanilla recipe group, use <see cref="AddRecipeGroup(RecipeGroup, int)"/> using a <see cref="RecipeGroups"/> entry instead.
 	/// </summary>
 	/// <param name="name">The name.</param>
 	/// <param name="stack">The stack.</param>
 	/// <exception cref="RecipeException">A recipe group with the name " + name + " does not exist.</exception>
 	public Recipe AddRecipeGroup(string name, int stack = 1)
 	{
-		if (!RecipeGroup.recipeGroupIDs.ContainsKey(name))
+		var group = RecipeGroup.recipeGroups.Values.SingleOrDefault(x => x.Key == name);
+
+		if (group == null)
 			throw new RecipeException($"A recipe group with the name {name} does not exist.");
 
-		int id = RecipeGroup.recipeGroupIDs[name];
-		var group = RecipeGroup.recipeGroups[id];
-
-		AddIngredient(group.IconicItemId, stack);
-		AddGroup(id);
-
-		return this;
+		return AddRecipeGroup(group, stack);
 	}
-	*/
 
 	/// <summary>
-	/// Adds a recipe group ingredient to this recipe with the given RecipeGroupID and stack size.
-	/// <br/> Recipe groups allow a recipe to use alternate ingredients without making multiple recipes. For example the <see cref="RecipeGroupID.IronBar"/> group accepts either <see cref="ItemID.IronBar"/> or <see cref="ItemID.LeadBar"/>. The <see href="https://github.com/tModLoader/tModLoader/wiki/Intermediate-Recipes#recipe-groups">Recipe Groups wiki guide</see> has more information.
-	/// <br/> Vanilla recipe group IDs can be found in <see cref="RecipeGroupID"/> and modded recipe group IDs will be returned from <see cref="RecipeGroup.RegisterGroup(string, RecipeGroup)"/>. <see cref="AddRecipeGroup(string, int)"/> can be used instead if the ID number is not known but the name is known.
+	/// Adds a recipe group ingredient to this recipe with the given <see cref="RecipeGroup.RegisteredId"/> and stack size. Using the <see cref="AddRecipeGroup(RecipeGroup, int)"/> method is usually preferred.
+	/// <br/> Recipe groups allow a recipe to use alternate ingredients without making multiple recipes. For example the <see cref="RecipeGroups.IronBar"/> group accepts either <see cref="ItemID.IronBar"/> or <see cref="ItemID.LeadBar"/>. The <see href="https://github.com/tModLoader/tModLoader/wiki/Intermediate-Recipes#recipe-groups">Recipe Groups wiki guide</see> has more information.
 	/// </summary>
-	/// <param name="recipeGroupId">The RecipeGroupID.</param>
+	/// <param name="recipeGroupId">A <see cref="RecipeGroup.RegisteredId"/>.</param>
 	/// <param name="stack">The stack.</param>
 	/// <exception cref="RecipeException">A recipe group with the ID " + recipeGroupID + " does not exist.</exception>
 	public Recipe AddRecipeGroup(int recipeGroupId, int stack = 1)

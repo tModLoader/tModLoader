@@ -19,7 +19,7 @@ public class HairID
 		public static bool[] DrawBackHair = Factory.CreateBoolSet(51, 52, 53, 54, 55, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 101, 102, 103, 105, 106, 107, 108, 109, 110, 111, 113, 114, 115, 133, 134, 146, 162, 6);
 	}
 
-	public static readonly int Count = 165;
+	public static readonly int Count = 228;
 
 	public static IdDictionary Search = IdDictionary.Create<HairID, int>();
 }
