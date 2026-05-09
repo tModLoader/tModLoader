@@ -3,6 +3,7 @@ using ExampleMod.Content.Tiles.Furniture;
 using Microsoft.Xna.Framework;
 using System;
 using Terraria;
+using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -80,12 +81,58 @@ namespace ExampleMod.Content.Projectiles.Minions
 			return true; // The minion projectile will be spawned by the game since we return true.
 		}
 
+		public override bool UseMinionActiveAbility(Player player, Projectile minion) {
+			Vector2 shootVelocity = (Main.MouseWorld - minion.Center).SafeNormalize(Vector2.UnitY) * 12f;
+
+			Projectile.NewProjectile(
+				player.GetSource_ItemUse(Item),
+				minion.Center,
+				shootVelocity,
+				ModContent.ProjectileType<ExampleSimpleMinionActiveShot>(),
+				player.GetWeaponDamage(Item),
+				player.GetWeaponKnockback(Item),
+				player.whoAmI
+			);
+
+			SoundEngine.PlaySound(SoundID.Item20, minion.Center);
+
+			return true;
+		}
+
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
 		public override void AddRecipes() {
 			CreateRecipe()
 				.AddIngredient(ModContent.ItemType<ExampleItem>())
 				.AddTile(ModContent.TileType<ExampleWorkbench>())
 				.Register();
+		}
+	}
+
+	public class ExampleSimpleMinionActiveShot : ModProjectile
+	{
+		public override string Texture => "ExampleMod/Content/Projectiles/SparklingBall";
+
+		public override void SetDefaults() {
+			Projectile.width = 16;
+			Projectile.height = 16;
+			Projectile.friendly = true;
+			Projectile.DamageType = DamageClass.Summon;
+			Projectile.penetrate = 1;
+			Projectile.timeLeft = 90;
+			Projectile.ignoreWater = true;
+		}
+
+		public override void AI() {
+			Projectile.rotation += 0.4f * Projectile.direction;
+			Lighting.AddLight(Projectile.Center, Color.SkyBlue.ToVector3() * 0.5f);
+		}
+
+		public override bool OnTileCollide(Vector2 oldVelocity) {
+			for (int i = 0; i < 5; i++) {
+				Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Electric);
+			}
+
+			return true;
 		}
 	}
 
