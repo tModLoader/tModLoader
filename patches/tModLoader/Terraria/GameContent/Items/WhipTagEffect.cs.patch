@@ -16,27 +16,28 @@
  	public int TagDamage;
  	private const int generalWhipMarkDuration = 240;
  
-@@ -16,8 +_,15 @@
+@@ -16,8 +_,14 @@
  		TagDuration = 240;
  	}
  
 +	/// <summary>
 +	/// Allows you to change if the tag effect can be applied to an NPC. <see langword="true"/> by default.
-+	/// <br/>TODO: By default, the tags cannot be applied to NPCs who are immune to tags.
++	/// <br/>By default, the tags cannot be applied to NPCs who are immune to tags.
 +	/// <para>Make sure to add `base.CanApplyTagToNPC(npcType)` for the default immunity check.</para>
 +	/// </summary>
  	public override bool CanApplyTagToNPC(int npcType)
  	{
-+		return true; // TODO: Whip debuffs don't exist anymore. Need to rework things.
 +		/*
  		if (!NPCID.Sets.DebuffImmunitySets.TryGetValue(npcType, out var value))
  			return true;
  
-@@ -25,14 +_,28 @@
+@@ -25,14 +_,30 @@
  			return !value.ImmuneToWhips;
  
  		return true;
 +		*/
++
++		return !NPCID.Sets.ImmuneToAllBuffs[npcType];
  	}
  
 +	/// <summary>

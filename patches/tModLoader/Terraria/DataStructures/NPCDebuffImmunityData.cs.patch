@@ -13,12 +13,12 @@
  public class NPCDebuffImmunityData
  {
 +	/// <summary>
-+	/// If <see langword="true"/>, this NPC type (<see cref="NPC.type"/>) will be immune to all tag debuffs (<see cref="BuffID.Sets.IsATagBuff"/>).
++	/// If <see langword="true"/>, this NPC type (<see cref="NPC.type"/>) will be immune to all tag effects and debuffs (<see cref="GameContent.Items.WhipTagEffect"/> and <see cref="BuffID.Sets.IsATagBuff"/>).
 +	/// </summary>
  	public bool ImmuneToWhips;
 +
 +	/// <summary>
-+	/// If <see langword="true"/>, this NPC type (<see cref="NPC.type"/>) will be immune to all non-tag debuffs (<see cref="BuffID.Sets.IsATagBuff"/>).
++	/// If <see langword="true"/>, this NPC type (<see cref="NPC.type"/>) will be immune to all non-tag effects and debuffs (<see cref="GameContent.Items.WhipTagEffect"/> and <see cref="BuffID.Sets.IsATagBuff"/>).
 +	/// </summary>
  	public bool ImmuneToAllBuffsThatAreNotWhips;
 +

@@ -33,8 +33,8 @@
  		public static int[] SortingPriorityFoodBuffs = Factory.CreateIntSet(-1, 207, 4, 206, 3, 26, 2, 25, 1);
 +
 +		/// <summary>
-+		/// If <see langword="true"/> for a given <see cref="BuffID"/>, then that buff is not considered a typical debuff, but is a buff used to "tag" entities for other purposes.<br/><br/>
-+		/// Whip debuffs are the primary example of tag buffs, they facilitate a combat mechanic rather than affect the NPC directly.<br/><br/>
++		/// If <see langword="true"/> for a given <see cref="BuffID"/>, then that buff is not considered a typical debuff, but is a buff used to supplement the functionality of <see cref="ItemID.Sets.UniqueTagEffects"/>.<br/><br/>
++		/// Most tagging functionally should be applied in <see cref="ItemID.Sets.UniqueTagEffects"/>. The Dark Harvest's reaping effect and Electric Eel's electric energy use a buff to achieve their effect.<br/><br/>
 +		/// Buffs in this set can be applied to all NPCs unless that NPC sets <see cref="NPCID.Sets.ImmuneToAllBuffs"/> to prevent it.<br/><br/>
 +		/// Defaults to <see langword="false"/>.
 +		/// </summary>
