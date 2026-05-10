@@ -89,6 +89,7 @@ namespace ExampleMod.Content.Items.Weapons
 		public int TagDamagePercent;
 		public float TagDamageMultiplier => TagDamagePercent / 100f;
 
+		/// <summary> This is the multiplier for the damage the extra proc effect will do. </summary>
 		public float ProcDamageMultiplier;
 
 		// This hook runs when a tagged enemy takes damage from a minion or sentry and allows us to change the damage dealt.
@@ -115,9 +116,9 @@ namespace ExampleMod.Content.Items.Weapons
 			CombatText.NewText(optionalProjectile.Hitbox, Color.Purple, "BAM!");
 
 			// This is how the Firecracker's explosion works.
-			int explosionDamage = (int)((float)calcDamage * ProcDamageMultiplier);
+			int explosionDamage = (int)(calcDamage * ProcDamageMultiplier);
 			int explosionProj = Projectile.NewProjectile(optionalProjectile.GetSource_FromThis(), npcHit.Center, Vector2.Zero, ProjectileID.FireWhipProj, explosionDamage, 0f, optionalProjectile.owner);
-			Main.projectile[explosionProj].localNPCImmunity[npcHit.whoAmI] = -1;
+			Main.projectile[explosionProj].localNPCImmunity[npcHit.whoAmI] = -1; // This makes it so the explosion projectile can only hit the same NPC once.
 		}
 		public override void ModifyProcHit(Player owner, Projectile optionalProjectile, NPC npcHit, ref NPC.HitModifiers damageDealt, ref bool crit) {
 			// This is how the Firecracker's damage scaling works.

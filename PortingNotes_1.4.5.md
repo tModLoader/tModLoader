@@ -198,7 +198,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Lots of new methods in Utils. Check if any duplicate TML.cs methods.
 - Various text rendering methods have been changed or improved. Investigate new functionality and previous bug fixes.
 - Player.IsAllowedToHoldItems
-- BuffID.IsAnNPCWhipDebuff, which tModLoader renamed to IsATagBuff, has changed a lot. Need to document the new behavior. Do we want to revert the name change? Also CanBeRemovedByNetMessage docs are now wrong.
 - ProjectileID.Sets.HeldProjDoesNotUsePlayerGfxOffY removed. How has this been fixed? I thought it wouldn't be fixed in vanilla.
 - Need to determine if hooks need to act on ModItem or WorldItem. For example: `ItemIO.SendModData(item3, writer);`
   - `public EntityGlobalsEnumerator<TGlobal> Enumerate(IEntityWithGlobals<TGlobal> entity) => new(ForType(entity.Type), entity);` doesn't work as-is for hooks that are now WorldItem. I've changed them to `.Enumerate(item.inner)`, but I'm not positive what design we want for these hooks now. (WorldItem points to Item, but Item doesn't point to WorldItem.)

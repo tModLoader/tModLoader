@@ -50,7 +50,7 @@
 +
 +		/// <summary>
 +		/// If <see langword="true"/> for a given <see cref="BuffID"/>, then that buff can be removed from an NPC using <see cref="NPC.RequestBuffRemoval(int)"/>.
-+		/// <br/> Useful for "flag" buffs that should go away on hit, like the <see href="https://terraria.wiki.gg/wiki/Firecracker">Firecracker's</see> <see cref="FlameWhipEnemyDebuff"/>.
++		/// <br/> Useful for "flag" buffs that should go away on hit.
 +		/// <br/> Defaults to <see langword="false"/>.
 +		/// </summary>
  		public static bool[] CanBeRemovedByNetMessage = Factory.CreateBoolSet();
