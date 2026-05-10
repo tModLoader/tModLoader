@@ -26,27 +26,6 @@
  			BombsHurtPlayers(rectangle, Main.myPlayer);
  			return;
  		}
-@@ -10171,9 +_,12 @@
-+									/*
- 									float num13 = 1f;
- 									if (type == 864)
- 										num13 = 0.75f;
- 
- 									if (type == 688 || type == 689 || type == 690)
- 										num13 /= 2f;
-+									*/
-+									float num13 = ProjectileID.Sets.SummonTagDamageMultiplier[type];
- 
- 									if (flag && (minion || ProjectileID.Sets.MinionShot[type] || sentry || ProjectileID.Sets.SentryShot[type])) {
- 										bool flag14 = false;
-@@ -10264,6 +_,6 @@
- 											int num17 = (int)((float)num5 * 1.75f);
- 											int num18 = NewProjectile(GetProjectileSource_FromThis(), nPC.Center, Vector2.Zero, 918, num17, 0f, owner);
- 											Main.projectile[num18].localNPCImmunity[i] = -1;
--											num6 += num17;
-+											modifiers.ScalingBonusDamage += 1.75f * num13; //num6 += num17;
- 										}
- 									}
 @@ -11354,6 +_,6 @@
  	private void BombsHurtPlayers(Rectangle projRectangle, int j)
  	{

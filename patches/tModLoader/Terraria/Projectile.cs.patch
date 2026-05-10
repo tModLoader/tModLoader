@@ -874,7 +874,7 @@
  
  			int num11 = type;
  			if ((uint)(num11 - 688) <= 2u) {
-@@ -10664,9 +_,16 @@
+@@ -10664,9 +_,15 @@
  			}
  		}
  
@@ -887,7 +887,6 @@
 +		/*
  		int num12 = ((!ownedBySomeone) ? Main.DamageVar(damageDealt) : Main.DamageVar(damageDealt, Main.player[owner].luck));
 +		*/
-+		// modifiers.FlatBonusDamage += num6; // TODO: Handled now by TagEffectState.ModifyHit maybe?
 +		float luck = flag ? Main.player[owner].luck : 0f;
 +		float num12 = 1000; // to reduce patches, set to 1000, and then turn it into a multiplier later
  		if (type == 1002)
