@@ -42,14 +42,14 @@ namespace ExampleMod.Content.Items
 			tooltips.Add(line);
 
 			line = new TooltipLine(Mod, "Face", FaceText.Value) {
-				OverrideColor = new Color(100, 100, 255)
+				Color = new Color(100, 100, 255)
 			};
 			tooltips.Add(line);
 
 			// Here we give the item name a rainbow effect.
 			foreach (TooltipLine line2 in tooltips) {
 				if (line2.Mod == "Terraria" && line2.Name == "ItemName") {
-					line2.OverrideColor = Main.DiscoColor;
+					line2.Color = Main.DiscoColor;
 				}
 			}
 

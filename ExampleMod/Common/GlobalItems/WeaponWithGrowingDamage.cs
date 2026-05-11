@@ -105,9 +105,9 @@ namespace ExampleMod.Common.GlobalItems
 
 		public override void ModifyTooltips(Item item, List<TooltipLine> tooltips) {
 			if (experience > 0) {
-				tooltips.Add(new TooltipLine(Mod, "level", LevelText.Format(level)) { OverrideColor = Color.LightGreen });
+				tooltips.Add(new TooltipLine(Mod, "level", LevelText.Format(level)) { Color = Color.LightGreen });
 				int nextLevelExperience = (level + 1) * experiencePerLevel - experience;
-				tooltips.Add(new TooltipLine(Mod, "experience", ExperienceText.Format(experience, nextLevelExperience)) { OverrideColor = Color.White });
+				tooltips.Add(new TooltipLine(Mod, "experience", ExperienceText.Format(experience, nextLevelExperience)) { Color = Color.White });
 			}
 		}
 
