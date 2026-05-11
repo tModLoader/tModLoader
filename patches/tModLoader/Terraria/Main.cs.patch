@@ -3165,7 +3165,7 @@
  		if (diff == 1)
  			result = new Microsoft.Xna.Framework.Color(mcColor.R, mcColor.G, mcColor.B);
  
-@@ -17480,30 +_,50 @@
+@@ -17480,30 +_,49 @@
  		return result;
  	}
  
@@ -3196,7 +3196,6 @@
  		if (item.social && !item.vanity && !item.hasVanityEffects) {
  			toolTipLine[numLines] = Lang.tip[61].Value;
 +			toolTipNames[numLines] = "Social";
-+			//toolTipNames[numLines] = "SocialDesc";
  			numLines++;
  		}
  

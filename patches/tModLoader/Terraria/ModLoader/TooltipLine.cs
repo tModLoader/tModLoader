@@ -45,7 +45,6 @@ public class TooltipLine
 	/// <item><description>"FavoriteDesc" - Tells what it means when an item is favorited.</description></item>
 	/// <item><description>"NoTransfer" - Warning that this item cannot be placed inside itself, used by Money Trough and Void Bag/Vault.</description></item>
 	/// <item><description>"Social" - Tells if the item is in a social slot.</description></item>
-	/// <item><description>"SocialDesc" - Tells what it means for an item to be in a social slot.</description></item>
 	/// <item><description>"Damage" - The damage value and type of the weapon.</description></item>
 	/// <item><description>"CritChance" - The critical strike chance of the weapon.</description></item>
 	/// <item><description>"Speed" - The use speed of the weapon.</description></item>

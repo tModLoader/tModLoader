@@ -100,7 +100,7 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Double check new DoScrollingInInventory logic against PlayerInput.MouseInModdedUI
 - Patches checking ActiveWorldFileData being null and initializing it might be superfluous now. Seems like there were some vanilla changes.
 - MapRenderer class now contains what was Main.mapSectionTexture and mapTarget. Most static fields there should probably be public.
-- New vanilla TooltipLine options. Need to add to docs and decide on name (is there a wiki page as well?): CommonItemTooltip.ItemUnlockedByTeammate, armorPenetration, bonusTagDamage, check for others. Seems like "Social" and "SocialDesc" logic changed, compare tooltips to 1.4.4 and adjust.
+- New vanilla TooltipLine options. Need to add to docs and decide on name (is there a wiki page as well?): CommonItemTooltip.ItemUnlockedByTeammate, armorPenetration, bonusTagDamage, check for others.
 - DrawBlockReplacementIcon return changed from void to bool. Does that affect how the builders toggle works? Did vanilla behavior change? New state bool in logic, and DoStatefulTickSound
 - See updated `toolTipNames[numLines] = "UseMana";` patch. Look into IsSpaceGun and GetManaCost, might need updates. 
 - Double check PlayerLoader.ModifyZoom logic. Seems like there is only 1 callsite now, code was cleaned up?
