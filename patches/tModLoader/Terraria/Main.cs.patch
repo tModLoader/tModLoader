@@ -3079,19 +3079,6 @@
  					if (m == 4)
  						color = new Microsoft.Xna.Framework.Color(num11, num11, num11, num11);
  
-@@ -17314,10 +_,10 @@
- 							num12++;
- 							break;
- 						case 2:
--							num13--;
-+							num12--;
- 							break;
- 						case 3:
--							num13++;
-+							num12++;
- 							break;
- 					}
- 
 @@ -17326,17 +_,29 @@
  			}
  			else {
@@ -3156,6 +3143,22 @@
  			result = new Microsoft.Xna.Framework.Color(255, (byte)(masterColor * 200f), 0);
  
  		if (rare == -12)
+@@ -17468,9 +_,15 @@
+ 		if (rare == 10)
+ 			result = new Microsoft.Xna.Framework.Color(255, 40, 100);
+ 
++		/*
+ 		if (rare >= 11)
++		*/
++		if (rare == 11)
+ 			result = new Microsoft.Xna.Framework.Color(180, 40, 255);
+ 
++		if (rare > 11)
++			result = RarityLoader.GetRarity(rare).RarityColor;
++
+ 		if (diff == 1)
+ 			result = new Microsoft.Xna.Framework.Color(mcColor.R, mcColor.G, mcColor.B);
+ 
 @@ -17480,30 +_,50 @@
  		return result;
  	}
