@@ -53,11 +53,11 @@ namespace ExampleMod.Content.Prefixes
 			// This results in "+1 Power" for ExamplePrefix and "+2 Power" for ExampleDerivedPrefix.
 			// Power isn't an actual stat, the effects of Power are already shown in the "+X% damage" tooltip, so this example is purely educational.
 			yield return new TooltipLine(Mod, "PrefixWeaponAwesome", PowerTooltip.Format(Power)) {
-				IsModifier/* tModPorter Note: Removed. Set Color = Terraria.ID.Colors.PrefixGood instead */ = true, // Sets the color to the positive modifier color.
+				Color = Terraria.ID.Colors.PrefixGood, // Sets the color to the positive modifier color.
 			};
 			// This localization is not shared with the inherited classes. ExamplePrefix and ExampleDerivedPrefix have their own translations for this line.
 			yield return new TooltipLine(Mod, "PrefixWeaponAwesomeDescription", AdditionalTooltip.Value) {
-				IsModifier/* tModPorter Note: Removed. Set Color = Terraria.ID.Colors.PrefixGood instead */ = true,
+				Color = Terraria.ID.Colors.PrefixGood,
 			};
 			// If possible and suitable, try to reuse the name identifier and translation value of Terraria prefixes. For example, this code uses the vanilla translation for the word defense, resulting in "-5 defense". Note that IsModifierBad is used for this bad modifier.
 			/*yield return new TooltipLine(Mod, "PrefixAccDefense", "-5" + Lang.tip[25].Value) {
