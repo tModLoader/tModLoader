@@ -59,10 +59,9 @@ namespace ExampleMod.Content.Prefixes
 			yield return new TooltipLine(Mod, "PrefixWeaponAwesomeDescription", AdditionalTooltip.Value) {
 				Color = Terraria.ID.Colors.PrefixGood,
 			};
-			// If possible and suitable, try to reuse the name identifier and translation value of Terraria prefixes. For example, this code uses the vanilla translation for the word defense, resulting in "-5 defense". Note that IsModifierBad is used for this bad modifier.
+			// If possible and suitable, try to reuse the name identifier and translation value of Terraria prefixes. For example, this code uses the vanilla translation for the word defense, resulting in "-5 defense".
 			/*yield return new TooltipLine(Mod, "PrefixAccDefense", "-5" + Lang.tip[25].Value) {
-				IsModifier = true,
-				IsModifierBad = true,
+				Color = Terraria.ID.Colors.PrefixBad,
 			};*/
 		}
 
