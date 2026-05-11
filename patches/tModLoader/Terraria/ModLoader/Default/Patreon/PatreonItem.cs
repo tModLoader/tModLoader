@@ -46,7 +46,7 @@ internal abstract class PatreonItem : ModLoaderModItem
 	public override void ModifyTooltips(List<TooltipLine> tooltips)
 	{
 		var line = new TooltipLine(Mod, "PatreonThanks", Language.GetTextValue("tModLoader.PatreonSetTooltip")) {
-			OverrideColor = Color.Aquamarine
+			Color = Color.Aquamarine
 		};
 		tooltips.Add(line);
 	}

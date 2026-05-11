@@ -3036,13 +3036,17 @@
  		Vector2 zero = Vector2.Zero;
 +
 +		// TML's abstractions over tooltip arrays.
-+		List<TooltipLine> lines = ItemLoader.ModifyTooltips(HoverItem, ref numLines, tooltipNames, ref mouseTextTooltipLine_Text, ref mouseTextTooltipLine_Color, ref yoyoLogo, out Color?[] overrideColor, prefixlineIndex);
-+		List<DrawableTooltipLine> drawableLines = lines.Select((TooltipLine x, int i) => new DrawableTooltipLine(x, i, 0, 0, Color.White)).ToList();
++		List<TooltipLine> lines = ItemLoader.ModifyTooltips(HoverItem, ref numLines, tooltipNames, ref mouseTextTooltipLine_Text, ref mouseTextTooltipLine_Color, ref yoyoLogo, prefixlineIndex);
++		List<DrawableTooltipLine> drawableLines = lines.Select((TooltipLine x, int i) => new DrawableTooltipLine(x, i, 0, 0, mouseTextTooltipLine_Color[i])).ToList();
 +
  		int num3 = 0;
  		for (int j = 0; j < numLines; j++) {
  			Vector2 stringSize = ChatManager.GetStringSize(FontAssets.MouseText.Value, mouseTextTooltipLine_Text[j], Vector2.One);
-@@ -17295,14 +_,32 @@
+@@ -17292,17 +_,36 @@
+ 		}
+ 
+ 		for (int k = 0; k < mouseTextTooltipLine_Text.Length; k++) {
++			// TODO: Some way for mods to bypass mouseTextColor pulsing for a TooltipLine. Apply to UnloadedPrefix once implemented.
  			mouseTextTooltipLine_Color[k] = new Microsoft.Xna.Framework.Color((byte)((float)(int)mouseTextTooltipLine_Color[k].R * num2), (byte)((float)(int)mouseTextTooltipLine_Color[k].G * num2), (byte)((float)(int)mouseTextTooltipLine_Color[k].B * num2), mouseTextColor);
  		}
  
@@ -3088,32 +3092,21 @@
  							break;
  					}
  
-@@ -17326,17 +_,40 @@
+@@ -17326,17 +_,29 @@
  			}
  			else {
  				Microsoft.Xna.Framework.Color baseColor = mouseTextTooltipLine_Color[l];
 +				/*
  				if (l == researchLine)
-+				*/
-+				if (drawableLines[l].Mod == "Terraria" && drawableLines[l].Name == "JourneyResearch")
  					baseColor = Colors.JourneyMode;
  
-+				/*
  				ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.MouseText.Value, mouseTextTooltipLine_Text[l], new Vector2(X, Y + num7), baseColor, 0f, Vector2.Zero, Vector2.One);
 +				*/
-+				drawableLines[l].Color = baseColor;
-+				Color realLineColor = baseColor;
-+
-+				if (overrideColor[l].HasValue) {
-+					// TODO: Some way for mods to bypass mouseTextColor pulsing for a TooltipLine. Apply to UnloadedPrefix once implemented.
-+					realLineColor = overrideColor[l].Value * num2;
-+					drawableLines[l].OverrideColor = realLineColor;
-+				}
 +
 +				if (!ItemLoader.PreDrawTooltipLine(HoverItem, drawableLines[l], ref num3) || !globalCanDraw)
 +					goto PostDraw;
 +
-+				ChatManager.DrawColorCodedStringWithShadow(spriteBatch, drawableLines[l].Font, drawableLines[l].Text, new Vector2(drawableLines[l].X, drawableLines[l].Y), realLineColor, drawableLines[l].Rotation, drawableLines[l].Origin, drawableLines[l].BaseScale, drawableLines[l].MaxWidth, drawableLines[l].Spread);
++				ChatManager.DrawColorCodedStringWithShadow(spriteBatch, drawableLines[l].Font, drawableLines[l].Text, new Vector2(drawableLines[l].X, drawableLines[l].Y), baseColor, drawableLines[l].Rotation, drawableLines[l].Origin, drawableLines[l].BaseScale, drawableLines[l].MaxWidth, drawableLines[l].Spread);
  			}
  
 +			PostDraw:
@@ -3696,15 +3689,18 @@
  			numLines++;
  		}
  
-@@ -18058,13 +_,28 @@
+@@ -18057,14 +_,31 @@
+ 			string teammateName;
  			if (amountWeHave < amountNeededTotal) {
  				toolTipLine[numLines] = Language.GetTextValue("CommonItemTooltip.CreativeSacrificeNeeded", amountNeededTotal - amountWeHave);
++				lineColors[numLines] = Colors.JourneyMode;
  				researchLine = numLines;
 +				toolTipNames[numLines] = "JourneyResearch";
  				numLines++;
  			}
  			else if (item.tooltipContext == 29 && LocalPlayerCreativeTracker.ItemSacrifices.TryGetTeammateUnlockCredit(item.type, out teammateName)) {
  				toolTipLine[numLines] = Language.GetTextValue("CommonItemTooltip.ItemUnlockedByTeammate", teammateName);
++				lineColors[numLines] = Colors.JourneyMode;
  				researchLine = numLines;
 +				// toolTipNames[numLines] = "JourneyResearchTeammate";
  				numLines++;

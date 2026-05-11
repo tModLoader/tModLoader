@@ -28,9 +28,11 @@ public class TooltipLine
 	public string Text;
 
 	/// <summary>
-	/// This completely overrides the color the tooltip is drawn in. If it is set to null (the default value) then the tooltip's color will not be overridden.
+	/// The color the tooltip is drawn in. Defaults to White.
+	/// <para/> <see cref="Terraria.ID.Colors.PrefixGood"/> and <see cref="Terraria.ID.Colors.PrefixBad"/> are the colors used by prefix stat changes.
+	/// <para/> The actual final color will be affected slightly by the mouse pulse effect (<see cref="Main.mouseTextColor"/>).
 	/// </summary>
-	public Color? OverrideColor;
+	public Color Color;
 
 	internal bool OneDropLogo;
 
@@ -105,6 +107,7 @@ public class TooltipLine
 		Mod = mod.Name;
 		Name = name;
 		Text = text;
+		Color = Color.White;
 	}
 
 	internal TooltipLine(string mod, string name, string text)
@@ -112,6 +115,7 @@ public class TooltipLine
 		Mod = mod;
 		Name = name;
 		Text = text;
+		Color = Color.White;
 	}
 
 	internal TooltipLine(string name, string text)
@@ -119,6 +123,7 @@ public class TooltipLine
 		Mod = "Terraria";
 		Name = name;
 		Text = text;
+		Color = Color.White;
 	}
 
 	public bool Visible { get; private set; } = true;
