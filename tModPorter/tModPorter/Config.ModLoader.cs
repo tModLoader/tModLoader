@@ -531,8 +531,6 @@ public static partial class Config
 		RenameMethod("Terraria.ModLoader.ModNPC",		from: "SetupShop",	to: "ModifyActiveShop");
 		RenameMethod("Terraria.ModLoader.GlobalNPC",	from: "SetupShop",	to: "ModifyActiveShop");
 		RenameMethod("Terraria.ModLoader.ModPylon",		from: "IsPylonForSale", to: "GetNPCShopEntry").FollowBy(AddCommentToOverride("See ExamplePylonTile for an example. To register to specific NPC shops, use the new shop system directly in ModNPC.AddShop, GlobalNPC.ModifyShop or ModSystem.PostAddRecipes"));
-		HookRemoved("Terraria.ModLoader.ModPylon", "ValidTeleportCheck_AnyDanger", "Pylons no longer check danger for teleportation");
-		HookRemoved("Terraria.ModLoader.GlobalPylon", "ValidTeleportCheck_PreAnyDanger", "Pylons no longer check danger for teleportation");
 		ChangeHookSignature("Terraria.ModLoader.ModNPC",	"OnChatButtonClicked");
 		ChangeHookSignature("Terraria.ModLoader.ModNPC",	"ModifyActiveShop");
 		ChangeHookSignature("Terraria.ModLoader.GlobalNPC", "ModifyActiveShop");
@@ -588,6 +586,8 @@ public static partial class Config
 
 		HookRemoved("Terraria.ModLoader.ModProjectile", "DrawBehind", "Set Projectile.drawLayer instead");
 		HookRemoved("Terraria.ModLoader.GlobalProjectile", "DrawBehind", "Set Projectile.drawLayer instead");
+		HookRemoved("Terraria.ModLoader.ModPylon", "ValidTeleportCheck_AnyDanger", "Pylons no longer check danger for teleportation");
+		HookRemoved("Terraria.ModLoader.GlobalPylon", "ValidTeleportCheck_PreAnyDanger", "Pylons no longer check danger for teleportation");
 
 		RefactorInstanceMember("Terraria.DataStructures.PlayerDrawSet", "heldProjOverHand", Removed("Automatically applied via Projectile.drawLayer value"));
 		RefactorInstanceMember("Terraria.ModLoader.ModProjectile", "DrawHeldProjInFrontOfHeldItemAndArms", Removed("Replace with Projectile.drawLayer = ProjectileDrawLayerID.HeldProjOverHand;"));
