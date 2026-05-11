@@ -94,25 +94,6 @@ public static class PylonLoader
 		return returnValue;
 	}
 
-	public static bool? ValidTeleportCheck_PreAnyDanger(TeleportPylonInfo pylonInfo)
-	{
-		bool? returnValue = null;
-
-		foreach (GlobalPylon globalPylon in globalPylons) {
-			bool? shouldSucceed = globalPylon.ValidTeleportCheck_PreAnyDanger(pylonInfo);
-
-			if (shouldSucceed.HasValue) {
-				if (!shouldSucceed.Value) {
-					return false;
-				}
-
-				returnValue = true;
-			}
-		}
-
-		return returnValue;
-	}
-
 	public static bool? ValidTeleportCheck_PreBiomeRequirements(TeleportPylonInfo pylonInfo, SceneMetrics sceneData)
 	{
 		bool? returnValue = null;

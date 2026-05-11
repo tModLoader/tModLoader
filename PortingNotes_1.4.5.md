@@ -13,7 +13,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - ItemSourceID is now static readonly, not a const. Do any other IDs change?
 - We need to add ModItem.SummonPrefix(), add ModPrefix.Summon
 - ShimmerTransforms.IsItemTransformLocked seems to have been split, need to verify RecipeLoader.DecraftAvailable and other logic still applies.
-- Update ModPylon docs to removed danger check from check listing, and remove the ValidTeleportCheck_AnyDanger hook
 - Consider updating FlexibleTileWand.Reload
 - https://github.com/tModLoader/tModLoader/pull/1675 seemed to fix a bug that is apparently now fixed in vanilla. Patches in AWorkshopPublishInfoState deleted. Verify that existing workshop publicity still correctly updates UI without requiring a click.
 - Mount.Dismount now has a ignoreEffect parameter, this might duplicate the skipDust variable used in MountLoader.Dismount. Adjust patches (and docs) accordingly if they should be the same. When is it set? Do modded mounts need to care about when ignoreEffect was true or false?
@@ -189,7 +188,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Many of the unique vanilla hairstyles are no longer available at character creation. Set ModHair.AvailableDuringCharacterCreation to false if you wish to follow suit.
 - SlimeBodyItemDropRule can be applied to any NPCID.Sets.SlimeCanContainItems now and ItemID.Sets.OreDropsFromSlime has been updated to include the alternate ores as well as Hellstone and DesertFossil
 - Magic and Summon prefixes have been split into separate categories
-- Pylons no longer check for "danger". ModPylon.ValidTeleportCheck_AnyDanger removed.
 - Pylons no longer require happiness to be sold. Remove Condition.HappyEnoughToSellPylons from ModPylon.GetNPCShopEntry() to match vanilla.
 - Removed Condition.HappyEnough and Condition.HappyEnoughToSellPylons. Replaced with Condition.CurrentPriceAdjustmentUnder(float priceModifier) and Condition.CurrentPriceAdjustmentOver(float priceModifier).
 - Item.SetDefaults(int Type = 0) no longer exists
@@ -227,7 +225,7 @@ Once all patches are fixed, these items need to be fixed or double checked:
 
 # ExampleMod TODOs
 - Verify that ExampleZombieThief still works with changes
-- A temporary compile flag COMPILE_ERROR_TODOS has been added to allow building and testing ExampleMod while some remaining porting decisions need to be made. 
+- A temporary compile flag COMPILE_ERROR_TODOS has been added to allow building and testing ExampleMod while some remaining porting decisions need to be made.
   - It also is there for HeldProjDoesNotUsePlayerGfxOffY, we need to test each projectile and see if they are correct or if they need additional code.
 
 # Terraria update requests
@@ -406,4 +404,3 @@ Longer TODOs that would clutter above
 +	/// Associates a <see cref="TileID.Dressers"/> style with the item type (<see cref="Item.type"/>) that is dropped when the dresser is destroyed.
 +	/// <br/> <see cref="maxDresserTypes"/> elements long.
 +	/// </summary>
-

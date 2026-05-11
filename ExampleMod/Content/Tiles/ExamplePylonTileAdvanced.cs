@@ -92,12 +92,8 @@ namespace ExampleMod.Content.Tiles
 			ModContent.GetInstance<AdvancedPylonTileEntity>().Kill(i, j);
 		}
 
-		// For the sake of example, we will allow this pylon to always be teleported to as long as it is on, so we make sure these two checks return true.
+		// For the sake of example, we will allow this pylon to always be teleported to as long as it is on, so we make sure this check returns true.
 		public override bool ValidTeleportCheck_NPCCount(TeleportPylonInfo pylonInfo, int defaultNecessaryNPCCount) {
-			return true;
-		}
-
-		public override bool ValidTeleportCheck_AnyDanger(TeleportPylonInfo pylonInfo) {
 			return true;
 		}
 
