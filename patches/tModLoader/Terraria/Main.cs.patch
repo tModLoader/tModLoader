@@ -3042,7 +3042,7 @@
  		int num3 = 0;
  		for (int j = 0; j < numLines; j++) {
  			Vector2 stringSize = ChatManager.GetStringSize(FontAssets.MouseText.Value, mouseTextTooltipLine_Text[j], Vector2.One);
-@@ -17292,17 +_,36 @@
+@@ -17292,19 +_,42 @@
  		}
  
  		for (int k = 0; k < mouseTextTooltipLine_Text.Length; k++) {
@@ -3060,11 +3060,12 @@
  			if (l == yoyoLogo) {
 +			*/
 +			if (drawableLines[l].Mod == "Terraria" && drawableLines[l].Name == "OneDropLogo") {
++				/*
  				float num10 = 1f;
  				int num11 = (int)((float)(int)mouseTextColor * num10);
++				*/
  				Microsoft.Xna.Framework.Color color = Microsoft.Xna.Framework.Color.Black;
 +
-+				drawableLines[l].Color = new Color(num11, num11, num11, num11);
 +				if (!ItemLoader.PreDrawTooltipLine(HoverItem, drawableLines[l], ref num3) || !globalCanDraw)
 +					goto PostDraw;
 +
@@ -3077,8 +3078,13 @@
 +					int num13 = drawableLines[l].Y;
 +
  					if (m == 4)
++						color = drawableLines[l].Color;
++						/*
  						color = new Microsoft.Xna.Framework.Color(num11, num11, num11, num11);
++						*/
  
+ 					switch (m) {
+ 						case 0:
 @@ -17326,17 +_,29 @@
  			}
  			else {

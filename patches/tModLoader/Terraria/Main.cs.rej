@@ -84,31 +84,6 @@
  			if (inputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Z) && !oldInputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Z)) {
  				text = "";
  			}
-@@ -16254,15 +_,24 @@
- 							break;
- 					}
- 
-+					/*
- 					spriteBatch.Draw(TextureAssets.OneDropLogo.Value, new Vector2(num21, num22), null, color2, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
-+					*/
-+					Color drawColor2 = drawableLines[k].OverrideColor ?? drawableLines[k].Color;
-+					spriteBatch.Draw(TextureAssets.OneDropLogo.Value, new Vector2(num21, num22), null, (l != 4) ? color2 : drawColor2, drawableLines[k].Rotation, drawableLines[k].Origin, (drawableLines[k].BaseScale.X + drawableLines[k].BaseScale.Y) / 2f, SpriteEffects.None, 0f);
- 				}
- 			}
- 			else {
- 				Microsoft.Xna.Framework.Color black = Microsoft.Xna.Framework.Color.Black;
- 				black = new Microsoft.Xna.Framework.Color(num4, num4, num4, num4);
-+				/*
- 				if (k == 0) {
-+				*/
-+				if (drawableLines[k].Mod == "Terraria" && drawableLines[k].Name == "ItemName") {
-+					/*
- 					if (rare == -13)
- 						black = new Microsoft.Xna.Framework.Color((byte)(255f * num4), (byte)(masterColor * 200f * num4), 0, a);
-+					*/
- 
- 					if (rare == -11)
- 						black = new Microsoft.Xna.Framework.Color((byte)(255f * num4), (byte)(175f * num4), (byte)(0f * num4), a);
 @@ -31743,8 +_,12 @@
  			textValue = Language.GetTextValue("StardewTalk.PlayerHasColaAndIsHoldingIt");
  

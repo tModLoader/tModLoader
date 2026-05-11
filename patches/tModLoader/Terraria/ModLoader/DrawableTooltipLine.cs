@@ -54,6 +54,12 @@ public sealed class DrawableTooltipLine : TooltipLine
 	public int Y;
 
 	/// <summary>
+	/// The color the tooltip is drawn in. Defaults to White.
+	/// <para/> The actual final color will be affected slightly by the mouse pulse effect (<see cref="Main.mouseTextColor"/>).
+	/// </summary>
+	public new Color Color { get; internal set; }
+
+	/// <summary>
 	/// Whether the tooltip is a One Drop logo or not. If it is, the tooltip text will be empty.
 	/// </summary>
 	public new readonly bool OneDropLogo;
