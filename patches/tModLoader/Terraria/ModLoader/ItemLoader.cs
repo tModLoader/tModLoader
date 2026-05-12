@@ -2273,6 +2273,8 @@ public static class ItemLoader
 				tooltip.OneDropLogo = true;
 			}
 
+			tooltip.Color = lineColors[k];
+
 			tooltips.Add(tooltip);
 		}
 
