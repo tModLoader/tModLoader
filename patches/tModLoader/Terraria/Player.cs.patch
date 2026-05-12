@@ -423,15 +423,17 @@
  	public int lavaTime;
  	public bool ignoreWater;
  	public bool lavaVision;
-@@ -984,13 +_,26 @@
+@@ -984,13 +_,28 @@
  	public bool isHatRackDoll;
  	public bool isFirstFractalAfterImage;
  	public float firstFractalAfterImageOpacity;
 +
++	/*
 +	/// <summary>
 +	/// The text that is shown on armor (<see cref="Item.wornArmor"/>) with an active set bonus.
 +	/// </summary>
  	public string setBonus = "";
++	*/
 +	/// <summary>
 +	/// The player's normal inventory. Indexes 0-9 hold the hotbar items, 10-49 the rest of the main inventory, 50-53 are coin slots, 54-57 are ammo slots. Index 58 is used to store the mouse item in some situations.<br/>
 +	/// Additional inventories are found in <see cref="bank"/> (Piggy Bank), <see cref="bank2"/> (Safe), <see cref="bank3"/> (Defender's Forge), and <see cref="bank4"/> (Void Vault).
@@ -3303,55 +3305,22 @@
  	}
  
  	public void UpdateArmorSets(int i)
-@@ -12525,10 +_,13 @@
- 
- 		if (head == 112 && body == 75 && legs == 64) {
- 			setBonus = Language.GetTextValue("ArmorSetBonus.Pumpkin");
-+			allDamage += 0.1f;
-+			/*
- 			meleeDamage += 0.1f;
- 			magicDamage += 0.1f;
- 			rangedDamage += 0.1f;
- 			minionDamage += 0.1f;
-+			*/
- 		}
- 
- 		if (head == 180 && body == 182 && legs == 122) {
-@@ -12751,6 +_,9 @@
- 
- 		if (head == 261 && body == 230 && legs == 213) {
- 			setBonus = Language.GetTextValue("ArmorSetBonus.CrystalNinja");
-+			allDamage += 0.1f;
-+			allCrit += 10;
-+			/*
- 			rangedDamage += 0.1f;
- 			meleeDamage += 0.1f;
- 			magicDamage += 0.1f;
-@@ -12758,6 +_,7 @@
- 			rangedCrit += 10;
- 			meleeCrit += 10;
- 			magicCrit += 10;
-+			*/
- 			dashType = 5;
- 		}
- 
-@@ -12874,11 +_,16 @@
- 			minionDamage += 0.15f;
- 			whipRangeMultiplier += 0.3f;
- 			float num = 1.15f;
-+			/*
- 			float num2 = 1f / num;
- 			whipUseTimeMultiplier *= num2;
-+			*/
-+			summonerWeaponSpeedBonus += num - 1; //TML: Obsidian armor changed to additive.
- 		}
- 
+@@ -12490,6 +_,7 @@
  		ApplyArmorSoundAndDustChanges();
-+
-+		ItemLoader.UpdateArmorSet(this, armor[0], armor[1], armor[2]);
  	}
  
++	/* TML: Unused, replaced by new ArmorSetBonuses system. Comment out since the code is misleading.
+ 	public void UpdateArmorSetsOld(int i)
+ 	{
+ 		setBonus = "";
+@@ -12880,6 +_,7 @@
+ 
+ 		ApplyArmorSoundAndDustChanges();
+ 	}
++	*/ // UpdateArmorSetsOld
+ 
  	private void UpdateArmorSets_Always_Vortex()
+ 	{
 @@ -13238,6 +_,12 @@
  			HasGardenGnomeNearby = SceneMetrics.HasGardenGnome;
  		}
