@@ -17,10 +17,10 @@ on:
   # This workflow runs when a push to major branch happens, or when a label is added to a pull request targetting major branch.
   push:
     # note these cannot use the env.Branch variables
-    branches: [githubActionsMaintenanceCheckoutCacheUpdates, stable, preview, 1.4.4, 1.4.5]
+    branches: [githubActionsMaintenanceCheckoutCacheUpdates, stable, preview, 1.4.5]
   pull_request_target:
     types: [labeled]
-    branches: [preview, stable, 1.4.4, 1.4.5]
+    branches: [preview, stable, 1.4.5]
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
