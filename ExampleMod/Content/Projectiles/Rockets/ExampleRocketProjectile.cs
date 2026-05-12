@@ -16,11 +16,11 @@ namespace ExampleMod.Content.Projectiles.Rockets
 
 			// This set handles some things for us already:
 			// Sets the timeLeft to 3 and the projectile direction when colliding with an NPC or player in PVP (so the explosive can detonate).
-			// Explosives also bounce off the top of Shimmer, detonate with no blast damage when touching the bottom or sides of Shimmer, and damage other players in For the Worthy worlds.
+			// Explosives also bounce off the top of Shimmer, detonate with no blast damage when touching the bottom or sides of Shimmer, and use the shared player blast damage path when killed.
 			ProjectileID.Sets.Explosive[Type] = true;
 
 			// This set makes it so the rocket doesn't deal damage to players. Only used for vanilla rockets.
-			// Simply remove the Projectile.HurtPlayer() part to stop the projectile from damaging its user.
+			// Modded rockets that use ProjectileID.Sets.Explosive can use it to opt out of the shared player blast damage path.
 			// ProjectileID.Sets.RocketsSkipDamageForPlayers[Type] = true;
 		}
 		public override void SetDefaults() {
@@ -106,9 +106,9 @@ namespace ExampleMod.Content.Projectiles.Rockets
 		}
 
 		public override void OnKill(int timeLeft) {
-			// Vanilla code takes care ensuring that in For the Worthy or Get Fixed Boi worlds the blast can damage other players because
-			// this projectile is ProjectileID.Sets.Explosive[Type] = true;. It also takes care of hurting the owner. The Projectile.PrepareBombToBlow
-			// and Projectile.HurtPlayer methods can be used directly if needed for a projectile not using ProjectileID.Sets.Explosive
+			// Vanilla code handles hurting the owner and, in For the Worthy or Get Fixed Boi worlds, other players because
+			// this projectile is ProjectileID.Sets.Explosive[Type] = true. Projectile.HurtPlayer can be used directly only
+			// for projectile designs that intentionally do not use ProjectileID.Sets.Explosive.
 
 			// Play an exploding sound.
 			SoundEngine.PlaySound(SoundID.Item14, Projectile.position);

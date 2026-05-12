@@ -19,13 +19,6 @@
  
  		if (Owner == Main.myPlayer) {
  			if (ProjectileID.Sets.IsAGolfBall[Type] && Damage <= 0) {
-@@ -9766,5 +_,5 @@
- 		Rectangle rectangle = Damage_GetHitbox();
--		if (friendly && Main.getGoodWorld && aiStyle == 16 && Main.netMode == 1 && owner != Main.myPlayer && !npcProj) {
-+		if (friendly && Main.getGoodWorld && (aiStyle == 16 || ProjectileID.Sets.Explosive[type]) && Main.netMode == 1 && owner != Main.myPlayer && !npcProj) {
- 			BombsHurtPlayers(rectangle, Main.myPlayer);
- 			return;
- 		}
 @@ -10171,9 +_,12 @@
 +									/*
  									float num13 = 1f;
@@ -47,11 +40,3 @@
 +											modifiers.ScalingBonusDamage += 1.75f * num13; //num6 += num17;
  										}
  									}
-@@ -11354,6 +_,6 @@
- 	private void BombsHurtPlayers(Rectangle projRectangle, int j)
- 	{
--		if (aiStyle != 16 || ProjectileID.Sets.RocketsSkipDamageForPlayers[type] || (timeLeft > 1 && type != 108 && type != 164 && type != 1002) || !Main.player[j].active || Main.player[j].dead || Main.player[j].immune || (ownerHitCheck && !CanHitWithMeleeWeapon(Main.player[j])))
-+		if (!(aiStyle == 16 || ProjectileID.Sets.Explosive[type]) || ProjectileID.Sets.RocketsSkipDamageForPlayers[type] || (timeLeft > 1 && type != 108 && type != 164 && type != 1002) || !Main.player[j].active || Main.player[j].dead || Main.player[j].immune || (ownerHitCheck && !CanHitWithMeleeWeapon(Main.player[j])))
- 			return;
- 
- 		Rectangle value = new Rectangle((int)Main.player[j].position.X, (int)Main.player[j].position.Y, Main.player[j].width, Main.player[j].height);
