@@ -3036,13 +3036,17 @@
  		Vector2 zero = Vector2.Zero;
 +
 +		// TML's abstractions over tooltip arrays.
-+		List<TooltipLine> lines = ItemLoader.ModifyTooltips(HoverItem, ref numLines, tooltipNames, ref mouseTextTooltipLine_Text, ref mouseTextTooltipLine_Color, ref yoyoLogo, out Color?[] overrideColor, prefixlineIndex);
-+		List<DrawableTooltipLine> drawableLines = lines.Select((TooltipLine x, int i) => new DrawableTooltipLine(x, i, 0, 0, Color.White)).ToList();
++		List<TooltipLine> lines = ItemLoader.ModifyTooltips(HoverItem, ref numLines, tooltipNames, ref mouseTextTooltipLine_Text, ref mouseTextTooltipLine_Color, ref yoyoLogo, prefixlineIndex);
++		List<DrawableTooltipLine> drawableLines = lines.Select((TooltipLine x, int i) => new DrawableTooltipLine(x, i, 0, 0, mouseTextTooltipLine_Color[i])).ToList();
 +
  		int num3 = 0;
  		for (int j = 0; j < numLines; j++) {
  			Vector2 stringSize = ChatManager.GetStringSize(FontAssets.MouseText.Value, mouseTextTooltipLine_Text[j], Vector2.One);
-@@ -17295,14 +_,32 @@
+@@ -17292,19 +_,42 @@
+ 		}
+ 
+ 		for (int k = 0; k < mouseTextTooltipLine_Text.Length; k++) {
++			// TODO: Some way for mods to bypass mouseTextColor pulsing for a TooltipLine. Apply to UnloadedPrefix once implemented.
  			mouseTextTooltipLine_Color[k] = new Microsoft.Xna.Framework.Color((byte)((float)(int)mouseTextTooltipLine_Color[k].R * num2), (byte)((float)(int)mouseTextTooltipLine_Color[k].G * num2), (byte)((float)(int)mouseTextTooltipLine_Color[k].B * num2), mouseTextColor);
  		}
  
@@ -3056,11 +3060,12 @@
  			if (l == yoyoLogo) {
 +			*/
 +			if (drawableLines[l].Mod == "Terraria" && drawableLines[l].Name == "OneDropLogo") {
++				/*
  				float num10 = 1f;
  				int num11 = (int)((float)(int)mouseTextColor * num10);
++				*/
  				Microsoft.Xna.Framework.Color color = Microsoft.Xna.Framework.Color.Black;
 +
-+				drawableLines[l].Color = new Color(num11, num11, num11, num11);
 +				if (!ItemLoader.PreDrawTooltipLine(HoverItem, drawableLines[l], ref num3) || !globalCanDraw)
 +					goto PostDraw;
 +
@@ -3073,47 +3078,28 @@
 +					int num13 = drawableLines[l].Y;
 +
  					if (m == 4)
++						color = drawableLines[l].Color;
++						/*
  						color = new Microsoft.Xna.Framework.Color(num11, num11, num11, num11);
++						*/
  
-@@ -17314,10 +_,10 @@
- 							num12++;
- 							break;
- 						case 2:
--							num13--;
-+							num12--;
- 							break;
- 						case 3:
--							num13++;
-+							num12++;
- 							break;
- 					}
- 
-@@ -17326,17 +_,40 @@
+ 					switch (m) {
+ 						case 0:
+@@ -17326,17 +_,29 @@
  			}
  			else {
  				Microsoft.Xna.Framework.Color baseColor = mouseTextTooltipLine_Color[l];
 +				/*
  				if (l == researchLine)
-+				*/
-+				if (drawableLines[l].Mod == "Terraria" && drawableLines[l].Name == "JourneyResearch")
  					baseColor = Colors.JourneyMode;
  
-+				/*
  				ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.MouseText.Value, mouseTextTooltipLine_Text[l], new Vector2(X, Y + num7), baseColor, 0f, Vector2.Zero, Vector2.One);
 +				*/
-+				drawableLines[l].Color = baseColor;
-+				Color realLineColor = baseColor;
-+
-+				if (overrideColor[l].HasValue) {
-+					// TODO: Some way for mods to bypass mouseTextColor pulsing for a TooltipLine. Apply to UnloadedPrefix once implemented.
-+					realLineColor = overrideColor[l].Value * num2;
-+					drawableLines[l].OverrideColor = realLineColor;
-+				}
 +
 +				if (!ItemLoader.PreDrawTooltipLine(HoverItem, drawableLines[l], ref num3) || !globalCanDraw)
 +					goto PostDraw;
 +
-+				ChatManager.DrawColorCodedStringWithShadow(spriteBatch, drawableLines[l].Font, drawableLines[l].Text, new Vector2(drawableLines[l].X, drawableLines[l].Y), realLineColor, drawableLines[l].Rotation, drawableLines[l].Origin, drawableLines[l].BaseScale, drawableLines[l].MaxWidth, drawableLines[l].Spread);
++				ChatManager.DrawColorCodedStringWithShadow(spriteBatch, drawableLines[l].Font, drawableLines[l].Text, new Vector2(drawableLines[l].X, drawableLines[l].Y), baseColor, drawableLines[l].Rotation, drawableLines[l].Origin, drawableLines[l].BaseScale, drawableLines[l].MaxWidth, drawableLines[l].Spread);
  			}
  
 +			PostDraw:
@@ -3163,7 +3149,23 @@
  			result = new Microsoft.Xna.Framework.Color(255, (byte)(masterColor * 200f), 0);
  
  		if (rare == -12)
-@@ -17480,30 +_,50 @@
+@@ -17468,9 +_,15 @@
+ 		if (rare == 10)
+ 			result = new Microsoft.Xna.Framework.Color(255, 40, 100);
+ 
++		/*
+ 		if (rare >= 11)
++		*/
++		if (rare == 11)
+ 			result = new Microsoft.Xna.Framework.Color(180, 40, 255);
+ 
++		if (rare > 11)
++			result = RarityLoader.GetRarity(rare).RarityColor;
++
+ 		if (diff == 1)
+ 			result = new Microsoft.Xna.Framework.Color(mcColor.R, mcColor.G, mcColor.B);
+ 
+@@ -17480,30 +_,49 @@
  		return result;
  	}
  
@@ -3194,7 +3196,6 @@
  		if (item.social && !item.vanity && !item.hasVanityEffects) {
  			toolTipLine[numLines] = Lang.tip[61].Value;
 +			toolTipNames[numLines] = "Social";
-+			//toolTipNames[numLines] = "SocialDesc";
  			numLines++;
  		}
  
@@ -3380,7 +3381,7 @@
  			numLines++;
  		}
  
-@@ -17663,39 +_,54 @@
+@@ -17663,54 +_,72 @@
  				toolTipLine[numLines] = Language.GetTextValue("CommonItemTooltip.RestoresLifeRange", healLife, num6);
  			}
  			else {
@@ -3437,6 +3438,24 @@
  			numLines++;
  		}
  
+ 		if ((item.createTile > -1 && (TileID.Sets.Wiring.IsATrigger[item.createTile] || TileID.Sets.Wiring.IsAMechanism[item.createTile])) & (item.createTile != 105 || ItemID.Sets.IsWireableStatue[item.type])) {
+ 			toolTipLine[numLines] = Language.GetTextValue("CommonItemTooltip.Wireable");
++			toolTipNames[numLines] = "Wireable";
+ 			numLines++;
+ 		}
+ 
+ 		if (item.createTile == 21 || item.createTile == 467) {
+ 			toolTipLine[numLines] = Language.GetTextValue("CommonItemTooltip.Container");
++			toolTipNames[numLines] = "Container";
+ 			numLines++;
+ 		}
+ 
+ 		if (item.createTile == 441 || item.createTile == 468) {
+ 			toolTipLine[numLines] = Language.GetTextValue("CommonItemTooltip.WireTrigger");
++			toolTipNames[numLines] = "WireTrigger";
+ 			numLines++;
+ 		}
+ 
 @@ -17718,10 +_,12 @@
  			for (int i = 0; i < item.ToolTip.Lines; i++) {
  				if (i == 0 && ItemID.Sets.UsesCursedByPlanteraTooltip[item.type] && !NPC.downedPlantBoss) {
@@ -3450,7 +3469,35 @@
  					numLines++;
  				}
  			}
-@@ -17754,16 +_,19 @@
+@@ -17729,11 +_,13 @@
+ 
+ 		if (tenthAnniversaryWorld && item.type == 238) {
+ 			toolTipLine[numLines] = Language.GetTextValue("CommonItemTooltip.WizardHatDuringAnniversary");
++			toolTipNames[numLines] = "WizardHatDuringAnniversary";
+ 			numLines++;
+ 		}
+ 
+ 		if (getGoodWorld && item.type == 1127) {
+ 			toolTipLine[numLines] = Language.GetTextValue("CommonItemTooltip.BurningBlock");
++			toolTipNames[numLines] = "BurningBlock";
+ 			numLines++;
+ 		}
+ 
+@@ -17741,6 +_,7 @@
+ 			if (item.type == 556 || item.type == 557 || item.type == 544) {
+ 				numLines--;
+ 				toolTipLine[numLines] = Language.GetTextValue("CommonItemTooltip.MechSummonDuringEverything");
++				toolTipNames[numLines] = "MechSummonDuringEverything";
+ 				numLines++;
+ 			}
+ 		}
+@@ -17749,21 +_,25 @@
+ 			toolTipLine[numLines] = "";
+ 			numLines--;
+ 			toolTipLine[numLines] = Language.GetTextValue("CommonItemTooltip.MechdusaSummonNotDuringEverything");
++			toolTipNames[numLines] = "MechdusaSummonNotDuringEverything";
+ 			numLines++;
+ 		}
  
  		if ((item.type == 3818 || item.type == 3819 || item.type == 3820 || item.type == 3824 || item.type == 3825 || item.type == 3826 || item.type == 3829 || item.type == 3830 || item.type == 3831 || item.type == 3832 || item.type == 3833 || item.type == 3834) && !player[myPlayer].downedDD2EventAnyDifficulty) {
  			toolTipLine[numLines] = Lang.misc[104].Value;
@@ -3526,7 +3573,7 @@
  				numLines++;
  			}
  
-@@ -17868,6 +_,7 @@
+@@ -17868,12 +_,14 @@
  					toolTipLine[numLines] = num13 + Lang.tip[45].Value;
  
  				lineColors[numLines] = ((num13 < 0.0) ? color : color2);
@@ -3534,6 +3581,21 @@
  				numLines++;
  			}
  
+ 			if (item2.armorPenetration != item.armorPenetration) {
+ 				int num14 = item.armorPenetration - item2.armorPenetration;
+ 				toolTipLine[numLines] = Language.GetTextValue("CommonItemTooltip.PrefixArmorPenetration", num14);
++				toolTipNames[numLines] = "PrefixArmorPenetration";
+ 				lineColors[numLines] = ((num14 < 0) ? color : color2);
+ 				numLines++;
+ 			}
+@@ -17881,6 +_,7 @@
+ 			if (item2.bonusTagDamage != item.bonusTagDamage) {
+ 				int num15 = item.bonusTagDamage - item2.bonusTagDamage;
+ 				toolTipLine[numLines] = Language.GetTextValue("CommonItemTooltip.PrefixTagDamage", num15);
++				toolTipNames[numLines] = "PrefixTagDamage";
+ 				lineColors[numLines] = ((num15 < 0) ? color : color2);
+ 				numLines++;
+ 			}
 @@ -17888,116 +_,137 @@
  			if (item.prefix == 62) {
  				toolTipLine[numLines] = "+1" + Lang.tip[25].Value;
@@ -3672,6 +3734,22 @@
  		}
  
  		if (true) {
+@@ -18006,6 +_,7 @@
+ 				if (!item.wornArmor) {
+ 					toolTipLine[numLines] = array[0].GetTooltipForSinglePiece(item.type);
+ 					lineColors[numLines] = new Microsoft.Xna.Framework.Color(130, 130, 130, 190);
++					toolTipNames[numLines] = "SetBonusSinglePiece";
+ 					numLines++;
+ 				}
+ 				else {
+@@ -18032,6 +_,7 @@
+ 					}
+ 
+ 					toolTipLine[numLines] = armorSetBonus.GetTooltipForWornArmor(context, result);
++					toolTipNames[numLines] = "SetBonus";
+ 					lineColors[numLines] = (result.Complete ? Microsoft.Xna.Framework.Color.LimeGreen : new Microsoft.Xna.Framework.Color(130, 130, 130));
+ 					numLines++;
+ 				}
 @@ -18039,17 +_,23 @@
  
  			if (player[myPlayer].setBonus != "") {
@@ -3696,17 +3774,20 @@
  			numLines++;
  		}
  
-@@ -18058,13 +_,28 @@
+@@ -18057,14 +_,31 @@
+ 			string teammateName;
  			if (amountWeHave < amountNeededTotal) {
  				toolTipLine[numLines] = Language.GetTextValue("CommonItemTooltip.CreativeSacrificeNeeded", amountNeededTotal - amountWeHave);
++				lineColors[numLines] = Colors.JourneyMode;
  				researchLine = numLines;
 +				toolTipNames[numLines] = "JourneyResearch";
  				numLines++;
  			}
  			else if (item.tooltipContext == 29 && LocalPlayerCreativeTracker.ItemSacrifices.TryGetTeammateUnlockCredit(item.type, out teammateName)) {
  				toolTipLine[numLines] = Language.GetTextValue("CommonItemTooltip.ItemUnlockedByTeammate", teammateName);
++				lineColors[numLines] = Colors.JourneyMode;
  				researchLine = numLines;
-+				// toolTipNames[numLines] = "JourneyResearchTeammate";
++				toolTipNames[numLines] = "JourneyResearchTeammate";
  				numLines++;
  			}
 +		}

@@ -66,7 +66,7 @@ namespace ExampleMod.Content.Items.Tools
 					int index = (int)((Main.GameUpdateCount / 60) % numColors);
 					int nextIndex = (index + 1) % numColors;
 
-					line2.OverrideColor = Color.Lerp(itemNameCycleColors[index], itemNameCycleColors[nextIndex], fade);
+					line2.Color = Color.Lerp(itemNameCycleColors[index], itemNameCycleColors[nextIndex], fade);
 				}
 			}
 		}

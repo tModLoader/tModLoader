@@ -2262,7 +2262,7 @@ public static class ItemLoader
 
 	private static HookList HookModifyTooltips = AddHook<Action<Item, List<TooltipLine>>>(g => g.ModifyTooltips);
 
-	public static List<TooltipLine> ModifyTooltips(Item item, ref int numTooltips, string[] names, ref string[] text, ref Color[] lineColors, ref int oneDropLogo, out Color?[] overrideColor, int prefixlineIndex)
+	public static List<TooltipLine> ModifyTooltips(Item item, ref int numTooltips, string[] names, ref string[] text, ref Color[] lineColors, ref int oneDropLogo, int prefixlineIndex)
 	{
 		var tooltips = new List<TooltipLine>();
 
@@ -2297,13 +2297,9 @@ public static class ItemLoader
 		tooltips.RemoveAll(x => !x.Visible);
 
 		numTooltips = tooltips.Count;
-		Array.Resize(ref lineColors, numTooltips); // Resize the mouseTextTooltipLine_Color array and assign a default white color to the new elements. Related to #4772 and Commit 6e7c00b
-		for (int i = text.Length; i < numTooltips; i++) {
-			lineColors[i] = new Color(255, 255, 255);
-		}
 		text = new string[numTooltips];
+		lineColors = new Color[numTooltips];
 		oneDropLogo = -1;
-		overrideColor = new Color?[numTooltips];
 
 		for (int k = 0; k < numTooltips; k++) {
 			text[k] = tooltips[k].Text;
@@ -2312,7 +2308,7 @@ public static class ItemLoader
 				oneDropLogo = k;
 			}
 
-			overrideColor[k] = tooltips[k].OverrideColor;
+			lineColors[k] = tooltips[k].Color;
 		}
 
 		return tooltips;
