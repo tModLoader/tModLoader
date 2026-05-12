@@ -3742,7 +3742,7 @@
  					numLines++;
  				}
  				else {
-@@ -18032,6 +_,7 @@
+@@ -18032,24 +_,33 @@
  					}
  
  					toolTipLine[numLines] = armorSetBonus.GetTooltipForWornArmor(context, result);
@@ -3750,13 +3750,15 @@
  					lineColors[numLines] = (result.Complete ? Microsoft.Xna.Framework.Color.LimeGreen : new Microsoft.Xna.Framework.Color(130, 130, 130));
  					numLines++;
  				}
-@@ -18039,17 +_,23 @@
+ 			}
  
++			/*
  			if (player[myPlayer].setBonus != "") {
  				toolTipLine[numLines] = Lang.tip[48].Value + " " + player[myPlayer].setBonus;
 +				toolTipNames[numLines] = "SetBonus";
  				numLines++;
  			}
++			*/
  		}
  
  		if (item.expert) {
