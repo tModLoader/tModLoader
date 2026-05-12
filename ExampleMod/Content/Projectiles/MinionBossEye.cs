@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using ExampleMod.Content.Buffs;
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -78,6 +79,11 @@ namespace ExampleMod.Content.Projectiles
 
 			// If the sprite points upwards, this will make it point towards the move direction (for other sprite orientations, change MathHelper.PiOver2)
 			Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
+		}
+
+		public override void OnHitPlayer(Player target, Player.HurtInfo info) {
+			// When hitting a player, a debuff similar to Frozen effect will be given
+			target.AddBuff(ModContent.BuffType<ExampleFrozenDebuff>(), 240);
 		}
 	}
 }

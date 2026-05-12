@@ -1218,7 +1218,7 @@
  	public float luck;
  	public float luckMinimumCap = -0.7f;
  	public float luckMaximumCap = 1f;
-@@ -1558,7 +_,7 @@
+@@ -1558,11 +_,12 @@
  	private const int SaveSlotIndex_GuideItem = 2;
  	private const int SaveSlotIndex_TinkererItem = 3;
  	private const int SaveSlotIndexCount = 4;
@@ -1227,6 +1227,11 @@
  	private static readonly PlayerFileData _visualCloneDummyData = new PlayerFileData();
  	private static readonly MemoryStream _visualCloneStream = new MemoryStream();
  	private static readonly BinaryWriter _visualCloneWriter = new BinaryWriter(_visualCloneStream);
+ 	private static readonly BinaryReader _visualCloneReader = new BinaryReader(_visualCloneStream);
++	private bool _customCCed;
+ 
+ 	public Vector2 BlehOldPositionFixer => -Vector2.UnitY;
+ 
 @@ -1640,6 +_,9 @@
  		}
  	}
@@ -1237,16 +1242,21 @@
  	public Vector2 MountedCenter {
  		get {
  			return new Vector2(position.X + (float)(width / 2), position.Y + 21f + HeightOffsetHitboxCenter);
-@@ -1653,6 +_,9 @@
+@@ -1653,9 +_,13 @@
  
  	public override Vector2 VisualPosition => position + new Vector2(0f, gfxOffY);
  
 +	/// <summary>
 +	/// Checks if the player is currently "crowd controlled", meaning the player is <see cref="frozen"/>, <see cref="webbed"/>, or <see cref="stoned"/>. Used in various checks to prevent some player actions that shouldn't be possible while in those states, such as channeling attacks, quick using items, and swapping loadouts.
++	/// <para>Mod can use <seealso cref="SetCCed"/> within buff to mark this attribute as true</para>
 +	/// </summary>
  	public bool CCed {
  		get {
- 			if (!frozen && !webbed)
+-			if (!frozen && !webbed)
++			if (!frozen && !webbed && !_customCCed)
+ 				return stoned;
+ 
+ 			return true;
 @@ -1823,6 +_,10 @@
  		}
  	}
@@ -3694,6 +3704,14 @@
  		calmed = false;
  		beetleOrbs = 0;
  		beetleBuff = false;
+@@ -14497,6 +_,7 @@
+ 		frozen = false;
+ 		stoned = false;
+ 		webbed = false;
++		_customCCed = false;
+ 		ichor = false;
+ 		manaRegenBonus = 0;
+ 		manaRegenDelayBonus = 0f;
 @@ -14505,6 +_,8 @@
  		dashType = 0;
  		spikedBoots = 0;

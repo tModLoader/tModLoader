@@ -686,4 +686,8 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 
 		return false;
 	}
+	/// <summary>
+	/// Call this method to mark <seealso cref="CCed"/> as true
+	/// </summary>
+	public void SetCCed() => _customCCed = true;
 }
