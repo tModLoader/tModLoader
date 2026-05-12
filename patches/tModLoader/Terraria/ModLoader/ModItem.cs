@@ -568,18 +568,6 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Allows this item to perform a special active ability instead of using the item normally.
-	/// <para/> This hook is called on the local client after <see cref="CanUseItem(Player)"/> succeeds, before the normal use animation starts.
-	/// <para/> This hook does not change damage type handling. Projectiles spawned by this hook should set their own <see cref="Projectile.DamageType"/>, usually <see cref="DamageClass.Summon"/> for Foxsparks-like minion weapons.
-	/// <para/> Return <see langword="true"/> to indicate that the ability was used and vanilla item use should be skipped. Return <see langword="false"/> to continue normal item use.
-	/// <para/> This can be used for items similar to <see cref="ItemID.PalworldMinionFoxsparks"/>, where using the item while a minion is already active commands the minion to perform an ability. The item should choose which projectile or projectiles to manipulate.
-	/// </summary>
-	public virtual bool UseMinionActiveAbility(Player player)
-	{
-		return false;
-	}
-
-	/// <summary>
 	/// Changes the hitbox of this melee weapon when it is used.
 	/// <para/> Called on the local client only.
 	/// </summary>

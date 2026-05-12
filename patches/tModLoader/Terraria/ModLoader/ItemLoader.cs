@@ -838,24 +838,6 @@ public static class ItemLoader
 		return defaultResult && (item.ModItem?.Shoot(player, source, position, velocity, type, damage, knockback) ?? true);
 	}
 
-	private static HookList HookUseMinionActiveAbility = AddHook<Func<Item, Player, bool>>(g => g.UseMinionActiveAbility);
-
-	/// <summary>
-	/// Calls each <see cref="GlobalItem.UseMinionActiveAbility"/> hook, then <see cref="ModItem.UseMinionActiveAbility"/>.
-	/// </summary>
-	public static bool UseMinionActiveAbility(Item item, Player player)
-	{
-		if (item.IsAir)
-			return false;
-
-		foreach (var g in HookUseMinionActiveAbility.Enumerate(item)) {
-			if (g.UseMinionActiveAbility(item, player))
-				return true;
-		}
-
-		return item.ModItem?.UseMinionActiveAbility(player) == true;
-	}
-
 	private delegate void DelegateUseItemHitbox(Item item, Player player, ref Rectangle hitbox, ref bool noHitbox);
 	private static HookList HookUseItemHitbox = AddHook<DelegateUseItemHitbox>(g => g.UseItemHitbox);
 

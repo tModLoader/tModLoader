@@ -81,30 +81,9 @@ namespace ExampleMod.Content.Projectiles.Minions
 			return true; // The minion projectile will be spawned by the game since we return true.
 		}
 
-		public override bool UseMinionActiveAbility(Player player) {
-			foreach (Projectile minion in Main.ActiveProjectiles) {
-				if (minion.owner != player.whoAmI || minion.type != Item.shoot || !minion.minion) {
-					continue;
-				}
-
-				Vector2 shootVelocity = (Main.MouseWorld - minion.Center).SafeNormalize(Vector2.UnitY) * 12f;
-
-				Projectile.NewProjectile(
-					player.GetSource_ItemUse(Item),
-					minion.Center,
-					shootVelocity,
-					ModContent.ProjectileType<ExampleSimpleMinionActiveShot>(),
-					player.GetWeaponDamage(Item),
-					player.GetWeaponKnockback(Item),
-					player.whoAmI
-				);
-
-				SoundEngine.PlaySound(SoundID.Item20, minion.Center);
-
-				return true;
-			}
-
-			return false;
+		public override bool CanUseItem(Player player) {
+			// Block normal item use while the minion is already active. The minion projectile handles the click as an active ability instead.
+			return player.ownedProjectileCounts[Item.shoot] <= 0;
 		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
@@ -193,6 +172,7 @@ namespace ExampleMod.Content.Projectiles.Minions
 				return;
 			}
 
+			UseActiveAbility(owner);
 			GeneralBehavior(owner, out Vector2 vectorToIdlePosition, out float distanceToIdlePosition);
 			SearchForTargets(owner, out bool foundTarget, out float distanceFromTarget, out Vector2 targetCenter);
 			Movement(foundTarget, distanceFromTarget, targetCenter, distanceToIdlePosition, vectorToIdlePosition);
@@ -212,6 +192,27 @@ namespace ExampleMod.Content.Projectiles.Minions
 			}
 
 			return true;
+		}
+
+		private void UseActiveAbility(Player owner) {
+			if (Main.myPlayer != owner.whoAmI || owner.HeldItem.type != ModContent.ItemType<ExampleSimpleMinionItem>() || !owner.controlUseItem || !owner.releaseUseItem) {
+				return;
+			}
+
+			Vector2 shootVelocity = (Main.MouseWorld - Projectile.Center).SafeNormalize(Vector2.UnitY) * 12f;
+
+			Projectile.NewProjectile(
+				owner.GetSource_ItemUse(owner.HeldItem),
+				Projectile.Center,
+				shootVelocity,
+				ModContent.ProjectileType<ExampleSimpleMinionActiveShot>(),
+				owner.GetWeaponDamage(owner.HeldItem),
+				owner.GetWeaponKnockback(owner.HeldItem),
+				owner.whoAmI
+			);
+
+			SoundEngine.PlaySound(SoundID.Item20, Projectile.Center);
+			owner.releaseUseItem = false;
 		}
 
 		private void GeneralBehavior(Player owner, out Vector2 vectorToIdlePosition, out float distanceToIdlePosition) {

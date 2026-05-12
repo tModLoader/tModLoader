@@ -480,12 +480,6 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 		return true;
 	}
 
-	/// <inheritdoc cref="ModItem.UseMinionActiveAbility(Player)"/>
-	public virtual bool UseMinionActiveAbility(Item item, Player player)
-	{
-		return false;
-	}
-
 	/// <summary>
 	/// Changes the hitbox of a melee weapon when it is used.
 	/// <para/> Called on the local client only.

@@ -6623,12 +6623,8 @@
  		ItemCheck_HandleMount();
  		int weaponDamage = GetWeaponDamage(item);
  		ItemCheck_AutoReuseLogic(item);
-@@ -34517,10 +_,10 @@
- 
- 			bool flag3 = item.shoot > 0 && ProjectileID.Sets.MinionTargetingFeature[item.shoot] && altFunctionUse == 2;
- 			bool flag4 = false;
--			if (!flag3 && flag2 && whoAmI == Main.myPlayer && item.shoot == 1094 && TryUsingFoxsparksAbility())
-+			if (!flag3 && flag2 && whoAmI == Main.myPlayer && (ItemLoader.UseMinionActiveAbility(item, this) || item.shoot == 1094 && TryUsingFoxsparksAbility()))
+@@ -34520,7 +_,7 @@
+ 			if (!flag3 && flag2 && whoAmI == Main.myPlayer && item.shoot == 1094 && TryUsingFoxsparksAbility())
  				flag4 = true;
  
 -			if (!flag4 && !flag3 && flag2 && whoAmI == Main.myPlayer && item.shoot >= 0 && item.shoot < ProjectileID.Count && (ProjectileID.Sets.LightPet[item.shoot] || Main.projPet[item.shoot]))
