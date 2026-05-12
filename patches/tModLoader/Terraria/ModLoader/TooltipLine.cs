@@ -70,7 +70,14 @@ public class TooltipLine
 	/// <item><description>"Ammo" - Tells if the item is ammo.</description></item>
 	/// <item><description>"Consumable" - Tells if the item is consumable.</description></item>
 	/// <item><description>"Material" - Tells if the item can be used to craft something.</description></item>
+	/// <item><description>"Wireable" - Tells if the item is wireable.</description></item>
+	/// <item><description>"Container" - The "Collects nearby dropped items when signaled" line.</description></item>
+	/// <item><description>"WireTrigger" - The "{InputTrigger_InteractWithTile} when placed to signal" line.</description></item>
 	/// <item><description>"Tooltip#" - A tooltip line of the item. # will be 0 for the first line, 1 for the second, etc.</description></item>
+	/// <item><description>"WizardHatDuringAnniversary" - The "Increases your max number of minions by 1" line.</description></item>
+	/// <item><description>"BurningBlock" - The "Burns you when touched without special protection" line.</description></item>
+	/// <item><description>"MechSummonDuringEverything" - The "'Part of a set'" line.</description></item>
+	/// <item><description>"MechdusaSummonNotDuringEverything" - The "'It has no effect in this world'" line.</description></item>
 	/// <item><description>"EtherianManaWarning" - Warning about how the item can't be used without Etherian Mana until the Eternia Crystal has been defeated.</description></item>
 	/// <item><description>"WellFedExpert" - In expert mode, tells that food increases life regeneration.</description></item>
 	/// <item><description>"BuffTime" - Tells how long the item's buff lasts.</description></item>
@@ -82,16 +89,20 @@ public class TooltipLine
 	/// <item><description>"PrefixSize" - The melee size modifier of the prefix.</description></item>
 	/// <item><description>"PrefixShootSpeed" - The shootSpeed modifier of the prefix.</description></item>
 	/// <item><description>"PrefixKnockback" - The knockback modifier of the prefix.</description></item>
+	/// <item><description>"PrefixArmorPenetration" - The armor penetration modifier of the prefix.</description></item>
+	/// <item><description>"PrefixTagDamage" - The tag damage modifier of the prefix.</description></item>
 	/// <item><description>"PrefixAccDefense" - The defense modifier of the accessory prefix.</description></item>
 	/// <item><description>"PrefixAccMaxMana" - The maximum mana modifier of the accessory prefix.</description></item>
 	/// <item><description>"PrefixAccCritChance" - The critical strike chance modifier of the accessory prefix.</description></item>
 	/// <item><description>"PrefixAccDamage" - The damage modifier of the accessory prefix.</description></item>
 	/// <item><description>"PrefixAccMoveSpeed" - The movement speed modifier of the accessory prefix.</description></item>
 	/// <item><description>"PrefixAccMeleeSpeed" - The melee speed modifier of the accessory prefix.</description></item>
+	/// <item><description>"SetBonusSinglePiece" - The set bonus description from a single piece of armor that is not equipped.</description></item>
 	/// <item><description>"SetBonus" - The set bonus description of the armor set.</description></item>
 	/// <item><description>"Expert" - Tells whether the item is from expert-mode.</description></item>
 	/// <item><description>"Master" - Whether the item is exclusive to Master Mode.</description></item>
 	/// <item><description>"JourneyResearch" - How many more items need to be researched to unlock duplication in Journey Mode.</description></item>
+	/// <item><description>"JourneyResearchTeammate" - The "Research completed by {0}" line.</description></item>
 	/// <item><description>"ModifiedByMods" - Whether the item has been modified by any mods and what mods when holding shift, added by tModLoader.</description></item>
 	/// <item><description>"BestiaryNotes" - Any bestiary notes, used when hovering items in the bestiary.</description></item>
 	/// <item><description>"SpecialPrice" - Tells the alternate currency price of an item.</description></item>
