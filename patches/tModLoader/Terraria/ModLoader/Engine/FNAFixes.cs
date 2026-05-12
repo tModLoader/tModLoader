@@ -1,8 +1,10 @@
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using SDL3;
+using Terraria.Utilities;
 
 namespace Terraria.ModLoader.Engine;
 
@@ -49,6 +51,47 @@ internal static class FNAFixes
 			File.Copy(dllPath, targetPath, overwrite: true);
 		} catch (Exception ex) when (ex is IOException or UnauthorizedAccessException) {
 			Logging.FNA.Warn($"Failed to install Agility SDK to \"{targetPath}\"");
+
+			// For developers of tModLoader itself running system dotnet, we'll need elevated permissions to copy the file to the destination.
+			if (Debugger.IsAttached) {
+				try {
+					ElevatedCopy(dllPath, targetPath);
+				}
+				catch { }
+			}
+		}
+	}
+
+	private static void ElevatedCopy(string source, string destination)
+	{
+		DialogResult result = MessageBox.Show($"""
+			tModLoader would like to copy a file to "{destination}", which requires elevated permissions.
+
+			Press "OK" to close this window and then "Yes" when asked "Do you want to allow this app to make changes to your device?" to proceed.
+
+			You should only see this message if you are developing tModLoader itself on Windows 10 or earlier.
+			""", "Elevated file copy", buttons: MessageBoxButtons.OKCancel, icon: MessageBoxIcon.Error);
+
+		if(result != DialogResult.OK) {
+			Logging.FNA.Warn($"User opted out of elevated copy to \"{destination}\".");
+			return;
+		}
+		Logging.FNA.Warn($"Attempting elevated copy to \"{destination}\".");
+
+		ProcessStartInfo processInfo = new ProcessStartInfo {
+			FileName = "cmd.exe",
+			// /c carries out the command and then terminates
+			Arguments = $"/c xcopy \"{source}\" \"{destination}*\"", // * needed so xcopy treats destination as file instead of asking. xcopy instead copy since we need to create the subfolder as well.
+			Verb = "runas", // This triggers the UAC prompt
+			UseShellExecute = true, // Required for 'runas'
+			WindowStyle = ProcessWindowStyle.Hidden
+		};
+
+		try {
+			Process.Start(processInfo);
+		}
+		catch (System.ComponentModel.Win32Exception) {
+			Logging.FNA.Warn($"User cancelled the UAC prompt");
 		}
 	}
 
