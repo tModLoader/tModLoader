@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using SDL3;
@@ -29,8 +30,26 @@ internal static class FNAFixes
 		}
 		*/
 
+		TryCopyAgilitySDK();
 		EnableHighDPI();
 		ConfigureDrivers();
+	}
+
+	private static void TryCopyAgilitySDK()
+	{
+		if (!OperatingSystem.IsWindows()) return;
+
+		var dllPath = Path.Combine(MonoLaunch.NativesDir, "D3D12Core.dll");
+		var targetPath = Path.Combine(Path.GetDirectoryName(Environment.ProcessPath), "D3D12", "D3D12Core.dll");
+		if (File.Exists(targetPath) && File.ReadAllBytes(targetPath).SequenceEqual(File.ReadAllBytes(dllPath))) return;
+
+		try {
+			using var _ = new Logging.QuietExceptionHandle();
+			Directory.CreateDirectory(Path.GetDirectoryName(targetPath));
+			File.Copy(dllPath, targetPath, overwrite: true);
+		} catch (Exception ex) when (ex is IOException or UnauthorizedAccessException) {
+			Logging.FNA.Warn($"Failed to install Agility SDK to \"{targetPath}\"");
+		}
 	}
 
 	private static void EnableHighDPI()
