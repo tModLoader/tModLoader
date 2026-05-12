@@ -288,3 +288,6 @@ All classes are in the `Terraria.ModLoader` or `Terraria` namespaces unless othe
   * 💀: `PlayerFloorX` and `PlayerFloorY` are no longer tracked by `NPC.Spawner`. Vanilla code no longer uses player floor tiles for spawning logic.
   * 💀: Using the `Player` fields such as `Player.ZoneJungle` is no longer recommended since `NPC.Spawner` contains its own version of those flags. These are used for custom spawning logic such as the dual dungeons secret seed. Failure to migrate to using these new fields will result in incorrect spawning logic.
   * There are many other new fields in `NPC.Spawner` that might prove useful, such as `hardDungeon`.
+* `TooltipLine` and `DrawableTooltipLine` changes:
+  * ⚙️: `(TooltipLine|DrawableTooltipLine).IsModifier` and `(TooltipLine|DrawableTooltipLine).IsModifierBad` are removed. Set `TooltipLine.Color` directly to `Terraria.ID.Colors.PrefixGood` or `Terraria.ID.Colors.PrefixBad`. If you previously needed to determine if tooltip lines were for prefixes, now check `TooltipLine.Color` against those colors or maybe see if `TooltipLine.Name` starts with "Prefix".
+  * ⚙️: `TooltipLine.OverrideColor` has been renamed to `Color`. It is no longer nullable. `DrawableTooltipLine.OverrideColor` has been removed, leaving just `DrawableTooltipLine.Color`.
