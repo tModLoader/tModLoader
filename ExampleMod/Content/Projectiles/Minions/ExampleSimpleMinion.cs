@@ -82,8 +82,9 @@ namespace ExampleMod.Content.Projectiles.Minions
 		}
 
 		public override bool CanUseItem(Player player) {
-			// Block normal item use while the minion is already active. The minion projectile handles the click as an active ability instead.
-			return player.ownedProjectileCounts[Item.shoot] <= 0;
+			// Block normal left-click use while the minion is already active. The minion projectile handles that click as an active ability instead.
+			// Right-click minion targeting still needs to pass through normal item use.
+			return player.altFunctionUse == 2 || player.ownedProjectileCounts[Item.shoot] <= 0;
 		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
@@ -195,7 +196,12 @@ namespace ExampleMod.Content.Projectiles.Minions
 		}
 
 		private void UseActiveAbility(Player owner) {
-			if (Main.myPlayer != owner.whoAmI || owner.HeldItem.type != ModContent.ItemType<ExampleSimpleMinionItem>() || !owner.controlUseItem || !owner.releaseUseItem) {
+			if (Projectile.localAI[0] > 0f) {
+				Projectile.localAI[0]--;
+				return;
+			}
+
+			if (Main.myPlayer != owner.whoAmI || owner.HeldItem.type != ModContent.ItemType<ExampleSimpleMinionItem>() || owner.altFunctionUse == 2 || !owner.controlUseItem) {
 				return;
 			}
 
@@ -212,7 +218,7 @@ namespace ExampleMod.Content.Projectiles.Minions
 			);
 
 			SoundEngine.PlaySound(SoundID.Item20, Projectile.Center);
-			owner.releaseUseItem = false;
+			Projectile.localAI[0] = 30f;
 		}
 
 		private void GeneralBehavior(Player owner, out Vector2 vectorToIdlePosition, out float distanceToIdlePosition) {
