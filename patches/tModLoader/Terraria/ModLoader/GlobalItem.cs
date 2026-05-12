@@ -480,8 +480,8 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 		return true;
 	}
 
-	/// <inheritdoc cref="ModItem.UseMinionActiveAbility(Player, Projectile)"/>
-	public virtual bool UseMinionActiveAbility(Item item, Player player, Projectile minion)
+	/// <inheritdoc cref="ModItem.UseMinionActiveAbility(Player)"/>
+	public virtual bool UseMinionActiveAbility(Item item, Player player)
 	{
 		return false;
 	}

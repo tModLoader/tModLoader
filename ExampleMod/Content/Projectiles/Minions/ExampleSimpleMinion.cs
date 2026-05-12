@@ -81,22 +81,30 @@ namespace ExampleMod.Content.Projectiles.Minions
 			return true; // The minion projectile will be spawned by the game since we return true.
 		}
 
-		public override bool UseMinionActiveAbility(Player player, Projectile minion) {
-			Vector2 shootVelocity = (Main.MouseWorld - minion.Center).SafeNormalize(Vector2.UnitY) * 12f;
+		public override bool UseMinionActiveAbility(Player player) {
+			foreach (Projectile minion in Main.ActiveProjectiles) {
+				if (minion.owner != player.whoAmI || minion.type != Item.shoot || !minion.minion) {
+					continue;
+				}
 
-			Projectile.NewProjectile(
-				player.GetSource_ItemUse(Item),
-				minion.Center,
-				shootVelocity,
-				ModContent.ProjectileType<ExampleSimpleMinionActiveShot>(),
-				player.GetWeaponDamage(Item),
-				player.GetWeaponKnockback(Item),
-				player.whoAmI
-			);
+				Vector2 shootVelocity = (Main.MouseWorld - minion.Center).SafeNormalize(Vector2.UnitY) * 12f;
 
-			SoundEngine.PlaySound(SoundID.Item20, minion.Center);
+				Projectile.NewProjectile(
+					player.GetSource_ItemUse(Item),
+					minion.Center,
+					shootVelocity,
+					ModContent.ProjectileType<ExampleSimpleMinionActiveShot>(),
+					player.GetWeaponDamage(Item),
+					player.GetWeaponKnockback(Item),
+					player.whoAmI
+				);
 
-			return true;
+				SoundEngine.PlaySound(SoundID.Item20, minion.Center);
+
+				return true;
+			}
+
+			return false;
 		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.

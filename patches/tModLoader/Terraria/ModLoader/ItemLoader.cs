@@ -838,31 +838,22 @@ public static class ItemLoader
 		return defaultResult && (item.ModItem?.Shoot(player, source, position, velocity, type, damage, knockback) ?? true);
 	}
 
-	private static HookList HookUseMinionActiveAbility = AddHook<Func<Item, Player, Projectile, bool>>(g => g.UseMinionActiveAbility);
+	private static HookList HookUseMinionActiveAbility = AddHook<Func<Item, Player, bool>>(g => g.UseMinionActiveAbility);
 
 	/// <summary>
-	/// Calls each <see cref="GlobalItem.UseMinionActiveAbility"/> hook, then <see cref="ModItem.UseMinionActiveAbility"/>, for any active minion owned by <paramref name="player"/> that matches <see cref="Item.shoot"/>.
+	/// Calls each <see cref="GlobalItem.UseMinionActiveAbility"/> hook, then <see cref="ModItem.UseMinionActiveAbility"/>.
 	/// </summary>
 	public static bool UseMinionActiveAbility(Item item, Player player)
 	{
-		if (item.IsAir || item.shoot <= 0)
+		if (item.IsAir)
 			return false;
 
-		for (int i = 0; i < Main.maxProjectiles; i++) {
-			Projectile minion = Main.projectile[i];
-			if (!minion.active || minion.owner != player.whoAmI || minion.type != item.shoot || !minion.minion)
-				continue;
-
-			foreach (var g in HookUseMinionActiveAbility.Enumerate(item)) {
-				if (g.UseMinionActiveAbility(item, player, minion))
-					return true;
-			}
-
-			if (item.ModItem?.UseMinionActiveAbility(player, minion) == true)
+		foreach (var g in HookUseMinionActiveAbility.Enumerate(item)) {
+			if (g.UseMinionActiveAbility(item, player))
 				return true;
 		}
 
-		return false;
+		return item.ModItem?.UseMinionActiveAbility(player) == true;
 	}
 
 	private delegate void DelegateUseItemHitbox(Item item, Player player, ref Rectangle hitbox, ref bool noHitbox);
