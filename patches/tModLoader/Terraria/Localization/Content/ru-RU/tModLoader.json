@@ -692,6 +692,7 @@
 		"TagsCategoryModSide": "Режим работы мода",
 		"TagsCategoryTModLoaderVersion": "Версия tModLoader",
 		"TagsCategoryLanguage": "{$LegacyMenu.103}",
+		// "TagsCategoryRating": "Mod Content Rating Flags",
 		// Tag descriptions by Webmilio, Tomat, Solxan, and Setnour6.
 		"TagsContent": "Новый контент",
 		"TagsContentDescription": "Добавляет в игру новый контент (т.е. предметы, оружие, НИПы, боссы и другой контент расширяющий игровой процесс).",
@@ -732,6 +733,12 @@
 		"TagsLanguage_PortugueseDescription": "{$TagsLanguage_Description}",
 		"TagsLanguage_GermanDescription": "{$TagsLanguage_Description}",
 		"TagsLanguage_PolishDescription": "{$TagsLanguage_Description}",
+		// "TagsRating_AdultsOnly": "Adults Only",
+		// "TagsRating_AdultsOnlyDescription": "Contains content that is sexually explicit or graphic and is intended for adults only. Users must affirm that they are at least eighteen years old before they can view content.",
+		// "TagsRating_Gore": "Extreme Gore",
+		// "TagsRating_GoreDescription": "Contains content that features extreme violence or gore.",
+		// "TagsRating_QuestionableContent": "Questionable Content",
+		// "TagsRating_QuestionableContentDescription": "Contains mature topics that may not be appropriate for all audiences.",
 
 		// Info Display Pages
 		"NextInfoAccPage": "Следующая страница",
@@ -862,6 +869,11 @@
 		"WorldDontStarve": "В генерации мира «Don't Starve»",
 		"WorldNoTraps": "В генерации мира «No Traps»",
 		"WorldZenith": "В генерации мира «Zenith»",
+		// "WorldSkyblock": "In a Skyblock world",
+		// "SeedVampire": "In a Vampirism world",
+		// "SeedInfected": "In a Purify this world",
+		// "SeedTeamBasedSpawns": "In a Royale with cheese world",
+		// "SeedDualDungeons": "In a Double daring dangers world",
 		"WorldNotDrunk": "Не в генерации мира «Drunk»",
 		"WorldNotRemix": "Не в генерации мира «Remix»",
 		"WorldNotNotTheBees": "Не в генерации мира «Not the Bees»",
@@ -870,6 +882,11 @@
 		"WorldNotDontStarve": "Не в генерации мира «Don't Starve»",
 		"WorldNotNoTraps": "Не в генерации мира «No Traps»",
 		"WorldNotZenith": "Не в генерации мира «Zenith»",
+		// "WorldNotSkyblock": "Not in a Skyblock world",
+		// "SeedNotVampire": "Not in a Vampirism world",
+		// "SeedNotInfected": "Not in a Purify this world",
+		// "SeedNotTeamBasedSpawns": "Not in a Royale with cheese world",
+		// "SeedNotDualDungeons": "Not in a Double daring dangers world",
 
 		"Christmas": "Во время Рождества",
 		"Halloween": "Во время Хэллоуина",
@@ -881,7 +898,6 @@
 		"BloodMoon": "Во время кровавой луны",
 		"NotSolarEclipse": "Не во время солнечного затмения",
 		"NotBloodMoon": "Не во время кровавой луны",
-		"HappyEnough": "Когда торговец достаточно счастлив",
 
 		"DownedKingSlime": "После победы над Королём слизней",
 		"DownedEyeOfCthulhu": "После победы над Глазом Ктулху",
@@ -963,8 +979,17 @@
 
 		"PlayerCarriesItem": "Когда в инвентаре находится {0}",
 		"PlayerCarriesItem2": "Когда в инвентаре находится {0} или {1}",
+		// "PlayerCarriesItem5": "When the player has a {0}, {1}, {2}, {3}, or {4} in their inventory",
 		"NpcIsPresent": "Когда в мире присутствует {0}",
 		"IsNpcShimmered": "Когда торговец в своей мерцающей форме",
+		// "NotIsNpcShimmered": "When the vendor is not a shimmer variant",
+		// "IsNpcHomeless": "When the vendor is homeless",
+		// "NotIsNpcHomeless": "When the vendor is not homeless",
+		// "BiomeSpreadingItems": "Not in a Remix world, or in a Celebration Mk 10 and not a For the Worthy world",
+		// "BiomeSpreadingItemsWithInfectedSeed": "Not in a Remix world, in or Purify this world, or in a Celebration Mk 10 and not a For the Worthy world",
+		// "JungleORCelebrationMk10ANDNotTheBeesANDNotRemix": "In a Jungle biome, or in a Celebration Mk 10 and Not The Bees wold and not in a Remix world",
+		// "DownedKingSlimeOrEoC": "After defeating King Slime or the Eye of Cthulhu",
+		// "NpcIsPresentOrDownedPlantera": "When the {0} is present or after defeating Plantera",
 
 		"AtleastXHealth": "Когда у игрока не менее {0} ед. максимального здоровья",
 		"AtleastXMana": "Когда у игрока не менее {0} ед. максимальной маны",
@@ -991,7 +1016,8 @@
 		"NightAfterEvilOrHardmode": "Ночью после победы над Пожирателем миров или Мозгом Ктулху, или в любое время в хардмоде",
 		"AnglerQuestsFinishedOver": "Когда игрок выполнил {0} или более заданий рыбака.",
 
-		"HappyEnoughForPylons": "Когда торговец достаточно счастлив для продажи пилонов",
+		// "CurrentPriceAdjustmentUnder": "When the vendor's price modifier is {0} or less",
+		// "CurrentPriceAdjustmentOver": "When the vendor's price modifier is {0} or more",
 		"AnotherTownNPCNearby": "Когда рядом с торговцем находится другой житель",
 		"ForestPylon": "На поверхности в лесном биоме",
 		"UndergroundPylon": "В биоме обычного подземелья",
@@ -1013,6 +1039,7 @@
 		"MoonPhasesHalf1": "Во время новолуния, молодой луны, первой четверти или молодой полной луны",
 		"MoonPhasesEven": "Во время полнолуния, последней четверти, новолуния или первой четверти",
 		"MoonPhasesOdd": "Во время растущей или убывающей луны",
+		// "MoonPhasesNearFull": "During a waxing gibbous, waning gibbous, or full moon",
 		"MoonPhasesNearNew": "Во время последней четверти, старой луны или новолуния",
 		"MoonPhasesEvenQuarters": "Во время полнолуния, старой полной луны, новолуния или молодой луны",
 		"MoonPhasesOddQuarters": "Во время последней четверти, старой луны, первой четверти или молодой полной луны",
@@ -1020,6 +1047,9 @@
 		"MoonPhases15": "Во время старой полной или молодой луны",
 		"MoonPhases26": "Во время последней или первой четверти",
 		"MoonPhases37": "Во время старой или молодой полной луны"
+		// "MoonPhases12": "During a waning gibbous or third quarter moon",
+		// "MoonPhases35": "During a waning crescent or waxing crescent moon",
+		// "MoonPhases67": "During a first quarter or waxing gibbous moon"
 	},
 	"TitleLinks": {
 		"Patreon": "Patreon"
