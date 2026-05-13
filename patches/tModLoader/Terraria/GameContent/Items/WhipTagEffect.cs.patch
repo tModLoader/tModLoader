@@ -22,7 +22,7 @@
  
 +	/// <summary>
 +	/// Allows you to change if the tag effect can be applied to an NPC. <see langword="true"/> by default.
-+	/// <br/>By default, the tags cannot be applied to NPCs who are immune to tags.
++	/// <br/>By default, the tags cannot be applied to NPCs who are immune to tags with <see cref="NPCID.Sets.ImmuneToWhipTags"/>.
 +	/// <para>Make sure to add `base.CanApplyTagToNPC(npcType)` for the default immunity check.</para>
 +	/// </summary>
  	public override bool CanApplyTagToNPC(int npcType)
@@ -37,7 +37,7 @@
  		return true;
 +		*/
 +
-+		return !NPCID.Sets.ImmuneToAllBuffs[npcType];
++		return !NPCID.Sets.ImmuneToWhipTags[npcType];
  	}
  
 +	/// <summary>
