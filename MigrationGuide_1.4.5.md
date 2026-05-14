@@ -170,6 +170,15 @@ SilverBarRecipeGroup = RecipeGroup.Register(
 * Shaders no longer need to declare every possible input, missing inputs will be ignored now.
 * Dungeon generation has changed. Multiple dungeons can now generate under some secret seeds. Most dungeon related fields that used to be static fields in `Terraria.WorldBuilding.GenVars` are now instance fields in `Terraria.GameContent.Generation.Dungeon.DungeonGenVars`, accessed through the `GenVars.CurrentDungeonGenVars` property to access the data for the currently generating dungeon index.
   * For example: `GenVars.dungeonSide` -> `GenVars.CurrentDungeonGenVars.dungeonSide`. Many of the fields have been renamed or have changed meaning, it would be wise to study the decompiled code if in doubt about any of the changes.
+  
+### Example Mod
+
+* `ExampleJoustingLanceProjectile` has been updated to match the 1.4.5 changes to Jousting Lances.
+  * Added `ProjectileID.Sets.AllowsContactDamageFromJellyfish` to allow for damage from a zapping jellyfish.
+  * In SetDefaults, add `Projectile.drawLayer = ProjectileDrawLayerID.HeldProj` and `Projectile.usesOwnerLight = true`
+    * If you are using `Projectile.DefaultToSpear()`, these two will automatically be set.
+  * The `rotationFactor` in `Colliding` has been updated.
+  * `player.gfxOffY` in `PreDraw` has been replaced with `Projectile.gfxOffY` to fix the sprite bouncing when walking up blocks.
 
 ## Renamed, Moved, or Removed Members
 
