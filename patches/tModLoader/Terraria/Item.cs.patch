@@ -742,8 +742,8 @@
  	public bool newAndShiny;
 +
 +	/// <summary>
-+	/// If <see langword="true"/>, this item has vanity effects even though it doesn't use equipment slots.
-+	/// <br/> Unused in vanilla, as the system it was used for was removed in 1.4.4.
++	/// If <see langword="true"/>, this item has vanity effects even though it doesn't necessarily use equipment slots.
++	/// <br/> This will prevent the "Social" tooltip line from appearing and suggesting the item has no effect in vanity slots.
 +	/// </summary>
  	[Old("This is used to allow items to be discerned as vanity even if they didn't have visual slots to poll against")]
  	public bool hasVanityEffects;

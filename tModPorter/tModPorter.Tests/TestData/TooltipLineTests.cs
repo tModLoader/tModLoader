@@ -1,4 +1,5 @@
-using Terraria.ModLoader; 
+using Microsoft.Xna.Framework;
+using Terraria.ModLoader;
 
 public class TooltipLineTests
 {
@@ -16,5 +17,15 @@ public class TooltipLineTests
 			isModifierBad = false,
 			overrideColor = null
 		};
+
+		line.IsModifier = true;
+		line.IsModifierBad = false;
+		line.OverrideColor = null;
+
+		DrawableTooltipLine drawableTooltipLine = new DrawableTooltipLine(line, 0, 0, 0, Color.White);
+		drawableTooltipLine.IsModifier = true;
+		drawableTooltipLine.IsModifierBad = false;
+		drawableTooltipLine.OverrideColor = null;
+		drawableTooltipLine.Color = Color.White;
 	}
 }
