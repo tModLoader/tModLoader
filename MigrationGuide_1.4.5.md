@@ -314,6 +314,12 @@ SilverBarRecipeGroup = RecipeGroup.Register(
 * Shaders no longer need to declare every possible input, missing inputs will be ignored now.
 * Dungeon generation has changed. Multiple dungeons can now generate under some secret seeds. Most dungeon related fields that used to be static fields in `Terraria.WorldBuilding.GenVars` are now instance fields in `Terraria.GameContent.Generation.Dungeon.DungeonGenVars`, accessed through the `GenVars.CurrentDungeonGenVars` property to access the data for the currently generating dungeon index.
   * For example: `GenVars.dungeonSide` -> `GenVars.CurrentDungeonGenVars.dungeonSide`. Many of the fields have been renamed or have changed meaning, it would be wise to study the decompiled code if in doubt about any of the changes.
+* Several item tooltip line changes:
+  * The "SocialDesc" tooltip line no longer exists. The "Social" tooltip line (now "Equipped in social slot") will now only show for items that are neither `Item.vanity` or `Item.hasVanityEffects`.
+    * `Item.hasVanityEffects` is now used. It was previously unused. Set this for accessories that have vanity effects to prevent the "Social" tooltip line from appearing and suggesting the item has no effect in vanity slots.
+  * There are new tooltip lines: "Wireable", "Container", "WireTrigger", "WizardHatDuringAnniversary", "BurningBlock", "MechSummonDuringEverything", "MechdusaSummonNotDuringEverything", "PrefixArmorPenetration", "PrefixTagDamage", "SetBonusSinglePiece", and "JourneyResearchTeammate".
+  * The "SetBonus" tooltip has changed. It now automatically displays partial sets and adjusts the color to indicate if the set is complete.
+  * The "SetBonusSinglePiece" tooltip shows the set bonus that would be applied if the unequipped equipment were equipped.
 * Town NPCs who are homeless have a new "Housing" button that displays their "NoHome" dialogue as well as a hint on what valid housing is. The hint text can be customized through the localization file. If the key `Mods.ModName.NPCs.NPCName.HousingText.HousingRequirements` exists, it will automatically be used over the default text.
 
 ## Renamed, Moved, or Removed Members
@@ -420,6 +426,7 @@ All classes are in the `Terraria.ModLoader` or `Terraria` namespaces unless othe
 * ⚙️: `(ModProjectile|GlobalProjectile).DrawBehind` has been removed. Set `Projectile.drawLayer` instead. 
 * ⚙️: `ModProjectile.DrawHeldProjInFrontOfHeldItemAndArms` has been removed. Set `Projectile.drawLayer` to `ProjectileDrawLayerID.HeldProjOverHand` instead. 
 * ⚙️: `(ModProjectile|GlobalProjectile).PreDraw/PreDrawExtras/PostDraw` now has a `Player` parameter. Use this instead of `Main.player[Projectile.owner]` to properly support rendering projectiles to custom `Player` instances, such as Mannequins.
+* ⚙️: `ModPylon.ValidTeleportCheck_AnyDanger` and `GlobalPylon.ValidTeleportCheck_PreAnyDanger` have been removed. Pylons no longer check for danger when teleporting.
 * 🤖: `ModTile.AddToArray` is no longer used for `TileID.Sets.RoomNeeds` entries since `TileID.Sets.RoomNeeds` fields have changed to typical ID sets.
 * ⚙️: `NPCSpawnInfo` is no longer used, it has been replaced by `NPC.Spawner` in functionality.
   * 🤖: The following fields changed from `NPCSpawnInfo` to `NPC.Spawner`: `DesertCave` -> `spawnUndergroundDesert`, `Granite` -> `nearGranite`, `Invasion` -> `invaders`, `Lihzahrd` -> `ZoneLihzhardTemple`, `Marble` -> `nearMarble`, `PlayerInTown` -> `spawnFriendly`, `PlayerSafe` -> `noWorms`, `Sky` -> `skyMob`, `SpiderCave` -> `spawnSpider`, `Water` -> `waterTile`
@@ -427,6 +434,9 @@ All classes are in the `Terraria.ModLoader` or `Terraria` namespaces unless othe
   * 💀: `PlayerFloorX` and `PlayerFloorY` are no longer tracked by `NPC.Spawner`. Vanilla code no longer uses player floor tiles for spawning logic.
   * 💀: Using the `Player` fields such as `Player.ZoneJungle` is no longer recommended since `NPC.Spawner` contains its own version of those flags. These are used for custom spawning logic such as the dual dungeons secret seed. Failure to migrate to using these new fields will result in incorrect spawning logic.
   * There are many other new fields in `NPC.Spawner` that might prove useful, such as `hardDungeon`.
+* `TooltipLine` and `DrawableTooltipLine` changes:
+  * ⚙️: `(TooltipLine|DrawableTooltipLine).IsModifier` and `(TooltipLine|DrawableTooltipLine).IsModifierBad` are removed. Set `TooltipLine.Color` directly to `Terraria.ID.Colors.PrefixGood` or `Terraria.ID.Colors.PrefixBad`. If you previously needed to determine if tooltip lines were for prefixes, now check `TooltipLine.Color` against those colors or maybe see if `TooltipLine.Name` starts with "Prefix".
+  * ⚙️: `TooltipLine.OverrideColor` has been renamed to `Color`. It is no longer nullable. `DrawableTooltipLine.OverrideColor` has been removed, leaving just `DrawableTooltipLine.Color`.
 * ⚙️: `ModNPC.SetChatButtons` has been removed and replaced with `RegisterChatButtons(NPCInteractionList interactions)`
 * ⚙️: `ModNPC.OnChatButtonClicked` changed parameters. `(bool firstButton, ref string shop)` -> `(NPCInteraction interaction)`
 * ⚙️: `GlobalNPC.OnChatButtonClicked` and `GlobalNPC.PreChatButtonClicked` changed parameters. `(NPC npc, bool firstButton)` -> `(NPC npc, NPCInteraction interaction)`

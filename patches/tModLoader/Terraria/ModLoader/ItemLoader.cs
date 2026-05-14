@@ -2262,7 +2262,7 @@ public static class ItemLoader
 
 	private static HookList HookModifyTooltips = AddHook<Action<Item, List<TooltipLine>>>(g => g.ModifyTooltips);
 
-	public static List<TooltipLine> ModifyTooltips(Item item, ref int numTooltips, string[] names, ref string[] text, ref Color[] lineColors, ref int oneDropLogo, out Color?[] overrideColor, int prefixlineIndex)
+	public static List<TooltipLine> ModifyTooltips(Item item, ref int numTooltips, string[] names, ref string[] text, ref Color[] lineColors, ref int oneDropLogo, int prefixlineIndex)
 	{
 		var tooltips = new List<TooltipLine>();
 
@@ -2272,6 +2272,8 @@ public static class ItemLoader
 			if (k == oneDropLogo) {
 				tooltip.OneDropLogo = true;
 			}
+
+			tooltip.Color = lineColors[k];
 
 			tooltips.Add(tooltip);
 		}
@@ -2298,8 +2300,8 @@ public static class ItemLoader
 
 		numTooltips = tooltips.Count;
 		text = new string[numTooltips];
+		lineColors = new Color[numTooltips];
 		oneDropLogo = -1;
-		overrideColor = new Color?[numTooltips];
 
 		for (int k = 0; k < numTooltips; k++) {
 			text[k] = tooltips[k].Text;
@@ -2308,7 +2310,7 @@ public static class ItemLoader
 				oneDropLogo = k;
 			}
 
-			overrideColor[k] = tooltips[k].OverrideColor;
+			lineColors[k] = tooltips[k].Color;
 		}
 
 		return tooltips;
