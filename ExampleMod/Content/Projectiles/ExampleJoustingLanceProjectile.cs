@@ -20,7 +20,7 @@ namespace ExampleMod.Content.Projectiles
 			// velocity to always be the same even if the player has increased attack speed.
 			ProjectileID.Sets.NoMeleeSpeedVelocityScaling[Type] = true;
 
-			// This will make it so zapping jellyfish can damage the player if the player is holding the Jousting Lance.
+			// This will make it so zapping jellyfish can damage the player if the player is holding the Jousting Lance. Since we aren't using ProjAIStyleID.Spear, we need to set this manually.
 			ProjectileID.Sets.AllowsContactDamageFromJellyfish[Type] = true;
 		}
 
@@ -42,7 +42,6 @@ namespace ExampleMod.Content.Projectiles
 			Projectile.drawLayer = ProjectileDrawLayerID.HeldProj; // Sets the draw layer of the projectile to be in front of the player's body but behind the player's arm.
 			Projectile.usesOwnerLight = true; // The projectile will take lighting information from the player's position instead of the projectile's position, which is the tip of the jousting lance in this case.
 			Projectile.scale = 1f; // The scale of the projectile. This only effects the drawing and the width of the collision.
-			Projectile.hide = true; // We are drawing the projectile ourselves. See PreDraw() below.
 			Projectile.ownerHitCheck = true; // Make sure the owner of the projectile has line of sight to the target (aka can't hit things through tile).
 			Projectile.DamageType = DamageClass.MeleeNoSpeed; // Set the damage to melee damage.
 

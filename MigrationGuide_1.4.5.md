@@ -179,9 +179,11 @@ SilverBarRecipeGroup = RecipeGroup.Register(
 
 ### Example Mod
 
-* `ExampleJoustingLanceProjectile` has been updated to match the 1.4.5 changes to Jousting Lances.
+Several Example Mod examples have been updated to adapt to 1.4.5 changes and to fix other issues. If you used any of these as a template/guide, we recommend applying the same changes.
+
+* `ExampleJoustingLanceProjectile` (https://github.com/tModLoader/tModLoader/pull/5145/changes)
   * Added `ProjectileID.Sets.AllowsContactDamageFromJellyfish` to allow for damage from a zapping jellyfish.
-  * In SetDefaults, add `Projectile.drawLayer = ProjectileDrawLayerID.HeldProj` and `Projectile.usesOwnerLight = true`
+  * `SetDefaults`: Remove `Projectile.hide`, add `Projectile.drawLayer = ProjectileDrawLayerID.HeldProj` and `Projectile.usesOwnerLight = true`.
     * If you are using `Projectile.DefaultToSpear()`, these two will automatically be set.
   * The `rotationFactor` in `Colliding` has been updated.
   * `player.gfxOffY` in `PreDraw` has been replaced with `Projectile.gfxOffY` to fix the sprite bouncing when walking up blocks.
