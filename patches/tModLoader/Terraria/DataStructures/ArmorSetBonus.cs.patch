@@ -1,0 +1,83 @@
+--- src/TerrariaNetCore/Terraria/DataStructures/ArmorSetBonus.cs
++++ src/tModLoader/Terraria/DataStructures/ArmorSetBonus.cs
+@@ -3,7 +_,7 @@
+ 
+ namespace Terraria.DataStructures;
+ 
+-public class ArmorSetBonus
++public partial class ArmorSetBonus
+ {
+ 	public delegate void ArmorSetEffect(Player player);
+ 
+@@ -62,7 +_,7 @@
+ 		public LocalizedText Description { get; set; }
+ 	}
+ 
+-	public class Builder
++	public partial class Builder
+ 	{
+ 		private struct Parts
+ 		{
+@@ -76,13 +_,22 @@
+ 		private PartType PrimaryPart;
+ 		private List<Parts> _sets = new List<Parts>();
+ 
+-		public Builder(ArmorSetEffect effect, string textKey, PartType primaryPart)
++		public Builder(ArmorSetEffect effect, string textKey, PartType primaryPart, string identifier)
+ 		{
+ 			Effect = effect;
+ 			TextKey = textKey;
+ 			PrimaryPart = primaryPart;
++			Identifier = identifier;
+ 		}
+ 
++		/// <summary>
++		/// Generates an armor set option. Call this method multiple times to generate multiple armor set options. The armor sets are interchangeable but the items within will not be. Use <see cref="Set(int[], int[], int[])"/> instead to allow each item to be interchangeable.
++		/// <para/> Be sure to call <see cref="Add"/> to register this armor set.
++		/// </summary>
++		/// <param name="head"></param>
++		/// <param name="body"></param>
++		/// <param name="legs"></param>
++		/// <returns></returns>
+ 		public Builder Set(int head, int body, int legs)
+ 		{
+ 			_sets.Add(new Parts {
+@@ -94,6 +_,10 @@
+ 			return this;
+ 		}
+ 
++		/// <summary>
++		/// Generates multiple armor set options at once. Each item option will be interchangeable.
++		/// <para/> Be sure to call <see cref="Add"/> to register this armor set.
++		/// </summary>
+ 		public Builder Set(int[] headOptions, int[] bodyOptions, int[] legsOptions)
+ 		{
+ 			if (headOptions == null)
+@@ -119,12 +_,20 @@
+ 			return this;
+ 		}
+ 
++		/// <summary>
++		/// Registers the armor set.
++		/// </summary>
+ 		public void Add()
+ 		{
+ 			foreach (Parts set in _sets) {
++				// TODO: Unique Identifier like "{Identifier}_#" for sets with multiple options?
+ 				ArmorSetBonuses.All.Add(new ArmorSetBonus {
+ 					Effect = Effect,
++					/* TML: Support passing in LocalizedText directly to support format args and reusing keys
+ 					Description = Language.GetText(TextKey),
++					*/
++					Description = LocalizedText ?? Language.GetText(TextKey),
++					Identifier = Identifier, // TML
+ 					Head = set.Head,
+ 					Body = set.Body,
+ 					Legs = set.Legs,
+@@ -205,5 +_,5 @@
+ 		});
+ 	}
+ 
+-	public static Builder Create(ArmorSetEffect effect, string textKey, PartType primaryPart = PartType.None) => new Builder(effect, textKey, primaryPart);
++	public static Builder Create(ArmorSetEffect effect, string textKey, PartType primaryPart = PartType.None, string Identifier = null) => new Builder(effect, textKey, primaryPart, Identifier);
+ }

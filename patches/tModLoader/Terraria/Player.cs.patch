@@ -3295,7 +3295,7 @@
  			}
  
  			ApplyMusicBox(currentItem);
-@@ -12477,6 +_,9 @@
+@@ -12477,19 +_,28 @@
  
  		if (currentItem.type == 6146)
  			musicBoxSilence = true;
@@ -3305,8 +3305,19 @@
  	}
  
  	public void UpdateArmorSets(int i)
-@@ -12490,6 +_,7 @@
+ 	{
++		/*
+ 		ArmorSetBonuses.GetCompleteSet(new ArmorSetBonus.QueryContext(this))?.Effect(this);
++		*/
++		ArmorSetBonus armorSetBonus = ArmorSetBonuses.GetCompleteSet(new ArmorSetBonus.QueryContext(this));
++		armorSetBonus?.Effect(this);
+ 		UpdateArmorSets_Always_Beetle();
+ 		UpdateArmorSets_Always_Solar();
+ 		UpdateArmorSets_Always_Stardust();
+ 		UpdateArmorSets_Always_Chlorophyte();
+ 		UpdateArmorSets_Always_Vortex();
  		ApplyArmorSoundAndDustChanges();
++		ItemLoader.UpdateArmorSet(this, armorSetBonus, armor[0], armor[1], armor[2]);
  	}
  
 +	/* TML: Unused, replaced by new ArmorSetBonuses system. Comment out since the code is misleading.

@@ -162,6 +162,87 @@ SilverBarRecipeGroup = RecipeGroup.Register(
 );
 ```
 
+### Declarative Armor Set Bonuses
+
+Armor sets are now declarative, meaning that they are stored as data rather than hard-coded logic. This change helps facilitate showing the "Set Bonus (NumEquipped/NumTotal)" tooltip line and other features. The new armor set system, found in the `ArmorSetBonuses` and `ArmorSetBonus` classes, allows armor sets to be created and registered. Each armor set is an `ArmorSetBonus` object that contains the head, body, and legs armor items, code for the armor set effects, a description, and optionally an indication of a primary equipment slot. The system supports optional equipment slots and multiple options for each equipment slot.
+
+Mods will need to update their code to use the new system, `ModItem.IsArmorSet` has been removed in favor of ensuring that all armor sets are properly declared as armor sets to take advantage of the features of the new system.
+
+#### Examples
+Here are some examples of declaring armor sets:
+```cs
+// These examples show code found in SetStaticDefaults of a helmet item (ExampleHelmet):
+int body = ModContent.ItemType<ExampleBreastplate>();
+int legs = ModContent.ItemType<ExampleLeggings>();
+
+// Basic armor set. Consists of a full set of items. No substitutions. 
+AddArmorSet(Type, body, legs);
+
+// Basic armor set with no legs. This is how the Wizard Hat set is implemented.
+AddArmorSet(Type, body, ItemID.None);
+
+// Armor set with multiple options and the same behavior. In this case, both ExampleHelmet and ExampleHood will satisfy this armor set. This is how the Necro armor set is implemented
+// For armor sets with multiple options, the CreateArmorSet method is followed by any number of Set methods to define the options, then Add must be called at the end.
+int alternateHelmet = ModContent.ItemType<ExampleHood>();
+CreateArmorSet().Set(Type, body, legs).Set(alternateHelmet, body, legs).Add();
+
+// Armor set with multiple options and the same behavior. In this case either complete set will satisfy and apply the armor set. Note that the items aren't interchangeable and can't be mixed and matched. This is how the Wood armor sets are implemented.
+int alternateBody = ModContent.ItemType<ExampleBreastplate_Alt>();
+int alternateLegs = ModContent.ItemType<ExampleLeggings_Alt>();
+CreateArmorSet().Set(Type, body, legs).Set(alternateHelmet, alternateBody, alternateLegs).Add();
+
+// Armor set with multiple options and the same behavior. In this case every equipment is interchangeable. For example ExampleLeggings_Alt can be used with ExampleHelmet and ExampleBreastplate. This is how the Shadow/Ancient Shadow armor sets are implemented.
+CreateArmorSet().Set([Type, alternateHelmet], [body, alternateBody], [legs, alternateLegs]).Add();
+
+// Armor sets sharing armor items except and having a primary item that changes the tooltip. 
+// The PartType parameter lets the game know that the head and legs items are part of multiple armor sets with different set bonus tooltips, so "Changes with (head/torso/leg) piece" is shown instead of the the set bonus tooltip. This is how the Beetle armor set is implemented.
+// Customizing localization and the identifier is explained in the next section.
+AddArmorSet(Type, body, legs, this.GetLocalization("SetBonus_Melee"), ArmorSetBonus.PartType.Body, "ExampleMod/ExampleArmor_Melee");
+AddArmorSet(Type, alternateBody, legs, this.GetLocalization("SetBonus_Ranged"), ArmorSetBonus.PartType.Body, "ExampleMod/ExampleArmor_Ranged");
+```
+
+The examples above all used `ModItem` helper methods that automate registering a localization key, assigning the armor set effect to `ModItem.UpdateArmorSet`, and assigning a default identifier string. These can all be customized by providing values for the optional parameters of the methods. The set bonus text can be customized by passing in a `LocalizedText`. The code that executes can be customized as well by passing in a delegate. The identifier can also be passed in, which is useful if you need to differentiate between multiple set bonuses that use some of the same items. The `ArmorSetBonuses.Add` and `ArmorSetBonuses.Create` methods could be used instead of the `ModItem.AddArmorSet` and `ModItem.CreateArmorSet` helper methods as well, such as if used in `GlobalItem`.
+
+```cs
+// Customize the set bonus tooltip. We can pass in any localization key rather than the automatically derived "Mods.{ModName}.Items.{ItemName}.SetBonus" key. We can also pass in a LocalizedText object.
+// In this example, we are using the automatic key but populating it with a value. This helps keep the set bonus effect in line with the tooltip as a mod is updated.
+LocalizedText SetBonusText = this.GetLocalization("SetBonus").WithFormatArgs(AdditiveGenericDamageBonus);
+AddArmorSet(Type, body, legs, SetBonusText);
+
+// The SetBonus_Melee and SetBonus_Ranged examples above show using a custom key and a custom identifier.
+
+// And of course, we can use a specific localization key, either by typing it out or using Mod.GetLocalizationKey, which can be useful for organization.
+AddArmorSetByKey(Type, body, legs, Mod.GetLocalizationKey("CommonSetBonuses.Example"));
+
+// Finally, we can customize the code that runs for each armor set. By default, the UpdateArmorSet method is called. We could check the data on the ArmorSetBonus passed into the method to implement custom code for alternate armor sets, but another option is to pass in a ArmorSetBonus.ArmorSetEffect delegate directly. Here is a full example of that:
+
+public static readonly int AdditiveMeleeDamageBonus = 15;
+public static readonly int AdditiveRangedDamageBonus = 25;
+
+public override void SetStaticDefaults() {
+	int body = ModContent.ItemType<ExampleBreastplate>();
+	int alternateBody = ModContent.ItemType<ExampleBreastplate_Alt>();
+	int legs = ModContent.ItemType<ExampleLeggings>();
+
+	var SetBonusTextMelee = this.GetLocalization("SetBonus_Melee").WithFormatArgs(AdditiveMeleeDamageBonus);
+	ArmorSetBonuses.Add(Type, body, legs, SetBonusTextMelee, ArmorSetBonus.PartType.Body, "ExampleMod/ExampleArmor_Melee", UpdateArmorSetMelee);
+	var SetBonusTextRanged = this.GetLocalization("SetBonus_Ranged").WithFormatArgs(AdditiveRangedDamageBonus);
+	ArmorSetBonuses.Add(Type, alternateBody, legs, SetBonusTextRanged, ArmorSetBonus.PartType.Body, "ExampleMod/ExampleArmor_Ranged", UpdateArmorSetRanged);
+}
+
+private void UpdateArmorSetMelee(Player player) {
+	player.GetDamage(DamageClass.Melee) += AdditiveMeleeDamageBonus / 100f;
+}
+private void UpdateArmorSetRanged(Player player) {
+	player.GetDamage(DamageClass.Ranged) += AdditiveRangedDamageBonus / 100f;
+}
+```
+
+#### Porting Notes
+* `ModItem.UpdateArmorSet` now has a `ArmorSetBonus armorSetBonus` parameter.
+* `ModItem.IsArmorSet` removed.
+* Using vanilla armor from existing armor sets in modded sets is now potentially confusing to the user due to how the set bonus tooltip is calculated and displayed. The game will show the armor set tooltip for an item in the inventory (not just the equipment slots), so if a modded armor set also uses that item, it might potentially show the modded armor set bonus tooltip rather than the original vanilla armor set bonus tooltip the player might be looking for. 
+
 ## Other Changes
 
 * Fishing power bonus now applies to any chair, not just toilets.

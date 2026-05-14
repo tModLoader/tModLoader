@@ -16,8 +16,16 @@ namespace ExampleMod.Content.Items.Armor
 		public static LocalizedText SetBonusText { get; private set; }
 
 		public override void SetStaticDefaults() {
+			// This is the armor set bonus tooltip:
+			//   Double tap or hold DOWN/UP to toggle various armor shadow effects
+			//   10% reduced mana cost
 			// We are passing in "{0}" into WithFormatArgs to replace "{0}" with itself because we do the final formatting for this LocalizedText in UpdateArmorSet itself according to the players current ReversedUpDownArmorSetBonuses setting.
 			SetBonusText = this.GetLocalization("SetBonus").WithFormatArgs("{0}", ManaCostReductionPercent);
+
+			// Registers an armor set. Note that ExampleHelmet also registers a similar armor set. The PartType parameter is needed in this case because the 2 sets have different tooltips.
+			int body = ModContent.ItemType<ExampleBreastplate>();
+			int legs = ModContent.ItemType<ExampleLeggings>();
+			AddArmorSet(Type, body, legs, SetBonusText, Terraria.DataStructures.ArmorSetBonus.PartType.Head);
 		}
 
 		public override void SetDefaults() {
@@ -28,17 +36,12 @@ namespace ExampleMod.Content.Items.Armor
 			Item.defense = 4; // The amount of defense the item will give when equipped
 		}
 
-		// IsArmorSet determines what armor pieces are needed for the setbonus to take effect
-		public override bool IsArmorSet(Item head, Item body, Item legs) {
-			return body.type == ModContent.ItemType<ExampleBreastplate>() && legs.type == ModContent.ItemType<ExampleLeggings>();
-		}
-
 		// UpdateArmorSet allows you to give set bonuses to the armor.
 		public override void UpdateArmorSet(Player player) {
-			// This is the setbonus tooltip:
-			//   Double tap or hold DOWN/UP to toggle various armor shadow effects
-			//   10% reduced mana cost
+#if COMPILE_ERROR_TODOS
+			// TODO: This isn't possible anymore...
 			player.setBonus = SetBonusText.Format(Language.GetTextValue(Main.ReversedUpDownArmorSetBonuses ? "Key.UP" : "Key.DOWN"));
+#endif
 			player.manaCost -= ManaCostReductionPercent / 100f; // Reduces mana cost by 10%
 			player.GetModPlayer<ExampleArmorSetBonusPlayer>().ExampleSetHood = true;
 		}

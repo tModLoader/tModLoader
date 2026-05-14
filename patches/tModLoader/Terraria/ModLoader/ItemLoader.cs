@@ -1317,26 +1317,26 @@ public static class ItemLoader
 		}
 	}
 
-	private static HookList HookUpdateArmorSet = AddHook<Action<Player, string>>(g => g.UpdateArmorSet);
+	private static HookList HookUpdateArmorSet = AddHook<Action<Player, ArmorSetBonus>>(g => g.UpdateArmorSet);
 
 	/// <summary>
-	/// If the head's <see cref="ModItem.IsArmorSet(Item, Item, Item)"/> returns true, calls the head's <see cref="ModItem.UpdateArmorSet(Player)"/>. This is then repeated for the body, then the legs. Then for each GlobalItem, if <see cref="GlobalItem.IsArmorSet(Item, Item, Item)"/> returns a non-empty string, calls <see cref="GlobalItem.UpdateArmorSet(Player, string)"/> with that string.
+	/// Calls <see cref="ModItem.UpdateArmorSet(Player)"/> on the head, body, and legs modded items that belong to the active ArmorSetBonus. Then <see cref="GlobalItem.UpdateArmorSet(Player, ArmorSetBonus)"/> is called on each GlobalItem.
 	/// </summary>
-	public static void UpdateArmorSet(Player player, Item head, Item body, Item legs)
+	public static void UpdateArmorSet(Player player, ArmorSetBonus armorSetBonus, Item head, Item body, Item legs)
 	{
-		if (head.ModItem != null && head.ModItem.IsArmorSet(head, body, legs))
-			head.ModItem.UpdateArmorSet(player);
+		if (armorSetBonus != null) {
+			if (head.ModItem != null && armorSetBonus.Head == head.type)
+				head.ModItem.UpdateArmorSet(player/*, armorSetBonus*/);
 
-		if (body.ModItem != null && body.ModItem.IsArmorSet(head, body, legs))
-			body.ModItem.UpdateArmorSet(player);
+			if (body.ModItem != null && armorSetBonus.Body == body.type)
+				body.ModItem.UpdateArmorSet(player/*, armorSetBonus*/);
 
-		if (legs.ModItem != null && legs.ModItem.IsArmorSet(head, body, legs))
-			legs.ModItem.UpdateArmorSet(player);
+			if (legs.ModItem != null && armorSetBonus.Legs == legs.type)
+				legs.ModItem.UpdateArmorSet(player/*, armorSetBonus*/);
+		}
 
 		foreach (var g in HookUpdateArmorSet.Enumerate()) {
-			string set = g.IsArmorSet(head, body, legs);
-			if (!string.IsNullOrEmpty(set))
-				g.UpdateArmorSet(player, set);
+			g.UpdateArmorSet(player, armorSetBonus);
 		}
 	}
 

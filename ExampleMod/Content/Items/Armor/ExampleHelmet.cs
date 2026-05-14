@@ -21,7 +21,13 @@ namespace ExampleMod.Content.Items.Armor
 			// ArmorIDs.Head.Sets.DrawFullHair[Item.headSlot] = true; // Draw all hair as normal. Used by Mime Mask, Sunglasses
 			// ArmorIDs.Head.Sets.DrawsBackHairWithoutHeadgear[Item.headSlot] = true;
 
+			// This is the armor set bonus tooltip: "Increases dealt damage by 20%"
 			SetBonusText = this.GetLocalization("SetBonus").WithFormatArgs(AdditiveGenericDamageBonus);
+
+			// Registers an armor set. Note that ExampleHood also registers a similar armor set. The PartType parameter is needed in this case because the 2 sets have different tooltips.
+			int body = ModContent.ItemType<ExampleBreastplate>();
+			int legs = ModContent.ItemType<ExampleLeggings>();
+			AddArmorSet(Type, body, legs, SetBonusText, Terraria.DataStructures.ArmorSetBonus.PartType.Head); 
 		}
 
 		public override void SetDefaults() {
@@ -32,14 +38,8 @@ namespace ExampleMod.Content.Items.Armor
 			Item.defense = 5; // The amount of defense the item will give when equipped
 		}
 
-		// IsArmorSet determines what armor pieces are needed for the setbonus to take effect
-		public override bool IsArmorSet(Item head, Item body, Item legs) {
-			return body.type == ModContent.ItemType<ExampleBreastplate>() && legs.type == ModContent.ItemType<ExampleLeggings>();
-		}
-
 		// UpdateArmorSet allows you to give set bonuses to the armor.
 		public override void UpdateArmorSet(Player player) {
-			player.setBonus = SetBonusText.Value; // This is the setbonus tooltip: "Increases dealt damage by 20%"
 			player.GetDamage(DamageClass.Generic) += AdditiveGenericDamageBonus / 100f; // Increase dealt damage for all weapon classes by 20%
 		}
 

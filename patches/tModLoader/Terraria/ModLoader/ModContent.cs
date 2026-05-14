@@ -321,6 +321,7 @@ public static class ModContent
 		Interface.loadMods.SetLoadStage("tModLoader.MSResizing");
 		ResizeArrays();
 		RecipeGroupHelper.CreateRecipeGroupLookups();
+		ArmorSetBonuses.Initialize();
 
 		Main.ResourceSetsManager.AddModdedDisplaySets();
 		Main.ResourceSetsManager.SetActiveFromOriginalConfigKey();
@@ -381,7 +382,6 @@ public static class ModContent
 		ItemSorting.SetupWhiteLists();
 		LocalizationLoader.FinishSetup();
 
-		ArmorSetBonuses.Initialize();
 		ArmorSetBonuses.BuildLookup();
 		ItemID.Sets.PostSetupContent();
 		TileID.Sets.PostSetupContent();
@@ -600,6 +600,7 @@ public static class ModContent
 		ContentSamples.Initialize();
 		SetupBestiary();
 
+		ArmorSetBonuses.Unload();
 		LocalizationLoader.Unload();
 
 		CleanupModReferences();
