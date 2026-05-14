@@ -177,6 +177,17 @@ SilverBarRecipeGroup = RecipeGroup.Register(
   * The "SetBonus" tooltip has changed. It now automatically displays partial sets and adjusts the color to indicate if the set is complete.
   * The "SetBonusSinglePiece" tooltip shows the set bonus that would be applied if the unequipped equipment were equipped.
 
+### Example Mod
+
+Several Example Mod examples have been updated to adapt to 1.4.5 changes and to fix other issues. If you used any of these as a template/guide, we recommend applying the same changes.
+
+* `ExampleJoustingLanceProjectile` (https://github.com/tModLoader/tModLoader/pull/5145/changes)
+  * Added `ProjectileID.Sets.AllowsContactDamageFromJellyfish` to allow for damage from a zapping jellyfish.
+  * `SetDefaults`: Remove `Projectile.hide`, add `Projectile.drawLayer = ProjectileDrawLayerID.HeldProj` and `Projectile.usesOwnerLight = true`.
+    * If you are using `Projectile.DefaultToSpear()`, these two will automatically be set.
+  * The `rotationFactor` in `Colliding` has been updated.
+  * `player.gfxOffY` in `PreDraw` has been replaced with `Projectile.gfxOffY` to fix the sprite bouncing when walking up blocks.
+
 ## Renamed, Moved, or Removed Members
 
 ### Static Methods
