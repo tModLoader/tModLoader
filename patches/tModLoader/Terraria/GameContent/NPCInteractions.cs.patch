@@ -8,7 +8,7 @@
  using Terraria.UI;
  
  namespace Terraria.GameContent;
-@@ -33,20 +_,46 @@
+@@ -33,20 +_,52 @@
  			}
  		}
  
@@ -40,7 +40,9 @@
 +				_shopFullName = shopName;
 +			}
 +
--			public OpenShop(int npcType, int shopIndex, string customTextKey = null)
++			/*
+ 			public OpenShop(int npcType, int shopIndex, string customTextKey = null)
++			*/
 +			public OpenShop(int shopIndex, string customTextKey = null)
  			{
 +				/*
@@ -52,7 +54,9 @@
 +				_shopFullName = null;
  			}
  
--			public override bool Condition() => base.TalkNPCType == _npcType;
++			/*
+ 			public override bool Condition() => base.TalkNPCType == _npcType;
++			*/
 +			public override bool Condition() => true; // TML: Changed condition
  
  			public override string GetText()
