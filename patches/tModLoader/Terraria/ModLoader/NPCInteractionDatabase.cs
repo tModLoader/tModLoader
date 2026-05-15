@@ -26,11 +26,11 @@ public class NPCInteractionDatabase
 	/// <summary>
 	/// Returns the NPCInteractionList of the NPC.
 	/// </summary>
-	/// <param name="npcNetId">The NPC to get the buttons for.</param>
+	/// <param name="type">The NPC to get the buttons for.</param>
 	/// <returns><see langword="null"/> if not found.</returns>
-	public NPCInteractionList GetInteractionListForNPCID(int npcNetId)
+	public NPCInteractionList GetInteractionList(int type)
 	{
-		if (_interactionDatabase.TryGetValue(npcNetId, out NPCInteractionList value))
+		if (_interactionDatabase.TryGetValue(type, out NPCInteractionList value))
 			return value;
 
 		return null;
@@ -39,11 +39,11 @@ public class NPCInteractionDatabase
 	/// <summary>
 	/// Returns the full <c>List&lt;NPCInteractionList.Entry&gt;</c> of the NPC.
 	/// </summary>
-	/// <param name="npcNetId">The NPC to get the buttons for.</param>
+	/// <param name="type">The NPC to get the buttons for.</param>
 	/// <returns><see langword="null"/> if not found.</returns>
-	public IReadOnlyList<NPCInteractionList.Entry> GetInteractionEntriesNPCID(int npcNetId)
+	public IReadOnlyList<NPCInteractionList.Entry> GetInteractionEntries(int type)
 	{
-		if (_interactionDatabase.TryGetValue(npcNetId, out NPCInteractionList value))
+		if (_interactionDatabase.TryGetValue(type, out NPCInteractionList value))
 			return value.Entries;
 
 		return null;
@@ -52,18 +52,18 @@ public class NPCInteractionDatabase
 	/// <summary>
 	/// Adds the NPC to the database and registers the provided interactions.
 	/// </summary>
-	/// <param name="npcNetId">The NPC to register.</param>
+	/// <param name="type">The NPC to register.</param>
 	/// <param name="interactions">List of interactions to pre-register</param>
-	private void RegisterNewNPC(int npcNetId, params NPCInteraction[] interactions)
+	private void RegisterNewNPC(int type, params NPCInteraction[] interactions)
 	{
-		if (!_interactionDatabase.ContainsKey(npcNetId)) {
-			_interactionDatabase[npcNetId] = new NPCInteractionList(npcNetId);
+		if (!_interactionDatabase.ContainsKey(type)) {
+			_interactionDatabase[type] = new NPCInteractionList(type);
 			foreach (NPCInteraction interaction in interactions) {
-				_interactionDatabase[npcNetId].Append(interaction);
+				_interactionDatabase[type].Append(interaction);
 			}
 		}
 		else {
-			throw new Exception($"NPCInteractionDatabase NPC type {npcNetId} was already registered.");
+			throw new Exception($"NPCInteractionDatabase NPC type {type} was already registered.");
 		}
 	}
 
@@ -86,7 +86,7 @@ public class NPCInteractionDatabase
 					NPCLoader.RegisterChatButtons(pair.Value, _interactionDatabase[pair.Key]);
 				}
 				else {
-					NPCLoader.RegisterChatButtons(pair.Value, GetInteractionListForNPCID(pair.Key));
+					NPCLoader.RegisterChatButtons(pair.Value, GetInteractionList(pair.Key));
 				}
 			}
 		}

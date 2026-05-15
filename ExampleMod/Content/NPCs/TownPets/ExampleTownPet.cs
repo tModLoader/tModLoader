@@ -163,12 +163,6 @@ namespace ExampleMod.Content.NPCs.TownPets
 			return chat;
 		}
 
-		/* Setting NPCID.Sets.IsTownPet will automatically add the pet button, but here is one way on how to do it if it weren't automatic.
-		public override void RegisterChatButtons(NPCInteractionList interactions) {
-			interactions.InsertAfter(NPCInteractionDatabase.PetButton, NPCInteractionDatabase.CloseButton);
-		}
-		*/
-
 		public override bool PreAI() {
 			// If your Town Pet can sit in chairs with NPCID.Sets.CannotSitOnFurniture[Type] = false
 			// We want to move the Town NPC up visually to match the height of the chair.

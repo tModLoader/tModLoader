@@ -22,10 +22,6 @@ public class GlobalNPCInteractions : GlobalNPC
 			// If the interaction wasn't found, nothing happens.
 			NPCInteraction guideTipNPCInteraction = interactions.Interactions.OfType<NPCInteractions.Actions.GuideTip>().FirstOrDefault();
 			interactions.Disable(guideTipNPCInteraction); // If the instance is null (aka not found), Disable won't do anything.
-
-			// Alternate way: this way does the same thing, but searches the Entries instead and returns the NPCInteractionList.Entry if found.
-			// NPCInteractionList.Entry guideTipEntry = interactions.Entries.Where(e => e.NPCInteraction.GetType() == typeof(NPCInteractions.Actions.GuideTip)).FirstOrDefault();
-			// interactions.Disable(guideTipEntry); // If the instance is null (aka not found), Disable won't do anything.
 		}
 	}
 

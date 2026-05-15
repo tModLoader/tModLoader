@@ -4694,18 +4694,29 @@
  
  		int num = npcChatPortraitFrameCounter++;
  		int num2 = 56;
-@@ -34894,13 +_,14 @@
+@@ -34894,13 +_,27 @@
  		return false;
  	}
  
--	public void OpenShop(int shopIndex)
-+	public void OpenShop(string shopName) // TML: Changed to use strings instead of integer indexes.
++	/*
+ 	public void OpenShop(int shopIndex)
  	{
  		playerInventory = true;
  		stackSplit = 9999;
  		npcChatText = "";
--		SetNPCShopIndex(shopIndex);
+ 		SetNPCShopIndex(shopIndex);
 -		shop[npcShop].SetupShop(npcShop);
++		shop[npcShop].SetupShop(shopIndex);
++
++		SoundEngine.PlaySound(12);
++	}
++	*/
++
++	public void OpenShop(string shopName) // TML: Changed to use strings instead of integer indexes.
++	{
++		playerInventory = true;
++		stackSplit = 9999;
++		npcChatText = "";
 +		SetNPCShopIndex(1);
 +		shop[npcShop].SetupShop(shopName, LocalPlayer.TalkNPC); // Full shop names are pre-retrieved in NPCInteractions.Actions.OpenShop in NPCInteractions.TML.cs
 +

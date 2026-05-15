@@ -8,7 +8,7 @@ namespace Terraria.ModLoader;
 /// <summary>
 /// Allows for <see cref="NPCInteraction"/> chat buttons to be assigned to an NPC.
 /// </summary>
-public class NPCInteractionList(int npcNetId)
+public class NPCInteractionList(int type)
 {
 	/// <summary>
 	/// This contains the NPCInteraction as well as if the interaction is enabled.
@@ -31,7 +31,7 @@ public class NPCInteractionList(int npcNetId)
 		public override string ToString() => $"(NPCInteraction: {NPCInteraction}, Enabled: {Enabled})";
 	}
 
-	public int Type => npcNetId;
+	public int Type => type;
 
 	private readonly List<Entry> _entries = new List<Entry>();
 

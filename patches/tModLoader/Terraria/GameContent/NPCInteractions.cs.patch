@@ -8,7 +8,7 @@
  using Terraria.UI;
  
  namespace Terraria.GameContent;
-@@ -33,20 +_,42 @@
+@@ -33,20 +_,46 @@
  			}
  		}
  
@@ -16,8 +16,9 @@
  		public class OpenShop : NPCInteraction
  		{
  			private int _shopIndex;
--			private int _npcType;
-+			// private int _npcType;
++			/*
+ 			private int _npcType;
++			*/
 +			private string _shopName; // String shop name
 +			private string _shopFullName; // String full shop name, if set.
  			private string _customTextKey;
@@ -42,8 +43,9 @@
 -			public OpenShop(int npcType, int shopIndex, string customTextKey = null)
 +			public OpenShop(int shopIndex, string customTextKey = null)
  			{
--				_npcType = npcType;
-+				// _npcType = npcType;
++				/*
+ 				_npcType = npcType;
++				*/
  				_shopIndex = shopIndex;
  				_customTextKey = customTextKey;
 +				_shopName = null;
@@ -55,17 +57,20 @@
  
  			public override string GetText()
  			{
-@@ -58,7 +_,18 @@
+@@ -58,7 +_,22 @@
  
  			public override void Interact()
  			{
++				/*
+ 				Main.instance.OpenShop(_shopIndex);
++				*/
++
 +				// If vanilla shop, open by ID.
 +				if (_shopIndex != -1) {
 +					Main.instance.OpenShop(NPCShopDatabase.GetShopNameFromVanillaIndex(_shopIndex));
 +				}
 +				// If the full name was entered, use that.
 +				else if (_shopFullName != _shopName) {
--				Main.instance.OpenShop(_shopIndex);
 +					Main.instance.OpenShop(_shopFullName);
 +				}
 +				// Else, get the full name.
@@ -157,7 +162,7 @@
  				else {
  					Main.npcChatText += Language.GetTextValue("HousingText.HousingRequirements");
  				}
-@@ -352,10 +_,11 @@
+@@ -352,10 +_,12 @@
  		}
  	}
  
@@ -167,34 +172,55 @@
  	public static void Initialize()
  	{
 +		// TML: Buttons are no longer initialized here. They are set in Terraria.ModLoader.NPCInteractionDatabase.Populate()
++		/*
  		Shop(17, 1);
  		Shop(19, 2);
  		Shop(20, 3);
-@@ -403,7 +_,26 @@
- 
- 	private static void Shop(int npcType, int shopIndex, string customTextKey = null)
- 	{
+@@ -399,15 +_,37 @@
+ 		Register(new Actions.TavernkeepAdvice());
+ 		Register(new Actions.ReportHappiness());
+ 		Register(new Actions.RequestHome());
+-	}
+-
+-	private static void Shop(int npcType, int shopIndex, string customTextKey = null)
+-	{
 -		Register(new Actions.OpenShop(npcType, shopIndex, customTextKey));
-+		// Register(new Actions.OpenShop(npcType, shopIndex, customTextKey)); TML: Removed/Obsolete
-+	}
+-	}
+-
+-	private static void Register(NPCInteraction interaction)
+-	{
+-		All.Add(interaction);
++		*/
++			}
 +
-+	/// <summary>
-+	/// Assigns a shop chat button to the npcType.
-+	/// <br/>Short for <c>new NPCInteractions.Actions.Shop(shopName = "Shop", customTextKey = null)</c>
-+	/// </summary>
-+	/// <param name="shopName">The name of the shop to open.
-+	/// <br/>This string will need to match the string used to create the <see cref="NPCShop"/> in <see cref="ModNPC.AddShops"/>.
-+	/// <br/>Defaults to "Shop"
-+	/// <para>The full name of the shop can be used instead to assign a shop from a different NPC to this NPC.
-+	/// <br/>Example: <c>"Terraria/Merchant/Shop"</c> will open the Merchant's shop.
-+	/// <br/>Example: <c>"ExampleMod/ExamplePerson/Shop"</c> will open the Example Person's shop from Example Mod.
-+	/// <br/>Note: if the shop is not found, the button will open an empty shop.
-+	/// </para></param>
-+	/// <param name="customTextKey">The localization key for the display name of the button.
-+	/// <br/>If not set, the button will be translated to say "Shop".</param>
-+	public static NPCInteraction Shop(string shopName = "Shop", string customTextKey = null)
++			/*
++			private static void Shop(int npcType, int shopIndex, string customTextKey = null)
++			{
++				Register(new Actions.OpenShop(npcType, shopIndex, customTextKey));
++			}
++
++			private static void Register(NPCInteraction interaction)
++			{
++				All.Add(interaction);
++			}
++			*/
++
++			/// <summary>
++			/// Assigns a shop chat button to the npcType.
++			/// <br/>Short for <c>new NPCInteractions.Actions.Shop(shopName = "Shop", customTextKey = null)</c>
++			/// </summary>
++			/// <param name="shopName">The name of the shop to open.
++			/// <br/>This string will need to match the string used to create the <see cref="NPCShop"/> in <see cref="ModNPC.AddShops"/>.
++			/// <br/>Defaults to "Shop"
++			/// <para>The full name of the shop can be used instead to assign a shop from a different NPC to this NPC.
++			/// <br/>Example: <c>"Terraria/Merchant/Shop"</c> will open the Merchant's shop.
++			/// <br/>Example: <c>"ExampleMod/ExamplePerson/Shop"</c> will open the Example Person's shop from Example Mod.
++			/// <br/>Note: if the shop is not found, the button will open an empty shop.
++			/// </para></param>
++			/// <param name="customTextKey">The localization key for the display name of the button.
++			/// <br/>If not set, the button will be translated to say "Shop".</param>
++			public static NPCInteraction Shop(string shopName = "Shop", string customTextKey = null)
 +	{
 +		return new Actions.OpenShop(shopName, customTextKey);
  	}
- 
- 	private static void Register(NPCInteraction interaction)
+ }
