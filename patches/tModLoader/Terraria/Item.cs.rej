@@ -129,15 +129,6 @@
  				gravity = 0f;
  				velocity.X = 0f;
  				velocity.Y = 0f;
-@@ -48124,6 +_,8 @@
- 			timeSinceItemSpawned += num7;
- 		}
- 
-+		ItemLoader.PostUpdate(this);
-+
- 		if (Main.netMode == 2 && playerIndexTheItemIsReservedFor != Main.myPlayer) {
- 			timeSinceTheItemHasBeenReservedForSomeone++;
- 			if (timeSinceTheItemHasBeenReservedForSomeone >= 300) {
 @@ -48274,7 +_,7 @@
  
  			NetMessage.SendData(21, -1, -1, null, i);
@@ -147,15 +138,6 @@
  			active = false;
  			type = 0;
  			stack = 0;
-@@ -48285,6 +_,8 @@
- 
- 	private void MoveInWorld(float gravity, float maxFallSpeed, ref Vector2 wetVelocity, int i)
- 	{
-+		ItemLoader.Update(this, ref gravity, ref maxFallSpeed);
-+
- 		if (!shimmered && ItemID.Sets.ItemNoGravity[type]) {
- 			velocity.X *= 0.95f;
- 			if ((double)velocity.X < 0.1 && (double)velocity.X > -0.1)
 @@ -48553,7 +_,7 @@
  		Rectangle hitbox = base.Hitbox;
  		for (int j = 0; j < 200; j++) {
