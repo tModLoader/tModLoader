@@ -68,7 +68,7 @@
  		get {
  			return inner.makeNPC;
  		}
-@@ -201,10 +_,19 @@
+@@ -201,10 +_,20 @@
  		for (int i = myItemIndex + 1; i < 400; i++) {
  			WorldItem worldItem = Main.item[i];
  			if (!worldItem.IsAir && Item.CanStack(inner, worldItem.inner) && worldItem.shimmered == shimmered && worldItem.playerIndexTheItemIsReservedFor == playerIndexTheItemIsReservedFor && !(Math.Abs(position.X - worldItem.position.X) + Math.Abs(position.Y - worldItem.position.Y) > (float)num)) {
@@ -84,8 +84,9 @@
 +				if (!ItemLoader.CanStackInWorld(this, worldItem))
 +					continue;
 +
-+				// TML: Use StackItems so OnStack fires. This matches 1.4.4 behavior where OnStack
-+				// fired for all stacking contexts (world, inventory, chests).
++				// TML: Use StackItems so OnStack fires. StackItems performs the same stack arithmetic
++				// as the replaced vanilla code (plus favorited transfer and shopCustomPrice nulling,
++				// which were already part of the 1.4.4 behavior via this same method call).
 +				ItemLoader.StackItems(inner, worldItem.inner, out int numTransferred);
 +
 +				float amount = (float)numTransferred / (float)stack;
