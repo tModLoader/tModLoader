@@ -1431,6 +1431,11 @@ Mods: {
 				// DisplayName: Example Whippin'!
 				// Description: Whip speed is increased
 			}
+
+			ExampleCrowdControlledDebuff: {
+				// DisplayName: Example Crowd Controlled Debuff
+				// Description: You can't move your arms or legs
+			}
 		}
 
 		// RecipeConditions.Night: At Low Health
