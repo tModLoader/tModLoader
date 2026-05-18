@@ -1402,6 +1402,11 @@ Mods: {
 				// DisplayName: Example Weapon Imbue
 				// Description: "{$Items.ExampleFlask.Tooltip}"
 			}
+
+			ExampleCrowdControlledDebuff: {
+				// DisplayName: Example Crowd Controlled Debuff
+				// Description: You can't move your arms or legs
+			}
 		}
 
 		RecipeConditions.Night: С низким здоровьем
