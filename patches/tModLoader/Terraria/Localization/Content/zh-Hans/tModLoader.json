@@ -694,6 +694,7 @@
 		"TagsCategoryModSide": "模组端",
 		"TagsCategoryTModLoaderVersion": "tModLoader版本",
 		"TagsCategoryLanguage": "{$LegacyMenu.103}",
+		// "TagsCategoryRating": "Mod Content Rating Flags",
 		// Tag descriptions by Webmilio, Tomat, Solxan, and Setnour6.
 		"TagsContent": "新增内容",
 		"TagsContentDescription": "添加了新的内容，例如物品、 武器、 NPC等",
@@ -734,6 +735,12 @@
 		"TagsLanguage_PortugueseDescription": "{$TagsLanguage_Description}",
 		"TagsLanguage_GermanDescription": "{$TagsLanguage_Description}",
 		"TagsLanguage_PolishDescription": "{$TagsLanguage_Description}",
+		// "TagsRating_AdultsOnly": "Adults Only",
+		// "TagsRating_AdultsOnlyDescription": "Contains content that is sexually explicit or graphic and is intended for adults only. Users must affirm that they are at least eighteen years old before they can view content.",
+		// "TagsRating_Gore": "Extreme Gore",
+		// "TagsRating_GoreDescription": "Contains content that features extreme violence or gore.",
+		// "TagsRating_QuestionableContent": "Questionable Content",
+		// "TagsRating_QuestionableContentDescription": "Contains mature topics that may not be appropriate for all audiences.",
 
 		// Info Display Pages
 		"NextInfoAccPage": "下一页",
@@ -864,6 +871,11 @@
 		"WorldDontStarve": "需要在饥荒世界（theconstant）",
 		"WorldNoTraps": "需要在陷阱世界（notraps）",
 		"WorldZenith": "需要在天顶世界（getfixedboi）",
+		// "WorldSkyblock": "In a Skyblock world",
+		// "SeedVampire": "In a Vampirism world",
+		// "SeedInfected": "In a Purify this world",
+		// "SeedTeamBasedSpawns": "In a Royale with cheese world",
+		// "SeedDualDungeons": "In a Double daring dangers world",
 		"WorldNotDrunk": "需要不在醉酒世界",
 		"WorldNotRemix": "需要不在颠倒世界",
 		"WorldNotNotTheBees": "需要不在蜜蜂世界",
@@ -872,6 +884,11 @@
 		"WorldNotDontStarve": "需要不在饥荒世界",
 		"WorldNotNoTraps": "需要不在陷阱世界",
 		"WorldNotZenith": "需要不在天顶世界",
+		// "WorldNotSkyblock": "Not in a Skyblock world",
+		// "SeedNotVampire": "Not in a Vampirism world",
+		// "SeedNotInfected": "Not in a Purify this world",
+		// "SeedNotTeamBasedSpawns": "Not in a Royale with cheese world",
+		// "SeedNotDualDungeons": "Not in a Double daring dangers world",
 
 		"Christmas": "需要在圣诞节期间",
 		"Halloween": "需要在万圣节期间",
@@ -883,7 +900,6 @@
 		"BloodMoon": "需要在血月期间",
 		"NotSolarEclipse": "需要不在日食期间",
 		"NotBloodMoon": "需要不在血月期间",
-		"HappyEnough": "需要有足够的幸福度",
 
 		"DownedKingSlime": "需要击败史莱姆王",
 		"DownedEyeOfCthulhu": "需要击败克苏鲁之眼",
@@ -965,8 +981,17 @@
 
 		"PlayerCarriesItem": "需要背包里拥有{0}",
 		"PlayerCarriesItem2": "需要背包里拥有{0}或{1}",
+		// "PlayerCarriesItem5": "When the player has a {0}, {1}, {2}, {3}, or {4} in their inventory",
 		"NpcIsPresent": "需要NPC {0}存在",
 		"IsNpcShimmered": "需要被微光转化",
+		// "NotIsNpcShimmered": "When the vendor is not a shimmer variant",
+		// "IsNpcHomeless": "When the vendor is homeless",
+		// "NotIsNpcHomeless": "When the vendor is not homeless",
+		// "BiomeSpreadingItems": "Not in a Remix world, or in a Celebration Mk 10 and not a For the Worthy world",
+		// "BiomeSpreadingItemsWithInfectedSeed": "Not in a Remix world, in or Purify this world, or in a Celebration Mk 10 and not a For the Worthy world",
+		// "JungleORCelebrationMk10ANDNotTheBeesANDNotRemix": "In a Jungle biome, or in a Celebration Mk 10 and Not The Bees wold and not in a Remix world",
+		// "DownedKingSlimeOrEoC": "After defeating King Slime or the Eye of Cthulhu",
+		// "NpcIsPresentOrDownedPlantera": "When the {0} is present or after defeating Plantera",
 
 		"AtleastXHealth": "需要拥有至少{0}点生命值",
 		"AtleastXMana": "需要拥有至少{0}点魔力值",
@@ -993,7 +1018,8 @@
 		"NightAfterEvilOrHardmode": "需要在击败世界吞噬者或克苏鲁之脑之后的夜晚，或者击败血肉之墙之后",
 		"AnglerQuestsFinishedOver": "需要完成{0}次渔夫的任务",
 
-		"HappyEnoughForPylons": "需要幸福度达到可以出售传送晶塔的程度",
+		// "CurrentPriceAdjustmentUnder": "When the vendor's price modifier is {0} or less",
+		// "CurrentPriceAdjustmentOver": "When the vendor's price modifier is {0} or more",
 		"AnotherTownNPCNearby": "需要附近有其他城镇NPC",
 		"ForestPylon": "需要在地表且不在其他传送晶塔环境中",
 		"UndergroundPylon": "需要在地下且不在其他传送晶塔环境中",
@@ -1015,6 +1041,7 @@
 		"MoonPhasesHalf1": "需要月相是新月、峨眉月、上弦月或盈凸月",
 		"MoonPhasesEven": "需要月相是满月、下弦月、新月或上弦月",
 		"MoonPhasesOdd": "需要月相是亏凸月、残月、峨眉月或盈凸月",
+		// "MoonPhasesNearFull": "During a waxing gibbous, waning gibbous, or full moon",
 		"MoonPhasesNearNew": "需要月相是亏凸月、残月或新月",
 		"MoonPhasesEvenQuarters": "需要月相是满月、亏凸月、新月或峨眉月",
 		"MoonPhasesOddQuarters": "需要月相是下弦月、残月、上弦月或盈凸月",
@@ -1022,6 +1049,9 @@
 		"MoonPhases15": "需要月相是亏凸月或峨眉月",
 		"MoonPhases26": "需要月相是下弦月或上弦月",
 		"MoonPhases37": "需要月相是残月或盈凸月"
+		// "MoonPhases12": "During a waning gibbous or third quarter moon",
+		// "MoonPhases35": "During a waning crescent or waxing crescent moon",
+		// "MoonPhases67": "During a first quarter or waxing gibbous moon"
 	},
 	"TitleLinks": {
 		"Patreon": "Patreon"

@@ -84,54 +84,6 @@
  			if (inputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Z) && !oldInputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Z)) {
  				text = "";
  			}
-@@ -16254,15 +_,24 @@
- 							break;
- 					}
- 
-+					/*
- 					spriteBatch.Draw(TextureAssets.OneDropLogo.Value, new Vector2(num21, num22), null, color2, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
-+					*/
-+					Color drawColor2 = drawableLines[k].OverrideColor ?? drawableLines[k].Color;
-+					spriteBatch.Draw(TextureAssets.OneDropLogo.Value, new Vector2(num21, num22), null, (l != 4) ? color2 : drawColor2, drawableLines[k].Rotation, drawableLines[k].Origin, (drawableLines[k].BaseScale.X + drawableLines[k].BaseScale.Y) / 2f, SpriteEffects.None, 0f);
- 				}
- 			}
- 			else {
- 				Microsoft.Xna.Framework.Color black = Microsoft.Xna.Framework.Color.Black;
- 				black = new Microsoft.Xna.Framework.Color(num4, num4, num4, num4);
-+				/*
- 				if (k == 0) {
-+				*/
-+				if (drawableLines[k].Mod == "Terraria" && drawableLines[k].Name == "ItemName") {
-+					/*
- 					if (rare == -13)
- 						black = new Microsoft.Xna.Framework.Color((byte)(255f * num4), (byte)(masterColor * 200f * num4), 0, a);
-+					*/
- 
- 					if (rare == -11)
- 						black = new Microsoft.Xna.Framework.Color((byte)(255f * num4), (byte)(175f * num4), (byte)(0f * num4), a);
-@@ -16300,9 +_,15 @@
- 					if (rare == 10)
- 						black = new Microsoft.Xna.Framework.Color((byte)(255f * num4), (byte)(40f * num4), (byte)(100f * num4), a);
- 
-+					/*
- 					if (rare >= 11)
-+					*/
-+					if (rare == 11)
- 						black = new Microsoft.Xna.Framework.Color((byte)(180f * num4), (byte)(40f * num4), (byte)(255f * num4), a);
- 
-+					if (rare > 11)
-+						black = RarityLoader.GetRarity(rare).RarityColor * num4;
-+
- 					if (diff == 1)
- 						black = new Microsoft.Xna.Framework.Color((byte)((float)(int)mcColor.R * num4), (byte)((float)(int)mcColor.G * num4), (byte)((float)(int)mcColor.B * num4), a);
- 
-@@ -16318,3 +_,6 @@
-+				/*
- 				else if (k == numLines - 1) {
-+				*/
-+				else if (drawableLines[k].Mod == "Terraria" && drawableLines[k].Name == "Price") {
- 					black = color;
- 				}
 @@ -31743,8 +_,12 @@
  			textValue = Language.GetTextValue("StardewTalk.PlayerHasColaAndIsHoldingIt");
  
