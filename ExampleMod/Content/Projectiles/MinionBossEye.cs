@@ -83,7 +83,7 @@ namespace ExampleMod.Content.Projectiles
 
 		public override void OnHitPlayer(Player target, Player.HurtInfo info) {
 			// When hitting a player, a debuff similar to Frozen effect will be given
-			target.AddBuff(ModContent.BuffType<ExampleFrozenDebuff>(), 240);
+			target.AddBuff(ModContent.BuffType<ExampleCrowdControlledDebuff>(), 90);
 		}
 	}
 }
