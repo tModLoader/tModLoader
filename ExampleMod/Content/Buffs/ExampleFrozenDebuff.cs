@@ -1,4 +1,5 @@
 ﻿using Terraria;
+using Terraria.DataStructures;
 using Terraria.Localization;
 using Terraria.ModLoader;
 
@@ -33,26 +34,42 @@ namespace ExampleMod.Content.Buffs
 			player.gravDir = 1f;
 		}
 	}
+
 	/// <summary>
 	/// ModPlayer class for implementing Frozen effects
 	/// </summary>
 	public class ExampleFrozenDebuffPlayer : ModPlayer
 	{
 		public bool exampleFrozenDebuff;
+
 		public override void ResetEffects() {
 			exampleFrozenDebuff = false;
 		}
+
 		public override void PostUpdateMiscEffects() {
 			if (!exampleFrozenDebuff)
 				return;
 
 			Player.pulley = false;
+
+			if (Player.mount.Active) {
+				Player.mount.Dismount(Player);
+			}
 		}
+
 		public override bool CanUseItem(Item item) {
 			return !exampleFrozenDebuff;
 		}
+
 		public override bool CanStartExtraJump(ExtraJump jump) {
 			return !exampleFrozenDebuff;
+		}
+
+		public override void DrawEffects(PlayerDrawSet drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright) {
+			if (exampleFrozenDebuff) {
+				g *= 0.2f;
+				r *= 0.2f;
+			}
 		}
 	}
 }

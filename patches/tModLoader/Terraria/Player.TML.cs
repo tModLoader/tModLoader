@@ -686,8 +686,10 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 
 		return false;
 	}
+
+	private bool _customCCed;
 	/// <summary>
-	/// Call this method to mark <seealso cref="CCed"/> as true
+	/// Call this method to mark <seealso cref="CCed"/> as true for this game update. Use for modded crowd control effects.
 	/// </summary>
 	public void SetCCed() => _customCCed = true;
 }

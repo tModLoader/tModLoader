@@ -1218,7 +1218,7 @@
  	public float luck;
  	public float luckMinimumCap = -0.7f;
  	public float luckMaximumCap = 1f;
-@@ -1558,11 +_,12 @@
+@@ -1558,7 +_,7 @@
  	private const int SaveSlotIndex_GuideItem = 2;
  	private const int SaveSlotIndex_TinkererItem = 3;
  	private const int SaveSlotIndexCount = 4;
@@ -1227,11 +1227,6 @@
  	private static readonly PlayerFileData _visualCloneDummyData = new PlayerFileData();
  	private static readonly MemoryStream _visualCloneStream = new MemoryStream();
  	private static readonly BinaryWriter _visualCloneWriter = new BinaryWriter(_visualCloneStream);
- 	private static readonly BinaryReader _visualCloneReader = new BinaryReader(_visualCloneStream);
-+	private bool _customCCed;
- 
- 	public Vector2 BlehOldPositionFixer => -Vector2.UnitY;
- 
 @@ -1640,6 +_,9 @@
  		}
  	}
@@ -1247,8 +1242,8 @@
  	public override Vector2 VisualPosition => position + new Vector2(0f, gfxOffY);
  
 +	/// <summary>
-+	/// Checks if the player is currently "crowd controlled", meaning the player is <see cref="frozen"/>, <see cref="webbed"/>, or <see cref="stoned"/>. Used in various checks to prevent some player actions that shouldn't be possible while in those states, such as channeling attacks, quick using items, and swapping loadouts.
-+	/// <para>Mod can use <seealso cref="SetCCed"/> within buff to mark this attribute as true</para>
++	/// Checks if the player is currently "crowd controlled", meaning the player is <see cref="frozen"/>, <see cref="webbed"/>, <see cref="stoned"/>, or affected by a modded crowd control effect (see below). Used in various checks to prevent some player actions that shouldn't be possible while in those states, such as channeling attacks, quick using items, and swapping loadouts.
++	/// <para/> Mods can use <seealso cref="SetCCed"/> within <see cref="ModBuff.Update(Player, ref int)"/> to mark the player as crowd controlled.
 +	/// </summary>
  	public bool CCed {
  		get {
