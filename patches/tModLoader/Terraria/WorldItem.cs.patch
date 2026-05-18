@@ -68,14 +68,10 @@
  		get {
  			return inner.makeNPC;
  		}
-@@ -201,10 +_,20 @@
+@@ -201,10 +_,26 @@
  		for (int i = myItemIndex + 1; i < 400; i++) {
  			WorldItem worldItem = Main.item[i];
  			if (!worldItem.IsAir && Item.CanStack(inner, worldItem.inner) && worldItem.shimmered == shimmered && worldItem.playerIndexTheItemIsReservedFor == playerIndexTheItemIsReservedFor && !(Math.Abs(position.X - worldItem.position.X) + Math.Abs(position.Y - worldItem.position.Y) > (float)num)) {
--				int num2 = Math.Min(worldItem.stack, maxStack - stack);
--				worldItem.stack -= num2;
--				stack += num2;
--				float amount = (float)num2 / (float)stack;
 +				// TML: Check CanStack first (general compatibility: type, prefix, etc.), then CanStackInWorld (world-specific).
 +				if (!ItemLoader.CanStack(inner, worldItem.inner))
 +					continue;
@@ -90,6 +86,12 @@
 +				ItemLoader.StackItems(inner, worldItem.inner, out int numTransferred);
 +
 +				float amount = (float)numTransferred / (float)stack;
++				/*
+ 				int num2 = Math.Min(worldItem.stack, maxStack - stack);
+ 				worldItem.stack -= num2;
+ 				stack += num2;
+ 				float amount = (float)num2 / (float)stack;
++				*/
  				position = Vector2.Lerp(worldItem.position, position, amount);
  				velocity = Vector2.Lerp(worldItem.velocity, velocity, amount);
  				if (worldItem.stack <= 0)
