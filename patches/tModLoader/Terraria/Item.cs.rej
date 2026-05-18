@@ -147,6 +147,7 @@
  				flag3 = true;
  				NPC.TransformCopperSlime(j);
  				break;
+@@ -49077,6 +_,16 @@
  			case 4070:
  				return TextureAssets.Item[type].Frame(1, 4);
  			default:
