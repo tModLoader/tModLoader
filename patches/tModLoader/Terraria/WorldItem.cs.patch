@@ -113,6 +113,24 @@
  
  					if (Main.rand.Next(num3) == 0 && Main.rand.NextFloat() < Main.maxRaining) {
  						int num4 = stack;
+@@ -485,6 +_,8 @@
+ 		if (timeSinceItemSpawned < 2147483547)
+ 			timeSinceItemSpawned++;
+ 
++		ItemLoader.PostUpdate(this);
++
+ 		if (noGrabDelay > 0)
+ 			noGrabDelay--;
+ 	}
+@@ -687,6 +_,8 @@
+ 
+ 	private void MoveInWorld(float gravity, float maxFallSpeed, ref Vector2 wetVelocity, int i)
+ 	{
++		ItemLoader.Update(this, ref gravity, ref maxFallSpeed);
++
+ 		if (!shimmered && ItemID.Sets.ItemNoGravity[type]) {
+ 			velocity.X *= 0.95f;
+ 			if ((double)velocity.X < 0.1 && (double)velocity.X > -0.1)
 @@ -1413,7 +_,11 @@
  	}
  
