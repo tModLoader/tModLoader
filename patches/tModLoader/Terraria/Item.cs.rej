@@ -147,33 +147,6 @@
  				flag3 = true;
  				NPC.TransformCopperSlime(j);
  				break;
-@@ -48669,14 +_,26 @@
- 				num2 *= 2;
- 
- 			if (num < (float)num2) {
-+				if (!ItemLoader.CanStack(this, item))
-+					continue;
-+
-+				if (!ItemLoader.CanStackInWorld(this, item))
-+					continue;
-+
- 				position = (position + item.position) / 2f;
- 				velocity = (velocity + item.velocity) / 2f;
-+
-+				ItemLoader.StackItems(this, item, out _);
-+
-+				/* #OnStackHook
- 				int num3 = item.stack;
- 				if (num3 > maxStack - stack)
- 					num3 = maxStack - stack;
- 
- 				item.stack -= num3;
- 				stack += num3;
-+				*/
-+
- 				if (item.stack <= 0) {
- 					item.SetDefaults();
- 					item.active = false;
 @@ -49077,6 +_,16 @@
  			case 4070:
  				return TextureAssets.Item[type].Frame(1, 4);

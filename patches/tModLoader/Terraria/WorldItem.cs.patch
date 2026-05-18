@@ -68,6 +68,33 @@
  		get {
  			return inner.makeNPC;
  		}
+@@ -201,10 +_,26 @@
+ 		for (int i = myItemIndex + 1; i < 400; i++) {
+ 			WorldItem worldItem = Main.item[i];
+ 			if (!worldItem.IsAir && Item.CanStack(inner, worldItem.inner) && worldItem.shimmered == shimmered && worldItem.playerIndexTheItemIsReservedFor == playerIndexTheItemIsReservedFor && !(Math.Abs(position.X - worldItem.position.X) + Math.Abs(position.Y - worldItem.position.Y) > (float)num)) {
++				// TML: Check CanStack first (general compatibility: type, prefix, etc.), then CanStackInWorld (world-specific).
++				if (!ItemLoader.CanStack(inner, worldItem.inner))
++					continue;
++
++				// TML: CanStackInWorld is world-only; it does NOT affect inventory/chest stacking.
++				if (!ItemLoader.CanStackInWorld(this, worldItem))
++					continue;
++
++				// TML: Use StackItems so OnStack fires. StackItems performs the same stack arithmetic
++				// as the replaced vanilla code (plus favorited transfer and shopCustomPrice nulling,
++				// which were already part of the 1.4.4 behavior via this same method call).
++				ItemLoader.StackItems(inner, worldItem.inner, out int numTransferred);
++
++				/* #OnStackHook
+ 				int num2 = Math.Min(worldItem.stack, maxStack - stack);
+ 				worldItem.stack -= num2;
+ 				stack += num2;
+ 				float amount = (float)num2 / (float)stack;
++				*/
++				float amount = (float)numTransferred / (float)stack;
+ 				position = Vector2.Lerp(worldItem.position, position, amount);
+ 				velocity = Vector2.Lerp(worldItem.velocity, velocity, amount);
+ 				if (worldItem.stack <= 0)
 @@ -338,7 +_,10 @@
  		float maxFallSpeed = 7f;
  		if (Main.netMode == 1) {
