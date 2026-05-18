@@ -85,13 +85,13 @@
 +				// which were already part of the 1.4.4 behavior via this same method call).
 +				ItemLoader.StackItems(inner, worldItem.inner, out int numTransferred);
 +
-+				float amount = (float)numTransferred / (float)stack;
-+				/*
++				/* #OnStackHook
  				int num2 = Math.Min(worldItem.stack, maxStack - stack);
  				worldItem.stack -= num2;
  				stack += num2;
  				float amount = (float)num2 / (float)stack;
 +				*/
++				float amount = (float)numTransferred / (float)stack;
  				position = Vector2.Lerp(worldItem.position, position, amount);
  				velocity = Vector2.Lerp(worldItem.velocity, velocity, amount);
  				if (worldItem.stack <= 0)
