@@ -108,7 +108,7 @@ public class NPCInteractionDatabase
 			HousingButton);
 
 		RegisterNewNPC(NPCID.Merchant,
-			new NPCInteractions.Actions.OpenShop(1), // Equivalent to NPCInteractions.Shop("Terraria/Merchant/Shop")
+			NPCInteractions.Shop(NPCShopDatabase.GetShopNameFromVanillaIndex(1)), // Equivalent to NPCInteractions.Shop("Terraria/Merchant/Shop")
 			CloseButton,
 			HappinessButton,
 			HousingButton);
@@ -120,13 +120,13 @@ public class NPCInteractionDatabase
 			HousingButton);
 
 		RegisterNewNPC(NPCID.Demolitionist,
-			new NPCInteractions.Actions.OpenShop(4),
+			NPCInteractions.Shop(NPCShopDatabase.GetShopNameFromVanillaIndex(4)),
 			CloseButton,
 			HappinessButton,
 			HousingButton);
 
 		RegisterNewNPC(NPCID.DyeTrader,
-			new NPCInteractions.Actions.OpenShop(12),
+			NPCInteractions.Shop(NPCShopDatabase.GetShopNameFromVanillaIndex(12)),
 			CloseButton,
 			new NPCInteractions.Actions.DyeTraderRarePlant(),
 			HappinessButton,
@@ -139,13 +139,13 @@ public class NPCInteractionDatabase
 			HousingButton);
 
 		RegisterNewNPC(NPCID.BestiaryGirl,
-			new NPCInteractions.Actions.OpenShop(23),
+			NPCInteractions.Shop(NPCShopDatabase.GetShopNameFromVanillaIndex(23)),
 			CloseButton,
 			HappinessButton,
 			HousingButton);
 
 		RegisterNewNPC(NPCID.Dryad,
-			new NPCInteractions.Actions.OpenShop(3),
+			NPCInteractions.Shop(NPCShopDatabase.GetShopNameFromVanillaIndex(3)),
 			CloseButton,
 			new NPCInteractions.Actions.StardewValleyBit(),
 			new NPCInteractions.Actions.DryadPurification(),
@@ -153,72 +153,72 @@ public class NPCInteractionDatabase
 			HousingButton);
 
 		RegisterNewNPC(NPCID.Painter,
-			new NPCInteractions.Actions.OpenShop(15),
-			new NPCInteractions.Actions.OpenShop(25, "GameUI.PainterDecor"),
+			NPCInteractions.Shop(NPCShopDatabase.GetShopNameFromVanillaIndex(15)),
+			NPCInteractions.Shop(NPCShopDatabase.GetShopNameFromVanillaIndex(25), "GameUI.PainterDecor"), // Equivalent to NPCInteractions.Shop("Terraria/Painter/Decor", "GameUI.PainterDecor")
 			CloseButton,
 			HappinessButton,
 			HousingButton);
 
 		RegisterNewNPC(NPCID.Golfer,
-			new NPCInteractions.Actions.OpenShop(22),
+			NPCInteractions.Shop(NPCShopDatabase.GetShopNameFromVanillaIndex(22)),
 			CloseButton,
 			HappinessButton,
 			HousingButton);
 
 		RegisterNewNPC(NPCID.ArmsDealer,
-			new NPCInteractions.Actions.OpenShop(2),
+			NPCInteractions.Shop(NPCShopDatabase.GetShopNameFromVanillaIndex(2)),
 			CloseButton,
 			HappinessButton,
 			HousingButton);
 
 		RegisterNewNPC(NPCID.DD2Bartender,
-			new NPCInteractions.Actions.OpenShop(21),
+			NPCInteractions.Shop(NPCShopDatabase.GetShopNameFromVanillaIndex(21)),
 			CloseButton,
 			new NPCInteractions.Actions.TavernkeepAdvice(),
 			HappinessButton,
 			HousingButton);
 
 		RegisterNewNPC(NPCID.Stylist,
-			new NPCInteractions.Actions.OpenShop(18),
+			NPCInteractions.Shop(NPCShopDatabase.GetShopNameFromVanillaIndex(18)),
 			CloseButton,
 			new NPCInteractions.Actions.StylistHairWindow(),
 			HappinessButton,
 			HousingButton);
 
 		RegisterNewNPC(NPCID.GoblinTinkerer,
-			new NPCInteractions.Actions.OpenShop(6),
+			NPCInteractions.Shop(NPCShopDatabase.GetShopNameFromVanillaIndex(6)),
 			CloseButton,
 			new NPCInteractions.Actions.TinkererReforge(),
 			HappinessButton,
 			HousingButton);
 
 		RegisterNewNPC(NPCID.WitchDoctor,
-			new NPCInteractions.Actions.OpenShop(16),
+			NPCInteractions.Shop(NPCShopDatabase.GetShopNameFromVanillaIndex(16)),
 			CloseButton,
 			HappinessButton,
 			HousingButton);
 
 		RegisterNewNPC(NPCID.Clothier,
-			new NPCInteractions.Actions.OpenShop(5),
+			NPCInteractions.Shop(NPCShopDatabase.GetShopNameFromVanillaIndex(5)),
 			CloseButton,
 			HappinessButton,
 			HousingButton);
 
 		RegisterNewNPC(NPCID.Mechanic,
-			new NPCInteractions.Actions.OpenShop(8),
+			NPCInteractions.Shop(NPCShopDatabase.GetShopNameFromVanillaIndex(8)),
 			CloseButton,
 			HappinessButton,
 			HousingButton);
 
 		RegisterNewNPC(NPCID.PartyGirl,
-			new NPCInteractions.Actions.OpenShop(13),
+			NPCInteractions.Shop(NPCShopDatabase.GetShopNameFromVanillaIndex(13)),
 			CloseButton,
 			new NPCInteractions.Actions.PartyGirlMusicSwap(),
 			HappinessButton,
 			HousingButton);
 
 		RegisterNewNPC(NPCID.Wizard,
-			new NPCInteractions.Actions.OpenShop(7),
+			NPCInteractions.Shop(NPCShopDatabase.GetShopNameFromVanillaIndex(7)),
 			CloseButton,
 			HappinessButton,
 			HousingButton);
@@ -230,37 +230,37 @@ public class NPCInteractionDatabase
 			HousingButton);
 
 		RegisterNewNPC(NPCID.Truffle,
-			new NPCInteractions.Actions.OpenShop(10),
+			NPCInteractions.Shop(NPCShopDatabase.GetShopNameFromVanillaIndex(10)),
 			CloseButton,
 			HappinessButton,
 			HousingButton);
 
 		RegisterNewNPC(NPCID.Pirate,
-			new NPCInteractions.Actions.OpenShop(17),
+			NPCInteractions.Shop(NPCShopDatabase.GetShopNameFromVanillaIndex(17)),
 			CloseButton,
 			HappinessButton,
 			HousingButton);
 
 		RegisterNewNPC(NPCID.Steampunker,
-			new NPCInteractions.Actions.OpenShop(11),
+			NPCInteractions.Shop(NPCShopDatabase.GetShopNameFromVanillaIndex(11)),
 			CloseButton,
 			HappinessButton,
 			HousingButton);
 
 		RegisterNewNPC(NPCID.Cyborg,
-			new NPCInteractions.Actions.OpenShop(14),
+			NPCInteractions.Shop(NPCShopDatabase.GetShopNameFromVanillaIndex(14)),
 			CloseButton,
 			HappinessButton,
 			HousingButton);
 
 		RegisterNewNPC(NPCID.SantaClaus,
-			new NPCInteractions.Actions.OpenShop(9),
+			NPCInteractions.Shop(NPCShopDatabase.GetShopNameFromVanillaIndex(9)),
 			CloseButton,
 			HappinessButton,
 			HousingButton);
 
 		RegisterNewNPC(NPCID.Princess,
-			new NPCInteractions.Actions.OpenShop(24),
+			NPCInteractions.Shop(NPCShopDatabase.GetShopNameFromVanillaIndex(24)),
 			CloseButton,
 			HappinessButton,
 			HousingButton);
@@ -338,13 +338,13 @@ public class NPCInteractionDatabase
 			HousingButton);
 
 		RegisterNewNPC(NPCID.TravellingMerchant,
-			new NPCInteractions.Actions.OpenShop(19),
+			NPCInteractions.Shop(NPCShopDatabase.GetShopNameFromVanillaIndex(19)),
 			CloseButton,
 			HappinessButton,
 			HousingButton);
 
 		RegisterNewNPC(NPCID.SkeletonMerchant,
-			new NPCInteractions.Actions.OpenShop(20),
+			NPCInteractions.Shop(NPCShopDatabase.GetShopNameFromVanillaIndex(20)),
 			CloseButton,
 			HappinessButton,
 			HousingButton);

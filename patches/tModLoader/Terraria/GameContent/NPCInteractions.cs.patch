@@ -8,22 +8,22 @@
  using Terraria.UI;
  
  namespace Terraria.GameContent;
-@@ -33,20 +_,52 @@
+@@ -33,12 +_,34 @@
  			}
  		}
  
 +		/// <summary> The helper method <see cref="NPCInteractions.Shop(string, string)"/> can be used instead of creating a new instance of this class.</summary>
  		public class OpenShop : NPCInteraction
  		{
- 			private int _shopIndex;
 +			/*
+ 			private int _shopIndex;
  			private int _npcType;
 +			*/
 +			private string _shopName; // String shop name
 +			private string _shopFullName; // String full shop name, if set.
  			private string _customTextKey;
  
-+			/// <inheritdoc cref="NPCInteractions.Shop(string, string)"/>
++			/// <inheritdoc cref="NPCInteractions.Actions.OpenShop"/>
 +			public OpenShop(string shopName, string customTextKey = null)
 +			{
 +				// Split the shopName by the / and assign _shopName to be the last part of the string.
@@ -34,7 +34,6 @@
 +				//		_shopName = Shop
 +				//		_shopFullName = Shop
 +				string[] splitName = shopName.Split('/');
-+				_shopIndex = -1;
 +				_customTextKey = customTextKey;
 +				_shopName = splitName[^1];
 +				_shopFullName = shopName;
@@ -42,26 +41,18 @@
 +
 +			/*
  			public OpenShop(int npcType, int shopIndex, string customTextKey = null)
-+			*/
-+			public OpenShop(int shopIndex, string customTextKey = null)
  			{
-+				/*
  				_npcType = npcType;
-+				*/
- 				_shopIndex = shopIndex;
- 				_customTextKey = customTextKey;
-+				_shopName = null;
-+				_shopFullName = null;
+@@ -47,6 +_,8 @@
  			}
  
-+			/*
  			public override bool Condition() => base.TalkNPCType == _npcType;
 +			*/
 +			public override bool Condition() => true; // TML: Changed condition
  
  			public override string GetText()
  			{
-@@ -58,7 +_,22 @@
+@@ -58,7 +_,18 @@
  
  			public override void Interact()
  			{
@@ -69,12 +60,8 @@
  				Main.instance.OpenShop(_shopIndex);
 +				*/
 +
-+				// If vanilla shop, open by ID.
-+				if (_shopIndex != -1) {
-+					Main.instance.OpenShop(NPCShopDatabase.GetShopNameFromVanillaIndex(_shopIndex));
-+				}
 +				// If the full name was entered, use that.
-+				else if (_shopFullName != _shopName) {
++				if (_shopFullName != _shopName) {
 +					Main.instance.OpenShop(_shopFullName);
 +				}
 +				// Else, get the full name.
