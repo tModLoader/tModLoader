@@ -361,6 +361,22 @@
  					break;
  				}
  				case 134: {
+@@ -1409,8 +_,15 @@
+ 				case 142: {
+ 					writer.Write((byte)number);
+ 					Player obj = Main.player[number];
++					foreach (var storage in PortableStorageLoader.GetAllStorage()) {
++						storage.GetProjectileReference(obj).Write(writer);
++					}
++					/*
+ 					obj.piggyBankProjTracker.Write(writer);
+ 					obj.voidLensChest.Write(writer);
++					obj.safeProjTracker.Write(writer);
++					obj.defendersForgeProjTracker.Write(writer);
++					*/
+ 					break;
+ 				}
+ 				case 146:
 @@ -1440,6 +_,16 @@
  				throw new Exception("Maximum packet length exceeded. id: " + msgType + " length: " + num21);
  

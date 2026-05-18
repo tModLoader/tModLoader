@@ -57,6 +57,23 @@
  					if (item3.stack == 0) {
  						inv[list[k]] = new Item();
  						list.Remove(list[k]);
+@@ -1007,6 +_,7 @@
+ 		if (chest == -1)
+ 			return;
+ 
++		/*
+ 		Item[] item = Main.player[Main.myPlayer].bank.item;
+ 		if (chest == -3)
+ 			item = Main.player[Main.myPlayer].bank2.item;
+@@ -1019,6 +_,8 @@
+ 
+ 		if (chest > -1)
+ 			item = Main.chest[chest].item;
++		*/
++		Item[] item = chest > -1 ? Main.chest[chest].item : PortableStorageLoader.GetPortableStorageFromChest(chest).GetInventory(Main.LocalPlayer).item;
+ 
+ 		Tuple<int, int, int>[] array = new Tuple<int, int, int>[40];
+ 		for (int i = 0; i < 40; i++) {
 @@ -1214,6 +_,11 @@
  		for (int i = loopStartIndex; i < loopEndIndex; i++) {
  			Item item = inv[i];

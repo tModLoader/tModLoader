@@ -543,6 +543,7 @@ public static class ModContent
 		MountLoader.Unload();
 		RarityLoader.Unload();
 		DamageClassLoader.Unload();
+		PortableStorageLoader.Unload();
 		InfoDisplayLoader.Unload();
 		BuilderToggleLoader.Unload();
 		ExtraJumpLoader.Unload();

@@ -672,4 +672,14 @@ public partial class Main
 			ConfigManager.OnChangedAll();
 		}
 	}
+
+	private static bool TrySyncingMyPlayer_TMLSyncBankFields(Player player)
+	{
+		foreach (var storage in PortableStorageLoader.GetAllStorage()) {
+			if (storage.GetProjectileReference(Main.LocalPlayer) != storage.GetProjectileReference(player))
+				return true;
+		}
+
+		return false;
+	}
 }

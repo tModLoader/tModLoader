@@ -198,7 +198,7 @@
  			if (alchemy && Main.player[Main.myPlayer].alchemyTable) {
  				if (num > 1) {
  					int num2 = 0;
-@@ -157,26 +_,38 @@
+@@ -157,31 +_,46 @@
  					num = 0;
  				}
  			}
@@ -237,7 +237,22 @@
  			}
  
  			if (Main.player[Main.myPlayer].chest != -1) {
-@@ -196,6 +_,11 @@
+ 				if (Main.player[Main.myPlayer].chest > -1)
+ 					array = Main.chest[Main.player[Main.myPlayer].chest].item;
++				else
++					array = PortableStorageLoader.GetPortableStorageFromChest(Main.LocalPlayer.chest).GetInventory(Main.LocalPlayer).item;
++				/*
+ 				else if (Main.player[Main.myPlayer].chest == -2)
+ 					array = Main.player[Main.myPlayer].bank.item;
+ 				else if (Main.player[Main.myPlayer].chest == -3)
+@@ -190,12 +_,18 @@
+ 					array = Main.player[Main.myPlayer].bank3.item;
+ 				else if (Main.player[Main.myPlayer].chest == -5)
+ 					array = Main.player[Main.myPlayer].bank4.item;
++				*/
+ 
+ 				for (int l = 0; l < 40; l++) {
+ 					item = array[l];
  					if (num <= 0)
  						break;
  
@@ -427,7 +442,22 @@
  			if (!player.adjTile[tempRec.requiredTile[i]])
  				return false;
  		}
-@@ -483,6 +_,10 @@
+@@ -471,6 +_,9 @@
+ 			Item[] currentInventory = null;
+ 			if (player.chest > -1)
+ 				currentInventory = Main.chest[player.chest].item;
++			else
++				currentInventory = PortableStorageLoader.GetPortableStorageFromChest(player.chest).GetInventory(player).item;
++			/*
+ 			else if (player.chest == -2)
+ 				currentInventory = player.bank.item;
+ 			else if (player.chest == -3)
+@@ -479,10 +_,15 @@
+ 				currentInventory = player.bank3.item;
+ 			else if (player.chest == -5)
+ 				currentInventory = player.bank4.item;
++			*/
+ 
  			CollectItems(currentInventory, 40);
  		}
  

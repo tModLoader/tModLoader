@@ -98,8 +98,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 					}
 				}
 				else {
-					player.piggyBankProjTracker.Clear();
-					player.voidLensChest.Clear();
+					player.ClearPortableBankProjectileTrackers();
 					int chestIndex = Chest.FindChest(left, top);
 					if (chestIndex != -1) {
 						Main.stackSplit = 600;
