@@ -13,7 +13,9 @@ using Terraria.ModLoader.UI.ModBrowser;
 using Terraria.Audio;
 using Terraria.GameContent;
 using ReLogic.Content;
+using Steamworks;
 using Terraria.Social.Base;
+using Terraria.Social.Steam;
 
 namespace Terraria.ModLoader.UI;
 
@@ -22,10 +24,16 @@ internal class UIModItem : UIPanel
 	private const float PADDING = 5f;
 	private float left2ndLine = 0;
 
+	private PublishedFileId_t _publishedFileId;
+	private CallResult<GetUserItemVoteResult_t> _rateCallResult;
+	private CallResult<SetUserItemVoteResult_t> _rateSetCallResult;
+	private bool _ratedUp;
+	private bool _ratedDown;
+
 	private UIImage _moreInfoButton;
 	private UIImage _modIcon;
 	private UIImageFramed updatedModDot;
-	private Version previousVersionHint;
+	private System.Version previousVersionHint;
 	private UIHoverImage _keyImage;
 	private UIImage _configButton;
 	private UIText _modName;
@@ -34,6 +42,7 @@ internal class UIModItem : UIPanel
 	private UIImage _modReferenceIcon;
 	private UIImage _translationModIcon;
 	private UIImage _deleteModButton;
+	private UIImage _rateButton;
 	private UIAutoScaleTextTextPanel<string> _dialogYesButton;
 	private UIAutoScaleTextTextPanel<string> _dialogNoButton;
 	private UIText _dialogText;
@@ -76,6 +85,11 @@ internal class UIModItem : UIPanel
 		Width.Percent = 1f;
 		SetPadding(6f);
 		DisplayNameClean = _mod.DisplayNameClean;
+
+		_rateCallResult = CallResult<GetUserItemVoteResult_t>.Create(RefreshRating);
+		_rateSetCallResult = CallResult<SetUserItemVoteResult_t>.Create(((t, failure) => GetRating()));
+		WorkshopHelper.GetPublishIdLocal(_mod?.modFile, out ulong publishId);
+		_publishedFileId = new PublishedFileId_t(publishId);
 	}
 
 	public override void OnInitialize()
@@ -321,15 +335,31 @@ internal class UIModItem : UIPanel
 
 		if (!_loaded && ModOrganizer.CanDeleteFrom(_mod.location)) {
 			bottomRightRowOffset -= 36;
-			_deleteModButton = new UIImage(TextureAssets.Trash) {
+			_deleteModButton = new UIImage(UICommon.ButtonDeleteTexture) {
 				RemoveFloatingPointsFromDrawPosition = true,
 				Width = { Pixels = 36 },
 				Height = { Pixels = 36 },
 				Left = { Pixels = bottomRightRowOffset - PADDING, Precent = 1 },
-				Top = { Pixels = 42.5f }
+				Top = { Pixels = 40 }
 			};
 			_deleteModButton.OnLeftClick += QuickModDelete;
 			Append(_deleteModButton);
+		}
+
+		if (_mod.location == ModLocation.Workshop) {
+			GetRating();
+			Rectangle frame = new Rectangle(0, 0, 36, 36);
+			bottomRightRowOffset -= 36 + (int)PADDING;
+			_rateButton = new UIImage(UICommon.ButtonRateTexture) {
+				RemoveFloatingPointsFromDrawPosition = true,
+				Width = { Pixels = 36 },
+				Height = { Pixels = 36 },
+				Frame = frame,
+				Left = { Pixels = bottomRightRowOffset - PADDING, Precent = 1 },
+				Top = { Pixels = 40 }
+			};
+			_rateButton.OnLeftClick += Rate;
+			Append(_rateButton);
 		}
 
 		var oldModVersionData = ModOrganizer.modsThatUpdatedSinceLastLaunch.FirstOrDefault(x => x.ModName == ModName);
@@ -418,6 +448,13 @@ internal class UIModItem : UIPanel
 		}
 		else if (_deleteModButton?.IsMouseHovering == true) {
 			_tooltip = Language.GetTextValue("UI.Delete");
+		}
+		else if (_rateButton?.IsMouseHovering == true) {
+			bool ratingUp = UserInterface.ActiveInstance.MousePosition.Y < _rateButton.GetDimensions().Center().Y;
+			if (!_ratedUp && ratingUp)
+				_tooltip = Language.GetTextValue("tModLoader.ModsRateUp");
+			else if (!_ratedDown && !ratingUp)
+				_tooltip = Language.GetTextValue("tModLoader.ModsRateDown");
 		}
 		else if (_modName?.IsMouseHovering == true && _mod?.properties.author.Length > 0) {
 			_tooltip = Language.GetTextValue("tModLoader.ModsByline", _mod.properties.author);
@@ -665,6 +702,40 @@ internal class UIModItem : UIPanel
 		else {
 			DeleteMod(evt, listeningElement);
 		}
+	}
+
+	private void Rate(UIMouseEvent evt, UIElement listeningElement)
+	{
+		bool ratingUp = evt.MousePosition.Y < listeningElement.GetDimensions().Center().Y;
+		if ((ratingUp && _ratedUp) || (!ratingUp && _ratedDown))
+			return;
+
+		SoundEngine.PlaySound(LegacySoundIDs.MenuTick, -1, -1, 1);
+
+		SteamAPICall_t call = SteamUGC.SetUserItemVote(_publishedFileId, ratingUp);
+		_rateSetCallResult.Set(call);
+	}
+
+	private void GetRating()
+	{
+		SteamAPICall_t call = SteamUGC.GetUserItemVote(_publishedFileId);
+		_rateCallResult.Set(call);
+	}
+
+	private void RefreshRating(GetUserItemVoteResult_t result, bool failure)
+	{
+		_ratedUp = result.m_bVotedUp;
+		_ratedDown = result.m_bVotedDown;
+
+		Rectangle frame = new Rectangle(0, 0, 36, 36);
+		if (result.m_bVotedUp)
+			frame.Y = 38;
+		else if (result.m_bVotedDown)
+			frame.Y = 38 * 2;
+		else
+			frame.Y = 0;
+
+		_rateButton?.Frame = frame;
 	}
 
 	private void DeleteMod(UIMouseEvent evt, UIElement listeningElement)

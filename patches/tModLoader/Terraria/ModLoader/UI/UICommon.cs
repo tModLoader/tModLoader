@@ -145,6 +145,8 @@ public static class UICommon
 	public static Asset<Texture2D> tModLoaderTitleLinkButtonsTexture { get; internal set; }
 	public static Asset<Texture2D> CopyCodeButtonTexture { get; internal set; }
 	public static Asset<Texture2D> DropdownIconTexture { get; internal set; }
+	public static Asset<Texture2D> ButtonDeleteTexture { get; internal set; }
+	public static Asset<Texture2D> ButtonRateTexture { get; internal set; }
 
 	internal static void LoadTextures()
 	{
@@ -185,5 +187,8 @@ public static class UICommon
 		tModLoaderTitleLinkButtonsTexture = LoadEmbeddedTexture("UI.tModLoaderTitleLinkButtons");
 		CopyCodeButtonTexture = LoadEmbeddedTexture("UI.CopyCodeButton");
 		DropdownIconTexture = LoadEmbeddedTexture("UI.DropdownIcon");
+
+		ButtonDeleteTexture = LoadEmbeddedTexture("UI.ButtonDelete");
+		ButtonRateTexture = LoadEmbeddedTexture("UI.ButtonRate");
 	}
 }
