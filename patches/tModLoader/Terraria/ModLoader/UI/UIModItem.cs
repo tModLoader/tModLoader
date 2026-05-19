@@ -344,12 +344,13 @@ internal class UIModItem : UIPanel
 			};
 			_deleteModButton.OnLeftClick += QuickModDelete;
 			Append(_deleteModButton);
+			bottomRightRowOffset -= (int)PADDING;
 		}
 
-		if (_mod.location == ModLocation.Workshop) {
+		if (_loaded && _mod.location == ModLocation.Workshop) {
 			GetRating();
 			Rectangle frame = new Rectangle(0, 0, 36, 36);
-			bottomRightRowOffset -= 36 + (int)PADDING;
+			bottomRightRowOffset -= 36;
 			_rateButton = new UIImage(UICommon.ButtonRateTexture) {
 				RemoveFloatingPointsFromDrawPosition = true,
 				Width = { Pixels = 36 },
