@@ -3,6 +3,7 @@ using ExampleMod.Content.Tiles.Furniture;
 using Microsoft.Xna.Framework;
 using System;
 using Terraria;
+using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -80,12 +81,46 @@ namespace ExampleMod.Content.Projectiles.Minions
 			return true; // The minion projectile will be spawned by the game since we return true.
 		}
 
+		public override bool CanUseItem(Player player) {
+			// Block normal left-click use while the minion is already active. The minion projectile handles that click as an active ability instead.
+			// Right-click minion targeting still needs to pass through normal item use.
+			return player.altFunctionUse == 2 || player.ownedProjectileCounts[Item.shoot] <= 0;
+		}
+
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
 		public override void AddRecipes() {
 			CreateRecipe()
 				.AddIngredient(ModContent.ItemType<ExampleItem>())
 				.AddTile(ModContent.TileType<ExampleWorkbench>())
 				.Register();
+		}
+	}
+
+	public class ExampleSimpleMinionActiveShot : ModProjectile
+	{
+		public override string Texture => "ExampleMod/Content/Projectiles/SparklingBall";
+
+		public override void SetDefaults() {
+			Projectile.width = 16;
+			Projectile.height = 16;
+			Projectile.friendly = true;
+			Projectile.DamageType = DamageClass.Summon;
+			Projectile.penetrate = 1;
+			Projectile.timeLeft = 90;
+			Projectile.ignoreWater = true;
+		}
+
+		public override void AI() {
+			Projectile.rotation += 0.4f * Projectile.direction;
+			Lighting.AddLight(Projectile.Center, Color.SkyBlue.ToVector3() * 0.5f);
+		}
+
+		public override bool OnTileCollide(Vector2 oldVelocity) {
+			for (int i = 0; i < 5; i++) {
+				Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Electric);
+			}
+
+			return true;
 		}
 	}
 
@@ -138,6 +173,7 @@ namespace ExampleMod.Content.Projectiles.Minions
 				return;
 			}
 
+			UseActiveAbility(owner);
 			GeneralBehavior(owner, out Vector2 vectorToIdlePosition, out float distanceToIdlePosition);
 			SearchForTargets(owner, out bool foundTarget, out float distanceFromTarget, out Vector2 targetCenter);
 			Movement(foundTarget, distanceFromTarget, targetCenter, distanceToIdlePosition, vectorToIdlePosition);
@@ -157,6 +193,32 @@ namespace ExampleMod.Content.Projectiles.Minions
 			}
 
 			return true;
+		}
+
+		private void UseActiveAbility(Player owner) {
+			if (Projectile.localAI[0] > 0f) {
+				Projectile.localAI[0]--;
+				return;
+			}
+
+			if (Main.myPlayer != owner.whoAmI || owner.HeldItem.type != ModContent.ItemType<ExampleSimpleMinionItem>() || owner.altFunctionUse == 2 || !owner.controlUseItem) {
+				return;
+			}
+
+			Vector2 shootVelocity = (Main.MouseWorld - Projectile.Center).SafeNormalize(Vector2.UnitY) * 12f;
+
+			Projectile.NewProjectile(
+				owner.GetSource_ItemUse(owner.HeldItem),
+				Projectile.Center,
+				shootVelocity,
+				ModContent.ProjectileType<ExampleSimpleMinionActiveShot>(),
+				owner.GetWeaponDamage(owner.HeldItem),
+				owner.GetWeaponKnockback(owner.HeldItem),
+				owner.whoAmI
+			);
+
+			SoundEngine.PlaySound(SoundID.Item20, Projectile.Center);
+			Projectile.localAI[0] = 30f;
 		}
 
 		private void GeneralBehavior(Player owner, out Vector2 vectorToIdlePosition, out float distanceToIdlePosition) {

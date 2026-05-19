@@ -1,6 +1,7 @@
 ﻿using ExampleMod.Content.Items;
 using ExampleMod.Content.Items.Placeable;
 using ExampleMod.Content.Items.Placeable.Furniture;
+using ExampleMod.Content.Projectiles.Minions;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
@@ -29,6 +30,7 @@ namespace ExampleMod.Common.Players
 				new Item(ModContent.ItemType<ExampleBlock>(), 256),
 				new Item(ModContent.ItemType<ExampleWall>(), 256),
 				new Item(ModContent.ItemType<ExampleOre>(), 256),
+				new Item(ModContent.ItemType<ExampleSimpleMinionItem>()),
 				new Item(ModContent.ItemType<ExampleChair>(), 99),
 				new Item(ModContent.ItemType<ExampleTable>(), 99),
 				new Item(ModContent.ItemType<ExampleChest>(), 99),

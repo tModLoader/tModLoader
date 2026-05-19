@@ -1311,6 +1311,7 @@ Mods: {
 			ExampleSentry.DisplayName: Example Sentry
 			ExampleSentryShot.DisplayName: Example Sentry Shot
 			ExampleHeldProjectileWeaponProjectile.DisplayName: Example Held Projectile Weapon Projectile
+			ExampleSimpleMinionActiveShot.DisplayName: Example Simple Minion Active Shot
 		}
 
 		Buffs: {
