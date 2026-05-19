@@ -5028,6 +5028,16 @@
  
  	public static bool LocalPlayerHasPendingInventoryActions()
  	{
+@@ -36799,7 +_,8 @@
+ 
+ 	public static void CraftItem_GrantItem(Recipe recipe, Item result, bool quickCraft)
+ 	{
+-		result.stack += mouseItem.stack;
++		// TML: Use StackItems so OnStack hook fires.
++		ItemLoader.StackItems(result, mouseItem, out _);
+ 		mouseItem = result;
+ 		if (quickCraft && !mouseItem.IsAir) {
+ 			if (CraftingRequests.HasPendingRequests) {
 @@ -37026,6 +_,10 @@
  					if (item[i].expert)
  						rare = -12;
