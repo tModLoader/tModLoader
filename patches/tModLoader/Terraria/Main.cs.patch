@@ -705,7 +705,7 @@
  	public static Item mouseItem = new Item();
  	public static Item guideItem = new Item();
  	public static Item reforgeItem = new Item();
-@@ -1015,16 +_,47 @@
+@@ -1015,38 +_,75 @@
  	public static bool PipsUseGrid;
  	public static PipPage PipsCurrentPage;
  	public static int recStart;
@@ -753,7 +753,13 @@
  	public static bool npcChatRelease;
  	public static bool editSign;
  	public static bool editChest;
-@@ -1037,16 +_,21 @@
+ 	public static bool blockInput = false;
+ 	public static string blockKey = Microsoft.Xna.Framework.Input.Keys.None.ToString();
+ 	public static string defaultChestName = string.Empty;
++	/// <summary> The text displayed in the town npc chat panel. </summary>
+ 	public static string npcChatText = "";
+ 	public static bool npcChatFocus1;
+ 	public static bool npcChatFocus2;
  	public static bool npcChatFocus3;
  	public static bool npcChatFocus4;
  	public static int oldNPCShop;
@@ -4694,18 +4700,32 @@
  
  		int num = npcChatPortraitFrameCounter++;
  		int num2 = 56;
-@@ -34899,8 +_,9 @@
- 		playerInventory = true;
- 		stackSplit = 9999;
- 		npcChatText = "";
--		SetNPCShopIndex(shopIndex);
-+		SetNPCShopIndex(1);
--		shop[npcShop].SetupShop(npcShop);
-+		shop[npcShop].SetupShop(shopIndex);
-+
- 		SoundEngine.PlaySound(12);
+@@ -34894,6 +_,7 @@
+ 		return false;
  	}
  
++	/*
+ 	public void OpenShop(int shopIndex)
+ 	{
+ 		playerInventory = true;
+@@ -34903,6 +_,17 @@
+ 		shop[npcShop].SetupShop(npcShop);
+ 		SoundEngine.PlaySound(12);
+ 	}
++	*/
++
++	public void OpenShop(string shopName) // TML: Changed to use strings instead of integer indexes.
++	{
++		playerInventory = true;
++		stackSplit = 9999;
++		npcChatText = "";
++		SetNPCShopIndex(1);
++		shop[npcShop].SetupShop(shopName, LocalPlayer.TalkNPC); // Full shop names are pre-retrieved in NPCInteractions.Actions.OpenShop in NPCInteractions.cs
++		SoundEngine.PlaySound(12);
++	}
+ 
+ 	public static void SetNPCShopIndex(int index)
+ 	{
 @@ -34945,8 +_,12 @@
  			npcChatFocus2 = false;
  		}
@@ -4745,7 +4765,7 @@
  			UILinkPointNavigator.SetPosition(2502, vector2 + stringSize * 0.5f);
  			UILinkPointNavigator.Shortcuts.NPCCHAT_ButtonsRight = true;
  		}
-@@ -35086,8 +_,12 @@
+@@ -35086,12 +_,17 @@
  			npcChatFocus4 = false;
  		}
  
@@ -4758,6 +4778,11 @@
  		UILinkPointNavigator.SetPosition(2503, vector2 + stringSize * 0.5f);
  		UILinkPointNavigator.Shortcuts.NPCCHAT_ButtonsRight2 = true;
  	}
+ 
++	/// <summary> Makes the town npc portrait bounce. </summary>
+ 	public static void DoNPCPortraitHop()
+ 	{
+ 		npcChatPortraitFrameCounter = 0;
 @@ -35412,8 +_,12 @@
  			}
  		}
