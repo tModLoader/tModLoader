@@ -1,0 +1,22 @@
+--- src/TerrariaNetCore/Terraria/GameContent/EmergencyStacking.cs
++++ src/tModLoader/Terraria/GameContent/EmergencyStacking.cs
+@@ -3,6 +_,7 @@
+ using System.Linq;
+ using Microsoft.Xna.Framework;
+ using Terraria.ID;
++using Terraria.ModLoader;
+ 
+ namespace Terraria.GameContent;
+ 
+@@ -295,8 +_,11 @@
+ 
+ 		int numToTransfer = t.NumToTransfer;
+ 		if (numToTransfer != 0) {
++			/* TML: Use StackItems so OnStack hook fires.
+ 			src.stack -= numToTransfer;
+ 			dst.stack += numToTransfer;
++			*/
++			ItemLoader.StackItems(dst.inner, src.inner, out _, numToTransfer: numToTransfer);
+ 			if (src.stack <= 0)
+ 				src.TurnToAir();
+ 
