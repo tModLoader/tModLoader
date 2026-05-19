@@ -41,7 +41,7 @@
  	public int TalkNPCType {
  		get {
  			if (LocalPlayer.talkNPC == -1)
-@@ -19,15 +_,48 @@
+@@ -19,15 +_,49 @@
  		}
  	}
  
@@ -58,7 +58,8 @@
  
 +	/// <summary>
 +	/// The action that happens when the button is clicked such as opening a shop.
-+	/// <br/>Call <see cref="Main.DoNPCPortraitHop()"/> to make the portrait bounce if desired.
++	/// <br/> Call <see cref="Main.DoNPCPortraitHop()"/> to make the portrait bounce if desired.
++	/// <br/> Assign <see cref="Main.npcChatText"/> to show text in the town npc chat panel.
 +	/// </summary>
 +	/// <remarks>If <see cref="GlobalNPC.PreChatButtonClicked(NPC, NPCInteraction)"/> returns false, this method will not be called.</remarks>
  	public abstract void Interact();

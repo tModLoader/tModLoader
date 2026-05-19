@@ -182,7 +182,7 @@ namespace ExampleMod.Content.NPCs
 
 		public override void RegisterChatButtons(NPCInteractionList interactions) {
 			// Here is one way to assign a Shop button to our NPC.
-			// In this example, we are inserting the button at index 0, so it'll be the first button.
+			// In this example, we are inserting the button before the close button, so it'll be the first button.
 			// Since we didn't pass a shop name in NPCInteractions.Shop(), it will default to "Shop".
 			interactions.InsertBefore(NPCInteractions.Shop(), NPCInteractionDatabase.CloseButton);
 		}

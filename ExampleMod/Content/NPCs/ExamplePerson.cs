@@ -338,18 +338,21 @@ namespace ExampleMod.Content.NPCs
 
 			// When the button is clicked, this will run.
 			public override void Interact() {
+				// We can set the text in the chat box by setting Main.npcChatText.
 				Main.npcChatText = AwesomeifyResponseText.Value;
 			}
 		}
 
 		// Here is another example of a custom button that only shows up if the player has a specific item in their inventory.
 		public class UpgradeButton : NPCInteraction {
-			public override string GetText() => UpgradeItemResponseText.Value;
+			public override string GetText() => UpgradeItemButtonText.Value;
 			public override bool Condition() => LocalPlayer.HasItem(ItemID.HiveBackpack);
 			public override void Interact() {
 				SoundEngine.PlaySound(SoundID.Item37); // Reforge/Anvil sound
 
 				Main.npcChatText = UpgradeItemResponseText.Value;
+
+				Main.DoNPCPortraitHop(); // Bounce the npc portrait
 
 				int hiveBackpackItemIndex = LocalPlayer.FindItem(ItemID.HiveBackpack); // Find the location of the item in the player's inventory.
 				var entitySource = TalkNPC.GetSource_GiftOrReward();
@@ -374,7 +377,7 @@ namespace ExampleMod.Content.NPCs
 			}
 		}
 
-		// With OnChatButtonClicked, we can do additional things when any chat button is clicked. The interaction is the type of button that was clicked.
+		// With OnChatButtonClicked, we can do additional things when any chat button is clicked. The interaction is the type of button that was clicked. This is most useful for adding additional logic to existing buttons.
 		public override void OnChatButtonClicked(NPCInteraction interaction) {
 			if (interaction is AwesomeifyButton) {
 				// OnChatButtonClicked only runs for the local player who clicked the button. Any multiplayer functionality will need to be synced with a packet.
