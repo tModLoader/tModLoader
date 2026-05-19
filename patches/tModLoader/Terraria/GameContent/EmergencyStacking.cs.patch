@@ -8,15 +8,14 @@
  
  namespace Terraria.GameContent;
  
-@@ -295,8 +_,10 @@
+@@ -295,8 +_,11 @@
  
  		int numToTransfer = t.NumToTransfer;
  		if (numToTransfer != 0) {
-+			// TML: Use StackItems so OnStack hook fires.
--			src.stack -= numToTransfer;
-+			// src.stack -= numToTransfer;
--			dst.stack += numToTransfer;
-+			// dst.stack += numToTransfer;
++			/* TML: Use StackItems so OnStack hook fires.
+ 			src.stack -= numToTransfer;
+ 			dst.stack += numToTransfer;
++			*/
 +			ItemLoader.StackItems(dst.inner, src.inner, out _, numToTransfer: numToTransfer);
  			if (src.stack <= 0)
  				src.TurnToAir();
