@@ -261,13 +261,15 @@
  	}
  
  	private static void Extractinator(int sourceX, int sourceY)
-@@ -2470,8 +_,8 @@
+@@ -2470,8 +_,10 @@
  		if (worldItem.stack + item.stack > item.maxStack)
  			num = item.maxStack - item.stack;
  
--		worldItem.stack -= num;
--		item.stack += num;
 +		// TML: Use StackItems so OnStack hook fires.
+-		worldItem.stack -= num;
++		// worldItem.stack -= num;
+-		item.stack += num;
++		// item.stack += num;
 +		ItemLoader.StackItems(item, worldItem.inner, out _, numToTransfer: num);
  		if (worldItem.stack <= 0) {
  			worldItem.TurnToAir();
