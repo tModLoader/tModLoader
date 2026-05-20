@@ -18,11 +18,13 @@ public static class MenuLoader
 	internal static readonly MenutML MenutML = new MenutML();
 	internal static readonly MenuJourneysEnd MenuJourneysEnd = new MenuJourneysEnd();
 	internal static readonly MenuOldVanilla MenuOldVanilla = new MenuOldVanilla();
+	internal static readonly MenuBiggerAndBoulder MenuBiggerAndBoulder = new MenuBiggerAndBoulder();
 
 	private static readonly List<ModMenu> menus = new List<ModMenu>() {
 		MenutML,
 		MenuJourneysEnd,
-		MenuOldVanilla
+		MenuOldVanilla,
+		MenuBiggerAndBoulder
 	};
 
 	private static readonly int DefaultMenuCount = menus.Count;
@@ -85,6 +87,11 @@ public static class MenuLoader
 	public static void ActivateOldVanillaMenu()
 	{
 		switchToMenu = MenuOldVanilla;
+	}
+
+	public static void ActivateBiggerAndBoulderMenu()
+	{
+		switchToMenu = MenuBiggerAndBoulder;
 	}
 
 	internal static void UpdateAndDrawModMenu(SpriteBatch spriteBatch, GameTime gameTime, Color color, float logoRotation, float logoScale)

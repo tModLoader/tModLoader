@@ -102,7 +102,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - DrawBlockReplacementIcon return changed from void to bool. Does that affect how the builders toggle works? Did vanilla behavior change? New state bool in logic, and DoStatefulTickSound
 - See updated `toolTipNames[numLines] = "UseMana";` patch. Look into IsSpaceGun and GetManaCost, might need updates. 
 - Double check PlayerLoader.ModifyZoom logic. Seems like there is only 1 callsite now, code was cleaned up?
-- What is Main.boulderLogo? Seems like MenuLoader needs to be updated with a new vanilla menu option?
 - There are new music tracks and some might have been moved. Update SceneEffectPriority enum docs and double check that they are correct for both methods.
 - DrawPlayer_14_2_GlassSlipperSparkles gone?
 - Need to find where ProjectileLoader.DrawHeldProjInFrontOfHeldItemAndArms (ModProjectile.DrawHeldProjInFrontOfHeldItemAndArms) should go. PlayerDrawSet removed heldProjOverHand and there are new fields as well. Seems like `SelectedDrawnProjectile.drawLayer == 8` replaced it in DrawPlayer_31_ProjectileOverArm? ProjectileDrawLayerID.HeldProjOverHand exists.
