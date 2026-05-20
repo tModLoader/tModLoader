@@ -624,6 +624,47 @@
  					break;
  				}
  			}
+@@ -2910,7 +_,7 @@
+ 			}
+ 			case 94: {
+ 				string text6 = reader.ReadString();
+-				reader.ReadInt32();
++				int idincommand = reader.ReadInt32();
+ 				int num254 = (int)reader.ReadSingle();
+ 				reader.ReadSingle();
+ 				if (DebugOptions.enableDebugCommands) {
+@@ -2921,6 +_,31 @@
+ 						DebugOptions.Shared_ServerPing = num254;
+ 						DebugNetworkStream.Latency = (uint)(num254 / 2);
+ 					}
++					if (text6 == "/quickload-clientprobe") {
++						if (Main.netMode == 2)
++							NetMessage.SendData(MessageID.DevCommands, -1, whoAmI, NetworkText.FromLiteral(text6), whoAmI);
++						else if (Netplay.ServerIPText == "127.0.0.1")
++							NetMessage.SendData(MessageID.DevCommands, -1, -1, NetworkText.FromLiteral("/quickload-clientresp " + QuickLoad.Serialize(new QuickLoad.JoinWorld().WithCurrentState())), idincommand);
++
++						break;
++					}
++					if (text6.StartsWith("/quickload-clientresp ")) {
++						if (Main.netMode == 2) {
++							NetMessage.SendData(MessageID.DevCommands, idincommand, -1, NetworkText.FromLiteral(text6));
++							break;
++						}
++
++						var json = text6.Substring("/quickload-clientresp ".Length);
++						var config = (QuickLoad.JoinWorld)QuickLoad.Deserialize(json);
++						QuickLoad hostConfig;
++						if (QuickLoad.TryRead(out hostConfig) && hostConfig is QuickLoad.JoinWorld) {
++							var hostJoinConfig = (QuickLoad.JoinWorld)hostConfig;
++							hostJoinConfig.ExtraClients.Add(config);
++							QuickLoad.Set(hostJoinConfig);
++							ChatHelper.DisplayMessage(NetworkText.FromLiteral("/quickload added " + Path.GetFileName(config.PlayerPath)), new Color(250, 250, 0), Main.maxPlayers);
++						}
++						break;
++					}
+ 				}
+ 
+ 				break;
 @@ -3227,7 +_,16 @@
  				break;
  			case 117: {
