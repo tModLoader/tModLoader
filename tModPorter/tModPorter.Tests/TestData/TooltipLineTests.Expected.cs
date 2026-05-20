@@ -30,10 +30,10 @@ public class TooltipLineTests
 
 		DrawableTooltipLine drawableTooltipLine = new DrawableTooltipLine(line, 0, 0, 0, Color.White);
 #if COMPILE_ERROR
-		drawableTooltipLine.IsModifier/* tModPorter Note: Removed. Set Color = Terraria.ID.Colors.PrefixGood instead */ = true;
-		drawableTooltipLine.IsModifierBad/* tModPorter Note: Removed. Set Color = Terraria.ID.Colors.PrefixBad instead */ = false;
-		drawableTooltipLine.Color = null;
+		_ = drawableTooltipLine.IsModifier/* tModPorter Note: Removed. Set Color = Terraria.ID.Colors.PrefixGood instead */ == true;
+		_ = drawableTooltipLine.IsModifierBad/* tModPorter Note: Removed. Set Color = Terraria.ID.Colors.PrefixBad instead */ == false;
+		_ = drawableTooltipLine.Color == null;
 #endif
-		drawableTooltipLine.Color = Color.White;
+		_ = drawableTooltipLine.Color == Color.White;
 	}
 }
