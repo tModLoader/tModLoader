@@ -125,7 +125,7 @@
  				ReadAccessoryVisibility(reader, player18.hideVisibleAccessory);
  				player18.hideMisc = reader.ReadByte();
  				player18.hairColor = reader.ReadRGB();
-@@ -325,9 +_,11 @@
+@@ -325,9 +_,12 @@
  			case 5: {
  				int num35 = reader.ReadByte();
  				int num36 = reader.ReadInt16();
@@ -134,14 +134,14 @@
  				int prefixWeWant2 = reader.ReadByte();
  				int type4 = reader.ReadInt16();
 +				*/
++				Item item = ItemIO.Receive(reader, readStack: true);
  				BitsByte bitsByte3 = reader.ReadByte();
  				bool favorited = bitsByte3[0];
  				bool flag2 = bitsByte3[1];
-@@ -341,10 +_,13 @@
+@@ -341,10 +_,12 @@
  				lock (player2) {
  					PlayerItemSlotID.SlotReference slot = new PlayerItemSlotID.SlotReference(player2, num36);
  					PlayerItemSlotID.SlotReference slotReference = new PlayerItemSlotID.SlotReference(Main.clientPlayer, num36);
-+					Item item = ItemIO.Receive(reader, readStack: true);
 +					/*
  					Item item = new Item();
  					item.SetDefaults(type4);
