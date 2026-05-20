@@ -2005,10 +2005,9 @@
  		Mount.Initialize();
  		Minecart.Initialize();
  		CacheSupportedDisplaySizes();
-+		ModLoader.ModLoader.OnSuccessfulLoad += () => {
--		QuickLoad.OnContentLoaded();
-+			QuickLoad.OnContentLoaded();
-+		};
++		/* Moved to QuickLoad.Load to run after mods
+ 		QuickLoad.OnContentLoaded();
++		*/
  	}
  
  	private IEnumerator LoadMusic_InSteps()
