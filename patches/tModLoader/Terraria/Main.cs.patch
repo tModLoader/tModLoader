@@ -425,6 +425,17 @@
  	public static bool[] projPet = new bool[ProjectileID.Count];
  	public static float demonTorch = 1f;
  	public static int demonTorchDir = 1;
+@@ -763,8 +_,8 @@
+ 	public static float masterColor = 1f;
+ 	public static int masterColorDir = 1;
+ 	public static bool placementPreview = true;
+-	private static SceneMetrics _cameraSceneMetrics = new SceneMetrics();
++	internal static SceneMetrics _cameraSceneMetrics = new SceneMetrics();
+-	private static SceneMetrics _playerSceneMetrics = new SceneMetrics();
++	internal static SceneMetrics _playerSceneMetrics = new SceneMetrics();
+ 	private static bool _usingSeparateCameraSceneMetrics;
+ 	public static SceneState SceneState = new SceneState();
+ 	public const int maxStars = 400;
 @@ -788,8 +_,15 @@
  	public static int fadeCounter;
  	public static float invAlpha = 1f;
