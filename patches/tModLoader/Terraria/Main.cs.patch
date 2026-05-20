@@ -2001,6 +2001,17 @@
  
  	protected IEnumerator LoadContent_Deferred()
  	{
+@@ -9844,7 +_,9 @@
+ 		Mount.Initialize();
+ 		Minecart.Initialize();
+ 		CacheSupportedDisplaySizes();
++		ModLoader.ModLoader.OnSuccessfulLoad += () => {
+-		QuickLoad.OnContentLoaded();
++			QuickLoad.OnContentLoaded();
++		};
+ 	}
+ 
+ 	private IEnumerator LoadMusic_InSteps()
 @@ -10311,6 +_,9 @@
  
  				if (SceneMetrics.ActiveMusicBox == 99)
