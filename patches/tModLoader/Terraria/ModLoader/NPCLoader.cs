@@ -568,10 +568,10 @@ public static class NPCLoader
 		}
 	}
 
-	public static void BossLoot(NPC npc, ref string name, ref int potionType)
+	public static void BossLoot(NPC npc, ref string name, ref int potionType, ref int potionStack, ref int heartStack)
 	{
 		npc.ModNPC?.BossLoot(ref name, ref potionType);
-		npc.ModNPC?.BossLoot(ref potionType);
+		npc.ModNPC?.BossLoot(ref potionType, ref potionStack, ref heartStack);
 	}
 
 	private static HookList HookCanFallThroughPlatforms = AddHook<Func<NPC, bool?>>(g => g.CanFallThroughPlatforms);

@@ -456,7 +456,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	/// Allows you to customize what happens when this boss dies, as well as letting you modify the type of potion it drops.
 	/// <para/> Called in single player or on the server only.
 	/// </summary>
-	public virtual void BossLoot(ref int potionType)
+	public virtual void BossLoot(ref int potionType, ref int potionStack, ref int heartStack)
 	{
 	}
 
