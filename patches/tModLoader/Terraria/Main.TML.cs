@@ -49,6 +49,10 @@ public partial class Main
 	/// </summary>
 	public static int worldEventUpdates;
 	private double _partialWorldEventUpdates = 0f;
+	/// <summary>
+	/// The NPCInteractionDatabase instance for registering chat buttons to NPCs (and signs).
+	/// </summary>
+	public static NPCInteractionDatabase NPCInteractionDB;
 
 	public static List<TitleLinkButton> tModLoaderTitleLinks = new List<TitleLinkButton>();
 

@@ -79,7 +79,7 @@ Once all patches are fixed, these items need to be fixed or double checked:
   - "This is unused, replaced with this.ArmorPenetration." patch might be incorrect as well. Nearby switch table also changed a lot, might need to apply them elsewhere.
 - Vanilla CanHavePrefixes logic changed, might be able to use it rather than tml changes.
   - #StackablePrefixWeapons needs to be searched for and removed
-- Item Shimmer/Update/CheckLavaDeath/MoveInWorld/GetPickedUpByMonsters_Special/FindOwner/getRect/GetShimmered/CombineWithNearbyItems/related methods have moved to World Item. Need to move docs/patches over.
+- Item Shimmer/CheckLavaDeath/GetPickedUpByMonsters_Special/FindOwner/getRect/GetShimmered/CombineWithNearbyItems/related methods have moved to World Item. Need to move docs/patches over.
 - ModPylon.DrawMapIcon needs to support new vanilla options (DrawClamped when fullscreen it seems.)
 - ItemSlot has new flip parameter, what is it used for? PreDrawInInventory needs flip parameter. (and itemFade parameter? And secondColor?)
 - "// Sound is played on animation start #ItemTimeOnAllClients" comments around "SoundEngine.PlaySound(item6.UseSound" in MessageBuffer's `ShotAnimationAndSound` code. ShotAnimationAndSound was renamed, we might need to verify that this is still fixed in tmod.

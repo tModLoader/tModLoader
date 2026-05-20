@@ -8,6 +8,16 @@
  using Terraria.Utilities;
  
  namespace Terraria.Graphics.Light;
+@@ -144,6 +_,9 @@
+ 
+ 	public Vector3 GetColor(int x, int y)
+ 	{
++		if (Testing.DebugOptions.devLightTilesCheat)
++			return Vector3.One;
++
+ 		if (x < _expandedRectLeft || x >= _expandedRectRight || y < _expandedRectTop || y >= _expandedRectBottom)
+ 			return Vector3.Zero;
+ 
 @@ -581,6 +_,7 @@
  		num3 = Utils.Clamp(_expandedRectTop, 5, Main.maxTilesY - 1);
  		num4 = Utils.Clamp(_expandedRectBottom, 5, Main.maxTilesY - 1);
@@ -24,6 +34,29 @@
  			for (int n = num3; n < num4; n++) {
  				LightingState lightingState2 = array3[n - _expandedRectTop];
  				Tile tile = Main.tile[m, n];
+@@ -671,6 +_,12 @@
+ 		if (!Main.gamePaused && !CaptureManager.Instance.IsCapturing)
+ 			_tempLights.Clear();
+ 
++		if (Testing.DebugOptions.devLightTilesCheat) {
++			Main.renderCount = 1;
++			TimeLogger.LightingInit.AddTime(fromTimestamp);
++			return;
++		}
++
+ 		_minX += _expandedRectLeft;
+ 		_maxX += _expandedRectLeft;
+ 		_minY += _expandedRectTop;
+@@ -688,6 +_,9 @@
+ 
+ 	private void DoColors()
+ 	{
++		if (Testing.DebugOptions.devLightTilesCheat)
++			return;
++
+ 		if (IsColorOrWhiteMode) {
+ 			_blueWave += (float)_blueDir * 0.0001f;
+ 			if (_blueWave > 1f) {
 @@ -761,6 +_,8 @@
  						_wetLightB = 0f;
  						break;

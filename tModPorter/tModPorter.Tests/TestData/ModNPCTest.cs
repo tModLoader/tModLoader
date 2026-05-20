@@ -49,6 +49,7 @@ public class ModNPCTest : ModNPC
 	}
 
 	public override void OnChatButtonClicked(bool firstButton, ref bool shop) { /* Empty */ }
+	public override void OnChatButtonClicked(bool firstButton, ref string shopName) { /* Empty */ }
 	public override void SetupShop(Chest shop, ref int nextSlot) { }
 
 	public override void HitEffect(int hitDirection, double damage) { }

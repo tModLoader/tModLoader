@@ -163,10 +163,6 @@ namespace ExampleMod.Content.NPCs.TownPets
 			return chat;
 		}
 
-		public override void SetChatButtons(ref string button, ref string button2) {
-			button = Language.GetTextValue("UI.PetTheAnimal"); // Automatically translated to say "Pet"
-		}
-
 		public override bool PreAI() {
 			// If your Town Pet can sit in chairs with NPCID.Sets.CannotSitOnFurniture[Type] = false
 			// We want to move the Town NPC up visually to match the height of the chair.

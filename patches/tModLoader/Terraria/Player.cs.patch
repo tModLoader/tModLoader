@@ -1376,8 +1376,13 @@
  
  	public bool CanUseBootFlyingAbilities => !isPerformingJump_DownDash;
  
-@@ -2388,6 +_,11 @@
+@@ -2386,8 +_,16 @@
+ 		}
+ 	}
  
++	/// <summary>
++	/// The index in <see cref="Main.npc"/> of the NPC the player is speaking to.
++	/// </summary>
  	public int talkNPC { get; private set; }
  
 +	/// <summary>
@@ -8356,13 +8361,18 @@
  			WorldItem obj = Main.item[num];
  			obj.velocity.Y = (float)Main.rand.Next(-20, 1) * 0.2f;
  			obj.velocity.X = (float)Main.rand.Next(-20, 21) * 0.2f;
-@@ -44182,6 +_,9 @@
+@@ -44180,8 +_,14 @@
+ 		}
+ 	}
  
++	private Player _clientClone;
  	public Player clientClone(Player clonePlayer)
  	{
 +		// Disable cloning until the end of the method.
 +		using var _disableItemCLone = new Item.DisableCloneMethod("Item.Clone is bad for performance, and should not be called during Player.clientClone or ModPlayer.CopyClientStateTo. Use Item.CopyNetStateTo instead");
 +
++		if(_clientClone == null)
++			clonePlayer = Main.clientPlayer = new Player();
  		clonePlayer.zone1 = zone1;
  		clonePlayer.zone2 = zone2;
  		clonePlayer.zone3 = zone3;
