@@ -74,12 +74,17 @@ public static class MenuLoader
 		if (LastSelectedModMenu == MenuOldVanilla.FullName) {
 			Main.instance.playOldTile = true; // If the previous menu was the 1.3.5.3 one, automatically reactivate it.
 		}
+		if (LastSelectedModMenu == MenuBiggerAndBoulder.FullName) {
+			Main.instance.boulderLogo = true;
+		}
 
 		switchToMenu = MenutML;
 		if (ModContent.TryFind(LastSelectedModMenu, out ModMenu value) && value.IsAvailable)
 			switchToMenu = value;
 		if (LastSelectedModMenu == MenuJourneysEnd.FullName)
 			switchToMenu = MenuJourneysEnd;
+		if (LastSelectedModMenu == MenuBiggerAndBoulder.FullName)
+			switchToMenu = MenuBiggerAndBoulder;
 
 		loading = false;
 	}
