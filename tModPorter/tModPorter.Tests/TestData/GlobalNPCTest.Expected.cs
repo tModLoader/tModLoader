@@ -66,5 +66,5 @@ public class GlobalNPCTest : GlobalNPC
 		if (spawner.waterTile) { }
 	}
 	public override void OnChatButtonClicked(NPC npc, NPCInteraction interaction) { }
-	public override bool PreChatButtonClicked(NPC npc, NPCInteraction interaction) { }
+	public override bool PreChatButtonClicked(NPC npc, NPCInteraction interaction) => true;
 }

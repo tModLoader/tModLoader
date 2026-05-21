@@ -53,5 +53,5 @@ public class GlobalNPCTest : GlobalNPC
 		if (spawnInfo.Water) { }
 	}
 	public override void OnChatButtonClicked(NPC npc, bool firstButton) { }
-	public override void PreChatButtonClicked(NPC npc, bool firstButton) { }
+	public override bool PreChatButtonClicked(NPC npc, bool firstButton) => true;
 }
