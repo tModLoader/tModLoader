@@ -603,5 +603,7 @@ public static partial class Config
 		RenameInstanceField("Terraria.ModLoader.TooltipLine", "OverrideColor", "Color");
 
 		RenameType(from: "Terraria.ModLoader.NPCSpawnInfo", to: "Terraria.NPC+Spawner");
+
+		ChangeHookSignature("Terraria.ModLoader.ModNPC", "BossLoot");
 	}
 }
