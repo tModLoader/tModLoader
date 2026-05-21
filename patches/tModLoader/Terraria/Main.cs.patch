@@ -888,15 +888,17 @@
  	public static int SmartInteractProj;
  	public static bool SmartInteractPotionOfReturn;
  	public static List<Microsoft.Xna.Framework.Point> SmartInteractTileCoords = new List<Microsoft.Xna.Framework.Point>();
-@@ -1986,7 +_,7 @@
+@@ -1986,8 +_,8 @@
  	public static bool _shouldUseWindyDayMusic = false;
  	public static bool _shouldUseStormMusic = false;
  	private int lastMusicPlayed = -1;
 -	private bool playOldTile;
 +	public bool playOldTile;
- 	private bool boulderLogo;
+-	private bool boulderLogo;
++	public bool boulderLogo;
  	private static TitleMusicStyle titleMusicStyle = TitleMusicStyle.Current;
  	private static TitleMusicStyle titleMusicStyleRandom = TitleMusicStyle.Current;
+ 	private static float _minWind = 0.34f;
 @@ -2004,12 +_,16 @@
  	public static float ambientLavaY = -1f;
  	public static float ambientLavaStrength;
@@ -5729,7 +5731,7 @@
  			if (starGame)
  				playOldTile = false;
  		}
-@@ -41738,12 +_,17 @@
+@@ -41738,20 +_,30 @@
  				logoScaleSpeed -= 1f;
  		}
  
@@ -5737,8 +5739,11 @@
 +
  		Microsoft.Xna.Framework.Color color2 = new Microsoft.Xna.Framework.Color((byte)((float)(int)color.R * ((float)LogoA / 255f)), (byte)((float)(int)color.G * ((float)LogoA / 255f)), (byte)((float)(int)color.B * ((float)LogoA / 255f)), (byte)((float)(int)color.A * ((float)LogoA / 255f)));
  		Microsoft.Xna.Framework.Color color3 = new Microsoft.Xna.Framework.Color((byte)((float)(int)color.R * ((float)LogoB / 255f)), (byte)((float)(int)color.G * ((float)LogoB / 255f)), (byte)((float)(int)color.B * ((float)LogoB / 255f)), (byte)((float)(int)color.A * ((float)LogoB / 255f)));
- 		if (noTrapsWorld)
+-		if (noTrapsWorld)
++		if (noTrapsWorld) {
  			boulderLogo = true;
++			MenuLoader.ActivateBiggerAndBoulderMenu();
++		}
  
 +		/*
  		if (playOldTile) {
@@ -5747,7 +5752,10 @@
  			spriteBatch.Draw(TextureAssets.Logo3.Value, new Vector2(screenWidth / 2, 100f), new Microsoft.Xna.Framework.Rectangle(0, 0, TextureAssets.Logo.Width(), TextureAssets.Logo.Height()), color2, logoRotation, new Vector2(TextureAssets.Logo.Width() / 2, TextureAssets.Logo.Height() / 2), logoScale, SpriteEffects.None, 0f);
  			spriteBatch.Draw(TextureAssets.Logo4.Value, new Vector2(screenWidth / 2, 100f), new Microsoft.Xna.Framework.Rectangle(0, 0, TextureAssets.Logo.Width(), TextureAssets.Logo.Height()), color3, logoRotation, new Vector2(TextureAssets.Logo.Width() / 2, TextureAssets.Logo.Height() / 2), logoScale, SpriteEffects.None, 0f);
  		}
-@@ -41751,7 +_,7 @@
++		/*
+ 		else if (boulderLogo) {
++		*/
++		else if (MenuLoader.MenuBiggerAndBoulder.IsSelected) {
  			spriteBatch.Draw(TextureAssets.Logo5.Value, new Vector2(screenWidth / 2, 100f), new Microsoft.Xna.Framework.Rectangle(0, 0, TextureAssets.Logo.Width(), TextureAssets.Logo.Height()), color2, logoRotation, new Vector2(TextureAssets.Logo.Width() / 2, TextureAssets.Logo.Height() / 2), logoScale, SpriteEffects.None, 0f);
  			spriteBatch.Draw(TextureAssets.Logo6.Value, new Vector2(screenWidth / 2, 100f), new Microsoft.Xna.Framework.Rectangle(0, 0, TextureAssets.Logo.Width(), TextureAssets.Logo.Height()), color3, logoRotation, new Vector2(TextureAssets.Logo.Width() / 2, TextureAssets.Logo.Height() / 2), logoScale, SpriteEffects.None, 0f);
  		}
