@@ -2083,7 +2083,7 @@
  	{
  		int stack = Main.rand.Next(5, 16);
  		int num = 28;
-@@ -65859,8 +_,14 @@
+@@ -65859,8 +_,16 @@
  		else if (type == 398)
  			num = 3544;
  
