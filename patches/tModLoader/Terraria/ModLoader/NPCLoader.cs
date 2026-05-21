@@ -567,10 +567,14 @@ public static class NPCLoader
 			g.ModifyGlobalLoot(globalLoot);
 		}
 	}
-
-	public static void BossLoot(NPC npc, ref string name, ref int potionType, ref int potionStack, ref int heartStack)
+	[Obsolete("BossLoot has now parameters to control the amount of potions and hearts.")]
+	public static void BossLoot(NPC npc, ref string name, ref int potionType)
 	{
 		npc.ModNPC?.BossLoot(ref name, ref potionType);
+		npc.ModNPC?.BossLoot(ref potionType);
+	}
+	public static void BossLoot(NPC npc, ref string name, ref int potionType, ref int potionStack, ref int heartStack)
+	{
 		npc.ModNPC?.BossLoot(ref potionType, ref potionStack, ref heartStack);
 	}
 
