@@ -24,7 +24,7 @@ public class ModKeybind // We could make this a ModType later
 	{
 		Mod = mod;
 		Name = name;
-		DefaultBinding = defaultBinding;
+		DefaultBinding = defaultBinding ?? string.Empty;
 		DisplayName = Language.GetOrRegister($"Mods.{Mod.Name}.Keybinds.{Name}.{nameof(DisplayName)}", () => Regex.Replace(Name, "([A-Z])", " $1").Trim());
 	}
 
