@@ -575,7 +575,7 @@ public static class NPCLoader
 		npc.ModNPC?.BossLoot(ref potionType);
 	}
 
-	public static void BossLoot(NPC npc, ref string name, ref int potionType, ref int potionStack, ref int heartStack)
+	public static void BossLoot(NPC npc, ref int potionType, ref int potionStack, ref int heartStack)
 	{
 		npc.ModNPC?.BossLoot(ref potionType, ref potionStack, ref heartStack);
 	}
