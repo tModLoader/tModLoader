@@ -2039,7 +2039,7 @@
  	{
  		if (type == compareItem.type && stack == compareItem.stack)
  			return prefix != compareItem.prefix;
-@@ -48780,10 +_,19 @@
+@@ -48780,27 +_,44 @@
  		return true;
  	}
  
@@ -2060,8 +2060,16 @@
  
  		return true;
  	}
-@@ -48796,11 +_,19 @@
- 		return false;
+ 
+ 	public static bool CanStack(Item item1, Item item2)
+ 	{
+-		if (item1.type == item2.type)
+-			return item1.prefix == item2.prefix;
++		if (item1.type != item2.type || item1.prefix != item2.prefix)
++			return false;
+ 
+-		return false;
++		return ItemLoader.CanStack(item1, item2);
  	}
  
 +	/// <summary>

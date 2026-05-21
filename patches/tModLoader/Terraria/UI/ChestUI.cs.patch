@@ -18,12 +18,11 @@
  			}
  		}
  		else if (player.chest == -2) {
-@@ -404,12 +_,18 @@
+@@ -404,12 +_,17 @@
  			if (chest.item[i].stack >= chest.item[i].maxStack || !Item.CanStack(player.inventory[playerInventorySlot], chest.item[i]))
  				continue;
  
-+			if (!ItemLoader.TryStackItems(chest.item[i], player.inventory[playerInventorySlot], out _))
-+				continue;
++			ItemLoader.StackItems(chest.item[i], player.inventory[playerInventorySlot], out _);
 +
 +			/* #OnStackHook
  			int num = player.inventory[playerInventorySlot].stack;
@@ -37,12 +36,11 @@
  			SoundEngine.PlaySound(7);
  			if (player.inventory[playerInventorySlot].stack <= 0) {
  				player.inventory[playerInventorySlot].SetDefaults(0);
-@@ -433,12 +_,18 @@
+@@ -433,12 +_,17 @@
  	{
  		for (int i = 0; i < chest.maxItems; i++) {
  			if (chest.item[i].stack < chest.item[i].maxStack && Item.CanStack(player.inventory[p], chest.item[i])) {
-+				if (!ItemLoader.TryStackItems(chest.item[i], player.inventory[p], out _))
-+					continue;
++				ItemLoader.StackItems(chest.item[i], player.inventory[p], out _);
 +
 +				/* #OnStackHook
  				int num = player.inventory[p].stack;
@@ -85,12 +83,11 @@
  					if (array[item5.Key].stack == 0)
  						array[item5.Key] = new Item();
  
-@@ -760,12 +_,17 @@
+@@ -760,12 +_,16 @@
  				if (!Item.CanStack(inventory[num2], item[i]) || ItemSlot.PickItemMovementAction(inventory, context, num2, item[i]) == -1)
  					continue;
  
-+				if (!ItemLoader.TryStackItems(inventory[num2], item[i], out _)) // #StackablePrefixWeapons, check moved here
-+					continue;
++				ItemLoader.StackItems(inventory[num2], item[i], out _); // #StackablePrefixWeapons, check moved here
 +
 +				/* #OnStackHook
  				int num3 = item[i].stack;
@@ -103,16 +100,6 @@
  				flag = true;
  				if (inventory[num2].stack == inventory[num2].maxStack) {
  					if (Main.netMode == 1 && Main.player[Main.myPlayer].chest > -1)
-@@ -1006,6 +_,9 @@
- 				if (item2[i].stack >= item2[i].maxStack || !Item.CanStack(item, item2[i]))
- 					continue;
- 
-+				if (!ItemLoader.CanStack(item2[i], item))
-+					continue;
-+
- 				int num = item.stack;
- 				if (item.stack + item2[i].stack > item2[i].maxStack)
- 					num = item2[i].maxStack - item2[i].stack;
 @@ -1015,8 +_,12 @@
  					break;
  				}
