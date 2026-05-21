@@ -109,10 +109,9 @@ public static class ItemLoader
 		lock (Main.itemAnimationsRegistered) {
 			Array.Resize(ref Main.itemAnimations, ItemCount);
 			Main.InitializeItemAnimations();
-
-			// TML: Reset EmergencyStacking cache so it picks up modded items.
-			EmergencyStacking.ResetGroupLookup();
 		}
+
+		EmergencyStacking.ResetGroupLookup();
 
 		if (unloading)
 			Array.Resize(ref Main.anglerQuestItemNetIDs, vanillaQuestFishCount);

@@ -2039,7 +2039,7 @@
  	{
  		if (type == compareItem.type && stack == compareItem.stack)
  			return prefix != compareItem.prefix;
-@@ -48780,27 +_,48 @@
+@@ -48780,27 +_,44 @@
  		return true;
  	}
  
@@ -2069,10 +2069,6 @@
 +			return false;
  
 -		return false;
-+		// TML: Forward to ItemLoader so modded CanStack hooks are checked everywhere
-+		// that calls this method. This centralizes mod stacking rules into the vanilla
-+		// stackability check rather than requiring every call site to also call
-+		// ItemLoader.CanStack separately.
 +		return ItemLoader.CanStack(item1, item2);
  	}
  

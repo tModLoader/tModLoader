@@ -8,27 +8,19 @@
  
  namespace Terraria.GameContent;
  
-@@ -140,8 +_,13 @@
+@@ -140,7 +_,7 @@
  				item.StackingPriority = count--;
  			}
  
 -			_groupLookup = (from t in Enumerable.Range(0, ItemID.Count)
--							select PreservationOrder.First((Group g) => g.Contains(ContentSamples.ItemsByType[t]))).ToArray();
-+			_groupLookup = new Group[ItemLoader.ItemCount];
-+			for (int t = 0; t < _groupLookup.Length; t++) {
-+				if (ContentSamples.ItemsByType.TryGetValue(t, out var item))
-+					_groupLookup[t] = PreservationOrder.First((Group g) => g.Contains(item));
-+				else
-+					_groupLookup[t] = Group.Default;
-+			}
++			_groupLookup = (from t in Enumerable.Range(0, ItemLoader.ItemCount)
+ 							select PreservationOrder.First((Group g) => g.Contains(ContentSamples.ItemsByType[t]))).ToArray();
  
  			return _groupLookup;
- 		}
-@@ -149,6 +_,9 @@
+@@ -149,6 +_,8 @@
  
  	public static bool HasPendingTransferInvolving(WorldItem item) => HasPendingTransfer[item.whoAmI];
  
-+	// TML: Ensure GroupLookup is rebuilt after mod loading/unloading.
 +	public static void ResetGroupLookup() => _groupLookup = null;
 +
  	public static void ClearPendingTransfersInvolving(WorldItem item)
