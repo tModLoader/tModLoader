@@ -2093,8 +2093,10 @@
  		int num2 = Main.rand.Next(5) + 5;
 +
 +		NPCLoader.BossLoot(this, ref typeName, ref num, ref stack, ref num2);
++		if (stack > 0 && num > 0) {
++			Item.NewItem(GetItemSource_Loot(), (int)position.X, (int)position.Y, width, height, num, stack);
++		}
 +
-+		Item.NewItem(GetItemSource_Loot(), (int)position.X, (int)position.Y, width, height, num, stack);
 +		// int num2 = Main.rand.Next(5) + 5;
  		for (int i = 0; i < num2; i++) {
  			Item.NewItem(GetItemSource_Loot(), (int)position.X, (int)position.Y, width, height, 58);

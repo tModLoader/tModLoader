@@ -452,10 +452,12 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	public virtual void BossLoot(ref string name, ref int potionType)
 	{
 	}
+
 	[Obsolete("BossLoot has now parameters to control the amount of potions and hearts.")]
 	public virtual void BossLoot(ref int potionType)
 	{
 	}
+
 	/// <summary>
 	/// Allows you to customize what happens when this boss dies, as well as letting you modify the type of potion it drops, the amount of potions and the amount of hearts.
 	/// <para/> Called in single player or on the server only.
