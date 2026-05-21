@@ -118,4 +118,6 @@ public class ModNPCTest : ModNPC
 
 		NPCID.Sets.SearchSpawnSlotsInReverse[Type] = true;
 	}
+
+	public override void BossLoot(ref int potionType, ref int potionStack, ref int heartStack) { }
 }

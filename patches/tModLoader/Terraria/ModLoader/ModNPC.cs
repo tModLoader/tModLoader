@@ -447,16 +447,21 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	{
 	}
 
-	[Obsolete("Use BossLoot(ref int potionType) instead. The name can be changed by modifying DeathMessage")]
+	[Obsolete("Use BossLoot(ref int potionType) instead. The name can be changed by modifying DeathMessage", error: true)]
 	public virtual void BossLoot(ref string name, ref int potionType)
 	{
 	}
 
+	[Obsolete("BossLoot has now parameters to control the amount of potions and hearts.", error: true)]
+	public virtual void BossLoot(ref int potionType)
+	{
+	}
+
 	/// <summary>
-	/// Allows you to customize what happens when this boss dies, as well as letting you modify the type of potion it drops.
+	/// Allows you to customize what happens when this boss dies, as well as letting you modify the type of potion it drops, the amount of potions, and the amount of hearts.
 	/// <para/> Called in single player or on the server only.
 	/// </summary>
-	public virtual void BossLoot(ref int potionType)
+	public virtual void BossLoot(ref int potionType, ref int potionStack, ref int heartStack)
 	{
 	}
 

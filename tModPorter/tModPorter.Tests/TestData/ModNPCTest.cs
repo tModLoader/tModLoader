@@ -91,4 +91,6 @@ public class ModNPCTest : ModNPC
 
 		NPCID.Sets.SpawnFromLastEmptySlot[Type] = true;
 	}
+
+	public override void BossLoot(ref int potionType) { }
 }
