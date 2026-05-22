@@ -711,24 +711,31 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	}
 
 	/// <summary>
-	/// Allows you to determine if something can happen whenever a button is clicked on this NPC's chat window. The firstButton parameter tells whether the first button or second button (button and button2 from SetChatButtons) was clicked. Return false to prevent the normal code for this button from running. Returns true by default.
+	/// Allows you to determine if something can happen whenever a button is clicked on this NPC's chat window. Return false to prevent the normal code for this button from running. Returns <see langword="true"/> by default.
 	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="npc"></param>
-	/// <param name="firstButton"></param>
+	/// <param name="interaction">The type of interaction that was clicked.</param>
 	/// <returns></returns>
-	public virtual bool PreChatButtonClicked(NPC npc, bool firstButton)
+	/// <remarks>This hook does not run when interacting with signs.</remarks>
+	public virtual bool PreChatButtonClicked(NPC npc, NPCInteraction interaction)
 	{
 		return true;
 	}
 
+	/// <inheritdoc cref="ModNPC.RegisterChatButtons(NPCInteractionList)"/>
+	public virtual void RegisterChatButtons(NPC npc, NPCInteractionList interactions)
+	{
+	}
+
 	/// <summary>
-	/// Allows you to make something happen whenever a button is clicked on this NPC's chat window. The firstButton parameter tells whether the first button or second button (button and button2 from SetChatButtons) was clicked.
+	/// Allows you to make something happen whenever a button is clicked on this NPC's chat window.
 	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="npc"></param>
-	/// <param name="firstButton"></param>
-	public virtual void OnChatButtonClicked(NPC npc, bool firstButton)
+	/// <param name="interaction">The type of interaction that was clicked.</param>
+	/// <remarks>This hook does not run when interacting with signs.</remarks>
+	public virtual void OnChatButtonClicked(NPC npc, NPCInteraction interaction)
 	{
 	}
 

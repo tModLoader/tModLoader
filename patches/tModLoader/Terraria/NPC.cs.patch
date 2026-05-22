@@ -35,7 +35,7 @@
  	{
  		public static int spawnSpaceX = 2;
  		public static int spawnSpaceY = 3;
-@@ -48,17 +_,44 @@
+@@ -48,18 +_,48 @@
  		public bool dayTime;
  		public bool raining;
  		public int townNPCs;
@@ -78,8 +78,12 @@
 +		/// Whether or not the player is in front of a desert wall or the NPC will spawn near one.
 +		/// </summary>
  		public bool spawnUndergroundDesert;
++		/// <summary>
++		/// Whether Plantera is defeated and the world is in hardmode.
++		/// </summary>
  		public bool hardDungeon;
  		public bool deeperThanRockLayer;
+ 		public bool underGround;
 @@ -83,6 +_,9 @@
  		public bool ZoneMeteor;
  		public bool ZoneGraveyard;
@@ -2082,15 +2086,22 @@
  	{
  		int stack = Main.rand.Next(5, 16);
  		int num = 28;
-@@ -65859,6 +_,8 @@
+@@ -65859,8 +_,14 @@
  		else if (type == 398)
  			num = 3544;
  
-+		NPCLoader.BossLoot(this, ref typeName, ref num);
-+
- 		Item.NewItem(GetItemSource_Loot(), (int)position.X, (int)position.Y, width, height, num, stack);
+-		Item.NewItem(GetItemSource_Loot(), (int)position.X, (int)position.Y, width, height, num, stack);
  		int num2 = Main.rand.Next(5) + 5;
++
++		NPCLoader.BossLoot(this, ref typeName, ref num);
++		NPCLoader.BossLoot(this, ref num, ref stack, ref num2);
++
++		if (stack > 0 && num > 0)
++			Item.NewItem(GetItemSource_Loot(), (int)position.X, (int)position.Y, width, height, num, stack);
++
  		for (int i = 0; i < num2; i++) {
+ 			Item.NewItem(GetItemSource_Loot(), (int)position.X, (int)position.Y, width, height, 58);
+ 		}
 @@ -65876,10 +_,27 @@
  		}
  	}
@@ -2990,6 +3001,15 @@
 +		NPCLoader.GetChat(this, ref result);
  		return result;
  	}
+ 
+@@ -80013,6 +_,8 @@
+ 			return false;
+ 
+ 		NPC nPC = Main.npc[npcIndex];
++		if (nPC.homeless && nPC.ModNPC != null && nPC.ModNPC.TownNPCStayingHomeless)
++			return false;
+ 		if (nPC.homeless && nPC.type != 37 && nPC.type != 368)
+ 			return nPC.type != 453;
  
 @@ -80118,6 +_,11 @@
  	public static void GetMeleeCollisionData(Rectangle victimHitbox, int enemyIndex, ref int specialHitSetter, ref float damageMultiplier, ref Rectangle npcRect)

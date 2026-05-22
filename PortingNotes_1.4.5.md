@@ -13,7 +13,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - ItemSourceID is now static readonly, not a const. Do any other IDs change?
 - We need to add ModItem.SummonPrefix(), add ModPrefix.Summon
 - ShimmerTransforms.IsItemTransformLocked seems to have been split, need to verify RecipeLoader.DecraftAvailable and other logic still applies.
-- Update ModPylon docs to removed danger check from check listing, and remove the ValidTeleportCheck_AnyDanger hook
 - Consider updating FlexibleTileWand.Reload
 - https://github.com/tModLoader/tModLoader/pull/1675 seemed to fix a bug that is apparently now fixed in vanilla. Patches in AWorkshopPublishInfoState deleted. Verify that existing workshop publicity still correctly updates UI without requiring a click.
 - Mount.Dismount now has a ignoreEffect parameter, this might duplicate the skipDust variable used in MountLoader.Dismount. Adjust patches (and docs) accordingly if they should be the same. When is it set? Do modded mounts need to care about when ignoreEffect was true or false?
@@ -33,8 +32,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - TileLoader.IsTileSpelunkable also takes `Main.SceneMetrics.PerspectivePlayer`. These hooks now need a Player parameter, they don't currently have one.
 - TileLoader.IsTileBiomeSightable as well.
 - TileLoader.SpecialDraw (and other tile methods I assume) now takes a TileBatch instead of Main.spriteBatch. What does this affect? How will mods need to change? Why do some methods in TileDrawing still use Main.spriteBatch?
-- Make sure ItemFilters.MiscFilter is properly resizing.
-- Does the new `uLightSource.SetValue(Vector3.Zero);` (`EffectParameter` class) do what `base.Shader.Parameters["uLightSource"]?.SetValue(Vector3.Zero);` used to do? "Allow shaders to omit parameters they don't use, no longer throw exception" (https://github.com/tModLoader/tModLoader/commit/30b2b9b1e3347a1c98ebe6924811ba5e82391dc3). Check ReflectiveArmorShaderData and other usages.
 - ShaderData classes now have `if (Main.dedServ)` checks. Are these overzealous, or do we need to adjust other places or inform modders that shader code might attempt to run on servers.
 - Player.voiceOverride. Currently an sbyte, might need to be an int like the other equipment slot IDs. Also an example would be nice.
 - Need to document ArmorIDs.Face.Sets.DrawInFaceMaskLayer as well
@@ -80,7 +77,7 @@ Once all patches are fixed, these items need to be fixed or double checked:
   - "This is unused, replaced with this.ArmorPenetration." patch might be incorrect as well. Nearby switch table also changed a lot, might need to apply them elsewhere.
 - Vanilla CanHavePrefixes logic changed, might be able to use it rather than tml changes.
   - #StackablePrefixWeapons needs to be searched for and removed
-- Item Shimmer/Update/CheckLavaDeath/MoveInWorld/GetPickedUpByMonsters_Special/FindOwner/getRect/GetShimmered/CombineWithNearbyItems/related methods have moved to World Item. Need to move docs/patches over.
+- Item Shimmer/CheckLavaDeath/GetPickedUpByMonsters_Special/FindOwner/getRect/GetShimmered/CombineWithNearbyItems/related methods have moved to World Item. Need to move docs/patches over.
 - ModPylon.DrawMapIcon needs to support new vanilla options (DrawClamped when fullscreen it seems.)
 - ItemSlot has new flip parameter, what is it used for? PreDrawInInventory needs flip parameter. (and itemFade parameter? And secondColor?)
 - "// Sound is played on animation start #ItemTimeOnAllClients" comments around "SoundEngine.PlaySound(item6.UseSound" in MessageBuffer's `ShotAnimationAndSound` code. ShotAnimationAndSound was renamed, we might need to verify that this is still fixed in tmod.
@@ -99,11 +96,9 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Double check new DoScrollingInInventory logic against PlayerInput.MouseInModdedUI
 - Patches checking ActiveWorldFileData being null and initializing it might be superfluous now. Seems like there were some vanilla changes.
 - MapRenderer class now contains what was Main.mapSectionTexture and mapTarget. Most static fields there should probably be public.
-- New vanilla TooltipLine options. Need to add to docs and decide on name (is there a wiki page as well?): CommonItemTooltip.ItemUnlockedByTeammate, armorPenetration, bonusTagDamage, check for others. Seems like "Social" and "SocialDesc" logic changed, compare tooltips to 1.4.4 and adjust.
 - DrawBlockReplacementIcon return changed from void to bool. Does that affect how the builders toggle works? Did vanilla behavior change? New state bool in logic, and DoStatefulTickSound
 - See updated `toolTipNames[numLines] = "UseMana";` patch. Look into IsSpaceGun and GetManaCost, might need updates. 
 - Double check PlayerLoader.ModifyZoom logic. Seems like there is only 1 callsite now, code was cleaned up?
-- What is Main.boulderLogo? Seems like MenuLoader needs to be updated with a new vanilla menu option?
 - There are new music tracks and some might have been moved. Update SceneEffectPriority enum docs and double check that they are correct for both methods.
 - DrawPlayer_14_2_GlassSlipperSparkles gone?
 - Need to find where ProjectileLoader.DrawHeldProjInFrontOfHeldItemAndArms (ModProjectile.DrawHeldProjInFrontOfHeldItemAndArms) should go. PlayerDrawSet removed heldProjOverHand and there are new fields as well. Seems like `SelectedDrawnProjectile.drawLayer == 8` replaced it in DrawPlayer_31_ProjectileOverArm? ProjectileDrawLayerID.HeldProjOverHand exists.
@@ -121,7 +116,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - GameTipsDisplay patches need to be redone
 - Main.OpenPlayerSelectFromNet changed how our patches can be implemented for invite joining. Need to be reimplemented.
 - DrawColorCodedStringWithShadow methods no longer return Vector2 string size. Is this because of some reason? All patches in ChatManager need to be revisited.
-- Tooltip methods, like MouseText_DrawItemTooltip_GetLinesInfo, seemed to have changed a lot. Revisit patches.
 - Paladin shield patches might have been mixed up. Double Check.
 - Missing Actuator/849 ConsumeItem patch. Is this a vanilla bug or is the stack now consumed elsewhere?
 - New GetItemManaUsageDetails and ItemCheck_PayMana_X methods split mana costs into multiple methods. Should be able to remove a lot of Player.TML.cs patches and use them directly.
@@ -138,11 +132,9 @@ Once all patches are fixed, these items need to be fixed or double checked:
     - In theory it can be restored, since the `_pendingCrafts` queue remains on the client, and changes to `Main.mouseItem` are forbidden while a craft is pending. Documentation needs to note that the craft could be refunded though, so we likely need `OnCraft` hoook to be in `CraftItem_GrantItem`. We could amend the response packet from the server to send the consumed items, at the cost of quite some bandwidth when rapid crafting
 - ItemSlot flow changed a lot. AccCheck no longer exists, replaced by CanEquipAccessoryInSlot?
 - DyeSwap/ModSlotDyeSwap needs new approach
-- Pretty much all OnTileConverted and similar hooks/patches need to be reworked.
 - There are still a lot of places checking for TileID.ClosedDoor that need to be TileLoader.IsClosedDoor.
 - Item192 uses Projectile.kiteSoundPitch. How do we do that?
 - New AmmoID.Sets.IsSpecialist doesn't contain Sand anymore. Is that expected?
-- TileID.Sets.RoomNeeds.CountsAsX is not a Set, but there is also a CountsAsXTypes int[] similar to the old approach. We'll probably want to make the non-set ones private and adjust logic for consistency.
 - Everything in NPCSpawnHelper will need to be checked against any 1.4.5 changes, as well as any new conditions that are still missing.
 - TileSnapshot will need more thought to restore functionality. Commented out erroring code for now.
 - Vanilla now has a NativeLibraries class, conflicting with our own.
@@ -156,6 +148,7 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Make a checklist of all TML hooks and have others QC each method behavior?
 - ItemID.Sets.BonusAttackSpeedMultiplier renamed to BonusMeleeSpeedMultiplier. tModPorter done. (double check that this doesn't only apply to melee weapons. I think it isn't limited currently)
 - Run NPCShopDatabase.Test tests.
+- Player.setBonus is unused by vanilla. We will likely remove it (and comment out UpdateArmorSetsOld since it is misleading) and migrate all ExampleMod set bonuses to the new system. We'll need examples of various common set bonus setups (multiple helments, partial sets, typical head/chest/leg set, etc.)
 
 # New Fields that might need more documentation
 
@@ -172,7 +165,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - TileID.Sets.DontDrawTileSlopes.
 - Player.selectedItem is not a getter property instead of a field. We might need to document selectedItemState and other related new fields.
 - BuffID.Sets.AddBuffTimeAdditivelyToCap. Also need to update Mod/GlobalBuff.ReApply docs to mention AddBuffTimeAdditivelyToCap as a streamlined alternative for this use-case.
-- Mount.DismountOnItemUse and MountID.Sets.CanUseHooks
 - Add docs for new GetItemSettings parameters
 - Main.menuChat
 - Need to fix documentation for various secret and special seeds, like Main.specialSeedWorld. Need to change secret to special in most cases, and fix wiki links.
@@ -188,7 +180,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Many of the unique vanilla hairstyles are no longer available at character creation. Set ModHair.AvailableDuringCharacterCreation to false if you wish to follow suit.
 - SlimeBodyItemDropRule can be applied to any NPCID.Sets.SlimeCanContainItems now and ItemID.Sets.OreDropsFromSlime has been updated to include the alternate ores as well as Hellstone and DesertFossil
 - Magic and Summon prefixes have been split into separate categories
-- Pylons no longer check for "danger". ModPylon.ValidTeleportCheck_AnyDanger removed.
 - Pylons no longer require happiness to be sold. Remove Condition.HappyEnoughToSellPylons from ModPylon.GetNPCShopEntry() to match vanilla.
 - Removed Condition.HappyEnough and Condition.HappyEnoughToSellPylons. Replaced with Condition.CurrentPriceAdjustmentUnder(float priceModifier) and Condition.CurrentPriceAdjustmentOver(float priceModifier).
 - Item.SetDefaults(int Type = 0) no longer exists
@@ -198,7 +189,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Lots of new methods in Utils. Check if any duplicate TML.cs methods.
 - Various text rendering methods have been changed or improved. Investigate new functionality and previous bug fixes.
 - Player.IsAllowedToHoldItems
-- ProjectileID.Sets.HeldProjDoesNotUsePlayerGfxOffY removed. How has this been fixed? I thought it wouldn't be fixed in vanilla.
 - Need to determine if hooks need to act on ModItem or WorldItem. For example: `ItemIO.SendModData(item3, writer);`
   - `public EntityGlobalsEnumerator<TGlobal> Enumerate(IEntityWithGlobals<TGlobal> entity) => new(ForType(entity.Type), entity);` doesn't work as-is for hooks that are now WorldItem. I've changed them to `.Enumerate(item.inner)`, but I'm not positive what design we want for these hooks now. (WorldItem points to Item, but Item doesn't point to WorldItem.)
 - The number3 parameter of the SyncEquipment message seems to have changed meaning. Docs needed.
@@ -225,8 +215,7 @@ Once all patches are fixed, these items need to be fixed or double checked:
 
 # ExampleMod TODOs
 - Verify that ExampleZombieThief still works with changes
-- A temporary compile flag COMPILE_ERROR_TODOS has been added to allow building and testing ExampleMod while some remaining porting decisions need to be made. 
-  - It also is there for HeldProjDoesNotUsePlayerGfxOffY, we need to test each projectile and see if they are correct or if they need additional code.
+- A temporary compile flag COMPILE_ERROR_TODOS has been added to allow building and testing ExampleMod while some remaining porting decisions need to be made.
 
 # Terraria update requests
 
@@ -404,4 +393,3 @@ Longer TODOs that would clutter above
 +	/// Associates a <see cref="TileID.Dressers"/> style with the item type (<see cref="Item.type"/>) that is dropped when the dresser is destroyed.
 +	/// <br/> <see cref="maxDresserTypes"/> elements long.
 +	/// </summary>
-

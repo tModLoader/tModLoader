@@ -266,6 +266,7 @@
 		"RuntimeErrorSilentlyCaughtException": "Silently Caught Exception: ",
 		"RuntimeErrorSeeLogsForFullTrace": "(see {0} for full trace)",
 		"ShopOverflow": "Not all items could fit in the shop!",
+		"UnknownShop": "Unknown shop name: {0}",
 		"PlayerSaveFail": "An error occurred while saving the player",
 		"BackingUpPlayerFile": "Backing up player file",
 		"OpenLogs": "Open Logs",
@@ -692,6 +693,7 @@
 		"TagsCategoryModSide": "Mod Side",
 		"TagsCategoryTModLoaderVersion": "tModLoader Version",
 		"TagsCategoryLanguage": "{$LegacyMenu.103}",
+		"TagsCategoryRating": "Mod Content Rating Flags",
 		// Tag descriptions by Webmilio, Tomat, Solxan, and Setnour6.
 		"TagsContent": "New Content",
 		"TagsContentDescription": "Adds new content (i.e. items, weapons, npcs, etc.) to the game",
@@ -732,6 +734,12 @@
 		"TagsLanguage_PortugueseDescription": "{$TagsLanguage_Description}",
 		"TagsLanguage_GermanDescription": "{$TagsLanguage_Description}",
 		"TagsLanguage_PolishDescription": "{$TagsLanguage_Description}",
+		"TagsRating_AdultsOnly": "Adults Only",
+		"TagsRating_AdultsOnlyDescription": "Contains content that is sexually explicit or graphic and is intended for adults only. Users must affirm that they are at least eighteen years old before they can view content.",
+		"TagsRating_Gore": "Extreme Gore",
+		"TagsRating_GoreDescription": "Contains content that features extreme violence or gore.",
+		"TagsRating_QuestionableContent": "Questionable Content",
+		"TagsRating_QuestionableContentDescription": "Contains mature topics that may not be appropriate for all audiences.",
 
 		// Info Display Pages
 		"NextInfoAccPage": "Next Page",

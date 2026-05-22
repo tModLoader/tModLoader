@@ -29,7 +29,7 @@ internal abstract class DeveloperItem : ModLoaderModItem
 	public override void ModifyTooltips(List<TooltipLine> tooltips)
 	{
 		var line = new TooltipLine(Mod, "DeveloperSetNote", $"{TooltipBrief}Developer Item") {
-			OverrideColor = Color.OrangeRed
+			Color = Color.OrangeRed
 		};
 		tooltips.Add(line);
 	}

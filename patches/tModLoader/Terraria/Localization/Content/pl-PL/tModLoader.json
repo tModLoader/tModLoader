@@ -692,6 +692,7 @@
 		"TagsCategoryModSide": "Typ synchronizacji Modu",
 		"TagsCategoryTModLoaderVersion": "Wersja tModLoadera",
 		// "TagsCategoryLanguage": "{$LegacyMenu.103}",
+		// "TagsCategoryRating": "Mod Content Rating Flags",
 		// Tag descriptions by Webmilio, Tomat, Solxan, and Setnour6.
 		"TagsContent": "Nowa zawartość",
 		"TagsContentDescription": "Dodaje nową zawartość (np. przedmioty, bronie, bloki, NPC, itd.) do gry",
@@ -732,6 +733,12 @@
 		"TagsLanguage_PortugueseDescription": "{$TagsLanguage_Description}",
 		"TagsLanguage_GermanDescription": "{$TagsLanguage_Description}",
 		"TagsLanguage_PolishDescription": "{$TagsLanguage_Description}",
+		// "TagsRating_AdultsOnly": "Adults Only",
+		// "TagsRating_AdultsOnlyDescription": "Contains content that is sexually explicit or graphic and is intended for adults only. Users must affirm that they are at least eighteen years old before they can view content.",
+		// "TagsRating_Gore": "Extreme Gore",
+		// "TagsRating_GoreDescription": "Contains content that features extreme violence or gore.",
+		// "TagsRating_QuestionableContent": "Questionable Content",
+		// "TagsRating_QuestionableContentDescription": "Contains mature topics that may not be appropriate for all audiences.",
 
 		// Info Display Pages
 		"NextInfoAccPage": "Następna strona",
@@ -862,6 +869,11 @@
 		"WorldDontStarve": "W świecie Don't Starve",
 		"WorldNoTraps": "W świecie No Traps",
 		"WorldZenith": "W świecie Zenith",
+		// "WorldSkyblock": "In a Skyblock world",
+		// "SeedVampire": "In a Vampirism world",
+		// "SeedInfected": "In a Purify this world",
+		// "SeedTeamBasedSpawns": "In a Royale with cheese world",
+		// "SeedDualDungeons": "In a Double daring dangers world",
 		"WorldNotDrunk": "Nie w świecie Drunk",
 		"WorldNotRemix": "Nie w świecie Remix",
 		"WorldNotNotTheBees": "Nie w świecie Not the Bees",
@@ -870,6 +882,11 @@
 		"WorldNotDontStarve": "Nie w świecie Don't Starve",
 		"WorldNotNoTraps": "Nie w świecie No Traps",
 		"WorldNotZenith": "Nie w świecie Zenith",
+		// "WorldNotSkyblock": "Not in a Skyblock world",
+		// "SeedNotVampire": "Not in a Vampirism world",
+		// "SeedNotInfected": "Not in a Purify this world",
+		// "SeedNotTeamBasedSpawns": "Not in a Royale with cheese world",
+		// "SeedNotDualDungeons": "Not in a Double daring dangers world",
 
 		"Christmas": "Podczas świąt Bożego Narodzenia",
 		"Halloween": "Podczas Halloween",
@@ -881,7 +898,6 @@
 		"BloodMoon": "Podczas Krwawego Księżyca",
 		"NotSolarEclipse": "Nie podczas zaćmienia Słońca",
 		"NotBloodMoon": "Nie podczas Krwawego Księżyca",
-		"HappyEnough": "Gdy sprzedawca jest wystarczająco zadowolony",
 
 		"DownedKingSlime": "Po pokonaniu Króla Szlamu",
 		"DownedEyeOfCthulhu": "Po pokonaniu Oka Cthulhu",
@@ -963,8 +979,17 @@
 
 		"PlayerCarriesItem": "Gdy gracz ma {0} w swoim ekwipunku",
 		"PlayerCarriesItem2": "Gdy gracz ma {0} lub {1} w ekwipunku",
+		// "PlayerCarriesItem5": "When the player has a {0}, {1}, {2}, {3}, or {4} in their inventory",
 		"NpcIsPresent": "Gdy {0} jest obecny",
 		"IsNpcShimmered": "Gdy sprzedawca jest wariantem migoczącym",
+		// "NotIsNpcShimmered": "When the vendor is not a shimmer variant",
+		// "IsNpcHomeless": "When the vendor is homeless",
+		// "NotIsNpcHomeless": "When the vendor is not homeless",
+		// "BiomeSpreadingItems": "Not in a Remix world, or in a Celebration Mk 10 and not a For the Worthy world",
+		// "BiomeSpreadingItemsWithInfectedSeed": "Not in a Remix world, in or Purify this world, or in a Celebration Mk 10 and not a For the Worthy world",
+		// "JungleORCelebrationMk10ANDNotTheBeesANDNotRemix": "In a Jungle biome, or in a Celebration Mk 10 and Not The Bees wold and not in a Remix world",
+		// "DownedKingSlimeOrEoC": "After defeating King Slime or the Eye of Cthulhu",
+		// "NpcIsPresentOrDownedPlantera": "When the {0} is present or after defeating Plantera",
 
 		"AtleastXHealth": "Kiedy gracz ma co najmniej {0} maksymalnego życia",
 		"AtleastXMana": "Kiedy gracz ma co najmniej {0} maksymalnej many",
@@ -991,7 +1016,8 @@
 		"NightAfterEvilOrHardmode": "W nocy po pokonaniu Pożeracza Światów lub Mózgu Cthulhu, lub w dowolnym momencie w hardmode",
 		"AnglerQuestsFinishedOver": "Kiedy gracz zakończył co najmniej {0} Zadania Rybaka",
 
-		"HappyEnoughForPylons": "Kiedy sprzedawca jest wystarczająco zadowolony, aby sprzedawać pylon",
+		// "CurrentPriceAdjustmentUnder": "When the vendor's price modifier is {0} or less",
+		// "CurrentPriceAdjustmentOver": "When the vendor's price modifier is {0} or more",
 		"AnotherTownNPCNearby": "Kiedy sprzedawca ma innego NPC z miasta w pobliżu",
 		"ForestPylon": "Na powierzchni i nie w innym biomie pylonu",
 		"UndergroundPylon": "Pod powierzchnią i nie w innym biomie pylonu",
@@ -1013,6 +1039,7 @@
 		"MoonPhasesHalf1": "Podczas nowiu, nowiu półksiężyca, pierwszej kwadry lub nowiu księżyca w pełni",
 		"MoonPhasesEven": "Podczas pełni, trzeciej kwadry, nowiu lub pierwszej kwadry księżyca",
 		"MoonPhasesOdd": "Podczas garbowania lub półksiężyca",
+		// "MoonPhasesNearFull": "During a waxing gibbous, waning gibbous, or full moon",
 		"MoonPhasesNearNew": "Podczas trzeciej kwadry ubywający półksiężyc lub nów",
 		"MoonPhasesEvenQuarters": "Podczas pełni, ubywającego księżyca, nowiu lub przybywającego półksiężyca",
 		"MoonPhasesOddQuarters": "Podczas trzeciej kwadry, ubywającego półksiężyca, pierwszej kwadry lub przybywającego garbatego księżyca",
@@ -1020,6 +1047,9 @@
 		"MoonPhases15": "Podczas ubywającego półksiężyca lub rosnącego półksiężyca",
 		"MoonPhases26": "Podczas trzeciej kwadry lub pierwszej kwadry księżyca",
 		"MoonPhases37": "Podczas ubywającego półksiężyca lub przybywającego księżyca w pełni"
+		// "MoonPhases12": "During a waning gibbous or third quarter moon",
+		// "MoonPhases35": "During a waning crescent or waxing crescent moon",
+		// "MoonPhases67": "During a first quarter or waxing gibbous moon"
 	},
 	"TitleLinks": {
 		"Patreon": "Patreon"

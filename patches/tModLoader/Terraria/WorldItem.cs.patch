@@ -68,6 +68,29 @@
  		get {
  			return inner.makeNPC;
  		}
+@@ -201,10 +_,22 @@
+ 		for (int i = myItemIndex + 1; i < 400; i++) {
+ 			WorldItem worldItem = Main.item[i];
+ 			if (!worldItem.IsAir && Item.CanStack(inner, worldItem.inner) && worldItem.shimmered == shimmered && worldItem.playerIndexTheItemIsReservedFor == playerIndexTheItemIsReservedFor && !(Math.Abs(position.X - worldItem.position.X) + Math.Abs(position.Y - worldItem.position.Y) > (float)num)) {
++				// TML: CanStackInWorld is world-only; it does NOT affect inventory/chest stacking.
++				if (!ItemLoader.CanStackInWorld(this, worldItem))
++					continue;
++
++				// TML: Use StackItems so OnStack fires. StackItems performs the same stack arithmetic
++				// as the replaced vanilla code (plus favorited transfer and shopCustomPrice nulling,
++				// which were already part of the 1.4.4 behavior via this same method call).
++				ItemLoader.StackItems(inner, worldItem.inner, out int numTransferred);
++
++				/* #OnStackHook
+ 				int num2 = Math.Min(worldItem.stack, maxStack - stack);
+ 				worldItem.stack -= num2;
+ 				stack += num2;
+ 				float amount = (float)num2 / (float)stack;
++				*/
++				float amount = (float)numTransferred / (float)stack;
+ 				position = Vector2.Lerp(worldItem.position, position, amount);
+ 				velocity = Vector2.Lerp(worldItem.velocity, velocity, amount);
+ 				if (worldItem.stack <= 0)
 @@ -338,7 +_,10 @@
  		float maxFallSpeed = 7f;
  		if (Main.netMode == 1) {
@@ -88,6 +111,24 @@
  
  					if (Main.rand.Next(num3) == 0 && Main.rand.NextFloat() < Main.maxRaining) {
  						int num4 = stack;
+@@ -485,6 +_,8 @@
+ 		if (timeSinceItemSpawned < 2147483547)
+ 			timeSinceItemSpawned++;
+ 
++		ItemLoader.PostUpdate(this);
++
+ 		if (noGrabDelay > 0)
+ 			noGrabDelay--;
+ 	}
+@@ -687,6 +_,8 @@
+ 
+ 	private void MoveInWorld(float gravity, float maxFallSpeed, ref Vector2 wetVelocity, int i)
+ 	{
++		ItemLoader.Update(this, ref gravity, ref maxFallSpeed);
++
+ 		if (!shimmered && ItemID.Sets.ItemNoGravity[type]) {
+ 			velocity.X *= 0.95f;
+ 			if ((double)velocity.X < 0.1 && (double)velocity.X > -0.1)
 @@ -1413,7 +_,11 @@
  	}
  

@@ -10,14 +10,12 @@ public class NPCSpawnInfoTest
 		var c = info.invaders;
 		var d = info.ZoneLihzhardTemple;
 		var e = info.nearMarble;
-		#if COMPILE_ERROR
-		var f = info.PlanteraDefeated/* tModPorter Note: Removed. Use (NPC.downedPlantBoss && Main.hardMode) instead */;
-		#endif
+		var f = info.hardDungeon;
 		var g = info.Player;
-		#if COMPILE_ERROR
+#if COMPILE_ERROR
 		var h = info.PlayerFloorX/* tModPorter Note: Removed. Player floor coordinates are no longer tracked by NPC.Spawner */;
 		var i = info.PlayerFloorY/* tModPorter Note: Removed. Player floor coordinates are no longer tracked by NPC.Spawner */;
-		#endif
+#endif
 		var j = info.spawnFriendly;
 		var k = info.noWorms;
 		var l = info.SafeRangeX;
@@ -33,9 +31,7 @@ public class NPCSpawnInfoTest
 		var c2 = info.invaders;
 		var d2 = info.ZoneLihzhardTemple;
 		var e2 = info.nearMarble;
-#if COMPILE_ERROR
-		var f2 = info.PlanteraDefeated/* tModPorter Note: Removed. Use (NPC.downedPlantBoss && Main.hardMode) instead */;
-#endif
+		var f2 = info.hardDungeon;
 		var g2 = info.Player;
 #if COMPILE_ERROR
 		var h2 = info.PlayerFloorX/* tModPorter Note: Removed. Player floor coordinates are no longer tracked by NPC.Spawner */;

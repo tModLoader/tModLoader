@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
+using System.Reflection.Metadata;
 using System.Threading;
 using ReLogic.OS;
 using Steamworks;
@@ -722,6 +723,9 @@ public static class SteamedWraps
 		// Add developer metadata to the Workshop item
 		AddDeveloperMetadata(ref uGCUpdateHandle_t, _entryData.BuildData["developermetadata"]);
 
+		// Add Content Descriptors
+		AddContentDescriptors(ref uGCUpdateHandle_t, _entryData);
+
 		// Adde Dependencies to the Workshop item
 		string refs = _entryData.BuildData["workshopdeps"];
 
@@ -738,6 +742,23 @@ public static class SteamedWraps
 					Logging.tML.Error("Failed to add Workshop dependency: " + dependency + " to " + _publishedFileID);
 				}
 			}
+		}
+	}
+
+	// https://partner.steamgames.com/doc/api/ISteamUGC#EUGCContentDescriptorID
+	private static void AddContentDescriptors(ref UGCUpdateHandle_t uGCUpdateHandle_t, WorkshopHelper.UGCBased.SteamWorkshopItem _entryData)
+	{
+		(EUGCContentDescriptorID flag, string internalName)[] descriptorLookup = new (EUGCContentDescriptorID, string)[] {
+			( EUGCContentDescriptorID.k_EUGCContentDescriptor_AdultOnlySexualContent, "AdultsOnly" ),
+			( EUGCContentDescriptorID.k_EUGCContentDescriptor_FrequentViolenceOrGore, "Gore" ),
+			( EUGCContentDescriptorID.k_EUGCContentDescriptor_AnyMatureContent, "Questionable" )
+		};
+
+		foreach (var descriptor in descriptorLookup) {
+			if (_entryData.Tags.Contains(descriptor.internalName))
+				SteamUGC.AddContentDescriptor(uGCUpdateHandle_t, EUGCContentDescriptorID.k_EUGCContentDescriptor_FrequentViolenceOrGore);
+			else
+				SteamUGC.RemoveContentDescriptor(uGCUpdateHandle_t, EUGCContentDescriptorID.k_EUGCContentDescriptor_FrequentViolenceOrGore);
 		}
 	}
 
@@ -782,6 +803,11 @@ public static class SteamedWraps
 		AddModTag("tModLoader.TagsLanguage_Chinese", "Chinese");
 		AddModTag("tModLoader.TagsLanguage_Portuguese", "Portuguese");
 		AddModTag("tModLoader.TagsLanguage_Polish", "Polish");
+
+		// Content Descriptors
+		AddModTag("tModLoader.TagsRating_AdultsOnly", "AdultsOnly");
+		AddModTag("tModLoader.TagsRating_Gore", "Gore");
+		AddModTag("tModLoader.TagsRating_QuestionableContent", "Questionable");
 	}
 
 	private static void AddModTag(string tagNameKey, string tagInternalName)

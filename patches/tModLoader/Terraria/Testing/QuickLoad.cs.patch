@@ -1,0 +1,33 @@
+--- src/TerrariaNetCore/Terraria/Testing/QuickLoad.cs
++++ src/tModLoader/Terraria/Testing/QuickLoad.cs
+@@ -69,7 +_,10 @@
+ 		private void LaunchExtraClients()
+ 		{
+ 			for (int i = 0; i < ExtraClients.Count; i++) {
++				/*
+ 				Process.Start(Process.GetCurrentProcess().ProcessName, "-quickloadclient " + i);
++				*/
++				Process.Start(Environment.ProcessPath, "tModLoader.dll -quickloadclient " + i);
+ 			}
+ 		}
+ 
+@@ -213,6 +_,10 @@
+ 			if (MessageBox.Show("Quick Load skipped. Do you want to delete the configuration?", "", MessageBoxButtons.YesNo) == DialogResult.Yes)
+ 				Clear();
+ 		}
++
++		// Added by TML
++		if (_loadedConfig != null)
++			ModLoader.ModLoader.OnSuccessfulLoad += OnContentLoaded;
+ 	}
+ 
+ 	public static void OnContentLoaded()
+@@ -224,6 +_,8 @@
+ 		catch (Exception ex) {
+ 			if (MessageBox.Show("Do you want to delete the configuration?\n\n" + ex, "Quickload Error", MessageBoxButtons.YesNo, MessageBoxIcon.Error) == DialogResult.Yes)
+ 				Clear();
++
++			Main.menuMode = 0; // Added by TML
+ 		}
+ 	}
+ 

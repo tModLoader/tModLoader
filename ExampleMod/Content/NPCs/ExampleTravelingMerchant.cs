@@ -334,14 +334,12 @@ namespace ExampleMod.Content.NPCs
 			return dialogueLine;
 		}
 
-		public override void SetChatButtons(ref string button, ref string button2) {
-			button = Language.GetTextValue("LegacyInterface.28"); // This is the key to the word "Shop"
-		}
-
-		public override void OnChatButtonClicked(bool firstButton, ref string shop) {
-			if (firstButton) {
-				shop = Shop.Name; // Opens the shop
-			}
+		public override void RegisterChatButtons(NPCInteractionList interactions) {
+			// Here is one way to assign a Shop button to our NPC.
+			// In this example, we are assigning the button to be at the beginning of the list.
+			// The shop name we pass in NPCInteractions.Shop() needs to be the same name as what we use to register the NPCShop.
+			interactions.Prepend(NPCInteractions.Shop(Shop.Name));
+			// In this case, this is the same thing as: interactions.InsertBefore(NPCInteractions.Shop(Shop.Name), NPCInteractionDatabase.CloseButton);
 		}
 
 		public override void AI() {

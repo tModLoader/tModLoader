@@ -152,7 +152,7 @@
 +					break;
 +
 +				// #OnStackHook: Prevent swapping items if they will be stacked together.
-+				if (Main.mouseItem.maxStack > 1 && inv[slot].type == Main.mouseItem.type && inv[slot].stack != inv[slot].maxStack && Main.mouseItem.stack != Main.mouseItem.maxStack)
++				if (Main.mouseItem.maxStack > 1 && inv[slot].type == Main.mouseItem.type && Item.CanStack(Main.mouseItem, inv[slot]) && inv[slot].stack != inv[slot].maxStack && Main.mouseItem.stack != Main.mouseItem.maxStack)
 +					goto SkipSwap;
 +
  				Utils.Swap(ref inv[slot], ref Main.mouseItem);
@@ -179,8 +179,8 @@
 +					*/
 +
  					if (inv[slot].stack != inv[slot].maxStack && Main.mouseItem.stack != Main.mouseItem.maxStack) {
-+						if (ItemLoader.TryStackItems(inv[slot], Main.mouseItem, out int numTransfered))
-+							AnnounceTransfer(new ItemTransferInfo(inv[slot], 21, context, numTransfered));
++						ItemLoader.StackItems(inv[slot], Main.mouseItem, out int numTransfered);
++						AnnounceTransfer(new ItemTransferInfo(inv[slot], 21, context, numTransfered));
 +
 +						/* #OnStackHook
  						if (Main.mouseItem.stack + inv[slot].stack <= Main.mouseItem.maxStack) {
