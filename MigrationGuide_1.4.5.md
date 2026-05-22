@@ -347,21 +347,7 @@ public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, 
 }
 ```
 
-Example Mod's whips have been updated with new examples and additional comments.
-
-* ExampleWhip and ExampleWhipProjectile have been simplified.
-  * It no longer has the charging ability that it did before (ExampleWhipAdvanced still has it).
-  * The draw code has been changed to be more generic.
-    * It is almost an exact copy of the Leather Whip's drawing.
-	* It assumes each segment in the sprite are equal size, like most sprite sheets are.
-* ExampleWhipAdvanced and ExampleWhipProjectileAdvanced have been updated.
-  * If you weren't using `Projectile.DefaultToWhip()`, add `Projectile.drawLayer = ProjectileDrawLayerID.HeldProj` to the projectile's SetDefaults.
-  * Replace `float swingTime = owner.itemAnimationMax * Projectile.MaxUpdates` with `Projectile.GetWhipSettings(Projectile, out float timeToFlyOut, out _, out _)`
-	* Projectile.GetWhipSettings has new functionality for when the whip is displayed on a mannequin.
-  * Add `owner.MatchItemTimeToItemAnimation()` after setting the heldProj to match vanilla.
-  * The draw code has been changed to work better for different segment amounts.
-    * Previously, the draw code was specific for ExampleWhipProjectileAdvanced. Now it will work for any number of segments.
-	* Even if your whips seem to draw fine, double check the code because it is likely that the third segment of your whip wasn't being drawn.
+Example Mod's whips have been updated with new examples and additional comments. See the *Example Mod* section below for the details.
 
 See ExampleWhip, ExampleWhipAdvanced, ExampleWhipProjectile, and ExampleWhipProjectileAdvanced for more examples.
 
@@ -380,6 +366,7 @@ See ExampleWhip, ExampleWhipAdvanced, ExampleWhipProjectile, and ExampleWhipProj
   * The "SetBonus" tooltip has changed. It now automatically displays partial sets and adjusts the color to indicate if the set is complete.
   * The "SetBonusSinglePiece" tooltip shows the set bonus that would be applied if the unequipped equipment were equipped.
 * Town NPCs who are homeless have a new "Housing" button that displays their "NoHome" dialogue as well as a hint on what valid housing is. The hint text can be customized through the localization file. If the key `Mods.ModName.NPCs.NPCName.HousingText.HousingRequirements` exists, it will automatically be used over the default text.
+* `NPCID.Sets.ImmuneToAllBuffs` was removed. Continue to use `NPCID.Sets.ImmuneToRegularBuffs` and if immunity to tags effects and tag buffs is desired, additionally set the new `NPCID.Sets.ImmuneToWhipTags`.
 
 ### Example Mod
 
@@ -391,6 +378,24 @@ Several Example Mod examples have been updated to adapt to 1.4.5 changes and to 
     * If you are using `Projectile.DefaultToSpear()`, these two will automatically be set.
   * The `rotationFactor` in `Colliding` has been updated.
   * `player.gfxOffY` in `PreDraw` has been replaced with `Projectile.gfxOffY` to fix the sprite bouncing when walking up blocks.
+* `ExampleWhip`, `ExampleWhipProjectile`, `ExampleWhipAdvanced`, and `ExampleWhipProjectileAdvanced` (https://github.com/tModLoader/tModLoader/pull/5130/changes)
+  * ExampleWhip and ExampleWhipProjectile have been simplified.
+	* Added the Shoot() override to spawn the projectile manually for the swing direction. See the *Whip Changes* section above for details.
+    * It no longer has the charging ability that it did before (ExampleWhipAdvanced still has it).
+    * The draw code has been changed to be more generic.
+      * It is almost an exact copy of the Leather Whip's drawing.
+	  * It assumes each segment in the sprite are equal size, like most sprite sheets are.
+	* See the *Whips and Tag Effects* section above for details on tag damage changes.
+  * ExampleWhipAdvanced and ExampleWhipProjectileAdvanced have been updated.
+    * Added the Shoot() override to spawn the projectile manually for the swing direction. See the *Whip Changes* section above for details.
+    * If you weren't using `Projectile.DefaultToWhip()`, add `Projectile.drawLayer = ProjectileDrawLayerID.HeldProj` to the projectile's SetDefaults.
+    * Replace `float swingTime = owner.itemAnimationMax * Projectile.MaxUpdates` with `Projectile.GetWhipSettings(Projectile, out float timeToFlyOut, out _, out _)`
+	  * Projectile.GetWhipSettings has new functionality for when the whip is displayed on a mannequin.
+    * Add `owner.MatchItemTimeToItemAnimation()` after setting the heldProj to match vanilla.
+    * The draw code has been changed to work better for different segment amounts.
+      * Previously, the draw code was specific for ExampleWhipProjectileAdvanced. Now it will work for any number of segments.
+	  * Even if your whips seem to draw fine, double check the code because it is likely that the third segment of your whip wasn't being drawn.
+	* See the *Whips and Tag Effects* section above for details on tag damage changes.
 
 ## Renamed, Moved, or Removed Members
 
