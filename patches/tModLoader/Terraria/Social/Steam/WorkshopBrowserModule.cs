@@ -79,7 +79,7 @@ internal class WorkshopBrowserModule : SocialBrowserModule
 		if (installed.Version < webVersion)
 			return true;
 
-		if (SteamedWraps.SteamAvailable && SteamedWraps.DoesWorkshopItemNeedUpdate(GetId(modId)))
+		if (SteamedWraps.DoesWorkshopItemNeedUpdate(GetId(modId)))
 			return true;
 
 		return false;
