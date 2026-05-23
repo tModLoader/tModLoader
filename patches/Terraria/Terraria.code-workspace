@@ -7,7 +7,7 @@
 	],
 	"settings": {
 		// Automatically open the solution.
-		"dotnet.solution.autoOpen": "./Terraria.sln",
+		"dotnet.solution.autoOpen": "src/Terraria/Terraria.sln",
 
 		// Configure file lists & search navigation.
 	    // Prevent gitignore from making VSC omit the src directory.
