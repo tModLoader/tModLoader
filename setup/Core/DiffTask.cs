@@ -9,7 +9,7 @@ namespace Terraria.ModLoader.Setup.Core
 		public const string RemovedFileList = "removed_files.list";
 
 		private static readonly string[] Extensions = [
-			".cs", ".csproj", ".resx", "App.config", ".json", ".targets", ".txt", ".bat", ".sh",
+			".cs", ".csproj", ".resx", "App.config", ".json", ".targets", ".txt", ".bat", ".sh", ".code-workspace"
 		];
 
 		private readonly DiffTaskParameters parameters;
@@ -88,7 +88,7 @@ namespace Terraria.ModLoader.Setup.Core
 				DeleteFile(patchPath);
 				return;
 			}
-			
+
 			CreateParentDirectory(patchPath);
 			File.WriteAllText(patchPath, patchFile.ToString(true));
 		}
