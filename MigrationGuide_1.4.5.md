@@ -58,6 +58,150 @@ Finally, `ProjectileID.Sets.HeldProjDoesNotUsePlayerGfxOffY` has been removed. `
   * Not held in hand (flail): Set `Projectile.drawLayer = ProjectileDrawLayerID.HeldProj;`
 * Projectile that shouldn't be drawn at all: No adjustments necessary.
 
+### Town NPC Chat Buttons
+
+Chat buttons for Town NPCs have changed significantly in 1.4.5. The new system uses an `NPCInteraction` to define what the button says, when it should be shown, and what happens when it is clicked. Town NPCs can now support up to 32 buttons visible at one time (no longer limited to firstButton and secondButton).
+
+#### Registering Chat Buttons
+
+Chat buttons are now registered at mod load time instead of when interacting with the NPC. Registration implicitly assigns the button to the NPC.
+
+* `ModNPC.SetChatButtons` has been replaced with `ModNPC.RegisterChatButtons(NPCInteractionList interactions)`
+* The Close, Happiness, and Housing buttons are automatically registered before RegisterChatButtons runs.
+  * If the NPC is a Town Pet, the Pet button will be added, too.
+  * The Close, Happiness, Housing, and Pet buttons are already predefined and can be used with `NPCInteractionDatabase.CloseButton`, etc.
+* Register buttons with the supplied `interactions` parameter.
+  * `interactions.Append(NPCInteraction interaction)` or `interactions.Prepend(NPCInteraction interaction)`
+    * Append will add the button to the end of the list (after the Happiness and Housing buttons, too).
+	* Prepend will add the button to the beginning of the list.
+  * `interactions.InsertAfter(NPCInteraction interactionToRegister, NPCInteraction interactionAfter)` or `interactions.InsertBefore(NPCInteraction interactionToRegister, NPCInteraction interactionBefore)`
+    * InsertAfter and InsertBefore will add the button after or before another specified button.
+  * Each method returns the supplied `NPCInteraction` as an `NPCInteractionList.Entry` if caching the result is desired for use in another method.
+* Use `interactions.X(NPCInteractions.Shop(string shopName = "Shop", string customTextKey = null))` to assign shops.
+  * The shopName must match the shopName for the `NPCShop`.
+  * Example: ModNPC calling `interactions.Append(NPCInteractions.Shop())` will register a button for the shop with full name "ModName/ModNPCName/Shop".
+  * Vanilla shops can easily be added with the full name string "Terraria/Merchant/Shop". ("Decor" for the Painter's second shop).
+  * Shops from other modded Town NPCs can be added with the full name string "ModName/ModNPCName/ShopName". For example: "ExampleMod/ExamplePerson/Shop".
+  * Alternatively, use `NPCShopDatabase.GetShopName(NPCID, "Shop")` to get the full shop name for an NPC.
+* Use `interactions.X(new NPCInteraction...)` to register other buttons.
+  * Example: `interactions.Append(new NPCInteractions.Actions.CloseChat());`
+
+Previously, `ModNPC.OnChatButtonClicked` was used to assign a shop to a button. This is no longer needed because shops are assigned directly to the button in `RegisterChatButtons`. Most modders can probably remove this hook.
+
+Full example:
+```cs
+public override void RegisterChatButtons(NPCInteractionList interactions) {
+	// Here is how to register chat buttons to your NPC.
+	// There are many method that you can use to change the order of the buttons.
+	// interactions.Append(NPCInteraction interaction)	This will add the button to the end of the list (after the Happiness and Housing buttons, too).
+	// interactions.Prepend(NPCInteraction interaction)	This will add the button to the beginning of the list.
+	// interactions.InsertAfter(NPCInteraction interactionToRegister, NPCInteraction interactionAfter)		This will add the button after another specified button.
+	// interactions.InsertBefore(NPCInteraction interactionToRegister, NPCInteraction interactionBefore)	This will add the button before another specified button.
+	
+	// In this example we are registering our Shop button to before the Close button.
+	// The Close button instance is provided for us for convenience.
+	interactions.InsertBefore(NPCInteractions.Shop(ShopName), NPCInteractionDatabase.CloseButton); // NPCInteractions.Shop() is a helper that creates a Shop button.
+	
+	// Next, add the rest of our buttons before the Happiness button (which is before the Housing button).
+	interactions.InsertBefore(new AwesomeifyButton(), NPCInteractionDatabase.HappinessButton); // These are custom buttons.
+	interactions.InsertBefore(new UpgradeButton(), NPCInteractionDatabase.HappinessButton);
+	interactions.InsertBefore(new OpenShopOnlyAvailableDuringDay(ShopName, "Day Only Shop"), NPCInteractionDatabase.HappinessButton);
+
+	// Showcase of other things you can do
+	NPCInteractionList.Entry awesomeifyButton = interactions.InsertBefore(new AwesomeifyButton(), NPCInteractionDatabase.HappinessButton); // Return the interaction instance
+	interactions.InsertAfter(new OpenShopOnlyAvailableDuringDay(ShopName, "Day Only Shop"), awesomeifyButton); // Insert after the instance we saved above.
+	interactions.Prepend(NPCInteractions.Shop(ShopName)); // Insert at the beginning
+	interactions.Append(NPCInteractions.Shop(ShopName)); // Insert at the end (after the happiness and housing buttons, too)
+	
+	// Don't want a close, happiness, or housing button? Just disable it!
+	interactions.Disable(NPCInteractionDatabase.HousingButton);
+
+	// Adding existing shops from other NPCs
+	interactions.Append(NPCInteractions.Shop("Terraria/Painter/Shop", "Painter Shop"));
+	interactions.Append(NPCInteractions.Shop("Terraria/Painter/Decor", "Painter Decor"));
+	interactions.Append(NPCInteractions.Shop("ExampleMod/ExamplePerson/Shop", "Example Person"));
+}
+```
+
+`GlobalNPC.RegisterChatButtons` is a new hook that allows you to add chat buttons to other Town NPCs, including vanilla Town NPCs.
+
+```cs
+// In GlobalNPC
+public override void RegisterChatButtons(NPC npc, NPCInteractionList interactions) {
+	// Here we can add additional chat buttons to Town NPCs.
+	if (npc.type == NPCID.Guide) {
+		// Add a shop button that open the Zoologist's shop.
+		// Vanilla shops can specified with "Terraria/NPCName/Shop" ("Decor" for the Painter's second shop)
+		// Modded shops can be specified with "ModName/NPCName/ShopName"
+		interactions.InsertBefore(NPCInteractions.Shop("Terraria/BestiaryGirl/Shop", "Shop"), NPCInteractionDatabase.CloseButton);
+
+		// Here we are going to disable the Guide's tips button.
+		// This way matches the type of the interaction and returns the first that matches or null if not found.
+		// If the interaction wasn't found, nothing happens.
+		NPCInteraction guideTipNPCInteraction = interactions.Interactions.OfType<NPCInteractions.Actions.GuideTip>().FirstOrDefault();
+		interactions.Disable(guideTipNPCInteraction); // If the instance is null (aka not found), Disable won't do anything.
+
+		// Alternate way: this way does the same thing, but searches the Entries instead and returns the NPCInteractionList.Entry if found.
+		// NPCInteractionList.Entry guideTipEntry = interactions.Entries.Where(e => e.NPCInteraction.GetType() == typeof(NPCInteractions.Actions.GuideTip)).FirstOrDefault();
+		// interactions.Disable(guideTipEntry); // If the instance is null (aka not found), Disable won't do anything.
+	}
+}
+```
+
+#### Creating a Custom NPCInteraction
+
+Custom chat buttons can easily be made by creating a new class that inherits `NPCInteraction`.
+* The `GetText()`, `Condition()`, and `Interact()` must be defined.
+  * `GetText()` is the text of the button.
+  * `Condition()` determines when this NPCInteraction can/will be shown.
+	* If you want the button to always be shown, return true.
+    * Since the buttons are assigned to NPCs, there is no need to set the Condition to be only for specific NPC (no need for `TalkNPCType == ...`)
+  * `Interact()` is the action that happens when the button is clicked such as opening a shop.
+* `ShowExcalmation` can be set to true to display a for a small exclamation point to be shown next to the button.
+* `TryAddCoins(ref Color chatColor, out int coinValue)` can be used to display a coin count next to the button.
+* `TextColor(ref Color chatColor, ref Color chatColorShadow, bool hoveringOverButton)` can be used to modify the color of the button.
+* The properties `LocalPlayer`, `TalkNPC`, and `TalkNPCType` can be used as shortcuts for `Main.LocalPlayer`, `Main.npc[Main.LocalPlayer.talkNPC]`, and `Main.npc[Main.LocalPlayer.talkNPC].type` respectively.
+
+Full Example:
+```cs
+// Here is simple example of a custom button that is labeled "Awesomeify".
+public class AwesomeifyButton : NPCInteraction {
+	// This is the label of the button. This points to a localization key that translates to "Awesomeify".
+	public override string GetText() => Language.GetTextValue("Mods.ExampleMod.NPCs.ExamplePerson.AwesomeifyButton");
+
+	// Here you can change when this button will show up.
+	// We want the button to always be shown, so we return true.
+	// Chat buttons are assigned per NPC, so we don't have to worry about specifying this button should only show for our NPC.
+	// (No need to do something like this: TalkNPCType == ModContent.NPCType<ExamplePerson>();)
+	public override bool Condition() => true;
+
+	// When the button is clicked, this will run.
+	public override void Interact() {
+		Main.npcChatText = "Awesome!";
+	}
+}
+
+// A custom interaction that inherits OpenShop with the condition changed to only show during the day.
+public class OpenShopOnlyAvailableDuringDay(string shopName, string customTextKey = null) : NPCInteractions.Actions.OpenShop(shopName, customTextKey)
+{
+	// base.Condition() will run the base class' condition, so we don't have to copy that ourselves.
+	// Then we also add && Main.dayTime to make this button only show up during the day time.
+	public override bool Condition() => base.Condition() && Main.dayTime;
+
+	public override bool ShowExcalmation => true; // Show an exclamation point next to the button.
+
+	public override void TextColor(ref Color chatColor, ref Color chatColorShadow, bool hoveringOverButton) { // Edit the color of the button.
+		chatColor = Color.Black * (Main.mouseTextColor / 255f); // * (Main.mouseTextColor / 255f) makes it pulse like the normal buttons.
+		chatColorShadow = Color.LightGray;
+		if (hoveringOverButton)
+		{
+			chatColor = Color.DarkGray * (Main.mouseTextColor / 255f);
+			chatColorShadow = Color.White;
+		}
+	}
+}
+```
+
 ## New Vanilla Features
 
 The [Terraria 1.4.5 changelog](https://terraria.wiki.gg/wiki/1.4.5.0) lists many vanilla changes made in the 1.4.5 update. A select portion of the changes relevant to modding will be detailed here as well.
@@ -176,6 +320,18 @@ SilverBarRecipeGroup = RecipeGroup.Register(
   * There are new tooltip lines: "Wireable", "Container", "WireTrigger", "WizardHatDuringAnniversary", "BurningBlock", "MechSummonDuringEverything", "MechdusaSummonNotDuringEverything", "PrefixArmorPenetration", "PrefixTagDamage", "SetBonusSinglePiece", and "JourneyResearchTeammate".
   * The "SetBonus" tooltip has changed. It now automatically displays partial sets and adjusts the color to indicate if the set is complete.
   * The "SetBonusSinglePiece" tooltip shows the set bonus that would be applied if the unequipped equipment were equipped.
+* Town NPCs who are homeless have a new "Housing" button that displays their "NoHome" dialogue as well as a hint on what valid housing is. The hint text can be customized through the localization file. If the key `Mods.ModName.NPCs.NPCName.HousingText.HousingRequirements` exists, it will automatically be used over the default text.
+
+### Example Mod
+
+Several Example Mod examples have been updated to adapt to 1.4.5 changes and to fix other issues. If you used any of these as a template/guide, we recommend applying the same changes.
+
+* `ExampleJoustingLanceProjectile` (https://github.com/tModLoader/tModLoader/pull/5145/changes)
+  * Added `ProjectileID.Sets.AllowsContactDamageFromJellyfish` to allow for damage from a zapping jellyfish.
+  * `SetDefaults`: Remove `Projectile.hide`, add `Projectile.drawLayer = ProjectileDrawLayerID.HeldProj` and `Projectile.usesOwnerLight = true`.
+    * If you are using `Projectile.DefaultToSpear()`, these two will automatically be set.
+  * The `rotationFactor` in `Colliding` has been updated.
+  * `player.gfxOffY` in `PreDraw` has been replaced with `Projectile.gfxOffY` to fix the sprite bouncing when walking up blocks.
 
 ## Renamed, Moved, or Removed Members
 
@@ -292,3 +448,6 @@ All classes are in the `Terraria.ModLoader` or `Terraria` namespaces unless othe
 * `TooltipLine` and `DrawableTooltipLine` changes:
   * ⚙️: `(TooltipLine|DrawableTooltipLine).IsModifier` and `(TooltipLine|DrawableTooltipLine).IsModifierBad` are removed. Set `TooltipLine.Color` directly to `Terraria.ID.Colors.PrefixGood` or `Terraria.ID.Colors.PrefixBad`. If you previously needed to determine if tooltip lines were for prefixes, now check `TooltipLine.Color` against those colors or maybe see if `TooltipLine.Name` starts with "Prefix".
   * ⚙️: `TooltipLine.OverrideColor` has been renamed to `Color`. It is no longer nullable. `DrawableTooltipLine.OverrideColor` has been removed, leaving just `DrawableTooltipLine.Color`.
+* ⚙️: `ModNPC.SetChatButtons` has been removed and replaced with `RegisterChatButtons(NPCInteractionList interactions)`
+* ⚙️: `ModNPC.OnChatButtonClicked` changed parameters. `(bool firstButton, ref string shop)` -> `(NPCInteraction interaction)`
+* ⚙️: `GlobalNPC.OnChatButtonClicked` and `GlobalNPC.PreChatButtonClicked` changed parameters. `(NPC npc, bool firstButton)` -> `(NPC npc, NPCInteraction interaction)`

@@ -111,6 +111,8 @@ public static class ItemLoader
 			Main.InitializeItemAnimations();
 		}
 
+		EmergencyStacking.ResetGroupLookup();
+
 		if (unloading)
 			Array.Resize(ref Main.anglerQuestItemNetIDs, vanillaQuestFishCount);
 		else

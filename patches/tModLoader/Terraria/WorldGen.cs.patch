@@ -336,7 +336,7 @@
  
  		Main.fastForwardTimeToDawn = false;
  		Main.fastForwardTimeToDusk = false;
-@@ -5414,7 +_,10 @@
+@@ -5414,7 +_,14 @@
  
  	public static void SaveAndQuit(Action callback = null)
  	{
@@ -344,6 +344,10 @@
 +		/*
  		SoundEngine.PlaySound(11);
 +		*/
++
++		Social.Steam.SteamedWraps.StopPlaytimeTracking(); // Added by TML
++		SystemLoader.PreSaveAndQuit();
++
  		StopWaterfallAmbienceAudio();
  		Main.invasionProgress = -1;
  		Main.invasionProgressDisplayLeft = 0;

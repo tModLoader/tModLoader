@@ -302,6 +302,19 @@
  					if (number2 != 255f) {
  						writer.Write((ushort)number3);
  						writer.Write((ushort)number4);
+@@ -1190,6 +_,12 @@
+ 					writer.Write(number3);
+ 					writer.Write(number4);
+ 					break;
++				case MessageID.DevCommands:
++					writer.Write(text.ToString());
++					writer.Write(number);
++					writer.Write(number2);
++					writer.Write(number3);
++					break;
+ 				case 95:
+ 					writer.Write((ushort)number);
+ 					writer.Write((byte)number2);
 @@ -1295,6 +_,11 @@
  					writer.Write(number);
  					break;
