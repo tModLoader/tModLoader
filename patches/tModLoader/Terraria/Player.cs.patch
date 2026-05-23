@@ -8862,6 +8862,56 @@
  		Array.Clear(adjTile, 0, adjTile.Length);
  		hitTile = new HitTile();
  		hitReplace = new HitTile();
+@@ -45686,31 +_,31 @@
+ 			allowSolidTopFloor = true
+ 		};
+ 
+-		Vector2 vector = Utils.CheckForGoodTeleportationSpot(ref canSpawn, num - num3, num2, teleportStartY, teleportRangeY, settings);
++		Vector2 vector = Utils.CheckForGoodTeleportationSpot(ref canSpawn, num - num3, num2, teleportStartY, teleportRangeY, settings, this);
+ 		if (!canSpawn)
+-			vector = Utils.CheckForGoodTeleportationSpot(ref canSpawn, num - num2, num3, teleportStartY, teleportRangeY, settings);
++			vector = Utils.CheckForGoodTeleportationSpot(ref canSpawn, num - num2, num3, teleportStartY, teleportRangeY, settings, this);
+ 
+ 		if (!canSpawn)
+-			vector = Utils.CheckForGoodTeleportationSpot(ref canSpawn, num + num3, num3, teleportStartY, teleportRangeY, settings);
++			vector = Utils.CheckForGoodTeleportationSpot(ref canSpawn, num + num3, num3, teleportStartY, teleportRangeY, settings, this);
+ 
+ 		if (!canSpawn) {
+ 			bool flag = Main.rand.Next(2) == 0;
+ 			num = (flag ? (num2 * 3) : (Main.maxTilesX - num2 * 3));
+-			vector = Utils.CheckForGoodTeleportationSpot(ref canSpawn, num - num3, num3, teleportStartY, teleportRangeY, settings);
++			vector = Utils.CheckForGoodTeleportationSpot(ref canSpawn, num - num3, num3, teleportStartY, teleportRangeY, settings, this);
+ 			if (!canSpawn)
+-				vector = Utils.CheckForGoodTeleportationSpot(ref canSpawn, num - num2, num3, teleportStartY, teleportRangeY, settings);
++				vector = Utils.CheckForGoodTeleportationSpot(ref canSpawn, num - num2, num3, teleportStartY, teleportRangeY, settings, this);
+ 
+ 			if (!canSpawn)
+-				vector = Utils.CheckForGoodTeleportationSpot(ref canSpawn, num + num3, num3, teleportStartY, teleportRangeY, settings);
++				vector = Utils.CheckForGoodTeleportationSpot(ref canSpawn, num + num3, num3, teleportStartY, teleportRangeY, settings, this);
+ 
+ 			if (!canSpawn) {
+ 				num = (flag ? (Main.maxTilesX - num2 * 3) : (num2 * 3));
+-				vector = Utils.CheckForGoodTeleportationSpot(ref canSpawn, num - num3, num3, teleportStartY, teleportRangeY, settings);
++				vector = Utils.CheckForGoodTeleportationSpot(ref canSpawn, num - num3, num3, teleportStartY, teleportRangeY, settings, this);
+ 				if (!canSpawn)
+-					vector = Utils.CheckForGoodTeleportationSpot(ref canSpawn, num - num2, num3, teleportStartY, teleportRangeY, settings);
++					vector = Utils.CheckForGoodTeleportationSpot(ref canSpawn, num - num2, num3, teleportStartY, teleportRangeY, settings, this);
+ 
+ 				if (!canSpawn)
+-					vector = Utils.CheckForGoodTeleportationSpot(ref canSpawn, num + num3, num3, teleportStartY, teleportRangeY, settings);
++					vector = Utils.CheckForGoodTeleportationSpot(ref canSpawn, num + num3, num3, teleportStartY, teleportRangeY, settings, this);
+ 			}
+ 		}
+ 
+@@ -45749,7 +_,7 @@
+ 			avoidHurtTiles = true,
+ 			maximumFallDistanceFromOrignalPoint = 100,
+ 			attemptsBeforeGivingUp = 1000
+-		});
++		}, this);
+ 
+ 		if (canSpawn) {
+ 			Vector2 newPos = vector;
 @@ -45777,10 +_,19 @@
  		int questsDone = anglerQuestsFinished;
  		float anglerRewardRarityMultiplier = GetAnglerRewardRarityMultiplier(questsDone);
