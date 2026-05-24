@@ -1,0 +1,20 @@
+--- src/TerrariaNetCore/Terraria/GameContent/Tile_Entities/TEDeadCellsDisplayJar.cs
++++ src/tModLoader/Terraria/GameContent/Tile_Entities/TEDeadCellsDisplayJar.cs
+@@ -1,5 +_,6 @@
+ using System.IO;
+ using Terraria.DataStructures;
++using Terraria.ModLoader.IO;
+ 
+ namespace Terraria.GameContent.Tile_Entities;
+ 
+@@ -35,8 +_,8 @@
+ 
+ 	public override void WriteExtraData(BinaryWriter writer, bool networkSend)
+ 	{
+-		writer.Write((short)item.type);
+-		writer.Write(item.prefix);
++		ItemIO.WriteShortVanillaID(item, writer);
++		ItemIO.WriteByteVanillaPrefix(item, writer);
+ 		writer.Write((short)item.stack);
+ 	}
+ 
