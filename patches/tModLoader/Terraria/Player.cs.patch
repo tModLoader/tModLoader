@@ -8862,6 +8862,22 @@
  		Array.Clear(adjTile, 0, adjTile.Length);
  		hitTile = new HitTile();
  		hitReplace = new HitTile();
+@@ -45673,6 +_,7 @@
+ 		int teleportStartY = Main.UnderworldLayer + 20;
+ 		int teleportRangeY = 80;
+ 		Utils.RandomTeleportationAttemptSettings settings = new Utils.RandomTeleportationAttemptSettings {
++			teleportee = this, // TML
+ 			teleporteeSize = base.Size,
+ 			teleporteeVelocity = velocity,
+ 			teleporteeGravityDirection = gravDir,
+@@ -45742,6 +_,7 @@
+ 		int teleportStartY = 100;
+ 		int underworldLayer = Main.UnderworldLayer;
+ 		Vector2 vector = Utils.CheckForGoodTeleportationSpot(ref canSpawn, teleportStartX, teleportRangeX, teleportStartY, underworldLayer, new Utils.RandomTeleportationAttemptSettings {
++			teleportee = this, // TML
+ 			teleporteeSize = base.Size,
+ 			teleporteeVelocity = velocity,
+ 			teleporteeGravityDirection = gravDir,
 @@ -45777,10 +_,19 @@
  		int questsDone = anglerQuestsFinished;
  		float anglerRewardRarityMultiplier = GetAnglerRewardRarityMultiplier(questsDone);
