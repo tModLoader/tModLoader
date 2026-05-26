@@ -606,6 +606,7 @@
  			}
  		}
  	}
+@@ -43489,11 +_,14 @@
  			if (Main.netMode == 1)
  				NetMessage.SendData(21, -1, -1, null, number, 1f);
  		}
