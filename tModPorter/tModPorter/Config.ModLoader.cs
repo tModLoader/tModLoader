@@ -560,6 +560,7 @@ public static partial class Config
 		ChangeHookSignature("Terraria.ModLoader.GlobalNPC", "EditSpawnPool").RenameParameter("spawnInfo", "spawner");
 		ChangeHookSignature("Terraria.ModLoader.GlobalNPC", "OnChatButtonClicked");
 		ChangeHookSignature("Terraria.ModLoader.GlobalNPC", "PreChatButtonClicked");
+		ChangeHookSignature("Terraria.ModLoader.GlobalNPC", "BuffTownNPC");
 		ChangeHookSignature("Terraria.ModLoader.ModItem", "OnSpawn");
 		ChangeHookSignature("Terraria.ModLoader.ModItem", "CanStackInWorld");
 		ChangeHookSignature("Terraria.ModLoader.ModItem", "Update");
