@@ -3060,7 +3060,8 @@
 -		MouseText_DrawItemTooltip_AddShopLines(hoverItem, ref numLines, mouseTextTooltipLine_Text, mouseTextTooltipLine_Color);
 +		MouseText_DrawItemTooltip_AddShopLines(hoverItem, ref numLines, mouseTextTooltipLine_Text, mouseTextTooltipLine_Color, tooltipNames);
  		if (NewCraftingUI.Visible)
- 			NewCraftingUI.AddTooltipLines(hoverItem, ref numLines, mouseTextTooltipLine_Text, mouseTextTooltipLine_Color);
+-			NewCraftingUI.AddTooltipLines(hoverItem, ref numLines, mouseTextTooltipLine_Text, mouseTextTooltipLine_Color);
++			NewCraftingUI.AddTooltipLines(hoverItem, ref numLines, mouseTextTooltipLine_Text, mouseTextTooltipLine_Color, tooltipNames);
  
  		Vector2 zero = Vector2.Zero;
 +

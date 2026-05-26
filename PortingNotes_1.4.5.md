@@ -66,7 +66,9 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Lange.CreateDialogFilter now has a checkConditions parameter. It seems that there is a new system for object substitutions. We'll need to document these and make sure they work for modded substitutions. LocalizedText.CanFormatWith usages seem to be replaced with ConditionsMetWith. Some Language.GetTextValueWith usages changed to GetTextValue but still somehow support substitutions.
 - Should PlayerLoader.SyncPlayer in SyncOnePlayer be after syncing owner Projectiles?
 - ItemID.ItemSpawnDecaySpeed gone. IsBasicFish added. IsQuestFish added (adjust ModItem.IsQuestFish?)
-- TEDeadCellsDisplayJar and associated net messages need to be updated. Are there other new TEs?
+- TELeashedEntityAnchorWithItem (used by TECritterAnchor and TEKiteAnchor) will need to be updated to support modded items.
+  - We'll likely need an ExampleKite.
+  - TECritterAnchor will probably require more changes as well.
 - ItemID.BannerEffect changed, might need an example. Docs need to be updated for LinearCurve.
 - Chest.maxItems no longer const. DefaultMaxItems/AbsoluteMaxItemsWeCanEverReachInAChestForNow added. Might need to find for loops to 40 and change if we want to support this. Chest ctors changed.
 - Verify that https://github.com/tModLoader/tModLoader/issues/4383 is fixed: `if (Language.GetText("CLI.NewWorld_Command").EqualsCommand(text3))` in vanilla replaced `if (text2 == "n" || text2 == "N" || string.Equals(text2, Language.GetTextValue("CLI.NewWorld_Command"), StringComparison.CurrentCultureIgnoreCase))` fix in tmod. (New world command)
