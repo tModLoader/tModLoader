@@ -439,6 +439,7 @@ All classes are in the `Terraria.ModLoader` or `Terraria` namespaces unless othe
 * ⚙️: `(ModProjectile|GlobalProjectile).PreDraw/PreDrawExtras/PostDraw` now has a `Player` parameter. Use this instead of `Main.player[Projectile.owner]` to properly support rendering projectiles to custom `Player` instances, such as Mannequins.
 * ⚙️: `ModPylon.ValidTeleportCheck_AnyDanger` and `GlobalPylon.ValidTeleportCheck_PreAnyDanger` have been removed. Pylons no longer check for danger when teleporting.
 * 🤖: `ModTile.AddToArray` is no longer used for `TileID.Sets.RoomNeeds` entries since `TileID.Sets.RoomNeeds` fields have changed to typical ID sets.
+* `NPCLoader.blockLoot` can now affect all drops such as coins, hearts, etherian mana, and skyblock specific drops. Before it could only affect loot table drops.
 * ⚙️: `NPCSpawnInfo` is no longer used, it has been replaced by `NPC.Spawner` in functionality.
   * 🤖: The following fields changed from `NPCSpawnInfo` to `NPC.Spawner`: `DesertCave` -> `spawnUndergroundDesert`, `Granite` -> `nearGranite`, `Invasion` -> `invaders`, `Lihzahrd` -> `ZoneLihzhardTemple`, `Marble` -> `nearMarble`, `PlayerInTown` -> `spawnFriendly`, `PlayerSafe` -> `noWorms`, `Sky` -> `skyMob`, `SpiderCave` -> `spawnSpider`, `Water` -> `waterTile`
   * ⚙️: `PlanteraDefeated` removed, use `NPC.downedPlantBoss && Main.hardMode` instead.

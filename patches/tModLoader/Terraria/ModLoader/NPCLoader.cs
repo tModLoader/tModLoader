@@ -546,8 +546,6 @@ public static class NPCLoader
 		foreach (var g in HookOnKill.Enumerate(npc)) {
 			g.OnKill(npc);
 		}
-
-		blockLoot.Clear();
 	}
 
 	private static HookList HookModifyNPCLoot = AddHook<Action<NPC, NPCLoot>>(g => g.ModifyNPCLoot);
