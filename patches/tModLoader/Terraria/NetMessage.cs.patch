@@ -377,6 +377,21 @@
  					break;
  				}
  				case 134: {
+@@ -1479,9 +_,14 @@
+ 					writer.Write((short)number);
+ 					writer.Write((short)number2);
+ 					Item item = Main.player[(int)number4].inventory[(int)number3];
++
++					ItemIO.Send(item, writer);
++					writer.Write7BitEncodedInt(number5);
++					/*
+ 					writer.Write((short)item.type);
+ 					writer.Write(item.prefix);
+ 					writer.Write((short)number5);
++					*/
+ 					break;
+ 				}
+ 				case 150:
 @@ -1527,6 +_,16 @@
  				throw new Exception("Maximum packet length exceeded. id: " + msgType + " length: " + num21);
  
