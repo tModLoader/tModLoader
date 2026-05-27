@@ -57,9 +57,11 @@
 			This is okay, as builds use fewer system libraries than clients and servers.
 		-->
 		<BuildLaunch>$(DotNetName)</BuildLaunch>
+		<BuildArch>$([System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture)</BuildArch>
 		<BuildEnvVars Condition="'$(OS)' == 'Windows_NT'"></BuildEnvVars>
-		<BuildEnvVars Condition="'$(OS)' == 'Unix'">LD_LIBRARY_PATH=$(tMLSteamPath)/Libraries/Native/Linux</BuildEnvVars>
-		<BuildEnvVars Condition="'$(OS)' == 'OSX'">DYLD_LIBRARY_PATH=$(tMLSteamPath)/Libraries/Native/OSX</BuildEnvVars>
+		<BuildEnvVars Condition="'$(OS)' == 'Unix' AND '$(BuildArch)' != 'Arm64'">LD_LIBRARY_PATH=$(tMLSteamPath)Libraries/Native/Linux</BuildEnvVars>
+		<BuildEnvVars Condition="'$(OS)' == 'Unix' AND '$(BuildArch)' == 'Arm64'">LD_LIBRARY_PATH=$(tMLSteamPath)Libraries/Native/Linux-arm64</BuildEnvVars>
+		<BuildEnvVars Condition="'$(OS)' == 'OSX'">DYLD_LIBRARY_PATH=$(tMLSteamPath)Libraries/Native/OSX</BuildEnvVars>
 	</PropertyGroup>
 
 	<ItemGroup Condition="'$(BuildMod)' == 'true'">
