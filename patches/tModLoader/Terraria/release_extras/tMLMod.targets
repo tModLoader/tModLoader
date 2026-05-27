@@ -33,14 +33,16 @@
 	</PropertyGroup>
 
 	<!-- Debug/run properties -->
-	<PropertyGroup>
+	<PropertyGroup Condition="!Exists('/etc/NIXOS')">
+		<ExecutablePath>$(DotNetName)</ExecutablePath>
+		<TmlClientArgs>$(tMLPath)</TmlClientArgs>
+		<TmlServerArgs>$(tMLServerPath)</TmlServerArgs>
+	</PropertyGroup>
+	<PropertyGroup Condition=" Exists('/etc/NIXOS')">
 		<!-- NixOS: When starting TML via system .NET, the 'steam-run' wrapper must be used to create a FHS environment. -->
-		<ExecutablePath Condition=" Exists('/etc/NIXOS')">steam-run</ExecutablePath>
-		<ExecutablePath Condition="!Exists('/etc/NIXOS')">$(DotNetName)</ExecutablePath>
-		<TmlClientArgs  Condition=" Exists('/etc/NIXOS')">$(DotNetName) $(tMLPath)</TmlClientArgs>
-		<TmlClientArgs  Condition="!Exists('/etc/NIXOS')">$(tMLPath)</TmlClientArgs>
-		<TmlServerArgs  Condition=" Exists('/etc/NIXOS')">$(DotNetName) $(tMLServerPath)</TmlServerArgs>
-		<TmlServerArgs  Condition="!Exists('/etc/NIXOS')">$(tMLServerPath)</TmlServerArgs>
+		<ExecutablePath>steam-run</ExecutablePath>
+		<TmlClientArgs>$(DotNetName) $(tMLPath)</TmlClientArgs>
+		<TmlServerArgs>$(DotNetName) $(tMLServerPath)</TmlServerArgs>
 	</PropertyGroup>
 
 	<!-- Build/packaging properties -->
@@ -52,7 +54,7 @@
 		<!--
 			NixOS: The 'steam-run' FHS wrapper is purposefully not used for mod builds,
 			as it is not available on non-Steam supported architectures, such as ARM.
-			This is okay, as builds use far less system libraries than clients and servers.
+			This is okay, as builds use fewer system libraries than clients and servers.
 		-->
 		<BuildLaunch>$(DotNetName)</BuildLaunch>
 		<BuildEnvVars Condition="'$(OS)' == 'Windows_NT'"></BuildEnvVars>
