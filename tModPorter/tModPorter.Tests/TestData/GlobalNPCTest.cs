@@ -54,4 +54,5 @@ public class GlobalNPCTest : GlobalNPC
 	}
 	public override void OnChatButtonClicked(NPC npc, bool firstButton) { }
 	public override bool PreChatButtonClicked(NPC npc, bool firstButton) => true;
+	public override void BuffTownNPC(ref float damageMult, ref int defense) { }
 }

@@ -1406,7 +1406,7 @@
  				num3 *= 0.9f;
  			}
 +
-+			NPCLoader.BuffTownNPC(ref num2, ref defense);
++			NPCLoader.BuffTownNPC(this, ref num2, ref num3, ref defense, ref lifeMax);
  		}
  
  		if (type == 142 && Main.netMode != 1 && !Main.xMas) {
