@@ -1,4 +1,8 @@
-<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project
+	ToolsVersion="14.0"
+	xmlns="http://schemas.microsoft.com/developer/msbuild/2003"
+	InitialTargets="TmlCheckForWarnings"
+>
 
 	<!-- Set default values for our build config properties -->
 	<PropertyGroup>
@@ -28,10 +32,36 @@
 		<!-- TML stable version define placeholder -->
 	</PropertyGroup>
 
+	<!-- Debug/run properties -->
+	<PropertyGroup Condition="!Exists('/etc/NIXOS')">
+		<ExecutablePath>$(DotNetName)</ExecutablePath>
+		<TmlClientArgs>$(tMLPath)</TmlClientArgs>
+		<TmlServerArgs>$(tMLServerPath)</TmlServerArgs>
+	</PropertyGroup>
+	<PropertyGroup Condition=" Exists('/etc/NIXOS')">
+		<!-- NixOS: When starting TML via system .NET, the 'steam-run' wrapper must be used to create a FHS environment. -->
+		<ExecutablePath>steam-run</ExecutablePath>
+		<TmlClientArgs>$(DotNetName) $(tMLPath)</TmlClientArgs>
+		<TmlServerArgs>$(DotNetName) $(tMLServerPath)</TmlServerArgs>
+	</PropertyGroup>
+
+	<!-- Build/packaging properties -->
 	<PropertyGroup Condition="'$(BuildMod)' == 'true'">
 		<DotNetName Condition=" '$(OS)' == 'Windows_NT' ">dotnet.exe</DotNetName>
 		<DotNetName Condition=" '$(OS)' == 'Unix' ">dotnet</DotNetName>
 		<DotNetName Condition=" '$(DotNetName)' == '' ">dotnet</DotNetName>
+		
+		<!--
+			NixOS: The 'steam-run' FHS wrapper is purposefully not used for mod builds,
+			as it is not available on non-Steam supported architectures, such as ARM.
+			This is okay, as builds use fewer system libraries than clients and servers.
+		-->
+		<BuildLaunch>$(DotNetName)</BuildLaunch>
+		<BuildArch>$([System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture)</BuildArch>
+		<BuildEnvVars Condition="'$(OS)' == 'Windows_NT'"></BuildEnvVars>
+		<BuildEnvVars Condition="'$(OS)' == 'Unix' AND '$(BuildArch)' != 'Arm64'">LD_LIBRARY_PATH=$(tMLSteamPath)Libraries/Native/Linux</BuildEnvVars>
+		<BuildEnvVars Condition="'$(OS)' == 'Unix' AND '$(BuildArch)' == 'Arm64'">LD_LIBRARY_PATH=$(tMLSteamPath)Libraries/Native/Linux-arm64</BuildEnvVars>
+		<BuildEnvVars Condition="'$(OS)' == 'OSX'">DYLD_LIBRARY_PATH=$(tMLSteamPath)Libraries/Native/OSX</BuildEnvVars>
 	</PropertyGroup>
 
 	<ItemGroup Condition="'$(BuildMod)' == 'true'">
@@ -55,8 +85,22 @@
 		<Analyzer Include="$(tMLLibraryPath)/tModCodeAssist/1.0.0/tModCodeAssist.CodeFixes.dll" />
 	</ItemGroup>
 
+	<Target Name="TmlCheckForWarnings">
+		<!-- NixOS only: Check if steam-run is available. -->
+		<Exec Condition="Exists('/etc/NIXOS')" Command="which steam-run &gt;/dev/null" IgnoreExitCode="True">
+			<Output TaskParameter="ExitCode" PropertyName="SteamRunCheck" />
+		</Exec>
+		<!-- NixOS only: Notify the user if steam-run is unavailable. -->
+		<Warning Condition="Exists('/etc/NIXOS') And '$(SteamRunCheck)' != '0'" Text="To debug mods on NixOS, add the 'steam-run' package to your system environment." />
+	</Target>
+
+	<!-- Package the mod after building its code -->
 	<Target Name="BuildMod" AfterTargets="Build" Condition="'$(BuildMod)' == 'true'">
-		<Exec Command="dotnet $(tMLServerPath) -build $(ProjectDir) -eac $(TargetPath) -define &quot;$(DefineConstants)&quot; -unsafe $(AllowUnsafeBlocks) $(ExtraBuildModFlags)" WorkingDirectory="$(tMLSteamPath)"/>
+		<Exec
+			Command="$(BuildLaunch) $(tMLServerPath) -build $(ProjectDir) -eac $(TargetPath) -define &quot;$(DefineConstants)&quot; -unsafe $(AllowUnsafeBlocks) $(ExtraBuildModFlags)"
+			WorkingDirectory="$(tMLSteamPath)"
+			EnvironmentVariables="$(BuildEnvVars)"
+		/>
 	</Target>
 
 </Project>
