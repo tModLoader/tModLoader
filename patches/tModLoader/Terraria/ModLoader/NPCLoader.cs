@@ -1354,13 +1354,13 @@ public static class NPCLoader
 		}
 	}
 
-	private delegate void DelegateBuffTownNPC(ref float damageMult, ref float attackSpeedMult, ref int defense, ref int maxLife);
+	private delegate void DelegateBuffTownNPC(NPC npc, ref float damageMult, ref float attackSpeedMult, ref int defense, ref int maxLife);
 	private static HookList HookBuffTownNPC = AddHook<DelegateBuffTownNPC>(g => g.BuffTownNPC);
 
-	public static void BuffTownNPC(ref float damageMult, ref float attackSpeedMult, ref int defense, ref int maxLife)
+	public static void BuffTownNPC(NPC npc, ref float damageMult, ref float attackSpeedMult, ref int defense, ref int maxLife)
 	{
-		foreach (var g in HookBuffTownNPC.Enumerate()) {
-			g.BuffTownNPC(ref damageMult, ref attackSpeedMult, ref defense, ref maxLife);
+		foreach (var g in HookBuffTownNPC.Enumerate(npc)) {
+			g.BuffTownNPC(npc, ref damageMult, ref attackSpeedMult, ref defense, ref maxLife);
 		}
 	}
 

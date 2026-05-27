@@ -808,11 +808,12 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// Allows you to modify the stats of town NPCs. Useful for buffing town NPCs when certain bosses are defeated, etc.
 	/// <para/> Called on the server and clients.
 	/// </summary>
+	/// <param name="npc">The NPC</param>
 	/// <param name="damageMult">In vanilla, Pre-Hardmode bosses give <c>+= 0.05f</c> or <c>+= 0.1f</c> (+5% or +10% damage) and Hardmode bosses give <c>+= 0.15f</c> (+15% damage). The Advanced Combat Techniques books give <c>+= 0.25f</c> (+25% damage).</param>
-	/// <param name="attackSpeedMult">In vanilla, all bosses (except Moon Lord) give a <c>*= 0.985f</c> multiplier (+1.5% attack speed). The Advanced Combat Techniques books give <c>*= 0.8f</c> (+20% attack speed).</param>
+	/// <param name="attackSpeedMult">In vanilla, all bosses (except Moon Lord) give a <c>*= 0.985f</c> multiplier (+1.5% attack speed). The Advanced Combat Techniques books give <c>*= 0.8f</c> (+20% attack speed) each.</param>
 	/// <param name="defense">In vanilla, Pre-Hardmode bosses give <c>+= 2</c> or <c>+= 3</c> defense and Hardmode bosses give <c>+= 6</c> or <c>+= 8</c>. The Lunatic Cultist gives <c>+= 20</c> and Tipsy gives <c>*= 1.1f</c>.</param>
 	/// <param name="maxLife">The Advanced Combat Techniques books give <c>+= 250</c> each.</param>
-	public virtual void BuffTownNPC(ref float damageMult, ref float attackSpeedMult, ref int defense, ref int maxLife)
+	public virtual void BuffTownNPC(NPC npc, ref float damageMult, ref float attackSpeedMult, ref int defense, ref int maxLife)
 	{
 	}
 
