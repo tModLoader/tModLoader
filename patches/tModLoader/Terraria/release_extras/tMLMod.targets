@@ -30,6 +30,10 @@
 		<tMLServerPath>$(tMLPath) -server</tMLServerPath>
 		<!-- The below comment gets replaced in the build script with <DefineConstant> -->
 		<!-- TML stable version define placeholder -->
+
+		<DotNetName Condition=" '$(OS)' == 'Windows_NT' ">dotnet.exe</DotNetName>
+		<DotNetName Condition=" '$(OS)' == 'Unix' ">dotnet</DotNetName>
+		<DotNetName Condition=" '$(DotNetName)' == '' ">dotnet</DotNetName>
 	</PropertyGroup>
 
 	<!-- Debug/run properties -->
@@ -47,10 +51,6 @@
 
 	<!-- Build/packaging properties -->
 	<PropertyGroup Condition="'$(BuildMod)' == 'true'">
-		<DotNetName Condition=" '$(OS)' == 'Windows_NT' ">dotnet.exe</DotNetName>
-		<DotNetName Condition=" '$(OS)' == 'Unix' ">dotnet</DotNetName>
-		<DotNetName Condition=" '$(DotNetName)' == '' ">dotnet</DotNetName>
-		
 		<!--
 			NixOS: The 'steam-run' FHS wrapper is purposefully not used for mod builds,
 			as it is not available on non-Steam supported architectures, such as ARM.
