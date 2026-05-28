@@ -69,7 +69,7 @@
  		new AllPersonalitiesModifier().ModifyShopPrice(info, this);
  		if (_currentHappiness == "")
  			AddHappinessReportText("Content");
-@@ -154,11 +_,23 @@
+@@ -154,11 +_,17 @@
  		return priceAdjustment;
  	}
  
@@ -83,12 +83,6 @@
  	{
  		string text = "TownNPCMood_" + NPCID.Search.GetName(_currentNPCBeingTalkedTo.netID);
 +
-+		/*
-+		if (textKeyInCategory == "Princess_LovesNPC")
-+			text = ModContent.GetModNPC(otherNPCType).GetLocalizationKey("TownNPCMood");
-+		else if (_currentNPCBeingTalkedTo.ModNPC is ModNPC modNPC)
-+			text = modNPC.GetLocalizationKey("TownNPCMood");
-+		*/
 +		if (_currentNPCBeingTalkedTo.ModNPC is ModNPC modNPC)
 +			text = modNPC.GetLocalizationKey("TownNPCMood");
 +

@@ -1,8 +1,7 @@
 --- src/TerrariaNetCore/Terraria/GameContent/Personalities/AllPersonalitiesModifier.cs
 +++ src/tModLoader/Terraria/GameContent/Personalities/AllPersonalitiesModifier.cs
-@@ -1,17 +_,68 @@
+@@ -1,17 +_,67 @@
  using System.Collections.Generic;
-+using Terraria.ID;
 +using Terraria.ModLoader;
  
  namespace Terraria.GameContent.Personalities;
@@ -84,7 +83,7 @@
 +			/*
  			shopHelperInstance.LikePrincess();
 +			*/
-+			shopHelperInstance.ApplyNpcRelationshipEffect(NPCID.Princess, AffectionLevel.Like);
++			shopHelperInstance.ApplyNpcRelationshipEffect(663, AffectionLevel.Like);
 +	}
 +
 +	// [[ Split of the previous method ]]
