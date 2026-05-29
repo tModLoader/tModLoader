@@ -1,21 +1,22 @@
 #if NETCORE
-using log4net;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Threading;
-using Terraria.ModLoader.UI;
-using System.Runtime.Loader;
 using System.Runtime.CompilerServices;
-using Terraria.Localization;
-using Microsoft.Xna.Framework;
+using System.Runtime.Loader;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using Ionic.Zip;
+using log4net;
+using Microsoft.Xna.Framework;
 using MonoMod.RuntimeDetour;
+using Terraria.Localization;
+using Terraria.ModLoader.UI;
+using static Terraria.ModLoader.Logging;
 
 namespace Terraria.ModLoader.Core;
 
@@ -297,6 +298,13 @@ public static class AssemblyManager
 	private static ModLoadContext GetLoadContext(string name) => loadedModContexts.TryGetValue(name, out var value) ? value : throw new KeyNotFoundException(name);
 
 	public static IEnumerable<Assembly> GetModAssemblies(string name) => GetLoadContext(name).assemblies.Values;
+
+	public static bool IsLoadedModAssemblyDebugBuild(string name)
+	{
+		var assembly = GetModAssemblies(name).Where(asm => asm.FullName.Contains(name)).FirstOrDefault();
+
+		return assembly.GetCustomAttributes(false).OfType<DebuggableAttribute>().Any(da => da.IsJITTrackingEnabled);
+	}
 
 	public static bool GetAssemblyOwner(Assembly assembly, out string modName)
 	{
