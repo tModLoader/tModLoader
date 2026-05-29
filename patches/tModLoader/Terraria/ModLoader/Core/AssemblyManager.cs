@@ -299,9 +299,12 @@ public static class AssemblyManager
 
 	public static IEnumerable<Assembly> GetModAssemblies(string name) => GetLoadContext(name).assemblies.Values;
 
+	public static Assembly GetMainModAssembly(string name) => GetLoadContext(name).assembly;
+
 	public static bool IsLoadedModAssemblyDebugBuild(string name)
 	{
-		var assembly = GetModAssemblies(name).Where(asm => asm.FullName.Contains(name)).FirstOrDefault();
+		var assembly = GetMainModAssembly(name);
+		if (assembly == null) return false;
 
 		return assembly.GetCustomAttributes(false).OfType<DebuggableAttribute>().Any(da => da.IsJITOptimizerDisabled);
 	}
