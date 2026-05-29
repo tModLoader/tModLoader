@@ -78,8 +78,7 @@
 +	//TODO: Anything else?
 +	public static string BiomeNameByKey(string biomeNameKey) => Language.GetTextValue(biomeNameKey.StartsWith("Mods.") ? biomeNameKey : "TownNPCMoodBiomes." + biomeNameKey);
  
--	private void AddHappinessReportText(string textKeyInCategory, object substitutes = null)
-+	private void AddHappinessReportText(string textKeyInCategory, object substitutes = null, int otherNPCType = 0)
+ 	private void AddHappinessReportText(string textKeyInCategory, object substitutes = null)
  	{
  		string text = "TownNPCMood_" + NPCID.Search.GetName(_currentNPCBeingTalkedTo.netID);
 +
@@ -89,7 +88,7 @@
  		if (_currentNPCBeingTalkedTo.type == 633 && _currentNPCBeingTalkedTo.altTexture == 2)
  			text += "Transformed";
  
-@@ -166,6 +_,114 @@
+@@ -166,6 +_,122 @@
  		_currentHappiness = _currentHappiness + textValueWith + " ";
  	}
  
@@ -176,17 +175,25 @@
 +		ModNPC talkModNPC = _currentNPCBeingTalkedTo.ModNPC; // ModNPC instance of the Town NPC the player is talking to, if it exists.
 +		string talkNPCName = NPCID.Search.GetName(_currentNPCBeingTalkedTo.netID); // Get the name of the Town NPC the player is talking to.
 +
++		// Vanilla biomes are just a name. Example: "Forest"
++		// Modded biomes are localization path. Example: "Mods.ExampleMod.Biomes.ExampleSurfaceBiome.TownNPCDialogueName"
++		string biomeName = biomeNameKey;
++		if (biomeNameKey.StartsWith("Mods.")) {
++			string[] splitBiomeName = biomeName.Split('.');
++			biomeName = $"{splitBiomeName[1]}/{splitBiomeName[3]}"; // Construct the ModName/ModBiomeName. Example: "ExampleMod/ExampleSurfaceBiome"
++		}
++
 +		// If the current Town NPC is a ModNPC
 +		// Check to see if there is a localization entry for the biome defined in our current Town NPC.
-+		if (talkModNPC != null && Language.Exists($"{talkModNPC.GetLocalizationKey("TownNPCMood")}.{affectionLevel}Biome_{biomeNameKey}")) {
++		if (talkModNPC != null && Language.Exists($"{talkModNPC.GetLocalizationKey("TownNPCMood")}.{affectionLevel}Biome_{biomeName}")) {
 +			// If it does exist, add the happiness report.
-+			AddHappinessReportTextWithKey(talkModNPC.GetLocalizationKey("TownNPCMood"), $"{affectionLevel}Biome_{biomeNameKey}", new {
++			AddHappinessReportTextWithKey(talkModNPC.GetLocalizationKey("TownNPCMood"), $"{affectionLevel}Biome_{biomeName}", new {
 +				BiomeName = BiomeNameByKey(biomeNameKey)
 +			});
 +		}
 +		// Try for vanilla NPC talking about the biome.
-+		else if (Language.Exists($"TownNPCMood_{talkNPCName}.{affectionLevel}Biome_{biomeNameKey}")) {
-+			AddHappinessReportTextWithKey($"TownNPCMood_{talkNPCName}", $"{affectionLevel}Biome_{biomeNameKey}", new {
++		else if (Language.Exists($"TownNPCMood_{talkNPCName}.{affectionLevel}Biome_{biomeName}")) {
++			AddHappinessReportTextWithKey($"TownNPCMood_{talkNPCName}", $"{affectionLevel}Biome_{biomeName}", new {
 +				BiomeName = BiomeNameByKey(biomeNameKey)
 +			});
 +		}
