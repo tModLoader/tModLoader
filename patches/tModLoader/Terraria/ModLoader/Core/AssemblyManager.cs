@@ -303,7 +303,7 @@ public static class AssemblyManager
 	{
 		var assembly = GetModAssemblies(name).Where(asm => asm.FullName.Contains(name)).FirstOrDefault();
 
-		return assembly.GetCustomAttributes(false).OfType<DebuggableAttribute>().Any(da => da.IsJITTrackingEnabled);
+		return assembly.GetCustomAttributes(false).OfType<DebuggableAttribute>().Any(da => da.IsJITOptimizerDisabled);
 	}
 
 	public static bool GetAssemblyOwner(Assembly assembly, out string modName)
