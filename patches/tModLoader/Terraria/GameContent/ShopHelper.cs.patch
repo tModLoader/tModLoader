@@ -143,8 +143,8 @@
 +			// Talking about a ModNPC. We want to use the OtherModNPC's entry for the Town NPC the player is talking to, if it exists.
 +			// Example: Mods.ExampleMod.NPCs.ExamplePerson.TownNPCMood.Guide_LoveNPC
 +			// Example: Mods.ExampleMod.NPCs.ExamplePerson.TownNPCMood.MyMod/MyTownNPC_LoveNPC
-+			if (otherModNPC != null && Language.Exists($"{otherModNPC.GetLocalizationKey("TownNPCMood")}.{talkNPCName}_{affectionLevel}NPC")) {
-+				AddHappinessReportTextWithKey(otherModNPC.GetLocalizationKey("TownNPCMood"), $"{talkNPCName}_{affectionLevel}NPC", new {
++			if (otherModNPC != null && Language.Exists($"{otherModNPC.GetLocalizationKey("TownNPCMood")}.{talkNPCName}_{affectionLevel}sNPC")) {
++				AddHappinessReportTextWithKey(otherModNPC.GetLocalizationKey("TownNPCMood"), $"{talkNPCName}_{affectionLevel}sNPC", new {
 +					NPCName = NPC.GetFullnameByID(otherNpcType)
 +				});
 +			}
