@@ -173,7 +173,7 @@
  		}
  		else if (type == 4986) {
  			if (NPC.unlockedSlimeRainbowSpawn)
-@@ -1538,12 +_,15 @@
+@@ -1538,22 +_,22 @@
  				num7++;
  				int num8 = num6 * item.stack;
  				int num9 = (item.IsRecipeGroup ? item.RecipeGroup.DecraftItemId : item.itemIdOrRecipeGroup);
@@ -188,4 +188,16 @@
 +				RecipeLoader.ConsumeIngredient(recipe, num9, ref num8, true);
  
  				while (num8 > 0) {
- 					int num11 = num8;
+-					int num11 = num8;
+-					if (num11 > 9999)
+-						num11 = 9999;
+-
+-					num8 -= num11;
+ 					int num12 = Item.NewItem(GetItemSource_Misc(ItemSourceID.Shimmer), (int)position.X, (int)position.Y, width, height, num9);
+ 					WorldItem worldItem = Main.item[num12];
++					int num11 = Math.Min(num8, worldItem.maxStack);
+ 					worldItem.stack = num11;
++					num8 -= num11;
+ 					worldItem.shimmerTime = 1f;
+ 					worldItem.shimmered = true;
+ 					worldItem.shimmerWet = true;
