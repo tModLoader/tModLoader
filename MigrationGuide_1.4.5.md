@@ -321,6 +321,23 @@ SilverBarRecipeGroup = RecipeGroup.Register(
   * The "SetBonus" tooltip has changed. It now automatically displays partial sets and adjusts the color to indicate if the set is complete.
   * The "SetBonusSinglePiece" tooltip shows the set bonus that would be applied if the unequipped equipment were equipped.
 * Town NPCs who are homeless have a new "Housing" button that displays their "NoHome" dialogue as well as a hint on what valid housing is. The hint text can be customized through the localization file. If the key `Mods.ModName.NPCs.NPCName.HousingText.HousingRequirements` exists, it will automatically be used over the default text.
+* Town NPCs can now have specific happiness dialogue for other Town NPCs or biomes that work just like the previous `LikeNPC_Princess` and `Princess_LovesNPC`.
+  * For Mod NPCs, the localization keys are scoped in `Mods.{ModName}.NPCs.{ModNPCName}.TownNPCMood`
+    * `{AffectionLevel}NPC_{OtherNPCInternalName}` For specific dialogue for talking about other NPC. Other loved NPCs will use the generic `{AffectionLevel}NPC`.
+      * Example: `LoveNPC_Guide` Would be a specific dialogue for talking about the Guide. 
+      * Modded NPCs will need the full mod name as well. Example: `LoveNPC_ExampleMod/ExamplePerson`.
+    * `{AffectionLevel}Biome_{BiomeName}` For biomes.
+      * Modded Biomes will need the full name. Example: `LoveBiome_ExampleMod/ExampleSurfaceBiome`
+    * `{OtherNPCInternalName}_{AffectionLevel}sNPC` For specific dialogue when another NPC is talking about your Mod NPC.
+      * Example: `Guide_LovesNPC` Would be specific dialogue from the Guide when he is talking about your Mod NPC.
+      * Modded NPCs will need the full mod name, too.  Example: `ExampleMod/ExamplePerson_LovesNPC`.
+  * For vanilla NPCs talking about vanilla NPCs, the localization keys are scoped in `TownNPCMood_{NPCInternalName}` (outside of Mods.ModName)
+    * `{AffectionLevel}NPC_{OtherVanillaNPCInternalName}`
+	  * Example: `TownNPCMood_Guide.LikeNPC_BestiaryGirl` Would be a specific dialogue for when the Guide is talking about the Zoologist. 
+    * `{AffectionLevel}Biome_{BiomeName}` for biomes.
+  * Caveat for the Zoologist: She has two sets of happiness dialogue. A normal one and one for when she is transformed.
+    * In the ModNPC, add Transformed beforehand: `Transformed.BestiaryGirl_{AffectionLevel}NPC`
+	* For vanilla NPCs talking about vanilla NPCs, use BestiaryGirlTransformed: `TownNPCMood_BeastiaryGirlTransformed.{AffectionLevel}NPC_{OtherNPCInternalName}`
 
 ### Example Mod
 

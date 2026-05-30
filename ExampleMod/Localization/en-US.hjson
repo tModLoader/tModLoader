@@ -118,13 +118,12 @@ Mods: {
 					DislikeBiome_Desert: It's way too hot in {BiomeName}, I'm burning!
 					LoveBiome_ExampleMod/ExampleSurfaceBiome: "{BiomeName} makes me feel right at home!"
 					# We can also give other NPCs specific dialogue text for this Modded NPC.
-					# They need to follow the pattern of [NPCInternalName]_[AffectionLevel]s(NPC or Biome)
+					# They need to follow the pattern of [NPCInternalName]_[AffectionLevel]s(NPC)
 					Guide_LovesNPC: I love a fellow educator like {NPCName}.
+					# Zoologist is a special case because she has a second set of dialogue when transformed.
 					BestiaryGirl_LikesNPC: I like the research {NPCName} does.
+					Transformed.BestiaryGirl_LikesNPC: "{NPCName} research GOOD!"
 				}
-
-				# Zoologist is a special case because she has a second set of dialogue when transformed.
-				TownNPCMoodTransformed.BestiaryGirl_LikesNPC: "{NPCName} research GOOD!"
 
 				Interactions: {
 					AwesomeifyButton: Awesomeify
@@ -1672,3 +1671,6 @@ UI.PlayerIsNotCreativeAndWorldIsCreative: Only Journey characters may enter a Jo
 # For the vanilla NPC talking about your Modded NPC, put the dialogue in the Modded NPC's TownNPCMood. See ExamplePerson for details.
 TownNPCMood_Guide.LoveBiome_ExampleMod/ExampleSurfaceBiome: Somehow, I love the muted colors of {BiomeName}!
 TownNPCMood_Nurse.DislikeNPC_PartyGirl: I don't like {NPCName}. How can she party all of the time?
+# Zoologist is a special case because she has a second set of dialogue when transformed.
+TownNPCMood_BestiaryGirl.LikeNPC_Golfer: "{NPCName} is my brother, of course I like him!"
+TownNPCMood_BestiaryGirlTransformed.LikeNPC_Golfer: "{NPCName} good family!"

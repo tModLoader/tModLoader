@@ -88,22 +88,29 @@
  		if (_currentNPCBeingTalkedTo.type == 633 && _currentNPCBeingTalkedTo.altTexture == 2)
  			text += "Transformed";
  
-@@ -166,6 +_,122 @@
+@@ -166,6 +_,129 @@
  		_currentHappiness = _currentHappiness + textValueWith + " ";
  	}
  
 +	// Added by TML
-+	private void AddHappinessReportTextWithKey(string textKey, string textKeyInCategory, object substitutes = null)
++	private void AddHappinessReportTextWithKey(string textKey, string textKeyInCategory, object substitutes = null, int otherNPCType = 0)
 +	{
-+		if (_currentNPCBeingTalkedTo.type == 633 && _currentNPCBeingTalkedTo.altTexture == 2)
-+			textKey += "Transformed";
++		if (_currentNPCBeingTalkedTo.type == 633 && _currentNPCBeingTalkedTo.altTexture == 2) {
++			// If the Zoologist is talking about a Mod NPC, use ".Transformed" so the key becomes Mods.ModName.NPCs.NPCName.TownNPCMood.Transformed.BestiaryGirl_AffectionLevelNPC
++			// The reason this check is only in this method and not the other is because the other method is not used for trying to access the otherNPCType's localization keys.
++			if (otherNPCType > NPCID.Count)
++				textKey += ".Transformed";
++			// Else vanilla, the key is TownNPCMood_BestiaryGirlTransformed.AffectionLevelNPC_NPCName
++			else
++				textKey += "Transformed";
++		}
 +
 +		string textValueWith = Language.GetTextValueWith(textKey + "." + textKeyInCategory, substitutes);
 +		_currentHappiness = _currentHappiness + textValueWith + " ";
 +	}
 +
 +	// Added by TML.
-+	internal void ApplyNpcRelationshipEffect(int otherNpcType, AffectionLevel affectionLevel)
++	internal void ApplyNpcRelationshipEffect(int otherNPCType, AffectionLevel affectionLevel)
 +	{
 +		if (affectionLevel == 0 || !Enum.IsDefined(affectionLevel)) {
 +			return;
@@ -112,8 +119,7 @@
 +		/*
 +			If talking to ModNPC
 +				Want to use ModNPC's LoveNPC_OtherPerson if exists
-+				Else, use generic LoveNPC
-+			If talking to Vanilla NPC
++			If talking to Vanilla NPC or ModNPC specific dialogue didn't exist.
 +				If talking about a ModNPC
 +					Want to use ModNPC's OtherPerson_LoveNPC if exists
 +				If talking about a vanilla NPC
@@ -121,7 +127,7 @@
 +				Else, use generic LoveNPC
 +		*/
 +
-+		string otherNPCName = NPCID.Search.GetName(otherNpcType); // Get the name of the other Town NPC.
++		string otherNPCName = NPCID.Search.GetName(otherNPCType); // Get the name of the other Town NPC.
 +		ModNPC talkModNPC = _currentNPCBeingTalkedTo.ModNPC; // ModNPC instance of the Town NPC the player is talking to, if it exists.
 +	
 +		// If the current Town NPC is a ModNPC
@@ -131,12 +137,12 @@
 +		if (talkModNPC != null && Language.Exists($"{talkModNPC.GetLocalizationKey("TownNPCMood")}.{affectionLevel}NPC_{otherNPCName}")) {
 +			// If it does exist, add the happiness report.
 +			AddHappinessReportTextWithKey(talkModNPC.GetLocalizationKey("TownNPCMood"), $"{affectionLevel}NPC_{otherNPCName}", new {
-+				NPCName = NPC.GetFullnameByID(otherNpcType)
++				NPCName = NPC.GetFullnameByID(otherNPCType)
 +			});
 +		}
 +		// Vanilla NPC or ModNPC specific dialogue didn't exist.
 +		else {
-+			ModNPC otherModNPC = ModContent.GetModNPC(otherNpcType); // ModNPC instance of the other Town NPC, if it exists.
++			ModNPC otherModNPC = ModContent.GetModNPC(otherNPCType); // ModNPC instance of the other Town NPC, if it exists.
 +			string talkNPCName = NPCID.Search.GetName(_currentNPCBeingTalkedTo.netID); // Get the name of the Town NPC the player is talking to.
 +
 +			// Talking about a ModNPC. We want to use the OtherModNPC's entry for the Town NPC the player is talking to, if it exists.
@@ -144,20 +150,21 @@
 +			// Example: Mods.ExampleMod.NPCs.ExamplePerson.TownNPCMood.MyMod/MyTownNPC_LoveNPC
 +			if (otherModNPC != null && Language.Exists($"{otherModNPC.GetLocalizationKey("TownNPCMood")}.{talkNPCName}_{affectionLevel}sNPC")) {
 +				AddHappinessReportTextWithKey(otherModNPC.GetLocalizationKey("TownNPCMood"), $"{talkNPCName}_{affectionLevel}sNPC", new {
-+					NPCName = NPC.GetFullnameByID(otherNpcType)
-+				});
++					NPCName = NPC.GetFullnameByID(otherNPCType)
++				},
++				otherNPCType);
 +			}
 +			// Try for vanilla NPC talking about another vanilla NPC.
 +			// Example: TownNPCMood_Guide.LoveNPC_Merchant
 +			else if (Language.Exists($"TownNPCMood_{talkNPCName}.{affectionLevel}NPC_{otherNPCName}")) {
 +				AddHappinessReportTextWithKey($"TownNPCMood_{talkNPCName}", $"{affectionLevel}NPC_{otherNPCName}", new {
-+					NPCName = NPC.GetFullnameByID(otherNpcType)
++					NPCName = NPC.GetFullnameByID(otherNPCType)
 +				});
 +			}
 +			// If nothing above was true, add the generic dialogue.
 +			else {
 +				AddHappinessReportText($"{affectionLevel}NPC", new {
-+					NPCName = NPC.GetFullnameByID(otherNpcType)
++					NPCName = NPC.GetFullnameByID(otherNPCType)
 +				});
 +			}
 +		}
