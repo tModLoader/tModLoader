@@ -141,6 +141,38 @@
  
  	public static void ShimmerEffect(Vector2 shimmerPositon)
  	{
+@@ -1464,10 +_,29 @@
+ 			stack = 0;
+ 		}
+ 		else if (transformToItem > 0) {
+-			int num = stack;
++			int stackSize = stack;
+ 			SetDefaults(transformToItem);
+-			stack = num;
++			stack = stackSize;
++			if (stack > maxStack)
++				stack = maxStack;
++			stackSize -= stack;
+ 			shimmered = true;
++			while (stackSize > 0) {
++				int newItemIndex = Item.NewItem(GetItemSource_Misc(ItemSourceID.Shimmer), (int)position.X, (int)position.Y, width, height, type);
++				WorldItem worldItem = Main.item[newItemIndex];
++				worldItem.stack = stackSize;
++				if (worldItem.stack > maxStack)
++					worldItem.stack = maxStack;
++				stackSize -= worldItem.stack;
++				worldItem.shimmerTime = 1f;
++				worldItem.shimmered = true;
++				worldItem.shimmerWet = true;
++				worldItem.wet = true;
++				worldItem.velocity *= 0.1f;
++				worldItem.playerIndexTheItemIsReservedFor = Main.myPlayer;
++
++				NetMessage.SendData(145, -1, -1, null, newItemIndex, 1f);
++			}
+ 		}
+ 		else if (type == 4986) {
+ 			if (NPC.unlockedSlimeRainbowSpawn)
 @@ -1538,12 +_,15 @@
  				num7++;
  				int num8 = num6 * item.stack;
