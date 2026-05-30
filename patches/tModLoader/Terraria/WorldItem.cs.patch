@@ -173,6 +173,15 @@
  		}
  		else if (type == 4986) {
  			if (NPC.unlockedSlimeRainbowSpawn)
+@@ -1519,7 +_,7 @@
+ 		else if (decraftingRecipeIndex >= 0) {
+ 			int num6 = inner.FindDecraftAmount();
+ 			Recipe recipe = Main.recipe[decraftingRecipeIndex];
+-			bool flag = recipe.requiredItem[1].stack > 0;
++			bool flag = recipe.requiredItem.Count > 1 && recipe.requiredItem[1].stack > 0;
+ 			IEnumerable<Recipe.RequiredItemEntry> enumerable = recipe.requiredItemQuickLookup;
+ 			if (recipe.customShimmerResults != null) {
+ 				enumerable = recipe.customShimmerResults.Select(delegate (Item item) {
 @@ -1538,22 +_,22 @@
  				num7++;
  				int num8 = num6 * item.stack;
