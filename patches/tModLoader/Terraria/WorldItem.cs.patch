@@ -182,7 +182,7 @@
  			IEnumerable<Recipe.RequiredItemEntry> enumerable = recipe.requiredItemQuickLookup;
  			if (recipe.customShimmerResults != null) {
  				enumerable = recipe.customShimmerResults.Select(delegate (Item item) {
-@@ -1538,22 +_,30 @@
+@@ -1538,22 +_,29 @@
  				num7++;
  				int num8 = num6 * item.stack;
  				int num9 = (item.IsRecipeGroup ? item.RecipeGroup.DecraftItemId : item.itemIdOrRecipeGroup);
@@ -202,7 +202,6 @@
  					if (num11 > 9999)
  						num11 = 9999;
  
-+
  					num8 -= num11;
 +					*/
  					int num12 = Item.NewItem(GetItemSource_Misc(ItemSourceID.Shimmer), (int)position.X, (int)position.Y, width, height, num9);
