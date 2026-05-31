@@ -491,7 +491,7 @@
 		"MigrateIndividualPlayersHeader": "Перенос отдельных персонажей",
 		"MigrateIndividualWorldsHeader": "Перенос отдельных миров",
 		"MigratingWorldsText": "Происходит перенос миров...",
-		// "ClickToCopyFileOverFromReleaseName": "Click to copy \"{0}\" over from {1}",
+		"ClickToCopyFileOverFromReleaseName": "Нажмите, чтобы скопировать \"{0}\" из {1}",
 		"ModsDifferentSinceLastPlay": "Следующие моды отличаются от тех, с которыми вы играли в последний раз: ",
 		"Missing1Mod": "Отсутствует 1 мод",
 		"MissingXMods": "\nОтсутствует {0} {^0:мод;мода;модов}",
