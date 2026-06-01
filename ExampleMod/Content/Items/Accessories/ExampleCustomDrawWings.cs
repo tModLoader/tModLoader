@@ -58,7 +58,7 @@ namespace ExampleMod.Content.Items.Accessories
 		}
 
 		public override bool ModifyEquipTextureDraw(ref PlayerDrawSet drawInfo, ref DrawData drawData, EquipType type, int slot, string memberName) {
-			// Some wings only draw while falling or being used, the ShouldDrawWingsThatAreAlwaysAnimated check does that.
+			// Some wings only draw while falling or being used. The ShouldDrawWingsThatAreAlwaysAnimated method can be checked to prevent drawing the wings when standing still or in similar situations.
 			//if (!drawInfo.drawPlayer.ShouldDrawWingsThatAreAlwaysAnimated()) {
 			//	return false; // false prevents drawData from being drawn
 			//}
@@ -106,7 +106,6 @@ namespace ExampleMod.Content.Items.Accessories
 			// Gliding - Attempting to fly without any remaining flight time. Not falling.
 			if (!inUse && player.wingsLogic > 0 && player.controlJump && player.velocity.Y > 0f) {
 				player.wingFrame = 1;
-
 			}
 
 			// Dust - spawn when flying or gliding at a reduced rate

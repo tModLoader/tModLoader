@@ -1123,7 +1123,7 @@ Mods: {
 
 			CustomItemDrawingShowcase: {
 				// DisplayName: Custom Item Drawing Showcase
-				// Tooltip: ""
+				// Tooltip: <right> to cycle draw mode examples
 				// RightClick: Switching to drawMode #{0}: {1}
 				// DrawMode_0: Draw an overlay/glowmask
 				// DrawMode_1: Scale drawing to make a pulse effect similar to Soul items
