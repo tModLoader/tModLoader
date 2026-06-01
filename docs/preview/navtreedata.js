@@ -67,16 +67,16 @@ var NAVTREEINDEX =
 "class_n_p_c.html#a865f6d2c61c4ee05593397b3f990d165",
 "class_n_p_c_i_d_1_1_sets.html#a6ff0032f7de1978e59db9e356b31c901",
 "class_player.html#a55103513d96bc820345e45f34cad7c7a",
-"class_player_draw_layers.html#aba05dcf88674bf1e907d517f24d5ab5b",
-"class_proj_a_i_style_i_d.html#ab9210c5003830c6a3c31db39571cd4cf",
-"class_recipe_1_1_consumption_rules.html",
-"class_t_e_display_doll.html#a65dc0d2bd9395517669cdd099dd3ea53",
-"class_tile_loader.html#a9e5a6496b43162b1885292a581ca97a0",
-"class_u_i_element.html#a0e7f0b480b90da1361844567745f2db4",
-"class_unloaded_item.html#ad1568a282da0013b69b809059748d2ab",
-"functions_func_l.html",
-"struct_boss_bar_draw_params.html#a77ff67cbfc6f723bd458af217e55cca1",
-"struct_player_1_1_hurt_modifiers.html#abf162277c97c930f388a61d09ea165da"
+"class_player_draw_layers.html#aaff565564b5b10ad63c69918585c41e3",
+"class_proj_a_i_style_i_d.html#ab7f0b379c09671410e9f2d41aff42d71",
+"class_recipe.html#afb01ae9f6e1291665e441763d92a8640",
+"class_t_e_display_doll.html",
+"class_tile_loader.html#a98f4e0da8b88b2451404d5586ca04819",
+"class_u_i_element.html#a08e6998f40b992c19bd37a3c121d8444",
+"class_unloaded_item.html#a8ecf3536a3f8ecd368746eb540e8b254",
+"functions_func_k.html",
+"struct_boss_bar_draw_params.html#a7769b9eff262cd868ea50ebd2e18d592",
+"struct_player_1_1_hurt_modifiers.html#aa447fefe1c6804405d6279704d2bd833"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
