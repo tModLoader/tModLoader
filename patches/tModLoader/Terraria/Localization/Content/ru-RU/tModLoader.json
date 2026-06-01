@@ -1184,6 +1184,6 @@
 	},
 	"TownNPCMood": {
 		"LikeNPC_Princess": "Мне нравится {NPCName}.",
-		"Princess_LovesNPC": "Мне нравится {NPCName}."
+		"Princess_LovesNPC": "Я люблю {NPCName}."
 	}
 }
