@@ -10,7 +10,7 @@ Modders should follow this guide to migrate their mod from 1.4.4 to 1.4.5. This 
 
 This tModLoader release updates .NET from .NET 8 to .NET 10. Modders will need to download and install the [.NET 10 SDK](https://dotnet.microsoft.com/en-us/download). Visual Studio users will need to [update to Visual Studio 2026](https://learn.microsoft.com/en-us/visualstudio/install/update-visual-studio?view=visualstudio) as well. Visual Studio 2022 will not work anymore. Rider and Visual Studio Code users should make sure they are updated as well.
 
-The porting process will change your source code. If you are not yet using and [source code version control](https://github.com/tModLoader/tModLoader/wiki/Intermediate-Git-&-mod-management) like a GitHub repository, now might be the time to learn how to do that. If you are not ready to learn that yet, please at least make a backup of your source code.
+The porting process will change your source code. If you are not yet using [source code version control](https://github.com/tModLoader/tModLoader/wiki/Intermediate-Git-&-mod-management) like a GitHub repository, now might be the time to learn how to do that. If you are not ready to learn that yet, please at least make a backup of your source code.
 
 ## Porting Instructions
 
@@ -317,7 +317,7 @@ SilverBarRecipeGroup = RecipeGroup.Register(
 * Several item tooltip line changes:
   * The "SocialDesc" tooltip line no longer exists. The "Social" tooltip line (now "Equipped in social slot") will now only show for items that are neither `Item.vanity` or `Item.hasVanityEffects`.
     * `Item.hasVanityEffects` is now used. It was previously unused. Set this for accessories that have vanity effects to prevent the "Social" tooltip line from appearing and suggesting the item has no effect in vanity slots.
-  * There are new tooltip lines: "Wireable", "Container", "WireTrigger", "WizardHatDuringAnniversary", "BurningBlock", "MechSummonDuringEverything", "MechdusaSummonNotDuringEverything", "PrefixArmorPenetration", "PrefixTagDamage", "SetBonusSinglePiece", and "JourneyResearchTeammate".
+  * There are new tooltip lines: "Wireable", "Container", "WireTrigger", "WizardHatDuringAnniversary", "BurningBlock", "MechSummonDuringEverything", "MechdusaSummonNotDuringEverything", "PrefixArmorPenetration", "PrefixTagDamage", "SetBonusSinglePiece", "JourneyResearchTeammate", and "MissingRequirements".
   * The "SetBonus" tooltip has changed. It now automatically displays partial sets and adjusts the color to indicate if the set is complete.
   * The "SetBonusSinglePiece" tooltip shows the set bonus that would be applied if the unequipped equipment were equipped.
 * Town NPCs who are homeless have a new "Housing" button that displays their "NoHome" dialogue as well as a hint on what valid housing is. The hint text can be customized through the localization file. If the key `Mods.ModName.NPCs.NPCName.HousingText.HousingRequirements` exists, it will automatically be used over the default text.
