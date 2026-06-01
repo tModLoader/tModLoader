@@ -2027,6 +2027,16 @@
  				if (inventory[i].stack <= 0)
  					inventory[i].SetDefaults();
  
+@@ -6512,7 +_,8 @@
+ 				return false;
+ 
+ 			Item item = bank4.item[num4];
++			if (ItemLoader.ConsumeItem(item, this))
+-			item.stack--;
++				item.stack--;
+ 			if (item.stack <= 0)
+ 				item.TurnToAir();
+ 
 @@ -6524,6 +_,9 @@
  
  	public void OpenShadowLockbox(int boxType)
