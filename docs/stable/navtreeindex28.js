@@ -1,5 +1,7 @@
 var NAVTREEINDEX28 =
 {
+"struct_player_1_1_hurt_modifiers.html#abf162277c97c930f388a61d09ea165da":[3,0,983,6,11],
+"struct_player_1_1_hurt_modifiers.html#acc6458994f221c568588dfaf15d91ba3":[3,0,983,6,16],
 "struct_player_1_1_hurt_modifiers.html#ad1fc5a57a28b9b5ac20822156c001262":[3,0,983,6,12],
 "struct_player_1_1_hurt_modifiers.html#adb99914ce1426d17f09a31c2ce9af838":[3,0,983,6,10],
 "struct_player_1_1_hurt_modifiers.html#add7409a737d4956980fd698ac185cb71":[3,0,983,6,0],

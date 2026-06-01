@@ -1,5 +1,7 @@
 var NAVTREEINDEX25 =
 {
+"class_unloaded_item.html#ad1568a282da0013b69b809059748d2ab":[3,0,1431,6],
+"class_unloaded_item.html#ae55673c8d05024e98d89a2dcb87a327e":[3,0,1431,2],
 "class_unloaded_item.html#af9a5e2d5ab6b9da46f1f55eb39336eae":[3,0,1431,4],
 "class_unloaded_item.html#afc5f9791ed834c179419c609800ea7c7":[3,0,1431,7],
 "class_unloaded_non_solid_tile.html":[3,0,1432],
@@ -247,7 +249,5 @@ var NAVTREEINDEX25 =
 "functions_func_h.html":[3,3,1,7],
 "functions_func_i.html":[3,3,1,8],
 "functions_func_j.html":[3,3,1,9],
-"functions_func_k.html":[3,3,1,10],
-"functions_func_l.html":[3,3,1,11],
-"functions_func_m.html":[3,3,1,12]
+"functions_func_k.html":[3,3,1,10]
 };

@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2026.03</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2026.04</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -483,6 +483,8 @@ static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>IsAMechanism
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>IsATreeTrunk</b> = Factory.CreateBoolSet(false, 5, 72, 583, 584, 585, 586, 587, 588, 589, 596, 616, 634)</td></tr>
 <tr class="memdesc:af6d219061ccc5d59b713d81ef0767c67"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>true</code> for a given tile type (<a class="el" href="struct_tile.html#a78dd48536cd907712816268fa581495a" title="The TileID of the tile at this position.  This value is only valid if HasTile is true....">Tile.TileType</a>), then that tile is categorized as a tree trunk. <br  />
  Tree trunks are a type of tile anchor (Enums.AnchorType.Tree), targetable by axes, and are replanted when using the ItemID.AcornAxe. <br  />
+ Tiles in this set also get the "Tree" map text. <br  />
+ Some trees, such as TileID.PalmTree, are not included in this set because they curve and as such are not suitable for tile anchors. <br  />
  Defaults to <code>false</code>. <br /></td></tr>
 <tr class="separator:af6d219061ccc5d59b713d81ef0767c67"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad89accedda94c95321ff3fa1867876e1"><td class="memItemLeft" align="right" valign="top"><a id="ad89accedda94c95321ff3fa1867876e1" name="ad89accedda94c95321ff3fa1867876e1"></a>

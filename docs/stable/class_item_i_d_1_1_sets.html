@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2026.03</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2026.04</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -323,10 +323,22 @@ static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>IsFishingCra
 <tr class="memitem:a44187beac658aae40966a080b6ed9e2f"><td class="memItemLeft" align="right" valign="top"><a id="a44187beac658aae40966a080b6ed9e2f" name="a44187beac658aae40966a080b6ed9e2f"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>IsFishingCrateHardmode</b> = Factory.CreateBoolSet(3979, 3980, 3981, 3982, 3983, 3984, 3985, 3986, 3987, 4406, 4408, 4878, 5003)</td></tr>
 <tr class="separator:a44187beac658aae40966a080b6ed9e2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7314ec9992952e5c00a87e63c5a595b1"><td class="memItemLeft" align="right" valign="top">static bool[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_item_i_d_1_1_sets.html#a7314ec9992952e5c00a87e63c5a595b1">IsFood</a> = Factory.CreateBoolSet(353, 357, 1787, 1911, 1912, 1919, 1920, 2266, 2267, 2268, 2425, 2426, 2427, 3195, 3532, 4009, 4010, 4011, 4012, 4013, 4014, 4015, 4016, 4017, 4018, 4019, 4020, 4021, 4022, 4023, 4024, 4025, 4026, 4027, 4028, 4029, 4030, 4031, 4032, 4033, 4034, 4035, 4036, 4037, 967, 969, 4282, 4283, 4284, 4285, 4286, 4287, 4288, 4289, 4290, 4291, 4292, 4293, 4294, 4295, 4296, 4297, 4403, 4411, 4614, 4615, 4616, 4617, 4618, 4619, 4620, 4621, 4622, 4623, 4624, 4625, 5009, 5042, 5041, 5092, 5093, 5275, 5277, 5278)</td></tr>
+<tr class="memitem:a7314ec9992952e5c00a87e63c5a595b1"><td class="memItemLeft" align="right" valign="top"><a id="a7314ec9992952e5c00a87e63c5a595b1" name="a7314ec9992952e5c00a87e63c5a595b1"></a>
+static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>IsFood</b> = Factory.CreateBoolSet(353, 357, 1787, 1911, 1912, 1919, 1920, 2266, 2267, 2268, 2425, 2426, 2427, 3195, 3532, 4009, 4010, 4011, 4012, 4013, 4014, 4015, 4016, 4017, 4018, 4019, 4020, 4021, 4022, 4023, 4024, 4025, 4026, 4027, 4028, 4029, 4030, 4031, 4032, 4033, 4034, 4035, 4036, 4037, 967, 969, 4282, 4283, 4284, 4285, 4286, 4287, 4288, 4289, 4290, 4291, 4292, 4293, 4294, 4295, 4296, 4297, 4403, 4411, 4614, 4615, 4616, 4617, 4618, 4619, 4620, 4621, 4622, 4623, 4624, 4625, 5009, 5042, 5041, 5092, 5093, 5275, 5277, 5278)</td></tr>
 <tr class="memdesc:a7314ec9992952e5c00a87e63c5a595b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>true</code> for a given item type (<a class="el" href="class_item.html#af79ba8b09813fd867fa3da24a4e31e51" title="The Item ID of this item. The Item ID is a unique number assigned to each Item loaded into the game....">Item.type</a>), then that item is food. <br  />
- Food items can be placed onto TileID.FoodPlatters, have a <a class="el" href="class_item.html#ab442988b55e45d07c89dfe6296ed5590" title="Assign to an ItemHoldStyleID value to give this item a specific animation while the player is not usi...">Item.holdStyle</a> of <a class="el" href="class_item_hold_style_i_d.html#a1d28c45899d946bfdf0f2fcc6654df10" title="Holding out in front of player.   Used for items such as torches, candles, and glowsticks">ItemHoldStyleID.HoldFront</a>, hide shields (<a class="el" href="class_item.html#a09c927e926b0cfb2f1517a2394e975d8">Item.shieldSlot</a>) when held, <br  />
- Food item sprites must have 3 frames. The required framing code is automatically initialized.  <a href="class_item_i_d_1_1_sets.html#a7314ec9992952e5c00a87e63c5a595b1">More...</a><br /></td></tr>
+<br  />
+ Food items can be placed onto TileID.FoodPlatters, have a <a class="el" href="class_item.html#ab442988b55e45d07c89dfe6296ed5590" title="Assign to an ItemHoldStyleID value to give this item a specific animation while the player is not usi...">Item.holdStyle</a> of <a class="el" href="class_item_hold_style_i_d.html#a1d28c45899d946bfdf0f2fcc6654df10" title="Holding out in front of player.   Used for items such as torches, candles, and glowsticks">ItemHoldStyleID.HoldFront</a>, and hide shields (<a class="el" href="class_item.html#a09c927e926b0cfb2f1517a2394e975d8">Item.shieldSlot</a>) when held. <br  />
+<br  />
+ Food item sprites must have 3 vertical frames. The <a class="el" href="class_main.html#a630750960449c333490e2326060524c5" title="Registers an animation for an item type to draw inside UI (not world or held item on player)....">Main.RegisterItemAnimation(int, DrawAnimation)</a> code should set the animation to not animate in the inventory by setting DrawAnimationVertical.NotActuallyAnimating. <br  />
+<br  />
+ The animation frames are as follows: <br  />
+ 1. Inventory sprite <br  />
+ 2. Held sprite <br  />
+ 3. TileID.FoodPlatter sprite <br  />
+<br  />
+ <a class="el" href="class_item.html#aee75bcf06e3325fe8c165a3b24a0ae73" title="This method sets a variety of Item values common to food items.  Specifically:">Item.DefaultToFood(int, int, int, int, bool, int)</a> will set many common item values for food. <br  />
+<br  />
+ See ExampleFoodItem.csfor an example of how to set up a food item. <br /></td></tr>
 <tr class="separator:a7314ec9992952e5c00a87e63c5a595b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa5f9d1811a0c2c9201e172d951571bfe"><td class="memItemLeft" align="right" valign="top"><a id="aa5f9d1811a0c2c9201e172d951571bfe" name="aa5f9d1811a0c2c9201e172d951571bfe"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>IsLavaBait</b> = Factory.CreateBoolSet(4849, 4845, 4847)</td></tr>
@@ -804,7 +816,7 @@ static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>WorksInVoidB
 <p>If non-empty for a given item type (<a class="el" href="class_item.html#af79ba8b09813fd867fa3da24a4e31e51" title="The Item ID of this item. The Item ID is a unique number assigned to each Item loaded into the game....">Item.type</a>), then that item will create translucent particles of the retrieved colors when used. <br  />
  Particles created by this set will drop downwards. <br  />
  Defaults to <code>Array.Empty&lt;Color&gt;</code>. </p>
-<p ><a class="el" href="class_item_i_d_1_1_sets.html#a7314ec9992952e5c00a87e63c5a595b1" title="If true for a given item type (Item.type), then that item is food.   Food items can be placed onto Ti...">IsFood</a> does not need to be set for dust to be created. </p>
+<p ><a class="el" href="class_item_i_d_1_1_sets.html#a7314ec9992952e5c00a87e63c5a595b1" title="If true for a given item type (Item.type), then that item is food.    Food items can be placed onto T...">IsFood</a> does not need to be set for dust to be created. </p>
 
 </div>
 </div>
@@ -831,7 +843,7 @@ static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>WorksInVoidB
 <p>If non-empty for a given item type (<a class="el" href="class_item.html#af79ba8b09813fd867fa3da24a4e31e51" title="The Item ID of this item. The Item ID is a unique number assigned to each Item loaded into the game....">Item.type</a>), then that item will create solid particles of the retrieved colors when used. <br  />
  Particles created by this set will fly outwards. <br  />
  Defaults to <code>Array.Empty&lt;Color&gt;</code>. </p>
-<p ><a class="el" href="class_item_i_d_1_1_sets.html#a7314ec9992952e5c00a87e63c5a595b1" title="If true for a given item type (Item.type), then that item is food.   Food items can be placed onto Ti...">IsFood</a> does not need to be set for dust to be created. </p>
+<p ><a class="el" href="class_item_i_d_1_1_sets.html#a7314ec9992952e5c00a87e63c5a595b1" title="If true for a given item type (Item.type), then that item is food.    Food items can be placed onto T...">IsFood</a> does not need to be set for dust to be created. </p>
 
 </div>
 </div>
@@ -1053,37 +1065,6 @@ Stack sizes with less than 1 or where minStack is not strictly smaller than maxS
  Drills have 40% faster use times (<a class="el" href="class_item.html#a0e4256dafa7294d30c9d57c1510fc9c0" title="The time span of using the item in ticks. This is independent of the time it takes for the item anima...">Item.useTime</a>, <a class="el" href="class_item.html#a07884f03e59e5fd14dd73424b07b5439" title="The time span of the using animation for the item in ticks. This is independent of the time it takes ...">Item.useAnimation</a>) and 1 less tile reach (<a class="el" href="class_item.html#ae5e54c66b05f165b6072e90b31eb2fb8" title="Additional tile range provided by this tool or tile. Copper Pickaxe has a value of -1,...">Item.tileBoost</a>) than what are set in Item.SetDefaults(int). <br  />
  Defaults to <code>false</code>. </p>
 <p >This set does <b>not</b> allow an <a class="el" href="class_item.html">Item</a> to damage tiles &ndash; use <a class="el" href="class_item.html#a5aadced21b5c18e5ac4c99091145cd38" title="The Pickaxe power of this item. For example, Item.pick = 50; will appear as 50% Pickaxe Power in the ...">Item.pick</a> for that. </p>
-
-</div>
-</div>
-<a id="a7314ec9992952e5c00a87e63c5a595b1" name="a7314ec9992952e5c00a87e63c5a595b1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7314ec9992952e5c00a87e63c5a595b1">&#9670;&nbsp;</a></span>IsFood</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool [] ItemID.Sets.IsFood = Factory.CreateBoolSet(353, 357, 1787, 1911, 1912, 1919, 1920, 2266, 2267, 2268, 2425, 2426, 2427, 3195, 3532, 4009, 4010, 4011, 4012, 4013, 4014, 4015, 4016, 4017, 4018, 4019, 4020, 4021, 4022, 4023, 4024, 4025, 4026, 4027, 4028, 4029, 4030, 4031, 4032, 4033, 4034, 4035, 4036, 4037, 967, 969, 4282, 4283, 4284, 4285, 4286, 4287, 4288, 4289, 4290, 4291, 4292, 4293, 4294, 4295, 4296, 4297, 4403, 4411, 4614, 4615, 4616, 4617, 4618, 4619, 4620, 4621, 4622, 4623, 4624, 4625, 5009, 5042, 5041, 5092, 5093, 5275, 5277, 5278)</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>If <code>true</code> for a given item type (<a class="el" href="class_item.html#af79ba8b09813fd867fa3da24a4e31e51" title="The Item ID of this item. The Item ID is a unique number assigned to each Item loaded into the game....">Item.type</a>), then that item is food. <br  />
- Food items can be placed onto TileID.FoodPlatters, have a <a class="el" href="class_item.html#ab442988b55e45d07c89dfe6296ed5590" title="Assign to an ItemHoldStyleID value to give this item a specific animation while the player is not usi...">Item.holdStyle</a> of <a class="el" href="class_item_hold_style_i_d.html#a1d28c45899d946bfdf0f2fcc6654df10" title="Holding out in front of player.   Used for items such as torches, candles, and glowsticks">ItemHoldStyleID.HoldFront</a>, hide shields (<a class="el" href="class_item.html#a09c927e926b0cfb2f1517a2394e975d8">Item.shieldSlot</a>) when held, <br  />
- Food item sprites must have 3 frames. The required framing code is automatically initialized. </p>
-<p >The auto-initialized animation for foods have 3 vertical frames. <br  />
- 1. Inventory sprite <br  />
- 2. Held sprite <br  />
- 3. TileID.FoodPlatter sprite <br  />
- <a class="el" href="class_item.html#aee75bcf06e3325fe8c165a3b24a0ae73" title="This method sets a variety of Item values common to food items.  Specifically:">Item.DefaultToFood(int, int, int, int, bool, int)</a> will set many common item values for food. </p>
 
 </div>
 </div>

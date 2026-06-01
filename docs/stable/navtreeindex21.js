@@ -1,5 +1,7 @@
 var NAVTREEINDEX21 =
 {
+"class_recipe_1_1_consumption_rules.html":[3,0,1064,0],
+"class_recipe_1_1_ingredient_quantity_rules.html":[3,0,1064,1],
 "class_recipe_1_1_ingredient_quantity_rules.html#af3d0bc5426faddfb36c7faa8958f44d4":[3,0,1064,1,0],
 "class_recipe_exception.html":[3,0,1065],
 "class_recipe_group.html":[3,0,1066],
@@ -247,7 +249,5 @@ var NAVTREEINDEX21 =
 "class_surface_map.html":[3,0,1211],
 "class_synchronization_context.html":[3,0,1212],
 "class_system_loader.html":[3,0,1213],
-"class_t_e_display_doll.html":[3,0,1223],
-"class_t_e_display_doll.html#a65dc0d2bd9395517669cdd099dd3ea53":[3,0,1223,2],
-"class_t_e_display_doll.html#a955bbd94a11345ee3b6dbba5cff983c6":[3,0,1223,3]
+"class_t_e_display_doll.html":[3,0,1223]
 };

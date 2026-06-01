@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2026.03</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2026.04</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -480,6 +480,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>StrikeInstantKill</b>
  Calls checkDead<br  />
  Does not automatically send packets. Use <a class="el" href="class_net_message.html#ad2410d5fc6a123cd802c288ec24d2597" title="Use this to synchronize damage strikes against NPCs!">NetMessage.SendStrikeNPC</a> to synchronize hits.  <a href="class_n_p_c.html#a99d0dc536e4ca397859fcb73a9871a79">More...</a><br /></td></tr>
 <tr class="separator:a99d0dc536e4ca397859fcb73a9871a79"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a75796987b9b02a1d44758ac443321507"><td class="memItemLeft" align="right" valign="top"><a id="a75796987b9b02a1d44758ac443321507" name="a75796987b9b02a1d44758ac443321507"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>StrikeOtherNPC</b> (<a class="el" href="class_n_p_c.html">NPC</a> <a class="el" href="class_n_p_c.html#a24627ed4a99fbc0555b1be4717a9335e">target</a>, int <a class="el" href="class_n_p_c.html#ac72dba2e618a5dbaeb12c3c3bf629580">damage</a>, float knockback, int hitDirection, bool crit=false, bool randomizeDamage=true)</td></tr>
+<tr class="memdesc:a75796987b9b02a1d44758ac443321507"><td class="mdescLeft">&#160;</td><td class="mdescRight">A helper method for an <a class="el" href="class_n_p_c.html">NPC</a> striking another <a class="el" href="class_n_p_c.html">NPC</a>. <br  />
+<br  />
+ Handles modifiers, hit info, network, and hooks automatically. <br /></td></tr>
+<tr class="separator:a75796987b9b02a1d44758ac443321507"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ace46ba11f1b49ba040e73aed0b05b1d9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_n_p_c.html#ace46ba11f1b49ba040e73aed0b05b1d9">TargetClosest</a> (bool faceTarget=true)</td></tr>
 <tr class="memdesc:ace46ba11f1b49ba040e73aed0b05b1d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Targets the closest alive <a class="el" href="class_player.html">Player</a> and optionally faces towards that <a class="el" href="class_player.html">Player</a>. This will set <a class="el" href="class_n_p_c.html#a24627ed4a99fbc0555b1be4717a9335e" title="The Player that this NPC is currently targeting, represented as the index of that Player within Main....">target</a> to the targeted player, as well as <a class="el" href="class_entity.html#a6bcffb2620b7dbf790114c5fea1bc50b" title="The direction this entity is facing. A value of 1 means the entity is facing to the right....">Entity.direction</a> if <em>faceTarget</em>  is true. Make sure to check <a class="el" href="class_n_p_c.html#a107eea2ccf9aa77e2ebc83b18892e8ec" title="Checks if target is a valid Player to target. This checks that target has a valid value and that the ...">HasValidTarget</a> before accessing <a class="el" href="class_n_p_c.html#a24627ed4a99fbc0555b1be4717a9335e" title="The Player that this NPC is currently targeting, represented as the index of that Player within Main....">target</a>.  <a href="class_n_p_c.html#ace46ba11f1b49ba040e73aed0b05b1d9">More...</a><br /></td></tr>
 <tr class="separator:ace46ba11f1b49ba040e73aed0b05b1d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2286,6 +2292,9 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>Type</b><code> [get]</
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A <a class="el" href="struct_n_p_c_1_1_hit_info.html" title="Represents a finalized damage calculation for damage about to be applied to an NPC....">HitInfo</a> for use with <a class="el" href="class_n_p_c.html#a99d0dc536e4ca397859fcb73a9871a79" title="Directly deals damage to the NPC, spawns combat text, plays hit sound, deals knockback based on the p...">StrikeNPC(HitInfo, bool, bool)</a> and <a class="el" href="class_net_message.html#ad2410d5fc6a123cd802c288ec24d2597" title="Use this to synchronize damage strikes against NPCs!">NetMessage.SendStrikeNPC</a></dd></dl>
+<p >Note: This method doesn't include entity-related hit modifying hooks and shouldn't be used in normal contexts. <br  />
+<br  />
+ Consider using <a class="el" href="class_n_p_c.html#a75796987b9b02a1d44758ac443321507" title="A helper method for an NPC striking another NPC.    Handles modifiers, hit info, network,...">StrikeOtherNPC</a> instead. </p>
 
 </div>
 </div>
