@@ -12,15 +12,16 @@
  	public static FlexibleTileWand RubblePlacementLarge = CreateRubblePlacerLarge();
  	private UnifiedRandom _random = new UnifiedRandom();
  	private Dictionary<int, OptionBucket> _options = new Dictionary<int, OptionBucket>();
-@@ -194,4 +_,11 @@
+@@ -193,5 +_,12 @@
+ 		wand.AddVariations_ByRow(1101, tileType, variationsPerRow, 28, 29, 30);
  		wand.AddVariations_ByRow(3081, tileType, variationsPerRow, 31, 32, 33);
  		wand.AddVariations_ByRow(607, tileType, variationsPerRow, 34, 35, 36);
- 	}
++	}
 +
 +	public static void Reload()
 +	{
 +		RubblePlacementSmall = CreateRubblePlacerSmall();
 +		RubblePlacementMedium = CreateRubblePlacerMedium();
 +		RubblePlacementLarge = CreateRubblePlacerLarge();
-+	} 
+ 	}
  }

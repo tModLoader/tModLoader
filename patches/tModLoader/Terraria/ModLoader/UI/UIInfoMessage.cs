@@ -14,7 +14,7 @@ internal class UIInfoMessage : UIState, IHaveBackButtonCommand
 	protected UIElement _area;
 	private UIMessageBox _messageBox;
 	protected UITextPanel<string> _button;
-	private UITextPanel<string> _buttonAlt;
+	private UIAutoScaleTextTextPanel<string> _buttonAlt;
 	private UIState _gotoState;
 	private string _message;
 	private int _gotoMenu;
@@ -65,7 +65,7 @@ internal class UIInfoMessage : UIState, IHaveBackButtonCommand
 		_button.OnLeftClick += OKClick;
 		_area.Append(_button);
 
-		_buttonAlt = new UITextPanel<string>("???", 0.7f, true) {
+		_buttonAlt = new UIAutoScaleTextTextPanel<string>("???", 0.7f, true) {
 			Width = { Pixels = -10, Percent = 0.5f },
 			Height = { Pixels = 50 },
 			Left = { Percent = .5f },

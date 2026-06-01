@@ -12,23 +12,17 @@ namespace ExampleMod.Content.CustomModType
 	/// <para/> This is the also the main API exposed and intended to be used by other mods. For example, other mods could use the API to trigger a specific ModVictoryPose manually, such as when they craft a specific item.
 	/// <para/> The internal methods are not part of the API.
 	/// </summary>
-	public class VictoryPoseLoader : ILoadable
+	public class VictoryPoseLoader
 	{
 		internal static readonly List<ModVictoryPose> victoryPoses = [];
 
-		// Expose victoryPoses as a ReadOnlyList to other mods to prevent accidental manipulations. 
+		// Expose victoryPoses as a ReadOnlyList to other mods to prevent accidental manipulations.
 		public static IReadOnlyList<ModVictoryPose> VictoryPoses => victoryPoses;
 
 		internal static int Add(ModVictoryPose victoryPose) {
 			int type = victoryPoses.Count;
 			victoryPoses.Add(victoryPose);
 			return type;
-		}
-
-		public void Load(Mod mod) {
-		}
-
-		public void Unload() {
 		}
 
 		/// <summary>

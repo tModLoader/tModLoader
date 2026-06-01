@@ -5,8 +5,8 @@
  namespace Terraria.UI;
  
 +/// <summary>
-+/// A UI element, the building blocks of a user interface. Commonly used elements include <see cref="UIPanel"/>, <see cref="UIImage"/>, <see cref="UIList"/>, <see cref="UIScrollbar"/>, <see cref="UITextPanel{T}"/>, and <see cref="UIText"/>. 
-+/// <para/> UIElements are nested within each other using <see cref="Append(Terraria.UI.UIElement)"/> to build a layout. 
++/// A UI element, the building blocks of a user interface. Commonly used elements include <see cref="UIPanel"/>, <see cref="UIImage"/>, <see cref="UIList"/>, <see cref="UIScrollbar"/>, <see cref="UITextPanel{T}"/>, and <see cref="UIText"/>.
++/// <para/> UIElements are nested within each other using <see cref="Append(Terraria.UI.UIElement)"/> to build a layout.
 +/// </summary>
 -public class UIElement : IComparable
 +public partial class UIElement : IComparable
@@ -41,7 +41,7 @@
  	public bool OverflowHidden;
  	public SamplerState OverrideSamplerState;
 +	/// <summary>
-+	/// Additional spacing between this element's <see cref="GetDimensions"/> and the position of its children placed within. 
++	/// Additional spacing between this element's <see cref="GetDimensions"/> and the position of its children placed within.
 +	/// </summary>
  	public float PaddingTop;
 +	/// <inheritdoc cref="PaddingTop"/>
@@ -51,7 +51,7 @@
 +	/// <inheritdoc cref="PaddingTop"/>
  	public float PaddingBottom;
 +	/// <summary>
-+	/// Additional spacing between this element and the <see cref="GetInnerDimensions"/> of its parent element. 
++	/// Additional spacing between this element and the <see cref="GetInnerDimensions"/> of its parent element.
 +	/// </summary>
  	public float MarginTop;
 +	/// <inheritdoc cref="MarginTop"/>
@@ -255,7 +255,7 @@
  	}
  
 +	/// <summary>
-+	/// Called before the first time this element is activated (see <see cref="OnActivate"/>). Use this method to create and append other UIElement to this to build a UI. 
++	/// Called before the first time this element is activated (see <see cref="OnActivate"/>). Use this method to create and append other UIElement to this to build a UI.
 +	/// </summary>
  	public virtual void OnInitialize()
  	{

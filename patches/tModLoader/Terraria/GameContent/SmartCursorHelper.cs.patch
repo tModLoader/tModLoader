@@ -106,7 +106,7 @@
 +						flag = true;
 +						continue;
 +					}
-+					
++
  					switch (tile10.type) {
  						case 2:
  						case 23:

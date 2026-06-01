@@ -21,7 +21,7 @@ public static class Verifier
 				public Test(string testCode, string fixedCode, IEnumerable<DiagnosticResult> expected) : base()
 				{
 					ReferenceAssemblies = ReferenceAssemblies.Net.Net80;
-					
+
 					TestCode = testCode.ReplaceLineEndings();
 					TestState.OutputKind = OutputKind.ConsoleApplication;
 

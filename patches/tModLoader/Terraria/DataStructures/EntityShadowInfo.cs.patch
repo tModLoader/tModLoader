@@ -1,0 +1,12 @@
+--- src/TerrariaNetCore/Terraria/DataStructures/EntityShadowInfo.cs
++++ src/tModLoader/Terraria/DataStructures/EntityShadowInfo.cs
+@@ -2,6 +_,9 @@
+ 
+ namespace Terraria.DataStructures;
+ 
++/// <summary>
++/// Contains positioning data (position, rotation, direction, etc) from previous frames for this player. See <see cref="Player.availableAdvancedShadowsCount"/> and <see cref="Player.GetAdvancedShadow(int)"/> to use.
++/// </summary>
+ public struct EntityShadowInfo
+ {
+ 	public Vector2 Position;

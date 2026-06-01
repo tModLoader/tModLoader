@@ -81,7 +81,7 @@
  		if (initializeStaticMembers)
  			ForceStaticInitializers(assembly);
  	}
-@@ -136,6 +_,10 @@
+@@ -136,6 +_,15 @@
  		if (Debugger.IsAttached)
  			return;
  
@@ -89,6 +89,11 @@
 +		if (!Main.dedServ && !LaunchParameters.ContainsKey("-console"))
 +			Platform.Get<IWindowService>().HideConsole();
 +
++		InitializeConsoleEncoding();
++	}
++
++	internal static void InitializeConsoleEncoding() // Split from InitializeConsoleOutput
++	{
  		try {
  			Console.OutputEncoding = Encoding.UTF8;
  			if (Platform.IsWindows)
@@ -118,7 +123,7 @@
 +		ProcessLaunchArgs(args, monoArgs, out bool isServer);
 +
 +		StartupSequenceTml(isServer);
-+		
++
 +		LaunchGame_(isServer);
 +	}
 +
@@ -148,14 +153,13 @@
  		Platform.Get<IWindowService>().SetQuickEditEnabled(enabled: false);
  		RunGame();
  	}
-@@ -184,9 +_,14 @@
- 				Main.instance.IsMouseVisible = false;
+@@ -185,8 +_,13 @@
  			};
  		}
-+		
-+		InstallVerifier.Startup();
  
 -		using Main main = new Main();
++		InstallVerifier.Startup();
++
  		try {
 +			ModLoader.ModLoader.EngineInit();
 +

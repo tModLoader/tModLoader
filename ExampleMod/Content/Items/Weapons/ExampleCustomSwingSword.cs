@@ -23,7 +23,7 @@ namespace ExampleMod.Content.Items.Weapons
 			Item.rare = ItemRarityID.Green;
 
 			// Use Properties
-			// Note that useTime and useAnimation for this item don't actually affect the behavior because the held projectile handles that. 
+			// Note that useTime and useAnimation for this item don't actually affect the behavior because the held projectile handles that.
 			// Each attack takes a different amount of time to execute
 			// Conforming to the item useTime and useAnimation makes it much harder to design
 			// It does, however, affect the item tooltip, so don't leave it out.

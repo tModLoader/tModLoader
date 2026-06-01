@@ -490,7 +490,7 @@
 +	/// </summary>
  	public int potionDelay;
 +	/// <summary>
-+	/// The <see href="https://terraria.wiki.gg/wiki/Difficulty">player difficulty</see>. Valid values are found in <see cref="PlayerDifficultyID"/>. 
++	/// The <see href="https://terraria.wiki.gg/wiki/Difficulty">player difficulty</see>. Valid values are found in <see cref="PlayerDifficultyID"/>.
 +	/// </summary>
  	public byte difficulty;
  	public byte wetSlime;
@@ -538,7 +538,7 @@
 +	public int balloonFront = -1;
 +	public int beard = -1;
 +	/// <summary>
-+	/// Indicates if the corresponding <see cref="armor"/> accessory is set to be hidden or not. 
++	/// Indicates if the corresponding <see cref="armor"/> accessory is set to be hidden or not.
 +	/// </summary>
  	public bool[] hideVisibleAccessory = new bool[10];
  	public BitsByte hideMisc = (byte)0;
@@ -559,7 +559,7 @@
  	public bool controlDownHold;
  	public bool isOperatingAnotherEntity;
  	public bool autoReuseAllWeapons;
-@@ -930,10 +_,26 @@
+@@ -930,20 +_,49 @@
  	public bool delayUseItem;
  	public const int defaultWidth = 20;
  	public const int defaultHeight = 42;
@@ -581,13 +581,22 @@
 +	/// </summary>
  	public int cursorItemIconPush;
 +	/// <summary>
-+	/// Text to be drawn on the cursor when <see cref="cursorItemIconEnabled"/> is true. 
++	/// Text to be drawn on the cursor when <see cref="cursorItemIconEnabled"/> is true.
 +	/// </summary>
  	public string cursorItemIconText = "";
  	public int runSoundDelay;
  	public float opacityForAnimation = 1f;
-@@ -943,7 +_,13 @@
+ 	public const int shadowMax = 3;
++	/// <summary>
++	/// Contains the player positioning data for the last 3 frames. Used by <see cref="armorEffectDrawShadow"/> and other similar effects.
++	/// <br/><br/> See <see cref="GetAdvancedShadow(int)"/> for a more flexible approach.
++	/// </summary>
+ 	public Vector2[] shadowPos = new Vector2[3];
++	/// <inheritdoc cref="shadowPos"/>
+ 	public float[] shadowRotation = new float[3];
++	/// <inheritdoc cref="shadowPos"/>
  	public Vector2[] shadowOrigin = new Vector2[3];
++	/// <inheritdoc cref="shadowPos"/>
  	public int[] shadowDirection = new int[3];
  	public int shadowCount;
 +
@@ -600,6 +609,16 @@
  	public bool fireWalk;
  	public bool channel;
  	public int step = -1;
+@@ -952,6 +_,9 @@
+ 	public RabbitOrderFrameHelper rabbitOrderFrame;
+ 	public bool creativeGodMode;
+ 	private const int MaxAdvancedShadows = 60;
++	/// <summary>
++	/// The number of frames of previous positioning data available for use with <see cref="GetAdvancedShadow(int)"/>. This will max at 60. Teleporting and mounting are some ways the previous positioning data will be cleared.
++	/// </summary>
+ 	public int availableAdvancedShadowsCount;
+ 	private EntityShadowInfo[] _advancedShadows = new EntityShadowInfo[60];
+ 	private int _lastAddedAvancedShadow;
 @@ -961,38 +_,124 @@
  	public int golferScoreAccumulated;
  	public int bartenderQuestLog;
@@ -1236,16 +1255,21 @@
  	public Vector2 MountedCenter {
  		get {
  			return new Vector2(position.X + (float)(width / 2), position.Y + 21f + HeightOffsetHitboxCenter);
-@@ -1653,6 +_,9 @@
+@@ -1653,9 +_,13 @@
  
  	public override Vector2 VisualPosition => position + new Vector2(0f, gfxOffY);
  
 +	/// <summary>
-+	/// Checks if the player is currently "crowd controlled", meaning the player is <see cref="frozen"/>, <see cref="webbed"/>, or <see cref="stoned"/>. Used in various checks to prevent some player actions that shouldn't be possible while in those states, such as channeling attacks, quick using items, and swapping loadouts.
++	/// Checks if the player is currently "crowd controlled", meaning the player is <see cref="frozen"/>, <see cref="webbed"/>, <see cref="stoned"/>, or affected by a modded crowd control effect (see below). Used in various checks to prevent some player actions that shouldn't be possible while in those states, such as channeling attacks, quick using items, and swapping loadouts.
++	/// <para/> Mods can use <seealso cref="SetCCed"/> within <see cref="ModBuff.Update(Player, ref int)"/> to mark the player as crowd controlled.
 +	/// </summary>
  	public bool CCed {
  		get {
- 			if (!frozen && !webbed)
+-			if (!frozen && !webbed)
++			if (!frozen && !webbed && !_customCCed)
+ 				return stoned;
+ 
+ 			return true;
 @@ -1823,6 +_,10 @@
  		}
  	}
@@ -1397,6 +1421,18 @@
  	public Vector2 RotatedRelativePoint(Vector2 pos, bool reverseRotation = false, bool addGfxOffY = true)
  	{
  		float num = (reverseRotation ? (0f - fullRotation) : fullRotation);
+@@ -2282,6 +_,11 @@
+ 		return num;
+ 	}
+ 
++	/// <summary>
++	/// Returns positioning data for this player <paramref name="shadowIndex"/> frames ago, up to <see cref="availableAdvancedShadowsCount"/>.
++	/// <br/><br/> This can be used to draw trails that follow the movement of the player. You'll usually want to iterate from <see cref="availableAdvancedShadowsCount"/> down to 1 for proper draw layering and to skip index 0 which would be the current frame when using this to draw a trail.
++	/// <br/><br/> See <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Common/Players/ExampleArmorSetBonusPlayer.cs">ExampleArmorSetBonusPlayer.DrawPlayer</see> for an example of correctly using this.
++	/// </summary>
+ 	public EntityShadowInfo GetAdvancedShadow(int shadowIndex)
+ 	{
+ 		if (shadowIndex > availableAdvancedShadowsCount)
 @@ -2328,6 +_,7 @@
  	{
  		talkNPC = npcIndex;
@@ -2008,6 +2044,16 @@
 +
  				if (inventory[i].stack <= 0)
  					inventory[i].SetDefaults();
+ 
+@@ -6512,7 +_,8 @@
+ 				return false;
+ 
+ 			Item item = bank4.item[num4];
++			if (ItemLoader.ConsumeItem(item, this))
+-			item.stack--;
++				item.stack--;
+ 			if (item.stack <= 0)
+ 				item.TurnToAir();
  
 @@ -6524,6 +_,9 @@
  
@@ -3521,7 +3567,7 @@
  		for (int i = 0; i < numberOfTorchAttacksMade; i++) {
  			int num = unlitTorchX[i];
  			int num2 = unlitTorchY[i];
-+			
++
 -			if (Main.tile[num, num2].type == 4 && Main.tile[num, num2].frameX >= 66) {
 +			if (TileID.Sets.Torch[Main.tile[num, num2].type] && Main.tile[num, num2].frameX >= 66) {
  				Main.tile[num, num2].frameX -= 66;
@@ -3681,6 +3727,14 @@
  		calmed = false;
  		beetleOrbs = 0;
  		beetleBuff = false;
+@@ -14497,6 +_,7 @@
+ 		frozen = false;
+ 		stoned = false;
+ 		webbed = false;
++		_customCCed = false;
+ 		ichor = false;
+ 		manaRegenBonus = 0;
+ 		manaRegenDelayBonus = 0f;
 @@ -14505,6 +_,8 @@
  		dashType = 0;
  		spikedBoots = 0;
@@ -4441,7 +4495,7 @@
  						int num15 = -1;
 -						if (Main.keyState.IsKeyDown(Keys.D1)) {
 +						// TML: Fix for digit keys being incorrectly checked instead of Hotbar hotkeys. Should be fixed in 1.4.5.
-+						if (PlayerInput.Triggers.Current.Hotbar1) { 
++						if (PlayerInput.Triggers.Current.Hotbar1) {
  							num15 = 0;
  							flag10 = true;
  						}
@@ -5342,18 +5396,13 @@
  	public void RefreshItems(bool onlyIfVariantChanged = true)
  	{
  		if (onlyIfVariantChanged && whoAmI == Main.myPlayer)
-@@ -27301,6 +_,15 @@
+@@ -27301,6 +_,10 @@
  		RefreshItems(bank3.item, onlyIfVariantChanged);
  		RefreshItems(bank4.item, onlyIfVariantChanged);
  		RefreshItems(_temporaryItemSlots, onlyIfVariantChanged);
 +
 +		foreach (Item item in NPCShopDatabase.AllShops.SelectMany(x => x.ActiveEntries).Select(x => x.Item)) {
-+			// Don't adjust custom prices, modders would need to add multiple shop entries to account for variants with custom prices anyway. 
-+			var originalCustomPrice = item.shopCustomPrice;
-+			var originalSpecialCurrency = item.shopSpecialCurrency;
 +			item.Refresh(onlyIfVariantChanged);
-+			item.shopCustomPrice = originalCustomPrice;
-+			item.shopSpecialCurrency = originalSpecialCurrency;
 +		}
  	}
  
@@ -5732,7 +5781,7 @@
  
 +	/// <summary>
 +	/// Teleports the player to the provided world coordinates. In multiplayer, clients should send <see cref="MessageID.TeleportEntity"/> rather than call this method directly.
-+	/// <br/> <b>newPos: </b> The teleportation destination in world coordinates. (Sets position, not Center) 
++	/// <br/> <b>newPos: </b> The teleportation destination in world coordinates. (Sets position, not Center)
 +	/// <br/> <b>Style: </b> Controls the visuals and sounds of the teleport. Equivalent to <see cref="TeleportationStyleID"/> values.
 +	/// </summary>
  	public void Teleport(Vector2 newPos, int Style = 0, int extraInfo = 0)
@@ -6409,7 +6458,7 @@
  				if (inventory[selectedItem].stack == 0)
  					inventory[selectedItem].SetDefaults();
  
-@@ -30673,9 +_,13 @@
+@@ -30673,9 +_,14 @@
  			int? forcedRandom = null;
  			TileObject objectData = default(TileObject);
  			FigureOutWhatToPlace(tile, item, out tileToCreate, out var previewPlaceStyle, out overrideCanPlace, out forcedRandom);
@@ -6419,6 +6468,7 @@
  			}
 +			else if (!TileLoader.CanPlace(tileTargetX, tileTargetY, tileToCreate)) {
 +				canPlace = false;
++				// TODO: CanPlace hook that allows forcing canPlace to true, rather than just preventing placement.
 +			}
  			else if (TileObjectData.CustomPlace(tileToCreate, previewPlaceStyle) && tileToCreate != 82 && tileToCreate != 227) {
  				newObjectType = true;
@@ -7396,9 +7446,9 @@
  			int weaponCrit = GetWeaponCrit(sItem);
  			if (Main.rand.Next(1, 101) <= weaponCrit)
  				flag3 = true;
-+			
-+			skipStandardCritCalcs:
  
++			skipStandardCritCalcs:
++
 +			/*
  			int num2 = Item.NPCtoBanner(nPC.BannerID());
  			if (num2 > 0 && HasNPCBannerBuff(num2))
@@ -8074,16 +8124,16 @@
  				itemLocation.Y = MountedCenter.Y - (float)heldItemFrame.Height * 0.5f;
  			}
  
-@@ -39713,7 +_,7 @@
- 		if (sItem.pick > 0 || sItem.axe > 0 || sItem.hammer > 0 || flag)
- 			toolTime = 1;
- 
--		if (grappling[0] > -1) {
-+		if (grappling[0] > -1 || sItem.useTurnOnAnimationStart) { // useTurnOnAnimationStart check added by tML
+@@ -39716,6 +_,8 @@
+ 		if (grappling[0] > -1) {
  			pulley = false;
  			pulleyDir = 1;
++		}
++		if (grappling[0] > -1 || sItem.useTurnOnAnimationStart) { // useTurnOnAnimationStart check added by tML
  			if (controlRight)
-@@ -39780,7 +_,10 @@
+ 				direction = 1;
+ 			else if (controlLeft)
+@@ -39780,11 +_,17 @@
  			}
  
  			for (int l = 0; l < list.Count; l++) {
@@ -8094,6 +8144,13 @@
  					break;
  
  				int type2 = Main.projectile[list[l]].type;
++				/*
+ 				if (type2 == num4 || type2 == 625 || type2 == 628 || type2 == 623)
++				*/
++				if (type2 == num4 || ProjectileID.Sets.MinionCannotBeFreed[type2])
+ 					continue;
+ 
+ 				if (type2 == 388 && num4 == 387)
 @@ -39836,6 +_,9 @@
  
  	private void ApplyPotionDelay(Item sItem)

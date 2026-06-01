@@ -146,7 +146,8 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 
 	/// <summary>
 	/// Allows you to control what happens when a projectile is killed (for example, creating dust or making sounds).
-	/// <para/> Can be called on the local client or server, depending on who owns the projectile.
+	/// <br/><br/> Be sure to check <c>if (Projectile.owner == Main.myPlayer)</c> for logic that should only run for the projectile owner. Some examples include spawning items, spawning projectiles, and modifying tiles.
+	/// <br/><br/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="projectile"></param>
 	/// <param name="timeLeft"></param>

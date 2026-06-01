@@ -503,7 +503,7 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 			ItemLoader.UpdateVisibleAccessory(item, this, true);
 	}
 
-	[Obsolete("Removed in 1.4.5. Use Player.TryDroppingSingleItem instead.")] 
+	[Obsolete("Removed in 1.4.5. Use Player.TryDroppingSingleItem instead.")]
 	public void DropItem(IEntitySource source, Vector2 position, ref Item item) => TryDroppingSingleItem(source, item);
 
 	public int GetHealLife(Item item, bool quickHeal = false)
@@ -686,4 +686,10 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 
 		return false;
 	}
+
+	private bool _customCCed;
+	/// <summary>
+	/// Call this method to mark <seealso cref="CCed"/> as true for this game update. Use for modded crowd control effects.
+	/// </summary>
+	public void SetCCed() => _customCCed = true;
 }

@@ -1,4 +1,5 @@
-﻿using ExampleMod.Content.Items;
+﻿using ExampleMod.Content.Currencies;
+using ExampleMod.Content.Items;
 using ExampleMod.Content.Items.Ammo;
 using ExampleMod.Content.Items.Consumables;
 using ExampleMod.Content.Items.Mounts;
@@ -29,7 +30,7 @@ namespace ExampleMod.Common.GlobalNPCs
 				// This shop entry sells for 3 of a custom currency added in our mod.
 				shop.Add(new Item(ModContent.ItemType<ExampleMountItem>()) {
 					shopCustomPrice = 2,
-					shopSpecialCurrency = ExampleMod.ExampleCustomCurrencyId
+					shopSpecialCurrency = ExampleCustomCurrencies.ExampleItemCurrency,
 				});
 			}
 			else if (shop.NpcType == NPCID.Wizard) {

@@ -74,7 +74,7 @@ public class DeveloperMetadata
 		// In case we want to store anything else down the road and it takes up space, this is the minimum amount of hashes we need to keep
 		// This minimum avoids issues with delays in the deployment time on Steam from when it is published to when it actually arrives for all users globally
 		var minNumberOfHashes = 2 * SocialBrowserModule.keepRequirements.Select(a => a.keepCount).Sum();
-		
+
 		while (Serialize().Length > MaxMetadataLength && modVersionHashes.Count() > minNumberOfHashes + 2) {
 			modVersionHashes = modVersionHashes.Take(modVersionHashes.Count() - 2).ToList();
 		}

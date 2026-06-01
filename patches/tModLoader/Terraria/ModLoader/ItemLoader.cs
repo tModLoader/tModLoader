@@ -276,6 +276,16 @@ public static class ItemLoader
 		return result;
 	}
 
+	private static HookList HookApplyPrefix = AddHook<Action<Item, int>>(g => g.ApplyPrefix);
+
+	public static void ApplyPrefix(Item item, int pre)
+	{
+		item.ModItem?.ApplyPrefix(pre);
+		foreach (var g in HookApplyPrefix.Enumerate(item)) {
+			g.ApplyPrefix(item, pre);
+		}
+	}
+
 	private static HookList HookCanUseItem = AddHook<Func<Item, Player, bool>>(g => g.CanUseItem);
 
 	public static bool CanUseItem(Item item, Player player)
@@ -571,7 +581,7 @@ public static class ItemLoader
 	private static HookList HookCanResearch = AddHook<DelegateCanResearch>(g => g.CanResearch);
 
 	/// <summary>
-	/// Hook that determines if an item will be prevented from being consumed by the research function. 
+	/// Hook that determines if an item will be prevented from being consumed by the research function.
 	/// </summary>
 	/// <param name="item">The item to be consumed or not</param>
 	public static bool CanResearch(Item item)

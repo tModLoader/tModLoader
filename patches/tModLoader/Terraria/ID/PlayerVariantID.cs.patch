@@ -46,5 +46,5 @@
  	public const int FemaleDisplayDoll = 11;
  	public static readonly int Count = 12;
 +
-+	public static IdDictionary Search = IdDictionary.Create<PlayerVariantID, sbyte>();
++	public static IdDictionary Search = IdDictionary.Create<PlayerVariantID, int>();
  }

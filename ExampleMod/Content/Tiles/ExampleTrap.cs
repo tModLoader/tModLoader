@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Tiles
 {
-	// This class shows off a number of less common ModTile methods. These methods help our trap tile behave like vanilla traps. 
+	// This class shows off a number of less common ModTile methods. These methods help our trap tile behave like vanilla traps.
 	// In particular, hammer behavior is particularly tricky. The logic here is setup for multiple styles as well.
 	public class ExampleTrap : ModTile
 	{
@@ -31,7 +31,7 @@ namespace ExampleMod.Content.Tiles
 
 		public override bool IsTileDangerous(int i, int j, Player player) => true;
 
-		// Because this tile does not use a TileObjectData, and consequently does not have "real" tile styles, the correct tile style value can't be determined automatically. This means that the correct item won't automatically drop, so we must use GetItemDrops to calculate the tile style to determine the item drop. 
+		// Because this tile does not use a TileObjectData, and consequently does not have "real" tile styles, the correct tile style value can't be determined automatically. This means that the correct item won't automatically drop, so we must use GetItemDrops to calculate the tile style to determine the item drop.
 		public override IEnumerable<Item> GetItemDrops(int i, int j) {
 			Tile t = Main.tile[i, j];
 			int style = t.TileFrameY / 18;
@@ -54,7 +54,7 @@ namespace ExampleMod.Content.Tiles
 			return true;
 		}
 
-		// PlaceInWorld is needed to facilitate styles and alternates since this tile doesn't use a TileObjectData. Placing left and right based on player direction is usually done in the TileObjectData, but the specifics of that don't work for how we want this tile to work. 
+		// PlaceInWorld is needed to facilitate styles and alternates since this tile doesn't use a TileObjectData. Placing left and right based on player direction is usually done in the TileObjectData, but the specifics of that don't work for how we want this tile to work.
 		public override void PlaceInWorld(int i, int j, Item item) {
 			int style = Main.LocalPlayer.HeldItem.placeStyle;
 			Tile tile = Main.tile[i, j];

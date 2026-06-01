@@ -278,7 +278,7 @@ public partial class NPC : IEntityWithGlobals<GlobalNPC>
 	/// <param name="buffType"></param>
 	public void BecomeImmuneTo(int buffType)
 	{
-		buffImmune[buffType] = true; 
+		buffImmune[buffType] = true;
 
 		for (int i = 0; i < BuffID.Sets.GrantImmunityWith.Length; i++) {
 			var buffsToInherit = BuffID.Sets.GrantImmunityWith[i];
@@ -307,7 +307,7 @@ public partial class NPC : IEntityWithGlobals<GlobalNPC>
 				anyBuffsCleared = true;
 			}
 
-			if (buffTime[i] == 0 || buffType[i] == 0) { 
+			if (buffTime[i] == 0 || buffType[i] == 0) {
 				for (int j = i + 1; j < maxBuffs; j++) {
 					buffTime[j - 1] = buffTime[j];
 					buffType[j - 1] = buffType[j];

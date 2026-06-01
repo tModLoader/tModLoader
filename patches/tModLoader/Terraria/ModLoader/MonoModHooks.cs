@@ -78,7 +78,7 @@ public static class MonoModHooks
 			GetDetourList(owner).ilHooks.Add(info);
 			Logging.tML.Debug($"ILHook {StringRep(info.Method.Method)} added by {owner.GetName().Name}");
 		};
-		
+
 		TerrariaHooks.Logging.OnObsoleteHookSubscribed += (MethodBase method, Delegate modded) => {
 			var owner = modded.Method.DeclaringType.Assembly;
 			Logging.tML.Error($"The method {StringRep(method)} is Obsolete. It was hooked by the {StringRep(modded.Method)} method of {owner.GetName().Name}");

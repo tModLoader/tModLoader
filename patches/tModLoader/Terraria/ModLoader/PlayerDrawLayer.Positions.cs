@@ -13,7 +13,7 @@ public abstract partial class PlayerDrawLayer
 
 	/// <summary>
 	/// Places this layer between the two provided layers. This layer will draw over layer1 and under layer2.
-	/// <para/> <see langword="null"/> can be used to indicate that the exact position of the layer doesn't matter aside from being before/after the other non-null argument. For example <c>new Between(PlayerDrawLayers.HairBack, null)</c> would place the layer anywhere after <c>HairBack</c>, while <c>new Between(null, PlayerDrawLayers.HairBack)</c> would be anywhere before <c>HairBack</c>. For ordering before or after all vanilla layers, the helper properties <see cref="PlayerDrawLayers.BeforeFirstVanillaLayer"/> and <see cref="PlayerDrawLayers.AfterLastVanillaLayer"/> can be used directly. 
+	/// <para/> <see langword="null"/> can be used to indicate that the exact position of the layer doesn't matter aside from being before/after the other non-null argument. For example <c>new Between(PlayerDrawLayers.HairBack, null)</c> would place the layer anywhere after <c>HairBack</c>, while <c>new Between(null, PlayerDrawLayers.HairBack)</c> would be anywhere before <c>HairBack</c>. For ordering before or after all vanilla layers, the helper properties <see cref="PlayerDrawLayers.BeforeFirstVanillaLayer"/> and <see cref="PlayerDrawLayers.AfterLastVanillaLayer"/> can be used directly.
 	/// <para/> The layer parameters used must have fixed positions, meaning that layers registered using either <see cref="Multiple"/>, <see cref="BeforeParent"/>, or <see cref="AfterParent"/> are not valid. For vanilla layers, this includes <see cref="PlayerDrawLayers.FrontAccFront"/> and <see cref="PlayerDrawLayers.HeldItem"/>. If ordering in relation to these layers, consider either using <see cref="AfterParent"/> or <see cref="BeforeParent"/> to draw at whatever positions that layer is actually drawn, or referencing a different layer for ordering instead.
 	/// </summary>
 	public sealed class Between : Position
@@ -35,7 +35,7 @@ public abstract partial class PlayerDrawLayer
 
 	/// <summary>
 	/// Places this layer into multiple <see cref="Position"/>s. Use this as a helper for layers that need to move around in the draw order rather than making multiple <see cref="PlayerDrawLayer"/> 'slots' manually.
-	/// <para/> An example of this can be seen in <see href="https://github.com/tModLoader/tModLoader/blob/stable/patches/tModLoader/Terraria/DataStructures/PlayerDrawLayers.tML.cs#L158">PlayerDrawLayers.tML.cs</see>. Note how the conditions for <c>FrontAccFront</c> and <c>HeldItem</c> are mutually exclusive, ensuring that the layer will only be drawn once for a given player. 
+	/// <para/> An example of this can be seen in <see href="https://github.com/tModLoader/tModLoader/blob/stable/patches/tModLoader/Terraria/DataStructures/PlayerDrawLayers.tML.cs#L158">PlayerDrawLayers.tML.cs</see>. Note how the conditions for <c>FrontAccFront</c> and <c>HeldItem</c> are mutually exclusive, ensuring that the layer will only be drawn once for a given player.
 	/// </summary>
 	public class Multiple : Position, IEnumerable
 	{

@@ -42,7 +42,7 @@ namespace ExampleMod.Content.Projectiles
 			return Color.White;
 		}
 
-		// In PreDrawExtras, we trick the game into thinking the projectile is actually a Sunfury projectile. After PreDrawExtras, the Terraria code will draw the chain. Drawing the chain ourselves is quite complicated, ExampleAdvancedFlailProjectile has an example of that. Then, in PreDraw, we restore the Projectile.type back to normal so we don't break anything.  
+		// In PreDrawExtras, we trick the game into thinking the projectile is actually a Sunfury projectile. After PreDrawExtras, the Terraria code will draw the chain. Drawing the chain ourselves is quite complicated, ExampleAdvancedFlailProjectile has an example of that. Then, in PreDraw, we restore the Projectile.type back to normal so we don't break anything.
 		public override bool PreDrawExtras() {
 			Projectile.type = ProjectileID.Sunfury;
 			return base.PreDrawExtras();
@@ -52,7 +52,7 @@ namespace ExampleMod.Content.Projectiles
 
 			// This code handles the after images.
 			if (Projectile.ai[0] == 1f) {
-				Texture2D projectileTexture = TextureAssets.Projectile[Projectile.type].Value;
+				Texture2D projectileTexture = TextureAssets.Projectile[Type].Value;
 				Vector2 drawPosition = Projectile.position + new Vector2(Projectile.width, Projectile.height) / 2f + Vector2.UnitY * Projectile.gfxOffY - Main.screenPosition;
 				Vector2 drawOrigin = new Vector2(projectileTexture.Width, projectileTexture.Height) / 2f;
 				Color drawColor = Projectile.GetAlpha(lightColor);
@@ -88,7 +88,7 @@ namespace ExampleMod.Content.Projectiles
 			}
 		}
 
-		// Finally, you can slightly customize the AI if you read and understand the vanilla aiStyle source code. You can't customize the range, retract speeds, or anything else. If you need to customize those things, you'll need to follow ExampleAdvancedFlailProjectile. This example spawns a Grenade right when the flail starts to retract. 
+		// Finally, you can slightly customize the AI if you read and understand the vanilla aiStyle source code. You can't customize the range, retract speeds, or anything else. If you need to customize those things, you'll need to follow ExampleAdvancedFlailProjectile. This example spawns a Grenade right when the flail starts to retract.
 		public override void AI() {
 			// The only reason this code works is because the author read the vanilla code and comprehended it well enough to tack on additional logic.
 			if (Main.myPlayer == Projectile.owner && Projectile.ai[0] == 2f && Projectile.ai[1] == 0f) {

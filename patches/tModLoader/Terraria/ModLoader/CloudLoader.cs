@@ -19,7 +19,7 @@ public static class CloudLoader
 	public static bool cloudLoaded = false;
 
 	/// <summary> Registers a new cloud with the provided texture, spawn chance, and indication if the cloud belongs to the "rare cloud" category. Typically used with <see cref="SimpleModCloud"/> as TCloud for cloud with no additional logic.
-	/// <para/> Use this to manually load a modded cloud rather than making a <see cref="ModCloud"/> class or autoloading the cloud through <see cref="Mod.CloudAutoloadingEnabled"/> logic. 
+	/// <para/> Use this to manually load a modded cloud rather than making a <see cref="ModCloud"/> class or autoloading the cloud through <see cref="Mod.CloudAutoloadingEnabled"/> logic.
 	/// </summary>
 	public static bool AddCloudFromTexture<TCloud>(Mod mod, string texture, float spawnChance = 1f, bool rareCloud = false) where TCloud : ModCloud, new()
 	{
@@ -41,7 +41,7 @@ public static class CloudLoader
 	}
 
 	/// <summary> Registers a new cloud with the provided texture, spawn chance, and indication if the cloud belongs to the "rare cloud" category.
-	/// <para/> Use this to manually load a modded cloud rather than making a <see cref="ModCloud"/> class or autoloading the cloud through <see cref="Mod.CloudAutoloadingEnabled"/> logic. 
+	/// <para/> Use this to manually load a modded cloud rather than making a <see cref="ModCloud"/> class or autoloading the cloud through <see cref="Mod.CloudAutoloadingEnabled"/> logic.
 	/// </summary>
 	public static bool AddCloudFromTexture(Mod mod, string texture, float spawnChance = 1f, bool rareCloud = false) => AddCloudFromTexture<SimpleModCloud>(mod, texture, spawnChance, rareCloud);
 

@@ -38,7 +38,7 @@ namespace ExampleMod.Content.Items
 	public class CustomItemSetsSystem : ModSystem
 	{
 		public override void Load() {
-			// The MergeNamedSets method can be used in rare situations where sets with different names need to be merged but the mods can't just release an update with the common set name. 
+			// The MergeNamedSets method can be used in rare situations where sets with different names need to be merged but the mods can't just release an update with the common set name.
 			// ItemID.Sets.Factory.MergeNamedSets<bool>("OtherMod/FireWeapons", "ExampleMod/FlamingWeapon");
 		}
 

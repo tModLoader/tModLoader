@@ -25,7 +25,7 @@ internal class BatchMetadataSetRunner
 				try {
 					string workingDir = CreateWorkingDirectoryForPage(response[i], i);
 					new BatchMetadataSetRunner(workingDir).RunForceDevMetadataUpdate(deleteModsWhenComplete: true);
-					
+
 				}
 				catch (Exception e) {
 					Logging.tML.Warn($"Page {i} failed to complete;\n{e}");

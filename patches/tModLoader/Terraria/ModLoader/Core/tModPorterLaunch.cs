@@ -15,7 +15,7 @@ internal class tModPorterLaunch
 	{
 		// The new MSBuild Workspaces uses a separate process to read the csproj file and execute tasks etc.
 		// We need to point it to the location of the packaged BuildHost-netcore folder in tML
-		// 
+		//
 		// https://github.com/dotnet/roslyn/blob/main/src/Workspaces/MSBuild/Core/MSBuild/BuildHostProcessManager.cs#L165
 
 		using var _1 = new Hook(

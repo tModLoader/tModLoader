@@ -247,7 +247,7 @@
  				y = num + 1;
  				break;
  			}
-@@ -593,7 +_,11 @@
+@@ -593,12 +_,16 @@
  		}
  	}
  
@@ -260,6 +260,12 @@
  	{
  		int y = j;
  		for (int k = j; k < Main.maxTilesY; k++) {
+ 			Tile tile = Main.tile[i, k];
+-			if (WorldGen.SolidTile(i, k) || !tile.active()) {
++			if (WorldGen.TopEdgeCanBeAttachedTo(i, k) || !tile.active()) {
+ 				y = k - 1;
+ 				break;
+ 			}
 @@ -629,7 +_,7 @@
  		if (TileID.Sets.HasOutlines[drawData.typeCache])
  			GetTileOutlineInfo(tileX, tileY, drawData.typeCache, ref drawData.tileLight, ref highlightTexture, ref highlightColor);
@@ -437,19 +443,8 @@
  		return num;
  	}
  
-@@ -2825,6 +_,7 @@
- 
- 				int num6 = (int)num5 * 2;
- 				if (tileCache.slope() != 0) {
-+
- 					vector = new Vector2(tileX * 16, tileY * 16 + num6);
- 					liquidSize = new Rectangle(0, num6, 16, 16 - num6);
- 				}
-@@ -2875,9 +_,11 @@
- 		vertices.BottomRightColor *= num7;
- 		vertices.TopLeftColor *= num7;
+@@ -2877,7 +_,8 @@
  		vertices.TopRightColor *= num7;
-+
  		bool flag7 = false;
  		if (flag6) {
 +			int totalCount = LoaderManager.Get<WaterStylesLoader>().TotalCount;

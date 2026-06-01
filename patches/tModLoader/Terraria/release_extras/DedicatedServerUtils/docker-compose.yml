@@ -3,17 +3,22 @@ version: "3.0"
 services:
   tml:
     container_name: tml
-    #restart: unless-stopped
+    restart: unless-stopped
+    #platform: linux/amd64 # Enable if you are running Docker on an ARM machine
     build:
       context: .
-      args:
-        UID: 1000
-        GID: 1000
-        #TML_VERSION: v2023.8.3.3
-    #entrypoint: [ "/bin/bash" ] # Uncomment this line if you need to poke around in the container
-    tty: true
-    stdin_open: true
+      # args:
+      #   TMLVERSION: v2023.8.3.3
+      #   UID: 1000
+      #   GID: 1000
     ports:
       - 7777:7777
+    tty: true
+    stdin_open: true
     volumes:
-      - ./tModLoader:/home/tml/.local/share/Terraria/tModLoader
+      - ./tModLoader:/tModLoader
+      # Optional volumes below. These files/folders MUST exist on the host
+      # before they can be mounted, otherwise they will appear as owned by root
+      #- ./tModLoader/logs:/home/tml/server/tModLoader-Logs
+      #- ./tModLoader/banlist.txt:/home/tml/server/banlist.txt
+      #- ./tModLoader/cli-argsConfig.txt:/home/tml/server/cli-argsConfig.txt

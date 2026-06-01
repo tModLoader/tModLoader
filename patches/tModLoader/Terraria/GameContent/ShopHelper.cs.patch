@@ -15,7 +15,7 @@
 -	private PersonalityDatabase _database;
 -	private AShoppingBiome[] _dangerousBiomes = new AShoppingBiome[3] {
 +	internal PersonalityDatabase _database; //TML: Turned from private to internal.
-+	
++
 +	private IShoppingBiome[] _dangerousBiomes = new IShoppingBiome[3] { //TML: Changed from AShoppingBiome to IShoppingBiome
  		new CorruptionBiome(),
  		new CrimsonBiome(),

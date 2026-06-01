@@ -513,7 +513,7 @@ public static partial class Config
 		RefactorInstanceMember("Terraria.ModLoader.ModTile", "ContainerName", Removed("Override DefaultContainerName instead"));
 		RenameMethod("Terraria.ModLoader.TileLoader", "ContainerName", "DefaultContainerName");
 		RefactorStaticMethodCall("Terraria.ModLoader.TileLoader", "DefaultContainerName", Comment("Note: new method takes in FrameX and FrameY"));
-    
+
 		RenameMethod("Terraria.ModLoader.ModBuff", from: "ModifyBuffTip", to: "ModifyBuffText");
 		RenameMethod("Terraria.ModLoader.GlobalBuff", from: "ModifyBuffTip", to: "ModifyBuffText");
 		ChangeHookSignature("Terraria.ModLoader.ModBuff", "ModifyBuffText");
@@ -545,5 +545,6 @@ public static partial class Config
 		RenameMethod("Terraria.ModLoader.GlobalProjectile", from: "Kill", to: "OnKill");
 		HookRemoved("Terraria.ModLoader.ModProjectile", "ModifyFishingLine", "Use ModItem.ModifyFishingLine");
 		HookRemoved("Terraria.ModLoader.BuilderToggle", "DisplayColorTexture", "Use BuilderToggle.Draw");
+		ChangeHookSignature("Terraria.ModLoader.ModTree", "SetTreeFoliageSettings");
 	}
 }

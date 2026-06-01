@@ -18,7 +18,7 @@ namespace ExampleMod.Common.Systems
 			int[] itemsToPlaceInFrozenChests = [ModContent.ItemType<ExampleMountItem>(), ModContent.ItemType<ExampleLightPetItem>(), ItemID.PinkJellyfishJar];
 			// This variable will help cycle through the items so that different Frozen Chests get different items
 			int itemsToPlaceInFrozenChestsChoice = 0;
-			// Rather than place items in each chest, we'll place up to 6 items (2 of each). 
+			// Rather than place items in each chest, we'll place up to 6 items (2 of each).
 			int itemsPlaced = 0;
 			int maxItems = 6;
 			// Loop over all the chests

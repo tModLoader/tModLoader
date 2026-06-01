@@ -48,10 +48,9 @@
  
  		return Path.GetExtension(value.FileName) ?? "";
  	}
--
--	public Stream OpenStream(string assetName)
 +	*/
-+	
+ 
+-	public Stream OpenStream(string assetName)
 +	public override Stream OpenStream(string assetName)
  	{
  		if (!_entries.TryGetValue(assetName, out var value))

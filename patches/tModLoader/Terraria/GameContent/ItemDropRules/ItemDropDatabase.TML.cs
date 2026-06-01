@@ -33,6 +33,13 @@ partial class ItemDropDatabase
 		return entry;
 	}
 
+	public void RegisterToItem(int type, IItemDropRule[] entries)
+	{
+		foreach (var entry in entries) {
+			RegisterToItem(type, entry);
+		}
+	}
+
 	public IItemDropRule RegisterToMultipleItems(IItemDropRule entry, params int[] itemIds)
 	{
 		for (int i = 0; i < itemIds.Length; i++) {
@@ -771,8 +778,10 @@ partial class ItemDropDatabase
 			bc_goldCoin,
 			hardmodeBiomeCrateOres,
 			hardmodeBiomeCrateBars,
+		};
+		// Note: Technically all the crates should have their rules split like divine here to match the source code, but this is the only case where it makes a vanilla drop rate difference. All the others have guaranteed drops that prevent AlwaysAtleastOneSuccess from running the rules multiple times resulting in extra coin/ores/bars.
+		IItemDropRule[] divine_extra = new IItemDropRule[] {
 			new OneFromRulesRule(4, potions),
-
 			bc_sol,
 			bc_shard,
 		};
@@ -905,6 +914,7 @@ partial class ItemDropDatabase
 		RegisterToItem(ItemID.CrimsonFishingCrateHard, ItemDropRule.AlwaysAtleastOneSuccess(hematic));
 		RegisterToItem(ItemID.HallowedFishingCrate, ItemDropRule.AlwaysAtleastOneSuccess(hallowed));
 		RegisterToItem(ItemID.HallowedFishingCrateHard, ItemDropRule.AlwaysAtleastOneSuccess(divine));
+		RegisterToItem(ItemID.HallowedFishingCrateHard, divine_extra);
 		RegisterToItem(ItemID.DungeonFishingCrate, ItemDropRule.AlwaysAtleastOneSuccess(dungeon));
 		RegisterToItem(ItemID.DungeonFishingCrateHard, ItemDropRule.AlwaysAtleastOneSuccess(stockade));
 		RegisterToItem(ItemID.FrozenCrate, ItemDropRule.AlwaysAtleastOneSuccess(frozen));

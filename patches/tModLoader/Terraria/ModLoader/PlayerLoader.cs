@@ -6,6 +6,7 @@ using System.Linq.Expressions;
 using System.Runtime.InteropServices;
 using Terraria.DataStructures;
 using Terraria.GameInput;
+using Terraria.Graphics;
 using Terraria.ModLoader.Default;
 using HookList = Terraria.ModLoader.Core.HookList<Terraria.ModLoader.ModPlayer>;
 
@@ -1214,6 +1215,19 @@ public static class PlayerLoader
 		}
 	}
 
+	private delegate void DelegateTransformDrawData(ref PlayerDrawSet drawInfo);
+	private static HookList HookTransformDrawData = AddHook<DelegateTransformDrawData>(p => p.TransformDrawData);
+
+	public static void TransformDrawData(ref PlayerDrawSet drawInfo)
+	{
+		var player = drawInfo.drawPlayer;
+
+		foreach (var modPlayer in HookTransformDrawData.Enumerate(player)) {
+			try { modPlayer.TransformDrawData(ref drawInfo); }
+			catch { }
+		}
+	}
+
 	private static HookList HookModifyDrawLayerOrdering = AddHook<Action<IDictionary<PlayerDrawLayer, PlayerDrawLayer.Position>>>(p => p.ModifyDrawLayerOrdering);
 
 	public static void ModifyDrawLayerOrdering(IDictionary<PlayerDrawLayer, PlayerDrawLayer.Position> positions)
@@ -1508,6 +1522,14 @@ public static class PlayerLoader
 	{
 		foreach (var modPlayer in HookOnEquipmentLoadoutSwitched.Enumerate(player)) {
 			modPlayer.OnEquipmentLoadoutSwitched(oldLoadoutIndex, loadoutIndex);
+		}
+	}
+
+	private static HookList HookDrawPlayer = AddHook<Action<Camera>>(p => p.DrawPlayer);
+
+	public static void DrawPlayer(Player player, Camera camera) {
+		foreach (var modPlayer in HookDrawPlayer.Enumerate(player)) {
+			modPlayer.DrawPlayer(camera);
 		}
 	}
 }

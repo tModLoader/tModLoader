@@ -231,7 +231,7 @@
  		if (_shouldSuperCart)
 -			num = SuperCartJumpSpeed;
 +			num = _data.MinecartUpgradeJumpSpeed;
-+		
++
 +		MountLoader.JumpSpeed(player, _data, ref num, xVelocity);
  
  		return num;
@@ -355,7 +355,7 @@
 +
 +			if (skipDust)
 +				goto PostDustSpawn;
-+			
++
  			DoSpawnDust(mountedPlayer, isDismounting: true);
 +			PostDustSpawn:
 +
@@ -380,7 +380,7 @@
 +
 +		if (skipDust)
 +			goto PostDustSpawn;
-+		
++
  		DoSpawnDust(mountedPlayer, isDismounting: false);
 +		PostDustSpawn:
 +

@@ -49,7 +49,7 @@
  
 +	/// <summary>
 +	/// Allows logic to execute every game update for this placed Tile Entity. Called on each placed Tile Entity.
-+	/// <para/> This hook is not called for multiplayer clients. The <see cref="ID.MessageID.TileEntitySharing"/> network message will need be used to keep clients in sync if necessary. 
++	/// <para/> This hook is not called for multiplayer clients. The <see cref="ID.MessageID.TileEntitySharing"/> network message will need be used to keep clients in sync if necessary.
 +	/// </summary>
  	public virtual void Update()
  	{

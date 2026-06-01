@@ -382,7 +382,7 @@ internal class UIModSourceItem : UIPanel
 
 			WorkshopItemPublicSettingId? publicity = null;
 			if (LaunchInitializer.TryParameter("-publicity") is string publicityString)
-				if (int.TryParse(publicityString, out int publicityInt) && publicityInt >= 0 && publicityInt <= 3) 
+				if (int.TryParse(publicityString, out int publicityInt) && publicityInt >= 0 && publicityInt <= 3)
 					publicity = (WorkshopItemPublicSettingId)publicityInt;
 
 			LocalMod localMod;

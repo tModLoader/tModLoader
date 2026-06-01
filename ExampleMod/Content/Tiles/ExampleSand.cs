@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Tiles
 {
-	// ExampleSand is a sand tile. Sand tiles are unique in how they cascade down. 
+	// ExampleSand is a sand tile. Sand tiles are unique in how they cascade down.
 	// When a sand tile determines that no tile is below it, it destroys itself and spawns a falling projectile (ExampleSandBallFallingProjectile) in its place.
 	// When that projectile hits another tile, it creates the sand tile at that location.
 	public class ExampleSand : ModTile

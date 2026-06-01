@@ -687,5 +687,6 @@ jobs:
           body: "Monthly Github Auto-release for ${{github.ref}}"
           tag: ${{ steps.version2.outputs.new_version }}
           prerelease: ${{ contains(github.ref, 'preview') }}
-          makeLatest: ${{ contains(github.ref, 'stable') }}
+          # No longer automatically make latest since we don't always release on Steam at the exact time, which can cause issues for manage-tModLoaderServer.sh servers. TML Team member will edit the GitHub release when Steam release goes live.
+          # makeLatest: ${{ contains(github.ref, 'stable') }} 
           

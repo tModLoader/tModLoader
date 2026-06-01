@@ -80,7 +80,7 @@
 +			_assetTransferQueue.Clear();
 +			return;
 +		}
-+			
++
 +		var evt = new ManualResetEvent(false);
 +		_assetTransferQueue.Enqueue(() => { action(); evt.Set(); });
 +		evt.WaitOne();
@@ -400,7 +400,7 @@
 +			return;
 +
 +		var sw = Stopwatch.StartNew();
-+		
++
 +		// Asset has been loaded asynchronously, and we need the result now.
 +		// This specific mix of async and synchronous loading, combined with the requirement to load some assets on the main thread is rife with deadlock potential
 +		// A careful understanding of the exact threading model and requirements is required, and there's no clean or best practice way to solve it
@@ -502,7 +502,7 @@
 +			Invoke(Dispose);
 +			return;
 +		}
-+			
++
  		Dispose(disposing: true);
  	}
  }

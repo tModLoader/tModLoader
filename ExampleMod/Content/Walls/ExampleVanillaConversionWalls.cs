@@ -22,7 +22,7 @@ namespace ExampleMod.Content.Walls
 			// Note: WallID.DesertFossil is unused, WallID.DesertFossilEcho is the only fossil wall that can be placed ingame
 			WallLoader.RegisterSimpleConversion(WallID.DesertFossilEcho, BiomeConversionID.Hallow, Type);
 
-			// Yellow (desert) solution should convert the infected desert fossil wall back into purity, so we do that manually 
+			// Yellow (desert) solution should convert the infected desert fossil wall back into purity, so we do that manually
 			WallLoader.RegisterConversion(Type, BiomeConversionID.Sand, WallID.DesertFossilEcho);
 		}
 	}

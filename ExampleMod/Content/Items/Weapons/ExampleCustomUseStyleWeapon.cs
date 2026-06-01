@@ -8,7 +8,7 @@ namespace ExampleMod.Content.Items.Weapons
 {
 	// The classes in this file showcase making and using a custom use style. A use style controls the movement and hitbox of an item when used.
 	// This custom use style swings the sword up from below instead of the usual down swing of ItemUseStyleID.Swing.
-	// In addition, this custom use style can swing at any angle. 
+	// In addition, this custom use style can swing at any angle.
 	// A separate example, ExampleCustomSwingSword, showcases an even more advanced custom swing using a held projectile instead of using custom use style code. It can be easier to implement advanced movements using a held projectile, but some may prefer the use style approach.
 
 	// ExampleCustomUseStyleGlobalItem contains the actual custom UseStyle logic. It is possible to put custom use style code directly in a ModItem, but we use a GlobalItem in this example because we use the same custom use style for the vanilla Cutlass weapon as well.

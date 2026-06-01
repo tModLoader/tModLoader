@@ -12,9 +12,9 @@ namespace ExampleMod.Content.Items.Weapons
 	{
 		public override void SetStaticDefaults() {
 			// These are all related to gamepad controls and don't seem to affect anything else
-			ItemID.Sets.Yoyo[Item.type] = true; // Used to increase the gamepad range when using Strings.
-			ItemID.Sets.GamepadExtraRange[Item.type] = 15; // Increases the gamepad range. Some vanilla values: 4 (Wood), 10 (Valor), 13 (Yelets), 18 (The Eye of Cthulhu), 21 (Terrarian).
-			ItemID.Sets.GamepadSmartQuickReach[Item.type] = true; // Unused, but weapons that require aiming on the screen are in this set.
+			ItemID.Sets.Yoyo[Type] = true; // Used to increase the gamepad range when using Strings.
+			ItemID.Sets.GamepadExtraRange[Type] = 15; // Increases the gamepad range. Some vanilla values: 4 (Wood), 10 (Valor), 13 (Yelets), 18 (The Eye of Cthulhu), 21 (Terrarian).
+			ItemID.Sets.GamepadSmartQuickReach[Type] = true; // Unused, but weapons that require aiming on the screen are in this set.
 		}
 
 		public override void SetDefaults() {
@@ -37,7 +37,7 @@ namespace ExampleMod.Content.Items.Weapons
 			Item.value = Item.buyPrice(gold: 1); // The amount of money that the item is can be bought for.
 
 			Item.shoot = ModContent.ProjectileType<ExampleYoyoProjectile>(); // Which projectile this item will shoot. We set this to our corresponding projectile.
-			Item.shootSpeed = 16f; // The velocity of the shot projectile.			
+			Item.shootSpeed = 16f; // The velocity of the shot projectile.
 		}
 
 		// Here is an example of blacklisting certain modifiers. Remove this section for standard vanilla behavior.

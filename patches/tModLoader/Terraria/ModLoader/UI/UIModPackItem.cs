@@ -475,7 +475,7 @@ internal class UIModPackItem : UIPanel
 
 	private static void RemoveModPackLocal(UIMouseEvent evt, UIElement listeningElement)
 	{
-		// Clear active Mod Pack 
+		// Clear active Mod Pack
 		UIModPackItem modpack = ((UIModPackItem)listeningElement.Parent);
 		ModOrganizer.ModPackActive = null;
 		Main.SaveSettings();

@@ -5,6 +5,7 @@ using System.IO;
 using System.Threading;
 using ReLogic.OS;
 using Steamworks;
+using Terraria.DataStructures;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.UI;
@@ -136,6 +137,41 @@ public static class SteamedWraps
 		return deps;
 	}
 
+	public static bool HasAcceptedTmodWorkshopEula()
+	{
+		if (!SteamClient)
+			return false;
+
+		WorkshopEULAStatus_t result = default;
+
+		using var _eulaHook = CallResult<WorkshopEULAStatus_t>.Create((WorkshopEULAStatus_t pCallback, bool bIOFailure) => {
+			result = pCallback;
+		});
+
+		_eulaHook.Set(SteamUGC.GetWorkshopEULAStatus());
+
+		// This probably should align better via a refactor of WorkshopHelper.WaitForQueryResultAsync
+		while (true) {
+			RunCallbacks();
+			if (result.m_eResult != EResult.k_EResultNone)
+				break;
+		}
+
+		// TODO: An exception here doesn't tell the user anything about what's going on. Just looks like button not working
+		if (result.m_eResult != EResult.k_EResultOK)
+			throw new SocialBrowserException("Failed to retreive EULA status");
+
+		return !result.m_bNeedsAction;
+	}
+
+	public static void ShowWorkshopEula()
+	{
+		if (!SteamClient)
+			return;
+
+		SteamUGC.ShowWorkshopEULA();
+	}
+
 	private static void ModifyQueryHandle(ref UGCQueryHandle_t qHandle, QueryParameters qP)
 	{
 		FilterByText(ref qHandle, qP.searchGeneric);
@@ -230,7 +266,7 @@ public static class SteamedWraps
 
 	public static EUGCQuery CalculateQuerySort(QueryParameters qParams)
 	{
-		// Only let steam rank by text when we want sorting for popularity, otherwise the results are not sorted when filtered by search term. 
+		// Only let steam rank by text when we want sorting for popularity, otherwise the results are not sorted when filtered by search term.
 		if ((!string.IsNullOrEmpty(qParams.searchGeneric) || !string.IsNullOrEmpty(qParams.searchAuthor)) && qParams.sortingParamater == ModBrowserSortMode.Hot)
 			return EUGCQuery.k_EUGCQuery_RankedByTextSearch;
 
@@ -259,7 +295,7 @@ public static class SteamedWraps
 		else { // assumes SteamAvailable as GetQueryHandle already checks this and is a required pre-req
 			ModifyQueryHandle(ref qHandle, qP);
 			FilterByInternalName(ref qHandle, internalName);
-			
+
 			return SteamGameServerUGC.SendQueryUGCRequest(qHandle);
 		}
 	}
@@ -508,7 +544,10 @@ public static class SteamedWraps
 
 	public static bool DoesWorkshopItemNeedUpdate(PublishedFileId_t publishId)
 	{
-		var currState = SteamedWraps.GetWorkshopItemState(publishId);
+		if (!SteamAvailable)
+			return false;
+
+		var currState = GetWorkshopItemState(publishId);
 
 		return (currState & (uint)EItemState.k_EItemStateNeedsUpdate) != 0 ||
 			(currState == (uint)EItemState.k_EItemStateNone) ||

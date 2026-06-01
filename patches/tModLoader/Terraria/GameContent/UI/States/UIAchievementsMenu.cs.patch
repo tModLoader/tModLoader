@@ -93,12 +93,13 @@
  		uIElement2.Height.Set(32f, 0f);
  		uIElement2.Top.Set(10f, 0f);
  		Asset<Texture2D> texture = Main.Assets.Request<Texture2D>("Images/UI/Achievement_Categories");
-@@ -94,6 +_,12 @@
+@@ -94,6 +_,13 @@
  			_categoryButtons.Add(uIToggleImage);
  			uIElement2.Append(uIToggleImage);
  		}
 +		UIToggleImage toggleModdedOnlyImage = new UIToggleImage(UICommon.UIAchievementsMenuIconsTexture, 32, 32, new Point(0, 0), new Point(0, 34));
 +		toggleModdedOnlyImage.Left.Set(4 * 36 + 8, 0f);
++		moddedOnly = false; // All settings should reset when the UI is reopened.
 +		toggleModdedOnlyImage.SetState(value: moddedOnly);
 +		toggleModdedOnlyImage.OnLeftClick += ToggleFilterModded;
 +		_categoryButtons.Add(toggleModdedOnlyImage);

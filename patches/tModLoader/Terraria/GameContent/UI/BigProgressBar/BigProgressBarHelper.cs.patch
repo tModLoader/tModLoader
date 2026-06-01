@@ -27,7 +27,7 @@
  		Texture2D value = Main.Assets.Request<Texture2D>("Images/UI/UI_BossBar").Value;
  		Point p = new Point(456, 22);
  		Point p2 = new Point(32, 24);
-@@ -75,6 +_,27 @@
+@@ -75,6 +_,28 @@
  	public static void DrawFancyBar(SpriteBatch spriteBatch, float lifeAmount, float lifeMax, Texture2D barIconTexture, Rectangle barIconFrame, float shieldCurrent, float shieldMax)
  	{
  		Texture2D value = Main.Assets.Request<Texture2D>("Images/UI/UI_BossBar").Value;
@@ -39,9 +39,10 @@
 +
 +			Vector2 barCenter = Main.ScreenSize.ToVector2() * new Vector2(0.5f, 1f) + new Vector2(0f, -50f);
 +			Color iconColor = Color.White;
++			Color BossBarColor = Color.White;
 +			float iconScale = 1f;
 +
-+			BossBarDrawParams drawParams = new BossBarDrawParams(value, barCenter, barIconTexture, barIconFrame, iconColor, lifeAmount, lifeMax, shieldCurrent, shieldMax, iconScale, info.showText, Vector2.Zero);
++			BossBarDrawParams drawParams = new BossBarDrawParams(value, barCenter, barIconTexture, barIconFrame, iconColor, lifeAmount, lifeMax, BossBarColor, shieldCurrent, shieldMax, iconScale, info.showText, Vector2.Zero);
 +
 +			bool skipped = !BossBarLoader.PreDraw(spriteBatch, info, ref drawParams);
 +			if (!skipped)

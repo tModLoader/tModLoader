@@ -169,7 +169,7 @@ internal class TerrariaSteamClient
 				SteamShutdown();
 				return;
 			}
-			if (TerrariaBuildID < LatestTerrariaBuildID) { 
+			if (TerrariaBuildID < LatestTerrariaBuildID) {
 				Logger.Fatal("Terraria is out of date, you need to update Terraria in Steam.");
 				Send(MsgInstallOutOfDate);
 				SteamShutdown();

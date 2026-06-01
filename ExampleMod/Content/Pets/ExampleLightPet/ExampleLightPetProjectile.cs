@@ -26,10 +26,10 @@ namespace ExampleMod.Content.Pets.ExampleLightPet
 		public ref float AIDashCharge => ref Projectile.ai[1];
 
 		public override void SetStaticDefaults() {
-			Main.projFrames[Projectile.type] = 1;
-			Main.projPet[Projectile.type] = true;
-			ProjectileID.Sets.TrailingMode[Projectile.type] = 2;
-			ProjectileID.Sets.LightPet[Projectile.type] = true;
+			Main.projFrames[Type] = 1;
+			Main.projPet[Type] = true;
+			ProjectileID.Sets.TrailingMode[Type] = 2;
+			ProjectileID.Sets.LightPet[Type] = true;
 		}
 
 		public override void SetDefaults() {

@@ -279,7 +279,7 @@ internal class UIModPacks : UIState, IHaveBackButtonCommand
 		Directory.CreateDirectory(Path.Combine(instancePath, "SaveData"));
 
 		//TODO: When implementing ModConfig as part of Mod Pack, update
-		string modsPath =  ModPackModsPath(modPackName); 
+		string modsPath =  ModPackModsPath(modPackName);
 		string configPath = Config.ConfigManager.ModConfigPath; //ModPackConfigPath(modPackName);
 
 		// Deploy Mods, Configs to instance

@@ -118,7 +118,7 @@ partial class ItemID
 
 		/// <summary>
 		/// Set for catching tools which can catch the Underworld's lava critters.<br></br>
-		/// Don't forget to use the <see cref="CatchingTool"/> set in conjunction with this one. 
+		/// Don't forget to use the <see cref="CatchingTool"/> set in conjunction with this one.
 		/// </summary>
 		public static bool[] LavaproofCatchingTool = Factory.CreateBoolSet(
 			GoldenBugNet,

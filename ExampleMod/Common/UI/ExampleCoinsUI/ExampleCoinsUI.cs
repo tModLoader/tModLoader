@@ -14,7 +14,7 @@ namespace ExampleMod.Common.UI.ExampleCoinsUI
 {
 	// ExampleUIs visibility is toggled by typing "/coins" in chat (See CoinCommand.cs)
 	// ExampleCoinsUI is a simple UI example showing how to use UIPanel, UIImageButton, and even a custom UIElement
-	// For more info about UI you can check https://github.com/tModLoader/tModLoader/wiki/Basic-UI-Element and https://github.com/tModLoader/tModLoader/wiki/Advanced-guide-to-custom-UI 
+	// For more info about UI you can check https://github.com/tModLoader/tModLoader/wiki/Basic-UI-Element and https://github.com/tModLoader/tModLoader/wiki/Advanced-guide-to-custom-UI
 	internal class ExampleCoinsUIState : UIState
 	{
 		public ExampleDraggableUIPanel CoinCounterPanel;
@@ -27,13 +27,13 @@ namespace ExampleMod.Common.UI.ExampleCoinsUI
 			// Here we define our container UIElement. In DraggableUIPanel.cs, you can see that DraggableUIPanel is a UIPanel with a couple added features.
 			CoinCounterPanel = new ExampleDraggableUIPanel();
 			CoinCounterPanel.SetPadding(0);
-			// We need to place this UIElement in relation to its Parent. Later we will be calling `base.Append(coinCounterPanel);`. 
+			// We need to place this UIElement in relation to its Parent. Later we will be calling `base.Append(coinCounterPanel);`.
 			// This means that this class, ExampleCoinsUI, will be our Parent. Since ExampleCoinsUI is a UIState, the Left and Top are relative to the top left of the screen.
 			// SetRectangle method help us to set the position and size of UIElement
 			SetRectangle(CoinCounterPanel, left: 400f, top: 100f, width: 170f, height: 70f);
 			CoinCounterPanel.BackgroundColor = new Color(73, 94, 171);
 
-			// Next, we create another UIElement that we will place. Since we will be calling `coinCounterPanel.Append(playButton);`, Left and Top are relative to the top left of the coinCounterPanel UIElement. 
+			// Next, we create another UIElement that we will place. Since we will be calling `coinCounterPanel.Append(playButton);`, Left and Top are relative to the top left of the coinCounterPanel UIElement.
 			// By properly nesting UIElements, we can position things relatively to each other easily.
 			Asset<Texture2D> buttonPlayTexture = ModContent.Request<Texture2D>("Terraria/Images/UI/ButtonPlay");
 			ExampleUIHoverImageButton playButton = new ExampleUIHoverImageButton(buttonPlayTexture, Language.GetTextValue("Mods.ExampleMod.UI.ExampleCoinsUIState.Reset"));

@@ -108,7 +108,7 @@ internal class UIModDownloadItem : UIPanel
 		_updateWithDepsButton.CopyStyle(_moreInfoButton);
 		_updateWithDepsButton.Left.Pixels += 36 + PADDING;
 		_updateWithDepsButton.OnLeftClick += DownloadWithDeps;
-		
+
 		if (ModDownload.ModReferencesBySlug?.Length > 0) {
 			var icon = UICommon.ButtonDepsTexture;
 			var modReferenceIcon = new UIHoverImage(icon, Language.GetTextValue("tModLoader.MBClickToViewDependencyMods", string.Join("\n", ModDownload.ModReferencesBySlug.Split(',').Select(x => x.Trim())))) {

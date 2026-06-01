@@ -1,0 +1,11 @@
+--- src/TerrariaNetCore/Terraria/Localization/Content/ru-RU/Legacy.json
++++ src/tModLoader/Terraria/Localization/Content/ru-RU/Legacy.json
+@@ -520,7 +_,7 @@
+ 		"127": "Стиль",
+ 		"128": "Предпросмотр размещения вкл.",
+ 		"129": "Предпросмотр размещения выкл.",
+-		"12": "Один игрок",
++		"12": "Одиночная Игра",
+ 		"130": "Транспорт",
+ 		"131": "Достижения",
+ 		"132": "Кровь и насилие вкл.",

@@ -92,21 +92,22 @@
  			PrepareTextureIfNecessary(asset.Value);
  		}
  
-@@ -112,7 +_,22 @@
+@@ -112,7 +_,23 @@
  
  		public override void Prepare()
  		{
 +			/*
  			Asset<Texture2D> asset = Main.Assets.Request<Texture2D>(TextureAssets.Tile[Key.TileType].Name);
 +			*/
-+			Asset<Texture2D> asset;
++			Asset<Texture2D> asset = null;
 +
 +			if (PlantLoader.plantIdToStyleLimit.TryGetValue(Key.TileType, out int val)
 +				&& val <= Math.Abs(Key.TileStyle)) {
 +
 +				int lookup = Math.Abs(Key.TileStyle) - val;
 +				asset = PlantLoader.GetTexture(Key.TileType, lookup);
-+			} else {
++			}
++			if (asset is null) {
 +				Main.instance.LoadTiles(Key.TileType);
 +				asset = TextureAssets.Tile[Key.TileType];
 +			}

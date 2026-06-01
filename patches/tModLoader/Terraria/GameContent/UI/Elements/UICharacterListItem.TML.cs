@@ -137,7 +137,7 @@ partial class UICharacterListItem
 			configButton.OnMouseOver += new UIElement.MouseEvent(this.ConfigMouseOver);
 			configButton.OnMouseOut += new UIElement.MouseEvent(this.ButtonMouseOut);
 			base.Append(configButton);
-		
+
 			buttonLabelLeft += 24;
 		}
 		*/

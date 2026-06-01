@@ -1,0 +1,10 @@
+--- src/TerrariaNetCore/Terraria/GameContent/UI/States/UIWorldCreation.cs
++++ src/tModLoader/Terraria/GameContent/UI/States/UIWorldCreation.cs
+@@ -228,6 +_,7 @@
+ 			for (int i = 0; i < difficultyButtons.Length; i++) {
+ 				difficultyButtons[i].SetCurrentOption(WorldDifficultyId.Normal);
+ 			}
++			UpdatePreviewPlate(); // Fix incorrect preview portrait world size non-Journey
+ 		}
+ 
+ 		GroupOptionButton<WorldEvilId>[] evilButtons = _evilButtons;

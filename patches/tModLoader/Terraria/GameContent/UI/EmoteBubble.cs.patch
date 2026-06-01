@@ -185,7 +185,7 @@
 +		// value2: bubble background frame
 +		// flag: whether the emote bubble is actually showing
 +		Rectangle emoteFrame = (emote >= 0 && emote < EmoteID.Count) ? value.Frame(8, 39, emote * 2 % 8 + frame, 1 + emote / 4) : new Rectangle(0, 0, 34, 28);
-+		
++
 +		if (emote == -1) {
 +			position += new Vector2(effect.HasFlag(SpriteEffects.FlipHorizontally) ? 1 : (-1), -emoteFrame.Height + 3);
 +		}
@@ -201,7 +201,7 @@
 +				return;
 +			}
 +		}
-+		
++
 -		sb.Draw(value, position, value2, Color.White, 0f, origin, 1f, effect, 0f);
 +		sb.Draw(TextureAssets.Extra[48].Value, position, value2, Color.White, 0f, origin, 1f, effect, 0f);
  		if (flag)

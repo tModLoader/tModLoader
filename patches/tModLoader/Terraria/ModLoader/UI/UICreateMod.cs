@@ -175,7 +175,7 @@ public class UICreateMod : UIState, IHaveBackButtonCommand
 			string basicSwordTrimmed = _basicSword.CurrentString.Trim();
 			string sourceFolder = Path.Combine(ModCompile.ModSourcePath, modNameTrimmed);
 			var provider = CodeDomProvider.CreateProvider("C#");
-			
+
 			if (Directory.Exists(sourceFolder))
 				_messagePanel.SetText(Language.GetTextValue("tModLoader.CreateModFolderAlreadyExists"));
 			else if (!provider.IsValidIdentifier(modNameTrimmed))

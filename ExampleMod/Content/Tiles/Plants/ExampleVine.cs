@@ -54,7 +54,7 @@ namespace ExampleMod.Content.Tiles.Plants
 	}
 
 	// This class handles spawning and growing ExampleVine (RandomUpdate). Vines can either grow from the tip of an existing vine or spawn from the tile it grows from.
-	// Because this behavior needs to act on both ExampleVine and ExampleBlock tiles, we put this logic in a GlobalTile rather than in both ModTile classes. 
+	// Because this behavior needs to act on both ExampleVine and ExampleBlock tiles, we put this logic in a GlobalTile rather than in both ModTile classes.
 	// This class also handle transforming vines to ExampleVine if the anchor tile changes (TileFrame).
 	public class ExampleVineGlobalTile : GlobalTile
 	{
@@ -118,7 +118,7 @@ namespace ExampleMod.Content.Tiles.Plants
 
 		// Transforming vines to ExampleVine if necessary behavior
 		public override bool TileFrame(int i, int j, int type, ref bool resetFrame, ref bool noBreak) {
-			// This code handles transforming any vine to ExampleVine if the anchored tile happens to change to ExampleBlock. This can happen with spreading grass tiles or Clentaminator solutions. Without this code the vine would just break in those situations. 
+			// This code handles transforming any vine to ExampleVine if the anchored tile happens to change to ExampleBlock. This can happen with spreading grass tiles or Clentaminator solutions. Without this code the vine would just break in those situations.
 			if (!TileID.Sets.IsVine[type]) {
 				return true;
 			}

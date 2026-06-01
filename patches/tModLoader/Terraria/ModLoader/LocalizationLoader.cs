@@ -205,7 +205,7 @@ public static class LocalizationLoader
 				string translationFileContents = streamReader.ReadToEnd();
 
 				string modpath = Path.Combine(tModFile.Name, translationFile.Name).Replace('/', '\\');
-				if (!string.IsNullOrWhiteSpace(sourceFolder) && changedFiles.Select(x => Path.Join(x.Mod, x.fileName)).Contains(modpath)) {
+				if (!string.IsNullOrWhiteSpace(sourceFolder) && changedFiles.Select(x => Path.Join(x.Mod, x.fileName).Replace('/', '\\')).Contains(modpath)) {
 					// TODO: we could skip this for GetLocalizationCounts to be more accurate to the entries in the mod itself, but that is not needed since we don't allow publishing on the client if any changedFiles and the command line publish won't detect changedFiles unless hosting.
 					string path = Path.Combine(sourceFolder, translationFile.Name);
 					if (File.Exists(path)) {
@@ -762,7 +762,7 @@ public static class LocalizationLoader
 		file.Entries.Insert(placementIndex, new(key, value, comment));
 	}
 
-	// Generates hjson files for the current culture in 
+	// Generates hjson files for the current culture in
 	internal static bool ExtractLocalizationFiles(string modName)
 	{
 		var dir = Path.Combine(Main.SavePath, "ModLocalization", modName);

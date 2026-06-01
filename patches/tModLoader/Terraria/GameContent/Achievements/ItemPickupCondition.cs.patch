@@ -23,10 +23,18 @@
  	{
  		_itemIds = new short[1] {
  			itemId
-@@ -20,8 +_,20 @@
+@@ -20,8 +_,28 @@
  		ListenForPickup(this);
  	}
  
++	/// <summary>
++	/// Since this takes a short array, you may need to do something like this to convert a set:
++	/// <code>
++	/// int[] drillItems = ItemID.Sets.IsDrill.GetTrueIndexes().ToArray();
++	/// short[] drillItemsAsShort = Array.ConvertAll(drillItems, Convert.ToInt16);
++	/// AddCondition(new ItemPickupCondition(drillItemsAsShort));
++	/// </code>
++	/// </summary>
 -	private ItemPickupCondition(short[] itemIds)
 +	public ItemPickupCondition(short[] itemIds)
 -		: base("ITEM_PICKUP_" + itemIds[0])

@@ -38,6 +38,9 @@ public class BadIDTypeUnitTest
 
 			_ = new Item().type == {|BadIDType:TileID.Dirt|};
 			_ = Main.tile[10, 20].TileType == {|BadIDType:ItemID.GoldOre|}; // ref property
+
+			// https://github.com/tModLoader/tModLoader/issues/4849
+			_ = Dust.NewDust(default, 0, 0, DustID.Dirt) == Main.maxDust;
 			"""
 			);
 	}
@@ -52,6 +55,7 @@ public class BadIDTypeUnitTest
 
 			var recipe = Recipe.Create(ItemID.CobaltBrickWall);
 			recipe.AddIngredient({|BadIDType:TileID.Dirt|});
+			recipe.AddRecipeGroup({|BadIDType:ItemID.Wood|});
 			"""
 			);
 	}

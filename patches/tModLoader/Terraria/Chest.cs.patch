@@ -607,7 +607,7 @@
  				item[i].stack -= num;
  				_ = item[i].value;
  				_ = 0;
-+				
++
 +				/*
  				break;
 +				*/

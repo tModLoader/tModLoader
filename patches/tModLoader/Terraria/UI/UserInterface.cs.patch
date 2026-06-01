@@ -33,7 +33,7 @@
  		UIElement uIElement = (Main.hasFocus ? _currentState.GetElementAt(MousePosition) : null);
  		_clickDisabledTimeRemaining = Math.Max(0.0, _clickDisabledTimeRemaining - time.ElapsedGameTime.TotalMilliseconds);
  		bool num = _clickDisabledTimeRemaining > 0.0;
-+		
++
 +		try {
 +			Update_Inner(time, uIElement, ref num);
 +		}

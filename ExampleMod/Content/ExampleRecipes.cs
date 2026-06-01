@@ -28,8 +28,8 @@ namespace ExampleMod.Content
 			// To avoid name collisions, when a modded items is the iconic or 1st item in a recipe group, name the recipe group: ModName:ItemName
 			RecipeGroup.RegisterGroup("ExampleMod:ExampleItem", ExampleRecipeGroup);
 
-			// Add an item to an existing Terraria recipeGroup. ExampleCritterItem isn't gold but it serves as an example for this.
-			RecipeGroup.recipeGroups[RecipeGroupID.GoldenCritter].ValidItems.Add(ModContent.ItemType<ExampleCritterItem>());
+			// Add an item to an existing Terraria recipeGroup. ExampleCritterItem isn't a bug but it serves as an example for this.
+			RecipeGroup.recipeGroups[RecipeGroupID.Bugs].ValidItems.Add(ModContent.ItemType<ExampleCritterItem>());
 
 			// We also add ExampleSand to the Sand group, which is used in the Glass and Magic Sand Dropper recipes
 			RecipeGroup.recipeGroups[RecipeGroupID.Sand].ValidItems.Add(ModContent.ItemType<ExampleSandBlock>());
@@ -96,7 +96,7 @@ namespace ExampleMod.Content
 				// Adds a mod tile requirement. To specify more than one crafting station, use multiple recipe.AddTile() calls.
 				.AddTile<Tiles.Furniture.ExampleWorkbench>()
 				// An alternate string-based approach to the above. Try to only use it for other mods' tiles, because it's slower.
-				.AddTile(Mod, "ExampleWorkbench")
+				//.AddTile(Mod, "ExampleWorkbench")
 
 				// Adds pre-defined conditions. These 3 lines combine to make so that the recipe must be crafted in desert waters at night.
 				.AddCondition(Condition.InDesert)

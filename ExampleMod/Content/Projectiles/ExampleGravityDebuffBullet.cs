@@ -12,8 +12,8 @@ namespace ExampleMod.Content.Projectiles
 	public class ExampleGravityDebuffBullet : ModProjectile
 	{
 		public override void SetStaticDefaults() {
-			ProjectileID.Sets.TrailCacheLength[Projectile.type] = 5; // The length of old position to be recorded
-			ProjectileID.Sets.TrailingMode[Projectile.type] = 0; // The recording mode
+			ProjectileID.Sets.TrailCacheLength[Type] = 5; // The length of old position to be recorded
+			ProjectileID.Sets.TrailingMode[Type] = 0; // The recording mode
 		}
 
 		public override void SetDefaults() {

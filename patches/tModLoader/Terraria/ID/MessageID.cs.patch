@@ -235,7 +235,7 @@
 +	// On client, does the open and close sounds (if changed)
 +	// On server, sends ChestName and SyncPlayerChestIndex to other clients
 +	/// <summary>
-+	/// Syncs basic information about a chest. Used on clients to send chest name changes to the server (the server then syncs the name change to other clients via <see cref="ChestName"/>). Used on the server to allow a specific client to open the chest the client previously requested to open via a <see cref="RequestChestOpen"/> message. Other clients are sent the <see cref="SyncPlayerChestIndex"/> message. 
++	/// Syncs basic information about a chest. Used on clients to send chest name changes to the server (the server then syncs the name change to other clients via <see cref="ChestName"/>). Used on the server to allow a specific client to open the chest the client previously requested to open via a <see cref="RequestChestOpen"/> message. Other clients are sent the <see cref="SyncPlayerChestIndex"/> message.
 +	/// <br/><br/> Modders should use this message exactly as shown in <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/Tiles/Furniture/ExampleChest.cs">ExampleChest</see>.
 +	/// <br/><br/> <c>NetMessage.SendData</c> parameters:
 +	/// <br/> <b>text:</b> The name of the chest. <c>NetworkText.FromLiteral(Main.chest[chestIndex].name)</c> should be used. Only relevant if <c>number2</c> is set to 1.
@@ -347,7 +347,7 @@
 +
 +	// Sends TileSquare to all clients
 +	/// <summary>
-+	/// Unlocks or locks the chest or door at the provided tile coordinates. The server will also sync the changed tiles to all clients.   
++	/// Unlocks or locks the chest or door at the provided tile coordinates. The server will also sync the changed tiles to all clients.
 +	/// <br/><br/> Modders should use this message exactly as shown in <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/Tiles/Furniture/ExampleChest.cs">ExampleChest</see>.
 +	/// <br/><br/> <c>NetMessage.SendData</c> parameters:
 +	/// <br/> <b>number2:</b> UnlockType. 1->Chest.Unlock, 2->WorldGen.UnlockDoor, 3->Chest.Lock
@@ -403,7 +403,7 @@
 +	public const byte NPCHome = 60;
 +
 +	/// <summary>
-+	/// Attempts to spawn an NPC on the player, start a specific event, or use a pet license. Spawned NPC must be in <see cref="NPCID.Sets.MPAllowedEnemies"/>, this will not allow multiple to spawn. 
++	/// Attempts to spawn an NPC on the player, start a specific event, or use a pet license. Spawned NPC must be in <see cref="NPCID.Sets.MPAllowedEnemies"/>, this will not allow multiple to spawn.
 +	/// <br/><br/> Mods should use this in boss spawner items to spawn a boss.
 +	/// <br/><br/> <c>NetMessage.SendData</c> parameters:
 +	/// <br/> <b>number:</b> The player.whoAmI of the player to spawn on.

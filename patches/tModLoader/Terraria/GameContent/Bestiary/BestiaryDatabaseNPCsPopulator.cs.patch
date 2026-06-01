@@ -48,7 +48,7 @@
  	{
 +		// Town NPCs are loaded automatically now so it just returns.
 +		return;
-+		
++
 +		/*
  		Register(BestiaryEntry.TownNPC(22));
  		Register(BestiaryEntry.TownNPC(17));

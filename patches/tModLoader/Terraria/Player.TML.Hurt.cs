@@ -113,7 +113,7 @@ public partial class Player
 		private bool _cancelled = default;
 		/// <summary>
 		/// Cancels the Hurt. Further hooks like <see cref="ModPlayer.FreeDodge"/> and <see cref="ModPlayer.OnHurt(HurtInfo)"/> will not be called. <br/>
-		/// Does not automatically apply immune frames, so the player can get hit again next frame. 
+		/// Does not automatically apply immune frames, so the player can get hit again next frame.
 		/// </summary>
 		public void Cancel() => _cancelled = true;
 

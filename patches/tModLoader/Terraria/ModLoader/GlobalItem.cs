@@ -81,6 +81,11 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	public virtual bool AllowPrefix(Item item, int pre) => true;
 
 	/// <summary>
+	/// Called immediately after prefix stat changes are applied (as well as <see cref="ModPrefix.Apply(Item)"/>), facilitating item-specific tweaks to prefix effects.
+	/// </summary>
+	public virtual void ApplyPrefix(Item item, int pre) { }
+
+	/// <summary>
 	/// Returns whether or not any item can be used. Returns true by default. The inability to use a specific item overrides this, so use this to stop an item from being used.
 	/// <para/> Called on local, server, and remote clients.
 	/// <br/><br/> The item may or not be used after this method is called, so logic in this method should have no side effects such as consuming items or resources.
@@ -223,7 +228,7 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	}
 
 	/// <summary>
-	/// Called before the potion delay is applied to the player after consuming a healing potion. 
+	/// Called before the potion delay is applied to the player after consuming a healing potion.
 	/// <br/><br/> Return false to prevent application of the <see cref="BuffID.PotionSickness"/> buff and setting <see cref="Player.potionDelay"/>.
 	/// </summary>
 	/// <param name="item">The healing item being used.</param>
@@ -833,7 +838,7 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 
 	/// <summary>
 	/// Allows you to prevent items from stacking.
-	/// <para/>This is only called when two items of the same type attempt to stack.
+	/// <para/>This is only called when two items of the same type attempt to stack. This is called on the item that would be stacked onto (<see langword="this"/>/<paramref name="destination"/>).
 	/// <para/>This is usually not called for coins and ammo in the inventory/UI.
 	/// <para/>This covers all scenarios, if you just need to change in-world stacking behavior, use <see cref="CanStackInWorld"/>.
 	/// <para/> Called on the local client only.
@@ -848,7 +853,7 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 
 	/// <summary>
 	/// Allows you to prevent items from stacking in the world.
-	/// <para/> This is only called when two items of the same type attempt to stack.
+	/// <para/> This is only called when two items of the same type attempt to stack. This is called on the item that would be stacked onto (<see langword="this"/>/<paramref name="destination"/>).
 	/// <para/> Called on the local client or server, depending on who the item is reserved for.
 	/// </summary>
 	/// <param name="destination">The item instance that <paramref name="source"/> will attempt to stack onto</param>
@@ -861,7 +866,7 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 
 	/// <summary>
 	/// Allows you to make things happen when items stack together.
-	/// <para/> This hook is called before the items are transferred from <paramref name="source"/> to <paramref name="destination"/>
+	/// <para/> This hook is called on the item being stacked onto (<see langword="this"/>/<paramref name="destination"/>) before the items are transferred from <paramref name="source"/> to <paramref name="destination"/>. This will be called both for in-world and in-inventory stacking.
 	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="destination">The item instance that <paramref name="source"/> will attempt to stack onto</param>
@@ -872,7 +877,7 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	}
 
 	/// <summary>
-	/// Allows you to make things happen when an item stack is split. This hook is called before the stack values are modified.
+	/// Allows you to make things happen when an item stack is split. This hook is called on the new item (<see langword="this"/>/<paramref name="destination"/>) before the stack values are modified.
 	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="destination">

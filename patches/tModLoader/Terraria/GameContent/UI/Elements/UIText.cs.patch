@@ -17,7 +17,7 @@
 +		// TML: Changed to use ChatManager.GetStringSize() since using DynamicSpriteFont.MeasureString() ignores chat tags,
 +		// giving the UI element a much larger calculated size than it should have.
 +		Vector2 vector = ChatManager.GetStringSize(dynamicSpriteFont, _visibleText, new Vector2(1));
-+	
++
  		Vector2 vector2 = (_textSize = ((!IsWrapped) ? (new Vector2(vector.X, large ? 32f : 16f) * textScale) : (new Vector2(vector.X, vector.Y + WrappedTextBottomPadding) * textScale)));
 +		if (!IsWrapped) { // TML: IsWrapped when true should prevent changing MinWidth, otherwise can't shrink in width due to logic.
 -		MinWidth.Set(vector2.X + PaddingLeft + PaddingRight, 0f);

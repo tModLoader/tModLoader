@@ -1,4 +1,4 @@
-using DiffPatch;
+using CodeChicken.DiffPatch;
 using Microsoft.Extensions.DependencyInjection;
 using Terraria.ModLoader.Setup.Core.Abstractions;
 

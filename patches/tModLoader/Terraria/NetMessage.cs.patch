@@ -247,7 +247,7 @@
  						writer.Write((short)0);
  					}
 +
-+					// Write extra modded chest id, see calls to SendData(34, 
++					// Write extra modded chest id, see calls to SendData(34,
 +					if (number >= 100)
 +						writer.Write((ushort)number6);
 +
@@ -629,7 +629,7 @@
 +	/// <summary>
 +	/// <inheritdoc cref="SendTileSquare(int, int, int, int, int, TileChangeType)" path="/SharedSummary/node()"/>
 +	/// <b>Range: </b>In this particular overload, <paramref name="tileX"/> and <paramref name="tileY"/> denote the center of a square range of tiles to sync and <paramref name="centeredSquareSize"/> denotes the width/height of the square to send. Odd <paramref name="centeredSquareSize"/> values result in a square centered directly on <paramref name="tileX"/> and <paramref name="tileY"/>, while even values will result in the square being 1 tile longer to the right of and below of the coordinates.
-+	/// <para/> The <see cref="SendTileSquare(int, int, int, int, int, TileChangeType)"/> overload is usually preferred to this because it sends the exact range of tiles desired and visualizing how the square range fits over the desired range of tiles can be hard to visualize and program correctly. 
++	/// <para/> The <see cref="SendTileSquare(int, int, int, int, int, TileChangeType)"/> overload is usually preferred to this because it sends the exact range of tiles desired and visualizing how the square range fits over the desired range of tiles can be hard to visualize and program correctly.
 +	/// </summary>
  	public static void SendTileSquare(int whoAmi, int tileX, int tileY, int centeredSquareSize, TileChangeType changeType = TileChangeType.None)
  	{

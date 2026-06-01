@@ -172,7 +172,7 @@ internal static class WorldIO
 				g.SaveData(npc, data);
 				if (data.Count == 0)
 					continue;
-				
+
 				globalData.Add(new TagCompound {
 					["mod"] = g.Mod.Name,
 					["name"] = g.Name,
@@ -674,7 +674,7 @@ internal static class WorldIO
 			["usedMods"] = SaveUsedMods(),
 			["usedModPack"] = SaveUsedModPack(),
 			["generatedWithMods"] = SaveGeneratedWithMods(),
-		};			
+		};
 	}
 
 	private static TagCompound SaveModHeaders()

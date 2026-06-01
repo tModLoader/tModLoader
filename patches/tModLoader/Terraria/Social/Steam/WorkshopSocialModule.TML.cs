@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -34,8 +35,8 @@ public partial class WorkshopSocialModule
 			IssueReporter.ReportInstantUploadProblem("tModLoader.NoWorkshopAccess");
 			return false;
 		}
-		
-		// TODO: Localized String missing 
+
+		// TODO: Localized String missing
 		if (state == WorkshopHelper.WorkshopSearchReturnState.RetrievalFailed) {
 			IssueReporter.ReportInstantUploadProblem("TODO: Localized String - Workshop Item is Corrupted; reach out in tML support");
 			return false;
@@ -43,6 +44,11 @@ public partial class WorkshopSocialModule
 
 		// This is a new Mod. "modDownloadItemAsFound" will be null
 		if (state == WorkshopHelper.WorkshopSearchReturnState.NotFound)
+			return false;
+
+		// If it is banned, then it can't be updated. This could be because it was malware or because of DMCA or whatever.
+		// It is imperative to ban malware accounts from further uploads during the 24 hour default ban time to prevent spam.
+		if (modDownloadItemAsFound.Banned)
 			return false;
 
 		currPublishID = ulong.Parse(modDownloadItemAsFound.PublishId.m_ModPubId);
@@ -81,6 +87,12 @@ public partial class WorkshopSocialModule
 		}
 
 		// Checks if Mod is adequate
+
+		// Check if mod is a debug build
+		if (AssemblyManager.IsLoadedModAssemblyDebugBuild(modFile.Name)) {
+			IssueReporter.ReportInstantUploadProblem("tModLoader.ModWasBuiltForDebugging");
+			return false;
+		}
 
 		// Check mod description
 		const string DescriptionFileName = "description.txt";
@@ -155,7 +167,7 @@ public partial class WorkshopSocialModule
 		}
 
 		string name = buildData["displaynameclean"];
-		if (name.Length >= Steamworks.Constants.k_cchPublishedDocumentTitleMax) {
+		if (Encoding.UTF8.GetByteCount(name) >= Steamworks.Constants.k_cchPublishedDocumentTitleMax) {
 			IssueReporter.ReportInstantUploadProblem("tModLoader.TitleLengthExceedLimit");
 			return false;
 		}
@@ -338,9 +350,10 @@ public partial class WorkshopSocialModule
 
 		ModCompile.UpdateSubstitutedDescriptionValues(ref descriptionFinal, buildData["trueversion"], buildData["homepage"]);
 
-		if (descriptionFinal.Length >= Steamworks.Constants.k_cchPublishedDocumentDescriptionMax) {
+		int descriptionByteCount = Encoding.UTF8.GetByteCount(descriptionFinal);
+		if (descriptionByteCount >= Steamworks.Constants.k_cchPublishedDocumentDescriptionMax) {
 			//IssueReporter.ReportInstantUploadProblem("tModLoader.DescriptionLengthExceedLimit");
-			throw new Exception(Language.GetTextValue("tModLoader.DescriptionLengthExceedLimit", Steamworks.Constants.k_cchPublishedDocumentDescriptionMax));
+			throw new Exception(Language.GetTextValue("tModLoader.DescriptionLengthExceedLimit", Steamworks.Constants.k_cchPublishedDocumentDescriptionMax, descriptionByteCount - Steamworks.Constants.k_cchPublishedDocumentDescriptionMax));
 		}
 
 		// If the modder hasn't supplied any change notes, then we will provde some default ones for them
@@ -366,7 +379,7 @@ public partial class WorkshopSocialModule
 		// Folder containing all the current copies of the mod on the workshop
 		Program.LaunchParameters.TryGetValue("-publishedmodfiles", out string publishedModFiles);
 
-		// folder which will be used for the upload when the artifact is downloaded in post-build action. 
+		// folder which will be used for the upload when the artifact is downloaded in post-build action.
 		Program.LaunchParameters.TryGetValue("-uploadfolder", out string uploadFolder);
 
 		// The Folder where we will put all the files that should be included in the build artifact
@@ -450,7 +463,7 @@ public partial class WorkshopSocialModule
 			/// "kvtags":[{"key":"name","value":"ToBeDeleted"},{"key":"Author","value":"Solxan"},{"key":"modside","value":"Both"},{"key":"homepage","value":""},{"key":"modloaderversion","value":"9999.0"},{"key":"version","value":"0.0.0"},{"key":"modreferences","value":""},{"key":"versionsummary","value":"9999.0:0.3.0.13;2023.10.3.0:0.3.0.9;2024.3:0.3.0.11"}]
 			/// "metadata":"{\"hashes\":[\"9999.0|0.3.0.13|\\u0010�L��\\fI\\\"r�����\\\\���n�\",\"9999.0|0.3.0.13|\\u0012%E�Aa�l�A�RdG����m0\"]}"
 
-			// 
+			//
 
 			return null;
 		}

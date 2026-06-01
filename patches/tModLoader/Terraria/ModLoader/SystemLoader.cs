@@ -57,7 +57,7 @@ public static partial class SystemLoader
 		{
 			RuntimeHelpers.RunClassConstructor(type.TypeHandle);
 			foreach (var nestedType in type.GetNestedTypes())
-				RunStaticCtorIfNotAlreadyRun(type);
+				RunStaticCtorIfNotAlreadyRun(nestedType);
 		}
 
 		foreach (var typesToReinitialize in TypesWithResizeArraysAttribute(mod.Code))

@@ -173,7 +173,7 @@
 +	*/
  
 +	/// <summary>
-+	/// Resets all of the data at this position except for the <see cref="WallType"/>, and sets <see cref="TileType"/> to <paramref name="type"/>. 
++	/// Resets all of the data at this position except for the <see cref="WallType"/>, and sets <see cref="TileType"/> to <paramref name="type"/>.
 +	/// </summary>
 +	/// <param name="type">The <see cref="ID.TileID"/> to set this tile to.</param>
  	public void ResetToType(ushort type)

@@ -44,9 +44,9 @@ namespace ExampleMod.Content.NPCs
 		public static LocalizedText GotStompedText { get; private set; }
 
 		public override void SetStaticDefaults() {
-			Main.npcFrameCount[NPC.type] = 6; // make sure to set this for your modnpcs.
+			Main.npcFrameCount[Type] = 6; // make sure to set this for your ModNPCs.
 
-			NPCID.Sets.ShimmerTransformToNPC[NPC.type] = NPCID.ShimmerSlime;
+			NPCID.Sets.ShimmerTransformToNPC[Type] = NPCID.ShimmerSlime;
 
 			// Specify the debuffs it is immune to.
 			// This NPC will be immune to the Poisoned debuff.

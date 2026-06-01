@@ -29,10 +29,10 @@ public sealed class ModPacket : BinaryWriter
 	/// <code>
 	/// // Sends to all connected clients
 	/// packet.Send();
-	/// 
+	///
 	/// // Sends to a specific client only
 	/// packet.Send(toClient: somePlayer.whoAmI);
-	/// 
+	///
 	/// // Sends to all other clients except a specific client
 	/// packet.Send(ignoreClient: somePlayer.whoAmI);
 	/// </code>

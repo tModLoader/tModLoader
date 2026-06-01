@@ -6,7 +6,7 @@ using Terraria.Localization;
 namespace Terraria.ModLoader.Engine;
 
 /// <summary>
-/// This class handles displaying errors that require a OS-provided modal message box. Fatal errors and errors that happen in situations where a suitable place to display an error doesn't exist (such as when initially loading). 
+/// This class handles displaying errors that require a OS-provided modal message box. Fatal errors and errors that happen in situations where a suitable place to display an error doesn't exist (such as when initially loading).
 /// </summary>
 internal class ErrorReporting
 {

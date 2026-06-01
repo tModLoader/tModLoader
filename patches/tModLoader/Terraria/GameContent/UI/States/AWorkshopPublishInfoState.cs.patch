@@ -52,12 +52,10 @@
  	}
  
  	public override void OnInitialize()
-@@ -66,8 +_,7 @@
- 		uIPanel.Width.Set(0f, 1f);
+@@ -67,7 +_,6 @@
  		uIPanel.Height.Set(-num3, 1f);
  		uIPanel.BackgroundColor = new Color(33, 43, 79) * 0.8f;
--		AddBackButton(num, uIElement);
-+		AddBackButton(num, uIElement);	
+ 		AddBackButton(num, uIElement);
 -		AddPublishButton(num, uIElement);
  		int num5 = 6 + num4;
  		UIList uiList = AddUIList(uIPanel, num5);

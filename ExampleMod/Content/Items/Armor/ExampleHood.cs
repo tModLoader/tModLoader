@@ -54,6 +54,9 @@ namespace ExampleMod.Content.Items.Armor
 			else if (exampleArmorSetBonusPlayer.ShadowStyle == 3) {
 				player.armorEffectDrawOutlinesForbidden = true;
 			}
+			else if (exampleArmorSetBonusPlayer.ShadowStyle == 4) {
+				exampleArmorSetBonusPlayer.CustomShadow = true;
+			}
 		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.

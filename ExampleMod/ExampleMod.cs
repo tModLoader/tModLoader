@@ -1,4 +1,3 @@
-using Terraria.GameContent.UI;
 using Terraria.ModLoader;
 
 namespace ExampleMod
@@ -9,11 +8,8 @@ namespace ExampleMod
 	{
 		public const string AssetPath = $"{nameof(ExampleMod)}/Assets/";
 
-		public static int ExampleCustomCurrencyId;
-
 		public override void Load() {
-			// Registers a new custom currency
-			ExampleCustomCurrencyId = CustomCurrencyManager.RegisterCurrency(new Content.Currencies.ExampleCustomCurrency(ModContent.ItemType<Content.Items.ExampleItem>(), 999L, "Mods.ExampleMod.Currencies.ExampleCustomCurrency"));
+			// The Load() method can be used for loading content and assets, but for organization reasons it is recommended that you instead use ModSystem/ModType/ILoadable Load() hooks.
 		}
 
 		public override void Unload() {

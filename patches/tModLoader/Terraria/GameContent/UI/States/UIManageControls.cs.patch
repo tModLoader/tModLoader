@@ -38,15 +38,15 @@
  			"Up",
  			"Down",
  			"Left",
-@@ -313,6 +_,8 @@
- 			"sp19",
+@@ -314,6 +_,8 @@
  			"sp13"
  		};
-+		
-+		OnAssembleBindPanels();
  
++		OnAssembleBindPanels();
++
  		InputMode currentInputMode = InputMode.Keyboard;
  		_bindsKeyboard.Add(CreateBindingGroup(0, bindings, currentInputMode));
+ 		_bindsKeyboard.Add(CreateBindingGroup(1, bindings4, currentInputMode));
 @@ -334,6 +_,8 @@
  		_bindsGamepadUI.Add(CreateBindingGroup(2, bindings3, currentInputMode));
  		_bindsGamepadUI.Add(CreateBindingGroup(3, bindings5, currentInputMode));
@@ -100,7 +100,7 @@
  				}, 1008, color);
  			default:
 +				var tmlResult = HandlePanelCreation(bind, currentInputMode, color);
-+				
++
 +				if (tmlResult != null) {
 +					return tmlResult;
 +				}

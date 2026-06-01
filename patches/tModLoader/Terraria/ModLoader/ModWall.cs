@@ -102,7 +102,7 @@ public abstract class ModWall : ModBlockType
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>
 	/// <param name="randomizeFrame">True if the calling code intends that the frameNumber be randomly changed, such as when placing the wall initially or loading the world, but not when updating due to nearby tile or wall placements</param>
-	/// <param name="style">The style or orientation that will be applied</param>
+	/// <param name="style">The style or orientation that will be applied. Think of this like a bitmask, adding together the neighbors: 0 for no neighbors, 1 for left, 2 for right, 4 for below, and 8 for above. Additional style variety is added for walls with all 4 neighbors to avoid repeating patterns, meaning values from 15 to 19 all correspond to a wall with all 4 neighbors.</param>
 	/// <param name="frameNumber">The random style that will be applied</param>
 	public virtual bool WallFrame(int i, int j, bool randomizeFrame, ref int style, ref int frameNumber)
 	{
@@ -113,5 +113,17 @@ public abstract class ModWall : ModBlockType
 	public virtual bool CanBeTeleportedTo(int i, int j, Player player, string context)
 	{
 		return true;
+	}
+
+	/// <summary>
+	/// Called when this wall has been converted to another wall type via biome conversion. Check <paramref name="fromType"/> and <paramref name="toType"/> to see the wall types the wall changed between. For ModWall, this will be called when converting both to and from the wall. <paramref name="conversionType"/> is a <see cref="BiomeConversionID"/> (or <see cref="ModBiomeConversion.Type"/>).
+	/// </summary>
+	/// <param name="i">The x position in tile coordinates.</param>
+	/// <param name="j">The y position in tile coordinates.</param>
+	/// <param name="fromType">The original wall type</param>
+	/// <param name="toType">The new wall type</param>
+	/// <param name="conversionType">A <see cref="BiomeConversionID"/> (or <see cref="ModBiomeConversion.Type"/>)</param>
+	public virtual void OnWallConverted(int i, int j, int fromType, int toType, int conversionType)
+	{
 	}
 }

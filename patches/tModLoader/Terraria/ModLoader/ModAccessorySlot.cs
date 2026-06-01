@@ -80,7 +80,7 @@ public abstract class ModAccessorySlot : ModType
 	}
 
 	/// <summary>
-	/// Indicates if the corresponding <see cref="FunctionalItem"/> is set to be hidden or not. 
+	/// Indicates if the corresponding <see cref="FunctionalItem"/> is set to be hidden or not.
 	/// <br/><br/> This property always accesses the equipment of the current player, see <see cref="Player"/> for more info.
 	/// </summary>
 	public bool HideVisuals {

@@ -87,7 +87,7 @@ public abstract class TEModdedPylon : ModTileEntity, IPylonTileEntity
 
 		if (PylonLoader.PreCanPlacePylon(x, y, type, pylon.PylonType) is bool value)
 			return value ? 0 : 1;
-		
+
 		return pylon.CanPlacePylon() ? 0 : 1;
 	}
 

@@ -21,7 +21,7 @@ namespace Terraria.GameContent.UI.States;
 
 public class WorkshopPublishInfoStateForMods : AWorkshopPublishInfoState<TmodFile>
 {
-	public const string TmlRules = "https://forums.terraria.org/index.php?threads/player-created-game-enhancements-rules-guidelines.286/";
+	public const string TmlRules = "https://store.steampowered.com/workshopeula/1281930/";
 
 	private readonly NameValueCollection _buildData;
 	protected UIText imageWarningText;
@@ -54,7 +54,11 @@ public class WorkshopPublishInfoStateForMods : AWorkshopPublishInfoState<TmodFil
 			resizedPreviewImage = true;
 		}
 
-		/* if ( SocialAPI.Workshop != null) */
+		if (!SteamedWraps.HasAcceptedTmodWorkshopEula()) {
+			SteamedWraps.ShowWorkshopEula();
+			return;
+		}
+
 		using (_dataObject.Open()) {
 			SocialAPI.Workshop.PublishMod(_dataObject, _buildData, GetPublishSettings());
 		}
@@ -273,7 +277,7 @@ public class WorkshopPublishInfoStateForMods : AWorkshopPublishInfoState<TmodFil
 	internal static unsafe void UpscaleAndSaveImageAsPng(string srcImagePath, string dstImagePath, int dstWidth, int dstHeight)
 	{
 		using var srcStream = File.OpenRead(srcImagePath);
-		Texture2D.TextureDataFromStreamEXT(srcStream, out int srcWidth, out int srcHeight, out byte[] srcBytes); 
+		Texture2D.TextureDataFromStreamEXT(srcStream, out int srcWidth, out int srcHeight, out byte[] srcBytes);
 
 		using var dstStream = File.OpenWrite(dstImagePath);
 		PlatformUtilities.SavePng(dstStream, srcWidth, srcHeight, dstWidth, dstHeight, srcBytes);
