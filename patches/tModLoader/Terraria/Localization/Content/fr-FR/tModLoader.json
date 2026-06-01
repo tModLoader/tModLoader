@@ -189,6 +189,7 @@
 		"WorkshopDisclaimer": "En soumettant cet article, vous acceptez les Conditions d'utilisation de tModLoader",
 		"NonModOwnerPublishWarning": "Un mod portant le nom \"{0}\" a déjà été publié sur le workshop par un autre moddeur. Si vous n’êtes pas un contributeur de ce mod, la tentative de publication échouera. Si ce mod est bien le vôtre, vérifiez que vous êtes connecté au bon compte Steam. Chaque mod doit avoir un nom interne unique.",
 		"SteamPublishingLimit": "Erreur: Seuls les propriétaires de Steam tModLoader peuvent publier sur Workshop dans le jeu.",
+		// "ModWasBuiltForDebugging": "Error: Only 'Release' builds of mods can be uploaded to the workshop. Use the in-game build+reload to quickly get a release build.",
 		"NoWorkshopAccess": "Erreur: Impossible d'accéder à Steam Workshop",
 		"ModAlreadyUploaded": "Erreur: Mod existe déjà sur Workshop!",
 		"ModVersionTooSmall": "Erreur: Les informations sur la version du Mod doivent être incrémentées avant la mise à jour.\n\nThe current version (v{0}) needs to be larger than the version already on the Workshop (v{1}).",

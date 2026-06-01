@@ -1,20 +1,19 @@
 #if NETCORE
-using log4net;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Threading;
-using Terraria.ModLoader.UI;
-using System.Runtime.Loader;
 using System.Runtime.CompilerServices;
-using Terraria.Localization;
-using Microsoft.Xna.Framework;
+using System.Runtime.Loader;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using MonoMod.RuntimeDetour;
+using Terraria.Localization;
+using Terraria.ModLoader.UI;
+using static Terraria.ModLoader.Logging;
 
 namespace Terraria.ModLoader.Core;
 
@@ -295,6 +294,16 @@ public static class AssemblyManager
 	private static ModLoadContext GetLoadContext(string name) => loadedModContexts.TryGetValue(name, out var value) ? value : throw new KeyNotFoundException(name);
 
 	public static IEnumerable<Assembly> GetModAssemblies(string name) => GetLoadContext(name).assemblies.Values;
+
+	public static Assembly GetMainModAssembly(string name) => GetLoadContext(name).assembly;
+
+	public static bool IsLoadedModAssemblyDebugBuild(string name)
+	{
+		var assembly = GetMainModAssembly(name);
+		if (assembly == null) return false;
+
+		return assembly.GetCustomAttributes(false).OfType<DebuggableAttribute>().Any(da => da.IsJITOptimizerDisabled);
+	}
 
 	public static bool GetAssemblyOwner(Assembly assembly, out string modName)
 	{
