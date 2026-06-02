@@ -1186,7 +1186,11 @@ partial class ItemDropDatabase
 
 	private void RegisterHugeDragonEgg()
 	{
-		RegisterToItem(ItemID.PalworldChilletEgg, ItemDropRule.Common(ItemID.PalworldPetChillet));
-		RegisterToItem(ItemID.PalworldChilletEgg, ItemDropRule.Common(ItemID.PalworldPetChilletIgnis));
+		IItemDropRule[] rules = new IItemDropRule[]
+		{
+			ItemDropRule.NotScalingWithLuck(ItemID.PalworldPetChillet, 2),
+			ItemDropRule.NotScalingWithLuck(ItemID.PalworldPetChilletIgnis, 2),
+		};
+		RegisterToItem(ItemID.PalworldChilletEgg, rules);
 	}
 }
