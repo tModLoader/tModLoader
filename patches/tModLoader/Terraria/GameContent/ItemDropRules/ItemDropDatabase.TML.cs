@@ -146,10 +146,10 @@ partial class ItemDropDatabase
 		RegisterToItem(item, ItemDropRule.Common(ItemID.EoCShield));
 		RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.EyeMask, 7));
 		RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.Binoculars, 30));
-		RegisterToItem(item, ItemDropRule.ByCondition(conditionIsCrimson, ItemID.CrimtaneOre, 1, 30, 87));
+		RegisterToItem(item, ItemDropRule.ByCondition(conditionIsCrimson, ItemID.CrimtaneOre, 1, 30, 90));
 		RegisterToItem(item, ItemDropRule.ByCondition(conditionIsCrimson, ItemID.CrimsonSeeds, 1, 1, 3));
-		RegisterToItem(item, ItemDropRule.ByCondition(conditionIsCorruption, ItemID.UnholyArrow, 1, 20, 49));
-		RegisterToItem(item, ItemDropRule.ByCondition(conditionIsCorruption, ItemID.DemoniteOre, 1, 30, 87));
+		RegisterToItem(item, ItemDropRule.ByCondition(conditionIsCorruption, ItemID.UnholyArrow, 1, 20, 50));
+		RegisterToItem(item, ItemDropRule.ByCondition(conditionIsCorruption, ItemID.DemoniteOre, 1, 30, 90));
 		RegisterToItem(item, ItemDropRule.ByCondition(conditionIsCorruption, ItemID.CorruptSeeds, 1, 1, 3));
 		RegisterToItem(item, ItemDropRule.CoinsBasedOnNPCValue(NPCID.EyeofCthulhu));
 
