@@ -57,7 +57,7 @@ namespace ExampleMod.Content.Items.Accessories
 				.Register();
 		}
 
-		public override bool ModifyEquipTextureDraw(ref PlayerDrawSet drawInfo, ref DrawData drawData, EquipType type, int slot, string memberName) {
+		public override bool ModifyEquipTextureDraw(ref PlayerDrawSet drawInfo, ref DrawData drawData, EquipType type, int slot, string methodName) {
 			// Some wings only draw while falling or being used. The ShouldDrawWingsThatAreAlwaysAnimated method can be checked to prevent drawing the wings when standing still or in similar situations.
 			//if (!drawInfo.drawPlayer.ShouldDrawWingsThatAreAlwaysAnimated()) {
 			//	return false; // false prevents drawData from being drawn
