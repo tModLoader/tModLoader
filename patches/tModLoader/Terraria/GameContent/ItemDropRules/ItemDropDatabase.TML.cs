@@ -148,7 +148,7 @@ partial class ItemDropDatabase
 		RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.Binoculars, 30));
 		RegisterToItem(item, ItemDropRule.ByCondition(conditionIsCrimson, ItemID.CrimtaneOre, 1, 30, 90));
 		RegisterToItem(item, ItemDropRule.ByCondition(conditionIsCrimson, ItemID.CrimsonSeeds, 1, 1, 3));
-		RegisterToItem(item, ItemDropRule.ByCondition(conditionIsCorruption, ItemID.UnholyArrow, 1, 20, 50));
+		RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.UnholyArrow, 1, 20, 50));
 		RegisterToItem(item, ItemDropRule.ByCondition(conditionIsCorruption, ItemID.DemoniteOre, 1, 30, 90));
 		RegisterToItem(item, ItemDropRule.ByCondition(conditionIsCorruption, ItemID.CorruptSeeds, 1, 1, 3));
 		RegisterToItem(item, ItemDropRule.CoinsBasedOnNPCValue(NPCID.EyeofCthulhu));
@@ -247,8 +247,8 @@ partial class ItemDropDatabase
 		RegisterToItem(item, ItemDropRule.Common(ItemID.ShrimpyTruffle));
 		RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.DukeFishronMask, 7));
 		RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.FishronWings, 10));
-		RegisterToItem(item, new LeadingConditionRule(new Conditions.NotRemixSeed())).OnSuccess(ItemDropRule.OneFromOptions(1, ItemID.EelWhip, ItemID.Flairon, ItemID.Tsunami, ItemID.RazorbladeTyphoon, ItemID.TempestStaff, ItemID.BubbleGun));
-		RegisterToItem(item, new LeadingConditionRule(new Conditions.RemixSeed())).OnSuccess(ItemDropRule.OneFromOptions(1, ItemID.EelWhip, ItemID.Flairon, ItemID.Tsunami, ItemID.RazorbladeTyphoon, ItemID.TempestStaff, ItemID.AquaScepter));
+		RegisterToItem(item, new LeadingConditionRule(new Conditions.NotRemixSeed())).OnSuccess(ItemDropRule.OneFromOptions(1, ItemID.EelWhip, ItemID.FlaironFlail, ItemID.Tsunami, ItemID.RazorbladeTyphoon, ItemID.TempestStaff, ItemID.BubbleGun));
+		RegisterToItem(item, new LeadingConditionRule(new Conditions.RemixSeed())).OnSuccess(ItemDropRule.OneFromOptions(1, ItemID.EelWhip, ItemID.FlaironFlail, ItemID.Tsunami, ItemID.RazorbladeTyphoon, ItemID.TempestStaff, ItemID.AquaScepter));
 		RegisterToItem(item, ItemDropRule.CoinsBasedOnNPCValue(NPCID.DukeFishron));
 	}
 
@@ -981,7 +981,7 @@ partial class ItemDropDatabase
 		RegisterToItem(ItemID.LockBox, new OneFromRulesRule(1, goldenLockBoxList));
 		RegisterToItem(ItemID.LockBox, ItemDropRule.NotScalingWithLuck(ItemID.ShadowKey, 3));
 		RegisterToItem(ItemID.LockBox, ItemDropRule.NotScalingWithLuck(ItemID.DeadCellsRamRune, 8));
-		RegisterToItem(ItemID.LockBox, ItemDropRule.NotScalingWithLuck(ItemID.MoonLordBody, 5));
+		RegisterToItem(ItemID.LockBox, ItemDropRule.ByCondition(new Conditions.ForTheWorthyIsUp(), ItemID.MoonLordBody, 5));
 	}
 
 	private void RegisterHerbBag()
@@ -1186,11 +1186,6 @@ partial class ItemDropDatabase
 
 	private void RegisterHugeDragonEgg()
 	{
-		IItemDropRule[] rules = new IItemDropRule[]
-		{
-			ItemDropRule.Common(ItemID.PalworldPetChillet),
-			ItemDropRule.Common(ItemID.PalworldPetChilletIgnis),
-		};
-		RegisterToItem(ItemID.PalworldChilletEgg, rules);
+		RegisterToItem(ItemID.PalworldChilletEgg, ItemDropRule.OneFromOptionsNotScalingWithLuck(1, ItemID.PalworldPetChillet, ItemID.PalworldPetChilletIgnis));
 	}
 }
