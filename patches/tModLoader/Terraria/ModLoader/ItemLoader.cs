@@ -1860,7 +1860,7 @@ public static class ItemLoader
 		return retVal ?? false;
 	}
 
-	public static bool ModifyEquipTextureDraw(ref PlayerDrawSet drawInfo, ref DrawData drawData, EquipType type, int slot, [CallerMemberName] string methodName = "")
+	public static void ModifyEquipTextureDraw(ref PlayerDrawSet drawInfo, ref DrawData drawData, EquipType type, int slot, [CallerMemberName] string methodName = "")
 	{
 		// Notes:
 		// Glowmasks not supported yet, but might in future
@@ -1869,13 +1869,19 @@ public static class ItemLoader
 		// Shield, Can be called many times if parrying, but no api support for that yet
 		// Body, called 5 times for each CompositePlayerDrawContext
 
-		if (slot <= 0)
-			return true;
+		if (slot <= 0) {
+			drawInfo.DrawDataCache.Add(drawData);
+			return;
+		}
 
+		// TODO: We can make a GlobalItem hook if requested, it would just need the equip type and slot passed to it rather than EquipTexture for it to work with vanilla equipment.
 		EquipTexture texture = EquipLoader.GetEquipTexture(type, slot);
-		bool? retVal = texture?.ModifyDraw(ref drawInfo, ref drawData, methodName);
+		bool? result = texture?.ModifyDraw(ref drawInfo, ref drawData, methodName);
 
-		return retVal ?? true;
+		if(result ?? true)
+			drawInfo.DrawDataCache.Add(drawData);
+
+		return;
 	}
 
 	private delegate void DelegateUpdate(Item item, ref float gravity, ref float maxFallSpeed);
