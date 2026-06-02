@@ -1183,4 +1183,10 @@ partial class ItemDropDatabase
 		RegisterToItem(ItemID.CapricornLegs, ItemDropRule.Common(ItemID.CapricornTail));
 		RegisterToItem(ItemID.CapricornTail, ItemDropRule.Common(ItemID.CapricornLegs));
 	}
+
+	private void RegisterHugeDragonEgg()
+	{
+		RegisterToItem(ItemID.PalworldChilletEgg, ItemDropRule.Common(ItemID.PalworldPetChillet));
+		RegisterToItem(ItemID.PalworldChilletEgg, ItemDropRule.Common(ItemID.PalworldPetChilletIgnis));
+	}
 }
