@@ -116,7 +116,7 @@ partial class ItemDropDatabase
 		RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.ThornHook, 10));
 		IItemDropRule itemDropRuleGrenadeLauncher = ItemDropRule.Common(ItemID.GrenadeLauncher);
 		itemDropRuleGrenadeLauncher.OnSuccess(ItemDropRule.Common(ItemID.RocketI, 1, 50, 149), hideLootReport: true);
-		RegisterToItem(item, new OneFromRulesRule(1, itemDropRuleGrenadeLauncher, ItemDropRule.Common(ItemID.VenusMagnum), ItemDropRule.Common(ItemID.NettleBurst), ItemDropRule.Common(ItemID.LeafBlower), ItemDropRule.Common(ItemID.FlowerPow), ItemDropRule.Common(ItemID.WaspGun), ItemDropRule.Common(ItemID.Seedler)));
+		RegisterToItem(item, new OneFromRulesRule(1, itemDropRuleGrenadeLauncher, ItemDropRule.Common(ItemID.VenusMagnum), ItemDropRule.Common(ItemID.NettleBurst), ItemDropRule.Common(ItemID.LeafBlower), ItemDropRule.Common(ItemID.FlowerPow), ItemDropRule.Common(ItemID.WaspGun), ItemDropRule.Common(ItemID.Seedler), ItemDropRule.Common(ItemID.FlowerWhip)));
 		RegisterToItem(item, ItemDropRule.CoinsBasedOnNPCValue(NPCID.Plantera));
 
 		item = ItemID.SkeletronPrimeBossBag;
