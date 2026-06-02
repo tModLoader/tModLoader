@@ -1188,8 +1188,8 @@ partial class ItemDropDatabase
 	{
 		IItemDropRule[] rules = new IItemDropRule[]
 		{
-			ItemDropRule.NotScalingWithLuck(ItemID.PalworldPetChillet, 2),
-			ItemDropRule.NotScalingWithLuck(ItemID.PalworldPetChilletIgnis, 2),
+			ItemDropRule.Common(ItemID.PalworldPetChillet),
+			ItemDropRule.Common(ItemID.PalworldPetChilletIgnis),
 		};
 		RegisterToItem(ItemID.PalworldChilletEgg, rules);
 	}
