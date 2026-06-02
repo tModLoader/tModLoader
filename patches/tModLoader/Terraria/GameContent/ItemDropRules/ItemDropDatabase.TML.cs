@@ -980,6 +980,8 @@ partial class ItemDropDatabase
 
 		RegisterToItem(ItemID.LockBox, new OneFromRulesRule(1, goldenLockBoxList));
 		RegisterToItem(ItemID.LockBox, ItemDropRule.NotScalingWithLuck(ItemID.ShadowKey, 3));
+		RegisterToItem(ItemID.LockBox, ItemDropRule.NotScalingWithLuck(ItemID.DeadCellsRamRune, 8));
+		RegisterToItem(ItemID.LockBox, ItemDropRule.NotScalingWithLuck(ItemID.MoonLordBody, 5));
 	}
 
 	private void RegisterHerbBag()
