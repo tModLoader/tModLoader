@@ -30,6 +30,7 @@ public class EquipTexture
 
 	/// <summary>
 	/// The item that is associated with this equipment texture. Null if no item is associated with this.
+	/// <para/> Note that this item is a template item and will not be the same instance as the item in an inventory.
 	/// </summary>
 	public ModItem Item { get; internal set; }
 
@@ -189,7 +190,6 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// </summary>
 	public virtual bool ModifyDraw(ref PlayerDrawSet drawInfo, ref DrawData drawData, string methodName)
 	{
-		// I think an item can only have 1 registered equipslot of a type, could we pass in EquipTexture?
-		return Item?.ModifyEquipTextureDraw(ref drawInfo, ref drawData, Type, Slot, methodName) ?? true;
+		return Item?.ModifyEquipTextureDraw(ref drawInfo, ref drawData, this, methodName) ?? true;
 	}
 }
