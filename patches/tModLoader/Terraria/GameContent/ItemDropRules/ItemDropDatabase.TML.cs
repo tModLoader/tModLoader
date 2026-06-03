@@ -554,6 +554,7 @@ partial class ItemDropDatabase
 		IItemDropRule bc_sky = ItemDropRule.OneFromOptionsNotScalingWithLuck(1, ItemID.LuckyHorseshoe, ItemID.CelestialMagnet, ItemID.Starfury, ItemID.ShinyRedBalloon);
 		IItemDropRule bc_cloud = ItemDropRule.NotScalingWithLuck(ItemID.Cloud, 2, 50, 100);
 		IItemDropRule bc_fledgeWings = ItemDropRule.NotScalingWithLuck(ItemID.CreativeWings, 40, 1, 1);
+		IItemDropRule bc_skymill = ItemDropRule.ByCondition(new Conditions.SkyblockIsUp(), ItemID.SkyMill, 3);
 		IItemDropRule bc_skyPaintings = ItemDropRule.OneFromOptionsNotScalingWithLuck(2, ItemID.HighPitch, ItemID.BlessingfromTheHeavens, ItemID.Constellation,
 			ItemID.SeeTheWorldForWhatItIs, ItemID.LoveisintheTrashSlot, ItemID.SunOrnament); // Sun Ornament == Eye of The Sun
 
@@ -568,6 +569,8 @@ partial class ItemDropDatabase
 
 		IItemDropRule bc_lockbox = ItemDropRule.Common(ItemID.LockBox);
 		IItemDropRule bc_book = ItemDropRule.NotScalingWithLuck(ItemID.Book, 2, 5, 15);
+		IItemDropRule bc_dungeonBricks = new OneFromRulesRule(2, ItemDropRule.Common(ItemID.BlueBrick, 1, 25, 50), ItemDropRule.Common(ItemID.GreenBrick, 1, 25, 50), ItemDropRule.Common(ItemID.PinkBrick, 1, 25, 50));
+		IItemDropRule bc_dungeonPaintings = ItemDropRule.OneFromOptionsNotScalingWithLuck(2, ItemID.GreatWave, ItemID.BoneWarp, ItemID.TheCreationoftheGuide, ItemID.TheCursedMan, ItemID.TheDestroyer, ItemID.PoweredbyBirds, ItemID.TheEyeSeestheEnd, ItemID.RemnantsofDevotion, ItemID.GloryoftheFire, ItemID.GoblinsPlayingPoker, ItemID.BloodMoonRising, ItemID.TheGuardiansGaze, ItemID.TheHangedMan, ItemID.Impact, ItemID.ThePersistencyofEyes, ItemID.Dryadisque, ItemID.TheScreamer, ItemID.SkellingtonJSkellingsworth, ItemID.SparkyPainting, ItemID.SomethingEvilisWatchingYou, ItemID.StarryNight, ItemID.TrioSuperHeroes, ItemID.TheTwinsHaveAwoken, ItemID.UnicornCrossingtheHallows, ItemID.FacingtheCerebralMastermind);
 
 		IItemDropRule ruleSnowballCannonIceBow = ItemDropRule.ByCondition(new Conditions.NotRemixSeed(), ItemID.SnowballCannon);
 		ruleSnowballCannonIceBow.OnFailedConditions(ItemDropRule.NotScalingWithLuck(ItemID.IceBow), hideLootReport: true);
@@ -589,6 +592,7 @@ partial class ItemDropDatabase
 		IItemDropRule bc_bomb = ItemDropRule.NotScalingWithLuck(ItemID.ScarabBomb, 4, 4, 6);
 		IItemDropRule bc_fossil = ItemDropRule.NotScalingWithLuck(ItemID.FossilOre, 4, 10, 16); // sturdy fossil
 		IItemDropRule bc_sandstormBottle = ItemDropRule.NotScalingWithLuck(ItemID.SandstorminaBottle, 35);
+		IItemDropRule bc_undergroundDesertPaintings = ItemDropRule.OneFromOptionsNotScalingWithLuck(2, ItemID.DivineEye, ItemID.WatchfulAntlion, ItemID.BurningSpirit, ItemID.LifeAboveTheSand, ItemID.TheSandsOfSlime, ItemID.BandageBoy, ItemID.JawsOfDeath, ItemID.Oasis, ItemID.PrehistoryPreserved, ItemID.AncientTablet, ItemID.Uluru, ItemID.VisitingThePyramids, ItemID.SnakesIHateSnakes, ItemID.AndrewSphinx);
 
 		IItemDropRule[] bc_lava = new IItemDropRule[]
 		{
@@ -602,12 +606,15 @@ partial class ItemDropDatabase
 		IItemDropRule bc_ornate = ItemDropRule.NotScalingWithLuck(ItemID.OrnateShadowKey, 20);
 		IItemDropRule bc_hellcart = ItemDropRule.NotScalingWithLuck(ItemID.HellMinecart, 20); // Demonic Hellcart
 		IItemDropRule bc_cake = ItemDropRule.NotScalingWithLuck(ItemID.HellCake, 20);
+		IItemDropRule bc_hellforge = ItemDropRule.NotScalingWithLuck(ItemID.Hellforge, 20);
+		IItemDropRule bc_underworldPaintings = ItemDropRule.OneFromOptionsNotScalingWithLuck(2, ItemID.HandEarth, ItemID.Darkness, ItemID.DemonsEye, ItemID.FlowingMagma, ItemID.DarkSoulReaper, ItemID.ImpFace, ItemID.LakeofFire, ItemID.TrappedGhost, ItemID.OminousPresence, ItemID.ShiningMoon, ItemID.Skelehead, ItemID.LivingGore);
 
 		IItemDropRule[] bc_sea = new IItemDropRule[]
 		{
 			ItemDropRule.NotScalingWithLuck(ItemID.WaterWalkingBoots, 10),
 			ItemDropRule.OneFromOptionsNotScalingWithLuck(1, ItemID.BreathingReed, ItemID.FloatingTube, ItemID.Trident, ItemID.Flipper),
 		};
+		IItemDropRule bc_ofseaanddreams = ItemDropRule.NotScalingWithLuck(ItemID.OfSeaAndDreams, 5);
 		IItemDropRule bc_pile = ItemDropRule.NotScalingWithLuck(ItemID.ShellPileBlock, 3, 20, 50);
 		IItemDropRule bc_sharkbait = ItemDropRule.NotScalingWithLuck(ItemID.SharkBait, 10);
 		IItemDropRule bc_sand = ItemDropRule.NotScalingWithLuck(ItemID.SandcastleBucket, 10);
@@ -713,6 +720,7 @@ partial class ItemDropDatabase
 			bc_sky,
 			bc_fledgeWings,
 			bc_cloud,
+			bc_skymill,
 			bc_skyPaintings,
 
 			bc_goldCoin,
@@ -725,6 +733,7 @@ partial class ItemDropDatabase
 			bc_sky,
 			bc_fledgeWings,
 			bc_cloud,
+			bc_skymill,
 			bc_skyPaintings,
 
 			bc_goldCoin,
@@ -790,6 +799,8 @@ partial class ItemDropDatabase
 		IItemDropRule[] dungeon = new IItemDropRule[] {
 			bc_lockbox,
 			bc_book,
+			bc_dungeonBricks,
+			bc_dungeonPaintings,
 
 			bc_goldCoin,
 			new OneFromRulesRule(7, ores),
@@ -799,6 +810,8 @@ partial class ItemDropDatabase
 		IItemDropRule[] stockade = new IItemDropRule[] {
 			bc_lockbox,
 			bc_book,
+			bc_dungeonBricks,
+			bc_dungeonPaintings,
 
 			bc_goldCoin,
 			hardmodeBiomeCrateOres,
@@ -829,6 +842,7 @@ partial class ItemDropDatabase
 			bc_scarab,
 			bc_bomb,
 			bc_sandstormBottle,
+			bc_undergroundDesertPaintings,
 
 			bc_goldCoin,
 			bc_fossil,
@@ -840,6 +854,7 @@ partial class ItemDropDatabase
 			bc_scarab,
 			bc_bomb,
 			bc_sandstormBottle,
+			bc_undergroundDesertPaintings,
 
 			bc_goldCoin,
 			bc_fossil,
@@ -857,13 +872,23 @@ partial class ItemDropDatabase
 			bc_hellcart,
 
 			bc_goldCoin,
-			new OneFromRulesRule(7, ores),
-			new OneFromRulesRule(4, bars),
+			new OneFromRulesRule(7, ItemDropRule.NotScalingWithLuck(ItemID.Hellstone, 1, 20, 35)),
+			new OneFromRulesRule(4, ItemDropRule.NotScalingWithLuck(ItemID.HellstoneBar, 1, 6, 16)),
 			new OneFromRulesRule(4, potions),
 
 			bc_ornate,
 			bc_cake,
+			bc_hellforge,
+			bc_underworldPaintings,
 		};
+		IItemDropRule hardmodeBiomeCrateOres_hellstoneSpecific = ItemDropRule.SequentialRulesNotScalingWithLuck(7,
+			new OneFromRulesRule(2, hardmodeOres),
+			new OneFromRulesRule(1, ItemDropRule.NotScalingWithLuck(ItemID.Hellstone, 1, 20, 35))
+		);
+		IItemDropRule hardmodeBiomeCrateBars_hellstoneSpecific = ItemDropRule.SequentialRulesNotScalingWithLuck(4,
+			new OneFromRulesRule(3, 2, hardmodeBars),
+			new OneFromRulesRule(1, ItemDropRule.NotScalingWithLuck(ItemID.HellstoneBar, 1, 6, 16))
+		);
 		IItemDropRule[] hellstone = new IItemDropRule[] {
 			ItemDropRule.SequentialRulesNotScalingWithLuck(1, bc_lava),
 
@@ -874,12 +899,14 @@ partial class ItemDropDatabase
 			bc_hellcart,
 
 			bc_goldCoin,
-			hardmodeBiomeCrateOres,
-			hardmodeBiomeCrateBars,
+			hardmodeBiomeCrateOres_hellstoneSpecific,
+			hardmodeBiomeCrateBars_hellstoneSpecific,
 			new OneFromRulesRule(4, potions),
 
 			bc_ornate,
 			bc_cake,
+			bc_hellforge,
+			bc_underworldPaintings,
 		};
 		IItemDropRule[] ocean = new IItemDropRule[] {
 			ItemDropRule.SequentialRulesNotScalingWithLuck(1, bc_sea),
@@ -892,6 +919,7 @@ partial class ItemDropDatabase
 
 			bc_pile,
 			bc_sand,
+			bc_ofseaanddreams,
 		};
 		IItemDropRule[] seaside = new IItemDropRule[] {
 			ItemDropRule.SequentialRulesNotScalingWithLuck(1, bc_sea),
@@ -904,6 +932,7 @@ partial class ItemDropDatabase
 
 			bc_pile,
 			bc_sand,
+			bc_ofseaanddreams,
 		};
 
 		RegisterToItem(ItemID.JungleFishingCrate, ItemDropRule.AlwaysAtleastOneSuccess(jungle));
