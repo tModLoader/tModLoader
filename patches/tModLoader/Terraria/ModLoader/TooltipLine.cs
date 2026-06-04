@@ -107,6 +107,7 @@ public class TooltipLine
 	/// <item><description>"BestiaryNotes" - Any bestiary notes, used when hovering items in the bestiary.</description></item>
 	/// <item><description>"SpecialPrice" - Tells the alternate currency price of an item.</description></item>
 	/// <item><description>"Price" - Tells the price of an item.</description></item>
+	/// <item><description>"MissingRequirements" - Tells the crafting requirements not met for crafting this item.</description></item>
 	/// </list>
 	/// </summary>
 	/// <param name="mod">The mod instance</param>

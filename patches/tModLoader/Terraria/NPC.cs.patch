@@ -1409,7 +1409,7 @@
  				num3 *= 0.9f;
  			}
 +
-+			NPCLoader.BuffTownNPC(ref num2, ref defense);
++			NPCLoader.BuffTownNPC(this, ref num2, ref num3, ref defense, ref lifeMax);
  		}
  
  		if (type == 142 && Main.netMode != 1 && !Main.xMas) {
@@ -2076,6 +2076,16 @@
  		DoDeathEvents(closestPlayer);
  		if (SpecialSeedFeatures.Mechdusa) {
  			int num = type;
+@@ -65786,6 +_,9 @@
+ 
+ 		NPCLoot_DropMoney(closestPlayer);
+ 		NPCLoot_DropHeals(closestPlayer);
++
++		// TML: needs to be at the end of NPCLoot to encapsulate every drop within it
++		NPCLoader.blockLoot.Clear();
+ 	}
+ 
+ 	public bool IsNPCValidForBestiaryKillCredit()
 @@ -65830,7 +_,8 @@
  		WoFKilledToday = false;
  	}

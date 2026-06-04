@@ -789,6 +789,22 @@
  				float torchLuck = reader.ReadSingle();
  				byte luckPotion = reader.ReadByte();
  				bool hasGardenGnomeNearby = reader.ReadBoolean();
+@@ -3612,10 +_,15 @@
+ 				if (Main.netMode == 2) {
+ 					short x4 = reader.ReadInt16();
+ 					int y4 = reader.ReadInt16();
++					Item item = ItemIO.Receive(reader);
++					int stack = reader.Read7BitEncodedInt();
++					/*
+ 					int type10 = reader.ReadInt16();
+ 					int prefix2 = reader.ReadByte();
+ 					int stack4 = reader.ReadInt16();
+ 					TEDeadCellsDisplayJar.TryPlacing(x4, y4, type10, prefix2, stack4);
++					*/
++					TEDeadCellsDisplayJar.TryPlacing(x4, y4, item, stack);
+ 				}
+ 				break;
+ 			case 150: {
 @@ -3652,7 +_,10 @@
  					Player player3 = Main.player[num39];
  					Item item2 = player3.inventory[player3.selectedItem];

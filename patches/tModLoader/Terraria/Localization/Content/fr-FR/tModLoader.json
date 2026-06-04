@@ -1183,7 +1183,7 @@
 		// "ModLoader.Items.Zeph_Wings.DisplayName": "Zeph's Wings"
 	},
 	"TownNPCMood": {
-		// "LikeNPC_Princess": "I like {NPCName}.",
-		// "Princess_LovesNPC": "I like {NPCName}."
+		"LikeNPC_Princess": "J'aime bien {NPCName}.",
+		"Princess_LovesNPC": "J'adore {NPCName}."
 	}
 }

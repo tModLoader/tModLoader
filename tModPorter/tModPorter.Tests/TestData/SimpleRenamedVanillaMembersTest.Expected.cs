@@ -63,6 +63,7 @@ public class SimpleRenamedVanillaMembersTest
 		bool isJourney = Main.IsJourneyMode;
 		_ = Main.PipsUseGrid;
 		_ = Main.PipsFastScroll;
+		_ = FocusHelper.AllowGameplayInputs/* tModPorter Suggestion: Also consider FocusHelper.AllowUIInputs, FocusHelper.UpdateVisualEffects, or others */;
 
 		PopupText popupText = PopupText.popupText[0];
 
@@ -72,6 +73,8 @@ public class SimpleRenamedVanillaMembersTest
 #if COMPILE_ERROR
 		Main.musicBox2/* tModPorter Note: Removed. Use Player.musicBox instead */ = 87;
 #endif
+
+		Main.instance.SetIMEPanelAnchor(new Vector2(98f, (float)(Main.screenHeight - 36)), 0f);
 
 		int copperTierOreInt = WorldGen.SavedOreTiers.Copper;
 #if COMPILE_ERROR // ushort -> int
