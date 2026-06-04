@@ -220,6 +220,12 @@ public class RenameRewriter : BaseRewriter {
 			rw.RegisterAction<MethodDeclarationSyntax>(decl, newNode => newNode.WithParameterList(newNode.ParameterList.WithBlockComment(comment)));
 	};
 
+	public static AdditionalRenameAction AddCommentToFieldAccess(string comment) => (rw, node) => {
+		if (node.Parent is not IdentifierNameSyntax nameSyntax || nameSyntax.Parent is not ExpressionSyntax usage)
+			return;
+		rw.RegisterAction<ExpressionSyntax>(usage, newNode => newNode.WithBlockComment(comment));
+	};
+
 	public static AdditionalRenameAction AccessShimmerBuffIDElem() => (rw, node) => {
 		if (node is not { Parent: IdentifierNameSyntax { Parent: ExpressionSyntax { Parent: ElementAccessExpressionSyntax elemAccess} } })
 			return;

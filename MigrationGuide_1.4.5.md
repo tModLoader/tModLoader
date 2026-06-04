@@ -354,6 +354,8 @@ Several Example Mod examples have been updated to adapt to 1.4.5 changes and to 
 
 ### Static Methods
 
+* 💀: `Item.NewItem` methods no longer have the `bool reverseLookup` parameter. Remove it.
+* 🤖: `Main.DrawWindowsIMEPanel` has been split into `Main.DrawIMEPanel` and `Main.SetIMEPanelAnchor`. `DrawIMEPanel` is automatically called each game update, so just replace  `DrawWindowsIMEPanel` calls with `SetIMEPanelAnchor` to customize the panel location.
 * 💀: `Main.GetPlayerArmPosition` now has a `Player` parameter.
 * ⚙️: `RecipeGroup.RegisterGroup` removed. See [RecipeGroup](#recipegroup) for more information.
 * ⚙️: `Utils.PlotTileArea` -> `Utils.FloodFillTile`. No longer returns `bool` and parameters are now `Point point, float maxDist, TileActionAttempt plot` instead of `int x, int y, TileActionAttempt plot`.
@@ -407,6 +409,7 @@ All classes are in the `Terraria` or `Terraria.ID` namespaces unless otherwise i
 * 🤖: `WallID.Sets.Crimson` -> `WallID.Sets.SpreadsCrimson`
 * 🤖: `WallID.Sets.Hallow` -> `WallID.Sets.SpreadsHallow`
 * 🤖: `Main.DisableIntenseVisualEffects` -> `Main.FlashyEffectsWorld`. The new field has the opposite meaning of the old field.
+* 💀: `Main.hasFocus` -> `Terraria.FocusHelper.AllowGameplayInputs`, most likely. Other options include `FocusHelper.AllowUIInputs`, `FocusHelper.UpdateVisualEffects`, and many more. Choose the property that best matches the intention of the code.
 * 🤖: `Main.gameInactive` -> `Terraria.FocusHelper.GameplayActive`. The new field has the opposite meaning of the old field.
 * 🤖: `NPC.killCount` -> `Terraria.GameContent.BannerSystem.killCount`
 * 🤖: `WorldGen.gen` -> `WorldGen.isGeneratingOrLoadingWorld`

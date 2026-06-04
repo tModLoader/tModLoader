@@ -305,6 +305,7 @@ public static partial class Config
 		RenameStaticField("Terraria.ID.WallID.Sets", from: "Hallow", to: "SpreadsHallow");
 		RenameStaticField("Terraria.Main", from: "DisableIntenseVisualEffects", to: "FlashyEffectsWorld").FollowBy(InvertBool);
 		RenameStaticField("Terraria.Main", "gameInactive", "GameplayActive", "Terraria.FocusHelper").FollowBy(InvertBool);
+		RenameStaticField("Terraria.Main", "hasFocus", "AllowGameplayInputs", "Terraria.FocusHelper").FollowBy(AddCommentToFieldAccess("Suggestion: Also consider FocusHelper.AllowUIInputs, FocusHelper.UpdateVisualEffects, or others"));
 		RenameStaticField("Terraria.Main", "LogicCheckScreenHeight", "MaxWorldViewSize.Y");
 		RenameStaticField("Terraria.Main", "LogicCheckScreenWidth", "MaxWorldViewSize.X");
 		RenameStaticField("Terraria.Main", "popupText", "popupText", "Terraria.PopupText");
@@ -342,6 +343,7 @@ public static partial class Config
 		RenameMethod("Terraria.Item", "BannerToItem", "BannerToItem", "Terraria.GameContent.BannerSystem");
 		RenameMethod("Terraria.Item", "BannerToNPC", "BannerToNPC", "Terraria.GameContent.BannerSystem");
 		RenameMethod("Terraria.Item", "NPCtoBanner", "NPCtoBanner", "Terraria.GameContent.BannerSystem");
+		RenameMethod("Terraria.Main", "DrawWindowsIMEPanel", "SetIMEPanelAnchor");
 		RenameMethod("Terraria.Main", "ShouldShowInvisibleWalls", "ShouldShowInvisibleBlocksAndWalls");
 		RenameMethod("Terraria.Player", "IsProjectileInteractibleAndInInteractionRange", "IsProjectileInteractableAndInInteractionRange");
 		RenameMethod("Terraria.Localization.LocalizedText", from: "CanFormatWith", to: "ConditionsMetWith");
