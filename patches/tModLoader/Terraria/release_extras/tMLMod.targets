@@ -1,7 +1,5 @@
-<Project
-	ToolsVersion="14.0"
-	xmlns="http://schemas.microsoft.com/developer/msbuild/2003"
-	InitialTargets="TmlCheckForWarnings"
+<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003"
+	InitialTargets="IncludeModReferences;TmlCheckForWarnings"
 >
 
 	<!-- Set default values for our build config properties -->
@@ -94,13 +92,66 @@
 		<Warning Condition="Exists('/etc/NIXOS') And '$(SteamRunCheck)' != '0'" Text="To debug mods on NixOS, add the 'steam-run' package to your system environment." />
 	</Target>
 
-	<!-- Package the mod after building its code -->
-	<Target Name="BuildMod" AfterTargets="Build" Condition="'$(BuildMod)' == 'true'">
-		<Exec
-			Command="$(BuildLaunch) $(tMLServerPath) -build $(ProjectDir) -eac $(TargetPath) -define &quot;$(DefineConstants)&quot; -unsafe $(AllowUnsafeBlocks) $(ExtraBuildModFlags)"
-			WorkingDirectory="$(tMLSteamPath)"
-			EnvironmentVariables="$(BuildEnvVars)"
-		/>
+	<ItemDefinitionGroup>
+		<ModReference>
+			<Visible>false</Visible>
+		</ModReference>
+	</ItemDefinitionGroup>
+	<UsingTask TaskName="GetTmlVersionSymbol" AssemblyFile="$(tMLLibraryPath)/tModLoader.BuildTasks/1.0.0/tModLoader.BuildTasks.dll" TaskFactory="TaskHostFactory" />
+	<Target Name="AddPreprocessorVersionSymbol" BeforeTargets="CoreCompile">
+		<GetTmlVersionSymbol TmlDllPath="$(tMLSteamPath)$(tMLPath)">
+			<Output TaskParameter="TmlVersionSymbol" PropertyName="TmlVersionSymbol" />
+		</GetTmlVersionSymbol>
+		<PropertyGroup>
+			<DefineConstants>$(DefineConstants);$(TmlVersionSymbol)</DefineConstants>
+		</PropertyGroup>
+	</Target>
+	<Target Name="IncludeModReferences">
+		<Message Text="Adding %(ModReference.Identity) as a reference" />
+
+		<ItemGroup>
+			<Reference Include="%(ModReference.Identity)" Condition="'%(ModReference.ProjectPath)'=='' AND '%(ModReference.HintPath)'!=''" Private="true">
+				<HintPath>%(ModReference.HintPath)</HintPath>
+			</Reference>
+		</ItemGroup>
+
+		<ItemGroup>
+			<ProjectReference Include="%(ModReference.ProjectPath)" Condition="'%(ModReference.ProjectPath)'!=''" Private="true" />
+		</ItemGroup>
+	</Target>
+
+	<UsingTask TaskName="PackageModFile" AssemblyFile="$(tMLLibraryPath)/tModLoader.BuildTasks/1.0.0/tModLoader.BuildTasks.dll" TaskFactory="TaskHostFactory" />
+	<Target Name="Package" AfterTargets="Build">
+		<Message Text="Packaging mod..." />
+
+		<Message Text="Convert mod properties into item group" />
+		<ItemGroup>
+			<ModProperty Include="Version" Value="$(Version)" Condition="$(Version) != ''" />
+			<ModProperty Include="DisplayName" Value="$(DisplayName)" Condition="$(DisplayName) != ''" />
+			<ModProperty Include="Author" Value="$(Author)" Condition="$(Author) != ''" />
+			<ModProperty Include="Homepage" Value="$(Homepage)" Condition="$(Homepage) != ''" />
+			<ModProperty Include="HideResources" Value="$(HideResources)" Condition="$(HideResources) != ''" />
+			<ModProperty Include="IncludeSource" Value="$(IncludeSource)" Condition="$(IncludeSource) != ''" />
+			<ModProperty Include="BuildIgnore" Value="$(BuildIgnore)" Condition="$(BuildIgnore) != ''" />
+			<ModProperty Include="Side" Value="$(Side)" Condition="$(Side) != ''" />
+			<ModProperty Include="SortBefore" Value="$(SortBefore)" Condition="$(SortBefore) != ''" />
+			<ModProperty Include="SortAfter" Value="$(SortAfter)" Condition="$(SortAfter) != ''" />
+			<ModProperty Include="PlayableOnPreview" Value="$(PlayableOnPreview)" Condition="$(PlayableOnPreview) != ''" />
+			<ModProperty Include="TranslationMod" Value="$(TranslationMod)" Condition="$(TranslationMod) != ''" />
+		</ItemGroup>
+
+		<PackageModFile
+				PackageReferences="@(PackageReference)"
+				ProjectReferences="@(_ResolvedProjectReferencePaths)"
+				ModReferences="@(ModReference)"
+				ReferencePaths="@(ReferencePath)"
+				ProjectDirectory="$(MSBuildProjectDirectory)"
+				OutputPath="$(OutputPath)"
+				AssemblyName="$(AssemblyName)"
+				TmlDllPath="$(tMLSteamPath)$(tMLPath)"
+				OutputTmodPath="$(OutputTmodPath)"
+				ModProperties="@(ModProperty)" >
+		</PackageModFile>
 	</Target>
 
 </Project>

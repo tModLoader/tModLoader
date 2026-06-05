@@ -55,8 +55,7 @@ internal class BuildProperties
 	internal Version version = new Version(1, 0);
 	internal string displayName = "";
 	internal bool noCompile = false;
-	internal bool hideCode = false;
-	internal bool hideResources = false;
+	internal bool hideResources = true;
 	internal bool includeSource = false;
 	internal string eacPath = "";
 	// This .tmod was built against a beta release, preventing publishing.
@@ -159,9 +158,6 @@ internal class BuildProperties
 				case "translationMod":
 					properties.translationMod = string.Equals(value, "true", StringComparison.OrdinalIgnoreCase);
 					break;
-				case "hideCode":
-					properties.hideCode = string.Equals(value, "true", StringComparison.OrdinalIgnoreCase);
-					break;
 				case "hideResources":
 					properties.hideResources = string.Equals(value, "true", StringComparison.OrdinalIgnoreCase);
 					break;
@@ -247,9 +243,6 @@ internal class BuildProperties
 				if (translationMod) {
 					writer.Write("translationMod");
 				}
-				if (!hideCode) {
-					writer.Write("!hideCode");
-				}
 				if (!hideResources) {
 					writer.Write("!hideResources");
 				}
@@ -287,8 +280,7 @@ internal class BuildProperties
 	internal static BuildProperties ReadFromStream(Stream stream)
 	{
 		BuildProperties properties = new BuildProperties();
-		// While the intended defaults for these are false, Info will only have !hideCode and !hideResources entries, so this is necessary.
-		properties.hideCode = true;
+		// While the intended defaults for these are false, Info will only have !hideResources entries, so this is necessary.
 		properties.hideResources = true;
 		using (var reader = new BinaryReader(stream)) {
 			for (string tag = reader.ReadString(); tag.Length > 0; tag = reader.ReadString()) {
@@ -330,9 +322,6 @@ internal class BuildProperties
 				}
 				if (tag == "translationMod") {
 					properties.translationMod = true;
-				}
-				if (tag == "!hideCode") {
-					properties.hideCode = false;
 				}
 				if (tag == "!hideResources") {
 					properties.hideResources = false;
@@ -376,8 +365,6 @@ internal class BuildProperties
 			sb.AppendLine($"weakReferences = {string.Join(", ", properties.weakReferences)}");
 		if (properties.noCompile)
 			sb.AppendLine($"noCompile = true");
-		if (properties.hideCode)
-			sb.AppendLine($"hideCode = true");
 		if (properties.hideResources)
 			sb.AppendLine($"hideResources = true");
 		if (properties.includeSource)

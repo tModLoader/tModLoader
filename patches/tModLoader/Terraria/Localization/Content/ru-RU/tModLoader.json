@@ -246,6 +246,7 @@
 		"BuildErrorNoModClass": "Убедитесь, что в вашем проекте мода присутствует только один класс, наследующийся от класса Mod.",
 		"BuildErrorLoadingPrecompiled": "Не удалось загрузить заранее скомпилированную библиотеку {0}",
 		"BuildErrorFailedLoadBuildTxt": "Не удалось загрузить {0}",
+		// "BuildErrorMissingCsproj": "Missing .csproj file. You can create one by clicking the 'Upgrade .csproj file' button in the Mod Sources menu.",
 		"BuildWarningEACWindowsOnly": "Функция 'Edit and Continue' поддерживается только на Windows.",
 		"LoadErrorTextureFailedToLoad": "Не удалось загрузить файл текстуры {0}",
 		"LoadErrorWavSoundFailedToLoad": "Не удалось загрузить wav аудио файл {0}",
@@ -523,6 +524,7 @@
 		"MSUpgradeCSProj": "Обновить .csproj файл",
 		"MSOpenCSProj": "Открыть .csproj",
 		"MSUpgradeLangFiles": "Обновить .lang файлы до .hjson (будут сделаны резервные копии)",
+		// "MSUpgradeBuildTxt": "Move build.txt properties to .csproj",
 		"MSRebuildRequired": "Требуется перекомпиляция",
 		"MSLocalizationFilesChangedCantPublish": "В файлы локализации были внесены изменения,\nперед публикацией необходимо пересобрать мод.",
 		"MSOpenSources": "Открыть исходники",
@@ -581,7 +583,6 @@
 
 		// Extract Mod
 		"ExtractErrorWhileExtractingMod": "Произошла ошибка во время извлечения мода {0}",
-		"ExtractHideCodeMessage": "Разработчик мода решил скрыть исходный код от tModReader.",
 		"ExtractNoSourceCodeMessage": "Разработчик мода решил не предоставлять свой исходный код.",
 		"ExtractHideResourcesMessage": "Разработчик мода решил скрыть ресурсы (т.е. изображения) от tModReader.",
 		"ExtractFileListing": "Список файлов:",

@@ -246,6 +246,7 @@
 		"BuildErrorNoModClass": "Soyez certain d'avoir une classe dans votre Mod.",
 		"BuildErrorLoadingPrecompiled": "Échec du chargement précompilé : {0}",
 		"BuildErrorFailedLoadBuildTxt": "Échec de chargement : {0}",
+		// "BuildErrorMissingCsproj": "Missing .csproj file. You can create one by clicking the 'Upgrade .csproj file' button in the Mod Sources menu.",
 		"BuildWarningEACWindowsOnly": "Modifier et continuer est uniquement supporté avec Windows.",
 		"LoadErrorTextureFailedToLoad": "La texture située en {0} n'a pas chargé correctement",
 		"LoadErrorWavSoundFailedToLoad": "Le dossier de son .wav situé en {0} n'a pas chargé correctement",
@@ -523,6 +524,7 @@
 		"MSUpgradeCSProj": "Mettre à jour le fichier .csproj",
 		// "MSOpenCSProj": "Open .csproj",
 		"MSUpgradeLangFiles": "Mettre à niveau les fichiers .lang à .hjson (non destructif)",
+		// "MSUpgradeBuildTxt": "Move build.txt properties to .csproj",
 		// "MSRebuildRequired": "Rebuild Required",
 		// "MSLocalizationFilesChangedCantPublish": "Changes have been made to localization files,\na rebuild is required prior to publishing",
 		"MSOpenSources": "Dossier des sources",
@@ -581,7 +583,6 @@
 
 		// Extract Mod
 		"ExtractErrorWhileExtractingMod": "Une erreur est apparue en extrayant {0}",
-		"ExtractHideCodeMessage": "Le Moddeur a choisi de cacher son code source de tModReader.",
 		"ExtractNoSourceCodeMessage": "Le Moddeur n'a pas choisi d'inclure son code source.",
 		"ExtractHideResourcesMessage": "Le Moddeur a choisi de cacher ses ressources (ex: images) de tModReader.",
 		"ExtractFileListing": "Dossiers :",
