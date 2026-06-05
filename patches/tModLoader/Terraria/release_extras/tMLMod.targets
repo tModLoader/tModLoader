@@ -121,7 +121,7 @@
 	</Target>
 
 	<UsingTask TaskName="PackageModFile" AssemblyFile="$(tMLLibraryPath)/tModLoader.BuildTasks/1.0.0/tModLoader.BuildTasks.dll" TaskFactory="TaskHostFactory" />
-	<Target Name="Package" AfterTargets="Build">
+	<Target Name="Package" AfterTargets="Build" Condition="'$(BuildMod)' == 'true'">
 		<Message Text="Packaging mod..." />
 
 		<Message Text="Convert mod properties into item group" />
