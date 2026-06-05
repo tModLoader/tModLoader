@@ -92,7 +92,7 @@
 +		then being copied next to the tModLoader.BuildTasks.dll). The .netcoreapp3.1 version of ImageSharp worked when building from Rider or the command line, but failed when building from Visual Studio 
 +		as it uses .NET framework 4.X, so the fix was to force the .netstandard2.0 version. -->
 +		<!-- ImageSharp is not copied to the Libraries/ folder automatically due to PrivateAssets and ExcludeAssets, this is intended. -->
-+		<PackageReference Include="SixLabors.ImageSharp" Version="2.1.6" GeneratePathProperty="true" PrivateAssets="all" ExcludeAssets="all" />
++		<PackageReference Include="SixLabors.ImageSharp" Version="2.1.13" GeneratePathProperty="true" PrivateAssets="all" ExcludeAssets="all" />
  	</ItemGroup>
  
  	<!-- Embedded Resources -->
