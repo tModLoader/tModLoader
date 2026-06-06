@@ -22,9 +22,9 @@
 
 	<PropertyGroup>
 		<!-- Legacy property name for tMLSteamPath -->
-		<TerrariaSteamPath>$(MSBuildThisFileDirectory)</TerrariaSteamPath>
-		<tMLSteamPath>$(MSBuildThisFileDirectory)</tMLSteamPath>
-		<tMLLibraryPath>$(tMLSteamPath)Libraries</tMLLibraryPath>
+		<TerrariaSteamPath Condition="'$(TerrariaSteamPath)' == ''">$(MSBuildThisFileDirectory)</TerrariaSteamPath>
+		<tMLSteamPath Condition="'$(tMLSteamPath)' == ''">$(MSBuildThisFileDirectory)</tMLSteamPath>
+		<tMLLibraryPath Condition="'$(tMLLibraryPath)' == ''">$(tMLSteamPath)Libraries</tMLLibraryPath>
 		<tMLName>tModLoader</tMLName>
 		<tMLPath>$(tMLName).dll</tMLPath>
 		<tMLServerPath>$(tMLPath) -server</tMLServerPath>
