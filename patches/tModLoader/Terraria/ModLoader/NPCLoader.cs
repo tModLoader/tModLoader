@@ -184,6 +184,9 @@ public static class NPCLoader
 				Language.GetOrRegister(fullKey, () => Language.Exists(oldKey) ? $"{{${oldKey}}}" : Language.GetTextValue(defaultValueKey));
 			}
 		}
+		if (NPCID.Sets.IsTownPet[npc.NPC.type]) {
+			Language.GetOrRegister(npc.GetLocalizationKey("TownNPCMood.NoHome"), () => Language.GetTextValue("TownNPCMood.NoHome"));
+		}
 	}
 
 	internal static void Unload()
