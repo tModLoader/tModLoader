@@ -24,7 +24,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - FileUtilities.Copy and Move no longer have an `overwrite` parameter.
 - LegacyAudioSystem now has TrackLoopCounts and PlayCallbacks. They seem to involve counting how many times a specific music has looped. Investigate. Modders might be interested. Used with RainbowBoulderMusicPlayCallback
 - SoundEngine.Initialize now returns the IAudioSystem. We should test if it is still necessary to show an error message for !IsAudioSupported. 1.4.5 change log claims "Terraria no longer fails to launch when it fails to detect an available audio device.", we should see if tModLoader can work without audio support too.
-- Update https://github.com/tModLoader/tModLoader/wiki/Vanilla-Content-IDs#achievement-identifiers with new achievements
 - https://github.com/tModLoader/tModLoader/pull/3500 seems to have changed ItemSourceID.PlayerDropItemCheck to ThrowItem. In 1.4.5 it was renamed to PlayerDrop and there is a new InventoryOverflow. Double check that the #3500 logic applies to the fixed 1.4.5 code. Maybe see if ThrowItem is a better name than PlayerDrop and can be fixed in Terraria, otherwise tModPorter it or double check that it is patched everywhere to use the new names.
 - Also, ItemSourceID.SortingWithNoSpace has been removed.
 - TileLoader.IsTileDangerous (and other methods?) now takes `Main.SceneMetrics.PerspectivePlayer` as input, not necessarily the LocalPlayer. I think this means dangersense should work when spectating. Need docs updates.
