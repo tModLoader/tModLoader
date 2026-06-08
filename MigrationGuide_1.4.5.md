@@ -321,6 +321,7 @@ SilverBarRecipeGroup = RecipeGroup.Register(
   * The "SetBonus" tooltip has changed. It now automatically displays partial sets and adjusts the color to indicate if the set is complete.
   * The "SetBonusSinglePiece" tooltip shows the set bonus that would be applied if the unequipped equipment were equipped.
 * Town NPCs who are homeless have a new "Housing" button that displays their "NoHome" dialogue as well as a hint on what valid housing is. The hint text can be customized through the localization file. If the key `Mods.ModName.NPCs.NPCName.HousingText.HousingRequirements` exists, it will automatically be used over the default text.
+  * The `Mods.{ModName}.NPCs.{ModNPCName}.TownNPCMood.NoHome` localization key will now be generated for town pets as well.
 * Town NPCs can now have specific happiness dialogue for other Town NPCs or biomes that work just like the previous `LikeNPC_Princess` and `Princess_LovesNPC`.
   * For Mod NPCs, the localization keys are scoped in `Mods.{ModName}.NPCs.{ModNPCName}.TownNPCMood`
     * `{AffectionLevel}NPC_{OtherNPCInternalName}` For specific dialogue for talking about other NPC. Other loved NPCs will use the generic `{AffectionLevel}NPC`.
