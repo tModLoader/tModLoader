@@ -24,12 +24,8 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - FileUtilities.Copy and Move no longer have an `overwrite` parameter.
 - LegacyAudioSystem now has TrackLoopCounts and PlayCallbacks. They seem to involve counting how many times a specific music has looped. Investigate. Modders might be interested. Used with RainbowBoulderMusicPlayCallback
 - SoundEngine.Initialize now returns the IAudioSystem. We should test if it is still necessary to show an error message for !IsAudioSupported. 1.4.5 change log claims "Terraria no longer fails to launch when it fails to detect an available audio device.", we should see if tModLoader can work without audio support too.
-- Update https://github.com/tModLoader/tModLoader/wiki/Vanilla-Content-IDs#achievement-identifiers with new achievements
 - https://github.com/tModLoader/tModLoader/pull/3500 seems to have changed ItemSourceID.PlayerDropItemCheck to ThrowItem. In 1.4.5 it was renamed to PlayerDrop and there is a new InventoryOverflow. Double check that the #3500 logic applies to the fixed 1.4.5 code. Maybe see if ThrowItem is a better name than PlayerDrop and can be fixed in Terraria, otherwise tModPorter it or double check that it is patched everywhere to use the new names.
 - Also, ItemSourceID.SortingWithNoSpace has been removed.
-- TileLoader.IsTileDangerous (and other methods?) now takes `Main.SceneMetrics.PerspectivePlayer` as input, not necessarily the LocalPlayer. I think this means dangersense should work when spectating. Need docs updates.
-- TileLoader.IsTileSpelunkable also takes `Main.SceneMetrics.PerspectivePlayer`. These hooks now need a Player parameter, they don't currently have one.
-- TileLoader.IsTileBiomeSightable as well.
 - TileLoader.SpecialDraw (and other tile methods I assume) now takes a TileBatch instead of Main.spriteBatch. What does this affect? How will mods need to change? Why do some methods in TileDrawing still use Main.spriteBatch?
 - ShaderData classes now have `if (Main.dedServ)` checks. Are these overzealous, or do we need to adjust other places or inform modders that shader code might attempt to run on servers.
 - Player.voiceOverride. Currently an sbyte, might need to be an int like the other equipment slot IDs. Also an example would be nice.
@@ -64,7 +60,12 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - BiomeConversionID.PurificationPowder (8) and Chlorophyte (9) might not match up with Terraria-added values. Need to double check where these were used against the new ID values. Chlorophyte is now either 8/9/10 and PurificationPowder is 11.
 - Lange.CreateDialogFilter now has a checkConditions parameter. It seems that there is a new system for object substitutions. We'll need to document these and make sure they work for modded substitutions. LocalizedText.CanFormatWith usages seem to be replaced with ConditionsMetWith. Some Language.GetTextValueWith usages changed to GetTextValue but still somehow support substitutions.
 - Should PlayerLoader.SyncPlayer in SyncOnePlayer be after syncing owner Projectiles?
-- ItemID.ItemSpawnDecaySpeed gone. IsBasicFish added. IsQuestFish added (adjust ModItem.IsQuestFish?)
+- ItemID.ItemSpawnDecaySpeed gone.
+- Vanilla Fishing drops are now declarative
+  - Mods should be encouraged to use the new system, so new fishing features work.
+    - "Fish now appear visually in the water while you are fishing" - (FishDropsDB.GetDisplayableDrops)
+	- The fish you are catching is drawn (FishingCheck_RollItemDrop)
+  - Is there any use for ModPlayer.CatchFish once mods are using the new system? It would need to be moved into FishingCheck_RollItemDrop to work with the new systems.
 - TELeashedEntityAnchorWithItem (used by TECritterAnchor and TEKiteAnchor) will need to be updated to support modded items.
   - We'll likely need an ExampleKite.
   - TECritterAnchor will probably require more changes as well.
@@ -154,7 +155,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 # New Fields that might need more documentation
 
 - UIElement.PassThroughMouseInteraction --> What does it do? How does it differ from IgnoresMouseInteraction?
-- FishingAttempt.junk added --> How does this change things?
 - TileEntity.RequiresUpdates (and static List<TileEntity> UpdateEntities) added -> Do all mods need to update their TEs? What is the default? What are Add and Remove methods? ModTileEntity will likely require updates.
 - TileEntity.Read now has a gameversion parameter. For modded tiles, I don't think this affects anything. Vanilla TEs have updated save and load code, need to verify poses and other changes work with modded items.
 - UserInterface.MouseCaptured -> could be useful
@@ -208,7 +208,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 
 - TileID.Sets.WallsMergeWith usages in Framing.WallFrame changed to newly added TileID.Sets.TruncatesWalls (TODO: New set contains several new vanilla tiles, does that make sense? tModPorter?)
 - ItemVariants.EverythingWorld renamed to MechdusaWorld
-- Player.GetItem no longer has plr parameter
 - Main.GameModeInfo.IsJourneyMode -> Main.IsJourneyMode
 - Item.SetDefaults() -> Item.SetDefaults(0)
 - Item.SetDefaults(int, bool) -> Item.SetDefaults(int)

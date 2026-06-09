@@ -369,6 +369,7 @@ public static partial class Config
 		RefactorStaticMethodCall("Terraria.RecipeGroup", "RegisterGroup", Removed("Replace this and \"new RecipeGroup()\" with RecipeGroup.Register"));
 
 		RefactorInstanceMethodCall("Terraria.Item", "SetDefaults", RemoveParameter(1, "noMatCheck", "bool"));
+		RefactorInstanceMethodCall("Terraria.Player", "GetItem", RemoveParameter(0, "plr", "int"));
 		RefactorInstanceMethodCall("Terraria.Tile", "water", GetterSetterToProperty("LiquidType", "Terraria.ID.LiquidID", "Water"));
 		RefactorInstanceMethodCall("Terraria.Tile", "anyWater", GetterToProperty("HasWater"));
 		RefactorInstanceMethodCall("Terraria.Tile", "anyLava", GetterToProperty("HasLava"));

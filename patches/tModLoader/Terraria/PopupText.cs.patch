@@ -163,7 +163,7 @@
  
 +	/// <summary>
 +	/// Destroys the <see cref="PopupText"/> in <see cref="PopupText.popupText"/> at the index <see cref="sonarText"/> if that text has <see cref="sonar"/> set to <see langword="true"/>.
-+	/// <para/> Note that multiple fishing lures is a common feature of many popular mods, so this method won't clear all PopupText in that situation because only 1 index is tracked. The Projectile.localAI[2] of a bobber projectile is used to store the index of its sonar PopupText. That stored value is offset by +1.
++	/// <para/> Note that multiple fishing lures is a common feature of many popular mods, so this method won't clear all PopupText in that situation because only 1 index is tracked. The Projectile.ai[2] of a bobber projectile is used to store the index of its sonar PopupText. That stored value is offset by +1.
 +	/// </summary>
  	public static void ClearSonarText()
  	{

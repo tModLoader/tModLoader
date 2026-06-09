@@ -452,26 +452,30 @@
  				if (Main.IsLiquidStyleWater(i) && Main.liquidAlpha[i] > 0f && i != num2) {
  					DrawPartialLiquid(!solidLayer, tileCache, ref position, ref liquidSize, i, ref vertices);
  					flag7 = true;
-@@ -3922,7 +_,8 @@
+@@ -3922,20 +_,25 @@
  		}
  	}
  
 -	private static bool IsTileDangerous(Player localPlayer, Tile tileCache, ushort typeCache)
 +	//TML: Added x/y for hook compatibility, made internal. Public variant in partial TML class
-+	internal static bool IsTileDangerous(int tileX, int tileY, Player localPlayer, Tile tileCache, ushort typeCache)
++	internal static bool IsTileDangerous(int tileX, int tileY, Player perspectivePlayer, Tile tileCache, ushort typeCache)
  	{
  		bool flag = false || typeCache == 135 || typeCache == 137 || TileID.Sets.Boulders[typeCache] || typeCache == 141 || typeCache == 210 || typeCache == 442 || typeCache == 443 || typeCache == 444 || typeCache == 411 || typeCache == 485 || typeCache == 85 || typeCache == 654 || (typeCache == 314 && Minecart.IsPressurePlate(tileCache));
  		flag |= Main.getGoodWorld && typeCache == 230;
-@@ -3932,10 +_,14 @@
- 			if (!localPlayer.fireWalk)
+ 		flag |= Main.dontStarveWorld && typeCache == 80;
+ 		if (tileCache.slope() == 0 && !tileCache.inActive()) {
+ 			flag = flag || (typeCache >= 0 && TileID.Sets.TouchDamageImmediate[typeCache] > 0) || typeCache == 483 || typeCache == 482 || typeCache == 481 || typeCache == 51 || typeCache == 229;
+-			if (!localPlayer.fireWalk)
++			if (!perspectivePlayer.fireWalk)
  				flag = flag || (typeCache >= 0 && TileID.Sets.TouchDamageHot[typeCache]);
  
 +			// Extra patch context.
- 			if (!localPlayer.iceSkate)
+-			if (!localPlayer.iceSkate)
++			if (!perspectivePlayer.iceSkate)
  				flag = flag || typeCache == 162;
  		}
  
-+		if (TileLoader.IsTileDangerous(tileX, tileY, typeCache, localPlayer) is bool modded)
++		if (TileLoader.IsTileDangerous(tileX, tileY, typeCache, perspectivePlayer) is bool modded)
 +			return modded;
 +
  		return flag;

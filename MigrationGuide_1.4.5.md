@@ -366,6 +366,7 @@ See ExampleWhip, ExampleWhipAdvanced, ExampleWhipProjectile, and ExampleWhipProj
   * The "SetBonus" tooltip has changed. It now automatically displays partial sets and adjusts the color to indicate if the set is complete.
   * The "SetBonusSinglePiece" tooltip shows the set bonus that would be applied if the unequipped equipment were equipped.
 * Town NPCs who are homeless have a new "Housing" button that displays their "NoHome" dialogue as well as a hint on what valid housing is. The hint text can be customized through the localization file. If the key `Mods.ModName.NPCs.NPCName.HousingText.HousingRequirements` exists, it will automatically be used over the default text.
+  * The `Mods.{ModName}.NPCs.{ModNPCName}.TownNPCMood.NoHome` localization key will now be generated for town pets as well.
 * Town NPCs can now have specific happiness dialogue for other Town NPCs or biomes that work just like the previous `LikeNPC_Princess` and `Princess_LovesNPC`.
   * For Mod NPCs, the localization keys are scoped in `Mods.{ModName}.NPCs.{ModNPCName}.TownNPCMood`
     * `{AffectionLevel}NPC_{OtherNPCInternalName}` For specific dialogue for talking about other NPC. Other loved NPCs will use the generic `{AffectionLevel}NPC`.
@@ -383,6 +384,8 @@ See ExampleWhip, ExampleWhipAdvanced, ExampleWhipProjectile, and ExampleWhipProj
   * Caveat for the Zoologist: She has two sets of happiness dialogue. A normal one and one for when she is transformed.
     * In the ModNPC, add Transformed beforehand: `Transformed.BestiaryGirl_{AffectionLevel}NPC`
 	* For vanilla NPCs talking about vanilla NPCs, use BestiaryGirlTransformed: `TownNPCMood_BeastiaryGirlTransformed.{AffectionLevel}NPC_{OtherNPCInternalName}`
+* `Item.maxStack` now defaults to `Item.CommonMaxStack` (9999) now instead of 1.
+* `FishingAttempt.junk` now exists.
 * `NPCID.Sets.ImmuneToAllBuffs` was removed. Continue to use `NPCID.Sets.ImmuneToRegularBuffs` and if immunity to tags effects and tag buffs is desired, additionally set the new `NPCID.Sets.ImmuneToWhipTags`.
 
 ### Example Mod
@@ -488,6 +491,7 @@ All classes are in the `Terraria` or `Terraria.ID` namespaces unless otherwise i
 * 🤖: `Main.ShouldShowInvisibleWalls` -> `Main.ShouldShowInvisibleBlocksAndWalls`
 * 🤖: `NPC.ShouldBestiaryGirlBeLycantrope` now static.
 * ⚙️: `NPC.SpawnWithHigherTime` removed. No longer used.
+* 🤖: `Player.GetItem` changed. The `plr` parameter has been removed.
 * 🤖: `Player.IsProjectileInteractibleAndInInteractionRange` -> `Player.IsProjectileInteractableAndInInteractionRange`
 * ⚙️: `Player.CheckForGoodTeleportationSpot` removed. Use `Utils.CheckForGoodTeleportationSpot` instead.
 * 💀: `Player.DropItems` now has a `gemsOnly` parameter indicating a softcore or creative player that should only drop large gems.
@@ -537,3 +541,4 @@ All classes are in the `Terraria.ModLoader` or `Terraria` namespaces unless othe
 * ⚙️: `ModNPC.SetChatButtons` has been removed and replaced with `RegisterChatButtons(NPCInteractionList interactions)`
 * ⚙️: `ModNPC.OnChatButtonClicked` changed parameters. `(bool firstButton, ref string shop)` -> `(NPCInteraction interaction)`
 * ⚙️: `GlobalNPC.OnChatButtonClicked` and `GlobalNPC.PreChatButtonClicked` changed parameters. `(NPC npc, bool firstButton)` -> `(NPC npc, NPCInteraction interaction)`
+* ⚙️: `ModItem.IsQuestFish` has been removed. Use `ItemID.Sets.IsQuestFish` instead.

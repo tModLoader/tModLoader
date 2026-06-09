@@ -115,10 +115,6 @@ public static class ItemLoader
 
 		if (unloading)
 			Array.Resize(ref Main.anglerQuestItemNetIDs, vanillaQuestFishCount);
-		else
-			Main.anglerQuestItemNetIDs = Main.anglerQuestItemNetIDs
-				.Concat(items.Where(modItem => modItem.IsQuestFish()).Select(modItem => modItem.Type))
-				.ToArray();
 	}
 
 	internal static void FinishSetup()
@@ -134,6 +130,10 @@ public static class ItemLoader
 		}
 
 		ValidateDropsSet();
+
+		Main.anglerQuestItemNetIDs = Main.anglerQuestItemNetIDs
+				.Concat(items.Where(modItem => ItemID.Sets.IsQuestFish[modItem.Type]).Select(modItem => modItem.Type))
+				.ToArray();
 	}
 
 	private static void UpdateHookLists()
