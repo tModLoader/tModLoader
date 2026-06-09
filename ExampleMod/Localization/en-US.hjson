@@ -1289,6 +1289,11 @@ Mods: {
 				DisplayName: Example Gemspark Block
 				Tooltip: ""
 			}
+
+			ExampleBasicFish: {
+				DisplayName: Example Basic Fish
+				Tooltip: ""
+			}
 		}
 
 		# Projectile display names mainly show in chat when a player dies from it.

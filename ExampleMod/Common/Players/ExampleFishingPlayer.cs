@@ -1,4 +1,5 @@
 ﻿using ExampleMod.Content.Biomes;
+using ExampleMod.Content.Items;
 using ExampleMod.Content.Items.Tools;
 using ExampleMod.Content.NPCs;
 using Microsoft.Xna.Framework;
@@ -71,6 +72,12 @@ namespace ExampleMod.Common.Players
 					itemDrop = ModContent.ItemType<Content.Items.Consumables.ExampleFishingCrate>();
 					return; // This is important so your code after this that rolls items will not run
 				}
+			}
+
+			if (inWater && inExampleSurfaceBiome && attempt.common && Main.rand.NextBool()) {
+				// Add the ExampleBasicFish as a common catch in Example Surface Biome.
+				itemDrop = ModContent.ItemType<ExampleBasicFish>();
+				return; // This is important so your code after this that rolls items will not run
 			}
 
 			// Here we will set the catch conditions for our ExampleQuestFish

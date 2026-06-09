@@ -596,6 +596,7 @@ public static partial class Config
 		HookRemoved("Terraria.ModLoader.ModNPC", "SetChatButtons", "Chat buttons are now set in RegisterChatButtons");
 		HookRemoved("Terraria.ModLoader.ModPylon", "ValidTeleportCheck_AnyDanger", "Pylons no longer check danger for teleportation");
 		HookRemoved("Terraria.ModLoader.GlobalPylon", "ValidTeleportCheck_PreAnyDanger", "Pylons no longer check danger for teleportation");
+		HookRemoved("Terraria.ModLoader.ModItem", "IsQuestFish", "Set with ItemID.Sets.IsQuestFish instead");
 
 		RefactorInstanceMember("Terraria.DataStructures.PlayerDrawSet", "heldProjOverHand", Removed("Automatically applied via Projectile.drawLayer value"));
 		RefactorInstanceMember("Terraria.ModLoader.ModProjectile", "DrawHeldProjInFrontOfHeldItemAndArms", Removed("Replace with Projectile.drawLayer = ProjectileDrawLayerID.HeldProjOverHand;"));

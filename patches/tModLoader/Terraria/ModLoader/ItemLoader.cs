@@ -117,7 +117,7 @@ public static class ItemLoader
 			Array.Resize(ref Main.anglerQuestItemNetIDs, vanillaQuestFishCount);
 		else
 			Main.anglerQuestItemNetIDs = Main.anglerQuestItemNetIDs
-				.Concat(items.Where(modItem => modItem.IsQuestFish()).Select(modItem => modItem.Type))
+				.Concat(items.Where(modItem => ItemID.Sets.IsQuestFish[modItem.Type]).Select(modItem => modItem.Type))
 				.ToArray();
 	}
 

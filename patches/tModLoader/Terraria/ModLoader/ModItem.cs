@@ -1379,14 +1379,6 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	}
 
 	/// <summary>
-	/// Whether or not the Angler can ever randomly request this type of item for his daily quest. Returns false by default.
-	/// </summary>
-	public virtual bool IsQuestFish()
-	{
-		return false;
-	}
-
-	/// <summary>
 	/// Whether or not specific conditions have been satisfied for the Angler to be able to request this item. (For example, Hardmode.) Returns true by default.
 	/// <para/> Called in single player or on the server only.
 	/// </summary>

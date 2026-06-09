@@ -13,6 +13,7 @@ namespace ExampleMod.Content.Items
 		public override void SetStaticDefaults() {
 			Item.ResearchUnlockCount = 2;
 			ItemID.Sets.CanBePlacedOnWeaponRacks[Type] = true; // All vanilla fish can be placed in a weapon rack.
+			ItemID.Sets.IsQuestFish[Type] = true; // Denotes this item as a quest fish. Use IsBasicFish instead for non-quest fish.
 
 			DescriptionText = this.GetLocalization("Description");
 			CatchLocationText = this.GetLocalization("CatchLocation");
@@ -25,8 +26,6 @@ namespace ExampleMod.Content.Items
 			Item.DefaultToQuestFish();
 		}
 
-		public override bool IsQuestFish() => true; // Makes the item a quest fish
-
 		public override bool IsAnglerQuestAvailable() => Main.hardMode; // Makes the quest only appear in hard mode. Adding a '!' before Main.hardMode makes it ONLY available in pre-hardmode.
 
 		public override void AnglerQuestChat(ref string description, ref string catchLocation) {
@@ -35,5 +34,7 @@ namespace ExampleMod.Content.Items
 			// What it says on the bottom of the angler's text box of how to catch the fish.
 			catchLocation = CatchLocationText.Value;
 		}
+
+		// The catch location is defined in ExampleMod/Common/Players/ExampleFishingPlayer
 	}
 }
