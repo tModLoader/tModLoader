@@ -18,6 +18,19 @@ namespace ExampleMod.Content.Items
 			Item.value = Item.sellPrice(silver: 5);
 		}
 
+		public override void AddRecipes() {
+			// Here is an example of creating a recipe for a different item and using this item as an ingredient.
+			// See ExampleRecipes.cs for more information about recipes.
+			Recipe.Create(ItemID.BlackenedFish)
+				.AddIngredient(Type) // Type is the item ID of the this item. In this case, it is the same thing as doing .AddIngredient(ModContent.ItemType<ExampleBasicFish>()) or .AddIngredient<ExampleBasicFish>()
+				.AddTile(TileID.Campfire)
+				.Register();
+			Recipe.Create(ItemID.CookedFish)
+				.AddIngredient(Type)
+				.AddTile(TileID.CookingPots)
+				.Register();
+		}
+
 		// The catch location is defined in ExampleMod/Common/Players/ExampleFishingPlayer
 	}
 }
