@@ -339,6 +339,8 @@ SilverBarRecipeGroup = RecipeGroup.Register(
   * Caveat for the Zoologist: She has two sets of happiness dialogue. A normal one and one for when she is transformed.
     * In the ModNPC, add Transformed beforehand: `Transformed.BestiaryGirl_{AffectionLevel}NPC`
 	* For vanilla NPCs talking about vanilla NPCs, use BestiaryGirlTransformed: `TownNPCMood_BeastiaryGirlTransformed.{AffectionLevel}NPC_{OtherNPCInternalName}`
+* `Item.maxStack` now defaults to `Item.CommonMaxStack` (9999) now instead of 1.
+* `FishingAttempt.junk` now exists.
 
 ### Example Mod
 

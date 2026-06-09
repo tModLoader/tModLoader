@@ -5,6 +5,8 @@ using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items
 {
+	// This is an example of a quest fish. See ExampleBasicFish for the non-quest fish example.
+	// Note that the catch conditions and logic is defined in ExampleMod/Common/Players/ExampleFishingPlayer.
 	public class ExampleQuestFish : ModItem
 	{
 		public static LocalizedText DescriptionText { get; private set; }
@@ -34,7 +36,5 @@ namespace ExampleMod.Content.Items
 			// What it says on the bottom of the angler's text box of how to catch the fish.
 			catchLocation = CatchLocationText.Value;
 		}
-
-		// The catch location is defined in ExampleMod/Common/Players/ExampleFishingPlayer
 	}
 }

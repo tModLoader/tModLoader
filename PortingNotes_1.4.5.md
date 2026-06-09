@@ -61,6 +61,11 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Lange.CreateDialogFilter now has a checkConditions parameter. It seems that there is a new system for object substitutions. We'll need to document these and make sure they work for modded substitutions. LocalizedText.CanFormatWith usages seem to be replaced with ConditionsMetWith. Some Language.GetTextValueWith usages changed to GetTextValue but still somehow support substitutions.
 - Should PlayerLoader.SyncPlayer in SyncOnePlayer be after syncing owner Projectiles?
 - ItemID.ItemSpawnDecaySpeed gone.
+- Vanilla Fishing drops are now declarative
+  - Mods should be encouraged to use the new system, so new fishing features work.
+    - "Fish now appear visually in the water while you are fishing" - (FishDropsDB.GetDisplayableDrops)
+	- The fish you are catching is drawn (FishingCheck_RollItemDrop)
+  - Is there any use for ModPlayer.CatchFish once mods are using the new system? It would need to be moved into FishingCheck_RollItemDrop to work with the new systems.
 - TELeashedEntityAnchorWithItem (used by TECritterAnchor and TEKiteAnchor) will need to be updated to support modded items.
   - We'll likely need an ExampleKite.
   - TECritterAnchor will probably require more changes as well.
