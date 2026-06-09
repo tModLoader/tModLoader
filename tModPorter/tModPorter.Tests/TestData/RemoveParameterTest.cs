@@ -12,5 +12,10 @@ public class RemoveParameterTest
 		item.SetDefaults(5, variant: null, noMatCheck: false);
 		item.SetDefaults(6, Main.rand.NextBool() ? false : true);
 		item.SetDefaults(7, variant: null, noMatCheck: Main.rand.NextBool() ? false : true);
+
+		Player player = Main.LocalPlayer;
+		player.GetItem(0, item, GetItemSettings.PickupItemFromWorld);
+		player.GetItem(Main.myPlayer, item, GetItemSettings.PickupItemFromWorld);
+		player.GetItem(plr: 0, newItem: item, settings: GetItemSettings.PickupItemFromWorld);
 	}
 }
