@@ -60,7 +60,12 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - BiomeConversionID.PurificationPowder (8) and Chlorophyte (9) might not match up with Terraria-added values. Need to double check where these were used against the new ID values. Chlorophyte is now either 8/9/10 and PurificationPowder is 11.
 - Lange.CreateDialogFilter now has a checkConditions parameter. It seems that there is a new system for object substitutions. We'll need to document these and make sure they work for modded substitutions. LocalizedText.CanFormatWith usages seem to be replaced with ConditionsMetWith. Some Language.GetTextValueWith usages changed to GetTextValue but still somehow support substitutions.
 - Should PlayerLoader.SyncPlayer in SyncOnePlayer be after syncing owner Projectiles?
-- ItemID.ItemSpawnDecaySpeed gone. IsBasicFish added. IsQuestFish added (adjust ModItem.IsQuestFish?)
+- ItemID.ItemSpawnDecaySpeed gone.
+- Vanilla Fishing drops are now declarative
+  - Mods should be encouraged to use the new system, so new fishing features work.
+    - "Fish now appear visually in the water while you are fishing" - (FishDropsDB.GetDisplayableDrops)
+	- The fish you are catching is drawn (FishingCheck_RollItemDrop)
+  - Is there any use for ModPlayer.CatchFish once mods are using the new system? It would need to be moved into FishingCheck_RollItemDrop to work with the new systems.
 - TELeashedEntityAnchorWithItem (used by TECritterAnchor and TEKiteAnchor) will need to be updated to support modded items.
   - We'll likely need an ExampleKite.
   - TECritterAnchor will probably require more changes as well.
@@ -151,7 +156,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 # New Fields that might need more documentation
 
 - UIElement.PassThroughMouseInteraction --> What does it do? How does it differ from IgnoresMouseInteraction?
-- FishingAttempt.junk added --> How does this change things?
 - TileEntity.RequiresUpdates (and static List<TileEntity> UpdateEntities) added -> Do all mods need to update their TEs? What is the default? What are Add and Remove methods? ModTileEntity will likely require updates.
 - TileEntity.Read now has a gameversion parameter. For modded tiles, I don't think this affects anything. Vanilla TEs have updated save and load code, need to verify poses and other changes work with modded items.
 - UserInterface.MouseCaptured -> could be useful

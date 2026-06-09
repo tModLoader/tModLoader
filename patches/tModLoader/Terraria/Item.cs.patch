@@ -302,7 +302,7 @@
 +
 +	/// <summary>
 +	/// The maximum number of items that can be contained within a single stack. <see cref="stack"/> indicates the current stack size.
-+	/// <br/> Defaults to 1.
++	/// <br/> Defaults to <see cref="Item.CommonMaxStack"/> which is 9999.
 +	/// </summary>
  	public int maxStack;
 +
@@ -1202,7 +1202,7 @@
  				useStyle = 5;
  				autoReuse = true;
  				useAnimation = 30;
-@@ -27228,6 +_,17 @@
+@@ -27228,6 +_,16 @@
  			value = 200;
  	}
  
@@ -1210,7 +1210,6 @@
 +	/// This method sets a variety of Item values common to quest fish items.<br/>
 +	/// Specifically:<code>
 +	/// questItem = true;
-+	///	maxStack = 1;
 +	///	width = 26;
 +	///	height = 26;
 +	///	uniqueStack = true;
@@ -1237,7 +1236,7 @@
  				useStyle = 5;
  				useAnimation = 25;
  				useTime = 3;
-@@ -34949,6 +_,26 @@
+@@ -34949,6 +_,25 @@
  		}
  	}
  
@@ -1249,7 +1248,6 @@
 +	///	shootSpeed = 12f;
 +	///	width = 18;
 +	///	height = 20;
-+	///	maxStack = 1;
 +	///	UseSound = <see cref="SoundID.Item1"/>;
 +	///	useAnimation = 15;
 +	///	useTime = 15;
@@ -1292,7 +1290,7 @@
  				useStyle = 5;
  				autoReuse = true;
  				useAnimation = 30;
-@@ -46905,6 +_,20 @@
+@@ -46905,6 +_,19 @@
  		voiceSlot = voiceOverrideID;
  	}
  
@@ -1305,7 +1303,6 @@
 +	///	height = 12;
 +	/// value = buyPrice(0, 0, 15);
 +	/// rare = 3;
-+	///	maxStack = <see cref="CommonMaxStack"/>;
 +	///	consumable = true;
 +	/// </code>
 +	/// </summary>
@@ -1438,7 +1435,7 @@
  	public void DefaultToSpear(int projType, float pushForwardSpeed, int animationTime)
  	{
  		useStyle = 5;
-@@ -47474,7 +_,24 @@
+@@ -47474,7 +_,23 @@
  		mountType = mount;
  	}
  
@@ -1451,7 +1448,6 @@
 +	///	useAnimation = 15;
 +	///	useTime = 7;
 +	///	autoReuse = true;
-+	///	maxStack = <see cref="CommonMaxStack"/>;
 +	///	consumable = true;
 +	///	createWall = wallToPlace;
 +	///	width = 12;
@@ -1542,7 +1538,7 @@
  	public void DefaultToRangedWeapon(int baseProjType, int ammoID, int singleShotTime, float shotVelocity, bool hasAutoReuse = false)
  	{
  		autoReuse = hasAutoReuse;
-@@ -47527,6 +_,25 @@
+@@ -47527,6 +_,24 @@
  		ranged = true;
  	}
  
@@ -1558,7 +1554,6 @@
 +	///	noMelee = true;
 +	///	DamageType = DamageClass.Ranged;
 +	///	consumable = true;
-+	///	maxStack = <see cref="CommonMaxStack"/>;
 +	/// </code>
 +	/// </summary>
 +	/// <param name="baseProjType"></param>
@@ -1568,7 +1563,7 @@
  	public void DefaultToThrownWeapon(int baseProjType, int singleShotTime, float shotVelocity, bool hasAutoReuse = false)
  	{
  		autoReuse = hasAutoReuse;
-@@ -47540,7 +_,36 @@
+@@ -47540,7 +_,35 @@
  		consumable = true;
  	}
  
@@ -1579,7 +1574,6 @@
 +	/// noWet = !allowWaterPlacement;
 +	///	holdStyle = <see cref="ItemHoldStyleID.HoldFront"/>;
 +	///	autoReuse = true;
-+	///	maxStack = <see cref="CommonMaxStack"/>;
 +	///	consumable = true;
 +	///	createTile = tileIDToPlace;
 +	///	placeStyle = tileStyleToPlace;
@@ -1606,7 +1600,7 @@
  	{
  		flame = true;
  		noWet = !allowWaterPlacement;
-@@ -47558,11 +_,30 @@
+@@ -47558,11 +_,29 @@
  		useTime = 10;
  	}
  
@@ -1626,7 +1620,6 @@
 +	/// useStyle = <see cref="ItemUseStyleID.Swing"/>;
 +	/// useAnimation = 15;
 +	/// useTime = 10;
-+	/// maxStack = <see cref="CommonMaxStack"/>;
 +	/// useTurn = true;
 +	/// autoReuse = true;
 +	/// consumable = true;
@@ -1647,7 +1640,7 @@
  	public void MakeUsableWithChlorophyteExtractinator()
  	{
  		useStyle = 1;
-@@ -47613,6 +_,27 @@
+@@ -47613,6 +_,26 @@
  		autoReuse = true;
  	}
  
@@ -1658,7 +1651,6 @@
 +	/// useStyle = useGulpSound ? <see cref="ItemUseStyleID.DrinkLiquid"/> : <see cref="ItemUseStyleID.EatFood"/>;
 +	/// useTurn = true;
 +	/// useAnimation = useTime = animationTime;
-+	/// maxStack = <see cref="CommonMaxStack"/>;
 +	/// consumable = true;
 +	/// buffType = <paramref name="foodbuff"/>;
 +	/// buffTime = <paramref name="foodbuffduration"/>;
