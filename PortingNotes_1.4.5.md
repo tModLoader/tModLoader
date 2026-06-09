@@ -151,7 +151,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 # New Fields that might need more documentation
 
 - UIElement.PassThroughMouseInteraction --> What does it do? How does it differ from IgnoresMouseInteraction?
-- FishingAttempt.junk added --> How does this change things?
 - TileEntity.RequiresUpdates (and static List<TileEntity> UpdateEntities) added -> Do all mods need to update their TEs? What is the default? What are Add and Remove methods? ModTileEntity will likely require updates.
 - TileEntity.Read now has a gameversion parameter. For modded tiles, I don't think this affects anything. Vanilla TEs have updated save and load code, need to verify poses and other changes work with modded items.
 - UserInterface.MouseCaptured -> could be useful
