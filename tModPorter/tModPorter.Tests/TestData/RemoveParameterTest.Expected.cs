@@ -12,5 +12,10 @@ public class RemoveParameterTest
 		item.SetDefaults(5, variant: null);
 		item.SetDefaults(6);
 		item.SetDefaults(7, variant: null);
+
+		Player player = Main.LocalPlayer;
+		player.GetItem(item, GetItemSettings.PickupItemFromWorld);
+		player.GetItem(item, GetItemSettings.PickupItemFromWorld);
+		player.GetItem(newItem: item, settings: GetItemSettings.PickupItemFromWorld);
 	}
 }
