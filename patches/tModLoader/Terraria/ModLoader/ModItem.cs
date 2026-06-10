@@ -1062,6 +1062,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to modify the colors in which this armor and surrounding accessories are drawn, in addition to which glow mask and in what color is drawn. Note that this hook is only ever called through this item's associated equipment texture.
+	/// <br/><br/> Note that the <paramref name="glowMask"/> parameter will only work with existing glowmask textures (<see cref="GlowMaskID"/> until custom glowmask support is added. You can use <see cref="ModifyEquipTextureDraw"/> and manually add a DrawData for the glowmask instead.
 	/// <para/> Called on local and remote clients.
 	/// </summary>
 	/// <param name="drawPlayer">The draw player.</param>
@@ -1112,11 +1113,11 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	}
 
 	/// <summary>
-	/// Allows for Wings to do various things while in use. "inUse" is whether or not the jump button is currently pressed. Called when these wings visually appear on the player. Use to animate wings, create dusts, invoke sounds, and create lights. Note that this hook is only ever called through this item's associated equipment texture. False will keep everything the same. True, you need to handle all animations in your own code.
+	/// Allows for Wings to do various things while in use. <paramref name="inUse"/> is whether or not the jump button is currently pressed and there is remaining <see cref="Player.wingTime"/>, meaning the wings are actively flying. If <paramref name="inUse"/> is false but <see cref="Player.controlJump"/> is true, the player is gliding. Called when these wings visually appear on the player. Use to animate wings, create dusts, invoke sounds, and create lights. Note that this hook is only ever called through this item's associated equipment texture. False will keep everything the same. True, you need to handle all animations in your own code.
 	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="player">The player.</param>
-	/// <param name="inUse">if set to <c>true</c> [in use].</param>
+	/// <param name="inUse">If <c>true</c>, the wings are actively flying.</param>
 	/// <returns></returns>
 	public virtual bool WingUpdate(Player player, bool inUse)
 	{
@@ -1207,18 +1208,19 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 
 	/// <summary>
 	/// Allows you to draw things behind this item, or to modify the way this item is drawn in the world. Return false to stop the game from drawing the item (useful if you're manually drawing the item).
-	/// <para/> Note that items in the world are drawn centered horizontally sitting at the bottom of the item hitbox, not in the center of the hitbox. To replicate the normal drawing calculations, use the following and then use <see cref="SpriteBatch.DrawString(SpriteFont, string, Vector2, Color, float, Vector2, float, SpriteEffects, float)"/>:
+	/// <para/> Note that items in the world are drawn centered horizontally sitting at the bottom of the item hitbox, not in the center of the hitbox. To replicate the normal drawing calculations, use the following and then use the <paramref name="spriteBatch"/>:
 	/// <para/> Called on all clients.
 	/// <code>
 	/// Main.GetItemDrawFrame(Item.type, out var itemTexture, out var itemFrame);
 	/// Vector2 drawOrigin = itemFrame.Size() / 2f;
 	/// Vector2 drawPosition = Item.Bottom - Main.screenPosition - new Vector2(0, drawOrigin.Y);
 	/// </code>
+	/// <br/><br/> See <c>PreDrawInInventory</c> and <c>PostDrawInInventory</c> for modifying the inventory visuals and <c>ModifyItemDraw</c> for modifying the held item visuals.
 	/// <para/> Returns true by default.
 	/// </summary>
 	/// <param name="spriteBatch">The sprite batch.</param>
-	/// <param name="lightColor">Color of the light.</param>
-	/// <param name="alphaColor">Color of the alpha.</param>
+	/// <param name="lightColor">The lighting color at the item's center.</param>
+	/// <param name="alphaColor">The final color used to draw the item, mixing its alpha and lighting.</param>
 	/// <param name="rotation">The item rotation. Items rotate slightly as they are thrown.</param>
 	/// <param name="scale">The draw scale. Items are usually drawn in the world at a scale of 1f but some effects like pulsing Soul items change this.</param>
 	/// <param name="whoAmI">The <see cref="Entity.whoAmI"/>.</param>
@@ -1230,7 +1232,8 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 
 	/// <summary>
 	/// Allows you to draw things in front of this item. This method is called even if PreDrawInWorld returns false.
-	/// <para/> Note that items in the world are drawn centered horizontally sitting at the bottom of the item hitbox, not in the center of the hitbox. To replicate the normal drawing calculations, use the following and then use <see cref="SpriteBatch.DrawString(SpriteFont, string, Vector2, Color, float, Vector2, float, SpriteEffects, float)"/>:
+	/// <para/> Note that items in the world are drawn centered horizontally sitting at the bottom of the item hitbox, not in the center of the hitbox. To replicate the normal drawing calculations, use the following and then use the <paramref name="spriteBatch"/>:
+	/// <br/><br/> See <c>PreDrawInInventory</c> and <c>PostDrawInInventory</c> for modifying the inventory visuals and <c>ModifyItemDraw</c> for modifying the held item visuals.
 	/// <para/> Called on all clients.
 	/// <code>
 	/// Main.GetItemDrawFrame(Item.type, out var itemTexture, out var itemFrame);
@@ -1239,8 +1242,8 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// </code>
 	/// </summary>
 	/// <param name="spriteBatch">The sprite batch.</param>
-	/// <param name="lightColor">Color of the light.</param>
-	/// <param name="alphaColor">Color of the alpha.</param>
+	/// <param name="lightColor">The lighting color at the item's center.</param>
+	/// <param name="alphaColor">The final color used to draw the item, mixing its alpha and lighting.</param>
 	/// <param name="rotation">The item rotation. Items rotate slightly as they are thrown.</param>
 	/// <param name="scale">The draw scale. Items are usually drawn in the world at a scale of 1f but some effects like pulsing Soul items change this.</param>
 	/// <param name="whoAmI">The <see cref="Entity.whoAmI"/>.</param>
@@ -1250,15 +1253,16 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 
 	/// <summary>
 	/// Allows you to draw things behind this item in the inventory. Return false to stop the game from drawing the item (useful if you're manually drawing the item).
-	/// <para/> Note that <paramref name="position"/> is the center of the inventory slot and <paramref name="origin"/> is the center of the texture <paramref name="frame"/> to be drawn, so the provided parameters can be passed into <see cref="SpriteBatch.DrawString(SpriteFont, string, Vector2, Color, float, Vector2, float, SpriteEffects, float)"/> to draw a texture in the typical manner.
+	/// <para/> Note that <paramref name="position"/> is the center of the inventory slot and <paramref name="origin"/> is the center of the texture <paramref name="frame"/> to be drawn, so the provided parameters can be passed into the <paramref name="spriteBatch"/> to draw a texture in the typical manner.
+	/// <br/><br/> See <c>PreDrawInWorld</c> and <c>PostDrawInWorld</c> for modifying the in-world visuals and <c>ModifyItemDraw</c> for modifying the held item visuals.
 	/// <para/> Called on the local client only.
 	/// <para/> Returns true by default.
 	/// </summary>
 	/// <param name="spriteBatch">The sprite batch.</param>
 	/// <param name="position">The screen position of the center of the inventory slot.</param>
 	/// <param name="frame">The frame of the item texture to be drawn.</param>
-	/// <param name="drawColor">Color of the draw.</param>
-	/// <param name="itemColor">Color of the item.</param>
+	/// <param name="drawColor">The primary color used to draw the item icon.</param>
+	/// <param name="itemColor">The item color usually used for tinting the item with a secondary draw call.</param>
 	/// <param name="origin">The draw origin, the center of the frame to be drawn.</param>
 	/// <param name="scale">The scale the item has been calculated to draw in to fit in the inventory slot.</param>
 	/// <returns></returns>
@@ -1270,19 +1274,32 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 
 	/// <summary>
 	/// Allows you to draw things in front of this item in the inventory. This method is called even if PreDrawInInventory returns false.
-	/// <para/> Note that <paramref name="position"/> is the center of the inventory slot and <paramref name="origin"/> is the center of the texture <paramref name="frame"/> to be drawn, so the provided parameters can be passed into <see cref="SpriteBatch.DrawString(SpriteFont, string, Vector2, Color, float, Vector2, float, SpriteEffects, float)"/> to draw a texture in the typical manner.
+	/// <para/> Note that <paramref name="position"/> is the center of the inventory slot and <paramref name="origin"/> is the center of the texture <paramref name="frame"/> to be drawn, so the provided parameters can be passed into the <paramref name="spriteBatch"/> to draw a texture in the typical manner.
+	/// <br/><br/> See <c>PreDrawInWorld</c> and <c>PostDrawInWorld</c> for modifying the in-world visuals and <c>ModifyItemDraw</c> for modifying the held item visuals.
 	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="spriteBatch">The sprite batch.</param>
 	/// <param name="position">The screen position of the center of the inventory slot.</param>
 	/// <param name="frame">The frame of the item texture to be drawn.</param>
-	/// <param name="drawColor">Color of the draw.</param>
-	/// <param name="itemColor">Color of the item.</param>
+	/// <param name="drawColor">The primary color used to draw the item icon.</param>
+	/// <param name="itemColor">The item color usually used for tinting the item with a secondary draw call.</param>
 	/// <param name="origin">The draw origin, the center of the frame to be drawn.</param>
 	/// <param name="scale">The scale of the item drawing to to fit in the inventory slot.</param>
 	public virtual void PostDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor,
 		Color itemColor, Vector2 origin, float scale)
 	{
+	}
+
+	/// <summary>
+	/// Allows customization of the <see cref="DrawData"/> responsible for drawing the held item. Held items are drawn as part of the player drawing process. Additional <see cref="DrawData"/> can be added to <paramref name="drawInfo"/> for more advanced drawing if needed. (Add DrawData objects to <see cref="PlayerDrawSet.DrawDataCache"/>)
+	/// <br/><br/> <paramref name="drawData"/> is the DrawData for the normal drawing. <paramref name="coloredDrawData"/> is an additional drawing if <see cref="Item.color"/> was set, overlaid over the normal drawing to tint it. <paramref name="glowMaskDrawData"/> is a separate glow mask texture, if <see cref="Item.glowMask"/> was set.
+	/// <br/><br/> Return false to stop the game from adding the <paramref name="drawData"/> (and <paramref name="coloredDrawData"/> and <paramref name="glowMaskDrawData"/> if they are not null) to the player drawing. This is useful if manually adding <paramref name="drawInfo"/> and an additional custom DrawData to properly order the custom DrawData after the normal DrawData.
+	/// <br/><br/> See <c>PreDrawInInventory</c> and <c>PostDrawInInventory</c> for modifying the inventory visuals and <c>PreDrawInWorld</c> and <c>PostDrawInWorld</c> for modifying the in-world visuals.
+	/// <br/><br/> Returns true by default.
+	/// </summary>
+	public virtual bool ModifyItemDraw(ref PlayerDrawSet drawInfo, ref DrawData drawData, ref DrawData? coloredDrawData, ref DrawData? glowMaskDrawData)
+	{
+		return true;
 	}
 
 	/// <summary>
@@ -1508,4 +1525,15 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// <param name="amount">The stack -> how many result items given when the recipe is crafted. (eg. 1 wood -> 4 wood platform)</param>
 	/// <returns></returns>
 	public Recipe CreateRecipe(int amount = 1) => Recipe.Create(Type, amount);
+
+	/// <summary>
+	/// Allows customization of the <see cref="DrawData"/> responsible for drawing the <see cref="EquipTexture"/> assigned to this item. Additional <see cref="DrawData"/> can be added to <paramref name="drawInfo"/> for more advanced drawing if needed.
+	/// <br/><br/> <paramref name="methodName"/> is the name of the method being hooked into. Some <see cref="EquipType"/> are drawn multiple times depending on layering, this provides that context if relevant.
+	/// <br/><br/> Note that this hook is only ever called through this item's associated equipment texture (<see cref="EquipTexture.ModifyDraw"/>). This means that the Item instance is not the actual equipped item instance. If the visuals depend on item data, you'll need to store that item instance in a ModPlayer and use the data from it rather than this item. See <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/Items/Accessories/WaspNest.cs#L77">WaspNestPlayer.strongBeesItem</see> for an example of this.
+	/// <br/><br/> Return false to stop the game from adding the <paramref name="drawData"/> to the player drawing. Returns true by default.
+	/// </summary>
+	public virtual bool ModifyEquipTextureDraw(ref PlayerDrawSet drawInfo, ref DrawData drawData, EquipTexture equipTexture, string methodName)
+	{
+		return true;
+	}
 }

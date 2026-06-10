@@ -28,6 +28,7 @@ body:
     options:
       - Latest 1.4.4-stable
       - Latest 1.4.4-preview
+      - Latest 1.4.5-dev
       - Latest 1.4.3-legacy
       - Latest 1.3-legacy
       - Self-Compiled (please specify branch)

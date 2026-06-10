@@ -16,8 +16,9 @@ public partial class NPCID
 
 		//IDs taken from start of NPC.NewNPC when determining num
 		/// <summary>
-		/// Whether or not the spawned NPC will start looking for a suitable slot from the end of <seealso cref="Main.npc"/>, ignoring the Start parameter of <see cref="NPC.NewNPC"/>.
-		/// Useful if you have a multi-segmented boss and want its parts to draw over the main body (body will be in this set).
+		/// Whether or not the spawned NPC will be assigned an empty slot in <see cref="NPC.NewNPC"/> by searching from the end of <seealso cref="Main.npc"/> rather than the start.
+		/// <br/><br/> This will result in the NPC drawing behind most other NPC because NPC are drawn in reverse slot order.
+		/// <br/><br/> Useful if you have a multi-segmented boss and want its parts to draw over the main body (body will be in this set). Also useful for bosses that spawn minions, to keep the minions visible. Used by <see cref="Golem"/> and <see cref="QueenBee"/>.
 		/// </summary>
 		public static bool[] SpawnFromLastEmptySlot = Factory.CreateBoolSet(222, 245);
 

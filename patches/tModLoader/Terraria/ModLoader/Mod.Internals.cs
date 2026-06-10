@@ -54,12 +54,10 @@ partial class Mod
 		if (ContentAutoloadingEnabled) {
 			var loadableTypes = AssemblyManager.GetLoadableTypes(Code)
 				.Where(t => !t.IsAbstract && !t.ContainsGenericParameters)
-				.Where(t => t.IsAssignableTo(typeof(ILoadable)))
-				.Where(t => t.GetConstructor(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, Type.EmptyTypes) != null) // has default constructor
 				.Where(t => AutoloadAttribute.GetValue(t).NeedsAutoloading)
 				.OrderBy(type => type.FullName, StringComparer.InvariantCulture);
 
-			LoaderUtils.ForEachAndAggregateExceptions(loadableTypes, t => AddContent((ILoadable)Activator.CreateInstance(t, true)));
+			LoaderUtils.ForEachAndAggregateExceptions(loadableTypes, TryAutoload);
 		}
 
 		// Skip loading client assets if this is a dedicated server;
@@ -77,6 +75,15 @@ partial class Mod
 
 		if (BackgroundAutoloadingEnabled)
 			BackgroundTextureLoader.AutoloadBackgrounds(this);
+	}
+	private static void AutoloadInvoker<TImpl>(Mod mod, Type type) where TImpl : IAutoloader => TImpl.Autoload(mod, type);
+
+	private static readonly MethodInfo _autoloadInvoker = typeof(Mod).GetMethod(nameof(AutoloadInvoker), BindingFlags.Static | BindingFlags.NonPublic);
+	public void TryAutoload(Type type)
+	{
+		// IAutoload<> can be implemented multiple times with different generic args. Call all of them
+		foreach (var iAutoload in type.GetInterfaces().Where(t => t.IsGenericType && t.GetGenericTypeDefinition() == typeof(IAutoload<>)))
+			_autoloadInvoker.MakeGenericMethod(iAutoload.GetGenericArguments()).Invoke(null, [this, type]);
 	}
 
 	internal void PrepareAssets()

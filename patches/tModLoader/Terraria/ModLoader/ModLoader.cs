@@ -41,6 +41,8 @@ public static class ModLoader
 	public static bool WarnedFamilyShareDontShowAgain;
 	public static Version LastPreviewFreezeNotificationSeen;
 	public static int LatestNewsTimestamp;
+	public static bool SeenNewUpdatedModsInfo;
+	public static bool ResolvedAbnormalModInstallStates;
 
 	// Update this name if doing an upgrade
 	public static bool BetaUpgradeWelcomed144;
@@ -167,19 +169,23 @@ public static class ModLoader
 				responsibleMods.Add(stackMod);
 
 			var msg = Language.GetTextValue("tModLoader.LoadError", string.Join(", ", responsibleMods));
+			var logOnlySuffix = string.Empty;
 			if (responsibleMods.Count == 1) {
 				var mod = availableMods.FirstOrDefault(m => m.Name == responsibleMods[0]); //use First rather than Single, incase of "Two mods with the same name" error message from ModOrganizer (#639)
 				if (mod != null)
 					msg += $" v{mod.Version}";
+					
 				if (mod != null && mod.tModLoaderVersion.MajorMinorBuild() != BuildInfo.tMLVersion.MajorMinorBuild())
-					msg += "\n" + Language.GetTextValue("tModLoader.LoadErrorVersionMessage", mod.tModLoaderVersion, versionedName);
+					// This note is not very important, and thus will only be shown in logs, so as to not confuse players.
+					logOnlySuffix += "\n" + Language.GetTextValue("tModLoader.LoadErrorVersionMessage", mod.tModLoaderVersion, versionedName);
 				else if (mod != null)
 					// if the mod exists, and the MajorMinorBuild() is identical, then assume it is an error in the Steam install/deployment - Solxan
 					SteamedWraps.QueueForceValidateSteamInstall();
 
 				if (e is Exceptions.JITException)
-					msg += "\n" + $"The mod will need to be updated to match the current tModLoader version, or may be incompatible with the version of some of your other mods. Click the '{Language.GetTextValue("tModLoader.OpenWebHelp")}' button to learn more.";
+					msg += "\n" + Language.GetTextValue("tModLoader.LoadErrorLikelyOutdated");
 			}
+
 			if (responsibleMods.Count > 0)
 				msg += "\n" + Language.GetTextValue("tModLoader.LoadErrorDisabled");
 			else
@@ -207,7 +213,7 @@ public static class ModLoader
 				}
 			}
 
-			Logging.tML.Error(msg, e);
+			Logging.tML.Error(msg + logOnlySuffix, e);
 
 			isLoading = false; // disable loading flag, because server will just instantly retry reload
 			DisplayLoadError(msg, e, e.Data.Contains("fatal"), responsibleMods.Count == 0);

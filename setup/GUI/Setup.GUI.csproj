@@ -10,8 +10,8 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\PatchReviewer\DiffPatch\DiffPatch.csproj" />
-		<ProjectReference Include="..\PatchReviewer\PatchReviewer.csproj" />
+		<ProjectReference Include="..\PatchReviewer\DiffPatch\src\DiffPatch.csproj" />
+		<ProjectReference Include="..\PatchReviewer\PatchReviewer\PatchReviewer.csproj" />
 		<ProjectReference Include="..\Core\Setup.Core.csproj" />
 	</ItemGroup>
 

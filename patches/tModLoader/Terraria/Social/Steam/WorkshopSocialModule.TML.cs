@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -45,6 +46,11 @@ public partial class WorkshopSocialModule
 		if (state == WorkshopHelper.WorkshopSearchReturnState.NotFound)
 			return false;
 
+		// If it is banned, then it can't be updated. This could be because it was malware or because of DMCA or whatever.
+		// It is imperative to ban malware accounts from further uploads during the 24 hour default ban time to prevent spam.
+		if (modDownloadItemAsFound.Banned)
+			return false;
+
 		currPublishID = ulong.Parse(modDownloadItemAsFound.PublishId.m_ModPubId);
 
 		// Update the subscribed mod to be the latest version published, so keeps all versions (stable, preview) together
@@ -81,6 +87,12 @@ public partial class WorkshopSocialModule
 		}
 
 		// Checks if Mod is adequate
+
+		// Check if mod is a debug build
+		if (AssemblyManager.IsLoadedModAssemblyDebugBuild(modFile.Name)) {
+			IssueReporter.ReportInstantUploadProblem("tModLoader.ModWasBuiltForDebugging");
+			return false;
+		}
 
 		// Check mod description
 		const string DescriptionFileName = "description.txt";
@@ -155,7 +167,7 @@ public partial class WorkshopSocialModule
 		}
 
 		string name = buildData["displaynameclean"];
-		if (name.Length >= Steamworks.Constants.k_cchPublishedDocumentTitleMax) {
+		if (Encoding.UTF8.GetByteCount(name) >= Steamworks.Constants.k_cchPublishedDocumentTitleMax) {
 			IssueReporter.ReportInstantUploadProblem("tModLoader.TitleLengthExceedLimit");
 			return false;
 		}
@@ -338,9 +350,10 @@ public partial class WorkshopSocialModule
 
 		ModCompile.UpdateSubstitutedDescriptionValues(ref descriptionFinal, buildData["trueversion"], buildData["homepage"]);
 
-		if (descriptionFinal.Length >= Steamworks.Constants.k_cchPublishedDocumentDescriptionMax) {
+		int descriptionByteCount = Encoding.UTF8.GetByteCount(descriptionFinal);
+		if (descriptionByteCount >= Steamworks.Constants.k_cchPublishedDocumentDescriptionMax) {
 			//IssueReporter.ReportInstantUploadProblem("tModLoader.DescriptionLengthExceedLimit");
-			throw new Exception(Language.GetTextValue("tModLoader.DescriptionLengthExceedLimit", Steamworks.Constants.k_cchPublishedDocumentDescriptionMax));
+			throw new Exception(Language.GetTextValue("tModLoader.DescriptionLengthExceedLimit", Steamworks.Constants.k_cchPublishedDocumentDescriptionMax, descriptionByteCount - Steamworks.Constants.k_cchPublishedDocumentDescriptionMax));
 		}
 
 		// If the modder hasn't supplied any change notes, then we will provde some default ones for them

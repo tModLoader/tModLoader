@@ -70,7 +70,7 @@
 +	public static TileObjectData Style2x2;
 -	private static TileObjectData Style1x2;
 +	public static TileObjectData Style1x2;
-+	/// <summary> No anchors. </summary>
++	/// <summary> Anchors to tile below. </summary>
 -	private static TileObjectData Style1x1;
 +	public static TileObjectData Style1x1;
 -	private static TileObjectData StyleAlch;

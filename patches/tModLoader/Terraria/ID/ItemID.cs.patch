@@ -298,7 +298,7 @@
  		public static FlowerPacketInfo[] flowerPacketInfo = Factory.CreateCustomSet<FlowerPacketInfo>(null, new object[18] {
  			(short)4041,
  			new FlowerPacketInfo {
-@@ -303,18 +_,91 @@
+@@ -303,18 +_,90 @@
  				}
  			}
  		});
@@ -369,16 +369,15 @@
 +
 +		/// <summary>
 +		/// If <see langword="true"/> for a given item type (<see cref="Item.type"/>), then that item is food.
-+		/// <br/> Food items can be placed onto <see cref="TileID.FoodPlatter"/>s, have a <see cref="Item.holdStyle"/> of <see cref="ItemHoldStyleID.HoldFront"/>, hide shields (<see cref="Item.shieldSlot"/>) when held,
-+		/// <br/> Food item sprites must have 3 frames. The required framing code is automatically initialized.
-+		/// </summary>
-+		/// <remarks>
-+		/// The auto-initialized animation for  foods have 3 vertical frames.
++		/// <br/><br/> Food items can be placed onto <see cref="TileID.FoodPlatter"/>s, have a <see cref="Item.holdStyle"/> of <see cref="ItemHoldStyleID.HoldFront"/>, and hide shields (<see cref="Item.shieldSlot"/>) when held.
++		/// <br/><br/> Food item sprites must have 3 vertical frames. The <see cref="Main.RegisterItemAnimation(int, DrawAnimation)"/> code should set the animation to not animate in the inventory by setting <see cref="DrawAnimationVertical.NotActuallyAnimating"/>.
++		/// <br/><br/> The animation frames are as follows:
 +		/// <br/> 1. Inventory sprite
 +		/// <br/> 2. Held sprite
 +		/// <br/> 3. <see cref="TileID.FoodPlatter"/> sprite
-+		/// <br/> <see cref="Item.DefaultToFood(int, int, int, int, bool, int)"/> will set many common item values for food.
-+		/// </remarks>
++		/// <br/><br/> <see cref="Item.DefaultToFood(int, int, int, int, bool, int)"/> will set many common item values for food.
++		/// <br/><br/> See <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/Items/Consumables/ExampleFoodItem.cs">ExampleFoodItem.cs</see> for an example of how to set up a food item.
++		/// </summary>
  		public static bool[] IsFood = Factory.CreateBoolSet(353, 357, 1787, 1911, 1912, 1919, 1920, 2266, 2267, 2268, 2425, 2426, 2427, 3195, 3532, 4009, 4010, 4011, 4012, 4013, 4014, 4015, 4016, 4017, 4018, 4019, 4020, 4021, 4022, 4023, 4024, 4025, 4026, 4027, 4028, 4029, 4030, 4031, 4032, 4033, 4034, 4035, 4036, 4037, 967, 969, 4282, 4283, 4284, 4285, 4286, 4287, 4288, 4289, 4290, 4291, 4292, 4293, 4294, 4295, 4296, 4297, 4403, 4411, 4614, 4615, 4616, 4617, 4618, 4619, 4620, 4621, 4622, 4623, 4624, 4625, 5009, 5042, 5041, 5092, 5093, 5275, 5277, 5278);
 +
 +		/// <summary>

@@ -26,6 +26,30 @@
  	{
  		TileObjectData tileData = TileObjectData.GetTileData(type, style);
  		objectData = Empty;
+@@ -228,7 +_,7 @@
+ 					num16--;
+ 
+ 				if (num16 < rectangle.Y) {
+-					rectangle.Width += rectangle.Y - num16;
++					rectangle.Height += rectangle.Y - num16; // Fix issue (OOB exception) with partial right and left anchors.
+ 					num11 += rectangle.Y - num16;
+ 					rectangle.Y = num16;
+ 				}
+@@ -246,12 +_,12 @@
+ 				if (rectangle.X + rectangle.Width == tileData2.Width)
+ 					rectangle.Width++;
+ 
+-				int num19 = tileData2.AnchorLeft.checkStart;
++				int num19 = tileData2.AnchorRight.checkStart; 
+ 				if ((tileData2.AnchorRight.type & AnchorType.Tree) == AnchorType.Tree)
+ 					num19--;
+ 
+ 				if (num19 < rectangle.Y) {
+-					rectangle.Width += rectangle.Y - num19;
++					rectangle.Height += rectangle.Y - num19; // Fix issue (OOB exception) with partial right and left anchors.
+ 					num11 += rectangle.Y - num19;
+ 					rectangle.Y = num19;
+ 				}
 @@ -283,7 +_,7 @@
  			for (int i = 0; i < tileData2.Width; i++) {
  				for (int j = 0; j < tileData2.Height; j++) {

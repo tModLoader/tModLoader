@@ -242,14 +242,14 @@ public static class BossBarLoader
 		// DrawFancyBar without shieldCurrent gets redirected to DrawFancyBar with shieldCurrent as 0f
 		// DrawFancyBar with shieldCurrent gets redirected to this
 
-		(Texture2D barTexture, Vector2 barCenter, Texture2D iconTexture, Rectangle iconFrame, Color iconColor, float life, float lifeMax, float shield, float shieldMax, float iconScale, bool showText, Vector2 textOffset) = drawParams;
+		(Texture2D barTexture, Vector2 barCenter, Color barColor, Texture2D iconTexture, Rectangle iconFrame, Color iconColor, float life, float lifeMax, float shield, float shieldMax, float iconScale, bool showText, Vector2 textOffset) = drawParams;
 
 		Point barSize = new Point(456, 22); //Size of the bar
 		Point topLeftOffset = new Point(32, 24); //Where the top left of the bar starts
 		int frameCount = 6;
 
 		Rectangle bgFrame = barTexture.Frame(verticalFrames: frameCount, frameY: 3);
-		Color bgColor = Color.White * 0.2f;
+		Color bgColor = barColor * 0.2f;
 
 		int scale = (int)(barSize.X * life / lifeMax);
 		scale -= scale % 2;
@@ -289,7 +289,6 @@ public static class BossBarLoader
 
 		// Bar itself
 		Vector2 stretchScale = new Vector2(scale / barFrame.Width, 1f);
-		Color barColor = Color.White;
 		spriteBatch.Draw(barTexture, barTopLeft, barFrame, barColor, 0f, Vector2.Zero, stretchScale, SpriteEffects.None, 0f);
 
 		// Tip
@@ -306,7 +305,7 @@ public static class BossBarLoader
 
 		// Frame
 		Rectangle frameFrame = barTexture.Frame(verticalFrames: frameCount, frameY: 0);
-		spriteBatch.Draw(barTexture, topLeft, frameFrame, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+		spriteBatch.Draw(barTexture, topLeft, frameFrame, barColor, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
 
 		// Icon
 		Vector2 iconOffset = new Vector2(4f, 20f);

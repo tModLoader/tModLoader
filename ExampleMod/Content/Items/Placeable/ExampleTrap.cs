@@ -1,7 +1,6 @@
 ﻿using System;
 using Terraria;
 using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items.Placeable
@@ -9,19 +8,11 @@ namespace ExampleMod.Content.Items.Placeable
 	// This item shows off using 1 class to load multiple items. This is an alternate to typical inheritance.
 	// Read the comments in this example carefully, as there are many parts necessary to make this approach work.
 	// The real strength of this approach is when you have many items that vary by small changes, like how these 2 trap items vary only by placeStyle.
-	public class ExampleTrap : ModItem
+	public class ExampleTrap : ModItem, ICustomAutoload
 	{
-		// This inner class is an ILoadable, the game will automatically call the Load method when loading this mod.
-		// Using this class, we manually call AddContent with 2 instances of the ExampleTrap class. This adds them to the game.
-		public class ExampleTrapLoader : ILoadable
-		{
-			public void Load(Mod mod) {
-				mod.AddContent(new ExampleTrap(0));
-				mod.AddContent(new ExampleTrap(1));
-			}
-
-			public void Unload() {
-			}
+		public static void Autoload(Mod mod) {
+			mod.AddContent(new ExampleTrap(0));
+			mod.AddContent(new ExampleTrap(1));
 		}
 
 		// CloneNewInstances is needed so that fields in this class are Cloned onto new instances, such as when this item is crafted or hovered over.

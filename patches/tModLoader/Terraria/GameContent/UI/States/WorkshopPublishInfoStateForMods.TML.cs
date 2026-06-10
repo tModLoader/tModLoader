@@ -21,7 +21,7 @@ namespace Terraria.GameContent.UI.States;
 
 public class WorkshopPublishInfoStateForMods : AWorkshopPublishInfoState<TmodFile>
 {
-	public const string TmlRules = "https://forums.terraria.org/index.php?threads/player-created-game-enhancements-rules-guidelines.286/";
+	public const string TmlRules = "https://store.steampowered.com/workshopeula/1281930/";
 
 	private readonly NameValueCollection _buildData;
 	protected UIText imageWarningText;
@@ -54,7 +54,11 @@ public class WorkshopPublishInfoStateForMods : AWorkshopPublishInfoState<TmodFil
 			resizedPreviewImage = true;
 		}
 
-		/* if ( SocialAPI.Workshop != null) */
+		if (!SteamedWraps.HasAcceptedTmodWorkshopEula()) {
+			SteamedWraps.ShowWorkshopEula();
+			return;
+		}
+
 		using (_dataObject.Open()) {
 			SocialAPI.Workshop.PublishMod(_dataObject, _buildData, GetPublishSettings());
 		}

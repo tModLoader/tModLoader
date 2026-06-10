@@ -18,9 +18,12 @@
  	private readonly Dictionary<string, List<string>> _categoryGroupedKeys = new Dictionary<string, List<string>>();
  	private GameCulture _fallbackCulture = GameCulture.DefaultCulture;
  
-@@ -95,13 +_,17 @@
+@@ -94,14 +_,20 @@
+ 
  	public void SetLanguage(GameCulture culture)
  	{
++		if (ActiveCulture != null) // Log selected language, but skip logging initial DefaultCulture.
++			Logging.tML.Info($"Language: {culture.Name}");
  		if (ActiveCulture != culture) {
 +			/*
  			if (culture != _fallbackCulture && ActiveCulture != _fallbackCulture) {

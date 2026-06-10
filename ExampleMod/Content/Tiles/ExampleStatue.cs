@@ -85,6 +85,18 @@ namespace ExampleMod.Content.Tiles
 
 				if (Wiring.CheckMech(x, y, 30) && NPC.MechSpawn(spawnX, spawnY, spawnedNpcId)) {
 					npcIndex = NPC.NewNPC(entitySource, (int)spawnX, (int)spawnY - 12, spawnedNpcId);
+
+					// Note: Statues that spawn NPC bigger than the statue itself have additional logic to ensure there is enough empty space for the NPC to spawn without becoming stuck in blocks. If your statue spawns a larger NPC, use the logic below instead, which adds a collision check and a poof of smoke visual effect:
+					/* // This example is for NPCID.Shark, which needs an area 6 tiles wide and 3 tiles high to spawn. Otherwise, a puff of smoke is spawned.
+					if (!Collision.SolidTiles(x - 2, x + 3, y, y + 2)) {
+						npcIndex = NPC.NewNPC(entitySource, (int)spawnX, (int)spawnY - 12, spawnedNpcId);
+					}
+					else {
+						Vector2 smokePosition = new Vector2(spawnX - 4, spawnY - 22) - new Vector2(10f);
+						Utils.PoofOfSmoke(smokePosition);
+						NetMessage.SendData(MessageID.PoofOfSmoke, number: (int)smokePosition.X, number2: smokePosition.Y);
+					}
+					*/
 				}
 
 				if (npcIndex >= 0) {
@@ -95,6 +107,7 @@ namespace ExampleMod.Content.Tiles
 					// Prevents Loot if NPCID.Sets.NoEarlymodeLootWhenSpawnedFromStatue and !Main.HardMode or NPCID.Sets.StatueSpawnedDropRarity != -1 and NextFloat() >= NPCID.Sets.StatueSpawnedDropRarity or killed by traps.
 					// Prevents CatchNPC
 					npc.SpawnedFromStatue = true;
+					npc.CanBeReplacedByOtherNPCs = true; // Ensures this NPC won't prevent real NPC spawns if Main.npc somehow becomes full.
 				}
 			}
 		}
