@@ -120,6 +120,57 @@ public partial class Recipe
 		=> AddIngredient(ModContent.ItemType<T>(), stack);
 
 	/// <summary>
+	/// Adds a required crafting liquid with the given liquid type to this recipe. Ex: <c>recipe.AddLiquid(LiquidID.Lava)</c>
+	/// </summary>
+	/// <param name="recipe"></param>
+	/// <param name="liquidID">The liquid identifier.</param>
+	/// <exception cref="T:Terraria.ModLoader.Exceptions.RecipeException">No liquid has ID " + liquidID</exception>
+	public Recipe AddLiquid(int liquidID)
+	{
+		if (liquidID < 0 || liquidID >= LiquidLoader.LiquidCount) {
+			throw new RecipeException($"No liquid has ID '{liquidID}'.");
+		}
+		AddCondition(Condition.NearLiquid(liquidID));
+		return this;
+	}
+
+	/// <summary>
+	/// Adds a required crafting liquid to this recipe with the given liquid name from the given mod. If the mod parameter is null, then it will automatically use a liquid from the mod creating this recipe.
+	/// </summary>
+	/// <param name="recipe"></param>
+	/// <param name="mod">The mod.</param>
+	/// <param name="liquidName">Name of the liquid.</param>
+	/// <exception cref="T:Terraria.ModLoader.Exceptions.RecipeException">The liquid " + liquidName + " does not exist in mod " + mod.Name + ". If you are trying to use a vanilla tile, try using Recipe.AddLiquid(liquidID).</exception>
+	public Recipe AddLiquid(Mod mod, string liquidName)
+	{
+		if (mod == null) {
+			mod = Mod;
+		}
+		if (!ModContent.TryFind<ModLiquid>(mod.Name, liquidName, out var liquid)) {
+			throw new RecipeException($"The liquid {liquidName} does not exist in the mod {mod.Name}.\r\nIf you are trying to use a vanilla tile, try using Recipe.AddLiquid(liquidID).");
+		}
+		return AddLiquid(liquid);
+	}
+
+	/// <summary>
+	/// Adds a required crafting liquid to this recipe of the given type of liquid.
+	/// </summary>
+	/// <param name="recipe"></param>
+	/// <param name="liquid">The liquid.</param>
+	public Recipe AddLiquid(ModLiquid liquid)
+	{
+		return AddLiquid(liquid.Type);
+	}
+
+	/// <summary>
+	/// Adds a required crafting liquid to this recipe of the given type of liquid.
+	/// </summary>
+	public Recipe AddLiquid<T>() where T : ModLiquid
+	{
+		return AddLiquid(ModContent.LiquidType<T>());
+	}
+
+	/// <summary>
 	/// Adds a recipe group ingredient to this recipe with the given RecipeGroup name and stack size.
 	/// <br/> Recipe groups allow a recipe to use alternate ingredients without making multiple recipes. For example the "IronBar" group accepts either <see cref="ItemID.IronBar"/> or <see cref="ItemID.LeadBar"/>. The <see href="https://github.com/tModLoader/tModLoader/wiki/Intermediate-Recipes#recipe-groups">Recipe Groups wiki guide</see> has more information.
 	/// <br/> To use a vanilla recipe group, use <see cref="AddRecipeGroup(int, int)"/> using a <see cref="RecipeGroupID"/> entry instead.

@@ -8,12 +8,11 @@
  using Microsoft.Xna.Framework;
  using Microsoft.Xna.Framework.Graphics.PackedVector;
  using Terraria.Audio;
-@@ -16,9 +_,13 @@
+@@ -16,9 +_,12 @@
  using Terraria.GameContent.UI;
  using Terraria.ID;
  using Terraria.Localization;
 +using Terraria.ModLoader;
-+using Terraria.ModLoader.Exceptions;
 +using Terraria.ModLoader.IO;
  using Terraria.Net;
  using Terraria.Testing;
@@ -227,7 +226,32 @@
  
  					player11.dead = player11.statLife <= 0;
  					if (Main.netMode == 2)
-@@ -1124,7 +_,7 @@
+@@ -1111,20 +_,27 @@
+ 				ushort num230 = reader.ReadByte();
+ 				ushort num231 = reader.ReadByte();
+ 				byte b13 = reader.ReadByte();
++				int otherLiquid = reader.ReadInt32();
+ 				if (!WorldGen.InWorld(num228, num229, 3))
+ 					break;
+ 
++				if (otherLiquid <= -1) {
+-				TileChangeType type12 = TileChangeType.None;
++					TileChangeType type12 = TileChangeType.None;
+-				if (Enum.IsDefined(typeof(TileChangeType), b13))
++					if (Enum.IsDefined(typeof(TileChangeType), b13))
+-					type12 = (TileChangeType)b13;
++						type12 = (TileChangeType)b13;
+ 
++					if (MessageBuffer.OnTileChangeReceived != null)
++						MessageBuffer.OnTileChangeReceived(num228, num229, Math.Max(num230, num231), (byte)type12, -1);
++				}
++				else {
+-				if (MessageBuffer.OnTileChangeReceived != null)
++					if (MessageBuffer.OnTileChangeReceived != null)
+-					MessageBuffer.OnTileChangeReceived(num228, num229, Math.Max(num230, num231), type12);
++						MessageBuffer.OnTileChangeReceived(num228, num229, Math.Max(num230, num231), b13, otherLiquid);
++				}
+ 
  				BitsByte bitsByte28 = (byte)0;
  				BitsByte bitsByte29 = (byte)0;
  				BitsByte bitsByte30 = (byte)0;

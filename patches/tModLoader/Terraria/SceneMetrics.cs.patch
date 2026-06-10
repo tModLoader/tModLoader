@@ -22,7 +22,8 @@
  	public bool hasBanner;
 -	private readonly int[] _tileCounts = new int[TileID.Count];
 +	internal int[] _tileCounts = new int[TileLoader.TileCount];
- 	private readonly int[] _liquidCounts = new int[LiquidID.Count];
+-	private readonly int[] _liquidCounts = new int[LiquidID.Count];
++	internal int[] _liquidCounts = new int[LiquidLoader.LiquidCount];
  	private readonly List<Point> _oreFinderTileLocations = new List<Point>(512);
  	public int bestOre;
  
@@ -122,6 +123,15 @@
  		if (settings.BiomeScanCenterPositionInWorld.HasValue) {
  			Point point = settings.BiomeScanCenterPositionInWorld.Value.ToTileCoordinates();
  			Rectangle tileRectangle = new Rectangle(point.X - Main.buffScanAreaWidth / 2, point.Y - Main.buffScanAreaHeight / 2, Main.buffScanAreaWidth, Main.buffScanAreaHeight);
+@@ -145,7 +_,7 @@
+ 
+ 					if (!tile.active()) {
+ 						if (tile.liquid > 0)
+-							_liquidCounts[tile.liquidType()]++;
++							_liquidCounts[tile.LiquidType]++;
+ 
+ 						continue;
+ 					}
 @@ -194,6 +_,8 @@
  
  					if (settings.ScanOreFinderData && Main.tileOreFinderPriority[tile.type] != 0)
@@ -174,9 +184,12 @@
  	}
  
  	private void ExportTileCountsToMain()
-@@ -300,6 +_,7 @@
+@@ -298,8 +_,9 @@
+ 		if (_tileCounts[567] > 0)
+ 			HasGardenGnome = true;
  
- 		ShimmerTileCount = _liquidCounts[3];
+-		ShimmerTileCount = _liquidCounts[3];
++		ShimmerTileCount = _liquidCounts[LiquidID.Shimmer];
  		HoneyBlockCount = _tileCounts[229];
 +		/*
  		HolyTileCount = _tileCounts[109] + _tileCounts[492] + _tileCounts[110] + _tileCounts[113] + _tileCounts[117] + _tileCounts[116] + _tileCounts[164] + _tileCounts[403] + _tileCounts[402];

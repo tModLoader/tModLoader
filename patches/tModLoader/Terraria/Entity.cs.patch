@@ -1,6 +1,11 @@
 --- src/TerrariaNetCore/Terraria/Entity.cs
 +++ src/tModLoader/Terraria/Entity.cs
-@@ -3,19 +_,64 @@
+@@ -1,29 +_,102 @@
+ using System;
++using System.Linq;
+ using Microsoft.Xna.Framework;
++using Terraria.ID;
++using Terraria.ModLoader;
  
  namespace Terraria;
  
@@ -64,9 +69,35 @@
 +	/// <br/> Projectile: Affects movement speed and some projectiles die when wet. <see cref="Projectile.ignoreWater"/> prevents this.
 +	/// </summary>
  	public bool wet;
- 	public bool shimmerWet;
- 	public bool honeyWet;
-@@ -24,6 +_,9 @@
+-	public bool shimmerWet;
+-	public bool honeyWet;
++	/// <summary>
++	/// Legacy code, use <see cref="wets"/> instead.
++	/// </summary>
++	public bool shimmerWet {
++		get => wets[LiquidID.Shimmer];
++		set => wets[LiquidID.Shimmer] = value;
++	}
++	/// <summary>
++	/// Legacy code, use <see cref="wets"/> instead.
++	/// </summary>
++	public bool honeyWet {
++		get => wets[LiquidID.Honey];
++		set => wets[LiquidID.Honey] = value;
++	}
+ 	public byte wetCount;
+-	public bool lavaWet;
++	/// <summary>
++	/// Legacy code, use <see cref="wets"/> instead.
++	/// </summary>
++	public bool lavaWet {
++		get => wets[LiquidID.Lava];
++		set => wets[LiquidID.Lava] = value;
++	}
++	/// <summary>
++	/// An array of whether the Entity is currently in a liquid or not.
++	/// </summary>
++	public bool[] wets = new bool[LiquidLoader.LiquidCount]; // Added by TML.
  
  	public virtual Vector2 VisualPosition => position;
  

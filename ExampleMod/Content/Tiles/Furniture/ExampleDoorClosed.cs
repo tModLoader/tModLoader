@@ -28,6 +28,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 			TileID.Sets.HasOutlines[Type] = true;
 			TileID.Sets.DisableSmartCursor[Type] = true;
 			TileID.Sets.OpenDoorID[Type] = ModContent.TileType<ExampleDoorOpen>();
+			TileID.Sets.IgnoresWaterDuringWorldgen.Add(Type); //Just like normal closed doors, we make liquids flow through this tile during world generation.
 
 			AddToArray(ref TileID.Sets.RoomNeeds.CountsAsDoor);
 

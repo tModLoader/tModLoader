@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Utilities;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.Enums;
 using Terraria.GameContent;
 using Terraria.GameContent.Biomes.CaveHouse;
 using Terraria.GameContent.ObjectInteractions;
+using Terraria.Graphics.Light;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
@@ -80,6 +82,7 @@ public static class TileLoader
 	private delegate void DelegateDrawEffects(int i, int j, int type, SpriteBatch spriteBatch, ref TileDrawInfo drawData);
 	private static DelegateDrawEffects[] HookDrawEffects;
 	private static Action<int, int, Tile, ushort, short, short, Color, bool>[] HookEmitParticles;
+	private static Func<int, int, int, SpriteBatch, Vector2, bool>[] HookDrawTileInWater;
 	private static Action<int, int, int, SpriteBatch>[] HookPostDraw;
 	private static Action<int, int, int, SpriteBatch>[] HookSpecialDraw;
 	private delegate bool DelegatePreDrawPlacementPreview(int i, int j, int type, SpriteBatch spriteBatch, ref Rectangle frame, ref Vector2 position, ref Color color, bool validPlacement, ref SpriteEffects spriteEffects);
@@ -109,6 +112,10 @@ public static class TileLoader
 	private static Action<int, int, TreeTypes>[] HookPreShakeTree;
 	private static Func<int, int, TreeTypes, bool>[] HookShakeTree;
 	private static Action<int, int, int, int, int>[] HookOnTileConverted;
+	private delegate void DelegateTileMaskMode(int i, int j, int type, ref LightMaskMode liquidMaskMode);
+	private static DelegateTileMaskMode[] HookTileLightMaskMode;
+	private delegate WaterfallManager.WaterfallData? DelegateCreateWaterfall(int i, int j, int type);
+	private static DelegateCreateWaterfall[] HookCreateWaterfall;
 
 	internal static int ReserveTileID()
 	{
@@ -268,6 +275,9 @@ public static class TileLoader
 		ModLoader.BuildGlobalHook(ref HookPreShakeTree, globalTiles, g => g.PreShakeTree);
 		ModLoader.BuildGlobalHook(ref HookShakeTree, globalTiles, g => g.ShakeTree);
 		ModLoader.BuildGlobalHook(ref HookOnTileConverted, globalTiles, g => g.OnTileConverted);
+		ModLoader.BuildGlobalHook(ref HookTileLightMaskMode, globalTiles, g => g.TileLightMaskMode);
+		ModLoader.BuildGlobalHook(ref HookDrawTileInWater, globalTiles, g => g.DrawTileInWater);
+		ModLoader.BuildGlobalHook(ref HookCreateWaterfall, globalTiles, g => g.CreateWaterfall);
 
 		if (!unloading) {
 			loaded = true;
@@ -710,6 +720,18 @@ public static class TileLoader
 		}
 	}
 
+	public static void TileLightMaskMode(int i, int j, int type, ref LightMaskMode liquidMaskMode)
+	{
+		ModTile modTile = GetTile(type);
+		if (modTile != null) {
+			liquidMaskMode = modTile.TileLightMaskMode(i, j);
+		}
+		DelegateTileMaskMode[] hookTileLightMaskMode = HookTileLightMaskMode;
+		for (int k = 0; k < hookTileLightMaskMode.Length; k++) {
+			hookTileLightMaskMode[k](i, j, type, ref liquidMaskMode);
+		}
+	}
+
 	/// <summary>
 	/// Registers a tile type as having custom biome conversion code for this specific <see cref="BiomeConversionID"/>. For modded tiles, you can directly use <see cref="Convert"/> <br/>
 	/// If you need to register conversions that rely on <see cref="TileID.Sets.Conversion"/> being fully populated, consider doing it in <see cref="ModBiomeConversion.PostSetupContent"/>
@@ -1040,6 +1062,17 @@ public static class TileLoader
 			hook(i, j, tileCache, typeCache, tileFrameX, tileFrameY, tileLight, visible);
 		}
 		GetTile(typeCache)?.EmitParticles(i, j, tileCache, tileFrameX, tileFrameY, tileLight, visible);
+	}
+
+	public static bool DrawTileInWater(int i, int j, int type, SpriteBatch spriteBatch, Vector2 drawOffset)
+	{
+		foreach (var hook in HookDrawTileInWater) {
+			if (!hook(i, j, type, spriteBatch, drawOffset)) {
+				return false;
+			}
+		}
+		GetTile(type)?.DrawTileInWater(i, j, spriteBatch, drawOffset);
+		return true;
 	}
 
 	public static void PostDraw(int i, int j, int type, SpriteBatch spriteBatch)
@@ -1520,5 +1553,14 @@ public static class TileLoader
 
 		GetTile(fromType)?.OnTileConverted(i, j, fromType, toType, conversionType);
 		GetTile(toType)?.OnTileConverted(i, j, fromType, toType, conversionType);
+	}
+
+	public static WaterfallManager.WaterfallData? CreateWaterfall(int i, int j, int type)
+	{
+		WaterfallManager.WaterfallData? data = GetTile(type)?.CreateWaterfall(i, j);
+		foreach (var hook in HookCreateWaterfall) {
+			data = hook(i, j, type);
+		}
+		return data;
 	}
 }

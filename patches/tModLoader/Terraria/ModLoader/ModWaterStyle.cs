@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Terraria.GameContent;
 using Terraria.GameContent.Liquid;
+using static Terraria.WaterfallManager;
 
 namespace Terraria.ModLoader;
 
@@ -130,5 +131,70 @@ public abstract class ModWaterfallStyle : ModTexturedType
 	/// </summary>
 	public virtual void ColorMultiplier(ref float r, ref float g, ref float b, float a)
 	{
+	}
+
+	/// <summary>
+	/// Allows you to draw things behind the waterfall at the given coordinates. Return false to stop the game from drawing the waterfall normally. Returns true by default.
+	/// </summary>
+	/// <param name="currentWaterfallData">The current waterfall data.</param>
+	/// <param name="i">The x position in tile coordinates.</param>
+	/// <param name="j">The Y position in tile coordinates.</param>
+	/// <param name="spriteBatch"></param>
+	/// <returns></returns>
+	public virtual bool PreDraw(WaterfallData currentWaterfallData, int i, int j, SpriteBatch spriteBatch)
+	{
+		return true;
+	}
+
+	/// <summary>
+	/// Allows you to draw things overtop of the waterfall at the given coordinates. This can also be used to do things such as rendering glowmasks.<para />
+	/// </summary>
+	/// <param name="currentWaterfallData">The current waterfall data, this is used inside of the waterfalls WaterfallData array.</param>
+	/// <param name="i">The x position in tile coordinates.</param>
+	/// <param name="j">The Y position in tile coordinates.</param>
+	/// <param name="spriteBatch"></param>
+	/// <returns></returns>
+	public virtual void PostDraw(WaterfallData currentWaterfallData, int i, int j, SpriteBatch spriteBatch)
+	{
+	}
+
+	/// <summary>
+	/// Allows you to animate your waterfall. <br/>
+	/// Overriding this method will make your waterfall nolonger animate normally.<br/><br/>
+	/// Use frame to specify which frame the waterfall is using currently. <br/><br/>
+	/// Use frameBackground to specify which background frame the waterfall is using. (This normally goes unused, but is very useful for modders looking into drawing their own waterfalls manually). <br/>
+	/// Rain clouds use this to specify the framing of the rain behind the main rain waterfall.<br/><br/>
+	/// Use frameCounter to specify the duration between frames.<br/><br/>
+	/// </summary>
+	/// <param name="frame">Waterfalls use this to know what frame to use when drawing.</param>
+	/// <param name="frameBackground">Unused normally, can be used by modders for extra framing.</param>
+	/// <param name="frameCounter">Used to specify a certain amount of time between waterfall frames.</param>
+	public virtual void AnimateWaterfall(ref int frame, ref int frameBackground, ref int frameCounter)
+	{
+	}
+
+	/// <summary>
+	/// Edits the opacity of the waterfall. For example: Waterfalls have an opacity of 60% (0.6f) which allows you to see some stuff behind them, while Lavafalls have an opacity of 100% (1f) which prevents you from seeing anything behind. <br />
+	/// Returns null be default.
+	/// </summary>
+	/// <param name="x">The x position in tile coordinates.</param>
+	/// <param name="y">The Y position in tile coordinates.</param>
+	/// <param name="Alpha">The current waterfall water style alpha</param>
+	/// <param name="maxSteps">The maximum length of the waterfall</param>
+	/// <param name="s"></param>
+	/// <param name="tileCache">Tile at the waterfall position</param>
+	/// <returns></returns>
+	public virtual float? Alpha(int x, int y, float Alpha, int maxSteps, int s, Tile tileCache)
+	{
+		return null;
+	}
+
+	/// <summary>
+	/// Allows you to prevent the waterfall/liquidfall from making any water sounds when on screen. This is useful for waterfalls/liquidfalls that arent made of water. Returns true by default. 
+	/// </summary>
+	/// <returns></returns>
+	public virtual bool PlayWaterfallSounds()
+	{
+		return true;
 	}
 }

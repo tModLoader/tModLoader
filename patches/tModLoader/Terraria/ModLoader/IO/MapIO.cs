@@ -70,6 +70,13 @@ internal static class MapIO
 				writer.Write(tile.Name);
 				writer.Write((ushort)(type - MapHelper.tileLookup[tile.Type]));
 			}
+			else if (MapLoader.entryToLiquid.ContainsKey(type)) {
+				ModLiquid liquid = LiquidLoader.GetLiquid(MapLoader.entryToLiquid[type]);
+				writer.Write(false);
+				writer.Write(liquid.Mod.Name);
+				writer.Write(liquid.Name);
+				writer.Write((ushort)(type - MapHelper.liquidLookup[liquid.Type]));
+			}
 			else if (MapLoader.entryToWall.ContainsKey(type)) {
 				ModWall wall = WallLoader.GetWall(MapLoader.entryToWall[type]);
 				writer.Write(false);
@@ -113,6 +120,12 @@ internal static class MapIO
 						option = 0;
 					}
 					newType = (ushort)(MapHelper.wallLookup[wall.Type] + option);
+				}
+				else if (ModContent.TryFind(modName, name, out ModLiquid liquid)) {
+					if (option >= MapLoader.modLiquidOptions(liquid.Type)) {
+						option = 0;
+					}
+					newType = (ushort)(MapHelper.liquidLookup[liquid.Type] + option);
 				}
 			}
 			table[type] = newType;

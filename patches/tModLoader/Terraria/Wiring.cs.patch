@@ -117,6 +117,15 @@
  	{
  		for (int k = 0; k < _numMechs; k++) {
  			if (_mechX[k] == i && _mechY[k] == j)
+@@ -388,7 +_,7 @@
+ 				if (liquid2 == 0)
+ 					b2 = b;
+ 
+-				if (b2 == b) {
++				if (b2 == b && LiquidLoader.OnPump(b, _inPumpX[i], _inPumpY[i], _outPumpX[j], _outPumpY[j])) {
+ 					int num5 = liquid;
+ 					if (num5 + liquid2 > 255)
+ 						num5 = 255 - liquid2;
 @@ -410,7 +_,14 @@
  		}
  	}

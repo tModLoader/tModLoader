@@ -1,0 +1,99 @@
+--- src/TerrariaNetCore/Terraria/GameContent/Shaders/WaterShaderData.cs
++++ src/tModLoader/Terraria/GameContent/Shaders/WaterShaderData.cs
+@@ -1,4 +_,5 @@
+ using System;
++using System.Linq;
+ using Microsoft.Xna.Framework;
+ using Microsoft.Xna.Framework.Graphics;
+ using ReLogic.Content;
+@@ -8,6 +_,7 @@
+ using Terraria.Graphics.Light;
+ using Terraria.Graphics.Shaders;
+ using Terraria.ID;
++using Terraria.ModLoader;
+ 
+ namespace Terraria.GameContent.Shaders;
+ 
+@@ -182,6 +_,10 @@
+ 					if (!nPC.wet)
+ 						num2 = -20f;
+ 
++					for (int l = LiquidLoader.LiquidCount - 1; l >= 0; l--)
++						if (nPC.wets[l])
++							LiquidLoader.NPCRippleModifier(l, nPC, ref num, ref num2);
++
+ 					QueueRipple(nPC.Center + velocity * num2, new Color(0.5f, (nPC.wet ? num : (0f - num)) * 0.5f + 0.5f, 0f, 1f) * 0.5f, new Vector2(nPC.width, (float)nPC.height * ((float)(int)nPC.wetCount / 9f)) * MathHelper.Clamp(num * 10f, 0f, 1f), RippleShape.Circle);
+ 				}
+ 			}
+@@ -210,6 +_,10 @@
+ 					if (!player.wet)
+ 						num4 = -20f;
+ 
++					for (int l = LiquidLoader.LiquidCount - 1; l >= 0; l--)
++						if (player.wets[l])
++							LiquidLoader.PlayerRippleModifier(l, player, ref num3, ref num4);
++
+ 					num3 *= 3f;
+ 					QueueRipple(player.Center + velocity2 * num4, player.wet ? num3 : (0f - num3), new Vector2(player.width, (float)player.height * ((float)(int)player.wetCount / 9f)) * MathHelper.Clamp(num3 * 10f, 0f, 1f), RippleShape.Circle);
+ 				}
+@@ -227,6 +_,9 @@
+ 				bool flag = projectile.lavaWet;
+ 				bool flag2 = projectile.honeyWet;
+ 				bool flag3 = projectile.wet;
++				bool shimmer = projectile.shimmerWet;
++				bool[] liquidsIn = new bool[LiquidLoader.LiquidCount];
++				Array.Copy(projectile.wets, liquidsIn, LiquidLoader.LiquidCount);
+ 				if (projectile.ignoreWater)
+ 					flag3 = true;
+ 
+@@ -236,8 +_,10 @@
+ 				if (projectile.ignoreWater) {
+ 					bool num5 = Collision.LavaCollision(projectile.position, projectile.width, projectile.height);
+ 					flag = Collision.WetCollision(projectile.position, projectile.width, projectile.height);
++					Collision.GetModdedWets(projectile.position, projectile.width, projectile.height, out liquidsIn);
+ 					flag2 = Collision.honey;
+-					if (!(num5 || flag || flag2))
++					shimmer = Collision.shimmer;
++					if (!(num5 || flag || flag2 || shimmer || liquidsIn.Contains(true)))
+ 						continue;
+ 				}
+ 
+@@ -246,8 +_,36 @@
+ 				num6 = 2f * (float)Math.Sqrt(0.05f * num6);
+ 				Vector2 velocity3 = projectile.velocity;
+ 				velocity3.Normalize();
++				if (!_useViscosityFilter) {
+-				if (!_useViscosityFilter && (flag2 || flag))
++					if ((flag2 || flag))
+-					num6 *= 0.3f;
++						num6 *= 0.3f;
++
++					for (int l = LiquidLoader.LiquidCount - 1; l >= 0; l--) {
++						if (l >= LiquidID.Count) {
++							if (liquidsIn[l]) {
++								num6 *= LiquidLoader.GetLiquid(l).WaterRippleMultiplier;
++								LiquidLoader.WaterRippleMultiplier(l, ref num6);
++								break;
++							}
++						}
++						else if (l == LiquidID.Shimmer) {
++							if (shimmer)
++								LiquidLoader.WaterRippleMultiplier(l, ref num6);
++						}
++						else if (l == LiquidID.Honey) {
++							if (flag2)
++								LiquidLoader.WaterRippleMultiplier(l, ref num6);
++						}
++						else if (l == LiquidID.Lava) {
++							if (flag)
++								LiquidLoader.WaterRippleMultiplier(l, ref num6);
++						}
++						else if (l == LiquidID.Water) {
++							if (flag3)
++								LiquidLoader.WaterRippleMultiplier(l, ref num6);
++						}
++					}
++				}
+ 
+ 				float num7 = Math.Max(12f, (float)projectile.width * 0.75f);
+ 				float num8 = Math.Max(12f, (float)projectile.height * 0.75f);

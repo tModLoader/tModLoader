@@ -1,9 +1,11 @@
+using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 using Terraria.DataStructures;
-using Terraria.ID;
 using Terraria.Enums;
+using Terraria.Graphics.Light;
+using Terraria.ID;
+using static Terraria.WaterfallManager;
 
 namespace Terraria.ModLoader;
 
@@ -162,6 +164,21 @@ public abstract class GlobalTile : GlobalBlockType
 	}
 
 	/// <summary>
+	/// Allows the rendering of tiles attached to liquids. <br/>
+	/// Lily pads use this hook to draw themselves to liquids so water ripples/waves effect those tiles. <br/>
+	/// Return false to prevent the rendering of tiles attached to liquids
+	/// </summary>
+	/// <param name="i">The x position in tile coordinates.</param>
+	/// <param name="j">The y position in tile coordinates.</param>
+	/// <param name="type">The Tile type of the tile being drawn</param>
+	/// <param name="spriteBatch"></param>
+	/// <param name="drawOffset">The draw offset of the tile, used to position the tile correctly.</param>
+	public virtual bool DrawTileInWater(int i, int j, int type, SpriteBatch spriteBatch, Vector2 drawOffset)
+	{
+		return true;
+	}
+
+	/// <summary>
 	/// Special Draw. Only called if coordinates are added using Main.instance.TilesRenderer.AddSpecialLegacyPoint during DrawEffects. Useful for drawing things that would otherwise be impossible to draw due to draw order, such as items in item frames.
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
@@ -220,6 +237,18 @@ public abstract class GlobalTile : GlobalBlockType
 	public virtual bool TileFrame(int i, int j, int type, ref bool resetFrame, ref bool noBreak)
 	{
 		return true;
+	}
+
+	/// <summary>
+	/// Allows you to change the Light Mask Mode for any tile. The Light Mask Mode is the mask for lighting to determine how light interacts with a tile. <br/>
+	/// Vanilla has options for Solid and None. Where all solid tiles will use Solid and active stone tiles will use the None option. <br/>
+	/// </summary>
+	/// <param name="i">The x position in tile coordinates.</param>
+	/// <param name="j">The y position in tile coordinates.</param>
+	/// <param name="type"></param>
+	/// <param name="tileMaskMode">Edit this param to change the Light Mask Mode of the liquid.</param>
+	public virtual void TileLightMaskMode(int i, int j, int type, ref LightMaskMode tileMaskMode)
+	{
 	}
 
 	/// <summary>
@@ -400,5 +429,21 @@ public abstract class GlobalTile : GlobalBlockType
 	/// <inheritdoc cref="ModTile.OnTileConverted(int, int, int, int, int)"/>
 	public virtual void OnTileConverted(int i, int j, int fromType, int toType, int conversionType)
 	{
+		return null;
+	}
+
+	/// <summary>
+	/// Used to create waterfalls from a tile.<br/>
+	/// This method is used only by rain clouds and snow clouds to create their effects beneath them.<br/>
+	/// Waterfall data is used to set the position and type of the waterfall. Return waterfall data with the type of -1 to prevent the creation of a waterfall from a given tile. <br/>
+	/// Returns null by default.
+	/// </summary>
+	/// <param name="i">The x position in tile coordinates.</param>
+	/// <param name="j">The y position in tile coordinates.</param>
+	/// <param name="type"></param>
+	/// <returns>The data of a waterfall created by this tile.</returns>
+	public virtual WaterfallData? CreateWaterfall(int i, int j, int type)
+	{
+		return null;
 	}
 }

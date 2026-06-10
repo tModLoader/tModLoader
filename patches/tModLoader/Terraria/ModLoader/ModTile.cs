@@ -1,13 +1,15 @@
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.GameContent.ObjectInteractions;
+using Terraria.Graphics.Light;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ObjectData;
+using static Terraria.WaterfallManager;
 
 namespace Terraria.ModLoader;
 
@@ -301,6 +303,18 @@ public abstract class ModTile : ModBlockType
 	}
 
 	/// <summary>
+	/// Allows you to change the Light Mask Mode for this tile. The Light Mask Mode is the mask for lighting to determine how light interacts with this tile. <br/>
+	/// Vanilla has options for Solid and None. Where all solid tiles will use Solid and active stone tiles will use the None option. <br/>
+	/// Defaults to LightMaskMode.Solid.
+	/// </summary>
+	/// <param name="i">The x position in tile coordinates.</param>
+	/// <param name="j">The y position in tile coordinates.</param>
+	public virtual LightMaskMode TileLightMaskMode(int i, int j)
+	{
+		return LightMaskMode.Solid;
+	}
+
+	/// <summary>
 	/// Only called for torches, when there is one nearby. Use this to contribute to vanilla torch luck calculations.
 	/// Typical return values are 1f for a torch in its biome, 0.5f for a weak positive torch, -1f for a torch in an opposing biome, and -0.5f for a weak negative torch.
 	/// </summary>
@@ -417,6 +431,18 @@ public abstract class ModTile : ModBlockType
 	/// <param name="spriteBatch"></param>
 	/// <param name="drawData">Various information about the tile that is being drawn, such as color, framing, glow textures, etc.</param>
 	public virtual void DrawEffects(int i, int j, SpriteBatch spriteBatch, ref TileDrawInfo drawData)
+	{
+	}
+
+	/// <summary>
+	/// Allows the rendering of tiles attached to liquids. <br/>
+	/// Lily pads use this hook to draw themselves to liquids so water ripples/waves effect those tiles.
+	/// </summary>
+	/// <param name="i">The x position in tile coordinates.</param>
+	/// <param name="j">The y position in tile coordinates.</param>
+	/// <param name="spriteBatch"></param>
+	/// <param name="drawOffset">The draw offset of the tile, used to position the tile correctly.</param>
+	public virtual void DrawTileInWater(int i, int j, SpriteBatch spriteBatch, Vector2 drawOffset)
 	{
 	}
 
@@ -779,5 +805,19 @@ public abstract class ModTile : ModBlockType
 	/// <param name="conversionType">A <see cref="BiomeConversionID"/> (or <see cref="ModBiomeConversion.Type"/>)</param>
 	public virtual void OnTileConverted(int i, int j, int fromType, int toType, int conversionType)
 	{
+	}
+
+	/// <summary>
+	/// Used to create waterfalls from this tile. <br/>
+	/// This method is used only by rain clouds and snow clouds to create their effects beneath them. Modded tiles can use this method to create their own custom rain clouds.<br/>
+	/// Waterfall data is used to set the position and type of the waterfall. Return type -1 when you don't want to create a waterfall. <br/>
+	/// Returns waterfall data with the type as -1 by default.
+	/// </summary>
+	/// <param name="i">The x position in tile coordinates.</param>
+	/// <param name="j">The y position in tile coordinates.</param>
+	/// <returns>The data of a waterfall created by this tile.</returns>
+	public virtual WaterfallData CreateWaterfall(int i, int j)
+	{
+		return new WaterfallData() { type = -1, x = i, y = j };
 	}
 }
