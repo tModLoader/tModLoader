@@ -1,9 +1,11 @@
 ﻿using System;
+using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Steamworks;
 using Terraria.Audio;
+using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
 using Terraria.Localization;
@@ -23,6 +25,12 @@ internal class UISwitchBeta : UIState, IHaveBackButtonCommand
 	private UIPanel betaListPanel;
 	private UIList betaList;
 	protected UITextPanel<string> backButton;
+	// confirmation dialog
+	private UIAutoScaleTextTextPanel<LocalizedText> confirmDialogYesButton;
+	private UIAutoScaleTextTextPanel<LocalizedText> confirmDialogNoButton;
+	private UIText confirmDialogText;
+	private UIImage blockInput;
+	private UIPanel activeDialog;
 
 	public UIState PreviousUIState { get; set; }
 
@@ -58,7 +66,7 @@ internal class UISwitchBeta : UIState, IHaveBackButtonCommand
 		topMessagePanel.Append(topMessage);
 
 		wikiLink = new UIText(Language.GetTextValue("tModLoader.SwitchVersionWikiLinkLabel")) {
-			TextColor = Color.White,
+			TextColor = Color.LightGray,
 			Top = new StyleDimension(90, 0),
 			Left = new StyleDimension(32, 0),
 		};
@@ -67,7 +75,7 @@ internal class UISwitchBeta : UIState, IHaveBackButtonCommand
 			wikiLink.TextColor = Main.OurFavoriteColor;
 		};
 		wikiLink.OnMouseOut += delegate (UIMouseEvent evt, UIElement listeningElement) {
-			wikiLink.TextColor = Color.White;
+			wikiLink.TextColor = Color.LightGray;
 		};
 		wikiLink.OnLeftClick += delegate (UIMouseEvent evt, UIElement listeningElement) {
 			SoundEngine.PlaySound(SoundID.MenuOpen);
@@ -133,14 +141,21 @@ internal class UISwitchBeta : UIState, IHaveBackButtonCommand
 			branchPanel.Height.Set(102, 0f);
 			branchPanel.BackgroundColor = UICommon.DefaultUIBlue;
 
-			UIText betaNameText = new UIText(betaName) {
+			string betaNameDisplay = betaName;
+			if (betaBranchFlags.HasFlag(EBetaBranchFlags.k_EBetaBranch_Default)) {
+				betaNameDisplay = Language.GetTextValue("tModLoader.SwitchVersionDefaultBranchName");
+				branchDescription = Language.GetTextValue("tModLoader.SwitchVersionDefaultBranchDescription");
+			}
+			// TODO: If requested, we could consider adding localization within tModLoader for the other beta branch names/descriptions, but it should be fine since this is the current status quo.
+
+			UIText betaNameText = new UIText(betaNameDisplay) {
 				Top = { Pixels = 2 },
-				Left = { Pixels = 85 }
+				Left = { Pixels = 45 }
 			};
 			UIText betaDescriptionText = new UIText(branchDescription) {
 				Top = { Pixels = 30 },
-				Left = { Pixels = 100 + 12 },
-				Width = StyleDimension.FromPixelsAndPercent(-112f, 1f),
+				Left = { Pixels = 60 + 12 },
+				Width = StyleDimension.FromPixelsAndPercent(-72f, 1f),
 				TextOriginX = 0
 			};
 			betaDescriptionText.IsWrapped = true;
@@ -154,8 +169,8 @@ internal class UISwitchBeta : UIState, IHaveBackButtonCommand
 			UIImage betaIconImage = new UIImage(Main.Assets.Request<Texture2D>(betaIconPath, AssetRequestMode.ImmediateLoad)) {
 				Left = { Percent = 0f },
 				Top = { Percent = 0f },
-				Width = { Pixels = 80 },
-				Height = { Pixels = 80 },
+				Width = { Pixels = 40 },
+				Height = { Pixels = 40 },
 				ScaleToFit = true,
 			};
 
@@ -166,23 +181,36 @@ internal class UISwitchBeta : UIState, IHaveBackButtonCommand
 			betaList.Add(branchPanel);
 
 			if (betaBranchFlags.HasFlag(EBetaBranchFlags.k_EBetaBranch_Selected)) {
-				UIText selectedMessage = new UIText("") {
-					Top = { Pixels = betaDescriptionText.Top.Pixels + betaDescriptionText.GetOuterDimensions().Height - 18 },
-					Left = { Pixels = 100 + 12 },
-					Width = StyleDimension.FromPixelsAndPercent(-112f, 1f),
+				float top = betaDescriptionText.Top.Pixels + betaDescriptionText.GetOuterDimensions().Height - 18;
+
+				UIText selectedMessage = new UIText(Language.GetTextValue("tModLoader.SwitchVersionCurrentlySelected")) {
+					Top = { Pixels = top },
+					Left = { Pixels = 45 },
+					Width = StyleDimension.FromPixelsAndPercent(-72f, 1f),
 					IsWrapped = true,
 					TextOriginX = 0,
-					TextColor = Color.Red
+					TextColor = Color.Green
 				};
-
-				selectedMessage.SetText(Language.GetTextValue("tModLoader.SwitchVersionCurrentlySelected"));
-				// TODO: Do we need to care if the current exe is the steam exe or not? (such as a dev build)
-				selectedMessage.TextColor = Color.Green;
-
 				branchPanel.Append(selectedMessage);
 				branchPanel.Recalculate();
-				int textHeight = (int)selectedMessage.GetDimensions().Height;
-				branchPanel.Height.Set(Math.Max(92, textHeight + selectedMessage.Top.Pixels - 12), 0f);
+				top = selectedMessage.Top.Pixels + selectedMessage.GetOuterDimensions().Height - 18;
+
+				SteamApps.GetAppInstallDir(Engine.Steam.TMLAppID_t, out string tModLoaderInstallDirectory, 1000);
+				string currentWorkingDirectory = Environment.CurrentDirectory;
+				if(Path.GetRelativePath(tModLoaderInstallDirectory, currentWorkingDirectory) != ".") {
+					UIText notSteamInstallWarning = new UIText(Language.GetTextValue("tModLoader.SwitchVersionCurrentlySelectedButRunningSeparateInstallWarning")) {
+						Top = { Pixels = top },
+						Left = { Pixels = 45 },
+						Width = StyleDimension.FromPixelsAndPercent(-72f, 1f),
+						IsWrapped = true,
+						TextOriginX = 0,
+						TextColor = Color.Orange
+					};
+					branchPanel.Append(notSteamInstallWarning);
+					branchPanel.Recalculate();
+					top = notSteamInstallWarning.Top.Pixels + notSteamInstallWarning.GetOuterDimensions().Height - 18;
+				}
+				branchPanel.Height.Set(Math.Max(92, top), 0f);
 			}
 			else {
 				var buttonPlayTexture = Main.Assets.Request<Texture2D>("Images/UI/ButtonPlay");
@@ -198,18 +226,97 @@ internal class UISwitchBeta : UIState, IHaveBackButtonCommand
 				};
 				switchButton.OnLeftClick += (a, b) => {
 					SoundEngine.PlaySound(SoundID.MenuClose);
-					Logging.tML.Info($"Switching to beta branch: {betaName}");
-					SteamApps.SetActiveBeta(betaName);
-					Main.instance.Exit();
+					ShowConfirmationWindow((UIElement, Vector2) => {
+						Logging.tML.Info($"Switching to beta branch: {betaName}");
+						SteamApps.SetActiveBeta(betaName);
+						Main.instance.Exit();
+					}, "tModLoader.SwitchVersionConfirm");
 				};
 				branchPanel.Append(switchButton);
 			}
 		}
 	}
 
+	private void ShowConfirmationWindow(MouseEvent yesAction, string confirmDialogTextKey)
+	{
+		var confirmationDialog = new UIPanel() {
+			Width = { Pixels = 500 },
+			Height = { Pixels = 160 },
+			HAlign = .5f,
+			VAlign = .5f,
+			BackgroundColor = new Color(63, 82, 151),
+			BorderColor = Color.Black
+		};
+		confirmationDialog.SetPadding(6f);
+		ShowConfirmDialog(confirmationDialog);
+
+		confirmDialogYesButton = new UIAutoScaleTextTextPanel<LocalizedText>(Language.GetText("LegacyMenu.104")) {
+			TextColor = Color.White,
+			Width = new StyleDimension(-10f, 1f / 3f),
+			Height = { Pixels = 40 },
+			VAlign = .95f,
+			HAlign = .15f
+		}.WithFadedMouseOver();
+		confirmDialogYesButton.OnLeftClick += yesAction;
+		confirmDialogYesButton.OnLeftClick += CloseConfirmDialog;
+		confirmationDialog.Append(confirmDialogYesButton);
+
+		confirmDialogNoButton = new UIAutoScaleTextTextPanel<LocalizedText>(Language.GetText("LegacyMenu.105")) {
+			TextColor = Color.White,
+			Width = new StyleDimension(-10f, 1f / 3f),
+			Height = { Pixels = 40 },
+			VAlign = .95f,
+			HAlign = .85f
+		}.WithFadedMouseOver();
+		confirmDialogNoButton.OnLeftClick += CloseConfirmDialog;
+		confirmationDialog.Append(confirmDialogNoButton);
+
+		confirmDialogText = new UIText(Language.GetTextValue(confirmDialogTextKey)) {
+			Width = { Percent = .75f },
+			HAlign = .5f,
+			VAlign = .2f,
+			IsWrapped = true
+		};
+		confirmationDialog.Append(confirmDialogText);
+		Recalculate();
+	}
+
+	internal void CloseConfirmDialog(UIMouseEvent evt, UIElement listeningElement)
+	{
+		SoundEngine.PlaySound(SoundID.MenuClose);
+		blockInput?.Remove();
+		activeDialog?.Remove();
+	}
+
+	internal void ShowConfirmDialog(UIPanel dialog)
+	{
+		blockInput = new UIImage(TextureAssets.Extra[190]) {
+			Width = { Percent = 1 },
+			Height = { Percent = 1 },
+			Color = Color.Black * 0.5f,
+			ScaleToFit = true
+		};
+		blockInput.Width = StyleDimension.Fill;
+		blockInput.Height = StyleDimension.Fill;
+		blockInput.OnLeftMouseDown += CloseConfirmDialog;
+		Append(blockInput);
+
+		Append(activeDialog = dialog);
+	}
+
 	private void BackClick(UIMouseEvent evt, UIElement listeningElement)
 	{
 		(this as IHaveBackButtonCommand).HandleBackButtonUsage();
+	}
+
+	public void HandleBackButtonUsage()
+	{
+		if (blockInput != null && HasChild(blockInput)) {
+			CloseConfirmDialog(null, null);
+			return;
+		}
+
+		IHaveBackButtonCommand.GoBackTo(PreviousUIState);
 	}
 
 	protected override void DrawSelf(SpriteBatch spriteBatch)
