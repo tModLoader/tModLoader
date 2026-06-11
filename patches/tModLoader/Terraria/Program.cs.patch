@@ -81,7 +81,7 @@
  		if (initializeStaticMembers)
  			ForceStaticInitializers(assembly);
  	}
-@@ -136,6 +_,10 @@
+@@ -136,6 +_,15 @@
  		if (Debugger.IsAttached)
  			return;
  
@@ -89,6 +89,11 @@
 +		if (!Main.dedServ && !LaunchParameters.ContainsKey("-console"))
 +			Platform.Get<IWindowService>().HideConsole();
 +
++		InitializeConsoleEncoding();
++	}
++
++	internal static void InitializeConsoleEncoding() // Split from InitializeConsoleOutput
++	{
  		try {
  			Console.OutputEncoding = Encoding.UTF8;
  			if (Platform.IsWindows)

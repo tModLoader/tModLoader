@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -45,6 +46,11 @@ public partial class WorkshopSocialModule
 		if (state == WorkshopHelper.WorkshopSearchReturnState.NotFound)
 			return false;
 
+		// If it is banned, then it can't be updated. This could be because it was malware or because of DMCA or whatever.
+		// It is imperative to ban malware accounts from further uploads during the 24 hour default ban time to prevent spam.
+		if (modDownloadItemAsFound.Banned)
+			return false;
+
 		currPublishID = ulong.Parse(modDownloadItemAsFound.PublishId.m_ModPubId);
 
 		// Update the subscribed mod to be the latest version published, so keeps all versions (stable, preview) together
@@ -81,6 +87,12 @@ public partial class WorkshopSocialModule
 		}
 
 		// Checks if Mod is adequate
+
+		// Check if mod is a debug build
+		if (AssemblyManager.IsLoadedModAssemblyDebugBuild(modFile.Name)) {
+			IssueReporter.ReportInstantUploadProblem("tModLoader.ModWasBuiltForDebugging");
+			return false;
+		}
 
 		// Check mod description
 		const string DescriptionFileName = "description.txt";

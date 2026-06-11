@@ -1,6 +1,6 @@
 using System.Collections.Concurrent;
 using System.Text;
-using DiffPatch;
+using CodeChicken.DiffPatch;
 using Microsoft.Extensions.DependencyInjection;
 using Terraria.ModLoader.Setup.Core.Abstractions;
 using Terraria.ModLoader.Setup.Core.Utilities;
