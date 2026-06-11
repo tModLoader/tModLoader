@@ -613,7 +613,7 @@ public partial class Main
 				continue;
 			var normalMod = normalModsToLoad.First(mod => mod.Name == loadedMod.Name); // If this throws, we have a big issue.
 			if (normalMod.modFile.path != loadedMod.File.path) {
-				reloadRequiredExplanationEntries.Add(new ReloadRequiredExplanation(1, normalMod.Name, normalMod, Language.GetTextValue("tModLoader.ReloadRequiredExplanationSwitchVersion", "FFFACD", normalMod.Version, loadedMod.Version)));
+				reloadRequiredExplanationEntries.Add(new ReloadRequiredExplanation(2, normalMod.Name, normalMod, Language.GetTextValue("tModLoader.ReloadRequiredExplanationSwitchVersion", "FFFACD", normalMod.Version, loadedMod.Version)));
 				needsReload = true;
 			}
 		}
