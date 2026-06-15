@@ -13,6 +13,18 @@
  {
  	private enum EngineState
  	{
+@@ -92,7 +_,10 @@
+ 
+ 		TimeLogger.LightingByPass[(int)_state].AddTime(fromTimestamp);
+ 		IncrementState();
+-	}
++
++        // TML: Mark light map as dirty to prompt buffer regenration.
++        _workingLightMap.MarkDirty();
++    }
+ 
+ 	private void IncrementState()
+ 	{
 @@ -167,6 +_,13 @@
  		}
  

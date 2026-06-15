@@ -24,6 +24,16 @@
  		if (x < _expandedRectLeft || x >= _expandedRectRight || y < _expandedRectTop || y >= _expandedRectBottom)
  			return Vector3.Zero;
  
+@@ -276,6 +_,9 @@
+ 			PreRenderPhase();
+ 
+ 		_lastCameraPosition = Main.Camera.UnscaledPosition;
++
++		// TML: Mark light map as dirty to prompt buffer regenration.
++		_lightMap.MarkDirty();
+ 	}
+ 
+ 	private void TryUpdatingMapWithLight()
 @@ -581,6 +_,7 @@
  		num3 = Utils.Clamp(_expandedRectTop, 5, Main.maxTilesY - 1);
  		num4 = Utils.Clamp(_expandedRectBottom, 5, Main.maxTilesY - 1);

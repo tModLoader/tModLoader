@@ -11,6 +11,11 @@ partial class LightMap
 	private Texture2D? bufferTexture;
 	private bool dirtyBuffer;
 
+	public void MarkDirty()
+	{
+		dirtyBuffer = true;
+	}
+
 	public unsafe LightMapBuffer GetBufferTexture()
 	{
 		var width = Width + 1;
