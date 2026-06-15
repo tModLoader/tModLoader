@@ -9,7 +9,7 @@
 +// from column-major to row-major; see comments below for explanations.
 +public partial class LightMap
  {
-+	// TML: Colors are now stored as a Vector4 array instead of a Vector4 array
++	// TML: Colors are now stored as a Vector4 array instead of a Vector3 array
 +	// with the express purpose of making it easier to write their data to a
 +	// texture.  This may be reverted if FNA ever adds a Vector3 surface
 +	// format.  The alpha channel is always 1.
