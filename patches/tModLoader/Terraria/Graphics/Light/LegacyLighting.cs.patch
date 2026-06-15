@@ -30,7 +30,7 @@
  		_lastCameraPosition = Main.Camera.UnscaledPosition;
 +
 +		// TML: Mark light map as dirty and update area.
-+		_lightMap.UpdateArea(new Rectangle(_expandedRectLeft, _expandedRectTop, _expandedRectRight - _expandedRectLeft, _expandedRectBottom - _expandedRectBottom));
++		_lightMap.UpdateArea(new Rectangle(_expandedRectLeft, _expandedRectTop, _expandedRectRight - _expandedRectLeft, _expandedRectBottom - _expandedRectTop));
  	}
  
  	private void TryUpdatingMapWithLight()
