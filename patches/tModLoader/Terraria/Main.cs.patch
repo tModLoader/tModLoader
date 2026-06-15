@@ -6803,6 +6803,46 @@
  	}
  
  	private static void UpdateAtmosphereTransparencyToSkyColor(float y)
+@@ -55298,6 +_,31 @@
+ 		ColorOfTheSkies = bgColorToSet;
+ 	}
+ 
++	// TML: Augment GetAreaToLight with additional information for light maps.
++	public static Rectangle GetAreaToLight()
++	{
++		return GetAreaToLight(out _, out _);
++	}
++
++	/// <summary>
++	///		Returns the area to light, as well as the scaled and unscaled
++	///		camera bounds.
++	/// </summary>
++	/// <param name="scaledBounds">The scaled bounds, in tiles.</param>
++	/// <param name="unscaledBounds">The unscaled bounds, in tiles.</param>
++	public static Rectangle GetAreaToLight(out Rectangle scaledBounds, out Rectangle unscaledBounds)
++	{
++		var unscaledPos = Camera.UnscaledPosition;
++		var unscaledSize = Camera.UnscaledSize;
++		var scaledPos = Camera.ScaledPosition;
++		var scaledSize = Camera.ScaledSize;
++
++		var useScaled = Lighting.UsingNewLighting;
++		var pos = useScaled ? scaledPos : unscaledPos;
++		var size = useScaled ? scaledSize : unscaledPos;
++	}
++
++	/*
+ 	public static Microsoft.Xna.Framework.Rectangle GetAreaToLight()
+ 	{
+ 		Vector2 vector = Camera.ScaledPosition;
+@@ -55313,6 +_,7 @@
+ 		int num4 = (int)Math.Floor((vector.Y + vector2.Y) / 16f) + 2;
+ 		return new Microsoft.Xna.Framework.Rectangle(num, num3, num2 - num, num4 - num3);
+ 	}
++	*/
+ 
+ 	public static void ClampScreenPositionToWorld()
+ 	{
 @@ -55390,6 +_,10 @@
  				else
  					bgStyle = 9;
