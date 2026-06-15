@@ -31,7 +31,7 @@
  		}
  	}
  
-@@ -44,15 +_,18 @@
+@@ -44,15 +_,22 @@
  		LightDecayThroughCrackedBrick = 0.8f;
  		LightDecayThroughWater = new Vector3(0.88f, 0.96f, 1.015f) * 0.91f;
  		LightDecayThroughHoney = new Vector3(0.75f, 0.7f, 0.6f) * 0.91f;
@@ -41,6 +41,10 @@
  		_colors = new Vector3[41209];
  		_mask = new LightMaskMode[41209];
 +		*/
++
++		// Initialized in SetSize.
++		_colors = [];
++		_mask = [];
 +		SetSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
  	}
  
