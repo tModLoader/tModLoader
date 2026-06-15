@@ -20,7 +20,7 @@ partial class Lighting
 	///		reinitalized between frames in response to lighting updates and
 	///		light map resizes.
 	///		<para/>
-	///		<b>This method is not thread-safe; it many initialize and mutate
+	///		<b>This method is not thread-safe; it may initialize and mutate
 	///		graphics resources and must be called exclusively on the main
 	///		thread.</b>
 	/// </summary>
