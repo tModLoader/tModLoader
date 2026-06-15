@@ -4,6 +4,6 @@ partial class LegacyLighting
 {
 	public LightMapBuffer GetBufferTexture()
 	{
-		return LightMapBuffer.FromLightMap(_lightMap);
+		return _lightMap.GetBufferTexture();
 	}
 }
