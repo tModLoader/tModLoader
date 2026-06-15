@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Graphics/Light/LegacyLighting.cs
 +++ src/tModLoader/Terraria/Graphics/Light/LegacyLighting.cs
-@@ -4,6 +_,7 @@
+@@ -4,11 +_,12 @@
  using ReLogic.Threading;
  using Terraria.DataStructures;
  using Terraria.Graphics.Capture;
@@ -8,6 +8,12 @@
  using Terraria.Utilities;
  
  namespace Terraria.Graphics.Light;
+ 
+-public class LegacyLighting : ILightingEngine
++public partial class LegacyLighting : ILightingEngine
+ {
+ 	public struct RectArea
+ 	{
 @@ -144,6 +_,9 @@
  
  	public Vector3 GetColor(int x, int y)

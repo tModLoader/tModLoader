@@ -1,5 +1,14 @@
 --- src/TerrariaNetCore/Terraria/Graphics/Light/LightMap.cs
 +++ src/tModLoader/Terraria/Graphics/Light/LightMap.cs
+@@ -4,7 +_,7 @@
+ 
+ namespace Terraria.Graphics.Light;
+ 
+-public class LightMap
++public partial class LightMap
+ {
+ 	private Vector3[] _colors;
+ 	private LightMaskMode[] _mask;
 @@ -193,9 +_,21 @@
  
  	public void SetSize(int width, int height)
