@@ -86,7 +86,7 @@
  	}
  
  	private void BlurLine(int startIndex, int endIndex, int stride)
-@@ -189,16 +_,38 @@
+@@ -189,16 +_,40 @@
  		}
  	}
  
@@ -117,6 +117,8 @@
  
  		Width = width;
  		Height = height;
++
++		tileArea = new Rectangle(0, 0, width + 1, height + 1);
 +
 +		if (bufferTexture is not null && (bufferTexture.Width != width || bufferTexture.Height != height)) {
 +			bufferTexture?.Dispose();

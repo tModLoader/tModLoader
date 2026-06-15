@@ -11,17 +11,15 @@ partial class LightMap
 	private Texture2D? bufferTexture;
 	private bool dirtyBuffer;
 	private Rectangle tileArea;
-	private int tilePadding;
 
 	public void MarkDirty()
 	{
 		dirtyBuffer = true;
 	}
 
-	public void UpdateArea(Rectangle area, int padding)
+	public void UpdateArea(Rectangle area)
 	{
 		tileArea = area;
-		tilePadding = padding;
 		dirtyBuffer = true;
 	}
 
@@ -51,7 +49,7 @@ partial class LightMap
 		return new LightMapBuffer
 		{
 			Texture = bufferTexture,
-			ScreenTileArea = tileArea
+			TileArea = tileArea
 		};
 	}
 

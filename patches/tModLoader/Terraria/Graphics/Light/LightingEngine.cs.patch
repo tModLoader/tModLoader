@@ -25,16 +25,14 @@
  
  	private void IncrementState()
  	{
-@@ -101,6 +_,9 @@
- 
- 	private void ProcessScan(Rectangle area)
- 	{
-+		// TML: Mark affected area.
-+		_workingLightMap.UpdateArea(area, padding: 28);
-+
+@@ -104,6 +_,7 @@
  		area.Inflate(28, 28);
  		_workingProcessedArea = area;
  		_workingLightMap.SetSize(area.Width, area.Height);
++		_workingLightMap.UpdateArea(area);
+ 		_workingLightMap.NonVisiblePadding = 18;
+ 		_tileScanner.Update();
+ 		_tileScanner.ExportTo(area, _workingLightMap, new TileLightScannerOptions {
 @@ -167,6 +_,13 @@
  		}
  
