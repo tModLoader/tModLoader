@@ -35,7 +35,7 @@ namespace ExampleMod.Content.Items.Weapons
 			// This has no effect on the actual collision.
 			float swingDirection = 0.6f + (0.4f * Main.rand.NextFloat());
 			// 1/3 of the time, swing the whip from the bottom to top instead of from top to bottom.
-			// The Dark Harvest is the only whip that doesn't have the chance of swinging from the button up.
+			// The Dark Harvest is the only whip that doesn't have the chance of swinging from the bottom up.
 			if (Main.rand.NextBool(3)) {
 				swingDirection *= -2.5f;
 			}
