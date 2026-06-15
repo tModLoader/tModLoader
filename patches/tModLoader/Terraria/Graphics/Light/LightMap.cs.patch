@@ -1,15 +1,100 @@
 --- src/TerrariaNetCore/Terraria/Graphics/Light/LightMap.cs
 +++ src/tModLoader/Terraria/Graphics/Light/LightMap.cs
-@@ -4,7 +_,7 @@
+@@ -4,9 +_,15 @@
  
  namespace Terraria.Graphics.Light;
  
 -public class LightMap
++// TML: Switched backing color store from Vector3[] to Vector4[], changed store
++// from column-major to row-major; see comments below for explanations.
 +public partial class LightMap
  {
- 	private Vector3[] _colors;
++	// TML: Colors are now stored as a Vector4 array instead of a Vector4 array
++	// with the express purpose of making it easier to write their data to a
++	// texture.  This may be reverted if FNA ever adds a Vector3 surface
++	// format.  The alpha channel is always 1.
+-	private Vector3[] _colors;
++	private Vector4[] _colors;
  	private LightMaskMode[] _mask;
-@@ -193,9 +_,21 @@
+ 	private FastRandom _random = FastRandom.CreateWithRandomSeed();
+ 	private const int DEFAULT_WIDTH = 203;
+@@ -30,10 +_,10 @@
+ 
+ 	public Vector3 this[int x, int y] {
+ 		get {
+-			return _colors[IndexOf(x, y)];
++			return ToVector3(_colors[IndexOf(x, y)]);
+ 		}
+ 		set {
+-			_colors[IndexOf(x, y)] = value;
++			_colors[IndexOf(x, y)] = FromVector3(value);
+ 		}
+ 	}
+ 
+@@ -44,15 +_,18 @@
+ 		LightDecayThroughCrackedBrick = 0.8f;
+ 		LightDecayThroughWater = new Vector3(0.88f, 0.96f, 1.015f) * 0.91f;
+ 		LightDecayThroughHoney = new Vector3(0.75f, 0.7f, 0.6f) * 0.91f;
++		/*
+ 		Width = 203;
+ 		Height = 203;
+ 		_colors = new Vector3[41209];
+ 		_mask = new LightMaskMode[41209];
++		*/
++		SetSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
+ 	}
+ 
+ 	public void GetLight(int x, int y, out Vector3 color)
+ 	{
+-		color = _colors[IndexOf(x, y)];
++		color = ToVector3(_colors[IndexOf(x, y)]);
+ 	}
+ 
+ 	public LightMaskMode GetMask(int x, int y) => _mask[IndexOf(x, y)];
+@@ -81,6 +_,7 @@
+ 
+ 	private void BlurPass()
+ 	{
++		/*
+ 		FastParallel.For(0, Width, delegate (int start, int end, object context) {
+ 			for (int j = start; j < end; j++) {
+ 				BlurLine(IndexOf(j, 0), IndexOf(j, Height - 1 - NonVisiblePadding), 1);
+@@ -94,6 +_,26 @@
+ 				BlurLine(IndexOf(Width - 1, i), IndexOf(NonVisiblePadding, i), -Height);
+ 			}
+ 		});
++		*/
++
++		// TML: Because we switch from column-major to row-major (see IndexOf
++		// comments), we also need to change the strides for these BlurLine
++		// operations.  Also increase Width by 1 because the array is
++		// consistently initialized with extra padding.
++		int rowStride = Width + 1;
++		FastParallel.For(0, Width, delegate (int start, int end, object context) {
++			for (int j = start; j < end; j++) {
++				BlurLine(IndexOf(j, 0), IndexOf(j, Height - 1 - NonVisiblePadding), rowStride);
++				BlurLine(IndexOf(j, Height - 1), IndexOf(j, NonVisiblePadding), -rowStride);
++			}
++		});
++
++		FastParallel.For(0, Height, delegate (int start, int end, object context) {
++			for (int i = start; i < end; i++) {
++				BlurLine(IndexOf(0, i), IndexOf(Width - 1 - NonVisiblePadding, i), 1);
++				BlurLine(IndexOf(Width - 1, i), IndexOf(NonVisiblePadding, i), -1);
++			}
++		});
+ 	}
+ 
+ 	private void BlurLine(int startIndex, int endIndex, int stride)
+@@ -189,13 +_,28 @@
+ 		}
+ 	}
+ 
++	// TML: Convert the color array from column-major to row-major to allow for
++	// direct texture uploads without it being rotated.
+-	private int IndexOf(int x, int y) => x * Height + y;
++	// private int IndexOf(int x, int y) => x * Height + y;
++	private int IndexOf(int x, int y) => y * (Width + 1) + x;
  
  	public void SetSize(int width, int height)
  	{
@@ -26,7 +111,7 @@
 +		}
 +		*/
 +		if (neededSize > _colors.Length) {
-+			_colors = new Vector3[neededSize];
++			_colors = new Vector4[neededSize];
 +			_mask = new LightMaskMode[neededSize];
  		}
  
