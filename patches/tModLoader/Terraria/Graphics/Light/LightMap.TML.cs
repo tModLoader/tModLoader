@@ -10,9 +10,18 @@ partial class LightMap
 {
 	private Texture2D? bufferTexture;
 	private bool dirtyBuffer;
+	private Rectangle tileArea;
+	private int tilePadding;
 
 	public void MarkDirty()
 	{
+		dirtyBuffer = true;
+	}
+
+	public void UpdateArea(Rectangle area, int padding)
+	{
+		tileArea = area;
+		tilePadding = padding;
 		dirtyBuffer = true;
 	}
 
@@ -20,9 +29,6 @@ partial class LightMap
 	{
 		var width = Width + 1;
 		var height = Height + 1;
-
-		// TODO
-		var tileArea = new Rectangle(0, 0, width, height);
 
 		if (bufferTexture is null) {
 			bufferTexture = InitBufferTexture(width, height);

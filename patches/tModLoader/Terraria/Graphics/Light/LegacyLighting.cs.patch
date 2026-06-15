@@ -29,8 +29,8 @@
  
  		_lastCameraPosition = Main.Camera.UnscaledPosition;
 +
-+		// TML: Mark light map as dirty to prompt buffer regenration.
-+		_lightMap.MarkDirty();
++		// TML: Mark light map as dirty and update area.
++		_lightMap.UpdateArea(area);
  	}
  
  	private void TryUpdatingMapWithLight()

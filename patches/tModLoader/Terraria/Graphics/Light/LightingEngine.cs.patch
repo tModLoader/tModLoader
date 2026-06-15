@@ -19,12 +19,22 @@
  		IncrementState();
 -	}
 +
-+        // TML: Mark light map as dirty to prompt buffer regenration.
++		// TML: Mark light map as dirty.
 +        _workingLightMap.MarkDirty();
 +    }
  
  	private void IncrementState()
  	{
+@@ -101,6 +_,9 @@
+ 
+ 	private void ProcessScan(Rectangle area)
+ 	{
++		// TML: Mark affected area.
++		_workingLightMap.UpdateArea(area, padding: 28);
++
+ 		area.Inflate(28, 28);
+ 		_workingProcessedArea = area;
+ 		_workingLightMap.SetSize(area.Width, area.Height);
 @@ -167,6 +_,13 @@
  		}
  
