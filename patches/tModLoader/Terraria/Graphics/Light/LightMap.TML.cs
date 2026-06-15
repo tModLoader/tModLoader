@@ -40,7 +40,7 @@ partial class LightMap
 
 		if (dirtyBuffer) {
 			fixed(Vector4* pColors = &_colors[0]) {
-				bufferTexture.SetDataPointerEXT(0, null, (nint)pColors, width * height * 4);
+				bufferTexture.SetDataPointerEXT(0, null, (nint)pColors, width * height * sizeof(Vector4));
 			}
 
 			dirtyBuffer = false;

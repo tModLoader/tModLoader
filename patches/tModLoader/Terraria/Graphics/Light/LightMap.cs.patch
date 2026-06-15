@@ -122,7 +122,7 @@
  		Width = width;
  		Height = height;
 +
-+		tileArea = new Rectangle(0, 0, width + 1, height + 1);
++		tileArea = new Rectangle(0, 0, width, height);
 +
 +		if (bufferTexture is not null && (bufferTexture.Width != width || bufferTexture.Height != height)) {
 +			bufferTexture?.Dispose();
