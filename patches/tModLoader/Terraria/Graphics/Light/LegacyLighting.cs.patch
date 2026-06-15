@@ -14,7 +14,7 @@
  {
  	public struct RectArea
  	{
-@@ -133,6 +_,21 @@
+@@ -133,6 +_,11 @@
  	private static FastRandom _swipeRandom = FastRandom.CreateWithRandomSeed();
  	private LightMap _lightMap = new LightMap();
  
@@ -22,16 +22,6 @@
 +	// lighting and mask data.  This new light map contains a copy of the data
 +	// in _states so it can be used with the LightMapBuffer API.
 +	private LightMap exposedLightMap = new();
-+	private int cachedExpandedLeft;
-+	private int cachedExpandedTop;
-+
-+	private void UpdateLightMap(int x, int y, Vector3 color)
-+	{
-+		// x += (_expandedRectLeft - cachedExpandedLeft);
-+		// y += (_expandedRectTop - cachedExpandedTop);
-+
-+		exposedLightMap[x, y] = color;
-+	}
 +
  	public int Mode { get; set; }
  
@@ -57,14 +47,13 @@
  		if (_states != null && _states.Length >= num && _states[0].Length >= num2)
  			return;
  
-@@ -276,6 +_,10 @@
+@@ -276,6 +_,9 @@
  			PreRenderPhase();
  
  		_lastCameraPosition = Main.Camera.UnscaledPosition;
 +
 +		// TML: Mark light map as dirty.
 +		exposedLightMap.MarkDirty();
-+		Main.NewText($"{_expandedRectLeft - cachedExpandedLeft} {_expandedRectTop - cachedExpandedTop}");
  	}
  
  	private void TryUpdatingMapWithLight()
@@ -74,7 +63,7 @@
  				}
 +
 +				// TML: LightMapBuffer state maintenance.
-+				UpdateLightMap(i - _expandedRectLeft, j - _expandedRectTop, lightingState.ToVector3());
++				exposedLightMap[i - _expandedRectLeft, j - _expandedRectTop] = lightingState.ToVector3();
  			}
  		}
  	}
@@ -84,7 +73,7 @@
  				obj.B = lightingState.B;
 +
 +				// TML: LightMapBuffer state maintenace.
-+				UpdateLightMap(i, j, obj.ToVector3());
++				exposedLightMap[i, j] = obj.ToVector3();
  			}
  		}
  	}
@@ -94,7 +83,7 @@
  					obj.B = lightingState.B2;
 +
 +					// TML: LightMapBuffer state maintenance.
-+					UpdateLightMap(i, j, obj.ToVector3());
++					exposedLightMap[i, j] = obj.ToVector3();
  				}
  			}
  
@@ -104,7 +93,7 @@
  				obj2.B = lightingState2.R2;
 +
 +				// TML: LightMapBuffer state maintenance.
-+				UpdateLightMap(k, l, obj2.ToVector3());
++				exposedLightMap[k, l] = obj2.ToVector3();
  			}
  		}
  	}
@@ -118,7 +107,7 @@
  	}
  
  	private void PreRenderPhase()
-@@ -581,13 +_,19 @@
+@@ -581,13 +_,17 @@
  		num3 = Utils.Clamp(_expandedRectTop, 5, Main.maxTilesY - 1);
  		num4 = Utils.Clamp(_expandedRectBottom, 5, Main.maxTilesY - 1);
  		Main.UpdateSceneMetrics();
@@ -128,8 +117,6 @@
  			DrawInvisibleWalls = Main.ShouldShowInvisibleBlocksAndWalls()
  		});
 +		// TML: Mark light map as dirty and update area.
-+		cachedExpandedLeft = _expandedRectLeft;
-+		cachedExpandedTop = _expandedRectTop;
 +		exposedLightMap.UpdateArea(new Rectangle(_expandedRectLeft, _expandedRectTop, _expandedRectRight - _expandedRectLeft, _expandedRectBottom - _expandedRectTop));
  
  		for (int m = num; m < num2; m++) {
