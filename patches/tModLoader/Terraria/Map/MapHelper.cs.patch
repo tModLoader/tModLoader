@@ -68,6 +68,15 @@
  			int wall = tileCache.wall;
  			baseType = wallLookup[wall];
  			newColor = tileCache.wallColor();
+@@ -1919,6 +_,8 @@
+ 				if (!sceneArea.Contains(i, j)) {
+ 					for (int k = i - 36; k <= i + 30; k += 10) {
+ 						for (int l = j - 36; l <= j + 30; l += 10) {
++							if (!WorldGen.InWorld(k, l)) // TML: Restore bounds check
++								continue;
+ 							int type = Main.Map[k, l].Type;
+ 							for (int m = 0; m < snowTypes.Length; m++) {
+ 								if (snowTypes[m] == type) {
 @@ -2716,7 +_,10 @@
  					byte b6 = 0;
  					int num7;
