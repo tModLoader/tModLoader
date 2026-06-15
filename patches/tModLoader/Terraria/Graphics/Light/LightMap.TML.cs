@@ -1,10 +1,54 @@
-﻿using System.Runtime.CompilerServices;
+﻿#nullable enable
+
+using System.Runtime.CompilerServices;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Terraria.Graphics.Light;
 
 partial class LightMap
 {
+	private Texture2D? bufferTexture;
+	private bool dirtyBuffer;
+
+	public unsafe LightMapBuffer GetBufferTexture()
+	{
+		var width = Width + 1;
+		var height = Height + 1;
+
+		// TODO
+		var tileArea = new Rectangle(0, 0, width, height);
+
+		if (bufferTexture is null) {
+			bufferTexture = InitBufferTexture(width, height);
+			dirtyBuffer = true;
+		}
+		else if (bufferTexture.Width != width || bufferTexture.Height != height) {
+			bufferTexture?.Dispose();
+			bufferTexture = InitBufferTexture(width, height);
+			dirtyBuffer = true;
+		}
+
+		if (dirtyBuffer) {
+			fixed(Vector4* pColors = &_colors[0]) {
+				bufferTexture.SetDataPointerEXT(0, null, (nint)pColors, width * height * 4);
+			}
+
+			dirtyBuffer = false;
+		}
+
+		return new LightMapBuffer
+		{
+			Texture = bufferTexture,
+			ScreenTileArea = tileArea
+		};
+	}
+
+	private static Texture2D InitBufferTexture(int width, int height)
+	{
+		return new Texture2D(Main.instance.GraphicsDevice, width, height, mipMap: false, format: SurfaceFormat.Vector4);
+	}
+
 	// PERF: If we ever need these to be faster:
 	// private static Vector3 ToVector3(in Vector4 value)
 	//     return *(Vector3*)&value;

@@ -86,7 +86,7 @@
  	}
  
  	private void BlurLine(int startIndex, int endIndex, int stride)
-@@ -189,13 +_,28 @@
+@@ -189,16 +_,38 @@
  		}
  	}
  
@@ -108,11 +108,21 @@
  		if (width * height > _colors.Length) {
  			_colors = new Vector3[width * height];
  			_mask = new LightMaskMode[width * height];
-+		}
+ 		}
 +		*/
 +		if (neededSize > _colors.Length) {
 +			_colors = new Vector4[neededSize];
 +			_mask = new LightMaskMode[neededSize];
- 		}
++		}
  
  		Width = width;
+ 		Height = height;
++
++		if (bufferTexture is not null && (bufferTexture.Width != width || bufferTexture.Height != height)) {
++			bufferTexture?.Dispose();
++			bufferTexture = null;
++		}
++
++		dirtyBuffer = true;
+ 	}
+ }
