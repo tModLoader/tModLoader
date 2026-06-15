@@ -52,8 +52,8 @@
  
  		_lastCameraPosition = Main.Camera.UnscaledPosition;
 +
-+		// TML: Mark light map as dirty.
-+		exposedLightMap.MarkDirty();
++		// TML: Mark light map as dirty and update area.
++		exposedLightMap.UpdateArea(new Rectangle(_expandedRectLeft, _expandedRectTop, _expandedRectRight - _expandedRectLeft, _expandedRectBottom - _expandedRectTop));
  	}
  
  	private void TryUpdatingMapWithLight()
@@ -107,7 +107,7 @@
  	}
  
  	private void PreRenderPhase()
-@@ -581,13 +_,17 @@
+@@ -581,6 +_,7 @@
  		num3 = Utils.Clamp(_expandedRectTop, 5, Main.maxTilesY - 1);
  		num4 = Utils.Clamp(_expandedRectBottom, 5, Main.maxTilesY - 1);
  		Main.UpdateSceneMetrics();
@@ -115,9 +115,7 @@
  		_tileScanner.Update();
  		_tileScanner.ExportTo(new Rectangle(num, num3, num2 - num, num4 - num3), _lightMap, new TileLightScannerOptions {
  			DrawInvisibleWalls = Main.ShouldShowInvisibleBlocksAndWalls()
- 		});
-+		// TML: Mark light map as dirty and update area.
-+		exposedLightMap.UpdateArea(new Rectangle(_expandedRectLeft, _expandedRectTop, _expandedRectRight - _expandedRectLeft, _expandedRectBottom - _expandedRectTop));
+@@ -588,6 +_,7 @@
  
  		for (int m = num; m < num2; m++) {
  			LightingState[] array3 = _states[m - _expandedRectLeft];
