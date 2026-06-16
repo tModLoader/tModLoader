@@ -246,6 +246,7 @@
 		"BuildErrorNoModClass": "Upewnij się, że masz dokładnie jedną klasę rozszerzającą Mod",
 		"BuildErrorLoadingPrecompiled": "Błąd ładowania prekompilowanego pliku: {0}",
 		"BuildErrorFailedLoadBuildTxt": "Nie można załadować {0}",
+		// "BuildErrorMissingCsproj": "Missing .csproj file. You can create one by clicking the 'Upgrade .csproj file' button in the Mod Sources menu.",
 		"BuildWarningEACWindowsOnly": "Edycja i kontynuacja jest obsługiwana tylko w systemie windows.",
 		"LoadErrorTextureFailedToLoad": "Tekstura {0}, nie mogła zostać załadowana.",
 		"LoadErrorWavSoundFailedToLoad": "Plik dźwiękowy waw {0}, nie mógł zostać załadowany.",
@@ -523,6 +524,7 @@
 		"MSUpgradeCSProj": "Uaktualnij plik .csproj",
 		"MSOpenCSProj": "Otwórz .csproj",
 		"MSUpgradeLangFiles": "Aktualizuj pliki .lang do .hjson (niedestrukcyjnie)",
+		// "MSUpgradeBuildTxt": "Move build.txt properties to .csproj",
 		"MSRebuildRequired": "Wymagane ponowne kompilowanie",
 		"MSLocalizationFilesChangedCantPublish": "Dokonano zmian w plikach lokalizacyjnych,\n konieczne jest ponowne kompilowanie przed opublikowaniem",
 		"MSOpenSources": "Otwórz pliki źródłowe",
@@ -581,7 +583,6 @@
 
 		// Extract Mod
 		"ExtractErrorWhileExtractingMod": "Wystąpił błąd podczas wypakowywania {0}",
-		"ExtractHideCodeMessage": "Modder zdecydował się ukryć kod źródłowy przed tModReader.",
 		"ExtractNoSourceCodeMessage": "Modder nie zdecydował się na dołączenie swojego kodu źródłowego.",
 		"ExtractHideResourcesMessage": "Modder zdecydował się ukryć zasoby (np. obrazy) przed tModReaderem.",
 		"ExtractFileListing": "Pliki:",

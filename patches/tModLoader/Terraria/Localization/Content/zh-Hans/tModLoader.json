@@ -248,6 +248,7 @@
 		"BuildErrorNoModClass": "请确保只有一个类继承自模组",
 		"BuildErrorLoadingPrecompiled": "无法加载预编译：{0}",
 		"BuildErrorFailedLoadBuildTxt": "加载失败 {0}",
+		// "BuildErrorMissingCsproj": "Missing .csproj file. You can create one by clicking the 'Upgrade .csproj file' button in the Mod Sources menu.",
 		"BuildWarningEACWindowsOnly": "只有Windows支持编辑并继续",
 		"LoadErrorTextureFailedToLoad": "在 {0} 的纹理文件加载失败",
 		"LoadErrorWavSoundFailedToLoad": "在 {0} 的[wav]音频文件加载失败",
@@ -525,6 +526,7 @@
 		"MSUpgradeCSProj": "更新[.csproj]文件",
 		"MSOpenCSProj": "打开 .csproj",
 		"MSUpgradeLangFiles": "升级 .lang 文件至 .hjson （您将不会丢失任何数据）",
+		// "MSUpgradeBuildTxt": "Move build.txt properties to .csproj",
 		"MSRebuildRequired": "需要重新构建",
 		"MSLocalizationFilesChangedCantPublish": "本地化文件已被修改\n发布前需要重新构建",
 		"MSOpenSources": "打开源码文件夹",
@@ -583,7 +585,6 @@
 
 		// Extract Mod
 		"ExtractErrorWhileExtractingMod": "提取时发生错误 {0}",
-		"ExtractHideCodeMessage": "该模组的作者选择对[tModReader]隐藏其源代码。",
 		"ExtractNoSourceCodeMessage": "该模组的作者选择不包含模组源代码。",
 		"ExtractHideResourcesMessage": "该模组的作者选择对[tModReader]隐藏其资源文件(如图像、音效等)。",
 		"ExtractFileListing": "文件:",

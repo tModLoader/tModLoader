@@ -1,3 +1,0 @@
-displayName = {{ModDisplayName}}
-author = {{ModAuthor}}
-version = {{ModVersion}}
