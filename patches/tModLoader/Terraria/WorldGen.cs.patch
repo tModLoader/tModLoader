@@ -582,6 +582,46 @@
  	public static bool IsDungeonPlatformOrShelf(Tile bottomTile)
  	{
  		if (bottomTile == null || !bottomTile.active() || bottomTile.type != 19)
+@@ -9611,15 +_,19 @@
+ 	public static void AddPasses()
+ 	{
+ 		AddGenerationPass(new TerrainPass());
++		/* // Note: skyblockWorldGen && !Skyblock.denyAllGeneration can never be true.
+ 		if (skyblockWorldGen) {
+ 			if (!Skyblock.denyAllGeneration)
+ 				AddGenerationPass(new JunglePass());
++		*/
+ 
+ 			AddGenerationPass(GenPassNameID.Skyblock, delegate (GenerationProgress progress, GameConfiguration passConfig) {
+ 				progress.Message = Lang.gen[12].Value;
+ 				GenerateSkyBlockWorld(progress);
+ 			});
++		/*
+ 		}
++		*/
+ 
+ 		AddGenerationPass(GenPassNameID.DunesAndPyramidLocations, delegate (GenerationProgress progress, GameConfiguration passConfig) {
+ 			DungeonCrawler.SetupDungeonGenVarVariables(GenVars.CurrentDungeonGenVars, genRand);
+@@ -10428,7 +_,9 @@
+ 			}
+ 		});
+ 
++		/*
+ 		if (!Skyblock.denyAllGeneration)
++		*/
+ 			AddGenerationPass(new JunglePass());
+ 
+ 		AddGenerationPass(GenPassNameID.MudCavesToJungleGrass, delegate (GenerationProgress progress, GameConfiguration passConfig) {
+@@ -12266,7 +_,9 @@
+ 			}
+ 		});
+ 
++		/*
+ 		if (!Skyblock.denyAllGeneration && SecretSeed.dualDungeons.Enabled)
++		*/
+ 			AddGenerationPass(new DitherSnakePass(GenPassNameID.DualDungeonsDitherSnake));
+ 
+ 		AddGenerationPass(GenPassNameID.Dungeon, delegate (GenerationProgress progress, GameConfiguration passConfig) {
 @@ -13347,10 +_,11 @@
  							int num698 = 0;
  							while (!flag51 && num698 < 100) {
@@ -713,6 +753,22 @@
  					bool flag2 = TileID.Sets.Dirt[tile7.type];
  					if (notTheBees)
  						flag2 = flag2 || TileID.Sets.Mud[tile7.type];
+@@ -18709,6 +_,15 @@
+ 
+ 	public static void DisablePassesForSpecialSeeds(List<GenPass> passes)
+ 	{
++		// TML: Moving conditional pass logic from AddPasses here since vanilla passes are collected at load time in TML.
++		if (!skyblockWorldGen)
++			VanillaGenPasses[GenPassNameID.Skyblock].Disable();
++		if (Skyblock.denyAllGeneration)
++			VanillaGenPasses[GenPassNameID.Jungle].Disable();
++		if (Skyblock.denyAllGeneration || !SecretSeed.dualDungeons.Enabled)
++			VanillaGenPasses[GenPassNameID.DualDungeonsDitherSnake].Disable();
++		// end TML
++
+ 		bool enabled = SecretSeed.dualDungeons.Enabled;
+ 		if (!enabled)
+ 			return;
 @@ -18730,8 +_,11 @@
  	public static void Finish()
  	{
