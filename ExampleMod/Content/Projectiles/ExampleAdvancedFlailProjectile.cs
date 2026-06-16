@@ -6,6 +6,7 @@ using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
+using Terraria.GameContent.Tile_Entities;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -60,6 +61,7 @@ namespace ExampleMod.Content.Projectiles
 			Projectile.friendly = true; // Deals damage to enemies
 			Projectile.penetrate = -1; // Infinite pierce
 			Projectile.DamageType = DamageClass.Melee; // Deals melee damage
+			Projectile.drawLayer = ProjectileDrawLayerID.HeldProj; // Draws over the player's body and under the player's hands
 			Projectile.usesLocalNPCImmunity = true; // Used for hit cooldown changes in the ai hook
 			Projectile.localNPCHitCooldown = 10; // This facilitates custom hit cooldown logic
 
@@ -502,6 +504,17 @@ namespace ExampleMod.Content.Projectiles
 				}
 			}
 			return true;
+		}
+
+		public override bool DisplayDollSettings(Player doll, TEDisplayDoll.DisplayDollPose pose, ref bool botherDrawing) {
+			// If the pose isn't one that is holding the item, then don't bother trying to draw the projectile.
+			if (pose.Pose < DisplayDollPoseID.Use1) {
+				botherDrawing = false;
+				return false;
+			}
+			Projectile.spriteDirection = Projectile.direction;
+			Projectile.position = new Vector2(doll.Center.X + (float)(9 * doll.direction), doll.Bottom.Y - 12f);
+			return false;
 		}
 	}
 }

@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.GameContent;
+using Terraria.GameContent.Tile_Entities;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -19,6 +20,7 @@ namespace ExampleMod.Content.Projectiles
 			Projectile.penetrate = -1; // Infinite pierce
 			Projectile.DamageType = DamageClass.Melee; // Deals melee damage
 			Projectile.scale = 0.8f;
+			Projectile.drawLayer = ProjectileDrawLayerID.HeldProj; // Draws over the player's body and under the player's hands
 			Projectile.usesLocalNPCImmunity = true; // Used for hit cooldown changes in the ai hook
 			Projectile.localNPCHitCooldown = 10; // This facilitates custom hit cooldown logic
 
@@ -27,8 +29,8 @@ namespace ExampleMod.Content.Projectiles
 			AIType = ProjectileID.Sunfury;
 
 			// These help center the projectile as it rotates since its hitbox and scale doesn't match the actual texture size
-			DrawOffsetX = -6;
-			DrawOriginOffsetY = -6;
+			DrawOffsetX = -8;
+			DrawOriginOffsetY = -8;
 		}
 
 		// All of the following methods are additional behaviors of Sunfury that are not automatically inherited by ExampleFlailProjectile through the use of Projectile.aiStyle and AIType. You'll need to find corresponding code in the decompiled source code if you wish to clone a different vanilla projectile as a starting point.
@@ -94,6 +96,20 @@ namespace ExampleMod.Content.Projectiles
 				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.velocity, ProjectileID.Grenade, Projectile.damage, Projectile.knockBack, Main.myPlayer);
 				Projectile.ai[1]++;
 			}
+		}
+
+		// This hook lets us change how the held projectile looks while a mannequin is holding it.
+		// The following code is adapted from vanilla's Projectile.AI_DisplayDoll for aiStyle 15 (Flail)
+		public override bool DisplayDollSettings(Player doll, TEDisplayDoll.DisplayDollPose pose, ref bool botherDrawing) {
+			// If the pose isn't one that is holding the item, then don't bother trying to draw the projectile.
+			if (pose.Pose < DisplayDollPoseID.Use1) {
+				botherDrawing = false; // Don't draw.
+				return false; // Returning false stops the rest of the vanilla code from running.
+			}
+
+			Projectile.spriteDirection = Projectile.direction;
+			Projectile.position = new Vector2(doll.Center.X + (9 * doll.direction), doll.Bottom.Y - 12f); // Set the position to be at the mannequin's feet.
+			return false;
 		}
 	}
 }

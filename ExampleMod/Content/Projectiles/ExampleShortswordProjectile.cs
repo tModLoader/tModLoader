@@ -1,6 +1,8 @@
 using Microsoft.Xna.Framework;
+using System;
 using Terraria;
 using Terraria.Enums;
+using Terraria.GameContent.Tile_Entities;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -37,7 +39,10 @@ namespace ExampleMod.Content.Projectiles
 			Projectile.extraUpdates = 1; // Update 1+extraUpdates times per tick
 			Projectile.timeLeft = 360; // This value does not matter since we manually kill it earlier, it just has to be higher than the duration we use in AI
 			Projectile.usesOwnerLight = true;
-			Projectile.drawLayer = ProjectileDrawLayerID.HeldProj;
+			Projectile.drawLayer = ProjectileDrawLayerID.HeldProj; // Draws over the player's body and under the player's hands
+
+			// The code in this method is important to align the sprite with the hitbox how we want it to
+			SetVisualOffsets();
 		}
 
 		public override void AI() {
@@ -69,9 +74,6 @@ namespace ExampleMod.Content.Projectiles
 
 			// Point towards where it is moving, applied offset for top right of the sprite respecting spriteDirection
 			Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2 - MathHelper.PiOver4 * Projectile.spriteDirection;
-
-			// The code in this method is important to align the sprite with the hitbox how we want it to
-			SetVisualOffsets();
 		}
 
 		private void SetVisualOffsets() {
@@ -120,6 +122,34 @@ namespace ExampleMod.Content.Projectiles
 			Vector2 end = start + Projectile.velocity * 6f;
 			float collisionPoint = 0f; // Don't need that variable, but required as parameter
 			return Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), start, end, CollisionWidth, ref collisionPoint);
+		}
+
+		// This hook lets us change how the held projectile looks while a mannequin is holding it.
+		// The following code is adapted from vanilla's Projectile.AI_DisplayDoll for aiStyle 161 (Shortsword)
+		public override bool DisplayDollSettings(Player doll, TEDisplayDoll.DisplayDollPose pose, ref bool botherDrawing) {
+			// If the pose isn't one that is holding the item, then don't bother trying to draw the projectile.
+			if (pose.Pose < DisplayDollPoseID.Use1) {
+				botherDrawing = false; // Don't draw.
+				return false; // Returning false stops the rest of the vanilla code from running.
+			}
+
+			Projectile.spriteDirection = Projectile.direction; // Set the direction of the sprite to the direction the projectile is facing.
+			Vector2 projectileRotation = Vector2.UnitX * 12f; // This will move the projectile forward in the mannequin's hand because the hitbox of the projectile is the center of the sprite.
+			float armRotation = 0f;
+			if (pose.ItemAimRadians.HasValue)
+				armRotation = pose.ItemAimRadians.Value; // The rotation of the mannequin's hand.
+
+			projectileRotation = projectileRotation.RotatedBy(armRotation); // Rotate the projectile based on the rotation of the mannequin's hand.
+			if (Projectile.direction == -1)
+				projectileRotation.X *= -1f;
+
+			Projectile.velocity = projectileRotation;
+			Projectile.position += projectileRotation + (projectileRotation * 1.5f); // Move the projectile's location while being held by the mannequin.
+
+			Projectile.rotation = (float)Math.Atan2(projectileRotation.Y, projectileRotation.X) + MathHelper.PiOver2; // Set the projectile's rotation based on the mannequin's hand.
+			Projectile.rotation -= MathHelper.PiOver4 * Projectile.spriteDirection; // Correct the rotation of the shortsword since we set this in the AI.
+
+			return false;
 		}
 	}
 }

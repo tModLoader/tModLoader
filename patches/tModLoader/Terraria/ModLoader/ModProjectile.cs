@@ -1,11 +1,12 @@
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria.DataStructures;
 using Terraria.GameContent;
+using Terraria.GameContent.Tile_Entities;
 using Terraria.ID;
 using Terraria.Localization;
 
@@ -466,5 +467,19 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 	/// </summary>
 	public virtual void EmitEnchantmentVisualsAt(Vector2 boxPosition, int boxWidth, int boxHeight)
 	{
+	}
+
+	/// <summary>
+	/// Allows for modifying the position of the held projectile while a Mannequin is holding it.
+	/// <br>This is needed for held projectiles such as Spears, Drills, Shortswords, Yoyos, Flails, and Whips.</br>
+	/// <br/>See also <see cref="Projectile.isAPreviewDisplayDoll"/>.
+	/// </summary>
+	/// <param name="doll">The mannequin holding the projectile.</param>
+	/// <param name="pose">The pose that the mannequin is in.</param>
+	/// <param name="botherDrawing">Tells the game whether to draw the projectile at all. Usually set to true when the pose doesn't need to hold the projectile.</param>
+	/// <returns>Return false to stop vanilla logic. Returns true by default.</returns>
+	public virtual bool DisplayDollSettings(Player doll, TEDisplayDoll.DisplayDollPose pose, ref bool botherDrawing)
+	{
+		return true;
 	}
 }

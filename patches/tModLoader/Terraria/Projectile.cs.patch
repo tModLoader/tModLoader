@@ -1467,6 +1467,16 @@
  			if (timeLeft > 3000)
  				timeLeft -= 60;
  
+@@ -17990,6 +_,9 @@
+ 		if ((uint)(pose2 - 4) <= 4u)
+ 			flag = true;
+ 
++		if (!ProjectileLoader.DisplayDollSettings(this, doll, pose, ref botherDrawing))
++			return;
++
+ 		switch (aiStyle) {
+ 			default:
+ 				botherDrawing = false;
 @@ -18201,6 +_,11 @@
  
  	public void AI()

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
+using Terraria.GameContent.Tile_Entities;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -216,6 +217,34 @@ namespace ExampleMod.Content.Projectiles
 
 				pos += diff;
 			}
+			return false;
+		}
+
+		// This hook lets us change how the held projectile looks while a mannequin is holding it.
+		// The following code is adapted from vanilla's Projectile.AI_DisplayDoll for aiStyle 165 (Whip)
+		public override bool DisplayDollSettings(Player doll, TEDisplayDoll.DisplayDollPose pose, ref bool botherDrawing) {
+			if (pose.Pose < DisplayDollPoseID.Use1) {
+				botherDrawing = false;
+				return false;
+			}
+
+			doll.channel = false;
+			Timer = 12f;
+			ChargeTime = 121;
+			Projectile.ai[1] = 0.4f;
+			Vector2 projectileRotation = Vector2.UnitX * 1f;
+			float armRotation = 0f;
+			if (pose.ItemAimRadians.HasValue)
+				armRotation = pose.ItemAimRadians.Value;
+
+			projectileRotation = projectileRotation.RotatedBy(armRotation);
+			if (Projectile.direction == -1)
+				projectileRotation.X *= -1f;
+
+			Projectile.velocity = projectileRotation;
+			Projectile.Center = Main.GetPlayerArmPosition(Projectile, doll) + Projectile.velocity * (Projectile.ai[0] - 1f);
+			Projectile.spriteDirection = ((!(Vector2.Dot(Projectile.velocity, Vector2.UnitX) < 0f)) ? 1 : (-1));
+			
 			return false;
 		}
 	}

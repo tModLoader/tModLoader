@@ -63,6 +63,17 @@
  		WorldGen.destroyObject = true;
  		for (int k = num; k < num + 2; k++) {
  			for (int l = num2; l < num2 + 3; l++) {
+@@ -420,7 +_,10 @@
+ 				_playerRenderer.OverrideHeldProjectile = projectileDummy;
+ 				int drawLayer = projectileDummy.drawLayer;
+ 				if ((uint)drawLayer <= 3u)
++					/*
+ 					Main.instance.DrawProjDirect(projectileDummy);
++					*/
++					Main.instance.DrawProjDirect(projectileDummy, dollPlayer);
+ 			}
+ 		}
+ 
 @@ -672,6 +_,10 @@
  	public void WriteItem(int itemIndex, BinaryWriter writer, Item[] collection)
  	{

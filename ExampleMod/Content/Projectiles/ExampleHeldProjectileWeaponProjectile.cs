@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using System;
 using Terraria;
 using Terraria.Audio;
+using Terraria.GameContent.Tile_Entities;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -28,7 +29,7 @@ namespace ExampleMod.Content.Projectiles
 			Projectile.penetrate = -1;
 			Projectile.tileCollide = false;
 			Projectile.usesOwnerLight = true;
-			Projectile.drawLayer = ProjectileDrawLayerID.HeldProj;
+			Projectile.drawLayer = ProjectileDrawLayerID.HeldProj; // Draws over the player's body and under the player's hands
 			Projectile.DamageType = DamageClass.Ranged;
 			Projectile.ignoreWater = true;
 
@@ -132,6 +133,34 @@ namespace ExampleMod.Content.Projectiles
 			Projectile.rotation = Projectile.velocity.ToRotation() + rotationOffset;
 			player.itemRotation = (Projectile.velocity * Projectile.direction).ToRotation();
 			Projectile.timeLeft = 2;
+		}
+
+		// This hook lets us change how the held projectile looks while a mannequin is holding it.
+		// The following code is adapted from vanilla's Projectile.AI_DisplayDoll for aiStyle 20 (Drill)
+		public override bool DisplayDollSettings(Player doll, TEDisplayDoll.DisplayDollPose pose, ref bool botherDrawing) {
+			// If the pose isn't one that is holding the item, then don't bother trying to draw the projectile.
+			if (pose.Pose < DisplayDollPoseID.Use1) {
+				botherDrawing = false;
+				return false;
+			}
+
+			Projectile.spriteDirection = Projectile.direction;
+			Vector2 projectileRotation = Vector2.UnitX * 20f;
+			float armRotation = 0f;
+			if (pose.ItemAimRadians.HasValue)
+				armRotation = pose.ItemAimRadians.Value;
+
+			projectileRotation = projectileRotation.RotatedBy(armRotation); // The rotation of the mannequin's hand.
+			if (Projectile.direction == -1) {
+				projectileRotation.X *= -1f;
+			}
+
+			Projectile.velocity = projectileRotation;
+			Projectile.position += projectileRotation; // Move the projectile's location while being held by the mannequin.
+			Projectile.rotation = (float)Math.Atan2(projectileRotation.Y, projectileRotation.X); // Set the projectile's rotation based on the mannequin's hand.
+			Projectile.rotation += Projectile.spriteDirection == -1 ? MathHelper.Pi : 0; // Correct the rotation when facing left.
+
+			return false;
 		}
 	}
 }

@@ -1,5 +1,7 @@
 ﻿using ExampleMod.Content.Dusts;
+using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.GameContent.Tile_Entities;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -33,6 +35,7 @@ namespace ExampleMod.Content.Projectiles
 			Projectile.DamageType = DamageClass.MeleeNoSpeed; // Benefits from melee bonuses. MeleeNoSpeed means the item will not scale with attack speed.
 			Projectile.penetrate = -1; // All vanilla yoyos have infinite penetration. The number of enemies the yoyo can hit before being pulled back in is based on YoyosLifeTimeMultiplier.
 			// Projectile.scale = 1f; // The scale of the projectile. Most yoyos are 1f, but a few are larger. The Kraken is the largest at 1.2f
+			Projectile.drawLayer = ProjectileDrawLayerID.HeldProj; // Draws over the player's body and under the player's hands
 		}
 
 		// notes for aiStyle 99:
@@ -47,6 +50,20 @@ namespace ExampleMod.Content.Projectiles
 			if (Main.rand.NextBool(5)) {
 				Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, ModContent.DustType<Sparkle>()); // Makes the projectile emit dust.
 			}
+		}
+
+		// This hook lets us change how the held projectile looks while a mannequin is holding it.
+		// The following code is adapted from vanilla's Projectile.AI_DisplayDoll for aiStyle 99 (Yoyo)
+		public override bool DisplayDollSettings(Player doll, TEDisplayDoll.DisplayDollPose pose, ref bool botherDrawing) {
+			// If the pose isn't one that is holding the item, then don't bother trying to draw the projectile.
+			if (pose.Pose < DisplayDollPoseID.Use1) {
+				botherDrawing = false; // Don't draw.
+				return false; // Returning false stops the rest of the vanilla code from running.
+			}
+
+			Projectile.spriteDirection = Projectile.direction;
+			Projectile.position = new Vector2(doll.Center.X + (9 * doll.direction), doll.Bottom.Y - 8f); // Set the position to be at the mannequin's feet.
+			return false;
 		}
 	}
 }

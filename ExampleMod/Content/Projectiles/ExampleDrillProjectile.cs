@@ -1,7 +1,9 @@
 ﻿using ExampleMod.Content.Dusts;
 using Microsoft.Xna.Framework;
+using System;
 using Terraria;
 using Terraria.Audio;
+using Terraria.GameContent.Tile_Entities;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -19,7 +21,7 @@ namespace ExampleMod.Content.Projectiles
 			Projectile.ownerHitCheck = true;
 			Projectile.aiStyle = -1; // Replace with 20 if you do not want custom code
 			Projectile.usesOwnerLight = true;
-			Projectile.drawLayer = ProjectileDrawLayerID.HeldProj;
+			Projectile.drawLayer = ProjectileDrawLayerID.HeldProj; // Draws over the player's body and under the player's hands
 		}
 
 		// This code is adapted and simplified from aiStyle 20 to use a different dust and more noises. If you want to use aiStyle 20, you do not need to do any of this.
@@ -83,6 +85,31 @@ namespace ExampleMod.Content.Projectiles
 				dust.velocity.X *= 0.5f;
 				dust.velocity.Y = -Main.rand.Next(3, 8) * 0.1f;
 			}
+		}
+
+		// This hook lets us change how the held projectile looks while a mannequin is holding it.
+		// The following code is adapted from vanilla's Projectile.AI_DisplayDoll for aiStyle 20 (Drill)
+		public override bool DisplayDollSettings(Player doll, TEDisplayDoll.DisplayDollPose pose, ref bool botherDrawing) {
+			// If the pose isn't one that is holding the item, then don't bother trying to draw the projectile.
+			if (pose.Pose < DisplayDollPoseID.Use1) {
+				botherDrawing = false;
+				return false;
+			}
+
+			Projectile.spriteDirection = Projectile.direction;
+			Vector2 projectileRotation = Vector2.UnitX * 20f;
+			float armRotation = 0f;
+			if (pose.ItemAimRadians.HasValue)
+				armRotation = pose.ItemAimRadians.Value;
+
+			projectileRotation = projectileRotation.RotatedBy(armRotation); // The rotation of the mannequin's hand.
+			if (Projectile.direction == -1)
+				projectileRotation.X *= -1f;
+
+			Projectile.velocity = projectileRotation;
+			Projectile.position += projectileRotation; // Move the projectile's location while being held by the mannequin.
+			Projectile.rotation = (float)Math.Atan2(projectileRotation.Y, projectileRotation.X) + MathHelper.PiOver2; // Set the projectile's rotation based on the mannequin's hand.
+			return false;
 		}
 	}
 }
