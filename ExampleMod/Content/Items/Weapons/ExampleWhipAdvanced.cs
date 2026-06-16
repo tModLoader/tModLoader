@@ -93,16 +93,16 @@ namespace ExampleMod.Content.Items.Weapons
 		public float ProcDamageMultiplier;
 
 		// This hook runs when a tagged enemy takes damage from a minion or sentry and allows us to change the damage dealt.
-		public override void ModifyTaggedHit(Player owner, Projectile optionalProjectile, NPC npcHit, ref NPC.HitModifiers damageDealt, ref bool crit) {
+		public override void ModifyTaggedHit(Player owner, Projectile optionalProjectile, NPC npcHit, ref NPC.HitModifiers modifiers) {
 			// Running base here is very important, or else the existing TagDamage code will not run.
-			base.ModifyTaggedHit(owner, optionalProjectile, npcHit, ref damageDealt, ref crit);
+			base.ModifyTaggedHit(owner, optionalProjectile, npcHit, ref modifiers);
 
 			float projTagMultiplier = ProjectileID.Sets.SummonTagDamageMultiplier[optionalProjectile.type]; // Get the minion's tag multiplier if it has one.
-			damageDealt.ScalingBonusDamage += TagDamageMultiplier * projTagMultiplier; // Add the addition percentage based damage.
+			modifiers.ScalingBonusDamage += TagDamageMultiplier * projTagMultiplier; // Add the addition percentage based damage.
 		}
 
 		// OnTaggedHit will run every time a tagged enemy takes damage from a minion or sentry.
-		public override void OnTaggedHit(Player owner, Projectile optionalProjectile, NPC npcHit, float calcDamage) {
+		public override void OnTaggedHit(Player owner, Projectile optionalProjectile, NPC npcHit, NPC.HitInfo hit) {
 			// Create some particles.
 			ParticleOrchestrator.RequestParticleSpawn(clientOnly: false, ParticleOrchestraType.BlackLightningHit, new ParticleOrchestraSettings {
 				PositionInWorld = npcHit.Center
@@ -111,18 +111,18 @@ namespace ExampleMod.Content.Items.Weapons
 
 		// OnProcHit will run when TryEnableProcOnNPC is true for the NPC. See ExampleWhipProjectileAdvanced.OnHitNPC for how to apply that.
 		// Procs will be removed from the NPC once they activate.
-		public override void OnProcHit(Player owner, Projectile optionalProjectile, NPC npcHit, float calcDamage) {
+		public override void OnProcHit(Player owner, Projectile optionalProjectile, NPC npcHit, NPC.HitInfo hit) {
 			// Display some combat text when the tag procs.
 			CombatText.NewText(optionalProjectile.Hitbox, Color.Purple, "BAM!");
 
 			// This is how the Firecracker's explosion works.
-			int explosionDamage = (int)(calcDamage * ProcDamageMultiplier);
+			int explosionDamage = (int)(hit.Damage * ProcDamageMultiplier);
 			int explosionProj = Projectile.NewProjectile(optionalProjectile.GetSource_FromThis(), npcHit.Center, Vector2.Zero, ProjectileID.FireWhipProj, explosionDamage, 0f, optionalProjectile.owner);
 			Main.projectile[explosionProj].localNPCImmunity[npcHit.whoAmI] = -1; // This makes it so the explosion projectile can only hit the same NPC once.
 		}
-		public override void ModifyProcHit(Player owner, Projectile optionalProjectile, NPC npcHit, ref NPC.HitModifiers damageDealt, ref bool crit) {
+		public override void ModifyProcHit(Player owner, Projectile optionalProjectile, NPC npcHit, ref NPC.HitModifiers modifiers) {
 			// This is how the Firecracker's damage scaling works.
-			damageDealt.ScalingBonusDamage += ProcDamageMultiplier * ProjectileID.Sets.SummonTagDamageMultiplier[optionalProjectile.type];
+			modifiers.ScalingBonusDamage += ProcDamageMultiplier * ProjectileID.Sets.SummonTagDamageMultiplier[optionalProjectile.type];
 		}
 
 		// There are number of other useful hooks including OnTagAppliedToNPC and OnSetToPlayer.

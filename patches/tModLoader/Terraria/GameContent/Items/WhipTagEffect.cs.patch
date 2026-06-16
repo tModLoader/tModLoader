@@ -62,7 +62,7 @@
  	public override void OnTagAppliedToNPC(Player player, NPC npc)
  	{
  		if (player == Main.LocalPlayer)
-@@ -45,15 +_,40 @@
+@@ -45,15 +_,42 @@
  			player.AddBuff(PlayerBuffId, PlayerBuffTime);
  	}
  
@@ -77,18 +77,20 @@
 +	/// <param name="owner">The player who inflicted the tag effect.</param>
 +	/// <param name="optionalProjectile">The projectile that hit the NPC.</param>
 +	/// <param name="npcHit">The NPC who was hit.</param>
-+	/// <param name="damageDealt">The original damage that was dealt to the NPC.</param>
-+	/// <param name="crit">Whether the hit is a critical hit.</param>
-+	public override void ModifyTaggedHit(Player owner, Projectile optionalProjectile, NPC npcHit, ref NPC.HitModifiers damageDealt, ref bool crit)
++	/// <param name="modifiers">The original damage that was dealt to the NPC.</param>
++	public override void ModifyTaggedHit(Player owner, Projectile optionalProjectile, NPC npcHit, ref NPC.HitModifiers modifiers)
  	{
  		if (optionalProjectile != null)
 +			/*
  			damageDealt += (int)((float)(TagDamage + optionalProjectile.bonusTagDamage) * ProjectileID.Sets.SummonTagDamageMultiplier[optionalProjectile.type]);
 +			*/
-+			damageDealt.FlatBonusDamage += (TagDamage + optionalProjectile.bonusTagDamage) * ProjectileID.Sets.SummonTagDamageMultiplier[optionalProjectile.type];
++			modifiers.FlatBonusDamage += (TagDamage + optionalProjectile.bonusTagDamage) * ProjectileID.Sets.SummonTagDamageMultiplier[optionalProjectile.type];
  
  		if (Main.rand.Next(100) < CritChance)
++			/*
  			crit = true;
++			*/
++			modifiers.SetCrit();
  	}
  
 +	/// <summary>

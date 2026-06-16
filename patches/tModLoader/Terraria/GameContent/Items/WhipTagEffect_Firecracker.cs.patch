@@ -7,26 +7,30 @@
  
  namespace Terraria.GameContent.Items;
  
-@@ -6,13 +_,22 @@
+@@ -6,15 +_,25 @@
  {
  	private static float ProcDamageMultiplier = 1.75f;
  
 +	/*
  	public override void ModifyProcHit(Player owner, Projectile optionalProjectile, NPC npcHit, ref int damageDealt, ref bool crit)
 +	*/
-+	public override void ModifyProcHit(Player owner, Projectile optionalProjectile, NPC npcHit, ref NPC.HitModifiers damageDealt, ref bool crit)
++	public override void ModifyProcHit(Player owner, Projectile optionalProjectile, NPC npcHit, ref NPC.HitModifiers modifiers)
  	{
- 		base.ModifyProcHit(owner, optionalProjectile, npcHit, ref damageDealt, ref crit);
++		base.ModifyProcHit(owner, optionalProjectile, npcHit, ref modifiers);
 +		/*
+ 		base.ModifyProcHit(owner, optionalProjectile, npcHit, ref damageDealt, ref crit);
  		damageDealt += (int)((float)damageDealt * ProcDamageMultiplier);
 +		*/
-+		damageDealt.ScalingBonusDamage += ProcDamageMultiplier * ProjectileID.Sets.SummonTagDamageMultiplier[optionalProjectile.type];
++		modifiers.ScalingBonusDamage += ProcDamageMultiplier * ProjectileID.Sets.SummonTagDamageMultiplier[optionalProjectile.type];
  	}
  
 +	/*
  	public override void OnProcHit(Player owner, Projectile optionalProjectile, NPC npcHit, int calcDamage)
 +	*/
-+	public override void OnProcHit(Player owner, Projectile optionalProjectile, NPC npcHit, float calcDamage)
++	public override void OnProcHit(Player owner, Projectile optionalProjectile, NPC npcHit, NPC.HitInfo hit)
  	{
- 		CreateExplosion(optionalProjectile, npcHit, (int)((float)calcDamage * ProcDamageMultiplier));
+-		CreateExplosion(optionalProjectile, npcHit, (int)((float)calcDamage * ProcDamageMultiplier));
++		CreateExplosion(optionalProjectile, npcHit, (int)((float)hit.Damage * ProcDamageMultiplier));
  	}
+ 
+ 	private static void CreateExplosion(Projectile projectile, NPC npcHit, int procDamage)

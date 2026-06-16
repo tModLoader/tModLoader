@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/GameContent/Items/UniqueTagEffect.cs
 +++ src/tModLoader/Terraria/GameContent/Items/UniqueTagEffect.cs
-@@ -1,40 +_,124 @@
+@@ -1,40 +_,123 @@
 +using Terraria.ModLoader;
 +
  namespace Terraria.GameContent.Items;
@@ -60,9 +60,8 @@
 +	/// <param name="owner">The player who inflicted the tag effect.</param>
 +	/// <param name="optionalProjectile">The projectile that hit the NPC.</param>
 +	/// <param name="npcHit">The NPC who was hit.</param>
-+	/// <param name="damageDealt">The original damage that was dealt to the NPC.</param>
-+	/// <param name="crit">Whether the hit is a critical hit.</param>
-+	public virtual void ModifyTaggedHit(Player owner, Projectile optionalProjectile, NPC npcHit, ref NPC.HitModifiers damageDealt, ref bool crit)
++	/// <param name="modifiers">The original damage that was dealt to the NPC.</param>
++	public virtual void ModifyTaggedHit(Player owner, Projectile optionalProjectile, NPC npcHit, ref NPC.HitModifiers modifiers)
  	{
  	}
  
@@ -82,10 +81,10 @@
 +	/// <param name="owner">The player who inflicted the tag effect.</param>
 +	/// <param name="optionalProjectile">The projectile that hit the NPC.</param>
 +	/// <param name="npcHit">The NPC who was hit.</param>
-+	/// <param name="damageDealt">The original damage that was dealt to the NPC.</param>
++	/// <param name="modifiers">The original damage that was dealt to the NPC.</param>
 +	/// <param name="crit">Whether the hit is a critical hit.</param>
 +	/// <remarks>Procs will be removed from the NPC once they activate.</remarks>
-+	public virtual void ModifyProcHit(Player owner, Projectile optionalProjectile, NPC npcHit, ref NPC.HitModifiers damageDealt, ref bool crit)
++	public virtual void ModifyProcHit(Player owner, Projectile optionalProjectile, NPC npcHit, ref NPC.HitModifiers modifiers)
  	{
  	}
  
@@ -98,8 +97,8 @@
 +	/// <param name="owner">The player who inflicted the tag effect.</param>
 +	/// <param name="optionalProjectile">The projectile that hit the NPC.</param>
 +	/// <param name="npcHit">The NPC who was hit.</param>
-+	/// <param name="calcDamage">The damage after calculations from <see cref="ModifyTaggedHit"/> and <see cref="ModifyProcHit"/>.</param>
-+	public virtual void OnTaggedHit(Player owner, Projectile optionalProjectile, NPC npcHit, float calcDamage)
++	/// <param name="hit">The damage after calculations from <see cref="ModifyTaggedHit"/> and <see cref="ModifyProcHit"/>.</param>
++	public virtual void OnTaggedHit(Player owner, Projectile optionalProjectile, NPC npcHit, NPC.HitInfo hit)
  	{
  	}
  
@@ -119,9 +118,9 @@
 +	/// <param name="owner">The player who inflicted the tag effect.</param>
 +	/// <param name="optionalProjectile">The projectile that hit the NPC.</param>
 +	/// <param name="npcHit">The NPC who was hit.</param>
-+	/// <param name="calcDamage">The damage after calculations from <see cref="ModifyTaggedHit"/> and <see cref="ModifyProcHit"/>.</param>
++	/// <param name="hit">The damage after calculations from <see cref="ModifyTaggedHit"/> and <see cref="ModifyProcHit"/>.</param>
 +	/// <remarks>Procs will be removed from the NPC once they activate.</remarks>
-+	public virtual void OnProcHit(Player owner, Projectile optionalProjectile, NPC npcHit, float calcDamage)
++	public virtual void OnProcHit(Player owner, Projectile optionalProjectile, NPC npcHit, NPC.HitInfo hit)
  	{
  	}
  }

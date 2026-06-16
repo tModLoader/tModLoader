@@ -883,7 +883,7 @@
 +		modifiers.SourceDamage *= num4 / 1000;
 +		// set this just so that summon procs which scale with this value can spawn correctly
 +		//float damageDealt = modifiers.SourceDamage.ApplyTo(damage);
-+		Main.player[owner].TagEffectState.ModifyHit(this, targetNPC, ref modifiers, ref crit);
++		Main.player[owner].TagEffectState.ModifyHit(this, targetNPC, ref modifiers);
 +		/*
  		int num12 = ((!ownedBySomeone) ? Main.DamageVar(damageDealt) : Main.DamageVar(damageDealt, Main.player[owner].luck));
 +		*/
@@ -1014,7 +1014,7 @@
 +		/*
  		Main.player[owner].TagEffectState.OnHit(this, targetNPC, num4);
 +		*/
-+		Main.player[owner].TagEffectState.OnHit(this, targetNPC, damage * projectileSpecificDamageMultiplier); // TML: Changed num4 to 1000 for multiplier calculations, but that was causing 1000 to be passed for TagEffectState.OnHit
++		Main.player[owner].TagEffectState.OnHit(this, targetNPC, new NPC.HitInfo() { SourceDamage = (int)(damage * projectileSpecificDamageMultiplier) }); // TML: Changed num4 to 1000 for multiplier calculations, but that was causing 1000 to be passed for TagEffectState.OnHit
  		bool flag8 = !targetNPC.immortal;
  		bool flag9 = num28 > 0 && targetNPC.lifeMax > 5 && friendly && !hostile && aiStyle != 59;
  		bool flag10 = false;

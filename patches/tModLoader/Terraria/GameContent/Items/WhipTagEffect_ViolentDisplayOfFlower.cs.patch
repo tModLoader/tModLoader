@@ -7,7 +7,7 @@
 +	/*
  	public override void OnProcHit(Player owner, Projectile optionalProjectile, NPC npcHit, int calcDamage)
 +	*/
-+	public override void OnProcHit(Player owner, Projectile optionalProjectile, NPC npcHit, float calcDamage)
++	public override void OnProcHit(Player owner, Projectile optionalProjectile, NPC npcHit, NPC.HitInfo hit)
  	{
  		SpawnFlowerExplosionOn(optionalProjectile, npcHit, 40);
  	}
