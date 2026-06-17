@@ -30,7 +30,7 @@
 +	public override void OnProcHit(Player owner, Projectile optionalProjectile, NPC npcHit, NPC.HitInfo hit)
  	{
 -		CreateExplosion(optionalProjectile, npcHit, (int)((float)calcDamage * ProcDamageMultiplier));
-+		CreateExplosion(optionalProjectile, npcHit, (int)(hit.Damage * ProcDamageMultiplier));
++		CreateExplosion(optionalProjectile, npcHit, (int)(hit.SourceDamage * ProcDamageMultiplier));
  	}
  
  	private static void CreateExplosion(Projectile projectile, NPC npcHit, int procDamage)
