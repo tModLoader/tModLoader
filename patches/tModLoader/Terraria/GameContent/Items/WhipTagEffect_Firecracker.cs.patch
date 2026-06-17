@@ -7,7 +7,7 @@
  
  namespace Terraria.GameContent.Items;
  
-@@ -6,15 +_,25 @@
+@@ -6,15 +_,24 @@
  {
  	private static float ProcDamageMultiplier = 1.75f;
  
@@ -16,9 +16,9 @@
 +	*/
 +	public override void ModifyProcHit(Player owner, Projectile optionalProjectile, NPC npcHit, ref NPC.HitModifiers modifiers)
  	{
+-		base.ModifyProcHit(owner, optionalProjectile, npcHit, ref damageDealt, ref crit);
 +		base.ModifyProcHit(owner, optionalProjectile, npcHit, ref modifiers);
 +		/*
- 		base.ModifyProcHit(owner, optionalProjectile, npcHit, ref damageDealt, ref crit);
  		damageDealt += (int)((float)damageDealt * ProcDamageMultiplier);
 +		*/
 +		modifiers.ScalingBonusDamage += ProcDamageMultiplier * ProjectileID.Sets.SummonTagDamageMultiplier[optionalProjectile.type];
@@ -30,7 +30,7 @@
 +	public override void OnProcHit(Player owner, Projectile optionalProjectile, NPC npcHit, NPC.HitInfo hit)
  	{
 -		CreateExplosion(optionalProjectile, npcHit, (int)((float)calcDamage * ProcDamageMultiplier));
-+		CreateExplosion(optionalProjectile, npcHit, (int)((float)hit.Damage * ProcDamageMultiplier));
++		CreateExplosion(optionalProjectile, npcHit, (int)(hit.Damage * ProcDamageMultiplier));
  	}
  
  	private static void CreateExplosion(Projectile projectile, NPC npcHit, int procDamage)
