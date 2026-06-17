@@ -306,6 +306,51 @@ SilverBarRecipeGroup = RecipeGroup.Register(
 );
 ```
 
+### Whips and Tag Effects
+
+#### Tag Effects
+
+The way whip tag damage and effects are applied have been redone. Most functionally is no longer applied with a debuff and is instead applied with a `WhipTagEffect`. The tag effect is unique, which means effects from multiple tags cannot be stacked.
+* In the whip item's SetStaticDefaults, add `ItemID.Sets.UniqueTagEffects[Type] = new WhipTagEffect() { ... };`
+  * In the constructor, you can add the basic effects.
+    * `TagDamage`, `CritChance`, `PlayerBuffId`, `PlayerBuffTime`, `PlayerBuffAppliedManually`, and `TagDuration` can be set.
+* Additional functionality can be achieved by creating a new class that inherits `WhipTagEffect` and using that class in the SetStaticDefaults.
+  * There are overrides for when the tagged NPC takes damage from from a minion, sentry, or one of their projectiles.
+    * Hooks include `ModifyTaggedHit`, `ModifyProcHit`, `OnTaggedHit`, and `OnProcHit` as well as others.
+	* For the Proc hooks to run, the tagged NPC must have procs enabled for itself with `TryEnableProcOnNPC`. See ExampleWhipProjectileAdvanced.OnHitNPC for how to apply that.
+  * See Example Whip Advanced for some examples.
+* Most buffs that were made to implement tag damage can be removed.
+  * Any additional effects can be moved to a custom `WhipTagEffect` class.
+  * Don't forget to remove the `AddBuff` in your whip projectile's `OnHitNPC`.
+
+#### Whip Changes
+
+Whip AI has changed slightly. `Projectile.ai[1]` is now used to set the swing direction.
+
+* This means you'll need to override the item's `Shoot` and spawn the projectile manually now.
+* The following code is exactly what you'll need and is what vanilla does.
+
+```cs
+public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+	// This gives some visual variance on how fast the whip swinging animation plays out.
+	// This has no effect on the actual collision.
+	float swingDirection = 0.6f + (0.4f * Main.rand.NextFloat());
+	// 1/3 of the time, swing the whip from the bottom to top instead of from top to bottom.
+	// The Dark Harvest is the only whip that doesn't have the chance of swinging from the bottom up.
+	if (Main.rand.NextBool(3)) {
+		swingDirection *= -2.5f;
+	}
+	// Set swingDirection to 1f for the pre-1.4.5 behavior.
+
+	Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI, 0f, swingDirection);
+	return false; // Return false because we've already spawned the projectile.
+}
+```
+
+Example Mod's whips have been updated with new examples and additional comments. See the *Example Mod* section below for the details.
+
+See ExampleWhip, ExampleWhipAdvanced, ExampleWhipProjectile, and ExampleWhipProjectileAdvanced for more examples.
+
 ## Other Changes
 
 * Fishing power bonus now applies to any chair, not just toilets.
@@ -352,6 +397,24 @@ Several Example Mod examples have been updated to adapt to 1.4.5 changes and to 
     * If you are using `Projectile.DefaultToSpear()`, these two will automatically be set.
   * The `rotationFactor` in `Colliding` has been updated.
   * `player.gfxOffY` in `PreDraw` has been replaced with `Projectile.gfxOffY` to fix the sprite bouncing when walking up blocks.
+* `ExampleWhip`, `ExampleWhipProjectile`, `ExampleWhipAdvanced`, and `ExampleWhipProjectileAdvanced` (https://github.com/tModLoader/tModLoader/pull/5130/changes)
+  * `ExampleWhip` and `ExampleWhipProjectile` have been simplified.
+	* Added the `Shoot()` override to spawn the projectile manually for the swing direction. See the *Whip Changes* section above for details.
+    * It no longer has the charging ability that it did before (`ExampleWhipAdvanced` still has it).
+    * The draw code has been changed to be more generic.
+      * It is almost an exact copy of the Leather Whip's drawing.
+	  * It assumes each segment in the sprite are equal size, like most sprite sheets are.
+	* See the *Whips and Tag Effects* section above for details on tag damage changes.
+  * `ExampleWhipAdvanced` and `ExampleWhipProjectileAdvanced` have been updated.
+    * Added the `Shoot()` override to spawn the projectile manually for the swing direction. See the *Whip Changes* section above for details.
+    * If you weren't using `Projectile.DefaultToWhip()`, add `Projectile.drawLayer = ProjectileDrawLayerID.HeldProj` to the projectile's SetDefaults.
+    * Replace `float swingTime = owner.itemAnimationMax * Projectile.MaxUpdates` with `Projectile.GetWhipSettings(Projectile, out float timeToFlyOut, out _, out _)`
+	  * `Projectile.GetWhipSettings` has new functionality for when the whip is displayed on a mannequin.
+    * Add `owner.MatchItemTimeToItemAnimation()` after setting the `heldProj` to match vanilla.
+    * The draw code has been changed to work better for different segment amounts.
+      * Previously, the draw code was specific for `ExampleWhipProjectileAdvanced`. Now it will work for any number of segments.
+	  * Even if your whips seem to draw fine, double check the code because it is likely that the third segment of your whip wasn't being drawn.
+	* See the *Whips and Tag Effects* section above for details on tag damage changes.
 
 ## Renamed, Moved, or Removed Members
 
@@ -391,6 +454,7 @@ All classes are in the `Terraria` or `Terraria.ID` namespaces unless otherwise i
 * 🤖: `MusicId` entry changes: `Night` -> `OverworldNight`, `Title` -> `TitleClassic`, `Jungle` -> `JungleDay`, `TheHallow` -> `Hallow`, `Space` -> `SpaceNight`, `Boss4` -> `Golem`, `AltOverworldDay` -> `OverworldDayAlt`, `Ocean` -> `OceanDay`, `RainSoundEffect` -> `RainAmbience`, `Mushrooms` -> `Mushroom`, `AltUnderground` -> `UndergroundAlt`, `TheTowers` -> `LunarPillars`, `Hell` -> `Underworld`, `LunarBoss` -> `MoonLord`, `GoblinInvasion` -> `GoblinArmy`, `DayRemix` -> `OverworldDayRemix`, `MenuMusic` -> `TitleJourneysBeginningWithIntro`, `Monsoon` -> `Storm`, `JungleUnderground` -> `UndergroundJungle`, `ConsoleMenu` -> `TitleAlt`, `OtherworldlyRain` -> `OtherworldRain`, `OtherworldlyDay` -> `OtherworlddDay`, `OtherworldlyNight` -> `OtherworldNight`, `OtherworldlyUnderground` -> `OtherworldUnderground`, `OtherworldlyDesert` -> `OtherworldDesert`, `OtherworldlyOcean` -> `OtherworldOcean`, `OtherworldlyMushrooms` -> `OtherworldMushroom`, `OtherworldlyDungeon` -> `OtherworldDungeon`, `OtherworldlySpace` -> `OtherworldSpace`, `OtherworldlyUnderworld` -> `OtherworldUnderworld`, `OtherworldlySnow` -> `OtherworldSnow`, `OtherworldlyCorruption` -> `OtherworldCorruption`, `OtherworldlyUGCorrption` -> `OtherworldUndergroundCorruption`, `OtherworldlyCrimson` -> `OtherworldCrimson`, `OtherworldlyUGCrimson` -> `OtherworldUndergroundCrimson`, `OtherworldlyIce` -> `OtherworldIce`, `OtherworldlyUGHallow` -> `OtherworldUndergroundHallow`, `OtherworldlyEerie` -> `OtherworldEerie`, `OtherworldlyBoss2` -> `OtherworldBoss2`, `OtherworldlyBoss1` -> `OtherworldBoss1`, `OtherworldlyInvasion` -> `OtherworldInvasion`, `OtherworldlyTowers` -> `OtherworldLunarPillars`, `OtherworldlyLunarBoss` -> `OtherworldMoonLord`, `OtherworldlyPlantera` -> `OtherworldPlantera`, `OtherworldlyJungle` -> `OtherworldJungle`, `OtherworldlyWoF` -> `OtherworldWallOfFlesh`, `OtherworldlyHallow` -> `OtherworldHallow`, `Credits` -> `JourneysEnd`, `Shimmer` -> `Aether`
 * 🤖: `NPCID.Sets.UsesNewTargetting` -> `NPCID.Sets.UsesNewTargeting`
 * 🤖: `NPCID.Sets.GoldCrittersCollection` -> `NPCID.Sets.IsGoldCritter`. Also changed from `List` to typical to typical ID set.
+* ⚙️: `NPCID.Sets.ImmuneToAllBuffs` was removed. Continue to use `NPCID.Sets.ImmuneToRegularBuffs` and if immunity to tags effects and tag buffs is desired, additionally set the new `NPCID.Sets.ImmuneToWhipTags`.
 * 🤖: `NPCID.Sets.ShouldBeCountedAsBoss` -> `NPCID.Sets.ShouldBeCountedAsBossForBestiary`
 * 🤖: `NPCID.Sets.SpawnFromLastEmptySlot` -> `NPCID.Sets.SearchSpawnSlotsInReverse`
 * 🤖: `ProjectileID.Web` -> `ProjectileID.WebSlingerHook`

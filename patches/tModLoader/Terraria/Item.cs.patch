@@ -469,7 +469,7 @@
  	public sbyte handOnSlot = -1;
  	public sbyte handOffSlot = -1;
  	public sbyte backSlot = -1;
-@@ -116,48 +_,273 @@
+@@ -116,48 +_,276 @@
  	public sbyte balloonSlot = -1;
  	public sbyte beardSlot = -1;
  	public sbyte voiceSlot;
@@ -678,6 +678,9 @@
 +	/// </summary>
  	public int crit;
  	public int armorPenetration;
++	/// <summary>
++	/// Additional tag damage for this weapon, typically from prefixes/modifiers such as <see cref="PrefixID.Fabled"/>. Will be added alongside <see cref="WhipTagEffect.TagDamage"/> as a flat damage bonus to hits that satisfy <see cref="WhipTagEffect.CanRunHitEffects(Player, Projectile, NPC)"/>.
++	/// </summary>
  	public int bonusTagDamage;
 -	public byte prefix;
 -	public bool melee;

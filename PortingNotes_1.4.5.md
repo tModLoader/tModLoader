@@ -94,7 +94,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Not sure about the order for "VanillaOnHitEffectsResume:" and other labels. SpawnHitVisuals method added in between existing patches.
 - It seems like bomb damage logic has been reworked. Maybe many of our patches are no longer necessary or our explosive projectile examples need fixing. 
 - CombinedHooks.CanHitNPCWithProj patches might need to be reworked, it seems like they should be able to be simplified
-- Whip tag damage changed. Player.TagEffectState. Need to reapply "float num13 = ProjectileID.Sets.SummonTagDamageMultiplier[type];" patch somewhere.
 - Looks like we might want to split out the collision hitbox modification from TileCollideStyle. There is a new Projectile.GetCollisionParams method.
 - Double check new DoScrollingInInventory logic against PlayerInput.MouseInModdedUI
 - Patches checking ActiveWorldFileData being null and initializing it might be superfluous now. Seems like there were some vanilla changes.
@@ -190,7 +189,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - UIWrappedSearchBar, is it useful to modders?
 - Various text rendering methods have been changed or improved. Investigate new functionality and previous bug fixes.
 - Player.IsAllowedToHoldItems
-- BuffID.IsAnNPCWhipDebuff, which tModLoader renamed to IsATagBuff, has changed a lot. Need to document the new behavior. Do we want to revert the name change? Also CanBeRemovedByNetMessage docs are now wrong.
 - Need to determine if hooks need to act on ModItem or WorldItem. For example: `ItemIO.SendModData(item3, writer);`
   - `public EntityGlobalsEnumerator<TGlobal> Enumerate(IEntityWithGlobals<TGlobal> entity) => new(ForType(entity.Type), entity);` doesn't work as-is for hooks that are now WorldItem. I've changed them to `.Enumerate(item.inner)`, but I'm not positive what design we want for these hooks now. (WorldItem points to Item, but Item doesn't point to WorldItem.)
 - The number3 parameter of the SyncEquipment message seems to have changed meaning. Docs needed.
