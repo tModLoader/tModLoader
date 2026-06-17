@@ -21,10 +21,12 @@
 	</PropertyGroup>
 
 	<PropertyGroup>
-		<!-- Legacy property name for tMLSteamPath -->
-		<TerrariaSteamPath Condition="'$(TerrariaSteamPath)' == ''">$(MSBuildThisFileDirectory)</TerrariaSteamPath>
-		<tMLSteamPath Condition="'$(tMLSteamPath)' == ''">$(MSBuildThisFileDirectory)</tMLSteamPath>
-		<tMLLibraryPath Condition="'$(tMLLibraryPath)' == ''">$(tMLSteamPath)Libraries</tMLLibraryPath>
+		<!-- GetDirectoryName is used to get a path without a trailing slash. -->
+		<TerrariaSteamPath Condition="'$(TerrariaSteamPath)' == ''">$([System.IO.Path]::GetDirectoryName('$(MSBuildThisFileDirectory)'))</TerrariaSteamPath>
+		<tModLoaderSteamPath Condition="'$(tModLoaderSteamPath)' == ''">$([System.IO.Path]::GetDirectoryName('$(MSBuildThisFileDirectory)'))</tModLoaderSteamPath>
+		<tMLLibraryPath>$(tModLoaderSteamPath)/Libraries</tMLLibraryPath>
+		<!-- tMLSteamPath property is obsolete, switch to tModLoaderSteamPath. Note the lack of trailing slash. -->
+		<tMLSteamPath>$(tModLoaderSteamPath)/</tMLSteamPath>
 		<tMLName>tModLoader</tMLName>
 		<tMLPath>$(tMLName).dll</tMLPath>
 		<tMLServerPath>$(tMLPath) -server</tMLServerPath>
@@ -59,9 +61,9 @@
 		<BuildLaunch>$(DotNetName)</BuildLaunch>
 		<BuildArch>$([System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture)</BuildArch>
 		<BuildEnvVars Condition="'$(OS)' == 'Windows_NT'"></BuildEnvVars>
-		<BuildEnvVars Condition="'$(OS)' == 'Unix' AND '$(BuildArch)' != 'Arm64'">LD_LIBRARY_PATH=$(tMLSteamPath)Libraries/Native/Linux</BuildEnvVars>
-		<BuildEnvVars Condition="'$(OS)' == 'Unix' AND '$(BuildArch)' == 'Arm64'">LD_LIBRARY_PATH=$(tMLSteamPath)Libraries/Native/Linux-arm64</BuildEnvVars>
-		<BuildEnvVars Condition="'$(OS)' == 'OSX'">DYLD_LIBRARY_PATH=$(tMLSteamPath)Libraries/Native/OSX</BuildEnvVars>
+		<BuildEnvVars Condition="'$(OS)' == 'Unix' AND '$(BuildArch)' != 'Arm64'">LD_LIBRARY_PATH=$(tModLoaderSteamPath)/Libraries/Native/Linux</BuildEnvVars>
+		<BuildEnvVars Condition="'$(OS)' == 'Unix' AND '$(BuildArch)' == 'Arm64'">LD_LIBRARY_PATH=$(tModLoaderSteamPath)/Libraries/Native/Linux-arm64</BuildEnvVars>
+		<BuildEnvVars Condition="'$(OS)' == 'OSX'">DYLD_LIBRARY_PATH=$(tModLoaderSteamPath)/Libraries/Native/OSX</BuildEnvVars>
 	</PropertyGroup>
 
 	<ItemGroup Condition="'$(BuildMod)' == 'true'">
@@ -75,7 +77,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Reference Include="$(tMLSteamPath)$(tMLPath)" Private="$(OutputTmlReferences)" />
+		<Reference Include="$(tModLoaderSteamPath)/$(tMLPath)" Private="$(OutputTmlReferences)" />
 		<Reference Include="$(tMLLibraryPath)/**/*.dll" Private="$(OutputTmlReferences)" />
 		<Reference Remove="$(tMLLibraryPath)/Native/**" />
 		<Reference Remove="$(tMLLibraryPath)/**/runtime*/**" />
@@ -98,7 +100,7 @@
 	<Target Name="BuildMod" AfterTargets="Build" Condition="'$(BuildMod)' == 'true'">
 		<Exec
 			Command="$(BuildLaunch) $(tMLServerPath) -build $(ProjectDir) -eac $(TargetPath) -define &quot;$(DefineConstants)&quot; -unsafe $(AllowUnsafeBlocks) $(ExtraBuildModFlags)"
-			WorkingDirectory="$(tMLSteamPath)"
+			WorkingDirectory="$(tModLoaderSteamPath)"
 			EnvironmentVariables="$(BuildEnvVars)"
 		/>
 	</Target>
