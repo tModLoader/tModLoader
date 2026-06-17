@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/GameContent/Items/UniqueTagEffect.cs
 +++ src/tModLoader/Terraria/GameContent/Items/UniqueTagEffect.cs
-@@ -1,40 +_,123 @@
+@@ -1,40 +_,122 @@
 +using Terraria.ModLoader;
 +
  namespace Terraria.GameContent.Items;
@@ -82,7 +82,6 @@
 +	/// <param name="optionalProjectile">The projectile that hit the NPC.</param>
 +	/// <param name="npcHit">The NPC who was hit.</param>
 +	/// <param name="modifiers">The original damage that was dealt to the NPC.</param>
-+	/// <param name="crit">Whether the hit is a critical hit.</param>
 +	/// <remarks>Procs will be removed from the NPC once they activate.</remarks>
 +	public virtual void ModifyProcHit(Player owner, Projectile optionalProjectile, NPC npcHit, ref NPC.HitModifiers modifiers)
  	{

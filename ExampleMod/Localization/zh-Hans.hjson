@@ -1428,7 +1428,7 @@ Mods: {
 				// Description: "{$Items.ExampleFlask.Tooltip}"
 			}
 
-			ExampleWhipBuff: {
+			ExampleWhipAdvancedPlayerBuff: {
 				// DisplayName: Example Whippin'!
 				// Description: Whip speed is increased
 			}

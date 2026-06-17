@@ -19,7 +19,7 @@
  {
  	private class NPCDistanceByIndexComparator : IComparer<Tuple<int, float>>
  	{
-@@ -61,96 +_,386 @@
+@@ -61,96 +_,394 @@
  		public Rectangle GetBulletHitbox(int bulletIndex, Vector2 centerPoint) => Utils.CenteredRectangle(GetBulletPosition(bulletIndex, centerPoint), BulletSize);
  	}
  
@@ -400,7 +400,15 @@
 +	/// </summary>
  	public int idStaticNPCHitCooldown = -1;
  	public int bannerIdToRespondTo;
++	/// <summary>
++	/// The tag effect this projectile will apply to NPCs.
++	/// <para/> Automatically set to the item type that spawned this projectile if <see cref="ItemID.Sets.UniqueTagEffects"/> is populated. Inherited from parent projectile spawning other projectiles.
++	/// </summary>
  	public int tagEffectType;
++	/// <summary>
++	/// Additional tag damage to be added to the normal tag damage of this projectile.
++	/// <para/> Automatically set to <see cref="Item.bonusTagDamage"/> of the item that spawned this projectile. Inherited from parent projectile spawning other projectiles.
++	/// </summary>
  	public int bonusTagDamage;
 -	public int armorPenetration;
 +	private int armorPenetration; // Changed to private, TML provides a public ArmorPenetration wrapper

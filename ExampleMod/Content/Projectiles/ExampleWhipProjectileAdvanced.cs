@@ -146,7 +146,7 @@ namespace ExampleMod.Content.Projectiles
 
 			Vector2 pos = list[0];
 			// This whip has a long range and this line is poking out of the front, so we will use list.Count - 2 instead of list.Count - 1.
-			for (int i = 0; i < list.Count - 2; i++) { 
+			for (int i = 0; i < list.Count - 2; i++) {
 				Vector2 element = list[i];
 				Vector2 diff = list[i + 1] - element;
 

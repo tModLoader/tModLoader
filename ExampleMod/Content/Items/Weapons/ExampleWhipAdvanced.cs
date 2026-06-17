@@ -25,7 +25,7 @@ namespace ExampleMod.Content.Items.Weapons
 				TagDamagePercent = ExampleWhipAdvancedTagDamagePercent,
 				ProcDamageMultiplier = 1.75f,
 				// Here's how to add buff that benefits the player.
-				PlayerBuffId = ModContent.BuffType<ExampleWhipBuff>(),
+				PlayerBuffId = ModContent.BuffType<ExampleWhipAdvancedPlayerBuff>(),
 				PlayerBuffTime = 180
 			};
 		}
@@ -84,7 +84,8 @@ namespace ExampleMod.Content.Items.Weapons
 	/// <summary>
 	/// This is a custom whip tag effect that allows us to customize the tag effect.
 	/// </summary>
-	public class WhipTagEffect_ExampleWhipAdvanced : WhipTagEffect {
+	public class WhipTagEffect_ExampleWhipAdvanced : WhipTagEffect
+	{
 		/// <summary> This will do percentage based bonus damage instead of flat damage like the normal TagDamage. </summary>
 		public int TagDamagePercent;
 		public float TagDamageMultiplier => TagDamagePercent / 100f;
