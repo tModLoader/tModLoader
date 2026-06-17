@@ -859,7 +859,6 @@ Mods: {
 					'''
 					{$CommonItemTooltip.SummonTagDamage}
 					{$CommonItemTooltip.Whips}
-					Hold for longer reach
 					''' */
 			}
 
@@ -867,7 +866,7 @@ Mods: {
 				// DisplayName: Example Whip Advanced
 				/* Tooltip:
 					'''
-					{0}% summon tag damage to the next minion or sentry hit
+					{0}% extra summon tag damage to the next minion or sentry hit
 					{$CommonItemTooltip.Whips}
 					Hold for longer reach
 					''' */
@@ -1388,11 +1387,6 @@ Mods: {
 				// Description: Leather seats, 4 cup holders
 			}
 
-			ExampleWhipDebuff: {
-				// DisplayName: Example Whip Debuff
-				// Description: ""
-			}
-
 			ExampleLightPetBuff: {
 				// DisplayName: Annoying Light
 				// Description: Ugh, soooo annoying
@@ -1423,11 +1417,6 @@ Mods: {
 				// Description: "{0}% of damage taken will be redirected to another player"
 			}
 
-			ExampleWhipAdvancedDebuff: {
-				// DisplayName: Example Whip Advanced Debuff
-				// Description: ""
-			}
-
 			ExampleJavelinDebuff: {
 				// DisplayName: Example Javelin Debuff
 				// Description: Losing life
@@ -1436,6 +1425,11 @@ Mods: {
 			ExampleWeaponImbue: {
 				// DisplayName: Example Weapon Imbue
 				// Description: "{$Items.ExampleFlask.Tooltip}"
+			}
+
+			ExampleWhipAdvancedPlayerBuff: {
+				// DisplayName: Example Whippin'!
+				// Description: Whip speed is increased
 			}
 		}
 

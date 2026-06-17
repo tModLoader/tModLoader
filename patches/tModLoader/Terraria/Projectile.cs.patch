@@ -19,7 +19,7 @@
  {
  	private class NPCDistanceByIndexComparator : IComparer<Tuple<int, float>>
  	{
-@@ -61,96 +_,386 @@
+@@ -61,96 +_,394 @@
  		public Rectangle GetBulletHitbox(int bulletIndex, Vector2 centerPoint) => Utils.CenteredRectangle(GetBulletPosition(bulletIndex, centerPoint), BulletSize);
  	}
  
@@ -400,7 +400,15 @@
 +	/// </summary>
  	public int idStaticNPCHitCooldown = -1;
  	public int bannerIdToRespondTo;
++	/// <summary>
++	/// The tag effect this projectile will apply to NPCs.
++	/// <para/> Automatically set to the item type that spawned this projectile if <see cref="ItemID.Sets.UniqueTagEffects"/> is populated. Inherited from parent projectile spawning other projectiles.
++	/// </summary>
  	public int tagEffectType;
++	/// <summary>
++	/// Additional tag damage to be added to the normal tag damage of this projectile.
++	/// <para/> Automatically set to <see cref="Item.bonusTagDamage"/> of the item that spawned this projectile. Inherited from parent projectile spawning other projectiles.
++	/// </summary>
  	public int bonusTagDamage;
 -	public int armorPenetration;
 +	private int armorPenetration; // Changed to private, TML provides a public ArmorPenetration wrapper
@@ -874,7 +882,7 @@
  
  			int num11 = type;
  			if ((uint)(num11 - 688) <= 2u) {
-@@ -10664,9 +_,16 @@
+@@ -10664,9 +_,15 @@
  			}
  		}
  
@@ -883,11 +891,10 @@
 +		modifiers.SourceDamage *= num4 / 1000;
 +		// set this just so that summon procs which scale with this value can spawn correctly
 +		//float damageDealt = modifiers.SourceDamage.ApplyTo(damage);
-+		Main.player[owner].TagEffectState.ModifyHit(this, targetNPC, ref modifiers, ref crit);
++		Main.player[owner].TagEffectState.ModifyHit(this, targetNPC, ref modifiers);
 +		/*
  		int num12 = ((!ownedBySomeone) ? Main.DamageVar(damageDealt) : Main.DamageVar(damageDealt, Main.player[owner].luck));
 +		*/
-+		// modifiers.FlatBonusDamage += num6; // TODO: Handled now by TagEffectState.ModifyHit maybe?
 +		float luck = flag ? Main.player[owner].luck : 0f;
 +		float num12 = 1000; // to reduce patches, set to 1000, and then turn it into a multiplier later
  		if (type == 1002)
@@ -978,7 +985,7 @@
  		switch (type) {
  			case 697:
  			case 699:
-@@ -11198,15 +_,33 @@
+@@ -11198,18 +_,39 @@
  		if (type == 22)
  			num27 = ((Main.player[owner].Center.X < targetNPC.Center.X) ? 1 : (-1));
  
@@ -1012,7 +1019,13 @@
 +		if (ownedBySomeone && Main.player[owner].accDreamCatcher && !targetNPC.HideStrikeDamage)
  			Main.player[owner].addDPS(num28);
  
++		/*
  		Main.player[owner].TagEffectState.OnHit(this, targetNPC, num4);
++		*/
++		Main.player[owner].TagEffectState.OnHit(this, targetNPC, strike);
+ 		bool flag8 = !targetNPC.immortal;
+ 		bool flag9 = num28 > 0 && targetNPC.lifeMax > 5 && friendly && !hostile && aiStyle != 59;
+ 		bool flag10 = false;
 @@ -11353,10 +_,13 @@
  			NewProjectile(GetProjectileSource_FromThis(), targetNPC.Center.X, targetNPC.Center.Y, targetNPC.velocity.X, targetNPC.velocity.Y, 289, 0, 0f, owner);
  
