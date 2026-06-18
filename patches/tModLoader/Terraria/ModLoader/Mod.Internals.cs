@@ -50,20 +50,14 @@ partial class Mod
 			return;
 
 		// Load icon.png and icon_small.png
-		ModIcon = null;
-		SmallModIcon = null;
+		// The embedded mod for tModLoader doesn't have File initialized
+		if (File != null) {
+			ModIcon = ModLoader.GetModIcon(File, out string modIconError)
+			       ?? throw new MissingResourceException($"Failed to load icon.png. Reason: {modIconError}.");
 
-		// The tModLoader embedded mod doesn't have File initialized
-		if (File != null)
-			ModIcon = ModLoader.GetModIcon(File, out string error)
-			       ?? throw new MissingResourceException($"Failed to load icon.png. Reason: {error}.");
-
-		if (RequestAssetIfExists<Texture2D>("icon_small", out var smallIconAsset)) {
-			if (smallIconAsset.Size() == new Vector2(30)) {
-				SmallModIcon = smallIconAsset;
-			}
-			else {
-				Logger.Error("icon_small.png needs to be 30x30 pixels.");
+			SmallModIcon = ModLoader.GetModIcon(File, out string smallIconError, "icon_small.png", 30);
+			if (SmallModIcon is null) {
+				Logger.Warn($"Failed to load icon_small.png. Reason: {smallIconError}.");
 			}
 		}
 

@@ -420,21 +420,21 @@ public static class ModLoader
 		Main.Configuration.Get("LiquidSlopeFix", ref LiquidEdgeRenderer.Enabled);
 	}
 
-	internal static Asset<Texture2D> GetModIcon(TmodFile modFile, out string error)
+	internal static Asset<Texture2D> GetModIcon(TmodFile modFile, out string error, string fileName = "icon.png", int iconSize = 80)
 	{
 		error = null;
 
-		if (modFile.HasFile("icon.png")) {
+		if (modFile.HasFile(fileName)) {
 			try {
 				using (modFile.Open())
-				using (var s = modFile.GetStream("icon.png")) {
-					var iconTexture = Main.Assets.CreateUntracked<Texture2D>(s, ".png");
+				using (var s = modFile.GetStream(fileName)) {
+					var iconTexture = Main.Assets.CreateUntracked<Texture2D>(s, fileName);
 
-					if (iconTexture.Width() == 80 && iconTexture.Height() == 80) {
+					if (iconTexture.Width() == iconSize && iconTexture.Height() == iconSize) {
 						return iconTexture;
 					}
 
-					error = "icon.png is not 80x80";
+					error = $"{fileName} is not {iconSize}x{iconSize}";
 					return null;
 				}
 			}
@@ -443,13 +443,13 @@ public static class ModLoader
 			}
 		}
 
-		error = "icon.png does not exist";
+		error = $"{fileName} does not exist";
 		return null;
 	}
 
-	internal static Asset<Texture2D> GetModIcon(TmodFile modFile)
+	internal static Asset<Texture2D> GetModIcon(TmodFile modFile, string fileName = "icon.png", int iconSize = 80)
 	{
-		return GetModIcon(modFile, out string _);
+		return GetModIcon(modFile, out string _, fileName, iconSize);
 	}
 
 	internal static void MigrateSettings()
