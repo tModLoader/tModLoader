@@ -97,7 +97,7 @@ namespace ExampleMod.Content.Projectiles
 			}
 
 			Projectile.spriteDirection = Projectile.direction;
-			Vector2 projectileRotation = Vector2.UnitX * 20f;
+			Vector2 projectileRotation = Vector2.UnitX * 20f; // How far out the item is held.
 			float armRotation = 0f;
 			if (pose.ItemAimRadians.HasValue)
 				armRotation = pose.ItemAimRadians.Value;

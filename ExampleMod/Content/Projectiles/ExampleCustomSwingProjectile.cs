@@ -6,6 +6,7 @@ using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent;
+using Terraria.GameContent.Tile_Entities;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -88,6 +89,7 @@ namespace ExampleMod.Content.Projectiles
 			Projectile.localNPCHitCooldown = -1; // We set this to -1 to make sure the projectile doesn't hit twice
 			Projectile.ownerHitCheck = true; // Make sure the owner of the projectile has line of sight to the target (aka can't hit things through tile).
 			Projectile.DamageType = DamageClass.Melee; // Projectile is a melee projectile
+			Projectile.drawLayer = ProjectileDrawLayerID.HeldProj; // Draws over the player's body and under the player's hands
 		}
 
 		public override void OnSpawn(IEntitySource source) {
@@ -282,6 +284,32 @@ namespace ExampleMod.Content.Projectiles
 					Projectile.Kill();
 				}
 			}
+		}
+
+		// This hook lets us change how the held projectile looks while a mannequin is holding it.
+		// The following code is adapted from vanilla's Projectile.AI_DisplayDoll for aiStyle 20 (Drill)
+		public override bool DisplayDollSettings(Player doll, TEDisplayDoll.DisplayDollPose pose, ref bool botherDrawing) {
+			// If the pose isn't one that is holding the item, then don't bother trying to draw the projectile.
+			if (pose.Pose < DisplayDollPoseID.Use1) {
+				botherDrawing = false; // Don't draw.
+				return false; // Returning false stops the rest of the vanilla code from running.
+			}
+
+			Projectile.spriteDirection = Projectile.direction;
+			Vector2 projectileRotation = Vector2.UnitX * 5f; // How far out the item is held.
+			float armRotation = 0f;
+			if (pose.ItemAimRadians.HasValue)
+				armRotation = pose.ItemAimRadians.Value;
+
+			projectileRotation = projectileRotation.RotatedBy(armRotation); // The rotation of the mannequin's hand.
+			if (Projectile.direction == -1)
+				projectileRotation.X *= -1f;
+
+			Projectile.velocity = projectileRotation;
+			Projectile.position += projectileRotation; // Move the projectile's location while being held by the mannequin.
+			Projectile.rotation = (float)Math.Atan2(projectileRotation.Y, projectileRotation.X) ; // Set the projectile's rotation based on the mannequin's hand.
+
+			return false;
 		}
 	}
 }
