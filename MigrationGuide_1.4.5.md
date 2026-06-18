@@ -386,6 +386,10 @@ See ExampleWhip, ExampleWhipAdvanced, ExampleWhipProjectile, and ExampleWhipProj
 	* For vanilla NPCs talking about vanilla NPCs, use BestiaryGirlTransformed: `TownNPCMood_BeastiaryGirlTransformed.{AffectionLevel}NPC_{OtherNPCInternalName}`
 * `Item.maxStack` now defaults to `Item.CommonMaxStack` (9999) now instead of 1.
 * `FishingAttempt.junk` now exists.
+* To support mannequins holding held projectiles, `(ModProjectile|GlobalProjectile).DisplayDollSettings(Player doll, TEDisplayDoll.DisplayDollPose pose, ref bool botherDrawing)` has been added.
+	* Many Example Mod held projectiles were updated to showcase the new hook.
+	* As mentioned in the Projectile Draw Changes section, PreDraw/Draw/PostDraw code needs to be updated to use the new `player` parameter instead of using `Main.player[Projectile.owner]`.
+	* `Projectile.drawLayer = ProjectileDrawLayerID.HeldProj` will likely need to be added to `SetDefaults` for the projectile to draw on the correct layer.
 
 ### Example Mod
 
@@ -415,6 +419,8 @@ Several Example Mod examples have been updated to adapt to 1.4.5 changes and to 
       * Previously, the draw code was specific for `ExampleWhipProjectileAdvanced`. Now it will work for any number of segments.
 	  * Even if your whips seem to draw fine, double check the code because it is likely that the third segment of your whip wasn't being drawn.
 	* See the *Whips and Tag Effects* section above for details on tag damage changes.
+* `ExampleAdvancedFlailProjectile`, `ExampleCustomSwingProjectile`, `ExampleDrillProjectile`, `ExampleFailProjectile`, `ExampleHeldProjectileWeaponProjectile`, `ExampleJoustingLanceProjectile`, `ExampleShortswordProjectile`, `ExampleSpearProjectile`, `ExampleWhipProjectile`, `ExampleWhipProjectileAdvanced`, and `ExampleYoyoProjectile` have been updated to support being held by mannequins.
+* `ExampleCustomUseStyleWeapon` (`ExampleCustomUseStyleGlobalItem`) has been updated to support being held by mannequins using `TEDisplayDoll.RegisterUsePose` and `player.isDisplayDollOrInanimate`.
 
 ## Renamed, Moved, or Removed Members
 
