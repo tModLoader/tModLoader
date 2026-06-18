@@ -53,15 +53,14 @@ public partial class Mod
 	public virtual Version Version => File.Version;
 
 	/// <summary>
-	/// The icon for this mod, sourced from <c>icon.png</c>.<br /><br />
-	/// Must be 80x80.<br /><br />
-	/// Will contain a placeholder icon if a suitable icon doesn't exist.
+	/// The icon for this mod, sourced from <c>icon.png</c>.
+	/// <br/><br/> Must be 80x80.
 	/// </summary>
 	public Asset<Texture2D> ModIcon { get; internal set; }
 	/// <summary>
-	/// The small icon for this mod, sourced from <c>icon_small.png</c>.<br /><br />
-	/// Must be 30x30.<br /><br />
-	/// Will be null if a suitable icon doesn't exist.
+	/// The small icon for this mod, sourced from <c>icon_small.png</c>.
+	/// <br/><br/> Must be 30x30.
+	/// <br/><br/> Will be null if a suitable icon doesn't exist.
 	/// </summary>
 	public Asset<Texture2D> SmallModIcon { get; internal set; }
 	/// <summary>
