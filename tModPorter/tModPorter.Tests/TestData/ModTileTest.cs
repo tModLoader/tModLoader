@@ -62,6 +62,14 @@ public class ModTileTest : ModTile
 		return false;
 	}
 
+	public override bool IsTileBiomeSightable(int i, int j, ref Color sightColor) {
+		return true;
+	}
+
+	public override bool IsTileSpelunkable(int i, int j) {
+		return true;
+	}
+
 	public override bool HasSmartInteract() { return true; /* comment */ }
 
 	public override bool NewRightClick(int i, int j) { return false; /* comment */ }

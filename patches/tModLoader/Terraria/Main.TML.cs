@@ -167,18 +167,30 @@ public partial class Main
 	/// Checks if a tile at the given coordinates counts towards tile coloring from the Spelunker buff, and is detected by various pets.
 	/// </summary>
 	public static bool IsTileSpelunkable(int tileX, int tileY)
+		=> IsTileSpelunkable(tileX, tileY, LocalPlayer);
+
+	/// <summary>
+	/// Checks if a tile at the given coordinates counts towards tile coloring from the Spelunker buff for the given player, and is detected by various pets.
+	/// </summary>
+	public static bool IsTileSpelunkable(int tileX, int tileY, Player player)
 	{
 		Tile tile = Main.tile[tileX, tileY];
-		return IsTileSpelunkable(tileX, tileY, tile.type, tile.frameX, tile.frameY);
+		return IsTileSpelunkable(tileX, tileY, player, tile.type, tile.frameX, tile.frameY);
 	}
 
 	/// <summary>
 	/// Checks if a tile at the given coordinates counts towards tile coloring from the Biome Sight buff.
 	/// </summary>
 	public static bool IsTileBiomeSightable(int tileX, int tileY, ref Color sightColor)
+		=> IsTileBiomeSightable(tileX, tileY, LocalPlayer, ref sightColor);
+
+	/// <summary>
+	/// Checks if a tile at the given coordinates counts towards tile coloring from the Biome Sight buff for the given player.
+	/// </summary>
+	public static bool IsTileBiomeSightable(int tileX, int tileY, Player player, ref Color sightColor)
 	{
 		Tile tile = Main.tile[tileX, tileY];
-		return IsTileBiomeSightable(tileX, tileY, tile.type, tile.frameX, tile.frameY, ref sightColor);
+		return IsTileBiomeSightable(tileX, tileY, player, tile.type, tile.frameX, tile.frameY, ref sightColor);
 	}
 
 	public static void InfoDisplayPageHandler(int startX, ref string mouseText, out int startingDisplay, out int endingDisplay)

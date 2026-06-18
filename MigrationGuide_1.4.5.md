@@ -527,6 +527,7 @@ All classes are in the `Terraria.ModLoader` or `Terraria` namespaces unless othe
 * ⚙️: `ModProjectile.DrawHeldProjInFrontOfHeldItemAndArms` has been removed. Set `Projectile.drawLayer` to `ProjectileDrawLayerID.HeldProjOverHand` instead. 
 * ⚙️: `(ModProjectile|GlobalProjectile).PreDraw/PreDrawExtras/PostDraw` now has a `Player` parameter. Use this instead of `Main.player[Projectile.owner]` to properly support rendering projectiles to custom `Player` instances, such as Mannequins.
 * ⚙️: `ModPylon.ValidTeleportCheck_AnyDanger` and `GlobalPylon.ValidTeleportCheck_PreAnyDanger` have been removed. Pylons no longer check for danger when teleporting.
+* ⚙️: `(ModTile|GlobalTile).IsTileBiomeSightable/IsTileSpelunkable` now have a `Player` parameter. Use this instead of `Main.LocalPlayer` so these hooks work correctly when rendering from a different player perspective.
 * 🤖: `ModTile.AddToArray` is no longer used for `TileID.Sets.RoomNeeds` entries since `TileID.Sets.RoomNeeds` fields have changed to typical ID sets.
 * `NPCLoader.blockLoot` can now affect all drops such as coins, hearts, etherian mana, and skyblock specific drops. Before it could only affect loot table drops.
 * ⚙️: `NPCSpawnInfo` is no longer used, it has been replaced by `NPC.Spawner` in functionality.

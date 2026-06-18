@@ -80,6 +80,14 @@ public class ModTileTest : ModTile
 		return false;
 	}
 
+	public override bool IsTileBiomeSightable(int i, int j, Player player, ref Color sightColor)/* tModPorter Suggestion: Add the new Player parameter to the hook signature and use it instead of Main.LocalPlayer. */ {
+		return true;
+	}
+
+	public override bool IsTileSpelunkable(int i, int j, Player player)/* tModPorter Suggestion: Add the new Player parameter to the hook signature and use it instead of Main.LocalPlayer. */ {
+		return true;
+	}
+
 	public override bool HasSmartInteract(int i, int j, SmartInteractScanSettings settings) { return true; /* comment */ }
 
 	public override bool RightClick(int i, int j) { return false; /* comment */ }

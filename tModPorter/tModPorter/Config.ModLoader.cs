@@ -178,6 +178,10 @@ public static partial class Config
 		ChangeHookSignature("Terraria.ModLoader.ModTile",			"DrawEffects");
 		ChangeHookSignature("Terraria.ModLoader.GlobalTile",		"DrawEffects");
 		ChangeHookSignature("Terraria.ModLoader.GlobalTile",		"IsTileDangerous", comment: "Suggestion: Return null instead of false");
+		ChangeHookSignature("Terraria.ModLoader.ModTile",			"IsTileBiomeSightable", comment: "Suggestion: Add the new Player parameter to the hook signature and use it instead of Main.LocalPlayer.");
+		ChangeHookSignature("Terraria.ModLoader.GlobalTile",		"IsTileBiomeSightable", comment: "Suggestion: Add the new Player parameter to the hook signature and use it instead of Main.LocalPlayer.");
+		ChangeHookSignature("Terraria.ModLoader.ModTile",			"IsTileSpelunkable", comment: "Suggestion: Add the new Player parameter to the hook signature and use it instead of Main.LocalPlayer.");
+		ChangeHookSignature("Terraria.ModLoader.GlobalTile",		"IsTileSpelunkable", comment: "Suggestion: Add the new Player parameter to the hook signature and use it instead of Main.LocalPlayer.");
 		ChangeHookSignature("Terraria.ModLoader.GlobalTile",		"PlaceInWorld");
 		ChangeHookSignature("Terraria.ModLoader.ModNPC",			"SetNPCNameList", comment: "Suggestion: Return a list of names");
 		ChangeHookSignature("Terraria.ModLoader.ModNPC",			"CanTownNPCSpawn", comment: "Suggestion: Copy the implementation of NPC.SpawnAllowed_Merchant in vanilla if you to count money, and be sure to set a flag when unlocked, so you don't count every tick.");

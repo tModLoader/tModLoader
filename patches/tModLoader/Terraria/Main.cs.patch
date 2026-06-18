@@ -3951,36 +3951,47 @@
  
  			Vector2 stringSize = ChatManager.GetStringSize(FontAssets.MouseText.Value, text, new Vector2(1f));
  			float t = num2;
-@@ -18474,10 +_,15 @@
+@@ -18474,10 +_,20 @@
  		}
  	}
  
 -	public static bool IsTileSpelunkable(Tile t) => IsTileSpelunkable(t.type, t.frameX, t.frameY);
-+	//TML: Added x/y to IsTileSpelunkable methods for hook compatibility, made internal. Public variant is in Main.TML.cs.
-+	internal static bool IsTileSpelunkable(int tileX, int tileY, Tile t) => IsTileSpelunkable(tileX, tileY, t.type, t.frameX, t.frameY);
++	//TML: Added x/y/player to IsTileSpelunkable methods for hook compatibility, made internal. Public variant is in Main.TML.cs.
++	internal static bool IsTileSpelunkable(int tileX, int tileY, Tile t) => IsTileSpelunkable(tileX, tileY, LocalPlayer, t);
  
 -	public static bool IsTileSpelunkable(ushort typeCache, short tileFrameX, short tileFrameY)
++	internal static bool IsTileSpelunkable(int tileX, int tileY, Player player, Tile t) => IsTileSpelunkable(tileX, tileY, player, t.type, t.frameX, t.frameY);
++
 +	internal static bool IsTileSpelunkable(int tileX, int tileY, ushort typeCache, short tileFrameX, short tileFrameY)
++		=> IsTileSpelunkable(tileX, tileY, LocalPlayer, typeCache, tileFrameX, tileFrameY);
++
++	internal static bool IsTileSpelunkable(int tileX, int tileY, Player player, ushort typeCache, short tileFrameX, short tileFrameY)
  	{
-+		bool? modded = TileLoader.IsTileSpelunkable(tileX, tileY, typeCache);
++		bool? modded = TileLoader.IsTileSpelunkable(tileX, tileY, typeCache, player);
 +		if (modded.HasValue)
 +			return modded.Value;
 +
  		if (tileSpelunker[typeCache])
  			return true;
  
-@@ -18490,8 +_,16 @@
+@@ -18490,8 +_,22 @@
  		return false;
  	}
  
-+	// TML: Added x/y to IsTileBiomeSightable methods for hook compatibility, made internal. Public variant is in Main.TML.cs.
++	// TML: Added x/y/player to IsTileBiomeSightable methods for hook compatibility, made internal. Public variant is in Main.TML.cs.
 +	internal static bool IsTileBiomeSightable(int tileX, int tileY, Tile t, ref Microsoft.Xna.Framework.Color sightColor) =>
-+		IsTileBiomeSightable(tileX, tileY, t.type, t.frameX, t.frameY, ref sightColor);
++		IsTileBiomeSightable(tileX, tileY, LocalPlayer, t, ref sightColor);
++
++	internal static bool IsTileBiomeSightable(int tileX, int tileY, Player player, Tile t, ref Microsoft.Xna.Framework.Color sightColor) =>
++		IsTileBiomeSightable(tileX, tileY, player, t.type, t.frameX, t.frameY, ref sightColor);
 +
 -	public static bool IsTileBiomeSightable(ushort type, short tileFrameX, short tileFrameY, ref Microsoft.Xna.Framework.Color sightColor)
 +	internal static bool IsTileBiomeSightable(int tileX, int tileY, ushort type, short tileFrameX, short tileFrameY, ref Microsoft.Xna.Framework.Color sightColor)
++		=> IsTileBiomeSightable(tileX, tileY, LocalPlayer, type, tileFrameX, tileFrameY, ref sightColor);
++
++	internal static bool IsTileBiomeSightable(int tileX, int tileY, Player player, ushort type, short tileFrameX, short tileFrameY, ref Microsoft.Xna.Framework.Color sightColor)
  	{
-+		bool? modded = TileLoader.IsTileBiomeSightable(tileX, tileY, type, ref sightColor);
++		bool? modded = TileLoader.IsTileBiomeSightable(tileX, tileY, type, player, ref sightColor);
 +		if (modded.HasValue)
 +			return modded.Value;
 +

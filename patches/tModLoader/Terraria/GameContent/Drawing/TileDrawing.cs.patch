@@ -258,7 +258,7 @@
  		}
  
 -		if (_perspectivePlayer.findTreasure && Main.IsTileSpelunkable(tileDrawInfo.typeCache, tileDrawInfo.tileFrameX, tileDrawInfo.tileFrameY)) {
-+		if (_perspectivePlayer.findTreasure && Main.IsTileSpelunkable(tileX, tileY, tileDrawInfo.typeCache, tileDrawInfo.tileFrameX, tileDrawInfo.tileFrameY)) {
++		if (_perspectivePlayer.findTreasure && Main.IsTileSpelunkable(tileX, tileY, _perspectivePlayer, tileDrawInfo.typeCache, tileDrawInfo.tileFrameX, tileDrawInfo.tileFrameY)) {
  			if (tileDrawInfo.tileLight.R < 200)
  				tileDrawInfo.tileLight.R = 200;
  
@@ -267,7 +267,7 @@
  		if (_perspectivePlayer.biomeSight) {
  			Color sightColor = Color.White;
 -			if (Main.IsTileBiomeSightable(tileDrawInfo.typeCache, tileDrawInfo.tileFrameX, tileDrawInfo.tileFrameY, ref sightColor)) {
-+			if (Main.IsTileBiomeSightable(tileX, tileY, tileDrawInfo.typeCache, tileDrawInfo.tileFrameX, tileDrawInfo.tileFrameY, ref sightColor)) {
++			if (Main.IsTileBiomeSightable(tileX, tileY, _perspectivePlayer, tileDrawInfo.typeCache, tileDrawInfo.tileFrameX, tileDrawInfo.tileFrameY, ref sightColor)) {
  				if (tileDrawInfo.tileLight.R < sightColor.R)
  					tileDrawInfo.tileLight.R = sightColor.R;
  
@@ -824,7 +824,7 @@
  		}
  
 -		if (_perspectivePlayer.findTreasure && Main.IsTileSpelunkable(typeCache, tileFrameX, tileFrameY)) {
-+		if (_perspectivePlayer.findTreasure && Main.IsTileSpelunkable(i, j, typeCache, tileFrameX, tileFrameY)) {
++		if (_perspectivePlayer.findTreasure && Main.IsTileSpelunkable(i, j, _perspectivePlayer, typeCache, tileFrameX, tileFrameY)) {
  			if (tileLight.R < 200)
  				tileLight.R = 200;
  
@@ -833,7 +833,7 @@
  
  		Color sightColor = Color.White;
 -		if (Main.IsTileBiomeSightable(typeCache, tileFrameX, tileFrameY, ref sightColor)) {
-+		if (Main.IsTileBiomeSightable(i, j, typeCache, tileFrameX, tileFrameY, ref sightColor)) {
++		if (Main.IsTileBiomeSightable(i, j, _perspectivePlayer, typeCache, tileFrameX, tileFrameY, ref sightColor)) {
  			if (tileLight.R < sightColor.R)
  				tileLight.R = sightColor.R;
  
@@ -912,7 +912,7 @@
  			if (_perspectivePlayer.biomeSight) {
  				Color sightColor = Color.White;
 -				if (Main.IsTileBiomeSightable(type, tileFrameX, tileFrameY, ref sightColor)) {
-+				if (Main.IsTileBiomeSightable(x, i, type, tileFrameX, tileFrameY, ref sightColor)) {
++				if (Main.IsTileBiomeSightable(x, i, _perspectivePlayer, type, tileFrameX, tileFrameY, ref sightColor)) {
  					if (color.R < sightColor.R)
  						color.R = sightColor.R;
  

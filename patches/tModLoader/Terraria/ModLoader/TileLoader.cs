@@ -66,9 +66,9 @@ public static class TileLoader
 	private delegate void DelegateModifyLight(int i, int j, int type, ref float r, ref float g, ref float b);
 	private static DelegateModifyLight[] HookModifyLight;
 	private static Func<int, int, int, Player, bool?>[] HookIsTileDangerous;
-	private delegate bool? DelegateIsTileBiomeSightable(int i, int j, int type, ref Color sightColor);
+	private delegate bool? DelegateIsTileBiomeSightable(int i, int j, int type, Player player, ref Color sightColor);
 	private static DelegateIsTileBiomeSightable[] HookIsTileBiomeSightable;
-	private static Func<int, int, int, bool?>[] HookIsTileSpelunkable;
+	private static Func<int, int, int, Player, bool?>[] HookIsTileSpelunkable;
 	private delegate void DelegateSetSpriteEffects(int i, int j, int type, ref SpriteEffects spriteEffects);
 	private static DelegateSetSpriteEffects[] HookSetSpriteEffects;
 	private static Action[] HookAnimateTile;
@@ -904,18 +904,18 @@ public static class TileLoader
 		return retVal;
 	}
 
-	public static bool? IsTileBiomeSightable(int i, int j, int type, ref Color sightColor)
+	public static bool? IsTileBiomeSightable(int i, int j, int type, Player player, ref Color sightColor)
 	{
 		bool? retVal = null;
 
 		ModTile modTile = GetTile(type);
 
-		if (modTile != null && modTile.IsTileBiomeSightable(i, j, ref sightColor)) {
+		if (modTile != null && modTile.IsTileBiomeSightable(i, j, player, ref sightColor)) {
 			retVal = true;
 		}
 
 		foreach (var hook in HookIsTileBiomeSightable) {
-			bool? globalRetVal = hook(i, j, type, ref sightColor);
+			bool? globalRetVal = hook(i, j, type, player, ref sightColor);
 			if (globalRetVal.HasValue) {
 				if (globalRetVal.Value) {
 					retVal = true;
@@ -929,18 +929,18 @@ public static class TileLoader
 		return retVal;
 	}
 
-	public static bool? IsTileSpelunkable(int i, int j, int type)
+	public static bool? IsTileSpelunkable(int i, int j, int type, Player player)
 	{
 		bool? retVal = null;
 
 		ModTile modTile = GetTile(type);
 
-		if (!Main.tileSpelunker[type] && modTile != null && modTile.IsTileSpelunkable(i, j)) {
+		if (!Main.tileSpelunker[type] && modTile != null && modTile.IsTileSpelunkable(i, j, player)) {
 			retVal = true;
 		}
 
 		foreach (var hook in HookIsTileSpelunkable) {
-			bool? globalRetVal = hook(i, j, type);
+			bool? globalRetVal = hook(i, j, type, player);
 			if (globalRetVal.HasValue) {
 				if (globalRetVal.Value) {
 					retVal = true;

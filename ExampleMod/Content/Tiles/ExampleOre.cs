@@ -35,7 +35,7 @@ namespace ExampleMod.Content.Tiles
 		}
 
 		// Example of how to enable the Biome Sight buff to highlight this tile. Biome Sight is technically intended to show "infected" tiles, so this example is purely for demonstration purposes.
-		public override bool IsTileBiomeSightable(int i, int j, ref Color sightColor) {
+		public override bool IsTileBiomeSightable(int i, int j, Player player, ref Color sightColor) {
 			sightColor = Color.Blue;
 			return true;
 		}

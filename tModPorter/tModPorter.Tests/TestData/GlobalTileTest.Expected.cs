@@ -9,6 +9,14 @@ public class GlobalTileTest : GlobalTile {
 		return false;
 	}
 
+	public override bool? IsTileBiomeSightable(int i, int j, int type, Player player, ref Color sightColor)/* tModPorter Suggestion: Add the new Player parameter to the hook signature and use it instead of Main.LocalPlayer. */ {
+		return true;
+	}
+
+	public override bool? IsTileSpelunkable(int i, int j, int type, Player player)/* tModPorter Suggestion: Add the new Player parameter to the hook signature and use it instead of Main.LocalPlayer. */ {
+		return true;
+	}
+
 	public override void SetStaticDefaults() { /* Empty */ }
 
 	public override void DrawEffects(int i, int j, int type, SpriteBatch spriteBatch, ref TileDrawInfo drawData) {

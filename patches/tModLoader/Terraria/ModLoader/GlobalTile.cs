@@ -101,34 +101,36 @@ public abstract class GlobalTile : GlobalBlockType
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>
 	/// <param name="type">The tile type</param>
-	/// <param name="player">Main.LocalPlayer</param>
+	/// <param name="player">The player whose perspective is being rendered.</param>
 	public virtual bool? IsTileDangerous(int i, int j, int type, Player player)
 	{
 		return null;
 	}
 
 	/// <summary>
-	/// Allows you to customize whether this tile glows <paramref name="sightColor"/> while the local player has the <see href="https://terraria.wiki.gg/wiki/Biome_Sight_Potion">Biome Sight buff</see>.
+	/// Allows you to customize whether this tile glows <paramref name="sightColor"/> while the given player has the <see href="https://terraria.wiki.gg/wiki/Biome_Sight_Potion">Biome Sight buff</see>.
 	/// <br/>Return true to force this behavior, or false to prevent it, overriding vanilla conditions and colors. Returns null by default.
 	/// <br/>This is only called on the local client.
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>
 	/// <param name="type">The tile type</param>
+	/// <param name="player">The player whose perspective is being rendered.</param>
 	/// <param name="sightColor">The color this tile should glow with, which defaults to <see cref="Color.White"/>.</param>
-	public virtual bool? IsTileBiomeSightable(int i, int j, int type, ref Color sightColor)
+	public virtual bool? IsTileBiomeSightable(int i, int j, int type, Player player, ref Color sightColor)
 	{
 		return null;
 	}
 
 	/// <summary>
-	/// Allows you to customize whether this tile can glow yellow while having the Spelunker buff, and is also detected by various pets.
+	/// Allows you to customize whether this tile can glow yellow while the given player has the Spelunker buff, and is also detected by various pets.
 	/// <br/>Return true to force this behavior, or false to prevent it, overriding vanilla conditions. Returns null by default.
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>
 	/// <param name="type">The tile type</param>
-	public virtual bool? IsTileSpelunkable(int i, int j, int type)
+	/// <param name="player">The player whose perspective is being rendered.</param>
+	public virtual bool? IsTileSpelunkable(int i, int j, int type, Player player)
 	{
 		return null;
 	}

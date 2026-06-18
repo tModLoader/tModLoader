@@ -8,6 +8,14 @@ public class GlobalTileTest : GlobalTile {
 		return false;
 	}
 
+	public override bool? IsTileBiomeSightable(int i, int j, int type, ref Color sightColor) {
+		return true;
+	}
+
+	public override bool? IsTileSpelunkable(int i, int j, int type) {
+		return true;
+	}
+
 	public override void SetDefaults() { /* Empty */ }
 
 	public override void DrawEffects(int i, int j, int type, SpriteBatch spriteBatch, ref Color drawColor, ref int nextSpecialDrawIndex) {

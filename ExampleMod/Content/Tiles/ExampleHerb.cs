@@ -153,7 +153,7 @@ namespace ExampleMod.Content.Tiles
 			}
 		}
 
-		public override bool IsTileSpelunkable(int i, int j) {
+		public override bool IsTileSpelunkable(int i, int j, Player player) {
 			PlantStage stage = GetStage(i, j);
 
 			// Only glow if the herb is grown
