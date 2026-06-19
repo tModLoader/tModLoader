@@ -1,3 +1,4 @@
+using System.IO;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -46,42 +47,43 @@ internal class UIModConfigList : UIState
 
 		var uIHeaderTextPanel = new UITextPanel<LocalizedText>(Language.GetText("tModLoader.ModConfiguration"), 0.8f, true) {
 			HAlign = 0.5f,
-			Top = { Pixels = -35f },
+			Top = { Pixels = -46 }, // -35 is common for most UIs, but UIWorkshopHub uses -46 to fit more content
 			BackgroundColor = UICommon.DefaultUIBlue,
 		}.WithPadding(15f);
 		uIElement.Append(uIHeaderTextPanel);
 
 		var modListPanel = new UIPanel {
-			Width = { Pixels = uIPanel.PaddingTop / -2, Percent = 0.5f },
+			Width = { Pixels = -uIPanel.PaddingTop / 2, Percent = 0.5f },
 			Height = { Percent = 1f },
 		};
 		uIPanel.Append(modListPanel);
 
 		var configListPanel = new UIPanel {
-			Width = { Pixels = uIPanel.PaddingTop / -2, Percent = 0.5f },
+			Width = { Pixels = -uIPanel.PaddingTop / 2, Percent = 0.5f },
 			Height = { Percent = 1f },
 			HAlign = 1f,
 		};
 		uIPanel.Append(configListPanel);
 
 		float headerHeight = 35;
+		float paddingDueToScrollbar = 12.5f;
 		var modListHeader = new UIText(Language.GetText("tModLoader.MenuMods"), 0.5f, true) {
 			Top = { Pixels = 5 },
-			Left = { Pixels = 12.5f },
+			Left = { Pixels = paddingDueToScrollbar },
 			HAlign = 0.5f,
 		};
 		modListPanel.Append(modListHeader);
 
 		var configListHeader = new UIText(Language.GetText("tModLoader.ModConfigs"), 0.5f, true) {
 			Top = { Pixels = 5 },
-			Left = { Pixels = -12.5f },
+			Left = { Pixels = -paddingDueToScrollbar },
 			HAlign = 0.5f,
 		};
 		configListPanel.Append(configListHeader);
 
 		modList = new UIList {
 			Top = { Pixels = headerHeight },
-			Width = { Pixels = -25, Percent = 1f },
+			Width = { Pixels = -paddingDueToScrollbar * 2, Percent = 1f },
 			Height = { Pixels = -headerHeight, Percent = 1f },
 			ListPadding = 5f,
 			HAlign = 1f,
@@ -91,7 +93,7 @@ internal class UIModConfigList : UIState
 
 		configList = new UIList {
 			Top = { Pixels = headerHeight },
-			Width = { Pixels = -25f, Percent = 1f },
+			Width = { Pixels = -paddingDueToScrollbar * 2, Percent = 1f },
 			Height = { Pixels = -headerHeight, Percent = 1f },
 			ListPadding = 5f,
 			HAlign = 0f,
@@ -102,6 +104,7 @@ internal class UIModConfigList : UIState
 		var modListScrollbar = new UIScrollbar {
 			Top = { Pixels = headerHeight },
 			Height = { Pixels = -headerHeight, Percent = 1f },
+			HAlign = 0f,
 		};
 		modListScrollbar.SetView(100f, 1000f);
 		modList.SetScrollbar(modListScrollbar);
@@ -172,9 +175,11 @@ internal class UIModConfigList : UIState
 		foreach (var mod in mods) {
 			if (ConfigManager.Configs.TryGetValue(mod, out _)) {
 				var modPanel = new UIButton<string>(mod.DisplayName) {
-					MaxWidth = { Percent = 0.95f },
+					Width = { Percent = 1f, Pixels = -1, }, // -1 to prevent clipping the right edge of the panel
+					Height = { Pixels = 41 },
+					TextOriginX = 0f,
 					HAlign = 0.5f,
-					ScalePanel = true,
+					ScalePanel = false,
 					UseInnerDimensions = true,
 					AltPanelColor = UICommon.MainPanelBackground,
 					AltHoverPanelColor = UICommon.MainPanelBackground * (1 / 0.8f),
@@ -196,9 +201,11 @@ internal class UIModConfigList : UIState
 					continue;
 
 				var modPanel = new UIButton<string>(mod.DisplayName) {
-					MaxWidth = { Percent = 0.95f },
+					Width = { Percent = 1f, Pixels = -1, }, // -1 to prevent clipping the right edge of the panel
+					Height = { Pixels = 41 },
+					TextOriginX = 0f,
 					HAlign = 0.5f,
-					ScalePanel = true,
+					ScalePanel = false,
 					UseInnerDimensions = true,
 					BackgroundColor = Color.Gray,
 					HoverPanelColor = Color.Gray,
@@ -215,16 +222,13 @@ internal class UIModConfigList : UIState
 
 		void AddSmallIcon(Mod mod, UIButton<string> modPanel)
 		{
-			var iconTexture = mod.SmallModIcon;
-			if (iconTexture == null) {
-				return;
-			}
+			var iconTexture = mod.SmallModIcon ?? Mod.PlaceholderSmallModIcon;
 
 			float iconOffset = iconTexture.Width();
 			float iconPadding = 2;
 			modPanel.PaddingLeft += iconOffset + iconPadding;
 
-			var modIcon = new UIImage(iconTexture) {
+				var modIcon = new UIImage(iconTexture) {
 				VAlign = 0.5f,
 				HAlign = 0f,
 				Color = Color.White,
@@ -249,9 +253,11 @@ internal class UIModConfigList : UIState
 
 		foreach (var config in sortedConfigs) {
 			var configPanel = new UIButton<LocalizedText>(config.DisplayName) {
-				MaxWidth = { Percent = 0.95f },
+				Width = { Percent = 1f, Pixels = -1, }, // -1 to prevent clipping the right edge of the panel
+				Height = { Pixels = 41 }, // Taken from the debugger when running with ScalePanel = true
+				TextOriginX = 0f,
 				HAlign = 0.5f,
-				ScalePanel = true,
+				ScalePanel = false,
 				UseInnerDimensions = true,
 				ClickSound = SoundID.MenuOpen,
 			};
@@ -272,13 +278,13 @@ internal class UIModConfigList : UIState
 
 			float indicatorOffset = indicatorFrame.Width;
 			float indicatorPadding = 8; // Supposed to be 12, but the icons have a lot of spare transparency on the sides which wastes space
-			configPanel.PaddingRight += indicatorOffset + indicatorPadding;
+			configPanel.PaddingLeft += indicatorOffset + indicatorPadding;
 
 			var sideIndicator = new UIImageFramed(indicatorTexture, indicatorFrame) {
 				VAlign = 0.5f,
-				HAlign = 1f,
+				HAlign = 0f,
 				Color = Color.White,
-				MarginRight = -indicatorOffset - indicatorPadding + 4, // 4 for alignment
+				MarginLeft = -indicatorOffset - indicatorPadding + 4, // 4 for alignment
 			};
 
 			sideIndicator.OnDraw += delegate (UIElement affectedElement) {

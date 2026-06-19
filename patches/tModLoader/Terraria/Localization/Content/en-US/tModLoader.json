@@ -147,7 +147,7 @@
 		"ModConfigConfigSaved": "Config Saved",
 		"ModConfigBack": "Back",
 		"ModConfigBackUnsavedChanges": "Warning: This config has unsaved changes",
-		"ModConfigBackUnsavedChangesPopup": "Are you sure you want to go back?\nThere are unsaved changes to this config and going back will discard the changes.",
+		"ModConfigBackUnsavedChangesPopup": "Are you sure you want to go back?\nThere are unsaved changes to this config and going back will discard these changes.",
 		"ModConfigRevertChanges": "Revert",
 		"ModConfigRevertChangesTooltip": "Revert the changes you have made to this config",
 		"ModConfigRevertChangesNoUnsavedChanges": "There are no changes to this config to revert",
