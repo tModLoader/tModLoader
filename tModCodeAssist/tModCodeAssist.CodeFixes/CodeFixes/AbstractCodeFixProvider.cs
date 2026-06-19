@@ -4,7 +4,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.Text;
 
-namespace tModCodeAssist;
+namespace tModCodeAssist.CodeFixes;
 
 public abstract class AbstractCodeFixProvider(string diagnosticId) : CodeFixProvider
 {

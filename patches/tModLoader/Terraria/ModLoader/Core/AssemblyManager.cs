@@ -324,7 +324,7 @@ public static class AssemblyManager
 		return false;
 	}
 
-	public static IEnumerable<Mod> GetDependencies(Mod mod) => GetLoadContext(mod.Name).dependencies.Select(m => ModLoader.GetMod(mod.Name));
+	public static IEnumerable<Mod> GetDependencies(Mod mod) => GetLoadContext(mod.Name).dependencies.Select(m => ModLoader.GetMod(m.Name));
 
 	/// <summary>
 	/// Gets all <see cref="Type"/>s loadable from the given <see cref="Assembly"/>.

@@ -28,8 +28,8 @@ namespace ExampleMod.Content
 			// To avoid name collisions, when a modded items is the iconic or 1st item in a recipe group, name the recipe group: ModName:ItemName
 			RecipeGroup.RegisterGroup("ExampleMod:ExampleItem", ExampleRecipeGroup);
 
-			// Add an item to an existing Terraria recipeGroup. ExampleCritterItem isn't gold but it serves as an example for this.
-			RecipeGroup.recipeGroups[RecipeGroupID.GoldenCritter].ValidItems.Add(ModContent.ItemType<ExampleCritterItem>());
+			// Add an item to an existing Terraria recipeGroup. ExampleCritterItem isn't a bug but it serves as an example for this.
+			RecipeGroup.recipeGroups[RecipeGroupID.Bugs].ValidItems.Add(ModContent.ItemType<ExampleCritterItem>());
 
 			// We also add ExampleSand to the Sand group, which is used in the Glass and Magic Sand Dropper recipes
 			RecipeGroup.recipeGroups[RecipeGroupID.Sand].ValidItems.Add(ModContent.ItemType<ExampleSandBlock>());

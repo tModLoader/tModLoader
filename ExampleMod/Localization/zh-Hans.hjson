@@ -1254,6 +1254,11 @@ Mods: {
 				// DisplayName: Example Gem
 				// Tooltip: ""
 			}
+
+			ExampleGemsparkBlock: {
+				// DisplayName: Example Gemspark Block
+				// Tooltip: ""
+			}
 		}
 
 		# Projectile display names mainly show in chat when a player dies from it.
@@ -1396,6 +1401,11 @@ Mods: {
 			ExampleWeaponImbue: {
 				// DisplayName: Example Weapon Imbue
 				// Description: "{$Items.ExampleFlask.Tooltip}"
+			}
+
+			ExampleCrowdControlledDebuff: {
+				// DisplayName: Example Crowd Controlled Debuff
+				// Description: You can't move your arms or legs
 			}
 		}
 

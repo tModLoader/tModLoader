@@ -128,6 +128,8 @@ internal static class Interface
 	{
 		if (Main.menuMode == loadModsID) {
 			// These must be "else if" because the code should only run when it will actually show. This code will be revisited each time these info messages are closed, to check if any other messages should be shown.
+			InfoMessageChainStart:
+
 			if (ModLoader.ShowFirstLaunchWelcomeMessage) {
 				ModLoader.ShowFirstLaunchWelcomeMessage = false;
 				infoMessage.Show(Language.GetTextValue("tModLoader.FirstLaunchWelcomeMessage"), Main.menuMode);
@@ -135,7 +137,7 @@ internal static class Interface
 
 			else if (SteamedWraps.FamilyShared && !ModLoader.WarnedFamilyShare && !ModLoader.WarnedFamilyShareDontShowAgain) {
 				ModLoader.WarnedFamilyShare = true;
-				infoMessage.Show(Language.GetTextValue("tModLoader.SteamFamilyShareWarning"), Main.menuMode, altButtonText: Language.GetTextValue("tModLoader.DontShowAgain"), altButtonAction: () => { ModLoader.WarnedFamilyShareDontShowAgain = true; Main.SaveSettings(); } );
+				infoMessage.Show(Language.GetTextValue("tModLoader.SteamFamilyShareWarning"), Main.menuMode, altButtonText: Language.GetTextValue("tModLoader.DontShowAgain"), altButtonAction: () => { ModLoader.WarnedFamilyShareDontShowAgain = true; Main.SaveSettings(); });
 			}
 
 			/* For Major Updates that span multi-month
@@ -186,59 +188,19 @@ internal static class Interface
 					() => Utils.OpenToURL($"https://github.com/tModLoader/tModLoader/wiki/tModLoader-Release-Cycle#144"));
 				Main.SaveSettings();
 			}
-			else if (!ModLoader.DownloadedDependenciesOnStartup) { // Keep this at the end of the if/else chain since it doesn't necessarily change Main.menuMode
-				ModLoader.DownloadedDependenciesOnStartup = true;
-
-				// Find dependencies that need to be downloaded.
-				var missingDeps = ModOrganizer.IdentifyMissingWorkshopDependencies().ToList();
+			else if (!ModLoader.SeenNewUpdatedModsInfo) {
+				ModLoader.SeenNewUpdatedModsInfo = true;
 
 				string message = $"{ModOrganizer.DetectModChangesForInfoMessage(out IEnumerable<string> removedMods)}";
-				if (missingDeps.Any()) {
-					message += $"{Language.GetTextValue("tModLoader.DependenciesNeededForOtherMods")}\n  {string.Join("\n  ", missingDeps)}";
-				}
-				message = message.Trim('\n');
+				if (message.Length > 0)
+					message += "\n";
 
-				bool anyMissingDependency = missingDeps.Any();
 				bool anyRemovedMod = removedMods.Any();
-				bool promptDepDownloads = anyMissingDependency || anyRemovedMod;
 
-				string cancelButton = promptDepDownloads ? Language.GetTextValue("tModLoader.ContinueAnyway") : null;
-				string continueButton = "";
-				if (anyMissingDependency && anyRemovedMod)
-					continueButton = Language.GetTextValue("tModLoader.InstallDependenciesAndRedownloadMods");
-				else if (anyMissingDependency)
-					continueButton = Language.GetTextValue("tModLoader.InstallDependencies");
-				else if (anyRemovedMod)
-					continueButton = Language.GetTextValue("tModLoader.RedownloadMods");
+				string cancelButton = anyRemovedMod ? Language.GetTextValue("tModLoader.ContinueAnyway") : null;
+				string continueButton = anyRemovedMod ? Language.GetTextValue("tModLoader.RedownloadMods") : string.Empty;
 
 				Action downloadAction = async () => {
-					HashSet<ModDownloadItem> downloads = new();
-					foreach (var slug in missingDeps) {
-						var state = WorkshopHelper.QueryHelper.AQueryInstance.TryGetModDownloadItem(slug, out var item);
-						if (state == WorkshopHelper.WorkshopSearchReturnState.SearchFailed)
-							break;
-
-						if (state != WorkshopHelper.WorkshopSearchReturnState.Success) {
-							Logging.tML.Error($"Could not find required mod dependency on Workshop: {slug}; Error State {state}");
-							continue;
-						}
-
-						if (item.Banned) {
-							Logging.tML.Error($"The missing dependency {item.DisplayName} with ID:{item.PublishId} is Banned on Workshop.");
-							continue;
-						}
-
-						downloads.Add(item);
-					}
-
-					if (downloads.Any()) {
-						await UIModBrowser.DownloadMods(
-							downloads,
-							loadModsID);
-					}
-
-					//TODO: This code was added hastily in response to a popular mod being transferred ownership by reuploading it.
-					// Revisit this code at a later date. Its not apparent how well the interaction of both dependencies and removed mods will play out in terms of UX
 					HashSet<ModPubId_t> removedDownloads = new();
 					foreach (var slug in removedMods) {
 						var state = WorkshopHelper.QueryHelper.AQueryInstance.TryGetModDownloadItem(slug, out var item);
@@ -283,6 +245,75 @@ internal static class Interface
 				if (!string.IsNullOrWhiteSpace(message)) {
 					Logging.tML.Info($"Mod Changes since last launch:\n{message}");
 					infoMessage.Show(message, Main.menuMode, altButtonText: continueButton, altButtonAction: downloadAction, okButtonText: cancelButton);
+				}
+				else {
+					// In order to ensure that the next information message actually shows when info message is not shown, we have to jump back to start of this If-Else Chain
+					goto InfoMessageChainStart;
+				}
+			}
+			else if (!ModLoader.ResolvedAbnormalModInstallStates) {
+				ModLoader.ResolvedAbnormalModInstallStates = true;
+
+				string message = ModOrganizer.DetectAbnormalSteamWorkshopDownloads(out Action resolveAbnormalDownloads, out string continueButton, out string cancelButton);
+
+				if (!string.IsNullOrWhiteSpace(message)) {
+					Logging.tML.Info($"Abnormal Mod States to Address:\n{message}");
+					infoMessage.Show(message, Main.menuMode, altButtonText: continueButton, altButtonAction: resolveAbnormalDownloads, okButtonText: cancelButton);
+				}
+				else {
+					// In order to ensure that the next information message actually shows when info message is not shown, we have to jump back to start of this If-Else Chain
+					goto InfoMessageChainStart;
+				}
+			}
+			else if (!ModLoader.DownloadedDependenciesOnStartup) { // Must be the last code to run since prior info messages may introduce new updates or new mods that may have dependencies.
+				ModLoader.DownloadedDependenciesOnStartup = true;
+
+				// Find dependencies that need to be downloaded.
+				var missingDeps = ModOrganizer.IdentifyMissingWorkshopDependencies().ToList();
+
+				bool anyMissingDependency = missingDeps.Any();
+				string message = string.Empty;
+				string cancelButton = Language.GetTextValue("tModLoader.ContinueAnyway");
+				string continueButton = Language.GetTextValue("tModLoader.InstallDependencies");
+
+				if (missingDeps.Any()) {
+					message += $"{Language.GetTextValue("tModLoader.DependenciesNeededForOtherMods")}\n  {string.Join("\n  ", missingDeps)}";
+				}
+				message = message.Trim('\n');
+
+				Action downloadAction = async () => {
+					HashSet<ModDownloadItem> downloads = new();
+					foreach (var slug in missingDeps) {
+						var state = WorkshopHelper.QueryHelper.AQueryInstance.TryGetModDownloadItem(slug, out var item);
+						if (state == WorkshopHelper.WorkshopSearchReturnState.SearchFailed)
+							break;
+
+						if (state != WorkshopHelper.WorkshopSearchReturnState.Success) {
+							Logging.tML.Error($"Could not find required mod dependency on Workshop: {slug}; Error State {state}");
+							continue;
+						}
+
+						if (item.Banned) {
+							Logging.tML.Error($"The missing dependency {item.DisplayName} with ID:{item.PublishId} is Banned on Workshop.");
+							continue;
+						}
+
+						downloads.Add(item);
+					}
+
+					if (downloads.Any() && await UIModBrowser.DownloadMods(downloads, loadModsID)) {
+						Main.menuMode = loadModsID;
+						Main.MenuUI.SetState(null);
+					}
+				};
+
+				if (!string.IsNullOrWhiteSpace(message)) {
+					Logging.tML.Info($"Abnormal Mod States to Address:\n{message}");
+					infoMessage.Show(message, Main.menuMode, altButtonText: continueButton, altButtonAction: downloadAction, okButtonText: cancelButton);
+				}
+				else {
+					// In order to ensure that the next information message actually shows when info message is not shown, we have to jump back to start of this If-Else Chain
+					goto InfoMessageChainStart;
 				}
 			}
 		}
