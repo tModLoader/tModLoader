@@ -1,9 +1,10 @@
 --- src/TerrariaNetCore/Terraria/Utils.cs
 +++ src/tModLoader/Terraria/Utils.cs
-@@ -20,6 +_,7 @@
+@@ -20,6 +_,8 @@
  using Terraria.DataStructures;
  using Terraria.GameContent;
  using Terraria.Localization;
++using Terraria.ModLoader;
 +using Terraria.ModLoader.Engine;
  using Terraria.UI;
  using Terraria.UI.Chat;
@@ -17,6 +18,14 @@
  {
  	public delegate bool TileActionAttempt(int x, int y);
  
+@@ -37,6 +_,7 @@
+ 
+ 	public class RandomTeleportationAttemptSettings
+ 	{
++		public Entity teleportee; // TML
+ 		public Vector2 teleporteeSize;
+ 		public Vector2 teleporteeVelocity;
+ 		public float teleporteeGravityDirection;
 @@ -100,10 +_,13 @@
  				continue;
  
@@ -108,6 +117,16 @@
  	public static float Remap(float fromValue, float fromMin, float fromMax, float toMin, float toMax, bool clamped = true) => MathHelper.Lerp(toMin, toMax, GetLerpValue(fromMin, fromMax, fromValue, clamped));
  	public static double Remap(double fromValue, double fromMin, double fromMax, double toMin, double toMax, bool clamped = true) => Lerp(toMin, toMax, GetLerpValue(fromMin, fromMax, fromValue, clamped));
  	public static double EaseOutBounce(double x) => BounceEaseOut(x, 4, 2.0);
+@@ -475,6 +_,9 @@
+ 			if (!(Collision.TileCollision(vector - vector2, vector2, num, num2, fallThrough: false, fall2: false, (int)teleporteeGravityDirection) != vector2)) {
+ 				vector2 = -Vector2.UnitY * 16f;
+ 				if (!(Collision.TileCollision(vector - vector2, vector2, num, num2, fallThrough: false, fall2: false, (int)teleporteeGravityDirection) != vector2) && (!Main.dualDungeonsSeed || !UnbreakableWallScan.InsideUnbreakableWalls(new Point(num9, num10)))) {
++					if (settings.teleportee is Player player && !CombinedHooks.CanBeTeleportedTo(player, vector, num9, num10, "CheckForGoodTeleportationSpot"))
++						continue;
++
+ 					canSpawn = true;
+ 					num5 += num8;
+ 					break;
 @@ -580,6 +_,10 @@
  		return (t - from) / (to - from);
  	}

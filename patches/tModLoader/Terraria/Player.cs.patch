@@ -5968,33 +5968,11 @@
  		int num = 50;
  		if (newItem.IsACoin)
  			num = 54;
-@@ -31620,7 +_,7 @@
- 		}
- 
- 		for (int k = 54; k < 58; k++) {
--			if (inventory[k].type > 0 && inventory[k].stack < inventory[k].maxStack && Item.CanStack(newItem, inventory[k]))
-+			if (inventory[k].type > 0 && inventory[k].stack < inventory[k].maxStack && ItemLoader.CanStack(inventory[k], newItem))
- 				return new ItemSpaceStatus(CanTakeItem: true);
- 		}
- 
-@@ -31655,7 +_,11 @@
- 		if (theSlot.favorited && theSlot.OnlyNeedOneInInventory())
- 			return false;
- 
-+		bool vanillaResult = false;
- 		if (theSlot.stack < theSlot.maxStack && Item.CanStack(theItemToAccept, theSlot))
-+			vanillaResult = true;
-+
-+		if (vanillaResult && ItemLoader.CanStack(theSlot, theItemToAccept))
- 			return true;
- 
- 		return false;
-@@ -31690,9 +_,14 @@
+@@ -31690,9 +_,13 @@
  			if (inventory[i].type <= 0 || inventory[i].stack >= inventory[i].maxStack || !Item.CanStack(newItem, inventory[i]))
  				continue;
  
-+			if (!ItemLoader.TryStackItems(inventory[i], newItem, out int numTransfered))
-+				continue;
++			ItemLoader.StackItems(inventory[i], newItem, out int numTransfered);
 +
  			if (!settings.NoSound)
  				SoundEngine.PlaySound(7);
@@ -6038,12 +6016,11 @@
  	public Item GetItem(Item newItem, GetItemSettings settings)
  	{
  		bool isACoin = newItem.IsACoin;
-@@ -31836,9 +_,14 @@
+@@ -31836,9 +_,13 @@
  	private bool GetItem_FillIntoOccupiedSlot_VoidBag(Item[] inv, Item newItem, GetItemSettings settings, Item returnItem, int i)
  	{
  		if (inv[i].type > 0 && inv[i].stack < inv[i].maxStack && Item.CanStack(returnItem, inv[i])) {
-+			if (!ItemLoader.TryStackItems(inv[i], returnItem, out int numTransfered))
-+				return false;
++			ItemLoader.StackItems(inv[i], returnItem, out int numTransfered);
 +
  			if (!settings.NoSound)
  				SoundEngine.PlaySound(newItem.IsACoin ? 38 : 7);
@@ -6070,12 +6047,11 @@
  		}
  
  		return false;
-@@ -31878,10 +_,16 @@
+@@ -31878,10 +_,15 @@
  	private bool GetItem_FillIntoOccupiedSlot(Item newItem, GetItemSettings settings, Item returnItem, int i)
  	{
  		if (inventory[i].type > 0 && inventory[i].stack < inventory[i].maxStack && CanItemSlotAcceptPickup(inventory[i], returnItem)) {
-+			if (!ItemLoader.TryStackItems(inventory[i], returnItem, out int numTransfered))
-+				return false;
++			ItemLoader.StackItems(inventory[i], returnItem, out int numTransfered);
 +
  			if (!settings.NoSound)
  				SoundEngine.PlaySound(newItem.IsACoin ? 38 : 7);
@@ -8886,6 +8862,22 @@
  		Array.Clear(adjTile, 0, adjTile.Length);
  		hitTile = new HitTile();
  		hitReplace = new HitTile();
+@@ -45673,6 +_,7 @@
+ 		int teleportStartY = Main.UnderworldLayer + 20;
+ 		int teleportRangeY = 80;
+ 		Utils.RandomTeleportationAttemptSettings settings = new Utils.RandomTeleportationAttemptSettings {
++			teleportee = this, // TML
+ 			teleporteeSize = base.Size,
+ 			teleporteeVelocity = velocity,
+ 			teleporteeGravityDirection = gravDir,
+@@ -45742,6 +_,7 @@
+ 		int teleportStartY = 100;
+ 		int underworldLayer = Main.UnderworldLayer;
+ 		Vector2 vector = Utils.CheckForGoodTeleportationSpot(ref canSpawn, teleportStartX, teleportRangeX, teleportStartY, underworldLayer, new Utils.RandomTeleportationAttemptSettings {
++			teleportee = this, // TML
+ 			teleporteeSize = base.Size,
+ 			teleporteeVelocity = velocity,
+ 			teleporteeGravityDirection = gravDir,
 @@ -45777,10 +_,19 @@
  		int questsDone = anglerQuestsFinished;
  		float anglerRewardRarityMultiplier = GetAnglerRewardRarityMultiplier(questsDone);

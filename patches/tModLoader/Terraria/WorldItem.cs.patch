@@ -68,14 +68,10 @@
  		get {
  			return inner.makeNPC;
  		}
-@@ -201,10 +_,26 @@
+@@ -201,10 +_,22 @@
  		for (int i = myItemIndex + 1; i < 400; i++) {
  			WorldItem worldItem = Main.item[i];
  			if (!worldItem.IsAir && Item.CanStack(inner, worldItem.inner) && worldItem.shimmered == shimmered && worldItem.playerIndexTheItemIsReservedFor == playerIndexTheItemIsReservedFor && !(Math.Abs(position.X - worldItem.position.X) + Math.Abs(position.Y - worldItem.position.Y) > (float)num)) {
-+				// TML: Check CanStack first (general compatibility: type, prefix, etc.), then CanStackInWorld (world-specific).
-+				if (!ItemLoader.CanStack(inner, worldItem.inner))
-+					continue;
-+
 +				// TML: CanStackInWorld is world-only; it does NOT affect inventory/chest stacking.
 +				if (!ItemLoader.CanStackInWorld(this, worldItem))
 +					continue;

@@ -90,5 +90,9 @@ public class ModNPCTest : ModNPC
 		NPCID.Sets.GoldCrittersCollection.Add(Type);
 
 		NPCID.Sets.SpawnFromLastEmptySlot[Type] = true;
+
+		NPCID.Sets.ImmuneToAllBuffs[Type] = true;
 	}
+
+	public override void BossLoot(ref int potionType) { }
 }

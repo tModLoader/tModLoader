@@ -184,6 +184,9 @@ public static class NPCLoader
 				Language.GetOrRegister(fullKey, () => Language.Exists(oldKey) ? $"{{${oldKey}}}" : Language.GetTextValue(defaultValueKey));
 			}
 		}
+		if (NPCID.Sets.IsTownPet[npc.NPC.type]) {
+			Language.GetOrRegister(npc.GetLocalizationKey("TownNPCMood.NoHome"), () => Language.GetTextValue("TownNPCMood.NoHome"));
+		}
 	}
 
 	internal static void Unload()
@@ -546,8 +549,6 @@ public static class NPCLoader
 		foreach (var g in HookOnKill.Enumerate(npc)) {
 			g.OnKill(npc);
 		}
-
-		blockLoot.Clear();
 	}
 
 	private static HookList HookModifyNPCLoot = AddHook<Action<NPC, NPCLoot>>(g => g.ModifyNPCLoot);
@@ -568,10 +569,16 @@ public static class NPCLoader
 		}
 	}
 
+	[Obsolete("BossLoot has now parameters to control the amount of potions and hearts.")]
 	public static void BossLoot(NPC npc, ref string name, ref int potionType)
 	{
 		npc.ModNPC?.BossLoot(ref name, ref potionType);
 		npc.ModNPC?.BossLoot(ref potionType);
+	}
+
+	public static void BossLoot(NPC npc, ref int potionType, ref int potionStack, ref int heartStack)
+	{
+		npc.ModNPC?.BossLoot(ref potionType, ref potionStack, ref heartStack);
 	}
 
 	private static HookList HookCanFallThroughPlatforms = AddHook<Func<NPC, bool?>>(g => g.CanFallThroughPlatforms);
@@ -1348,13 +1355,13 @@ public static class NPCLoader
 		}
 	}
 
-	private delegate void DelegateBuffTownNPC(ref float damageMult, ref int defense);
+	private delegate void DelegateBuffTownNPC(NPC npc, ref float damageMult, ref float attackSpeedMult, ref int defense, ref int maxLife);
 	private static HookList HookBuffTownNPC = AddHook<DelegateBuffTownNPC>(g => g.BuffTownNPC);
 
-	public static void BuffTownNPC(ref float damageMult, ref int defense)
+	public static void BuffTownNPC(NPC npc, ref float damageMult, ref float attackSpeedMult, ref int defense, ref int maxLife)
 	{
-		foreach (var g in HookBuffTownNPC.Enumerate()) {
-			g.BuffTownNPC(ref damageMult, ref defense);
+		foreach (var g in HookBuffTownNPC.Enumerate(npc)) {
+			g.BuffTownNPC(npc, ref damageMult, ref attackSpeedMult, ref defense, ref maxLife);
 		}
 	}
 

@@ -314,7 +314,7 @@ public abstract class ModTile : ModBlockType
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>
-	/// <param name="player">Main.LocalPlayer</param>
+	/// <param name="player">The player viewing the area. <c>Main.SceneMetrics.PerspectivePlayer</c></param>
 	public virtual bool IsTileDangerous(int i, int j, Player player)
 	{
 		return false;

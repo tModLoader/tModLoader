@@ -1184,6 +1184,6 @@
 	},
 	"TownNPCMood": {
 		"LikeNPC_Princess": "Me gusta {NPCName}.",
-		"Princess_LovesNPC": "Me gusta {NPCName}."
+		"Princess_LovesNPC": "Adoro a {NPCName}."
 	}
 }

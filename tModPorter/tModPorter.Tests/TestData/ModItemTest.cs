@@ -95,4 +95,6 @@ public class ModItemTest : ModItem
 	{
 		dryTorch = true;
 	}
+
+	public override bool IsQuestFish() { }
 }

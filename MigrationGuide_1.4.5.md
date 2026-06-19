@@ -10,7 +10,7 @@ Modders should follow this guide to migrate their mod from 1.4.4 to 1.4.5. This 
 
 This tModLoader release updates .NET from .NET 8 to .NET 10. Modders will need to download and install the [.NET 10 SDK](https://dotnet.microsoft.com/en-us/download). Visual Studio users will need to [update to Visual Studio 2026](https://learn.microsoft.com/en-us/visualstudio/install/update-visual-studio?view=visualstudio) as well. Visual Studio 2022 will not work anymore. Rider and Visual Studio Code users should make sure they are updated as well.
 
-The porting process will change your source code. If you are not yet using and [source code version control](https://github.com/tModLoader/tModLoader/wiki/Intermediate-Git-&-mod-management) like a GitHub repository, now might be the time to learn how to do that. If you are not ready to learn that yet, please at least make a backup of your source code.
+The porting process will change your source code. If you are not yet using [source code version control](https://github.com/tModLoader/tModLoader/wiki/Intermediate-Git-&-mod-management) like a GitHub repository, now might be the time to learn how to do that. If you are not ready to learn that yet, please at least make a backup of your source code.
 
 ## Porting Instructions
 
@@ -306,6 +306,51 @@ SilverBarRecipeGroup = RecipeGroup.Register(
 );
 ```
 
+### Whips and Tag Effects
+
+#### Tag Effects
+
+The way whip tag damage and effects are applied have been redone. Most functionally is no longer applied with a debuff and is instead applied with a `WhipTagEffect`. The tag effect is unique, which means effects from multiple tags cannot be stacked.
+* In the whip item's SetStaticDefaults, add `ItemID.Sets.UniqueTagEffects[Type] = new WhipTagEffect() { ... };`
+  * In the constructor, you can add the basic effects.
+    * `TagDamage`, `CritChance`, `PlayerBuffId`, `PlayerBuffTime`, `PlayerBuffAppliedManually`, and `TagDuration` can be set.
+* Additional functionality can be achieved by creating a new class that inherits `WhipTagEffect` and using that class in the SetStaticDefaults.
+  * There are overrides for when the tagged NPC takes damage from from a minion, sentry, or one of their projectiles.
+    * Hooks include `ModifyTaggedHit`, `ModifyProcHit`, `OnTaggedHit`, and `OnProcHit` as well as others.
+	* For the Proc hooks to run, the tagged NPC must have procs enabled for itself with `TryEnableProcOnNPC`. See ExampleWhipProjectileAdvanced.OnHitNPC for how to apply that.
+  * See Example Whip Advanced for some examples.
+* Most buffs that were made to implement tag damage can be removed.
+  * Any additional effects can be moved to a custom `WhipTagEffect` class.
+  * Don't forget to remove the `AddBuff` in your whip projectile's `OnHitNPC`.
+
+#### Whip Changes
+
+Whip AI has changed slightly. `Projectile.ai[1]` is now used to set the swing direction.
+
+* This means you'll need to override the item's `Shoot` and spawn the projectile manually now.
+* The following code is exactly what you'll need and is what vanilla does.
+
+```cs
+public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+	// This gives some visual variance on how fast the whip swinging animation plays out.
+	// This has no effect on the actual collision.
+	float swingDirection = 0.6f + (0.4f * Main.rand.NextFloat());
+	// 1/3 of the time, swing the whip from the bottom to top instead of from top to bottom.
+	// The Dark Harvest is the only whip that doesn't have the chance of swinging from the bottom up.
+	if (Main.rand.NextBool(3)) {
+		swingDirection *= -2.5f;
+	}
+	// Set swingDirection to 1f for the pre-1.4.5 behavior.
+
+	Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI, 0f, swingDirection);
+	return false; // Return false because we've already spawned the projectile.
+}
+```
+
+Example Mod's whips have been updated with new examples and additional comments. See the *Example Mod* section below for the details.
+
+See ExampleWhip, ExampleWhipAdvanced, ExampleWhipProjectile, and ExampleWhipProjectileAdvanced for more examples.
+
 ## Other Changes
 
 * Fishing power bonus now applies to any chair, not just toilets.
@@ -318,10 +363,30 @@ SilverBarRecipeGroup = RecipeGroup.Register(
 * Several item tooltip line changes:
   * The "SocialDesc" tooltip line no longer exists. The "Social" tooltip line (now "Equipped in social slot") will now only show for items that are neither `Item.vanity` or `Item.hasVanityEffects`.
     * `Item.hasVanityEffects` is now used. It was previously unused. Set this for accessories that have vanity effects to prevent the "Social" tooltip line from appearing and suggesting the item has no effect in vanity slots.
-  * There are new tooltip lines: "Wireable", "Container", "WireTrigger", "WizardHatDuringAnniversary", "BurningBlock", "MechSummonDuringEverything", "MechdusaSummonNotDuringEverything", "PrefixArmorPenetration", "PrefixTagDamage", "SetBonusSinglePiece", and "JourneyResearchTeammate".
+  * There are new tooltip lines: "Wireable", "Container", "WireTrigger", "WizardHatDuringAnniversary", "BurningBlock", "MechSummonDuringEverything", "MechdusaSummonNotDuringEverything", "PrefixArmorPenetration", "PrefixTagDamage", "SetBonusSinglePiece", "JourneyResearchTeammate", and "MissingRequirements".
   * The "SetBonus" tooltip has changed. It now automatically displays partial sets and adjusts the color to indicate if the set is complete.
   * The "SetBonusSinglePiece" tooltip shows the set bonus that would be applied if the unequipped equipment were equipped.
 * Town NPCs who are homeless have a new "Housing" button that displays their "NoHome" dialogue as well as a hint on what valid housing is. The hint text can be customized through the localization file. If the key `Mods.ModName.NPCs.NPCName.HousingText.HousingRequirements` exists, it will automatically be used over the default text.
+  * The `Mods.{ModName}.NPCs.{ModNPCName}.TownNPCMood.NoHome` localization key will now be generated for town pets as well.
+* Town NPCs can now have specific happiness dialogue for other Town NPCs or biomes that work just like the previous `LikeNPC_Princess` and `Princess_LovesNPC`.
+  * For Mod NPCs, the localization keys are scoped in `Mods.{ModName}.NPCs.{ModNPCName}.TownNPCMood`
+    * `{AffectionLevel}NPC_{OtherNPCInternalName}` For specific dialogue for talking about other NPC. Other loved NPCs will use the generic `{AffectionLevel}NPC`.
+      * Example: `LoveNPC_Guide` Would be a specific dialogue for talking about the Guide. 
+      * Modded NPCs will need the full mod name as well. Example: `LoveNPC_ExampleMod/ExamplePerson`.
+    * `{AffectionLevel}Biome_{BiomeName}` For biomes.
+      * Modded Biomes will need the full name. Example: `LoveBiome_ExampleMod/ExampleSurfaceBiome`
+    * `{OtherNPCInternalName}_{AffectionLevel}sNPC` For specific dialogue when another NPC is talking about your Mod NPC.
+      * Example: `Guide_LovesNPC` Would be specific dialogue from the Guide when he is talking about your Mod NPC.
+      * Modded NPCs will need the full mod name, too.  Example: `ExampleMod/ExamplePerson_LovesNPC`.
+  * For vanilla NPCs talking about vanilla NPCs, the localization keys are scoped in `TownNPCMood_{NPCInternalName}` (outside of Mods.ModName)
+    * `{AffectionLevel}NPC_{OtherVanillaNPCInternalName}`
+	  * Example: `TownNPCMood_Guide.LikeNPC_BestiaryGirl` Would be a specific dialogue for when the Guide is talking about the Zoologist. 
+    * `{AffectionLevel}Biome_{BiomeName}` for biomes.
+  * Caveat for the Zoologist: She has two sets of happiness dialogue. A normal one and one for when she is transformed.
+    * In the ModNPC, add Transformed beforehand: `Transformed.BestiaryGirl_{AffectionLevel}NPC`
+	* For vanilla NPCs talking about vanilla NPCs, use BestiaryGirlTransformed: `TownNPCMood_BeastiaryGirlTransformed.{AffectionLevel}NPC_{OtherNPCInternalName}`
+* `Item.maxStack` now defaults to `Item.CommonMaxStack` (9999) now instead of 1.
+* `FishingAttempt.junk` now exists.
 
 ### Example Mod
 
@@ -333,11 +398,31 @@ Several Example Mod examples have been updated to adapt to 1.4.5 changes and to 
     * If you are using `Projectile.DefaultToSpear()`, these two will automatically be set.
   * The `rotationFactor` in `Colliding` has been updated.
   * `player.gfxOffY` in `PreDraw` has been replaced with `Projectile.gfxOffY` to fix the sprite bouncing when walking up blocks.
+* `ExampleWhip`, `ExampleWhipProjectile`, `ExampleWhipAdvanced`, and `ExampleWhipProjectileAdvanced` (https://github.com/tModLoader/tModLoader/pull/5130/changes)
+  * `ExampleWhip` and `ExampleWhipProjectile` have been simplified.
+	* Added the `Shoot()` override to spawn the projectile manually for the swing direction. See the *Whip Changes* section above for details.
+    * It no longer has the charging ability that it did before (`ExampleWhipAdvanced` still has it).
+    * The draw code has been changed to be more generic.
+      * It is almost an exact copy of the Leather Whip's drawing.
+	  * It assumes each segment in the sprite are equal size, like most sprite sheets are.
+	* See the *Whips and Tag Effects* section above for details on tag damage changes.
+  * `ExampleWhipAdvanced` and `ExampleWhipProjectileAdvanced` have been updated.
+    * Added the `Shoot()` override to spawn the projectile manually for the swing direction. See the *Whip Changes* section above for details.
+    * If you weren't using `Projectile.DefaultToWhip()`, add `Projectile.drawLayer = ProjectileDrawLayerID.HeldProj` to the projectile's SetDefaults.
+    * Replace `float swingTime = owner.itemAnimationMax * Projectile.MaxUpdates` with `Projectile.GetWhipSettings(Projectile, out float timeToFlyOut, out _, out _)`
+	  * `Projectile.GetWhipSettings` has new functionality for when the whip is displayed on a mannequin.
+    * Add `owner.MatchItemTimeToItemAnimation()` after setting the `heldProj` to match vanilla.
+    * The draw code has been changed to work better for different segment amounts.
+      * Previously, the draw code was specific for `ExampleWhipProjectileAdvanced`. Now it will work for any number of segments.
+	  * Even if your whips seem to draw fine, double check the code because it is likely that the third segment of your whip wasn't being drawn.
+	* See the *Whips and Tag Effects* section above for details on tag damage changes.
 
 ## Renamed, Moved, or Removed Members
 
 ### Static Methods
 
+* 💀: `Item.NewItem` methods no longer have the `bool reverseLookup` parameter. Remove it.
+* 🤖: `Main.DrawWindowsIMEPanel` has been split into `Main.DrawIMEPanel` and `Main.SetIMEPanelAnchor`. `DrawIMEPanel` is automatically called each game update, so just replace  `DrawWindowsIMEPanel` calls with `SetIMEPanelAnchor` to customize the panel location.
 * 💀: `Main.GetPlayerArmPosition` now has a `Player` parameter.
 * ⚙️: `RecipeGroup.RegisterGroup` removed. See [RecipeGroup](#recipegroup) for more information.
 * ⚙️: `Utils.PlotTileArea` -> `Utils.FloodFillTile`. No longer returns `bool` and parameters are now `Point point, float maxDist, TileActionAttempt plot` instead of `int x, int y, TileActionAttempt plot`.
@@ -370,6 +455,7 @@ All classes are in the `Terraria` or `Terraria.ID` namespaces unless otherwise i
 * 🤖: `MusicId` entry changes: `Night` -> `OverworldNight`, `Title` -> `TitleClassic`, `Jungle` -> `JungleDay`, `TheHallow` -> `Hallow`, `Space` -> `SpaceNight`, `Boss4` -> `Golem`, `AltOverworldDay` -> `OverworldDayAlt`, `Ocean` -> `OceanDay`, `RainSoundEffect` -> `RainAmbience`, `Mushrooms` -> `Mushroom`, `AltUnderground` -> `UndergroundAlt`, `TheTowers` -> `LunarPillars`, `Hell` -> `Underworld`, `LunarBoss` -> `MoonLord`, `GoblinInvasion` -> `GoblinArmy`, `DayRemix` -> `OverworldDayRemix`, `MenuMusic` -> `TitleJourneysBeginningWithIntro`, `Monsoon` -> `Storm`, `JungleUnderground` -> `UndergroundJungle`, `ConsoleMenu` -> `TitleAlt`, `OtherworldlyRain` -> `OtherworldRain`, `OtherworldlyDay` -> `OtherworlddDay`, `OtherworldlyNight` -> `OtherworldNight`, `OtherworldlyUnderground` -> `OtherworldUnderground`, `OtherworldlyDesert` -> `OtherworldDesert`, `OtherworldlyOcean` -> `OtherworldOcean`, `OtherworldlyMushrooms` -> `OtherworldMushroom`, `OtherworldlyDungeon` -> `OtherworldDungeon`, `OtherworldlySpace` -> `OtherworldSpace`, `OtherworldlyUnderworld` -> `OtherworldUnderworld`, `OtherworldlySnow` -> `OtherworldSnow`, `OtherworldlyCorruption` -> `OtherworldCorruption`, `OtherworldlyUGCorrption` -> `OtherworldUndergroundCorruption`, `OtherworldlyCrimson` -> `OtherworldCrimson`, `OtherworldlyUGCrimson` -> `OtherworldUndergroundCrimson`, `OtherworldlyIce` -> `OtherworldIce`, `OtherworldlyUGHallow` -> `OtherworldUndergroundHallow`, `OtherworldlyEerie` -> `OtherworldEerie`, `OtherworldlyBoss2` -> `OtherworldBoss2`, `OtherworldlyBoss1` -> `OtherworldBoss1`, `OtherworldlyInvasion` -> `OtherworldInvasion`, `OtherworldlyTowers` -> `OtherworldLunarPillars`, `OtherworldlyLunarBoss` -> `OtherworldMoonLord`, `OtherworldlyPlantera` -> `OtherworldPlantera`, `OtherworldlyJungle` -> `OtherworldJungle`, `OtherworldlyWoF` -> `OtherworldWallOfFlesh`, `OtherworldlyHallow` -> `OtherworldHallow`, `Credits` -> `JourneysEnd`, `Shimmer` -> `Aether`
 * 🤖: `NPCID.Sets.UsesNewTargetting` -> `NPCID.Sets.UsesNewTargeting`
 * 🤖: `NPCID.Sets.GoldCrittersCollection` -> `NPCID.Sets.IsGoldCritter`. Also changed from `List` to typical to typical ID set.
+* ⚙️: `NPCID.Sets.ImmuneToAllBuffs` was removed. Continue to use `NPCID.Sets.ImmuneToRegularBuffs` and if immunity to tags effects and tag buffs is desired, additionally set the new `NPCID.Sets.ImmuneToWhipTags`.
 * 🤖: `NPCID.Sets.ShouldBeCountedAsBoss` -> `NPCID.Sets.ShouldBeCountedAsBossForBestiary`
 * 🤖: `NPCID.Sets.SpawnFromLastEmptySlot` -> `NPCID.Sets.SearchSpawnSlotsInReverse`
 * 🤖: `ProjectileID.Web` -> `ProjectileID.WebSlingerHook`
@@ -391,6 +477,7 @@ All classes are in the `Terraria` or `Terraria.ID` namespaces unless otherwise i
 * 🤖: `WallID.Sets.Crimson` -> `WallID.Sets.SpreadsCrimson`
 * 🤖: `WallID.Sets.Hallow` -> `WallID.Sets.SpreadsHallow`
 * 🤖: `Main.DisableIntenseVisualEffects` -> `Main.FlashyEffectsWorld`. The new field has the opposite meaning of the old field.
+* 💀: `Main.hasFocus` -> `Terraria.FocusHelper.AllowGameplayInputs`, most likely. Other options include `FocusHelper.AllowUIInputs`, `FocusHelper.UpdateVisualEffects`, and many more. Choose the property that best matches the intention of the code.
 * 🤖: `Main.gameInactive` -> `Terraria.FocusHelper.GameplayActive`. The new field has the opposite meaning of the old field.
 * 🤖: `NPC.killCount` -> `Terraria.GameContent.BannerSystem.killCount`
 * 🤖: `WorldGen.gen` -> `WorldGen.isGeneratingOrLoadingWorld`
@@ -405,6 +492,7 @@ All classes are in the `Terraria` or `Terraria.ID` namespaces unless otherwise i
 * 🤖: `Main.ShouldShowInvisibleWalls` -> `Main.ShouldShowInvisibleBlocksAndWalls`
 * 🤖: `NPC.ShouldBestiaryGirlBeLycantrope` now static.
 * ⚙️: `NPC.SpawnWithHigherTime` removed. No longer used.
+* 🤖: `Player.GetItem` changed. The `plr` parameter has been removed.
 * 🤖: `Player.IsProjectileInteractibleAndInInteractionRange` -> `Player.IsProjectileInteractableAndInInteractionRange`
 * ⚙️: `Player.CheckForGoodTeleportationSpot` removed. Use `Utils.CheckForGoodTeleportationSpot` instead.
 * 💀: `Player.DropItems` now has a `gemsOnly` parameter indicating a softcore or creative player that should only drop large gems.
@@ -435,11 +523,13 @@ All classes are in the `Terraria.ModLoader` or `Terraria` namespaces unless othe
 * 🤖: `ModNPC.SpawnChance` and `GlobalNPC.EditSpawnPool` changed and renamed the parameter from `NPCSpawnInfo spawnInfo` to `NPC.Spawner spawner`.
   * `GlobalNPC.EditSpawnFlags(NPC.Spawner spawner)` can be used to adjust player-level spawn flags before spawn rate, range, and tile selection. Use this when the changed flags should affect those later spawn calculations, such as biome, safe wall, or invasion state. For example, a modded safe-zone effect could set `spawner.noWorms = true` before vanilla spawn logic uses that flag.
   * `GlobalNPC.EditSpawnInfo(NPC.Spawner spawner)` can be used to adjust spawn information after the spawn tile has been selected and before `SpawnChance` and `EditSpawnPool` are evaluated. Use this for tile-level spawn context, such as water, granite, marble, spider cave, underground desert, spawn tile type, or spawn wall type. For example, a modded tile could set `spawner.nearGranite = true` so later spawn chance and spawn pool logic sees the chosen tile as granite-like.
+* 🤖: `GlobalNPC.BuffTownNPC` has new parameters to adjust more stats and now honors `AppliesToEntity`.
 * ⚙️: `(ModProjectile|GlobalProjectile).DrawBehind` has been removed. Set `Projectile.drawLayer` instead. 
 * ⚙️: `ModProjectile.DrawHeldProjInFrontOfHeldItemAndArms` has been removed. Set `Projectile.drawLayer` to `ProjectileDrawLayerID.HeldProjOverHand` instead. 
 * ⚙️: `(ModProjectile|GlobalProjectile).PreDraw/PreDrawExtras/PostDraw` now has a `Player` parameter. Use this instead of `Main.player[Projectile.owner]` to properly support rendering projectiles to custom `Player` instances, such as Mannequins.
 * ⚙️: `ModPylon.ValidTeleportCheck_AnyDanger` and `GlobalPylon.ValidTeleportCheck_PreAnyDanger` have been removed. Pylons no longer check for danger when teleporting.
 * 🤖: `ModTile.AddToArray` is no longer used for `TileID.Sets.RoomNeeds` entries since `TileID.Sets.RoomNeeds` fields have changed to typical ID sets.
+* `NPCLoader.blockLoot` can now affect all drops such as coins, hearts, etherian mana, and skyblock specific drops. Before it could only affect loot table drops.
 * ⚙️: `NPCSpawnInfo` is no longer used, it has been replaced by `NPC.Spawner` in functionality.
   * 🤖: The following fields changed from `NPCSpawnInfo` to `NPC.Spawner`: `DesertCave` -> `spawnUndergroundDesert`, `Granite` -> `nearGranite`, `Invasion` -> `invaders`, `Lihzahrd` -> `ZoneLihzhardTemple`, `Marble` -> `nearMarble`, `PlayerInTown` -> `spawnFriendly`, `PlayerSafe` -> `noWorms`, `Sky` -> `skyMob`, `SpiderCave` -> `spawnSpider`, `Water` -> `waterTile`
   * ⚙️: `PlanteraDefeated` removed, use `NPC.downedPlantBoss && Main.hardMode` instead.
@@ -452,3 +542,4 @@ All classes are in the `Terraria.ModLoader` or `Terraria` namespaces unless othe
 * ⚙️: `ModNPC.SetChatButtons` has been removed and replaced with `RegisterChatButtons(NPCInteractionList interactions)`
 * ⚙️: `ModNPC.OnChatButtonClicked` changed parameters. `(bool firstButton, ref string shop)` -> `(NPCInteraction interaction)`
 * ⚙️: `GlobalNPC.OnChatButtonClicked` and `GlobalNPC.PreChatButtonClicked` changed parameters. `(NPC npc, bool firstButton)` -> `(NPC npc, NPCInteraction interaction)`
+* ⚙️: `ModItem.IsQuestFish` has been removed. Use `ItemID.Sets.IsQuestFish` instead.

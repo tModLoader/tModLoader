@@ -86,15 +86,19 @@ namespace ExampleMod.Content.NPCs
 
 			NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
 
-			// Set Example Person's biome and neighbor preferences with the NPCHappiness hook. You can add happiness text and remarks with localization (See an example in ExampleMod/Localization/en-US.lang).
+			// Set Example Person's biome and neighbor preferences with the NPCHappiness hook. You can add happiness text and remarks with localization (See an example in ExampleMod/Localization/en-US.hjson).
 			// NOTE: The following code uses chaining - a style that works due to the fact that the SetXAffection methods return the same NPCHappiness instance they're called on.
 			NPC.Happiness
+				.SetBiomeAffection<ExampleSurfaceBiome>(AffectionLevel.Love) // Example Person likes the Example Surface Biome
 				.SetBiomeAffection<ForestBiome>(AffectionLevel.Like) // Example Person prefers the forest.
 				.SetBiomeAffection<SnowBiome>(AffectionLevel.Dislike) // Example Person dislikes the snow.
-				.SetBiomeAffection<ExampleSurfaceBiome>(AffectionLevel.Love) // Example Person likes the Example Surface Biome
+				.SetBiomeAffection<DesertBiome>(AffectionLevel.Dislike) // Example Person dislikes the desert.
+				// Town NPCs automatically hate the Corruption, Crimson, and Dungeon.
 				.SetNPCAffection(NPCID.Dryad, AffectionLevel.Love) // Loves living near the dryad.
 				.SetNPCAffection(NPCID.Guide, AffectionLevel.Like) // Likes living near the guide.
+				.SetNPCAffection(NPCID.BestiaryGirl, AffectionLevel.Like) // Likes living near the zoologist.
 				.SetNPCAffection(NPCID.Merchant, AffectionLevel.Dislike) // Dislikes living near the merchant.
+				.SetNPCAffection(NPCID.Golfer, AffectionLevel.Dislike) // Dislikes living near the golfer.
 				.SetNPCAffection(NPCID.Demolitionist, AffectionLevel.Hate) // Hates living near the demolitionist.
 			; // < Mind the semicolon!
 

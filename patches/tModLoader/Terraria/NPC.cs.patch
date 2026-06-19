@@ -326,7 +326,7 @@
  	public int[] buffTime = new int[maxBuffs];
 +
 +	/// <summary>
-+	/// Contains the NPC buff immunities for this NPC. The default values in this array are populated from <see cref="NPCID.Sets.ImmuneToAllBuffs"/>, <see cref="NPCID.Sets.ImmuneToRegularBuffs"/>, <see cref="NPCID.Sets.SpecificDebuffImmunity"/>, and <see cref="BuffID.Sets.GrantImmunityWith"/>.
++	/// Contains the NPC buff immunities for this NPC. The default values in this array are populated from <see cref="NPCID.Sets.ImmuneToWhipTags"/>, <see cref="NPCID.Sets.ImmuneToRegularBuffs"/>, <see cref="NPCID.Sets.SpecificDebuffImmunity"/>, and <see cref="BuffID.Sets.GrantImmunityWith"/>.
 +	/// </summary>
 -	public bool[] buffImmune = new bool[BuffID.Count];
 +	public bool[] buffImmune = new bool[BuffLoader.BuffCount];
@@ -1142,19 +1142,22 @@
  		}
  		else if (type == 607) {
  			noGravity = true;
-@@ -15136,14 +_,84 @@
+@@ -15136,14 +_,87 @@
  			knockBackResist = 0.5f;
  			rarity = 1;
  		}
 +		// TML: Moved before NPCLoader.SetDefaults to allow changing. DebuffImmunitySets broken into separate sets for easier manipulation.
-+		if (NPCID.Sets.ImmuneToAllBuffs[type])
-+			Array.Fill(buffImmune, true);
-+
-+		if (NPCID.Sets.ImmuneToRegularBuffs[type] || NPCID.Sets.ImmuneToAllBuffs[type]) {
++		if (NPCID.Sets.ImmuneToRegularBuffs[type] || NPCID.Sets.ImmuneToWhipTags[type]) {
 +			// Equivalent to vanilla ImmuneToAllBuffsThatAreNotWhips
-+			if (!NPCID.Sets.ImmuneToAllBuffs[type]) {
++			if (NPCID.Sets.ImmuneToRegularBuffs[type]) {
 +				for (int i = 0; i < buffImmune.Length; i++) {
 +					buffImmune[i] = !BuffID.Sets.IsATagBuff[i];
++				}
++			}
++
++			if (NPCID.Sets.ImmuneToWhipTags[type]) {
++				for (int i = 0; i < buffImmune.Length; i++) {
++					buffImmune[i] = BuffID.Sets.IsATagBuff[i];
 +				}
 +			}
 +
@@ -1406,7 +1409,7 @@
  				num3 *= 0.9f;
  			}
 +
-+			NPCLoader.BuffTownNPC(ref num2, ref defense);
++			NPCLoader.BuffTownNPC(this, ref num2, ref num3, ref defense, ref lifeMax);
  		}
  
  		if (type == 142 && Main.netMode != 1 && !Main.xMas) {
@@ -2073,6 +2076,16 @@
  		DoDeathEvents(closestPlayer);
  		if (SpecialSeedFeatures.Mechdusa) {
  			int num = type;
+@@ -65786,6 +_,9 @@
+ 
+ 		NPCLoot_DropMoney(closestPlayer);
+ 		NPCLoot_DropHeals(closestPlayer);
++
++		// TML: needs to be at the end of NPCLoot to encapsulate every drop within it
++		NPCLoader.blockLoot.Clear();
+ 	}
+ 
+ 	public bool IsNPCValidForBestiaryKillCredit()
 @@ -65830,7 +_,8 @@
  		WoFKilledToday = false;
  	}
@@ -2083,15 +2096,22 @@
  	{
  		int stack = Main.rand.Next(5, 16);
  		int num = 28;
-@@ -65859,6 +_,8 @@
+@@ -65859,8 +_,14 @@
  		else if (type == 398)
  			num = 3544;
  
-+		NPCLoader.BossLoot(this, ref typeName, ref num);
-+
- 		Item.NewItem(GetItemSource_Loot(), (int)position.X, (int)position.Y, width, height, num, stack);
+-		Item.NewItem(GetItemSource_Loot(), (int)position.X, (int)position.Y, width, height, num, stack);
  		int num2 = Main.rand.Next(5) + 5;
++
++		NPCLoader.BossLoot(this, ref typeName, ref num);
++		NPCLoader.BossLoot(this, ref num, ref stack, ref num2);
++
++		if (stack > 0 && num > 0)
++			Item.NewItem(GetItemSource_Loot(), (int)position.X, (int)position.Y, width, height, num, stack);
++
  		for (int i = 0; i < num2; i++) {
+ 			Item.NewItem(GetItemSource_Loot(), (int)position.X, (int)position.Y, width, height, 58);
+ 		}
 @@ -65876,10 +_,27 @@
  		}
  	}
