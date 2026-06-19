@@ -13,7 +13,6 @@ using Terraria.Localization;
 using Terraria.ModLoader.Config;
 using Terraria.ModLoader.Core;
 using Terraria.ModLoader.Exceptions;
-using Terraria.ModLoader.UI;
 
 namespace Terraria.ModLoader;
 
@@ -62,17 +61,13 @@ public partial class Mod
 	/// <summary>
 	/// The small icon for this mod, sourced from <c>icon_small.png</c>.<br /><br />
 	/// Must be 30x30.<br /><br />
-	/// Will contain a placeholder icon if a suitable icon doesn't exist.
+	/// Will be null if a suitable icon doesn't exist.
 	/// </summary>
 	public Asset<Texture2D> SmallModIcon { get; internal set; }
 	/// <summary>
 	/// A placeholder mod icon, for use when a mod doesn't have a valid icon.
 	/// </summary>
 	public static Asset<Texture2D> PlaceholderModIcon => Main.Assets.Request<Texture2D>("Images/UI/DefaultResourcePackIcon");
-	/// <summary>
-	/// A placeholder small mod icon, for use when a mod doesn't have a valid small icon.
-	/// </summary>
-	public static Asset<Texture2D> PlaceholderSmallModIcon => ModLoader.ManifestAssets.Request<Texture2D>($"Terraria.ModLoader.UI.PlaceholderSmallModIcon");
 
 	public List<string> TranslationForMods { get; internal set; }
 
