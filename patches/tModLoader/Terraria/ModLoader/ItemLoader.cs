@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Runtime.CompilerServices;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent;
@@ -1114,7 +1115,8 @@ public static class ItemLoader
 	/// </summary>
 	public static bool ConsumeItem(Item item, Player player)
 	{
-		if (item.IsAir) return true;
+		if (item.IsAir)
+			return true;
 		if (item.ModItem != null && !item.ModItem.ConsumeItem(player))
 			return false;
 
@@ -1858,6 +1860,30 @@ public static class ItemLoader
 		return retVal ?? false;
 	}
 
+	public static void ModifyEquipTextureDraw(ref PlayerDrawSet drawInfo, ref DrawData drawData, EquipType type, int slot, [CallerMemberName] string methodName = "")
+	{
+		// Notes:
+		// Glowmasks not supported yet, but might in future
+		// Front, called twice, once for each half of texture
+		// Head, can be called twice if Head.Sets.FrontToBackID used
+		// Shield, Can be called many times if parrying, but no api support for that yet
+		// Body, called 5 times for each CompositePlayerDrawContext
+
+		if (slot <= 0) {
+			drawInfo.DrawDataCache.Add(drawData);
+			return;
+		}
+
+		// TODO: We can make a GlobalItem hook if requested, it would just need the equip type and slot passed to it rather than EquipTexture for it to work with vanilla equipment.
+		EquipTexture texture = EquipLoader.GetEquipTexture(type, slot);
+		bool? result = texture?.ModifyDraw(ref drawInfo, ref drawData, methodName);
+
+		if(result ?? true)
+			drawInfo.DrawDataCache.Add(drawData);
+
+		return;
+	}
+
 	private delegate void DelegateUpdate(Item item, ref float gravity, ref float maxFallSpeed);
 	private static HookList HookUpdate = AddHook<DelegateUpdate>(g => g.Update);
 
@@ -2039,6 +2065,36 @@ public static class ItemLoader
 
 		foreach (var g in HookPostDrawInInventory.Enumerate(item)) {
 			g.PostDrawInInventory(item, spriteBatch, position, frame, drawColor, itemColor, origin, scale);
+		}
+	}
+
+	private delegate void DelegatePreModifyItemDraw(Item item, ref PlayerDrawSet drawInfo, ref DrawData drawData, ref DrawData? coloredDrawData, ref DrawData? glowmaskDrawData);
+	private static HookList HookPreModifyItemDraw = AddHook<DelegatePreModifyItemDraw>(g => g.PreModifyItemDraw);
+	private delegate void DelegatePostModifyItemDraw(Item item, ref PlayerDrawSet drawInfo, DrawData drawData, DrawData? coloredDrawData, DrawData? glowmaskDrawData);
+	private static HookList HookPostModifyItemDraw = AddHook<DelegatePostModifyItemDraw>(g => g.PostModifyItemDraw);
+
+	/// <summary>
+	/// Calls GlobalItem.PreModifyItemDraw, then ModItem.ModifyItemDraw, then GlobalItem.PostModifyItemDraw.
+	/// </summary>
+	public static void ModifyItemDraw(Item item, ref PlayerDrawSet drawInfo, DrawData drawData, DrawData? coloredDrawData, DrawData? glowmaskDrawData)
+	{
+		// Draw behind and modify normal drawData
+		foreach (var g in HookPreModifyItemDraw.Enumerate(item)) {
+			g.PreModifyItemDraw(item, ref drawInfo, ref drawData, ref coloredDrawData, ref glowmaskDrawData);
+		}
+
+		// Draw before, modify normal drawData, draw after
+		if (item.ModItem?.ModifyItemDraw(ref drawInfo, ref drawData, ref coloredDrawData, ref glowmaskDrawData) ?? true) {
+			drawInfo.DrawDataCache.Add(drawData);
+			if (coloredDrawData.HasValue)
+				drawInfo.DrawDataCache.Add(coloredDrawData.Value);
+			if (glowmaskDrawData.HasValue)
+				drawInfo.DrawDataCache.Add(glowmaskDrawData.Value);
+		}
+
+		// Draw in front
+		foreach (var g in HookPostModifyItemDraw.Enumerate(item)) {
+			g.PostModifyItemDraw(item, ref drawInfo, drawData, coloredDrawData, glowmaskDrawData);
 		}
 	}
 

@@ -33,7 +33,7 @@
  	public static int[] killCount = new int[NPCID.Count];
  	public static float totalInvasionPoints = 0f;
  	public static float waveKills = 0f;
-@@ -55,6 +_,12 @@
+@@ -55,7 +_,16 @@
  	public const float nameOverIncrement = 0.025f;
  	public const float nameOverDistance = 350f;
  	public float nameOver;
@@ -44,8 +44,12 @@
 +	/// <para/> Defaults to false.
 +	/// </summary>
  	public bool SpawnedFromStatue;
++	/// <summary>
++	/// If true, this NPC can be replaced by a newly spawning NPC when <see cref="Main.npc"/> is completely full. This is typically set for NPCs spawned by players, such as NPC spawned from statues, to prevent players from cheesing boss fights by preventing minions from spawning because Main.npc is already full.
++	/// </summary>
  	public bool CanBeReplacedByOtherNPCs;
  	public bool dripping;
+ 	public bool drippingSlime;
 @@ -65,19 +_,52 @@
  	public int altTexture;
  	public int townNpcVariationIndex;
@@ -336,7 +340,7 @@
  	public static bool downedDeerclops = false;
  	public static int ShieldStrengthTowerSolar = 0;
  	public static int ShieldStrengthTowerVortex = 0;
-@@ -223,61 +_,229 @@
+@@ -223,61 +_,230 @@
  	public static bool TowerActiveNebula = false;
  	public static bool TowerActiveStardust = false;
  	public static bool LunarApocalypseIsUp = false;
@@ -549,6 +553,7 @@
 +
 +	/// <summary>
 +	/// How many copper coins the NPC will drop when killed (100 copper coins = 1 silver coin etc.).
++	/// <para/> When spawned from a statue, the value will be set to 0.  
 +	/// </summary>
  	public float value;
 +	/// <summary>
@@ -863,7 +868,7 @@
  		return result;
  	}
  
-@@ -2105,9 +_,27 @@
+@@ -2105,19 +_,48 @@
  		defDamage = damage;
  		defDefense = defense;
  		if (flag) {
@@ -876,6 +881,12 @@
 +	}
 +
 +	// Added by TML.
++	/// <summary>
++	/// Clones all the default stats (damage, health, defense, etc) of another NPC type. This should be used in <see cref="ModNPC.SetDefaults"/> prior to changing any other stats.
++	/// <para/> This is useful for creating a ModNPC that should be a copy of another NPC. Using CloneDefaults instead of manually setting stats will ensure that modifications done to the NPC being cloned by other mods will automatically apply to this clone as well.
++	/// <para/> Note that for cloning negative <see cref="NPCID"/>, the final values might be very slightly off for higher difficulty modes due to the way difficulty scaling is applied.
++	/// </summary>
++	/// <param name="Type"></param>
 +	public void CloneDefaults(int Type)
 +	{
 +		int originalType = type;
@@ -883,7 +894,7 @@
 +		var originalModNPC = ModNPC;
 +		var originalGlobals = _globals;
 +
-+		SetDefaultsKeepPlayerInteraction(Type);
++		SetDefaultsKeepPlayerInteraction(Type, new NPCSpawnParams() { gameModeData = GameModeData.NormalMode, strengthMultiplierOverride = 1f });
 +
 +		type = originalType;
 +		netID = originalNetID;
@@ -892,6 +903,22 @@
  	}
  
  	public void SetDefaultsKeepPlayerInteraction(int Type)
+ 	{
++		SetDefaultsKeepPlayerInteraction(Type, default(NPCSpawnParams));
++	}
++
++	public void SetDefaultsKeepPlayerInteraction(int Type, NPCSpawnParams spawnparams)
++	{
+ 		bool[] array = new bool[playerInteraction.Length];
+ 		for (int i = 0; i < playerInteraction.Length; i++) {
+ 			array[i] = playerInteraction[i];
+ 		}
+ 
+-		SetDefaults(Type);
++		SetDefaults(Type, spawnparams);
+ 		for (int j = 0; j < playerInteraction.Length; j++) {
+ 			playerInteraction[j] = array[j];
+ 		}
 @@ -2156,6 +_,15 @@
  			return;
  		}

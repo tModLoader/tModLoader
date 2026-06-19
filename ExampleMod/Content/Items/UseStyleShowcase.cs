@@ -55,12 +55,13 @@ namespace ExampleMod.Content.Items
 				if (Item.useStyle > ItemUseStyleID.RaiseLamp) {
 					Item.useStyle = ItemUseStyleID.Swing;
 				}
-				Main.NewText(SwitchingText.Format(Item.useStyle));
-				// This line will trigger NetSend to be called at the end of this game update, allowing the changes to useStyle to be in sync.
+				string useStyleName = ItemUseStyleID.Search.GetName(Item.useStyle);
+				Main.NewText(SwitchingText.Format(Item.useStyle) + $" ({useStyleName})");
+				// This line will trigger NetSend to be called at the end of this game update, allowing the changes to useStyle to be in sync. 
 				Item.NetStateChanged();
 			}
 			else {
-				Main.NewText(ThisIsText.Format(Item.useStyle));
+				Main.NewText(ThisIsText.Format(Item.useStyle) + $" ({ItemUseStyleID.Search.GetName(Item.useStyle)})");
 			}
 			return true;
 		}
