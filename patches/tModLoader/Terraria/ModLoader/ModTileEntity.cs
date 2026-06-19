@@ -10,7 +10,8 @@ using Terraria.Localization;
 namespace Terraria.ModLoader;
 
 /// <summary>
-/// Tile Entities are Entities tightly coupled with tiles, allowing the possibility of tiles to exhibit cool behavior. TileEntity.Update is called in SP and on Server, not on Clients.
+/// Tile Entities are Entities tightly coupled with tiles, allowing the possibility of tiles to exhibit cool behavior. <see cref="TileEntity.Update"/> is called in SP and on Server, not on Clients.
+/// <para/> Modded tile entities update by default. Set <see cref="TileEntity.RequiresUpdates"/> to <see langword="false"/> in the constructor if the tile entity does not need to update.
 /// </summary>
 /// <seealso cref="TileEntity" />
 public abstract class ModTileEntity : TileEntity, IModType, ILoadable
@@ -38,7 +39,10 @@ public abstract class ModTileEntity : TileEntity, IModType, ILoadable
 	/// </summary>
 	public int Type { get; internal set; }
 
-	public ModTileEntity() { }
+	public ModTileEntity()
+	{
+		RequiresUpdates = true;
+	}
 
 	/// <summary>
 	/// Returns the number of modded tile entities that exist in the world currently being played.
@@ -115,10 +119,7 @@ public abstract class ModTileEntity : TileEntity, IModType, ILoadable
 		newEntity.Position = new Point16(i, j);
 		newEntity.ID = AssignNewID();
 		newEntity.type = (byte)Type;
-		lock (EntityCreationLock) {
-			ByID[newEntity.ID] = newEntity;
-			ByPosition[newEntity.Position] = newEntity;
-		}
+		Add(newEntity);
 
 		return newEntity.ID;
 	}
@@ -133,8 +134,7 @@ public abstract class ModTileEntity : TileEntity, IModType, ILoadable
 		if (ByPosition.TryGetValue(pos, out var tileEntity)) {
 			if (tileEntity.type == Type) {
 				((ModTileEntity)tileEntity).OnKill();
-				ByID.Remove(tileEntity.ID);
-				ByPosition.Remove(pos);
+				Remove(tileEntity);
 			}
 		}
 	}
