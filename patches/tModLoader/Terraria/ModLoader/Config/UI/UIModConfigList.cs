@@ -53,37 +53,36 @@ internal class UIModConfigList : UIState
 		uIElement.Append(uIHeaderTextPanel);
 
 		var modListPanel = new UIPanel {
-			Width = { Pixels = -uIPanel.PaddingTop / 2, Percent = 0.5f },
+			Width = { Pixels = uIPanel.PaddingTop / -2, Percent = 0.5f },
 			Height = { Percent = 1f },
 		};
 		uIPanel.Append(modListPanel);
 
 		var configListPanel = new UIPanel {
-			Width = { Pixels = -uIPanel.PaddingTop / 2, Percent = 0.5f },
+			Width = { Pixels = uIPanel.PaddingTop / -2, Percent = 0.5f },
 			Height = { Percent = 1f },
 			HAlign = 1f,
 		};
 		uIPanel.Append(configListPanel);
 
 		float headerHeight = 35;
-		float paddingDueToScrollbar = 12.5f;
 		var modListHeader = new UIText(Language.GetText("tModLoader.MenuMods"), 0.5f, true) {
 			Top = { Pixels = 5 },
-			Left = { Pixels = paddingDueToScrollbar },
+			Left = { Pixels = 12.5f },
 			HAlign = 0.5f,
 		};
 		modListPanel.Append(modListHeader);
 
 		var configListHeader = new UIText(Language.GetText("tModLoader.ModConfigs"), 0.5f, true) {
 			Top = { Pixels = 5 },
-			Left = { Pixels = -paddingDueToScrollbar },
+			Left = { Pixels = -12.5f },
 			HAlign = 0.5f,
 		};
 		configListPanel.Append(configListHeader);
 
 		modList = new UIList {
 			Top = { Pixels = headerHeight },
-			Width = { Pixels = -paddingDueToScrollbar * 2, Percent = 1f },
+			Width = { Pixels = -25, Percent = 1f },
 			Height = { Pixels = -headerHeight, Percent = 1f },
 			ListPadding = 5f,
 			HAlign = 1f,
@@ -93,10 +92,9 @@ internal class UIModConfigList : UIState
 
 		configList = new UIList {
 			Top = { Pixels = headerHeight },
-			Width = { Pixels = -paddingDueToScrollbar * 2, Percent = 1f },
+			Width = { Pixels = -25f, Percent = 1f },
 			Height = { Pixels = -headerHeight, Percent = 1f },
 			ListPadding = 5f,
-			HAlign = 0f,
 			ManualSortMethod = (list) => { }, // Elements added in order, no need to sort.
 		};
 		configListPanel.Append(configList);
@@ -228,7 +226,7 @@ internal class UIModConfigList : UIState
 			float iconPadding = 2;
 			modPanel.PaddingLeft += iconOffset + iconPadding;
 
-				var modIcon = new UIImage(iconTexture) {
+			var modIcon = new UIImage(iconTexture) {
 				VAlign = 0.5f,
 				HAlign = 0f,
 				Color = Color.White,
