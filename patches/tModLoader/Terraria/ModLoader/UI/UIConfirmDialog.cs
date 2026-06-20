@@ -1,3 +1,4 @@
+using System;
 using Microsoft.Xna.Framework;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -9,25 +10,29 @@ using Terraria.UI;
 namespace Terraria.ModLoader.UI;
 
 // TODO: make UIMods use this, since this is adapted from it
-// TODO: change the style of this to the one in the achievements menu, andm ake it use the achivements menu one
 public class UIConfirmDialog : UIElement
 {
 	public MouseEvent YesAction { get; }
 	public MouseEvent NoAction { get; }
 	public MouseEvent YesDontShowAgainAction { get; }
 	public LocalizedText ConfirmText { get; }
+	public LocalizedText SubText { get; }
 	public bool ShowYesDontShowAgainButton { get; }
+	public bool PlaySoundOnClose { get; }
+	public Action OnClose { get; set; }
 
 	private UIImage blockInput;
 	private UIPanel dialog;
 
-	public UIConfirmDialog(bool showYesDontShowAgainButton, LocalizedText confirmText, MouseEvent yesAction = null, MouseEvent noAction = null, MouseEvent yesDontShowAgainAction = null)
+	public UIConfirmDialog(bool showYesDontShowAgainButton, LocalizedText confirmText, LocalizedText subText = null, MouseEvent yesAction = null, MouseEvent noAction = null, MouseEvent yesDontShowAgainAction = null, bool playSoundOnClose = true)
 	{
 		ShowYesDontShowAgainButton = showYesDontShowAgainButton;
 		ConfirmText = confirmText;
+		SubText = subText;
 		YesAction = yesAction;
 		NoAction = noAction;
 		YesDontShowAgainAction = yesDontShowAgainAction;
+		PlaySoundOnClose = playSoundOnClose;
 
 		Width.Set(0, 1f);
 		Height.Set(0, 1f);
@@ -36,7 +41,7 @@ public class UIConfirmDialog : UIElement
 
 	private void CreateUI()
 	{
-		blockInput = new UIImage(TextureAssets.Extra[190]) {
+		blockInput = new UIImage(TextureAssets.MagicPixel.Value) {
 			Width = { Percent = 1 },
 			Height = { Percent = 1 },
 			Color = Color.Black * 0.5f,
@@ -60,9 +65,16 @@ public class UIConfirmDialog : UIElement
 			Width = { Percent = 0.75f },
 			HAlign = 0.5f,
 			VAlign = ShowYesDontShowAgainButton ? 0.2f : 0.3f,
-			IsWrapped = true,
 		};
 		dialog.Append(confirmText);
+
+		var subText = new UIText(SubText) {
+			Width = { Percent = 0.75f },
+			HAlign = 0.5f,
+			VAlign = ShowYesDontShowAgainButton ? 0.2f : 0.3f,
+			Top = { Pixels = 50 },
+		};
+		dialog.Append(subText);
 
 		var yesButton = new UIAutoScaleTextTextPanel<LocalizedText>(Language.GetText("LegacyMenu.104")) {
 			TextColor = Color.White,
@@ -109,8 +121,12 @@ public class UIConfirmDialog : UIElement
 
 	public void Close()
 	{
-		SoundEngine.PlaySound(SoundID.MenuClose);
+		if (PlaySoundOnClose) {
+			SoundEngine.PlaySound(SoundID.MenuClose);
+		}
+
 		Remove();
+		OnClose?.Invoke();
 	}
 
 	private void Close(UIMouseEvent evt, UIElement listeningElement)
