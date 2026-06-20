@@ -81,6 +81,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 	#region UI Creation
 
 	// TODO: in future, all of the UI methods and fields will be protected and/or virtual to allow modders to customize their UIState if they wish
+	// TODO: store more of the below UI elements as fields and make the fields protected
 
 	public override void OnInitialize()
 	{
