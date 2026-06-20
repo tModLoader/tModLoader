@@ -146,7 +146,7 @@ namespace ExampleMod.Content.Items.Accessories
 			dust.fadeIn = 1.1f;
 			dust.noGravity = true;
 			dust.noLight = true;
-			dust.noLightEmittence = noLightEmittance;
+			dust.noLightEmittance = noLightEmittance;
 			dust.velocity *= 0.3f;
 			dust.shader = GameShaders.Armor.GetSecondaryShader(player.cWings, player);
 		}

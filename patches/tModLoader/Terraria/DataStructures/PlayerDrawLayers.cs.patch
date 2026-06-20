@@ -299,7 +299,7 @@
 +				// Legs, sitting, Under robes or normal
 +
 -				DrawSittingLegs(ref drawinfo, TextureAssets.ArmorLeg[drawinfo.drawPlayer.legs].Value, drawinfo.colorArmorLegs, drawinfo.cLegs, drawinfo.drawPlayer.legs);
-+				DrawSittingLegs(ref drawinfo, TextureAssets.ArmorLeg[drawinfo.drawPlayer.legs].Value, drawinfo.colorArmorLegs, drawinfo.cLegs, drawinfo.drawPlayer.legs, EquipType: EquipType.Legs);
++				DrawSittingLegs(ref drawinfo, TextureAssets.ArmorLeg[drawinfo.drawPlayer.legs].Value, drawinfo.colorArmorLegs, drawinfo.cLegs, drawinfo.drawPlayer.legs, equipType: EquipType.Legs);
 +
  				if (drawinfo.drawPlayer.legs == 60) {
  					Texture2D value = TextureAssets.Extra[278].Value;

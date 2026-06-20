@@ -10,10 +10,11 @@ using System.Runtime.Loader;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using log4net;
+using Microsoft.Xna.Framework;
 using MonoMod.RuntimeDetour;
 using Terraria.Localization;
 using Terraria.ModLoader.UI;
-using static Terraria.ModLoader.Logging;
 
 namespace Terraria.ModLoader.Core;
 
