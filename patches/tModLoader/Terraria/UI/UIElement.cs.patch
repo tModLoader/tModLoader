@@ -13,7 +13,7 @@
  {
  	public delegate void MouseEvent(UIMouseEvent evt, UIElement listeningElement);
  
-@@ -19,27 +_,56 @@
+@@ -19,32 +_,61 @@
  	public delegate void UIElementAction(UIElement element);
  
  	protected readonly List<UIElement> Elements = new List<UIElement>();
@@ -70,6 +70,12 @@
  	public float VAlign;
  	private CalculatedStyle _innerDimensions;
  	private CalculatedStyle _dimensions;
+ 	private CalculatedStyle _outerDimensions;
+-	private static readonly RasterizerState OverflowHiddenRasterizerState = new RasterizerState {
++	internal static readonly RasterizerState OverflowHiddenRasterizerState = new RasterizerState {
+ 		CullMode = CullMode.None,
+ 		ScissorTestEnable = true
+ 	};
 @@ -52,12 +_,19 @@
  	private SnapPoint _snapPoint;
  	private static int _idCounter = 0;

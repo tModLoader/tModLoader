@@ -9,6 +9,7 @@ using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.UI;
+using Terraria.ModLoader.UI.Elements;
 using Terraria.UI;
 using Terraria.UI.Chat;
 using Terraria.UI.Gamepad;
@@ -171,10 +172,9 @@ internal class UIModConfigList : UIState
 
 		foreach (var mod in mods) {
 			if (ConfigManager.Configs.TryGetValue(mod, out _)) {
-				var modPanel = new UIButton<string>(mod.DisplayName) {
+				var modPanel = new UIButton<string>("") {
 					Width = { Percent = 1f, Pixels = -1, }, // -1 to prevent clipping the right edge of the panel
 					Height = { Pixels = 41 },
-					TextOriginX = 0f,
 					HAlign = 0.5f,
 					ScalePanel = false,
 					UseInnerDimensions = true,
@@ -184,7 +184,7 @@ internal class UIModConfigList : UIState
 					ClickSound = SoundID.MenuTick,
 				};
 				modPanel.SetPadding(6);
-				AddSmallIcon(mod, modPanel);
+				AddSmallIconAndName(mod, modPanel);
 
 				modPanel.OnLeftClick += delegate (UIMouseEvent evt, UIElement listeningElement) {
 					selectedMod = mod;
@@ -197,10 +197,9 @@ internal class UIModConfigList : UIState
 				if (mod.Name == "ModLoader")
 					continue;
 
-				var modPanel = new UIButton<string>(mod.DisplayName) {
+				var modPanel = new UIButton<string>("") {
 					Width = { Percent = 1f, Pixels = -1, }, // -1 to prevent clipping the right edge of the panel
 					Height = { Pixels = 41 },
-					TextOriginX = 0f,
 					HAlign = 0.5f,
 					ScalePanel = false,
 					UseInnerDimensions = true,
@@ -211,13 +210,13 @@ internal class UIModConfigList : UIState
 					HoverText = Language.GetTextValue("tModLoader.ModConfigModLoaderButNoConfigs")
 				};
 				modPanel.SetPadding(6);
-				AddSmallIcon(mod, modPanel);
+				AddSmallIconAndName(mod, modPanel);
 
 				modList.Add(modPanel);
 			}
 		}
 
-		void AddSmallIcon(Mod mod, UIButton<string> modPanel)
+		void AddSmallIconAndName(Mod mod, UIButton<string> modPanel)
 		{
 			var iconTexture = mod.SmallModIcon ?? Mod.PlaceholderSmallModIcon;
 
@@ -234,6 +233,17 @@ internal class UIModConfigList : UIState
 			};
 
 			modPanel.Append(modIcon);
+
+			var modName = new MarqueeText(mod.DisplayName) {
+				Width = { Percent = 1f },
+				Height = { Percent = 1f },
+				IsScrolling = false,
+			};
+
+			modPanel.Append(modName);
+
+			modPanel.OnMouseOver += (_, _) => modName.IsScrolling = true;
+			modPanel.OnMouseOut += (_, _) => modName.IsScrolling = false;
 		}
 	}
 
@@ -249,16 +259,26 @@ internal class UIModConfigList : UIState
 		var sortedConfigs = configs.OrderBy(x => Utils.CleanChatTags(x.DisplayName.Value)).ToList();
 
 		foreach (var config in sortedConfigs) {
-			var configPanel = new UIButton<LocalizedText>(config.DisplayName) {
+			var configPanel = new UIButton<string>("") {
 				Width = { Percent = 1f, Pixels = -1, }, // -1 to prevent clipping the right edge of the panel
 				Height = { Pixels = 41 }, // Taken from the debugger when running with ScalePanel = true
-				TextOriginX = 0f,
 				HAlign = 0.5f,
 				ScalePanel = false,
 				UseInnerDimensions = true,
 				ClickSound = SoundID.MenuOpen,
 			};
 			configPanel.SetPadding(6);
+
+			var configName = new MarqueeText(config.DisplayName) {
+				Width = { Percent = 1f },
+				Height = { Percent = 1f },
+				IsScrolling = false,
+			};
+
+			configPanel.Append(configName);
+
+			configPanel.OnMouseOver += (_, _) => configName.IsScrolling = true;
+			configPanel.OnMouseOut += (_, _) => configName.IsScrolling = false;
 
 			configPanel.OnLeftClick += delegate (UIMouseEvent evt, UIElement listeningElement) {
 				Interface.modConfig.SetMod(selectedMod, config);
