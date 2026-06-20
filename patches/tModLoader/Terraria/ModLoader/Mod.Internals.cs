@@ -90,15 +90,7 @@ partial class Mod
 		if (BackgroundAutoloadingEnabled)
 			BackgroundTextureLoader.AutoloadBackgrounds(this);
 	}
-	private static void AutoloadInvoker<TImpl>(Mod mod, Type type) where TImpl : IAutoloader => TImpl.Autoload(mod, type);
 
-	private static readonly MethodInfo _autoloadInvoker = typeof(Mod).GetMethod(nameof(AutoloadInvoker), BindingFlags.Static | BindingFlags.NonPublic);
-	public void TryAutoload(Type type)
-	{
-		// IAutoload<> can be implemented multiple times with different generic args. Call all of them
-		foreach (var iAutoload in type.GetInterfaces().Where(t => t.IsGenericType && t.GetGenericTypeDefinition() == typeof(IAutoload<>)))
-			_autoloadInvoker.MakeGenericMethod(iAutoload.GetGenericArguments()).Invoke(null, [this, type]);
-	}
 
 	internal void PrepareAssets()
 	{
