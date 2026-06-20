@@ -75,8 +75,10 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 	private UIAutoScaleTextTextPanel<string> configNamePanel;
 	private UIImage smallModIcon;
 
-	// TODO: reimpl subpages
-	// TODO: add a tooltip to the back button when there are unsaved changes
+	// TODO: add the tooltip panel at the bottom
+	// TODO: Make the little panel for the mod name just for the mod name
+	// TODO: make the header panel for the config name but use marquee text if it is too long
+	// TODO: add a config side indicator somewhere (probably next to the mod indicator
 
 	#region UI Creation
 
@@ -237,6 +239,8 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 
 	public UIState PreviousUIState { get; set; } // Unused interface property, manual logic in HandleBackButtonUsage instead
 
+	private bool isConfirmDiscardChangsPopupOpen = false;
+
 	private void BackClick(UIMouseEvent evt, UIElement listeningElement)
 	{
 		HandleBackButtonUsage();
@@ -246,16 +250,25 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 	public void HandleBackButtonUsage()
 	{
 		if (HasUnsavedChanges) {
+			if (isConfirmDiscardChangsPopupOpen) {
+				return;
+			}
+
 			var confirmDialog = new UIConfirmDialog(
-				false,
+				showYesDontShowAgainButton: false,
 				Language.GetText("tModLoader.ModConfigBackUnsavedChangesPopup"),
+				Language.GetText("tModLoader.ModConfigBackUnsavedChangesPopupSubText"),
 				(_, _) => {
 					HasUnsavedChanges = false;
 					HandleBackButtonUsage();
 				}
-			);
+			) {
+				OnClose = () => isConfirmDiscardChangsPopupOpen = false,
+			};
 
+			SoundEngine.PlaySound(SoundID.MenuOpen);
 			Append(confirmDialog);
+			isConfirmDiscardChangsPopupOpen = true;
 			return;
 		}
 
@@ -533,8 +546,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 
 	#endregion
 
-	// TODO: refactor all of the below
-
+	// TODO: refactor in the future
 	#region ConfigElement Handling
 
 	public static Tuple<UIElement, UIElement> WrapIt(UIElement parent, ref int top, PropertyFieldWrapper memberInfo, object item, int order, object list = null, Type arrayType = null, int index = -1)
@@ -734,6 +746,8 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 
 	#endregion
 
+	// TODO: reimpl subpages
+	// TODO: ensure we can search for stuff inside of a sub-config
 	#region Sub Configs
 
 	internal static UIPanel MakeSeparateListPanel(object item, object subitem, PropertyFieldWrapper memberInfo, IList array, int index, Func<string> AbridgedTextDisplayFunction)
