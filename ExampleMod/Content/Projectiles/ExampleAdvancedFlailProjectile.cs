@@ -506,14 +506,17 @@ namespace ExampleMod.Content.Projectiles
 			return true;
 		}
 
+		// This hook lets us change how the held projectile looks while a mannequin is holding it.
+		// The following code is adapted from vanilla's Projectile.AI_DisplayDoll for aiStyle 15 (Flail)
 		public override bool DisplayDollSettings(Player doll, TEDisplayDoll.DisplayDollPose pose, ref bool botherDrawing) {
 			// If the pose isn't one that is holding the item, then don't bother trying to draw the projectile.
 			if (pose.Pose < DisplayDollPoseID.Use1) {
-				botherDrawing = false;
-				return false;
+				botherDrawing = false; // Don't draw.
+				return false; // Returning false stops the rest of the vanilla code from running.
 			}
+
 			Projectile.spriteDirection = Projectile.direction;
-			Projectile.position = new Vector2(doll.Center.X + (float)(9 * doll.direction), doll.Bottom.Y - 12f);
+			Projectile.position = new Vector2(doll.Center.X + (9 * doll.direction), doll.Bottom.Y - 12f); // Set the position to be at the mannequin's feet.
 			return false;
 		}
 	}

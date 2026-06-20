@@ -1,10 +1,10 @@
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
-using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.GameContent.Tile_Entities;

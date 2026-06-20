@@ -347,6 +347,8 @@ public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, 
 }
 ```
 
+If you were using `Projectile.FillWhipControlPoints` to draw the projectile, you should now pass the player parameter as the third parameter. Otherwise the whip won't draw correctly for mannequins.
+
 Example Mod's whips have been updated with new examples and additional comments. See the *Example Mod* section below for the details.
 
 See ExampleWhip, ExampleWhipAdvanced, ExampleWhipProjectile, and ExampleWhipProjectileAdvanced for more examples.
@@ -406,6 +408,7 @@ Several Example Mod examples have been updated to adapt to 1.4.5 changes and to 
 	* Added the `Shoot()` override to spawn the projectile manually for the swing direction. See the *Whip Changes* section above for details.
     * It no longer has the charging ability that it did before (`ExampleWhipAdvanced` still has it).
     * The draw code has been changed to be more generic.
+	  * `Projectile.FillWhipControlPoints` has been updated to pass the player parameter.
       * It is almost an exact copy of the Leather Whip's drawing.
 	  * It assumes each segment in the sprite are equal size, like most sprite sheets are.
 	* See the *Whips and Tag Effects* section above for details on tag damage changes.
@@ -416,6 +419,7 @@ Several Example Mod examples have been updated to adapt to 1.4.5 changes and to 
 	  * `Projectile.GetWhipSettings` has new functionality for when the whip is displayed on a mannequin.
     * Add `owner.MatchItemTimeToItemAnimation()` after setting the `heldProj` to match vanilla.
     * The draw code has been changed to work better for different segment amounts.
+	  * `Projectile.FillWhipControlPoints` has been updated to pass the player parameter.
       * Previously, the draw code was specific for `ExampleWhipProjectileAdvanced`. Now it will work for any number of segments.
 	  * Even if your whips seem to draw fine, double check the code because it is likely that the third segment of your whip wasn't being drawn.
 	* See the *Whips and Tag Effects* section above for details on tag damage changes.
