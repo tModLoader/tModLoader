@@ -152,6 +152,7 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Run NPCShopDatabase.Test tests.
 - Player.setBonus is unused by vanilla. We will likely remove it (and comment out UpdateArmorSetsOld since it is misleading) and migrate all ExampleMod set bonuses to the new system. We'll need examples of various common set bonus setups (multiple helments, partial sets, typical head/chest/leg set, etc.)
 - Check ModifyEquipTextureDraw to determine if there is any other locations where the hook needs to be applied in PlayerDrawLayers.cs
+- PlayerDrawLayers.cs DrawPlayer_13_Leggings
 
 # New Fields that might need more documentation
 
