@@ -1,4 +1,3 @@
-using System.IO;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -95,6 +94,7 @@ internal class UIModConfigList : UIState
 			Width = { Pixels = -25f, Percent = 1f },
 			Height = { Pixels = -headerHeight, Percent = 1f },
 			ListPadding = 5f,
+			HAlign = 0f,
 			ManualSortMethod = (list) => { }, // Elements added in order, no need to sort.
 		};
 		configListPanel.Append(configList);
@@ -102,7 +102,6 @@ internal class UIModConfigList : UIState
 		var modListScrollbar = new UIScrollbar {
 			Top = { Pixels = headerHeight },
 			Height = { Pixels = -headerHeight, Percent = 1f },
-			HAlign = 0f,
 		};
 		modListScrollbar.SetView(100f, 1000f);
 		modList.SetScrollbar(modListScrollbar);
