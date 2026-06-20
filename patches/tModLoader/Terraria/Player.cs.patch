@@ -7529,6 +7529,17 @@
  
  		if ((sItem.type == 105 || sItem.type == 713) && !wet && !pulley) {
  			int maxValue2 = 20;
+@@ -40826,7 +_,10 @@
+ 		if (item.holdStyle == 5 && petting.isPetting)
+ 			return false;
+ 
++		/*
+ 		if (item.holdStyle == 8 && spectating < 0)
++		*/
++		if (item.holdStyle == 8 && spectating < 0 && item.type == ItemID.ScryingOrb) // Allow other items to use this holdStyle.
+ 			return false;
+ 
+ 		return true;
 @@ -40834,6 +_,12 @@
  
  	private void ItemCheck_ApplyHoldStyle(float mountOffset, Item sItem, Rectangle heldItemFrame)

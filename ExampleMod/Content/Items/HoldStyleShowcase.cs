@@ -53,7 +53,7 @@ namespace ExampleMod.Content.Items
 
 			if (player.altFunctionUse == 2) {
 				Item.holdStyle++;
-				if (Item.holdStyle > ItemHoldStyleID.HoldRadio) {
+				if (Item.holdStyle > ItemHoldStyleID.HoldOrb) {
 					Item.holdStyle = ItemHoldStyleID.None;
 				}
 				Main.NewText(SwitchingText.Format(Item.holdStyle));

@@ -52,7 +52,7 @@ namespace ExampleMod.Content.Items
 
 			if (player.altFunctionUse == 2) {
 				Item.useStyle++;
-				if (Item.useStyle > ItemUseStyleID.RaiseLamp) {
+				if (Item.useStyle > ItemUseStyleID.PlaySound) {
 					Item.useStyle = ItemUseStyleID.Swing;
 				}
 				Main.NewText(SwitchingText.Format(Item.useStyle));
