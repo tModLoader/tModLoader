@@ -1298,6 +1298,11 @@ Mods: {
 				// DisplayName: Example Custom Draw Wings
 				// Tooltip: ""
 			}
+
+			ExampleKite: {
+				// DisplayName: Example Kite
+				// Tooltip: ""
+			}
 		}
 
 		# Projectile display names mainly show in chat when a player dies from it.
@@ -1349,6 +1354,7 @@ Mods: {
 			// ExampleSentry.DisplayName: Example Sentry
 			// ExampleSentryShot.DisplayName: Example Sentry Shot
 			// ExampleHeldProjectileWeaponProjectile.DisplayName: Example Held Projectile Weapon Projectile
+			// ExampleKiteProjectile.DisplayName: Example Kite Projectile
 		}
 
 		Buffs: {
