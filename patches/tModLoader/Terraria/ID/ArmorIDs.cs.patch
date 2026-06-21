@@ -368,7 +368,7 @@
  			public static bool[] IsABelt = Factory.CreateBoolSet(false, 5, 10, 10, 12);
  		}
  
-@@ -1033,13 +_,20 @@
+@@ -1033,14 +_,25 @@
  		public const sbyte SandstorminaBottle = 15;
  		public const sbyte TreasureMagnet = 16;
  		public static readonly int Count = 17;
@@ -390,8 +390,13 @@
 +			/// <br/> It's recommended to use <see cref="Player.GetWingStats(int)"/> instead of directly accessing this set.
 +			/// </summary>
  			public static WingStats[] Stats;
++			/// <summary>
++			/// Used by the Velociraptor mount to determine if to show the Velociraptor's flying animation while the player is grappling.
++			/// <br/> Wings in this set will not show the Velociraptor's flying animation while grappling.
++			/// </summary>
  			public static bool[] AlwaysAnimated = Factory.CreateBoolSet(false, 22, 28, 45, 34, 48, 39, 40, 44);
  		}
+ 
 @@ -1096,6 +_,8 @@
  		public const sbyte KazzymodusWings = 50;
  		public const sbyte LunasWings = 51;

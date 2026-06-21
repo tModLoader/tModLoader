@@ -56,7 +56,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - SystemLoader.ModifyLightingBrightness might need `_negLight3` parameter.
 - SystemLoader.ModifyLightingBrightness and LoaderManager.Get<WaterStylesLoader>().LightColorMultiplier might need perspectivePlayer parameter or docs to use Main.SceneMetrics.PerspectivePlayer. This is for supporting spectator mode I believe.
 - There seems to be a new `flag` we should add to TileLoader.ModifyLight. It seems to determine if paint should override the native light color from a tile.
-- What is ArmorIDs.Wing.Sets.AlwaysAnimated?
 - BiomeConversionID.PurificationPowder (8) and Chlorophyte (9) might not match up with Terraria-added values. Need to double check where these were used against the new ID values. Chlorophyte is now either 8/9/10 and PurificationPowder is 11.
 - Lange.CreateDialogFilter now has a checkConditions parameter. It seems that there is a new system for object substitutions. We'll need to document these and make sure they work for modded substitutions. LocalizedText.CanFormatWith usages seem to be replaced with ConditionsMetWith. Some Language.GetTextValueWith usages changed to GetTextValue but still somehow support substitutions.
 - Should PlayerLoader.SyncPlayer in SyncOnePlayer be after syncing owner Projectiles?
