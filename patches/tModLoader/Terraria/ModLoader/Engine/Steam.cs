@@ -71,8 +71,12 @@ internal class Steam
 
 		//Solxan: While testing family share, noticed this inherently fails if game is not initiated from the 'start' button in Steam.
 		// Not normally a problem, as family share should be pathing to game server anyways
-		if (Environment.GetEnvironmentVariable("SteamAppId") != appId.ToString()) {
-			throw new Exception("Cannot overwrite steam env. SteamAppId=" + Environment.GetEnvironmentVariable("SteamAppId"));
+		var existingSteamAppId = Environment.GetEnvironmentVariable("SteamAppId");
+		if (existingSteamAppId == appId.ToString()) {
+			return;
+		}
+		if (existingSteamAppId != null) {
+			throw new Exception("Cannot overwrite steam env. SteamAppId=" + existingSteamAppId);
 		}
 	}
 }
