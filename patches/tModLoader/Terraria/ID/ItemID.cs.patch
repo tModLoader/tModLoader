@@ -224,7 +224,7 @@
  		public static bool?[] ForcesBreaksSleeping = Factory.CreateCustomSet<bool?>(null, new object[6] {
  			(short)1991,
  			true,
-@@ -161,11 +_,39 @@
+@@ -161,11 +_,45 @@
  			(short)3183,
  			true
  		});
@@ -250,6 +250,12 @@
 +		/// <br/> Defaults to <see langword="false"/>.
 +		/// </summary>
  		public static bool[] IsAKite = Factory.CreateBoolSet(false, 4367, 4368, 4369, 4370, 4371, 4379, 4610, 4611, 4612, 4613, 4648, 4649, 4650, 4651, 4669, 4670, 4671, 4674, 4675, 4676, 4677, 4681, 4683, 4684);
++		/// <summary>
++		/// If <see langword="true"/> for a given item type (<see cref="Item.type"/>), then this item will attempt to place <see cref="Item.createTile"/> when using the interact button (right mouse click).
++		/// <para/> These items will have the "Placeable" tooltip.
++		/// <para/> Vanilla entries include kites and caught critters.
++		/// <para/> Defaults to <see langword="false"/>.
++		/// </summary>
  		public static bool[] PlaceTileOnAltUse = Factory.CreateBoolSet(false, 4367, 4368, 4369, 4370, 4371, 4379, 4610, 4611, 4612, 4613, 4648, 4649, 4650, 4651, 4669, 4670, 4671, 4674, 4675, 4676, 4677, 4681, 4683, 4684, 261, 1338, 1992, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2006, 2007, 2015, 2016, 2017, 2018, 2019, 2121, 2122, 2123, 2156, 2157, 2205, 2673, 2740, 2889, 2890, 2891, 2892, 2893, 2894, 2895, 3191, 3192, 3193, 3194, 3563, 3564, 4068, 4069, 4070, 4274, 4334, 4335, 4336, 4337, 4338, 4339, 4340, 4359, 4361, 4362, 4363, 4373, 4374, 4375, 4395, 4418, 4419, 4464, 4465, 4480, 4482, 4831, 4832, 4833, 4834, 4835, 4836, 4837, 4838, 4839, 4840, 4841, 4842, 4843, 4844, 4845, 4847, 4849, 4961, 5132, 5212, 5300, 5311, 5312, 5313, 5350, 5511);
 +
 +		/// <summary>
@@ -264,14 +270,15 @@
  		public static bool?[] ForceConsumption = Factory.CreateCustomSet<bool?>(null, new object[12] {
  			(short)2350,
  			false,
-@@ -180,14 +_,43 @@
+@@ -180,14 +_,44 @@
  			(short)4344,
  			true
  		});
 +
 +		/// <summary>
-+		/// If <see langword="true"/> for a given item type (<see cref="Item.type"/>), then that item will run <see cref="Projectile.CheckUsability(Player, ref bool)"/> on every <see cref="Projectile"/> the using <see cref="Player"/> owns before usage is attempted.
-+		/// <br/> Defaults to <see langword="false"/>.
++		/// If <see langword="true"/> for a given item type (<see cref="Item.type"/>), then that item will run <see cref="Projectile.CheckUsability(Player, ref bool)"/> on every <see cref="Projectile"/> the using <see cref="Player"/> owns before usage is attempted. CheckUsability only checks for projectiles that use <see cref="ProjAIStyleID.Kite"/>.
++		/// <para/> Vanilla entries include kites.
++		/// <para/> Defaults to <see langword="false"/>.
 +		/// </summary>
  		public static bool[] HasAProjectileThatHasAUsabilityCheck = Factory.CreateBoolSet(false, 4367, 4368, 4369, 4370, 4371, 4379, 4610, 4611, 4612, 4613, 4648, 4649, 4650, 4651, 4669, 4670, 4671, 4674, 4675, 4676, 4677, 4681, 4683, 4684);
 +
@@ -753,7 +760,7 @@
  		public static short[] Workbenches = new short[44] {
  			36,
  			635,
-@@ -1090,7 +_,21 @@
+@@ -1090,8 +_,26 @@
  			5187,
  			5208
  		};
@@ -773,8 +780,23 @@
 +		/// <br/> If you need to check if any item is right-clickable, use <see cref="ItemLoader.CanRightClick(Item)"/>.
 +		/// </remarks>
  		public static bool[] OpenableBag = Factory.CreateBoolSet(3318, 3319, 3320, 3321, 3322, 3323, 3324, 3325, 3326, 3327, 3328, 3329, 3330, 3331, 3332, 3860, 3861, 3862, 4782, 4957, 5111, 2334, 2335, 2336, 3203, 3204, 3205, 3206, 3207, 3208, 4405, 4407, 4877, 5002, 3979, 3980, 3981, 3982, 3983, 3984, 3985, 3986, 3987, 4406, 4408, 4878, 5003, 3093, 4345, 4410, 1774, 6142, 3085, 4879, 1869, 599, 600, 601);
++		/// <summary>
++		/// Indicates that the item switches to another item (<see cref="UI.ItemSlot.TryItemSwap"/> when right clicked in the inventory.
++		/// <para/> This approach is not yet implemeted for modded items.
++		/// </summary>
  		public static bool[] HasItemSwap = Factory.CreateBoolSet(5325, 4131, 5060, 5059, 5324, 5329, 5330, 4346, 5391, 5323, 5455, 4767, 5453, 5309, 5454, 5358, 5360, 5361, 5359, 5437, 2611, 5526);
  		public static bool[] RecoverableImportantItem = Factory.CreateBoolSet(3318, 3319, 3320, 3321, 3322, 3323, 3324, 3325, 3326, 3327, 3328, 3329, 3330, 3331, 3332, 3860, 3861, 3862, 4782, 4957, 5111);
+ 		public static bool?[] OnlyNeedOneInInventoryOverride = Factory.CreateCustomSet<bool?>(null, new object[52] {
+@@ -1148,6 +_,9 @@
+ 			(short)849,
+ 			false
+ 		});
++		/// <summary>
++		/// Indicates that the item has a right click functionality. Used to display gamepad control hints while the item is held.
++		/// </summary>
+ 		public static bool[] HasRightFire = Factory.CreateBoolSet(4346, 5391, 5323, 5455, 4767, 5453, 5309, 5454, 4131, 5325, 5358, 5359, 5360, 5361, 3384, 3823, 3858, 4760, 3852, 4367, 4368, 4369, 4370, 4371, 4379, 4610, 4611, 4612, 4613, 4648, 4649, 4650, 4651, 4669, 4670, 4671, 4673, 4674, 4675, 4676, 4677, 4681, 4683, 4684, 2611, 5526);
+ 		public static bool?[] CanPassivelyStackInWorldOverride = Factory.CreateCustomSet<bool?>(null, new object[20] {
+ 			(short)71,
 @@ -1171,7 +_,14 @@
  			(short)530,
  			true

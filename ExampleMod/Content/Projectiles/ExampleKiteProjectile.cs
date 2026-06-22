@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using Terraria;
 using Terraria.GameContent;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Projectiles
@@ -13,6 +14,10 @@ namespace ExampleMod.Content.Projectiles
 		public override void SetStaticDefaults() {
 			// Total count animation frames
 			Main.projFrames[Type] = 4;
+
+			ProjectileID.Sets.BreaksFromToyBreaker[Type] = true;
+			ProjectileID.Sets.TrailingMode[Type] = 2;
+			ProjectileID.Sets.TrailCacheLength[Type] = 60;
 		}
 
 		public override void SetDefaults() {

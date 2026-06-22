@@ -573,6 +573,23 @@
  	}
  
  	public void DefaultToSpear()
+@@ -9098,6 +_,16 @@
+ 		melee = true;
+ 	}
+ 
++	/// <summary>
++	/// This method sets a variety of Projectile values common to kites.<br/>
++	/// Specifically:<code>
++	/// width = 4;
++	/// height = 4;
++	///	aiStyle = <see cref="ProjAIStyleID.Kite"/>;
++	///	penetrate = -1;
++	///	extraUpdates = 60;
++	/// </code>
++	/// </summary>
+ 	public void DefaultToKite()
+ 	{
+ 		width = 4;
 @@ -9156,6 +_,10 @@
  		return result;
  	}

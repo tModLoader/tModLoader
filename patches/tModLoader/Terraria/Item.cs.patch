@@ -1344,7 +1344,7 @@
  	public void DefaultToWhip(int projectileId, int dmg, float kb, float shootspeed, int animationTotalTime = 30)
  	{
  		autoReuse = false;
-@@ -46927,7 +_,10 @@
+@@ -46927,13 +_,36 @@
  		shoot = projectileId;
  		UseSound = SoundID.Item152;
  		noMelee = true;
@@ -1355,6 +1355,32 @@
  		noUseGraphic = true;
  		damage = dmg;
  		knockBack = kb;
+ 		shootSpeed = shootspeed;
+ 	}
+ 
++	/// <summary>
++	/// This method sets a variety of Item values common to kites.<br/>
++	/// Specifically:<code>
++	/// width = 20;
++	///	height = 28;
++	/// autoReuse = false;
++	///	useStyle = <see cref="ItemUseStyleID.Swing"/>;
++	///	useAnimation = 15;
++	///	useTime = 15;
++	///	shoot = <paramref name="projId"/>;
++	///	shootSpeed = 8;
++	///	noMelee = true;
++	///	consumable = false;
++	///	DamageType = <see cref="DamageClass.Default"/>;
++	///	noUseGraphic = true;
++	///	SetShopValues(ItemRarityColor.Blue1, buyPrice(0, 2));
++	///	createTile = <see cref="TileID.KiteAnchor"/>;
++	///	</code>
++	/// </summary>
++	/// <param name="projId">The kite projectile type</param>
+ 	public void DefaultToKite(int projId)
+ 	{
+ 		width = 20;
 @@ -46946,10 +_,14 @@
  		createTile = 723;
  	}
@@ -1555,7 +1581,7 @@
 +	///	shoot = baseProjType;
 +	///	shootSpeed = shotVelocity;
 +	///	noMelee = true;
-+	///	DamageType = DamageClass.Ranged;
++	///	DamageType = <see cref="DamageClass.Ranged"/>;
 +	///	consumable = true;
 +	/// </code>
 +	/// </summary>
