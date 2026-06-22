@@ -450,7 +450,7 @@
  	public readonly Chest bank4 = Chest.CreateBank(-5);
  	public BitsByte voidVaultInfo;
  	public float headRotation;
-@@ -1006,31 +_,58 @@
+@@ -1006,31 +_,59 @@
  	public Vector2 fullRotationOrigin = Vector2.Zero;
  	public int fartKartCloudDelay;
  	public const int fartKartCloudDelayMax = 20;
@@ -469,6 +469,7 @@
 +	/// <summary> Indicates if this player is dead </summary>
  	public bool dead;
  	public int deadTime;
++	/// <summary> The index in <see cref="Main.player"/> of the player this player is spectating. Will be -1 if not spectating. </summary>
  	public int spectating = -1;
 +	/// <summary> The amount of time in ticks before this player respawns after death. Most suitably modified in <see cref="ModPlayer.Kill(double, int, bool, PlayerDeathReason)"/> </summary>
  	public int respawnTimer;

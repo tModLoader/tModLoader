@@ -13,7 +13,7 @@
  {
 +	/// <summary>
 +	/// Default. No specific animation will happen while this item is used.
-+	/// <br/>Used by any item by default.
++	/// <br/> Used by any item by default.
 +	/// </summary>
  	public const int None = 0;
 +	/// <summary>Item is swung in an overhead arch.<br/>Used for many sword weapons, block placement, etc.</summary>
