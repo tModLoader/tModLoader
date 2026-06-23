@@ -12,7 +12,7 @@ namespace Terraria.ModLoader;
 
 /// <summary>
 /// Tile Entities are Entities tightly coupled with tiles, allowing the possibility of tiles to exhibit cool behavior. <see cref="TileEntity.Update"/> is called in SP and on Server, not on Clients.
-/// <para/> Modded tile entities update by default. Set <see cref="TileEntity.RequiresUpdates"/> to <see langword="false"/> in the constructor if the tile entity does not need to update.
+/// <para/> Modded tile entities update by default when they override <see cref="TileEntity.Update"/>. Set <see cref="TileEntity.RequiresUpdates"/> in the constructor to override this behavior.
 /// </summary>
 /// <seealso cref="TileEntity" />
 public abstract class ModTileEntity : TileEntity, IModType, ILoadable
