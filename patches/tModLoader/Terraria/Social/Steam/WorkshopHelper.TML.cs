@@ -535,11 +535,11 @@ public partial class WorkshopHelper
 				try {
 					WaitForQueryResultAsync(query).GetAwaiter().GetResult();
 				}
-				catch (TimeoutException e) {
-					// Solxan: Most likely to occur during game startup if it occurs due to banned/malware startup check code
+				catch (Exception e) {
+					// Catch all workshop query failures (offline mode, timeout, k_EResultFail, etc.)
 					SteamedWraps.SteamAvailable = false;
 					SteamedWraps.SteamClient = false;
-					Utils.ShowFancyErrorMessage("Steam Workshop Timed Out. Steam Workshop related functionality has been disabled.\n" +
+					Utils.ShowFancyErrorMessage("Unable to access Steam Workshop. Steam Workshop related functionality has been disabled.\n" +
 						"Restart Steam and tModLoader to attempt to restore.", Interface.loadModsID);
 				}
 			}
