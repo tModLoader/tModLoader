@@ -386,6 +386,9 @@ See ExampleWhip, ExampleWhipAdvanced, ExampleWhipProjectile, and ExampleWhipProj
 	* For vanilla NPCs talking about vanilla NPCs, use BestiaryGirlTransformed: `TownNPCMood_BeastiaryGirlTransformed.{AffectionLevel}NPC_{OtherNPCInternalName}`
 * `Item.maxStack` now defaults to `Item.CommonMaxStack` (9999) now instead of 1.
 * `FishingAttempt.junk` now exists.
+* Critters can now be leashed. While leashed, they are a new type of `Entity` called `LeashedCritter` rather than a `NPC`. This requires several changes to support.
+  * Assign `TECritterAnchor.CritterPrototypes[Type]` in `ModNPC.SetStaticDefaults` to dictate the animation and AI to use while leashed. 
+  * Add `ItemID.Sets.PlaceTileOnAltUse[Type] = true;` to `ModItem.SetStaticDefaults` and set `Item.createTile = TileID.CritterAnchor;` in `ModItem.SetDefaults`.
 
 ### Example Mod
 
