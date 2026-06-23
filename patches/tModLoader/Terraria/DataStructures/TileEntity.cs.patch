@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/DataStructures/TileEntity.cs
 +++ src/tModLoader/Terraria/DataStructures/TileEntity.cs
-@@ -5,19 +_,25 @@
+@@ -5,26 +_,38 @@
  using Terraria.Audio;
  using Terraria.GameInput;
  using Terraria.UI;
@@ -25,9 +25,12 @@
 +	/// <summary> The tile coordinate location of this TileEntity. Will typically be the top left corner of the corresponding multitile, but not necessarily. </summary>
  	public Point16 Position;
  	public byte type;
-+	/// <summary> Whether this tile entity is registered to have <see cref="Update"/> called each game update. </summary>
++	/// <summary>
++	/// Whether this tile entity is registered to have <see cref="Update"/> called each game update.
++	/// <para/> For modded tile entities, this will automatically be set to true if <see cref="Update"/> is overridden.
++	/// </summary>
  	public bool RequiresUpdates;
-@@ -25,6 +_,9 @@
+ 
  	public static event Action _UpdateStart;
  	public static event Action _UpdateEnd;
  
