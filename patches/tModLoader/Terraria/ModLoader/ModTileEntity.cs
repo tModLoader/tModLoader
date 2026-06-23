@@ -4,8 +4,9 @@ using System.Linq;
 using System.Reflection;
 using Terraria.DataStructures;
 using Terraria.ID;
-using Terraria.ObjectData;
 using Terraria.Localization;
+using Terraria.ModLoader.Core;
+using Terraria.ObjectData;
 
 namespace Terraria.ModLoader;
 
@@ -41,7 +42,7 @@ public abstract class ModTileEntity : TileEntity, IModType, ILoadable
 
 	public ModTileEntity()
 	{
-		RequiresUpdates = true;
+		RequiresUpdates = LoaderUtils.HasOverride(this, e => e.Update);
 	}
 
 	/// <summary>
