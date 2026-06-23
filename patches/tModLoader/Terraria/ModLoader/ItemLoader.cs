@@ -86,8 +86,10 @@ public static class ItemLoader
 		LoaderUtils.ResetStaticMembers(typeof(AmmoID));
 		LoaderUtils.ResetStaticMembers(typeof(PrefixLegacy.ItemSets));
 		LoaderUtils.ResetStaticMembers(typeof(ItemVariants));
-		if (unloading)
+		if (unloading) {
 			LoaderUtils.ResetStaticMembers(typeof(ItemUseStyleID));
+			LoaderUtils.ResetStaticMembers(typeof(GameContent.Tile_Entities.TEDisplayDoll));
+		}
 
 		//Etc
 		Array.Resize(ref Item.cachedItemSpawnsByType, ItemCount);
