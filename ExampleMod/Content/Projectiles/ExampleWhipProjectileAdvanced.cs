@@ -236,36 +236,10 @@ namespace ExampleMod.Content.Projectiles
 		}
 
 		// This hook lets us change how the held projectile looks while a mannequin is holding it.
-		// The following code is adapted from vanilla's Projectile.AI_DisplayDoll for aiStyle 165 (Whip)
-		public override bool DisplayDollSettings(Player doll, TEDisplayDoll.DisplayDollPose pose, ref bool botherDrawing) {
-			// If the pose isn't one that is holding the item, then don't bother trying to draw the projectile.
-			if (pose.Pose < DisplayDollPoseID.Use1) {
-				botherDrawing = false; // Don't draw.
-				return false; // Returning false stops the rest of the vanilla code from running.
-			}
-
-			Timer = 12f; // How far into the animation the whip is. 12 matches vanilla and is just starting the swing. 71.265 is straight ahead for ExampleWhipProjectileAdvanced. 
-			Projectile.ai[1] = 0.4f; // How curled the whip is. 0.4f matches vanilla. 0 for no curl.
-
-			// Note: Projectile.GetWhipSettings() in the PreDraw code will always return 60 for the timeToFlyOut if the projectile isAPreviewDisplayDoll.
-			// This means the head of the whip will be scaled down, if your code does that.
-
-			// Unlike other DisplayDoll code, this doesn't shift the position of the projectile.
-			// Instead it sets the velocity which determines how stretched out the whip is (in addition to what Timer does). 1f matches vanilla.
-			Vector2 projectileVelocity = Vector2.UnitX * 1f;
-			float armRotation = 0f;
-			if (pose.ItemAimRadians.HasValue)
-				armRotation = pose.ItemAimRadians.Value; // The rotation of the mannequin's hand.
-
-			projectileVelocity = projectileVelocity.RotatedBy(armRotation); // Rotate the projectile based on the rotation of the mannequin's hand.
-			if (Projectile.direction == -1)
-				projectileVelocity.X *= -1f;
-
-			Projectile.velocity = projectileVelocity; // The velocity of the whip affects how stretched out it will be.
-			Projectile.Center = Main.GetPlayerArmPosition(Projectile, doll) + Projectile.velocity * (Timer - 1f); // Set the projectile to be in the mannequin's hand.
-			Projectile.spriteDirection = (Vector2.Dot(Projectile.velocity, Vector2.UnitX) >= 0f).ToDirectionInt(); // Set the direction to the direction the whip is facing.
-
-			return false;
+		// We set aiStyle to Whip to draw the projectile as if it had the vanilla whip aiStyle.
+		public override bool DisplayDollSettings(Player doll, TEDisplayDoll.DisplayDollPose pose, ref int aiStyle, ref bool botherDrawing) {
+			aiStyle = ProjAIStyleID.Whip;
+			return true;
 		}
 	}
 }

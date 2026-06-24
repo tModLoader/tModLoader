@@ -471,14 +471,17 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 
 	/// <summary>
 	/// Allows for modifying the position of the held projectile while a Mannequin is holding it.
-	/// <br>This is needed for held projectiles such as Spears, Drills, Shortswords, Yoyos, Flails, and Whips.</br>
-	/// <br/>See also <see cref="Projectile.isAPreviewDisplayDoll"/>.
+	/// <para/> This is needed for held projectiles such as Spears, Drills, Shortswords, Yoyos, Flails, and Whips.
+	/// <para/> Vanilla code supports <see cref="ProjAIStyleID.Spear"/>, <see cref="ProjAIStyleID.Drill"/>, <see cref="ProjAIStyleID.ShortSword"/>, <see cref="ProjAIStyleID.HeldProjectile"/>, <see cref="ProjAIStyleID.ForwardStab"/>, <see cref="ProjAIStyleID.SleepyOctopod"/>, <see cref="ProjAIStyleID.Yoyo"/>, <see cref="ProjAIStyleID.Flail"/>, <see cref="ProjAIStyleID.MedusaRay"/>, and <see cref="ProjAIStyleID.Whip"/>, but the existing logic might not work or look correct for all modded projectiles. <paramref name="aiStyle"/> can be set to a supported vanilla aiStyle to get the same behavior as a vanilla projectile.
+	/// <para/> If re-using an existing aiStyle value doesn't work, you will need to implement this hook to make it display correctly on mannequins. Consult the decompiled code of <see cref="Projectile.AI_DisplayDoll(Player, TEDisplayDoll.DisplayDollPose, out bool)"/> or Example Mod usages for sample code.
+	/// <para/> See also <see cref="Projectile.isAPreviewDisplayDoll"/>.
 	/// </summary>
-	/// <param name="doll">The mannequin holding the projectile.</param>
-	/// <param name="pose">The pose that the mannequin is in.</param>
-	/// <param name="botherDrawing">Tells the game whether to draw the projectile at all. Usually set to true when the pose doesn't need to hold the projectile.</param>
-	/// <returns>Return false to stop vanilla logic. Returns true by default.</returns>
-	public virtual bool DisplayDollSettings(Player doll, TEDisplayDoll.DisplayDollPose pose, ref bool botherDrawing)
+	/// <param name="doll"> The mannequin holding the projectile. </param>
+	/// <param name="pose"> The pose that the mannequin is in. </param>
+	/// <param name="aiStyle"> The Projectile.aiStyle of the projectile. Can be changed to a supported style. </param>
+	/// <param name="botherDrawing"> Tells the game whether to draw the projectile at all. Usually set to true when the pose doesn't need to hold the projectile.</param>
+	/// <returns> Return false to skip the vanilla logic. Returns true by default. </returns>
+	public virtual bool DisplayDollSettings(Player doll, TEDisplayDoll.DisplayDollPose pose, ref int aiStyle, ref bool botherDrawing)
 	{
 		return true;
 	}

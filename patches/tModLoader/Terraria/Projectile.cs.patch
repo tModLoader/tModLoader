@@ -19,7 +19,7 @@
  {
  	private class NPCDistanceByIndexComparator : IComparer<Tuple<int, float>>
  	{
-@@ -61,96 +_,394 @@
+@@ -61,96 +_,400 @@
  		public Rectangle GetBulletHitbox(int bulletIndex, Vector2 centerPoint) => Utils.CenteredRectangle(GetBulletPosition(bulletIndex, centerPoint), BulletSize);
  	}
  
@@ -284,7 +284,13 @@
 +	/// <br/> Defaults to <see langword="false"/>.
 +	/// </summary>
  	public bool ignoreWater;
++	/// <summary>
++	/// If true, this projectile is a pet projectile drawing on the player select screen.
++	/// </summary>
  	public bool isAPreviewDummy;
++	/// <summary>
++	/// If true, this projectile is a held projectile drawing on a <see cref="TileID.DisplayDoll"/>.
++	/// </summary>
  	public bool isAPreviewDisplayDoll;
  	public MinionSpawnInfo MinionSpawnInfo;
 +	/// <summary>
@@ -1480,11 +1486,12 @@
  			if (timeLeft > 3000)
  				timeLeft -= 60;
  
-@@ -17990,6 +_,9 @@
+@@ -17990,6 +_,10 @@
  		if ((uint)(pose2 - 4) <= 4u)
  			flag = true;
  
-+		if (!ProjectileLoader.DisplayDollSettings(this, doll, pose, ref botherDrawing))
++		int aiStyle = this.aiStyle;
++		if (!ProjectileLoader.DisplayDollSettings(this, doll, pose, ref aiStyle, ref botherDrawing))
 +			return;
 +
  		switch (aiStyle) {

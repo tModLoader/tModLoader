@@ -126,27 +126,22 @@ namespace ExampleMod.Content.Projectiles
 
 		// This hook lets us change how the held projectile looks while a mannequin is holding it.
 		// The following code is adapted from vanilla's Projectile.AI_DisplayDoll for aiStyle 161 (Shortsword)
-		public override bool DisplayDollSettings(Player doll, TEDisplayDoll.DisplayDollPose pose, ref bool botherDrawing) {
-			// If the pose isn't one that is holding the item, then don't bother trying to draw the projectile.
-			if (pose.Pose < DisplayDollPoseID.Use1) {
-				botherDrawing = false; // Don't draw.
-				return false; // Returning false stops the rest of the vanilla code from running.
-			}
-
+		// Due to our custom AI code, using ProjAIStyleID.Shortsword for this one woouldn't display correctly.
+		public override bool DisplayDollSettings(Player doll, TEDisplayDoll.DisplayDollPose pose, ref int aiStyle, ref bool botherDrawing) {
 			Projectile.spriteDirection = Projectile.direction; // Set the direction of the sprite to the direction the projectile is facing.
-			Vector2 projectileRotation = Vector2.UnitX * 12f; // This will move the projectile forward in the mannequin's hand because the hitbox of the projectile is the center of the sprite.
+			Vector2 projectileDirection = Vector2.UnitX * 12f; // This will move the projectile forward in the mannequin's hand because the hitbox of the projectile is the center of the sprite.
 			float armRotation = 0f;
 			if (pose.ItemAimRadians.HasValue)
 				armRotation = pose.ItemAimRadians.Value; // The rotation of the mannequin's hand.
 
-			projectileRotation = projectileRotation.RotatedBy(armRotation); // Rotate the projectile based on the rotation of the mannequin's hand.
+			projectileDirection = projectileDirection.RotatedBy(armRotation); // Rotate the projectile based on the rotation of the mannequin's hand.
 			if (Projectile.direction == -1)
-				projectileRotation.X *= -1f;
+				projectileDirection.X *= -1f;
 
-			Projectile.velocity = projectileRotation;
-			Projectile.position += projectileRotation + (projectileRotation * 1.5f); // Move the projectile's location while being held by the mannequin.
+			Projectile.velocity = projectileDirection;
+			Projectile.position += projectileDirection + (projectileDirection * 1.5f); // Move the projectile's location while being held by the mannequin.
 
-			Projectile.rotation = (float)Math.Atan2(projectileRotation.Y, projectileRotation.X) + MathHelper.PiOver2; // Set the projectile's rotation based on the mannequin's hand.
+			Projectile.rotation = projectileDirection.ToRotation() + MathHelper.PiOver2; // Set the projectile's rotation based on the mannequin's hand.
 			Projectile.rotation -= MathHelper.PiOver4 * Projectile.spriteDirection; // Correct the rotation of the shortsword since we set this in the AI.
 
 			return false;

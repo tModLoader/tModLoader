@@ -88,28 +88,10 @@ namespace ExampleMod.Content.Projectiles
 		}
 
 		// This hook lets us change how the held projectile looks while a mannequin is holding it.
-		// The following code is adapted from vanilla's Projectile.AI_DisplayDoll for aiStyle 20 (Drill)
-		public override bool DisplayDollSettings(Player doll, TEDisplayDoll.DisplayDollPose pose, ref bool botherDrawing) {
-			// If the pose isn't one that is holding the item, then don't bother trying to draw the projectile.
-			if (pose.Pose < DisplayDollPoseID.Use1) {
-				botherDrawing = false;
-				return false;
-			}
-
-			Projectile.spriteDirection = Projectile.direction;
-			Vector2 projectileRotation = Vector2.UnitX * 20f; // How far out the item is held.
-			float armRotation = 0f;
-			if (pose.ItemAimRadians.HasValue)
-				armRotation = pose.ItemAimRadians.Value;
-
-			projectileRotation = projectileRotation.RotatedBy(armRotation); // The rotation of the mannequin's hand.
-			if (Projectile.direction == -1)
-				projectileRotation.X *= -1f;
-
-			Projectile.velocity = projectileRotation;
-			Projectile.position += projectileRotation; // Move the projectile's location while being held by the mannequin.
-			Projectile.rotation = (float)Math.Atan2(projectileRotation.Y, projectileRotation.X) + MathHelper.PiOver2; // Set the projectile's rotation based on the mannequin's hand.
-			return false;
+		// We set aiStyle to Flail to draw the projectile as if it had the vanilla drill aiStyle.
+		public override bool DisplayDollSettings(Player doll, TEDisplayDoll.DisplayDollPose pose, ref int aiStyle, ref bool botherDrawing) {
+			aiStyle = ProjAIStyleID.Drill;
+			return true;
 		}
 	}
 }

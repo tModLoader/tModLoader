@@ -51,19 +51,5 @@ namespace ExampleMod.Content.Projectiles
 				Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, ModContent.DustType<Sparkle>()); // Makes the projectile emit dust.
 			}
 		}
-
-		// This hook lets us change how the held projectile looks while a mannequin is holding it.
-		// The following code is adapted from vanilla's Projectile.AI_DisplayDoll for aiStyle 99 (Yoyo)
-		public override bool DisplayDollSettings(Player doll, TEDisplayDoll.DisplayDollPose pose, ref bool botherDrawing) {
-			// If the pose isn't one that is holding the item, then don't bother trying to draw the projectile.
-			if (pose.Pose < DisplayDollPoseID.Use1) {
-				botherDrawing = false; // Don't draw.
-				return false; // Returning false stops the rest of the vanilla code from running.
-			}
-
-			Projectile.spriteDirection = Projectile.direction;
-			Projectile.position = new Vector2(doll.Center.X + (9 * doll.direction), doll.Bottom.Y - 8f); // Set the position to be at the mannequin's feet.
-			return false;
-		}
 	}
 }

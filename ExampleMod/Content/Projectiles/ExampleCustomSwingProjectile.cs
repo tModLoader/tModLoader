@@ -288,26 +288,21 @@ namespace ExampleMod.Content.Projectiles
 
 		// This hook lets us change how the held projectile looks while a mannequin is holding it.
 		// The following code is adapted from vanilla's Projectile.AI_DisplayDoll for aiStyle 20 (Drill)
-		public override bool DisplayDollSettings(Player doll, TEDisplayDoll.DisplayDollPose pose, ref bool botherDrawing) {
-			// If the pose isn't one that is holding the item, then don't bother trying to draw the projectile.
-			if (pose.Pose < DisplayDollPoseID.Use1) {
-				botherDrawing = false; // Don't draw.
-				return false; // Returning false stops the rest of the vanilla code from running.
-			}
-
+		// Due to how our sprite is oriented, we need to customize the rotation and can't just use ProjAIStyleID.Drill directly.
+		public override bool DisplayDollSettings(Player doll, TEDisplayDoll.DisplayDollPose pose, ref int aiStyle, ref bool botherDrawing) {
 			Projectile.spriteDirection = Projectile.direction;
-			Vector2 projectileRotation = Vector2.UnitX * 5f; // How far out the item is held.
+			Vector2 projectileDirection = Vector2.UnitX * 5f; // How far out the item is held.
 			float armRotation = 0f;
 			if (pose.ItemAimRadians.HasValue)
 				armRotation = pose.ItemAimRadians.Value;
 
-			projectileRotation = projectileRotation.RotatedBy(armRotation); // The rotation of the mannequin's hand.
+			projectileDirection = projectileDirection.RotatedBy(armRotation); // The rotation of the mannequin's hand.
 			if (Projectile.direction == -1)
-				projectileRotation.X *= -1f;
+				projectileDirection.X *= -1f;
 
-			Projectile.velocity = projectileRotation;
-			Projectile.position += projectileRotation; // Move the projectile's location while being held by the mannequin.
-			Projectile.rotation = (float)Math.Atan2(projectileRotation.Y, projectileRotation.X) ; // Set the projectile's rotation based on the mannequin's hand.
+			Projectile.velocity = projectileDirection;
+			Projectile.position += projectileDirection; // Move the projectile's location while being held by the mannequin.
+			Projectile.rotation = projectileDirection.ToRotation(); // Set the projectile's rotation based on the mannequin's hand.
 
 			return false;
 		}
