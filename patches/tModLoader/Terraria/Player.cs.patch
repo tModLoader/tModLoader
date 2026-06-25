@@ -4901,7 +4901,7 @@
  
 +	/// <summary>
 +	/// Returns true if the player isn't on a mount and isn't wet or shouldn't float and has non-zero vertical velocity or is currently grappling.
-+	/// <br/><br/> Checked by wings that only draw when in use.
++	/// <br/><br/> Checked by wings that only draw when in use (See also <see cref="ArmorIDs.Wing.Sets.AlwaysAnimated"/>).
 +	/// </summary>
  	public bool ShouldDrawWingsThatAreAlwaysAnimated(bool ignoreMounts = false)
  	{

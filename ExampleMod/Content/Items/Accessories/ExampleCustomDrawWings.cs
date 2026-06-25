@@ -29,6 +29,9 @@ namespace ExampleMod.Content.Items.Accessories
 			// Fly speed: 9
 			// Acceleration multiplier: 2.5
 			ArmorIDs.Wing.Sets.Stats[Item.wingSlot] = new WingStats(180, 9f, 2.5f);
+
+			// If making wings that are only shown while in use, set this and also use ShouldDrawWingsThatAreAlwaysAnimated as shown below.
+			//ArmorIDs.Wing.Sets.AlwaysAnimated[Item.wingSlot] = true;
 		}
 
 		public override void SetDefaults() {
