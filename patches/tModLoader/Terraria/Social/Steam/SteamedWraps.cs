@@ -6,6 +6,7 @@ using System.Reflection.Metadata;
 using System.Threading;
 using ReLogic.OS;
 using Steamworks;
+using Terraria.DataStructures;
 using Terraria.GameContent.UI.States;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -550,7 +551,10 @@ public static class SteamedWraps
 
 	public static bool DoesWorkshopItemNeedUpdate(PublishedFileId_t publishId)
 	{
-		var currState = SteamedWraps.GetWorkshopItemState(publishId);
+		if (!SteamAvailable)
+			return false;
+
+		var currState = GetWorkshopItemState(publishId);
 
 		return (currState & (uint)EItemState.k_EItemStateNeedsUpdate) != 0 ||
 			(currState == (uint)EItemState.k_EItemStateNone) ||

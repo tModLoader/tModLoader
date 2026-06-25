@@ -8,6 +8,7 @@ using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using ReLogic.OS;
 using Terraria.GameContent.Liquid;
@@ -198,18 +199,8 @@ public static class ModLoader
 				msg += "\n" + Language.GetTextValue("tModLoader.LoadErrorContentType", contentType.FullName);
 
 			foreach (var mod in responsibleMods) {
-				DisableModAndDependents(mod);
-			}
-			void DisableModAndDependents(string mod)
-			{
-				DisableMod(mod);
-
-				var dependents = availableMods
-					.Where(m => IsEnabled(m.Name) && m.properties.RefNames(includeWeak: false).Any(refName => refName.Equals(mod)))
-					.Select(m => m.Name);
-
-				foreach (var dependent in dependents) {
-					DisableModAndDependents(dependent);
+				foreach(string modAndDependent in CollectEnabledDependents(availableMods, mod)) {
+					ModLoader.DisableMod(modAndDependent);
 				}
 			}
 
@@ -226,6 +217,26 @@ public static class ModLoader
 			//TODO: FUTURE
 			//GOGModUpdateChecker.CheckModUpdates();
 		}
+	}
+
+	internal static void CollectEnabledDependents(LocalMod[] modFiles, string name, ISet<string> result) // Note: Recursive
+	{
+		if (!result.Add(name)) return;
+		var dependents = modFiles
+			.Where(m => ModLoader.IsEnabled(m.Name) &&
+					m.properties.RefNames(includeWeak: false).Any(refName => refName.Equals(name)))
+			.Select(m => m.Name);
+
+		foreach (var dependent in dependents) {
+			CollectEnabledDependents(modFiles, dependent, result);
+		}
+	}
+
+	internal static HashSet<string> CollectEnabledDependents(LocalMod[] modFiles, string name) // Note: Recursive
+	{
+		var set = new HashSet<string>();
+		CollectEnabledDependents(modFiles, name, set);
+		return set;
 	}
 
 	internal static void Reload()
@@ -423,6 +434,38 @@ public static class ModLoader
 			Interface.modsMenu.sortMode = modsMenuSortMode;
 
 		Main.Configuration.Get("LiquidSlopeFix", ref LiquidEdgeRenderer.Enabled);
+	}
+
+	internal static Asset<Texture2D> GetModIcon(TmodFile modFile, out string error, string fileName = "icon.png", int iconSize = 80)
+	{
+		error = null;
+
+		if (modFile.HasFile(fileName)) {
+			try {
+				using (modFile.Open())
+				using (var s = modFile.GetStream(fileName)) {
+					var iconTexture = Main.Assets.CreateUntracked<Texture2D>(s, fileName);
+
+					if (iconTexture.Width() == iconSize && iconTexture.Height() == iconSize) {
+						return iconTexture;
+					}
+
+					error = $"{fileName} is not {iconSize}x{iconSize}";
+					return null;
+				}
+			}
+			catch (Exception e) {
+				Logging.tML.Error("Unknown error", e);
+			}
+		}
+
+		error = $"{fileName} does not exist";
+		return null;
+	}
+
+	internal static Asset<Texture2D> GetModIcon(TmodFile modFile, string fileName = "icon.png", int iconSize = 80)
+	{
+		return GetModIcon(modFile, out string _, fileName, iconSize);
 	}
 
 	internal static void MigrateSettings()

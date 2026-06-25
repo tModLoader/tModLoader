@@ -221,7 +221,7 @@
  	public bool active;
  	private const int NPC_TARGETS_START = 300;
  	public bool IsABestiaryIconDummy;
-@@ -4420,6 +_,12 @@
+@@ -4420,7 +_,16 @@
  	public const float nameOverIncrement = 0.025f;
  	public const float nameOverDistance = 350f;
  	public float nameOver;
@@ -232,8 +232,12 @@
 +	/// <para/> Defaults to false.
 +	/// </summary>
  	public bool SpawnedFromStatue;
++	/// <summary>
++	/// If true, this NPC can be replaced by a newly spawning NPC when <see cref="Main.npc"/> is completely full. This is typically set for NPCs spawned by players, such as NPC spawned from statues, to prevent players from cheesing boss fights by preventing minions from spawning because Main.npc is already full.
++	/// <summary>
  	public bool CanBeReplacedByOtherNPCs;
  	public bool dripping;
+ 	public bool drippingSlime;
 @@ -4428,17 +_,50 @@
  	public static bool[] ShimmeredTownNPCs = new bool[NPCID.Count];
  	public int altTexture;
@@ -518,7 +522,7 @@
  	public static bool downedDeerclops = false;
  	public static int ShieldStrengthTowerSolar = 0;
  	public static int ShieldStrengthTowerVortex = 0;
-@@ -4594,59 +_,222 @@
+@@ -4594,59 +_,223 @@
  	public static bool TowerActiveNebula = false;
  	public static bool TowerActiveStardust = false;
  	public static bool LunarApocalypseIsUp = false;
@@ -724,6 +728,7 @@
 +
 +	/// <summary>
 +	/// How many copper coins the NPC will drop when killed (100 copper coins = 1 silver coin etc.).
++	/// <para/> When spawned from a statue, the value will be set to 0.  
 +	/// </summary>
  	public float value;
 +	/// <summary>

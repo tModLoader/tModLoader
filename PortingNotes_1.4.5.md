@@ -150,11 +150,12 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - ItemID.Sets.BonusAttackSpeedMultiplier renamed to BonusMeleeSpeedMultiplier. tModPorter done. (double check that this doesn't only apply to melee weapons. I think it isn't limited currently)
 - Run NPCShopDatabase.Test tests.
 - Player.setBonus is unused by vanilla. We will likely remove it (and comment out UpdateArmorSetsOld since it is misleading) and migrate all ExampleMod set bonuses to the new system. We'll need examples of various common set bonus setups (multiple helments, partial sets, typical head/chest/leg set, etc.)
+- Check ModifyEquipTextureDraw to determine if there is any other locations where the hook needs to be applied in PlayerDrawLayers.cs
+- PlayerDrawLayers.cs DrawPlayer_13_Leggings
 
 # New Fields that might need more documentation
 
 - UIElement.PassThroughMouseInteraction --> What does it do? How does it differ from IgnoresMouseInteraction?
-- TileEntity.RequiresUpdates (and static List<TileEntity> UpdateEntities) added -> Do all mods need to update their TEs? What is the default? What are Add and Remove methods? ModTileEntity will likely require updates.
 - TileEntity.Read now has a gameversion parameter. For modded tiles, I don't think this affects anything. Vanilla TEs have updated save and load code, need to verify poses and other changes work with modded items.
 - UserInterface.MouseCaptured -> could be useful
 - FlexibleTileWand is now used to place many other tiles that used to rely solely on RandomStyleRange. We should add an example of a custom FlexibleTileWand item/tile and document when to use it.
