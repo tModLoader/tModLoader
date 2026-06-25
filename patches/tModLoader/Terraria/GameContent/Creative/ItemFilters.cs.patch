@@ -8,7 +8,7 @@
  using Terraria.UI;
  
  namespace Terraria.GameContent.Creative;
-@@ -22,19 +_,34 @@
+@@ -22,19 +_,43 @@
  		private int _unusedResearchLine;
  		private string _search;
  
@@ -32,7 +32,16 @@
  			entry.stack = 1;
 -			Main.MouseText_DrawItemTooltip_GetLinesInfo(entry, ref _unusedYoyoLogo, ref _unusedResearchLine, knockBack, ref numLines, _toolTipLines, _unusedColor);
 +			Main.MouseText_DrawItemTooltip_GetLinesInfo(entry, ref _unusedYoyoLogo, ref _unusedResearchLine, knockBack, ref numLines, _toolTipLines, _unusedColor, _toolTipNames, out _);
-+			var modifiedTooltipLines = ItemLoader.ModifyTooltips(entry, ref numLines, _toolTipNames, ref _toolTipLines, ref _unusedColor, ref _unusedYoyoLogo, -1);
++
++			List<TooltipLine> modifiedTooltipLines;
++			try {
++				modifiedTooltipLines = ItemLoader.ModifyTooltips(entry, ref numLines, _toolTipNames, ref _toolTipLines, ref _unusedColor, ref _unusedYoyoLogo, -1);
++			}
++			catch {
++				// Fix erroneous tooltips preventing the filter from working entirely
++				return false;
++			}
++
  			entry.stack = stack;
 +
 +			/*

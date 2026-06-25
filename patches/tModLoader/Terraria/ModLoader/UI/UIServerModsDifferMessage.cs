@@ -202,22 +202,7 @@ internal class UIServerModsDifferMessage : UIState, IHaveBackButtonCommand
 			};
 			reason.IsWrapped = true;
 
-			var modIcon = Main.Assets.Request<Texture2D>("Images/UI/DefaultResourcePackIcon", AssetRequestMode.ImmediateLoad);
-			if (entry.localMod != null) {
-				try {
-					using (entry.localMod.modFile.Open())
-					using (var s = entry.localMod.modFile.GetStream("icon.png")) {
-						var iconTexture = Main.Assets.CreateUntracked<Texture2D>(s, ".png");
-
-						if (iconTexture.Width() == 80 && iconTexture.Height() == 80) {
-							modIcon = iconTexture;
-						}
-					}
-				}
-				catch (Exception e) {
-					Logging.tML.Error("Unknown error", e);
-				}
-			}
+			var modIcon = ModLoader.GetModIcon(entry.localMod.modFile) ?? Mod.PlaceholderModIcon;
 			UIImage modIconImage = new UIImage(modIcon) {
 				Left = { Percent = 0f },
 				Top = { Percent = 0f },

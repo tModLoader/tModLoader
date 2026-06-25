@@ -702,4 +702,10 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 		if (GetBannerBuffEffect(bannerId, out var effect))
 			ApplyBannerDefenseBuff(effect, ref modifiers);
 	}
+
+	private bool _customCCed;
+	/// <summary>
+	/// Call this method to mark <seealso cref="CCed"/> as true for this game update. Use for modded crowd control effects.
+	/// </summary>
+	public void SetCCed() => _customCCed = true;
 }

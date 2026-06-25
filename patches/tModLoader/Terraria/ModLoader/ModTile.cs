@@ -321,9 +321,10 @@ public abstract class ModTile : ModBlockType
 	}
 
 	/// <summary>
-	/// Allows you to determine whether this tile glows <paramref name="sightColor"/> while the local player has the <see href="https://terraria.wiki.gg/wiki/Biome_Sight_Potion">Biome Sight buff</see>.
-	/// <br/>Return true and assign to <paramref name="sightColor"/> to allow this tile to glow.
-	/// <br/>This is only called on the local client.
+	/// Allows you to determine whether this tile glows <paramref name="sightColor"/> while the player has the <see href="https://terraria.wiki.gg/wiki/Biome_Sight_Potion">Biome Sight buff</see>.
+	/// <para/> The player isn't necessarily the local player, but the player being used to view the area (such as when spectating), <c>Main.SceneMetrics.PerspectivePlayer</c>.
+	/// <para/> Return true and assign to <paramref name="sightColor"/> to allow this tile to glow.
+	/// <para/> This is only called on the local client.
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>
@@ -334,8 +335,9 @@ public abstract class ModTile : ModBlockType
 	}
 
 	/// <summary>
-	/// Allows you to customize whether this tile can glow yellow while having the Spelunker buff, and is also detected by various pets.
-	/// <br/>This is only called if Main.tileSpelunker[type] is false.
+	/// Allows you to customize whether this tile can glow yellow while the player has the Spelunker buff, and is also detected by various pets.
+	/// <para/> The player isn't necessarily the local player, but the player being used to view the area (such as when spectating), <c>Main.SceneMetrics.PerspectivePlayer</c>.
+	/// <para/> This is only called if Main.tileSpelunker[type] is false.
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>

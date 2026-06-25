@@ -78,6 +78,7 @@ public static class NPCLoader
 
 		// Sets
 		LoaderUtils.ResetStaticMembers(typeof(NPCID));
+		LoaderUtils.ResetStaticMembers(typeof(GameContent.Tile_Entities.TECritterAnchor));
 		Main.ShopHelper.ReinitializePersonalityDatabase();
 		NPCHappiness.RegisterVanillaNpcRelationships();
 

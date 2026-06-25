@@ -89,14 +89,12 @@ internal static partial class TileIO
 
 			//Check mods' TEs for being valid. If they are, register them to TE collections.
 			if (baseModTileEntity != null && tileEntity.IsTileValidForEntity(tileEntity.Position.X, tileEntity.Position.Y)) {
-				tileEntity.ID = TileEntity.AssignNewID();
-				TileEntity.ByID[tileEntity.ID] = tileEntity;
-
 				if (TileEntity.ByPosition.TryGetValue(tileEntity.Position, out TileEntity other)) {
-					TileEntity.ByID.Remove(other.ID);
+					TileEntity.Remove(other);
 				}
 
-				TileEntity.ByPosition[tileEntity.Position] = tileEntity;
+				tileEntity.ID = TileEntity.AssignNewID();
+				TileEntity.Add(tileEntity);
 			}
 		}
 	}

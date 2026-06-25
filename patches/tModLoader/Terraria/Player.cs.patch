@@ -304,6 +304,24 @@
  	public float slotsMinions;
  	public bool pygmy;
  	public bool raven;
+@@ -865,7 +_,17 @@
+ 	public bool palworldCattivaMinion;
+ 	public bool palworldFoxsparksMinion;
+ 	public float wingTime;
++	/// <summary>
++	/// The visible wings equipment slot (<see cref="ArmorIDs.Wing"/>). Usually corresponds to the <see cref="Item.wingSlot"/> of the visible wing accessory (unless hidden and either a mount is active or velocity.Y is 0) or vanity accessory.
++	/// <br/><br/> Responsible for wing visuals and sounds, not the movement (see <see cref="wingsLogic"/>.
++	/// <br/><br/> Defaults to 0.
++	/// </summary>
+ 	public int wings;
++	/// <summary>
++	/// The functional wings equipment slot (<see cref="ArmorIDs.Wing"/>). Usually corresponds to the <see cref="Item.wingSlot"/> of the wing accessory (non-vanity).
++	/// <br/><br/> Responsible for wing movement, not the visuals and sounds (see <see cref="wings"/>.
++	/// <br/><br/> Defaults to 0.
++	/// </summary>
+ 	public int wingsLogic;
+ 	public int wingTimeMax;
+ 	public int wingFrame;
 @@ -896,11 +_,24 @@
  	public bool dontHurtCritters;
  	public bool hasLucyTheAxe;
@@ -450,7 +468,7 @@
  	public readonly Chest bank4 = Chest.CreateBank(-5);
  	public BitsByte voidVaultInfo;
  	public float headRotation;
-@@ -1006,31 +_,58 @@
+@@ -1006,31 +_,59 @@
  	public Vector2 fullRotationOrigin = Vector2.Zero;
  	public int fartKartCloudDelay;
  	public const int fartKartCloudDelayMax = 20;
@@ -469,6 +487,7 @@
 +	/// <summary> Indicates if this player is dead </summary>
  	public bool dead;
  	public int deadTime;
++	/// <summary> The index in <see cref="Main.player"/> of the player this player is spectating. Will be -1 if not spectating. </summary>
  	public int spectating = -1;
 +	/// <summary> The amount of time in ticks before this player respawns after death. Most suitably modified in <see cref="ModPlayer.Kill(double, int, bool, PlayerDeathReason)"/> </summary>
  	public int respawnTimer;
@@ -1259,16 +1278,22 @@
  	public Vector2 MountedCenter {
  		get {
  			return new Vector2(position.X + (float)(width / 2), position.Y + BaseHeight / 2f + HeightOffsetHitboxCenter);
-@@ -1910,6 +_,9 @@
+@@ -1910,9 +_,14 @@
  
  	public override Vector2 VisualPosition => position + new Vector2(0f, gfxOffY);
  
 +	/// <summary>
-+	/// Checks if the player is currently "crowd controlled", meaning the player is <see cref="frozen"/>, <see cref="webbed"/>, or <see cref="stoned"/>. Used in various checks to prevent some player actions that shouldn't be possible while in those states, such as channeling attacks, quick using items, and swapping loadouts.
++	/// Checks if the player is currently "crowd controlled", meaning the player is <see cref="frozen"/>, <see cref="webbed"/>, <see cref="stoned"/>, or affected by a modded crowd control effect (see below).
++	/// Used in various checks to prevent some player actions that shouldn't be possible while in those states, such as channeling attacks, quick using items, and swapping loadouts.
++	/// <para/> Mods can use <seealso cref="SetCCed"/> within <see cref="ModBuff.Update(Player, ref int)"/> to mark the player as crowd controlled.
 +	/// </summary>
  	public bool CCed {
  		get {
- 			if (!frozen && !webbed)
+-			if (!frozen && !webbed)
++			if (!frozen && !webbed && !_customCCed)
+ 				return stoned;
+ 
+ 			return true;
 @@ -2080,6 +_,10 @@
  		}
  	}
@@ -2076,6 +2101,16 @@
 +
  				if (inventory[i].stack <= 0)
  					inventory[i].SetDefaults(0);
+ 
+@@ -6966,7 +_,8 @@
+ 				return false;
+ 
+ 			Item item = bank4.item[num4];
++			if (ItemLoader.ConsumeItem(item, this))
+-			item.stack--;
++				item.stack--;
+ 			if (item.stack <= 0)
+ 				item.TurnToAir();
  
 @@ -6978,6 +_,9 @@
  
@@ -3656,6 +3691,14 @@
  		calmed = false;
  		beetleOrbs = 0;
  		beetleBuff = false;
+@@ -14834,6 +_,7 @@
+ 		frozen = false;
+ 		stoned = false;
+ 		webbed = false;
++		_customCCed = false;
+ 		ichor = false;
+ 		manaRegenBonus = 0;
+ 		manaRegenDelayBonus = 0f;
 @@ -14842,6 +_,8 @@
  		dashType = 0;
  		spikedBoots = 0;
@@ -4852,6 +4895,17 @@
  		int num35 = 4;
  		int num36 = 4;
  		int num37 = 0;
+@@ -24583,6 +_,10 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Returns true if the player isn't on a mount and isn't wet or shouldn't float and has non-zero vertical velocity or is currently grappling.
++	/// <br/><br/> Checked by wings that only draw when in use.
++	/// </summary>
+ 	public bool ShouldDrawWingsThatAreAlwaysAnimated(bool ignoreMounts = false)
+ 	{
+ 		if (velocity.Y != 0f && grappling[0] <= -1 && (!wet || !ShouldFloatInWater)) {
 @@ -24914,7 +_,7 @@
  		if (TileID.Sets.BasicChest[tile.type] || tile.type == 97)
  			r = new Rectangle(chestPointX * 16, chestPointY * 16, 32, 32);
@@ -7529,6 +7583,17 @@
  
  		if ((sItem.type == 105 || sItem.type == 713) && !wet && !pulley) {
  			int maxValue2 = 20;
+@@ -40826,7 +_,10 @@
+ 		if (item.holdStyle == 5 && petting.isPetting)
+ 			return false;
+ 
++		/*
+ 		if (item.holdStyle == 8 && spectating < 0)
++		*/
++		if (item.holdStyle == 8 && spectating < 0 && item.type == ItemID.ScryingOrb) // Allow other items to use this holdStyle.
+ 			return false;
+ 
+ 		return true;
 @@ -40834,6 +_,12 @@
  
  	private void ItemCheck_ApplyHoldStyle(float mountOffset, Item sItem, Rectangle heldItemFrame)

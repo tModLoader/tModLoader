@@ -52,6 +52,22 @@ public partial class Mod
 	/// </summary>
 	public virtual Version Version => File.Version;
 
+	/// <summary>
+	/// The icon for this mod, sourced from <c>icon.png</c>.
+	/// <br/><br/> Must be 80x80.
+	/// </summary>
+	public Asset<Texture2D> ModIcon { get; internal set; }
+	/// <summary>
+	/// The small icon for this mod, sourced from <c>icon_small.png</c>.
+	/// <br/><br/> Must be 30x30.
+	/// <br/><br/> Will be null if a suitable icon doesn't exist.
+	/// </summary>
+	public Asset<Texture2D> SmallModIcon { get; internal set; }
+	/// <summary>
+	/// A placeholder mod icon, for use when a mod doesn't have a valid icon.
+	/// </summary>
+	public static Asset<Texture2D> PlaceholderModIcon => Main.Assets.Request<Texture2D>("Images/UI/DefaultResourcePackIcon");
+
 	public List<string> TranslationForMods { get; internal set; }
 
 	/// <summary>
