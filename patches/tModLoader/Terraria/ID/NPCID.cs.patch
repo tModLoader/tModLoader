@@ -483,7 +483,7 @@
 +		/// If <see langword="true"/> for a given NPC type (<see cref="NPC.type"/>), then that NPC will receive stat scaling in Expert Mode, even if its normal stats would prevent that.
 +		/// <br/> Defaults to <see langword="false"/>.
 +		/// </summary>
-+		/// <remarks>NPCs with less than 5 health are most prone to needing this set. The full scaling conditions can be found at the start of <see cref="NPC.ScaleStats(int?, GameModeData, float?)"/>.</remarks>
++		/// <remarks>NPCs with less than 5 health are most prone to needing this set. The full scaling conditions can be found at the start of <see cref="NPC.ScaleStats(int?, float?)"/>.</remarks>
  		public static bool[] NeedsExpertScaling = Factory.CreateBoolSet(25, 30, 665, 33, 112, 666, 261, 265, 371, 516, 519, 397, 396, 398, 491);
 +
 +		/// <summary>

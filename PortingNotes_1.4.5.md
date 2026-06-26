@@ -2,7 +2,6 @@
 
 Once all patches are fixed, these items need to be fixed or double checked:
 
-- GameModeData.cs no longer exists, patches need to be redistributed
 - NPCSpawnParams.gameModeData no longer exists. This was potentially used in IBestiaryInfoElement.
 - NPCSpawnParams.strengthMultiplierOverride renamed to difficultyOverride. Investigate if behavior changed.
 - NPCHitCount = 58 --> (and others) needs comment explaining what the value should be. Why is it 1 more when no sound 0?
