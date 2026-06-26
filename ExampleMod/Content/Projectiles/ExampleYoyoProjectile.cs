@@ -1,7 +1,5 @@
 ﻿using ExampleMod.Content.Dusts;
-using Microsoft.Xna.Framework;
 using Terraria;
-using Terraria.GameContent.Tile_Entities;
 using Terraria.ID;
 using Terraria.ModLoader;
 
