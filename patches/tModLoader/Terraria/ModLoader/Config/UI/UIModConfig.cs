@@ -563,6 +563,15 @@ internal class UIModConfig : UIState, IHaveBackButtonCommand
 		else if (type == typeof(TileDefinition)) {
 			e = new TileDefinitionElement();
 		}
+		
+		//New WallDefinition section
+		else if (type == typeof(WallDefinition)) {
+			e = new WallDefinitionElement();
+		}
+		else if (type == typeof(Color)) {
+			e = new ColorElement();
+		}
+
 		else if (type == typeof(Color)) {
 			e = new ColorElement();
 		}
