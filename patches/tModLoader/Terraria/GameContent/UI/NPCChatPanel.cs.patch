@@ -129,7 +129,7 @@
  			string text = textLines[i];
  			if (text != null) {
  				if (allowRichText)
-@@ -197,13 +_,35 @@
+@@ -197,13 +_,30 @@
  				else
  					Utils.DrawBorderStringFourWay(Main.spriteBatch, value, text, vector.X, vector.Y + (float)(i * 30), textColor, Color.Black, Vector2.Zero);
  			}
@@ -140,11 +140,6 @@
 +			if (hoveredSnippetNum > -1)
 +				hoveredSnippet = text[hoveredSnippetNum];
 +		}
-+
-+		/*
-+		if (textBlinkerState == 1)
-+			textLines[amountOfLines - 1].RemoveAt(textLines[amountOfLines - 1].Count - 1);
-+		*/
 +
 +		// Added on-hover and on-click callbacks as well
 +		if (hoveredSnippet is not null) {
