@@ -63,25 +63,28 @@ namespace ExampleMod.Content.Tiles.Plants
 				return;
 			}
 
-			Tile tile = Framing.GetTileSafely(i, j); // Safely get the tile at the given coordinates
-			bool growSuccess; // A bool to see if the tree growing was successful.
+			GrowSapling(i, j);
+		}
+
+		// Overridden to handle both ExampleTree (GrowTree) and ExamplePalmTree (GrowPalmTree) styles based on TileFrameX.
+		public override bool GrowSapling(int x, int y) {
+			Tile tile = Framing.GetTileSafely(x, y);
+			bool growSuccess;
 
 			// Style 0 is for the ExampleTree sapling, and style 1 is for ExamplePalmTree, so here we check frameX to call the correct method.
 			// Any pixels before 54 on the tilesheet are for ExampleTree while any pixels above it are for ExamplePalmTree
 			if (tile.TileFrameX < 54) {
-				growSuccess = WorldGen.GrowTree(i, j);
+				growSuccess = WorldGen.GrowTree(x, y);
 			}
 			else {
-				growSuccess = WorldGen.GrowPalmTree(i, j);
+				growSuccess = WorldGen.GrowPalmTree(x, y);
 			}
 
-			// A flag to check if a player is near the sapling
-			bool isPlayerNear = WorldGen.PlayerLOS(i, j);
-
-			// If growing the tree was a success and the player is near, show growing effects
-			if (growSuccess && isPlayerNear) {
-				WorldGen.TreeGrowFXCheck(i, j);
+			if (growSuccess && WorldGen.PlayerLOS(x, y)) {
+				WorldGen.TreeGrowFXCheck(x, y);
 			}
+
+			return growSuccess;
 		}
 
 		public override void SetSpriteEffects(int i, int j, ref SpriteEffects effects) {

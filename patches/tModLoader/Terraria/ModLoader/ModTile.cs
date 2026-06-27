@@ -154,6 +154,21 @@ public abstract class ModTile : ModBlockType
 	}
 
 	/// <summary>
+	/// Called when fertilizer (<see cref="ItemID.Fertilizer"/>) is used on this tile, if <see cref="TileID.Sets.CommonSapling"/> is set for this tile type.
+	/// <br/> By default, attempts to grow a standard tree via <see cref="WorldGen.GrowTree"/>, matching vanilla fertilizer behavior. Override to use a different growth method (e.g. <see cref="WorldGen.GrowPalmTree"/>) or to add custom logic.
+	/// <br/> Return <see langword="true"/> if growth was attempted (even if it failed due to space constraints), <see langword="false"/> to do nothing.
+	/// </summary>
+	/// <param name="x">The x position in tile coordinates.</param>
+	/// <param name="y">The y position in tile coordinates.</param>
+	public virtual bool GrowSapling(int x, int y)
+	{
+		bool success = WorldGen.GrowTree(x, y);
+		if (success && WorldGen.PlayerLOS(x, y))
+			WorldGen.TreeGrowFXCheck(x, y);
+		return success;
+	}
+
+	/// <summary>
 	/// Whether or not the smart interact function can select this tile. Useful for things like chests. Defaults to false.
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
