@@ -50,6 +50,7 @@ internal class WallDefinitionOptionElement : DefinitionOptionElement<WallDefinit
 
 	protected override void DrawSelf(SpriteBatch spriteBatch)
 	{
+		base.DrawSelf(spriteBatch);
 		CalculatedStyle dimensions = GetInnerDimensions();
 
 		if (IsMouseHovering) {
