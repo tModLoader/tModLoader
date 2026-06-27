@@ -48,10 +48,15 @@ internal class WallDefinitionOptionElement : DefinitionOptionElement<WallDefinit
 {
 	public WallDefinitionOptionElement(WallDefinition definition, float scale = 0.5f) : base(definition, scale) { }
 
+	public override void SetItem(WallDefinition definition)
+	{
+		NullID = 0;
+		base.SetItem(definition);
+	}
+
 	protected override void DrawSelf(SpriteBatch spriteBatch)
 	{
 		CalculatedStyle dimensions = GetInnerDimensions();
-
 		spriteBatch.Draw(BackgroundTexture.Value, dimensions.Position(), null, Color.White, 0f, Vector2.Zero, Scale, SpriteEffects.None, 0f);
 
 		if (Definition != null && Definition.Type > 0) {
@@ -61,11 +66,9 @@ internal class WallDefinitionOptionElement : DefinitionOptionElement<WallDefinit
 			if (wallTexture != null) {
 				int size = 32;
 				Rectangle sourceRectangle = new Rectangle(0, 0, size, size);
-				Vector2 position = new Vector2(
-					dimensions.X + dimensions.Width / 2f - size / 2f * Scale,
-					dimensions.Y + dimensions.Height / 2f - size / 2f * Scale
-				);
-				spriteBatch.Draw(wallTexture, position, sourceRectangle, Color.White, 0f, Vector2.Zero, Scale, SpriteEffects.None, 0f);
+				var position = dimensions.Center();
+
+				spriteBatch.Draw(wallTexture, position, sourceRectangle, Color.White, 0f, Vector2.One * 16, Scale, SpriteEffects.None, 0f);
 			}
 		}
 
