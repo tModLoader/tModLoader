@@ -1,14 +1,13 @@
 --- src/TerrariaNetCore/Terraria/GameContent/UI/Elements/UIPanel.cs
 +++ src/tModLoader/Terraria/GameContent/UI/Elements/UIPanel.cs
-@@ -13,16 +_,25 @@
- 	private Asset<Texture2D> _backgroundTexture;
+@@ -14,15 +_,24 @@
  	public Color BorderColor = Color.Black;
  	public Color BackgroundColor = new Color(63, 82, 151) * 0.7f;
-+	
-+	// Added by TML.
-+	private bool _needsTextureLoading;
  
 -	public UIPanel()
++	// Added by TML.
++	private bool _needsTextureLoading;
++
 +	private void LoadTextures()
  	{
 +		// These used to be moved to OnActivate in order to avoid texture loading on JIT thread.

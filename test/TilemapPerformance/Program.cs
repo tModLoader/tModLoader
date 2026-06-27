@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
@@ -45,7 +45,11 @@ void Launch() {
 	}));
 
 	ApplyHooks();
-	asm.GetType("Terraria.MonoLaunch").GetMethod("Main", BindingFlags.Static | BindingFlags.NonPublic).Invoke(null, new[] { new[] { "-server" } });
+
+	var tempModsFile = Path.GetTempFileName() + ".json";
+	File.WriteAllText(tempModsFile, "[]");
+
+	asm.GetType("Terraria.MonoLaunch").GetMethod("Main", BindingFlags.Static | BindingFlags.NonPublic).Invoke(null, [new[] { "-server", "-modpack", tempModsFile }]);
 }
 
 void ApplyHooks()
@@ -70,6 +74,10 @@ void ApplyHooks()
 		c.Remove();
 		c.Emit(OpCodes.Ldc_I4, 50000);
 	}));
+
+	HookStorage.Store(new Hook(typeof(TilePaintSystemV2).GetMethod("TryGetTileAndRequestIfNotReady", BindingFlags.Public | BindingFlags.Instance), new Func<Func<object, int, int, int, Texture2D>, object, int, int, int, Texture2D>((orig, self, tt, ts, pc) => {
+		return Asset<Texture2D>.DefaultValue;
+	})));
 }
 
 void ServerLoaded() {
@@ -77,36 +85,40 @@ void ServerLoaded() {
 
 	Process.GetCurrentProcess().PriorityClass = ProcessPriorityClass.RealTime;
 
-	List<(List<TimeSpan> results, string name, Func<TimeSpan> run)> tests = new();
-	tests.Add((new(), nameof(GenWorld), GenWorld));
-	tests.Add((new(), nameof(SaveWorld), Median(SaveWorld, 5)));
-	tests.Add((new(), nameof(LoadWorld), Median(LoadWorld, 5)));
-	tests.Add((new(), nameof(DrawWorld), Median(DrawWorld, 5)));
+	List<(List<TestResult> results, string name, Func<TestResult> run)> tests =
+	[
+		(new(), nameof(GenWorld), GenWorld),
+		(new(), nameof(SaveWorld), Median(SaveWorld, 5)),
+		(new(), nameof(LoadWorld), Median(LoadWorld, 5)),
+		(new(), nameof(DrawWorld), Median(DrawWorld, 5)),
+	];
+
+	var seeds = new[] { "1", "2", "3" };
+	void RunTests()
+	{
+		foreach (var seed in seeds) {
+			Main.worldName = seed;
+			Main.ActiveWorldFileData = new WorldFileData(Path.Combine(Main.WorldPath, Main.worldName + ".wld"), false);
+
+			foreach (var test in tests) {
+				test.results.Add(test.run());
+			}
+		}
+	}
 
 	Console.Clear();
-	Main.worldName = "1";
-	Main.ActiveWorldFileData = new WorldFileData(Path.Combine(Main.WorldPath, Main.worldName + ".wld"), false);
 
 	// warmup
-	for (int i = 0; i < 3; i++) {
-		foreach (var test in tests) {
-			test.run();
-		}
-	}
-
-
-	foreach (var seed in new[] { "3", "2", "1" }) {
-		Main.worldName = seed;
-		Main.ActiveWorldFileData = new WorldFileData(Path.Combine(Main.WorldPath, Main.worldName + ".wld"), false);
-
-		foreach (var test in tests) {
-			test.results.Add(test.run());
-		}
-	}
+	RunTests();
+	foreach (var test in tests)
+		test.results.Clear();
+	
+	RunTests();
 
 	Console.Clear();
-	foreach (var test in tests) {
-		Console.WriteLine($"{test.name}: \t{string.Join('\t', test.results.Select(t => $"{(long)t.TotalSeconds}.{t.Milliseconds / 100:0}s"))}");
+	Console.WriteLine($"Seed:    \t{string.Join("", seeds.Select(s => $"{s,-15}"))}");
+	foreach (var (results, name, _) in tests) {
+		Console.WriteLine($"{name}:\t{string.Join("", results.Select(r => $"{r,-15}"))}");
 	}
 
 	while (true) {
@@ -114,9 +126,9 @@ void ServerLoaded() {
 	}
 }
 
-Func<TimeSpan> Median(Func<TimeSpan> run, int attempts) =>
+Func<TestResult> Median(Func<TestResult> run, int attempts) =>
 	() => {
-		var list = Enumerable.Range(0, attempts).Select(_ => run()).OrderBy(t => t).ToList();
+		var list = Enumerable.Range(0, attempts).Select(_ => run()).OrderBy(t => t.Total).ToList();
 		return list[attempts / 2];
 	};
 
@@ -142,8 +154,13 @@ TimeSpan ExportLightmap()
 	return sw.Elapsed;
 }
 
-TimeSpan DrawWorld()
+TestResult DrawWorld()
 {
+	void InitAssets<T>(Asset<T>[] assets) where T : class {
+		foreach (ref var a in assets.AsSpan())
+			a = Asset<T>.Empty;
+	}
+
 	Asset<Texture2D>.DefaultValue = new Texture2D(null, 16, 16);
 	InitAssets(TextureAssets.Wall);
 	InitAssets(TextureAssets.Tile);
@@ -160,7 +177,7 @@ TimeSpan DrawWorld()
 	Main.instance.TilesRenderer = new TileDrawing(Main.instance.TilePaintSystem);
 	Main.instance.WallsRenderer = new WallDrawing(Main.instance.TilePaintSystem);
 	Lighting.Mode = LightMode.Color;
-	Main.offScreenRange = 10000*16;
+
 	Main.GameViewMatrix = new SpriteViewMatrix(null);
 	Main.GameViewMatrix.SetViewportOverride(new Viewport(0, 0, 1, 1));
 
@@ -172,46 +189,45 @@ TimeSpan DrawWorld()
 	Main.sectionManager = new WorldSections(Main.maxTilesX / 200, Main.maxTilesY / 150);
 	Main.TileFrameSeed = 0;
 
-	var sw = new Stopwatch();
-	sw.Start();
-	typeof(Main).GetMethod("DrawWalls", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(Main.instance, null);
-	typeof(Main).GetMethod("DrawTiles", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(Main.instance, new object[] { false, false, true, -1 });
-	typeof(Main).GetMethod("DrawTiles", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(Main.instance, new object[] { true, false, true, -1 });
-	return sw.Elapsed;
+	int stepSize = 1000;
+	Main.offScreenRange = stepSize/2 * 16;
+	Main.screenWidth = Main.screenHeight = 160;
+
+	var timer = new TestTimer();
+	for (int x = stepSize / 2; x < Main.maxTilesX; x += stepSize)
+		for (int y = stepSize / 2; y < Main.maxTilesY; y += stepSize) {
+			Main.screenPosition = new Vector2(x, y) * 16;
+			typeof(Main).GetMethod("DrawWalls", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(Main.instance, null);
+			Main.instance.TilesRenderer.PreDrawTiles(false, false, true);
+			typeof(Main).GetMethod("DrawTiles", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(Main.instance, new object[] { false, false, true, -1 });
+			Main.instance.TilesRenderer.PreDrawTiles(true, false, true);
+			typeof(Main).GetMethod("DrawTiles", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(Main.instance, new object[] { true, false, true, -1 });
+		}
+	return timer.Result;
 }
 
-void InitAssets<T>(Asset<T>[] assets) where T : class
+TestResult SaveWorld()
 {
-    for (int i = 0; i < assets.Length; i++) {
-		assets[i] = Asset<T>.Empty;
-    }
-}
-
-TimeSpan SaveWorld()
-{
-	var sw = new Stopwatch();
-	sw.Start();
+	var timer = new TestTimer();
 	WorldFile.SaveWorld(false);
-	return sw.Elapsed;
+	return timer.Result;
 }
 
-TimeSpan LoadWorld()
+TestResult LoadWorld()
 {
-	var sw = new Stopwatch();
-	sw.Start();
+	var timer = new TestTimer();
 	WorldFile.LoadWorld(false);
-	return sw.Elapsed;
+	return timer.Result;
 }
 
-TimeSpan GenWorld()
+TestResult GenWorld()
 {
 	Main.maxTilesX = 8400;
 	Main.maxTilesY = 2400;
 	Main.ActiveWorldFileData.SetSeed(Main.worldName);
 	Main.menuMode = 10;
 
-	var sw = new Stopwatch();
-	sw.Start();
+	var timer = new TestTimer();
 
 	GenerationProgress generationProgress = new GenerationProgress();
 	Task task = WorldGen.CreateNewWorld(generationProgress);
@@ -221,7 +237,7 @@ TimeSpan GenWorld()
 	}
 	task.Wait();
 
-	return sw.Elapsed;
+	return timer.Result;
 }
 
 class HookStorage
@@ -229,4 +245,24 @@ class HookStorage
 	public static List<object> storage = new List<object>();
 
 	public static void Store(object hook) => storage.Add(hook);
+}
+
+readonly record struct TestResult(TimeSpan Total, TimeSpan GCTime)
+{
+	public override string ToString() => $"{(long)Total.TotalSeconds}.{Total.Milliseconds / 100:0}s";// GC: {(int)(GCTime/Total*100)}%";
+}
+
+class TestTimer
+{
+	private readonly Stopwatch sw;
+	private readonly TimeSpan gc;
+
+	public TestTimer()
+	{
+		GC.Collect(GC.MaxGeneration, GCCollectionMode.Aggressive);
+		sw = Stopwatch.StartNew();
+		gc = GC.GetTotalPauseDuration();
+	}
+
+	public TestResult Result => new(sw.Elapsed, GC.GetTotalPauseDuration() - gc);
 }

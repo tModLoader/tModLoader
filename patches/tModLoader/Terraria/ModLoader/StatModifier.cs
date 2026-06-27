@@ -132,4 +132,14 @@ public struct StatModifier
 	/// </summary>
 	public StatModifier Scale(float scale)
 		=> new StatModifier(1 + (Additive - 1) * scale, 1 + (Multiplicative - 1) * scale, Flat * scale, Base * scale);
+
+	/// <summary>
+	/// Calculates a base value from a provided adjusted value, undoing <see cref="ApplyTo(float)"/>.
+	/// </summary>
+	/// <param name="currentValue">The value to remove modifiers from</param>
+	/// <returns></returns>
+	public float Undo(float currentValue)
+		=> ((currentValue - Flat) / (Multiplicative * Additive)) - Base;
+
+	// public override string ToString() => $"(baseValue + Base) * Additive * Multiplicative + Flat => (100 + {Base}) * {Additive} * {Multiplicative} + {Flat} => {ApplyTo(100)}";
 }

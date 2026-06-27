@@ -20,6 +20,13 @@ public class HookRewriter : BaseRewriter
 		public string comment { get; init; }
 
 		public bool removed;
+		public Dictionary<string, string> parameterRenames;
+
+		public RefactorEntry RenameParameter(string from, string to) {
+			parameterRenames ??= new();
+			parameterRenames[from] = to;
+			return this;
+		}
 	}
 
 	private static List<RefactorEntry> refactors = new();
@@ -30,7 +37,7 @@ public class HookRewriter : BaseRewriter
 		return entry;
 	}
 
-	public static void ChangeHookSignature(string type, string member, string comment = null) => AddRefactor(type, member, comment);
+	public static RefactorEntry ChangeHookSignature(string type, string member, string comment = null) => AddRefactor(type, member, comment);
 	public static void HookRemoved(string type, string member, string comment) => AddRefactor(type, member, "Note: Removed. " + comment).removed = true;
 
 	private static bool SelectRefactor(ISymbol sym, out RefactorEntry refactor) {
@@ -64,6 +71,8 @@ public class HookRewriter : BaseRewriter
 
 	public override SyntaxNode VisitMethodDeclaration(MethodDeclarationSyntax node) {
 		var sym = model.GetDeclaredSymbol(node);
+		RegisterParameterRenames(sym, node);
+		RegisterBaseMethodInvocationRewrites(sym, node);
 		node = (MethodDeclarationSyntax)base.VisitMethodDeclaration(node);
 		if (!SelectRefactor(sym, out var refactor))
 			return node;
@@ -72,6 +81,100 @@ public class HookRewriter : BaseRewriter
 			node = node.WithParameterList(node.ParameterList.WithBlockComment(refactor.comment));
 
 		return node;
+	}
+
+	private void RegisterParameterRenames(IMethodSymbol sym, MethodDeclarationSyntax node) {
+		if (!SelectRefactor(sym, out var refactor) || refactor.removed || refactor.parameterRenames == null)
+			return;
+
+		var renames = new Dictionary<IParameterSymbol, string>(SymbolEqualityComparer.Default);
+		foreach (var param in sym.Parameters) {
+			if (refactor.parameterRenames.TryGetValue(param.Name, out var newName))
+				renames[param] = newName;
+		}
+
+		if (renames.Count == 0)
+			return;
+
+		var body = (SyntaxNode)node.Body ?? node.ExpressionBody;
+		if (body == null)
+			return;
+
+		foreach (var nameSyntax in body.DescendantNodes().OfType<IdentifierNameSyntax>()) {
+			if (model.GetSymbolInfo(nameSyntax).Symbol is IParameterSymbol param && renames.TryGetValue(param, out var newName))
+				RegisterAction<IdentifierNameSyntax>(nameSyntax, n => n.WithIdentifier(newName));
+		}
+	}
+
+	private void RegisterBaseMethodInvocationRewrites(IMethodSymbol sym, MethodDeclarationSyntax node)
+	{
+		if (!SelectRefactor(sym, out var refactor) || refactor.removed)
+			return;
+
+		var body = (SyntaxNode)node.Body ?? node.ExpressionBody;
+		if (body == null)
+			return;
+
+		if (!SelectBaseSym(sym, sym.OverriddenMethod, out var baseSym))
+			return;
+
+		var newParamCount = baseSym.Parameters.Length;
+		if (newParamCount <= 0) 
+			return;
+		
+		foreach (var invoke in body.DescendantNodes().OfType<InvocationExpressionSyntax>()) {
+			// Match base.<MethodName>(...)
+			if (invoke.Expression is not MemberAccessExpressionSyntax memberAccess ||
+				memberAccess.Expression is not BaseExpressionSyntax ||
+				memberAccess.Name.Identifier.Text != sym.Name) {
+				continue;
+			}
+
+			var origNode = invoke;
+			if (ParametersEqual(sym, baseSym))
+				continue;
+
+			// If any parameters in the original method don't exist in the new method (because the modder renamed them) skip rewriting this invocation since we won't be able to map all arguments reliably.
+			if (sym.Parameters.Any(x => !baseSym.Parameters.Select(x=>x.Name).Contains(x.Name)))
+				continue;
+
+			var existingArgs = invoke.ArgumentList?.Arguments.ToArray() ?? Array.Empty<ArgumentSyntax>();
+			var builtArgs = new ArgumentSyntax[newParamCount];
+
+			var originalArgumentsByName = new Dictionary<string, ArgumentSyntax>();
+			var parameterExpressionsToKeep = new Dictionary<string, ExpressionSyntax>();
+
+			// Make a mapping of parameter name to original argument syntax for all parameters in the original method to preserve trivia, and track any arguments that will need to be preserved as-is because they aren't simple identifier arguments matching the parameter name
+			for (int i = 0; i < sym.Parameters.Length; i++) {
+				originalArgumentsByName[sym.Parameters[i].Name] = existingArgs[i];
+				if (existingArgs[i].Expression is not IdentifierNameSyntax identifier ||
+					identifier.Identifier.Text != sym.Parameters[i].Name) {
+					parameterExpressionsToKeep[sym.Parameters[i].Name] = existingArgs[i].Expression;
+					break;
+				}
+			}
+
+			// Initialize built args with identifier arguments using the base parameter names and ref/out keywords when necessary
+			for (int i = 0; i < newParamCount; i++) {
+				var p = baseSym.Parameters[i];
+				ExpressionSyntax expr = IdentifierName(p.Name);
+				if(parameterExpressionsToKeep.TryGetValue(p.Name, out var existingCustomExpression))
+					expr = existingCustomExpression;
+				var arg = Argument(expr);
+				if (p.RefKind == RefKind.Ref)
+					arg = arg.WithRefKindKeyword(TokenSpace(SyntaxKind.RefKeyword));
+				else if (p.RefKind == RefKind.Out)
+					arg = arg.WithRefKindKeyword(TokenSpace(SyntaxKind.OutKeyword));
+				if (originalArgumentsByName.TryGetValue(p.Name, out var existingExpr) && (existingExpr.HasLeadingTrivia || existingExpr.HasTrailingTrivia)) {
+					arg = arg.WithTriviaFrom(existingExpr);
+					// Note: We could preserve trivia on ref/out keywords and before the 1st argument if we wanted to, but it's a bit more complex
+				}
+				builtArgs[i] = arg;
+			}
+
+			var newArgList = ArgumentList(SimpleSyntaxFactory.SeparatedList(builtArgs)).WithTriviaFrom(invoke.ArgumentList);
+			RegisterAction<InvocationExpressionSyntax>(invoke, n => n.WithArgumentList(newArgList));
+		}
 	}
 
 	private bool AccessibilityMismatch(ISymbol sym, ISymbol baseSym) =>

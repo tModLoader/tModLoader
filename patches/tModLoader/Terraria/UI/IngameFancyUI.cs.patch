@@ -29,8 +29,8 @@
 +	/// <param name="uiState"></param>
  	public static void OpenUIState(UIState uiState)
  	{
- 		CoverNextFrame();
-@@ -94,6 +_,10 @@
+ 		OpenUIState(uiState, closeIngameWindows: true);
+@@ -99,6 +_,10 @@
  				else if (tile.type == 88)
  					Main.defaultChestName = Lang.dresserType[tile.frameX / 54].Value;
  
@@ -41,8 +41,8 @@
  				if (Main.npcChatText == "")
  					Main.npcChatText = Main.defaultChestName;
  
-@@ -152,8 +_,11 @@
- 			Main.playerInventory = false;
+@@ -154,8 +_,11 @@
+ 			Main.playerInventory = true;
  
  		Main.LocalPlayer.releaseInventory = false;
 +		bool currentStateWasModConfig = Main.InGameUI.CurrentState == Interface.modConfig;

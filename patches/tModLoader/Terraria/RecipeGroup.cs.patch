@@ -1,32 +1,51 @@
 --- src/TerrariaNetCore/Terraria/RecipeGroup.cs
 +++ src/tModLoader/Terraria/RecipeGroup.cs
-@@ -13,6 +_,8 @@
- 	public static Dictionary<string, int> recipeGroupIDs = new Dictionary<string, int>();
- 	public static int nextRecipeGroupIndex;
+@@ -6,7 +_,7 @@
  
-+	internal bool[] ValidItemsLookup; // Added by TML.
-+
- 	public RecipeGroup(Func<string> getName, params int[] validItems)
- 	{
- 		GetText = getName;
-@@ -22,11 +_,20 @@
+ namespace Terraria;
  
- 	public static int RegisterGroup(string name, RecipeGroup rec)
- 	{
-+		// TML: Handle registering to an existing group by merging items and keeping the original group.
-+		if (recipeGroupIDs.TryGetValue(name, out int existingRecipeGroup)) {
-+			recipeGroups[existingRecipeGroup].ValidItems.UnionWith(rec.ValidItems);
-+			return existingRecipeGroup;
-+		}
-+
- 		int num = (rec.RegisteredId = nextRecipeGroupIndex++);
- 		recipeGroups.Add(num, rec);
- 		recipeGroupIDs.Add(name, num);
- 		return num;
+-public class RecipeGroup
++public partial class RecipeGroup
+ {
+ 	public static readonly int FakeItemIdOffset = 1000000;
+ 	public static LocalizedText DefaultCombineFormat = Language.GetText("CombineFormat.RecipeGroup");
+@@ -25,12 +_,13 @@
+ 		return () => DefaultCombineFormat.Format(text);
  	}
-+
-+	// Added by TML.
-+	public bool ContainsItem(int type) => ValidItemsLookup?[type] ?? ValidItems.Contains(type);
  
- 	public int CountUsableItems(Dictionary<int, int> itemStacksAvailable)
++	// TML: ctors are now internal to force modders to use static factory method approach
+-	public RecipeGroup(string groupDescriptorKey, params int[] validItems)
++	internal RecipeGroup(string groupDescriptorKey, params int[] validItems)
+ 		: this(WithDefaultCombineFormat(groupDescriptorKey), validItems)
  	{
+ 	}
+ 
+-	public RecipeGroup(Func<string> getName, params int[] validItems)
++	internal RecipeGroup(Func<string> getName, params int[] validItems)
+ 	{
+ 		RegisteredId = -1;
+ 		GetText = getName;
+@@ -53,10 +_,22 @@
+ 
+ 	public override string ToString() => GetText();
+ 
+-	public RecipeGroup Register()
++	internal RecipeGroup Register()
+ 	{
+ 		if (RegisteredId >= 0)
+ 			throw new Exception("Already registered");
++
++		// TML: Handle registering to an existing group by merging items and keeping the original group.
++		if (!string.IsNullOrWhiteSpace(Key)) {
++			var existingRecipeGroup = recipeGroups.Values.FirstOrDefault(x => x.Key == Key);
++			if (existingRecipeGroup != null) {
++				foreach (var item in this.Items) {
++					if (!existingRecipeGroup.ValidItems.Contains(item))
++						existingRecipeGroup.Add(item);
++				}
++				return existingRecipeGroup;
++			}
++		}
+ 
+ 		int key = (RegisteredId = nextRecipeGroupIndex++);
+ 		recipeGroups.Add(key, this);

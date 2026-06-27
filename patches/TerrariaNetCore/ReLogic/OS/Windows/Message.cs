@@ -3,6 +3,7 @@ using System.Runtime.InteropServices;
 
 namespace ReLogic.OS.Windows;
 
+#if NETCORE
 [StructLayout(LayoutKind.Sequential)]
 public struct Message
 {
@@ -21,3 +22,4 @@ public struct Message
 		Result = IntPtr.Zero
 	};
 }
+#endif

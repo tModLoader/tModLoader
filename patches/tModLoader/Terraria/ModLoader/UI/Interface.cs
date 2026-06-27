@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using Microsoft.Build.Framework;
 using Terraria.UI.Chat;
 using Microsoft.Xna.Framework;
+using Terraria.Social.Base;
 
 namespace Terraria.ModLoader.UI;
 
@@ -57,6 +58,7 @@ internal static class Interface
 	internal const int exitID = 10026;
 	internal const int modConfigListID = 10027;
 	internal const int serverModsDifferMessageID = 10028;
+	internal const int switchBetaID = 10029;
 	internal static UIMods modsMenu = new UIMods();
 	internal static UILoadMods loadMods = new UILoadMods();
 	internal static UIModSources modSources = new UIModSources();
@@ -78,6 +80,7 @@ internal static class Interface
 	internal static UICreateMod createMod = new UICreateMod();
 	internal static UIProgress progress = new UIProgress();
 	internal static UIDownloadProgress downloadProgress = new UIDownloadProgress();
+	internal static UISwitchBeta switchBeta = new UISwitchBeta();
 
 	/// <summary> Collection of error messages that will be shown one at a time once the main menu is reached. Useful for error messages during player and world saving happening on another thread. </summary>
 	internal static Stack<string> pendingErrorMessages = new Stack<string>();
@@ -127,14 +130,16 @@ internal static class Interface
 	{
 		if (Main.menuMode == loadModsID) {
 			// These must be "else if" because the code should only run when it will actually show. This code will be revisited each time these info messages are closed, to check if any other messages should be shown.
+			InfoMessageChainStart:
+
 			if (ModLoader.ShowFirstLaunchWelcomeMessage) {
 				ModLoader.ShowFirstLaunchWelcomeMessage = false;
 				infoMessage.Show(Language.GetTextValue("tModLoader.FirstLaunchWelcomeMessage"), Main.menuMode);
 			}
 
-			else if (SteamedWraps.FamilyShared && !ModLoader.WarnedFamilyShare) {
+			else if (SteamedWraps.FamilyShared && !ModLoader.WarnedFamilyShare && !ModLoader.WarnedFamilyShareDontShowAgain) {
 				ModLoader.WarnedFamilyShare = true;
-				infoMessage.Show(Language.GetTextValue("tModLoader.SteamFamilyShareWarning"), Main.menuMode);
+				infoMessage.Show(Language.GetTextValue("tModLoader.SteamFamilyShareWarning"), Main.menuMode, altButtonText: Language.GetTextValue("tModLoader.DontShowAgain"), altButtonAction: () => { ModLoader.WarnedFamilyShareDontShowAgain = true; Main.SaveSettings(); });
 			}
 
 			/* For Major Updates that span multi-month
@@ -147,6 +152,7 @@ internal static class Interface
 
 			else if (ModLoader.ShowWhatsNew) {
 				ModLoader.ShowWhatsNew = false;
+				string compareToBranch = BuildInfo.IsDev ? "1.4.5" : "preview";
 				if (File.Exists("RecentGitHubCommits.txt")) {
 					bool LastLaunchedShaInRecentGitHubCommits = false;
 					var messages = new StringBuilder();
@@ -164,17 +170,17 @@ internal static class Interface
 							}
 						}
 					}
-					string compareUrl = $"{ModLoader.LastLaunchedTModLoaderAlphaSha}...preview";
+					string compareUrl = $"{ModLoader.LastLaunchedTModLoaderAlphaSha}...{compareToBranch}";
 					if (!LastLaunchedShaInRecentGitHubCommits) {
 						// If not seen, then too many commits since the last time user opened Preview
 						messages.Append("\n...and more");
-						compareUrl = $"stable...preview";
+						compareUrl = $"stable...{compareToBranch}";
 					}
 
 					infoMessage.Show(Language.GetTextValue("tModLoader.WhatsNewMessage") + messages.ToString(), Main.menuMode, null, Language.GetTextValue("tModLoader.ViewOnGitHub"), () => Utils.OpenToURL($"https://github.com/tModLoader/tModLoader/compare/{compareUrl}"));
 				}
 				else {
-					infoMessage.Show(Language.GetTextValue("tModLoader.WhatsNewMessage") + "Unknown, somehow RecentGitHubCommits.txt is missing.", Main.menuMode, null, Language.GetTextValue("tModLoader.ViewOnGitHub"), () => Utils.OpenToURL($"https://github.com/tModLoader/tModLoader/compare/stable...preview"));
+					infoMessage.Show(Language.GetTextValue("tModLoader.WhatsNewMessage") + "Unknown, somehow RecentGitHubCommits.txt is missing.", Main.menuMode, null, Language.GetTextValue("tModLoader.ViewOnGitHub"), () => Utils.OpenToURL($"https://github.com/tModLoader/tModLoader/compare/stable...{compareToBranch}"));
 				}
 			}
 
@@ -185,47 +191,132 @@ internal static class Interface
 					() => Utils.OpenToURL($"https://github.com/tModLoader/tModLoader/wiki/tModLoader-Release-Cycle#144"));
 				Main.SaveSettings();
 			}
-			else if (!ModLoader.DownloadedDependenciesOnStartup) { // Keep this at the end of the if/else chain since it doesn't necessarily change Main.menuMode
+			else if (!ModLoader.SeenNewUpdatedModsInfo) {
+				ModLoader.SeenNewUpdatedModsInfo = true;
+
+				string message = $"{ModOrganizer.DetectModChangesForInfoMessage(out IEnumerable<string> removedMods)}";
+				if (message.Length > 0)
+					message += "\n";
+
+				bool anyRemovedMod = removedMods.Any();
+
+				string cancelButton = anyRemovedMod ? Language.GetTextValue("tModLoader.ContinueAnyway") : null;
+				string continueButton = anyRemovedMod ? Language.GetTextValue("tModLoader.RedownloadMods") : string.Empty;
+
+				Action downloadAction = async () => {
+					HashSet<ModPubId_t> removedDownloads = new();
+					foreach (var slug in removedMods) {
+						var state = WorkshopHelper.QueryHelper.AQueryInstance.TryGetModDownloadItem(slug, out var item);
+						if (state == WorkshopHelper.WorkshopSearchReturnState.SearchFailed)
+							break;
+
+						if (state != WorkshopHelper.WorkshopSearchReturnState.Success) {
+							Logging.tML.Error($"Could not find removed mod on Workshop: {slug}; Error State {state}");
+							continue;
+						}
+
+						if (item.Banned) {
+							Logging.tML.Error($"The removed mod {item.DisplayName} with ID:{item.PublishId} is Banned on Workshop.");
+							continue;
+						}
+
+						removedDownloads.Add(item.PublishId);
+					}
+
+					if (removedDownloads.Any()) {
+						modBrowser.Activate();
+						modBrowser.FilterTextBox.Text = "";
+						modBrowser.SpecialModPackFilter = removedDownloads.ToList();
+						modBrowser.SpecialModPackFilterTitle = Language.GetTextValue("tModLoader.MBFilterModlist");// Too long: " + modListItem.modName.Text;
+						modBrowser.UpdateFilterMode = UpdateFilter.All; // Set to 'All' so all mods from ModPack are visible
+						modBrowser.ModSideFilterMode = ModSideFilter.All;
+						modBrowser.ResetTagFilters();
+						SoundEngine.PlaySound(SoundID.MenuOpen);
+
+						modBrowser.reloadOnExit = true;
+						modBrowser.PreviousUIState = null;
+						Main.menuMode = modBrowserID;
+					}
+					else {
+						Main.QueueMainThreadAction(() => {
+							Main.menuMode = Interface.loadModsID;
+							Main.MenuUI.SetState(null);
+						});
+					}
+				};
+
+				if (!string.IsNullOrWhiteSpace(message)) {
+					Logging.tML.Info($"Mod Changes since last launch:\n{message}");
+					infoMessage.Show(message, Main.menuMode, altButtonText: continueButton, altButtonAction: downloadAction, okButtonText: cancelButton);
+				}
+				else {
+					// In order to ensure that the next information message actually shows when info message is not shown, we have to jump back to start of this If-Else Chain
+					goto InfoMessageChainStart;
+				}
+			}
+			else if (!ModLoader.ResolvedAbnormalModInstallStates) {
+				ModLoader.ResolvedAbnormalModInstallStates = true;
+
+				string message = ModOrganizer.DetectAbnormalSteamWorkshopDownloads(out Action resolveAbnormalDownloads, out string continueButton, out string cancelButton);
+
+				if (!string.IsNullOrWhiteSpace(message)) {
+					Logging.tML.Info($"Abnormal Mod States to Address:\n{message}");
+					infoMessage.Show(message, Main.menuMode, altButtonText: continueButton, altButtonAction: resolveAbnormalDownloads, okButtonText: cancelButton);
+				}
+				else {
+					// In order to ensure that the next information message actually shows when info message is not shown, we have to jump back to start of this If-Else Chain
+					goto InfoMessageChainStart;
+				}
+			}
+			else if (!ModLoader.DownloadedDependenciesOnStartup) { // Must be the last code to run since prior info messages may introduce new updates or new mods that may have dependencies.
 				ModLoader.DownloadedDependenciesOnStartup = true;
 
 				// Find dependencies that need to be downloaded.
 				var missingDeps = ModOrganizer.IdentifyMissingWorkshopDependencies().ToList();
-				bool promptDepDownloads = missingDeps.Count != 0;
 
-				string message = $"{ModOrganizer.DetectModChangesForInfoMessage()}";
-				if (promptDepDownloads) {
+				bool anyMissingDependency = missingDeps.Any();
+				string message = string.Empty;
+				string cancelButton = Language.GetTextValue("tModLoader.ContinueAnyway");
+				string continueButton = Language.GetTextValue("tModLoader.InstallDependencies");
+
+				if (missingDeps.Any()) {
 					message += $"{Language.GetTextValue("tModLoader.DependenciesNeededForOtherMods")}\n  {string.Join("\n  ", missingDeps)}";
 				}
 				message = message.Trim('\n');
 
-
-				string cancelButton = promptDepDownloads ? Language.GetTextValue("tModLoader.ContinueAnyway") : null;
-				string continueButton = promptDepDownloads ? Language.GetTextValue("tModLoader.InstallDependencies") : "";
-
 				Action downloadAction = async () => {
 					HashSet<ModDownloadItem> downloads = new();
 					foreach (var slug in missingDeps) {
-						if (!WorkshopHelper.TryGetModDownloadItem(slug, out var item) || item == null) {
-							Logging.tML.Error($"Could not find required mod dependency on Workshop: {slug}");
+						var state = WorkshopHelper.QueryHelper.AQueryInstance.TryGetModDownloadItem(slug, out var item);
+						if (state == WorkshopHelper.WorkshopSearchReturnState.SearchFailed)
+							break;
+
+						if (state != WorkshopHelper.WorkshopSearchReturnState.Success) {
+							Logging.tML.Error($"Could not find required mod dependency on Workshop: {slug}; Error State {state}");
+							continue;
+						}
+
+						if (item.Banned) {
+							Logging.tML.Error($"The missing dependency {item.DisplayName} with ID:{item.PublishId} is Banned on Workshop.");
 							continue;
 						}
 
 						downloads.Add(item);
 					}
 
-					await UIModBrowser.DownloadMods(
-						downloads,
-						loadModsID);
-
-					Main.QueueMainThreadAction(() => {
-						Main.menuMode = Interface.loadModsID;
+					if (downloads.Any() && await UIModBrowser.DownloadMods(downloads, loadModsID)) {
+						Main.menuMode = loadModsID;
 						Main.MenuUI.SetState(null);
-					});
+					}
 				};
 
 				if (!string.IsNullOrWhiteSpace(message)) {
-					Logging.tML.Info($"Mod Changes since last launch:\n{message}");
+					Logging.tML.Info($"Abnormal Mod States to Address:\n{message}");
 					infoMessage.Show(message, Main.menuMode, altButtonText: continueButton, altButtonAction: downloadAction, okButtonText: cancelButton);
+				}
+				else {
+					// In order to ensure that the next information message actually shows when info message is not shown, we have to jump back to start of this If-Else Chain
+					goto InfoMessageChainStart;
 				}
 			}
 		}
@@ -295,7 +386,7 @@ internal static class Interface
 		else if (Main.menuMode == tModLoaderSettingsID) {
 			offY = 210;
 			spacing = 42;
-			numButtons = 9;
+			numButtons = 8;
 			buttonVerticalSpacing[numButtons - 1] = 18;
 			for (int i = 0; i < numButtons; i++) {
 				buttonScales[i] = 0.75f;
@@ -307,12 +398,14 @@ internal static class Interface
 				ModNet.downloadModsFromServers = !ModNet.downloadModsFromServers;
 			}
 
+			/*
 			buttonIndex++;
 			buttonNames[buttonIndex] = (ModLoader.autoReloadAndEnableModsLeavingModBrowser ? Language.GetTextValue("tModLoader.AutomaticallyReloadAndEnableModsLeavingModBrowserYes") : Language.GetTextValue("tModLoader.AutomaticallyReloadAndEnableModsLeavingModBrowserNo"));
 			if (selectedMenu == buttonIndex) {
 				SoundEngine.PlaySound(SoundID.MenuTick);
 				ModLoader.autoReloadAndEnableModsLeavingModBrowser = !ModLoader.autoReloadAndEnableModsLeavingModBrowser;
 			}
+			*/
 
 
 			buttonIndex++;
@@ -398,6 +491,10 @@ internal static class Interface
 			Main.MenuUI.SetState(serverModsDifferMessage);
 			Main.menuMode = 888;
 		}
+		else if (Main.menuMode == switchBetaID) {
+			Main.MenuUI.SetState(switchBeta);
+			Main.menuMode = 888;
+		}
 		else if (Main.menuMode == exitID) {
 			Environment.Exit(0);
 		}
@@ -464,7 +561,7 @@ internal static class Interface
 					WriteColoredLine(ConsoleColor.Yellow, Language.GetTextValue("tModLoader.DedErrorNoConfig"));
 				}
 				else {
-					// We are acting on the actual configs rather than a clone because a reload will be forced anyway. If changing configs during server play is implemented later this will need to adjust to the clone approach.  
+					// We are acting on the actual configs rather than a clone because a reload will be forced anyway. If changing configs during server play is implemented later this will need to adjust to the clone approach.
 					ConfigureMod(mod, configs);
 				}
 			}

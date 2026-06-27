@@ -192,7 +192,7 @@ internal static class PlayerIO
 	{
 		if (hair < HairID.Count)
 			return "";
-		
+
 		return HairLoader.GetHair(hair).FullName;
 	}
 
@@ -200,7 +200,7 @@ internal static class PlayerIO
 	{
 		if (hairName == "")
 			return;
-		
+
 		if (ModContent.TryFind<ModHair>(hairName, out var modHair))
 			player.hair = modHair.Type;
 	}
@@ -403,7 +403,7 @@ internal static class PlayerIO
 
 	internal static void LoadUsedModPack(Player player, string modpack)
 	{
-		player.modPack = string.IsNullOrEmpty(modpack) ? null : modpack; // tag.GetString returns "" even though null 
+		player.modPack = string.IsNullOrEmpty(modpack) ? null : modpack; // tag.GetString returns "" even though null
 	}
 
 	internal static string SaveUsedModPack(Player player)
@@ -457,7 +457,7 @@ internal static class PlayerIO
 	{
 		path = Path.ChangeExtension(path, ".tplr");
 		if (FileUtilities.Exists(path + ".bak", cloudSave)) {
-			FileUtilities.Move(path + ".bak", path, cloudSave, true);
+			FileUtilities.Move(path + ".bak", path, cloudSave);
 		}
 	}
 	//in Terraria.Main.ErasePlayer between the two try catches add

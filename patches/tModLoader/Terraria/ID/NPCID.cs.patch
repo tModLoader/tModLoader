@@ -1,7 +1,7 @@
 --- src/TerrariaNetCore/Terraria/ID/NPCID.cs
 +++ src/tModLoader/Terraria/ID/NPCID.cs
-@@ -3,29 +_,110 @@
- using Microsoft.Xna.Framework;
+@@ -5,29 +_,111 @@
+ using ReLogic.Content;
  using ReLogic.Reflection;
  using Terraria.DataStructures;
 +using Terraria.ModLoader;
@@ -11,6 +11,7 @@
 -public class NPCID
 +public partial class NPCID
  {
++#if !TMLANALYZER
 -	public static class Sets
 +	public static partial class Sets
  	{
@@ -114,12 +115,76 @@
  			public NPCBestiaryDrawModifiers(int seriouslyWhyCantStructsHaveParameterlessConstructors)
  			{
  				Position = default(Vector2);
-@@ -64,7 +_,13 @@
- 			public const int BloodButcherer = 344;
+@@ -62,18 +_,28 @@
+ 			public int FrameY;
+ 			private Asset<Texture2D> _image;
+ 
+-			public BasicNPCPortrait(string texturePath)
++			public BasicNPCPortrait(string texturePath, int horizontalFrames = 1, int verticalFrames = 1, int paddingX = 0, int paddingY = 0, int frameX = 0, int frameY = 0)
+ 			{
++				if(texturePath.StartsWith("Images/TownNPCs/Portraits"))
++					texturePath = $"Terraria/{texturePath}"; // Lets vanilla and modded portraits share same logic by using ModContent.Request
+ 				TexturePath = texturePath;
++				/*
+ 				HorizontalFrames = (VerticalFrames = 1);
+ 				PaddingX = (PaddingY = 0);
+ 				FrameX = (FrameY = 0);
++				*/
++				HorizontalFrames = horizontalFrames;
++				VerticalFrames = verticalFrames;
++				PaddingX = paddingX;
++				PaddingY = paddingY;
++				FrameX = frameX;
++				FrameY = frameY;
+ 			}
+ 
+ 			public virtual void GetDrawData(out Texture2D texture, out Rectangle drawFrame)
+ 			{
+ 				if (_image == null)
+-					_image = Main.Assets.Request<Texture2D>(TexturePath);
++					_image = ModContent.Request<Texture2D>(TexturePath, AssetRequestMode.ImmediateLoad); // Changed to ModContent.Request
+ 
+ 				texture = null;
+ 				if (_image.IsLoaded)
+@@ -83,6 +_,9 @@
+ 			}
+ 		}
+ 
++		/// <summary>
++		/// The draw information for the Town NPC portrait image for <see cref="NPCID.Sets.NPCPortraits"/>.
++		/// </summary>
+ 		public class NPCPortraitSelector : NPCPortraitProvider
+ 		{
+ 			public delegate bool SelectionCondition();
+@@ -95,6 +_,11 @@
+ 
+ 			private List<Entry> _entries = new List<Entry>();
+ 
++			/// <summary>
++			/// Add a portrait type with a condition.
++			/// </summary>
++			/// <param name="condition">When this portrait should be shown. See <see cref="ShimmeredPortraitCondition"/> or <see cref="VariantPortraitCondition"/></param>
++			/// <param name="portrait">The portrait to use. For example: <see cref="BasicPortrait"/></param>
+ 			public NPCPortraitSelector With(SelectionCondition condition, NPCPortraitProvider portrait)
+ 			{
+ 				_entries.Add(new Entry {
+@@ -105,6 +_,10 @@
+ 				return this;
+ 			}
+ 
++			/// <summary>
++			/// The default portrait type to use if no other portrait conditions (Example: shimmer variant condition) are met.
++			/// </summary>
++			/// <param name="portrait">The portrait to use. For example: <see cref="ModTownNPCPortrait(string)"/></param>
+ 			public NPCPortraitSelector Default(NPCPortraitProvider portrait)
+ 			{
+ 				_entries.Add(new Entry {
+@@ -174,7 +_,13 @@
+ 			public const int Hemorrhage = 375;
  		}
  
 -		public static SetFactory Factory = new SetFactory(Count);
-+		public static SetFactory Factory = new SetFactory(NPCLoader.NPCCount);
++		public static SetFactory Factory = new SetFactory(NPCLoader.NPCCount, nameof(NPCID), Search);
 +
 +		/// <summary>
 +		/// Determines the special spawning rules for an NPC to use when respawning using the coin loss system (<see cref="GameContent.CoinLossRevengeSystem"/>).
@@ -129,9 +194,27 @@
  		public static Dictionary<int, int> SpecialSpawningRules = new Dictionary<int, int> {
  			{ 259, 0 },
  			{ 260, 0 },
-@@ -73,8 +_,18 @@
+@@ -183,6 +_,17 @@
  			{ 56, 0 },
  			{ 101, 0 }
+ 		};
++
++		/// <summary>
++		/// Determines which portrait image to use for Town NPCs when the Portrait Style setting is set to detailed.
++		/// <br/><br/> <b>Example usage:</b>
++		/// <code>
++		/// NPCID.Sets.NPCPortraits.Add(Type, NPCID.Sets.PrioritizedPortrait()
++		///     .With(NPCID.Sets.ShimmeredPortraitCondition, NPCID.Sets.BasicPortrait($"{Texture}_Shimmer_Portrait"))
++		///     .Default(NPCID.Sets.BasicPortrait($"{Texture}_Portrait")));
++		/// </code>
++		/// </summary>
++		/// <remarks>See <see cref="NPCPortraitsCloseUpOffsets"/> and <see cref="NPCPortraitsFullBodyRetroOffsets"/> for the profile and retro portrait style settings.</remarks>
+ 		public static Dictionary<int, NPCPortraitProvider> NPCPortraits = new Dictionary<int, NPCPortraitProvider> {
+ 			{ 369, PrioritizedPortrait().With(ShimmeredPortraitCondition, BasicPortrait("Images/TownNPCs/Portraits/Portrait_Angler_shimmer")).Default(BasicPortrait("Images/TownNPCs/Portraits/Portrait_Angler")) },
+ 			{ 19, PrioritizedPortrait().With(ShimmeredPortraitCondition, BasicPortrait("Images/TownNPCs/Portraits/Portrait_ArmsDealer_shimmer")).Default(BasicPortrait("Images/TownNPCs/Portraits/Portrait_ArmsDealer")) },
+@@ -250,8 +_,18 @@
+ 					.Default(BasicPortrait("Images/TownNPCs/Portraits/Portrait_Bunny_Angora"))
+ 			}
  		};
 +
 +		/// <summary>
@@ -140,7 +223,7 @@
  		public static Dictionary<int, NPCBestiaryDrawModifiers> NPCBestiaryDrawOffset = NPCBestiaryDrawOffsetCreation();
 +
 +		/// <summary>
-+		/// <b>Unused:</b> Replaced by <see cref="SpecificDebuffImmunity"/>, <see cref="ImmuneToAllBuffs "/>, and <see cref="ImmuneToRegularBuffs"/><br/><br/>
++		/// <b>Unused:</b> Replaced by <see cref="SpecificDebuffImmunity"/>, <see cref="ImmuneToWhipTags "/>, and <see cref="ImmuneToRegularBuffs"/><br/><br/>
 +		/// The default debuff immunities for a given NPC type (<see cref="NPC.type"/>).
 +		/// </summary>
 +		/// <remarks><see cref="NPC.buffImmune"/> can still be manually changed to grant temporary immunity.</remarks>
@@ -149,7 +232,7 @@
  			{ 0, null },
  			{
  				1,
-@@ -4756,6 +_,10 @@
+@@ -5001,6 +_,10 @@
  				}
  			}
  		};
@@ -160,7 +243,7 @@
  		public static List<int> NormalGoldCritterBestiaryPriority = new List<int> {
  			46,
  			540,
-@@ -4805,6 +_,10 @@
+@@ -5050,6 +_,10 @@
  			669,
  			677
  		};
@@ -171,7 +254,7 @@
  		public static List<int> BossBestiaryPriority = new List<int> {
  			664,
  			4,
-@@ -4869,6 +_,10 @@
+@@ -5114,6 +_,10 @@
  			400,
  			401
  		};
@@ -182,10 +265,10 @@
  		public static List<int> TownNPCBestiaryPriority = new List<int> {
  			22,
  			17,
-@@ -4912,11 +_,45 @@
- 			37,
- 			687
+@@ -5159,12 +_,43 @@
  		};
+ 		public static bool[] SpawnOnPlayerCanSpawnInMidairOnSkyblock = Factory.CreateBoolSet(4, 266, 222, 125, 126, 127, 262, 551);
+ 		public static bool[] DontDropDungeonKeysOrSouls = Factory.CreateBoolSet(23);
 +
 +		/// <summary>
 +		/// If <see langword="true"/> for a given NPC type (<see cref="NPC.type"/>), then that NPC will not have its stats increased in <see cref="Main.expertMode"/> or higher difficulties.
@@ -220,42 +303,83 @@
 +		/// <br/> Defaults to <see langword="false"/>.
 +		/// </summary>
  		public static bool[] CanConvertIntoCopperSlimeTownNPC = Factory.CreateBoolSet(1, 302, 335, 336, 333, 334);
+-		public static List<int> GoldCrittersCollection = new List<int> {
 +
-+		/// <summary>
-+		/// A list of all NPC types (<see cref="NPC.type"/>) categorized as gold critters.
-+		/// <br/> If a gold critter shows up on the Lifeform Analyzer, its name will be gold (<see cref="Main.DrawInfoAccs_AdjustInfoTextColorsForNPC(NPC, ref Color, ref Color)"/>).
-+		/// </summary>
- 		public static List<int> GoldCrittersCollection = new List<int> {
++		internal static ReadOnlySpan<int> GoldCrittersCollection => IsGoldCritter;
++		private static int[] GoldCrittersCollection_Vanilla = {
  			443,
  			442,
-@@ -4933,8 +_,24 @@
+ 			592,
+@@ -5180,13 +_,40 @@
  			448,
  			539
  		};
++
++		/// <summary>
++		/// If <see langword="true"/> for a given NPC type (<see cref="NPC.type"/>), then that NPC is categorized as a gold critter.
++		/// <br/> All gold critters share a bestiary entry.
++		/// <br/> If a gold critter shows up on the Lifeform Analyzer, its name will be gold (<see cref="Main.DrawInfoAccs_AdjustInfoTextColorsForNPC(NPC, ref Color, ref Color)"/>).
++		/// </summary>
++		public static BoolListSet IsGoldCritter = Factory.CreateBoolListSet(GoldCrittersCollection_Vanilla);
++		/*
+ 		public static bool[] IsGoldCritter = Factory.CreateBoolSet(false, 442, 443, 444, 445, 446, 447, 448, 539, 592, 593, 601, 605, 613, 627);
++		*/
 +
 +		/// <summary>
 +		/// If <see langword="true"/> for a given NPC type (<see cref="NPC.type"/>), then that NPC, if currently <see cref="NPC.dontTakeDamage"/>, will damage the player when hit with a melee attack, a whip, certain <see cref="ProjAIStyleID"/>s (<see cref="ProjAIStyleID.Spear"/>, <see cref="ProjAIStyleID.ShortSword"/>, <see cref="ProjAIStyleID.SleepyOctopod"/>, <see cref="ProjAIStyleID.HeldProjectile"/>), or by any projectile type (<see cref="Projectile.type"/>) in the <see cref="ProjectileID.Sets.AllowsContactDamageFromJellyfish"/> or <see cref="ProjectileID.Sets.IsAWhip"/> sets.
 +		/// <br/> Defaults to <see langword="false"/>.
 +		/// </summary>
  		public static bool[] ZappingJellyfish = Factory.CreateBoolSet(63, 64, 103, 242);
+ 		public static bool?[] HunterPotionFriendlyOverride = Factory.CreateCustomSet<bool?>(null, new object[2] {
+ 			(short)689,
+ 			false
+ 		});
 +
 +		/// <summary>
 +		/// If <see langword="true"/> for a given NPC type (<see cref="NPC.type"/>), then that NPC cannot pick up dropped coins in Expert Mode.
-+		/// <br/> Defaults to <see langword="false"/>.
++		/// <para/> Vanilla entries include mainly boss summons and other NPC that shouldn't be able to respawn naturally. See also <see cref="RespawnEnemyID"/>.
++		/// <para/> Defaults to <see langword="false"/>.
 +		/// </summary>
- 		public static bool[] CantTakeLunchMoney = Factory.CreateBoolSet(394, 393, 392, 492, 491, 662, 384, 478, 535, 658, 659, 660, 128, 131, 129, 130, 139, 267, 247, 248, 246, 249, 245, 409, 410, 397, 396, 401, 400, 440, 68, 534);
+ 		public static bool[] CantTakeLunchMoney = Factory.CreateBoolSet(394, 393, 392, 690, 492, 491, 662, 384, 478, 535, 658, 659, 660, 128, 131, 129, 130, 139, 267, 247, 248, 246, 249, 245, 409, 410, 397, 396, 401, 400, 440, 68, 534, 316);
 +
 +		/// <summary>
 +		/// Associates an NPC type (<see cref="NPC.type"/>) with the NPC type it respawns as from the coin loss system (<see cref="GameContent.CoinLossRevengeSystem"/>).
 +		/// <br/> If an NPC type is not a key in this dictionary, then that NPC respawns as itself.
 +		/// <br/> If the value for an NPC type is <c>0</c>, then that NPC won't be cached (<see cref="GameContent.CoinLossRevengeSystem.CacheEnemy(NPC)"/>).
++		/// <para/> Some vanilla entries contain 0 values for special enemies that shouldn't respawn and other entries contain values indicating the "head" NPC of worm enemies to allow them to spawn the worm correctly. (Worm enemies currently don't work with the coin loss revenge system, however.) See also <see cref="CantTakeLunchMoney"/>.
 +		/// </summary>
  		public static Dictionary<int, int> RespawnEnemyID = new Dictionary<int, int> {
  			{ 492, 0 },
  			{ 491, 0 },
-@@ -4980,54 +_,371 @@
+@@ -5232,6 +_,12 @@
  			{ 622, 621 },
  			{ 623, 621 }
+ 		};
++		/// <summary>
++		/// Determines the offset to use for Town NPCs when the Portrait Style setting is set to profile so that the Town NPC's head is centered.
++		/// <br/><br/> Example usage: <c>NPCID.Sets.NPCPortraits.Add(Type, new Vector2(0f, 0f))</c>
++		/// <br/><br/> If not set, defaults to no offset (<c>Vector2.Zero</c>).
++		/// </summary>
++		/// <remarks>See <see cref="NPCPortraits"/> and <see cref="NPCPortraitsFullBodyRetroOffsets"/> for the detailed and retro portrait style settings.</remarks>
+ 		public static Dictionary<int, Vector2> NPCPortraitsCloseUpOffsets = new Dictionary<int, Vector2> {
+ 			{ 17, new Vector2(6f, 0f) },
+ 			{ 18, new Vector2(-6f, 0f) },
+@@ -5274,6 +_,12 @@
+ 			{ 683, new Vector2(-6f, 2f) },
+ 			{ 682, new Vector2(-3f, 2f) }
+ 		};
++		/// <summary>
++		/// Determines the offset to use for Town NPCs when the Portrait Style setting is set to retro so that the Town NPC's entire body is centered.
++		/// <br/><br/> Example usage: <c>NPCID.Sets.NPCPortraits.Add(Type, new Vector2(0f, 0f))</c>
++		/// <br/><br/> If not set, defaults to no offset (<c>Vector2.Zero</c>).
++		/// </summary>
++		/// <remarks>See <see cref="NPCPortraits"/> and <see cref="NPCPortraitsCloseUpOffsets"/> for the detailed and profile portrait style settings.</remarks>
+ 		public static Dictionary<int, Vector2> NPCPortraitsFullBodyRetroOffsets = new Dictionary<int, Vector2> {
+ 			{ 18, new Vector2(-3f, 0f) },
+ 			{ 20, new Vector2(-4f, 0f) },
+@@ -5297,63 +_,393 @@
+ 			{ 683, new Vector2(-6f, 0f) },
+ 			{ 682, new Vector2(-6f, 0f) }
  		};
 +
 +		// Should TML have a ModNPC that uses trails? ExampleBullet exists for ProjectileID.Sets.TrailingMode usage, but no equivalent NPC version exists.
@@ -306,14 +430,17 @@
 +		/// You can check if an NPC is in this set using <see cref="NPC.SupportsNPCTargets"/>.
 +		/// <br/> You can use <see cref="NPC.GetTargetData(bool)"/> to get info about a target, regardless of if that target is a <see cref="Player"/> or <see cref="NPC"/>.
 +		/// </remarks>
- 		public static bool[] UsesNewTargetting = Factory.CreateBoolSet(547, 552, 553, 554, 561, 562, 563, 555, 556, 557, 558, 559, 560, 576, 577, 568, 569, 566, 567, 570, 571, 572, 573, 564, 565, 574, 575, 551, 578, 210, 211, 620, 668);
+ 		public static bool[] UsesNewTargeting = Factory.CreateBoolSet(547, 552, 553, 554, 561, 562, 563, 555, 556, 557, 558, 559, 560, 576, 577, 568, 569, 566, 567, 570, 571, 572, 573, 564, 565, 574, 575, 551, 578, 210, 211, 620, 668);
++
+ 		public static bool[] BirdThatCanPoop = Factory.CreateBoolSet(74, 297, 298, 442, 363, 365, 603, 609, 671, 672, 673, 674, 675);
+ 		public static bool[] CritterThatCanTurnOnPlayers = Factory.CreateBoolSet(645, 639, 644, 642, 643, 641, 640, 299, 539, 538);
 +
 +		/// <summary>
 +		/// If <see langword="true"/> for a given NPC type (<see cref="NPC.type"/>), then that NPC can take damage from hostile NPCs without being friendly.
 +		/// <br/> Used in vanilla for critters and trapped town slimes.
 +		/// <br/> Defaults to <see langword="false"/>.
 +		/// </summary>
- 		public static bool[] TakesDamageFromHostilesWithoutBeingFriendly = Factory.CreateBoolSet(46, 55, 74, 148, 149, 230, 297, 298, 299, 303, 355, 356, 358, 359, 360, 361, 362, 363, 364, 365, 366, 367, 377, 357, 374, 442, 443, 444, 445, 446, 448, 538, 539, 337, 540, 484, 485, 486, 487, 592, 593, 595, 596, 597, 598, 599, 600, 601, 602, 603, 604, 605, 606, 607, 608, 609, 611, 612, 613, 614, 615, 616, 617, 625, 626, 627, 639, 640, 641, 642, 643, 644, 645, 646, 647, 648, 649, 650, 651, 652, 653, 654, 655, 583, 584, 585, 669, 671, 672, 673, 674, 675, 677, 687);
+ 		public static bool[] TakesDamageFromHostilesWithoutBeingFriendly = Factory.CreateBoolSet(46, 55, 74, 148, 149, 230, 297, 298, 299, 303, 355, 356, 358, 359, 360, 361, 362, 363, 364, 365, 366, 367, 377, 357, 374, 442, 443, 444, 445, 446, 448, 538, 539, 337, 540, 484, 485, 486, 487, 592, 593, 595, 596, 597, 598, 599, 600, 601, 602, 603, 604, 605, 606, 607, 608, 609, 611, 689, 612, 613, 614, 615, 616, 617, 625, 626, 627, 639, 640, 641, 642, 643, 644, 645, 646, 647, 648, 649, 650, 651, 652, 653, 654, 655, 583, 584, 585, 669, 671, 672, 673, 674, 675, 677, 687, 688);
 +
 +		/// <summary>
 +		/// An array of length <see cref="NPCLoader.NPCCount"/> with only <see langword="true"/> entries.
@@ -325,7 +452,13 @@
 +		/// If <see langword="true"/> for a given NPC type (<see cref="NPC.type"/>), then that NPC is a bee that will hurt other non-bee NPCs on contact.
 +		/// <br/> Defaults to <see langword="false"/>.
 +		/// </summary>
- 		public static bool[] HurtingBees = Factory.CreateBoolSet(210, 211, 222);
+ 		public static bool[] HurtingBees = Factory.CreateBoolSet(210, 211);
++
+ 		public static bool[] CanBeHurtByBees = Factory.CreateBoolSet(true, 210, 211, 222);
++
+ 		public static bool[] ConveyorBeltCollision = Factory.CreateBoolSet(624, 85, 629, 195, 1, 147, 184, 537, 204, 16, 59, 71, 535, 225, 676, 303, 335, 336, 333, 334, 667, 141, 81, 121, 183, 138, 244, 304, 105, 123, 685, 686, 687, 106, 354, 376, 579, 589, 37, 695, 696);
++
+ 		public static bool[] SlimeCanContainItems = Factory.CreateBoolSet(1, 59, 147, 184, 537);
 +
 +		/// <summary>
 +		/// If <see langword="true"/> for a given NPC type (<see cref="NPC.type"/>), then that NPC will have a special spawning animation when using <see cref="NPCAIStyleID.DD2Fighter"/>.
@@ -373,6 +506,17 @@
  		public static int[] TrailCacheLength = Factory.CreateIntSet(10, 402, 36, 519, 20, 522, 20, 620, 20, 677, 60, 685, 10);
 +
 +		/// <summary>
++		/// Whether or not the spawned NPC will be assigned an empty slot in <see cref="NPC.NewNPC"/> by searching from the end of <seealso cref="Main.npc"/> rather than the start.
++		/// <br/><br/> This will result in the NPC drawing behind most other NPC because NPC are drawn in reverse slot order.
++		/// <br/><br/> Useful if you have a multi-segmented boss and want its parts to draw over the main body (body will be in this set). Also useful for bosses that spawn minions, to keep the minions visible. Used by <see cref="Golem"/> and <see cref="QueenBee"/>.
++		/// </summary>
+ 		public static bool[] SearchSpawnSlotsInReverse = Factory.CreateBoolSet(222, 245);
++
+ 		public static bool[] CannotSpawnInSlot0 = Factory.CreateBoolSet(134, 135, 136, 7, 8, 9, 10, 11, 12, 13, 14, 15, 39, 40, 41, 87, 88, 89, 90, 91, 92, 95, 96, 97, 98, 99, 100, 117, 118, 119, 375, 402, 412, 413, 414, 454, 455, 456, 457, 458, 459, 510, 511, 512, 513, 514, 515, 621, 622, 623);
++
+ 		public static bool[] SkipUpdateInUnsyncedTiles = Factory.CreateBoolSet(true, 135, 136, 14, 15, 8, 9, 11, 12, 40, 41, 96, 97, 99, 100, 118, 119, 622, 623, 511, 512, 514, 515, 455, 456, 457, 458, 459, 89, 90, 91, 92, 413, 414);
++
++		/// <summary>
 +		/// If <see langword="true"/> for a given NPC type (<see cref="NPC.type"/>), then that NPC will sync more the closer it is to a player.
 +		/// <br/> Defaults to <see langword="true"/>.
 +		/// </summary>
@@ -383,7 +527,7 @@
 +		/// <br/> Defaults to <see langword="false"/>.
 +		/// </summary>
 +		/// <remarks>To prevent smoothing by <see cref="NPCAIStyleID"/> (<see cref="NPC.aiStyle"/>), use <see cref="NoMultiplayerSmoothingByAI"/>.</remarks>
- 		public static bool[] NoMultiplayerSmoothingByType = Factory.CreateBoolSet(113, 114, 50, 657, 120, 245, 247, 248, 246, 370, 222, 398, 397, 396, 400, 401, 668, 70);
+ 		public static bool[] NoMultiplayerSmoothingByType = Factory.CreateBoolSet(50, 657, 120, 245, 247, 248, 246, 370, 222, 398, 397, 396, 400, 401, 668, 70, 690);
 +
 +		/// <summary>
 +		/// If <see langword="true"/> for a given <strong><see cref="NPCAIStyleID"/></strong> (<see cref="NPC.aiStyle"/>), then that AI style will not smooth its visual position in multiplayer.
@@ -405,14 +549,14 @@
 +		/// <br/> Defaults to <see langword="false"/>.
 +		/// </summary>
 +		/// <remarks>Make sure to also set <see cref="CountsAsCritter"/> for NPCs in this set.</remarks>
- 		public static bool[] TownCritter = Factory.CreateBoolSet(46, 148, 149, 230, 299, 300, 303, 337, 361, 362, 364, 366, 367, 443, 445, 447, 538, 539, 540, 583, 584, 585, 592, 593, 602, 607, 608, 610, 616, 617, 625, 626, 627, 639, 640, 641, 642, 643, 644, 645, 646, 647, 648, 649, 650, 651, 652, 687);
+ 		public static bool[] TownCritter = Factory.CreateBoolSet(46, 148, 149, 230, 299, 300, 303, 337, 361, 362, 364, 366, 367, 443, 445, 447, 538, 539, 540, 583, 584, 585, 592, 593, 602, 607, 608, 610, 616, 617, 625, 626, 627, 639, 640, 641, 642, 643, 644, 645, 646, 647, 648, 649, 650, 651, 652, 687, 688);
 +
 +		/// <summary>
 +		/// If <see langword="true"/> for a given NPC type (<see cref="NPC.type"/>), then that NPC is counted as a critter.
 +		/// <br/> Critters cannot be damage by players with <see cref="Player.dontHurtCritters"/> set to <see langword="true"/>.
 +		/// <br/> Also, critters can't be used to summon Horseman's Blade projectiles, nor can they be chased by said projectiles.
 +		/// </summary>
- 		public static bool[] CountsAsCritter = Factory.CreateBoolSet(46, 303, 337, 540, 443, 74, 297, 298, 442, 611, 377, 446, 612, 613, 356, 444, 595, 596, 597, 598, 599, 600, 601, 604, 605, 357, 448, 374, 484, 355, 358, 606, 359, 360, 485, 486, 487, 148, 149, 55, 230, 592, 593, 299, 538, 539, 300, 447, 361, 445, 362, 363, 364, 365, 367, 366, 583, 584, 585, 602, 603, 607, 608, 609, 610, 616, 617, 625, 626, 627, 615, 639, 640, 641, 642, 643, 644, 645, 646, 647, 648, 649, 650, 651, 652, 653, 654, 655, 661, 669, 671, 672, 673, 674, 675, 677, 687);
+ 		public static bool[] CountsAsCritter = Factory.CreateBoolSet(46, 303, 337, 540, 443, 74, 297, 298, 442, 611, 689, 377, 446, 612, 613, 356, 444, 595, 596, 597, 598, 599, 600, 601, 604, 605, 357, 448, 374, 484, 355, 358, 606, 359, 360, 485, 486, 487, 148, 149, 55, 230, 592, 593, 299, 538, 539, 300, 447, 361, 445, 362, 363, 364, 365, 367, 366, 583, 584, 585, 602, 603, 607, 608, 609, 610, 616, 617, 625, 626, 627, 615, 639, 640, 641, 642, 643, 644, 645, 646, 647, 648, 649, 650, 651, 652, 653, 654, 655, 661, 669, 671, 672, 673, 674, 675, 677, 687, 688);
 +
 +		/// <summary>
 +		/// <strong>Only applies to vanilla NPCs.</strong> Also only applies to town NPCs.
@@ -487,7 +631,7 @@
 +		/// <br/> Defaults to <c>-1</c>.
 +		/// <br/> Also applies to transforming critter items (<c><see cref="Item.makeNPC"/> &gt; 0</c>) into NPC.
 +		/// </summary>
- 		public static int[] ShimmerTransformToNPC = Factory.CreateIntSet(-1, 3, 21, 132, 202, 186, 201, 187, 21, 188, 21, 189, 202, 200, 203, 590, 21, 1, 676, 302, 676, 335, 676, 336, 676, 334, 676, 333, 676, 225, 676, 141, 676, 16, 676, 147, 676, 184, 676, 537, 676, 204, 676, 81, 676, 183, 676, 138, 676, 121, 676, 591, 449, 430, 449, 436, 452, 432, 450, 433, 449, 434, 449, 435, 451, 614, 677, 74, 677, 297, 677, 298, 677, 673, 677, 672, 677, 671, 677, 675, 677, 674, 677, 362, 677, 363, 677, 364, 677, 365, 677, 608, 677, 609, 677, 602, 677, 603, 677, 611, 677, 148, 677, 149, 677, 46, 677, 303, 677, 337, 677, 299, 677, 538, 677, 55, 677, 607, 677, 615, 677, 625, 677, 626, 677, 361, 677, 687, 677, 484, 677, 604, 677, 358, 677, 355, 677, 616, 677, 617, 677, 654, 677, 653, 677, 655, 677, 585, 677, 584, 677, 583, 677, 595, 677, 596, 677, 600, 677, 597, 677, 598, 677, 599, 677, 357, 677, 377, 677, 606, 677, 359, 677, 360, 677, 367, 677, 366, 677, 300, 677, 610, 677, 612, 677, 487, 677, 486, 677, 485, 677, 669, 677, 356, 677, 661, 677, 374, 677, 442, 677, 443, 677, 444, 677, 601, 677, 445, 677, 592, 677, 446, 677, 605, 677, 447, 677, 627, 677, 539, 677, 613, 677);
+ 		public static int[] ShimmerTransformToNPC = Factory.CreateIntSet(-1, 3, 21, 132, 202, 186, 201, 187, 21, 188, 21, 189, 202, 200, 203, 590, 21, 1, 676, 302, 676, 335, 676, 336, 676, 334, 676, 333, 676, 225, 676, 141, 676, 16, 676, 147, 676, 184, 676, 537, 676, 204, 676, 81, 676, 183, 676, 138, 676, 121, 676, 591, 449, 430, 449, 436, 452, 432, 450, 433, 449, 434, 449, 435, 451, 614, 677, 74, 677, 297, 677, 298, 677, 673, 677, 672, 677, 671, 677, 675, 677, 674, 677, 362, 677, 363, 677, 364, 677, 365, 677, 608, 677, 609, 677, 602, 677, 603, 677, 611, 677, 689, 677, 148, 677, 149, 677, 46, 677, 303, 677, 337, 677, 540, 677, 299, 677, 538, 677, 55, 677, 607, 677, 615, 677, 625, 677, 626, 677, 688, 677, 361, 677, 687, 677, 484, 677, 604, 677, 358, 677, 355, 677, 616, 677, 617, 677, 654, 677, 653, 677, 655, 677, 585, 677, 584, 677, 583, 677, 595, 677, 596, 677, 600, 677, 597, 677, 598, 677, 599, 677, 357, 677, 377, 677, 606, 677, 359, 677, 360, 677, 367, 677, 366, 677, 300, 677, 610, 677, 612, 677, 487, 677, 486, 677, 485, 677, 669, 677, 356, 677, 661, 677, 374, 677, 442, 677, 443, 677, 444, 677, 601, 677, 445, 677, 592, 677, 446, 677, 605, 677, 447, 677, 627, 677, 539, 677, 613, 677);
 +
 +		/// <summary>
 +		/// The duration of this town NPC's attack animation in ticks.
@@ -574,14 +718,16 @@
 +		/// <Br/> Used in vanilla for the Celestial Pillars, the Eater of Worlds' head, and the Torch God.
 +		/// <br/> Defaults to <see langword="false"/>.
 +		/// </summary>
- 		public static bool[] ShouldBeCountedAsBoss = Factory.CreateBoolSet(false, 517, 422, 507, 493, 13, 664);
+ 		public static bool[] ShouldBeCountedAsBossForBestiary = Factory.CreateBoolSet(false, 517, 422, 507, 493, 13, 664);
++
+ 		public static bool[] ShouldBeCountedAsBossForRainbowBoulders = Factory.CreateBoolSet(false, 517, 422, 507, 493, 13, 14, 15, 267, 36, 114, 664, 134, 135, 136, 128, 129, 130, 131, 245, 247, 248, 246, 491, 492, 392, 395, 394, 393, 564, 565, 576, 577, 551, 325, 327, 344, 345, 346);
 +
 +		/// <summary>
 +		/// If <see langword="true"/> for a given NPC type (<see cref="NPC.type"/>), then that NPC is considered dangerous without having <see cref="NPC.boss"/> set.
 +		/// <br/> <see cref="Main.CurrentFrameFlags.AnyActiveBossNPC"/> will be set to <see langword="true"/> if any NPC in this set is alive, and <see cref="NPC.AnyDanger(bool, bool)"/> will return <see langword="true"/> if any NPCs in this set are alive.
 +		/// <br/> Defaults to <see langword="false"/>.
 +		/// </summary>
- 		public static bool[] DangerThatPreventsOtherDangers = Factory.CreateBoolSet(517, 422, 507, 493, 399);
+ 		public static bool[] DangerThatPreventsOtherDangers = Factory.CreateBoolSet(517, 422, 507, 493, 399, 13, 14, 15);
 +
 +		/// <summary>
 +		/// If <see langword="true"/> for a given NPC type (<see cref="NPC.type"/>), then that NPC will always draw, even if its hitbox is off-screen.
@@ -628,7 +774,7 @@
  			new int[26] {
  				0,
  				0,
-@@ -5237,6 +_,9 @@
+@@ -5563,13 +_,38 @@
  				2,
  				4,
  				2
@@ -638,7 +784,37 @@
  			}
  		};
  
-@@ -5246,21 +_,34 @@
++		/// <summary>
++		/// Creates a new Town NPC portrait selector.
++		/// </summary>
+ 		public static NPCPortraitSelector PrioritizedPortrait() => new NPCPortraitSelector();
+-		public static BasicNPCPortrait BasicPortrait(string texturePath) => new BasicNPCPortrait(texturePath);
++		/// <summary>
++		/// Creates a new Town NPC portrait with the image provided.
++		/// </summary>
++		/// <param name="texturePath">The path to the image without the file extension.</param>
++		/// <param name="horizontalFrames">If using a sprite sheet with multiple frames, this is the number of horizontal frames in the sheet.</param>
++		/// <param name="verticalFrames">If using a sprite sheet with multiple frames, this is the number of vertical frames in the sheet.</param>
++		/// <param name="paddingX">The number of additional pixels to move the selected frame left or right.</param>
++		/// <param name="paddingY">The number of additional pixels to move the selected frame up or down.</param>
++		/// <param name="frameX">The frame to select from left to right. The leftmost frame is frame 0.</param>
++		/// <param name="frameY">The frame to select from top to bottom. THe topmost frame is frame 0.</param>
++		public static BasicNPCPortrait BasicPortrait(string texturePath, int horizontalFrames = 1, int verticalFrames = 1, int paddingX = 0, int paddingY = 0, int frameX = 0, int frameY = 0) => new(texturePath, horizontalFrames, verticalFrames, paddingX, paddingY, frameX, frameY);
++		/// <summary>
++		/// The Town NPC portrait condition based on the NPC's <see cref="NPC.townNpcVariationIndex"/>.
++		/// </summary>
++		/// <param name="variantIndex">The index for the variant <see cref="NPC.townNpcVariationIndex"/> to check.</param>
++		/// <returns>True if the Town NPC is a matching variant.</returns>
+ 		public static NPCPortraitSelector.SelectionCondition VariantPortraitCondition(int variantIndex) => new NPCVariantChecker(variantIndex).Fits;
+ 
++		/// <summary>
++		/// The Town NPC portrait condition that the Town NPC is <see cref="NPC.IsShimmerVariant"/>.
++		/// </summary>
++		/// <returns>True if the Town NPC that the player is speaking to is a shimmer variant.</returns>
+ 		public static bool ShimmeredPortraitCondition()
+ 		{
+ 			int talkNPC = Main.LocalPlayer.talkNPC;
+@@ -5585,21 +_,34 @@
  			Dictionary<int, NPCBestiaryDrawModifiers> leinforsEntries = GetLeinforsEntries();
  			Dictionary<int, NPCBestiaryDrawModifiers> groxEntries = GetGroxEntries();
  			Dictionary<int, NPCBestiaryDrawModifiers> dictionary = new Dictionary<int, NPCBestiaryDrawModifiers>();
@@ -676,18 +852,20 @@
  		private static Dictionary<int, NPCBestiaryDrawModifiers> GetRedigitEntries()
  		{
  			return new Dictionary<int, NPCBestiaryDrawModifiers> {
-@@ -9972,6 +_,7 @@
+@@ -10358,7 +_,9 @@
  				}
  			};
  		}
 +#pragma warning restore CS0618
  	}
++#endif
  
  	private static readonly int[] NetIdMap = new int[65] {
-@@ -11271,6 +_,7 @@
- 	public const short BoundTownSlimePurple = 686;
- 	public const short BoundTownSlimeYellow = 687;
- 	public static readonly short Count = 688;
+ 		81,
+@@ -11666,6 +_,7 @@
+ 	public const short PalworldCattivaDistressed = 695;
+ 	public const short PalworldFoxsparksDistressed = 696;
+ 	public static readonly short Count = 697;
 +	/// <inheritdoc cref="IdDictionary"/>
  	public static readonly IdDictionary Search = IdDictionary.Create<NPCID, short>();
  

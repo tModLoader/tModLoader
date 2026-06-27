@@ -14,12 +14,12 @@ public partial class NPCID
 #pragma warning restore CS0618
 		}
 
-		//IDs taken from start of NPC.NewNPC when determining num
 		/// <summary>
-		/// Whether or not the spawned NPC will start looking for a suitable slot from the end of <seealso cref="Main.npc"/>, ignoring the Start parameter of <see cref="NPC.NewNPC"/>.
-		/// Useful if you have a multi-segmented boss and want its parts to draw over the main body (body will be in this set).
+		/// If true, the given Town NPC won't drop a tombstone on death in hardcore mode and will have the "NPC has left!" death message unless specified otherwise by <see cref="ModNPC.DeathMessage"/>.
+		/// <br/> This does NOT affect the gore spawned when the NPC dies.
+		/// <para/> Defaults to <see langword="false"/>.
 		/// </summary>
-		public static bool[] SpawnFromLastEmptySlot = Factory.CreateBoolSet(222, 245);
+		public static bool[] IsTownChild = Factory.CreateBoolSet(Angler, Princess);
 
 		//Default ID is the skeleton merchant
 		/// <summary>
@@ -65,23 +65,23 @@ public partial class NPCID
 		public static bool[] AllowDoorInteraction = Factory.CreateBoolSet();
 
 		/// <summary>
-		/// If <see langword="true"/>, this NPC type (<see cref="NPC.type"/>) will be immune to all debuffs and "tag" buffs by default.<br/><br/>
-		/// Use this for special NPCs that cannot be hit at all, such as fairy critters, container NPCs like Martian Saucer and Pirate Ship, bound town slimes, and Blazing Wheel. Dungeon Guardian also is in this set to prevent the bonus damage from "tag" buffs.<br/><br/>
-		/// If the NPC should be attacked, it is recommended to set <see cref="ImmuneToRegularBuffs"/> to <see langword="true"/> instead. This will prevent all debuffs except "tag" buffs (<see cref="BuffID.Sets.IsATagBuff"/>), which are intended to affect enemies typically seen as immune to all debuffs. Tag debuffs are special debuffs that facilitate combat mechanics, they are not something that adversely affects NPC.<br/><br/>
+		/// If <see langword="true"/>, this NPC type (<see cref="NPC.type"/>) will be immune to all whip "tag" effects and "tag" buffs.<br/><br/>
+		/// Use this for special NPCs that cannot be hit at all, such as fairy critters, container NPCs like Martian Saucer and Pirate Ship, bound town slimes, and Blazing Wheel. Dungeon Guardian also is in this set to prevent the bonus damage from "tag" effects and "tag" buffs.<br/><br/>
+		/// If the NPC should be attacked, it is recommended to set <see cref="ImmuneToRegularBuffs"/> to <see langword="true"/> instead. This will prevent all debuffs except "tag" effects and debuffs (<see cref="GameContent.Items.WhipTagEffect"/> and <see cref="BuffID.Sets.IsATagBuff"/>), which are intended to affect enemies typically seen as immune to all debuffs. Tag effects and tag debuffs are special debuffs that facilitate combat mechanics, they are not something that adversely affects NPC.<br/><br/>
 		/// Modders can specify specific buffs to be vulnerable to by assigning <see cref="SpecificDebuffImmunity"/> to false.
 		/// </summary>
-		public static bool[] ImmuneToAllBuffs; // derived from DebuffImmunitySets
+		public static bool[] ImmuneToWhipTags; // derived from DebuffImmunitySets
 
 		/// <summary>
-		/// If <see langword="true"/>, this NPC type (<see cref="NPC.type"/>) will be immune to all debuffs except tag debuffs (<see cref="BuffID.Sets.IsATagBuff"/>) by default.<br/><br/>
-		/// Use this for NPCs that can be attacked that should be immune to all normal debuffs. Tag debuffs are special debuffs that facilitate combat mechanics, such as the "summon tag damage" applied by whip weapons. Wraith, Reaper, Lunatic Cultist, the Celestial Pillars, The Destroyer, and the Martian Saucer Turret/Cannon/Core are examples of NPCs that use this setting.<br/><br/>
+		/// If <see langword="true"/>, this NPC type (<see cref="NPC.type"/>) will be immune to all debuffs except tag effects and debuffs (<see cref="GameContent.Items.WhipTagEffect"/> and <see cref="BuffID.Sets.IsATagBuff"/>) by default.<br/><br/>
+		/// Use this for NPCs that can be attacked that should be immune to all normal debuffs. Tag effects and tag debuffs are special effects that facilitate combat mechanics, such as the "summon tag damage" applied by whip weapons. Wraith, Reaper, Lunatic Cultist, the Celestial Pillars, The Destroyer, and the Martian Saucer Turret/Cannon/Core are examples of NPCs that use this setting.<br/><br/>
 		/// Modders can specify specific buffs to be vulnerable to by assigning <see cref="SpecificDebuffImmunity"/> to false.
 		/// </summary>
 		public static bool[] ImmuneToRegularBuffs; // derived from DebuffImmunitySets
 
 		/// <summary>
 		/// Indexed by NPC type and then Buff type. If <see langword="true"/>, this NPC type (<see cref="NPC.type"/>) will be immune (<see cref="NPC.buffImmune"/>) to the specified buff type. If <see langword="false"/>, the NPC will not be immune.<br/><br/>
-		/// By default, NPCs aren't immune to any buffs, but <see cref="ImmuneToRegularBuffs"/> or <see cref="ImmuneToAllBuffs"/> can make an NPC immune to all buffs. The values in this set override those settings.<br/><br/>
+		/// By default, NPCs aren't immune to any buffs, but <see cref="ImmuneToRegularBuffs"/> can make an NPC immune to all buffs except "tag" effects and "tag" buffs. <see cref="ImmuneToWhipTags"/> can make an NPC immune to all "tag" effects and "tag" buffs. The values in this set override those settings.<br/><br/>
 		/// Additionally, the effects of <see cref="BuffID.Sets.GrantImmunityWith"/> will also be applied. Inherited buff immunities do not need to be specifically assigned, as they will be automatically applied. Setting an inherited debuff to false in this set can be used to undo the effects of <see cref="BuffID.Sets.GrantImmunityWith"/>, if needed.<br/><br/>
 		/// Defaults to <see langword="null"/>, indicating no immunity override.<br/>
 		/// </summary>
@@ -89,13 +89,13 @@ public partial class NPCID
 
 		static Sets()
 		{
-			ImmuneToAllBuffs = Factory.CreateBoolSet();
+			ImmuneToWhipTags = Factory.CreateBoolSet();
 			ImmuneToRegularBuffs  = Factory.CreateBoolSet();
 			SpecificDebuffImmunity = Factory.CreateCustomSet<bool?[]>(null);
 			for (int type = 0; type < NPCLoader.NPCCount; type++) {
 				SpecificDebuffImmunity[type] = new bool?[BuffLoader.BuffCount];
 				if (DebuffImmunitySets.TryGetValue(type, out var data) && data != null) {
-					ImmuneToAllBuffs[type] = data.ImmuneToAllBuffsThatAreNotWhips && data.ImmuneToWhips;
+					ImmuneToWhipTags[type] = data.ImmuneToWhips;
 					ImmuneToRegularBuffs[type] = data.ImmuneToAllBuffsThatAreNotWhips;				
 					if (data.SpecificallyImmuneTo != null) {
 						foreach (var buff in data.SpecificallyImmuneTo) {
@@ -130,7 +130,7 @@ public partial class NPCID
 		/// <br/> If any NPC in this set is alive and <see cref="InvasionSlotCount"/> is above 0, the Pirate Invasion music will play.
 		/// <br/> Defaults to <see langword="false"/>.
 		/// </summary>
-		public static bool[] BelongsToInvasionPirate = Factory.CreateBoolSet(212, 213, 214, 215, 216, 491);
+		public static bool[] BelongsToInvasionPirate = Factory.CreateBoolSet(212, 213, 214, 215, 216, 491, 492, 252, 662);
 
 		/// <summary>
 		/// If <see langword="true"/> for a given NPC type (<see cref="NPC.type"/>), then that NPC belongs to the Martian Madness invasion.
@@ -138,7 +138,7 @@ public partial class NPCID
 		/// <br/> If any NPC in this set is alive and <see cref="InvasionSlotCount"/> is above 0, the Martian Madness music will play.
 		/// <br/> Defaults to <see langword="false"/>.
 		/// </summary>
-		public static bool[] BelongsToInvasionMartianMadness = Factory.CreateBoolSet(381, 382, 383, 385, 386, 387, 388, 389, 390, 391, 395, 520);
+		public static bool[] BelongsToInvasionMartianMadness = Factory.CreateBoolSet(381, 382, 383, 384, 385, 386, 387, 388, 389, 390, 391, 394, 395, 520);
 
 		// IDs taken from Main.UpdateAudio_DecideOnNewMusic, only if it doesn't appear in any BelongsToInvasion set
 		/// <summary>
@@ -158,13 +158,13 @@ public partial class NPCID
 		/// </remarks>
 		public static int[] InvasionSlotCount = Factory.CreateIntSet(1, 216, 5, 395, 10, 491, 10, 471, 10, 472, 0, 387, 0);
 
-		// IDs taken from Player.GetPettingInfo
+		// IDs taken from NPC.GetPettingInfo
 		/// <summary>
 		/// While petting, the number of pixels away the player stands from the NPC. Defaults to 36 pixels.
 		/// </summary>
 		public static int[] PlayerDistanceWhilePetting = Factory.CreateIntSet(36, TownCat, 28, TownBunny, 24, TownSlimeBlue, 26, TownSlimeGreen, 26, TownSlimeOld, 26, TownSlimePurple, 26, TownSlimeRainbow, 26, TownSlimeYellow, 26, TownSlimeRed, 22, TownSlimeCopper, 20);
 
-		// IDs taken from Player.GetPettingInfo
+		// IDs taken from NPC.GetPettingInfo
 		/// <summary>
 		/// While petting, the player's arm will be angled up by default. If the NPC is in this set, the player's armor will be angled down instead. Defaults to false.
 		/// </summary>
@@ -175,5 +175,10 @@ public partial class NPCID
 		/// <para/> Defaults to false.
 		/// </summary>
 		public static bool[] NeverDropsResourcePickups = Factory.CreateBoolSet(MotherSlime, CorruptSlime, Slimer);
+
+		/// <summary>
+		/// This NPC will not despawn due to being far offscreen, but will still count towards <see cref="Player.nearbyActiveNPCs"/>. Unlike returning false in <see cref="ModNPC.CheckActive"/>, this NPC still counts towards spawn limits. 
+		/// </summary>
+		public static bool[] DoesntDespawnToInactivityAndCountsNPCSlots = Factory.CreateBoolSet(Deerclops);
 	}
 }

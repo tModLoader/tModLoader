@@ -1,13 +1,10 @@
 --- src/TerrariaNetCore/Terraria/Map/IMapLayer.cs
 +++ src/tModLoader/Terraria/Map/IMapLayer.cs
-@@ -3,4 +_,10 @@
- public interface IMapLayer
+@@ -1,6 +_,6 @@
+ namespace Terraria.Map;
+ 
+-public interface IMapLayer
++public partial interface IMapLayer
  {
  	void Draw(ref MapOverlayDrawContext context, ref string text);
-+
-+	// Added by TML.
-+	bool Visible { get; internal set; }
-+
-+	// Added by TML.
-+	void Hide() => Visible = false;
  }

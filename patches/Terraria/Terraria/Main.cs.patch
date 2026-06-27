@@ -1,43 +1,24 @@
 --- src/decompiled/Terraria/Main.cs
 +++ src/Terraria/Terraria/Main.cs
-@@ -75,7 +_,21 @@
+@@ -80,7 +_,11 @@
  
  namespace Terraria;
  
-+#if !WINDOWS
-+class Control
-+{
-+	internal static Form FromHandle(IntPtr handle)
-+	{
-+		throw new NotImplementedException();
-+	}
-+}
-+#endif
-+
 +#if SERVER
 +public class Main : Terraria.Server.Game
 +#else
  public class Main : Game
 +#endif
  {
- 	public delegate void OnPlayerSelected(PlayerFileData player);
- 
-@@ -4969,7 +_,7 @@
- 		if (!dedServ) {
+ 	public static class CurrentFrameFlags
+ 	{
+@@ -5410,6 +_,9 @@
  			Map = new WorldMap(maxTilesX, maxTilesY);
  			Configuration.Load();
--			graphics = new GraphicsDeviceManager(this as Game);
-+			graphics = new GraphicsDeviceManager(((object)this) as Game);
+ 			graphics = new GraphicsDeviceManager(this as Game);
++#if FNA
++			Console.WriteLine("SDL Video Driver: " + SDL3.SDL.SDL_GetCurrentVideoDriver());
++#endif
  			base.Content.RootDirectory = "Content";
  		}
  	}
-@@ -39052,6 +_,9 @@
- 
- 		Assets.TransferCompletedAssets();
- 		Exit();
-+#if MAC && !SERVER
-+		SDL2.SDL.SDL_DestroyWindow(base.Window.Handle);
-+#endif
- 	}
- 
- 	private void Main_Exiting(object sender, EventArgs e)

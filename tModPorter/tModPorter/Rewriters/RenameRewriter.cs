@@ -1,9 +1,10 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Operations;
-using System.Collections.Generic;
-using System.Linq;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static tModPorter.Rewriters.SimpleSyntaxFactory;
 
@@ -36,7 +37,21 @@ public class RenameRewriter : BaseRewriter {
 	}
 
 	public static MemberRename RenameInstanceField(string type, string from, string to) => RenameMember(new() { type = type, from = from, to = to });
+	public static void RenameInstanceFieldMultiple(string type, string[] froms, string to)
+	{
+		foreach (string from in froms) {
+			RenameMember(new() { type = type, from = from, to = to });
+		}
+	}
 	public static MemberRename RenameStaticField(string type, string from, string to) => RenameMember(new() { type = type, from = from, to = to });
+	public static void RenameStaticFields(string type, params string[] fromTo)
+	{
+		if (fromTo.Length % 2 != 0)
+			throw new Exception("You have a bad length for inputs on RenameStaticFields");
+		for (int i = 0; i < fromTo.Length; i += 2) {
+			RenameMember(new() { type = type, from = fromTo[i], to = fromTo[i + 1] });
+		}
+	}
 	public static MemberRename RenameMethod(string type, string from, string to) => RenameMember(new() { type = type, from = from, to = to, isMethod = true });
 	public static void RenameType(string from, string to) => typeRenames.Add((from, to));
 	public static void RenameNamespace(string from, string to) => namespaceRenames.Add(from, to);
@@ -80,7 +95,7 @@ public class RenameRewriter : BaseRewriter {
 	}
 
 	protected override SyntaxList<UsingDirectiveSyntax> VisitUsingList(SyntaxList<UsingDirectiveSyntax> usings) {
-		var renamed = usings.Where(u => namespaceRenames.ContainsKey(u.Name.ToString())).ToArray();
+		var renamed = usings.Where(u => u.Name != null && namespaceRenames.ContainsKey(u.Name.ToString())).ToArray();
 		if (renamed.Length == 0)
 			return usings;
 
@@ -125,7 +140,7 @@ public class RenameRewriter : BaseRewriter {
 		RegisterAction(memberAccess, node => UseType(to));
 	}
 
-	private IdentifierNameSyntax RefactorSpeculative(IdentifierNameSyntax nameSyntax) {
+	private SyntaxNode RefactorSpeculative(IdentifierNameSyntax nameSyntax) {
 		var nameToken = nameSyntax.Identifier;
 
 		foreach (var entry in memberRenames) {
@@ -143,7 +158,7 @@ public class RenameRewriter : BaseRewriter {
 		return RefactorType(nameSyntax);
 	}
 
-	private IdentifierNameSyntax RefactorType(IdentifierNameSyntax nameSyntax) {
+	private TypeSyntax RefactorType(IdentifierNameSyntax nameSyntax) {
 		var nameToken = nameSyntax.Identifier;
 
 		foreach (var (from, to) in typeRenames) {
@@ -162,7 +177,7 @@ public class RenameRewriter : BaseRewriter {
 			}
 
 			if (IsUsingNamespace(qualifier[..^1])) {
-				return UseType(to).WithTriviaFrom(nameSyntax);
+				return UseTypeByMetadataName(to).WithTriviaFrom(nameSyntax);
 			}
 		}
 
@@ -195,9 +210,24 @@ public class RenameRewriter : BaseRewriter {
 		);
 	};
 
+	public static AdditionalRenameAction AddCommentToMethodInvocation(string comment) => (rw, node) => {
+		if (node.Parent.Parent.Parent is InvocationExpressionSyntax invoke)
+			rw.RegisterAction<InvocationExpressionSyntax>(invoke, newNode => newNode.WithArgumentList(newNode.ArgumentList.WithBlockComment(comment)));
+	};
+
 	public static AdditionalRenameAction AddCommentToOverride(string comment) => (rw, node) => {
 		if (node.Parent is MethodDeclarationSyntax decl)
 			rw.RegisterAction<MethodDeclarationSyntax>(decl, newNode => newNode.WithParameterList(newNode.ParameterList.WithBlockComment(comment)));
+	};
+
+	public static AdditionalRenameAction AddCommentToFieldAccess(string comment) => (rw, node) => {
+		if (node.Parent is not IdentifierNameSyntax nameSyntax || nameSyntax.Parent is not ExpressionSyntax usage)
+			return;
+		usage = usage.Parent switch {
+			ElementAccessExpressionSyntax e when usage == e.Expression => e,
+			_ => usage
+		};
+		rw.RegisterAction<ExpressionSyntax>(usage, newNode => newNode.WithBlockComment(comment));
 	};
 
 	public static AdditionalRenameAction AccessShimmerBuffIDElem() => (rw, node) => {
@@ -208,4 +238,50 @@ public class RenameRewriter : BaseRewriter {
 		rw.RegisterAction<ExpressionSyntax>(elemAccess,
 			n => ElementAccessExpression(n.WithoutTrivia(), buffIdShimmer).WithTriviaFrom(n));
 	};
+
+	public static void ConvertCollectionAddToSetTrue(RenameRewriter rw, SyntaxToken node)
+	{
+		// node.Add(...)
+		// ->
+		// node[...] = true
+
+		if (node is not { Parent: IdentifierNameSyntax { Parent: MemberAccessExpressionSyntax {
+				Parent: MemberAccessExpressionSyntax { Name.Identifier.Text: "Add", Parent: InvocationExpressionSyntax invoke } } } })
+			return;
+
+		if (invoke.ArgumentList.Arguments.Count != 1)
+			return;
+
+		rw.RegisterAction<InvocationExpressionSyntax>(invoke, n => {
+			var addAccess = (MemberAccessExpressionSyntax)n.Expression;
+			var arrayAccess = addAccess.Expression;
+			var arg = n.ArgumentList.Arguments[0].Expression;
+			return AssignmentExpression(
+				ElementAccessExpression(arrayAccess.WithoutTrivia(), arg.WithoutTrivia()),
+				LiteralExpression(SyntaxKind.TrueLiteralExpression)
+			).WithTriviaFrom(n);
+		});
+	}
+
+	public static void InvertBool(RenameRewriter rw, SyntaxToken node)
+	{
+		if (node.Parent is not IdentifierNameSyntax nameSyntax)
+			return;
+
+		ExpressionSyntax usage = nameSyntax.Parent is MemberAccessExpressionSyntax memberAccess
+			? memberAccess
+			: nameSyntax;
+
+		if (usage.Parent is AssignmentExpressionSyntax assign && assign.Left == usage)
+			return;
+
+		if (usage.Parent is PrefixUnaryExpressionSyntax notExpr && notExpr.IsKind(SyntaxKind.LogicalNotExpression)) {
+			rw.RegisterAction<PrefixUnaryExpressionSyntax>(notExpr,
+				n => n.Operand.WithTriviaFrom(n));
+		}
+		else {
+			rw.RegisterAction<ExpressionSyntax>(usage,
+				n => PrefixUnaryExpression(SyntaxKind.LogicalNotExpression, n.WithoutTrivia()).WithTriviaFrom(n));
+		}
+	}
 }

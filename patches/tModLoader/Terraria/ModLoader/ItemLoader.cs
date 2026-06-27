@@ -1,14 +1,16 @@
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Runtime.CompilerServices;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent;
+using Terraria.GameContent.Items;
 using Terraria.GameContent.Prefixes;
 using Terraria.ID;
 using Terraria.Localization;
@@ -26,6 +28,7 @@ namespace Terraria.ModLoader;
 public static class ItemLoader
 {
 	public static int ItemCount { get; private set; } = ItemID.Count;
+	public static int UseStyleCount { get; private set; } = ItemUseStyleID.Count;
 	private static readonly IList<ModItem> items = new List<ModItem>();
 
 	private static readonly List<HookList> hooks = new List<HookList>();
@@ -53,6 +56,16 @@ public static class ItemLoader
 	}
 
 	/// <summary>
+	/// Registers a new item use style (<see cref="ItemUseStyleID"/>). The return value is its unique ID suitable for <see cref="Item.useStyle"/>.
+	/// </summary>
+	public static int RegisterUseStyle(Mod mod, string useStyleName)
+	{
+		int useStyle = UseStyleCount++;
+		ItemUseStyleID.Search.Add($"{mod?.Name ?? "Terraria"}/{useStyleName}", useStyle);
+		return useStyle;
+	}
+
+	/// <summary>
 	/// Gets the ModItem template instance corresponding to the specified type (not the clone/new instance which gets added to Items as the game is played). Returns null if no modded item has the given type.
 	/// </summary>
 	public static ModItem GetItem(int type)
@@ -73,6 +86,9 @@ public static class ItemLoader
 		LoaderUtils.ResetStaticMembers(typeof(ItemID));
 		LoaderUtils.ResetStaticMembers(typeof(AmmoID));
 		LoaderUtils.ResetStaticMembers(typeof(PrefixLegacy.ItemSets));
+		LoaderUtils.ResetStaticMembers(typeof(ItemVariants));
+		if (unloading)
+			LoaderUtils.ResetStaticMembers(typeof(ItemUseStyleID));
 
 		//Etc
 		Array.Resize(ref Item.cachedItemSpawnsByType, ItemCount);
@@ -96,17 +112,15 @@ public static class ItemLoader
 			Main.InitializeItemAnimations();
 		}
 
+		EmergencyStacking.ResetGroupLookup();
+
 		if (unloading)
 			Array.Resize(ref Main.anglerQuestItemNetIDs, vanillaQuestFishCount);
-		else
-			Main.anglerQuestItemNetIDs = Main.anglerQuestItemNetIDs
-				.Concat(items.Where(modItem => modItem.IsQuestFish()).Select(modItem => modItem.Type))
-				.ToArray();
 	}
 
 	internal static void FinishSetup()
 	{
-		GlobalLoaderUtils<GlobalItem, Item>.BuildTypeLookups(new Item().SetDefaults);
+		GlobalLoaderUtils<GlobalItem, Item>.BuildTypeLookups((type) => new Item().SetDefaults(type));
 		UpdateHookLists();
 		GlobalTypeLookups<GlobalItem>.LogStats();
 
@@ -117,6 +131,10 @@ public static class ItemLoader
 		}
 
 		ValidateDropsSet();
+
+		Main.anglerQuestItemNetIDs = Main.anglerQuestItemNetIDs
+				.Concat(items.Where(modItem => ItemID.Sets.IsQuestFish[modItem.Type]).Select(modItem => modItem.Type))
+				.ToArray();
 	}
 
 	private static void UpdateHookLists()
@@ -150,6 +168,7 @@ public static class ItemLoader
 	internal static void Unload()
 	{
 		ItemCount = ItemID.Count;
+		UseStyleCount = ItemUseStyleID.Count;
 		items.Clear();
 		FlexibleTileWand.Reload();
 		GlobalList<GlobalItem>.Reset();
@@ -172,6 +191,9 @@ public static class ItemLoader
 	internal static bool MagicPrefix(Item item)
 		=> item.ModItem != null && item.ModItem.MagicPrefix();
 
+	internal static bool SummonPrefix(Item item)
+		=> item.ModItem != null && item.ModItem.SummonPrefix();
+
 	internal static void SetDefaults(Item item, bool createModItem = true)
 	{
 		if (IsModItem(item.type) && createModItem)
@@ -183,13 +205,13 @@ public static class ItemLoader
 		});
 	}
 
-	private static HookList HookOnSpawn = AddHook<Action<Item, IEntitySource>>(g => g.OnSpawn);
+	private static HookList HookOnSpawn = AddHook<Action<WorldItem, IEntitySource>>(g => g.OnSpawn);
 
-	internal static void OnSpawn(Item item, IEntitySource source)
+	internal static void OnSpawn(WorldItem item, IEntitySource source)
 	{
-		item.ModItem?.OnSpawn(source);
+		item.ModItem?.OnSpawn(item, source);
 
-		foreach (GlobalItem g in HookOnSpawn.Enumerate(item)) {
+		foreach (GlobalItem g in HookOnSpawn.Enumerate(item.inner)) {
 			g.OnSpawn(item, source);
 		}
 	}
@@ -259,6 +281,16 @@ public static class ItemLoader
 			result &= item.ModItem.AllowPrefix(pre);
 		}
 		return result;
+	}
+
+	private static HookList HookApplyPrefix = AddHook<Action<Item, int>>(g => g.ApplyPrefix);
+
+	public static void ApplyPrefix(Item item, int pre)
+	{
+		item.ModItem?.ApplyPrefix(pre);
+		foreach (var g in HookApplyPrefix.Enumerate(item)) {
+			g.ApplyPrefix(item, pre);
+		}
 	}
 
 	private static HookList HookCanUseItem = AddHook<Func<Item, Player, bool>>(g => g.CanUseItem);
@@ -497,6 +529,31 @@ public static class ItemLoader
 		}
 	}
 
+	private delegate void DelegateModifyPotionDelay(Item item, Player player, ref int baseDelay);
+	private static HookList HookModifyPotionDelay = AddHook<DelegateModifyPotionDelay>(g => g.ModifyPotionDelay);
+
+	public static void ModifyPotionDelay(Item item, Player player, ref int baseDelay)
+	{
+		item.ModItem?.ModifyPotionDelay(player, ref baseDelay);
+
+		foreach (var g in HookModifyPotionDelay.Enumerate(item)) {
+			g.ModifyPotionDelay(item, player, ref baseDelay);
+		}
+	}
+
+	private delegate bool DelegateApplyPotionDelay(Item item, Player player, int potionDelay);
+	private static HookList HookApplyPotionDelay = AddHook<DelegateApplyPotionDelay>(g => g.ApplyPotionDelay);
+
+	public static bool ApplyPotionDelay(Item item, Player player, int potionDelay)
+	{
+		foreach (var g in HookApplyPotionDelay.Enumerate(item)) {
+			if (!g.ApplyPotionDelay(item, player, potionDelay))
+				return false;
+		}
+
+		return item.ModItem?.ApplyPotionDelay(player, potionDelay) ?? true;
+	}
+
 	private delegate bool? DelegateCanConsumeBait(Player baiter, Item bait);
 	private static HookList HookCanConsumeBait = AddHook<DelegateCanConsumeBait>(g => g.CanConsumeBait);
 
@@ -531,7 +588,7 @@ public static class ItemLoader
 	private static HookList HookCanResearch = AddHook<DelegateCanResearch>(g => g.CanResearch);
 
 	/// <summary>
-	/// Hook that determines if an item will be prevented from being consumed by the research function. 
+	/// Hook that determines if an item will be prevented from being consumed by the research function.
 	/// </summary>
 	/// <param name="item">The item to be consumed or not</param>
 	public static bool CanResearch(Item item)
@@ -1065,7 +1122,8 @@ public static class ItemLoader
 	/// </summary>
 	public static bool ConsumeItem(Item item, Player player)
 	{
-		if (item.IsAir) return true;
+		if (item.IsAir)
+			return true;
 		if (item.ModItem != null && !item.ModItem.ConsumeItem(player))
 			return false;
 
@@ -1235,10 +1293,38 @@ public static class ItemLoader
 		}
 	}
 
+	private static HookList HookUpdateVisibleAccessory = AddHook<Action<Item, Player, bool>>(g => g.UpdateVisibleAccessory);
+
+	/// <summary>
+	/// Hook at the end of Player.UpdateVisibleAccessory that can be called to set flags related to player drawing.
+	/// </summary>
+	public static void UpdateVisibleAccessory(Item item, Player player, bool hideVisual)
+	{
+		if (item.IsAir)
+			return;
+
+		item.ModItem?.UpdateVisibleAccessory(player, hideVisual);
+
+		foreach (var g in HookUpdateVisibleAccessory.Enumerate(item)) {
+			g.UpdateVisibleAccessory(item, player, hideVisual);
+		}
+	}
+
+	private static HookList HookUpdateItemDye = AddHook<Action<Item, Player, int, bool>>(g => g.UpdateItemDye);
+
+	public static void UpdateItemDye(Item item, Player player, int dye, bool hideVisual)
+	{
+		item.ModItem?.UpdateItemDye(player, dye, hideVisual);
+
+		foreach (var g in HookUpdateItemDye.Enumerate(item)) {
+			g.UpdateItemDye(item, player, dye, hideVisual);
+		}
+	}
+
 	private static HookList HookUpdateArmorSet = AddHook<Action<Player, string>>(g => g.UpdateArmorSet);
 
 	/// <summary>
-	/// If the head's ModItem.IsArmorSet returns true, calls the head's ModItem.UpdateArmorSet. This is then repeated for the body, then the legs. Then for each GlobalItem, if GlobalItem.IsArmorSet returns a non-empty string, calls GlobalItem.UpdateArmorSet with that string.
+	/// If the head's <see cref="ModItem.IsArmorSet(Item, Item, Item)"/> returns true, calls the head's <see cref="ModItem.UpdateArmorSet(Player)"/>. This is then repeated for the body, then the legs. Then for each GlobalItem, if <see cref="GlobalItem.IsArmorSet(Item, Item, Item)"/> returns a non-empty string, calls <see cref="GlobalItem.UpdateArmorSet(Player, string)"/> with that string.
 	/// </summary>
 	public static void UpdateArmorSet(Player player, Item head, Item body, Item legs)
 	{
@@ -1391,19 +1477,17 @@ public static class ItemLoader
 	/// 5. Plays the item-grabbing sound
 	/// 6. Sets Main.stackSplit to 30
 	/// 7. Sets Main.mouseRightRelease to false
-	/// 8. Calls Recipe.FindRecipes.
 	/// </summary>
 	public static void RightClick(Item item, Player player)
 	{
 		RightClickCallHooks(item, player);
 
 		if (ConsumeItem(item, player) && --item.stack == 0)
-			item.SetDefaults();
+			item.SetDefaults(0);
 
 		SoundEngine.PlaySound(7);
 		Main.stackSplit = 30;
 		Main.mouseRightRelease = false;
-		Recipe.FindRecipes();
 	}
 
 	internal static void RightClickCallHooks(Item item, Player player)
@@ -1451,7 +1535,7 @@ public static class ItemLoader
 		return destination.ModItem?.CanStack(source) ?? true;
 	}
 
-	private static HookList HookCanStackInWorld = AddHook<Func<Item, Item, bool>>(g => g.CanStackInWorld);
+	private static HookList HookCanStackInWorld = AddHook<Func<WorldItem, WorldItem, bool>>(g => g.CanStackInWorld);
 
 	/// <summary>
 	/// Calls all GlobalItem.CanStackInWorld hooks until one returns false then ModItem.CanStackInWorld. Returns whether any of the hooks returned false.
@@ -1459,14 +1543,14 @@ public static class ItemLoader
 	/// <param name="destination">The item instance that <paramref name="source"/> will attempt to stack onto</param>
 	/// <param name="source">The item instance being stacked onto <paramref name="destination"/></param>
 	/// <returns>Whether or not the items are allowed to stack</returns>
-	public static bool CanStackInWorld(Item destination, Item source)
+	public static bool CanStackInWorld(WorldItem destination, WorldItem source)
 	{
-		foreach (var g in HookCanStackInWorld.Enumerate(destination)) {
+		foreach (var g in HookCanStackInWorld.Enumerate(destination.inner)) {
 			if (!g.CanStackInWorld(destination, source))
 				return false;
 		}
 
-		return destination.ModItem?.CanStackInWorld(source) ?? true;
+		return destination.ModItem?.CanStackInWorld(destination, source) ?? true;
 	}
 
 	private static HookList HookOnStack = AddHook<Action<Item, Item, int>>(g => g.OnStack);
@@ -1584,7 +1668,7 @@ public static class ItemLoader
 		source.stack -= numToTransfer;
 	}
 
-	private delegate bool DelegateReforgePrice(Item item, ref int reforgePrice, ref bool canApplyDiscount);
+	private delegate bool DelegateReforgePrice(Item item, ref long reforgePrice, ref bool canApplyDiscount);
 	private static HookList HookReforgePrice = AddHook<DelegateReforgePrice>(g => g.ReforgePrice);
 
 	/// <summary>
@@ -1594,7 +1678,7 @@ public static class ItemLoader
 	/// <param name="reforgePrice"></param>
 	/// <param name="canApplyDiscount"></param>
 	/// <returns></returns>
-	public static bool ReforgePrice(Item item, ref int reforgePrice, ref bool canApplyDiscount)
+	public static bool ReforgePrice(Item item, ref long reforgePrice, ref bool canApplyDiscount)
 	{
 		bool b = item.ModItem?.ReforgePrice(ref reforgePrice, ref canApplyDiscount) ?? true;
 
@@ -1781,90 +1865,116 @@ public static class ItemLoader
 		return retVal ?? false;
 	}
 
-	private delegate void DelegateUpdate(Item item, ref float gravity, ref float maxFallSpeed);
+    public static void ModifyEquipTextureDraw(ref PlayerDrawSet drawInfo, ref DrawData drawData, EquipType type, int slot, [CallerMemberName] string methodName = "")
+    {
+        // Notes:
+        // Glowmasks not supported yet, but might in future
+        // Front, called twice, once for each half of texture
+        // Head, can be called twice if Head.Sets.FrontToBackID used
+        // Shield, Can be called many times if parrying, but no api support for that yet
+        // Body, called 5 times for each CompositePlayerDrawContext
+
+        if (slot <= 0)
+        {
+            drawInfo.DrawDataCache.Add(drawData);
+            return;
+        }
+
+        // TODO: We can make a GlobalItem hook if requested, it would just need the equip type and slot passed to it rather than EquipTexture for it to work with vanilla equipment.
+        EquipTexture texture = EquipLoader.GetEquipTexture(type, slot);
+        bool? result = texture?.ModifyDraw(ref drawInfo, ref drawData, methodName);
+
+        if (result ?? true)
+            drawInfo.DrawDataCache.Add(drawData);
+
+        return;
+    }
+
+    private delegate void DelegateUpdate(WorldItem item, ref float gravity, ref float maxFallSpeed);
 	private static HookList HookUpdate = AddHook<DelegateUpdate>(g => g.Update);
 
 	/// <summary>
 	/// Calls ModItem.Update, then all GlobalItem.Update hooks.
 	/// </summary>
-	public static void Update(Item item, ref float gravity, ref float maxFallSpeed)
+	public static void Update(WorldItem item, ref float gravity, ref float maxFallSpeed)
 	{
-		item.ModItem?.Update(ref gravity, ref maxFallSpeed);
+		item.ModItem?.Update(item, ref gravity, ref maxFallSpeed);
 
-		foreach (var g in HookUpdate.Enumerate(item)) {
+
+		foreach (var g in HookUpdate.Enumerate(item.inner)) {
 			g.Update(item, ref gravity, ref maxFallSpeed);
 		}
 	}
 
-	private static HookList HookPostUpdate = AddHook<Action<Item>>(g => g.PostUpdate);
+	private static HookList HookPostUpdate = AddHook<Action<WorldItem>>(g => g.PostUpdate);
 
 	/// <summary>
 	/// Calls ModItem.PostUpdate and all GlobalItem.PostUpdate hooks.
 	/// </summary>
-	public static void PostUpdate(Item item)
+	public static void PostUpdate(WorldItem item)
 	{
-		item.ModItem?.PostUpdate();
+		item.ModItem?.PostUpdate(item);
 
-		foreach (var g in HookPostUpdate.Enumerate(item)) {
+		foreach (var g in HookPostUpdate.Enumerate(item.inner)) {
 			g.PostUpdate(item);
 		}
 	}
 
-	private delegate void DelegateGrabRange(Item item, Player player, ref int grabRange);
+	private delegate void DelegateGrabRange(WorldItem item, Player player, ref int grabRange);
 	private static HookList HookGrabRange = AddHook<DelegateGrabRange>(g => g.GrabRange);
 
 	/// <summary>
 	/// Calls ModItem.GrabRange, then all GlobalItem.GrabRange hooks.
 	/// </summary>
-	public static void GrabRange(Item item, Player player, ref int grabRange)
+	public static void GrabRange(WorldItem item, Player player, ref int grabRange)
 	{
-		item.ModItem?.GrabRange(player, ref grabRange);
+		item.ModItem?.GrabRange(item, player, ref grabRange);
 
-		foreach (var g in HookGrabRange.Enumerate(item)) {
+		foreach (var g in HookGrabRange.Enumerate(item.inner)) {
 			g.GrabRange(item, player, ref grabRange);
 		}
 	}
 
-	private static HookList HookGrabStyle = AddHook<Func<Item, Player, bool>>(g => g.GrabStyle);
+	private static HookList HookGrabStyle = AddHook<Func<WorldItem, Player, bool>>(g => g.GrabStyle);
 
 	/// <summary>
 	/// Calls all GlobalItem.GrabStyle hooks then ModItem.GrabStyle, until one of them returns true. Returns whether any of the hooks returned true.
 	/// </summary>
-	public static bool GrabStyle(Item item, Player player)
+	public static bool GrabStyle(WorldItem item, Player player)
 	{
-		foreach (var g in HookGrabStyle.Enumerate(item)) {
+		foreach (var g in HookGrabStyle.Enumerate(item.inner)) {
 			if (g.GrabStyle(item, player))
 				return true;
 		}
 
-		return item.ModItem != null && item.ModItem.GrabStyle(player);
+		return item.ModItem != null && item.ModItem.GrabStyle(item, player);
 	}
 
-	private static HookList HookCanPickup = AddHook<Func<Item, Player, bool>>(g => g.CanPickup);
+	private static HookList HookCanPickup = AddHook<Func<WorldItem, Player, bool>>(g => g.CanPickup);
 
-	public static bool CanPickup(Item item, Player player)
+	public static bool CanPickup(WorldItem item, Player player)
 	{
-		foreach (var g in HookCanPickup.Enumerate(item)) {
+		foreach (var g in HookCanPickup.Enumerate(item.inner)) {
 			if (!g.CanPickup(item, player))
 				return false;
 		}
 
-		return item.ModItem?.CanPickup(player) ?? true;
+		return item.ModItem?.CanPickup(item, player) ?? true;
 	}
 
-	private static HookList HookOnPickup = AddHook<Func<Item, Player, bool>>(g => g.OnPickup);
+	private static HookList HookOnPickup = AddHook<Func<WorldItem, Player, bool>>(g => g.OnPickup);
 
 	/// <summary>
 	/// Calls all GlobalItem.OnPickup hooks then ModItem.OnPickup, until one of the returns false. Returns true if all of the hooks return true.
 	/// </summary>
-	public static bool OnPickup(Item item, Player player)
+	public static bool OnPickup(WorldItem item, Player player)
 	{
-		foreach (var g in HookOnPickup.Enumerate(item)) {
+		foreach (var g in HookOnPickup.Enumerate(item.inner)) {
 			if (!g.OnPickup(item, player))
 				return false;
 		}
 
-		return item.ModItem?.OnPickup(player) ?? true;
+		return item.ModItem?.OnPickup(item, player) ?? true;
 	}
 
 	private static HookList HookItemSpace = AddHook<Func<Item, Player, bool>>(g => g.ItemSpace);
@@ -1898,35 +2008,35 @@ public static class ItemLoader
 		return item.ModItem?.GetAlpha(lightColor);
 	}
 
-	private delegate bool DelegatePreDrawInWorld(Item item, SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI);
+	private delegate bool DelegatePreDrawInWorld(WorldItem item, SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI);
 	private static HookList HookPreDrawInWorld = AddHook<DelegatePreDrawInWorld>(g => g.PreDrawInWorld);
 
 	/// <summary>
 	/// Returns the "and" operator on the results of ModItem.PreDrawInWorld and all GlobalItem.PreDrawInWorld hooks.
 	/// </summary>
-	public static bool PreDrawInWorld(Item item, SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI)
+	public static bool PreDrawInWorld(WorldItem item, SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI)
 	{
 		bool flag = true;
 		if (item.ModItem != null)
-			flag &= item.ModItem.PreDrawInWorld(spriteBatch, lightColor, alphaColor, ref rotation, ref scale, whoAmI);
+			flag &= item.ModItem.PreDrawInWorld(item, spriteBatch, lightColor, alphaColor, ref rotation, ref scale, whoAmI);
 
-		foreach (var g in HookPreDrawInWorld.Enumerate(item)) {
+		foreach (var g in HookPreDrawInWorld.Enumerate(item.inner)) {
 			flag &= g.PreDrawInWorld(item, spriteBatch, lightColor, alphaColor, ref rotation, ref scale, whoAmI);
 		}
 
 		return flag;
 	}
 
-	private static HookList HookPostDrawInWorld = AddHook<Action<Item, SpriteBatch, Color, Color, float, float, int>>(g => g.PostDrawInWorld);
+	private static HookList HookPostDrawInWorld = AddHook<Action<WorldItem, SpriteBatch, Color, Color, float, float, int>>(g => g.PostDrawInWorld);
 
 	/// <summary>
 	/// Calls ModItem.PostDrawInWorld, then all GlobalItem.PostDrawInWorld hooks.
 	/// </summary>
-	public static void PostDrawInWorld(Item item, SpriteBatch spriteBatch, Color lightColor, Color alphaColor, float rotation, float scale, int whoAmI)
+	public static void PostDrawInWorld(WorldItem item, SpriteBatch spriteBatch, Color lightColor, Color alphaColor, float rotation, float scale, int whoAmI)
 	{
-		item.ModItem?.PostDrawInWorld(spriteBatch, lightColor, alphaColor, rotation, scale, whoAmI);
+		item.ModItem?.PostDrawInWorld(item, spriteBatch, lightColor, alphaColor, rotation, scale, whoAmI);
 
-		foreach (var g in HookPostDrawInWorld.Enumerate(item)) {
+		foreach (var g in HookPostDrawInWorld.Enumerate(item.inner)) {
 			g.PostDrawInWorld(item, spriteBatch, lightColor, alphaColor, rotation, scale, whoAmI);
 		}
 	}
@@ -1962,6 +2072,36 @@ public static class ItemLoader
 
 		foreach (var g in HookPostDrawInInventory.Enumerate(item)) {
 			g.PostDrawInInventory(item, spriteBatch, position, frame, drawColor, itemColor, origin, scale);
+		}
+	}
+
+	private delegate void DelegatePreModifyItemDraw(Item item, ref PlayerDrawSet drawInfo, ref DrawData drawData, ref DrawData? coloredDrawData, ref DrawData? glowmaskDrawData);
+	private static HookList HookPreModifyItemDraw = AddHook<DelegatePreModifyItemDraw>(g => g.PreModifyItemDraw);
+	private delegate void DelegatePostModifyItemDraw(Item item, ref PlayerDrawSet drawInfo, DrawData drawData, DrawData? coloredDrawData, DrawData? glowmaskDrawData);
+	private static HookList HookPostModifyItemDraw = AddHook<DelegatePostModifyItemDraw>(g => g.PostModifyItemDraw);
+
+	/// <summary>
+	/// Calls GlobalItem.PreModifyItemDraw, then ModItem.ModifyItemDraw, then GlobalItem.PostModifyItemDraw.
+	/// </summary>
+	public static void ModifyItemDraw(Item item, ref PlayerDrawSet drawInfo, DrawData drawData, DrawData? coloredDrawData, DrawData? glowmaskDrawData)
+	{
+		// Draw behind and modify normal drawData
+		foreach (var g in HookPreModifyItemDraw.Enumerate(item)) {
+			g.PreModifyItemDraw(item, ref drawInfo, ref drawData, ref coloredDrawData, ref glowmaskDrawData);
+		}
+
+		// Draw before, modify normal drawData, draw after
+		if (item.ModItem?.ModifyItemDraw(ref drawInfo, ref drawData, ref coloredDrawData, ref glowmaskDrawData) ?? true) {
+			drawInfo.DrawDataCache.Add(drawData);
+			if (coloredDrawData.HasValue)
+				drawInfo.DrawDataCache.Add(coloredDrawData.Value);
+			if (glowmaskDrawData.HasValue)
+				drawInfo.DrawDataCache.Add(glowmaskDrawData.Value);
+		}
+
+		// Draw in front
+		foreach (var g in HookPostModifyItemDraw.Enumerate(item)) {
+			g.PostModifyItemDraw(item, ref drawInfo, drawData, coloredDrawData, glowmaskDrawData);
 		}
 	}
 
@@ -2029,11 +2169,29 @@ public static class ItemLoader
 		return true;
 	}
 
+	public static bool CanEquipAccessory(Player player, Item item, int slot, bool modded)
+	{
+		if (item.ModItem != null && !item.ModItem.CanEquipAccessory(player, slot, modded))
+			return false;
+
+		foreach (var g in HookCanEquipAccessory.Enumerate(item)) {
+			if (!g.CanEquipAccessory(item, player, slot, modded))
+				return false;
+		}
+
+		return true;
+	}
+
 	private static HookList HookCanAccessoryBeEquippedWith = AddHook<Func<Item, Item, Player, bool>>(g => g.CanAccessoryBeEquippedWith);
 
 	public static bool CanAccessoryBeEquippedWith(Item equippedItem, Item incomingItem)
 	{
 		Player player = Main.player[Main.myPlayer];
+		return CanAccessoryBeEquippedWith(equippedItem, incomingItem, player) && CanAccessoryBeEquippedWith(incomingItem, equippedItem, player);
+	}
+
+	public static bool CanAccessoryBeEquippedWith(Player player, Item equippedItem, Item incomingItem)
+	{
 		return CanAccessoryBeEquippedWith(equippedItem, incomingItem, player) && CanAccessoryBeEquippedWith(incomingItem, equippedItem, player);
 	}
 
@@ -2163,18 +2321,18 @@ public static class ItemLoader
 
 	private static HookList HookModifyTooltips = AddHook<Action<Item, List<TooltipLine>>>(g => g.ModifyTooltips);
 
-	public static List<TooltipLine> ModifyTooltips(Item item, ref int numTooltips, string[] names, ref string[] text, ref bool[] modifier, ref bool[] badModifier, ref int oneDropLogo, out Color?[] overrideColor, int prefixlineIndex)
+	public static List<TooltipLine> ModifyTooltips(Item item, ref int numTooltips, string[] names, ref string[] text, ref Color[] lineColors, ref int oneDropLogo, int prefixlineIndex)
 	{
 		var tooltips = new List<TooltipLine>();
 
 		for (int k = 0; k < numTooltips; k++) {
 			TooltipLine tooltip = new TooltipLine(names[k], text[k]);
-			tooltip.IsModifier = modifier[k];
-			tooltip.IsModifierBad = badModifier[k];
 
 			if (k == oneDropLogo) {
 				tooltip.OneDropLogo = true;
 			}
+
+			tooltip.Color = lineColors[k];
 
 			tooltips.Add(tooltip);
 		}
@@ -2201,29 +2359,24 @@ public static class ItemLoader
 
 		numTooltips = tooltips.Count;
 		text = new string[numTooltips];
-		modifier = new bool[numTooltips];
-		badModifier = new bool[numTooltips];
+		lineColors = new Color[numTooltips];
 		oneDropLogo = -1;
-		overrideColor = new Color?[numTooltips];
 
 		for (int k = 0; k < numTooltips; k++) {
 			text[k] = tooltips[k].Text;
-			modifier[k] = tooltips[k].IsModifier;
-			badModifier[k] = tooltips[k].IsModifierBad;
 
 			if (tooltips[k].OneDropLogo) {
 				oneDropLogo = k;
 			}
 
-			overrideColor[k] = tooltips[k].OverrideColor;
+			lineColors[k] = tooltips[k].Color;
 		}
 
 		return tooltips;
 	}
 
-	public static void ModifyFishingLine(Projectile projectile, ref float polePosX, ref float polePosY, ref Color lineColor)
+	public static void ModifyFishingLine(Projectile projectile, Player player, ref float polePosX, ref float polePosY, ref Color lineColor)
 	{
-		Player player = Main.player[projectile.owner];
 		Item item = player.inventory[player.selectedItem];
 
 		if (item.ModItem == null)

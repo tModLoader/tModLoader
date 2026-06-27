@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
+using Terraria.ModLoader.Core;
 
 namespace Terraria.ModLoader;
 
@@ -23,6 +24,8 @@ public static class DustLoader
 
 	internal static void ResizeArrays()
 	{
+		LoaderUtils.ResetStaticMembers(typeof(DustID));
+
 		Array.Resize(ref ChildSafety.SafeDust, DustCount);
 
 		for (int k = DustID.Count; k < DustCount; k++) {

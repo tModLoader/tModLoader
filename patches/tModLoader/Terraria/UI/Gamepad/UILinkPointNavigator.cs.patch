@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/UI/Gamepad/UILinkPointNavigator.cs
 +++ src/tModLoader/Terraria/UI/Gamepad/UILinkPointNavigator.cs
-@@ -33,6 +_,7 @@
+@@ -40,6 +_,7 @@
  		public static int BackButtonCommand;
  		public static bool BackButtonInUse = false;
  		public static bool BackButtonLock;

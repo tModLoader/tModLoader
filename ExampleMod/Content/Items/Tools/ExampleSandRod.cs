@@ -68,7 +68,7 @@ namespace ExampleMod.Content.Items.Tools
 
 			// If it is on the multiplayer client, sync the tile destruction to the server
 			if (Main.netMode == NetmodeID.MultiplayerClient) {
-				// 4 corresponds to the KillTileNoItem message
+				// 4 corresponds to the "KillTile (No Item)" message
 				NetMessage.SendData(MessageID.TileManipulation, number: 4, number2: tilePos.X, number3: tilePos.Y);
 			}
 

@@ -41,4 +41,9 @@ Line 2"); */
 	{
 		// t2.SetDefault("Test");
 	}
+
+	void LocalizedTexts(LocalizedText t)
+	{
+		t.ConditionsMetWith(null);
+	}
 }

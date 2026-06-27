@@ -1,5 +1,6 @@
 ﻿using ExampleMod.Content.Dusts;
 using Microsoft.Xna.Framework;
+using Terraria;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Walls
@@ -8,6 +9,7 @@ namespace ExampleMod.Content.Walls
 	{
 		public override void SetStaticDefaults() {
 			// As an example of an unsafe wall, "Main.wallHouse[Type] = true;" is omitted.
+			Main.wallBlend[Type] = ModContent.WallType<ExampleWall>(); // Lets these 2 walls "blend", preventing the game from drawing a dark line between this and ExampleWall.
 
 			DustType = ModContent.DustType<Sparkle>();
 

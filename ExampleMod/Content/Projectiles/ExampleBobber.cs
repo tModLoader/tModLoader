@@ -12,10 +12,10 @@ namespace ExampleMod.Content.Projectiles
 	// Typically the fishing rod item decides the line color, but this bobber decides its own line color and serves as an example of using OnSpawn, SendExtraAI, and ReceiveExtraAI to sync a random value determined when spawned.
 	public class ExampleBobber : ModProjectile
 	{
-		public static readonly Color[] PossibleLineColors = new Color[] {
+		public static readonly Color[] PossibleLineColors = [
 			new Color(255, 215, 0), // A gold color
 			new Color(0, 191, 255) // A blue color
-		};
+		];
 
 		// This holds the index of the fishing line color in the PossibleLineColors array.
 		private int fishingLineColorIndex;

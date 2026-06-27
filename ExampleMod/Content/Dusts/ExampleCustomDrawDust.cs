@@ -10,13 +10,17 @@ namespace ExampleMod.Content.Dusts
 	// This dust shows off custom drawing. By default, the dust sprite is drawn once. This example uses custom drawing to draw a trail, it is an exact clone of DustID.Electric, aside from some code cleanup. One place Terraria uses DustID.Electric is when a player is suffering from BuffID.Electrified.
 	public class ExampleCustomDrawDust : ModDust
 	{
-		public override string Texture => null;
+		public override string Texture => null; // Set to null to use the vanilla texture instead of a custom texture
 
 		public override void OnSpawn(Dust dust) {
+			// We use HackFrame to set this dust to use the sprite of a vanilla dust.
+			dust.HackFrame(DustID.Electric);
+			/* This is the same logic as HackFrame, for reference:
 			int desiredVanillaDustTexture = DustID.Electric;
 			int frameX = desiredVanillaDustTexture * 10 % 1000;
 			int frameY = desiredVanillaDustTexture * 10 / 1000 * 30 + Main.rand.Next(3) * 10;
 			dust.frame = new Rectangle(frameX, frameY, 8, 8);
+			*/
 		}
 
 		public override Color? GetAlpha(Dust dust, Color lightColor) {
@@ -25,7 +29,7 @@ namespace ExampleMod.Content.Dusts
 		}
 
 		public override bool PreDraw(Dust dust) {
-			// Here we draw a trail by drawing the dust many times at different scales and offsets. 
+			// Here we draw a trail by drawing the dust many times at different scales and offsets.
 			if (dust.fadeIn == 0f) {
 				float trailLength = Math.Abs(dust.velocity.X) + Math.Abs(dust.velocity.Y);
 				trailLength *= 3f;

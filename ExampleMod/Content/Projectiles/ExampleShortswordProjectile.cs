@@ -1,6 +1,7 @@
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Enums;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Projectiles
@@ -35,7 +36,8 @@ namespace ExampleMod.Content.Projectiles
 			Projectile.ownerHitCheck = true; // Prevents hits through tiles. Most melee weapons that use projectiles have this
 			Projectile.extraUpdates = 1; // Update 1+extraUpdates times per tick
 			Projectile.timeLeft = 360; // This value does not matter since we manually kill it earlier, it just has to be higher than the duration we use in AI
-			Projectile.hide = true; // Important when used alongside player.heldProj. "Hidden" projectiles have special draw conditions
+			Projectile.usesOwnerLight = true;
+			Projectile.drawLayer = ProjectileDrawLayerID.HeldProj;
 		}
 
 		public override void AI() {
@@ -59,7 +61,7 @@ namespace ExampleMod.Content.Projectiles
 			Projectile.Opacity = Utils.GetLerpValue(0f, FadeInDuration, Timer, clamped: true) * Utils.GetLerpValue(TotalDuration, TotalDuration - FadeOutDuration, Timer, clamped: true);
 
 			// Keep locked onto the player, but extend further based on the given velocity (Requires ShouldUpdatePosition returning false to work)
-			Vector2 playerCenter = player.RotatedRelativePoint(player.MountedCenter, reverseRotation: false, addGfxOffY: false);
+			Vector2 playerCenter = player.RotatedRelativePoint(player.MountedCenter, reverseRotation: false);
 			Projectile.Center = playerCenter + Projectile.velocity * (Timer - 1f);
 
 			// Set spriteDirection based on moving left or right. Left -1, right 1

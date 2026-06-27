@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Dust.cs
 +++ src/tModLoader/Terraria/Dust.cs
-@@ -1,35 +_,100 @@
+@@ -1,36 +_,108 @@
  using System;
  using Microsoft.Xna.Framework;
 +using Terraria.DataStructures;
@@ -50,10 +50,18 @@
 +	/// </summary>
  	public float rotation;
 +	/// <summary>
-+	/// If true, the dust will not emit light. The specific behavior depends on the dust type, as many dust might not emit light or honor <see cref="noLight"/>. Defaults to <see langword="false"/>.
++	/// If true, the dust will not emit light. The specific behavior depends on the dust type, as many dust might not emit light or honor <see cref="noLight"/>. <see cref="noLightEmittance"/> is similar and might need to be used instead or together. Defaults to <see langword="false"/>.
 +	/// </summary>
  	public bool noLight;
- 	public bool noLightEmittence;
++	/// <summary>
++	/// If true, the dust will not emit light. The specific behavior depends on the dust type, as many dust might not emit light or honor <see cref="noLightEmittance"/>. <see cref="noLight"/> is similar and might need to be used instead or together. Defaults to <see langword="false"/>.
++	/// </summary>
+ 	public bool noLightEmittance;
++	/// <summary>
++	/// If true, this dust will draw in full brightness (Color.White) rather that using the color provided in <see cref="GetAlpha"/>.
++	/// Defaults to <see langword="false"/>.
++	/// </summary>
+ 	public bool fullBright;
  	public bool active;
 +	/// <summary>
 +	/// The Dust ID of this dust. The Dust ID will be equal to either a <see cref="DustID"/> entry or <see cref="ModContent.DustType{T}"/>.
@@ -68,7 +76,7 @@
 +	/// </summary>
  	public int alpha;
 +	/// <summary>
-+	/// The portion of the sprite sheet that this dust will be drawn using. Typical vanilla dust spawn with a randomly chosen 8x8 frame from a set of 3 options, but modded dust can use whatever dimensions are desired. 
++	/// The portion of the sprite sheet that this dust will be drawn using. Typical vanilla dust spawn with a randomly chosen 8x8 frame from a set of 3 options, but modded dust can use whatever dimensions are desired.
 +	/// </summary>
  	public Rectangle frame;
 +	/// <summary>
@@ -81,13 +89,13 @@
 +	/// </summary>
  	public object customData;
  	public bool firstFrame;
-+	
+ 
 +	// Added by TML.
 +	/// <summary>
 +	/// Used to temporarily store <see cref="type"/> when using <see cref="ModDust.UpdateType"/> to copy the behavior of an existing dust type.
 +	/// </summary>
 +	internal int realType = -1;
- 
++
 +	/// <summary>
 +	/// Attempts to spawn a single Dust into the game world. <paramref name="Position"/> indicates the spawn position and <paramref name="Velocity"/> indicates the initial velocity. Unlike <see cref="NewDust(Vector2, int, int, int, float, float, int, Color, float)"/>, position and velocity will not be slightly randomized, making this method suitable for visual effects that need exact positioning.
 +	/// </summary>
@@ -101,7 +109,7 @@
  	public static Dust NewDustPerfect(Vector2 Position, int Type, Vector2? Velocity = null, int Alpha = 0, Color newColor = default(Color), float Scale = 1f)
  	{
  		Dust dust = Main.dust[NewDust(Position, 0, 0, Type, 0f, 0f, Alpha, newColor, Scale)];
-@@ -40,6 +_,20 @@
+@@ -41,6 +_,20 @@
  		return dust;
  	}
  
@@ -122,7 +130,7 @@
  	public static Dust NewDustDirect(Vector2 Position, int Width, int Height, int Type, float SpeedX = 0f, float SpeedY = 0f, int Alpha = 0, Color newColor = default(Color), float Scale = 1f)
  	{
  		Dust dust = Main.dust[NewDust(Position, Width, Height, Type, SpeedX, SpeedY, Alpha, newColor, Scale)];
-@@ -49,6 +_,19 @@
+@@ -50,6 +_,19 @@
  		return dust;
  	}
  
@@ -142,7 +150,7 @@
  	public static int NewDust(Vector2 Position, int Width, int Height, int Type, float SpeedX = 0f, float SpeedY = 0f, int Alpha = 0, Color newColor = default(Color), float Scale = 1f)
  	{
  		if (Main.gameMenu)
-@@ -168,6 +_,8 @@
+@@ -193,6 +_,8 @@
  			if (dust.type == 80)
  				dust.alpha = 50;
  
@@ -151,7 +159,7 @@
  			if (dust.type == 34 || dust.type == 35 || dust.type == 152) {
  				dust.velocity *= 0.1f;
  				dust.velocity.Y = -0.5f;
-@@ -207,7 +_,9 @@
+@@ -232,9 +_,16 @@
  		return obj;
  	}
  
@@ -160,8 +168,15 @@
 +	/// <inheritdoc cref="Dust.QuickDust(Vector2, Color)"/>
  	public static Dust QuickDust(Point tileCoords, Color color) => QuickDust(tileCoords.ToWorldCoordinates(), color);
  
- 	public static void QuickBox(Vector2 topLeft, Vector2 bottomRight, int divisions, Color color, Action<Dust> manipulator)
-@@ -237,6 +_,12 @@
++	/// <summary>
++	/// Sets <see cref="frame"/> values to match the sprite of an existing vanilla Dust type (<see cref="DustID"/>). This can be used to re-use the sprite of an existing dust while giving the dust unique other behaviors.
++	/// <br/><br/> This can be used in <see cref="ModDust.OnSpawn(Dust)"/> to create a visual clone of an existing dust with custom logic or after spawning Dust with <c>Dust.NewDust</c> methods to give an instance of existing dust the sprite of another dust.
++	/// </summary>
++	/// <param name="Type">A <see cref="DustID"/> entry</param>
+ 	public void HackFrame(int Type)
+ 	{
+ 		frame.X = 10 * Type;
+@@ -298,6 +_,12 @@
  		}
  	}
  
@@ -174,7 +189,7 @@
  	public static Dust QuickDust(Vector2 pos, Color color)
  	{
  		Dust obj = Main.dust[NewDust(pos, 0, 0, 267)];
-@@ -272,6 +_,9 @@
+@@ -333,6 +_,9 @@
  
  	public static int dustWater()
  	{
@@ -184,7 +199,7 @@
  		switch (Main.waterStyle) {
  			case 2:
  				return 98;
-@@ -312,6 +_,16 @@
+@@ -376,6 +_,16 @@
  					continue;
  
  				dCount += 1f;
@@ -201,28 +216,29 @@
  				if (dust.scale > 10f)
  					dust.active = false;
  
-@@ -1650,7 +_,7 @@
+@@ -1743,7 +_,7 @@
  
- 					Lighting.AddLight((int)(dust.position.X / 16f), (int)(dust.position.Y / 16f), num104 * 0.7f, num104, num104 * 0.8f);
+ 					Lighting.AddLight((int)(dust.position.X / 16f), (int)(dust.position.Y / 16f), num108 * 0.7f, num108, num108 * 0.8f);
  				}
 -				else if (dust.type != 304) {
 +				else if (dust.type != 304 && (modDust == null || !modDust.MidUpdate(dust))) {
  					dust.velocity.X *= 0.99f;
  				}
  
-@@ -1875,6 +_,8 @@
+@@ -1974,6 +_,8 @@
  
- 				if (dust.scale < num113)
+ 				if (dust.scale < num117)
  					dust.active = false;
 +
 +				DustLoader.TakeDownUpdateType(dust);
  			}
  			else {
  				dust.active = false;
-@@ -1898,6 +_,14 @@
- 
- 	public Color GetAlpha(Color newColor)
+@@ -1999,6 +_,14 @@
  	{
+ 		if (fullBright)
+ 			return Color.White;
++
 +		ModDust modDust = DustLoader.GetDust(type);
 +
 +		if (modDust != null) {
@@ -230,7 +246,6 @@
 +			if (modColor.HasValue)
 +				return modColor.Value;
 +		}
-+
+ 
  		float num = (float)(255 - alpha) / 255f;
  		switch (type) {
- 			case 323:

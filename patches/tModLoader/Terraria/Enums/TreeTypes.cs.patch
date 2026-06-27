@@ -1,0 +1,10 @@
+--- src/TerrariaNetCore/Terraria/Enums/TreeTypes.cs
++++ src/tModLoader/Terraria/Enums/TreeTypes.cs
+@@ -14,5 +_,6 @@
+ 	PalmCrimson,
+ 	PalmCorrupt,
+ 	PalmHallowed,
+-	Ash
++	Ash,
++	Custom // Added by TML
+ }

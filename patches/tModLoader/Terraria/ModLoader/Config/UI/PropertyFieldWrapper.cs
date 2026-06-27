@@ -13,6 +13,7 @@ public class PropertyFieldWrapper
 	public MemberInfo MemberInfo => fieldInfo ?? (MemberInfo)propertyInfo;
 	public string Name => fieldInfo?.Name ?? propertyInfo.Name;
 	public Type Type => fieldInfo?.FieldType ?? propertyInfo.PropertyType;
+	public bool IsFieldOfAnEnum => Type.IsEnum && (fieldInfo?.DeclaringType.IsEnum ?? false);
 
 	public PropertyFieldWrapper(FieldInfo fieldInfo)
 	{

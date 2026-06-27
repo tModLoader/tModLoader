@@ -1,0 +1,16 @@
+@@ -220,3 +_,15 @@
+ 
+ 	public ItemSacrificeResult SacrificeItem(out int amountWeSacrificed)
+ 	{
++		return SacrificeItem(ref _itemSlotsForUI[0], out amountWeSacrificed);
++	}
++
++	// TML-added overload, allows to sacrifice any item without needing to go through the UI
++	public static ItemSacrificeResult SacrificeItem(Item toSacrifice, out int amountWeSacrificed)
++	{
++		return SacrificeItem(ref toSacrifice, out amountWeSacrificed);
++	}
++
++	// TML-added overload, allows to sacrifice any item without needing to go through the UI
++	public static ItemSacrificeResult SacrificeItem(ref Item item, out int amountWeSacrificed, bool returnRemainderToPlayer = false)
++	{

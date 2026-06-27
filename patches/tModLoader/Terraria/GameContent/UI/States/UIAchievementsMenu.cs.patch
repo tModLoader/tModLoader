@@ -1,0 +1,162 @@
+--- src/TerrariaNetCore/Terraria/GameContent/UI/States/UIAchievementsMenu.cs
++++ src/tModLoader/Terraria/GameContent/UI/States/UIAchievementsMenu.cs
+@@ -8,12 +_,13 @@
+ using Terraria.GameInput;
+ using Terraria.ID;
+ using Terraria.Localization;
++using Terraria.ModLoader.UI;
+ using Terraria.UI;
+ using Terraria.UI.Gamepad;
+ 
+ namespace Terraria.GameContent.UI.States;
+ 
+-public class UIAchievementsMenu : UIState
++public partial class UIAchievementsMenu : UIState
+ {
+ 	private UIList _achievementsList;
+ 	private List<UIAchievementListItem> _achievementElements = new List<UIAchievementListItem>();
+@@ -57,15 +_,33 @@
+ 		uITextPanel.BackgroundColor = new Color(73, 94, 171);
+ 		uIElement.Append(uITextPanel);
+ 		UITextPanel<LocalizedText> uITextPanel2 = new UITextPanel<LocalizedText>(Language.GetText("UI.Back"), 0.7f, large: true);
++		/*
+ 		uITextPanel2.Width.Set(-10f, 0.5f);
++		*/
+ 		uITextPanel2.Height.Set(50f, 0f);
+ 		uITextPanel2.VAlign = 1f;
++		/*
+ 		uITextPanel2.HAlign = 0.5f;
++		*/
+ 		uITextPanel2.Top.Set(-45f, 0f);
+ 		uITextPanel2.OnMouseOver += FadedMouseOver;
+ 		uITextPanel2.OnMouseOut += FadedMouseOut;
+ 		uITextPanel2.OnLeftClick += GoBackClick;
+ 		uIElement.Append(uITextPanel2);
++
++		resetAchievementsButton = new UITextPanel<LocalizedText>(Language.GetText("tModLoader.AchievementsReset"), 0.7f, large: true);
++		uITextPanel2.Width.Set(-10f, 0.8f);
++		uITextPanel2.HAlign = 0f;
++		resetAchievementsButton.Width.Set(-10f, 1 - uITextPanel2.Width.Percent);
++		resetAchievementsButton.Height.Set(50f, 0f);
++		resetAchievementsButton.VAlign = 1f;
++		resetAchievementsButton.HAlign = 1f;
++		resetAchievementsButton.Top.Set(-45f, 0f);
++		resetAchievementsButton.OnMouseOver += FadedMouseOver;
++		resetAchievementsButton.OnMouseOut += FadedMouseOut;
++		resetAchievementsButton.OnLeftClick += ResetAchievementsConfirm;
++		uIElement.Append(resetAchievementsButton);
++
+ 		_backpanel = uITextPanel2;
+ 		List<Achievement> list = Main.Achievements.CreateAchievementsList();
+ 		for (int i = 0; i < list.Count; i++) {
+@@ -74,6 +_,34 @@
+ 			_achievementElements.Add(item);
+ 		}
+ 
++		var filterTextBoxBackground = new UIPanel {
++			Top = { Pixels = 10f },
++			Left = { Pixels = -188, Percent = 1f },
++			Width = { Pixels = 180 },
++			Height = { Pixels = 32 }
++		};
++		filterTextBoxBackground.SetPadding(0);
++		filterTextBoxBackground.OnRightClick += ClearSearchField;
++		uIPanel.Append(filterTextBoxBackground);
++
++		filterTextBox = new UIInputTextField(Language.GetTextValue("tModLoader.ModsTypeToSearch")) {
++			Top = { Pixels = 5 },
++			Height = { Percent = 1f },
++			Width = { Percent = 1f },
++			Left = { Pixels = 5 },
++			VAlign = 0.5f,
++		};
++		filterTextBox.OnTextChange += (a, b) => FilterList(null, null);
++		filterTextBoxBackground.Append(filterTextBox);
++
++		UIImageButton clearSearchButton = new UIImageButton(Main.Assets.Request<Texture2D>("Images/UI/SearchCancel")) {
++			HAlign = 1f,
++			VAlign = 0.5f,
++			Left = new StyleDimension(-2f, 0f)
++		};
++		clearSearchButton.OnLeftClick += ClearSearchField;
++		filterTextBoxBackground.Append(clearSearchButton);
++
+ 		UIScrollbar uIScrollbar = new UIScrollbar();
+ 		uIScrollbar.SetView(100f, 1000f);
+ 		uIScrollbar.Height.Set(-50f, 1f);
+@@ -82,7 +_,7 @@
+ 		uIPanel.Append(uIScrollbar);
+ 		_achievementsList.SetScrollbar(uIScrollbar);
+ 		UIElement uIElement2 = new UIElement();
+-		uIElement2.Width.Set(0f, 1f);
++		uIElement2.Width.Set(0f, 0.5f); // Adjust so it doesn't overlap search textbox hitbox
+ 		uIElement2.Height.Set(32f, 0f);
+ 		uIElement2.Top.Set(10f, 0f);
+ 		Asset<Texture2D> texture = Main.Assets.Request<Texture2D>("Images/UI/Achievement_Categories");
+@@ -94,6 +_,13 @@
+ 			_categoryButtons.Add(uIToggleImage);
+ 			uIElement2.Append(uIToggleImage);
+ 		}
++		UIToggleImage toggleModdedOnlyImage = new UIToggleImage(UICommon.UIAchievementsMenuIconsTexture, 32, 32, new Point(0, 0), new Point(0, 34));
++		toggleModdedOnlyImage.Left.Set(4 * 36 + 8, 0f);
++		moddedOnly = false; // All settings should reset when the UI is reopened.
++		toggleModdedOnlyImage.SetState(value: moddedOnly);
++		toggleModdedOnlyImage.OnLeftClick += ToggleFilterModded;
++		_categoryButtons.Add(toggleModdedOnlyImage);
++		uIElement2.Append(toggleModdedOnlyImage);
+ 
+ 		uIPanel.Append(uIElement2);
+ 	}
+@@ -105,6 +_,9 @@
+ 			if (_categoryButtons[i].IsMouseHovering) {
+ 				string text = "";
+ 				switch (i) {
++					case 4:
++						text = Language.GetTextValue("tModLoader.AchievementsOnlyShowModded");
++						break;
+ 					case 3:
+ 						text = Language.GetTextValue("Achievements.ChallengerCategory");
+ 						break;
+@@ -139,6 +_,10 @@
+ 		}
+ 
+ 		SetupGamepadPoints(spriteBatch);
++		UILinkPointNavigator.Shortcuts.BackButtonCommand = 7;
++		if (Main.inputTextEscape && !Main.gameMenu) {
++			HandleBackButtonUsage(); // Need to manually handle this in-game for various reasons.
++		}
+ 	}
+ 
+ 	public void GotoAchievement(Achievement achievement)
+@@ -167,9 +_,16 @@
+ 
+ 	private void FilterList(UIMouseEvent evt, UIElement listeningElement)
+ 	{
++		if(listeningElement is UIToggleImage)
+ 		SoundEngine.PlaySound(12);
+ 		_achievementsList.Clear();
+ 		foreach (UIAchievementListItem achievementElement in _achievementElements) {
++			if (moddedOnly && achievementElement.GetAchievement().ModAchievement == null)
++				continue;
++
++			if (!PassSearchFilter(achievementElement.GetAchievement()))
++				continue;
++
+ 			if (_categoryButtons[(int)achievementElement.GetAchievement().Category].IsOn)
+ 				_achievementsList.Add(achievementElement);
+ 		}
+@@ -179,6 +_,7 @@
+ 
+ 	public override void OnActivate()
+ 	{
++		Main.clrInput();
+ 		InitializePage();
+ 		if (Main.gameMenu) {
+ 			_outerContainer.Top.Set(220f, 0f);
+@@ -218,5 +_,6 @@
+ 			uILinkPoint3.Right = ((i == _categoryButtons.Count - 1) ? (-4) : (num2 + 1));
+ 			uILinkPoint3.Down = num;
+ 		}
++		SetupGamepadPoints_TML(num, num2, uILinkPoint);
+ 	}
+ }

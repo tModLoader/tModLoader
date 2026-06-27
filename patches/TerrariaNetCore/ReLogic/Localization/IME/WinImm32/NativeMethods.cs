@@ -3,6 +3,7 @@ using System.Runtime.InteropServices;
 
 namespace ReLogic.Localization.IME.WinImm32;
 
+#if NETCORE
 internal static class NativeMethods
 {
 	[DllImport("Imm32.dll")]
@@ -39,3 +40,4 @@ internal static class NativeMethods
 	[DllImport("Imm32.dll", CharSet = CharSet.Unicode)]
 	public static extern bool ImmNotifyIME(IntPtr hImc, uint dwAction, uint dwIndex, uint dwValue);
 }
+#endif

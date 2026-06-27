@@ -1,9 +1,9 @@
 --- src/TerrariaNetCore/Terraria/DataStructures/TileEntity.cs
 +++ src/tModLoader/Terraria/DataStructures/TileEntity.cs
-@@ -4,24 +_,32 @@
- using Microsoft.Xna.Framework.Graphics;
+@@ -5,26 +_,38 @@
  using Terraria.Audio;
  using Terraria.GameInput;
+ using Terraria.UI;
 +using Terraria.ModLoader;
  
  namespace Terraria.DataStructures;
@@ -14,16 +14,22 @@
  	public static TileEntitiesManager manager;
  	public const int MaxEntitiesPerChunk = 1000;
  	public static object EntityCreationLock = new object();
+ 	public static List<TileEntity> UpdateEntities = new List<TileEntity>();
 +	/// <summary> Maps <see cref="ID"/> to TileEntity instances. </summary>
  	public static Dictionary<int, TileEntity> ByID = new Dictionary<int, TileEntity>();
 +	/// <summary> Maps tile coordinate locations to the TileEntity at that location. </summary>
  	public static Dictionary<Point16, TileEntity> ByPosition = new Dictionary<Point16, TileEntity>();
  	public static int TileEntitiesNextID;
-+	/// <summary> A unique ID for each TileEntity instance in the world. </summary>
++	/// <summary> A unique ID for each TileEntity instance in the world. This ID is consistent in multiplayer. </summary>
  	public int ID;
 +	/// <summary> The tile coordinate location of this TileEntity. Will typically be the top left corner of the corresponding multitile, but not necessarily. </summary>
  	public Point16 Position;
  	public byte type;
++	/// <summary>
++	/// Whether this tile entity is registered to have <see cref="Update"/> called each game update.
++	/// <para/> For modded tile entities, this will automatically be set to true if <see cref="Update"/> is overridden.
++	/// </summary>
+ 	public bool RequiresUpdates;
  
  	public static event Action _UpdateStart;
  	public static event Action _UpdateEnd;
@@ -34,7 +40,7 @@
  	public static int AssignNewID() => TileEntitiesNextID++;
  
  	public static void Clear()
-@@ -47,6 +_,8 @@
+@@ -110,6 +_,8 @@
  	{
  		manager = new TileEntitiesManager();
  		manager.RegisterAll();
@@ -43,7 +49,15 @@
  	}
  
  	public static void PlaceEntityNet(int x, int y, int type)
-@@ -59,38 +_,62 @@
+@@ -136,42 +_,70 @@
+ 		return result != null;
+ 	}
+ 
++	/// <summary>
++	/// Allows logic to execute every game update for this placed Tile Entity. Called on each placed Tile Entity.
++	/// <para/> This hook is not called for multiplayer clients. The <see cref="ID.MessageID.TileEntitySharing"/> network message will need be used to keep clients in sync if necessary.
++	/// </summary>
+ 	public virtual void Update()
  	{
  	}
  
@@ -61,16 +75,16 @@
 +		ent.WriteInner(writer, networkSend, lightSend);
  	}
  
--	public static TileEntity Read(BinaryReader reader, bool networkSend = false)
-+	public static TileEntity Read(BinaryReader reader, bool networkSend = false, bool lightSend = false)
+-	public static TileEntity Read(BinaryReader reader, int gameVersion, bool networkSend = false)
++	public static TileEntity Read(BinaryReader reader, int gameVersion, bool networkSend = false, bool lightSend = false)
  	{
 +		lightSend &= networkSend;
 +
  		byte id = reader.ReadByte();
  		TileEntity tileEntity = manager.GenerateInstance(id);
  		tileEntity.type = id;
--		tileEntity.ReadInner(reader, networkSend);
-+		tileEntity.ReadInner(reader, networkSend, lightSend);
+-		tileEntity.ReadInner(reader, gameVersion, networkSend);
++		tileEntity.ReadInner(reader, gameVersion, networkSend, lightSend);
  		return tileEntity;
  	}
  
@@ -95,8 +109,8 @@
 +		WriteExtraData(writer, lightSend);
  	}
  
--	private void ReadInner(BinaryReader reader, bool networkSend)
-+	private void ReadInner(BinaryReader reader, bool networkSend, bool lightSend)
+-	private void ReadInner(BinaryReader reader, int gameVersion, bool networkSend)
++	private void ReadInner(BinaryReader reader, int gameVersion, bool networkSend, bool lightSend)
  	{
 -		if (!networkSend)
 +		if (!lightSend)
@@ -111,8 +125,8 @@
 +			return;
 +		}
 +
--		ReadExtraData(reader, networkSend);
-+		ReadExtraData(reader, lightSend);
+-		ReadExtraData(reader, gameVersion, networkSend);
++		ReadExtraData(reader, gameVersion, lightSend);
  	}
  
  	public virtual void WriteExtraData(BinaryWriter writer, bool networkSend)

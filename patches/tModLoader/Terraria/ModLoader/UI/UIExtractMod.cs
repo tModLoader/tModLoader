@@ -82,12 +82,12 @@ internal class UIExtractMod : UIProgress
 				if (name == LOG_NAME)
 					continue;
 
-				bool hidden = codeExtensions.Contains(Path.GetExtension(name))
+				bool hidden = codeExtensions.Contains(Path.GetExtension(name)) || name == $"{mod.Name}.xml"
 					? mod.properties.hideCode
 					: mod.properties.hideResources;
 
 				if (hidden) {
-					log.Write($"[hidden] {name}");
+					log.WriteLine($"[hidden] {name}");
 					continue;
 				} else {
 					log.WriteLine(name);
@@ -110,7 +110,7 @@ internal class UIExtractMod : UIProgress
 					File.Copy(path, Path.Combine(modReferencesPath, $"{mod.Name}_v{mod.modFile.Version}.dll"), true);
 					log?.WriteLine($"You can find this mod's .dll files under {Path.GetFullPath(modReferencesPath)} for easy mod collaboration!");
 				}
-				if (name == $"{mod.Name}.xml" && !mod.properties.hideCode) {
+				if (name == $"{mod.Name}.xml") {
 					Directory.CreateDirectory(modReferencesPath);
 					File.Copy(path, Path.Combine(modReferencesPath, $"{mod.Name}_v{mod.modFile.Version}.xml"), true);
 					log?.WriteLine($"You can find this mod's documentation .xml file under {Path.GetFullPath(modReferencesPath)} for easy mod collaboration!");

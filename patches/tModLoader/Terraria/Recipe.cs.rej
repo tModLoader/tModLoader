@@ -1,0 +1,226 @@
+@@ -58,7 +_,7 @@
+ 
+ 	public void RequireGroup(int id)
+ 	{
+-		for (int i = 0; i < maxRequirements; i++) {
++		for (int i = 0; i < acceptedGroups.Count; i++) {
+ 			if (acceptedGroups[i] == -1) {
+ 				acceptedGroups[i] = id;
+ 				break;
+@@ -85,7 +_,7 @@
+ 
+ 	public bool AcceptsGroup(int groupId)
+ 	{
+-		for (int i = 0; i < maxRequirements; i++) {
++		for (int i = 0; i < acceptedGroups.Count; i++) {
+ 			int num = acceptedGroups[i];
+ 			if (num == -1)
+ 				break;
+@@ -99,14 +_,10 @@
+ 
+ 	public bool AcceptedByItemGroups(int invType, int reqType)
+ 	{
+-		for (int i = 0; i < maxRequirements; i++) {
+-			int num = acceptedGroups[i];
+-			if (num == -1)
+-				break;
+-
+-			if (RecipeGroup.recipeGroups[num].ValidItems.Contains(invType) && RecipeGroup.recipeGroups[num].ValidItems.Contains(reqType))
++		foreach (int num in acceptedGroups) {
++			if (RecipeGroup.recipeGroups[num].ContainsItem(invType) && RecipeGroup.recipeGroups[num].ContainsItem(reqType))
+ 				return true;
+ 		}
+ 
+ 		return false;
+ 	}
+@@ -134,15 +_,14 @@
+ 
+ 	public void Create()
+ 	{
++		//TML: Just in case something throws or breaks and the 'clear after craft' doesn't run.
++		RecipeLoader.ConsumedItems.Clear();
++
+ 		Item[] array = null;
+ 		Item item = null;
+-		Item item2 = null;
+-		for (int i = 0; i < maxRequirements; i++) {
+-			item2 = requiredItem[i];
+-			if (item2.type == 0)
+-				break;
+-
++		foreach (Item item2 in requiredItem) {
+ 			int num = item2.stack;
++			/* TML: Recipe.alchemy is unused due to being replaced by consume item hooks
+ 			if (alchemy && Main.player[Main.myPlayer].alchemyTable) {
+ 				if (num > 1) {
+ 					int num2 = 0;
+@@ -157,26 +_,38 @@
+ 					num = 0;
+ 				}
+ 			}
++			*/
++
++			RecipeLoader.ConsumeIngredient(this, item2.type, ref num, false);
+ 
+ 			if (num <= 0)
+ 				continue;
+ 
++			// Extra patch context.
+ 			array = Main.player[Main.myPlayer].inventory;
+ 			for (int k = 0; k < 58; k++) {
+ 				item = array[k];
+ 				if (num <= 0)
+ 					break;
+ 
++				ConsumeForCraft(item, item2, ref num);
++				/*
+ 				if (item.IsTheSameAs(item2) || useWood(item.type, item2.type) || useSand(item.type, item2.type) || useFragment(item.type, item2.type) || useIronBar(item.type, item2.type) || usePressurePlate(item.type, item2.type) || AcceptedByItemGroups(item.type, item2.type)) {
+ 					if (item.stack > num) {
++						RecipeLoader.ConsumedItems.Add(item.Clone());
++						RecipeLoader.ConsumedItems[^1].stack = num;
++
+ 						item.stack -= num;
+ 						num = 0;
+ 					}
+ 					else {
++						RecipeLoader.ConsumedItems.Add(item);
++
+ 						num -= item.stack;
+ 						array[k] = new Item();
+ 					}
+ 				}
++				*/
+ 			}
+ 
+ 			if (Main.player[Main.myPlayer].chest != -1) {
+@@ -196,6 +_,11 @@
+ 					if (num <= 0)
+ 						break;
+ 
++					if (ConsumeForCraft(item, item2, ref num)) {
++						if (Main.netMode == 1 && Main.player[Main.myPlayer].chest >= 0)
++							NetMessage.SendData(32, -1, -1, null, Main.player[Main.myPlayer].chest, l);
++					}
++					/*
+ 					if (!item.IsTheSameAs(item2) && !useWood(item.type, item2.type) && !useSand(item.type, item2.type) && !useIronBar(item.type, item2.type) && !usePressurePlate(item.type, item2.type) && !useFragment(item.type, item2.type) && !AcceptedByItemGroups(item.type, item2.type))
+ 						continue;
+ 
+@@ -212,11 +_,12 @@
+ 						if (Main.netMode == 1 && Main.player[Main.myPlayer].chest >= 0)
+ 							NetMessage.SendData(32, -1, -1, null, Main.player[Main.myPlayer].chest, l);
+ 					}
++					*/
+ 				}
+ 			}
+ 
+ 			if (!Main.player[Main.myPlayer].useVoidBag() || Main.player[Main.myPlayer].chest == -5)
+-				continue;
++				goto ModdedMaterials; // continue;
+ 
+ 			array = Main.player[Main.myPlayer].bank4.item;
+ 			for (int m = 0; m < 40; m++) {
+@@ -224,10 +_,16 @@
+ 				if (num <= 0)
+ 					break;
+ 
++				// tML note, the net syncing code is redundant (vanilla bug) and doesn't need to be called. Void bag is synced like player inventory
++				ConsumeForCraft(item, item2, ref num);
++				/*
+ 				if (!item.IsTheSameAs(item2) && !useWood(item.type, item2.type) && !useSand(item.type, item2.type) && !useIronBar(item.type, item2.type) && !usePressurePlate(item.type, item2.type) && !useFragment(item.type, item2.type) && !AcceptedByItemGroups(item.type, item2.type))
+ 					continue;
+ 
+ 				if (item.stack > num) {
++					RecipeLoader.ConsumedItems.Add(item.Clone());
++					RecipeLoader.ConsumedItems[^1].stack = num;
++
+ 					item.stack -= num;
+ 					if (Main.netMode == 1 && Main.player[Main.myPlayer].chest >= 0)
+ 						NetMessage.SendData(32, -1, -1, null, Main.player[Main.myPlayer].chest, m);
+@@ -235,11 +_,31 @@
+ 					num = 0;
+ 				}
+ 				else {
++					RecipeLoader.ConsumedItems.Add(item);
++
+ 					num -= item.stack;
+ 					array[m] = new Item();
+ 					if (Main.netMode == 1 && Main.player[Main.myPlayer].chest >= 0)
+ 						NetMessage.SendData(32, -1, -1, null, Main.player[Main.myPlayer].chest, m);
+ 				}
++				*/
++			}
++
++			ModdedMaterials:
++			foreach ((var items, var onConsumedCallback) in PlayerLoader.GetModdedCraftingMaterials(Main.LocalPlayer)) {
++				if (num <= 0)
++					break;
++
++				int index = 0;
++				foreach (var materialItem in items) {
++					if (num <= 0)
++						break;
++
++					if (ConsumeForCraft(materialItem, item2, ref num))
++						onConsumedCallback?.Invoke(materialItem, index);
++
++					index++;
++				}
+ 			}
+ 		}
+ 
+@@ -398,7 +_,7 @@
+ 
+ 	public static bool CollectedEnoughItemsToCraftRecipeOld(Recipe tempRec)
+ 	{
+-		for (int i = 0; i < maxRequirements; i++) {
++		for (int i = 0; i < tempRec.requiredItem.Count; i++) {
+ 			Item item = tempRec.requiredItem[i];
+ 			if (item.type == 0)
+ 				break;
+@@ -424,7 +_,7 @@
+ 
+ 	public static bool CollectedEnoughItemsToCraftRecipeNew(Recipe tempRec)
+ 	{
+-		for (int i = 0; i < maxRequirements; i++) {
++		for (int i = 0; i < tempRec.requiredItem.Count; i++) {
+ 			RequiredItemEntry requiredItemEntry = tempRec.requiredItemQuickLookup[i];
+ 			if (requiredItemEntry.itemIdOrRecipeGroup == 0)
+ 				break;
+@@ -441,7 +_,7 @@
+ 
+ 	private static bool PlayerMeetsEnvironmentConditions(Player player, Recipe tempRec)
+ 	{
+-		bool num = !tempRec.needWater || player.adjWater || player.adjTile[172];
++		bool num = !tempRec.needWater || player.adjWater /*|| player.adjTile[172]*/;
+ 		bool flag = !tempRec.needHoney || tempRec.needHoney == player.adjHoney;
+ 		bool flag2 = !tempRec.needLava || tempRec.needLava == player.adjLava;
+ 		bool flag3 = !tempRec.needSnowBiome || player.ZoneSnow;
+@@ -452,7 +_,7 @@
+ 
+ 	private static bool PlayerMeetsTileRequirements(Player player, Recipe tempRec)
+ 	{
+-		for (int i = 0; i < maxRequirements && tempRec.requiredTile[i] != -1; i++) {
++		for (int i = 0; i < tempRec.requiredTile.Count && tempRec.requiredTile[i] != -1; i++) {
+ 			if (!player.adjTile[tempRec.requiredTile[i]])
+ 				return false;
+ 		}
+@@ -628,4 +_,5 @@
+ 
++		/*
+ 		if (Main.remixWorld && Main.getGoodWorld) {
+ 			ItemID.Sets.IsAMaterial[544] = true;
+ 			ItemID.Sets.IsAMaterial[556] = true;
+@@ -636,6 +_,7 @@
+ 			ItemID.Sets.IsAMaterial[556] = false;
+ 			ItemID.Sets.IsAMaterial[557] = false;
+ 		}
++		*/
+ 	}
+ 
+ 	public static void SetupRecipes()
+@@ -14542,4 +_,5 @@
+ 	{
+ 		if (flag)
+ 			RequireGroup(groupId);
++		flag = false; // TML: wasn't being cleared
+ 	}

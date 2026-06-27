@@ -10,7 +10,7 @@ public static class BuildInfo
 	{
 		Dev, // Personal Builds
 		Preview, // Monthly preview builds from CI that modders develop against for compatibility
-		Stable // The 'stable' builds from CI that players are expected to play on. 
+		Stable // The 'stable' builds from CI that players are expected to play on.
 	}
 
 	public static readonly string BuildIdentifier = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion;
@@ -52,8 +52,7 @@ public static class BuildInfo
 		// Version name for players
 		versionedName = $"tModLoader v{tMLVersion}";
 
-		string[] branchNameBlacklist = { "unknown", "stable", "preview", "1.4.3-Legacy" };
-		if (!string.IsNullOrEmpty(BranchName) && !branchNameBlacklist.Contains(BranchName))
+		if (!string.IsNullOrEmpty(BranchName) && !Social.Base.SocialBrowserModule.branchNameBlacklist.Contains(BranchName))
 			versionedName += $" {BranchName}";
 
 		if (Purpose != BuildPurpose.Stable)

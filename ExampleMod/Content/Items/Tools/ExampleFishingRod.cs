@@ -13,7 +13,7 @@ namespace ExampleMod.Content.Items.Tools
 	public class ExampleFishingRod : ModItem
 	{
 		public override void SetStaticDefaults() {
-			ItemID.Sets.CanFishInLava[Item.type] = true; // Allows the pole to fish in lava
+			ItemID.Sets.CanFishInLava[Type] = true; // Allows the pole to fish in lava
 		}
 
 		public override void SetDefaults() {

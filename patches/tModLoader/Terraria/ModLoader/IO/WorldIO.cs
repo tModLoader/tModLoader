@@ -6,6 +6,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using Terraria.Chat;
+using Terraria.GameContent;
 using Terraria.GameContent.Events;
 using Terraria.ID;
 using Terraria.IO;
@@ -172,7 +173,7 @@ internal static class WorldIO
 				g.SaveData(npc, data);
 				if (data.Count == 0)
 					continue;
-				
+
 				globalData.Add(new TagCompound {
 					["mod"] = g.Mod.Name,
 					["name"] = g.Name,
@@ -324,7 +325,7 @@ internal static class WorldIO
 	{
 		var list = new List<TagCompound>();
 		for (int type = NPCID.Count; type < NPCLoader.NPCCount; type++) {
-			int killCount = NPC.killCount[type];
+			int killCount = BannerSystem.killCount[type];
 			if (killCount <= 0)
 				continue;
 
@@ -342,7 +343,7 @@ internal static class WorldIO
 	{
 		foreach (var tag in list) {
 			if (ModContent.TryFind(tag.GetString("mod"), tag.GetString("name"), out ModNPC modNpc)) {
-				NPC.killCount[modNpc.Type] = tag.GetInt("count");
+				BannerSystem.killCount[modNpc.Type] = tag.GetInt("count");
 			}
 			else {
 				ModContent.GetInstance<UnloadedSystem>().unloadedKillCounts.Add(tag);
@@ -626,7 +627,7 @@ internal static class WorldIO
 	{
 		path = Path.ChangeExtension(path, ".twld");
 		if (FileUtilities.Exists(path + ".bak", cloudSave)) {
-			FileUtilities.Move(path + ".bak", path, cloudSave, true);
+			FileUtilities.Move(path + ".bak", path, cloudSave);
 		}
 	}
 	//in Terraria.WorldGen.do_playWorldCallback add this after moving .bak file
@@ -634,10 +635,10 @@ internal static class WorldIO
 	{
 		path = Path.ChangeExtension(path, ".twld");
 		if (FileUtilities.Exists(path, cloudSave)) {
-			FileUtilities.Copy(path, path + ".bad", cloudSave, true);
+			FileUtilities.Copy(path, path + ".bad", cloudSave);
 		}
 		if (FileUtilities.Exists(path + ".bak", cloudSave)) {
-			FileUtilities.Copy(path + ".bak", path, cloudSave, true);
+			FileUtilities.Copy(path + ".bak", path, cloudSave);
 			FileUtilities.Delete(path + ".bak", cloudSave);
 		}
 	}
@@ -646,10 +647,10 @@ internal static class WorldIO
 	{
 		path = Path.ChangeExtension(path, ".twld");
 		if (FileUtilities.Exists(path, cloudSave)) {
-			FileUtilities.Copy(path, path + ".bak", cloudSave, true);
+			FileUtilities.Copy(path, path + ".bak", cloudSave);
 		}
 		if (FileUtilities.Exists(path + ".bad", cloudSave)) {
-			FileUtilities.Copy(path + ".bad", path, cloudSave, true);
+			FileUtilities.Copy(path + ".bad", path, cloudSave);
 			FileUtilities.Delete(path + ".bad", cloudSave);
 		}
 	}
@@ -674,7 +675,7 @@ internal static class WorldIO
 			["usedMods"] = SaveUsedMods(),
 			["usedModPack"] = SaveUsedModPack(),
 			["generatedWithMods"] = SaveGeneratedWithMods(),
-		};			
+		};
 	}
 
 	private static TagCompound SaveModHeaders()

@@ -17,7 +17,7 @@
 +			// Modifications by TML:
 +			.Concat(
 +				ModLoader.ModLoader.Mods
-+				.Where(mod => NPCLoader.npcs.Any(npc => npc.Mod == mod))
++				.Where(mod => NPCLoader.npcs.Any(npc => npc.Mod == mod && (!NPCID.Sets.NPCBestiaryDrawOffset.TryGetValue(npc.Type, out var drawModifiers) || !drawModifiers.Hide)))
 +				.Select(mod => mod.ModSourceBestiaryInfoElement)
 +			)
 +			.Concat(
@@ -42,18 +42,18 @@
  	private BestiaryEntry Register(BestiaryEntry entry) => _currentDatabase.Register(entry);
  	private IBestiaryEntryFilter Register(IBestiaryEntryFilter filter) => _currentDatabase.Register(filter);
  
-@@ -580,6 +_,10 @@
+@@ -591,6 +_,10 @@
  
  	private void AddTownNPCs_Manual()
  	{
 +		// Town NPCs are loaded automatically now so it just returns.
 +		return;
-+		
++
 +		/*
  		Register(BestiaryEntry.TownNPC(22));
  		Register(BestiaryEntry.TownNPC(17));
  		Register(BestiaryEntry.TownNPC(18));
-@@ -620,6 +_,7 @@
+@@ -631,6 +_,7 @@
  		Register(BestiaryEntry.TownNPC(682));
  		Register(BestiaryEntry.TownNPC(683));
  		Register(BestiaryEntry.TownNPC(684));
@@ -61,7 +61,7 @@
  	}
  
  	private void AddMultiEntryNPCS_Manual()
-@@ -629,13 +_,19 @@
+@@ -640,13 +_,19 @@
  
  	private void AddEmptyEntries_CrittersAndEnemies_Automated()
  	{

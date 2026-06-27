@@ -22,6 +22,7 @@ namespace ExampleMod.Common.Configs.ModConfigShowcases
 	{
 		public override ConfigScope Mode => ConfigScope.ClientSide;
 
+		[Header("CustomElements")]
 		[CustomModConfigItem(typeof(GradientElement))]
 		public Gradient gradient = new Gradient();
 
@@ -49,6 +50,17 @@ namespace ExampleMod.Common.Configs.ModConfigShowcases
 		[CustomModConfigItem(typeof(CustomFloatElement))]
 		public float tint;
 
+		// Enum can be presented as a chooser (default), slider, dropdown, or cycle button:
+		[Header("EnumOptions")]
+		public SampleEnum EnumDefault;
+		[Slider, DrawTicks]
+		public SampleEnum EnumSlider;
+		[Dropdown]
+		public SampleEnum EnumDropdown;
+		[Cycle]
+		public SampleEnum EnumCycle;
+
+		[Header("Collections")]
 		public Dictionary<string, Pair> StringPairDictionary = new Dictionary<string, Pair>();
 		public Dictionary<ItemDefinition, float> JsonItemFloatDictionary = new Dictionary<ItemDefinition, float>();
 
@@ -65,6 +77,7 @@ namespace ExampleMod.Common.Configs.ModConfigShowcases
 		[Expand(false, false)]
 		public List<Pair> collapsedListOfCollapsedObjects = new List<Pair>() { new Pair() { enabled = true, boost = 3 }, new Pair { enabled = true, boost = 6 } };
 
+		[Header("CustomDataClasses")]
 		[Expand(false)]
 		public SimpleData simpleDataExample; // you can also initialize in the constructor, see initialization in public ModConfigShowcaseMisc() below.
 

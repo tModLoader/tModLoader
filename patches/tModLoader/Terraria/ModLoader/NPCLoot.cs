@@ -4,7 +4,7 @@ using Terraria.GameContent.ItemDropRules;
 
 namespace Terraria.ModLoader;
 
-/// <summary> This readonly struct is a simple shortcut to <see cref="ItemDropDatabase"/>'s methods. </summary>
+/// <summary> Provides access to <see cref="ItemDropDatabase"/>'s methods specific to this NPC type. </summary>
 public readonly struct NPCLoot : ILoot
 {
 	private readonly int npcNetId;
@@ -16,6 +16,7 @@ public readonly struct NPCLoot : ILoot
 		this.itemDropDatabase = itemDropDatabase;
 	}
 
+	/// <inheritdoc cref="ItemDropDatabase.GetRulesForNPCID(int, bool)"/>
 	public List<IItemDropRule> Get(bool includeGlobalDrops = true)
 		=> itemDropDatabase.GetRulesForNPCID(npcNetId, includeGlobalDrops);
 
@@ -26,6 +27,10 @@ public readonly struct NPCLoot : ILoot
 		return entry;
 	}
 
+	/// <summary>
+	/// Removes a specific <see cref="IItemDropRule"/> from this NPC type.
+	/// <para/> Note that <paramref name="entry"/> must be an existing <see cref="IItemDropRule"/> instance retrieved from <see cref="Get(bool)"/>, not a newly created instance.
+	/// </summary>
 	public IItemDropRule Remove(IItemDropRule entry)
 	{
 		itemDropDatabase.RemoveFromNPCNetId(npcNetId, entry);

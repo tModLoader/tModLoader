@@ -1,5 +1,6 @@
 namespace ReLogic.Localization.IME.WinImm32;
 
+#if NETCORE
 internal static class Imm
 {
 	public const int ISC_SHOWUICANDIDATEWINDOW = 1;
@@ -436,3 +437,4 @@ internal static class Imm
 	public const ushort SUBLANG_YORUBA_NIGERIA = 1;
 	public const ushort SUBLANG_ZULU_SOUTH_AFRICA = 1;
 }
+#endif

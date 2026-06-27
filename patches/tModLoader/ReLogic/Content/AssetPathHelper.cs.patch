@@ -7,7 +7,7 @@
  
  namespace ReLogic.Content;
  
-+//TML: 'StringComparison.Ordinal' added everywhere.	
++//TML: 'StringComparison.Ordinal' added everywhere.
  public static class AssetPathHelper
  {
  	public static string CleanPath(string path)

@@ -1,0 +1,36 @@
+--- src/TerrariaNetCore/Terraria/GameContent/Items/TagEffectState.cs
++++ src/tModLoader/Terraria/GameContent/Items/TagEffectState.cs
+@@ -242,22 +_,28 @@
+ 		}
+ 	}
+ 
++	/*
+ 	public void ModifyHit(Projectile optionalProjectile, NPC npcHit, ref int damageDealt, ref bool crit)
++	*/
++	public void ModifyHit(Projectile optionalProjectile, NPC npcHit, ref NPC.HitModifiers modifiers)
+ 	{
+ 		if (_effect != null && IsNPCTagged(npcHit.whoAmI) && _effect.CanRunHitEffects(_owner, optionalProjectile, npcHit)) {
+-			_effect.ModifyTaggedHit(_owner, optionalProjectile, npcHit, ref damageDealt, ref crit);
++			_effect.ModifyTaggedHit(_owner, optionalProjectile, npcHit, ref modifiers);
+ 			if (CanProcOnNPC(npcHit.whoAmI))
+-				_effect.ModifyProcHit(_owner, optionalProjectile, npcHit, ref damageDealt, ref crit);
++				_effect.ModifyProcHit(_owner, optionalProjectile, npcHit, ref modifiers);
+ 		}
+ 	}
+ 
++	/*
+-	public void OnHit(Projectile optionalProjectile, NPC npcHit, int calcDamage)
++	public void OnHit(Projectile optionalProjectile, NPC npcHit, float calcDamage)
++	*/
++	public void OnHit(Projectile optionalProjectile, NPC npcHit, NPC.HitInfo hit)
+ 	{
+ 		if (_effect != null && IsNPCTagged(npcHit.whoAmI) && _effect.CanRunHitEffects(_owner, optionalProjectile, npcHit)) {
+-			_effect.OnTaggedHit(_owner, optionalProjectile, npcHit, calcDamage);
++			_effect.OnTaggedHit(_owner, optionalProjectile, npcHit, hit);
+ 			if (CanProcOnNPC(npcHit.whoAmI)) {
+ 				ClearProcOnNPC(npcHit.whoAmI);
+-				_effect.OnProcHit(_owner, optionalProjectile, npcHit, calcDamage);
++				_effect.OnProcHit(_owner, optionalProjectile, npcHit, hit);
+ 			}
+ 		}
+ 	}

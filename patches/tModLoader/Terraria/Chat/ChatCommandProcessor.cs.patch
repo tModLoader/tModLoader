@@ -8,7 +8,7 @@
  
  namespace Terraria.Chat;
  
-@@ -107,6 +_,11 @@
+@@ -86,6 +_,11 @@
  
  	public void ProcessIncomingMessage(ChatMessage message, int clientId)
  	{

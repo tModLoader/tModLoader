@@ -1,0 +1,18 @@
+--- src/TerrariaNetCore/Terraria/GameContent/QuickStacking.cs
++++ src/tModLoader/Terraria/GameContent/QuickStacking.cs
+@@ -4,6 +_,7 @@
+ using System.Linq;
+ using Microsoft.Xna.Framework;
+ using Terraria.ID;
++using Terraria.ModLoader;
+ using Terraria.UI;
+ 
+ namespace Terraria.GameContent;
+@@ -93,6 +_,7 @@
+ 
+ 		public void Reset()
+ 		{
++			Array.Resize(ref firstEntryForType, ItemLoader.ItemCount);
+ 			Array.Clear(firstEntryForType, 0, firstEntryForType.Length);
+ 			Array.Clear(entries, 0, entries.Length);
+ 			numEntries = 1;

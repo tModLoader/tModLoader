@@ -1,0 +1,112 @@
+--- src/TerrariaNetCore/Terraria/GameContent/Items/WhipTagEffect.cs
++++ src/tModLoader/Terraria/GameContent/Items/WhipTagEffect.cs
+@@ -2,12 +_,20 @@
+ 
+ namespace Terraria.GameContent.Items;
+ 
++/// <summary>
++/// A whip "tag effect". This class contains data and methods related to the effect that is applied to an NPC when hit by a whip and to the player that is hitting that NPC.
++/// </summary>
+ public class WhipTagEffect : UniqueTagEffect
+ {
++	/// <summary> The buff ID to apply to the player when the tag effect is applied. Example: a buff that increases DamageClass.SummonMeleeSpeed attack speed.</summary>
+ 	public int PlayerBuffId;
++	/// <summary> The duration of the buff that is applied to the player in ticks. 60 ticks == 1 second.</summary>
+ 	public int PlayerBuffTime;
++	/// <summary> Set to <see langword="true"/> to stop the player buff from being applied automatically in case you want to apply the buff manually.</summary>
+ 	public bool PlayerBuffAppliedManually;
++	/// <summary> The chance that an attack will be a critical hit in whole numbers. Example: <c>20</c> would be 20% chance to crit.</summary>
+ 	public int CritChance;
++	/// <summary> The flat damage added when a minion, sentry, or one of their projectiles hits a tagged enemy.</summary>
+ 	public int TagDamage;
+ 	private const int generalWhipMarkDuration = 240;
+ 
+@@ -16,8 +_,14 @@
+ 		TagDuration = 240;
+ 	}
+ 
++	/// <summary>
++	/// Allows you to change if the tag effect can be applied to an NPC. <see langword="true"/> by default.
++	/// <br/> By default, the tags cannot be applied to NPCs who are immune to tags with <see cref="NPCID.Sets.ImmuneToWhipTags"/>.
++	/// <para> Make sure to add `base.CanApplyTagToNPC(npcType)` for the default immunity check.</para>
++	/// </summary>
+ 	public override bool CanApplyTagToNPC(int npcType)
+ 	{
++		/*
+ 		if (!NPCID.Sets.DebuffImmunitySets.TryGetValue(npcType, out var value))
+ 			return true;
+ 
+@@ -25,14 +_,30 @@
+ 			return !value.ImmuneToWhips;
+ 
+ 		return true;
++		*/
++
++		return !NPCID.Sets.ImmuneToWhipTags[npcType];
+ 	}
+ 
++	/// <summary>
++	/// Allows you to add additional effects when the buff is removed from the player.
++	/// <br/> This will automatically clear the <see cref="PlayerBuffId"/> from the player.
++	/// <para> Make sure to add `base.OnRemovedFromPlayer(player)` for the buff to be cleared automatically.</para>
++	/// </summary>
++	/// <param name="player">The player who inflicted the tag effect.</param>
+ 	public override void OnRemovedFromPlayer(Player player)
+ 	{
+ 		if (player == Main.LocalPlayer)
+ 			player.ClearBuff(PlayerBuffId);
+ 	}
+ 
++	/// <summary>
++	/// Allows you to add additional effects when the tag is first applied to the NPC.
++	/// <br/> This will automatically apply the <see cref="PlayerBuffId"/> to the player.
++	/// <para> Make sure to add `base.OnTagAppliedToNPC(player, npc)` for the buff to be applied automatically.</para>
++	/// </summary>
++	/// <param name="player">The player who inflicted the tag effect.</param>
++	/// <param name="npc">The NPC who was hit.</param>
+ 	public override void OnTagAppliedToNPC(Player player, NPC npc)
+ 	{
+ 		if (player == Main.LocalPlayer)
+@@ -45,15 +_,42 @@
+ 			player.AddBuff(PlayerBuffId, PlayerBuffTime);
+ 	}
+ 
++	/*
+ 	public override void ModifyTaggedHit(Player owner, Projectile optionalProjectile, NPC npcHit, ref int damageDealt, ref bool crit)
++	*/
++	/// <summary>
++	/// Allows the damage dealt to be modified when a tagged enemy takes damage from a minion, sentry, or one of their projectiles.
++	/// <br/> This automatically handles the <see cref="TagDamage"/> and <see cref="CritChance"/> fields.
++	/// <para> Make sure to add <c>base.ModifyTaggedHit(owner, optionalProjectile, npcHit, ref damageDealt, ref crit);</c> in order for those calculations to take place.</para>
++	/// </summary>
++	/// <param name="owner">The player who inflicted the tag effect.</param>
++	/// <param name="optionalProjectile">The projectile that hit the NPC.</param>
++	/// <param name="npcHit">The NPC who was hit.</param>
++	/// <param name="modifiers">The original damage that was dealt to the NPC.</param>
++	public override void ModifyTaggedHit(Player owner, Projectile optionalProjectile, NPC npcHit, ref NPC.HitModifiers modifiers)
+ 	{
+ 		if (optionalProjectile != null)
++			/*
+ 			damageDealt += (int)((float)(TagDamage + optionalProjectile.bonusTagDamage) * ProjectileID.Sets.SummonTagDamageMultiplier[optionalProjectile.type]);
++			*/
++			modifiers.FlatBonusDamage += (TagDamage + optionalProjectile.bonusTagDamage) * ProjectileID.Sets.SummonTagDamageMultiplier[optionalProjectile.type];
+ 
+ 		if (Main.rand.Next(100) < CritChance)
++			/*
+ 			crit = true;
++			*/
++			modifiers.SetCrit();
+ 	}
+ 
++	/// <summary>
++	/// Allows you to change if hit effects can run.
++	/// <br/> By default, hit effects can run if the NPC was hit by a minion, sentry, or one of their projectiles.
++	/// <para> Make sure to add `base.CanRunHitEffects(owner, optionalProjectile, npcHit)` for the default check.</para>
++	/// </summary>
++	/// <param name="owner">The player who inflicted the tag effect.</param>
++	/// <param name="optionalProjectile">The projectile that hit the NPC.</param>
++	/// <param name="npcHit">The NPC who was hit.</param>
++	/// <returns><see langword="true"/> for minions, sentries, or one of their projectiles.</returns>
+ 	public override bool CanRunHitEffects(Player owner, Projectile optionalProjectile, NPC npcHit)
+ 	{
+ 		if (optionalProjectile == null || !optionalProjectile.OwnedBySomeone)

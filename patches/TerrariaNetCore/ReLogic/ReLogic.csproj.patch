@@ -19,5 +19,5 @@
 -		<Reference Include="System.Drawing" />
 -		<Reference Include="System.Windows.Forms" />
  	</ItemGroup>
- 	<ItemGroup>
- 		<EmbeddedResource Include="Microsoft/**" />
+ 	<ItemGroup />
+ </Project>

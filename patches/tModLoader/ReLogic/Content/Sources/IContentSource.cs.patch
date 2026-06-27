@@ -9,9 +9,9 @@
  
  namespace ReLogic.Content.Sources;
  
-@@ -7,17 +_,57 @@
- {
- 	IContentValidator ContentValidator { get; set; }
+@@ -9,19 +_,59 @@
+ 
+ 	string FileWatcherPath { get; }
  
 +	/*
  	bool HasAsset(string assetName);
@@ -26,14 +26,14 @@
 +	IEnumerable<string> EnumerateAssets();
 +
 +	/// <summary>
-+	/// Must be threadsafe! 
++	/// Must be threadsafe!
 +	/// </summary>
 +	/// <returns>null if the asset does not exist</returns>
  	string GetExtension(string assetName);
  
 +	//TML: Changed parameter name from 'assetName'.
 +	/// <summary>
-+	/// Must be threadsafe! 
++	/// Must be threadsafe!
 +	/// </summary>
 -	Stream OpenStream(string assetName);
 +	Stream OpenStream(string fullAssetName);
@@ -45,6 +45,8 @@
  
  	bool TryGetRejections(List<string> rejectionReasons);
 +	*/
+ 
+ 	void Refresh();
 +
 +	// Added by TML.
 +	/// <summary>

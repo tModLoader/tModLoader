@@ -25,7 +25,7 @@ namespace Terraria.ModLoader.Setup.Core
 			using var taskProgress = GetTaskProgress(progress);
 			using var workspace = CreateWorkspace(taskProgress);
 			// todo proper error log
-			workspace.WorkspaceFailed += (o, e) => Console.Error.WriteLine(e.Diagnostic.Message);
+			workspace.RegisterWorkspaceFailedHandler(e => Console.Error.WriteLine(e.Diagnostic.Message));
 
 			taskProgress.ReportStatus($"Loading project '{Parameters.ProjectPath}'...'");
 

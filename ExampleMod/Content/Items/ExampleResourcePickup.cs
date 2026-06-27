@@ -12,7 +12,8 @@ namespace ExampleMod.Content.Items
 	// Pickups usually provide resources to the player, such as hearts providing life or stars providing mana. Nebula armor boosters are another example.
 	// This example drops from enemies when Example Resource is low, similar to how hearts and stars only drop if the player is lacking health or mana.
 	// See ExampleResourcePickupGlobalNPC for the item drop code.
-	public class ExampleResourcePickup : ModItem {
+	public class ExampleResourcePickup : ModItem
+	{
 		public static readonly int ExampleResourceHealAmount = 50;
 
 		public override LocalizedText Tooltip => LocalizedText.Empty;
@@ -21,7 +22,6 @@ namespace ExampleMod.Content.Items
 			ItemID.Sets.ItemsThatShouldNotBeInInventory[Type] = true;
 			ItemID.Sets.IgnoresEncumberingStone[Type] = true;
 			ItemID.Sets.IsAPickup[Type] = true;
-			ItemID.Sets.ItemSpawnDecaySpeed[Type] = 4;
 		}
 
 		public override void SetDefaults() {
@@ -29,7 +29,7 @@ namespace ExampleMod.Content.Items
 			Item.width = 12;
 		}
 
-		public override bool OnPickup(Player player) {
+		public override bool OnPickup(WorldItem item, Player player) {
 			// When the item is picked up, heal the player's ExampleResource stat and spawn and sync the corresponding CombatText
 			player.GetModPlayer<ExampleResourcePlayer>().HealExampleResource(ExampleResourceHealAmount);
 
@@ -45,7 +45,7 @@ namespace ExampleMod.Content.Items
 		// We can override CanPickup to prevent attempting to pick up this item when at max ExampleResource, but hearts and stars do not do this so we won't either.
 
 		// GrabRange can be used to implement effects similar to Heartreach potion or Celestial Magnet.
-		public override void GrabRange(Player player, ref int grabRange) {
+		public override void GrabRange(WorldItem item, Player player, ref int grabRange) {
 			if (player.GetModPlayer<ExampleResourcePlayer>().exampleResourceMagnet) {
 				grabRange += ExampleResourcePlayer.exampleResourceMagnetGrabRange;
 			}

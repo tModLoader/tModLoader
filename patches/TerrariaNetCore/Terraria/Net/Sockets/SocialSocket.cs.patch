@@ -29,4 +29,4 @@
 +#endif
  	}
  
- 	void ISocket.SendQueuedPackets()
+ 	bool ISocket.IsDataAvailable() => SocialAPI.Network.IsDataAvailable(_remoteAddress);

@@ -49,7 +49,7 @@ partial class SystemLoader
 
 	private delegate void DelegateModifyTimeRate(ref double timeRate, ref double tileUpdateRate, ref double eventUpdateRate);
 
-	private delegate void DelegateModifyWorldGenTasks(List<GenPass> passes, ref double totalWeight);
+	private delegate void DelegateModifyWorldGenTasks(List<GenPass> passes);
 
 	private delegate bool DelegateHijackGetData(ref byte messageType, ref BinaryReader reader, int playerNumber);
 
@@ -60,6 +60,8 @@ partial class SystemLoader
 	private static HookList HookOnLocalizationsLoaded = AddHook<Action>(s => s.OnLocalizationsLoaded);
 
 	private static HookList HookOnWorldLoad = AddHook<Action>(s => s.OnWorldLoad);
+
+	private static HookList HookPostWorldLoad = AddHook<Action>(s => s.PostWorldLoad);
 
 	private static HookList HookOnWorldUnload = AddHook<Action>(s => s.OnWorldUnload);
 
@@ -153,4 +155,6 @@ partial class SystemLoader
 
 	internal static HookList HookNetSend = AddHook<Action<BinaryWriter>>(s => s.NetSend);
 	internal static HookList HookNetReceive = AddHook<Action<BinaryReader>>(s => s.NetReceive);
+
+	private static HookList HookResizeArrays = AddHook<Action>(s => s.ResizeArrays);
 }

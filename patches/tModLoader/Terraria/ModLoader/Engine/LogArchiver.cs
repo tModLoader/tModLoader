@@ -1,7 +1,7 @@
-using Ionic.Zip;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -121,31 +121,33 @@ internal static class LogArchiver
 
 		// Initiate the ZIP.
 		try {
-			using (var zip = new ZipFile(Path.Combine(Logging.LogArchiveDir, $"{time:yyyy-MM-dd}-{n}.zip"), Encoding.UTF8)) {
+			using (var zip = new ZipArchive(File.Create(Path.Combine(Logging.LogArchiveDir, $"{time:yyyy-MM-dd}-{n}.zip")), ZipArchiveMode.Create)) {
 				foreach (var logFile in logFiles) {
 					// Omit '.old', but not '.old9001', as doing the latter would result in duplicate names.
 					string entryName = Path.GetExtension(logFile) == ".old"
 						? Path.GetFileNameWithoutExtension(logFile)
 						: Path.GetFileName(logFile);
 
-					using (var stream = File.OpenRead(logFile)) {
-						if (stream.Length > 10_000_000) {
-							// Some users have enormous log files for unknown reasons. Techinically 4GB is the limit for regular zip files, but 10MB seems reasonable.
-							Logging.tML.Warn($"{logFile} exceeds 10MB, it will be truncated for the logs archive.");
-							zip.AddEntry(entryName, stream.ReadBytes(10_000_000));
-						}
-						else {
-							zip.AddEntry(entryName, stream);
-						}
-						zip.Save();
+					using var stream = File.OpenRead(logFile);
+					using var entryStream = zip.CreateEntry(entryName).Open();
+					if (stream.Length > 10_000_000) {
+						// Some users have enormous log files for unknown reasons. Techinically 4GB is the limit for regular zip files, but 10MB seems reasonable.
+						Logging.tML.Warn($"{logFile} exceeds 10MB, it will be truncated for the logs archive.");
+						entryStream.Write(stream.ReadBytes(10_000_000));
 					}
-
-					File.Delete(logFile);
+					else {
+						stream.CopyTo(entryStream);
+					}
 				}
+			}
+
+			// ZipArchive has no incremental Save(), so files are deleted after the archive is finalized
+			foreach (var logFile in logFiles) {
+				File.Delete(logFile);
 			}
 		}
 		catch (Exception e) {
-			// Problem either in File.OpenRead, zip.Save or File.Delete IO ops
+			// Problem either in File.OpenRead, zip creation or File.Delete IO ops
 			Logging.tML.Error(e);
 		}
 	}

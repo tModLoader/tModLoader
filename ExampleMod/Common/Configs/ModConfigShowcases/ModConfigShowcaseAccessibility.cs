@@ -18,7 +18,7 @@ namespace ExampleMod.Common.Configs.ModConfigShowcases
 
 		// Private and Internal fields and properties will not be shown.
 		// Note that private and internal values will not be replaced by the deserialization, so initializer and ctor work.
-		// You should avoid private and internal values in
+		// You should avoid private and internal values in ModConfigs
 #pragma warning disable CS0414
 		private float Private = 144;
 #pragma warning restore CS0414

@@ -1,0 +1,207 @@
+--- src/TerrariaNetCore/Terraria/GameContent/NPCInteractions.cs
++++ src/tModLoader/Terraria/GameContent/NPCInteractions.cs
+@@ -4,6 +_,7 @@
+ using Terraria.GameContent.Achievements;
+ using Terraria.ID;
+ using Terraria.Localization;
++using Terraria.ModLoader;
+ using Terraria.UI;
+ 
+ namespace Terraria.GameContent;
+@@ -33,12 +_,34 @@
+ 			}
+ 		}
+ 
++		/// <summary> The helper method <see cref="NPCInteractions.Shop(string, string)"/> can be used instead of creating a new instance of this class.</summary>
+ 		public class OpenShop : NPCInteraction
+ 		{
++			/*
+ 			private int _shopIndex;
+ 			private int _npcType;
++			*/
++			private string _shopName; // String shop name
++			private string _shopFullName; // String full shop name, if set.
+ 			private string _customTextKey;
+ 
++			/// <inheritdoc cref="NPCInteractions.Actions.OpenShop"/>
++			public OpenShop(string shopName, string customTextKey = null)
++			{
++				// Split the shopName by the / and assign _shopName to be the last part of the string.
++				// Example: Terraria/Painter/Shop
++				//		_shopName = Shop
++				//		_shopFullName = Terraria/Painter/Shop
++				// Example: Shop
++				//		_shopName = Shop
++				//		_shopFullName = Shop
++				string[] splitName = shopName.Split('/');
++				_customTextKey = customTextKey;
++				_shopName = splitName[^1];
++				_shopFullName = shopName;
++			}
++
++			/*
+ 			public OpenShop(int npcType, int shopIndex, string customTextKey = null)
+ 			{
+ 				_npcType = npcType;
+@@ -47,6 +_,8 @@
+ 			}
+ 
+ 			public override bool Condition() => base.TalkNPCType == _npcType;
++			*/
++			public override bool Condition() => true; // TML: Changed condition
+ 
+ 			public override string GetText()
+ 			{
+@@ -58,7 +_,18 @@
+ 
+ 			public override void Interact()
+ 			{
++				/*
+ 				Main.instance.OpenShop(_shopIndex);
++				*/
++
++				// If the full name was entered, use that.
++				if (_shopFullName != _shopName) {
++					Main.instance.OpenShop(_shopFullName);
++				}
++				// Else, get the full name.
++				else if (_shopName != null) {
++					Main.instance.OpenShop(NPCShopDatabase.GetShopName(LocalPlayer.TalkNPC.type, _shopName));
++				}
+ 			}
+ 		}
+ 
+@@ -119,6 +_,7 @@
+ 			}
+ 		}
+ 
++		/// <summary> This interaction is predefined and can be used with <see cref="NPCInteractionDatabase.PetButton"/></summary>
+ 		public class PetAnimal : NPCInteraction
+ 		{
+ 			public override bool Condition() => NPCID.Sets.IsTownPet[base.TalkNPCType];
+@@ -191,17 +_,31 @@
+ 
+ 			public override void Interact()
+ 			{
+-				Main.NPCChatText_DoNurseHeal(Main.GetNurseHealCost());
++				// TML locals.
++				int health = LocalPlayer.statLifeMax2 - LocalPlayer.statLife;
++				bool removeDebuffs = true;
++				string reason = "";
++				bool canHeal = true;
++
++				int healCost = Main.GetNurseHealCost(ref health, ref removeDebuffs, ref reason, ref canHeal);
++				Main.NPCChatText_DoNurseHeal(healCost, health, removeDebuffs, reason, canHeal);
+ 			}
+ 
+ 			public override bool TryAddCoins(ref Color chatColor, out int coinValue)
+ 			{
+-				coinValue = Main.GetNurseHealCost();
++				// TML locals.
++				int health = LocalPlayer.statLifeMax2 - LocalPlayer.statLife;
++				bool removeDebuffs = true;
++				string reason = "";
++				bool canHeal = true;
++
++				coinValue = Main.GetNurseHealCost(ref health, ref removeDebuffs, ref reason, ref canHeal);
+ 				Main.GetCoinValueText_Nurse(ref chatColor, ref coinValue);
+ 				return coinValue > 0;
+ 			}
+ 		}
+ 
++		/// <summary> This interaction is predefined and can be used with <see cref="NPCInteractionDatabase.CloseButton"/></summary>
+ 		public class CloseChat : NPCInteraction
+ 		{
+ 			public override bool Condition() => true;
+@@ -213,6 +_,7 @@
+ 			}
+ 		}
+ 
++		/// <summary> This interaction is predefined and can be used with <see cref="NPCInteractionDatabase.HappinessButton"/></summary>
+ 		public class ReportHappiness : NPCInteraction
+ 		{
+ 			public override bool Condition()
+@@ -234,6 +_,7 @@
+ 			}
+ 		}
+ 
++		/// <summary> This interaction is predefined and can be used with <see cref="NPCInteractionDatabase.HousingButton"/></summary>
+ 		public class RequestHome : NPCInteraction
+ 		{
+ 			public override bool ShowExcalmation => true;
+@@ -265,13 +_,22 @@
+ 					text = "Slime" + slimeType + "Chatter";
+ 				}
+ 
++				if (talkNPC.ModNPC is ModNPC modNPC)
++					Main.npcChatText = Language.GetTextValue(modNPC.GetLocalizationKey("TownNPCMood") + ".NoHome");
++				else
+-				Main.npcChatText = Language.GetTextValue(text + ".NoHome");
++					Main.npcChatText = Language.GetTextValue(text + ".NoHome");
+ 				Main.npcChatText += "\n\n";
+ 				if (talkNPC.type == 160) {
+ 					Main.npcChatText += Language.GetTextValueWith("HousingText.HousingRequirements_Truffle", new {
+ 						NPCName = talkNPC.FullName
+ 					});
+ 				}
++				else if (talkNPC.ModNPC is ModNPC modNPC2 && Language.Exists($"{modNPC2.GetLocalizationKey("HousingText")}.HousingRequirements")) {
++					// If Mods.ModName.NPCs.NPCName.HousingText.HousingRequirements exists, use that as the text.
++					Main.npcChatText += Language.GetTextValueWith($"{modNPC2.GetLocalizationKey("HousingText")}.HousingRequirements", new {
++						NPCName = talkNPC.FullName
++					});
++				}
+ 				else {
+ 					Main.npcChatText += Language.GetTextValue("HousingText.HousingRequirements");
+ 				}
+@@ -352,10 +_,14 @@
+ 		}
+ 	}
+ 
++	/*
+ 	public static List<NPCInteraction> All = new List<NPCInteraction>();
++	*/
+ 
+ 	public static void Initialize()
+ 	{
++		// TML: Buttons are no longer initialized here. They are set in Terraria.ModLoader.NPCInteractionDatabase.Populate()
++		/*
+ 		Shop(17, 1);
+ 		Shop(19, 2);
+ 		Shop(20, 3);
+@@ -399,8 +_,10 @@
+ 		Register(new Actions.TavernkeepAdvice());
+ 		Register(new Actions.ReportHappiness());
+ 		Register(new Actions.RequestHome());
++		*/
+ 	}
+ 
++	/*
+ 	private static void Shop(int npcType, int shopIndex, string customTextKey = null)
+ 	{
+ 		Register(new Actions.OpenShop(npcType, shopIndex, customTextKey));
+@@ -409,5 +_,25 @@
+ 	private static void Register(NPCInteraction interaction)
+ 	{
+ 		All.Add(interaction);
++	}
++	*/
++
++	/// <summary>
++	/// Assigns a shop chat button to the npcType.
++	/// <br/>Short for <c>new NPCInteractions.Actions.Shop(shopName = "Shop", customTextKey = null)</c>
++	/// </summary>
++	/// <param name="shopName">The name of the shop to open.
++	/// <br/>This string will need to match the string used to create the <see cref="NPCShop"/> in <see cref="ModNPC.AddShops"/>.
++	/// <br/>Defaults to "Shop"
++	/// <para>The full name of the shop can be used instead to assign a shop from a different NPC to this NPC.
++	/// <br/>Example: <c>"Terraria/Merchant/Shop"</c> will open the Merchant's shop.
++	/// <br/>Example: <c>"ExampleMod/ExamplePerson/Shop"</c> will open the Example Person's shop from Example Mod.
++	/// <br/>Note: if the shop is not found, the button will open an empty shop.
++	/// </para></param>
++	/// <param name="customTextKey">The localization key for the display name of the button.
++	/// <br/>If not set, the button will be translated to say "Shop".</param>
++	public static NPCInteraction Shop(string shopName = "Shop", string customTextKey = null)
++	{
++		return new Actions.OpenShop(shopName, customTextKey);
+ 	}
+ }

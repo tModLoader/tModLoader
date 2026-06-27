@@ -8,7 +8,7 @@
  
  namespace Terraria;
  
-@@ -386,7 +_,7 @@
+@@ -477,7 +_,7 @@
  		if (tile2 == null)
  			return false;
  

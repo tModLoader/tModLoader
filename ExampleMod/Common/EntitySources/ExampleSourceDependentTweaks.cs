@@ -23,7 +23,7 @@ namespace ExampleMod.Common.EntitySources
 
 	public sealed class ExampleSourceDependentItemTweaks : GlobalItem
 	{
-		public override void OnSpawn(Item item, IEntitySource source) {
+		public override void OnSpawn(WorldItem item, IEntitySource source) {
 			// Accompany all loot from trees with a slime.
 			if (source is EntitySource_ShakeTree) {
 				NPC.NewNPC(source, (int)item.position.X, (int)item.position.Y, NPCID.BlueSlime);
@@ -38,7 +38,7 @@ namespace ExampleMod.Common.EntitySources
 			return entity.type is ItemID.CopperCoin or ItemID.SilverCoin or ItemID.GoldCoin or ItemID.PlatinumCoin;
 		}
 
-		public override void OnSpawn(Item item, IEntitySource source) {
+		public override void OnSpawn(WorldItem item, IEntitySource source) {
 			// make coins spawned from the lucky coin accessory fly into the air
 			if (source.Context == "LuckyCoin") {
 				item.velocity.Y -= 20;

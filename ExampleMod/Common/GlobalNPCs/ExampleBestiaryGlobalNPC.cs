@@ -28,7 +28,7 @@ public class ExampleBestiaryGlobalNPC : GlobalNPC
 			}
 
 			// This code mostly adapted from vanilla Bestiary code
-			UIPanel backPanel = new(Main.Assets.Request<Texture2D>("Images/UI/Bestiary/Stat_Panel"), null, customBarSize: 7)	{
+			UIPanel backPanel = new(Main.Assets.Request<Texture2D>("Images/UI/Bestiary/Stat_Panel"), null, customBarSize: 7) {
 				IgnoresMouseInteraction = true,
 				Width = StyleDimension.FromPixelsAndPercent(-11f, 1f),
 				Height = StyleDimension.FromPixels(30f),
@@ -40,7 +40,9 @@ public class ExampleBestiaryGlobalNPC : GlobalNPC
 			backPanel.SetPadding(0f);
 
 			UIText importantFlavorTextElement = new UIText(ModContent.GetInstance<ExampleMod>().GetLocalization("Bestiary.ImportantFlavorText")) {
-				HAlign = 0.5f, VAlign = 0.5f, TextColor = Color.Red
+				HAlign = 0.5f,
+				VAlign = 0.5f,
+				TextColor = Color.Red
 			};
 			backPanel.Append(importantFlavorTextElement);
 

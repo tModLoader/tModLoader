@@ -10,12 +10,12 @@ public interface IEntitySource_OnHurt
 	/// <summary>
 	/// The attacking entity. Note that this may be a <see cref="Projectile"/> (possibly owned by a player), a <see cref="Player"/> or even a <see cref="NPC"/>
 	/// </summary>
-	public Entity? Attacker { get; }
+	public IEntitySourceTarget? Attacker { get; }
 
 	/// <summary>
 	/// The entity being attacked. Normally a Player, but could be an NPC if a mod decides to use this source in such a way
 	/// </summary>
-	public Entity Victim { get; }
+	public IEntitySourceTarget Victim { get; }
 }
 
 /// <summary>
@@ -25,11 +25,11 @@ public interface IEntitySource_OnHurt
 /// </summary>
 public class EntitySource_OnHurt : EntitySource_Parent, IEntitySource_OnHurt
 {
-	public Entity? Attacker { get; }
+	public IEntitySourceTarget? Attacker { get; }
 
-	public Entity Victim => Entity;
+	public IEntitySourceTarget Victim => Entity;
 
-	public EntitySource_OnHurt(Entity victim, Entity? attacker, string? context = null) : base(victim, context)
+	public EntitySource_OnHurt(IEntitySourceTarget victim, IEntitySourceTarget? attacker, string? context = null) : base(victim, context)
 	{
 		Attacker = attacker;
 	}

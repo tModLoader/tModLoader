@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
@@ -25,7 +26,11 @@ public class ModItemTest : ModItem
 		Tooltip.SetDefault(
 			"This tooltip\n" +
 			"Has multiple lines");
+		AmmoID.Sets.IsRocket[Type] = true;
+		/* Not working when qualified
+		ID.AmmoID.Sets.IsRocket[Type] = true;
 		Terraria.ID.AmmoID.Sets.IsRocket[Type] = true;
+		*/
 	}
 
 	public override bool IgnoreDamageModifiers => false;
@@ -90,4 +95,6 @@ public class ModItemTest : ModItem
 	{
 		dryTorch = true;
 	}
+
+	public override bool IsQuestFish() { }
 }

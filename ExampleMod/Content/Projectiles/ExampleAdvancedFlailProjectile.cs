@@ -49,10 +49,8 @@ namespace ExampleMod.Content.Projectiles
 
 		public override void SetStaticDefaults() {
 			// These lines facilitate the trail drawing
-			ProjectileID.Sets.TrailCacheLength[Projectile.type] = 6;
-			ProjectileID.Sets.TrailingMode[Projectile.type] = 2;
-
-			ProjectileID.Sets.HeldProjDoesNotUsePlayerGfxOffY[Type] = true;
+			ProjectileID.Sets.TrailCacheLength[Type] = 6;
+			ProjectileID.Sets.TrailingMode[Type] = 2;
 		}
 
 		public override void SetDefaults() {
@@ -68,7 +66,7 @@ namespace ExampleMod.Content.Projectiles
 			// Vanilla flails all use aiStyle 15, but the code isn't customizable so an adaption of that aiStyle is used in the AI method
 		}
 
-		// This AI code was adapted from vanilla code: Terraria.Projectile.AI_015_Flails() 
+		// This AI code was adapted from vanilla code: Terraria.Projectile.AI_015_Flails()
 		public override void AI() {
 			Player player = Main.player[Projectile.owner];
 			// Kill the projectile if the player dies or gets crowd controlled
@@ -156,7 +154,7 @@ namespace ExampleMod.Content.Projectiles
 							// This is where Drippler Crippler spawns its projectile
 							/*
 							if (Main.myPlayer == Projectile.owner)
-								Projectile.NewProjectile(Projectile.GetProjectileSource_FromThis(), Projectile.Center, Projectile.velocity, 928, Projectile.damage, Projectile.knockBack, Main.myPlayer);
+								Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.velocity, ProjectileID.DripplerFlailExtraBall, Projectile.damage, Projectile.knockBack, Main.myPlayer);
 							*/
 							break;
 						}
@@ -191,8 +189,8 @@ namespace ExampleMod.Content.Projectiles
 						}
 						break;
 					}
-				case AIState.UnusedState: // Projectile.ai[0] == 3; This case is actually unused, but maybe a Terraria update will add it back in, or maybe it is useless, so I left it here.
-					{
+				// Projectile.ai[0] == 3; This case is actually unused, but maybe a Terraria update will add it back in, or maybe it is useless, so I left it here.
+				case AIState.UnusedState: {
 						if (!player.controlUseItem) {
 							CurrentAIState = AIState.ForcedRetracting; // Move to super retracting mode if the player taps
 							StateTimer = 0f;
@@ -228,8 +226,7 @@ namespace ExampleMod.Content.Projectiles
 						player.ChangeDir((player.Center.X < Projectile.Center.X).ToDirectionInt());
 						break;
 					}
-				case AIState.ForcedRetracting:
-					{
+				case AIState.ForcedRetracting: {
 						Projectile.tileCollide = false;
 						Vector2 unitVectorTowardsPlayer = Projectile.DirectionTo(mountedCenter).SafeNormalize(Vector2.Zero);
 						if (Projectile.Distance(mountedCenter) <= maxForcedRetractSpeed) {
@@ -303,7 +300,7 @@ namespace ExampleMod.Content.Projectiles
 
 			Projectile.timeLeft = 2; // Makes sure the flail doesn't die (good when the flail is resting on the ground)
 			player.heldProj = Projectile.whoAmI;
-			player.SetDummyItemTime(2); //Add a delay so the player can't button mash the flail
+			player.SetDummyItemTime(2); // Add a delay so the player can't button mash the flail
 			player.itemRotation = Projectile.DirectionFrom(mountedCenter).ToRotation();
 			if (Projectile.Center.X < mountedCenter.X) {
 				player.itemRotation += (float)Math.PI;
@@ -433,15 +430,11 @@ namespace ExampleMod.Content.Projectiles
 		}
 
 		// PreDraw is used to draw a chain and trail before the projectile is drawn normally.
-		public override bool PreDraw(ref Color lightColor) {
-			Vector2 playerArmPosition = Main.GetPlayerArmPosition(Projectile);
-
-			// This fixes a vanilla GetPlayerArmPosition bug causing the chain to draw incorrectly when stepping up slopes. The flail itself still draws incorrectly due to another similar bug. This should be removed once the vanilla bug is fixed.
-			playerArmPosition.Y -= Main.player[Projectile.owner].gfxOffY;
-
+		public override bool PreDraw(Player player, ref Color lightColor) {
+			Vector2 playerArmPosition = Main.GetPlayerArmPosition(Projectile, player);
 			Rectangle? chainSourceRectangle = null;
 			// Drippler Crippler customizes sourceRectangle to cycle through sprite frames: sourceRectangle = asset.Frame(1, 6);
-			float chainHeightAdjustment = 0f; // Use this to adjust the chain overlap. 
+			float chainHeightAdjustment = 0f; // Use this to adjust the chain overlap.
 
 			Vector2 chainOrigin = chainSourceRectangle.HasValue ? (chainSourceRectangle.Value.Size() / 2f) : (chainTexture.Size() / 2f);
 			Vector2 chainDrawPosition = Projectile.Center;

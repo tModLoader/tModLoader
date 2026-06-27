@@ -1,0 +1,36 @@
+@@ -202,7 +_,7 @@
+ 
+ 	public static void ResetImmunity()
+ 	{
+-		for (int i = 0; i < ProjectileID.Count; i++) {
++		for (int i = 0; i < perIDStaticNPCImmunity.Length; i++) {
+ 			for (int j = 0; j < 200; j++) {
+ 				perIDStaticNPCImmunity[i][j] = 0u;
+ 			}
+@@ -8832,8 +_,11 @@
+ 			}
+ 		}
+ 
++		// Copied at the bottom. Gotos would be messy.
++		/*
+ 		if (Main.netMode != 0 && Owner == Main.myPlayer)
+ 			NetMessage.SendData(27, -1, -1, null, num);
++		*/
+ 
+ 		if (Owner == Main.myPlayer) {
+ 			if (ProjectileID.Sets.IsAGolfBall[Type] && Damage <= 0) {
+@@ -9766,5 +_,5 @@
+ 		Rectangle rectangle = Damage_GetHitbox();
+-		if (friendly && Main.getGoodWorld && aiStyle == 16 && Main.netMode == 1 && owner != Main.myPlayer && !npcProj) {
++		if (friendly && Main.getGoodWorld && (aiStyle == 16 || ProjectileID.Sets.Explosive[type]) && Main.netMode == 1 && owner != Main.myPlayer && !npcProj) {
+ 			BombsHurtPlayers(rectangle, Main.myPlayer);
+ 			return;
+ 		}
+@@ -11354,6 +_,6 @@
+ 	private void BombsHurtPlayers(Rectangle projRectangle, int j)
+ 	{
+-		if (aiStyle != 16 || ProjectileID.Sets.RocketsSkipDamageForPlayers[type] || (timeLeft > 1 && type != 108 && type != 164 && type != 1002) || !Main.player[j].active || Main.player[j].dead || Main.player[j].immune || (ownerHitCheck && !CanHitWithMeleeWeapon(Main.player[j])))
++		if (!(aiStyle == 16 || ProjectileID.Sets.Explosive[type]) || ProjectileID.Sets.RocketsSkipDamageForPlayers[type] || (timeLeft > 1 && type != 108 && type != 164 && type != 1002) || !Main.player[j].active || Main.player[j].dead || Main.player[j].immune || (ownerHitCheck && !CanHitWithMeleeWeapon(Main.player[j])))
+ 			return;
+ 
+ 		Rectangle value = new Rectangle((int)Main.player[j].position.X, (int)Main.player[j].position.Y, Main.player[j].width, Main.player[j].height);

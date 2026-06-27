@@ -23,7 +23,12 @@ public abstract class ModBlockType : ModTexturedType, ILocalizedModType
 	/// <para/> Defaults to 0, which is <see cref="DustID.Dirt"/>. To prevent spawning any hit dust, set this to -1 instead. </summary>
 	public int DustType { get; set; }
 
-	/// <summary> The vanilla ID of what should replace the instance when a user unloads and subsequently deletes data from your mod in their save file. Defaults to 0. </summary>
+	/// <summary>
+	/// The vanilla ID of what should replace the instance when a user unloads and subsequently deletes data from your mod in their save file.
+	/// <br/><br/> <see cref="Main.tileFrameImportant"/> tiles attempting to fallback to a vanilla <see cref="Main.tileFrameImportant"/> tile need to match the layout (FrameX and FrameY values) of the fallback tile so that the resulting tiles aren't broken.
+	/// <br/><br/> Also note that tiles with ModTileEntity won't be able to fallback to a working vanilla Tile+TileEntity. The user will have to mine and replace the tile to spawn the correct TileEntity.
+	/// <br/><br/> Defaults to <see cref="TileID.Dirt"/> (0).
+	/// </summary>
 	public ushort VanillaFallbackOnModDeletion { get; set; } = 0;
 
 	public abstract string LocalizationCategory { get; }
@@ -168,6 +173,18 @@ public abstract class ModBlockType : ModTexturedType, ILocalizedModType
 	/// <param name="g">The green component of light, usually a value between 0 and 1</param>
 	/// <param name="b">The blue component of light, usually a value between 0 and 1</param>
 	public virtual void ModifyLight(int i, int j, ref float r, ref float g, ref float b)
+	{
+	}
+
+	/// <summary>
+	/// Allows you to change what happens when this tile/wall is converted into another biome. If you need to override or add a new conversion to a vanilla tile, use <see cref="TileLoader.RegisterConversion"/> and <see cref="WallLoader.RegisterConversion"/>.
+	/// <para/> Purification powder uses a separate conversionType, as it doesn't convert hallowed tiles back to purity tiles. Be sure to check for <see cref="BiomeConversionID.PurificationPowder"/> as well as <see cref="BiomeConversionID.Purity"/> when handling corruption/crimson tiles.
+	/// <para/> You can use <see cref="WorldGen.ConvertTile(int, int, int)"/> or <see cref="WorldGen.ConvertWall"/> to automatically handle tile framing and multiplayer syncing.
+	/// </summary>
+	/// <param name="i"></param>
+	/// <param name="j"></param>
+	/// <param name="conversionType">The <see cref="BiomeConversionID"/> of the conversion</param>
+	public virtual void Convert(int i, int j, int conversionType)
 	{
 	}
 }

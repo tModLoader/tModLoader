@@ -1,6 +1,7 @@
-﻿using ExampleMod.Content.Items;
-using ExampleMod.Content.Items.Consumables;
+﻿using ExampleMod.Content.Currencies;
+using ExampleMod.Content.Items;
 using ExampleMod.Content.Items.Ammo;
+using ExampleMod.Content.Items.Consumables;
 using ExampleMod.Content.Items.Mounts;
 using ExampleMod.Content.NPCs;
 using Terraria;
@@ -29,7 +30,7 @@ namespace ExampleMod.Common.GlobalNPCs
 				// This shop entry sells for 3 of a custom currency added in our mod.
 				shop.Add(new Item(ModContent.ItemType<ExampleMountItem>()) {
 					shopCustomPrice = 2,
-					shopSpecialCurrency = ExampleMod.ExampleCustomCurrencyId
+					shopSpecialCurrency = ExampleCustomCurrencies.ExampleItemCurrency,
 				});
 			}
 			else if (shop.NpcType == NPCID.Wizard) {
@@ -75,10 +76,10 @@ namespace ExampleMod.Common.GlobalNPCs
 
 			// Let's add an item that appears just during Windy day and when NPC is happy enough (can sell pylons)
 			// If condition is fulfilled, add an item to the shop.
-			shop.Add<ExampleItem>(Condition.HappyWindyDay, Condition.HappyEnough);
+			shop.Add<ExampleItem>(Condition.HappyWindyDay, Condition.CurrentPriceAdjustmentUnder(0.9f));
 
 			// Custom condition, opposite of conditions for ExampleItem above.
-			var redPotCondition = new Condition("Mods.ExampleMod.Conditions.NotSellingExampleItem", () => !Condition.HappyWindyDay.IsMet() || !Condition.HappyEnough.IsMet());
+			var redPotCondition = new Condition("Mods.ExampleMod.Conditions.NotSellingExampleItem", () => !Condition.HappyWindyDay.IsMet() || !Condition.CurrentPriceAdjustmentUnder(0.9f).IsMet());
 			// Otherwise, if condition is not fulfilled, then let's check if its For The Worthy world and then sell Red Potion.
 			shop.Add(ItemID.RedPotion, redPotCondition, Condition.ForTheWorthyWorld);
 		}

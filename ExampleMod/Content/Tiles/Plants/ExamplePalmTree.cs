@@ -13,7 +13,7 @@ namespace ExampleMod.Content.Tiles
 		private Asset<Texture2D> topsTexture;
 
 		// This is a blind copy-paste from Vanilla's PurityPalmTree settings.
-		//TODO: This needs some explanations
+		// TODO: This needs some explanations
 		public override TreePaintingSettings TreeShaderSettings => new TreePaintingSettings {
 			UseSpecialGroups = true,
 			SpecialGroupMinimalHueValue = 11f / 72f,
@@ -24,7 +24,7 @@ namespace ExampleMod.Content.Tiles
 
 		public override void SetStaticDefaults() {
 			// Makes Example Palm Tree grow on Gold Ore
-			GrowsOnTileId = new int[1] { TileID.Gold };
+			GrowsOnTileId = [TileID.Gold];
 			texture = ModContent.Request<Texture2D>("ExampleMod/Content/Tiles/Plants/ExamplePalmTree");
 			oasisTopsTexture = ModContent.Request<Texture2D>("ExampleMod/Content/Tiles/Plants/ExamplePalmOasisTree_Tops");
 			topsTexture = ModContent.Request<Texture2D>("ExampleMod/Content/Tiles/Plants/ExamplePalmTree_Tops");

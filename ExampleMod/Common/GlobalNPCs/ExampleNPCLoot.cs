@@ -87,10 +87,10 @@ namespace ExampleMod.Common.GlobalNPCs
 
 			// A simple example of using a 'standard' condition
 			if (npc.aiStyle == NPCAIStyleID.Slime) {
-				npcLoot.Add(ItemDropRule.ByCondition(Condition.TimeDay.ToDropCondition(ShowItemDropInUI.Always), ModContent.ItemType<ExampleSword>()));
+				npcLoot.Add(ItemDropRule.ByCondition(Condition.TimeDay.ToDropCondition(ShowItemDropInUI.Always), ModContent.ItemType<ExampleSword>(), 250));
 			}
 
-			//TODO: Add the rest of the vanilla drop rules!!
+			// TODO: Add the rest of the vanilla drop rules!!
 		}
 
 		// ModifyGlobalLoot allows you to modify loot that every NPC should be able to drop, preferably with a condition.

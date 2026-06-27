@@ -8,12 +8,12 @@
  using System.Threading;
  using ReLogic.OS;
 +using Terraria.ModLoader;
-+using Ionic.Zip;
++using System.IO.Compression;
 +using System.Linq;
  
  namespace Terraria.Utilities;
  
-@@ -53,10 +_,51 @@
+@@ -53,10 +_,50 @@
  	public static bool WriteException(Options options, string outputDirectory = ".") => Write(options, ExceptionInfo.Present, outputDirectory);
  	public static bool Write(Options options, string outputDirectory = ".") => Write(options, ExceptionInfo.None, outputDirectory);
  
@@ -46,11 +46,10 @@
 +		}
 +
 +		string zipFilename = Path.ChangeExtension(path, ".dmp.zip");
-+		using (var zip = new ZipFile(zipFilename, Encoding.UTF8)) {
-+			zip.AddFile(path, "");
-+			zip.Save();
-+			File.Delete(path);
++		using (var zip = new ZipArchive(File.Create(zipFilename), ZipArchiveMode.Create)) {
++			zip.CreateEntryFromFile(path, Path.GetFileName(path));
 +		}
++		File.Delete(path);
 +
 +		return zipFilename;
 +	}

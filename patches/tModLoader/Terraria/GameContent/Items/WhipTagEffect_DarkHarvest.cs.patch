@@ -1,0 +1,13 @@
+--- src/TerrariaNetCore/Terraria/GameContent/Items/WhipTagEffect_DarkHarvest.cs
++++ src/tModLoader/Terraria/GameContent/Items/WhipTagEffect_DarkHarvest.cs
+@@ -6,7 +_,10 @@
+ 
+ public class WhipTagEffect_DarkHarvest : WhipTagEffect
+ {
++	/*
+ 	public override void OnTaggedHit(Player owner, Projectile optionalProjectile, NPC npcHit, int calcDamage)
++	*/
++	public override void OnTaggedHit(Player owner, Projectile optionalProjectile, NPC npcHit, NPC.HitInfo hit)
+ 	{
+ 		SpawnBlackLightning(optionalProjectile, npcHit);
+ 	}

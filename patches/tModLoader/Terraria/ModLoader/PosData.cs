@@ -18,7 +18,7 @@ public struct PosData<T>
 		private PosData<T> last;
 
 		/// <summary>
-		/// Use <paramref name="compressEqualValues"/> to produce a smaller lookup which won't work with <see cref="PosData.LookupExact"/>
+		/// Use <paramref name="compressEqualValues"/> to produce a smaller lookup which won't work with <see cref="PosData.LookupExact{T}(PosData{T}[], int, int, out T)"/>
 		/// When using <paramref name="compressEqualValues"/> without <paramref name="insertDefaultEntries"/>,
 		/// unspecified positions will default to the value of the previous specified position
 		/// </summary>

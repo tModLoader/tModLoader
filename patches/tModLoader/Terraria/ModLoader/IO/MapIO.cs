@@ -207,7 +207,7 @@ internal static class MapIO
 		uint sameCount = 0;
 		while (NextTile(ref nextI, ref nextJ)) {
 			MapTile nextTile = Main.Map[nextI, nextJ];
-			if (tile.Equals(ref nextTile) && sameCount < UInt32.MaxValue) {
+			if (tile.Equals(nextTile) && sameCount < UInt32.MaxValue) {
 				sameCount++;
 				i = nextI;
 				j = nextJ;

@@ -77,7 +77,7 @@
  
  		if (Main.netMode == 2) {
 @@ -37,7 +_,7 @@
- 			Main.item[num].active = false;
+ 			Main.item[num].TurnToAir();
  		}
  		else {
 -			DropItemFromNPC(npc, itemId, stack);

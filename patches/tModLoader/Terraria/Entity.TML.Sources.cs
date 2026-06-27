@@ -4,7 +4,7 @@ using Terraria.DataStructures;
 
 namespace Terraria;
 
-partial class Entity
+partial class Entity : IEntitySourceTarget
 {
 	// Common
 

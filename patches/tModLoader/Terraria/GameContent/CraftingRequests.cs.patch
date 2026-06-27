@@ -1,0 +1,39 @@
+--- src/TerrariaNetCore/Terraria/GameContent/CraftingRequests.cs
++++ src/tModLoader/Terraria/GameContent/CraftingRequests.cs
+@@ -107,10 +_,10 @@
+ 		CraftingEffects.OnCraft(recipe, quickCraft);
+ 	}
+ 
+-	private static Item CreateResult(Recipe recipe)
++	private static Item CreateResult(Recipe recipe, List<Item> consumedItems)
+ 	{
+ 		Item item = recipe.createItem.Clone();
+-		item.OnCreated(new RecipeItemCreationContext(recipe));
++		item.OnCreated(new RecipeItemCreationContext(recipe, consumedItems));
+ 		if (item.stack <= 1)
+ 			item.Prefix(-1);
+ 
+@@ -119,11 +_,12 @@
+ 
+ 	private static void CraftLocally(Recipe recipe, bool quickCraft, List<Chest> chests, List<Recipe.RequiredItemEntry> ingredients)
+ 	{
++		List<Item> consumedItems = new List<Item>();
+ 		foreach (Recipe.RequiredItemEntry ingredient in ingredients) {
+-			Consume(ingredient, chests, null, fromChests: true);
++			Consume(ingredient, chests, consumedItems, fromChests: true);
+ 		}
+ 
+-		Main.CraftItem_GrantItem(recipe, CreateResult(recipe), quickCraft);
++		Main.CraftItem_GrantItem(recipe, CreateResult(recipe, consumedItems), quickCraft);
+ 	}
+ 
+ 	private static void CraftViaRequest(Recipe recipe, bool quickCraft, List<Chest> chests, List<Recipe.RequiredItemEntry> ingredients)
+@@ -140,7 +_,7 @@
+ 			}
+ 		}
+ 
+-		Item item = CreateResult(recipe);
++		Item item = CreateResult(recipe, list);
+ 		if (!quickCraft)
+ 			FakeCursorItem.Add(item);
+ 

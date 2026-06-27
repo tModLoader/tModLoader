@@ -4,9 +4,9 @@ using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items.Accessories
 {
-	//Showcases a beard vanity item that uses a greyscale sprite which gets its' color from the players' hair
-	//Requires ArmorIDs.Beard.Sets.UseHairColor and Item.color to be used properly
-	//For a beard with a fixed color, remove the above mentioned code
+	// Showcases a beard vanity item that uses a greyscale sprite which gets its' color from the players' hair
+	// Requires ArmorIDs.Beard.Sets.UseHairColor and Item.color to be used properly
+	// For a beard with a fixed color, remove the above mentioned code
 	[AutoloadEquip(EquipType.Beard)]
 	public class ExampleBeard : ModItem
 	{

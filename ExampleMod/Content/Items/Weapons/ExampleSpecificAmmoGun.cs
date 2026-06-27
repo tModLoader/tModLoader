@@ -17,7 +17,7 @@ namespace ExampleMod.Content.Items.Weapons
 
 		private bool consumptionDamageBoost = false;
 
-		public override string Texture => "ExampleMod/Content/Items/Weapons/ExampleGun"; //TODO: remove when sprite is made for this
+		public override string Texture => "ExampleMod/Content/Items/Weapons/ExampleGun"; // TODO: remove when sprite is made for this
 
 		public override LocalizedText Tooltip => base.Tooltip.WithFormatArgs(FreeAmmoChance1, FreeAmmoChance2, FreeAmmoChance3, AmmoUseDamageBoost);
 

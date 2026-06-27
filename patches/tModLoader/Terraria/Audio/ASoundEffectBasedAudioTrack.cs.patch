@@ -1,0 +1,13 @@
+--- src/TerrariaNetCore/Terraria/Audio/ASoundEffectBasedAudioTrack.cs
++++ src/tModLoader/Terraria/Audio/ASoundEffectBasedAudioTrack.cs
+@@ -80,6 +_,10 @@
+ 				_soundEffectInstance.Volume = volume;
+ 				break;
+ 			}
++			case "VolumeDirect": {
++				_soundEffectInstance.Volume = value;
++				break;
++			}
+ 			case "Pitch":
+ 				_soundEffectInstance.Pitch = value;
+ 				break;

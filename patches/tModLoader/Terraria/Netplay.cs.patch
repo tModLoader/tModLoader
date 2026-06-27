@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Netplay.cs
 +++ src/tModLoader/Terraria/Netplay.cs
-@@ -7,8 +_,11 @@
+@@ -8,8 +_,11 @@
  using NATUPNPLib;
  using ReLogic.OS;
  using Terraria.Audio;
@@ -12,7 +12,36 @@
  using Terraria.Net;
  using Terraria.Net.Sockets;
  using Terraria.Social;
-@@ -165,6 +_,8 @@
+@@ -33,7 +_,14 @@
+ 	public static string ServerPassword = "";
+ 	public static RemoteClient[] Clients = new RemoteClient[256];
+ 	public static RemoteServer Connection = new RemoteServer();
++	private static IPAddress _serverIP;
+-	public static IPAddress ServerIP;
++	public static IPAddress ServerIP {
++		get => _serverIP;
++		set {
++			IsHostAndPlay = false;
++			_serverIP = value;
++		}
++	}
+ 	public static string ServerIPText = "";
+ 	public static bool IsHostAndPlay;
+ 	public static string HostToken;
+@@ -82,6 +_,12 @@
+ 		Main.ActiveNetDiagnosticsUI.Reset();
+ 	}
+ 
++	/// <summary>
++	/// Sets all world sections as unloaded for all clients. This results in all clients being sent the world sections again.
++	/// <br/><br/> This is used at the end of Hardmode world generation to force all clients to receive the tiles from the server again.
++	/// <br/><br/> If you are doing massive world changes in-game outside of the Hardmode transformation, this is a simple way to ensure that all clients see those tile changes without sending countless <see cref="NetMessage.SendTileSquare(int, int, int, TileChangeType)"/> messages.
++	/// <br/><br/> <b>Call on Server only!</b>
++	/// </summary>
+ 	public static void ResetSections()
+ 	{
+ 		RemoteClient[] clients = Clients;
+@@ -166,6 +_,8 @@
  
  	private static void OnConnectionAccepted(ISocket client)
  	{
@@ -21,7 +50,22 @@
  		int num = FindNextOpenClientSlot();
  		if (num != -1) {
  			Clients[num].Reset();
-@@ -312,7 +_,7 @@
+@@ -300,8 +_,13 @@
+ 			if (Clients[i].PendingTermination) {
+ 				num++;
+ 				if (Clients[i].PendingTerminationApproved) {
+-					Clients[i].Reset();
++					// TML: Re-order to prevent RemoteClient.Reset from re-instantiating the player before
++					//      execution ends up in PlayerLoader.PlayerDisconnect, which would invoke the hook
++					//      with useless Player/ModPlayer data.
++					//      Set the RemoteClient.State to 0 so SyncOnePlayer will still treat them as disconnected.
++					Clients[i].State = 0;
+ 					NetMessage.SyncDisconnectedPlayer(i);
++					Clients[i].Reset();
+ 				}
+ 
+ 				continue;
+@@ -314,7 +_,7 @@
  			}
  
  			if (Clients[i].IsActive) {
@@ -30,7 +74,7 @@
  				Clients[i].PendingTerminationApproved = true;
  				continue;
  			}
-@@ -413,6 +_,12 @@
+@@ -415,6 +_,12 @@
  
  	private static void ClientLoopSetup(RemoteAddress address)
  	{
@@ -43,7 +87,7 @@
  		Connection.ResetSpecialFlags();
  		ResetNetDiag();
  		Main.ServerSideCharacter = false;
-@@ -429,11 +_,11 @@
+@@ -431,11 +_,11 @@
  		Main.netMode = 1;
  		Main.menuMode = 14;
  		if (!Main.autoPass)
@@ -57,8 +101,8 @@
  	}
  
  	private static void InnerClientLoop()
-@@ -453,6 +_,24 @@
- 						NetMessage.SendData(1);
+@@ -456,6 +_,24 @@
+ 						Ping.Reset();
  					}
  
 +					if (Connection.State == 1 && ModNet.NetReloadActive && Main.netMode == 0) {
@@ -82,7 +126,7 @@
  					if (Connection.State == 2 && num != Connection.State)
  						Main.statusText = Language.GetTextValue("Net.SendingPlayerData");
  
-@@ -472,6 +_,9 @@
+@@ -475,6 +_,9 @@
  						Main.cloudAlpha = Main.maxRaining;
  						Main.ToggleGameplayUpdates(state: false);
  						WorldGen.clearWorld();
@@ -92,18 +136,27 @@
  						if (Main.mapEnabled)
  							Main.Map.Load();
  					}
-@@ -523,6 +_,10 @@
+@@ -524,6 +_,11 @@
  			}
  
  			if (!Main.gameMenu) {
 +				// This is only called in case of kicks and other sudden disconnects.
 +				// The more common (client) call to this is in Main.SaveAndQuitCallback.
++				string originalStatusText = Main.statusText;
 +				SystemLoader.OnWorldUnload();
 +
  				Main.gameMenu = true;
  				Main.SwitchNetMode(0);
  				MapHelper.noStatusText = true;
-@@ -589,7 +_,29 @@
+@@ -533,6 +_,7 @@
+ 				SoundEngine.StopTrackedSounds();
+ 				MapHelper.noStatusText = false;
+ 				Main.menuMode = 14;
++				Main.statusText = originalStatusText;
+ 			}
+ 
+ 			NetMessage.buffer[256].Reset();
+@@ -590,7 +_,29 @@
  		thread.Start();
  	}
  

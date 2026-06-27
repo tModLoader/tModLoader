@@ -19,6 +19,9 @@ namespace ExampleMod.Content.Projectiles
 			// Since the velocity of the projectile affects how far out the jousting lance will spawn, we want the
 			// velocity to always be the same even if the player has increased attack speed.
 			ProjectileID.Sets.NoMeleeSpeedVelocityScaling[Type] = true;
+
+			// This will make it so zapping jellyfish can damage the player if the player is holding the Jousting Lance. Since we aren't using ProjAIStyleID.Spear, we need to set this manually.
+			ProjectileID.Sets.AllowsContactDamageFromJellyfish[Type] = true;
 		}
 
 		public override void SetDefaults() {
@@ -36,8 +39,9 @@ namespace ExampleMod.Content.Projectiles
 			Projectile.friendly = true; // Player shot projectile. Does damage to enemies but not to friendly Town NPCs.
 			Projectile.penetrate = -1; // Infinite penetration. The projectile can hit an infinite number of enemies.
 			Projectile.tileCollide = false; // Don't kill the projectile if it hits a tile.
+			Projectile.drawLayer = ProjectileDrawLayerID.HeldProj; // Sets the draw layer of the projectile to be in front of the player's body but behind the player's arm.
+			Projectile.usesOwnerLight = true; // The projectile will take lighting information from the player's position instead of the projectile's position, which is the tip of the jousting lance in this case.
 			Projectile.scale = 1f; // The scale of the projectile. This only effects the drawing and the width of the collision.
-			Projectile.hide = true; // We are drawing the projectile ourselves. See PreDraw() below.
 			Projectile.ownerHitCheck = true; // Make sure the owner of the projectile has line of sight to the target (aka can't hit things through tile).
 			Projectile.DamageType = DamageClass.MeleeNoSpeed; // Set the damage to melee damage.
 
@@ -141,7 +145,7 @@ namespace ExampleMod.Content.Projectiles
 
 		// This is the custom collision that Jousting Lances uses. 
 		public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox) {
-			float rotationFactor = Projectile.rotation + (float)Math.PI / 4f; // The rotation of the Jousting Lance.
+			float rotationFactor = Projectile.rotation - (3 * MathHelper.PiOver4) - ((Projectile.spriteDirection == 1) ? MathHelper.Pi : MathHelper.PiOver2); // The rotation of the Jousting Lance.
 			float scaleFactor = 95f; // How far back the hit-line will be from the tip of the Jousting Lance. You will need to modify this if you have a longer or shorter Jousting Lance. Vanilla uses 95f
 			float widthMultiplier = 23f; // How thick the hit-line is. Increase or decrease this value if your Jousting Lance is thicker or thinner. Vanilla uses 23f
 			float collisionPoint = 0f; // collisionPoint is needed for CheckAABBvLineCollision(), but it isn't used for our collision here. Keep it at 0f.
@@ -173,7 +177,7 @@ namespace ExampleMod.Content.Projectiles
 		}
 
 		// We need to draw the projectile manually. If you don't include this, the Jousting Lance will not be aligned with the player.
-		public override bool PreDraw(ref Color lightColor) {
+		public override bool PreDraw(Player player, ref Color lightColor) {
 
 			// SpriteEffects change which direction the sprite is drawn.
 			SpriteEffects spriteEffects = SpriteEffects.None;
@@ -198,8 +202,8 @@ namespace ExampleMod.Content.Projectiles
 				spriteEffects = SpriteEffects.FlipHorizontally;
 			}
 
-			// The position of the sprite. Not subtracting Main.player[Projectile.owner].gfxOffY will cause the sprite to bounce when walking up blocks.
-			Vector2 position = new(Projectile.Center.X, Projectile.Center.Y - Main.player[Projectile.owner].gfxOffY);
+			// The position of the sprite. Not subtracting Projectile.gfxOffY will cause the sprite to bounce when walking up blocks.
+			Vector2 position = new(Projectile.Center.X, Projectile.Center.Y - Projectile.gfxOffY);
 
 			// Apply lighting and draw our projectile
 			Color drawColor = Projectile.GetAlpha(lightColor);

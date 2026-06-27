@@ -25,12 +25,12 @@ namespace ExampleMod.Content.Pets.MinionBossPet
 		}
 
 		public override void SetStaticDefaults() {
-			Main.projFrames[Projectile.type] = 6;
-			Main.projPet[Projectile.type] = true;
+			Main.projFrames[Type] = 6;
+			Main.projPet[Type] = true;
 
 			// Basics of CharacterPreviewAnimations explained in ExamplePetProjectile
 			// Notice we define our own method to use in .WithCode() below. This technically allows us to animate the projectile manually using frameCounter and frame as well
-			ProjectileID.Sets.CharacterPreviewAnimations[Projectile.type] = ProjectileID.Sets.SimpleLoop(0, Main.projFrames[Projectile.type], 5)
+			ProjectileID.Sets.CharacterPreviewAnimations[Type] = ProjectileID.Sets.SimpleLoop(0, Main.projFrames[Type], 5)
 				.WithOffset(-2, -22f)
 				.WithCode(CharacterPreviewCustomization);
 		}
@@ -64,7 +64,7 @@ namespace ExampleMod.Content.Pets.MinionBossPet
 			return Color.White * AlphaForVisuals * Projectile.Opacity;
 		}
 
-		public override void PostDraw(Color lightColor) {
+		public override void PostDraw(Player player, Color lightColor) {
 			// Draw surrounding eyes to mimic the boss
 			Texture2D eyeTexture = EyeAsset.Value;
 
@@ -184,7 +184,7 @@ namespace ExampleMod.Content.Pets.MinionBossPet
 				Projectile.frameCounter = 0;
 				Projectile.frame++;
 
-				if (Projectile.frame >= Main.projFrames[Projectile.type]) {
+				if (Projectile.frame >= Main.projFrames[Type]) {
 					Projectile.frame = 0;
 				}
 			}

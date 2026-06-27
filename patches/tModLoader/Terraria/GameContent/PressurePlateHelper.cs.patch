@@ -1,0 +1,28 @@
+--- src/TerrariaNetCore/Terraria/GameContent/PressurePlateHelper.cs
++++ src/tModLoader/Terraria/GameContent/PressurePlateHelper.cs
+@@ -1,6 +_,7 @@
+ using System.Collections.Generic;
+ using System.Linq;
+ using Microsoft.Xna.Framework;
++using Terraria.ID;
+ 
+ namespace Terraria.GameContent;
+ 
+@@ -56,7 +_,7 @@
+ 		for (int i = 0; i < tilesIn.Count; i++) {
+ 			Point point = tilesIn[i];
+ 			Tile tile = Main.tile[point.X, point.Y];
+-			if (tile.active() && tile.type == 428) {
++			if (tile.active() && TileID.Sets.PressurePlate[tile.type] == -3) {
+ 				pressurePlateBounds.X = point.X * 16;
+ 				pressurePlateBounds.Y = point.Y * 16 + 16 - pressurePlateBounds.Height;
+ 				if (!hitbox.Intersects(pressurePlateBounds) && !tilesIn2.Contains(point))
+@@ -67,7 +_,7 @@
+ 		for (int j = 0; j < tilesIn2.Count; j++) {
+ 			Point point2 = tilesIn2[j];
+ 			Tile tile2 = Main.tile[point2.X, point2.Y];
+-			if (tile2.active() && tile2.type == 428) {
++			if (tile2.active() && TileID.Sets.PressurePlate[tile2.type] == -3) {
+ 				pressurePlateBounds.X = point2.X * 16;
+ 				pressurePlateBounds.Y = point2.Y * 16 + 16 - pressurePlateBounds.Height;
+ 				if (hitbox.Intersects(pressurePlateBounds) && (!tilesIn.Contains(point2) || !hitbox2.Intersects(pressurePlateBounds)))

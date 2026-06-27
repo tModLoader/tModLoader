@@ -1,9 +1,10 @@
 --- src/TerrariaNetCore/Terraria/ID/ContentSamples.cs
 +++ src/tModLoader/Terraria/ID/ContentSamples.cs
-@@ -1,10 +_,17 @@
+@@ -1,11 +_,18 @@
 +using System;
  using System.Collections.Generic;
  using System.Linq;
+ using Terraria.DataStructures;
  using Terraria.GameContent.Bestiary;
  using Terraria.Graphics.Shaders;
 +using Terraria.ModLoader;
@@ -17,8 +18,8 @@
 +/// </summary>
  public static class ContentSamples
  {
- 	public static class CommonlyUsedContentSamples
-@@ -93,7 +_,15 @@
+ 	public static class DyeShaderIDs
+@@ -94,7 +_,15 @@
  			public ItemGroupAndOrderInGroup(Item item)
  			{
  				ItemType = item.type;
@@ -35,28 +36,17 @@
  			}
  		}
  
-@@ -238,7 +_,10 @@
- 			if (item.type == 781 || item.type == 783 || item.type == 780 || item.type == 782 || item.type == 784)
- 				return ItemGroup.Solutions;
- 
-+			/*
- 			if (item.type == 282 || item.type == 3112 || item.type == 4776 || item.type == 3002 || item.type == 286) {
-+			*/
-+			if (ItemID.Sets.Glowsticks[item.type]) {
- 				if (item.type == 282)
- 					orderInGroup = -1;
- 
-@@ -332,6 +_,9 @@
+@@ -338,6 +_,9 @@
  						return ItemGroup.Torches;
  					}
  
-+					if (TileID.Sets.Torch[item.createTile])
++					if (TileID.Sets.Torches[item.createTile])
 +						return ItemGroup.Torches;
 +
  					if (item.createTile == 178) {
  						orderInGroup = 5;
  					}
-@@ -639,7 +_,7 @@
+@@ -647,7 +_,7 @@
  		public static void SetCreativeMenuOrder()
  		{
  			List<Item> list = new List<Item>();
@@ -65,7 +55,7 @@
  				Item item = new Item();
  				item.SetDefaults(i);
  				list.Add(item);
-@@ -719,26 +_,86 @@
+@@ -733,26 +_,87 @@
  		public static int GetBestiaryStarsPriority(NPC npc) => NpcBestiaryRarityStars[npc.type];
  	}
  
@@ -125,7 +115,8 @@
 +
 +	/// <summary>
 +	/// The number of stars a given NPC type (<see cref="NPC.type"/>) shows in the Bestiary.
-+	/// <br/> Set in <see cref="ModNPC.SetBestiary(BestiaryDatabase, BestiaryEntry)"/> or <see cref="GlobalNPC.SetBestiary(NPC, BestiaryDatabase, BestiaryEntry)"/>.
++	/// <br/><br/> Defaults to the result of <see cref="GetNPCBestiaryRarityStarsCount"/>. Read the <see href="https://github.com/tModLoader/tModLoader/wiki/Bestiary-Stars">Bestiary Stars wiki page</see> to learn more about the default calculations.
++	/// <br/><br/> Set in SetStaticDefaults to override that logic.
 +	/// </summary>
  	public static Dictionary<int, int> NpcBestiaryRarityStars = new Dictionary<int, int>();
 +
@@ -153,7 +144,7 @@
  			NPC nPC = new NPC();
  			nPC.SetDefaults(i);
  			NpcsByNetId[i] = nPC;
-@@ -750,14 +_,14 @@
+@@ -764,14 +_,14 @@
  
  		ModifyNPCIds();
  		ProjectilesByType.Clear();
@@ -170,12 +161,27 @@
  			Item item = new Item();
  			item.SetDefaults(k);
  			ItemsByType[k] = item;
-@@ -955,7 +_,7 @@
+@@ -805,7 +_,10 @@
+ 		AddItemResearchOverride(5526, 2611);
+ 	}
+ 
++	/// <summary>
++	/// Registers any number of item types (<see cref="Item.type"/>) with the item type it shares research values with.
++	/// </summary>
+-	private static void AddItemResearchOverride(int itemTypeToUnlock, params int[] itemsThatWillResearchTheItemToUnlock)
++	public static void AddItemResearchOverride(int itemTypeToUnlock, params int[] itemsThatWillResearchTheItemToUnlock)
+ 	{
+ 		for (int i = 0; i < itemsThatWillResearchTheItemToUnlock.Length; i++) {
+ 			AddItemResearchOverride_Inner(itemsThatWillResearchTheItemToUnlock[i], itemTypeToUnlock);
+@@ -983,7 +_,10 @@
  		NPCSpawnParams nPCSpawnParams = default(NPCSpawnParams);
- 		nPCSpawnParams.gameModeData = Main.RegisteredGameModes[0];
+ 		nPCSpawnParams.difficultyOverride = GameDifficultyLevel.Classic;
  		NPCSpawnParams spawnparams = nPCSpawnParams;
 -		for (int i = -65; i < NPCID.Count; i++) {
 +		for (int i = -65; i < NPCLoader.NPCCount; i++) {
++			if (NpcBestiaryRarityStars.ContainsKey(i)) // Fix #4687, let modders set stars manually in SetStaticDefaults.
++				continue;
++
  			NPC nPC = new NPC();
  			nPC.SetDefaults(i, spawnparams);
  			NpcBestiaryRarityStars[i] = GetNPCBestiaryRarityStarsCount(nPC);

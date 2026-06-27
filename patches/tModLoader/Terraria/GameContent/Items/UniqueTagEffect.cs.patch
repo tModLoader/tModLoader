@@ -1,0 +1,125 @@
+--- src/TerrariaNetCore/Terraria/GameContent/Items/UniqueTagEffect.cs
++++ src/tModLoader/Terraria/GameContent/Items/UniqueTagEffect.cs
+@@ -1,40 +_,122 @@
++using Terraria.ModLoader;
++
+ namespace Terraria.GameContent.Items;
+ 
+ public abstract class UniqueTagEffect
+ {
+ 	public bool NetSync;
+ 	public bool SyncProcs;
++	/// <summary> How long the tag effect will last. 240 ticks (4 seconds) by default for <see cref="WhipTagEffect"/>. </summary>
+ 	public int TagDuration;
+ 
++	/// <summary>
++	/// Allows you to change if the tag effect can be applied to an NPC. <see langword="true"/> by default.
++	/// </summary>
+ 	public virtual bool CanApplyTagToNPC(int npcType) => true;
+ 
++	/// <summary>
++	/// Allows you to add additional effects when the buff is removed from the player.
++	/// </summary>
++	/// <param name="owner">The player who inflicted the tag effect.</param>
+ 	public virtual void OnRemovedFromPlayer(Player owner)
+ 	{
+ 	}
+ 
++	/// <summary>
++	/// Allows you to add additional effects when the buff is first applied to the player.
++	/// </summary>
++	/// <param name="owner">The player who inflicted the tag effect.</param>
+ 	public virtual void OnSetToPlayer(Player owner)
+ 	{
+ 	}
+ 
++	/// <summary>
++	/// Allows you to add additional effects when the tag is first applied to the NPC.
++	/// </summary>
++	/// <param name="owner">The player who inflicted the tag effect.</param>
++	/// <param name="npc">The NPC who was hit.</param>
+ 	public virtual void OnTagAppliedToNPC(Player owner, NPC npc)
+ 	{
+ 	}
+ 
++	/// <summary>
++	/// Allows you to change if hit effects can run.
++	/// </summary>
++	/// <param name="owner">The player who inflicted the tag effect.</param>
++	/// <param name="optionalProjectile">The projectile that hit the NPC.</param>
++	/// <param name="npcHit">The NPC who was hit.</param>
++	/// <returns><see langword="true"/> by default.</returns>
+ 	public virtual bool CanRunHitEffects(Player owner, Projectile optionalProjectile, NPC npcHit) => true;
+ 
++	/*
+ 	public virtual void ModifyTaggedHit(Player owner, Projectile optionalProjectile, NPC npcHit, ref int damageDealt, ref bool crit)
++	*/
++	/// <summary>
++	/// Allows the damage dealt to be modified when a tagged enemy takes damage from a minion, sentry, or one of their projectiles.
++	/// </summary>
++	/// <param name="owner">The player who inflicted the tag effect.</param>
++	/// <param name="optionalProjectile">The projectile that hit the NPC.</param>
++	/// <param name="npcHit">The NPC who was hit.</param>
++	/// <param name="modifiers">The original damage that was dealt to the NPC.</param>
++	public virtual void ModifyTaggedHit(Player owner, Projectile optionalProjectile, NPC npcHit, ref NPC.HitModifiers modifiers)
+ 	{
+ 	}
+ 
++	/*
+ 	public virtual void ModifyProcHit(Player owner, Projectile optionalProjectile, NPC npcHit, ref int damageDealt, ref bool crit)
++	*/
++	/// <summary>
++	/// Allows the damage dealt to be modified when a tag effect triggers on a tagged enemy.
++	/// <para>In order for a tag effect to proc, apply the following or similar code in <see cref="ModProjectile.OnHitNPC(NPC, NPC.HitInfo, int)"/>
++	/// <code>
++	/// if (Projectile.localAI[0] == 0f) {
++	/// Projectile.localAI[0] = 1f;
++	///		Main.player[Projectile.owner].TagEffectState.TryEnableProcOnNPC(Projectile.tagEffectType, target);
++	///	}
++	/// </code></para>
++	/// </summary>
++	/// <param name="owner">The player who inflicted the tag effect.</param>
++	/// <param name="optionalProjectile">The projectile that hit the NPC.</param>
++	/// <param name="npcHit">The NPC who was hit.</param>
++	/// <param name="modifiers">The original damage that was dealt to the NPC.</param>
++	/// <remarks>Procs will be removed from the NPC once they activate.</remarks>
++	public virtual void ModifyProcHit(Player owner, Projectile optionalProjectile, NPC npcHit, ref NPC.HitModifiers modifiers)
+ 	{
+ 	}
+ 
++	/*
+ 	public virtual void OnTaggedHit(Player owner, Projectile optionalProjectile, NPC npcHit, int calcDamage)
++	*/
++	/// <summary>
++	/// Allows you to create special effects when tagged enemy takes damage from a minion, sentry, or one of their projectiles.
++	/// </summary>
++	/// <param name="owner">The player who inflicted the tag effect.</param>
++	/// <param name="optionalProjectile">The projectile that hit the NPC.</param>
++	/// <param name="npcHit">The NPC who was hit.</param>
++	/// <param name="hit">The damage after calculations from <see cref="ModifyTaggedHit"/> and <see cref="ModifyProcHit"/>.</param>
++	public virtual void OnTaggedHit(Player owner, Projectile optionalProjectile, NPC npcHit, NPC.HitInfo hit)
+ 	{
+ 	}
+ 
++	/*
+ 	public virtual void OnProcHit(Player owner, Projectile optionalProjectile, NPC npcHit, int calcDamage)
++	*/
++	/// <summary>
++	/// Allows you to create special effects when a tag effect triggers on a tagged enemy.
++	/// <para>In order for a tag effect to proc, apply the following or similar code in <see cref="ModProjectile.OnHitNPC(NPC, NPC.HitInfo, int)"/>
++	/// <code>
++	/// if (Projectile.localAI[0] == 0f) {
++	/// Projectile.localAI[0] = 1f;
++	///		Main.player[Projectile.owner].TagEffectState.TryEnableProcOnNPC(Projectile.tagEffectType, target);
++	///	}
++	/// </code></para>
++	/// </summary>
++	/// <param name="owner">The player who inflicted the tag effect.</param>
++	/// <param name="optionalProjectile">The projectile that hit the NPC.</param>
++	/// <param name="npcHit">The NPC who was hit.</param>
++	/// <param name="hit">The damage after calculations from <see cref="ModifyTaggedHit"/> and <see cref="ModifyProcHit"/>.</param>
++	/// <remarks>Procs will be removed from the NPC once they activate.</remarks>
++	public virtual void OnProcHit(Player owner, Projectile optionalProjectile, NPC npcHit, NPC.HitInfo hit)
+ 	{
+ 	}
+ }

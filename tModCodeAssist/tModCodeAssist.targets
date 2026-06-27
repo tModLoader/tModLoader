@@ -1,0 +1,12 @@
+<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+	<PropertyGroup>
+		<_LibraryAnalyzersOutputPath>Libraries\tModCodeAssist\1.0.0\</_LibraryAnalyzersOutputPath>
+	</PropertyGroup>
+	
+	<ItemGroup>
+		<Content Include="$(MSBuildThisFileDirectory)tModCodeAssist\bin\**\*.dll" CopyToOutputDirectory="PreserveNewest" Link="$(_LibraryAnalyzersOutputPath)%(RecursiveDir)%(Filename)%(Extension)" />
+		<Content Include="$(MSBuildThisFileDirectory)tModCodeAssist.CodeFixes\bin\**\*.dll" CopyToOutputDirectory="PreserveNewest" Link="$(_LibraryAnalyzersOutputPath)%(RecursiveDir)%(Filename)%(Extension)" />
+	</ItemGroup>
+
+</Project>

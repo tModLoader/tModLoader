@@ -23,7 +23,7 @@
  			Tile tile = Main.tile[x + i * directionX, y];
 -			if ((!tile.active() || tile.type < 0 || tile.type >= TileID.Count || !TileID.Sets.IsAContainer[tile.type]) && tile.active() && Main.tileSolid[tile.type]) {
 +			if ((!tile.active() || tile.type < 0 || !TileID.Sets.IsAContainer[tile.type]) && tile.active() && Main.tileSolid[tile.type]) {
- 				if (i >= 5 && !tile.actuator() && !Main.tileFrameImportant[tile.type] && TileID.Sets.CanBeClearedDuringGeneration[tile.type]) {
+ 				if (i >= 5 && !tile.actuator() && !Main.tileFrameImportant[tile.type] && WorldGen.CanBeClearedDuringGeneration(tile.type, x + i * directionX, y)) {
  					_dartTrapPlacementSpots.Add(new DartTrapPlacementAttempt(position, directionX, x, y, i, tile));
  					return true;
 @@ -331,7 +_,7 @@

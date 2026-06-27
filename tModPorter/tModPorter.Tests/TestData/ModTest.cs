@@ -7,7 +7,6 @@ public class ModTest : Mod
 			Autoload = true,
 			AutoloadBackgrounds = true,
 			AutoloadGores = true,
-			AutoloadClouds = true,
 			AutoloadSounds = true
 		};
 	}

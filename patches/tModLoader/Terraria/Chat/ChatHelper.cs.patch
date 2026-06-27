@@ -16,7 +16,7 @@
  	}
  
 +	/// <summary>
-+	/// Sends a message to the specified client to be displayed in their chat. Intended to be used from the server. Useful for the server replying to client actions. 
++	/// Sends a message to the specified client to be displayed in their chat. Intended to be used from the server. Useful for the server replying to client actions.
 +	/// </summary>
 +	/// <param name="text"></param>
 +	/// <param name="color"></param>

@@ -5,6 +5,8 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Exceptions;
+using Terraria.UI;
+
 
 #pragma warning disable IDE0060 //Remove unused parameter.
 
@@ -19,32 +21,40 @@ namespace Terraria;
 /// </summary>
 public partial class Recipe
 {
+	[Obsolete($"Replaced by {nameof(IngredientQuantityRules)} due to not accounting for shimmer decrafting")]
 	public static class ConsumptionRules
 	{
-		/// <summary> Gives 1/3 chance for every ingredient to not be consumed, if used at an alchemy table. (!) This behavior is already automatically given to all items that can be made at a placed bottle tile. </summary>
-		public static ConsumeItemCallback Alchemy = (Recipe recipe, int type, ref int amount) => {
-			if (!Main.LocalPlayer.alchemyTable) return;
+		[Obsolete($"Replaced by {nameof(IngredientQuantityRules)}.{nameof(IngredientQuantityRules.Alchemy)} due to not accounting for shimmer decrafting")]
+		public static ConsumeItemCallback Alchemy = (Recipe recipe, int type, ref int amount) => IngredientQuantityRules.Alchemy(recipe, type, ref amount, false);
+	}
 
-			int amountUsed = 0;
-
-			for (int i = 0; i < amount; i++) {
-				if (!Main.rand.NextBool(3))
-					amountUsed++;
+	public static class IngredientQuantityRules
+	{
+		/// <summary> Gives 1/3 chance for every ingredient to not be consumed, if used at an alchemy table. (!) This behaviour is already automatically given to all items that can be made at a placed bottle tile. </summary>
+		public static IngredientQuantityCallback Alchemy = (Recipe recipe, int type, ref int amount, bool isDecrafting) => {
+			if (!Main.LocalPlayer.alchemyTable && !isDecrafting)
+				return;
+			for (int i = amount; i > 0; i--) {
+				if (Main.rand.NextBool(3))
+					amount--;
 			}
-
-			amount = amountUsed;
 		};
 	}
 
 	public readonly Mod Mod;
-	public readonly List<Condition> Conditions = new List<Condition>();
-	public readonly List<Condition> DecraftConditions = new List<Condition>();
+	public readonly List<Condition> Conditions = new();
+	public readonly List<Condition> DecraftConditions = new();
 
 	public delegate void OnCraftCallback(Recipe recipe, Item item, List<Item> consumedItems, Item destinationStack);
-	public delegate void ConsumeItemCallback(Recipe recipe, int type, ref int amount);
 
+	[Obsolete($"Replaced by {nameof(IngredientQuantityCallback)} due to not accounting for shimmer decrafting")]
+	public delegate void ConsumeItemCallback(Recipe recipe, int type, ref int amount);
+	/// <summary>
+	/// Called for both <see cref="Create()"/> and <see cref="Item.GetShimmered"/>, using <paramref name="isDecrafting"/> = <see langword="true"/> to denote a shimmer operation
+	/// </summary>
+	public delegate void IngredientQuantityCallback(Recipe recipe, int type, ref int amount, bool isDecrafting);
 	internal OnCraftCallback OnCraftHooks { get; private set; }
-	internal ConsumeItemCallback ConsumeItemHooks { get; private set; }
+	internal IngredientQuantityCallback ConsumeIngredientHooks { get; private set; }
 
 	private void AddGroup(int id)
 	{
@@ -62,6 +72,11 @@ public partial class Recipe
 	/// Any recipe with this flag won't be shown in game.
 	/// </summary>
 	public bool Disabled { get; private set; }
+
+	/// <summary>
+	/// Any recipe with this flag won't be decrafted in shimmer.
+	/// </summary>
+	public bool DecraftDisabled => notDecraftable;
 
 	/// <summary>
 	/// Adds an ingredient to this recipe with the given item type and stack size. Ex: <c>recipe.AddIngredient(ItemID.IronAxe)</c>
@@ -107,33 +122,28 @@ public partial class Recipe
 		=> AddIngredient(ModContent.ItemType<T>(), stack);
 
 	/// <summary>
-	/// Adds a recipe group ingredient to this recipe with the given RecipeGroup name and stack size.
+	/// Adds a recipe group ingredient to this recipe with the given RecipeGroup key and stack size. This overload is intended for using modded recipe groups in situations where a reference to the <see cref="RecipeGroup"/> object itself isn't accessible, but it is usually safer to use the other overloads if at all possible.
 	/// <br/> Recipe groups allow a recipe to use alternate ingredients without making multiple recipes. For example the "IronBar" group accepts either <see cref="ItemID.IronBar"/> or <see cref="ItemID.LeadBar"/>. The <see href="https://github.com/tModLoader/tModLoader/wiki/Intermediate-Recipes#recipe-groups">Recipe Groups wiki guide</see> has more information.
-	/// <br/> To use a vanilla recipe group, use <see cref="AddRecipeGroup(int, int)"/> using a <see cref="RecipeGroupID"/> entry instead.
+	/// <br/> To use a vanilla recipe group, use <see cref="AddRecipeGroup(RecipeGroup, int)"/> using a <see cref="RecipeGroups"/> entry instead.
 	/// </summary>
 	/// <param name="name">The name.</param>
 	/// <param name="stack">The stack.</param>
 	/// <exception cref="RecipeException">A recipe group with the name " + name + " does not exist.</exception>
 	public Recipe AddRecipeGroup(string name, int stack = 1)
 	{
-		if (!RecipeGroup.recipeGroupIDs.ContainsKey(name))
+		var group = RecipeGroup.recipeGroups.Values.SingleOrDefault(x => x.Key == name);
+
+		if (group == null)
 			throw new RecipeException($"A recipe group with the name {name} does not exist.");
 
-		int id = RecipeGroup.recipeGroupIDs[name];
-		var group = RecipeGroup.recipeGroups[id];
-
-		AddIngredient(group.IconicItemId, stack);
-		AddGroup(id);
-
-		return this;
+		return AddRecipeGroup(group, stack);
 	}
 
 	/// <summary>
-	/// Adds a recipe group ingredient to this recipe with the given RecipeGroupID and stack size.
-	/// <br/> Recipe groups allow a recipe to use alternate ingredients without making multiple recipes. For example the <see cref="RecipeGroupID.IronBar"/> group accepts either <see cref="ItemID.IronBar"/> or <see cref="ItemID.LeadBar"/>. The <see href="https://github.com/tModLoader/tModLoader/wiki/Intermediate-Recipes#recipe-groups">Recipe Groups wiki guide</see> has more information.
-	/// <br/> Vanilla recipe group IDs can be found in <see cref="RecipeGroupID"/> and modded recipe group IDs will be returned from <see cref="RecipeGroup.RegisterGroup(string, RecipeGroup)"/>. <see cref="AddRecipeGroup(string, int)"/> can be used instead if the ID number is not known but the name is known.
+	/// Adds a recipe group ingredient to this recipe with the given <see cref="RecipeGroup.RegisteredId"/> and stack size. Using the <see cref="AddRecipeGroup(RecipeGroup, int)"/> method is usually preferred.
+	/// <br/> Recipe groups allow a recipe to use alternate ingredients without making multiple recipes. For example the <see cref="RecipeGroups.IronBar"/> group accepts either <see cref="ItemID.IronBar"/> or <see cref="ItemID.LeadBar"/>. The <see href="https://github.com/tModLoader/tModLoader/wiki/Intermediate-Recipes#recipe-groups">Recipe Groups wiki guide</see> has more information.
 	/// </summary>
-	/// <param name="recipeGroupId">The RecipeGroupID.</param>
+	/// <param name="recipeGroupId">A <see cref="RecipeGroup.RegisteredId"/>.</param>
 	/// <param name="stack">The stack.</param>
 	/// <exception cref="RecipeException">A recipe group with the ID " + recipeGroupID + " does not exist.</exception>
 	public Recipe AddRecipeGroup(int recipeGroupId, int stack = 1)
@@ -143,7 +153,7 @@ public partial class Recipe
 
 		RecipeGroup rec = RecipeGroup.recipeGroups[recipeGroupId];
 
-		AddIngredient(rec.IconicItemId, stack);
+		AddIngredient(rec.GetPlaceholderItemType(), stack);
 		AddGroup(recipeGroupId);
 
 		return this;
@@ -156,7 +166,7 @@ public partial class Recipe
 	/// <param name="stack"></param>
 	public Recipe AddRecipeGroup(RecipeGroup recipeGroup, int stack = 1)
 	{
-		AddIngredient(recipeGroup.IconicItemId, stack);
+		AddIngredient(recipeGroup.GetPlaceholderItemType(), stack);
 		AddGroup(recipeGroup.RegisteredId);
 
 		return this;
@@ -172,7 +182,7 @@ public partial class Recipe
 		if (tileID < 0 || tileID >= TileLoader.TileCount)
 			throw new RecipeException($"No tile has ID '{tileID}'.");
 
-		requiredTile.Add(tileID);
+		requiredTile = tileID;
 
 		return this;
 	}
@@ -304,9 +314,21 @@ public partial class Recipe
 	/// <summary>
 	/// Sets a callback that allows you to determine how many of a certain ingredient is consumed when this recipe is used. Return the number of ingredients that will actually be consumed. By default returns numRequired.
 	/// </summary>
+
+	[Obsolete($"Replaced by {nameof(AddConsumeIngredientCallback)} due to not accounting for shimmer decrafting")]
 	public Recipe AddConsumeItemCallback(ConsumeItemCallback callback)
 	{
-		ConsumeItemHooks += callback;
+		ConsumeIngredientHooks += (Recipe recipe, int type, ref int num, bool decraft) => callback(recipe, type, ref num);
+
+		return this;
+	}
+
+	/// <summary>
+	/// Sets a callback that allows you to determine how many of a certain ingredient is consumed when this recipe is used. Return the number of ingredients that will actually be consumed. By default returns numRequired.
+	/// </summary>
+	public Recipe AddConsumeIngredientCallback(IngredientQuantityCallback callback)
+	{
+		ConsumeIngredientHooks += callback;
 
 		return this;
 	}
@@ -391,7 +413,7 @@ public partial class Recipe
 		clone.createItem = createItem.Clone();
 
 		clone.requiredItem = new List<Item>(requiredItem.Select(x => x.Clone()).ToArray());
-		clone.requiredTile = new List<int>(requiredTile.ToArray());
+		clone.requiredTile = requiredTile;
 		clone.acceptedGroups = new List<int>(acceptedGroups.ToArray());
 		clone.notDecraftable = notDecraftable;
 		clone.crimson = crimson;
@@ -401,18 +423,12 @@ public partial class Recipe
 		clone.needHoney = needHoney;
 		clone.needWater = needWater;
 		clone.needLava = needLava;
-		clone.anyWood = anyWood;
-		clone.anyIronBar = anyIronBar;
-		clone.anyPressurePlate = anyPressurePlate;
-		clone.anySand = anySand;
-		clone.anyFragment = anyFragment;
-		clone.alchemy = alchemy;
 		clone.needSnowBiome = needSnowBiome;
 		clone.needGraveyardBiome = needGraveyardBiome;
-		clone.needEverythingSeed = needEverythingSeed;
+		clone.needMechdusa = needMechdusa;
 
 		clone.OnCraftHooks = OnCraftHooks;
-		clone.ConsumeItemHooks = ConsumeItemHooks;
+		clone.ConsumeIngredientHooks = ConsumeIngredientHooks;
 		foreach (Condition condition in Conditions) {
 			clone.AddCondition(condition);
 		}
@@ -423,8 +439,8 @@ public partial class Recipe
 
 		// A subsequent call to Register() will re-add this hook if Bottles is a required tile, so we remove
 		// it here to not have multiple duplicate hooks.
-		if (clone.requiredTile.Contains(TileID.Bottles))
-			clone.ConsumeItemHooks -= ConsumptionRules.Alchemy;
+		if (clone.requiredTile == TileID.Bottles)
+			clone.ConsumeIngredientHooks -= IngredientQuantityRules.Alchemy;
 
 		return clone;
 	}
@@ -441,19 +457,19 @@ public partial class Recipe
 		if (RecipeIndex >= 0)
 			throw new RecipeException("There was an attempt to register an already registered recipe.");
 
-		if (requiredTile.Contains(TileID.Bottles))
-			AddConsumeItemCallback(ConsumptionRules.Alchemy);
+		if (requiredTile == TileID.Bottles)
+			AddConsumeIngredientCallback(IngredientQuantityRules.Alchemy);
 
 		if (numRecipes >= maxRecipes) {
 			maxRecipes += 500;
 
 			Array.Resize(ref Main.recipe, maxRecipes);
 			Array.Resize(ref Main.availableRecipe, maxRecipes);
-			Array.Resize(ref Main.availableRecipeY, maxRecipes);
+			Array.Resize(ref CraftingUI.availableRecipeY, maxRecipes);
 
 			for (int k = numRecipes; k < maxRecipes; k++) {
 				Main.recipe[k] = new Recipe();
-				Main.availableRecipeY[k] = 65f * k;
+				CraftingUI.availableRecipeY[k] = 65f * k;
 			}
 		}
 
@@ -481,7 +497,7 @@ public partial class Recipe
 		ArgumentNullException.ThrowIfNull(RecipeLoader.CurrentMod);
 		var recipe = new Recipe(RecipeLoader.CurrentMod);
 
-		recipe.createItem.SetDefaults(result, false);
+		recipe.createItem.SetDefaults(result);
 		recipe.createItem.stack = amount;
 
 		return recipe;

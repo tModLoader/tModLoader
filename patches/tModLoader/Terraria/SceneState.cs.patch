@@ -1,0 +1,12 @@
+--- src/TerrariaNetCore/Terraria/SceneState.cs
++++ src/tModLoader/Terraria/SceneState.cs
+@@ -292,7 +_,8 @@
+ 			MoveTowards(ref Main.shimmerAlpha, 0f, 0.05f);
+ 	}
+ 
++	// TML: Made public
+-	private void ManageSpecialBiomeVisuals(string biomeName, bool inZone, Vector2 activationSource = default(Vector2), bool alwaysInstant = false)
++	public void ManageSpecialBiomeVisuals(string biomeName, bool inZone, Vector2 activationSource = default(Vector2), bool alwaysInstant = false)
+ 	{
+ 		if (SkyManager.Instance[biomeName] != null && inZone != SkyManager.Instance[biomeName].IsActive()) {
+ 			if (inZone)

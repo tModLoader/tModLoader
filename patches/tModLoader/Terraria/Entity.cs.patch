@@ -1,10 +1,10 @@
 --- src/TerrariaNetCore/Terraria/Entity.cs
 +++ src/tModLoader/Terraria/Entity.cs
-@@ -3,19 +_,64 @@
+@@ -3,17 +_,62 @@
  
  namespace Terraria;
  
--public abstract class Entity
+-public abstract class Entity : IEntitySourceTarget
 +public abstract partial class Entity
  {
 +	/// <summary>
@@ -20,8 +20,6 @@
 +	/// <summary>
 +	/// If true, the Entity actually exists within the game world. Within the specific entity array, if active is false, the entity is junk data. Always check active if iterating over the entity array. Another option for iterating is to use <see cref="Main.ActivePlayers"/>, <see cref="Main.ActiveNPCs"/>, <see cref="Main.ActiveProjectiles"/>, or <see cref="Main.ActiveItems"/> instead for simpler code.
 +	/// </summary>
- 	public bool active;
- 	internal long entityId;
 +
 +	/// <summary>
 +	/// The position of this Entity in world coordinates. Note that this corresponds to the top left corner of the entity. Use <see cref="Center"/> instead for logic that needs the position at the center of the entity.
@@ -66,7 +64,7 @@
  	public bool wet;
  	public bool shimmerWet;
  	public bool honeyWet;
-@@ -24,6 +_,9 @@
+@@ -31,6 +_,9 @@
  
  	public virtual Vector2 VisualPosition => position;
  
@@ -75,4 +73,4 @@
 +	/// </summary>
  	public Vector2 Center {
  		get {
- 			return new Vector2(position.X + (float)(width / 2), position.Y + (float)(height / 2));
+ 			return new Vector2(position.X + (float)width / 2f, position.Y + (float)height / 2f);

@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework;
 using System;
 using Terraria;
 using Terraria.Graphics.Capture;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Biomes
@@ -19,6 +20,16 @@ namespace ExampleMod.Content.Biomes
 
 		// Select Music
 		public override int Music => MusicLoader.GetMusicSlot(Mod, "Assets/Music/MysteriousMystery");
+		/* If you need the music choice to be conditional, such as supporting the Otherworld soundtrack toggle, you can use this approach:
+		public override int Music {
+			get {
+				if (!Main.swapMusic == Main.drunkWorld && !Main.remixWorld) {
+					return MusicID.OtherworldlyEerie;
+				}
+				return MusicLoader.GetMusicSlot(Mod, "Assets/Music/MysteriousMystery");
+			}
+		}
+		*/
 
 		public override int BiomeTorchItemType => ModContent.ItemType<ExampleTorch>();
 		public override int BiomeCampfireItemType => ModContent.ItemType<ExampleCampfire>();

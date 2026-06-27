@@ -39,6 +39,7 @@ steamToLocalizationKey = {
   "tag_362268":"TagsLanguage_Chinese",
   "tag_362269":"TagsLanguage_Portuguese",
   "tag_362270":"TagsLanguage_Polish",
+  "tag_558042":"TagsTranslation",
 }
 
 # English will be updated directly, if ever needed. -- actually, not sure what the website text input changes yet, internal or display.

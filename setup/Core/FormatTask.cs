@@ -79,6 +79,22 @@ namespace Terraria.ModLoader.Setup.Core
 		}
 
 		public static string Format(string source, bool aggressive, CancellationToken cancellationToken) {
+
+			// Hack for extra stack space, remove when we stop doing crimes in vanilla
+			if (source.Length > 1_000_000) {
+				var tcs = new TaskCompletionSource<string>();
+				var t = new Thread(_ => { try { tcs.SetResult(_Format(source, aggressive, cancellationToken)); } catch (Exception ex) { tcs.SetException(ex); } }, maxStackSize: 4_000_000) {
+					IsBackground = true
+				};
+				t.Start();
+				return tcs.Task.GetAwaiter().GetResult();
+			}
+
+			return _Format(source, aggressive, cancellationToken);
+		}
+
+		public static string _Format(string source, bool aggressive, CancellationToken cancellationToken)
+		{
 			SyntaxTree tree = CSharpSyntaxTree.ParseText(source, new CSharpParseOptions(preprocessorSymbols: new[] { "SERVER" }));
 			return Format(tree.GetRoot(), aggressive, cancellationToken).ToFullString();
 		}

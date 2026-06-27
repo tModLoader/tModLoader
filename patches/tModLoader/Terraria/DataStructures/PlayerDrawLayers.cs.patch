@@ -12,9 +12,43 @@
 -public static class PlayerDrawLayers
 +public static partial class PlayerDrawLayers
  {
- 	private const int DEFAULT_MAX_SPRITES = 200;
- 	private static SpriteDrawBuffer spriteBuffer;
-@@ -233,7 +_,7 @@
+ 	public static void DrawPlayer_extra_TorsoPlus(ref PlayerDrawSet drawinfo)
+ 	{
+@@ -39,7 +_,17 @@
+ 
+ 	public static void DrawCompositeArmorPiece(ref PlayerDrawSet drawinfo, CompositePlayerDrawContext context, DrawData data, int bodyIndex)
+ 	{
++		var args = context switch {
++			CompositePlayerDrawContext.FrontArmAccessory => (EquipType.HandsOn, drawinfo.drawPlayer.handon),
++			CompositePlayerDrawContext.BackArmAccessory => (EquipType.HandsOff, drawinfo.drawPlayer.handoff),
++			_ => (EquipType.Body, drawinfo.drawPlayer.body),
++		};
++
++		ItemLoader.ModifyEquipTextureDraw(ref drawinfo, ref data, args.Item1, args.Item2); // Body, HandsOn, HandsOff, Normal
++		/*
+ 		drawinfo.DrawDataCache.Add(data);
++		*/
++
+ 		if (drawinfo.hideEntirePlayer || drawinfo.hideEntirePlayerExceptHelmetsAndFaceAccessories)
+ 			return;
+ 
+@@ -66,6 +_,7 @@
+ 					}
+ 				}
+ 
++				// if (ItemLoader.ModifyEquipTextureDraw(ref drawinfo, ref data, EquipType.Body, drawinfo.drawPlayer.body)) // Body Glow Mask, no API support for glow masks yet
+ 				drawinfo.DrawDataCache.Add(item2);
+ 				break;
+ 			}
+@@ -88,6 +_,7 @@
+ 					}
+ 				}
+ 
++				// if (ItemLoader.ModifyEquipTextureDraw(ref drawinfo, ref data, EquipType.Body, drawinfo.drawPlayer.body)) // Body Glow Mask, no API support for glow masks yet
+ 				drawinfo.DrawDataCache.Add(item);
+ 				break;
+ 			}
+@@ -288,14 +_,17 @@
  
  	public static void DrawPlayer_01_3_BackHead(ref PlayerDrawSet drawinfo)
  	{
@@ -22,8 +56,18 @@
 +		if (drawinfo.drawPlayer.head >= 0) {
  			int num = ArmorIDs.Head.Sets.FrontToBackID[drawinfo.drawPlayer.head];
  			if (num >= 0) {
- 				Vector2 helmetOffset = drawinfo.helmetOffset;
-@@ -292,6 +_,10 @@
+ 				Vector2 pos = drawinfo.helmetOffset;
+ 				drawinfo.drawPlayer.ApplyHeadOffsetFromMount(ref pos);
+ 				DrawData item = new DrawData(TextureAssets.ArmorHead[num].Value, pos + new Vector2((int)(drawinfo.Position.X - Main.screenPosition.X - (float)(drawinfo.drawPlayer.bodyFrame.Width / 2) + (float)(drawinfo.drawPlayer.width / 2)), (int)(drawinfo.Position.Y - Main.screenPosition.Y + (float)drawinfo.drawPlayer.height - (float)drawinfo.drawPlayer.bodyFrame.Height + 4f)) + drawinfo.drawPlayer.headPosition + drawinfo.headVect, drawinfo.drawPlayer.bodyFrame, drawinfo.colorArmorHead, drawinfo.drawPlayer.headRotation, drawinfo.headVect, 1f, drawinfo.playerEffect);
+ 				item.shader = drawinfo.cHead;
++				ItemLoader.ModifyEquipTextureDraw(ref drawinfo, ref item, EquipType.Head, num); // Head, Head.Sets.FrontToBackID entry ("Back head alternate")
++				/*
+ 				drawinfo.DrawDataCache.Add(item);
++				*/
+ 			}
+ 		}
+ 
+@@ -358,6 +_,10 @@
  
  	public static void DrawPlayer_07_LeinforsHairShampoo(ref PlayerDrawSet drawinfo)
  	{
@@ -34,16 +78,16 @@
  		if (drawinfo.drawPlayer.leinforsHair && (drawinfo.fullHair || drawinfo.hatHair || drawinfo.drawsBackHairWithoutHeadgear || drawinfo.drawPlayer.head == -1 || drawinfo.drawPlayer.head == 0) && drawinfo.drawPlayer.hair != 12 && drawinfo.shadow == 0f && Main.rgbToHsl(drawinfo.colorHead).Z > 0.2f) {
  			if (Main.rand.Next(20) == 0 && !drawinfo.hatHair) {
  				Rectangle r = Utils.CenteredRectangle(drawinfo.Position + drawinfo.drawPlayer.Size / 2f + new Vector2(0f, drawinfo.drawPlayer.gravDir * -20f), new Vector2(20f, 14f));
-@@ -368,7 +_,7 @@
+@@ -434,7 +_,7 @@
  			drawinfo.DrawDataCache.Add(item);
  		}
  
--		if (drawinfo.drawPlayer.backpack > 0 && drawinfo.drawPlayer.backpack < ArmorIDs.Back.Count && !drawinfo.drawPlayer.mount.Active) {
-+		if (drawinfo.drawPlayer.backpack > 0 && !drawinfo.drawPlayer.mount.Active) {
+-		if (drawinfo.drawPlayer.backpack > 0 && drawinfo.drawPlayer.backpack < ArmorIDs.Back.Count && (!drawinfo.drawPlayer.mount.Active || (drawinfo.drawPlayer.mount.Type >= 0 && MountID.Sets.DoesNotOverrideBackpackDraw[drawinfo.drawPlayer.mount.Type]))) {
++		if (drawinfo.drawPlayer.backpack > 0 && (!drawinfo.drawPlayer.mount.Active || (drawinfo.drawPlayer.mount.Type >= 0 && MountID.Sets.DoesNotOverrideBackpackDraw[drawinfo.drawPlayer.mount.Type]))) {
  			Vector2 vector2 = new Vector2(0f, 8f);
  			Vector2 vec4 = drawinfo.Position - Main.screenPosition + drawinfo.drawPlayer.bodyPosition + new Vector2(drawinfo.drawPlayer.width / 2, drawinfo.drawPlayer.height - drawinfo.drawPlayer.bodyFrame.Height / 2) + new Vector2(0f, -4f) + vector2;
  			vec4 = vec4.Floor();
-@@ -448,7 +_,7 @@
+@@ -514,7 +_,7 @@
  
  	public static void DrawPlayer_08_1_Tails(ref PlayerDrawSet drawinfo)
  	{
@@ -52,7 +96,16 @@
  			Vector2 zero = Vector2.Zero;
  			if (drawinfo.isSitting)
  				zero.Y += -2f;
-@@ -464,10 +_,10 @@
+@@ -527,16 +_,19 @@
+ 			vec = vec.Floor();
+ 			DrawData item = new DrawData(TextureAssets.AccBack[drawinfo.drawPlayer.tail].Value, vec, drawinfo.drawPlayer.bodyFrame, drawinfo.colorArmorBody, drawinfo.drawPlayer.bodyRotation, drawinfo.bodyVect, 1f, drawinfo.playerEffect);
+ 			item.shader = drawinfo.cTail;
++			ItemLoader.ModifyEquipTextureDraw(ref drawinfo, ref item, EquipType.Back, drawinfo.drawPlayer.back); // Back, tail
++			/*
+ 			drawinfo.DrawDataCache.Add(item);
++			*/
+ 		}
+ 	}
  
  	public static void DrawPlayer_10_BackAcc(ref PlayerDrawSet drawinfo)
  	{
@@ -65,7 +118,29 @@
  			int num = drawinfo.drawPlayer.bodyFrame.Y / 56;
  			if (num < 1 || num > 5) {
  				drawinfo.armorAdjust = 10;
-@@ -842,7 +_,7 @@
+@@ -562,7 +_,10 @@
+ 		vec = vec.Floor();
+ 		DrawData item = new DrawData(TextureAssets.AccBack[drawinfo.drawPlayer.back].Value, vec, drawinfo.drawPlayer.bodyFrame, drawinfo.colorArmorBody, drawinfo.drawPlayer.bodyRotation, drawinfo.bodyVect, 1f, drawinfo.playerEffect);
+ 		item.shader = drawinfo.cBack;
++		ItemLoader.ModifyEquipTextureDraw(ref drawinfo, ref item, EquipType.Back, drawinfo.drawPlayer.back); // Back, non-tail, non-backpack
++		/*
+ 		drawinfo.DrawDataCache.Add(item);
++		*/
+ 		if (drawinfo.drawPlayer.back == 36) {
+ 			Rectangle bodyFrame = drawinfo.drawPlayer.bodyFrame;
+ 			Rectangle value = bodyFrame;
+@@ -911,7 +_,10 @@
+ 		Vector2 vector18 = vector + new Vector2(num13 - 9, num12 + 2) * directions;
+ 		item = new DrawData(TextureAssets.Wings[drawinfo.drawPlayer.wings].Value, vector18.Floor(), new Rectangle(0, TextureAssets.Wings[drawinfo.drawPlayer.wings].Height() / num14 * drawinfo.drawPlayer.wingFrame, TextureAssets.Wings[drawinfo.drawPlayer.wings].Width(), TextureAssets.Wings[drawinfo.drawPlayer.wings].Height() / num14), color9, drawinfo.drawPlayer.bodyRotation, new Vector2(TextureAssets.Wings[drawinfo.drawPlayer.wings].Width() / 2, TextureAssets.Wings[drawinfo.drawPlayer.wings].Height() / num14 / 2), 1f, drawinfo.playerEffect);
+ 		item.shader = drawinfo.cWings;
++		ItemLoader.ModifyEquipTextureDraw(ref drawinfo, ref item, EquipType.Wings, drawinfo.drawPlayer.wings);
++		/*
+ 		drawinfo.DrawDataCache.Add(item);
++		*/
+ 		if (drawinfo.drawPlayer.wings == 43 && drawinfo.shadow == 0f) {
+ 			float scale2 = drawinfo.stealth * drawinfo.stealth;
+ 			Vector2 vector19 = vector18;
+@@ -1010,14 +_,17 @@
  
  	public static void DrawPlayer_12_1_BalloonFronts(ref PlayerDrawSet drawinfo)
  	{
@@ -74,7 +149,25 @@
  			return;
  
  		DrawData item;
-@@ -872,7 +_,7 @@
+ 		if (ArmorIDs.Balloon.Sets.UsesTorsoFraming[drawinfo.drawPlayer.balloonFront]) {
+ 			item = new DrawData(TextureAssets.AccBalloon[drawinfo.drawPlayer.balloonFront].Value, new Vector2((int)(drawinfo.Position.X - Main.screenPosition.X - (float)(drawinfo.drawPlayer.bodyFrame.Width / 2) + (float)(drawinfo.drawPlayer.width / 2)), (int)(drawinfo.Position.Y - Main.screenPosition.Y + (float)drawinfo.drawPlayer.height - (float)drawinfo.drawPlayer.bodyFrame.Height + 4f)) + drawinfo.drawPlayer.bodyPosition + drawinfo.bodyVect, drawinfo.drawPlayer.bodyFrame, drawinfo.colorArmorBody, drawinfo.drawPlayer.bodyRotation, drawinfo.bodyVect, 1f, drawinfo.playerEffect);
+ 			item.shader = drawinfo.cBalloonFront;
++			ItemLoader.ModifyEquipTextureDraw(ref drawinfo, ref item, EquipType.Balloon, drawinfo.drawPlayer.balloonFront); // Balloon, ArmorIDs.Balloon.Sets.DrawInFrontOfBackArmLayer and ArmorIDs.Balloon.Sets.UsesTorsoFraming
++			/*
+ 			drawinfo.DrawDataCache.Add(item);
++			*/
+ 			return;
+ 		}
+ 
+@@ -1035,19 +_,25 @@
+ 		vector3 = vector3.Floor();
+ 		item = new DrawData(TextureAssets.AccBalloon[drawinfo.drawPlayer.balloonFront].Value, vector3, new Rectangle(0, TextureAssets.AccBalloon[drawinfo.drawPlayer.balloonFront].Height() / 4 * num, TextureAssets.AccBalloon[drawinfo.drawPlayer.balloonFront].Width(), TextureAssets.AccBalloon[drawinfo.drawPlayer.balloonFront].Height() / 4), drawinfo.colorArmorBody, drawinfo.drawPlayer.bodyRotation, new Vector2(26 + drawinfo.drawPlayer.direction * 4, 28f + drawinfo.drawPlayer.gravDir * 6f), 1f, drawinfo.playerEffect);
+ 		item.shader = drawinfo.cBalloonFront;
++		ItemLoader.ModifyEquipTextureDraw(ref drawinfo, ref item, EquipType.Balloon, drawinfo.drawPlayer.balloonFront); // Balloon, ArmorIDs.Balloon.Sets.DrawInFrontOfBackArmLayer and Not ArmorIDs.Balloon.Sets.UsesTorsoFraming
++		/*
+ 		drawinfo.DrawDataCache.Add(item);
++		*/
+ 	}
  
  	public static void DrawPlayer_11_Balloons(ref PlayerDrawSet drawinfo)
  	{
@@ -83,16 +176,37 @@
  			return;
  
  		DrawData item;
-@@ -919,7 +_,7 @@
+ 		if (ArmorIDs.Balloon.Sets.UsesTorsoFraming[drawinfo.drawPlayer.balloon]) {
+ 			item = new DrawData(TextureAssets.AccBalloon[drawinfo.drawPlayer.balloon].Value, new Vector2((int)(drawinfo.Position.X - Main.screenPosition.X - (float)(drawinfo.drawPlayer.bodyFrame.Width / 2) + (float)(drawinfo.drawPlayer.width / 2)), (int)(drawinfo.Position.Y - Main.screenPosition.Y + (float)drawinfo.drawPlayer.height - (float)drawinfo.drawPlayer.bodyFrame.Height + 4f)) + drawinfo.drawPlayer.bodyPosition + drawinfo.bodyVect, drawinfo.drawPlayer.bodyFrame, drawinfo.colorArmorBody, drawinfo.drawPlayer.bodyRotation, drawinfo.bodyVect, 1f, drawinfo.playerEffect);
+ 			item.shader = drawinfo.cBalloon;
++			ItemLoader.ModifyEquipTextureDraw(ref drawinfo, ref item, EquipType.Balloon, drawinfo.drawPlayer.balloon); // Balloon, Not ArmorIDs.Balloon.Sets.DrawInFrontOfBackArmLayer and ArmorIDs.Balloon.Sets.UsesTorsoFraming
++			/*
+ 			drawinfo.DrawDataCache.Add(item);
++			*/
+ 			return;
+ 		}
+ 
+@@ -1065,7 +_,10 @@
+ 		vector3 = vector3.Floor();
+ 		item = new DrawData(TextureAssets.AccBalloon[drawinfo.drawPlayer.balloon].Value, vector3, new Rectangle(0, TextureAssets.AccBalloon[drawinfo.drawPlayer.balloon].Height() / 4 * num, TextureAssets.AccBalloon[drawinfo.drawPlayer.balloon].Width(), TextureAssets.AccBalloon[drawinfo.drawPlayer.balloon].Height() / 4), drawinfo.colorArmorBody, drawinfo.drawPlayer.bodyRotation, new Vector2(26 + drawinfo.drawPlayer.direction * 4, 28f + drawinfo.drawPlayer.gravDir * 6f), 1f, drawinfo.playerEffect);
+ 		item.shader = drawinfo.cBalloon;
++		ItemLoader.ModifyEquipTextureDraw(ref drawinfo, ref item, EquipType.Balloon, drawinfo.drawPlayer.balloon);  // Balloon, Not ArmorIDs.Balloon.Sets.DrawInFrontOfBackArmLayer and Not ArmorIDs.Balloon.Sets.UsesTorsoFraming
++		/*
+ 		drawinfo.DrawDataCache.Add(item);
++		*/
+ 	}
+ 
+ 	public static void DrawPlayer_12_Skin(ref PlayerDrawSet drawinfo)
+@@ -1087,7 +_,7 @@
  			drawinfo.Position.Y -= drawinfo.torsoOffset;
  		}
  
 -		if (!drawinfo.hidesBottomSkin && !IsBottomOverridden(ref drawinfo)) {
 +		if (!drawinfo.hidesBottomSkin && !drawinfo.isBottomOverriden) {
  			if (drawinfo.isSitting) {
- 				DrawSittingLegs(ref drawinfo, TextureAssets.Players[drawinfo.skinVar, 10].Value, drawinfo.colorLegs);
+ 				DrawSittingLegs(ref drawinfo, TextureAssets.Players[drawinfo.skinVar, 10].Value, drawinfo.colorLegs, 0, drawinfo.drawPlayer.legs, default(Vector2), skin: true);
  				return;
-@@ -930,7 +_,8 @@
+@@ -1098,7 +_,8 @@
  		}
  	}
  
@@ -102,7 +216,7 @@
  	{
  		if (ShouldOverrideLegs_CheckPants(ref drawinfo))
  			return true;
-@@ -941,8 +_,12 @@
+@@ -1109,11 +_,15 @@
  		return false;
  	}
  
@@ -110,13 +224,16 @@
 -	public static bool ShouldOverrideLegs_CheckPants(ref PlayerDrawSet drawinfo)
 +	private static bool ShouldOverrideLegs_CheckPants(ref PlayerDrawSet drawinfo)
  	{
+ 		if (ShouldOverrideLegs_CheckShoes(ref drawinfo))
+ 			return false;
+ 
 +		return drawinfo.drawPlayer.legs > 0 && ArmorIDs.Legs.Sets.OverridesLegs[drawinfo.drawPlayer.legs];
 +
 +		/*
  		switch (drawinfo.drawPlayer.legs) {
- 			case 67:
- 			case 106:
-@@ -957,15 +_,22 @@
+ 			case 55:
+ 			case 63:
+@@ -1130,15 +_,22 @@
  			default:
  				return false;
  		}
@@ -141,43 +258,62 @@
  	}
  
  	public static void DrawPlayer_12_Skin_Composite(ref PlayerDrawSet drawinfo)
-@@ -998,7 +_,7 @@
+@@ -1171,7 +_,7 @@
  			});
  		}
  
 -		if (!drawinfo.hidesBottomSkin && !drawinfo.drawPlayer.invis && !IsBottomOverridden(ref drawinfo)) {
 +		if (!drawinfo.hidesBottomSkin && !drawinfo.drawPlayer.invis && !drawinfo.isBottomOverriden) {
  			if (drawinfo.isSitting) {
- 				DrawSittingLegs(ref drawinfo, TextureAssets.Players[drawinfo.skinVar, 10].Value, drawinfo.colorLegs, drawinfo.skinDyePacked);
+ 				DrawSittingLegs(ref drawinfo, TextureAssets.Players[drawinfo.skinVar, 10].Value, drawinfo.colorLegs, drawinfo.skinDyePacked, drawinfo.drawPlayer.legs, default(Vector2), skin: true);
  			}
-@@ -1031,7 +_,7 @@
+@@ -1204,8 +_,8 @@
  		float rotation = bodyRotation + drawinfo.compositeBackArmRotation;
  		bool flag = !drawinfo.drawPlayer.invis;
  		bool flag2 = !drawinfo.drawPlayer.invis;
 -		bool flag3 = drawinfo.drawPlayer.body > 0 && drawinfo.drawPlayer.body < ArmorIDs.Body.Count;
+-		bool flag4 = drawinfo.drawPlayer.coat > 0 && drawinfo.drawPlayer.coat < ArmorIDs.Body.Count;
 +		bool flag3 = drawinfo.drawPlayer.body > 0;
- 		bool flag4 = !drawinfo.hidesTopSkin;
- 		bool flag5 = false;
++ 		bool flag4 = drawinfo.drawPlayer.coat > 0;
+ 		bool flag5 = !drawinfo.hidesTopSkin;
+ 		bool flag6 = false;
  		if (flag3) {
-@@ -1093,7 +_,7 @@
- 			}
+@@ -1294,7 +_,7 @@
+ 			}, drawinfo.drawPlayer.coat);
  		}
  
 -		if (drawinfo.drawPlayer.handoff > 0 && drawinfo.drawPlayer.handoff < ArmorIDs.HandOff.Count) {
 +		if (drawinfo.drawPlayer.handoff > 0) {
- 			Texture2D value2 = TextureAssets.AccHandsOffComposite[drawinfo.drawPlayer.handoff].Value;
- 			DrawCompositeArmorPiece(ref drawinfo, CompositePlayerDrawContext.BackArmAccessory, new DrawData(value2, vector3, drawinfo.compBackArmFrame, drawinfo.colorArmorBody, rotation, bodyVect, 1f, drawinfo.playerEffect) {
+ 			Texture2D value5 = TextureAssets.AccHandsOffComposite[drawinfo.drawPlayer.handoff].Value;
+ 			DrawCompositeArmorPiece(ref drawinfo, CompositePlayerDrawContext.BackArmAccessory, new DrawData(value5, vector3, drawinfo.compBackArmFrame, drawinfo.colorArmorBody, rotation, bodyVect, 1f, drawinfo.playerEffect) {
  				shader = drawinfo.cHandOff
-@@ -1117,7 +_,7 @@
+@@ -1334,11 +_,14 @@
  			return;
  
- 		if (drawinfo.isSitting && drawinfo.drawPlayer.legs != 140 && drawinfo.drawPlayer.legs != 217) {
+ 		if (drawinfo.isSitting && drawinfo.drawPlayer.legs != 140) {
 -			if (drawinfo.drawPlayer.legs > 0 && drawinfo.drawPlayer.legs < ArmorIDs.Legs.Count && (!ShouldOverrideLegs_CheckShoes(ref drawinfo) || drawinfo.drawPlayer.wearsRobe)) {
 +			if (drawinfo.drawPlayer.legs > 0 && (!ShouldOverrideLegs_CheckShoes(ref drawinfo) || drawinfo.drawPlayer.wearsRobe)) {
- 				if (!drawinfo.drawPlayer.invis) {
- 					DrawSittingLegs(ref drawinfo, TextureAssets.ArmorLeg[drawinfo.drawPlayer.legs].Value, drawinfo.colorArmorLegs, drawinfo.cLegs);
- 					if (drawinfo.legsGlowMask != -1)
-@@ -1159,7 +_,7 @@
+ 				if (drawinfo.drawPlayer.invis)
+ 					return;
+ 
++				// Legs, sitting, Under robes or normal
++
+-				DrawSittingLegs(ref drawinfo, TextureAssets.ArmorLeg[drawinfo.drawPlayer.legs].Value, drawinfo.colorArmorLegs, drawinfo.cLegs, drawinfo.drawPlayer.legs);
++				DrawSittingLegs(ref drawinfo, TextureAssets.ArmorLeg[drawinfo.drawPlayer.legs].Value, drawinfo.colorArmorLegs, drawinfo.cLegs, drawinfo.drawPlayer.legs, equipType: EquipType.Legs);
++
+ 				if (drawinfo.drawPlayer.legs == 60) {
+ 					Texture2D value = TextureAssets.Extra[278].Value;
+ 					DrawSittingLegs(ref drawinfo, value, drawinfo.colorArmorLegs, 0, drawinfo.drawPlayer.legs);
+@@ -1347,6 +_,8 @@
+ 				if (drawinfo.legsGlowMask == -1)
+ 					return;
+ 
++				// Legs Glow Mask, sitting, Under robes or normal, no API support for glow masks yet. glow mask bool will also need to be set.
++
+ 				if (drawinfo.legsGlowMask == 274) {
+ 					Vector2 legsOffset2 = drawinfo.legsOffset;
+ 					for (int i = 0; i < 2; i++) {
+@@ -1395,13 +_,16 @@
  				drawinfo.DrawDataCache.Add(item);
  			}
  		}
@@ -186,36 +322,100 @@
  			if (drawinfo.drawPlayer.invis)
  				return;
  
-@@ -1295,7 +_,7 @@
+ 			DrawData item = new DrawData(TextureAssets.ArmorLeg[drawinfo.drawPlayer.legs].Value, legsOffset + new Vector2((int)(drawinfo.Position.X - Main.screenPosition.X - (float)(drawinfo.drawPlayer.legFrame.Width / 2) + (float)(drawinfo.drawPlayer.width / 2)), (int)(drawinfo.Position.Y - Main.screenPosition.Y + (float)drawinfo.drawPlayer.height - (float)drawinfo.drawPlayer.legFrame.Height + 4f)) + drawinfo.drawPlayer.legPosition + drawinfo.legVect, drawinfo.drawPlayer.legFrame, drawinfo.colorArmorLegs, drawinfo.drawPlayer.legRotation, drawinfo.legVect, 1f, drawinfo.playerEffect);
+ 			item.shader = drawinfo.cLegs;
++			ItemLoader.ModifyEquipTextureDraw(ref drawinfo, ref item, EquipType.Legs, drawinfo.drawPlayer.legs); // Legs, Not sitting, Under robes or normal
++			/*
+ 			drawinfo.DrawDataCache.Add(item);
++			*/
+ 			if (drawinfo.drawPlayer.legs == 60) {
+ 				Texture2D value3 = TextureAssets.Extra[278].Value;
+ 				item = new DrawData(value3, legsOffset + new Vector2((int)(drawinfo.Position.X - Main.screenPosition.X - (float)(drawinfo.drawPlayer.legFrame.Width / 2) + (float)(drawinfo.drawPlayer.width / 2)), (int)(drawinfo.Position.Y - Main.screenPosition.Y + (float)drawinfo.drawPlayer.height - (float)drawinfo.drawPlayer.legFrame.Height + 4f)) + drawinfo.drawPlayer.legPosition + drawinfo.legVect, drawinfo.drawPlayer.legFrame, drawinfo.colorArmorLegs, drawinfo.drawPlayer.legRotation, drawinfo.legVect, 1f, drawinfo.playerEffect);
+@@ -1422,6 +_,7 @@
+ 			else {
+ 				item = new DrawData(TextureAssets.GlowMask[drawinfo.legsGlowMask].Value, legsOffset + new Vector2((int)(drawinfo.Position.X - Main.screenPosition.X - (float)(drawinfo.drawPlayer.legFrame.Width / 2) + (float)(drawinfo.drawPlayer.width / 2)), (int)(drawinfo.Position.Y - Main.screenPosition.Y + (float)drawinfo.drawPlayer.height - (float)drawinfo.drawPlayer.legFrame.Height + 4f)) + drawinfo.drawPlayer.legPosition + drawinfo.legVect, drawinfo.drawPlayer.legFrame, drawinfo.legsGlowColor, drawinfo.drawPlayer.legRotation, drawinfo.legVect, 1f, drawinfo.playerEffect);
+ 				item.shader = drawinfo.cLegs;
++				// if (ItemLoader.ModifyEquipTextureDraw(ref drawinfo, ref item, EquipType.Legs, drawinfo.drawPlayer.legs)) // Legs Glow mask, Not sitting, Under robes, no API support for glow masks yet
+ 				drawinfo.DrawDataCache.Add(item);
+ 			}
+ 		}
+@@ -1433,7 +_,7 @@
+ 		}
+ 	}
+ 
+-	private static void DrawSittingLegs(ref PlayerDrawSet drawinfo, Texture2D textureToDraw, Color matchingColor, int shaderIndex = 0, int legIndex = -1, Vector2 offset = default(Vector2), bool skin = false)
++	private static void DrawSittingLegs(ref PlayerDrawSet drawinfo, Texture2D textureToDraw, Color matchingColor, int shaderIndex = 0, int legIndex = -1, Vector2 offset = default(Vector2), bool skin = false, EquipType? equipType = null)
+ 	{
+ 		Vector2 legsOffset = drawinfo.legsOffset;
+ 		Vector2 vector = new Vector2((int)(drawinfo.Position.X - Main.screenPosition.X - (float)(drawinfo.drawPlayer.legFrame.Width / 2) + (float)(drawinfo.drawPlayer.width / 2)), (int)(drawinfo.Position.Y - Main.screenPosition.Y + (float)drawinfo.drawPlayer.height - (float)drawinfo.drawPlayer.legFrame.Height + 4f)) + drawinfo.drawPlayer.legPosition + drawinfo.legVect;
+@@ -1585,35 +_,53 @@
+ 			position.Y += num9;
+ 			DrawData cdd = new DrawData(textureToDraw, position, value, matchingColor, drawinfo.drawPlayer.legRotation, drawinfo.legVect, 1f, drawinfo.playerEffect);
+ 			cdd.shader = shaderIndex;
++
++			int slot = equipType switch {
++				EquipType.Shoes => drawinfo.drawPlayer.shoe,
++				EquipType.Legs => drawinfo.drawPlayer.legs,
++				_ => -1,
++			};
++
+ 			if (flag)
++				// Long coat body additional legs, sitting. No support yet. Note that this uses body shader.
+ 				DrawLongCoat(ref drawinfo, ref cdd, legIndex);
+-			else
++			else if (equipType == null) {
+ 				drawinfo.DrawDataCache.Add(cdd);
++			}
++			else {
++				if (equipType == EquipType.Shoes)
++					ItemLoader.ModifyEquipTextureDraw(ref drawinfo, ref cdd, EquipType.Shoes, drawinfo.drawPlayer.shoe);
++				else if (equipType == EquipType.Legs)
++					ItemLoader.ModifyEquipTextureDraw(ref drawinfo, ref cdd, EquipType.Legs, drawinfo.drawPlayer.legs);
++			}
+ 		}
+ 	}
  
  	public static void DrawPlayer_14_Shoes(ref PlayerDrawSet drawinfo)
  	{
--		if (drawinfo.drawPlayer.shoe <= 0 || drawinfo.drawPlayer.shoe >= ArmorIDs.Shoe.Count || ShouldOverrideLegs_CheckPants(ref drawinfo))
-+		if (drawinfo.drawPlayer.shoe <= 0 || ShouldOverrideLegs_CheckPants(ref drawinfo))
- 			return;
+-		if (drawinfo.drawPlayer.shoe > 0 && drawinfo.drawPlayer.shoe < ArmorIDs.Shoe.Count && !ShouldOverrideLegs_CheckPants(ref drawinfo)) {
++		if (drawinfo.drawPlayer.shoe > 0 && !ShouldOverrideLegs_CheckPants(ref drawinfo)) {
+ 			Vector2 shoeDrawOffset = drawinfo.drawPlayer.GetShoeDrawOffset();
+ 			int num = drawinfo.cShoe;
+ 			if (drawinfo.drawPlayer.shoe == 22 || drawinfo.drawPlayer.shoe == 23)
+ 				num = drawinfo.cFlameWaker;
  
- 		int num = drawinfo.cShoe;
-@@ -1316,6 +_,10 @@
+ 			if (drawinfo.isSitting) {
+-				DrawSittingLegs(ref drawinfo, TextureAssets.AccShoes[drawinfo.drawPlayer.shoe].Value, drawinfo.colorArmorLegs, num, drawinfo.drawPlayer.legs, shoeDrawOffset);
++				DrawSittingLegs(ref drawinfo, TextureAssets.AccShoes[drawinfo.drawPlayer.shoe].Value, drawinfo.colorArmorLegs, num, drawinfo.drawPlayer.legs, shoeDrawOffset, equipType: EquipType.Shoes);
+ 				return;
+ 			}
  
- 	public static void DrawPlayer_14_2_GlassSlipperSparkles(ref PlayerDrawSet drawinfo)
- 	{
-+		if (drawinfo.headOnlyRender) {
-+			return;
-+		}
-+
- 		if (drawinfo.shadow == 0f) {
- 			if (Main.rand.Next(60) == 0) {
- 				Rectangle r = Utils.CenteredRectangle(drawinfo.Position + drawinfo.drawPlayer.Size / 2f + new Vector2(0f, drawinfo.drawPlayer.gravDir * 16f), new Vector2(20f, 8f));
-@@ -1341,7 +_,7 @@
+ 			DrawData item = new DrawData(TextureAssets.AccShoes[drawinfo.drawPlayer.shoe].Value, shoeDrawOffset + new Vector2((int)(drawinfo.Position.X - Main.screenPosition.X - (float)(drawinfo.drawPlayer.legFrame.Width / 2) + (float)(drawinfo.drawPlayer.width / 2)), (int)(drawinfo.Position.Y - Main.screenPosition.Y + (float)drawinfo.drawPlayer.height - (float)drawinfo.drawPlayer.legFrame.Height + 4f)) + drawinfo.drawPlayer.legPosition + drawinfo.legVect, drawinfo.drawPlayer.legFrame, drawinfo.colorArmorLegs, drawinfo.drawPlayer.legRotation, drawinfo.legVect, 1f, drawinfo.playerEffect);
+ 			item.shader = num;
++			ItemLoader.ModifyEquipTextureDraw(ref drawinfo, ref item, EquipType.Shoes, drawinfo.drawPlayer.shoe); // Shoes, non-sitting
++			/*
+ 			drawinfo.DrawDataCache.Add(item);
++			*/
+ 		}
+ 	}
  
  	public static void DrawPlayer_15_SkinLongCoat(ref PlayerDrawSet drawinfo)
  	{
 -		if ((drawinfo.skinVar == 3 || drawinfo.skinVar == 8 || drawinfo.skinVar == 7) && (drawinfo.drawPlayer.body <= 0 || drawinfo.drawPlayer.body >= ArmorIDs.Body.Count) && !drawinfo.drawPlayer.invis) {
 +		if ((drawinfo.skinVar == 3 || drawinfo.skinVar == 8 || drawinfo.skinVar == 7) && (drawinfo.drawPlayer.body <= 0) && !drawinfo.drawPlayer.invis) {
  			if (drawinfo.isSitting) {
- 				DrawSittingLegs(ref drawinfo, TextureAssets.Players[drawinfo.skinVar, 14].Value, drawinfo.colorShirt);
+ 				DrawSittingLegs(ref drawinfo, TextureAssets.Players[drawinfo.skinVar, 14].Value, drawinfo.colorShirt, 0, drawinfo.drawPlayer.legs, default(Vector2), skin: true);
  				return;
-@@ -1442,7 +_,7 @@
+@@ -1751,6 +_,8 @@
+ 				break;
+ 		}
+ 
++		// TODO: There is no support for modded long coats yet. Robes replace legs, long coats add an additional leg texture drawn over normal legs.
++
+ 		return result;
+ 	}
+ 
+@@ -1759,7 +_,7 @@
  		if (drawinfo.usesCompositeTorso) {
  			DrawPlayer_17_TorsoComposite(ref drawinfo);
  		}
@@ -224,16 +424,29 @@
  			Rectangle bodyFrame = drawinfo.drawPlayer.bodyFrame;
  			int num = drawinfo.armorAdjust;
  			bodyFrame.X += num;
-@@ -1503,7 +_,7 @@
- 		Vector2 compositeOffset_BackArm = GetCompositeOffset_BackArm(ref drawinfo);
+@@ -1771,10 +_,12 @@
+ 				Texture2D texture = (drawinfo.drawPlayer.Male ? TextureAssets.ArmorBody[drawinfo.drawPlayer.body].Value : TextureAssets.FemaleBody[drawinfo.drawPlayer.body].Value);
+ 				DrawData item = new DrawData(texture, new Vector2((int)(drawinfo.Position.X - Main.screenPosition.X - (float)(drawinfo.drawPlayer.bodyFrame.Width / 2) + (float)(drawinfo.drawPlayer.width / 2)) + num, (int)(drawinfo.Position.Y - Main.screenPosition.Y + (float)drawinfo.drawPlayer.height - (float)drawinfo.drawPlayer.bodyFrame.Height + 4f)) + drawinfo.drawPlayer.bodyPosition + new Vector2(drawinfo.drawPlayer.bodyFrame.Width / 2, drawinfo.drawPlayer.bodyFrame.Height / 2), bodyFrame, drawinfo.colorArmorBody, drawinfo.drawPlayer.bodyRotation, drawinfo.bodyVect, 1f, drawinfo.playerEffect);
+ 				item.shader = drawinfo.cBody;
++				// Non-composite Body. No need for ModifyEquipTextureDraw hook.
+ 				drawinfo.DrawDataCache.Add(item);
+ 				if (drawinfo.bodyGlowMask != -1) {
+ 					item = new DrawData(TextureAssets.GlowMask[drawinfo.bodyGlowMask].Value, new Vector2((int)(drawinfo.Position.X - Main.screenPosition.X - (float)(drawinfo.drawPlayer.bodyFrame.Width / 2) + (float)(drawinfo.drawPlayer.width / 2)) + num, (int)(drawinfo.Position.Y - Main.screenPosition.Y + (float)drawinfo.drawPlayer.height - (float)drawinfo.drawPlayer.bodyFrame.Height + 4f)) + drawinfo.drawPlayer.bodyPosition + new Vector2(drawinfo.drawPlayer.bodyFrame.Width / 2, drawinfo.drawPlayer.bodyFrame.Height / 2), bodyFrame, drawinfo.bodyGlowColor, drawinfo.drawPlayer.bodyRotation, drawinfo.bodyVect, 1f, drawinfo.playerEffect);
+ 					item.shader = drawinfo.cBody;
++					// Non-composite Body. No need for ModifyEquipTextureDraw hook.
+ 					drawinfo.DrawDataCache.Add(item);
+ 				}
+ 			}
+@@ -1821,7 +_,7 @@
  		_ = vector3 + compositeOffset_BackArm;
  		bodyVect += compositeOffset_BackArm;
+ 		bool flag = false;
 -		if (drawinfo.drawPlayer.body > 0 && drawinfo.drawPlayer.body < ArmorIDs.Body.Count) {
 +		if (drawinfo.drawPlayer.body > 0) {
+ 			flag = true;
  			if (!drawinfo.drawPlayer.invis || IsArmorDrawnWhenInvisible(drawinfo.drawPlayer.body)) {
  				Texture2D value = TextureAssets.ArmorBodyComposite[drawinfo.drawPlayer.body].Value;
- 				DrawCompositeArmorPiece(ref drawinfo, CompositePlayerDrawContext.Torso, new DrawData(value, vector, drawinfo.compTorsoFrame, drawinfo.colorArmorBody, bodyRotation, drawinfo.bodyVect, 1f, drawinfo.playerEffect) {
-@@ -1527,7 +_,7 @@
+@@ -1861,9 +_,10 @@
  
  	public static void DrawPlayer_18_OffhandAcc(ref PlayerDrawSet drawinfo)
  	{
@@ -241,8 +454,11 @@
 +		if (!drawinfo.usesCompositeBackHandAcc && drawinfo.drawPlayer.handoff > 0) {
  			DrawData item = new DrawData(TextureAssets.AccHandsOff[drawinfo.drawPlayer.handoff].Value, new Vector2((int)(drawinfo.Position.X - Main.screenPosition.X - (float)(drawinfo.drawPlayer.bodyFrame.Width / 2) + (float)(drawinfo.drawPlayer.width / 2)), (int)(drawinfo.Position.Y - Main.screenPosition.Y + (float)drawinfo.drawPlayer.height - (float)drawinfo.drawPlayer.bodyFrame.Height + 4f)) + drawinfo.drawPlayer.bodyPosition + new Vector2(drawinfo.drawPlayer.bodyFrame.Width / 2, drawinfo.drawPlayer.bodyFrame.Height / 2), drawinfo.drawPlayer.bodyFrame, drawinfo.colorArmorBody, drawinfo.drawPlayer.bodyRotation, drawinfo.bodyVect, 1f, drawinfo.playerEffect);
  			item.shader = drawinfo.cHandOff;
++			// Non-composite HandsOff. No need for ModifyEquipTextureDraw hook.
  			drawinfo.DrawDataCache.Add(item);
-@@ -1547,7 +_,7 @@
+ 		}
+ 	}
+@@ -1881,23 +_,29 @@
  
  	public static void DrawPlayer_19_WaistAcc(ref PlayerDrawSet drawinfo)
  	{
@@ -251,7 +467,15 @@
  			Rectangle value = drawinfo.drawPlayer.legFrame;
  			if (ArmorIDs.Waist.Sets.UsesTorsoFraming[drawinfo.drawPlayer.waist])
  				value = drawinfo.drawPlayer.bodyFrame;
-@@ -1560,7 +_,7 @@
+ 
+ 			DrawData item = new DrawData(TextureAssets.AccWaist[drawinfo.drawPlayer.waist].Value, new Vector2((int)(drawinfo.Position.X - Main.screenPosition.X - (float)(drawinfo.drawPlayer.legFrame.Width / 2) + (float)(drawinfo.drawPlayer.width / 2)), (int)(drawinfo.Position.Y - Main.screenPosition.Y + (float)drawinfo.drawPlayer.height - (float)drawinfo.drawPlayer.legFrame.Height + 4f)) + drawinfo.drawPlayer.legPosition + drawinfo.legVect, value, drawinfo.colorArmorLegs, drawinfo.drawPlayer.legRotation, drawinfo.legVect, 1f, drawinfo.playerEffect);
+ 			item.shader = drawinfo.cWaist;
++			ItemLoader.ModifyEquipTextureDraw(ref drawinfo, ref item, EquipType.Waist, drawinfo.drawPlayer.waist);
++			/*
+ 			drawinfo.DrawDataCache.Add(item);
++			*/
+ 		}
+ 	}
  
  	public static void DrawPlayer_20_NeckAcc(ref PlayerDrawSet drawinfo)
  	{
@@ -259,26 +483,85 @@
 +		if (drawinfo.drawPlayer.neck > 0) {
  			DrawData item = new DrawData(TextureAssets.AccNeck[drawinfo.drawPlayer.neck].Value, new Vector2((int)(drawinfo.Position.X - Main.screenPosition.X - (float)(drawinfo.drawPlayer.bodyFrame.Width / 2) + (float)(drawinfo.drawPlayer.width / 2)), (int)(drawinfo.Position.Y - Main.screenPosition.Y + (float)drawinfo.drawPlayer.height - (float)drawinfo.drawPlayer.bodyFrame.Height + 4f)) + drawinfo.drawPlayer.bodyPosition + new Vector2(drawinfo.drawPlayer.bodyFrame.Width / 2, drawinfo.drawPlayer.bodyFrame.Height / 2), drawinfo.drawPlayer.bodyFrame, drawinfo.colorArmorBody, drawinfo.drawPlayer.bodyRotation, drawinfo.bodyVect, 1f, drawinfo.playerEffect);
  			item.shader = drawinfo.cNeck;
++			ItemLoader.ModifyEquipTextureDraw(ref drawinfo, ref item, EquipType.Neck, drawinfo.drawPlayer.neck);
++			/*
  			drawinfo.DrawDataCache.Add(item);
-@@ -1571,7 +_,7 @@
- 	{
- 		Vector2 helmetOffset = drawinfo.helmetOffset;
++			*/
+ 		}
+ 	}
+ 
+@@ -1907,7 +_,7 @@
+ 		drawinfo.drawPlayer.ApplyHeadOffsetFromMount(ref pos);
+ 		Vector2 helmetOffset = drawinfo.helmetOffset + pos;
  		DrawPlayer_21_Head_TheFace(ref drawinfo);
 -		bool flag = drawinfo.drawPlayer.head == 14 || drawinfo.drawPlayer.head == 56 || drawinfo.drawPlayer.head == 114 || drawinfo.drawPlayer.head == 158 || drawinfo.drawPlayer.head == 69 || drawinfo.drawPlayer.head == 180;
 +		bool flag = drawinfo.drawPlayer.head >= 0 && ArmorIDs.Head.Sets.IsTallHat[drawinfo.drawPlayer.head];
  		bool flag2 = drawinfo.drawPlayer.head == 28;
  		bool flag3 = drawinfo.drawPlayer.head == 39 || drawinfo.drawPlayer.head == 38;
- 		Vector2 vector = new Vector2(-drawinfo.drawPlayer.bodyFrame.Width / 2 + drawinfo.drawPlayer.width / 2, drawinfo.drawPlayer.height - drawinfo.drawPlayer.bodyFrame.Height + 4);
-@@ -1667,7 +_,7 @@
+ 		bool flag4 = true;
+@@ -1954,7 +_,10 @@
+ 
+ 			item = new DrawData(TextureAssets.ArmorHead[drawinfo.drawPlayer.head].Value, helmetOffset + new Vector2((int)(drawinfo.Position.X - Main.screenPosition.X - (float)(drawinfo.drawPlayer.bodyFrame.Width / 2) + (float)(drawinfo.drawPlayer.width / 2)), (int)(drawinfo.Position.Y - Main.screenPosition.Y + (float)drawinfo.drawPlayer.height - (float)drawinfo.drawPlayer.bodyFrame.Height + 4f)) + drawinfo.drawPlayer.headPosition + drawinfo.headVect, drawinfo.drawPlayer.bodyFrame, color, drawinfo.drawPlayer.headRotation, drawinfo.headVect, 1f, drawinfo.playerEffect);
+ 			item.shader = shader;
++			ItemLoader.ModifyEquipTextureDraw(ref drawinfo, ref item, EquipType.Head, drawinfo.drawPlayer.head); // Head, ArmorIDs.Head.Sets.DrawFullHair
++			/*
+ 			drawinfo.DrawDataCache.Add(item);
++			*/
+ 			if (!drawinfo.drawPlayer.invis) {
+ 				item = new DrawData(TextureAssets.PlayerHair[drawinfo.drawPlayer.hair].Value, position, drawinfo.hairFrontFrame, drawinfo.colorHair, drawinfo.drawPlayer.headRotation, drawinfo.headVect, 1f, drawinfo.playerEffect);
+ 				item.shader = drawinfo.hairDyePacked;
+@@ -2027,7 +_,10 @@
+ 
+ 			item = new DrawData(TextureAssets.ArmorHead[drawinfo.drawPlayer.head].Value, helmetOffset + new Vector2((int)(drawinfo.Position.X - Main.screenPosition.X - (float)(drawinfo.drawPlayer.bodyFrame.Width / 2) + (float)(drawinfo.drawPlayer.width / 2)), (int)(drawinfo.Position.Y - Main.screenPosition.Y + (float)drawinfo.drawPlayer.height - (float)drawinfo.drawPlayer.bodyFrame.Height + 4f)) + drawinfo.drawPlayer.headPosition + drawinfo.headVect, bodyFrame4, color2, drawinfo.drawPlayer.headRotation, headVect, 1f, drawinfo.playerEffect);
+ 			item.shader = shader2;
++			ItemLoader.ModifyEquipTextureDraw(ref drawinfo, ref item, EquipType.Head, drawinfo.drawPlayer.head); // Head, ArmorIDs.Head.Sets.IsTallHat
++			/*
+ 			drawinfo.DrawDataCache.Add(item);
++			*/
+ 		}
+ 		else if (flag4 && drawinfo.drawPlayer.head == 259) {
+ 			int verticalFrames = 27;
+@@ -2052,7 +_,7 @@
  				drawinfo.DrawDataCache.Add(item);
  			}
  		}
--		else if (drawinfo.drawPlayer.head > 0 && drawinfo.drawPlayer.head < ArmorIDs.Head.Count && !flag2) {
-+		else if (drawinfo.drawPlayer.head > 0 && !flag2) {
+-		else if (flag4 && drawinfo.drawPlayer.head > 0 && drawinfo.drawPlayer.head < ArmorIDs.Head.Count && !flag2) {
++		else if (flag4 && drawinfo.drawPlayer.head > 0 && !flag2) {
  			if (!(drawinfo.drawPlayer.invis && flag3)) {
  				if (drawinfo.drawPlayer.head == 13) {
  					int hatStacks2 = GetHatStacks(ref drawinfo, 205);
-@@ -1844,6 +_,11 @@
+@@ -2124,7 +_,10 @@
+ 
+ 					item = new DrawData(value3, helmetOffset + new Vector2((int)(drawinfo.Position.X - Main.screenPosition.X - (float)(drawinfo.drawPlayer.bodyFrame.Width / 2) + (float)(drawinfo.drawPlayer.width / 2)), (int)(drawinfo.Position.Y - Main.screenPosition.Y + (float)drawinfo.drawPlayer.height - (float)drawinfo.drawPlayer.bodyFrame.Height + 4f)) + drawinfo.drawPlayer.headPosition + drawinfo.headVect, bodyFrame5, color3, drawinfo.drawPlayer.headRotation, headVect2, 1f, drawinfo.playerEffect);
+ 					item.shader = shader3;
++					ItemLoader.ModifyEquipTextureDraw(ref drawinfo, ref item, EquipType.Head, drawinfo.drawPlayer.head); // Head, Not ArmorIDs.Head.Sets.IsTallHat
++					/*
+ 					drawinfo.DrawDataCache.Add(item);
++					*/
+ 					if (drawinfo.drawPlayer.head == 292) {
+ 						item = new DrawData(TextureAssets.Extra[300].Value, helmetOffset + new Vector2((int)(drawinfo.Position.X - Main.screenPosition.X - (float)(drawinfo.drawPlayer.bodyFrame.Width / 2) + (float)(drawinfo.drawPlayer.width / 2)), (int)(drawinfo.Position.Y - Main.screenPosition.Y + (float)drawinfo.drawPlayer.height - (float)drawinfo.drawPlayer.bodyFrame.Height + 4f)) + drawinfo.drawPlayer.headPosition + drawinfo.headVect, bodyFrame5, color4, drawinfo.drawPlayer.headRotation, headVect2, 1f, drawinfo.playerEffect);
+ 						item.shader = skinDyePacked;
+@@ -2174,6 +_,8 @@
+ 						else {
+ 							item = new DrawData(TextureAssets.GlowMask[drawinfo.headGlowMask].Value, helmetOffset + new Vector2((int)(drawinfo.Position.X - Main.screenPosition.X - (float)(drawinfo.drawPlayer.bodyFrame.Width / 2) + (float)(drawinfo.drawPlayer.width / 2)), (int)(drawinfo.Position.Y - Main.screenPosition.Y + (float)drawinfo.drawPlayer.height - (float)drawinfo.drawPlayer.bodyFrame.Height + 4f)) + drawinfo.drawPlayer.headPosition + drawinfo.headVect, bodyFrame5, drawinfo.headGlowColor, drawinfo.drawPlayer.headRotation, headVect2, 1f, drawinfo.playerEffect);
+ 							item.shader = drawinfo.cHead;
++							// TODO: Support arbitrary Glow Mask in TextureAssets.GlowMask.
++							// if (ItemLoader.ModifyEquipTextureDraw(ref drawinfo, ref item, EquipType.Head, drawinfo.drawPlayer.head)) // Head Glow Mask, Not ArmorIDs.Head.Sets.IsTallHat
+ 							drawinfo.DrawDataCache.Add(item);
+ 						}
+ 					}
+@@ -2211,7 +_,10 @@
+ 
+ 			item = new DrawData(TextureAssets.AccBeard[drawinfo.drawPlayer.beard].Value, vector6 + new Vector2((int)(drawinfo.Position.X - Main.screenPosition.X - (float)(drawinfo.drawPlayer.bodyFrame.Width / 2) + (float)(drawinfo.drawPlayer.width / 2)), (int)(drawinfo.Position.Y - Main.screenPosition.Y + (float)drawinfo.drawPlayer.height - (float)drawinfo.drawPlayer.bodyFrame.Height + 4f)) + drawinfo.drawPlayer.headPosition + drawinfo.headVect, drawinfo.drawPlayer.bodyFrame, color6, drawinfo.drawPlayer.headRotation, drawinfo.headVect, 1f, drawinfo.playerEffect);
+ 			item.shader = drawinfo.cBeard;
++			ItemLoader.ModifyEquipTextureDraw(ref drawinfo, ref item, EquipType.Beard, drawinfo.drawPlayer.beard);
++			/*
+ 			drawinfo.DrawDataCache.Add(item);
++			*/
+ 		}
+ 
+ 		if (flag4 && drawinfo.drawPlayer.head == 205) {
+@@ -2252,6 +_,11 @@
  				drawinfo.DrawDataCache.Add(item);
  			}
  		}
@@ -288,32 +571,23 @@
 +	{
 +		DrawData item;
  
- 		if (drawinfo.drawPlayer.babyBird) {
- 			Rectangle bodyFrame5 = drawinfo.drawPlayer.bodyFrame;
-@@ -1856,7 +_,7 @@
- 				vector6 = new Vector2(0f, 6f) * drawinfo.drawPlayer.Directions;
+ 		if (!drawinfo.drawPlayer.babyBird)
+ 			return;
+@@ -2344,24 +_,30 @@
+ 				drawinfo.DrawDataCache.Add(item);
  			}
- 
--			DrawData item = new DrawData(TextureAssets.Extra[100].Value, vector6 + new Vector2((int)(drawinfo.Position.X - Main.screenPosition.X - (float)(drawinfo.drawPlayer.bodyFrame.Width / 2) + (float)(drawinfo.drawPlayer.width / 2)), (int)(drawinfo.Position.Y - Main.screenPosition.Y + (float)drawinfo.drawPlayer.height - (float)drawinfo.drawPlayer.bodyFrame.Height + 4f)) + drawinfo.drawPlayer.headPosition + drawinfo.headVect + Main.OffsetsPlayerHeadgear[drawinfo.drawPlayer.bodyFrame.Y / drawinfo.drawPlayer.bodyFrame.Height] * drawinfo.drawPlayer.gravDir, bodyFrame5, color8, drawinfo.drawPlayer.headRotation, drawinfo.headVect, 1f, drawinfo.playerEffect);
-+			item = new DrawData(TextureAssets.Extra[100].Value, vector6 + new Vector2((int)(drawinfo.Position.X - Main.screenPosition.X - (float)(drawinfo.drawPlayer.bodyFrame.Width / 2) + (float)(drawinfo.drawPlayer.width / 2)), (int)(drawinfo.Position.Y - Main.screenPosition.Y + (float)drawinfo.drawPlayer.height - (float)drawinfo.drawPlayer.bodyFrame.Height + 4f)) + drawinfo.drawPlayer.headPosition + drawinfo.headVect + Main.OffsetsPlayerHeadgear[drawinfo.drawPlayer.bodyFrame.Y / drawinfo.drawPlayer.bodyFrame.Height] * drawinfo.drawPlayer.gravDir, bodyFrame5, color8, drawinfo.drawPlayer.headRotation, drawinfo.headVect, 1f, drawinfo.playerEffect);
- 			drawinfo.DrawDataCache.Add(item);
  		}
- 	}
-@@ -1912,8 +_,12 @@
- 
- 	private static void DrawPlayer_21_Head_TheFace(ref PlayerDrawSet drawinfo)
- 	{
-+		/*
- 		bool flag = drawinfo.drawPlayer.head == 38 || drawinfo.drawPlayer.head == 135 || drawinfo.drawPlayer.head == 269;
--		if (!flag && drawinfo.drawPlayer.faceHead > 0 && drawinfo.drawPlayer.faceHead < ArmorIDs.Face.Count) {
-+		*/
-+		bool flag = drawinfo.drawPlayer.head > 0 && !ArmorIDs.Head.Sets.DrawHead[drawinfo.drawPlayer.head];
-+
-+		if (!flag && drawinfo.drawPlayer.faceHead > 0) {
- 			Vector2 faceHeadOffsetFromHelmet = drawinfo.drawPlayer.GetFaceHeadOffsetFromHelmet();
- 			DrawData item = new DrawData(TextureAssets.AccFace[drawinfo.drawPlayer.faceHead].Value, new Vector2((int)(drawinfo.Position.X - Main.screenPosition.X - (float)(drawinfo.drawPlayer.bodyFrame.Width / 2) + (float)(drawinfo.drawPlayer.width / 2)), (int)(drawinfo.Position.Y - Main.screenPosition.Y + (float)drawinfo.drawPlayer.height - (float)drawinfo.drawPlayer.bodyFrame.Height + 4f)) + drawinfo.drawPlayer.headPosition + drawinfo.headVect + faceHeadOffsetFromHelmet, drawinfo.drawPlayer.bodyFrame, drawinfo.colorArmorHead, drawinfo.drawPlayer.headRotation, drawinfo.headVect, 1f, drawinfo.playerEffect);
+-		else if (!flag && drawinfo.drawPlayer.faceHead > 0 && drawinfo.drawPlayer.faceHead < ArmorIDs.Face.Count) {
++		else if (!flag && drawinfo.drawPlayer.faceHead > 0) {
+ 			Vector2 vector = drawinfo.drawPlayer.GetFaceHeadOffsetFromHelmet() + pos;
+ 			DrawData item = new DrawData(TextureAssets.AccFace[drawinfo.drawPlayer.faceHead].Value, new Vector2((int)(drawinfo.Position.X - Main.screenPosition.X - (float)(drawinfo.drawPlayer.bodyFrame.Width / 2) + (float)(drawinfo.drawPlayer.width / 2)), (int)(drawinfo.Position.Y - Main.screenPosition.Y + (float)drawinfo.drawPlayer.height - (float)drawinfo.drawPlayer.bodyFrame.Height + 4f)) + drawinfo.drawPlayer.headPosition + drawinfo.headVect + vector, drawinfo.drawPlayer.bodyFrame, drawinfo.colorArmorHead, drawinfo.drawPlayer.headRotation, drawinfo.headVect, 1f, drawinfo.playerEffect);
  			item.shader = drawinfo.cFaceHead;
-@@ -1923,7 +_,7 @@
++			ItemLoader.ModifyEquipTextureDraw(ref drawinfo, ref item, EquipType.Face, drawinfo.drawPlayer.faceHead); // Face under helmet, DrawInFaceHeadLayer, ArmorIDs.Head.Sets.DrawHead
++			/*
+ 			drawinfo.DrawDataCache.Add(item);
++			*/
+ 			if (drawinfo.drawPlayer.face <= 0 || !ArmorIDs.Face.Sets.DrawInFaceUnderHairLayer[drawinfo.drawPlayer.face] || (drawinfo.drawPlayer.mount.Active && drawinfo.drawPlayer.mount.Type == 54 && !ArmorIDs.Face.Sets.CanDrawOnVelociraptorMount[drawinfo.drawPlayer.face]))
+ 				return;
  
  			float num = 0f;
  			if (drawinfo.drawPlayer.face == 5) {
@@ -322,30 +596,69 @@
  				if ((uint)(faceHead - 10) <= 3u)
  					num = 2 * drawinfo.drawPlayer.direction;
  			}
-@@ -1986,11 +_,12 @@
- 	public static void DrawPlayer_22_FaceAcc(ref PlayerDrawSet drawinfo)
- 	{
- 		Vector2 vector = Vector2.Zero;
-+		// Extra patch context.
- 		if (drawinfo.drawPlayer.mount.Active && drawinfo.drawPlayer.mount.Type == 52)
- 			vector = new Vector2(28f, -2f);
  
- 		vector *= drawinfo.drawPlayer.Directions;
--		if (drawinfo.drawPlayer.face > 0 && drawinfo.drawPlayer.face < ArmorIDs.Face.Count && !ArmorIDs.Face.Sets.DrawInFaceUnderHairLayer[drawinfo.drawPlayer.face]) {
-+		if (drawinfo.drawPlayer.face > 0 && !ArmorIDs.Face.Sets.DrawInFaceUnderHairLayer[drawinfo.drawPlayer.face]) {
- 			Vector2 vector2 = Vector2.Zero;
- 			if (drawinfo.drawPlayer.face == 19)
- 				vector2 = new Vector2(0f, -6f) * drawinfo.drawPlayer.Directions;
-@@ -2000,7 +_,7 @@
+ 			item = new DrawData(TextureAssets.AccFace[drawinfo.drawPlayer.face].Value, pos + new Vector2((float)(int)(drawinfo.Position.X - Main.screenPosition.X - (float)(drawinfo.drawPlayer.bodyFrame.Width / 2) + (float)(drawinfo.drawPlayer.width / 2)) + num, (int)(drawinfo.Position.Y - Main.screenPosition.Y + (float)drawinfo.drawPlayer.height - (float)drawinfo.drawPlayer.bodyFrame.Height + 4f)) + drawinfo.drawPlayer.headPosition + drawinfo.headVect, drawinfo.drawPlayer.bodyFrame, drawinfo.colorArmorHead, drawinfo.drawPlayer.headRotation, drawinfo.headVect, 1f, drawinfo.playerEffect);
+ 			item.shader = drawinfo.cFace;
++			ItemLoader.ModifyEquipTextureDraw(ref drawinfo, ref item, EquipType.Face, drawinfo.drawPlayer.face); // Face under helmet, DrawInFaceHeadLayer, ArmorIDs.Head.Sets.DrawHead, DrawInFaceUnderHairLayer
++			/*
+ 			drawinfo.DrawDataCache.Add(item);
++			*/
+ 		}
+ 		else if (!drawinfo.drawPlayer.invis && !flag) {
+ 			DrawData drawData = new DrawData(TextureAssets.Players[drawinfo.skinVar, 0].Value, new Vector2((int)(drawinfo.Position.X - Main.screenPosition.X - (float)(drawinfo.drawPlayer.bodyFrame.Width / 2) + (float)(drawinfo.drawPlayer.width / 2)), (int)(drawinfo.Position.Y - Main.screenPosition.Y + (float)drawinfo.drawPlayer.height - (float)drawinfo.drawPlayer.bodyFrame.Height + 4f)) + drawinfo.drawPlayer.headPosition + drawinfo.headVect, drawinfo.drawPlayer.bodyFrame, drawinfo.colorHead, drawinfo.drawPlayer.headRotation, drawinfo.headVect, 1f, drawinfo.playerEffect);
+@@ -2383,7 +_,10 @@
+ 			if (drawinfo.drawPlayer.face > 0 && ArmorIDs.Face.Sets.DrawInFaceUnderHairLayer[drawinfo.drawPlayer.face] && (!drawinfo.drawPlayer.mount.Active || drawinfo.drawPlayer.mount.Type != 54 || ArmorIDs.Face.Sets.CanDrawOnVelociraptorMount[drawinfo.drawPlayer.face])) {
+ 				item = new DrawData(TextureAssets.AccFace[drawinfo.drawPlayer.face].Value, pos + new Vector2((int)(drawinfo.Position.X - Main.screenPosition.X - (float)(drawinfo.drawPlayer.bodyFrame.Width / 2) + (float)(drawinfo.drawPlayer.width / 2)), (int)(drawinfo.Position.Y - Main.screenPosition.Y + (float)drawinfo.drawPlayer.height - (float)drawinfo.drawPlayer.bodyFrame.Height + 4f)) + drawinfo.drawPlayer.headPosition + drawinfo.headVect, drawinfo.drawPlayer.bodyFrame, drawinfo.colorArmorHead, drawinfo.drawPlayer.headRotation, drawinfo.headVect, 1f, drawinfo.playerEffect);
+ 				item.shader = drawinfo.cFace;
++				ItemLoader.ModifyEquipTextureDraw(ref drawinfo, ref item, EquipType.Face, drawinfo.drawPlayer.face); // Face under helmet, Not DrawInFaceHeadLayer, ArmorIDs.Head.Sets.DrawHead, DrawInFaceUnderHairLayer
++				/*
+ 				drawinfo.DrawDataCache.Add(item);
++				*/
+ 			}
+ 		}
+ 	}
+@@ -2544,14 +_,17 @@
+ 		bool hasRockGolemHead = false;
+ 		bool flag = drawinfo.drawPlayer.head == 287;
+ 		Vector2 vector = DrawPlayer_GetMountOffsetForFaceAcc(ref drawinfo, ref isVelociraptor, ref hasRockGolemHead);
+-		if (drawinfo.drawPlayer.face > 0 && drawinfo.drawPlayer.face < ArmorIDs.Face.Count && !ArmorIDs.Face.Sets.DrawInFaceUnderHairLayer[drawinfo.drawPlayer.face] && (!isVelociraptor || ArmorIDs.Face.Sets.CanDrawOnVelociraptorMount[drawinfo.drawPlayer.face]) && (drawinfo.drawPlayer.face != 23 || !flag)) {
++		if (drawinfo.drawPlayer.face > 0 && !ArmorIDs.Face.Sets.DrawInFaceUnderHairLayer[drawinfo.drawPlayer.face] && (!isVelociraptor || ArmorIDs.Face.Sets.CanDrawOnVelociraptorMount[drawinfo.drawPlayer.face]) && (drawinfo.drawPlayer.face != 23 || !flag)) {
+ 			Vector2 faceDrawOffset = drawinfo.drawPlayer.GetFaceDrawOffset(drawinfo.drawPlayer.face);
+ 			if (isVelociraptor && hasRockGolemHead)
+ 				faceDrawOffset += drawinfo.drawPlayer.GetHelmetOffsetAddonFromMount();
+ 
+ 			DrawData item = new DrawData(TextureAssets.AccFace[drawinfo.drawPlayer.face].Value, faceDrawOffset + vector + new Vector2((int)(drawinfo.Position.X - Main.screenPosition.X - (float)(drawinfo.drawPlayer.bodyFrame.Width / 2) + (float)(drawinfo.drawPlayer.width / 2)), (int)(drawinfo.Position.Y - Main.screenPosition.Y + (float)drawinfo.drawPlayer.height - (float)drawinfo.drawPlayer.bodyFrame.Height + 4f)) + drawinfo.drawPlayer.headPosition + drawinfo.headVect, drawinfo.drawPlayer.bodyFrame, drawinfo.colorArmorHead, drawinfo.drawPlayer.headRotation, drawinfo.headVect, 1f, drawinfo.playerEffect);
+ 			item.shader = drawinfo.cFace;
++			ItemLoader.ModifyEquipTextureDraw(ref drawinfo, ref item, EquipType.Face, drawinfo.drawPlayer.face); // Face, Not DrawInFaceUnderHairLayer
++			/*
+ 			drawinfo.DrawDataCache.Add(item);
++			*/
+ 		}
+ 
+ 		bool flag2 = drawinfo.drawPlayer.faceMask > 0 && drawinfo.drawPlayer.faceMask < ArmorIDs.Face.Count;
+@@ -2570,8 +_,8 @@
  			drawinfo.DrawDataCache.Add(item);
  		}
  
--		if (drawinfo.drawPlayer.faceFlower > 0 && drawinfo.drawPlayer.faceFlower < ArmorIDs.Face.Count) {
-+		if (drawinfo.drawPlayer.faceFlower > 0) {
- 			DrawData item = new DrawData(TextureAssets.AccFace[drawinfo.drawPlayer.faceFlower].Value, vector + drawinfo.helmetOffset + new Vector2((int)(drawinfo.Position.X - Main.screenPosition.X - (float)(drawinfo.drawPlayer.bodyFrame.Width / 2) + (float)(drawinfo.drawPlayer.width / 2)), (int)(drawinfo.Position.Y - Main.screenPosition.Y + (float)drawinfo.drawPlayer.height - (float)drawinfo.drawPlayer.bodyFrame.Height + 4f)) + drawinfo.drawPlayer.headPosition + drawinfo.headVect, drawinfo.drawPlayer.bodyFrame, drawinfo.colorArmorHead, drawinfo.drawPlayer.headRotation, drawinfo.headVect, 1f, drawinfo.playerEffect);
+-		bool flag3 = drawinfo.drawPlayer.faceFlower > 0 && drawinfo.drawPlayer.faceFlower < ArmorIDs.Face.Count;
+-		if (flag3 && drawinfo.drawPlayer.head > 0 && drawinfo.drawPlayer.head < ArmorIDs.Head.Count && ArmorIDs.Head.Sets.PreventFaceFlowerDraw[drawinfo.drawPlayer.head])
++		bool flag3 = drawinfo.drawPlayer.faceFlower > 0;
++		if (flag3 && drawinfo.drawPlayer.head > 0 && ArmorIDs.Head.Sets.PreventFaceFlowerDraw[drawinfo.drawPlayer.head])
+ 			flag3 = false;
+ 		else if (flag3 && drawinfo.drawPlayer.mount.Active && drawinfo.drawPlayer.mount.Type == 54 && !ArmorIDs.Face.Sets.CanDrawOnVelociraptorMount[drawinfo.drawPlayer.faceFlower])
+ 			flag3 = false;
+@@ -2583,7 +_,10 @@
+ 
+ 			DrawData item = new DrawData(TextureAssets.AccFace[drawinfo.drawPlayer.faceFlower].Value, faceDrawOffset3 + vector + drawinfo.helmetOffset + new Vector2((int)(drawinfo.Position.X - Main.screenPosition.X - (float)(drawinfo.drawPlayer.bodyFrame.Width / 2) + (float)(drawinfo.drawPlayer.width / 2)), (int)(drawinfo.Position.Y - Main.screenPosition.Y + (float)drawinfo.drawPlayer.height - (float)drawinfo.drawPlayer.bodyFrame.Height + 4f)) + drawinfo.drawPlayer.headPosition + drawinfo.headVect, drawinfo.drawPlayer.bodyFrame, drawinfo.colorArmorHead, drawinfo.drawPlayer.headRotation, drawinfo.headVect, 1f, drawinfo.playerEffect);
  			item.shader = drawinfo.cFaceFlower;
++			ItemLoader.ModifyEquipTextureDraw(ref drawinfo, ref item, EquipType.Face, drawinfo.drawPlayer.faceFlower); // Face, DrawInFaceFlowerLayer
++			/*
  			drawinfo.DrawDataCache.Add(item);
-@@ -2165,7 +_,7 @@
++			*/
+ 		}
+ 
+ 		if (drawinfo.drawUnicornHorn) {
+@@ -2765,7 +_,7 @@
  
  	public static void DrawPlayer_25_Shield(ref PlayerDrawSet drawinfo)
  	{
@@ -354,52 +667,134 @@
  			return;
  
  		Vector2 zero = Vector2.Zero;
-@@ -2298,7 +_,7 @@
- 		if (!drawinfo.drawPlayer.CanVisuallyHoldItem(heldItem))
- 			flag2 = false;
+@@ -2792,13 +_,19 @@
+ 			for (float num2 = 0f; num2 < 4f; num2 += 1f) {
+ 				item = new DrawData(TextureAssets.AccShield[drawinfo.drawPlayer.shield].Value, zero2 + new Vector2((int)(drawinfo.Position.X - Main.screenPosition.X - (float)(bodyFrame.Width / 2) + (float)(drawinfo.drawPlayer.width / 2)), (int)(drawinfo.Position.Y - Main.screenPosition.Y + (float)drawinfo.drawPlayer.height - (float)drawinfo.drawPlayer.bodyFrame.Height + 4f)) + drawinfo.drawPlayer.bodyPosition + new Vector2(bodyFrame.Width / 2, drawinfo.drawPlayer.bodyFrame.Height / 2) + zero + new Vector2(x, 0f).RotatedBy(num2 / 4f * ((float)Math.PI * 2f)), bodyFrame, colorArmorBody, drawinfo.drawPlayer.bodyRotation, bodyVect, 1f, drawinfo.playerEffect);
+ 				item.shader = drawinfo.cShield;
++				ItemLoader.ModifyEquipTextureDraw(ref drawinfo, ref item, EquipType.Shield, drawinfo.drawPlayer.shield); // Shield, Raised, pulse outline
++				/*
+ 				drawinfo.DrawDataCache.Add(item);
++				*/
+ 			}
+ 		}
  
+ 		item = new DrawData(TextureAssets.AccShield[drawinfo.drawPlayer.shield].Value, zero2 + new Vector2((int)(drawinfo.Position.X - Main.screenPosition.X - (float)(bodyFrame.Width / 2) + (float)(drawinfo.drawPlayer.width / 2)), (int)(drawinfo.Position.Y - Main.screenPosition.Y + (float)drawinfo.drawPlayer.height - (float)drawinfo.drawPlayer.bodyFrame.Height + 4f)) + drawinfo.drawPlayer.bodyPosition + new Vector2(bodyFrame.Width / 2, drawinfo.drawPlayer.bodyFrame.Height / 2) + zero, bodyFrame, drawinfo.colorArmorBody, drawinfo.drawPlayer.bodyRotation, bodyVect, 1f, drawinfo.playerEffect);
+ 		item.shader = drawinfo.cShield;
++		ItemLoader.ModifyEquipTextureDraw(ref drawinfo, ref item, EquipType.Shield, drawinfo.drawPlayer.shield); // Shield, Normal drawing
++		/*
+ 		drawinfo.DrawDataCache.Add(item);
++		*/
+ 		if (drawinfo.drawPlayer.shieldRaised) {
+ 			Color colorArmorBody2 = drawinfo.colorArmorBody;
+ 			float num3 = (float)Math.Sin(Main.GlobalTimeWrappedHourly * (float)Math.PI);
+@@ -2822,7 +_,10 @@
+ 			colorArmorBody3 *= 1f - num4;
+ 			item = new DrawData(TextureAssets.AccShield[drawinfo.drawPlayer.shield].Value, vector, bodyFrame, colorArmorBody3, drawinfo.drawPlayer.bodyRotation, bodyVect, num6, drawinfo.playerEffect);
+ 			item.shader = drawinfo.cShield;
++			ItemLoader.ModifyEquipTextureDraw(ref drawinfo, ref item, EquipType.Shield, drawinfo.drawPlayer.shield); // Shield, Raised, Actively parrying visual
++			/*
+ 			drawinfo.DrawDataCache.Add(item);
++			*/
+ 		}
+ 
+ 		if (drawinfo.drawPlayer.mount.Cart)
+@@ -2886,7 +_,7 @@
+ 			drawinfo.itemColor = Color.White;
+ 
+ 		DrawPlayer_27_HeldItem_ApplyStealthToColor(ref drawinfo, heldItem, flag, flag2, ref drawinfo.itemColor);
 -		if (drawinfo.shadow != 0f || drawinfo.drawPlayer.frozen || !(flag || flag2) || num <= 0 || drawinfo.drawPlayer.dead || heldItem.noUseGraphic || (drawinfo.drawPlayer.wet && heldItem.noWet) || (drawinfo.drawPlayer.happyFunTorchTime && drawinfo.drawPlayer.inventory[drawinfo.drawPlayer.selectedItem].createTile == 4 && drawinfo.drawPlayer.itemAnimation == 0))
 +		if (drawinfo.shadow != 0f || drawinfo.drawPlayer.frozen || !(flag || flag2) || num <= 0 || drawinfo.drawPlayer.dead || heldItem.noUseGraphic || (drawinfo.drawPlayer.wet && heldItem.noWet && !ItemID.Sets.WaterTorches[num]/*Allow biome torches underwater.*/) || (drawinfo.drawPlayer.happyFunTorchTime && drawinfo.drawPlayer.inventory[drawinfo.drawPlayer.selectedItem].createTile == 4 && drawinfo.drawPlayer.itemAnimation == 0))
  			return;
  
  		_ = drawinfo.drawPlayer.name;
-@@ -2468,12 +_,16 @@
- 						origin5 = Vector2.Zero;
- 					}
- 				}
-+				// Extra patch context.
- 				else if (drawinfo.drawPlayer.direction == -1) {
- 					origin5 = new Vector2(itemDrawFrame.Width, itemDrawFrame.Height);
- 					num10 -= (float)itemDrawFrame.Width;
+@@ -3040,6 +_,11 @@
+ 			}
+ 		}
+ 
++		// Used to facilitate ItemLoader.ModifyItemDraw
++		DrawData normal = default;
++		DrawData ? colored = null;
++		DrawData ? glow = null;
++
+ 		if (heldItem.useStyle == 5) {
+ 			if (Item.staff[num]) {
+ 				float num6 = drawinfo.drawPlayer.itemRotation + 0.785f * (float)drawinfo.drawPlayer.direction;
+@@ -3082,8 +_,14 @@
+ 					num7 -= (float)rectangle.Width;
  				}
  
-+				ItemLoader.HoldoutOrigin(drawinfo.drawPlayer, ref origin5);
++				ItemLoader.HoldoutOrigin(drawinfo.drawPlayer, ref origin5); // DrawPlayer_27_HeldItem
 +
- 				item = new DrawData(value, new Vector2((int)(drawinfo.ItemLocation.X - Main.screenPosition.X + origin5.X + num10), (int)(drawinfo.ItemLocation.Y - Main.screenPosition.Y + num11)), itemDrawFrame, heldItem.GetAlpha(drawinfo.itemColor), num9, origin5, adjustedItemScale, drawinfo.itemEffect);
-+
+ 				item = new DrawData(value, new Vector2((int)(drawinfo.ItemLocation.X - Main.screenPosition.X + origin5.X + num7), (int)(drawinfo.ItemLocation.Y - Main.screenPosition.Y + num8)), rectangle, heldItem.GetAlpha(drawinfo.itemColor), num6, origin5, adjustedItemScale, drawinfo.itemEffect);
++				normal = item;
++				/*
  				drawinfo.DrawDataCache.Add(item);
++				*/
++				ItemLoader.ModifyItemDraw(heldItem, ref drawinfo, normal, colored, glow); // useStyle == 5, Item.staff[num], no vanilla colored or glow support
  				if (num == 3870) {
- 					item = new DrawData(TextureAssets.GlowMask[238].Value, new Vector2((int)(drawinfo.ItemLocation.X - Main.screenPosition.X + origin5.X + num10), (int)(drawinfo.ItemLocation.Y - Main.screenPosition.Y + num11)), itemDrawFrame, new Color(255, 255, 255, 127), num9, origin5, adjustedItemScale, drawinfo.itemEffect);
-@@ -2485,7 +_,7 @@
+ 					item = new DrawData(TextureAssets.GlowMask[238].Value, new Vector2((int)(drawinfo.ItemLocation.X - Main.screenPosition.X + origin5.X + num7), (int)(drawinfo.ItemLocation.Y - Main.screenPosition.Y + num8)), rectangle, new Color(255, 255, 255, 127), num6, origin5, adjustedItemScale, drawinfo.itemEffect);
+ 					drawinfo.DrawDataCache.Add(item);
+@@ -3113,18 +_,28 @@
+ 				origin7 = new Vector2(rectangle.Width + num9, rectangle.Height / 2);
  
- 			if (num == 5118) {
- 				float rotation = drawinfo.drawPlayer.itemRotation + 1.57f * (float)drawinfo.drawPlayer.direction;
--				Vector2 vector8 = new Vector2((float)itemDrawFrame.Width * 0.5f, (float)itemDrawFrame.Height * 0.5f);
-+				Vector2 vector8 = new Vector2(0, (float)itemDrawFrame.Height * 0.5f); // forward port from 1.4.5
- 				Vector2 origin6 = new Vector2((float)itemDrawFrame.Width * 0.5f, itemDrawFrame.Height);
- 				Vector2 spinningpoint = new Vector2(10f, 4f) * drawinfo.drawPlayer.Directions;
- 				spinningpoint = spinningpoint.RotatedBy(drawinfo.drawPlayer.itemRotation);
-@@ -2495,7 +_,7 @@
+ 			item = new DrawData(value, new Vector2((int)(drawinfo.ItemLocation.X - Main.screenPosition.X + vector9.X), (int)(drawinfo.ItemLocation.Y - Main.screenPosition.Y + vector9.Y)), rectangle, heldItem.GetAlpha(drawinfo.itemColor), drawinfo.drawPlayer.itemRotation, origin7, adjustedItemScale, drawinfo.itemEffect);
++			normal = item;
++			/*
+ 			drawinfo.DrawDataCache.Add(item);
++			*/
+ 			if (heldItem.color != default(Color)) {
+ 				item = new DrawData(value, new Vector2((int)(drawinfo.ItemLocation.X - Main.screenPosition.X + vector9.X), (int)(drawinfo.ItemLocation.Y - Main.screenPosition.Y + vector9.Y)), rectangle, heldItem.GetColor(drawinfo.itemColor), drawinfo.drawPlayer.itemRotation, origin7, adjustedItemScale, drawinfo.itemEffect);
++				colored = item;
++				/*
+ 				drawinfo.DrawDataCache.Add(item);
++				*/
  			}
  
- 			int num12 = 10;
--			Vector2 vector9 = new Vector2(itemDrawFrame.Width / 2, itemDrawFrame.Height / 2);
-+			Vector2 vector9 = new Vector2(0, itemDrawFrame.Height / 2); // forward port from 1.4.5
- 			Vector2 vector10 = Main.DrawPlayerItemPos(drawinfo.drawPlayer.gravDir, num);
- 			num12 = (int)vector10.X;
- 			vector9.Y = vector10.Y;
-@@ -2603,7 +_,7 @@
- 		if (drawinfo.usesCompositeTorso) {
+ 			if (heldItem.glowMask != -1) {
+ 				Color color3 = Color.White;
+ 				DrawPlayer_27_HeldItem_ApplyStealthToColor(ref drawinfo, heldItem, flag, flag2, ref color3);
+ 				item = new DrawData(TextureAssets.GlowMask[heldItem.glowMask].Value, new Vector2((int)(drawinfo.ItemLocation.X - Main.screenPosition.X + vector9.X), (int)(drawinfo.ItemLocation.Y - Main.screenPosition.Y + vector9.Y)), rectangle, color3, drawinfo.drawPlayer.itemRotation, origin7, adjustedItemScale, drawinfo.itemEffect);
++				glow = item;
++				/*
+ 				drawinfo.DrawDataCache.Add(item);
++				*/
+ 			}
++			ItemLoader.ModifyItemDraw(heldItem, ref drawinfo, normal, colored, glow); // useStyle == 5, Item.staff[num], no vanilla colored or glow support
+ 
+ 			if (num == 3788) {
+ 				float num10 = ((float)drawinfo.drawPlayer.miscCounter / 75f * ((float)Math.PI * 2f)).ToRotationVector2().X * 1f + 0f;
+@@ -3140,10 +_,16 @@
+ 		}
+ 
+ 		item = new DrawData(value, vector, rectangle, heldItem.GetAlpha(drawinfo.itemColor), num2, origin, adjustedItemScale, drawinfo.itemEffect);
++		normal = item;
++		/*
+ 		drawinfo.DrawDataCache.Add(item);
++		*/
+ 		if (heldItem.color != default(Color)) {
+ 			item = new DrawData(value, vector, rectangle, heldItem.GetColor(drawinfo.itemColor), num2, origin, adjustedItemScale, drawinfo.itemEffect);
++			colored = item;
++			/*
+ 			drawinfo.DrawDataCache.Add(item);
++			*/
+ 		}
+ 
+ 		if (heldItem.glowMask != -1) {
+@@ -3155,8 +_,12 @@
+ 			}
+ 
+ 			item = new DrawData(TextureAssets.GlowMask[heldItem.glowMask].Value, vector, rectangle, color, num2, origin, adjustedItemScale, drawinfo.itemEffect);
++			glow = item;
++			/*
+ 			drawinfo.DrawDataCache.Add(item);
++			*/
+ 		}
++		ItemLoader.ModifyItemDraw(heldItem, ref drawinfo, normal, colored, glow); // useStyle != 5, normal gravity
+ 
+ 		if (heldItem.type == 5462 && drawinfo.SelectedDrawnProjectile != null) {
+ 			Projectile selectedDrawnProjectile2 = drawinfo.SelectedDrawnProjectile;
+@@ -3261,7 +_,7 @@
+ 		else if (drawinfo.usesCompositeTorso) {
  			DrawPlayer_28_ArmOverItemComposite(ref drawinfo);
  		}
 -		else if (drawinfo.drawPlayer.body > 0 && drawinfo.drawPlayer.body < ArmorIDs.Body.Count) {
@@ -407,25 +802,27 @@
  			Rectangle bodyFrame = drawinfo.drawPlayer.bodyFrame;
  			int num = drawinfo.armorAdjust;
  			bodyFrame.X += num;
-@@ -2682,7 +_,7 @@
- 			vector += new Vector2((!drawinfo.playerEffect.HasFlag(SpriteEffects.FlipHorizontally)) ? 1 : (-1), (!drawinfo.playerEffect.HasFlag(SpriteEffects.FlipVertically)) ? 1 : (-1));
+@@ -3340,8 +_,8 @@
+ 			vector += new Vector2(((drawinfo.playerEffect & SpriteEffects.FlipHorizontally) == 0) ? 1 : (-1), ((drawinfo.playerEffect & SpriteEffects.FlipVertically) == 0) ? 1 : (-1));
  
  		_ = drawinfo.drawPlayer.invis;
 -		bool num = drawinfo.drawPlayer.body > 0 && drawinfo.drawPlayer.body < ArmorIDs.Body.Count;
+-		bool flag = drawinfo.drawPlayer.coat > 0 && drawinfo.drawPlayer.coat < ArmorIDs.Body.Count;
 +		bool num = drawinfo.drawPlayer.body > 0;
++ 		bool flag = drawinfo.drawPlayer.coat > 0;
  		int num2 = (drawinfo.compShoulderOverFrontArm ? 1 : 0);
  		int num3 = ((!drawinfo.compShoulderOverFrontArm) ? 1 : 0);
  		int num4 = ((!drawinfo.compShoulderOverFrontArm) ? 1 : 0);
-@@ -2756,7 +_,7 @@
+@@ -3456,7 +_,7 @@
  			}
  		}
  
 -		if (drawinfo.drawPlayer.handon > 0 && drawinfo.drawPlayer.handon < ArmorIDs.HandOn.Count) {
 +		if (drawinfo.drawPlayer.handon > 0) {
- 			Texture2D value2 = TextureAssets.AccHandsOnComposite[drawinfo.drawPlayer.handon].Value;
- 			DrawCompositeArmorPiece(ref drawinfo, CompositePlayerDrawContext.FrontArmAccessory, new DrawData(value2, vector, drawinfo.compFrontArmFrame, drawinfo.colorArmorBody, rotation, bodyVect, 1f, drawinfo.playerEffect) {
+ 			Texture2D value6 = TextureAssets.AccHandsOnComposite[drawinfo.drawPlayer.handon].Value;
+ 			DrawCompositeArmorPiece(ref drawinfo, CompositePlayerDrawContext.FrontArmAccessory, new DrawData(value6, vector, drawinfo.compFrontArmFrame, drawinfo.colorArmorBody, rotation, bodyVect, 1f, drawinfo.playerEffect) {
  				shader = drawinfo.cHandOn
-@@ -2766,7 +_,7 @@
+@@ -3466,9 +_,10 @@
  
  	public static void DrawPlayer_29_OnhandAcc(ref PlayerDrawSet drawinfo)
  	{
@@ -433,8 +830,11 @@
 +		if (!drawinfo.usesCompositeFrontHandAcc && drawinfo.drawPlayer.handon > 0) {
  			DrawData item = new DrawData(TextureAssets.AccHandsOn[drawinfo.drawPlayer.handon].Value, new Vector2((int)(drawinfo.Position.X - Main.screenPosition.X - (float)(drawinfo.drawPlayer.bodyFrame.Width / 2) + (float)(drawinfo.drawPlayer.width / 2)), (int)(drawinfo.Position.Y - Main.screenPosition.Y + (float)drawinfo.drawPlayer.height - (float)drawinfo.drawPlayer.bodyFrame.Height + 4f)) + drawinfo.drawPlayer.bodyPosition + new Vector2(drawinfo.drawPlayer.bodyFrame.Width / 2, drawinfo.drawPlayer.bodyFrame.Height / 2), drawinfo.drawPlayer.bodyFrame, drawinfo.colorArmorBody, drawinfo.drawPlayer.bodyRotation, drawinfo.bodyVect, 1f, drawinfo.playerEffect);
  			item.shader = drawinfo.cHandOn;
++			// Non-composite HandsOn. No need for ModifyEquipTextureDraw hook.
  			drawinfo.DrawDataCache.Add(item);
-@@ -2801,7 +_,7 @@
+ 		}
+ 	}
+@@ -3501,17 +_,18 @@
  
  	public static void DrawPlayer_32_FrontAcc(ref PlayerDrawSet drawinfo)
  	{
@@ -443,21 +843,46 @@
  			Vector2 zero = Vector2.Zero;
  			DrawData item = new DrawData(TextureAssets.AccFront[drawinfo.drawPlayer.front].Value, zero + new Vector2((int)(drawinfo.Position.X - Main.screenPosition.X - (float)(drawinfo.drawPlayer.bodyFrame.Width / 2) + (float)(drawinfo.drawPlayer.width / 2)), (int)(drawinfo.Position.Y - Main.screenPosition.Y + (float)drawinfo.drawPlayer.height - (float)drawinfo.drawPlayer.bodyFrame.Height + 4f)) + drawinfo.drawPlayer.bodyPosition + new Vector2(drawinfo.drawPlayer.bodyFrame.Width / 2, drawinfo.drawPlayer.bodyFrame.Height / 2), drawinfo.drawPlayer.bodyFrame, drawinfo.colorArmorBody, drawinfo.drawPlayer.bodyRotation, drawinfo.bodyVect, 1f, drawinfo.playerEffect);
  			item.shader = drawinfo.cFront;
-@@ -2811,7 +_,7 @@
++			// Method unused. No need for hook.
+ 			drawinfo.DrawDataCache.Add(item);
+ 		}
+ 	}
  
  	public static void DrawPlayer_32_FrontAcc_FrontPart(ref PlayerDrawSet drawinfo)
  	{
--		if (drawinfo.drawPlayer.front <= 0 || drawinfo.drawPlayer.front >= ArmorIDs.Front.Count)
-+		if (drawinfo.drawPlayer.front <= 0)
+-		if (drawinfo.drawPlayer.front <= 0 || drawinfo.drawPlayer.front >= ArmorIDs.Front.Count || (ArmorIDs.Front.Sets.DontDrawIfWearingAScarfOrCape[drawinfo.drawPlayer.front] && ((drawinfo.drawPlayer.neck > 0 && ArmorIDs.Neck.Sets.IsAScarf[drawinfo.drawPlayer.neck]) || (drawinfo.drawPlayer.back > 0 && ArmorIDs.Back.Sets.IsACape[drawinfo.drawPlayer.back]))))
++		if (drawinfo.drawPlayer.front <= 0 || (ArmorIDs.Front.Sets.DontDrawIfWearingAScarfOrCape[drawinfo.drawPlayer.front] && ((drawinfo.drawPlayer.neck > 0 && ArmorIDs.Neck.Sets.IsAScarf[drawinfo.drawPlayer.neck]) || (drawinfo.drawPlayer.back > 0 && ArmorIDs.Back.Sets.IsACape[drawinfo.drawPlayer.back]))))
  			return;
  
  		Rectangle bodyFrame = drawinfo.drawPlayer.bodyFrame;
-@@ -2850,7 +_,7 @@
+@@ -3524,7 +_,10 @@
+ 		Vector2 vector = drawinfo.drawPlayer.GetFrontDrawOffset() + new Vector2((int)(drawinfo.Position.X - Main.screenPosition.X - (float)(drawinfo.drawPlayer.bodyFrame.Width / 2) + (float)(drawinfo.drawPlayer.width / 2)), (int)(drawinfo.Position.Y - Main.screenPosition.Y + (float)drawinfo.drawPlayer.height - (float)drawinfo.drawPlayer.bodyFrame.Height + 4f)) + drawinfo.drawPlayer.bodyPosition + new Vector2(drawinfo.drawPlayer.bodyFrame.Width / 2, drawinfo.drawPlayer.bodyFrame.Height / 2);
+ 		DrawData item = new DrawData(TextureAssets.AccFront[drawinfo.drawPlayer.front].Value, vector, bodyFrame, drawinfo.colorArmorBody, drawinfo.drawPlayer.bodyRotation, bodyVect, 1f, drawinfo.playerEffect);
+ 		item.shader = drawinfo.cFront;
++		/*
+ 		drawinfo.DrawDataCache.Add(item);
++		*/
++		ItemLoader.ModifyEquipTextureDraw(ref drawinfo, ref item, EquipType.Front, drawinfo.drawPlayer.front); // Front, "front part". Both front and back will be called.
+ 		if (drawinfo.drawPlayer.front == 12) {
+ 			Rectangle rectangle = bodyFrame;
+ 			Rectangle value = rectangle;
+@@ -3550,7 +_,7 @@
  
  	public static void DrawPlayer_32_FrontAcc_BackPart(ref PlayerDrawSet drawinfo)
  	{
--		if (drawinfo.drawPlayer.front <= 0 || drawinfo.drawPlayer.front >= ArmorIDs.Front.Count)
-+		if (drawinfo.drawPlayer.front <= 0)
+-		if (drawinfo.drawPlayer.front <= 0 || drawinfo.drawPlayer.front >= ArmorIDs.Front.Count || (ArmorIDs.Front.Sets.DontDrawIfWearingAScarfOrCape[drawinfo.drawPlayer.front] && ((drawinfo.drawPlayer.neck > 0 && ArmorIDs.Neck.Sets.IsAScarf[drawinfo.drawPlayer.neck]) || (drawinfo.drawPlayer.back > 0 && ArmorIDs.Back.Sets.IsACape[drawinfo.drawPlayer.back]))))
++		if (drawinfo.drawPlayer.front <= 0 || (ArmorIDs.Front.Sets.DontDrawIfWearingAScarfOrCape[drawinfo.drawPlayer.front] && ((drawinfo.drawPlayer.neck > 0 && ArmorIDs.Neck.Sets.IsAScarf[drawinfo.drawPlayer.neck]) || (drawinfo.drawPlayer.back > 0 && ArmorIDs.Back.Sets.IsACape[drawinfo.drawPlayer.back]))))
  			return;
  
  		Rectangle bodyFrame = drawinfo.drawPlayer.bodyFrame;
+@@ -3564,7 +_,10 @@
+ 		Vector2 vector = drawinfo.drawPlayer.GetFrontDrawOffset() + new Vector2((int)(drawinfo.Position.X - Main.screenPosition.X - (float)(drawinfo.drawPlayer.bodyFrame.Width / 2) + (float)(drawinfo.drawPlayer.width / 2)), (int)(drawinfo.Position.Y - Main.screenPosition.Y + (float)drawinfo.drawPlayer.height - (float)drawinfo.drawPlayer.bodyFrame.Height + 4f)) + drawinfo.drawPlayer.bodyPosition + new Vector2(drawinfo.drawPlayer.bodyFrame.Width / 2, drawinfo.drawPlayer.bodyFrame.Height / 2);
+ 		DrawData item = new DrawData(TextureAssets.AccFront[drawinfo.drawPlayer.front].Value, vector, bodyFrame, drawinfo.colorArmorBody, drawinfo.drawPlayer.bodyRotation, bodyVect, 1f, drawinfo.playerEffect);
+ 		item.shader = drawinfo.cFront;
++		ItemLoader.ModifyEquipTextureDraw(ref drawinfo, ref item, EquipType.Front, drawinfo.drawPlayer.front); // Front, "front part". Both front and back will be called.
++		/*
+ 		drawinfo.DrawDataCache.Add(item);
++		*/
+ 		if (drawinfo.drawPlayer.front == 12) {
+ 			Rectangle rectangle = bodyFrame;
+ 			Rectangle value = rectangle;

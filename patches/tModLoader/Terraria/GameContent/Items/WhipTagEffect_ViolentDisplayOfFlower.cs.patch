@@ -1,0 +1,13 @@
+--- src/TerrariaNetCore/Terraria/GameContent/Items/WhipTagEffect_ViolentDisplayOfFlower.cs
++++ src/tModLoader/Terraria/GameContent/Items/WhipTagEffect_ViolentDisplayOfFlower.cs
+@@ -5,7 +_,10 @@
+ 
+ public class WhipTagEffect_ViolentDisplayOfFlower : WhipTagEffect
+ {
++	/*
+ 	public override void OnProcHit(Player owner, Projectile optionalProjectile, NPC npcHit, int calcDamage)
++	*/
++	public override void OnProcHit(Player owner, Projectile optionalProjectile, NPC npcHit, NPC.HitInfo hit)
+ 	{
+ 		SpawnFlowerExplosionOn(optionalProjectile, npcHit, 40);
+ 	}

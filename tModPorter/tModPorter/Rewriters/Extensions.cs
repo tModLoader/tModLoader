@@ -70,14 +70,15 @@ public static class Extensions
 		return node.WithTrailingTrivia(existing.InsertRange(i, comments));
 	}
 
-	public static bool Contains(this SyntaxList<UsingDirectiveSyntax> usings, string @namespace) => usings.Any(u => u.Name.ToString() == @namespace);
+	public static bool Contains(this SyntaxList<UsingDirectiveSyntax> usings, string @namespace) => usings.Any(u => u.Name?.ToString() == @namespace);
 
 	public static SyntaxList<UsingDirectiveSyntax> WithUsingNamespace(this SyntaxList<UsingDirectiveSyntax> usings, string @namespace) {
 		if (usings.Contains(@namespace))
 			return usings;
 
+		// UsingDirectiveSyntax.Name can be null for namespace aliases. We could check .Alias.Name instead, but sorting before aliases is preferred.
 		int idx = 0;
-		while (idx < usings.Count && string.Compare(usings[idx].Name.ToString(), @namespace) < 0)
+		while (idx < usings.Count && usings[idx].Name != null && string.Compare(usings[idx].Name.ToString(), @namespace) < 0)
 			idx++;
 
 		return usings.Insert(idx, SimpleUsing(@namespace));

@@ -16,11 +16,11 @@ public enum SceneEffectPriority
 	BiomeHigh,
 	/// <summary> Will override vanilla SceneEffect for Sandstorm, Hell, Above surface during Eclipse, Space, Shimmer</summary>
 	Environment,
-	/// <summary> Will override vanilla SceneEffect for Pirate Invasion, Goblin Invasion, Old Ones Army</summary>
+	/// <summary> Will override vanilla SceneEffect for Pirate Invasion, Goblin Invasion, Old Ones Army, Pumpkin Moon, Frost Moon</summary>
 	Event,
 	/// <summary>All other bosses and default modded boss priority</summary>
 	BossLow,
-	/// <summary>Will override vanilla SceneEffect for Martian Madness, Celestial Towers, Plantera</summary>
+	/// <summary>Will override vanilla SceneEffect for Martian Madness, Celestial Towers, Plantera, Mechdusa</summary>
 	BossMedium,
 	/// <summary>Will override SceneEffect of Moon Lord and Torch God</summary>
 	BossHigh

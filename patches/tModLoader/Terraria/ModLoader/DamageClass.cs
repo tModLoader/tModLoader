@@ -1,5 +1,7 @@
 using System;
 using System.Linq;
+using ReLogic.Reflection;
+using Terraria.ID;
 using Terraria.Localization;
 
 namespace Terraria.ModLoader;
@@ -8,11 +10,21 @@ namespace Terraria.ModLoader;
 /// <see cref="DamageClass"/> is used to determine the application of item effects, damage/stat scaling, and class bonuses.
 /// </summary>
 /// <remarks>
-/// New classes can be created and can be set to inherit these applications from other classes. 
+/// New classes can be created and can be set to inherit these applications from other classes.
 /// <para>For a more in-depth explanation and demonstration refer to <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/DamageClasses/ExampleDamageClass.cs">ExampleMod's ExampleDamageClass.cs</see>.</para>
 /// </remarks>
 public abstract class DamageClass : ModType, ILocalizedModType
 {
+	public class Sets
+	{
+		/// <summary>
+		/// Used for creating sets indexed by DamageClass type (<see cref="DamageClass.Type"/>).
+		/// <para/> <inheritdoc cref="SetFactory"/>
+		/// </summary>
+		public static SetFactory Factory = new SetFactory(DamageClassLoader.DamageClassCount, nameof(DamageClass), Search);
+	}
+	public static IdDictionary Search = IdDictionary.Create<DamageClass, int>();
+
 	/// <summary>
 	/// Default damage class for non-classed weapons and items, does not benefit from Generic bonuses
 	/// </summary>
@@ -73,7 +85,7 @@ public abstract class DamageClass : ModType, ILocalizedModType
 	/// <returns>By default this will return <see cref="StatInheritanceData.Full"/> for <see cref="DamageClass.Generic"/> and <see cref="StatInheritanceData.None"/> for any other.</returns>
 	public virtual StatInheritanceData GetModifierInheritance(DamageClass damageClass) => damageClass == Generic ? StatInheritanceData.Full : StatInheritanceData.None;
 
-	/// <summary> 
+	/// <summary>
 	/// This lets you define the classes that this <see cref="DamageClass"/> will count as (other than itself) for the purpose of armor and accessory effects, such as Spectre armor's bolts on magic attacks, or Magma Stone's Hellfire debuff on melee attacks.<br/>
 	/// For a more in-depth explanation and demonstration, see <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/DamageClasses/ExampleDamageClass.cs">ExampleMod's ExampleDamageClass.cs</see>
 	/// This method is only meant to be overridden. Modders should call <see cref="CountsAsClass"/> to query effect inheritance.
@@ -83,7 +95,7 @@ public abstract class DamageClass : ModType, ILocalizedModType
 	/// <returns><see langword="false"/> by default - which does not let any other classes' effects trigger on this <see cref="DamageClass"/>.</returns>
 	public virtual bool GetEffectInheritance(DamageClass damageClass) => false;
 
-	/// <summary> 
+	/// <summary>
 	/// This lets you define the classes that this <see cref="DamageClass"/> will count as (other than itself) for the purpose of prefixes.<br/>
 	/// This method is only meant to be overridden. Modders should call <see cref="GetsPrefixesFor"/> to query prefix inheritance.
 	/// </summary>
@@ -92,7 +104,7 @@ public abstract class DamageClass : ModType, ILocalizedModType
 	/// <returns><see cref="GetEffectInheritance"/> by default - which lets the prefixes of any class this class inherits effects from roll and remain on items of this <see cref="DamageClass"/>.</returns>
 	public virtual bool GetPrefixInheritance(DamageClass damageClass) => GetEffectInheritance(damageClass);
 
-	/// <summary> 
+	/// <summary>
 	/// This lets you define default stat modifiers for all items of this class (e.g. base crit chance).
 	/// </summary>
 	/// <param name="player">The player to apply stat modifications to</param>
@@ -122,8 +134,8 @@ public abstract class DamageClass : ModType, ILocalizedModType
 	protected sealed override void Register()
 	{
 		ModTypeLookup<DamageClass>.Register(this);
-
 		Type = DamageClassLoader.Add(this);
+		Search.Add(FullName, Type);
 	}
 
 	public sealed override void SetupContent()

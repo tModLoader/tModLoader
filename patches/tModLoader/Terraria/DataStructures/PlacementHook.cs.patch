@@ -11,6 +11,6 @@
 +	/// <para/> <paramref name="badResponse"/>: Set to 0.
 +	/// <para/> <paramref name="processedCoordinates"/>: If true, the top left corner coordinates of the tile will be passed into <see cref="hook"/> rather than the placement coordinate (the placement coordinate is where the mouse would be (<see cref="Player.tileTargetX"/> and <see cref="Player.tileTargetY"/>), accounting for the <see cref="ObjectData.TileObjectData.Origin"/> offset). Typically a true value will make all the logic in the <paramref name="hook"/> method much simpler.
 +	/// </summary>
- 	public PlacementHook(Func<int, int, int, int, int, int, int> hook, int badReturn, int badResponse, bool processedCoordinates)
+ 	public PlacementHook(HookFormat hook, int badReturn, int badResponse, bool processedCoordinates)
  	{
  		this.hook = hook;

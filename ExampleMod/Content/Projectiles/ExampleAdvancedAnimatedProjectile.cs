@@ -14,7 +14,7 @@ namespace ExampleMod.Content.Projectiles
 	{
 		public override void SetStaticDefaults() {
 			// Total count animation frames
-			Main.projFrames[Projectile.type] = 4;
+			Main.projFrames[Type] = 4;
 		}
 
 		public override void SetDefaults() {
@@ -54,8 +54,8 @@ namespace ExampleMod.Content.Projectiles
 			// Projectile.frame — index of current frame
 			if (++Projectile.frameCounter >= 5) {
 				Projectile.frameCounter = 0;
-				// Or more compactly Projectile.frame = ++Projectile.frame % Main.projFrames[Projectile.type];
-				if (++Projectile.frame >= Main.projFrames[Projectile.type])
+				// Or more compactly Projectile.frame = ++Projectile.frame % Main.projFrames[Type];
+				if (++Projectile.frame >= Main.projFrames[Type])
 					Projectile.frame = 0;
 			}
 
@@ -91,7 +91,7 @@ namespace ExampleMod.Content.Projectiles
 
 			// Fade out
 			Projectile.alpha += 25;
-			// Cal alpha to the maximum 255(complete transparent)
+			// Cap alpha to the maximum 255 (completely transparent)
 			if (Projectile.alpha > 255)
 				Projectile.alpha = 255;
 		}
@@ -99,7 +99,7 @@ namespace ExampleMod.Content.Projectiles
 		// Some advanced drawing because the texture image isn't centered or symmetrical
 		// If you don't want to manually draw you can use vanilla projectile rendering offsets
 		// Here you can check it https://github.com/tModLoader/tModLoader/wiki/Basic-Projectile#horizontal-sprite-example
-		public override bool PreDraw(ref Color lightColor) {
+		public override bool PreDraw(Player player, ref Color lightColor) {
 			// SpriteEffects helps to flip texture horizontally and vertically
 			SpriteEffects spriteEffects = SpriteEffects.None;
 			if (Projectile.spriteDirection == -1)

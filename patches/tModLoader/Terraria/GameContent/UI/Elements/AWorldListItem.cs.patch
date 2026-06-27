@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/GameContent/UI/Elements/AWorldListItem.cs
 +++ src/tModLoader/Terraria/GameContent/UI/Elements/AWorldListItem.cs
-@@ -9,6 +_,9 @@
+@@ -10,6 +_,9 @@
  
  public abstract class AWorldListItem : UIPanel
  {

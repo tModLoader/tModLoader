@@ -1,0 +1,28 @@
+--- src/Terraria/ReLogic/OS/Base/SDLWindowService.cs
++++ src/TerrariaNetCore/ReLogic/OS/Base/SDLWindowService.cs
+@@ -8,9 +_,9 @@
+ 
+ public abstract class SDLWindowService : IWindowService
+ {
+-	public float GetScaling() => 1f;
++	public virtual float GetScaling() => 1f;
+ 
+-	public void SetQuickEditEnabled(bool enabled)
++	public virtual void SetQuickEditEnabled(bool enabled)
+ 	{
+ 	}
+ 
+@@ -19,11 +_,11 @@
+ 		window.Title = title;
+ 	}
+ 
+-	public void StartFlashingIcon(GameWindow window)
++	public virtual void StartFlashingIcon(GameWindow window)
+ 	{
+ 	}
+ 
+-	public void StopFlashingIcon(GameWindow window)
++	public virtual void StopFlashingIcon(GameWindow window)
+ 	{
+ 	}
+ 

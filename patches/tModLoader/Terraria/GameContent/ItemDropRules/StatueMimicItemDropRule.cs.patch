@@ -1,0 +1,11 @@
+--- src/TerrariaNetCore/Terraria/GameContent/ItemDropRules/StatueMimicItemDropRule.cs
++++ src/tModLoader/Terraria/GameContent/ItemDropRules/StatueMimicItemDropRule.cs
+@@ -28,7 +_,7 @@
+ 	public ItemDropAttemptResult TryDroppingItem(DropAttemptInfo info)
+ 	{
+ 		int itemId = WorldGen.StatueStyleToItem((int)info.npc.ai[1]);
+-		CommonCode.DropItemFromNPC(info.npc, itemId, 1);
++		CommonCode.DropItem(info, itemId, 1);
+ 		ItemDropAttemptResult result = default(ItemDropAttemptResult);
+ 		result.State = ItemDropAttemptResultState.Success;
+ 		return result;

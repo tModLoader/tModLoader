@@ -44,8 +44,6 @@ namespace ExampleMod
 		public bool nullified;
 		public int purityDebuffCooldown;
 		public bool purityMinion;
-		public bool examplePet;
-		public bool exampleLightPet;
 		public bool exampleShield;
 		public bool infinity;
 		public bool strongBeesUpgrade;
@@ -53,11 +51,6 @@ namespace ExampleMod
 		public int manaHeartCounter;
 		public bool nonStopParty; // The value of this bool can't be calculated by other clients automatically since it is set in ExampleUI. This bool is synced by SendClientChanges.
 		public bool examplePersonGiftReceived;
-
-		public const int maxExampleLifeFruits = 10;
-		public int exampleLifeFruits;
-
-		public bool ZoneExample;
 
 		public override void ResetEffects() {
 			eFlames = false;
@@ -69,8 +62,6 @@ namespace ExampleMod
 			healHurt = 0;
 			nullified = false;
 			purityMinion = false;
-			examplePet = false;
-			exampleLightPet = false;
 			exampleShield = false;
 			infinity = false;
 			strongBeesUpgrade = false;
@@ -78,8 +69,6 @@ namespace ExampleMod
 				manaHeartCounter = 0;
 			}
 			manaHeart = false;
-
-			player.statLifeMax2 += exampleLifeFruits * 2;
 		}
 
 		public override void OnEnterWorld(Player player) {
@@ -106,7 +95,6 @@ namespace ExampleMod
 			ModPacket packet = mod.GetPacket();
 			packet.Write((byte)ExampleModMessageType.ExamplePlayerSyncPlayer);
 			packet.Write((byte)player.whoAmI);
-			packet.Write(exampleLifeFruits);
 			packet.Write(nonStopParty); // While we sync nonStopParty in SendClientChanges, we still need to send it here as well so newly joining players will receive the correct value.
 			packet.Send(toWho, fromWho);
 		}
@@ -134,7 +122,6 @@ namespace ExampleMod
 			return new TagCompound {
 				// {"somethingelse", somethingelse}, // To save more data, add additional lines
 				{"score", score},
-				{"exampleLifeFruits", exampleLifeFruits},
 				{"nonStopParty", nonStopParty},
 				{nameof(examplePersonGiftReceived), examplePersonGiftReceived},
 			};
@@ -146,15 +133,9 @@ namespace ExampleMod
 
 		public override void Load(TagCompound tag) {
 			score = tag.GetInt("score");
-			exampleLifeFruits = tag.GetInt("exampleLifeFruits");
 			// nonStopParty was added after the initial ExampleMod release. Read https://github.com/tModLoader/tModLoader/wiki/Saving-and-loading-using-TagCompound#mod-version-updates for information about how to handle version updates in your mod without messing up current users of your mod.
 			nonStopParty = tag.GetBool("nonStopParty");
 			examplePersonGiftReceived = tag.GetBool(nameof(examplePersonGiftReceived));
-		}
-
-		public override void LoadLegacy(BinaryReader reader) {
-			int loadVersion = reader.ReadInt32();
-			score = reader.ReadInt32();
 		}
 
 		public override void SetupStartInventory(IList<Item> items, bool mediumcoreDeath) {
@@ -164,51 +145,11 @@ namespace ExampleMod
 			items.Add(item);
 		}
 
-		public override void UpdateBiomes() {
-			ZoneExample = ExampleWorld.exampleTiles > 50;
-		}
-
-		public override bool CustomBiomesMatch(Player other) {
-			ExamplePlayer modOther = other.GetModPlayer<ExamplePlayer>();
-			return ZoneExample == modOther.ZoneExample;
-			// If you have several Zones, you might find the &= operator or other logic operators useful:
-			// bool allMatch = true;
-			// allMatch &= ZoneExample == modOther.ZoneExample;
-			// allMatch &= ZoneModel == modOther.ZoneModel;
-			// return allMatch;
-			// Here is an example just using && chained together in one statemeny 
-			// return ZoneExample == modOther.ZoneExample && ZoneModel == modOther.ZoneModel;
-		}
-
-		public override void CopyCustomBiomesTo(Player other) {
-			ExamplePlayer modOther = other.GetModPlayer<ExamplePlayer>();
-			modOther.ZoneExample = ZoneExample;
-		}
-
-		public override void SendCustomBiomes(BinaryWriter writer) {
-			BitsByte flags = new BitsByte();
-			flags[0] = ZoneExample;
-			writer.Write(flags);
-		}
-
-		public override void ReceiveCustomBiomes(BinaryReader reader) {
-			BitsByte flags = reader.ReadByte();
-			ZoneExample = flags[0];
-		}
-
 		public override void UpdateBiomeVisuals() {
 			bool usePurity = NPC.AnyNPCs(NPCType<PuritySpirit>());
 			player.ManageSpecialBiomeVisuals("ExampleMod:PuritySpirit", usePurity);
 			bool useVoidMonolith = voidMonolith && !usePurity && !NPC.AnyNPCs(NPCID.MoonLordCore);
 			player.ManageSpecialBiomeVisuals("ExampleMod:MonolithVoid", useVoidMonolith, player.Center);
-		}
-
-		public override Texture2D GetMapBackgroundImage() {
-			if (ZoneExample) {
-				return mod.GetTexture("ExampleBiomeMapBackground").Value;
-			}
-
-			return null;
 		}
 
 		public override void UpdateBadLifeRegen() {
@@ -566,16 +507,6 @@ namespace ExampleMod
 					item.SetDefaults(ItemID.PlatinumCoin);
 					item.stack = stack;
 				}
-			}
-		}
-
-		public override void CatchFish(Item fishingRod, Item bait, int power, int liquidType, int poolSize, int worldLayer, int questFish, ref int caughtType) {
-			if (player.FindBuffIndex(BuffID.TwinEyesMinion) > -1 && liquidType == 0 && Main.rand.NextBool(3)) {
-				caughtType = ItemType<SparklingSphere>();
-			}
-
-			if (player.gravDir == -1f && questFish == ItemType<ExampleQuestFish>() && Main.rand.NextBool()) {
-				caughtType = ItemType<ExampleQuestFish>();
 			}
 		}
 

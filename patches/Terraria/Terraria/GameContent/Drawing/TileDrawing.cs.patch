@@ -1,0 +1,12 @@
+--- src/decompiled/Terraria/GameContent/Drawing/TileDrawing.cs
++++ src/Terraria/Terraria/GameContent/Drawing/TileDrawing.cs
+@@ -6128,7 +_,8 @@
+ 			if (_rand.NextFloat() < lerpValue) {
+ 				bool flag2 = _rand.Next(600) == 0;
+ 				if (!flag2) {
++					// Decompiler bug: turn `out var directionX` into `out int directionX`.
+-					_windGrid.GetWindTime(i, j, 8, out var windTimeLeft, out var directionX, out directionX);
++					_windGrid.GetWindTime(i, j, 8, out var windTimeLeft, out int directionX, out directionX);
+ 					flag2 = windTimeLeft > 0 && _rand.Next(48) == 0;
+ 				}
+ 

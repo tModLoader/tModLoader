@@ -16,7 +16,7 @@ namespace ExampleMod.Common.Configs.CustomDataTypes
 		public bool enabled;
 
 		[DrawTicks]
-		[OptionStrings(new string[] { "Pikachu", "Charmander", "Bulbasaur", "Squirtle" })]
+		[OptionStrings(["Pikachu", "Charmander", "Bulbasaur", "Squirtle"])]
 		[DefaultValue("Bulbasaur")]
 		public string FavoritePokemon;
 

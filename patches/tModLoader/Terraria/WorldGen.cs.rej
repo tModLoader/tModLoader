@@ -1,0 +1,132 @@
+@@ -2518,12 +_,20 @@
+ 	public static void SaveAndQuitCallBack(object threadContext)
+ 	{
+ 		int netMode = Main.netMode;
++
++		/*
+ 		try {
+ 			SoundEngine.PlaySound(34, -1, -1, 0);
+ 			SoundEngine.PlaySound(35, -1, -1, 0);
+ 		}
+ 		catch {
+ 		}
++		*/
++
++		// Properly stop waterfall/lavafall sounds.
++		// The above wouldn't do anything in the new sound system.
++		Main.ambientWaterfallStrength = 0f;
++		Main.ambientLavafallStrength = 0f;
+ 
+ 		if (netMode == 0)
+ 			WorldFile.CacheSaveTime();
+@@ -2535,6 +_,14 @@
+ 		Main.menuMode = 10;
+ 		Main.gameMenu = true;
+ 		SoundEngine.StopTrackedSounds();
++
++		try {
++			// Delay playing the "menu close" sound until AFTER all sounds have stopped
++			SoundEngine.PlaySound(11);
++		}
++		catch {
++		}
++
+ 		CaptureInterface.ResetFocus();
+ 		Main.ActivePlayerFileData.StopPlayTimer();
+ 		Player.SavePlayer(Main.ActivePlayerFileData);
+@@ -2674,6 +_,12 @@
+ 		if (Main.netMode == 0 && Main.anglerWhoFinishedToday.Contains(Main.player[Main.myPlayer].name))
+ 			Main.anglerQuestFinished = true;
+ 
++		// TML: Move rest of method to main thread to fix concurrent modification exceptions
++		Main.QueueMainThreadAction(FinishPlayWorld);
++	}
++
++	internal static void FinishPlayWorld()
++	{
+ 		Main.player[Main.myPlayer].Spawn(PlayerSpawnContext.SpawningIntoWorld);
+ 		_lastSeed = Main.ActiveWorldFileData.Seed;
+ 		WorldFile.SetOngoingToTemps();
+@@ -6103,3 +_,5 @@
++	internal static void AddGenPasses()
++	{
+ 		AddGenerationPass("Reset", delegate (GenerationProgress progress, GameConfiguration passConfig) {
+ 			if (genRand.Next(2) == 0)
+ 				GenVars.crimsonLeft = false;
+@@ -13858,3 +_,7 @@
++
++		generationStopwatch.Stop();
++
++		Logging.tML.Info($"Generation of {Main.maxTilesX}x{Main.maxTilesY} {(crimson ? "Crimson" : "Corruption")} world with seed {seed} completed in {generationStopwatch.Elapsed:m'm 's's 'fff'ms'}");
+ 	}
+ 
+ 	private static Point GetAdjustedFloorPosition(int x, int y)
+@@ -19416,10 +_,15 @@
+ 				shapeData.Clear();
+ 			}
+ 		}
++	}
+ 
++	// Split from smCallback
++	private static void HardmodeAnnouncementTask(GenerationProgress progress, GameConfiguration configuration)
++	{
+ 		if (Main.netMode == 0)
+ 			Main.NewText(Lang.misc[15].Value, 50, byte.MaxValue, 130);
+ 		else if (Main.netMode == 2)
+ 			ChatHelper.BroadcastChatMessage(NetworkText.FromKey(Lang.misc[15].Key), new Color(50, 255, 130));
+ 
+ 		AchievementsHelper.NotifyProgressionEvent(9);
++	}
+@@ -19426,3 +_,13 @@
++
++	// Split from smCallback
++	private static void smCallback_End(List<GenPass> hardmodeTasks)
++	{
++		SystemLoader.ModifyHardmodeTasks(hardmodeTasks);
++
++		foreach (GenPass task in hardmodeTasks) {
++			task.Apply(null, null);
++		}
++
+ 		if (Main.netMode == 2)
+ 			Netplay.ResetSections();
+ 
+@@ -33829,7 +_,7 @@
+ 			if (Main.tile[k, j - 1] == null)
+ 				Main.tile[k, j - 1] = new Tile();
+ 
+-			if (Main.tile[k, j - 1].active() && (TileID.Sets.BasicChest[Main.tile[k, j - 1].type] || TileID.Sets.BasicChestFake[Main.tile[k, j - 1].type] || Main.tile[k, j - 1].type == 88 || Main.tile[k, j - 1].type == 470 || Main.tile[k, j - 1].type == 475 || Main.tile[k, j - 1].type == 597))
++			if (Main.tile[k, j - 1].active() && (TileID.Sets.BasicChest[Main.tile[k, j - 1].type] || TileID.Sets.BasicChestFake[Main.tile[k, j - 1].type] || TileID.Sets.BasicDresser[Main.tile[k, j - 1].type]  || Main.tile[k, j - 1].type == 470 || Main.tile[k, j - 1].type == 475 || Main.tile[k, j - 1].type == 597))
+ 				return;
+ 
+ 			if (!SolidTileAllowBottomSlope(k, j + 1))
+@@ -60380,14 +_,20 @@
+ 										break;
+ 								}
+ 
++								/*
+ 								if ((num == 1 || Main.tileMoss[num] || num == 117 || num == 25 || num == 203) && down == 165) {
++								*/
++								if ((TileID.Sets.Stone[num] || Main.tileMoss[num]) && down == 165) {
+ 									if (tile3 != null && tile3.frameY == 72)
+ 										down = num;
+ 									else if (tile3 != null && tile3.frameY == 0)
+ 										down = num;
+ 								}
+ 
++								/*
+ 								if ((num == 1 || Main.tileMoss[num] || num == 117 || num == 25 || num == 203) && up == 165) {
++								*/
++								if ((TileID.Sets.Stone[num] || Main.tileMoss[num]) && up == 165) {
+ 									if (tile2 != null && tile2.frameY == 90)
+ 										up = num;
+ 									else if (tile2 != null && tile2.frameY == 54)
+@@ -63276,7 +_,7 @@
+ 								if (!noTileActions && tile.active() && TileID.Sets.Falling[num])
+ 									SpawnFallingBlockProjectile(i, j, tile, tile2, tile3, num);
+ 
+-								if ((rectangle.X != frameX && rectangle.Y != frameY && frameX >= 0 && frameY >= 0) || flag14) {
++								if ((tile.frameX != frameX && tile.frameY != frameY && frameX >= 0 && frameY >= 0) || flag14) { // #4640 - Account for tile frameX/Y changes within TileLoader.PostTileFrame
+ 									tileReframeCount++;
+ 									if (tileReframeCount < 25) {
+ 										bool num50 = mergeUp;

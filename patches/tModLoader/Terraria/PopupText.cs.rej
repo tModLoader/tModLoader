@@ -1,0 +1,10 @@
+@@ -256,6 +_,8 @@
+ 				popupText2.color = new Color(5, 200, 255);
+ 			else if (newItem.rare == 10)
+ 				popupText2.color = new Color(255, 40, 100);
+-			else if (newItem.rare >= 11)
++			else if (newItem.rare == 11)
+ 				popupText2.color = new Color(180, 40, 255);
++			else if (newItem.rare >= ItemRarityID.Count)
++				popupText2.color = RarityLoader.GetRarity(newItem.rare).RarityColor;
+ 

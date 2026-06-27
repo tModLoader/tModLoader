@@ -1,0 +1,16 @@
+--- src/TerrariaNetCore/Terraria/ID/BiomeConversionID.cs
++++ src/tModLoader/Terraria/ID/BiomeConversionID.cs
+@@ -1,6 +_,6 @@
+ namespace Terraria.ID;
+ 
+-public static class BiomeConversionID
++public static partial class BiomeConversionID
+ {
+ 	public const int Purity = 0;
+ 	public const int Corruption = 1;
+@@ -24,4 +_,5 @@
+ 	public const int ForcedJungle = 19;
+ 	public const int ForcedTemple = 20;
+ 	public const int ForcedDungeon = 21;
++	public static readonly int Count = 22;
+ }

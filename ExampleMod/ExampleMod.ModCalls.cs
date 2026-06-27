@@ -17,7 +17,7 @@ namespace ExampleMod
 		public override object Call(params object[] args) {
 			// Make sure the call doesn't include anything that could potentially cause exceptions.
 			if (args is null) {
-				throw new ArgumentNullException(nameof(args), "Arguments cannot be null!");
+				throw new ArgumentNullException(nameof(args));
 			}
 
 			if (args.Length == 0) {

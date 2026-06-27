@@ -1,6 +1,13 @@
 --- src/TerrariaNetCore/ReLogic/Content/Sources/ZipContentSource.cs
 +++ src/tModLoader/ReLogic/Content/Sources/ZipContentSource.cs
-@@ -7,18 +_,16 @@
+@@ -1,25 +_,27 @@
+ using System;
+ using System.Collections.Generic;
+ using System.IO;
++using System.IO.Compression;
+ using System.Linq;
+ using System.Text.RegularExpressions;
+-using Ionic.Zip;
  
  namespace ReLogic.Content.Sources;
  
@@ -8,8 +15,12 @@
 -public class ZipContentSource : IContentSource, IDisposable
 +public class ZipContentSource : ContentSource, IDisposable
  {
++	/*
  	private readonly ZipFile _zipFile;
  	private readonly Dictionary<string, ZipEntry> _entries = new Dictionary<string, ZipEntry>();
++	*/
++	private readonly ZipArchive _zipFile;
++	private readonly Dictionary<string, ZipArchiveEntry> _entries = new Dictionary<string, ZipArchiveEntry>();
  	private readonly string _basePath;
  	private bool _isDisposed;
 -	private readonly RejectedAssetCollection _rejections = new RejectedAssetCollection();
@@ -18,50 +29,51 @@
  
 -	public IContentValidator ContentValidator { get; set; }
 -
+-	public string FileWatcherPath => null;
++	public override string FileWatcherPath => null;
+ 
  	public ZipContentSource(string path)
  		: this(path, "")
- 	{
-@@ -31,7 +_,8 @@
- 			throw new ArgumentException("Content directory cannot contain \"..\"", "contentDir");
- 
- 		_basePath = CleanZipPath(contentDir);
--		BuildExtensionFreeEntryList();
-+
-+		BuildEntryList(); //BuildExtensionFreeEntryList();
+@@ -27,11 +_,11 @@
  	}
  
- 	public ZipContentSource(ZipFile zip, string contentDir)
-@@ -41,9 +_,11 @@
- 			throw new ArgumentException("Content directory cannot contain \"..\"", "contentDir");
+ 	public ZipContentSource(string path, string contentDir)
+-		: this(ZipFile.Read(path), contentDir)
++		: this(new ZipArchive(File.OpenRead(path), ZipArchiveMode.Read), contentDir)
+ 	{
+ 	}
  
- 		_basePath = CleanZipPath(contentDir);
--		BuildExtensionFreeEntryList();
-+
-+		BuildEntryList(); //BuildExtensionFreeEntryList();
+-	public ZipContentSource(ZipFile zip, string contentDir)
++	public ZipContentSource(ZipArchive zip, string contentDir)
+ 	{
+ 		_zipFile = zip;
+ 		if (ZipPathContainsInvalidCharacters(contentDir))
+@@ -41,6 +_,7 @@
+ 		Refresh();
  	}
  
 +	/*
  	public bool HasAsset(string assetName)
  	{
  		if (!_entries.TryGetValue(assetName, out var _))
-@@ -73,28 +_,42 @@
+@@ -70,28 +_,41 @@
  
  		return Path.GetExtension(value.FileName) ?? "";
  	}
--
--	public Stream OpenStream(string assetName)
 +	*/
-+	
+ 
+-	public Stream OpenStream(string assetName)
 +	public override Stream OpenStream(string assetName)
  	{
  		if (!_entries.TryGetValue(assetName, out var value))
  			throw AssetLoadException.FromMissingAsset(assetName);
  
- 		MemoryStream memoryStream = new MemoryStream((int)value.UncompressedSize);
+-		MemoryStream memoryStream = new MemoryStream((int)value.UncompressedSize);
+-		value.Extract(memoryStream);
++		MemoryStream memoryStream = new MemoryStream((int)value.Length);
 +
 +		//TML: Wrapped call in this lock.
 +		lock (_zipFile) {
--		value.Extract(memoryStream);
 +			value.Extract(memoryStream);
 +		}
 +
@@ -69,13 +81,14 @@
  		return memoryStream;
  	}
  
-+	//TML: Renamed from BuildExtensionFreeEntryList()
--	private void BuildExtensionFreeEntryList()
-+	private void BuildEntryList()
+-	public void Refresh()
++	public override void Refresh()
  	{
  		_entries.Clear();
- 		foreach (ZipEntry item in _zipFile.Entries.Where((ZipEntry entry) => !entry.IsDirectory && entry.FileName.StartsWith(_basePath))) {
- 			string fileName = item.FileName;
+-		foreach (ZipEntry item in _zipFile.Entries.Where((ZipEntry entry) => !entry.IsDirectory && entry.FileName.StartsWith(_basePath))) {
++		foreach (var item in _zipFile.Entries.Where(entry => !entry.IsDirectory() && entry.FullName.StartsWith(_basePath))) {
+-			string fileName = item.FileName;
++			string fileName = item.FullName;
 +
 +			/*
  			string text = Path.GetExtension(fileName) ?? "";
@@ -91,7 +104,7 @@
  	}
  
  	private static bool ZipPathContainsInvalidCharacters(string path)
-@@ -132,6 +_,7 @@
+@@ -129,6 +_,7 @@
  		Dispose(disposing: true);
  	}
  
@@ -99,7 +112,7 @@
  	public void RejectAsset(string assetName, IRejectionReason reason)
  	{
  		_rejections.Reject(assetName, reason);
-@@ -143,4 +_,5 @@
+@@ -140,4 +_,5 @@
  	}
  
  	public bool TryGetRejections(List<string> rejectionReasons) => _rejections.TryGetRejections(rejectionReasons);

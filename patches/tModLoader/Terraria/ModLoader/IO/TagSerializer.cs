@@ -58,6 +58,7 @@ public abstract class TagSerializer : ModType
 		serializers.Add(serializer.Type, serializer);
 	}
 
+	[Obsolete("Cannot find types in mod dllReferences, and dictionary is unnecessarily large. Use AssemblyManager.FindSubtype/FindTypes instead")]
 	public static Type? GetType(string name)
 	{
 		if (typeNameCache.TryGetValue(name, out Type? type))

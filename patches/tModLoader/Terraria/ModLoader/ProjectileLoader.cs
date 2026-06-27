@@ -1,6 +1,7 @@
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
@@ -207,24 +208,31 @@ public static class ProjectileLoader
 
 	public static byte[] WriteExtraAI(Projectile projectile)
 	{
+		// Data is ordered as follows: GlobalProjectile BitWriter, ModProjectile Bytes, GlobalProjectile Bytes
 		using var stream = new MemoryStream();
 		using var modWriter = new BinaryWriter(stream);
 
-		projectile.ModProjectile?.SendExtraAI(modWriter);
-
 		using var bufferedStream = new MemoryStream();
-		using var globalWriter = new BinaryWriter(bufferedStream);
+		using var binaryWriter = new BinaryWriter(bufferedStream);
 
 		BitWriter bitWriter = new BitWriter();
 
+		projectile.ModProjectile?.SendExtraAI(binaryWriter);
+
 		foreach (var g in HookSendExtraAI.Enumerate(projectile)) {
-			g.SendExtraAI(projectile, bitWriter, globalWriter);
+			g.SendExtraAI(projectile, bitWriter, binaryWriter);
 		}
 
 		bitWriter.Flush(modWriter);
 		modWriter.Write(bufferedStream.ToArray());
 
-		return stream.ToArray();
+		byte[] bytes = stream.ToArray();
+		// If the only byte is the bitWriter.Flush length byte, no extra data.
+		if (bytes.Length == 1) {
+			Debug.Assert(bytes[0] == 0);
+			return null;
+		}
+		return bytes;
 	}
 
 	public static byte[] ReadExtraAI(BinaryReader reader)
@@ -239,13 +247,15 @@ public static class ProjectileLoader
 		using var stream = extraAI.ToMemoryStream();
 		using var modReader = new BinaryReader(stream);
 
-		projectile.ModProjectile?.ReceiveExtraAI(modReader);
-
-		BitReader bitReader = new BitReader(modReader);
-
-		bool anyGlobals = false;
+		GlobalProjectile lastGlobalProjectile = null;
 		try {
+			BitReader bitReader = new BitReader(modReader);
+
+			var bitReaderEnd = stream.Position;
+			projectile.ModProjectile?.ReceiveExtraAI(modReader);
+
 			foreach (var g in HookReceiveExtraAI.Enumerate(projectile)) {
+				lastGlobalProjectile = g;
 				g.ReceiveExtraAI(projectile, bitReader, modReader);
 			}
 
@@ -254,17 +264,21 @@ public static class ProjectileLoader
 			}
 
 			if (stream.Position < stream.Length) {
-				throw new IOException($"Read underflow {stream.Length - stream.Position} of {stream.Length} bytes in ReceiveExtraAI, more info below");
+				throw new IOException($"Read underflow {stream.Length - stream.Position} of {stream.Length - bitReaderEnd} bytes in ReceiveExtraAI, more info below");
 			}
 		}
-		catch (IOException e) {
+		catch (Exception e) {
 			string message = $"Error in ReceiveExtraAI for Projectile {projectile.ModProjectile?.FullName ?? projectile.Name}";
-			if (anyGlobals) {
-				message += ", may be caused by one of these GlobalNPCs:";
+			if (lastGlobalProjectile != null) {
+				message += ", may be caused by one of these GlobalProjectiles:";
 				foreach (var g in HookReceiveExtraAI.Enumerate(projectile)) {
 					message += $"\n\t{g.FullName}";
+					if (lastGlobalProjectile == g)
+						break;
 				}
 			}
+
+			Logging.tML.Error(message);
 		}
 	}
 
@@ -565,13 +579,6 @@ public static class ProjectileLoader
 		return projectile.ModProjectile?.Colliding(projHitbox, targetHitbox);
 	}
 
-	public static void DrawHeldProjInFrontOfHeldItemAndArms(Projectile projectile, ref bool flag)
-	{
-		if (projectile.ModProjectile != null) {
-			flag = projectile.ModProjectile.DrawHeldProjInFrontOfHeldItemAndArms;
-		}
-	}
-
 	[Obsolete($"Moved to ItemLoader. Fishing line position and color are now set by the pole used.")]
 	public static void ModifyFishingLine(Projectile projectile, ref float polePosX, ref float polePosY, ref Color lineColor)
 	{
@@ -611,49 +618,49 @@ public static class ProjectileLoader
 		}
 	}
 
-	private static HookList HookPreDrawExtras = AddHook<Func<Projectile, bool>>(g => g.PreDrawExtras);
+	private static HookList HookPreDrawExtras = AddHook<Func<Projectile, Player, bool>>(g => g.PreDrawExtras);
 
-	public static bool PreDrawExtras(Projectile projectile)
+	public static bool PreDrawExtras(Projectile projectile, Player player)
 	{
 		bool result = true;
 
 		foreach (var g in HookPreDrawExtras.Enumerate(projectile)) {
-			result &= g.PreDrawExtras(projectile);
+			result &= g.PreDrawExtras(projectile, player);
 		}
 
 		if (result && projectile.ModProjectile != null) {
-			return projectile.ModProjectile.PreDrawExtras();
+			return projectile.ModProjectile.PreDrawExtras(player);
 		}
 
 		return result;
 	}
 
-	private delegate bool DelegatePreDraw(Projectile projectile, ref Color lightColor);
+	private delegate bool DelegatePreDraw(Projectile projectile, Player player, ref Color lightColor);
 	private static HookList HookPreDraw = AddHook<DelegatePreDraw>(g => g.PreDraw);
 
-	public static bool PreDraw(Projectile projectile, ref Color lightColor)
+	public static bool PreDraw(Projectile projectile, Player player, ref Color lightColor)
 	{
 		bool result = true;
 
 		foreach (var g in HookPreDraw.Enumerate(projectile)) {
-			result &= g.PreDraw(projectile, ref lightColor);
+			result &= g.PreDraw(projectile, player, ref lightColor);
 		}
 
 		if (result && projectile.ModProjectile != null) {
-			return projectile.ModProjectile.PreDraw(ref lightColor);
+			return projectile.ModProjectile.PreDraw(player, ref lightColor);
 		}
 
 		return result;
 	}
 
-	private static HookList HookPostDraw = AddHook<Action<Projectile, Color>>(g => g.PostDraw);
+	private static HookList HookPostDraw = AddHook<Action<Projectile, Player, Color>>(g => g.PostDraw);
 
-	public static void PostDraw(Projectile projectile, Color lightColor)
+	public static void PostDraw(Projectile projectile, Player player, Color lightColor)
 	{
-		projectile.ModProjectile?.PostDraw(lightColor);
+		projectile.ModProjectile?.PostDraw(player, lightColor);
 
 		foreach (var g in HookPostDraw.Enumerate(projectile)) {
-			g.PostDraw(projectile, lightColor);
+			g.PostDraw(projectile, player, lightColor);
 		}
 	}
 
@@ -757,17 +764,6 @@ public static class ProjectileLoader
 		}
 
 		return flag;
-	}
-
-	private static HookList HookDrawBehind = AddHook<Action<Projectile, int, List<int>, List<int>, List<int>, List<int>, List<int>>>(g => g.DrawBehind);
-
-	internal static void DrawBehind(Projectile projectile, int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
-	{
-		projectile.ModProjectile?.DrawBehind(index, behindNPCsAndTiles, behindNPCs, behindProjectiles, overPlayers, overWiresUI);
-
-		foreach (var g in HookDrawBehind.Enumerate(projectile)) {
-			g.DrawBehind(projectile, index, behindNPCsAndTiles, behindNPCs, behindProjectiles, overPlayers, overWiresUI);
-		}
 	}
 
 	private static HookList HookPrepareBombToBlow = AddHook<Action<Projectile>>(g => g.PrepareBombToBlow);

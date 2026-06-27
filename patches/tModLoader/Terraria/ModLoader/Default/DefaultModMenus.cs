@@ -41,7 +41,20 @@ internal class MenuOldVanilla : ModMenu
 
 	public override string DisplayName => "Terraria 1.3.5.3";
 
-	public override int Music => MusicID.Title;
+	public override int Music => MusicID.TitleClassic;
+
+	public override bool PreDrawLogo(SpriteBatch spriteBatch, ref Vector2 logoDrawCenter, ref float logoRotation, ref float logoScale, ref Color drawColor) => false;
+}
+
+/// <summary>
+/// The Bigger and Boulder theme converted into a ModMenu, so that it better fits with the new system.
+/// </summary>
+[Autoload(false)]
+internal class MenuBiggerAndBoulder : ModMenu
+{
+	public override bool IsAvailable => Main.instance.boulderLogo;
+
+	public override string DisplayName => "Bigger and Boulder";
 
 	public override bool PreDrawLogo(SpriteBatch spriteBatch, ref Vector2 logoDrawCenter, ref float logoRotation, ref float logoScale, ref Color drawColor) => false;
 }

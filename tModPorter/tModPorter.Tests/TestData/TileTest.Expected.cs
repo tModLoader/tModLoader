@@ -53,6 +53,7 @@ public class TileTest
 		tile.BlueWire = !tile.BlueWire;
 		tile.GreenWire = !tile.GreenWire;
 		tile.YellowWire = !tile.YellowWire;
+		bool anyWire = tile.HasWire;
 		tile.CheckingLiquid = !tile.CheckingLiquid;
 		tile.SkipLiquid = !tile.SkipLiquid;
 
@@ -98,5 +99,11 @@ public class TileTest
 		tile.honey/* tModPorter Suggestion: LiquidType = ... */(false);
 		tile.lava/* tModPorter Suggestion: LiquidType = ... */(liquid > 0);
 #endif
+
+		bool water = (tile.LiquidType == LiquidID.Water);
+		bool hasWater = tile.HasWater;
+		bool hasLava = tile.HasLava;
+		bool hasHoney = tile.HasHoney;
+		bool hasShimmer = tile.HasShimmer;
 	}
 }

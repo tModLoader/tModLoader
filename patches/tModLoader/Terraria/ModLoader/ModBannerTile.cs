@@ -27,7 +27,7 @@ public abstract class ModBannerTile : ModTile
 
 		TileObjectData.newTile.CopyFrom(TileObjectData.Style1x2Top);
 		TileObjectData.newTile.Height = 3;
-		TileObjectData.newTile.CoordinateHeights = new[] { 16, 16, 16 };
+		TileObjectData.newTile.CoordinateHeights = [16, 16, 16];
 		TileObjectData.newTile.StyleHorizontal = true;
 		TileObjectData.newTile.AnchorTop = new AnchorData(AnchorType.SolidTile | AnchorType.SolidSide | AnchorType.SolidBottom | AnchorType.PlanterBox, TileObjectData.newTile.Width, 0);
 		TileObjectData.newTile.DrawYOffset = -2; // Draw this tile 2 pixels up, allowing the banner pole to align visually with the bottom of the tile it is anchored to.

@@ -16,7 +16,7 @@
 +	/// <summary>
 +	/// An item stack that the created item will be combined with (via OnStack). For normal crafting, this is Main.mouseItem
 +	/// </summary>
-+	public Item DestinationStack;
++	//public Item DestinationStack;
 +
 +	// Added by TML.
 +	/// <summary>
@@ -27,10 +27,10 @@
 +	/*
  	public RecipeItemCreationContext(Recipe recipe)
 +	*/
-+	public RecipeItemCreationContext(Recipe recipe, List<Item> consumedItems, Item destinationStack)
++	public RecipeItemCreationContext(Recipe recipe, List<Item> consumedItems/*, Item destinationStack*/)
  	{
  		Recipe = recipe;
 +		ConsumedItems = consumedItems;
-+		DestinationStack = destinationStack;
++		//DestinationStack = destinationStack;
  	}
  }

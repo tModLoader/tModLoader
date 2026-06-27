@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Buffs
 {
-	//TODO 1.4.5: review MinecartLeft/Right if it still exists
+	// TODO 1.4.5: review MinecartLeft/Right if it still exists
 	public class ExampleMinecartBuff : ModBuff
 	{
 		// Use the vanilla DisplayName ("Minecart")
@@ -19,9 +19,7 @@ namespace ExampleMod.Content.Buffs
 
 		public override void SetStaticDefaults() {
 			// Handles automatically mounting the player within Update, and setting Main.buffNoTimeDisplay/buffNoSave (no need to write yourself like in ExampleMountBuff)
-			BuffID.Sets.BasicMountData[Type] = new BuffID.Sets.BuffMountData() {
-				mountID = ModContent.MountType<ExampleMinecartMount>()
-			};
+			BuffID.Sets.MountType[Type] = ModContent.MountType<ExampleMinecartMount>();
 		}
 	}
 }

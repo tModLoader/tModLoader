@@ -1,14 +1,24 @@
 using Terraria;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items
 {
+	// This is an example of a quest fish. See ExampleBasicFish for the non-quest fish example.
+	// Note that the catch conditions and logic is defined in ExampleMod/Common/Players/ExampleFishingPlayer.
 	public class ExampleQuestFish : ModItem
 	{
+		public static LocalizedText DescriptionText { get; private set; }
+		public static LocalizedText CatchLocationText { get; private set; }
+
 		public override void SetStaticDefaults() {
 			Item.ResearchUnlockCount = 2;
 			ItemID.Sets.CanBePlacedOnWeaponRacks[Type] = true; // All vanilla fish can be placed in a weapon rack.
+			ItemID.Sets.IsQuestFish[Type] = true; // Denotes this item as a quest fish. Use IsBasicFish instead for non-quest fish.
+
+			DescriptionText = this.GetLocalization("Description");
+			CatchLocationText = this.GetLocalization("CatchLocation");
 		}
 
 		public override void SetDefaults() {
@@ -18,15 +28,13 @@ namespace ExampleMod.Content.Items
 			Item.DefaultToQuestFish();
 		}
 
-		public override bool IsQuestFish() => true; // Makes the item a quest fish
-
 		public override bool IsAnglerQuestAvailable() => Main.hardMode; // Makes the quest only appear in hard mode. Adding a '!' before Main.hardMode makes it ONLY available in pre-hardmode.
 
 		public override void AnglerQuestChat(ref string description, ref string catchLocation) {
 			// How the angler describes the fish to the player.
-			description = "I've heard stories of a fish that swims upside-down. Supposedly you have the stand upside-down yourself to even find one. One of those would go great on my ceiling. Go fetch!";
+			description = DescriptionText.Value;
 			// What it says on the bottom of the angler's text box of how to catch the fish.
-			catchLocation = "Caught anywhere while standing upside-down.";
+			catchLocation = CatchLocationText.Value;
 		}
 	}
 }

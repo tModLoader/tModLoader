@@ -45,6 +45,8 @@ namespace ExampleMod.Content.Tiles
 			Main.tileLighted[Type] = true;
 			Main.tileFrameImportant[Type] = true;
 
+			VanillaFallbackOnModDeletion = TileID.TeleportationPylon;
+
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style3x4);
 			TileObjectData.newTile.LavaDeath = false;
 			TileObjectData.newTile.DrawYOffset = 2;
@@ -57,20 +59,20 @@ namespace ExampleMod.Content.Tiles
 
 			TileObjectData.addTile(Type);
 
-			TileID.Sets.InteractibleByNPCs[Type] = true;
+			TileID.Sets.InteractableByNPCs[Type] = true;
 			TileID.Sets.PreventsSandfall[Type] = true;
 			TileID.Sets.AvoidedByMeteorLanding[Type] = true;
 
 			// Adds functionality for proximity of pylons; if this is true, then being near this tile will count as being near a pylon for the teleportation process.
 			AddToArray(ref TileID.Sets.CountsAsPylon);
 
-			LocalizedText pylonName = CreateMapEntryName(); //Name is in the localization file
+			LocalizedText pylonName = CreateMapEntryName(); // Name is in the localization file
 			AddMapEntry(Color.White, pylonName);
 		}
 
 		public override NPCShop.Entry GetNPCShopEntry() {
 			// In this method we can customize the shop entry for the pylon item.
-			// The default method, base.GetNPCShopEntry(), generates a shop entry for the pylon item with the typical pylon conditions: Condition.HappyEnoughToSellPylons, Condition.AnotherTownNPCNearby, and Condition.NotInEvilBiome
+			// The default method, base.GetNPCShopEntry(), generates a shop entry for the pylon item with the typical pylon conditions: Condition.AnotherTownNPCNearby, and Condition.NotInEvilBiome
 			NPCShop.Entry shopEntry = base.GetNPCShopEntry();
 
 			// We will take that shop entry and add an additional condition to check for ExampleBiome, as this is typical for biome pylons

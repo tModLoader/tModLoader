@@ -42,7 +42,7 @@ namespace ExampleMod.Content.Items.Accessories
 
 			// Remember that UpdateAccessory runs for all players on all clients. Only check every 10 ticks
 			if (player.whoAmI != Main.myPlayer && player.miscCounter % 10 == 0) {
-				Player localPlayer = Main.player[Main.myPlayer];
+				Player localPlayer = Main.LocalPlayer;
 				if (localPlayer.team == player.team && player.team != 0 && player.statLife > player.statLifeMax2 * DamageAbsorptionAbilityLifeThreshold && player.Distance(localPlayer.Center) <= DamageAbsorptionRange) {
 					// The buff is used to visually indicate to the player that they are defended, and is also synchronized automatically to other players, letting them know that we were defended at the time we took the hit
 					localPlayer.AddBuff(ModContent.BuffType<AbsorbTeamDamageBuff>(), 20);

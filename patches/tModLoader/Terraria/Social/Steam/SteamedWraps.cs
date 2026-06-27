@@ -1,14 +1,15 @@
-using Microsoft.Xna.Framework;
-using ReLogic.OS;
-using Steamworks;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
+using System.Reflection.Metadata;
 using System.Threading;
+using ReLogic.OS;
+using Steamworks;
+using Terraria.DataStructures;
+using Terraria.GameContent.UI.States;
 using Terraria.Localization;
 using Terraria.ModLoader;
-using Terraria.ModLoader.Core;
 using Terraria.ModLoader.UI;
 using Terraria.ModLoader.UI.DownloadManager;
 using Terraria.ModLoader.UI.ModBrowser;
@@ -138,6 +139,46 @@ public static class SteamedWraps
 		return deps;
 	}
 
+	public static bool HasAcceptedTmodWorkshopEula()
+	{
+		if (!SteamClient)
+			return false;
+
+		WorkshopEULAStatus_t result = default;
+
+		using var _eulaHook = CallResult<WorkshopEULAStatus_t>.Create((WorkshopEULAStatus_t pCallback, bool bIOFailure) => {
+			result = pCallback;
+		});
+
+		_eulaHook.Set(SteamUGC.GetWorkshopEULAStatus());
+
+		// This probably should align better via a refactor of WorkshopHelper.WaitForQueryResultAsync
+		while (true) {
+			RunCallbacks();
+			if (result.m_eResult != EResult.k_EResultNone)
+				break;
+		}
+
+		// TODO: An exception here doesn't tell the user anything about what's going on. Just looks like button not working
+		if (result.m_eResult != EResult.k_EResultOK)
+			throw new SocialBrowserException("Failed to retreive EULA status");
+
+		return !result.m_bNeedsAction;
+	}
+
+	public const string TmlRules = "https://store.steampowered.com/workshopeula/1281930/";
+
+	public static void ShowWorkshopEula()
+	{
+		if (!SteamClient)
+			return;
+
+		if (SteamUtils.IsOverlayEnabled())
+			SteamUGC.ShowWorkshopEULA();
+		else
+			Utils.OpenToURL(TmlRules);
+	}
+
 	private static void ModifyQueryHandle(ref UGCQueryHandle_t qHandle, QueryParameters qP)
 	{
 		FilterByText(ref qHandle, qP.searchGeneric);
@@ -148,6 +189,7 @@ public static class SteamedWraps
 		if (SteamClient) {
 			SteamUGC.SetAllowCachedResponse(qHandle, 0); // Anything other than 0 may cause Access Denied errors.
 
+			SteamUGC.SetReturnMetadata(qHandle, qP.returnDevMetadata);
 			SteamUGC.SetRankedByTrendDays(qHandle, qP.days);
 			SteamUGC.SetLanguage(qHandle, GetCurrentSteamLangKey());
 			SteamUGC.SetReturnChildren(qHandle, true);
@@ -157,6 +199,7 @@ public static class SteamedWraps
 		else if (SteamAvailable) {
 			SteamGameServerUGC.SetAllowCachedResponse(qHandle, 0); // Anything other than 0 may cause Access Denied errors.
 
+			SteamGameServerUGC.SetReturnMetadata(qHandle, qP.returnDevMetadata);
 			SteamGameServerUGC.SetRankedByTrendDays(qHandle, qP.days);
 			SteamGameServerUGC.SetLanguage(qHandle, GetCurrentSteamLangKey());
 			SteamGameServerUGC.SetReturnChildren(qHandle, true);
@@ -210,18 +253,18 @@ public static class SteamedWraps
 			SteamGameServerUGC.SetSearchText(qHandle, text);
 	}
 
-	public static SteamAPICall_t GenerateDirectItemsQuery(string[] modId)
+	public static SteamAPICall_t GenerateDirectItemsQuery(string[] modId, QueryParameters qP)
 	{
 		var publishId = Array.ConvertAll(modId, new Converter<string, PublishedFileId_t>((s) => new PublishedFileId_t(ulong.Parse(s))));
 
 		if (SteamClient) {
 			UGCQueryHandle_t qHandle = SteamUGC.CreateQueryUGCDetailsRequest(publishId, (uint)publishId.Length);
-			ModifyQueryHandle(ref qHandle, new QueryParameters());
+			ModifyQueryHandle(ref qHandle, qP);
 			return SteamUGC.SendQueryUGCRequest(qHandle);
 		}
 		else if (SteamAvailable) {
 			UGCQueryHandle_t qHandle = SteamGameServerUGC.CreateQueryUGCDetailsRequest(publishId, (uint)publishId.Length);
-			ModifyQueryHandle(ref qHandle, new QueryParameters());
+			ModifyQueryHandle(ref qHandle, qP);
 			return SteamGameServerUGC.SendQueryUGCRequest(qHandle);
 		}
 
@@ -230,7 +273,7 @@ public static class SteamedWraps
 
 	public static EUGCQuery CalculateQuerySort(QueryParameters qParams)
 	{
-		// Only let steam rank by text when we want sorting for popularity, otherwise the results are not sorted when filtered by search term. 
+		// Only let steam rank by text when we want sorting for popularity, otherwise the results are not sorted when filtered by search term.
 		if ((!string.IsNullOrEmpty(qParams.searchGeneric) || !string.IsNullOrEmpty(qParams.searchAuthor)) && qParams.sortingParamater == ModBrowserSortMode.Hot)
 			return EUGCQuery.k_EUGCQuery_RankedByTextSearch;
 
@@ -259,7 +302,7 @@ public static class SteamedWraps
 		else { // assumes SteamAvailable as GetQueryHandle already checks this and is a required pre-req
 			ModifyQueryHandle(ref qHandle, qP);
 			FilterByInternalName(ref qHandle, internalName);
-			
+
 			return SteamGameServerUGC.SendQueryUGCRequest(qHandle);
 		}
 	}
@@ -333,6 +376,16 @@ public static class SteamedWraps
 
 			metadata[key] = val;
 		}
+	}
+
+	public static bool FetchDeveloperMetadata(UGCQueryHandle_t handle, uint index, out string devMetadataSerialized)
+	{
+		if (SteamClient)
+			return SteamUGC.GetQueryUGCMetadata(handle, index, out devMetadataSerialized, Constants.k_cchDeveloperMetadataMax);
+		else if (SteamAvailable)
+			return SteamGameServerUGC.GetQueryUGCMetadata(handle, index, out devMetadataSerialized, Constants.k_cchDeveloperMetadataMax);
+
+		throw new Exception("Invalid Call to FetchDeveloperMetadata. Steam is not initialized");
 	}
 
 	public static void RunCallbacks()
@@ -498,7 +551,10 @@ public static class SteamedWraps
 
 	public static bool DoesWorkshopItemNeedUpdate(PublishedFileId_t publishId)
 	{
-		var currState = SteamedWraps.GetWorkshopItemState(publishId);
+		if (!SteamAvailable)
+			return false;
+
+		var currState = GetWorkshopItemState(publishId);
 
 		return (currState & (uint)EItemState.k_EItemStateNeedsUpdate) != 0 ||
 			(currState == (uint)EItemState.k_EItemStateNone) ||
@@ -508,22 +564,25 @@ public static class SteamedWraps
 	internal class ModDownloadInstance
 	{
 		// All of the below are for actually verifying a download has completed in the 'proper' steam method, but hasn't worked for gameserver?
-		private EResult _downloadCallback;
-		protected Callback<DownloadItemResult_t> _downloadHook;
+		private EResult _downloadCallbackResult;
 
-		public ModDownloadInstance()
+		private Callback<DownloadItemResult_t> RegisterDownloadCallback(PublishedFileId_t publishId)
 		{
+			void MarkDownloadComplete(DownloadItemResult_t result)
+			{
+				Logging.tML.Debug($"Steam Download Callback: appId={result.m_unAppID}, fileId={result.m_nPublishedFileId} result={result.m_eResult}");
+
+				if (result.m_unAppID != ModLoader.Engine.Steam.TMLAppID_t || result.m_nPublishedFileId != publishId)
+					return;
+
+				_downloadCallbackResult = result.m_eResult;
+			}
+
 			// For Steam Users
 			if (SteamClient)
-				_downloadHook = Callback<DownloadItemResult_t>.Create(MarkDownloadComplete);
+				return Callback<DownloadItemResult_t>.Create(MarkDownloadComplete);
 			else // For Non-Steam Users
-				_downloadHook = Callback<DownloadItemResult_t>.CreateGameServer(MarkDownloadComplete);
-		}
-
-		internal void MarkDownloadComplete(DownloadItemResult_t result)
-		{
-			_downloadCallback = result.m_eResult;
-			Logging.tML.Debug($"Download Callback Received From Steam: {_downloadCallback}");
+				return Callback<DownloadItemResult_t>.CreateGameServer(MarkDownloadComplete);
 		}
 
 		/// <summary>
@@ -533,6 +592,8 @@ public static class SteamedWraps
 		{
 			if (!SteamAvailable)
 				return;
+
+			using var _callback = RegisterDownloadCallback(publishId);
 
 			if (SteamClient)
 				SteamUGC.SubscribeItem(publishId);
@@ -613,15 +674,15 @@ public static class SteamedWraps
 
 			// Due to issues with Steam moving files from downloading folder to installed folder,
 			// there can be some latency in detecting it's installed. - Solxan
-			while (_downloadCallback == EResult.k_EResultNone) {
+			while (_downloadCallbackResult == EResult.k_EResultNone) {
 				Thread.Sleep(100);
 				RunCallbacks();
 			}
 
-			if (_downloadCallback != EResult.k_EResultOK) {
+			if (_downloadCallbackResult != EResult.k_EResultOK) {
 				//TODO: does this happen often? Never seen before at this stage in flow - Solxan
 				ReportCheckSteamLogs();
-				Logging.tML.Error($"Mod with ID {publishId} failed to install with Steam Error Result {_downloadCallback}");
+				Logging.tML.Error($"Mod with ID {publishId} failed to install with Steam Error Result {_downloadCallbackResult}");
 			}
 		}
 	}
@@ -656,17 +717,25 @@ public static class SteamedWraps
 		if (!SteamClient)
 			throw new Exception("Invalid Call to ModifyUgcUpdateHandleTModLoader. Steam Client API not initialized!");
 
+		// Add player metadata to the Workshop item
 		Logging.tML.Info("Adding tModLoader Metadata to Workshop Upload");
 		foreach (var key in WorkshopHelper.MetadataKeys) {
 			SteamUGC.RemoveItemKeyValueTags(uGCUpdateHandle_t, key);
 			SteamUGC.AddItemKeyValueTag(uGCUpdateHandle_t, key, _entryData.BuildData[key]);
 		}
 
+		// Add developer metadata to the Workshop item
+		AddDeveloperMetadata(ref uGCUpdateHandle_t, _entryData.BuildData["developermetadata"]);
+
+		// Add Content Descriptors
+		AddContentDescriptors(ref uGCUpdateHandle_t, _entryData);
+
+		// Adde Dependencies to the Workshop item
 		string refs = _entryData.BuildData["workshopdeps"];
 
 		if (!string.IsNullOrWhiteSpace(refs)) {
 			Logging.tML.Info("Adding dependencies to Workshop Upload");
-			string[] dependencies = refs.Split(",", StringSplitOptions.TrimEntries);
+			string[] dependencies = refs.Split(",", StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
 
 			foreach (string dependency in dependencies) {
 				try {
@@ -680,6 +749,34 @@ public static class SteamedWraps
 		}
 	}
 
+	// https://partner.steamgames.com/doc/api/ISteamUGC#EUGCContentDescriptorID
+	private static void AddContentDescriptors(ref UGCUpdateHandle_t uGCUpdateHandle_t, WorkshopHelper.UGCBased.SteamWorkshopItem _entryData)
+	{
+		(EUGCContentDescriptorID flag, string internalName)[] descriptorLookup = new (EUGCContentDescriptorID, string)[] {
+			( EUGCContentDescriptorID.k_EUGCContentDescriptor_AdultOnlySexualContent, "AdultsOnly" ),
+			( EUGCContentDescriptorID.k_EUGCContentDescriptor_FrequentViolenceOrGore, "Gore" ),
+			( EUGCContentDescriptorID.k_EUGCContentDescriptor_AnyMatureContent, "Questionable" )
+		};
+
+		foreach (var descriptor in descriptorLookup) {
+			if (_entryData.Tags.Contains(descriptor.internalName))
+				SteamUGC.AddContentDescriptor(uGCUpdateHandle_t, EUGCContentDescriptorID.k_EUGCContentDescriptor_FrequentViolenceOrGore);
+			else
+				SteamUGC.RemoveContentDescriptor(uGCUpdateHandle_t, EUGCContentDescriptorID.k_EUGCContentDescriptor_FrequentViolenceOrGore);
+		}
+	}
+
+	private static bool AddDeveloperMetadata(ref UGCUpdateHandle_t uGCUpdateHandle_t, string developerMetadata)
+	{
+		if (!SteamClient)
+			throw new Exception("Invalid Call to AddDeveloperMetadata. Steam Client API not initialized!");
+
+		if (developerMetadata.Length >= Constants.k_cchDeveloperMetadataMax)
+			throw new Exception($"Invalid Call to AddDeveloperMetadata. Developer Metadata exceeds {Constants.k_cchDeveloperMetadataMax} characters");
+
+		return SteamUGC.SetItemMetadata(uGCUpdateHandle_t, developerMetadata);
+	}
+
 	public static readonly List<WorkshopTagOption> ModTags = new List<WorkshopTagOption>();
 
 	private static void InitializeModTags()
@@ -688,6 +785,7 @@ public static class SteamedWraps
 		AddModTag("tModLoader.TagsContent", "New Content");
 		AddModTag("tModLoader.TagsUtility", "Utilities");
 		AddModTag("tModLoader.TagsLibrary", "Library");
+		AddModTag("tModLoader.TagsTranslation", "Translation");
 		AddModTag("tModLoader.TagsQoL", "Quality of Life");
 
 		// Tweaks
@@ -709,6 +807,11 @@ public static class SteamedWraps
 		AddModTag("tModLoader.TagsLanguage_Chinese", "Chinese");
 		AddModTag("tModLoader.TagsLanguage_Portuguese", "Portuguese");
 		AddModTag("tModLoader.TagsLanguage_Polish", "Polish");
+
+		// Content Descriptors
+		AddModTag("tModLoader.TagsRating_AdultsOnly", "AdultsOnly");
+		AddModTag("tModLoader.TagsRating_Gore", "Gore");
+		AddModTag("tModLoader.TagsRating_QuestionableContent", "Questionable");
 	}
 
 	private static void AddModTag(string tagNameKey, string tagInternalName)

@@ -1,0 +1,159 @@
+--- src/TerrariaNetCore/Terraria/WorldItem.cs
++++ src/tModLoader/Terraria/WorldItem.cs
+@@ -9,27 +_,57 @@
+ using Terraria.GameContent.Drawing;
+ using Terraria.GameContent.Events;
+ using Terraria.ID;
++using Terraria.ModLoader;
++using Terraria.ModLoader.IO;
+ 
+ namespace Terraria;
+ 
+-public class WorldItem : Entity
++public partial class WorldItem : Entity
+ {
+ 	public Item inner = new Item();
+ 	public int ownTime;
+ 	public int playerIndexTheItemIsReservedFor = 255;
++	/// <summary>
++	/// The delay, in ticks, before players can pick up this item.<br/>
++	/// Usually set to 100 (approximately 1.666... seconds) whenever an item is dropped.<br/>
++	/// Set to 0 whenever an item drops from a projectile.<br/>
++	/// </summary>
+ 	public int noGrabDelay;
+ 	public bool shimmered;
+ 	public float shimmerTime;
++	/// <summary>
++	/// If true, then the given item is instanced per-client.<br/>
++	/// Instanced items only appear on the client they were spawned on and are less likely to be replaced if a new item is spawned.<br/>
++	/// Instanced items do not exist on servers.<br/>
++	/// Vanilla uses this field for treasure bags and Defender Medals. tModLoader automatically handles this for modded treasure bags.<br/>
++	/// If you would like to make an instanced item, see any one of the following for examples:<br/>
++	/// - <see cref="NPC.DropItemInstanced"/><br/>
++	/// - <see cref="GameContent.ItemDropRules.CommonCode.DropItemLocalPerClientAndSetNPCMoneyTo0"/><br/>
++	/// - <see cref="MessageID.InstancedItem"/><br/>
++	/// Defaults to <see langword="false"/>.<br/>
++	/// </summary>
+ 	public bool instanced;
+ 	public int ownIgnore = -1;
+ 	public int timeSinceTheItemHasBeenReservedForSomeone;
+ 	public int timeLeftInWhichTheItemCannotBeTakenByEnemies;
++	/// <summary>
++	/// A value that increases every tick an item is in the world.<br/>
++	/// Defaults to the value in <see cref="ItemID.Sets.OverflowProtectionTimeOffset"/> when an item is created, and increases by <see cref="ItemID.Sets.ItemSpawnDecaySpeed"/> every tick.<br/>
++	/// When creating new items, items with a high <c>timeSinceItemSpawned</c> value will be replaced if no empty item slots are available.<br/>
++	/// </summary>
+ 	public int timeSinceItemSpawned;
++	/// <summary>
++	/// If true, then this item is currently being grabbed by a player.<br/>
++	/// Items being grabbed by the player cannot combine with nearby items, be picked up by enemies, burn in lava, or despawn.<br/>
++	/// </summary>
+ 	public bool beingGrabbed;
+ 	public bool onConveyor;
+ 	public int keepTime;
+ 	private static SceneMetrics _sceneMetrics;
+ 
++	/// <summary>
++	/// If true, the WorldItem actually exists within the game world. Within <see cref="Main.item"/>, if active is false, the WorldItem is junk data. Always check active if iterating over <see cref="Main.item"/>. Another option for iterating is to use <see cref="Main.ActiveItems"/> instead for simpler code.
++	/// </summary>
+ 	public bool active => inner.active;
+ 
+ 	public int type {
+@@ -77,7 +_,7 @@
+ 		}
+ 	}
+ 
+-	public short makeNPC {
++	public int makeNPC { // TML: short->int
+ 		get {
+ 			return inner.makeNPC;
+ 		}
+@@ -201,10 +_,22 @@
+ 		for (int i = myItemIndex + 1; i < 400; i++) {
+ 			WorldItem worldItem = Main.item[i];
+ 			if (!worldItem.IsAir && Item.CanStack(inner, worldItem.inner) && worldItem.shimmered == shimmered && worldItem.playerIndexTheItemIsReservedFor == playerIndexTheItemIsReservedFor && !(Math.Abs(position.X - worldItem.position.X) + Math.Abs(position.Y - worldItem.position.Y) > (float)num)) {
++				// TML: CanStackInWorld is world-only; it does NOT affect inventory/chest stacking.
++				if (!ItemLoader.CanStackInWorld(this, worldItem))
++					continue;
++
++				// TML: Use StackItems so OnStack fires. StackItems performs the same stack arithmetic
++				// as the replaced vanilla code (plus favorited transfer and shopCustomPrice nulling,
++				// which were already part of the 1.4.4 behavior via this same method call).
++				ItemLoader.StackItems(inner, worldItem.inner, out int numTransferred);
++
++				/* #OnStackHook
+ 				int num2 = Math.Min(worldItem.stack, maxStack - stack);
+ 				worldItem.stack -= num2;
+ 				stack += num2;
+ 				float amount = (float)num2 / (float)stack;
++				*/
++				float amount = (float)numTransferred / (float)stack;
+ 				position = Vector2.Lerp(worldItem.position, position, amount);
+ 				velocity = Vector2.Lerp(worldItem.velocity, velocity, amount);
+ 				if (worldItem.stack <= 0)
+@@ -338,7 +_,10 @@
+ 		float maxFallSpeed = 7f;
+ 		if (Main.netMode == 1) {
+ 			Point p = base.Bottom.ToTileCoordinates();
++			/*
+ 			if (WorldGen.InWorld(p) && Main.tile[p.X, p.Y] == null) {
++			*/
++			if (WorldGen.InWorld(p) && Main.netMode == 1 && !Main.sectionManager.TileLoaded(p.X, p.Y)) {
+ 				gravity = 0f;
+ 				velocity = Vector2.Zero;
+ 				if (instanced && Main.GameUpdateCount % 10u == 0)
+@@ -377,7 +_,7 @@
+ 				if (WorldGen.InWorld(num, num2) && WallID.Sets.AllowsWind[Main.tile[num, num2].wall]) {
+ 					int num3 = 600;
+ 					if (Main.dayRate > 0 && Main.dayRate < num3)
+-						num3 /= Main.dayRate;
++						num3 = (int)(num3 / Main.dayRate); //num3 /= Main.dayRate;
+ 
+ 					if (Main.rand.Next(num3) == 0 && Main.rand.NextFloat() < Main.maxRaining) {
+ 						int num4 = stack;
+@@ -485,6 +_,8 @@
+ 		if (timeSinceItemSpawned < 2147483547)
+ 			timeSinceItemSpawned++;
+ 
++		ItemLoader.PostUpdate(this);
++
+ 		if (noGrabDelay > 0)
+ 			noGrabDelay--;
+ 	}
+@@ -687,6 +_,8 @@
+ 
+ 	private void MoveInWorld(float gravity, float maxFallSpeed, ref Vector2 wetVelocity, int i)
+ 	{
++		ItemLoader.Update(this, ref gravity, ref maxFallSpeed);
++
+ 		if (!shimmered && ItemID.Sets.ItemNoGravity[type]) {
+ 			velocity.X *= 0.95f;
+ 			if ((double)velocity.X < 0.1 && (double)velocity.X > -0.1)
+@@ -1413,7 +_,11 @@
+ 	}
+ 
+ 	public IEntitySource GetNPCSource_FromThis() => new EntitySource_Parent(this);
++	// Internal redirect
++	/*
+ 	public IEntitySource GetItemSource_Misc(int itemSourceId) => new EntitySource_ByItemSourceId(this, itemSourceId);
++	*/
++	internal IEntitySource GetItemSource_Misc(int itemSourceId) => GetSource_Misc(context: ItemSourceID.ToContextString(itemSourceId));
+ 
+ 	public static void ShimmerEffect(Vector2 shimmerPositon)
+ 	{
+@@ -1538,12 +_,15 @@
+ 				num7++;
+ 				int num8 = num6 * item.stack;
+ 				int num9 = (item.IsRecipeGroup ? item.RecipeGroup.DecraftItemId : item.itemIdOrRecipeGroup);
++				/*
+ 				if (recipe.alchemy) {
+ 					for (int num10 = num8; num10 > 0; num10--) {
+ 						if (Main.rand.Next(3) == 0)
+ 							num8--;
+ 					}
+ 				}
++				*/
++				RecipeLoader.ConsumeIngredient(recipe, num9, ref num8, true);
+ 
+ 				while (num8 > 0) {
+ 					int num11 = num8;

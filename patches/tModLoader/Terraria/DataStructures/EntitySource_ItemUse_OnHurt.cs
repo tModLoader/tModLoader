@@ -12,11 +12,11 @@ namespace Terraria.DataStructures;
 /// </summary>
 public class EntitySource_ItemUse_OnHurt : EntitySource_ItemUse, IEntitySource_OnHurt
 {
-	public Entity? Attacker { get; }
+	public IEntitySourceTarget? Attacker { get; }
 
-	public Entity Victim => Entity;
+	public IEntitySourceTarget Victim => Entity;
 
-	public EntitySource_ItemUse_OnHurt(Player player, Item item, Entity? attacker, string? context = null) : base(player, item, context)
+	public EntitySource_ItemUse_OnHurt(Player player, Item item, IEntitySourceTarget? attacker, string? context = null) : base(player, item, context)
 	{
 		Attacker = attacker;
 	}

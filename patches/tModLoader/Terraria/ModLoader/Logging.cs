@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -211,7 +212,7 @@ public static partial class Logging
 	private static bool CanOpen(string fileName)
 	{
 		try {
-			using (new FileStream(fileName, FileMode.Append)) { };
+			using (new FileStream(fileName, FileMode.Append, FileAccess.Write, FileShare.None)) { };
 
 			return true;
 		}
@@ -291,8 +292,8 @@ public static partial class Logging
 
 			using var f = File.OpenWrite(filePath);
 			using var w = new StreamWriter(f);
-			foreach (var key in Environment.GetEnvironmentVariables().Keys) {
-				w.WriteLine($"{key}={Environment.GetEnvironmentVariable((string)key)}");
+			foreach (var entry in Environment.GetEnvironmentVariables().Cast<DictionaryEntry>().OrderBy(x => x.Key)) {
+				w.WriteLine($"{entry.Key}={entry.Value}");
 			}
 		}
 		catch (Exception e) {

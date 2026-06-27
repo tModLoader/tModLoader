@@ -51,9 +51,9 @@
  		if (num3 < 0)
  			num3 = 0;
  
-@@ -30,7 +_,12 @@
- 		int num4 = player.statLifeMax2 - player.statLifeMax;
- 		num += (float)(num4 / num2);
+@@ -32,7 +_,12 @@
+ 			num += (float)(num4 / num2);
+ 
  		LifeFruitCount = num3;
 +
 +		/*

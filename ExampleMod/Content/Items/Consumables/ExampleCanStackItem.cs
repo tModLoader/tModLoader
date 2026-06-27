@@ -4,6 +4,7 @@ using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
@@ -17,6 +18,16 @@ namespace ExampleMod.Content.Items.Consumables
 	{
 		// We set this when the item is crafted. In other contexts, this will be an empty string
 		public string craftedPlayerName = string.Empty;
+
+		public static LocalizedText CraftedPlayerNameCannotOpenText { get; private set; }
+		public static LocalizedText CraftedPlayerNameOtherText { get; private set; }
+		public static LocalizedText CraftedPlayerNameEmptyText { get; private set; }
+
+		public override void SetStaticDefaults() {
+			CraftedPlayerNameCannotOpenText = this.GetLocalization("CraftedPlayerNameCannotOpen");
+			CraftedPlayerNameOtherText = this.GetLocalization("CraftedPlayerNameOther");
+			CraftedPlayerNameEmptyText = this.GetLocalization("CraftedPlayerNameEmpty");
+		}
 
 		public override void SetDefaults() {
 			Item.maxStack = Item.CommonMaxStack; // This item is stackable, otherwise the example wouldn't work
@@ -90,14 +101,14 @@ namespace ExampleMod.Content.Items.Consumables
 			if (craftedPlayerName != string.Empty) {
 				// Here we make a distinction to disclose that the bag can't be opened by the player who crafted it
 				if (Main.LocalPlayer.name == craftedPlayerName) {
-					tooltips.Add(new TooltipLine(Mod, "CraftedPlayerNameCannotOpen", $"You crafted this bag and cannot open it!"));
+					tooltips.Add(new TooltipLine(Mod, "CraftedPlayerNameCannotOpen", CraftedPlayerNameCannotOpenText.Value));
 				}
 				else {
-					tooltips.Add(new TooltipLine(Mod, "CraftedPlayerNameOther", $"This is a bag from {craftedPlayerName}, open it to receive a gift!"));
+					tooltips.Add(new TooltipLine(Mod, "CraftedPlayerNameOther", CraftedPlayerNameOtherText.Format(craftedPlayerName)));
 				}
 			}
 			else {
-				tooltips.Add(new TooltipLine(Mod, "CraftedPlayerNameEmpty", $"This bag was not crafted, it will do nothing"));
+				tooltips.Add(new TooltipLine(Mod, "CraftedPlayerNameEmpty", CraftedPlayerNameEmptyText.Value));
 			}
 		}
 

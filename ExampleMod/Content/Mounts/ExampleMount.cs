@@ -19,7 +19,7 @@ namespace ExampleMod.Content.Mounts
 		// Using something like this for gameplay effects would require ModPlayer syncing, but this example is purely visual.
 		protected class CarSpecificData
 		{
-			internal static float[] offsets = new float[] { 0, 14, -14 };
+			internal static float[] offsets = [0, 14, -14];
 
 			internal int count; // Tracks how many balloons are still left.
 			internal float[] rotations;

@@ -40,4 +40,11 @@ internal class LocalMod
 	public LocalMod(ModLocation location, TmodFile modFile) : this(location, modFile, BuildProperties.ReadModFile(modFile))
 	{
 	}
+
+	internal static LocalMod FromWorkshopModFile(string path)
+	{
+		var sModFile = new TmodFile(path);
+		using (sModFile.Open())
+			return new LocalMod(ModLocation.Workshop, sModFile);
+	}
 }

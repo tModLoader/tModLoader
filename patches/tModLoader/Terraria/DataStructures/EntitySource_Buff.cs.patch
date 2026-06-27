@@ -16,11 +16,11 @@
 -public class EntitySource_Buff : IEntitySource
 +public class EntitySource_Buff : EntitySource_Parent
  {
--	public readonly Entity Entity;
+-	public readonly IEntitySourceTarget Entity;
 -	public readonly int BuffId;
 -	public readonly int BuffIndex;
 -
--	public EntitySource_Buff(Entity entity, int buffId, int buffIndex)
+-	public EntitySource_Buff(IEntitySourceTarget entity, int buffId, int buffIndex)
 +	/// <summary>
 +	/// The type of the buff (<see cref="BuffID"/> or <see cref="ModContent.BuffType"/>)
 +	/// </summary>
@@ -31,7 +31,7 @@
 +	/// </summary>
 +	public int BuffIndex { get; }
 +
-+	public EntitySource_Buff(Entity entity, int buffId, int buffIndex, string? context = null) : base(entity, context)
++	public EntitySource_Buff(IEntitySourceTarget entity, int buffId, int buffIndex, string? context = null) : base(entity, context)
  	{
 -		Entity = entity;
  		BuffId = buffId;

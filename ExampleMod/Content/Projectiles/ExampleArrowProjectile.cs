@@ -9,8 +9,7 @@ namespace ExampleMod.Content.Projectiles
 	// This example is similar to the Wooden Arrow projectile
 	public class ExampleArrowProjectile : ModProjectile
 	{
-		public override void SetStaticDefaults()
-		{
+		public override void SetStaticDefaults() {
 			// If this arrow would have strong effects (like Holy Arrow pierce), we can make it fire fewer projectiles from Daedalus Stormbow for game balance considerations like this:
 			//ProjectileID.Sets.FiresFewerFromDaedalusStormbow[Type] = true;
 		}
@@ -54,7 +53,7 @@ namespace ExampleMod.Content.Projectiles
 				dust.noGravity = true;
 				dust.velocity *= 1.5f;
 				dust.scale *= 0.9f;
-			} 
+			}
 		}
 	}
 }

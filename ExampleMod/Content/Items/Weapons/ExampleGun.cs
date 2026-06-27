@@ -57,7 +57,7 @@ namespace ExampleMod.Content.Items.Weapons
 			return new Vector2(2f, -2f);
 		}
 
-		//TODO: Move this to a more specifically named example. Say, a paint gun?
+		// TODO: Move this to a more specifically named example. Say, a paint gun?
 		public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
 			// Every projectile shot from this gun has a 1/3 chance of being an ExampleInstancedProjectile
 			if (Main.rand.NextBool(3)) {
@@ -126,7 +126,7 @@ namespace ExampleMod.Content.Items.Weapons
 		// How can I choose between several projectiles randomly?
 		/*public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
 			// Here we randomly set type to either the original (as defined by the ammo), a vanilla projectile, or a mod projectile.
-			type = Main.rand.Next(new int[] { type, ProjectileID.GoldenBullet, ModContent.ProjectileType<Projectiles.ExampleBullet>() });
+			type = Main.rand.Next([type, ProjectileID.GoldenBullet, ModContent.ProjectileType<Projectiles.ExampleBullet>()]);
 		}*/
 	}
 }

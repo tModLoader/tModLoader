@@ -1,14 +1,21 @@
+using Terraria.ModLoader;
+
 namespace Terraria.ID;
 
-public static partial class DustID
+public partial class DustID
 {
+#if !TMLANALYZER
+	public static class Sets
+	{
+		public static SetFactory Factory = new SetFactory(DustLoader.DustCount, nameof(DustID), Search);
+	}
+#endif
+
 	// Naming is based on the best approximation of the earliest or most popular implementation.
 	// There are a few duplicates, unlike other ID classes, since some dust are used for different purposes.
 	public const short WoodFurniture = 7;
 	public const short HeartCrystal = 12;
-	public const short Glass = 13;
 	public const short Demonite = 14;
-	public const short Corruption = 14;
 	public const short MagicMirror = 15;
 	public const short Sunflower = 19;
 	public const short PurificationPowder = 20;
@@ -172,17 +179,12 @@ public static partial class DustID
 	public const short Teleporter = 159;
 	public const short MagnetSphere = 160;
 	public const short IceGolem = 161;
-	public const short HeatRay = 162;
 	public const short PoisonStaff = 163; // Better name may be available, at a glance it's implementation was only used for Poison Staff projectile's death dust
 	public const short DryadsWard = 163;
 	public const short TeleportationPotion = 164;
 	public const short FungiHit = 165;
 	public const short Plantera_Pink = 166;
 	public const short Plantera_Green = 167;
-	/// <summary>
-	/// Lingers and scales with gravity enabled
-	/// </summary>
-	public const short PlanteraBulb = 168;
 	public const short Ichor = 170;
 	public const short Venom = 171;
 	public const short DungeonWater = 172;

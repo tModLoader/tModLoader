@@ -39,6 +39,7 @@ namespace ExampleMod.Content.Items.Accessories
 					return returnValue;
 				});
 			}
+#pragma warning disable CS0168 // Variable is declared but never used (due to commented code below)
 			catch (Exception e) {
 				// If there are any failures with the IL editing, this method will dump the IL to Logs/ILDumps/{Mod Name}/{Method Name}.txt
 				MonoModHooks.DumpIL(ModContent.GetInstance<ExampleMod>(), il);
@@ -46,6 +47,7 @@ namespace ExampleMod.Content.Items.Accessories
 				// If the mod cannot run without the IL hook, throw an exception instead. The exception will call DumpIL internally
 				// throw new ILPatchFailureException(ModContent.GetInstance<ExampleMod>(), il, e);
 			}
+#pragma warning restore CS0168
 		}
 
 		public override void SetDefaults() {
@@ -85,7 +87,7 @@ namespace ExampleMod.Content.Items.Accessories
 		// This is just an example of the concept of storing an Item instance for accessory effects and GetSource_Accessory or GetSource_Accessory_OnHurt,
 		// if you actually are making an accessory with the existing Honey Comb effect, just set "player.honeyCombItem = Item;" in UpdateAccessory instead
 		public override void OnHurt(Player.HurtInfo info) {
-			if(Player.whoAmI != Main.myPlayer) {
+			if (Player.whoAmI != Main.myPlayer) {
 				return;
 			}
 
@@ -93,7 +95,7 @@ namespace ExampleMod.Content.Items.Accessories
 				int baseDamage = 20;
 
 				// By storing the Item instance, we can create varying effects for different "tiers" of accessories. 
-				if(strongBeesItem.ModItem is WaspNest) {
+				if (strongBeesItem.ModItem is WaspNest) {
 					baseDamage += 10;
 				}
 

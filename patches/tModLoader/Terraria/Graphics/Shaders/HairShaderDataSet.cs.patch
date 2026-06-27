@@ -11,7 +11,7 @@
 +	protected internal Dictionary<int, int> _shaderLookupDictionary = new Dictionary<int, int>();
 -	protected byte _shaderDataCount;
 +	protected internal int _shaderDataCount;
-+	
++
 +	// Added by TML.
 +	internal Dictionary<int, int> _reverseShaderLookupDictionary = new Dictionary<int, int>();
  

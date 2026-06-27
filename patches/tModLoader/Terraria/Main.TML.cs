@@ -49,6 +49,10 @@ public partial class Main
 	/// </summary>
 	public static int worldEventUpdates;
 	private double _partialWorldEventUpdates = 0f;
+	/// <summary>
+	/// The NPCInteractionDatabase instance for registering chat buttons to NPCs (and signs).
+	/// </summary>
+	public static NPCInteractionDatabase NPCInteractionDB;
 
 	public static List<TitleLinkButton> tModLoaderTitleLinks = new List<TitleLinkButton>();
 
@@ -72,16 +76,18 @@ public partial class Main
 	// Tracks whether the Stylist has had her hairstyle list updated for the current interaction.
 	private static bool hairstylesUpdatedForThisInteraction; // TML: Track whether hairstyle cache needs refreshing for Stylist UI.
 
+	[ThreadStatic]
 	private static Player _currentPlayerOverride;
 
 	/// <summary>
-	/// A replacement for `Main.LocalPlayer` which respects whichever player is currently running hooks on the main thread.
-	/// This works in the player select screen, and in multiplayer (when other players are updating)
+	/// A replacement for <see cref="Main.LocalPlayer"/> which respects whichever player is currently running hooks on the main thread.
+	/// This works in the player select screen, and in multiplayer (when other players are updating).
+	/// <br/><br/> <see cref="CurrentPlayerOverride"/> can be used to temporarily override CurrentPlayer.
 	/// </summary>
 	public static Player CurrentPlayer => _currentPlayerOverride ?? LocalPlayer;
 
 	/// <summary>
-	/// Use to iterate over active players. Game logic is usually only interested in <see cref="Entity.active"/> elements, this iterator facilitates that usage and allows for simpler and more readable code.
+	/// Use to iterate over active players. Game logic is usually only interested in <see cref="Player.active"/> elements, this iterator facilitates that usage and allows for simpler and more readable code.
 	/// <para/> Typically used in a foreach statement:
 	/// <code>foreach (var player in Main.ActivePlayers) {
 	///     // Code
@@ -96,11 +102,11 @@ public partial class Main
 	///     // Code
 	/// }
 	/// </code>
-	/// Note that if the index of the Player in the <see cref="Main.player"/> array is needed, <see cref="Entity.whoAmI"/> can be used.
+	/// Note that if the index of the Player in the <see cref="player"/> array is needed, <see cref="Entity.whoAmI"/> can be used.
 	/// </summary>
-	public static ActiveEntityIterator<Player> ActivePlayers => new(player.AsSpan(0, maxPlayers));
+	public static ActivePlayerIterator ActivePlayers => new(player.AsSpan(0, maxPlayers));
 	/// <summary>
-	/// Use to iterate over active players. Game logic is usually only interested in <see cref="Entity.active"/> elements, this iterator facilitates that usage and allows for simpler and more readable code.
+	/// Use to iterate over active players. Game logic is usually only interested in <see cref="NPC.active"/> elements, this iterator facilitates that usage and allows for simpler and more readable code.
 	/// <para/> Typically used in a foreach statement:
 	/// <code>foreach (var npc in Main.ActiveNPCs) {
 	///     // Code
@@ -115,11 +121,11 @@ public partial class Main
 	///     // Code
 	/// }
 	/// </code>
-	/// Note that if the index of the NPC in the <see cref="Main.npc"/> array is needed, <see cref="Entity.whoAmI"/> can be used.
+	/// Note that if the index of the NPC in the <see cref="npc"/> array is needed, <see cref="Entity.whoAmI"/> can be used.
 	/// </summary>
-	public static ActiveEntityIterator<NPC> ActiveNPCs => new(npc.AsSpan(0, maxNPCs));
+	public static ActiveNPCIterator ActiveNPCs => new(npc.AsSpan(0, maxNPCs));
 	/// <summary>
-	/// Use to iterate over active projectiles. Game logic is usually only interested in <see cref="Entity.active"/> elements, this iterator facilitates that usage and allows for simpler and more readable code.
+	/// Use to iterate over active projectiles. Game logic is usually only interested in <see cref="Projectile.active"/> elements, this iterator facilitates that usage and allows for simpler and more readable code.
 	/// <para/> Typically used in a foreach statement:
 	/// <code>foreach (var projectile in Main.ActiveProjectiles) {
 	///     // Code
@@ -134,11 +140,11 @@ public partial class Main
 	///     // Code
 	/// }
 	/// </code>
-	/// Note that if the index of the Projectile in the <see cref="Main.projectile"/> array is needed, <see cref="Entity.whoAmI"/> can be used.
+	/// Note that if the index of the Projectile in the <see cref="projectile"/> array is needed, <see cref="Entity.whoAmI"/> can be used.
 	/// </summary>
-	public static ActiveEntityIterator<Projectile> ActiveProjectiles => new(projectile.AsSpan(0, maxProjectiles));
+	public static ActiveProjectileIterator ActiveProjectiles => new(projectile.AsSpan(0, maxProjectiles));
 	/// <summary>
-	/// Use to iterate over active items. Game logic is usually only interested in <see cref="Entity.active"/> elements, this iterator facilitates that usage and allows for simpler and more readable code.
+	/// Use to iterate over active items. Game logic is usually only interested in <see cref="Item.active"/> elements, this iterator facilitates that usage and allows for simpler and more readable code.
 	/// <para/> Typically used in a foreach statement:
 	/// <code>foreach (var item in Main.ActiveItems) {
 	///     // Code
@@ -153,9 +159,9 @@ public partial class Main
 	///     // Code
 	/// }
 	/// </code>
-	/// Note that if the index of the Item in the <see cref="Main.item"/> array is needed, <see cref="Entity.whoAmI"/> can <b>not</b> be used. This will be fixed in 1.4.5, but for now the for loop approach would have to be used instead.
+	/// Note that if the index of the Item in the <see cref="item"/> array is needed, <see cref="Entity.whoAmI"/> can <b>not</b> be used. This will be fixed in 1.4.5, but for now the for loop approach would have to be used instead.
 	/// </summary>
-	public static ActiveEntityIterator<Item> ActiveItems => new(item.AsSpan(0, maxItems));
+	public static ActiveItemIterator ActiveItems => new(item.AsSpan(0, maxItems));
 
 	/// <summary>
 	/// Checks if a tile at the given coordinates counts towards tile coloring from the Spelunker buff, and is detected by various pets.
@@ -252,7 +258,7 @@ public partial class Main
 				spriteBatch.Draw(TextureAssets.InfoIcon[13].Value, buttonPosition - Vector2.One * 2f, null, OurFavoriteColor, 0f, default, 1f, SpriteEffects.None, 0f);
 		}
 	}
-	
+
 	public static void BuilderTogglePageHandler(int startY, int activeToggles, out bool moveDownForButton, out int startIndex, out int endIndex) {
 		startIndex = 0;
 		endIndex = activeToggles;
@@ -449,6 +455,10 @@ public partial class Main
 		}
 	}
 
+	/// <summary>
+	/// Overrides <see cref="Main.CurrentPlayer"/>. For example, <c>using var _currentPlr = new Main.CurrentPlayerOverride(player);</c> would result in Main.CurrentPlayer returning the specified player until the end of the current scope.
+	/// <br/><br/> Used internally to make <see cref="ModAccessorySlot"/> access a specific player rather than <see cref="Main.LocalPlayer"/>.
+	/// </summary>
 	public ref struct CurrentPlayerOverride
 	{
 		private Player _prevPlayer;
@@ -481,7 +491,7 @@ public partial class Main
 		}
 		// Explicitly path if we are family shared using the old logic from prior to #4018; Temporary Hotfix - Solxan
 		// Maybe replace with a call to get InstallDir from TerrariaSteamClient? Or change Steam.GetInstallDir to be 'FamilyShare' safe?
-		// Also left as a generic fallback 
+		// Also left as a generic fallback
 		else /*if (Social.Steam.SteamedWraps.FamilyShared)*/ {
 			vanillaContentFolder = Platform.IsOSX ? "../Terraria/Terraria.app/Contents/Resources/Content" : "../Terraria/Content"; // Side-by-Side Manual Install
 
@@ -489,19 +499,19 @@ public partial class Main
 				vanillaContentFolder = Platform.IsOSX ? "../Terraria.app/Contents/Resources/Content" : "../Content"; // Nested Manual Install
 			}
 		}
-		
+
 
 		if (!Directory.Exists(vanillaContentFolder)) {
 			ErrorReporting.FatalExit(Language.GetTextValue("tModLoader.ContentFolderNotFound"));
 		}
 
 		// Canary file for legacy Terraria branches.
-		if (!File.Exists(Path.Combine(vanillaContentFolder, "Images", "Projectile_112.xnb"))) {
+		if (!File.Exists(Path.Combine(vanillaContentFolder, "Images", "Projectile_651.xnb"))) {
 			Utils.OpenToURL("https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Usage-FAQ#terraria-is-out-of-date-or-terraria-is-on-a-legacy-version");
 			ErrorReporting.FatalExit(Language.GetTextValue("tModLoader.TerrariaLegacyBranchMessage"));
 		}
 
-		// Canary file, ensures that Terraria has updated to at least the version this tModLoader was built for. Alternate check to BuildID check in TerrariaSteamClient for non-Steam launches 
+		// Canary file, ensures that Terraria has updated to at least the version this tModLoader was built for. Alternate check to BuildID check in TerrariaSteamClient for non-Steam launches
 		if (!File.Exists(Path.Combine(vanillaContentFolder, "Images", "Projectile_981.xnb"))) {
 			Utils.OpenToURL("https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Usage-FAQ#terraria-is-out-of-date-or-terraria-is-on-a-legacy-version");
 			ErrorReporting.FatalExit(Language.GetTextValue("tModLoader.TerrariaOutOfDateMessage"));
@@ -514,7 +524,7 @@ public partial class Main
 
 		base.Content = new TMLContentManager(Content.ServiceProvider, vanillaContentFolder, localOverrideContentManager);
 	}
-	
+
 	private static void DrawtModLoaderSocialMediaButtons(Microsoft.Xna.Framework.Color menuColor, float upBump)
 	{
 		List<TitleLinkButton> titleLinks = tModLoaderTitleLinks;
@@ -523,33 +533,6 @@ public partial class Main
 			titleLinks[i].Draw(spriteBatch, anchorPosition);
 			anchorPosition.X += 30f;
 		}
-	}
-
-	/// <summary>
-	/// Wait for an action to be performed on the main thread.
-	/// </summary>
-	/// <param name="action"></param>
-	public static Task RunOnMainThread(Action action)
-	{
-		var tcs = new TaskCompletionSource();
-
-		QueueMainThreadAction(() => {
-			action();
-			tcs.SetResult();
-		});
-
-		return tcs.Task;
-	}
-
-	/// <summary>
-	/// Wait for an action to be performed on the main thread.
-	/// </summary>
-	/// <param name="func"></param>
-	public static Task<T> RunOnMainThread<T>(Func<T> func)
-	{
-		var tcs = new TaskCompletionSource<T>();
-		QueueMainThreadAction(() => tcs.SetResult(func()));
-		return tcs.Task;
 	}
 
 	private static PosixSignalRegistration SIGINTHandler;
@@ -578,7 +561,7 @@ public partial class Main
 				newsChecked = true;
 				// Download latest news, save to config.json.
 				// https://partner.steamgames.com/doc/webapi/ISteamNews
-				client.GetStringAsync("https://api.steampowered.com/ISteamNews/GetNewsForApp/v2/?appid=1281930&count=1").ContinueWith(response => {
+				client.GetStringAsync("https://api.steampowered.com/ISteamNews/GetNewsForApp/v2/?appid=1281930&count=1&feeds=steam_community_announcements").ContinueWith(response => {
 					if (!response.IsCompletedSuccessfully || response.Exception != null) {
 						newsText = Language.GetTextValue("tModLoader.LatestNewsOffline");
 						return;
@@ -609,7 +592,7 @@ public partial class Main
 				var newsColor = newsMouseOver && newsURL != null ? highVersionColor : menuColor;
 				ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.MouseText.Value, latestNewsText, newsPosition - newsSize, newsColor, 0f, Vector2.Zero, newsScales);
 
-				if (newsMouseOver && mouseLeftRelease && mouseLeft && hasFocus && newsURL != null) {
+				if (newsMouseOver && mouseLeftRelease && mouseLeft && FocusHelper.AllowUIInputs && newsURL != null) {
 					SoundEngine.PlaySound(SoundID.MenuOpen);
 					Utils.OpenToURL(newsURL);
 					newsIsNew = false;
@@ -630,7 +613,7 @@ public partial class Main
 				continue;
 			var normalMod = normalModsToLoad.First(mod => mod.Name == loadedMod.Name); // If this throws, we have a big issue.
 			if (normalMod.modFile.path != loadedMod.File.path) {
-				reloadRequiredExplanationEntries.Add(new ReloadRequiredExplanation(1, normalMod.Name, normalMod, Language.GetTextValue("tModLoader.ReloadRequiredExplanationSwitchVersion", "FFFACD", normalMod.Version, loadedMod.Version)));
+				reloadRequiredExplanationEntries.Add(new ReloadRequiredExplanation(2, normalMod.Name, normalMod, Language.GetTextValue("tModLoader.ReloadRequiredExplanationSwitchVersion", "FFFACD", normalMod.Version, loadedMod.Version)));
 				needsReload = true;
 			}
 		}
@@ -643,7 +626,7 @@ public partial class Main
 			}
 		}
 
-		// If reload is required, show message. Back action should leave current ModConfig instances unchanged 
+		// If reload is required, show message. Back action should leave current ModConfig instances unchanged
 		if (needsReload) {
 			string continueButtonText = Language.GetTextValue("tModLoader.ReloadRequiredReloadAndContinue");
 			Interface.serverModsDifferMessage.Show(Language.GetTextValue("tModLoader.ReloadRequiredSinglePlayerMessage", continueButtonText),

@@ -144,7 +144,7 @@
  				num3 += Main.cursorScale - 1f;
  
 +			Vector2 position = new Vector2(775 + UI_ScreenAnchorX, 30 + TextureAssets.Mana.Height() / 2 + TextureAssets.Mana.Height() * (1 - num3) / 2f + 28 * (i - 1));
-+			
++
  			int a = (int)((double)num2 * 0.9);
 +
 +			ResourceOverlayDrawContext drawContext = new ResourceOverlayDrawContext(snapshot, this, i - 1, TextureAssets.Mana) {

@@ -8,7 +8,7 @@
  
  namespace Terraria;
  
-@@ -1030,7 +_,7 @@
+@@ -1206,7 +_,7 @@
  		if (tile == null || !tile.active() || tile.inActive() || !Main.tileSolid[tile.type])
  			return false;
  
@@ -17,18 +17,53 @@
  			return false;
  
  		int num = tile.blockType();
-@@ -2614,7 +_,10 @@
- 			tile = Main.tile[num2, num3];
- 			tile2 = Main.tile[num2, num3 - 1];
- 			if (specialChecksMode == 1)
-+				/*
- 				flag5 = tile.type != 16 && tile.type != 18 && tile.type != 14 && tile.type != 469 && tile.type != 134;
-+				*/
-+				flag5 = !TileID.Sets.IgnoredByNpcStepUp[tile.type];
+@@ -2677,6 +_,17 @@
+ 		return false;
+ 	}
  
- 			flag4 = flag4 && ((tile.nactive() && (!tile.topSlope() || (tile.slope() == 1 && position.X + (float)(width / 2) < (float)(num2 * 16)) || (tile.slope() == 2 && position.X + (float)(width / 2) > (float)(num2 * 16 + 16))) && (!tile.topSlope() || position.Y + (float)height > (float)(num3 * 16)) && ((Main.tileSolid[tile.type] && !Main.tileSolidTop[tile.type]) || (holdsMatching && ((Main.tileSolidTop[tile.type] && tile.frameY == 0) || TileID.Sets.Platforms[tile.type]) && (!Main.tileSolid[tile2.type] || !tile2.nactive()) && flag5))) || (tile2.halfBrick() && tile2.nactive()));
- 			flag4 &= !Main.tileSolidTop[tile.type] || !Main.tileSolidTop[tile2.type];
-@@ -2694,7 +_,7 @@
++	/// <summary>
++	/// Calls collision related tile actions. Acts on <see cref="TileID.Sets.PressurePlate"/>, ProjectilePressurePad, LandMine, GeyserTrap, as well as modded content using <see cref="ModTile.SwitchTiles"/>
++	/// <br/><br/> Successful collisions usually call <see cref="Wiring.HitSwitch(int, int)"/> and sync it.
++	/// <include file = 'CommonDocs.xml' path='Common/SwitchTilesObjType' />
++	/// </summary>
++	/// <param name="entity"><inheritdoc cref="ModTile.SwitchTiles" path="/param[@name='entity']"/></param>
++	/// <param name="Position"><inheritdoc cref="ModTile.SwitchTiles" path="/param[@name='position']"/></param>
++	/// <param name="Width"><inheritdoc cref="ModTile.SwitchTiles" path="/param[@name='width']"/></param>
++	/// <param name="Height"><inheritdoc cref="ModTile.SwitchTiles" path="/param[@name='height']"/></param>
++	/// <param name="oldPosition"><inheritdoc cref="ModTile.SwitchTiles" path="/param[@name='oldPosition']"/></param>
++	/// <param name="objType"><inheritdoc cref="ModTile.SwitchTiles" path="/param[@name='objType']"/></param>
+ 	public static bool SwitchTiles(Entity entity, Vector2 Position, int Width, int Height, Vector2 oldPosition, int objType)
+ 	{
+ 		int num = (int)(Position.X / 16f) - 1;
+@@ -2702,13 +_,18 @@
+ 					continue;
+ 
+ 				int type = Main.tile[i, j].type;
++				if (TileLoader.SwitchTiles(i, j, Main.tile[i, j].TileType, entity, Position, Width, Height, oldPosition, objType))
++					return true;
++				/*
+ 				if (!Main.tile[i, j].active() || (type != 135 && type != 210 && type != 443 && type != 442))
++				*/
++				if (!Main.tile[i, j].active() || ((TileID.Sets.PressurePlate[type] == -1 || TileID.Sets.PressurePlate[type] == -3) && type != 210 && type != 443))
+ 					continue;
+ 
+ 				vector.X = i * 16;
+ 				vector.Y = j * 16 + 12;
+ 				bool flag = false;
+-				if (type == 442) {
++				if (TileID.Sets.PressurePlate[type] == -4) {
+ 					if (objType == 4) {
+ 						float r1StartX = 0f;
+ 						float r1StartY = 0f;
+@@ -2768,6 +_,7 @@
+ 				}
+ 
+ 				int num5 = Main.tile[i, j].frameY / 18;
++				if (TileID.Sets.PressurePlate[type] >= 0) num5 = TileID.Sets.PressurePlate[type];
+ 				bool flag2 = true;
+ 				if ((num5 == 4 || num5 == 2 || num5 == 3 || num5 == 6 || num5 == 7) && objType != 5)
+ 					flag2 = false;
+@@ -3149,7 +_,7 @@
  			if (tile.active()) {
  				if (Main.tileSolid[tile.type]) {
  					int num5 = tile.blockType();

@@ -25,10 +25,10 @@ namespace ExampleMod.Common.Systems
 
 			// This is an array of statues we want to add to worldgen.
 			// Set shouldBeWired to true to make the statue spawn with a pressure plate wired to it (like traps are).
-			(int type, bool shouldBeWired, ushort placeStyle)[] statueTypesToAdd = {
+			(int type, bool shouldBeWired, ushort placeStyle)[] statueTypesToAdd = [
 				(ModContent.TileType<ExampleStatue>(), false, 0),
 				// If the mod adds more statues, they can be added here.
-			};
+			];
 
 			// Make space in the statueList array.
 			Array.Resize(ref GenVars.statueList, GenVars.statueList.Length + statueTypesToAdd.Length);

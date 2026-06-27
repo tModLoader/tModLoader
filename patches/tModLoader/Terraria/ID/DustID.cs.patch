@@ -1,10 +1,34 @@
 --- src/TerrariaNetCore/Terraria/ID/DustID.cs
 +++ src/tModLoader/Terraria/ID/DustID.cs
-@@ -1,6 +_,6 @@
+@@ -1,6 +_,8 @@
++using ReLogic.Reflection;
++
  namespace Terraria.ID;
  
 -public static class DustID
-+public static partial class DustID
++public partial class DustID
  {
  	public const short Dirt = 0;
  	public const short Stone = 1;
+@@ -70,12 +_,13 @@
+ 	public const short TintablePaint = 143;
+ 	public const short Honey = 152;
+ 	public const short UltraBrightTorch = 156;
+-	public const short Chlorophyte = 157;
++	public const short Chlorophyte_New_Vanilla = 157; // TODO: tModPorter? Advise modders? Overwrite vanilla name? (Used by CrystalLeafShot and ChlorophyteOrb)
+ 	public const short OrangeTorch = 158;
+ 	public const short BlueGreenElectricity = 160;
+ 	public const short HeatRay = 162;
+ 	public const short PlanteraPetal = 166;
+ 	public const short PlanteraGrass = 167;
++	/// <summary> Lingers and scales with gravity enabled </summary>
+ 	public const short PlanteraBulb = 168;
+ 	public const short IchorTorch = 169;
+ 	public const short IchorSplash = 170;
+@@ -206,4 +_,6 @@
+ 	public const short GemRuby = 90;
+ 	public const short GemDiamond = 91;
+ 	public const short GemAmber = 138;
++
++	public static IdDictionary Search = IdDictionary.Create<DustID, short>();
+ }

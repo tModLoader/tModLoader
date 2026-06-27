@@ -1,0 +1,14 @@
+--- src/TerrariaNetCore/Terraria/ID/PaintID.cs
++++ src/tModLoader/Terraria/ID/PaintID.cs
+@@ -1,3 +_,5 @@
++using ReLogic.Reflection;
++
+ namespace Terraria.ID;
+ 
+ public static class PaintID
+@@ -35,4 +_,5 @@
+ 	public const byte NegativePaint = 30;
+ 	public const byte IlluminantPaint = 31;
+ 	public const byte Old_IlluminantPaint = 31;
++	public static readonly IdDictionary Search = IdDictionary.Create(typeof(PaintID), typeof(byte)); // Added By TML
+ }

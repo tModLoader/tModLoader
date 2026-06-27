@@ -30,4 +30,10 @@ partial struct Point16
 
 	public static Point16 operator %(Point16 first, int num)
 		=> new(first.X % num, first.Y % num);
+
+	public void Deconstruct(out short x, out short y)
+	{
+		x = X;
+		y = Y;
+	}
 }

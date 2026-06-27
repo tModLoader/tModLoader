@@ -8,6 +8,7 @@ using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items.Weapons
 {
+	// This weapon is special because it consumes "Example Resource" instead of mana or ammo.
 	// Holding this item will cause the ExampleResourceBar UI to show, displaying the player's custom resource amounts tracked in ExampleResourcePlayer.
 	public class ExampleCustomResourceWeapon : ModItem
 	{

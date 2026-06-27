@@ -1,0 +1,19 @@
+--- src/Terraria/Terraria/FocusHelper.cs
++++ src/TerrariaNetCore/Terraria/FocusHelper.cs
+@@ -117,6 +_,8 @@
+ 		wantsToPause = false;
+ 		bool flag = !Main.SettingPlayWhenUnfocused;
+ 		IsSelectedApplication = Main.instance.IsActive;
++
++#if !NETCORE
+ 		if (Platform.IsWindows) {
+ 			Form form = Control.FromHandle(Main.instance.Window.Handle) as Form;
+ 			bool num = form.WindowState == FormWindowState.Minimized;
+@@ -125,6 +_,7 @@
+ 			if (num)
+ 				IsSelectedApplication = false;
+ 		}
++#endif
+ 
+ 		if (!IsSelectedApplication && Main.netMode == 0 && flag) {
+ 			if (!Platform.IsOSX)

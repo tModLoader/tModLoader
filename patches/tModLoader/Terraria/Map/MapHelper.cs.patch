@@ -1,15 +1,20 @@
 --- src/TerrariaNetCore/Terraria/Map/MapHelper.cs
 +++ src/tModLoader/Terraria/Map/MapHelper.cs
-@@ -6,6 +_,8 @@
+@@ -2,10 +_,12 @@
+ using System.Diagnostics;
+ using System.IO;
+ using System.Threading;
+-using Ionic.Zlib;
++using System.IO.Compression;
  using Microsoft.Xna.Framework;
  using Terraria.ID;
  using Terraria.IO;
 +using Terraria.ModLoader;
 +using Terraria.ModLoader.IO;
  using Terraria.Social;
+ using Terraria.Testing;
  using Terraria.Utilities;
- 
-@@ -134,7 +_,8 @@
+@@ -131,7 +_,8 @@
  	private static ushort dirtPosition;
  	private static ushort rockPosition;
  	private static ushort hellPosition;
@@ -19,51 +24,60 @@
  	private static ushort[] snowTypes;
  	private static ushort wallRangeStart;
  	private static ushort wallRangeEnd;
-@@ -1604,6 +_,7 @@
+@@ -139,7 +_,9 @@
+ 	public static float sceneSnowiness;
+ 	public static bool noStatusText = false;
+ 	public const int MapChunkSize = 64;
++	/*
+ 	private static ZlibCodec zlibDecompress = new ZlibCodec(CompressionMode.Decompress);
++	*/
  
- 		hellPosition = num20;
- 		colorLookup[num20] = color10;
-+		modPosition = (ushort)(num20 + 1); // Added by TML.
+ 	public static void Initialize()
+ 	{
+@@ -1707,6 +_,7 @@
+ 
+ 		hellPosition = num22;
+ 		colorLookup[num22] = color11;
++		modPosition = (ushort)(num22 + 1); // Added by TML.
  		snowTypes = new ushort[6];
  		snowTypes[0] = tileLookup[147];
  		snowTypes[1] = tileLookup[161];
-@@ -1749,7 +_,7 @@
- 				int num5 = tile.liquidType();
- 				num3 = liquidPosition + num5;
- 			}
--			else if (!tile.invisibleWall() && tile.wall > 0 && tile.wall < WallID.Count) {
-+			else if (!tile.invisibleWall() && tile.wall > 0 && tile.wall < WallLoader.WallCount) {
- 				int wall = tile.wall;
- 				num3 = wallLookup[wall];
- 				num = tile.wallColor();
-@@ -1778,6 +_,7 @@
- 		if (num3 == 0) {
- 			if ((double)j < Main.worldSurface) {
- 				if (Main.remixWorld) {
-+					// Patch note: num2, used below.
- 					num2 = 5;
- 					num3 = 100;
- 				}
-@@ -1821,12 +_,18 @@
- 
- 				num3 = ((!((double)j < Main.rockLayer)) ? (rockPosition + b) : (dirtPosition + b));
- 			}
+@@ -1811,10 +_,16 @@
+ 		if (baseType == 0) {
+ 			newColor = 0;
+ 			newLight = Light;
 +			// Extra patch context.
- 			else {
- 				num3 = hellPosition;
- 			}
+ 			baseType = ((backgroundOverride == 0) ? GetBackgroundType(i, j, ref newLight) : backgroundOverride);
  		}
  
 +		/*
- 		return MapTile.Create((ushort)(num3 + baseOption), (byte)num2, (byte)num);
+ 		return MapTile.Create((ushort)(baseType + baseOption), (byte)newLight, (byte)newColor);
 +		*/
-+		ushort mapType = (ushort)(num3 + baseOption);
++		ushort mapType = (ushort)(baseType + baseOption);
 +		MapLoader.ModMapOption(ref mapType, i, j);
-+		return MapTile.Create(mapType, (byte)num2, (byte)num);
++		return MapTile.Create(mapType, (byte)newLight, (byte)newColor);
  	}
  
- 	public static void GetTileBaseOption(int x, int y, int tileType, Tile tileCache, ref int baseOption)
-@@ -2603,7 +_,10 @@
+ 	private static void GetTileType(int i, int j, Tile tileCache, ref int newColor, ref int newLight, ref int baseType, ref int baseOption)
+@@ -1875,7 +_,7 @@
+ 			int num = tileCache.liquidType();
+ 			baseType = liquidPosition + num;
+ 		}
+-		else if (!tileCache.invisibleWall() && tileCache.wall > 0 && tileCache.wall < WallID.Count) {
++		else if (!tileCache.invisibleWall() && tileCache.wall > 0 && tileCache.wall < WallLoader.WallCount) {
+ 			int wall = tileCache.wall;
+ 			baseType = wallLookup[wall];
+ 			newColor = tileCache.wallColor();
+@@ -1916,7 +_,7 @@
+ 		if (j < Main.UnderworldLayer) {
+ 			byte b = 0;
+ 			if (!WorldGen.generatingWorld) {
+-				if (!sceneArea.Contains(i, j)) {
++				if (!sceneArea.Contains(i, j) && WorldGen.InWorld(i, j, WorldMap.BlackEdgeWidth)) { // TML: Restore InWorld check
+ 					for (int k = i - 36; k <= i + 30; k += 10) {
+ 						for (int l = j - 36; l <= j + 30; l += 10) {
+ 							int type = Main.Map[k, l].Type;
+@@ -2716,7 +_,10 @@
  					byte b6 = 0;
  					int num7;
  					ushort num8;
@@ -74,7 +88,7 @@
  						flag2 = false;
  						flag = false;
  						num7 = 0;
-@@ -2761,6 +_,8 @@
+@@ -2869,6 +_,8 @@
  
  			deflateStream.Dispose();
  			FileUtilities.WriteAllBytes(text, memoryStream.ToArray(), isCloudSave);
@@ -83,7 +97,34 @@
  		}
  
  		noStatusText = false;
-@@ -2768,6 +_,7 @@
+@@ -2877,6 +_,7 @@
+ 	public static void DecompressChunk(byte[] srcData, long srcLength, byte[] dstData, long dstLength, out long resultLength)
+ 	{
+ 		resultLength = 0L;
++		/*
+ 		ZlibCodec zlibCodec = zlibDecompress;
+ 		zlibCodec.InitializeInflate();
+ 		zlibCodec.InputBuffer = srcData;
+@@ -2888,6 +_,18 @@
+ 		int num = zlibCodec.Inflate(FlushType.Finish);
+ 		if ((num == 0 || 1 == num) && zlibCodec.TotalBytesOut > 0)
+ 			resultLength = zlibCodec.TotalBytesOut;
++		*/
++
++		// Untested, but should let us load legacy map files if anyone was to ever try that
++		using (var srcStream = new MemoryStream(srcData, 0, (int)srcLength))
++		using (var zlibStream = new ZLibStream(srcStream, CompressionMode.Decompress)) {
++			int totalRead = 0;
++			int bytesRead;
++			while ((bytesRead = zlibStream.Read(dstData, totalRead, dstData.Length - totalRead)) > 0) {
++				totalRead += bytesRead;
++			}
++			resultLength = totalRead;
++		}
+ 
+ 		for (int i = (int)resultLength; i < dstLength; i++) {
+ 			dstData[i] = 0;
+@@ -3105,6 +_,7 @@
  
  	public static void LoadMapVersion1(BinaryReader fileIO, int release)
  	{

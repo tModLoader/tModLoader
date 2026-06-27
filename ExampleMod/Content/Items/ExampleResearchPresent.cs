@@ -1,12 +1,17 @@
 ﻿using Terraria;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items
 {
 	public class ExampleResearchPresent : ModItem
 	{
+		public static LocalizedText NoAccessoryText { get; private set; }
+		public static LocalizedText NewAccessoryText { get; private set; }
+		public static LocalizedText AllAccessoryText { get; private set; }
+
 		public override void SetStaticDefaults() {
 			// Must be researched as many times as there are items in the game.
 			// If fully researched, and a new mod is added, it will become un-researched and require that much more
@@ -14,7 +19,11 @@ namespace ExampleMod.Content.Items
 			Item.ResearchUnlockCount = Utils.Clamp(ItemLoader.ItemCount, 1, 9999);
 
 			// Use a MonoMod hook to allow our presents to run through the Sacrifice system.
-			On_CreativeUI.SacrificeItem_refItem_refInt32_bool += OnSacrificeItem;
+			On_CreativeUI.SacrificeItem_refItem_refInt32_bool_bool += OnSacrificeItem;
+
+			NoAccessoryText = this.GetLocalization("NoAccessory");
+			NewAccessoryText = this.GetLocalization("NewAccessory");
+			AllAccessoryText = this.GetLocalization("AllAccessory");
 		}
 
 		public override void SetDefaults() {
@@ -23,8 +32,7 @@ namespace ExampleMod.Content.Items
 
 		// This allows for the present to be researched even when you already have infinite of them.
 		// This is not a standard use of the research system, but allows for re-running a 'research complete' effect
-		private CreativeUI.ItemSacrificeResult OnSacrificeItem(On_CreativeUI.orig_SacrificeItem_refItem_refInt32_bool orig,
-				ref Item item, out int amountWeSacrificed, bool returnRemainderToPlayer) {
+		private CreativeUI.ItemSacrificeResult OnSacrificeItem(On_CreativeUI.orig_SacrificeItem_refItem_refInt32_bool_bool orig, CreativeUI self, ref Item item, out int amountWeSacrificed, bool spawnExcessItem, bool onlySacrificeIfItWouldFinishResearch) {
 
 			// If the item being sacrificed has the same type as us (is an ExampleResearchPresent) and is fully researched
 			if (item.type == Type && CreativeUI.GetSacrificesRemaining(Type) == 0) {
@@ -36,10 +44,8 @@ namespace ExampleMod.Content.Items
 				item.stack -= 1;
 
 				// This code is copied from the end of SacrificeItem
-				if (item.stack > 0 && returnRemainderToPlayer) {
-					item.position.X = Main.player[Main.myPlayer].Center.X - item.width / 2;
-					item.position.Y = Main.player[Main.myPlayer].Center.Y - item.height / 2;
-					item = Main.LocalPlayer.GetItem(Main.myPlayer, item, GetItemSettings.InventoryUIToInventorySettings);
+				if (item.stack > 0 && spawnExcessItem) {
+					item = Main.LocalPlayer.GetItem(item, GetItemSettings.ReturnItemFromSlot);
 				}
 
 				// This is the amount the sacrifice counter goes up by. We didn't actually change the total number of sacrifices, so this is 0
@@ -50,7 +56,7 @@ namespace ExampleMod.Content.Items
 			}
 
 			// Otherwise, call the original method to run the default behavior
-			return orig(ref item, out amountWeSacrificed, returnRemainderToPlayer);
+			return orig(self, ref item, out amountWeSacrificed, spawnExcessItem, onlySacrificeIfItWouldFinishResearch);
 		}
 
 		public override void OnResearched(bool fullyResearched) {
@@ -66,10 +72,10 @@ namespace ExampleMod.Content.Items
 					}
 				}
 				if (count == 0) {
-					Main.NewText("No new accessory...");
+					Main.NewText(NoAccessoryText);
 				}
 				else {
-					Main.NewText("Learned " + count + " new accessor" + (count == 1 ? "y" : "ies") + " !");
+					Main.NewText(NewAccessoryText.Format(count));
 				}
 			}
 		}
@@ -94,7 +100,7 @@ namespace ExampleMod.Content.Items
 				}
 			}
 
-			Main.NewText("You got all accessories!");
+			Main.NewText(AllAccessoryText);
 		}
 	}
 }

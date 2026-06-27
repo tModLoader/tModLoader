@@ -8,8 +8,8 @@
  
  namespace Terraria.Graphics.Light;
  
-@@ -255,9 +_,12 @@
- 				break;
+@@ -280,9 +_,12 @@
+ 			num3 = (float)(int)color.B / 765f;
  		}
  
 +		WallLoader.ModifyLight(x, y, tile.wall, ref num, ref num2, ref num3);
@@ -21,7 +21,7 @@
  		if (lightColor.Y < num2)
  			lightColor.Y = num2;
  
-@@ -2214,11 +_,14 @@
+@@ -2952,8 +_,11 @@
  					B = 0.15f;
  					break;
  			}
@@ -29,6 +29,11 @@
 +			TileLoader.ModifyLight(x, y, tile.type, ref R, ref G, ref B);
  		}
  
++		// TODO: flag parameter in ModifyLight
+ 		if (flag && tile.color() != 0) {
+ 			Color color2 = WorldGen.paintColor(tile.color());
+ 			R = (float)(int)color2.R / 255f;
+@@ -2964,6 +_,7 @@
  		if (lightColor.X < R)
  			lightColor.X = R;
  

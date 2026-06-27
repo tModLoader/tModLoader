@@ -11,7 +11,7 @@ namespace ExampleMod.Content.Tiles
 
 		public override void SetStaticDefaults() {
 			// Makes Example Cactus grow on ExampleSand. You will need to use ExampleSolution to convert regular sand since ExampleCactus will not grow naturally yet.
-			GrowsOnTileId = new int[1] { ModContent.TileType<ExampleSand>() };
+			GrowsOnTileId = [ModContent.TileType<ExampleSand>()];
 			texture = ModContent.Request<Texture2D>("ExampleMod/Content/Tiles/Plants/ExampleCactus");
 			fruitTexture = ModContent.Request<Texture2D>("ExampleMod/Content/Tiles/Plants/ExampleCactus_Fruit");
 		}

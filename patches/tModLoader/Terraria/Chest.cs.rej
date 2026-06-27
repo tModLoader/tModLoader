@@ -1,0 +1,71 @@
+@@ -222,6 +_,20 @@
+ 		return false;
+ 	}
+ 
++	/// <summary>
++	/// Attempts to move the item in <paramref name="plr"/>'s inventory or Void Vault into nearby chests.
++	/// <br/> Only called on <see cref="NetmodeID.Server"/>.
++	/// </summary>
++	/// <param name="plr">The index of the <see cref="Player"/> in <see cref="Main.player"/> to try moving an item for.</param>
++	/// <param name="slot">
++	/// The <see cref="PlayerItemSlotID"/> to move an item from.
++	/// <br/> If <c><paramref name="slot"/> &lt; 58</c>, then that slot of <paramref name="plr"/>'s inventory is moved.
++	/// <br/> If <c><paramref name="slot"/> >= <see cref="PlayerItemSlotID.Bank4_0"/> &amp;&amp; <paramref name="slot"/> &lt; <see cref="PlayerItemSlotID.Bank4_0"/> + 40</c>, then that slot (minus <see cref="PlayerItemSlotID.Bank4_0"/>) of <paramref name="plr"/>'s Void Vault is moved.
++	/// <br/> Otherwise, no item is moved.
++	/// </param>
++	/// <remarks>
++	/// It's recommended to use <see cref="Player.QuickStackAllChests"/> to handle this automatically.
++	/// </remarks>
+ 	public static void ServerPlaceItem(int plr, int slot)
+ 	{
+ 		if (slot >= PlayerItemSlotID.Bank4_0 && slot < PlayerItemSlotID.Bank4_0 + 40) {
+@@ -235,6 +_,15 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Attempts to move the given item into any chests near the given position. Cannot place items into a chest if <see cref="IsPlayerInChest(int)"/> or  if that chest <see cref="IsLocked(int, int)"/>
++	/// </summary>
++	/// <param name="item">The item to attempt moving.</param>
++	/// <param name="position">The position to attempt moving from.</param>
++	/// <returns>
++	/// If on <see cref="NetmodeID.MultiplayerClient"/>, <paramref name="item"/> without modification.
++	/// <br/> Otherwise, <paramref name="item"/> after being quick-stacked into any nearby chests. May be <see cref="Item.IsAir"/>.
++	/// </returns>
+ 	public static Item PutItemInNearbyChest(Item item, Vector2 position)
+ 	{
+ 		if (Main.netMode == 1)
+@@ -257,6 +_,19 @@
+ 				}
+ 				else if (item.IsTheSameAs(Main.chest[i].item[j])) {
+ 					flag2 = true;
++					// flag set above means "item of same type found in chest, able to be put into an empty slot later", which means we have to respect it before TryStackItems
++					if (!ItemLoader.TryStackItems(Main.chest[i].item[j], item, out int numTransfered))
++						continue;
++
++					if(numTransfered > 0)
++						VisualizeChestTransfer(position, vector, item, numTransfered);
++
++					if (item.stack <= 0) {
++						item.SetDefaults();
++						return item;
++					}
++
++					/* #OnStackHook
+ 					int num = Main.chest[i].item[j].maxStack - Main.chest[i].item[j].stack;
+ 					if (num > 0) {
+ 						if (num > item.stack)
+@@ -268,11 +_,13 @@
+ 							Main.chest[i].item[j].stack += num;
+ 						}
+ 
++						// Extra context.
+ 						if (item.stack <= 0) {
+ 							item.SetDefaults();
+ 							return item;
+ 						}
+ 					}
++					*/
+ 				}
+ 				else {
+ 					flag3 = true;

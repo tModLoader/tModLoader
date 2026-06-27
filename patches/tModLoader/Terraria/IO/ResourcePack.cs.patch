@@ -1,6 +1,34 @@
 --- src/TerrariaNetCore/Terraria/IO/ResourcePack.cs
 +++ src/tModLoader/Terraria/IO/ResourcePack.cs
-@@ -94,7 +_,11 @@
+@@ -1,6 +_,6 @@
+ using System;
+ using System.IO;
+-using Ionic.Zip;
++using System.IO.Compression;
+ using Microsoft.Xna.Framework.Graphics;
+ using Newtonsoft.Json.Linq;
+ using ReLogic.Content;
+@@ -23,7 +_,10 @@
+ 	private readonly IServiceProvider _services;
+ 	public readonly bool IsCompressed;
+ 	public readonly BrandingType Branding;
++	/*
+ 	private readonly ZipFile _zipFile;
++	*/
++	private readonly ZipArchive _zipFile;
+ 	private Texture2D _icon;
+ 	private IContentSource _contentSource;
+ 	private const string ICON_FILE_NAME = "icon.png";
+@@ -62,7 +_,7 @@
+ 		FullPath = path;
+ 		Branding = branding;
+ 		if (IsCompressed)
+-			_zipFile = ZipFile.Read(path);
++			_zipFile = new ZipArchive(File.OpenRead(path), ZipArchiveMode.Read);
+ 
+ 		LoadManifest();
+ 	}
+@@ -87,7 +_,11 @@
  			return _services.Get<IAssetRepository>().Request<Texture2D>("Images/UI/DefaultResourcePackIcon").Value;
  
  		using Stream stream = OpenStream("icon.png");
@@ -12,3 +40,16 @@
  	}
  
  	private void LoadManifest()
+@@ -112,8 +_,12 @@
+ 		if (!IsCompressed)
+ 			return File.OpenRead(Path.Combine(FullPath, fileName));
+ 
++		/*
+ 		ZipEntry zipEntry = _zipFile[fileName];
+ 		MemoryStream memoryStream = new MemoryStream((int)zipEntry.UncompressedSize);
++		*/
++		ZipArchiveEntry zipEntry = _zipFile.GetEntry(fileName);
++		MemoryStream memoryStream = new MemoryStream((int)zipEntry.Length);
+ 		zipEntry.Extract(memoryStream);
+ 		memoryStream.Position = 0L;
+ 		return memoryStream;

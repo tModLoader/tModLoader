@@ -38,5 +38,5 @@
 +		public void Dispose() => _goreFallback = prev;
 +	}
 +
-+	internal static FallbackSourceRef PushFallback(IEntitySource source) => new (source); 
++	internal static FallbackSourceRef PushFallback(IEntitySource source) => new (source);
  }

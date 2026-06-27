@@ -9,7 +9,7 @@ namespace ExampleMod.Common.Systems
 	// This example shows spawning rubble tiles during world generation.
 	public class RubbleWorldGen : ModSystem
 	{
-		public override void ModifyWorldGenTasks(List<GenPass> tasks, ref double totalWeight) {
+		public override void ModifyWorldGenTasks(List<GenPass> tasks) {
 			// Add a GenPass immediately after the "Piles" pass. ExampleOreSystem explains this approach in more detail.
 			int PilesIndex = tasks.FindIndex(genpass => genpass.Name.Equals("Piles"));
 
@@ -27,7 +27,7 @@ namespace ExampleMod.Common.Systems
 		protected override void ApplyPass(GenerationProgress progress, GameConfiguration configuration) {
 			progress.Message = "Example Mod Piles";
 
-			int[] tileTypes = new int[] { ModContent.TileType<Example1x1RubbleNatural>(), ModContent.TileType<Example2x1RubbleNatural>(), ModContent.TileType<Example3x2RubbleNatural>() };
+			int[] tileTypes = [ModContent.TileType<Example1x1RubbleNatural>(), ModContent.TileType<Example2x1RubbleNatural>(), ModContent.TileType<Example3x2RubbleNatural>()];
 
 			// To not be annoying, we'll only spawn 15 Example Rubble near the spawn point.
 			// This example uses the Try Until Success approach: https://github.com/tModLoader/tModLoader/wiki/World-Generation#try-until-success

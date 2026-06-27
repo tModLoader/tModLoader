@@ -11,7 +11,6 @@ namespace ExampleMod.Content.Mounts
 	{
 		public override void SetStaticDefaults() {
 			MountID.Sets.Cart[Type] = true;
-			MountID.Sets.FacePlayersVelocity[Type] = true;
 
 			// Helper method setting many common properties for a minecart
 			Mount.SetAsMinecart(
@@ -40,7 +39,7 @@ namespace ExampleMod.Content.Mounts
 				Vector2 directionOffset = new Vector2(0f, 10f) * player.Directions;
 				Vector2 position = player.Center + directionOffset + randomOffset;
 				position = player.RotatedRelativePoint(position);
-				Dust dust = Dust.NewDustPerfect(position, 91);
+				Dust dust = Dust.NewDustPerfect(position, DustID.GemDiamond);
 				dust.noGravity = true;
 				dust.fadeIn = 0.6f;
 				dust.scale = 0.4f;

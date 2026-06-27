@@ -73,7 +73,7 @@ public readonly partial struct Tile
 
 	/// <summary>
 	/// The slope shape of the tile, which can be changed by hammering.<br/>
-	/// Used by <see cref="WorldGen.SlopeTile(int, int, int, bool)"/> and <see cref="BlockType"/>.<br/>
+	/// Used by <see cref="WorldGen.SlopeTile(int, int, int, bool, bool)"/> and <see cref="BlockType"/>.<br/>
 	/// Legacy/vanilla equivalent is <see cref="slope()"/> or <see cref="slope(byte)"/>.
 	/// </summary>
 	public SlopeType Slope { get => Get<TileWallWireStateData>().Slope; set => Get<TileWallWireStateData>().Slope = value; }
@@ -90,22 +90,22 @@ public readonly partial struct Tile
 	public bool IsHalfBlock { get => Get<TileWallWireStateData>().IsHalfBlock; set => Get<TileWallWireStateData>().IsHalfBlock = value; }
 
 	/// <summary>
-	/// Whether a tile's <see cref="Slope"/> has a solid top side (<see cref="SlopeType.SlopeDownLeft"/> or <see cref="SlopeType.SlopeDownRight"/>).<br/>
+	/// If the top side of a tile is sloped (<see cref="Slope"/>), meaning the bottom side is solid. (<see cref="SlopeType.SlopeDownLeft"/> or <see cref="SlopeType.SlopeDownRight"/>).<br/>
 	/// Legacy/vanilla equivalent is <see cref="topSlope"/>.
 	/// </summary>
 	public bool TopSlope => Slope == SlopeType.SlopeDownLeft || Slope == SlopeType.SlopeDownRight;
 	/// <summary>
-	/// Whether a tile's <see cref="Slope"/> has a solid bottom side (<see cref="SlopeType.SlopeUpLeft"/> or <see cref="SlopeType.SlopeUpRight"/>).<br/>
+	/// If the bottom side of a tile is sloped (<see cref="Slope"/>), meaning the top side is solid. (<see cref="SlopeType.SlopeUpLeft"/> or <see cref="SlopeType.SlopeUpRight"/>).<br/>
 	/// Legacy/vanilla equivalent is <see cref="bottomSlope"/>.
 	/// </summary>
 	public bool BottomSlope => Slope == SlopeType.SlopeUpLeft || Slope == SlopeType.SlopeUpRight;
 	/// <summary>
-	/// Whether a tile's <see cref="Slope"/> has a solid left side (<see cref="SlopeType.SlopeDownRight"/> or <see cref="SlopeType.SlopeUpRight"/>).<br/>
+	/// If the left side of a tile is sloped (<see cref="Slope"/>), meaning the right side is solid. (<see cref="SlopeType.SlopeDownRight"/> or <see cref="SlopeType.SlopeUpRight"/>).<br/>
 	/// Legacy/vanilla equivalent is <see cref="leftSlope"/>.
 	/// </summary>
 	public bool LeftSlope => Slope == SlopeType.SlopeDownRight || Slope == SlopeType.SlopeUpRight;
 	/// <summary>
-	/// Whether a tile's <see cref="Slope"/> has a solid right side (<see cref="SlopeType.SlopeDownLeft"/> or <see cref="SlopeType.SlopeUpLeft"/>).<br/>
+	/// If the right side of a tile is sloped (<see cref="Slope"/>), meaning the left side is solid. (<see cref="SlopeType.SlopeDownLeft"/> or <see cref="SlopeType.SlopeUpLeft"/>).<br/>
 	/// Legacy/vanilla equivalent is <see cref="rightSlope"/>.
 	/// </summary>
 	public bool RightSlope => Slope == SlopeType.SlopeDownLeft || Slope == SlopeType.SlopeUpLeft;
@@ -189,6 +189,30 @@ public readonly partial struct Tile
 	/// </summary>
 	public bool CheckingLiquid { get => Get<LiquidData>().CheckingLiquid; set => Get<LiquidData>().CheckingLiquid = value; }
 
+	/// <summary>
+	/// Whether there is water at this position.
+	/// <br/><br/> Legacy/vanilla equivalent is <see cref="anyWater()"/>.
+	/// </summary>
+	public bool HasWater => Get<LiquidData>().Amount > 0 && Get<LiquidData>().LiquidType == LiquidID.Water;
+
+	/// <summary>
+	/// Whether there is water at this position.
+	/// <br/><br/> Legacy/vanilla equivalent is <see cref="anyLava()"/>.
+	/// </summary>
+	public bool HasLava => Get<LiquidData>().Amount > 0 && Get<LiquidData>().LiquidType == LiquidID.Lava;
+
+	/// <summary>
+	/// Whether there is water at this position.
+	/// <br/><br/> Legacy/vanilla equivalent is <see cref="anyHoney()"/>.
+	/// </summary>
+	public bool HasHoney => Get<LiquidData>().Amount > 0 && Get<LiquidData>().LiquidType == LiquidID.Honey;
+
+	/// <summary>
+	/// Whether there is water at this position.
+	/// <br/><br/> Legacy/vanilla equivalent is <see cref="anyShimmer()"/>.
+	/// </summary>
+	public bool HasShimmer => Get<LiquidData>().Amount > 0 && Get<LiquidData>().LiquidType == LiquidID.Shimmer;
+
 	// Wires
 
 	/// <summary>
@@ -211,6 +235,12 @@ public readonly partial struct Tile
 	/// Legacy/vanilla equivalent is <see cref="wire4()"/> or <see cref="wire4(bool)"/>.
 	/// </summary>
 	public bool YellowWire { get => Get<TileWallWireStateData>().YellowWire; set => Get<TileWallWireStateData>().YellowWire = value; }
+
+	/// <summary>
+	/// Whether there is any wire at this position.<br/>
+	/// Legacy/vanilla equivalent is <see cref="anyWire()"/>.
+	/// </summary>
+	public bool HasWire => Get<TileWallWireStateData>().WireData > 0;
 
 	// Invisibility
 

@@ -1,0 +1,38 @@
+--- src/TerrariaNetCore/Terraria/GameContent/Drawing/ParticleOrchestrator.cs
++++ src/tModLoader/Terraria/GameContent/Drawing/ParticleOrchestrator.cs
+@@ -482,7 +_,7 @@
+ 				if (!tileSafely.active())
+ 					continue;
+ 
+-				int num3 = WorldGen.KillTile_GetTileDustAmount(fail: true, tileSafely);
++				int num3 = WorldGen.KillTile_GetTileDustAmount(fail: true, tileSafely, i, j);
+ 				for (int k = 0; k < num3; k++) {
+ 					Dust obj = Main.dust[WorldGen.KillTile_MakeTileDust(i, j, tileSafely)];
+ 					obj.velocity.Y -= 3f + (float)num2 * 1.5f;
+@@ -1134,7 +_,7 @@
+ 				if (i <= point.X + num2 && i >= point.X - num2 && j <= point.Y + num2 && j >= point2.Y - num2)
+ 					continue;
+ 
+-				int num9 = WorldGen.KillTile_GetTileDustAmount(fail: true, tileSafely);
++				int num9 = WorldGen.KillTile_GetTileDustAmount(fail: true, tileSafely, i, j);
+ 				for (int k = 0; k < num9; k++) {
+ 					Dust obj = Main.dust[WorldGen.KillTile_MakeTileDust(i, j, tileSafely)];
+ 					obj.velocity.Y -= 3f + (float)num8 * 1.5f;
+@@ -1450,7 +_,7 @@
+ 				if (tileSafely2.active() && Main.tileSolid[tileSafely2.type] && !Main.tileSolidTop[tileSafely2.type])
+ 					continue;
+ 
+-				int num8 = WorldGen.KillTile_GetTileDustAmount(fail: true, tileSafely);
++				int num8 = WorldGen.KillTile_GetTileDustAmount(fail: true, tileSafely, j, k);
+ 				for (int l = 0; l < num8; l++) {
+ 					Dust obj = Main.dust[WorldGen.KillTile_MakeTileDust(j, k, tileSafely)];
+ 					obj.velocity.Y -= 3f + (float)num7 * 1.5f;
+@@ -2119,7 +_,7 @@
+ 			Player player = Main.player[settings.IndexOfPlayerWhoInvokedThis];
+ 			if (player.active && !player.dead) {
+ 				sbyte voiceOverride = (sbyte)settings.UniqueInfoPiece;
+-				sbyte voiceOverride2 = player.voiceOverride;
++				int voiceOverride2 = player.voiceOverride; // TML: sbyte->int
+ 				player.voiceOverride = voiceOverride;
+ 				player.PlayHurtSound();
+ 				player.voiceOverride = voiceOverride2;

@@ -6,6 +6,7 @@ namespace Terraria.UI;
 
 public partial class ItemSlot
 {
+	/* TODO: Restore functionality in ArmorSwap. Try new approach rather than just fixing compile issues.
 	private static bool AccessorySwap(Player player, Item item, ref Item result)
 	{
 		//TML: Rewrote ArmorSwap for accessories under the PR #1299 so it was actually readable. No vanilla functionality lost in transition
@@ -26,7 +27,7 @@ public partial class ItemSlot
 		//TML: Check our modded functional slots
 		if (accSlotToSwapTo < 0) {
 			for (int i = 0; i < accessories.Length / 2; i++) {
-				if (accLoader.ModdedIsItemSlotUnlockedAndUsable(i, player)) {
+				if (accLoader.ModdedIsSpecificItemSlotUnlockedAndUsable(i, player, vanity: false)) {
 					if (accessories[i].type == 0 && accLoader.CanAcceptItem(i, item, (int)Context.ModdedAccessorySlot) && ItemLoader.CanEquipAccessory(item, i, true)) {
 						accSlotToSwapTo = i + 20;
 						break;
@@ -69,6 +70,10 @@ public partial class ItemSlot
 				return false;
 			}
 
+			if (!accLoader.ModSlotCheck(item, num3, Context.ModdedAccessorySlot)) {
+				return false;
+			}
+
 			result = accessories[num3].Clone();
 			accessories[num3] = item.Clone();
 		}
@@ -85,6 +90,7 @@ public partial class ItemSlot
 
 		return true;
 	}
+	*/
 
 	/// <summary>
 	/// Alters the ItemSlot.DyeSwap method for modded slots;
@@ -114,44 +120,53 @@ public partial class ItemSlot
 		dyes[dyeSlotCount] = item.Clone();
 
 		SoundEngine.PlaySound(7);
-		Recipe.FindRecipes();
 		success = true;
 		return item2;
 	}
 
 	// Copy of Acc check, but runs hooks which take the local player as a context.
-	internal static bool AccCheck_ForLocalPlayer(Item[] itemCollection, Item item, int slot)
+	/// <inheritdoc cref="AccCheck_ForPlayer(Player, Item[], Item, int)"/>
+	internal static bool AccCheck_ForLocalPlayer(Item[] itemCollection, Item item, int slot) => AccCheck_ForPlayer(Main.LocalPlayer, itemCollection, item, slot);
+
+	/// <summary>
+	/// Checks if placing <paramref name="item"/> into index <paramref name="slot"/> of <paramref name="itemCollection"/> works or not. <paramref name="itemCollection"/> corresponds to the <paramref name="player"/>'s accessories. 
+	/// <br/><br/> This is a replacement for <see cref="AccCheck(Item[], Item, int)"/> that takes into account player-specific checks and hooks.
+	/// <br/><br/> Returns true if can't equip and false if placing the accessory is ok. 
+	/// </summary>
+	internal static bool AccCheck_ForPlayer(Player player, Item[] itemCollection, Item item, int slot)
 	{
+		/*
 		if (isEquipLocked(item.type))
 			return true;
+		*/
 
 		if (slot != -1) {
-			if (itemCollection[slot].IsTheSameAs(item))
+			if (!itemCollection[slot].IsNotTheSameAs(item))
 				return false;
 
-			if (itemCollection[slot].wingSlot > 0 && item.wingSlot > 0 || !ItemLoader.CanAccessoryBeEquippedWith(itemCollection[slot], item))
-				return !ItemLoader.CanEquipAccessory(item, slot % 20, slot >= 20);
+			if (itemCollection[slot].wingSlot > 0 && item.wingSlot > 0 || !ItemLoader.CanAccessoryBeEquippedWith(player, itemCollection[slot], item))
+				return !ItemLoader.CanEquipAccessory(player, item, slot >= 20 ? slot - 20 : slot, slot >= 20);
 		}
 
-		var modSlotPlayer = AccessorySlotLoader.ModSlotPlayer(Main.LocalPlayer);
+		var modSlotPlayer = AccessorySlotLoader.ModSlotPlayer(player);
 		var modCount = modSlotPlayer.SlotCount;
 		bool targetVanity = slot >= 20 && (slot >= modCount + 20) || slot < 20 && slot >= 10;
 
 		for (int i = targetVanity ? 13 : 3; i < (targetVanity ? 20 : 10); i++) {
-			if (!targetVanity && item.wingSlot > 0 && itemCollection[i].wingSlot > 0 || !ItemLoader.CanAccessoryBeEquippedWith(itemCollection[i], item))
+			if (!targetVanity && item.wingSlot > 0 && itemCollection[i].wingSlot > 0 || !ItemLoader.CanAccessoryBeEquippedWith(player, itemCollection[i], item))
 				return true;
 		}
 
 		for (int i = (targetVanity ? modCount : 0) + 20; i < (targetVanity ? modCount * 2 : modCount) + 20; i++) {
-			if (!targetVanity && item.wingSlot > 0 && itemCollection[i].wingSlot > 0 || !ItemLoader.CanAccessoryBeEquippedWith(itemCollection[i], item))
+			if (!targetVanity && item.wingSlot > 0 && itemCollection[i].wingSlot > 0 || !ItemLoader.CanAccessoryBeEquippedWith(player, itemCollection[i], item))
 				return true;
 		}
 
 		for (int i = 0; i < itemCollection.Length; i++) {
-			if (item.IsTheSameAs(itemCollection[i]))
+			if (!item.IsNotTheSameAs(itemCollection[i]))
 				return true;
 		}
 
-		return !ItemLoader.CanEquipAccessory(item, slot % 20, slot >= 20);
+		return !ItemLoader.CanEquipAccessory(player, item, slot >= 20 ? slot - 20 : slot, slot >= 20);
 	}
 }

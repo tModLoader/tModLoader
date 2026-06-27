@@ -1,4 +1,8 @@
-﻿using Terraria;
+﻿using ExampleMod.Common.UI.ExampleFullscreenUI;
+using Microsoft.Xna.Framework;
+using Terraria;
+using Terraria.Audio;
+using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Config;
@@ -48,6 +52,24 @@ namespace ExampleMod.Common.Configs.ModConfigShowcases
 
 			// Accept the changes. This is the default behavior of the AcceptClientChanges method.
 			return true;
+		}
+
+		public override void HandleAcceptClientChangesReply(bool success, int player, NetworkText message) {
+			ExampleFullscreenUI.instance.UpdateConfigSaveStatusMessage(message.ToString(), success ? Color.Green : Color.Red);
+
+			if (success) {
+				ExampleFullscreenUI.instance.RefreshContents();
+			}
+
+			// Only play the sound if this player requested the changes
+			if (player == Main.myPlayer) {
+				if (success) {
+					SoundEngine.PlaySound(SoundID.CoinPickup);
+				}
+				else {
+					SoundEngine.PlaySound(SoundID.Duck);
+				}
+			}
 		}
 	}
 }

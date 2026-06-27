@@ -32,7 +32,7 @@ namespace ExampleMod.Common.Systems
 			ExampleTravelingMerchant.shopItems.Clear();
 			ExampleTravelingMerchant.spawnTime = double.MaxValue;
 		}
- 
+
 		public override void NetSend(BinaryWriter writer) {
 			// Note that NetSend is called whenever WorldData packet is sent.
 			// We use this so that shop items can easily be synced to joining players

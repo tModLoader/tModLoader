@@ -43,7 +43,7 @@
 +
 +	// Added by TML: [[
 +	internal Action Continuation { get; set; }
-+	
++
 +	Action IAsset.Continuation { set => Continuation = value; }
 +
 +	public Action Wait { get; internal set; }

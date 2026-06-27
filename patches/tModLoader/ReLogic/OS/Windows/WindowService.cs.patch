@@ -1,13 +1,51 @@
 --- src/TerrariaNetCore/ReLogic/OS/Windows/WindowService.cs
 +++ src/tModLoader/ReLogic/OS/Windows/WindowService.cs
-@@ -55,4 +_,10 @@
- 		NativeMethods.FlashInfo flashInfo = NativeMethods.FlashInfo.CreateStop(window.Handle);
- 		NativeMethods.FlashWindowEx(ref flashInfo);
+@@ -5,6 +_,7 @@
+ using System.Windows.Forms;
+ #endif
+ using Microsoft.Xna.Framework;
++using System.IO;
+ using ReLogic.OS.Base;
+ 
+ namespace ReLogic.OS.Windows;
+@@ -99,4 +_,40 @@
+ 		return new Microsoft.Xna.Framework.Rectangle(form.Bounds.X, form.Bounds.Y, form.Bounds.Width, form.Bounds.Height);
  	}
+ #endif
 +
 +	// Added by TML.
-+	public void HideConsole()
++	public override void HideConsole()
 +	{
 +		NativeMethods.HideConsole();
++	}
++
++	public override void ShowConsole()
++	{
++		NativeMethods.ShowConsole();
++	}
++
++	public override void ReleaseConsole()
++	{
++		NativeMethods.FreeConsole();
++	}
++
++	public override void CreateAndRedirectConsole()
++	{
++		// Allocate a new console window
++		if (NativeMethods.AllocConsole()) {
++			// Redirect Console.Out to the new console's output stream
++			IntPtr stdOutHandle = NativeMethods.GetStdHandle(0xFFFFFFF5);
++			if (stdOutHandle != IntPtr.Zero) {
++				// Reopen standard output stream to the new console
++				TextWriter writer = new StreamWriter(Console.OpenStandardOutput()) { AutoFlush = true };
++				Console.SetOut(writer);
++			}
++			else {
++				Console.WriteLine("Failed to get standard output handle.");
++			}
++		}
++		else {
++			Console.WriteLine("Failed to allocate console.");
++		}
 +	}
  }

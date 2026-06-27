@@ -1,6 +1,6 @@
 --- src/decompiled/Terraria/Netplay.cs
 +++ src/Terraria/Terraria/Netplay.cs
-@@ -4,6 +_,9 @@
+@@ -5,6 +_,9 @@
  using System.Net;
  using System.Net.Sockets;
  using System.Threading;
@@ -10,7 +10,7 @@
  using ReLogic.OS;
  using Terraria.Audio;
  using Terraria.Localization;
-@@ -41,6 +_,10 @@
+@@ -45,6 +_,10 @@
  	public static bool SpamCheck = false;
  	public static bool HasClients;
  	private static Thread _serverThread;
@@ -20,8 +20,8 @@
 +#endif
  	public static MessageBuffer fullBuffer = new MessageBuffer();
  	private static int _currentRequestId;
- 	private static UdpClient BroadcastClient = null;
-@@ -115,10 +_,43 @@
+ 	private static long swTicksLast;
+@@ -116,10 +_,43 @@
  
  	private static void OpenPort(int port)
  	{

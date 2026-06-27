@@ -11,11 +11,11 @@
 -public class EntitySource_Gift : IEntitySource
 +public class EntitySource_Gift : EntitySource_Parent
  {
--	public readonly Entity Entity;
+-	public readonly IEntitySourceTarget Entity;
 -
 -	public EntitySource_Gift(Entity entity)
 -	{
 -		Entity = entity;
 -	}
-+	public EntitySource_Gift(Entity entity, string? context = null) : base(entity, context) { }
++	public EntitySource_Gift(IEntitySourceTarget entity, string? context = null) : base(entity, context) { }
  }

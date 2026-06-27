@@ -45,15 +45,15 @@
  		UpdatePlayersList();
  		if (PlayerInput.UsingGamepadUI)
  			UILinkPointNavigator.ChangePoint(3000 + ((_playerList.Count == 0) ? 1 : 2));
-@@ -149,6 +_,12 @@
+@@ -142,6 +_,12 @@
  		int num = 0;
- 		foreach (PlayerFileData item in list) {
+ 		foreach (PlayerFileData item in orderedEnumerable) {
  			_playerList.Add(new UICharacterListItem(item, num++));
 +		}
 +
 +		_playerList.Add(_migrationPanel);
 +
-+		if (list.Count == 0) {
++		if (orderedEnumerable.Any()) {
 +			AddAutomaticPlayerMigrationButtons();
  		}
  	}

@@ -28,12 +28,18 @@ fi
 
 cd "$(dirname "$0")"/..
 if [[ ! -z "$DOTNET_ROOT" ]]; then
-	echo "DOTNET_ROOT is $DOTNET_ROOT"
-	export DOTNET_ROOT=$HOME/.dotnet
-	export PATH=$PATH:$DOTNET_ROOT:$DOTNET_ROOT/tools
+    echo "DOTNET_ROOT is $DOTNET_ROOT"
+else
+    export DOTNET_ROOT=$HOME/.dotnet
 fi
+export PATH=$PATH:$DOTNET_ROOT:$DOTNET_ROOT/tools
 
 DOTNET_PATH=$(which dotnet)
+if [[ "$?" != "0" ]]; then
+  echo "dotnet not found on PATH. Either add dotnet to PATH, set DOTNET_ROOT to the install path, or provide an install in ~/.dotnet"
+  read -n 1 -s -r -p "Press any key to continue"
+  exit 1
+fi
 DOTNET_X64_PATH=$(dirname $DOTNET_PATH)/x64/dotnet
 if [[ -f $DOTNET_X64_PATH ]]; then
 	DOTNET_PATH=$DOTNET_X64_PATH

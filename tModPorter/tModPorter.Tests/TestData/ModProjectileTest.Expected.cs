@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -14,33 +15,43 @@ public class ModProjectileTest : ModProjectile
 		Console.Write(DrawOffsetX);
 		Console.Write(DrawOriginOffsetY);
 		Console.Write(DrawOriginOffsetX);
-		Console.Write(DrawHeldProjInFrontOfHeldItemAndArms);
+#if COMPILE_ERROR
+		Console.Write(DrawHeldProjInFrontOfHeldItemAndArms/* tModPorter Note: Removed. Replace with Projectile.drawLayer = ProjectileDrawLayerID.HeldProjOverHand; */);
+#endif
+	}
+
+	public override void SetStaticDefaults()
+	{
+#if COMPILE_ERROR
+		ProjectileID.Sets.HeldProjDoesNotUsePlayerGfxOffY/* tModPorter Note: Removed. AI() should use master.RotatedRelativePoint(master.MountedCenter + ...) to position held projectiles */[Type] = true;
+		ProjectileID.Sets.DontAttachHideToAlpha/* tModPorter Note: Removed. Now true by default. See Projectile.usesOwnerLight and Projectile.drawLayer for more details. */[Type] = true;
+#endif
 	}
 
 	public override bool? CanDamage()/* tModPorter Suggestion: Return null instead of true */ { return false; }
 
 	public override bool TileCollideStyle(ref int width, ref int height, ref bool fallThrough, ref Vector2 hitboxCenterFrac) { return true; }
 
-	public override bool PreDrawExtras() { return true; }
+	public override bool PreDrawExtras(Player player)/* tModPorter Replace 'Main.player[Projectile.owner]' with 'player'. */ { return true; }
 
-	public override bool PreDraw(ref Color lightColor) { return true; }
+	public override bool PreDraw(Player player, ref Color lightColor)/* tModPorter Replace 'Main.player[Projectile.owner]' with 'player'. */ { return true; }
 
-	public override void PostDraw(Color lightColor) { /* Empty */ }
+	public override void PostDraw(Player player, Color lightColor)/* tModPorter Replace 'Main.player[Projectile.owner]' with 'player'. */ { /* Empty */ }
 
-	public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI) {
+#if COMPILE_ERROR
+	public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)/* tModPorter Note: Removed. Set Projectile.drawLayer instead */ {
 		// not-yet-implemented
 		behindNPCsAndTiles.Add(index);
 		behindNPCs.Add(index);
 		behindProjectiles.Add(index);
 		overWiresUI.Add(index);
 		// instead-expect
-#if COMPILE_ERROR
 		drawCacheProjsBehindNPCsAndTiles.Add(index);
 		drawCacheProjsBehindNPCs.Add(index);
 		drawCacheProjsBehindProjectiles.Add(index);
 		drawCacheProjsOverWiresUI.Add(index);
-#endif
 	}
+#endif
 
 #if COMPILE_ERROR
 	public override bool? SingleGrappleHook(Player player)/* tModPorter Note: Removed. In SetStaticDefaults, use ProjectileID.Sets.SingleGrappleHook[Type] = true if you previously had this method return true */ { return null; }

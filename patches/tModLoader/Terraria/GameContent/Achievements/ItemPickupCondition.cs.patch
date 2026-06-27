@@ -1,0 +1,56 @@
+--- src/TerrariaNetCore/Terraria/GameContent/Achievements/ItemPickupCondition.cs
++++ src/tModLoader/Terraria/GameContent/Achievements/ItemPickupCondition.cs
+@@ -3,6 +_,9 @@
+ 
+ namespace Terraria.GameContent.Achievements;
+ 
++/// <summary>
++/// Satisfied when any of the provided items is picked up by the local player.
++/// </summary>
+ public class ItemPickupCondition : AchievementCondition
+ {
+ 	private const string Identifier = "ITEM_PICKUP";
+@@ -10,8 +_,10 @@
+ 	private static bool _isListenerHooked;
+ 	private short[] _itemIds;
+ 
++	private static string IDToIdentifier(short itemId) => ModLoader.ItemLoader.GetItem(itemId)?.FullName ?? itemId.ToString();
++
+-	private ItemPickupCondition(short itemId)
++	public ItemPickupCondition(short itemId)
+-		: base("ITEM_PICKUP_" + itemId)
++		: base("ITEM_PICKUP_" + IDToIdentifier(itemId))
+ 	{
+ 		_itemIds = new short[1] {
+ 			itemId
+@@ -20,8 +_,28 @@
+ 		ListenForPickup(this);
+ 	}
+ 
++	/// <summary>
++	/// Since this takes a short array, you may need to do something like this to convert a set:
++	/// <code>
++	/// int[] drillItems = ItemID.Sets.IsDrill.GetTrueIndexes().ToArray();
++	/// short[] drillItemsAsShort = Array.ConvertAll(drillItems, Convert.ToInt16);
++	/// AddCondition(new ItemPickupCondition(drillItemsAsShort));
++	/// </code>
++	/// </summary>
+-	private ItemPickupCondition(short[] itemIds)
++	public ItemPickupCondition(short[] itemIds)
+-		: base("ITEM_PICKUP_" + itemIds[0])
++		: base("ITEM_PICKUP_" + IDToIdentifier(itemIds[0]))
++	{
++		_itemIds = itemIds;
++		ListenForPickup(this);
++	}
++
++	public ItemPickupCondition(short itemId, string name) : base(name)
++	{
++		_itemIds = [itemId];
++		ListenForPickup(this);
++	}
++
++	public ItemPickupCondition(short[] itemIds, string name) : base(name)
+ 	{
+ 		_itemIds = itemIds;
+ 		ListenForPickup(this);

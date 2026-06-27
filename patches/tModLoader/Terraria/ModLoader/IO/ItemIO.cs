@@ -13,10 +13,10 @@ public static class ItemIO
 	//replace netID writes in Terraria.Player.SavePlayer
 	//in Terraria.IO.WorldFile.SaveChests include IsModItem for no-item check
 	internal static void WriteVanillaID(Item item, BinaryWriter writer)
-		=> writer.Write(item.ModItem != null ? 0 : item.netID);
+		=> writer.Write(item.ModItem != null ? 0 : item.type);
 
 	internal static void WriteShortVanillaID(Item item, BinaryWriter writer)
-		=> WriteShortVanillaID(item.netID, writer);
+		=> WriteShortVanillaID(item.type, writer);
 
 	internal static void WriteShortVanillaID(int id, BinaryWriter writer)
 		=> writer.Write((short)(id >= ItemID.Count ? 0 : id));
@@ -44,7 +44,7 @@ public static class ItemIO
 
 		if (item.ModItem == null) {
 			tag.Set("mod", "Terraria");
-			tag.Set("id", item.netID);
+			tag.Set("id", item.type);
 		}
 		else {
 			tag.Set("mod", item.ModItem.Mod.Name);
@@ -104,6 +104,12 @@ public static class ItemIO
 				item.SetDefaults(ModContent.ItemType<UnloadedItem>());
 				((UnloadedItem)item.ModItem).Setup(tag);
 			}
+		}
+
+		// The item may have turned to air if it is deprecated in one way or another.
+		// Short-circuit in order to avoid throwing errors down the line.
+		if (item.IsAir) {
+			return;
 		}
 
 		LoadModdedPrefix(item, tag);
@@ -192,7 +198,7 @@ public static class ItemIO
 
 	public static void Send(Item item, BinaryWriter writer, bool writeStack = false, bool writeFavorite = false)
 	{
-		writer.Write7BitEncodedInt(item.netID);
+		writer.Write7BitEncodedInt(item.type);
 		writer.Write7BitEncodedInt(item.prefix);
 
 		if (writeStack)

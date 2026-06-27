@@ -16,7 +16,7 @@
 +	/// </summary>
 +	public int AmmoItemIdUsed { get; }
  
--	public EntitySource_ItemUse_WithAmmo(Entity entity, Item item, int ammoItemIdUsed)
+-	public EntitySource_ItemUse_WithAmmo(IEntitySourceTarget entity, Item item, int ammoItemIdUsed)
 -		: base(entity, item)
 +	public EntitySource_ItemUse_WithAmmo(Player player, Item item, int ammoItemId, string? context = null) : base(player, item, context)
  	{

@@ -1,25 +1,24 @@
 --- src/TerrariaNetCore/Terraria/GameContent/Drawing/TileDrawing.cs
 +++ src/tModLoader/Terraria/GameContent/Drawing/TileDrawing.cs
-@@ -11,25 +_,31 @@
- using Terraria.Graphics;
+@@ -10,31 +_,47 @@
  using Terraria.Graphics.Capture;
+ using Terraria.Graphics.Effects;
  using Terraria.ID;
 +using Terraria.ModLoader;
- using Terraria.ObjectData;
++using Terraria.ObjectData;
+ using Terraria.Testing;
  using Terraria.UI;
  using Terraria.Utilities;
  
  namespace Terraria.GameContent.Drawing;
  
--public class TileDrawing
-+public partial class TileDrawing
+-public class TileDrawing : TileDrawingBase
++public partial class TileDrawing : TileDrawingBase
  {
 -	private enum TileCounterType
 +	public enum TileCounterType
  	{
  		Tree,
- 		DisplayDoll,
- 		HatRack,
 +		/// <summary> Tile will sway as if anchored below (1x1 tile). Affected by wind and player interaction. Used automatically by tiles in <see cref="TileID.Sets.SwaysInWindBasic"/>. </summary>
  		WindyGrass,
 +		/// <summary> Tile will sway as if anchored below. Affected by wind but not player interaction. Used by <see cref="TileID.PlantDetritus"/>, <see cref="TileID.Sunflower"/>. Tiles need to assign <see cref="TileID.Sets.MultiTileSway"/> and use as directed.</summary>
@@ -34,20 +33,67 @@
  		ReverseVine,
  		TeleportationPylon,
  		MasterTrophy,
-@@ -114,7 +_,11 @@
+ 		AnyDirectionalGrass,
++		/// <summary> Will cause <see cref="ModTile.SpecialDraw(int, int, SpriteBatch)"/> to be called.
++		/// <br/><br/> This option should be used with non-<see cref="Main.tileSolid"/> tiles or solid tiles that set <see cref="TileID.Sets.DrawTileInSolidLayer"/> to false.</summary>
++		CustomNonSolid,
++		/// <summary> Will cause <see cref="ModTile.SpecialDraw(int, int, SpriteBatch)"/> to be called.
++		/// <br/><br/> This option should be used with <see cref="Main.tileSolid"/> tiles or non-solid tiles that set <see cref="TileID.Sets.DrawTileInSolidLayer"/> to true.</summary>
++		CustomSolid,
+ 		Count
+ 	}
+ 
++	/// <summary>
++	/// Contains parameters for controlling how a flame overlay on a tile will be drawn. Used by <see cref="ModTile.GetTileFlameData(int, int, ref TileFlameData)"/>.
++	/// </summary>
+-	private struct TileFlameData
++	public struct TileFlameData
+ 	{
+ 		public Texture2D flameTexture;
+ 		public ulong flameSeed;
+@@ -57,8 +_,8 @@
+ 	private const float FORCE_FOR_MIN_WIND = 0.08f;
+ 	private const float FORCE_FOR_MAX_WIND = 1.2f;
+ 	private int _leafFrequency = 100000;
+-	private int[] _specialsCount = new int[11];
++	private int[] _specialsCount = new int[(int)TileCounterType.Count];
+-	private Point[][] _specialPositions = new Point[11][];
++	private Point[][] _specialPositions = new Point[(int)TileCounterType.Count][];
+ 	private Dictionary<Point, int> _displayDollTileEntityPositions = new Dictionary<Point, int>();
+ 	private Dictionary<Point, int> _hatRackTileEntityPositions = new Dictionary<Point, int>();
+ 	private Dictionary<Point, int> _trainingDummyTileEntityPositions = new Dictionary<Point, int>();
+@@ -71,10 +_,16 @@
+ 	private int[] _specialTileX = new int[1000];
+ 	private int[] _specialTileY = new int[1000];
+ 	private UnifiedRandom _rand;
++	public double _treeWindCounter;
++	public double _grassWindCounter;
++	public double _sunflowerWindCounter;
++	public double _vineWindCounter;
++	/*
+ 	private double _treeWindCounter;
+ 	private double _grassWindCounter;
+ 	private double _sunflowerWindCounter;
+ 	private double _vineWindCounter;
++	*/
+ 	private WindGrid _windGrid = new WindGrid();
+ 	private bool _shouldShowInvisibleBlocks;
+ 	private bool _shouldShowInvisibleBlocks_LastFrame;
+@@ -119,7 +_,12 @@
  
  	private Gore[] _gore => Main.gore;
  
 +	/// <summary>
 +	/// Registers a tile coordinate to use custom drawing code corresponding to the <see cref="TileCounterType"/> provided. This is mostly used to apply wind and player interaction effects to tiles.
-+	/// <para/> For multitiles, make sure to only call this for the top left corner of the multitile to prevent duplicate draws by checking <see cref="TileObjectData.IsTopLeft(int, int)"/> first. This should be called in <c>ModTile.PreDraw</c> (or <c>GlobalTile.PreDraw</c>) and false should be returned to prevent the default tile drawing.
++	/// <para/> For multitiles, make sure to only call this for the top left corner of the multitile to prevent duplicate draws by checking <see cref="TileObjectData.IsTopLeft(int, int)"/> first. This should be called in <c>ModTile.PreDraw</c> (or <c>GlobalTile.PreDraw</c>) and false should be returned to prevent the default tile drawing. It can also be called in <see cref="ModTile.DrawEffects(int, int, SpriteBatch, ref TileDrawInfo)"/> as well.
++	/// <para/> When <see cref="TileCounterType.CustomNonSolid"/> or <see cref="TileCounterType.CustomSolid"/> is used, <see cref="ModTile.SpecialDraw(int, int, SpriteBatch)"/> will be called to allow custom rendering. Compared to using <see cref="AddSpecialLegacyPoint(int, int)"/>, SpecialDraw will be called at 60fps rather than 15fps, the sampler state will default to PointClamp instead of LinearClamp, and adjusting for <see cref="Main.offScreenRange"/> is no longer necessary because the render target is the screen rather than the tile render targets.
 +	/// </summary>
 -	private void AddSpecialPoint(int x, int y, TileCounterType type)
 +	public void AddSpecialPoint(int x, int y, TileCounterType type)
  	{
  		_specialPositions[(int)type][_specialsCount[(int)type]++] = new Point(x, y);
  	}
-@@ -151,11 +_,11 @@
+@@ -152,11 +_,11 @@
  				if (tile == null)
  					continue;
  
@@ -60,7 +106,7 @@
  					switch (tile.type) {
  						case 5:
  							tileStyle = GetTreeBiome(j, i, tile.frameX, tile.frameY);
-@@ -179,12 +_,13 @@
+@@ -180,14 +_,15 @@
  				}
  
  				if (!prepareLazily)
@@ -68,6 +114,8 @@
 +					MakeExtraPreparations(tile, j, i, tileStyle);
  			}
  		}
+ 
+ 		TimeLogger.FindPaintedTiles.AddTime(fromTimestamp);
  	}
  
 +	//TML: Added tileStyle parameter.
@@ -76,7 +124,7 @@
  	{
  		switch (tile.type) {
  			case 5: {
-@@ -268,9 +_,24 @@
+@@ -271,9 +_,24 @@
  			}
  			case 323: {
  				int textureIndex = 15;
@@ -101,12 +149,37 @@
  				TilePaintSystemV2.TreeFoliageVariantKey treeFoliageVariantKey = default(TilePaintSystemV2.TreeFoliageVariantKey);
  				treeFoliageVariantKey.TextureIndex = textureIndex;
  				treeFoliageVariantKey.PaintColor = tile.color();
-@@ -396,8 +_,10 @@
- 		byte b = (byte)(100f + 150f * Main.martianLight);
- 		_martianGlow = new Color(b, b, b, 0);
- 		TileDrawInfo value = _currentTileDrawInfo.Value;
+@@ -319,6 +_,7 @@
+ 		_specialsCount[7] = 0;
+ 		_specialsCount[8] = 0;
+ 		_specialsCount[9] = 0;
++		_specialsCount[(int)TileCounterType.CustomNonSolid] = 0;
+ 	}
+ 
+ 	private void DrawNature(Texture2D texture, Vector2 position, Rectangle sourceRectangle, Color color, float rotation, Vector2 origin, float scale, SpriteEffects effects, float layerDepth, SideFlags seams = SideFlags.None)
+@@ -347,6 +_,7 @@
+ 			DrawTrees();
+ 			DrawVines();
+ 			DrawReverseVines();
++			DrawCustom(solidLayer);
+ 			Main.spriteBatch.End();
+ 			TimeLogger.TileExtras.AddTime(fromTimestamp);
+ 			_natureRenderer.DrawAfterAllObjects(beginner);
+@@ -357,6 +_,7 @@
+ 			DrawEntities_HatRacks();
+ 			DrawEntities_DisplayDolls();
+ 			TimeLogger.ClothingRacks.AddTime(fromTimestamp2);
++			DrawCustom(solidLayer);
+ 		}
+ 	}
+ 
+@@ -417,8 +_,11 @@
+ 			TileType = -1
+ 		};
+ 
 -		for (int i = firstTileY; i < lastTileY + 4; i++) {
 -			for (int j = firstTileX - 2; j < lastTileX + 2; j++) {
++		bool liquidSlopeFix = LiquidEdgeRenderer.Active;
 +
 +		//TML: Swapped loop iteration order to improve memory access linearity. Minor perf improvement, may cause slight visual discrepancies with tiles that overdraw
 +		for (int j = firstTileX - 2; j < lastTileX + 2; j++) {
@@ -114,7 +187,18 @@
  				Tile tile = Main.tile[j, i];
  				if (tile == null) {
  					tile = new Tile();
-@@ -417,6 +_,9 @@
+@@ -429,7 +_,9 @@
+ 					if (!tile.active() || IsTileDrawLayerSolid(tile.type) != solidLayer || (DebugOptions.ShowUnbreakableWall && tile.wall == 350))
+ 						continue;
+ 
+-					if (solidLayer) {
++					// TML(liquid-slopes): Behind-tile liquid rendering is now
++					// handled as part of actual liquid rendering.
++					if (solidLayer && !liquidSlopeFix) { 
+ 						Main.tileBatch.SetLayer(Layer_LiquidBehindTiles, 0);
+ 						DrawTile_LiquidBehindTile(solidLayer, waterStyleOverride, unscaledPosition, drawOffSet, j, i, tile);
+ 					}
+@@ -441,6 +_,9 @@
  					if (!TextureAssets.Tile[type].IsLoaded)
  						Main.instance.LoadTiles(type);
  
@@ -124,76 +208,87 @@
  					switch (type) {
  						case 52:
  						case 62:
-@@ -554,6 +_,9 @@
+@@ -587,6 +_,9 @@
  					}
  
- 					DrawSingleTile(value, solidLayer, waterStyleOverride, unscaledPosition, vector, j, i);
+ 					DrawSingleTile(unscaledPosition, drawOffSet, j, i);
 +
 +					PostDraw:
 +					TileLoader.PostDraw(j, i, type, Main.spriteBatch);
  				}
  			}
  		}
-@@ -575,7 +_,10 @@
- 			TimeLogger.DrawTime(1, stopwatch.Elapsed.TotalMilliseconds);
+@@ -607,7 +_,11 @@
+ 		}
  	}
  
 +	/// <summary>
 +	/// Finds the top of a tile chain of vine tiles and calls <see cref="AddSpecialPoint"/> using <see cref="TileCounterType.Vine"/> if not already registered for custom drawing. See <see cref="TileID.Sets.VineThreads"/>.
++	/// <br/><br/> <b>Note:</b> The tile coordinate parameters of this method are the reverse of the usual order.
 +	/// </summary>
 -	private void CrawlToTopOfVineAndAddSpecialPoint(int j, int i)
 +	public void CrawlToTopOfVineAndAddSpecialPoint(int j, int i)
  	{
  		int y = j;
  		for (int num = j - 1; num > 0; num--) {
-@@ -593,7 +_,10 @@
+@@ -625,7 +_,11 @@
  		}
  	}
  
 +	/// <summary>
 +	/// Finds the bottom of a tile chain of reverse vine tiles and calls <see cref="AddSpecialPoint"/> using <see cref="TileCounterType.ReverseVine"/> if not already registered for custom drawing. See <see cref="TileID.Sets.ReverseVineThreads"/>.
++	/// <br/><br/> <b>Note:</b> The tile coordinate parameters of this method are the reverse of the usual order.
 +	/// </summary>
 -	private void CrawlToBottomOfReverseVineAndAddSpecialPoint(int j, int i)
 +	public void CrawlToBottomOfReverseVineAndAddSpecialPoint(int j, int i)
  	{
  		int y = j;
  		for (int k = j; k < Main.maxTilesY; k++) {
-@@ -629,7 +_,7 @@
- 		if (TileID.Sets.HasOutlines[drawData.typeCache])
- 			GetTileOutlineInfo(tileX, tileY, drawData.typeCache, ref drawData.tileLight, ref highlightTexture, ref highlightColor);
+@@ -745,7 +_,7 @@
+ 		if (TileID.Sets.HasOutlines[tileDrawInfo.typeCache])
+ 			GetTileOutlineInfo(tileX, tileY, tileDrawInfo.typeCache, ref tileDrawInfo.tileLight, ref highlightTexture, ref highlightColor);
  
--		if (_localPlayer.dangerSense && IsTileDangerous(_localPlayer, drawData.tileCache, drawData.typeCache)) {
-+		if (_localPlayer.dangerSense && IsTileDangerous(tileX, tileY, _localPlayer, drawData.tileCache, drawData.typeCache)) {
- 			if (drawData.tileLight.R < byte.MaxValue)
- 				drawData.tileLight.R = byte.MaxValue;
+-		if (_perspectivePlayer.dangerSense && IsTileDangerous(_perspectivePlayer, tileDrawInfo.tileCache, tileDrawInfo.typeCache)) {
++		if (_perspectivePlayer.dangerSense && IsTileDangerous(tileX, tileY, _perspectivePlayer, tileDrawInfo.tileCache, tileDrawInfo.typeCache)) {
+ 			if (tileDrawInfo.tileLight.R < byte.MaxValue)
+ 				tileDrawInfo.tileLight.R = byte.MaxValue;
  
-@@ -648,7 +_,7 @@
+@@ -764,7 +_,7 @@
  			}
  		}
  
--		if (_localPlayer.findTreasure && Main.IsTileSpelunkable(drawData.typeCache, drawData.tileFrameX, drawData.tileFrameY)) {
-+		if (_localPlayer.findTreasure && Main.IsTileSpelunkable(tileX, tileY, drawData.typeCache, drawData.tileFrameX, drawData.tileFrameY)) {
- 			if (drawData.tileLight.R < 200)
- 				drawData.tileLight.R = 200;
+-		if (_perspectivePlayer.findTreasure && Main.IsTileSpelunkable(tileDrawInfo.typeCache, tileDrawInfo.tileFrameX, tileDrawInfo.tileFrameY)) {
++		if (_perspectivePlayer.findTreasure && Main.IsTileSpelunkable(tileX, tileY, tileDrawInfo.typeCache, tileDrawInfo.tileFrameX, tileDrawInfo.tileFrameY)) {
+ 			if (tileDrawInfo.tileLight.R < 200)
+ 				tileDrawInfo.tileLight.R = 200;
  
-@@ -665,7 +_,7 @@
+@@ -781,7 +_,7 @@
  
- 		if (_localPlayer.biomeSight) {
+ 		if (_perspectivePlayer.biomeSight) {
  			Color sightColor = Color.White;
--			if (Main.IsTileBiomeSightable(drawData.typeCache, drawData.tileFrameX, drawData.tileFrameY, ref sightColor)) {
-+			if (Main.IsTileBiomeSightable(tileX, tileY, drawData.typeCache, drawData.tileFrameX, drawData.tileFrameY, ref sightColor)) {
- 				if (drawData.tileLight.R < sightColor.R)
- 					drawData.tileLight.R = sightColor.R;
+-			if (Main.IsTileBiomeSightable(tileDrawInfo.typeCache, tileDrawInfo.tileFrameX, tileDrawInfo.tileFrameY, ref sightColor)) {
++			if (Main.IsTileBiomeSightable(tileX, tileY, tileDrawInfo.typeCache, tileDrawInfo.tileFrameX, tileDrawInfo.tileFrameY, ref sightColor)) {
+ 				if (tileDrawInfo.tileLight.R < sightColor.R)
+ 					tileDrawInfo.tileLight.R = sightColor.R;
  
-@@ -715,6 +_,7 @@
+@@ -844,11 +_,16 @@
+ 			num5 = 0f;
  
- 		Rectangle rectangle = new Rectangle(drawData.tileFrameX + drawData.addFrX, drawData.tileFrameY + drawData.addFrY, drawData.tileWidth, drawData.tileHeight - drawData.halfBrickHeight);
- 		Vector2 vector = new Vector2((float)(tileX * 16 - (int)screenPosition.X) - ((float)drawData.tileWidth - 16f) / 2f, tileY * 16 - (int)screenPosition.Y + drawData.tileTop + drawData.halfBrickHeight) + screenOffset;
-+		TileLoader.DrawEffects(tileX, tileY, drawData.typeCache, Main.spriteBatch, ref drawData);
+ 		Vector2 vector = new Vector2((float)(tileX * 16 - (int)screenPosition.X) - num5, tileY * 16 - (int)screenPosition.Y + tileDrawInfo.tileTop + tileDrawInfo.halfBrickHeight) + screenOffset;
++		/*
  		if (!flag)
  			return;
++		*/
  
-@@ -974,7 +_,13 @@
+ 		tileDrawInfo.colorTint = Color.White;
+ 		tileDrawInfo.finalColor = GetFinalLight(tileDrawInfo.tileCache, tileDrawInfo.typeCache, tileDrawInfo.tileLight, tileDrawInfo.colorTint);
++		TileLoader.DrawEffects(tileX, tileY, tileDrawInfo.typeCache, Main.spriteBatch, ref tileDrawInfo);
++		if (!flag)
++			return;
+ 		switch (tileDrawInfo.typeCache) {
+ 			case 751:
+ 				if (tileDrawInfo.tileFrameX != 0 || tileDrawInfo.tileCache.frameY != 0)
+@@ -1199,7 +_,13 @@
  		}
  	}
  
@@ -208,7 +303,7 @@
  	{
  		bool flag = tile.invisibleBlock();
  		switch (tile.type) {
-@@ -989,12 +_,12 @@
+@@ -1214,7 +_,7 @@
  		}
  
  		if (flag)
@@ -217,26 +312,19 @@
  
  		return true;
  	}
- 
--	private Texture2D GetTileDrawTexture(Tile tile, int tileX, int tileY)
-+	public Texture2D GetTileDrawTexture(Tile tile, int tileX, int tileY)
- 	{
- 		Texture2D result = TextureAssets.Tile[tile.type].Value;
- 		int tileStyle = 0;
-@@ -1010,6 +_,25 @@
- 				if (IsAlchemyPlantHarvestable(tile.frameX / 18))
- 					num = 84;
- 				Main.instance.LoadTiles(num);
-+				break;
-+			case 80:
-+			case 227:
+@@ -1237,6 +_,25 @@
+ 				if (WorldGen.IsAlchemyPlantHarvestable(tile.frameX / 18, tileY))
+ 					key.TileType = 84;
+ 				break;
++			case TileID.Cactus:
++			case TileID.DyePlants:
 +				WorldGen.GetCactusType(tileX, tileY, tile.frameX, tile.frameY, out int sandType);
 +
 +				if (!TileLoader.CanGrowModCactus(sandType))
 +					break;
 +
-+				if (num == 80) {
-+					tileStyle = sandType + 1;
++				if (key.TileType == TileID.Cactus) {
++					key.TileStyle = sandType + 1;
 +					break;
 +				}
 +
@@ -246,46 +334,19 @@
 +						return asset.Value;
 +				}
 +
- 				break;
- 		}
- 
-@@ -1020,7 +_,7 @@
- 		return result;
- 	}
- 
--	private Texture2D GetTileDrawTexture(Tile tile, int tileX, int tileY, int paintOverride)
-+	public Texture2D GetTileDrawTexture(Tile tile, int tileX, int tileY, int paintOverride)
- 	{
- 		Texture2D result = TextureAssets.Tile[tile.type].Value;
- 		int tileStyle = 0;
-@@ -1036,6 +_,26 @@
- 				if (IsAlchemyPlantHarvestable(tile.frameX / 18))
- 					num = 84;
- 				Main.instance.LoadTiles(num);
 +				break;
-+			// Whole case below is TML code.
-+			case 80:
-+			case 227:
-+				WorldGen.GetCactusType(tileX, tileY, tile.frameX, tile.frameY, out int sandType);
-+
-+				if (!TileLoader.CanGrowModCactus(sandType))
-+					break;
-+
-+				if (num == 80) {
-+					tileStyle = sandType + 1;
-+					break;
-+				}
-+
-+				if (tile.frameX == 204 || tile.frameX == 202) {
-+					var asset = PlantLoader.GetCactusFruitTexture(sandType);
-+					if (asset != null)
-+						return asset.Value;
-+				}
-+
- 				break;
  		}
  
-@@ -1265,6 +_,9 @@
+ 		return GetTileDrawTexture(key);
+@@ -1424,6 +_,7 @@
+ 
+ 				value4.Y = 0;
+ 				value4.Height = 10;
++				value4.X %= num10 < 3 ? 108 : 54; // Added by TML. Accounts for tilesheets with multiple columns
+ 				Texture2D texture = LookupCageTopDrawTexture(new TilePaintSystemV2.CageTopVariationkey {
+ 					CageStyle = num10,
+ 					PaintColor = drawData.tileCache.color()
+@@ -1543,6 +_,9 @@
  			case 662:
  				return 4;
  			default:
@@ -295,7 +356,23 @@
  				return -1;
  		}
  	}
-@@ -2359,6 +_,9 @@
+@@ -1572,8 +_,14 @@
+ 		return baseColor * num;
+ 	}
+ 
+-	private TileFlameData GetTileFlameData(int tileX, int tileY, int type, int tileFrameY)
++	public TileFlameData GetTileFlameData(int tileX, int tileY, int type, int tileFrameY)
+ 	{
++		if (type >= TileID.Count) {
++			TileFlameData tileFlameData = default(TileFlameData);
++			TileLoader.GetTile(type)?.GetTileFlameData(tileX, tileY, ref tileFlameData);
++			return tileFlameData;
++		}
++
+ 		switch (type) {
+ 			case 270: {
+ 				TileFlameData tileFlameData = default(TileFlameData);
+@@ -3126,6 +_,9 @@
  		if (WorldGen.IsPalmOasisTree(x))
  			num += 4;
  
@@ -305,8 +382,68 @@
  		return num;
  	}
  
-@@ -2877,7 +_,8 @@
- 		vertices.TopRightColor *= num7;
+@@ -3427,6 +_,7 @@
+ 			Main.tile[tileX, tileY + 1] = tile4;
+ 		}
+ 
++		/*
+ 		if (tile.type == 379)
+ 			tile = new Tile();
+ 
+@@ -3440,6 +_,15 @@
+ 			tile4 = new Tile();
+ 
+ 		if (DebugOptions.hideWater || !tileCache.active() || tileCache.inActive() || _tileSolidTop[tileCache.type] || (tileCache.halfBrick() && (tile2.liquid > 160 || tile.liquid > 160) && Main.instance.waterfallManager.CheckForWaterfall(tileX, tileY)) || (TileID.Sets.BlocksWaterDrawingBehindSelf[tileCache.type] && tileCache.slope() == 0))
++		*/
++
++		// TML `new Tile()` would point to the tile at (0,0) instead of an empty tile. Reimplement the logic with separate bools instead of checking a tile coordinate that could potentially have garbage data in it.
++		bool tile1IsSand = tile.type == 379;
++		bool tile2IsSand = tile2.type == 379;
++		bool tile3IsSand = tile3.type == 379;
++		bool tile4IsSand = tile4.type == 379;
++
++		if (DebugOptions.hideWater || !tileCache.active() || tileCache.inActive() || _tileSolidTop[tileCache.type] || (tileCache.halfBrick() && ((!tile2IsSand && tile2.liquid > 160) || (!tile1IsSand && tile.liquid > 160)) && Main.instance.waterfallManager.CheckForWaterfall(tileX, tileY)) || (TileID.Sets.BlocksWaterDrawingBehindSelf[tileCache.type] && tileCache.slope() == 0))
+ 			return;
+ 
+ 		int num = 0;
+@@ -3499,7 +_,7 @@
+ 					num = tileCache.liquid;
+ 			}
+ 
+-			if (tile2.liquid > 0 && num3 != 1 && num3 != 3) {
++			if (!tile2IsSand && tile2.liquid > 0 && num3 != 1 && num3 != 3) {
+ 				flag = true;
+ 				switch (tile2.liquidType()) {
+ 					case 0:
+@@ -3520,7 +_,7 @@
+ 					num = tile2.liquid;
+ 			}
+ 
+-			if (tile.liquid > 0 && num3 != 2 && num3 != 4) {
++			if (!tile1IsSand && tile.liquid > 0 && num3 != 2 && num3 != 4) {
+ 				flag2 = true;
+ 				switch (tile.liquidType()) {
+ 					case 0:
+@@ -3541,7 +_,7 @@
+ 					num = tile.liquid;
+ 			}
+ 
+-			if (tile3.liquid > 0 && num3 != 3 && num3 != 4) {
++			if (!tile3IsSand && tile3.liquid > 0 && num3 != 3 && num3 != 4) {
+ 				flag3 = true;
+ 				switch (tile3.liquidType()) {
+ 					case 0:
+@@ -3559,7 +_,7 @@
+ 				}
+ 			}
+ 
+-			if (tile4.liquid > 0 && num3 != 1 && num3 != 2) {
++			if (!tile4IsSand && tile4.liquid > 0 && num3 != 1 && num3 != 2) {
+ 				if (tile4.liquid > 240)
+ 					flag4 = true;
+ 
+@@ -3675,7 +_,8 @@
+ 
  		bool flag7 = false;
  		if (flag6) {
 +			int totalCount = LoaderManager.Get<WaterStylesLoader>().TotalCount;
@@ -315,32 +452,36 @@
  				if (Main.IsLiquidStyleWater(i) && Main.liquidAlpha[i] > 0f && i != num2) {
  					DrawPartialLiquid(!solidLayer, tileCache, ref position, ref liquidSize, i, ref vertices);
  					flag7 = true;
-@@ -3112,7 +_,8 @@
+@@ -3922,20 +_,25 @@
  		}
  	}
  
 -	private static bool IsTileDangerous(Player localPlayer, Tile tileCache, ushort typeCache)
 +	//TML: Added x/y for hook compatibility, made internal. Public variant in partial TML class
-+	internal static bool IsTileDangerous(int tileX, int tileY, Player localPlayer, Tile tileCache, ushort typeCache)
++	internal static bool IsTileDangerous(int tileX, int tileY, Player perspectivePlayer, Tile tileCache, ushort typeCache)
  	{
  		bool flag = false || typeCache == 135 || typeCache == 137 || TileID.Sets.Boulders[typeCache] || typeCache == 141 || typeCache == 210 || typeCache == 442 || typeCache == 443 || typeCache == 444 || typeCache == 411 || typeCache == 485 || typeCache == 85 || typeCache == 654 || (typeCache == 314 && Minecart.IsPressurePlate(tileCache));
  		flag |= Main.getGoodWorld && typeCache == 230;
-@@ -3122,10 +_,14 @@
- 			if (!localPlayer.fireWalk)
- 				flag = flag || typeCache == 37 || typeCache == 58 || typeCache == 76;
+ 		flag |= Main.dontStarveWorld && typeCache == 80;
+ 		if (tileCache.slope() == 0 && !tileCache.inActive()) {
+ 			flag = flag || (typeCache >= 0 && TileID.Sets.TouchDamageImmediate[typeCache] > 0) || typeCache == 483 || typeCache == 482 || typeCache == 481 || typeCache == 51 || typeCache == 229;
+-			if (!localPlayer.fireWalk)
++			if (!perspectivePlayer.fireWalk)
+ 				flag = flag || (typeCache >= 0 && TileID.Sets.TouchDamageHot[typeCache]);
  
 +			// Extra patch context.
- 			if (!localPlayer.iceSkate)
+-			if (!localPlayer.iceSkate)
++			if (!perspectivePlayer.iceSkate)
  				flag = flag || typeCache == 162;
  		}
  
-+		if (TileLoader.IsTileDangerous(tileX, tileY, typeCache, localPlayer) is bool modded)
++		if (TileLoader.IsTileDangerous(tileX, tileY, typeCache, perspectivePlayer) is bool modded)
 +			return modded;
 +
  		return flag;
  	}
  
-@@ -3137,7 +_,7 @@
+@@ -3947,7 +_,7 @@
  		return _tileSolid[typeCache];
  	}
  
@@ -349,16 +490,28 @@
  	{
  		if (Main.InSmartCursorHighlightArea(x, y, out var actuallySelected)) {
  			int num = (tileLight.R + tileLight.G + tileLight.B) / 3;
-@@ -3179,7 +_,7 @@
+@@ -3958,7 +_,7 @@
+ 		}
+ 	}
  
- 	private bool InAPlaceWithWind(int x, int y, int width, int height) => WorldGen.InAPlaceWithWind(x, y, width, height);
+-	private void DrawPartialLiquid(bool behindBlocks, Tile tileCache, ref Vector2 position, ref Rectangle liquidSize, int liquidType, ref VertexColors colors)
++	internal void DrawPartialLiquid(bool behindBlocks, Tile tileCache, ref Vector2 position, ref Rectangle liquidSize, int liquidType, ref VertexColors colors)
+ 	{
+ 		int num = tileCache.slope();
+ 		bool flag = !TileID.Sets.BlocksWaterDrawingBehindSelf[tileCache.type];
+@@ -3987,9 +_,9 @@
+ 		}
+ 	}
+ 
+-	private bool InAPlaceWithWind(int x, int y, int width, int height) => WorldGen.InAPlaceWithWind(x, y, width, height);
++	public bool InAPlaceWithWind(int x, int y, int width, int height) => WorldGen.InAPlaceWithWind(x, y, width, height);
  
 -	private void GetTileDrawData(int x, int y, Tile tileCache, ushort typeCache, ref short tileFrameX, ref short tileFrameY, out int tileWidth, out int tileHeight, out int tileTop, out int halfBrickHeight, out int addFrX, out int addFrY, out SpriteEffects tileSpriteEffect, out Texture2D glowTexture, out Rectangle glowSourceRect, out Color glowColor)
 +	public void GetTileDrawData(int x, int y, Tile tileCache, ushort typeCache, ref short tileFrameX, ref short tileFrameY, out int tileWidth, out int tileHeight, out int tileTop, out int halfBrickHeight, out int addFrX, out int addFrY, out SpriteEffects tileSpriteEffect, out Texture2D glowTexture, out Rectangle glowSourceRect, out Color glowColor)
  	{
  		tileTop = 0;
  		tileWidth = 16;
-@@ -3255,6 +_,10 @@
+@@ -4104,6 +_,10 @@
  				tileWidth = 20;
  				tileHeight = 20;
  				int treeBiome = GetTreeBiome(x, y, tileFrameX, tileFrameY);
@@ -369,7 +522,7 @@
  				tileFrameX += (short)(176 * (treeBiome + 1));
  				break;
  			}
-@@ -3279,6 +_,12 @@
+@@ -4128,6 +_,12 @@
  				tileWidth = 20;
  				tileHeight = 20;
  				int palmTreeBiome = GetPalmTreeBiome(x, y);
@@ -382,7 +535,7 @@
  				tileFrameY = (short)(22 * palmTreeBiome);
  				break;
  			}
-@@ -4848,9 +_,16 @@
+@@ -5795,9 +_,16 @@
  					glowColor = _meteorGlow;
  				}
  
@@ -399,7 +552,7 @@
  	}
  
  	private bool IsWindBlocked(int x, int y)
-@@ -4868,21 +_,21 @@
+@@ -5815,21 +_,21 @@
  		return false;
  	}
  
@@ -424,20 +577,15 @@
  	{
  		int num = x - tileFrameX / 18;
  		int num2 = y - tileFrameY / 18;
-@@ -4922,18 +_,35 @@
+@@ -5875,19 +_,31 @@
  		if (solidLayer) {
  			_displayDollTileEntityPositions.Clear();
  			_hatRackTileEntityPositions.Clear();
-+			/*
- 			_vineRootsPositions.Clear();
- 			_reverseVineRootsPositions.Clear();
-+			*/
-+			return;
++			_specialsCount[(int)TileCounterType.CustomSolid] = 0;
  		}
-+
-+		//TML: Moved so positions get cleared and added in the same frame.
-+		_vineRootsPositions.Clear();
-+		_reverseVineRootsPositions.Clear();
+ 		else {
+ 			ClearSpecialBlockCounts();
+ 		}
  	}
  
 +	/// <inheritdoc cref="AddSpecialLegacyPoint(int, int)"/>
@@ -449,8 +597,9 @@
  
 +	/// <summary>
 +	/// Registers a tile coordinate to have additional drawing code executed after all tiles are drawn. <see cref="ModTile.SpecialDraw"/> (or <see cref="GlobalTile.SpecialDraw(int, int, int, SpriteBatch)"/>) will be called with the same coordinates after all tiles have been rendered. For multitiles, make sure to only call this for the top left corner of the multitile to prevent duplicate draws by checking <see cref="TileObjectData.IsTopLeft(int, int)"/> first. This should be called in <see cref="ModTile.DrawEffects(int, int, SpriteBatch, ref TileDrawInfo)"/> (or <see cref="GlobalTile.DrawEffects(int, int, int, SpriteBatch, ref TileDrawInfo)"/>)
-+	/// <para/> This is useful for drawing additional visuals to a tile, especially visuals that might render outside the bounds of a single Tile. Attempting to draw outside the bounds will not work in normal tile drawing methods because the visuals will be overwritten by the next tile drawn. 
-+	/// <para/> Some examples include how the <see cref="TileID.LihzahrdAltar"/> draws a sun texture hovering over the tile and how <see cref="TileID.ItemFrame"/> draws the contained item sprite over the tile. 
++	/// <para/> This is useful for drawing additional visuals which overlap multiple tiles.
++	/// <para/> Some examples include how the <see cref="TileID.LihzahrdAltar"/> draws a sun texture hovering over the tile and how <see cref="TileID.ItemFrame"/> draws the contained item sprite over the tile.
++	/// <para/> This additional drawing will draw to the tile rendering targets, meaning it will render at 15fps and requires adjusting for <see cref="Main.offScreenRange"/>. As mentioned in <see cref="ModTile.AnimateTile(ref int, ref int)"/>, any animation done using this method should stick to animating at multiples of 4 frames to avoid jerky animation. For smoother animations <see cref="AddSpecialPoint(int, int, TileCounterType)"/> can be used with <see cref="TileCounterType.CustomSolid"/> or CustomNonSolid to render at full frame rate.
 +	/// </summary>
 -	private void AddSpecialLegacyPoint(int x, int y)
 +	public void AddSpecialLegacyPoint(int x, int y)
@@ -462,7 +611,28 @@
  		_specialTileX[_specialTilesCount] = x;
  		_specialTileY[_specialTilesCount] = y;
  		_specialTilesCount++;
-@@ -5544,14 +_,28 @@
+@@ -5904,7 +_,7 @@
+ 		_specialTilesCount = 0;
+ 	}
+ 
+-	private Color DrawTiles_GetLightOverride(int j, int i, Tile tileCache, ushort typeCache, short tileFrameX, short tileFrameY, Color tileLight)
++	public Color DrawTiles_GetLightOverride(int j, int i, Tile tileCache, ushort typeCache, short tileFrameX, short tileFrameY, Color tileLight)
+ 	{
+ 		if (tileCache.fullbrightBlock())
+ 			return Color.White;
+@@ -5961,9 +_,10 @@
+ 		return tileLight;
+ 	}
+ 
+-	private void DrawTiles_EmitParticles(int j, int i, Tile tileCache, ushort typeCache, short tileFrameX, short tileFrameY, Color tileLight)
++	public void DrawTiles_EmitParticles(int j, int i, Tile tileCache, ushort typeCache, short tileFrameX, short tileFrameY, Color tileLight)
+ 	{
+ 		bool flag = IsVisible(tileCache);
++		TileLoader.EmitParticles(i, j, tileCache, typeCache, tileFrameX, tileFrameY, tileLight, flag);
+ 		int leafFrequency = _leafFrequency;
+ 		leafFrequency /= 4;
+ 		if (typeCache == 718 && !Main.dayTime && _rand.Next(3) == 0 && !WorldGen.SolidTile3(i, j - 1)) {
+@@ -6695,14 +_,28 @@
  		}
  	}
  
@@ -493,7 +663,7 @@
  	{
  		Tile tile = Main.tile[x, y + 1];
  		if (!WorldGen.SolidTile(tile) && tile.liquid <= 0) {
-@@ -5561,7 +_,13 @@
+@@ -6712,7 +_,13 @@
  		}
  	}
  
@@ -508,18 +678,16 @@
  	{
  		int num = 0;
  		if (Main.WindForVisuals > 0.2f)
-@@ -5603,7 +_,10 @@
- 		rectangle.Y -= 100;
+@@ -6755,7 +_,7 @@
  		rectangle.Height = 400;
  		for (int k = 0; k < 600; k++) {
-+			/*
- 			if (_gore[k].active && ((_gore[k].type >= 706 && _gore[k].type <= 717) || _gore[k].type == 943 || _gore[k].type == 1147 || (_gore[k].type >= 1160 && _gore[k].type <= 1162))) {
-+			*/
-+			if (_gore[k].active && GoreID.Sets.LiquidDroplet[_gore[k].type]) {
- 				Rectangle value = new Rectangle((int)_gore[k].position.X, (int)_gore[k].position.Y, 16, 16);
+ 			Gore gore = _gore[k];
+-			if (gore.active && gore.type >= 0 && gore.type < GoreID.Count && GoreID.Sets.IsDrip[gore.type]) {
++			if (gore.active && gore.type >= 0 && GoreID.Sets.IsDrip[gore.type]) {
+ 				Rectangle value = new Rectangle((int)gore.position.X, (int)gore.position.Y, 16, 16);
  				if (rectangle.Intersects(value))
  					return;
-@@ -5618,6 +_,8 @@
+@@ -6770,6 +_,8 @@
  			type = 706;
  		else if (Main.waterStyle == 12)
  			type = 1147;
@@ -528,7 +696,7 @@
  		else if (Main.waterStyle > 1)
  			type = 706 + Main.waterStyle - 1;
  
-@@ -5643,7 +_,17 @@
+@@ -6798,7 +_,17 @@
  		_gore[num2].velocity *= 0f;
  	}
  
@@ -547,7 +715,7 @@
  	{
  		if (!Main.SettingsEnabled_TilesSwayInWind)
  			return 0f;
-@@ -5667,7 +_,22 @@
+@@ -6822,7 +_,22 @@
  		return num2 * lerpValue;
  	}
  
@@ -571,19 +739,19 @@
  	{
  		if (!Main.SettingsEnabled_TilesSwayInWind)
  			return false;
-@@ -5956,8 +_,11 @@
- 					Main.spriteBatch.Draw(value6, position2, value7, color6, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+@@ -7089,8 +_,11 @@
+ 					Main.tileBatch.Draw(value5, position2, value6, color5, Vector2.Zero, 1f, SpriteEffects.None);
  				}
  
 +				// Extra patch context.
- 				Main.spriteBatch.Draw(value6, vector, value7, new Color(255, 255, 255, 0) * 0.1f, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+ 				Main.tileBatch.Draw(value5, vector, value6, new Color(255, 255, 255, 0) * 0.1f, Vector2.Zero, 1f, SpriteEffects.None);
  			}
 +
 +			TileLoader.SpecialDraw(type, num, num2, Main.spriteBatch);
  		}
  	}
  
-@@ -6209,6 +_,26 @@
+@@ -7342,6 +_,26 @@
  						num20 = 2;
  					}
  
@@ -610,7 +778,7 @@
  					int frameY2 = Main.tile[x, y].frameY;
  					byte tileColor4 = tile.color();
  					Texture2D treeTopTexture2 = GetTreeTopTexture(treeTextureIndex, palmTreeBiome, tileColor4);
-@@ -6234,8 +_,13 @@
+@@ -7367,8 +_,13 @@
  	private Texture2D GetTreeTopTexture(int treeTextureIndex, int treeTextureStyle, byte tileColor)
  	{
  		Texture2D texture2D = _paintSystem.TryGetTreeTopAndRequestIfNotReady(treeTextureIndex, treeTextureStyle, tileColor);
@@ -625,7 +793,7 @@
  
  		return texture2D;
  	}
-@@ -6243,8 +_,12 @@
+@@ -7376,8 +_,12 @@
  	private Texture2D GetTreeBranchTexture(int treeTextureIndex, int treeTextureStyle, byte tileColor)
  	{
  		Texture2D texture2D = _paintSystem.TryGetTreeBranchAndRequestIfNotReady(treeTextureIndex, treeTextureStyle, tileColor);
@@ -639,25 +807,28 @@
  
  		return texture2D;
  	}
-@@ -6394,7 +_,7 @@
+@@ -7523,9 +_,9 @@
+ 		}
+ 	}
  
- 	private void DrawAnimatedTile_AdjustForVisionChangers(int i, int j, Tile tileCache, ushort typeCache, short tileFrameX, short tileFrameY, ref Color tileLight, bool canDoDust)
+-	private void DrawAnimatedTile_AdjustForVisionChangers(int i, int j, Tile tileCache, ushort typeCache, short tileFrameX, short tileFrameY, ref Color tileLight, bool canDoDust)
++	public void DrawAnimatedTile_AdjustForVisionChangers(int i, int j, Tile tileCache, ushort typeCache, short tileFrameX, short tileFrameY, ref Color tileLight, bool canDoDust)
  	{
--		if (_localPlayer.dangerSense && IsTileDangerous(_localPlayer, tileCache, typeCache)) {
-+		if (_localPlayer.dangerSense && IsTileDangerous(i, j, _localPlayer, tileCache, typeCache)) {
+-		if (_perspectivePlayer.dangerSense && IsTileDangerous(_perspectivePlayer, tileCache, typeCache)) {
++		if (_perspectivePlayer.dangerSense && IsTileDangerous(i, j, _perspectivePlayer, tileCache, typeCache)) {
  			if (tileLight.R < byte.MaxValue)
  				tileLight.R = byte.MaxValue;
  
-@@ -6413,7 +_,7 @@
+@@ -7544,7 +_,7 @@
  			}
  		}
  
--		if (_localPlayer.findTreasure && Main.IsTileSpelunkable(typeCache, tileFrameX, tileFrameY)) {
-+		if (_localPlayer.findTreasure && Main.IsTileSpelunkable(i, j, typeCache, tileFrameX, tileFrameY)) {
+-		if (_perspectivePlayer.findTreasure && Main.IsTileSpelunkable(typeCache, tileFrameX, tileFrameY)) {
++		if (_perspectivePlayer.findTreasure && Main.IsTileSpelunkable(i, j, typeCache, tileFrameX, tileFrameY)) {
  			if (tileLight.R < 200)
  				tileLight.R = 200;
  
-@@ -6432,7 +_,7 @@
+@@ -7563,7 +_,7 @@
  			return;
  
  		Color sightColor = Color.White;
@@ -666,7 +837,7 @@
  			if (tileLight.R < sightColor.R)
  				tileLight.R = sightColor.R;
  
-@@ -6453,7 +_,17 @@
+@@ -7584,7 +_,17 @@
  		}
  	}
  
@@ -685,7 +856,7 @@
  	{
  		_windGrid.GetWindTime(i, j, pushAnimationTimeTotal, out var windTimeLeft, out var directionX, out var _);
  		if (windTimeLeft >= pushAnimationTimeTotal / 2)
-@@ -6475,7 +_,18 @@
+@@ -7606,7 +_,18 @@
  		}
  	}
  
@@ -705,7 +876,7 @@
  	{
  		_windGrid.GetWindTime(i, j, pushAnimationTimeTotal, out var windTimeLeft, out var directionX, out var _);
  		float num = (float)windTimeLeft / (float)pushAnimationTimeTotal;
-@@ -6662,6 +_,15 @@
+@@ -7809,6 +_,15 @@
  						num4 = ClimbCatTail(x, num3);
  						num3 -= num4 - 1;
  						break;
@@ -721,9 +892,9 @@
  				}
  
  				DrawMultiTileGrassInWind(unscaledPosition, zero, x, num3, sizeX, num4);
-@@ -6738,6 +_,14 @@
- 						sizeX = 2;
- 						sizeY = 3;
+@@ -7889,6 +_,14 @@
+ 						sizeX = 1;
+ 						sizeY = 1;
  						break;
 +					default:
 +						if (TileID.Sets.MultiTileSway[tile.TileType]) {
@@ -736,16 +907,29 @@
  				}
  
  				DrawMultiTileVinesInWind(unscaledPosition, zero, x, y, sizeX, sizeY);
-@@ -6903,7 +_,7 @@
+@@ -8072,7 +_,7 @@
  			float num6 = (float)num2 * num3 * windCycle + num4;
- 			if (_localPlayer.biomeSight) {
+ 			if (_perspectivePlayer.biomeSight) {
  				Color sightColor = Color.White;
 -				if (Main.IsTileBiomeSightable(type, tileFrameX, tileFrameY, ref sightColor)) {
 +				if (Main.IsTileBiomeSightable(x, i, type, tileFrameX, tileFrameY, ref sightColor)) {
  					if (color.R < sightColor.R)
  						color.R = sightColor.R;
  
-@@ -7041,7 +_,19 @@
+@@ -8184,7 +_,11 @@
+ 		return num / (float)num2;
+ 	}
+ 
++	/// <summary>
++	/// Determines how much wind should affect a multitile of the given size and top left target location on the current update tick.
++	/// <para/> Similar to <see cref="GetWindGridPushComplex"/>, but for a multitile area instead of a single tile.
++	/// </summary>
+-	private float GetHighestWindGridPushComplex(int topLeftX, int topLeftY, int sizeX, int sizeY, int totalPushTime, float pushForcePerFrame, int loops, bool swapLoopDir)
++	public float GetHighestWindGridPushComplex(int topLeftX, int topLeftY, int sizeX, int sizeY, int totalPushTime, float pushForcePerFrame, int loops, bool swapLoopDir)
+ 	{
+ 		float result = 0f;
+ 		int num = int.MaxValue;
+@@ -8217,7 +_,19 @@
  		Vector2 vector2 = new Vector2(0f, -2f);
  		vector += vector2;
  		bool flag = false;
@@ -765,3 +949,11 @@
  			vector.Y -= 8f;
  			vector2.Y -= 8f;
  		}
+@@ -8409,6 +_,7 @@
+ 				flag3 = true;
+ 				break;
+ 		}
++		TileLoader.GetTile(type)?.AdjustMultiTileVineParameters(topLeftX, topLeftY, ref num3, ref num4, ref num5, ref flag2, ref num2, ref texture2D, ref color);
+ 
+ 		if (flag2)
+ 			vector += new Vector2(0f, 16f);

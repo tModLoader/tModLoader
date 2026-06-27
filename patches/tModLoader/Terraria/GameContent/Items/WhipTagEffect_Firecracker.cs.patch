@@ -1,0 +1,36 @@
+--- src/TerrariaNetCore/Terraria/GameContent/Items/WhipTagEffect_Firecracker.cs
++++ src/tModLoader/Terraria/GameContent/Items/WhipTagEffect_Firecracker.cs
+@@ -1,4 +_,6 @@
+ using Microsoft.Xna.Framework;
++using Terraria.ID;
++using Terraria.WorldBuilding;
+ 
+ namespace Terraria.GameContent.Items;
+ 
+@@ -6,15 +_,24 @@
+ {
+ 	private static float ProcDamageMultiplier = 1.75f;
+ 
++	/*
+ 	public override void ModifyProcHit(Player owner, Projectile optionalProjectile, NPC npcHit, ref int damageDealt, ref bool crit)
++	*/
++	public override void ModifyProcHit(Player owner, Projectile optionalProjectile, NPC npcHit, ref NPC.HitModifiers modifiers)
+ 	{
+-		base.ModifyProcHit(owner, optionalProjectile, npcHit, ref damageDealt, ref crit);
++		base.ModifyProcHit(owner, optionalProjectile, npcHit, ref modifiers);
++		/*
+ 		damageDealt += (int)((float)damageDealt * ProcDamageMultiplier);
++		*/
++		modifiers.ScalingBonusDamage += ProcDamageMultiplier * ProjectileID.Sets.SummonTagDamageMultiplier[optionalProjectile.type];
+ 	}
+ 
++	/*
+ 	public override void OnProcHit(Player owner, Projectile optionalProjectile, NPC npcHit, int calcDamage)
++	*/
++	public override void OnProcHit(Player owner, Projectile optionalProjectile, NPC npcHit, NPC.HitInfo hit)
+ 	{
+-		CreateExplosion(optionalProjectile, npcHit, (int)((float)calcDamage * ProcDamageMultiplier));
++		CreateExplosion(optionalProjectile, npcHit, (int)(hit.SourceDamage * ProcDamageMultiplier));
+ 	}
+ 
+ 	private static void CreateExplosion(Projectile projectile, NPC npcHit, int procDamage)

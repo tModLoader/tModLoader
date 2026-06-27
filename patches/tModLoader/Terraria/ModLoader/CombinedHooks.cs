@@ -44,6 +44,11 @@ public static class CombinedHooks
 		PlayerLoader.OnMissingMana(player, item, neededMana);
 	}
 
+	public static bool ApplyPotionDelay(Item item, Player player, int potionDelay)
+	{
+		return PlayerLoader.ApplyPotionDelay(item, player, potionDelay) && ItemLoader.ApplyPotionDelay(item, player, potionDelay);
+	}
+
 	public static bool CanConsumeAmmo(Player player, Item weapon, Item ammo)
 	{
 		return PlayerLoader.CanConsumeAmmo(player, weapon, ammo) && ItemLoader.CanConsumeAmmo(weapon, ammo, player);
@@ -178,14 +183,7 @@ public static class CombinedHooks
 			modifiers.IncomingDamageMultiplier *= 0.7f;
 
 		if (!projectile.reflected && !ProjectileID.Sets.PlayerHurtDamageIgnoresDifficultyScaling[projectile.type]) {
-			float damageMult = Main.GameModeInfo.EnemyDamageMultiplier;
-			if (Main.GameModeInfo.IsJourneyMode) {
-				var power = CreativePowerManager.Instance.GetPower<CreativePowers.DifficultySliderPower>();
-				if (power.GetIsUnlocked())
-					damageMult = power.StrengthMultiplierToGiveNPCs;
-			}
-
-			modifiers.SourceDamage *= damageMult;
+			modifiers.SourceDamage *= GameDifficultyData.EnemyDamageMultiplier.Sample(Main.Difficulty);
 		}
 	}
 
@@ -318,8 +316,13 @@ public static class CombinedHooks
 		EquipLoader.EquipFrameEffects(player);
 	}
 
-	public static bool OnPickup(Item item, Player player)
+	public static bool OnPickup(WorldItem item, Player player)
 	{
 		return ItemLoader.OnPickup(item, player) && PlayerLoader.OnPickup(player, item);
+	}
+
+	public static bool CanBeTeleportedTo(Player player, Vector2 teleportPosition, int i, int j, string context)
+	{
+		return PlayerLoader.CanBeTeleportedTo(player, teleportPosition, context) && WallLoader.CanBeTeleportedTo(i, j, Main.tile[i, j].WallType, player, context);
 	}
 }

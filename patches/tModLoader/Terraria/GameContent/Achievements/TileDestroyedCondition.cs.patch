@@ -1,0 +1,32 @@
+--- src/TerrariaNetCore/Terraria/GameContent/Achievements/TileDestroyedCondition.cs
++++ src/tModLoader/Terraria/GameContent/Achievements/TileDestroyedCondition.cs
+@@ -3,6 +_,10 @@
+ 
+ namespace Terraria.GameContent.Achievements;
+ 
++/// <summary>
++/// Satisfied when any of the provided tiles is mined.
++/// <br/><br/> Called in <see cref="WorldGen.KillTile"/>, but will only be satisfied if <see cref="AchievementsHelper.CurrentlyMining"/> is true.
++/// </summary>
+ public class TileDestroyedCondition : AchievementCondition
+ {
+ 	private const string Identifier = "TILE_DESTROYED";
+@@ -10,8 +_,16 @@
+ 	private static bool _isListenerHooked;
+ 	private ushort[] _tileIds;
+ 
++	private static string IDToIdentifier(ushort tileId) => ModLoader.TileLoader.GetTile(tileId)?.FullName ?? tileId.ToString();
++
+-	private TileDestroyedCondition(ushort[] tileIds)
++	public TileDestroyedCondition(ushort[] tileIds)
+-		: base("TILE_DESTROYED_" + tileIds[0])
++		: base("TILE_DESTROYED_" + IDToIdentifier(tileIds[0]))
++	{
++		_tileIds = tileIds;
++		ListenForDestruction(this);
++	}
++
++	public TileDestroyedCondition(ushort[] tileIds, string name) : base(name)
+ 	{
+ 		_tileIds = tileIds;
+ 		ListenForDestruction(this);

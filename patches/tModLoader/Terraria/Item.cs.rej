@@ -1,0 +1,194 @@
+@@ -293,4 +_,11 @@
+ 		}
+ 
+ 		return false;
++		*/
++
++		return type != 0
++			&& ItemID.Sets.CanGetPrefixes[type]
++			&& (maxStack == 1 || AllowReforgeForStackableItem)
++			&& ammo == 0
++			&& (damage > 0 || IsAPrefixableAccessory());
+ 	}
+@@ -369,6 +_,11 @@
+ 		if (rolledPrefix == 65 || rolledPrefix == 72 || rolledPrefix == 76 || rolledPrefix == 80 || rolledPrefix == 68)
+ 			num *= 1.2f;
+ 
++		if (rolledPrefix >= PrefixID.Count)
++			PrefixLoader.GetPrefix(rolledPrefix)?.ModifyValue(ref num);
++
++		int baseRarity = rare;
++
+ 		if ((double)num >= 1.2)
+ 			rare += 2;
+ 		else if ((double)num >= 1.05)
+@@ -412,3 +_,8 @@
++	/// <summary>
++	/// Determines if this <see cref="Item"/> can receive the given prefix.
++	/// </summary>
++	/// <param name="prefix">The <see cref="PrefixID"/> to check.</param>
++	/// <returns><see langword="true"/> if this <see cref="Item"/> can roll the given prefix (<see cref="CanRollPrefix(int)"/>) and if the applied prefix does not fail to modify any stat values.</returns>
+ 	public bool CanApplyPrefix(int prefix)
+ 	{
+ 		if (!CanRollPrefix(prefix))
+@@ -789,8 +_,14 @@
+ 			ToolTip = Lang.GetTooltip(netID);
+ 	}
+ 
++	/// <summary>
++	/// Gets this <see cref="Item"/>'s hitbox in the world. Equivalent to <see cref="Entity.Hitbox"/>.
++	/// </summary>
++	/// <returns>This <see cref="Item"/>'s hitbox in the world.</returns>
+ 	public Rectangle getRect() => new Rectangle((int)position.X, (int)position.Y, width, height);
+@@ -47737,6 +_,8 @@
+ 					stack *= 1000000;
+ 					break;
+ 			}
++			*/
++			// patch context for CoinLuckValue
+ 
+ 			Main.player[Main.myPlayer].AddCoinLuck(base.Center, stack);
+ 			NetMessage.SendData(146, -1, -1, null, 1, (int)base.Center.X, (int)base.Center.Y, stack);
+@@ -47808,10 +_,34 @@
+ 			shimmered = true;
+ 		}
+ 		else if (ItemID.Sets.ShimmerTransformToItem[shimmerEquivalentType] > 0) {
++			// Since 1.4.5 seems to add item stacking (April 2024 state of the game) this is likely a temporary fix. All variables are renamed as such so I can read this later. (Copy paste + modify from decrafting code) - Kogsey
+-			int num8 = stack;
++			int stackSize = stack;
+ 			SetDefaults(ItemID.Sets.ShimmerTransformToItem[shimmerEquivalentType]);
+-			stack = num8;
++			stack = stackSize;
++			if (stack > maxStack)
++				stack = maxStack;
++			stackSize -= stack;
+ 			shimmered = true;
++			int spawnCount = 0;
++
++			while (stackSize > 0) {
++				spawnCount++;
++
++				int newItemIndex = NewItem(GetItemSource_Misc(8), (int)position.X, (int)position.Y, width, height, type);
++				Item item = Main.item[newItemIndex];
++				item.stack = stackSize;
++				if (item.stack > maxStack)
++					item.stack = maxStack;
++				stackSize -= item.stack;
++				item.shimmerTime = 1f;
++				item.shimmered = true;
++				item.shimmerWet = true;
++				item.wet = true;
++				item.velocity *= 0.1f;
++				item.playerIndexTheItemIsReservedFor = Main.myPlayer;
++
++				NetMessage.SendData(145, -1, -1, null, newItemIndex, 1f);
++			}
+ 		}
+ 		else if (type == 4986) {
+ 			if (NPC.unlockedSlimeRainbowSpawn)
+@@ -47857,7 +_,7 @@
+ 			int num13 = FindDecraftAmount();
+ 			Recipe recipe = Main.recipe[decraftingRecipeIndex];
+ 			int num14 = 0;
+-			bool flag = recipe.requiredItem[1].stack > 0;
++			bool flag = recipe.requiredItem.Count > 1;
+ 			IEnumerable<Item> enumerable = recipe.requiredItem;
+ 			if (recipe.customShimmerResults != null)
+ 				enumerable = recipe.customShimmerResults;
+@@ -47869,17 +_,22 @@
+ 
+ 				num15++;
+ 				int num16 = num13 * item2.stack;
++
++				/* TML: Recipe.alchemy is removed due to being replaced by consume item hooks
+ 				if (recipe.alchemy) {
+ 					for (int num17 = num16; num17 > 0; num17--) {
+ 						if (Main.rand.Next(3) == 0)
+ 							num16--;
+ 					}
+ 				}
++				*/
++
++				RecipeLoader.ConsumeIngredient(recipe, item2.type, ref num16, true);
+ 
+ 				while (num16 > 0) {
+ 					int num18 = num16;
+-					if (num18 > 9999)
+-						num18 = 9999;
++					if (num18 > item2.maxStack)
++						num18 = item2.maxStack;
+ 
+ 					num16 -= num18;
+ 					int num19 = NewItem(GetItemSource_Misc(8), (int)position.X, (int)position.Y, width, height, item2.type);
+@@ -48004,7 +_,7 @@
+ 		if (Main.netMode == 1) {
+ 			int num = (int)(position.X + (float)(width / 2)) / 16;
+ 			int num2 = (int)(position.Y + (float)(height / 2)) / 16;
+-			if (num >= 0 && num2 >= 0 && num < Main.maxTilesX && num2 < Main.maxTilesY && Main.tile[num, num2] == null) {
++			if (num >= 0 && num2 >= 0 && num < Main.maxTilesX && num2 < Main.maxTilesY && !Main.sectionManager.TileLoaded(num, num2)) {
+ 				gravity = 0f;
+ 				velocity.X = 0f;
+ 				velocity.Y = 0f;
+@@ -48274,7 +_,7 @@
+ 
+ 			NetMessage.SendData(21, -1, -1, null, i);
+ 		}
+-		else if (playerIndexTheItemIsReservedFor == Main.myPlayer && rare == 0 && type >= 0 && type < ItemID.Count && !ItemID.Sets.IsLavaImmuneRegardlessOfRarity[type]) {
++		else if (playerIndexTheItemIsReservedFor == Main.myPlayer && rare == 0 && type >= 0 && !ItemID.Sets.IsLavaImmuneRegardlessOfRarity[type]) {
+ 			active = false;
+ 			type = 0;
+ 			stack = 0;
+@@ -48553,7 +_,7 @@
+ 		Rectangle hitbox = base.Hitbox;
+ 		for (int j = 0; j < 200; j++) {
+ 			NPC nPC = Main.npc[j];
+-			if (nPC.active && flag && nPC.type >= 0 && nPC.type < NPCID.Count && NPCID.Sets.CanConvertIntoCopperSlimeTownNPC[nPC.type] && hitbox.Intersects(nPC.Hitbox)) {
++			if (nPC.active && flag && nPC.type >= 0 && NPCID.Sets.CanConvertIntoCopperSlimeTownNPC[nPC.type] && hitbox.Intersects(nPC.Hitbox)) {
+ 				flag3 = true;
+ 				NPC.TransformCopperSlime(j);
+ 				break;
+@@ -49077,6 +_,16 @@
+ 			case 4070:
+ 				return TextureAssets.Item[type].Frame(1, 4);
+ 			default:
++				/*
+ 				return TextureAssets.Item[type].Frame();
++				*/
++
++				// Notes:
++				//   If the item doesn't have an animation, "Main.itemAnimations[type]" is just null, so the code will default to Asset<Texture2D>.Frame(), which will just be what vanilla does.
++				//   However, if it does have an animation, then the source rect will be obtained from the animation instance, which is also what's used for displaying the animation
++				//   source rect for items in the inventory and dropped items in the world.  This source rect will then be the basis for the use item's hitbox, rather than the entire
++				//   spritesheet's size.
++				//     - absoluteAquarian
++				return Main.itemAnimations[type]?.GetFrame(TextureAssets.Item[type].Value) ?? TextureAssets.Item[type].Frame();
+ 		}
+ 	}
+@@ -49240,8 +_,9 @@
+ 					continue;
+ 
+ 				Player.ItemSpaceStatus status = player.ItemSpace(Main.item[whoAmI]);
+-				if (player.CanPullItem(Main.item[whoAmI], status)) {
++				if (ItemLoader.CanPickup(Main.item[whoAmI], player) && player.CanPullItem(Main.item[whoAmI], status)) {
+ 					float num3 = Math.Abs(player.position.X + (float)(player.width / 2) - position.X - (float)(width / 2)) + Math.Abs(player.position.Y + (float)(player.height / 2) - position.Y - (float)height);
++					/*
+ 					if (player.manaMagnet && (type == 184 || type == 1735 || type == 1868))
+ 						num3 -= (float)manaGrabRange;
+ 
+@@ -49250,6 +_,9 @@
+ 
+ 					if (type == 4143)
+ 						num3 -= (float)manaGrabRange;
++					*/
++					// This will have grab range discrepancies with the above code due to this method having additional checks - Mutant
++					num3 -= player.GetItemGrabRange(Main.item[whoAmI]);
+ 
+ 					if (num2 > num3) {
+ 						num2 = num3;
+@@ -49272,4 +_,5 @@
++	// TML: Made internal so that modders will have to replace it with a more straightforward item.type == compareItem.type
+-	public bool IsTheSameAs(Item compareItem)
++	internal bool IsTheSameAs(Item compareItem)
+ 	{
+ 		if (netID == compareItem.netID)
+ 			return type == compareItem.type;

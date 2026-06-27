@@ -1,13 +1,14 @@
-﻿using Mono.Cecil;
-using Mono.Cecil.Cil;
-using MonoMod.Utils;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Mono.Cecil;
+using Mono.Cecil.Cil;
+using Mono.Cecil.Rocks;
+using MonoMod.Utils;
 
 // Man, I just want these warnings gone. This needs to be entirely rewritten anyway.
 #pragma warning disable CA1051 // Do not declare visible instance fields
@@ -186,8 +187,11 @@ namespace MonoMod.RuntimeDetour.HookGen
 
             var add = false;
 
-            foreach (var method in type.Methods)
+            foreach (var method in type.Methods) {
                 add |= GenerateFor(hookType, hookILType, method);
+                if (method.HasCustomAttribute("Terraria.ModLoader.OriginalOverloadAttribute"))
+                    add |= GenerateFor(hookType, hookILType, method, skipOverloadSuffix: true);
+            }
 
             foreach (var nested in type.NestedTypes)
             {
@@ -205,7 +209,7 @@ namespace MonoMod.RuntimeDetour.HookGen
             }
         }
 
-        public bool GenerateFor(TypeDefinition hookType, TypeDefinition hookILType, MethodDefinition method)
+        public bool GenerateFor(TypeDefinition hookType, TypeDefinition hookILType, MethodDefinition method, bool skipOverloadSuffix = false)
         {
             if (method.HasGenericParameters ||
                 method.IsAbstract ||
@@ -228,9 +232,14 @@ namespace MonoMod.RuntimeDetour.HookGen
             if (suffix)
             {
                 overloads = method.DeclaringType.Methods.Where(other => !other.HasGenericParameters && HookGenerator.GetFriendlyName(other) == name && other != method);
-                if (!overloads.Any())
+                if (!overloads.Any() || skipOverloadSuffix)
                 {
                     suffix = false;
+                }
+                if (skipOverloadSuffix) {
+                    if (overloads.Any(x => x.HasCustomAttribute("Terraria.ModLoader.OriginalOverloadAttribute"))) {
+                          throw new Exception($"Multiple overloads for {method.DeclaringType.Name}.{method.Name} with OriginalOverloadAttribute");
+                    }
                 }
             }
 
@@ -271,6 +280,8 @@ namespace MonoMod.RuntimeDetour.HookGen
                 name = nameTmp;
             }
 
+            bool obsolete = method.HasCustomAttribute("System.ObsoleteAttribute"); // Do we need to check if error is true?
+
             // TODO: Fix possible conflict when other members with the same names exist.
 
             var delOrig = GenerateDelegateFor(method);
@@ -302,13 +313,24 @@ namespace MonoMod.RuntimeDetour.HookGen
             addHook.Parameters.Add(new ParameterDefinition(null, ParameterAttributes.None, delHook));
             addHook.Body = new MethodBody(addHook);
             il = addHook.Body.GetILProcessor();
-            il.Emit(OpCodes.Ldtoken, methodRef);
-            il.Emit(OpCodes.Call, m_GetMethodFromHandle);
-            il.Emit(OpCodes.Ldarg_0);
-            endpointMethod = new GenericInstanceMethod(m_Add);
-            endpointMethod.GenericArguments.Add(delHook);
-            il.Emit(OpCodes.Call, endpointMethod);
-            il.Emit(OpCodes.Ret);
+            if (obsolete) {
+                if (LogObsoleteHookSubscribed != null) {
+                    il.Emit(OpCodes.Ldtoken, methodRef);
+                    il.Emit(OpCodes.Call, m_GetMethodFromHandle);
+                    il.Emit(OpCodes.Ldarg_0);
+                    il.Emit(OpCodes.Call, LogObsoleteHookSubscribed);
+                }
+                il.Emit(OpCodes.Ret);
+            }
+            else {
+                il.Emit(OpCodes.Ldtoken, methodRef);
+                il.Emit(OpCodes.Call, m_GetMethodFromHandle);
+                il.Emit(OpCodes.Ldarg_0);
+                endpointMethod = new GenericInstanceMethod(m_Add);
+                endpointMethod.GenericArguments.Add(delHook);
+                il.Emit(OpCodes.Call, endpointMethod);
+                il.Emit(OpCodes.Ret);
+            }
             hookType.Methods.Add(addHook);
 
             var removeHook = new MethodDefinition(
@@ -319,13 +341,18 @@ namespace MonoMod.RuntimeDetour.HookGen
             removeHook.Parameters.Add(new ParameterDefinition(null, ParameterAttributes.None, delHook));
             removeHook.Body = new MethodBody(removeHook);
             il = removeHook.Body.GetILProcessor();
-            il.Emit(OpCodes.Ldtoken, methodRef);
-            il.Emit(OpCodes.Call, m_GetMethodFromHandle);
-            il.Emit(OpCodes.Ldarg_0);
-            endpointMethod = new GenericInstanceMethod(m_Remove);
-            endpointMethod.GenericArguments.Add(delHook);
-            il.Emit(OpCodes.Call, endpointMethod);
-            il.Emit(OpCodes.Ret);
+            if (obsolete) {
+                il.Emit(OpCodes.Ret);
+            }
+            else { 
+                il.Emit(OpCodes.Ldtoken, methodRef);
+                il.Emit(OpCodes.Call, m_GetMethodFromHandle);
+                il.Emit(OpCodes.Ldarg_0);
+                endpointMethod = new GenericInstanceMethod(m_Remove);
+                endpointMethod.GenericArguments.Add(delHook);
+                il.Emit(OpCodes.Call, endpointMethod);
+                il.Emit(OpCodes.Ret);
+            }
             hookType.Methods.Add(removeHook);
 
             var evHook = new EventDefinition(name, EventAttributes.None, delHook)
@@ -333,6 +360,9 @@ namespace MonoMod.RuntimeDetour.HookGen
                 AddMethod = addHook,
                 RemoveMethod = removeHook
             };
+            if (obsolete) {
+                evHook.CustomAttributes.Add(GenerateObsolete("The hooked method is Obsolete, this detour should not be used.", true));
+            }
             hookType.Events.Add(evHook);
 
             #endregion
@@ -347,13 +377,24 @@ namespace MonoMod.RuntimeDetour.HookGen
             addIL.Parameters.Add(new ParameterDefinition(null, ParameterAttributes.None, t_ILManipulator));
             addIL.Body = new MethodBody(addIL);
             il = addIL.Body.GetILProcessor();
-            il.Emit(OpCodes.Ldtoken, methodRef);
-            il.Emit(OpCodes.Call, m_GetMethodFromHandle);
-            il.Emit(OpCodes.Ldarg_0);
-            endpointMethod = new GenericInstanceMethod(m_Modify);
-            endpointMethod.GenericArguments.Add(delHook);
-            il.Emit(OpCodes.Call, endpointMethod);
-            il.Emit(OpCodes.Ret);
+            if (obsolete) {
+                if (LogObsoleteHookSubscribed != null) {
+                    il.Emit(OpCodes.Ldtoken, methodRef);
+                    il.Emit(OpCodes.Call, m_GetMethodFromHandle);
+                    il.Emit(OpCodes.Ldarg_0);
+                    il.Emit(OpCodes.Call, LogObsoleteHookSubscribed);
+                }
+                il.Emit(OpCodes.Ret);
+            }
+            else {
+                il.Emit(OpCodes.Ldtoken, methodRef);
+                il.Emit(OpCodes.Call, m_GetMethodFromHandle);
+                il.Emit(OpCodes.Ldarg_0);
+                endpointMethod = new GenericInstanceMethod(m_Modify);
+                endpointMethod.GenericArguments.Add(delHook);
+                il.Emit(OpCodes.Call, endpointMethod);
+                il.Emit(OpCodes.Ret);
+            }
             hookILType.Methods.Add(addIL);
 
             var removeIL = new MethodDefinition(
@@ -364,13 +405,18 @@ namespace MonoMod.RuntimeDetour.HookGen
             removeIL.Parameters.Add(new ParameterDefinition(null, ParameterAttributes.None, t_ILManipulator));
             removeIL.Body = new MethodBody(removeIL);
             il = removeIL.Body.GetILProcessor();
-            il.Emit(OpCodes.Ldtoken, methodRef);
-            il.Emit(OpCodes.Call, m_GetMethodFromHandle);
-            il.Emit(OpCodes.Ldarg_0);
-            endpointMethod = new GenericInstanceMethod(m_Unmodify);
-            endpointMethod.GenericArguments.Add(delHook);
-            il.Emit(OpCodes.Call, endpointMethod);
-            il.Emit(OpCodes.Ret);
+            if (obsolete) {
+                il.Emit(OpCodes.Ret);
+            }
+            else {
+                il.Emit(OpCodes.Ldtoken, methodRef);
+                il.Emit(OpCodes.Call, m_GetMethodFromHandle);
+                il.Emit(OpCodes.Ldarg_0);
+                endpointMethod = new GenericInstanceMethod(m_Unmodify);
+                endpointMethod.GenericArguments.Add(delHook);
+                il.Emit(OpCodes.Call, endpointMethod);
+                il.Emit(OpCodes.Ret);
+            }
             hookILType.Methods.Add(removeIL);
 
             var evIL = new EventDefinition(name, EventAttributes.None, t_ILManipulator)
@@ -378,6 +424,9 @@ namespace MonoMod.RuntimeDetour.HookGen
                 AddMethod = addIL,
                 RemoveMethod = removeIL
             };
+            if (obsolete) {
+                evIL.CustomAttributes.Add(GenerateObsolete("The hooked method is Obsolete, this IL edit should not be used.", true));
+            }
             hookILType.Events.Add(evIL);
 
             #endregion
@@ -609,6 +658,129 @@ namespace MonoMod.RuntimeDetour.HookGen
             return attrib;
         }
 
+        MethodDefinition LogObsoleteHookSubscribed;
+
+        public void GenerateObsoleteLogging(Terraria.ModLoader.Setup.Core.HookGenTask.ProgressReportingMonoModder modder)
+        {
+            // Generated on https://cecilifier.me/
+            /*
+            using System;
+            using System.Reflection;
+
+            namespace TerrariaHooks {
+                public static class Logging
+                {
+                    public static Action<MethodBase, Delegate> OnObsoleteHookSubscribed;
+
+                    public static void LogObsoleteHookSubscribed(MethodBase methodBase, Delegate methodDelegate) {
+                        if(OnObsoleteHookSubscribed != null) {
+                            OnObsoleteHookSubscribed.Invoke(methodBase, methodDelegate);
+                        }
+                    }
+                }
+            }
+            */
+
+            var cls_Logging_0 = new TypeDefinition("TerrariaHooks", "Logging", TypeAttributes.AnsiClass | TypeAttributes.BeforeFieldInit | TypeAttributes.Public | TypeAttributes.Abstract | TypeAttributes.Sealed, OutputModule.TypeSystem.Object);
+            OutputModule.Types.Add(cls_Logging_0);
+
+            OutputModule.ImportReference(modder.FindType("System.Reflection.MethodBase").Resolve());
+            OutputModule.ImportReference(modder.FindType("System.Delegate").Resolve());
+
+            var fld_OnObsoleteHookSubscribed_1 = new FieldDefinition("OnObsoleteHookSubscribed", FieldAttributes.Public | FieldAttributes.Static, OutputModule.ImportReference(modder.FindType("System.Action`2").Resolve().MakeGenericInstanceType(modder.FindType("System.Reflection.MethodBase").Resolve(), modder.FindType("System.Delegate").Resolve())));
+            //var fld_OnObsoleteHookSubscribed_1 = new FieldDefinition("OnObsoleteHookSubscribed", FieldAttributes.Public | FieldAttributes.Static, OutputModule.ImportReference(typeof(System.Action<>)).MakeGenericInstanceType(OutputModule.TypeSystem.String)); // Generated code that causes assembly reference issue
+
+            cls_Logging_0.Fields.Add(fld_OnObsoleteHookSubscribed_1);
+
+            //Method : LogObsoleteHookSubscribed
+            var md_LogObsoleteHookSubscribed_2 = new MethodDefinition("LogObsoleteHookSubscribed", MethodAttributes.Public | MethodAttributes.Static | MethodAttributes.HideBySig, OutputModule.TypeSystem.Void);
+            cls_Logging_0.Methods.Add(md_LogObsoleteHookSubscribed_2);
+            md_LogObsoleteHookSubscribed_2.Body.InitLocals = true;
+            var il_LogObsoleteHookSubscribed_3 = md_LogObsoleteHookSubscribed_2.Body.GetILProcessor();
+
+            //Parameters of 'public static void LogObsoleteHookSubscribed(MethodBase methodBase, Delegate methodDelegate) {...'
+            var p_MethodBase_4 = new ParameterDefinition("methodBase", ParameterAttributes.None, OutputModule.ImportReference(modder.FindType("System.Reflection.MethodBase").Resolve()));
+            md_LogObsoleteHookSubscribed_2.Parameters.Add(p_MethodBase_4);
+            var p_MethodDelegate_5 = new ParameterDefinition("methodDelegate", ParameterAttributes.None, OutputModule.ImportReference(modder.FindType("System.Delegate").Resolve()));
+            md_LogObsoleteHookSubscribed_2.Parameters.Add(p_MethodDelegate_5);
+
+            LogObsoleteHookSubscribed = md_LogObsoleteHookSubscribed_2; // Store reference for later
+
+            //if(OnObsoleteHookSubscribed != null) {...
+            il_LogObsoleteHookSubscribed_3.Emit(OpCodes.Ldsfld, fld_OnObsoleteHookSubscribed_1);
+            il_LogObsoleteHookSubscribed_3.Emit(OpCodes.Ldnull);
+            il_LogObsoleteHookSubscribed_3.Emit(OpCodes.Ceq);
+            il_LogObsoleteHookSubscribed_3.Emit(OpCodes.Ldc_I4_0);
+            il_LogObsoleteHookSubscribed_3.Emit(OpCodes.Ceq);
+            var lbl_ElseEntryPoint_5 = il_LogObsoleteHookSubscribed_3.Create(OpCodes.Nop);
+            il_LogObsoleteHookSubscribed_3.Emit(OpCodes.Brfalse, lbl_ElseEntryPoint_5);
+            //if body
+
+            //OnObsoleteHookSubscribed.Invoke(methodBase, methodDelegate);
+            il_LogObsoleteHookSubscribed_3.Emit(OpCodes.Ldsfld, fld_OnObsoleteHookSubscribed_1);
+            il_LogObsoleteHookSubscribed_3.Emit(OpCodes.Ldarg_0);
+            il_LogObsoleteHookSubscribed_3.Emit(OpCodes.Ldarg_1);
+            il_LogObsoleteHookSubscribed_3.Emit(OpCodes.Callvirt, OutputModule.ImportReference(TypeHelpers.ResolveMethod(typeof(System.Action<System.Reflection.MethodBase, System.Delegate>), "Invoke", System.Reflection.BindingFlags.Default | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public, "System.Reflection.MethodBase", "System.Delegate")));
+            var lbl_ElseEnd_6 = il_LogObsoleteHookSubscribed_3.Create(OpCodes.Nop);
+            il_LogObsoleteHookSubscribed_3.Append(lbl_ElseEntryPoint_5);
+            il_LogObsoleteHookSubscribed_3.Append(lbl_ElseEnd_6);
+            md_LogObsoleteHookSubscribed_2.Body.OptimizeMacros();
+            // end if (if(OnObsoleteHookSubscribed != null) {...)
+            il_LogObsoleteHookSubscribed_3.Emit(OpCodes.Ret);
+
+            //** Constructor: Logging() **
+            var ctor_Logging_7 = new MethodDefinition(".ctor", MethodAttributes.Public | MethodAttributes.HideBySig | MethodAttributes.RTSpecialName | MethodAttributes.SpecialName, OutputModule.TypeSystem.Void);
+            cls_Logging_0.Methods.Add(ctor_Logging_7);
+            var il_Ctor_Logging_8 = ctor_Logging_7.Body.GetILProcessor();
+            il_Ctor_Logging_8.Emit(OpCodes.Ldarg_0);
+            il_Ctor_Logging_8.Emit(OpCodes.Call, OutputModule.ImportReference(TypeHelpers.DefaultCtorFor(cls_Logging_0.BaseType)));
+            il_Ctor_Logging_8.Emit(OpCodes.Ret);
+        }
+    }
+
+    public class TypeHelpers
+    {
+        public static MethodReference DefaultCtorFor(TypeReference type)
+        {
+            var resolved = type.Resolve();
+            if (resolved == null)
+                return null;
+
+            var ctor = resolved.Methods.SingleOrDefault(m => m.IsConstructor && m.Parameters.Count == 0 && !m.IsStatic);
+            if (ctor == null)
+                return DefaultCtorFor(resolved.BaseType);
+
+            return new MethodReference(".ctor", type.Module.TypeSystem.Void, type) { HasThis = true };
+        }
+
+        public static System.Reflection.MethodBase ResolveMethod(Type declaringType, string methodName, System.Reflection.BindingFlags bindingFlags, params string[] paramTypes)
+        {
+            if (methodName == ".ctor") {
+                var resolvedCtor = declaringType.GetConstructor(
+                    bindingFlags,
+                    null,
+                    paramTypes.Select(Type.GetType).ToArray(),
+                    null);
+
+                if (resolvedCtor == null) {
+                    throw new InvalidOperationException($"Failed to resolve ctor [{declaringType}({string.Join(',', paramTypes)})");
+                }
+
+                return resolvedCtor;
+            }
+
+            var resolvedMethod = declaringType.GetMethod(methodName,
+                bindingFlags,
+                null,
+                paramTypes.Select(Type.GetType).ToArray(),
+                null);
+
+            if (resolvedMethod == null) {
+                throw new InvalidOperationException($"Failed to resolve method {declaringType}.{methodName}({string.Join(',', paramTypes)})");
+            }
+
+            return resolvedMethod;
+        }
     }
 }
 

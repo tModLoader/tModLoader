@@ -11,22 +11,22 @@
  
 @@ -39,6 +_,7 @@
  
- 	public static void Copy(string source, string destination, bool cloud, bool overwrite = true)
+ 	public static void Copy(string source, string destination, bool cloud)
  	{
 +		/*
  		if (!cloud) {
  			try {
- 				File.Copy(source, destination, overwrite);
+ 				File.Copy(source, destination, overwrite: true);
 @@ -57,6 +_,8 @@
  
- 		if (SocialAPI.Cloud != null && (overwrite || !SocialAPI.Cloud.HasFile(destination)))
+ 		if (SocialAPI.Cloud != null)
  			SocialAPI.Cloud.Write(destination, SocialAPI.Cloud.Read(source));
 +		*/
-+		CopyExtended(source, destination, cloud, overwriteAlways: overwrite);
++		CopyExtended(source, destination, cloud, overwriteAlways: true); // TODO: overwrite parameter removed from this method, is that OK for CopyExtended?
  	}
  
- 	public static void Move(string source, string destination, bool cloud, bool overwrite = true, bool forceDeleteSourceFile = false)
-@@ -181,6 +_,7 @@
+ 	public static void Move(string source, string destination, bool cloud)
+@@ -198,6 +_,7 @@
  
  	public static void CopyFolder(string sourcePath, string destinationPath)
  	{
@@ -34,7 +34,7 @@
  		Directory.CreateDirectory(destinationPath);
  		string[] directories = Directory.GetDirectories(sourcePath, "*", SearchOption.AllDirectories);
  		for (int i = 0; i < directories.Length; i++) {
-@@ -191,6 +_,8 @@
+@@ -208,6 +_,8 @@
  		foreach (string obj in directories) {
  			File.Copy(obj, obj.Replace(sourcePath, destinationPath), overwrite: true);
  		}

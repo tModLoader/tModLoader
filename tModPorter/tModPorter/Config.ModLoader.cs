@@ -55,7 +55,7 @@ public static partial class Config
 
 		RefactorInstanceMethodCall("Terraria.ModLoader.BuffLoader", "CanBeCleared",			Removed("Use !BuffID.Sets.NurseCannotRemoveDebuff instead"));
 		RefactorInstanceMember("Terraria.ModLoader.ModBuff",		"canBeCleared",			Removed("Use BuffID.Sets.NurseCannotRemoveDebuff instead, and invert the logic"));
-		RefactorInstanceMember("Terraria.ModLoader.ModBuff",		"longerExpertDebuff",	Removed("Use BuffID.Sets.LongerExpertDebuff instead"));
+		RefactorInstanceMember("Terraria.ModLoader.ModBuff",		"longerExpertDebuff",	Removed("Use BuffID.Sets.BuffTimeIsExtendedWithGameDifficulty instead"));
 		RefactorInstanceMember("Terraria.ModLoader.EquipTexture",	"mod",					Removed(""));
 		RefactorInstanceMember("Terraria.ModLoader.ModNPC",			"bossBag",				Removed("Spawn the treasure bag alongside other loot via npcLoot.Add(ItemDropRule.BossBag(type))"));
 		RefactorInstanceMember("Terraria.ModLoader.Mod",			"Properties",			Removed("Instead, assign the properties directly (ContentAutoloadingEnabled, GoreAutoloadingEnabled, MusicAutoloadingEnabled, and BackgroundAutoloadingEnabled)"));
@@ -153,6 +153,7 @@ public static partial class Config
 		ChangeHookSignature("Terraria.ModLoader.GlobalNPC",			"CanHitNPC", comment: "Suggestion: Return true instead of null");
 		ChangeHookSignature("Terraria.ModLoader.ModNPC",			"ApplyDifficultyAndPlayerScaling", comment: "Note: bossLifeScale -> balance (bossAdjustment is different, see the docs for details)");
 		ChangeHookSignature("Terraria.ModLoader.GlobalNPC",			"ApplyDifficultyAndPlayerScaling", comment: "Note: bossLifeScale -> balance (bossAdjustment is different, see the docs for details)");
+		/* Updated once again in 1.4.5
 		ChangeHookSignature("Terraria.ModLoader.ModProjectile",		"PreDrawExtras");
 		ChangeHookSignature("Terraria.ModLoader.GlobalProjectile",	"PreDrawExtras");
 		ChangeHookSignature("Terraria.ModLoader.ModProjectile",		"PreDraw");
@@ -161,6 +162,7 @@ public static partial class Config
 		ChangeHookSignature("Terraria.ModLoader.GlobalProjectile",	"PostDraw");
 		ChangeHookSignature("Terraria.ModLoader.ModProjectile",		"DrawBehind");
 		ChangeHookSignature("Terraria.ModLoader.GlobalProjectile",	"DrawBehind");
+		*/
 		ChangeHookSignature("Terraria.ModLoader.ModProjectile",		"CanDamage", comment: "Suggestion: Return null instead of true");
 		ChangeHookSignature("Terraria.ModLoader.GlobalProjectile",	"CanDamage", comment: "Suggestion: Return null instead of true");
 		ChangeHookSignature("Terraria.ModLoader.ModProjectile",		"TileCollideStyle");
@@ -374,6 +376,7 @@ public static partial class Config
 		RenameInstanceField("Terraria.ModLoader.ModWaterStyle",		from: "Type",		to: "Slot");
 		RenameInstanceField("Terraria.ModLoader.ModWaterfallStyle", from: "Type",		to: "Slot");
 
+		/* Updated once again in 1.4.5
 		RenameInstanceField("Terraria.ModLoader.NPCSpawnInfo", from: "desertCave",			to: "DesertCave");
 		RenameInstanceField("Terraria.ModLoader.NPCSpawnInfo", from: "granite",				to: "Granite");
 		RenameInstanceField("Terraria.ModLoader.NPCSpawnInfo", from: "invasion",			to: "Invasion");
@@ -392,6 +395,7 @@ public static partial class Config
 		RenameInstanceField("Terraria.ModLoader.NPCSpawnInfo", from: "spawnTileY",			to: "SpawnTileY");
 		RenameInstanceField("Terraria.ModLoader.NPCSpawnInfo", from: "spiderCave",			to: "SpiderCave");
 		RenameInstanceField("Terraria.ModLoader.NPCSpawnInfo", from: "water",				to: "Water");
+		*/
 
 		RefactorInstanceMethodCall("Terraria.ModLoader.Mod", "BuffType",		ToFindTypeCall("Terraria.ModLoader.ModBuff"));
 		RefactorInstanceMethodCall("Terraria.ModLoader.Mod", "DustType",		ToFindTypeCall("Terraria.ModLoader.ModDust"));
@@ -513,7 +517,7 @@ public static partial class Config
 		RefactorInstanceMember("Terraria.ModLoader.ModTile", "ContainerName", Removed("Override DefaultContainerName instead"));
 		RenameMethod("Terraria.ModLoader.TileLoader", "ContainerName", "DefaultContainerName");
 		RefactorStaticMethodCall("Terraria.ModLoader.TileLoader", "DefaultContainerName", Comment("Note: new method takes in FrameX and FrameY"));
-    
+
 		RenameMethod("Terraria.ModLoader.ModBuff", from: "ModifyBuffTip", to: "ModifyBuffText");
 		RenameMethod("Terraria.ModLoader.GlobalBuff", from: "ModifyBuffTip", to: "ModifyBuffText");
 		ChangeHookSignature("Terraria.ModLoader.ModBuff", "ModifyBuffText");
@@ -527,7 +531,9 @@ public static partial class Config
 		RenameMethod("Terraria.ModLoader.ModNPC",		from: "SetupShop",	to: "ModifyActiveShop");
 		RenameMethod("Terraria.ModLoader.GlobalNPC",	from: "SetupShop",	to: "ModifyActiveShop");
 		RenameMethod("Terraria.ModLoader.ModPylon",		from: "IsPylonForSale", to: "GetNPCShopEntry").FollowBy(AddCommentToOverride("See ExamplePylonTile for an example. To register to specific NPC shops, use the new shop system directly in ModNPC.AddShop, GlobalNPC.ModifyShop or ModSystem.PostAddRecipes"));
+		/* Updated once again in 1.4.5
 		ChangeHookSignature("Terraria.ModLoader.ModNPC",	"OnChatButtonClicked");
+		*/
 		ChangeHookSignature("Terraria.ModLoader.ModNPC",	"ModifyActiveShop");
 		ChangeHookSignature("Terraria.ModLoader.GlobalNPC", "ModifyActiveShop");
 		ChangeHookSignature("Terraria.ModLoader.ModPylon",	"GetNPCShopEntry");
@@ -545,5 +551,62 @@ public static partial class Config
 		RenameMethod("Terraria.ModLoader.GlobalProjectile", from: "Kill", to: "OnKill");
 		HookRemoved("Terraria.ModLoader.ModProjectile", "ModifyFishingLine", "Use ModItem.ModifyFishingLine");
 		HookRemoved("Terraria.ModLoader.BuilderToggle", "DisplayColorTexture", "Use BuilderToggle.Draw");
+		ChangeHookSignature("Terraria.ModLoader.ModTree", "SetTreeFoliageSettings");
+
+		// 1.4.5
+		ChangeHookSignature("Terraria.ModLoader.ModNPC", "BossLoot");
+		ChangeHookSignature("Terraria.ModLoader.ModNPC", "SpawnChance").RenameParameter("spawnInfo", "spawner");
+		ChangeHookSignature("Terraria.ModLoader.ModNPC", "OnChatButtonClicked", comment: "Suggestion: Previously this was used to assign a shop to a button, but that is now handled by RegisterChatButtons. If that is all this was used for, remove this hook");
+		ChangeHookSignature("Terraria.ModLoader.GlobalNPC", "BuffTownNPC");
+		ChangeHookSignature("Terraria.ModLoader.GlobalNPC", "EditSpawnPool").RenameParameter("spawnInfo", "spawner");
+		ChangeHookSignature("Terraria.ModLoader.GlobalNPC", "OnChatButtonClicked");
+		ChangeHookSignature("Terraria.ModLoader.GlobalNPC", "PreChatButtonClicked");
+		ChangeHookSignature("Terraria.ModLoader.ModItem", "OnSpawn");
+		ChangeHookSignature("Terraria.ModLoader.ModItem", "CanStackInWorld");
+		ChangeHookSignature("Terraria.ModLoader.ModItem", "Update");
+		ChangeHookSignature("Terraria.ModLoader.ModItem", "PostUpdate");
+		ChangeHookSignature("Terraria.ModLoader.ModItem", "GrabRange");
+		ChangeHookSignature("Terraria.ModLoader.ModItem", "GrabStyle");
+		ChangeHookSignature("Terraria.ModLoader.ModItem", "CanPickup");
+		ChangeHookSignature("Terraria.ModLoader.ModItem", "OnPickup");
+		ChangeHookSignature("Terraria.ModLoader.ModItem", "PreDrawInWorld");
+		ChangeHookSignature("Terraria.ModLoader.ModItem", "PostDrawInWorld");
+		ChangeHookSignature("Terraria.ModLoader.GlobalItem", "OnSpawn");
+		ChangeHookSignature("Terraria.ModLoader.GlobalItem", "CanStackInWorld");
+		ChangeHookSignature("Terraria.ModLoader.GlobalItem", "Update");
+		ChangeHookSignature("Terraria.ModLoader.GlobalItem", "PostUpdate");
+		ChangeHookSignature("Terraria.ModLoader.GlobalItem", "GrabRange");
+		ChangeHookSignature("Terraria.ModLoader.GlobalItem", "GrabStyle");
+		ChangeHookSignature("Terraria.ModLoader.GlobalItem", "CanPickup");
+		ChangeHookSignature("Terraria.ModLoader.GlobalItem", "OnPickup");
+		ChangeHookSignature("Terraria.ModLoader.GlobalItem", "PreDrawInWorld");
+		ChangeHookSignature("Terraria.ModLoader.GlobalItem", "PostDrawInWorld");
+		const string ProjectileDrawPlayerHint = "Replace 'Main.player[Projectile.owner]' with 'player'.";
+		ChangeHookSignature("Terraria.ModLoader.ModProjectile", "PreDrawExtras", ProjectileDrawPlayerHint);
+		ChangeHookSignature("Terraria.ModLoader.ModProjectile", "PreDraw", ProjectileDrawPlayerHint);
+		ChangeHookSignature("Terraria.ModLoader.ModProjectile", "PostDraw", ProjectileDrawPlayerHint);
+		ChangeHookSignature("Terraria.ModLoader.GlobalProjectile", "PreDrawExtras", ProjectileDrawPlayerHint);
+		ChangeHookSignature("Terraria.ModLoader.GlobalProjectile", "PreDraw", ProjectileDrawPlayerHint);
+		ChangeHookSignature("Terraria.ModLoader.GlobalProjectile", "PostDraw", ProjectileDrawPlayerHint);
+
+		RefactorInstanceMethodCall("Terraria.ModLoader.ModTile", "AddToArray", RewriteAddToArrayForRoomNeeds);
+
+		HookRemoved("Terraria.ModLoader.ModProjectile", "DrawBehind", "Set Projectile.drawLayer instead");
+		HookRemoved("Terraria.ModLoader.GlobalProjectile", "DrawBehind", "Set Projectile.drawLayer instead");
+		HookRemoved("Terraria.ModLoader.ModNPC", "SetChatButtons", "Chat buttons are now set in RegisterChatButtons");
+		HookRemoved("Terraria.ModLoader.ModPylon", "ValidTeleportCheck_AnyDanger", "Pylons no longer check danger for teleportation");
+		HookRemoved("Terraria.ModLoader.GlobalPylon", "ValidTeleportCheck_PreAnyDanger", "Pylons no longer check danger for teleportation");
+		HookRemoved("Terraria.ModLoader.ModItem", "IsQuestFish", "Set with ItemID.Sets.IsQuestFish instead");
+
+		RefactorInstanceMember("Terraria.DataStructures.PlayerDrawSet", "heldProjOverHand", Removed("Automatically applied via Projectile.drawLayer value"));
+		RefactorInstanceMember("Terraria.ModLoader.ModProjectile", "DrawHeldProjInFrontOfHeldItemAndArms", Removed("Replace with Projectile.drawLayer = ProjectileDrawLayerID.HeldProjOverHand;"));
+		RefactorInstanceMember("Terraria.ModLoader.TooltipLine", "IsModifier", Removed("Set Color = Terraria.ID.Colors.PrefixGood instead"));
+		RefactorInstanceMember("Terraria.ModLoader.TooltipLine", "IsModifierBad", Removed("Set Color = Terraria.ID.Colors.PrefixBad instead"));
+
+		RenameInstanceField("Terraria.ModLoader.TooltipLine", "OverrideColor", "Color");
+
+		RenameType(from: "Terraria.ModLoader.NPCSpawnInfo", to: "Terraria.NPC+Spawner");
+
+		RenameStaticField("Terraria.ID.NPCID.Sets", from: "ImmuneToAllBuffs", to: "ImmuneToRegularBuffs").FollowBy(AddCommentToFieldAccess("NPCID.Sets.ImmuneToAllBuffs was removed. If immunity to whip tag effects are desired, also set NPCID.Sets.ImmuneToWhipTags to true."));
 	}
 }

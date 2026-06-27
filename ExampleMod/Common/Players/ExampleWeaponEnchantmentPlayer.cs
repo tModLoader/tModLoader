@@ -11,7 +11,7 @@ namespace ExampleMod.Common.Players
 	/// Handles the effects and weapon visuals of the Example Weapon Imbue.
 	/// See also ExampleFlask and ExampleWeaponImbue.
 	/// </summary>
-	public class ExampleWeaponEnchantmentPlayer :  ModPlayer
+	public class ExampleWeaponEnchantmentPlayer : ModPlayer
 	{
 		public bool exampleWeaponImbue = false;
 

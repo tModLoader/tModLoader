@@ -2,6 +2,7 @@
 using ExampleMod.Content.Items.Accessories;
 using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content
@@ -12,9 +13,17 @@ namespace ExampleMod.Content
 	/// </summary>
 	public class ExampleInfoDisplay : InfoDisplay
 	{
+		public static LocalizedText CurrentMinionsText { get; private set; }
+		public static LocalizedText NoMinionsText { get; private set; }
+
+		public override void SetStaticDefaults() {
+			CurrentMinionsText = this.GetLocalization("CurrentMinions");
+			NoMinionsText = this.GetLocalization("NoMinions");
+		}
+
 		public static Color RedInfoTextColor => new(255, 19, 19, Main.mouseTextColor);
 
-		// By default, the vanilla circular outline texture will be used. 
+		// By default, the vanilla circular outline texture will be used.
 		// This info display has a square icon instead of a circular one, so we need to use a custom outline texture instead of the vanilla outline texture.
 		// You will only need to use a custom hover texture if your info display icon doesn't perfectly match the shape that vanilla info displays use
 		public override string HoverTexture => Texture + "_Hover";
@@ -44,7 +53,7 @@ namespace ExampleMod.Content
 				// This red color serves as a warning that the player has not summoned all their minions.
 				displayColor = RedInfoTextColor;
 			}
-			/* 
+			/*
 			else if (minionCount == Main.LocalPlayer.maxMinions) {
 				// The gold text color used for gold critters by the Lifeform Analyzer is easily accessible if needed
 				displayColor = GoldInfoTextColor;
@@ -52,7 +61,7 @@ namespace ExampleMod.Content
 			}
 			*/
 
-			return !noInfo ? $"{minionCount} minions" : "No minions";
+			return !noInfo ? CurrentMinionsText.Format(minionCount) : NoMinionsText.Value;
 		}
 	}
 

@@ -1,8 +1,8 @@
-﻿using System.IO;
-using Terraria.ModLoader.IO;
-using Terraria.ModLoader;
+﻿using ExampleMod.Content.NPCs;
+using System.IO;
 using Terraria;
-using ExampleMod.Content.NPCs;
+using Terraria.ModLoader;
+using Terraria.ModLoader.IO;
 
 namespace ExampleMod.Common.Systems
 {

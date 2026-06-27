@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Rain.cs
 +++ src/tModLoader/Terraria/Rain.cs
-@@ -13,6 +_,8 @@
+@@ -12,6 +_,8 @@
  	public int alpha;
  	public bool active;
  	public byte type;
@@ -9,7 +9,7 @@
  
  	public static void ClearRain()
  	{
-@@ -136,6 +_,14 @@
+@@ -128,6 +_,14 @@
  		rain.scale = 1f + (float)Main.rand.Next(-20, 21) * 0.01f;
  		rain.velocity = Velocity * rain.scale;
  		rain.rotation = (float)Math.Atan2(rain.velocity.X, 0f - rain.velocity.Y);
@@ -24,7 +24,7 @@
  		rain.type = (byte)(Main.waterStyle * 3 + Main.rand.Next(3));
  		return num;
  	}
-@@ -179,6 +_,14 @@
+@@ -168,6 +_,14 @@
  		rain.scale = 1f + (float)Main.rand.Next(-20, 21) * 0.01f;
  		rain.velocity = Velocity * rain.scale;
  		rain.rotation = (float)Math.Atan2(rain.velocity.X, 0f - rain.velocity.Y);

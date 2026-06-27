@@ -1,0 +1,482 @@
+@@ -143,20 +_,31 @@
+ 		private int _lastScreenHeight;
+ 		private InputMode _lastInputMode;
+ 
+-		public string[] TextLines { get; private set; }
++		// Added by TML.
++		private Color originalColor;
++
++		public List<List<TextSnippet>> TextLines { get; private set; } // Changed from string[]
+ 
+ 		public int AmountOfLines { get; private set; }
+ 
+-		public void PrepareCache(string text)
++		// Fix all instances of drawing text to use TextSnippets instead of strings (#FixNPCChat)
++		// Added baseColor parameter
++		public void PrepareCache(string text, Color baseColor)
+ 		{
+-			if (false | (screenWidth != _lastScreenWidth) | (screenHeight != _lastScreenHeight) | (_originalText != text) | (PlayerInput.CurrentInputMode != _lastInputMode)) {
++			if (false | (screenWidth != _lastScreenWidth) | (screenHeight != _lastScreenHeight) | (_originalText != text) | (PlayerInput.CurrentInputMode != _lastInputMode) | (originalColor != baseColor)) {
+ 				_lastScreenWidth = screenWidth;
+ 				_lastScreenHeight = screenHeight;
+ 				_originalText = text;
+ 				_lastInputMode = PlayerInput.CurrentInputMode;
+ 				text = Lang.SupportGlyphs(text);
++				originalColor = baseColor;
++
++				/*
+ 				TextLines = Utils.WordwrapString(text, FontAssets.MouseText.Value, 460, 10, out var lineAmount);
+ 				AmountOfLines = lineAmount;
++				*/
++				TextLines = Utils.WordwrapStringSmart(text, baseColor, FontAssets.MouseText.Value, 460, 10);
++				AmountOfLines = TextLines.Count;
+ 			}
+ 		}
+ 	}
+@@ -3933,8 +_,10 @@
+ 						new FileInfo(text2);
+ 						autoGenFileLocation = text2;
+ 						ActiveWorldFileData = WorldFile.GetAllMetadata(text2, cloudSave: false);
++						ActiveWorldFileData ??= new();
+ 					}
+ 					catch {
++						ActiveWorldFileData = new();
+ 					}
+ 				}
+ 
+@@ -9065,7 +_,10 @@
+ 		Assets = base.Services.Get<IAssetRepository>();
+ 		Assets.AssetLoadFailHandler = OnceFailedLoadingAnAsset;
+ 		mapSectionTexture = new RenderTarget2D(base.GraphicsDevice, 200, 150);
++		/*
+ 		ShaderContentManager = new ContentManager(base.Content.ServiceProvider, base.Content.RootDirectory);
++		*/
++		ShaderContentManager = Main.instance.Content; // Use TMLContentManager to properly fallback shaders.
+ 		PixelShaderRef.Value = ShaderContentManager.Load<Effect>("PixelShader");
+ 		VertexPixelShaderRef.Value = ShaderContentManager.Load<Effect>("PixelShader");
+ 		TileShaderRef.Value = ShaderContentManager.Load<Effect>("TileShader");
+@@ -13947,6 +_,9 @@
+ 					focusRecipe = 0;
+ 			}
+ 
++			noScrollOnLocked:
++			PlayerInput.MouseInModdedUI.Clear();
++
+ 			Main.player[myPlayer].dropItemCheck();
+ 		}
+ 
+@@ -14143,7 +_,7 @@
+ 	private static void TrySyncingItemArray(ref bool syncedAnyInventoryContents, Item[] my, Item[] other, int slotOffset)
+ 	{
+ 		for (int i = 0; i < my.Length; i++) {
+-			if (my[i].IsNotTheSameAs(other[i])) {
++			if (my[i].IsNetStateDifferent(other[i])) {
+ 				syncedAnyInventoryContents = true;
+ 				NetMessage.SendData(5, -1, -1, null, myPlayer, slotOffset + i, (int)my[i].prefix);
+ 			}
+@@ -15840,7 +_,8 @@
+ 			text = "";
+ 
+ 		bool flag = false;
+-		if (inputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.LeftControl) || inputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.RightControl)) {
++		// Old code prevented users from using AltGr modifier key. Needed to type chars such as []{}\| on many languages keyboard layouts. Windows interprets Ctrl + Alt as AltGr.
++		if ((inputText.IsKeyDown(Keys.LeftControl) || inputText.IsKeyDown(Keys.RightControl)) && !(inputText.IsKeyDown(Keys.LeftAlt) || inputText.IsKeyDown(Keys.RightAlt))) {
+ 			if (inputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Z) && !oldInputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Z)) {
+ 				text = "";
+ 			}
+@@ -31743,8 +_,12 @@
+ 			textValue = Language.GetTextValue("StardewTalk.PlayerHasColaAndIsHoldingIt");
+ 
+ 		bool flag2 = player[myPlayer].talkNPC != -1;
++		/*
+ 		_textDisplayCache.PrepareCache(textValue);
+ 		string[] textLines = _textDisplayCache.TextLines;
++		*/
++		_textDisplayCache.PrepareCache(textValue, color2);
++		List<List<TextSnippet>> textLines = _textDisplayCache.TextLines;
+ 		int amountOfLines = _textDisplayCache.AmountOfLines;
+ 		bool flag3 = false;
+ 		if (editSign) {
+@@ -31758,16 +_,25 @@
+ 				textBlinkerCount = 0;
+ 			}
+ 
+-			if (textBlinkerState == 1)
++			if (textBlinkerState == 1) {
+ 				flag3 = true;
++
++				textLines[amountOfLines - 1].Add(new TextSnippet("|", Microsoft.Xna.Framework.Color.White, 1f));
++			}
+ 
+ 			instance.DrawWindowsIMEPanel(new Vector2(screenWidth / 2, 90f), 0.5f);
+ 		}
+ 
++		/*
+ 		amountOfLines++;
++		*/
+ 		spriteBatch.Draw(TextureAssets.ChatBack.Value, new Vector2(screenWidth / 2 - TextureAssets.ChatBack.Width() / 2, 100f), new Microsoft.Xna.Framework.Rectangle(0, 0, TextureAssets.ChatBack.Width(), (amountOfLines + 1) * 30), color, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
+ 		spriteBatch.Draw(TextureAssets.ChatBack.Value, new Vector2(screenWidth / 2 - TextureAssets.ChatBack.Width() / 2, 100 + (amountOfLines + 1) * 30), new Microsoft.Xna.Framework.Rectangle(0, TextureAssets.ChatBack.Height() - 30, TextureAssets.ChatBack.Width(), 30), color, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
++
++		// Fix all instances of drawing text to use TextSnippets instead of strings (#FixNPCChat)
++		TextSnippet hoveredSnippet = null;
+ 		for (int i = 0; i < amountOfLines; i++) {
++			/*
+ 			string text = textLines[i];
+ 			if (text != null) {
+ 				if (i == amountOfLines - 1 && flag3)
+@@ -31778,6 +_,23 @@
+ 				else
+ 					Utils.DrawBorderStringFourWay(spriteBatch, FontAssets.MouseText.Value, text, 170 + (screenWidth - 800) / 2, 120 + i * 30, color2, Microsoft.Xna.Framework.Color.Black, Vector2.Zero);
+ 			}
++			*/
++			List<TextSnippet> text = textLines[i];
++			ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.MouseText.Value, text.ToArray(), new Vector2(170 + (screenWidth - 800) / 2, 120 + i * 30), 0f, color2, Color.Black, Vector2.Zero, Vector2.One, out int hoveredSnippetNum);
++
++			if (hoveredSnippetNum > -1)
++				hoveredSnippet = text[hoveredSnippetNum];
++		}
++
++		if (flag3)
++			textLines[amountOfLines - 1].RemoveAt(textLines[amountOfLines - 1].Count - 1);
++
++		// Added on-hover and on-click callbacks as well
++		if (hoveredSnippet is not null) {
++			hoveredSnippet.OnHover();
++
++			if (mouseLeft && mouseLeftRelease)
++				hoveredSnippet.OnClick();
+ 		}
+ 
+ 		Microsoft.Xna.Framework.Rectangle rectangle = new Microsoft.Xna.Framework.Rectangle(screenWidth / 2 - TextureAssets.ChatBack.Width() / 2, 100, TextureAssets.ChatBack.Width(), (amountOfLines + 2) * 30);
+@@ -33572,7 +_,7 @@
+ 			if (numAvailableRecipes > 0) {
+ 				UILinkPointNavigator.Shortcuts.CRAFT_CurrentRecipeBig = -1;
+ 				UILinkPointNavigator.Shortcuts.CRAFT_CurrentRecipeSmall = -1;
+-				for (int num72 = 0; num72 < Recipe.maxRequirements; num72++) {
++				for (int num72 = 0; num72 < recipe[availableRecipe[focusRecipe]].requiredItem.Count; num72++) {
+ 					if (recipe[availableRecipe[focusRecipe]].requiredItem[num72].type == 0) {
+ 						UILinkPointNavigator.Shortcuts.CRAFT_CurrentIngredientsCount = num72 + 1;
+ 						break;
+@@ -33617,7 +_,13 @@
+ 					UILinkPointNavigator.Shortcuts.CRAFT_CurrentRecipeSmall = 1 + num72;
+ 					Microsoft.Xna.Framework.Color color5 = inventoryBack;
+ 					inventoryBack = new Microsoft.Xna.Framework.Color((byte)num75, (byte)num75, (byte)num75, (byte)num75);
++
++					//TML: Ref a local copy variable instead of the data in the array.
++					/*
+ 					ItemSlot.Draw(spriteBatch, ref recipe[availableRecipe[focusRecipe]].requiredItem[num72], 22, new Vector2(num73, num74));
++					*/
++					Item tempItem = recipe[availableRecipe[focusRecipe]].requiredItem[num72];
++					ItemSlot.Draw(spriteBatch, ref tempItem, 22, new Vector2(num73, num74));
+ 					inventoryBack = color5;
+ 				}
+ 			}
+@@ -34097,7 +_,7 @@
+ 		else {
+ 			text = Lang.inter[21].Value + " " + guideItem.Name;
+ 			Recipe recipe = Main.recipe[availableRecipe[focusRecipe]];
+-			for (int i = 0; i < Recipe.maxRequirements; i++) {
++			for (int i = 0; i < recipe.requiredTile.Count; i++) {
+ 				int num = recipe.requiredTile[i];
+ 				if (num == -1)
+ 					break;
+@@ -34159,7 +_,7 @@
+ 			spriteBatch.DrawString(FontAssets.MouseText.Value, Lang.inter[22].Value, new Vector2(inventoryX, inventoryY + 118), craftingTipColor, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
+ 			int num3 = focusRecipe;
+ 			int num4 = 0;
+-			for (int i = 0; i < Recipe.maxRequirements; i++) {
++			for (int i = 0; i < recipe[availableRecipe[num3]].requiredTile.Count; i++) {
+ 				int num5 = (i + 1) * 26;
+ 				if (recipe[availableRecipe[num3]].requiredTile[i] == -1) {
+ 					if (i == 0 && !recipe[availableRecipe[num3]].needWater && !recipe[availableRecipe[num3]].needHoney && !recipe[availableRecipe[num3]].needLava && !recipe[availableRecipe[num3]].needSnowBiome && !recipe[availableRecipe[num3]].needGraveyardBiome)
+@@ -34533,17 +_,39 @@
+ 
+ 	public static void CraftItem(Recipe r)
+ 	{
++		// #OnStackHook
++		/*
+ 		int stack = mouseItem.stack;
+ 		mouseItem = r.createItem.Clone();
+ 		mouseItem.stack += stack;
+ 		mouseItem.OnCreated(new RecipeItemCreationContext(r));
+ 		if (stack <= 0)
+ 			mouseItem.Prefix(-1);
++		*/
++
++		if (mouseItem.stack > 0 && !ItemLoader.CanStack(mouseItem, r.createItem))
++			return;
++
++		Item crafted = r.createItem.Clone();
++		crafted.Prefix(-1);
++		r.Create();
++		RecipeLoader.OnCraft(crafted, r, mouseItem);
++
++		if (mouseItem.stack > 0) {
++			ItemLoader.StackItems(mouseItem, crafted, out _);
++		}
++		else {
++			mouseItem = crafted;
++		}
+ 
+ 		mouseItem.position.X = player[myPlayer].position.X + (float)(player[myPlayer].width / 2) - (float)(mouseItem.width / 2);
+ 		mouseItem.position.Y = player[myPlayer].position.Y + (float)(player[myPlayer].height / 2) - (float)(mouseItem.height / 2);
+ 		PopupText.NewText(PopupTextContext.ItemCraft, mouseItem, r.createItem.stack);
++
++		// Moved above
++		/*
+ 		r.Create();
++		*/
+ 		if (mouseItem.type > 0 || r.createItem.type > 0)
+ 			SoundEngine.PlaySound(7);
+ 	}
+@@ -36525,7 +_,11 @@
+ 		if (num > 0) {
+ 			int num3 = 10 + player[myPlayer].cursorItemIconPush;
+ 			instance.LoadItem(num);
++			Vector2 value = Item.GetDrawHitbox(num, null).Size() * num2 * 0.5f;
++			ItemSlot.DrawItemIcon(ContentSamples.ItemsByType[num], ItemSlot.Context.InWorld, Main.spriteBatch, new Vector2(Main.mouseX + num3, Main.mouseY + num3) + value, num2, 9999f, currentColor);
++			/* Fix item frame drawing not respecting default item.color
+ 			spriteBatch.Draw(TextureAssets.Item[num].Value, new Vector2(mouseX + num3, mouseY + num3), Item.GetDrawHitbox(num, null), currentColor, 0f, default(Vector2), num2, effects, 0f);
++			*/
+ 			if (num == item.type && TryGetAmmo(item, out var ammoItem, out var ammoColor, out var ammoScale, out var ammoOffset)) {
+ 				float scale = num2 * ammoScale;
+ 				int type = ammoItem.type;
+@@ -37178,4 +_,6 @@
+ 		num22 = 240;
+ 		text9 = $"{upTimerMax:F2}ms";
+ 		spriteBatch.DrawString(FontAssets.MouseText.Value, text9, new Vector2(num22, num23), Microsoft.Xna.Framework.Color.White, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
++
++		spriteBatch.DrawString(FontAssets.MouseText.Value, Localization.Language.GetTextValue("tModLoader.PressXToClose", Microsoft.Xna.Framework.Input.Keys.F7), new Vector2(20, num23 + 32), Color.White, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
+ 	}
+@@ -43698,7 +_,7 @@
+ 									Lighting.GetCornerColors(num24, num25, out var vertices);
+ 									vertices.BottomLeftColor = new Microsoft.Xna.Framework.Color(vertices.BottomLeftColor.ToVector3() * vector2);
+ 									vertices.BottomRightColor = new Microsoft.Xna.Framework.Color(vertices.BottomRightColor.ToVector3() * vector2);
+-									tileBatch.Draw(TextureAssets.Background[array[1]].Value, new Vector2(bgStartX + num6 * num19 + 16 * num21 + num18, bgStartY + backgroundHeight[array2[1]] * num20 + 16 * num22) + vector, new Microsoft.Xna.Framework.Rectangle(16 * num21 + num18 + 16, 16 * num22, 16, 16), vertices, Vector2.Zero, 1f, SpriteEffects.None);
++									tileBatch.Draw(TextureAssets.Background[array[1]].Value, new Vector2(bgStartX + num6 * num19 + 16 * num21 + num18, bgStartY + backgroundHeight[array[1]] * num20 + 16 * num22) + vector, new Microsoft.Xna.Framework.Rectangle(16 * num21 + num18 + 16, 16 * num22, 16, 16), vertices, Vector2.Zero, 1f, SpriteEffects.None);
+ 								}
+ 								else if ((color4.R > num4 || (double)(int)color4.G > (double)num4 * 1.1 || (double)(int)color4.B > (double)num4 * 1.2) && !tile[num24, num25].active() && WallLightAt(num24, num25) && ugBackTransition == 0f) {
+ 									Lighting.GetColor9Slice(num24, num25, ref slices);
+@@ -45894,7 +_,11 @@
+ 		float num40 = (float)textureMaxHeight * num5;
+ 		float num41 = num;
+ 		float num42 = 0f;
++
++		/*
+ 		for (int k = 0; k <= 4; k++) {
++		*/
++		for (int k = 0; k <= mapTargetX - 1; k++) {
+ 			if (!((float)((k + 1) * textureMaxWidth) > num7) || !((float)(k * textureMaxWidth) < num7 + num9))
+ 				continue;
+ 
+@@ -46783,6 +_,9 @@
+ 
+ 	public void DrawCapture(Microsoft.Xna.Framework.Rectangle area, CaptureSettings settings)
+ 	{
++		// Remove in 1.4.5
++		bool lidquidEdgeRendererEnabled = LiquidEdgeRenderer.Enabled;
++		LiquidEdgeRenderer.Enabled = false;
+ 		float[] array = bgAlphaFrontLayer;
+ 		bgAlphaFrontLayer = new float[array.Length];
+ 		float[] array2 = bgAlphaFarBackLayer;
+@@ -47132,6 +_,8 @@
+ 		SceneMetrics.HolyTileCount = holyTileCount;
+ 		Lighting.Initialize();
+ 		GameViewMatrix = gameViewMatrix;
++		// Remove in 1.4.5
++		LiquidEdgeRenderer.Enabled = lidquidEdgeRendererEnabled;
+ 	}
+ 
+ 	protected void RenderTiles()
+@@ -48019,6 +_,7 @@
+ 				backgroundTarget = new RenderTarget2D(base.GraphicsDevice, width, height, mipMap: false, base.GraphicsDevice.PresentationParameters.BackBufferFormat, DepthFormat.None);
+ 				screenTarget = new RenderTarget2D(base.GraphicsDevice, base.GraphicsDevice.PresentationParameters.BackBufferWidth, base.GraphicsDevice.PresentationParameters.BackBufferHeight, mipMap: false, base.GraphicsDevice.PresentationParameters.BackBufferFormat, DepthFormat.None);
+ 				screenTargetSwap = new RenderTarget2D(base.GraphicsDevice, base.GraphicsDevice.PresentationParameters.BackBufferWidth, base.GraphicsDevice.PresentationParameters.BackBufferHeight, mipMap: false, base.GraphicsDevice.PresentationParameters.BackBufferFormat, DepthFormat.None);
++
+ 				if (Main.OnRenderTargetsInitialized != null)
+ 					Main.OnRenderTargetsInitialized(base.GraphicsDevice.PresentationParameters.BackBufferWidth, base.GraphicsDevice.PresentationParameters.BackBufferHeight);
+ 			}
+@@ -48951,7 +_,10 @@
+ 					color.G = (byte)((float)(int)color.G * num9);
+ 					float num10 = cloud[i].position.Y * ((float)screenHeight / 600f);
+ 					num10 = cloud[i].position.Y + (float)(int)(num4 * 750.0 + 830.0) + (float)(int)scAdj + (float)num6;
++					DrawCloud(i, color * num7, num10);
++					/*
+ 					spriteBatch.Draw(TextureAssets.Cloud[cloud[i].type].Value, new Vector2(cloud[i].position.X + (float)TextureAssets.Cloud[cloud[i].type].Width() * 0.5f, num10 + (float)TextureAssets.Cloud[cloud[i].type].Height() * 0.5f), new Microsoft.Xna.Framework.Rectangle(0, 0, TextureAssets.Cloud[cloud[i].type].Width(), TextureAssets.Cloud[cloud[i].type].Height()), color * num7, cloud[i].rotation, new Vector2((float)TextureAssets.Cloud[cloud[i].type].Width() * 0.5f, (float)TextureAssets.Cloud[cloud[i].type].Height() * 0.5f), cloud[i].scale, cloud[i].spriteDir, 0f);
++					*/
+ 				}
+ 			}
+ 		}
+@@ -49067,8 +_,10 @@
+ 
+ 						if (gameMenu)
+ 							num16 = 1f;
+-
++						DrawCloud(l, color2 * num7, num15 + cTop + 200f);
++						/*
+ 						spriteBatch.Draw(TextureAssets.Cloud[cloud[l].type].Value, new Vector2(cloud[l].position.X + (float)TextureAssets.Cloud[cloud[l].type].Width() * 0.5f, num15 + (float)TextureAssets.Cloud[cloud[l].type].Height() * 0.5f + cTop + 200f), new Microsoft.Xna.Framework.Rectangle(0, 0, TextureAssets.Cloud[cloud[l].type].Width(), TextureAssets.Cloud[cloud[l].type].Height()), color2 * num7, cloud[l].rotation, new Vector2((float)TextureAssets.Cloud[cloud[l].type].Width() * 0.5f, (float)TextureAssets.Cloud[cloud[l].type].Height() * 0.5f), cloud[l].scale, cloud[l].spriteDir, 0f);
++						*/
+ 					}
+ 				}
+ 			}
+@@ -49149,7 +_,10 @@
+ 						if (gameMenu)
+ 							num20 = 1f;
+ 
++						DrawCloud(n, color4 * num7, num19 + cTop);
++						/*
+ 						spriteBatch.Draw(TextureAssets.Cloud[cloud[n].type].Value, new Vector2(cloud[n].position.X + (float)TextureAssets.Cloud[cloud[n].type].Width() * 0.5f, num19 + (float)TextureAssets.Cloud[cloud[n].type].Height() * 0.5f + cTop), new Microsoft.Xna.Framework.Rectangle(0, 0, TextureAssets.Cloud[cloud[n].type].Width(), TextureAssets.Cloud[cloud[n].type].Height()), color4 * num7, cloud[n].rotation, new Vector2((float)TextureAssets.Cloud[cloud[n].type].Width() * 0.5f, (float)TextureAssets.Cloud[cloud[n].type].Height() * 0.5f), cloud[n].scale, cloud[n].spriteDir, 0f);
++						*/
+ 					}
+ 				}
+ 			}
+@@ -49257,6 +_,22 @@
+ 
+ 		if (!mapFullscreen)
+ 			SkyManager.Instance.DrawRemainingDepth(spriteBatch);
++
++		void DrawCloud(int cloudIndex, Color color, float yOffset)
++		{
++			Cloud cloud = Main.cloud[cloudIndex];
++			Asset<Texture2D> texture = TextureAssets.Cloud[cloud.type];
++			Vector2 position = new Vector2(cloud.position.X + (float)texture.Width() * 0.5f, yOffset + (float)texture.Height() * 0.5f);
++			Rectangle sourceRectangle = new Rectangle(0, 0, texture.Width(), texture.Height());
++			float rotation = cloud.rotation;
++			Vector2 origin = new Vector2((float)texture.Width() * 0.5f, (float)texture.Height() * 0.5f);
++			float scale = cloud.scale;
++			SpriteEffects effects = cloud.spriteDir;
++			DrawData drawData = new DrawData(texture.Value, position, sourceRectangle, color, rotation, origin, scale, effects);
++			if (cloud.ModCloud?.Draw(spriteBatch, cloud, cloudIndex, ref drawData) == false)
++				return;
++			drawData.Draw(spriteBatch);
++		}
+ 	}
+ 
+ 	private static float DrawSurfaceBG_GetFogPower() => Math.Max(cloudAlpha, GraveyardVisualIntensity * 0.92f);
+@@ -50898,19 +_,22 @@
+ 				renderCount = 99;
+ 			}
+ 			else {
++				//TML: RenderTiles() is quite slow. ~30ms at peak; doesn't change with lighting modes
+ 				if (renderCount == 3) {
+ 					RenderTiles();
+ 					sceneTilePos.X = screenPosition.X - (float)offScreenRange;
+ 					sceneTilePos.Y = screenPosition.Y - (float)offScreenRange;
+ 				}
+ 
+-				if (renderCount == 3) {
++				//TML: Remapped from 3 to 2 to flatten per frame load for color lighting ( ~5ms peak).
++				if (renderCount == (Lighting.LegacyEngine.Mode == 0 ? 2 : 3)) {
+ 					RenderTiles2();
+ 					sceneTile2Pos.X = screenPosition.X - (float)offScreenRange;
+ 					sceneTile2Pos.Y = screenPosition.Y - (float)offScreenRange;
+ 				}
+ 
+-				if (renderCount == 3) {
++				//TML: Remapped from 3 to 0 to flatten per frame load for color lighting ( ~15ms peak).
++				if (renderCount == (Lighting.LegacyEngine.Mode == 0 ? 0 : 3)) {
+ 					RenderWalls();
+ 					sceneWallPos.X = screenPosition.X - (float)offScreenRange;
+ 					sceneWallPos.Y = screenPosition.Y - (float)offScreenRange;
+@@ -51628,8 +_,12 @@
+ 		}
+ 
+ 		Vector2 value = screenPosition;
++		screenPosition.X = Main.player[myPlayer].position.X + (float)Main.player[myPlayer].width * 0.5f - screenWidth / 2 * vector2.X + cameraX;
++		screenPosition.Y = Main.player[myPlayer].position.Y + (float)Main.player[myPlayer].height - (float)num - screenHeight / 2 * vector2.Y + Main.player[myPlayer].gfxOffY;
++		/* Fix #603. We allow odd screen resolutions, which potentially adds 0.5f here, which in turn draws the screen 1 pixel ahead due to how the game draws at whole pixel coordinates (pixel snapping).
+ 		screenPosition.X = Main.player[myPlayer].position.X + (float)Main.player[myPlayer].width * 0.5f - (float)screenWidth * 0.5f * vector2.X + cameraX;
+ 		screenPosition.Y = Main.player[myPlayer].position.Y + (float)Main.player[myPlayer].height - (float)num - (float)screenHeight * 0.5f * vector2.Y + Main.player[myPlayer].gfxOffY;
++		*/
+ 		Vector2 vector3 = Vector2.Zero;
+ 		float num2 = 0f;
+ 		float num3 = 0f;
+@@ -51709,8 +_,15 @@
+ 					if (num7 < 0)
+ 						num7 = 0;
+ 
++					float zoom = 1 / 1.25f;
++					PlayerLoader.ModifyZoom(LocalPlayer, ref zoom);
++
++					/*
+ 					vector3.X = (float)(num6 - screenWidth / 2) / 1.25f;
+ 					vector3.Y = (float)(num7 - screenHeight / 2) / 1.25f;
++					*/
++					vector3.X = (num6 - screenWidth / 2) * zoom;
++					vector3.Y = (num7 - screenHeight / 2) * zoom;
+ 					flag = true;
+ 				}
+ 				else if (Main.player[myPlayer].inventory[Main.player[myPlayer].selectedItem].type == 1254 && mouseRight) {
+@@ -51728,8 +_,15 @@
+ 					if (num9 < 0)
+ 						num9 = 0;
+ 
++					float zoom = 1 / 1.5f;
++					PlayerLoader.ModifyZoom(LocalPlayer, ref zoom);
++
++					/*
+ 					vector3.X = (float)(num8 - screenWidth / 2) / 1.5f;
+ 					vector3.Y = (float)(num9 - screenHeight / 2) / 1.5f;
++					*/
++					vector3.X = (num8 - screenWidth / 2) * zoom;
++					vector3.Y = (num9 - screenHeight / 2) * zoom;
+ 					flag = true;
+ 				}
+ 				else if (Main.player[myPlayer].inventory[Main.player[myPlayer].selectedItem].type == 1299 && Main.player[myPlayer].selectedItem != 58) {
+@@ -51747,8 +_,15 @@
+ 					if (num11 < 0)
+ 						num11 = 0;
+ 
++					float zoom = 1 / 1.5f;
++					PlayerLoader.ModifyZoom(LocalPlayer, ref zoom);
++
++					/*
+ 					vector3.X = (float)(num10 - screenWidth / 2) / 1.5f;
+ 					vector3.Y = (float)(num11 - screenHeight / 2) / 1.5f;
++					*/
++					vector3.X = (num10 - screenWidth / 2) * zoom;
++					vector3.Y = (num11 - screenHeight / 2) * zoom;
+ 					flag = true;
+ 				}
+ 				else if (Main.player[myPlayer].scope && mouseRight) {
+@@ -51766,9 +_,29 @@
+ 					if (num13 < 0)
+ 						num13 = 0;
+ 
++					float zoom = 1 / 2f;
++					PlayerLoader.ModifyZoom(player[myPlayer], ref zoom);
++
++					/*
+ 					vector3.X = (float)(num12 - screenWidth / 2) / 2f;
+ 					vector3.Y = (float)(num13 - screenHeight / 2) / 2f;
++					*/
++					vector3.X = (num12 - screenWidth / 2) * zoom;
++					vector3.Y = (num13 - screenHeight / 2) * zoom;
++
+ 					flag = true;
++				}
++				else { // Added by TML
++					float zoom = -1f;
++					PlayerLoader.ModifyZoom(LocalPlayer, ref zoom);
++
++					if (zoom != -1f) {
++						int mouseXClamped = Utils.Clamp(mouseX, 0, screenWidth);
++						int mouseYClamped = Utils.Clamp(mouseY, 0, screenHeight);
++						vector3.X = (mouseXClamped - screenWidth / 2) * zoom;
++						vector3.Y = (mouseYClamped - screenHeight / 2) * zoom;
++						flag = true;
++					}
+ 				}
+ 			}
+ 		}
+@@ -52230,6 +_,10 @@
+ 
+ 				vec.X -= messageSize.X / 2f;
+ 				vec.Y += player[i].gfxOffY;
++				// Proper fix coming in 1.4.5
++				if (i != myPlayer && player[myPlayer].gravDir == -1f)
++					vec.Y = Main.screenHeight - vec.Y - messageSize.Y;
++
+ 				vec = vec.Floor();
+ 				int hoveredSnippet = 0;
+ 				ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.MouseText.Value, player[i].chatOverhead.snippets, vec, 0f, player[i].chatOverhead.color, Vector2.Zero, Vector2.One, out hoveredSnippet);

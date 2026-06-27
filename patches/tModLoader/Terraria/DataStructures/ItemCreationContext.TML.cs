@@ -24,3 +24,21 @@ public class BuyItemCreationContext : ItemCreationContext
 		VendorNPC = vendorNPC;
 	}
 }
+
+/// <summary>
+/// Used when an item is given directly to the player's inventory, possibly overflowing into the world if the inventory is full.<br/>
+/// Typical uses include opening loot bags, fishing, and gifts/rewards from npcs
+/// Called from <see cref="Player.QuickSpawnItem(IEntitySource, Item, GetItemSettings)"/>
+/// </summary>
+public class GivePlayerCreationContext : ItemCreationContext
+{
+	/// <summary>
+	/// The source for creating the item
+	/// </summary>
+	public IEntitySource Source;
+
+	public GivePlayerCreationContext(IEntitySource source)
+	{
+		Source = source;
+	}
+}

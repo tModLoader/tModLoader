@@ -1,0 +1,4 @@
+<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="../../../src/WorkspaceInfo.targets" />
+  <Import Project="$(tModLoaderSteamPath)/tMLMod.targets" />
+</Project>

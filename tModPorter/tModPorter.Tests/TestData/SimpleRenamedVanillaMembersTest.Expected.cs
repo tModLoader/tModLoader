@@ -1,5 +1,6 @@
 using Terraria;
 using Terraria.Chat;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
@@ -19,7 +20,8 @@ public class SimpleRenamedVanillaMembersTest
 		var tileValue = Main.tileOreFinderPriority;
 		var worldRate = Main.desiredWorldTilesUpdateRate;
 		var lightMode = Lighting.LegacyEngine.Mode;
-		var technicallyABoss = NPCID.Sets.ShouldBeCountedAsBoss;
+		var technicallyABoss = NPCID.Sets.ShouldBeCountedAsBossForBestiary;
+		var shouldBeCountedAsBoss = NPCID.Sets.ShouldBeCountedAsBossForBestiary;
 		var homing = ProjectileID.Sets.CultistIsResistantTo;
 		// not-yet-implemented
 		var rasterizer = Main.Rasterizer;
@@ -48,6 +50,7 @@ public class SimpleRenamedVanillaMembersTest
 		var heartLantern = Main.SceneMetrics.HasHeartLantern;
 		var sunflower = Main.SceneMetrics.HasSunflower;
 
+#if COMPILE_ERROR
 		var expertDebuffTime = Main.GameModeInfo.DebuffTimeMultiplier;
 		var expertNPCDamage = Main.GameModeInfo.TownNPCDamageMultiplier;
 		var expertLife = Main.GameModeInfo.EnemyMaxLifeMultiplier;
@@ -55,6 +58,23 @@ public class SimpleRenamedVanillaMembersTest
 		var expertKnockBack = Main.GameModeInfo.KnockbackToEnemiesMultiplier;
 		var knockBackMultiplier = Main.GameModeInfo.KnockbackToEnemiesMultiplier;
 		var damageMultiplier = Main.GameModeInfo.EnemyDamageMultiplier;
+#endif
+
+		bool isJourney = Main.IsJourneyMode;
+		_ = Main.PipsUseGrid;
+		_ = Main.PipsFastScroll;
+		_ = FocusHelper.AllowGameplayInputs/* tModPorter Suggestion: Also consider FocusHelper.AllowUIInputs, FocusHelper.UpdateVisualEffects, or others */;
+
+		PopupText popupText = PopupText.popupText[0];
+
+		int logicCheckScreenHeight = Main.MaxWorldViewSize.Y;
+		int logicCheckScreenWidth = Main.MaxWorldViewSize.X;
+
+#if COMPILE_ERROR
+		Main.musicBox2/* tModPorter Note: Removed. Use Player.musicBox instead */ = 87;
+#endif
+
+		Main.instance.SetIMEPanelAnchor(new Vector2(98f, (float)(Main.screenHeight - 36)), 0f);
 
 		int copperTierOreInt = WorldGen.SavedOreTiers.Copper;
 #if COMPILE_ERROR // ushort -> int
@@ -66,6 +86,7 @@ public class SimpleRenamedVanillaMembersTest
 		int oreTier1 = WorldGen.SavedOreTiers.Cobalt;
 		int oreTier2 = WorldGen.SavedOreTiers.Mythril;
 		int oreTier3 = WorldGen.SavedOreTiers.Adamantite;
+		WorldGen.CheckStalactite(1, 2);
 
 		float inverseLerp = Utils.GetLerpValue(0f, 1f, 0.1f, false);
 		Lighting.Clear();
@@ -76,6 +97,10 @@ public class SimpleRenamedVanillaMembersTest
 #endif
 
 		int dustFire = DustID.Torch;
+		int readSign = MessageID.OpenSignResponse;
+		int killCount = MessageID.Unused83;
+		_ = MusicID.LunarPillars;
+		_ = ProjectileID.WebSlingerHook;
 
 		int water = LiquidID.Water;
 		int honey = LiquidID.Honey;
@@ -133,8 +158,18 @@ public class SimpleRenamedVanillaMembersTest
 		Main.DrawPlayer(player, Vector2.Zero, 0f, Vector2.Zero, 1f);
 #endif
 
+#if COMPILE_ERROR
+		Player.RandomTeleportationAttemptSettings settings = new Player.RandomTeleportationAttemptSettings/* tModPorter Note: Removed. Use Utils.RandomTeleportationAttemptSettings instead and populate all the relevant new fields */ {
+			avoidLava = true,
+		};
+		bool canSpawn = false;
+		_ = player.CheckForGoodTeleportationSpot(ref canSpawn, 100, 200, 300, 400, settings)/* tModPorter Note: Removed. Use Utils.CheckForGoodTeleportationSpot instead. */;
+#endif
+
 		var item = new Item();
+#if COMPILE_ERROR
 		var owner = item.playerIndexTheItemIsReservedFor;
+#endif
 		var vanity = item.hasVanityEffects;
 		item.DefaultToPlaceableWall(0);
 
@@ -155,10 +190,13 @@ public class SimpleRenamedVanillaMembersTest
 
 		NPC npc = new NPC();
 		// not-yet-implemented
-		npc.damage = npc.GetAttackDamage_ScaledByStrength(80f); // int cast matches return type
-		// instead-expect
-		npc.damage = (int)(80f * Main.GameModeInfo.EnemyDamageMultiplier); // int cast matches return type
 #if COMPILE_ERROR
+		npc.damage = npc.GetAttackDamage_ScaledByStrength(80f); // int cast matches return type
+#endif
+		// instead-expect
+#if COMPILE_ERROR
+		npc.damage = (int)(80f * Main.GameModeInfo.EnemyDamageMultiplier); // int cast matches return type
+		npc.netSkip/* tModPorter Note: Removed. No longer necessary when setting life <= 0 and was never necessary when setting active = false */ = -1;
 #endif
 
 		// not-yet-implemented
@@ -166,6 +204,15 @@ public class SimpleRenamedVanillaMembersTest
 		// instead-expect
 #if COMPILE_ERROR
 		Utils.PerLinePoint cut = DelegateMethods.CutTiles;
+#endif
+
+		_ = BannerSystem.killCount[10];
+		int Banner = BannerSystem.NPCtoBanner(NPCID.Zombie);
+		_ = BannerSystem.BannerToItem(Banner);
+		_ = BannerSystem.BannerToNPC(Banner);
+
+#if COMPILE_ERROR
+		Utils.FloodFillTile(10, 20, DelegateMethods.SpreadLightOpen_StopForSolids)/* tModPorter Parameters have changed */;
 #endif
 	}
 }

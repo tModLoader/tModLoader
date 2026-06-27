@@ -1,10 +1,12 @@
 ﻿using ExampleMod.Content.Biomes;
+using ExampleMod.Content.Items;
 using ExampleMod.Content.Items.Tools;
 using ExampleMod.Content.NPCs;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Common.Players
@@ -12,7 +14,12 @@ namespace ExampleMod.Common.Players
 	// This class showcases things you can do with fishing
 	public class ExampleFishingPlayer : ModPlayer
 	{
+		public static LocalizedText WrongText { get; private set; }
 		public bool hasExampleCrateBuff;
+
+		public override void SetStaticDefaults() {
+			WrongText = Mod.GetLocalization($"{nameof(ExampleFishingPlayer)}.Wrong");
+		}
 
 		public override void ResetEffects() {
 			hasExampleCrateBuff = false;
@@ -42,7 +49,7 @@ namespace ExampleMod.Common.Players
 					itemDrop = -1;
 
 					// Also, to make it cooler, we will make a special sonar message for when it shows up
-					sonar.Text = "Something's wrong...";
+					sonar.Text = WrongText.Value;
 					sonar.Color = Color.LimeGreen;
 					sonar.Velocity = Vector2.Zero;
 					sonar.DurationInFrames = 300;
@@ -65,6 +72,12 @@ namespace ExampleMod.Common.Players
 					itemDrop = ModContent.ItemType<Content.Items.Consumables.ExampleFishingCrate>();
 					return; // This is important so your code after this that rolls items will not run
 				}
+			}
+
+			if (inWater && inExampleSurfaceBiome && attempt.common && Main.rand.NextBool()) {
+				// Add the ExampleBasicFish as a common catch in Example Surface Biome.
+				itemDrop = ModContent.ItemType<ExampleBasicFish>();
+				return; // This is important so your code after this that rolls items will not run
 			}
 
 			// Here we will set the catch conditions for our ExampleQuestFish

@@ -1,0 +1,113 @@
+--- src/TerrariaNetCore/Terraria/ID/SetFactory.cs
++++ src/tModLoader/Terraria/ID/SetFactory.cs
+@@ -1,9 +_,10 @@
+ using System;
+ using System.Collections.Generic;
++using Terraria.ModLoader;
+ 
+ namespace Terraria.ID;
+ 
+-public class SetFactory
++public partial class SetFactory
+ {
+ 	protected int _size;
+ 	private readonly Queue<int[]> _intBufferCache = new Queue<int[]>();
+@@ -12,6 +_,7 @@
+ 	private readonly Queue<float[]> _floatBufferCache = new Queue<float[]>();
+ 	private object _queueLock = new object();
+ 
++	[Obsolete("Use the new overloads to support named sets", true)]
+ 	public SetFactory(int size)
+ 	{
+ 		if (size == 0)
+@@ -70,8 +_,10 @@
+ 		}
+ 	}
+ 
++	/// <summary> Creates and returns a bool array ID set. All values will be false except the indexes passed in (<paramref name="types"/>) will be true. </summary>
+ 	public bool[] CreateBoolSet(params int[] types) => CreateBoolSet(defaultState: false, types);
+ 
++	/// <summary> Creates and returns a bool array ID set. All values will be <paramref name="defaultState"/> except the indexes passed in (<paramref name="types"/>) will be the opposite of <paramref name="defaultState"/>. </summary>
+ 	public bool[] CreateBoolSet(bool defaultState, params int[] types)
+ 	{
+ 		bool[] boolBuffer = GetBoolBuffer();
+@@ -80,14 +_,18 @@
+ 		}
+ 
+ 		for (int j = 0; j < types.Length; j++) {
++			if (!ContentCache.contentLoadingFinished && types[j] >= _size)
++				continue;
+ 			boolBuffer[types[j]] = !defaultState;
+ 		}
+ 
+ 		return boolBuffer;
+ 	}
+ 
++	/// <summary> Creates and returns an int array ID set. All values are -1 except for the values passed in as <paramref name="types"/>. The <paramref name="types"/> contain index value pairs listed one after the other. For example <c>CreateIntSet([ItemID.CopperOre, 10, ItemID.SilverOre, 20])</c> will result in an array filled with -1 except the CopperOre index will have a value of 10 and the SilverOre index a value of 20. </summary>
+ 	public int[] CreateIntSet(params int[] types) => CreateIntSet(-1, types);
+ 
++	/// <summary> Creates and returns an int array ID set. All values are <paramref name="defaultState"/> except for the values passed in as <paramref name="inputs"/>. The <paramref name="inputs"/> contain index value pairs listed one after the other. For example <c>CreateIntSet(-1, ItemID.CopperOre, 10, ItemID.SilverOre, 20)</c> will result in an array filled with -1 except the CopperOre index will have a value of 10 and the SilverOre index a value of 20. </summary>
+ 	public int[] CreateIntSet(int defaultState, params int[] inputs)
+ 	{
+ 		if (inputs.Length % 2 != 0)
+@@ -99,12 +_,15 @@
+ 		}
+ 
+ 		for (int j = 0; j < inputs.Length; j += 2) {
++			if (!ContentCache.contentLoadingFinished && inputs[j] >= _size)
++				continue;
+ 			intBuffer[inputs[j]] = inputs[j + 1];
+ 		}
+ 
+ 		return intBuffer;
+ 	}
+ 
++	/// <summary> Creates and returns a ushort array ID set. All values are <paramref name="defaultState"/> except for the values passed in as <paramref name="inputs"/>. The <paramref name="inputs"/> contain index value pairs listed one after the other. For example <c>CreateUshortSet(0, ItemID.CopperOre, 10, ItemID.SilverOre, 20)</c> will result in an array filled with 0 except the CopperOre index will have a value of 10 and the SilverOre index a value of 20. </summary>
+ 	public ushort[] CreateUshortSet(ushort defaultState, params ushort[] inputs)
+ 	{
+ 		if (inputs.Length % 2 != 0)
+@@ -116,12 +_,15 @@
+ 		}
+ 
+ 		for (int j = 0; j < inputs.Length; j += 2) {
++			if (!ContentCache.contentLoadingFinished && inputs[j] >= _size)
++				continue;
+ 			ushortBuffer[inputs[j]] = inputs[j + 1];
+ 		}
+ 
+ 		return ushortBuffer;
+ 	}
+ 
++	/// <summary> Creates and returns a float array ID set. All values are <paramref name="defaultState"/> except for the values passed in as <paramref name="inputs"/>. The <paramref name="inputs"/> contain index value pairs listed one after the other. For example <c>CreateFloatSet(1f, ItemID.CopperOre, 1.5f, ItemID.SilverOre, 2.3f)</c> will result in an array filled with 1f except the CopperOre index will have a value of 1.5f and the SilverOre index a value of 2.3f. </summary>
+ 	public float[] CreateFloatSet(float defaultState, params float[] inputs)
+ 	{
+ 		if (inputs.Length % 2 != 0)
+@@ -133,12 +_,19 @@
+ 		}
+ 
+ 		for (int j = 0; j < inputs.Length; j += 2) {
++			if (!ContentCache.contentLoadingFinished && inputs[j] >= _size)
++				continue;
+ 			floatBuffer[(int)inputs[j]] = inputs[j + 1];
+ 		}
+ 
+ 		return floatBuffer;
+ 	}
+ 
++	/// <summary>
++	/// Creates and returns an array ID set of the supplied Type. This should be used for creating ID sets not covered by the other methods, such as for classes (string, List&lt;T&gt;), nullable primitives (bool?), and structs (Color).
++	/// <para/> All values are <paramref name="defaultState"/> except for the values passed in as <paramref name="inputs"/>. The <paramref name="inputs"/> contain index value pairs listed one after the other. For example <c>CreateCustomSet&lt;string&gt;(null, ItemID.CopperOre, "Ugly", ItemID.SilverOre, "Pretty")</c> will result in an array filled with null except the CopperOre index will have a value of "Ugly" and the SilverOre index a value of "Pretty".
++	/// <para/> Note that for non-null class values used for <paramref name="defaultState"/>, the reference will be shared with all default entries, so be mindful when working with these sets to not accidentally affect the shared default state object. For example passing in <c>new List&lt;int&gt;</c> as <paramref name="defaultState"/> will make it very likely to be misused on accident.
++	/// </summary>
+ 	public T[] CreateCustomSet<T>(T defaultState, params object[] inputs)
+ 	{
+ 		if (inputs.Length % 2 != 0)
+@@ -151,6 +_,8 @@
+ 
+ 		if (inputs != null) {
+ 			for (int j = 0; j < inputs.Length; j += 2) {
++				if (!ContentCache.contentLoadingFinished && (inputs[j] is ushort a && a >= _size || inputs[j] is int b && b >= _size || inputs[j] is short c && c >= _size))
++					continue;
+ 				T val = (typeof(T).IsPrimitive ? ((T)inputs[j + 1]) : ((typeof(T).IsGenericType && typeof(T).GetGenericTypeDefinition() == typeof(Nullable<>)) ? ((T)inputs[j + 1]) : ((!typeof(T).IsClass) ? ((T)Convert.ChangeType(inputs[j + 1], typeof(T))) : ((T)inputs[j + 1]))));
+ 				if (inputs[j] is ushort)
+ 					array[(ushort)inputs[j]] = val;

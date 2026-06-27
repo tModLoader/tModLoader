@@ -1,6 +1,7 @@
 ﻿using ExampleMod.Content.Items;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent.Drawing;
@@ -13,6 +14,11 @@ namespace ExampleMod.Content.Tiles
 {
 	internal class ExampleAnimatedTile : ModTile
 	{
+		private Asset<Texture2D> flameTexture;
+		public override void Load() {
+			flameTexture = ModContent.Request<Texture2D>(Texture + "_Flame");
+		}
+
 		// If you want to know more about tiles, please follow this link
 		// https://github.com/tModLoader/tModLoader/wiki/Basic-Tile
 		public override void SetStaticDefaults() {
@@ -113,7 +119,7 @@ namespace ExampleMod.Content.Tiles
 
 			// If you are using ModTile.SpecialDraw or PostDraw or PreDraw, use this snippet and add zero to all calls to spriteBatch.Draw
 			// The reason for this is to accommodate the shift in drawing coordinates that occurs when using the different Lighting mode
-			// Press Shift+F9 to change lighting modes quickly to verify your code works for all lighting modes
+			// While at 100% world zoom, press Shift+F9 to change lighting modes quickly to verify your code works for all lighting modes
 			Vector2 zero = Main.drawToScreen ? Vector2.Zero : new Vector2(Main.offScreenRange);
 
 			Main.spriteBatch.Draw(
@@ -156,6 +162,17 @@ namespace ExampleMod.Content.Tiles
 
 			// We must return false here to prevent the normal tile drawing code from drawing the default static tile. Without this a duplicate tile will be drawn.
 			return false;
+		}
+
+		public override void AdjustMultiTileVineParameters(int i, int j, ref float? overrideWindCycle, ref float windPushPowerX, ref float windPushPowerY, ref bool dontRotateTopTiles, ref float totalWindMultiplier, ref Texture2D glowTexture, ref Color glowColor) {
+			overrideWindCycle = 1f;
+			windPushPowerY = 0f;
+		}
+
+		public override void GetTileFlameData(int i, int j, ref TileDrawing.TileFlameData tileFlameData) {
+			tileFlameData.flameTexture = flameTexture.Value;
+			tileFlameData.flameColor = new Color(200, 200, 200, 0);
+			tileFlameData.flameCount = 1;
 		}
 	}
 

@@ -1,0 +1,56 @@
+--- src/TerrariaNetCore/Terraria/GameContent/UI/GameTipsProvider.cs
++++ src/tModLoader/Terraria/GameContent/UI/GameTipsProvider.cs
+@@ -1,10 +_,11 @@
+ using System.Collections.Generic;
+ using Terraria.GameInput;
+ using Terraria.Localization;
++using Terraria.ModLoader;
+ 
+ namespace Terraria.GameContent.UI;
+ 
+-public class GameTipsProvider : ITipProvider
++public partial class GameTipsProvider : ITipProvider
+ {
+ 	private LocalizedText[] _tipsDefault;
+ 	private LocalizedText[] _tipsGamepad;
+@@ -17,10 +_,13 @@
+ 		_tipsGamepad = Language.FindAll(Lang.CreateDialogFilter("LoadingTips_GamePad.", checkConditions: false));
+ 		_tipsKeyboard = Language.FindAll(Lang.CreateDialogFilter("LoadingTips_Keyboard.", checkConditions: false));
+ 		_lastTip = null;
++
++		Initialize();
+ 	}
+ 
+ 	public LocalizedText RollAvailableTip()
+ 	{
++		/*
+ 		List<LocalizedText> list = new List<LocalizedText>();
+ 		list.AddRange(_tipsDefault);
+ 		if (PlayerInput.UsingGamepad)
+@@ -35,6 +_,26 @@
+ 			else
+ 				_lastTip = list[Main.rand.Next(list.Count)];
+ 		} while (!_lastTip.ConditionsMet);
++
++		return _lastTip;
++		*/
++
++		var list = new List<GameTipData>(allTips);
++		
++		if (PlayerInput.UsingGamepad)
++			list.RemoveAll(tip => tip.Mod is null && tip.TipText.Key.StartsWith("LoadingTips_Keyboard"));
++		else
++			list.RemoveAll(tip => tip.Mod is null && tip.TipText.Key.StartsWith("LoadingTips_GamePad"));
++		
++		if (_lastTip != null)
++			list.RemoveAll(tip => tip.TipText == _lastTip);
++		
++		list.RemoveAll(tip => !tip.isVisible);
++
++		if (list.Count == 0)
++			_lastTip = LocalizedText.Empty;
++		else
++			_lastTip = list[Main.rand.Next(list.Count)].TipText;
+ 
+ 		return _lastTip;
+ 	}

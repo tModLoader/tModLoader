@@ -164,7 +164,7 @@ namespace ExampleMod.Content.Projectiles.Rockets
 			//	int minTileY = (int)(Projectile.Center.Y / 16f - blastRadius);
 			//	int maxTileY = (int)(Projectile.Center.Y / 16f + blastRadius);
 
-				// Make sure the tiles are inside the world.
+			// Make sure the tiles are inside the world.
 			// Utils.ClampWithinWorld(ref minTileX, ref maxTileX, ref minTileY, ref maxTileY);
 
 			// Check to see if the walls should be destroyed, too.

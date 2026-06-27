@@ -20,7 +20,7 @@ namespace ExampleMod.Content.Projectiles
 		public ref float DelayTimer => ref Projectile.ai[1];
 
 		public override void SetStaticDefaults() {
-			ProjectileID.Sets.CultistIsResistantTo[Projectile.type] = true; // Make the cultist resistant to this projectile, as it's resistant to all homing projectiles.
+			ProjectileID.Sets.CultistIsResistantTo[Type] = true; // Make the cultist resistant to this projectile, as it's resistant to all homing projectiles.
 		}
 
 		public override void SetDefaults() {
@@ -77,7 +77,7 @@ namespace ExampleMod.Content.Projectiles
 
 			// Loop through all NPCs
 			foreach (var target in Main.ActiveNPCs) {
-				// Check if NPC able to be targeted. 
+				// Check if NPC able to be targeted.
 				if (IsValidTarget(target)) {
 					// The DistanceSquared function returns a squared distance between 2 points, skipping relatively expensive square root calculations
 					float sqrDistanceToTarget = Vector2.DistanceSquared(target.Center, Projectile.Center);

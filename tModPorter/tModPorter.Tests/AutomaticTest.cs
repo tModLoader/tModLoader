@@ -145,12 +145,12 @@ public class AutomaticTest {
 		if (_project is not null) return _project;
 
 		using MSBuildWorkspace workspace = MSBuildWorkspace.Create();
-		workspace.WorkspaceFailed += (o, e) => {
+		workspace.RegisterWorkspaceFailedHandler(e => {
 			if (e.Diagnostic.Kind == WorkspaceDiagnosticKind.Failure && !e.Diagnostic.ToString().Contains("This mismatch may cause runtime failures"))
 				throw new Exception(e.Diagnostic.ToString());
 
 			Console.Error.WriteLine(e.Diagnostic.ToString());
-		};
+		});
 
 		if (!File.Exists(TestModPath)) {
 			throw new FileNotFoundException("TestData.csproj not found.");

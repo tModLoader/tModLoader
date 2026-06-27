@@ -1,0 +1,96 @@
+@@ -300,7 +_,7 @@
+ 						case 1:
+ 						case 2:
+ 							if (context == 0 && Main.InReforgeMenu) {
+-								if (item.maxStack == 1 && item.Prefix(-3))
++								if (/* item.maxStack == 1 && */item.Prefix(-3)) // #StackablePrefixWeapons
+ 									Main.cursorOverride = 9;
+ 							}
+ 							else if (context == 0 && Main.InGuideCraftMenu) {
+@@ -361,7 +_,7 @@
+ 							Main.cursorOverride = 9;
+ 						}
+ 						else if (context == 0 && Main.InReforgeMenu) {
+-							if (item.maxStack == 1 && item.Prefix(-3))
++							if (/* item.maxStack == 1 && */item.Prefix(-3)) // #StackablePrefixWeapons
+ 								Main.cursorOverride = 9;
+ 						}
+ 						else if (context == 0 && Main.InGuideCraftMenu) {
+@@ -418,9 +_,9 @@
+ 
+ 	private static bool OverrideLeftClick(Item[] inv, int context = 0, int slot = 0)
+ 	{
+-		if (context == 10 && isEquipLocked(inv[slot].type))
++		if (Math.Abs(context) == 10 && isEquipLocked(inv[slot].type))
+ 			return true;
+ 
+ 		if (Main.LocalPlayer.tileEntityAnchor.IsInValidUseTileEntity() && Main.LocalPlayer.tileEntityAnchor.GetTileEntity().OverrideItemSlotLeftClick(inv, context, slot))
+ 			return true;
+ 
+@@ -798,7 +_,7 @@
+ 			}
+ 		}
+ 		else {
+-			if ((uint)context <= 4u || context == 32)
++			if ((uint)context <= 4u && context >= 0 || context == 32)
+ 				flag = Main.player[Main.myPlayer].chest == -1;
+ 
+ 			if (ShiftInUse && flag && (!NotUsingGamepad || !Options.DisableQuickTrash)) {
+@@ -810,7 +_,7 @@
+ 		return result;
+ 	}
+ 
+-	private static void SellOrTrash(Item[] inv, int context, int slot)
++	public static void SellOrTrash(Item[] inv, int context, int slot)
+ 	{
+ 		Player player = Main.player[Main.myPlayer];
+ 		if (inv[slot].type <= 0)
+@@ -2166,6 +_,7 @@
+ 		return true;
+ 	}
+ 
++	// Vanilla usages other than for tile entities acting like players replaced with AccCheck_ForLocalPlayer to support player-specific checks and hooks.
+ 	public static bool AccCheck(Item[] itemCollection, Item item, int slot)
+ 	{
+ 		if (isEquipLocked(item.type))
+@@ -2210,8 +_,13 @@
+ 			}
+ 		}
+ 
+-		if (dyeSlotCount >= 10)
++		if (dyeSlotCount >= 10) {
++			item2 = ModSlotDyeSwap(item, out success);
++			if (success)
++				return item2;
++
+ 			dyeSlotCount = 0;
++		}
+ 
+ 		if (dyeSlotCount < 0)
+ 			dyeSlotCount = 9;
+@@ -2254,6 +_,10 @@
+ 			player.armor[num + 2] = item.Clone();
+ 		}
+ 		else if (item.accessory) {
++			if (!AccessorySwap(player, item, ref result))
++				return result;
++
++			/*
+ 			int num2 = 3;
+ 			for (int i = 3; i < 10; i++) {
+ 				if (player.IsItemSlotUnlockedAndUsable(i)) {
+@@ -2286,11 +_,14 @@
+ 			for (int k = 0; k < player.armor.Length; k++) {
+ 				if (item.IsTheSameAs(player.armor[k]))
+ 					num3 = k;
++
++				// Extra patch context.
+ 			}
+ 
+ 			result = player.armor[num3].Clone();
+ 			player.armor[num3] = item.Clone();
+ 			accSlotToSwapTo = 0;
++			*/
+ 		}
+ 
+ 		SoundEngine.PlaySound(7);

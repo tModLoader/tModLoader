@@ -12,7 +12,7 @@ using Terraria.ObjectData;
 
 namespace ExampleMod.Content.Tiles.Furniture
 {
-	//Very similar to ExampleChair, but has special HitWire code and potentially additional AdjTiles
+	// Very similar to ExampleChair, but has special HitWire code and potentially additional AdjTiles
 	public class ExampleToilet : ModTile
 	{
 		public const int NextStyleHeight = 40; // Calculated by adding all CoordinateHeights + CoordinatePaddingFix.Y applied to all of them + 2
@@ -27,17 +27,17 @@ namespace ExampleMod.Content.Tiles.Furniture
 			TileID.Sets.CanBeSatOnForPlayers[Type] = true; // Facilitates calling ModifySittingTargetInfo for Players
 			TileID.Sets.DisableSmartCursor[Type] = true;
 
-			AddToArray(ref TileID.Sets.RoomNeeds.CountsAsChair);
+			TileID.Sets.RoomNeeds.CountsAsChair[Type] = true;
 
 			DustType = ModContent.DustType<Sparkle>();
-			AdjTiles = new int[] { TileID.Toilets }; // Consider adding TileID.Chairs to AdjTiles to mirror "(regular) Toilet" and "Golden Toilet" behavior for crafting stations
+			AdjTiles = [TileID.Toilets]; // Consider adding TileID.Chairs to AdjTiles to mirror "(regular) Toilet" and "Golden Toilet" behavior for crafting stations
 
 			// Names
 			AddMapEntry(new Color(200, 200, 200), Language.GetText("MapObject.Toilet"));
 
 			// Placement
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style1x2);
-			TileObjectData.newTile.CoordinateHeights = new[] { 16, 18 };
+			TileObjectData.newTile.CoordinateHeights = [16, 18];
 			TileObjectData.newTile.CoordinatePaddingFix = new Point16(0, 2);
 			TileObjectData.newTile.Direction = TileObjectDirection.PlaceLeft;
 			// The following 3 lines are needed if you decide to add more styles and stack them vertically

@@ -109,12 +109,12 @@ namespace ExampleMod.Content.Projectiles
 
 			// Let's add some dust for special effect. In this case, it runs every other tick (30 ticks per second).
 			if (Projectile.timeLeft % 2 == 0) {
-				Dust.NewDustPerfect(new Vector2(Projectile.Center.X - (Projectile.width * Projectile.direction), Projectile.Center.Y), ModContent.DustType<Dusts.Sparkle>(), null, 0, default, 0.5f); //Here we spawn the dust at the back of the projectile with half scale.
+				Dust.NewDustPerfect(new Vector2(Projectile.Center.X - (Projectile.width * Projectile.direction), Projectile.Center.Y), ModContent.DustType<Dusts.Sparkle>(), null, 0, default, 0.5f); // Here we spawn the dust at the back of the projectile with half scale.
 			}
 		}
 
 		// We need to draw the projectile manually. If you don't include this, the projectile will be facing the wrong direction when flying left.
-		public override bool PreDraw(ref Color lightColor) {
+		public override bool PreDraw(Player player, ref Color lightColor) {
 			// This is where we specify which way to flip the sprite. If the projectile is moving to the left, then flip it vertically.
 			SpriteEffects spriteEffects = ((Projectile.spriteDirection <= 0) ? SpriteEffects.FlipVertically : SpriteEffects.None);
 

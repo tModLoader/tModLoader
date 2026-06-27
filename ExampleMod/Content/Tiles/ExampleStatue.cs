@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.DataStructures;
+using Terraria.Enums;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -15,10 +16,17 @@ namespace ExampleMod.Content.Tiles
 		public override void SetStaticDefaults() {
 			Main.tileFrameImportant[Type] = true;
 			Main.tileObsidianKill[Type] = true;
+			Main.tileSpelunker[Type] = true;
 			TileID.Sets.DisableSmartCursor[Type] = true;
-			TileID.Sets.IsAMechanism[Type] = true; // Ensures that this tile and connected pressure plate won't be removed during the "Remove Broken Traps" worldgen step
+			TileID.Sets.Wiring.IsAMechanism[Type] = true; // Ensures that this tile and connected pressure plate won't be removed during the "Remove Broken Traps" worldgen step
 
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style2xX);
+			TileObjectData.newTile.DrawYOffset = 2;
+			TileObjectData.newTile.StyleMultiplier = 2;
+			TileObjectData.newTile.Direction = TileObjectDirection.PlaceLeft;
+			TileObjectData.newAlternate.CopyFrom(TileObjectData.newTile);
+			TileObjectData.newAlternate.Direction = TileObjectDirection.PlaceRight;
+			TileObjectData.addAlternate(1);
 			TileObjectData.addTile(Type);
 
 			DustType = DustID.Silver;
@@ -29,9 +37,8 @@ namespace ExampleMod.Content.Tiles
 		// This hook allows you to make anything happen when this statue is powered by wiring.
 		// In this example, powering the statue either spawns a random coin with a 95% chance, or, with a 5% chance - a goldfish.
 		public override void HitWire(int i, int j) {
-			// Find the coordinates of top left tile square through math
-			int y = j - Main.tile[i, j].TileFrameY / 18;
-			int x = i - Main.tile[i, j].TileFrameX / 18;
+			// Find the coordinates of top left tile square
+			(int x, int y) = TileObjectData.TopLeft(i, j);
 
 			const int TileWidth = 2;
 			const int TileHeight = 3;
@@ -43,7 +50,7 @@ namespace ExampleMod.Content.Tiles
 				}
 			}
 
-			// Calculcate the center of this tile to use as an entity spawning position.
+			// Calculate the center of this tile to use as an entity spawning position.
 			// Note that we use 0.65 for height because even though the statue takes 3 blocks, its appearance is shorter.
 			float spawnX = (x + TileWidth * 0.5f) * 16;
 			float spawnY = (y + TileHeight * 0.65f) * 16;
@@ -78,6 +85,18 @@ namespace ExampleMod.Content.Tiles
 
 				if (Wiring.CheckMech(x, y, 30) && NPC.MechSpawn(spawnX, spawnY, spawnedNpcId)) {
 					npcIndex = NPC.NewNPC(entitySource, (int)spawnX, (int)spawnY - 12, spawnedNpcId);
+
+					// Note: Statues that spawn NPC bigger than the statue itself have additional logic to ensure there is enough empty space for the NPC to spawn without becoming stuck in blocks. If your statue spawns a larger NPC, use the logic below instead, which adds a collision check and a poof of smoke visual effect:
+					/* // This example is for NPCID.Shark, which needs an area 6 tiles wide and 3 tiles high to spawn. Otherwise, a puff of smoke is spawned.
+					if (!Collision.SolidTiles(x - 2, x + 3, y, y + 2)) {
+						npcIndex = NPC.NewNPC(entitySource, (int)spawnX, (int)spawnY - 12, spawnedNpcId);
+					}
+					else {
+						Vector2 smokePosition = new Vector2(spawnX - 4, spawnY - 22) - new Vector2(10f);
+						Utils.PoofOfSmoke(smokePosition);
+						NetMessage.SendData(MessageID.PoofOfSmoke, number: (int)smokePosition.X, number2: smokePosition.Y);
+					}
+					*/
 				}
 
 				if (npcIndex >= 0) {
@@ -88,6 +107,7 @@ namespace ExampleMod.Content.Tiles
 					// Prevents Loot if NPCID.Sets.NoEarlymodeLootWhenSpawnedFromStatue and !Main.HardMode or NPCID.Sets.StatueSpawnedDropRarity != -1 and NextFloat() >= NPCID.Sets.StatueSpawnedDropRarity or killed by traps.
 					// Prevents CatchNPC
 					npc.SpawnedFromStatue = true;
+					npc.CanBeReplacedByOtherNPCs = true; // Ensures this NPC won't prevent real NPC spawns if Main.npc somehow becomes full.
 				}
 			}
 		}

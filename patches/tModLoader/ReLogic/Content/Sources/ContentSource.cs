@@ -14,6 +14,8 @@ public abstract class ContentSource : IContentSource
 	protected string[] assetPaths;
 	protected Dictionary<string, string> assetExtensions = new();
 
+	public abstract string FileWatcherPath { get; }
+
 	protected void SetAssetNames(IEnumerable<string> paths) {
 		assetPaths = paths.ToArray();
 		assetExtensions.Clear();
@@ -37,4 +39,6 @@ public abstract class ContentSource : IContentSource
 	public string GetExtension(string assetName) => assetExtensions.TryGetValue(AssetPathHelper.CleanPath(assetName), out var ext) ? ext : null;
 
 	public abstract Stream OpenStream(string fullAssetName);
+
+	public abstract void Refresh();
 }

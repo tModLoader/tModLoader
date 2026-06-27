@@ -2,24 +2,38 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria.ModLoader.Core;
-using Terraria.ModLoader.UI;
 using Terraria.ModLoader.UI.DownloadManager;
 using Terraria.ModLoader.UI.ModBrowser;
-using System.Threading.Tasks;
 using System.Threading;
 using System.Runtime.CompilerServices;
+using Terraria.Localization;
+using Terraria.Social.Steam;
 
 namespace Terraria.Social.Base;
 
 public struct ModPubId_t
 {
 	public string m_ModPubId;
+
+	public override string ToString() => m_ModPubId;
 }
 
 public class SocialBrowserException : Exception
 {
 	public SocialBrowserException(string message) : base(message)
 	{
+	}
+}
+
+public class BannedModException : SocialBrowserException
+{
+	internal string displayName;
+	internal string modPubId;
+
+	public BannedModException(string message, string displayName, string modPubId) : base(message)
+	{
+		this.displayName = displayName;
+		this.modPubId = modPubId;
 	}
 }
 
@@ -35,6 +49,8 @@ public interface SocialBrowserModule
 
 	public List<ModDownloadItem> DirectQueryItems(QueryParameters queryParams, out List<string> missingMods);
 
+	public DeveloperMetadata GetDeveloperMetadataFromModBrowser(ModPubId_t modId);
+
 	/////// Display of Browser Items ///////////////////////////////////////////
 
 	public string GetModWebPage(ModPubId_t item);
@@ -48,13 +64,20 @@ public interface SocialBrowserModule
 	public List<ModDownloadItem> DirectQueryInstalledMDItems(QueryParameters qParams = new QueryParameters()) {
 		var mods = GetInstalledMods();
 		var listIds = new List<ModPubId_t>();
+		var modSlugs = new List<string>();
 
+		// We provide both the Mod Internal Name (Slug) and Publish ID
+		// This allows us to find a local mod on workshop that is no longer available under the original Publish ID (Author transfer / DMCA reupload)
+		// This recovery method works because Steam does not delete files from users during the 30 days of DMCA claim processing or when items are 'hidden' via incompatible flag
 		foreach (var mod in mods) {
-			if (GetModIdFromLocalFiles(mod.modFile, out var id))
+			if (GetModIdFromLocalFiles(mod.modFile, out var id)) {
 				listIds.Add(id);
+				modSlugs.Add(mod.Name);
+			}
 		}
 
 		qParams.searchModIds = listIds.ToArray();
+		qParams.searchModSlugs = modSlugs.ToArray();
 
 		return DirectQueryItems(qParams, out _);
 	}
@@ -97,7 +120,7 @@ public interface SocialBrowserModule
 		var iterationSet = set;
 
 		while (true) {
-			// Get the list of all Publish IDs labelled as dependencies 
+			// Get the list of all Publish IDs labelled as dependencies
 			foreach (var item in iterationSet) {
 				iterationList.UnionWith(item.ModReferenceByModId);
 			}
@@ -137,7 +160,64 @@ public interface SocialBrowserModule
 		if (tmlVersion < new Version(2023, 3, 85)) // Introduction of 1.4.4 tag and end of major 1.4.4 breaking changes
 			return "1.4.4-Transitive";
 
-		return "1.4.4"; // Long Term Service Version 1.4.4 (Current)
+		// 1.4.5_RELEASE_FLAG
+		if (tmlVersion < new Version(2026, DateTime.Now.Month)) // Versions 2022.3.85.0 to 2026.?.XXX
+			return "1.4.4"; // Long Term Service version 1.4.4
+
+		return "1.4.5"; // Long Term Service Version 1.4.45(Current)
+	}
+
+	// 1.4.5_RELEASE_FLAG
+	/// <summary>
+	/// Solxan: We want to keep 4 copies of the mod. A Preview version, a Stable Version, and a Legacy version in case
+	/// we need to rollback to the last stable due to a significant bug.
+	/// We also keep a 1.4.3 version from version 2022.9 prior and a 1.4.4 version from 2026.??? prior
+	/// </summary>
+	public static (string browserVersion, int keepCount)[] keepRequirements =
+			{ ("1.4.3", 1), ("1.4.4", 3), ("1.3", 1), ("1.4.4-Transitive", 0) };
+
+	public static string[] branchNameBlacklist = { "unknown", "stable", "preview", "1.4.3-Legacy", "1.4.4-Legacy" };
+
+	internal static List<(WorkshopTagOption tag, bool setState, bool degraded)> GetModLocalizationProgress(TmodFile tModFile, List<WorkshopTagOption> existingActiveTagsList)
+	{
+		var localizationCounts = ModLoader.LocalizationLoader.GetLocalizationCounts(tModFile);
+		int countMaxEntries = localizationCounts.DefaultIfEmpty().Max(x => x.Value);
+
+		ModLoader.Logging.tML.Info($"Determining localization progress for {tModFile.Name}:");
+
+		List<(WorkshopTagOption tag, bool setState, bool degraded)> autoLangTags = new List<(WorkshopTagOption tag, bool setState, bool degraded)>();
+
+		foreach (var tag in SteamedWraps.ModTags) {
+			if (tag.NameKey.StartsWith("tModLoader.TagsLanguage_")) {
+				// I couldn't see any other way to convert this.
+				var culture = tag.NameKey.Split('_')[1] switch {
+					"English" => GameCulture.FromName("en-US"),
+					"Spanish" => GameCulture.FromName("es-ES"),
+					"French" => GameCulture.FromName("fr-FR"),
+					"Italian" => GameCulture.FromName("it-IT"),
+					"Russian" => GameCulture.FromName("ru-RU"),
+					"Chinese" => GameCulture.FromName("zh-Hans"),
+					"Portuguese" => GameCulture.FromName("pt-BR"),
+					"German" => GameCulture.FromName("de-DE"),
+					"Polish" => GameCulture.FromName("pl-PL"),
+					_ => throw new NotImplementedException(),
+				};
+
+				int countOtherEntries;
+				localizationCounts.TryGetValue(culture, out countOtherEntries);
+				float localizationProgress = (float)countOtherEntries / countMaxEntries;
+
+				ModLoader.Logging.tML.Info($"{culture.Name}, {countOtherEntries}/{countMaxEntries}, {localizationProgress:P0}, missing {countMaxEntries - countOtherEntries}");
+
+				bool languageMostlyLocalized = localizationProgress > 0.75f; // 75% Threshold to be localized.
+				bool languagePreviouslyLocalizedAndStillEnough = existingActiveTagsList.Contains(tag) && localizationProgress > 0.5f; // If mod previously tagged as localized, persist selection as long as above 50%
+
+				// Override existing selection. Existing selection will persist if still above 50% to accommodate temporarily falling below threshold.
+				autoLangTags.Add((tag, languageMostlyLocalized || languagePreviouslyLocalizedAndStillEnough, !languageMostlyLocalized));
+			}
+		}
+
+		return autoLangTags;
 	}
 }
 
@@ -155,6 +235,7 @@ public struct QueryParameters
 	public ModSideFilter modSideFilter;
 
 	public QueryType queryType;
+	public bool returnDevMetadata;
 }
 
 public enum QueryType

@@ -40,14 +40,14 @@ namespace ExampleMod.Common.Configs.ModConfigShowcases
 		public SampleEnum EnumExample1 { get; set; }
 
 		[DrawTicks]
-		[OptionStrings(new string[] { "Pikachu", "Charmander", "Bulbasaur", "Squirtle" })]
+		[OptionStrings(["Pikachu", "Charmander", "Bulbasaur", "Squirtle"])]
 		[DefaultValue("Bulbasaur")]
 		// Note that the enum approach above is recommended for options. This is just included for the sake of completeness.
 		public string FavoritePokemon;
 
 		// OptionStrings makes a string appear as a choice rather than an input field. Remember that users can manually edit json files, so be aware that a value other than the Options in OptionStrings might populate the field.
-		[OptionStrings(new string[] { "Win", "Lose", "Give Up" })]
-		public string[] ArrayOfString = new string[] { "Give Up", "Give Up" };
+		[OptionStrings(["Win", "Lose", "Give Up"])]
+		public string[] ArrayOfString = ["Give Up", "Give Up"];
 
 		// DefaultListValue provides the default value to be added when the user clicks add in the UI.
 		[DefaultListValue(123)]

@@ -1,8 +1,9 @@
-using Microsoft.Xna.Framework;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria.DataStructures;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.GameContent.UI;
@@ -85,6 +86,18 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 	/// </summary>
 	public const int ManaCrystalMax = 9;
 
+	/// <summary>
+	/// How effectively the player can hold their breath underwater. Controls how long it takes for <see cref="breath"/> to decrease. Breathing Reed adds 1 (100%) to this value and Diving Gear multiplies it by 6.
+	/// <para/> Modded effects should add to this instead of multiplying to avoid values getting unreasonable large. Adding 1.5f for example will increase breath time by 150%.
+	/// <para/> Applied in the calculation of <see cref="breathCDMax"/>.
+	/// </summary>
+	public StatModifier breathEffectiveness = StatModifier.Default;
+
+	/// <summary>
+	/// Modifies the cooldown of health potions. Can be used to adjust potion cooldown calculations, similar to the Philosopher's Stone.
+	/// </summary>
+	public StatModifier PotionDelayModifier = StatModifier.Default;
+
 	public RefReadOnlyArray<ModPlayer> ModPlayers => modPlayers;
 
 	RefReadOnlyArray<ModPlayer> IEntityWithInstances<ModPlayer>.Instances => modPlayers;
@@ -139,45 +152,6 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 		};
 		Main.ItemDropSolver.TryDropping(info);
 	}
-
-	/// <summary>
-	/// Will spawn an item like <see cref="Player.QuickSpawnItem(IEntitySource, int, int)"/>, but clones it (handy when you need to retain item infos)
-	/// </summary>
-	/// <param name="source">The spawn context</param>
-	/// <param name="item">The item you want to be cloned</param>
-	/// <param name="stack">The stack to give the item. Note that this will override maxStack if it's higher.</param>
-	// TODO: 1.4.4, delete this and move code to Player.QuickSpawnItem(IEntitySource source, Item item, int stack).
-	[Obsolete("Use Player.QuickSpawnItem(IEntitySource source, Item item, int stack) instead.")]
-	public int QuickSpawnClonedItem(IEntitySource source, Item item, int stack = 1)
-	{
-		int index = Item.NewItem(source, getRect(), item, false, false, false);
-		Main.item[index].stack = stack;
-
-		// Sync the item for mp
-		if (Main.netMode == NetmodeID.MultiplayerClient)
-			NetMessage.SendData(MessageID.SyncItem, -1, -1, null, index, 1f, 0f, 0f, 0, 0, 0);
-
-		return index;
-	}
-
-	/// <inheritdoc cref="QuickSpawnClonedItem"/>
-	public int QuickSpawnItem(IEntitySource source, Item item, int stack = 1)
-		=> QuickSpawnClonedItem(source, item, stack);
-
-	/// <summary><inheritdoc cref="QuickSpawnClonedItem"/></summary>
-	/// <returns>Returns the Item instance</returns>
-	public Item QuickSpawnClonedItemDirect(IEntitySource source, Item item, int stack = 1)
-		=> Main.item[QuickSpawnClonedItem(source, item, stack)];
-
-	/// <summary><inheritdoc cref="QuickSpawnClonedItem"/></summary>
-	/// <returns>Returns the Item instance</returns>
-	public Item QuickSpawnItemDirect(IEntitySource source, Item item, int stack = 1)
-		=> Main.item[QuickSpawnClonedItem(source, item, stack)];
-
-	/// <summary><inheritdoc cref="QuickSpawnItem(IEntitySource, int, int)"/></summary>
-	/// <returns>Returns the Item instance</returns>
-	public Item QuickSpawnItemDirect(IEntitySource source, int type, int stack = 1)
-		=> Main.item[QuickSpawnItem(source, type, stack)];
 
 	/// <summary> Returns whether or not this Player currently has a (de)buff of the provided type. </summary>
 	public bool HasBuff(int type) => FindBuffIndex(type) != -1;
@@ -373,7 +347,7 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 	{
 		float attackSpeed = GetTotalAttackSpeed(sItem.DamageType);
 		// apply a scale based on the set. It's not recommended for mods to use this, but vanilla does for super fast melee weapons so here we are
-		attackSpeed = 1 + ((attackSpeed - 1) * ItemID.Sets.BonusAttackSpeedMultiplier[sItem.type]);
+		attackSpeed = 1 + ((attackSpeed - 1) * ItemID.Sets.BonusMeleeSpeedMultiplier[sItem.type]);
 		return attackSpeed;
 	}
 
@@ -487,28 +461,12 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 
 		if (!invisible)
 			UpdateVisibleAccessory(slot, item, modded);
+		else
+			ItemLoader.UpdateVisibleAccessory(item, this, true);
 	}
 
-	/// <summary>
-	/// Drops the ref'd item from the player at the position, and than turns the ref'd Item to air.
-	/// </summary>
-	public void DropItem(IEntitySource source, Vector2 position, ref Item item)
-	{
-		if (item.stack > 0) {
-			int itemDropId = Item.NewItem(source, (int)position.X, (int)position.Y, width, height, item);
-			var itemDrop = Main.item[itemDropId];
-
-			itemDrop.velocity.Y = (float)Main.rand.Next(-20, 1) * 0.2f;
-			itemDrop.velocity.X = (float)Main.rand.Next(-20, 21) * 0.2f;
-			itemDrop.noGrabDelay = 100;
-			itemDrop.newAndShiny = false;
-
-			if (Main.netMode == 1)
-				NetMessage.SendData(21, -1, -1, null, itemDropId);
-		}
-
-		item.TurnToAir();
-	}
+	[Obsolete("Removed in 1.4.5. Use Player.TryDroppingSingleItem instead.")]
+	public void DropItem(IEntitySource source, Vector2 position, ref Item item) => TryDroppingSingleItem(source, item);
 
 	public int GetHealLife(Item item, bool quickHeal = false)
 	{
@@ -673,4 +631,81 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 		if (anyJumpCancelled)
 			jump = 0;
 	}
+
+	/// <summary>
+	/// Checks if the player has any item in their <see cref="inventory"/> that appears in the provided Item ID set (<paramref name="itemSet"/>).
+	/// <br/><br/> For example <c>if (player.HasItem(ItemID.Sets.Glowsticks))</c> would return true if the player has any glowstick item.
+	/// <br/><br/> Does not check Void Bag.
+	/// </summary>
+	/// <param name="itemSet">A set of length <see cref="ItemLoader.ItemCount"/> to check against</param>
+	/// <returns>True if the player has such an item</returns>
+	public bool HasItem(bool[] itemSet)
+	{
+		for (int i = 0; i < 58; i++) {
+			if (itemSet[inventory[i].type] && inventory[i].stack > 0)
+				return true;
+		}
+
+		return false;
+	}
+
+	private void ApplyVanillaHurtEffectModifiers(ref HurtModifiers modifiers)
+	{
+		{
+			modifiers.FinalDamage *= Math.Max(1 - endurance, 0);
+			if (setSolar && solarShields > 0)
+				modifiers.FinalDamage *= 0.8f;
+
+			if (beetleDefense && beetleOrbs > 0)
+				modifiers.FinalDamage *= 1 - 0.15f * beetleOrbs;
+
+			/*
+			if (defendedByPaladin && whoAmI == Main.myPlayer && TeammateHasPalidinShieldAndCanTakeDamage())
+				modifiers.FinalDamage *= 0.75f;
+			*/
+		}
+	}
+
+	public void ApplyBannerOffenseBuff(ItemID.BannerEffect effect, ref NPC.HitModifiers modifiers)
+	{
+		modifiers.TargetDamageMultiplier *= effect.DamageDealt.Sample(Main.Difficulty);
+	}
+
+	/*
+	// Added by TML
+	public void ApplyBannerOffenseBuff(NPC npc, ref NPC.HitModifiers modifiers) => ApplyBannerOffenseBuff(Item.NPCtoBanner(npc.BannerID()), ref modifiers);
+
+	// Added by TML
+	public void ApplyBannerOffenseBuff(int bannerId, ref NPC.HitModifiers modifiers)
+	{
+		if (!HasNPCBannerBuff(bannerId))
+			return;
+
+		var effect = ItemID.Sets.BannerStrength[Item.BannerToItem(bannerId)];
+		modifiers.TargetDamageMultiplier *= Main.expertMode ? effect.ExpertDamageDealt : effect.NormalDamageDealt;
+	}
+	*/
+
+	public void ApplyBannerDefenseBuff(NPC npc, ref Player.HurtModifiers modifiers)
+	{
+		if (GetBannerBuffEffect(npc, out var effect))
+			ApplyBannerDefenseBuff(effect, ref modifiers);
+	}
+
+	public void ApplyBannerDefenseBuff(ItemID.BannerEffect effect, ref Player.HurtModifiers modifiers)
+	{
+		modifiers.IncomingDamageMultiplier *= effect.DamageReceived.Sample(Main.Difficulty);
+	}
+
+	public void ApplyBannerDefenseBuff(int bannerId, ref Player.HurtModifiers modifiers)
+	{
+		if (GetBannerBuffEffect(bannerId, out var effect))
+			ApplyBannerDefenseBuff(effect, ref modifiers);
+	}
+
+	private bool _customCCed;
+	/// <summary>
+	/// Call this method to mark <seealso cref="CCed"/> as true for this game update. Use for modded crowd control effects.
+	/// </summary>
+	public void SetCCed() => _customCCed = true;
 }

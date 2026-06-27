@@ -37,8 +37,6 @@ internal class UIModItem : UIPanel
 	private UIAutoScaleTextTextPanel<string> _dialogYesButton;
 	private UIAutoScaleTextTextPanel<string> _dialogNoButton;
 	private UIText _dialogText;
-	private UIImage _blockInput;
-	private UIPanel _deleteModDialog;
 	private readonly LocalMod _mod;
 	private bool modFromLocalModFolder;
 
@@ -85,24 +83,8 @@ internal class UIModItem : UIPanel
 		base.OnInitialize();
 
 		string text = _mod.DisplayName + " v" + _mod.modFile.Version;
-		var modIcon = Main.Assets.Request<Texture2D>("Images/UI/DefaultResourcePackIcon", AssetRequestMode.ImmediateLoad);
+		var modIcon = ModLoader.GetModIcon(_mod.modFile) ?? Mod.PlaceholderModIcon;
 		_modIconAdjust += 85;
-
-		if (_mod.modFile.HasFile("icon.png")) {
-			try {
-				using (_mod.modFile.Open())
-				using (var s = _mod.modFile.GetStream("icon.png")) {
-					var iconTexture = Main.Assets.CreateUntracked<Texture2D>(s, ".png");
-
-					if (iconTexture.Width() == 80 && iconTexture.Height() == 80) {
-						modIcon = iconTexture;
-					}
-				}
-			}
-			catch (Exception e) {
-				Logging.tML.Error("Unknown error", e);
-			}
-		}
 
 		_modIcon = new UIImage(modIcon) {
 			Left = { Percent = 0f },
@@ -623,16 +605,7 @@ internal class UIModItem : UIPanel
 
 		if (!shiftPressed) {
 			SoundEngine.PlaySound(10, -1, -1, 1);
-			_blockInput = new UIImage(TextureAssets.Extra[190]) {
-				Width = { Percent = 1 },
-				Height = { Percent = 1 },
-				Color = new Color(0, 0, 0, 0),
-				ScaleToFit = true
-			};
-			_blockInput.OnLeftMouseDown += CloseDialog;
-			Interface.modsMenu.Append(_blockInput);
-
-			_deleteModDialog = new UIPanel() {
+			var _deleteModDialog = new UIPanel() {
 				Width = { Percent = .30f },
 				Height = { Percent = .30f },
 				HAlign = .5f,
@@ -641,7 +614,7 @@ internal class UIModItem : UIPanel
 				BorderColor = Color.Black
 			};
 			_deleteModDialog.SetPadding(6f);
-			Interface.modsMenu.Append(_deleteModDialog);
+			Interface.modsMenu.ShowConfirmDialog(_deleteModDialog);
 
 			_dialogYesButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("LegacyMenu.104")) {
 				TextColor = Color.White,
@@ -660,7 +633,7 @@ internal class UIModItem : UIPanel
 				VAlign = .85f,
 				HAlign = .85f
 			}.WithFadedMouseOver();
-			_dialogNoButton.OnLeftClick += CloseDialog;
+			_dialogNoButton.OnLeftClick += Interface.modsMenu.CloseConfirmDialog;
 			_deleteModDialog.Append(_dialogNoButton);
 
 			_dialogText = new UIText(Language.GetTextValue("tModLoader.DeleteModConfirm")) {
@@ -678,18 +651,12 @@ internal class UIModItem : UIPanel
 		}
 	}
 
-	private void CloseDialog(UIMouseEvent evt, UIElement listeningElement)
-	{
-		SoundEngine.PlaySound(SoundID.MenuClose);
-		_blockInput?.Remove();
-		_deleteModDialog?.Remove();
-	}
-
 	private void DeleteMod(UIMouseEvent evt, UIElement listeningElement)
 	{
 		ModOrganizer.DeleteMod(_mod);
 
-		CloseDialog(evt, listeningElement);
+		Interface.modsMenu.CloseConfirmDialog(evt, listeningElement);
+		Interface.modsMenu.StoreCurrentScrollPosition();
 		Interface.modsMenu.Activate();
 	}
 

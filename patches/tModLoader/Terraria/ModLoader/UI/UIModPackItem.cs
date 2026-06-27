@@ -397,7 +397,7 @@ internal class UIModPackItem : UIPanel
 		}
 
 		var query = new QueryParameters() { searchModSlugs = _mods };
-		if (!WorkshopHelper.TryGetGroupPublishIdsByInternalName(query, out var modIds))
+		if (!WorkshopHelper.QueryHelper.AQueryInstance.TryGetGroupPublishIdsByInternalName(query, out var modIds))
 			return new List<ModPubId_t>(); // query failed. TODO, actually show an error UI instead
 
 		var output = new List<ModPubId_t>();
@@ -475,7 +475,7 @@ internal class UIModPackItem : UIPanel
 
 	private static void RemoveModPackLocal(UIMouseEvent evt, UIElement listeningElement)
 	{
-		// Clear active Mod Pack 
+		// Clear active Mod Pack
 		UIModPackItem modpack = ((UIModPackItem)listeningElement.Parent);
 		ModOrganizer.ModPackActive = null;
 		Main.SaveSettings();

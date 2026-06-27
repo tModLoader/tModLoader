@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
@@ -47,4 +48,11 @@ public class GlobalNPCTest : GlobalNPC
 	public override void DrawTownAttackGun(NPC npc, ref float scale, ref int item, ref int closeness) {
 		closeness = 20;
 	}
+
+	public override void EditSpawnPool(IDictionary<int, float> pool, NPCSpawnInfo spawnInfo) {
+		if (spawnInfo.Water) { }
+	}
+	public override void OnChatButtonClicked(NPC npc, bool firstButton) { }
+	public override bool PreChatButtonClicked(NPC npc, bool firstButton) => true;
+	public override void BuffTownNPC(ref float damageMult, ref int defense) { }
 }

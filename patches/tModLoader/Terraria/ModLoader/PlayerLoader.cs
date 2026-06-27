@@ -6,6 +6,7 @@ using System.Linq.Expressions;
 using System.Runtime.InteropServices;
 using Terraria.DataStructures;
 using Terraria.GameInput;
+using Terraria.Graphics;
 using Terraria.ModLoader.Default;
 using HookList = Terraria.ModLoader.Core.HookList<Terraria.ModLoader.ModPlayer>;
 
@@ -153,7 +154,7 @@ public static class PlayerLoader
 				if (k < items.Count)
 					player.inventory[k] = items[k];
 				else
-					player.inventory[k].SetDefaults();
+					player.inventory[k].SetDefaults(0);
 		}
 		else {
 			for (int k = 0; k < 49; k++) {
@@ -719,6 +720,20 @@ public static class PlayerLoader
 		}
 	}
 
+	private delegate bool DelegateApplyPotionDelay(Item item, int potionDelay);
+	private static HookList HookApplyPotionDelay = AddHook<DelegateApplyPotionDelay>(p => p.ApplyPotionDelay);
+
+	public static bool ApplyPotionDelay(Item item, Player player, int potionDelay)
+	{
+		bool flag = true;
+
+		foreach (var modPlayer in HookApplyPotionDelay.Enumerate(player)) {
+			flag &= modPlayer.ApplyPotionDelay(item, potionDelay);
+		}
+
+		return flag;
+	}
+
 	private delegate void DelegateModifyWeaponDamage(Item item, ref StatModifier damage);
 	private static HookList HookModifyWeaponDamage = AddHook<DelegateModifyWeaponDamage>(p => p.ModifyWeaponDamage);
 	/// <summary>
@@ -1200,6 +1215,19 @@ public static class PlayerLoader
 		}
 	}
 
+	private delegate void DelegateTransformDrawData(ref PlayerDrawSet drawInfo);
+	private static HookList HookTransformDrawData = AddHook<DelegateTransformDrawData>(p => p.TransformDrawData);
+
+	public static void TransformDrawData(ref PlayerDrawSet drawInfo)
+	{
+		var player = drawInfo.drawPlayer;
+
+		foreach (var modPlayer in HookTransformDrawData.Enumerate(player)) {
+			try { modPlayer.TransformDrawData(ref drawInfo); }
+			catch { }
+		}
+	}
+
 	private static HookList HookModifyDrawLayerOrdering = AddHook<Action<IDictionary<PlayerDrawLayer, PlayerDrawLayer.Position>>>(p => p.ModifyDrawLayerOrdering);
 
 	public static void ModifyDrawLayerOrdering(IDictionary<PlayerDrawLayer, PlayerDrawLayer.Position> positions)
@@ -1446,9 +1474,9 @@ public static class PlayerLoader
 		}
 	}
 
-	private static HookList HookOnPickup = AddHook<Func<Item, bool>>(p => p.OnPickup);
+	private static HookList HookOnPickup = AddHook<Func<WorldItem, bool>>(p => p.OnPickup);
 
-	public static bool OnPickup(Player player, Item item)
+	public static bool OnPickup(Player player, WorldItem item)
 	{
 		foreach (var modPlayer in HookOnPickup.Enumerate(player)) {
 			if (!modPlayer.OnPickup(item)) {
@@ -1474,6 +1502,34 @@ public static class PlayerLoader
 	{
 		foreach (var modPlayer in HookArmorSetBonusHeld.Enumerate(player)) {
 			modPlayer.ArmorSetBonusHeld(holdTime);
+		}
+	}
+
+	private static HookList HookCanBeTeleportedTo = AddHook<Func<Vector2, string, bool>>(p => p.CanBeTeleportedTo);
+
+	public static bool CanBeTeleportedTo(Player player, Vector2 teleportPosition, string context)
+	{
+		foreach (var modPlayer in HookCanBeTeleportedTo.Enumerate(player)) {
+			if (!modPlayer.CanBeTeleportedTo(teleportPosition, context))
+				return false;
+		}
+		return true;
+	}
+
+	private static HookList HookOnEquipmentLoadoutSwitched = AddHook<Action<int, int>>(p => p.OnEquipmentLoadoutSwitched);
+
+	public static void OnEquipmentLoadoutSwitched(Player player, int oldLoadoutIndex, int loadoutIndex)
+	{
+		foreach (var modPlayer in HookOnEquipmentLoadoutSwitched.Enumerate(player)) {
+			modPlayer.OnEquipmentLoadoutSwitched(oldLoadoutIndex, loadoutIndex);
+		}
+	}
+
+	private static HookList HookDrawPlayer = AddHook<Action<Camera>>(p => p.DrawPlayer);
+
+	public static void DrawPlayer(Player player, Camera camera) {
+		foreach (var modPlayer in HookDrawPlayer.Enumerate(player)) {
+			modPlayer.DrawPlayer(camera);
 		}
 	}
 }

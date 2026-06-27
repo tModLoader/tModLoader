@@ -8,7 +8,7 @@
 +		// Logging and dedServ check added by TML.
 +		Utils.LogAndConsoleErrorMessage(textValue);
 +		if (Main.dedServ)
-+			return;
++			throw new NotImplementedException(textValue);
 +
  		AddReport(textValue);
  		OpenReportsScreen();
@@ -19,7 +19,7 @@
 +		// Logging and dedServ check added by TML.
 +		Utils.LogAndConsoleErrorMessage(text);
 +		if (Main.dedServ)
-+			return;
++			throw new NotImplementedException(text);
 +
  		AddReport(text);
  		OpenReportsScreen();
@@ -32,7 +32,7 @@
 +		// Logging and dedServ check added by TML.
 +		Utils.LogAndConsoleErrorMessage(textValue);
 +		if (Main.dedServ)
-+			return;
++			throw new NotImplementedException(textValue);
 +
  		AddReport(textValue);
  		NotifyReportsScreen();
@@ -45,7 +45,7 @@
 +		// Logging and dedServ check added by TML.
 +		Utils.LogAndConsoleErrorMessage(textValueWith);
 +		if (Main.dedServ)
-+			return;
++			throw new NotImplementedException(textValueWith);
 +
  		AddReport(textValueWith);
  		NotifyReportsScreen();

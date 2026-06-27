@@ -105,13 +105,22 @@
  			IgnoresMouseInteraction = true,
  			VAlign = 0.5f
  		};
-@@ -315,13 +_,13 @@
+@@ -276,7 +_,6 @@
+ 	private void GoBackClick(UIMouseEvent evt, UIElement listeningElement)
+ 	{
+ 		HandleBackButtonUsage();
+-		SoundEngine.PlaySound(11);
+ 	}
+ 
+ 	private void GoLogsClick(UIMouseEvent evt, UIElement listeningElement)
+@@ -315,13 +_,14 @@
  
  	public void HandleBackButtonUsage()
  	{
 -		if (_previousUIState == null) {
 +		if (PreviousUIState == null) {
  			Main.menuMode = 0;
++			SoundEngine.PlaySound(11);
  			return;
  		}
  

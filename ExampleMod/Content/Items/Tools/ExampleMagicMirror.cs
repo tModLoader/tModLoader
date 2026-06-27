@@ -10,12 +10,12 @@ namespace ExampleMod.Content.Items.Tools
 	// It may prove a useful guide for ModItems with similar behaviors.
 	internal class ExampleMagicMirror : ExampleItem
 	{
-		private static readonly Color[] itemNameCycleColors = {
+		private static readonly Color[] itemNameCycleColors = [
 			new Color(254, 105, 47),
 			new Color(190, 30, 209),
 			new Color(34, 221, 151),
 			new Color(0, 106, 185),
-		};
+		];
 
 		public override string Texture => $"Terraria/Images/Item_{ItemID.IceMirror}"; // Copies the texture for the Ice Mirror, make your own texture if need be.
 
@@ -66,7 +66,7 @@ namespace ExampleMod.Content.Items.Tools
 					int index = (int)((Main.GameUpdateCount / 60) % numColors);
 					int nextIndex = (index + 1) % numColors;
 
-					line2.OverrideColor = Color.Lerp(itemNameCycleColors[index], itemNameCycleColors[nextIndex], fade);
+					line2.Color = Color.Lerp(itemNameCycleColors[index], itemNameCycleColors[nextIndex], fade);
 				}
 			}
 		}

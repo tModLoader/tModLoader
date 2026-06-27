@@ -104,7 +104,7 @@ namespace ExampleMod.Content.Projectiles
 			Projectile.ai[0] += 1f;
 			if (Projectile.ai[0] > 10f) {
 				Projectile.ai[0] = 10f;
-				// Roll speed dampening. 
+				// Roll speed dampening.
 				if (Projectile.velocity.Y == 0f && Projectile.velocity.X != 0f) {
 					Projectile.velocity.X = Projectile.velocity.X * 0.96f;
 
@@ -116,7 +116,7 @@ namespace ExampleMod.Content.Projectiles
 				// Delayed gravity
 				Projectile.velocity.Y = Projectile.velocity.Y + 0.2f;
 			}
-			// Rotation increased by velocity.X 
+			// Rotation increased by velocity.X
 			Projectile.rotation += Projectile.velocity.X * 0.1f;
 		}
 

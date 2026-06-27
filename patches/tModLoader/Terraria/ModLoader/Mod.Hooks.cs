@@ -36,7 +36,7 @@ partial class Mod
 	}
 
 	/// <summary>
-	/// The amount of extra buff slots this mod desires for Players. This value is checked after Mod.Load but before Mod.PostSetupContent. The actual number of buffs the player can use will be 22 plus the max value of all enabled mods. In-game use Player.MaxBuffs to check the maximum number of buffs.
+	/// The amount of extra buff slots this mod desires for Players. This value is checked after Mod.Load but before Mod.PostSetupContent. The actual number of buffs the player can use will be 44 plus the max value of all enabled mods. In-game use Player.MaxBuffs to check the maximum number of buffs.
 	/// </summary>
 	public virtual uint ExtraPlayerBuffSlots { get; }
 
@@ -89,7 +89,7 @@ partial class Mod
 	/// The <see cref="ModSystem.HijackGetData(ref byte, ref BinaryReader, int)"/> hook can be used to intercept any packet used by Terraria.
 	/// </summary>
 	/// <param name="reader">The reader.</param>
-	/// <param name="whoAmI">The player the message is from. Only relevant for server code. For clients it will always be 255, the server. For the server it will be the whoAmI of the client.</param>
+	/// <param name="whoAmI">The player the message is from. Only relevant for server code. For clients it will always be 256, the server. For the server it will be the whoAmI of the client.</param>
 	public virtual void HandlePacket(BinaryReader reader, int whoAmI)
 	{
 	}

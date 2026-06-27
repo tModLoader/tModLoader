@@ -261,7 +261,7 @@ namespace ExampleMod.Content.Projectiles
 			return Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), Projectile.Center, beamEndPos, BeamHitboxCollisionWidth * Projectile.scale, ref _);
 		}
 
-		public override bool PreDraw(ref Color lightColor) {
+		public override bool PreDraw(Player player, ref Color lightColor) {
 			// If the beam doesn't have a defined direction, don't draw anything.
 			if (Projectile.velocity == Vector2.Zero) {
 				return false;

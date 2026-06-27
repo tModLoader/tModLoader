@@ -5,6 +5,7 @@ namespace Terraria.ModLoader;
 
 /// <summary>
 /// This class represents a DrawLayer for the player. Drawing should be done by adding Terraria.DataStructures.DrawData objects to drawInfo.DrawDataCache in the Draw method.
+/// <br/><br/> Custom PlayerDrawLayer can be used to add additional layers to player drawing. There are a few options for customizing player rendering without resorting to a custom PlayerDrawLayer for some specific use-cases: <see cref="ModItem.ModifyEquipTextureDraw"/> can be used to modify how an equipment texture for an item is drawn. <see cref="ModItem.ModifyItemDraw"/> can be used to modify how the held item is drawn.
 /// </summary>
 [Autoload]
 public abstract partial class PlayerDrawLayer : ModType
@@ -64,7 +65,9 @@ public abstract partial class PlayerDrawLayer : ModType
 	/// <returns> Whether or not this layer will be visible by default. Modders can hide layers later, if needed.</returns>
 	public virtual bool GetDefaultVisibility(PlayerDrawSet drawInfo) => true;
 
-	/// <summary> Returns the layer's default position in regards to other layers. Make use of e.g <see cref="BeforeParent"/>/<see cref="AfterParent"/>, and provide a layer (usually a vanilla one from <see cref="PlayerDrawLayers"/>). </summary>
+	/// <summary>
+	/// Returns the layer's default position in regards to other layers. Make use of <see cref="BeforeParent"/>, <see cref="AfterParent"/>, <see cref="Between"/>, or <see cref="Multiple"/> to indicate the position. Use other layers as arguments, usually vanilla layers contained in the <see cref="PlayerDrawLayers"/>. <see cref="PlayerDrawLayers.BeforeFirstVanillaLayer"/> and <see cref="PlayerDrawLayers.AfterLastVanillaLayer"/> are also possible values.
+	/// </summary>
 	public abstract Position GetDefaultPosition();
 
 	internal void ResetVisibility(PlayerDrawSet drawInfo)

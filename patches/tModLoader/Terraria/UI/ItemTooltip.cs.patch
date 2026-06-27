@@ -1,7 +1,7 @@
 --- src/TerrariaNetCore/Terraria/UI/ItemTooltip.cs
 +++ src/tModLoader/Terraria/UI/ItemTooltip.cs
-@@ -32,6 +_,13 @@
- 		_text = Language.GetText(key);
+@@ -26,12 +_,22 @@
+ 	{
  	}
  
 +	// Added by TML
@@ -10,14 +10,14 @@
 +		_text = text;
 +	}
 +
-+	// TML: Made internal
- 	public static ItemTooltip FromLanguageKey(string key)
+ 	private ItemTooltip(string key)
  	{
- 		if (!Language.Exists(key))
-@@ -39,6 +_,9 @@
- 
- 		return new ItemTooltip(key);
+ 		_text = Language.GetText(key);
  	}
+ 
++	// TML: Made internal
+-	public static ItemTooltip FromLanguageKey(string key) => new ItemTooltip(key);
++	internal static ItemTooltip FromLanguageKey(string key) => new ItemTooltip(key);
 +
 +	// Added by TML
 +	public static ItemTooltip FromLocalization(LocalizedText text) => new(text);

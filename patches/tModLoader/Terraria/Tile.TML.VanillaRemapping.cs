@@ -174,6 +174,21 @@ public readonly partial struct Tile
 	/// <inheritdoc cref="shimmer()"/>
 	internal void shimmer(bool shimmer) => SetIsLiquidType(LiquidID.Shimmer, shimmer);
 
+	/// <summary> Legacy code, use <c>tile.LiquidType == LiquidID.Water</c> instead. </summary>
+	internal bool water() => LiquidType == LiquidID.Water;
+
+	/// <summary> Legacy code, use <c>tile.HasWater</c> instead. </summary>
+	internal bool anyWater() => LiquidAmount > 0 && LiquidType == LiquidID.Water;
+
+	/// <summary> Legacy code, use <c>tile.HasLava</c> instead. </summary>
+	internal bool anyLava() => LiquidAmount > 0 && LiquidType == LiquidID.Lava;
+
+	/// <summary> Legacy code, use <c>tile.HasHoney</c> instead. </summary>
+	internal bool anyHoney() => LiquidAmount > 0 && LiquidType == LiquidID.Honey;
+
+	/// <summary> Legacy code, use <c>tile.HasShimmer</c> instead. </summary>
+	internal bool anyShimmer() => LiquidAmount > 0 && LiquidType == LiquidID.Shimmer;
+
 	/// <summary>
 	/// Legacy code, use <see cref="SkipLiquid"/> instead.
 	/// </summary>
@@ -215,6 +230,9 @@ public readonly partial struct Tile
 	internal bool wire3() => GreenWire;
 	/// <inheritdoc cref="wire3()"/>
 	internal void wire3(bool wire3) => GreenWire = wire3;
+
+	/// <summary> Legacy code, use <c>tile.HasWire</c> instead. </summary>
+	internal bool anyWire() => HasWire;
 
 	/// <summary>
 	/// Legacy code, use <see cref="YellowWire"/> instead.

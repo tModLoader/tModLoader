@@ -7,6 +7,8 @@ using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Tiles
 {
+	// This tile showcases the unique tile placement property of tiles like Living Fire
+	// This tile also serves as an example of an animated terrain tile.
 	public class ExampleLivingFireTile : ModTile
 	{
 		public override void SetStaticDefaults() {

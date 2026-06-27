@@ -59,7 +59,7 @@ namespace ExampleMod.Content.Tiles
 
 			TileObjectData.addTile(Type);
 
-			TileID.Sets.InteractibleByNPCs[Type] = true;
+			TileID.Sets.InteractableByNPCs[Type] = true;
 			TileID.Sets.PreventsSandfall[Type] = true;
 
 			AddToArray(ref TileID.Sets.CountsAsPylon);
@@ -92,12 +92,8 @@ namespace ExampleMod.Content.Tiles
 			ModContent.GetInstance<AdvancedPylonTileEntity>().Kill(i, j);
 		}
 
-		// For the sake of example, we will allow this pylon to always be teleported to as long as it is on, so we make sure these two checks return true.
+		// For the sake of example, we will allow this pylon to always be teleported to as long as it is on, so we make sure this check returns true.
 		public override bool ValidTeleportCheck_NPCCount(TeleportPylonInfo pylonInfo, int defaultNecessaryNPCCount) {
-			return true;
-		}
-
-		public override bool ValidTeleportCheck_AnyDanger(TeleportPylonInfo pylonInfo) {
 			return true;
 		}
 
@@ -110,7 +106,7 @@ namespace ExampleMod.Content.Tiles
 			// 1) The Tile Entity at the given position is an AdvancedPylonTileEntity (AKA not null or something else)
 			// 2) The Tile Entity's isActive value is false
 			if (TileEntity.ByPosition[destinationPylonInfo.PositionInTiles] is AdvancedPylonTileEntity { isActive: false }) {
-				//Given that both of these things are true, set the error key to our own special message (check the localization file), and make the destination value invalid (false)
+				// Given that both of these things are true, set the error key to our own special message (check the localization file), and make the destination value invalid (false)
 				destinationPylonValid = false;
 				errorKey = "Mods.ExampleMod.MessageInfo.UnstablePylonIsOff";
 			}

@@ -22,11 +22,28 @@
  	public int GetId(string name) => _nameToId[name];
  
  	public void Add(string name, int id)
-@@ -56,6 +_,7 @@
+@@ -54,15 +_,24 @@
+ 		}
+ 
  		IdDictionary dictionary = new IdDictionary(num);
++		dictionary._idToName = new(); // Added by TML
  		(from f in idClass.GetFields(BindingFlags.Static | BindingFlags.Public)
  		 where f.FieldType == idType
 +		 where f.GetCustomAttribute<ObsoleteAttribute>() == null
  		 select f).ToList().ForEach(delegate (FieldInfo field) {
  			 int num2 = Convert.ToInt32(field.GetValue(null));
  			 if (num2 < dictionary.Count)
+ 				 dictionary._nameToId.Add(field.Name, num2);
++
++			 // Added by TML to handle duplicate fields in some more janky ID classes
++			 if (num2 < dictionary.Count && !dictionary._idToName.ContainsKey(num2))
++				 dictionary._idToName.Add(num2, field.Name);
++
+ 		 });
+ 
++		/*
+ 		dictionary._idToName = dictionary._nameToId.ToDictionary((KeyValuePair<string, int> kp) => kp.Value, (KeyValuePair<string, int> kp) => kp.Key);
++		*/
+ 		return dictionary;
+ 	}
+ 
