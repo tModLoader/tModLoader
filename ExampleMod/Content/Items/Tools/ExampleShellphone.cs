@@ -13,7 +13,7 @@ namespace ExampleMod.Content.Items.Tools
 			// After right clicking Shellphone(Home) in inventory, it will become Shellphone(Model).
 			ItemID.Sets.RightClickItemSwap[ItemID.Shellphone] = Type;
 
-			// Make the sound when changing is SoundID.Unlook that is the same as other Shellphone.
+			// Make the sound when changing is SoundID.Unlock that is the same as other Shellphone.
 			ItemID.Sets.UseUnlockSoundStyleAfterItemSwap[Type] = true;
 		}
 
