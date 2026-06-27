@@ -4952,7 +4952,7 @@
  
  				if (flag && Hurt(dodgeable: Main.npc[i].IsDamageDodgeable(), damageSource: PlayerDeathReason.ByNPC(i), Damage: num4, hitDirection: num3, pvp: false, quiet: false, Crit: false, cooldownCounter: specialHitSetter) > 0.0 && !dead && !flag2)
  					StatusFromNPC(Main.npc[i]);
-@@ -25285,6 +_,9 @@
+@@ -25285,12 +_,16 @@
  
  	public void ItemCheck_ManageRightClickFeatures()
  	{
@@ -4962,6 +4962,32 @@
  		bool flag = selectedItem != 58 && controlUseTile && Main.myPlayer == whoAmI && !tileInteractionHappened && releaseUseItem && !controlUseItem && !mouseInterface && !CaptureManager.Instance.Active && (!Main.mouseRightRelease || !Main.HoveringAnInteractable) && !Main.LocalPlayerHasPendingInventoryActions();
  		bool flag2 = flag;
  		if (!ItemID.Sets.ItemsThatAllowRepeatedRightClick[inventory[selectedItem].type] && !Main.mouseRightRelease)
+ 			flag2 = false;
+ 
+ 		if (flag2 && altFunctionUse == 0 && itemTime == 0 && itemAnimation == 0) {
++			/*
+ 			int num = -1;
+ 			int type = 7;
+ 			switch (inventory[selectedItem].type) {
+@@ -25372,6 +_,18 @@
+ 				SoundEngine.PlaySound(type);
+ 				inventory[selectedItem].ChangeItemType(num);
+ 			}
++			*/
++			
++			int num = ItemID.Sets.RightClickItemSwap[inventory[selectedItem].type];
++			if (num != -1) {
++				releaseUseTile = false;
++				Main.mouseRightRelease = false;
++				if (ItemID.Sets.UseUnlockSoundStyleAfterItemSwap[num])
++					SoundEngine.PlaySound(22);
++				else
++					SoundEngine.PlaySound(7);
++				inventory[selectedItem].ChangeItemType(num);
++			}
+ 		}
+ 
+ 		if (flag2 && altFunctionUse == 0 && inventory[selectedItem].type == 3384) {
 @@ -25414,11 +_,18 @@
  			controlUseItem = true;
  		}
