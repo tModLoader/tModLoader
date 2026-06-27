@@ -54,6 +54,7 @@ internal class BuildProperties
 	internal string author = "";
 	internal Version version = new Version(1, 0);
 	internal string displayName = "";
+	internal Dictionary<string, string> localizedDisplayNames = new(StringComparer.OrdinalIgnoreCase);
 	internal bool noCompile = false;
 	internal bool hideCode = false;
 	internal bool hideResources = false;
@@ -117,6 +118,14 @@ internal class BuildProperties
 			if (value.Length == 0) {
 				continue;
 			}
+			if (property.StartsWith("displayName.", StringComparison.OrdinalIgnoreCase)) {
+				string cultureName = property.Substring("displayName.".Length).Trim();
+				if (cultureName.Length > 0) {
+					properties.localizedDisplayNames[cultureName] = value;
+				}
+				continue;
+			}
+
 			switch (property) {
 				case "dllReferences":
 					properties.dllReferences = ReadList(value).ToArray();
@@ -230,6 +239,12 @@ internal class BuildProperties
 					writer.Write("displayName");
 					writer.Write(displayName);
 				}
+				foreach (var (cultureName, localizedDisplayName) in localizedDisplayNames.OrderBy(x => x.Key)) {
+					if (localizedDisplayName.Length > 0) {
+						writer.Write($"displayName.{cultureName}");
+						writer.Write(localizedDisplayName);
+					}
+				}
 				if (homepage.Length > 0) {
 					writer.Write("homepage");
 					writer.Write(homepage);
@@ -316,6 +331,9 @@ internal class BuildProperties
 				if (tag == "displayName") {
 					properties.displayName = reader.ReadString();
 				}
+				if (tag.StartsWith("displayName.", StringComparison.OrdinalIgnoreCase)) {
+					properties.localizedDisplayNames[tag.Substring("displayName.".Length)] = reader.ReadString();
+				}
 				if (tag == "homepage") {
 					properties.homepage = reader.ReadString();
 				}
@@ -363,6 +381,8 @@ internal class BuildProperties
 		var sb = new StringBuilder();
 		if (properties.displayName.Length > 0)
 			sb.AppendLine($"displayName = {properties.displayName}");
+		foreach (var (cultureName, localizedDisplayName) in properties.localizedDisplayNames.OrderBy(x => x.Key))
+			sb.AppendLine($"displayName.{cultureName} = {localizedDisplayName}");
 		if (properties.author.Length > 0)
 			sb.AppendLine($"author = {properties.author}");
 		sb.AppendLine($"version = {properties.version}");
