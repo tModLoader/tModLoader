@@ -79,6 +79,19 @@ public abstract class ConfigElement : UIElement
 		backgroundColor = UICommon.DefaultUIBlue;
 	}
 
+	/// <summary>
+	/// Used by <see cref="RefreshUI"/> in user code to update the value the config element references.
+	/// </summary>
+	/// <param name="item"></param>
+	/// <param name="array"></param>
+	/// <param name="index"></param>
+	public void UpdateObject(object item, IList array, int index)
+	{
+		Item = item;
+		List = array;
+		Index = index;
+	}
+
 	public virtual void OnBind()
 	{
 		LabelAttribute = ConfigManager.GetCustomAttributeFromMemberThenMemberType<LabelKeyAttribute>(MemberInfo, Item, List);
