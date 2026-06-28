@@ -432,7 +432,7 @@
  				return false;
 -
 +		*/
-+		else if (item.type == 599 && item.type == 600 && item.type == 601) {
++		else if (item.type == 599 || item.type == 600 || item.type == 601) {
  			player.OpenLegacyPresent(item.type);
  		}
 +		else { // Added by TML.
