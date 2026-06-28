@@ -517,6 +517,15 @@ All classes are in the `Terraria` or `Terraria.ID` namespaces unless otherwise i
 ### Classes
 * ⚙️: `Player.RandomTeleportationAttemptSettings` is now `Utils.RandomTeleportationAttemptSettings`. Modder will need to populate all relevant new fields (`teleporteeSize,  `teleporteeVelocity`, `teleporteeGravityDirection`).
 
+### Localization
+* 💀: `<left>` and `<right>` strings that automatically localized into "Left Click" and "Right Click" has been removed.
+  * Replace all `<left>` with `{InputTrigger_UseOrAttack}`.
+  * Replace `<right>` with one of the three options:
+    * `{InputTrigger_ToggleOrOpen}` Used by items that have right click functionality in the inventory. Example: Grab bags and items that transform into other items.
+	  * `{$CommonItemTooltip.RightClickToOpen}` can still be used for "Right Click to open".
+	* `{InputTrigger_InteractWithTile}` Used by things that have right click functionality with tiles or the world. Example: Placing items into a tile or right click alternate fire weapons.
+	* `{InputTrigger_InteractWithTileUI}` Used by the crafting window to tell you can right click it to switch between the classic and modern styles.
+
 ## tModLoader changes
 
 All classes are in the `Terraria.ModLoader` or `Terraria` namespaces unless otherwise indicated.
