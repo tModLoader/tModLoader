@@ -3,9 +3,12 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using Terraria.GameContent;
+using Terraria.ModLoader;
 using Terraria.ModLoader.Config;
 using Terraria.ModLoader.Config.UI;
+using Terraria.UI;
 
 // ATTENTION: Below this point is custom config UI element.
 // Be aware that mods using custom config elements will break with the next few tModLoader updates until their design is finalized.
@@ -18,29 +21,51 @@ namespace ExampleMod.Common.Configs.CustomUI
 	// This custom config UI element uses vanilla config elements paired with custom drawing.
 	class GradientElement : ConfigElement
 	{
+		private List<Tuple<UIElement, UIElement>> wrappedElements = [];
+
+		private object GetSubItem() {
+			object subItem = MemberInfo.GetValue(Item);
+
+			if (subItem == null) {
+				subItem = Activator.CreateInstance(MemberInfo.Type);
+				JsonConvert.PopulateObject("{}", subItem, ConfigManager.serializerSettings);
+				MemberInfo.SetValue(Item, subItem);
+			}
+
+			return subItem;
+		}
+
 		public override void OnBind() {
 			base.OnBind();
 
-			object subitem = MemberInfo.GetValue(Item);
-
-			if (subitem == null) {
-				subitem = Activator.CreateInstance(MemberInfo.Type);
-				JsonConvert.PopulateObject("{}", subitem, ConfigManager.serializerSettings);
-				MemberInfo.SetValue(Item, subitem);
-			}
+			var subItem = GetSubItem();
 
 			// Item is the owner object instance, MemberInfo is the info about this field in Item
 
 			int height = 30;
 			int order = 0;
 
-			foreach (PropertyFieldWrapper variable in ConfigManager.GetFieldsAndProperties(subitem)) {
-				var wrapped = ConfigManager.WrapIt(this, ref height, variable, subitem, order++);
+			foreach (PropertyFieldWrapper variable in ConfigManager.GetFieldsAndProperties(subItem)) {
+				var wrapped = ConfigManager.WrapIt(this, ref height, variable, subItem, order++);
+				wrappedElements.Add(wrapped);
 
 				if (List != null) {
 					wrapped.Item1.Left.Pixels -= 20;
 					wrapped.Item1.Width.Pixels += 20;
 				}
+			}
+		}
+
+		// When the config is modified, we need to update the references to the objects in case they were modified
+		// RefreshUI() is called when the config might need refreshing
+		// For more info, read the documentation for RefreshUI()
+		public override void RefreshUI() {
+			foreach (var wrappedElement in wrappedElements) {
+				if (wrappedElement.Item2 is not ConfigElement configElement)
+					return;
+
+				configElement.UpdateObject(GetSubItem(), null, -1);
+				configElement.RefreshUI();
 			}
 		}
 
