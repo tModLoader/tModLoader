@@ -30,6 +30,7 @@
 +			// Fields added by TML.
 +			public NameValueCollection BuildData;
 +			public string ChangeNotes;
++			public Dictionary<string, string> LocalizedDescriptions;
  		}
  
  		public class Downloader
@@ -109,7 +110,7 @@
  
 -			public void PublishContent(PublishedItemsFinder finder, WorkshopIssueReporter issueReporter, FinishedPublishingAction endAction, string itemTitle, string itemDescription, string contentFolderPath, string previewImagePath, WorkshopItemPublicSettingId publicity, string[] tags)
 +			//TML: Added 'buildData', 'existingID', 'changeNotes' parameters.
-+			public void PublishContent(PublishedItemsFinder finder, WorkshopIssueReporter issueReporter, FinishedPublishingAction endAction, string itemTitle, string itemDescription, string contentFolderPath, string previewImagePath, WorkshopItemPublicSettingId publicity, string[] tags, NameValueCollection buildData = null, ulong existingID = 0, string changeNotes = null)
++			public void PublishContent(PublishedItemsFinder finder, WorkshopIssueReporter issueReporter, FinishedPublishingAction endAction, string itemTitle, string itemDescription, string contentFolderPath, string previewImagePath, WorkshopItemPublicSettingId publicity, string[] tags, NameValueCollection buildData = null, ulong existingID = 0, string changeNotes = null, Dictionary<string, string> localizedDescriptions = null)
  			{
 +				Utils.LogAndConsoleInfoMessage(Language.GetTextValue("tModLoader.PublishItem", itemTitle));
  				_issueReporter = issueReporter;
@@ -130,7 +131,8 @@
 -					Visibility = visibility
 +					Visibility = visibility,
 +					BuildData = buildData,
-+					ChangeNotes = changeNotes
++					ChangeNotes = changeNotes,
++					LocalizedDescriptions = localizedDescriptions
  				};
  
 +				if (!File.Exists(previewImagePath)) {
@@ -340,6 +342,10 @@
  						break;
  				}
  
++				if (_updateCallback == EResult.k_EResultOK) {
++					SteamedWraps.SubmitLocalizedDescriptionUpdates(_publishedFileID, _entryData.LocalizedDescriptions, _entryData.ChangeNotes);
++				}
++
 +				SteamUGC.SubscribeItem(_publishedFileID);
 +
 +				if (cleanTemporaryFolder)

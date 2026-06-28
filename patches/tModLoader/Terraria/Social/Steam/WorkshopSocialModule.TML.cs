@@ -173,6 +173,7 @@ public partial class WorkshopSocialModule
 		}
 
 		string description = CalculateDescriptionAndChangeNotes(isCi: false, buildData, ref settings.ChangeNotes);
+		Dictionary<string, string> localizedDescriptions = GetLocalizedWorkshopDescriptions(buildData, settings.ChangeNotes);
 
 		List<string> tagsList = new List<string>();
 		tagsList.AddRange(settings.GetUsedTagsInternalNames());
@@ -207,7 +208,7 @@ public partial class WorkshopSocialModule
 
 			_publisherInstances.Add(modPublisherInstance);
 
-			modPublisherInstance.PublishContent(_publishedItems, base.IssueReporter, Forget, name, description, workshopFolderPath, settings.PreviewImagePath, settings.Publicity, tagsList.ToArray(), buildData, currPublishID, settings.ChangeNotes);
+			modPublisherInstance.PublishContent(_publishedItems, base.IssueReporter, Forget, name, description, workshopFolderPath, settings.PreviewImagePath, settings.Publicity, tagsList.ToArray(), buildData, currPublishID, settings.ChangeNotes, localizedDescriptions);
 
 			return true;
 		}
@@ -334,13 +335,24 @@ public partial class WorkshopSocialModule
 
 	private static string CalculateDescriptionAndChangeNotes(bool isCi, NameValueCollection buildData, ref string changeNotes)
 	{
-		string workshopDescFile = Path.Combine(buildData["sourcesfolder"], "description_workshop.txt");
-		string workshopDesc;
-		if (!File.Exists(workshopDescFile))
-			workshopDesc = buildData["description"];
-		else
-			workshopDesc = File.ReadAllText(workshopDescFile);
+		string workshopDesc = GetWorkshopDescription(buildData);
 
+		string descriptionFinal = BuildWorkshopDescription(workshopDesc, isCi, buildData);
+
+		// If the modder hasn't supplied any change notes, then we will provde some default ones for them
+		if (string.IsNullOrWhiteSpace(changeNotes)) {
+			changeNotes = "Version {ModVersion} has been published to {tMLBuildPurpose} tModLoader v{tMLVersion}";
+			if (!string.IsNullOrWhiteSpace(buildData["homepage"]))
+				changeNotes += ", learn more at the [url={ModHomepage}]homepage[/url]";
+		}
+
+		ModCompile.UpdateSubstitutedDescriptionValues(ref changeNotes, buildData["trueversion"], buildData["homepage"]);
+
+		return descriptionFinal;
+	}
+
+	private static string BuildWorkshopDescription(string workshopDesc, bool isCi, NameValueCollection buildData)
+	{
 		// Add version metadata override to allow CI publishing
 		string descriptionFinal = "";
 		if (isCi)
@@ -356,16 +368,62 @@ public partial class WorkshopSocialModule
 			throw new Exception(Language.GetTextValue("tModLoader.DescriptionLengthExceedLimit", Steamworks.Constants.k_cchPublishedDocumentDescriptionMax, descriptionByteCount - Steamworks.Constants.k_cchPublishedDocumentDescriptionMax));
 		}
 
-		// If the modder hasn't supplied any change notes, then we will provde some default ones for them
-		if (string.IsNullOrWhiteSpace(changeNotes)) {
-			changeNotes = "Version {ModVersion} has been published to {tMLBuildPurpose} tModLoader v{tMLVersion}";
-			if (!string.IsNullOrWhiteSpace(buildData["homepage"]))
-				changeNotes += ", learn more at the [url={ModHomepage}]homepage[/url]";
+		return descriptionFinal;
+	}
+
+	private static string GetWorkshopDescription(NameValueCollection buildData)
+	{
+		string sourceFolder = buildData["sourcesfolder"];
+		string cultureName = Language.ActiveCulture?.Name;
+
+		if (!string.IsNullOrEmpty(cultureName)) {
+			string localizedWorkshopDescFile = Path.Combine(sourceFolder, $"description_workshop_{cultureName}.txt");
+			if (File.Exists(localizedWorkshopDescFile)) {
+				return File.ReadAllText(localizedWorkshopDescFile);
+			}
 		}
 
-		ModCompile.UpdateSubstitutedDescriptionValues(ref changeNotes, buildData["trueversion"], buildData["homepage"]);
+		string workshopDescFile = Path.Combine(sourceFolder, "description_workshop.txt");
+		if (File.Exists(workshopDescFile)) {
+			return File.ReadAllText(workshopDescFile);
+		}
 
-		return descriptionFinal;
+		return buildData["description"];
+	}
+
+	private static Dictionary<string, string> GetLocalizedWorkshopDescriptions(NameValueCollection buildData, string changeNotes)
+	{
+		string sourceFolder = buildData["sourcesfolder"];
+		if (string.IsNullOrEmpty(sourceFolder) || !Directory.Exists(sourceFolder)) {
+			return null;
+		}
+
+		Dictionary<string, string> localizedDescriptions = new();
+		string currentSteamLanguageKey = SteamedWraps.GetCurrentSteamLangKey();
+		string defaultWorkshopDesc = GetDefaultWorkshopDescription(buildData);
+		foreach (var culture in GameCulture.KnownCultures) {
+			string steamLanguageKey = SteamedWraps.GetSteamLangKey(culture);
+			if (steamLanguageKey == currentSteamLanguageKey) {
+				continue;
+			}
+
+			string localizedWorkshopDescFile = Path.Combine(sourceFolder, $"description_workshop_{culture.Name}.txt");
+			string workshopDesc = File.Exists(localizedWorkshopDescFile) ? File.ReadAllText(localizedWorkshopDescFile) : defaultWorkshopDesc;
+			string descriptionFinal = BuildWorkshopDescription(workshopDesc, isCi: false, buildData);
+			localizedDescriptions[steamLanguageKey] = descriptionFinal;
+		}
+
+		return localizedDescriptions;
+	}
+
+	private static string GetDefaultWorkshopDescription(NameValueCollection buildData)
+	{
+		string workshopDescFile = Path.Combine(buildData["sourcesfolder"], "description_workshop.txt");
+		if (File.Exists(workshopDescFile)) {
+			return File.ReadAllText(workshopDescFile);
+		}
+
+		return buildData["description"];
 	}
 
 	public static void SteamCMDPublishPreparer(string modFolder)

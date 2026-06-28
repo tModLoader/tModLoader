@@ -26,10 +26,12 @@ public static class SteamedWraps
 	internal static bool SteamAvailable { get; set; }
 
 	// Used to get the right token for fetching/setting localized descriptions from/to Steam Workshop
-	internal static string GetCurrentSteamLangKey()
+	internal static string GetCurrentSteamLangKey() => GetSteamLangKey(LanguageManager.Instance.ActiveCulture);
+
+	internal static string GetSteamLangKey(GameCulture culture)
 	{
 		//TODO: Unhardcode this whenever the language roster is unhardcoded for modding.
-		return (GameCulture.CultureName)LanguageManager.Instance.ActiveCulture.LegacyId switch {
+		return (GameCulture.CultureName)culture.LegacyId switch {
 			GameCulture.CultureName.German => "german",
 			GameCulture.CultureName.Italian => "italian",
 			GameCulture.CultureName.French => "french",
@@ -710,6 +712,23 @@ public static class SteamedWraps
 
 		Logging.tML.Info("Setting the language for default description");
 		SteamUGC.SetItemUpdateLanguage(uGCUpdateHandle_t, GetCurrentSteamLangKey());
+	}
+
+	internal static void SubmitLocalizedDescriptionUpdates(PublishedFileId_t publishedFileID, Dictionary<string, string> localizedDescriptions, string changeNotes)
+	{
+		if (localizedDescriptions == null || localizedDescriptions.Count == 0)
+			return;
+
+		foreach (var (languageKey, description) in localizedDescriptions) {
+			if (string.IsNullOrWhiteSpace(languageKey) || string.IsNullOrWhiteSpace(description))
+				continue;
+
+			Logging.tML.Info($"Submitting localized Workshop description for {languageKey}");
+			var updateHandle = SteamUGC.StartItemUpdate(SteamUtils.GetAppID(), publishedFileID);
+			SteamUGC.SetItemDescription(updateHandle, description);
+			SteamUGC.SetItemUpdateLanguage(updateHandle, languageKey);
+			SteamUGC.SubmitItemUpdate(updateHandle, changeNotes);
+		}
 	}
 
 	internal static void ModifyUgcUpdateHandleTModLoader(ref UGCUpdateHandle_t uGCUpdateHandle_t, WorkshopHelper.UGCBased.SteamWorkshopItem _entryData, PublishedFileId_t _publishedFileID)
