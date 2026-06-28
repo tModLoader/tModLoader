@@ -1189,6 +1189,18 @@ partial class ItemDropDatabase
 		RegisterToItem(ItemID.Present, new SequentialRulesNotScalingWithLuckRule(chanceDenominator: 1, rules));
 	}
 
+	private void RegisterLegacyPresent()
+	{
+		IItemDropRule[] rules = new IItemDropRule[]
+		{
+			ItemDropRule.ByConditionNotScalingWithLuck(new Conditions.IsHardmode(), ItemID.SnowGlobe, chanceDenominator: 14),
+			new CommonDropNotScalingWithLuck(ItemID.CandyCaneBlock, 14, 8, 20, 49),
+			ItemDropRule.Common(ItemID.GreenCandyCaneBlock, 1, 20, 49)
+		};
+
+		RegisterToMultipleItems(new SequentialRulesNotScalingWithLuckRule(chanceDenominator: 1, rules), ItemID.BluePresent, ItemID.GreenPresent, ItemID.YellowPresent);
+	}
+
 	private void RegisterCanOfWorms()
 	{
 		RegisterToItem(ItemID.CanOfWorms, ItemDropRule.NotScalingWithLuck(ItemID.Worm, 1, 5, 8));
