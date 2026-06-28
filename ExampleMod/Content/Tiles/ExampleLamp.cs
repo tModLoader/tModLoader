@@ -25,7 +25,7 @@ namespace ExampleMod.Content.Tiles
 			Main.tileNoAttach[Type] = true;
 			Main.tileWaterDeath[Type] = true;
 			Main.tileLavaDeath[Type] = true;
-			// Main.tileFlame[Type] = true; // Main.tileFlame is only useful for vanilla tiles. Modded tiles can manually draw flames in PostDraw.
+			// Main.tileFlame[Type] = true; // Main.tileFlame is only useful for vanilla tiles. Modded tiles can manually draw flames in SpecialDraw.
 			TileID.Sets.Wiring.IsAMechanism[Type] = true;
 			TileID.Sets.Wiring.IgnoreWhenValidatingTraps[Type] = true;
 
@@ -121,7 +121,14 @@ namespace ExampleMod.Content.Tiles
 			}
 		}
 
-		public override void PostDraw(int i, int j, SpriteBatch spriteBatch) {
+		public override void DrawEffects(int i, int j, SpriteBatch spriteBatch, ref TileDrawInfo drawData) {
+			// Only queue a special draw point for the top tile when the lamp is on (frameX == 0).
+			if (drawData.tileFrameX == 0 && drawData.tileFrameY / 18 % 3 == 0) {
+				Main.instance.TilesRenderer.AddSpecialLegacyPoint(i, j);
+			}
+		}
+
+		public override void SpecialDraw(int i, int j, SpriteBatch spriteBatch) {
 			Tile tile = Main.tile[i, j];
 
 			if (!TileDrawing.IsVisible(tile)) {
@@ -146,12 +153,12 @@ namespace ExampleMod.Content.Tiles
 
 			ulong randSeed = Main.TileFrameSeed ^ (ulong)((long)j << 32 | (long)(uint)i); // Don't remove any casts.
 
-			// We can support different flames for different styles here: int style = Main.tile[j, i].frameY / 54;
+			// We can support different flames for different styles here: int style = tile.TileFrameY / 54;
 			for (int c = 0; c < 7; c++) {
 				float shakeX = Utils.RandomInt(ref randSeed, -10, 11) * 0.15f;
 				float shakeY = Utils.RandomInt(ref randSeed, -10, 1) * 0.35f;
 
-				spriteBatch.Draw(flameTexture.Value, new Vector2(i * 16 - (int)Main.screenPosition.X - (width - 16f) / 2f + shakeX, j * 16 - (int)Main.screenPosition.Y + offsetY + shakeY) + zero, new Rectangle(frameX, frameY, width, height), new Color(100, 100, 100, 0), 0f, default, 1f, effects, 0f);
+				spriteBatch.Draw(flameTexture.Value, new Vector2(i * 16 - (int)Main.screenPosition.X - (width - 16f) / 2f + shakeX, j * 16 - (int)Main.screenPosition.Y + offsetY + shakeY) + zero, new Rectangle(0, 0, 16, 16), new Color(100, 100, 100, 0), 0f, default, 1f, effects, 0f);
 			}
 		}
 	}
