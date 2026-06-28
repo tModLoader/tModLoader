@@ -762,7 +762,7 @@ public abstract class ModTile : ModBlockType
 
 	/// <summary>
 	/// Use to populate <paramref name="tileFlameData"/> with flame drawing parameters.
-	/// <para/> Currently only supported for tiles drawn using <see cref="GameContent.Drawing.TileDrawing.AddSpecialPoint"/> with <see cref="GameContent.Drawing.TileDrawing.TileCounterType.MultiTileVine"/>, other tiles should draw flames manually in <see cref="ModBlockType.PostDraw(int, int, SpriteBatch)"/> as shown in <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/Tiles/ExampleLamp.cs#L124">ExampleLamp.cs</see>.
+	/// <para/> Currently only supported for tiles drawn using <see cref="GameContent.Drawing.TileDrawing.AddSpecialPoint"/> with <see cref="GameContent.Drawing.TileDrawing.TileCounterType.MultiTileVine"/>, other tiles should draw flames manually by calling <c>Main.instance.TilesRenderer.AddSpecialLegacyPoint</c> in <see cref="DrawEffects"/> and drawing the flame in <see cref="SpecialDraw(int, int, SpriteBatch)"/>, as shown in <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/Tiles/ExampleLamp.cs">ExampleLamp.cs</see>.
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>
