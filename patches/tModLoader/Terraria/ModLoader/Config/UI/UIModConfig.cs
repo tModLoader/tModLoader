@@ -18,6 +18,8 @@ using Terraria.ModLoader.UI;
 using Terraria.UI;
 using Terraria.UI.Gamepad;
 using Terraria.Localization;
+using Terraria.ModLoader.UI.Elements;
+using Terraria.UI.Chat;
 using tModPorter;
 
 namespace Terraria.ModLoader.Config.UI;
@@ -62,7 +64,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 
 	private UIElement uiElement;
 	private UIPanel uiPanel;
-	private UITextPanel<LocalizedText> headerTextPanel;
+	private MarqueeTextPanel headerTextPanel;
 
 	private UIButton<LocalizedText> backButton;
 	private UIButton<LocalizedText> saveConfigButton;
@@ -72,7 +74,8 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 	private UIList configElementList;
 	private UIScrollbar scrollbar;
 	private UIFocusInputTextField filterTextField;
-	private UIAutoScaleTextTextPanel<string> configNamePanel;
+	private UIAutoScaleTextTextPanel<object> modNamePanel;
+	private MarqueeText modNameText;
 	private UIImage smallModIcon;
 
 	// TODO: add the tooltip panel at the bottom
@@ -197,14 +200,27 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 		};
 		// Gets appended in OnActivate
 
-		configNamePanel = new UIAutoScaleTextTextPanel<string>("") {
+		modNamePanel = new UIAutoScaleTextTextPanel<object>("") {
 			MaxWidth = { Pixels = 385, Percent = 0f },
 			Height = { Pixels = 40 },
 			VAlign = 0.5f,
 			UseInnerDimensions = true,
-			ScalePanel = true,
-		}.WithPadding(6);
-		listHeaderContainer.Append(configNamePanel);
+			ScalePanel = false,
+		};
+		modNamePanel.SetPadding(6);
+
+		modNameText = new MarqueeText("[Unknown Mod Name]") {
+			Width = { Percent = 1f },
+			Height = { Percent = 1f },
+			IsScrolling = false,
+		};
+
+		modNamePanel.Append(modNameText);
+
+		modNamePanel.OnMouseOver += (_, _) => modNameText.IsScrolling = true;
+		modNamePanel.OnMouseOut += (_, _) => modNameText.IsScrolling = false;
+
+		listHeaderContainer.Append(modNamePanel);
 
 		configElementList = new UIList {
 			Width =  { Pixels = -25, Percent = 1f },
@@ -225,7 +241,8 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 
 	private void CreateHeaderPanel()
 	{
-		headerTextPanel = new UITextPanel<LocalizedText>(Language.GetText("tModLoader.ModConfigModConfig"), 0.8f, true) {
+		headerTextPanel = new MarqueeTextPanel("[Unknown Config Name]", 0.8f, true) {
+			MaxWidth = { Percent = 0.95f},
 			HAlign = 0.5f,
 			Top = { Pixels = -46 }, // -35 is common for most UIs, but UIWorkshopHub uses -46 to fit more content
 			BackgroundColor = UICommon.DefaultUIBlue,
@@ -296,6 +313,8 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 	}
 
 	#endregion
+
+	// TODO: merge with UI Updating
 
 	#region State Management
 
@@ -507,26 +526,32 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 
 		Interface.modConfigList.ModToSelectOnOpen = mod;
 
-		// Set mod name, config name, and small mod icon in the display panel
-		string configNamePanelContents = modConfig.Mod.DisplayName + " - " + modConfig.DisplayName.Value;
-		configNamePanel.SetText(configNamePanelContents);
+		// TODO: config side indicator
 
-		var iconTexture = modConfig.Mod.SmallModIcon;
-		configNamePanel.RemoveChild(smallModIcon);
-		if (iconTexture is not null) {
-			// Same logic used in UIConfigList
-			float iconOffset = iconTexture.Width();
-			float iconPadding = 2;
+		// Set config name, mod name and small mod icon in the display panel
+		headerTextPanel.SetText(modConfig.DisplayName);
+		modNameText.SetText(modConfig.Mod.DisplayName);
 
-			smallModIcon.MarginTop = -2;
-			smallModIcon.MarginLeft = -iconOffset - iconPadding;
-			smallModIcon.SetImage(iconTexture);
-			configNamePanel.PaddingLeft += iconOffset + iconPadding;
-			configNamePanel.Append(smallModIcon);
-		}
-		else {
-			configNamePanel.PaddingLeft = 6;
-		}
+		// Same logic used in UIConfigList
+		var iconTexture = modConfig.Mod.SmallModIcon ?? Mod.PlaceholderSmallModIcon;
+		float iconOffset = iconTexture.Width();
+		float iconPadding = 2;
+
+		smallModIcon.Remove();
+		smallModIcon.MarginTop = -2;
+		smallModIcon.MarginLeft = -iconOffset - iconPadding;
+		smallModIcon.SetImage(iconTexture);
+
+		modNamePanel.PaddingLeft = 6;
+		modNamePanel.PaddingLeft += iconOffset + iconPadding;
+		modNamePanel.Append(smallModIcon);
+
+		// Resize the mod name panel
+		const float ExtraTextSize = 6f; // Stops the edges getting clipped
+		var modNameTextSize = ChatManager.GetStringSize(FontAssets.MouseText.Value, modNameText.Text, new Vector2(modNameText.MaxTextScale));
+		modNamePanel.Width.Set(modNamePanel.PaddingLeft + modNameTextSize.X + modNamePanel.PaddingRight + ExtraTextSize, 0f);
+		modNamePanel.Height.Set(modNamePanel.PaddingTop + modNameTextSize.Y + modNamePanel.PaddingBottom, 0f);
+		modNamePanel.Recalculate();
 
 		// Setup the config elements
 		int top = 0;

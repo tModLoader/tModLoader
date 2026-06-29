@@ -8,6 +8,7 @@
  
  namespace Terraria.GameContent.UI.Elements;
  
+<<<<<<< HEAD
 +// tML: non-generic version
 +public class UITextPanel(object text, float textScale = 1, bool large = false) : UITextPanel<object>(text, textScale, large);
 +
@@ -20,12 +21,27 @@
  	private string _asterisks;
 +	// Added by tML
 +	protected virtual bool SetTextUsesMinSize => true; // Can't be a field because the ctor calls SetText() before we can set any fields
+||||||| parent of 5ce07b5cbb (add marquee text to the config name and mod name)
+@@ -74,7 +_,14 @@
+=======
+@@ -15,6 +_,8 @@
+ 	public float TextHAlign = 0.5f;
+ 	public bool HideContents;
+ 	private string _asterisks;
++	protected Vector2 textOffset = Vector2.Zero;
++	protected bool drawTextAsChild = false;
+ 
+ 	public bool IsLarge => _isLarge;
+ 
+@@ -74,7 +_,14 @@
+>>>>>>> 5ce07b5cbb (add marquee text to the config name and mod name)
  
  	public bool IsLarge => _isLarge;
  
 @@ -101,7 +_,19 @@
  		_text = text;
  		_textScale = textScale;
+<<<<<<< HEAD
  		_isLarge = large;
 +		/*
  		_textSize = new Vector2(Font.MeasureString(text.ToString()).X, large ? 32f : 16f) * textScale;
@@ -53,3 +69,37 @@
  	{
  		if (_isLarge)
  			Utils.DrawBorderStringBig(spriteBatch, text, position, color, _textScale);
+||||||| parent of 5ce07b5cbb (add marquee text to the config name and mod name)
+ 		_textSize = textSize;
+=======
+ 		_textSize = textSize;
+@@ -88,7 +_,16 @@
+ 		if (_drawPanel)
+ 			base.DrawSelf(spriteBatch);
+ 
++		if (!drawTextAsChild)
+-		DrawText(spriteBatch);
++			DrawText(spriteBatch);
++	}
++
++	protected override void DrawChildren(SpriteBatch spriteBatch)
++	{
++		if (drawTextAsChild)
++			DrawText(spriteBatch);
++
++		base.DrawChildren(spriteBatch);
+ 	}
+ 
+ 	protected void DrawText(SpriteBatch spriteBatch)
+@@ -110,8 +_,8 @@
+ 		}
+ 
+ 		if (_isLarge)
+-			Utils.DrawBorderStringBig(spriteBatch, text, pos, _color, _textScale);
++			Utils.DrawBorderStringBig(spriteBatch, text, pos + textOffset, _color, _textScale);
+ 		else
+-			Utils.DrawBorderString(spriteBatch, text, pos, _color, _textScale);
++			Utils.DrawBorderString(spriteBatch, text, pos + textOffset, _color, _textScale);
+ 	}
+ }
+>>>>>>> 5ce07b5cbb (add marquee text to the config name and mod name)
