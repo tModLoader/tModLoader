@@ -240,6 +240,13 @@ internal class EnumElement2 : ConfigElement
 		UpdateNeeded = true;
 	}
 
+	public override void SetExpanded(bool expanded)
+	{
+		bool prevExpanded = SelectionExpanded;
+		SelectionExpanded = expanded;
+		UpdateNeeded |= prevExpanded != SelectionExpanded;
+	}
+
 	private void DefaultSetValue(int index)
 	{
 		if (!MemberInfo.CanWrite)

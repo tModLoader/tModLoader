@@ -272,6 +272,20 @@ internal class ObjectElement : ConfigElement<object>
 		}
 	}
 
+	public override void SetExpanded(bool expanded)
+	{
+		bool prevExpanded = this.expanded;
+		this.expanded = expanded;
+		pendingChanges |= prevExpanded != this.expanded;
+
+		foreach (var wrappedElement in wrappedElements) {
+			if (wrappedElement.Item2 is not ConfigElement configElement)
+				return;
+
+			configElement.SetExpanded(expanded);
+		}
+	}
+
 	private List<Tuple<UIElement, UIElement>> wrappedElements = [];
 
 	private void SetupList()

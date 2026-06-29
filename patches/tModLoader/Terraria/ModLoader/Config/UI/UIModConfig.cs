@@ -186,6 +186,21 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 		filterTextField.OnRightClick += (_, _) => filterTextField.SetText("");
 		textBoxBackground.Append(filterTextField);
 
+		var collapseAllButton = new UIImage(UICommon.ButtonCollapsedTexture) {
+			VAlign = 0.5f,
+			HAlign = 1f,
+			Left = { Pixels = -(textBoxBackground.GetOuterDimensions().Width + 10) },
+		};
+
+		collapseAllButton.OnLeftClick += CollapseAll;
+		collapseAllButton.OnDraw += delegate (UIElement affectedElement) {
+			if (collapseAllButton.IsMouseHovering) {
+				UICommon.TooltipMouseText(Language.GetTextValue("tModLoader.ModConfigCollapseAll"));
+			}
+		};
+
+		listHeaderContainer.Append(collapseAllButton);
+
 		var configSideIndicatorPanel = new UIPanel {
 			Width = { Pixels = 40 },
 			Height = { Pixels = 40 },
@@ -212,7 +227,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 		// Gets appended in OnActivate
 
 		modNamePanel = new UIAutoScaleTextTextPanel<object>("") {
-			MaxWidth = { Pixels = 335, Percent = 0f }, // TODO: this needs a proper calculation (use ingame UI to measure paddings since it doesn't apply a scaling factor)
+			MaxWidth = { Pixels = 310, Percent = 0f }, // TODO: this needs a proper calculation (use ingame UI to measure paddings since it doesn't apply a scaling factor)
 			Height = { Pixels = 40 },
 			Left = { Pixels = 50 },
 			VAlign = 0.5f,
@@ -358,6 +373,17 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 		SetMessage(Language.GetTextValue("tModLoader.ModConfigDefaultsRestored"), Color.Green);
 		ConfigManager.Reset(pendingConfig);
 		OnConfigModified();
+	}
+
+	private void CollapseAll(UIMouseEvent evt, UIElement listeningElement)
+	{
+		SoundEngine.PlaySound(SoundID.MenuTick);
+
+		foreach (var listItem in configElements) {
+			if (listItem.Item2 is ConfigElement configElement) {
+				configElement.SetExpanded(false);
+			}
+		}
 	}
 
 	#endregion
