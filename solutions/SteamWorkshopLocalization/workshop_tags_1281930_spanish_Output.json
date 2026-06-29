@@ -13,10 +13,10 @@
     "tag_307063": "Mejoras de audio",
     "tag_307064": "Mejoras visuales",
     "tag_307066": "Generación de mundos",
-    "tag_307067": "Both",
-    "tag_307172": "Client",
-    "tag_307173": "Server",
-    "tag_307174": "NoSync",
+    "tag_307067": "Ambos",
+    "tag_307172": "Cliente",
+    "tag_307173": "Servidor",
+    "tag_307174": "NoSincronización",
     "tag_348888": "1.4.4",
     "tag_349568": "1.4.3",
     "tag_362262": "Inglés",
@@ -28,5 +28,5 @@
     "tag_362268": "Chino simplificado",
     "tag_362269": "Portugués de Brasil",
     "tag_362270": "Polaco",
-    "tag_558042": "Translation"
+    "tag_558042": "Traducción"
 }
