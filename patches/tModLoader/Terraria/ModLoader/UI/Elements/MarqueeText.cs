@@ -7,8 +7,6 @@ using Terraria.UI.Chat;
 
 namespace Terraria.ModLoader.UI.Elements;
 
-// TODO: switch to CRLF
-
 public class MarqueeText : UIElement
 {
     private object text;
