@@ -174,7 +174,7 @@ internal class UIModConfigList : UIState
 			if (ConfigManager.Configs.TryGetValue(mod, out _)) {
 				var modPanel = new UIButton<string>("") {
 					Width = { Percent = 1f, Pixels = -1, }, // -1 to prevent clipping the right edge of the panel
-					Height = { Pixels = 41 },
+					Height = { Pixels = 40 },
 					HAlign = 0.5f,
 					ScalePanel = false,
 					UseInnerDimensions = true,
@@ -199,7 +199,7 @@ internal class UIModConfigList : UIState
 
 				var modPanel = new UIButton<string>("") {
 					Width = { Percent = 1f, Pixels = -1, }, // -1 to prevent clipping the right edge of the panel
-					Height = { Pixels = 41 },
+					Height = { Pixels = 40 },
 					HAlign = 0.5f,
 					ScalePanel = false,
 					UseInnerDimensions = true,
@@ -261,7 +261,7 @@ internal class UIModConfigList : UIState
 		foreach (var config in sortedConfigs) {
 			var configPanel = new UIButton<string>("") {
 				Width = { Percent = 1f, Pixels = -1, }, // -1 to prevent clipping the right edge of the panel
-				Height = { Pixels = 41 }, // Taken from the debugger when running with ScalePanel = true
+				Height = { Pixels = 40 },
 				HAlign = 0.5f,
 				ScalePanel = false,
 				UseInnerDimensions = true,

@@ -7,7 +7,8 @@ using Terraria.UI.Chat;
 
 namespace Terraria.ModLoader.UI.Elements;
 
-// TODO: have a configurable scroll speed
+// TODO: switch to CRLF
+
 public class MarqueeText : UIElement
 {
     private object text;
@@ -69,11 +70,14 @@ public class MarqueeText : UIElement
 
         DynamicSpriteFont font = Large ? FontAssets.DeathText.Value : FontAssets.MouseText.Value;
 
-        Vector2 textSize = font.MeasureString(Text) * new Vector2(MaxTextScale);
+        Vector2 textSize = ChatManager.GetStringSize(font, Text, new Vector2(textScale));
 
         var dims = this.GetInnerDimensions();
 
         textScale = MathHelper.Min(dims.Height / textSize.Y, MaxTextScale);
+
+        textSize = ChatManager.GetStringSize(font, Text, new Vector2(textScale));
+        OverflowHidden = textSize.X >= dims.Width;
     }
 
     public override void Update(GameTime gameTime)
@@ -86,97 +90,96 @@ public class MarqueeText : UIElement
 
         var dims = this.GetInnerDimensions();
 
-        bool shouldScroll = textSize.X >= dims.Width && IsScrolling;
-
-        if (shouldScroll)
-        {
-            const float scroll_increment = 1.5f;
-
-            const int scroll_delay = 30;
-
-            // Each half of the text seperated by the alignment.
-            var left =
-                (textSize.X * TextAlignX) -
-                (dims.Width * TextAlignX);
-
-            var right =
-                (textSize.X * (1f - TextAlignX)) -
-                (dims.Width * (1f - TextAlignX));
-
-            scrollTimer--;
-
-            if (scrollTimer > 0)
-            {
-                return;
-            }
-
-            scroll += scroll_increment * ScrollSpeed * scrollDirection;
-
-            if (scroll >= right)
-            {
-                scroll = right;
-                scrollTimer = scroll_delay;
-                scrollDirection = -1;
-            }
-            else if (scroll <= -left)
-            {
-                scroll = -left;
-                scrollTimer = scroll_delay;
-                scrollDirection = 1;
-            }
-        }
-        else
-        {
-            scroll = 0;
-            scrollTimer = 0;
-            scrollDirection = 1;
-        }
+        UpdateScrollValues(textSize, dims, TextAlignX, textSize.X >= dims.Width && IsScrolling, ScrollSpeed, ref scroll, ref scrollTimer, ref scrollDirection);
     }
 
-    protected override void DrawSelf(SpriteBatch spriteBatch)
+    public static void UpdateScrollValues(Vector2 textSize, CalculatedStyle innerDimensions, float textAlignX, bool shouldScroll, float scrollSpeed, ref float scroll, ref int scrollTimer, ref int scrollDirection)
     {
-        base.DrawSelf(spriteBatch);
+	    if (shouldScroll)
+	    {
+		    const float scroll_increment = 1.5f;
 
-        spriteBatch.End();
+		    const int scroll_delay = 30;
 
-        var oldScissor = spriteBatch.GraphicsDevice.ScissorRectangle;
-        spriteBatch.GraphicsDevice.ScissorRectangle = GetClippingRectangle(spriteBatch);
+		    // Each half of the text seperated by the alignment.
+		    var left =
+			    (textSize.X * textAlignX) -
+			    (innerDimensions.Width * textAlignX);
 
-        var dims = this.GetInnerDimensions();
+		    var right =
+			    (textSize.X * (1f - textAlignX)) -
+			    (innerDimensions.Width * (1f - textAlignX));
 
-        var rasterizerState = spriteBatch.GraphicsDevice.RasterizerState;
-        spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.None, OverflowHiddenRasterizerState, null, Main.UIScaleMatrix);
+		    scrollTimer--;
 
-        var font = FontAssets.MouseText.Value;
-        var position = new Vector2(dims.X + (dims.Width * TextAlignX), dims.Y + (dims.Height * TextAlignY) + 4);
-        var textSize = ChatManager.GetStringSize(font, Text, Vector2.One);
-        var origin = new Vector2(textSize.X * TextAlignX, textSize.Y * TextAlignY);
+		    if (scrollTimer > 0)
+		    {
+			    return;
+		    }
 
-        if (textSize.X * textScale >= dims.Width)
-        {
-            var offset = scroll;
+		    scroll += scroll_increment * scrollSpeed * scrollDirection;
 
-            position.X -= offset;
-        }
+		    if (scroll >= right)
+		    {
+			    scroll = right;
+			    scrollTimer = scroll_delay;
+			    scrollDirection = -1;
+		    }
+		    else if (scroll <= -left)
+		    {
+			    scroll = -left;
+			    scrollTimer = scroll_delay;
+			    scrollDirection = 1;
+		    }
+	    }
+	    else
+	    {
+		    scroll = 0;
+		    scrollTimer = 0;
+		    scrollDirection = 1;
+	    }
+    }
 
-        // Chat tags don't correctly account for origin nor scale/rotation.
-        position -= origin * textScale;
+    public override Rectangle GetClippingRectangle(SpriteBatch spriteBatch)
+    {
+	    const float ExtraXPadding = 2f; // Extra space to stop the right of the text getting clipped
 
-        ChatManager.DrawColorCodedStringWithShadow(
-            spriteBatch,
-            font,
-            Text,
-            position,
-            TextColor,
-            0f,
-            Vector2.Zero,
-            new Vector2(textScale)
-        );
+	    var dims = GetInnerDimensions();
+	    dims.X -=  ExtraXPadding;
+	    dims.Width += ExtraXPadding * 2;
 
-        spriteBatch.End();
+	    return UIElement.GetClippingRectangleFrom(spriteBatch, dims);
+    }
 
-        spriteBatch.GraphicsDevice.ScissorRectangle = oldScissor;
+    protected override void DrawChildren(SpriteBatch spriteBatch)
+    {
+	    var dims = this.GetInnerDimensions();
+	    var font = FontAssets.MouseText.Value;
+	    var position = new Vector2(dims.X + (dims.Width * TextAlignX), dims.Y + (dims.Height * TextAlignY) + 4);
+	    var textSize = ChatManager.GetStringSize(font, Text, Vector2.One);
+	    var origin = new Vector2(textSize.X * TextAlignX, textSize.Y * TextAlignY);
 
-        spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.None, rasterizerState, null, Main.UIScaleMatrix);
+	    if (textSize.X * textScale >= dims.Width)
+	    {
+		    var offset = scroll;
+
+		    position.X -= offset;
+	    }
+
+	    // Chat tags don't correctly account for origin nor scale/rotation.
+	    position -= origin * textScale;
+
+	    ChatManager.DrawColorCodedStringWithShadow(
+		    spriteBatch,
+		    font,
+		    Text,
+		    position,
+		    TextColor,
+		    0f,
+		    Vector2.Zero,
+		    new Vector2(textScale)
+	    );
+
+	    base.DrawChildren(spriteBatch);
     }
 }
