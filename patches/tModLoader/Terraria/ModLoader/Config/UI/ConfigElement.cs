@@ -150,10 +150,16 @@ public abstract class ConfigElement : UIElement
 	}
 
 	/// <summary>
-	/// Called when the config UI refreshes.<br/><br/>
-	/// Ensure the ConfigElement UI still reflects the value from GetObject(), as the config may have had changes reverted or it's default values restored.
+	/// Called when the config UI refreshes.
+	/// <br/><br/> Ensure the ConfigElement UI still reflects the value from GetObject(), as the config may have had changes reverted or it's default values restored.
 	/// </summary>
 	public virtual void RefreshUI() { }
+
+	/// <summary>
+	/// Called when the config UI asks this element to collapse or expand.
+	/// <br/><br/> Ensure that custom child elements also have <see cref="SetExpanded"/> called on them.
+	/// </summary>
+	public virtual void SetExpanded(bool expanded) { }
 
 	protected override void DrawSelf(SpriteBatch spriteBatch)
 	{
@@ -229,7 +235,7 @@ public abstract class ConfigElement : UIElement
 	}
 }
 
-// TODO: remember, this is used in the controls menu too
+// TODO: when reworking in future, remember that this is used in the controls menu too
 internal class HeaderElement : UIElement
 {
 	private readonly string header;

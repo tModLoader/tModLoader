@@ -243,6 +243,16 @@ internal abstract class CollectionElement : ConfigElement
 		pendingChanges = true;
 		Data = MemberInfo.GetValue(Item);
 		SetupList(); // TODO: this fucks with collapsing and entering text in input fields of the child elements, but it's still an improvement over not working
+		// - solution is probably to just impl RefreshUI for each collection element individually
+	}
+
+	public override void SetExpanded(bool expanded)
+	{
+		bool prevExpanded = this.expanded;
+		this.expanded = expanded;
+		pendingChanges |= prevExpanded != this.expanded;
+
+		// TODO: SetExpanded on children
 	}
 
 	public override void Recalculate()
