@@ -82,6 +82,7 @@ var class_player =
     [ "RefreshExtraJumps", "class_player.html#a0cc5081609eced6c17012c68fd1444e6", null ],
     [ "RefreshItems", "class_player.html#a144300a7a4facd17e60a373bfd9eb4e0", null ],
     [ "RotatedRelativePoint", "class_player.html#a4d51c1bc55b3d00e19042581d56e2dab", null ],
+    [ "SetCCed", "class_player.html#a6066a9758fab128f5a586211533742b2", null ],
     [ "SetDummyItemTime", "class_player.html#afd77a2da2ad41ac8c904e122ea77dfec", null ],
     [ "StopExtraJumpInProgress", "class_player.html#a12b29ebfe9672d1317b9534c874c6e0e", null ],
     [ "StrikeNPCDirect", "class_player.html#aa5747bc3c4c71944001372293befb3fd", null ],

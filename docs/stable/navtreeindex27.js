@@ -1,5 +1,6 @@
 var NAVTREEINDEX27 =
 {
+"struct_boss_bar_draw_params.html#a7769b9eff262cd868ea50ebd2e18d592":[3,0,113,3],
 "struct_boss_bar_draw_params.html#a77ff67cbfc6f723bd458af217e55cca1":[3,0,113,1],
 "struct_boss_bar_draw_params.html#a8a64708b0e9fe06bc0eb39b409fda748":[3,0,113,2],
 "struct_boss_bar_draw_params.html#aa6d658c158f71215e51569f6c1736fea":[3,0,113,12],
@@ -248,6 +249,5 @@ var NAVTREEINDEX27 =
 "struct_player_1_1_hurt_modifiers.html#a6e0d4a36f78e3187926662e9b38efb43":[3,0,983,6,9],
 "struct_player_1_1_hurt_modifiers.html#a873d28ec48235b3cc3c4489cd9629133":[3,0,983,6,15],
 "struct_player_1_1_hurt_modifiers.html#a91dc16c0ded57f497609926b87ec2125":[3,0,983,6,1],
-"struct_player_1_1_hurt_modifiers.html#a9ec7c517952042fd807043412a84462f":[3,0,983,6,8],
-"struct_player_1_1_hurt_modifiers.html#aa447fefe1c6804405d6279704d2bd833":[3,0,983,6,3]
+"struct_player_1_1_hurt_modifiers.html#a9ec7c517952042fd807043412a84462f":[3,0,983,6,8]
 };

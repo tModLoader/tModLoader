@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2026.04</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2026.05</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -1201,6 +1201,11 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>SellItem</b> (<a clas
 <tr class="memitem:a9ad891f37ede8def3e8e641c1c7bb2d1"><td class="memItemLeft" align="right" valign="top"><a id="a9ad891f37ede8def3e8e641c1c7bb2d1" name="a9ad891f37ede8def3e8e641c1c7bb2d1"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>SetArmorEffectVisuals</b> (<a class="el" href="class_player.html">Player</a> drawPlayer)</td></tr>
 <tr class="separator:a9ad891f37ede8def3e8e641c1c7bb2d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6066a9758fab128f5a586211533742b2"><td class="memItemLeft" align="right" valign="top"><a id="a6066a9758fab128f5a586211533742b2" name="a6066a9758fab128f5a586211533742b2"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>SetCCed</b> ()</td></tr>
+<tr class="memdesc:a6066a9758fab128f5a586211533742b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Call this method to mark </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="class_player.html#a395bdfdd1cff8473a9b1ad4a3060b4ec" title="Checks if the player is currently &quot;crowd controlled&quot;, meaning the player is frozen,...">CCed</a></dd></dl>
+<p>as true for this game update. Use for modded crowd control effects. <br /></td></tr>
+<tr class="separator:a6066a9758fab128f5a586211533742b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abf64611013f12c8f513cc6882b1d7fe3"><td class="memItemLeft" align="right" valign="top"><a id="abf64611013f12c8f513cc6882b1d7fe3" name="abf64611013f12c8f513cc6882b1d7fe3"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>SetCompositeArmBack</b> (bool enabled, CompositeArmStretchAmount stretch, float rotation)</td></tr>
 <tr class="separator:abf64611013f12c8f513cc6882b1d7fe3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -4980,7 +4985,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanBeTalkedTo</b><cod
 <tr class="separator:a0c5a015afac602260b585117376a55e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a395bdfdd1cff8473a9b1ad4a3060b4ec"><td class="memItemLeft" align="right" valign="top"><a id="a395bdfdd1cff8473a9b1ad4a3060b4ec" name="a395bdfdd1cff8473a9b1ad4a3060b4ec"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>CCed</b><code> [get]</code></td></tr>
-<tr class="memdesc:a395bdfdd1cff8473a9b1ad4a3060b4ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if the player is currently "crowd controlled", meaning the player is frozen, webbed, or stoned. Used in various checks to prevent some player actions that shouldn't be possible while in those states, such as channeling attacks, quick using items, and swapping loadouts. <br /></td></tr>
+<tr class="memdesc:a395bdfdd1cff8473a9b1ad4a3060b4ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if the player is currently "crowd controlled", meaning the player is frozen, webbed, stoned, or affected by a modded crowd control effect (see below). Used in various checks to prevent some player actions that shouldn't be possible while in those states, such as channeling attacks, quick using items, and swapping loadouts. Mods can use </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="class_player.html#a6066a9758fab128f5a586211533742b2" title="Call this method to mark CCedas true for this game update. Use for modded crowd control effects.">SetCCed</a></dd></dl>
+<p>within <a class="el" href="class_mod_buff.html#a03f24b9c5cfae72b1217c156e4e80d7a" title="Allows you to make this buff give certain effects to the given player. If you remove the buff from th...">ModBuff.Update(Player, ref int)</a> to mark the player as crowd controlled. <br /></td></tr>
 <tr class="separator:a395bdfdd1cff8473a9b1ad4a3060b4ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a891ff74aeebeaff3aa620994f1c24553"><td class="memItemLeft" align="right" valign="top"><a id="a891ff74aeebeaff3aa620994f1c24553" name="a891ff74aeebeaff3aa620994f1c24553"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>ConsumedLifeCrystals</b><code> [get, set]</code></td></tr>
