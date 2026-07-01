@@ -869,6 +869,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 	#endregion
 }
 
+// TODO: make public in the future for any modded UI that may want popups
 internal class BlockInputElement : UIElement
 {
 	private UIElement elementToBlock;
