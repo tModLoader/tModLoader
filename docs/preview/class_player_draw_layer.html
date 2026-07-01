@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2026.05</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2026.06</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -94,7 +94,9 @@ $(document).ready(function(){initNavTree('class_player_draw_layer.html',''); ini
 </div><!--header-->
 <div class="contents">
 
-<p>This class represents a DrawLayer for the player. Drawing should be done by adding Terraria.DataStructures.DrawData objects to drawInfo.DrawDataCache in the Draw method.  
+<p>This class represents a DrawLayer for the player. Drawing should be done by adding Terraria.DataStructures.DrawData objects to drawInfo.DrawDataCache in the Draw method. <br  />
+<br  />
+ Custom <a class="el" href="class_player_draw_layer.html" title="This class represents a DrawLayer for the player. Drawing should be done by adding Terraria....">PlayerDrawLayer</a> can be used to add additional layers to player drawing. There are a few options for customizing player rendering without resorting to a custom <a class="el" href="class_player_draw_layer.html" title="This class represents a DrawLayer for the player. Drawing should be done by adding Terraria....">PlayerDrawLayer</a> for some specific use-cases: <a class="el" href="class_mod_item.html#a0689f202f70e8d2e1a15b40aa26f742e" title="Allows customization of the DrawData responsible for drawing the EquipTexture assigned to this item....">ModItem.ModifyEquipTextureDraw</a> can be used to modify how an equipment texture for an item is drawn. <a class="el" href="class_mod_item.html#a0361d8f93a120ed76388f7ebe07853b8" title="Allows customization of the DrawData responsible for drawing the held item. Held items are drawn as p...">ModItem.ModifyItemDraw</a> can be used to modify how the held item is drawn.  
  <a href="class_player_draw_layer.html#details">More...</a></p>
 
 <p>Inherits <a class="el" href="class_mod_type.html">ModType&lt; TEntity, TModType &gt;</a>.</p>
@@ -315,7 +317,9 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsCloneable</
 <tr class="separator:abf8b5495dff140a4be73e09e6f1f3c53 inherit properties_class_mod_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p >This class represents a DrawLayer for the player. Drawing should be done by adding Terraria.DataStructures.DrawData objects to drawInfo.DrawDataCache in the Draw method. </p>
+<div class="textblock"><p >This class represents a DrawLayer for the player. Drawing should be done by adding Terraria.DataStructures.DrawData objects to drawInfo.DrawDataCache in the Draw method. <br  />
+<br  />
+ Custom <a class="el" href="class_player_draw_layer.html" title="This class represents a DrawLayer for the player. Drawing should be done by adding Terraria....">PlayerDrawLayer</a> can be used to add additional layers to player drawing. There are a few options for customizing player rendering without resorting to a custom <a class="el" href="class_player_draw_layer.html" title="This class represents a DrawLayer for the player. Drawing should be done by adding Terraria....">PlayerDrawLayer</a> for some specific use-cases: <a class="el" href="class_mod_item.html#a0689f202f70e8d2e1a15b40aa26f742e" title="Allows customization of the DrawData responsible for drawing the EquipTexture assigned to this item....">ModItem.ModifyEquipTextureDraw</a> can be used to modify how an equipment texture for an item is drawn. <a class="el" href="class_mod_item.html#a0361d8f93a120ed76388f7ebe07853b8" title="Allows customization of the DrawData responsible for drawing the held item. Held items are drawn as p...">ModItem.ModifyItemDraw</a> can be used to modify how the held item is drawn. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="aa1621b2c94333b9f9f928bcad59c7af5" name="aa1621b2c94333b9f9f928bcad59c7af5"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa1621b2c94333b9f9f928bcad59c7af5">&#9670;&nbsp;</a></span>Draw()</h2>

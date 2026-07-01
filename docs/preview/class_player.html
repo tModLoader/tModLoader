@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2026.05</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2026.06</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -1250,6 +1250,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>ShouldDrawFootball</b
 <tr class="separator:a196776996b650d7f268ce7b5e66bf0bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a91dcc835e679cf382fad53c283184bfd"><td class="memItemLeft" align="right" valign="top"><a id="a91dcc835e679cf382fad53c283184bfd" name="a91dcc835e679cf382fad53c283184bfd"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>ShouldDrawWingsThatAreAlwaysAnimated</b> ()</td></tr>
+<tr class="memdesc:a91dcc835e679cf382fad53c283184bfd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true if the player isn't on a mount and isn't wet or shouldn't float and has non-zero vertical velocity or is currently grappling. <br  />
+<br  />
+ Checked by wings that only draw when in use. <br /></td></tr>
 <tr class="separator:a91dcc835e679cf382fad53c283184bfd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab46f7cd3699a97d78cf3f8dc04224280"><td class="memItemLeft" align="right" valign="top"><a id="ab46f7cd3699a97d78cf3f8dc04224280" name="ab46f7cd3699a97d78cf3f8dc04224280"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>SlopeDownMovement</b> ()</td></tr>
@@ -4677,9 +4680,19 @@ float&#160;</td><td class="memItemRight" valign="bottom"><b>wingRunAccelerationM
 <tr class="separator:a6d53ec8809a2ad3aeb2c7214b7457f4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae1ffb843be4f83fdafc056d99b57deb9"><td class="memItemLeft" align="right" valign="top"><a id="ae1ffb843be4f83fdafc056d99b57deb9" name="ae1ffb843be4f83fdafc056d99b57deb9"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>wings</b></td></tr>
+<tr class="memdesc:ae1ffb843be4f83fdafc056d99b57deb9"><td class="mdescLeft">&#160;</td><td class="mdescRight">The visible wings equipment slot (<a class="el" href="class_armor_i_ds_1_1_wing.html">ArmorIDs.Wing</a>). Usually corresponds to the <a class="el" href="class_item.html#af1555c125f095b7be59ea7e4d78956d9">Item.wingSlot</a> of the visible wing accessory (unless hidden and either a mount is active or velocity.Y is 0) or vanity accessory. <br  />
+<br  />
+ Responsible for wing visuals and sounds, not the movement (see <a class="el" href="class_player.html#a6a80e73645841f24bfd10052dc443dda" title="The functional wings equipment slot (ArmorIDs.Wing). Usually corresponds to the Item....">wingsLogic</a>. <br  />
+<br  />
+ Defaults to 0. <br /></td></tr>
 <tr class="separator:ae1ffb843be4f83fdafc056d99b57deb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6a80e73645841f24bfd10052dc443dda"><td class="memItemLeft" align="right" valign="top"><a id="a6a80e73645841f24bfd10052dc443dda" name="a6a80e73645841f24bfd10052dc443dda"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>wingsLogic</b></td></tr>
+<tr class="memdesc:a6a80e73645841f24bfd10052dc443dda"><td class="mdescLeft">&#160;</td><td class="mdescRight">The functional wings equipment slot (<a class="el" href="class_armor_i_ds_1_1_wing.html">ArmorIDs.Wing</a>). Usually corresponds to the <a class="el" href="class_item.html#af1555c125f095b7be59ea7e4d78956d9">Item.wingSlot</a> of the wing accessory (non-vanity). <br  />
+<br  />
+ Responsible for wing movement, not the visuals and sounds (see <a class="el" href="class_player.html#ae1ffb843be4f83fdafc056d99b57deb9" title="The visible wings equipment slot (ArmorIDs.Wing). Usually corresponds to the Item....">wings</a>. <br  />
+<br  />
+ Defaults to 0. <br /></td></tr>
 <tr class="separator:a6a80e73645841f24bfd10052dc443dda"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a144b5a6e6cd725436cc725a53496e252"><td class="memItemLeft" align="right" valign="top"><a id="a144b5a6e6cd725436cc725a53496e252" name="a144b5a6e6cd725436cc725a53496e252"></a>
 float&#160;</td><td class="memItemRight" valign="bottom"><b>wingTime</b></td></tr>

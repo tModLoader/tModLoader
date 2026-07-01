@@ -29,6 +29,7 @@ var class_item_loader =
     [ "MeleeEffects", "class_item_loader.html#a934752bdc8c051fc7f3ca55ff447b79e", null ],
     [ "ModifyHitNPC", "class_item_loader.html#aa0b3b1cb3f632c2f2606d2a23d87847a", null ],
     [ "ModifyHitPvp", "class_item_loader.html#aae0ab24163712ecb034fe877d2d4e2ea", null ],
+    [ "ModifyItemDraw", "class_item_loader.html#a3b3368a720cd38a5fb32acb65893e243", null ],
     [ "ModifyItemLoot", "class_item_loader.html#a034a2a293220f9ec4ee6229fe1462319", null ],
     [ "ModifyItemScale", "class_item_loader.html#aab5a66eecc04397436e8a8800a826729", null ],
     [ "ModifyManaCost", "class_item_loader.html#af29ffba3c318d29dcd5b95a7fe1ab1bd", null ],
