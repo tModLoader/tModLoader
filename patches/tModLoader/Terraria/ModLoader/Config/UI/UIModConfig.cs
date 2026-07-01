@@ -42,13 +42,18 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 	private ModConfig modConfig; // This is from ConfigManager.Configs
 	private ModConfig pendingConfig; // The clone we modify, so we can revert changes easily
 
-	// TODO: refactor these fields
-	private readonly List<Tuple<UIElement, UIElement>> configElements = new();
+	private ConfigPage RootConfigPage => configPageStack.First();
+	private ConfigPage CurrentConfigPage => configPageStack.Peek();
+	private readonly Stack<ConfigPage> configPageStack = new();
+
+	public class ConfigPage(object name)
+	{
+		public object Name = name;
+		public readonly List<Tuple<UIElement, UIElement>> ConfigElements = new();
+	}
+
 	private BlockInputElement blockInput;
 	private UIElement activeDialog;
-	private readonly Stack<UIPanel> configPanelStack = new();
-	private readonly Stack<string> subPageStack = new();
-	private bool preserveNotificationMessage;
 
 	private bool openedFromModder = false;
 	private Action modderOnClose = null;
@@ -293,6 +298,13 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 	// Note that Escape key while in-game won't call this.
 	public void HandleBackButtonUsage()
 	{
+		// TODO: temporary until I make a real back button
+		if (configPageStack.Count > 1) {
+			configPageStack.Pop();
+			RefreshUI();
+			return;
+		}
+
 		if (HasUnsavedChanges) {
 			if (isConfirmDiscardChangsPopupOpen) {
 				return;
@@ -379,11 +391,13 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 	{
 		SoundEngine.PlaySound(SoundID.MenuTick);
 
-		foreach (var listItem in configElements) {
+		foreach (var listItem in CurrentConfigPage.ConfigElements) {
 			if (listItem.Item2 is ConfigElement configElement) {
 				configElement.SetExpanded(false);
 			}
 		}
+
+		// TODO: fix the weird jump that happens when an element is collapsed with this (may need fixing when collapsing elements normally)
 	}
 
 	#endregion
@@ -401,8 +415,8 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 
 	private void ResetUI()
 	{
+		configPageStack?.Clear();
 		configElementList?.Clear();
-		configElements?.Clear();
 		filterTextField?.SetText("");
 
 		if (scrollbar is not null)
@@ -422,7 +436,8 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 		// TODO: unfortunately, because of how ConfigElements currently handle changing values and because of reference types
 		// - nested elements require manual handling to make UI refresh on revert/restore
 		// - in future, this should be much easier, since things like the Item (the parent) won't be stored, and will instead be getters, based on a parent ConfigElement
-		foreach (var listItem in configElements) {
+		// TODO: is it necessary to refresh all, or only the current page? RootCOnfigPage will refresh all of it's children
+		foreach (var listItem in RootConfigPage.ConfigElements) {
 			if (listItem.Item2 is ConfigElement configElement) {
 				configElement.RefreshUI();
 			}
@@ -430,7 +445,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 
 		// Populate the config list
 		configElementList.Clear();
-		configElementList.AddRange(configElements.Where(item => {
+		configElementList.AddRange(CurrentConfigPage.ConfigElements.Where(item => {
 			if (item.Item2 is ConfigElement configElement) {
 				// TODO: instead of using TextDisplayFunction, allow elements to define a "search string" so they can include things like sub-members and tooltips in their search info
 				return configElement.TextDisplayFunction().Contains(filterTextField.CurrentString, StringComparison.OrdinalIgnoreCase);
@@ -440,6 +455,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 
 		// Set panel color
 		// TODO: in future, this should be done via hooks here rather than attributes
+		// TODO: also account for the colour of the subpage
 		var backgroundColorAttribute = (BackgroundColorAttribute)Attribute.GetCustomAttribute(pendingConfig.GetType(), typeof(BackgroundColorAttribute));
 		uiPanel.BackgroundColor = backgroundColorAttribute?.Color ?? UICommon.MainPanelBackground;
 
@@ -447,6 +463,9 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 	}
 
 	// TODO: strange bugs with reference types that default to null (such as strings) when backspacing themselves
+	// TODO: consider if it's necessary to call this every frame? do we really need to re-add all config elements every frame?
+	// TODO: merge CheckSaveAndRestoreConditions in?
+	// - to resolve a bunch of the above, it may be wise to do everything in a refreshUI method, but include flags for what needs updating
 	public void OnConfigModified()
 	{
 		CheckSaveAndRestoreConditions();
@@ -457,6 +476,14 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 	{
 		HasUnsavedChanges = !ConfigManager.AreConfigsEqual(pendingConfig, modConfig);
 		HasDefaultValues = ConfigManager.AreConfigsEqual(pendingConfig, ConfigManager.GetLoadTimeConfig(mod, modConfig.Name));
+	}
+
+	// TODO: ensure we can search for stuff inside of a sub-config (make the sub config show up if the children contain the value, perhaps highlight the subconfig to indicate its inside of it)
+	// - also allow the search bar to work within any config page
+	public void PushConfigPage(ConfigPage configPage)
+	{
+		configPageStack.Push(configPage);
+		RefreshUI();
 	}
 
 	// TODO: set message/notification popup in the corner of the screen
@@ -529,7 +556,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 
 		// Set config name, mod name and small mod icon in the display panel
 		headerTextPanel.SetText(modConfig.DisplayName);
-		modNameText.SetText(modConfig.Mod.DisplayName + "  ASD HASKDH ASJDH ASHDKASHD KASHD KJASHDKJASH DKJ");
+		modNameText.SetText(modConfig.Mod.DisplayName);
 
 		// Same logic used in UIConfigList
 		var iconTexture = modConfig.Mod.SmallModIcon ?? Mod.PlaceholderSmallModIcon;
@@ -553,6 +580,8 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 		modNamePanel.Recalculate();
 
 		// Setup the config elements
+		var rootConfigPage = new ConfigPage(modConfig.DisplayName);
+
 		int top = 0;
 		int order = 0;
 		// ReSharper disable once LoopCanBePartlyConvertedToQuery
@@ -560,49 +589,58 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 			if (Attribute.IsDefined(variable.MemberInfo, typeof(JsonIgnoreAttribute)) && !Attribute.IsDefined(variable.MemberInfo, typeof(ShowDespiteJsonIgnoreAttribute)))
 				continue;
 
-			HandleHeader(configElementList, ref top, ref order, variable);
-			WrapIt(configElementList, ref top, variable, pendingConfig, order++);
+			var header = HandleHeader(null, ref top, ref order, variable);
+			if (header is not null) {
+				rootConfigPage.ConfigElements.Add(header);
+			}
+
+			rootConfigPage.ConfigElements.Add(WrapIt(null, ref top, variable, pendingConfig, order++));
 		}
+
+		PushConfigPage(rootConfigPage);
 
 		RefreshUI(delayRefresh: false);
 		CheckSaveAndRestoreConditions();
 
-
 		if (scrollToOption != null) {
-			bool header = false;
-			if (scrollToOption.StartsWith("Header:")) {
-				scrollToOption = scrollToOption.Split("Header:", StringSplitOptions.RemoveEmptyEntries)[0];
-				header = true;
-			}
-			// Potential future support: ModConfigShowcaseDataTypes@SomeClassA/Header:enabled, ModConfigShowcaseDataTypes@SomeList/3, ModConfigShowcaseMisc@collapsedList
-			var desiredElement = configElementList._items.Find(x => {
-				if (x is UISortableElement sortableElement && sortableElement.Children.FirstOrDefault() is ConfigElement configElement && configElement.MemberInfo.Name == scrollToOption) {
-					if (configElement is ObjectElement objectElement && objectElement.separatePagePanel != null) {
-						SwitchToSubConfig(objectElement.separatePagePanel);
-						return true;
-					}
-					configElement.Flashing = true;
-					return true;
-				}
-				return false;
-			});
-
-			if (header) {
-				int index = configElementList._items.IndexOf(desiredElement);
-				for (int i = index - 1; i >= 0; i--) {
-					if (configElementList._items[i] is UISortableElement sortableElement && sortableElement.Children.FirstOrDefault() is HeaderElement headerElement) {
-						desiredElement = sortableElement;
-						break;
-					}
-				}
-			}
-			configElementList.Goto(delegate (UIElement element) {
-				return element == desiredElement;
-			}, center: centerScrolledOption);
-
+			ScrollTo(scrollToOption, centerScrolledOption);
 			scrollToOption = null;
 			centerScrolledOption = false;
 		}
+	}
+
+	public void ScrollTo(string scrollToOption, bool centerScrolledOption)
+	{
+		bool header = false;
+		if (scrollToOption.StartsWith("Header:")) {
+			scrollToOption = scrollToOption.Split("Header:", StringSplitOptions.RemoveEmptyEntries)[0];
+			header = true;
+		}
+		// Potential future support: ModConfigShowcaseDataTypes@SomeClassA/Header:enabled, ModConfigShowcaseDataTypes@SomeList/3, ModConfigShowcaseMisc@collapsedList
+		var desiredElement = configElementList._items.Find(x => {
+			if (x is UISortableElement sortableElement && sortableElement.Children.FirstOrDefault() is ConfigElement configElement && configElement.MemberInfo.Name == scrollToOption) {
+				if (configElement is ObjectElement objectElement && objectElement.separateConfigPage != null) {
+					PushConfigPage(objectElement.separateConfigPage);
+					return true;
+				}
+				configElement.Flashing = true;
+				return true;
+			}
+			return false;
+		});
+
+		if (header) {
+			int index = configElementList._items.IndexOf(desiredElement);
+			for (int i = index - 1; i >= 0; i--) {
+				if (configElementList._items[i] is UISortableElement sortableElement && sortableElement.Children.FirstOrDefault() is HeaderElement headerElement) {
+					desiredElement = sortableElement;
+					break;
+				}
+			}
+		}
+		configElementList.Goto(delegate (UIElement element) {
+			return element == desiredElement;
+		}, center: centerScrolledOption);
 	}
 
 	#endregion
@@ -623,6 +661,8 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 
 		// TODO: Other common structs? -- Rectangle, Point
 		var customUI = ConfigManager.GetCustomAttributeFromMemberThenMemberType<CustomModConfigItemAttribute>(memberInfo, null, null);
+
+		#region Big if statement
 
 		if (customUI != null) {
 			Type customUIType = customUI.Type;
@@ -747,6 +787,8 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 			e.Left.Pixels += 4;
 		}
 
+		#endregion
+
 		if (e != null) {
 			if (e is ConfigElement configElement) {
 				configElement.Bind(memberInfo, item, (IList)list, index);
@@ -764,7 +806,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 				uiList.Add(container);
 				uiList.GetTotalHeight();
 			}
-			else {
+			else if (parent is not null) {
 				// Only Vector2 and Color use this I think, but modders can use the non-UIList approach for custom UI and layout.
 				container.Top.Pixels = top;
 				container.Width.Pixels = -20;
@@ -775,10 +817,6 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 			}
 
 			var tuple = new Tuple<UIElement, UIElement>(container, e);
-
-			if (parent == Interface.modConfig.configElementList) {
-				Interface.modConfig.configElements.Add(tuple);
-			}
 
 			return tuple;
 		}
@@ -795,151 +833,16 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 		return container;
 	}
 
-	public static void HandleHeader(UIElement parent, ref int top, ref int order, PropertyFieldWrapper variable)
+	public static Tuple<UIElement, UIElement> HandleHeader(UIElement parent, ref int top, ref int order, PropertyFieldWrapper variable)
 	{
 		HeaderAttribute header = ConfigManager.GetLocalizedHeader(variable.MemberInfo);
 
 		if (header != null) {
 			var wrapper = new PropertyFieldWrapper(typeof(HeaderAttribute).GetProperty(nameof(HeaderAttribute.Header)));
-			WrapIt(parent, ref top, wrapper, header, order++);
-		}
-	}
-
-	#endregion
-
-	// TODO: reimpl subpages
-	// TODO: ensure we can search for stuff inside of a sub-config
-	#region Sub Configs
-
-	internal static UIPanel MakeSeparateListPanel(object item, object subitem, PropertyFieldWrapper memberInfo, IList array, int index, Func<string> AbridgedTextDisplayFunction)
-	{
-		UIPanel uIPanel = new UIPanel();
-		uIPanel.CopyStyle(Interface.modConfig.uiPanel);
-		uIPanel.BackgroundColor = UICommon.MainPanelBackground;
-
-		BackgroundColorAttribute bca = ConfigManager.GetCustomAttributeFromMemberThenMemberType<BackgroundColorAttribute>(memberInfo, subitem, null);
-
-		if (bca != null) {
-			uIPanel.BackgroundColor = bca.Color;
+			return WrapIt(parent, ref top, wrapper, header, order++);
 		}
 
-		//uIElement.Append(uIPanel);
-
-		UIList separateList = new UIList();
-		separateList.CopyStyle(Interface.modConfig.configElementList);
-		separateList.Height.Set(-40f, 1f);
-		separateList.Top.Set(40f, 0f);
-		uIPanel.Append(separateList);
-		int i = 0;
-		int top = 0;
-
-		UIScrollbar uIScrollbar = new UIScrollbar();
-		uIScrollbar.SetView(100f, 1000f);
-		uIScrollbar.Height.Set(-40f, 1f);
-		uIScrollbar.Top.Set(40f, 0f);
-		uIScrollbar.HAlign = 1f;
-		uIPanel.Append(uIScrollbar);
-		separateList.SetScrollbar(uIScrollbar);
-
-		string name = ConfigManager.GetLocalizedLabel(memberInfo);
-		if (index != -1)
-			name = name + " #" + (index + 1);
-		Interface.modConfig.subPageStack.Push(name);
-		//UIPanel heading = new UIPanel();
-		//UIText headingText = new UIText(name);
-
-		name = string.Join(" > ", Interface.modConfig.subPageStack.Reverse()); //.Aggregate((current, next) => current + "/" + next);
-
-		UITextPanel<string> heading = new UITextPanel<string>(name); // TODO: ToString as well. Separate label?
-		heading.HAlign = 0f;
-		//heading.Width.Set(-10, 0.5f);
-		//heading.Left.Set(60, 0f);
-		heading.Top.Set(-6, 0);
-		heading.Height.Set(40, 0);
-		//var headingContainer = GetContainer(heading, i++);
-		//headingContainer.Height.Pixels = 40;
-		uIPanel.Append(heading);
-		//headingText.Top.Set(6, 0);
-		//headingText.Left.Set(0, .5f);
-		//headingText.HAlign = .5f;
-		//uIPanel.Append(headingText);
-		//top += 40;
-
-		UITextPanel<string> back = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModConfigBack")) {
-			HAlign = 1f
-		};
-
-		back.Width.Set(50, 0f);
-		back.Top.Set(-6, 0);
-
-		//top += 40;
-		//var capturedCurrent = Interface.modConfig.currentConfigList;
-
-		back.OnLeftClick += (a, c) => {
-			Interface.modConfig.uiElement.RemoveChild(uIPanel);
-			Interface.modConfig.configPanelStack.Pop();
-			Interface.modConfig.uiElement.Append(Interface.modConfig.configPanelStack.Peek());
-			//Interface.modConfig.configPanelStack.Peek().SetScrollbar(Interface.modConfig.uIScrollbar);
-			//Interface.modConfig.currentConfigList = capturedCurrent;
-		};
-		back.WithFadedMouseOver();
-		//var backContainer = GetContainer(back, i++);
-		//backContainer.Height.Pixels = 40;
-		uIPanel.Append(back);
-
-		//var b = new UIText("Test");
-		//separateList.Add(b);
-		// Make rest of list
-
-		// load all mod config options into UIList
-		// TODO: Inheritance with ModConfig? DeclaredOnly?
-
-		if (true) {
-			int order = 0;
-			bool hasToString = false;
-
-			if (array != null) {
-				var listType = memberInfo.Type.GetGenericArguments()[0];
-				hasToString = listType.GetMethod("ToString", new Type[0]).DeclaringType != typeof(object);
-			}
-			else {
-				hasToString = memberInfo.Type.GetMethod("ToString", new Type[0]).DeclaringType != typeof(object);
-			}
-
-			if (AbridgedTextDisplayFunction != null) {
-				var display = new UITextPanel<FuncStringWrapper>(new FuncStringWrapper(AbridgedTextDisplayFunction)) { DrawPanel = true };
-				display.Recalculate();
-				var container = GetContainer(display, order++);
-				container.Height.Pixels = (int)display.GetOuterDimensions().Height;
-				separateList.Add(container);
-			}
-
-			//if (hasToString)
-			//	_TextDisplayFunction = () => index + 1 + ": " + (array[index]?.ToString() ?? "null");
-
-			foreach (PropertyFieldWrapper variable in ConfigManager.GetFieldsAndProperties(subitem)) {
-				if (Attribute.IsDefined(variable.MemberInfo, typeof(JsonIgnoreAttribute)) && !Attribute.IsDefined(variable.MemberInfo, typeof(ShowDespiteJsonIgnoreAttribute)))
-					continue;
-
-				HandleHeader(separateList, ref top, ref order, variable);
-
-				WrapIt(separateList, ref top, variable, subitem, order++);
-			}
-		}
-		else {
-			//ignoreSeparatePage just to simplify ToString label--> had some issues.
-			//WrapIt(separateList, ref top, memberInfo, item, 1, ignoreSeparatePage: true);
-		}
-
-		Interface.modConfig.subPageStack.Pop();
-		return uIPanel;
-	}
-
-	internal static void SwitchToSubConfig(UIPanel separateListPanel)
-	{
-		// Interface.modConfig.uiElement.RemoveChild(Interface.modConfig.configPanelStack.Peek());
-		// Interface.modConfig.uiElement.Append(separateListPanel);
-		// Interface.modConfig.configPanelStack.Push(separateListPanel);
+		return null;
 	}
 
 	#endregion
