@@ -1,7 +1,6 @@
-ru-RU 10
+ru-RU 1
 pt-BR 57
 pl-PL 54
 it-IT 1005
 fr-FR 470
-es-ES 429
 de-DE 430
