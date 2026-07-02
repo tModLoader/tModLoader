@@ -42,7 +42,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 	private ModConfig modConfig; // This is from ConfigManager.Configs
 	private ModConfig pendingConfig; // The clone we modify, so we can revert changes easily
 
-	private ConfigPage RootConfigPage => configPageStack.First();
+	private ConfigPage rootConfigPage;
 	private ConfigPage CurrentConfigPage => configPageStack.Peek();
 	private readonly Stack<ConfigPage> configPageStack = new();
 
@@ -415,6 +415,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 
 	private void ResetUI()
 	{
+		rootConfigPage = null;
 		configPageStack?.Clear();
 		configElementList?.Clear();
 		filterTextField?.SetText("");
@@ -437,7 +438,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 		// - nested elements require manual handling to make UI refresh on revert/restore
 		// - in future, this should be much easier, since things like the Item (the parent) won't be stored, and will instead be getters, based on a parent ConfigElement
 		// TODO: is it necessary to refresh all, or only the current page? RootCOnfigPage will refresh all of it's children
-		foreach (var listItem in RootConfigPage.ConfigElements) {
+		foreach (var listItem in rootConfigPage.ConfigElements) {
 			if (listItem.Item2 is ConfigElement configElement) {
 				configElement.RefreshUI();
 			}
@@ -479,14 +480,13 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 	}
 
 	// TODO: ensure we can search for stuff inside of a sub-config (make the sub config show up if the children contain the value, perhaps highlight the subconfig to indicate its inside of it)
-	// - also allow the search bar to work within any config page
 	public void PushConfigPage(ConfigPage configPage)
 	{
 		configPageStack.Push(configPage);
 		RefreshUI();
 	}
 
-	// TODO: set message/notification popup in the corner of the screen
+	// TODO: reimpl
 	public void SetMessage(string text, Color color)
 	{
 		/*
@@ -580,7 +580,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 		modNamePanel.Recalculate();
 
 		// Setup the config elements
-		var rootConfigPage = new ConfigPage(modConfig.DisplayName);
+		rootConfigPage = new ConfigPage(modConfig.DisplayName);
 
 		int top = 0;
 		int order = 0;
@@ -621,6 +621,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 			if (x is UISortableElement sortableElement && sortableElement.Children.FirstOrDefault() is ConfigElement configElement && configElement.MemberInfo.Name == scrollToOption) {
 				if (configElement is ObjectElement objectElement && objectElement.separateConfigPage != null) {
 					PushConfigPage(objectElement.separateConfigPage);
+					RefreshUI();
 					return true;
 				}
 				configElement.Flashing = true;

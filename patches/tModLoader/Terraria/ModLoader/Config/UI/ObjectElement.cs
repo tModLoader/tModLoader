@@ -83,6 +83,8 @@ internal class ObjectElement : ConfigElement<object>
 		separatePage = ConfigManager.GetCustomAttributeFromMemberThenMemberType<SeparatePageAttribute>(MemberInfo, Item, List) != null;
 
 		if (separatePage && !ignoreSeparatePage) {
+			separateConfigPage = new UIModConfig.ConfigPage(Language.GetText(Label));
+
 			// TODO: UITextPanel doesn't update...
 			separatePageButton = new UITextPanel<FuncStringWrapper>(new FuncStringWrapper(TextDisplayFunction));
 			separatePageButton.HAlign = 0.5f;
@@ -238,6 +240,11 @@ internal class ObjectElement : ConfigElement<object>
 	{
 		pendingChanges = true;
 
+		if (Value is null) {
+			wrappedElements.Clear();
+			separateConfigPage?.ConfigElements.Clear();
+		}
+
 		if (separateConfigPage is not null) {
 			foreach (var wrappedElement in separateConfigPage.ConfigElements) {
 				if (wrappedElement.Item2 is not ConfigElement configElement)
@@ -281,7 +288,7 @@ internal class ObjectElement : ConfigElement<object>
 
 		if (data != null) {
 			if (separatePage && !ignoreSeparatePage) {
-				separateConfigPage = new UIModConfig.ConfigPage(Language.GetText(Label));
+				separateConfigPage.ConfigElements.Clear();
 
 				int top = 0;
 				int order = 0;
@@ -300,6 +307,7 @@ internal class ObjectElement : ConfigElement<object>
 			}
 			else {
 				int order = 0;
+				wrappedElements.Clear();
 				foreach (PropertyFieldWrapper variable in ConfigManager.GetFieldsAndProperties(data)) {
 					if (Attribute.IsDefined(variable.MemberInfo, typeof(JsonIgnoreAttribute)) && !Attribute.IsDefined(variable.MemberInfo, typeof(ShowDespiteJsonIgnoreAttribute)))
 						continue;
