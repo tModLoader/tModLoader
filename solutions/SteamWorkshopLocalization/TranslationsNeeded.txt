@@ -1,7 +1,5 @@
 de-DE 3
 it-IT 12
 fr-FR 12
-es-ES 1
-ru-RU 1
 pt-BR 1
 pl-PL 1
