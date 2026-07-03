@@ -1,10 +1,7 @@
-version: "3.0"
-
 services:
   tml:
     container_name: tml
     restart: unless-stopped
-    #platform: linux/amd64 # Enable if you are running Docker on an ARM machine
     build:
       context: .
       # args:
