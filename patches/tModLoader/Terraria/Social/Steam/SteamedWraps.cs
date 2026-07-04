@@ -759,10 +759,9 @@ public static class SteamedWraps
 		};
 
 		foreach (var descriptor in descriptorLookup) {
+			// We only allow setting from in-game in order to preserve moderator efforts
 			if (_entryData.Tags.Contains(descriptor.internalName))
-				SteamUGC.AddContentDescriptor(uGCUpdateHandle_t, EUGCContentDescriptorID.k_EUGCContentDescriptor_FrequentViolenceOrGore);
-			else
-				SteamUGC.RemoveContentDescriptor(uGCUpdateHandle_t, EUGCContentDescriptorID.k_EUGCContentDescriptor_FrequentViolenceOrGore);
+				SteamUGC.AddContentDescriptor(uGCUpdateHandle_t, descriptor.flag);
 		}
 	}
 
