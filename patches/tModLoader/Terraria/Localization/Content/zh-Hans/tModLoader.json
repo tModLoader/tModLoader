@@ -704,6 +704,7 @@
 		"TagsCategoryModSide": "模组端",
 		"TagsCategoryTModLoaderVersion": "tModLoader版本",
 		"TagsCategoryLanguage": "{$LegacyMenu.103}",
+		// "TagsCategoryRating": "Mod Content Rating Flags",
 		// Tag descriptions by Webmilio, Tomat, Solxan, and Setnour6.
 		"TagsContent": "新增内容",
 		"TagsContentDescription": "添加了新的内容，例如物品、 武器、 NPC等",
@@ -744,6 +745,12 @@
 		"TagsLanguage_PortugueseDescription": "{$TagsLanguage_Description}",
 		"TagsLanguage_GermanDescription": "{$TagsLanguage_Description}",
 		"TagsLanguage_PolishDescription": "{$TagsLanguage_Description}",
+		// "TagsRating_AdultsOnly": "Adults Only",
+		// "TagsRating_AdultsOnlyDescription": "Contains content that is sexually explicit or graphic and is intended for adults only. Users must affirm that they are at least eighteen years old before they can view content.",
+		// "TagsRating_Gore": "Extreme Gore",
+		// "TagsRating_GoreDescription": "Contains content that features extreme violence or gore.",
+		// "TagsRating_QuestionableContent": "Questionable Content",
+		// "TagsRating_QuestionableContentDescription": "Contains mature topics that may not be appropriate for all audiences.",
 
 		// Info Display Pages
 		"NextInfoAccPage": "下一页",

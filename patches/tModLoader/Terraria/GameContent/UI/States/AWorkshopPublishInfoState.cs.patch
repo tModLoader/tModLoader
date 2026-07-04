@@ -207,12 +207,12 @@
  			groupOptionButton.HAlign = (float)i / (float)(array6.Length - 1);
  			groupOptionButton.Left = StyleDimension.FromPercent((1f - num) * (1f - groupOptionButton.HAlign * 2f));
  			groupOptionButton.Top.Set(accumulatedHeight, 0f);
-@@ -382,22 +_,47 @@
+@@ -382,22 +_,73 @@
  	{
  		List<WorkshopTagOption> tagsToShow = GetTagsToShow();
  		int num = 3;
 -		int num2 = (int)Math.Ceiling((float)tagsToShow.Count / (float)num);
-+		int num2 = (int)Math.Ceiling((float)tagsToShow.Count / (float)num) + 1;
++		int num2 = (int)Math.Ceiling((float)(tagsToShow.Count + 3) / (float)num) + 1;
  		int num3 = heightPerRow * num2;
  		CreateStylizedCategoryPanel(num3, "Workshop.CategoryTitleTags", out var entirePanel, out var innerPanel);
  		float num4 = 0.98f;
@@ -226,6 +226,8 @@
 -			int num5 = i / num;
 -			int num6 = i - num5 * num;
 +			int num5 = (i + additionalIOffset) / num;
++
++			// Added by tml
 +			if (workshopTagOption.InternalNameForAPIs == "English") {
 +				num5++;
 +				if ((i + additionalIOffset) % num != 0) {
@@ -247,6 +249,30 @@
 +				uIText.IsWrapped = false;
 +				entirePanel.Append(uIText);
 +			}
++			if (workshopTagOption.InternalNameForAPIs == "AdultsOnly") {
++				num5++;
++				if ((i + additionalIOffset) % num != 0) {
++					additionalIOffset += 3;
++					num5++;
++			    }
++				additionalIOffset += 3 - ((i + additionalIOffset) % num);
++				AddHorizontalSeparator(entirePanel, 44 + num5 * heightPerRow, 4);
++				UIText uIText = new UIText(Language.GetText("tModLoader.TagsCategoryRating")) {
++					HAlign = 0f,
++					VAlign = 0f,
++					Width = StyleDimension.FromPixelsAndPercent(-40f, 1f),
++					Height = StyleDimension.FromPixelsAndPercent(44, 0f),
++					Top = StyleDimension.FromPixelsAndPercent(5f + num5 * heightPerRow, 0f)
++				};
++				
++				uIText.PaddingLeft = 20f;
++				uIText.PaddingRight = 20f;
++				uIText.PaddingTop = 6f;
++				uIText.IsWrapped = false;
++				entirePanel.Append(uIText);
++			}
++			// End tml addition
++
 +			num5 = (i + additionalIOffset) / num;
 +			int num6 = (i + additionalIOffset) % num;
  			groupOptionButton.Width = StyleDimension.FromPixelsAndPercent(-4 * (num - 1), 1f / (float)num * num4);
