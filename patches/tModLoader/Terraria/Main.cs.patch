@@ -4958,7 +4958,7 @@
 +						/*
  						if (mouseLeftRelease && mouseLeft && reforgeCooldown <= 0 && player[myPlayer].BuyItem(num55))
 +						*/
-+						if (mouseLeftRelease && mouseLeft && player[myPlayer].CanAfford(num55) && ItemLoader.CanReforge(reforgeItem)) {
++						if (mouseLeftRelease && mouseLeft && reforgeCooldown <= 0 && player[myPlayer].CanAfford(num55) && ItemLoader.CanReforge(reforgeItem)) {
 +							player[myPlayer].BuyItem(num55);
  							ReforgeItemInReforgeSlot();
 +						}
