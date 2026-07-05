@@ -62,7 +62,7 @@
  				PublishedFileId_t[] array = new PublishedFileId_t[SteamUGC.GetNumSubscribedItems()];
  				SteamUGC.GetSubscribedItems(array, (uint)array.Length);
  				ulong punSizeOnDisk = 0uL;
-@@ -52,6 +_,7 @@
+@@ -52,19 +_,26 @@
  				}
  
  				return list;
@@ -70,7 +70,16 @@
  			}
  
  			public bool Prepare(WorkshopIssueReporter issueReporter) => Refresh(issueReporter);
-@@ -65,6 +_,9 @@
+ 
+ 			public bool Refresh(WorkshopIssueReporter issueReporter)
+ 			{
++				// tML replaced the Steamworks UGC calls in GetListOfSubscribedItemsPaths with non-Steam dependent calculations.
++				/*
+ #if NETCORE
+ 				if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux) && RuntimeInformation.ProcessArchitecture == Architecture.Arm64)
+ 					return true;
+ #endif
++				*/
  
  				ResourcePackPaths.Clear();
  				WorldPaths.Clear();
