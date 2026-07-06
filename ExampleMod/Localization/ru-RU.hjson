@@ -196,7 +196,7 @@ Mods: {
 			// ExampleDresser.MapEntry: Example Dresser
 
 			ExampleSign: {
-				// DefaultSignText: Interact wih me!
+				// DefaultSignText: Interact with me!
 				// MapEntry: Example Sign
 			}
 
