@@ -196,7 +196,7 @@ Mods: {
 			ExampleDresser.MapEntry: Example Dresser
 
 			ExampleSign: {
-				DefaultSignText: "{InputTrigger_InteractWithTile} me!"
+				DefaultSignText: Interact wih me!
 				MapEntry: Example Sign
 			}
 
