@@ -51,7 +51,7 @@ partial class Mod
 
 		// Load icon.png and icon_small.png
 		// The embedded mod for tModLoader doesn't have File initialized
-		if (File != null) {
+		if (File != null && !Main.dedServ) {
 			ModIcon = ModLoader.GetModIcon(File, out string modIconError)
 			       ?? throw new MissingResourceException($"Failed to load icon.png. Reason: {modIconError}.");
 
