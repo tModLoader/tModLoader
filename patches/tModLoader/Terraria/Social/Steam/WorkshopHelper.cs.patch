@@ -62,7 +62,7 @@
  				PublishedFileId_t[] array = new PublishedFileId_t[SteamUGC.GetNumSubscribedItems()];
  				SteamUGC.GetSubscribedItems(array, (uint)array.Length);
  				ulong punSizeOnDisk = 0uL;
-@@ -52,6 +_,7 @@
+@@ -52,17 +_,24 @@
  				}
  
  				return list;
@@ -70,7 +70,14 @@
  			}
  
  			public bool Prepare(WorkshopIssueReporter issueReporter) => Refresh(issueReporter);
-@@ -63,6 +_,9 @@
+ 
+ 			public bool Refresh(WorkshopIssueReporter issueReporter)
+ 			{
++				// tML replaced the Steamworks UGC calls in GetListOfSubscribedItemsPaths with non-Steam dependent calculations.
++				/*
+ 				if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux) && RuntimeInformation.ProcessArchitecture == Architecture.Arm64)
+ 					return true;
++				*/
  
  				ResourcePackPaths.Clear();
  				WorldPaths.Clear();
@@ -151,7 +158,7 @@
  					_publishedFileID = new PublishedFileId_t(num.Value);
  					PreventUpdatingCertainThings();
 +				*/
-+				_publishedFileID = new PublishedFileId_t(existingID);
++								_publishedFileID = new PublishedFileId_t(existingID);
 +
 +				// Verify can write to the manifest before running creating any items.
 +				if (!WrappedWriteManifest())
