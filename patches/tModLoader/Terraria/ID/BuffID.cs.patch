@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/ID/BuffID.cs
 +++ src/tModLoader/Terraria/ID/BuffID.cs
-@@ -2,25 +_,86 @@
+@@ -2,25 +_,87 @@
  using System.Collections.Generic;
  using ReLogic.Reflection;
  using Terraria.DataStructures;
@@ -86,7 +86,8 @@
  		public static bool[] NurseCannotRemoveDebuff = Factory.CreateBoolSet(28, 34, 87, 89, 21, 86, 199, 332, 333, 334, 165, 146, 48, 158, 157, 350, 215, 147, 321, 43);
  		public static int[] AddBuffTimeAdditivelyToCap = Factory.CreateIntSet(0, 94, 600, 383, 43200);
 +		/// <summary>
-+		/// Allows for assigning an IBuffTextHandler to this buff ID. Used in vanilla to add a counter to minion buffs for how many minions of that type are active.
++		///	Allows for assigning an IBuffTextHandler to this buff ID. Used to calculate the text below the buff icon, overriding the time remaining text if that would be shown.
++		/// <para/> All vanilla entries are <see cref="CachedProjectileCounterBuffTextHandler"/> and are used to show how many sets of minions have been summoned that correspond to the buff.
 +		/// </summary>
  		public static Dictionary<int, IBuffTextHandler> BuffTextHandlers = new Dictionary<int, IBuffTextHandler> {
  			{ 64, new CachedProjectileCounterBuffTextHandler(266) },
