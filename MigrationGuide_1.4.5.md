@@ -528,6 +528,7 @@ All classes are in the `Terraria` or `Terraria.ID` namespaces unless otherwise i
 	  * `{$CommonItemTooltip.RightClickToOpen}` can still be used for "Right Click to open".
 	* `{InputTrigger_InteractWithTile}` Used by things that have right click functionality with tiles or the world. Example: Placing items into a tile or right click alternate fire weapons.
 	* `{InputTrigger_InteractWithTileUI}` Used by the crafting window to tell you can right click it to switch between the classic and modern styles.
+  * These changes are to better support gamepad hint text and interactions. Also consider testing all items in your mod with right click interactions with a gamepad. You may need to add `ItemID.Sets.OpenableBag` or `ItemID.Sets.HasRightFire` if the gamepad instructions are missing or incorrect.
 
 ## tModLoader changes
 
