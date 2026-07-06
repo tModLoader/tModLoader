@@ -153,19 +153,19 @@
  	public static bool[] pvpBuff = new bool[BuffID.Count];
 +
 +	/// <summary>
-+	/// Allows status effects for which this is set to true to persist after the afflicted player's death.<br/>
++	/// If <see langword="true"/> for a given <see cref="BuffID"/>, then that buff will persist after the afflicted player's death.<br/>
 +	/// Defaults to <see langword="false"/>; all vanilla flask effects have their entries here set to true.<br/>
 +	/// </summary>
  	public static bool[] persistentBuff = new bool[BuffID.Count];
 +
 +	/// <summary>
-+	/// Categorizes status effects for which this is set to true as being from vanity pets, preventing them from overlapping with other vanity pet status effects.<br/>
++	/// If <see langword="true"/> for a given <see cref="BuffID"/>, then that buff corresponds to a vanity pet buff, preventing them from overlapping with other vanity pet status effects.<br/>
 +	/// Defaults to <see langword="false"/>; all vanilla vanity pets have their entries here set to true.<br/>
 +	/// </summary>
  	public static bool[] vanityPet = new bool[BuffID.Count];
 +
 +	/// <summary>
-+	/// Categorizes status effects for which this is set to true as being tied to a light pet, preventing them from overlapping with other light pet status effects.<br/>
++	/// If <see langword="true"/> for a given <see cref="BuffID"/>, then that buff corresponds to a light pet buff, preventing them from overlapping with other light pet status effects.<br/>
 +	/// Defaults to <see langword="false"/>; all vanilla light pets have their entries here set to true.<br/>
 +	/// </summary>
  	public static bool[] lightPet = new bool[BuffID.Count];
@@ -4958,7 +4958,7 @@
 +						/*
  						if (mouseLeftRelease && mouseLeft && reforgeCooldown <= 0 && player[myPlayer].BuyItem(num55))
 +						*/
-+						if (mouseLeftRelease && mouseLeft && player[myPlayer].CanAfford(num55) && ItemLoader.CanReforge(reforgeItem)) {
++						if (mouseLeftRelease && mouseLeft && reforgeCooldown <= 0 && player[myPlayer].CanAfford(num55) && ItemLoader.CanReforge(reforgeItem)) {
 +							player[myPlayer].BuyItem(num55);
  							ReforgeItemInReforgeSlot();
 +						}

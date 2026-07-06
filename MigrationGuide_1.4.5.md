@@ -389,6 +389,8 @@ See ExampleWhip, ExampleWhipAdvanced, ExampleWhipProjectile, and ExampleWhipProj
 * Critters can now be leashed. While leashed, they are a new type of `Entity` called `LeashedCritter` rather than a `NPC`. This requires several changes to support.
   * Assign `TECritterAnchor.CritterPrototypes[Type]` in `ModNPC.SetStaticDefaults` to dictate the animation and AI to use while leashed. 
   * Add `ItemID.Sets.PlaceTileOnAltUse[Type] = true;` to `ModItem.SetStaticDefaults` and set `Item.createTile = TileID.CritterAnchor;` in `ModItem.SetDefaults`.
+* Minion buffs can now have a counter for how many times the minion was summoned. Simply add `BuffID.Sets.BuffTextHandlers.Add(Type, new CachedProjectileCounterBuffTextHandler(ModContent.ProjectileType<YourMinionsProjectile>()));` to the buff's `SetStaticDefaults`.
+  * Custom buff text handlers can be made by creating a class that inherits `IBuffTextHandler` if the vanilla `CachedProjectileCounterBuffTextHandler` doesn't suit your minion or if you want to display custom text on a buff for any other purpose.
 
 ### Example Mod
 
@@ -418,6 +420,7 @@ Several Example Mod examples have been updated to adapt to 1.4.5 changes and to 
       * Previously, the draw code was specific for `ExampleWhipProjectileAdvanced`. Now it will work for any number of segments.
 	  * Even if your whips seem to draw fine, double check the code because it is likely that the third segment of your whip wasn't being drawn.
 	* See the *Whips and Tag Effects* section above for details on tag damage changes.
+* `ExampleSimpleMinionBuff` now tracks how many minions were summoned with `BuffID.Sets.BuffTextHandlers`.
 
 ## Renamed, Moved, or Removed Members
 
