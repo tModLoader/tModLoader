@@ -218,7 +218,7 @@ ModConfigShowcaseDataTypes: {
 	}
 
 	wallDefinitionExample: {
-		// Label: wall Definition Example
+		// Label: WallDefinition Example
 		// Tooltip: ""
 	}
 }

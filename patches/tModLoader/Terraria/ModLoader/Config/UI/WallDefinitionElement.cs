@@ -1,9 +1,11 @@
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using Terraria.GameContent;
 using Terraria.ID;
+using Terraria.ModLoader.Default;
 using Terraria.UI;
 
 namespace Terraria.ModLoader.Config.UI;
@@ -48,24 +50,20 @@ internal class WallDefinitionOptionElement : DefinitionOptionElement<WallDefinit
 {
 	public WallDefinitionOptionElement(WallDefinition definition, float scale = 0.5f) : base(definition, scale) { }
 
-	public override void SetItem(WallDefinition definition)
-	{
-		NullID = 0;
-		base.SetItem(definition);
-	}
-
 	protected override void DrawSelf(SpriteBatch spriteBatch)
 	{
 		CalculatedStyle dimensions = GetInnerDimensions();
 		spriteBatch.Draw(BackgroundTexture.Value, dimensions.Position(), null, Color.White, 0f, Vector2.Zero, Scale, SpriteEffects.None, 0f);
 
-		if (Definition != null && Definition.Type > 0) {
-			Main.instance.LoadWall(Definition.Type);
-			Texture2D wallTexture = TextureAssets.Wall[Definition.Type].Value;
+		if (Definition != null && Definition.Type != 0) {
+			int type = Unloaded ? ModContent.WallType<UnloadedWall>() : Definition.Type;
+			if (TextureAssets.Wall[type].State == AssetState.NotLoaded)
+				Main.Assets.Request<Texture2D>(TextureAssets.Wall[type].Name, AssetRequestMode.AsyncLoad);
+			Texture2D wallTexture = TextureAssets.Wall[type].Value;
 
 			if (wallTexture != null) {
 				int size = 32;
-				Rectangle sourceRectangle = new Rectangle(0, 0, size, size);
+				Rectangle sourceRectangle = new Rectangle(324, 108, size, size);
 				var position = dimensions.Center();
 
 				spriteBatch.Draw(wallTexture, position, sourceRectangle, Color.White, 0f, Vector2.One * 16, Scale, SpriteEffects.None, 0f);
@@ -73,6 +71,6 @@ internal class WallDefinitionOptionElement : DefinitionOptionElement<WallDefinit
 		}
 
 		if (IsMouseHovering)
-			UIModConfig.Tooltip = Definition.DisplayName;
+			UIModConfig.Tooltip = Tooltip;
 	}
 }

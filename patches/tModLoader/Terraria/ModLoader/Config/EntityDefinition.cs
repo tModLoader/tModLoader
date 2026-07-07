@@ -286,9 +286,6 @@ public class WallDefinition : EntityDefinition
 {
 	public static readonly Func<TagCompound, WallDefinition> DESERIALIZER = Load;
 
-	public override bool IsUnloaded
-		=> Type <= 0 && !(Mod == "Terraria" && Name == "None" || Mod == "" && Name == "");
-
 	public override int Type => WallID.Search.TryGetId(Mod != "Terraria" ? $"{Mod}/{Name}" : Name, out int id) ? id : -1;
 
 	public WallDefinition() : base() { }
@@ -306,7 +303,7 @@ public class WallDefinition : EntityDefinition
 	public override string DisplayName
 		=> IsUnloaded || Type == -1
 		? Language.GetTextValue("Mods.ModLoader.Unloaded")
-		: Name;
+		: (WallLoader.wallTypeToItemType.TryGetValue(Type, out int itemType) ? Lang.GetItemNameValue(itemType) : Name);
 }
 
 /// <summary>
