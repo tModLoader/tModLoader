@@ -154,15 +154,19 @@ public abstract class ModTile : ModBlockType
 	}
 
 	/// <summary>
-	/// Called when fertilizer (<see cref="ItemID.Fertilizer"/>) is used on this tile, if <see cref="TileID.Sets.CommonSapling"/> is set for this tile type.
-	/// <br/> By default, attempts to grow a standard tree via <see cref="WorldGen.GrowTree"/>, matching vanilla fertilizer behavior. Override to use a different growth method (e.g. <see cref="WorldGen.GrowPalmTree"/>) or to add custom logic.
-	/// <br/> Return <see langword="true"/> if growth was attempted (even if it failed due to space constraints), <see langword="false"/> to do nothing.
+	/// Called when a tree is attempting to grow from a sapling tile (Assuming <see cref="TileID.Sets.CommonSapling"/> is set for this tile type) at this location. This can be either a natural growth from code calling <see cref="WorldGen.AttemptToGrowTreeFromSapling(int, int, bool, int, bool)"/> in <see cref="ModBlockType.RandomUpdate(int, int)"/> or unnaturally, such as when fertilizer (<see cref="ItemID.Fertilizer"/> or <see cref="ItemID.SuperFertilizer"/>) is used on this tile.
+	/// <para/> <paramref name="treeHeightAddon"/> and <paramref name="ignoreWalls"/> are set based on how the tree is being grown. For example, <see cref="ItemID.SuperFertilizer"/> will set <paramref name="treeHeightAddon"/> to 15 and <paramref name="ignoreWalls"/> to true, while natural growth will set <paramref name="treeHeightAddon"/> to 0 and <paramref name="ignoreWalls"/> to false.
+	/// <para/> By default, attempts to grow a standard tree via <see cref="WorldGen.GrowTree"/> and then potentially spawns leaves if a player is nearby, matching vanilla behavior. Override to use a different growth method (e.g. <see cref="WorldGen.GrowPalmTree"/>) or to add custom logic.
+	/// <para/> Return <see langword="true"/> if a tree was grown, <see langword="false"/> otherwise.
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>
-	public virtual bool GrowSapling(int i, int j)
+	/// <param name="underground">If the location should be considered underground or not.</param>
+	/// <param name="treeHeightAddon">The additional height for the tree. Will be 0 if <see cref="ItemID.Fertilizer"/> is used and 15 when <see cref="ItemID.SuperFertilizer"/> is used.</param>
+	/// <param name="ignoreWalls">If wall restrictions should be ignored.</param>
+	public virtual bool GrowSapling(int i, int j, bool underground, int treeHeightAddon, bool ignoreWalls)
 	{
-		bool success = WorldGen.GrowTree(i, j);
+		bool success = WorldGen.GrowTree(i, j, treeHeightAddon, ignoreWalls);
 		if (success && WorldGen.PlayerLOS(i, j))
 			WorldGen.TreeGrowFXCheck(i, j);
 		return success;

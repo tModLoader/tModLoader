@@ -909,7 +909,15 @@
  		}
  	}
  
-@@ -24568,7 +_,7 @@
+@@ -24565,10 +_,15 @@
+ 		return false;
+ 	}
+ 
++	/// <summary>
++	/// Attempts to grow a tree at the specified tile coordinates. Returns true if the tree was successfully grown, false otherwise.
++	/// <para/> <paramref name="treeHeightAddon"/> adds additional height to the resulting tree, such as if grown by <see cref="ItemID.SuperFertilizer"/>. <paramref name="ignoreWalls"/> when true ignores wall restrictions that usually apply to natural tree growth. See also <see cref="WallID.Sets.AllowsPlantsToGrow"/>.
++	/// <para/> Note that this can be used to directly grow trees during world generation without placing a sapling first.
++	/// </summary>
  	public static bool GrowTree(int i, int y, int treeHeightAddon = 0, bool ignoreWalls = false)
  	{
  		int j;
@@ -2806,6 +2814,16 @@
  		return false;
  	}
  
+@@ -58333,6 +_,9 @@
+ 	public static IEntitySource GetItemSource_FromWallBreak(int x, int y) => new EntitySource_TileBreak(x, y);
+ 	public static IEntitySource GetItemSource_FromTreeShake(int x, int y) => new EntitySource_ShakeTree(x, y);
+ 
++	/// <summary>
++	/// Returns true if any player is "located on screen" of the tile coordinates provided. Technically it checks a little farther than the normal max gameplay dimensions. Used for things like spawning tree leaves when trees grow near players or preventing the cultists from spawning when players are nearby. 
++	/// </summary>
+ 	public static bool PlayerLOS(int x, int y)
+ 	{
+ 		Rectangle rectangle = new Rectangle(x * 16, y * 16, 16, 16);
 @@ -58347,6 +_,11 @@
  		return false;
  	}
@@ -3052,12 +3070,26 @@
  		int num = i - 1;
  		int num2 = i + 2;
  		int num3 = j - 1;
-@@ -61162,4 +_,4 @@
+@@ -61071,6 +_,10 @@
+ 			DontStarveTryWateringTile(i, j);
+ 	}
+ 
++	/// <summary>
++	/// Attempts to grow a tree from a sapling at the specified coordinates. Returns true if the tree was successfully grown, false otherwise.
++	/// <para/> <paramref name="treeHeightAddon"/> adds additional height to the resulting tree, such as if grown by <see cref="ItemID.SuperFertilizer"/>. <paramref name="ignoreWalls"/> when true ignores wall restrictions that usually apply to natural tree growth. <paramref name="underground"/> indicates if the location should be considered underground or not.
++	/// </summary>
+ 	public static bool AttemptToGrowTreeFromSapling(int x, int y, bool underground, int treeHeightAddon = 0, bool ignoreWalls = false)
+ 	{
+ 		if (Main.netMode == 1)
+@@ -61160,7 +_,7 @@
+ 					TreeGrowFXCheck(x, y);
+ 				return flag;
  			default:
 -				return false;
-+				return TileLoader.GrowModSapling(x, y, tile.type);
++				return TileLoader.GrowModSapling(x, y, tile.type, underground, treeHeightAddon, ignoreWalls);
  		}
  	}
+ 
 @@ -61201,6 +_,7 @@
  		return DelegateMethods.CheckResultOut;
  	}
