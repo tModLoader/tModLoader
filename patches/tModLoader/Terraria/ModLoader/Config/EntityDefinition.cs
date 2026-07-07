@@ -307,7 +307,7 @@ public class WallDefinition : EntityDefinition
 }
 
 /// <summary>
-/// This TypeConverter facilitates converting to and f	rom the string Type. This is necessary for Objects that are to be used as Dictionary keys, since the JSON for keys needs to be a string. Classes annotated with this TypeConverter need to implement a static FromString method that returns T.
+/// This TypeConverter facilitates converting to and from the string Type. This is necessary for Objects that are to be used as Dictionary keys, since the JSON for keys needs to be a string. Classes annotated with this TypeConverter need to implement a static FromString method that returns T.
 /// </summary>
 /// <typeparam name="T">The Type that implements the static FromString method that returns Type T.</typeparam>
 public class ToFromStringConverter<T> : TypeConverter
