@@ -1,6 +1,5 @@
 author = TML Team
 displayName = Example Mod
-displayName.zh-Hans = 示例Mod
 homepage = https://tmodloader.net/
 hideCode = false
 hideResources = false
