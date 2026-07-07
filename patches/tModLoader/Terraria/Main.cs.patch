@@ -1006,6 +1006,26 @@
  		}
  	}
  
+@@ -2233,6 +_,11 @@
+ 
+ 	public static string SavePath => Program.SavePath;
+ 
++	/// <summary>
++	/// The world mode of the active world. A <see cref="GameModeID"/> value. (<see href="https://terraria.wiki.gg/wiki/Difficulty#World_modes">World modes wiki page</see>)
++	/// <para/> For the actual active difficulty, see <see cref="Difficulty"/>.
++	/// <para/> For gameplay logic based on world difficulty it is usually best to check <see cref="Main.expertMode"/>, <see cref="masterMode"/>, and <see cref="IsJourneyMode"/> directly.
++	/// </summary>
+ 	public static int GameMode {
+ 		get {
+ 			if (ActiveWorldFileData == null)
+@@ -2246,6 +_,7 @@
+ 		}
+ 	}
+ 
++	/// <summary> The active world is a Journey mode world. Note that the world <see cref="Difficulty"/> is separate. </summary>
+ 	public static bool IsJourneyMode => GameMode == 3;
+ 
+ 	public static bool NoFunctionalSurface => worldSurface <= 30.0;
 @@ -2259,6 +_,7 @@
  		}
  	}
@@ -1014,17 +1034,25 @@
  	public static bool specialSeedWorld {
  		get {
  			if (!drunkWorld && !getGoodWorld && !tenthAnniversaryWorld && !notTheBeesWorld && !dontStarveWorld && !remixWorld && !noTrapsWorld && !zenithWorld)
-@@ -2295,8 +_,10 @@
+@@ -2295,10 +_,18 @@
  		}
  	}
  
-+	/// <summary> Returns true if the world is a Master Mode world. Note that the <see cref="expertMode"/> will also be true. </summary>
++	/// <summary> Returns true if the world is in Master Mode difficulty. Note that the <see cref="expertMode"/> will also be true. </summary>
  	public static bool masterMode => Difficulty >= GameDifficultyLevel.Master;
  
-+	/// <summary> Returns true if the world is an Expert Mode world. Will be true even in Master Mode worlds. </summary>
++	/// <summary> Returns true if the world is in Expert Mode difficulty. Will be true even in Master Mode or higher difficulties. </summary>
  	public static bool expertMode => Difficulty >= GameDifficultyLevel.Expert;
  
++	/// <summary>
++	/// The difficulty of the active world. Takes into account the Journey Mode difficulty slider if in use. Can be used to scale various stats to account for desired difficulty. (The <see href="https://terraria.wiki.gg/wiki/Difficulty">Difficulty wiki page</see> lists how difficulty affects some stats.)
++	/// <para/> Journey mode is 0.5, Class is 1, Expert is 2, Master is 3. The journey mode difficulty slider overrides these values and the For the Worthy seed will add 1.
++	/// <para/> For the actual world mode, see <see cref="GameMode"/>.
++	/// <para/> For gameplay logic based on world difficulty it is usually best to check <see cref="Main.expertMode"/>, <see cref="masterMode"/>, and <see cref="IsJourneyMode"/> directly.
++	/// </summary>
  	public static float Difficulty {
+ 		get {
+ 			float num = GameDifficultyLevel.Classic;
 @@ -2333,8 +_,16 @@
  	[Old("Transform is deprecated. Please use GameViewMatrix & GUIViewMatrix")]
  	public static Matrix Transform => GameViewMatrix.TransformationMatrix;
