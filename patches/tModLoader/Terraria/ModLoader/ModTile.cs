@@ -158,13 +158,13 @@ public abstract class ModTile : ModBlockType
 	/// <br/> By default, attempts to grow a standard tree via <see cref="WorldGen.GrowTree"/>, matching vanilla fertilizer behavior. Override to use a different growth method (e.g. <see cref="WorldGen.GrowPalmTree"/>) or to add custom logic.
 	/// <br/> Return <see langword="true"/> if growth was attempted (even if it failed due to space constraints), <see langword="false"/> to do nothing.
 	/// </summary>
-	/// <param name="x">The x position in tile coordinates.</param>
-	/// <param name="y">The y position in tile coordinates.</param>
-	public virtual bool GrowSapling(int x, int y)
+	/// <param name="i">The x position in tile coordinates.</param>
+	/// <param name="j">The y position in tile coordinates.</param>
+	public virtual bool GrowSapling(int i, int j)
 	{
-		bool success = WorldGen.GrowTree(x, y);
-		if (success && WorldGen.PlayerLOS(x, y))
-			WorldGen.TreeGrowFXCheck(x, y);
+		bool success = WorldGen.GrowTree(i, j);
+		if (success && WorldGen.PlayerLOS(i, j))
+			WorldGen.TreeGrowFXCheck(i, j);
 		return success;
 	}
 

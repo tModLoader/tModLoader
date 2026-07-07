@@ -67,21 +67,21 @@ namespace ExampleMod.Content.Tiles.Plants
 		}
 
 		// Overridden to handle both ExampleTree (GrowTree) and ExamplePalmTree (GrowPalmTree) styles based on TileFrameX.
-		public override bool GrowSapling(int x, int y) {
-			Tile tile = Framing.GetTileSafely(x, y);
+		public override bool GrowSapling(int i, int j) {
+			Tile tile = Framing.GetTileSafely(i, j);
 			bool growSuccess;
 
 			// Style 0 is for the ExampleTree sapling, and style 1 is for ExamplePalmTree, so here we check frameX to call the correct method.
 			// Any pixels before 54 on the tilesheet are for ExampleTree while any pixels above it are for ExamplePalmTree
 			if (tile.TileFrameX < 54) {
-				growSuccess = WorldGen.GrowTree(x, y);
+				growSuccess = WorldGen.GrowTree(i, j);
 			}
 			else {
-				growSuccess = WorldGen.GrowPalmTree(x, y);
+				growSuccess = WorldGen.GrowPalmTree(i, j);
 			}
 
-			if (growSuccess && WorldGen.PlayerLOS(x, y)) {
-				WorldGen.TreeGrowFXCheck(x, y);
+			if (growSuccess && WorldGen.PlayerLOS(i, j)) {
+				WorldGen.TreeGrowFXCheck(i, j);
 			}
 
 			return growSuccess;
