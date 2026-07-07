@@ -727,7 +727,7 @@ public static class SteamedWraps
 			var updateHandle = SteamUGC.StartItemUpdate(SteamUtils.GetAppID(), publishedFileID);
 			SteamUGC.SetItemDescription(updateHandle, description);
 			SteamUGC.SetItemUpdateLanguage(updateHandle, languageKey);
-			SteamUGC.SubmitItemUpdate(updateHandle, changeNotes);
+			SteamUGC.SubmitItemUpdate(updateHandle, null);
 		}
 	}
 

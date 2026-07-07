@@ -383,12 +383,7 @@ public partial class WorkshopSocialModule
 			}
 		}
 
-		string workshopDescFile = Path.Combine(sourceFolder, "description_workshop.txt");
-		if (File.Exists(workshopDescFile)) {
-			return File.ReadAllText(workshopDescFile);
-		}
-
-		return buildData["description"];
+		return GetDefaultWorkshopDescription(buildData);
 	}
 
 	private static Dictionary<string, string> GetLocalizedWorkshopDescriptions(NameValueCollection buildData, string changeNotes)

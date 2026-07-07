@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using Terraria.Localization;
 using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader.Core;
@@ -75,6 +76,29 @@ internal class BuildProperties
 
 	public IEnumerable<string> RefNames(bool includeWeak) => Refs(includeWeak).Select(dep => dep.mod);
 
+	private static readonly Regex LocalizedDisplayNameRegex = new(@"^displayName\.(?<cultureName>.+)$", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
+	private static bool TryGetLocalizedDisplayNameFromText(string text, string value, out string cultureName, out string localizedDisplayName)
+	{
+		cultureName = null;
+		localizedDisplayName = null;
+
+		var match = LocalizedDisplayNameRegex.Match(text);
+		if (!match.Success)
+			return false;
+
+		string parsedCultureName = match.Groups["cultureName"].Value.Trim();
+		localizedDisplayName = value;
+
+		if (!GameCulture.KnownCultures.Any(culture => culture.Name.Equals(parsedCultureName, StringComparison.OrdinalIgnoreCase))) {
+			Logging.tML.Error($"Ignoring localized display name for unknown culture \"{Utils.CleanChatTags(parsedCultureName)}\". Expected one of: {string.Join(", ", GameCulture.KnownCultures.Select(culture => culture.Name))}");
+			return false;
+		}
+
+		cultureName = parsedCultureName;
+		return true;
+	}
+
 	private static IEnumerable<string> ReadList(string value)
 		=> value.Split(',').Select(s => s.Trim()).Where(s => s.Length > 0);
 
@@ -118,11 +142,8 @@ internal class BuildProperties
 			if (value.Length == 0) {
 				continue;
 			}
-			if (property.StartsWith("displayName.", StringComparison.OrdinalIgnoreCase)) {
-				string cultureName = property.Substring("displayName.".Length).Trim();
-				if (cultureName.Length > 0) {
-					properties.localizedDisplayNames[cultureName] = value;
-				}
+			if (TryGetLocalizedDisplayNameFromText(property, value, out string cultureName, out string localizedDisplayName)) {
+				properties.localizedDisplayNames[cultureName] = localizedDisplayName;
 				continue;
 			}
 
@@ -154,6 +175,7 @@ internal class BuildProperties
 					}
 					break;
 				case "displayName":
+					properties.localizedDisplayNames[GameCulture.DefaultCulture.Name] = value;
 					properties.displayName = value;
 					break;
 				case "homepage":
@@ -235,10 +257,6 @@ internal class BuildProperties
 				}
 				writer.Write("version");
 				writer.Write(version.ToString());
-				if (displayName.Length > 0) {
-					writer.Write("displayName");
-					writer.Write(displayName);
-				}
 				foreach (var (cultureName, localizedDisplayName) in localizedDisplayNames.OrderBy(x => x.Key)) {
 					if (localizedDisplayName.Length > 0) {
 						writer.Write($"displayName.{cultureName}");
@@ -329,10 +347,14 @@ internal class BuildProperties
 					properties.version = new Version(reader.ReadString());
 				}
 				if (tag == "displayName") {
-					properties.displayName = reader.ReadString();
+					properties.localizedDisplayNames[GameCulture.DefaultCulture.Name] = reader.ReadString();
+					properties.displayName = properties.localizedDisplayNames[GameCulture.DefaultCulture.Name];
 				}
-				if (tag.StartsWith("displayName.", StringComparison.OrdinalIgnoreCase)) {
-					properties.localizedDisplayNames[tag.Substring("displayName.".Length)] = reader.ReadString();
+				else if (LocalizedDisplayNameRegex.IsMatch(tag)) {
+					string value = reader.ReadString();
+					if (TryGetLocalizedDisplayNameFromText(tag, value, out string cultureName, out string localizedDisplayName)) {
+						properties.localizedDisplayNames[cultureName] = localizedDisplayName;
+					}
 				}
 				if (tag == "homepage") {
 					properties.homepage = reader.ReadString();
@@ -372,6 +394,11 @@ internal class BuildProperties
 				}
 			}
 		}
+
+		if (string.IsNullOrEmpty(properties.displayName) && properties.localizedDisplayNames.TryGetValue(GameCulture.DefaultCulture.Name, out string defaultDisplayName)) {
+			properties.displayName = defaultDisplayName;
+		}
+
 		return properties;
 	}
 
@@ -379,8 +406,6 @@ internal class BuildProperties
 	{
 		BuildProperties properties = ReadFromStream(src);
 		var sb = new StringBuilder();
-		if (properties.displayName.Length > 0)
-			sb.AppendLine($"displayName = {properties.displayName}");
 		foreach (var (cultureName, localizedDisplayName) in properties.localizedDisplayNames.OrderBy(x => x.Key))
 			sb.AppendLine($"displayName.{cultureName} = {localizedDisplayName}");
 		if (properties.author.Length > 0)
