@@ -22,7 +22,7 @@
  {
  	public class UGCBased
  	{
-@@ -21,6 +_,10 @@
+@@ -21,6 +_,11 @@
  			public string[] Tags;
  			public string Title;
  			public ERemoteStoragePublishedFileVisibility? Visibility;
@@ -124,7 +124,7 @@
  				ERemoteStoragePublishedFileVisibility visibility = GetVisibility(publicity);
  				_entryData = new SteamWorkshopItem {
  					Title = itemTitle,
-@@ -181,9 +_,21 @@
+@@ -181,9 +_,22 @@
  					ContentFolderPath = contentFolderPath,
  					Tags = tags,
  					PreviewImagePath = previewImagePath,
@@ -338,7 +338,7 @@
  					case EResult.k_EResultOK:
  						SteamFriends.ActivateGameOverlayToWebPage("steam://url/CommunityFilePage/" + _publishedFileID.m_PublishedFileId);
  						break;
-@@ -307,6 +_,11 @@
+@@ -307,6 +_,15 @@
  						break;
  				}
  
