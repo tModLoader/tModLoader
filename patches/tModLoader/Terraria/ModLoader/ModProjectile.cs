@@ -475,4 +475,20 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 	public virtual void EmitEnchantmentVisualsAt(Vector2 boxPosition, int boxWidth, int boxHeight)
 	{
 	}
+	/// <summary>
+	/// Used to adjust flail properties
+	/// </summary>
+	/// <param name="launchTimeLimit">How much time the projectile can go before retracting (speed and shootTimer will set the flail's range)</param>
+	/// <param name="launchSpeed">How fast the projectile can move</param>
+	/// <param name="maxLaunchLength">How far the projectile's chain can stretch before being forced to retract when in launched state</param>
+	/// <param name="retractAcceleration">How quickly the projectile will accelerate back towards the player while retracting</param>
+	/// <param name="maxRetractSpeed">The max speed the projectile will have while retracting</param>
+	/// <param name="forcedRetractAcceleration">How quickly the projectile will accelerate back towards the player while being forced to retract</param>
+	/// <param name="maxForcedRetractSpeed">The max speed the projectile will have while being forced to retract</param>
+	public virtual void FlailStats(ref int launchTimeLimit, ref float launchSpeed, ref float maxLaunchLength, ref float retractAcceleration, ref float maxRetractSpeed, ref float forcedRetractAcceleration, ref float maxForcedRetractSpeed, ref int ricochetTimeLimit, ref float spinVisualDistance)
+	{
+	}
+	public virtual void FlailCollisionRange(ref float range)
+	{
+	}
 }

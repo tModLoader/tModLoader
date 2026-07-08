@@ -804,4 +804,28 @@ public static class ProjectileLoader
 			g.EmitEnchantmentVisualsAt(projectile, boxPosition, boxWidth, boxHeight);
 		}
 	}
+
+	private delegate void DelegateFlailStats(Projectile projectile, ref int launchTimeLimit, ref float launchSpeed, ref float maxLaunchLength, ref float retractAcceleration, ref float maxRetractSpeed, ref float forcedRetractAcceleration, ref float maxForcedRetractSpeed, ref int ricochetTimeLimit, ref float spinVisualDistance);
+	private static HookList HookFlailStats = AddHook<DelegateFlailStats>(g => g.FlailStats);
+
+	public static void FlailStats(Projectile projectile, ref int launchTimeLimit, ref float launchSpeed, ref float maxLaunchLength, ref float retractAcceleration, ref float maxRetractSpeed, ref float forcedRetractAcceleration, ref float maxForcedRetractSpeed, ref int ricochetTimeLimit, ref float spinVisualDistance)
+	{
+		projectile.ModProjectile?.FlailStats(ref launchTimeLimit, ref launchSpeed, ref maxLaunchLength, ref retractAcceleration, ref maxRetractSpeed, ref forcedRetractAcceleration, ref maxForcedRetractSpeed, ref ricochetTimeLimit, ref spinVisualDistance);
+
+		foreach (var g in HookFlailStats.Enumerate(projectile)) {
+			g.FlailStats(projectile, ref launchTimeLimit, ref launchSpeed, ref maxLaunchLength, ref retractAcceleration, ref maxRetractSpeed, ref forcedRetractAcceleration, ref maxForcedRetractSpeed, ref ricochetTimeLimit, ref spinVisualDistance);
+		}
+	}
+
+	private delegate void DelegateFlailCollisionRange(Projectile projectile, ref float range);
+	private static HookList HookFlailCollisionRange = AddHook<DelegateFlailCollisionRange>(g => g.FlailCollisionRange);
+
+	public static void FlailCollisionRange(Projectile projectile, ref float range)
+	{
+		projectile.ModProjectile?.FlailCollisionRange(ref range);
+
+		foreach (var g in HookFlailCollisionRange.Enumerate(projectile)) {
+			g.FlailCollisionRange(projectile, ref range);
+		}
+	}
 }

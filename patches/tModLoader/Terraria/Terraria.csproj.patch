@@ -8,7 +8,7 @@
  
  	<!-- General -->
  	<PropertyGroup>
-@@ -11,59 +_,99 @@
+@@ -11,59 +_,105 @@
  		<Company>Re-Logic</Company>
  		<Copyright>Copyright © 2022 Re-Logic</Copyright>
  		<RootNamespace>Terraria</RootNamespace>
@@ -63,13 +63,19 @@
 -			<LogicalName>Terraria.Libraries.ReLogic.ReLogic.dll</LogicalName>
 -		</EmbeddedResource>
 +		<ProjectReference Include="../../../tModPorter/tModPorter/tModPorter.csproj" />
-+		<ProjectReference Include="../../../tModCodeAssist/tModCodeAssist/tModCodeAssist.csproj"
-+			ReferenceOutputAssembly="false" />
-+		<ProjectReference Include="../../../tModCodeAssist/tModCodeAssist.CodeFixes/tModCodeAssist.CodeFixes.csproj"
-+			ReferenceOutputAssembly="false" />
++		<ProjectReference Include="../../../tModCodeAssist/tModCodeAssist/tModCodeAssist.csproj" ReferenceOutputAssembly="false" />
++		<ProjectReference Include="../../../tModCodeAssist/tModCodeAssist.CodeFixes/tModCodeAssist.CodeFixes.csproj" ReferenceOutputAssembly="false" />
  
  		<Reference Include="CsvHelper" />
 -		<Reference Include="Ionic.Zip.CF" />
++
++		<Reference Include="Microsoft.CodeAnalysis.CSharp">
++		  <HintPath>..\..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\tModLoaderDev\Libraries\microsoft.codeanalysis.csharp\5.3.0\lib\net10.0\Microsoft.CodeAnalysis.CSharp.dll</HintPath>
++		</Reference>
++
++		<Reference Include="Microsoft.CodeAnalysis.Workspaces.MSBuild">
++		  <HintPath>..\..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\tModLoaderDev\Libraries\microsoft.codeanalysis.workspaces.msbuild\5.3.0\lib\net10.0\Microsoft.CodeAnalysis.Workspaces.MSBuild.dll</HintPath>
++		</Reference>
  		<Reference Include="MP3Sharp" />
  		<Reference Include="Newtonsoft.Json" />
  		<Reference Include="NVorbis" />
