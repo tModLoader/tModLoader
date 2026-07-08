@@ -1090,6 +1090,18 @@ public static class TileLoader
 		}
 	}
 
+	/// <summary>
+	/// Invokes <see cref="ModTile.GrowSapling"/> for the modded tile at the given coordinates.
+	/// Called by <see cref="WorldGen.AttemptToGrowTreeFromSapling"/> when fertilizer is used on a modded sapling tile.
+	/// </summary>
+	public static bool GrowModSapling(int i, int j, int type, bool underground, int treeHeightAddon, bool ignoreWalls)
+	{
+		if (!Main.tile[i, j].active())
+			return false;
+
+		return GetTile(type)?.GrowSapling(i, j, underground, treeHeightAddon, ignoreWalls) ?? false;
+	}
+
 	public static bool TileFrame(int i, int j, int type, ref bool resetFrame, ref bool noBreak)
 	{
 		ModTile modTile = GetTile(type);

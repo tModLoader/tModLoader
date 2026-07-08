@@ -558,3 +558,4 @@ All classes are in the `Terraria.ModLoader` or `Terraria` namespaces unless othe
 * ⚙️: `ModNPC.OnChatButtonClicked` changed parameters. `(bool firstButton, ref string shop)` -> `(NPCInteraction interaction)`
 * ⚙️: `GlobalNPC.OnChatButtonClicked` and `GlobalNPC.PreChatButtonClicked` changed parameters. `(NPC npc, bool firstButton)` -> `(NPC npc, NPCInteraction interaction)`
 * ⚙️: `ModItem.IsQuestFish` has been removed. Use `ItemID.Sets.IsQuestFish` instead.
+* 🤖: Modded trees now support being grown directly with `Fertilizer` and `Infused Fertilizer`. This requires moving tree growing code in your sapling tiles. Move `WorldGen.GrowTree`/`WorldGen.GrowPalmTree` code from `ModTile.RandomUpdate` to the new `ModTile.GrowSapling` method and call `WorldGen.AttemptToGrowTreeFromSapling` in its place. See the [`ExampleSapling.cs` changes](https://github.com/tModLoader/tModLoader/pull/5229/changes) for an example.
