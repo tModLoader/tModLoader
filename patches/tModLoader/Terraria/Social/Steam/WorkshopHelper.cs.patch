@@ -22,7 +22,7 @@
  {
  	public class UGCBased
  	{
-@@ -21,6 +_,10 @@
+@@ -21,6 +_,11 @@
  			public string[] Tags;
  			public string Title;
  			public ERemoteStoragePublishedFileVisibility? Visibility;
@@ -30,6 +30,7 @@
 +			// Fields added by TML.
 +			public NameValueCollection BuildData;
 +			public string ChangeNotes;
++			public List<(string steamLangKey, string description, string displayName)> LocalizedDescriptions;
  		}
  
  		public class Downloader
@@ -98,7 +99,7 @@
  						}
  						else {
  							WorldPaths.Add(listOfSubscribedItemsPath);
-@@ -161,19 +_,32 @@
+@@ -161,19 +_,33 @@
  
  			protected WorkshopItemPublicSettingId _publicity;
  			protected SteamWorkshopItem _entryData;
@@ -116,9 +117,10 @@
  			private FinishedPublishingAction _endAction;
  			private WorkshopIssueReporter _issueReporter;
  
--			public void PublishContent(PublishedItemsFinder finder, WorkshopIssueReporter issueReporter, FinishedPublishingAction endAction, string itemTitle, string itemDescription, string contentFolderPath, string previewImagePath, WorkshopItemPublicSettingId publicity, string[] tags)
 +			//TML: Added 'buildData', 'existingID', 'changeNotes' parameters.
-+			public void PublishContent(PublishedItemsFinder finder, WorkshopIssueReporter issueReporter, FinishedPublishingAction endAction, string itemTitle, string itemDescription, string contentFolderPath, string previewImagePath, WorkshopItemPublicSettingId publicity, string[] tags, NameValueCollection buildData = null, ulong existingID = 0, string changeNotes = null)
+-			public void PublishContent(PublishedItemsFinder finder, WorkshopIssueReporter issueReporter, FinishedPublishingAction endAction, string itemTitle, string itemDescription, string contentFolderPath, string previewImagePath, WorkshopItemPublicSettingId publicity, string[] tags)
++			public void PublishContent(PublishedItemsFinder finder, WorkshopIssueReporter issueReporter, FinishedPublishingAction endAction, string itemTitle, string itemDescription, string contentFolderPath, string previewImagePath, WorkshopItemPublicSettingId publicity, string[] tags,
++				NameValueCollection buildData = null, ulong existingID = 0,	string changeNotes = null, List<(string steamLangKey, string description, string displayName)> localizedDescriptions = null)
  			{
 +				Utils.LogAndConsoleInfoMessage(Language.GetTextValue("tModLoader.PublishItem", itemTitle));
  				_issueReporter = issueReporter;
@@ -132,14 +134,15 @@
  				ERemoteStoragePublishedFileVisibility visibility = GetVisibility(publicity);
  				_entryData = new SteamWorkshopItem {
  					Title = itemTitle,
-@@ -181,9 +_,21 @@
+@@ -181,9 +_,22 @@
  					ContentFolderPath = contentFolderPath,
  					Tags = tags,
  					PreviewImagePath = previewImagePath,
 -					Visibility = visibility
 +					Visibility = visibility,
 +					BuildData = buildData,
-+					ChangeNotes = changeNotes
++					ChangeNotes = changeNotes,
++					LocalizedDescriptions = localizedDescriptions
  				};
  
 +				if (!File.Exists(previewImagePath)) {
@@ -345,10 +348,14 @@
  					case EResult.k_EResultOK:
  						SteamFriends.ActivateGameOverlayToWebPage("steam://url/CommunityFilePage/" + _publishedFileID.m_PublishedFileId);
  						break;
-@@ -307,6 +_,11 @@
+@@ -307,6 +_,15 @@
  						break;
  				}
  
++				if (_updateCallback == EResult.k_EResultOK) {
++					SteamedWraps.SubmitLocalizedDescriptionUpdates(_publishedFileID, _entryData.LocalizedDescriptions, _entryData.ChangeNotes);
++				}
++
 +				SteamUGC.SubscribeItem(_publishedFileID);
 +
 +				if (cleanTemporaryFolder)
