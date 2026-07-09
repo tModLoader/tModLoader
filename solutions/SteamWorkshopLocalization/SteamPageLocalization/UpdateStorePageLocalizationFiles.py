@@ -40,6 +40,8 @@ for index, steamLanguage in enumerate(steamLanguages):
     except FileNotFoundError:
         print("Error: Corresponding LongDescription file not found.")
     
+    # Remove empty data
+    steamTagData = {k: v for k, v in steamTagData.items() if v not in [None, "", [], {}]}
 
     outputString = json.dumps(steamTagData, indent=4, ensure_ascii=False) # json.dump instead of json5.dump for quoted keys
 
