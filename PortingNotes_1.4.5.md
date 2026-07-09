@@ -2,7 +2,6 @@
 
 Once all patches are fixed, these items need to be fixed or double checked:
 
-- GameModeData.cs no longer exists, patches need to be redistributed
 - NPCSpawnParams.gameModeData no longer exists. This was potentially used in IBestiaryInfoElement.
 - NPCSpawnParams.strengthMultiplierOverride renamed to difficultyOverride. Investigate if behavior changed.
 - NPCHitCount = 58 --> (and others) needs comment explaining what the value should be. Why is it 1 more when no sound 0?
@@ -159,7 +158,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - TileEntity.Read now has a gameversion parameter. For modded tiles, I don't think this affects anything. Vanilla TEs have updated save and load code, need to verify poses and other changes work with modded items.
 - UserInterface.MouseCaptured -> could be useful
 - FlexibleTileWand is now used to place many other tiles that used to rely solely on RandomStyleRange. We should add an example of a custom FlexibleTileWand item/tile and document when to use it.
-- NPCID.Sets: SpawnOnPlayerCanSpawnInMidairOnSkyblock, DontDropDungeonKeysOrSouls, HunterPotionFriendlyOverride, others.
 - UIScrollbar.AutoHide and CanScroll
 - NPC.defLifeMax
 - NPC.DelBuff has new quiet parameter

@@ -173,7 +173,7 @@ public partial class WorkshopSocialModule
 		}
 
 		string description = CalculateDescriptionAndChangeNotes(isCi: false, buildData, ref settings.ChangeNotes);
-		Dictionary<string, string> localizedDescriptions = GetLocalizedWorkshopDescriptions(buildData, settings.ChangeNotes);
+		List<(string steamLangKey, string description, string displayName)> localizedDescriptions = GetLocalizedWorkshopDescriptions(buildData, modFile);
 
 		List<string> tagsList = new List<string>();
 		tagsList.AddRange(settings.GetUsedTagsInternalNames());
@@ -386,26 +386,38 @@ public partial class WorkshopSocialModule
 		return GetDefaultWorkshopDescription(buildData);
 	}
 
-	private static Dictionary<string, string> GetLocalizedWorkshopDescriptions(NameValueCollection buildData, string changeNotes)
+	private static List<(string steamLangKey, string description, string displayName)> GetLocalizedWorkshopDescriptions(NameValueCollection buildData, TmodFile modFile)
 	{
 		string sourceFolder = buildData["sourcesfolder"];
 		if (string.IsNullOrEmpty(sourceFolder) || !Directory.Exists(sourceFolder)) {
 			return null;
 		}
 
-		Dictionary<string, string> localizedDescriptions = new();
+		List<(string steamLangKey, string description, string displayName)> localizedDescriptions = new();
+
 		string currentSteamLanguageKey = SteamedWraps.GetCurrentSteamLangKey();
 		string defaultWorkshopDesc = GetDefaultWorkshopDescription(buildData);
+
+		Dictionary<string, string> localizedDisplayNames;
+		using (modFile.Open()) {
+			var localMod = new LocalMod(ModLocation.Local, modFile);
+			localizedDisplayNames = localMod.properties.localizedDisplayNames;
+		}
+
 		foreach (var culture in GameCulture.KnownCultures) {
 			string steamLanguageKey = SteamedWraps.GetSteamLangKey(culture);
 			if (steamLanguageKey == currentSteamLanguageKey) {
+				// These will be taken care of within the default publishing; we don't need to do extra publishing
 				continue;
 			}
 
 			string localizedWorkshopDescFile = Path.Combine(sourceFolder, $"description_workshop_{culture.Name}.txt");
 			string workshopDesc = File.Exists(localizedWorkshopDescFile) ? File.ReadAllText(localizedWorkshopDescFile) : defaultWorkshopDesc;
 			string descriptionFinal = BuildWorkshopDescription(workshopDesc, isCi: false, buildData);
-			localizedDescriptions[steamLanguageKey] = descriptionFinal;
+
+			string displayName = localizedDisplayNames.TryGetValue(culture.Name, out string localizedName) ? localizedName : buildData["displaynameclean"];
+
+			localizedDescriptions.Add((steamLanguageKey, descriptionFinal, Utils.CleanChatTags(displayName)));
 		}
 
 		return localizedDescriptions;

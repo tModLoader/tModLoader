@@ -389,6 +389,8 @@ See ExampleWhip, ExampleWhipAdvanced, ExampleWhipProjectile, and ExampleWhipProj
 * Critters can now be leashed. While leashed, they are a new type of `Entity` called `LeashedCritter` rather than a `NPC`. This requires several changes to support.
   * Assign `TECritterAnchor.CritterPrototypes[Type]` in `ModNPC.SetStaticDefaults` to dictate the animation and AI to use while leashed. 
   * Add `ItemID.Sets.PlaceTileOnAltUse[Type] = true;` to `ModItem.SetStaticDefaults` and set `Item.createTile = TileID.CritterAnchor;` in `ModItem.SetDefaults`.
+* Minion buffs can now have a counter for how many times the minion was summoned. Simply add `BuffID.Sets.BuffTextHandlers.Add(Type, new CachedProjectileCounterBuffTextHandler(ModContent.ProjectileType<YourMinionsProjectile>()));` to the buff's `SetStaticDefaults`.
+  * Custom buff text handlers can be made by creating a class that inherits `IBuffTextHandler` if the vanilla `CachedProjectileCounterBuffTextHandler` doesn't suit your minion or if you want to display custom text on a buff for any other purpose.
 
 ### Example Mod
 
@@ -418,6 +420,7 @@ Several Example Mod examples have been updated to adapt to 1.4.5 changes and to 
       * Previously, the draw code was specific for `ExampleWhipProjectileAdvanced`. Now it will work for any number of segments.
 	  * Even if your whips seem to draw fine, double check the code because it is likely that the third segment of your whip wasn't being drawn.
 	* See the *Whips and Tag Effects* section above for details on tag damage changes.
+* `ExampleSimpleMinionBuff` now tracks how many minions were summoned with `BuffID.Sets.BuffTextHandlers`.
 
 ## Renamed, Moved, or Removed Members
 
@@ -517,6 +520,16 @@ All classes are in the `Terraria` or `Terraria.ID` namespaces unless otherwise i
 ### Classes
 * ⚙️: `Player.RandomTeleportationAttemptSettings` is now `Utils.RandomTeleportationAttemptSettings`. Modder will need to populate all relevant new fields (`teleporteeSize,  `teleporteeVelocity`, `teleporteeGravityDirection`).
 
+### Localization
+* 💀: `<left>` and `<right>` strings that automatically localized into "Left Click" and "Right Click" have been removed.
+  * Replace all `<left>` with `{InputTrigger_UseOrAttack}`.
+  * Replace `<right>` with one of these three options:
+    * `{InputTrigger_ToggleOrOpen}` Used by items that have right click functionality in the inventory. Example: Grab bags and items that transform into other items.
+	  * `{$CommonItemTooltip.RightClickToOpen}` can still be used for "Right Click to open".
+	* `{InputTrigger_InteractWithTile}` Used by things that have right click functionality with tiles or the world. Example: Placing items into a tile or right click alternate fire weapons.
+	* `{InputTrigger_InteractWithTileUI}` Used by the crafting window to tell you can right click it to switch between the classic and modern styles.
+  * These changes are to better support gamepad hint text and interactions. Also consider testing all items in your mod with right click interactions with a gamepad. You may need to add `ItemID.Sets.OpenableBag` or `ItemID.Sets.HasRightFire` if the gamepad instructions are missing or incorrect.
+
 ## tModLoader changes
 
 All classes are in the `Terraria.ModLoader` or `Terraria` namespaces unless otherwise indicated.
@@ -545,3 +558,4 @@ All classes are in the `Terraria.ModLoader` or `Terraria` namespaces unless othe
 * ⚙️: `ModNPC.OnChatButtonClicked` changed parameters. `(bool firstButton, ref string shop)` -> `(NPCInteraction interaction)`
 * ⚙️: `GlobalNPC.OnChatButtonClicked` and `GlobalNPC.PreChatButtonClicked` changed parameters. `(NPC npc, bool firstButton)` -> `(NPC npc, NPCInteraction interaction)`
 * ⚙️: `ModItem.IsQuestFish` has been removed. Use `ItemID.Sets.IsQuestFish` instead.
+* 🤖: Modded trees now support being grown directly with `Fertilizer` and `Infused Fertilizer`. This requires moving tree growing code in your sapling tiles. Move `WorldGen.GrowTree`/`WorldGen.GrowPalmTree` code from `ModTile.RandomUpdate` to the new `ModTile.GrowSapling` method and call `WorldGen.AttemptToGrowTreeFromSapling` in its place. See the [`ExampleSapling.cs` changes](https://github.com/tModLoader/tModLoader/pull/5229/changes) for an example.
