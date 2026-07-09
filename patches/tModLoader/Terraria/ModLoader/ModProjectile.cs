@@ -475,6 +475,7 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 	public virtual void EmitEnchantmentVisualsAt(Vector2 boxPosition, int boxWidth, int boxHeight)
 	{
 	}
+
 	/// <summary>
 	/// Used to adjust flail properties
 	/// </summary>
@@ -488,6 +489,7 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 	public virtual void FlailStats(ref int launchTimeLimit, ref float launchSpeed, ref float maxLaunchLength, ref float retractAcceleration, ref float maxRetractSpeed, ref float forcedRetractAcceleration, ref float maxForcedRetractSpeed, ref int ricochetTimeLimit, ref float spinVisualDistance)
 	{
 	}
+
 	public virtual void FlailCollisionRange(ref float range)
 	{
 	}

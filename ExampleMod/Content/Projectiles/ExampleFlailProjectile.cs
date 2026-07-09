@@ -47,12 +47,15 @@ namespace ExampleMod.Content.Projectiles
 			Projectile.type = ProjectileID.Sunfury;
 			return base.PreDrawExtras();
 		}
+
 		public override void FlailStats(ref int launchTimeLimit, ref float launchSpeed, ref float maxLaunchLength, ref float retractAcceleration, ref float maxRetractSpeed, ref float forcedRetractAcceleration, ref float maxForcedRetractSpeed, ref int ricochetTimeLimit, ref float spinVisualDistance) {
 			spinVisualDistance += 30;
 		}
+
 		public override void FlailCollisionRange(ref float range) {
 			range += 30;
 		}
+
 		public override bool PreDraw(ref Color lightColor) {
 			Projectile.type = ModContent.ProjectileType<ExampleFlailProjectile>();
 
