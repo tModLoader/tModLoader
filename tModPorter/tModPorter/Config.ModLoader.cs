@@ -554,6 +554,8 @@ public static partial class Config
 		ChangeHookSignature("Terraria.ModLoader.ModTree", "SetTreeFoliageSettings");
 
 		// 1.4.5
+		ChangeHookSignature("Terraria.ModLoader.ModBlockType", "RandomUpdate");
+		ChangeHookSignature("Terraria.ModLoader.GlobalBlockType", "RandomUpdate");
 		ChangeHookSignature("Terraria.ModLoader.ModNPC", "BossLoot");
 		ChangeHookSignature("Terraria.ModLoader.ModNPC", "SpawnChance").RenameParameter("spawnInfo", "spawner");
 		ChangeHookSignature("Terraria.ModLoader.ModNPC", "OnChatButtonClicked", comment: "Suggestion: Previously this was used to assign a shop to a button, but that is now handled by RegisterChatButtons. If that is all this was used for, remove this hook");

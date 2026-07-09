@@ -57,17 +57,14 @@ namespace ExampleMod.Content.Tiles.Plants
 			num = fail ? 1 : 3;
 		}
 
-		public override void RandomUpdate(int i, int j) {
-			// Determine if the sapling is above ground or underground. We could use this to prevent above ground growth similar to gem trees, for example.
-			bool overground = Main.isThereAWorldSurface && j < (int)Main.worldSurface - 1;
-
+		public override void RandomUpdate(int i, int j, bool underground) {
 			// A random chance to slow down growth. 
 			if (!WorldGen.genRand.NextBool(20)) {
 				return;
 			}
 
 			// For natural spawns, we usually leave treeHeightAddon as 0 and ignoreWalls as false.
-			WorldGen.AttemptToGrowTreeFromSapling(i, j, underground: !overground, treeHeightAddon: 0, ignoreWalls: false);
+			WorldGen.AttemptToGrowTreeFromSapling(i, j, underground: underground, treeHeightAddon: 0, ignoreWalls: false);
 		}
 
 		// Overridden to handle both ExampleTree (GrowTree) and ExamplePalmTree (GrowPalmTree) styles based on TileFrameX.

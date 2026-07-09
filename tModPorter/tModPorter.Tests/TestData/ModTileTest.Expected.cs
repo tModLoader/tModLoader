@@ -108,6 +108,8 @@ public class ModTileTest : ModTile
 #if COMPILE_ERROR
 	public override bool Drop(int i, int j)/* tModPorter Note: Removed. Use CanDrop to decide if an item should drop. Use GetItemDrops to decide which item drops. Item drops based on placeStyle are handled automatically now, so this method might be able to be removed altogether. */ { /* Empty */ }
 #endif
+
+	public override void RandomUpdate(int i, int j, bool underground) { /* Empty */ }
 }
 
 public static class TileHelpers

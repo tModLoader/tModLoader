@@ -148,7 +148,8 @@ public abstract class ModBlockType : ModTexturedType, ILocalizedModType
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>
-	public virtual void RandomUpdate(int i, int j)
+	/// <param name="underground">Whether the tile/wall is considered underground.</param>
+	public virtual void RandomUpdate(int i, int j, bool underground)
 	{
 	}
 
