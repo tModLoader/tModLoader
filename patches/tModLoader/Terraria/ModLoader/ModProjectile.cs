@@ -478,6 +478,7 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 
 	/// <summary>
 	/// Used to adjust flail properties
+	/// Called when aiStyle is <see cref="ProjAIStyleID.Flail"/>
 	/// </summary>
 	/// <param name="launchTimeLimit">How much time the projectile can go before retracting (speed and shootTimer will set the flail's range)</param>
 	/// <param name="launchSpeed">How fast the projectile can move</param>
@@ -486,11 +487,17 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 	/// <param name="maxRetractSpeed">The max speed the projectile will have while retracting</param>
 	/// <param name="forcedRetractAcceleration">How quickly the projectile will accelerate back towards the player while being forced to retract</param>
 	/// <param name="maxForcedRetractSpeed">The max speed the projectile will have while being forced to retract</param>
+	/// <param name="ricochetTimeLimit">How long the projectile will remain in the ricocheting state before switching to the dropping state</param>
+	/// <param name="spinVisualDistance">How far from the player the flail will be while spinning</param>
 	public virtual void FlailStats(ref int launchTimeLimit, ref float launchSpeed, ref float maxLaunchLength, ref float retractAcceleration, ref float maxRetractSpeed, ref float forcedRetractAcceleration, ref float maxForcedRetractSpeed, ref int ricochetTimeLimit, ref float spinVisualDistance)
 	{
 	}
 
-	public virtual void FlailCollisionRange(ref float range)
+	/// <summary>
+	/// Used to adjust flail spin collision range
+	/// Called during <see cref="Projectile.Colliding(Rectangle, Rectangle)"/> when aiStyle is <see cref="ProjAIStyleID.Flail"/>
+	/// </summary>
+	public virtual void FlailSpinCollisionRange(ref float range)
 	{
 	}
 }

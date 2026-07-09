@@ -442,8 +442,8 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 	{
 	}
 
-	/// <inheritdoc cref="ModProjectile.FlailCollisionRange"/>
-	public virtual void FlailCollisionRange(Projectile projectile, ref float range)
+	/// <inheritdoc cref="ModProjectile.FlailSpinCollisionRange"/>
+	public virtual void FlailSpinCollisionRange(Projectile projectile, ref float range)
 	{
 	}
 }

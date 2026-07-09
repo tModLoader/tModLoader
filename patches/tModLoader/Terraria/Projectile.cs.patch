@@ -1279,7 +1279,7 @@
  				Vector2 vector = targetRect.ClosestPointInRect(mountedCenter) - mountedCenter;
  				vector.Y /= 0.8f;
  				float num = 55f;
-+				ProjectileLoader.FlailCollisionRange(this, ref num);
++				ProjectileLoader.FlailSpinCollisionRange(this, ref num);
  				return vector.Length() <= num;
  			}
  		}

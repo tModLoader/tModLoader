@@ -817,15 +817,15 @@ public static class ProjectileLoader
 		}
 	}
 
-	private delegate void DelegateFlailCollisionRange(Projectile projectile, ref float range);
-	private static HookList HookFlailCollisionRange = AddHook<DelegateFlailCollisionRange>(g => g.FlailCollisionRange);
+	private delegate void DelegateFlailSpinCollisionRange(Projectile projectile, ref float range);
+	private static HookList HookFlailSpinCollisionRange = AddHook<DelegateFlailSpinCollisionRange>(g => g.FlailSpinCollisionRange);
 
-	public static void FlailCollisionRange(Projectile projectile, ref float range)
+	public static void FlailSpinCollisionRange(Projectile projectile, ref float range)
 	{
-		projectile.ModProjectile?.FlailCollisionRange(ref range);
+		projectile.ModProjectile?.FlailSpinCollisionRange(ref range);
 
-		foreach (var g in HookFlailCollisionRange.Enumerate(projectile)) {
-			g.FlailCollisionRange(projectile, ref range);
+		foreach (var g in HookFlailSpinCollisionRange.Enumerate(projectile)) {
+			g.FlailSpinCollisionRange(projectile, ref range);
 		}
 	}
 }

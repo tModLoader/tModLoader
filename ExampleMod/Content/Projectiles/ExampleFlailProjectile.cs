@@ -52,7 +52,7 @@ namespace ExampleMod.Content.Projectiles
 			spinVisualDistance += 30;
 		}
 
-		public override void FlailCollisionRange(ref float range) {
+		public override void FlailSpinCollisionRange(ref float range) {
 			range += 30;
 		}
 
