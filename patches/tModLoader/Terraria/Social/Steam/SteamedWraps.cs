@@ -714,21 +714,26 @@ public static class SteamedWraps
 		SteamUGC.SetItemUpdateLanguage(uGCUpdateHandle_t, GetCurrentSteamLangKey());
 	}
 
-	internal static void SubmitLocalizedDescriptionUpdates(PublishedFileId_t publishedFileID, Dictionary<string, string> localizedDescriptions, string changeNotes)
+	internal static void SubmitLocalizedDescriptionUpdates(PublishedFileId_t publishedFileID, List<(string steamLangKey, string description, string displayName)> localizedDescriptions, string changeNotes)
 	{
 		if (localizedDescriptions == null || localizedDescriptions.Count == 0)
 			return;
 
-		foreach (var (languageKey, description) in localizedDescriptions) {
-			if (string.IsNullOrWhiteSpace(languageKey) || string.IsNullOrWhiteSpace(description))
+		foreach (var set in localizedDescriptions) {
+			if (string.IsNullOrWhiteSpace(set.steamLangKey) || string.IsNullOrWhiteSpace(set.description) || string.IsNullOrEmpty(set.displayName))
 				continue;
 
-			Logging.tML.Info($"Submitting localized Workshop description for {languageKey}");
+			Logging.tML.Info($"Submitting localized Workshop description and title for {set.steamLangKey}");
 			var updateHandle = SteamUGC.StartItemUpdate(SteamUtils.GetAppID(), publishedFileID);
-			SteamUGC.SetItemDescription(updateHandle, description);
-			SteamUGC.SetItemUpdateLanguage(updateHandle, languageKey);
+
+			SteamUGC.SetItemDescription(updateHandle, set.description);
+			SteamUGC.SetItemTitle(updateHandle, set.displayName);
+
+			SteamUGC.SetItemUpdateLanguage(updateHandle, set.steamLangKey);
 			SteamUGC.SubmitItemUpdate(updateHandle, null);
 		}
+
+		Logging.tML.Info("Localized Workshop descriptions updated");
 	}
 
 	internal static void ModifyUgcUpdateHandleTModLoader(ref UGCUpdateHandle_t uGCUpdateHandle_t, WorkshopHelper.UGCBased.SteamWorkshopItem _entryData, PublishedFileId_t _publishedFileID)
