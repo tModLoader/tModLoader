@@ -118,6 +118,6 @@ public class ModItemTest : ModItem
 #endif
 
 #if COMPILE_ERROR
-	public override bool IsQuestFish() { }/* tModPorter Note: Removed. Set with ItemID.Sets.IsQuestFish instead */
+	public override bool IsQuestFish()/* tModPorter Note: Removed. Set with ItemID.Sets.IsQuestFish instead */ { }
 #endif
 }

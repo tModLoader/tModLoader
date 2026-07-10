@@ -67,6 +67,13 @@ internal class WallDefinitionOptionElement : DefinitionOptionElement<WallDefinit
 				var position = dimensions.Center();
 
 				spriteBatch.Draw(wallTexture, position, sourceRectangle, Color.White, 0f, Vector2.One * 16, Scale, SpriteEffects.None, 0f);
+
+				if (!Main.wallHouse[type]) {
+					Vector2 unsafeIndicatorOffset = dimensions.ToRectangle().Size() * 0.2f * new Vector2(1f, -1f);
+					Texture2D unsafeIndicatorTexture = TextureAssets.Extra[ExtrasID.UnsafeIndicator].Value;
+					Rectangle unsafeIndicatorFrame = unsafeIndicatorTexture.Frame();
+					spriteBatch.Draw(unsafeIndicatorTexture, position + unsafeIndicatorOffset, unsafeIndicatorFrame, Color.White, 0f, unsafeIndicatorFrame.Size() / 2f, Scale, SpriteEffects.None, 0f);
+				}
 			}
 		}
 

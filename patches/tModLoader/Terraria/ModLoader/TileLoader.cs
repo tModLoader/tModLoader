@@ -81,7 +81,7 @@ public static class TileLoader
 	private delegate bool DelegatePreDrawPlacementPreview(int i, int j, int type, SpriteBatch spriteBatch, ref Rectangle frame, ref Vector2 position, ref Color color, bool validPlacement, ref SpriteEffects spriteEffects);
 	private static DelegatePreDrawPlacementPreview[] HookPreDrawPlacementPreview;
 	private static Action<int, int, int, SpriteBatch, Rectangle, Vector2, Color, bool, SpriteEffects>[] HookPostDrawPlacementPreview;
-	private static Action<int, int, int>[] HookRandomUpdate;
+	private static Action<int, int, int, bool>[] HookRandomUpdate;
 	private delegate bool DelegateTileFrame(int i, int j, int type, ref bool resetFrame, ref bool noBreak);
 	private static DelegateTileFrame[] HookTileFrame;
 	private static Func<int, int, int, bool>[] HookCanPlace;
@@ -1078,15 +1078,15 @@ public static class TileLoader
 		}
 	}
 
-	public static void RandomUpdate(int i, int j, int type)
+	public static void RandomUpdate(int i, int j, int type, bool underground)
 	{
 		if (!Main.tile[i, j].active()) {
 			return;
 		}
-		GetTile(type)?.RandomUpdate(i, j);
+		GetTile(type)?.RandomUpdate(i, j, underground);
 
 		foreach (var hook in HookRandomUpdate) {
-			hook(i, j, type);
+			hook(i, j, type, underground);
 		}
 	}
 

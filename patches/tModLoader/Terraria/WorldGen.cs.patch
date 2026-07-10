@@ -3064,8 +3064,8 @@
  
  	private static void UpdateWorld_OvergroundTile(int i, int j, int wallDist)
  	{
-+		TileLoader.RandomUpdate(i, j, Main.tile[i, j].type);
-+		WallLoader.RandomUpdate(i, j, Main.tile[i, j].wall);
++		TileLoader.RandomUpdate(i, j, Main.tile[i, j].type, underground: false);
++		WallLoader.RandomUpdate(i, j, Main.tile[i, j].wall, underground: false);
 +
  		int num = i - 1;
  		int num2 = i + 2;
@@ -3120,8 +3120,8 @@
  
  	private static void UpdateWorld_UndergroundTile(int i, int j, int wallDist)
  	{
-+		TileLoader.RandomUpdate(i, j, Main.tile[i, j].type);
-+		WallLoader.RandomUpdate(i, j, Main.tile[i, j].wall);
++		TileLoader.RandomUpdate(i, j, Main.tile[i, j].type, underground: true);
++		WallLoader.RandomUpdate(i, j, Main.tile[i, j].wall, underground: true);
 +
  		int num = i - 1;
  		int num2 = i + 2;
