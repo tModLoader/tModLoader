@@ -40,9 +40,6 @@ namespace ExampleMod.Content.Projectiles
 			Projectile.timeLeft = 360; // This value does not matter since we manually kill it earlier, it just has to be higher than the duration we use in AI
 			Projectile.usesOwnerLight = true;
 			Projectile.drawLayer = ProjectileDrawLayerID.HeldProj; // Draws over the player's body and under the player's hands
-
-			// The code in this method is important to align the sprite with the hitbox how we want it to
-			SetVisualOffsets();
 		}
 
 		public override void AI() {
@@ -74,6 +71,9 @@ namespace ExampleMod.Content.Projectiles
 
 			// Point towards where it is moving, applied offset for top right of the sprite respecting spriteDirection
 			Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2 - MathHelper.PiOver4 * Projectile.spriteDirection;
+
+			// The code in this method is important to align the sprite with the hitbox how we want it to
+			SetVisualOffsets();
 		}
 
 		private void SetVisualOffsets() {
@@ -128,6 +128,10 @@ namespace ExampleMod.Content.Projectiles
 		// The following code is adapted from vanilla's Projectile.AI_DisplayDoll for aiStyle 161 (Shortsword)
 		// Due to our custom AI code, using ProjAIStyleID.Shortsword for this one wouldn't display correctly.
 		public override bool DisplayDollSettings(Player doll, TEDisplayDoll.DisplayDollPose pose, ref int aiStyle, ref bool botherDrawing) {
+
+			// The code in this method is important to align the sprite with the hitbox how we want it to
+			SetVisualOffsets();
+
 			Projectile.spriteDirection = Projectile.direction; // Set the direction of the sprite to the direction the projectile is facing.
 			Vector2 projectileDirection = Vector2.UnitX * 12f; // This will move the projectile forward in the mannequin's hand because the hitbox of the projectile is the center of the sprite.
 			float armRotation = 0f;
