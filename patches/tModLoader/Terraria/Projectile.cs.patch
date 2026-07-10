@@ -1486,13 +1486,15 @@
  			if (timeLeft > 3000)
  				timeLeft -= 60;
  
-@@ -17990,6 +_,10 @@
+@@ -17990,6 +_,12 @@
  		if ((uint)(pose2 - 4) <= 4u)
  			flag = true;
  
 +		int aiStyle = this.aiStyle;
 +		if (!ProjectileLoader.DisplayDollSettings(this, doll, pose, ref aiStyle, ref botherDrawing))
 +			return;
++
++		int type = ModProjectile?.AIType ?? this.type;
 +
  		switch (aiStyle) {
  			default:
@@ -1623,6 +1625,16 @@
  	public int FindTargetWithLineOfSight(float maxRange = 800f)
  	{
  		float num = maxRange;
+@@ -36740,6 +_,9 @@
+ 		float num7 = 0f;
+ 		float num8 = 0f;
+ 		spriteDirection = -direction;
++
++		int type = ModProjectile?.AIType ?? this.type;
++
+ 		switch (type) {
+ 			case 46:
+ 				num6 = 3f;
 @@ -36861,7 +_,10 @@
  				break;
  		}
