@@ -2,10 +2,7 @@ Learn how to mod with tModLoader by exploring the source code for this mod.
 
 You can find the source code at https://github.com/tModLoader/tModLoader/tree/1.4.5/ExampleMod
 
-This is the default description that will be used when no 'description_workshop_{language}' file is found.
-
-tMod will automatically apply this workshop description to the language based on your ingame setting.
-It is required to use this for your default language to maintain legacy compatibility. 
+tMod will apply this description to the zH-Hans language profile in game
 
 You can interpolate these values into a mod description:
 - ModVersion: {ModVersion}

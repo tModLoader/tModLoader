@@ -2,7 +2,6 @@
 
 Once all patches are fixed, these items need to be fixed or double checked:
 
-- GameModeData.cs no longer exists, patches need to be redistributed
 - NPCSpawnParams.gameModeData no longer exists. This was potentially used in IBestiaryInfoElement.
 - NPCSpawnParams.strengthMultiplierOverride renamed to difficultyOverride. Investigate if behavior changed.
 - NPCHitCount = 58 --> (and others) needs comment explaining what the value should be. Why is it 1 more when no sound 0?
@@ -56,7 +55,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - SystemLoader.ModifyLightingBrightness might need `_negLight3` parameter.
 - SystemLoader.ModifyLightingBrightness and LoaderManager.Get<WaterStylesLoader>().LightColorMultiplier might need perspectivePlayer parameter or docs to use Main.SceneMetrics.PerspectivePlayer. This is for supporting spectator mode I believe.
 - There seems to be a new `flag` we should add to TileLoader.ModifyLight. It seems to determine if paint should override the native light color from a tile.
-- What is ArmorIDs.Wing.Sets.AlwaysAnimated?
 - BiomeConversionID.PurificationPowder (8) and Chlorophyte (9) might not match up with Terraria-added values. Need to double check where these were used against the new ID values. Chlorophyte is now either 8/9/10 and PurificationPowder is 11.
 - Lange.CreateDialogFilter now has a checkConditions parameter. It seems that there is a new system for object substitutions. We'll need to document these and make sure they work for modded substitutions. LocalizedText.CanFormatWith usages seem to be replaced with ConditionsMetWith. Some Language.GetTextValueWith usages changed to GetTextValue but still somehow support substitutions.
 - Should PlayerLoader.SyncPlayer in SyncOnePlayer be after syncing owner Projectiles?
@@ -160,7 +158,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - TileEntity.Read now has a gameversion parameter. For modded tiles, I don't think this affects anything. Vanilla TEs have updated save and load code, need to verify poses and other changes work with modded items.
 - UserInterface.MouseCaptured -> could be useful
 - FlexibleTileWand is now used to place many other tiles that used to rely solely on RandomStyleRange. We should add an example of a custom FlexibleTileWand item/tile and document when to use it.
-- NPCID.Sets: SpawnOnPlayerCanSpawnInMidairOnSkyblock, DontDropDungeonKeysOrSouls, HunterPotionFriendlyOverride, others.
 - UIScrollbar.AutoHide and CanScroll
 - NPC.defLifeMax
 - NPC.DelBuff has new quiet parameter

@@ -196,7 +196,7 @@ Mods: {
 			ExampleDresser.MapEntry: Example Dresser
 
 			ExampleSign: {
-				DefaultSignText: Right-click me!
+				DefaultSignText: Interact with me!
 				MapEntry: Example Sign
 			}
 
@@ -752,11 +752,11 @@ Mods: {
 
 			UseStyleShowcase: {
 				DisplayName: Use Style Showcase
-				# The special text "<right>" will change depending on if the user is using keyboard or gamepad to show the alternate click button
+				# The special text "{InputTrigger_InteractWithTile}" will change depending on if the user is using keyboard or gamepad to show the alternate click button
 				Tooltip:
 					'''
 					This item showcases each UseStyle.
-					<right> to cycle through UseStyles.
+					{InputTrigger_InteractWithTile} to cycle through UseStyles.
 					'''
 				Switching: Switching to ItemUseStyleID #{0}
 				ThisIs: This is ItemUseStyleID #{0}
@@ -922,7 +922,7 @@ Mods: {
 				Tooltip:
 					'''
 					This item showcases each HoldStyle.
-					<right> to cycle through HoldStyles.
+					{InputTrigger_InteractWithTile} to cycle through HoldStyles.
 					'''
 				Switching: Switching to ItemHoldStyleID #{0}
 				ThisIs: This is ItemHoldStyleID #{0}
@@ -1152,7 +1152,7 @@ Mods: {
 
 			CustomItemDrawingShowcase: {
 				DisplayName: Custom Item Drawing Showcase
-				Tooltip: <right> to cycle draw mode examples
+				Tooltip: "{InputTrigger_ToggleOrOpen} to cycle draw mode examples"
 				RightClick: Switching to drawMode #{0}: {1}
 				DrawMode_0: Draw an overlay/glowmask
 				DrawMode_1: Scale drawing to make a pulse effect similar to Soul items
@@ -1187,7 +1187,7 @@ Mods: {
 
 			BasicTileEntityItem: {
 				DisplayName: Basic Tile Entity Item
-				Tooltip: Collects rain water. Right Click when full to claim a water bucket.
+				Tooltip: Collects rain water. {InputTrigger_InteractWithTile} when full to claim a water bucket.
 			}
 
 			CorruptFossilTileItem: {

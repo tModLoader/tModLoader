@@ -31,7 +31,7 @@ namespace ExampleMod.Content.Tiles
 			TileLoader.RegisterConversion(Type, BiomeConversionID.Sand, TileID.DesertFossil); // Yellow (desert) solution also converts evil/hallowed tiles back into purity, so don't forget that check!
 		}
 
-		public override void RandomUpdate(int i, int j) {
+		public override void RandomUpdate(int i, int j, bool underground) {
 			// We use this helper method to mimic vanilla behavior for spreading tiles, letting our hallowed fossil infect convert nearby tiles into hallowed versions of themselves
 			WorldGen.SpreadInfectionToNearbyTile(i, j, BiomeConversionID.Hallow);
 		}
@@ -63,7 +63,7 @@ namespace ExampleMod.Content.Tiles
 			TileLoader.RegisterConversion(Type, BiomeConversionID.Sand, TileID.DesertFossil);
 		}
 
-		public override void RandomUpdate(int i, int j) {
+		public override void RandomUpdate(int i, int j, bool underground) {
 			WorldGen.SpreadInfectionToNearbyTile(i, j, BiomeConversionID.Corruption);
 		}
 
@@ -100,7 +100,7 @@ namespace ExampleMod.Content.Tiles
 			}
 		}
 
-		public override void RandomUpdate(int i, int j) {
+		public override void RandomUpdate(int i, int j, bool underground) {
 			WorldGen.SpreadInfectionToNearbyTile(i, j, BiomeConversionID.Crimson);
 		}
 

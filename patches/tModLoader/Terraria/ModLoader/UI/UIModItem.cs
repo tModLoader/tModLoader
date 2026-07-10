@@ -533,7 +533,7 @@ internal class UIModItem : UIPanel
 	internal void ShowMoreInfo(UIMouseEvent evt, UIElement listeningElement)
 	{
 		SoundEngine.PlaySound(SoundID.MenuOpen);
-		Interface.modInfo.Show(ModName, _mod.DisplayName, Interface.modsMenuID, _mod, _mod.properties.description, _mod.properties.homepage);
+		Interface.modInfo.Show(ModName, _mod.DisplayName, Interface.modsMenuID, _mod, _mod.GetDescription(), _mod.properties.homepage);
 	}
 
 	internal void OpenConfig(UIMouseEvent evt, UIElement listeningElement)

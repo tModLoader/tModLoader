@@ -19,6 +19,8 @@ namespace ExampleMod.Content.Items
 		public override void SetStaticDefaults() {
 			SwitchingText = this.GetLocalization("Switching");
 			ThisIsText = this.GetLocalization("ThisIs");
+
+			ItemID.Sets.HasRightFire[Type] = true;
 		}
 
 		public override void SetDefaults() {
