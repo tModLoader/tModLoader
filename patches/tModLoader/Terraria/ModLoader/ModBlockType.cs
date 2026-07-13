@@ -148,7 +148,7 @@ public abstract class ModBlockType : ModTexturedType, ILocalizedModType
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>
-	/// <param name="underground">Whether the tile/wall is considered underground.</param>
+	/// <param name="underground">Whether the tile/wall is considered underground. This usually means below <see cref="Main.worldSurface"/>, but if the "Don't dig up" special world seed (<see cref="Main.remixWorld"/>) is active tiles technically underground might be considered overground for random update purposes. </param>
 	public virtual void RandomUpdate(int i, int j, bool underground)
 	{
 	}

@@ -551,7 +551,7 @@
  	public static short[] tileOreFinderPriority = new short[TileID.Count];
 +	/// <summary>
 +	/// When set to 1 or 2, this tile will use a tiled pattern for the tile variation rather than the random <see cref="Tile.TileFrameNumber"/> choice (The info below counts from 1 rather than 0 for illustrative purposes). Only applicable to terrain/framed tiles. Defaults to 0.
-+	/// <para/> A value of 1 results in a 3x4 pattern used by Smoothe Marble Block (<see cref="TileID.MarbleBlock"/>) and others: <code>2 4 2
++	/// <para/> A value of 1 results in a 3x4 pattern used by Smooth Marble Block (<see cref="TileID.MarbleBlock"/>) and others: <code>2 4 2
 +	/// 1 3 1
 +	/// 2 2 4
 +	/// 1 1 3 </code>
