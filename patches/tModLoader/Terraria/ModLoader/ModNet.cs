@@ -173,6 +173,8 @@ namespace Terraria.ModLoader
 		}
 
 		internal static void SyncClientMods(BinaryReader reader) {
+			downloadModsFromServers = false; // Downloading mods from servers is now disabled for legacy releases for security reasons.
+
 			if (!SyncClientMods(reader, out bool needsReload))
 				return; //error syncing can't connect to server
 

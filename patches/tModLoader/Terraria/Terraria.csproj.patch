@@ -20,7 +20,7 @@
 -  <PropertyGroup Condition="!$(Configuration.Contains('Debug'))">
 -    <AssemblyName>$(AssemblyName)Release</AssemblyName>
 +  <PropertyGroup>
-+    <tMLVersion Condition="'$(TmlVersion)' == ''">2022.09.47</tMLVersion>
++    <tMLVersion Condition="'$(TmlVersion)' == ''">2022.09.48</tMLVersion>
 +    <StableVersion Condition="'$(stableVersion)' == ''">2022.09</StableVersion>
 +    <BuildPurpose Condition="'$(BuildPurpose)' == ''">dev</BuildPurpose>
 +    <BranchName Condition="'$(BranchName)' == ''">unknown</BranchName>
