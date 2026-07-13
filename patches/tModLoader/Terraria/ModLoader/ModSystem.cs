@@ -9,6 +9,7 @@ using Terraria.IO;
 using Terraria.Localization;
 using Terraria.Map;
 using Terraria.ModLoader.Core;
+using Terraria.GameContent.Creative;
 using Terraria.ModLoader.IO;
 using Terraria.UI;
 using Terraria.WorldBuilding;
@@ -259,6 +260,12 @@ public abstract partial class ModSystem : ModType
 	/// </summary>
 	/// <param name="layers">The layers.</param>
 	public virtual void ModifyInterfaceLayers(List<GameInterfaceLayer> layers) { }
+
+	/// <summary>
+	/// Allows you to add custom parent categories and child buttons to Journey Mode's powers menu.
+	/// <para/> Called on the local client when the powers menu is opened.
+	/// </summary>
+	public virtual void ModifyCreativePowersMenu(CreativePowerMenuEntries entries) { }
 
 	/// <summary>
 	/// Allows you to set the visibility of any added vanilla or modded GameTips. In order to add your OWN tips, add them in

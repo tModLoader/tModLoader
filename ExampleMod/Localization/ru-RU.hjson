@@ -74,6 +74,47 @@ Mods: {
 			// LearningExample.DisplayName: Learning Example
 		}
 
+		CreativePowers: {
+			ExampleMainToggle: {
+				// Enabled: Example main toggle is enabled
+				// Disabled: Example main toggle is disabled
+				// Description: This top-level button behaves like the vanilla infection spread toggle.
+			}
+
+			ExampleCategory: {
+				// Opened: Close Example powers
+				// Closed: Open Example powers
+				// Description: This custom category was added by ExampleMod.
+			}
+
+			ExampleToggle: {
+				// Enabled: Example toggle: enabled
+				// Disabled: Example toggle: disabled
+				// Description: Toggles an ExampleMod value and shows selected button state.
+			}
+
+			ExampleItemButton: {
+				// Enabled: Give Example Item
+				// Disabled: Give Example Item
+				// Description: Gives the local player an Example Item.
+			}
+
+			ExampleMultiplierSlider: {
+				// Opened: Example multiplier
+				// Closed: Example multiplier
+				// Description: A custom multiplier-style slider added by ExampleMod.
+			}
+
+			ExamplePercentSlider: {
+				// Opened: Example percent
+				// Closed: Example percent
+				// Description: A custom percentage-style slider added by ExampleMod.
+				// Top: High
+				// Middle: Medium
+				// Bottom: Low
+			}
+		}
+
 		NPCs: {
 			ExampleCustomAISlimeNPC: {
 				DisplayName: Порхающий слизень
