@@ -35,6 +35,15 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 	/// <summary> Determines which <see cref="ImmunityCooldownID"/> to use when this projectile damages a player. Defaults to -1 (<see cref="ImmunityCooldownID.General"/>). </summary>
 	public int CooldownSlot { get; set; } = -1;
 
+	/// <summary>
+	///	Determines if the projectile has a custom dust. <br/>
+	///	Needs to be called within <see cref="ModProjectile.SetDefaults"/> to change. <br/>
+	///	Defaults to -1 to prevent older mods from losing functionality as well as determining if there is a custom dust being used. <br/>
+	///	You must set this to a valid DustID or ModContent.DustType. <br/>
+	///	Currently is only implemented for aiType 10 <br/>
+	/// </summary>
+	public int CustomDustID { get; set; } = -1;
+
 	/// <summary> How far to the right of its position this projectile should be drawn. Defaults to 0. </summary>
 	public int DrawOffsetX { get; set; }
 
@@ -46,6 +55,15 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 
 	/// <summary> If this projectile is held by the player, determines whether it is drawn in front of or behind the player's arms. Defaults to false. </summary>
 	public bool DrawHeldProjInFrontOfHeldItemAndArms { get; set; }
+
+	/// <summary>
+	///	Determines whether or not the projectile has dust enabled. <br/>
+	///	Needs to be called within <see cref="ModProjectile.SetDefaults"/> to disable. <br/>
+	///	Defaults to false to prevent older mods from losing functionality. <br/>
+	///	This will override any dust setting set. <br/>
+	///	Currently is only implemented for aiType 10 <br/>
+	/// </summary>
+	public bool DustDisabled { get; set; } = false;
 
 	/// <summary>
 	/// The file name of this type's texture file in the mod loader's file space. <br/>

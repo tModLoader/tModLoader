@@ -1,5 +1,12 @@
 --- src/TerrariaNetCore/Terraria/Projectile.cs
 +++ src/tModLoader/Terraria/Projectile.cs
+@@ -1,5 +_,6 @@
+ using System;
+ using System.Collections.Generic;
++using System.Security.Cryptography.X509Certificates;
+ using Microsoft.Xna.Framework;
+ using Microsoft.Xna.Framework.Audio;
+ using ReLogic.Utilities;
 @@ -20,14 +_,16 @@
  using Terraria.Graphics.Shaders;
  using Terraria.ID;
@@ -434,22 +441,44 @@
  			for (int j = 0; j < 200; j++) {
  				perIDStaticNPCImmunity[i][j] = 0u;
  			}
-@@ -232,8 +_,46 @@
+@@ -232,8 +_,68 @@
  		}
  	}
  
++	public bool DustDisabled {
++		get => ModProjectile?.DustDisabled ?? false;
++		set {
++			if (ModProjectile != null) {
++				ModProjectile.DustDisabled = value;
++			}
++		}
++	}
++
++	public int CustomDustID {
++		get => ModProjectile?.CustomDustID ?? -1;
++		set {
++			if (ModProjectile != null) {
++				ModProjectile.CustomDustID = value;
++			}
++		}
++	}
++
 +	// Added by TML.
 +	public void CloneDefaults(int TypeToClone)
 +	{
 +		int originalType = type;
 +		var originalModProjectile = ModProjectile;
 +		var originalGlobals = _globals;
++		bool originalDustDisabled = DustDisabled;
++		int originalCustomDustID = CustomDustID;
 +
 +		SetDefaults(TypeToClone);
 +
 +		type = originalType;
 +		ModProjectile = originalModProjectile;
 +		_globals = originalGlobals;
++		DustDisabled = originalDustDisabled;
++		CustomDustID = originalCustomDustID;
 +
 +		int num = ProjectileID.Sets.TrailCacheLength[type];
 +		if (num != oldPos.Length) {
@@ -481,6 +510,16 @@
  		ownerHitCheckDistance = 1000f;
  		counterweight = false;
  		sentry = false;
+@@ -252,6 +_,9 @@
+ 		usesIDStaticNPCImmunity = false;
+ 		usesOwnerMeleeHitCD = false;
+ 		appliesImmunityTimeOnSingleHits = false;
++
++	
++
+ 		int num = 10;
+ 		if (Type >= 0)
+ 			num = ProjectileID.Sets.TrailCacheLength[Type];
 @@ -284,9 +_,11 @@
  		minionSlots = 0f;
  		soundDelay = 0;
@@ -1863,6 +1902,25 @@
  			if (Main.netMode == 1)
  				NetMessage.SendData(21, -1, -1, null, number, 1f);
  		}
+@@ -40518,7 +_,17 @@
+ 
+ 	private void AI_010()
+ 	{
++		if ((DustDisabled == true) && (ModProjectile != null)) { // Added by TML
++			if (Main.rand.Next(2) == 0) {
++				int num = Dust.NewDust(new Vector2(position.X, position.Y), width, height, -1, 0f, velocity.Y / 2f);
++				Main.dust[num].velocity.X *= 0.4f;
++			}
++		}
++		else if (CustomDustID != -1) { // Added by TML
++			int num = Dust.NewDust(new Vector2(position.X, position.Y), width, height, CustomDustID, 0f, velocity.Y / 2f);
++			Main.dust[num].velocity.X *= 0.4f;
++		}
+-		if (type == 31 && ai[0] != 2f) {
++		else if (type == 31 && ai[0] != 2f) {
+ 			if (Main.rand.Next(2) == 0) {
+ 				int num = Dust.NewDust(new Vector2(position.X, position.Y), width, height, 32, 0f, velocity.Y / 2f);
+ 				Main.dust[num].velocity.X *= 0.4f;
 @@ -46762,7 +_,7 @@
  			}
  

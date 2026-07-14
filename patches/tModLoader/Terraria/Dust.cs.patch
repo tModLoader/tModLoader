@@ -142,10 +142,13 @@
  	public static int NewDust(Vector2 Position, int Width, int Height, int Type, float SpeedX = 0f, float SpeedY = 0f, int Alpha = 0, Color newColor = default(Color), float Scale = 1f)
  	{
  		if (Main.gameMenu)
-@@ -168,6 +_,8 @@
+@@ -168,6 +_,11 @@
  			if (dust.type == 80)
  				dust.alpha = 50;
  
++			if (dust.type == -1) // If the dust type is -1, set the dust particles to be transparent
++				dust.alpha = 255;
++
 +			DustLoader.SetupDust(dust);
 +
  			if (dust.type == 34 || dust.type == 35 || dust.type == 152) {
