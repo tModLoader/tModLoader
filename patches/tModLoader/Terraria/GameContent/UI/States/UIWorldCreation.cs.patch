@@ -1,5 +1,13 @@
 --- src/TerrariaNetCore/Terraria/GameContent/UI/States/UIWorldCreation.cs
 +++ src/tModLoader/Terraria/GameContent/UI/States/UIWorldCreation.cs
+@@ -14,6 +_,7 @@
+ using Terraria.ID;
+ using Terraria.IO;
+ using Terraria.Localization;
++using Terraria.ModLoader;
+ using Terraria.Social;
+ using Terraria.Testing;
+ using Terraria.UI;
 @@ -118,6 +_,12 @@
  		ResetSpecialSeedRing();
  	}
@@ -13,3 +21,12 @@
  	public void SetGoBackTarget(UIState state)
  	{
  		_goBackTarget = state;
+@@ -484,7 +_,7 @@
+ 	private void ClickAdvancedSeedMenu(UIMouseEvent evt, UIElement listeningElement)
+ 	{
+ 		ResetSpecialSeedRing();
+-		UIWorldCreationAdvanced uIWorldCreationAdvanced = new UIWorldCreationAdvanced(this);
++		UIWorldCreationAdvanced uIWorldCreationAdvanced = new UIWorldCreationAdvanced(this, SpecialSeedLoader.ShouldSeedMenuScroll);
+ 		SetGoBackTarget(uIWorldCreationAdvanced);
+ 		Main.MenuUI.SetState(uIWorldCreationAdvanced);
+ 	}

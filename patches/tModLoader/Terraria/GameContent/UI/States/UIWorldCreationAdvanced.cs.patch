@@ -1,5 +1,13 @@
 --- src/TerrariaNetCore/Terraria/GameContent/UI/States/UIWorldCreationAdvanced.cs
 +++ src/tModLoader/Terraria/GameContent/UI/States/UIWorldCreationAdvanced.cs
+@@ -7,6 +_,7 @@
+ using Terraria.GameContent.UI.Elements;
+ using Terraria.ID;
+ using Terraria.Localization;
++using Terraria.ModLoader;
+ using Terraria.UI;
+ using Terraria.UI.Gamepad;
+ using Terraria.WorldBuilding;
 @@ -36,6 +_,12 @@
  	private bool _allowScrolling;
  	private UIGamepadHelper _helper;
@@ -13,3 +21,18 @@
  	public UIWorldCreationAdvanced(UIWorldCreation state, bool allowScrolling = false)
  	{
  		_creationState = state;
+@@ -225,6 +_,14 @@
+ 				Description = option.Description,
+ 				Title = option.Title,
+ 				Element = option.ProvideUIElement()
++			}));
++		}
++		foreach (ModSpecialSeed specialSeed in SpecialSeedLoader.specialSeeds) {
++			list.Add(CreateButton(new WorldSpecialSeedOption {
++				Seed = specialSeed.WorldGenerationOption,
++				Description = specialSeed.Description,
++				Title = specialSeed.DisplayName,
++				Element = specialSeed.ProvideSeedIconElement()
+ 			}));
+ 		}
+ 
