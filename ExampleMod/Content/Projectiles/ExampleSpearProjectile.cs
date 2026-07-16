@@ -76,31 +76,28 @@ namespace ExampleMod.Content.Projectiles
 
 		// This hook lets us change how the held projectile looks while a mannequin is holding it.
 		// The following code is adapted from vanilla's Projectile.AI_DisplayDoll for aiStyle 19 (Spear)
-		// Due to how spears animate forward and back, we need to customize the forward offset to make it look right and can't just use ProjAIStyleID.Spear for this one.
-		public override bool DisplayDollSettings(Player doll, TEDisplayDoll.DisplayDollPose pose, ref int aiStyle, ref bool botherDrawing) {
-
-			return true;
-
-			Projectile.direction = doll.direction;
-			Projectile.spriteDirection = -Projectile.direction;
-			Vector2 projctileDirection = Vector2.UnitX;
-			float armRotation = 0f;
-			if (pose.ItemAimRadians.HasValue)
-				armRotation = pose.ItemAimRadians.Value;
-
-			projctileDirection = projctileDirection.RotatedBy(armRotation);
-			if (Projectile.direction == -1)
-				projctileDirection.X *= -1f;
-
-			Projectile.velocity = projctileDirection;
-
-			int forwardOffset = 52; // This matches the vanilla Spear. Other spears may need a different value.
-			Projectile.position += Projectile.velocity * forwardOffset;
-			Projectile.rotation = projctileDirection.ToRotation() + (3f * MathHelper.PiOver4);
-			if (Projectile.spriteDirection == -1)
-				Projectile.rotation -= MathHelper.PiOver2;
-
-			return false;
-		}
+		// If not setting an AIType, we need to customize the forward offset to make it look right and can't just use ProjAIStyleID.Spear for this one.
+		// public override bool DisplayDollSettings(Player doll, TEDisplayDoll.DisplayDollPose pose, ref int aiStyle, ref bool botherDrawing) {
+		//	Projectile.direction = doll.direction;
+		//	Projectile.spriteDirection = -Projectile.direction;
+		//	Vector2 projctileDirection = Vector2.UnitX;
+		//	float armRotation = 0f;
+		//	if (pose.ItemAimRadians.HasValue)
+		//		armRotation = pose.ItemAimRadians.Value;
+		//
+		//	projctileDirection = projctileDirection.RotatedBy(armRotation);
+		//	if (Projectile.direction == -1)
+		//		projctileDirection.X *= -1f;
+		//
+		//	Projectile.velocity = projctileDirection;
+		//
+		//	int forwardOffset = 52; // This matches the vanilla Spear. Other spears may need a different value.
+		//	Projectile.position += Projectile.velocity * forwardOffset;
+		//	Projectile.rotation = projctileDirection.ToRotation() + (3f * MathHelper.PiOver4);
+		//	if (Projectile.spriteDirection == -1)
+		//		Projectile.rotation -= MathHelper.PiOver2;
+		//
+		//	return false;
+		// }
 	}
 }
