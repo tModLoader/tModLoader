@@ -1671,6 +1671,13 @@ Mods: {
 			// ShortPose.VictoryCheer: Yay!
 			// LongPose.VictoryCheer: We did it!
 		}
+
+		SpecialSeeds: {
+			ExampleSpecialSeed: {
+				// Description: ""
+				// DisplayName: Example Special Seed
+			}
+		}
 	}
 }
 

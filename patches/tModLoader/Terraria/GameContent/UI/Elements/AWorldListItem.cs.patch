@@ -1,6 +1,13 @@
 --- src/TerrariaNetCore/Terraria/GameContent/UI/Elements/AWorldListItem.cs
 +++ src/tModLoader/Terraria/GameContent/UI/Elements/AWorldListItem.cs
-@@ -10,6 +_,9 @@
+@@ -4,12 +_,16 @@
+ using ReLogic.Content;
+ using Terraria.IO;
+ using Terraria.Localization;
++using Terraria.ModLoader;
+ using Terraria.UI;
+ 
+ namespace Terraria.GameContent.UI.Elements;
  
  public abstract class AWorldListItem : UIPanel
  {
@@ -10,3 +17,12 @@
  	protected WorldFileData _data;
  	protected int _glitchFrameCounter;
  	protected int _glitchFrame;
+@@ -135,6 +_,8 @@
+ 
+ 		if (_data.SkyblockWorld)
+ 			list.Add(GetSeedIcon("Skyblock", hardmodeVariants: false, evilVariants: false));
++
++		SpecialSeedLoader.AddModdedSeedIcons(_data, list);
+ 
+ 		if (list.Count > 0)
+ 			return list;

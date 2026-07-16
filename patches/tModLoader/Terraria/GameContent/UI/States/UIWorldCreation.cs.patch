@@ -30,3 +30,13 @@
  		SetGoBackTarget(uIWorldCreationAdvanced);
  		Main.MenuUI.SetState(uIWorldCreationAdvanced);
  	}
+@@ -792,6 +_,9 @@
+ 			if (_isSpecialSeedText) {
+ 				WorldGenerationOptions.SelectOption(optionFromSeedText);
+ 				SoundEngine.PlaySound(24);
++			}
++			else {
++				_isSpecialSeedText = SpecialSeedLoader.CanEnableSeedsFromText(_optionSeed);
+ 			}
+ 
+ 			if (WorldGen.SecretSeed.CheckInputForSecretSeed(_optionSeed, out var secretSeed)) {

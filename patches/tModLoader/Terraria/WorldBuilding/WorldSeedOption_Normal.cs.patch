@@ -1,0 +1,28 @@
+--- src/TerrariaNetCore/Terraria/WorldBuilding/WorldSeedOption_Normal.cs
++++ src/tModLoader/Terraria/WorldBuilding/WorldSeedOption_Normal.cs
+@@ -1,4 +_,5 @@
+ using System.Linq;
++using Terraria.ModLoader;
+ 
+ namespace Terraria.WorldBuilding;
+ 
+@@ -17,7 +_,7 @@
+ 
+ 	private void UpdateDependentState(AWorldGenerationOption changed)
+ 	{
+-		base.Enabled = WorldGenerationOptions.Options.All((AWorldGenerationOption x) => x == this || !x.Enabled);
++		base.Enabled = WorldGenerationOptions.Options.All((AWorldGenerationOption x) => x == this || !x.Enabled) && SpecialSeedLoader.specialSeeds.All((ModSpecialSeed modSeed) => !modSeed.WorldGenerationOption.Enabled);
+ 	}
+ 
+ 	protected override void OnEnabledStateChanged()
+@@ -28,6 +_,10 @@
+ 		foreach (AWorldGenerationOption option in WorldGenerationOptions.Options) {
+ 			if (option != this)
+ 				option.Enabled = false;
++		}
++
++		foreach (ModSpecialSeed modSeed in SpecialSeedLoader.specialSeeds) {
++			modSeed.WorldGenerationOption.Enabled = false;
+ 		}
+ 	}
+ }

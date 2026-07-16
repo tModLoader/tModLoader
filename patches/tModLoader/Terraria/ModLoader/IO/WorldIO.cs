@@ -46,6 +46,7 @@ internal static class WorldIO
 			["anglerQuest"] = SaveAnglerQuest(),
 			["townManager"] = SaveTownManager(),
 			["modData"] = SaveModData(),
+			["modSeeds"] = SaveModSeeds(),
 			["alteredVanillaFields"] = SaveAlteredVanillaFields()
 		};
 
@@ -102,6 +103,7 @@ internal static class WorldIO
 			customDataFail = e;
 			throw;
 		}
+		LoadModSeeds(tag.GetList<TagCompound>("modSeeds"));
 		LoadAlteredVanillaFields(tag.GetCompound("alteredVanillaFields"));
 
 		if (Main.ActiveWorldFileData.ModSaveErrors.Any()) {
@@ -557,6 +559,30 @@ internal static class WorldIO
 		}
 	}
 
+	internal static List<TagCompound> SaveModSeeds()
+	{
+		var list = new List<TagCompound>();
+		foreach (ModSpecialSeed specialSeed in SpecialSeedLoader.specialSeeds) {
+			if (!specialSeed.Enabled)
+				continue;
+			list.Add(new TagCompound() {
+				["mod"] = specialSeed.Mod.Name,
+				["name"] = specialSeed.Name
+			});
+		}
+
+		return list;
+	}
+
+	internal static void LoadModSeeds(IList<TagCompound> list)
+	{
+		foreach (var tag in list) {
+			if (ModContent.TryFind(tag.GetString("mod"), tag.GetString("name"), out ModSpecialSeed specialSeed)) {
+				specialSeed.Enabled = true;
+			}
+		}
+	}
+
 	internal static TagCompound SaveAlteredVanillaFields()
 	{
 		return new TagCompound {
@@ -672,6 +698,7 @@ internal static class WorldIO
 	{
 		return new TagCompound {
 			["modHeaders"] = SaveModHeaders(),
+			["modSpecialSeeds"] = SaveModSeedHeaders(),
 			["usedMods"] = SaveUsedMods(),
 			["usedModPack"] = SaveUsedModPack(),
 			["generatedWithMods"] = SaveGeneratedWithMods(),
@@ -713,6 +740,17 @@ internal static class WorldIO
 		return modHeaders;
 	}
 
+	private static List<string> SaveModSeedHeaders()
+	{
+		List<string> list = new List<string>();
+		foreach (ModSpecialSeed specialSeed in SpecialSeedLoader.specialSeeds) {
+			if(specialSeed.Enabled)
+				list.Add(specialSeed.FullName);
+		}
+
+		return list;
+	}
+
 	internal static void ReadWorldHeader(WorldFileData data)
 	{
 		string path = Path.ChangeExtension(data.Path, ".twld");
@@ -749,6 +787,7 @@ internal static class WorldIO
 	private static void LoadWorldHeader(WorldFileData data, TagCompound tag)
 	{
 		LoadModHeaders(data, tag);
+		LoadModSeedHeader(data, tag.GetList<string>("modSpecialSeeds"));
 		LoadUsedMods(data, tag.GetList<string>("usedMods"));
 		LoadUsedModPack(data, tag.GetString("usedModPack"));
 		if (tag.ContainsKey("generatedWithMods")) // GetCompound will return an empty TagCompound instead of null. null and empty TagCompound have different meaning for this data.
@@ -774,6 +813,11 @@ internal static class WorldIO
 
 			data.ModHeaders[fullname] = (TagCompound)entry.Value;
 		}
+	}
+
+	private static void LoadModSeedHeader(WorldFileData data, IList<string> list)
+	{
+		data.ModSeeds = list;
 	}
 
 	internal static void LoadUsedMods(WorldFileData data, IList<string> usedMods)

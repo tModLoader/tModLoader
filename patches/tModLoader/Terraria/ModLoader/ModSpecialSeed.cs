@@ -7,17 +7,25 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Terraria.IO;
 using Terraria.UI;
 
 namespace Terraria.ModLoader;
 
 public abstract class ModSpecialSeed : ModTexturedType
 {
-	public bool Enabled = false;
+	internal bool Enabled { get; set; } = false;
 
 	internal WorldGenerationOption WorldGenerationOption { get; private set; }
 
+	/// <summary>
+	/// The translation for the display name of this special seed
+	/// </summary>
 	public virtual LocalizedText DisplayName => Language.GetOrRegister($"Mods.{Mod.Name}.SpecialSeeds.{Name}.{nameof(DisplayName)}", PrettyPrintName);
+
+	/// <summary>
+	/// The translation for the description used for this special seed
+	/// </summary>
 	public virtual LocalizedText Description => Language.GetOrRegister($"Mods.{Mod.Name}.SpecialSeeds.{Name}.{nameof(Description)}", () => "");
 
 	/// <summary>
@@ -25,30 +33,71 @@ public abstract class ModSpecialSeed : ModTexturedType
 	/// </summary>
 	public virtual ModMenu GenerationMenu => null;
 
+	internal Asset<Texture2D> GetSeedIcon(WorldFileData data)
+	{
+		string text = "";
+		text += (data.IsHardMode ? "Hallow" : "");
+		text += (data.HasCorruption ? "Corruption" : "Crimson");
+		return worldIcons[text];
+	}
+
 	protected sealed override void Register()
 	{
+		ModTypeLookup<ModSpecialSeed>.Register(this);
 		SpecialSeedLoader.Add(this);
 	}
 
 	public sealed override void SetupContent()
 	{
 		textureAsset = ModContent.Request<Texture2D>(Texture);
+		worldIcons["Corruption"] = IconCorruption;
+		worldIcons["Crimson"] = IconCrimson;
+		worldIcons["HallowCorruption"] = IconHallowCorruption;
+		worldIcons["HallowCrimson"] = IconHallowCrimson;
 		SetupWorldGenerationOption();
 		SetStaticDefaults();
 	}
 
 	private Asset<Texture2D> textureAsset;
+	private Dictionary<string, Asset<Texture2D>> worldIcons = new();
 
-	public virtual IEnumerable<string> SpecialSeedNames() { return Enumerable.Empty<string>(); }
-	public virtual IEnumerable<int> SpecialSeedNumbers() { return Enumerable.Empty<int>(); }
+	public abstract Asset<Texture2D> IconHallowCorruption { get; }
+	public abstract Asset<Texture2D> IconHallowCrimson { get; }
+	public abstract Asset<Texture2D> IconCorruption { get; }
+	public abstract Asset<Texture2D> IconCrimson { get; }
 
 	private void SetupWorldGenerationOption()
 	{
 		WorldGenerationOption = new WorldGenerationOption(SpecialSeedNames(), SpecialSeedNumbers(), Description, DisplayName, textureAsset);
 	}
 
-	public virtual UIElement ProvideSeedIconElement()
+	public UIElement ProvideSeedIconElement()
 	{
-		return WorldGenerationOption.ProvideUIElement();
+		var element = WorldGenerationOption.ProvideUIElement();
+		ModifySeedIconElement(element);
+		return element;
 	}
+
+	/// <summary>
+	/// This allows changing the special seed toggle for this seed used in the world creation menu.
+	/// </summary>
+	/// <param name="element">The UI element that is used for the toggle</param>
+	public virtual void ModifySeedIconElement(UIElement element) { }
+
+	/// <summary>
+	/// Allows you to add custom seed names that will trigger your special seed when entered into the seed menu.
+	/// </summary>
+	/// <returns></returns>
+	public virtual IEnumerable<string> SpecialSeedNames() { return Enumerable.Empty<string>(); }
+	/// <summary>
+	/// Allows you to add custom seed numbers that will trigger your special seed when entered into the seed menu.
+	/// </summary>
+	/// <returns></returns>
+	public virtual IEnumerable<int> SpecialSeedNumbers() { return Enumerable.Empty<int>(); }
+
+	/// <summary>
+	/// <inheritdoc cref="ModSystem.ModifyWorldGenTasks"/>
+	/// This only applies for worlds with this seed enabled. It is called before ModSystem.ModifyWorldGenTasks.
+	/// </summary>
+	public virtual void ModifyWorldGenTasks(List<GenPass> tasks) { }
 }

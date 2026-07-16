@@ -1671,6 +1671,13 @@ Mods: {
 			ShortPose.VictoryCheer: Yay!
 			LongPose.VictoryCheer: We did it!
 		}
+
+		SpecialSeeds: {
+			ExampleSpecialSeed: {
+				Description: "This is an example special seed. Entering either 'example' or '1337' into the seed input will trigger this seed.\nEnter examplesecret into the seed input to unlock the example secret seed."
+				DisplayName: Example Special Seed
+			}
+		}
 	}
 }
 

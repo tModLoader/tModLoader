@@ -528,7 +528,7 @@
  	public static bool GenerateWorld(GenerationProgress customProgressObject = null, WorldGenerator.Controller customController = null)
  	{
  		generatingWorld = true;
-@@ -9218,15 +_,27 @@
+@@ -9218,15 +_,28 @@
  		generatingWorldOnThisThread = true;
  		bool flag = false;
  		try {
@@ -548,6 +548,7 @@
 +			AddGenPassesFromLoadTime();
  			DisablePassesForSpecialSeeds(_generator._passes);
 +
++			SpecialSeedLoader.ModifyWorldGenTasks(_generator._passes);
 +			SystemLoader.ModifyWorldGenTasks(_generator._passes);
 +
  			flag = _generator.GenerateWorld();
@@ -557,6 +558,14 @@
  			Finish();
  			return flag;
  		}
+@@ -9262,6 +_,7 @@
+ 		Main.remixWorld = (remixWorldGen = WorldGenerationOptions.Get<WorldSeedOption_Remix>().Enabled);
+ 		Main.zenithWorld = (everythingWorldGen = WorldGenerationOptions.Get<WorldSeedOption_Everything>().Enabled);
+ 		Main.skyblockWorld = (skyblockWorldGen = WorldGenerationOptions.Get<WorldSeedOption_Skyblock>().Enabled);
++		SpecialSeedLoader.SetEnabledFromUI();
+ 		SecretSeed.InitializeSecretSeeds();
+ 		GenVars.notTheBeesAndForTheWorthyNoCelebration = Main.notTheBeesWorld && Main.getGoodWorld && !Main.tenthAnniversaryWorld;
+ 		GenVars.noTrapsAndForTheWorthyNoCelebration = Main.noTrapsWorld && Main.getGoodWorld && !Main.tenthAnniversaryWorld;
 @@ -9345,6 +_,9 @@
  		GenVars.snowOriginRight = 0;
  		GenVars.logX = -1;
@@ -2093,9 +2102,9 @@
  		}
 +
 +		if (conversionRecursionDepth == 1) {
-+			if (type != theTile.TileType) 
++			if (type != theTile.TileType)
 +				TileLoader.OnTileConverted(i2, j2, type, theTile.type, conversionType);
-+			if (wall != theTile.WallType) 
++			if (wall != theTile.WallType)
 +				WallLoader.OnWallConverted(i2, j2, wall, theTile.wall, conversionType);
 +		}
  	}
@@ -2632,7 +2641,7 @@
  
 -	public static void KillTile_DropItems(int x, int y, Tile tileCache, bool includeLargeObjectDrops = false)
 +	// made internal, added includeAllModdedLargeObjectDrops param
-+ 	internal static void KillTile_DropItems(int x, int y, Tile tileCache, bool includeLargeObjectDrops = false, bool includeAllModdedLargeObjectDrops = false) 	
++ 	internal static void KillTile_DropItems(int x, int y, Tile tileCache, bool includeLargeObjectDrops = false, bool includeAllModdedLargeObjectDrops = false)
  	{
 +		if (!TileLoader.Drop(x, y, Main.tile[x, y].type, includeLargeObjectDrops))
 +			return;
@@ -2700,15 +2709,15 @@
  						dropItem = 9;
  						secondaryItem = 27;
  					}
-@@ -55625,6 +_,8 @@
- 				dropItem = 2503;
+@@ -55626,6 +_,8 @@
  				break;
  		}
-+		
-+		TileLoader.DropTreeWood(Main.tile[bottomX, bottomY].type, ref dropItem); // TODO: Likely wrong.
  
++		TileLoader.DropTreeWood(Main.tile[bottomX, bottomY].type, ref dropItem); // TODO: Likely wrong.
++
  		int num = Player.FindClosest(new Vector2(bottomX * 16, bottomY * 16), 16, 16);
  		int axe = Main.player[num].inventory[Main.player[num].selectedItem].axe;
+ 		if (genRand.Next(35) <= axe || Main.rand.Next(3) == 0)
 @@ -55654,6 +_,7 @@
  				num3 = 1000;
  
@@ -2819,7 +2828,7 @@
  	public static IEntitySource GetItemSource_FromTreeShake(int x, int y) => new EntitySource_ShakeTree(x, y);
  
 +	/// <summary>
-+	/// Returns true if any player is "located on screen" of the tile coordinates provided. Technically it checks a little farther than the normal max gameplay dimensions. Used for things like spawning tree leaves when trees grow near players or preventing the cultists from spawning when players are nearby. 
++	/// Returns true if any player is "located on screen" of the tile coordinates provided. Technically it checks a little farther than the normal max gameplay dimensions. Used for things like spawning tree leaves when trees grow near players or preventing the cultists from spawning when players are nearby.
 +	/// </summary>
  	public static bool PlayerLOS(int x, int y)
  	{
