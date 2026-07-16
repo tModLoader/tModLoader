@@ -362,9 +362,9 @@
 +			int rowItemCount = Math.Min(maxOptionsPerRow, buttons.Length - row * maxOptionsPerRow);
 +			WorldCreationMenuOption option = options[i];
 +			GroupOptionButton<WorldCreationMenuOption> groupOptionButton = new GroupOptionButton<WorldCreationMenuOption>(option, option.Title, option.Description, option.TextColor, option.IconTexturePath, 1f, 1f, 16f);
-+			// Use one spacing unit per button. This leaves the same gap between buttons and at the right edge of every row.
-+			groupOptionButton.Width = StyleDimension.FromPixelsAndPercent(spacingPixels, usableWidthPercent / rowItemCount);
-+			groupOptionButton.Left = StyleDimension.FromPercent(1f - usableWidthPercent + column * usableWidthPercent / rowItemCount);
++			// Split the row's total inter-button spacing across its items so its last button ends exactly at the usable right edge.
++			groupOptionButton.Width = StyleDimension.FromPixelsAndPercent(spacingPixels * (rowItemCount - 1) / (float)rowItemCount, usableWidthPercent / rowItemCount);
++			groupOptionButton.Left = StyleDimension.FromPixelsAndPercent(-spacingPixels * column / (float)rowItemCount, 1f - usableWidthPercent + column * usableWidthPercent / rowItemCount);
 +			groupOptionButton.HAlign = 0f;
 +			groupOptionButton.Top.Set(accumualtedHeight + row * 44f, 0f);
 +			groupOptionButton.OnLeftMouseDown += clickEvent;
