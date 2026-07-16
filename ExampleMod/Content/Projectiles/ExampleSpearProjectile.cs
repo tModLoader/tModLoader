@@ -16,6 +16,10 @@ namespace ExampleMod.Content.Projectiles
 
 		public override void SetDefaults() {
 			Projectile.CloneDefaults(ProjectileID.Spear); // Clone the default values for a vanilla spear. Spear specific values set for width, height, aiStyle, friendly, penetrate, tileCollide, scale, hide, ownerHitCheck, and melee.
+
+			// Setting AIType along with a vanilla Projectile.aiStyle (which CloneDefaults sets) will make our modded projectile act like a vanilla projectile in its AI.
+			// In the case for ExampleSpearProjectile, this lets the projectile match the vanilla spear for mannequins.
+			AIType = ProjectileID.Spear;
 		}
 
 		public override bool PreAI() {
@@ -74,6 +78,9 @@ namespace ExampleMod.Content.Projectiles
 		// The following code is adapted from vanilla's Projectile.AI_DisplayDoll for aiStyle 19 (Spear)
 		// Due to how spears animate forward and back, we need to customize the forward offset to make it look right and can't just use ProjAIStyleID.Spear for this one.
 		public override bool DisplayDollSettings(Player doll, TEDisplayDoll.DisplayDollPose pose, ref int aiStyle, ref bool botherDrawing) {
+
+			return true;
+
 			Projectile.direction = doll.direction;
 			Projectile.spriteDirection = -Projectile.direction;
 			Vector2 projctileDirection = Vector2.UnitX;

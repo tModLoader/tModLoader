@@ -1490,16 +1490,23 @@
  		if ((uint)(pose2 - 4) <= 4u)
  			flag = true;
  
++		int originalType = this.type;
++		this.type = ModProjectile?.AIType ?? this.type;
 +		int aiStyle = this.aiStyle;
 +		if (!ProjectileLoader.DisplayDollSettings(this, doll, pose, ref aiStyle, ref botherDrawing))
-+			return;
-+
-+		int type = ModProjectile?.AIType ?? this.type;
++			goto SkipVanillaLogic;
 +
  		switch (aiStyle) {
  			default:
  				botherDrawing = false;
-@@ -18201,6 +_,11 @@
+@@ -18197,10 +_,18 @@
+ 				break;
+ 			}
+ 		}
++
++		SkipVanillaLogic:
++		this.type = originalType; // AI_DisplayDoll restore original projectile type.
+ 	}
  
  	public void AI()
  	{
@@ -1625,12 +1632,10 @@
  	public int FindTargetWithLineOfSight(float maxRange = 800f)
  	{
  		float num = maxRange;
-@@ -36740,6 +_,9 @@
+@@ -36740,6 +_,7 @@
  		float num7 = 0f;
  		float num8 = 0f;
  		spriteDirection = -direction;
-+
-+		int type = ModProjectile?.AIType ?? this.type;
 +
  		switch (type) {
  			case 46:
