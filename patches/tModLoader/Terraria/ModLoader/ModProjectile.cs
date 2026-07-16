@@ -479,9 +479,8 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 	/// <param name="doll"> The mannequin holding the projectile. </param>
 	/// <param name="pose"> The pose that the mannequin is in. </param>
 	/// <param name="aiStyle"> The Projectile.aiStyle of the projectile. Can be changed to a supported style. </param>
-	/// <param name="botherDrawing"> Tells the game whether to draw the projectile at all. Usually set to true when the pose doesn't need to hold the projectile.</param>
 	/// <returns> Return false to skip the vanilla logic. Returns true by default. </returns>
-	public virtual bool DisplayDollSettings(Player doll, TEDisplayDoll.DisplayDollPose pose, ref int aiStyle, ref bool botherDrawing)
+	public virtual bool DisplayDollSettings(Player doll, TEDisplayDoll.DisplayDollPose pose, ref int aiStyle)
 	{
 		return true;
 	}

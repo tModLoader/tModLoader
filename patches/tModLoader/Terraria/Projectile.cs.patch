@@ -1493,7 +1493,7 @@
 +		int originalType = this.type;
 +		this.type = ModProjectile?.AIType ?? this.type;
 +		int aiStyle = this.aiStyle;
-+		if (!ProjectileLoader.DisplayDollSettings(this, doll, pose, ref aiStyle, ref botherDrawing))
++		if (!ProjectileLoader.DisplayDollSettings(this, doll, pose, ref aiStyle))
 +			goto SkipVanillaLogic;
 +
  		switch (aiStyle) {

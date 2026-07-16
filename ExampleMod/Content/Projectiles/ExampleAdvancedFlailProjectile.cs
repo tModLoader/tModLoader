@@ -508,7 +508,7 @@ namespace ExampleMod.Content.Projectiles
 
 		// This hook lets us change how the held projectile looks while a mannequin is holding it.
 		// We set aiStyle to Flail to draw the projectile as if it had the vanilla flail aiStyle.
-		public override bool DisplayDollSettings(Player doll, TEDisplayDoll.DisplayDollPose pose, ref int aiStyle, ref bool botherDrawing) {
+		public override bool DisplayDollSettings(Player doll, TEDisplayDoll.DisplayDollPose pose, ref int aiStyle) {
 			aiStyle = ProjAIStyleID.Flail;
 			return true;
 		}

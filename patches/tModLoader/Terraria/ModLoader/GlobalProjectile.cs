@@ -427,7 +427,7 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 	}
 
 	/// <inheritdoc cref="ModProjectile.DisplayDollSettings"/>
-	public virtual bool DisplayDollSettings(Projectile projectile, Player doll, TEDisplayDoll.DisplayDollPose pose, ref int aiStyle, ref bool botherDrawing)
+	public virtual bool DisplayDollSettings(Projectile projectile, Player doll, TEDisplayDoll.DisplayDollPose pose, ref int aiStyle)
 	{
 		return true;
 	}

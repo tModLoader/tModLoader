@@ -788,19 +788,19 @@ public static class ProjectileLoader
 		}
 	}
 
-	private delegate bool DelegateDisplayDollSettings(Projectile projectile, Player doll, TEDisplayDoll.DisplayDollPose pose, ref int aiStyle, ref bool botherDrawing);
+	private delegate bool DelegateDisplayDollSettings(Projectile projectile, Player doll, TEDisplayDoll.DisplayDollPose pose, ref int aiStyle);
 	private static HookList HookDisplayDollSettings = AddHook<DelegateDisplayDollSettings>(g => g.DisplayDollSettings);
 
-	internal static bool DisplayDollSettings(Projectile projectile, Player doll, TEDisplayDoll.DisplayDollPose pose, ref int aiStyle, ref bool botherDrawing)
+	internal static bool DisplayDollSettings(Projectile projectile, Player doll, TEDisplayDoll.DisplayDollPose pose, ref int aiStyle)
 	{
 		bool result = true;
 
 		foreach (var g in HookDisplayDollSettings.Enumerate(projectile)) {
-			result &= g.DisplayDollSettings(projectile, doll, pose, ref aiStyle, ref botherDrawing);
+			result &= g.DisplayDollSettings(projectile, doll, pose, ref aiStyle);
 		}
 
 		if (result && projectile.ModProjectile != null) {
-			return projectile.ModProjectile.DisplayDollSettings(doll, pose, ref aiStyle, ref botherDrawing);
+			return projectile.ModProjectile.DisplayDollSettings(doll, pose, ref aiStyle);
 		}
 
 		return result;
