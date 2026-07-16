@@ -1,0 +1,38 @@
+--- src/TerrariaNetCore/Terraria/GameContent/UI/Elements/GroupOptionButton.cs
++++ src/tModLoader/Terraria/GameContent/UI/Elements/GroupOptionButton.cs
+@@ -5,6 +_,7 @@
+ using Terraria.Audio;
+ using Terraria.ID;
+ using Terraria.Localization;
++using Terraria.ModLoader;
+ using Terraria.UI;
+ 
+ namespace Terraria.GameContent.UI.Elements;
+@@ -90,7 +_,7 @@
+ 		_selectedBorderTexture = Main.Assets.Request<Texture2D>("Images/UI/CharCreation/CategoryPanelHighlight");
+ 		_hoveredBorderTexture = Main.Assets.Request<Texture2D>("Images/UI/CharCreation/CategoryPanelBorder");
+ 		if (iconTexturePath != null)
+-			_iconTexture = Main.Assets.Request<Texture2D>(iconTexturePath);
++			_iconTexture = RequestIcon(iconTexturePath);
+ 
+ 		_color = Colors.InventoryDefaultColor;
+ 		if (title != null) {
+@@ -152,9 +_,17 @@
+ 	public void SetIcon(string iconTexturePath)
+ 	{
+ 		if (iconTexturePath != null)
+-			_iconTexture = Main.Assets.Request<Texture2D>(iconTexturePath);
++			_iconTexture = RequestIcon(iconTexturePath);
+ 		else
+ 			_iconTexture = null;
++	}
++
++	private static Asset<Texture2D> RequestIcon(string iconTexturePath)
++	{
++		if (iconTexturePath.StartsWith("Images/"))
++			return Main.Assets.Request<Texture2D>(iconTexturePath);
++
++		return ModContent.Request<Texture2D>(iconTexturePath);
+ 	}
+ 
+ 	public void SetIconFrame(Rectangle region)

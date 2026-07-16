@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using ReLogic.Utilities;
 using System;
 using System.Collections.Generic;
@@ -8,6 +9,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using Terraria.DataStructures;
+using Terraria.GameContent.Creative;
 using Terraria.Graphics;
 using Terraria.IO;
 using Terraria.Localization;
@@ -480,6 +482,20 @@ public static partial class SystemLoader
 	{
 		foreach (var system in HookPreWorldGen.Enumerate()) {
 			system.PreWorldGen();
+		}
+	}
+
+	internal static void ModifyWorldCreationMenuOptions(ref List<WorldCreationMenuOption> difficultyOptions, ref List<WorldCreationMenuOption> evilOptions)
+	{
+		foreach (var system in HookModifyWorldCreationMenuOptions.Enumerate()) {
+			system.ModifyWorldCreationMenuOptions(ref difficultyOptions, ref evilOptions);
+		}
+	}
+
+	internal static void ModifyWorldListDisplay(WorldFileData worldData, ref string difficultyText, ref Color difficultyColor, List<Asset<Texture2D>> icons)
+	{
+		foreach (var system in HookModifyWorldListDisplay.Enumerate()) {
+			system.ModifyWorldListDisplay(worldData, ref difficultyText, ref difficultyColor, icons);
 		}
 	}
 
