@@ -48,5 +48,14 @@ namespace ExampleMod.Content
 			drawColor = Main.DiscoColor; // Changes the draw color of the logo
 			return true;
 		}
+
+		public override void ModifyLoadingTips(ref string text, ref Color textColor) {
+			textColor = Main.DiscoColor;
+		}
+
+		// Apply the same effect to the world status text that we do to the loading text
+		public override void ModifyWorldStatusText(ref string text, ref Color textColor) {
+			ModifyLoadingTips(ref text, ref textColor);
+		}
 	}
 }

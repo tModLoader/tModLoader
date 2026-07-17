@@ -1,0 +1,29 @@
+--- src/TerrariaNetCore/Terraria/GameContent/UI/Elements/UIHeader.cs
++++ src/tModLoader/Terraria/GameContent/UI/Elements/UIHeader.cs
+@@ -1,6 +_,7 @@
+ using Microsoft.Xna.Framework;
+ using Microsoft.Xna.Framework.Graphics;
+ using ReLogic.Graphics;
++using Terraria.ModLoader;
+ using Terraria.UI;
+ 
+ namespace Terraria.GameContent.UI.Elements;
+@@ -8,6 +_,7 @@
+ public class UIHeader : UIElement
+ {
+ 	private string _text;
++	internal Color? CustomColor { get; set; }
+ 
+ 	public string Text {
+ 		get {
+@@ -47,7 +_,9 @@
+ 		spriteBatch.DrawString(FontAssets.DeathText.Value, Text, new Vector2(dimensions.X + num, dimensions.Y - num), Color.Black);
+ 		spriteBatch.DrawString(FontAssets.DeathText.Value, Text, new Vector2(dimensions.X - num, dimensions.Y + num), Color.Black);
+ 		spriteBatch.DrawString(FontAssets.DeathText.Value, Text, new Vector2(dimensions.X + num, dimensions.Y + num), Color.Black);
++		if (CustomColor.HasValue)
++			spriteBatch.DrawString(FontAssets.DeathText.Value, Text, new Vector2(dimensions.X, dimensions.Y), CustomColor.Value);
+-		if (WorldGen.tenthAnniversaryWorldGen && !Main.zenithWorld)
++		else if (WorldGen.tenthAnniversaryWorldGen && !Main.zenithWorld)
+ 			spriteBatch.DrawString(FontAssets.DeathText.Value, Text, new Vector2(dimensions.X, dimensions.Y), Color.HotPink);
+ 		else
+ 			spriteBatch.DrawString(FontAssets.DeathText.Value, Text, new Vector2(dimensions.X, dimensions.Y), Color.White);

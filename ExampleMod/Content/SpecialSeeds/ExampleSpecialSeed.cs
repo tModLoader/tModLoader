@@ -17,6 +17,8 @@ public class ExampleSpecialSeed : ModSpecialSeed
 		yield return 1337;
 	}
 
+	public override ModMenu WorldGenMenu => ModContent.GetInstance<ExampleModMenu>();
+
 	public override Asset<Texture2D> IconCorruption =>
 		ModContent.Request<Texture2D>($"ExampleMod/Content/SpecialSeeds/{Name}_IconCorruption");
 	public override Asset<Texture2D> IconHallowCorruption =>

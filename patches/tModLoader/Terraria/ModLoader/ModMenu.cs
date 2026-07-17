@@ -94,4 +94,23 @@ public abstract class ModMenu : ModType
 	public virtual void PostDrawLogo(SpriteBatch spriteBatch, Vector2 logoDrawCenter, float logoRotation, float logoScale, Color drawColor)
 	{
 	}
+
+	/// <summary>
+	/// Allows you to modify the loading screen tips that are displayed at the bottom of the screen.
+	/// Vanilla usages of this include the Drunk seed replacing the text with random numbers, or For the Worthy flipping it backwards.
+	/// Check <code>WorldGen.generatingWorld</code> if you want this to only apply while a world is generating.
+	/// <seealso cref="ModifyWorldStatusText"/>
+	/// </summary>
+	public virtual void ModifyLoadingTips(ref string text, ref Color drawColor)
+	{
+	}
+
+	/// <summary>
+	/// Allows you to modify the text that is displayed during world generation to inform world generation status.
+	/// Vanilla usages of this include the Drunk seed replacing the text with random numbers, or For the Worthy flipping it backwards.
+	/// <seealso cref="ModifyLoadingTips"/>
+	/// </summary>
+	public virtual void ModifyWorldStatusText(ref string text, ref Color drawColor)
+	{
+	}
 }

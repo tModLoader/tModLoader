@@ -29,9 +29,16 @@ public abstract class ModSpecialSeed : ModTexturedType
 	public virtual LocalizedText Description => Language.GetOrRegister($"Mods.{Mod.Name}.SpecialSeeds.{Name}.{nameof(Description)}", () => "");
 
 	/// <summary>
-	/// How the menu will look while a world with this seed is being generated
+	/// The menu that will be used while a world with this seed is being generated
 	/// </summary>
-	public virtual ModMenu GenerationMenu => null;
+	public virtual ModMenu WorldGenMenu => null;
+
+	/// <summary>
+	/// Is invoked when multiple ModSpecialSeeds with their own menus are together in a generating world, and the game needs to pick a WorldGenMenu to use.
+	/// Analogously, if WorldGenMenus were competing in a wrestling match, this would be how likely the WorldGenMenu should win within its weight class.
+	/// Is intentionally bounded at a max of 100% (1) to reduce complexity. Defaults to 50% (0.5).
+	/// </summary>
+	public virtual float GetMenuWeight() => 0.5f;
 
 	internal Asset<Texture2D> GetSeedIcon(WorldFileData data)
 	{
@@ -86,6 +93,7 @@ public abstract class ModSpecialSeed : ModTexturedType
 
 	/// <summary>
 	/// Allows you to add custom seed names that will trigger your special seed when entered into the seed menu.
+	/// Any seed name you add will automatically be formatted to be all lowercase and to have spaces and special characters removed.
 	/// </summary>
 	/// <returns></returns>
 	public virtual IEnumerable<string> SpecialSeedNames() { return Enumerable.Empty<string>(); }

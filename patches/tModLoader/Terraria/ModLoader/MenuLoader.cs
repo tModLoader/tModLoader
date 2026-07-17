@@ -176,6 +176,10 @@ public static class MenuLoader
 			}
 		}
 
+		if (WorldGen.generatingWorld && SpecialSeedLoader.CurrentWorldGenMenu != null && SpecialSeedLoader.CurrentWorldGenMenu != currentMenu) {
+			switchToMenu = SpecialSeedLoader.CurrentWorldGenMenu;
+		}
+
 		if (Main.menuMode == 0) {
 			ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.MouseText.Value, text, new Vector2(switchTextRect.X, switchTextRect.Y),
 				switchTextRect.Contains(Main.mouseX, Main.mouseY) ? Main.OurFavoriteColor : new Color(120, 120, 120, 76), 0, Vector2.Zero, Vector2.One);

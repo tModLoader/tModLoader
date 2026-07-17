@@ -30,13 +30,22 @@
  		SetGoBackTarget(uIWorldCreationAdvanced);
  		Main.MenuUI.SetState(uIWorldCreationAdvanced);
  	}
-@@ -792,6 +_,9 @@
- 			if (_isSpecialSeedText) {
+@@ -793,6 +_,9 @@
  				WorldGenerationOptions.SelectOption(optionFromSeedText);
  				SoundEngine.PlaySound(24);
-+			}
+ 			}
 +			else {
 +				_isSpecialSeedText = SpecialSeedLoader.CanEnableSeedsFromText(_optionSeed);
- 			}
++			}
  
  			if (WorldGen.SecretSeed.CheckInputForSecretSeed(_optionSeed, out var secretSeed)) {
+ 				if (!secretSeed.Enabled) {
+@@ -941,6 +_,8 @@
+ 			string seed = string.Join("|", _secretSeedTextsEntered) + "|" + Main.ActiveWorldFileData.SeedText;
+ 			Main.ActiveWorldFileData.SetSeed(seed);
+ 		}
++
++		SpecialSeedLoader.SetWorldGenMenu();
+ 
+ 		WorldGenerator.Controller controller = new WorldGenerator.Controller {
+ 			Paused = (DebugOptions.enableDebugCommands && Main.keyState.PressingControl())

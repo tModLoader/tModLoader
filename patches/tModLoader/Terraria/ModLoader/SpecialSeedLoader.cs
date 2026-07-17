@@ -33,6 +33,24 @@ public static class SpecialSeedLoader
 		}
 	}
 
+	public static ModMenu CurrentWorldGenMenu { get; private set; }
+
+	public static void SetWorldGenMenu()
+	{
+		CurrentWorldGenMenu = null;
+		float highestWeight = float.NegativeInfinity;
+		foreach (ModSpecialSeed seed in specialSeeds) {
+			if (!seed.WorldGenerationOption.Enabled || seed.WorldGenMenu == null)
+				continue;
+			float menuWeight = Math.Clamp(seed.GetMenuWeight(),0f,1f);
+			if (menuWeight < highestWeight) {
+				continue;
+			}
+			highestWeight = menuWeight;
+			CurrentWorldGenMenu = seed.WorldGenMenu;
+		}
+	}
+
 	public static void DisableAll()
 	{
 		foreach (ModSpecialSeed seed in specialSeeds) {
@@ -82,6 +100,7 @@ public static class SpecialSeedLoader
 		string seedText = Regex.Replace(seed.ToLower(), "[^a-z0-9]+", "");
 		bool enabledASeed = false;
 		foreach (ModSpecialSeed seedCandidate in specialSeeds) {
+			//We reuse the instance created for WorldGenerationOption instead of making a new one
 			int[] candidateSeedValues = seedCandidate.WorldGenerationOption.SpecialSeedValues;
 			foreach (int value in candidateSeedValues) {
 				if (value != seedNum) {
@@ -96,7 +115,10 @@ public static class SpecialSeedLoader
 
 			string[] candidateSeedNames = seedCandidate.WorldGenerationOption.SpecialSeedNames;
 			foreach (string seedName in candidateSeedNames) {
-				if (seedName != seedText) {
+				string formattedSeedName = Regex.Replace(seedName.ToLower(), "[^a-z0-9]+", "");
+				if(string.IsNullOrEmpty(formattedSeedName))
+					continue;
+				if (formattedSeedName != seedText) {
 					continue;
 				}
 				if (!enabledASeed) {

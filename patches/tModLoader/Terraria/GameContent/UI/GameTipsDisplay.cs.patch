@@ -14,3 +14,24 @@
  {
  	private class GameTip
  	{
+@@ -123,6 +_,8 @@
+ 						text += Main.rand.Next(999999999);
+ 				}
+ 			}
++			Color textColor = (WorldGen.tenthAnniversaryWorldGen && !Main.zenithWorld) ? Color.HotPink : Color.White;
++			MenuLoader.CurrentMenu.ModifyLoadingTips(ref text, ref textColor);
+ 
+ 			Vector2 vector = value.MeasureString(text);
+ 			float num4 = 1.1f;
+@@ -132,10 +_,7 @@
+ 
+ 			Vector2 position = new Vector2(num * currentTip.ScreenAnchorX, y);
+ 			position -= vector * num4 * 0.5f;
+-			if (WorldGen.tenthAnniversaryWorldGen && !Main.zenithWorld)
+-				ChatManager.DrawColorCodedStringWithShadow(spriteBatch, value, text, position, Color.HotPink, 0f, Vector2.Zero, new Vector2(num4, num4));
++			ChatManager.DrawColorCodedStringWithShadow(spriteBatch, value, text, position, textColor, 0f, Vector2.Zero, new Vector2(num4, num4));
+-			else
+-				ChatManager.DrawColorCodedStringWithShadow(spriteBatch, value, text, position, Color.White, 0f, Vector2.Zero, new Vector2(num4, num4));
+ 		}
+ 	}
+ 
