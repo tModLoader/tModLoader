@@ -394,15 +394,16 @@ public abstract partial class ModSystem : ModType
 		=> false;
 
 	/// <summary>
-	/// Allows you to add, remove, or reorder the difficulty and evil biome options shown in the world creation menu.
+	/// Allows you to add, remove, or reorder the world size, difficulty, and evil biome options shown in the world creation menu.
 	/// <br/>Use this to expose custom world creation presets without IL editing or On hooks.
 	/// <br/>Options should update the world generation state in their <see cref="WorldCreationMenuOption.OnSelected"/> callback and report current selection in <see cref="WorldCreationMenuOption.IsSelected"/>.
-	/// <br/>Modded options are automatically assigned an ID in final list order after vanilla values. Difficulty options start at <see cref="GameModeID.TML"/> and evil biome options start at <see cref="WorldEvilID.TML"/>, so multiple mods adding options won't conflict.
-	/// <br/>The world creation menu automatically wraps option buttons to new rows when many options are present.
+	/// <br/>Modded difficulty options start at <see cref="GameModeID.TML"/> and evil biome options start at <see cref="WorldEvilID.TML"/>, so multiple mods adding options won't conflict.
+	/// <br/>The world creation menu automatically wraps size, difficulty, and evil biome option buttons to new rows when many options are present.
 	/// </summary>
+	/// <param name="sizeOptions">The world size options shown in the world creation menu. A custom size option should apply a valid world size in its selection callback. It can temporarily use an existing vanilla world size.</param>
 	/// <param name="difficultyOptions">The difficulty options shown in the world creation menu.</param>
 	/// <param name="evilOptions">The evil biome options shown in the world creation menu.</param>
-	public virtual void ModifyWorldCreationMenuOptions(ref List<WorldCreationMenuOption> difficultyOptions, ref List<WorldCreationMenuOption> evilOptions) { }
+	public virtual void ModifyWorldCreationMenuOptions(ref List<WorldCreationMenuOption> sizeOptions, ref List<WorldCreationMenuOption> difficultyOptions, ref List<WorldCreationMenuOption> evilOptions) { }
 
 	/// <summary>
 	/// Allows you to modify the difficulty text/color and icon list shown for a world in the world select menu.

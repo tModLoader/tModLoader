@@ -30,12 +30,15 @@
  	public delegate void SubmitSeedEvent();
  
  	private string _optionwWorldName;
-@@ -60,8 +_,8 @@
+@@ -59,9 +_,10 @@
+ 	private UICharacterNameButton _namePlate;
  	private UICharacterNameButton _seedPlate;
  	private UIWorldCreationPreview _previewPlate;
- 	private GroupOptionButton<WorldSizeId>[] _sizeButtons;
+-	private GroupOptionButton<WorldSizeId>[] _sizeButtons;
++	private GroupOptionButton<WorldCreationMenuOption>[] _sizeButtons;
 -	private GroupOptionButton<WorldDifficultyId>[] _difficultyButtons;
 +	private GroupOptionButton<WorldCreationMenuOption>[] _difficultyButtons;
++	private WorldCreationMenuOption _selectedSizeOption;
 -	private GroupOptionButton<WorldEvilId>[] _evilButtons;
 +	private GroupOptionButton<WorldCreationMenuOption>[] _evilButtons;
  	private UIText _descriptionText;
@@ -121,16 +124,22 @@
  	{
  		UIElement uIElement = new UIElement {
  			Width = StyleDimension.FromPixelsAndPercent(0f, 1f),
-@@ -253,14 +_,13 @@
- 		AddWorldSizeOptions(uIElement, num, ClickSizeOption, "size", usableWidthPercent);
- 		num += 48f;
- 		AddHorizontalSeparator(uIElement, num);
+@@ -250,17 +_,15 @@
+ 		num += uICharacterNameButton2.GetDimensions().Height + 10f;
+ 		AddHorizontalSeparator(uIElement, num + 2f);
+ 		float usableWidthPercent = 1f;
+-		AddWorldSizeOptions(uIElement, num, ClickSizeOption, "size", usableWidthPercent);
+-		num += 48f;
+-		AddHorizontalSeparator(uIElement, num);
 -		AddWorldDifficultyOptions(uIElement, num, ClickDifficultyOption, "difficulty", usableWidthPercent);
 -		num += 48f;
-+		num += AddWorldDifficultyOptions(uIElement, num, ClickDifficultyOption, "difficulty", usableWidthPercent) * 44f + 4f;
- 		AddHorizontalSeparator(uIElement, num);
+-		AddHorizontalSeparator(uIElement, num);
 -		AddWorldEvilOptions(uIElement, num, ClickEvilOption, "evil", usableWidthPercent);
 -		num += 48f;
++		num += AddWorldSizeOptions(uIElement, num, ClickSizeOption, "size", usableWidthPercent) * 44f + 4f;
++		AddHorizontalSeparator(uIElement, num);
++		num += AddWorldDifficultyOptions(uIElement, num, ClickDifficultyOption, "difficulty", usableWidthPercent) * 44f + 4f;
++		AddHorizontalSeparator(uIElement, num);
 +		num += AddWorldEvilOptions(uIElement, num, ClickEvilOption, "evil", usableWidthPercent) * 44f + 4f;
  		AddHorizontalSeparator(uIElement, num);
  		AddDescriptionPanel(uIElement, num, "desc");
@@ -139,9 +148,12 @@
  	}
  
  	private static void AddHorizontalSeparator(UIElement Container, float accumualtedHeight)
-@@ -281,9 +_,9 @@
+@@ -279,11 +_,11 @@
+ 		Main.ActiveWorldFileData = new WorldFileData();
+ 		AssignRandomWorldName();
  		ClearSeed();
- 		_optionSize = WorldSizeId.Medium;
+-		_optionSize = WorldSizeId.Medium;
++		SelectWorldCreationOption(_sizeButtons, _sizeButtons.First(button => button.OptionValue.Id == "VanillaSize:1").OptionValue);
  		if (Main.ActivePlayerFileData.Player.difficulty == 3)
 -			_optionDifficulty = WorldDifficultyId.Creative;
 +			_optionDifficulty = GameModeID.Creative;
@@ -177,10 +189,60 @@
  		};
  
  		uIText.PaddingLeft = 20f;
-@@ -368,109 +_,98 @@
- 		_sizeButtons = array6;
+@@ -318,159 +_,120 @@
+ 		_descriptionText = uIText;
  	}
  
+-	private void AddWorldSizeOptions(UIElement container, float accumualtedHeight, MouseEvent clickEvent, string tagGroup, float usableWidthPercent)
+-	{
+-		WorldSizeId[] array = new WorldSizeId[3] {
+-			WorldSizeId.Small,
+-			WorldSizeId.Medium,
+-			WorldSizeId.Large
+-		};
+-
+-		LocalizedText[] array2 = new LocalizedText[3] {
+-			Lang.menu[92],
+-			Lang.menu[93],
+-			Lang.menu[94]
+-		};
+-
+-		LocalizedText[] array3 = new LocalizedText[3] {
+-			Language.GetText("UI.WorldDescriptionSizeSmall"),
+-			Language.GetText("UI.WorldDescriptionSizeMedium"),
+-			Language.GetText("UI.WorldDescriptionSizeLarge")
+-		};
+-
+-		Color[] array4 = new Color[3] {
+-			Color.Cyan,
+-			Color.Lerp(Color.Cyan, Color.LimeGreen, 0.5f),
+-			Color.LimeGreen
+-		};
+-
+-		string[] array5 = new string[3] {
+-			"Images/UI/WorldCreation/IconSizeSmall",
+-			"Images/UI/WorldCreation/IconSizeMedium",
+-			"Images/UI/WorldCreation/IconSizeLarge"
+-		};
+-
+-		GroupOptionButton<WorldSizeId>[] array6 = new GroupOptionButton<WorldSizeId>[array.Length];
+-		for (int i = 0; i < array6.Length; i++) {
+-			GroupOptionButton<WorldSizeId> groupOptionButton = new GroupOptionButton<WorldSizeId>(array[i], array2[i], array3[i], array4[i], array5[i], 1f, 1f, 16f);
+-			groupOptionButton.Width = StyleDimension.FromPixelsAndPercent(-4 * (array6.Length - 1), 1f / (float)array6.Length * usableWidthPercent);
+-			groupOptionButton.Left = StyleDimension.FromPercent(1f - usableWidthPercent);
+-			groupOptionButton.HAlign = (float)i / (float)(array6.Length - 1);
+-			groupOptionButton.Top.Set(accumualtedHeight, 0f);
+-			groupOptionButton.OnLeftMouseDown += clickEvent;
+-			groupOptionButton.OnMouseOver += ShowOptionDescription;
+-			groupOptionButton.OnMouseOut += ClearOptionDescription;
+-			groupOptionButton.SetSnapPoint(tagGroup, i);
+-			container.Append(groupOptionButton);
+-			array6[i] = groupOptionButton;
+-		}
+-
+-		_sizeButtons = array6;
+-	}
+-
 -	private void AddWorldDifficultyOptions(UIElement container, float accumualtedHeight, MouseEvent clickEvent, string tagGroup, float usableWidthPercent)
 -	{
 -		WorldDifficultyId[] array = new WorldDifficultyId[4] {
@@ -284,6 +346,26 @@
 -		}
 -
 -		_evilButtons = array6;
++	private int AddWorldSizeOptions(UIElement container, float accumualtedHeight, MouseEvent clickEvent, string tagGroup, float usableWidthPercent)
++	{
++		List<WorldCreationMenuOption> options = new List<WorldCreationMenuOption>();
++		WorldCreationMenuOption small = null;
++		WorldCreationMenuOption medium = null;
++		WorldCreationMenuOption large = null;
++		small = new("VanillaSize:0", Lang.menu[92], Language.GetText("UI.WorldDescriptionSizeSmall"), Color.Cyan, "Images/UI/WorldCreation/IconSizeSmall", () => { _optionSize = WorldSizeId.Small; _selectedSizeOption = small; }, () => _selectedSizeOption == small, 0);
++		medium = new("VanillaSize:1", Lang.menu[93], Language.GetText("UI.WorldDescriptionSizeMedium"), Color.Lerp(Color.Cyan, Color.LimeGreen, 0.5f), "Images/UI/WorldCreation/IconSizeMedium", () => { _optionSize = WorldSizeId.Medium; _selectedSizeOption = medium; }, () => _selectedSizeOption == medium, 1);
++		large = new("VanillaSize:2", Lang.menu[94], Language.GetText("UI.WorldDescriptionSizeLarge"), Color.LimeGreen, "Images/UI/WorldCreation/IconSizeLarge", () => { _optionSize = WorldSizeId.Large; _selectedSizeOption = large; }, () => _selectedSizeOption == large, 2);
++		options.Add(small);
++		options.Add(medium);
++		options.Add(large);
++
++		List<WorldCreationMenuOption> difficultyOptions = new List<WorldCreationMenuOption>();
++		List<WorldCreationMenuOption> evilOptions = new List<WorldCreationMenuOption>();
++		SystemLoader.ModifyWorldCreationMenuOptions(ref options, ref difficultyOptions, ref evilOptions);
++		_sizeButtons = AddWorldCreationOptions(container, accumualtedHeight, clickEvent, tagGroup, usableWidthPercent, options, -4, 4, out int rows);
++		return rows;
++	}
++
 +	private int AddWorldDifficultyOptions(UIElement container, float accumualtedHeight, MouseEvent clickEvent, string tagGroup, float usableWidthPercent)
 +	{
 +		List<WorldCreationMenuOption> options = new List<WorldCreationMenuOption> {
@@ -293,8 +375,9 @@
 +			new("VanillaDifficulty:2", Language.GetText("UI.Master"), Language.GetText("UI.WorldDescriptionMaster"), Main.hcColor, "Images/UI/WorldCreation/IconDifficultyMaster", () => _optionDifficulty = GameModeID.Master, () => _optionDifficulty == GameModeID.Master, (byte)GameModeID.Master)
 +		};
 +
++		List<WorldCreationMenuOption> sizeOptions = new List<WorldCreationMenuOption>();
 +		List<WorldCreationMenuOption> evilOptions = new List<WorldCreationMenuOption>();
-+		SystemLoader.ModifyWorldCreationMenuOptions(ref options, ref evilOptions);
++		SystemLoader.ModifyWorldCreationMenuOptions(ref sizeOptions, ref options, ref evilOptions);
 +		AssignWorldCreationOptionTypes(options, GameModeID.TML);
 +		_difficultyButtons = AddWorldCreationOptions(container, accumualtedHeight, clickEvent, tagGroup, usableWidthPercent, options, -1, 5, out int rows);
 +		return rows;
@@ -308,8 +391,9 @@
 +			new("VanillaEvil:1", Lang.misc[102], Language.GetText("UI.WorldDescriptionEvilCrimson"), Color.IndianRed, "Images/UI/WorldCreation/IconEvilCrimson", () => _optionEvil = 1, () => _optionEvil == 1, 2)
 +		};
 +
++		List<WorldCreationMenuOption> sizeOptions = new List<WorldCreationMenuOption>();
 +		List<WorldCreationMenuOption> difficultyOptions = new List<WorldCreationMenuOption>();
-+		SystemLoader.ModifyWorldCreationMenuOptions(ref difficultyOptions, ref options);
++		SystemLoader.ModifyWorldCreationMenuOptions(ref sizeOptions, ref difficultyOptions, ref options);
 +		AssignWorldCreationOptionTypes(options, WorldEvilID.TML);
 +		_evilButtons = AddWorldCreationOptions(container, accumualtedHeight, clickEvent, tagGroup, usableWidthPercent, options, -4, GetMaxEvilOptionsPerRow(options.Count), out int rows);
 +		return rows;
@@ -379,7 +463,25 @@
  	}
  
  	private void ClickRandomizeName(UIMouseEvent evt, UIElement listeningElement)
-@@ -531,31 +_,49 @@
+@@ -519,75 +_,96 @@
+ 
+ 	private void ClickSizeOption(UIMouseEvent evt, UIElement listeningElement)
+ 	{
+-		GroupOptionButton<WorldSizeId> groupOptionButton = (GroupOptionButton<WorldSizeId>)listeningElement;
+-		_optionSize = groupOptionButton.OptionValue;
+-		GroupOptionButton<WorldSizeId>[] sizeButtons = _sizeButtons;
+-		for (int i = 0; i < sizeButtons.Length; i++) {
+-			sizeButtons[i].SetCurrentOption(groupOptionButton.OptionValue);
+-		}
+-
++		GroupOptionButton<WorldCreationMenuOption> groupOptionButton = (GroupOptionButton<WorldCreationMenuOption>)listeningElement;
++		// Vanilla size options use _selectedSizeOption while modded options can use their own IsSelected callbacks.
++		// Set this for every click so a previously selected vanilla size cannot remain selected beside a modded size.
++		_selectedSizeOption = groupOptionButton.OptionValue;
++		SelectWorldCreationOption(_sizeButtons, groupOptionButton.OptionValue);
++		UpdateSliders();
+ 		UpdatePreviewPlate();
+ 	}
  
  	private void ClickDifficultyOption(UIMouseEvent evt, UIElement listeningElement)
  	{
@@ -425,9 +527,10 @@
  	private void UpdatePreviewPlate()
  	{
 -		_previewPlate.UpdateOption((byte)_optionDifficulty, (byte)_optionEvil, (byte)_optionSize);
++		WorldCreationMenuOption sizeOption = GetSelectedWorldCreationOption(_sizeButtons);
 +		WorldCreationMenuOption difficultyOption = GetSelectedWorldCreationOption(_difficultyButtons);
 +		WorldCreationMenuOption evilOption = GetSelectedWorldCreationOption(_evilButtons);
-+		_previewPlate.UpdateOption(GetSelectedPreviewValue(_difficultyButtons), GetSelectedPreviewValue(_evilButtons), (byte)_optionSize, difficultyOption?.PreviewTexturePath, evilOption?.PreviewTexturePath, difficultyOption?.PreviewTexturePath2);
++		_previewPlate.UpdateOption(GetSelectedPreviewValue(_difficultyButtons), GetSelectedPreviewValue(_evilButtons), (byte)_optionSize, difficultyOption?.PreviewTexturePath, evilOption?.PreviewTexturePath, difficultyOption?.PreviewTexturePath2, sizeOption?.PreviewTexturePath);
 +	}
 +
 +	private static byte GetSelectedPreviewValue(GroupOptionButton<WorldCreationMenuOption>[] buttons)
@@ -444,10 +547,12 @@
  	}
  
  	private void UpdateSliders()
-@@ -565,15 +_,28 @@
- 			sizeButtons[i].SetCurrentOption(_optionSize);
- 		}
- 
+ 	{
+-		GroupOptionButton<WorldSizeId>[] sizeButtons = _sizeButtons;
+-		for (int i = 0; i < sizeButtons.Length; i++) {
+-			sizeButtons[i].SetCurrentOption(_optionSize);
+-		}
+-
 -		GroupOptionButton<WorldDifficultyId>[] difficultyButtons = _difficultyButtons;
 -		for (int i = 0; i < difficultyButtons.Length; i++) {
 -			difficultyButtons[i].SetCurrentOption(_optionDifficulty);
@@ -457,6 +562,7 @@
 -		for (int i = 0; i < evilButtons.Length; i++) {
 -			evilButtons[i].SetCurrentOption(_optionEvil);
 -		}
++		UpdateWorldCreationOptionButtons(_sizeButtons);
 +		UpdateWorldCreationOptionButtons(_difficultyButtons);
 +		UpdateWorldCreationOptionButtons(_evilButtons);
 +	}
@@ -482,10 +588,11 @@
  	}
  
  	public void ShowOptionDescription(UIMouseEvent evt, UIElement listeningElement)
-@@ -582,12 +_,9 @@
- 		if (listeningElement is GroupOptionButton<WorldSizeId> groupOptionButton)
- 			localizedText = groupOptionButton.Description;
- 
+ 	{
+ 		LocalizedText localizedText = null;
+-		if (listeningElement is GroupOptionButton<WorldSizeId> groupOptionButton)
+-			localizedText = groupOptionButton.Description;
+-
 -		if (listeningElement is GroupOptionButton<WorldDifficultyId> groupOptionButton2)
 +		if (listeningElement is GroupOptionButton<WorldCreationMenuOption> groupOptionButton2)
  			localizedText = groupOptionButton2.Description;

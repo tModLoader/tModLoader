@@ -1,3 +1,3 @@
-en-US, 769/769, 100%, missing 0
-ru-RU, 6/769, 1%, missing 763
-zh-Hans, 6/769, 1%, missing 763
+en-US, 771/771, 100%, missing 0
+ru-RU, 6/771, 1%, missing 765
+zh-Hans, 8/771, 1%, missing 763

@@ -29,13 +29,35 @@ namespace ExampleMod.Common.Systems
 	{
 		private const string HeaderKeyDifficulty = "ExampleDifficulty";
 		private const string HeaderKeyEvil = "ExampleEvil";
+		private const string HeaderKeySize = "ExampleSize";
 		private const string ExampleDifficultyValue = "exampleDifficulty";
 		private const string ExampleEvilValue = "exampleEvil";
+		private const string ExampleSizeValue = "exampleSize";
 
 		private static bool creatingExampleDifficultyWorld;
 		private static bool creatingExampleEvilWorld;
+		private static bool creatingExampleSizeWorld;
 
-		public override void ModifyWorldCreationMenuOptions(ref List<WorldCreationMenuOption> difficultyOptions, ref List<WorldCreationMenuOption> evilOptions) {
+		public override void ModifyWorldCreationMenuOptions(ref List<WorldCreationMenuOption> sizeOptions, ref List<WorldCreationMenuOption> difficultyOptions, ref List<WorldCreationMenuOption> evilOptions) {
+			WorldCreationMenuOption exampleSize = null;
+			exampleSize = new WorldCreationMenuOption(
+				"ExampleMod:ExampleSize",
+				Mod.GetLocalization("WorldCreation.ExampleSize.DisplayName"),
+				Mod.GetLocalization("WorldCreation.ExampleSize.Description"),
+				Color.Gold,
+				"ExampleMod/Assets/Textures/WorldCreation/IconSizeExample",
+				() => {
+					// This example intentionally uses the Large world's actual dimensions until custom dimensions are supported.
+					WorldGen.SetWorldSize(0);
+					creatingExampleSizeWorld = true;
+				},
+				() => creatingExampleSizeWorld,
+				2,
+				() => creatingExampleSizeWorld = false,
+				previewTexturePath: "ExampleMod/Assets/Textures/WorldCreation/PreviewSizeExample"
+			);
+			sizeOptions.Add(exampleSize);
+
 			// This local variable is captured by the OnSelected lambda. It is safe because Type is assigned by tModLoader
 			// immediately after all mods have finished modifying the option list, before the player can click the button.
 			WorldCreationMenuOption exampleDifficulty = null;
@@ -83,6 +105,9 @@ namespace ExampleMod.Common.Systems
 		}
 
 		public override void SaveWorldHeader(TagCompound tag) {
+			if (creatingExampleSizeWorld && WorldGen.GetWorldSize() == 2)
+				tag[HeaderKeySize] = ExampleSizeValue;
+
 			if (creatingExampleDifficultyWorld && Main.GameMode >= GameModeID.TML)
 				tag[HeaderKeyDifficulty] = ExampleDifficultyValue;
 
@@ -95,6 +120,11 @@ namespace ExampleMod.Common.Systems
 		public override void ModifyWorldListDisplay(WorldFileData worldData, ref string difficultyText, ref Color difficultyColor, List<Asset<Texture2D>> icons) {
 			if (!worldData.TryGetHeaderData(this, out TagCompound tag))
 				return;
+
+			if (tag.GetString(HeaderKeySize) == ExampleSizeValue) {
+				// The example currently generates using Large dimensions, but the world select menu displays the selected custom size preset.
+				worldData._worldSizeName = Mod.GetLocalization("WorldCreation.ExampleSize.DisplayName");
+			}
 
 			if (tag.GetString(HeaderKeyDifficulty) == ExampleDifficultyValue) {
 				difficultyText = Mod.GetLocalization("WorldCreation.ExampleDifficulty.DisplayName").Value;

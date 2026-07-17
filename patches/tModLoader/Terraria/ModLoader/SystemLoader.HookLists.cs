@@ -53,7 +53,7 @@ partial class SystemLoader
 
 	private delegate void DelegateModifyWorldGenTasks(List<GenPass> passes);
 
-	private delegate void DelegateModifyWorldCreationMenuOptions(ref List<WorldCreationMenuOption> difficultyOptions, ref List<WorldCreationMenuOption> evilOptions);
+	private delegate void DelegateModifyWorldCreationMenuOptions(ref List<WorldCreationMenuOption> sizeOptions, ref List<WorldCreationMenuOption> difficultyOptions, ref List<WorldCreationMenuOption> evilOptions);
 
 	private delegate void DelegateModifyWorldListDisplay(WorldFileData worldData, ref string difficultyText, ref Color difficultyColor, List<Asset<Texture2D>> icons);
 

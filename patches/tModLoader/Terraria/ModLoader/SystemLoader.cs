@@ -485,10 +485,10 @@ public static partial class SystemLoader
 		}
 	}
 
-	internal static void ModifyWorldCreationMenuOptions(ref List<WorldCreationMenuOption> difficultyOptions, ref List<WorldCreationMenuOption> evilOptions)
+	internal static void ModifyWorldCreationMenuOptions(ref List<WorldCreationMenuOption> sizeOptions, ref List<WorldCreationMenuOption> difficultyOptions, ref List<WorldCreationMenuOption> evilOptions)
 	{
 		foreach (var system in HookModifyWorldCreationMenuOptions.Enumerate()) {
-			system.ModifyWorldCreationMenuOptions(ref difficultyOptions, ref evilOptions);
+			system.ModifyWorldCreationMenuOptions(ref sizeOptions, ref difficultyOptions, ref evilOptions);
 		}
 	}
 

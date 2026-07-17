@@ -11,6 +11,11 @@ Mods: {
 		Common.PaperAirplane: Paper Airplane
 
 		WorldCreation: {
+			ExampleSize: {
+				DisplayName: Example
+				Description: An example modded world size option.
+			}
+
 			ExampleDifficulty: {
 				DisplayName: Example
 				Description: An example modded world difficulty option.
