@@ -7,7 +7,7 @@ namespace ExampleMod.Common.Systems;
 public class ExampleSpecialSeedSystem : ModSystem
 {
 	public override void ModifySunLightColor(ref Color tileColor, ref Color backgroundColor) {
-		if (!ModContent.SpecialSeedEnabled<ExampleSpecialSeed>())
+		if (!SpecialSeedLoader.SeedEnabled<ExampleSpecialSeed>())
 			return;
 		backgroundColor = Color.Lerp(backgroundColor, Color.Black, 0.8f);
 	}

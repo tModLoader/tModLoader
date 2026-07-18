@@ -17,12 +17,22 @@
  	protected WorldFileData _data;
  	protected int _glitchFrameCounter;
  	protected int _glitchFrame;
-@@ -135,6 +_,8 @@
- 
+@@ -136,6 +_,9 @@
  		if (_data.SkyblockWorld)
  			list.Add(GetSeedIcon("Skyblock", hardmodeVariants: false, evilVariants: false));
-+
-+		SpecialSeedLoader.AddModdedSeedIcons(_data, list);
  
++		list.RemoveAll(icon => icon == null);
++		SpecialSeedLoader.AddModdedSeedIcons(_data, list);
++
  		if (list.Count > 0)
  			return list;
+ 
+@@ -160,6 +_,8 @@
+ 
+ 	private Asset<Texture2D> GetSeedIcon(string seed, bool hardmodeVariants = true, bool evilVariants = true)
+ 	{
++		if (SpecialSeedLoader.IsVanillaSeedDependency(seed, _data))
++			return null;
+ 		string text = "Images/UI/Icon";
+ 		if (hardmodeVariants)
+ 			text += (_data.IsHardMode ? "Hallow" : "");

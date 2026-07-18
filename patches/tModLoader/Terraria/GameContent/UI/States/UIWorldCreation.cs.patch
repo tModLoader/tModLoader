@@ -26,7 +26,7 @@
  	{
  		ResetSpecialSeedRing();
 -		UIWorldCreationAdvanced uIWorldCreationAdvanced = new UIWorldCreationAdvanced(this);
-+		UIWorldCreationAdvanced uIWorldCreationAdvanced = new UIWorldCreationAdvanced(this, SpecialSeedLoader.ShouldSeedMenuScroll);
++		UIWorldCreationAdvanced uIWorldCreationAdvanced = new UIWorldCreationAdvanced(this, true);
  		SetGoBackTarget(uIWorldCreationAdvanced);
  		Main.MenuUI.SetState(uIWorldCreationAdvanced);
  	}

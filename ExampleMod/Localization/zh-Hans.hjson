@@ -1681,6 +1681,11 @@ Mods: {
 					''' */
 				// DisplayName: Example Special Seed
 			}
+
+			ExampleAdvancedSpecialSeed: {
+				// Description: ""
+				// DisplayName: Example Advanced Special Seed
+			}
 		}
 	}
 }

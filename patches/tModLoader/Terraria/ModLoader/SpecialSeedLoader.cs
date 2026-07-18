@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Terraria.Audio;
+using Terraria.GameContent.UI.Elements;
 using Terraria.IO;
 using Terraria.Localization;
 using Terraria.WorldBuilding;
@@ -12,7 +14,13 @@ namespace Terraria.ModLoader;
 
 public static class SpecialSeedLoader
 {
-	public static bool ShouldSeedMenuScroll => false;
+	public static int SeedMenuRows {
+		get {
+			int seedCount = 11; //All 9 of the vanilla special seeds as well as the option for no seed and the secret seed menu
+			seedCount += specialSeeds.Count;
+			return (seedCount / 6) + 1;
+		}
+	}
 
 	internal static readonly IList<ModSpecialSeed> specialSeeds = new List<ModSpecialSeed>();
 
@@ -26,10 +34,22 @@ public static class SpecialSeedLoader
 		specialSeeds.Clear();
 	}
 
+	internal static void PostSetupContent()
+	{
+		foreach (ModSpecialSeed seed in specialSeeds) {
+			seed.PostSetupContent();
+		}
+	}
+
+	/// <summary>
+	/// Gets whether the specified special seed is enabled on this world.
+	/// </summary>
+	public static ref bool SeedEnabled<T>() where T : ModSpecialSeed => ref ModContent.GetInstance<T>().Enabled;
+
 	public static void SetEnabledFromUI()
 	{
 		foreach (ModSpecialSeed seed in specialSeeds) {
-			seed.Enabled = seed.WorldGenerationOption.Enabled;
+			seed.Enabled = seed.UIOption.Enabled;
 		}
 	}
 
@@ -40,7 +60,7 @@ public static class SpecialSeedLoader
 		CurrentWorldGenMenu = null;
 		float highestWeight = float.NegativeInfinity;
 		foreach (ModSpecialSeed seed in specialSeeds) {
-			if (!seed.WorldGenerationOption.Enabled || seed.WorldGenMenu == null)
+			if (!seed.UIOption.Enabled || seed.WorldGenMenu == null)
 				continue;
 			float menuWeight = Math.Clamp(seed.GetMenuWeight(),0f,1f);
 			if (menuWeight < highestWeight) {
@@ -58,17 +78,12 @@ public static class SpecialSeedLoader
 		}
 	}
 
-	/// <summary>
-	/// Allows changing if a certain special seed is enabled or not for the loaded world
-	/// </summary>
-	public static void ChangeSpecialSeedFlag<T>(bool enable = true) where T : ModSpecialSeed
-	{
-		ModContent.GetInstance<T>().Enabled = enable;
-	}
-
 	public static void ModifyWorldGenTasks(List<GenPass> passes)
 	{
 		foreach (ModSpecialSeed seed in specialSeeds) {
+			if (!seed.Enabled) {
+				continue;
+			}
 			try {
 				seed.ModifyWorldGenTasks(passes);
 			}
@@ -87,52 +102,130 @@ public static class SpecialSeedLoader
 
 	internal static void AddModdedSeedIcons(WorldFileData data, List<Asset<Texture2D>> list)
 	{
+		List<ModSpecialSeed> includedSeeds = new();
 		foreach (string seedName in data.ModSeeds) {
 			if (ModContent.TryFind(seedName, out ModSpecialSeed seed)) {
-				list.Add(seed.GetSeedIcon(data));
+				includedSeeds.Add(seed);
 			}
+		}
+		includedSeeds.RemoveAll(includedSeed => {
+			return includedSeeds.Exists(otherIncludedSeed => otherIncludedSeed.Dependencies.Contains(includedSeed.UIOption));
+		});
+		foreach (ModSpecialSeed includedSeed in includedSeeds) {
+			list.Add(includedSeed.GetSeedIcon(data));
 		}
 	}
 
+	internal static bool IsVanillaSeedDependency(string seedCode, WorldFileData data)
+	{
+		List<ModSpecialSeed> includedSeeds = new();
+		foreach (string seedName in data.ModSeeds) {
+			if (ModContent.TryFind(seedName, out ModSpecialSeed seed)) {
+				includedSeeds.Add(seed);
+			}
+		}
+		switch (seedCode) {
+			case "CorruptionCrimson":
+				return IsVanillaSeedDependency_Inner<WorldSeedOption_Drunk>(includedSeeds);
+			case "FTW":
+				return IsVanillaSeedDependency_Inner<WorldSeedOption_ForTheWorthy>(includedSeeds);
+			case "NotTheBees":
+				return IsVanillaSeedDependency_Inner<WorldSeedOption_NotTheBees>(includedSeeds);
+			case "Anniversary":
+				return IsVanillaSeedDependency_Inner<WorldSeedOption_Anniversary>(includedSeeds);
+			case "DontStarve":
+				return IsVanillaSeedDependency_Inner<WorldSeedOption_DontStarve>(includedSeeds);
+			case "Remix":
+				return IsVanillaSeedDependency_Inner<WorldSeedOption_Remix>(includedSeeds);
+			case "Traps":
+				return IsVanillaSeedDependency_Inner<WorldSeedOption_NoTraps>(includedSeeds);
+			case "Skyblock":
+				return IsVanillaSeedDependency_Inner<WorldSeedOption_Skyblock>(includedSeeds);
+		}
+
+		return false;
+	}
+
+	private static bool IsVanillaSeedDependency_Inner<T>(List<ModSpecialSeed> modSeeds) where T : AWorldGenerationOption
+	{
+		return modSeeds.Exists(modSeed => modSeed.Dependencies.Contains(WorldGenerationOptions.Get<T>()));
+	}
+
 	internal static bool CanEnableSeedsFromText(string seed)
+	{
+		AWorldGenerationOption option = GetOptionFromSeedText(seed);
+
+		if (option != null) {
+			WorldGenerationOptions.Reset();
+			option.Enabled = true;
+			SoundEngine.PlaySound(24);
+		}
+
+		return option != null;
+	}
+
+	internal static List<AWorldGenerationOption> AddModSeedOptions(IEnumerable<AWorldGenerationOption> genOptions)
+	{
+		List<ModSpecialSeed> toBeAdded = new List<ModSpecialSeed>(specialSeeds);
+		List<AWorldGenerationOption> genOptionsPlusModded = new List<AWorldGenerationOption>(genOptions);
+		//Add seeds that have no sorting logic/invalid sorting logic first so that the sorter doesn't get stuck.
+		for (int i = 0; i < toBeAdded.Count; i++) {
+			if (toBeAdded[i].Ordering.target != null) {
+				continue;
+			}
+			if (genOptionsPlusModded.Contains(toBeAdded[i].Ordering.target)) {
+				continue;
+			}
+			if (specialSeeds.Any(seed => seed.UIOption == toBeAdded[i].Ordering.target)) {
+				continue;
+			}
+			genOptionsPlusModded.Add(toBeAdded[i].UIOption);
+			toBeAdded.RemoveAt(i);
+			i -= 1;
+		}
+		while (toBeAdded.Count > 0) {
+			for (int i = 0; i < toBeAdded.Count; i++) {
+				int target = genOptionsPlusModded.FindIndex(sortTarget => sortTarget == toBeAdded[i].Ordering.target);
+				if (target == -1) {
+					continue;
+				}
+				genOptionsPlusModded.Insert(target + (toBeAdded[i].Ordering.after ? 1 : 0), toBeAdded[i].UIOption);
+				toBeAdded.RemoveAt(i);
+				i -= 1;
+			}
+		}
+
+		return genOptionsPlusModded;
+	}
+
+	public static AWorldGenerationOption GetOptionFromSeedText(string seed)
 	{
 		int seedNum = WorldFileData.TranslateSeed(seed);
 		string seedText = Regex.Replace(seed.ToLower(), "[^a-z0-9]+", "");
 		bool enabledASeed = false;
 		foreach (ModSpecialSeed seedCandidate in specialSeeds) {
 			//We reuse the instance created for WorldGenerationOption instead of making a new one
-			int[] candidateSeedValues = seedCandidate.WorldGenerationOption.SpecialSeedValues;
+			int[] candidateSeedValues = seedCandidate.UIOption.SpecialSeedValues;
 			foreach (int value in candidateSeedValues) {
 				if (value != seedNum) {
 					continue;
 				}
-				if (!enabledASeed) {
-					WorldGenerationOptions.Reset();
-				}
-				seedCandidate.WorldGenerationOption.Enabled = true;
-				enabledASeed = true;
+				return seedCandidate.UIOption;
 			}
 
-			string[] candidateSeedNames = seedCandidate.WorldGenerationOption.SpecialSeedNames;
+			string[] candidateSeedNames = seedCandidate.UIOption.SpecialSeedNames;
 			foreach (string seedName in candidateSeedNames) {
 				string formattedSeedName = Regex.Replace(seedName.ToLower(), "[^a-z0-9]+", "");
-				if(string.IsNullOrEmpty(formattedSeedName))
+				if (string.IsNullOrEmpty(formattedSeedName)) {
 					continue;
+				}
 				if (formattedSeedName != seedText) {
 					continue;
 				}
-				if (!enabledASeed) {
-					WorldGenerationOptions.Reset();
-				}
-				seedCandidate.WorldGenerationOption.Enabled = true;
-				enabledASeed = true;
+				return seedCandidate.UIOption;
 			}
 		}
 
-		if (enabledASeed) {
-			SoundEngine.PlaySound(24);
-		}
-
-		return enabledASeed;
+		return null;
 	}
 }

@@ -21,18 +21,41 @@
  	public UIWorldCreationAdvanced(UIWorldCreation state, bool allowScrolling = false)
  	{
  		_creationState = state;
-@@ -225,6 +_,14 @@
- 				Description = option.Description,
- 				Title = option.Title,
- 				Element = option.ProvideUIElement()
-+			}));
-+		}
-+		foreach (ModSpecialSeed specialSeed in SpecialSeedLoader.specialSeeds) {
-+			list.Add(CreateButton(new WorldSpecialSeedOption {
-+				Seed = specialSeed.WorldGenerationOption,
-+				Description = specialSeed.Description,
-+				Title = specialSeed.DisplayName,
-+				Element = specialSeed.ProvideSeedIconElement()
- 			}));
- 		}
+@@ -70,7 +_,9 @@
+ 			VAlign = 0f
+ 		};
  
++		/*
+ 		if (!_allowScrolling)
++		*/
+ 			uIElement.MaxHeight = StyleDimension.FromPixels(400f);
+ 
+ 		uIElement.SetPadding(0f);
+@@ -132,7 +_,8 @@
+ 		UIScrollbar uIScrollbar = new UIScrollbar {
+ 			Height = StyleDimension.FromPixelsAndPercent(-138 - num * 2, 1f),
+ 			Top = StyleDimension.FromPixels(44 + num),
+-			HAlign = 1f
++			HAlign = 1f,
++			AutoHide = true
+ 		};
+ 
+ 		uIList.SetScrollbar(uIScrollbar);
+@@ -196,7 +_,7 @@
+ 		GroupOptionButton<AWorldGenerationOption>[] array = (_seedButtons = PrepareSeedButtons());
+ 		_seedButtonRegion = new UIElement {
+ 			Width = StyleDimension.FromPercent(1f),
+-			Height = StyleDimension.FromPixels((float)Math.Ceiling((double)array.Length / (double)num) * 70f - 10f)
++			Height = StyleDimension.FromPixels((float)Math.Ceiling((double)(array.Length+1) / (double)num) * 70f)
+ 		};
+ 
+ 		listArea.Add(_seedButtonRegion);
+@@ -218,7 +_,7 @@
+ 	private GroupOptionButton<AWorldGenerationOption>[] PrepareSeedButtons()
+ 	{
+ 		List<GroupOptionButton<AWorldGenerationOption>> list = new List<GroupOptionButton<AWorldGenerationOption>>();
+-		foreach (AWorldGenerationOption option in WorldGenerationOptions.Options) {
++		foreach (AWorldGenerationOption option in SpecialSeedLoader.AddModSeedOptions(WorldGenerationOptions.Options)) {
+ 			option.Load();
+ 			list.Add(CreateButton(new WorldSpecialSeedOption {
+ 				Seed = option,

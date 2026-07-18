@@ -11,7 +11,7 @@
  	private void UpdateDependentState(AWorldGenerationOption changed)
  	{
 -		base.Enabled = WorldGenerationOptions.Options.All((AWorldGenerationOption x) => x == this || !x.Enabled);
-+		base.Enabled = WorldGenerationOptions.Options.All((AWorldGenerationOption x) => x == this || !x.Enabled) && SpecialSeedLoader.specialSeeds.All((ModSpecialSeed modSeed) => !modSeed.WorldGenerationOption.Enabled);
++		base.Enabled = WorldGenerationOptions.Options.All((AWorldGenerationOption x) => x == this || !x.Enabled) && SpecialSeedLoader.specialSeeds.All((ModSpecialSeed modSeed) => !modSeed.UIOption.Enabled);
  	}
  
  	protected override void OnEnabledStateChanged()
@@ -22,7 +22,7 @@
 +		}
 +
 +		foreach (ModSpecialSeed modSeed in SpecialSeedLoader.specialSeeds) {
-+			modSeed.WorldGenerationOption.Enabled = false;
++			modSeed.UIOption.Enabled = false;
  		}
  	}
  }

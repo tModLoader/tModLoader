@@ -98,7 +98,7 @@ public abstract class ModMenu : ModType
 	/// <summary>
 	/// Allows you to modify the loading screen tips that are displayed at the bottom of the screen.
 	/// Vanilla usages of this include the Drunk seed replacing the text with random numbers, or For the Worthy flipping it backwards.
-	/// Check <code>WorldGen.generatingWorld</code> if you want this to only apply while a world is generating.
+	/// Check <see cref="WorldGen.generatingWorld"/> if you want this to only apply while a world is generating.
 	/// <seealso cref="ModifyWorldStatusText"/>
 	/// </summary>
 	public virtual void ModifyLoadingTips(ref string text, ref Color drawColor)

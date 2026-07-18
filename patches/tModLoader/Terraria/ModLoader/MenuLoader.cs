@@ -96,7 +96,8 @@ public static class MenuLoader
 
 	public static void ActivateBiggerAndBoulderMenu()
 	{
-		switchToMenu = MenuBiggerAndBoulder;
+		if(currentMenu != SpecialSeedLoader.CurrentWorldGenMenu)
+			switchToMenu = MenuBiggerAndBoulder;
 	}
 
 	internal static void UpdateAndDrawModMenu(SpriteBatch spriteBatch, GameTime gameTime, Color color, float logoRotation, float logoScale)

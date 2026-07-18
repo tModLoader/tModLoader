@@ -288,11 +288,6 @@ public static class ModContent
 	/// </summary>
 	public static int EmoteBubbleType<T>() where T : ModEmoteBubble => GetInstance<T>()?.Type ?? 0;
 
-	/// <summary>
-	/// Get whether the specified special seed is enabled on this world
-	/// </summary>
-	public static bool SpecialSeedEnabled<T>() where T : ModSpecialSeed => GetInstance<T>()?.Enabled ?? false;
-
 	private record struct ScopedCleanup(Action Dispose) : IDisposable
 	{
 		void IDisposable.Dispose() => Dispose();
@@ -341,6 +336,7 @@ public static class ModContent
 		TileLoader.PostSetupContent();
 		BuffLoader.PostSetupContent();
 		BiomeConversionLoader.PostSetupContent();
+		SpecialSeedLoader.PostSetupContent();
 
 		Interface.loadMods.SetLoadStage("tModLoader.MSPostSetupContent", ModLoader.Mods.Length);
 		LoadModContent(token, mod => {
