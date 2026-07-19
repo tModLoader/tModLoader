@@ -305,17 +305,6 @@ Longer TODOs that would clutter above
  				list.RemoveAt(0);
 ```
 
-- NPC.netUpdate field moved, need to restore this patch in a new patch after patches fixed.
-```diff
-+	/// <summary>
-+	/// Set to true in <see cref="ModNPC.AI"/> or other suitable places to trigger the NPC syncing code (<see cref="MessageID.SyncNPC"/>). This will sync position, life, and other data about this NPC from the server to the clients. Modded data from <see cref="ModNPC.SendExtraAI(System.IO.BinaryWriter)"/> and <see cref="GlobalNPC.SendExtraAI(NPC, ModLoader.IO.BitWriter, System.IO.BinaryWriter)"/> will be included.
-+	/// <para/> Use this to sync changes so that the client's NPC instances stay in sync with the server's. Only changes that are non-Deterministic on the client's side, such as random decisions or code only running on the server, need to be synced. The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Netcode">Basic Netcode wiki page</see> goes into more details and links to examples.
-+	/// <para/> As the server is in charge of NPC, changes to NPC data should only happen on the server in multiplayer.
-+	/// </summary>
- 	public bool netUpdate;
- 	public bool netUpdate2;
-```
-
 - These buffimmune change are new and likely need to be used to update TML-specific sets.
 ```cs
 		if (buffImmune[20]) {
