@@ -35,6 +35,16 @@
  			return;
  
  		_targets.Clear();
+@@ -263,6 +_,9 @@
+ 				if (tile.active() && !tile.inActive() && (flag || flag2)) {
+ 					bool flag3 = false;
+ 					switch (type) {
++						case int _ when type >= ItemID.Count:
++							flag3 = ItemID.Sets.GrassSeedDirtTiles[type]?.Contains(tile.type) ?? false;
++							break;
+ 						default:
+ 							flag3 = tile.type == 0;
+ 							break;
 @@ -672,7 +_,7 @@
  	private static void Step_BlocksLines(SmartCursorUsageInfo providedInfo, ref int focusedX, ref int focusedY)
  	{

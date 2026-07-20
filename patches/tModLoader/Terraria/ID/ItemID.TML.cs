@@ -217,5 +217,11 @@ partial class ItemID
 		/// Set to <see langword="true"/> to have seeds drop whenever grass breaks with this Item in the player's inventory.
 		/// </summary>
 		public static bool[] DropSeedsIfInInventory = Factory.CreateBoolSet(false, Blowpipe, Blowgun);
+
+		/// <summary>
+		/// Dictates which dirt tiles each grass seed item (<see cref="GrassSeeds"/>) can be planted on. Only checked for modded tiles. Used for smart cursor. 
+		/// <br/> Defaults to <see langword="null"/>.
+		/// </summary>
+		public static List<int>[] GrassSeedDirtTiles = Factory.CreateCustomSet<List<int>>(null);
 	}
 }
