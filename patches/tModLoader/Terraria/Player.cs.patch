@@ -6676,6 +6676,17 @@
  					if (Main.tile[num, num2].active())
  						array[i, j] = Main.tile[num, num2].type;
  					else
+@@ -31193,7 +_,10 @@
+ 		for (int i = tileTargetX - 1; i <= tileTargetX + 1; i++) {
+ 			for (int j = tileTargetY - 1; j <= tileTargetY + 1; j++) {
+ 				Tile tile = Main.tile[i, j];
++				/*
+ 				if (!tile.active() || inventory[selectedItem].createTile == tile.type || (tile.type != 2 && tile.type != 23 && tile.type != 60 && tile.type != 70 && tile.type != 109 && tile.type != 199 && tile.type != 477 && tile.type != 492 && tile.type != 633))
++				*/
++				if (!tile.active() || inventory[selectedItem].createTile == tile.type || (!TileID.Sets.Grass[tile.type] && !TileID.Sets.GrassSpecial[tile.type] && !TileID.Sets.NeedsGrassFraming[tile.type] || TileID.Sets.GrassNotKilledWhenSurrounded[tile.type]))
+ 					continue;
+ 
+ 				bool flag = true;
 @@ -31213,7 +_,7 @@
  		}
  	}

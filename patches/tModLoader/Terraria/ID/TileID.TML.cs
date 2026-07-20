@@ -17,6 +17,12 @@ partial class TileID
 		/// <br/><br/> Defaults to <see langword="false"/>. See also <see cref="TileID.Sets.GrassSpecial"/> and <see cref="NeedsGrassFraming"/>.
 		/// </summary>
 		public static bool[] Grass = Factory.CreateBoolSet(TileID.Grass, CorruptGrass, HallowedGrass, CrimsonGrass, GolfGrass, GolfGrassHallowed); // 2, 23, 109, 199, 477, 492
+
+		/// <summary>
+		/// Grass tiles in this set will not be destroyed when newly placed solid tiles surround it.
+		/// </summary>
+		public static bool[] GrassNotKilledWhenSurrounded = Factory.CreateBoolSet(CorruptJungleGrass, CrimsonJungleGrass);
+
 		/// <summary> Tiles within this set are multi-tiles that don't have a TileObjectData. This is only used to prevent TileLoader.Drop from being called multiple times when breaking these tiles, as might be expected. Trees and Cactus are not included in this, since each of those tiles drop items. </summary>
 		public static bool[] IsMultitile = Factory.CreateBoolSet(Pots, ShadowOrbs, PlantDetritus, LifeFruit, PlanteraBulb, OasisPlants); // 165, 185, 201: Have 1x1 and multitiles in same tile, ignore.
 
