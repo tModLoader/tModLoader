@@ -170,9 +170,11 @@ public abstract class ModSpecialSeed : ModSeedType
 		SetStaticDefaults();
 	}
 
-	internal void DisposeTexture()
+	internal void UnsubscribeAndNullify()
 	{
-		textureAsset.Dispose();
+		_uIOption.OnEnableStateChange -= OnUIEnabledStateChange;
+		_uIOption.OnAnyOptionStateChange -= OnAnyOptionStateChange;
+		_uIOption = null;
 	}
 
 	internal void PostSetupContent()

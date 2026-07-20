@@ -60,6 +60,7 @@ public class ExampleSpecialSeed : ModSpecialSeed
 		}
 	}
 }
+
 public class ExampleSpecialSeedPass : GenPass
 {
 	public ExampleSpecialSeedPass(string name, float loadWeight) : base(name, loadWeight) {

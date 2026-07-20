@@ -37,7 +37,7 @@ public static class SeedLoader
 	internal static void Unload()
 	{
 		foreach (ModSpecialSeed seed in specialSeeds) {
-			seed.DisposeTexture();
+			seed.UnsubscribeAndNullify();
 		}
 		specialSeeds.Clear();
 		secretSeeds.Clear();

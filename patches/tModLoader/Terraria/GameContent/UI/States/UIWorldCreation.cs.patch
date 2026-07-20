@@ -69,3 +69,12 @@
  			for (int i = 0; i < 61; i++) {
  				UpdateSpecialSeedRing(element);
  			}
+@@ -1005,7 +_,7 @@
+ 
+ 		DrawSpecialSeedRing();
+ 		spriteBatch.End();
+-		spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.UIScaleMatrix);
++		spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.None, new RasterizerState{CullMode = CullMode.CullCounterClockwiseFace, ScissorTestEnable = true}, null, Main.UIScaleMatrix);
+ 	}
+ 
+ 	public void DrawSpecialSeedRingCallbackWithoutCondition(UIElement element, SpriteBatch spriteBatch)
