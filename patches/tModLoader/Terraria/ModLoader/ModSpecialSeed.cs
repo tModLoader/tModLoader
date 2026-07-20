@@ -13,17 +13,10 @@ using Terraria.UI;
 namespace Terraria.ModLoader;
 
 /// <summary>
-/// This type of class represents a special seed added by a mod.
+/// This type of class represents a special seed added by a mod. Special seeds can be used to change gameplay and/or worldgen only for worlds that have them enabled.
 /// </summary>
-public abstract class ModSpecialSeed : ModTexturedType
+public abstract class ModSpecialSeed : ModSeedType
 {
-	/// <summary>
-	/// Whether this seed is enabled for the current world.
-	/// <br/><br/>It is recommended that you use <see cref="SpecialSeedLoader.SeedEnabled"/> to access this property.
-	/// </summary>
-	public ref bool Enabled => ref _enabled;
-	private bool _enabled;
-
 	private ModSpecialSeedUIOption _uIOption;
 
 	/// <summary>
@@ -42,6 +35,8 @@ public abstract class ModSpecialSeed : ModTexturedType
 	/// The translation for the description used for this special seed
 	/// </summary>
 	public virtual LocalizedText Description => Language.GetOrRegister($"Mods.{Mod.Name}.SpecialSeeds.{Name}.{nameof(Description)}", () => "");
+
+	public virtual string Texture => (GetType().Namespace + "." + Name).Replace('.', '/');
 
 	/// <summary>
 	/// The menu that will be used while a world with this seed is being generated
@@ -88,6 +83,7 @@ public abstract class ModSpecialSeed : ModTexturedType
 	}
 
 	/// <inheritdoc cref="SortBefore(AWorldGenerationOption)"/>
+	/// <param name="option">The ModSpecialSeed instance to sort this seed before.</param>
 	public void SortBefore(ModSpecialSeed option)
 	{
 		SortBefore(option.UIOption);
@@ -115,6 +111,7 @@ public abstract class ModSpecialSeed : ModTexturedType
 	}
 
 	/// <inheritdoc cref="SortAfter(AWorldGenerationOption)"/>
+	/// <param name="option">The ModSpecialSeed instance to sort this seed after.</param>
 	public void SortAfter(ModSpecialSeed option)
 	{
 		SortAfter(option.UIOption);
@@ -148,27 +145,34 @@ public abstract class ModSpecialSeed : ModTexturedType
 
 	internal Asset<Texture2D> GetSeedIcon(WorldFileData data)
 	{
-		string text = "";
-		text += (data.IsHardMode ? "Hallow" : "");
-		text += (data.HasCorruption ? "Corruption" : "Crimson");
-		return worldIcons[text];
+		return GetSeedTexture(data.HasCorruption, data.IsHardMode);
 	}
+
+	/// <summary>
+	/// Gets the icon used to represent worlds with this seed enabled.
+	/// Unlike the autoloaded texture, the texture used here needs to have the icon backdrop behind it.
+	/// </summary>
+	/// <param name="isCorruption">True if this is a Corruption world, false if it is a Crimson world.</param>
+	/// <param name="isHardMode"></param>
+	/// <returns></returns>
+	public abstract Asset<Texture2D> GetSeedTexture(bool isCorruption, bool isHardMode);
 
 	protected sealed override void Register()
 	{
 		ModTypeLookup<ModSpecialSeed>.Register(this);
-		SpecialSeedLoader.Add(this);
+		SeedLoader.Add(this);
 	}
 
 	public sealed override void SetupContent()
 	{
 		textureAsset = ModContent.Request<Texture2D>(Texture);
-		worldIcons["Corruption"] = IconCorruption;
-		worldIcons["Crimson"] = IconCrimson;
-		worldIcons["HallowCorruption"] = IconHallowCorruption;
-		worldIcons["HallowCrimson"] = IconHallowCrimson;
 		SetupWorldGenerationOption();
 		SetStaticDefaults();
+	}
+
+	internal void DisposeTexture()
+	{
+		textureAsset.Dispose();
 	}
 
 	internal void PostSetupContent()
@@ -190,12 +194,6 @@ public abstract class ModSpecialSeed : ModTexturedType
 	public List<AWorldGenerationOption> Incompatibilities { get; private set; }
 
 	private Asset<Texture2D> textureAsset;
-	private Dictionary<string, Asset<Texture2D>> worldIcons = new();
-
-	public abstract Asset<Texture2D> IconHallowCorruption { get; }
-	public abstract Asset<Texture2D> IconHallowCrimson { get; }
-	public abstract Asset<Texture2D> IconCorruption { get; }
-	public abstract Asset<Texture2D> IconCrimson { get; }
 
 	private void SetupWorldGenerationOption()
 	{
@@ -302,11 +300,6 @@ public abstract class ModSpecialSeed : ModTexturedType
 	/// <returns></returns>
 	public virtual IEnumerable<int> SpecialSeedNumbers() { return Enumerable.Empty<int>(); }
 
-	/// <summary>
-	/// <inheritdoc cref="ModSystem.ModifyWorldGenTasks"/>
-	/// <br/><br/>This only applies for worlds with this seed enabled. It is called before ModSystem.ModifyWorldGenTasks.
-	/// </summary>
-	public virtual void ModifyWorldGenTasks(List<GenPass> tasks) { }
 
 	/// <summary>
 	/// Allows you to make things happen when the button for this seed is pressed in the seed menu.

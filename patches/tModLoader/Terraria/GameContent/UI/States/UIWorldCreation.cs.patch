@@ -35,17 +35,37 @@
  				SoundEngine.PlaySound(24);
  			}
 +			else {
-+				_isSpecialSeedText = SpecialSeedLoader.CanEnableSeedsFromText(_optionSeed);
++				_isSpecialSeedText = SeedLoader.CanEnableSeedsFromText(_optionSeed);
 +			}
  
  			if (WorldGen.SecretSeed.CheckInputForSecretSeed(_optionSeed, out var secretSeed)) {
  				if (!secretSeed.Enabled) {
-@@ -941,6 +_,8 @@
- 			string seed = string.Join("|", _secretSeedTextsEntered) + "|" + Main.ActiveWorldFileData.SeedText;
+@@ -942,6 +_,8 @@
  			Main.ActiveWorldFileData.SetSeed(seed);
  		}
-+
-+		SpecialSeedLoader.SetWorldGenMenu();
  
++		SeedLoader.SetWorldGenMenu();
++
  		WorldGenerator.Controller controller = new WorldGenerator.Controller {
  			Paused = (DebugOptions.enableDebugCommands && Main.keyState.PressingControl())
+ 		};
+@@ -985,6 +_,9 @@
+ 		Array.Clear(oldTangent, 0, oldTangent.Length);
+ 	}
+ 
++	// Added by TML.
++	internal bool RecalculateSpecialSeedRing { get; set; }
++
+ 	public void DrawSpecialSeedRingCallback(UIElement element, SpriteBatch spriteBatch)
+ 	{
+ 		if (!HasEnteredSpecialSeed)
+@@ -992,7 +_,8 @@
+ 
+ 		spriteBatch.End();
+ 		spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.UIScaleMatrix);
+-		if (oldPos[0] == Vector2.Zero) {
++		if (oldPos[0] == Vector2.Zero || RecalculateSpecialSeedRing) {
++			RecalculateSpecialSeedRing = false;
+ 			for (int i = 0; i < 61; i++) {
+ 				UpdateSpecialSeedRing(element);
+ 			}

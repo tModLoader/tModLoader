@@ -1578,7 +1578,7 @@
  					else {
  						AWorldGenerationOption optionFromSeedText = WorldGenerationOptions.GetOptionFromSeedText(text5);
 +						if (optionFromSeedText == null)
-+							optionFromSeedText = SpecialSeedLoader.GetOptionFromSeedText(text5);
++							optionFromSeedText = SeedLoader.GetOptionFromSeedText(text5);
  						WorldGenerationOptions.SelectOption(optionFromSeedText);
  						if (optionFromSeedText != null || string.IsNullOrWhiteSpace(text5))
  							ActiveWorldFileData.SetSeedToRandomWithCurrentEvents();
@@ -1740,7 +1740,7 @@
  	private static void DedServ_SeedFlagsMenu()
  	{
 -		List<AWorldGenerationOption> list = WorldGenerationOptions.Options.ToList();
-+		List<AWorldGenerationOption> list = SpecialSeedLoader.AddModSeedOptions(WorldGenerationOptions.Options);
++		List<AWorldGenerationOption> list = SeedLoader.AddModSeedOptions(WorldGenerationOptions.Options);
  		foreach (AWorldGenerationOption item in list) {
  			item.Load();
  		}
@@ -6266,7 +6266,7 @@
  		infectedSeed = false;
  		teamBasedSpawnsSeed = false;
  		dualDungeonsSeed = false;
-+		SpecialSeedLoader.DisableAll();
++		SeedLoader.DisableAll();
  	}
  
  	private static void PostDrawMenu(Microsoft.Xna.Framework.Point screenSizeCache, Microsoft.Xna.Framework.Point screenSizeCacheAfterScaling)

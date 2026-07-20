@@ -12,6 +12,18 @@ namespace ExampleMod.Content.SpecialSeeds;
 
 public class ExampleAdvancedSpecialSeed : ModSpecialSeed
 {
+	private Asset<Texture2D> iconCorruption;
+	private Asset<Texture2D> iconHallowCorruption;
+	private Asset<Texture2D> iconCrimson;
+	private Asset<Texture2D> iconHallowCrimson;
+
+	public override void SetStaticDefaults() {
+		iconCorruption = ModContent.Request<Texture2D>($"ExampleMod/Content/SpecialSeeds/{Name}_IconCorruption");
+		iconHallowCorruption = ModContent.Request<Texture2D>($"ExampleMod/Content/SpecialSeeds/{Name}_IconHallowCorruption");
+		iconCrimson = ModContent.Request<Texture2D>($"ExampleMod/Content/SpecialSeeds/{Name}_IconCrimson");
+		iconHallowCrimson = ModContent.Request<Texture2D>($"ExampleMod/Content/SpecialSeeds/{Name}_IconHallowCrimson");
+	}
+
 	public override void PostAddSeeds() {
 		SortAfterModdedSeed<ExampleSpecialSeed>();
 		// alternatively SortAfter(ModContent.GetInstance<ExampleSpecialSeed>());
@@ -35,10 +47,14 @@ public class ExampleAdvancedSpecialSeed : ModSpecialSeed
 
 	public override ModMenu WorldGenMenu => ModContent.GetInstance<ExampleModMenu>();
 
-	public override Asset<Texture2D> IconCorruption => ModContent.Request<Texture2D>($"ExampleMod/Content/SpecialSeeds/{Name}_IconCorruption");
-	public override Asset<Texture2D> IconHallowCorruption => ModContent.Request<Texture2D>($"ExampleMod/Content/SpecialSeeds/{Name}_IconHallowCorruption");
-	public override Asset<Texture2D> IconCrimson => ModContent.Request<Texture2D>($"ExampleMod/Content/SpecialSeeds/{Name}_IconCrimson");
-	public override Asset<Texture2D> IconHallowCrimson => ModContent.Request<Texture2D>($"ExampleMod/Content/SpecialSeeds/{Name}_IconHallowCrimson");
+	public override Asset<Texture2D> GetSeedTexture(bool isCorruption, bool isHardMode) {
+		if (isCorruption) {
+			return isHardMode ? iconHallowCorruption : iconCorruption;
+		}
+		else {
+			return isHardMode ? iconHallowCrimson : iconCrimson;
+		}
+	}
 
 	public override void ModifyWorldGenTasks(List<GenPass> tasks) {
 		//Add a GenPass immediately after the "Grass" pass. ExampleOreSystem explains this approach in more detail.
@@ -50,21 +66,3 @@ public class ExampleAdvancedSpecialSeed : ModSpecialSeed
 	}
 }
 
-public class ExampleSpecialSeedPass : GenPass
-{
-	public ExampleSpecialSeedPass(string name, float loadWeight) : base(name, loadWeight) {
-	}
-
-	protected override void ApplyPass(GenerationProgress progress, GameConfiguration configuration) {
-		for (int i = 0; i < Main.maxTilesX; i++) {
-			for (int j = 0; j < Main.worldSurface; j++) {
-				Tile tile = Main.tile[i, j];
-				if (!TileID.Sets.Grass[tile.TileType] && !TileID.Sets.Dirt[tile.TileType]) {
-					continue;
-				}
-
-				tile.TileType = (ushort)ModContent.TileType<ExampleBlock>();
-			}
-		}
-	}
-}

@@ -1683,10 +1683,12 @@ Mods: {
 			}
 
 			ExampleAdvancedSpecialSeed: {
-				Description: ""
+				Description: This is another example special seed, demonstrating seed dependencies and incompatibilities.
 				DisplayName: Example Advanced Special Seed
 			}
 		}
+
+		SecretSeeds.ExampleSecretSeed.Description: This is an example of a modded secret seed. (Effects are usually explained in these parentheses)
 	}
 }
 

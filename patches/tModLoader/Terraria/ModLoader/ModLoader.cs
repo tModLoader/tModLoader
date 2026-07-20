@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using ReLogic.OS;
+using Terraria.GameContent;
 using Terraria.GameContent.Liquid;
 using Terraria.Initializers;
 using Terraria.Localization;
@@ -175,7 +176,7 @@ public static class ModLoader
 				var mod = availableMods.FirstOrDefault(m => m.Name == responsibleMods[0]); //use First rather than Single, incase of "Two mods with the same name" error message from ModOrganizer (#639)
 				if (mod != null)
 					msg += $" v{mod.Version}";
-					
+
 				if (mod != null && mod.tModLoaderVersion.MajorMinorBuild() != BuildInfo.tMLVersion.MajorMinorBuild())
 					// This note is not very important, and thus will only be shown in logs, so as to not confuse players.
 					logOnlySuffix += "\n" + Language.GetTextValue("tModLoader.LoadErrorVersionMessage", mod.tModLoaderVersion, versionedName);
@@ -279,6 +280,7 @@ public static class ModLoader
 		Interface.loadMods.SetLoadStage("tModLoader.MSUnloading", Mods.Length);
 
 		WorldGen.clearWorld();
+		SecretSeedsTracker.ResetConfig();
 		ModContent.UnloadModContent();
 
 		Mods = new Mod[0];

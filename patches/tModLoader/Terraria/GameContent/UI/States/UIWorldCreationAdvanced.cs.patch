@@ -31,7 +31,7 @@
  			uIElement.MaxHeight = StyleDimension.FromPixels(400f);
  
  		uIElement.SetPadding(0f);
-@@ -132,7 +_,8 @@
+@@ -132,8 +_,11 @@
  		UIScrollbar uIScrollbar = new UIScrollbar {
  			Height = StyleDimension.FromPixelsAndPercent(-138 - num * 2, 1f),
  			Top = StyleDimension.FromPixels(44 + num),
@@ -39,8 +39,11 @@
 +			HAlign = 1f,
 +			AutoHide = true
  		};
++		uIScrollbar.OnScroll += () => _creationState.RecalculateSpecialSeedRing = true;
++
  
  		uIList.SetScrollbar(uIScrollbar);
+ 		infoContainer.Append(uIList);
 @@ -196,7 +_,7 @@
  		GroupOptionButton<AWorldGenerationOption>[] array = (_seedButtons = PrepareSeedButtons());
  		_seedButtonRegion = new UIElement {
@@ -55,7 +58,7 @@
  	{
  		List<GroupOptionButton<AWorldGenerationOption>> list = new List<GroupOptionButton<AWorldGenerationOption>>();
 -		foreach (AWorldGenerationOption option in WorldGenerationOptions.Options) {
-+		foreach (AWorldGenerationOption option in SpecialSeedLoader.AddModSeedOptions(WorldGenerationOptions.Options)) {
++		foreach (AWorldGenerationOption option in SeedLoader.AddModSeedOptions(WorldGenerationOptions.Options)) {
  			option.Load();
  			list.Add(CreateButton(new WorldSpecialSeedOption {
  				Seed = option,

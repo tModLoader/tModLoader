@@ -96,7 +96,7 @@ public static class MenuLoader
 
 	public static void ActivateBiggerAndBoulderMenu()
 	{
-		if(currentMenu != SpecialSeedLoader.CurrentWorldGenMenu)
+		if(currentMenu != SeedLoader.CurrentWorldGenMenu)
 			switchToMenu = MenuBiggerAndBoulder;
 	}
 
@@ -177,8 +177,8 @@ public static class MenuLoader
 			}
 		}
 
-		if (WorldGen.generatingWorld && SpecialSeedLoader.CurrentWorldGenMenu != null && SpecialSeedLoader.CurrentWorldGenMenu != currentMenu) {
-			switchToMenu = SpecialSeedLoader.CurrentWorldGenMenu;
+		if (WorldGen.generatingWorld && SeedLoader.CurrentWorldGenMenu != null && SeedLoader.CurrentWorldGenMenu != currentMenu) {
+			switchToMenu = SeedLoader.CurrentWorldGenMenu;
 		}
 
 		if (Main.menuMode == 0) {

@@ -22,7 +22,7 @@
  			list.Add(GetSeedIcon("Skyblock", hardmodeVariants: false, evilVariants: false));
  
 +		list.RemoveAll(icon => icon == null);
-+		SpecialSeedLoader.AddModdedSeedIcons(_data, list);
++		SeedLoader.AddModdedSeedIcons(_data, list);
 +
  		if (list.Count > 0)
  			return list;
@@ -31,7 +31,7 @@
  
  	private Asset<Texture2D> GetSeedIcon(string seed, bool hardmodeVariants = true, bool evilVariants = true)
  	{
-+		if (SpecialSeedLoader.IsVanillaSeedDependency(seed, _data))
++		if (SeedLoader.IsVanillaSeedDependency(seed, _data))
 +			return null;
  		string text = "Images/UI/Icon";
  		if (hardmodeVariants)
