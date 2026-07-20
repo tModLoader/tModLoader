@@ -8796,6 +8796,17 @@
  
  		if (tileTarget.type == 147 || tileTarget.type == 0 || tileTarget.type == 40 || tileTarget.type == 53 || tileTarget.type == 57 || tileTarget.type == 59 || tileTarget.type == 123 || tileTarget.type == 224 || tileTarget.type == 397)
  			num += pickPower;
+@@ -41386,7 +_,10 @@
+ 
+ 	private bool DoesPickTargetTransformOnKill(HitTile hitCounter, int damage, int x, int y, int pickPower, int bufferIndex, Tile tileTarget)
+ 	{
++		/* // Causes KillTile to be called with the fail parameter as true, which will transform the tile to stone or the corresponding "dirt".
+ 		if (hitCounter.AddDamage(bufferIndex, damage, updateAmount: false) >= 100 && (tileTarget.type == 2 || tileTarget.type == 477 || tileTarget.type == 492 || tileTarget.type == 23 || tileTarget.type == 60 || tileTarget.type == 70 || tileTarget.type == 109 || tileTarget.type == 199 || Main.tileMoss[tileTarget.type] || tileTarget.type == 662 || tileTarget.type == 661 || TileID.Sets.tileMossBrick[tileTarget.type] || tileTarget.type == 633))
++		*/
++		if (hitCounter.AddDamage(bufferIndex, damage, updateAmount: false) >= 100 && (TileID.Sets.Grass[tileTarget.type] || TileID.Sets.GrassSpecial[tileTarget.type] || TileID.Sets.NeedsGrassFraming[tileTarget.type] || Main.tileMoss[tileTarget.type] || TileID.Sets.tileMossBrick[tileTarget.type]))
+ 			return true;
+ 
+ 		return false;
 @@ -41631,15 +_,43 @@
  	public void DropItems()
  	{
