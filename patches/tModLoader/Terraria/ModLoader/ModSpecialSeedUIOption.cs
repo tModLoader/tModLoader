@@ -41,4 +41,9 @@ internal class ModSpecialSeedUIOption : AWorldGenerationOption
 		if(OnAnyOptionStateChange != null)
 			OnAnyOptionStateChange(changed);
 	}
+
+	public void Unsubscribe()
+	{
+		OnOptionStateChanged -= UpdateOptionState;
+	}
 }

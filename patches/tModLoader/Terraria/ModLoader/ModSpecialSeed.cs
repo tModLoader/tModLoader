@@ -170,11 +170,11 @@ public abstract class ModSpecialSeed : ModSeedType
 		SetStaticDefaults();
 	}
 
-	internal void UnsubscribeAndNullify()
+	internal void Unsubscribe()
 	{
 		_uIOption.OnEnableStateChange -= OnUIEnabledStateChange;
 		_uIOption.OnAnyOptionStateChange -= OnAnyOptionStateChange;
-		_uIOption = null;
+		_uIOption.Unsubscribe();
 	}
 
 	internal void PostSetupContent()
