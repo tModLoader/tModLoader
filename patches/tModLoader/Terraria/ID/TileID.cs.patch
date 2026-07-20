@@ -203,9 +203,24 @@
  		public static bool[] HasOutlines = Factory.CreateBoolSet(10, 11, 15, 21, 29, 55, 79, 85, 88, 89, 97, 102, 104, 125, 132, 136, 139, 144, 207, 209, 212, 215, 216, 237, 287, 335, 338, 354, 356, 377, 386, 387, 388, 389, 410, 411, 425, 441, 455, 463, 467, 468, 470, 475, 487, 480, 494, 497, 509, 510, 511, 621, 464, 657, 658, 663);
  		public static bool[] AllTiles = Factory.CreateBoolSet(true);
  		public static bool[] Dirt = Factory.CreateBoolSet(0, 668);
-@@ -181,10 +_,30 @@
+@@ -176,15 +_,45 @@
+ 		public static bool[] Ices = Factory.CreateBoolSet(161, 200, 163, 164);
+ 		public static bool[] IcesSlush = Factory.CreateBoolSet(161, 200, 163, 164, 224);
+ 		public static bool[] IcesSnow = Factory.CreateBoolSet(161, 200, 163, 164, 147);
++		/// <summary>
++		/// Contains grasses that transform into <see cref="TileID.Mud"/> when mined.
++		/// <br/><br/> Vanilla entries include <see cref="JungleGrass"/>, <see cref="MushroomGrass"/>, <see cref="CorruptJungleGrass"/>, and <see cref="CrimsonJungleGrass"/>,
++		/// <br/><br/> Defaults to <see langword="false"/>. See also <see cref="TileID.Sets.Grass"/> and <see cref="NeedsGrassFraming"/>.
++		/// </summary>
+ 		public static bool[] GrassSpecial = Factory.CreateBoolSet(70, 60, 661, 662);
+ 		public static bool[] JungleSpecial = Factory.CreateBoolSet(226, 225, 211);
  		public static bool[] HellSpecial = Factory.CreateBoolSet(58, 76, 75);
  		public static bool[] Leaves = Factory.CreateBoolSet(384, 192);
++		/// <summary>
++		/// Contains moss tiles variants for <see cref="GrayBrick"/>. These tiles look like <see cref="TileID.GrayBrick"/> with moss overlaying it. They act like GrayBrick for various operations and turn into GrayBrick when mined. They also spread moss to nearby tiles.
++		/// <br/><br/> Vanilla entries include <see cref="GreenMossBrick"/>, BrownMossBrick, RedMossBrick, BlueMossBrick, PurpleMossBrick, LavaMossBrick, KryptonMossBrick, XenonMossBrick, ArgonMossBrick, VioletMossBrick, and RainbowMossBrick.
++		/// <br/><br/> Defaults to <see langword="false"/>. See also <see cref="Main.tileMoss"/>.
++		/// </summary>
  		public static bool[] tileMossBrick = Factory.CreateBoolSet(false, 512, 513, 514, 515, 516, 517, 535, 537, 540, 626, 628);
 +		/// <summary>
 +		/// Indicates if a tile is eligible to be replaced during world generation. Tiles indicated to not be valid for general placement will prevent the placement of various micro biomes such as hives, campsites, enchanted sword shrines, and minecart tracks.
@@ -234,7 +249,7 @@
  		public static bool[] CanBeClearedDuringGeneration = Factory.CreateBoolSet(true, 396, 400, 401, 397, 398, 399, 404, 368, 367, 226, 237);
  		public static List<int> CorruptCountCollection = new List<int> {
  			23,
-@@ -231,34 +_,87 @@
+@@ -231,34 +_,96 @@
  		public static bool[] IsSkippedForNPCSpawningGroundTypeCheck = Factory.CreateBoolSet(false, 421, 422);
  		public static bool[] BlocksStairs = Factory.CreateBoolSet(386, 387, 54, 541);
  		public static bool[] BlocksStairsAbove = Factory.CreateBoolSet(386, 387);
@@ -245,7 +260,16 @@
 -		public static bool[] BlocksWaterDrawingBehindSelf = Factory.CreateBoolSet(false, 54, 541, 328, 470);
 +		public static bool[] BlocksWaterDrawingBehindSelf = Factory.CreateBoolSet(false, 54, 541, 328, 470, 459);
  		public static bool[] AllowLightInWater = Factory.CreateBoolSet(false, 54, 541, 328);
++		/// <summary>
++		/// Additional grass tiles that need to be framed like grass but don't merge with dirt (<see cref="Sets.Grass"/>) or mud (<see cref="Sets.GrassSpecial"/>). This is used for grass tiles that don't merge with dirt or mud, such as <see cref="TileID.AshGrass"/>. <see cref="NeedsGrassFramingDirt"/> will also need to be set.
++		/// <br/><br/> Defaults to <see langword="false"/>. 
++		/// </summary>
  		public static bool[] NeedsGrassFraming = Factory.CreateBoolSet(633);
++		/// <summary>
++		/// Maps additional grass tiles to the tile it merges with (its "dirt" tile). This is used for grass tiles that don't merge with dirt (<see cref="Sets.Grass"/>) or mud (<see cref="Sets.GrassSpecial"/>). These entries must able be found in <see cref="NeedsGrassFraming"/>.
++		/// <br/><br/> Vanilla entries include <see cref="TileID.AshGrass"/>-><see cref="TileID.Ash"/>. 
++		/// <br/><br/> Defaults to 0 (Dirt). 
++		/// </summary>
  		public static int[] NeedsGrassFramingDirt = Factory.CreateIntSet(0, 633, 57);
  		public static bool[] ChecksForMerge = Factory.CreateBoolSet(0, 668, 2, 661, 60, 70, 199, 662, 109, 477, 492, 633, 57, 58, 75, 76, 684, 147, 161, 164, 163, 200, 162, 189, 196, 460, 224, 191, 383, 211, 225, 59, 226, 396, 397, 398, 399, 402, 400, 401, 403, 404, 234, 112, 407);
 +		/// <summary>

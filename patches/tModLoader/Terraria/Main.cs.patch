@@ -492,7 +492,7 @@
  	public static bool allChestStackHover;
  	public static bool inventorySortMouseOver;
  	public static float GraveyardVisualIntensity;
-@@ -829,44 +_,152 @@
+@@ -829,44 +_,157 @@
  	public static float ambientVolume = 1f;
  	public static float soundVolume = 1f;
  	public static ServerMode MenuServerMode = ServerMode.Lobby | ServerMode.FriendsCanJoin;
@@ -615,6 +615,11 @@
 +	/// If true, this tile is considered a typical brick for tile merging purposes. Most "terrain" tiles intended for building that aren't dirt or similar natural materials set this to true to allow seamless connections between the tiles. Most of these tiles cover the full 16x16 area unlike dirt which has rough edges.
 +	/// </summary>
  	public static bool[] tileBrick = new bool[TileID.Count];
++	/// <summary>
++	/// Contains moss tiles. Moss tiles look like <see cref="TileID.Stone"/> with moss overlaying it. They act like Stone for various operations and turn into Stone when mined. They also spread moss to nearby tiles.
++	/// <br/><br/> Vanilla entries include <see cref="TileID.GreenMoss"/>, LavaMoss, KryptonMoss, XenonMoss, ArgonMoss, VioletMoss, RainbowMoss, BrownMoss, RedMoss, BlueMoss, and PurpleMoss.
++	/// <br/><br/> Defaults to <see langword="false"/>. See also <see cref="TileID.Sets.tileMossBrick"/>.
++	/// </summary>
  	public static bool[] tileMoss = new bool[TileID.Count];
 +	/// <summary>
 +	/// If true, tiles can't be attached to this tile. Furniture tiles typically set this. A good rule of thumb is to set this to true if placing a torch on this tile would look strange.

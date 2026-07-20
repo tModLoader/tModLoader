@@ -10,6 +10,12 @@ partial class TileID
 		/// <summary> Will cause the tile to be killed when right clicked, like <see cref="Torches"/> or <see cref="Bottles"/>. No need to set this if using <see cref="Torch"/>. </summary>
 		public static bool[] CanDropFromRightClick = Factory.CreateBoolSet(4);
 		public static bool[] Stone = Factory.CreateBoolSet(1, 117, 25, 203);
+
+		/// <summary>
+		/// Contains grasses that transform into <see cref="TileID.Dirt"/> when mined.
+		/// <br/><br/> Vanilla entries include <see cref="TileID.Grass"/>, <see cref="CorruptGrass"/>, <see cref="HallowedGrass"/>, <see cref="CrimsonGrass"/>, <see cref="GolfGrass"/>, and <see cref="GolfGrassHallowed"/>.
+		/// <br/><br/> Defaults to <see langword="false"/>. See also <see cref="TileID.Sets.GrassSpecial"/> and <see cref="NeedsGrassFraming"/>.
+		/// </summary>
 		public static bool[] Grass = Factory.CreateBoolSet(TileID.Grass, CorruptGrass, HallowedGrass, CrimsonGrass, GolfGrass, GolfGrassHallowed); // 2, 23, 109, 199, 477, 492
 		/// <summary> Tiles within this set are multi-tiles that don't have a TileObjectData. This is only used to prevent TileLoader.Drop from being called multiple times when breaking these tiles, as might be expected. Trees and Cactus are not included in this, since each of those tiles drop items. </summary>
 		public static bool[] IsMultitile = Factory.CreateBoolSet(Pots, ShadowOrbs, PlantDetritus, LifeFruit, PlanteraBulb, OasisPlants); // 165, 185, 201: Have 1x1 and multitiles in same tile, ignore.
