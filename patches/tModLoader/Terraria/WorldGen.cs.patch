@@ -3763,7 +3763,7 @@
 +										/*
  										if (num != 2 && num != 23 && num != 60 && num != 70 && num != 109 && num != 199 && num != 477 && num != 492 && num != 633 && num != 661 && num != 662) {
 +										*/
-+										if (!TileID.Sets.Grass[num] && !TileID.Sets.GrassSpecial[num]) {
++										if (!TileID.Sets.Grass[num] && !TileID.Sets.GrassSpecial[num] && !TileID.Sets.NeedsGrassFraming[num]) {
  											if (up == -1 && down == -2 && left == num && right == num) {
  												switch (num27) {
  													case 0:
@@ -3774,7 +3774,7 @@
 +									/*
  									if (num == 2 || num == 23 || num == 60 || num == 70 || num == 109 || num == 199 || num == 477 || num == 492 || num == 633 || num == 661 || num == 662 || Main.tileMoss[num] || TileID.Sets.tileMossBrick[num]) {
 +									*/
-+									if (TileID.Sets.Grass[num] || TileID.Sets.GrassSpecial[num] || Main.tileMoss[num] || TileID.Sets.tileMossBrick[num]) {
++									if (TileID.Sets.Grass[num] || TileID.Sets.GrassSpecial[num] || TileID.Sets.NeedsGrassFraming[num] || Main.tileMoss[num] || TileID.Sets.tileMossBrick[num]) {
  										TileMergeAttempt(num, -2, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
  										tileMergeCullCache.Cull(ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
  									}
