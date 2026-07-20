@@ -2382,6 +2382,32 @@
  
  		bool result = false;
  		if (i >= 0 && j >= 0 && i < Main.maxTilesX && j < Main.maxTilesY) {
+@@ -42156,7 +_,17 @@
+ 					num = 662;
+ 			}
+ 
++			/*
+ 			if (forced || Collision.EmptyTile(i, j) || !Main.tileSolid[num] || (num == 23 && tile.type == 0 && tile.active()) || (num == 199 && tile.type == 0 && tile.active()) || (num == 2 && tile.type == 0 && tile.active()) || (num == 109 && tile.type == 0 && tile.active()) || (num == 60 && tile.type == 59 && tile.active()) || (num == 661 && tile.type == 59 && tile.active()) || (num == 662 && tile.type == 59 && tile.active()) || (num == 70 && tile.type == 59 && tile.active()) || (num == 633 && tile.type == 57 && tile.active()) || (Main.tileMoss[num] && (tile.type == 1 || tile.type == 38) && tile.active())) {
++			*/
++			if (forced || Collision.EmptyTile(i, j) || !Main.tileSolid[num] || TileID.Sets.Grass[num] && num != TileID.GolfGrass && num != TileID.GolfGrassHallowed && tile.TileType == TileID.Dirt && tile.HasTile || TileID.Sets.GrassSpecial[num] && tile.TileType == TileID.Mud && tile.HasTile || TileID.Sets.NeedsGrassFraming[num] && tile.TileType == TileID.Sets.NeedsGrassFramingDirt[num] && tile.HasTile || (Main.tileMoss[num] && (tile.type == 1 || tile.type == 38) && tile.active())) {
++				if (TileID.Sets.Grass[num] && num != TileID.GolfGrass && num != TileID.GolfGrassHallowed && (tile.TileType != TileID.Dirt || !tile.HasTile))
++					return false;
++				if (TileID.Sets.GrassSpecial[num] && (tile.TileType != TileID.Mud || !tile.HasTile))
++					return false;
++				if (TileID.Sets.NeedsGrassFraming[num] && (tile.TileType != TileID.Sets.NeedsGrassFramingDirt[num] || !tile.HasTile))
++					return false;
++				/* These checks replaced with more extensible checks above.
+ 				if (num == 23 && (tile.type != 0 || !tile.active()))
+ 					return false;
+ 
+@@ -42183,6 +_,7 @@
+ 
+ 				if (num == 633 && (tile.type != 57 || !tile.active()))
+ 					return false;
++				*/
+ 
+ 				if (Main.tileMoss[num]) {
+ 					if ((tile.type != 1 && tile.type != 38) || !tile.active())
 @@ -42238,8 +_,12 @@
  							if (style != 8 && style != 11 && style != 17)
  								return false;

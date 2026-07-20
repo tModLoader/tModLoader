@@ -6458,7 +6458,17 @@
  				if (inventory[selectedItem].stack == 0)
  					inventory[selectedItem].SetDefaults();
  
-@@ -30673,9 +_,14 @@
+@@ -30666,16 +_,24 @@
+ 				tileToCreate = 662;
+ 		}
+ 
++		/*
+ 		if (canUse && ((!tile.active() && !flag) || (Main.tileCut[tile.type] && tile.type != 484) || (tile.type >= 373 && tile.type <= 375) || tile.type == 461 || tileToCreate == 199 || tileToCreate == 23 || tileToCreate == 662 || tileToCreate == 661 || tileToCreate == 2 || tileToCreate == 109 || tileToCreate == 60 || tileToCreate == 70 || tileToCreate == 633 || Main.tileMoss[tileToCreate] || TileID.Sets.BreakableWhenPlacing[tile.type]) && ItemTimeIsZero && itemAnimation > 0 && controlUseItem) {
++		*/
++		if (canUse && ((!tile.active() && !flag) || (Main.tileCut[tile.type] && tile.type != 484) || (tile.type >= 373 && tile.type <= 375) || tile.type == 461 || (TileID.Sets.Grass[tileToCreate] && tileToCreate != TileID.GolfGrass && tileToCreate != TileID.GolfGrassHallowed) || TileID.Sets.GrassSpecial[tileToCreate] || TileID.Sets.NeedsGrassFraming[tileToCreate] || Main.tileMoss[tileToCreate] || TileID.Sets.BreakableWhenPlacing[tile.type]) && ItemTimeIsZero && itemAnimation > 0 && controlUseItem) {
+ 			bool canPlace = false;
+ 			bool newObjectType = false;
+ 			bool? overrideCanPlace = null;
  			int? forcedRandom = null;
  			TileObject objectData = default(TileObject);
  			FigureOutWhatToPlace(tile, item, out tileToCreate, out var previewPlaceStyle, out overrideCanPlace, out forcedRandom);
@@ -6473,6 +6483,15 @@
  			else if (TileObjectData.CustomPlace(tileToCreate, previewPlaceStyle) && tileToCreate != 82 && tileToCreate != 227) {
  				newObjectType = true;
  				canPlace = TileObject.CanPlace(tileTargetX, tileTargetY, (ushort)tileToCreate, previewPlaceStyle, direction, out objectData, onlyCheck: false, forcedRandom);
+@@ -30685,7 +_,7 @@
+ 				PlaceThing_Tiles_BlockPlacementForRepeatedCoralAndBeachPiles(ref canPlace, ref objectData);
+ 			}
+ 			else {
+-				canPlace = PlaceThing_Tiles_BlockPlacementForAssortedThings(canPlace);
++				canPlace = PlaceThing_Tiles_BlockPlacementForAssortedThings(canPlace, tileToCreate); // TML: add tileToCreate parameter
+ 			}
+ 
+ 			if (canPlace)
 @@ -30757,9 +_,15 @@
  			if (!WorldGen.IsTileReplacable(tileTargetX, tileTargetY))
  				return false;
@@ -6729,11 +6748,51 @@
  					if (inventory[num7].stack <= 0)
  						inventory[num7].SetDefaults();
  				}
-@@ -31648,7 +_,7 @@
+@@ -31610,13 +_,14 @@
+ 		return placed;
+ 	}
+ 
+-	private bool PlaceThing_Tiles_BlockPlacementForAssortedThings(bool canPlace)
++	private bool PlaceThing_Tiles_BlockPlacementForAssortedThings(bool canPlace, int tileToCreate) // TML: add tileToCreate parameter to support grass seed items placing on many dirts.
+ 	{
+ 		bool flag = inventory[selectedItem].type == 213 || inventory[selectedItem].type == 5295;
+ 		if (flag) {
+ 			if (Main.tile[tileTargetX, tileTargetY].type == 0 || Main.tile[tileTargetX, tileTargetY].type == 1 || Main.tile[tileTargetX, tileTargetY].type == 38)
+ 				canPlace = true;
+ 		}
++		/*
+ 		else if (inventory[selectedItem].createTile == 2 || inventory[selectedItem].createTile == 109) {
+ 			if (Main.tile[tileTargetX, tileTargetY].nactive() && Main.tile[tileTargetX, tileTargetY].type == 0)
+ 				canPlace = true;
+@@ -31629,6 +_,17 @@
+ 					canPlace = true;
+ 			}
+ 		}
++		*/
++		// TML: Support modded grass. Allow placing grass tile over corresponding "dirt" tile. Commented-out vanilla checks are also replaced by new checks.
++		else if (TileID.Sets.Grass[tileToCreate] && tileToCreate != TileID.GolfGrass && tileToCreate != TileID.GolfGrassHallowed || TileID.Sets.GrassSpecial[tileToCreate] || TileID.Sets.NeedsGrassFraming[tileToCreate]) {
++			if (Main.tile[tileTargetX, tileTargetY].HasUnactuatedTile) {
++				var dirt = TileID.Sets.Grass[tileToCreate] ? TileID.Dirt :
++					TileID.Sets.GrassSpecial[tileToCreate] ? TileID.Mud :
++					TileID.Sets.NeedsGrassFramingDirt[tileToCreate];
++				if (Main.tile[tileTargetX, tileTargetY].type == dirt)
++					canPlace = true;
++			}
++		}
+ 		else if (inventory[selectedItem].createTile == 227) {
+ 			canPlace = true;
+ 		}
+@@ -31644,11 +_,13 @@
+ 			if (Main.tile[num3, num4].nactive() && Main.tileSolid[Main.tile[num3, num4].type] && !Main.tileSolidTop[Main.tile[num3, num4].type])
+ 				canPlace = true;
+ 		}
++		/*
+ 		else if (inventory[selectedItem].createTile == 60 || inventory[selectedItem].createTile == 70 || inventory[selectedItem].createTile == 661 || inventory[selectedItem].createTile == 662) {
  			if (Main.tile[tileTargetX, tileTargetY].nactive() && Main.tile[tileTargetX, tileTargetY].type == 59)
  				canPlace = true;
  		}
 -		else if (inventory[selectedItem].createTile == 4 || inventory[selectedItem].createTile == 136) {
++		*/
 +		else if (TileID.Sets.Torch[inventory[selectedItem].createTile] || inventory[selectedItem].createTile == 136) {
  			if (Main.tile[tileTargetX, tileTargetY].wall > 0) {
  				canPlace = true;
