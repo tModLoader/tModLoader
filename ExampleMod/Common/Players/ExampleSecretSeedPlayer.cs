@@ -1,4 +1,4 @@
-using ExampleMod.Content.SecretSeeds;
+using ExampleMod.Common.SecretSeeds;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Common.Players;

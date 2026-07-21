@@ -1,14 +1,15 @@
-using ExampleMod.Content.Tiles;
+using ExampleMod.Content;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
-using Terraria.IO;
 using Terraria.ModLoader;
 using Terraria.WorldBuilding;
 
-namespace ExampleMod.Content.SpecialSeeds;
+namespace ExampleMod.Common.SpecialSeeds;
 
 public class ExampleAdvancedSpecialSeed : ModSpecialSeed
 {
@@ -18,13 +19,13 @@ public class ExampleAdvancedSpecialSeed : ModSpecialSeed
 	private Asset<Texture2D> iconHallowCrimson;
 
 	public override void SetStaticDefaults() {
-		iconCorruption = ModContent.Request<Texture2D>($"ExampleMod/Content/SpecialSeeds/{Name}_IconCorruption");
-		iconHallowCorruption = ModContent.Request<Texture2D>($"ExampleMod/Content/SpecialSeeds/{Name}_IconHallowCorruption");
-		iconCrimson = ModContent.Request<Texture2D>($"ExampleMod/Content/SpecialSeeds/{Name}_IconCrimson");
-		iconHallowCrimson = ModContent.Request<Texture2D>($"ExampleMod/Content/SpecialSeeds/{Name}_IconHallowCrimson");
+		iconCorruption = ModContent.Request<Texture2D>($"ExampleMod/Common/SpecialSeeds/{Name}_IconCorruption");
+		iconHallowCorruption = ModContent.Request<Texture2D>($"ExampleMod/Common/SpecialSeeds/{Name}_IconHallowCorruption");
+		iconCrimson = ModContent.Request<Texture2D>($"ExampleMod/Common/SpecialSeeds/{Name}_IconCrimson");
+		iconHallowCrimson = ModContent.Request<Texture2D>($"ExampleMod/Common/SpecialSeeds/{Name}_IconHallowCrimson");
 	}
 
-	public override void PostAddSeeds() {
+	public override void PostSetupContent() {
 		SortAfterModdedSeed<ExampleSpecialSeed>();
 		// alternatively SortAfter(ModContent.GetInstance<ExampleSpecialSeed>());
 	}
@@ -43,7 +44,14 @@ public class ExampleAdvancedSpecialSeed : ModSpecialSeed
 		yield return WorldGenerationOptions.Get<WorldSeedOption_Anniversary>();
 	}
 
-	//public override AWorldGenerationOption SortAfter => ModContent.GetInstance<ExampleSpecialSeed>().UIOption;
+	public override void OnSeedButtonPress() {
+		if (UIOption.Enabled) {
+			SoundEngine.PlaySound(SoundID.BestReforge);
+		}
+		else {
+			SoundEngine.PlaySound(SoundID.Item37); //Reforging sound effect.
+		}
+	}
 
 	public override ModMenu WorldGenMenu => ModContent.GetInstance<ExampleModMenu>();
 
@@ -63,6 +71,16 @@ public class ExampleAdvancedSpecialSeed : ModSpecialSeed
 		if (index != -1) {
 			tasks.Insert(index+1,new ExampleSpecialSeedPass("Example Special Seed Changes", 200f));
 		}
+	}
+
+
+	public override void ModifyLoadingTips(ref string text, ref Color textColor) {
+		textColor = Main.DiscoColor;
+	}
+
+	public override void ModifyWorldProgressText(ref string text, ref Color textColor) {
+		text = "Generating example bees";
+		textColor = Main.DiscoColor;
 	}
 }
 

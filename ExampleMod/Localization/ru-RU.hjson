@@ -1672,7 +1672,7 @@ Mods: {
 			// LongPose.VictoryCheer: We did it!
 		}
 
-		SpecialSeeds: {
+		Seeds: {
 			ExampleSpecialSeed: {
 				/* Description:
 					'''
@@ -1683,12 +1683,17 @@ Mods: {
 			}
 
 			ExampleAdvancedSpecialSeed: {
-				// Description: This is another example special seed, demonstrating seed dependencies and incompatibilities.
+				// Description: This is another example special seed that demonstrates more advanced features of ModSpecialSeed, like dependencies, incompatibilities, sorting, and the OnSeedButtonPress hook.
 				// DisplayName: Example Advanced Special Seed
 			}
+
+			// ExampleSecretSeed.Description: This is an example of a modded secret seed. (Effects are usually explained in these parentheses)
 		}
 
-		// SecretSeeds.ExampleSecretSeed.Description: This is an example of a modded secret seed. (Effects are usually explained in these parentheses)
+		SpecialSeeds: {
+			// ExampleAdvancedSpecialSeed.DisplayName: Example Advanced Special Seed
+			// ExampleSpecialSeed.DisplayName: Example Special Seed
+		}
 	}
 }
 

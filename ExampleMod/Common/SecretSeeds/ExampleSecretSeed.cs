@@ -8,7 +8,7 @@ using Terraria.IO;
 using Terraria.ModLoader;
 using Terraria.WorldBuilding;
 
-namespace ExampleMod.Content.SecretSeeds;
+namespace ExampleMod.Common.SecretSeeds;
 
 public class ExampleSecretSeed : ModSecretSeed
 {

@@ -1,7 +1,5 @@
 using Terraria.Localization;
-using Terraria.GameContent.UI;
 using Terraria.WorldBuilding;
-using System.Reflection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +11,9 @@ using Terraria.UI;
 namespace Terraria.ModLoader;
 
 /// <summary>
-/// This type of class represents a special seed added by a mod. Special seeds can be used to change gameplay and/or worldgen only for worlds that have them enabled.
+/// This type of class represents a special seed added by a mod. Special seeds can be used to change gameplay and/or worldgen only for worlds that have them enabled.<br/>
+/// You can check if a ModSpecialSeed is enabled for a particular world by using <see cref="SeedLoader.SeedEnabled"/>.
+/// <br/><br/>Unlike secret seeds, special seeds have custom icons and appear prominently in the seeds menu.
 /// </summary>
 public abstract class ModSpecialSeed : ModSeedType
 {
@@ -30,11 +30,6 @@ public abstract class ModSpecialSeed : ModSeedType
 	/// The translation for the display name of this special seed
 	/// </summary>
 	public virtual LocalizedText DisplayName => Language.GetOrRegister($"Mods.{Mod.Name}.SpecialSeeds.{Name}.{nameof(DisplayName)}", PrettyPrintName);
-
-	/// <summary>
-	/// The translation for the description used for this special seed
-	/// </summary>
-	public virtual LocalizedText Description => Language.GetOrRegister($"Mods.{Mod.Name}.SpecialSeeds.{Name}.{nameof(Description)}", () => "");
 
 	public virtual string Texture => (GetType().Namespace + "." + Name).Replace('.', '/');
 
@@ -64,6 +59,19 @@ public abstract class ModSpecialSeed : ModSeedType
 			}
 		}
 	}
+
+	/// <summary>
+	/// Whether this seed should be automatically enabled when all of its dependencies are also enabled.
+	/// True for the Zenith seed.
+	/// </summary>
+	public bool AutoEnableWithDependencies { get; set; }
+
+	/// <summary>
+	/// Whether this secret seed's UI option can be enabled or disabled by clicking it.<br/>
+	/// Can be used with <see cref="OnSeedButtonPress"/> to have whether this seed's UI option is enabled be dependent on custom logic.
+	/// <br/><br/>Defaults to true.
+	/// </summary>
+	public ref bool ToggleOnClick => ref _uIOption.ToggleOnClick;
 
 	#region Sorting
 
@@ -172,24 +180,22 @@ public abstract class ModSpecialSeed : ModSeedType
 
 	internal void Unsubscribe()
 	{
-		_uIOption.OnEnableStateChange -= OnUIEnabledStateChange;
+		_uIOption.OnUIButtonPress -= OnUIButtonPress;
 		_uIOption.OnAnyOptionStateChange -= OnAnyOptionStateChange;
 		_uIOption.Unsubscribe();
 	}
 
-	internal void PostSetupContent()
+	internal void FinalizeContent()
 	{
 		List<AWorldGenerationOption> dependencies = GetDependencies().ToList();
 		List<AWorldGenerationOption> incompatibilities = GetIncompatibilities().ToList();
-		int sharedIndex = dependencies.FindIndex((dependent) => {
-			return incompatibilities.Contains(dependent);
-		});
+		int sharedIndex = dependencies.FindIndex((dependent) => incompatibilities.Contains(dependent));
 		if (sharedIndex != -1) {
 			throw new Exception($"Seed {FullName} had a seed ({(dependencies[sharedIndex] is ModSpecialSeedUIOption specialOption ? specialOption.ParentName : "")}) that is both a dependency and an incompatibility.");
 		}
 		Dependencies = dependencies;
 		Incompatibilities = incompatibilities;
-		PostAddSeeds();
+		PostSetupContent();
 	}
 
 	public List<AWorldGenerationOption> Dependencies { get; private set; }
@@ -200,35 +206,29 @@ public abstract class ModSpecialSeed : ModSeedType
 	private void SetupWorldGenerationOption()
 	{
 		_uIOption = new ModSpecialSeedUIOption(SpecialSeedNames(), SpecialSeedNumbers(), FullName, Description, DisplayName, textureAsset);
-		_uIOption.OnEnableStateChange += OnUIEnabledStateChange;
+		_uIOption.OnUIButtonPress += OnUIButtonPress;
 		_uIOption.OnAnyOptionStateChange += OnAnyOptionStateChange;
 	}
 
-	private void OnUIEnabledStateChange(object sender, EventArgs e)
+	private void OnUIButtonPress(object sender, EventArgs e)
 	{
-		if (sender is ModSpecialSeedUIOption uiOption) {
-			bool enabled = uiOption.Enabled;
-			OnSeedButtonPressed(ref enabled);
-			uiOption.Enabled = enabled;
-			ChangeDependencyState(enabled);
-			ChangeIncompatibilityState(enabled);
-		}
+		OnSeedButtonPress();
 	}
 
-	private void ChangeDependencyState(bool enabled)
+	private void ChangeDependencyState()
 	{
-		if (!enabled && Dependencies.Any((option) => !option.Enabled)) {
+		if (!UIOption.Enabled && Dependencies.Any((option) => !option.Enabled)) {
 			return;
 		}
 
 		foreach (AWorldGenerationOption option in Dependencies) {
-			option.Enabled = enabled;
+			option.Enabled = UIOption.Enabled;
 		}
 	}
 
-	private void ChangeIncompatibilityState(bool enabled)
+	private void ChangeIncompatibilityState()
 	{
-		if (!enabled) {
+		if (!UIOption.Enabled) {
 			return;
 		}
 
@@ -240,9 +240,14 @@ public abstract class ModSpecialSeed : ModSeedType
 	private void OnAnyOptionStateChange(AWorldGenerationOption changed)
 	{
 		if (changed == UIOption) {
-			return;
+			OnChangeOptionEnabled();
+			ChangeDependencyState();
+			ChangeIncompatibilityState();
 		}
 		UpdateDependencies(changed);
+		if (AutoEnableWithDependencies && Dependencies.All(dependent => dependent.Enabled)) {
+			UIOption.Enabled = true;
+		}
 		UpdateIncompatibilities(changed);
 	}
 
@@ -304,10 +309,16 @@ public abstract class ModSpecialSeed : ModSeedType
 
 
 	/// <summary>
-	/// Allows you to make things happen when the button for this seed is pressed in the seed menu.
+	/// Allows you to make things happen when the button for this option is pressed.
 	/// </summary>
-	/// <param name="enabled"></param>
-	public virtual void OnSeedButtonPressed(ref bool enabled) { }
+	public virtual void OnSeedButtonPress() { }
+
+	/// <summary>
+	/// Called whenever the Enabled property of this ModSpecialSeed's UIOption changes value.<br/>
+	/// This differs from <see cref="OnSeedButtonPress"/> in that it can also be triggered when something else causes the Enabled property to change,<br/>
+	/// e.g. when another seed enables this one as one of its dependencies.
+	/// </summary>
+	public virtual void OnChangeOptionEnabled() { }
 
 	/// <summary>
 	/// Used in conjunction with <see cref="GetModdedSeedOption"/> and <see cref="WorldGenerationOptions.Get"/> to mark seeds that will be enabled when this seed is enabled.
@@ -322,9 +333,9 @@ public abstract class ModSpecialSeed : ModSeedType
 	public virtual IEnumerable<AWorldGenerationOption> GetIncompatibilities() { return Enumerable.Empty<AWorldGenerationOption>(); }
 
 	/// <summary>
-	/// Called at load time after content has been set up.
-	/// <br/><br/>Intended to be used to call <see cref="SortBefore(AWorldGenerationOption)"/> and <see cref="SortAfter(AWorldGenerationOption)"/>
+	/// Allows you to run code after the mod's content has been setup.<br/>
+	/// Use <see cref="SortBefore(AWorldGenerationOption)"/> and <see cref="SortAfter(AWorldGenerationOption)"/> in this hook to implement proper seed button sorting after all the mod's seeds have been loaded.
 	/// </summary>
-	public virtual void PostAddSeeds() { }
+	public virtual void PostSetupContent() { }
 	#endregion
 }

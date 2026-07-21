@@ -4,6 +4,7 @@ using System.Linq;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Terraria.Localization;
+using Terraria.UI;
 using Terraria.WorldBuilding;
 
 namespace Terraria.ModLoader;
@@ -13,10 +14,13 @@ internal class ModSpecialSeedUIOption : AWorldGenerationOption
 	protected override string KeyName { get; }
 	public override string ServerConfigName { get; }
 
-	public event EventHandler OnEnableStateChange;
+	public event EventHandler OnUIButtonPress;
 	public event Action<AWorldGenerationOption> OnAnyOptionStateChange;
 
 	public string ParentName { get; }
+
+	public ref bool ToggleOnClick => ref _toggleOnClick;
+	private bool _toggleOnClick = true;
 
 	public (AWorldGenerationOption target, bool after) Ordering { get; internal set; }
 
@@ -31,9 +35,9 @@ internal class ModSpecialSeedUIOption : AWorldGenerationOption
 		AWorldGenerationOption.OnOptionStateChanged += UpdateOptionState;
 	}
 
-	protected override void OnEnabledStateChanged()
+	public void OnClick()
 	{
-		OnEnableStateChange?.Invoke(this, EventArgs.Empty);
+		OnUIButtonPress?.Invoke(this, EventArgs.Empty);
 	}
 
 	private void UpdateOptionState(AWorldGenerationOption changed)

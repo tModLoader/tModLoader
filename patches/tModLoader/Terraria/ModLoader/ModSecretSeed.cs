@@ -8,13 +8,13 @@ using Terraria.WorldBuilding;
 
 namespace Terraria.ModLoader;
 
+/// <summary>
+/// This type of class represents a secret seed added by a mod. Secret seeds can be used to change gameplay and/or worldgen only for worlds that have them enabled.
+/// You can check if a ModSecretSeed is enabled for a particular world by using <see cref="SeedLoader.SeedEnabled"/>.
+/// <br/><br/>Unlike special seeds, secret seeds are simpler and more out-of-the-way. They also need to be unlocked and can be more hidden.
+/// </summary>
 public abstract class ModSecretSeed : ModSeedType
 {
-	/// <summary>
-	/// Whether this secret seed is enabled in the current world.
-	/// Unlike <see cref="WorldGen.SecretSeed.Enabled"/>, this does not state if this secret seed is enabled in the world creation UI.
-	/// </summary>
-
 	/// <summary>
 	/// The code used to match the secret seed input with your secret seed. It is formatted to remove spaces and special characters.
 	/// <br/><br/>Note that this code also acts as the seed's name in the secret seeds menu.
@@ -89,9 +89,4 @@ public abstract class ModSecretSeed : ModSeedType
 		SecretSeed.ModSecretSeed = this;
 		SetStaticDefaults();
 	}
-
-	/// <summary>
-	/// The translation for the description used for this secret seed
-	/// </summary>
-	public virtual LocalizedText Description => Language.GetOrRegister($"Mods.{Mod.Name}.SecretSeeds.{Name}.{nameof(Description)}", () => "");
 }

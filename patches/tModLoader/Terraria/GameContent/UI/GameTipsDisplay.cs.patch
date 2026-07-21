@@ -19,7 +19,7 @@
  				}
  			}
 +			Color textColor = (WorldGen.tenthAnniversaryWorldGen && !Main.zenithWorld) ? Color.HotPink : Color.White;
-+			MenuLoader.CurrentMenu.ModifyLoadingTips(ref text, ref textColor);
++			SeedLoader.ModifyLoadingTips(ref text, ref textColor);
  
  			Vector2 vector = value.MeasureString(text);
  			float num4 = 1.1f;

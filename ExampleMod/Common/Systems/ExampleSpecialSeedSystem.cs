@@ -1,4 +1,4 @@
-using ExampleMod.Content.SpecialSeeds;
+using ExampleMod.Common.SpecialSeeds;
 using Microsoft.Xna.Framework;
 using Terraria.ModLoader;
 
