@@ -6590,10 +6590,12 @@
  
  			flag = WorldGen.PlaceTile(tileTargetX, tileTargetY, tileToCreate, mute: false, forced, whoAmI, num);
  		}
-@@ -30963,9 +_,13 @@
+@@ -30962,10 +_,14 @@
+ 			PlaceThing_Tiles_PlaceIt_SpinSmartPlatform();
  			PlaceThing_Tiles_PlaceIt_ConsumeFlexibleWandMaterial();
  			PlaceThing_Tiles_PlaceIt_UnslopeForSolids();
- 			PlaceThing_Tiles_PlaceIt_KillGrassForSolids();
+-			PlaceThing_Tiles_PlaceIt_KillGrassForSolids();
++			PlaceThing_Tiles_PlaceIt_KillGrassForSolids(tileToCreate);
 -			PlaceThing_Tiles_PlaceIt_AutoPaintAndActuate(typeCaches, tileToCreate);
 +			PlaceThing_Tiles_PlaceIt_AutoPaintAndActuate(typeCaches, tileToCreate, topLeft);
 +
@@ -6695,14 +6697,27 @@
  					if (Main.tile[num, num2].active())
  						array[i, j] = Main.tile[num, num2].type;
  					else
-@@ -31193,7 +_,10 @@
+@@ -31185,15 +_,23 @@
+ 		}
+ 	}
+ 
++	/*
+ 	private void PlaceThing_Tiles_PlaceIt_KillGrassForSolids()
+ 	{
+ 		if (!Main.tileSolid[inventory[selectedItem].createTile])
++	*/
++	private void PlaceThing_Tiles_PlaceIt_KillGrassForSolids(int tileToCreate) // TML: Add tileToCreate param to fix bug with seeds that place multiple grass options.
++	{
++		if (!Main.tileSolid[tileToCreate])
+ 			return;
+ 
  		for (int i = tileTargetX - 1; i <= tileTargetX + 1; i++) {
  			for (int j = tileTargetY - 1; j <= tileTargetY + 1; j++) {
  				Tile tile = Main.tile[i, j];
 +				/*
  				if (!tile.active() || inventory[selectedItem].createTile == tile.type || (tile.type != 2 && tile.type != 23 && tile.type != 60 && tile.type != 70 && tile.type != 109 && tile.type != 199 && tile.type != 477 && tile.type != 492 && tile.type != 633))
 +				*/
-+				if (!tile.active() || inventory[selectedItem].createTile == tile.type || (!TileID.Sets.Grass[tile.type] && !TileID.Sets.GrassSpecial[tile.type] && !TileID.Sets.NeedsGrassFraming[tile.type] || TileID.Sets.GrassNotKilledWhenSurrounded[tile.type]))
++				if (!tile.active() || tileToCreate == tile.type || (!TileID.Sets.Grass[tile.type] && !TileID.Sets.GrassSpecial[tile.type] && !TileID.Sets.NeedsGrassFraming[tile.type] || TileID.Sets.GrassNotKilledWhenSurrounded[tile.type]))
  					continue;
  
  				bool flag = true;
