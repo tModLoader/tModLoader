@@ -34,7 +34,7 @@
  	public static bool crimson;
  	public static int[] tileCounts = new int[TileID.Count];
  	public static int totalEvil;
-@@ -816,6 +_,9 @@
+@@ -816,8 +_,14 @@
  	private static bool mergeDown;
  	private static bool mergeLeft;
  	private static bool mergeRight;
@@ -43,7 +43,12 @@
 +	/// </summary>
  	private static bool stopDrops;
  	public static bool noLiquidCheck;
++	/// <summary>
++	/// When true, "infections" such as crimson, corruption, and hallow are allowed to spread. This is always true unless the journey mode biome spread toggle has been used to disable infection spread.
++	/// </summary>
  	public static bool AllowedToSpreadInfections = true;
+ 	[ThreadStatic]
+ 	public static UnifiedRandom _genRand;
 @@ -825,6 +_,7 @@
  	public static int _genRandSeed = -2;
  	public static int _lastSeed;
@@ -3355,6 +3360,16 @@
  			Main.tile[num2, num3].wall = num6.Value;
  			if (Main.netMode == 2)
  				NetMessage.SendTileSquare(-1, num2, num3);
+@@ -54477,6 +_,9 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Attempts to spread <paramref name="grass"/> to a <paramref name="dirt"/> at the provided coordinates. Does various checks and will apply the provided paint (<paramref name="color"/>) to the new grass tiles.
++	/// </summary>
+ 	public static void SpreadGrass(int i, int j, int dirt = 0, int grass = 2, bool repeat = true, TileColorCache color = default(TileColorCache))
+ 	{
+ 		try {
 @@ -55301,7 +_,16 @@
  					if (!(Math.Abs((double)m - vector2D.X) + Math.Abs((double)n - vector2D.Y) < (double)num2 * 0.5 * (1.0 + (double)genRand.Next(-10, 11) * 0.015)))
  						continue;
