@@ -35,7 +35,7 @@
 +
 +		string modText = _progressMessage.Text;
 +		Color modColor = (WorldGen.tenthAnniversaryWorldGen && !Main.zenithWorld) ? Color.HotPink : Color.White;
-+		MenuLoader.CurrentMenu.ModifyWorldStatusText(ref modText, ref modColor);
++		SeedLoader.ModifyWorldProgressText(ref modText, ref modColor);
 +		_progressMessage.Text = modText;
 +		_progressMessage.CustomColor = modColor;
  

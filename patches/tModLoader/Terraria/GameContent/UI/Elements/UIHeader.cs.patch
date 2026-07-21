@@ -8,14 +8,16 @@
  using Terraria.UI;
  
  namespace Terraria.GameContent.UI.Elements;
-@@ -8,6 +_,7 @@
- public class UIHeader : UIElement
+@@ -9,6 +_,9 @@
  {
  	private string _text;
-+	internal Color? CustomColor { get; set; }
  
++	// Added by TML
++	internal Color? CustomColor { get; set; }
++
  	public string Text {
  		get {
+ 			return _text;
 @@ -47,7 +_,9 @@
  		spriteBatch.DrawString(FontAssets.DeathText.Value, Text, new Vector2(dimensions.X + num, dimensions.Y - num), Color.Black);
  		spriteBatch.DrawString(FontAssets.DeathText.Value, Text, new Vector2(dimensions.X - num, dimensions.Y + num), Color.Black);

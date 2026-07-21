@@ -30,6 +30,16 @@
  		SetGoBackTarget(uIWorldCreationAdvanced);
  		Main.MenuUI.SetState(uIWorldCreationAdvanced);
  	}
+@@ -718,6 +_,9 @@
+ 
+ 	public void ToggleSeedOption(AWorldGenerationOption seedOption)
+ 	{
++		if (seedOption is ModSpecialSeedUIOption modSeedOption && !modSeedOption.ToggleOnClick) {
++			return;
++		}
+ 		if (_isSpecialSeedText) {
+ 			_optionSeed = string.Empty;
+ 			_isSpecialSeedText = false;
 @@ -793,6 +_,9 @@
  				WorldGenerationOptions.SelectOption(optionFromSeedText);
  				SoundEngine.PlaySound(24);

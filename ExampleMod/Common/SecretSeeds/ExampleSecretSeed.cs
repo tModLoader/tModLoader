@@ -8,8 +8,9 @@ using Terraria.IO;
 using Terraria.ModLoader;
 using Terraria.WorldBuilding;
 
-namespace ExampleMod.Content.SecretSeeds;
+namespace ExampleMod.Common.SecretSeeds;
 
+// See ExampleSecretSeedPlayer for an example of this secret seed's flag being used in a world.
 public class ExampleSecretSeed : ModSecretSeed
 {
 	public override void SetStaticDefaults() {

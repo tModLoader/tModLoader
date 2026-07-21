@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Terraria.Audio;
@@ -50,7 +51,7 @@ public static class SeedLoader
 			seedList.Sort((left, right) => (right is ModSpecialSeed).CompareTo(left is ModSpecialSeed));
 		}
 		foreach (ModSpecialSeed seed in specialSeeds) {
-			seed.PostSetupContent();
+			seed.FinalizeContent();
 		}
 	}
 
@@ -130,6 +131,29 @@ public static class SeedLoader
 				continue;
 			}
 			seed.PostWorldGen();
+		}
+	}
+
+	public static void ModifyLoadingTips(ref string text, ref Color drawColor)
+	{
+		if (!WorldGen.generatingWorld) {
+			return;
+		}
+		foreach (ModSeedType seed in allSeeds) {
+			if (!seed.Enabled) {
+				continue;
+			}
+			seed.ModifyLoadingTips(ref text, ref drawColor);
+		}
+	}
+
+	public static void ModifyWorldProgressText(ref string text, ref Color drawColor)
+	{
+		foreach (ModSeedType seed in allSeeds) {
+			if (!seed.Enabled) {
+				continue;
+			}
+			seed.ModifyWorldProgressText(ref text, ref drawColor);
 		}
 	}
 

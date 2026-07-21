@@ -62,3 +62,13 @@
  			option.Load();
  			list.Add(CreateButton(new WorldSpecialSeedOption {
  				Seed = option,
+@@ -235,6 +_,9 @@
+ 	{
+ 		AWorldGenerationOption optionValue = ((GroupOptionButton<AWorldGenerationOption>)listeningElement).OptionValue;
+ 		_creationState.ToggleSeedOption(optionValue);
++		if (optionValue is ModSpecialSeedUIOption modOption) {
++			modOption.OnClick();
++		}
+ 		UpdateContents();
+ 	}
+ 
