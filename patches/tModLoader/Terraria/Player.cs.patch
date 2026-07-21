@@ -7327,6 +7327,15 @@
  
  		if (targetTile != null && targetTile.active()) {
  			ushort type = targetTile.type;
+@@ -33795,6 +_,8 @@
+ 
+ 		if (!ModifyFlexibleWandPlacementInfo(ref tileToCreate, ref previewPlaceStyle, ref forcedRandom))
+ 			overrideCanPlace = false;
++
++		TileLoader.OverridePlacementTile(tileTargetX, tileTargetY, sItem, ref tileToCreate, ref previewPlaceStyle, ref forcedRandom, ref overrideCanPlace);
+ 	}
+ 
+ 	private void ItemCheck_OwnerOnlyCode(ref ItemCheckContext context, Item sItem, int weaponDamage, Rectangle heldItemFrame)
 @@ -33820,13 +_,18 @@
  			_spawnMuramasaCut = true;
  

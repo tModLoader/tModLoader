@@ -780,4 +780,20 @@ public abstract class ModTile : ModBlockType
 	public virtual void OnTileConverted(int i, int j, int fromType, int toType, int conversionType)
 	{
 	}
+
+	/// <summary>
+	/// Allows customizing the tile type, tile style, and random style offset that will result from attempting to place this tile. Used for advanced scenarios where the usual placement logic is insufficient.
+	/// <br/> This is called before the tile is placed with an item, before the tile is placed manually (<see cref="WorldGen.PlaceTile(int, int, int, bool, bool, int, int)"/>), and also for the tile placement preview. Code in this hook should not have effects on the tiles in the world. 
+	/// <br/> <paramref name="item"/> is the item placing this tile. It is <see langword="null"/> when this hook is called from WorldGen.PlaceTile. <see cref="ModItem.OverridePlacementTile(int, int, ref int, ref int, ref int?, ref bool?)"/> also exists.
+	/// </summary>
+	/// <param name="i">The x position in tile coordinates.</param>
+	/// <param name="j">The y position in tile coordinates.</param>
+	/// <param name="item">The item placing this tile. Will be null from many callsites.</param>
+	/// <param name="tileToCreate">The tile type that will be placed</param>
+	/// <param name="previewPlaceStyle">The style of the tile to be placed</param>
+	/// <param name="forcedRandom">The random placement offset to use, if assigned</param>
+	/// <param name="overrideCanPlace">Indicates if the tile can be placed</param>
+	public virtual void OverridePlacementTile(int i, int j, Item item, ref int tileToCreate, ref int previewPlaceStyle, ref int? forcedRandom, ref bool? overrideCanPlace)
+	{
+	}
 }

@@ -1521,4 +1521,12 @@ public static class TileLoader
 		GetTile(fromType)?.OnTileConverted(i, j, fromType, toType, conversionType);
 		GetTile(toType)?.OnTileConverted(i, j, fromType, toType, conversionType);
 	}
+
+	public static void OverridePlacementTile(int i, int j, Item item, ref int tileToCreate, ref int previewPlaceStyle, ref int? forcedRandom, ref bool? overrideCanPlace)
+	{
+		if(item != null)
+			ItemLoader.GetItem(item.type)?.OverridePlacementTile(i, j, ref tileToCreate, ref previewPlaceStyle, ref forcedRandom, ref overrideCanPlace);
+
+		GetTile(tileToCreate)?.OverridePlacementTile(i, j, item, ref tileToCreate, ref previewPlaceStyle, ref forcedRandom, ref overrideCanPlace);
+	}
 }

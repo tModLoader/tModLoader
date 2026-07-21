@@ -2382,10 +2382,14 @@
  
  		bool result = false;
  		if (i >= 0 && j >= 0 && i < Main.maxTilesX && j < Main.maxTilesY) {
-@@ -42156,7 +_,17 @@
+@@ -42156,7 +_,21 @@
  					num = 662;
  			}
  
++			int? unusedForcedRandom = null;
++			bool? unusedOverrideCanPlace = null;
++			TileLoader.OverridePlacementTile(i, j, null, ref num, ref style, ref unusedForcedRandom, ref unusedOverrideCanPlace); // OverridePlacementTile called here to handle non-item/player tile placement overrides.
++
 +			/*
  			if (forced || Collision.EmptyTile(i, j) || !Main.tileSolid[num] || (num == 23 && tile.type == 0 && tile.active()) || (num == 199 && tile.type == 0 && tile.active()) || (num == 2 && tile.type == 0 && tile.active()) || (num == 109 && tile.type == 0 && tile.active()) || (num == 60 && tile.type == 59 && tile.active()) || (num == 661 && tile.type == 59 && tile.active()) || (num == 662 && tile.type == 59 && tile.active()) || (num == 70 && tile.type == 59 && tile.active()) || (num == 633 && tile.type == 57 && tile.active()) || (Main.tileMoss[num] && (tile.type == 1 || tile.type == 38) && tile.active())) {
 +			*/
