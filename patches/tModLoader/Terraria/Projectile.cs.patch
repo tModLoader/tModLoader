@@ -1266,16 +1266,23 @@
  		if (aiStyle != 45 && aiStyle != 137 && aiStyle != 92 && aiStyle != 105 && aiStyle != 106 && !ProjectileID.Sets.IsAGolfBall[type] && type != 463 && type != 69 && type != 70 && type != 621 && type != 10 && type != 11 && type != 379 && type != 407 && type != 476 && type != 623 && (type < 625 || type > 628) && type != 833 && type != 834 && type != 835 && type != 818 && type != 831 && type != 820 && type != 864 && type != 970 && type != 995 && type != 908)
  			return type != 1020;
  
-@@ -11854,6 +_,9 @@
- 			}
- 		}
+@@ -11596,12 +_,16 @@
  
+ 	public bool Colliding(Rectangle myRect, Rectangle targetRect)
+ 	{
 +		if (ProjectileLoader.Colliding(this, myRect, targetRect) is bool modColliding)
 +			return modColliding;
 +
- 		if (myRect.Intersects(targetRect))
- 			return true;
- 
+ 		if (aiStyle == 15) {
+ 			if (ai[0] == 0f) {
+ 				Vector2 mountedCenter = Main.player[owner].MountedCenter;
+ 				Vector2 vector = targetRect.ClosestPointInRect(mountedCenter) - mountedCenter;
+ 				vector.Y /= 0.8f;
+ 				float num = 55f;
++				ProjectileLoader.FlailSpinCollisionRange(this, ref num);
+ 				return vector.Length() <= num;
+ 			}
+ 		}
 @@ -12433,7 +_,7 @@
  		if (Main.netMode == 1 && (ProjectileID.Sets.IsAGolfBall[type] || type == 820)) {
  			int num = (int)(position.X + (float)(width / 2)) / 16;
@@ -1651,10 +1658,13 @@
  	{
  		for (int i = 0; i < 200; i++) {
  			localNPCImmunity[i] = 0;
-@@ -30413,8 +_,11 @@
+@@ -30413,8 +_,14 @@
  				break;
  		}
  
++		float spinVisualDistance = 30f;
++		ProjectileLoader.FlailStats(this, ref num, ref num2, ref num3, ref num4, ref num5, ref num6, ref num7, ref num14, ref spinVisualDistance);
++
 +		/*
  		float meleeSpeed = player.meleeSpeed;
  		float num15 = 1f / meleeSpeed;
@@ -1663,6 +1673,15 @@
  		num2 *= num15;
  		num8 *= num15;
  		num9 *= num15;
+@@ -30451,7 +_,7 @@
+ 				if (vector4.Y * player.gravDir > 0f)
+ 					vector4.Y *= 0.5f;
+ 
+-				base.Center = mountedCenter + vector4 * 30f;
++				base.Center = mountedCenter + vector4 * spinVisualDistance; // TML: 30->spinVisualDistance
+ 				velocity = Vector2.Zero;
+ 				localNPCHitCooldown = num12;
+ 				break;
 @@ -30730,7 +_,10 @@
  			}
  		}
