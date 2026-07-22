@@ -136,11 +136,11 @@ namespace ExampleMod.Content.Projectiles
 		}
 
 		// This hook lets us change how the held projectile looks while a mannequin is holding it.
-		// The following code is adapted from vanilla's Projectile.AI_DisplayDoll for aiStyle 20 (Drill)
-		// Due to how our sprite is oriented, we need to customize the rotation and can't just use ProjAIStyleID.Drill for this one.
+		// The following code is adapted from vanilla's Projectile.AI_DisplayDoll for aiStyle 75 (HeldProjectile)
+		// Due to how our sprite is oriented and our custom holdout distance, we need to customize the rotation and holdout distance and can't just use ProjAIStyleID.HeldProjectile for this one.
 		public override bool DisplayDollSettings(Player doll, TEDisplayDoll.DisplayDollPose pose, ref int aiStyle) {
 			Projectile.spriteDirection = Projectile.direction;
-			Vector2 projectileDirection = Vector2.UnitX * 20f;
+			Vector2 projectileDirection = Vector2.UnitX * ExampleHeldProjectileWeapon.HoldoutDistance;
 			float armRotation = 0f;
 			if (pose.ItemAimRadians.HasValue)
 				armRotation = pose.ItemAimRadians.Value;
