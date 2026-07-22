@@ -347,7 +347,7 @@ public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, 
 }
 ```
 
-If you were using `Projectile.FillWhipControlPoints` to draw the projectile, you should now pass the player parameter as the third parameter. Otherwise the whip won't draw correctly for mannequins.
+If you were using `Projectile.FillWhipControlPoints` to draw the projectile, you should now pass the player parameter as the third argument. Otherwise the whip won't draw correctly for mannequins.
 
 Example Mod's whips have been updated with new examples and additional comments. See the *Example Mod* section below for the details.
 
@@ -393,7 +393,7 @@ See ExampleWhip, ExampleWhipAdvanced, ExampleWhipProjectile, and ExampleWhipProj
   * Add `ItemID.Sets.PlaceTileOnAltUse[Type] = true;` to `ModItem.SetStaticDefaults` and set `Item.createTile = TileID.CritterAnchor;` in `ModItem.SetDefaults`.
 * Minion buffs can now have a counter for how many times the minion was summoned. Simply add `BuffID.Sets.BuffTextHandlers.Add(Type, new CachedProjectileCounterBuffTextHandler(ModContent.ProjectileType<YourMinionsProjectile>()));` to the buff's `SetStaticDefaults`.
   * Custom buff text handlers can be made by creating a class that inherits `IBuffTextHandler` if the vanilla `CachedProjectileCounterBuffTextHandler` doesn't suit your minion or if you want to display custom text on a buff for any other purpose.
-* To support mannequins holding held projectiles, `(ModProjectile|GlobalProjectile).DisplayDollSettings(Player doll, TEDisplayDoll.DisplayDollPose pose, ref int aiStyle, ref bool botherDrawing)` has been added.
+* To support mannequins holding held projectiles, `(ModProjectile|GlobalProjectile).DisplayDollSettings(Player doll, TEDisplayDoll.DisplayDollPose pose, ref int aiStyle)` has been added.
 	* Many Example Mod held projectiles were updated to showcase the new hook.
 	* As mentioned in the Projectile Draw Changes section, PreDraw/Draw/PostDraw code needs to be updated to use the new `player` parameter instead of using `Main.player[Projectile.owner]`.
 	* `Projectile.drawLayer = ProjectileDrawLayerID.HeldProj` will likely need to be added to `SetDefaults` for the projectile to draw on the correct layer.

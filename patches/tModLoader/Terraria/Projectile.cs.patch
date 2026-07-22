@@ -1632,14 +1632,6 @@
  	public int FindTargetWithLineOfSight(float maxRange = 800f)
  	{
  		float num = maxRange;
-@@ -36740,6 +_,7 @@
- 		float num7 = 0f;
- 		float num8 = 0f;
- 		spriteDirection = -direction;
-+
- 		switch (type) {
- 			case 46:
- 				num6 = 3f;
 @@ -36861,7 +_,10 @@
  				break;
  		}
