@@ -45,6 +45,15 @@ namespace ExampleMod.Content.Projectiles
 			return base.PreDrawExtras(player);
 		}
 
+		// These 2 hooks are specific to projectiles using ProjAIStyleID.Flail and allow customizing the behavior of that aiStyle to some degree.
+		public override void FlailStats(ref int launchTimeLimit, ref float launchSpeed, ref float maxLaunchLength, ref float retractAcceleration, ref float maxRetractSpeed, ref float forcedRetractAcceleration, ref float maxForcedRetractSpeed, ref int ricochetTimeLimit, ref float spinVisualDistance) {
+			spinVisualDistance += 30;
+		}
+
+		public override void FlailSpinCollisionRange(ref float range) {
+			range += 30;
+		}
+
 		public override bool PreDraw(Player player, ref Color lightColor) {
 			Projectile.type = ModContent.ProjectileType<ExampleFlailProjectile>();
 
@@ -86,7 +95,7 @@ namespace ExampleMod.Content.Projectiles
 			}
 		}
 
-		// Finally, you can slightly customize the AI if you read and understand the vanilla aiStyle source code. You can't customize the range, retract speeds, or anything else. If you need to customize those things, you'll need to follow ExampleAdvancedFlailProjectile. This example spawns a Grenade right when the flail starts to retract.
+		// Finally, you can customize the AI if you read and understand the vanilla aiStyle source code. This example spawns a Grenade right when the flail starts to retract.
 		public override void AI() {
 			// The only reason this code works is because the author read the vanilla code and comprehended it well enough to tack on additional logic.
 			if (Main.myPlayer == Projectile.owner && Projectile.ai[0] == 2f && Projectile.ai[1] == 0f) {

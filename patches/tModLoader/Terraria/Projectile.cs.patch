@@ -1,5 +1,12 @@
 --- src/TerrariaNetCore/Terraria/Projectile.cs
 +++ src/tModLoader/Terraria/Projectile.cs
+@@ -1,5 +_,6 @@
+ using System;
+ using System.Collections.Generic;
++using System.Numerics;
+ using Microsoft.Xna.Framework;
+ using Microsoft.Xna.Framework.Audio;
+ using ReLogic.Utilities;
 @@ -21,15 +_,17 @@
  using Terraria.Graphics.Shaders;
  using Terraria.ID;
@@ -1224,6 +1231,14 @@
  		if (type == 1041 && ai[0] < 0f)
  			return false;
  
+@@ -12401,6 +_,7 @@
+ 				Vector2 vector = targetRect.ClosestPointInRect(mountedCenter) - mountedCenter;
+ 				vector.Y /= 0.8f;
+ 				float num = 55f;
++				ProjectileLoader.FlailSpinCollisionRange(this, ref num);
+ 				return vector.Length() <= num;
+ 			}
+ 		}
 @@ -12672,6 +_,9 @@
  			}
  		}
@@ -1589,10 +1604,13 @@
  			localAI[0] = 1f;
  		}
  	}
-@@ -34775,8 +_,11 @@
+@@ -34775,8 +_,14 @@
  				break;
  		}
  
++		float spinVisualDistance = 30f;
++		ProjectileLoader.FlailStats(this, ref num, ref num2, ref num3, ref num4, ref num5, ref num6, ref num7, ref num14, ref spinVisualDistance);
++
 +		/*
  		float meleeSpeed = player.meleeSpeed;
  		float num16 = 1f / meleeSpeed;
@@ -1601,6 +1619,15 @@
  		num2 *= num16;
  		num8 *= num16;
  		num9 *= num16;
+@@ -34837,7 +_,7 @@
+ 				if (vector6.Y * player.gravDir > 0f)
+ 					vector6.Y *= 0.5f;
+ 
+-				base.Center = mountedCenter + vector6 * num15;
++				base.Center = mountedCenter + vector4 * spinVisualDistance; // TML: 30->spinVisualDistance
+ 				velocity = Vector2.Zero;
+ 				localNPCHitCooldown = num12;
+ 				break;
 @@ -35168,7 +_,10 @@
  			}
  		}
