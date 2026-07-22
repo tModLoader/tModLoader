@@ -48,6 +48,7 @@ namespace ExampleMod.Content.Projectiles
 			return base.PreDrawExtras();
 		}
 
+		// These 2 hooks are specific to projectiles using ProjAIStyleID.Flail and allow customizing the behavior of that aiStyle to some degree.
 		public override void FlailStats(ref int launchTimeLimit, ref float launchSpeed, ref float maxLaunchLength, ref float retractAcceleration, ref float maxRetractSpeed, ref float forcedRetractAcceleration, ref float maxForcedRetractSpeed, ref int ricochetTimeLimit, ref float spinVisualDistance) {
 			spinVisualDistance += 30;
 		}
