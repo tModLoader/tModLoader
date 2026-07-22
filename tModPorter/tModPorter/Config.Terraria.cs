@@ -300,6 +300,7 @@ public static partial class Config
 		RenameStaticField("Terraria.ID.TileID.Sets", from: "InteractibleByNPCs", to: "InteractableByNPCs");
 		RenameStaticField("Terraria.ID.TileID.Sets", from: "Torch", to: "Torches");
 		RenameStaticField("Terraria.ID.TileID.Sets", from: "Campfire", to: "Campfires");
+		RenameStaticField("Terraria.ID.TileID.Sets", from: "WallsMergeWith", to: "TruncatesWalls");
 		RenameStaticField("Terraria.ID.WallID.Sets", from: "Corrupt", to: "SpreadsCorruption");
 		RenameStaticField("Terraria.ID.WallID.Sets", from: "Crimson", to: "SpreadsCrimson");
 		RenameStaticField("Terraria.ID.WallID.Sets", from: "Hallow", to: "SpreadsHallow");
