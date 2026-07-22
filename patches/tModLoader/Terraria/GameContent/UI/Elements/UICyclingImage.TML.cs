@@ -2,8 +2,8 @@ namespace Terraria.GameContent.UI.Elements;
 
 public partial class UICyclingImage
 {
-	//These are exposed to allow for modded special seeds to add their own textures.
-	internal int CurrentTextureIndex { get => _currentTextureIndex; set => _currentTextureIndex = value; }
-	internal int FramesCounted { get => _framesCounted; set => _framesCounted = value; }
+	//Added to allow modded seeds to modify texture frames.
+	internal int CurrentTextureIndex => _currentTextureIndex;
 	internal int TextureCount => _textureAssets.Count;
+	internal int FramesCounted => _framesCounted;
 }

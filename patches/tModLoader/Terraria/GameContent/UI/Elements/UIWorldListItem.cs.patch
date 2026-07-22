@@ -22,7 +22,7 @@
  {
  	private Asset<Texture2D> _dividerTexture;
  	private Asset<Texture2D> _innerPanelTexture;
-@@ -44,10 +_,15 @@
+@@ -44,10 +_,14 @@
  		_canBePlayed = canBePlayed;
  		_hasBeenPlayedByActivePlayer = hasBeenPlayedByActivePlayer;
  		_isNewlyGenerated = isNewlyGenerated;
@@ -34,20 +34,9 @@
  		_worldIcon = GetIconElement();
  		_worldIcon.OnLeftDoubleClick += PlayGame;
 +		_worldIcon.OnUpdate += UpdateIconForModSeeds;
-+		_includedModSeeds = SeedLoader.IncludedModSeeds(data);
  		Append(_worldIcon);
  		if (_data.DefeatedMoonlord) {
  			UIImage element = new UIImage(Main.Assets.Request<Texture2D>("Images/UI/IconCompletion")) {
-@@ -61,7 +_,8 @@
- 			_worldIcon.Append(element);
- 		}
- 
-+		int vanillaIconCount = _showVanillaSeedIcons ? GetIcons().Count : 0;
--		if (GetIcons().Count >= 2 && !_data.ZenithWorld) {
-+		if (vanillaIconCount + _includedModSeeds.Count >= 2 && !_data.ZenithWorld) {
- 			UIImage element2 = new UIImage(Main.Assets.Request<Texture2D>("Images/UI/IconMixedSeed")) {
- 				HAlign = 0f,
- 				VAlign = 1f,
 @@ -115,6 +_,8 @@
  			num += 24f;
  		}

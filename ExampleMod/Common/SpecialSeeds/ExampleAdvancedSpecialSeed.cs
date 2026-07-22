@@ -49,15 +49,18 @@ public class ExampleAdvancedSpecialSeed : ModSpecialSeed
 
 	public override ModMenu WorldGenMenu => ModContent.GetInstance<ExampleModMenu>();
 
-	public override Texture2D GetSeedTexture(bool isCorruption, bool isHardMode, ref Rectangle frame) {
+	public override Asset<Texture2D> GetWorldIconTexture() {
+		return icon;
+	}
+
+	public override void ModifyWorldIconDrawParams(bool isCrimson, bool isHardmode, ref Rectangle frame) {
 		frame = new Rectangle(0, 0, 60, 58);
-		if (!isCorruption) {
+		if (isCrimson) {
 			frame.Y = 60;
 		}
-		if (isHardMode) {
+		if (isHardmode) {
 			frame.X = 62;
 		}
-		return icon.Value;
 	}
 
 	public override void ModifyWorldGenTasks(List<GenPass> tasks) {

@@ -19,9 +19,6 @@ public partial class UIWorldListItem : AWorldListItem
 	private ulong _fileSize;
 	private Asset<Texture2D> _configTexture;
 	UIText warningLabel; // top right label.
-	private int _modSeedFrameCounter;
-	private readonly List<ModSpecialSeed> _includedModSeeds;
-	private bool _showModIcons;
 
 	private void InitializeTmlFields(WorldFileData data)
 	{
@@ -168,7 +165,7 @@ public partial class UIWorldListItem : AWorldListItem
 
 	private void UpdateIconForModSeeds(UIElement element)
 	{
-		if (_includedModSeeds.Count == 0) {
+		if (_moddedSeeds.Count == 0) {
 			return;
 		}
 		UICyclingImage worldIcon = null;
@@ -180,37 +177,25 @@ public partial class UIWorldListItem : AWorldListItem
 		}
 
 		worldIcon.AllowResizingDimensions = false;
-		SetShowModIcons(worldIcon);
-		if (!_showModIcons) {
-			return;
+		worldIcon.Width.Set(60,0f);
+		worldIcon.Height.Set(58,0f);
+		int currentIndex = worldIcon.CurrentTextureIndex;
+		if (worldIcon.FramesCounted >= worldIcon.FramesPerCycle - 1) {
+			currentIndex++;
 		}
-		worldIcon.Frame = null;
-		worldIcon.FramesCounted = 0;
-		int modSeedIndex = _modSeedFrameCounter / worldIcon.FramesPerCycle;
-		Rectangle newFrame = Rectangle.Empty;
-		worldIcon.SetImage(_includedModSeeds[modSeedIndex].GetSeedTexture(_data.HasCorruption,_data.IsHardMode,ref newFrame));
-		if (newFrame != Rectangle.Empty) {
-			worldIcon.Frame = newFrame;
+		if (currentIndex >= worldIcon.TextureCount) {
+			currentIndex = 0;
 		}
-		_modSeedFrameCounter++;
-	}
 
-	private void SetShowModIcons(UICyclingImage worldIcon)
-	{
-		if (!_showVanillaSeedIcons) {
-			_modSeedFrameCounter %= _includedModSeeds.Count * worldIcon.FramesPerCycle;
-			_showModIcons = true;
-			return;
-		}
-		if (worldIcon.CurrentTextureIndex == worldIcon.TextureCount - 1 && worldIcon.FramesCounted == worldIcon.FramesPerCycle - 1 && !_showModIcons) {
-			_showModIcons = true;
-			return;
-		}
-		if (_modSeedFrameCounter >= _includedModSeeds.Count * worldIcon.FramesPerCycle) {
-			_showModIcons = false;
-			worldIcon.FramesCounted = worldIcon.FramesPerCycle;
+		int modSeedIndex = currentIndex - (worldIcon.TextureCount - _moddedSeeds.Count);
+		if (modSeedIndex < 0) {
 			worldIcon.Frame = null;
-			_modSeedFrameCounter = 0;
+			return;
+		}
+		Rectangle frame = Rectangle.Empty;
+		_moddedSeeds[modSeedIndex].ModifyWorldIconDrawParams(_data.HasCrimson, _data.HasCorruption, ref frame);
+		if (frame != Rectangle.Empty) {
+			worldIcon.Frame = frame;
 		}
 	}
 }

@@ -13,24 +13,20 @@
  {
 +	// Added by TML
 +	public WorldFileData Data => _data;
-+	protected bool _showVanillaSeedIcons = true;
++	protected List<ModSpecialSeed> _moddedSeeds = new();
 +
  	protected WorldFileData _data;
  	protected int _glitchFrameCounter;
  	protected int _glitchFrame;
-@@ -136,10 +_,13 @@
+@@ -136,6 +_,9 @@
  		if (_data.SkyblockWorld)
  			list.Add(GetSeedIcon("Skyblock", hardmodeVariants: false, evilVariants: false));
  
 +		list.RemoveAll(icon => icon == null);
++		SeedLoader.AddModSeedIcons(_data,list,_moddedSeeds);
 +
  		if (list.Count > 0)
  			return list;
- 
- 		list.Add(GetSeedIcon(""));
-+		_showVanillaSeedIcons = false; // This won't do anything unless the world file actually has loaded modded seeds
- 		return list;
- 	}
  
 @@ -160,6 +_,8 @@
  

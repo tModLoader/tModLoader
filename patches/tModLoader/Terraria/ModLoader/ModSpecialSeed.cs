@@ -156,10 +156,7 @@ public abstract class ModSpecialSeed : ModSeedType
 	/// Gets the icon used to represent worlds with this seed enabled.
 	/// Unlike the autoloaded texture, the texture used here needs to have the icon backdrop behind it.
 	/// </summary>
-	/// <param name="isCorruption">True if this is a Corruption world, false if it is a Crimson world.</param>
-	/// <param name="isHardMode">True if this world is in Hardmode, false if it is in Pre-Hardmode</param>
-	/// <param name="frame">The frame of the texture that will be used. Will use the entire texture if not specified.</param>
-	public abstract Texture2D GetSeedTexture(bool isCorruption, bool isHardMode, ref Rectangle frame);
+	public abstract Asset<Texture2D> GetWorldIconTexture();
 
 	protected sealed override void Register()
 	{
@@ -273,7 +270,7 @@ public abstract class ModSpecialSeed : ModSeedType
 	public UIElement ProvideSeedIconElement()
 	{
 		var element = UIOption.ProvideUIElement();
-		ModifySeedIconElement(element);
+		ModifySeedMenuElement(element);
 		return element;
 	}
 
@@ -287,7 +284,7 @@ public abstract class ModSpecialSeed : ModSeedType
 	/// This allows changing the icon for this seed's toggle in the world creation menu.
 	/// </summary>
 	/// <param name="element">The UI element that is used for the toggle</param>
-	public virtual void ModifySeedIconElement(UIElement element) { }
+	public virtual void ModifySeedMenuElement(UIElement element) { }
 
 	/// <summary>
 	/// Allows you to add custom seed names that will trigger your special seed when entered into the seed menu.
@@ -327,6 +324,14 @@ public abstract class ModSpecialSeed : ModSeedType
 	/// <br/><br/>Called during load time after content has been set up.
 	/// </summary>
 	public virtual IEnumerable<AWorldGenerationOption> GetIncompatibilities() { return Enumerable.Empty<AWorldGenerationOption>(); }
+
+	/// <summary>
+	/// Used to modify the way the icon is displayed for worlds with this seed enabled.
+	/// </summary>
+	/// <param name="isCrimson">True if this is a Crimson world, false if it is a Corruption world.</param>
+	/// <param name="isHardmode">True if this is in Hardmode, false if it is in Pre-Hardmode</param>
+	/// <param name="frame">The frame of the texture being displayed. Will use the entire texture if not specified.</param>
+	public virtual void ModifyWorldIconDrawParams(bool isCrimson, bool isHardmode, ref Rectangle frame) { }
 
 	/// <summary>
 	/// Allows you to run code after the mod's content has been setup.<br/>
