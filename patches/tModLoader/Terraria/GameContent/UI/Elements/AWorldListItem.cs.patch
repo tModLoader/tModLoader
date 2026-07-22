@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/GameContent/UI/Elements/AWorldListItem.cs
 +++ src/tModLoader/Terraria/GameContent/UI/Elements/AWorldListItem.cs
-@@ -4,12 +_,16 @@
+@@ -4,12 +_,17 @@
  using ReLogic.Content;
  using Terraria.IO;
  using Terraria.Localization;
@@ -13,19 +13,24 @@
  {
 +	// Added by TML
 +	public WorldFileData Data => _data;
++	protected bool _showVanillaSeedIcons = true;
 +
  	protected WorldFileData _data;
  	protected int _glitchFrameCounter;
  	protected int _glitchFrame;
-@@ -136,6 +_,9 @@
+@@ -136,10 +_,13 @@
  		if (_data.SkyblockWorld)
  			list.Add(GetSeedIcon("Skyblock", hardmodeVariants: false, evilVariants: false));
  
 +		list.RemoveAll(icon => icon == null);
-+		SeedLoader.AddModdedSeedIcons(_data, list);
 +
  		if (list.Count > 0)
  			return list;
+ 
+ 		list.Add(GetSeedIcon(""));
++		_showVanillaSeedIcons = false; // This won't do anything unless the world file actually has loaded modded seeds
+ 		return list;
+ 	}
  
 @@ -160,6 +_,8 @@
  

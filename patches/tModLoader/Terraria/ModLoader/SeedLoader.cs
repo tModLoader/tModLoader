@@ -157,7 +157,7 @@ public static class SeedLoader
 		}
 	}
 
-	internal static void AddModdedSeedIcons(WorldFileData data, List<Asset<Texture2D>> list)
+	internal static List<ModSpecialSeed> IncludedModSeeds(WorldFileData data)
 	{
 		List<ModSpecialSeed> includedSeeds = new();
 		foreach (string seedName in data.ModSeeds) {
@@ -168,9 +168,7 @@ public static class SeedLoader
 		includedSeeds.RemoveAll(includedSeed => {
 			return includedSeeds.Exists(otherIncludedSeed => otherIncludedSeed.Dependencies.Contains(includedSeed.UIOption));
 		});
-		foreach (ModSpecialSeed includedSeed in includedSeeds) {
-			list.Add(includedSeed.GetSeedIcon(data));
-		}
+		return includedSeeds;
 	}
 
 	internal static bool IsVanillaSeedDependency(string seedCode, WorldFileData data)

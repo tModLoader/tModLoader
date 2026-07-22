@@ -12,7 +12,7 @@
  {
  	private string _text;
  
-+	// Added by TML
++	// Added by TML. Used by UIWorldLoad.DrawSelf
 +	internal Color? CustomColor { get; set; }
 +
  	public string Text {

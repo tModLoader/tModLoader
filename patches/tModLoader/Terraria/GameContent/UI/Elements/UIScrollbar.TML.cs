@@ -11,6 +11,7 @@ public partial class UIScrollbar : UIElement
 	public float ViewSize => _viewSize;
 	public float MaxViewSize => _maxViewSize;
 
+	// Used by UIWorldCreationAdvanced
 	public event Action OnScroll;
 	private float _prevViewPosition;
 

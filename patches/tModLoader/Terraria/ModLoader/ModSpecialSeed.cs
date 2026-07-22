@@ -3,6 +3,7 @@ using Terraria.WorldBuilding;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Terraria.IO;
@@ -151,19 +152,14 @@ public abstract class ModSpecialSeed : ModSeedType
 
 	#endregion
 
-	internal Asset<Texture2D> GetSeedIcon(WorldFileData data)
-	{
-		return GetSeedTexture(data.HasCorruption, data.IsHardMode);
-	}
-
 	/// <summary>
 	/// Gets the icon used to represent worlds with this seed enabled.
 	/// Unlike the autoloaded texture, the texture used here needs to have the icon backdrop behind it.
 	/// </summary>
 	/// <param name="isCorruption">True if this is a Corruption world, false if it is a Crimson world.</param>
-	/// <param name="isHardMode"></param>
-	/// <returns></returns>
-	public abstract Asset<Texture2D> GetSeedTexture(bool isCorruption, bool isHardMode);
+	/// <param name="isHardMode">True if this world is in Hardmode, false if it is in Pre-Hardmode</param>
+	/// <param name="frame">The frame of the texture that will be used. Will use the entire texture if not specified.</param>
+	public abstract Texture2D GetSeedTexture(bool isCorruption, bool isHardMode, ref Rectangle frame);
 
 	protected sealed override void Register()
 	{

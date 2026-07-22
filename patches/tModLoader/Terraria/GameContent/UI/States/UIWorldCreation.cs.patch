@@ -63,7 +63,7 @@
  		Array.Clear(oldTangent, 0, oldTangent.Length);
  	}
  
-+	// Added by TML.
++	// Added by TML. Used by UIWorldCreationAdvanced.
 +	internal bool RecalculateSpecialSeedRing { get; set; }
 +
  	public void DrawSpecialSeedRingCallback(UIElement element, SpriteBatch spriteBatch)

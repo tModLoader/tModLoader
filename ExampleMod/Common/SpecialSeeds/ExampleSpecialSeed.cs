@@ -1,5 +1,6 @@
 using ExampleMod.Content;
 using ExampleMod.Content.Tiles;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using System.Collections.Generic;
@@ -14,17 +15,11 @@ namespace ExampleMod.Common.SpecialSeeds;
 // See ExampleSpecialSeedSystem for an example of this special seed's flag being used in a world.
 public class ExampleSpecialSeed : ModSpecialSeed
 {
-	private Asset<Texture2D> iconCorruption;
-	private Asset<Texture2D> iconHallowCorruption;
-	private Asset<Texture2D> iconCrimson;
-	private Asset<Texture2D> iconHallowCrimson;
+	private Asset<Texture2D> icon;
 
 	public override void SetStaticDefaults() {
 		IncludeInZenith = true;
-		iconCorruption = ModContent.Request<Texture2D>($"ExampleMod/Common/SpecialSeeds/{Name}_IconCorruption");
-		iconHallowCorruption = ModContent.Request<Texture2D>($"ExampleMod/Common/SpecialSeeds/{Name}_IconHallowCorruption");
-		iconCrimson = ModContent.Request<Texture2D>($"ExampleMod/Common/SpecialSeeds/{Name}_IconCrimson");
-		iconHallowCrimson = ModContent.Request<Texture2D>($"ExampleMod/Common/SpecialSeeds/{Name}_IconHallowCrimson");
+		icon = ModContent.Request<Texture2D>($"ExampleMod/Common/SpecialSeeds/{Name}_Icon");
 	}
 
 	public override IEnumerable<string> SpecialSeedNames()
@@ -38,13 +33,8 @@ public class ExampleSpecialSeed : ModSpecialSeed
 
 	public override ModMenu WorldGenMenu => ModContent.GetInstance<ExampleModMenu>();
 
-	public override Asset<Texture2D> GetSeedTexture(bool isCorruption, bool isHardMode) {
-		if (isCorruption) {
-			return isHardMode ? iconHallowCorruption : iconCorruption;
-		}
-		else {
-			return isHardMode ? iconHallowCrimson : iconCrimson;
-		}
+	public override Texture2D GetSeedTexture(bool isCorruption, bool isHardMode, ref Rectangle frame) {
+		return icon.Value;
 	}
 
 	public override void ModifyWorldGenTasks(List<GenPass> tasks) {

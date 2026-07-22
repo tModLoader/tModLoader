@@ -1,9 +1,12 @@
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework;
 using ReLogic.Content;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Terraria.IO;
 using Terraria.Localization;
+using Terraria.ModLoader;
 using Terraria.ModLoader.Core;
 using Terraria.ModLoader.UI;
 using Terraria.UI;
@@ -16,6 +19,9 @@ public partial class UIWorldListItem : AWorldListItem
 	private ulong _fileSize;
 	private Asset<Texture2D> _configTexture;
 	UIText warningLabel; // top right label.
+	private int _modSeedFrameCounter;
+	private readonly List<ModSpecialSeed> _includedModSeeds;
+	private bool _showModIcons;
 
 	private void InitializeTmlFields(WorldFileData data)
 	{
@@ -158,5 +164,53 @@ public partial class UIWorldListItem : AWorldListItem
 	private void ConfigButtonClick(UIMouseEvent evt, UIElement listeningElement)
 	{
 
+	}
+
+	private void UpdateIconForModSeeds(UIElement element)
+	{
+		if (_includedModSeeds.Count == 0) {
+			return;
+		}
+		UICyclingImage worldIcon = null;
+		if (element is UICyclingImage castWorldIcon) {
+			worldIcon = castWorldIcon;
+		}
+		if (worldIcon == null) {
+			return;
+		}
+
+		worldIcon.AllowResizingDimensions = false;
+		SetShowModIcons(worldIcon);
+		if (!_showModIcons) {
+			return;
+		}
+		worldIcon.Frame = null;
+		worldIcon.FramesCounted = 0;
+		int modSeedIndex = _modSeedFrameCounter / worldIcon.FramesPerCycle;
+		Rectangle newFrame = Rectangle.Empty;
+		worldIcon.SetImage(_includedModSeeds[modSeedIndex].GetSeedTexture(_data.HasCorruption,_data.IsHardMode,ref newFrame));
+		if (newFrame != Rectangle.Empty) {
+			worldIcon.Frame = newFrame;
+		}
+		_modSeedFrameCounter++;
+	}
+
+	private void SetShowModIcons(UICyclingImage worldIcon)
+	{
+		if (!_showVanillaSeedIcons) {
+			_modSeedFrameCounter %= _includedModSeeds.Count * worldIcon.FramesPerCycle;
+			_showModIcons = true;
+			return;
+		}
+		if (worldIcon.CurrentTextureIndex == worldIcon.TextureCount - 1 && worldIcon.FramesCounted == worldIcon.FramesPerCycle - 1 && !_showModIcons) {
+			_showModIcons = true;
+			return;
+		}
+		if (_modSeedFrameCounter >= _includedModSeeds.Count * worldIcon.FramesPerCycle) {
+			_showModIcons = false;
+			worldIcon.FramesCounted = worldIcon.FramesPerCycle;
+			worldIcon.Frame = null;
+			_modSeedFrameCounter = 0;
+		}
 	}
 }

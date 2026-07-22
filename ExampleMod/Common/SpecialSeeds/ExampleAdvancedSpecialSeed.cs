@@ -13,16 +13,10 @@ namespace ExampleMod.Common.SpecialSeeds;
 
 public class ExampleAdvancedSpecialSeed : ModSpecialSeed
 {
-	private Asset<Texture2D> iconCorruption;
-	private Asset<Texture2D> iconHallowCorruption;
-	private Asset<Texture2D> iconCrimson;
-	private Asset<Texture2D> iconHallowCrimson;
+	private Asset<Texture2D> icon;
 
 	public override void SetStaticDefaults() {
-		iconCorruption = ModContent.Request<Texture2D>($"ExampleMod/Common/SpecialSeeds/{Name}_IconCorruption");
-		iconHallowCorruption = ModContent.Request<Texture2D>($"ExampleMod/Common/SpecialSeeds/{Name}_IconHallowCorruption");
-		iconCrimson = ModContent.Request<Texture2D>($"ExampleMod/Common/SpecialSeeds/{Name}_IconCrimson");
-		iconHallowCrimson = ModContent.Request<Texture2D>($"ExampleMod/Common/SpecialSeeds/{Name}_IconHallowCrimson");
+		icon = ModContent.Request<Texture2D>($"ExampleMod/Common/SpecialSeeds/{Name}_Icon");
 	}
 
 	public override void PostSetupContent() {
@@ -55,13 +49,15 @@ public class ExampleAdvancedSpecialSeed : ModSpecialSeed
 
 	public override ModMenu WorldGenMenu => ModContent.GetInstance<ExampleModMenu>();
 
-	public override Asset<Texture2D> GetSeedTexture(bool isCorruption, bool isHardMode) {
-		if (isCorruption) {
-			return isHardMode ? iconHallowCorruption : iconCorruption;
+	public override Texture2D GetSeedTexture(bool isCorruption, bool isHardMode, ref Rectangle frame) {
+		frame = new Rectangle(0, 0, 60, 58);
+		if (!isCorruption) {
+			frame.Y = 60;
 		}
-		else {
-			return isHardMode ? iconHallowCrimson : iconCrimson;
+		if (isHardMode) {
+			frame.X = 62;
 		}
+		return icon.Value;
 	}
 
 	public override void ModifyWorldGenTasks(List<GenPass> tasks) {
