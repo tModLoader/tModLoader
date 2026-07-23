@@ -478,6 +478,7 @@ All classes are in the `Terraria` or `Terraria.ID` namespaces unless otherwise i
 * 🤖: `TileID.Sets.InteractibleByNPCs` -> `TileID.Sets.InteractableByNPCs`
 * 🤖: `TileID.Sets.Torch` -> `TileID.Sets.Torches`
 * 🤖: `TileID.Sets.Campfire` -> `TileID.Sets.Campfires`
+* 🤖: `TileID.Sets.WallsMergeWith` -> `TileID.Sets.TruncatesWalls`
 * 🤖: `WallID.Sets.Corrupt` -> `WallID.Sets.SpreadsCorruption`
 * 🤖: `WallID.Sets.Crimson` -> `WallID.Sets.SpreadsCrimson`
 * 🤖: `WallID.Sets.Hallow` -> `WallID.Sets.SpreadsHallow`
@@ -567,4 +568,4 @@ All classes are in the `Terraria.ModLoader` or `Terraria` namespaces unless othe
 * Localized mod display names, mod descriptions, and steam workshop descriptions are now supported. [More information](https://github.com/tModLoader/tModLoader/pull/5226).
   * Add `displayName.[languageCode] = LocalizedDisplayName` to `build.txt` to support other languages for the name of the mod.
   * Add `description_[languageCode].txt` and `description_workshop_[languageCode].txt` to support other languages for the in-game description and steam workshop description.
-* `(Mod|Global)BlockType.RandomUpdate` (Tiles and Walls) now have a `underground` parameter to more easily support underground or overground-only logic and better support the "Don't dig up" special world seed behaviors.
+* `(Mod|Global)BlockType.RandomUpdate` (Tiles and Walls) now have an `underground` parameter to more easily support underground or overground-only logic and better support the "Don't dig up" special world seed behaviors. If that seed is active, tile locations technically underground (below `Main.worldSurface`) might be considered overground for random update purposes. Modders should trust the `underground` parameter rather than rely on checking `Main.worldSurface` to support the special characteristics of "Don't dig up".

@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/ID/MessageID.cs
 +++ src/tModLoader/Terraria/ID/MessageID.cs
-@@ -1,165 +_,675 @@
+@@ -1,165 +_,682 @@
  using Terraria.Utilities;
 +using Terraria.ModLoader;
  
@@ -153,7 +153,7 @@
  	public const byte AreaTileChange = 20;
 +
 +	/// <summary>
-+	/// Syncs all info about an item in the world, includding modded data.
++	/// Syncs all info about an item in the world, including modded data.
 +	/// <br/><br/> Use this whenever an item in the world is manipulated. <c>Item.NewItem</c> calls this automatically on the server to sync the item with other clients, but on clients this needs to be used or <c>Player.QuickSpawnItem</c> should be used instead.
 +	/// <br/><br/> <c>NetMessage.SendData</c> parameters:
 +	/// <br/> <b>number:</b> The index of the item within <see cref="Main.item"/>
@@ -331,13 +331,20 @@
 +	// Forwarded to other clients
  	public const byte PlayerBuffs = 50;
 +
-+	// Param, actionType
-+	// ActionType {
-+	// 1 - NPC.SpawnSkeletron
-+	// 2 - Play grapple sound at the position of Main.player[param]. forwarded to other clients
-+	// 3 - Main.Sundialing
-+	// 4 - Main.npc[param].BigMimicSpawnSmoke
-+	// }
++	/// <summary>
++	/// Used to sync various miscellaneous events.
++	/// <br/><br/> <c>NetMessage.SendData</c> parameters:
++	/// <br/> <b>number:</b> param: A parameter to use with the actionType.
++	/// <br/> <b>number2:</b> actionType: The type of action to perform:
++	/// <code>
++	/// 1 - NPC.SpawnSkeletron
++	/// 2 - Play grapple sound at the position of Main.player[param]. Forwarded to other clients
++	/// 3 - Main.Sundialing
++	/// 4 - Main.npc[param].BigMimicSpawnSmoke
++	/// 5 - Register Torch God kill
++	/// 6 - Main.Moondialing
++	/// </code>
++	/// </summary>
  	public const byte MiscDataSync = 51;
 +
 +	// Sends TileSquare to all clients
@@ -393,7 +400,7 @@
 +
 +	// NpcID, homeX, homeY, changeType
 +	// ChangeType WorldGen.{ kickOut = 0, moveRoom = 1 }
-+	// Sent by client on WorldGen.kickOut/moveRoom, propogated by server in UpdateNPC
++	// Sent by client on WorldGen.kickOut/moveRoom, propagated by server in UpdateNPC
 -	public const byte Unknown60 = 60;
 +	public const byte NPCHome = 60;
 +
@@ -403,7 +410,7 @@
 +	/// <br/><br/> <c>NetMessage.SendData</c> parameters:
 +	/// <br/> <b>number:</b> The player.whoAmI of the player to spawn on.
 +	/// <br/> <b>number2:</b> If positive, this is the NPC type to spawn. If negative, this is a special event value from one of the following:
-+	/// GoblinArmy: -1, FrostLegion: -2, Pirates: -3, PumpkinMoon: -4, SnowMoon: -5, Eclipse: -6, MartianInvation: -7, MoonLordTimer: -8, BloodMoon: -10, <see cref="NPC.combatBookWasUsed"/>: -11, Pet License: -12 through -15, MechQueen: 16, <see cref="NPC.combatBookVolumeTwoWasUsed"/>: -17, <see cref="NPC.peddlersSatchelWasUsed"/>: -18,
++	/// GoblinArmy: -1, FrostLegion: -2, Pirates: -3, PumpkinMoon: -4, SnowMoon: -5, Eclipse: -6, MartianInvasion: -7, MoonLordTimer: -8, BloodMoon: -10, <see cref="NPC.combatBookWasUsed"/>: -11, Pet License: -12 through -15, MechQueen: 16, <see cref="NPC.combatBookVolumeTwoWasUsed"/>: -17, <see cref="NPC.peddlersSatchelWasUsed"/>: -18,
 +	/// <br/><br/> <b>Client->Server only</b>
 +	/// </summary>
  	public const byte SpawnBossUseLicenseStartEvent = 61;
@@ -501,7 +508,7 @@
 +	/// </summary>
  	public const byte CombatTextInt = 81;
 +
-+	// Used by NetModule, NetMaager and NetPacket for a more extensible packet system.
++	// Used by NetModule, NetManager and NetPacket for a more extensible packet system.
 +	// Sent by NetManager.SendData
 +	// Handled by NetManager.Read
 +	// Currently the only module (id 0) is the NetLiquidModule
