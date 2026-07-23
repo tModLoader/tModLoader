@@ -237,7 +237,7 @@ namespace ExampleMod.Content.Projectiles
 
 		// This hook lets us change how the held projectile looks while a mannequin is holding it.
 		// We set aiStyle to Whip to draw the projectile as if it had the vanilla whip aiStyle.
-		public override bool DisplayDollSettings(Player doll, TEDisplayDoll.DisplayDollPose pose, ref int aiStyle) {
+		public override bool DisplayDollSettings(Player doll, TEDisplayDoll.DisplayDollPose pose, ref int aiStyle, ref int aiType) {
 			aiStyle = ProjAIStyleID.Whip;
 			return true;
 		}

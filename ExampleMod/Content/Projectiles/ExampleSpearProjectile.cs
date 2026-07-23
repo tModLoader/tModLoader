@@ -78,7 +78,7 @@ namespace ExampleMod.Content.Projectiles
 		// The following code is adapted from vanilla's Projectile.AI_DisplayDoll for aiStyle 19 (Spear)
 		// If not setting an AIType, we need to customize the forward offset to make it look right and can't just use ProjAIStyleID.Spear for this one.
 		// Since we are using AIType, this example is commented out and left as an example of what custom DisplayDollSettings code would look like.
-		/*public override bool DisplayDollSettings(Player doll, TEDisplayDoll.DisplayDollPose pose, ref int aiStyle) {
+		/*public override bool DisplayDollSettings(Player doll, TEDisplayDoll.DisplayDollPose pose, ref int aiStyle, ref int aiType) {
 			Projectile.direction = doll.direction;
 			Projectile.spriteDirection = -Projectile.direction;
 			Vector2 projectileDirection = Vector2.UnitX;

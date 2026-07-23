@@ -1486,15 +1486,19 @@
  			if (timeLeft > 3000)
  				timeLeft -= 60;
  
-@@ -17990,6 +_,12 @@
+@@ -17990,6 +_,16 @@
  		if ((uint)(pose2 - 4) <= 4u)
  			flag = true;
  
 +		int originalType = this.type;
-+		this.type = ModProjectile?.AIType ?? this.type;
++		int aiType = this.type;
++		if (ModProjectile?.AIType > 0) {
++			aiType = ModProjectile.AIType;
++		}
 +		int aiStyle = this.aiStyle;
-+		if (!ProjectileLoader.DisplayDollSettings(this, doll, pose, ref aiStyle))
++		if (!ProjectileLoader.DisplayDollSettings(this, doll, pose, ref aiStyle, ref aiType))
 +			goto SkipVanillaLogic;
++		this.type = aiType;
 +
  		switch (aiStyle) {
  			default:
