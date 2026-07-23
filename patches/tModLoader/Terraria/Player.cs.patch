@@ -441,7 +441,20 @@
  	public int lavaTime;
  	public bool ignoreWater;
  	public bool lavaVision;
-@@ -984,13 +_,26 @@
+@@ -979,18 +_,39 @@
+ 	public int stealthTimer;
+ 	public float stealth = 1f;
+ 	public int beardGrowthTimer;
++	/// <summary>
++	/// If true, this player is a <see cref="TileID.DisplayDoll"/> or a <see cref="TileID.HatRack"/>
++	/// <br/>See also: <seealso cref="Player.isHatRackDoll"/>
++	/// </summary>
+ 	public bool isDisplayDollOrInanimate;
+ 	public bool isFullbright;
++	/// <summary>
++	/// If true, this player is a <see cref="TileID.HatRack"/>
++	/// <br/>See also: <seealso cref="Player.isDisplayDollOrInanimate"/>
++	/// </summary>
  	public bool isHatRackDoll;
  	public bool isFirstFractalAfterImage;
  	public float firstFractalAfterImageOpacity;

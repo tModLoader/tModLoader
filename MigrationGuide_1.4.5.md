@@ -347,6 +347,8 @@ public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, 
 }
 ```
 
+If you were using `Projectile.FillWhipControlPoints` to draw the projectile, you should now pass the player parameter as the third argument. Otherwise the whip won't draw correctly for mannequins.
+
 Example Mod's whips have been updated with new examples and additional comments. See the *Example Mod* section below for the details.
 
 See ExampleWhip, ExampleWhipAdvanced, ExampleWhipProjectile, and ExampleWhipProjectileAdvanced for more examples.
@@ -391,6 +393,10 @@ See ExampleWhip, ExampleWhipAdvanced, ExampleWhipProjectile, and ExampleWhipProj
   * Add `ItemID.Sets.PlaceTileOnAltUse[Type] = true;` to `ModItem.SetStaticDefaults` and set `Item.createTile = TileID.CritterAnchor;` in `ModItem.SetDefaults`.
 * Minion buffs can now have a counter for how many times the minion was summoned. Simply add `BuffID.Sets.BuffTextHandlers.Add(Type, new CachedProjectileCounterBuffTextHandler(ModContent.ProjectileType<YourMinionsProjectile>()));` to the buff's `SetStaticDefaults`.
   * Custom buff text handlers can be made by creating a class that inherits `IBuffTextHandler` if the vanilla `CachedProjectileCounterBuffTextHandler` doesn't suit your minion or if you want to display custom text on a buff for any other purpose.
+* To support mannequins holding held projectiles, `(ModProjectile|GlobalProjectile).DisplayDollSettings(Player doll, TEDisplayDoll.DisplayDollPose pose, ref int aiStyle, ref int aiType)` has been added.
+	* Many Example Mod held projectiles were updated to showcase the new hook.
+	* As mentioned in the Projectile Draw Changes section, PreDraw/Draw/PostDraw code needs to be updated to use the new `player` parameter instead of using `Main.player[Projectile.owner]`.
+	* `Projectile.drawLayer = ProjectileDrawLayerID.HeldProj` will likely need to be added to `SetDefaults` for the projectile to draw on the correct layer.
 
 ### Example Mod
 
@@ -407,6 +413,7 @@ Several Example Mod examples have been updated to adapt to 1.4.5 changes and to 
 	* Added the `Shoot()` override to spawn the projectile manually for the swing direction. See the *Whip Changes* section above for details.
     * It no longer has the charging ability that it did before (`ExampleWhipAdvanced` still has it).
     * The draw code has been changed to be more generic.
+	  * `Projectile.FillWhipControlPoints` has been updated to pass the player parameter.
       * It is almost an exact copy of the Leather Whip's drawing.
 	  * It assumes each segment in the sprite are equal size, like most sprite sheets are.
 	* See the *Whips and Tag Effects* section above for details on tag damage changes.
@@ -417,10 +424,13 @@ Several Example Mod examples have been updated to adapt to 1.4.5 changes and to 
 	  * `Projectile.GetWhipSettings` has new functionality for when the whip is displayed on a mannequin.
     * Add `owner.MatchItemTimeToItemAnimation()` after setting the `heldProj` to match vanilla.
     * The draw code has been changed to work better for different segment amounts.
+	  * `Projectile.FillWhipControlPoints` has been updated to pass the player parameter.
       * Previously, the draw code was specific for `ExampleWhipProjectileAdvanced`. Now it will work for any number of segments.
 	  * Even if your whips seem to draw fine, double check the code because it is likely that the third segment of your whip wasn't being drawn.
 	* See the *Whips and Tag Effects* section above for details on tag damage changes.
 * `ExampleSimpleMinionBuff` now tracks how many minions were summoned with `BuffID.Sets.BuffTextHandlers`.
+* `ExampleAdvancedFlailProjectile`, `ExampleCustomSwingProjectile`, `ExampleDrillProjectile`, `ExampleFailProjectile`, `ExampleHeldProjectileWeaponProjectile`, `ExampleJoustingLanceProjectile`, `ExampleShortswordProjectile`, `ExampleSpearProjectile`, `ExampleWhipProjectile`, `ExampleWhipProjectileAdvanced`, and `ExampleYoyoProjectile` have been updated to support being held by mannequins.
+* `ExampleCustomUseStyleWeapon` (`ExampleCustomUseStyleGlobalItem`) has been updated to support being held by mannequins using `TEDisplayDoll.RegisterUsePose` and `player.isDisplayDollOrInanimate`.
 
 ## Renamed, Moved, or Removed Members
 

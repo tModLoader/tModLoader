@@ -19,7 +19,7 @@
  {
  	private class NPCDistanceByIndexComparator : IComparer<Tuple<int, float>>
  	{
-@@ -61,96 +_,394 @@
+@@ -61,96 +_,400 @@
  		public Rectangle GetBulletHitbox(int bulletIndex, Vector2 centerPoint) => Utils.CenteredRectangle(GetBulletPosition(bulletIndex, centerPoint), BulletSize);
  	}
  
@@ -284,7 +284,13 @@
 +	/// <br/> Defaults to <see langword="false"/>.
 +	/// </summary>
  	public bool ignoreWater;
++	/// <summary>
++	/// If true, this projectile is a pet projectile drawing on the player select screen.
++	/// </summary>
  	public bool isAPreviewDummy;
++	/// <summary>
++	/// If true, this projectile is a held projectile drawing on a <see cref="TileID.DisplayDoll"/>.
++	/// </summary>
  	public bool isAPreviewDisplayDoll;
  	public MinionSpawnInfo MinionSpawnInfo;
 +	/// <summary>
@@ -1480,7 +1486,31 @@
  			if (timeLeft > 3000)
  				timeLeft -= 60;
  
-@@ -18201,6 +_,11 @@
+@@ -17990,6 +_,16 @@
+ 		if ((uint)(pose2 - 4) <= 4u)
+ 			flag = true;
+ 
++		int originalType = this.type;
++		int aiType = this.type;
++		if (ModProjectile?.AIType > 0) {
++			aiType = ModProjectile.AIType;
++		}
++		int aiStyle = this.aiStyle;
++		if (!ProjectileLoader.DisplayDollSettings(this, doll, pose, ref aiStyle, ref aiType))
++			goto SkipVanillaLogic;
++		this.type = aiType;
++
+ 		switch (aiStyle) {
+ 			default:
+ 				botherDrawing = false;
+@@ -18197,10 +_,18 @@
+ 				break;
+ 			}
+ 		}
++
++		SkipVanillaLogic:
++		this.type = originalType; // AI_DisplayDoll restore original projectile type.
+ 	}
  
  	public void AI()
  	{
