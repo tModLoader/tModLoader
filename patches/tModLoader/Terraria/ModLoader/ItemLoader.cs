@@ -124,17 +124,24 @@ public static class ItemLoader
 		UpdateHookLists();
 		GlobalTypeLookups<GlobalItem>.LogStats();
 
-		foreach (ModItem item in items) {
-			Lang._itemNameCache[item.Type] = item.DisplayName;
-			Lang._itemTooltipCache[item.Type] = ItemTooltip.FromLocalization(item.Tooltip);
-			ContentSamples.ItemsByType[item.Type].RebuildTooltip();
-		}
+		RefreshModdedItemTooltips();
 
 		ValidateDropsSet();
 
 		Main.anglerQuestItemNetIDs = Main.anglerQuestItemNetIDs
 				.Concat(items.Where(modItem => ItemID.Sets.IsQuestFish[modItem.Type]).Select(modItem => modItem.Type))
 				.ToArray();
+	}
+
+	// Localization hot reload updates LocalizedText values, but the sample items retain their previously built tooltip strings.
+	internal static void RefreshModdedItemTooltips()
+	{
+		foreach (ModItem item in items) {
+			Lang._itemNameCache[item.Type] = item.DisplayName;
+			Lang._itemTooltipCache[item.Type] = ItemTooltip.FromLocalization(item.Tooltip);
+			if (ContentSamples.ItemsByType.TryGetValue(item.Type, out var sampleItem))
+				sampleItem.RebuildTooltip();
+		}
 	}
 
 	private static void UpdateHookLists()
