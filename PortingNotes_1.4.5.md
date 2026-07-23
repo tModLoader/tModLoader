@@ -7,7 +7,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - NPCHitCount = 58 --> (and others) needs comment explaining what the value should be. Why is it 1 more when no sound 0?
 - Remove all Obsolete methods, including hooks and vanilla changes.
 - Doublecheck methods marked as "Unused": SwitchTilesNew, AddStructure/AddProtectedStructure
-- Remove TileID.Sets.WallsMergeWith (see TileID.Sets.TruncatesWalls)
 - Test if https://github.com/tModLoader/tModLoader/pull/4626 is fixed in vanilla. I think you need to test with non-player chat to test properly, or maybe another player?
 - ItemSourceID is now static readonly, not a const. Do any other IDs change?
 - We need to add ModItem.SummonPrefix(), add ModPrefix.Summon
@@ -303,17 +302,6 @@ Longer TODOs that would clutter above
  		for (int i = 0; i < 5; i++) {
  			if (!_layerList.Contains(ItemSortingLayers.WeaponsMelee) && player.meleeDamage == list[0]) {
  				list.RemoveAt(0);
-```
-
-- NPC.netUpdate field moved, need to restore this patch in a new patch after patches fixed.
-```diff
-+	/// <summary>
-+	/// Set to true in <see cref="ModNPC.AI"/> or other suitable places to trigger the NPC syncing code (<see cref="MessageID.SyncNPC"/>). This will sync position, life, and other data about this NPC from the server to the clients. Modded data from <see cref="ModNPC.SendExtraAI(System.IO.BinaryWriter)"/> and <see cref="GlobalNPC.SendExtraAI(NPC, ModLoader.IO.BitWriter, System.IO.BinaryWriter)"/> will be included.
-+	/// <para/> Use this to sync changes so that the client's NPC instances stay in sync with the server's. Only changes that are non-Deterministic on the client's side, such as random decisions or code only running on the server, need to be synced. The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Netcode">Basic Netcode wiki page</see> goes into more details and links to examples.
-+	/// <para/> As the server is in charge of NPC, changes to NPC data should only happen on the server in multiplayer.
-+	/// </summary>
- 	public bool netUpdate;
- 	public bool netUpdate2;
 ```
 
 - These buffimmune change are new and likely need to be used to update TML-specific sets.
