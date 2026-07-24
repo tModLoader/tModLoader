@@ -1298,6 +1298,16 @@ Mods: {
 				DisplayName: Example Custom Draw Wings
 				Tooltip: ""
 			}
+
+			ExampleVoiceAccessory: {
+				DisplayName: Example Voice Accessory
+				Tooltip: ""
+			}
+
+			SpawnBlueSlimeWithExVoiceAccessory: {
+				DisplayName: Spawn Blue Slime With Ex Voice Accessory
+				Tooltip: ""
+			}
 		}
 
 		# Projectile display names mainly show in chat when a player dies from it.

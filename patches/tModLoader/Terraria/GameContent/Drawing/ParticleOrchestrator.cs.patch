@@ -27,11 +27,16 @@
  				for (int l = 0; l < num8; l++) {
  					Dust obj = Main.dust[WorldGen.KillTile_MakeTileDust(j, k, tileSafely)];
  					obj.velocity.Y -= 3f + (float)num7 * 1.5f;
-@@ -2119,7 +_,7 @@
+@@ -2118,8 +_,12 @@
+ 		if (indexOfPlayerWhoInvokedThis >= 0 && indexOfPlayerWhoInvokedThis < byte.MaxValue) {
  			Player player = Main.player[settings.IndexOfPlayerWhoInvokedThis];
  			if (player.active && !player.dead) {
- 				sbyte voiceOverride = (sbyte)settings.UniqueInfoPiece;
--				sbyte voiceOverride2 = player.voiceOverride;
++				/*
+-				sbyte voiceOverride = (sbyte)settings.UniqueInfoPiece;
++				sbyte voiceOverride = (sbyte)settings.UniqueInfoPiece
+ 				sbyte voiceOverride2 = player.voiceOverride;
++				*/
++				int voiceOverride = settings.UniqueInfoPiece; // TML: sbyte->int
 +				int voiceOverride2 = player.voiceOverride; // TML: sbyte->int
  				player.voiceOverride = voiceOverride;
  				player.PlayHurtSound();

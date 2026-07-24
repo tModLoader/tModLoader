@@ -1,5 +1,6 @@
 using ExampleMod.Content.Mounts;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -18,6 +19,7 @@ namespace ExampleMod.Content.Items.Mounts
 			Item.UseSound = SoundID.Item79; // What sound should play when using the item
 			Item.noMelee = true; // this item doesn't do any melee damage
 			Item.mountType = ModContent.MountType<ExampleMount>();
+			Item.voiceSlot = Type;
 		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
@@ -26,6 +28,11 @@ namespace ExampleMod.Content.Items.Mounts
 				.AddIngredient<ExampleItem>()
 				.AddTile<Tiles.Furniture.ExampleWorkbench>()
 				.Register();
+		}
+
+		public override bool PlayerHurtSoundOverride(Entity entity) {
+			SoundEngine.PlaySound(SoundID.NPCHit58, entity.position);
+			return true;
 		}
 	}
 }

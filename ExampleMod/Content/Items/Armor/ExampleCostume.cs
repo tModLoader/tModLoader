@@ -1,6 +1,7 @@
 using ExampleMod.Common.Players;
 using ExampleMod.Content.Dusts;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -73,6 +74,7 @@ namespace ExampleMod.Content.Items.Armor
 			Item.value = Item.buyPrice(gold: 15);
 			Item.rare = ItemRarityID.Pink;
 			Item.hasVanityEffects = true;
+			Item.voiceSlot = Type;
 		}
 
 		public override void UpdateAccessory(Player player, bool hideVisual) {
@@ -85,6 +87,11 @@ namespace ExampleMod.Content.Items.Armor
 			var p = player.GetModPlayer<ExampleCostumePlayer>();
 			p.BlockyHideVanity = false;
 			p.BlockyForceVanity = true;
+		}
+
+		public override bool PlayerHurtSoundOverride(Entity entity) {
+			SoundEngine.PlaySound(SoundID.Item102, entity.position);
+			return true;
 		}
 	}
 

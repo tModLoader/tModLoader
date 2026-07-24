@@ -5933,7 +5933,7 @@
  		}
  		else {
  			statLife = 0;
-@@ -31127,10 +_,12 @@
+@@ -31127,17 +_,21 @@
  				KillMe(damageSource, num2, hitDirection, pvp);
  		}
  
@@ -5946,6 +5946,43 @@
  	}
  
  	public void PlayHurtSound()
+ 	{
+ 		Vector2 vector = position;
++		/*
+ 		if (whoAmI == Main.myPlayer)
+ 			vector = new Vector2(-1f, -1f);
++		*/
+ 
+ 		if (stoned) {
+ 			SoundEngine.PlaySound(0, vector);
+@@ -31210,6 +_,13 @@
+ 				return;
+ 		}
+ 
++		//
++		if (voiceOverride > PlayerVoiceOverrideID.Other) {
++			if (ContentSamples.ItemsByType[voiceOverride]?.ModItem?.PlayerHurtSoundOverride(this) ?? false) {
++				return;
++			}
++		}
++
+ 		if (mount.Active) {
+ 			if (mount.Type == 52) {
+ 				SoundEngine.PlaySound(3, vector, 6);
+@@ -31296,6 +_,13 @@
+ 				return;
+ 		}
+ 
++		//
++		if (voiceOverride > PlayerVoiceOverrideID.Other) {
++			if (ContentSamples.ItemsByType[voiceOverride]?.ModItem?.PlayerDeathSoundOverride(this) ?? false) {
++				return;
++			}
++		}
++
+ 		if (Main.dontStarveWorld || Main.tenthAnniversaryWorld)
+ 			SoundEngine.PlaySound(Male ? SoundID.DSTMaleHurt : SoundID.DSTFemaleHurt, position);
+ 		else
 @@ -31347,6 +_,14 @@
  			if (FileUtilities.Exists(Main.playerPathName + ".bak", isCloudSave))
  				FileUtilities.Delete(Main.playerPathName + ".bak", isCloudSave);

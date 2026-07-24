@@ -1542,4 +1542,14 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	{
 		return true;
 	}
+
+	public virtual bool PlayerHurtSoundOverride(Entity entity)
+	{
+		return false;
+	}
+
+	public virtual bool PlayerDeathSoundOverride(Entity entity)
+	{
+		return false;
+	}
 }
