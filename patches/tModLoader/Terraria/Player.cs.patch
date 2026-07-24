@@ -2371,7 +2371,7 @@
 +	internal IEntitySource GetItemSource_Item(Item item) => GetSource_ItemUse(item);
 +	internal IEntitySource GetItemSource_OpenItem(int itemType) => GetSource_OpenItem(itemType);
 +	internal IEntitySource GetItemSource_Death() => GetSource_Death();
-+	internal IEntitySource GetItemSource_InventoryOverflow() => GetItemSource_Misc(ItemSourceID.InventoryOverflow);
++	internal IEntitySource GetItemSource_InventoryOverflow() => new EntitySource_OverfullInventory(this);
 +	internal IEntitySource GetItemSource_Misc(int itemSourceId) => GetSource_Misc(context: ItemSourceID.ToContextString(itemSourceId));
 +	internal IEntitySource GetProjectileSource_Item_WithPotentialAmmo(Item item, int ammoItemId) => GetSource_ItemUse_WithPotentialAmmo(item, ammoItemId);
 +	internal IEntitySource GetProjectileSource_OnHit(Entity victim, int projectileSourceId) => GetSource_OnHit(victim, context: ProjectileSourceID.ToContextString(projectileSourceId));
