@@ -1653,7 +1653,7 @@
  			Main.item[num].OverrideWith(theItemWeDrop);
  			theItemWeDrop = new Item();
  			if (slot == 58)
-@@ -3422,6 +_,22 @@
+@@ -3422,6 +_,21 @@
  		return -1;
  	}
  
@@ -1667,8 +1667,7 @@
 +	/// <br/>
 +	/// Vanilla buff types are found in <see cref="BuffID"/> and modded buff types are typically retrieved using
 +	/// <see cref="ModContent.BuffType{T}"/>. <br/>
-+	/// The network-syncing functions of the now-gone <b>quiet</b> parameter are now handled automatically. <br/>
-+	/// Set <paramref name="fromNetPvP"/> to <b>true</b>, if you want to skip multiplying <paramref name="time"/> by 1.2 if <see cref="BuffID.DeadCellsPotionStation"/> is present, as well as skip multiplying by <see cref="Main.Difficulty"/>.
++	/// Player buff changes are synced by the owner using a <b><see cref="PlayerBuffs"/></b> packet, instead of an add/remove. Adding a pvpBuff to a remote player will send a <b><see cref="AddPlayerBuffPvP"/></b> packet instead of adding the buff locally.
 +	/// </summary>
 +	/// <param name="type"> The buff type; </param>
 +	/// <param name="time"> The amount of time in ticks. 60 ticks = 1 second;</param>
