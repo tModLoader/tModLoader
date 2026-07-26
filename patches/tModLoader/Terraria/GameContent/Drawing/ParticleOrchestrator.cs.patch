@@ -32,8 +32,7 @@
  			Player player = Main.player[settings.IndexOfPlayerWhoInvokedThis];
  			if (player.active && !player.dead) {
 +				/*
--				sbyte voiceOverride = (sbyte)settings.UniqueInfoPiece;
-+				sbyte voiceOverride = (sbyte)settings.UniqueInfoPiece
+ 				sbyte voiceOverride = (sbyte)settings.UniqueInfoPiece;
  				sbyte voiceOverride2 = player.voiceOverride;
 +				*/
 +				int voiceOverride = settings.UniqueInfoPiece; // TML: sbyte->int
