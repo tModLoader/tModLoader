@@ -1301,12 +1301,12 @@ Mods: {
 
 			ExampleVoiceAccessory: {
 				// DisplayName: Example Voice Accessory
-				// Tooltip: ""
+				// Tooltip: "'Boing!'"
 			}
 
 			SpawnBlueSlimeWithExVoiceAccessory: {
 				// DisplayName: Spawn Blue Slime With Ex Voice Accessory
-				// Tooltip: ""
+				// Tooltip: TODO remove
 			}
 		}
 

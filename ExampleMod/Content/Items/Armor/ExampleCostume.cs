@@ -90,7 +90,7 @@ namespace ExampleMod.Content.Items.Armor
 		}
 
 		public override bool PlayerHurtSoundOverride(Entity entity) {
-			SoundEngine.PlaySound(SoundID.Item102, entity.position);
+			SoundEngine.PlaySound(SoundID.Item103, entity.position);
 			return true;
 		}
 	}

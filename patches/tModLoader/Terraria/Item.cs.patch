@@ -1293,6 +1293,15 @@
  				useStyle = 5;
  				autoReuse = true;
  				useAnimation = 30;
+@@ -46891,7 +_,7 @@
+ 		noMelee = true;
+ 	}
+ 
+-	public void DefaultToVoiceOverrideAccessory(sbyte voiceOverrideID)
++	public void DefaultToVoiceOverrideAccessory(int voiceOverrideID) // TML: sbyte -> int
+ 	{
+ 		useStyle = 4;
+ 		UseSound = null;
 @@ -46905,6 +_,19 @@
  		voiceSlot = voiceOverrideID;
  	}

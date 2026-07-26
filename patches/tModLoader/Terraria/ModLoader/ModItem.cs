@@ -1543,11 +1543,23 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 		return true;
 	}
 
+	/// <summary>
+	/// If set with <c><see cref="Item.voiceSlot"/> <see langword="="/> <see cref="Type"/></c>, then the sound the player makes when taking damage can be overridden.
+	/// <br/> Return <see langword="true"/> to prevent other hurt sounds from playing.
+	/// </summary>
+	/// <param name="entity"> The entity that created the sound. </param>
+	/// <returns>Returns <see langword="false"/> by default.</returns>
 	public virtual bool PlayerHurtSoundOverride(Entity entity)
 	{
 		return false;
 	}
 
+	/// <summary>
+	/// If set with <c><see cref="Item.voiceSlot"/> <see langword="="/> <see cref="Type"/></c>, then the sound the player makes when dying can be overridden.
+	/// <br/> Return <see langword="true"/> to prevent other hurt sounds from playing.
+	/// </summary>
+	/// <param name="entity"> The entity that created the sound. </param>
+	/// <returns><see langword="false"/> by default.</returns>
 	public virtual bool PlayerDeathSoundOverride(Entity entity)
 	{
 		return false;
