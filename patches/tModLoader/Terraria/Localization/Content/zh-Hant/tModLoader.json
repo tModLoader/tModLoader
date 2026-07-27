@@ -1,5 +1,3 @@
-//Original translation by Al Fahrel
-//Edits and quality checks by Daria Shane
 {
 	"tModLoader": {
 		// Main Menu
@@ -727,28 +725,28 @@
 		// "TagsLangDescription": "This mod supports multiple languages",
 		// "TagsGen": "World Gen",
 		// "TagsGenDescription": "Changes the way the world is generated (i.e. ores, new structures, etc.)",
-		"TagsLanguage_English": "Inglese",
-		"TagsLanguage_German": "Tedesco",
-		"TagsLanguage_Italian": "Italiano",
-		"TagsLanguage_French": "Francese",
-		"TagsLanguage_Spanish": "Spagnolo",
-		"TagsLanguage_Russian": "Russo",
-		"TagsLanguage_SimplifiedChinese": "Cinese semplificato",
-		"TagsLanguage_Portuguese": "Portoghese brasiliano",
-		"TagsLanguage_Polish": "Polacco",
+		// "TagsLanguage_English": "English",
+		// "TagsLanguage_German": "German",
+		// "TagsLanguage_Italian": "Italian",
+		// "TagsLanguage_French": "French",
+		// "TagsLanguage_Spanish": "Spanish",
+		// "TagsLanguage_Russian": "Russian",
+		// "TagsLanguage_SimplifiedChinese": "Simplified Chinese",
+		// "TagsLanguage_Portuguese": "Brazilian Portuguese",
+		// "TagsLanguage_Polish": "Polish",
 		// "TagsLanguage_Japanese": "Japanese",
 		// "TagsLanguage_Korean": "Korean",
 		// "TagsLanguage_TraditionalChinese": "Traditional Chinese",
 		// "TagsLanguage_Description": "This mod is localized for this language.",
-		"TagsLanguage_EnglishDescription": "{$TagsLanguage_Description}",
-		"TagsLanguage_SpanishDescription": "{$TagsLanguage_Description}",
-		"TagsLanguage_FrenchDescription": "{$TagsLanguage_Description}",
-		"TagsLanguage_ItalianDescription": "{$TagsLanguage_Description}",
-		"TagsLanguage_RussianDescription": "{$TagsLanguage_Description}",
-		"TagsLanguage_SimplifiedChineseDescription": "{$TagsLanguage_Description}",
-		"TagsLanguage_PortugueseDescription": "{$TagsLanguage_Description}",
-		"TagsLanguage_GermanDescription": "{$TagsLanguage_Description}",
-		"TagsLanguage_PolishDescription": "{$TagsLanguage_Description}"
+		// "TagsLanguage_EnglishDescription": "{$TagsLanguage_Description}",
+		// "TagsLanguage_SpanishDescription": "{$TagsLanguage_Description}",
+		// "TagsLanguage_FrenchDescription": "{$TagsLanguage_Description}",
+		// "TagsLanguage_ItalianDescription": "{$TagsLanguage_Description}",
+		// "TagsLanguage_RussianDescription": "{$TagsLanguage_Description}",
+		// "TagsLanguage_SimplifiedChineseDescription": "{$TagsLanguage_Description}",
+		// "TagsLanguage_PortugueseDescription": "{$TagsLanguage_Description}",
+		// "TagsLanguage_GermanDescription": "{$TagsLanguage_Description}",
+		// "TagsLanguage_PolishDescription": "{$TagsLanguage_Description}",
 		// "TagsLanguage_JapaneseDescription": "{$TagsLanguage_Description}",
 		// "TagsLanguage_KoreanDescription": "{$TagsLanguage_Description}",
 		// "TagsLanguage_TraditionalChineseDescription": "{$TagsLanguage_Description}",
@@ -766,57 +764,57 @@
 		// "LastInfoAccPage": "Go To Last Page"
 	},
 	"CommonItemTooltip": {
-		"IncreasesDefenseBy": "Aumenta la difesa di {0}",
-		"IncreasesArmorPenBy": "Aumenta la penetrazione armatura di {0}",
+		// "IncreasesDefenseBy": "Increases defense by {0}",
+		// "IncreasesArmorPenBy": "Increases armor penetration by {0}",
 
 		// "IncreasesMaxLifeBy": "Increases maximum life by {0}",
-		"IncreasesMaxManaBy": "Aumenta il mana massimo di {0}",
+		// "IncreasesMaxManaBy": "Increases maximum mana by {0}",
 		// "IncreasesMaxLifeByPercent": "Increases maximum life by {0}%",
 		// "IncreasesMaxManaByPercent": "Increases maximum mana by {0}%",
 
-		"IncreasesBowDamageByPercent": "Aumenta il danno da arco del {0}%",
-		"IncreasesGunDamageByPercent": "Aumenta il danno da pistola del {0}%",
-		"IncreasesSpecialistDamageByPercent": "Aumenta il danno dalla distanza specializzato del {0}%",
+		// "IncreasesBowDamageByPercent": "Increases bow damage by {0}%",
+		// "IncreasesGunDamageByPercent": "Increases gun damage by {0}%",
+		// "IncreasesSpecialistDamageByPercent": "Increases specialist ranged damage by {0}%",
 
-		"IncreasesWhipRangeByPercent": "Aumenta la portata della frusta del {0}%",
-		"IncreasesMaxMinionsBy": "Aumenta il numero massimo dei tuoi seguaci di {0}",
-		"IncreasesMaxSentriesBy": "Aumenta il numero massimo di sentinelle di {0}",
+		// "IncreasesWhipRangeByPercent": "Increases whip range by {0}%",
+		// "IncreasesMaxMinionsBy": "Increases your max number of minions by {0}",
+		// "IncreasesMaxSentriesBy": "Increases your max number of sentries by {0}",
 
-		"IncreasesFishingPowerBy": "Aumenta la potenza di pesca di {0} ",
+		// "IncreasesFishingPowerBy": "Increases fishing power by {0}",
 
-		"PermanentlyIncreasesMaxLifeBy": "Aumenta in maniera permanente la vita massima di {0}",
-		"PermanentlyIncreasesMaxManaBy": "Aumenta in maniera permanente il mana massimo di {0}",
+		// "PermanentlyIncreasesMaxLifeBy": "Permanently increases maximum life by {0}",
+		// "PermanentlyIncreasesMaxManaBy": "Permanently increases maximum mana by {0}",
 
-		"ReducesDamageTakenByPercent": "Riduce il danno subito del {0}%",
+		// "ReducesDamageTakenByPercent": "Reduces damage taken by {0}%",
 
-		"PercentChanceToSaveAmmo": "{0}% di probabilità di risparmiare munizioni",
-		"PercentReducedManaCost": "Consumo mana ridotto del {0}%",
-		"ReducesHealingPotionCooldownByPercent": "Riduce la ricarica della pozione curativa del {0}%",
+		// "PercentChanceToSaveAmmo": "{0}% chance to save ammo",
+		// "PercentReducedManaCost": "{0}% reduced mana cost",
+		// "ReducesHealingPotionCooldownByPercent": "Reduces the cooldown of healing potions by {0}%",
 
-		"PercentIncreasedMiningSpeed": "Velocità di estrazione aumentata del {0}%",
-		"PercentIncreasedMovementSpeed": "Velocità di movimento aumentata del {0}%",
+		// "PercentIncreasedMiningSpeed": "{0}% increased mining speed",
+		// "PercentIncreasedMovementSpeed": "{0}% increased movement speed",
 
 		// "ArmorPenetration": "{0} armor penetration",
-		"PercentIncreasedDamage": "Danno aumentato del {0}%",
-		"PercentIncreasedCritChance": "Possibilità di colpo critico aumentata del {0}%",
-		"PercentIncreasedDamageCritChance": "Probabilità di colpo critico e danno aumentate del {0}%",
+		// "PercentIncreasedDamage": "{0}% increased damage",
+		// "PercentIncreasedCritChance": "{0}% increased critical strike chance",
+		// "PercentIncreasedDamageCritChance": "{0}% increased damage and critical strike chance",
 
-		"PercentIncreasedMagicDamage": "Danno magico aumentato del {0}%",
-		"PercentIncreasedMagicCritChance": "Aumenta la probabilità di colpo critico magico del {0}%",
-		"PercentIncreasedMagicDamageCritChance": "Probabilità di colpo critico e danno magico aumentate del {0}%",
+		// "PercentIncreasedMagicDamage": "{0}% increased magic damage",
+		// "PercentIncreasedMagicCritChance": "{0}% increased magic critical strike chance",
+		// "PercentIncreasedMagicDamageCritChance": "{0}% increased magic damage and critical strike chance",
 
-		"PercentIncreasedMeleeDamage": "Danno da mischia aumentato del {0}%",
-		"PercentIncreasedMeleeCritChance": "Possibilità di colpo critico nel corpo a corpo aumentata del {0}%",
-		"PercentIncreasedMeleeDamageCritChance": "Probabilità di colpo critico e danno da mischia aumentati dell'{0}%",
-		"PercentIncreasedMeleeSpeed": "Velocità in mischia aumentata del {0}%",
+		// "PercentIncreasedMeleeDamage": "{0}% increased melee damage",
+		// "PercentIncreasedMeleeCritChance": "{0}% increased melee critical strike chance",
+		// "PercentIncreasedMeleeDamageCritChance": "{0}% increased melee damage and critical strike chance",
+		// "PercentIncreasedMeleeSpeed": "{0}% increased melee speed",
 
-		"PercentIncreasedRangedDamage": "Danno boomerang aumentato del {0}%",
-		"PercentIncreasedRangedCritChance": "Probabilità di colpo critico a distanza aumentata del {0}%",
-		"PercentIncreasedRangedDamageCritChance": "Danno a distanza e probabilità di colpo critico aumentano del {0}%",
+		// "PercentIncreasedRangedDamage": "{0}% increased ranged damage",
+		// "PercentIncreasedRangedCritChance": "{0}% increased ranged critical strike chance",
+		// "PercentIncreasedRangedDamageCritChance": "{0}% increased ranged damage and critical strike chance",
 
-		"PercentIncreasedSummonDamage": "Danno della creatura evocata aumentato del {0}%",
-		"SummonTagDamage": "{0} danni ai seguaci evocati",
-		"PercentSummonTagCritChance": "{0}% possibilità colpo critico ai seguaci evocati"
+		// "PercentIncreasedSummonDamage": "{0}% increased summon damage",
+		// "SummonTagDamage": "{0} summon tag damage",
+		// "PercentSummonTagCritChance": "{0}% summon tag critical strike chance"
 	},
 	"Bestiary_ItemDropConditions": {
 		// "SimpleCondition": "Drops: {0}"
@@ -1202,7 +1200,7 @@
 		// "ModLoader.Items.Zeph_Wings.DisplayName": "Zeph's Wings"
 	},
 	"TownNPCMood": {
-		"LikeNPC_Princess": "Mi piace {NPCName}.",
-		"Princess_LovesNPC": "Adoro {NPCName}."
+		// "LikeNPC_Princess": "I like {NPCName}.",
+		// "Princess_LovesNPC": "I love {NPCName}."
 	}
 }
