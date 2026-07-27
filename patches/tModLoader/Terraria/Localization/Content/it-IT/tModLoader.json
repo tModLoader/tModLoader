@@ -733,7 +733,7 @@
 		"TagsLanguage_French": "Francese",
 		"TagsLanguage_Spanish": "Spagnolo",
 		"TagsLanguage_Russian": "Russo",
-		"TagsLanguage_Chinese": "Cinese semplificato",
+		"TagsLanguage_SimplifiedChinese": "Cinese semplificato",
 		"TagsLanguage_Portuguese": "Portoghese brasiliano",
 		"TagsLanguage_Polish": "Polacco",
 		// "TagsLanguage_Description": "This mod is localized for this language.",
@@ -742,7 +742,7 @@
 		"TagsLanguage_FrenchDescription": "{$TagsLanguage_Description}",
 		"TagsLanguage_ItalianDescription": "{$TagsLanguage_Description}",
 		"TagsLanguage_RussianDescription": "{$TagsLanguage_Description}",
-		"TagsLanguage_ChineseDescription": "{$TagsLanguage_Description}",
+		"TagsLanguage_SimplifiedChineseDescription": "{$TagsLanguage_Description}",
 		"TagsLanguage_PortugueseDescription": "{$TagsLanguage_Description}",
 		"TagsLanguage_GermanDescription": "{$TagsLanguage_Description}",
 		"TagsLanguage_PolishDescription": "{$TagsLanguage_Description}"

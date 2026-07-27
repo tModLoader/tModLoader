@@ -40,6 +40,9 @@ public static class SteamedWraps
 			GameCulture.CultureName.Chinese => "schinese",
 			GameCulture.CultureName.Portuguese => "portuguese",
 			GameCulture.CultureName.Polish => "polish",
+			GameCulture.CultureName.Japanese => "japanese",
+			GameCulture.CultureName.Korean => "koreana",
+			GameCulture.CultureName.ChineseTraditional => "tchinese",
 			_ => "english",
 		};
 	}
@@ -827,9 +830,12 @@ public static class SteamedWraps
 		AddModTag("tModLoader.TagsLanguage_French", "French");
 		AddModTag("tModLoader.TagsLanguage_Spanish", "Spanish");
 		AddModTag("tModLoader.TagsLanguage_Russian", "Russian");
-		AddModTag("tModLoader.TagsLanguage_Chinese", "Chinese");
+		AddModTag("tModLoader.TagsLanguage_SimplifiedChinese", "Chinese");
 		AddModTag("tModLoader.TagsLanguage_Portuguese", "Portuguese");
 		AddModTag("tModLoader.TagsLanguage_Polish", "Polish");
+		AddModTag("tModLoader.TagsLanguage_Japanese", "Japanese");
+		AddModTag("tModLoader.TagsLanguage_Korean", "Korean");
+		AddModTag("tModLoader.TagsLanguage_TraditionalChinese", "TraditionalChinese");
 
 		// Content Descriptors
 		AddModTag("tModLoader.TagsRating_AdultsOnly", "AdultsOnly");

@@ -36,16 +36,20 @@ steamToLocalizationKey = {
   "tag_362265":"TagsLanguage_French",
   "tag_362266":"TagsLanguage_Spanish",
   "tag_362267":"TagsLanguage_Russian",
-  "tag_362268":"TagsLanguage_Chinese",
+  "tag_362268":"TagsLanguage_SimplifiedChinese",
   "tag_362269":"TagsLanguage_Portuguese",
   "tag_362270":"TagsLanguage_Polish",
+  # TODO after tags added to workshop.
+  "tag_???":"TagsLanguage_Japanese",
+  "tag_???":"TagsLanguage_Korean",
+  "tag_???":"TagsLanguage_TraditionalChinese",
   "tag_558042":"TagsTranslation",
 }
 
 # English will be updated directly, if ever needed. -- actually, not sure what the website text input changes yet, internal or display.
 languages = ['en-US', 'de-DE', 'it-IT', 'fr-FR', 'es-ES', 'ru-RU', 'zh-Hans', 'pt-BR', 'pl-PL']
-steamLanguages = ['english', 'german', 'italian', 'french', 'spanish', 'russian', 'schinese', 'brazilian', 'polish']
-TagsCategoryLanguage = ['Language', 'Sprache', 'Lingua', 'Langue', 'Idioma', 'Язык', '语言', 'Idioma', 'Język'] # not in tModLoader.json, so just do it manually for simplicity
+steamLanguages = ['english', 'german', 'italian', 'french', 'spanish', 'russian', 'schinese', 'brazilian', 'polish', 'japanese', 'koreana', 'tchinese']
+TagsCategoryLanguage = ['Language', 'Sprache', 'Lingua', 'Langue', 'Idioma', 'Язык', '语言', 'Idioma', 'Język', '言語', '언어', '語言'] # not in tModLoader.json, so just do it manually for simplicity
 
 # TODO: what to do about latam-spanishlatinamerica, sc_schinese-steamsimplifiedchinese, tchinese-traditionalchinese, portuguese-portugalportuguese?
 # should we copy the results from the similar language? Not sure why there are 3 chinese either, steam website only has 2 options.

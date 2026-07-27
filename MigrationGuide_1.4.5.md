@@ -353,6 +353,12 @@ Example Mod's whips have been updated with new examples and additional comments.
 
 See ExampleWhip, ExampleWhipAdvanced, ExampleWhipProjectile, and ExampleWhipProjectileAdvanced for more examples.
 
+## New language support
+Japanese ("ja-JP"), Korean ("ko-KR"), and Traditional Chinese ("zh-Hant") have been added as newly supported languages. 
+* Supporting these new languages in mods is the same process as the existing languages.
+* If you have custom fonts, you may need to build your font files again and include the new characters in your font creation.
+  * TODO: We will have new tooling for this made available sometime.
+
 ## Other Changes
 
 * Fishing power bonus now applies to any chair, not just toilets.
