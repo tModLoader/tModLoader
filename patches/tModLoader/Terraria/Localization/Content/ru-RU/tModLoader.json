@@ -702,7 +702,7 @@
 		"TagsCategoryModSide": "Режим работы мода",
 		"TagsCategoryTModLoaderVersion": "Версия tModLoader",
 		"TagsCategoryLanguage": "{$LegacyMenu.103}",
-		// "TagsCategoryRating": "Mod Content Rating Flags",
+		"TagsCategoryRating": "Метки возрастного рейтинга контента",
 		// Tag descriptions by Webmilio, Tomat, Solxan, and Setnour6.
 		"TagsContent": "Новый контент",
 		"TagsContentDescription": "Добавляет в игру новый контент (предметы, оружие, НИПы, боссы и другой контент, расширяющий игровой процесс).",
@@ -743,12 +743,12 @@
 		"TagsLanguage_PortugueseDescription": "{$TagsLanguage_Description}",
 		"TagsLanguage_GermanDescription": "{$TagsLanguage_Description}",
 		"TagsLanguage_PolishDescription": "{$TagsLanguage_Description}",
-		// "TagsRating_AdultsOnly": "Adults Only",
-		// "TagsRating_AdultsOnlyDescription": "Contains content that is sexually explicit or graphic and is intended for adults only. Users must affirm that they are at least eighteen years old before they can view content.",
-		// "TagsRating_Gore": "Extreme Gore",
-		// "TagsRating_GoreDescription": "Contains content that features extreme violence or gore.",
-		// "TagsRating_QuestionableContent": "Questionable Content",
-		// "TagsRating_QuestionableContentDescription": "Contains mature topics that may not be appropriate for all audiences.",
+		"TagsRating_AdultsOnly": "Только для взрослых",
+		"TagsRating_AdultsOnlyDescription": "Содержит откровенный или графический контент сексуального характера и предназначен только для взрослых. Пользователи должны подтвердить, что им исполнилось 18 лет, прежде чем смогут просматривать этот контент.",
+		"TagsRating_Gore": "Особая жестокость",
+		"TagsRating_GoreDescription": "Содержит контент, демонстрирующий крайнюю жестокость или сцены расчленения.",
+		"TagsRating_QuestionableContent": "Спорный контент",
+		"TagsRating_QuestionableContentDescription": "Содержит темы для взрослой аудитории, которые могут быть неподходящими для некоторых пользователей.",
 
 		// Info Display Pages
 		"NextInfoAccPage": "Следующая страница",
