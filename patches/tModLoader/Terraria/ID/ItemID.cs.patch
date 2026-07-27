@@ -650,7 +650,7 @@
 +		/// <br/><br/> Defaults to <see langword="false"/>.
 +		/// </summary>
  		public static bool[] GamepadWholeScreenUseRange = Factory.CreateBoolSet(1326, 5335, 1256, 1244, 3014, 113, 218, 495, 114, 496, 65, 1931, 3570, 2750, 3065, 3029, 3030, 4381, 4956, 5669, 5065, 2796, 494, 3006, 4715, 1309, 2364, 2365, 2551, 2535, 2584, 1157, 2749, 1802, 2621, 3249, 3531, 3474, 2366, 1572, 3569, 3571, 4269, 4273, 4281, 5119, 5456, 5463, 5663, 5664, 3611, 1299, 1254);
-+		
++
 +		/// <summary>
 +		/// Determines the multiplier that applies to the given item type's (<see cref="Item.type"/>) attack speed.
 +		/// <br/> A value of <c>0f</c> doesn't scale attack speed at all. Values <c>&gt; 1f</c> increase the effects of attack speed multipliers, values <c>&lt; 1f</c> decrease the effects.
@@ -790,7 +790,7 @@
  		public static UniqueTagEffect[] UniqueTagEffects = Factory.CreateCustomSet<UniqueTagEffect>(null, new object[38] {
  			(short)5688,
  			new WhipTagEffect {
-@@ -1266,6 +_,9 @@
+@@ -1266,8 +_,17 @@
  				TagDamage = 4
  			}
  		});
@@ -799,7 +799,15 @@
 +		/// </summary>
  		public static bool[] IsWireableStatue = Factory.CreateBoolSet(441, 449, 466, 471, 3651, 3652, 3653, 3654, 3655, 3656, 3657, 3658, 3659, 3660, 3661, 3662, 3708, 3709, 3710, 3711, 3712, 3713, 3714, 3715, 3716, 3717, 3718, 3719, 3720, 4397, 4360, 4342, 4466, 5317, 5318, 5319, 440, 443, 444, 445, 446, 452, 454, 459, 463, 464, 478, 473, 2672, 438, 453, 476, 477, 470, 4355, 4276);
  
++		/// <summary>
++		/// Whether or not this item is a golf club. Set this to <see langword="true"/> for custom golf club items, so that <see cref="Item.IsAGolfingItem"/> and <see cref="GolfHelper.IsPlayerHoldingClub"/> recognize them.<br/>
++		/// Use <see cref="ModItem.GetGolfClubProperties"/> to specify the <see cref="GolfHelper.ClubProperties"/> for the club.
++		/// </summary>
++		public static bool[] IsAGolfClub = Factory.CreateBoolSet(4039, 4092, 4093, 4094, 4587, 4588, 4589, 4590, 4591, 4592, 4593, 4594, 4595, 4596, 4597, 4598);
++
  		public static void PostSetupContent()
+ 		{
+ 			for (int i = 0; i < Count; i++) {
 @@ -1287,6 +_,7 @@
  			}
  		}

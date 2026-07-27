@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent;
+using Terraria.GameContent.Golf;
 using Terraria.GameContent.Items;
 using Terraria.GameContent.Prefixes;
 using Terraria.ID;
@@ -71,6 +72,26 @@ public static class ItemLoader
 	public static ModItem GetItem(int type)
 	{
 		return type >= ItemID.Count && type < ItemCount ? items[type - ItemID.Count] : null;
+	}
+
+	/// <summary>
+	/// Attempts to get the <see cref="GolfHelper.ClubProperties"/> for a modded golf club item.
+	/// Returns <see langword="true"/> if the item is a modded golf club with custom properties, <see langword="false"/> otherwise.
+	/// </summary>
+	/// <param name="itemId">The item type ID.</param>
+	/// <param name="properties">The resulting <see cref="GolfHelper.ClubProperties"/> if successful.</param>
+	public static bool TryGetGolfClubProperties(int itemId, out GolfHelper.ClubProperties properties)
+	{
+		if (itemId >= ItemID.Count && itemId < ItemCount) {
+			ModItem modItem = items[itemId - ItemID.Count];
+			GolfHelper.ClubProperties? result = modItem.GetGolfClubProperties();
+			if (result.HasValue) {
+				properties = result.Value;
+				return true;
+			}
+		}
+		properties = default;
+		return false;
 	}
 
 	internal static void ResizeArrays(bool unloading)

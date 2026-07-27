@@ -9,6 +9,7 @@ using System.IO;
 using System.Text.RegularExpressions;
 using Terraria.DataStructures;
 using Terraria.GameContent;
+using Terraria.GameContent.Golf;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
@@ -362,6 +363,24 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	/// <param name="itemGroup">The item group this item is being assigned to</param>
 	public virtual void ModifyResearchSorting(ref ContentSamples.CreativeHelper.ItemGroup itemGroup)
 	{
+	}
+
+	/// <summary>
+	/// Allows you to specify the <see cref="GolfHelper.ClubProperties"/> for a custom golf club item.<br/>
+	/// This hook is only called if <see cref="ItemID.Sets.IsAGolfClub"/> is set to <see langword="true"/> for this item's type.<br/>
+	/// Return <see langword="null"/> to fall back to the default behavior (which returns <c>default</c> for modded items).
+	/// <para/>
+	/// The <see cref="GolfHelper.ClubProperties"/> struct controls the shot strength of the golf club:
+	/// <list type="bullet">
+	/// <item><term>MinimumStrength</term><description> The minimum power applied to the golf ball. </description></item>
+	/// <item><term>MaximumStrength</term><description> The maximum power applied to the golf ball. </description></item>
+	/// <item><term>RoughLandResistance</term><description> Resistance to rough landing (0 = none, 1 = full). </description></item>
+	/// </list>
+	/// </summary>
+	/// <returns>The <see cref="GolfHelper.ClubProperties"/> for this golf club, or <see langword="null"/> to use the default.</returns>
+	public virtual GolfHelper.ClubProperties? GetGolfClubProperties()
+	{
+		return null;
 	}
 
 	/// <summary>

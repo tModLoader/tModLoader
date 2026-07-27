@@ -1,0 +1,31 @@
+--- src/TerrariaNetCore/Terraria/GameContent/Golf/GolfHelper.cs
++++ src/tModLoader/Terraria/GameContent/Golf/GolfHelper.cs
+@@ -5,6 +_,7 @@
+ using Terraria.GameContent.Metadata;
+ using Terraria.ID;
+ using Terraria.Localization;
++using Terraria.ModLoader;
+ using Terraria.Physics;
+ 
+ namespace Terraria.GameContent.Golf;
+@@ -288,8 +_,7 @@
+ 		if (player == null || player.HeldItem == null)
+ 			return false;
+ 
+-		int type = player.HeldItem.type;
+-		if (type == 4039 || (uint)(type - 4092) <= 2u || (uint)(type - 4587) <= 11u)
++		if (ItemID.Sets.IsAGolfClub[player.HeldItem.type])
+ 			return true;
+ 
+ 		return false;
+@@ -321,6 +_,10 @@
+ 
+ 	public static ClubProperties GetClubProperties(short itemId)
+ 	{
++		// Allow modded golf clubs to specify their own ClubProperties via ModItem.GetGolfClubProperties
++		if (ItemLoader.TryGetGolfClubProperties(itemId, out ClubProperties moddedProperties))
++			return moddedProperties;
++
+ 		Vector2 vector = new Vector2(0.25f, 0.25f);
+ 		switch (itemId) {
+ 			case 4039:

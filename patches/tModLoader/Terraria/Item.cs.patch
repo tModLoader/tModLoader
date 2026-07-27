@@ -1371,7 +1371,15 @@
  		int num = stack;
  		SetDefaults(to);
  		Prefix(prefixWeWant);
-@@ -47037,7 +_,7 @@
+@@ -47030,14 +_,13 @@
+ 		if (ProjectileID.Sets.IsAGolfBall[item.shoot])
+ 			return true;
+ 
+-		int num = item.type;
+-		if (num == 4039 || (uint)(num - 4092) <= 3u || (uint)(num - 4587) <= 11u)
++		if (ItemID.Sets.IsAGolfClub[item.type])
+ 			return true;
+ 
  		return false;
  	}
  

@@ -1298,6 +1298,15 @@ Mods: {
 				DisplayName: Example Custom Draw Wings
 				Tooltip: ""
 			}
+
+			ExampleGolfClub: {
+				DisplayName: Example Golf Club
+				Tooltip:
+					'''
+					A well-rounded club best for mid-range distances
+					Golf balls will carry a good distance with decent vertical loft
+					'''
+			}
 		}
 
 		# Projectile display names mainly show in chat when a player dies from it.
