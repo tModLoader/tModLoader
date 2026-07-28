@@ -12,7 +12,6 @@ public partial class Projectile
 	/// The values vanilla uses to draw a projectile through the generic draw path.
 	/// Projectiles that vanilla draws specially (by some <see cref="type"/> values and by some
 	/// <see cref="aiStyle"/> values) are not replicated.
-	/// Modded projectile types never match vanilla's type specific cases, so those only apply when calling this onto a vanilla projectile.
 	///	</summary>
 	public struct DefaultDrawParameters
 	{
