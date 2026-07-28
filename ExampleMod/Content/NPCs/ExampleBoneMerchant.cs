@@ -171,13 +171,7 @@ namespace ExampleMod.Content.NPCs
 		}
 
 		public override string GetChat() {
-			WeightedRandom<string> chat = new WeightedRandom<string>();
-
-			// These are things that the NPC has a chance of telling you when you talk to it.
-			chat.Add(Language.GetTextValue("Mods.ExampleMod.Dialogue.ExampleBoneMerchant.StandardDialogue1"));
-			chat.Add(Language.GetTextValue("Mods.ExampleMod.Dialogue.ExampleBoneMerchant.StandardDialogue2"));
-			chat.Add(Language.GetTextValue("Mods.ExampleMod.Dialogue.ExampleBoneMerchant.StandardDialogue3"));
-			return chat; // chat is implicitly cast to a string.
+			return Language.SelectRandom(Lang.CreateDialogFilter("Mods.ExampleMod.Dialogue.ExampleBoneMerchant")).Value;
 		}
 
 		public override void RegisterChatButtons(NPCInteractionList interactions) {

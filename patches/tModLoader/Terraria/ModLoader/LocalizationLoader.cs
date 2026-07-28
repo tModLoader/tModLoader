@@ -860,6 +860,7 @@ public static class LocalizationLoader
 	{
 		LanguageManager.Instance.UnloadModdedEntries();
 		UnloadFileWatchers();
+		Lang.ResetGlobalSubstitutions();
 	}
 
 	private static void UnloadFileWatchers()
