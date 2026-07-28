@@ -2585,25 +2585,16 @@
  			}
  
  			if (type == 1) {
-@@ -67969,9 +_,18 @@
+@@ -67969,6 +_,9 @@
  						SoundEngine.PlaySound(SoundID.VampireHurt, position);
  						break;
  					default:
-+					/*
++						// type == slime, ai[1] == the item the slime is carrying.
++						if (ai[1] > 0 && (ContentSamples.ItemsByType[(int)ai[1]]?.ModItem?.PlayerHurtSoundOverride(this) is true)) { }
++						else
  						if (HitSound != null)
  							SoundEngine.PlaySound(HitSound, position);
-+					*/
  						break;
-+				}
-+
-+				// type == slime, ai[1] == the item the slime is carrying.
-+				if (ai[1] > 0 && (!ContentSamples.ItemsByType[(int)ai[1]]?.ModItem?.PlayerHurtSoundOverride(this) ?? true)) {
-+					if (HitSound != null) {
-+						SoundEngine.PlaySound(HitSound, position);
-+					}
- 				}
- 			}
- 			else if (HitSound != null) {
 @@ -67983,10 +_,10 @@
  			else
  				checkDead();

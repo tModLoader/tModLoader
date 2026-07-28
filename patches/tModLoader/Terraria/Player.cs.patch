@@ -5955,29 +5955,25 @@
  
  		if (stoned) {
  			SoundEngine.PlaySound(0, vector);
-@@ -31210,6 +_,13 @@
+@@ -31210,6 +_,11 @@
  				return;
  		}
  
 +		// Run ModItem.PlayerHurtSoundOverride to override the hurt sound if voiceOverride == ModItem.Type. PlayerHurtSoundOverride returning true will return.
-+		if (voiceOverride > PlayerVoiceOverrideID.Other) {
-+			if (ContentSamples.ItemsByType[voiceOverride]?.ModItem?.PlayerHurtSoundOverride(this) ?? false) {
-+				return;
-+			}
++		if (voiceOverride > PlayerVoiceOverrideID.Other && (ContentSamples.ItemsByType[voiceOverride]?.ModItem?.PlayerHurtSoundOverride(this) ?? false)) {
++			return;
 +		}
 +
  		if (mount.Active) {
  			if (mount.Type == 52) {
  				SoundEngine.PlaySound(3, vector, 6);
-@@ -31296,6 +_,13 @@
+@@ -31296,6 +_,11 @@
  				return;
  		}
  
 +		// Run ModItem.PlayerDeathSoundOverride to override the hurt sound if voiceOverride == ModItem.Type. PlayerDeathSoundOverride returning true will return.
-+		if (voiceOverride > PlayerVoiceOverrideID.Other) {
-+			if (ContentSamples.ItemsByType[voiceOverride]?.ModItem?.PlayerDeathSoundOverride(this) ?? false) {
-+				return;
-+			}
++		if (voiceOverride > PlayerVoiceOverrideID.Other && (ContentSamples.ItemsByType[voiceOverride]?.ModItem?.PlayerDeathSoundOverride(this) ?? false)) {
++			return;
 +		}
 +
  		if (Main.dontStarveWorld || Main.tenthAnniversaryWorld)
