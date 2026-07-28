@@ -61,14 +61,13 @@ namespace ExampleMod.Content.Projectiles
 
 		public override bool PreDraw(Player player, ref Color lightColor) {
 			// Draws an afterimage trail. See https://github.com/tModLoader/tModLoader/wiki/Basic-Projectile#afterimage-trail for more information.
+			// GetDefaultDrawParameters supplies the texture, frame and origin vanilla would use, so only the position and color need to be calculated here.
+			var draw = Projectile.GetDefaultDrawParameters(player);
 
-			Texture2D texture = TextureAssets.Projectile[Type].Value;
-
-			Vector2 drawOrigin = new Vector2(texture.Width * 0.5f, Projectile.height * 0.5f);
 			for (int k = Projectile.oldPos.Length - 1; k > 0; k--) {
-				Vector2 drawPos = (Projectile.oldPos[k] - Main.screenPosition) + drawOrigin + new Vector2(0f, Projectile.gfxOffY);
+				Vector2 drawPos = (Projectile.oldPos[k] - Main.screenPosition) + draw.origin + new Vector2(0f, Projectile.gfxOffY);
 				Color color = Projectile.GetAlpha(lightColor) * ((Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length);
-				Main.EntitySpriteDraw(texture, drawPos, null, color, Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0);
+				Main.EntitySpriteDraw(draw.texture, drawPos, draw.sourceRectangle, color, Projectile.rotation, draw.origin, Projectile.scale, draw.effects, 0);
 			}
 
 			return true;
