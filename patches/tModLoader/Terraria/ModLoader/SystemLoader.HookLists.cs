@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq.Expressions;
+using Terraria.GameContent.Creative;
 using Terraria.Graphics;
 using Terraria.IO;
 using Terraria.Localization;
@@ -124,6 +125,8 @@ partial class SystemLoader
 	private static HookList HookPostUpdateEverything = AddHook<Action>(s => s.PostUpdateEverything);
 
 	private static HookList HookModifyInterfaceLayers = AddHook<Action<List<GameInterfaceLayer>>>(s => s.ModifyInterfaceLayers);
+
+	private static HookList HookModifyCreativePowersMenu = AddHook<Action<CreativePowerMenuEntries>>(s => s.ModifyCreativePowersMenu);
 
 	private static HookList HookModifyGameTipVisibility = AddHook<Action<IReadOnlyList<GameTipData>>>(s => s.ModifyGameTipVisibility);
 

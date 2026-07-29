@@ -8,6 +8,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using Terraria.DataStructures;
+using Terraria.GameContent.Creative;
 using Terraria.Graphics;
 using Terraria.IO;
 using Terraria.Localization;
@@ -431,6 +432,13 @@ public static partial class SystemLoader
 
 		foreach (var system in HookModifyInterfaceLayers.Enumerate()) {
 			system.ModifyInterfaceLayers(layers);
+		}
+	}
+
+	internal static void ModifyCreativePowersMenu(CreativePowerMenuEntries entries)
+	{
+		foreach (var system in HookModifyCreativePowersMenu.Enumerate()) {
+			system.ModifyCreativePowersMenu(entries);
 		}
 	}
 

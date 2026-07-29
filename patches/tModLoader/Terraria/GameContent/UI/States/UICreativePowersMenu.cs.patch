@@ -1,0 +1,67 @@
+--- src/TerrariaNetCore/Terraria/GameContent/UI/States/UICreativePowersMenu.cs
++++ src/tModLoader/Terraria/GameContent/UI/States/UICreativePowersMenu.cs
+@@ -10,7 +_,7 @@
+ 
+ namespace Terraria.GameContent.UI.States;
+ 
+-public class UICreativePowersMenu : UIState
++public partial class UICreativePowersMenu : UIState
+ {
+ 	private class MenuTree<TEnum> where TEnum : struct, IConvertible
+ 	{
+@@ -93,6 +_,7 @@
+ 		};
+ 
+ 		Append(_container);
++		InitializeCustomPowerMenuEntries();
+ 		List<UIElement> buttons = CreateMainPowerStrip();
+ 		PowerStripUIElement powerStripUIElement = new PowerStripUIElement("strip 0", buttons) {
+ 			HAlign = 0f,
+@@ -133,6 +_,7 @@
+ 		powerStripUIElement4.OnMouseOver += strip_OnMouseOver;
+ 		powerStripUIElement4.OnMouseOut += strip_OnMouseOut;
+ 		_personalPowersStrip = powerStripUIElement4;
++		CreateCustomPowerStrips();
+ 		_infiniteItemsWindow = new UICreativeInfiniteItemsDisplay {
+ 			HAlign = 0f,
+ 			VAlign = 0.5f,
+@@ -186,9 +_,11 @@
+ 		mainCategory.Buttons.Add(6, groupOptionButton5);
+ 		list.Add(groupOptionButton5);
+ 		CreativePowerManager.Instance.GetPower<CreativePowers.StopBiomeSpreadPower>().ProvidePowerButtons(request, list);
++		AddCustomMainButtons(request, list);
+ 		GroupOptionButton<int> groupOptionButton6 = CreateSubcategoryButton<CreativePowers.DifficultySliderPower>(ref request, 1, "strip 1", 5, 0, mainCategory.Buttons, mainCategory.Sliders);
+ 		groupOptionButton6.OnLeftClick += MainCategoryButtonClick;
+ 		list.Add(groupOptionButton6);
++		AddCustomCategoryButtons(request, list);
+ 		return list;
+ 	}
+ 
+@@ -196,8 +_,16 @@
+ 	{
+ 		GroupOptionButton<int> groupOptionButton = affectedElement as GroupOptionButton<int>;
+ 		if (affectedElement.IsMouseHovering) {
+-			string originalText = Language.GetTextValue(groupOptionButton.IsSelected ? (categoryNameKey + "Opened") : (categoryNameKey + "Closed"));
+-			CreativePowersHelper.AddDescriptionIfNeeded(ref originalText, categoryNameKey);
++			string suffix = groupOptionButton.IsSelected ? "Opened" : "Closed";
++			string originalText = categoryNameKey.StartsWith("Mods.")
++				? CreativePowerMenuCategory.GetText(categoryNameKey, suffix, categoryNameKey)
++				: Language.GetTextValue(categoryNameKey + suffix);
++
++			if (categoryNameKey.StartsWith("Mods."))
++				CreativePowerMenuCategory.AddDescriptionIfNeeded(ref originalText, categoryNameKey, "Description");
++			else
++				CreativePowersHelper.AddDescriptionIfNeeded(ref originalText, categoryNameKey);
++
+ 			Main.instance.MouseTextNoOverride(originalText, 0, 0);
+ 		}
+ 	}
+@@ -435,6 +_,8 @@
+ 			if (personalCategory.Sliders.TryGetValue(personalCategory.CurrentOption, out value))
+ 				_container.Append(value);
+ 		}
++
++		AppendCustomCategoryElements(mainCategory.CurrentOption);
+ 	}
+ 
+ 	public override void Draw(SpriteBatch spriteBatch)

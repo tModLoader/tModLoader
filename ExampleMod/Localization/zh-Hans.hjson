@@ -74,6 +74,47 @@ Mods: {
 			// LearningExample.DisplayName: Learning Example
 		}
 
+		CreativePowers: {
+			ExampleMainToggle: {
+				Enabled: 示例主开关已启用
+				Disabled: 示例主开关已禁用
+				Description: 这个顶层按钮的行为类似原版感染蔓延开关。
+			}
+
+			ExampleCategory: {
+				Opened: 关闭示例能力
+				Closed: 打开示例能力
+				Description: 这个自定义分类由 ExampleMod 添加。
+			}
+
+			ExampleToggle: {
+				Enabled: 示例开关：开启
+				Disabled: 示例开关：关闭
+				Description: 切换一个 ExampleMod 值，并展示按钮选中状态。
+			}
+
+			ExampleItemButton: {
+				Enabled: 给予 Example Item
+				Disabled: 给予 Example Item
+				Description: 给本地玩家一个 Example Item。
+			}
+
+			ExampleMultiplierSlider: {
+				Opened: 示例倍率
+				Closed: 示例倍率
+				Description: ExampleMod 添加的自定义倍率滑块。
+			}
+
+			ExamplePercentSlider: {
+				Opened: 示例百分比
+				Closed: 示例百分比
+				Description: ExampleMod 添加的自定义百分比滑块。
+				Top: 高
+				Middle: 中
+				Bottom: 低
+			}
+		}
+
 		NPCs: {
 			ExampleCustomAISlimeNPC: {
 				// DisplayName: Flutter Slime
