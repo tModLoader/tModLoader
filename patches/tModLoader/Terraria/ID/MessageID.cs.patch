@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/ID/MessageID.cs
 +++ src/tModLoader/Terraria/ID/MessageID.cs
-@@ -1,165 +_,682 @@
+@@ -1,165 +_,693 @@
  using Terraria.Utilities;
 +using Terraria.ModLoader;
  
@@ -325,10 +325,14 @@
 +	// Sent from RequestTileData once the world is ready for the player to spawn
  	public const byte InitialSpawn = 49;
 +
-+	// Contents of Player.buffType
-+	// On receipt, the buffTime for active buffs is set to 60 ticks (1 second)
-+	// BuffTime is only ever decremented on the owner's client, and the server relies on the client resending this packet when buffs are generated or expire
-+	// Forwarded to other clients
++	/// <summary>
++	/// Used to sync all active buffs (<see cref="Player.buffType"/>) of the local player to other players.
++	///	<para/> <c>NetMessage.SendData</c> parameters:
++	/// <br/> <b>number:</b> player: The player.whoAmI of the player this message is syncing the buffs of.
++	/// <para/> Called automatically during player syncing as buffs expire or change. This only syncs buffs types, all buff times (<see cref="Player.buffTime"/>) for remote players are set to 60.
++	/// <para/> BuffTime is only ever decremented on the owner's client, and the server relies on the client resending this packet when buffs are generated or expire
++	/// <br/><br/> <b>Forwarded to other clients</b>
++	/// </summary>
  	public const byte PlayerBuffs = 50;
 +
 +	/// <summary>
@@ -370,6 +374,13 @@
 +
 +	// Server does nothing except forward the packet to the buffed player IF the buff is a pvpBuff
 +	// Client rejects packets for other players
++	/// <summary>
++	/// Used to sync applying pvp buffs (<see cref="Main.pvpBuff"/>) from the source player to the player being affected by that buff. Sent by <see cref="Player.AddBuff(int, int, bool)"/>.
++	/// <br/><br/> <c>NetMessage.SendData</c> parameters:
++	/// <br/> <b>number:</b> The player.whoAmI of the player the buff is being applied to.
++	/// <br/> <b>number2:</b> The buff type.
++	/// <br/> <b>number3:</b> The buff time. Note that this is unaffected by buff time adjustment logic since that will happen on the target client.
++	/// </summary>
  	public const byte AddPlayerBuffPvP = 55;
 +
 +	// NPC.displayName for town NPCs and Skeleton Merchant
