@@ -790,7 +790,7 @@
  		public static UniqueTagEffect[] UniqueTagEffects = Factory.CreateCustomSet<UniqueTagEffect>(null, new object[38] {
  			(short)5688,
  			new WhipTagEffect {
-@@ -1266,8 +_,17 @@
+@@ -1266,6 +_,9 @@
  				TagDamage = 4
  			}
  		});
@@ -799,15 +799,7 @@
 +		/// </summary>
  		public static bool[] IsWireableStatue = Factory.CreateBoolSet(441, 449, 466, 471, 3651, 3652, 3653, 3654, 3655, 3656, 3657, 3658, 3659, 3660, 3661, 3662, 3708, 3709, 3710, 3711, 3712, 3713, 3714, 3715, 3716, 3717, 3718, 3719, 3720, 4397, 4360, 4342, 4466, 5317, 5318, 5319, 440, 443, 444, 445, 446, 452, 454, 459, 463, 464, 478, 473, 2672, 438, 453, 476, 477, 470, 4355, 4276);
  
-+		/// <summary>
-+		/// Whether or not this item is a golf club. Set this to <see langword="true"/> for custom golf club items, so that <see cref="Item.IsAGolfingItem"/> and <see cref="GolfHelper.IsPlayerHoldingClub"/> recognize them.<br/>
-+		/// Use <see cref="ModItem.GetGolfClubProperties"/> to specify the <see cref="GolfHelper.ClubProperties"/> for the club.
-+		/// </summary>
-+		public static bool[] IsAGolfClub = Factory.CreateBoolSet(4039, 4092, 4093, 4094, 4587, 4588, 4589, 4590, 4591, 4592, 4593, 4594, 4595, 4596, 4597, 4598);
-+
  		public static void PostSetupContent()
- 		{
- 			for (int i = 0; i < Count; i++) {
 @@ -1287,6 +_,7 @@
  			}
  		}

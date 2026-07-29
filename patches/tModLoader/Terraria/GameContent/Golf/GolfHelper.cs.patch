@@ -8,16 +8,21 @@
  using Terraria.Physics;
  
  namespace Terraria.GameContent.Golf;
-@@ -288,8 +_,7 @@
+@@ -288,9 +_,14 @@
  		if (player == null || player.HeldItem == null)
  			return false;
  
--		int type = player.HeldItem.type;
--		if (type == 4039 || (uint)(type - 4092) <= 2u || (uint)(type - 4587) <= 11u)
-+		if (ItemID.Sets.IsAGolfClub[player.HeldItem.type])
++		/* VANILLA CODE
+ 		int type = player.HeldItem.type;
+ 		if (type == 4039 || (uint)(type - 4092) <= 2u || (uint)(type - 4587) <= 11u)
  			return true;
++		*/
++
++		if (ItemID.Sets.IsAGolfClub[player.HeldItem.type])
++			return true;
  
  		return false;
+ 	}
 @@ -321,6 +_,10 @@
  
  	public static ClubProperties GetClubProperties(short itemId)
