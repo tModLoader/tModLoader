@@ -208,8 +208,8 @@ partial class ItemID
 		public static bool[] DropSeedsIfInInventory = Factory.CreateBoolSet(false, Blowpipe, Blowgun);
 
 		/// <summary>
-		/// Whether or not this item is a golf club. Set this to <see langword="true"/> for custom golf club items, so that <see cref="Item.IsAGolfingItem"/> and <see cref="GolfHelper.IsPlayerHoldingClub"/> recognize them.<br/>
-		/// Use <see cref="ModItem.GetGolfClubProperties"/> to specify the <see cref="GolfHelper.ClubProperties"/> for the club.
+		/// Whether or not this item is a golf club. Set this to <see langword="true"/> for custom golf club items.
+		/// <para/> <see cref="ModLoader.ModItem.GetGolfClubProperties"/> must be used to specify the <see cref="GameContent.Golf.GolfHelper.ClubProperties"/> for the club.
 		/// </summary>
 		public static bool[] IsAGolfClub = Factory.CreateBoolSet(false,
 			GolfClubIron, GolfClubPutter, GolfClubWedge, GolfClubDriver,

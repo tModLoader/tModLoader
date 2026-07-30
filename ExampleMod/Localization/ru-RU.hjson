@@ -1300,12 +1300,8 @@ Mods: {
 			}
 
 			ExampleGolfClub: {
-				// DisplayName: Example Golf Club
-				/* Tooltip:
-					'''
-					A well-rounded club best for mid-range distances
-					Golf balls will carry a good distance with decent vertical loft
-					''' */
+				// DisplayName: Example Golf Club (Driver)
+				// Tooltip: "{$CommonItemTooltip.GolfDriver}"
 			}
 		}
 

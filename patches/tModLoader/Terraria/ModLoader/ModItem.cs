@@ -368,16 +368,10 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	/// <summary>
 	/// Allows you to specify the <see cref="GolfHelper.ClubProperties"/> for a custom golf club item.<br/>
 	/// This hook is only called if <see cref="ItemID.Sets.IsAGolfClub"/> is set to <see langword="true"/> for this item's type.<br/>
-	/// Return <see langword="null"/> to fall back to the default behavior (which returns <c>default</c> for modded items).
-	/// <para/>
-	/// The <see cref="GolfHelper.ClubProperties"/> struct controls the shot strength of the golf club:
-	/// <list type="bullet">
-	/// <item><term>MinimumStrength</term><description> The minimum power applied to the golf ball. </description></item>
-	/// <item><term>MaximumStrength</term><description> The maximum power applied to the golf ball. </description></item>
-	/// <item><term>RoughLandResistance</term><description> Resistance to rough landing (0 = none, 1 = full). </description></item>
-	/// </list>
+	/// Return <see langword="null"/> by default, which will result in a club that can't launch a ball.
+	/// <para/><b><see cref="GolfHelper.ClubProperties"/> documentation:</b>
+	/// <br/><inheritdoc cref="GolfHelper.ClubProperties" />
 	/// </summary>
-	/// <returns>The <see cref="GolfHelper.ClubProperties"/> for this golf club, or <see langword="null"/> to use the default.</returns>
 	public virtual GolfHelper.ClubProperties? GetGolfClubProperties()
 	{
 		return null;

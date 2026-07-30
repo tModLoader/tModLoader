@@ -1371,18 +1371,15 @@
  		int num = stack;
  		SetDefaults(to);
  		Prefix(prefixWeWant);
-@@ -47030,14 +_,19 @@
- 		if (ProjectileID.Sets.IsAGolfBall[item.shoot])
+@@ -47031,13 +_,16 @@
  			return true;
  
-+		/* VANILLA CODE
  		int num = item.type;
++		/*
  		if (num == 4039 || (uint)(num - 4092) <= 3u || (uint)(num - 4587) <= 11u)
- 			return true;
 +		*/
-+
-+		if (ItemID.Sets.IsAGolfClub[item.type])
-+			return true;
++		if (ItemID.Sets.IsAGolfClub[num] || num == ItemID.GolfWhistle)
+ 			return true;
  
  		return false;
  	}
