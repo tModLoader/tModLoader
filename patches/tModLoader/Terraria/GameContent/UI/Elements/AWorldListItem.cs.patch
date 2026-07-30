@@ -1,6 +1,13 @@
 --- src/TerrariaNetCore/Terraria/GameContent/UI/Elements/AWorldListItem.cs
 +++ src/tModLoader/Terraria/GameContent/UI/Elements/AWorldListItem.cs
-@@ -10,6 +_,9 @@
+@@ -4,12 +_,16 @@
+ using ReLogic.Content;
+ using Terraria.IO;
+ using Terraria.Localization;
++using Terraria.ModLoader;
+ using Terraria.UI;
+ 
+ namespace Terraria.GameContent.UI.Elements;
  
  public abstract class AWorldListItem : UIPanel
  {
@@ -10,3 +17,36 @@
  	protected WorldFileData _data;
  	protected int _glitchFrameCounter;
  	protected int _glitchFrame;
+@@ -42,6 +_,7 @@
+ 		if (_data.GameMode == 3) {
+ 			expertText = Language.GetTextValue("UI.Creative");
+ 			gameModeColor = Main.creativeModeColor;
++			SystemLoader.ModifyWorldListDisplay(_data, ref expertText, ref gameModeColor, null);
+ 			return;
+ 		}
+ 
+@@ -75,6 +_,8 @@
+ 				gameModeColor = Main.legendaryModeColor;
+ 				break;
+ 		}
++
++		SystemLoader.ModifyWorldListDisplay(_data, ref expertText, ref gameModeColor, null);
+ 	}
+ 
+ 	protected Asset<Texture2D> GetIcon()
+@@ -136,10 +_,12 @@
+ 		if (_data.SkyblockWorld)
+ 			list.Add(GetSeedIcon("Skyblock", hardmodeVariants: false, evilVariants: false));
+ 
+-		if (list.Count > 0)
+-			return list;
++		if (list.Count == 0)
++			list.Add(GetSeedIcon(""));
+ 
+-		list.Add(GetSeedIcon(""));
++		string expertText = null;
++		Color gameModeColor = Color.White;
++		SystemLoader.ModifyWorldListDisplay(_data, ref expertText, ref gameModeColor, list);
+ 		return list;
+ 	}
+ 

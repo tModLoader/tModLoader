@@ -1,0 +1,183 @@
+--- src/TerrariaNetCore/Terraria/GameContent/UI/Elements/UIWorldCreationPreview.cs
++++ src/tModLoader/Terraria/GameContent/UI/Elements/UIWorldCreationPreview.cs
+@@ -1,6 +_,7 @@
+ using Microsoft.Xna.Framework;
+ using Microsoft.Xna.Framework.Graphics;
+ using ReLogic.Content;
++using Terraria.ModLoader;
+ using Terraria.UI;
+ 
+ namespace Terraria.GameContent.UI.Elements;
+@@ -24,6 +_,10 @@
+ 	private byte _difficulty;
+ 	private byte _evil;
+ 	private byte _size;
++	private Asset<Texture2D> _difficultyPreviewTexture;
++	private Asset<Texture2D> _difficultyPreviewTexture2;
++	private Asset<Texture2D> _evilPreviewTexture;
++	private Asset<Texture2D> _sizePreviewTexture;
+ 
+ 	public UIWorldCreationPreview()
+ 	{
+@@ -45,11 +_,26 @@
+ 		Height.Set(_BackgroundExpertTexture.Height(), 0f);
+ 	}
+ 
+-	public void UpdateOption(byte difficulty, byte evil, byte size)
++	public void UpdateOption(byte difficulty, byte evil, byte size, string difficultyPreviewTexturePath = null, string evilPreviewTexturePath = null, string difficultyPreviewTexturePath2 = null, string sizePreviewTexturePath = null)
+ 	{
+ 		_difficulty = difficulty;
+ 		_evil = evil;
+ 		_size = size;
++		_difficultyPreviewTexture = RequestPreviewTexture(difficultyPreviewTexturePath);
++		_difficultyPreviewTexture2 = RequestPreviewTexture(difficultyPreviewTexturePath2);
++		_evilPreviewTexture = RequestPreviewTexture(evilPreviewTexturePath);
++		_sizePreviewTexture = RequestPreviewTexture(sizePreviewTexturePath);
++	}
++
++	private static Asset<Texture2D> RequestPreviewTexture(string previewTexturePath)
++	{
++		if (previewTexturePath == null)
++			return null;
++
++		if (previewTexturePath.StartsWith("Images/"))
++			return Main.Assets.Request<Texture2D>(previewTexturePath);
++
++		return ModContent.Request<Texture2D>(previewTexturePath);
+ 	}
+ 
+ 	protected override void DrawSelf(SpriteBatch spriteBatch)
+@@ -57,59 +_,80 @@
+ 		CalculatedStyle dimensions = GetDimensions();
+ 		Vector2 position = new Vector2(dimensions.X + 4f, dimensions.Y + 4f);
+ 		Color color = Color.White;
+-		switch (_difficulty) {
+-			case 0:
+-			case 3:
+-				spriteBatch.Draw(_BackgroundNormalTexture.Value, position, Color.White);
+-				color = Color.White;
+-				break;
+-			case 1:
+-				spriteBatch.Draw(_BackgroundExpertTexture.Value, position, Color.White);
+-				color = Color.DarkGray;
+-				break;
+-			case 2:
+-				spriteBatch.Draw(_BackgroundMasterTexture.Value, position, Color.White);
+-				color = Color.DarkGray;
+-				break;
+-		}
+-
+-		switch (_size) {
+-			case 0:
+-				spriteBatch.Draw(_SizeSmallTexture.Value, position, color);
+-				break;
+-			case 1:
+-				spriteBatch.Draw(_SizeMediumTexture.Value, position, color);
+-				break;
+-			case 2:
+-				spriteBatch.Draw(_SizeLargeTexture.Value, position, color);
+-				break;
+-		}
+-
+-		switch (_evil) {
+-			case 0:
+-				spriteBatch.Draw(_EvilRandomTexture.Value, position, color);
+-				break;
+-			case 1:
+-				spriteBatch.Draw(_EvilCorruptionTexture.Value, position, color);
+-				break;
+-			case 2:
+-				spriteBatch.Draw(_EvilCrimsonTexture.Value, position, color);
+-				break;
+-		}
+-
+-		switch (_difficulty) {
+-			case 0:
+-				spriteBatch.Draw(_BunnyNormalTexture.Value, position, color);
+-				break;
+-			case 1:
+-				spriteBatch.Draw(_BunnyExpertTexture.Value, position, color);
+-				break;
+-			case 2:
+-				spriteBatch.Draw(_BunnyMasterTexture.Value, position, color * 1.2f);
+-				break;
+-			case 3:
+-				spriteBatch.Draw(_BunnyCreativeTexture.Value, position, color);
+-				break;
++		if (_difficulty != byte.MaxValue) {
++			switch (_difficulty) {
++				case 0:
++				case 3:
++					spriteBatch.Draw(_BackgroundNormalTexture.Value, position, Color.White);
++					color = Color.White;
++					break;
++				case 1:
++					spriteBatch.Draw(_BackgroundExpertTexture.Value, position, Color.White);
++					color = Color.DarkGray;
++					break;
++				case 2:
++					spriteBatch.Draw(_BackgroundMasterTexture.Value, position, Color.White);
++					color = Color.DarkGray;
++					break;
++			}
++		}
++
++		if (_difficultyPreviewTexture != null)
++			spriteBatch.Draw(_difficultyPreviewTexture.Value, position, Color.White);
++
++		if (_evil != byte.MaxValue) {
++			switch (_evil) {
++				case 0:
++					spriteBatch.Draw(_EvilRandomTexture.Value, position, color);
++					break;
++				case 1:
++					spriteBatch.Draw(_EvilCorruptionTexture.Value, position, color);
++					break;
++				case 2:
++					spriteBatch.Draw(_EvilCrimsonTexture.Value, position, color);
++					break;
++			}
++		}
++
++		if (_evilPreviewTexture != null)
++			spriteBatch.Draw(_evilPreviewTexture.Value, position, Color.White);
++
++		if (_difficulty != byte.MaxValue) {
++			switch (_difficulty) {
++				case 0:
++					spriteBatch.Draw(_BunnyNormalTexture.Value, position, color);
++					break;
++				case 1:
++					spriteBatch.Draw(_BunnyExpertTexture.Value, position, color);
++					break;
++				case 2:
++					spriteBatch.Draw(_BunnyMasterTexture.Value, position, color * 1.2f);
++					break;
++				case 3:
++					spriteBatch.Draw(_BunnyCreativeTexture.Value, position, color);
++					break;
++			}
++		}
++
++		if (_difficultyPreviewTexture2 != null)
++			spriteBatch.Draw(_difficultyPreviewTexture2.Value, position, Color.White);
++
++		// Draw size last so custom full-plate difficulty/evil preview art doesn't cover these vanilla size overlays.
++		if (_sizePreviewTexture != null) {
++			spriteBatch.Draw(_sizePreviewTexture.Value, position, Color.White);
++		}
++		else {
++			switch (_size) {
++				case 0:
++					spriteBatch.Draw(_SizeSmallTexture.Value, position, color);
++					break;
++				case 1:
++					spriteBatch.Draw(_SizeMediumTexture.Value, position, color);
++					break;
++				case 2:
++					spriteBatch.Draw(_SizeLargeTexture.Value, position, color);
++					break;
++			}
+ 		}
+ 
+ 		spriteBatch.Draw(_BorderTexture.Value, new Vector2(dimensions.X, dimensions.Y), Color.White);

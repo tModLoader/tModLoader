@@ -3,12 +3,14 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using ReLogic.Content;
 using Terraria.Graphics;
 using Terraria.ID;
 using Terraria.IO;
 using Terraria.Localization;
 using Terraria.Map;
 using Terraria.ModLoader.Core;
+using Terraria.GameContent.Creative;
 using Terraria.ModLoader.IO;
 using Terraria.UI;
 using Terraria.WorldBuilding;
@@ -390,6 +392,28 @@ public abstract partial class ModSystem : ModType
 	/// </summary>
 	public virtual bool HijackSendData(int whoAmI, int msgType, int remoteClient, int ignoreClient, NetworkText text, int number, float number2, float number3, float number4, int number5, int number6, int number7)
 		=> false;
+
+	/// <summary>
+	/// Allows you to add, remove, or reorder the world size, difficulty, and evil biome options shown in the world creation menu.
+	/// <br/>Use this to expose custom world creation presets without IL editing or On hooks.
+	/// <br/>Options should update the world generation state in their <see cref="WorldCreationMenuOption.OnSelected"/> callback and report current selection in <see cref="WorldCreationMenuOption.IsSelected"/>.
+	/// <br/>Modded difficulty options start at <see cref="GameModeID.TML"/> and evil biome options start at <see cref="WorldEvilID.TML"/>, so multiple mods adding options won't conflict.
+	/// <br/>The world creation menu automatically wraps size, difficulty, and evil biome option buttons to new rows when many options are present.
+	/// </summary>
+	/// <param name="sizeOptions">The world size options shown in the world creation menu. A custom size option should apply a valid world size in its selection callback. It can temporarily use an existing vanilla world size.</param>
+	/// <param name="difficultyOptions">The difficulty options shown in the world creation menu.</param>
+	/// <param name="evilOptions">The evil biome options shown in the world creation menu.</param>
+	public virtual void ModifyWorldCreationMenuOptions(ref List<WorldCreationMenuOption> sizeOptions, ref List<WorldCreationMenuOption> difficultyOptions, ref List<WorldCreationMenuOption> evilOptions) { }
+
+	/// <summary>
+	/// Allows you to modify the difficulty text/color and icon list shown for a world in the world select menu.
+	/// <br/>Use this together with <see cref="SaveWorldHeader(TagCompound)"/> and <see cref="WorldFileData.TryGetHeaderData(ModSystem, out TagCompound)"/> to display custom options chosen during world creation.
+	/// </summary>
+	/// <param name="worldData">The world file data being displayed.</param>
+	/// <param name="difficultyText">The difficulty text shown beside the world name.</param>
+	/// <param name="difficultyColor">The color of the difficulty text.</param>
+	/// <param name="icons">The list of world icons to cycle through. This can be <see langword="null"/> when only the difficulty text is being requested.</param>
+	public virtual void ModifyWorldListDisplay(WorldFileData worldData, ref string difficultyText, ref Color difficultyColor, List<Asset<Texture2D>> icons) { }
 
 	/// <summary>
 	/// Allows a mod to run code before a world is generated.

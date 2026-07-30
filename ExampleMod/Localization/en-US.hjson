@@ -10,6 +10,23 @@ Mods: {
 	ExampleMod: {
 		Common.PaperAirplane: Paper Airplane
 
+		WorldCreation: {
+			ExampleSize: {
+				DisplayName: Example
+				Description: An example modded world size option.
+			}
+
+			ExampleDifficulty: {
+				DisplayName: Example
+				Description: An example modded world difficulty option.
+			}
+
+			ExampleEvil: {
+				DisplayName: Example
+				Description: An example modded world evil option.
+			}
+		}
+
 		Achievements: {
 			MinionBossKilled: {
 				Description: Defeat Minion Boss, a massive eye protected by a ring of friends.

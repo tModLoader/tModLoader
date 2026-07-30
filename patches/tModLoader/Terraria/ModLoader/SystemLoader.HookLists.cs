@@ -1,9 +1,11 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq.Expressions;
+using Terraria.GameContent.Creative;
 using Terraria.Graphics;
 using Terraria.IO;
 using Terraria.Localization;
@@ -50,6 +52,10 @@ partial class SystemLoader
 	private delegate void DelegateModifyTimeRate(ref double timeRate, ref double tileUpdateRate, ref double eventUpdateRate);
 
 	private delegate void DelegateModifyWorldGenTasks(List<GenPass> passes);
+
+	private delegate void DelegateModifyWorldCreationMenuOptions(ref List<WorldCreationMenuOption> sizeOptions, ref List<WorldCreationMenuOption> difficultyOptions, ref List<WorldCreationMenuOption> evilOptions);
+
+	private delegate void DelegateModifyWorldListDisplay(WorldFileData worldData, ref string difficultyText, ref Color difficultyColor, List<Asset<Texture2D>> icons);
 
 	private delegate bool DelegateHijackGetData(ref byte messageType, ref BinaryReader reader, int playerNumber);
 
@@ -140,6 +146,10 @@ partial class SystemLoader
 	private static HookList HookPreWorldGen = AddHook<Action>(s => s.PreWorldGen);
 
 	private static HookList HookModifyWorldGenTasks = AddHook<DelegateModifyWorldGenTasks>(s => s.ModifyWorldGenTasks);
+
+	private static HookList HookModifyWorldCreationMenuOptions = AddHook<DelegateModifyWorldCreationMenuOptions>(s => s.ModifyWorldCreationMenuOptions);
+
+	private static HookList HookModifyWorldListDisplay = AddHook<DelegateModifyWorldListDisplay>(s => s.ModifyWorldListDisplay);
 
 	private static HookList HookPostWorldGen = AddHook<Action>(s => s.PostWorldGen);
 
