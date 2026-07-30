@@ -636,7 +636,7 @@
  	public bool fireWalk;
  	public bool channel;
  	public int step = -1;
-@@ -1144,6 +_,9 @@
+@@ -1144,48 +_,140 @@
  	public RabbitOrderFrameHelper rabbitOrderFrame;
  	public bool creativeGodMode;
  	private const int MaxAdvancedShadows = 60;
@@ -646,7 +646,10 @@
  	public int availableAdvancedShadowsCount;
  	private EntityShadowInfo[] _advancedShadows = new EntityShadowInfo[60];
  	private int _lastAddedAvancedShadow;
-@@ -1153,39 +_,127 @@
+ 	public CompositeArmData compositeFrontArm;
+ 	public CompositeArmData compositeBackArm;
+ 	public int anglerQuestsFinished;
++	/// <summary> The golf score of the player (not the stroke count), mainly affects the Golfers shop inventory: <see href="https://terraria.wiki.gg/wiki/Golf#Golf_score"/> </summary>
  	public int golferScoreAccumulated;
  	public int bartenderQuestLog;
  	public bool downedDD2EventAnyDifficulty;

@@ -1371,7 +1371,16 @@
  		int num = stack;
  		SetDefaults(to);
  		Prefix(prefixWeWant);
-@@ -47037,7 +_,7 @@
+@@ -47031,13 +_,16 @@
+ 			return true;
+ 
+ 		int num = item.type;
++		/*
+ 		if (num == 4039 || (uint)(num - 4092) <= 3u || (uint)(num - 4587) <= 11u)
++		*/
++		if (ItemID.Sets.IsAGolfClub[num] || num == ItemID.GolfWhistle)
+ 			return true;
+ 
  		return false;
  	}
  
