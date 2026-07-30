@@ -41,12 +41,11 @@
  			return true;
  
  		return false;
-@@ -321,6 +_,10 @@
+@@ -321,6 +_,9 @@
  
  	public static ClubProperties GetClubProperties(short itemId)
  	{
-+		// Allow modded golf clubs to specify their own ClubProperties via ModItem.GetGolfClubProperties
-+		if (ItemLoader.TryGetGolfClubProperties(itemId, out ClubProperties moddedProperties))
++		if (ItemLoader.GetGolfClubProperties(itemId, out ClubProperties moddedProperties))
 +			return moddedProperties;
 +
  		Vector2 vector = new Vector2(0.25f, 0.25f);
