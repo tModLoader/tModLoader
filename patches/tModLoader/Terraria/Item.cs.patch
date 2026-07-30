@@ -610,7 +610,7 @@
  	public bool noWet;
 +
 +	/// <summary>
-+	/// The Buff ID of the buff given by this item on use. To have a potion give multiple buffs, assign one buff here and in <see cref="ModItem.UseItem(Player)"/>, call <see cref="Player.AddBuff(int, int, bool)"/> for the remaining buffs you wish to give.
++	/// The Buff ID of the buff given by this item on use. To have a potion give multiple buffs, assign one buff here and in <see cref="ModItem.UseItem(Player)"/>, call <see cref="Player.AddBuff(int, int)"/> for the remaining buffs you wish to give.
 +	/// <br/> Make sure to set <see cref="buffTime"/> as well or the buff will instantly disappear.
 +	/// <br/> Defaults to 0.
 +	/// </summary>

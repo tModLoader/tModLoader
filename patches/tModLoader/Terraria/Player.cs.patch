@@ -1653,7 +1653,7 @@
  			Main.item[num].OverrideWith(theItemWeDrop);
  			theItemWeDrop = new Item();
  			if (slot == 58)
-@@ -3422,6 +_,22 @@
+@@ -3422,7 +_,23 @@
  		return -1;
  	}
  
@@ -1668,14 +1668,16 @@
 +	/// Vanilla buff types are found in <see cref="BuffID"/> and modded buff types are typically retrieved using
 +	/// <see cref="ModContent.BuffType{T}"/>. <br/><br/>
 +	/// Adding a <see cref="Main.pvpBuff"/> to a remote player will send a <b><see cref="MessageID.AddPlayerBuffPvP"/></b> packet instead of adding the buff locally. Non-pvp buffs will not be applied to remote players.
-+	/// <para/> The <paramref name="fromNetPvP"/> is set when syncing buff data and should always be left as <see langword="false"/> for modded code.
 +	/// </summary>
 +	/// <param name="type">The buff type</param>
 +	/// <param name="time">The amount of time in ticks. 60 ticks = 1 second.</param>
-+	/// <param name="fromNetPvP">Whether to skip multiplying by current world difficulty and alchemic enhancement buff. Should always be <see langword="false"/> for modded code.</param>
- 	public void AddBuff(int type, int time, bool fromNetPvP = false)
++	public void AddBuff(int type, int time) => AddBuff(type, time, false); // TML: Hide fromNetPvP param to avoid porting pitfall
++
+-	public void AddBuff(int type, int time, bool fromNetPvP = false)
++	internal void AddBuff(int type, int time, bool fromNetPvP = false)
  	{
  		if (buffImmune[type])
+ 			return;
 @@ -3520,6 +_,7 @@
  				continue;
  

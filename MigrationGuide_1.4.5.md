@@ -509,6 +509,7 @@ All classes are in the `Terraria` or `Terraria.ID` namespaces unless otherwise i
 * 🤖: `Main.ShouldShowInvisibleWalls` -> `Main.ShouldShowInvisibleBlocksAndWalls`
 * 🤖: `NPC.ShouldBestiaryGirlBeLycantrope` now static.
 * ⚙️: `NPC.SpawnWithHigherTime` removed. No longer used.
+* 🤖: `Player.AddBuff` changed. The `quiet` and `foodHack` parameters have been removed.
 * 🤖: `Player.GetItem` changed. The `plr` parameter has been removed.
 * 🤖: `Player.IsProjectileInteractibleAndInInteractionRange` -> `Player.IsProjectileInteractableAndInInteractionRange`
 * ⚙️: `Player.CheckForGoodTeleportationSpot` removed. Use `Utils.CheckForGoodTeleportationSpot` instead.

@@ -375,7 +375,7 @@
 +	// Server does nothing except forward the packet to the buffed player IF the buff is a pvpBuff
 +	// Client rejects packets for other players
 +	/// <summary>
-+	/// Used to sync applying pvp buffs (<see cref="Main.pvpBuff"/>) from the source player to the player being affected by that buff. Sent by <see cref="Player.AddBuff(int, int, bool)"/>.
++	/// Used to sync applying pvp buffs (<see cref="Main.pvpBuff"/>) from the source player to the player being affected by that buff. Sent by <see cref="Player.AddBuff(int, int)"/>.
 +	/// <br/><br/> <c>NetMessage.SendData</c> parameters:
 +	/// <br/> <b>number:</b> The player.whoAmI of the player the buff is being applied to.
 +	/// <br/> <b>number2:</b> The buff type.

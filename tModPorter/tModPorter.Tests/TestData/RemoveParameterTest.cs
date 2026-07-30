@@ -1,4 +1,5 @@
 ﻿using Terraria;
+using Terraria.ID;
 
 public class RemoveParameterTest
 {
@@ -17,5 +18,13 @@ public class RemoveParameterTest
 		player.GetItem(0, item, GetItemSettings.PickupItemFromWorld);
 		player.GetItem(Main.myPlayer, item, GetItemSettings.PickupItemFromWorld);
 		player.GetItem(plr: 0, newItem: item, settings: GetItemSettings.PickupItemFromWorld);
+
+		player.AddBuff(BuffID.OnFire, 10, quiet: false, foodHack: true);
+		player.AddBuff(BuffID.OnFire, 20, foodHack: false, quiet: true);
+		player.AddBuff(BuffID.OnFire, 30, false, foodHack: false);
+		player.AddBuff(BuffID.OnFire, 40, quiet: false);
+		player.AddBuff(BuffID.OnFire, 50, foodHack: false);
+		player.AddBuff(BuffID.OnFire, 60, true, false);
+		player.AddBuff(BuffID.OnFire, 70, true);
 	}
 }

@@ -206,7 +206,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 
 # ExampleMod TODOs
 - Verify that ExampleZombieThief still works with changes
-- A temporary compile flag COMPILE_ERROR_TODOS has been added to allow building and testing ExampleMod while some remaining porting decisions need to be made.
 
 # Terraria update requests
 
