@@ -20,8 +20,8 @@ internal class CompositeText
 	private readonly Plural[] _plurals;
 	private readonly object[] _extendedArgBuffer;
 
-	private static readonly Regex _positionalRegex = new Regex(@"\{(\d+)", RegexOptions.Compiled);
-	private static readonly Regex _positionalPluralRegex = new Regex(@"{\^(\d+):([^\r\n]+?)}", RegexOptions.Compiled); // "{0} {^0:item;items}"
+	private static readonly Regex _argIndexRegex = new Regex(@"\{\^?(\d+)", RegexOptions.Compiled); // Matches the arg index of both "{0}" and the pluralization regex below
+	private static readonly Regex _positionalPluralRegex = new Regex(@"{\^(\d+):([^\r\n]+?)}", RegexOptions.Compiled); // Matches "{^0:item;items}" -> (0, "item;items")
 
 	public CompositeText(string format)
 	{
@@ -33,7 +33,7 @@ internal class CompositeText
 
 	public static bool TryCreate(string s, out CompositeText text)
 	{
-		if (!_positionalRegex.IsMatch(s) && !_positionalPluralRegex.IsMatch(s)) {
+		if (!_argIndexRegex.IsMatch(s)) {
 			text = null;
 			return false;
 		}
@@ -48,7 +48,7 @@ internal class CompositeText
 			return [];
 
 		var plurals = new List<Plural>();
-		int nextSlot = _positionalRegex.Matches(format).Max(m => int.Parse(m.Groups[1].Value)) + 1;
+		int nextSlot = _argIndexRegex.Matches(format).Max(m => int.Parse(m.Groups[1].Value)) + 1;
 
 		format = _positionalPluralRegex.Replace(format, delegate (Match match) {
 			plurals.Add(new Plural {
