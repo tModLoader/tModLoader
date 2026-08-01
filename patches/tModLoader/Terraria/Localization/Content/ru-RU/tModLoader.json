@@ -51,6 +51,7 @@
 		"SwitchVersionConfirm": "Вы уверены, что хотите переключиться на другую ветку?",
 		"SwitchVersionDefaultBranchName": "Стандартная публичная версия",
 		"SwitchVersionDefaultBranchDescription": "Это стандартная стабильная версия, которой пользуется большинство игроков.",
+		// "SwitchVersionObsoleteBranch": "This branch is obsolete.",
 		"LatestNews": "Последние новости: {0}",
 		"LatestNewsOffline": "Оффлайн",
 		"LatestNewsChecking": "Проверка...",

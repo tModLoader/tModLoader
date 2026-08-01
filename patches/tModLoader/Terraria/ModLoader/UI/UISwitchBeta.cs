@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Runtime.InteropServices;
+using System.Text.RegularExpressions;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
@@ -11,11 +14,19 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.UI;
 using Terraria.UI.Gamepad;
+using Version = System.Version;
 
 namespace Terraria.ModLoader.UI;
 
 internal class UISwitchBeta : UIState, IHaveBackButtonCommand
 {
+	private record struct Branch(EBetaBranchFlags Flags, uint BuildID, string Name, string Description)
+	{
+		public bool Obsolete;
+		public bool Preview;
+		public Version TmlMajorMinor = null;
+	}
+	
 	protected UIElement area;
 	private UIPanel contentPanel;
 	private UIPanel topMessagePanel;
@@ -127,32 +138,69 @@ internal class UISwitchBeta : UIState, IHaveBackButtonCommand
 
 		int betaBranchCount = SteamApps.GetNumBetas(out _, out _);
 		bool onBetaBranch = SteamApps.GetCurrentBetaName(out string branchName, 128);
+		var tmlVersion = BuildInfo.tMLVersion.MajorMinor();
+		var previewRegex = new Regex(@"preview\-[v]?(\d+\.\d+)", RegexOptions.Compiled);
 
+		// Collect branches first.
+		var branches = new List<Branch>(betaBranchCount);
+		int newestBranchIdx = -1;
 		for (int i = 0; i < betaBranchCount; i++) {
-			SteamApps.GetBetaInfo(i, out uint betaBranchFlagsValue, out uint buildID, out string betaName, 128, out string branchDescription, 1024);
-			EBetaBranchFlags betaBranchFlags = (EBetaBranchFlags)betaBranchFlagsValue;
+			SteamApps.GetBetaInfo(i, out uint flagsValue, out uint buildID, out string betaName, 128, out string branchDescription, 1024);
 
-			if (betaBranchFlags.HasFlag(EBetaBranchFlags.k_EBetaBranch_Private))
+			var branch = new Branch((EBetaBranchFlags)flagsValue, buildID, betaName, branchDescription);
+
+			if (branch.Flags.HasFlag(EBetaBranchFlags.k_EBetaBranch_Private))
 				continue;
+			
+			if (!onBetaBranch && branch.Flags.HasFlag(EBetaBranchFlags.k_EBetaBranch_Default)) {
+				branch.TmlMajorMinor = tmlVersion;
+			} else if (previewRegex.Match(branch.Name) is { Success: true } m && m.Groups[1] is { Value: string vStr } && Version.TryParse(vStr, out var version)) {
+				branch.Preview = true;
+				branch.TmlMajorMinor = version;
+			}
 
+			if (newestBranchIdx < 0 || (branch.TmlMajorMinor is { } v && v > branches[newestBranchIdx].TmlMajorMinor))
+				newestBranchIdx = branches.Count;
+			
+			branches.Add(branch);
+		};
+
+		// Identify obsolete preview branches.
+		foreach (ref var branch in CollectionsMarshal.AsSpan(branches)) {
+			if (branch.Preview && branch.TmlMajorMinor is { } branchVersion && newestBranchIdx >= 0 && branch.TmlMajorMinor < branches[newestBranchIdx].TmlMajorMinor) {
+				branch.Obsolete = true;
+			}
+		};
+
+		// Put obsolete branches last.
+		branches.Sort((a, b) => a.Obsolete.CompareTo(b.Obsolete));
+
+		for (int i = 0; i < branches.Count; i++) {
+			var branch = branches[i];
+			
 			UIPanel branchPanel = new UIPanel();
 			branchPanel.SetPadding(6);
 			branchPanel.Width.Set(0, 1f);
 			branchPanel.Height.Set(102, 0f);
 			branchPanel.BackgroundColor = UICommon.DefaultUIBlue;
 
-			string betaNameDisplay = betaName;
-			if (betaBranchFlags.HasFlag(EBetaBranchFlags.k_EBetaBranch_Default)) {
+			string betaNameDisplay = branch.Name;
+			if (branch.Flags.HasFlag(EBetaBranchFlags.k_EBetaBranch_Default)) {
 				betaNameDisplay = Language.GetTextValue("tModLoader.SwitchVersionDefaultBranchName");
-				branchDescription = Language.GetTextValue("tModLoader.SwitchVersionDefaultBranchDescription");
+				branch.Description = Language.GetTextValue("tModLoader.SwitchVersionDefaultBranchDescription");
 			}
 			// TODO: If requested, we could consider adding localization within tModLoader for the other beta branch names/descriptions, but it should be fine since this is the current status quo.
+
+			if (branch.Obsolete) {
+				branchPanel.BackgroundColor = Color.Lerp(UICommon.DefaultUIBlue, Color.Black, 0.5f);
+				branch.Description += $"\n{Language.GetTextValue("tModLoader.SwitchVersionObsoleteBranch")}";
+			}
 
 			UIText betaNameText = new UIText(betaNameDisplay) {
 				Top = { Pixels = 2 },
 				Left = { Pixels = 45 }
 			};
-			UIText betaDescriptionText = new UIText(branchDescription) {
+			UIText betaDescriptionText = new UIText(branch.Description) {
 				Top = { Pixels = 30 },
 				Left = { Pixels = 60 + 12 },
 				Width = StyleDimension.FromPixelsAndPercent(-72f, 1f),
@@ -161,9 +209,9 @@ internal class UISwitchBeta : UIState, IHaveBackButtonCommand
 			betaDescriptionText.IsWrapped = true;
 
 			string betaIconPath = "Images/UI/WorldCreation/IconDifficultyNormal";
-			if (betaName.Contains("legacy"))
+			if (branch.Name.Contains("legacy"))
 				betaIconPath = "Images/UI/WorldCreation/IconDifficultyCreative";
-			else if (!betaBranchFlags.HasFlag(EBetaBranchFlags.k_EBetaBranch_Default))
+			else if (!branch.Flags.HasFlag(EBetaBranchFlags.k_EBetaBranch_Default))
 				betaIconPath = "Images/UI/WorldCreation/IconDifficultyExpert";
 
 			UIImage betaIconImage = new UIImage(Main.Assets.Request<Texture2D>(betaIconPath, AssetRequestMode.ImmediateLoad)) {
@@ -180,7 +228,7 @@ internal class UISwitchBeta : UIState, IHaveBackButtonCommand
 
 			betaList.Add(branchPanel);
 
-			if (betaBranchFlags.HasFlag(EBetaBranchFlags.k_EBetaBranch_Selected)) {
+			if (branch.Flags.HasFlag(EBetaBranchFlags.k_EBetaBranch_Selected)) {
 				float top = betaDescriptionText.Top.Pixels + betaDescriptionText.GetOuterDimensions().Height - 18;
 
 				UIText selectedMessage = new UIText(Language.GetTextValue("tModLoader.SwitchVersionCurrentlySelected")) {
@@ -227,8 +275,8 @@ internal class UISwitchBeta : UIState, IHaveBackButtonCommand
 				switchButton.OnLeftClick += (a, b) => {
 					SoundEngine.PlaySound(SoundID.MenuClose);
 					ShowConfirmationWindow((UIElement, Vector2) => {
-						Logging.tML.Info($"Switching to beta branch: {betaName}");
-						SteamApps.SetActiveBeta(betaName);
+						Logging.tML.Info($"Switching to beta branch: {branch.Name}");
+						SteamApps.SetActiveBeta(branch.Name);
 						Main.instance.Exit();
 					}, "tModLoader.SwitchVersionConfirm");
 				};
