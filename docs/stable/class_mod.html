@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2026.05</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2026.06</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -262,6 +262,12 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsNetSynced</b><code>
 ILog&#160;</td><td class="memItemRight" valign="bottom"><b>Logger</b><code> [get, set]</code></td></tr>
 <tr class="memdesc:a36f6a48cdff60d11217fcd27f77a3e7b"><td class="mdescLeft">&#160;</td><td class="mdescRight">A logger with this mod's name for easy logging. <br /></td></tr>
 <tr class="separator:a36f6a48cdff60d11217fcd27f77a3e7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af52e3c3e74a2e40150adf378ecca79e8"><td class="memItemLeft" align="right" valign="top"><a id="af52e3c3e74a2e40150adf378ecca79e8" name="af52e3c3e74a2e40150adf378ecca79e8"></a>
+Asset&lt; Texture2D &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>ModIcon</b><code> [get, set]</code></td></tr>
+<tr class="memdesc:af52e3c3e74a2e40150adf378ecca79e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">The icon for this mod, sourced from <code>icon.png</code>. <br  />
+<br  />
+ Must be 80x80. <br /></td></tr>
+<tr class="separator:af52e3c3e74a2e40150adf378ecca79e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a00d5eed93524439d8a47da0bc5bff0de"><td class="memItemLeft" align="right" valign="top"><a id="a00d5eed93524439d8a47da0bc5bff0de" name="a00d5eed93524439d8a47da0bc5bff0de"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>MusicAutoloadingEnabled</b> = true<code> [get]</code></td></tr>
 <tr class="memdesc:a00d5eed93524439d8a47da0bc5bff0de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not this mod will automatically add music to the game. All supported audio files in a folder or subfolder of a folder named "Music" will be autoloaded as music. <br /></td></tr>
@@ -277,6 +283,10 @@ virtual string&#160;</td><td class="memItemRight" valign="bottom"><b>Name</b><co
 <tr class="memitem:a087b9009fd1a6345f715a58a1e3ff48b"><td class="memItemLeft" align="right" valign="top"><a id="a087b9009fd1a6345f715a58a1e3ff48b" name="a087b9009fd1a6345f715a58a1e3ff48b"></a>
 short&#160;</td><td class="memItemRight" valign="bottom"><b>NetID</b><code> [get]</code></td></tr>
 <tr class="separator:a087b9009fd1a6345f715a58a1e3ff48b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab1f1aab0cafb28008cd4b81acbd152f5"><td class="memItemLeft" align="right" valign="top"><a id="ab1f1aab0cafb28008cd4b81acbd152f5" name="ab1f1aab0cafb28008cd4b81acbd152f5"></a>
+static Asset&lt; Texture2D &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>PlaceholderModIcon</b><code> [get]</code></td></tr>
+<tr class="memdesc:ab1f1aab0cafb28008cd4b81acbd152f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">A placeholder mod icon, for use when a mod doesn't have a valid icon. <br /></td></tr>
+<tr class="separator:ab1f1aab0cafb28008cd4b81acbd152f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a203672e875cf843ef7fea8166a0fda64"><td class="memItemLeft" align="right" valign="top"><a id="a203672e875cf843ef7fea8166a0fda64" name="a203672e875cf843ef7fea8166a0fda64"></a>
 <a class="el" href="class_pre_j_i_t_filter.html">PreJITFilter</a>&#160;</td><td class="memItemRight" valign="bottom"><b>PreJITFilter</b> = new <a class="el" href="class_pre_j_i_t_filter.html">PreJITFilter</a>()<code> [get, protected set]</code></td></tr>
 <tr class="separator:a203672e875cf843ef7fea8166a0fda64"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -287,6 +297,14 @@ IContentSource&#160;</td><td class="memItemRight" valign="bottom"><b>RootContent
 ModSide&#160;</td><td class="memItemRight" valign="bottom"><b>Side</b><code> [get, set]</code></td></tr>
 <tr class="memdesc:a8706680abdd1062598b4719d8b3decdf"><td class="mdescLeft">&#160;</td><td class="mdescRight">The ModSide that controls how this mod is synced between client and server. <br /></td></tr>
 <tr class="separator:a8706680abdd1062598b4719d8b3decdf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac6288ce43d86361d2c65cac2935cf8ca"><td class="memItemLeft" align="right" valign="top"><a id="ac6288ce43d86361d2c65cac2935cf8ca" name="ac6288ce43d86361d2c65cac2935cf8ca"></a>
+Asset&lt; Texture2D &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>SmallModIcon</b><code> [get, set]</code></td></tr>
+<tr class="memdesc:ac6288ce43d86361d2c65cac2935cf8ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">The small icon for this mod, sourced from <code>icon_small.png</code>. <br  />
+<br  />
+ Must be 30x30. <br  />
+<br  />
+ Will be null if a suitable icon doesn't exist. <br /></td></tr>
+<tr class="separator:ac6288ce43d86361d2c65cac2935cf8ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af9cc6edeeb2cee626f0ab6b1d0b3d9ba"><td class="memItemLeft" align="right" valign="top"><a id="af9cc6edeeb2cee626f0ab6b1d0b3d9ba" name="af9cc6edeeb2cee626f0ab6b1d0b3d9ba"></a>
 string&#160;</td><td class="memItemRight" valign="bottom"><b>SourceFolder</b><code> [get, set]</code></td></tr>
 <tr class="memdesc:af9cc6edeeb2cee626f0ab6b1d0b3d9ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">The path to the source folder the mod was built from. <br /></td></tr>

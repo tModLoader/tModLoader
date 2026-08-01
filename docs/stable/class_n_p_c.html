@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2026.05</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2026.06</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -195,8 +195,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>CheckDrowning</b> ()<
 <tr class="memitem:a5d07abe0af162a753b3e337b51893ff3"><td class="memItemLeft" align="right" valign="top"><a id="a5d07abe0af162a753b3e337b51893ff3" name="a5d07abe0af162a753b3e337b51893ff3"></a>
 object&#160;</td><td class="memItemRight" valign="bottom"><b>Clone</b> ()</td></tr>
 <tr class="separator:a5d07abe0af162a753b3e337b51893ff3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af5a7aa9a27fc2fab65548fe3df53767c"><td class="memItemLeft" align="right" valign="top"><a id="af5a7aa9a27fc2fab65548fe3df53767c" name="af5a7aa9a27fc2fab65548fe3df53767c"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>CloneDefaults</b> (int Type)</td></tr>
+<tr class="memitem:af5a7aa9a27fc2fab65548fe3df53767c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_n_p_c.html#af5a7aa9a27fc2fab65548fe3df53767c">CloneDefaults</a> (int Type)</td></tr>
+<tr class="memdesc:af5a7aa9a27fc2fab65548fe3df53767c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clones all the default stats (damage, health, defense, etc) of another <a class="el" href="class_n_p_c.html">NPC</a> type. This should be used in <a class="el" href="class_mod_n_p_c.html#ad8c6ebb19eb4a5e8728604a8dd976829" title="Allows you to set all your NPC&#39;s properties, such as width, damage, aiStyle, lifeMax,...">ModNPC.SetDefaults</a> prior to changing any other stats. This is useful for creating a <a class="el" href="class_mod_n_p_c.html" title="This class serves as a place for you to place all your properties and hooks for each NPC....">ModNPC</a> that should be a copy of another <a class="el" href="class_n_p_c.html">NPC</a>. Using CloneDefaults instead of manually setting stats will ensure that modifications done to the <a class="el" href="class_n_p_c.html">NPC</a> being cloned by other mods will automatically apply to this clone as well. Note that for cloning negative <a class="el" href="class_n_p_c_i_d.html">NPCID</a>, the final values might be very slightly off for higher difficulty modes due to the way difficulty scaling is applied.  <a href="class_n_p_c.html#af5a7aa9a27fc2fab65548fe3df53767c">More...</a><br /></td></tr>
 <tr class="separator:af5a7aa9a27fc2fab65548fe3df53767c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abfe2c4b50da73c7a82e90ccd04b710d5"><td class="memItemLeft" align="right" valign="top"><a id="abfe2c4b50da73c7a82e90ccd04b710d5" name="abfe2c4b50da73c7a82e90ccd04b710d5"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>CopyInteractions</b> (<a class="el" href="class_n_p_c.html">NPC</a> npc)</td></tr>
@@ -442,6 +442,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>SetDefaults_ForNetId<
 <tr class="memitem:aedd1fe334854872c0f36823dfc467848"><td class="memItemLeft" align="right" valign="top"><a id="aedd1fe334854872c0f36823dfc467848" name="aedd1fe334854872c0f36823dfc467848"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>SetDefaultsKeepPlayerInteraction</b> (int Type)</td></tr>
 <tr class="separator:aedd1fe334854872c0f36823dfc467848"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3e94433b645dad1c3b3fde6c6c416af6"><td class="memItemLeft" align="right" valign="top"><a id="a3e94433b645dad1c3b3fde6c6c416af6" name="a3e94433b645dad1c3b3fde6c6c416af6"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>SetDefaultsKeepPlayerInteraction</b> (int Type, <a class="el" href="struct_n_p_c_spawn_params.html">NPCSpawnParams</a> spawnparams)</td></tr>
+<tr class="separator:a3e94433b645dad1c3b3fde6c6c416af6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:add46c870b2561f18d6c47391d2035339"><td class="memItemLeft" align="right" valign="top"><a id="add46c870b2561f18d6c47391d2035339" name="add46c870b2561f18d6c47391d2035339"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>SetFrameSize</b> ()</td></tr>
 <tr class="separator:add46c870b2561f18d6c47391d2035339"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -950,6 +953,7 @@ int[]&#160;</td><td class="memItemRight" valign="bottom"><b>buffType</b> = new i
 <tr class="separator:a62d9f3483acfb027e85b21d8b630bdd5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a96816b835a259547aa2333d2db77d0f4"><td class="memItemLeft" align="right" valign="top"><a id="a96816b835a259547aa2333d2db77d0f4" name="a96816b835a259547aa2333d2db77d0f4"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanBeReplacedByOtherNPCs</b></td></tr>
+<tr class="memdesc:a96816b835a259547aa2333d2db77d0f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true, this <a class="el" href="class_n_p_c.html">NPC</a> can be replaced by a newly spawning <a class="el" href="class_n_p_c.html">NPC</a> when <a class="el" href="class_main.html#afc65638760af97cd54a3648304d0b1c9" title="Contains all the NPCs in the game world. NPC are spawned via the NPC.NewNPC(IEntitySource,...">Main.npc</a> is completely full. This is typically set for NPCs spawned by players, such as <a class="el" href="class_n_p_c.html">NPC</a> spawned from statues, to prevent players from cheesing boss fights by preventing minions from spawning because <a class="el" href="class_main.html#afc65638760af97cd54a3648304d0b1c9" title="Contains all the NPCs in the game world. NPC are spawned via the NPC.NewNPC(IEntitySource,...">Main.npc</a> is already full. <br /></td></tr>
 <tr class="separator:a96816b835a259547aa2333d2db77d0f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4a3c47dfb04022f76a66a5e7a1dfcbf5"><td class="memItemLeft" align="right" valign="top"><a id="a4a3c47dfb04022f76a66a5e7a1dfcbf5" name="a4a3c47dfb04022f76a66a5e7a1dfcbf5"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>canDisplayBuffs</b> = true</td></tr>
@@ -1426,7 +1430,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>trapImmune</b></td></
 <tr class="separator:acf886c9366b1f1ce9e2a278c21a9c78b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a561c4d93c6f0ece100ea64c264589e33"><td class="memItemLeft" align="right" valign="top"><a id="a561c4d93c6f0ece100ea64c264589e33" name="a561c4d93c6f0ece100ea64c264589e33"></a>
 float&#160;</td><td class="memItemRight" valign="bottom"><b>value</b></td></tr>
-<tr class="memdesc:a561c4d93c6f0ece100ea64c264589e33"><td class="mdescLeft">&#160;</td><td class="mdescRight">How many copper coins the <a class="el" href="class_n_p_c.html">NPC</a> will drop when killed (100 copper coins = 1 silver coin etc.). <br /></td></tr>
+<tr class="memdesc:a561c4d93c6f0ece100ea64c264589e33"><td class="mdescLeft">&#160;</td><td class="mdescRight">How many copper coins the <a class="el" href="class_n_p_c.html">NPC</a> will drop when killed (100 copper coins = 1 silver coin etc.). When spawned from a statue, the value will be set to 0. <br  />
+ <br /></td></tr>
 <tr class="separator:a561c4d93c6f0ece100ea64c264589e33"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1f50958526f012fdc053fec60e6462a3"><td class="memItemLeft" align="right" valign="top"><a id="a1f50958526f012fdc053fec60e6462a3" name="a1f50958526f012fdc053fec60e6462a3"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>venom</b></td></tr>
@@ -2430,6 +2435,32 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>Type</b><code> [get]</
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">anyBuffsCleared</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="af5a7aa9a27fc2fab65548fe3df53767c" name="af5a7aa9a27fc2fab65548fe3df53767c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af5a7aa9a27fc2fab65548fe3df53767c">&#9670;&nbsp;</a></span>CloneDefaults()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void NPC.CloneDefaults </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>Type</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Clones all the default stats (damage, health, defense, etc) of another <a class="el" href="class_n_p_c.html">NPC</a> type. This should be used in <a class="el" href="class_mod_n_p_c.html#ad8c6ebb19eb4a5e8728604a8dd976829" title="Allows you to set all your NPC&#39;s properties, such as width, damage, aiStyle, lifeMax,...">ModNPC.SetDefaults</a> prior to changing any other stats. This is useful for creating a <a class="el" href="class_mod_n_p_c.html" title="This class serves as a place for you to place all your properties and hooks for each NPC....">ModNPC</a> that should be a copy of another <a class="el" href="class_n_p_c.html">NPC</a>. Using CloneDefaults instead of manually setting stats will ensure that modifications done to the <a class="el" href="class_n_p_c.html">NPC</a> being cloned by other mods will automatically apply to this clone as well. Note that for cloning negative <a class="el" href="class_n_p_c_i_d.html">NPCID</a>, the final values might be very slightly off for higher difficulty modes due to the way difficulty scaling is applied. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">Type</td><td></td></tr>
   </table>
   </dd>
 </dl>

@@ -6,6 +6,7 @@ var class_equip_texture =
     [ "FrameEffects", "class_equip_texture.html#afa1857188c214545b261d4a4836b6666", null ],
     [ "HorizontalWingSpeeds", "class_equip_texture.html#a64a2fc6585ed6572c8ee6f9a38d58d6a", null ],
     [ "IsVanitySet", "class_equip_texture.html#ae81962cf01a71fa05a0b86273be79261", null ],
+    [ "ModifyDraw", "class_equip_texture.html#ac5765546663be45d2e7ae61a838a6d82", null ],
     [ "PreUpdateVanitySet", "class_equip_texture.html#ac060e5cd0212a50c6ddb2a3b19535348", null ],
     [ "SetMatch", "class_equip_texture.html#a12e8019e43cf953da3c8453f6795b8e8", null ],
     [ "UpdateVanitySet", "class_equip_texture.html#a9c343e9a3ebe72c6f888c178ab69dd7b", null ],
