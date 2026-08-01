@@ -12,6 +12,8 @@ var class_mod_projectile =
     [ "CutTiles", "class_mod_projectile.html#a333ea65dd55fea5c9288a6f2684e3344", null ],
     [ "DrawBehind", "class_mod_projectile.html#ac731237c8770d1ac6f67ac5c22558d59", null ],
     [ "EmitEnchantmentVisualsAt", "class_mod_projectile.html#a350eab2d1922b8049a18af8e1c7376ba", null ],
+    [ "FlailSpinCollisionRange", "class_mod_projectile.html#acf855d764af3f35ddd9ae450b6e62601", null ],
+    [ "FlailStats", "class_mod_projectile.html#a5407eb6d6e040052a50c181d6e75c514", null ],
     [ "GetAlpha", "class_mod_projectile.html#a06bc673759fe0d67576f5e657e093e2c", null ],
     [ "GrappleCanLatchOnTo", "class_mod_projectile.html#aeeb70d196aa3088063b117bed4c2d6ff", null ],
     [ "GrapplePullSpeed", "class_mod_projectile.html#a1d4a446cf802064f0d5c27633d8baf96", null ],

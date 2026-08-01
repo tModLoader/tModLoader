@@ -1,5 +1,9 @@
 var NAVTREEINDEX22 =
 {
+"class_structure_map.html#a8f93887496f32259130515e961b91f86":[3,0,1203,3],
+"class_structure_map.html#aaf6e15771f6cea1274dc89f7efe27f66":[3,0,1203,1],
+"class_structure_map.html#acd2298145b892adeafd96e37d40d1088":[3,0,1203,0],
+"class_summon_damage_class.html":[3,0,1205],
 "class_summon_damage_class.html#a49b9eba36c210061998ba002929ffda6":[3,0,1205,1],
 "class_summon_damage_class.html#aae5137b11f104318b423dbf5944ced6b":[3,0,1205,0],
 "class_summon_melee_speed_damage_class.html":[3,0,1206],
@@ -245,9 +249,5 @@ var NAVTREEINDEX22 =
 "class_tile_i_d_1_1_sets.html#af57edc49ebef1747053213d8956c3a36":[3,0,1259,0,17],
 "class_tile_i_d_1_1_sets.html#af69a818caf125df9f8897c190f049add":[3,0,1259,0,50],
 "class_tile_i_d_1_1_sets.html#af6d219061ccc5d59b713d81ef0767c67":[3,0,1259,0,57],
-"class_tile_i_d_1_1_sets.html#af83141b5db3aec5e8f108fc234de071b":[3,0,1259,0,79],
-"class_tile_i_d_1_1_sets.html#aff1403f322dfd6e9126e89ef2d1de620":[3,0,1259,0,84],
-"class_tile_i_d_1_1_sets.html#aff8ff43ce2fe95a587735a42c9a9326d":[3,0,1259,0,55],
-"class_tile_i_d_1_1_sets_1_1_conversion.html":[3,0,1259,0,0],
-"class_tile_i_d_1_1_sets_1_1_falling_block_projectile_info.html":[3,0,1259,0,1]
+"class_tile_i_d_1_1_sets.html#af83141b5db3aec5e8f108fc234de071b":[3,0,1259,0,79]
 };

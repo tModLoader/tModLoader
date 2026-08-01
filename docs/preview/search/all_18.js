@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['y_0',['y',['../class_chest.html#aed3156e68c6284abd05b66e276113665',1,'Chest']]],
-  ['y_1',['Y',['../struct_fishing_attempt.html#abe8f36a2af1135e2d5c232c7e913b70a',1,'FishingAttempt.Y()'],['../class_drawable_tooltip_line.html#a81ee1b5662ed73763e8a7bb3c32be69a',1,'DrawableTooltipLine.Y()']]],
+  ['y_0',['Y',['../struct_fishing_attempt.html#abe8f36a2af1135e2d5c232c7e913b70a',1,'FishingAttempt.Y()'],['../class_drawable_tooltip_line.html#a81ee1b5662ed73763e8a7bb3c32be69a',1,'DrawableTooltipLine.Y()']]],
+  ['y_1',['y',['../class_chest.html#aed3156e68c6284abd05b66e276113665',1,'Chest']]],
   ['yellow_2',['Yellow',['../class_item_rarity_i_d.html#a2809790c050d1300e5c9bd2eb60f9344',1,'ItemRarityID']]],
   ['yellowwire_3',['YellowWire',['../struct_tile.html#a45645d128e148155cf9adb298124f14d',1,'Tile']]],
   ['yellowwirevisibilitybuildertoggle_4',['YellowWireVisibilityBuilderToggle',['../class_yellow_wire_visibility_builder_toggle.html',1,'']]],

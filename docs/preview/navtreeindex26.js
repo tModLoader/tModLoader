@@ -1,5 +1,9 @@
 var NAVTREEINDEX26 =
 {
+"functions_b.html":[3,3,0,1],
+"functions_c.html":[3,3,0,2],
+"functions_d.html":[3,3,0,3],
+"functions_e.html":[3,3,0,4],
 "functions_enum.html":[3,3,3],
 "functions_evnt.html":[3,3,5],
 "functions_f.html":[3,3,0,5],
@@ -245,9 +249,5 @@ var NAVTREEINDEX26 =
 "struct_anchor_data.html":[3,0,37],
 "struct_anchor_data.html#a1beb4cc288b9cae4f95d606748352f5a":[3,0,37,0],
 "struct_armor_i_ds_1_1_body_1_1_sets_1_1_include_cape_front_and_back_info.html":[3,0,48,3,0,0],
-"struct_armor_i_ds_1_1_body_1_1_sets_1_1_include_cape_front_and_back_info.html#a0bc1e5563d255007edcba481e935752e":[3,0,48,3,0,0,2],
-"struct_armor_i_ds_1_1_body_1_1_sets_1_1_include_cape_front_and_back_info.html#aa7f4e733e7c3cce70917381b6a698329":[3,0,48,3,0,0,0],
-"struct_armor_i_ds_1_1_body_1_1_sets_1_1_include_cape_front_and_back_info.html#ae20b61126a07dddf9beb6b96acd18d7a":[3,0,48,3,0,0,1],
-"struct_ball_collision_event.html":[3,0,74],
-"struct_ball_pass_through_event.html":[3,0,75]
+"struct_armor_i_ds_1_1_body_1_1_sets_1_1_include_cape_front_and_back_info.html#a0bc1e5563d255007edcba481e935752e":[3,0,48,3,0,0,2]
 };

@@ -1,5 +1,9 @@
 var NAVTREEINDEX21 =
 {
+"class_recipe.html#a751327b6eabc4ce750fd7059387b120a":[3,0,1064,21],
+"class_recipe.html#a7e44a7659baf373b83f44c0fab3f5ac0":[3,0,1064,18],
+"class_recipe.html#a80a75313e584f7c91e3dc0e02c594708":[3,0,1064,29],
+"class_recipe.html#a82a8b7544c9e7de652ece58224193c7a":[3,0,1064,13],
 "class_recipe.html#aa4dc1aeebc0fe4c0478d75ef5543e79b":[3,0,1064,28],
 "class_recipe.html#aaf2ce910bb8fc35fb9ec7fb195a242c2":[3,0,1064,6],
 "class_recipe.html#ab6306a38f7fdb58f08a141f27143c773":[3,0,1064,34],
@@ -245,9 +249,5 @@ var NAVTREEINDEX21 =
 "class_stopwatch_info_display.html#a10031152437ee1fa39696762bfd75e6c":[3,0,1201,0],
 "class_stray_methods.html":[3,0,1202],
 "class_structure_map.html":[3,0,1203],
-"class_structure_map.html#a746436c215907a8e40f9a7c610b74684":[3,0,1203,2],
-"class_structure_map.html#a8f93887496f32259130515e961b91f86":[3,0,1203,3],
-"class_structure_map.html#aaf6e15771f6cea1274dc89f7efe27f66":[3,0,1203,1],
-"class_structure_map.html#acd2298145b892adeafd96e37d40d1088":[3,0,1203,0],
-"class_summon_damage_class.html":[3,0,1205]
+"class_structure_map.html#a746436c215907a8e40f9a7c610b74684":[3,0,1203,2]
 };

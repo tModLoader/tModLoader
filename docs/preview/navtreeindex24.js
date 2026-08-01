@@ -1,5 +1,9 @@
 var NAVTREEINDEX24 =
 {
+"class_u_i_creative_items_infinite_filtering_options.html":[3,0,1346],
+"class_u_i_creative_power_button.html":[3,0,1347],
+"class_u_i_creative_powers_menu.html":[3,0,1348],
+"class_u_i_creative_powers_menu.html#a20cce538df395462dd1e9bf04c9dfc7e":[3,0,1348,1],
 "class_u_i_creative_powers_menu.html#a51fafa50a66e9de7b9b7608727b48c6a":[3,0,1348,0],
 "class_u_i_cycle_image.html":[3,0,1349],
 "class_u_i_cycle_image.html#a2cea021522fad2396c6083577c087cf8":[3,0,1349,0],
@@ -245,9 +249,5 @@ var NAVTREEINDEX24 =
 "class_unified_random.html#ac104338db126a82928eddeb57a12dba1":[3,0,1425,1],
 "class_unloaded_accessory_slot.html":[3,0,1426],
 "class_unloaded_accessory_slot.html#ac75289d3883f4ff618e28aa699243544":[3,0,1426,1],
-"class_unloaded_accessory_slot.html#af530ab0b04f75c8ec2574d5ac492d1ba":[3,0,1426,0],
-"class_unloaded_chest.html":[3,0,1427],
-"class_unloaded_chest.html#a4ee5c4c3a882f72d9310bf8d21ef6b51":[3,0,1427,0],
-"class_unloaded_chest.html#a6aedd044dbefce85b2daadf410b032b3":[3,0,1427,3],
-"class_unloaded_chest.html#a6d783d0fc1e826978dee845ae90cd86f":[3,0,1427,2]
+"class_unloaded_accessory_slot.html#af530ab0b04f75c8ec2574d5ac492d1ba":[3,0,1426,0]
 };
