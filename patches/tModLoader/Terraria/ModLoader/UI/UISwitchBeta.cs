@@ -22,6 +22,7 @@ internal class UISwitchBeta : UIState, IHaveBackButtonCommand
 {
 	private record struct Branch(EBetaBranchFlags Flags, uint BuildID, string Name, string Description)
 	{
+		public bool Default;
 		public bool Obsolete;
 		public bool Preview;
 		public Version TmlMajorMinor = null;
@@ -152,7 +153,9 @@ internal class UISwitchBeta : UIState, IHaveBackButtonCommand
 			if (branch.Flags.HasFlag(EBetaBranchFlags.k_EBetaBranch_Private))
 				continue;
 			
-			if (!onBetaBranch && branch.Flags.HasFlag(EBetaBranchFlags.k_EBetaBranch_Default)) {
+			branch.Default = branch.Flags.HasFlag(EBetaBranchFlags.k_EBetaBranch_Default);
+			
+			if (!onBetaBranch && branch.Default) {
 				branch.TmlMajorMinor = tmlVersion;
 			} else if (previewRegex.Match(branch.Name) is { Success: true } m && m.Groups[1] is { Value: string vStr } && Version.TryParse(vStr, out var version)) {
 				branch.Preview = true;
@@ -167,7 +170,11 @@ internal class UISwitchBeta : UIState, IHaveBackButtonCommand
 
 		// Identify obsolete preview branches.
 		foreach (ref var branch in CollectionsMarshal.AsSpan(branches)) {
-			if (branch.Preview && branch.TmlMajorMinor is { } branchVersion && newestBranchIdx >= 0 && branch.TmlMajorMinor < branches[newestBranchIdx].TmlMajorMinor) {
+			if (branch.Preview && branch.TmlMajorMinor is { } branchVersion
+			&& newestBranchIdx >= 0 && branches[newestBranchIdx] is { } newest
+			// Edge case: If the default branch is the newest, the branch information might be out of date.
+			// Display all previews as obsolete in that case.
+			&& (newest.Default ? (branch.TmlMajorMinor <= newest.TmlMajorMinor) : (branch.TmlMajorMinor < newest.TmlMajorMinor))) {
 				branch.Obsolete = true;
 			}
 		};
