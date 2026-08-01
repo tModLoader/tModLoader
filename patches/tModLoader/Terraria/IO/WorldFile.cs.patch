@@ -53,6 +53,24 @@
  			}
  		}
  	}
+@@ -544,8 +_,15 @@
+ 					Main.ActiveWorldFileData.SetSeed(text);
+ 			}
+ 
++			try {
+-			if (WorldGen.GenerateWorld(Main.AutogenProgress))
++				if (WorldGen.GenerateWorld(Main.AutogenProgress))
+-				SaveNewWorld();
++					SaveNewWorld();
++			}
++			catch (Exception ex) {
++				LastThrownLoadException = ex;
++				WorldGen.loadFailed = true;
++				return;
++			}
+ 		}
+ 
+ 		try {
 @@ -564,12 +_,17 @@
  
  				binaryReader.Close();

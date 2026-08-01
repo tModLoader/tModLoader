@@ -244,36 +244,6 @@ These are simple changes that we'd like Terraria to implement, mainly to reduce 
 
 Longer TODOs that would clutter above
 
-- See what happens when a worldgen step fails now with the new world generator code. We removed this patch since the new code seems to handle it, but maybe we need to restore the error reporting (Utils.ShowFancyErrorMessage)
-```diff
-@@ -42,7 +42,24 @@
- 			Main.rand = new UnifiedRandom(_seed);
- 			stopwatch.Start();
- 			progress.Start(pass2.Weight);
-+
-+			try {
--			pass2.Apply(progress, _configuration.GetPassConfiguration(pass2.Name));
-+				pass2.Apply(progress, _configuration.GetPassConfiguration(pass2.Name));
-+			}
-+			catch(Exception e) {
-+				string message = string.Join(
-+					"\n",
-+					Language.GetTextValue("tModLoader.WorldGenError"),
-+					pass2.Name,
-+					e
-+				);
-+				Utils.ShowFancyErrorMessage(message, 0);
-+
-+				// We need to shutdown the thread without it saving.
-+				//TODO: Allow returning a bool to signify if it should save or not.
-+				throw;
-+			}
-+
- 			progress.End();
- 			stopwatch.Reset();
- 		}
-```
-
 - Need to restore this patch. The code has been moved into ItemSorting.AddSortingPrioritiesBasedOnPlayerDamage and DamageTypeSortingLayerEntry is also new:
 ```diff
  	{
