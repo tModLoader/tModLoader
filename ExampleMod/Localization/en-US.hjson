@@ -27,6 +27,15 @@ Mods: {
 			}
 		}
 
+		ArmorSetBonus: {
+			ExampleHelmet: Increases dealt damage by 20%
+			ExampleHood:
+				'''
+				Double tap or hold {$ToggleArmorSetBonusKey} to toggle various armor shadow effects
+				10% reduced mana cost
+				'''
+		}
+
 		CommonItemTooltip: {
 			IncreasesMaxExampleResourceBy: Increases maximum example resource by {0}
 			# It is recommended to make some common tooltips for custom damage classes
@@ -376,17 +385,11 @@ Mods: {
 			ExampleHelmet: {
 				DisplayName: Example Helmet
 				Tooltip: This is a modded helmet.
-				SetBonus: Increases dealt damage by {0}%
 			}
 
 			ExampleHood: {
 				DisplayName: Example Hood
 				Tooltip: This is a modded hood.
-				SetBonus:
-					'''
-					Double tap or hold {0} to toggle various armor shadow effects
-					{$CommonItemTooltip.PercentReducedManaCost@1}
-					'''
 			}
 
 			ExampleLeggings: {

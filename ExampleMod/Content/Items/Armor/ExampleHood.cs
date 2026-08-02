@@ -1,7 +1,6 @@
 ﻿using ExampleMod.Common.Players;
 using Terraria;
 using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items.Armor
@@ -13,13 +12,6 @@ namespace ExampleMod.Content.Items.Armor
 	{
 		public static readonly int ManaCostReductionPercent = 10;
 
-		public static LocalizedText SetBonusText { get; private set; }
-
-		public override void SetStaticDefaults() {
-			// We are passing in "{0}" into WithFormatArgs to replace "{0}" with itself because we do the final formatting for this LocalizedText in UpdateArmorSet itself according to the players current ReversedUpDownArmorSetBonuses setting.
-			SetBonusText = this.GetLocalization("SetBonus").WithFormatArgs("{0}", ManaCostReductionPercent);
-		}
-
 		public override void SetDefaults() {
 			Item.width = 18; // Width of the item
 			Item.height = 18; // Height of the item
@@ -28,19 +20,10 @@ namespace ExampleMod.Content.Items.Armor
 			Item.defense = 4; // The amount of defense the item will give when equipped
 		}
 
-		// IsArmorSet determines what armor pieces are needed for the setbonus to take effect
+		// This matching logic is still used by the default IsVanitySet implementation so ArmorSetShadows can run when the full set is visible.
+		// The actual 1.4.5 armor set bonus effect is registered in ExampleArmorSetBonusSystem through ArmorSetBonus.Create.
 		public override bool IsArmorSet(Item head, Item body, Item legs) {
 			return body.type == ModContent.ItemType<ExampleBreastplate>() && legs.type == ModContent.ItemType<ExampleLeggings>();
-		}
-
-		// UpdateArmorSet allows you to give set bonuses to the armor.
-		public override void UpdateArmorSet(Player player) {
-			// This is the setbonus tooltip:
-			//   Double tap or hold DOWN/UP to toggle various armor shadow effects
-			//   10% reduced mana cost
-			player.setBonus = SetBonusText.Format(Language.GetTextValue(Main.ReversedUpDownArmorSetBonuses ? "Key.UP" : "Key.DOWN"));
-			player.manaCost -= ManaCostReductionPercent / 100f; // Reduces mana cost by 10%
-			player.GetModPlayer<ExampleArmorSetBonusPlayer>().ExampleSetHood = true;
 		}
 
 		public override void ArmorSetShadows(Player player) {

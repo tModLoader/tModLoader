@@ -367,6 +367,34 @@ See ExampleWhip, ExampleWhipAdvanced, ExampleWhipProjectile, and ExampleWhipProj
   * There are new tooltip lines: "Wireable", "Container", "WireTrigger", "WizardHatDuringAnniversary", "BurningBlock", "MechSummonDuringEverything", "MechdusaSummonNotDuringEverything", "PrefixArmorPenetration", "PrefixTagDamage", "SetBonusSinglePiece", "JourneyResearchTeammate", and "MissingRequirements".
   * The "SetBonus" tooltip has changed. It now automatically displays partial sets and adjusts the color to indicate if the set is complete.
   * The "SetBonusSinglePiece" tooltip shows the set bonus that would be applied if the unequipped equipment were equipped.
+
+### Armor Set Bonuses
+
+Armor set bonuses now use Terraria's `ArmorSetBonus` registry. Register armor sets after item content is loaded, usually in `ModSystem.PostSetupContent`, by calling `ArmorSetBonus.Create(...).Set(...).Add()`. The old `ModItem.IsArmorSet(Item head, Item body, Item legs)` and `ModItem.UpdateArmorSet(Player player)` hooks should no longer be used for the actual set bonus effect. `Player.setBonus` is also no longer used by vanilla for the displayed text; the registered `ArmorSetBonus` description is used by the tooltip system instead.
+
+This change lets the game automatically show partial set progress through the "SetBonus" tooltip and show "SetBonusSinglePiece" on unequipped armor pieces. Put the set bonus text in localization, then pass the localization key to `ArmorSetBonus.Create`. If different head/body/leg pieces decide different bonuses, pass the deciding slot as the optional `ArmorSetBonus.PartType` argument so the tooltip can explain which piece controls the bonus.
+
+Typical 3-piece set example:
+
+```cs
+public override void PostSetupContent() {
+    ArmorSetBonus.Create(ApplyExampleSetBonus, Mod.GetLocalization("ArmorSetBonus.ExampleSet").Key, ArmorSetBonus.PartType.Head)
+        .Set(
+              ModContent.ItemType<ExampleHelmet>(),
+              ModContent.ItemType<ExampleBreastplate>(),
+              ModContent.ItemType<ExampleLeggings>()
+			)
+			.Add();
+	}
+
+private static void ApplyExampleSetBonus(Player player) {
+    player.GetDamage(DamageClass.Generic) += 0.2f; 
+}
+```
+For sets with multiple valid variants, chain multiple `.Set(...)` calls or use the `Set(int[] headOptions, int[] bodyOptions, int[] legsOptions)` overload. Use `0` or `null` for a missing slot in partial sets, such as vanity-style head/body-only sets.
+
+`ModItem.IsArmorSet` can still be useful for vanity set effects because the default `ModItem.IsVanitySet` implementation calls it before `ArmorSetShadows`, `PreUpdateVanitySet`, and `UpdateVanitySet`. In that case, keep `IsArmorSet` only for visual matching and move the actual stat/effect logic to the registered `ArmorSetBonus` effect.
+
 * Town NPCs who are homeless have a new "Housing" button that displays their "NoHome" dialogue as well as a hint on what valid housing is. The hint text can be customized through the localization file. If the key `Mods.ModName.NPCs.NPCName.HousingText.HousingRequirements` exists, it will automatically be used over the default text.
   * The `Mods.{ModName}.NPCs.{ModNPCName}.TownNPCMood.NoHome` localization key will now be generated for town pets as well.
 * Town NPCs can now have specific happiness dialogue for other Town NPCs or biomes that work just like the previous `LikeNPC_Princess` and `Princess_LovesNPC`.
