@@ -1,0 +1,18 @@
+{
+    "itemid": "275117",
+    "language": "japanese",
+    "app[content][about]": "tModLoaderで、プレイヤーが作り上げたModの世界を掘って、戦って、作ろう - このDLCによって、TerrariaのMod導入が可能になります！\n\ntModLoader（TML）は、TerrariaでModを制作・プレイできるようにする、オープンソースかつコミュニティ主導の改造・拡張ツールです。Terrariaコミュニティによって作られた新たなコンテンツを探索し、これまで以上に冒険を広げよう！一人で遊ぶか、フレンドと遊ぶか、1つのModを導入するか、複数のModを組み合わせるか・・・遊び方は君次第！  \n\n注意：フレンドと一緒にプレイする場合、全員がTMLを導入する必要があります。バニラ版のユーザーとTMLユーザーで一緒にプレイすることはできません。\n\n---\n\n[b][u][h2]サポート[/h2][/u][/b]\n何かお困りですか？Terraria Community Forumsのフォーラムスレッド、または公式Discordサーバーでサポートを受けられます！どちらもサポートを受けるのに最適な場所であり、Steamストアページ下部にある公式ウェブサイトから直接アクセス可能です。\n\ntModLoaderはオープンソースプロジェクトです。つまり、ソースコードは一般公開されており、誰でもプロジェクトの開発に貢献できます。プロジェクトのGitHubページには、公式ウェブサイトからアクセスできます。\n\ntModLoaderの仕組みについて、もっと詳しく知りたいですか？あるいは、今すぐtModLoaderを使い始めたいですか？Steamページ下部の「マニュアルを見る」に掲載されているプレイヤー向けガイドから始められます。開発者やコントリビューター向けのページも用意されています。Wikiには、tModLoaderを使ったMod制作について学べるガイドが数多く掲載されています。\n\n---\n\n[b][u][h2]FAQ[/h2][/u][/b]\ntModLoaderをインストールし、冒険を始める前に知っておきたい重要な情報を紹介します：\n\n[b][list][*]事前にバックアップを取る必要はありません\n[*]Terrariaを1.4にアップデートして、SteamからtModLoaderをインストールすれば準備完了です\n[*]通常版TerrariaとTMLは別々に遊ぶことができ、SteamではtModLoaderが独立したゲームとして扱われます\n[*]tModLoaderはTerraria 1.3と1.4に対応しています\n[*]Steamワークショップも利用できます（利用は必須ではなく、ゲーム内のModブラウザからも導入可能）\n[*]新しいバージョンでは、インストール場所やSteam版かどうかを問わず、好きな場所にtModLoaderをインストールできます\n[*]Windows、Mac、Linuxに対応しています[/list][/b]\n\n[b]この変更によって何が変わりますか？Terraria 1.4でも今までのModを使えますか？[/b]\nこのアップデートではtModLoaderに大幅な変更が加えられたため、多くのModが正常に動作しなくなります。場合によっては、ほぼすべてのModが影響を受ける可能性もあります。Mod制作者には対応するための時間が与えられていますが、今後もこのバージョンへ更新されないModもあると思われます。1.3で利用できたModを、すべてそのまま使えるわけではない点に注意してください。\n\n[b]tModLoaderがTerraria 1.4に対応したということですか？[/b]\nSteam版tModLoaderは、Terraria 1.3.5とTerraria 1.4の両方に対応しています。\n\n[b]Steamワークショップには対応していますか？[/b]\nSteamワークショップに対応しています。\n",
+    "app[content][short_description]": "tModLoaderで、プレイヤーが作り上げたModの世界を掘って、戦って、作ろう - このDLCによって、TerrariaのMod導入が現実のものとなります！",
+    "app[content][sysreqs][mac][min][osversion]": "(1.4.4) OSX 12 Monterey、(1.4.3) OSX 10.15 Catalina",
+    "app[content][sysreqs][mac][min][processor]": "2.0 GHz",
+    "app[content][sysreqs][mac][min][graphics]": "FNAの動作要件： https://fna-xna.github.io/docs/3%3A-Distributing-FNA-Games/",
+    "app[content][sysreqs][mac][min][notes]": "tModLoaderは.NET 8ランタイムに依存しています。.NET 8の動作要件： https://github.com/dotnet/core/blob/main/release-notes/8.0/supported-os.md。追加の動作要件は、インストールされているワークショップアイテムによって異なる場合があります",
+    "app[content][sysreqs][windows][min][osversion]": "Windows 7 x64、8/8.1 x64、10、11",
+    "app[content][sysreqs][windows][min][processor]": "2.0 GHz",
+    "app[content][sysreqs][windows][min][graphics]": "FNAの動作要件： https://fna-xna.github.io/docs/3%3A-Distributing-FNA-Games/",
+    "app[content][sysreqs][windows][min][notes]": "tModLoaderは.NET 8ランタイムに依存しています。.NET 8の動作要件： https://github.com/dotnet/core/blob/main/release-notes/8.0/supported-os.md。追加の動作要件は、インストールされているワークショップアイテムによって異なる場合があります",
+    "app[content][sysreqs][linux][min][osversion]": "Ubuntu 16.04 LTS以降",
+    "app[content][sysreqs][linux][min][processor]": "2.0 GHz",
+    "app[content][sysreqs][linux][min][graphics]": "FNAの動作要件: https://fna-xna.github.io/docs/3%3A-Distributing-FNA-Games/",
+    "app[content][sysreqs][linux][min][notes]": "tModLoaderは.NET 8ランタイムに依存しています。.NET 8の動作要件： https://github.com/dotnet/core/blob/main/release-notes/8.0/supported-os.md。追加の動作要件は、インストールされているワークショップアイテムによって異なる場合があります"
+}
