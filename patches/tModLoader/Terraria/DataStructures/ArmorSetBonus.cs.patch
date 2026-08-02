@@ -1,0 +1,24 @@
+--- src/TerrariaNetCore/Terraria/DataStructures/ArmorSetBonus.cs
++++ src/tModLoader/Terraria/DataStructures/ArmorSetBonus.cs
+@@ -1,5 +_,6 @@
+ using System.Collections.Generic;
+ using Terraria.Localization;
++using Terraria.ModLoader;
+ 
+ namespace Terraria.DataStructures;
+ 
+@@ -92,6 +_,14 @@
+ 			});
+ 
+ 			return this;
++		}
++
++		public Builder Set<THead, TBody, TLegs>()
++			where THead : ModItem
++			where TBody : ModItem
++			where TLegs : ModItem
++		{
++			return Set(ModContent.ItemType<THead>(), ModContent.ItemType<TBody>(), ModContent.ItemType<TLegs>());
+ 		}
+ 
+ 		public Builder Set(int[] headOptions, int[] bodyOptions, int[] legsOptions)

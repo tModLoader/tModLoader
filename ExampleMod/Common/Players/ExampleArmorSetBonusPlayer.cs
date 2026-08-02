@@ -29,19 +29,11 @@ namespace ExampleMod.Common.Players
 
 		public override void ModifyArmorSetBonuses(IList<ArmorSetBonus> armorSetBonuses) {
 			ArmorSetBonus.Create(ApplyExampleHelmetSetBonus, Mod.GetLocalization("ArmorSetBonus.ExampleHelmet").Key, ArmorSetBonus.PartType.Head)
-				.Set(
-					ModContent.ItemType<ExampleHelmet>(),
-					ModContent.ItemType<ExampleBreastplate>(),
-					ModContent.ItemType<ExampleLeggings>()
-				)
+				.Set<ExampleHelmet, ExampleBreastplate, ExampleLeggings>()
 				.Add();
 
 			ArmorSetBonus.Create(ApplyExampleHoodSetBonus, Mod.GetLocalization("ArmorSetBonus.ExampleHood").Key, ArmorSetBonus.PartType.Head)
-				.Set(
-					ModContent.ItemType<ExampleHood>(),
-					ModContent.ItemType<ExampleBreastplate>(),
-					ModContent.ItemType<ExampleLeggings>()
-				)
+				.Set<ExampleHood, ExampleBreastplate, ExampleLeggings>()
 				.Add();
 
 			// Existing definitions can also be modified without detouring Player.UpdateArmorSets or registering duplicate sets.
