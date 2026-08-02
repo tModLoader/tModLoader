@@ -16,5 +16,14 @@ namespace ExampleMod.Content.Items
 		public override void ModifyResearchSorting(ref ContentSamples.CreativeHelper.ItemGroup itemGroup) {
 			itemGroup = ContentSamples.CreativeHelper.ItemGroup.Golf;
 		}
+
+		public override void AddRecipes() {
+			CreateRecipe()
+				.AddIngredient(ItemID.GolfBall)
+				.AddIngredient(ModContent.ItemType<ExampleDye>())
+				.AddTile(TileID.DyeVat)
+				.SortAfterFirstRecipesOf(ItemID.GolfBallDyedYellow)
+				.Register();
+		}
 	}
 }

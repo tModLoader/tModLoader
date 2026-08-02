@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using Terraria;
 using Terraria.GameContent;
+using Terraria.GameContent.Tile_Entities;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -219,6 +220,32 @@ namespace ExampleMod.Content.Projectiles
 			// 	lanceHitboxBounds, Color.Orange * 0.5f, 0, Vector2.Zero, 1f, SpriteEffects.None, 0);
 
 			// It's important to return false, otherwise we also draw the original texture.
+			return false;
+		}
+
+		// This hook lets us change how the held projectile looks while a mannequin is holding it.
+		// The following code is adapted from vanilla's Projectile.AI_DisplayDoll for aiStyle 19 (Spear)
+		// Due to how lances are held and how they fade in, we need to customize the forward offset and alpha to make it look right and can't just use ProjAIStyleID.Spear for this one.
+		public override bool DisplayDollSettings(Player doll, TEDisplayDoll.DisplayDollPose pose, ref int aiStyle, ref int aiType) {
+			Projectile.direction = doll.direction;
+			Projectile.spriteDirection = -Projectile.direction;
+			Vector2 projectileDirection = Vector2.UnitX;
+			float armRotation = 0f;
+			if (pose.ItemAimRadians.HasValue)
+				armRotation = pose.ItemAimRadians.Value; // The rotation of the mannequin's hand.
+
+			projectileDirection = projectileDirection.RotatedBy(armRotation);
+			if (Projectile.direction == -1)
+				projectileDirection.X *= -1f;
+
+			Projectile.velocity = projectileDirection;
+
+			Projectile.alpha = 0; // Jousting Lance specific: The jousting lance normally starts invisible and fades in. 0 alpha is fully opaque.
+
+			int forwardOffset = 122; // This matches the vanilla Jousting Lances. Other spears may need a different value.
+			Projectile.position += Projectile.velocity * forwardOffset; // Move the projectile's location while being held by the mannequin.
+			Projectile.rotation = (float)Math.Atan2(projectileDirection.Y, projectileDirection.X) + (3f * MathHelper.PiOver4); // Set the projectile's rotation based on the mannequin's hand.
+
 			return false;
 		}
 	}
