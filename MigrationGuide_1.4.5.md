@@ -377,8 +377,7 @@ This change lets the game automatically show partial set progress through the "S
 Use the loading hook to register modded sets and modify vanilla set definitions. The `ArmorSetBonus.Effect` delegate receives the current `Player` when a complete set is applied:
 
 ```cs
-public class ExampleArmorSetBonusPlayer : ModPlayer
-{
+
 	public override void ModifyArmorSetBonuses(IList<ArmorSetBonus> armorSetBonuses) {
 		// Register a modded 3-piece armor set and provide its runtime effect directly.
 		ArmorSetBonus.Create(ApplyExampleSetBonus, Mod.GetLocalization("ArmorSetBonus.ExampleSet").Key, ArmorSetBonus.PartType.Head)
@@ -402,7 +401,6 @@ public class ExampleArmorSetBonusPlayer : ModPlayer
 	private static void ApplyCustomCactusSetBonus(Player player) {
 		player.statDefense += 10;
 	}
-}
 ```
 
 `ModifyArmorSetBonuses` runs once during loading on the template `ModPlayer`, so its `Player` property is not available. It runs after Terraria registers vanilla armor set bonuses and before the lookup tables are built. Use it to call `ArmorSetBonus.Create(...).Set(...).Add()` for new sets or edit entries from `armorSetBonuses` to modify existing definitions. Use the `Player` parameter supplied to each `ArmorSetBonus.Effect` delegate for per-player logic.
