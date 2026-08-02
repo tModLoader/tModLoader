@@ -242,6 +242,17 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
+	/// Allows you to register modded armor set bonuses and modify existing armor set bonuses after vanilla armor set bonuses have been registered and before their lookup tables are built.
+	/// <br/> Use <see cref="ArmorSetBonus.Create(ArmorSetBonus.ArmorSetEffect, string, ArmorSetBonus.PartType)"/> in this hook to register modded armor set bonuses. The provided effect runs on the actual player whenever the set is complete.
+	/// <br/> Use the <paramref name="armorSetBonuses"/> parameter to change the effect, description, primary part, or armor pieces of existing armor set bonuses without detouring player update methods or shadowing the same armor set with a duplicate registration.
+	/// <para/> Called once during loading on the template <see cref="ModPlayer"/> instance. Use the <see cref="Player"/> parameter supplied to each <see cref="ArmorSetBonus.ArmorSetEffect"/> for per-player logic.
+	/// </summary>
+	/// <param name="armorSetBonuses">The armor set bonuses registered so far, including vanilla armor set bonuses.</param>
+	public virtual void ModifyArmorSetBonuses(IList<ArmorSetBonus> armorSetBonuses)
+	{
+	}
+
+	/// <summary>
 	/// This is called when the player activates their armor set bonus by double tapping down (or up if <see cref="Main.ReversedUpDownArmorSetBonuses"/> is true). As an example, the Vortex armor uses this to toggle stealth mode.
 	/// <para/> Use this to implement armor set bonuses that need to be activated by the player.
 	/// <para/> Don't forget to check if your armor set is active.

@@ -881,7 +881,7 @@
 +	*/
 +	internal ref StatModifier allKB => ref GetKnockback(DamageClass.Generic); //TML: New.
 +	internal ref float minionKB => ref GetKnockback(DamageClass.Summon).Base;
-+	
++
  	public int revolverCritChanceBonus;
 +	/*
  	public float meleeSpeed = 1f;
@@ -3359,7 +3359,7 @@
  			}
  
  			ApplyMusicBox(currentItem);
-@@ -12477,6 +_,9 @@
+@@ -12477,11 +_,16 @@
  
  		if (currentItem.type == 6146)
  			musicBoxSilence = true;
@@ -3369,6 +3369,14 @@
  	}
  
  	public void UpdateArmorSets(int i)
+ 	{
+-		ArmorSetBonuses.GetCompleteSet(new ArmorSetBonus.QueryContext(this))?.Effect(this);
++		ArmorSetBonus armorSetBonus = ArmorSetBonuses.GetCompleteSet(new ArmorSetBonus.QueryContext(this));
++		armorSetBonus?.Effect(this);
++
+ 		UpdateArmorSets_Always_Beetle();
+ 		UpdateArmorSets_Always_Solar();
+ 		UpdateArmorSets_Always_Stardust();
 @@ -12525,10 +_,13 @@
  
  		if (head == 112 && body == 75 && legs == 64) {
@@ -5192,7 +5200,7 @@
  			if (base.Hitbox.Intersects(hitbox)) {
 -				if (i == Main.myPlayer && (inventory[selectedItem].type != 0 || itemAnimation <= 0))
 +				if (i == Main.myPlayer && (inventory[selectedItem].type != 0 || itemAnimation <= 0)) {
-+					
++
 +
  					PickupItem(worldItem);
 +				}
@@ -5719,7 +5727,7 @@
 +		if (whoAmI == Main.myPlayer && info.Dodgeable) {
 +			if (PlayerLoader.FreeDodge(this, info))
 +				return 0.0;
-+		
++
  			if (blackBelt && Main.rand.Next(10) == 0) {
  				NinjaDodge();
  				return 0.0;
@@ -6004,7 +6012,7 @@
 +			goto postSound;
 +
  		PlayDeathSound();
-+		
++
 +		postSound:
 +
  		if (Main.tenthAnniversaryWorld) {
@@ -6298,7 +6306,7 @@
  				style = 8;
  			else if (ZoneDesert && Main.remixWorld)
  				style = 8;
-+				
++
 +			if (CurrentSceneEffect.biomeCampfireItemType.value > -1) {
 +				var item = ContentSamples.ItemsByType[CurrentSceneEffect.biomeCampfireItemType.value];
 +				type = item.createTile;
@@ -7269,16 +7277,16 @@
  		Teleport(pointPosition, 1);
  		NetMessage.SendData(65, -1, -1, null, 0, whoAmI, pointPosition.X, pointPosition.Y, 1);
  		if (sItem.type != 1326)
-@@ -36885,6 +_,9 @@
- 	{
+@@ -36886,6 +_,9 @@
  		if (Main.tileHammer[targetTile.type])
  			return false;
-+			
+ 
 +		if (TileID.Sets.CanBeSloped[targetTile.type])
 +			return true;
- 
++
  		if (!Main.tileSolid[targetTile.type] && targetTile.type != 314 && targetTile.type != 424 && targetTile.type != 442 && targetTile.type != 351 && targetTile.type != 470)
  			return TileID.Sets.IsLivingFire[targetTile.type];
+ 
 @@ -36900,7 +_,10 @@
  			}
  		}

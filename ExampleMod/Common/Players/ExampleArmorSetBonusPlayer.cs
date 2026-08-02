@@ -1,8 +1,12 @@
-﻿using Microsoft.Xna.Framework;
+﻿using ExampleMod.Content.Items.Armor;
+using Microsoft.Xna.Framework;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.Graphics;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Common.Players
@@ -21,6 +25,42 @@ namespace ExampleMod.Common.Players
 		public override void ResetEffects() {
 			ExampleSetHood = false;
 			CustomShadow = false;
+		}
+
+		public override void ModifyArmorSetBonuses(IList<ArmorSetBonus> armorSetBonuses) {
+			ArmorSetBonus.Create(ApplyExampleHelmetSetBonus, Mod.GetLocalization("ArmorSetBonus.ExampleHelmet").Key, ArmorSetBonus.PartType.Head)
+				.Set(
+					ModContent.ItemType<ExampleHelmet>(),
+					ModContent.ItemType<ExampleBreastplate>(),
+					ModContent.ItemType<ExampleLeggings>()
+				)
+				.Add();
+
+			ArmorSetBonus.Create(ApplyExampleHoodSetBonus, Mod.GetLocalization("ArmorSetBonus.ExampleHood").Key, ArmorSetBonus.PartType.Head)
+				.Set(
+					ModContent.ItemType<ExampleHood>(),
+					ModContent.ItemType<ExampleBreastplate>(),
+					ModContent.ItemType<ExampleLeggings>()
+				)
+				.Add();
+
+			// Existing definitions can also be modified without detouring Player.UpdateArmorSets or registering duplicate sets.
+			ArmorSetBonus cactusSet = armorSetBonuses.First(set => set.Head == ItemID.CactusHelmet);
+			cactusSet.Description = Mod.GetLocalization("ArmorSetBonus.ModifiedVanillaCactus");
+			cactusSet.Effect = ApplyModifiedCactusSetBonus;
+		}
+
+		private static void ApplyExampleHelmetSetBonus(Player player) {
+			player.GetDamage(DamageClass.Generic) += ExampleHelmet.AdditiveGenericDamageBonus / 100f; // Increase dealt damage for all weapon classes by 20%.
+		}
+
+		private static void ApplyExampleHoodSetBonus(Player player) {
+			player.manaCost -= ExampleHood.ManaCostReductionPercent / 100f;
+			player.GetModPlayer<ExampleArmorSetBonusPlayer>().ExampleSetHood = true;
+		}
+
+		private static void ApplyModifiedCactusSetBonus(Player player) {
+			player.statDefense += 10;
 		}
 
 		public override void ArmorSetBonusActivated() {

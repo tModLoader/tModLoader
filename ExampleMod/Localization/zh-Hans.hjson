@@ -28,6 +28,7 @@ Mods: {
 		}
 
 		ArmorSetBonus: {
+			// ModifiedVanillaCactus: Increases defense by 10
 			// ExampleHelmet: Increases dealt damage by 20%
 			/* ExampleHood:
 				'''

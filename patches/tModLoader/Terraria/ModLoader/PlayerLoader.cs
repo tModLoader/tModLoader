@@ -1487,6 +1487,16 @@ public static class PlayerLoader
 		return true;
 	}
 
+	private static HookList HookModifyArmorSetBonuses = AddHook<Action<IList<ArmorSetBonus>>>(p => p.ModifyArmorSetBonuses);
+
+	internal static void ModifyArmorSetBonuses(IList<ArmorSetBonus> armorSetBonuses)
+	{
+		foreach (var modPlayer in HookModifyArmorSetBonuses.Enumerate()) {
+			modPlayer.ModifyArmorSetBonuses(armorSetBonuses);
+		}
+	}
+
+
 	private static HookList HookArmorSetBonusActivated = AddHook<Action>(p => p.ArmorSetBonusActivated);
 
 	public static void ArmorSetBonusActivated(Player player)

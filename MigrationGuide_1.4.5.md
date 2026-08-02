@@ -370,27 +370,43 @@ See ExampleWhip, ExampleWhipAdvanced, ExampleWhipProjectile, and ExampleWhipProj
 
 ### Armor Set Bonuses
 
-Armor set bonuses now use Terraria's `ArmorSetBonus` registry. Register armor sets after item content is loaded, usually in `ModSystem.PostSetupContent`, by calling `ArmorSetBonus.Create(...).Set(...).Add()`. The old `ModItem.IsArmorSet(Item head, Item body, Item legs)` and `ModItem.UpdateArmorSet(Player player)` hooks should no longer be used for the actual set bonus effect. `Player.setBonus` is also no longer used by vanilla for the displayed text; the registered `ArmorSetBonus` description is used by the tooltip system instead.
+Armor set bonuses now use Terraria's `ArmorSetBonus` registry. Register modded armor sets or modify existing set definitions in `ModPlayer.ModifyArmorSetBonuses`. The old `ModItem.IsArmorSet(Item head, Item body, Item legs)` and `ModItem.UpdateArmorSet(Player player)` hooks should no longer be used for the actual set bonus effect. `Player.setBonus` is also no longer used by vanilla for the displayed text; the registered `ArmorSetBonus` description is used by the tooltip system instead.
 
 This change lets the game automatically show partial set progress through the "SetBonus" tooltip and show "SetBonusSinglePiece" on unequipped armor pieces. Put the set bonus text in localization, then pass the localization key to `ArmorSetBonus.Create`. If different head/body/leg pieces decide different bonuses, pass the deciding slot as the optional `ArmorSetBonus.PartType` argument so the tooltip can explain which piece controls the bonus.
 
-Typical 3-piece set example:
+Use the loading hook to register modded sets and modify vanilla set definitions. The `ArmorSetBonus.Effect` delegate receives the current `Player` when a complete set is applied:
 
 ```cs
-public override void PostSetupContent() {
-    ArmorSetBonus.Create(ApplyExampleSetBonus, Mod.GetLocalization("ArmorSetBonus.ExampleSet").Key, ArmorSetBonus.PartType.Head)
-        .Set(
-              ModContent.ItemType<ExampleHelmet>(),
-              ModContent.ItemType<ExampleBreastplate>(),
-              ModContent.ItemType<ExampleLeggings>()
+public class ExampleArmorSetBonusPlayer : ModPlayer
+{
+	public override void ModifyArmorSetBonuses(IList<ArmorSetBonus> armorSetBonuses) {
+		// Register a modded 3-piece armor set and provide its runtime effect directly.
+		ArmorSetBonus.Create(ApplyExampleSetBonus, Mod.GetLocalization("ArmorSetBonus.ExampleSet").Key, ArmorSetBonus.PartType.Head)
+			.Set(
+				ModContent.ItemType<ExampleHelmet>(),
+				ModContent.ItemType<ExampleBreastplate>(),
+				ModContent.ItemType<ExampleLeggings>()
 			)
 			.Add();
+
+		// Modify an existing vanilla set's displayed description and replace its effect.
+		ArmorSetBonus cactusSet = armorSetBonuses.First(set => set.Head == ItemID.CactusHelmet);
+		cactusSet.Description = Mod.GetLocalization("ArmorSetBonus.CustomCactus");
+		cactusSet.Effect = ApplyCustomCactusSetBonus;
 	}
 
-private static void ApplyExampleSetBonus(Player player) {
-    player.GetDamage(DamageClass.Generic) += 0.2f; 
+	private static void ApplyExampleSetBonus(Player player) {
+		player.GetDamage(DamageClass.Generic) += 0.2f;
+	}
+
+	private static void ApplyCustomCactusSetBonus(Player player) {
+		player.statDefense += 10;
+	}
 }
 ```
+
+`ModifyArmorSetBonuses` runs once during loading on the template `ModPlayer`, so its `Player` property is not available. It runs after Terraria registers vanilla armor set bonuses and before the lookup tables are built. Use it to call `ArmorSetBonus.Create(...).Set(...).Add()` for new sets or edit entries from `armorSetBonuses` to modify existing definitions. Use the `Player` parameter supplied to each `ArmorSetBonus.Effect` delegate for per-player logic.
+
 For sets with multiple valid variants, chain multiple `.Set(...)` calls or use the `Set(int[] headOptions, int[] bodyOptions, int[] legsOptions)` overload. Use `0` or `null` for a missing slot in partial sets, such as vanity-style head/body-only sets.
 
 `ModItem.IsArmorSet` can still be useful for vanity set effects because the default `ModItem.IsVanitySet` implementation calls it before `ArmorSetShadows`, `PreUpdateVanitySet`, and `UpdateVanitySet`. In that case, keep `IsArmorSet` only for visual matching and move the actual stat/effect logic to the registered `ArmorSetBonus` effect.

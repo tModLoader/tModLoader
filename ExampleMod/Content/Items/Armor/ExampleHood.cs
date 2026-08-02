@@ -21,7 +21,7 @@ namespace ExampleMod.Content.Items.Armor
 		}
 
 		// This matching logic is still used by the default IsVanitySet implementation so ArmorSetShadows can run when the full set is visible.
-		// The actual 1.4.5 armor set bonus effect is registered in ExampleArmorSetBonusSystem through ArmorSetBonus.Create.
+		// The actual 1.4.5 armor set bonus effect is registered in ExampleArmorSetBonusPlayer through ArmorSetBonus.Create.
 		public override bool IsArmorSet(Item head, Item body, Item legs) {
 			return body.type == ModContent.ItemType<ExampleBreastplate>() && legs.type == ModContent.ItemType<ExampleLeggings>();
 		}

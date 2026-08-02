@@ -384,6 +384,7 @@ public static class ModContent
 		Main.NPCInteractionDB.Populate();
 
 		ArmorSetBonuses.Initialize();
+		PlayerLoader.ModifyArmorSetBonuses(ArmorSetBonuses.All);
 		ArmorSetBonuses.BuildLookup();
 		ItemID.Sets.PostSetupContent();
 		TileID.Sets.PostSetupContent();
