@@ -378,29 +378,29 @@ Use the loading hook to register modded sets and modify vanilla set definitions.
 
 ```cs
 
-	public override void ModifyArmorSetBonuses(IList<ArmorSetBonus> armorSetBonuses) {
-		// Register a modded 3-piece armor set and provide its runtime effect directly.
-		ArmorSetBonus.Create(ApplyExampleSetBonus, Mod.GetLocalization("ArmorSetBonus.ExampleSet").Key, ArmorSetBonus.PartType.Head)
-			.Set(
-				ModContent.ItemType<ExampleHelmet>(),
-				ModContent.ItemType<ExampleBreastplate>(),
-				ModContent.ItemType<ExampleLeggings>()
-			)
-			.Add();
+public override void ModifyArmorSetBonuses(IList<ArmorSetBonus> armorSetBonuses) {
+    // Register a modded 3-piece armor set and provide its runtime effect directly.
+    ArmorSetBonus.Create(ApplyExampleSetBonus, Mod.GetLocalization("ArmorSetBonus.ExampleSet").Key, ArmorSetBonus.PartType.Head)
+        .Set(
+        ModContent.ItemType<ExampleHelmet>(),
+        ModContent.ItemType<ExampleBreastplate>(),
+        ModContent.ItemType<ExampleLeggings>()
+        )
+        .Add();
 
-		// Modify an existing vanilla set's displayed description and replace its effect.
-		ArmorSetBonus cactusSet = armorSetBonuses.First(set => set.Head == ItemID.CactusHelmet);
-		cactusSet.Description = Mod.GetLocalization("ArmorSetBonus.CustomCactus");
-		cactusSet.Effect = ApplyCustomCactusSetBonus;
-	}
+    // Modify an existing vanilla set's displayed description and replace its effect.
+    ArmorSetBonus cactusSet = armorSetBonuses.First(set => set.Head == ItemID.CactusHelmet);
+    cactusSet.Description = Mod.GetLocalization("ArmorSetBonus.CustomCactus");
+    cactusSet.Effect = ApplyCustomCactusSetBonus;
+}
 
-	private static void ApplyExampleSetBonus(Player player) {
-		player.GetDamage(DamageClass.Generic) += 0.2f;
-	}
+private static void ApplyExampleSetBonus(Player player) {
+    player.GetDamage(DamageClass.Generic) += 0.2f;
+}
 
-	private static void ApplyCustomCactusSetBonus(Player player) {
-		player.statDefense += 10;
-	}
+private static void ApplyCustomCactusSetBonus(Player player) {
+    player.statDefense += 10;
+}
 ```
 
 `ModifyArmorSetBonuses` runs once during loading on the template `ModPlayer`, so its `Player` property is not available. It runs after Terraria registers vanilla armor set bonuses and before the lookup tables are built. Use it to call `ArmorSetBonus.Create(...).Set(...).Add()` for new sets or edit entries from `armorSetBonuses` to modify existing definitions. Use the `Player` parameter supplied to each `ArmorSetBonus.Effect` delegate for per-player logic.
