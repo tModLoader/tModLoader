@@ -25,7 +25,7 @@ internal class WinImm32Ime : PlatformIme, IMessageFilter
 
 	public override bool IsCandidateListVisible => CandidateCount > 0;
 
-	public override uint SelectedCandidate => _candSelection % _candPageSize;
+	public override uint SelectedCandidate => _candPageSize == 0 ? 0 : _candSelection % _candPageSize;
 
 	public override uint CandidateCount => Math.Min((uint)_candList.Length - SelectedPage * _candPageSize, _candPageSize);
 
@@ -96,12 +96,20 @@ internal class WinImm32Ime : PlatformIme, IMessageFilter
 			var offsets = MemoryMarshal.CreateReadOnlySpan(ref candList.dwOffset, (int)candList.dwCount);
 
 			string[] candStrList = new string[candList.dwCount];
-			int next = buf.Length;
-			for (int i = (int)candList.dwCount-1; i >= 0; i--) {
+
+			for (int i = 0; i < (int)candList.dwCount; i++) {
 				int start = (int)offsets[i];
-				// Assume all strings are fully packed, with 2 byte null char at the end
-				candStrList[i] = Encoding.Unicode.GetString(buf[start..(next-2)]);
-				next = start;
+				int end = start;
+
+				// Note that strings are not always fully packed, we need to search from each offset
+				// for a UTF-16 null terminator (0x00 0x00). Length of UTF-16 sequences are always even.
+				while (end < buf.Length - 1) {
+					if (buf[end] == 0 && buf[end + 1] == 0) {
+						break;
+					}
+					end += 2;
+				}
+				candStrList[i] = Encoding.Unicode.GetString(buf[start..end]);
 			}
 
 			_candList = candStrList;
