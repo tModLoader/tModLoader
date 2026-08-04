@@ -1,10 +1,9 @@
 --- src/TerrariaNetCore/Terraria/Localization/LanguageManager.cs
 +++ src/tModLoader/Terraria/Localization/LanguageManager.cs
-@@ -13,14 +_,16 @@
+@@ -13,14 +_,15 @@
  using ReLogic.Content.Sources;
  using ReLogic.Graphics;
  using ReLogic.Utilities;
-+using Terraria.Initializers;
 +using Terraria.ModLoader;
  using Terraria.Utilities;
  
@@ -29,7 +28,7 @@
  		if (ActiveCulture != culture) {
  			Thread.CurrentThread.CurrentCulture = culture.CultureInfo;
  			Thread.CurrentThread.CurrentUICulture = culture.CultureInfo;
-@@ -114,6 +_,26 @@
+@@ -114,6 +_,25 @@
  		ProcessCopyCommandsInTexts();
  	}
  
@@ -48,7 +47,6 @@
 +		ProcessCopyCommandsInTexts();
 +		RecalculateBoundTextValues();
 +		Terraria.UI.ItemTooltip.InvalidateTooltips();
-+		ChatInitializer.PrepareAliases();
 +
 +		SystemLoader.OnLocalizationsLoaded();
 +	}
