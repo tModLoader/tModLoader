@@ -13,7 +13,7 @@
  {
  	private struct Condition
  	{
-@@ -14,17 +_,26 @@
+@@ -14,29 +_,43 @@
  	}
  
  	private readonly string _original;
@@ -27,10 +27,12 @@
  	private readonly StringBuilder _formatBuffer = new StringBuilder();
 +	*/
 +	private readonly CompositeText _compositeText; // TML added, replacement for _format and _formatBuffer
++	private readonly int _positionalArgCount; // TML added, positional args occupy slots [0, _positionalArgCount), followed by named variables
 +
  	private static readonly Regex _substitutionRegex = new Regex("{(\\?!?)?([a-zA-Z][\\w\\.]*)}", RegexOptions.Compiled);
  
- 	private VariableText(string original, string format, Condition[] conditions, string[] variables)
+-	private VariableText(string original, string format, Condition[] conditions, string[] variables)
++	private VariableText(string original, string format, Condition[] conditions, string[] variables, int positionalArgCount)
  	{
  		_original = original;
 +		/*
@@ -39,8 +41,10 @@
 +		_compositeText = new CompositeText(format);
  		_conditions = conditions;
  		_variables = variables;
- 		_formatArgBuffer = new object[variables.Length];
-@@ -32,6 +_,7 @@
++		_positionalArgCount = positionalArgCount;
+-		_formatArgBuffer = new object[variables.Length];
++		_formatArgBuffer = new object[positionalArgCount + variables.Length];
+ 	}
  
  	public static bool TryCreate(string s, out VariableText text)
  	{
@@ -48,15 +52,47 @@
  		if (!_substitutionRegex.IsMatch(s)) {
  			text = null;
  			return false;
-@@ -60,6 +_,7 @@
+ 		}
+ 
++		int positionalArgCount = CompositeText.ArgCount(s); // Added by TML
++
+ 		List<string> variables = new List<string>();
+ 		List<Condition> conditions = new List<Condition>();
+ 		string format = _substitutionRegex.Replace(s, delegate (Match match) {
+@@ -57,10 +_,12 @@
+ 				variables.Add(text2);
+ 			}
+ 
++			num += positionalArgCount; // Added by TML
  			return "{" + num + "}";
  		});
  
-+		format = ConvertNamedPlurals(format, variables); // Added by TML
- 		text = new VariableText(s, format, conditions.ToArray(), variables.ToArray());
++		format = ConvertNamedPlurals(format, variables, positionalArgCount); // Added by TML, named plural support
+-		text = new VariableText(s, format, conditions.ToArray(), variables.ToArray());
++		text = new VariableText(s, format, conditions.ToArray(), variables.ToArray(), positionalArgCount);
  		return true;
  	}
-@@ -93,9 +_,12 @@
+ 
+@@ -78,7 +_,7 @@
+ 			if (obj == null)
+ 				return false;
+ 
+-			_formatArgBuffer[j] = obj;
++			_formatArgBuffer[_positionalArgCount + j] = obj;
+ 		}
+ 
+ 		return true;
+@@ -86,16 +_,21 @@
+ 
+ 	public bool ConditionsMet(Func<string, object> lookup) => CheckConditionsAndLoadArgs(lookup);
+ 
+-	public bool TryFormat(Func<string, object> lookup, out string formatted)
++	public bool TryFormat(Func<string, object> lookup, out string formatted) => TryFormat(lookup, [], out formatted);
++	public bool TryFormat(Func<string, object> lookup, object[] args, out string formatted) // overload added to supply positional args as well as named substitutions
+ 	{
+-		if (!CheckConditionsAndLoadArgs(lookup)) {
++		if (args.Length < _positionalArgCount || !CheckConditionsAndLoadArgs(lookup)) {
+ 			formatted = null;
  			return false;
  		}
  
@@ -65,6 +101,7 @@
  		formatted = _formatBuffer.ToString();
  		_formatBuffer.Clear();
 +		*/
++		Array.Copy(args, _formatArgBuffer, _positionalArgCount);
 +		formatted = _compositeText.Format(_formatArgBuffer);
  		return true;
  	}

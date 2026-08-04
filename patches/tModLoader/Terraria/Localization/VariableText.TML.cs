@@ -7,7 +7,7 @@ internal partial class VariableText
 {
 	private static readonly Regex _namedPluralRegex = new Regex(@"{\^([a-zA-Z][\w\.]*):([^\r\n]+?)}", RegexOptions.Compiled); // "{Count} {^Count:item;items}"
 
-	private static string ConvertNamedPlurals(string format, List<string> variables)
+	private static string ConvertNamedPlurals(string format, List<string> variables, int positionalArgCount)
 	{
 		return _namedPluralRegex.Replace(format, delegate (Match match) {
 			string varName = match.Groups[1].Value;
@@ -16,7 +16,7 @@ internal partial class VariableText
 				idx = variables.Count;
 				variables.Add(varName);
 			}
-			return "{^" + idx + ":" + match.Groups[2].Value + "}";
+			return "{^" + (positionalArgCount + idx) + ":" + match.Groups[2].Value + "}";
 		});
 	}
 }

@@ -42,13 +42,17 @@ internal class CompositeText
 		return true;
 	}
 
+	/// <summary> The number of args <paramref name="format"/> requires, one more than the highest index it references. Unreferenced indices below that still count, eg "{2}" requires 3. </summary>
+	public static int ArgCount(string format)
+		=> _argIndexRegex.Matches(format).Select(m => int.Parse(m.Groups[1].Value) + 1).DefaultIfEmpty(0).Max();
+
 	private static Plural[] ProcessPlurals(ref string format)
 	{
 		if (!_positionalPluralRegex.IsMatch(format))
 			return [];
 
 		var plurals = new List<Plural>();
-		int nextSlot = _argIndexRegex.Matches(format).Max(m => int.Parse(m.Groups[1].Value)) + 1;
+		int nextSlot = ArgCount(format);
 
 		format = _positionalPluralRegex.Replace(format, delegate (Match match) {
 			plurals.Add(new Plural {
