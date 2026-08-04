@@ -17,16 +17,15 @@ internal class WinImm32Ime : PlatformIme, IMessageFilter
 	private string _compString;
 	private string[] _candList = Array.Empty<string>();
 	private uint _candSelection;
+	private uint _candPageStart;
 	private uint _candPageSize;
 	private bool _isCandDirty;
-
-	public uint SelectedPage => _candPageSize == 0 ? 0 : _candSelection / _candPageSize;
 
 	public override string CompositionString => _compString;
 
 	public override bool IsCandidateListVisible => CandidateCount > 0;
 
-	public override uint SelectedCandidate => _candPageSize == 0 ? 0 : _candSelection % _candPageSize;
+	public override uint SelectedCandidate => _candSelection - _candPageStart;
 
 	public override uint CandidateCount {
 		get {
@@ -35,7 +34,7 @@ internal class WinImm32Ime : PlatformIme, IMessageFilter
 			if (_isCandDirty) {
 				UpdateCandidateList();
 			}
-			return Math.Min((uint)_candList.Length - SelectedPage * _candPageSize, _candPageSize);
+			return Math.Min((uint)_candList.Length - _candPageStart, _candPageSize);
 		}
 	}
 
@@ -95,6 +94,7 @@ internal class WinImm32Ime : PlatformIme, IMessageFilter
 			if (size == 0) {
 				// This usually means candidate list is not ready, wait for next frame
 				_candList = Array.Empty<string>();
+				_candPageStart = 0;
 				_candPageSize = 0;
 				_candSelection = 0;
 				return;
@@ -126,6 +126,7 @@ internal class WinImm32Ime : PlatformIme, IMessageFilter
 
 			_isCandDirty = false;
 			_candList = candStrList;
+			_candPageStart = candList.dwPageStart;
 			_candPageSize = candList.dwPageSize;
 			_candSelection = candList.dwSelection;
 		}
@@ -143,6 +144,7 @@ internal class WinImm32Ime : PlatformIme, IMessageFilter
 	{
 		_isCandDirty = false;
 		_candList = Array.Empty<string>();
+		_candPageStart = 0;
 		_candPageSize = 0;
 		_candSelection = 0;
 	}
@@ -150,7 +152,7 @@ internal class WinImm32Ime : PlatformIme, IMessageFilter
 	public override string GetCandidate(uint index)
 	{
 		if (index < CandidateCount) {
-			return _candList[index + SelectedPage * _candPageSize];
+			return _candList[index + _candPageStart];
 		}
 
 		return "";
@@ -236,7 +238,7 @@ internal class WinImm32Ime : PlatformIme, IMessageFilter
 	protected override void Dispose(bool disposing)
 	{
 		if (!_disposedValue) {
-			if (base.IsEnabled)
+			if (IsEnabled)
 				Disable();
 
 			_wndProcHook.RemoveMessageFilter(this);
