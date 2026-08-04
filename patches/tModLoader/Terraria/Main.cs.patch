@@ -1006,6 +1006,18 @@
  		}
  	}
  
+@@ -2211,9 +_,10 @@
+ 
+ 	public static bool RenderTargetsRequired {
+ 		get {
++			/*
+ 			if (!(GameZoomTarget > 1f))
+ 				return GameViewMatrix.TransformationMatrix.M11 > 1f;
+-
++			*/
+ 			return true;
+ 		}
+ 	}
 @@ -2233,6 +_,11 @@
  
  	public static string SavePath => Program.SavePath;
@@ -6681,6 +6693,20 @@
  			_isDrawingOrUpdating = false;
  		}
  	}
+@@ -53441,10 +_,13 @@
+ 			MapRenderer.DrawToMap(default(Microsoft.Xna.Framework.Rectangle));
+ 		}
+ 
++		/*
+ 		if (Lighting.UpdateEveryFrame)
+ 			drawToScreen = true;
+ 		else
+ 			drawToScreen = false;
++		*/
++		drawToScreen = false;
+ 
+ 		if (drawToScreen && targetSet)
+ 			ReleaseTargets();
 @@ -53568,9 +_,12 @@
  			}
  		}
@@ -6715,6 +6741,15 @@
  		if (gameMenu || player[myPlayer].gravDir == 1f)
  			Rasterizer = RasterizerState.CullCounterClockwise;
  		else
+@@ -53663,7 +_,7 @@
+ 		}
+ 
+ 		bool flag2 = Terraria.Graphics.Effects.Filters.Scene.CanCapture() || ForegroundSunlightEffects;
+-		bool flag3 = !drawToScreen && !mapFullscreen && !onlyDrawFancyUI && Lighting.NotRetro && flag2;
++		bool flag3 = /* !drawToScreen && */ !mapFullscreen && !onlyDrawFancyUI /* && Lighting.NotRetro */ && flag2;
+ 		if (flag3) {
+ 			instance.GraphicsDevice.SetRenderTarget(skyTarget);
+ 			instance.GraphicsDevice.Clear(Microsoft.Xna.Framework.Color.Transparent);
 @@ -53748,7 +_,7 @@
  		spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, Rasterizer, null, GameViewMatrix.TransformationMatrix);
  		DrawBackgroundBlackFill();
