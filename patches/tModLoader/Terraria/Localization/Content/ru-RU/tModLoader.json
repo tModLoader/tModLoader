@@ -677,6 +677,7 @@
 		"WatchLocalizationFileMessage": "Следующие файлы локализации были изменены и перезагружены: {0}",
 
 		// MessageBox
+		// "TerrariaGraphicsResourcesInitFailed": "The game could not create the needed graphics resources.\n\nYour computer may not be performant enough to run tModLoader.\n\nEnsure your graphics card is working/connected, and try restarting.",
 		"ContentFolderNotFound": "Папка Content не найдена. Если tModLoader был установлен через Steam, убедитесь, что Terraria также установлена. Если нет, переместите папку tModLoader в папку с Terraria или рядом с ней.",
 		"GraphicsEngineFailure": "Ошибка графического движка.",
 		"GraphicsEngineReportUnknown": "Неизвестно.",

@@ -677,6 +677,7 @@
 		"WatchLocalizationFileMessage": "Folgende Übersetzungsdateie hat sich verändert und wird neugeladen: {0}",
 
 		// MessageBox
+		// "TerrariaGraphicsResourcesInitFailed": "The game could not create the needed graphics resources.\n\nYour computer may not be performant enough to run tModLoader.\n\nEnsure your graphics card is working/connected, and try restarting.",
 		"ContentFolderNotFound": "Terraria Content-Ordner nicht gefunden. Falls du tModLoader über Steam installiert hast, stelle sicher das Terraria installiert ist. Falls nicht, stelle sicher tModLoader in einem Ordner innerhalb des Terraria-Installationsverzeichnisses oder einem Ordner neben des Terraria-Installationsverzeichnisses zu installieren.",
 		"GraphicsEngineFailure": "Grafik-Engine-Ausfall",
 		"GraphicsEngineReportUnknown": "Unbekannt",

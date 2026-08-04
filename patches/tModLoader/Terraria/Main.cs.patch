@@ -92,6 +92,14 @@
  	public static UserInterface InGameUI = new UserInterface();
  	private static Action _pendingCharacterSelect;
  	public static bool drawBackGore;
+@@ -399,6 +_,7 @@
+ 	public static bool drawBetterDebug;
+ 	public static bool betterDebugRelease;
+ 	public static bool renderNow;
++	[Obsolete("Always false in TML")]
+ 	public static bool drawToScreen;
+ 	public static bool targetSet;
+ 	public static int mouseX;
 @@ -408,7 +_,15 @@
  	public static CraftingUI craftingUI = new CraftingUI();
  	public static BannerClaimingUI bannerUI = new BannerClaimingUI();
@@ -1006,6 +1014,21 @@
  		}
  	}
  
+@@ -2209,10 +_,14 @@
+ 		}
+ 	}
+ 
++
++	[Obsolete("Always true in TML")]
+ 	public static bool RenderTargetsRequired {
+ 		get {
++			/*
+ 			if (!(GameZoomTarget > 1f))
+ 				return GameViewMatrix.TransformationMatrix.M11 > 1f;
++			*/
+ 
+ 			return true;
+ 		}
 @@ -2233,6 +_,11 @@
  
  	public static string SavePath => Program.SavePath;
@@ -6508,6 +6531,23 @@
  					byte b = tile.liquid;
  					bool num5 = num4 <= num2 && ((!flag2 && b < 250) || WorldGen.SolidTile(tile) || (b >= 200 && num4 == 0f));
  					bool flag3 = tile.active() && tileBlockLight[tile.type] && (!tile.invisibleBlock() || flag);
+@@ -50334,6 +_,8 @@
+ 			}
+ 		}
+ 		catch {
++			ErrorReporting.FatalExit(Language.GetTextValue("tModLoader.TerrariaGraphicsResourcesInitFailed"));
++			/*
+ 			Lighting.Mode = LightMode.Retro;
+ 			mapEnabled = false;
+ 			SaveSettings();
+@@ -50342,6 +_,7 @@
+ 			}
+ 			catch {
+ 			}
++			*/
+ 		}
+ 	}
+ 
 @@ -51071,18 +_,33 @@
  		}
  	}
@@ -6715,6 +6755,15 @@
  		if (gameMenu || player[myPlayer].gravDir == 1f)
  			Rasterizer = RasterizerState.CullCounterClockwise;
  		else
+@@ -53663,7 +_,7 @@
+ 		}
+ 
+ 		bool flag2 = Terraria.Graphics.Effects.Filters.Scene.CanCapture() || ForegroundSunlightEffects;
+-		bool flag3 = !drawToScreen && !mapFullscreen && !onlyDrawFancyUI && Lighting.NotRetro && flag2;
++		bool flag3 = !drawToScreen && !mapFullscreen && !onlyDrawFancyUI /* && Lighting.NotRetro */ && flag2;
+ 		if (flag3) {
+ 			instance.GraphicsDevice.SetRenderTarget(skyTarget);
+ 			instance.GraphicsDevice.Clear(Microsoft.Xna.Framework.Color.Transparent);
 @@ -53748,7 +_,7 @@
  		spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, Rasterizer, null, GameViewMatrix.TransformationMatrix);
  		DrawBackgroundBlackFill();

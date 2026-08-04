@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent;
+using Terraria.GameContent.Golf;
 using Terraria.GameContent.Items;
 using Terraria.GameContent.Prefixes;
 using Terraria.ID;
@@ -2406,6 +2407,17 @@ public static class ItemLoader
 		if (item.ModItem != null || item.prefix >= PrefixID.Count)
 			return true;
 
+		return false;
+	}
+
+	public static bool GetGolfClubProperties(int type, out GolfHelper.ClubProperties properties)
+	{
+		if (GetItem(type)?.GetGolfClubProperties() is GolfHelper.ClubProperties result) {
+			properties = result;
+			return true;
+		}
+
+		properties = default;
 		return false;
 	}
 }

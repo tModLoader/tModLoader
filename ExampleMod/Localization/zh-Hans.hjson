@@ -1299,6 +1299,11 @@ Mods: {
 				// Tooltip: ""
 			}
 
+			ExampleGolfClub: {
+				// DisplayName: Example Golf Club (Driver)
+				// Tooltip: "{$CommonItemTooltip.GolfDriver}"
+			}
+
 			ExampleVoiceAccessory: {
 				// DisplayName: Example Voice Accessory
 				// Tooltip: "'Boing!'"
