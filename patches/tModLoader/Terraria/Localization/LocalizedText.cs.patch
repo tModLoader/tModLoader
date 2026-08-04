@@ -149,20 +149,26 @@
  	public bool ConditionsMetWith(Func<string, object> lookup)
  	{
  		if (_value is VariableText variableText)
-@@ -115,7 +_,12 @@
+@@ -115,18 +_,51 @@
  		return true;
  	}
  
 +	/*
  	public NetworkText ToNetworkText() => NetworkText.FromKey(Key);
+-	public NetworkText ToNetworkText(params object[] substitutions) => NetworkText.FromKey(Key, substitutions);
 +	*/
 +	/// <summary> Convert this <see cref="LocalizedText"/> to a <see cref="NetworkText"/> for use in various network code applications. Non-chat messages sent to other players should be sent as <see cref="NetworkText"/> to facilitate localization. </summary>
-+	public NetworkText ToNetworkText() => NetworkText.FromKey(Key, BoundArgs ?? []);
++	public NetworkText ToNetworkText() => ToNetworkText(BoundArgs ?? []);
++
 +	/// <inheritdoc cref="ToNetworkText()"/>
- 	public NetworkText ToNetworkText(params object[] substitutions) => NetworkText.FromKey(Key, substitutions);
++	public NetworkText ToNetworkText(params object[] substitutions)
++	{
++		if (string.IsNullOrEmpty(Key) && !string.IsNullOrEmpty(UnformattedValue)) ThrowInvalidLiteralOperation();
++		return NetworkText.FromKey(Key, substitutions);
++	}
  
  	public static explicit operator string(LocalizedText text)
-@@ -123,10 +_,33 @@
+ 	{
  		return text.Value;
  	}
  

@@ -1,4 +1,6 @@
+using System;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using Terraria.ModLoader.Core;
 
 namespace Terraria.Localization;
@@ -14,9 +16,20 @@ public partial class LocalizedText
 	}
 
 	/// <summary>
+	/// Creates a <see cref="LocalizedText"/> with empty <see cref="Key"/> a given <see cref="Value"/> <br/>
+	/// <b>Only use as a last resort to call an API that requires a LocalizedText with an unlocalizable value</b>
+	/// </summary>
+	public static LocalizedText Literal(string text) => new LocalizedText("", text);
+
+	/// <summary>
 	/// Returns the args used with <see cref="WithFormatArgs"/> to create this text, if any.
 	/// </summary>
 	public object[] BoundArgs { get; private set; }
+
+	private void ThrowInvalidLiteralOperation([CallerMemberName] string methodName = default)
+	{
+		throw new InvalidOperationException($"{methodName} on literal text \"{UnformattedValue}\"");
+	}
 
 	/// <summary>
 	/// Creates a new LocalizedText with the supplied arguments formatted into the value (via <see cref="string.Format(string, object?[])"/>)<br/>
@@ -28,7 +41,11 @@ public partial class LocalizedText
 	/// </summary>
 	/// <param name="args">The substitution args</param>
 	/// <returns></returns>
-	public LocalizedText WithFormatArgs(params object[] args) => LanguageManager.Instance.BindFormatArgs(Key, args);
+	public LocalizedText WithFormatArgs(params object[] args)
+	{
+		if (string.IsNullOrEmpty(Key)) ThrowInvalidLiteralOperation();
+		return LanguageManager.Instance.BindFormatArgs(Key, args);
+	}
 
 	internal void BindArgs(LocalizedText original, object[] args)
 	{
