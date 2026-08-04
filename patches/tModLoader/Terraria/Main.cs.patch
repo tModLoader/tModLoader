@@ -1014,7 +1014,7 @@
  		}
  	}
  
-@@ -2209,11 +_,14 @@
+@@ -2209,10 +_,14 @@
  		}
  	}
  
@@ -1025,11 +1025,10 @@
 +			/*
  			if (!(GameZoomTarget > 1f))
  				return GameViewMatrix.TransformationMatrix.M11 > 1f;
--
 +			*/
+ 
  			return true;
  		}
- 	}
 @@ -2233,6 +_,11 @@
  
  	public static string SavePath => Program.SavePath;
@@ -6705,20 +6704,6 @@
  			_isDrawingOrUpdating = false;
  		}
  	}
-@@ -53441,10 +_,13 @@
- 			MapRenderer.DrawToMap(default(Microsoft.Xna.Framework.Rectangle));
- 		}
- 
-+		/*
- 		if (Lighting.UpdateEveryFrame)
- 			drawToScreen = true;
- 		else
- 			drawToScreen = false;
-+		*/
-+		drawToScreen = false;
- 
- 		if (drawToScreen && targetSet)
- 			ReleaseTargets();
 @@ -53568,9 +_,12 @@
  			}
  		}
@@ -6758,7 +6743,7 @@
  
  		bool flag2 = Terraria.Graphics.Effects.Filters.Scene.CanCapture() || ForegroundSunlightEffects;
 -		bool flag3 = !drawToScreen && !mapFullscreen && !onlyDrawFancyUI && Lighting.NotRetro && flag2;
-+		bool flag3 = /* !drawToScreen && */ !mapFullscreen && !onlyDrawFancyUI /* && Lighting.NotRetro */ && flag2;
++		bool flag3 = !drawToScreen && !mapFullscreen && !onlyDrawFancyUI /* && Lighting.NotRetro */ && flag2;
  		if (flag3) {
  			instance.GraphicsDevice.SetRenderTarget(skyTarget);
  			instance.GraphicsDevice.Clear(Microsoft.Xna.Framework.Color.Transparent);
