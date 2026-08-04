@@ -6531,6 +6531,23 @@
  					byte b = tile.liquid;
  					bool num5 = num4 <= num2 && ((!flag2 && b < 250) || WorldGen.SolidTile(tile) || (b >= 200 && num4 == 0f));
  					bool flag3 = tile.active() && tileBlockLight[tile.type] && (!tile.invisibleBlock() || flag);
+@@ -50334,6 +_,8 @@
+ 			}
+ 		}
+ 		catch {
++			ErrorReporting.FatalExit(Language.GetTextValue("tModLoader.TerrariaGraphicsResourcesInitFailed"));
++			/*
+ 			Lighting.Mode = LightMode.Retro;
+ 			mapEnabled = false;
+ 			SaveSettings();
+@@ -50342,6 +_,7 @@
+ 			}
+ 			catch {
+ 			}
++			*/
+ 		}
+ 	}
+ 
 @@ -51071,18 +_,33 @@
  		}
  	}
