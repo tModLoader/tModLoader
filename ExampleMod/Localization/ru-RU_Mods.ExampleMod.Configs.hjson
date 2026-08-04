@@ -216,6 +216,11 @@ ModConfigShowcaseDataTypes: {
 		// Label: TileDefinition Example
 		// Tooltip: ""
 	}
+
+	wallDefinitionExample: {
+		// Label: WallDefinition Example
+		// Tooltip: ""
+	}
 }
 
 ModConfigShowcaseDefaultValues: {

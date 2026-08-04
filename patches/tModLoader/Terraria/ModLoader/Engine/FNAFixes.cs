@@ -32,30 +32,38 @@ internal static class FNAFixes
 		}
 		*/
 
-		TryCopyAgilitySDK();
+		TryLinkOrCopyAgilitySDK();
 		EnableHighDPI();
 		ConfigureDrivers();
 	}
 
-	private static void TryCopyAgilitySDK()
+	private static void TryLinkOrCopyAgilitySDK()
 	{
 		if (!OperatingSystem.IsWindows()) return;
 
-		var dllPath = Path.Combine(MonoLaunch.NativesDir, "D3D12Core.dll");
-		var targetPath = Path.Combine(Path.GetDirectoryName(Environment.ProcessPath), "D3D12", "D3D12Core.dll");
-		if (File.Exists(targetPath) && File.ReadAllBytes(targetPath).SequenceEqual(File.ReadAllBytes(dllPath))) return;
+		var sdkDir = MonoLaunch.NativesDir;
+		var processDir = Path.GetDirectoryName(Environment.ProcessPath);
+		if (Path.GetRelativePath(processDir, sdkDir) is string relPath && relPath != sdkDir) {
+			Logging.FNA.Info($"Relative path to Agility SDK: \"{relPath}\"");
+			SDL.SDL_SetHintWithPriority("FNA3D_SDL_AGILITY_SDK_PATH", relPath, SDL.SDL_HintPriority.SDL_HINT_OVERRIDE);
+			return;
+		}
+
+		var sdkPath = Path.Combine(MonoLaunch.NativesDir, "D3D12Core.dll");
+		var targetPath = Path.Combine(processDir, "D3D12", "D3D12Core.dll");
+		if (File.Exists(targetPath) && File.ReadAllBytes(targetPath).SequenceEqual(File.ReadAllBytes(sdkPath))) return;
 
 		try {
 			using var _ = new Logging.QuietExceptionHandle();
 			Directory.CreateDirectory(Path.GetDirectoryName(targetPath));
-			File.Copy(dllPath, targetPath, overwrite: true);
+			File.Copy(sdkPath, targetPath, overwrite: true);
 		} catch (Exception ex) when (ex is IOException or UnauthorizedAccessException) {
 			Logging.FNA.Warn($"Failed to install Agility SDK to \"{targetPath}\"");
 
 			// For developers of tModLoader itself running system dotnet, we'll need elevated permissions to copy the file to the destination.
 			if (Debugger.IsAttached) {
 				try {
-					ElevatedCopy(dllPath, targetPath);
+					ElevatedCopy(sdkPath, targetPath);
 				}
 				catch { }
 			}

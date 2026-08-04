@@ -606,16 +606,6 @@
  			}
  		}
  	}
-@@ -43304,6 +_,9 @@
- 			if ((settings.avoidWalls && tileSafely.wall > 0) || (settings.avoidAnyLiquid && Collision.WetCollision(vector, num4, height)) || (settings.avoidLava && Collision.LavaCollision(vector, num4, height)) || (settings.avoidHurtTiles && Collision.AnyHurtingTiles(vector, num4, height)) || Collision.SolidCollision(vector, num4, height) || num6 >= settings.maximumFallDistanceFromOrignalPoint - 1)
- 				continue;
- 
-+			if (!CombinedHooks.CanBeTeleportedTo(this, vector, i, j, "CheckForGoodTeleportationSpot"))
-+				continue;
-+
- 			Vector2 vector2 = Vector2.UnitX * 16f;
- 			if (Collision.TileCollision(vector - vector2, vector2, width, height, fallThrough: false, fall2: false, (int)gravDir) != vector2)
- 				continue;
 @@ -43489,11 +_,14 @@
  			if (Main.netMode == 1)
  				NetMessage.SendData(21, -1, -1, null, number, 1f);

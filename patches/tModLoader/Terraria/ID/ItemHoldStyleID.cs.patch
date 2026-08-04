@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/ID/ItemHoldStyleID.cs
 +++ src/tModLoader/Terraria/ID/ItemHoldStyleID.cs
-@@ -1,14 +_,50 @@
+@@ -1,14 +_,54 @@
  namespace Terraria.ID;
  
 +/// <summary>
@@ -30,13 +30,13 @@
 +	/// </summary>
  	public const int HoldHeavy = 3;
 +	/// <summary>
-+	/// Item held by both hands low.
++	/// Item held by both hands low with the item pointing down.
 +	/// <br/> Used by Golf Clubs.
 +	/// </summary>
  	public const int HoldGolfClub = 4;
 +	/// <summary>
-+	/// Item held very low.
-+	/// <br/> Used by guitar-shaped instruments
++	/// Item held very low with the item pointing up.
++	/// <br/> Used by Stellar Tune, Ivy, and Rain Song.
 +	/// </summary>
  	public const int HoldGuitar = 5;
 +	/// <summary>
@@ -49,5 +49,9 @@
 +	/// <br/> Used by Kwad Racer Drone
 +	/// </summary>
  	public const int HoldRadio = 7;
++	/// <summary>
++	/// Similar to <see cref="HoldFront"/>, but using the composite arm instead.
++	/// <br/> Used by Scrying Orb
++	/// </summary>
  	public const int HoldOrb = 8;
  }

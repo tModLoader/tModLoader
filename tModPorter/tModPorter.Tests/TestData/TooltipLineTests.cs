@@ -23,9 +23,9 @@ public class TooltipLineTests
 		line.OverrideColor = null;
 
 		DrawableTooltipLine drawableTooltipLine = new DrawableTooltipLine(line, 0, 0, 0, Color.White);
-		drawableTooltipLine.IsModifier = true;
-		drawableTooltipLine.IsModifierBad = false;
-		drawableTooltipLine.OverrideColor = null;
-		drawableTooltipLine.Color = Color.White;
+		_ = drawableTooltipLine.IsModifier == true;
+		_ = drawableTooltipLine.IsModifierBad == false;
+		_ = drawableTooltipLine.OverrideColor == null;
+		_ = drawableTooltipLine.Color == Color.White;
 	}
 }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using System.IO;
 using Terraria;
+using Terraria.GameContent.Tile_Entities;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -96,6 +97,12 @@ namespace ExampleMod.Content.Items.Weapons
 		public override void Load() {
 			// We register a custom use style ID in Load so that the value is set and ready to use in ModItem/GlobalItem.SetDefaults.
 			ExampleCustomUseStyle = ItemLoader.RegisterUseStyle(Mod, "ExampleCustomUseStyle");
+			// Register the use style for mannequins to use.
+			TEDisplayDoll.RegisterUsePose(ExampleCustomUseStyle, DisplayDollPoseID.Use1, 0.1f);
+			TEDisplayDoll.RegisterUsePose(ExampleCustomUseStyle, DisplayDollPoseID.Use2, 0.3f);
+			TEDisplayDoll.RegisterUsePose(ExampleCustomUseStyle, DisplayDollPoseID.Use3, 0.5f);
+			TEDisplayDoll.RegisterUsePose(ExampleCustomUseStyle, DisplayDollPoseID.Use4, 0.7f);
+			TEDisplayDoll.RegisterUsePose(ExampleCustomUseStyle, DisplayDollPoseID.Use5, 0.9f);
 		}
 
 		// Rather than checking item.useStyle in each method, we use AppliesToEntity to have the logic in this class only run for items set to use our custom use style.
@@ -139,8 +146,14 @@ namespace ExampleMod.Content.Items.Weapons
 				}
 			}
 
-			// Set the player facing left or right depending on the target angle.
-			player.direction = Utils.ToDirectionInt(useStylePlayer.swingAngle.ToRotationVector2().X >= 0);
+			// If the item is being held by a mannequin, set the swing angle to straight ahead of the mannequin.
+			if (player.isDisplayDollOrInanimate) {
+				useStylePlayer.swingAngle = player.direction > 0 ? 0 : MathHelper.Pi;
+			}
+			else {
+				// Set the player facing left or right depending on the target angle.
+				player.direction = Utils.ToDirectionInt(useStylePlayer.swingAngle.ToRotationVector2().X >= 0);
+			}
 
 			// Calculate start and end rotational values
 			float start = useStylePlayer.swingAngle + (swingArcRange * .5f * player.direction);

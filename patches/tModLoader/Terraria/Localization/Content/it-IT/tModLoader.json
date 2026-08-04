@@ -45,6 +45,14 @@
 		// "MenuModUpdatesAvailable": "({0} {^0:Update;Updates} Available!)",
 		// "AudioNotSupported": "No audio hardware found. Disabling all audio.",
 		// "SwitchVersionInfoButton": "Switch to a different tModLoader version",
+		// "SwitchVersionInstructions": "Select a beta branch below to switch to it. The game will close itself and Steam will download the branch. After that is complete launch the game again.",
+		// "SwitchVersionWikiLinkLabel": "Beta Branch Information",
+		// "SwitchVersionCurrentlySelected": "Currently Selected",
+		// "SwitchVersionCurrentlySelectedButRunningSeparateInstallWarning": "Note: The currently running game appears to be a separate install from the Steam install. Switching to another branch will affect the Steam install of this game, not this install.",
+		// "SwitchVersionSwitchButtonTooltip": "Close the game and switch to this branch",
+		// "SwitchVersionConfirm": "Are you sure you want to switch branches?",
+		// "SwitchVersionDefaultBranchName": "Default public version",
+		// "SwitchVersionDefaultBranchDescription": "This is the default stable version most players are using",
 		// "LatestNews": "Latest News: {0}",
 		// "LatestNewsOffline": "Offline",
 		// "LatestNewsChecking": "Checking...",
@@ -191,6 +199,7 @@
 		// "WorkshopDisclaimer": "By submitting this item, you agree to the tModLoader Terms of Service",
 		// "NonModOwnerPublishWarning": "A mod with the name \"{0}\" has already been published to the workshop by another modder. If you are not a contributor to that mod then attempting to publish will fail. If this is your mod, double check that you are logged into the correct Steam account. Every mod must have a unique internal name.",
 		// "SteamPublishingLimit": "Error: Only Steam tModLoader owners can publish to Workshop in-game.",
+		// "ModWasBuiltForDebugging": "Error: Only 'Release' builds of mods can be uploaded to the workshop. Use the in-game build+reload to quickly get a release build.",
 		// "NoWorkshopAccess": "Error: Unable to access Steam Workshop.\n\nYou must have a valid Steam install on your system in order to use the in-game Mod Browser.\n\nNOTE: GoG users - once Steam is installed, you can use the ingame mod browser to download mods",
 		// "ModAlreadyUploaded": "Error: Mod already exists on Workshop!",
 		// "ModVersionTooSmall": "Error: Mod Version information must be incremented prior to updating.\n\nThe current version (v{0}) needs to be larger than the version already on the Workshop (v{1}).",
@@ -268,6 +277,7 @@
 		// "RuntimeErrorSilentlyCaughtException": "Silently Caught Exception: ",
 		// "RuntimeErrorSeeLogsForFullTrace": "(see {0} for full trace)",
 		// "ShopOverflow": "Not all items could fit in the shop!",
+		// "UnknownShop": "Unknown shop name: {0}",
 		// "PlayerSaveFail": "An error occurred while saving the player",
 		// "BackingUpPlayerFile": "Backing up player file",
 		// "OpenLogs": "Open Logs",
@@ -493,6 +503,7 @@
 		// "MigrateIndividualPlayersHeader": "Migrate individual players...",
 		// "MigrateIndividualWorldsHeader": "Migrate individual worlds...",
 		// "MigratingWorldsText": "Migrating...",
+		// "ClickToCopyFileOverFromReleaseName": "Click to copy \"{0}\" over from {1}",
 		// "ModsDifferentSinceLastPlay": "The following mods are different since last time you played: ",
 		// "Missing1Mod": "Missing 1 mod",
 		// "MissingXMods": "Missing {0} mods",
@@ -668,6 +679,7 @@
 		// "WatchLocalizationFileMessage": "The following localization files have changed and will be reloaded: {0}",
 
 		// MessageBox
+		// "TerrariaGraphicsResourcesInitFailed": "The game could not create the needed graphics resources.\n\nYour computer may not be performant enough to run tModLoader.\n\nEnsure your graphics card is working/connected, and try restarting.",
 		// "ContentFolderNotFound": "Terraria Content folder not found. If you installed tModLoader through Steam, make sure that Terraria is installed. If not, make sure to install tModLoader in a folder nested within the Terraria install directory or a folder next to the Terraria install directory.",
 		// "GraphicsEngineFailure": "Graphics Engine Failure",
 		// "GraphicsEngineReportUnknown": "Unknown",
@@ -910,7 +922,7 @@
 		// "DownedSkeletron": "After defeating Skeletron",
 		// "DownedDeerclops": "After defeating Deerclops",
 		// "DownedQueenSlime": "After defeating Queen Slime",
-		// "DownedEarlygameBoss": "After defeating the Eye of Cthulhu, Eater of Worlds, Brain of Cthulhu, Queen Bee, Skeletron or Wall of Flesh",
+		// "DownedEarlygameBoss": "After defeating the Eye of Cthulhu, Eater of Worlds, Brain of Cthulhu, Queen Bee, Skeletron, King Slime, Deerclops, or Wall of Flesh",
 		// "DownedMechBossAny": "After defeating any mechanical boss",
 		// "DownedTwins": "After defeating The Twins",
 		// "DownedDestroyer": "After defeating The Destroyer",
@@ -1185,7 +1197,7 @@
 		// "ModLoader.Items.Zeph_Wings.DisplayName": "Zeph's Wings"
 	},
 	"TownNPCMood": {
-		// "LikeNPC_Princess": "I like {NPCName}.",
-		// "Princess_LovesNPC": "I like {NPCName}."
+		"LikeNPC_Princess": "Mi piace {NPCName}.",
+		"Princess_LovesNPC": "Adoro {NPCName}."
 	}
 }

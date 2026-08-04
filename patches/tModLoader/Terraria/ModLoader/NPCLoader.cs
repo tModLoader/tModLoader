@@ -78,6 +78,7 @@ public static class NPCLoader
 
 		// Sets
 		LoaderUtils.ResetStaticMembers(typeof(NPCID));
+		LoaderUtils.ResetStaticMembers(typeof(GameContent.Tile_Entities.TECritterAnchor));
 		Main.ShopHelper.ReinitializePersonalityDatabase();
 		NPCHappiness.RegisterVanillaNpcRelationships();
 
@@ -89,6 +90,7 @@ public static class NPCLoader
 		Array.Resize(ref Main.SceneMetrics.NPCBannerBuff, NPCCount);
 		Array.Resize(ref Main.SceneMetrics.ClosestNPCPosition, NPCCount);
 		Array.Resize(ref BannerSystem.killCount, NPCCount);
+		Array.Resize(ref BannerSystem.claimableBanners, NPCCount);
 		Array.Resize(ref NPC.ShimmeredTownNPCs, NPCCount);
 		Array.Resize(ref NPC.npcsFoundForCheckActive, NPCCount);
 		Array.Resize(ref Lang._npcNameCache, NPCCount);
@@ -183,6 +185,9 @@ public static class NPCLoader
 				// Register current language translation rather than vanilla text substitution so modder can see the {BiomeName} and {NPCName} usages. Might result in non-English values, but modder is expected to change the translation value anyway.
 				Language.GetOrRegister(fullKey, () => Language.Exists(oldKey) ? $"{{${oldKey}}}" : Language.GetTextValue(defaultValueKey));
 			}
+		}
+		if (NPCID.Sets.IsTownPet[npc.NPC.type]) {
+			Language.GetOrRegister(npc.GetLocalizationKey("TownNPCMood.NoHome"), () => Language.GetTextValue("TownNPCMood.NoHome"));
 		}
 	}
 
@@ -546,8 +551,6 @@ public static class NPCLoader
 		foreach (var g in HookOnKill.Enumerate(npc)) {
 			g.OnKill(npc);
 		}
-
-		blockLoot.Clear();
 	}
 
 	private static HookList HookModifyNPCLoot = AddHook<Action<NPC, NPCLoot>>(g => g.ModifyNPCLoot);
@@ -568,10 +571,16 @@ public static class NPCLoader
 		}
 	}
 
+	[Obsolete("BossLoot has now parameters to control the amount of potions and hearts.")]
 	public static void BossLoot(NPC npc, ref string name, ref int potionType)
 	{
 		npc.ModNPC?.BossLoot(ref name, ref potionType);
 		npc.ModNPC?.BossLoot(ref potionType);
+	}
+
+	public static void BossLoot(NPC npc, ref int potionType, ref int potionStack, ref int heartStack)
+	{
+		npc.ModNPC?.BossLoot(ref potionType, ref potionStack, ref heartStack);
 	}
 
 	private static HookList HookCanFallThroughPlatforms = AddHook<Func<NPC, bool?>>(g => g.CanFallThroughPlatforms);
@@ -1235,20 +1244,28 @@ public static class NPCLoader
 		}
 	}
 
-	public static void SetChatButtons(ref string button, ref string button2)
+	private static HookList HookRegisterChatButtons = AddHook<Action<NPC, NPCInteractionList>>(g => g.RegisterChatButtons);
+
+	public static void RegisterChatButtons(NPC npc, NPCInteractionList interactions)
 	{
-		Main.LocalPlayer.TalkNPC?.ModNPC?.SetChatButtons(ref button, ref button2);
+		npc.ModNPC?.RegisterChatButtons(interactions);
+
+		foreach (var g in HookRegisterChatButtons.Enumerate(npc)) {
+			g.RegisterChatButtons(npc, interactions);
+		}
 	}
 
-	private static HookList HookPreChatButtonClicked = AddHook<Func<NPC, bool, bool>>(g => g.PreChatButtonClicked);
+	private static HookList HookPreChatButtonClicked = AddHook<Func<NPC, NPCInteraction, bool>>(g => g.PreChatButtonClicked);
 
-	public static bool PreChatButtonClicked(bool firstButton)
+	public static bool PreChatButtonClicked(NPCInteraction interaction)
 	{
-		NPC npc = Main.LocalPlayer.TalkNPC;
+		NPC npc = interaction.TalkNPC;
+		if (npc == null) // Player is click buttons on a sign.
+			return true;
 
 		bool result = true;
 		foreach (var g in HookPreChatButtonClicked.Enumerate(npc)) {
-			result &= g.PreChatButtonClicked(npc, firstButton);
+			result &= g.PreChatButtonClicked(npc, interaction);
 		}
 
 		if (!result) {
@@ -1259,30 +1276,19 @@ public static class NPCLoader
 		return true;
 	}
 
-	private delegate void DelegateOnChatButtonClicked(NPC npc, bool firstButton);
+	private delegate void DelegateOnChatButtonClicked(NPC npc, NPCInteraction interaction);
 	private static HookList HookOnChatButtonClicked = AddHook<DelegateOnChatButtonClicked>(g => g.OnChatButtonClicked);
 
-	public static void OnChatButtonClicked(bool firstButton)
+	public static void OnChatButtonClicked(NPCInteraction interaction)
 	{
-		NPC npc = Main.LocalPlayer.TalkNPC;
-		string shopName = null;
+		NPC npc = interaction.TalkNPC;
+		if (npc == null) // Player is click buttons on a sign.
+			return;
 
-		if (npc.ModNPC != null) {
-			npc.ModNPC.OnChatButtonClicked(firstButton, ref shopName);
-			SoundEngine.PlaySound(SoundID.MenuTick);
-
-			if (shopName != null) {
-				// Copied from Main.OpenShop
-				Main.playerInventory = true;
-				Main.stackSplit = 9999;
-				Main.npcChatText = "";
-				Main.SetNPCShopIndex(1);
-				Main.instance.shop[Main.npcShop].SetupShop(NPCShopDatabase.GetShopName(npc.type, shopName), npc);
-			}
-		}
+		npc.ModNPC?.OnChatButtonClicked(interaction);
 
 		foreach (var g in HookOnChatButtonClicked.Enumerate(npc)) {
-			g.OnChatButtonClicked(npc, firstButton);
+			g.OnChatButtonClicked(npc, interaction);
 		}
 	}
 
@@ -1351,13 +1357,13 @@ public static class NPCLoader
 		}
 	}
 
-	private delegate void DelegateBuffTownNPC(ref float damageMult, ref int defense);
+	private delegate void DelegateBuffTownNPC(NPC npc, ref float damageMult, ref float attackSpeedMult, ref int defense, ref int maxLife);
 	private static HookList HookBuffTownNPC = AddHook<DelegateBuffTownNPC>(g => g.BuffTownNPC);
 
-	public static void BuffTownNPC(ref float damageMult, ref int defense)
+	public static void BuffTownNPC(NPC npc, ref float damageMult, ref float attackSpeedMult, ref int defense, ref int maxLife)
 	{
-		foreach (var g in HookBuffTownNPC.Enumerate()) {
-			g.BuffTownNPC(ref damageMult, ref defense);
+		foreach (var g in HookBuffTownNPC.Enumerate(npc)) {
+			g.BuffTownNPC(npc, ref damageMult, ref attackSpeedMult, ref defense, ref maxLife);
 		}
 	}
 

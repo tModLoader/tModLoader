@@ -19,7 +19,7 @@
  {
  	private class NPCDistanceByIndexComparator : IComparer<Tuple<int, float>>
  	{
-@@ -61,96 +_,386 @@
+@@ -61,96 +_,400 @@
  		public Rectangle GetBulletHitbox(int bulletIndex, Vector2 centerPoint) => Utils.CenteredRectangle(GetBulletPosition(bulletIndex, centerPoint), BulletSize);
  	}
  
@@ -284,7 +284,13 @@
 +	/// <br/> Defaults to <see langword="false"/>.
 +	/// </summary>
  	public bool ignoreWater;
++	/// <summary>
++	/// If true, this projectile is a pet projectile drawing on the player select screen.
++	/// </summary>
  	public bool isAPreviewDummy;
++	/// <summary>
++	/// If true, this projectile is a held projectile drawing on a <see cref="TileID.DisplayDoll"/>.
++	/// </summary>
  	public bool isAPreviewDisplayDoll;
  	public MinionSpawnInfo MinionSpawnInfo;
 +	/// <summary>
@@ -400,7 +406,15 @@
 +	/// </summary>
  	public int idStaticNPCHitCooldown = -1;
  	public int bannerIdToRespondTo;
++	/// <summary>
++	/// The tag effect this projectile will apply to NPCs.
++	/// <para/> Automatically set to the item type that spawned this projectile if <see cref="ItemID.Sets.UniqueTagEffects"/> is populated. Inherited from parent projectile spawning other projectiles.
++	/// </summary>
  	public int tagEffectType;
++	/// <summary>
++	/// Additional tag damage to be added to the normal tag damage of this projectile.
++	/// <para/> Automatically set to <see cref="Item.bonusTagDamage"/> of the item that spawned this projectile. Inherited from parent projectile spawning other projectiles.
++	/// </summary>
  	public int bonusTagDamage;
 -	public int armorPenetration;
 +	private int armorPenetration; // Changed to private, TML provides a public ArmorPenetration wrapper
@@ -874,7 +888,7 @@
  
  			int num11 = type;
  			if ((uint)(num11 - 688) <= 2u) {
-@@ -10664,9 +_,16 @@
+@@ -10664,9 +_,15 @@
  			}
  		}
  
@@ -883,11 +897,10 @@
 +		modifiers.SourceDamage *= num4 / 1000;
 +		// set this just so that summon procs which scale with this value can spawn correctly
 +		//float damageDealt = modifiers.SourceDamage.ApplyTo(damage);
-+		Main.player[owner].TagEffectState.ModifyHit(this, targetNPC, ref modifiers, ref crit);
++		Main.player[owner].TagEffectState.ModifyHit(this, targetNPC, ref modifiers);
 +		/*
  		int num12 = ((!ownedBySomeone) ? Main.DamageVar(damageDealt) : Main.DamageVar(damageDealt, Main.player[owner].luck));
 +		*/
-+		// modifiers.FlatBonusDamage += num6; // TODO: Handled now by TagEffectState.ModifyHit maybe?
 +		float luck = flag ? Main.player[owner].luck : 0f;
 +		float num12 = 1000; // to reduce patches, set to 1000, and then turn it into a multiplier later
  		if (type == 1002)
@@ -978,7 +991,7 @@
  		switch (type) {
  			case 697:
  			case 699:
-@@ -11198,15 +_,33 @@
+@@ -11198,18 +_,39 @@
  		if (type == 22)
  			num27 = ((Main.player[owner].Center.X < targetNPC.Center.X) ? 1 : (-1));
  
@@ -1012,7 +1025,13 @@
 +		if (ownedBySomeone && Main.player[owner].accDreamCatcher && !targetNPC.HideStrikeDamage)
  			Main.player[owner].addDPS(num28);
  
++		/*
  		Main.player[owner].TagEffectState.OnHit(this, targetNPC, num4);
++		*/
++		Main.player[owner].TagEffectState.OnHit(this, targetNPC, strike);
+ 		bool flag8 = !targetNPC.immortal;
+ 		bool flag9 = num28 > 0 && targetNPC.lifeMax > 5 && friendly && !hostile && aiStyle != 59;
+ 		bool flag10 = false;
 @@ -11353,10 +_,13 @@
  			NewProjectile(GetProjectileSource_FromThis(), targetNPC.Center.X, targetNPC.Center.Y, targetNPC.velocity.X, targetNPC.velocity.Y, 289, 0, 0f, owner);
  
@@ -1384,7 +1403,7 @@
 +				if (sonarPopupText >= 0)
 +					PopupText.popupText[sonarPopupText].NoStack = true;
 +				PopupText.AssignAsSonarText(sonarPopupText);
-+				localAI[2] = sonarPopupText + 1;
++				ai[2] = sonarPopupText + 1;
  				SoundEngine.PlaySound(SoundID.SonarPotion, position);
  			}
  
@@ -1467,7 +1486,31 @@
  			if (timeLeft > 3000)
  				timeLeft -= 60;
  
-@@ -18201,6 +_,11 @@
+@@ -17990,6 +_,16 @@
+ 		if ((uint)(pose2 - 4) <= 4u)
+ 			flag = true;
+ 
++		int originalType = this.type;
++		int aiType = this.type;
++		if (ModProjectile?.AIType > 0) {
++			aiType = ModProjectile.AIType;
++		}
++		int aiStyle = this.aiStyle;
++		if (!ProjectileLoader.DisplayDollSettings(this, doll, pose, ref aiStyle, ref aiType))
++			goto SkipVanillaLogic;
++		this.type = aiType;
++
+ 		switch (aiStyle) {
+ 			default:
+ 				botherDrawing = false;
+@@ -18197,10 +_,18 @@
+ 				break;
+ 			}
+ 		}
++
++		SkipVanillaLogic:
++		this.type = originalType; // AI_DisplayDoll restore original projectile type.
+ 	}
  
  	public void AI()
  	{
@@ -1479,6 +1522,15 @@
  		if (aiStyle == 1) {
  			AI_001();
  		}
+@@ -19072,7 +_,7 @@
+ 							treeHeightAddon = 15;
+ 
+ 						Tile tile = Main.tile[num57, num58];
+-						if (tile.type >= 0 && tile.type < TileID.Count && TileID.Sets.CommonSapling[tile.type]) {
++						if (tile.type >= 0 && TileID.Sets.CommonSapling[tile.type]) {
+ 							if (Main.remixWorld && num58 >= (int)Main.worldSurface - 1 && num58 < Main.maxTilesY - 20)
+ 								WorldGen.AttemptToGrowTreeFromSapling(num57, num58, underground: false, treeHeightAddon, ignoreWalls: true);
+ 
 @@ -26518,7 +_,7 @@
  					int num816 = (int)base.Center.Y / 16;
  					for (int num817 = num815 - num814; num817 <= num815 + num814; num817++) {
@@ -1895,8 +1947,8 @@
  			PopupText.ClearSonarText();
 -			if (ai[1] > 0f && ai[1] < (float)ItemID.Count)
 +			// Fix #4042 by referencing corresponding sonar popupText directly
-+			if (localAI[2] >= 1) {
-+				int customSonarText = (int)(localAI[2] - 1);
++			if (ai[2] >= 1) {
++				int customSonarText = (int)(ai[2] - 1);
 +				if (PopupText.popupText[customSonarText].sonar) {
 +					PopupText.popupText[customSonarText].active = false;
 +				}

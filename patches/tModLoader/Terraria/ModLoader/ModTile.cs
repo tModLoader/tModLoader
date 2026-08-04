@@ -154,6 +154,25 @@ public abstract class ModTile : ModBlockType
 	}
 
 	/// <summary>
+	/// Called when a tree is attempting to grow from a sapling tile (Assuming <see cref="TileID.Sets.CommonSapling"/> is set for this tile type) at this location. This can be either a natural growth from code calling <see cref="WorldGen.AttemptToGrowTreeFromSapling(int, int, bool, int, bool)"/> in <see cref="ModBlockType.RandomUpdate(int, int)"/> or unnaturally, such as when fertilizer (<see cref="ItemID.Fertilizer"/> or <see cref="ItemID.SuperFertilizer"/>) is used on this tile.
+	/// <para/> <paramref name="treeHeightAddon"/> and <paramref name="ignoreWalls"/> are set based on how the tree is being grown. For example, <see cref="ItemID.SuperFertilizer"/> will set <paramref name="treeHeightAddon"/> to 15 and <paramref name="ignoreWalls"/> to true, while natural growth will set <paramref name="treeHeightAddon"/> to 0 and <paramref name="ignoreWalls"/> to false.
+	/// <para/> By default, attempts to grow a standard tree via <see cref="WorldGen.GrowTree"/> and then potentially spawns leaves if a player is nearby, matching vanilla behavior. Override to use a different growth method (e.g. <see cref="WorldGen.GrowPalmTree"/>) or to add custom logic.
+	/// <para/> Return <see langword="true"/> if a tree was grown, <see langword="false"/> otherwise.
+	/// </summary>
+	/// <param name="i">The x position in tile coordinates.</param>
+	/// <param name="j">The y position in tile coordinates.</param>
+	/// <param name="underground">If the location should be considered underground or not.</param>
+	/// <param name="treeHeightAddon">The additional height for the tree. Will be 0 if <see cref="ItemID.Fertilizer"/> is used and 15 when <see cref="ItemID.SuperFertilizer"/> is used.</param>
+	/// <param name="ignoreWalls">If wall restrictions should be ignored.</param>
+	public virtual bool GrowSapling(int i, int j, bool underground, int treeHeightAddon, bool ignoreWalls)
+	{
+		bool success = WorldGen.GrowTree(i, j, treeHeightAddon, ignoreWalls);
+		if (success && WorldGen.PlayerLOS(i, j))
+			WorldGen.TreeGrowFXCheck(i, j);
+		return success;
+	}
+
+	/// <summary>
 	/// Whether or not the smart interact function can select this tile. Useful for things like chests. Defaults to false.
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
@@ -314,16 +333,17 @@ public abstract class ModTile : ModBlockType
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>
-	/// <param name="player">Main.LocalPlayer</param>
+	/// <param name="player">The player viewing the area. <c>Main.SceneMetrics.PerspectivePlayer</c></param>
 	public virtual bool IsTileDangerous(int i, int j, Player player)
 	{
 		return false;
 	}
 
 	/// <summary>
-	/// Allows you to determine whether this tile glows <paramref name="sightColor"/> while the local player has the <see href="https://terraria.wiki.gg/wiki/Biome_Sight_Potion">Biome Sight buff</see>.
-	/// <br/>Return true and assign to <paramref name="sightColor"/> to allow this tile to glow.
-	/// <br/>This is only called on the local client.
+	/// Allows you to determine whether this tile glows <paramref name="sightColor"/> while the player has the <see href="https://terraria.wiki.gg/wiki/Biome_Sight_Potion">Biome Sight buff</see>.
+	/// <para/> The player isn't necessarily the local player, but the player being used to view the area (such as when spectating), <c>Main.SceneMetrics.PerspectivePlayer</c>.
+	/// <para/> Return true and assign to <paramref name="sightColor"/> to allow this tile to glow.
+	/// <para/> This is only called on the local client.
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>
@@ -334,8 +354,9 @@ public abstract class ModTile : ModBlockType
 	}
 
 	/// <summary>
-	/// Allows you to customize whether this tile can glow yellow while having the Spelunker buff, and is also detected by various pets.
-	/// <br/>This is only called if Main.tileSpelunker[type] is false.
+	/// Allows you to customize whether this tile can glow yellow while the player has the Spelunker buff, and is also detected by various pets.
+	/// <para/> The player isn't necessarily the local player, but the player being used to view the area (such as when spectating), <c>Main.SceneMetrics.PerspectivePlayer</c>.
+	/// <para/> This is only called if Main.tileSpelunker[type] is false.
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>
@@ -760,7 +781,7 @@ public abstract class ModTile : ModBlockType
 
 	/// <summary>
 	/// Use to populate <paramref name="tileFlameData"/> with flame drawing parameters.
-	/// <para/> Currently only supported for tiles drawn using <see cref="GameContent.Drawing.TileDrawing.AddSpecialPoint"/> with <see cref="GameContent.Drawing.TileDrawing.TileCounterType.MultiTileVine"/>, other tiles should draw flames manually in <see cref="ModBlockType.PostDraw(int, int, SpriteBatch)"/> as shown in <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/Tiles/ExampleLamp.cs#L124">ExampleLamp.cs</see>.
+	/// <para/> Currently only supported for tiles drawn using <see cref="GameContent.Drawing.TileDrawing.AddSpecialPoint"/> with <see cref="GameContent.Drawing.TileDrawing.TileCounterType.MultiTileVine"/>, other tiles should draw flames manually by calling <c>Main.instance.TilesRenderer.AddSpecialLegacyPoint</c> in <see cref="DrawEffects"/> and drawing the flame in <see cref="SpecialDraw(int, int, SpriteBatch)"/>, as shown in <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/Tiles/ExampleLamp.cs">ExampleLamp.cs</see>.
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>

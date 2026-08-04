@@ -125,7 +125,7 @@
  				ReadAccessoryVisibility(reader, player18.hideVisibleAccessory);
  				player18.hideMisc = reader.ReadByte();
  				player18.hairColor = reader.ReadRGB();
-@@ -325,9 +_,11 @@
+@@ -325,9 +_,12 @@
  			case 5: {
  				int num35 = reader.ReadByte();
  				int num36 = reader.ReadInt16();
@@ -134,14 +134,14 @@
  				int prefixWeWant2 = reader.ReadByte();
  				int type4 = reader.ReadInt16();
 +				*/
++				Item item = ItemIO.Receive(reader, readStack: true);
  				BitsByte bitsByte3 = reader.ReadByte();
  				bool favorited = bitsByte3[0];
  				bool flag2 = bitsByte3[1];
-@@ -341,10 +_,13 @@
+@@ -341,10 +_,12 @@
  				lock (player2) {
  					PlayerItemSlotID.SlotReference slot = new PlayerItemSlotID.SlotReference(player2, num36);
  					PlayerItemSlotID.SlotReference slotReference = new PlayerItemSlotID.SlotReference(Main.clientPlayer, num36);
-+					Item item = ItemIO.Receive(reader, readStack: true);
 +					/*
  					Item item = new Item();
  					item.SetDefaults(type4);
@@ -624,6 +624,47 @@
  					break;
  				}
  			}
+@@ -2910,7 +_,7 @@
+ 			}
+ 			case 94: {
+ 				string text6 = reader.ReadString();
+-				reader.ReadInt32();
++				int idincommand = reader.ReadInt32();
+ 				int num254 = (int)reader.ReadSingle();
+ 				reader.ReadSingle();
+ 				if (DebugOptions.enableDebugCommands) {
+@@ -2921,6 +_,31 @@
+ 						DebugOptions.Shared_ServerPing = num254;
+ 						DebugNetworkStream.Latency = (uint)(num254 / 2);
+ 					}
++					if (text6 == "/quickload-clientprobe") {
++						if (Main.netMode == 2)
++							NetMessage.SendData(MessageID.DevCommands, -1, whoAmI, NetworkText.FromLiteral(text6), whoAmI);
++						else if (Netplay.ServerIPText == "127.0.0.1")
++							NetMessage.SendData(MessageID.DevCommands, -1, -1, NetworkText.FromLiteral("/quickload-clientresp " + QuickLoad.Serialize(new QuickLoad.JoinWorld().WithCurrentState())), idincommand);
++
++						break;
++					}
++					if (text6.StartsWith("/quickload-clientresp ")) {
++						if (Main.netMode == 2) {
++							NetMessage.SendData(MessageID.DevCommands, idincommand, -1, NetworkText.FromLiteral(text6));
++							break;
++						}
++
++						var json = text6.Substring("/quickload-clientresp ".Length);
++						var config = (QuickLoad.JoinWorld)QuickLoad.Deserialize(json);
++						QuickLoad hostConfig;
++						if (QuickLoad.TryRead(out hostConfig) && hostConfig is QuickLoad.JoinWorld) {
++							var hostJoinConfig = (QuickLoad.JoinWorld)hostConfig;
++							hostJoinConfig.ExtraClients.Add(config);
++							QuickLoad.Set(hostJoinConfig);
++							ChatHelper.DisplayMessage(NetworkText.FromLiteral("/quickload added " + Path.GetFileName(config.PlayerPath)), new Color(250, 250, 0), Main.maxPlayers);
++						}
++						break;
++					}
+ 				}
+ 
+ 				break;
 @@ -3227,7 +_,16 @@
  				break;
  			case 117: {
@@ -748,6 +789,22 @@
  				float torchLuck = reader.ReadSingle();
  				byte luckPotion = reader.ReadByte();
  				bool hasGardenGnomeNearby = reader.ReadBoolean();
+@@ -3612,10 +_,15 @@
+ 				if (Main.netMode == 2) {
+ 					short x4 = reader.ReadInt16();
+ 					int y4 = reader.ReadInt16();
++					Item item = ItemIO.Receive(reader);
++					int stack = reader.Read7BitEncodedInt();
++					/*
+ 					int type10 = reader.ReadInt16();
+ 					int prefix2 = reader.ReadByte();
+ 					int stack4 = reader.ReadInt16();
+ 					TEDeadCellsDisplayJar.TryPlacing(x4, y4, type10, prefix2, stack4);
++					*/
++					TEDeadCellsDisplayJar.TryPlacing(x4, y4, item, stack);
+ 				}
+ 				break;
+ 			case 150: {
 @@ -3652,7 +_,10 @@
  					Player player3 = Main.player[num39];
  					Item item2 = player3.inventory[player3.selectedItem];

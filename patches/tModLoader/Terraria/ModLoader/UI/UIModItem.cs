@@ -94,24 +94,8 @@ internal class UIModItem : UIPanel
 		base.OnInitialize();
 
 		string text = _mod.DisplayName + " v" + _mod.modFile.Version;
-		var modIcon = Main.Assets.Request<Texture2D>("Images/UI/DefaultResourcePackIcon", AssetRequestMode.ImmediateLoad);
+		var modIcon = ModLoader.GetModIcon(_mod.modFile) ?? Mod.PlaceholderModIcon;
 		_modIconAdjust += 85;
-
-		if (_mod.modFile.HasFile("icon.png")) {
-			try {
-				using (_mod.modFile.Open())
-				using (var s = _mod.modFile.GetStream("icon.png")) {
-					var iconTexture = Main.Assets.CreateUntracked<Texture2D>(s, ".png");
-
-					if (iconTexture.Width() == 80 && iconTexture.Height() == 80) {
-						modIcon = iconTexture;
-					}
-				}
-			}
-			catch (Exception e) {
-				Logging.tML.Error("Unknown error", e);
-			}
-		}
 
 		_modIcon = new UIImage(modIcon) {
 			Left = { Percent = 0f },
@@ -624,7 +608,7 @@ internal class UIModItem : UIPanel
 	internal void ShowMoreInfo(UIMouseEvent evt, UIElement listeningElement)
 	{
 		SoundEngine.PlaySound(SoundID.MenuOpen);
-		Interface.modInfo.Show(ModName, _mod.DisplayName, Interface.modsMenuID, _mod, _mod.properties.description, _mod.properties.homepage);
+		Interface.modInfo.Show(ModName, _mod.DisplayName, Interface.modsMenuID, _mod, _mod.GetDescription(), _mod.properties.homepage);
 	}
 
 	internal void OpenConfig(UIMouseEvent evt, UIElement listeningElement)

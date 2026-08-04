@@ -45,36 +45,6 @@
  	{
  		Player player = Main.player[Main.myPlayer];
  		if (inv[slot].type <= 0)
-@@ -1109,7 +_,10 @@
- 
- 					int num = Main.superFastStack + 1;
- 					for (int i = 0; i < num; i++) {
-+						/*
- 						if ((Main.mouseItem.IsTheSameAs(inv[slot]) || Main.mouseItem.type == 0) && (Main.mouseItem.stack < Main.mouseItem.maxStack || Main.mouseItem.type == 0)) {
-+						*/
-+						if ((Main.mouseItem.IsTheSameAs(inv[slot]) && ItemLoader.CanStack(Main.mouseItem, inv[slot]) || Main.mouseItem.type == 0) && (Main.mouseItem.stack < Main.mouseItem.maxStack || Main.mouseItem.type == 0)) {
- 							PickupItemIntoMouse(inv, context, slot, player);
- 							SoundEngine.PlaySound(12);
- 							RefreshStackSplitCooldown();
-@@ -1268,12 +_,17 @@
- 	private static void TryPickupDyeToCursor(int context, Item[] inv, int slot, Player player)
- 	{
- 		bool flag = false;
-+
-+		/*
- 		if (!flag && ((Main.mouseItem.stack < Main.mouseItem.maxStack && Main.mouseItem.type > 0) || Main.mouseItem.IsAir) && inv[slot].type > 0 && (Main.mouseItem.type == inv[slot].type || Main.mouseItem.IsAir)) {
-+		*/
-+		if (!flag && ((Main.mouseItem.stack < Main.mouseItem.maxStack && Main.mouseItem.type > 0 && ItemLoader.CanStack(Main.mouseItem, inv[slot])) || Main.mouseItem.IsAir) && inv[slot].type > 0 && (Main.mouseItem.type == inv[slot].type || Main.mouseItem.IsAir)) {
- 			flag = true;
-+
- 			if (Main.mouseItem.IsAir)
- 				Main.mouseItem = inv[slot].Clone();
- 			else
--				Main.mouseItem.stack++;
-+				ItemLoader.StackItems(Main.mouseItem, inv[slot], out _); // Main.mouseItem.stack++;
- 
- 			inv[slot].SetDefaults();
- 			SoundEngine.PlaySound(7);
 @@ -2166,6 +_,7 @@
  		return true;
  	}

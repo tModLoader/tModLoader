@@ -12,6 +12,22 @@
  using Terraria.Net;
  using Terraria.Net.Sockets;
  using Terraria.Social;
+@@ -33,7 +_,14 @@
+ 	public static string ServerPassword = "";
+ 	public static RemoteClient[] Clients = new RemoteClient[256];
+ 	public static RemoteServer Connection = new RemoteServer();
++	private static IPAddress _serverIP;
+-	public static IPAddress ServerIP;
++	public static IPAddress ServerIP {
++		get => _serverIP;
++		set {
++			IsHostAndPlay = false;
++			_serverIP = value;
++		}
++	}
+ 	public static string ServerIPText = "";
+ 	public static bool IsHostAndPlay;
+ 	public static string HostToken;
 @@ -82,6 +_,12 @@
  		Main.ActiveNetDiagnosticsUI.Reset();
  	}

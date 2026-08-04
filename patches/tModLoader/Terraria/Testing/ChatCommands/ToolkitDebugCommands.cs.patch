@@ -1,0 +1,35 @@
+--- src/TerrariaNetCore/Terraria/Testing/ChatCommands/ToolkitDebugCommands.cs
++++ src/tModLoader/Terraria/Testing/ChatCommands/ToolkitDebugCommands.cs
+@@ -3,6 +_,7 @@
+ using System.Diagnostics;
+ using System.IO;
+ using Microsoft.Xna.Framework;
++using ReLogic.OS;
+ using Terraria.Chat;
+ using Terraria.GameContent.UI.States;
+ using Terraria.ID;
+@@ -112,6 +_,24 @@
+ 		Main.ThrottleWhenInactive = !Main.ThrottleWhenInactive;
+ 		Main.SaveSettings();
+ 		message.Reply("Inactive CPU throttling " + (Main.ThrottleWhenInactive ? "enabled" : "disabled"));
++		return true;
++	}
++
++	[DebugCommand("togglecore0pinning", "Toggles core 0 unpinning on load (this setting is saved).", CommandRequirement.Client)]
++	public static bool ToggleCore0Pinning(DebugMessage message)
++	{
++		if (!Platform.IsWindows) {
++			message.ReplyError("Only supported on windows");
++			return false;
++		}
++
++		Main.UnpinFromCore0 ^= true;
++		Main.SaveSettings();
++
++		message.Reply("Core 0 pinning " + (!Main.UnpinFromCore0 ? "enabled" : "disabled"));
++		if (Main.UnpinFromCore0)
++			WindowsPerformanceDiagnostics.UnpinFromCore0();
++
+ 		return true;
+ 	}
+ 

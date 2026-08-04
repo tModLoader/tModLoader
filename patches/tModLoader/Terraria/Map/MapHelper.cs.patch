@@ -68,6 +68,15 @@
  			int wall = tileCache.wall;
  			baseType = wallLookup[wall];
  			newColor = tileCache.wallColor();
+@@ -1916,7 +_,7 @@
+ 		if (j < Main.UnderworldLayer) {
+ 			byte b = 0;
+ 			if (!WorldGen.generatingWorld) {
+-				if (!sceneArea.Contains(i, j)) {
++				if (!sceneArea.Contains(i, j) && WorldGen.InWorld(i, j, WorldMap.BlackEdgeWidth)) { // TML: Restore InWorld check
+ 					for (int k = i - 36; k <= i + 30; k += 10) {
+ 						for (int l = j - 36; l <= j + 30; l += 10) {
+ 							int type = Main.Map[k, l].Type;
 @@ -2716,7 +_,10 @@
  					byte b6 = 0;
  					int num7;

@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using ReLogic.OS;
 using Steamworks;
+using Terraria.DataStructures;
 using Terraria.GameContent.UI.States;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -27,10 +28,12 @@ public static class SteamedWraps
 	internal static bool SteamAvailable { get; set; }
 
 	// Used to get the right token for fetching/setting localized descriptions from/to Steam Workshop
-	internal static string GetCurrentSteamLangKey()
+	internal static string GetCurrentSteamLangKey() => GetSteamLangKey(LanguageManager.Instance.ActiveCulture);
+
+	internal static string GetSteamLangKey(GameCulture culture)
 	{
 		//TODO: Unhardcode this whenever the language roster is unhardcoded for modding.
-		return (GameCulture.CultureName)LanguageManager.Instance.ActiveCulture.LegacyId switch {
+		return (GameCulture.CultureName)culture.LegacyId switch {
 			GameCulture.CultureName.German => "german",
 			GameCulture.CultureName.Italian => "italian",
 			GameCulture.CultureName.French => "french",
@@ -592,7 +595,10 @@ public static class SteamedWraps
 
 	public static bool DoesWorkshopItemNeedUpdate(PublishedFileId_t publishId)
 	{
-		var currState = SteamedWraps.GetWorkshopItemState(publishId);
+		if (!SteamAvailable)
+			return false;
+
+		var currState = GetWorkshopItemState(publishId);
 
 		return (currState & (uint)EItemState.k_EItemStateNeedsUpdate) != 0 ||
 			(currState == (uint)EItemState.k_EItemStateNone) ||
@@ -750,6 +756,28 @@ public static class SteamedWraps
 		SteamUGC.SetItemUpdateLanguage(uGCUpdateHandle_t, GetCurrentSteamLangKey());
 	}
 
+	internal static void SubmitLocalizedDescriptionUpdates(PublishedFileId_t publishedFileID, List<(string steamLangKey, string description, string displayName)> localizedDescriptions, string changeNotes)
+	{
+		if (localizedDescriptions == null || localizedDescriptions.Count == 0)
+			return;
+
+		foreach (var set in localizedDescriptions) {
+			if (string.IsNullOrWhiteSpace(set.steamLangKey) || string.IsNullOrWhiteSpace(set.description) || string.IsNullOrEmpty(set.displayName))
+				continue;
+
+			Logging.tML.Info($"Submitting localized Workshop description and title for {set.steamLangKey}");
+			var updateHandle = SteamUGC.StartItemUpdate(SteamUtils.GetAppID(), publishedFileID);
+
+			SteamUGC.SetItemDescription(updateHandle, set.description);
+			SteamUGC.SetItemTitle(updateHandle, set.displayName);
+
+			SteamUGC.SetItemUpdateLanguage(updateHandle, set.steamLangKey);
+			SteamUGC.SubmitItemUpdate(updateHandle, null);
+		}
+
+		Logging.tML.Info("Localized Workshop descriptions updated");
+	}
+
 	internal static void ModifyUgcUpdateHandleTModLoader(ref UGCUpdateHandle_t uGCUpdateHandle_t, WorkshopHelper.UGCBased.SteamWorkshopItem _entryData, PublishedFileId_t _publishedFileID)
 	{
 		if (!SteamClient)
@@ -797,10 +825,9 @@ public static class SteamedWraps
 		};
 
 		foreach (var descriptor in descriptorLookup) {
+			// We only allow setting from in-game in order to preserve moderator efforts
 			if (_entryData.Tags.Contains(descriptor.internalName))
-				SteamUGC.AddContentDescriptor(uGCUpdateHandle_t, EUGCContentDescriptorID.k_EUGCContentDescriptor_FrequentViolenceOrGore);
-			else
-				SteamUGC.RemoveContentDescriptor(uGCUpdateHandle_t, EUGCContentDescriptorID.k_EUGCContentDescriptor_FrequentViolenceOrGore);
+				SteamUGC.AddContentDescriptor(uGCUpdateHandle_t, descriptor.flag);
 		}
 	}
 

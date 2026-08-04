@@ -447,16 +447,21 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	{
 	}
 
-	[Obsolete("Use BossLoot(ref int potionType) instead. The name can be changed by modifying DeathMessage")]
+	[Obsolete("Use BossLoot(ref int potionType) instead. The name can be changed by modifying DeathMessage", error: true)]
 	public virtual void BossLoot(ref string name, ref int potionType)
 	{
 	}
 
+	[Obsolete("BossLoot has now parameters to control the amount of potions and hearts.", error: true)]
+	public virtual void BossLoot(ref int potionType)
+	{
+	}
+
 	/// <summary>
-	/// Allows you to customize what happens when this boss dies, as well as letting you modify the type of potion it drops.
+	/// Allows you to customize what happens when this boss dies, as well as letting you modify the type of potion it drops, the amount of potions, and the amount of hearts.
 	/// <para/> Called in single player or on the server only.
 	/// </summary>
-	public virtual void BossLoot(ref int potionType)
+	public virtual void BossLoot(ref int potionType, ref int potionStack, ref int heartStack)
 	{
 	}
 
@@ -787,6 +792,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	/// <para/> Methods like <see cref="WorldGen.Housing_GetTestedRoomBounds(out int, out int, out int, out int)"/> and <see cref="WorldGen.CountTileTypesInArea(int[], int, int, int, int)"/> can facilitate implementing specific checks.
 	/// <para/> Return false to prevent the npc from spawning due to failed condition checks.
 	/// <para/> Called on the server and clients.
+	/// <para/> The hint text explaining what a valid house is in the Housing button can be customized by adding the localization key <c>Mods.YourModName.NPCs.YourNPCName.HousingText.HousingRequirements</c>
 	/// </summary>
 	public virtual bool CheckConditions(int left, int right, int top, int bottom)
 	{
@@ -827,23 +833,27 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Allows you to set the text for the buttons that appear on this NPC's chat window. A parameter left as an empty string will not be included as a button on the chat window.
-	/// <br/><br/> The value <c>Language.GetTextValue("LegacyInterface.28")</c> should be used for the "Shop" button.
-	/// <br/><br/> Called on the local client only.
+	/// Allows you to register chat buttons for this NPC.
+	/// <br/>Use <paramref name="interactions"/> to register new buttons.
+	/// <br/><br/> The "Close", "Happiness", and "Housing" buttons will automatically be registered before the buttons registered here.
+	/// <br/><br/> An NPC can only have 32 chat buttons shown at one time.
 	/// </summary>
-	/// <param name="button"></param>
-	/// <param name="button2"></param>
-	public virtual void SetChatButtons(ref string button, ref string button2)
+	/// <param name="interactions">Use this with one of the methods to register new buttons.
+	/// <para>Use <c>interactions.Prepend</c>, <c>interactions.Append</c>,
+	/// <br/><c>interactions.InsertAfter</c>, or <c>interactions.InsertBefore</c></para>
+	/// <br/>The Close, Happiness, Housing, and Pet buttons are already predefined and can be used with <see cref="NPCInteractionDatabase.CloseButton"/>, etc.
+	/// <para>Example: <c>interactions.InsertBefore(NPCInteractions.Shop(), NPCInteractionDatabase.CloseButton)</c></para>
+	/// </param>
+	public virtual void RegisterChatButtons(NPCInteractionList interactions)
 	{
 	}
 
 	/// <summary>
-	/// Allows you to make something happen whenever a button is clicked on this NPC's chat window. The firstButton parameter tells whether the first button or second button (button and button2 from SetChatButtons) was clicked. Set the shopName parameter to "Shop" to open this NPC's shop.
+	/// Allows you to make something happen whenever a button is clicked on this NPC's chat window.
 	/// <para/> Called on the local client only.
 	/// </summary>
-	/// <param name="firstButton"></param>
-	/// <param name="shopName"></param>
-	public virtual void OnChatButtonClicked(bool firstButton, ref string shopName)
+	/// <param name="interaction">The type of interaction that was clicked.</param>
+	public virtual void OnChatButtonClicked(NPCInteraction interaction)
 	{
 	}
 

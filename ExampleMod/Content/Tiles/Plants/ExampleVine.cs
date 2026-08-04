@@ -68,8 +68,8 @@ namespace ExampleMod.Content.Tiles.Plants
 		}
 
 		// Random growth behavior:
-		public override void RandomUpdate(int i, int j, int type) {
-			if (j >= Main.worldSurface - 1) {
+		public override void RandomUpdate(int i, int j, int type, bool underground) {
+			if (underground) {
 				return; // ExampleVine only grows above ground
 			}
 
