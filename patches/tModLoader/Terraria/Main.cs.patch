@@ -92,6 +92,14 @@
  	public static UserInterface InGameUI = new UserInterface();
  	private static Action _pendingCharacterSelect;
  	public static bool drawBackGore;
+@@ -399,6 +_,7 @@
+ 	public static bool drawBetterDebug;
+ 	public static bool betterDebugRelease;
+ 	public static bool renderNow;
++	[Obsolete("Always false in TML")]
+ 	public static bool drawToScreen;
+ 	public static bool targetSet;
+ 	public static int mouseX;
 @@ -408,7 +_,15 @@
  	public static CraftingUI craftingUI = new CraftingUI();
  	public static BannerClaimingUI bannerUI = new BannerClaimingUI();
@@ -1006,8 +1014,12 @@
  		}
  	}
  
-@@ -2211,9 +_,10 @@
+@@ -2209,11 +_,14 @@
+ 		}
+ 	}
  
++
++	[Obsolete("Always true in TML")]
  	public static bool RenderTargetsRequired {
  		get {
 +			/*
