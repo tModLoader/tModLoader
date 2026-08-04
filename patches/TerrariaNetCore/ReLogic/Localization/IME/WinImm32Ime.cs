@@ -34,6 +34,7 @@ internal class WinImm32Ime : PlatformIme, IMessageFilter
 			if (_isCandDirty) {
 				UpdateCandidateList();
 			}
+
 			return Math.Min((uint)_candList.Length - _candPageStart, _candPageSize);
 		}
 	}
@@ -67,17 +68,18 @@ internal class WinImm32Ime : PlatformIme, IMessageFilter
 		}
 	}
 
-	private string GetCompositionString()
+	private string GetCompositionString(uint dwIndex)
 	{
 		IntPtr hImc = NativeMethods.ImmGetContext(_hWnd);
 		try {
-			int size = NativeMethods.ImmGetCompositionString(hImc, Imm.GCS_COMPSTR, ref MemoryMarshal.GetReference(Span<byte>.Empty), 0);
+			int size = NativeMethods.ImmGetCompositionString(hImc, dwIndex,
+				ref MemoryMarshal.GetReference(Span<byte>.Empty), 0);
 			if (size == 0) {
 				return "";
 			}
 
 			Span<byte> buf = stackalloc byte[size];
-			NativeMethods.ImmGetCompositionString(hImc, Imm.GCS_COMPSTR, ref MemoryMarshal.GetReference(buf), size);
+			NativeMethods.ImmGetCompositionString(hImc, dwIndex, ref MemoryMarshal.GetReference(buf), size);
 
 			return Encoding.Unicode.GetString(buf.ToArray());
 		}
@@ -118,6 +120,7 @@ internal class WinImm32Ime : PlatformIme, IMessageFilter
 					if (buf[end] == 0 && buf[end + 1] == 0) {
 						break;
 					}
+
 					end += 2;
 				}
 
@@ -204,9 +207,19 @@ internal class WinImm32Ime : PlatformIme, IMessageFilter
 				return true;
 
 			case Msg.WM_IME_COMPOSITION:
-				_isCandDirty = true;
-				_compString = GetCompositionString();
-				break;
+				if ((message.LParam.ToInt32() & Imm.GCS_RESULTSTR) != 0) {
+					var resultString = GetCompositionString(Imm.GCS_RESULTSTR);
+					foreach (var c in resultString) {
+						OnKeyPress(c);
+					}
+				}
+
+				if ((message.LParam.ToInt32() & Imm.GCS_COMPSTR) != 0) {
+					_compString = GetCompositionString(Imm.GCS_COMPSTR);
+					_isCandDirty = true;
+				}
+
+				return true;
 
 			case Msg.WM_IME_ENDCOMPOSITION:
 				_compString = "";
@@ -218,14 +231,14 @@ internal class WinImm32Ime : PlatformIme, IMessageFilter
 					case Imm.IMN_OPENCANDIDATE:
 					case Imm.IMN_CHANGECANDIDATE:
 						_isCandDirty = true;
-						return true;
+						break;
 
 					case Imm.IMN_CLOSECANDIDATE:
 						ClearCandidateList();
-						return true;
+						break;
 				}
 
-				break;
+				return true;
 
 			case Msg.WM_CHAR:
 				OnKeyPress((char)message.WParam.ToInt32());
