@@ -13,7 +13,7 @@
  {
  	private struct Condition
  	{
-@@ -14,29 +_,43 @@
+@@ -14,29 +_,42 @@
  	}
  
  	private readonly string _original;
@@ -27,7 +27,6 @@
  	private readonly StringBuilder _formatBuffer = new StringBuilder();
 +	*/
 +	private readonly CompositeText _compositeText; // TML added, replacement for _format and _formatBuffer
-+	private readonly int _positionalArgCount; // TML added, positional args occupy slots [0, _positionalArgCount), followed by named variables
 +
  	private static readonly Regex _substitutionRegex = new Regex("{(\\?!?)?([a-zA-Z][\\w\\.]*)}", RegexOptions.Compiled);
  
@@ -41,7 +40,7 @@
 +		_compositeText = new CompositeText(format);
  		_conditions = conditions;
  		_variables = variables;
-+		_positionalArgCount = positionalArgCount;
++		PositionalArgCount = positionalArgCount;
 -		_formatArgBuffer = new object[variables.Length];
 +		_formatArgBuffer = new object[positionalArgCount + variables.Length];
  	}
@@ -54,7 +53,7 @@
  			return false;
  		}
  
-+		int positionalArgCount = CompositeText.ArgCount(s); // Added by TML
++		int positionalArgCount = CompositeText.CountArgs(s); // Added by TML
 +
  		List<string> variables = new List<string>();
  		List<Condition> conditions = new List<Condition>();
@@ -78,7 +77,7 @@
  				return false;
  
 -			_formatArgBuffer[j] = obj;
-+			_formatArgBuffer[_positionalArgCount + j] = obj;
++			_formatArgBuffer[PositionalArgCount + j] = obj;
  		}
  
  		return true;
@@ -91,7 +90,7 @@
 +	public bool TryFormat(Func<string, object> lookup, object[] args, out string formatted) // overload added to supply positional args as well as named substitutions
  	{
 -		if (!CheckConditionsAndLoadArgs(lookup)) {
-+		if (args.Length < _positionalArgCount || !CheckConditionsAndLoadArgs(lookup)) {
++		if (args.Length < PositionalArgCount || !CheckConditionsAndLoadArgs(lookup)) {
  			formatted = null;
  			return false;
  		}
@@ -101,7 +100,7 @@
  		formatted = _formatBuffer.ToString();
  		_formatBuffer.Clear();
 +		*/
-+		Array.Copy(args, _formatArgBuffer, _positionalArgCount);
++		Array.Copy(args, _formatArgBuffer, PositionalArgCount);
 +		formatted = _compositeText.Format(_formatArgBuffer);
  		return true;
  	}

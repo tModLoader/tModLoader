@@ -13,6 +13,17 @@ internal class CompositeText
 		public int SourceArgIndex;
 		public int FormatArgIndex;
 		public string[] Options;
+
+		public override string ToString() => "{^" + SourceArgIndex + ":" + string.Join(';', Options) + "}"; // Reproduces the pattern this was parsed from, so it can be re-supplied as an arg. See UnboundArg
+	}
+
+	/// <summary>
+	/// Helper for <see cref="LocalizedText.FormatPartial"/>
+	/// </summary>
+	internal struct PlaceholderArg
+	{
+		public int Index;
+		public override string ToString() => "{" + Index + "}";
 	}
 
 	private readonly string _original;
@@ -23,10 +34,14 @@ internal class CompositeText
 	private static readonly Regex _argIndexRegex = new Regex(@"\{\^?(\d+)", RegexOptions.Compiled); // Matches the arg index of both "{0}" and the pluralization regex below
 	private static readonly Regex _positionalPluralRegex = new Regex(@"{\^(\d+):([^\r\n]+?)}", RegexOptions.Compiled); // Matches "{^0:item;items}" -> (0, "item;items")
 
+	/// <summary> The number of args <see cref="Format"/> requires, one more than the highest index the text references. </summary>
+	public int ArgCount { get; }
+
 	public CompositeText(string format)
 	{
 		_original = format;
-		_plurals = ProcessPlurals(ref format);
+		ArgCount = CountArgs(format);
+		_plurals = ProcessPlurals(ref format, ArgCount);
 		_compositeFormat = CompositeFormat.Parse(format);
 		_extendedArgBuffer = _plurals.Length > 0 ? new object[_compositeFormat.MinimumArgumentCount] : null;
 	}
@@ -43,16 +58,15 @@ internal class CompositeText
 	}
 
 	/// <summary> The number of args <paramref name="format"/> requires, one more than the highest index it references. Unreferenced indices below that still count, eg "{2}" requires 3. </summary>
-	public static int ArgCount(string format)
+	public static int CountArgs(string format)
 		=> _argIndexRegex.Matches(format).Select(m => int.Parse(m.Groups[1].Value) + 1).DefaultIfEmpty(0).Max();
 
-	private static Plural[] ProcessPlurals(ref string format)
+	private static Plural[] ProcessPlurals(ref string format, int nextSlot)
 	{
 		if (!_positionalPluralRegex.IsMatch(format))
 			return [];
 
 		var plurals = new List<Plural>();
-		int nextSlot = ArgCount(format);
 
 		format = _positionalPluralRegex.Replace(format, delegate (Match match) {
 			plurals.Add(new Plural {
@@ -72,8 +86,12 @@ internal class CompositeText
 			return string.Format(null, _compositeFormat, args);
 
 		Array.Copy(args, _extendedArgBuffer, args.Length);
-		foreach (var p in _plurals)
-			_extendedArgBuffer[p.FormatArgIndex] = Pluralization.SelectPlural(p.Options, args[p.SourceArgIndex]);
+		foreach (var p in _plurals) {
+			_extendedArgBuffer[p.FormatArgIndex] = args[p.SourceArgIndex] switch {
+				PlaceholderArg unbound => p with { SourceArgIndex = unbound.Index },
+				var count => Pluralization.SelectPlural(p.Options, count),
+			};
+		}
 
 		return string.Format(null, _compositeFormat, _extendedArgBuffer);
 	}
