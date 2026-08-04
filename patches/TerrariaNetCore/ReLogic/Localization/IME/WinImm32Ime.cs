@@ -18,6 +18,7 @@ internal class WinImm32Ime : PlatformIme, IMessageFilter
 	private string[] _candList = Array.Empty<string>();
 	private uint _candSelection;
 	private uint _candPageSize;
+	private bool _isCandDirty;
 
 	public uint SelectedPage => _candPageSize == 0 ? 0 : _candSelection / _candPageSize;
 
@@ -27,7 +28,16 @@ internal class WinImm32Ime : PlatformIme, IMessageFilter
 
 	public override uint SelectedCandidate => _candPageSize == 0 ? 0 : _candSelection % _candPageSize;
 
-	public override uint CandidateCount => Math.Min((uint)_candList.Length - SelectedPage * _candPageSize, _candPageSize);
+	public override uint CandidateCount {
+		get {
+			// Lazily update candidate list at most once per frame to avoid race conditions.
+			// CandidateCount is always read first so we use it.
+			if (_isCandDirty) {
+				UpdateCandidateList();
+			}
+			return Math.Min((uint)_candList.Length - SelectedPage * _candPageSize, _candPageSize);
+		}
+	}
 
 	public WinImm32Ime(WindowsMessageHook wndProcHook, IntPtr hWnd)
 	{
@@ -83,6 +93,7 @@ internal class WinImm32Ime : PlatformIme, IMessageFilter
 		try {
 			int size = NativeMethods.ImmGetCandidateList(hImc, 0, ref MemoryMarshal.GetReference(Span<byte>.Empty), 0);
 			if (size == 0) {
+				// This usually means candidate list is not ready, wait for next frame
 				_candList = Array.Empty<string>();
 				_candPageSize = 0;
 				_candSelection = 0;
@@ -109,16 +120,31 @@ internal class WinImm32Ime : PlatformIme, IMessageFilter
 					}
 					end += 2;
 				}
+
 				candStrList[i] = Encoding.Unicode.GetString(buf[start..end]);
 			}
 
+			_isCandDirty = false;
 			_candList = candStrList;
 			_candPageSize = candList.dwPageSize;
 			_candSelection = candList.dwSelection;
 		}
+		catch (Exception e) when (e is ArgumentOutOfRangeException or IndexOutOfRangeException) {
+			// Some IME occasionally send malformed candidate buffers due to race conditions.
+			// Ignore them until next correct buffer is available.
+			Console.WriteLine($"Failed to parse candidate list: {e}");
+		}
 		finally {
 			NativeMethods.ImmReleaseContext(_hWnd, hImc);
 		}
+	}
+
+	private void ClearCandidateList()
+	{
+		_isCandDirty = false;
+		_candList = Array.Empty<string>();
+		_candPageSize = 0;
+		_candSelection = 0;
 	}
 
 	public override string GetCandidate(uint index)
@@ -144,31 +170,31 @@ internal class WinImm32Ime : PlatformIme, IMessageFilter
 
 	public bool PreFilterMessage(ref Message message)
 	{
-		if (message.Msg == Msg.WM_KILLFOCUS) {
-			SetEnabled(bEnable: false);
-			_isFocused = false;
-			return true;
+		switch (message.Msg) {
+			case Msg.WM_KILLFOCUS:
+				SetEnabled(bEnable: false);
+				_isFocused = false;
+				return true;
+
+			case Msg.WM_SETFOCUS:
+				if (IsEnabled)
+					SetEnabled(bEnable: true);
+				_isFocused = true;
+				return true;
+
+			case Msg.WM_IME_SETCONTEXT:
+				// Hides the system IME. Should always be called on application startup.
+				message.LParam = IntPtr.Zero;
+				return false;
 		}
 
-		if (message.Msg == Msg.WM_SETFOCUS) {
-			if (base.IsEnabled)
-				SetEnabled(bEnable: true);
-
-			_isFocused = true;
-			return true;
-		}
-
-		// Hides the system IME. Should always be called on application startup.
-		if (message.Msg == Msg.WM_IME_SETCONTEXT) {
-			message.LParam = IntPtr.Zero;
-			return false;
-		}
-
-		if (!base.IsEnabled)
+		if (!IsEnabled)
 			return false;
 
 		switch (message.Msg) {
 			case Msg.WM_INPUTLANGCHANGE:
+				_compString = "";
+				ClearCandidateList();
 				return true;
 
 			case Msg.WM_IME_STARTCOMPOSITION:
@@ -176,24 +202,28 @@ internal class WinImm32Ime : PlatformIme, IMessageFilter
 				return true;
 
 			case Msg.WM_IME_COMPOSITION:
+				_isCandDirty = true;
 				_compString = GetCompositionString();
 				break;
 
 			case Msg.WM_IME_ENDCOMPOSITION:
 				_compString = "";
-				UpdateCandidateList();
+				ClearCandidateList();
 				break;
 
 			case Msg.WM_IME_NOTIFY:
 				switch (message.WParam.ToInt32()) {
 					case Imm.IMN_OPENCANDIDATE:
 					case Imm.IMN_CHANGECANDIDATE:
+						_isCandDirty = true;
+						return true;
+
 					case Imm.IMN_CLOSECANDIDATE:
-						UpdateCandidateList();
-						break;
+						ClearCandidateList();
+						return true;
 				}
 
-				return true;
+				break;
 
 			case Msg.WM_CHAR:
 				OnKeyPress((char)message.WParam.ToInt32());
