@@ -130,7 +130,8 @@ public static class UICommon
 	public static Asset<Texture2D> ButtonOpenFolder { get; internal set; }
 	public static Asset<Texture2D> ButtonOpenFolderCustom { get; internal set; }
 	public static Asset<Texture2D> ButtonTranslationModTexture { get; internal set; }
-	public static Asset<Texture2D> LoaderTexture { get; internal set; }
+    public static Asset<Texture2D> LoaderTexture { get; internal set; }
+    public static Asset<Texture2D> SmallLoaderTexture { get; internal set; }
 	public static Asset<Texture2D> LoaderBgTexture { get; internal set; }
 	public static Asset<Texture2D> ButtonDownloadTexture { get; internal set; }
 	public static Asset<Texture2D> ButtonDowngradeTexture { get; internal set; }
@@ -172,6 +173,7 @@ public static class UICommon
 		ButtonTranslationModTexture = LoadEmbeddedTexture("UI.ButtonTranslationMod");
 		LoaderTexture = LoadEmbeddedTexture("UI.Loader");
 		LoaderBgTexture = LoadEmbeddedTexture("UI.LoaderBG");
+        SmallLoaderTexture = LoadEmbeddedTexture("UI.SmallLoader");
 		ButtonDownloadTexture = LoadEmbeddedTexture("UI.ButtonDownload");
 		ButtonDowngradeTexture = LoadEmbeddedTexture("UI.ButtonDowngrade");
 		ButtonDownloadMultipleTexture = LoadEmbeddedTexture("UI.ButtonDownloadMultiple");
@@ -189,6 +191,6 @@ public static class UICommon
 		DropdownIconTexture = LoadEmbeddedTexture("UI.DropdownIcon");
 
 		ButtonDeleteTexture = LoadEmbeddedTexture("UI.ButtonDelete");
-		ButtonRateTexture = LoadEmbeddedTexture("UI.ButtonRate");
+        ButtonRateTexture = LoadEmbeddedTexture("UI.ButtonRate");
 	}
 }

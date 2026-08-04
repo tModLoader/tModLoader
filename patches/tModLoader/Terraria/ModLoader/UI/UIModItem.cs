@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Terraria.GameContent.UI.Elements;
 using Terraria.UI;
 using Terraria.ID;
@@ -24,11 +25,10 @@ internal class UIModItem : UIPanel
 	private const float PADDING = 5f;
 	private float left2ndLine = 0;
 
-	private PublishedFileId_t _publishedFileId;
-	private CallResult<GetUserItemVoteResult_t> _rateCallResult;
-	private CallResult<SetUserItemVoteResult_t> _rateSetCallResult;
-	private bool _ratedUp;
-	private bool _ratedDown;
+	private ulong _publishId;
+	private bool? _ratedUp; // null = not rated, false = rated down
+    private bool _gotRating;
+    private float _bufferRotation;
 
 	private UIImage _moreInfoButton;
 	private UIImage _modIcon;
@@ -86,10 +86,7 @@ internal class UIModItem : UIPanel
 		SetPadding(6f);
 		DisplayNameClean = _mod.DisplayNameClean;
 
-		_rateCallResult = CallResult<GetUserItemVoteResult_t>.Create(RefreshRating);
-		_rateSetCallResult = CallResult<SetUserItemVoteResult_t>.Create(((t, failure) => GetRating()));
-		WorkshopHelper.GetPublishIdLocal(_mod?.modFile, out ulong publishId);
-		_publishedFileId = new PublishedFileId_t(publishId);
+		WorkshopHelper.GetPublishIdLocal(_mod?.modFile, out _publishId);
 	}
 
 	public override void OnInitialize()
@@ -347,8 +344,7 @@ internal class UIModItem : UIPanel
 			bottomRightRowOffset -= (int)PADDING;
 		}
 
-		if (_loaded && _mod.location == ModLocation.Workshop) {
-			GetRating();
+		if (SteamedWraps.SteamClient && _mod.location == ModLocation.Workshop) {
 			Rectangle frame = new Rectangle(0, 0, 36, 36);
 			bottomRightRowOffset -= 36;
 			_rateButton = new UIImage(UICommon.ButtonRateTexture) {
@@ -360,8 +356,19 @@ internal class UIModItem : UIPanel
 				Top = { Pixels = 40 }
 			};
 			_rateButton.OnLeftClick += Rate;
+
+            var bufferImage = new UIElement()
+            {
+                Width = { Percent = 1f },
+                Height = { Percent = 1f },
+                IgnoresMouseInteraction = true
+            };
+            bufferImage.OnDraw += DrawRatingBuffer;
+            _rateButton.Append(bufferImage);
+            
 			Append(_rateButton);
-		}
+            Task.Run(GetRating);
+        }
 
 		var oldModVersionData = ModOrganizer.modsThatUpdatedSinceLastLaunch.FirstOrDefault(x => x.ModName == ModName);
 		if (oldModVersionData != default) {
@@ -444,19 +451,39 @@ internal class UIModItem : UIPanel
 				UICommon.DrawHoverStringInBounds(spriteBatch, Language.GetTextValue("tModLoader.ModIsServerSide"));
 		}
 
+        if (!_gotRating)
+            _rateButton?.Frame = new Rectangle(0, 0, 36, 36);
+        else if (_rateButton?.IsMouseHovering == false)
+        {
+            if (_ratedUp == null)
+                _rateButton?.Frame = new Rectangle(0, 38, 36, 36);
+            else
+                _rateButton?.Frame = new Rectangle(0, 38 * (_ratedUp == true ? 4 : 5), 36, 36);
+        }
+        
 		if (_moreInfoButton?.IsMouseHovering == true) {
 			_tooltip = Language.GetTextValue("tModLoader.ModsMoreInfo");
 		}
 		else if (_deleteModButton?.IsMouseHovering == true) {
 			_tooltip = Language.GetTextValue("UI.Delete");
 		}
-		else if (_rateButton?.IsMouseHovering == true) {
+		else if (_rateButton?.IsMouseHovering == true && _gotRating) {
 			bool ratingUp = UserInterface.ActiveInstance.MousePosition.Y < _rateButton.GetDimensions().Center().Y;
-			if (!_ratedUp && ratingUp)
-				_tooltip = Language.GetTextValue("tModLoader.ModsRateUp");
-			else if (!_ratedDown && !ratingUp)
-				_tooltip = Language.GetTextValue("tModLoader.ModsRateDown");
-		}
+            if (_ratedUp != true && ratingUp)
+                _tooltip = Language.GetTextValue("tModLoader.ModsRateUp");
+            else if (_ratedUp != false && !ratingUp)
+                _tooltip = Language.GetTextValue("tModLoader.ModsRateDown");
+
+            if (_ratedUp != null)
+            {
+                if (_ratedUp != ratingUp)
+                    _rateButton?.Frame = new Rectangle(0, 38 * 6, 36, 36);
+                else 
+                    _rateButton?.Frame = new Rectangle(0, 38 * (_ratedUp == true ? 4 : 5), 36, 36);
+            }
+            else
+                _rateButton?.Frame = new Rectangle(0, 38 * (ratingUp ? 3 : 2), 36, 36);
+        }
 		else if (_modName?.IsMouseHovering == true && _mod?.properties.author.Length > 0) {
 			_tooltip = Language.GetTextValue("tModLoader.ModsByline", _mod.properties.author);
 		}
@@ -483,6 +510,16 @@ internal class UIModItem : UIPanel
 			_tooltip = Language.GetTextValue("tModLoader.TranslationModTooltip", refs);
 		}
 	}
+
+    private void DrawRatingBuffer(UIElement element, SpriteBatch spriteBatch)
+    {
+        if (_gotRating)
+            return;
+                
+        var texture = UICommon.SmallLoaderTexture.Value;
+        _bufferRotation -= 0.15f;
+        spriteBatch.Draw(texture, element.GetDimensions().Center(), null, Color.White, _bufferRotation, texture.Size() / 2f, 1f, SpriteEffects.None, 0);
+    }
 
 	public override void MouseOver(UIMouseEvent evt)
 	{
@@ -706,37 +743,36 @@ internal class UIModItem : UIPanel
 	}
 
 	private void Rate(UIMouseEvent evt, UIElement listeningElement)
-	{
+    {
 		bool ratingUp = evt.MousePosition.Y < listeningElement.GetDimensions().Center().Y;
-		if ((ratingUp && _ratedUp) || (!ratingUp && _ratedDown))
+		if (!_gotRating || (ratingUp && _ratedUp == true) || (!ratingUp && _ratedUp == false))
 			return;
 
 		SoundEngine.PlaySound(LegacySoundIDs.MenuTick, -1, -1, 1);
 
-		SteamAPICall_t call = SteamUGC.SetUserItemVote(_publishedFileId, ratingUp);
-		_rateSetCallResult.Set(call);
+        _gotRating = false;
+		SteamedWraps.SetUserRating(_publishId, ratingUp);
+		Task.Run(GetRating);
 	}
 
-	private void GetRating()
-	{
-		SteamAPICall_t call = SteamUGC.GetUserItemVote(_publishedFileId);
-		_rateCallResult.Set(call);
+	private async Task GetRating()
+    {
+        _gotRating = false;
+		var result = await SteamedWraps.GetUserRating(_publishId);
+        if (result != null)
+            RefreshRating(result.Value);
+        
+        _gotRating = true;
 	}
 
-	private void RefreshRating(GetUserItemVoteResult_t result, bool failure)
+	private void RefreshRating(GetUserItemVoteResult_t result)
 	{
-		_ratedUp = result.m_bVotedUp;
-		_ratedDown = result.m_bVotedDown;
-
-		Rectangle frame = new Rectangle(0, 0, 36, 36);
 		if (result.m_bVotedUp)
-			frame.Y = 38;
+			_ratedUp = true;
 		else if (result.m_bVotedDown)
-			frame.Y = 38 * 2;
+			_ratedUp = false;
 		else
-			frame.Y = 0;
-
-		_rateButton?.Frame = frame;
+			_ratedUp = null;
 	}
 
 	private void DeleteMod(UIMouseEvent evt, UIElement listeningElement)

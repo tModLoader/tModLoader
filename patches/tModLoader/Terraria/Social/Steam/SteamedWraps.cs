@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection.Metadata;
 using System.Threading;
+using System.Threading.Tasks;
 using ReLogic.OS;
 using Steamworks;
 using Terraria.GameContent.UI.States;
@@ -136,6 +138,46 @@ public static class SteamedWraps
 		else if (SteamAvailable)
 			SteamGameServerUGC.GetQueryUGCChildren(handle, index, deps, numChildren);
 		return deps;
+	}
+
+	public static async Task<GetUserItemVoteResult_t?> GetUserRating(ulong fileId)
+	{
+		if (!SteamClient)
+			return null;
+
+		PublishedFileId_t _fileId = new PublishedFileId_t(fileId);
+
+		GetUserItemVoteResult_t result = default;
+
+		using var _call = CallResult<GetUserItemVoteResult_t>.Create(((t, failure) => result = t));
+		_call.Set(SteamUGC.GetUserItemVote(_fileId));
+
+		while (true) {
+			RunCallbacks();
+			if (result.m_eResult != EResult.k_EResultNone)
+				break;
+		}
+
+		return result;
+	}
+
+	public static void SetUserRating(ulong fileId, bool up)
+	{
+		if (!SteamClient)
+			return;
+
+		PublishedFileId_t _fileId = new PublishedFileId_t(fileId);
+
+		SetUserItemVoteResult_t result = default;
+
+		using var _call = CallResult<SetUserItemVoteResult_t>.Create(((t, failure) => result = t));
+		_call.Set(SteamUGC.SetUserItemVote(_fileId, up));
+
+		while (true) {
+			RunCallbacks();
+			if (result.m_eResult != EResult.k_EResultNone)
+				break;
+		}
 	}
 
 	public static bool HasAcceptedTmodWorkshopEula()
