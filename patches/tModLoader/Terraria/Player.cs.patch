@@ -7132,15 +7132,15 @@
  		}
  	}
  
-@@ -36451,6 +_,8 @@
- 			if (mount.Type == 63)
- 				Main.dust[num27].color = Color.Lerp(new Color(1f, 0.7f, 0.5f), Color.White, num28 * num28 * num28);
- 		}
-+
-+		CombinedHooks.MeleeEffects(this, sItem, itemRectangle);
- 	}
+@@ -36436,6 +_,8 @@
+ 		if (sItem.type == 1304 && Main.rand.Next(60) == 0 && ChildSafety.Disabled)
+ 			Gore.NewGore(new Vector2(itemRectangle.Left + itemRectangle.Width / 2, itemRectangle.Top + itemRectangle.Height / 2), new Vector2((float)direction * (2f + Main.rand.NextFloat() * 3f), -2f - Main.rand.NextFloat() * 3f), Main.rand.Next(3, 6));
  
- 	private void ItemCheck_GetMeleeHitboxParticles(Item sItem, Rectangle heldItemFrame)
++		CombinedHooks.MeleeEffects(this, sItem, itemRectangle); // ItemCheck_EmitUseVisuals
++
+ 		if (!mount.Active || (mount.Type != 62 && mount.Type != 63) || !sItem.melee || sItem.noMelee || sItem.noUseGraphic)
+ 			return;
+ 
 @@ -36570,6 +_,8 @@
  					itemRectangle.X += 10;
  			}
