@@ -17,6 +17,7 @@ using ReLogic.Content;
 using Steamworks;
 using Terraria.Social.Base;
 using Terraria.Social.Steam;
+using System.Threading;
 
 namespace Terraria.ModLoader.UI;
 
@@ -25,6 +26,7 @@ internal class UIModItem : UIPanel
 	private const float PADDING = 5f;
 	private float left2ndLine = 0;
 
+	private CancellationTokenSource _ratingCts;
 	private ulong _publishId;
 	private bool? _ratedUp; // null = not rated, false = rated down
     private bool _gotRating;
@@ -309,9 +311,13 @@ internal class UIModItem : UIPanel
 		OnLeftDoubleClick += (e, el) => {
 			if (tMLUpdateRequired != null)
 				return;
-			// Only trigger if we didn't target the ModStateText, otherwise we trigger this behavior twice
-			if (e.Target.GetType() != typeof(UIModStateText))
-				_uiModStateText.LeftClick(e);
+
+			// Prevent infinite recursion.
+			if (e.Target.GetType() == typeof(UIModStateText)) return;
+			// Ignore inner elements that may not react immediately.
+			if (e.Target == _rateButton) return;
+
+			_uiModStateText.LeftClick(e);
 		};
 
 		if (!_loaded && ModOrganizer.CanDeleteFrom(_mod.location)) {
@@ -351,7 +357,11 @@ internal class UIModItem : UIPanel
             _rateButton.Append(bufferImage);
             
 			Append(_rateButton);
-            Task.Run(GetRating);
+
+			_ratingCts?.Cancel(false);
+			_ratingCts?.Dispose();
+			_ratingCts = new CancellationTokenSource();
+            Task.Run(GetRating, _ratingCts.Token);
         }
 
 		var oldModVersionData = ModOrganizer.modsThatUpdatedSinceLastLaunch.FirstOrDefault(x => x.ModName == ModName);
@@ -382,6 +392,13 @@ internal class UIModItem : UIPanel
 		}
 
 		SetHoverColors(hovered: false);
+	}
+
+	public override void OnDeactivate()
+	{
+		_ratingCts?.Cancel(false);
+		_ratingCts?.Dispose();
+		_ratingCts = null;
 	}
 
 	// TODO: "Generate Language File Template" button in upcoming "Miscellaneous Tools" menu.
@@ -744,18 +761,24 @@ internal class UIModItem : UIPanel
 		SoundEngine.PlaySound(LegacySoundIDs.MenuTick, -1, -1, 1);
 
         _gotRating = false;
-		SteamedWraps.SetUserRating(_publishId, ratingUp);
-		Task.Run(GetRating);
+		_ratingCts?.Cancel(false);
+		_ratingCts?.Dispose();
+		_ratingCts = new CancellationTokenSource();
+		Task.Run(cancellationToken: _ratingCts.Token, function: async () => {
+			await SteamedWraps.SetUserRating(_publishId, ratingUp);
+			await GetRating();
+		});
 	}
 
 	private async Task GetRating()
     {
         _gotRating = false;
+
 		var result = await SteamedWraps.GetUserRating(_publishId);
-        if (result != null)
+        if (result != null) {
             RefreshRating(result.Value);
-        
-        _gotRating = true;
+	        _gotRating = true;
+		}
 	}
 
 	private void RefreshRating(GetUserItemVoteResult_t result)

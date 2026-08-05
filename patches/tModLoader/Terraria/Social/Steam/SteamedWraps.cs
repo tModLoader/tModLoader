@@ -145,41 +145,33 @@ public static class SteamedWraps
 
 	public static async Task<GetUserItemVoteResult_t?> GetUserRating(ulong fileId)
 	{
-		if (!SteamClient)
-			return null;
+		if (!SteamClient) return null;
 
-		PublishedFileId_t _fileId = new PublishedFileId_t(fileId);
-
-		GetUserItemVoteResult_t result = default;
-
-		using var _call = CallResult<GetUserItemVoteResult_t>.Create(((t, failure) => result = t));
-		_call.Set(SteamUGC.GetUserItemVote(_fileId));
+		GetUserItemVoteResult_t? result = default(GetUserItemVoteResult_t);
+		using var call = CallResult<GetUserItemVoteResult_t>.Create((r, f) => result = f ? null : r);
+		call.Set(SteamUGC.GetUserItemVote(new PublishedFileId_t(fileId)));
 
 		while (true) {
 			RunCallbacks();
-			if (result.m_eResult != EResult.k_EResultNone)
-				break;
+			if (result?.m_eResult == EResult.k_EResultOK) return result;
+			if (result?.m_eResult != EResult.k_EResultNone) return null;
+			await Task.Delay(10);
 		}
-
-		return result;
 	}
 
-	public static void SetUserRating(ulong fileId, bool up)
+	public static async Task<SetUserItemVoteResult_t?> SetUserRating(ulong fileId, bool up)
 	{
-		if (!SteamClient)
-			return;
+		if (!SteamClient) return null;
 
-		PublishedFileId_t _fileId = new PublishedFileId_t(fileId);
-
-		SetUserItemVoteResult_t result = default;
-
-		using var _call = CallResult<SetUserItemVoteResult_t>.Create(((t, failure) => result = t));
-		_call.Set(SteamUGC.SetUserItemVote(_fileId, up));
+		SetUserItemVoteResult_t? result = default(SetUserItemVoteResult_t);
+		using var call = CallResult<SetUserItemVoteResult_t>.Create((r, f) => result = f ? null : r);
+		call.Set(SteamUGC.SetUserItemVote(new PublishedFileId_t(fileId), up));
 
 		while (true) {
 			RunCallbacks();
-			if (result.m_eResult != EResult.k_EResultNone)
-				break;
+			if (result?.m_eResult == EResult.k_EResultOK) return result;
+			if (result?.m_eResult != EResult.k_EResultNone) return null;
+			await Task.Delay(10);
 		}
 	}
 
