@@ -6758,7 +6758,8 @@
 @@ -53663,7 +_,7 @@
  		}
  
- 		bool flag2 = Terraria.Graphics.Effects.Filters.Scene.CanCapture() || ForegroundSunlightEffects;
+-		bool flag2 = Terraria.Graphics.Effects.Filters.Scene.CanCapture() || ForegroundSunlightEffects;
++		bool flag2 = Terraria.Graphics.Effects.Filters.Scene.CanCapture() || ForegroundSunlightEffects || SystemLoader.RequiresScreenTarget();
 -		bool flag3 = !drawToScreen && !mapFullscreen && !onlyDrawFancyUI && Lighting.NotRetro && flag2;
 +		bool flag3 = !drawToScreen && !mapFullscreen && !onlyDrawFancyUI /* && Lighting.NotRetro */ && flag2;
  		if (flag3) {

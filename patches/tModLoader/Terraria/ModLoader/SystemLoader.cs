@@ -259,6 +259,15 @@ public static partial class SystemLoader
 		negLight2 = Math.Max(negLight2, 0.001f);
 	}
 
+	public static bool RequiresScreenTarget()
+	{
+		bool result = false;
+		foreach (var g in HookRequiresScreenTarget.Enumerate()) {
+			result |= g.RequiresScreenTarget();
+		}
+		return result;
+	}
+
 	public static void PreDrawMapIconOverlay(IReadOnlyList<IMapLayer> layers, MapOverlayDrawContext mapOverlayDrawContext)
 	{
 		foreach (var system in HookPreDrawMapIconOverlay.Enumerate()) {
