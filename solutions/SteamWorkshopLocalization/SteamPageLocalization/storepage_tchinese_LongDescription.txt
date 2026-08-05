@@ -1,0 +1,36 @@
+挖掘、戰鬥、建造，使用 tModLoader 在 Terraria 的玩家自製模組世界中闖蕩——這個 DLC 讓 Terraria 模組化成為現實！
+
+tModLoader（TML）是開放原始碼、由社群驅動的 Terraria 改造與擴充，讓製作與遊玩模組成為可能。TML 以 Terraria 社群創作、可供探索的新內容，拓展你的 Terraria 冒險之旅！TML 讓玩家可以製作與遊玩 Terraria 模組，其設計讓你無論獨自遊玩或與朋友同樂——使用單一或多個模組，隨心所欲選擇你喜愛的玩法！
+
+注意：若想與朋友一同遊玩，他們也必須安裝 TML；原版玩家無法與使用 TML 的玩家連線遊玩。
+
+---
+
+[b][u][h2]支援[/h2][/u][/b]
+需要協助嗎？你可以從我們在 Terraria 社群論壇（Terraria Community Forums）的討論串，或我們的 Discord 伺服器獲得支援！這些是獲得支援的最佳管道，兩者都可直接從我們的官方網站連結前往，官網位置在下方 Steam 商店頁面上。
+
+tModLoader 是開放原始碼專案，代表其程式碼公開取得，任何人都能為專案貢獻心力。我們的專案可在 GitHub 上找到，可經由官方網站連結前往。
+
+想更深入瞭解 tModLoader 的運作原理嗎？或者你現在就想開始使用 tModLoader？你可以從我們的玩家指南開始，指南位於 Steam 商店頁面下方的「查看手冊」。另外也有為模組開發者與貢獻者準備的頁面。我們的 Wiki 收錄了豐富的指南，教你如何使用 tModLoader 製作模組。
+
+---
+
+[b][u][h2]常見問題[/h2][/u][/b]
+當你安裝並準備好深入體驗 tModLoader 時，有幾件重要事項需要你知道：
+
+[b][list][*]你不需要做任何備份
+[*]只要將 Terraria 更新到 1.4，並在 Steam 上安裝 tModLoader
+[*]你可以同時遊玩原版 Terraria 與 TML；透過 Steam 安裝的 tModLoader 會被視為獨立的遊戲
+[*]tModLoader 支援 Terraria 1.3 與 1.4
+[*]支援 Steam 工作坊（但非必要，我們有遊戲內的模組瀏覽器）
+[*]在新版本中，tModLoader 可以安裝在任何位置，無論安裝位置為何或是否為 Steam 安裝
+[*]tModLoader 支援 Windows、Mac 與 Linux[/list][/b]
+
+[b]這會對我有什麼影響？Terraria 1.4 推出後，我的模組還能用嗎？[/b]
+由於這次更新為 tModLoader 帶來許多變動，大多數甚至所有的模組都會無法使用。儘管我們已給模組作者時間更新他們的模組，仍有一些模組很可能永遠不會更新到這個版本。請謹記，你在 1.3 能使用的模組，未必全部都能繼續使用。
+
+[b]這代表 tModLoader 已更新到 1.4 了嗎？[/b]
+Steam 上的 tModLoader 支援 Terraria 1.3.5 與 Terraria 1.4。
+
+[b]那 Steam 工作坊支援呢？[/b]
+支援 Steam 工作坊。
