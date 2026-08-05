@@ -31,7 +31,8 @@
 +	*/
 +	private readonly CompositeText _compositeText; // TML added, replacement for _format and _formatBuffer
 +
- 	private static readonly Regex _substitutionRegex = new Regex("{(\\?!?)?([a-zA-Z][\\w\\.]*)}", RegexOptions.Compiled);
+-	private static readonly Regex _substitutionRegex = new Regex("{(\\?!?)?([a-zA-Z][\\w\\.]*)}", RegexOptions.Compiled);
++	private static readonly Regex _substitutionRegex = new Regex("{(\\?!?)?([a-zA-Z][\\w\\./]*)}", RegexOptions.Compiled); // '/' added by TML, for mod namespaces (eg {ExampleMod/Something})
  
 -	private VariableText(string original, string format, Condition[] conditions, string[] variables)
 +	private VariableText(string original, string format, Condition[] conditions, string[] variables, int positionalArgCount)

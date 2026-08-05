@@ -8,7 +8,7 @@ internal partial class VariableText
 {
 	public int PositionalArgCount { get; } // positional args occupy slots [0, PositionalArgCount), followed by named variables
 
-	private static readonly Regex _namedPluralRegex = new Regex(@"{\^([a-zA-Z][\w\.]*):([^\r\n]+?)}", RegexOptions.Compiled); // "{Count} {^Count:item;items}"
+	private static readonly Regex _namedPluralRegex = new Regex(@"{\^([a-zA-Z][\w\./]*):([^\r\n]+?)}", RegexOptions.Compiled); // "{Count} {^Count:item;items}"
 	private static readonly Regex _argIndexRegex = new Regex(@"(?<=\{\^?)\d+", RegexOptions.Compiled); // Matches just the index of "{0}" or "{^0:item;items}", so it can be mapped back to a variable name
 
 	/// <summary>
