@@ -6531,32 +6531,7 @@
  					byte b = tile.liquid;
  					bool num5 = num4 <= num2 && ((!flag2 && b < 250) || WorldGen.SolidTile(tile) || (b >= 200 && num4 == 0f));
  					bool flag3 = tile.active() && tileBlockLight[tile.type] && (!tile.invisibleBlock() || flag);
-@@ -50283,6 +_,9 @@
- 				if (backgroundTargetSwap != null)
- 					backgroundTargetSwap.Dispose();
- 
-+				if (finalScreenTarget != null)
-+					finalScreenTarget.Dispose();
-+
- 				if (Main.OnRenderTargetsReleased != null)
- 					Main.OnRenderTargetsReleased();
- 			}
-@@ -50293,7 +_,7 @@
- 
- 	protected void EnsureRenderTargetContent()
- 	{
--		if (waterTarget == null || waterTarget.IsContentLost || backWaterTarget == null || backWaterTarget.IsContentLost || tileTarget == null || tileTarget.IsContentLost || tile2Target == null || tile2Target.IsContentLost || wallTarget == null || wallTarget.IsContentLost || skyTarget == null || skyTarget.IsContentLost || backgroundTarget == null || backgroundTarget.IsContentLost || backgroundTargetSwap == null || backgroundTargetSwap.IsContentLost || screenTarget == null || screenTarget.IsContentLost || screenTargetSwap == null || screenTargetSwap.IsContentLost)
-+		if (waterTarget == null || waterTarget.IsContentLost || backWaterTarget == null || backWaterTarget.IsContentLost || tileTarget == null || tileTarget.IsContentLost || tile2Target == null || tile2Target.IsContentLost || wallTarget == null || wallTarget.IsContentLost || skyTarget == null || skyTarget.IsContentLost || backgroundTarget == null || backgroundTarget.IsContentLost || backgroundTargetSwap == null || backgroundTargetSwap.IsContentLost || screenTarget == null || screenTarget.IsContentLost || screenTargetSwap == null || screenTargetSwap.IsContentLost || finalScreenTarget.IsContentLost || finalScreenTarget == null)
- 			InitTargets();
- 	}
- 
-@@ -50329,11 +_,14 @@
- 				skyTarget = new RenderTarget2D(base.GraphicsDevice, base.GraphicsDevice.PresentationParameters.BackBufferWidth, base.GraphicsDevice.PresentationParameters.BackBufferHeight, mipMap: false, base.GraphicsDevice.PresentationParameters.BackBufferFormat, DepthFormat.None);
- 				screenTarget = new RenderTarget2D(base.GraphicsDevice, base.GraphicsDevice.PresentationParameters.BackBufferWidth, base.GraphicsDevice.PresentationParameters.BackBufferHeight, mipMap: false, base.GraphicsDevice.PresentationParameters.BackBufferFormat, DepthFormat.None);
- 				screenTargetSwap = new RenderTarget2D(base.GraphicsDevice, base.GraphicsDevice.PresentationParameters.BackBufferWidth, base.GraphicsDevice.PresentationParameters.BackBufferHeight, mipMap: false, base.GraphicsDevice.PresentationParameters.BackBufferFormat, DepthFormat.None);
-+				finalScreenTarget = new RenderTarget2D(base.GraphicsDevice, base.GraphicsDevice.PresentationParameters.BackBufferWidth, base.GraphicsDevice.PresentationParameters.BackBufferHeight, mipMap: false, base.GraphicsDevice.PresentationParameters.BackBufferFormat, DepthFormat.None);
- 				if (Main.OnRenderTargetsInitialized != null)
- 					Main.OnRenderTargetsInitialized(base.GraphicsDevice.PresentationParameters.BackBufferWidth, base.GraphicsDevice.PresentationParameters.BackBufferHeight);
+@@ -50334,6 +_,8 @@
  			}
  		}
  		catch {
@@ -6750,7 +6725,7 @@
  			return;
  		}
  
-+		finalScreenTargetPopulated = true;
++		finalScreenTarget = null;
 +
  		TimeLogger.StartTimestamp fromTimestamp2 = TimeLogger.Start();
  		int num = renderCount;
@@ -6809,28 +6784,6 @@
  		TimeLogger.SurfaceBackground.AddTime(fromTimestamp7);
  		if (gameMenu || netMode == 2) {
  			TimeLogger.StartTimestamp fromTimestamp8 = TimeLogger.Start();
-@@ -53758,8 +_,19 @@
- 			PostDrawMenu(screenSizeCache, screenSizeCacheAfterScaling);
- 			TimeLogger.MenuDrawTime.AddTime(fromTimestamp8);
- 			HorizonHelper.UpdateSunVisibility(flag3 ? screenTarget : null);
--			if (flag3)
-+			if (flag3) {
--				Terraria.Graphics.Effects.Filters.Scene.EndCapture(null, screenTarget, screenTargetSwap);
-+				Terraria.Graphics.Effects.Filters.Scene.EndCapture(finalScreenTarget, screenTarget, screenTargetSwap);
-+
-+				GraphicsDevice.SetRenderTarget(null);
-+				GraphicsDevice.Clear(Color.Transparent);
-+				spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
-+
-+				spriteBatch.Draw(finalScreenTarget, Vector2.Zero, Color.White);
-+
-+				spriteBatch.End();
-+
-+				finalScreenTargetPopulated = true;
-+			}
- 
- 			return;
- 		}
 @@ -53864,6 +_,9 @@
  		}
  
@@ -6841,7 +6794,7 @@
  		HasInteractableObjectThatIsNotATile = false;
  		SortDrawCacheWorms();
  		DrawSuperSpecialProjectiles(DrawCacheFirstFractals);
-@@ -53935,12 +_,23 @@
+@@ -53935,7 +_,7 @@
  		MoonlordDeathDrama.DrawWhite(spriteBatch);
  		ScreenObstruction.Draw(spriteBatch);
  		spriteBatch.End();
@@ -6850,24 +6803,6 @@
  		TimeLogger.Overlays.AddTime(fromTimestamp11);
  		DebugLineDraw.World.Draw(spriteBatch);
  		HorizonHelper.UpdateSunVisibility(flag3 ? screenTarget : null);
--		if (flag3)
-+		if (flag3) {
--			Terraria.Graphics.Effects.Filters.Scene.EndCapture(null, screenTarget, screenTargetSwap);
-+			Terraria.Graphics.Effects.Filters.Scene.EndCapture(finalScreenTarget, screenTarget, screenTargetSwap);
-+
-+			GraphicsDevice.SetRenderTarget(null);
-+			GraphicsDevice.Clear(Color.Transparent);
-+			spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
-+
-+			spriteBatch.Draw(finalScreenTarget, Vector2.Zero, Color.White);
-+
-+			spriteBatch.End();
-+
-+			finalScreenTargetPopulated = true;
-+		}
- 
- 		if (!hideUI) {
- 			TimeLogger.StartTimestamp fromTimestamp12 = TimeLogger.Start();
 @@ -54062,6 +_,21 @@
  		else
  			mouseRightRelease = true;

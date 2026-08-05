@@ -1,6 +1,35 @@
 --- src/TerrariaNetCore/Terraria/Graphics/Effects/FilterManager.cs
 +++ src/tModLoader/Terraria/Graphics/Effects/FilterManager.cs
-@@ -183,4 +_,13 @@
+@@ -158,7 +_,7 @@
+ 			linkedListNode = next;
+ 		}
+ 
+-		graphicsDevice.SetRenderTarget(finalTexture);
++		graphicsDevice.SetRenderTarget(t2);
+ 		graphicsDevice.Clear(Color.Transparent);
+ 		if (Main.player[Main.myPlayer].gravDir == -1f)
+ 			Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.EffectMatrix);
+@@ -174,13 +_,33 @@
+ 		}
+ 
+ 		Main.spriteBatch.End();
++
++		graphicsDevice.SetRenderTarget(finalTexture);
++		graphicsDevice.Clear(Color.Transparent);
++
++		Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
++
++		Main.spriteBatch.Draw(t2, Vector2.Zero, value, Color.White);
++
++		Main.spriteBatch.End();
+ 		for (int i = 0; i < 8; i++) {
+ 			graphicsDevice.Textures[i] = null;
+ 		}
+ 
++		Main.finalScreenTarget = t2;
++
+ 		TimeLogger.Filters.AddTime(fromTimestamp);
+ 	}
  
  	public bool HasActiveFilter() => _activeFilters.Count != 0;
  	public bool CanCapture() => HasActiveFilter();
