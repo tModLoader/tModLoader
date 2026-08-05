@@ -1,5 +1,4 @@
-ru-RU 8
-pt-BR 7
+ru-RU 1
 pl-PL 61
 it-IT 1012
 fr-FR 477
