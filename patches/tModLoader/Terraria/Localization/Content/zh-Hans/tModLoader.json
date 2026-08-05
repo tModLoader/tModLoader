@@ -53,6 +53,7 @@
 		"SwitchVersionConfirm": "你确定要切换到该版本吗？",
 		"SwitchVersionDefaultBranchName": "默认公开版本",
 		"SwitchVersionDefaultBranchDescription": "大多数玩家使用的默认稳定版本",
+		// "SwitchVersionObsoleteBranch": "This branch is obsolete.",
 		"LatestNews": "最新消息：{0}",
 		"LatestNewsOffline": "离线",
 		"LatestNewsChecking": "正在检查……",

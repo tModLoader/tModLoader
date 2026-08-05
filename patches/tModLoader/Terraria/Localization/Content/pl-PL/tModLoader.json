@@ -51,6 +51,7 @@
 		// "SwitchVersionConfirm": "Are you sure you want to switch branches?",
 		// "SwitchVersionDefaultBranchName": "Default public version",
 		// "SwitchVersionDefaultBranchDescription": "This is the default stable version most players are using",
+		// "SwitchVersionObsoleteBranch": "This branch is obsolete.",
 		"LatestNews": "Ostatnie wiadomości: {0}",
 		"LatestNewsOffline": "Niedostępne",
 		"LatestNewsChecking": "Sprawdzanie...",

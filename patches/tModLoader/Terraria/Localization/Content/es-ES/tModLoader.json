@@ -51,6 +51,7 @@
 		"SwitchVersionConfirm": "¿Estás seguro de que quieres cambiar de rama?",
 		"SwitchVersionDefaultBranchName": "Default public version",
 		"SwitchVersionDefaultBranchDescription": "Esta es la versión estable predeterminada que la mayoría de los jugadores están usando",
+		// "SwitchVersionObsoleteBranch": "This branch is obsolete.",
 		"LatestNews": "Últimas Noticias: {0}",
 		"LatestNewsOffline": "Desconectado",
 		"LatestNewsChecking": "Revisando...",
