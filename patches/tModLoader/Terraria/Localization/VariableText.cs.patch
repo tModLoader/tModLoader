@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Localization/VariableText.cs
 +++ src/tModLoader/Terraria/Localization/VariableText.cs
-@@ -1,11 +_,10 @@
+@@ -1,42 +_,56 @@
  using System;
  using System.Collections.Generic;
 -using System.Text;
@@ -13,7 +13,10 @@
  {
  	private struct Condition
  	{
-@@ -14,29 +_,42 @@
+ 		public bool RequiredValue;
+ 		public string Name;
++
++		public override string ToString() => $"{{{(RequiredValue ? "?" : "?!")}{Name}}}"; // Added by TML. Reproduces the pattern this was parsed from. See Bind
  	}
  
  	private readonly string _original;

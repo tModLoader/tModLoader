@@ -14,16 +14,16 @@ internal class CompositeText
 		public int FormatArgIndex;
 		public string[] Options;
 
-		public override string ToString() => "{^" + SourceArgIndex + ":" + string.Join(';', Options) + "}"; // Reproduces the pattern this was parsed from, so it can be re-supplied as an arg. See UnboundArg
+		public override string ToString() => $"{{^{SourceArgIndex}:{string.Join(';', Options)}}}"; // Reproduces the pattern this was parsed from. See Bind
 	}
 
 	/// <summary>
-	/// Helper for <see cref="LocalizedText.FormatPartial"/>
+	/// Helper for <see cref="Bind"/>
 	/// </summary>
 	internal struct PlaceholderArg
 	{
 		public int Index;
-		public override string ToString() => "{" + Index + "}";
+		public override string ToString() => $"{{{Index}}}";
 	}
 
 	private readonly string _original;
@@ -94,6 +94,19 @@ internal class CompositeText
 		}
 
 		return string.Format(null, _compositeFormat, _extendedArgBuffer);
+	}
+
+	/// <summary>
+	/// Formats <paramref name="args"/> into the leading placeholders, shifting the rest down.
+	/// </summary>
+	public string Bind(object[] args)
+	{
+		int bound = args.Length;
+		Array.Resize(ref args, ArgCount);
+		for (int i = bound; i < ArgCount; i++)
+			args[i] = new PlaceholderArg { Index = i - bound };
+
+		return Format(args);
 	}
 
 	public override string ToString() => _original;

@@ -16,9 +16,7 @@ namespace ExampleMod.Content.Items.Armor
 		public static LocalizedText SetBonusText { get; private set; }
 
 		public override void SetStaticDefaults() {
-			// TODO: This doesn't work.
-			//SetBonusText = this.GetLocalization("SetBonus").WithFormatArgs(ManaCostReductionPercent);
-			//SetBonusText = this.GetLocalization("SetBonus").WithFormatArgs(null, ManaCostReductionPercent);
+			SetBonusText = this.GetLocalization("SetBonus").WithFormatArgs(ManaCostReductionPercent);
 		}
 
 		public override void SetDefaults() {

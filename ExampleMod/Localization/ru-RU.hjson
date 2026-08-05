@@ -386,7 +386,7 @@ Mods: {
 				/* SetBonus:
 					'''
 					Double tap or hold {ToggleArmorSetBonusKey} to toggle various armor shadow effects
-					{$CommonItemTooltip.PercentReducedManaCost@1}
+					{$CommonItemTooltip.PercentReducedManaCost}
 					''' */
 			}
 

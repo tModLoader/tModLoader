@@ -70,26 +70,31 @@ public partial class LocalizedText
 		return LanguageManager.Instance.BindFormatArgs(Key, [.. BoundArgs ?? [], .. args]);
 	}
 
-	/// <summary>
-	/// Formats <paramref name="args"/> into the leading placeholders, shifting the rest down.
-	/// </summary>
-	private string FormatPartial(object[] args)
-	{
-		if (args.Length >= ArgCount)
-			return Format(args);
-
-		var padded = new object[ArgCount];
-		Array.Copy(args, padded, args.Length);
-		for (int i = args.Length; i < padded.Length; i++)
-			padded[i] = new CompositeText.PlaceholderArg { Index = i - args.Length };
-
-		return Format(padded);
-	}
-
 	internal void BindArgs(LocalizedText original, object[] args)
 	{
 		Debug.Assert(Key == original.Key);
-		SetValue(original.FormatPartial(args));
+
+		if (args.Length > original.ArgCount)
+			throw new ArgumentException($"The localization key:\n  \"{original.Key}\"\nwith a value of:\n  \"{original.UnformattedValue}\"\ntakes {original.ArgCount} args, but {args.Length} were supplied:\n  [{string.Join(", ", args)}]");
+
+		try {
+			switch (original._value) {
+				case VariableText variableText:
+					_value = variableText.Bind(args);
+					break;
+				case CompositeText compositeText:
+					// SetValue re-parses, giving a plain string once every placeholder has been supplied
+					SetValue(compositeText.Bind(args));
+					break;
+				default:
+					SetValue(original.UnformattedValue);
+					break;
+			}
+		}
+		catch (Exception e) {
+			throw new Exception($"The localization key:\n  \"{original.Key}\"\nwith a value of:\n  \"{original.UnformattedValue}\"\nfailed to be formatted with the inputs:\n  [{string.Join(", ", args)}]", e);
+		}
+
 		EnglishValue = original.EnglishValue; // keep the unformatted english value on all langs, for consistency, though we don't expect it to be used for anything other than HasValue
 		BoundArgs = args;
 	}
