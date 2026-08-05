@@ -84,7 +84,7 @@
  		}
  
  		return true;
-@@ -86,16 +_,21 @@
+@@ -86,16 +_,23 @@
  
  	public bool ConditionsMet(Func<string, object> lookup) => CheckConditionsAndLoadArgs(lookup);
  
@@ -92,8 +92,7 @@
 +	public bool TryFormat(Func<string, object> lookup, out string formatted) => TryFormat(lookup, [], out formatted);
 +	public bool TryFormat(Func<string, object> lookup, object[] args, out string formatted) // overload added to supply positional args as well as named substitutions
  	{
--		if (!CheckConditionsAndLoadArgs(lookup)) {
-+		if (args.Length < PositionalArgCount || !CheckConditionsAndLoadArgs(lookup)) {
+ 		if (!CheckConditionsAndLoadArgs(lookup)) {
  			formatted = null;
  			return false;
  		}
@@ -103,6 +102,8 @@
  		formatted = _formatBuffer.ToString();
  		_formatBuffer.Clear();
 +		*/
++
++		CompositeText.PadArgs(ref args, PositionalArgCount);
 +		Array.Copy(args, _formatArgBuffer, PositionalArgCount);
 +		formatted = _compositeText.Format(_formatArgBuffer);
  		return true;

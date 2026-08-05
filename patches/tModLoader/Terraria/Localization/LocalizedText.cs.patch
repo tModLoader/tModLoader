@@ -9,7 +9,7 @@
  {
  	public static readonly LocalizedText Empty = new LocalizedText("", "");
  	private static Regex _substitutionRegex = new Regex("{(\\?(?:!)?)?([a-zA-Z][\\w\\.]*)}", RegexOptions.Compiled);
-@@ -13,6 +_,10 @@
+@@ -13,25 +_,43 @@
  	private object _value;
  	private static Dictionary<Type, PropertyDescriptorCollection> _propertyLookupCache = new Dictionary<Type, PropertyDescriptorCollection>();
  
@@ -19,8 +19,11 @@
 +	/// </summary>
  	public string Value {
  		get {
- 			if (_value is VariableText variableText && variableText.TryFormat(Lang.GetGlobalSubstitution, out var formatted))
-@@ -22,12 +_,26 @@
+-			if (_value is VariableText variableText && variableText.TryFormat(Lang.GetGlobalSubstitution, out var formatted))
++			if (_value is VariableText variableText && TryFormat(variableText, Lang.GetGlobalSubstitution, out var formatted))
+ 				return formatted;
+ 
+ 			return _value.ToString();
  		}
  	}
  
@@ -47,6 +50,11 @@
  	public bool ConditionsMet {
  		get {
  			if (_value is VariableText variableText)
+-				return variableText.ConditionsMet(Lang.GetGlobalSubstitution);
++				return CheckConditionsMet(variableText, Lang.GetGlobalSubstitution);
+ 
+ 			return true;
+ 		}
 @@ -40,6 +_,7 @@
  	internal LocalizedText(string key, string text)
  	{
@@ -55,7 +63,7 @@
  		SetValue(text);
  	}
  
-@@ -52,10 +_,29 @@
+@@ -52,37 +_,68 @@
  		if (LanguageManager.Instance != null && LanguageManager.Instance.ActiveCulture == GameCulture.DefaultCulture)
  			EnglishValue = value;
  
@@ -85,7 +93,10 @@
  	public bool GetValueIfConditionsMet(out string formatted)
  	{
  		if (_value is VariableText variableText)
-@@ -65,6 +_,9 @@
+-			return variableText.TryFormat(Lang.GetGlobalSubstitution, out formatted);
++			return TryFormat(variableText, Lang.GetGlobalSubstitution, out formatted);
+ 
+ 		formatted = Value;
  		return true;
  	}
  
@@ -95,7 +106,10 @@
  	public bool TryFormatWith(object obj, out string formatted)
  	{
  		if (_value is VariableText variableText)
-@@ -74,6 +_,12 @@
+-			return variableText.TryFormat(GetPropertyLookupFunc(obj), out formatted);
++			return TryFormat(variableText, GetPropertyLookupFunc(obj), out formatted);
+ 
+ 		formatted = Value;
  		return true;
  	}
  
@@ -108,7 +122,10 @@
  	public bool TryFormatWith(Func<string, object> lookup, out string formatted)
  	{
  		if (_value is VariableText variableText)
-@@ -83,6 +_,9 @@
+-			return variableText.TryFormat(lookup, out formatted);
++			return TryFormat(variableText, lookup, out formatted);
+ 
+ 		formatted = Value;
  		return true;
  	}
  
@@ -128,7 +145,7 @@
  	public string FormatWith(Func<string, object> lookup)
  	{
  		if (!TryFormatWith(lookup, out var formatted))
-@@ -99,6 +_,9 @@
+@@ -99,34 +_,80 @@
  		return formatted;
  	}
  
@@ -138,7 +155,9 @@
  	public bool ConditionsMetWith(object obj)
  	{
  		if (_value is VariableText variableText)
-@@ -107,6 +_,11 @@
+-			return variableText.ConditionsMet(GetPropertyLookupFunc(obj));
++			return CheckConditionsMet(variableText, GetPropertyLookupFunc(obj));
+ 
  		return true;
  	}
  
@@ -150,7 +169,9 @@
  	public bool ConditionsMetWith(Func<string, object> lookup)
  	{
  		if (_value is VariableText variableText)
-@@ -115,18 +_,55 @@
+-			return variableText.ConditionsMet(lookup);
++			return CheckConditionsMet(variableText, lookup);
+ 
  		return true;
  	}
  
@@ -198,7 +219,8 @@
 +				return ct.Format(args);
 +		}
 +		catch (Exception e) {
-+			throw new Exception($"The localization key:\n  \"{Key}\"\nwith a value of:\n  \"{UnformattedValue}\"\nfailed to be formatted with the inputs:\n  [{string.Join(", ", args)}]", e);
++			ReportFormatException(args, e);
++			return UnformattedValue;
 +		}
 +
 +		return Value;

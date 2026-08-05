@@ -70,12 +70,41 @@ public partial class LocalizedText
 		return LanguageManager.Instance.BindFormatArgs(Key, [.. BoundArgs ?? [], .. args]);
 	}
 
+	private bool TryFormat(VariableText variableText, Func<string, object> lookup, out string formatted)
+	{
+		try {
+			return variableText.TryFormat(lookup, out formatted);
+		}
+		catch (Exception e) {
+			ReportFormatException([], e);
+			formatted = UnformattedValue;
+			return true;
+		}
+	}
+
+	private bool CheckConditionsMet(VariableText variableText, Func<string, object> lookup)
+	{
+		try {
+			return variableText.ConditionsMet(lookup);
+		}
+		catch (Exception e) {
+			ReportFormatException([], e);
+			return true; // most likely, the conditions were met, but format encountered an exception. Showing the text will allow the user to diagnose the bad localization
+		}
+	}
+
+	private void ReportFormatException(object[] args, Exception e)
+	{
+		try {
+			// Rely on Logging.FirstChanceExceptionHandler to report and deduplicate these
+			throw new Exception($"The localization key:\n  \"{Key}\"\nwith a value of:\n  \"{UnformattedValue}\"\nfailed to be formatted with the inputs:\n  [{string.Join(", ", args)}]", e);
+		}
+		catch (Exception) { }
+	}
+
 	internal void BindArgs(LocalizedText original, object[] args)
 	{
 		Debug.Assert(Key == original.Key);
-
-		if (args.Length > original.ArgCount)
-			throw new ArgumentException($"The localization key:\n  \"{original.Key}\"\nwith a value of:\n  \"{original.UnformattedValue}\"\ntakes {original.ArgCount} args, but {args.Length} were supplied:\n  [{string.Join(", ", args)}]");
 
 		try {
 			switch (original._value) {
@@ -92,7 +121,8 @@ public partial class LocalizedText
 			}
 		}
 		catch (Exception e) {
-			throw new Exception($"The localization key:\n  \"{original.Key}\"\nwith a value of:\n  \"{original.UnformattedValue}\"\nfailed to be formatted with the inputs:\n  [{string.Join(", ", args)}]", e);
+			original.ReportFormatException(args, e);
+			SetValue(original.UnformattedValue); // carry on with the placeholders visible, so the remaining texts still re-bind on a language change
 		}
 
 		EnglishValue = original.EnglishValue; // keep the unformatted english value on all langs, for consistency, though we don't expect it to be used for anything other than HasValue

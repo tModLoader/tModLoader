@@ -80,12 +80,24 @@ internal class CompositeText
 		return plurals.ToArray();
 	}
 
+	public static void PadArgs(ref object[] args, int count, int shift = 0)
+	{
+		int supplied = args.Length;
+		if (supplied >= count)
+			return;
+
+		Array.Resize(ref args, count);
+		for (int i = supplied; i < count; i++)
+			args[i] = new PlaceholderArg { Index = i - shift };
+	}
+
 	public string Format(params object[] args)
 	{
+		PadArgs(ref args, ArgCount);
 		if (_extendedArgBuffer == null)
 			return string.Format(null, _compositeFormat, args);
 
-		Array.Copy(args, _extendedArgBuffer, args.Length);
+		Array.Copy(args, _extendedArgBuffer, ArgCount);
 		foreach (var p in _plurals) {
 			_extendedArgBuffer[p.FormatArgIndex] = args[p.SourceArgIndex] switch {
 				PlaceholderArg unbound => p with { SourceArgIndex = unbound.Index },
@@ -101,11 +113,7 @@ internal class CompositeText
 	/// </summary>
 	public string Bind(object[] args)
 	{
-		int bound = args.Length;
-		Array.Resize(ref args, ArgCount);
-		for (int i = bound; i < ArgCount; i++)
-			args[i] = new PlaceholderArg { Index = i - bound };
-
+		PadArgs(ref args, ArgCount, shift: args.Length);
 		return Format(args);
 	}
 

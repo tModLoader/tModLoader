@@ -16,6 +16,10 @@ internal partial class VariableText
 	/// </summary>
 	public VariableText Bind(object[] args)
 	{
+		// discard excess positional args so they don't overflow into the named args
+		if (args.Length > PositionalArgCount)
+			Array.Resize(ref args, PositionalArgCount);
+
 		int positionalArgCount = PositionalArgCount - args.Length;
 		string format = _compositeText.Bind(args);
 		string original = string.Join("", _conditions) + _argIndexRegex.Replace(format, match => {
