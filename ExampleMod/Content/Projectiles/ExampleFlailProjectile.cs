@@ -82,9 +82,7 @@ namespace ExampleMod.Content.Projectiles
 
 		public override void OnHitPlayer(Player target, Player.HurtInfo info) {
 			if (Main.rand.NextBool(4)) {
-#if COMPILE_ERROR_TODOS
-				target.AddBuff(BuffID.OnFire, 180, quiet: false);
-#endif
+				target.AddBuff(BuffID.OnFire, 180);
 			}
 		}
 

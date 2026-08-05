@@ -33,7 +33,8 @@ public abstract class GlobalBuff : ModType
 	}
 
 	/// <summary>
-	/// Allows to you make special things happen when adding the given type of buff to a player when the player already has that buff. Return true to block the vanilla re-apply code from being called; returns false by default. The vanilla re-apply code sets the buff time to the "time" argument if that argument is larger than the current buff time. (For Mana Sickness, the vanilla re-apply code adds the "time" argument to the current buff time.)
+	/// Allows to you make special things happen when adding the given type of buff to a player when the player already has that buff. Return true to block the vanilla re-apply code from being called; returns false by default.
+	/// <para/> The vanilla re-apply code sets the buff time to the "time" argument if that argument is larger than the current buff time. If <see cref="ID.BuffID.Sets.AddBuffTimeAdditivelyToCap"/> is set, it will instead accumulate up to the cap contained in that set. That set is used for <see cref="ID.BuffID.ManaSickness"/> and "High Spirits" (<see cref="ID.BuffID.Kite"/>)
 	/// </summary>
 	public virtual bool ReApply(int type, Player player, int time, int buffIndex)
 	{

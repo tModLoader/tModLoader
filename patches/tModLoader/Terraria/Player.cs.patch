@@ -636,7 +636,7 @@
  	public bool fireWalk;
  	public bool channel;
  	public int step = -1;
-@@ -1144,6 +_,9 @@
+@@ -1144,48 +_,140 @@
  	public RabbitOrderFrameHelper rabbitOrderFrame;
  	public bool creativeGodMode;
  	private const int MaxAdvancedShadows = 60;
@@ -646,7 +646,10 @@
  	public int availableAdvancedShadowsCount;
  	private EntityShadowInfo[] _advancedShadows = new EntityShadowInfo[60];
  	private int _lastAddedAvancedShadow;
-@@ -1153,39 +_,127 @@
+ 	public CompositeArmData compositeFrontArm;
+ 	public CompositeArmData compositeBackArm;
+ 	public int anglerQuestsFinished;
++	/// <summary> The golf score of the player (not the stroke count), mainly affects the Golfers shop inventory: <see href="https://terraria.wiki.gg/wiki/Golf#Golf_score"/> </summary>
  	public int golferScoreAccumulated;
  	public int bartenderQuestLog;
  	public bool downedDD2EventAnyDifficulty;
@@ -1653,28 +1656,31 @@
  			Main.item[num].OverrideWith(theItemWeDrop);
  			theItemWeDrop = new Item();
  			if (slot == 58)
-@@ -3422,6 +_,21 @@
+@@ -3422,7 +_,23 @@
  		return -1;
  	}
  
 +	/// <summary>
-+	/// Gives the player the provided buff type, for example: <see cref="BuffID.Regeneration"/>. <br/>
++	/// Gives the player the provided buff type (such as <see cref="BuffID.Regeneration"/>), for the provided time, in ticks. <br/>
 +	/// <br/>
 +	/// <b>This accounts for the following: </b><br/>
-+	/// If the player is immune to the buff; <br/>
-+	/// Adjusting the buff <paramref name="time"/> for different game modes; <br/>
-+	/// If the player already has the buff, where re-apply logic will happen. <br/>
++	/// - If the player is immune to the buff. <br/>
++	/// - Adjusting the buff <paramref name="time"/> for different game modes. <br/>
++	/// - If the player already has the buff, where re-apply logic will happen. <br/>
 +	/// <br/>
 +	/// Vanilla buff types are found in <see cref="BuffID"/> and modded buff types are typically retrieved using
-+	/// <see cref="ModContent.BuffType{T}"/>. <br/>
-+	/// Player buff changes are synced by the owner using a <b><see cref="PlayerBuffs"/></b> packet, instead of an add/remove. Adding a pvpBuff to a remote player will send a <b><see cref="AddPlayerBuffPvP"/></b> packet instead of adding the buff locally.
++	/// <see cref="ModContent.BuffType{T}"/>. <br/><br/>
++	/// Adding a <see cref="Main.pvpBuff"/> to a remote player will send a <b><see cref="MessageID.AddPlayerBuffPvP"/></b> packet instead of adding the buff locally. Non-pvp buffs will not be applied to remote players.
 +	/// </summary>
-+	/// <param name="type"> The buff type; </param>
-+	/// <param name="time"> The amount of time in ticks. 60 ticks = 1 second;</param>
-+	/// <param name="fromNetPvP">Whether to skip multiplying by current world difficulty and alchemic enhancement buff.</param>
- 	public void AddBuff(int type, int time, bool fromNetPvP = false)
++	/// <param name="type">The buff type</param>
++	/// <param name="time">The amount of time in ticks. 60 ticks = 1 second.</param>
++	public void AddBuff(int type, int time) => AddBuff(type, time, false); // TML: Hide fromNetPvP param to avoid porting pitfall
++
+-	public void AddBuff(int type, int time, bool fromNetPvP = false)
++	internal void AddBuff(int type, int time, bool fromNetPvP = false)
  	{
  		if (buffImmune[type])
+ 			return;
 @@ -3520,6 +_,7 @@
  				continue;
  

@@ -371,6 +371,8 @@ public static partial class Config
 
 		RefactorInstanceMethodCall("Terraria.Item", "SetDefaults", RemoveParameter(1, "noMatCheck", "bool"));
 		RefactorInstanceMethodCall("Terraria.Player", "GetItem", RemoveParameter(0, "plr", "int"));
+		RefactorInstanceMethodCall("Terraria.Player", "AddBuff", RemoveParameter(2, "quiet", "bool"));
+		RefactorInstanceMethodCall("Terraria.Player", "AddBuff", RemoveParameter(3, "foodHack", "bool")); // Order seems to matter here
 		RefactorInstanceMethodCall("Terraria.Tile", "water", GetterSetterToProperty("LiquidType", "Terraria.ID.LiquidID", "Water"));
 		RefactorInstanceMethodCall("Terraria.Tile", "anyWater", GetterToProperty("HasWater"));
 		RefactorInstanceMethodCall("Terraria.Tile", "anyLava", GetterToProperty("HasLava"));
