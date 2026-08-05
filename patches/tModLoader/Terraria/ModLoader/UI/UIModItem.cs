@@ -495,13 +495,22 @@ internal class UIModItem : UIPanel
 		}
 	}
 
-    private void DrawRatingBuffer(UIElement element, SpriteBatch spriteBatch)
+	public override void Update(GameTime gameTime)
+	{
+		base.Update(gameTime);
+
+		// Update rating buffer.
+		if (!_gotRating) {
+	        _bufferRotation -= 0.15f;
+		}
+	}
+
+	private void DrawRatingBuffer(UIElement element, SpriteBatch spriteBatch)
     {
         if (_gotRating)
             return;
                 
         var texture = UICommon.SmallLoaderTexture.Value;
-        _bufferRotation -= 0.15f;
         spriteBatch.Draw(texture, element.GetDimensions().Center(), null, Color.White, _bufferRotation, texture.Size() / 2f, 1f, SpriteEffects.None, 0);
     }
 
