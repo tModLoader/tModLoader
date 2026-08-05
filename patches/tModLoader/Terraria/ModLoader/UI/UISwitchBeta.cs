@@ -27,7 +27,7 @@ internal class UISwitchBeta : UIState, IHaveBackButtonCommand
 		public bool Preview;
 		public Version TmlMajorMinor = null;
 	}
-	
+
 	protected UIElement area;
 	private UIPanel contentPanel;
 	private UIPanel topMessagePanel;
@@ -152,21 +152,22 @@ internal class UISwitchBeta : UIState, IHaveBackButtonCommand
 
 			if (branch.Flags.HasFlag(EBetaBranchFlags.k_EBetaBranch_Private))
 				continue;
-			
+
 			branch.Default = branch.Flags.HasFlag(EBetaBranchFlags.k_EBetaBranch_Default);
-			
+
 			if (!onBetaBranch && branch.Default) {
 				branch.TmlMajorMinor = tmlVersion;
-			} else if (previewRegex.Match(branch.Name) is { Success: true } m && m.Groups[1] is { Value: string vStr } && Version.TryParse(vStr, out var version)) {
+			}
+			else if (previewRegex.Match(branch.Name) is { Success: true } m && m.Groups[1] is { Value: string vStr } && Version.TryParse(vStr, out var version)) {
 				branch.Preview = true;
 				branch.TmlMajorMinor = version;
 			}
 
 			if (newestBranchIdx < 0 || (branch.TmlMajorMinor is { } v && v > branches[newestBranchIdx].TmlMajorMinor))
 				newestBranchIdx = branches.Count;
-			
+
 			branches.Add(branch);
-		};
+		}
 
 		// Identify obsolete preview branches.
 		foreach (ref var branch in CollectionsMarshal.AsSpan(branches)) {
@@ -177,14 +178,14 @@ internal class UISwitchBeta : UIState, IHaveBackButtonCommand
 			&& (newest.Default ? (branch.TmlMajorMinor <= newest.TmlMajorMinor) : (branch.TmlMajorMinor < newest.TmlMajorMinor))) {
 				branch.Obsolete = true;
 			}
-		};
+		}
 
 		// Put obsolete branches last.
 		branches.Sort((a, b) => a.Obsolete.CompareTo(b.Obsolete));
 
 		for (int i = 0; i < branches.Count; i++) {
 			var branch = branches[i];
-			
+
 			UIPanel branchPanel = new UIPanel();
 			branchPanel.SetPadding(6);
 			branchPanel.Width.Set(0, 1f);
@@ -252,7 +253,7 @@ internal class UISwitchBeta : UIState, IHaveBackButtonCommand
 
 				SteamApps.GetAppInstallDir(Engine.Steam.TMLAppID_t, out string tModLoaderInstallDirectory, 1000);
 				string currentWorkingDirectory = Environment.CurrentDirectory;
-				if(Path.GetRelativePath(tModLoaderInstallDirectory, currentWorkingDirectory) != ".") {
+				if (Path.GetRelativePath(tModLoaderInstallDirectory, currentWorkingDirectory) != ".") {
 					UIText notSteamInstallWarning = new UIText(Language.GetTextValue("tModLoader.SwitchVersionCurrentlySelectedButRunningSeparateInstallWarning")) {
 						Top = { Pixels = top },
 						Left = { Pixels = 45 },
