@@ -649,4 +649,16 @@ public partial class Main
 			ConfigManager.OnChangedAll();
 		}
 	}
+
+	/// <summary>
+	/// Render target that contains the final contents of the screen before any UI is drawn with any filters and transformations (reverse gravity) applied. <para/>
+	/// Only populated if <see cref="finalScreenTargetPopulated"/> is true; use <see cref="ModSystem.RequiresScreenTarget"/> to force this target to be populated.
+	/// </summary>
+	public static RenderTarget2D finalScreenTarget;
+
+	/// <summary>
+	/// True if <see cref="finalScreenTarget"/> has been populated this frame (only true AFTER FilterManager.EndCapture has run.) <para/>
+	/// Use <see cref="ModSystem.RequiresScreenTarget"/> to force this target to be populated.
+	/// </summary>
+	public static bool finalScreenTargetPopulated;
 }
