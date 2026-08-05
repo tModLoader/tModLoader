@@ -224,7 +224,7 @@ internal class WinImm32Ime : PlatformIme, IMessageFilter
 			case Msg.WM_IME_ENDCOMPOSITION:
 				_compString = "";
 				ClearCandidateList();
-				break;
+				return true;
 
 			case Msg.WM_IME_NOTIFY:
 				switch (message.WParam.ToInt32()) {
