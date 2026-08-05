@@ -9,6 +9,27 @@
  
  namespace Terraria.GameContent.UI.Elements;
  
+@@ -56,6 +_,20 @@
+ 		}
+ 	}
+ 
++	protected virtual Vector2 TextDrawPosition {
++		get {
++			CalculatedStyle innerDimensions = GetInnerDimensions();
++			Vector2 result = innerDimensions.Position();
++			result.X += (innerDimensions.Width - _textSize.X) * TextHAlign;
++			if (_isLarge)
++				result.Y -= 10f * _textScale * _textScale;
++			else
++				result.Y -= 2f * _textScale;
++
++			return result;
++		}
++	}
++
+ 	public UITextPanel(T text, float textScale = 1f, bool large = false)
+ 	{
+ 		SetText(text, textScale, large);
 @@ -74,7 +_,14 @@
  
  	public virtual void SetText(T text, float textScale, bool large)
@@ -24,3 +45,41 @@
  		_text = text;
  		_textScale = textScale;
  		_textSize = textSize;
+@@ -93,6 +_,8 @@
+ 
+ 	protected void DrawText(SpriteBatch spriteBatch)
+ 	{
++		// 1.4.5 Backport: Draw IME composition strings (#5293)
++		/*
+ 		CalculatedStyle innerDimensions = GetInnerDimensions();
+ 		Vector2 pos = innerDimensions.Position();
+ 		if (_isLarge)
+@@ -101,6 +_,7 @@
+ 			pos.Y -= 2f * _textScale;
+ 
+ 		pos.X += (innerDimensions.Width - _textSize.X) * TextHAlign;
++		*/
+ 		string text = Text;
+ 		if (HideContents) {
+ 			if (_asterisks == null || _asterisks.Length != text.Length)
+@@ -109,9 +_,20 @@
+ 			text = _asterisks;
+ 		}
+ 
++		/*
+ 		if (_isLarge)
+ 			Utils.DrawBorderStringBig(spriteBatch, text, pos, _color, _textScale);
+ 		else
+ 			Utils.DrawBorderString(spriteBatch, text, pos, _color, _textScale);
++		*/
++		DrawText(spriteBatch, text, TextDrawPosition, _color);
++	}
++
++	protected void DrawText(SpriteBatch spriteBatch, string text, Vector2 position, Color color)
++	{
++		if (_isLarge)
++			Utils.DrawBorderStringBig(spriteBatch, text, position, color, _textScale);
++		else
++			Utils.DrawBorderString(spriteBatch, text, position, color, _textScale);
+ 	}
+ }
