@@ -147,15 +147,17 @@ public static class SteamedWraps
 	{
 		if (!SteamClient) return null;
 
-		GetUserItemVoteResult_t? result = default(GetUserItemVoteResult_t);
-		using var call = CallResult<GetUserItemVoteResult_t>.Create((r, f) => result = f ? null : r);
+		var ioFailure = false;
+		var result = default(GetUserItemVoteResult_t);
+		using var call = CallResult<GetUserItemVoteResult_t>.Create((r, f) => (result, ioFailure) = (r, f));
 		call.Set(SteamUGC.GetUserItemVote(new PublishedFileId_t(fileId)));
 
 		while (true) {
 			RunCallbacks();
-			if (result?.m_eResult == EResult.k_EResultOK) return result;
-			if (result?.m_eResult != EResult.k_EResultNone) return null;
-			await Task.Delay(10);
+			if (ioFailure) return null;
+			if (result.m_eResult == EResult.k_EResultOK) return result;
+			if (result.m_eResult != EResult.k_EResultNone) return null;
+			await Task.Delay(1);
 		}
 	}
 
@@ -163,15 +165,17 @@ public static class SteamedWraps
 	{
 		if (!SteamClient) return null;
 
-		SetUserItemVoteResult_t? result = default(SetUserItemVoteResult_t);
-		using var call = CallResult<SetUserItemVoteResult_t>.Create((r, f) => result = f ? null : r);
+		var ioFailure = false;
+		var result = default(SetUserItemVoteResult_t);
+		using var call = CallResult<SetUserItemVoteResult_t>.Create((r, f) => (result, ioFailure) = (r, f));
 		call.Set(SteamUGC.SetUserItemVote(new PublishedFileId_t(fileId), up));
 
 		while (true) {
 			RunCallbacks();
-			if (result?.m_eResult == EResult.k_EResultOK) return result;
-			if (result?.m_eResult != EResult.k_EResultNone) return null;
-			await Task.Delay(10);
+			if (ioFailure) return null;
+			if (result.m_eResult == EResult.k_EResultOK) return result;
+			if (result.m_eResult != EResult.k_EResultNone) return null;
+			await Task.Delay(1);
 		}
 	}
 
