@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -35,14 +36,19 @@ namespace ExampleMod.Content.Projectiles
 		}
 
 		public override bool PreDraw(Player player, ref Color lightColor) {
-			Texture2D texture = TextureAssets.Projectile[Type].Value;
+			var drawData = Projectile.GetDefaultDrawParameters(player, lightColor);
 
-			// Redraw the projectile with the color not influenced by light
-			Vector2 drawOrigin = new Vector2(texture.Width * 0.5f, Projectile.height * 0.5f);
 			for (int k = Projectile.oldPos.Length - 1; k > 0; k--) {
-				Vector2 drawPos = (Projectile.oldPos[k] - Main.screenPosition) + drawOrigin + new Vector2(0f, Projectile.gfxOffY);
-				Color color = Projectile.GetAlpha(lightColor) * ((Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length);
-				Main.EntitySpriteDraw(texture, drawPos, null, color, Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0);
+				if (Projectile.oldPos[k] == Vector2.Zero) {
+					continue;
+				}
+
+				DrawData adjustedDrawData = drawData with {
+					position = drawData.position - Projectile.position + Projectile.oldPos[k],
+					color = drawData.color * ((Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length)
+				};
+
+				Main.EntitySpriteDraw(adjustedDrawData);
 			}
 
 			return true;

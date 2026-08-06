@@ -44,16 +44,6 @@ namespace ExampleMod.Content.Projectiles
 		public override void PostDraw(Player player, Color lightColor) {
 			// We use PostDraw to draw the highlight texture over the normal texture.
 
-			// This logic replicates the vanilla projectile drawing logic:
-			Asset<Texture2D> texture = TextureAssets.Projectile[Type];
-			int offsetY = 0;
-			int offsetX = 0;
-			float originX = (texture.Width() - Projectile.width) * 0.5f + Projectile.width * 0.5f;
-			ProjectileLoader.DrawOffset(Projectile, ref offsetX, ref offsetY, ref originX);
-			int frameHeight = texture.Height() / Main.projFrames[Type];
-			int frameY = frameHeight * Projectile.frame;
-			SpriteEffects drawEffects = Projectile.spriteDirection == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
-
 			// TryInteracting return values:
 			// 0: Not highlighted, 1: draw faded highlight, 2: draw selected highlight selected
 			int highlightTextureDrawMode = TryInteracting();
@@ -66,16 +56,15 @@ namespace ExampleMod.Content.Projectiles
 			if (lightValue > 10) {
 				bool isProjectileSelected = highlightTextureDrawMode == 2;
 				Color selectionGlowColor = Colors.GetSelectionGlowColor(isProjectileSelected, lightValue);
-				Main.EntitySpriteDraw(
-					highlightTexture.Value,
-					new Vector2(Projectile.position.X - Main.screenPosition.X + originX + offsetX, Projectile.position.Y - Main.screenPosition.Y + (Projectile.height / 2) + Projectile.gfxOffY),
-					new Rectangle(0, frameY, texture.Width(), frameHeight - 1),
-					selectionGlowColor,
-					Projectile.rotation,
-					new Vector2(originX, Projectile.height / 2 + offsetY),
-					1f,
-					drawEffects
-				);
+
+				// GetDefaultDrawParameters calculates the vanilla draw parameters:
+				var drawData = Projectile.GetDefaultDrawParameters(player, lightColor);
+
+				// Adjust the draw parameters to use the highlight texture and selection color and draw them.
+				Main.EntitySpriteDraw(drawData with {
+					texture = highlightTexture.Value,
+					color = selectionGlowColor
+				});
 			}
 		}
 
