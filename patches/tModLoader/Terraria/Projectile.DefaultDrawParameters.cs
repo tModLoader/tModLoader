@@ -1,10 +1,10 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ModLoader;
 
 namespace Terraria;
-
 
 public partial class Projectile
 {
@@ -23,15 +23,19 @@ public partial class Projectile
 	}
 
 	/// <summary>
-	/// Calculates the values vanilla would pass to <c>Main.EntitySpriteDraw</c> for this projectile,
-	/// so custom drawings can reuse them instead of recreating the math.
-	/// Omitted rotation, scale, and color: maybe use <see cref="rotation"/>, <see cref="scale"/>, and <see cref="GetAlpha"/>
+	/// Calculates the default drawing parameters for this projectile. This can be used to easily implement custom drawing without reimplementing the vanilla drawing logic, usually in <see cref="ModProjectile.PreDraw(Player, ref Color)"/> or <see cref="ModProjectile.PostDraw(Player, Color)"/>.
+	/// <para/> Note that this is only valid for modded projectiles and does not replicate any custom logic that would adjust the drawing parameters for vanilla projectiles.
+	/// <para/> The returned <see cref="DrawData"/> can be adjusted and then drawn with <see cref="Main.EntitySpriteDraw(DrawData)"/>:
+	/// <code>
+	/// var drawData = Projectile.GetDefaultDrawParameters(player, lightColor);
+	/// var adjustedDrawData = drawData with { color = Color.Blue }; // Adjust any parameter here
+	/// Main.EntitySpriteDraw(adjustedDrawData);
+	/// </code>
 	/// </summary>
-	/// <param name="player">
-	/// Owner of the projectile.
-	/// </param>
+	/// <param name="player">Owner of the projectile. </param>
+	/// <param name="lightColor">The lighting color for this projectile. Use the Color value passed into <see cref="ModProjectile.PreDraw(Player, ref Color)"/> or <see cref="ModProjectile.PostDraw(Player, Color)"/>. </param>
 	/// <returns>Vanilla's default draw parameters for this projectile</returns>
-	public DefaultDrawParameters GetDefaultDrawParameters(Player player = null)
+	public DrawData GetDefaultDrawParameters(Player player, Color lightColor)
 	{
 		Texture2D texture = TextureAssets.Projectile[type].Value;
 
@@ -59,7 +63,7 @@ public partial class Projectile
 		else {
 			sourceRectangle = new Rectangle(0, 0, texture.Width, texture.Height);
 
-			if (player != null && ownerHitCheck && player.gravDir == -1f) {
+			if (ownerHitCheck && player.gravDir == -1f) {
 				if (player.direction == 1)
 					effects = SpriteEffects.FlipHorizontally;
 				else if (player.direction == -1)
@@ -67,16 +71,18 @@ public partial class Projectile
 			}
 		}
 
-		return new DefaultDrawParameters {
-			texture = texture,
-			sourceRectangle = sourceRectangle,
-			position = new Vector2(
+		return new DrawData(
+			texture,
+			new Vector2(
 				position.X - Main.screenPosition.X + originX + drawOffsetX,
-				position.Y - Main.screenPosition.Y + height / 2 + gfxOffY),
-			origin = new Vector2(originX, height / 2 + originOffsetY),
-			effects = effects
-		};
+				position.Y - Main.screenPosition.Y + height / 2 + gfxOffY
+			),
+			sourceRectangle,
+			GetAlpha(lightColor),
+			rotation,
+			new Vector2(originX, height / 2 + originOffsetY),
+			scale,
+			effects
+		);
 	}
 }
-
-
