@@ -271,6 +271,11 @@ public partial class WorkshopHelper
 
 			private void OnWorkshopQueryInitialized(SteamUGCQueryCompleted_t pCallback, bool bIOFailure)
 			{
+				if (bIOFailure) {
+					_primaryQueryResult = EResult.k_EResultIOFailure;
+					return;
+				}
+
 				_primaryUGCHandle = pCallback.m_handle;
 				_primaryQueryResult = pCallback.m_eResult;
 				_queryReturnCount = pCallback.m_unNumResultsReturned;
