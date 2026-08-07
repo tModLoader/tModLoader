@@ -74,7 +74,7 @@ namespace ExampleMod.Content.Items.Armor
 			Item.value = Item.buyPrice(gold: 15);
 			Item.rare = ItemRarityID.Pink;
 			Item.hasVanityEffects = true;
-			Item.voiceSlot = Type;
+			Item.voiceSlot = Type; // This lets this accessory have a unique hurt and/or death sound.
 		}
 
 		public override void UpdateAccessory(Player player, bool hideVisual) {
@@ -89,6 +89,7 @@ namespace ExampleMod.Content.Items.Armor
 			p.BlockyForceVanity = true;
 		}
 
+		// Give this accessory a unique hurt sound.
 		public override bool PlayerHurtSoundOverride(Entity entity) {
 			SoundEngine.PlaySound(SoundID.Item103, entity.position);
 			return true;
