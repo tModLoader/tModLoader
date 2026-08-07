@@ -146,21 +146,29 @@ public static class SteamedWraps
 		WorkshopEULAStatus_t result = default;
 
 		using var _eulaHook = CallResult<WorkshopEULAStatus_t>.Create((WorkshopEULAStatus_t pCallback, bool bIOFailure) => {
-			result = pCallback;
+			try {
+				if (bIOFailure)
+					throw new IOException("Steam IO Failure in Workshop Eula Call Result: Failed to read or write to Steam");
+
+				if (pCallback.m_eResult != EResult.k_EResultOK)
+					throw new SocialBrowserException("Failed to retreive EULA status");
+
+				result = pCallback;
+			}
+			catch (Exception e) {
+				// Fail such that they can't publish because who knows what broke in Steam.
+				result.m_bNeedsAction = true;
+				result.m_eResult = EResult.k_EResultIOFailure;
+			}
 		});
 
 		_eulaHook.Set(SteamUGC.GetWorkshopEULAStatus());
 
-		// This probably should align better via a refactor of WorkshopHelper.WaitForQueryResultAsync
-		while (true) {
-			RunCallbacks();
-			if (result.m_eResult != EResult.k_EResultNone)
-				break;
+		// We don't need to call SteamedWraps.RunCallbacks here because there is no GameServer for publishing -- Solxan
+		while (result.m_eResult == EResult.k_EResultNone) {
+			CoreSocialModule.Pulse();
+			Thread.Sleep(1);
 		}
-
-		// TODO: An exception here doesn't tell the user anything about what's going on. Just looks like button not working
-		if (result.m_eResult != EResult.k_EResultOK)
-			throw new SocialBrowserException("Failed to retreive EULA status");
 
 		return !result.m_bNeedsAction;
 	}

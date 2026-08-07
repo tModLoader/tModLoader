@@ -226,11 +226,18 @@
  				if (param.m_bUserNeedsToAcceptWorkshopLegalAgreement) {
  					_issueReporter.ReportDelayedUploadProblem("Workshop.ReportIssue_FailedToPublish_UserDidNotAcceptWorkshopTermsOfService");
  					_endAction(this);
-@@ -236,12 +_,36 @@
+@@ -236,12 +_,43 @@
  					_issueReporter.ReportDelayedUploadProblemWithoutKnownReason("Workshop.ReportIssue_FailedToPublish_WithoutKnownReason", param.m_eResult.ToString());
  					_endAction(this);
  				}
 +				*/
++
++				if (bIOFailure) {
++					_updateCallback = EResult.k_EResultIOFailure;
++					_issueReporter.ReportDelayedUploadProblemWithoutKnownReason("Workshop.ReportIssue_FailedToPublish_WithoutKnownReason", param.m_eResult.ToString());
++					_endAction(this);
++					return;
++				}
 +
 +				_createCallback = param.m_eResult;
 +				if (param.m_eResult != EResult.k_EResultOK) {
@@ -279,7 +286,7 @@
  				UGCUpdateHandle_t uGCUpdateHandle_t = SteamUGC.StartItemUpdate(SteamUtils.GetAppID(), _publishedFileID);
  				if (_entryData.Title != null)
  					SteamUGC.SetItemTitle(uGCUpdateHandle_t, _entryData.Title);
-@@ -265,23 +_,61 @@
+@@ -265,23 +_,68 @@
  
  				if (_entryData.Visibility.HasValue)
  					SteamUGC.SetItemVisibility(uGCUpdateHandle_t, _entryData.Visibility.Value);
@@ -327,6 +334,13 @@
  
  			private void UpdateItemResult(SubmitItemUpdateResult_t param, bool bIOFailure)
  			{
++				if (bIOFailure) {
++					_updateCallback = EResult.k_EResultIOFailure;
++					_issueReporter.ReportDelayedUploadProblemWithoutKnownReason("Workshop.ReportIssue_FailedToPublish_WithoutKnownReason", param.m_eResult.ToString());
++					_endAction(this);
++					return;
++				}
++
 +				_updateCallback = param.m_eResult;
 +
  				if (param.m_bUserNeedsToAcceptWorkshopLegalAgreement) {
