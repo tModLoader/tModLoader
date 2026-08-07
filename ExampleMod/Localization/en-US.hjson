@@ -1308,11 +1308,6 @@ Mods: {
 				DisplayName: Example Voice Accessory
 				Tooltip: "'Boing!'"
 			}
-
-			SpawnBlueSlimeWithExVoiceAccessory: {
-				DisplayName: Spawn Blue Slime With Ex Voice Accessory
-				Tooltip: TODO remove
-			}
 		}
 
 		# Projectile display names mainly show in chat when a player dies from it.

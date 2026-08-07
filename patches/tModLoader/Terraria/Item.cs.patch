@@ -1901,7 +1901,7 @@
  	public static bool MechSpawn(float x, float y, int type)
  	{
  		int num = 0;
-@@ -48379,7 +_,18 @@
+@@ -48379,11 +_,26 @@
  		return true;
  	}
  
@@ -1920,6 +1920,22 @@
  	public static int sellPrice(int platinum = 0, int gold = 0, int silver = 0, int copper = 0) => (copper + silver * 100 + gold * 100 * 100 + platinum * 100 * 100 * 100) * 5;
  
  	public static int GetRandomVoiceItem()
+ 	{
++		// Randomly select an item from the list. Unless the list is empty, in which case, return 0;
++		return ItemID.Sets.VoiceChangeItemForChestLootAndSlimes.Count == 0 ? 0 : ItemID.Sets.VoiceChangeItemForChestLootAndSlimes[WorldGen.genRand.Next(ItemID.Sets.VoiceChangeItemForChestLootAndSlimes.Count)];
++
++		/*
+ 		switch (WorldGen.genRand.Next(14)) {
+ 			default:
+ 				return 5499;
+@@ -48414,6 +_,7 @@
+ 			case 13:
+ 				return 5534;
+ 		}
++		*/
+ 	}
+ 
+ 	public bool CanShimmer()
 @@ -48425,7 +_,7 @@
  		if (shimmerEquivalentType == 560 && Main.slimeRain)
  			return false;

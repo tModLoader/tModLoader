@@ -1,6 +1,5 @@
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
 using Terraria.Enums;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -17,6 +16,8 @@ namespace ExampleMod.Content.Items.Accessories
 		public override void SetStaticDefaults() {
 			// This marks this item as voice change item which causes naturally spawned slimes that carry this item to have triple HP.
 			ItemID.Sets.IsAVoiceChangeItem[Type] = true;
+			// This lets this item be randomly generated in chest loot and lets slimes in Skyblock spawn carrying with this item.
+			ItemID.Sets.VoiceChangeItemForChestLootAndSlimes.Add(Type);
 		}
 		public override void SetDefaults() {
 			// DefaultToVoiceOverrideAccessory sets a number of things for us such as the use style, use time, vanity, and accessory.
@@ -57,45 +58,4 @@ namespace ExampleMod.Content.Items.Accessories
 			return true;
 		}
 	}
-
-	#region TODO: Remove later, this is for testing
-	public class SpawnBlueSlimeWithExVoiceAccessory : ModItem
-	{
-		public override string Texture => "Terraria/Images/Item_1";
-		public override void SetDefaults() {
-			Item.width = 16;
-			Item.height = 16;
-			Item.useTime = 1;
-			Item.useAnimation = 1;
-
-			Item.useStyle = ItemUseStyleID.Shoot;
-		}
-		public override bool? UseItem(Player player) {
-			NPC.NewNPC(new EntitySource_BossSpawn(player), (int)player.position.X, (int)player.position.Y, NPCID.BlueSlime, 0, default, ModContent.ItemType<ExampleVoiceAccessory>());
-			return base.UseItem(player);
-		}
-	}
-
-	public class ExampleVoiceAccessoryPlayer : ModPlayer
-	{
-		/*
-		public SoundStyle ExampleVoiceAccessoryHurtSound = new($"{nameof(ExampleMod)}/Assets/Sounds/Items/BananaImpact");
-		public SoundStyle ExampleVoiceAccessoryDeathSound = SoundID.StatueMimicLaugh;
-
-		public override void OnHurt(Player.HurtInfo info) {
-			if (!info.SoundDisabled) {
-				if (Player.dead) {
-					SoundEngine.PlaySound(ExampleVoiceAccessoryDeathSound, Player.position); // Doesn't work
-				}
-				else {
-					SoundEngine.PlaySound(ExampleVoiceAccessoryHurtSound, Player.position); // Works, but also plays whatever vanilla sound.
-				}
-			}
-		}
-		*/
-		public override void PostUpdate() {
-			Main.NewText($"Player.voiceOverride {Player.voiceOverride}");
-		}
-	}
-	#endregion
 }

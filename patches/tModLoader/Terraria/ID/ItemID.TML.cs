@@ -217,5 +217,17 @@ partial class ItemID
 			GolfClubMythrilIron, GolfClubLeadPutter, GolfClubGoldWedge, GolfClubPearlwoodDriver,
 			GolfClubTitaniumIron, GolfClubShroomitePutter, GolfClubDiamondWedge, GolfClubChlorophyteDriver
 		);
+
+		/// <summary>
+		/// Contains voice accessories that can randomly generated in chests and lets slimes in Skyblock spawn with this item.
+		/// <para/>Additionally set <see cref="ItemID.Sets.IsAVoiceChangeItem"/> to boost the HP of slimes with this item.
+		/// </summary>
+		public static List<int> VoiceChangeItemForChestLootAndSlimes = [
+			PlayerVoiceFrogItem, PlayerVoiceGoatItem, PlayerVoiceRetroItem, PlayerVoiceCatItem,
+			PlayerVoiceDogItem, PlayerVoiceTurkeyItem, PlayerVoiceGoblinItem, PlayerVoiceCrowItem,
+			PlayerVoiceBalloonItem, PlayerVoiceUndeadItem, PlayerVoiceVampireItem,
+			PlayerVoiceCowbellItem, PlayerVoiceChickenFeetItem, PlayerVoiceFairyItem
+			// Does not contain WhoopieCushion like ItemID.Sets.IsAVoiceChangeItem
+		];
 	}
 }
