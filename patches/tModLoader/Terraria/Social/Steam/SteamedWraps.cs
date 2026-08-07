@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection.Metadata;
 using System.Threading;
+using System.Threading.Tasks;
 using ReLogic.OS;
 using Steamworks;
 using Terraria.DataStructures;
@@ -139,6 +141,44 @@ public static class SteamedWraps
 		else if (SteamAvailable)
 			SteamGameServerUGC.GetQueryUGCChildren(handle, index, deps, numChildren);
 		return deps;
+	}
+
+	public static async Task<GetUserItemVoteResult_t?> GetUserRating(ulong fileId)
+	{
+		if (!SteamClient) return null;
+
+		var ioFailure = false;
+		var result = default(GetUserItemVoteResult_t);
+		using var call = CallResult<GetUserItemVoteResult_t>.Create((r, f) => (result, ioFailure) = (r, f));
+		call.Set(SteamUGC.GetUserItemVote(new PublishedFileId_t(fileId)));
+
+		// Since Gameserver doesn't have user ratings, we use CoreSocialModule.Pulse() instead of SteamedWraps.RunCallbacks().
+		while (true) {
+			CoreSocialModule.Pulse();
+			if (ioFailure) return null;
+			if (result.m_eResult == EResult.k_EResultOK) return result;
+			if (result.m_eResult != EResult.k_EResultNone) return null;
+			await Task.Delay(1);
+		}
+	}
+
+	public static async Task<SetUserItemVoteResult_t?> SetUserRating(ulong fileId, bool up)
+	{
+		if (!SteamClient) return null;
+
+		var ioFailure = false;
+		var result = default(SetUserItemVoteResult_t);
+		using var call = CallResult<SetUserItemVoteResult_t>.Create((r, f) => (result, ioFailure) = (r, f));
+		call.Set(SteamUGC.SetUserItemVote(new PublishedFileId_t(fileId), up));
+
+		// Since Gameserver doesn't have user ratings, we use CoreSocialModule.Pulse() instead of SteamedWraps.RunCallbacks().
+		while (true) {
+			CoreSocialModule.Pulse();
+			if (ioFailure) return null;
+			if (result.m_eResult == EResult.k_EResultOK) return result;
+			if (result.m_eResult != EResult.k_EResultNone) return null;
+			await Task.Delay(1);
+		}
 	}
 
 	public static bool HasAcceptedTmodWorkshopEula()
@@ -390,6 +430,10 @@ public static class SteamedWraps
 		throw new Exception("Invalid Call to FetchDeveloperMetadata. Steam is not initialized");
 	}
 
+	/// <summary>
+	/// Used when CoreSocialModule.Pulse() is not available, such as when publishing using command line.
+	/// Also used when need to interact with both Steam Game Server for GoG and SteamClient equivocally (only Mod Browser downloads at this time).
+	/// </summary>
 	public static void RunCallbacks()
 	{
 		if (SteamClient)
