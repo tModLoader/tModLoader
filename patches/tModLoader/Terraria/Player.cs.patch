@@ -5946,7 +5946,7 @@
  		}
  		else {
  			statLife = 0;
-@@ -31127,17 +_,21 @@
+@@ -31127,10 +_,12 @@
  				KillMe(damageSource, num2, hitDirection, pvp);
  		}
  
@@ -5959,15 +5959,6 @@
  	}
  
  	public void PlayHurtSound()
- 	{
- 		Vector2 vector = position;
-+		/*
- 		if (whoAmI == Main.myPlayer)
- 			vector = new Vector2(-1f, -1f);
-+		*/
- 
- 		if (stoned) {
- 			SoundEngine.PlaySound(0, vector);
 @@ -31210,6 +_,11 @@
  				return;
  		}
