@@ -152,8 +152,9 @@ public static class SteamedWraps
 		using var call = CallResult<GetUserItemVoteResult_t>.Create((r, f) => (result, ioFailure) = (r, f));
 		call.Set(SteamUGC.GetUserItemVote(new PublishedFileId_t(fileId)));
 
+		// Since Gameserver doesn't have user ratings, we use CoreSocialModule.Pulse() instead of SteamedWraps.RunCallbacks().
 		while (true) {
-			RunCallbacks();
+			CoreSocialModule.Pulse();
 			if (ioFailure) return null;
 			if (result.m_eResult == EResult.k_EResultOK) return result;
 			if (result.m_eResult != EResult.k_EResultNone) return null;
@@ -170,8 +171,9 @@ public static class SteamedWraps
 		using var call = CallResult<SetUserItemVoteResult_t>.Create((r, f) => (result, ioFailure) = (r, f));
 		call.Set(SteamUGC.SetUserItemVote(new PublishedFileId_t(fileId), up));
 
+		// Since Gameserver doesn't have user ratings, we use CoreSocialModule.Pulse() instead of SteamedWraps.RunCallbacks().
 		while (true) {
-			RunCallbacks();
+			CoreSocialModule.Pulse();
 			if (ioFailure) return null;
 			if (result.m_eResult == EResult.k_EResultOK) return result;
 			if (result.m_eResult != EResult.k_EResultNone) return null;
@@ -428,6 +430,10 @@ public static class SteamedWraps
 		throw new Exception("Invalid Call to FetchDeveloperMetadata. Steam is not initialized");
 	}
 
+	/// <summary>
+	/// Used when CoreSocialModule.Pulse() is not available, such as when publishing using command line.
+	/// Also used when need to interact with both Steam Game Server for GoG and SteamClient equivocally (only Mod Browser downloads at this time).
+	/// </summary>
 	public static void RunCallbacks()
 	{
 		if (SteamClient)
