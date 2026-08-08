@@ -204,17 +204,18 @@ public partial class Projectile : IEntityWithGlobals<GlobalProjectile>
 	/// <summary>
 	/// Calculates the default drawing parameters for this projectile. This can be used to easily implement custom drawing without reimplementing the vanilla drawing logic, usually in <see cref="ModProjectile.PreDraw(Player, ref Color)"/> or <see cref="ModProjectile.PostDraw(Player, Color)"/>.
 	/// <para/> Note that this is only valid for modded projectiles and does not replicate any custom logic that would adjust the drawing parameters for vanilla projectiles.
+	/// <para/> This also does not apply to projectiles drawn with specialized logic, such as spears and chain-drawn projectiles, or projectiles with hardcoded type-specific draw parameters, like golf balls.
 	/// <para/> The returned <see cref="DrawData"/> can be adjusted and then drawn with <see cref="Main.EntitySpriteDraw(DrawData)"/>:
 	/// <code>
-	/// var drawData = Projectile.GetDefaultDrawParameters(player, lightColor);
+	/// var drawData = Projectile.GetDefaultDrawData(player, lightColor);
 	/// var adjustedDrawData = drawData with { color = Color.Blue }; // Adjust any parameter here
 	/// Main.EntitySpriteDraw(adjustedDrawData);
 	/// </code>
 	/// </summary>
-	/// <param name="player">Owner of the projectile. </param>
+	/// <param name="player">Owner of the projectile. For non-player-owned projectiles, pass <c>Main.player[Projectile.owner]</c></param>
 	/// <param name="lightColor">The lighting color for this projectile. Use the Color value passed into <see cref="ModProjectile.PreDraw(Player, ref Color)"/> or <see cref="ModProjectile.PostDraw(Player, Color)"/>. </param>
 	/// <returns>Vanilla's default draw parameters for this projectile</returns>
-	public DrawData GetDefaultDrawParameters(Player player, Color lightColor)
+	public DrawData GetDefaultDrawData(Player player, Color lightColor)
 	{
 		Texture2D texture = TextureAssets.Projectile[type].Value;
 

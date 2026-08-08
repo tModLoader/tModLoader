@@ -36,7 +36,7 @@ namespace ExampleMod.Content.Projectiles
 		}
 
 		public override bool PreDraw(Player player, ref Color lightColor) {
-			var drawData = Projectile.GetDefaultDrawParameters(player, lightColor);
+			var drawData = Projectile.GetDefaultDrawData(player, lightColor);
 
 			for (int k = Projectile.oldPos.Length - 1; k > 0; k--) {
 				if (Projectile.oldPos[k] == Vector2.Zero) {

@@ -63,8 +63,8 @@ namespace ExampleMod.Content.Projectiles
 		public override bool PreDraw(Player player, ref Color lightColor) {
 			// Draws an afterimage trail. See https://github.com/tModLoader/tModLoader/wiki/Basic-Projectile#afterimage-trail for more information.
 
-			// GetDefaultDrawParameters calculates the draw parameters (such as texture, frame, origin, etc.) that would be used for the normal projectile drawing.
-			var drawData = Projectile.GetDefaultDrawParameters(player, lightColor);
+			// GetDefaultDrawData calculates the draw parameters (such as texture, frame, origin, etc.) that would be used for the normal projectile drawing.
+			var drawData = Projectile.GetDefaultDrawData(player, lightColor);
 
 			for (int k = Projectile.oldPos.Length - 1; k > 0; k--) {
 				if (Projectile.oldPos[k] == Vector2.Zero) {

@@ -57,8 +57,8 @@ namespace ExampleMod.Content.Projectiles
 				bool isProjectileSelected = highlightTextureDrawMode == 2;
 				Color selectionGlowColor = Colors.GetSelectionGlowColor(isProjectileSelected, lightValue);
 
-				// GetDefaultDrawParameters calculates the vanilla draw parameters:
-				var drawData = Projectile.GetDefaultDrawParameters(player, lightColor);
+				// GetDefaultDrawData calculates the vanilla draw parameters:
+				var drawData = Projectile.GetDefaultDrawData(player, lightColor);
 
 				// Adjust the draw parameters to use the highlight texture and selection color and draw them.
 				Main.EntitySpriteDraw(drawData with {
