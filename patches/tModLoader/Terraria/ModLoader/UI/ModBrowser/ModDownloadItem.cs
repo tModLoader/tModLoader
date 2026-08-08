@@ -27,7 +27,9 @@ public class ModDownloadItem
 
 	public readonly ModSide ModSide;
 	public readonly int Downloads;
-	public readonly int Hot;
+    public readonly int Hot;
+    public readonly uint Upvotes;
+    public readonly uint Downvotes;
 	public readonly string Homepage;
 	public readonly Version ModloaderVersion;
 
@@ -36,7 +38,7 @@ public class ModDownloadItem
 	public bool AppNeedRestartToReinstall { get; private set; }
 	public bool IsInstalled => Installed != null;
 
-	public ModDownloadItem(string displayName, string name, Version version, string author, string modReferences, ModSide modSide, string modIconUrl, string publishId, int downloads, int hot, DateTime timeStamp, Version modloaderversion, string homepage, string ownerId, string[] referencesById, bool banned, DeveloperMetadata devMetadata)
+	public ModDownloadItem(string displayName, string name, Version version, string author, string modReferences, ModSide modSide, string modIconUrl, string publishId, int downloads, int hot, DateTime timeStamp, Version modloaderversion, string homepage, string ownerId, string[] referencesById, bool banned, DeveloperMetadata devMetadata, uint upvotes, uint downvotes)
 	{
 		ModName = name;
 		DisplayName = displayName;
@@ -57,6 +59,8 @@ public class ModDownloadItem
 		ModloaderVersion = modloaderversion;
 		Banned = banned;
 		DevMetadata = devMetadata;
+        Upvotes = upvotes;
+        Downvotes = downvotes;
 
 		UpdateInstallState();
 	}
