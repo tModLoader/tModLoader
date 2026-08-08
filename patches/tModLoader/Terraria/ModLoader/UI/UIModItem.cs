@@ -334,7 +334,7 @@ internal class UIModItem : UIPanel
 			bottomRightRowOffset -= (int)PADDING;
 		}
 
-		if (SteamedWraps.SteamClient && _mod.location == ModLocation.Workshop) {
+		if (SteamedWraps.SteamClient && _loaded && _mod.location == ModLocation.Workshop) {
 			Rectangle frame = new Rectangle(0, 0, 36, 36);
 			bottomRightRowOffset -= 36;
 			_rateButton = new UIImage(UICommon.ButtonRateTexture) {
