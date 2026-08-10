@@ -1104,7 +1104,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// <summary>
 	/// Allows you to modify the speed at which you fall when gliding with these wings are equipped.
 	/// <para/> Called on local, server, and remote clients.
-	/// <para/> Return false to prevent vanilla gliding behavior
+	/// <para/> Return false to prevent vanilla gliding behavior.
 	/// </summary>
 	/// <param name="player">The player.</param>
 	/// <param name="gravityMultiplier">The multiplier applied to <see cref="Player.gravity"/>.</param>

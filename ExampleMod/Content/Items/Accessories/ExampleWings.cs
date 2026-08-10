@@ -45,6 +45,7 @@ namespace ExampleMod.Content.Items.Accessories
 			constantAscend = 0.135f;
 		}
 
+		// WingGlidingSpeeds allows adjusting speeds while gliding. This example increases horizontal gliding speed while holding up and reduces the effect of gravity while increasing max fall speed otherwise.
 		public override bool WingGlidingSpeeds(Player player, ref float gravityMultiplier, ref float maxSpeedMultiplier) {
 			if (player.controlUp) {
 				float descent = player.velocity.Y * 0.02f;
