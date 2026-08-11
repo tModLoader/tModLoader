@@ -191,7 +191,8 @@ internal class UIModSourceItem : UIPanel
 		if (!_upgradePotentialChecked) {
 			_upgradePotentialChecked = true;
 
-			StartUpgradeTasks();
+			if (Directory.Exists(_mod))
+				StartUpgradeTasks();
 		}
 
 		// Display upgrade .lang files button if any .lang files present

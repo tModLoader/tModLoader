@@ -1,10 +1,9 @@
 --- src/TerrariaNetCore/Terraria/Localization/LanguageManager.cs
 +++ src/tModLoader/Terraria/Localization/LanguageManager.cs
-@@ -13,14 +_,16 @@
+@@ -13,14 +_,15 @@
  using ReLogic.Content.Sources;
  using ReLogic.Graphics;
  using ReLogic.Utilities;
-+using Terraria.Initializers;
 +using Terraria.ModLoader;
  using Terraria.Utilities;
  
@@ -19,32 +18,47 @@
  	private readonly Dictionary<string, List<string>> _categoryGroupedKeys = new Dictionary<string, List<string>>();
  	private readonly Dictionary<string, Dictionary<string, string>> _textVariations = new Dictionary<string, Dictionary<string, string>>();
  	private GameCulture _fallbackCulture = GameCulture.DefaultCulture;
-@@ -114,6 +_,25 @@
- 		ProcessCopyCommandsInTexts();
+@@ -85,6 +_,9 @@
+ 
+ 	public void SetLanguage(GameCulture culture)
+ 	{
++		if (ActiveCulture != null) // Log selected language, but skip logging initial DefaultCulture.
++			Logging.tML.Info($"Language: {culture.Name}");
++
+ 		if (ActiveCulture != culture) {
+ 			Thread.CurrentThread.CurrentCulture = culture.CultureInfo;
+ 			Thread.CurrentThread.CurrentUICulture = culture.CultureInfo;
+@@ -92,18 +_,29 @@
+ 		}
  	}
  
-+	// Added by tML, replacement for commented code above
-+	internal void ReloadLanguage(bool resetValuesToKeysFirst = true)
-+	{
-+		if (resetValuesToKeysFirst)
-+			SetAllTextValuesToKeys();
-+
-+		LoadFilesForCulture(_fallbackCulture);
-+		if (ActiveCulture != _fallbackCulture)
-+			LoadFilesForCulture(ActiveCulture);
-+
-+		LoadFromContentSources();
-+
-+		ProcessCopyCommandsInTexts();
-+		RecalculateBoundTextValues();
-+		ChatInitializer.PrepareAliases();
-+
-+		SystemLoader.OnLocalizationsLoaded();
-+	}
-+
- 	private void LoadFilesForCulture(GameCulture culture)
++	/*
+ 	private void ReloadLanguage(GameCulture targetCulture)
++	*/
++	private void ReloadLanguage(GameCulture targetCulture, bool resetValuesToKeysFirst = true)
  	{
- 		string[] languageFilesForCulture = GetLanguageFilesForCulture(culture);
+ 		if (ActiveCulture != _fallbackCulture) {
++			if (resetValuesToKeysFirst)
+-			SetAllTextValuesToKeys();
++				SetAllTextValuesToKeys();
++
+ 			if (targetCulture != _fallbackCulture)
+ 				LoadLanguage(_fallbackCulture);
+ 		}
+ 
+ 		LoadLanguage(targetCulture);
++		RecalculateBoundTextValues(); // Added by TML
++
+ 		if (this.OnLanguageChanged != null)
+ 			this.OnLanguageChanged(this);
++
++		SystemLoader.OnLocalizationsLoaded(); // Added by TML
+ 	}
++
++	internal void ReloadLanguage(bool resetValuesToKeysFirst = true) => ReloadLanguage(ActiveCulture, resetValuesToKeysFirst);
+ 
+ 	private void LoadLanguage(GameCulture culture)
+ 	{
 @@ -136,8 +_,12 @@
  				break;
  			}
@@ -58,7 +72,7 @@
  	private void ProcessCopyCommandsInTexts()
  	{
  		Regex regex = new Regex("{\\$(\\w+\\.\\w+)}", RegexOptions.Compiled);
-@@ -155,9 +_,11 @@
+@@ -155,12 +_,17 @@
  					break;
  
  				value.SetValue(text);
@@ -70,6 +84,12 @@
  
  	public void UseSources(List<IContentSource> sourcesFromLowestToHighest)
  	{
++		if (_contentSources.SequenceEqual(sourcesFromLowestToHighest)) // Added by tML
++			return;
++
+ 		_contentSources = sourcesFromLowestToHighest;
+ 		ReloadLanguage(ActiveCulture);
+ 	}
 @@ -170,8 +_,9 @@
  		string name = ActiveCulture.Name;
  		string assetNameStart = ("Localization" + Path.DirectorySeparatorChar + name).ToLower();

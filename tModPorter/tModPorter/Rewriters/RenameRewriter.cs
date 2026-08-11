@@ -37,6 +37,12 @@ public class RenameRewriter : BaseRewriter {
 	}
 
 	public static MemberRename RenameInstanceField(string type, string from, string to) => RenameMember(new() { type = type, from = from, to = to });
+	public static void RenameInstanceFieldMultiple(string type, string[] froms, string to)
+	{
+		foreach (string from in froms) {
+			RenameMember(new() { type = type, from = from, to = to });
+		}
+	}
 	public static MemberRename RenameStaticField(string type, string from, string to) => RenameMember(new() { type = type, from = from, to = to });
 	public static void RenameStaticFields(string type, params string[] fromTo)
 	{
@@ -134,7 +140,7 @@ public class RenameRewriter : BaseRewriter {
 		RegisterAction(memberAccess, node => UseType(to));
 	}
 
-	private IdentifierNameSyntax RefactorSpeculative(IdentifierNameSyntax nameSyntax) {
+	private SyntaxNode RefactorSpeculative(IdentifierNameSyntax nameSyntax) {
 		var nameToken = nameSyntax.Identifier;
 
 		foreach (var entry in memberRenames) {
@@ -152,7 +158,7 @@ public class RenameRewriter : BaseRewriter {
 		return RefactorType(nameSyntax);
 	}
 
-	private IdentifierNameSyntax RefactorType(IdentifierNameSyntax nameSyntax) {
+	private TypeSyntax RefactorType(IdentifierNameSyntax nameSyntax) {
 		var nameToken = nameSyntax.Identifier;
 
 		foreach (var (from, to) in typeRenames) {
@@ -171,7 +177,7 @@ public class RenameRewriter : BaseRewriter {
 			}
 
 			if (IsUsingNamespace(qualifier[..^1])) {
-				return UseType(to).WithTriviaFrom(nameSyntax);
+				return UseTypeByMetadataName(to).WithTriviaFrom(nameSyntax);
 			}
 		}
 
@@ -204,9 +210,24 @@ public class RenameRewriter : BaseRewriter {
 		);
 	};
 
+	public static AdditionalRenameAction AddCommentToMethodInvocation(string comment) => (rw, node) => {
+		if (node.Parent.Parent.Parent is InvocationExpressionSyntax invoke)
+			rw.RegisterAction<InvocationExpressionSyntax>(invoke, newNode => newNode.WithArgumentList(newNode.ArgumentList.WithBlockComment(comment)));
+	};
+
 	public static AdditionalRenameAction AddCommentToOverride(string comment) => (rw, node) => {
 		if (node.Parent is MethodDeclarationSyntax decl)
 			rw.RegisterAction<MethodDeclarationSyntax>(decl, newNode => newNode.WithParameterList(newNode.ParameterList.WithBlockComment(comment)));
+	};
+
+	public static AdditionalRenameAction AddCommentToFieldAccess(string comment) => (rw, node) => {
+		if (node.Parent is not IdentifierNameSyntax nameSyntax || nameSyntax.Parent is not ExpressionSyntax usage)
+			return;
+		usage = usage.Parent switch {
+			ElementAccessExpressionSyntax e when usage == e.Expression => e,
+			_ => usage
+		};
+		rw.RegisterAction<ExpressionSyntax>(usage, newNode => newNode.WithBlockComment(comment));
 	};
 
 	public static AdditionalRenameAction AccessShimmerBuffIDElem() => (rw, node) => {

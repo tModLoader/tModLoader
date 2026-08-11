@@ -22,6 +22,14 @@
  	private static ILightingEngine _activeEngine;
  
  	public static float GlobalBrightness { get; set; }
+@@ -62,6 +_,7 @@
+ 
+ 	public static bool UsingNewLighting => Mode == LightMode.Color;
+ 
++	[Obsolete("Always false in TML")]
+ 	public static bool UpdateEveryFrame {
+ 		get {
+ 			if (!Main.RenderTargetsRequired)
 @@ -96,12 +_,19 @@
  			GlobalBrightness = 1f;
  	}

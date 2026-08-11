@@ -126,8 +126,8 @@ public partial class LanguageManager
 		if (boundTextCache.TryGetValue(binding, out var text))
 			return text;
 
-		text = new LocalizedText(key, GetTextValue(key));
-		text.BindArgs(args);
+		text = new LocalizedText(key, key);
+		text.BindArgs(GetText(key), args);
 
 		boundTextCache[binding] = text;
 		boundTexts.Add(text);
@@ -137,9 +137,7 @@ public partial class LanguageManager
 	internal void RecalculateBoundTextValues()
 	{
 		foreach (var text in boundTexts) {
-			var args = text.BoundArgs;
-			text.SetValue(GetTextValue(text.Key));
-			text.BindArgs(args);
+			text.BindArgs(GetText(text.Key), text.BoundArgs);
 		}
 	}
 	#endregion

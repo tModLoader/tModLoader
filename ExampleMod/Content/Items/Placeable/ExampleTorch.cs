@@ -51,8 +51,8 @@ namespace ExampleMod.Content.Items.Placeable
 
 		public override void PostUpdate(WorldItem item) {
 			// Create a white (1.0, 1.0, 1.0) light when the item is in world, and isn't underwater.
-			if (!Item.wet) {
-				Lighting.AddLight(Item.Center, 1f, 1f, 1f);
+			if (!item.wet) {
+				Lighting.AddLight(item.Center, 1f, 1f, 1f);
 			}
 		}
 

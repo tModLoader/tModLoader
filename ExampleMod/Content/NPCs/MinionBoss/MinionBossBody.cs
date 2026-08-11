@@ -243,9 +243,10 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 			*/
 		}
 
-		public override void BossLoot(ref int potionType) {
-			// Here you'd want to change the potion type that drops when the boss is defeated. Because this boss is early pre-hardmode, we keep it unchanged
+		public override void BossLoot(ref int potionType, ref int potionStack, ref int heartStack) {
+			// Here you'd want to change the potion type, the amount of potions and the amount of hearts that drops when the boss is defeated. Because this boss is early pre-hardmode, we keep it unchanged
 			// (Lesser Healing Potion). If you wanted to change it, simply write "potionType = ItemID.HealingPotion;" or any other potion type
+			// Same goes for the potionStack and heartStack, simply write "heartStack = amount_desired;" or "potionStack = amount_desired;".
 		}
 
 		public override bool CanHitPlayer(Player target, ref int cooldownSlot) {

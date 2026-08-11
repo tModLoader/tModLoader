@@ -1,11 +1,12 @@
-using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using Terraria.GameContent.UI.BigProgressBar;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Core;
+using Terraria.WorldBuilding;
 
 namespace Terraria;
 
@@ -122,6 +123,28 @@ public partial class NPC : IEntityWithGlobals<GlobalNPC>
 		bottom.X += direction * directionOffset; // Added to match PlayerSittingHelper
 		bottom += finalOffset; // Added to match PlayerSittingHelper
 	}
+
+	/// <summary>
+	/// A helper method for an NPC striking another NPC.
+	/// <br/><br/> Handles modifiers, hit info, network, and hooks automatically.
+	/// </summary>
+	public void StrikeOtherNPC(NPC target, int damage, float knockback, int hitDirection, bool crit = false, bool randomizeDamage = true)
+	{
+		NPC.HitModifiers modifiers = target.GetIncomingStrikeModifiers(DamageClass.Default, hitDirection, default);
+
+		NPCLoader.ModifyHitNPC(this, target, ref modifiers);
+
+		NPC.HitInfo hitInfo = modifiers.ToHitInfo(damage, crit, knockback, randomizeDamage);
+
+		target.StrikeNPC(hitInfo, false, true);
+
+		if (Main.netMode != 0) {
+			NetMessage.SendStrikeNPC(target, hitInfo);
+		}
+
+		NPCLoader.OnHitNPC(this, target, hitInfo);
+	}
+
 
 	/// <summary>
 	/// Runs most code related to the process of checking whether or not an NPC can be caught.<br></br>
@@ -321,6 +344,12 @@ public partial class NPC : IEntityWithGlobals<GlobalNPC>
 			NetMessage.SendData(54, -1, -1, null, whoAmI);
 	}
 
+	/// <summary>
+	/// Clones all the default stats (damage, health, defense, etc) of another NPC type. This should be used in <see cref="ModNPC.SetDefaults"/> prior to changing any other stats
+	/// <para/> This is useful for creating a ModNPC that should be a copy of another NPC. Using CloneDefaults instead of manually setting stats will ensure that modifications done to the NPC being cloned by other mods will automatically apply to this clone as well.
+	/// <para/> Note that for cloning negative <see cref="NPCID"/>, the final values might be very slightly off for higher difficulty modes due to the way difficulty scaling is applied.
+	/// </summary>
+	/// <param name="Type"></param>
 	public void CloneDefaults(int Type)
 	{
 		int originalType = type;
@@ -328,7 +357,7 @@ public partial class NPC : IEntityWithGlobals<GlobalNPC>
 		var originalModNPC = ModNPC;
 		var originalGlobals = _globals;
 
-		SetDefaultsKeepPlayerInteraction(Type);
+		SetDefaultsKeepPlayerInteraction(Type, new NPCSpawnParams() { difficultyOverride = GameDifficultyLevel.Classic }.WithScale(1));
 
 		type = originalType;
 		netID = originalNetID;
@@ -338,12 +367,17 @@ public partial class NPC : IEntityWithGlobals<GlobalNPC>
 
 	public void SetDefaultsKeepPlayerInteraction(int Type)
 	{
+		SetDefaultsKeepPlayerInteraction(Type, default(NPCSpawnParams));
+	}
+
+	public void SetDefaultsKeepPlayerInteraction(int Type, NPCSpawnParams spawnParams)
+	{
 		bool[] array = new bool[playerInteraction.Length];
 		for (int i = 0; i < playerInteraction.Length; i++) {
 			array[i] = playerInteraction[i];
 		}
 
-		SetDefaults(Type);
+		SetDefaults(Type, spawnParams);
 		for (int j = 0; j < playerInteraction.Length; j++) {
 			playerInteraction[j] = array[j];
 		}

@@ -15,13 +15,17 @@ public class ModProjectileTest : ModProjectile
 		Console.Write(DrawOffsetX);
 		Console.Write(DrawOriginOffsetY);
 		Console.Write(DrawOriginOffsetX);
+#if COMPILE_ERROR
 		Console.Write(DrawHeldProjInFrontOfHeldItemAndArms/* tModPorter Note: Removed. Replace with Projectile.drawLayer = ProjectileDrawLayerID.HeldProjOverHand; */);
+#endif
 	}
 
 	public override void SetStaticDefaults()
 	{
+#if COMPILE_ERROR
 		ProjectileID.Sets.HeldProjDoesNotUsePlayerGfxOffY/* tModPorter Note: Removed. AI() should use master.RotatedRelativePoint(master.MountedCenter + ...) to position held projectiles */[Type] = true;
 		ProjectileID.Sets.DontAttachHideToAlpha/* tModPorter Note: Removed. Now true by default. See Projectile.usesOwnerLight and Projectile.drawLayer for more details. */[Type] = true;
+#endif
 	}
 
 	public override bool? CanDamage()/* tModPorter Suggestion: Return null instead of true */ { return false; }
@@ -46,8 +50,8 @@ public class ModProjectileTest : ModProjectile
 		drawCacheProjsBehindNPCs.Add(index);
 		drawCacheProjsBehindProjectiles.Add(index);
 		drawCacheProjsOverWiresUI.Add(index);
-#endif
 	}
+#endif
 
 #if COMPILE_ERROR
 	public override bool? SingleGrappleHook(Player player)/* tModPorter Note: Removed. In SetStaticDefaults, use ProjectileID.Sets.SingleGrappleHook[Type] = true if you previously had this method return true */ { return null; }

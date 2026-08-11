@@ -302,6 +302,19 @@
  					if (number2 != 255f) {
  						writer.Write((ushort)number3);
  						writer.Write((ushort)number4);
+@@ -1190,6 +_,12 @@
+ 					writer.Write(number3);
+ 					writer.Write(number4);
+ 					break;
++				case MessageID.DevCommands:
++					writer.Write(text.ToString());
++					writer.Write(number);
++					writer.Write(number2);
++					writer.Write(number3);
++					break;
+ 				case 95:
+ 					writer.Write((ushort)number);
+ 					writer.Write((byte)number2);
 @@ -1295,6 +_,11 @@
  					writer.Write(number);
  					break;
@@ -364,6 +377,21 @@
  					break;
  				}
  				case 134: {
+@@ -1479,9 +_,14 @@
+ 					writer.Write((short)number);
+ 					writer.Write((short)number2);
+ 					Item item = Main.player[(int)number4].inventory[(int)number3];
++
++					ItemIO.Send(item, writer);
++					writer.Write7BitEncodedInt(number5);
++					/*
+ 					writer.Write((short)item.type);
+ 					writer.Write(item.prefix);
+ 					writer.Write((short)number5);
++					*/
+ 					break;
+ 				}
+ 				case 150:
 @@ -1527,6 +_,16 @@
  				throw new Exception("Maximum packet length exceeded. id: " + msgType + " length: " + num21);
  

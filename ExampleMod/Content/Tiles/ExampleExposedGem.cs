@@ -45,60 +45,43 @@ namespace ExampleMod.Content.Tiles
 
 		// TileFrame handles orienting the tile based on nearby solid tiles whenever a nearby tile is mined or this tile is placed.
 		public override bool TileFrame(int i, int j, ref bool resetFrame, ref bool noBreak) {
-			// Check for solid tiles in each cardinal direction.
-			Tile tile = Main.tile[i, j];
-			Tile above = Main.tile[i, j - 1];
-			Tile below = Main.tile[i, j + 1];
-			Tile left = Main.tile[i - 1, j];
-			Tile right = Main.tile[i + 1, j];
-			int belowType = -1;
-			int aboveType = -1;
-			int leftType = -1;
-			int rightType = -1;
-			if (above != null && above.HasUnactuatedTile && !above.BottomSlope) {
-				aboveType = above.TileType;
-			}
-			if (below != null && below.HasUnactuatedTile && !below.IsHalfBlock && !below.TopSlope) {
-				belowType = below.TileType;
-			}
-			if (left != null && left.HasUnactuatedTile && !left.IsHalfBlock && !left.RightSlope) {
-				leftType = left.TileType;
-			}
-			if (right != null && right.HasUnactuatedTile && !right.IsHalfBlock && !right.LeftSlope) {
-				rightType = right.TileType;
-			}
-			if (TileLoader.IsClosedDoor(leftType)) {
-				leftType = -1;
-			}
-			if (TileLoader.IsClosedDoor(rightType)) {
-				rightType = -1;
-			}
+			// CheckAndAdjustMultiDirectionalTile checks for valid solid tiles to anchor to and returns the new direction for this tile, newFrameDirection. 
+			if (WorldGen.CheckAndAdjustMultiDirectionalTile(i, j, Type, out int newFrameDirection)) {
+				Tile tile = Main.tile[i, j];
 
-			// Here we change the tile frame values to orient the tile towards a nearby solid tile. A random placement style is also calculated.
-			// The TileFrameY checks ensure that we don't randomize the random placement style if already oriented correctly.
-			short randomStyleOffset = (short)(WorldGen.genRand.Next(RandomStyleCount) * TileHeight);
-			if (belowType >= 0 && Main.tileSolid[belowType] && !Main.tileSolidTop[belowType]) {
-				if (tile.TileFrameY < 0 || tile.TileFrameY >= StyleHeight) {
-					tile.TileFrameY = randomStyleOffset;
+				// Here we change the tile frame values to orient the tile anchored to a nearby solid tile. A random placement style is also calculated.
+				short randomStyleOffset = (short)(WorldGen.genRand.Next(RandomStyleCount) * TileHeight);
+				// We check if the tile is already oriented correctly before randomizing the random placement style. This ensures that the random placement style is only randomized when the tile is reoriented to a new direction.
+				if (tile.TileFrameY < StyleHeight * newFrameDirection || tile.TileFrameY >= StyleHeight * (newFrameDirection + 1)) {
+					tile.TileFrameY = (short)(StyleHeight * newFrameDirection + randomStyleOffset);
 				}
-			}
-			else if (leftType >= 0 && Main.tileSolid[leftType] && !Main.tileSolidTop[leftType]) {
-				if (tile.TileFrameY < StyleHeight * 2 || tile.TileFrameY >= StyleHeight * 3) {
-					tile.TileFrameY = (short)(StyleHeight * 2 + randomStyleOffset);
+
+				// Because the placement styles of this tile are in Up, Down, Right, Left order, matching the values of newFrameDirection, we can use the newFrameDirection to calculate the correct TileFrameY value. The commented out code below shows how to do this without relying on the order of the placement styles for tiles that might not use this same order.
+				/*
+				if (newFrameDirection == 0) {
+					if (tile.TileFrameY < 0 || tile.TileFrameY >= StyleHeight) {
+						tile.TileFrameY = randomStyleOffset;
+					}
 				}
-			}
-			else if (rightType >= 0 && Main.tileSolid[rightType] && !Main.tileSolidTop[rightType]) {
-				if (tile.TileFrameY < StyleHeight * 3 || tile.TileFrameY >= StyleHeight * 4) {
-					tile.TileFrameY = (short)(StyleHeight * 3 + randomStyleOffset);
+				else if (newFrameDirection == 1) {
+					if (tile.TileFrameY < StyleHeight * 1 || tile.TileFrameY >= StyleHeight * 2) {
+						tile.TileFrameY = (short)(StyleHeight + randomStyleOffset);
+					}
 				}
-			}
-			else if (aboveType >= 0 && Main.tileSolid[aboveType] && !Main.tileSolidTop[aboveType]) {
-				if (tile.TileFrameY < StyleHeight || tile.TileFrameY >= StyleHeight * 2) {
-					tile.TileFrameY = (short)(StyleHeight + randomStyleOffset);
+				else if (newFrameDirection == 2) {
+					if (tile.TileFrameY < StyleHeight * 2 || tile.TileFrameY >= StyleHeight * 3) {
+						tile.TileFrameY = (short)(StyleHeight * 2 + randomStyleOffset);
+					}
 				}
+				else if (newFrameDirection == 3) {
+					if (tile.TileFrameY < StyleHeight * 3 || tile.TileFrameY >= StyleHeight * 4) {
+						tile.TileFrameY = (short)(StyleHeight * 3 + randomStyleOffset);
+					}
+				}
+				*/
 			}
 			else {
-				// If there are no solid tiles in any direction, the tile is killed.
+				// If there are no solid tiles in any direction, CheckAndAdjustMultiDirectionalTile returns false and we destroy the tile.
 				WorldGen.KillTile(i, j);
 			}
 

@@ -54,16 +54,6 @@
  		num10++;
  		if (flag5 && DrawLeftSide(sb, Lang.menu[147].Value, num10, vector4, vector5, leftScale)) {
  			leftHover = num10;
-@@ -289,6 +_,9 @@
- 		if (DrawLeftSide(sb, Lang.inter[35].Value, num10, vector4, vector5, leftScale)) {
- 			leftHover = num10;
- 			if (flag4) {
-+				Social.Steam.SteamedWraps.StopPlaytimeTracking();
-+				SystemLoader.PreSaveAndQuit();
-+
- 				Close();
- 				Main.menuMode = 10;
- 				Main.gameMenu = true;
 @@ -314,6 +_,7 @@
  				break;
  			case 1:

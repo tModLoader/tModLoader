@@ -22,16 +22,20 @@ public class ChangeHookSignatureBaseMethodCallTest : ModProjectile
 			bool result = base.PreDraw(player, ref otherColor);
 			return result;
 		}
+#if COMPILE_ERROR
 		bool test = base.PreDrawExtras();
+#endif
 		bool test2 = base.PreDraw(player, ref lightColor /* c */ );
 		return base.PreDraw(player, ref lightColor);
 	}
 
 	public override void PostDraw(Player player, Color lightColor)/* tModPorter Replace 'Main.player[Projectile.owner]' with 'player'. */ {
 		// These will all remain unchanged since the modder deviated from the expected parameter name, so we don't have enough information to map the arguments to the new signature.
+#if COMPILE_ERROR
 		int test = changedParameterName.R;
 		base.PostDraw(changedParameterName /*Comment*/);
 		base.PostDraw(Main.rand.NextBool() ? Color.Red : changedParameterName);
+#endif
 	}
 }
 

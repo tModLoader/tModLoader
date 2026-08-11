@@ -1,0 +1,162 @@
+--- src/TerrariaNetCore/Terraria/GameContent/UI/NPCChatPanel.cs
++++ src/tModLoader/Terraria/GameContent/UI/NPCChatPanel.cs
+@@ -1,6 +_,8 @@
+ using System;
++using System.Collections;
+ using System.Collections.Generic;
+ using Microsoft.Xna.Framework;
++using Microsoft.Xna.Framework.Graphics;
+ using ReLogic.Graphics;
+ using ReLogic.Localization.IME;
+ using ReLogic.OS;
+@@ -46,16 +_,24 @@
+ 			return;
+ 		}
+ 
++		// TML: Moved color definition up.
++		int num = (mouseTextColor * 2 + 255) / 3;
++		Color color = new Color(num, num, num, num);
++		PrepareText(color);
++		/*
+ 		PrepareText();
++		*/
+ 		PrepareInteractions();
+ 		PrepareVirtualKeyboard();
+ 		Color chatBack = new Color(200, 200, 200, 200);
++		/*
+ 		int num = (mouseTextColor * 2 + 255) / 3;
+ 		Color color = new Color(num, num, num, num);
++		*/
+ 		Point point = new Point(500, 500);
+ 		Rectangle rectangle = new Rectangle(Main.screenWidth / 2 - point.X / 2, 100, point.X, 30);
+ 		rectangle.Height += 30 * _textDisplayCache.AmountOfLines;
+-		rectangle.Height += 30 * _neededInteractionLines + Math.Max(0, 2 * (_neededInteractionLines - 1));
++		rectangle.Height += 20 * Math.Min(_neededInteractionLines, 8) + Math.Max(0, 2 * (Math.Min(_neededInteractionLines, 8) - 1)); // TML: changed +30 to +20. Capped the _neededInteractionLines to 8 (32 buttons).
+ 		Utils.DrawInvBG(Main.spriteBatch, rectangle);
+ 		DrawText(color, rectangle);
+ 		Main.DrawNPCPortrait(chatBack, rectangle.TopLeft());
+@@ -69,15 +_,19 @@
+ 	private void DrawButtons(Rectangle panelArea, Color chatColor)
+ 	{
+ 		UILinkPointNavigator.Shortcuts.NPCCHAT_ButtonsNew = true;
+-		UILinkPointNavigator.Shortcuts.NPCCHAT_ButtonsCount = _interactions.Count;
++		UILinkPointNavigator.Shortcuts.NPCCHAT_ButtonsCount = _interactions.Count > 32 ? 32 : _interactions.Count; // Artificially capped at 32 buttons.
+ 		DynamicSpriteFont value = FontAssets.MouseText.Value;
+-		Vector2 vector = panelArea.BottomLeft() + new Vector2(30f, -22 * _neededInteractionLines + Math.Max(0, 2 * (_neededInteractionLines - 1)) - 4);
++		Vector2 vector = panelArea.BottomLeft() + new Vector2(30f, -24 * Math.Min(_neededInteractionLines, 8) + Math.Max(0, 2 * (Math.Min(_neededInteractionLines, 8) - 1)) - 4); // TML: changed -22 to -24. Capped the _neededInteractionLines to 8 (32 buttons).
+ 		int num = -1;
+ 		int num2 = -1;
+ 		float num3 = 0.9f;
+ 		Rectangle rectangle = new Rectangle((int)vector.X, (int)vector.Y, 100, 22);
+ 		foreach (NPCInteraction interaction in _interactions) {
+ 			num++;
++			
++			if (num > 31) // Artificially capped at 32 buttons. It could go up to 100 if enough gamepad UILinkPoints are initialized.
++				continue;
++
+ 			byte b = mouseTextColor;
+ 			chatColor = new Color(b, (int)((double)(int)b / 1.1), (int)b / 2, b);
+ 			if (num % 4 == 0) {
+@@ -107,6 +_,8 @@
+ 			if (flag)
+ 				num2 = num;
+ 
++			interaction.TextColor(ref chatColor, ref baseColor, flag); // TML: Added interaction.TextColor
++
+ 			ChatManager.DrawColorCodedStringShadow(Main.spriteBatch, value, text, vector3, baseColor, 0f, origin, vector2 * num5);
+ 			ChatManager.DrawColorCodedString(Main.spriteBatch, value, text, vector3, chatColor, 0f, origin, vector2 * num5);
+ 			UILinkPointNavigator.SetPosition(2500 + num, rectangle.Center.ToVector2());
+@@ -125,7 +_,11 @@
+ 				num2 = num;
+ 				if (Main.mouseLeft && Main.mouseLeftRelease) {
+ 					Main.mouseLeftRelease = false;
++					if (!ModLoader.NPCLoader.PreChatButtonClicked(interaction))
++						return;
++
+ 					interaction.Interact();
++					ModLoader.NPCLoader.OnChatButtonClicked(interaction);
+ 				}
+ 			}
+ 		}
+@@ -139,10 +_,20 @@
+ 	private void PrepareInteractions()
+ 	{
+ 		_interactions.Clear();
++		/*
+ 		foreach (NPCInteraction item in NPCInteractions.All) {
+ 			if (item.Condition())
+ 				_interactions.Add(item);
+ 		}
++		*/
++		int talkNPCNetID = 0;
++		if (Main.LocalPlayer.sign == -1) { // If the player is not talking to a sign, they are talking to an NPC.
++			talkNPCNetID = Main.LocalPlayer.TalkNPC.netID;
++		}
++
++		foreach (ModLoader.NPCInteractionList.Entry entry in Main.NPCInteractionDB.GetInteractionEntries(talkNPCNetID))
++			if (entry.NPCInteraction.Condition() && entry.Enabled)
++				_interactions.Add(entry.NPCInteraction);
+ 
+ 		int count = _interactions.Count;
+ 		_neededInteractionLines = (int)Math.Ceiling((float)count / 4f);
+@@ -159,11 +_,11 @@
+ 		UIVirtualKeyboard.OffsetDown = num;
+ 	}
+ 
+-	private void PrepareText()
++	private void PrepareText(Color baseColor) // Added baseColor parameter
+ 	{
+ 		string chatTextToShow = Main.npcChatText;
+ 		OverrideChatTextWithShenanigans(ref chatTextToShow);
+-		_textDisplayCache.PrepareCache(chatTextToShow);
++		_textDisplayCache.PrepareCache(chatTextToShow, baseColor);
+ 	}
+ 
+ 	private void OverrideChatTextWithShenanigans(ref string chatTextToShow)
+@@ -187,9 +_,15 @@
+ 	{
+ 		Vector2 vector = textArea.TopLeft() + new Vector2(20f, 20f);
+ 		DynamicSpriteFont value = FontAssets.MouseText.Value;
++		/*
+ 		string[] textLines = _textDisplayCache.TextLines;
++		*/
++		List<List<TextSnippet>> textLines = _textDisplayCache.TextLines;
+ 		int amountOfLines = _textDisplayCache.AmountOfLines;
++		// Fix all instances of drawing text to use TextSnippets instead of strings (#FixNPCChat)
++		TextSnippet hoveredSnippet = null;
+ 		for (int i = 0; i < amountOfLines; i++) {
++			/*
+ 			string text = textLines[i];
+ 			if (text != null) {
+ 				if (allowRichText)
+@@ -197,13 +_,30 @@
+ 				else
+ 					Utils.DrawBorderStringFourWay(Main.spriteBatch, value, text, vector.X, vector.Y + (float)(i * 30), textColor, Color.Black, Vector2.Zero);
+ 			}
++			*/
++			List<TextSnippet> text = textLines[i];
++			ChatManager.DrawColorCodedStringWithShadow(Main.spriteBatch, FontAssets.MouseText.Value, text.ToArray(), new Vector2(170 + (Main.screenWidth - 800) / 2, 120 + i * 30), textColor, Color.Black, 0f, Vector2.Zero, Vector2.One, out int hoveredSnippetNum);
++
++			if (hoveredSnippetNum > -1)
++				hoveredSnippet = text[hoveredSnippetNum];
++		}
++
++		// Added on-hover and on-click callbacks as well
++		if (hoveredSnippet is not null) {
++			hoveredSnippet.OnHover();
++
++			if (Main.mouseLeft && Main.mouseLeftRelease)
++				hoveredSnippet.OnClick();
+ 		}
+ 
+ 		if (!Main.editSign || textLines[amountOfLines - 1] == null)
+ 			return;
+ 
+ 		Vector2 vector2 = vector + new Vector2(0f, (amountOfLines - 1) * 30);
++		/*
+ 		vector2.X += value.MeasureString(textLines[amountOfLines - 1]).X;
++		*/
++		vector2.X += ChatManager.GetStringSize(FontAssets.MouseText.Value, textLines[amountOfLines - 1].ToArray(), Vector2.One).X;
+ 		string compositionString = Platform.Get<IImeService>().CompositionString;
+ 		if (compositionString != null && compositionString.Length > 0) {
+ 			float x = value.MeasureString(compositionString).X;

@@ -81,7 +81,7 @@ public static class TileLoader
 	private delegate bool DelegatePreDrawPlacementPreview(int i, int j, int type, SpriteBatch spriteBatch, ref Rectangle frame, ref Vector2 position, ref Color color, bool validPlacement, ref SpriteEffects spriteEffects);
 	private static DelegatePreDrawPlacementPreview[] HookPreDrawPlacementPreview;
 	private static Action<int, int, int, SpriteBatch, Rectangle, Vector2, Color, bool, SpriteEffects>[] HookPostDrawPlacementPreview;
-	private static Action<int, int, int>[] HookRandomUpdate;
+	private static Action<int, int, int, bool>[] HookRandomUpdate;
 	private delegate bool DelegateTileFrame(int i, int j, int type, ref bool resetFrame, ref bool noBreak);
 	private static DelegateTileFrame[] HookTileFrame;
 	private static Func<int, int, int, bool>[] HookCanPlace;
@@ -148,7 +148,8 @@ public static class TileLoader
 		LoaderUtils.ResetStaticMembers(typeof(TileID));
 
 		//Etc
-		Array.Resize(ref Main.SceneMetrics._tileCounts, nextTile);
+		Array.Resize(ref Main._playerSceneMetrics._tileCounts, nextTile);
+		Array.Resize(ref Main._cameraSceneMetrics._tileCounts, nextTile);
 		Array.Resize(ref Main.PylonSystem._sceneMetrics._tileCounts, nextTile);
 		Array.Resize(ref Main.tileLighted, nextTile);
 		Array.Resize(ref Main.tileMergeDirt, nextTile);
@@ -782,7 +783,6 @@ public static class TileLoader
 
 		RegisterConversionFallback(TileID.CorruptJungleGrass, TileID.JungleGrass, BiomeConversionID.Corruption, BiomeConversionID.GlowingMushroom);
 		RegisterConversionFallback(TileID.CrimsonJungleGrass, TileID.JungleGrass, BiomeConversionID.Crimson, BiomeConversionID.GlowingMushroom);
-		RegisterConversionFallback(TileID.MushroomGrass, TileID.JungleGrass, BiomeConversionID.GlowingMushroom, BiomeConversionID.Corruption, BiomeConversionID.Crimson);
 
 		RegisterConversionFallback(TileID.CorruptIce, TileID.IceBlock, BiomeConversionID.Corruption);
 		RegisterConversionFallback(TileID.FleshIce, TileID.IceBlock, BiomeConversionID.Crimson);
@@ -870,7 +870,7 @@ public static class TileLoader
 
 		if (tile.TileType == type && TryGetConversionFallback(type, conversionType, out var fallback)) {
 			tile.TileType = (ushort)fallback;
-			WorldGen.Convert(i, j, conversionType, size: 0, walls: false);
+			WorldGen.Convert(i, j, conversionType, walls: false);
 
 			if (tile.TileType == fallback)
 				tile.TileType = (ushort)type;
@@ -1078,16 +1078,28 @@ public static class TileLoader
 		}
 	}
 
-	public static void RandomUpdate(int i, int j, int type)
+	public static void RandomUpdate(int i, int j, int type, bool underground)
 	{
 		if (!Main.tile[i, j].active()) {
 			return;
 		}
-		GetTile(type)?.RandomUpdate(i, j);
+		GetTile(type)?.RandomUpdate(i, j, underground);
 
 		foreach (var hook in HookRandomUpdate) {
-			hook(i, j, type);
+			hook(i, j, type, underground);
 		}
+	}
+
+	/// <summary>
+	/// Invokes <see cref="ModTile.GrowSapling"/> for the modded tile at the given coordinates.
+	/// Called by <see cref="WorldGen.AttemptToGrowTreeFromSapling"/> when fertilizer is used on a modded sapling tile.
+	/// </summary>
+	public static bool GrowModSapling(int i, int j, int type, bool underground, int treeHeightAddon, bool ignoreWalls)
+	{
+		if (!Main.tile[i, j].active())
+			return false;
+
+		return GetTile(type)?.GrowSapling(i, j, underground, treeHeightAddon, ignoreWalls) ?? false;
 	}
 
 	public static bool TileFrame(int i, int j, int type, ref bool resetFrame, ref bool noBreak)

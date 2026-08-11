@@ -7,15 +7,6 @@
  			killCount[i] = 0;
  		}
  	}
-@@ -60513,6 +_,8 @@
- 			}
- 		}
- 
-+		NPCSpawnInfo spawnInfo = new NPCSpawnInfo();
-+
- 		float num6 = (int)((float)defaultMaxSpawns * (2f + 0.3f * (float)num4));
- 		for (int k = 0; k < 255; k++) {
- 			if (!Main.player[k].active || Main.player[k].dead)
 @@ -60535,6 +_,7 @@
  			bool flag11 = false;
  			bool flag12 = false;
@@ -83,10 +74,6 @@
  
  				int num29 = (int)Main.player[k].Center.X / 16;
  				int num30 = (int)(Main.player[k].Bottom.Y + 8f) / 16;
-+
-+				spawnInfo.PlayerFloorX = num29;
-+				spawnInfo.PlayerFloorY = num30;
-+
  				if (Main.tile[num, num2].type == 367) {
 +					// Patch note: flag10 - Marble
  					flag10 = true;
@@ -112,30 +99,6 @@
  									flag13 = true;
  							}
  						}
-@@ -61258,4 +_,23 @@
- 			}
- 
- 			num49 = SpawnNPC_TryFindingProperGroundTileType(num49, num, num2);
-+
-+			//TML: Fill NPCSpawnInfo
-+			spawnInfo.SpawnTileX = num;
-+			spawnInfo.SpawnTileY = num2;
-+			spawnInfo.SpawnTileType = num3;
-+			spawnInfo.Player = Main.player[k];
-+			spawnInfo.Sky = flag3;
-+			spawnInfo.Lihzahrd = flag4;
-+			spawnInfo.PlayerSafe = flag5;
-+			spawnInfo.Invasion = flag6;
-+			spawnInfo.Water = flag7;
-+			spawnInfo.Granite = flag9;
-+			spawnInfo.Marble = flag10;
-+			spawnInfo.SpiderCave = flag11;
-+			spawnInfo.PlayerInTown = flag12;
-+			spawnInfo.DesertCave = flag13;
-+			//spawnInfo.PlanteraDefeated = flag14;
-+			spawnInfo.SafeRangeX = flag15;
-+
- 			int newNPC = 200;
 @@ -63451,7 +_,8 @@
  			else if (Main.hardMode && (Main.remixWorld || (double)num2 > (Main.rockLayer + (double)Main.maxTilesY) / 2.0) && Main.rand.Next(200) == 0) {
  				newNPC = NewNPC(GetSpawnSourceForNaturalSpawn(), num * 16 + 8, num2 * 16, 172);

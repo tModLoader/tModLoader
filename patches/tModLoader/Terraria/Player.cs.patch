@@ -123,7 +123,7 @@
  	public int loadStatus;
  	public Vector2[] itemFlamePos = new Vector2[7];
  	public int itemFlameCount;
-@@ -754,20 +_,81 @@
+@@ -754,20 +_,82 @@
  	public int ropeCount;
  	public int manaRegenBonus;
  	public float manaRegenDelayBonus;
@@ -136,6 +136,7 @@
 +	/// 3 => Solar Flare armor set bonus<br/>
 +	/// 4 => Unused, though a dash for this value DOES exist<br/>
 +	/// 5 => Crystal Assassin set bonus<br/>
++	/// 6 => Chillet and Chillet Ignis<br/>
 +	/// </summary>
  	public int dashType;
 +
@@ -303,6 +304,24 @@
  	public float slotsMinions;
  	public bool pygmy;
  	public bool raven;
+@@ -865,7 +_,17 @@
+ 	public bool palworldCattivaMinion;
+ 	public bool palworldFoxsparksMinion;
+ 	public float wingTime;
++	/// <summary>
++	/// The visible wings equipment slot (<see cref="ArmorIDs.Wing"/>). Usually corresponds to the <see cref="Item.wingSlot"/> of the visible wing accessory (unless hidden and either a mount is active or velocity.Y is 0) or vanity accessory.
++	/// <br/><br/> Responsible for wing visuals and sounds, not the movement (see <see cref="wingsLogic"/>.
++	/// <br/><br/> Defaults to 0.
++	/// </summary>
+ 	public int wings;
++	/// <summary>
++	/// The functional wings equipment slot (<see cref="ArmorIDs.Wing"/>). Usually corresponds to the <see cref="Item.wingSlot"/> of the wing accessory (non-vanity).
++	/// <br/><br/> Responsible for wing movement, not the visuals and sounds (see <see cref="wings"/>.
++	/// <br/><br/> Defaults to 0.
++	/// </summary>
+ 	public int wingsLogic;
+ 	public int wingTimeMax;
+ 	public int wingFrame;
 @@ -896,11 +_,24 @@
  	public bool dontHurtCritters;
  	public bool hasLucyTheAxe;
@@ -422,7 +441,20 @@
  	public int lavaTime;
  	public bool ignoreWater;
  	public bool lavaVision;
-@@ -984,13 +_,26 @@
+@@ -979,18 +_,39 @@
+ 	public int stealthTimer;
+ 	public float stealth = 1f;
+ 	public int beardGrowthTimer;
++	/// <summary>
++	/// If true, this player is a <see cref="TileID.DisplayDoll"/> or a <see cref="TileID.HatRack"/>
++	/// <br/>See also: <seealso cref="Player.isHatRackDoll"/>
++	/// </summary>
+ 	public bool isDisplayDollOrInanimate;
+ 	public bool isFullbright;
++	/// <summary>
++	/// If true, this player is a <see cref="TileID.HatRack"/>
++	/// <br/>See also: <seealso cref="Player.isDisplayDollOrInanimate"/>
++	/// </summary>
  	public bool isHatRackDoll;
  	public bool isFirstFractalAfterImage;
  	public float firstFractalAfterImageOpacity;
@@ -449,7 +481,7 @@
  	public readonly Chest bank4 = Chest.CreateBank(-5);
  	public BitsByte voidVaultInfo;
  	public float headRotation;
-@@ -1006,31 +_,58 @@
+@@ -1006,31 +_,59 @@
  	public Vector2 fullRotationOrigin = Vector2.Zero;
  	public int fartKartCloudDelay;
  	public const int fartKartCloudDelayMax = 20;
@@ -468,6 +500,7 @@
 +	/// <summary> Indicates if this player is dead </summary>
  	public bool dead;
  	public int deadTime;
++	/// <summary> The index in <see cref="Main.player"/> of the player this player is spectating. Will be -1 if not spectating. </summary>
  	public int spectating = -1;
 +	/// <summary> The amount of time in ticks before this player respawns after death. Most suitably modified in <see cref="ModPlayer.Kill(double, int, bool, PlayerDeathReason)"/> </summary>
  	public int respawnTimer;
@@ -603,7 +636,7 @@
  	public bool fireWalk;
  	public bool channel;
  	public int step = -1;
-@@ -1144,6 +_,9 @@
+@@ -1144,48 +_,140 @@
  	public RabbitOrderFrameHelper rabbitOrderFrame;
  	public bool creativeGodMode;
  	private const int MaxAdvancedShadows = 60;
@@ -613,7 +646,10 @@
  	public int availableAdvancedShadowsCount;
  	private EntityShadowInfo[] _advancedShadows = new EntityShadowInfo[60];
  	private int _lastAddedAvancedShadow;
-@@ -1153,39 +_,127 @@
+ 	public CompositeArmData compositeFrontArm;
+ 	public CompositeArmData compositeBackArm;
+ 	public int anglerQuestsFinished;
++	/// <summary> The golf score of the player (not the stroke count), mainly affects the Golfers shop inventory: <see href="https://terraria.wiki.gg/wiki/Golf#Golf_score"/> </summary>
  	public int golferScoreAccumulated;
  	public int bartenderQuestLog;
  	public bool downedDD2EventAnyDifficulty;
@@ -1258,16 +1294,22 @@
  	public Vector2 MountedCenter {
  		get {
  			return new Vector2(position.X + (float)(width / 2), position.Y + BaseHeight / 2f + HeightOffsetHitboxCenter);
-@@ -1910,6 +_,9 @@
+@@ -1910,9 +_,14 @@
  
  	public override Vector2 VisualPosition => position + new Vector2(0f, gfxOffY);
  
 +	/// <summary>
-+	/// Checks if the player is currently "crowd controlled", meaning the player is <see cref="frozen"/>, <see cref="webbed"/>, or <see cref="stoned"/>. Used in various checks to prevent some player actions that shouldn't be possible while in those states, such as channeling attacks, quick using items, and swapping loadouts.
++	/// Checks if the player is currently "crowd controlled", meaning the player is <see cref="frozen"/>, <see cref="webbed"/>, <see cref="stoned"/>, or affected by a modded crowd control effect (see below).
++	/// Used in various checks to prevent some player actions that shouldn't be possible while in those states, such as channeling attacks, quick using items, and swapping loadouts.
++	/// <para/> Mods can use <seealso cref="SetCCed"/> within <see cref="ModBuff.Update(Player, ref int)"/> to mark the player as crowd controlled.
 +	/// </summary>
  	public bool CCed {
  		get {
- 			if (!frozen && !webbed)
+-			if (!frozen && !webbed)
++			if (!frozen && !webbed && !_customCCed)
+ 				return stoned;
+ 
+ 			return true;
 @@ -2080,6 +_,10 @@
  		}
  	}
@@ -1375,8 +1417,13 @@
  
  	public bool CanUseBootFlyingAbilities => !isPerformingJump_DownDash;
  
-@@ -2388,6 +_,11 @@
+@@ -2386,8 +_,16 @@
+ 		}
+ 	}
  
++	/// <summary>
++	/// The index in <see cref="Main.npc"/> of the NPC the player is speaking to.
++	/// </summary>
  	public int talkNPC { get; private set; }
  
 +	/// <summary>
@@ -1429,7 +1476,7 @@
 +	/// <summary>
 +	/// Returns positioning data for this player <paramref name="shadowIndex"/> frames ago, up to <see cref="availableAdvancedShadowsCount"/>.
 +	/// <br/><br/> This can be used to draw trails that follow the movement of the player. You'll usually want to iterate from <see cref="availableAdvancedShadowsCount"/> down to 1 for proper draw layering and to skip index 0 which would be the current frame when using this to draw a trail.
-+	/// <br/><br/> See <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/ExampleMod/Common/Players/ExampleArmorSetBonusPlayer.cs">ExampleArmorSetBonusPlayer.DrawPlayer</see> for an example of correctly using this.
++	/// <br/><br/> See <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Common/Players/ExampleArmorSetBonusPlayer.cs">ExampleArmorSetBonusPlayer.DrawPlayer</see> for an example of correctly using this.
 +	/// </summary>
  	public EntityShadowInfo GetAdvancedShadow(int shadowIndex)
  	{
@@ -1456,6 +1503,15 @@
  			Main.BestiaryTracker.Chats.RegisterChatStartWith(Main.npc[npcIndex]);
  
  		if (talkNPC == -1)
+@@ -2672,6 +_,8 @@
+ 			Main.npcChatPortrait = null;
+ 			if (npcIndex >= 0 && npcIndex < Main.maxNPCs && NPCID.Sets.NPCPortraits.TryGetValue(Main.npc[npcIndex].type, out var value)) {
+ 				Main.npcChatPortrait = value;
++			}
++			if (npcIndex >= 0 && npcIndex < Main.maxNPCs) { // TML: Still do the portrait hop even if no detailed portrait is provided.
+ 				Main.DoNPCPortraitHop();
+ 			}
+ 		}
 @@ -2683,6 +_,7 @@
  		itemTimeMax = frames;
  	}
@@ -1600,21 +1656,31 @@
  			Main.item[num].OverrideWith(theItemWeDrop);
  			theItemWeDrop = new Item();
  			if (slot == 58)
-@@ -3422,6 +_,14 @@
+@@ -3422,7 +_,23 @@
  		return -1;
  	}
  
 +	/// <summary>
-+	/// Gives the player the provided buff. This accounts for if the player is immune to the buff. This also accounts for adjusting the buff time for different game modes. If the player already has the buff, the re-apply logic will happen. Vanilla buff types are found in <see cref="BuffID"/> and modded buffs are typically retrieved using <see cref="ModContent.BuffType{T}"/>. The quiet parameter will determine if the network sync message should happen. This should only be set to false in non-deterministic situations (such as random chance) and code that only runs locally. Other situations run on all clients so the buff should automatically be applied on all clients, keeping the player buff data in sync without burdening the network. When in doubt, consult vanilla source code examples or test your code.
-+	/// <br/> If applying a buff to a player other than the local player in pvp, quiet should be false and the buff must be true in <see cref="Main.pvpBuff"/> to properly sync.
++	/// Gives the player the provided buff type (such as <see cref="BuffID.Regeneration"/>), for the provided time, in ticks. <br/>
++	/// <br/>
++	/// <b>This accounts for the following: </b><br/>
++	/// - If the player is immune to the buff. <br/>
++	/// - Adjusting the buff <paramref name="time"/> for different game modes. <br/>
++	/// - If the player already has the buff, where re-apply logic will happen. <br/>
++	/// <br/>
++	/// Vanilla buff types are found in <see cref="BuffID"/> and modded buff types are typically retrieved using
++	/// <see cref="ModContent.BuffType{T}"/>. <br/><br/>
++	/// Adding a <see cref="Main.pvpBuff"/> to a remote player will send a <b><see cref="MessageID.AddPlayerBuffPvP"/></b> packet instead of adding the buff locally. Non-pvp buffs will not be applied to remote players.
 +	/// </summary>
 +	/// <param name="type">The buff type</param>
-+	/// <param name="timeToAdd">The desired buff time in ticks. 60 ticks is 1 second</param>
-+	/// <param name="quiet">If true, the network sync message is skipped.</param>
-+	/// <param name="foodHack">unused</param>
- 	public void AddBuff(int type, int time, bool fromNetPvP = false)
++	/// <param name="time">The amount of time in ticks. 60 ticks = 1 second.</param>
++	public void AddBuff(int type, int time) => AddBuff(type, time, false); // TML: Hide fromNetPvP param to avoid porting pitfall
++
+-	public void AddBuff(int type, int time, bool fromNetPvP = false)
++	internal void AddBuff(int type, int time, bool fromNetPvP = false)
  	{
  		if (buffImmune[type])
+ 			return;
 @@ -3520,6 +_,7 @@
  				continue;
  
@@ -2062,6 +2128,16 @@
  				if (inventory[i].stack <= 0)
  					inventory[i].SetDefaults(0);
  
+@@ -6966,7 +_,8 @@
+ 				return false;
+ 
+ 			Item item = bank4.item[num4];
++			if (ItemLoader.ConsumeItem(item, this))
+-			item.stack--;
++				item.stack--;
+ 			if (item.stack <= 0)
+ 				item.TurnToAir();
+ 
 @@ -6978,6 +_,9 @@
  
  	public void OpenShadowLockbox(int boxType)
@@ -2308,7 +2384,7 @@
 +	internal IEntitySource GetItemSource_Item(Item item) => GetSource_ItemUse(item);
 +	internal IEntitySource GetItemSource_OpenItem(int itemType) => GetSource_OpenItem(itemType);
 +	internal IEntitySource GetItemSource_Death() => GetSource_Death();
-+	internal IEntitySource GetItemSource_InventoryOverflow() => GetItemSource_Misc(ItemSourceID.InventoryOverflow);
++	internal IEntitySource GetItemSource_InventoryOverflow() => new EntitySource_OverfullInventory(this);
 +	internal IEntitySource GetItemSource_Misc(int itemSourceId) => GetSource_Misc(context: ItemSourceID.ToContextString(itemSourceId));
 +	internal IEntitySource GetProjectileSource_Item_WithPotentialAmmo(Item item, int ammoItemId) => GetSource_ItemUse_WithPotentialAmmo(item, ammoItemId);
 +	internal IEntitySource GetProjectileSource_OnHit(Entity victim, int projectileSourceId) => GetSource_OnHit(victim, context: ProjectileSourceID.ToContextString(projectileSourceId));
@@ -3641,6 +3717,14 @@
  		calmed = false;
  		beetleOrbs = 0;
  		beetleBuff = false;
+@@ -14834,6 +_,7 @@
+ 		frozen = false;
+ 		stoned = false;
+ 		webbed = false;
++		_customCCed = false;
+ 		ichor = false;
+ 		manaRegenBonus = 0;
+ 		manaRegenDelayBonus = 0f;
 @@ -14842,6 +_,8 @@
  		dashType = 0;
  		spikedBoots = 0;
@@ -4390,7 +4474,7 @@
 +							/*
  							if (TileID.Sets.Clouds[tile.type] || tile.type == 666 || flag8) {
 +							*/
-+							if (TileID.Sets.Clouds[tile.type] || tile.type == 666 || flag8 || TileID.Sets.NegatesFallDamage[tile.type]) {
++							if (TileID.Sets.Clouds[tile.type] || TileID.Sets.NegatesFallDamage[tile.type] || flag8) {
  								num10 = 0;
  								break;
  							}
@@ -4837,6 +4921,17 @@
  		int num35 = 4;
  		int num36 = 4;
  		int num37 = 0;
+@@ -24583,6 +_,10 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Returns true if the player isn't on a mount and isn't wet or shouldn't float and has non-zero vertical velocity or is currently grappling.
++	/// <br/><br/> Checked by wings that only draw when in use (See also <see cref="ArmorIDs.Wing.Sets.AlwaysAnimated"/>).
++	/// </summary>
+ 	public bool ShouldDrawWingsThatAreAlwaysAnimated(bool ignoreMounts = false)
+ 	{
+ 		if (velocity.Y != 0f && grappling[0] <= -1 && (!wet || !ShouldFloatInWater)) {
 @@ -24914,7 +_,7 @@
  		if (TileID.Sets.BasicChest[tile.type] || tile.type == 97)
  			r = new Rectangle(chestPointX * 16, chestPointY * 16, 32, 32);
@@ -5953,33 +6048,11 @@
  		int num = 50;
  		if (newItem.IsACoin)
  			num = 54;
-@@ -31620,7 +_,7 @@
- 		}
- 
- 		for (int k = 54; k < 58; k++) {
--			if (inventory[k].type > 0 && inventory[k].stack < inventory[k].maxStack && Item.CanStack(newItem, inventory[k]))
-+			if (inventory[k].type > 0 && inventory[k].stack < inventory[k].maxStack && ItemLoader.CanStack(inventory[k], newItem))
- 				return new ItemSpaceStatus(CanTakeItem: true);
- 		}
- 
-@@ -31655,7 +_,11 @@
- 		if (theSlot.favorited && theSlot.OnlyNeedOneInInventory())
- 			return false;
- 
-+		bool vanillaResult = false;
- 		if (theSlot.stack < theSlot.maxStack && Item.CanStack(theItemToAccept, theSlot))
-+			vanillaResult = true;
-+
-+		if (vanillaResult && ItemLoader.CanStack(theSlot, theItemToAccept))
- 			return true;
- 
- 		return false;
-@@ -31690,9 +_,14 @@
+@@ -31690,9 +_,13 @@
  			if (inventory[i].type <= 0 || inventory[i].stack >= inventory[i].maxStack || !Item.CanStack(newItem, inventory[i]))
  				continue;
  
-+			if (!ItemLoader.TryStackItems(inventory[i], newItem, out int numTransfered))
-+				continue;
++			ItemLoader.StackItems(inventory[i], newItem, out int numTransfered);
 +
  			if (!settings.NoSound)
  				SoundEngine.PlaySound(7);
@@ -6023,12 +6096,11 @@
  	public Item GetItem(Item newItem, GetItemSettings settings)
  	{
  		bool isACoin = newItem.IsACoin;
-@@ -31836,9 +_,14 @@
+@@ -31836,9 +_,13 @@
  	private bool GetItem_FillIntoOccupiedSlot_VoidBag(Item[] inv, Item newItem, GetItemSettings settings, Item returnItem, int i)
  	{
  		if (inv[i].type > 0 && inv[i].stack < inv[i].maxStack && Item.CanStack(returnItem, inv[i])) {
-+			if (!ItemLoader.TryStackItems(inv[i], returnItem, out int numTransfered))
-+				return false;
++			ItemLoader.StackItems(inv[i], returnItem, out int numTransfered);
 +
  			if (!settings.NoSound)
  				SoundEngine.PlaySound(newItem.IsACoin ? 38 : 7);
@@ -6055,12 +6127,11 @@
  		}
  
  		return false;
-@@ -31878,10 +_,16 @@
+@@ -31878,10 +_,15 @@
  	private bool GetItem_FillIntoOccupiedSlot(Item newItem, GetItemSettings settings, Item returnItem, int i)
  	{
  		if (inventory[i].type > 0 && inventory[i].stack < inventory[i].maxStack && CanItemSlotAcceptPickup(inventory[i], returnItem)) {
-+			if (!ItemLoader.TryStackItems(inventory[i], returnItem, out int numTransfered))
-+				return false;
++			ItemLoader.StackItems(inventory[i], returnItem, out int numTransfered);
 +
  			if (!settings.NoSound)
  				SoundEngine.PlaySound(newItem.IsACoin ? 38 : 7);
@@ -7061,15 +7132,15 @@
  		}
  	}
  
-@@ -36451,6 +_,8 @@
- 			if (mount.Type == 63)
- 				Main.dust[num27].color = Color.Lerp(new Color(1f, 0.7f, 0.5f), Color.White, num28 * num28 * num28);
- 		}
-+
-+		CombinedHooks.MeleeEffects(this, sItem, itemRectangle);
- 	}
+@@ -36436,6 +_,8 @@
+ 		if (sItem.type == 1304 && Main.rand.Next(60) == 0 && ChildSafety.Disabled)
+ 			Gore.NewGore(new Vector2(itemRectangle.Left + itemRectangle.Width / 2, itemRectangle.Top + itemRectangle.Height / 2), new Vector2((float)direction * (2f + Main.rand.NextFloat() * 3f), -2f - Main.rand.NextFloat() * 3f), Main.rand.Next(3, 6));
  
- 	private void ItemCheck_GetMeleeHitboxParticles(Item sItem, Rectangle heldItemFrame)
++		CombinedHooks.MeleeEffects(this, sItem, itemRectangle); // ItemCheck_EmitUseVisuals
++
+ 		if (!mount.Active || (mount.Type != 62 && mount.Type != 63) || !sItem.melee || sItem.noMelee || sItem.noUseGraphic)
+ 			return;
+ 
 @@ -36570,6 +_,8 @@
  					itemRectangle.X += 10;
  			}
@@ -7538,6 +7609,17 @@
  
  		if ((sItem.type == 105 || sItem.type == 713) && !wet && !pulley) {
  			int maxValue2 = 20;
+@@ -40826,7 +_,10 @@
+ 		if (item.holdStyle == 5 && petting.isPetting)
+ 			return false;
+ 
++		/*
+ 		if (item.holdStyle == 8 && spectating < 0)
++		*/
++		if (item.holdStyle == 8 && spectating < 0 && item.type == ItemID.ScryingOrb) // Allow other items to use this holdStyle.
+ 			return false;
+ 
+ 		return true;
 @@ -40834,6 +_,12 @@
  
  	private void ItemCheck_ApplyHoldStyle(float mountOffset, Item sItem, Rectangle heldItemFrame)
@@ -7575,15 +7657,16 @@
  		if (Main.dedServ)
  			return;
  
-@@ -42020,7 +_,7 @@
- 		if (sItem.pick > 0 || sItem.axe > 0 || sItem.hammer > 0 || flag)
- 			toolTime = 1;
- 
--		if (grappling[0] > -1) {
-+		if (grappling[0] > -1 || sItem.useTurnOnAnimationStart) { // useTurnOnAnimationStart check added by tML
+@@ -42023,6 +_,9 @@
+ 		if (grappling[0] > -1) {
  			pulley = false;
  			pulleyDir = 1;
++		}
++
++		if (grappling[0] > -1 || sItem.useTurnOnAnimationStart) { // useTurnOnAnimationStart check added by tML
  			if (controlRight)
+ 				direction = 1;
+ 			else if (controlLeft)
 @@ -42044,7 +_,10 @@
  				NetMessage.SendData(152, -1, -1, null, whoAmI);
  
@@ -8251,6 +8334,18 @@
  
  		if (tileTarget.type == 147 || tileTarget.type == 0 || tileTarget.type == 40 || tileTarget.type == 53 || tileTarget.type == 57 || tileTarget.type == 59 || tileTarget.type == 123 || tileTarget.type == 224 || tileTarget.type == 397)
  			num += pickPower;
+@@ -44062,6 +_,11 @@
+ 		return num;
+ 	}
+ 
++	/// <summary>
++	/// Drops the player's items. Called when the player dies.
++	/// <br/><br/> <paramref name="gemsOnly"/> will be true for <see cref="PlayerDifficultyID.SoftCore"/> and <see cref="PlayerDifficultyID.Creative"/> players, causing only large gems (<see href="https://terraria.wiki.gg/wiki/Large_Gems"/>) to drop.
++	/// </summary>
++	/// <param name="gemsOnly">True if only large gems should drop.</param>
+ 	public void DropItems(bool gemsOnly)
+ 	{
+ 		trashItem.TurnToAir(fullReset: true);
 @@ -44077,12 +_,37 @@
  			return;
  		}
@@ -8333,13 +8428,18 @@
  			WorldItem obj = Main.item[num];
  			obj.velocity.Y = (float)Main.rand.Next(-20, 1) * 0.2f;
  			obj.velocity.X = (float)Main.rand.Next(-20, 21) * 0.2f;
-@@ -44182,6 +_,9 @@
+@@ -44180,8 +_,14 @@
+ 		}
+ 	}
  
++	private Player _clientClone;
  	public Player clientClone(Player clonePlayer)
  	{
 +		// Disable cloning until the end of the method.
 +		using var _disableItemCLone = new Item.DisableCloneMethod("Item.Clone is bad for performance, and should not be called during Player.clientClone or ModPlayer.CopyClientStateTo. Use Item.CopyNetStateTo instead");
 +
++		if(_clientClone == null)
++			clonePlayer = Main.clientPlayer = new Player();
  		clonePlayer.zone1 = zone1;
  		clonePlayer.zone2 = zone2;
  		clonePlayer.zone3 = zone3;
@@ -8853,6 +8953,22 @@
  		Array.Clear(adjTile, 0, adjTile.Length);
  		hitTile = new HitTile();
  		hitReplace = new HitTile();
+@@ -45673,6 +_,7 @@
+ 		int teleportStartY = Main.UnderworldLayer + 20;
+ 		int teleportRangeY = 80;
+ 		Utils.RandomTeleportationAttemptSettings settings = new Utils.RandomTeleportationAttemptSettings {
++			teleportee = this, // TML
+ 			teleporteeSize = base.Size,
+ 			teleporteeVelocity = velocity,
+ 			teleporteeGravityDirection = gravDir,
+@@ -45742,6 +_,7 @@
+ 		int teleportStartY = 100;
+ 		int underworldLayer = Main.UnderworldLayer;
+ 		Vector2 vector = Utils.CheckForGoodTeleportationSpot(ref canSpawn, teleportStartX, teleportRangeX, teleportStartY, underworldLayer, new Utils.RandomTeleportationAttemptSettings {
++			teleportee = this, // TML
+ 			teleporteeSize = base.Size,
+ 			teleporteeVelocity = velocity,
+ 			teleporteeGravityDirection = gravDir,
 @@ -45777,10 +_,19 @@
  		int questsDone = anglerQuestsFinished;
  		float anglerRewardRarityMultiplier = GetAnglerRewardRarityMultiplier(questsDone);

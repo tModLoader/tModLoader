@@ -11,10 +11,6 @@ namespace ExampleMod.Content.Projectiles
 	// ExampleFlailProjectile is a copy of the Sunfury flail projectile.
 	internal class ExampleFlailProjectile : ModProjectile
 	{
-		public override void SetStaticDefaults() {
-			ProjectileID.Sets.HeldProjDoesNotUsePlayerGfxOffY/* tModPorter Note: Removed. AI() should use master.RotatedRelativePoint(master.MountedCenter + ...) to position held projectiles */[Type] = true;
-		}
-
 		public override void SetDefaults() {
 			Projectile.netImportant = true; // This ensures that the projectile is synced when other players join the world.
 			Projectile.width = 22; // The width of your projectile
@@ -23,6 +19,7 @@ namespace ExampleMod.Content.Projectiles
 			Projectile.penetrate = -1; // Infinite pierce
 			Projectile.DamageType = DamageClass.Melee; // Deals melee damage
 			Projectile.scale = 0.8f;
+			Projectile.drawLayer = ProjectileDrawLayerID.HeldProj; // Draws over the player's body and under the player's hands
 			Projectile.usesLocalNPCImmunity = true; // Used for hit cooldown changes in the ai hook
 			Projectile.localNPCHitCooldown = 10; // This facilitates custom hit cooldown logic
 
@@ -31,8 +28,8 @@ namespace ExampleMod.Content.Projectiles
 			AIType = ProjectileID.Sunfury;
 
 			// These help center the projectile as it rotates since its hitbox and scale doesn't match the actual texture size
-			DrawOffsetX = -6;
-			DrawOriginOffsetY = -6;
+			DrawOffsetX = -8;
+			DrawOriginOffsetY = -8;
 		}
 
 		// All of the following methods are additional behaviors of Sunfury that are not automatically inherited by ExampleFlailProjectile through the use of Projectile.aiStyle and AIType. You'll need to find corresponding code in the decompiled source code if you wish to clone a different vanilla projectile as a starting point.
@@ -85,7 +82,7 @@ namespace ExampleMod.Content.Projectiles
 
 		public override void OnHitPlayer(Player target, Player.HurtInfo info) {
 			if (Main.rand.NextBool(4)) {
-				target.AddBuff(BuffID.OnFire, 180, quiet: false);
+				target.AddBuff(BuffID.OnFire, 180);
 			}
 		}
 

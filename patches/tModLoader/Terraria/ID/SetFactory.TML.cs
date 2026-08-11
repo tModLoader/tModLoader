@@ -184,7 +184,7 @@ public partial class SetFactory
 		GetName = getName;
 
 		if (SetFactories.Any(x => x.ContainingClassName == ContainingClassName))
-			throw new Exception("SetFactory instances must have unique names");
+			throw new Exception("SetFactory instances must have unique names"); // If an exception is thrown here from a vanilla class. Add this class to ModContent.RunEarlyClassConstructors
 
 		SetFactories.Add(this);
 

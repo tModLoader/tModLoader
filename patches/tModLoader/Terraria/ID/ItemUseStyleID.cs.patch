@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/ID/ItemUseStyleID.cs
 +++ src/tModLoader/Terraria/ID/ItemUseStyleID.cs
-@@ -1,22 +_,67 @@
+@@ -1,22 +_,86 @@
 +using ReLogic.Reflection;
 +
  namespace Terraria.ID;
@@ -11,11 +11,16 @@
 +/// </summary>
  public class ItemUseStyleID
  {
++	/// <summary>
++	/// Default. No specific animation will happen while this item is used.
++	/// <br/> Used by any item by default.
++	/// </summary>
  	public const int None = 0;
 +	/// <summary>Item is swung in an overhead arch.<br/>Used for many sword weapons, block placement, etc.</summary>
  	public const int Swing = 1;
 +	/// <summary>
-+	/// Unused
++	/// Item is brought in front of player and rotated towards player.
++	/// <br/> Unused. Replaced with <see cref="DrinkLiquid"/>
 +	/// </summary>
  	public const int DrinkOld = 7;
 +	/// <summary>Item is thrust horizontally.<br/>Use by <see cref="ItemID.Umbrella"/> and <see cref="ItemID.TragicUmbrella"/></summary>
@@ -44,18 +49,24 @@
 +	/// <br/> Used by potions, drinks, flasks, and hair dyes.
 +	/// </summary>
  	public const int DrinkLiquid = 9;
++	/// <summary>
++	/// No animation.
++	/// <br/> Used by Whoopie Cushion
++	/// </summary>
  	public const int HiddenAnimation = 10;
 +	/// <summary>
-+	/// Used by Lawn Mower
++	/// The item is pushed back and forth close to the ground.
++	/// <br/> Used by Lawn Mower
 +	/// </summary>
  	public const int MowTheLawn = 11;
 +	/// <summary>
-+	/// Used by guitar-shaped instruments
++	/// The item is strummed like a guitar
++	/// <br/> Used by Stellar Tune, Ivy, and Rain Song.
 +	/// </summary>
  	public const int Guitar = 12;
 +	/// <summary>
 +	/// Item is thrust in any direction towards the mouse.
-+	/// Used by Shortswords
++	/// <br/> Used by Shortswords
 +	/// </summary>
  	public const int Rapier = 13;
 +	/// <summary>
@@ -63,7 +74,15 @@
 +	/// <br/> Used by Nightglow.
 +	/// </summary>
  	public const int RaiseLamp = 14;
++	/// <summary>
++	/// Item is held in front of the player.
++	/// <br/> Used by Scrying Orb
++	/// </summary>
  	public const int HoldOrb = 15;
++	/// <summary>
++	/// This use style applies the hold style of the item if the item has a hold style. 
++	/// <br/> Used by Unicorn on a Stick.
++	/// </summary>
  	public const int PlaySound = 16;
 +	public const int Count = 17;
 +	public static readonly IdDictionary Search = IdDictionary.Create<ItemUseStyleID, int>(); // Added by TML

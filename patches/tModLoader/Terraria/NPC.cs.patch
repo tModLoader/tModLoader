@@ -22,16 +22,20 @@
  {
  	internal struct PlayerNetSyncState
  	{
-@@ -35,7 +_,7 @@
+@@ -35,7 +_,11 @@
  		public byte streamCounter;
  	}
  
 -	public class Spawner
++	/// <summary>
++	/// Used for determining natural NPC spawns. Contains data pertaining to the spawn context, such as the <see cref="Player"/>, <see cref="SpawnTileType"/>, and more.
++	/// <br/><br/> Note that there are many fields in this class like <see cref="ZoneJungle"/> that appear to be duplicates of Player fields, such as <see cref="Player.ZoneJungle"/>, but you should always used the fields found in this class if present for NPC spawning logic to properly account for custom NPC spawning logic. For example, the dual dungeons secret world seed affects these fields for custom spawning logic separately from the logic used for the Player fields, which would affect visuals and other things.
++	/// </summary>
 +	public partial class Spawner
  	{
  		public static int spawnSpaceX = 2;
  		public static int spawnSpaceY = 3;
-@@ -48,17 +_,44 @@
+@@ -48,18 +_,48 @@
  		public bool dayTime;
  		public bool raining;
  		public int townNPCs;
@@ -74,8 +78,12 @@
 +		/// Whether or not the player is in front of a desert wall or the NPC will spawn near one.
 +		/// </summary>
  		public bool spawnUndergroundDesert;
++		/// <summary>
++		/// Whether Plantera is defeated and the world is in hardmode.
++		/// </summary>
  		public bool hardDungeon;
  		public bool deeperThanRockLayer;
+ 		public bool underGround;
 @@ -83,6 +_,9 @@
  		public bool ZoneMeteor;
  		public bool ZoneGraveyard;
@@ -86,6 +94,15 @@
  		public bool ZoneLihzhardTemple;
  		public bool ZoneGranite;
  		public bool ZoneMarble;
+@@ -138,6 +_,8 @@
+ 		private bool TrySpawnAnNPC(Player player)
+ 		{
+ 			SetSpawnFlags(player);
++			NPCLoader.EditSpawnFlags(this);
++
+ 			GetSpawnRate(player, out var spawnRate, out var maxSpawns);
+ 			if (player.nearbyActiveNPCs >= (float)maxSpawns)
+ 				return false;
 @@ -147,6 +_,9 @@
  
  			if (!FindSpawnTile(player, out var spawnTileX, out var spawnTileY, out var xRange))
@@ -105,6 +122,15 @@
  			if (!PostCheckChosenSpawnTile(spawnTileX, spawnTileY, spawnTileType, spawnWallType))
  				return false;
  
+@@ -169,6 +_,8 @@
+ 				}
+ 			}
+ 
++			NPCLoader.EditSpawnInfo(this);
++
+ 			SpawnAnNPC(spawnTileX, spawnTileY, spawnTileType, xRange, player.whoAmI);
+ 			if (Main.netMode == 2)
+ 				SyncNewlySpawnedNPCs();
 @@ -195,6 +_,7 @@
  
  		private void SetSpawnFlags(Player player)
@@ -195,7 +221,7 @@
  	public bool active;
  	private const int NPC_TARGETS_START = 300;
  	public bool IsABestiaryIconDummy;
-@@ -4420,6 +_,12 @@
+@@ -4420,7 +_,16 @@
  	public const float nameOverIncrement = 0.025f;
  	public const float nameOverDistance = 350f;
  	public float nameOver;
@@ -206,8 +232,12 @@
 +	/// <para/> Defaults to false.
 +	/// </summary>
  	public bool SpawnedFromStatue;
++	/// <summary>
++	/// If true, this NPC can be replaced by a newly spawning NPC when <see cref="Main.npc"/> is completely full. This is typically set for NPCs spawned by players, such as NPC spawned from statues, to prevent players from cheesing boss fights by preventing minions from spawning because Main.npc is already full.
++	/// <summary>
  	public bool CanBeReplacedByOtherNPCs;
  	public bool dripping;
+ 	public bool drippingSlime;
 @@ -4428,17 +_,50 @@
  	public static bool[] ShimmeredTownNPCs = new bool[NPCID.Count];
  	public int altTexture;
@@ -260,6 +290,18 @@
  	public bool teleporting;
  	private static int maxAttack = 20;
  	private static int[] attackNPC = new int[maxAttack];
+@@ -4455,6 +_,11 @@
+ 	public static int plantBoss = -1;
+ 	public static int crimsonBoss = -1;
+ 	public static int deerclopsBoss = -1;
++	/// <summary>
++	/// Set to true in <see cref="ModNPC.AI"/> or other suitable places to trigger the NPC syncing code (<see cref="MessageID.SyncNPC"/>). This will sync position, life, and other data about this NPC from the server to the clients. Modded data from <see cref="ModNPC.SendExtraAI(System.IO.BinaryWriter)"/> and <see cref="GlobalNPC.SendExtraAI(NPC, ModLoader.IO.BitWriter, System.IO.BinaryWriter)"/> will be included.
++	/// <para/> Use this to sync changes so that the client's NPC instances stay in sync with the server's. Only changes that are non-Deterministic on the client's side, such as random decisions or code only running on the server, need to be synced. The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Netcode">Basic Netcode wiki page</see> goes into more details and links to examples.
++	/// <para/> As the server is in charge of NPC, changes to NPC data should only happen on the server in multiplayer.
++	/// </summary>
+ 	public bool netUpdate;
+ 	internal bool netUpdatePendingSpamCooldown;
+ 	internal bool netUpdatePendingFullSpamCooldown;
 @@ -4468,17 +_,32 @@
  	internal PlayerNetSyncState[] playerNetSyncState = new PlayerNetSyncState[255];
  	private bool needsUniqueInfoUpdate = true;
@@ -300,7 +342,7 @@
  	public int[] buffTime = new int[maxBuffs];
 +
 +	/// <summary>
-+	/// Contains the NPC buff immunities for this NPC. The default values in this array are populated from <see cref="NPCID.Sets.ImmuneToAllBuffs"/>, <see cref="NPCID.Sets.ImmuneToRegularBuffs"/>, <see cref="NPCID.Sets.SpecificDebuffImmunity"/>, and <see cref="BuffID.Sets.GrantImmunityWith"/>.
++	/// Contains the NPC buff immunities for this NPC. The default values in this array are populated from <see cref="NPCID.Sets.ImmuneToWhipTags"/>, <see cref="NPCID.Sets.ImmuneToRegularBuffs"/>, <see cref="NPCID.Sets.SpecificDebuffImmunity"/>, and <see cref="BuffID.Sets.GrantImmunityWith"/>.
 +	/// </summary>
 -	public bool[] buffImmune = new bool[BuffID.Count];
 +	public bool[] buffImmune = new bool[BuffLoader.BuffCount];
@@ -492,7 +534,7 @@
  	public static bool downedDeerclops = false;
  	public static int ShieldStrengthTowerSolar = 0;
  	public static int ShieldStrengthTowerVortex = 0;
-@@ -4594,59 +_,222 @@
+@@ -4594,59 +_,223 @@
  	public static bool TowerActiveNebula = false;
  	public static bool TowerActiveStardust = false;
  	public static bool LunarApocalypseIsUp = false;
@@ -698,6 +740,7 @@
 +
 +	/// <summary>
 +	/// How many copper coins the NPC will drop when killed (100 copper coins = 1 silver coin etc.).
++	/// <para/> When spawned from a statue, the value will be set to 0.  
 +	/// </summary>
  	public float value;
 +	/// <summary>
@@ -1116,19 +1159,22 @@
  		}
  		else if (type == 607) {
  			noGravity = true;
-@@ -15136,14 +_,84 @@
+@@ -15136,14 +_,87 @@
  			knockBackResist = 0.5f;
  			rarity = 1;
  		}
 +		// TML: Moved before NPCLoader.SetDefaults to allow changing. DebuffImmunitySets broken into separate sets for easier manipulation.
-+		if (NPCID.Sets.ImmuneToAllBuffs[type])
-+			Array.Fill(buffImmune, true);
-+
-+		if (NPCID.Sets.ImmuneToRegularBuffs[type] || NPCID.Sets.ImmuneToAllBuffs[type]) {
++		if (NPCID.Sets.ImmuneToRegularBuffs[type] || NPCID.Sets.ImmuneToWhipTags[type]) {
 +			// Equivalent to vanilla ImmuneToAllBuffsThatAreNotWhips
-+			if (!NPCID.Sets.ImmuneToAllBuffs[type]) {
++			if (NPCID.Sets.ImmuneToRegularBuffs[type]) {
 +				for (int i = 0; i < buffImmune.Length; i++) {
 +					buffImmune[i] = !BuffID.Sets.IsATagBuff[i];
++				}
++			}
++
++			if (NPCID.Sets.ImmuneToWhipTags[type]) {
++				for (int i = 0; i < buffImmune.Length; i++) {
++					buffImmune[i] = BuffID.Sets.IsATagBuff[i];
 +				}
 +			}
 +
@@ -1380,7 +1426,7 @@
  				num3 *= 0.9f;
  			}
 +
-+			NPCLoader.BuffTownNPC(ref num2, ref defense);
++			NPCLoader.BuffTownNPC(this, ref num2, ref num3, ref defense, ref lifeMax);
  		}
  
  		if (type == 142 && Main.netMode != 1 && !Main.xMas) {
@@ -2047,6 +2093,16 @@
  		DoDeathEvents(closestPlayer);
  		if (SpecialSeedFeatures.Mechdusa) {
  			int num = type;
+@@ -65786,6 +_,9 @@
+ 
+ 		NPCLoot_DropMoney(closestPlayer);
+ 		NPCLoot_DropHeals(closestPlayer);
++
++		// TML: needs to be at the end of NPCLoot to encapsulate every drop within it
++		NPCLoader.blockLoot.Clear();
+ 	}
+ 
+ 	public bool IsNPCValidForBestiaryKillCredit()
 @@ -65830,7 +_,8 @@
  		WoFKilledToday = false;
  	}
@@ -2057,15 +2113,22 @@
  	{
  		int stack = Main.rand.Next(5, 16);
  		int num = 28;
-@@ -65859,6 +_,8 @@
+@@ -65859,8 +_,14 @@
  		else if (type == 398)
  			num = 3544;
  
-+		NPCLoader.BossLoot(this, ref typeName, ref num);
-+
- 		Item.NewItem(GetItemSource_Loot(), (int)position.X, (int)position.Y, width, height, num, stack);
+-		Item.NewItem(GetItemSource_Loot(), (int)position.X, (int)position.Y, width, height, num, stack);
  		int num2 = Main.rand.Next(5) + 5;
++
++		NPCLoader.BossLoot(this, ref typeName, ref num);
++		NPCLoader.BossLoot(this, ref num, ref stack, ref num2);
++
++		if (stack > 0 && num > 0)
++			Item.NewItem(GetItemSource_Loot(), (int)position.X, (int)position.Y, width, height, num, stack);
++
  		for (int i = 0; i < num2; i++) {
+ 			Item.NewItem(GetItemSource_Loot(), (int)position.X, (int)position.Y, width, height, 58);
+ 		}
 @@ -65876,10 +_,27 @@
  		}
  	}
@@ -2201,7 +2264,7 @@
 +	/// <param name="X"></param>
 +	/// <param name="Y"></param>
 +	/// <param name="Type">Either an <see cref="NPCID"/> entry or <see cref="ModContent.NPCType{T}"/>, for example <see cref="NPCID.BabySlime"/> or <c>ModContent.NPCType&lt;MyModNPC&gt;()</c></param>
-+	/// <param name="Start">The lowest slot in which this NPC can spawn. This can be used to ensure that the spawned NPC draws behind an existing NPC. This is useful for multi-segment NPC or NPC that spawn minions. See also <see cref="NPCID.Sets.SpawnFromLastEmptySlot"/>. </param>
++	/// <param name="Start">The lowest slot in which this NPC can spawn. This can be used to ensure that the spawned NPC draws behind an existing NPC. This is useful for multi-segment NPC or NPC that spawn minions. See also <see cref="NPCID.Sets.SearchSpawnSlotsInReverse"/>. </param>
 +	/// <param name="ai0"></param>
 +	/// <param name="ai1"></param>
 +	/// <param name="ai2"></param>
@@ -2234,6 +2297,24 @@
  				nPC.townNpcVariationIndex = profile.RollVariation();
  				nPC.GivenName = profile.GetNameForVariant(nPC);
  			}
+@@ -67389,6 +_,9 @@
+ 	public PlayerPettingInfo GetPettingInfo(Player player)
+ 	{
+ 		int num = ((base.Center.X > player.Center.X) ? 1 : (-1));
++		int num2 = NPCID.Sets.PlayerDistanceWhilePetting[type];
++		bool isPetSmall = NPCID.Sets.IsPetSmallForPetting[type];
++		/*
+ 		int num2 = 36;
+ 		bool isPetSmall = false;
+ 		switch (type) {
+@@ -67418,6 +_,7 @@
+ 				num2 = 20;
+ 				break;
+ 		}
++		*/
+ 
+ 		return new PlayerPettingInfo(this, new Vector2(-num * num2, 0f), isPetSmall);
+ 	}
 @@ -67455,7 +_,7 @@
  
  	public bool RerollVariation()
@@ -2285,7 +2366,7 @@
  		Vector2 positionInWorld = base.Hitbox.ClosestPointInRect(bestSwordSpot);
  		ParticleOrchestrator.RequestParticleSpawn(clientOnly: false, ParticleOrchestraType.Keybrand, new ParticleOrchestraSettings {
  			PositionInWorld = positionInWorld
-@@ -67681,24 +_,161 @@
+@@ -67681,24 +_,165 @@
  		return dmg;
  	}
  
@@ -2368,6 +2449,10 @@
 +	/// <param name="damageVariation">Whether to apply damage variation. Defaults to false.</param>
 +	/// <param name="luck">Luck modifier to produce weight damageVariation towards higher (positive) or lower (negative) values. Defaults to 0</param>
 +	/// <returns>A <see cref="HitInfo"/> for use with <see cref="StrikeNPC(HitInfo, bool, bool)"/> and <see cref="NetMessage.SendStrikeNPC"/></returns>
++	/// <remarks>
++	/// Note: This method doesn't include entity-related hit modifying hooks and shouldn't be used in normal contexts.
++	/// <br/><br/> Consider using <see cref="StrikeOtherNPC"/> instead.
++	/// </remarks>
 +	public HitInfo CalculateHitInfo(int damage, int hitDirection, bool crit = false, float knockBack = 0f, DamageClass damageType = null, bool damageVariation = false, float luck = 0) {
 +		return GetIncomingStrikeModifiers(damageType, hitDirection).ToHitInfo(damage, crit, knockBack, damageVariation, luck);
 +	}
@@ -2943,6 +3028,15 @@
 +		NPCLoader.GetChat(this, ref result);
  		return result;
  	}
+ 
+@@ -80013,6 +_,8 @@
+ 			return false;
+ 
+ 		NPC nPC = Main.npc[npcIndex];
++		if (nPC.homeless && nPC.ModNPC != null && nPC.ModNPC.TownNPCStayingHomeless)
++			return false;
+ 		if (nPC.homeless && nPC.type != 37 && nPC.type != 368)
+ 			return nPC.type != 453;
  
 @@ -80118,6 +_,11 @@
  	public static void GetMeleeCollisionData(Rectangle victimHitbox, int enemyIndex, ref int specialHitSetter, ref float damageMultiplier, ref Rectangle npcRect)

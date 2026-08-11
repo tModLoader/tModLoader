@@ -92,6 +92,14 @@
  	public static UserInterface InGameUI = new UserInterface();
  	private static Action _pendingCharacterSelect;
  	public static bool drawBackGore;
+@@ -399,6 +_,7 @@
+ 	public static bool drawBetterDebug;
+ 	public static bool betterDebugRelease;
+ 	public static bool renderNow;
++	[Obsolete("Always false in TML")]
+ 	public static bool drawToScreen;
+ 	public static bool targetSet;
+ 	public static int mouseX;
 @@ -408,7 +_,15 @@
  	public static CraftingUI craftingUI = new CraftingUI();
  	public static BannerClaimingUI bannerUI = new BannerClaimingUI();
@@ -153,19 +161,19 @@
  	public static bool[] pvpBuff = new bool[BuffID.Count];
 +
 +	/// <summary>
-+	/// Allows status effects for which this is set to true to persist after the afflicted player's death.<br/>
++	/// If <see langword="true"/> for a given <see cref="BuffID"/>, then that buff will persist after the afflicted player's death.<br/>
 +	/// Defaults to <see langword="false"/>; all vanilla flask effects have their entries here set to true.<br/>
 +	/// </summary>
  	public static bool[] persistentBuff = new bool[BuffID.Count];
 +
 +	/// <summary>
-+	/// Categorizes status effects for which this is set to true as being from vanity pets, preventing them from overlapping with other vanity pet status effects.<br/>
++	/// If <see langword="true"/> for a given <see cref="BuffID"/>, then that buff corresponds to a vanity pet buff, preventing them from overlapping with other vanity pet status effects.<br/>
 +	/// Defaults to <see langword="false"/>; all vanilla vanity pets have their entries here set to true.<br/>
 +	/// </summary>
  	public static bool[] vanityPet = new bool[BuffID.Count];
 +
 +	/// <summary>
-+	/// Categorizes status effects for which this is set to true as being tied to a light pet, preventing them from overlapping with other light pet status effects.<br/>
++	/// If <see langword="true"/> for a given <see cref="BuffID"/>, then that buff corresponds to a light pet buff, preventing them from overlapping with other light pet status effects.<br/>
 +	/// Defaults to <see langword="false"/>; all vanilla light pets have their entries here set to true.<br/>
 +	/// </summary>
  	public static bool[] lightPet = new bool[BuffID.Count];
@@ -425,6 +433,17 @@
  	public static bool[] projPet = new bool[ProjectileID.Count];
  	public static float demonTorch = 1f;
  	public static int demonTorchDir = 1;
+@@ -763,8 +_,8 @@
+ 	public static float masterColor = 1f;
+ 	public static int masterColorDir = 1;
+ 	public static bool placementPreview = true;
+-	private static SceneMetrics _cameraSceneMetrics = new SceneMetrics();
++	internal static SceneMetrics _cameraSceneMetrics = new SceneMetrics();
+-	private static SceneMetrics _playerSceneMetrics = new SceneMetrics();
++	internal static SceneMetrics _playerSceneMetrics = new SceneMetrics();
+ 	private static bool _usingSeparateCameraSceneMetrics;
+ 	public static SceneState SceneState = new SceneState();
+ 	public const int maxStars = 400;
 @@ -788,8 +_,15 @@
  	public static int fadeCounter;
  	public static float invAlpha = 1f;
@@ -442,7 +461,7 @@
  	public static bool allChestStackHover;
  	public static bool inventorySortMouseOver;
  	public static bool bestiaryMouseOver;
-@@ -823,44 +_,149 @@
+@@ -823,44 +_,152 @@
  	public static float ambientVolume = 1f;
  	public static float soundVolume = 1f;
  	public static ServerMode MenuServerMode = ServerMode.Lobby | ServerMode.FriendsCanJoin;
@@ -540,7 +559,7 @@
  	public static short[] tileOreFinderPriority = new short[TileID.Count];
 +	/// <summary>
 +	/// When set to 1 or 2, this tile will use a tiled pattern for the tile variation rather than the random <see cref="Tile.TileFrameNumber"/> choice (The info below counts from 1 rather than 0 for illustrative purposes). Only applicable to terrain/framed tiles. Defaults to 0.
-+	/// <para/> A value of 1 results in a 3x4 pattern used by Smoothe Marble Block (<see cref="TileID.MarbleBlock"/>) and others: <code>2 4 2
++	/// <para/> A value of 1 results in a 3x4 pattern used by Smooth Marble Block (<see cref="TileID.MarbleBlock"/>) and others: <code>2 4 2
 +	/// 1 3 1
 +	/// 2 2 4
 +	/// 1 1 3 </code>
@@ -561,6 +580,9 @@
 +	/// </summary>
  	public static byte[] wallLargeFrames = new byte[WallID.Count];
  	public static bool[] tileRope = new bool[TileID.Count];
++	/// <summary>
++	/// If true, this tile is considered a typical brick for tile merging purposes. Most "terrain" tiles intended for building that aren't dirt or similar natural materials set this to true to allow seamless connections between the tiles. Most of these tiles cover the full 16x16 area unlike dirt which has rough edges.
++	/// </summary>
  	public static bool[] tileBrick = new bool[TileID.Count];
  	public static bool[] tileMoss = new bool[TileID.Count];
 +	/// <summary>
@@ -702,7 +724,7 @@
  	public static Item mouseItem = new Item();
  	public static Item guideItem = new Item();
  	public static Item reforgeItem = new Item();
-@@ -1015,16 +_,47 @@
+@@ -1015,38 +_,75 @@
  	public static bool PipsUseGrid;
  	public static PipPage PipsCurrentPage;
  	public static int recStart;
@@ -750,7 +772,13 @@
  	public static bool npcChatRelease;
  	public static bool editSign;
  	public static bool editChest;
-@@ -1037,16 +_,21 @@
+ 	public static bool blockInput = false;
+ 	public static string blockKey = Microsoft.Xna.Framework.Input.Keys.None.ToString();
+ 	public static string defaultChestName = string.Empty;
++	/// <summary> The text displayed in the town npc chat panel. </summary>
+ 	public static string npcChatText = "";
+ 	public static bool npcChatFocus1;
+ 	public static bool npcChatFocus2;
  	public static bool npcChatFocus3;
  	public static bool npcChatFocus4;
  	public static int oldNPCShop;
@@ -868,15 +896,17 @@
  	public static int SmartInteractProj;
  	public static bool SmartInteractPotionOfReturn;
  	public static List<Microsoft.Xna.Framework.Point> SmartInteractTileCoords = new List<Microsoft.Xna.Framework.Point>();
-@@ -1986,7 +_,7 @@
+@@ -1986,8 +_,8 @@
  	public static bool _shouldUseWindyDayMusic = false;
  	public static bool _shouldUseStormMusic = false;
  	private int lastMusicPlayed = -1;
 -	private bool playOldTile;
 +	public bool playOldTile;
- 	private bool boulderLogo;
+-	private bool boulderLogo;
++	public bool boulderLogo;
  	private static TitleMusicStyle titleMusicStyle = TitleMusicStyle.Current;
  	private static TitleMusicStyle titleMusicStyleRandom = TitleMusicStyle.Current;
+ 	private static float _minWind = 0.34f;
 @@ -2004,12 +_,16 @@
  	public static float ambientLavaY = -1f;
  	public static float ambientLavaStrength;
@@ -984,6 +1014,41 @@
  		}
  	}
  
+@@ -2209,10 +_,14 @@
+ 		}
+ 	}
+ 
++
++	[Obsolete("Always true in TML")]
+ 	public static bool RenderTargetsRequired {
+ 		get {
++			/*
+ 			if (!(GameZoomTarget > 1f))
+ 				return GameViewMatrix.TransformationMatrix.M11 > 1f;
++			*/
+ 
+ 			return true;
+ 		}
+@@ -2233,6 +_,11 @@
+ 
+ 	public static string SavePath => Program.SavePath;
+ 
++	/// <summary>
++	/// The world mode of the active world. A <see cref="GameModeID"/> value. (<see href="https://terraria.wiki.gg/wiki/Difficulty#World_modes">World modes wiki page</see>)
++	/// <para/> For the actual active difficulty, see <see cref="Difficulty"/>.
++	/// <para/> For gameplay logic based on world difficulty it is usually best to check <see cref="Main.expertMode"/>, <see cref="masterMode"/>, and <see cref="IsJourneyMode"/> directly.
++	/// </summary>
+ 	public static int GameMode {
+ 		get {
+ 			if (ActiveWorldFileData == null)
+@@ -2246,6 +_,7 @@
+ 		}
+ 	}
+ 
++	/// <summary> The active world is a Journey mode world. Note that the world <see cref="Difficulty"/> is separate. </summary>
+ 	public static bool IsJourneyMode => GameMode == 3;
+ 
+ 	public static bool NoFunctionalSurface => worldSurface <= 30.0;
 @@ -2259,6 +_,7 @@
  		}
  	}
@@ -992,17 +1057,25 @@
  	public static bool specialSeedWorld {
  		get {
  			if (!drunkWorld && !getGoodWorld && !tenthAnniversaryWorld && !notTheBeesWorld && !dontStarveWorld && !remixWorld && !noTrapsWorld && !zenithWorld)
-@@ -2295,8 +_,10 @@
+@@ -2295,10 +_,18 @@
  		}
  	}
  
-+	/// <summary> Returns true if the world is a Master Mode world. Note that the <see cref="expertMode"/> will also be true. </summary>
++	/// <summary> Returns true if the world is in Master Mode difficulty. Note that the <see cref="expertMode"/> will also be true. </summary>
  	public static bool masterMode => Difficulty >= GameDifficultyLevel.Master;
  
-+	/// <summary> Returns true if the world is an Expert Mode world. Will be true even in Master Mode worlds. </summary>
++	/// <summary> Returns true if the world is in Expert Mode difficulty. Will be true even in Master Mode or higher difficulties. </summary>
  	public static bool expertMode => Difficulty >= GameDifficultyLevel.Expert;
  
++	/// <summary>
++	/// The difficulty of the active world. Takes into account the Journey Mode difficulty slider if in use. Can be used to scale various stats to account for desired difficulty. (The <see href="https://terraria.wiki.gg/wiki/Difficulty">Difficulty wiki page</see> lists how difficulty affects some stats.)
++	/// <para/> Journey mode is 0.5, Class is 1, Expert is 2, Master is 3. The journey mode difficulty slider overrides these values and the For the Worthy seed will add 1.
++	/// <para/> For the actual world mode, see <see cref="GameMode"/>.
++	/// <para/> For gameplay logic based on world difficulty it is usually best to check <see cref="Main.expertMode"/>, <see cref="masterMode"/>, and <see cref="IsJourneyMode"/> directly.
++	/// </summary>
  	public static float Difficulty {
+ 		get {
+ 			float num = GameDifficultyLevel.Classic;
 @@ -2333,8 +_,16 @@
  	[Old("Transform is deprecated. Please use GameViewMatrix & GUIViewMatrix")]
  	public static Matrix Transform => GameViewMatrix.TransformationMatrix;
@@ -1419,7 +1492,7 @@
  			string lpWindowName = (Console.Title = "terraria" + rand.Next(int.MaxValue));
  			if (Platform.IsWindows) {
  				IntPtr intPtr = FindWindow(null, lpWindowName);
-@@ -4517,17 +_,37 @@
+@@ -4517,17 +_,38 @@
  			}
  		}
  		else {
@@ -1431,6 +1504,7 @@
 +			// Make a new console and use it. I don't know why, but trying to start the server process will share the same console by default.
 +			Platform.Get<IWindowService>().ReleaseConsole();
 +			Platform.Get<IWindowService>().CreateAndRedirectConsole();
++			Program.InitializeConsoleEncoding();
  		}
  
  		dedServ = true;
@@ -1867,6 +1941,16 @@
  		for (int i = 1; i < ProjectileID.Count; i++) {
  			Projectile obj = new Projectile();
  			obj.SetDefaults(i);
+@@ -5672,7 +_,9 @@
+ 				projHook[i] = true;
+ 		}
+ 
++		/* TML: Moved into Recipe.SetupRecipes();
+ 		Recipe.SetupRecipeGroups();
++		*/
+ 		ConditionalDialogue.Init();
+ 		ArmorSetBonuses.Initialize();
+ 		ArmorSetBonuses.BuildLookup();
 @@ -5698,11 +_,18 @@
  		}
  
@@ -1981,6 +2065,16 @@
  
  	protected IEnumerator LoadContent_Deferred()
  	{
+@@ -9844,7 +_,9 @@
+ 		Mount.Initialize();
+ 		Minecart.Initialize();
+ 		CacheSupportedDisplaySizes();
++		/* Moved to QuickLoad.Load to run after mods
+ 		QuickLoad.OnContentLoaded();
++		*/
+ 	}
+ 
+ 	private IEnumerator LoadMusic_InSteps()
 @@ -10311,6 +_,9 @@
  
  				if (SceneMetrics.ActiveMusicBox == 99)
@@ -2990,6 +3084,20 @@
  		if (diff == 1)
  			baseColor = new Microsoft.Xna.Framework.Color((byte)((float)(int)mcColor.R * num3), (byte)((float)(int)mcColor.G * num3), (byte)((float)(int)mcColor.B * num3), mouseTextColor);
  
+@@ -17245,6 +_,13 @@
+ 		int numLines = 1;
+ 		string[] mouseTextTooltipLine_Text = _mouseTextTooltipLine_Text;
+ 		Microsoft.Xna.Framework.Color[] mouseTextTooltipLine_Color = _mouseTextTooltipLine_Color;
++
++		int expectedLineCount = _mouseTextTooltip_MaxLines + hoverItem.ToolTip?.Lines ?? 0; // Easy fix to #4772. A full fix would require rewrites of hooks.
++		if (mouseTextTooltipLine_Text.Length < expectedLineCount) {
++			Array.Resize(ref mouseTextTooltipLine_Text, expectedLineCount);
++			Array.Resize(ref mouseTextTooltipLine_Color, expectedLineCount);
++		}
++
+ 		_ = mouseTextColor;
+ 		float num2 = (float)(int)mouseTextColor / 255f;
+ 		for (int i = 0; i < mouseTextTooltipLine_Text.Length; i++) {
 @@ -17252,12 +_,21 @@
  		}
  
@@ -3003,18 +3111,23 @@
 -		MouseText_DrawItemTooltip_AddShopLines(hoverItem, ref numLines, mouseTextTooltipLine_Text, mouseTextTooltipLine_Color);
 +		MouseText_DrawItemTooltip_AddShopLines(hoverItem, ref numLines, mouseTextTooltipLine_Text, mouseTextTooltipLine_Color, tooltipNames);
  		if (NewCraftingUI.Visible)
- 			NewCraftingUI.AddTooltipLines(hoverItem, ref numLines, mouseTextTooltipLine_Text, mouseTextTooltipLine_Color);
+-			NewCraftingUI.AddTooltipLines(hoverItem, ref numLines, mouseTextTooltipLine_Text, mouseTextTooltipLine_Color);
++			NewCraftingUI.AddTooltipLines(hoverItem, ref numLines, mouseTextTooltipLine_Text, mouseTextTooltipLine_Color, tooltipNames);
  
  		Vector2 zero = Vector2.Zero;
 +
 +		// TML's abstractions over tooltip arrays.
-+		List<TooltipLine> lines = ItemLoader.ModifyTooltips(HoverItem, ref numLines, tooltipNames, ref mouseTextTooltipLine_Text, ref mouseTextTooltipLine_Color, ref yoyoLogo, out Color?[] overrideColor, prefixlineIndex);
-+		List<DrawableTooltipLine> drawableLines = lines.Select((TooltipLine x, int i) => new DrawableTooltipLine(x, i, 0, 0, Color.White)).ToList();
++		List<TooltipLine> lines = ItemLoader.ModifyTooltips(HoverItem, ref numLines, tooltipNames, ref mouseTextTooltipLine_Text, ref mouseTextTooltipLine_Color, ref yoyoLogo, prefixlineIndex);
++		List<DrawableTooltipLine> drawableLines = lines.Select((TooltipLine x, int i) => new DrawableTooltipLine(x, i, 0, 0, mouseTextTooltipLine_Color[i])).ToList();
 +
  		int num3 = 0;
  		for (int j = 0; j < numLines; j++) {
  			Vector2 stringSize = ChatManager.GetStringSize(FontAssets.MouseText.Value, mouseTextTooltipLine_Text[j], Vector2.One);
-@@ -17295,14 +_,32 @@
+@@ -17292,19 +_,42 @@
+ 		}
+ 
+ 		for (int k = 0; k < mouseTextTooltipLine_Text.Length; k++) {
++			// TODO: Some way for mods to bypass mouseTextColor pulsing for a TooltipLine. Apply to UnloadedPrefix once implemented.
  			mouseTextTooltipLine_Color[k] = new Microsoft.Xna.Framework.Color((byte)((float)(int)mouseTextTooltipLine_Color[k].R * num2), (byte)((float)(int)mouseTextTooltipLine_Color[k].G * num2), (byte)((float)(int)mouseTextTooltipLine_Color[k].B * num2), mouseTextColor);
  		}
  
@@ -3028,11 +3141,12 @@
  			if (l == yoyoLogo) {
 +			*/
 +			if (drawableLines[l].Mod == "Terraria" && drawableLines[l].Name == "OneDropLogo") {
++				/*
  				float num10 = 1f;
  				int num11 = (int)((float)(int)mouseTextColor * num10);
++				*/
  				Microsoft.Xna.Framework.Color color = Microsoft.Xna.Framework.Color.Black;
 +
-+				drawableLines[l].Color = new Color(num11, num11, num11, num11);
 +				if (!ItemLoader.PreDrawTooltipLine(HoverItem, drawableLines[l], ref num3) || !globalCanDraw)
 +					goto PostDraw;
 +
@@ -3045,47 +3159,28 @@
 +					int num13 = drawableLines[l].Y;
 +
  					if (m == 4)
++						color = drawableLines[l].Color;
++						/*
  						color = new Microsoft.Xna.Framework.Color(num11, num11, num11, num11);
++						*/
  
-@@ -17314,10 +_,10 @@
- 							num12++;
- 							break;
- 						case 2:
--							num13--;
-+							num12--;
- 							break;
- 						case 3:
--							num13++;
-+							num12++;
- 							break;
- 					}
- 
-@@ -17326,17 +_,40 @@
+ 					switch (m) {
+ 						case 0:
+@@ -17326,17 +_,29 @@
  			}
  			else {
  				Microsoft.Xna.Framework.Color baseColor = mouseTextTooltipLine_Color[l];
 +				/*
  				if (l == researchLine)
-+				*/
-+				if (drawableLines[l].Mod == "Terraria" && drawableLines[l].Name == "JourneyResearch")
  					baseColor = Colors.JourneyMode;
  
-+				/*
  				ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.MouseText.Value, mouseTextTooltipLine_Text[l], new Vector2(X, Y + num7), baseColor, 0f, Vector2.Zero, Vector2.One);
 +				*/
-+				drawableLines[l].Color = baseColor;
-+				Color realLineColor = baseColor;
-+
-+				if (overrideColor[l].HasValue) {
-+					// TODO: Some way for mods to bypass mouseTextColor pulsing for a TooltipLine. Apply to UnloadedPrefix once implemented.
-+					realLineColor = overrideColor[l].Value * num2;
-+					drawableLines[l].OverrideColor = realLineColor;
-+				}
 +
 +				if (!ItemLoader.PreDrawTooltipLine(HoverItem, drawableLines[l], ref num3) || !globalCanDraw)
 +					goto PostDraw;
 +
-+				ChatManager.DrawColorCodedStringWithShadow(spriteBatch, drawableLines[l].Font, drawableLines[l].Text, new Vector2(drawableLines[l].X, drawableLines[l].Y), realLineColor, drawableLines[l].Rotation, drawableLines[l].Origin, drawableLines[l].BaseScale, drawableLines[l].MaxWidth, drawableLines[l].Spread);
++				ChatManager.DrawColorCodedStringWithShadow(spriteBatch, drawableLines[l].Font, drawableLines[l].Text, new Vector2(drawableLines[l].X, drawableLines[l].Y), baseColor, drawableLines[l].Rotation, drawableLines[l].Origin, drawableLines[l].BaseScale, drawableLines[l].MaxWidth, drawableLines[l].Spread);
  			}
  
 +			PostDraw:
@@ -3135,7 +3230,23 @@
  			result = new Microsoft.Xna.Framework.Color(255, (byte)(masterColor * 200f), 0);
  
  		if (rare == -12)
-@@ -17480,30 +_,50 @@
+@@ -17468,9 +_,15 @@
+ 		if (rare == 10)
+ 			result = new Microsoft.Xna.Framework.Color(255, 40, 100);
+ 
++		/*
+ 		if (rare >= 11)
++		*/
++		if (rare == 11)
+ 			result = new Microsoft.Xna.Framework.Color(180, 40, 255);
+ 
++		if (rare > 11)
++			result = RarityLoader.GetRarity(rare).RarityColor;
++
+ 		if (diff == 1)
+ 			result = new Microsoft.Xna.Framework.Color(mcColor.R, mcColor.G, mcColor.B);
+ 
+@@ -17480,30 +_,49 @@
  		return result;
  	}
  
@@ -3166,7 +3277,6 @@
  		if (item.social && !item.vanity && !item.hasVanityEffects) {
  			toolTipLine[numLines] = Lang.tip[61].Value;
 +			toolTipNames[numLines] = "Social";
-+			//toolTipNames[numLines] = "SocialDesc";
  			numLines++;
  		}
  
@@ -3352,7 +3462,7 @@
  			numLines++;
  		}
  
-@@ -17663,39 +_,54 @@
+@@ -17663,54 +_,72 @@
  				toolTipLine[numLines] = Language.GetTextValue("CommonItemTooltip.RestoresLifeRange", healLife, num6);
  			}
  			else {
@@ -3409,6 +3519,24 @@
  			numLines++;
  		}
  
+ 		if ((item.createTile > -1 && (TileID.Sets.Wiring.IsATrigger[item.createTile] || TileID.Sets.Wiring.IsAMechanism[item.createTile])) & (item.createTile != 105 || ItemID.Sets.IsWireableStatue[item.type])) {
+ 			toolTipLine[numLines] = Language.GetTextValue("CommonItemTooltip.Wireable");
++			toolTipNames[numLines] = "Wireable";
+ 			numLines++;
+ 		}
+ 
+ 		if (item.createTile == 21 || item.createTile == 467) {
+ 			toolTipLine[numLines] = Language.GetTextValue("CommonItemTooltip.Container");
++			toolTipNames[numLines] = "Container";
+ 			numLines++;
+ 		}
+ 
+ 		if (item.createTile == 441 || item.createTile == 468) {
+ 			toolTipLine[numLines] = Language.GetTextValue("CommonItemTooltip.WireTrigger");
++			toolTipNames[numLines] = "WireTrigger";
+ 			numLines++;
+ 		}
+ 
 @@ -17718,10 +_,12 @@
  			for (int i = 0; i < item.ToolTip.Lines; i++) {
  				if (i == 0 && ItemID.Sets.UsesCursedByPlanteraTooltip[item.type] && !NPC.downedPlantBoss) {
@@ -3422,7 +3550,35 @@
  					numLines++;
  				}
  			}
-@@ -17754,16 +_,19 @@
+@@ -17729,11 +_,13 @@
+ 
+ 		if (tenthAnniversaryWorld && item.type == 238) {
+ 			toolTipLine[numLines] = Language.GetTextValue("CommonItemTooltip.WizardHatDuringAnniversary");
++			toolTipNames[numLines] = "WizardHatDuringAnniversary";
+ 			numLines++;
+ 		}
+ 
+ 		if (getGoodWorld && item.type == 1127) {
+ 			toolTipLine[numLines] = Language.GetTextValue("CommonItemTooltip.BurningBlock");
++			toolTipNames[numLines] = "BurningBlock";
+ 			numLines++;
+ 		}
+ 
+@@ -17741,6 +_,7 @@
+ 			if (item.type == 556 || item.type == 557 || item.type == 544) {
+ 				numLines--;
+ 				toolTipLine[numLines] = Language.GetTextValue("CommonItemTooltip.MechSummonDuringEverything");
++				toolTipNames[numLines] = "MechSummonDuringEverything";
+ 				numLines++;
+ 			}
+ 		}
+@@ -17749,21 +_,25 @@
+ 			toolTipLine[numLines] = "";
+ 			numLines--;
+ 			toolTipLine[numLines] = Language.GetTextValue("CommonItemTooltip.MechdusaSummonNotDuringEverything");
++			toolTipNames[numLines] = "MechdusaSummonNotDuringEverything";
+ 			numLines++;
+ 		}
  
  		if ((item.type == 3818 || item.type == 3819 || item.type == 3820 || item.type == 3824 || item.type == 3825 || item.type == 3826 || item.type == 3829 || item.type == 3830 || item.type == 3831 || item.type == 3832 || item.type == 3833 || item.type == 3834) && !player[myPlayer].downedDD2EventAnyDifficulty) {
  			toolTipLine[numLines] = Lang.misc[104].Value;
@@ -3498,7 +3654,7 @@
  				numLines++;
  			}
  
-@@ -17868,6 +_,7 @@
+@@ -17868,12 +_,14 @@
  					toolTipLine[numLines] = num13 + Lang.tip[45].Value;
  
  				lineColors[numLines] = ((num13 < 0.0) ? color : color2);
@@ -3506,6 +3662,21 @@
  				numLines++;
  			}
  
+ 			if (item2.armorPenetration != item.armorPenetration) {
+ 				int num14 = item.armorPenetration - item2.armorPenetration;
+ 				toolTipLine[numLines] = Language.GetTextValue("CommonItemTooltip.PrefixArmorPenetration", num14);
++				toolTipNames[numLines] = "PrefixArmorPenetration";
+ 				lineColors[numLines] = ((num14 < 0) ? color : color2);
+ 				numLines++;
+ 			}
+@@ -17881,6 +_,7 @@
+ 			if (item2.bonusTagDamage != item.bonusTagDamage) {
+ 				int num15 = item.bonusTagDamage - item2.bonusTagDamage;
+ 				toolTipLine[numLines] = Language.GetTextValue("CommonItemTooltip.PrefixTagDamage", num15);
++				toolTipNames[numLines] = "PrefixTagDamage";
+ 				lineColors[numLines] = ((num15 < 0) ? color : color2);
+ 				numLines++;
+ 			}
 @@ -17888,116 +_,137 @@
  			if (item.prefix == 62) {
  				toolTipLine[numLines] = "+1" + Lang.tip[25].Value;
@@ -3644,6 +3815,22 @@
  		}
  
  		if (true) {
+@@ -18006,6 +_,7 @@
+ 				if (!item.wornArmor) {
+ 					toolTipLine[numLines] = array[0].GetTooltipForSinglePiece(item.type);
+ 					lineColors[numLines] = new Microsoft.Xna.Framework.Color(130, 130, 130, 190);
++					toolTipNames[numLines] = "SetBonusSinglePiece";
+ 					numLines++;
+ 				}
+ 				else {
+@@ -18032,6 +_,7 @@
+ 					}
+ 
+ 					toolTipLine[numLines] = armorSetBonus.GetTooltipForWornArmor(context, result);
++					toolTipNames[numLines] = "SetBonus";
+ 					lineColors[numLines] = (result.Complete ? Microsoft.Xna.Framework.Color.LimeGreen : new Microsoft.Xna.Framework.Color(130, 130, 130));
+ 					numLines++;
+ 				}
 @@ -18039,17 +_,23 @@
  
  			if (player[myPlayer].setBonus != "") {
@@ -3668,17 +3855,20 @@
  			numLines++;
  		}
  
-@@ -18058,13 +_,28 @@
+@@ -18057,14 +_,31 @@
+ 			string teammateName;
  			if (amountWeHave < amountNeededTotal) {
  				toolTipLine[numLines] = Language.GetTextValue("CommonItemTooltip.CreativeSacrificeNeeded", amountNeededTotal - amountWeHave);
++				lineColors[numLines] = Colors.JourneyMode;
  				researchLine = numLines;
 +				toolTipNames[numLines] = "JourneyResearch";
  				numLines++;
  			}
  			else if (item.tooltipContext == 29 && LocalPlayerCreativeTracker.ItemSacrifices.TryGetTeammateUnlockCredit(item.type, out teammateName)) {
  				toolTipLine[numLines] = Language.GetTextValue("CommonItemTooltip.ItemUnlockedByTeammate", teammateName);
++				lineColors[numLines] = Colors.JourneyMode;
  				researchLine = numLines;
-+				// toolTipNames[numLines] = "JourneyResearchTeammate";
++				toolTipNames[numLines] = "JourneyResearchTeammate";
  				numLines++;
  			}
 +		}
@@ -4556,18 +4746,61 @@
  			}
  			else {
  				int num2 = rand.Next(3);
-@@ -34899,8 +_,9 @@
- 		playerInventory = true;
- 		stackSplit = 9999;
- 		npcChatText = "";
--		SetNPCShopIndex(shopIndex);
-+		SetNPCShopIndex(1);
--		shop[npcShop].SetupShop(npcShop);
-+		shop[npcShop].SetupShop(shopIndex);
+@@ -34758,13 +_,28 @@
+ 		if (dialoguePortraitPreference == DialoguePortraitDrawOption.Disabled)
+ 			return;
+ 
++		if (LocalPlayer.sign != -1) // TML: return if editing a sign. Main.editSign didn't work
++			return;
 +
- 		SoundEngine.PlaySound(12);
+ 		NPCID.Sets.NPCPortraitProvider nPCPortraitProvider = npcChatPortrait;
++		/*
+ 		if (nPCPortraitProvider == null)
+ 			return;
+ 
+ 		nPCPortraitProvider.GetDrawData(out var texture, out var drawFrame);
+ 		if (texture == null)
+ 			return;
++		*/
++		// TML: Instead of not drawing at all for ModNPC that haven't implemented portraits yet, just fallback to closeup.
++		Texture2D texture = null;
++		Rectangle drawFrame = Rectangle.Empty;
++		if (nPCPortraitProvider == null && dialoguePortraitPreference == DialoguePortraitDrawOption.Detailed)
++			dialoguePortraitPreference = DialoguePortraitDrawOption.CloseUp;
++		if (nPCPortraitProvider != null) {
++			nPCPortraitProvider.GetDrawData(out texture, out drawFrame);
++			if (texture == null)
++				return;
++		}
+ 
+ 		int num = npcChatPortraitFrameCounter++;
+ 		int num2 = 56;
+@@ -34894,6 +_,7 @@
+ 		return false;
  	}
  
++	/*
+ 	public void OpenShop(int shopIndex)
+ 	{
+ 		playerInventory = true;
+@@ -34903,6 +_,17 @@
+ 		shop[npcShop].SetupShop(npcShop);
+ 		SoundEngine.PlaySound(12);
+ 	}
++	*/
++
++	public void OpenShop(string shopName) // TML: Changed to use strings instead of integer indexes.
++	{
++		playerInventory = true;
++		stackSplit = 9999;
++		npcChatText = "";
++		SetNPCShopIndex(1);
++		shop[npcShop].SetupShop(shopName, LocalPlayer.TalkNPC); // Full shop names are pre-retrieved in NPCInteractions.Actions.OpenShop in NPCInteractions.cs
++		SoundEngine.PlaySound(12);
++	}
+ 
+ 	public static void SetNPCShopIndex(int index)
+ 	{
 @@ -34945,8 +_,12 @@
  			npcChatFocus2 = false;
  		}
@@ -4607,7 +4840,7 @@
  			UILinkPointNavigator.SetPosition(2502, vector2 + stringSize * 0.5f);
  			UILinkPointNavigator.Shortcuts.NPCCHAT_ButtonsRight = true;
  		}
-@@ -35086,8 +_,12 @@
+@@ -35086,12 +_,17 @@
  			npcChatFocus4 = false;
  		}
  
@@ -4620,6 +4853,11 @@
  		UILinkPointNavigator.SetPosition(2503, vector2 + stringSize * 0.5f);
  		UILinkPointNavigator.Shortcuts.NPCCHAT_ButtonsRight2 = true;
  	}
+ 
++	/// <summary> Makes the town npc portrait bounce. </summary>
+ 	public static void DoNPCPortraitHop()
+ 	{
+ 		npcChatPortraitFrameCounter = 0;
 @@ -35412,8 +_,12 @@
  			}
  		}
@@ -4771,7 +5009,7 @@
 +						/*
  						if (mouseLeftRelease && mouseLeft && reforgeCooldown <= 0 && player[myPlayer].BuyItem(num55))
 +						*/
-+						if (mouseLeftRelease && mouseLeft && player[myPlayer].CanAfford(num55) && ItemLoader.CanReforge(reforgeItem)) {
++						if (mouseLeftRelease && mouseLeft && reforgeCooldown <= 0 && player[myPlayer].CanAfford(num55) && ItemLoader.CanReforge(reforgeItem)) {
 +							player[myPlayer].BuyItem(num55);
  							ReforgeItemInReforgeSlot();
 +						}
@@ -4890,6 +5128,19 @@
  
  	public static bool LocalPlayerHasPendingInventoryActions()
  	{
+@@ -36799,7 +_,12 @@
+ 
+ 	public static void CraftItem_GrantItem(Recipe recipe, Item result, bool quickCraft)
+ 	{
++		/* TML: Use StackItems so OnStack hook fires.
+ 		result.stack += mouseItem.stack;
++		*/
++		if (mouseItem.stack > 0)
++			ItemLoader.StackItems(result, mouseItem, out _);
++
+ 		mouseItem = result;
+ 		if (quickCraft && !mouseItem.IsAir) {
+ 			if (CraftingRequests.HasPendingRequests) {
 @@ -37026,6 +_,10 @@
  					if (item[i].expert)
  						rare = -12;
@@ -5532,7 +5783,7 @@
  			if (starGame)
  				playOldTile = false;
  		}
-@@ -41738,12 +_,17 @@
+@@ -41738,20 +_,30 @@
  				logoScaleSpeed -= 1f;
  		}
  
@@ -5540,8 +5791,11 @@
 +
  		Microsoft.Xna.Framework.Color color2 = new Microsoft.Xna.Framework.Color((byte)((float)(int)color.R * ((float)LogoA / 255f)), (byte)((float)(int)color.G * ((float)LogoA / 255f)), (byte)((float)(int)color.B * ((float)LogoA / 255f)), (byte)((float)(int)color.A * ((float)LogoA / 255f)));
  		Microsoft.Xna.Framework.Color color3 = new Microsoft.Xna.Framework.Color((byte)((float)(int)color.R * ((float)LogoB / 255f)), (byte)((float)(int)color.G * ((float)LogoB / 255f)), (byte)((float)(int)color.B * ((float)LogoB / 255f)), (byte)((float)(int)color.A * ((float)LogoB / 255f)));
- 		if (noTrapsWorld)
+-		if (noTrapsWorld)
++		if (noTrapsWorld) {
  			boulderLogo = true;
++			MenuLoader.ActivateBiggerAndBoulderMenu();
++		}
  
 +		/*
  		if (playOldTile) {
@@ -5550,7 +5804,10 @@
  			spriteBatch.Draw(TextureAssets.Logo3.Value, new Vector2(screenWidth / 2, 100f), new Microsoft.Xna.Framework.Rectangle(0, 0, TextureAssets.Logo.Width(), TextureAssets.Logo.Height()), color2, logoRotation, new Vector2(TextureAssets.Logo.Width() / 2, TextureAssets.Logo.Height() / 2), logoScale, SpriteEffects.None, 0f);
  			spriteBatch.Draw(TextureAssets.Logo4.Value, new Vector2(screenWidth / 2, 100f), new Microsoft.Xna.Framework.Rectangle(0, 0, TextureAssets.Logo.Width(), TextureAssets.Logo.Height()), color3, logoRotation, new Vector2(TextureAssets.Logo.Width() / 2, TextureAssets.Logo.Height() / 2), logoScale, SpriteEffects.None, 0f);
  		}
-@@ -41751,7 +_,7 @@
++		/*
+ 		else if (boulderLogo) {
++		*/
++		else if (MenuLoader.MenuBiggerAndBoulder.IsSelected) {
  			spriteBatch.Draw(TextureAssets.Logo5.Value, new Vector2(screenWidth / 2, 100f), new Microsoft.Xna.Framework.Rectangle(0, 0, TextureAssets.Logo.Width(), TextureAssets.Logo.Height()), color2, logoRotation, new Vector2(TextureAssets.Logo.Width() / 2, TextureAssets.Logo.Height() / 2), logoScale, SpriteEffects.None, 0f);
  			spriteBatch.Draw(TextureAssets.Logo6.Value, new Vector2(screenWidth / 2, 100f), new Microsoft.Xna.Framework.Rectangle(0, 0, TextureAssets.Logo.Width(), TextureAssets.Logo.Height()), color3, logoRotation, new Vector2(TextureAssets.Logo.Width() / 2, TextureAssets.Logo.Height() / 2), logoScale, SpriteEffects.None, 0f);
  		}
@@ -5937,7 +6194,7 @@
  		Vector2 origin = FontAssets.MouseText.Value.MeasureString(text);
  		origin.X *= 0.5f;
  		origin.Y *= 0.5f;
-@@ -45091,7 +_,59 @@
+@@ -45091,7 +_,63 @@
  				num2 = 2;
  
  			spriteBatch.DrawString(FontAssets.MouseText.Value, text, new Vector2(origin.X + (float)num + 10f, (float)screenHeight - origin.Y + (float)num2 - 2f - upBump), color, 0f, origin, 1f, SpriteEffects.None, 0f);
@@ -5961,7 +6218,11 @@
 +
 +					if (mouseover && mouseLeftRelease && mouseLeft) {
 +						SoundEngine.PlaySound(SoundID.MenuOpen);
-+						Utils.OpenToURL("https://github.com/tModLoader/tModLoader/wiki/tModLoader-guide-for-players#beta-branches");
++
++						if (SteamedWraps.SteamClient)
++							Main.menuMode = Interface.switchBetaID;
++						else
++							Utils.OpenToURL("https://github.com/tModLoader/tModLoader/wiki/tModLoader-guide-for-players#beta-branches"); // Manual instructions
 +					}
 +				}
 +
@@ -6270,6 +6531,23 @@
  					byte b = tile.liquid;
  					bool num5 = num4 <= num2 && ((!flag2 && b < 250) || WorldGen.SolidTile(tile) || (b >= 200 && num4 == 0f));
  					bool flag3 = tile.active() && tileBlockLight[tile.type] && (!tile.invisibleBlock() || flag);
+@@ -50334,6 +_,8 @@
+ 			}
+ 		}
+ 		catch {
++			ErrorReporting.FatalExit(Language.GetTextValue("tModLoader.TerrariaGraphicsResourcesInitFailed"));
++			/*
+ 			Lighting.Mode = LightMode.Retro;
+ 			mapEnabled = false;
+ 			SaveSettings();
+@@ -50342,6 +_,7 @@
+ 			}
+ 			catch {
+ 			}
++			*/
+ 		}
+ 	}
+ 
 @@ -51071,18 +_,33 @@
  		}
  	}
@@ -6477,6 +6755,15 @@
  		if (gameMenu || player[myPlayer].gravDir == 1f)
  			Rasterizer = RasterizerState.CullCounterClockwise;
  		else
+@@ -53663,7 +_,7 @@
+ 		}
+ 
+ 		bool flag2 = Terraria.Graphics.Effects.Filters.Scene.CanCapture() || ForegroundSunlightEffects;
+-		bool flag3 = !drawToScreen && !mapFullscreen && !onlyDrawFancyUI && Lighting.NotRetro && flag2;
++		bool flag3 = !drawToScreen && !mapFullscreen && !onlyDrawFancyUI /* && Lighting.NotRetro */ && flag2;
+ 		if (flag3) {
+ 			instance.GraphicsDevice.SetRenderTarget(skyTarget);
+ 			instance.GraphicsDevice.Clear(Microsoft.Xna.Framework.Color.Transparent);
 @@ -53748,7 +_,7 @@
  		spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, Rasterizer, null, GameViewMatrix.TransformationMatrix);
  		DrawBackgroundBlackFill();

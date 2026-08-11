@@ -48,7 +48,7 @@
  			Main.item[num].stack = stack;
  			NetMessage.SendData(21, -1, -1, null, num);
 +			*/
-+			Item.NewItem(new EntitySource_TileBreak(x, y), new Rectangle(x * 16, y * 16, 16, 16), item);
++			Item.NewItem(new EntitySource_TileBreak(x, y), new Rectangle(x * 16, y * 16, 32, 32), item);
  			return;
  		}
  

@@ -9,7 +9,7 @@
 		Remember that unless you manually register music via <see cref="AddMusic(Mod, string)"/>, only files found in a folder or subfolder of a folder named "Music" will be autoloaded as music.
 	</MusicAutoloadReminder>
     <CoordinateConversionNote>
-		<para/> By convention, Tile coordinates should be represented by represented using <see cref="Point"/> or <see cref="Point16"/> and World coordinates should be represented using <see cref="Vector2"/>. This convention is not always followed, so naming variables appropriately is highly recommended.
+		<para/> By convention, Tile coordinates should be represented using <see cref="Point"/> or <see cref="Point16"/> and World coordinates should be represented using <see cref="Vector2"/>. This convention is not always followed, so naming variables appropriately is highly recommended.
 		<para/> Please read the <see href="https://github.com/tModLoader/tModLoader/wiki/Coordinates">Coordinates wiki page</see> for more information.
 	</CoordinateConversionNote>
     <ToWorldCoordinates>

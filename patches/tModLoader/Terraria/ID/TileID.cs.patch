@@ -34,7 +34,7 @@
  		{
  			public static int[] CountsAsChairTypes = new int[6] {
  				15,
-@@ -145,32 +_,110 @@
+@@ -145,32 +_,117 @@
  			public static bool[] CountsAsDoor = Factory.CreateBoolSet(CountsAsDoorTypes);
  		}
  
@@ -53,13 +53,18 @@
  		public static class Wiring
  		{
 +			/// <summary>
-+			/// Indicates that the tile is an appropriate tile to be connected to a trigger tile (<see cref="IsATrigger"/>). Used during the "Remove Broken Traps" world generation step to remove wires and tiles in situations where the mechanism or trigger have been orphaned (not connected anymore).
++			/// Indicates that the tile is wireable and any item placing these tiles will have the "Wireable" tooltip.
++			/// <br/><br/> Unless <see cref="IgnoreWhenValidatingTraps"/> is also set, the "Remove Broken Traps" world generation step will remove tiles of this type (and connected wires) that are not connected to a trigger tile (<see cref="IsATrigger"/>).
 +			/// </summary>
  			public static bool[] IsAMechanism = Factory.CreateBoolSet(420, 419, 411, 4, 33, 100, 93, 42, 34, 215, 405, 92, 35, 126, 95, 149, 593, 594, 564, 10, 11, 387, 386, 388, 389, 137, 443, 141, 130, 131, 546, 557, 421, 422, 209, 212, 216, 338, 335, 497, 406, 244, 452, 565, 139, 506, 105, 349, 531, 429, 142, 143, 235, 210, 425, 21, 467, 219, 642, 356, 663, 255, 256, 257, 258, 259, 260, 261, 262, 263, 264, 265, 266, 267, 268, 207, 480, 455, 509, 657, 658, 720, 721, 725, 733, 314);
 +			/// <summary>
-+			/// Indicates that the tile is an appropriate tile to be connected to a mechanism tile (<see cref="IsAMechanism"/>). Used during the "Remove Broken Traps" world generation step to remove wires and tiles in situations where the mechanism or trigger have been orphaned (not connected anymore).
++			/// Indicates that the tile is an appropriate tile to be connected to a mechanism tile (<see cref="IsAMechanism"/>). Any item placing these tiles will have the "Wireable" tooltip. Used during the "Remove Broken Traps" world generation step to remove wires and tiles in situations where the mechanism or trigger have been orphaned (not connected anymore).
 +			/// </summary>
  			public static bool[] IsATrigger = Factory.CreateBoolSet(135, 136, 132, 144, 411, 423, 476, 440, 441, 468);
++			/// <summary>
++			/// Tiles in this set are ignored during the "Remove Broken Traps" world generation step despite being in <see cref="IsAMechanism"/> and won't be removed even if they are not connected to a trigger. Used for tiles that should have the "Wireable" tooltip but shouldn't be removed as traps, such as doors and other wireable furniture.
++			/// <br/><br/> Defaults to <see langword="false"/>.
++			/// </summary>
  			public static bool[] IgnoreWhenValidatingTraps = Factory.CreateBoolSet(411, 10, 11, 387, 386, 388, 389, 4, 215, 21, 467, 219, 642, 314);
  		}
  
@@ -100,6 +105,8 @@
 +		/// <summary>
 +		/// If <see langword="true"/> for a given tile type (<see cref="Tile.TileType"/>), then that tile is categorized as a tree trunk.
 +		/// <br/> Tree trunks are a type of tile anchor (<see cref="Enums.AnchorType.Tree"/>), targetable by axes, and are replanted when using the <see cref="ItemID.AcornAxe"/>.
++		/// /// <br/> Tiles in this set also get the "Tree" map text.
++		/// <br/> Some trees, such as <see cref="TileID.PalmTree"/>, are not included in this set because they curve and as such are not suitable for tile anchors.
 +		/// <br/> Defaults to <see langword="false"/>.
 +		/// </summary>
  		public static bool[] IsATreeTrunk = Factory.CreateBoolSet(false, 5, 72, 583, 584, 585, 586, 587, 588, 589, 596, 616, 634);
@@ -295,7 +302,7 @@
  		public static bool[] CanBeClearedDuringGeneration = Factory.CreateBoolSet(true, 396, 400, 401, 397, 398, 399, 404, 368, 367, 41, 43, 44, 481, 482, 483, 226, 237);
  		public static bool[] PreventsSlopesDuringGeneration = Factory.CreateBoolSet(false, 48, 137, 232, 191, 151, 274, 135, 442, 428);
  		public static List<int> CorruptCountCollection = new List<int> {
-@@ -298,6 +_,9 @@
+@@ -298,33 +_,85 @@
  		public static bool[] SpreadsCrimson = Factory.CreateBoolSet(199, 662, 203, 234, 399, 401, 200, 352, 205, 201);
  		public static bool[] UsesADifferentTileTypeForNPCSpawning = Factory.CreateBoolSet(false, 421, 422);
  		public static bool[] BlocksStairs = Factory.CreateBoolSet(386, 387, 54, 328, 459, 541);
@@ -305,7 +312,11 @@
  		public static bool[] NotReallySolid = Factory.CreateBoolSet(387, 388, 10);
  		public static bool[] BlocksWaterDrawingBehindSelf = Factory.CreateBoolSet(false, 54, 541, 328, 459, 470);
  		public static bool[] AllowLightInWater = Factory.CreateBoolSet(false, 54, 541, 328, 459, 748, 750);
-@@ -306,25 +_,71 @@
++		/// <summary>
++		/// Tiles that are interpreted as a wall by nearby walls during framing, causing them to frame as if merging with this adjacent tile. Prevents wall from drawing within bounds for transparent tiles.
++		/// </summary>
+ 		public static bool[] TruncatesWalls = Factory.CreateBoolSet(false, 54, 328, 459, 748);
+ 		public static bool[] FrameImportantEchoCulling = Factory.CreateBoolSet(false, 19, 436, 435, 438, 427, 439, 437, 380);
  		public static bool[] NeedsGrassFraming = Factory.CreateBoolSet(633);
  		public static int[] NeedsGrassFramingDirt = Factory.CreateIntSet(0, 633, 57);
  		public static bool[] ChecksForMerge = Factory.CreateBoolSet(0, 668, 2, 661, 60, 70, 199, 662, 109, 477, 492, 633, 747, 57, 58, 75, 76, 684, 147, 161, 164, 163, 200, 162, 189, 196, 460, 717, 718, 719, 170, 738, 224, 191, 383, 211, 225, 59, 226, 396, 397, 398, 399, 402, 400, 401, 403, 404, 234, 112, 407);

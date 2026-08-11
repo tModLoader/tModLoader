@@ -1,4 +1,5 @@
 using ReLogic.Reflection;
+using static Terraria.ID.NPCID;
 
 namespace Terraria.ID;
 
@@ -6,53 +7,53 @@ public class NPCAIStyleID
 {
 	public static readonly IdDictionary Search = IdDictionary.Create<NPCAIStyleID, short>();
 	/// <summary>
-	/// Used by: <see cref="NPCID.BoundGoblin"/>, <see cref="NPCID.BoundWizard"/>, <see cref="NPCID.BoundMechanic"/>, <see cref="NPCID.WebbedStylist"/>, <see cref="NPCID.SleepingAngler"/>, <see cref="NPCID.StardustWormBody"/>, <see cref="NPCID.StardustWormTail"/>, <see cref="NPCID.StardustJellyfishSmall"/>, <see cref="NPCID.BartenderUnconscious"/>, <see cref="NPCID.GolferRescue"/>, <see cref="NPCID.TorchGod"/>
+	/// Used by: <see cref="BoundGoblin"/>, <see cref="BoundWizard"/>, <see cref="BoundMechanic"/>, <see cref="WebbedStylist"/>, <see cref="SleepingAngler"/>, <see cref="StardustWormBody"/>, <see cref="StardustWormTail"/>, <see cref="StardustJellyfishSmall"/>, <see cref="BartenderUnconscious"/>, <see cref="GolferRescue"/>, <see cref="TorchGod"/>
 	/// </summary>
 	public const short FaceClosestPlayer = 0;
 	/// <summary>
-	/// Used by: <see cref="NPCID.BigCrimslime"/>, <see cref="NPCID.LittleCrimslime"/>, <see cref="NPCID.JungleSlime"/>, <see cref="NPCID.YellowSlime"/>, <see cref="NPCID.RedSlime"/>, <see cref="NPCID.PurpleSlime"/>, <see cref="NPCID.BlackSlime"/>, <see cref="NPCID.BabySlime"/>, <see cref="NPCID.Pinky"/>, <see cref="NPCID.GreenSlime"/>, <see cref="NPCID.Slimer2"/>, <see cref="NPCID.Slimeling"/>, <see cref="NPCID.BlueSlime"/>, <see cref="NPCID.MotherSlime"/>, <see cref="NPCID.LavaSlime"/>, <see cref="NPCID.DungeonSlime"/>, <see cref="NPCID.CorruptSlime"/>, <see cref="NPCID.IlluminantSlime"/>, <see cref="NPCID.ToxicSludge"/>, <see cref="NPCID.IceSlime"/>, <see cref="NPCID.Crimslime"/>, <see cref="NPCID.SpikedIceSlime"/>, <see cref="NPCID.SpikedJungleSlime"/>, <see cref="NPCID.UmbrellaSlime"/>, <see cref="NPCID.RainbowSlime"/>, <see cref="NPCID.SlimeMasked"/>, <see cref="NPCID.HoppinJack"/>, <see cref="NPCID.SlimeRibbonWhite"/>, <see cref="NPCID.SlimeRibbonYellow"/>, <see cref="NPCID.SlimeRibbonGreen"/>, <see cref="NPCID.SlimeRibbonRed"/>, <see cref="NPCID.Grasshopper"/>, <see cref="NPCID.GoldGrasshopper"/>, <see cref="NPCID.SlimeSpiked"/>, <see cref="NPCID.SandSlime"/>, <see cref="NPCID.QueenSlimeMinionBlue"/>, <see cref="NPCID.QueenSlimeMinionPink"/>, <see cref="NPCID.GoldenSlime"/>, <see cref="NPCID.ShimmerSlime"/>, <see cref="NPCID.BoundTownSlimeOld"/>
+	/// Used by: <see cref="BigCrimslime"/>, <see cref="LittleCrimslime"/>, <see cref="JungleSlime"/>, <see cref="YellowSlime"/>, <see cref="RedSlime"/>, <see cref="PurpleSlime"/>, <see cref="BlackSlime"/>, <see cref="BabySlime"/>, <see cref="Pinky"/>, <see cref="GreenSlime"/>, <see cref="Slimer2"/>, <see cref="Slimeling"/>, <see cref="BlueSlime"/>, <see cref="MotherSlime"/>, <see cref="LavaSlime"/>, <see cref="DungeonSlime"/>, <see cref="CorruptSlime"/>, <see cref="IlluminantSlime"/>, <see cref="ToxicSludge"/>, <see cref="IceSlime"/>, <see cref="Crimslime"/>, <see cref="SpikedIceSlime"/>, <see cref="SpikedJungleSlime"/>, <see cref="UmbrellaSlime"/>, <see cref="RainbowSlime"/>, <see cref="SlimeMasked"/>, <see cref="HoppinJack"/>, <see cref="SlimeRibbonWhite"/>, <see cref="SlimeRibbonYellow"/>, <see cref="SlimeRibbonGreen"/>, <see cref="SlimeRibbonRed"/>, <see cref="Grasshopper"/>, <see cref="GoldGrasshopper"/>, <see cref="SlimeSpiked"/>, <see cref="SandSlime"/>, <see cref="QueenSlimeMinionBlue"/>, <see cref="QueenSlimeMinionPink"/>, <see cref="GoldenSlime"/>, <see cref="ShimmerSlime"/>, <see cref="BoundTownSlimeOld"/>
 	/// </summary>
 	public const short Slime = 1;
 	/// <summary>
-	/// Used by: <see cref="NPCID.DemonEye2"/>, <see cref="NPCID.PurpleEye2"/>, <see cref="NPCID.GreenEye2"/>, <see cref="NPCID.DialatedEye2"/>, <see cref="NPCID.SleepyEye2"/>, <see cref="NPCID.CataractEye2"/>, <see cref="NPCID.DemonEye"/>, <see cref="NPCID.TheHungryII"/>, <see cref="NPCID.WanderingEye"/>, <see cref="NPCID.PigronCorruption"/>, <see cref="NPCID.PigronHallow"/>, <see cref="NPCID.PigronCrimson"/>, <see cref="NPCID.CataractEye"/>, <see cref="NPCID.SleepyEye"/>, <see cref="NPCID.DialatedEye"/>, <see cref="NPCID.GreenEye"/>, <see cref="NPCID.PurpleEye"/>, <see cref="NPCID.DemonEyeOwl"/>, <see cref="NPCID.DemonEyeSpaceship"/>
+	/// Used by: <see cref="DemonEye2"/>, <see cref="PurpleEye2"/>, <see cref="GreenEye2"/>, <see cref="DialatedEye2"/>, <see cref="SleepyEye2"/>, <see cref="CataractEye2"/>, <see cref="NPCID.DemonEye"/>, <see cref="TheHungryII"/>, <see cref="WanderingEye"/>, <see cref="PigronCorruption"/>, <see cref="PigronHallow"/>, <see cref="PigronCrimson"/>, <see cref="CataractEye"/>, <see cref="SleepyEye"/>, <see cref="DialatedEye"/>, <see cref="GreenEye"/>, <see cref="PurpleEye"/>, <see cref="DemonEyeOwl"/>, <see cref="DemonEyeSpaceship"/>
 	/// </summary>
 	public const short DemonEye = 2;
 	/// <summary>
-	/// Used by: <see cref="NPCID.BigRainZombie"/>, <see cref="NPCID.SmallRainZombie"/>, <see cref="NPCID.BigPantlessSkeleton"/>, <see cref="NPCID.SmallPantlessSkeleton"/>, <see cref="NPCID.BigMisassembledSkeleton"/>, <see cref="NPCID.SmallMisassembledSkeleton"/>, <see cref="NPCID.BigHeadacheSkeleton"/>, <see cref="NPCID.SmallHeadacheSkeleton"/>, <see cref="NPCID.BigSkeleton"/>, <see cref="NPCID.SmallSkeleton"/>, <see cref="NPCID.BigFemaleZombie"/>, <see cref="NPCID.SmallFemaleZombie"/>, <see cref="NPCID.BigTwiggyZombie"/>, <see cref="NPCID.SmallTwiggyZombie"/>, <see cref="NPCID.BigSwampZombie"/>, <see cref="NPCID.SmallSwampZombie"/>, <see cref="NPCID.BigSlimedZombie"/>, <see cref="NPCID.SmallSlimedZombie"/>, <see cref="NPCID.BigPincushionZombie"/>, <see cref="NPCID.SmallPincushionZombie"/>, <see cref="NPCID.BigBaldZombie"/>, <see cref="NPCID.SmallBaldZombie"/>, <see cref="NPCID.BigZombie"/>, <see cref="NPCID.SmallZombie"/>, <see cref="NPCID.HeavySkeleton"/>, <see cref="NPCID.BigBoned"/>, <see cref="NPCID.ShortBones"/>, <see cref="NPCID.Zombie"/>, <see cref="NPCID.Skeleton"/>, <see cref="NPCID.GoblinPeon"/>, <see cref="NPCID.GoblinThief"/>, <see cref="NPCID.GoblinWarrior"/>, <see cref="NPCID.AngryBones"/>, <see cref="NPCID.UndeadMiner"/>, <see cref="NPCID.CorruptBunny"/>, <see cref="NPCID.DoctorBones"/>, <see cref="NPCID.TheGroom"/>, <see cref="NPCID.Crab"/>, <see cref="NPCID.GoblinScout"/>, <see cref="NPCID.ArmoredSkeleton"/>, <see cref="NPCID.Mummy"/>, <see cref="NPCID.DarkMummy"/>, <see cref="NPCID.LightMummy"/>, <see cref="NPCID.Werewolf"/>, <see cref="NPCID.Clown"/>, <see cref="NPCID.SkeletonArcher"/>, <see cref="NPCID.GoblinArcher"/>, <see cref="NPCID.ChaosElemental"/>, <see cref="NPCID.BaldZombie"/>, <see cref="NPCID.PossessedArmor"/>, <see cref="NPCID.Vampire"/>, <see cref="NPCID.ZombieEskimo"/>, <see cref="NPCID.Frankenstein"/>, <see cref="NPCID.BlackRecluse"/>, <see cref="NPCID.WallCreeper"/>, <see cref="NPCID.SwampThing"/>, <see cref="NPCID.UndeadViking"/>, <see cref="NPCID.CorruptPenguin"/>, <see cref="NPCID.FaceMonster"/>, <see cref="NPCID.SnowFlinx"/>, <see cref="NPCID.PincushionZombie"/>, <see cref="NPCID.SlimedZombie"/>, <see cref="NPCID.SwampZombie"/>, <see cref="NPCID.TwiggyZombie"/>, <see cref="NPCID.Nymph"/>, <see cref="NPCID.ArmoredViking"/>, <see cref="NPCID.Lihzahrd"/>, <see cref="NPCID.LihzahrdCrawler"/>, <see cref="NPCID.FemaleZombie"/>, <see cref="NPCID.HeadacheSkeleton"/>, <see cref="NPCID.MisassembledSkeleton"/>, <see cref="NPCID.PantlessSkeleton"/>, <see cref="NPCID.IcyMerman"/>, <see cref="NPCID.PirateDeckhand"/>, <see cref="NPCID.PirateCorsair"/>, <see cref="NPCID.PirateDeadeye"/>, <see cref="NPCID.PirateCrossbower"/>, <see cref="NPCID.PirateCaptain"/>, <see cref="NPCID.CochinealBeetle"/>, <see cref="NPCID.CyanBeetle"/>, <see cref="NPCID.LacBeetle"/>, <see cref="NPCID.SeaSnail"/>, <see cref="NPCID.ZombieRaincoat"/>, <see cref="NPCID.JungleCreeper"/>, <see cref="NPCID.BloodCrawler"/>, <see cref="NPCID.IceGolem"/>, <see cref="NPCID.Eyezor"/>, <see cref="NPCID.ZombieMushroom"/>, <see cref="NPCID.ZombieMushroomHat"/>, <see cref="NPCID.AnomuraFungus"/>, <see cref="NPCID.MushiLadybug"/>, <see cref="NPCID.RustyArmoredBonesAxe"/>, <see cref="NPCID.RustyArmoredBonesFlail"/>, <see cref="NPCID.RustyArmoredBonesSword"/>, <see cref="NPCID.RustyArmoredBonesSwordNoArmor"/>, <see cref="NPCID.BlueArmoredBones"/>, <see cref="NPCID.BlueArmoredBonesMace"/>, <see cref="NPCID.BlueArmoredBonesNoPants"/>, <see cref="NPCID.BlueArmoredBonesSword"/>, <see cref="NPCID.HellArmoredBones"/>, <see cref="NPCID.HellArmoredBonesSpikeShield"/>, <see cref="NPCID.HellArmoredBonesMace"/>, <see cref="NPCID.HellArmoredBonesSword"/>, <see cref="NPCID.BoneLee"/>, <see cref="NPCID.Paladin"/>, <see cref="NPCID.SkeletonSniper"/>, <see cref="NPCID.TacticalSkeleton"/>, <see cref="NPCID.SkeletonCommando"/>, <see cref="NPCID.AngryBonesBig"/>, <see cref="NPCID.AngryBonesBigMuscle"/>, <see cref="NPCID.AngryBonesBigHelmet"/>, <see cref="NPCID.Scarecrow1"/>, <see cref="NPCID.Scarecrow2"/>, <see cref="NPCID.Scarecrow3"/>, <see cref="NPCID.Scarecrow4"/>, <see cref="NPCID.Scarecrow5"/>, <see cref="NPCID.Scarecrow6"/>, <see cref="NPCID.Scarecrow7"/>, <see cref="NPCID.Scarecrow8"/>, <see cref="NPCID.Scarecrow9"/>, <see cref="NPCID.Scarecrow10"/>, <see cref="NPCID.ZombieDoctor"/>, <see cref="NPCID.ZombieSuperman"/>, <see cref="NPCID.ZombiePixie"/>, <see cref="NPCID.SkeletonTopHat"/>, <see cref="NPCID.SkeletonAstonaut"/>, <see cref="NPCID.SkeletonAlien"/>, <see cref="NPCID.Splinterling"/>, <see cref="NPCID.ZombieXmas"/>, <see cref="NPCID.ZombieSweater"/>, <see cref="NPCID.ZombieElf"/>, <see cref="NPCID.ZombieElfBeard"/>, <see cref="NPCID.ZombieElfGirl"/>, <see cref="NPCID.GingerbreadMan"/>, <see cref="NPCID.Yeti"/>, <see cref="NPCID.Nutcracker"/>, <see cref="NPCID.NutcrackerSpinning"/>, <see cref="NPCID.ElfArcher"/>, <see cref="NPCID.Krampus"/>, <see cref="NPCID.CultistArcherBlue"/>, <see cref="NPCID.CultistArcherWhite"/>, <see cref="NPCID.BrainScrambler"/>, <see cref="NPCID.RayGunner"/>, <see cref="NPCID.MartianOfficer"/>, <see cref="NPCID.GrayGrunt"/>, <see cref="NPCID.MartianEngineer"/>, <see cref="NPCID.GigaZapper"/>, <see cref="NPCID.Scutlix"/>, <see cref="NPCID.StardustSpiderBig"/>, <see cref="NPCID.StardustSoldier"/>, <see cref="NPCID.SolarDrakomire"/>, <see cref="NPCID.SolarSolenian"/>, <see cref="NPCID.NebulaSoldier"/>, <see cref="NPCID.VortexRifleman"/>, <see cref="NPCID.VortexHornetQueen"/>, <see cref="NPCID.VortexHornet"/>, <see cref="NPCID.VortexLarva"/>, <see cref="NPCID.VortexSoldier"/>, <see cref="NPCID.ArmedZombie"/>, <see cref="NPCID.ArmedZombieEskimo"/>, <see cref="NPCID.ArmedZombiePincussion"/>, <see cref="NPCID.ArmedZombieSlimed"/>, <see cref="NPCID.ArmedZombieSwamp"/>, <see cref="NPCID.ArmedZombieTwiggy"/>, <see cref="NPCID.ArmedZombieCenx"/>, <see cref="NPCID.BoneThrowingSkeleton"/>, <see cref="NPCID.BoneThrowingSkeleton2"/>, <see cref="NPCID.BoneThrowingSkeleton3"/>, <see cref="NPCID.BoneThrowingSkeleton4"/>, <see cref="NPCID.Butcher"/>, <see cref="NPCID.CreatureFromTheDeep"/>, <see cref="NPCID.Fritz"/>, <see cref="NPCID.Nailhead"/>, <see cref="NPCID.CrimsonBunny"/>, <see cref="NPCID.Psycho"/>, <see cref="NPCID.DrManFly"/>, <see cref="NPCID.ThePossessed"/>, <see cref="NPCID.CrimsonPenguin"/>, <see cref="NPCID.GoblinSummoner"/>, <see cref="NPCID.Medusa"/>, <see cref="NPCID.GreekSkeleton"/>, <see cref="NPCID.GraniteGolem"/>, <see cref="NPCID.BloodZombie"/>, <see cref="NPCID.Crawdad"/>, <see cref="NPCID.Crawdad2"/>, <see cref="NPCID.Salamander"/>, <see cref="NPCID.Salamander2"/>, <see cref="NPCID.Salamander3"/>, <see cref="NPCID.Salamander4"/>, <see cref="NPCID.Salamander5"/>, <see cref="NPCID.Salamander6"/>, <see cref="NPCID.Salamander7"/>, <see cref="NPCID.Salamander8"/>, <see cref="NPCID.Salamander9"/>, <see cref="NPCID.GiantWalkingAntlion"/>, <see cref="NPCID.SolarSpearman"/>, <see cref="NPCID.MartianWalker"/>, <see cref="NPCID.DesertGhoul"/>, <see cref="NPCID.DesertGhoulCorruption"/>, <see cref="NPCID.DesertGhoulCrimson"/>, <see cref="NPCID.DesertGhoulHallow"/>, <see cref="NPCID.DesertLamiaLight"/>, <see cref="NPCID.DesertLamiaDark"/>, <see cref="NPCID.DesertScorpionWalk"/>, <see cref="NPCID.DesertBeast"/>, <see cref="NPCID.DemonTaxCollector"/>, <see cref="NPCID.TheBride"/>, <see cref="NPCID.WalkingAntlion"/>, <see cref="NPCID.LarvaeAntlion"/>, <see cref="NPCID.ZombieMerman"/>, <see cref="NPCID.TorchZombie"/>, <see cref="NPCID.ArmedTorchZombie"/>, <see cref="NPCID.Gnome"/>, <see cref="NPCID.BloodMummy"/>, <see cref="NPCID.RockGolem"/>, <see cref="NPCID.MaggotZombie"/>, <see cref="NPCID.SporeSkeleton"/>
+	/// Used by: <see cref="BigRainZombie"/>, <see cref="SmallRainZombie"/>, <see cref="BigPantlessSkeleton"/>, <see cref="SmallPantlessSkeleton"/>, <see cref="BigMisassembledSkeleton"/>, <see cref="SmallMisassembledSkeleton"/>, <see cref="BigHeadacheSkeleton"/>, <see cref="SmallHeadacheSkeleton"/>, <see cref="BigSkeleton"/>, <see cref="SmallSkeleton"/>, <see cref="BigFemaleZombie"/>, <see cref="SmallFemaleZombie"/>, <see cref="BigTwiggyZombie"/>, <see cref="SmallTwiggyZombie"/>, <see cref="BigSwampZombie"/>, <see cref="SmallSwampZombie"/>, <see cref="BigSlimedZombie"/>, <see cref="SmallSlimedZombie"/>, <see cref="BigPincushionZombie"/>, <see cref="SmallPincushionZombie"/>, <see cref="BigBaldZombie"/>, <see cref="SmallBaldZombie"/>, <see cref="BigZombie"/>, <see cref="SmallZombie"/>, <see cref="HeavySkeleton"/>, <see cref="BigBoned"/>, <see cref="ShortBones"/>, <see cref="Zombie"/>, <see cref="Skeleton"/>, <see cref="GoblinPeon"/>, <see cref="GoblinThief"/>, <see cref="GoblinWarrior"/>, <see cref="AngryBones"/>, <see cref="UndeadMiner"/>, <see cref="CorruptBunny"/>, <see cref="DoctorBones"/>, <see cref="TheGroom"/>, <see cref="Crab"/>, <see cref="GoblinScout"/>, <see cref="ArmoredSkeleton"/>, <see cref="Mummy"/>, <see cref="DarkMummy"/>, <see cref="LightMummy"/>, <see cref="Werewolf"/>, <see cref="Clown"/>, <see cref="SkeletonArcher"/>, <see cref="GoblinArcher"/>, <see cref="ChaosElemental"/>, <see cref="BaldZombie"/>, <see cref="PossessedArmor"/>, <see cref="Vampire"/>, <see cref="ZombieEskimo"/>, <see cref="Frankenstein"/>, <see cref="BlackRecluse"/>, <see cref="WallCreeper"/>, <see cref="SwampThing"/>, <see cref="UndeadViking"/>, <see cref="CorruptPenguin"/>, <see cref="FaceMonster"/>, <see cref="SnowFlinx"/>, <see cref="PincushionZombie"/>, <see cref="SlimedZombie"/>, <see cref="SwampZombie"/>, <see cref="TwiggyZombie"/>, <see cref="Nymph"/>, <see cref="ArmoredViking"/>, <see cref="Lihzahrd"/>, <see cref="LihzahrdCrawler"/>, <see cref="FemaleZombie"/>, <see cref="HeadacheSkeleton"/>, <see cref="MisassembledSkeleton"/>, <see cref="PantlessSkeleton"/>, <see cref="IcyMerman"/>, <see cref="PirateDeckhand"/>, <see cref="PirateCorsair"/>, <see cref="PirateDeadeye"/>, <see cref="PirateCrossbower"/>, <see cref="PirateCaptain"/>, <see cref="CochinealBeetle"/>, <see cref="CyanBeetle"/>, <see cref="LacBeetle"/>, <see cref="SeaSnail"/>, <see cref="ZombieRaincoat"/>, <see cref="JungleCreeper"/>, <see cref="BloodCrawler"/>, <see cref="IceGolem"/>, <see cref="Eyezor"/>, <see cref="ZombieMushroom"/>, <see cref="ZombieMushroomHat"/>, <see cref="AnomuraFungus"/>, <see cref="MushiLadybug"/>, <see cref="RustyArmoredBonesAxe"/>, <see cref="RustyArmoredBonesFlail"/>, <see cref="RustyArmoredBonesSword"/>, <see cref="RustyArmoredBonesSwordNoArmor"/>, <see cref="BlueArmoredBones"/>, <see cref="BlueArmoredBonesMace"/>, <see cref="BlueArmoredBonesNoPants"/>, <see cref="BlueArmoredBonesSword"/>, <see cref="HellArmoredBones"/>, <see cref="HellArmoredBonesSpikeShield"/>, <see cref="HellArmoredBonesMace"/>, <see cref="HellArmoredBonesSword"/>, <see cref="BoneLee"/>, <see cref="Paladin"/>, <see cref="SkeletonSniper"/>, <see cref="TacticalSkeleton"/>, <see cref="SkeletonCommando"/>, <see cref="AngryBonesBig"/>, <see cref="AngryBonesBigMuscle"/>, <see cref="AngryBonesBigHelmet"/>, <see cref="Scarecrow1"/>, <see cref="Scarecrow2"/>, <see cref="Scarecrow3"/>, <see cref="Scarecrow4"/>, <see cref="Scarecrow5"/>, <see cref="Scarecrow6"/>, <see cref="Scarecrow7"/>, <see cref="Scarecrow8"/>, <see cref="Scarecrow9"/>, <see cref="Scarecrow10"/>, <see cref="ZombieDoctor"/>, <see cref="ZombieSuperman"/>, <see cref="ZombiePixie"/>, <see cref="SkeletonTopHat"/>, <see cref="SkeletonAstonaut"/>, <see cref="SkeletonAlien"/>, <see cref="Splinterling"/>, <see cref="ZombieXmas"/>, <see cref="ZombieSweater"/>, <see cref="ZombieElf"/>, <see cref="ZombieElfBeard"/>, <see cref="ZombieElfGirl"/>, <see cref="GingerbreadMan"/>, <see cref="Yeti"/>, <see cref="Nutcracker"/>, <see cref="NutcrackerSpinning"/>, <see cref="ElfArcher"/>, <see cref="Krampus"/>, <see cref="CultistArcherBlue"/>, <see cref="CultistArcherWhite"/>, <see cref="BrainScrambler"/>, <see cref="RayGunner"/>, <see cref="MartianOfficer"/>, <see cref="GrayGrunt"/>, <see cref="MartianEngineer"/>, <see cref="GigaZapper"/>, <see cref="Scutlix"/>, <see cref="StardustSpiderBig"/>, <see cref="StardustSoldier"/>, <see cref="SolarDrakomire"/>, <see cref="SolarSolenian"/>, <see cref="NebulaSoldier"/>, <see cref="VortexRifleman"/>, <see cref="VortexHornetQueen"/>, <see cref="VortexHornet"/>, <see cref="VortexLarva"/>, <see cref="VortexSoldier"/>, <see cref="ArmedZombie"/>, <see cref="ArmedZombieEskimo"/>, <see cref="ArmedZombiePincussion"/>, <see cref="ArmedZombieSlimed"/>, <see cref="ArmedZombieSwamp"/>, <see cref="ArmedZombieTwiggy"/>, <see cref="ArmedZombieCenx"/>, <see cref="BoneThrowingSkeleton"/>, <see cref="BoneThrowingSkeleton2"/>, <see cref="BoneThrowingSkeleton3"/>, <see cref="BoneThrowingSkeleton4"/>, <see cref="Butcher"/>, <see cref="CreatureFromTheDeep"/>, <see cref="Fritz"/>, <see cref="Nailhead"/>, <see cref="CrimsonBunny"/>, <see cref="Psycho"/>, <see cref="DrManFly"/>, <see cref="ThePossessed"/>, <see cref="CrimsonPenguin"/>, <see cref="GoblinSummoner"/>, <see cref="Medusa"/>, <see cref="GreekSkeleton"/>, <see cref="GraniteGolem"/>, <see cref="BloodZombie"/>, <see cref="Crawdad"/>, <see cref="Crawdad2"/>, <see cref="Salamander"/>, <see cref="Salamander2"/>, <see cref="Salamander3"/>, <see cref="Salamander4"/>, <see cref="Salamander5"/>, <see cref="Salamander6"/>, <see cref="Salamander7"/>, <see cref="Salamander8"/>, <see cref="Salamander9"/>, <see cref="GiantWalkingAntlion"/>, <see cref="SolarSpearman"/>, <see cref="MartianWalker"/>, <see cref="DesertGhoul"/>, <see cref="DesertGhoulCorruption"/>, <see cref="DesertGhoulCrimson"/>, <see cref="DesertGhoulHallow"/>, <see cref="DesertLamiaLight"/>, <see cref="DesertLamiaDark"/>, <see cref="DesertScorpionWalk"/>, <see cref="DesertBeast"/>, <see cref="DemonTaxCollector"/>, <see cref="TheBride"/>, <see cref="WalkingAntlion"/>, <see cref="LarvaeAntlion"/>, <see cref="ZombieMerman"/>, <see cref="TorchZombie"/>, <see cref="ArmedTorchZombie"/>, <see cref="Gnome"/>, <see cref="BloodMummy"/>, <see cref="RockGolem"/>, <see cref="MaggotZombie"/>, <see cref="SporeSkeleton"/>, <see cref="MossZombie"/>
 	/// </summary>
 	public const short Fighter = 3;
 	/// <summary>
-	/// Used by: <see cref="NPCID.EyeofCthulhu"/>
+	/// Used by: <see cref="EyeofCthulhu"/>
 	/// </summary>
 	public const short EyeOfCthulhu = 4;
 	/// <summary>
 	/// Behavior: Includes things such as Eaters of Souls<br/><br/>
-	/// Used by: <see cref="NPCID.BigHornetStingy"/>, <see cref="NPCID.LittleHornetStingy"/>, <see cref="NPCID.BigHornetSpikey"/>, <see cref="NPCID.LittleHornetSpikey"/>, <see cref="NPCID.BigHornetLeafy"/>, <see cref="NPCID.LittleHornetLeafy"/>, <see cref="NPCID.BigHornetHoney"/>, <see cref="NPCID.LittleHornetHoney"/>, <see cref="NPCID.BigHornetFatty"/>, <see cref="NPCID.LittleHornetFatty"/>, <see cref="NPCID.BigCrimera"/>, <see cref="NPCID.LittleCrimera"/>, <see cref="NPCID.GiantMossHornet"/>, <see cref="NPCID.BigMossHornet"/>, <see cref="NPCID.LittleMossHornet"/>, <see cref="NPCID.TinyMossHornet"/>, <see cref="NPCID.BigStinger"/>, <see cref="NPCID.LittleStinger"/>, <see cref="NPCID.BigEater"/>, <see cref="NPCID.LittleEater"/>, <see cref="NPCID.ServantofCthulhu"/>, <see cref="NPCID.EaterofSouls"/>, <see cref="NPCID.MeteorHead"/>, <see cref="NPCID.Hornet"/>, <see cref="NPCID.Corruptor"/>, <see cref="NPCID.Probe"/>, <see cref="NPCID.Crimera"/>, <see cref="NPCID.MossHornet"/>, <see cref="NPCID.Moth"/>, <see cref="NPCID.Bee"/>, <see cref="NPCID.BeeSmall"/>, <see cref="NPCID.HornetFatty"/>, <see cref="NPCID.HornetHoney"/>, <see cref="NPCID.HornetLeafy"/>, <see cref="NPCID.HornetSpikey"/>, <see cref="NPCID.HornetStingy"/>, <see cref="NPCID.Parrot"/>, <see cref="NPCID.BloodSquid"/>
+	/// Used by: <see cref="BigHornetStingy"/>, <see cref="LittleHornetStingy"/>, <see cref="BigHornetSpikey"/>, <see cref="LittleHornetSpikey"/>, <see cref="BigHornetLeafy"/>, <see cref="LittleHornetLeafy"/>, <see cref="BigHornetHoney"/>, <see cref="LittleHornetHoney"/>, <see cref="BigHornetFatty"/>, <see cref="LittleHornetFatty"/>, <see cref="BigCrimera"/>, <see cref="LittleCrimera"/>, <see cref="GiantMossHornet"/>, <see cref="BigMossHornet"/>, <see cref="LittleMossHornet"/>, <see cref="TinyMossHornet"/>, <see cref="BigStinger"/>, <see cref="LittleStinger"/>, <see cref="BigEater"/>, <see cref="LittleEater"/>, <see cref="ServantofCthulhu"/>, <see cref="EaterofSouls"/>, <see cref="MeteorHead"/>, <see cref="Hornet"/>, <see cref="Corruptor"/>, <see cref="Probe"/>, <see cref="Crimera"/>, <see cref="MossHornet"/>, <see cref="Moth"/>, <see cref="Bee"/>, <see cref="BeeSmall"/>, <see cref="HornetFatty"/>, <see cref="HornetHoney"/>, <see cref="HornetLeafy"/>, <see cref="HornetSpikey"/>, <see cref="HornetStingy"/>, <see cref="Parrot"/>, <see cref="BloodSquid"/>
 	/// </summary>
 	public const short Flying = 5;
 	/// <summary>
-	/// Used by: <see cref="NPCID.DevourerHead"/>, <see cref="NPCID.DevourerBody"/>, <see cref="NPCID.DevourerTail"/>, <see cref="NPCID.GiantWormHead"/>, <see cref="NPCID.GiantWormBody"/>, <see cref="NPCID.GiantWormTail"/>, <see cref="NPCID.EaterofWorldsHead"/>, <see cref="NPCID.EaterofWorldsBody"/>, <see cref="NPCID.EaterofWorldsTail"/>, <see cref="NPCID.BoneSerpentHead"/>, <see cref="NPCID.BoneSerpentBody"/>, <see cref="NPCID.BoneSerpentTail"/>, <see cref="NPCID.WyvernHead"/>, <see cref="NPCID.WyvernLegs"/>, <see cref="NPCID.WyvernBody"/>, <see cref="NPCID.WyvernBody2"/>, <see cref="NPCID.WyvernBody3"/>, <see cref="NPCID.WyvernTail"/>, <see cref="NPCID.DiggerHead"/>, <see cref="NPCID.DiggerBody"/>, <see cref="NPCID.DiggerTail"/>, <see cref="NPCID.SeekerHead"/>, <see cref="NPCID.SeekerBody"/>, <see cref="NPCID.SeekerTail"/>, <see cref="NPCID.LeechHead"/>, <see cref="NPCID.LeechBody"/>, <see cref="NPCID.LeechTail"/>, <see cref="NPCID.TruffleWormDigger"/>, <see cref="NPCID.StardustWormHead"/>, <see cref="NPCID.SolarCrawltipedeHead"/>, <see cref="NPCID.SolarCrawltipedeBody"/>, <see cref="NPCID.SolarCrawltipedeTail"/>, <see cref="NPCID.CultistDragonHead"/>, <see cref="NPCID.CultistDragonBody1"/>, <see cref="NPCID.CultistDragonBody2"/>, <see cref="NPCID.CultistDragonBody3"/>, <see cref="NPCID.CultistDragonBody4"/>, <see cref="NPCID.CultistDragonTail"/>, <see cref="NPCID.DuneSplicerHead"/>, <see cref="NPCID.DuneSplicerBody"/>, <see cref="NPCID.DuneSplicerTail"/>, <see cref="NPCID.TombCrawlerHead"/>, <see cref="NPCID.TombCrawlerBody"/>, <see cref="NPCID.TombCrawlerTail"/>, <see cref="NPCID.BloodEelHead"/>, <see cref="NPCID.BloodEelBody"/>, <see cref="NPCID.BloodEelTail"/>
+	/// Used by: <see cref="DevourerHead"/>, <see cref="DevourerBody"/>, <see cref="DevourerTail"/>, <see cref="GiantWormHead"/>, <see cref="GiantWormBody"/>, <see cref="GiantWormTail"/>, <see cref="EaterofWorldsHead"/>, <see cref="EaterofWorldsBody"/>, <see cref="EaterofWorldsTail"/>, <see cref="BoneSerpentHead"/>, <see cref="BoneSerpentBody"/>, <see cref="BoneSerpentTail"/>, <see cref="WyvernHead"/>, <see cref="WyvernLegs"/>, <see cref="WyvernBody"/>, <see cref="WyvernBody2"/>, <see cref="WyvernBody3"/>, <see cref="WyvernTail"/>, <see cref="DiggerHead"/>, <see cref="DiggerBody"/>, <see cref="DiggerTail"/>, <see cref="SeekerHead"/>, <see cref="SeekerBody"/>, <see cref="SeekerTail"/>, <see cref="LeechHead"/>, <see cref="LeechBody"/>, <see cref="LeechTail"/>, <see cref="TruffleWormDigger"/>, <see cref="StardustWormHead"/>, <see cref="SolarCrawltipedeHead"/>, <see cref="SolarCrawltipedeBody"/>, <see cref="SolarCrawltipedeTail"/>, <see cref="CultistDragonHead"/>, <see cref="CultistDragonBody1"/>, <see cref="CultistDragonBody2"/>, <see cref="CultistDragonBody3"/>, <see cref="CultistDragonBody4"/>, <see cref="CultistDragonTail"/>, <see cref="DuneSplicerHead"/>, <see cref="DuneSplicerBody"/>, <see cref="DuneSplicerTail"/>, <see cref="TombCrawlerHead"/>, <see cref="TombCrawlerBody"/>, <see cref="TombCrawlerTail"/>, <see cref="BloodEelHead"/>, <see cref="BloodEelBody"/>, <see cref="BloodEelTail"/>
 	/// </summary>
 	public const short Worm = 6;
 	/// <summary>
 	/// Behavior: Includes Town NPCs and some ambient creatures, only Town NPCs will have defense with this AI, due to type-based hardcode<br/><br/>
-	/// Used by: <see cref="NPCID.Merchant"/>, <see cref="NPCID.Nurse"/>, <see cref="NPCID.ArmsDealer"/>, <see cref="NPCID.Dryad"/>, <see cref="NPCID.Guide"/>, <see cref="NPCID.OldMan"/>, <see cref="NPCID.Demolitionist"/>, <see cref="NPCID.Bunny"/>, <see cref="NPCID.Clothier"/>, <see cref="NPCID.GoblinTinkerer"/>, <see cref="NPCID.Wizard"/>, <see cref="NPCID.Mechanic"/>, <see cref="NPCID.SantaClaus"/>, <see cref="NPCID.Penguin"/>, <see cref="NPCID.PenguinBlack"/>, <see cref="NPCID.Truffle"/>, <see cref="NPCID.Steampunker"/>, <see cref="NPCID.DyeTrader"/>, <see cref="NPCID.PartyGirl"/>, <see cref="NPCID.Cyborg"/>, <see cref="NPCID.Painter"/>, <see cref="NPCID.WitchDoctor"/>, <see cref="NPCID.Pirate"/>, <see cref="NPCID.GoldfishWalker"/>, <see cref="NPCID.Squirrel"/>, <see cref="NPCID.Mouse"/>, <see cref="NPCID.BunnySlimed"/>, <see cref="NPCID.BunnyXmas"/>, <see cref="NPCID.Stylist"/>, <see cref="NPCID.Frog"/>, <see cref="NPCID.Duck"/>, <see cref="NPCID.DuckWhite"/>, <see cref="NPCID.ScorpionBlack"/>, <see cref="NPCID.Scorpion"/>, <see cref="NPCID.TravellingMerchant"/>, <see cref="NPCID.Angler"/>, <see cref="NPCID.TaxCollector"/>, <see cref="NPCID.GoldBunny"/>, <see cref="NPCID.GoldFrog"/>, <see cref="NPCID.GoldMouse"/>, <see cref="NPCID.SkeletonMerchant"/>, <see cref="NPCID.SquirrelRed"/>, <see cref="NPCID.SquirrelGold"/>, <see cref="NPCID.PartyBunny"/>, <see cref="NPCID.DD2Bartender"/>, <see cref="NPCID.Golfer"/>, <see cref="NPCID.GoldGoldfishWalker"/>, <see cref="NPCID.Seagull"/>, <see cref="NPCID.Grebe"/>, <see cref="NPCID.Rat"/>, <see cref="NPCID.ExplosiveBunny"/>, <see cref="NPCID.Turtle"/>, <see cref="NPCID.TurtleJungle"/>, <see cref="NPCID.SeaTurtle"/>, <see cref="NPCID.BestiaryGirl"/>, <see cref="NPCID.TownCat"/>, <see cref="NPCID.TownDog"/>, <see cref="NPCID.GemSquirrelAmethyst"/>, <see cref="NPCID.GemSquirrelTopaz"/>, <see cref="NPCID.GemSquirrelSapphire"/>, <see cref="NPCID.GemSquirrelEmerald"/>, <see cref="NPCID.GemSquirrelRuby"/>, <see cref="NPCID.GemSquirrelDiamond"/>, <see cref="NPCID.GemSquirrelAmber"/>, <see cref="NPCID.GemBunnyAmethyst"/>, <see cref="NPCID.GemBunnyTopaz"/>, <see cref="NPCID.GemBunnySapphire"/>, <see cref="NPCID.GemBunnyEmerald"/>, <see cref="NPCID.GemBunnyRuby"/>, <see cref="NPCID.GemBunnyDiamond"/>, <see cref="NPCID.GemBunnyAmber"/>, <see cref="NPCID.TownBunny"/>, <see cref="NPCID.Princess"/>, <see cref="NPCID.TownSlimeBlue"/>, <see cref="NPCID.TownSlimeGreen"/>, <see cref="NPCID.TownSlimeOld"/>, <see cref="NPCID.TownSlimePurple"/>, <see cref="NPCID.TownSlimeRainbow"/>, <see cref="NPCID.TownSlimeRed"/>, <see cref="NPCID.TownSlimeYellow"/>, <see cref="NPCID.TownSlimeCopper"/>, <see cref="NPCID.BoundTownSlimeYellow"/>
+	/// Used by: <see cref="Merchant"/>, <see cref="Nurse"/>, <see cref="ArmsDealer"/>, <see cref="Dryad"/>, <see cref="Guide"/>, <see cref="OldMan"/>, <see cref="Demolitionist"/>, <see cref="Bunny"/>, <see cref="Clothier"/>, <see cref="GoblinTinkerer"/>, <see cref="Wizard"/>, <see cref="Mechanic"/>, <see cref="SantaClaus"/>, <see cref="Penguin"/>, <see cref="PenguinBlack"/>, <see cref="Truffle"/>, <see cref="Steampunker"/>, <see cref="DyeTrader"/>, <see cref="PartyGirl"/>, <see cref="Cyborg"/>, <see cref="Painter"/>, <see cref="WitchDoctor"/>, <see cref="Pirate"/>, <see cref="GoldfishWalker"/>, <see cref="Squirrel"/>, <see cref="Mouse"/>, <see cref="BunnySlimed"/>, <see cref="BunnyXmas"/>, <see cref="Stylist"/>, <see cref="Frog"/>, <see cref="NPCID.Duck"/>, <see cref="DuckWhite"/>, <see cref="ScorpionBlack"/>, <see cref="Scorpion"/>, <see cref="TravellingMerchant"/>, <see cref="Angler"/>, <see cref="TaxCollector"/>, <see cref="GoldBunny"/>, <see cref="GoldFrog"/>, <see cref="GoldMouse"/>, <see cref="SkeletonMerchant"/>, <see cref="SquirrelRed"/>, <see cref="SquirrelGold"/>, <see cref="PartyBunny"/>, <see cref="DD2Bartender"/>, <see cref="Golfer"/>, <see cref="GoldGoldfishWalker"/>, <see cref="Seagull"/>, <see cref="Grebe"/>, <see cref="Rat"/>, <see cref="ExplosiveBunny"/>, <see cref="Turtle"/>, <see cref="TurtleJungle"/>, <see cref="SeaTurtle"/>, <see cref="BestiaryGirl"/>, <see cref="TownCat"/>, <see cref="TownDog"/>, <see cref="GemSquirrelAmethyst"/>, <see cref="GemSquirrelTopaz"/>, <see cref="GemSquirrelSapphire"/>, <see cref="GemSquirrelEmerald"/>, <see cref="GemSquirrelRuby"/>, <see cref="GemSquirrelDiamond"/>, <see cref="GemSquirrelAmber"/>, <see cref="GemBunnyAmethyst"/>, <see cref="GemBunnyTopaz"/>, <see cref="GemBunnySapphire"/>, <see cref="GemBunnyEmerald"/>, <see cref="GemBunnyRuby"/>, <see cref="GemBunnyDiamond"/>, <see cref="GemBunnyAmber"/>, <see cref="TownBunny"/>, <see cref="Princess"/>, <see cref="TownSlimeBlue"/>, <see cref="TownSlimeGreen"/>, <see cref="TownSlimeOld"/>, <see cref="TownSlimePurple"/>, <see cref="TownSlimeRainbow"/>, <see cref="TownSlimeRed"/>, <see cref="TownSlimeYellow"/>, <see cref="TownSlimeCopper"/>, <see cref="BoundTownSlimeYellow"/>
 	/// </summary>
 	public const short Passive = 7;
 	/// <summary>
-	/// Used by: <see cref="NPCID.FireImp"/>, <see cref="NPCID.GoblinSorcerer"/>, <see cref="NPCID.DarkCaster"/>, <see cref="NPCID.Tim"/>, <see cref="NPCID.RuneWizard"/>, <see cref="NPCID.RaggedCaster"/>, <see cref="NPCID.RaggedCasterOpenCoat"/>, <see cref="NPCID.Necromancer"/>, <see cref="NPCID.NecromancerArmored"/>, <see cref="NPCID.DiabolistRed"/>, <see cref="NPCID.DiabolistWhite"/>, <see cref="NPCID.DesertDjinn"/>
+	/// Used by: <see cref="FireImp"/>, <see cref="GoblinSorcerer"/>, <see cref="DarkCaster"/>, <see cref="Tim"/>, <see cref="RuneWizard"/>, <see cref="RaggedCaster"/>, <see cref="RaggedCasterOpenCoat"/>, <see cref="Necromancer"/>, <see cref="NecromancerArmored"/>, <see cref="DiabolistRed"/>, <see cref="DiabolistWhite"/>, <see cref="DesertDjinn"/>, <see cref="LibrarianSkeleton"/>
 	/// </summary>
 	public const short Caster = 8;
 	/// <summary>
-	/// Used by: <see cref="NPCID.BurningSphere"/>, <see cref="NPCID.ChaosBall"/>, <see cref="NPCID.WaterSphere"/>, <see cref="NPCID.VileSpit"/>, <see cref="NPCID.SolarFlare"/>, <see cref="NPCID.ChaosBallTim"/>, <see cref="NPCID.VileSpitEaterOfWorlds"/>
+	/// Used by: <see cref="BurningSphere"/>, <see cref="ChaosBall"/>, <see cref="WaterSphere"/>, <see cref="VileSpit"/>, <see cref="SolarFlare"/>, <see cref="ChaosBallTim"/>, <see cref="VileSpitEaterOfWorlds"/>
 	/// </summary>
 	public const short Spell = 9;
 	/// <summary>
-	/// Used by: <see cref="NPCID.CursedSkull"/>, <see cref="NPCID.GiantCursedSkull"/>
+	/// Used by: <see cref="NPCID.CursedSkull"/>, <see cref="GiantCursedSkull"/>, <see cref="WaterBoltMimic"/>
 	/// </summary>
 	public const short CursedSkull = 10;
 	/// <summary>
-	/// Used by: <see cref="NPCID.SkeletronHead"/>, <see cref="NPCID.DungeonGuardian"/>
+	/// Used by: <see cref="NPCID.SkeletronHead"/>, <see cref="DungeonGuardian"/>
 	/// </summary>
 	public const short SkeletronHead = 11;
 	/// <summary>
@@ -60,11 +61,11 @@ public class NPCAIStyleID
 	/// </summary>
 	public const short SkeletronHand = 12;
 	/// <summary>
-	/// Used by: <see cref="NPCID.ManEater"/>, <see cref="NPCID.Snatcher"/>, <see cref="NPCID.Clinger"/>, <see cref="NPCID.AngryTrapper"/>, <see cref="NPCID.FungiBulb"/>, <see cref="NPCID.GiantFungiBulb"/>
+	/// Used by: <see cref="NPCID.ManEater"/>, <see cref="Snatcher"/>, <see cref="Clinger"/>, <see cref="AngryTrapper"/>, <see cref="FungiBulb"/>, <see cref="GiantFungiBulb"/>
 	/// </summary>
 	public const short ManEater = 13;
 	/// <summary>
-	/// Used by: <see cref="NPCID.Harpy"/>, <see cref="NPCID.CaveBat"/>, <see cref="NPCID.JungleBat"/>, <see cref="NPCID.Hellbat"/>, <see cref="NPCID.Demon"/>, <see cref="NPCID.VoodooDemon"/>, <see cref="NPCID.GiantBat"/>, <see cref="NPCID.Slimer"/>, <see cref="NPCID.IlluminantBat"/>, <see cref="NPCID.IceBat"/>, <see cref="NPCID.Lavabat"/>, <see cref="NPCID.GiantFlyingFox"/>, <see cref="NPCID.RedDevil"/>, <see cref="NPCID.VampireBat"/>, <see cref="NPCID.FlyingSnake"/>, <see cref="NPCID.SporeBat"/>, <see cref="NPCID.QueenSlimeMinionPurple"/>
+	/// Used by: <see cref="Harpy"/>, <see cref="CaveBat"/>, <see cref="JungleBat"/>, <see cref="Hellbat"/>, <see cref="Demon"/>, <see cref="VoodooDemon"/>, <see cref="GiantBat"/>, <see cref="Slimer"/>, <see cref="IlluminantBat"/>, <see cref="IceBat"/>, <see cref="Lavabat"/>, <see cref="GiantFlyingFox"/>, <see cref="RedDevil"/>, <see cref="VampireBat"/>, <see cref="FlyingSnake"/>, <see cref="SporeBat"/>, <see cref="QueenSlimeMinionPurple"/>
 	/// </summary>
 	public const short Bat = 14;
 	/// <summary>
@@ -72,15 +73,15 @@ public class NPCAIStyleID
 	/// </summary>
 	public const short KingSlime = 15;
 	/// <summary>
-	/// Used by: <see cref="NPCID.Goldfish"/>, <see cref="NPCID.CorruptGoldfish"/>, <see cref="NPCID.Piranha"/>, <see cref="NPCID.Shark"/>, <see cref="NPCID.AnglerFish"/>, <see cref="NPCID.Arapaima"/>, <see cref="NPCID.BloodFeeder"/>, <see cref="NPCID.CrimsonGoldfish"/>, <see cref="NPCID.GoldGoldfish"/>, <see cref="NPCID.Pupfish"/>, <see cref="NPCID.Dolphin"/>
+	/// Used by: <see cref="Goldfish"/>, <see cref="CorruptGoldfish"/>, <see cref="NPCID.Piranha"/>, <see cref="Shark"/>, <see cref="AnglerFish"/>, <see cref="Arapaima"/>, <see cref="BloodFeeder"/>, <see cref="CrimsonGoldfish"/>, <see cref="GoldGoldfish"/>, <see cref="Pupfish"/>, <see cref="Dolphin"/>, <see cref="Pufferfish"/>, <see cref="Orca"/>
 	/// </summary>
 	public const short Piranha = 16;
 	/// <summary>
-	/// Used by: <see cref="NPCID.Vulture"/>, <see cref="NPCID.Raven"/>
+	/// Used by: <see cref="NPCID.Vulture"/>, <see cref="Raven"/>
 	/// </summary>
 	public const short Vulture = 17;
 	/// <summary>
-	/// Used by: <see cref="NPCID.BlueJellyfish"/>, <see cref="NPCID.PinkJellyfish"/>, <see cref="NPCID.GreenJellyfish"/>, <see cref="NPCID.Squid"/>, <see cref="NPCID.BloodJelly"/>, <see cref="NPCID.FungoFish"/>
+	/// Used by: <see cref="BlueJellyfish"/>, <see cref="PinkJellyfish"/>, <see cref="GreenJellyfish"/>, <see cref="Squid"/>, <see cref="BloodJelly"/>, <see cref="FungoFish"/>
 	/// </summary>
 	public const short Jellyfish = 18;
 	/// <summary>
@@ -98,32 +99,32 @@ public class NPCAIStyleID
 	public const short BlazingWheel = 21;
 	/// <summary>
 	/// Behavior: Includes enemies such as Wraiths or Ghosts<br/><br/>
-	/// Used by: <see cref="NPCID.Pixie"/>, <see cref="NPCID.Wraith"/>, <see cref="NPCID.Gastropod"/>, <see cref="NPCID.IceElemental"/>, <see cref="NPCID.FloatyGross"/>, <see cref="NPCID.Reaper"/>, <see cref="NPCID.IchorSticker"/>, <see cref="NPCID.Ghost"/>, <see cref="NPCID.Poltergeist"/>, <see cref="NPCID.Drippler"/>
+	/// Used by: <see cref="Pixie"/>, <see cref="Wraith"/>, <see cref="Gastropod"/>, <see cref="IceElemental"/>, <see cref="FloatyGross"/>, <see cref="Reaper"/>, <see cref="IchorSticker"/>, <see cref="Ghost"/>, <see cref="Poltergeist"/>, <see cref="Drippler"/>
 	/// </summary>
 	public const short HoveringFighter = 22;
 	/// <summary>
 	/// Behavior: Includes Shadow Hammer and Crimson Axe<br/><br/>
-	/// Used by: <see cref="NPCID.CursedHammer"/>, <see cref="NPCID.EnchantedSword"/>, <see cref="NPCID.CrimsonAxe"/>
+	/// Used by: <see cref="CursedHammer"/>, <see cref="NPCID.EnchantedSword"/>, <see cref="CrimsonAxe"/>
 	/// </summary>
 	public const short EnchantedSword = 23;
 	/// <summary>
-	/// Used by: <see cref="NPCID.Bird"/>, <see cref="NPCID.BirdBlue"/>, <see cref="NPCID.BirdRed"/>, <see cref="NPCID.GoldBird"/>, <see cref="NPCID.Owl"/>, <see cref="NPCID.ScarletMacaw"/>, <see cref="NPCID.BlueMacaw"/>, <see cref="NPCID.Toucan"/>, <see cref="NPCID.YellowCockatiel"/>, <see cref="NPCID.GrayCockatiel"/>
+	/// Used by: <see cref="NPCID.Bird"/>, <see cref="BirdBlue"/>, <see cref="BirdRed"/>, <see cref="GoldBird"/>, <see cref="Owl"/>, <see cref="ScarletMacaw"/>, <see cref="BlueMacaw"/>, <see cref="Toucan"/>, <see cref="YellowCockatiel"/>, <see cref="GrayCockatiel"/>, <see cref="OwlMimic"/>
 	/// </summary>
 	public const short Bird = 24;
 	/// <summary>
-	/// Used by: <see cref="NPCID.Mimic"/>, <see cref="NPCID.PresentMimic"/>, <see cref="NPCID.IceMimic"/>
+	/// Used by: <see cref="NPCID.Mimic"/>, <see cref="PresentMimic"/>, <see cref="IceMimic"/>
 	/// </summary>
 	public const short Mimic = 25;
 	/// <summary>
-	/// Used by: <see cref="NPCID.Unicorn"/>, <see cref="NPCID.Wolf"/>, <see cref="NPCID.HeadlessHorseman"/>, <see cref="NPCID.Hellhound"/>, <see cref="NPCID.StardustSpiderSmall"/>, <see cref="NPCID.NebulaBeast"/>, <see cref="NPCID.Tumbleweed"/>
+	/// Used by: <see cref="NPCID.Unicorn"/>, <see cref="Wolf"/>, <see cref="HeadlessHorseman"/>, <see cref="Hellhound"/>, <see cref="StardustSpiderSmall"/>, <see cref="NebulaBeast"/>, <see cref="Tumbleweed"/>
 	/// </summary>
 	public const short Unicorn = 26;
 	/// <summary>
-	/// Used by: <see cref="NPCID.WallofFlesh"/>
+	/// Used by: <see cref="WallofFlesh"/>
 	/// </summary>
 	public const short WallOfFleshMouth = 27;
 	/// <summary>
-	/// Used by: <see cref="NPCID.WallofFleshEye"/>
+	/// Used by: <see cref="WallofFleshEye"/>
 	/// </summary>
 	public const short WallOfFleshEye = 28;
 	/// <summary>
@@ -135,11 +136,11 @@ public class NPCAIStyleID
 	/// </summary>
 	public const short Retinazer = 30;
 	/// <summary>
-	/// Used by: <see cref="NPCID.Spazmatism"/>
+	/// Used by: <see cref="Spazmatism"/>
 	/// </summary>
 	public const short Spaazmatism = 31;
 	/// <summary>
-	/// Used by: <see cref="NPCID.SkeletronPrime"/>
+	/// Used by: <see cref="SkeletronPrime"/>
 	/// </summary>
 	public const short SkeletronPrimeHead = 32;
 	/// <summary>
@@ -159,25 +160,25 @@ public class NPCAIStyleID
 	/// </summary>
 	public const short PrimeLaser = 36;
 	/// <summary>
-	/// Used by: <see cref="NPCID.TheDestroyer"/>, <see cref="NPCID.TheDestroyerBody"/>, <see cref="NPCID.TheDestroyerTail"/>
+	/// Used by: <see cref="NPCID.TheDestroyer"/>, <see cref="TheDestroyerBody"/>, <see cref="TheDestroyerTail"/>
 	/// </summary>
 	public const short TheDestroyer = 37;
 	/// <summary>
-	/// Used by: <see cref="NPCID.SnowmanGangsta"/>, <see cref="NPCID.MisterStabby"/>, <see cref="NPCID.SnowBalla"/>
+	/// Used by: <see cref="SnowmanGangsta"/>, <see cref="MisterStabby"/>, <see cref="SnowBalla"/>
 	/// </summary>
 	public const short Snowman = 38;
 	/// <summary>
 	/// Behavior: Also includes Srollers and Giant Shellies<br/><br/>
-	/// Used by: <see cref="NPCID.GiantTortoise"/>, <see cref="NPCID.IceTortoise"/>, <see cref="NPCID.SolarSroller"/>, <see cref="NPCID.GiantShelly"/>, <see cref="NPCID.GiantShelly2"/>
+	/// Used by: <see cref="NPCID.GiantTortoise"/>, <see cref="IceTortoise"/>, <see cref="SolarSroller"/>, <see cref="GiantShelly"/>, <see cref="GiantShelly2"/>
 	/// </summary>
 	public const short GiantTortoise = 39;
 	/// <summary>
 	/// Behavior: Used for the wall climbing variants of spiders, the ground variant is<br/><br/>
-	/// Used by: <see cref="NPCID.WallCreeperWall"/>, <see cref="NPCID.JungleCreeperWall"/>, <see cref="NPCID.BlackRecluseWall"/>, <see cref="NPCID.BloodCrawlerWall"/>, <see cref="NPCID.DesertScorpionWall"/>
+	/// Used by: <see cref="WallCreeperWall"/>, <see cref="JungleCreeperWall"/>, <see cref="BlackRecluseWall"/>, <see cref="BloodCrawlerWall"/>, <see cref="DesertScorpionWall"/>
 	/// </summary>
 	public const short Spider = 40;
 	/// <summary>
-	/// Used by: <see cref="NPCID.Herpling"/>, <see cref="NPCID.Derpling"/>, <see cref="NPCID.ChatteringTeethBomb"/>
+	/// Used by: <see cref="NPCID.Herpling"/>, <see cref="Derpling"/>, <see cref="ChatteringTeethBomb"/>
 	/// </summary>
 	public const short Herpling = 41;
 	/// <summary>
@@ -191,11 +192,11 @@ public class NPCAIStyleID
 	public const short QueenBee = 43;
 	/// <summary>
 	/// Behavior: Also used for Antlion Swarmers<br/><br/>
-	/// Used by: <see cref="NPCID.FlyingFish"/>, <see cref="NPCID.GiantFlyingAntlion"/>, <see cref="NPCID.FlyingAntlion"/>, <see cref="NPCID.EyeballFlyingFish"/>
+	/// Used by: <see cref="NPCID.FlyingFish"/>, <see cref="GiantFlyingAntlion"/>, <see cref="FlyingAntlion"/>, <see cref="EyeballFlyingFish"/>
 	/// </summary>
 	public const short FlyingFish = 44;
 	/// <summary>
-	/// Used by: <see cref="NPCID.Golem"/>
+	/// Used by: <see cref="Golem"/>
 	/// </summary>
 	public const short GolemBody = 45;
 	/// <summary>
@@ -204,11 +205,11 @@ public class NPCAIStyleID
 	/// </summary>
 	public const short GolemHead = 46;
 	/// <summary>
-	/// Used by: <see cref="NPCID.GolemFistLeft"/>, <see cref="NPCID.GolemFistRight"/>
+	/// Used by: <see cref="GolemFistLeft"/>, <see cref="GolemFistRight"/>
 	/// </summary>
 	public const short GolemFist = 47;
 	/// <summary>
-	/// Used by: <see cref="NPCID.GolemHeadFree"/>
+	/// Used by: <see cref="GolemHeadFree"/>
 	/// </summary>
 	public const short FreeGolemHead = 48;
 	/// <summary>
@@ -216,7 +217,7 @@ public class NPCAIStyleID
 	/// </summary>
 	public const short AngryNimbus = 49;
 	/// <summary>
-	/// Used by: <see cref="NPCID.FungiSpore"/>, <see cref="NPCID.Spore"/>
+	/// Used by: <see cref="FungiSpore"/>, <see cref="NPCID.Spore"/>
 	/// </summary>
 	public const short Spore = 50;
 	/// <summary>
@@ -224,15 +225,15 @@ public class NPCAIStyleID
 	/// </summary>
 	public const short Plantera = 51;
 	/// <summary>
-	/// Used by: <see cref="NPCID.PlanterasHook"/>
+	/// Used by: <see cref="PlanterasHook"/>
 	/// </summary>
 	public const short PlanteraHook = 52;
 	/// <summary>
-	/// Used by: <see cref="NPCID.PlanterasTentacle"/>
+	/// Used by: <see cref="PlanterasTentacle"/>
 	/// </summary>
 	public const short PlanteraTentacle = 53;
 	/// <summary>
-	/// Used by: <see cref="NPCID.BrainofCthulhu"/>
+	/// Used by: <see cref="BrainofCthulhu"/>
 	/// </summary>
 	public const short BrainOfCthulhu = 54;
 	/// <summary>
@@ -246,7 +247,7 @@ public class NPCAIStyleID
 	public const short DungeonSpirit = 56;
 	/// <summary>
 	/// Behavior: Includes Everscream<br/><br/>
-	/// Used by: <see cref="NPCID.MourningWood"/>, <see cref="NPCID.Everscream"/>
+	/// Used by: <see cref="NPCID.MourningWood"/>, <see cref="Everscream"/>
 	/// </summary>
 	public const short MourningWood = 57;
 	/// <summary>
@@ -254,7 +255,7 @@ public class NPCAIStyleID
 	/// </summary>
 	public const short Pumpking = 58;
 	/// <summary>
-	/// Used by: <see cref="NPCID.PumpkingBlade"/>
+	/// Used by: <see cref="PumpkingBlade"/>
 	/// </summary>
 	public const short PumpkingScythe = 59;
 	/// <summary>
@@ -274,23 +275,23 @@ public class NPCAIStyleID
 	/// </summary>
 	public const short Flocko = 63;
 	/// <summary>
-	/// Used by: <see cref="NPCID.Firefly"/>, <see cref="NPCID.LightningBug"/>, <see cref="NPCID.Lavafly"/>, <see cref="NPCID.Shimmerfly"/>
+	/// Used by: <see cref="NPCID.Firefly"/>, <see cref="LightningBug"/>, <see cref="Lavafly"/>, <see cref="Shimmerfly"/>
 	/// </summary>
 	public const short Firefly = 64;
 	/// <summary>
-	/// Used by: <see cref="NPCID.Butterfly"/>, <see cref="NPCID.GoldButterfly"/>, <see cref="NPCID.HellButterfly"/>, <see cref="NPCID.EmpressButterfly"/>
+	/// Used by: <see cref="NPCID.Butterfly"/>, <see cref="GoldButterfly"/>, <see cref="HellButterfly"/>, <see cref="EmpressButterfly"/>
 	/// </summary>
 	public const short Butterfly = 65;
 	/// <summary>
-	/// Used by: <see cref="NPCID.Worm"/>, <see cref="NPCID.TruffleWorm"/>, <see cref="NPCID.GoldWorm"/>, <see cref="NPCID.EnchantedNightcrawler"/>, <see cref="NPCID.Grubby"/>, <see cref="NPCID.Sluggy"/>, <see cref="NPCID.Buggy"/>, <see cref="NPCID.Maggot"/>
+	/// Used by: <see cref="NPCID.Worm"/>, <see cref="TruffleWorm"/>, <see cref="GoldWorm"/>, <see cref="EnchantedNightcrawler"/>, <see cref="Grubby"/>, <see cref="Sluggy"/>, <see cref="Buggy"/>, <see cref="Maggot"/>
 	/// </summary>
 	public const short CritterWorm = 66;
 	/// <summary>
-	/// Used by: <see cref="NPCID.Snail"/>, <see cref="NPCID.GlowingSnail"/>, <see cref="NPCID.MagmaSnail"/>
+	/// Used by: <see cref="NPCID.Snail"/>, <see cref="GlowingSnail"/>, <see cref="MagmaSnail"/>
 	/// </summary>
 	public const short Snail = 67;
 	/// <summary>
-	/// Used by: <see cref="NPCID.Duck2"/>, <see cref="NPCID.DuckWhite2"/>, <see cref="NPCID.Seagull2"/>, <see cref="NPCID.Grebe2"/>
+	/// Used by: <see cref="Duck2"/>, <see cref="DuckWhite2"/>, <see cref="Seagull2"/>, <see cref="Grebe2"/>
 	/// </summary>
 	public const short Duck = 68;
 	/// <summary>
@@ -298,32 +299,32 @@ public class NPCAIStyleID
 	/// </summary>
 	public const short DukeFishron = 69;
 	/// <summary>
-	/// Used by: <see cref="NPCID.DetonatingBubble"/>
+	/// Used by: <see cref="DetonatingBubble"/>
 	/// </summary>
 	public const short DukeFishronBubble = 70;
 	/// <summary>
-	/// Used by: <see cref="NPCID.Sharkron"/>, <see cref="NPCID.Sharkron2"/>
+	/// Used by: <see cref="NPCID.Sharkron"/>, <see cref="Sharkron2"/>
 	/// </summary>
 	public const short Sharkron = 71;
 	/// <summary>
-	/// Used by: <see cref="NPCID.ForceBubble"/>
+	/// Used by: <see cref="ForceBubble"/>
 	/// </summary>
 	public const short BubbleShield = 72;
 	/// <summary>
-	/// Used by: <see cref="NPCID.MartianTurret"/>
+	/// Used by: <see cref="MartianTurret"/>
 	/// </summary>
 	public const short TeslaTurret = 73;
 	/// <summary>
-	/// Used by: <see cref="NPCID.MartianDrone"/>, <see cref="NPCID.SolarCorite"/>
+	/// Used by: <see cref="MartianDrone"/>, <see cref="SolarCorite"/>
 	/// </summary>
 	public const short Corite = 74;
 	/// <summary>
 	/// Behavior: Includes Drakomire Rider, Dutchman Cannon, Martian Saucer,Martian Saucer Cannon, Martian Saucer Turret, and Scutlix Gunner<br/><br/>
-	/// Used by: <see cref="NPCID.ScutlixRider"/>, <see cref="NPCID.MartianSaucer"/>, <see cref="NPCID.MartianSaucerTurret"/>, <see cref="NPCID.MartianSaucerCannon"/>, <see cref="NPCID.SolarDrakomireRider"/>, <see cref="NPCID.PirateShipCannon"/>
+	/// Used by: <see cref="ScutlixRider"/>, <see cref="NPCID.MartianSaucer"/>, <see cref="MartianSaucerTurret"/>, <see cref="MartianSaucerCannon"/>, <see cref="SolarDrakomireRider"/>, <see cref="PirateShipCannon"/>
 	/// </summary>
 	public const short Rider = 75;
 	/// <summary>
-	/// Used by: <see cref="NPCID.MartianSaucerCore"/>
+	/// Used by: <see cref="MartianSaucerCore"/>
 	/// </summary>
 	public const short MartianSaucer = 76;
 	/// <summary>
@@ -343,32 +344,32 @@ public class NPCAIStyleID
 	/// </summary>
 	public const short MartianProbe = 80;
 	/// <summary>
-	/// Used by: <see cref="NPCID.MoonLordFreeEye"/>
+	/// Used by: <see cref="MoonLordFreeEye"/>
 	/// </summary>
 	public const short TrueEyeOfCthulhu = 81;
 	/// <summary>
-	/// Used by: <see cref="NPCID.MoonLordLeechBlob"/>
+	/// Used by: <see cref="MoonLordLeechBlob"/>
 	/// </summary>
 	public const short MoonLeachClot = 82;
 	/// <summary>
-	/// Used by: <see cref="NPCID.CultistTablet"/>, <see cref="NPCID.CultistDevote"/>
+	/// Used by: <see cref="CultistTablet"/>, <see cref="CultistDevote"/>
 	/// </summary>
 	public const short LunaticDevote = 83;
 	/// <summary>
-	/// Used by: <see cref="NPCID.CultistBoss"/>, <see cref="NPCID.CultistBossClone"/>
+	/// Used by: <see cref="CultistBoss"/>, <see cref="CultistBossClone"/>
 	/// </summary>
 	public const short LunaticCultist = 84;
 	/// <summary>
 	/// Behavior: Includes Brain Sucklers and Deadly Spheres<br/><br/>
-	/// Used by: <see cref="NPCID.StardustCellBig"/>, <see cref="NPCID.NebulaHeadcrab"/>, <see cref="NPCID.DeadlySphere"/>
+	/// Used by: <see cref="StardustCellBig"/>, <see cref="NebulaHeadcrab"/>, <see cref="DeadlySphere"/>
 	/// </summary>
 	public const short StarCell = 85;
 	/// <summary>
-	/// Used by: <see cref="NPCID.ShadowFlameApparition"/>, <see cref="NPCID.AncientCultistSquidhead"/>
+	/// Used by: <see cref="ShadowFlameApparition"/>, <see cref="AncientCultistSquidhead"/>
 	/// </summary>
 	public const short AncientVision = 86;
 	/// <summary>
-	/// Used by: <see cref="NPCID.BigMimicCorruption"/>, <see cref="NPCID.BigMimicCrimson"/>, <see cref="NPCID.BigMimicHallow"/>, <see cref="NPCID.BigMimicJungle"/>
+	/// Used by: <see cref="BigMimicCorruption"/>, <see cref="BigMimicCrimson"/>, <see cref="BigMimicHallow"/>, <see cref="BigMimicJungle"/>
 	/// </summary>
 	public const short BiomeMimic = 87;
 	/// <summary>
@@ -380,11 +381,11 @@ public class NPCAIStyleID
 	/// </summary>
 	public const short MothronEgg = 89;
 	/// <summary>
-	/// Used by: <see cref="NPCID.MothronSpawn"/>
+	/// Used by: <see cref="MothronSpawn"/>
 	/// </summary>
 	public const short BabyMothron = 90;
 	/// <summary>
-	/// Used by: <see cref="NPCID.GraniteFlyer"/>
+	/// Used by: <see cref="GraniteFlyer"/>
 	/// </summary>
 	public const short GraniteElemental = 91;
 	/// <summary>
@@ -392,23 +393,23 @@ public class NPCAIStyleID
 	/// </summary>
 	public const short TargetDummy = 92;
 	/// <summary>
-	/// Used by: <see cref="NPCID.PirateShip"/>
+	/// Used by: <see cref="PirateShip"/>
 	/// </summary>
 	public const short FlyingDutchman = 93;
 	/// <summary>
-	/// Used by: <see cref="NPCID.LunarTowerVortex"/>, <see cref="NPCID.LunarTowerStardust"/>, <see cref="NPCID.LunarTowerNebula"/>, <see cref="NPCID.LunarTowerSolar"/>
+	/// Used by: <see cref="LunarTowerVortex"/>, <see cref="LunarTowerStardust"/>, <see cref="LunarTowerNebula"/>, <see cref="LunarTowerSolar"/>
 	/// </summary>
 	public const short CelestialPillar = 94;
 	/// <summary>
-	/// Used by: <see cref="NPCID.StardustCellSmall"/>
+	/// Used by: <see cref="StardustCellSmall"/>
 	/// </summary>
 	public const short SmallStarCell = 95;
 	/// <summary>
-	/// Used by: <see cref="NPCID.StardustJellyfishBig"/>
+	/// Used by: <see cref="StardustJellyfishBig"/>
 	/// </summary>
 	public const short FlowInvader = 96;
 	/// <summary>
-	/// Used by: <see cref="NPCID.NebulaBrain"/>
+	/// Used by: <see cref="NebulaBrain"/>
 	/// </summary>
 	public const short NebulaFloater = 97;
 	/// <summary>
@@ -418,7 +419,7 @@ public class NPCAIStyleID
 	public const short Unused0 = 98;
 	/// <summary>
 	/// Behavior: The fireball-like "projectiles" shot by the solar pillar<br/><br/>
-	/// Used by: <see cref="NPCID.SolarGoop"/>
+	/// Used by: <see cref="SolarGoop"/>
 	/// </summary>
 	public const short SolarFragment = 99;
 	/// <summary>
@@ -434,12 +435,12 @@ public class NPCAIStyleID
 	/// </summary>
 	public const short SandElemental = 102;
 	/// <summary>
-	/// Used by: <see cref="NPCID.SandShark"/>, <see cref="NPCID.SandsharkCorrupt"/>, <see cref="NPCID.SandsharkCrimson"/>, <see cref="NPCID.SandsharkHallow"/>
+	/// Used by: <see cref="NPCID.SandShark"/>, <see cref="SandsharkCorrupt"/>, <see cref="SandsharkCrimson"/>, <see cref="SandsharkHallow"/>
 	/// </summary>
 	public const short SandShark = 103;
 	/// <summary>
 	/// Behavior: Instantly despawns<br/><br/>
-	/// Used by: <see cref="NPCID.DD2AttackerTest"/>
+	/// Used by: <see cref="DD2AttackerTest"/>
 	/// </summary>
 	public const short Unknown1 = 104;
 	/// <summary>
@@ -447,21 +448,21 @@ public class NPCAIStyleID
 	/// </summary>
 	public const short DD2EterniaCrystal = 105;
 	/// <summary>
-	/// Used by: <see cref="NPCID.DD2LanePortal"/>
+	/// Used by: <see cref="DD2LanePortal"/>
 	/// </summary>
 	public const short DD2MysteriousPortal = 106;
 	/// <summary>
 	/// Behavior: Used for things such as Etherian Goblins<br/><br/>
-	/// Used by: <see cref="NPCID.DD2GoblinT1"/>, <see cref="NPCID.DD2GoblinT2"/>, <see cref="NPCID.DD2GoblinT3"/>, <see cref="NPCID.DD2GoblinBomberT1"/>, <see cref="NPCID.DD2GoblinBomberT2"/>, <see cref="NPCID.DD2GoblinBomberT3"/>, <see cref="NPCID.DD2JavelinstT1"/>, <see cref="NPCID.DD2JavelinstT2"/>, <see cref="NPCID.DD2JavelinstT3"/>, <see cref="NPCID.DD2SkeletonT1"/>, <see cref="NPCID.DD2SkeletonT3"/>, <see cref="NPCID.DD2WitherBeastT2"/>, <see cref="NPCID.DD2WitherBeastT3"/>, <see cref="NPCID.DD2DrakinT2"/>, <see cref="NPCID.DD2DrakinT3"/>, <see cref="NPCID.DD2KoboldWalkerT2"/>, <see cref="NPCID.DD2KoboldWalkerT3"/>, <see cref="NPCID.DD2OgreT2"/>, <see cref="NPCID.DD2OgreT3"/>, <see cref="NPCID.GoblinShark"/>
+	/// Used by: <see cref="DD2GoblinT1"/>, <see cref="DD2GoblinT2"/>, <see cref="DD2GoblinT3"/>, <see cref="DD2GoblinBomberT1"/>, <see cref="DD2GoblinBomberT2"/>, <see cref="DD2GoblinBomberT3"/>, <see cref="DD2JavelinstT1"/>, <see cref="DD2JavelinstT2"/>, <see cref="DD2JavelinstT3"/>, <see cref="DD2SkeletonT1"/>, <see cref="DD2SkeletonT3"/>, <see cref="DD2WitherBeastT2"/>, <see cref="DD2WitherBeastT3"/>, <see cref="DD2DrakinT2"/>, <see cref="DD2DrakinT3"/>, <see cref="DD2KoboldWalkerT2"/>, <see cref="DD2KoboldWalkerT3"/>, <see cref="DD2OgreT2"/>, <see cref="DD2OgreT3"/>, <see cref="GoblinShark"/>
 	/// </summary>
 	public const short DD2Fighter = 107;
 	/// <summary>
 	/// Behavior: Used for things such as Etherian Wyverns<br/><br/>
-	/// Used by: <see cref="NPCID.DD2WyvernT1"/>, <see cref="NPCID.DD2WyvernT2"/>, <see cref="NPCID.DD2WyvernT3"/>, <see cref="NPCID.DD2KoboldFlyerT2"/>, <see cref="NPCID.DD2KoboldFlyerT3"/>
+	/// Used by: <see cref="DD2WyvernT1"/>, <see cref="DD2WyvernT2"/>, <see cref="DD2WyvernT3"/>, <see cref="DD2KoboldFlyerT2"/>, <see cref="DD2KoboldFlyerT3"/>
 	/// </summary>
 	public const short DD2Flying = 108;
 	/// <summary>
-	/// Used by: <see cref="NPCID.DD2DarkMageT1"/>, <see cref="NPCID.DD2DarkMageT3"/>
+	/// Used by: <see cref="DD2DarkMageT1"/>, <see cref="DD2DarkMageT3"/>
 	/// </summary>
 	public const short DD2DarkMage = 109;
 	/// <summary>
@@ -469,51 +470,51 @@ public class NPCAIStyleID
 	/// </summary>
 	public const short DD2Betsy = 110;
 	/// <summary>
-	/// Used by: <see cref="NPCID.DD2LightningBugT3"/>
+	/// Used by: <see cref="DD2LightningBugT3"/>
 	/// </summary>
 	public const short DD2LightningBug = 111;
 	/// <summary>
-	/// Used by: <see cref="NPCID.FairyCritterPink"/>, <see cref="NPCID.FairyCritterGreen"/>, <see cref="NPCID.FairyCritterBlue"/>
+	/// Used by: <see cref="FairyCritterPink"/>, <see cref="FairyCritterGreen"/>, <see cref="FairyCritterBlue"/>
 	/// </summary>
 	public const short Fairy = 112;
 	/// <summary>
-	/// Used by: <see cref="NPCID.WindyBalloon"/>
+	/// Used by: <see cref="WindyBalloon"/>
 	/// </summary>
 	public const short Balloon = 113;
 	/// <summary>
-	/// Used by: <see cref="NPCID.BlackDragonfly"/>, <see cref="NPCID.BlueDragonfly"/>, <see cref="NPCID.GreenDragonfly"/>, <see cref="NPCID.OrangeDragonfly"/>, <see cref="NPCID.RedDragonfly"/>, <see cref="NPCID.YellowDragonfly"/>, <see cref="NPCID.GoldDragonfly"/>
+	/// Used by: <see cref="BlackDragonfly"/>, <see cref="BlueDragonfly"/>, <see cref="GreenDragonfly"/>, <see cref="OrangeDragonfly"/>, <see cref="RedDragonfly"/>, <see cref="YellowDragonfly"/>, <see cref="GoldDragonfly"/>
 	/// </summary>
 	public const short Dragonfly = 114;
 	/// <summary>
-	/// Used by: <see cref="NPCID.LadyBug"/>, <see cref="NPCID.GoldLadyBug"/>, <see cref="NPCID.Stinkbug"/>
+	/// Used by: <see cref="LadyBug"/>, <see cref="GoldLadyBug"/>, <see cref="Stinkbug"/>
 	/// </summary>
 	public const short Ladybug = 115;
 	/// <summary>
-	/// Used by: <see cref="NPCID.WaterStrider"/>, <see cref="NPCID.GoldWaterStrider"/>
+	/// Used by: <see cref="NPCID.WaterStrider"/>, <see cref="GoldWaterStrider"/>
 	/// </summary>
 	public const short WaterStrider = 116;
 	/// <summary>
-	/// Used by: <see cref="NPCID.BloodNautilus"/>
+	/// Used by: <see cref="BloodNautilus"/>
 	/// </summary>
 	public const short Dreadnautilus = 117;
 	/// <summary>
-	/// Used by: <see cref="NPCID.Seahorse"/>, <see cref="NPCID.GoldSeahorse"/>
+	/// Used by: <see cref="NPCID.Seahorse"/>, <see cref="GoldSeahorse"/>
 	/// </summary>
 	public const short Seahorse = 118;
 	/// <summary>
-	/// Used by: <see cref="NPCID.Dandelion"/>
+	/// Used by: <see cref="Dandelion"/>
 	/// </summary>
 	public const short AngryDandelion = 119;
 	/// <summary>
-	/// Used by: <see cref="NPCID.HallowBoss"/>
+	/// Used by: <see cref="HallowBoss"/>
 	/// </summary>
 	public const short EmpressOfLight = 120;
 	/// <summary>
-	/// Used by: <see cref="NPCID.QueenSlimeBoss"/>
+	/// Used by: <see cref="QueenSlimeBoss"/>
 	/// </summary>
 	public const short QueenSlime = 121;
 	/// <summary>
-	/// Used by: <see cref="NPCID.PirateGhost"/>
+	/// Used by: <see cref="PirateGhost"/>
 	/// </summary>
 	public const short PiratesCurse = 122;
 }

@@ -8,6 +8,7 @@ using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using ReLogic.OS;
 using Terraria.GameContent.Liquid;
@@ -41,6 +42,8 @@ public static class ModLoader
 	public static bool WarnedFamilyShareDontShowAgain;
 	public static Version LastPreviewFreezeNotificationSeen;
 	public static int LatestNewsTimestamp;
+	public static bool SeenNewUpdatedModsInfo;
+	public static bool ResolvedAbnormalModInstallStates;
 
 	// Update this name if doing an upgrade
 	public static bool BetaUpgradeWelcomed144;
@@ -167,19 +170,23 @@ public static class ModLoader
 				responsibleMods.Add(stackMod);
 
 			var msg = Language.GetTextValue("tModLoader.LoadError", string.Join(", ", responsibleMods));
+			var logOnlySuffix = string.Empty;
 			if (responsibleMods.Count == 1) {
 				var mod = availableMods.FirstOrDefault(m => m.Name == responsibleMods[0]); //use First rather than Single, incase of "Two mods with the same name" error message from ModOrganizer (#639)
 				if (mod != null)
 					msg += $" v{mod.Version}";
+					
 				if (mod != null && mod.tModLoaderVersion.MajorMinorBuild() != BuildInfo.tMLVersion.MajorMinorBuild())
-					msg += "\n" + Language.GetTextValue("tModLoader.LoadErrorVersionMessage", mod.tModLoaderVersion, versionedName);
+					// This note is not very important, and thus will only be shown in logs, so as to not confuse players.
+					logOnlySuffix += "\n" + Language.GetTextValue("tModLoader.LoadErrorVersionMessage", mod.tModLoaderVersion, versionedName);
 				else if (mod != null)
 					// if the mod exists, and the MajorMinorBuild() is identical, then assume it is an error in the Steam install/deployment - Solxan
 					SteamedWraps.QueueForceValidateSteamInstall();
 
 				if (e is Exceptions.JITException)
-					msg += "\n" + $"The mod will need to be updated to match the current tModLoader version, or may be incompatible with the version of some of your other mods. Click the '{Language.GetTextValue("tModLoader.OpenWebHelp")}' button to learn more.";
+					msg += "\n" + Language.GetTextValue("tModLoader.LoadErrorLikelyOutdated");
 			}
+
 			if (responsibleMods.Count > 0)
 				msg += "\n" + Language.GetTextValue("tModLoader.LoadErrorDisabled");
 			else
@@ -192,22 +199,12 @@ public static class ModLoader
 				msg += "\n" + Language.GetTextValue("tModLoader.LoadErrorContentType", contentType.FullName);
 
 			foreach (var mod in responsibleMods) {
-				DisableModAndDependents(mod);
-			}
-			void DisableModAndDependents(string mod)
-			{
-				DisableMod(mod);
-
-				var dependents = availableMods
-					.Where(m => IsEnabled(m.Name) && m.properties.RefNames(includeWeak: false).Any(refName => refName.Equals(mod)))
-					.Select(m => m.Name);
-
-				foreach (var dependent in dependents) {
-					DisableModAndDependents(dependent);
+				foreach(string modAndDependent in CollectEnabledDependents(availableMods, mod)) {
+					ModLoader.DisableMod(modAndDependent);
 				}
 			}
 
-			Logging.tML.Error(msg, e);
+			Logging.tML.Error(msg + logOnlySuffix, e);
 
 			isLoading = false; // disable loading flag, because server will just instantly retry reload
 			DisplayLoadError(msg, e, e.Data.Contains("fatal"), responsibleMods.Count == 0);
@@ -220,6 +217,26 @@ public static class ModLoader
 			//TODO: FUTURE
 			//GOGModUpdateChecker.CheckModUpdates();
 		}
+	}
+
+	internal static void CollectEnabledDependents(LocalMod[] modFiles, string name, ISet<string> result) // Note: Recursive
+	{
+		if (!result.Add(name)) return;
+		var dependents = modFiles
+			.Where(m => ModLoader.IsEnabled(m.Name) &&
+					m.properties.RefNames(includeWeak: false).Any(refName => refName.Equals(name)))
+			.Select(m => m.Name);
+
+		foreach (var dependent in dependents) {
+			CollectEnabledDependents(modFiles, dependent, result);
+		}
+	}
+
+	internal static HashSet<string> CollectEnabledDependents(LocalMod[] modFiles, string name) // Note: Recursive
+	{
+		var set = new HashSet<string>();
+		CollectEnabledDependents(modFiles, name, set);
+		return set;
 	}
 
 	internal static void Reload()
@@ -417,6 +434,38 @@ public static class ModLoader
 			Interface.modsMenu.sortMode = modsMenuSortMode;
 
 		Main.Configuration.Get("LiquidSlopeFix", ref LiquidEdgeRenderer.Enabled);
+	}
+
+	internal static Asset<Texture2D> GetModIcon(TmodFile modFile, out string error, string fileName = "icon.png", int iconSize = 80)
+	{
+		error = null;
+
+		if (modFile.HasFile(fileName)) {
+			try {
+				using (modFile.Open())
+				using (var s = modFile.GetStream(fileName)) {
+					var iconTexture = Main.Assets.CreateUntracked<Texture2D>(s, fileName);
+
+					if (iconTexture.Width() == iconSize && iconTexture.Height() == iconSize) {
+						return iconTexture;
+					}
+
+					error = $"{fileName} is not {iconSize}x{iconSize}";
+					return null;
+				}
+			}
+			catch (Exception e) {
+				Logging.tML.Error("Unknown error", e);
+			}
+		}
+
+		error = $"{fileName} does not exist";
+		return null;
+	}
+
+	internal static Asset<Texture2D> GetModIcon(TmodFile modFile, string fileName = "icon.png", int iconSize = 80)
+	{
+		return GetModIcon(modFile, out string _, fileName, iconSize);
 	}
 
 	internal static void MigrateSettings()

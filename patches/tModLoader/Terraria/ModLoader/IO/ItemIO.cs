@@ -106,6 +106,12 @@ public static class ItemIO
 			}
 		}
 
+		// The item may have turned to air if it is deprecated in one way or another.
+		// Short-circuit in order to avoid throwing errors down the line.
+		if (item.IsAir) {
+			return;
+		}
+
 		LoadModdedPrefix(item, tag);
 
 		item.stack = tag.Get<int?>("stack") ?? 1;
