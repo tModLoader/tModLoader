@@ -592,8 +592,8 @@ public partial class WorkshopHelper
 				string displayname = pDetails.m_rgchTitle;
 				bool banned = pDetails.m_bBanned;
 
-                var upvotes = pDetails.m_unVotesUp;
-                var downvotes = pDetails.m_unVotesDown;
+				var upvotes = pDetails.m_unVotesUp;
+				var downvotes = pDetails.m_unVotesDown;
 
 				// Item Tagged data / Player metadata
 				SteamedWraps.FetchMetadata(_primaryUGCHandle, i, out var metadata);

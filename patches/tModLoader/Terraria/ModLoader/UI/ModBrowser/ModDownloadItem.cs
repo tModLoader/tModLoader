@@ -27,9 +27,9 @@ public class ModDownloadItem
 
 	public readonly ModSide ModSide;
 	public readonly int Downloads;
-    public readonly int Hot;
-    public readonly uint Upvotes;
-    public readonly uint Downvotes;
+	public readonly int Hot;
+	public readonly uint Upvotes;
+	public readonly uint Downvotes;
 	public readonly string Homepage;
 	public readonly Version ModloaderVersion;
 
@@ -59,8 +59,8 @@ public class ModDownloadItem
 		ModloaderVersion = modloaderversion;
 		Banned = banned;
 		DevMetadata = devMetadata;
-        Upvotes = upvotes;
-        Downvotes = downvotes;
+		Upvotes = upvotes;
+		Downvotes = downvotes;
 
 		UpdateInstallState();
 	}
