@@ -312,7 +312,8 @@ internal class UIModDownloadItem : UIPanel
 		var ratingIcons = UICommon.RatingIcons.Value;
 		var ratingStar = UICommon.RatingStar.Value;
 
-		var ratio = ModDownload.Upvotes + ModDownload.Downvotes == 0 ? 0 : MathF.Round(100 * ModDownload.Upvotes / (float)(ModDownload.Upvotes + ModDownload.Downvotes), 1);
+		// var ratio = ModDownload.Upvotes + ModDownload.Downvotes == 0 ? 0 : MathF.Round(100 * ModDownload.Upvotes / (float)(ModDownload.Upvotes + ModDownload.Downvotes), 0); // Option for simple math
+		var ratio = MathF.Round(ModDownload.VoteScore * 100, 0); // Option to use the weighted rating used on workshop
 		var ratioText = ratio + "%";
 		var upvoteText = FormatRatingNumbers(ModDownload.Upvotes);
 		var downvoteText = FormatRatingNumbers(ModDownload.Downvotes);
