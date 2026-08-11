@@ -1,3 +1,4 @@
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
 using Terraria.Enums;
@@ -39,21 +40,25 @@ namespace ExampleMod.Content.Items.Accessories
 		}
 
 		// Here is where we can define our hurt sound. This optional. If you only want a hurt sound, don't override this hook.
-		public override bool PlayerHurtSoundOverride(Entity entity) {
+		// Note: This hook will only run if Item.voiceSlot matches the this item's type and the item is in a social accessory slot.
+		// For a more generic player hurt hook, use ModPlayer.PlayerHurtSound().
+		public override bool VoiceItemHurtSoundOverride(Entity entity, Vector2 soundPosition) {
 			// Rarely play a different sound like the Chicken Charm.
 			if (Main.rand.NextBool(5)) {
-				SoundEngine.PlaySound(ExampleVoiceAccessoryRareHurtSound, entity.position);
+				SoundEngine.PlaySound(ExampleVoiceAccessoryRareHurtSound, soundPosition);
 			}
 			else {
-				SoundEngine.PlaySound(ExampleVoiceAccessoryHurtSound, entity.position);
+				SoundEngine.PlaySound(ExampleVoiceAccessoryHurtSound, soundPosition);
 			}
 
 			return true; // Return true to prevent vanilla from playing other sounds.
 		}
 
-		// Here is where we can define our death sound. This optional. If you only want a death sound, don't override this hook.
+		// Here is where we can define our death sound. This optional. If you only want a hurt sound, don't override this hook.
 		// Note: The hurt sound will still play in addition to the death sound.
-		public override bool PlayerDeathSoundOverride(Entity entity) {
+		// Note: This hook will only run if Item.voiceSlot matches the this item's type and the item is in a social accessory slot.
+		// For a more generic player death hook, use ModPlayer.PlayerDeathSound().
+		public override bool VoiceItemDeathSoundOverride(Entity entity) {
 			SoundEngine.PlaySound(ExampleVoiceAccessoryDeathSound, entity.position);
 			return true;
 		}

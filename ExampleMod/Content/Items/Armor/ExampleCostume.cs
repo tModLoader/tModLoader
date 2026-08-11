@@ -1,5 +1,6 @@
 using ExampleMod.Common.Players;
 using ExampleMod.Content.Dusts;
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -90,8 +91,10 @@ namespace ExampleMod.Content.Items.Armor
 		}
 
 		// Give this accessory a unique hurt sound.
-		public override bool PlayerHurtSoundOverride(Entity entity) {
-			SoundEngine.PlaySound(SoundID.Item103, entity.position);
+		// Note: This hook will only run if Item.voiceSlot matches the this item's type and the item is in a social accessory slot.
+		// For a more generic player hurt hook, use ModPlayer.PlayerHurtSound().
+		public override bool VoiceItemHurtSoundOverride(Entity entity, Vector2 soundPosition) {
+			SoundEngine.PlaySound(SoundID.Item103, soundPosition);
 			return true;
 		}
 	}

@@ -1560,10 +1560,13 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// <summary>
 	/// If set with <c><see cref="Item.voiceSlot"/> <see langword="="/> <see cref="Type"/></c>, then the sound the player makes when taking damage can be overridden.
 	/// <br/> Return <see langword="true"/> to prevent other hurt sounds from playing.
+	/// <br/><br/> For a more generic hook, use <seealso cref="ModPlayer.PlayerHurtSound"/>.
 	/// </summary>
 	/// <param name="entity"> The entity that created the sound. </param>
+	/// <param name="soundPosition"> The position that the sound should be played at.
+	/// <br/> If the sound is emanating from ourselves (aka local client), play the sound "globally" for us so it doesn't pan while we are moving.</param>
 	/// <returns>Returns <see langword="false"/> by default.</returns>
-	public virtual bool PlayerHurtSoundOverride(Entity entity)
+	public virtual bool VoiceItemHurtSoundOverride(Entity entity, Vector2 soundPosition)
 	{
 		return false;
 	}
@@ -1571,10 +1574,11 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// <summary>
 	/// If set with <c><see cref="Item.voiceSlot"/> <see langword="="/> <see cref="Type"/></c>, then the sound the player makes when dying can be overridden.
 	/// <br/> Return <see langword="true"/> to prevent other hurt sounds from playing.
+	/// <br/><br/> For a more generic hook, use <seealso cref="ModPlayer.PlayerDeathSound"/>.
 	/// </summary>
 	/// <param name="entity"> The entity that created the sound. </param>
 	/// <returns><see langword="false"/> by default.</returns>
-	public virtual bool PlayerDeathSoundOverride(Entity entity)
+	public virtual bool VoiceItemDeathSoundOverride(Entity entity)
 	{
 		return false;
 	}

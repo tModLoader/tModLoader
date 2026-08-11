@@ -544,6 +544,17 @@ public static class PlayerLoader
 		}
 	}
 
+	private static HookList HookPlayerHurtSound = AddHook<Func<bool>>(p => p.PlayerHurtSound);
+	public static bool PlayerHurtSound(Player player)
+	{
+		foreach (var modPlayer in HookPlayerHurtSound.Enumerate(player)) {
+			if (modPlayer.PlayerHurtSound())
+				return true;
+		}
+
+		return false;
+	}
+
 	private delegate bool DelegatePreKill(double damage, int hitDirection, bool pvp, ref bool playSound,
 		ref bool genGore, ref PlayerDeathReason damageSource);
 	private static HookList HookPreKill = AddHook<DelegatePreKill>(p => p.PreKill);
@@ -565,6 +576,17 @@ public static class PlayerLoader
 		foreach (var modPlayer in HookKill.Enumerate(player)) {
 			try { modPlayer.Kill(damage, hitDirection, pvp, damageSource); } catch { }
 		}
+	}
+
+	private static HookList HookPlayerDeathSound = AddHook<Func<bool>>(p => p.PlayerDeathSound);
+	public static bool PlayerDeathSound(Player player)
+	{
+		foreach (var modPlayer in HookPlayerDeathSound.Enumerate(player)) {
+			if (modPlayer.PlayerDeathSound())
+				return true;
+		}
+
+		return false;
 	}
 
 	private delegate bool DelegatePreModifyLuck(ref float luck);

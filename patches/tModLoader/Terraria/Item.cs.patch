@@ -505,7 +505,7 @@
 +	/// <summary>
 +	/// The slot ID for voice accessories. When this item is equipped, the <seealso cref="Player.voiceOverride"/> field will be set to this value.
 +	/// <br/><br/> Unlike other equipment slots, this does not store a specific texture and thus doesn't use <see cref="AutoloadEquip"/>.
-+	/// <br/> For modded items, assign this slot the <seealso cref="type"/> or <seealso cref="ModItem.Type"/> and override <seealso cref="ModItem.PlayerHurtSoundOverride(Entity)"/> and/or <seealso cref="ModItem.PlayerDeathSoundOverride(Entity)"/>.
++	/// <br/> For modded items, assign this slot the <seealso cref="type"/> or <seealso cref="ModItem.Type"/> and override <seealso cref="ModItem.VoiceItemHurtSoundOverride(Entity)"/> and/or <seealso cref="ModItem.VoiceItemDeathSoundOverride(Entity)"/>.
 +	/// <br/><br/> Defaults to 0, indicating that this item does not have a specific voice ID for slot.
 +	/// </summary>
 +	public int voiceSlot = PlayerVoiceOverrideID.NoOverride;
