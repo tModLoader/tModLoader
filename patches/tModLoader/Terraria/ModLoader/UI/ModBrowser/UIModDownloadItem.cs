@@ -290,7 +290,7 @@ internal class UIModDownloadItem : UIPanel
         const int ratingThreshold = 25;
         
         var shouldDrawTime = ModDownload.TimeStamp != DateTime.MinValue;
-        var shouldDrawRating = ModDownload.Downvotes + ModDownload.Upvotes > ratingThreshold;
+        var shouldDrawRating = ModDownload.Downvotes + ModDownload.Upvotes >= ratingThreshold;
 
         if (shouldDrawTime)
         {
