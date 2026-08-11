@@ -48,6 +48,9 @@ internal static class ModOrganizer
 
 	private enum SearchFolders { }
 
+	/// <summary>
+	/// The full folder path of the currently active mod pack. Mods will load from this modern mod pack.
+	/// </summary>
 	internal static string ModPackActive = null;
 
 	/// <summary>Mods in workshop folders, not in dev folder or modpacks</summary>
