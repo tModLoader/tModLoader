@@ -6259,7 +6259,7 @@
 +			// ModPack
 +			if (ModOrganizer.ModPackActive != null) {
 +				var font = FontAssets.MouseText.Value;
-+				string modpackText = Language.GetTextValue("tModLoader.CurrentModPack", Path.GetFileNameWithoutExtension(ModOrganizer.ModPackActive));
++				string modpackText = Language.GetTextValue("tModLoader.CurrentModPack", Path.GetFileName(ModOrganizer.ModPackActive));
 +				var packOrigin = font.MeasureString(modpackText);
 +
 +				spriteBatch.DrawString(font, modpackText, new Vector2(packOrigin.X + num + 10f, screenHeight - packOrigin.Y + num2 - 2f - (int)upBump), color, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
