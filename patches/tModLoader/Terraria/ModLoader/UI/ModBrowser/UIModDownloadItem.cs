@@ -317,13 +317,13 @@ internal class UIModDownloadItem : UIPanel
 		var ratioText = ratio + "%";
 		var upvoteText = FormatRatingNumbers(ModDownload.Upvotes);
 		var downvoteText = FormatRatingNumbers(ModDownload.Downvotes);
-		var tooNewText = Language.GetTextValue("tModLoader.NoRatings");
+		var tooNewText = Language.GetTextValue("tModLoader.NotEnoughRatings");
 
 		var ratingOffset = new Vector2(6, 6);
 		var textOffset = new Vector2(0, -2);
 		var ratingFrame = new Rectangle(0, 0, 18, 16);
 
-		var ratioDisplayWidth = ratingIcons.Width + (int)FontAssets.MouseText.Value.MeasureString("000.0%").X + 8;
+		var ratioDisplayWidth = ratingIcons.Width + (int)FontAssets.MouseText.Value.MeasureString("000%").X + 8;
 		var detailedDisplayWidth = ratingIcons.Width * 2 + (int)FontAssets.MouseText.Value.MeasureString(downvoteText + upvoteText).X + 28;
 		var ratingWidth = IsMouseHovering ? detailedDisplayWidth : ratioDisplayWidth;
 
@@ -346,7 +346,7 @@ internal class UIModDownloadItem : UIPanel
 			ratingOffset = new Vector2(2, 2);
 			ratingFrame = new Rectangle(0, 24 * starFrame, 22, 22);
 
-			textOffset.X += 0.5f * ((int)FontAssets.MouseText.Value.MeasureString("000.0%").X - (int)FontAssets.MouseText.Value.MeasureString(ratioText).X) - 2;
+			textOffset.X += 0.5f * ((int)FontAssets.MouseText.Value.MeasureString("000%").X - (int)FontAssets.MouseText.Value.MeasureString(ratioText).X) - 2;
 			textOffset.Y += 4;
 		}
 
