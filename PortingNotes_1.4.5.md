@@ -47,7 +47,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - ShaderData classes now have `if (Main.dedServ)` checks. Are these overzealous, or do we need to adjust other places or inform modders that shader code might attempt to run on servers.
 - Player.voiceOverride. Currently an sbyte, might need to be an int like the other equipment slot IDs. Also an example would be nice.
 - Need to document ArmorIDs.Face.Sets.DrawInFaceMaskLayer as well
-- Player.revolverCritChanceBonus needs a quick test now that it has been implemented as a Projectile.CritChance bonus. Need to hookup `Item.GetVisualCritChance`
 - Player.adjTile patches are weird. It shouldn't be necessary to resize, they should be correct when the Player is initialized anyway.
 - player.oldAdjTile has been removed. Did modders depend on this for any reason? Tracking previous frames?
 - Player.coat added. It might also need and EquipType
@@ -430,5 +429,4 @@ Longer TODOs that would clutter above
 +	/// Associates a <see cref="TileID.Dressers"/> style with the item type (<see cref="Item.type"/>) that is dropped when the dresser is destroyed.
 +	/// <br/> <see cref="maxDresserTypes"/> elements long.
 +	/// </summary>
-
 
