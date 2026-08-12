@@ -13,6 +13,14 @@
  using Terraria.Utilities;
  
  namespace Terraria.WorldBuilding;
+@@ -418,6 +_,7 @@
+ 		}
+ 		catch (Exception ex) {
+ 			_controller.ReportException("Exception in Pass: " + pass.Name, ex);
++			throw;
+ 		}
+ 
+ 		_progress.End();
 @@ -433,7 +_,10 @@
  		_hashTime.Start();
  		uint[] line_hashes = new uint[Main.maxTilesX];
