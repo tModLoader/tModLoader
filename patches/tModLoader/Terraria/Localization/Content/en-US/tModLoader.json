@@ -441,6 +441,9 @@
 		"SixMonths": "Six Months",
 		"OneYear": "One Year",
 		"AllTime": "All Time",
+		"ThousandSuffix": "k",
+		"MillionSuffix": "m",
+		"NotEnoughRatings": "Not enough ratings",
 		"MBServerReturnToMenu": "Return to world menu",
 		"MBServerAskForModName": "Type an exact ModName to download: ",
 

@@ -148,6 +148,8 @@ public static class UICommon
 	public static Asset<Texture2D> DropdownIconTexture { get; internal set; }
 	public static Asset<Texture2D> ButtonDeleteTexture { get; internal set; }
 	public static Asset<Texture2D> ButtonRateTexture { get; internal set; }
+	public static Asset<Texture2D> RatingIcons { get; internal set; }
+	public static Asset<Texture2D> RatingStar { get; internal set; }
 
 	internal static void LoadTextures()
 	{
@@ -191,6 +193,9 @@ public static class UICommon
 		DropdownIconTexture = LoadEmbeddedTexture("UI.DropdownIcon");
 
 		ButtonDeleteTexture = LoadEmbeddedTexture("UI.ButtonDelete");
-        ButtonRateTexture = LoadEmbeddedTexture("UI.ButtonRate");
+		ButtonRateTexture = LoadEmbeddedTexture("UI.ButtonRate");
+
+		RatingIcons = LoadEmbeddedTexture("UI.RatingIcons");
+		RatingStar = LoadEmbeddedTexture("UI.RatingStar");
 	}
 }
