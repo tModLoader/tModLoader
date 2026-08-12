@@ -5246,7 +5246,7 @@
 +	/// Fetches the range at which the given item begins to gravitate towards the player.<br/>
 +	/// This range, referred to as item grab range, is measured in pixels.
 +	/// </summary>
-+	/// <param name="item">The item whose grab range is being evaluated.</param>
++	/// <param name="worldItem">The item whose grab range is being evaluated.</param>
 +	/// <returns>The item grab range of the player, in pixels.</returns>
 +	public int GetItemGrabRange(WorldItem worldItem)
  	{

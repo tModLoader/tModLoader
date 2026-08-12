@@ -70,7 +70,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Verify that https://github.com/tModLoader/tModLoader/issues/4383 is fixed: `if (Language.GetText("CLI.NewWorld_Command").EqualsCommand(text3))` in vanilla replaced `if (text2 == "n" || text2 == "N" || string.Equals(text2, Language.GetTextValue("CLI.NewWorld_Command"), StringComparison.CurrentCultureIgnoreCase))` fix in tmod. (New world command)
 - Main.ExecuteCommand changed, doesn't have both a lowercase and raw input string anymore. Double check how capitalization is handled now, such as in CommandLoader.HandleCommand. 
 - Main menu music logic now checks Main.titleMusicStyle and titleMusicStyleRandom, document and adjust ModMenu logic if necessary.
-- Move Item.instanced failed patch to WorldItem. Also noGrabDelay, beingGrabbed, timeSinceItemSpawned patch.
 - Item.armorPenetration added, should we keep tml-added ArmorPenetration property?
   - "This is unused, replaced with this.ArmorPenetration." patch might be incorrect as well. Nearby switch table also changed a lot, might need to apply them elsewhere.
 - Vanilla CanHavePrefixes logic changed, might be able to use it rather than tml changes.
