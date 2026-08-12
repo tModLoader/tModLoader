@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.DataStructures;
@@ -51,12 +52,13 @@ public abstract class ModCloud : ModTexturedType
 	public virtual void OnSpawn(Cloud cloud) { }
 
 	/// <summary>
-	/// Return <c>true</c> to draw using vanilla drawing logic. Return <c>false</c> to prevent vanilla drawing logic and use this hook to draw the cloud manually.
+	/// Allows customization of the <see cref="DrawData"/> responsible for drawing the this cloud.
+	/// <para/> Return <c>true</c> to draw using vanilla drawing logic, which will render <paramref name="drawData"/> by adding it to <paramref name="drawDataCache"/>. Return <c>false</c> to prevent <paramref name="drawData"/> from being added to <paramref name="drawDataCache"/>.
 	/// </summary>
-	/// <param name="spriteBatch"></param>
+	/// <param name="drawDataCache"></param>
 	/// <param name="cloud"></param>
 	/// <param name="cloudIndex">The index of the cloud within Main.cloud. Note that clouds are shifted around as clouds spawn and despawn.</param>
 	/// <param name="drawData">The calculated draw parameters</param>
 	/// <returns></returns>
-	public virtual bool Draw(SpriteBatch spriteBatch, Cloud cloud, int cloudIndex, ref DrawData drawData) => true;
+	public virtual bool Draw(List<DrawData> drawDataCache, Cloud cloud, int cloudIndex, ref DrawData drawData) => true;
 }

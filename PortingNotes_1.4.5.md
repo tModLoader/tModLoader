@@ -107,7 +107,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - ItemLoader.UseItemHitbox callsite useStyle == 3 needs adjustment to call hook reliably.
 - clientClone changed. I think the `_clientClone` field is no longer needed, or extraneous.
 - Player.nonTorch removed
-- Cloud rendering has moved, need to migrate modcloud patches from Main to HorizonRenderer I think.
 - What is ApplyRapidAttackBonus?
 - GameTipsDisplay patches need to be redone
 - Main.OpenPlayerSelectFromNet changed how our patches can be implemented for invite joining. Need to be reimplemented.
