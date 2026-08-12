@@ -103,11 +103,6 @@ partial class TileID
 			597
 		};
 
-		/// <summary>
-		/// Tiles that are interpreted as a wall by nearby walls during framing, causing them to frame as if merging with this adjacent tile. Prevents wall from drawing within bounds for transparent tiles.
-		/// </summary>
-		public static bool[] WallsMergeWith = Factory.CreateBoolSet(Glass);
-
 		// Values taken from Main.SetupTileMerge
 		/// <summary>
 		/// The value a tile forces to be set for <see cref="BlockMergesWithMergeAllBlock"/> regardless of default conditions (see its documentation). null by default.
@@ -154,10 +149,11 @@ partial class TileID
 		public static bool[] MultiTileSway = Factory.CreateBoolSet(false);
 
 		/// <summary>
-		/// If true, players landing on these tiles will not suffer <see href="https://terraria.wiki.gg/wiki/Fall_damage#Tiles">fall damage</see>. Vanilla entries include Cloud, RainCloud, SnowCloud, and PoopBlock. Defaults to false.
-		/// <para/> See also <see cref="Main.tileBouncy"/>.
+		/// If true, players landing on these tiles will not suffer <see href="https://terraria.wiki.gg/wiki/Fall_damage#Tiles">fall damage</see>. Entries in <see cref="Clouds"/> will have the same effect as well. Vanilla entries include PoopBlock.
+		/// <br/><br/> Defaults to <see langword="false"/>.
+		/// <br/><br/> See also <see cref="Main.tileBouncy"/>.
 		/// </summary>
-		public static bool[] NegatesFallDamage = Factory.CreateBoolSet(Cloud, RainCloud, SnowCloud, PoopBlock);
+		public static bool[] NegatesFallDamage = Factory.CreateBoolSet(PoopBlock);
 
 		/// <summary>
 		/// Indicates that this tile is a pressure plate, and which entities should trigger it when they collide with it. Custom tiles will still need to implement <see cref="ModTile.HitSwitch(int, int)"/> to act on the trigger. The <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/Tiles/ExamplePressurePlate.cs">ExamplePressurePlate.cs</see> example demonstrates this.

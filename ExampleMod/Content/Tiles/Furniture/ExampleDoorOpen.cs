@@ -32,7 +32,6 @@ namespace ExampleMod.Content.Tiles.Furniture
 			AdjTiles = [TileID.OpenDoor];
 			// Tiles usually drop their corresponding item automatically, but RegisterItemDrop is needed here since the ExampleDoor item places ExampleDoorClosed, not this tile.
 			RegisterItemDrop(ModContent.ItemType<ExampleDoor>(), 0);
-			TileID.Sets.CloseDoorID[Type] = ModContent.TileType<ExampleDoorClosed>();
 
 			// Names
 			AddMapEntry(new Color(200, 200, 200), Language.GetText("MapObject.Door"));

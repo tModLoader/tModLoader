@@ -68,6 +68,7 @@ public partial class WorkshopHelper
 		string steamClientPath = null; // GetAppInstallDir may return null (#2491). Also the default location for dedicated servers and such
 		if (SteamedWraps.SteamClient)
 			SteamApps.GetAppInstallDir(app, out steamClientPath, 1000);
+
 		steamClientPath ??= ".";
 		steamClientPath = Path.Combine(steamClientPath, "..", "..", "workshop");
 
@@ -270,6 +271,11 @@ public partial class WorkshopHelper
 
 			private void OnWorkshopQueryInitialized(SteamUGCQueryCompleted_t pCallback, bool bIOFailure)
 			{
+				if (bIOFailure) {
+					_primaryQueryResult = EResult.k_EResultIOFailure;
+					return;
+				}
+
 				_primaryUGCHandle = pCallback.m_handle;
 				_primaryQueryResult = pCallback.m_eResult;
 				_queryReturnCount = pCallback.m_unNumResultsReturned;
@@ -304,6 +310,7 @@ public partial class WorkshopHelper
 				for (int i = 0; i < numPages; i++) {
 					var pageIds = queryParameters.searchModIds.Take(new Range(i * Constants.kNumUGCResultsPerPage, Constants.kNumUGCResultsPerPage * (i + 1)));
 					var idArray = pageIds.Select(x => x.m_ModPubId).ToArray();
+					var checkReupload = new List<string>();
 
 					try {
 						WaitForQueryResult(SteamedWraps.GenerateDirectItemsQuery(idArray, queryParameters));
@@ -311,20 +318,51 @@ public partial class WorkshopHelper
 						for (int j = 0; j < _queryReturnCount; j++) {
 							var itemsIndex = j + i * Constants.kNumUGCResultsPerPage;
 							var match = TryGenerateModDownloadItem((uint)j, out var item);
-							if (match != WorkshopSearchReturnState.Success) {
 
+							// Because we are directly querying the state of the mod via its publish ID, developers are able to see that it is banned.
+							// For regular users, they will see WorkshopState NotFound. The banned state includes DMCA and Malware, so its a mix bag
+							if (match == WorkshopSearchReturnState.Success && item.Banned) {
+								// Includes as of April 2026 banned states (DMCA, Malware)
+								Logging.tML.Warn($"Mod ID {idArray[j]} is banned on Steam Workshop. Consult a developer for more details");
+								missingMods.Add(idArray[j]);
+
+								//checkReupload.Add(queryParameters.searchModSlugs[itemsIndex]); // Enable this line if doing dev testing for NotFound state in DMCA
+								continue;
+							}
+
+							// Check for reupload when searchModSlugs is provided
+							if (match == WorkshopSearchReturnState.NotFound	&& queryParameters.searchModSlugs?.Length == queryParameters.searchModIds.Length) {
 								// Currently, only known case is if a mod the user is subbed to is set to hidden & not deleted by the user
-								Logging.tML.Warn($"Unable to find Mod with ID {idArray[j]} on the Steam Workshop");
+								// Includes 'Hide As Incompatible', Changes in Visibility (Friends-Only, Private), and as of April 2026 banned states (DMCA, Malware)
+								Logging.tML.Warn($"Mod ID {idArray[j]} Not Found on the Steam Workshop. Queuing for Search by Slug {queryParameters.searchModSlugs[itemsIndex]}");
+								missingMods.Add(idArray[j]);
+
+								checkReupload.Add(queryParameters.searchModSlugs[itemsIndex]);
+								continue;
+							}
+
+							if (match != WorkshopSearchReturnState.Success) {		
+								// This would be the case if Steam workshop failed to respond or the mod item is corrupt
+								Logging.tML.Warn($"{match}: Search Attempt Failed for Mod with ID {idArray[j]}");
 								missingMods.Add(idArray[j]);
 								continue;
 							}
 
-							item.UpdateInstallState();
 							items.Add(item);
 						}
 					}
 					finally {
 						ReleaseWorkshopQuery();
+					}
+
+					// Check if any of the mods flagged for reupload review are actually reuploaded or if the user has a now hidden mod
+					// As per the method description, we've intentionally ensured that all upstream functions do not need to care about order.
+					// The mod is either found or in the missingMods summary; this gives a second chance for DMCA / hidden mods to transfer users
+					foreach (var item in checkReupload) {
+						var match2 = TryGetModDownloadItem(item, out var reupload);
+						if (match2 == WorkshopSearchReturnState.Success) {
+							items.Add(reupload);
+						}
 					}
 				}
 
@@ -422,6 +460,10 @@ public partial class WorkshopHelper
 				return true;
 			}
 
+			/// <summary>
+			/// Only Use if we don't have a PublishID source.
+			/// This method does NOT guard against banned items. Plan usage accordingly.
+			/// </summary>
 			internal static WorkshopSearchReturnState TryGetModDownloadItem(string modSlug, out ModDownloadItem item)
 			{
 				var query = new AQueryInstance(new QueryParameters() { queryType = QueryType.SearchDirect, returnDevMetadata = true });
@@ -440,7 +482,7 @@ public partial class WorkshopHelper
 
 			/// <summary>
 			/// Only Use if we don't have a PublishID source.
-			/// This method does NOT guard against banned items. Plan usage accordingly
+			/// This method does NOT guard against banned items. Plan usage accordingly.
 			/// </summary>
 			private WorkshopSearchReturnState TrySearchByInternalName(string slug, out ModDownloadItem item)
 			{
@@ -495,7 +537,16 @@ public partial class WorkshopHelper
 			[Obsolete("Should not be used because it hides syncronous waiting")]
 			internal void WaitForQueryResult(SteamAPICall_t query)
 			{
-				WaitForQueryResultAsync(query).GetAwaiter().GetResult();
+				try {
+					WaitForQueryResultAsync(query).GetAwaiter().GetResult();
+				}
+				catch (Exception e) {
+					// Catch all workshop query failures (offline mode, timeout, k_EResultFail, etc.)
+					SteamedWraps.SteamAvailable = false;
+					SteamedWraps.SteamClient = false;
+					Utils.ShowFancyErrorMessage("Unable to access Steam Workshop. Steam Workshop related functionality has been disabled.\n" +
+						"Restart Steam and tModLoader to attempt to restore.", Interface.loadModsID);
+				}
 			}
 
 			/////// Process Query Result per Item ////////////////////
@@ -506,6 +557,9 @@ public partial class WorkshopHelper
 				try {
 					item = GenerateModDownloadItemFromQuery(index);
 					return WorkshopSearchReturnState.Success;
+				}
+				catch (UnauthorizedAccessException) {
+					return WorkshopSearchReturnState.NotFound;
 				}
 				catch (Exception) {
 					return WorkshopSearchReturnState.RetrievalFailed;
@@ -520,6 +574,15 @@ public partial class WorkshopHelper
 				PublishedFileId_t id = pDetails.m_nPublishedFileId;
 
 				if (pDetails.m_eResult != EResult.k_EResultOK) {
+					if (pDetails.m_eResult  == EResult.k_EResultAccessDenied) {
+						// When we directly query a particular publish ID, three scenarios can happen:
+						//	If it is a developer, then they will see the item exactly as is, regardless of visibility
+						//	If it is the modder who uploaded it, then they will see the same state as the developer
+						//	If it is a player, then if it is: hidden as incompatible, hidden via visibility (friends-only, private)
+						//		Then it will show as Access Denied to that player. Functionally, Access Denied is simply 'Not Found'.
+						throw new UnauthorizedAccessException($"Access to mod PublishId# {id} was denied. Returning 'not found'");
+					}
+
 					throw new SocialBrowserException("Unable to fetch mod PublishId#" + id + " information. " + pDetails.m_eResult);
 				}
 
@@ -528,6 +591,10 @@ public partial class WorkshopHelper
 				DateTime lastUpdate = Utils.UnixTimeStampToDateTime((long)pDetails.m_rtimeUpdated);
 				string displayname = pDetails.m_rgchTitle;
 				bool banned = pDetails.m_bBanned;
+
+				var upvotes = pDetails.m_unVotesUp;
+				var downvotes = pDetails.m_unVotesDown;
+				var voteScore = pDetails.m_flScore;
 
 				// Item Tagged data / Player metadata
 				SteamedWraps.FetchMetadata(_primaryUGCHandle, i, out var metadata);
@@ -575,7 +642,7 @@ public partial class WorkshopHelper
 				// Item Statistics
 				SteamedWraps.FetchPlayTimeStats(_primaryUGCHandle, i, out var hot, out var downloads);
 
-				return new ModDownloadItem(displayname, metadata["name"], cVersion.modV, metadata["author"], metadata["modreferences"], modside, modIconURL, id.m_PublishedFileId.ToString(), (int)downloads, (int)hot, lastUpdate, cVersion.tmlV, metadata["homepage"], ownerId, refsById, banned, devMetadata);
+				return new ModDownloadItem(displayname, metadata["name"], cVersion.modV, metadata["author"], metadata["modreferences"], modside, modIconURL, id.m_PublishedFileId.ToString(), (int)downloads, (int)hot, lastUpdate, cVersion.tmlV, metadata["homepage"], ownerId, refsById, banned, devMetadata, upvotes, downvotes, voteScore);
 			}
 		}
 	}

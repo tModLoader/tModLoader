@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
@@ -66,7 +67,10 @@ public class ModNPCTest : ModNPC
 	{
 	}
 
-	public override void OnChatButtonClicked(bool firstButton, ref string shopName) { /* Empty */ }
+	public override void OnChatButtonClicked(NPCInteraction interaction)/* tModPorter Suggestion: Previously this was used to assign a shop to a button, but that is now handled by RegisterChatButtons. If that is all this was used for, remove this hook */ { /* Empty */ }
+#if COMPILE_ERROR
+	public override void OnChatButtonClicked(NPCInteraction interaction)/* tModPorter Suggestion: Previously this was used to assign a shop to a button, but that is now handled by RegisterChatButtons. If that is all this was used for, remove this hook */ { /* Empty */ }
+#endif
 	public override void ModifyActiveShop(string shopName, Item[] items) { }
 
 	public override void HitEffect(NPC.HitInfo hit) { }
@@ -113,5 +117,9 @@ public class ModNPCTest : ModNPC
 		NPCID.Sets.IsGoldCritter[Type] = true;
 
 		NPCID.Sets.SearchSpawnSlotsInReverse[Type] = true;
+
+		NPCID.Sets.ImmuneToRegularBuffs[Type]/* tModPorter NPCID.Sets.ImmuneToAllBuffs was removed. If immunity to whip tag effects are desired, also set NPCID.Sets.ImmuneToWhipTags to true. */ = true;
 	}
+
+	public override void BossLoot(ref int potionType, ref int potionStack, ref int heartStack) { }
 }

@@ -121,6 +121,7 @@ public abstract class ModBlockType : ModTexturedType, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to draw things behind the tile/wall at the given coordinates. Return false to stop the game from drawing the tile normally. Returns true by default.
+	/// <para/> Note that tiles are drawn one at a time in sequence (top to bottom, left to right), so this runs immediately before a single tile's sprite is drawn, not before all tiles on screen are rendered.
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>
@@ -133,6 +134,7 @@ public abstract class ModBlockType : ModTexturedType, ILocalizedModType
 	/// <summary>
 	/// Allows you to draw things in front of the tile/wall at the given coordinates. This can also be used to do things such as creating dust.<para/>
 	/// Note that this method will be called for tiles even when the tile is <see cref="Tile.IsTileInvisible"/> due to Echo Coating. Use the <see cref="GameContent.Drawing.TileDrawing.IsVisible(Tile)"/> method to skip effects that shouldn't show when the tile is invisible. This method won't be called for invisible walls.
+	/// <para/> Note that tiles are drawn one at a time in sequence (top to bottom, left to right), so this runs immediately after a single tile's sprite is drawn. Any effects drawn here will be overdrawn by sprites of tiles drawn after it. Use <see cref="ModTile.SpecialDraw(int, int, SpriteBatch)"/> via <see cref="ModTile.DrawEffects"/> to draw after all tiles on screen have been rendered.
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>
@@ -146,7 +148,8 @@ public abstract class ModBlockType : ModTexturedType, ILocalizedModType
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>
-	public virtual void RandomUpdate(int i, int j)
+	/// <param name="underground">Whether the tile/wall is considered underground. This usually means below <see cref="Main.worldSurface"/>, but if the "Don't dig up" special world seed (<see cref="Main.remixWorld"/>) is active tiles technically underground might be considered overground for random update purposes. </param>
+	public virtual void RandomUpdate(int i, int j, bool underground)
 	{
 	}
 

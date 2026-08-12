@@ -68,4 +68,11 @@ public class SimpleIdentifiersTest : Mod
 		Dummy item = new();
 		item.FieldA = 0;
 	}
+
+	public void QualifiedMemberAccess()
+	{
+		_ = Main.PipsUseGrid;
+		_ = Terraria.Main.PipsUseGrid;
+		_ = global::Terraria.Main.PipsUseGrid;
+	}
 }

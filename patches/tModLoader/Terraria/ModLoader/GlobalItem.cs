@@ -838,7 +838,7 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 
 	/// <summary>
 	/// Allows you to prevent items from stacking.
-	/// <para/>This is only called when two items of the same type attempt to stack.
+	/// <para/>This is only called when two items of the same type attempt to stack. This is called on the item that would be stacked onto (<see langword="this"/>/<paramref name="destination"/>).
 	/// <para/>This is usually not called for coins and ammo in the inventory/UI.
 	/// <para/>This covers all scenarios, if you just need to change in-world stacking behavior, use <see cref="CanStackInWorld"/>.
 	/// <para/> Called on the local client only.
@@ -853,7 +853,7 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 
 	/// <summary>
 	/// Allows you to prevent items from stacking in the world.
-	/// <para/> This is only called when two items of the same type attempt to stack.
+	/// <para/> This is only called when two items of the same type attempt to stack. This is called on the item that would be stacked onto (<see langword="this"/>/<paramref name="destination"/>).
 	/// <para/> Called on the local client or server, depending on who the item is reserved for.
 	/// </summary>
 	/// <param name="destination">The item instance that <paramref name="source"/> will attempt to stack onto</param>
@@ -866,7 +866,7 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 
 	/// <summary>
 	/// Allows you to make things happen when items stack together.
-	/// <para/> This hook is called before the items are transferred from <paramref name="source"/> to <paramref name="destination"/>
+	/// <para/> This hook is called on the item being stacked onto (<see langword="this"/>/<paramref name="destination"/>) before the items are transferred from <paramref name="source"/> to <paramref name="destination"/>. This will be called both for in-world and in-inventory stacking.
 	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="destination">The item instance that <paramref name="source"/> will attempt to stack onto</param>
@@ -877,7 +877,7 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	}
 
 	/// <summary>
-	/// Allows you to make things happen when an item stack is split. This hook is called before the stack values are modified.
+	/// Allows you to make things happen when an item stack is split. This hook is called on the new item (<see langword="this"/>/<paramref name="destination"/>) before the stack values are modified.
 	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="destination">
@@ -1076,6 +1076,21 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// </summary>
 	public virtual void PostDrawInInventory(Item item, SpriteBatch spriteBatch, Vector2 position, Rectangle frame,
 		Color drawColor, Color itemColor, Vector2 origin, float scale)
+	{
+	}
+
+	/// <summary>
+	/// Allows customization of the <see cref="DrawData"/> responsible for drawing the held item. Held items are drawn as part of the player drawing process. Additional <see cref="DrawData"/> can be added to <paramref name="drawInfo"/> for more advanced drawing if needed. (Add DrawData objects to <see cref="PlayerDrawSet.DrawDataCache"/>)
+	/// <br/><br/> <paramref name="drawData"/> is the DrawData for the normal drawing. <paramref name="coloredDrawData"/> is an additional drawing if <see cref="Item.color"/> was set, overlaid over the normal drawing to tint it. <paramref name="glowMaskDrawData"/> is a separate glow mask texture, if <see cref="Item.glowMask"/> was set.
+	/// </summary>
+	public virtual void PreModifyItemDraw(Item item, ref PlayerDrawSet drawInfo, ref DrawData drawData, ref DrawData? coloredDrawData, ref DrawData? glowMaskDrawData)
+	{
+	}
+
+	/// <summary>
+	/// Allows drawing additional <see cref="DrawData"/> after the normal drawing by adding to <paramref name="drawInfo"/>. (Add DrawData objects to <see cref="PlayerDrawSet.DrawDataCache"/>)
+	/// </summary>
+	public virtual void PostModifyItemDraw(Item item, ref PlayerDrawSet drawInfo, DrawData drawData, DrawData? coloredDrawData, DrawData? glowmaskDrawData)
 	{
 	}
 

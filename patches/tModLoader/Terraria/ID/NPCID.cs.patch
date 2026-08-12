@@ -115,6 +115,70 @@
  			public NPCBestiaryDrawModifiers(int seriouslyWhyCantStructsHaveParameterlessConstructors)
  			{
  				Position = default(Vector2);
+@@ -62,18 +_,28 @@
+ 			public int FrameY;
+ 			private Asset<Texture2D> _image;
+ 
+-			public BasicNPCPortrait(string texturePath)
++			public BasicNPCPortrait(string texturePath, int horizontalFrames = 1, int verticalFrames = 1, int paddingX = 0, int paddingY = 0, int frameX = 0, int frameY = 0)
+ 			{
++				if(texturePath.StartsWith("Images/TownNPCs/Portraits"))
++					texturePath = $"Terraria/{texturePath}"; // Lets vanilla and modded portraits share same logic by using ModContent.Request
+ 				TexturePath = texturePath;
++				/*
+ 				HorizontalFrames = (VerticalFrames = 1);
+ 				PaddingX = (PaddingY = 0);
+ 				FrameX = (FrameY = 0);
++				*/
++				HorizontalFrames = horizontalFrames;
++				VerticalFrames = verticalFrames;
++				PaddingX = paddingX;
++				PaddingY = paddingY;
++				FrameX = frameX;
++				FrameY = frameY;
+ 			}
+ 
+ 			public virtual void GetDrawData(out Texture2D texture, out Rectangle drawFrame)
+ 			{
+ 				if (_image == null)
+-					_image = Main.Assets.Request<Texture2D>(TexturePath);
++					_image = ModContent.Request<Texture2D>(TexturePath, AssetRequestMode.ImmediateLoad); // Changed to ModContent.Request
+ 
+ 				texture = null;
+ 				if (_image.IsLoaded)
+@@ -83,6 +_,9 @@
+ 			}
+ 		}
+ 
++		/// <summary>
++		/// The draw information for the Town NPC portrait image for <see cref="NPCID.Sets.NPCPortraits"/>.
++		/// </summary>
+ 		public class NPCPortraitSelector : NPCPortraitProvider
+ 		{
+ 			public delegate bool SelectionCondition();
+@@ -95,6 +_,11 @@
+ 
+ 			private List<Entry> _entries = new List<Entry>();
+ 
++			/// <summary>
++			/// Add a portrait type with a condition.
++			/// </summary>
++			/// <param name="condition">When this portrait should be shown. See <see cref="ShimmeredPortraitCondition"/> or <see cref="VariantPortraitCondition"/></param>
++			/// <param name="portrait">The portrait to use. For example: <see cref="BasicPortrait"/></param>
+ 			public NPCPortraitSelector With(SelectionCondition condition, NPCPortraitProvider portrait)
+ 			{
+ 				_entries.Add(new Entry {
+@@ -105,6 +_,10 @@
+ 				return this;
+ 			}
+ 
++			/// <summary>
++			/// The default portrait type to use if no other portrait conditions (Example: shimmer variant condition) are met.
++			/// </summary>
++			/// <param name="portrait">The portrait to use. For example: <see cref="ModTownNPCPortrait(string)"/></param>
+ 			public NPCPortraitSelector Default(NPCPortraitProvider portrait)
+ 			{
+ 				_entries.Add(new Entry {
 @@ -174,7 +_,13 @@
  			public const int Hemorrhage = 375;
  		}
@@ -130,6 +194,24 @@
  		public static Dictionary<int, int> SpecialSpawningRules = new Dictionary<int, int> {
  			{ 259, 0 },
  			{ 260, 0 },
+@@ -183,6 +_,17 @@
+ 			{ 56, 0 },
+ 			{ 101, 0 }
+ 		};
++
++		/// <summary>
++		/// Determines which portrait image to use for Town NPCs when the Portrait Style setting is set to detailed.
++		/// <br/><br/> <b>Example usage:</b>
++		/// <code>
++		/// NPCID.Sets.NPCPortraits.Add(Type, NPCID.Sets.PrioritizedPortrait()
++		///     .With(NPCID.Sets.ShimmeredPortraitCondition, NPCID.Sets.BasicPortrait($"{Texture}_Shimmer_Portrait"))
++		///     .Default(NPCID.Sets.BasicPortrait($"{Texture}_Portrait")));
++		/// </code>
++		/// </summary>
++		/// <remarks>See <see cref="NPCPortraitsCloseUpOffsets"/> and <see cref="NPCPortraitsFullBodyRetroOffsets"/> for the profile and retro portrait style settings.</remarks>
+ 		public static Dictionary<int, NPCPortraitProvider> NPCPortraits = new Dictionary<int, NPCPortraitProvider> {
+ 			{ 369, PrioritizedPortrait().With(ShimmeredPortraitCondition, BasicPortrait("Images/TownNPCs/Portraits/Portrait_Angler_shimmer")).Default(BasicPortrait("Images/TownNPCs/Portraits/Portrait_Angler")) },
+ 			{ 19, PrioritizedPortrait().With(ShimmeredPortraitCondition, BasicPortrait("Images/TownNPCs/Portraits/Portrait_ArmsDealer_shimmer")).Default(BasicPortrait("Images/TownNPCs/Portraits/Portrait_ArmsDealer")) },
 @@ -250,8 +_,18 @@
  					.Default(BasicPortrait("Images/TownNPCs/Portraits/Portrait_Bunny_Angora"))
  			}
@@ -141,7 +223,7 @@
  		public static Dictionary<int, NPCBestiaryDrawModifiers> NPCBestiaryDrawOffset = NPCBestiaryDrawOffsetCreation();
 +
 +		/// <summary>
-+		/// <b>Unused:</b> Replaced by <see cref="SpecificDebuffImmunity"/>, <see cref="ImmuneToAllBuffs "/>, and <see cref="ImmuneToRegularBuffs"/><br/><br/>
++		/// <b>Unused:</b> Replaced by <see cref="SpecificDebuffImmunity"/>, <see cref="ImmuneToWhipTags "/>, and <see cref="ImmuneToRegularBuffs"/><br/><br/>
 +		/// The default debuff immunities for a given NPC type (<see cref="NPC.type"/>).
 +		/// </summary>
 +		/// <remarks><see cref="NPC.buffImmune"/> can still be manually changed to grant temporary immunity.</remarks>
@@ -183,9 +265,27 @@
  		public static List<int> TownNPCBestiaryPriority = new List<int> {
  			22,
  			17,
-@@ -5159,12 +_,43 @@
+@@ -5157,14 +_,61 @@
+ 			37,
+ 			687
  		};
++
++		/// <summary>
++		/// If <see langword="true"/> for a given NPC type (<see cref="NPC.type"/>), then in worlds using the skyblock seed, that NPC can spawn in midair (if there are no blocks near the player).
++		/// <br/> Defaults to <see langword="false"/>.
++		/// </summary>
++		/// <remarks>
++		/// Vanilla uses this to allow some bosses to spawn on the player even when there are no blocks near the player.
++		/// </remarks>
  		public static bool[] SpawnOnPlayerCanSpawnInMidairOnSkyblock = Factory.CreateBoolSet(4, 266, 222, 125, 126, 127, 262, 551);
++
++		/// <summary>
++		/// If <see langword="true"/> for a given NPC type (<see cref="NPC.type"/>), then that NPC can not drop dungeon keys (i.e. <see cref="ItemID.JungleKey"/>, ...) or any souls (i.e. <see cref="ItemID.SoulofNight"/>, ...).
++		/// <br/> Defaults to <see langword="false"/>.
++		/// </summary>
++		/// <remarks>
++		/// Only true for <see cref="NPCID.MeteorHead"/> in vanilla.
++		/// </remarks>
  		public static bool[] DontDropDungeonKeysOrSouls = Factory.CreateBoolSet(23);
 +
 +		/// <summary>
@@ -228,7 +328,7 @@
  			443,
  			442,
  			592,
-@@ -5180,13 +_,40 @@
+@@ -5180,13 +_,50 @@
  			448,
  			539
  		};
@@ -248,6 +348,16 @@
 +		/// <br/> Defaults to <see langword="false"/>.
 +		/// </summary>
  		public static bool[] ZappingJellyfish = Factory.CreateBoolSet(63, 64, 103, 242);
++
++		/// <summary>
++		/// Overrides if an NPC should be considered friendly or unfriendly by the <see cref="BuffID.Hunter"/> buff visual effect.
++		/// <br/> If <see langword="true"/> for a given NPC type (<see cref="NPC.type"/>), then that NPC will always appear green (friendly) when the player has the <see cref="BuffID.Hunter"/> buff.
++		/// <br/> If <see langword="false"/> for a given NPC type (<see cref="NPC.type"/>), then that NPC will always appear red (unfriendly) when the player has the <see cref="BuffID.Hunter"/> buff.
++		/// <para/> Defaults to <see langword="null"/>, which will default to checking the normal logic: <c>friendly || catchItem > 0 || (damage == 0 &amp;&amp; lifeMax == 5)</c>.
++		/// </summary>
++		/// <remarks>
++		/// <see cref="NPCID.OwlMimic"/> sets this to <see langword="false"/> because it can transform into the unfriendly <see cref="NPCID.DemonEyeOwl"/>.
++		/// </remarks>
  		public static bool?[] HunterPotionFriendlyOverride = Factory.CreateCustomSet<bool?>(null, new object[2] {
  			(short)689,
  			false
@@ -269,7 +379,33 @@
  		public static Dictionary<int, int> RespawnEnemyID = new Dictionary<int, int> {
  			{ 492, 0 },
  			{ 491, 0 },
-@@ -5297,63 +_,393 @@
+@@ -5232,6 +_,12 @@
+ 			{ 622, 621 },
+ 			{ 623, 621 }
+ 		};
++		/// <summary>
++		/// Determines the offset to use for Town NPCs when the Portrait Style setting is set to profile so that the Town NPC's head is centered.
++		/// <br/><br/> Example usage: <c>NPCID.Sets.NPCPortraits.Add(Type, new Vector2(0f, 0f))</c>
++		/// <br/><br/> If not set, defaults to no offset (<c>Vector2.Zero</c>).
++		/// </summary>
++		/// <remarks>See <see cref="NPCPortraits"/> and <see cref="NPCPortraitsFullBodyRetroOffsets"/> for the detailed and retro portrait style settings.</remarks>
+ 		public static Dictionary<int, Vector2> NPCPortraitsCloseUpOffsets = new Dictionary<int, Vector2> {
+ 			{ 17, new Vector2(6f, 0f) },
+ 			{ 18, new Vector2(-6f, 0f) },
+@@ -5274,6 +_,12 @@
+ 			{ 683, new Vector2(-6f, 2f) },
+ 			{ 682, new Vector2(-3f, 2f) }
+ 		};
++		/// <summary>
++		/// Determines the offset to use for Town NPCs when the Portrait Style setting is set to retro so that the Town NPC's entire body is centered.
++		/// <br/><br/> Example usage: <c>NPCID.Sets.NPCPortraits.Add(Type, new Vector2(0f, 0f))</c>
++		/// <br/><br/> If not set, defaults to no offset (<c>Vector2.Zero</c>).
++		/// </summary>
++		/// <remarks>See <see cref="NPCPortraits"/> and <see cref="NPCPortraitsCloseUpOffsets"/> for the detailed and profile portrait style settings.</remarks>
+ 		public static Dictionary<int, Vector2> NPCPortraitsFullBodyRetroOffsets = new Dictionary<int, Vector2> {
+ 			{ 18, new Vector2(-3f, 0f) },
+ 			{ 20, new Vector2(-4f, 0f) },
+@@ -5297,63 +_,435 @@
  			{ 683, new Vector2(-6f, 0f) },
  			{ 682, new Vector2(-6f, 0f) }
  		};
@@ -324,7 +460,18 @@
 +		/// </remarks>
  		public static bool[] UsesNewTargeting = Factory.CreateBoolSet(547, 552, 553, 554, 561, 562, 563, 555, 556, 557, 558, 559, 560, 576, 577, 568, 569, 566, 567, 570, 571, 572, 573, 564, 565, 574, 575, 551, 578, 210, 211, 620, 668);
 +
++		/// <summary>
++		/// If <see langword="true"/> for a given NPC type (<see cref="NPC.type"/>), then that NPC can drop <see cref="ProjectileID.BirdDroppings"/> on the player when overhead and the player has negative luck.
++		/// <br/> This is implemented for <see cref="NPCAIStyleID.Bird"/> and <see cref="NPCAIStyleID.Duck"/>.
++		/// <br/> Defaults to <see langword="false"/>.
++		/// </summary>
  		public static bool[] BirdThatCanPoop = Factory.CreateBoolSet(74, 297, 298, 442, 363, 365, 603, 609, 671, 672, 673, 674, 675);
++
++		/// <summary>
++		/// If <see langword="true"/> for a given NPC type (<see cref="NPC.type"/>), then that NPC can turn hostile when a nearby player has negative luck.
++		/// <br/> Defaults to <see langword="false"/>.
++		/// <para/> This is set by all squirrels. The AI code for these NPC needs to support this feature directly, it is not automatic. The NPC must change to <see cref="NPCAIStyleID.Fighter"/> for the game to consider this a critter that became hostile.
++		/// </summary>
  		public static bool[] CritterThatCanTurnOnPlayers = Factory.CreateBoolSet(645, 639, 644, 642, 643, 641, 640, 299, 539, 538);
 +
 +		/// <summary>
@@ -346,10 +493,24 @@
 +		/// </summary>
  		public static bool[] HurtingBees = Factory.CreateBoolSet(210, 211);
 +
++		/// <summary>
++		/// If <see langword="true"/> for a given NPC type (<see cref="NPC.type"/>), then that NPC will be hurt by bee NPCs (those in <see cref="HurtingBees"/>) on contact.
++		/// <br/> Defaults to <see langword="true"/>.
++		/// <para/> Set to false by <see cref="NPCID.Bee"/>, <see cref="NPCID.BeeSmall"/>, and <see cref="NPCID.QueenBee"/>. 
++		/// </summary>
  		public static bool[] CanBeHurtByBees = Factory.CreateBoolSet(true, 210, 211, 222);
 +
++		/// <summary>
++		/// If <see langword="true"/> for a given NPC type (<see cref="NPC.type"/>), then that NPC will be moved when standing on a conveyer belt.
++		/// <br/> Defaults to <see langword="false"/>.
++		/// <para/> Set by various stationary NPC, such as Gnomes, Lost Girl, Bound NPCs, etc.
++		/// </summary>
  		public static bool[] ConveyorBeltCollision = Factory.CreateBoolSet(624, 85, 629, 195, 1, 147, 184, 537, 204, 16, 59, 71, 535, 225, 676, 303, 335, 336, 333, 334, 667, 141, 81, 121, 183, 138, 244, 304, 105, 123, 685, 686, 687, 106, 354, 376, 579, 589, 37, 695, 696);
 +
++		/// <summary>
++		/// If <see langword="true"/> for a given NPC type (<see cref="NPC.type"/>), and that NPC has slime AI, then that NPC can spawn containing an item.
++		/// <br/> Defaults to <see langword="false"/>.
++		/// </summary>
  		public static bool[] SlimeCanContainItems = Factory.CreateBoolSet(1, 59, 147, 184, 537);
 +
 +		/// <summary>
@@ -375,7 +536,7 @@
 +		/// If <see langword="true"/> for a given NPC type (<see cref="NPC.type"/>), then that NPC will receive stat scaling in Expert Mode, even if its normal stats would prevent that.
 +		/// <br/> Defaults to <see langword="false"/>.
 +		/// </summary>
-+		/// <remarks>NPCs with less than 5 health are most prone to needing this set. The full scaling conditions can be found at the start of <see cref="NPC.ScaleStats(int?, GameModeData, float?)"/>.</remarks>
++		/// <remarks>NPCs with less than 5 health are most prone to needing this set. The full scaling conditions can be found at the start of <see cref="NPC.ScaleStats(int?, float?)"/>.</remarks>
  		public static bool[] NeedsExpertScaling = Factory.CreateBoolSet(25, 30, 665, 33, 112, 666, 261, 265, 371, 516, 519, 397, 396, 398, 491);
 +
 +		/// <summary>
@@ -404,8 +565,21 @@
 +		/// </summary>
  		public static bool[] SearchSpawnSlotsInReverse = Factory.CreateBoolSet(222, 245);
 +
++		/// <summary>
++		/// If <see langword="true"/> for a given NPC type (<see cref="NPC.type"/>), then that NPC cannot be assigned to slot 0 of <see cref="Main.npc"/> when spawned by <see cref="NPC.NewNPC"/>.
++		/// <br/> This can be useful for NPC using <see cref="NPC.ai"/> values to store the index of another NPC implemented using AI code that fails to account for the default 0 value.
++		/// <br/> Defaults to <see langword="false"/>.
++		/// </summary>
++		/// <remarks>
++		/// Vanilla sets this to true for all worm NPCs.
++		/// </remarks>
  		public static bool[] CannotSpawnInSlot0 = Factory.CreateBoolSet(134, 135, 136, 7, 8, 9, 10, 11, 12, 13, 14, 15, 39, 40, 41, 87, 88, 89, 90, 91, 92, 95, 96, 97, 98, 99, 100, 117, 118, 119, 375, 402, 412, 413, 414, 454, 455, 456, 457, 458, 459, 510, 511, 512, 513, 514, 515, 621, 622, 623);
 +
++		/// <summary>
++		/// If <see langword="true"/>, this NPC will skip much of the NPC update logic on clients if located in a section of the world that has not yet been synced to this client. 
++		/// <br/> Defaults to <see langword="true"/>.
++		/// <para/> Vanilla sets this to <see langword="false"/> for worm bodies and tails.
++		/// </summary>
  		public static bool[] SkipUpdateInUnsyncedTiles = Factory.CreateBoolSet(true, 135, 136, 14, 15, 8, 9, 11, 12, 40, 41, 96, 97, 99, 100, 118, 119, 622, 623, 511, 512, 514, 515, 455, 456, 457, 458, 459, 89, 90, 91, 92, 413, 414);
 +
 +		/// <summary>
@@ -612,6 +786,10 @@
 +		/// </summary>
  		public static bool[] ShouldBeCountedAsBossForBestiary = Factory.CreateBoolSet(false, 517, 422, 507, 493, 13, 664);
 +
++		/// <summary>
++		/// If <see langword="true"/> for a given NPC type (<see cref="NPC.type"/>), then a <see cref="ProjectileID.RainbowBoulder"/> colliding with an NPC of this NPC type causes the boulder to break.
++		/// <br/> Defaults to <see langword="false"/>.
++		/// </summary>
  		public static bool[] ShouldBeCountedAsBossForRainbowBoulders = Factory.CreateBoolSet(false, 517, 422, 507, 493, 13, 14, 15, 267, 36, 114, 664, 134, 135, 136, 128, 129, 130, 131, 245, 247, 248, 246, 491, 492, 392, 395, 394, 393, 564, 565, 576, 577, 551, 325, 327, 344, 345, 346);
 +
 +		/// <summary>
@@ -666,7 +844,7 @@
  			new int[26] {
  				0,
  				0,
-@@ -5563,6 +_,9 @@
+@@ -5563,13 +_,38 @@
  				2,
  				4,
  				2
@@ -676,6 +854,36 @@
  			}
  		};
  
++		/// <summary>
++		/// Creates a new Town NPC portrait selector.
++		/// </summary>
+ 		public static NPCPortraitSelector PrioritizedPortrait() => new NPCPortraitSelector();
+-		public static BasicNPCPortrait BasicPortrait(string texturePath) => new BasicNPCPortrait(texturePath);
++		/// <summary>
++		/// Creates a new Town NPC portrait with the image provided.
++		/// </summary>
++		/// <param name="texturePath">The path to the image without the file extension.</param>
++		/// <param name="horizontalFrames">If using a sprite sheet with multiple frames, this is the number of horizontal frames in the sheet.</param>
++		/// <param name="verticalFrames">If using a sprite sheet with multiple frames, this is the number of vertical frames in the sheet.</param>
++		/// <param name="paddingX">The number of additional pixels to move the selected frame left or right.</param>
++		/// <param name="paddingY">The number of additional pixels to move the selected frame up or down.</param>
++		/// <param name="frameX">The frame to select from left to right. The leftmost frame is frame 0.</param>
++		/// <param name="frameY">The frame to select from top to bottom. THe topmost frame is frame 0.</param>
++		public static BasicNPCPortrait BasicPortrait(string texturePath, int horizontalFrames = 1, int verticalFrames = 1, int paddingX = 0, int paddingY = 0, int frameX = 0, int frameY = 0) => new(texturePath, horizontalFrames, verticalFrames, paddingX, paddingY, frameX, frameY);
++		/// <summary>
++		/// The Town NPC portrait condition based on the NPC's <see cref="NPC.townNpcVariationIndex"/>.
++		/// </summary>
++		/// <param name="variantIndex">The index for the variant <see cref="NPC.townNpcVariationIndex"/> to check.</param>
++		/// <returns>True if the Town NPC is a matching variant.</returns>
+ 		public static NPCPortraitSelector.SelectionCondition VariantPortraitCondition(int variantIndex) => new NPCVariantChecker(variantIndex).Fits;
+ 
++		/// <summary>
++		/// The Town NPC portrait condition that the Town NPC is <see cref="NPC.IsShimmerVariant"/>.
++		/// </summary>
++		/// <returns>True if the Town NPC that the player is speaking to is a shimmer variant.</returns>
+ 		public static bool ShimmeredPortraitCondition()
+ 		{
+ 			int talkNPC = Main.LocalPlayer.talkNPC;
 @@ -5585,21 +_,34 @@
  			Dictionary<int, NPCBestiaryDrawModifiers> leinforsEntries = GetLeinforsEntries();
  			Dictionary<int, NPCBestiaryDrawModifiers> groxEntries = GetGroxEntries();

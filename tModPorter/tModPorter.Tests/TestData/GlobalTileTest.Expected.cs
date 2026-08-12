@@ -31,4 +31,6 @@ public class GlobalTileTest : GlobalTile {
 	public override void PlaceInWorld(int i, int j, int type, Item item) { /* Empty */ }
 
 	public override void Drop(int i, int j, int type)/* tModPorter Suggestion: Use CanDrop to decide if items can drop, use this method to drop additional items. See documentation. */ { /* Empty */ }
+
+	public override void RandomUpdate(int i, int j, int type, bool underground) { /* Empty */ }
 }

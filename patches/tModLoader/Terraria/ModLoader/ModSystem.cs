@@ -249,7 +249,7 @@ public abstract partial class ModSystem : ModType
 
 	/// <summary>
 	/// Called after the Network got updated, this is the last hook that happens in an update.
-	/// <para/> Called in single player or on the server only.
+	/// <para/> Called on all clients and the server.
 	/// </summary>
 	public virtual void PostUpdateEverything() { }
 
@@ -417,7 +417,7 @@ public abstract partial class ModSystem : ModType
 	public virtual void ResetNearbyTileEffects() { }
 
 	/// <summary>
-	/// Similar to <see cref="ModifyWorldGenTasks(List{GenPass}, ref double)"/>, but occurs in-game when Hardmode starts. Can be used to modify which tasks should be done and/or add custom tasks. <para/>
+	/// Similar to <see cref="ModifyWorldGenTasks(List{GenPass})"/>, but occurs in-game when Hardmode starts. Can be used to modify which tasks should be done and/or add custom tasks. <para/>
 	/// By default the list will only contain 5 items, the vanilla hardmode tasks called "Hardmode Good Remix", "Hardmode Good", "Hardmode Evil", "Hardmode Walls", and "Hardmode Announcement". "Hardmode Good Remix" will only be enabled on <see href="https://terraria.wiki.gg/wiki/Don%27t_dig_up">Don't dig up</see> worlds (<see cref="Main.remixWorld"/>) while "Hardmode Good" and "Hardmode Evil" will be enabled otherwise.<para/>
 	/// To disable or hide tasks, please use <see cref="GenPass.Disable"/> and defensive coding.
 	/// </summary>

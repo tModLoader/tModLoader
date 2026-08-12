@@ -568,6 +568,16 @@
  	public int[] CoordinateHeights {
  		get {
  			if (_tileObjectCoords == null)
+@@ -1123,6 +_,9 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Affects the tile placement preview only. Applies an offset to the tile placement preview for each individual tile within this multitile. Mainly used by vanilla tiles with many subtiles that need manual adjustment due to running into legacy image size limitations. Also used by Item Flask to draw outside the normal tile borders.
++	/// </summary>
+ 	public Rectangle[,] DrawFrameOffsets {
+ 		get {
+ 			if (_tileObjectCoords == null)
 @@ -1157,6 +_,11 @@
  		}
  	}
@@ -883,6 +893,17 @@
  	public static TileObjectData GetTileData(int type, int style, int alternate = 0)
  	{
  		if (type < 0 || type >= _data.Count)
+@@ -5431,6 +_,10 @@
+ 		return tileObjectData;
+ 	}
+ 
++	/// <summary>
++	/// Gets the bounds of the multitile that the tile at the given coordinates (<paramref name="x"/> and <paramref name="y"/>) is a part of. The bounds are returned in tile coordinates, not world coordinates.
++	/// <br/><br/> Returns false if the tile is not part of a multitile (a terrain tile) and the bounds will be set to a 1x1 rectangle at the given coordinates.
++	/// </summary>
+ 	public static bool TryGetTileBounds(int x, int y, out Rectangle bounds)
+ 	{
+ 		bounds = new Rectangle(x, y, 1, 1);
 @@ -5462,6 +_,10 @@
  		return true;
  	}

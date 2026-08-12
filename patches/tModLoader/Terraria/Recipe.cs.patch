@@ -267,10 +267,11 @@
  				RequiredItemEntry requiredItemEntry = recipe.requiredItemQuickLookup[j];
  				if (requiredItemEntry.itemIdOrRecipeGroup == 0)
  					break;
-@@ -434,6 +_,7 @@
+@@ -434,6 +_,8 @@
  		RecipeGroups.Fragment = new RecipeGroup(Lang.misc[51].Key, 3458, 3456, 3457, 3459).Register();
  		RecipeGroups.PressurePlate = new RecipeGroup(Lang.misc[38].Key, 542, 852, 543, 541, 1151, 529, 853, 4261).Register();
  		RecipeGroups.Jellyfish = new RecipeGroup("Misc.Jellyfish", 2436, 2437, 2438).Register();
++		RecipeGroup.AssignKeysToVanillaGroups(); // TML
 +		RecipeGroupHelper.AddRecipeGroups();
  	}
  

@@ -501,7 +501,7 @@ public static partial class SystemLoader
 			}
 		}
 
-		passes.RemoveAll(x => !x.Enabled);
+		// passes.RemoveAll(x => !x.Enabled);
 	}
 
 	public static void PostWorldGen()

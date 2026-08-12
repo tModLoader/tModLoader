@@ -69,7 +69,7 @@
  		new AllPersonalitiesModifier().ModifyShopPrice(info, this);
  		if (_currentHappiness == "")
  			AddHappinessReportText("Content");
-@@ -154,11 +_,19 @@
+@@ -154,11 +_,17 @@
  		return priceAdjustment;
  	}
  
@@ -78,33 +78,96 @@
 +	//TODO: Anything else?
 +	public static string BiomeNameByKey(string biomeNameKey) => Language.GetTextValue(biomeNameKey.StartsWith("Mods.") ? biomeNameKey : "TownNPCMoodBiomes." + biomeNameKey);
  
--	private void AddHappinessReportText(string textKeyInCategory, object substitutes = null)
-+	private void AddHappinessReportText(string textKeyInCategory, object substitutes = null, int otherNPCType = 0)
+ 	private void AddHappinessReportText(string textKeyInCategory, object substitutes = null)
  	{
  		string text = "TownNPCMood_" + NPCID.Search.GetName(_currentNPCBeingTalkedTo.netID);
 +
-+		if (textKeyInCategory == "Princess_LovesNPC")
-+			text = ModContent.GetModNPC(otherNPCType).GetLocalizationKey("TownNPCMood");
-+		else if (_currentNPCBeingTalkedTo.ModNPC is ModNPC modNPC)
++		if (_currentNPCBeingTalkedTo.ModNPC is ModNPC modNPC)
 +			text = modNPC.GetLocalizationKey("TownNPCMood");
 +
  		if (_currentNPCBeingTalkedTo.type == 633 && _currentNPCBeingTalkedTo.altTexture == 2)
  			text += "Transformed";
  
-@@ -166,6 +_,35 @@
+@@ -166,6 +_,129 @@
  		_currentHappiness = _currentHappiness + textValueWith + " ";
  	}
  
++	// Added by TML
++	private void AddHappinessReportTextWithKey(string textKey, string textKeyInCategory, object substitutes = null, int otherNPCType = 0)
++	{
++		if (_currentNPCBeingTalkedTo.type == 633 && _currentNPCBeingTalkedTo.altTexture == 2) {
++			// If the Zoologist is talking about a Mod NPC, use ".Transformed" so the key becomes Mods.ModName.NPCs.NPCName.TownNPCMood.Transformed.BestiaryGirl_AffectionLevelNPC
++			// The reason this check is only in this method and not the other is because the other method is not used for trying to access the otherNPCType's localization keys.
++			if (otherNPCType > NPCID.Count)
++				textKey += ".Transformed";
++			// Else vanilla, the key is TownNPCMood_BestiaryGirlTransformed.AffectionLevelNPC_NPCName
++			else
++				textKey += "Transformed";
++		}
++
++		string textValueWith = Language.GetTextValueWith(textKey + "." + textKeyInCategory, substitutes);
++		_currentHappiness = _currentHappiness + textValueWith + " ";
++	}
++
 +	// Added by TML.
-+	internal void ApplyNpcRelationshipEffect(int npcType, AffectionLevel affectionLevel)
++	internal void ApplyNpcRelationshipEffect(int otherNPCType, AffectionLevel affectionLevel)
 +	{
 +		if (affectionLevel == 0 || !Enum.IsDefined(affectionLevel)) {
 +			return;
 +		}
 +
-+		AddHappinessReportText($"{affectionLevel}NPC", new {
-+			NPCName = NPC.GetFullnameByID(npcType)
-+		});
++		/*
++			If talking to ModNPC
++				Want to use ModNPC's LoveNPC_OtherPerson if exists
++			If talking to Vanilla NPC or ModNPC specific dialogue didn't exist.
++				If talking about a ModNPC
++					Want to use ModNPC's OtherPerson_LoveNPC if exists
++				If talking about a vanilla NPC
++					Want to use TownNPCMood_TalkPerson.LoveNPC_OtherPerson
++				Else, use generic LoveNPC
++		*/
++
++		string otherNPCName = NPCID.Search.GetName(otherNPCType); // Get the name of the other Town NPC.
++		ModNPC talkModNPC = _currentNPCBeingTalkedTo.ModNPC; // ModNPC instance of the Town NPC the player is talking to, if it exists.
++	
++		// If the current Town NPC is a ModNPC
++		// Check to see if there is a localization entry for the other Town NPC defined in our current Town NPC.
++		// Example: Mods.ExampleMod.NPCs.ExamplePerson.TownNPCMood.LoveNPC_Guide
++		// Example: Mods.ExampleMod.NPCs.ExamplePerson.TownNPCMood.LoveNPC_MyMod/MyTownNPC
++		if (talkModNPC != null && Language.Exists($"{talkModNPC.GetLocalizationKey("TownNPCMood")}.{affectionLevel}NPC_{otherNPCName}")) {
++			// If it does exist, add the happiness report.
++			AddHappinessReportTextWithKey(talkModNPC.GetLocalizationKey("TownNPCMood"), $"{affectionLevel}NPC_{otherNPCName}", new {
++				NPCName = NPC.GetFullnameByID(otherNPCType)
++			});
++		}
++		// Vanilla NPC or ModNPC specific dialogue didn't exist.
++		else {
++			ModNPC otherModNPC = ModContent.GetModNPC(otherNPCType); // ModNPC instance of the other Town NPC, if it exists.
++			string talkNPCName = NPCID.Search.GetName(_currentNPCBeingTalkedTo.netID); // Get the name of the Town NPC the player is talking to.
++
++			// Talking about a ModNPC. We want to use the OtherModNPC's entry for the Town NPC the player is talking to, if it exists.
++			// Example: Mods.ExampleMod.NPCs.ExamplePerson.TownNPCMood.Guide_LoveNPC
++			// Example: Mods.ExampleMod.NPCs.ExamplePerson.TownNPCMood.MyMod/MyTownNPC_LoveNPC
++			if (otherModNPC != null && Language.Exists($"{otherModNPC.GetLocalizationKey("TownNPCMood")}.{talkNPCName}_{affectionLevel}sNPC")) {
++				AddHappinessReportTextWithKey(otherModNPC.GetLocalizationKey("TownNPCMood"), $"{talkNPCName}_{affectionLevel}sNPC", new {
++					NPCName = NPC.GetFullnameByID(otherNPCType)
++				},
++				otherNPCType);
++			}
++			// Try for vanilla NPC talking about another vanilla NPC.
++			// Example: TownNPCMood_Guide.LoveNPC_Merchant
++			else if (Language.Exists($"TownNPCMood_{talkNPCName}.{affectionLevel}NPC_{otherNPCName}")) {
++				AddHappinessReportTextWithKey($"TownNPCMood_{talkNPCName}", $"{affectionLevel}NPC_{otherNPCName}", new {
++					NPCName = NPC.GetFullnameByID(otherNPCType)
++				});
++			}
++			// If nothing above was true, add the generic dialogue.
++			else {
++				AddHappinessReportText($"{affectionLevel}NPC", new {
++					NPCName = NPC.GetFullnameByID(otherNPCType)
++				});
++			}
++		}
 +
 +		_currentPriceAdjustment *= NPCHappiness.AffectionLevelToPriceMultiplier[affectionLevel];
 +	}
@@ -116,9 +179,37 @@
 +			return;
 +		}
 +
-+		AddHappinessReportText($"{affectionLevel}Biome", new {
-+			BiomeName = BiomeNameByKey(biomeNameKey)
-+		});
++		ModNPC talkModNPC = _currentNPCBeingTalkedTo.ModNPC; // ModNPC instance of the Town NPC the player is talking to, if it exists.
++		string talkNPCName = NPCID.Search.GetName(_currentNPCBeingTalkedTo.netID); // Get the name of the Town NPC the player is talking to.
++
++		// Vanilla biomes are just a name. Example: "Forest"
++		// Modded biomes are localization path. Example: "Mods.ExampleMod.Biomes.ExampleSurfaceBiome.TownNPCDialogueName"
++		string biomeName = biomeNameKey;
++		if (biomeNameKey.StartsWith("Mods.")) {
++			string[] splitBiomeName = biomeName.Split('.');
++			biomeName = $"{splitBiomeName[1]}/{splitBiomeName[3]}"; // Construct the ModName/ModBiomeName. Example: "ExampleMod/ExampleSurfaceBiome"
++		}
++
++		// If the current Town NPC is a ModNPC
++		// Check to see if there is a localization entry for the biome defined in our current Town NPC.
++		if (talkModNPC != null && Language.Exists($"{talkModNPC.GetLocalizationKey("TownNPCMood")}.{affectionLevel}Biome_{biomeName}")) {
++			// If it does exist, add the happiness report.
++			AddHappinessReportTextWithKey(talkModNPC.GetLocalizationKey("TownNPCMood"), $"{affectionLevel}Biome_{biomeName}", new {
++				BiomeName = BiomeNameByKey(biomeNameKey)
++			});
++		}
++		// Try for vanilla NPC talking about the biome.
++		else if (Language.Exists($"TownNPCMood_{talkNPCName}.{affectionLevel}Biome_{biomeName}")) {
++			AddHappinessReportTextWithKey($"TownNPCMood_{talkNPCName}", $"{affectionLevel}Biome_{biomeName}", new {
++				BiomeName = BiomeNameByKey(biomeNameKey)
++			});
++		}
++		// Else, generic biome dialogue.
++		else {
++			AddHappinessReportText($"{affectionLevel}Biome", new {
++				BiomeName = BiomeNameByKey(biomeNameKey)
++			});
++		}
 +
 +		_currentPriceAdjustment *= NPCHappiness.AffectionLevelToPriceMultiplier[affectionLevel];
 +	}
@@ -127,49 +218,6 @@
  	public void LikeBiome(string nameKey)
  	{
  		AddHappinessReportText("LikeBiome", new {
-@@ -210,25 +_,38 @@
- 
- 		_currentPriceAdjustment *= 0.94f;
- 	}
-+	*/
- 
-+	//TML: Made internal.
--	public void LoveNPCByTypeName(int npcType)
-+	internal void LoveNPCByTypeName(int npcType)
- 	{
-+		if (npcType >= NPCID.Count && _currentNPCBeingTalkedTo.type == 663) {
-+			// Princess text for liking modded npcs located with the text for the modnpc itself, not with the princess text. Revisit this if https://github.com/tModLoader/tModLoader/issues/3493 is ever implemented.
-+			AddHappinessReportText("Princess_LovesNPC", new {
-+				NPCName = NPC.GetFullnameByID(npcType)
-+			}, npcType);
-+			goto PriceAdjustment;
-+		}
-+
- 		AddHappinessReportText("LoveNPC_" + NPCID.Search.GetName(npcType), new {
- 			NPCName = NPC.GetFullnameByID(npcType)
- 		});
- 
--		_currentPriceAdjustment *= 0.88f;
-+		PriceAdjustment:
-+		_currentPriceAdjustment *= NPCHappiness.AffectionLevelToPriceMultiplier[AffectionLevel.Love];
- 	}
- 
-+	//TML: Made internal.
--	public void LikePrincess()
-+	internal void LikePrincess()
- 	{
- 		AddHappinessReportText("LikeNPC_Princess", new {
- 			NPCName = NPC.GetFullnameByID(663)
- 		});
- 
--		_currentPriceAdjustment *= 0.94f;
-+		_currentPriceAdjustment *= NPCHappiness.AffectionLevelToPriceMultiplier[AffectionLevel.Like];
- 	}
- 
-+	/*
- 	public void LoveNPC(int npcType)
- 	{
- 		AddHappinessReportText("LoveNPC", new {
 @@ -255,6 +_,7 @@
  
  		_currentPriceAdjustment *= 1.12f;

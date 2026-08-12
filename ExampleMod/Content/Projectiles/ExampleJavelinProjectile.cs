@@ -47,7 +47,6 @@ namespace ExampleMod.Content.Projectiles
 			Projectile.light = 0.5f; // How much light emit around the projectile
 			Projectile.ignoreWater = true; // Does the projectile's speed be influenced by water?
 			Projectile.tileCollide = true; // Can the projectile collide with tiles?
-			Projectile.hide = true; // Makes the projectile completely invisible. We need this to draw our projectile behind enemies/tiles in DrawBehind()
 			Projectile.drawLayer = ProjectileDrawLayerID.BehindProjectiles;
 		}
 

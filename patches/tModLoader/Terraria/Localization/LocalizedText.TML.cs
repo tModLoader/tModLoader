@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Terraria.ModLoader.Core;
 
 namespace Terraria.Localization;
@@ -29,10 +30,12 @@ public partial class LocalizedText
 	/// <returns></returns>
 	public LocalizedText WithFormatArgs(params object[] args) => LanguageManager.Instance.BindFormatArgs(Key, args);
 
-	internal void BindArgs(object[] args)
+	internal void BindArgs(LocalizedText original, object[] args)
 	{
+		Debug.Assert(Key == original.Key);
 		// TODO, consider if we should do partial binding, shifting the higher args down
-		SetValue(Format(args));
+		SetValue(original.Format(args));
+		EnglishValue = original.EnglishValue; // keep the unformatted english value on all langs, for consistency, though we don't expect it to be used for anything other than HasValue
 		BoundArgs = args;
 	}
 }

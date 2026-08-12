@@ -39,6 +39,7 @@ namespace ExampleMod.Content.Items.Accessories
 					return returnValue;
 				});
 			}
+#pragma warning disable CS0168 // Variable is declared but never used (due to commented code below)
 			catch (Exception e) {
 				// If there are any failures with the IL editing, this method will dump the IL to Logs/ILDumps/{Mod Name}/{Method Name}.txt
 				MonoModHooks.DumpIL(ModContent.GetInstance<ExampleMod>(), il);
@@ -46,6 +47,7 @@ namespace ExampleMod.Content.Items.Accessories
 				// If the mod cannot run without the IL hook, throw an exception instead. The exception will call DumpIL internally
 				// throw new ILPatchFailureException(ModContent.GetInstance<ExampleMod>(), il, e);
 			}
+#pragma warning restore CS0168
 		}
 
 		public override void SetDefaults() {

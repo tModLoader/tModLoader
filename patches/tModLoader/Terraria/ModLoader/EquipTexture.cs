@@ -1,4 +1,5 @@
 using Microsoft.Xna.Framework;
+using Terraria.DataStructures;
 
 namespace Terraria.ModLoader;
 
@@ -29,6 +30,7 @@ public class EquipTexture
 
 	/// <summary>
 	/// The item that is associated with this equipment texture. Null if no item is associated with this.
+	/// <para/> Note that this item is a template item and will not be the same instance as the item in an inventory.
 	/// </summary>
 	public ModItem Item { get; internal set; }
 
@@ -109,6 +111,8 @@ public class EquipTexture
 
 	/// <summary>
 	/// Allows you to modify the colors in which this armor texture and surrounding accessories are drawn, in addition to which glow mask and in what color is drawn. By default this will call the associated ModItem's <see cref="ModItem.DrawArmorColor(Player, float, ref Color, ref int, ref Color)"/> if there is an associated ModItem.
+	/// <br/><br/> Note that the <paramref name="glowMask"/> parameter will only work with existing glowmask textures until glowmask support is added.
+	/// <br/><br/> Note that the <paramref name="glowMask"/> parameter will only work with existing glowmask textures (<see cref="ID.GlowMaskID"/> until custom glowmask support is added. You can use <see cref="ModifyDraw"/> and manually add a DrawData for the glowmask instead.
 	/// </summary>
 	/// <param name="drawPlayer"></param>
 	/// <param name="shadow"></param>
@@ -176,5 +180,16 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	public virtual bool WingUpdate(Player player, bool inUse)
 	{
 		return Item?.WingUpdate(player, inUse) ?? false;
+	}
+
+	/// <summary>
+	/// Allows customization of the <see cref="DrawData"/> responsible for drawing this <see cref="EquipTexture"/>. Additional <see cref="DrawData"/> can be added to <paramref name="drawInfo"/> for more advanced drawing if needed.
+	/// <br/><br/> <paramref name="methodName"/> is the name of the method being hooked into. Some <see cref="EquipType"/> are drawn multiple times depending on layering, this provides that context if relevant.
+	/// <br/><br/> Note that the default behavior of this hook is to call and return the return value of the <see cref="ModItem.ModifyEquipTextureDraw"/> hook on the associated ModItem, if it exists.
+	/// <br/><br/> Return false to stop the game from adding the <paramref name="drawData"/> to the player drawing. Returns true if not associated with a ModItem.
+	/// </summary>
+	public virtual bool ModifyDraw(ref PlayerDrawSet drawInfo, ref DrawData drawData, string methodName)
+	{
+		return Item?.ModifyEquipTextureDraw(ref drawInfo, ref drawData, this, methodName) ?? true;
 	}
 }

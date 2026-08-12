@@ -40,24 +40,6 @@
 +	/// </summary>
 +	/// <returns>This <see cref="Item"/>'s hitbox in the world.</returns>
  	public Rectangle getRect() => new Rectangle((int)position.X, (int)position.Y, width, height);
- 
-+	// Removed in favor of UpdateWhichItemsAreMaterials logic
-+	/*
- 	public bool checkMat()
- 	{
- 		if (type >= 71 && type <= 74) {
-@@ -839,9 +_,11 @@
- 
- 				material = false;
- 				return false;
-+				// Extra patch context.
- 			}
- 		}
- 	}
-+	*/
- 
- 	public void netDefaults(int type)
- 	{
 @@ -47737,6 +_,8 @@
  					stack *= 1000000;
  					break;
@@ -147,15 +129,6 @@
  				gravity = 0f;
  				velocity.X = 0f;
  				velocity.Y = 0f;
-@@ -48124,6 +_,8 @@
- 			timeSinceItemSpawned += num7;
- 		}
- 
-+		ItemLoader.PostUpdate(this);
-+
- 		if (Main.netMode == 2 && playerIndexTheItemIsReservedFor != Main.myPlayer) {
- 			timeSinceTheItemHasBeenReservedForSomeone++;
- 			if (timeSinceTheItemHasBeenReservedForSomeone >= 300) {
 @@ -48274,7 +_,7 @@
  
  			NetMessage.SendData(21, -1, -1, null, i);
@@ -165,15 +138,6 @@
  			active = false;
  			type = 0;
  			stack = 0;
-@@ -48285,6 +_,8 @@
- 
- 	private void MoveInWorld(float gravity, float maxFallSpeed, ref Vector2 wetVelocity, int i)
- 	{
-+		ItemLoader.Update(this, ref gravity, ref maxFallSpeed);
-+
- 		if (!shimmered && ItemID.Sets.ItemNoGravity[type]) {
- 			velocity.X *= 0.95f;
- 			if ((double)velocity.X < 0.1 && (double)velocity.X > -0.1)
 @@ -48553,7 +_,7 @@
  		Rectangle hitbox = base.Hitbox;
  		for (int j = 0; j < 200; j++) {
@@ -183,33 +147,6 @@
  				flag3 = true;
  				NPC.TransformCopperSlime(j);
  				break;
-@@ -48669,14 +_,26 @@
- 				num2 *= 2;
- 
- 			if (num < (float)num2) {
-+				if (!ItemLoader.CanStack(this, item))
-+					continue;
-+
-+				if (!ItemLoader.CanStackInWorld(this, item))
-+					continue;
-+
- 				position = (position + item.position) / 2f;
- 				velocity = (velocity + item.velocity) / 2f;
-+
-+				ItemLoader.StackItems(this, item, out _);
-+
-+				/* #OnStackHook
- 				int num3 = item.stack;
- 				if (num3 > maxStack - stack)
- 					num3 = maxStack - stack;
- 
- 				item.stack -= num3;
- 				stack += num3;
-+				*/
-+
- 				if (item.stack <= 0) {
- 					item.SetDefaults();
- 					item.active = false;
 @@ -49077,6 +_,16 @@
  			case 4070:
  				return TextureAssets.Item[type].Frame(1, 4);

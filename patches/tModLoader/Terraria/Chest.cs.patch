@@ -567,7 +567,7 @@
  					array[num].SetDefaults(1978);
  					num++;
  				}
-@@ -2986,7 +_,30 @@
+@@ -2986,7 +_,36 @@
  		}
  	}
  
@@ -582,6 +582,12 @@
 +				Main.NewText(Language.GetTextValue("tModLoader.ShopOverflow"), Color.Orange);
 +				Logging.tML.Warn($"Unable to fit all item in the shop {shopName}");
 +			}
++		}
++		else {
++			if (ModLoader.Core.ModCompile.activelyModding)
++				Main.NewText(Language.GetText("tModLoader.UnknownShop").WithFormatArgs(shopName).Value, Color.Orange);
++
++			Logging.tML.Warn($"Tried to open a shop with an unknown shop name: {shopName}");
 +		}
 +
 +		if (npc != null) // not that it's valid to call SetupShop without an npc, except when testing

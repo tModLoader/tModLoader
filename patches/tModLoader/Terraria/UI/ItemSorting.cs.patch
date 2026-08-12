@@ -55,12 +55,11 @@
  		if (num == 0)
  			num = x.Index.CompareTo(y.Index);
  
-@@ -1251,6 +_,10 @@
+@@ -1251,6 +_,9 @@
  
  				Item item3 = inv[_sort_itemsToSort[k]];
  				if (Item.CanStack(item2, item3) && item3.stack != item3.maxStack) {
-+					if (!ItemLoader.TryStackItems(item2, item3, out _))
-+						continue;
++					ItemLoader.StackItems(item2, item3, out _);
 +
 +					/* #OnStackHook
  					int num2 = item3.stack;

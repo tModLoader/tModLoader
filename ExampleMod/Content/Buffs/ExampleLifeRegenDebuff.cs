@@ -12,7 +12,7 @@ namespace ExampleMod.Content.Buffs
 			Main.debuff[Type] = true;  // Is it a debuff?
 			Main.pvpBuff[Type] = true; // Players can give other players buffs, which are listed as pvpBuff
 			Main.buffNoSave[Type] = true; // Causes this buff not to persist when exiting and rejoining the world
-			BuffID.Sets.LongerExpertDebuff[Type] = true; // If this buff is a debuff, setting this to true will make this buff last twice as long on players in expert mode
+			BuffID.Sets.BuffTimeIsExtendedWithGameDifficulty[Type] = true; // Makes higher game difficulties extend this buff's duration
 		}
 
 		// Allows you to make this buff give certain effects to the given player

@@ -76,6 +76,13 @@ namespace ExampleMod.Content.NPCs
 				new Profiles.DefaultNPCProfile(Texture, -1),
 				new Profiles.DefaultNPCProfile(Texture + "_Shimmer", -1)
 			);
+
+			// Here we define which portrait to use for the Town NPC when the portrait style setting is set to detailed.
+			NPCID.Sets.NPCPortraits.Add(Type, NPCID.Sets.PrioritizedPortrait()
+				.With(NPCID.Sets.ShimmeredPortraitCondition, NPCID.Sets.BasicPortrait($"{Texture}_Shimmer_Portrait")) // This is the portrait to use while the Town NPC is shimmered.
+				.Default(NPCID.Sets.BasicPortrait($"{Texture}_Portrait"))); // Default portrait to use (not shimmered).
+			NPCID.Sets.NPCPortraitsCloseUpOffsets.Add(Type, new Vector2(-3f, 0f)); // Here we can change the offsets of Town NPC when the portrait style setting is set to profile.
+			//NPCID.Sets.NPCPortraitsFullBodyRetroOffsets.Add(Type, new Vector2(0f, 0f)); // Here we can change the offsets of Town NPC when the portrait style setting is set to retro.
 		}
 
 		public override void SetDefaults() {
@@ -173,14 +180,11 @@ namespace ExampleMod.Content.NPCs
 			return chat; // chat is implicitly cast to a string.
 		}
 
-		public override void SetChatButtons(ref string button, ref string button2) { // What the chat buttons are when you open up the chat UI
-			button = Language.GetTextValue("LegacyInterface.28"); // This is the key to the word "Shop"
-		}
-
-		public override void OnChatButtonClicked(bool firstButton, ref string shop) {
-			if (firstButton) {
-				shop = "Shop";
-			}
+		public override void RegisterChatButtons(NPCInteractionList interactions) {
+			// Here is one way to assign a Shop button to our NPC.
+			// In this example, we are inserting the button before the close button, so it'll be the first button.
+			// Since we didn't pass a shop name in NPCInteractions.Shop(), it will default to "Shop".
+			interactions.InsertBefore(NPCInteractions.Shop(), NPCInteractionDatabase.CloseButton);
 		}
 
 		public override void AddShops() {

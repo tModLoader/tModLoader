@@ -48,6 +48,9 @@ public partial class UIWorldListItem : AWorldListItem
 		};
 
 		float topRightButtonsLeftPixels = 0f;
+		if (_hasBeenPlayedByActivePlayer || _isNewlyGenerated)
+			topRightButtonsLeftPixels -= 24;
+
 		warningLabel.Top.Set(3f, 0f);
 
 		Append(warningLabel);

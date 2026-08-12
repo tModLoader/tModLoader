@@ -336,7 +336,7 @@
  
  		Main.fastForwardTimeToDawn = false;
  		Main.fastForwardTimeToDusk = false;
-@@ -5414,7 +_,10 @@
+@@ -5414,7 +_,14 @@
  
  	public static void SaveAndQuit(Action callback = null)
  	{
@@ -344,6 +344,10 @@
 +		/*
  		SoundEngine.PlaySound(11);
 +		*/
++
++		Social.Steam.SteamedWraps.StopPlaytimeTracking(); // Added by TML
++		SystemLoader.PreSaveAndQuit();
++
  		StopWaterfallAmbienceAudio();
  		Main.invasionProgress = -1;
  		Main.invasionProgressDisplayLeft = 0;
@@ -578,6 +582,46 @@
  	public static bool IsDungeonPlatformOrShelf(Tile bottomTile)
  	{
  		if (bottomTile == null || !bottomTile.active() || bottomTile.type != 19)
+@@ -9611,15 +_,19 @@
+ 	public static void AddPasses()
+ 	{
+ 		AddGenerationPass(new TerrainPass());
++		/* // Note: skyblockWorldGen && !Skyblock.denyAllGeneration can never be true.
+ 		if (skyblockWorldGen) {
+ 			if (!Skyblock.denyAllGeneration)
+ 				AddGenerationPass(new JunglePass());
++		*/
+ 
+ 			AddGenerationPass(GenPassNameID.Skyblock, delegate (GenerationProgress progress, GameConfiguration passConfig) {
+ 				progress.Message = Lang.gen[12].Value;
+ 				GenerateSkyBlockWorld(progress);
+ 			});
++		/*
+ 		}
++		*/
+ 
+ 		AddGenerationPass(GenPassNameID.DunesAndPyramidLocations, delegate (GenerationProgress progress, GameConfiguration passConfig) {
+ 			DungeonCrawler.SetupDungeonGenVarVariables(GenVars.CurrentDungeonGenVars, genRand);
+@@ -10428,7 +_,9 @@
+ 			}
+ 		});
+ 
++		/*
+ 		if (!Skyblock.denyAllGeneration)
++		*/
+ 			AddGenerationPass(new JunglePass());
+ 
+ 		AddGenerationPass(GenPassNameID.MudCavesToJungleGrass, delegate (GenerationProgress progress, GameConfiguration passConfig) {
+@@ -12266,7 +_,9 @@
+ 			}
+ 		});
+ 
++		/*
+ 		if (!Skyblock.denyAllGeneration && SecretSeed.dualDungeons.Enabled)
++		*/
+ 			AddGenerationPass(new DitherSnakePass(GenPassNameID.DualDungeonsDitherSnake));
+ 
+ 		AddGenerationPass(GenPassNameID.Dungeon, delegate (GenerationProgress progress, GameConfiguration passConfig) {
 @@ -13347,10 +_,11 @@
  							int num698 = 0;
  							while (!flag51 && num698 < 100) {
@@ -709,6 +753,22 @@
  					bool flag2 = TileID.Sets.Dirt[tile7.type];
  					if (notTheBees)
  						flag2 = flag2 || TileID.Sets.Mud[tile7.type];
+@@ -18709,6 +_,15 @@
+ 
+ 	public static void DisablePassesForSpecialSeeds(List<GenPass> passes)
+ 	{
++		// TML: Moving conditional pass logic from AddPasses here since vanilla passes are collected at load time in TML.
++		if (!skyblockWorldGen)
++			VanillaGenPasses[GenPassNameID.Skyblock].Disable();
++		if (Skyblock.denyAllGeneration)
++			VanillaGenPasses[GenPassNameID.Jungle].Disable();
++		if (Skyblock.denyAllGeneration || !SecretSeed.dualDungeons.Enabled)
++			VanillaGenPasses[GenPassNameID.DualDungeonsDitherSnake].Disable();
++		// end TML
++
+ 		bool enabled = SecretSeed.dualDungeons.Enabled;
+ 		if (!enabled)
+ 			return;
 @@ -18730,8 +_,11 @@
  	public static void Finish()
  	{
@@ -849,7 +909,15 @@
  		}
  	}
  
-@@ -24568,7 +_,7 @@
+@@ -24565,10 +_,15 @@
+ 		return false;
+ 	}
+ 
++	/// <summary>
++	/// Attempts to grow a tree at the specified tile coordinates. Returns true if the tree was successfully grown, false otherwise.
++	/// <para/> <paramref name="treeHeightAddon"/> adds additional height to the resulting tree, such as if grown by <see cref="ItemID.SuperFertilizer"/>. <paramref name="ignoreWalls"/> when true ignores wall restrictions that usually apply to natural tree growth. See also <see cref="WallID.Sets.AllowsPlantsToGrow"/>.
++	/// <para/> Note that this can be used to directly grow trees during world generation without placing a sapling first.
++	/// </summary>
  	public static bool GrowTree(int i, int y, int treeHeightAddon = 0, bool ignoreWalls = false)
  	{
  		int j;
@@ -956,11 +1024,11 @@
 +		hardmodeTasks.Add(HardmodeEvilPass);
 +
 +		// Main.remixWorld and dualDungeonsSeed checks removed from Pass code, we want all passes present in the list no matter what and disable those that don't apply for consistency with other tModLoader approaches and modder expectations. #3606 discussion
-+		if (Main.remixWorld || flag) {
++		if (Main.remixWorld || !flag) {
 +			HardmodeGoodPass.Disable();
 +			HardmodeEvilPass.Disable();
 +		}
-+		else if (!Main.remixWorld || flag) {
++		if (!Main.remixWorld || !flag) {
 +			HardmodeGoodRemixPass.Disable();
 +		}
 +
@@ -979,25 +1047,27 @@
  		double num9 = (double)Main.maxTilesX / 4200.0;
  		int num10 = (int)(25.0 * num9);
  		ShapeData shapeData = new ShapeData();
-@@ -26319,7 +_,7 @@
+@@ -26319,7 +_,9 @@
  
  		int frameX = Main.tile[i, j].frameX;
  		Tile tile = Main.tile[i, j];
 -		if (tile.type != 11)
-+		if (TileLoader.CloseDoorID(Main.tile[i, j]) < 0)
++		var openDoorID = tile.TileType;
++		var closeDoorID = TileLoader.CloseDoorID(tile);
++		if (closeDoorID < 0)
  			return false;
  
  		int num4 = tile.frameY;
-@@ -26369,15 +_,18 @@
- 		if (!ValidateTileSquareIsActiveAndOfType(num7, num3, 2, 3, 11))
+@@ -26366,7 +_,7 @@
+ 			}
+ 		}
+ 
+-		if (!ValidateTileSquareIsActiveAndOfType(num7, num3, 2, 3, 11))
++		if (!ValidateTileSquareIsActiveAndOfType(num7, num3, 2, 3, openDoorID))
  			return false;
  
-+		ushort closeDoorID = (ushort)TileLoader.CloseDoorID(tile);
-+		ushort openDoorID = (ushort)TileLoader.OpenDoorID(tile);
-+
  		for (int l = num7; l < num7 + 2; l++) {
- 			for (int m = num3; m < num3 + 3; m++) {
- 				if (Main.tile[l, m] == null)
+@@ -26375,9 +_,9 @@
  					Main.tile[l, m] = new Tile();
  
  				Tile tile2 = Main.tile[l, m];
@@ -1005,7 +1075,7 @@
 + 				if (tile2.active() && tile2.type == openDoorID) {
  					if (l == num2) {
 -						tile2.type = 10;
-+						tile2.type = closeDoorID;
++						tile2.type = (ushort)closeDoorID;
  						tile2.frameX = (short)(genRand.Next(3) * 18 + num6);
  					}
  					else {
@@ -1046,29 +1116,37 @@
  	public static bool AddBuriedChest(int i, int j, out Point chestLocation, int mainItemInChest = 0, bool notNearOtherChests = false, int chestStyle = -1, bool trySlope = false, ushort chestTileType = 0)
  	{
  		chestLocation = Point.Zero;
-@@ -31178,9 +_,10 @@
+@@ -31178,9 +_,12 @@
  			Main.tile[i, j] = new Tile();
  
  		Tile tile = Main.tile[i, j];
 -		if (tile.type != 10)
-+		if (TileLoader.OpenDoorID(tile) < 0)
++		var closedDoorID = tile.TileType;
++		var openDoorID = TileLoader.OpenDoorID(tile); // All instances of type 11 are replaced with this below.
++		if (openDoorID < 0)
  			return false;
  
 +		// Extra patch context.
  		if (IsLockedDoor(tile))
  			return false;
  
-@@ -31246,8 +_,12 @@
+@@ -31200,7 +_,7 @@
+ 
+ 		num = j - num3 / 18;
+ 		int num6 = i;
+-		if (!ValidateTileSquareIsActiveAndOfType(num6, num, 1, 3, 10))
++		if (!ValidateTileSquareIsActiveAndOfType(num6, num, 1, 3, closedDoorID))
+ 			return false;
+ 
+ 		TileColorCache cache = Main.tile[num6, num].BlockColorAndCoating();
+@@ -31246,8 +_,9 @@
  
  		int num8 = num4 % 36 * 54;
  		SoundEngine.PlaySound(8, i * 16, j * 16);
 +
-+		// All instances of type 11 are replaced with this below.
-+		ushort openDoorID = (ushort)TileLoader.OpenDoorID(Main.tile[i, j]);
-+
  		Main.tile[num6, num].active(active: true);
 -		Main.tile[num6, num].type = 11;
-+		Main.tile[num6, num].type = openDoorID;
++		Main.tile[num6, num].type = (ushort)openDoorID;
  		Main.tile[num6, num].frameY = (short)num8;
  		Main.tile[num6, num].frameX = num2;
  		Main.tile[num6, num].UseBlockColors(cache);
@@ -1077,7 +1155,7 @@
  
  		Main.tile[num6 + 1, num].active(active: true);
 -		Main.tile[num6 + 1, num].type = 11;
-+		Main.tile[num6 + 1, num].type = openDoorID;
++		Main.tile[num6 + 1, num].type = (ushort)openDoorID;
  		Main.tile[num6 + 1, num].frameY = (short)num8;
  		Main.tile[num6 + 1, num].frameX = (short)(num2 + 18);
  		Main.tile[num6 + 1, num].UseBlockColors(cache);
@@ -1086,7 +1164,7 @@
  
  		Main.tile[num6, num + 1].active(active: true);
 -		Main.tile[num6, num + 1].type = 11;
-+		Main.tile[num6, num + 1].type = openDoorID;
++		Main.tile[num6, num + 1].type = (ushort)openDoorID;
  		Main.tile[num6, num + 1].frameY = (short)(num8 + 18);
  		Main.tile[num6, num + 1].frameX = num2;
  		Main.tile[num6, num + 1].UseBlockColors(cache2);
@@ -1095,7 +1173,7 @@
  
  		Main.tile[num6 + 1, num + 1].active(active: true);
 -		Main.tile[num6 + 1, num + 1].type = 11;
-+		Main.tile[num6 + 1, num + 1].type = openDoorID;
++		Main.tile[num6 + 1, num + 1].type = (ushort)openDoorID;
  		Main.tile[num6 + 1, num + 1].frameY = (short)(num8 + 18);
  		Main.tile[num6 + 1, num + 1].frameX = (short)(num2 + 18);
  		Main.tile[num6 + 1, num + 1].UseBlockColors(cache2);
@@ -1104,7 +1182,7 @@
  
  		Main.tile[num6, num + 2].active(active: true);
 -		Main.tile[num6, num + 2].type = 11;
-+		Main.tile[num6, num + 2].type = openDoorID;
++		Main.tile[num6, num + 2].type = (ushort)openDoorID;
  		Main.tile[num6, num + 2].frameY = (short)(num8 + 36);
  		Main.tile[num6, num + 2].frameX = num2;
  		Main.tile[num6, num + 2].UseBlockColors(cache3);
@@ -1113,7 +1191,7 @@
  
  		Main.tile[num6 + 1, num + 2].active(active: true);
 -		Main.tile[num6 + 1, num + 2].type = 11;
-+		Main.tile[num6 + 1, num + 2].type = openDoorID;
++		Main.tile[num6 + 1, num + 2].type = (ushort)openDoorID;
  		Main.tile[num6 + 1, num + 2].frameY = (short)(num8 + 36);
  		Main.tile[num6 + 1, num + 2].frameX = (short)(num2 + 18);
  		Main.tile[num6 + 1, num + 2].UseBlockColors(cache3);
@@ -1972,7 +2050,7 @@
  			return false;
  
  		if (!InWorld(i, j, 2))
-@@ -46297,8 +_,28 @@
+@@ -46297,6 +_,25 @@
  			Main.tile[x + 1, y].type = (ushort)newType;
  	}
  
@@ -1997,10 +2075,32 @@
 +	/// <param name="walls">If the conversion should affect walls</param>
  	public static void Convert(int i, int j, int conversionType, int size, bool tiles = true, bool walls = true)
  	{
-+		using var recursionCounter = new ConversionRecursion();
  		if (!tiles && !walls)
+@@ -46321,6 +_,10 @@
+ 		if (!theTile.active() && wall <= 0)
  			return;
  
++		using var recursionCounter = new ConversionRecursion();
++		walls = walls && wall > 0 && WallLoader.Convert(i2, j2, conversionType);
++		tiles = tiles && theTile.HasTile && TileLoader.Convert(i2, j2, conversionType);
++
+ 		switch (conversionType) {
+ 			case 4:
+ 				if (walls) {
+@@ -47093,6 +_,13 @@
+ 				break;
+ 			}
+ 		}
++
++		if (conversionRecursionDepth == 1) {
++			if (type != theTile.TileType) 
++				TileLoader.OnTileConverted(i2, j2, type, theTile.type, conversionType);
++			if (wall != theTile.WallType) 
++				WallLoader.OnWallConverted(i2, j2, wall, theTile.wall, conversionType);
++		}
+ 	}
+ 
+ 	public static void Convert_ActuallyConvertTorch(int conversionType, int x, int y, ref Tile theTile, int newStyle)
 @@ -47356,7 +_,7 @@
  		if ((!Main.remixWorld || !((double)j > Main.worldSurface)) && num3 / 255 > cactusWaterLimit)
  			return;
@@ -2195,6 +2295,33 @@
  						switch (num) {
  							case 127:
  								SoundEngine.PlaySound(SoundID.Item30, i * 16, j * 16);
+@@ -50423,7 +_,7 @@
+ 
+ 	private static bool ValidAnchorForMultiDirectionalTile(int x, int y, Tile tileCache, int direction)
+ 	{
+-		if (tileCache != null && tileCache.type >= 0 && !TileID.Sets.Boulders[tileCache.type] && tileCache.type != 10) {
++		if (tileCache != null && tileCache.type >= 0 && !TileID.Sets.Boulders[tileCache.type] && !TileLoader.IsClosedDoor(tileCache.type)) {
+ 			if ((direction != 0 || !SolidTileAllowTopSlope(x, y)) && (direction != 1 || !SolidTileAllowBottomSlope(x, y)) && (direction != 2 || !SolidTileAllowLeftSlope(x, y))) {
+ 				if (direction == 3)
+ 					return SolidTileAllowRightSlope(x, y);
+@@ -50437,6 +_,17 @@
+ 		return false;
+ 	}
+ 
++	/// <summary>
++	/// Checks whether a multi-directional tile (such as <see cref="TileID.ExposedGems"/> or <see cref="TileID.Crystals"/>) at the specified coordinates can be anchored and returns the new direction the tile should face.
++	/// <paramref name="newFrameDirection"/> values are as follows:
++	/// <br/><br/> <paramref name="newFrameDirection"/> values indicate the direction the tile is now pointing, which is the opposite of the direction they are anchored to:
++	/// <br/> <b>0:</b> Up
++	/// <br/> <b>1:</b> Down
++	/// <br/> <b>2:</b> Right
++	/// <br/> <b>3:</b> Left
++	/// <br/><br/> If true is returned, adjust the tile's frame values to match the new direction.
++	/// <br/><br/> Returns false if no valid anchor exists, in which case the tile should be destroyed with <c>WorldGen.KillTile(i, j);</c>
++	/// </summary>
+ 	public static bool CheckAndAdjustMultiDirectionalTile(int i, int j, int type, out int newFrameDirection)
+ 	{
+ 		newFrameDirection = 0;
 @@ -50501,10 +_,15 @@
  			return;
  
@@ -2687,7 +2814,17 @@
  		return false;
  	}
  
-@@ -58347,9 +_,17 @@
+@@ -58333,6 +_,9 @@
+ 	public static IEntitySource GetItemSource_FromWallBreak(int x, int y) => new EntitySource_TileBreak(x, y);
+ 	public static IEntitySource GetItemSource_FromTreeShake(int x, int y) => new EntitySource_ShakeTree(x, y);
+ 
++	/// <summary>
++	/// Returns true if any player is "located on screen" of the tile coordinates provided. Technically it checks a little farther than the normal max gameplay dimensions. Used for things like spawning tree leaves when trees grow near players or preventing the cultists from spawning when players are nearby. 
++	/// </summary>
+ 	public static bool PlayerLOS(int x, int y)
+ 	{
+ 		Rectangle rectangle = new Rectangle(x * 16, y * 16, 16, 16);
+@@ -58347,6 +_,11 @@
  		return false;
  	}
  
@@ -2698,13 +2835,7 @@
 +	/// </summary>
  	public static void ChlorophyteDefense(int x, int y)
  	{
-+/*
  		if (Main.remixWorld)
-+*/
-+		if (Main.remixWorld && TileLoader.Convert(x, y, BiomeConversionID.ChlorophyteDefenseWhenEvilSpreads))
- 			Convert(x, y, 10);
- 	}
- 
 @@ -58397,7 +_,10 @@
  		return true;
  	}
@@ -2933,12 +3064,32 @@
  
  	private static void UpdateWorld_OvergroundTile(int i, int j, int wallDist)
  	{
-+		TileLoader.RandomUpdate(i, j, Main.tile[i, j].type);
-+		WallLoader.RandomUpdate(i, j, Main.tile[i, j].wall);
++		TileLoader.RandomUpdate(i, j, Main.tile[i, j].type, underground: false);
++		WallLoader.RandomUpdate(i, j, Main.tile[i, j].wall, underground: false);
 +
  		int num = i - 1;
  		int num2 = i + 2;
  		int num3 = j - 1;
+@@ -61071,6 +_,10 @@
+ 			DontStarveTryWateringTile(i, j);
+ 	}
+ 
++	/// <summary>
++	/// Attempts to grow a tree from a sapling at the specified coordinates. Returns true if the tree was successfully grown, false otherwise.
++	/// <para/> <paramref name="treeHeightAddon"/> adds additional height to the resulting tree, such as if grown by <see cref="ItemID.SuperFertilizer"/>. <paramref name="ignoreWalls"/> when true ignores wall restrictions that usually apply to natural tree growth. <paramref name="underground"/> indicates if the location should be considered underground or not.
++	/// </summary>
+ 	public static bool AttemptToGrowTreeFromSapling(int x, int y, bool underground, int treeHeightAddon = 0, bool ignoreWalls = false)
+ 	{
+ 		if (Main.netMode == 1)
+@@ -61160,7 +_,7 @@
+ 					TreeGrowFXCheck(x, y);
+ 				return flag;
+ 			default:
+-				return false;
++				return TileLoader.GrowModSapling(x, y, tile.type, underground, treeHeightAddon, ignoreWalls);
+ 		}
+ 	}
+ 
 @@ -61201,6 +_,7 @@
  		return DelegateMethods.CheckResultOut;
  	}
@@ -2969,8 +3120,8 @@
  
  	private static void UpdateWorld_UndergroundTile(int i, int j, int wallDist)
  	{
-+		TileLoader.RandomUpdate(i, j, Main.tile[i, j].type);
-+		WallLoader.RandomUpdate(i, j, Main.tile[i, j].wall);
++		TileLoader.RandomUpdate(i, j, Main.tile[i, j].type, underground: true);
++		WallLoader.RandomUpdate(i, j, Main.tile[i, j].wall, underground: true);
 +
  		int num = i - 1;
  		int num2 = i + 2;
