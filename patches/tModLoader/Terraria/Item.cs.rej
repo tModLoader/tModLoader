@@ -111,23 +111,6 @@
  
  					num16 -= num18;
  					int num19 = NewItem(GetItemSource_Misc(8), (int)position.X, (int)position.Y, width, height, item2.type);
-@@ -49077,6 +_,16 @@
- 			case 4070:
- 				return TextureAssets.Item[type].Frame(1, 4);
- 			default:
-+				/*
- 				return TextureAssets.Item[type].Frame();
-+				*/
-+
-+				// Notes:
-+				//   If the item doesn't have an animation, "Main.itemAnimations[type]" is just null, so the code will default to Asset<Texture2D>.Frame(), which will just be what vanilla does.
-+				//   However, if it does have an animation, then the source rect will be obtained from the animation instance, which is also what's used for displaying the animation
-+				//   source rect for items in the inventory and dropped items in the world.  This source rect will then be the basis for the use item's hitbox, rather than the entire
-+				//   spritesheet's size.
-+				//     - absoluteAquarian
-+				return Main.itemAnimations[type]?.GetFrame(TextureAssets.Item[type].Value) ?? TextureAssets.Item[type].Frame();
- 		}
- 	}
 @@ -49272,4 +_,5 @@
 +	// TML: Made internal so that modders will have to replace it with a more straightforward item.type == compareItem.type
 -	public bool IsTheSameAs(Item compareItem)

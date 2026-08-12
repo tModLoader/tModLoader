@@ -3141,7 +3141,7 @@
  			minionDamage += 0.11f;
  		}
 +
-+		// Lifted from NPC.SpawnNPC for NewNPC(..., 45), which is NPCID.Tim. See usage of the flag
++		// Lifted from NPC.Spawner.SetSpawnFlags/Spawner.offensiveToTim. See usage of the flag
 +		if (armorPiece.type == 4256 || (armorPiece.type >= 1282 && armorPiece.type <= 1287))
 +			hasGemRobe = true;
 +
