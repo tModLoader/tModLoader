@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Terraria.ModLoader;
 
 namespace Terraria.ID;
 
@@ -140,6 +141,57 @@ partial class ArmorIDs
 			/// <br/> Defaults to <see langword="false"/>.
 			/// </summary>
 			public static bool[] OverridesLegs = Factory.CreateBoolSet(15);
+		}
+	}
+
+	partial class Wing
+	{
+		partial class Sets
+		{
+			public static SetFactory Factory = new(EquipLoader.nextEquip[EquipType.Wings]);
+
+			// Below three sets created based on snippets from 'Player.Update'.
+			/// <summary>
+			/// If <see langword="true"/> for a given <see cref="Wing"/>, then the player can hover while that wing is equipped (<see cref="Player.wingsLogic"/>).
+			/// <br/> Defaults to <see langword="false"/>.
+			/// </summary>
+			public static bool[] CanHover = Factory.CreateBoolSet(22, 28, 30, 31, 33, 35, 37, 45);
+
+			/// <summary>
+			/// If <see langword="true"/> for a given <see cref="Wing"/>, then that wing will be considered to be "in use" if the player is attempting to hover with it.
+			/// <br/> If <see langword="false"/>, then that wing will not be considered "in use".
+			/// <br/> If <see langword="null"/>, then that wing will be considered "in use" if it can hover (<see cref="CanHover"/>).
+			/// <br/> Defaults to <see langword="null"/>.
+			/// </summary>
+			public static bool?[] InUseWhenAttemptingHover = Factory.CreateCustomSet<bool?>(null,
+				29, true,
+				31, false,
+				32, true
+				);
+
+			/// <summary>
+			/// The multiplier on the player's Y velocity when entering a hovering state (<see cref="CanHover"/>).
+			/// <br/> Defaults to <c>0.9f</c>.
+			/// </summary>
+			public static float[] HoverSlowdown = Factory.CreateFloatSet(0.9f,
+				45, 0.8f,
+				37, 0.9f * 0.92f // For some reason, Betsy's Wings have their hovering slowdown applied twice.
+				);
+
+			// Created based on 'Player.WingMovement'.
+			/// <summary>
+			/// The <see cref="Player.wingTime"/> usage of a given <see cref="Wing"/> per frame while the player is attempting to hover (<see cref="Player.TryingToHoverDown"/>) and stationary (<c>!<see cref="Player.controlLeft"/> &amp;&amp; !<see cref="Player.controlRight"/></c>).
+			/// <br/> A pair of wings <b>does not need to be able to hover</b> to use this set.
+			/// <br/> Defaults to <c>1f</c>.
+			/// </summary>
+			public static float[] StationaryHoverUsage = Factory.CreateFloatSet(1f,
+				22, 0.5f,
+				28, 0.5f,
+				30, 0.5f,
+				31, 0.5f,
+				37, 0.5f,
+				45, 0.5f
+				);
 		}
 	}
 }

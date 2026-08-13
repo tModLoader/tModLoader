@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/DataStructures/WingStats.cs
 +++ src/tModLoader/Terraria/DataStructures/WingStats.cs
-@@ -1,15 +_,47 @@
+@@ -1,15 +_,48 @@
  namespace Terraria.DataStructures;
  
 +/// <summary>
@@ -27,18 +27,19 @@
  	public float AccRunAccelerationMult;
 +
 +	/// <summary>
-+	/// If <see langword="true"/>, then players can use these wings to hover.
-+	/// <br/> When hovering, <see cref="DownHoverSpeedOverride"/> and <see cref="DownHoverAccelerationMult"/> apply instead of <see cref="AccRunSpeedOverride"/> and <see cref="AccRunAccelerationMult"/>, respectively.
++	/// If <see langword="true"/>, then players will change speed when trying to hover with these wings (<see cref="Player.TryingToHoverDown"/>).
++	/// <br/> When attempting to hover, <see cref="DownHoverSpeedOverride"/> and <see cref="DownHoverAccelerationMult"/> apply instead of <see cref="AccRunSpeedOverride"/> and <see cref="AccRunAccelerationMult"/>, respectively.
++	/// <br/> <b>This does not allow the player to hover.</b> For that, use <see cref="ID.ArmorIDs.Wing.Sets.CanHover"/>.
 +	/// </summary>
  	public bool HasDownHoverStats;
 +
 +	/// <summary>
-+	/// Overrides the value of <see cref="AccRunSpeedOverride"/> if <see cref="HasDownHoverStats"/> is <see langword="true"/> and the player is hovering.
++	/// Overrides the value of <see cref="AccRunSpeedOverride"/> if <see cref="HasDownHoverStats"/> is <see langword="true"/> and the player is trying to hover (<see cref="Player.TryingToHoverDown"/>).
 +	/// </summary>
  	public float DownHoverSpeedOverride;
 +
 +	/// <summary>
-+	/// Overrides the value of <see cref="AccRunAccelerationMult"/> if <see cref="HasDownHoverStats"/> is <see langword="true"/> and the player is hovering.
++	/// Overrides the value of <see cref="AccRunAccelerationMult"/> if <see cref="HasDownHoverStats"/> is <see langword="true"/> and the player is trying to hover (<see cref="Player.TryingToHoverDown"/>).
 +	/// </summary>
  	public float DownHoverAccelerationMult;
  
