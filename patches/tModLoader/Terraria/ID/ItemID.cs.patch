@@ -173,8 +173,8 @@
  		public static bool[] ShimmerPostMoonlord = Factory.CreateBoolSet(1326, 779, 3031, 5364, 784, 782);
 +
 +		/// <summary>
-+		/// If <c>!= 0</c> for a given item type (<see cref="Item.type"/>), then that item will spawn with <see cref="Item.timeSinceItemSpawned"/> set to the retrieved value.
-+		/// <br/> If <c>== 0</c> for a given item type, then that item is eligible for spawn protection, which massively decreases <see cref="Item.timeSinceItemSpawned"/> to prevent natural despawning.
++		/// If <c>!= 0</c> for a given item type (<see cref="Item.type"/>), then that item will spawn with <see cref="WorldItem.timeSinceItemSpawned"/> set to the retrieved value.
++		/// <br/> If <c>== 0</c> for a given item type, then that item is eligible for spawn protection, which massively decreases <see cref="WorldItem.timeSinceItemSpawned"/> to prevent natural despawning.
 +		/// <br/> Defaults to <c>0</c>.
 +		/// </summary>
 +		/// <remarks>Items with non-zero values in this set are extremely common drops and thus should be despawned first if the item cap is reached.</remarks>

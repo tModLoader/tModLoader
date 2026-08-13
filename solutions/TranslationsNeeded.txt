@@ -1,8 +1,8 @@
-zh-Hans 44
-ru-RU 45
-pt-BR 92
-pl-PL 89
-it-IT 1035
-fr-FR 500
-es-ES 461
-de-DE 463
+zh-Hans 48
+ru-RU 49
+pt-BR 96
+pl-PL 93
+it-IT 1039
+fr-FR 504
+es-ES 465
+de-DE 467

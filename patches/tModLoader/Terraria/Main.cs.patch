@@ -6663,6 +6663,45 @@
  				}
  			}
  		}
+@@ -51557,7 +_,7 @@
+ 			Cloud cloud = Main.cloud[i];
+ 			if (cloud.active && cloud.scale >= 1.15f) {
+ 				float num2 = cloud.position.Y * ((float)screenHeight / 600f) - 100f;
+-				DrawCloud(globalCloudAlpha, cloud, 3, num2 + num);
++				DrawCloud(globalCloudAlpha, cloud, 3, num2 + num, i);
+ 			}
+ 		}
+ 
+@@ -51575,7 +_,7 @@
+ 			Cloud cloud = Main.cloud[i];
+ 			if (cloud.active && (double)cloud.scale < 1.15 && cloud.scale >= 1f) {
+ 				float num2 = cloud.position.Y * ((float)screenHeight / 600f);
+-				DrawCloud(globalCloudAlpha, cloud, 2, num2 + num + 200f);
++				DrawCloud(globalCloudAlpha, cloud, 2, num2 + num + 200f, i);
+ 			}
+ 		}
+ 
+@@ -51596,7 +_,7 @@
+ 			Cloud cloud = Main.cloud[i];
+ 			if (cloud.active && cloud.scale < 1f) {
+ 				float y = cloud.position.Y;
+-				DrawCloud(globalCloudAlpha, cloud, 1, y + num);
++				DrawCloud(globalCloudAlpha, cloud, 1, y + num, i);
+ 			}
+ 		}
+ 
+@@ -51613,9 +_,9 @@
+ 		HorizonRenderer.CloudsEnd();
+ 	}
+ 
+-	private void DrawCloud(float globalCloudAlpha, Cloud theCloud, int cloudPass, float cY)
++	private void DrawCloud(float globalCloudAlpha, Cloud theCloud, int cloudPass, float cY, int cloudIndex)
+ 	{
+-		HorizonRenderer.DrawCloud(globalCloudAlpha, theCloud, cloudPass, cY);
++		HorizonRenderer.DrawCloud(globalCloudAlpha, theCloud, cloudPass, cY, cloudIndex);
+ 	}
+ 
+ 	private static float DrawSurfaceBG_GetFogPower() => Math.Max(cloudAlpha, GraveyardVisualIntensity * 0.92f);
 @@ -51756,11 +_,14 @@
  				DrawSurfaceBG_DrawBackMountainsLayer(24);
  		}

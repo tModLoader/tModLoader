@@ -20,7 +20,7 @@
  	public string Value {
  		get {
  			if (_value is VariableText variableText && variableText.TryFormat(Lang.GetGlobalSubstitution, out var formatted))
-@@ -22,12 +_,23 @@
+@@ -22,12 +_,26 @@
  		}
  	}
  
@@ -30,10 +30,13 @@
  	public string UnformattedValue => _value.ToString();
  
 +	/// <summary>
-+	/// Technically, this is UnformattedEnglishValue. Mostly used to allow commands to run in both the current language and english
++	/// Technically, this is UnformattedEnglishValue, or UnformattedOriginalValue. Mostly used to allow commands to run in both the current language and english
 +	/// </summary>
  	public string EnglishValue { get; private set; }
  
++	/// <summary>
++	/// True if this text has a value distinct from its <see cref="Key"/>, ie a localization entry exists for it
++	/// </summary>
  	public bool HasValue => EnglishValue != Key;
  
 +	/// <summary>
@@ -44,6 +47,14 @@
  	public bool ConditionsMet {
  		get {
  			if (_value is VariableText variableText)
+@@ -40,6 +_,7 @@
+ 	internal LocalizedText(string key, string text)
+ 	{
+ 		Key = key;
++		EnglishValue = text; // Added by TML. Texts may be created or registered outside an english language load, and this provides some fallback value (often correct, since it's a code default or a literal)
+ 		SetValue(text);
+ 	}
+ 
 @@ -52,10 +_,29 @@
  		if (LanguageManager.Instance != null && LanguageManager.Instance.ActiveCulture == GameCulture.DefaultCulture)
  			EnglishValue = value;

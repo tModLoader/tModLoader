@@ -62,18 +62,6 @@
  			}
  			else if (buffType[j] == 192) {
  				pickSpeed -= 0.2f;
-@@ -13580,7 +_,11 @@
- 						SmartSelect_SelectItem(i);
- 						return;
- 					}
-+
-+					/*
- 					if (type == 282 || type == 286 || type == 3002 || type == 3112 || type == 4776)
-+					*/
-+					if (ItemID.Sets.Glowsticks[type])
- 						SmartSelect_SelectItem(i);
- 					break;
- 				case 1:
 @@ -13602,16 +_,26 @@
  					}
  					break;
@@ -110,24 +98,6 @@
  							selectedItem = i;
  
  						break;
-@@ -13666,6 +_,7 @@
- 						case 3002:
- 						case 3112:
- 						case 4776:
-+						case int thisType when ItemID.Sets.Glowsticks[thisType]:
- 							SmartSelect_SelectItem(i);
- 							return;
- 					}
-@@ -13887,7 +_,8 @@
- 		for (int i = 0; i < numberOfTorchAttacksMade; i++) {
- 			int num = unlitTorchX[i];
- 			int num2 = unlitTorchY[i];
-+
--			if (Main.tile[num, num2].type == 4 && Main.tile[num, num2].frameX >= 66) {
-+			if (TileID.Sets.Torch[Main.tile[num, num2].type] && Main.tile[num, num2].frameX >= 66) {
- 				Main.tile[num, num2].frameX -= 66;
- 				NetMessage.SendTileSquare(-1, num, num2);
- 			}
 @@ -19323,8 +_,12 @@
  							DpadRadial.ChangeSelection(-1);
  							CircularRadial.ChangeSelection(-1);
@@ -156,69 +126,6 @@
  					}
  				}
  				else {
-@@ -19407,51 +_,52 @@
- 					bool flag10 = false;
- 					if (!Main.drawingPlayerChat && selectedItem != 58 && !Main.editSign && !Main.editChest) {
- 						int num15 = -1;
--						if (Main.keyState.IsKeyDown(Keys.D1)) {
-+						// TML: Fix for digit keys being incorrectly checked instead of Hotbar hotkeys. Should be fixed in 1.4.5.
-+						if (PlayerInput.Triggers.Current.Hotbar1) {
- 							num15 = 0;
- 							flag10 = true;
- 						}
- 
--						if (Main.keyState.IsKeyDown(Keys.D2)) {
-+						if (PlayerInput.Triggers.Current.Hotbar2) {
- 							num15 = 1;
- 							flag10 = true;
- 						}
- 
--						if (Main.keyState.IsKeyDown(Keys.D3)) {
-+						if (PlayerInput.Triggers.Current.Hotbar3) {
- 							num15 = 2;
- 							flag10 = true;
- 						}
- 
--						if (Main.keyState.IsKeyDown(Keys.D4)) {
-+						if (PlayerInput.Triggers.Current.Hotbar4) {
- 							num15 = 3;
- 							flag10 = true;
- 						}
- 
--						if (Main.keyState.IsKeyDown(Keys.D5)) {
-+						if (PlayerInput.Triggers.Current.Hotbar5) {
- 							num15 = 4;
- 							flag10 = true;
- 						}
- 
--						if (Main.keyState.IsKeyDown(Keys.D6)) {
-+						if (PlayerInput.Triggers.Current.Hotbar6) {
- 							num15 = 5;
- 							flag10 = true;
- 						}
- 
--						if (Main.keyState.IsKeyDown(Keys.D7)) {
-+						if (PlayerInput.Triggers.Current.Hotbar7) {
- 							num15 = 6;
- 							flag10 = true;
- 						}
- 
--						if (Main.keyState.IsKeyDown(Keys.D8)) {
-+						if (PlayerInput.Triggers.Current.Hotbar8) {
- 							num15 = 7;
- 							flag10 = true;
- 						}
- 
--						if (Main.keyState.IsKeyDown(Keys.D9)) {
-+						if (PlayerInput.Triggers.Current.Hotbar9) {
- 							num15 = 8;
- 							flag10 = true;
- 						}
- 
--						if (Main.keyState.IsKeyDown(Keys.D0)) {
-+						if (PlayerInput.Triggers.Current.Hotbar10) {
- 							num15 = 9;
- 							flag10 = true;
 @@ -19461,14 +_,17 @@
  							if (num15 != nonTorch)
  								SoundEngine.PlaySound(12);
@@ -347,26 +254,6 @@
  				if (stoned)
  					SoundEngine.PlaySound(0, (int)position.X, (int)position.Y);
  				else if (mount.Active && mount.Type == 52)
-@@ -30833,11 +_,19 @@
- 		if (TileID.Sets.Platforms[tile.type] && tile.type == createTile)
- 			return tile.frameY != num * 18;
- 
-+		/*
- 		if (tile.type == 4 && tile.type == createTile)
- 			return tile.frameY != num * 22;
-+		*/
-+		if (TileID.Sets.Torch[tile.type] && TileID.Sets.Torch[createTile])
-+			return tile.type != createTile || tile.frameY != num * 22;
- 
-+		/*
- 		if (tile.type == 215 && tile.type == createTile)
- 			return tile.frameX / 54 != num;
-+		*/
-+		if (TileID.Sets.Campfire[tile.type] && TileID.Sets.Campfire[createTile])
-+			return tile.type != createTile || tile.frameX / 54 != num;
- 
- 		if (TileID.Sets.BasicChest[tile.type] && TileID.Sets.BasicChest[createTile]) {
- 			if (tile.frameX / 36 == num)
 @@ -30954,5 +_,7 @@
  			int damage = (int)(num2 * 0.25);
 +			/*
@@ -375,17 +262,6 @@
 +			*/
  
  			if (player == Main.LocalPlayer && num7 < PaladinsShieldRange)
-@@ -30981,7 +_,10 @@
- 		}
- 	}
- 
-+	/* Added type to support modded tiletypes. Changed to ref, but kept int return to keep patches small.
- 	public int BiomeTorchPlaceStyle(int style)
-+	*/
-+	public int BiomeTorchPlaceStyle(ref int type, ref int style)
- 	{
- 		if (!UsingBiomeTorches || style != 0)
- 			return style;
 @@ -32383,13 +_,19 @@
  		int num6 = -1;
  		int num7 = 1;
@@ -417,24 +293,6 @@
  				num = -1;
  				num2 = -1;
  				num3 = -1;
-@@ -32800,7 +_,17 @@
- 				position.X = num;
- 				direction = dir;
- 			}
-+			// added by TML, forward port from 1.4.5
-+			else {
-+				return;
-+			}
- 		}
-+
-+		// Added by TML, forward port from 1.4.5
-+		compositeBackArm.rotation *= -1;
-+		compositeFrontArm.rotation *= -1;
-+		itemRotation *= -1;
-+		itemLocation.X = MountedCenter.X + (MountedCenter.X - itemLocation.X);
- 	}
- 
- 	public Rectangle getRect() => new Rectangle((int)position.X, (int)position.Y, width, height);
 @@ -33072,7 +_,7 @@
  			if (Main.tile[tileTargetX, tileTargetY].nactive() && Main.tile[tileTargetX, tileTargetY].type == 57)
  				canPlace = true;
@@ -444,15 +302,6 @@
  			if (Main.tile[tileTargetX, tileTargetY].wall > 0) {
  				canPlace = true;
  			}
-@@ -33782,7 +_,7 @@
- 		overrideCanPlace = null;
- 		forcedRandom = null;
- 		if (UsingBiomeTorches && tileToCreate == 215 && previewPlaceStyle == 0)
--			previewPlaceStyle = BiomeCampfirePlaceStyle(previewPlaceStyle);
-+			BiomeCampfirePlaceStyle(ref tileToCreate, ref previewPlaceStyle);
- 
- 		if (targetTile != null && targetTile.active()) {
- 			ushort type = targetTile.type;
 @@ -33898,7 +_,10 @@
  			Projectile.NewProjectile(GetProjectileSource_Accessory(boneGloveItem), center.X, center.Y, vector.X, vector.Y, 532, 25, 5f, whoAmI);
  		}
