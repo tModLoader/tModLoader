@@ -2,8 +2,8 @@ var searchData=
 [
   ['tails_0',['Tails',['../class_player_draw_layers.html#a34c8c63cf868db26f5208cd7255d6052',1,'PlayerDrawLayers']]],
   ['takesdamagefromhostileswithoutbeingfriendly_1',['TakesDamageFromHostilesWithoutBeingFriendly',['../class_n_p_c_i_d_1_1_sets.html#a8990bb80ffa4470f3a386c343cefe4a7',1,'NPCID::Sets']]],
-  ['target_2',['Target',['../class_u_i_event.html#a1f589b912ad8ead603f14b480747ae8c',1,'UIEvent']]],
-  ['target_3',['target',['../class_n_p_c.html#a24627ed4a99fbc0555b1be4717a9335e',1,'NPC']]],
+  ['target_2',['target',['../class_n_p_c.html#a24627ed4a99fbc0555b1be4717a9335e',1,'NPC']]],
+  ['target_3',['Target',['../class_u_i_event.html#a1f589b912ad8ead603f14b480747ae8c',1,'UIEvent']]],
   ['targetdamagemultiplier_4',['TargetDamageMultiplier',['../struct_n_p_c_1_1_hit_modifiers.html#afadf0c41e3043a05af10804e0f33d24a',1,'NPC::HitModifiers']]],
   ['targetdirection_5',['TargetDirection',['../struct_tile_resting_info.html#a7977752c6b9c60fa52749c41fd2eda21',1,'TileRestingInfo']]],
   ['targetdummy_6',['TargetDummy',['../class_n_p_c_a_i_style_i_d.html#ac45e45985c6bc72ae2f41560ab533a08',1,'NPCAIStyleID']]],
