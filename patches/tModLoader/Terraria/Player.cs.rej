@@ -262,37 +262,6 @@
 +			*/
  
  			if (player == Main.LocalPlayer && num7 < PaladinsShieldRange)
-@@ -32383,13 +_,19 @@
- 		int num6 = -1;
- 		int num7 = 1;
- 		switch (extractType) {
-+			/*
- 			case 1:
-+			*/
-+			case ItemID.DesertFossil:
- 				num /= 3;
- 				num2 *= 2;
- 				num3 = 20;
- 				num4 = 10;
- 				break;
-+			/*
- 			case 2:
-+			*/
-+			case ItemID.OldShoe:
- 				num = -1;
- 				num2 = -1;
- 				num3 = -1;
-@@ -32397,7 +_,10 @@
- 				num5 = 1;
- 				num7 = -1;
- 				break;
-+			/*
- 			case 3:
-+			*/
-+			case ItemID.LavaMoss:
- 				num = -1;
- 				num2 = -1;
- 				num3 = -1;
 @@ -33072,7 +_,7 @@
  			if (Main.tile[tileTargetX, tileTargetY].nactive() && Main.tile[tileTargetX, tileTargetY].type == 57)
  				canPlace = true;
