@@ -89,9 +89,30 @@ internal static class ModOrganizer
 		WorkshopFileFinder.Refresh(new WorkshopIssueReporter());
 		foreach (string repo in WorkshopFileFinder.ModPaths) {
 			mods.AddRange(ReadModFiles(ModLocation.Workshop, Directory.GetFiles(repo, "*.tmod", SearchOption.AllDirectories)));
+
+			PreventativeMeasuresActAug2026(repo);
 		}
 
 		return AllFoundMods = mods.ToArray();
+	}
+
+	private static void PreventativeMeasuresActAug2026(string repo)
+	{
+		// Absolute Chaos Prevention Patch. Doubt will ever be needed, but when pigs can fly we are ready.
+		(string modName, string tmlVer, string pubId)[] preserveScope =
+			[("CalamityMod.tmod", "2026.6", "2824688072"), ("CalamityModMusic.tmod", "2025.12", "2824688266")]; //1.4.4 only
+
+		foreach (var devCopy in preserveScope) {
+			string pathDest = Path.Combine(modPath, devCopy.tmlVer + devCopy.modName);
+			string pathSrc = Path.Combine(repo, devCopy.tmlVer, devCopy.modName);
+
+			if (!repo.Contains(devCopy.pubId))
+				continue;
+
+			if (File.Exists(pathSrc) && !File.Exists(pathDest))
+				File.Copy(pathSrc, pathDest);
+		}
+		// END
 	}
 
 	private static IEnumerable<LocalMod> SelectVersionsToLoad(IEnumerable<LocalMod> mods, bool quiet = false) => mods.GroupBy(m => m.Name).OrderBy(g => g.Key).Select(m => SelectVersionToLoad(m, quiet)).Where(m => m != null);
