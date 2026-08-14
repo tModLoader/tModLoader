@@ -530,8 +530,10 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// <br/> Return <see langword="true"/> to prevent other hurt sounds from playing.
 	/// <br/><br/> For voice accessories, use <seealso cref="ModItem.VoiceItemHurtSoundOverride(Entity, Vector2)"/>.
 	/// </summary>
+	/// <param name="soundPosition"> The position that the sound should be played at.
+	/// <br/> If the sound is emanating from ourselves (aka local client), play the sound "globally" for us so it doesn't pan while we are moving.</param>
 	/// <returns>Returns <see langword="false"/> by default.</returns>
-	public virtual bool PlayerHurtSound()
+	public virtual bool PlayerHurtSound(Vector2 soundPosition)
 	{
 		return false;
 	}

@@ -5968,7 +5968,7 @@
 +			return;
 +		}
 +
-+		if (PlayerLoader.PlayerHurtSound(this)) {
++		if (PlayerLoader.PlayerHurtSound(this, vector)) {
 +			return;
 +		}
 +

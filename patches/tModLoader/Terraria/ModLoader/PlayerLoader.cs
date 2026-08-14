@@ -544,11 +544,12 @@ public static class PlayerLoader
 		}
 	}
 
-	private static HookList HookPlayerHurtSound = AddHook<Func<bool>>(p => p.PlayerHurtSound);
-	public static bool PlayerHurtSound(Player player)
+	private delegate bool DelegatePlayerHurtSound(Vector2 soundPostion);
+	private static HookList HookPlayerHurtSound = AddHook<DelegatePlayerHurtSound>(p => p.PlayerHurtSound);
+	public static bool PlayerHurtSound(Player player, Vector2 soundPosition)
 	{
 		foreach (var modPlayer in HookPlayerHurtSound.Enumerate(player)) {
-			if (modPlayer.PlayerHurtSound())
+			if (modPlayer.PlayerHurtSound(soundPosition))
 				return true;
 		}
 
