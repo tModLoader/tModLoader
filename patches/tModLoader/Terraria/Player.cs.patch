@@ -6916,8 +6916,16 @@
  			}
  		}
  
-@@ -35234,7 +_,10 @@
- 			ItemCheck_GetMeleeHitbox(sItem, heldItemFrame, out var dontAttack2, out var itemRectangle2);
+@@ -35230,11 +_,17 @@
+ 		if (sItem.type > 0 && itemAnimation > 0)
+ 			ItemCheck_GetMeleeHitboxParticles(sItem, heldItemFrame);
+ 
++		/*
+ 		if (((sItem.damage >= 0 && sItem.type > 0 && !sItem.noMelee) || sItem.type == 1991 || sItem.type == 3183 || sItem.type == 4821) && itemAnimation > 0) {
++		*/
++		if (((sItem.damage >= 0 && sItem.type > 0 && !sItem.noMelee) || ItemID.Sets.CatchingTool[sItem.type]) && itemAnimation > 0) {
+-			ItemCheck_GetMeleeHitbox(sItem, heldItemFrame, out var dontAttack2, out var itemRectangle2);
++				ItemCheck_GetMeleeHitbox(sItem, heldItemFrame, out var dontAttack2, out var itemRectangle2);
  			if (!dontAttack2) {
  				ItemCheck_EmitUseVisuals(sItem, itemRectangle2);
 +				/*

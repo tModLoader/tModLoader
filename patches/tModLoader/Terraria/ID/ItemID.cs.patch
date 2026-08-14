@@ -546,7 +546,7 @@
  		public static int[] ExtractinatorMode = Factory.CreateIntSet(-1, 424, 0, 1103, 0, 3347, 1, 2339, 2, 2338, 2, 2337, 2, 4354, 3, 4389, 3, 4377, 3, 4378, 3, 5127, 3, 5128, 3, 5395, 4, 1124, 5, 4090, 6, 173, 6);
 -		public static int[] StaffMinionSlotsRequired = Factory.CreateIntSet(1);
 +		*/
-+		public static int[] ExtractinatorMode = Factory.CreateIntSet(-1, 424, 0, 1103, 0, DesertFossil, DesertFossil, TinCan, OldShoe, FishingSeaweed, OldShoe, OldShoe, OldShoe, LavaMoss, LavaMoss, ArgonMoss, LavaMoss, KryptonMoss, LavaMoss, XenonMoss, LavaMoss, VioletMoss, LavaMoss, RainbowMoss, LavaMoss, PoopBlock, PoopBlock, Hive, Hive, ShellPileBlock, ShellPileBlock, Obsidian, ShellPileBlock);
++		public static int[] ExtractinatorMode = Factory.CreateIntSet(-1, SiltBlock, 0, SlushBlock, 0, DesertFossil, DesertFossil, TinCan, OldShoe, FishingSeaweed, OldShoe, OldShoe, OldShoe, LavaMoss, LavaMoss, ArgonMoss, LavaMoss, KryptonMoss, LavaMoss, XenonMoss, LavaMoss, VioletMoss, LavaMoss, RainbowMoss, LavaMoss, PoopBlock, PoopBlock, Hive, Hive, ShellPileBlock, ShellPileBlock, Obsidian, ShellPileBlock);
 +
 +		/// <summary>
 +		/// How many minion slots one usage of this item will spawn.
