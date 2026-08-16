@@ -30,9 +30,9 @@ namespace ExampleMod.Content.Tiles
 		}
 
 		public override void OnTileKilled(int i, int j) {
-			// 10% chance to spawn a mouse when broken.
-			if (Main.netMode != NetmodeID.MultiplayerClient && Main.rand.NextBool(10)) {
-				NPC.NewNPC(new EntitySource_TileBreak(i, j), i * 16, j * 16, NPCID.Mouse);
+			// 1% chance to release a firework when broken.
+			if (Main.netMode != NetmodeID.MultiplayerClient && Main.rand.NextBool(100)) {
+				Projectile.NewProjectile(new EntitySource_TileBreak(i, j), i * 16f, j * 16f, 0f, -4f, ProjectileID.RocketFireworksBoxRed + Main.rand.Next(4), 0, 0, Main.myPlayer);
 			}
 		}
 	}
