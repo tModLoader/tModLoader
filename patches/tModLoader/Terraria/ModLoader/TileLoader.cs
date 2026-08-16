@@ -61,6 +61,7 @@ public static class TileLoader
 	private static DelegateCanKillTile[] HookCanKillTile;
 	private delegate void DelegateKillTile(int i, int j, int type, ref bool fail, ref bool effectOnly, ref bool noItem);
 	private static DelegateKillTile[] HookKillTile;
+	private static Action<int, int, int>[] HookOnTileKilled;
 	private static Func<int, int, int, bool>[] HookCanExplode;
 	private static Action<int, int, int, bool>[] HookNearbyEffects;
 	private delegate void DelegateModifyLight(int i, int j, int type, ref float r, ref float g, ref float b);
@@ -231,6 +232,7 @@ public static class TileLoader
 		ModLoader.BuildGlobalHook(ref HookDrop, globalTiles, g => g.Drop);
 		ModLoader.BuildGlobalHook<GlobalTile, DelegateCanKillTile>(ref HookCanKillTile, globalTiles, g => g.CanKillTile);
 		ModLoader.BuildGlobalHook<GlobalTile, DelegateKillTile>(ref HookKillTile, globalTiles, g => g.KillTile);
+		ModLoader.BuildGlobalHook(ref HookOnTileKilled, globalTiles, g => g.OnTileKilled);
 		ModLoader.BuildGlobalHook(ref HookCanExplode, globalTiles, g => g.CanExplode);
 		ModLoader.BuildGlobalHook(ref HookNearbyEffects, globalTiles, g => g.NearbyEffects);
 		ModLoader.BuildGlobalHook<GlobalTile, DelegateModifyLight>(ref HookModifyLight, globalTiles, g => g.ModifyLight);
@@ -656,6 +658,14 @@ public static class TileLoader
 	public static void KillMultiTile(int i, int j, int frameX, int frameY, int type)
 	{
 		GetTile(type)?.KillMultiTile(i, j, frameX, frameY);
+	}
+
+	public static void OnTileKilled(int i, int j, int type)
+	{
+		GetTile(type)?.OnTileKilled(i, j);
+		foreach (var hook in HookOnTileKilled) {
+			hook(i, j, type);
+		}
 	}
 
 	public static bool CanExplode(int i, int j)

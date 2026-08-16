@@ -2,6 +2,7 @@ using ExampleMod.Content.Biomes;
 using ExampleMod.Content.Dusts;
 using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -26,6 +27,13 @@ namespace ExampleMod.Content.Tiles
 
 		public override void ChangeWaterfallStyle(ref int style) {
 			style = ModContent.GetInstance<ExampleWaterfallStyle>().Slot;
+		}
+
+		public override void OnTileKilled(int i, int j) {
+			// 10% chance to spawn a mouse when broken.
+			if (Main.netMode != NetmodeID.MultiplayerClient && Main.rand.NextBool(10)) {
+				NPC.NewNPC(new EntitySource_TileBreak(i, j), i * 16, j * 16, NPCID.Mouse);
+			}
 		}
 	}
 }
