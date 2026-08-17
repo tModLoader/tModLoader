@@ -1,0 +1,11 @@
+--- src/TerrariaNetCore/Terraria/GameContent/Drawing/EmptyHorizonRenderer.cs
++++ src/tModLoader/Terraria/GameContent/Drawing/EmptyHorizonRenderer.cs
+@@ -36,7 +_,7 @@
+ 	{
+ 	}
+ 
+-	public void DrawCloud(float globalCloudAlpha, Cloud theCloud, int cloudPass, float cY)
++	public void DrawCloud(float globalCloudAlpha, Cloud theCloud, int cloudPass, float cY, int cloudIndex)
+ 	{
+ 		Asset<Texture2D> asset = TextureAssets.Cloud[theCloud.type];
+ 		Color color = theCloud.cloudColor(Main.ColorOfTheSkies);

@@ -108,6 +108,8 @@
 		"ModFromLocal": "来源于本地模组文件夹",
 		"ModsByline": "作者：{0}",
 		"ModsMoreInfo": "更多信息",
+		// "ModsRateUp": "Like",
+		// "ModsRateDown": "Dislike",
 		"ModsOriginatedFromModBrowser": "该模组来源于模组浏览器",
 		"ModsTypeToSearch": "搜索",
 		"ModsSearchByModName": "按模组名称搜索",
@@ -441,6 +443,9 @@
 		"SixMonths": "半年",
 		"OneYear": "一年",
 		"AllTime": "有史以来",
+		// "ThousandSuffix": "k",
+		// "MillionSuffix": "m",
+		"NotEnoughRatings": "评价数不足",
 		"MBServerReturnToMenu": "返回至世界菜单",
 		"MBServerAskForModName": "请输入要下载的模组完整全名：",
 

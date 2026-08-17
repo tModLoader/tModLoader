@@ -108,6 +108,8 @@
 		// "ModFromLocal": "Loading from local mods folder",
 		// "ModsByline": "By: {0}",
 		// "ModsMoreInfo": "More Info",
+		// "ModsRateUp": "Like",
+		// "ModsRateDown": "Dislike",
 		// "ModsOriginatedFromModBrowser": "This mod originated from the Mod Browser",
 		// "ModsTypeToSearch": "Type to search",
 		// "ModsSearchByModName": "Search by Mod name",
@@ -441,6 +443,9 @@
 		// "SixMonths": "Six Months",
 		// "OneYear": "One Year",
 		// "AllTime": "All Time",
+		// "ThousandSuffix": "k",
+		// "MillionSuffix": "m",
+		"NotEnoughRatings": "Servono più voti",
 		// "MBServerReturnToMenu": "Return to world menu",
 		// "MBServerAskForModName": "Type an exact ModName to download: ",
 

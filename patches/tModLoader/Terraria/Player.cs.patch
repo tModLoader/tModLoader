@@ -3141,7 +3141,7 @@
  			minionDamage += 0.11f;
  		}
 +
-+		// Lifted from NPC.SpawnNPC for NewNPC(..., 45), which is NPCID.Tim. See usage of the flag
++		// Lifted from NPC.Spawner.SetSpawnFlags/Spawner.offensiveToTim. See usage of the flag
 +		if (armorPiece.type == 4256 || (armorPiece.type >= 1282 && armorPiece.type <= 1287))
 +			hasGemRobe = true;
 +
@@ -5246,7 +5246,7 @@
 +	/// Fetches the range at which the given item begins to gravitate towards the player.<br/>
 +	/// This range, referred to as item grab range, is measured in pixels.
 +	/// </summary>
-+	/// <param name="item">The item whose grab range is being evaluated.</param>
++	/// <param name="worldItem">The item whose grab range is being evaluated.</param>
 +	/// <returns>The item grab range of the player, in pixels.</returns>
 +	public int GetItemGrabRange(WorldItem worldItem)
  	{
@@ -6916,8 +6916,16 @@
  			}
  		}
  
-@@ -35234,7 +_,10 @@
- 			ItemCheck_GetMeleeHitbox(sItem, heldItemFrame, out var dontAttack2, out var itemRectangle2);
+@@ -35230,11 +_,17 @@
+ 		if (sItem.type > 0 && itemAnimation > 0)
+ 			ItemCheck_GetMeleeHitboxParticles(sItem, heldItemFrame);
+ 
++		/*
+ 		if (((sItem.damage >= 0 && sItem.type > 0 && !sItem.noMelee) || sItem.type == 1991 || sItem.type == 3183 || sItem.type == 4821) && itemAnimation > 0) {
++		*/
++		if (((sItem.damage >= 0 && sItem.type > 0 && !sItem.noMelee) || ItemID.Sets.CatchingTool[sItem.type]) && itemAnimation > 0) {
+-			ItemCheck_GetMeleeHitbox(sItem, heldItemFrame, out var dontAttack2, out var itemRectangle2);
++				ItemCheck_GetMeleeHitbox(sItem, heldItemFrame, out var dontAttack2, out var itemRectangle2);
  			if (!dontAttack2) {
  				ItemCheck_EmitUseVisuals(sItem, itemRectangle2);
 +				/*

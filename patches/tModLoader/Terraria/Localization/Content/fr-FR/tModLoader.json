@@ -106,6 +106,8 @@
 		"ModFromLocal": "Chargement depuis le dossier local des mods",
 		"ModsByline": "Par : {0}",
 		"ModsMoreInfo": "Détails",
+		// "ModsRateUp": "Like",
+		// "ModsRateDown": "Dislike",
 		"ModsOriginatedFromModBrowser": "Ce Mod est originaire du navigateur",
 		"ModsTypeToSearch": "Rechercher",
 		"ModsSearchByModName": "Trier par nom de Mod",
@@ -439,6 +441,9 @@
 		// "SixMonths": "Six Months",
 		// "OneYear": "One Year",
 		// "AllTime": "All Time",
+		// "ThousandSuffix": "k",
+		// "MillionSuffix": "m",
+		"NotEnoughRatings": "Pas assez d'évaluations",
 		"MBServerReturnToMenu": "Retour au menu du monde",
 		"MBServerAskForModName": "Tapez un Nom de Mod exact à télécharger: ",
 

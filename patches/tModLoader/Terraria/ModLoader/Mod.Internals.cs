@@ -142,6 +142,7 @@ partial class Mod
 				var reasons = new List<string>();
 				RootContentSource.Rejections.TryGetRejections(reasons); // Not technically the rejection reasons for the specific asset, but there is no current way of getting that.
 				var MissingResourceException = new Exceptions.MissingResourceException(reasons, assetPath.Replace("\\", "/"), cleanKeys);
+				MissingResourceException.Data["mod"] = ModContent.CurrentlyLoadingMod; // Attribute to the loading mod, not necessarily the mod corresponding to the asset path.
 				AssetExceptions.Add(MissingResourceException);
 			}
 			else {
