@@ -18,7 +18,7 @@
  		graphicsDevice.Clear(Color.Transparent);
  		if (Main.player[Main.myPlayer].gravDir == -1f)
  			Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.EffectMatrix);
-@@ -174,13 +_,37 @@
+@@ -174,6 +_,19 @@
  		}
  
  		Main.spriteBatch.End();
@@ -38,11 +38,7 @@
  		for (int i = 0; i < 8; i++) {
  			graphicsDevice.Textures[i] = null;
  		}
- 
- 		TimeLogger.Filters.AddTime(fromTimestamp);
-+
-+		TimeLogger.Filters.AddTime(fromTimestamp);
- 	}
+@@ -183,4 +_,13 @@
  
  	public bool HasActiveFilter() => _activeFilters.Count != 0;
  	public bool CanCapture() => HasActiveFilter();
