@@ -688,22 +688,48 @@ internal static class ModOrganizer
 	internal static List<LocalMod> Sort(ICollection<LocalMod> mods)
 	{
 		var preSorted = mods.OrderBy(mod => mod.Name, StringComparer.InvariantCulture).ToList();
-		var syncedSort = BuildSort(preSorted.Where(mod => mod.properties.side == ModSide.Both).ToList());
-		var fullSort = BuildSort(preSorted);
-		EnsureSyncedDependencyStability(syncedSort, fullSort);
 
+		var nameMap = mods.ToDictionary(mod => mod.Name);
+		var toProcess = new Queue<LocalMod>(preSorted.Where(mod => mod.properties.side == ModSide.Both));
+		var knownSyncedMods = new HashSet<LocalMod>(preSorted.Where(mod => mod.properties.side == ModSide.Both));
+		while (toProcess.TryDequeue(out LocalMod processing)) {
+			foreach (BuildProperties.ModReference reference in processing.properties.modReferences) {
+				LocalMod requirement = nameMap[reference.mod];
+				if (requirement.properties.side is not ModSide.Both and not ModSide.NoSync)
+					throw new ModSortingException([processing], "TODO: write error or warning, mods should never require mods with more restrictive sides");
+				if (!knownSyncedMods.Add(requirement))
+					toProcess.Enqueue(requirement);
+			} 
+		}
+
+		List<LocalMod> unsyncedSort;
+		List<LocalMod> fullSort;
 		try {
-			var syncedList = syncedSort.Sort();
-
-			//preserve synced order
-			for (int i = 1; i < syncedList.Count; i++)
-				fullSort.AddEntry(syncedList[i - 1], syncedList[i]);
-
-			return fullSort.Sort();
+			fullSort = BuildSort(preSorted.Where(knownSyncedMods.Contains).ToList()).Sort();
+			unsyncedSort = BuildSort(preSorted.Where(m => !knownSyncedMods.Contains(m)).ToList()).Sort();
 		}
 		catch (TopoSort<LocalMod>.SortingException e) {
 			throw new ModSortingException(e.set, e.Message);
 		}
+		var allOrders = BuildSort(preSorted);
+
+		for (int i = unsyncedSort.Count - 1; i >= 0; i--) {
+			var mustBeAfter = allOrders.Dependencies(unsyncedSort[i]).ToHashSet();
+			var mustBeBefore = allOrders.Dependents(unsyncedSort[i]).ToHashSet();
+			for (int j = 0; j < fullSort.Count; j++) {
+				if (mustBeAfter.Count == 0) {
+					fullSort.Insert(j, unsyncedSort[i]);
+					break;
+				}
+				if (mustBeBefore.Contains(fullSort[j])) {
+					mustBeAfter.Add(unsyncedSort[i]);
+					throw new ModSortingException(mustBeAfter.Concat(mustBeBefore).ToHashSet(), "TODO: write error, unsynced mod can't be placed in order without changing order of synced mod");
+				}
+				mustBeAfter.Remove(fullSort[j]);
+			}
+		}
+
+		return fullSort;
 	}
 
 	internal static void SaveEnabledMods()
