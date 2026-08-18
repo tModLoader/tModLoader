@@ -40,12 +40,19 @@
  
  	public static string GetMapObjectName(int id)
  	{
-@@ -62,11 +_,22 @@
+@@ -62,11 +_,29 @@
  		return string.Empty;
  	}
  
 +	/// <summary>
 +	/// Registers a "Global substitution". These are values that will influence the text value of LocalizedText automatically.
++	/// <para/> Some modded content will automatically register global substitutions:
++	/// <para/> <see cref="ModNPC"/>:
++	/// <br/> <b>Key</b>: <c>"NPCFirstName_{FullName}"</c> (For example, "NPCFirstName_ExampleMod/RandomBuff").
++	/// <br/> <b>Result</b>: The values of <see cref="NPC.GetFirstNPCNameOrNull"/>, which will be the first name or type name of the NPC if it exists in the world. If the NPC is not in the world this will return <see langword="null"/>, causing the LocalizedText fail <see cref="LocalizedText.ConditionsMet"/>. This is typically used in TownNPC dialogue to refer to other TownNPCs.
++	/// <para/> <see cref="ModKeybind"/>:
++	/// <br/> <b>Key</b>:  <c>"InputTrigger_{FullName}"</c> (For example, "InputTrigger_ExampleMod/RandomBuff").
++	/// <br/> <b>Result</b>: A comma-separated list of the assigned hotkeys for the keybind for the current input method or "&lt;Unbound&gt;" if no assigned hotkey.
 +	/// </summary>
 +	/// <param name="key"></param>
 +	/// <param name="getValue"></param>
