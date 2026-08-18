@@ -118,6 +118,15 @@
  					IAssetRepository assetRepository = Main.instance.Services.Get<IAssetRepository>();
  					if (assetRepository != null && assetRepository.AssetLoadFailHandler != null) {
  						string assetName = item + extension;
+@@ -248,7 +_,7 @@
+ 		}
+ 	}
+ 
+-	private bool UpdateTextValue(string key, string value)
++	internal bool UpdateTextValue(string key, string value)
+ 	{
+ 		if (key.Contains('$')) {
+ 			string[] array = key.Split('$');
 @@ -353,6 +_,9 @@
  		if (!_categoryGroupedKeys.TryGetValue(categoryName, out var value))
  			return new LocalizedText(categoryName + ".RANDOM", categoryName + ".RANDOM");
