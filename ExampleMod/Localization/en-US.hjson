@@ -1683,6 +1683,31 @@ Mods: {
 			ShortPose.VictoryCheer: Yay!
 			LongPose.VictoryCheer: We did it!
 		}
+
+		# Variation is a feature that allows a single text key to have several variant options. This is used in many non-English languages to support prefixes/adjectives adjusting their spelling to the gender of the item/noun. The wiki has more information on this feature.
+		# This feature is not limited to gendered item prefixes, ExampleMod demonstrates other potential uses of this feature in LanguageSubstitutionSystem.cs using the keys below.
+		VariationShowcase: {
+			LooksNiceMessage: That's a good looking {0}
+			LooksNiceMessage$Male: That's a handsome {0}
+			LooksNiceMessage$Female: That's a pretty {0}
+			CollectiveNounMessage: A group of {0}.
+			CollectiveNounMessage2: A group of {0} {1}.
+			CollectiveNounMessage$Flock: A flock of {0} flying high.
+			CollectiveNounMessage$School: A school of {0} swimming gracefully.
+			CollectiveNounMessage$Herd: A herd of {0} roaming around.
+			NounA: "{^0:lizard;lizards}"
+			NounB: "{^0:cat;cats}"
+			NounB$Gender: Female
+			NounB$Collective: Herd
+			NounC: "{^0:dog;dogs}"
+			NounC$Gender: Male
+			NounD: "{^0:bird;birds}"
+			NounD$Collective: Flock
+			NounE: fish
+			NounE$Collective: School
+			# TEMP
+			CollectiveNounMessage2$Flock: A flock of {0} {1} flying high.
+		}
 	}
 }
 

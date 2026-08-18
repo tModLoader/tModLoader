@@ -60,5 +60,52 @@ namespace ExampleMod.Common.Systems
 			// 5. Mods.ExampleMod.Dialogue.ExamplePerson.ConditionalDialogue1 - Uses the {?DownedMinionBoss} custom condition and {?GolemDefeated} vanilla condition in chat dialogue. This will only show if both Minion Boss and Golem have been defeated.
 			// 6. Mods.ExampleMod.Dialogue.ExamplePerson.ConditionalDialogue2 - Shows negating conditions. This will only show at night and if there is no ExamplePet.
 		}
+
+		public override void SetupContent() {
+			VariationFeatureShowcase();
+		}
+
+		public static void VariationFeatureShowcase() {
+			var nouns = Language.FindAll(Lang.CreateDialogFilter("Mods.ExampleMod.VariationShowcase.Noun"));
+			(string key, string variationKeyword, bool plural)[] messages = [
+				("Mods.ExampleMod.VariationShowcase.LooksNiceMessage", variationKeyword: "Gender", plural: false),
+				("Mods.ExampleMod.VariationShowcase.CollectiveNounMessage", variationKeyword: "Collective", plural: true)
+			];
+			foreach (var message in messages) {
+				foreach (var noun in nouns) {
+					string result = GetVariantMessageForNoun(message.key, noun.Key, message.variationKeyword, message.plural);
+					Main.NewText(result);
+				}
+			}
+
+			// TEMP
+			var result1 = GetVariantMessageForNounWithCount("Mods.ExampleMod.VariationShowcase.CollectiveNounMessage2", "Mods.ExampleMod.VariationShowcase.NounD", "Collective", 1);
+			var result2 = GetVariantMessageForNounWithCount("Mods.ExampleMod.VariationShowcase.CollectiveNounMessage2", "Mods.ExampleMod.VariationShowcase.NounD", "Collective", 10);
+			Main.NewText(result1);
+			Main.NewText(result2);
+		}
+
+		public static string GetVariantMessageForNoun(string messageKey, string nounKey, string variationKeyword, bool plural) {
+			LocalizedText nounText = Language.GetText(nounKey);
+			LocalizedText messageText = Language.GetText(messageKey);
+			string messageTextValue = messageText.Value;
+			if (Language.TryGetVariation(nounText.Key, variationKeyword, out var value) && Language.TryGetVariation(messageText.Key, value, out var value2))
+				messageTextValue = value2;
+
+			string pluralizedNoun = nounText.Format(!plural ? 1 : 2);
+			return LocalizedText.Literal(messageTextValue).Format(pluralizedNoun);
+		}
+
+		// TEMP
+		public static string GetVariantMessageForNounWithCount(string messageKey, string nounKey, string variationKeyword, int count) {
+			LocalizedText nounText = Language.GetText(nounKey);
+			LocalizedText messageText = Language.GetText(messageKey);
+			string messageTextValue = messageText.Value;
+			if (Language.TryGetVariation(nounText.Key, variationKeyword, out var value) && Language.TryGetVariation(messageText.Key, value, out var value2))
+				messageTextValue = value2;
+
+			string pluralizedNoun = nounText.Format(count);
+			return LocalizedText.Literal(messageTextValue).Format(count, pluralizedNoun);
+		}
 	}
 }
