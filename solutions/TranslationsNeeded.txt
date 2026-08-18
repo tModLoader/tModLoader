@@ -6,6 +6,4 @@ it-IT 1039
 fr-FR 504
 es-ES 465
 de-DE 467
-ja-JP 8
-ko-KR 8
-zh-Hant 56
+zh-Hant 48
