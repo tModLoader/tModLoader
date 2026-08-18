@@ -13,6 +13,9 @@ using Terraria.ModLoader.IO;
 // Related to GlobalProjectile: ProjectileWithGrowingDamage
 namespace ExampleMod.Common.GlobalItems
 {
+	// This class features an implementation of instance fields stored on any item.
+	// As the hooks and approach is mostly the same except an additional InstancePerEntity override,
+	// it is sufficient to refer to ExampleInstancedItem for the understanding of the concept
 	public class WeaponWithGrowingDamage : GlobalItem
 	{
 		public int experience;
