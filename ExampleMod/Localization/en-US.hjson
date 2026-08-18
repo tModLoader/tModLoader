@@ -1510,7 +1510,7 @@ Mods: {
 				StandardDialogue4: Hey, if you find a [i:HiveBackpack], I can upgrade it for you.
 				# See LanguageSubstitutionSystem.cs for an explanation of how "global substitutions" work and how to register custom substitutions. These are showcased in these chat options.
 				ConditionalDialogue1: "{?DownedMinionBoss}{?GolemDefeated}Wow, you defeated both {$NPCs.MinionBossBody.DisplayName} and {$NPCName.Golem}? Amazing!"
-				ConditionalDialogue2: "{?!Day}{?!ExampleTownPet}It's scary at night. I'd feel a lot safer if I had a pet to keep me company."
+				ConditionalDialogue2: "{?!Day}{?!NPCFirstName_ExampleMod/ExampleTownPet}It's scary at night. I'd feel a lot safer if I had a pet to keep me company."
 				CommonDialogue: This message has a weight of 5, meaning it appears 5 times more often.
 				RareDialogue: This message has a weight of 0.1, meaning it appears 10 times as rare.
 				TalkALot: I'm getting tired of talking to you. I have to go.
@@ -1527,7 +1527,7 @@ Mods: {
 				StandardDialogue1: Sometimes my cousin feels like they're different from everyone else here.
 				StandardDialogue2: What's your favorite color? My cousin's favorite colors are white and black.
 				StandardDialogue3: I'm a traveling merchant, and I sell things.
-				ConditionalDialogue1: Is that my cousin {ExamplePerson} over there?
+				ConditionalDialogue1: Is that my cousin {NPCFirstName_ExampleMod/ExamplePerson} over there?
 				HiveBackpackDialogue: Hey, if you find a [i:HiveBackpack], my cousin can upgrade it for you.
 			}
 
@@ -1538,7 +1538,7 @@ Mods: {
 			ExampleTip0: Woah! Example Tip!
 			ExampleTip1: This tip was added by Example Mod!
 			ExampleTip2: This is yet another tip added by Example Mod!
-			ExampleTip3: You can press {InputTrigger_ExampleMod_RandomBuff} for a random buff!
+			ExampleTip3: You can press {InputTrigger_ExampleMod/RandomBuff} for a random buff!
 			DisabledExampleTip: This tip will be added but then disabled by Example Mod.
 		}
 
