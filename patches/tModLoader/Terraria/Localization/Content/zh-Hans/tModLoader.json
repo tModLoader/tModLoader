@@ -108,6 +108,8 @@
 		"ModFromLocal": "来源于本地模组文件夹",
 		"ModsByline": "作者：{0}",
 		"ModsMoreInfo": "更多信息",
+		// "ModsRateUp": "Like",
+		// "ModsRateDown": "Dislike",
 		"ModsOriginatedFromModBrowser": "该模组来源于模组浏览器",
 		"ModsTypeToSearch": "搜索",
 		"ModsSearchByModName": "按模组名称搜索",
@@ -441,6 +443,9 @@
 		"SixMonths": "半年",
 		"OneYear": "一年",
 		"AllTime": "有史以来",
+		// "ThousandSuffix": "k",
+		// "MillionSuffix": "m",
+		"NotEnoughRatings": "评价数不足",
 		"MBServerReturnToMenu": "返回至世界菜单",
 		"MBServerAskForModName": "请输入要下载的模组完整全名：",
 
@@ -679,6 +684,7 @@
 		"WatchLocalizationFileMessage": "下列本地化文件被修改并重新加载：\n{0}",
 
 		// MessageBox
+		// "TerrariaGraphicsResourcesInitFailed": "The game could not create the needed graphics resources.\n\nYour computer may not be performant enough to run tModLoader.\n\nEnsure your graphics card is working/connected, and try restarting.",
 		"ContentFolderNotFound": "无法检测到原版Terraria的Content资源文件夹\n如果你是通过Steam安装的tModLoader，请确保你也安装了Terraria\n否则，请确保你的tModLoader安装在原版Terraria的文件夹或与原版Terraria处于同级",
 		"GraphicsEngineFailure": "图形引擎崩溃",
 		"GraphicsEngineReportUnknown": "未知",

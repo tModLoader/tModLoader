@@ -106,6 +106,8 @@
 		// "ModFromLocal": "Loading from local mods folder",
 		"ModsByline": "De: {0}",
 		"ModsMoreInfo": "Información",
+		// "ModsRateUp": "Like",
+		// "ModsRateDown": "Dislike",
 		"ModsOriginatedFromModBrowser": "Este mod proviene del Navegador de Mods",
 		"ModsTypeToSearch": "Buscar",
 		"ModsSearchByModName": "Buscar por nombre de mod",
@@ -439,6 +441,9 @@
 		// "SixMonths": "Six Months",
 		// "OneYear": "One Year",
 		// "AllTime": "All Time",
+		// "ThousandSuffix": "k",
+		// "MillionSuffix": "m",
+		"NotEnoughRatings": "No hay suficientes valoraciones",
 		"MBServerReturnToMenu": "Volver al menú de mundos",
 		"MBServerAskForModName": "Escribe el nombre exacto del mod a descargar: ",
 
@@ -677,6 +682,7 @@
 		"WatchLocalizationFileMessage": "Los siguientes archivos de localización han cambiado y se volverán a cargar: {0}",
 
 		// MessageBox
+		// "TerrariaGraphicsResourcesInitFailed": "The game could not create the needed graphics resources.\n\nYour computer may not be performant enough to run tModLoader.\n\nEnsure your graphics card is working/connected, and try restarting.",
 		"ContentFolderNotFound": "No se ha encontrado la carpeta de contenido de Terraria. Si instalaste tModLoader a través de Steam, asegúrate de que Terraria esté instalado. Si no, asegúrate de instalar el tModLoader en una carpeta ubicada dentro del directorio de instalación de Terraria o en una carpeta junto al directorio de instalación de Terraria.",
 		"GraphicsEngineFailure": "Fallo del motor de gráficos",
 		"GraphicsEngineReportUnknown": "Desconocido",

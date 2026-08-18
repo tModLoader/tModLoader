@@ -8,6 +8,7 @@ using System.Text;
 using System.Xml;
 using System.Xml.Linq;
 using Stubble.Core;
+using Terraria.Localization;
 
 #nullable enable
 #pragma warning disable IDE0057
@@ -25,10 +26,24 @@ internal static class SourceManagement
 		public required string ModDisplayName { get; set; }
 		public required string ModAuthor { get; set; }
 		public required string ModVersion { get; set; }
+		public string ModDisplayNameCultureName { get; set; } = GetLocalizedModDisplayNameCultureName();
 		public string ItemName { get; set; } = string.Empty;
 		public string ItemDisplayName { get; set; } = string.Empty;
 
 		public bool IncludeItem => ItemName != string.Empty;
+		public bool IncludeLocalizedModDisplayName => ModDisplayNameCultureName != string.Empty;
+
+		private static string GetLocalizedModDisplayNameCultureName()
+		{
+			string cultureName = Language.ActiveCulture?.Name;
+			string defaultCultureName = GameCulture.DefaultCulture?.Name;
+
+			if (!string.IsNullOrEmpty(cultureName) && !string.Equals(cultureName, defaultCultureName, StringComparison.OrdinalIgnoreCase)) {
+				return cultureName;
+			}
+
+			return string.Empty;
+		}
 
 		public static TemplateParameters FromSourceFolder(string modSrcDirectory)
 		{

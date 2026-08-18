@@ -1,0 +1,24 @@
+--- src/TerrariaNetCore/Terraria/Graphics/Capture/CaptureCamera.cs
++++ src/tModLoader/Terraria/Graphics/Capture/CaptureCamera.cs
+@@ -180,7 +_,8 @@
+ 
+ 	public void BeginDrawCapture()
+ 	{
+-		if (Lighting.NotRetro) {
++		// if (Lighting.NotRetro)
++		{
+ 			Main.instance.GraphicsDevice.SetRenderTarget(Main.skyTarget);
+ 			Main.instance.GraphicsDevice.Clear(Microsoft.Xna.Framework.Color.Transparent);
+ 			Filters.Scene.BeginCapture(_filterFrameBuffer1);
+@@ -191,8 +_,10 @@
+ 
+ 	public void EndDrawCapture(Vector2 screenSize, Vector2 sceneSize, Vector2 sceneOffset)
+ 	{
+-		if (Lighting.NotRetro)
++		// if (Lighting.NotRetro)
++		{
+ 			Filters.Scene.EndCapture(_frameBuffer, _filterFrameBuffer1, _filterFrameBuffer2, screenSize, sceneSize, sceneOffset);
++		}
+ 	}
+ 
+ 	private unsafe void DrawBytesToBuffer(byte[] sourceBuffer, byte[] destinationBuffer, int sourceBufferWidth, int destinationBufferWidth, Microsoft.Xna.Framework.Rectangle area)
