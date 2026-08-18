@@ -105,6 +105,7 @@ internal class BuildProperties
 		if (File.Exists(descriptionfile)) {
 			properties.description = File.ReadAllText(descriptionfile);
 		}
+		string[] sortIgnore = [];
 		foreach (string line in File.ReadAllLines(propertiesFile)) {
 			if (string.IsNullOrWhiteSpace(line)) {
 				continue;
@@ -132,6 +133,9 @@ internal class BuildProperties
 					break;
 				case "sortAfter":
 					properties.sortAfter = ReadList(value).ToArray();
+					break;
+				case "sortIgnore":
+					sortIgnore = ReadList(value).ToArray();
 					break;
 				case "author":
 					properties.author = value;
@@ -187,7 +191,8 @@ internal class BuildProperties
 
 		//add (mod|weak)References that are not in sortBefore to sortAfter
 		properties.sortAfter = properties.RefNames(true).Where(dep => !properties.sortBefore.Contains(dep))
-			.Concat(properties.sortAfter).Distinct().ToArray();
+			.Concat(properties.sortAfter).Distinct().Where(dep => !sortIgnore.Contains(dep)).ToArray();
+		properties.sortBefore = properties.sortBefore.Where(dep => !sortIgnore.Contains(dep)).ToArray()
 
 		// Interpolate description values
 		ModCompile.UpdateSubstitutedDescriptionValues(ref properties.description, properties.version.ToString(), properties.homepage);
@@ -395,6 +400,10 @@ internal class BuildProperties
 			sb.AppendLine($"sortAfter = {string.Join(", ", properties.sortAfter)}");
 		if (properties.sortBefore.Length > 0)
 			sb.AppendLine($"sortBefore = {string.Join(", ", properties.sortBefore)}");
+
+		string[] sortIgnore = properties.modReferences.Union(properties.weakReferences).Select(dep => dep.mod).Except(properties.sortAfter).Except(properties.sortBefore).ToArray();
+		if (sortIgnore.Length > 0)
+			sb.AppendLine($"sortIgnore = {string.Join(", ", sortIgnore)}");
 		var bytes = Encoding.UTF8.GetBytes(sb.ToString());
 		dst.Write(bytes, 0, bytes.Length);
 	}
