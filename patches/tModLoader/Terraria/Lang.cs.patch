@@ -40,12 +40,13 @@
  
  	public static string GetMapObjectName(int id)
  	{
-@@ -62,11 +_,43 @@
+@@ -62,11 +_,44 @@
  		return string.Empty;
  	}
  
 +	/// <summary>
 +	/// Registers a "Global substitution". These are values that will influence the text value of LocalizedText automatically.
++	/// <para/> The <paramref name="key"/> must be start with a letter and can only contain letters, digits, underscores, periods, and forward slashes (/).
 +	/// <para/> Some modded content will automatically register global substitutions:
 +	/// <para/> <see cref="ModNPC"/>:
 +	/// <br/> <b>Key</b>: <c>"NPCFirstName_{FullName}"</c> (For example, "NPCFirstName_ExampleMod/RandomBuff").
@@ -84,10 +85,12 @@
  	public static object GetGlobalSubstitution(string key)
  	{
  		if (!_globalSubstitutions.TryGetValue(key, out var value))
-@@ -75,6 +_,12 @@
+@@ -75,6 +_,14 @@
  		return value();
  	}
  
++	internal static Dictionary<string, Func<object>> GetGlobalSubstitutions() => _globalSubstitutions;
++
 +	internal static void ResetGlobalSubstitutions()
 +	{
 +		_globalSubstitutions.Clear();
