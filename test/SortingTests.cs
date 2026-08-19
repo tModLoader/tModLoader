@@ -373,6 +373,13 @@ namespace Terraria.ModLoader
 				Make("E", sortAfter: new[] {"D", "A"})
 			};
 			AssertSortSatisfied(list4);
+
+			//NoSync mod required by a both-side mod (B is known to exist if C exists)
+			AssertSortSatisfied([
+				Make("A"),
+				Make("B", sortAfter: new[] { "A" }, side: ModSide.NoSync),
+				Make("C", sortAfter: new[] { "B" }, refs: new[] { "B" })
+			]);
 		}
 
 		[TestMethod]
