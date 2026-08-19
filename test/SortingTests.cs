@@ -380,6 +380,24 @@ namespace Terraria.ModLoader
 				Make("B", sortAfter: new[] { "A" }, side: ModSide.NoSync),
 				Make("C", sortAfter: new[] { "B" }, refs: new[] { "B" })
 			]);
+
+			List<LocalMod> list5 = [
+				Make("A"),
+				Make("B", sortAfter: new[] { "A" }, side: ModSide.NoSync),
+				Make("C", sortAfter: new[] { "B" }, weakRefs: new[] { "B" })
+			];
+			AssertModException(
+				() => AssertSortSatisfied(list5),
+				["C"],
+				"C indirectly depends on A via C -> B -> A\r\n" +
+				"Some of these mods may not exist on both client and server. Add a direct sort entries or weak references.");
+
+			list5[2] = Make("C", sortAfter: new[] { "B" });
+			AssertModException(
+				() => AssertSortSatisfied(list5),
+				["C"],
+				"C indirectly depends on A via C -> B -> A\r\n" +
+				"Some of these mods may not exist on both client and server. Add a direct sort entries or weak references.");
 		}
 
 		[TestMethod]
