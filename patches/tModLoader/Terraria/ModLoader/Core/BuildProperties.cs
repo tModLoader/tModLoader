@@ -225,6 +225,11 @@ internal class BuildProperties
 					writer.Write("sortBefore");
 					WriteList(sortBefore, writer);
 				}
+				string[] sortIgnore = modReferences.Union(weakReferences).Select(dep => dep.mod).Except(sortAfter).Except(sortBefore).ToArray();
+				if (sortIgnore.Length > 0) {
+					writer.Write("sortIgnore");
+					WriteList(sortIgnore, writer);
+				}
 				if (author.Length > 0) {
 					writer.Write("author");
 					writer.Write(author);
