@@ -192,7 +192,7 @@ internal class BuildProperties
 		//add (mod|weak)References that are not in sortBefore to sortAfter
 		properties.sortAfter = properties.RefNames(true).Where(dep => !properties.sortBefore.Contains(dep))
 			.Concat(properties.sortAfter).Distinct().Where(dep => !sortIgnore.Contains(dep)).ToArray();
-		properties.sortBefore = properties.sortBefore.Where(dep => !sortIgnore.Contains(dep)).ToArray()
+		properties.sortBefore = properties.sortBefore.Where(dep => !sortIgnore.Contains(dep)).ToArray();
 
 		// Interpolate description values
 		ModCompile.UpdateSubstitutedDescriptionValues(ref properties.description, properties.version.ToString(), properties.homepage);
