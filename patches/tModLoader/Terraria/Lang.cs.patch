@@ -40,7 +40,7 @@
  
  	public static string GetMapObjectName(int id)
  	{
-@@ -62,11 +_,29 @@
+@@ -62,11 +_,43 @@
  		return string.Empty;
  	}
  
@@ -61,6 +61,20 @@
  		_globalSubstitutions[key] = getValue;
  	}
  
++	/// <summary>
++	/// <inheritdoc cref="RegisterGlobalSubstitution"/>
++	/// <para/> <b>RegisterModdedGlobalSubstitution specific behavior:</b>
++	/// <br/> Unlike <see cref="RegisterGlobalSubstitution(string, Func{object})"/>, this method will automatically prefix the key with the mod's name so that it is unique and will not conflict with substitutions from other mods. <c>"{mod.Name}/{key}"</c> will be the actual key and is what should be used to reference the substitution in localization entries.
++	/// </summary>
++	/// <param name="mod">The mod this substitution belongs to.</param>
++	/// <param name="key"></param>
++	/// <param name="getValue"></param>
++	public static void RegisterModdedGlobalSubstitution(Mod mod, string key, Func<object> getValue)
++	{
++		key = $"{mod.Name}/{key}";
++		_globalSubstitutions[key] = getValue;
++	}
++
 +	/// <summary>
 +	/// Gets the current current value of a global substitution. Used for keybindings, npc names, world evil substitutions, and guide tip conditions. <br/>
 +	/// If the value is <c>null</c>, then uses of <see cref="LocalizedText.TryFormatWith(object, out string)"/> or <see cref="LocalizedText.ConditionsMet"/> with {Key} will return false<br/>

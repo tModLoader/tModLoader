@@ -1509,7 +1509,7 @@ Mods: {
 				// StandardDialogue3: What? I don't have any arms or legs? Oh, don't be ridiculous!
 				// StandardDialogue4: Hey, if you find a [i:HiveBackpack], I can upgrade it for you.
 				# See LanguageSubstitutionSystem.cs for an explanation of how "global substitutions" work and how to register custom substitutions. These are showcased in these chat options.
-				// ConditionalDialogue1: "{?DownedMinionBoss}{?GolemDefeated}Wow, you defeated both {$NPCs.MinionBossBody.DisplayName} and {$NPCName.Golem}? Amazing!"
+				// ConditionalDialogue1: "{?ExampleMod/DownedMinionBoss}{?GolemDefeated}Wow, you defeated both {$NPCs.MinionBossBody.DisplayName} and {$NPCName.Golem}? Amazing!"
 				// ConditionalDialogue2: "{?!Day}{?!NPCFirstName_ExampleMod/ExampleTownPet}It's scary at night. I'd feel a lot safer if I had a pet to keep me company."
 				// CommonDialogue: This message has a weight of 5, meaning it appears 5 times more often.
 				// RareDialogue: This message has a weight of 0.1, meaning it appears 10 times as rare.

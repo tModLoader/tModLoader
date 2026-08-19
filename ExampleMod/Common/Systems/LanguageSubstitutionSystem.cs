@@ -1,4 +1,5 @@
 ﻿using Terraria;
+using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Common.Systems
@@ -11,7 +12,8 @@ namespace ExampleMod.Common.Systems
 	public class LanguageSubstitutionSystem : ModSystem
 	{
 		public override void Load() {
-			// Register global substitutions during mod loading by calling Lang.RegisterGlobalSubstitution.
+			// Register global substitutions during mod loading by calling Lang.RegisterModdedGlobalSubstitution.
+			// Lang.RegisterGlobalSubstitution is also an option but RegisterModdedGlobalSubstitution is preferred to avoid key conflicts.
 
 			// The most common usages of global substitutions are TownNPCs mentioning other TownNPCs by their given names and displaying bound keybinds to the user. These are handled automatically by tModLoader for all ModNPC and ModKeybind instances.
 
@@ -40,21 +42,20 @@ namespace ExampleMod.Common.Systems
 			// Aside from the automatically registered global substitutions, mods can add their own global substitutions for any purpose:
 
 			// Biome and Boss progression are also useful. These return bool, so they are used for conditional checks.
-			// "{?ExampleBiome}" or "{?DownedMinionBoss}" in a LocalizedText will cause these conditions to be checked to indicate if the LocalizedText is valid or not.
+			// "{?ExampleMod/ExampleBiome}" or "{?ExampleMod/DownedMinionBoss}" in a LocalizedText will cause these conditions to be checked to indicate if the LocalizedText is valid or not.
 			// Use "{?!KeyHere}" to reverse the conditional check.
 			// Multiple checks can be included.
-			Lang.RegisterGlobalSubstitution("ExampleBiome", () => ExampleConditions.InExampleBiome.IsMet());
-			Lang.RegisterGlobalSubstitution("DownedMinionBoss", () => ExampleConditions.DownedMinionBoss.IsMet());
+			Lang.RegisterModdedGlobalSubstitution(Mod, "ExampleBiome", () => ExampleConditions.InExampleBiome.IsMet());
+			Lang.RegisterModdedGlobalSubstitution(Mod, "DownedMinionBoss", () => ExampleConditions.DownedMinionBoss.IsMet());
+			// Note that with RegisterModdedGlobalSubstitution, the actual key to reference these substitutions is "ExampleMod/ExampleBiome" and "ExampleMod/DownedMinionBoss" since the mod name is automatically prepended to the key.
 
 			// To see global substitutions in action, see the following localization entries and their corresponding code, if relevant:
 			// 1. Mods.ExampleMod.Items.ExampleHood.SetBonus - Uses the vanilla {ToggleArmorSetBonusKey} substitution. It will automatically display "UP" or "DOWN" depending on the user's "Activate Set Bonuses" (Main.ReversedUpDownArmorSetBonuses) setting.
 			// 2. Mods.ExampleMod.GameTips.ExampleTip3 - Displays {InputTrigger_ExampleMod/RandomBuff} to the user in a tip during world generation. It will only show if it has a bound hotkey.
 			// 3. Mods.ExampleMod.Dialogue.ExampleTravelingMerchant.PartyGirlDialogue - Uses the vanilla {PartyGirl} substitution. This will display the given name and will only show if a Party Girl is in the world.
-			// 4. Mods.ExampleMod.Dialogue.ExampleTravelingMerchant.ConditionalDialogue1 - Displays {ExamplePerson}, a custom substitution. This will display the given name and will only show if an Example Person is in the world.
-			// 5. Mods.ExampleMod.Dialogue.ExamplePerson.ConditionalDialogue1 - Uses the {?DownedMinionBoss} custom condition and {?GolemDefeated} vanilla condition in chat dialogue. This will only show if both Minion Boss and Golem have been defeated.
+			// 4. Mods.ExampleMod.Dialogue.ExampleTravelingMerchant.ConditionalDialogue1 - Displays {NPCFirstName_ExampleMod/ExamplePerson}, the automatically registered substitution for ModNPC. This will display the given name and will only show if an Example Person is in the world.
+			// 5. Mods.ExampleMod.Dialogue.ExamplePerson.ConditionalDialogue1 - Uses the {?ExampleMod/DownedMinionBoss} custom condition and {?GolemDefeated} vanilla condition in chat dialogue. This will only show if both Minion Boss and Golem have been defeated.
 			// 6. Mods.ExampleMod.Dialogue.ExamplePerson.ConditionalDialogue2 - Shows negating conditions. This will only show at night and if there is no ExamplePet.
 		}
-
-
 	}
 }

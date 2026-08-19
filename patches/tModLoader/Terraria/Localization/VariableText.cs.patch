@@ -76,6 +76,26 @@
  		return true;
  	}
  
+@@ -69,8 +_,19 @@
+ 		Condition[] conditions = _conditions;
+ 		for (int i = 0; i < conditions.Length; i++) {
+ 			Condition condition = conditions[i];
++			/*
+ 			if (((lookup(condition.Name) as bool?) ?? false) != condition.RequiredValue)
+ 				return false;
++			*/
++			// Support non-bool as conditions. Non-null values act like true.
++			object value = lookup(condition.Name);
++			if (value is bool boolValue) {
++				if (boolValue != condition.RequiredValue)
++					return false;
++			}
++			else if ((value == null) == condition.RequiredValue) {
++				return false;
++			}
+ 		}
+ 
+ 		for (int j = 0; j < _variables.Length; j++) {
 @@ -78,7 +_,7 @@
  			if (obj == null)
  				return false;
