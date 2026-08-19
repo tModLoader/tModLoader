@@ -46,7 +46,7 @@ internal class BuildProperties
 	internal ModReference[] modReferences = new ModReference[0];
 	internal ModReference[] weakReferences = new ModReference[0];
 	//this mod will load after any mods in this list
-	//sortAfter includes (mod|weak)References that are not in sortBefore
+	//sortAfter includes (mod|weak)References that are not in sortBefore or sortIgnore
 	internal string[] sortAfter = new string[0];
 	//this mod will load before any mods in this list
 	internal string[] sortBefore = new string[0];
@@ -189,7 +189,7 @@ internal class BuildProperties
 		if (properties.dllReferences.Intersect(properties.modReferences.Select(x => x.mod)).Any())
 			throw new Exception("dllReferences contains duplicate of modReferences");
 
-		//add (mod|weak)References that are not in sortBefore to sortAfter
+		//add (mod|weak)References that are not in sortBefore or sortIgnore to sortAfter
 		properties.sortAfter = properties.RefNames(true).Where(dep => !properties.sortBefore.Contains(dep))
 			.Concat(properties.sortAfter).Distinct().Where(dep => !sortIgnore.Contains(dep)).ToArray();
 		properties.sortBefore = properties.sortBefore.Where(dep => !sortIgnore.Contains(dep)).ToArray();
