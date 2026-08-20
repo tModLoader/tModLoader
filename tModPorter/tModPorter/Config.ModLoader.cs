@@ -531,7 +531,9 @@ public static partial class Config
 		RenameMethod("Terraria.ModLoader.ModNPC",		from: "SetupShop",	to: "ModifyActiveShop");
 		RenameMethod("Terraria.ModLoader.GlobalNPC",	from: "SetupShop",	to: "ModifyActiveShop");
 		RenameMethod("Terraria.ModLoader.ModPylon",		from: "IsPylonForSale", to: "GetNPCShopEntry").FollowBy(AddCommentToOverride("See ExamplePylonTile for an example. To register to specific NPC shops, use the new shop system directly in ModNPC.AddShop, GlobalNPC.ModifyShop or ModSystem.PostAddRecipes"));
+		/* Updated once again in 1.4.5
 		ChangeHookSignature("Terraria.ModLoader.ModNPC",	"OnChatButtonClicked");
+		*/
 		ChangeHookSignature("Terraria.ModLoader.ModNPC",	"ModifyActiveShop");
 		ChangeHookSignature("Terraria.ModLoader.GlobalNPC", "ModifyActiveShop");
 		ChangeHookSignature("Terraria.ModLoader.ModPylon",	"GetNPCShopEntry");
@@ -552,8 +554,15 @@ public static partial class Config
 		ChangeHookSignature("Terraria.ModLoader.ModTree", "SetTreeFoliageSettings");
 
 		// 1.4.5
+		ChangeHookSignature("Terraria.ModLoader.ModBlockType", "RandomUpdate");
+		ChangeHookSignature("Terraria.ModLoader.GlobalBlockType", "RandomUpdate");
+		ChangeHookSignature("Terraria.ModLoader.ModNPC", "BossLoot");
 		ChangeHookSignature("Terraria.ModLoader.ModNPC", "SpawnChance").RenameParameter("spawnInfo", "spawner");
+		ChangeHookSignature("Terraria.ModLoader.ModNPC", "OnChatButtonClicked", comment: "Suggestion: Previously this was used to assign a shop to a button, but that is now handled by RegisterChatButtons. If that is all this was used for, remove this hook");
+		ChangeHookSignature("Terraria.ModLoader.GlobalNPC", "BuffTownNPC");
 		ChangeHookSignature("Terraria.ModLoader.GlobalNPC", "EditSpawnPool").RenameParameter("spawnInfo", "spawner");
+		ChangeHookSignature("Terraria.ModLoader.GlobalNPC", "OnChatButtonClicked");
+		ChangeHookSignature("Terraria.ModLoader.GlobalNPC", "PreChatButtonClicked");
 		ChangeHookSignature("Terraria.ModLoader.ModItem", "OnSpawn");
 		ChangeHookSignature("Terraria.ModLoader.ModItem", "CanStackInWorld");
 		ChangeHookSignature("Terraria.ModLoader.ModItem", "Update");
@@ -581,13 +590,16 @@ public static partial class Config
 		ChangeHookSignature("Terraria.ModLoader.GlobalProjectile", "PreDrawExtras", ProjectileDrawPlayerHint);
 		ChangeHookSignature("Terraria.ModLoader.GlobalProjectile", "PreDraw", ProjectileDrawPlayerHint);
 		ChangeHookSignature("Terraria.ModLoader.GlobalProjectile", "PostDraw", ProjectileDrawPlayerHint);
+		ChangeHookSignature("Terraria.ModLoader.ModCloud", "Draw");
 
 		RefactorInstanceMethodCall("Terraria.ModLoader.ModTile", "AddToArray", RewriteAddToArrayForRoomNeeds);
 
 		HookRemoved("Terraria.ModLoader.ModProjectile", "DrawBehind", "Set Projectile.drawLayer instead");
 		HookRemoved("Terraria.ModLoader.GlobalProjectile", "DrawBehind", "Set Projectile.drawLayer instead");
+		HookRemoved("Terraria.ModLoader.ModNPC", "SetChatButtons", "Chat buttons are now set in RegisterChatButtons");
 		HookRemoved("Terraria.ModLoader.ModPylon", "ValidTeleportCheck_AnyDanger", "Pylons no longer check danger for teleportation");
 		HookRemoved("Terraria.ModLoader.GlobalPylon", "ValidTeleportCheck_PreAnyDanger", "Pylons no longer check danger for teleportation");
+		HookRemoved("Terraria.ModLoader.ModItem", "IsQuestFish", "Set with ItemID.Sets.IsQuestFish instead");
 
 		RefactorInstanceMember("Terraria.DataStructures.PlayerDrawSet", "heldProjOverHand", Removed("Automatically applied via Projectile.drawLayer value"));
 		RefactorInstanceMember("Terraria.ModLoader.ModProjectile", "DrawHeldProjInFrontOfHeldItemAndArms", Removed("Replace with Projectile.drawLayer = ProjectileDrawLayerID.HeldProjOverHand;"));
@@ -597,5 +609,7 @@ public static partial class Config
 		RenameInstanceField("Terraria.ModLoader.TooltipLine", "OverrideColor", "Color");
 
 		RenameType(from: "Terraria.ModLoader.NPCSpawnInfo", to: "Terraria.NPC+Spawner");
+
+		RenameStaticField("Terraria.ID.NPCID.Sets", from: "ImmuneToAllBuffs", to: "ImmuneToRegularBuffs").FollowBy(AddCommentToFieldAccess("NPCID.Sets.ImmuneToAllBuffs was removed. If immunity to whip tag effects are desired, also set NPCID.Sets.ImmuneToWhipTags to true."));
 	}
 }

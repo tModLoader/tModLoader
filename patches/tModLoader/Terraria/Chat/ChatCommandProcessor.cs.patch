@@ -8,6 +8,42 @@
  
  namespace Terraria.Chat;
  
+@@ -40,6 +_,8 @@
+ 
+ 	public void PrepareAliases()
+ 	{
++		_aliases.Clear(); // Added by TML
++
+ 		foreach (IChatCommand value in _commands.Values) {
+ 			if (value is ICommandAliasProvider)
+ 				((ICommandAliasProvider)value).PrepareAliases(this);
+@@ -57,7 +_,7 @@
+ 	private static bool ParseCommandPrefix<T>(string text, Dictionary<LocalizedText, T> commands, out string remainder, out T value)
+ 	{
+ 		foreach (KeyValuePair<LocalizedText, T> command in commands) {
+-			if (command.Key.ParseCommandPrefix(text, out remainder)) {
++			if (MatchCommandPrefix(command.Key, text, out remainder)) {
+ 				value = command.Value;
+ 				return true;
+ 			}
+@@ -68,6 +_,17 @@
+ 		return false;
+ 	}
+ 
++	// Added by TML. Chat command localizations may omit the leading '/', letting a single key serve as both the command and the name it stands for (see EmojiName), instead of needing a second "/{$Name}" key
++	private static bool MatchCommandPrefix(LocalizedText command, string text, out string remainder)
++	{
++		if (!text.StartsWith('/')) {
++			remainder = default;
++			return false;
++		}
++
++		return command.ParseCommandPrefix(text, out remainder) || command.ParseCommandPrefix(text.Substring(1), out remainder);
++	}
++
+ 	public ChatMessage CreateOutgoingMessage(string text)
+ 	{
+ 		ChatMessage chatMessage = new ChatMessage(text);
 @@ -86,6 +_,11 @@
  
  	public void ProcessIncomingMessage(ChatMessage message, int clientId)

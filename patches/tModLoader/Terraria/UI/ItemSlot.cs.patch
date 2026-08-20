@@ -152,7 +152,7 @@
 +					break;
 +
 +				// #OnStackHook: Prevent swapping items if they will be stacked together.
-+				if (Main.mouseItem.maxStack > 1 && inv[slot].type == Main.mouseItem.type && inv[slot].stack != inv[slot].maxStack && Main.mouseItem.stack != Main.mouseItem.maxStack)
++				if (Main.mouseItem.maxStack > 1 && inv[slot].type == Main.mouseItem.type && Item.CanStack(Main.mouseItem, inv[slot]) && inv[slot].stack != inv[slot].maxStack && Main.mouseItem.stack != Main.mouseItem.maxStack)
 +					goto SkipSwap;
 +
  				Utils.Swap(ref inv[slot], ref Main.mouseItem);
@@ -179,8 +179,8 @@
 +					*/
 +
  					if (inv[slot].stack != inv[slot].maxStack && Main.mouseItem.stack != Main.mouseItem.maxStack) {
-+						if (ItemLoader.TryStackItems(inv[slot], Main.mouseItem, out int numTransfered))
-+							AnnounceTransfer(new ItemTransferInfo(inv[slot], 21, context, numTransfered));
++						ItemLoader.StackItems(inv[slot], Main.mouseItem, out int numTransfered);
++						AnnounceTransfer(new ItemTransferInfo(inv[slot], 21, context, numTransfered));
 +
 +						/* #OnStackHook
  						if (Main.mouseItem.stack + inv[slot].stack <= Main.mouseItem.maxStack) {
@@ -432,7 +432,7 @@
  				return false;
 -
 +		*/
-+		else if (item.type == 599 && item.type == 600 && item.type == 601) {
++		else if (item.type == 599 || item.type == 600 || item.type == 601) {
  			player.OpenLegacyPresent(item.type);
  		}
 +		else { // Added by TML.
@@ -696,3 +696,22 @@
  			return currentColor;
  
  		if (type == 662 || type == 663 || type == 5444 || type == 5450 || type == 5643) {
+@@ -3124,6 +_,18 @@
+ 					s += PlayerInput.BuildCommand(Language.GetTextValue("UI.ActionChangeType"), PlayerInput.ProfileGamepadUI.KeyStatus["Grapple"]);
+ 					if (CanExecuteCommand() && PlayerInput.Triggers.JustPressed.Grapple) {
+ 						TryItemSwap(inv[slot]);
++						PlayerInput.LockGamepadButtons("Grapple");
++						PlayerInput.SettingsForUI.TryRevertingToMouseMode();
++					}
++				}
++				// TML: Add a right click path for items that might not want "Open" as the gamepad hint text.
++				else if (ItemLoader.CanRightClick(inv[slot])) {
++					s += PlayerInput.BuildCommand(Language.GetTextValue("UI.ActionAltAction"), PlayerInput.ProfileGamepadUI.KeyStatus["Grapple"]);
++					if (CanExecuteCommand() && PlayerInput.Triggers.JustPressed.Grapple) {
++						if (Main.ItemDropsDB.GetRulesForItemID(inv[slot].type).Any())
++							TryOpenContainer(inv, context, slot, player);
++						else
++							ItemLoader.RightClick(inv[slot], player);
+ 						PlayerInput.LockGamepadButtons("Grapple");
+ 						PlayerInput.SettingsForUI.TryRevertingToMouseMode();
+ 					}

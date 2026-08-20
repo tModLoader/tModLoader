@@ -40,7 +40,7 @@
  	public int timeLeftInWhichTheItemCannotBeTakenByEnemies;
 +	/// <summary>
 +	/// A value that increases every tick an item is in the world.<br/>
-+	/// Defaults to the value in <see cref="ItemID.Sets.OverflowProtectionTimeOffset"/> when an item is created, and increases by <see cref="ItemID.Sets.ItemSpawnDecaySpeed"/> every tick.<br/>
++	/// Defaults to the value in <see cref="ItemID.Sets.OverflowProtectionTimeOffset"/> when an item is created, and increases by 1 every tick.<br/>
 +	/// When creating new items, items with a high <c>timeSinceItemSpawned</c> value will be replaced if no empty item slots are available.<br/>
 +	/// </summary>
  	public int timeSinceItemSpawned;
@@ -68,6 +68,50 @@
  		get {
  			return inner.makeNPC;
  		}
+@@ -201,10 +_,22 @@
+ 		for (int i = myItemIndex + 1; i < 400; i++) {
+ 			WorldItem worldItem = Main.item[i];
+ 			if (!worldItem.IsAir && Item.CanStack(inner, worldItem.inner) && worldItem.shimmered == shimmered && worldItem.playerIndexTheItemIsReservedFor == playerIndexTheItemIsReservedFor && !(Math.Abs(position.X - worldItem.position.X) + Math.Abs(position.Y - worldItem.position.Y) > (float)num)) {
++				// TML: CanStackInWorld is world-only; it does NOT affect inventory/chest stacking.
++				if (!ItemLoader.CanStackInWorld(this, worldItem))
++					continue;
++
++				// TML: Use StackItems so OnStack fires. StackItems performs the same stack arithmetic
++				// as the replaced vanilla code (plus favorited transfer and shopCustomPrice nulling,
++				// which were already part of the 1.4.4 behavior via this same method call).
++				ItemLoader.StackItems(inner, worldItem.inner, out int numTransferred);
++
++				/* #OnStackHook
+ 				int num2 = Math.Min(worldItem.stack, maxStack - stack);
+ 				worldItem.stack -= num2;
+ 				stack += num2;
+ 				float amount = (float)num2 / (float)stack;
++				*/
++				float amount = (float)numTransferred / (float)stack;
+ 				position = Vector2.Lerp(worldItem.position, position, amount);
+ 				velocity = Vector2.Lerp(worldItem.velocity, velocity, amount);
+ 				if (worldItem.stack <= 0)
+@@ -249,8 +_,9 @@
+ 					continue;
+ 
+ 				Player.ItemSpaceStatus status = player.ItemSpace(Main.item[whoAmI]);
+-				if (player.CanPullItem(Main.item[whoAmI], status)) {
++				if (ItemLoader.CanPickup(Main.item[whoAmI], player) && player.CanPullItem(Main.item[whoAmI], status)) {
+ 					float num4 = Math.Abs(player.position.X + (float)(player.width / 2) - position.X - (float)(width / 2)) + Math.Abs(player.position.Y + (float)(player.height / 2) - position.Y - (float)height);
++					/*
+ 					if (player.manaMagnet && (type == 184 || type == 1735 || type == 1868))
+ 						num4 -= (float)Item.manaGrabRange;
+ 
+@@ -259,6 +_,9 @@
+ 
+ 					if (type == 4143)
+ 						num4 -= (float)Item.manaGrabRange;
++					*/
++					// This will have grab range discrepancies with the above code due to this method having additional checks - Mutant
++					num4 -= player.GetItemGrabRange(Main.item[whoAmI]);
+ 
+ 					if (num3 > num4) {
+ 						num3 = num4;
 @@ -338,7 +_,10 @@
  		float maxFallSpeed = 7f;
  		if (Main.netMode == 1) {
@@ -88,6 +132,42 @@
  
  					if (Main.rand.Next(num3) == 0 && Main.rand.NextFloat() < Main.maxRaining) {
  						int num4 = stack;
+@@ -485,6 +_,8 @@
+ 		if (timeSinceItemSpawned < 2147483547)
+ 			timeSinceItemSpawned++;
+ 
++		ItemLoader.PostUpdate(this);
++
+ 		if (noGrabDelay > 0)
+ 			noGrabDelay--;
+ 	}
+@@ -647,7 +_,7 @@
+ 
+ 			NetMessage.SendData(21, -1, -1, null, i);
+ 		}
+-		else if (playerIndexTheItemIsReservedFor == Main.myPlayer && (type > 0 || type < ItemID.Count) && (rare == 0 || rare == -1) && !ItemID.Sets.IsLavaImmuneRegardlessOfRarity[type]) {
++		else if (playerIndexTheItemIsReservedFor == Main.myPlayer && type > 0 && (rare == 0 || rare == -1) && !ItemID.Sets.IsLavaImmuneRegardlessOfRarity[type]) {
+ 			TurnToAir();
+ 			if (Main.netMode != 0)
+ 				NetMessage.SendData(21, -1, -1, null, i);
+@@ -687,6 +_,8 @@
+ 
+ 	private void MoveInWorld(float gravity, float maxFallSpeed, ref Vector2 wetVelocity, int i)
+ 	{
++		ItemLoader.Update(this, ref gravity, ref maxFallSpeed);
++
+ 		if (!shimmered && ItemID.Sets.ItemNoGravity[type]) {
+ 			velocity.X *= 0.95f;
+ 			if ((double)velocity.X < 0.1 && (double)velocity.X > -0.1)
+@@ -964,7 +_,7 @@
+ 		Rectangle hitbox = base.Hitbox;
+ 		for (int j = 0; j < Main.maxNPCs; j++) {
+ 			NPC nPC = Main.npc[j];
+-			if (nPC.active && flag && nPC.type >= 0 && nPC.type < NPCID.Count && NPCID.Sets.CanConvertIntoCopperSlimeTownNPC[nPC.type] && hitbox.Intersects(nPC.Hitbox)) {
++			if (nPC.active && flag && nPC.type >= 0 && NPCID.Sets.CanConvertIntoCopperSlimeTownNPC[nPC.type] && hitbox.Intersects(nPC.Hitbox)) {
+ 				flag3 = true;
+ 				NPC.TransformCopperSlime(j);
+ 				break;
 @@ -1413,7 +_,11 @@
  	}
  
@@ -100,6 +180,26 @@
  
  	public static void ShimmerEffect(Vector2 shimmerPositon)
  	{
+@@ -1443,7 +_,9 @@
+ 		int shimmerEquivalentType = inner.GetShimmerEquivalentType();
+ 		int decraftingRecipeIndex = ShimmerTransforms.GetDecraftingRecipeIndex(inner.GetShimmerEquivalentType(forDecrafting: true));
+ 		int transformToItem = ShimmerTransforms.GetTransformToItem(shimmerEquivalentType);
+-		if (ItemID.Sets.CommonCoin[shimmerEquivalentType]) {
++		if (ItemID.Sets.CoinLuckValue[shimmerEquivalentType] > 0) {
++			stack *= ItemID.Sets.CoinLuckValue[shimmerEquivalentType];
++			/*
+ 			switch (shimmerEquivalentType) {
+ 				case 72:
+ 					stack *= 100;
+@@ -1457,6 +_,8 @@
+ 					stack *= 1000000;
+ 					break;
+ 			}
++			*/
++			// patch context for CoinLuckValue
+ 
+ 			Main.player[Main.myPlayer].AddCoinLuck(base.Center, stack);
+ 			NetMessage.SendData(146, -1, -1, null, 1, (int)base.Center.X, (int)base.Center.Y, stack);
 @@ -1538,12 +_,15 @@
  				num7++;
  				int num8 = num6 * item.stack;

@@ -38,6 +38,8 @@ internal class WorkshopBrowserModule : SocialBrowserModule
 
 		if (SteamedWraps.SteamAvailable)
 			CachedInstalledModDownloadItems = (this as SocialBrowserModule).DirectQueryInstalledMDItems();
+		else
+			CachedInstalledModDownloadItems = new List<ModDownloadItem>();
 
 		if (!isDeletion)
 			return;
@@ -77,7 +79,7 @@ internal class WorkshopBrowserModule : SocialBrowserModule
 		if (installed.Version < webVersion)
 			return true;
 
-		if (SteamedWraps.SteamAvailable && SteamedWraps.DoesWorkshopItemNeedUpdate(GetId(modId)))
+		if (SteamedWraps.DoesWorkshopItemNeedUpdate(GetId(modId)))
 			return true;
 
 		return false;

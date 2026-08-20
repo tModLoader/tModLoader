@@ -1,5 +1,13 @@
 --- src/TerrariaNetCore/Terraria/UI/Gamepad/GamepadPointID.cs
 +++ src/tModLoader/Terraria/UI/Gamepad/GamepadPointID.cs
+@@ -1,6 +_,6 @@
+ namespace Terraria.UI.Gamepad;
+ 
+-public static class GamepadPointID
++public static partial class GamepadPointID
+ {
+ 	public const int EndUp = -1;
+ 	public const int EndDown = -2;
 @@ -165,7 +_,7 @@
  	public const int ChestActRestock = 503;
  	public const int ChestActRenameChest = 504;

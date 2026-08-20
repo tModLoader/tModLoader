@@ -12,6 +12,20 @@
  
  			vector += new Vector2(72f, 22f);
  			float num = Math.Min(11f / (float)i, 1f);
+@@ -463,11 +_,12 @@
+ 		return Language.GetTextValue("GameUI.NotEnoughMaterials");
+ 	}
+ 
+-	internal static void AddTooltipLines(Item hoverItem, ref int numLines, string[] lineText, Color[] lineColors)
++	internal static void AddTooltipLines(Item hoverItem, ref int numLines, string[] lineText, Color[] lineColors, string[] toolTipNames)
+ 	{
+ 		if (_instance == null || (_instance._missingRequirementsTooltipText != null && !hoverItem.IsAir)) {
+ 			lineText[numLines] = _instance._missingRequirementsTooltipText;
+ 			lineColors[numLines] = new Color(255, 140, 160, 255);
++			toolTipNames[numLines] = "MissingRequirements";
+ 			numLines++;
+ 		}
+ 	}
 @@ -642,7 +_,8 @@
  		UILinkPoint rightSide = ((materialCount == 0) ? null : uILinkPage.LinkMap[20001]);
  		UILinkPoint uILinkPoint10 = ((materialCount == 0) ? null : uILinkPage.LinkMap[20001 + materialCount - 1]);

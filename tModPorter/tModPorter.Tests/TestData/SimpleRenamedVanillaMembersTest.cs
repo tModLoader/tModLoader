@@ -53,6 +53,7 @@ public class SimpleRenamedVanillaMembersTest
 		bool isJourney = Main.GameModeInfo.IsJourneyMode;
 		_ = Main.recBigList;
 		_ = Main.recFastScroll;
+		_ = Main.hasFocus;
 
 		PopupText popupText = Main.popupText[0];
 
@@ -60,6 +61,8 @@ public class SimpleRenamedVanillaMembersTest
 		int logicCheckScreenWidth = Main.LogicCheckScreenWidth;
 
 		Main.musicBox2 = 87;
+
+		Main.instance.DrawWindowsIMEPanel(new Vector2(98f, (float)(Main.screenHeight - 36)), 0f);
 
 		int copperTierOreInt = WorldGen.CopperTierOre;
 		ushort copperTierOre = WorldGen.CopperTierOre;
@@ -120,6 +123,7 @@ public class SimpleRenamedVanillaMembersTest
 		player.IsAValidEquipmentSlotForIteration(0);
 		player.VanillaUpdateEquip(null);
 		player.CanBuyItem(100000);
+		player.oldAdjTile[0] = false;
 
 		Main.DrawPlayer(player, Vector2.Zero, 0f, Vector2.Zero, 1f);
 

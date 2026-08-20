@@ -55,8 +55,10 @@ public abstract class ModBestiaryInfoElement : IFilterInfoProvider, IProvideSear
 		filterImage.Left = new StyleDimension(5f, 0f);
 		UIText element = new UIText(Language.GetText(GetDisplayNameKey()), 0.8f) {
 			HAlign = 0f,
-			Left = new StyleDimension(38f, 0f),
+			PaddingLeft = 38f,
+			Width = StyleDimension.FromPercent(1f),
 			TextOriginX = 0f,
+			TextOriginY = 0f,
 			VAlign = 0.5f,
 			DynamicallyScaleDownToWidth = true
 		};

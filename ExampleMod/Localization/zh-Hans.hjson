@@ -89,7 +89,10 @@ Mods: {
 				// DisplayName: Example Person
 
 				# This is what displays during all of an NPC's happiness levels.
+				# {NPCName} is a placeholder and will be replaced with the NPC's full name.
+				# {BiomeName} is a placeholder and will be replaced with the biome's name.
 				TownNPCMood: {
+					# The following are dialogue entries that all Town NPCs affected by happiness should have.
 					// Content: I feel pretty fine right now.
 					// NoHome: I would very much like a house, all the colorful monsters scare me.
 					// FarFromHome: Could you please get me back to my house?
@@ -102,15 +105,41 @@ Mods: {
 					// HateBiome: It's kind of hard to mod while being attacked by monsters in {BiomeName}.
 					// LoveNPC: Do you think {NPCName} notices me?
 					// LikeNPC: I can respect {NPCName} as a fellow guide and educator!
-					// DislikeNPC: '''"{NPCName} keeps rambling on about "paid mods"... Wish I could convince him how terrible of an idea that is."'''
+					// DislikeNPC: "{NPCName} is not very helpful."
 					// HateNPC: I hate all the loud noises caused by {NPCName} and his explosives! I just want peace and quiet.
 					// LikeNPC_Princess: "{NPCName} is a princess? That is so cool!"
 					// Princess_LovesNPC: "{NPCName} is so square. I love that about them!"
+					# Specific dialogue text can be defined as well.
+					# These quotes are optional and will be used instead of the generic dialogue above.
+					# They need to follow the pattern of [AffectionLevel](NPC or Biome)_[NPCInternalName]
+					# Modded NPCs need mod name as well: ExampleMod/ExamplePerson
+					// LikeNPC_BestiaryGirl: "{NPCName} likes to research animals the same way I like to research mods."
+					// DislikeNPC_Merchant: '''{NPCName} keeps rambling on about "paid mods"... Wish I could convince him how terrible of an idea that is.'''
+					// DislikeBiome_Desert: It's way too hot in {BiomeName}, I'm burning!
+					// LoveBiome_ExampleMod/ExampleSurfaceBiome: "{BiomeName} makes me feel right at home!"
+					# We can also give other NPCs specific dialogue text for this Modded NPC.
+					# They need to follow the pattern of [NPCInternalName]_[AffectionLevel]s(NPC)
+					// Guide_LovesNPC: I love a fellow educator like {NPCName}.
+					# Zoologist is a special case because she has a second set of dialogue when transformed.
+					// BestiaryGirl_LikesNPC: I like the research {NPCName} does.
+					// Transformed.BestiaryGirl_LikesNPC: "{NPCName} research GOOD!"
 				}
 
+				Interactions: {
+					// AwesomeifyButton: Awesomeify
+					// AwesomeifyResponse: Awesome!
+					// DayOnlyShopButton: Day Only Shop
+					// UpgradeItemButton: Upgrade {$ItemName.HiveBackpack}
+					// UpgradeItemResponse: I upgraded your {$ItemName.HiveBackpack} to a {$Mods.ExampleMod.Items.WaspNest.DisplayName}
+				}
+
+				# Town NPCs who are homeless have a "Housing" button that displays their "NoHome" dialogue as well as a hint on what valid housing is. The hint text can be customized through the localization file.
+				# Default hint:			(In order for a room to be considered a home, it needs to have a door, a chair, a table, and a light source.  Make sure the house has walls as well.)
+				# Hint for the truffle: (In order for {NPCName} to consider a home, it needs to be in Glowing Mushroom Fields and have a door, a chair, a table, and a light source.  Make sure the house has walls as well.)
+				# {NPCName} is a placeholder and will be replaced with the NPC's full name.
+				// HousingText.HousingRequirements: (In order for {NPCName} to consider a home, it needs to have an Example Door, Example Chair or Example Bed, Example Workbench, and a light source.  Make sure the house has walls as well made out of Example Walls and Example Blocks.)
 				# This key is generated and used when the "Census" mod is enabled: It allows the user to see the spawn condition of this town NPC in the Housing UI
 				// Census.SpawnCondition: Have either an {$Items.ExampleItem.DisplayName} [i:ExampleMod/ExampleItem] or an {$Items.ExampleBlock.DisplayName} [i:ExampleMod/ExampleBlock] in your inventory
-				// Upgraded: I upgraded your {$ItemName.HiveBackpack} to a {$Mods.ExampleMod.Items.WaspNest.DisplayName}
 				// DeathMessage: "{0} is gone..."
 				// DeathMessageAlt: "{0} faded out of existence..."
 			}
@@ -167,7 +196,7 @@ Mods: {
 			// ExampleDresser.MapEntry: Example Dresser
 
 			ExampleSign: {
-				// DefaultSignText: Right-click me!
+				// DefaultSignText: Interact with me!
 				// MapEntry: Example Sign
 			}
 
@@ -723,11 +752,11 @@ Mods: {
 
 			UseStyleShowcase: {
 				// DisplayName: Use Style Showcase
-				# The special text "<right>" will change depending on if the user is using keyboard or gamepad to show the alternate click button
+				# The special text "{InputTrigger_InteractWithTile}" will change depending on if the user is using keyboard or gamepad to show the alternate click button
 				/* Tooltip:
 					'''
 					This item showcases each UseStyle.
-					<right> to cycle through UseStyles.
+					{InputTrigger_InteractWithTile} to cycle through UseStyles.
 					''' */
 				// Switching: Switching to ItemUseStyleID #{0}
 				// ThisIs: This is ItemUseStyleID #{0}
@@ -830,7 +859,6 @@ Mods: {
 					'''
 					{$CommonItemTooltip.SummonTagDamage}
 					{$CommonItemTooltip.Whips}
-					Hold for longer reach
 					''' */
 			}
 
@@ -838,7 +866,7 @@ Mods: {
 				// DisplayName: Example Whip Advanced
 				/* Tooltip:
 					'''
-					{0}% summon tag damage to the next minion or sentry hit
+					{0}% extra summon tag damage to the next minion or sentry hit
 					{$CommonItemTooltip.Whips}
 					Hold for longer reach
 					''' */
@@ -894,7 +922,7 @@ Mods: {
 				/* Tooltip:
 					'''
 					This item showcases each HoldStyle.
-					<right> to cycle through HoldStyles.
+					{InputTrigger_InteractWithTile} to cycle through HoldStyles.
 					''' */
 				// Switching: Switching to ItemHoldStyleID #{0}
 				// ThisIs: This is ItemHoldStyleID #{0}
@@ -1124,7 +1152,7 @@ Mods: {
 
 			CustomItemDrawingShowcase: {
 				// DisplayName: Custom Item Drawing Showcase
-				// Tooltip: ""
+				// Tooltip: "{InputTrigger_ToggleOrOpen} to cycle draw mode examples"
 				// RightClick: Switching to drawMode #{0}: {1}
 				// DrawMode_0: Draw an overlay/glowmask
 				// DrawMode_1: Scale drawing to make a pulse effect similar to Soul items
@@ -1159,7 +1187,7 @@ Mods: {
 
 			BasicTileEntityItem: {
 				// DisplayName: Basic Tile Entity Item
-				// Tooltip: Collects rain water. Right Click when full to claim a water bucket.
+				// Tooltip: Collects rain water. {InputTrigger_InteractWithTile} when full to claim a water bucket.
 			}
 
 			CorruptFossilTileItem: {
@@ -1260,6 +1288,21 @@ Mods: {
 				// DisplayName: Example Gemspark Block
 				// Tooltip: ""
 			}
+
+			ExampleBasicFish: {
+				// DisplayName: Example Basic Fish
+				// Tooltip: ""
+			}
+
+			ExampleCustomDrawWings: {
+				// DisplayName: Example Custom Draw Wings
+				// Tooltip: ""
+			}
+
+			ExampleGolfClub: {
+				// DisplayName: Example Golf Club (Driver)
+				// Tooltip: "{$CommonItemTooltip.GolfDriver}"
+			}
 		}
 
 		# Projectile display names mainly show in chat when a player dies from it.
@@ -1354,11 +1397,6 @@ Mods: {
 				// Description: Leather seats, 4 cup holders
 			}
 
-			ExampleWhipDebuff: {
-				// DisplayName: Example Whip Debuff
-				// Description: ""
-			}
-
 			ExampleLightPetBuff: {
 				// DisplayName: Annoying Light
 				// Description: Ugh, soooo annoying
@@ -1389,11 +1427,6 @@ Mods: {
 				// Description: "{0}% of damage taken will be redirected to another player"
 			}
 
-			ExampleWhipAdvancedDebuff: {
-				// DisplayName: Example Whip Advanced Debuff
-				// Description: ""
-			}
-
 			ExampleJavelinDebuff: {
 				// DisplayName: Example Javelin Debuff
 				// Description: Losing life
@@ -1402,6 +1435,16 @@ Mods: {
 			ExampleWeaponImbue: {
 				// DisplayName: Example Weapon Imbue
 				// Description: "{$Items.ExampleFlask.Tooltip}"
+			}
+
+			ExampleWhipAdvancedPlayerBuff: {
+				// DisplayName: Example Whippin'!
+				// Description: Whip speed is increased
+			}
+
+			ExampleCrowdControlledDebuff: {
+				// DisplayName: Example Crowd Controlled Debuff
+				// Description: You can't move your arms or legs
 			}
 		}
 
@@ -1638,3 +1681,10 @@ Mods: {
 
 # Mods can also override existing translation keys, but these types of changes are better suited to Resource Packs.
 // UI.PlayerIsNotCreativeAndWorldIsCreative: Only Journey characters may enter a Journey world, silly.
+# Here is how you can add specific happiness dialogue text for vanilla NPCs talking about biomes or vanilla NPCs talking about vanilla NPCs.
+# For the vanilla NPC talking about your Modded NPC, put the dialogue in the Modded NPC's TownNPCMood. See ExamplePerson for details.
+// TownNPCMood_Guide.LoveBiome_ExampleMod/ExampleSurfaceBiome: Somehow, I love the muted colors of {BiomeName}!
+// TownNPCMood_Nurse.DislikeNPC_PartyGirl: I don't like {NPCName}. How can she party all of the time?
+# Zoologist is a special case because she has a second set of dialogue when transformed.
+// TownNPCMood_BestiaryGirl.LikeNPC_Golfer: "{NPCName} is my brother, of course I like him!"
+// TownNPCMood_BestiaryGirlTransformed.LikeNPC_Golfer: "{NPCName} good family!"

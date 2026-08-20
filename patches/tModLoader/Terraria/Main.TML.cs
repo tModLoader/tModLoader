@@ -24,6 +24,7 @@ using Terraria.ModLoader.Core;
 using Terraria.ModLoader.Default;
 using Terraria.ModLoader.Config;
 using System.Net.Http;
+using JetBrains.Annotations;
 using Newtonsoft.Json.Linq;
 
 namespace Terraria;
@@ -49,6 +50,10 @@ public partial class Main
 	/// </summary>
 	public static int worldEventUpdates;
 	private double _partialWorldEventUpdates = 0f;
+	/// <summary>
+	/// The NPCInteractionDatabase instance for registering chat buttons to NPCs (and signs).
+	/// </summary>
+	public static NPCInteractionDatabase NPCInteractionDB;
 
 	public static List<TitleLinkButton> tModLoaderTitleLinks = new List<TitleLinkButton>();
 
@@ -609,7 +614,7 @@ public partial class Main
 				continue;
 			var normalMod = normalModsToLoad.First(mod => mod.Name == loadedMod.Name); // If this throws, we have a big issue.
 			if (normalMod.modFile.path != loadedMod.File.path) {
-				reloadRequiredExplanationEntries.Add(new ReloadRequiredExplanation(1, normalMod.Name, normalMod, Language.GetTextValue("tModLoader.ReloadRequiredExplanationSwitchVersion", "FFFACD", normalMod.Version, loadedMod.Version)));
+				reloadRequiredExplanationEntries.Add(new ReloadRequiredExplanation(2, normalMod.Name, normalMod, Language.GetTextValue("tModLoader.ReloadRequiredExplanationSwitchVersion", "FFFACD", normalMod.Version, loadedMod.Version)));
 				needsReload = true;
 			}
 		}
@@ -645,4 +650,11 @@ public partial class Main
 			ConfigManager.OnChangedAll();
 		}
 	}
+
+	/// <summary>
+	/// Reference to the screen target after FilterManager.EndCapture has run, has all filters applied, and accounts for reverse gravity. <para/>
+	/// <see langword="null"/> if referenced before FilterManager.EndCapture or if the screen was not captured this frame. <para/>
+	/// Use <see cref="ModSystem.RequiresScreenTarget"/> to force this target to be populated.
+	/// </summary>
+	[CanBeNull]	public static RenderTarget2D finalScreenTarget;
 }

@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using Terraria;
 using Terraria.GameContent;
+using Terraria.GameContent.Tile_Entities;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -19,6 +20,9 @@ namespace ExampleMod.Content.Projectiles
 			// Since the velocity of the projectile affects how far out the jousting lance will spawn, we want the
 			// velocity to always be the same even if the player has increased attack speed.
 			ProjectileID.Sets.NoMeleeSpeedVelocityScaling[Type] = true;
+
+			// This will make it so zapping jellyfish can damage the player if the player is holding the Jousting Lance. Since we aren't using ProjAIStyleID.Spear, we need to set this manually.
+			ProjectileID.Sets.AllowsContactDamageFromJellyfish[Type] = true;
 		}
 
 		public override void SetDefaults() {
@@ -36,8 +40,9 @@ namespace ExampleMod.Content.Projectiles
 			Projectile.friendly = true; // Player shot projectile. Does damage to enemies but not to friendly Town NPCs.
 			Projectile.penetrate = -1; // Infinite penetration. The projectile can hit an infinite number of enemies.
 			Projectile.tileCollide = false; // Don't kill the projectile if it hits a tile.
+			Projectile.drawLayer = ProjectileDrawLayerID.HeldProj; // Sets the draw layer of the projectile to be in front of the player's body but behind the player's arm.
+			Projectile.usesOwnerLight = true; // The projectile will take lighting information from the player's position instead of the projectile's position, which is the tip of the jousting lance in this case.
 			Projectile.scale = 1f; // The scale of the projectile. This only effects the drawing and the width of the collision.
-			Projectile.hide = true; // We are drawing the projectile ourselves. See PreDraw() below.
 			Projectile.ownerHitCheck = true; // Make sure the owner of the projectile has line of sight to the target (aka can't hit things through tile).
 			Projectile.DamageType = DamageClass.MeleeNoSpeed; // Set the damage to melee damage.
 
@@ -141,7 +146,7 @@ namespace ExampleMod.Content.Projectiles
 
 		// This is the custom collision that Jousting Lances uses. 
 		public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox) {
-			float rotationFactor = Projectile.rotation + (float)Math.PI / 4f; // The rotation of the Jousting Lance.
+			float rotationFactor = Projectile.rotation - (3 * MathHelper.PiOver4) - ((Projectile.spriteDirection == 1) ? MathHelper.Pi : MathHelper.PiOver2); // The rotation of the Jousting Lance.
 			float scaleFactor = 95f; // How far back the hit-line will be from the tip of the Jousting Lance. You will need to modify this if you have a longer or shorter Jousting Lance. Vanilla uses 95f
 			float widthMultiplier = 23f; // How thick the hit-line is. Increase or decrease this value if your Jousting Lance is thicker or thinner. Vanilla uses 23f
 			float collisionPoint = 0f; // collisionPoint is needed for CheckAABBvLineCollision(), but it isn't used for our collision here. Keep it at 0f.
@@ -198,8 +203,8 @@ namespace ExampleMod.Content.Projectiles
 				spriteEffects = SpriteEffects.FlipHorizontally;
 			}
 
-			// The position of the sprite. Not subtracting player.gfxOffY will cause the sprite to bounce when walking up blocks.
-			Vector2 position = new(Projectile.Center.X, Projectile.Center.Y - player.gfxOffY);
+			// The position of the sprite. Not subtracting Projectile.gfxOffY will cause the sprite to bounce when walking up blocks.
+			Vector2 position = new(Projectile.Center.X, Projectile.Center.Y - Projectile.gfxOffY);
 
 			// Apply lighting and draw our projectile
 			Color drawColor = Projectile.GetAlpha(lightColor);
@@ -215,6 +220,32 @@ namespace ExampleMod.Content.Projectiles
 			// 	lanceHitboxBounds, Color.Orange * 0.5f, 0, Vector2.Zero, 1f, SpriteEffects.None, 0);
 
 			// It's important to return false, otherwise we also draw the original texture.
+			return false;
+		}
+
+		// This hook lets us change how the held projectile looks while a mannequin is holding it.
+		// The following code is adapted from vanilla's Projectile.AI_DisplayDoll for aiStyle 19 (Spear)
+		// Due to how lances are held and how they fade in, we need to customize the forward offset and alpha to make it look right and can't just use ProjAIStyleID.Spear for this one.
+		public override bool DisplayDollSettings(Player doll, TEDisplayDoll.DisplayDollPose pose, ref int aiStyle, ref int aiType) {
+			Projectile.direction = doll.direction;
+			Projectile.spriteDirection = -Projectile.direction;
+			Vector2 projectileDirection = Vector2.UnitX;
+			float armRotation = 0f;
+			if (pose.ItemAimRadians.HasValue)
+				armRotation = pose.ItemAimRadians.Value; // The rotation of the mannequin's hand.
+
+			projectileDirection = projectileDirection.RotatedBy(armRotation);
+			if (Projectile.direction == -1)
+				projectileDirection.X *= -1f;
+
+			Projectile.velocity = projectileDirection;
+
+			Projectile.alpha = 0; // Jousting Lance specific: The jousting lance normally starts invisible and fades in. 0 alpha is fully opaque.
+
+			int forwardOffset = 122; // This matches the vanilla Jousting Lances. Other spears may need a different value.
+			Projectile.position += Projectile.velocity * forwardOffset; // Move the projectile's location while being held by the mannequin.
+			Projectile.rotation = (float)Math.Atan2(projectileDirection.Y, projectileDirection.X) + (3f * MathHelper.PiOver4); // Set the projectile's rotation based on the mannequin's hand.
+
 			return false;
 		}
 	}

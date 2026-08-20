@@ -320,7 +320,6 @@ public static class ModContent
 
 		Interface.loadMods.SetLoadStage("tModLoader.MSResizing");
 		ResizeArrays();
-		RecipeGroupHelper.CreateRecipeGroupLookups();
 		ArmorSetBonuses.Initialize();
 
 		Main.ResourceSetsManager.AddModdedDisplaySets();
@@ -381,6 +380,8 @@ public static class ModContent
 		ContentSamples.RebuildItemCreativeSortingIDsAfterRecipesAreSetUp();
 		ItemSorting.SetupWhiteLists();
 		LocalizationLoader.FinishSetup();
+		Main.NPCInteractionDB = new NPCInteractionDatabase();
+		Main.NPCInteractionDB.Populate();
 
 		ArmorSetBonuses.BuildLookup();
 		ItemID.Sets.PostSetupContent();
@@ -453,7 +454,8 @@ public static class ModContent
 				loadAction(mod);
 			}
 			catch (Exception e) {
-				e.Data["mod"] = mod.Name;
+				if (!e.Data.Contains("mod"))
+					e.Data["mod"] = mod.Name;
 				throw;
 			}
 			finally {

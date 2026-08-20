@@ -1,10 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Diagnostics;
 using System.IO;
+using System.Reflection.Metadata;
 using System.Threading;
+using System.Threading.Tasks;
 using ReLogic.OS;
 using Steamworks;
+using Terraria.DataStructures;
 using Terraria.GameContent.UI.States;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -24,10 +28,12 @@ public static class SteamedWraps
 	internal static bool SteamAvailable { get; set; }
 
 	// Used to get the right token for fetching/setting localized descriptions from/to Steam Workshop
-	internal static string GetCurrentSteamLangKey()
+	internal static string GetCurrentSteamLangKey() => GetSteamLangKey(LanguageManager.Instance.ActiveCulture);
+
+	internal static string GetSteamLangKey(GameCulture culture)
 	{
 		//TODO: Unhardcode this whenever the language roster is unhardcoded for modding.
-		return (GameCulture.CultureName)LanguageManager.Instance.ActiveCulture.LegacyId switch {
+		return (GameCulture.CultureName)culture.LegacyId switch {
 			GameCulture.CultureName.German => "german",
 			GameCulture.CultureName.Italian => "italian",
 			GameCulture.CultureName.French => "french",
@@ -137,6 +143,44 @@ public static class SteamedWraps
 		return deps;
 	}
 
+	public static async Task<GetUserItemVoteResult_t?> GetUserRating(ulong fileId)
+	{
+		if (!SteamClient) return null;
+
+		var ioFailure = false;
+		var result = default(GetUserItemVoteResult_t);
+		using var call = CallResult<GetUserItemVoteResult_t>.Create((r, f) => (result, ioFailure) = (r, f));
+		call.Set(SteamUGC.GetUserItemVote(new PublishedFileId_t(fileId)));
+
+		// Since Gameserver doesn't have user ratings, we use CoreSocialModule.Pulse() instead of SteamedWraps.RunCallbacks().
+		while (true) {
+			CoreSocialModule.Pulse();
+			if (ioFailure) return null;
+			if (result.m_eResult == EResult.k_EResultOK) return result;
+			if (result.m_eResult != EResult.k_EResultNone) return null;
+			await Task.Delay(1);
+		}
+	}
+
+	public static async Task<SetUserItemVoteResult_t?> SetUserRating(ulong fileId, bool up)
+	{
+		if (!SteamClient) return null;
+
+		var ioFailure = false;
+		var result = default(SetUserItemVoteResult_t);
+		using var call = CallResult<SetUserItemVoteResult_t>.Create((r, f) => (result, ioFailure) = (r, f));
+		call.Set(SteamUGC.SetUserItemVote(new PublishedFileId_t(fileId), up));
+
+		// Since Gameserver doesn't have user ratings, we use CoreSocialModule.Pulse() instead of SteamedWraps.RunCallbacks().
+		while (true) {
+			CoreSocialModule.Pulse();
+			if (ioFailure) return null;
+			if (result.m_eResult == EResult.k_EResultOK) return result;
+			if (result.m_eResult != EResult.k_EResultNone) return null;
+			await Task.Delay(1);
+		}
+	}
+
 	public static bool HasAcceptedTmodWorkshopEula()
 	{
 		if (!SteamClient)
@@ -145,21 +189,29 @@ public static class SteamedWraps
 		WorkshopEULAStatus_t result = default;
 
 		using var _eulaHook = CallResult<WorkshopEULAStatus_t>.Create((WorkshopEULAStatus_t pCallback, bool bIOFailure) => {
-			result = pCallback;
+			try {
+				if (bIOFailure)
+					throw new IOException("Steam IO Failure in Workshop Eula Call Result: Failed to read or write to Steam");
+
+				if (pCallback.m_eResult != EResult.k_EResultOK)
+					throw new SocialBrowserException("Failed to retreive EULA status");
+
+				result = pCallback;
+			}
+			catch (Exception e) {
+				// Fail such that they can't publish because who knows what broke in Steam.
+				result.m_bNeedsAction = true;
+				result.m_eResult = EResult.k_EResultIOFailure;
+			}
 		});
 
 		_eulaHook.Set(SteamUGC.GetWorkshopEULAStatus());
 
-		// This probably should align better via a refactor of WorkshopHelper.WaitForQueryResultAsync
-		while (true) {
-			RunCallbacks();
-			if (result.m_eResult != EResult.k_EResultNone)
-				break;
+		// We don't need to call SteamedWraps.RunCallbacks here because there is no GameServer for publishing -- Solxan
+		while (result.m_eResult == EResult.k_EResultNone) {
+			CoreSocialModule.Pulse();
+			Thread.Sleep(1);
 		}
-
-		// TODO: An exception here doesn't tell the user anything about what's going on. Just looks like button not working
-		if (result.m_eResult != EResult.k_EResultOK)
-			throw new SocialBrowserException("Failed to retreive EULA status");
 
 		return !result.m_bNeedsAction;
 	}
@@ -386,6 +438,10 @@ public static class SteamedWraps
 		throw new Exception("Invalid Call to FetchDeveloperMetadata. Steam is not initialized");
 	}
 
+	/// <summary>
+	/// Used when CoreSocialModule.Pulse() is not available, such as when publishing using command line.
+	/// Also used when need to interact with both Steam Game Server for GoG and SteamClient equivocally (only Mod Browser downloads at this time).
+	/// </summary>
 	public static void RunCallbacks()
 	{
 		if (SteamClient)
@@ -549,7 +605,10 @@ public static class SteamedWraps
 
 	public static bool DoesWorkshopItemNeedUpdate(PublishedFileId_t publishId)
 	{
-		var currState = SteamedWraps.GetWorkshopItemState(publishId);
+		if (!SteamAvailable)
+			return false;
+
+		var currState = GetWorkshopItemState(publishId);
 
 		return (currState & (uint)EItemState.k_EItemStateNeedsUpdate) != 0 ||
 			(currState == (uint)EItemState.k_EItemStateNone) ||
@@ -707,6 +766,28 @@ public static class SteamedWraps
 		SteamUGC.SetItemUpdateLanguage(uGCUpdateHandle_t, GetCurrentSteamLangKey());
 	}
 
+	internal static void SubmitLocalizedDescriptionUpdates(PublishedFileId_t publishedFileID, List<(string steamLangKey, string description, string displayName)> localizedDescriptions, string changeNotes)
+	{
+		if (localizedDescriptions == null || localizedDescriptions.Count == 0)
+			return;
+
+		foreach (var set in localizedDescriptions) {
+			if (string.IsNullOrWhiteSpace(set.steamLangKey) || string.IsNullOrWhiteSpace(set.description) || string.IsNullOrEmpty(set.displayName))
+				continue;
+
+			Logging.tML.Info($"Submitting localized Workshop description and title for {set.steamLangKey}");
+			var updateHandle = SteamUGC.StartItemUpdate(SteamUtils.GetAppID(), publishedFileID);
+
+			SteamUGC.SetItemDescription(updateHandle, set.description);
+			SteamUGC.SetItemTitle(updateHandle, set.displayName);
+
+			SteamUGC.SetItemUpdateLanguage(updateHandle, set.steamLangKey);
+			SteamUGC.SubmitItemUpdate(updateHandle, null);
+		}
+
+		Logging.tML.Info("Localized Workshop descriptions updated");
+	}
+
 	internal static void ModifyUgcUpdateHandleTModLoader(ref UGCUpdateHandle_t uGCUpdateHandle_t, WorkshopHelper.UGCBased.SteamWorkshopItem _entryData, PublishedFileId_t _publishedFileID)
 	{
 		if (!SteamClient)
@@ -721,6 +802,9 @@ public static class SteamedWraps
 
 		// Add developer metadata to the Workshop item
 		AddDeveloperMetadata(ref uGCUpdateHandle_t, _entryData.BuildData["developermetadata"]);
+
+		// Add Content Descriptors
+		AddContentDescriptors(ref uGCUpdateHandle_t, _entryData);
 
 		// Adde Dependencies to the Workshop item
 		string refs = _entryData.BuildData["workshopdeps"];
@@ -738,6 +822,22 @@ public static class SteamedWraps
 					Logging.tML.Error("Failed to add Workshop dependency: " + dependency + " to " + _publishedFileID);
 				}
 			}
+		}
+	}
+
+	// https://partner.steamgames.com/doc/api/ISteamUGC#EUGCContentDescriptorID
+	private static void AddContentDescriptors(ref UGCUpdateHandle_t uGCUpdateHandle_t, WorkshopHelper.UGCBased.SteamWorkshopItem _entryData)
+	{
+		(EUGCContentDescriptorID flag, string internalName)[] descriptorLookup = new (EUGCContentDescriptorID, string)[] {
+			( EUGCContentDescriptorID.k_EUGCContentDescriptor_AdultOnlySexualContent, "AdultsOnly" ),
+			( EUGCContentDescriptorID.k_EUGCContentDescriptor_FrequentViolenceOrGore, "Gore" ),
+			( EUGCContentDescriptorID.k_EUGCContentDescriptor_AnyMatureContent, "Questionable" )
+		};
+
+		foreach (var descriptor in descriptorLookup) {
+			// We only allow setting from in-game in order to preserve moderator efforts
+			if (_entryData.Tags.Contains(descriptor.internalName))
+				SteamUGC.AddContentDescriptor(uGCUpdateHandle_t, descriptor.flag);
 		}
 	}
 
@@ -782,6 +882,11 @@ public static class SteamedWraps
 		AddModTag("tModLoader.TagsLanguage_Chinese", "Chinese");
 		AddModTag("tModLoader.TagsLanguage_Portuguese", "Portuguese");
 		AddModTag("tModLoader.TagsLanguage_Polish", "Polish");
+
+		// Content Descriptors
+		AddModTag("tModLoader.TagsRating_AdultsOnly", "AdultsOnly");
+		AddModTag("tModLoader.TagsRating_Gore", "Gore");
+		AddModTag("tModLoader.TagsRating_QuestionableContent", "Questionable");
 	}
 
 	private static void AddModTag(string tagNameKey, string tagInternalName)

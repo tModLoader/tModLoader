@@ -10,6 +10,16 @@
  using Terraria.UI;
  using Terraria.UI.Gamepad;
  
+@@ -130,6 +_,9 @@
+ 		cp22.LinkMap.Add(2509, new UILinkPoint(2509, enabled: true, -3, -4, -1, -2));
+ 		cp22.LinkMap.Add(2510, new UILinkPoint(2510, enabled: true, -3, -4, -1, -2));
+ 		cp22.LinkMap.Add(2511, new UILinkPoint(2511, enabled: true, -3, -4, -1, -2));
++		for (int i = 12; i < 32; i++) { // TML: Increased the number of supported Town NPCs chat buttons to 32.
++			cp22.LinkMap.Add(2500 + i, new UILinkPoint(2500 + i, enabled: true, -3, -4, -1, -2));
++		}
+ 		cp22.UpdateEvent += delegate {
+ 			if (UILinkPointNavigator.Shortcuts.NPCCHAT_ButtonsNew) {
+ 				for (int num69 = 0; num69 < UILinkPointNavigator.Shortcuts.NPCCHAT_ButtonsCount; num69++) {
 @@ -772,7 +_,8 @@
  			return text3;
  		};

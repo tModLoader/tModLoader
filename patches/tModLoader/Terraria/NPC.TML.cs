@@ -344,6 +344,12 @@ public partial class NPC : IEntityWithGlobals<GlobalNPC>
 			NetMessage.SendData(54, -1, -1, null, whoAmI);
 	}
 
+	/// <summary>
+	/// Clones all the default stats (damage, health, defense, etc) of another NPC type. This should be used in <see cref="ModNPC.SetDefaults"/> prior to changing any other stats
+	/// <para/> This is useful for creating a ModNPC that should be a copy of another NPC. Using CloneDefaults instead of manually setting stats will ensure that modifications done to the NPC being cloned by other mods will automatically apply to this clone as well.
+	/// <para/> Note that for cloning negative <see cref="NPCID"/>, the final values might be very slightly off for higher difficulty modes due to the way difficulty scaling is applied.
+	/// </summary>
+	/// <param name="Type"></param>
 	public void CloneDefaults(int Type)
 	{
 		int originalType = type;
@@ -351,7 +357,7 @@ public partial class NPC : IEntityWithGlobals<GlobalNPC>
 		var originalModNPC = ModNPC;
 		var originalGlobals = _globals;
 
-		SetDefaultsKeepPlayerInteraction(Type);
+		SetDefaultsKeepPlayerInteraction(Type, new NPCSpawnParams() { difficultyOverride = GameDifficultyLevel.Classic }.WithScale(1));
 
 		type = originalType;
 		netID = originalNetID;
@@ -361,12 +367,17 @@ public partial class NPC : IEntityWithGlobals<GlobalNPC>
 
 	public void SetDefaultsKeepPlayerInteraction(int Type)
 	{
+		SetDefaultsKeepPlayerInteraction(Type, default(NPCSpawnParams));
+	}
+
+	public void SetDefaultsKeepPlayerInteraction(int Type, NPCSpawnParams spawnParams)
+	{
 		bool[] array = new bool[playerInteraction.Length];
 		for (int i = 0; i < playerInteraction.Length; i++) {
 			array[i] = playerInteraction[i];
 		}
 
-		SetDefaults(Type);
+		SetDefaults(Type, spawnParams);
 		for (int j = 0; j < playerInteraction.Length; j++) {
 			playerInteraction[j] = array[j];
 		}

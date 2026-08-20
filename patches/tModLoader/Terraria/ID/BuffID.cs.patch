@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/ID/BuffID.cs
 +++ src/tModLoader/Terraria/ID/BuffID.cs
-@@ -2,23 +_,81 @@
+@@ -2,25 +_,92 @@
  using System.Collections.Generic;
  using ReLogic.Reflection;
  using Terraria.DataStructures;
@@ -33,9 +33,9 @@
  		public static int[] SortingPriorityFoodBuffs = Factory.CreateIntSet(-1, 207, 4, 206, 3, 26, 2, 25, 1);
 +
 +		/// <summary>
-+		/// If <see langword="true"/> for a given <see cref="BuffID"/>, then that buff is not considered a typical debuff, but is a buff used to "tag" entities for other purposes.<br/><br/>
-+		/// Whip debuffs are the primary example of tag buffs, they facilitate a combat mechanic rather than affect the NPC directly.<br/><br/>
-+		/// Buffs in this set can be applied to all NPCs unless that NPC sets <see cref="NPCID.Sets.ImmuneToAllBuffs"/> to prevent it.<br/><br/>
++		/// If <see langword="true"/> for a given <see cref="BuffID"/>, then that buff is not considered a typical debuff, but is a buff used to supplement the functionality of <see cref="ItemID.Sets.UniqueTagEffects"/>.<br/><br/>
++		/// Most tagging functionally should be applied in <see cref="ItemID.Sets.UniqueTagEffects"/>. The Dark Harvest's reaping effect and Electric Eel's electric energy use a buff to achieve their effect.<br/><br/>
++		/// Buffs in this set can be applied to all NPCs unless that NPC sets <see cref="NPCID.Sets.ImmuneToWhipTags"/> to prevent it.<br/><br/>
 +		/// Defaults to <see langword="false"/>.
 +		/// </summary>
 -		public static bool[] IsAnNPCWhipDebuff = Factory.CreateBoolSet(310, 362);
@@ -50,7 +50,7 @@
 +
 +		/// <summary>
 +		/// If <see langword="true"/> for a given <see cref="BuffID"/>, then that buff can be removed from an NPC using <see cref="NPC.RequestBuffRemoval(int)"/>.
-+		/// <br/> Useful for "flag" buffs that should go away on hit, like the <see href="https://terraria.wiki.gg/wiki/Firecracker">Firecracker's</see> <see cref="FlameWhipEnemyDebuff"/>.
++		/// <br/> Useful for "flag" buffs that should go away on hit.
 +		/// <br/> Defaults to <see langword="false"/>.
 +		/// </summary>
  		public static bool[] CanBeRemovedByNetMessage = Factory.CreateBoolSet();
@@ -84,8 +84,19 @@
 +		/// <br/> Defaults to <see langword="false"/>.
 +		/// </summary>
  		public static bool[] NurseCannotRemoveDebuff = Factory.CreateBoolSet(28, 34, 87, 89, 21, 86, 199, 332, 333, 334, 165, 146, 48, 158, 157, 350, 215, 147, 321, 43);
++		/// <summary>
++		/// When a buff in this set is reapplied to a player who already has the buff, the buff time is added to the remaining buff time up to the supplied cap instead of resetting back to the new buff time. This allows a buff to accumulate time with repeated applications. 
++		/// <para/> <see cref="ManaSickness"/> sets this to 600 (10 seconds) and "High Spirits" (<see cref="Kite"/>) sets to tp 43200 (12 minutes).
++		/// <para/> Defaults to 0, meaning the normal behavior of resetting time will take place.
++		/// </summary>
  		public static int[] AddBuffTimeAdditivelyToCap = Factory.CreateIntSet(0, 94, 600, 383, 43200);
++		/// <summary>
++		///	Allows for assigning an IBuffTextHandler to this buff ID. Used to calculate the text below the buff icon, overriding the time remaining text if that would be shown.
++		/// <para/> All vanilla entries are <see cref="CachedProjectileCounterBuffTextHandler"/> and are used to show how many sets of minions have been summoned that correspond to the buff.
++		/// </summary>
  		public static Dictionary<int, IBuffTextHandler> BuffTextHandlers = new Dictionary<int, IBuffTextHandler> {
+ 			{ 64, new CachedProjectileCounterBuffTextHandler(266) },
+ 			{ 125, new CachedProjectileCounterBuffTextHandler(373) },
 @@ -47,8 +_,15 @@
  			{ 385, new CachedProjectileCounterBuffTextHandler(1093) },
  			{ 386, new CachedProjectileCounterBuffTextHandler(1094) }

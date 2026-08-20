@@ -68,6 +68,7 @@ public partial class WorkshopHelper
 		string steamClientPath = null; // GetAppInstallDir may return null (#2491). Also the default location for dedicated servers and such
 		if (SteamedWraps.SteamClient)
 			SteamApps.GetAppInstallDir(app, out steamClientPath, 1000);
+
 		steamClientPath ??= ".";
 		steamClientPath = Path.Combine(steamClientPath, "..", "..", "workshop");
 
@@ -270,6 +271,11 @@ public partial class WorkshopHelper
 
 			private void OnWorkshopQueryInitialized(SteamUGCQueryCompleted_t pCallback, bool bIOFailure)
 			{
+				if (bIOFailure) {
+					_primaryQueryResult = EResult.k_EResultIOFailure;
+					return;
+				}
+
 				_primaryUGCHandle = pCallback.m_handle;
 				_primaryQueryResult = pCallback.m_eResult;
 				_queryReturnCount = pCallback.m_unNumResultsReturned;
@@ -531,7 +537,16 @@ public partial class WorkshopHelper
 			[Obsolete("Should not be used because it hides syncronous waiting")]
 			internal void WaitForQueryResult(SteamAPICall_t query)
 			{
-				WaitForQueryResultAsync(query).GetAwaiter().GetResult();
+				try {
+					WaitForQueryResultAsync(query).GetAwaiter().GetResult();
+				}
+				catch (Exception e) {
+					// Catch all workshop query failures (offline mode, timeout, k_EResultFail, etc.)
+					SteamedWraps.SteamAvailable = false;
+					SteamedWraps.SteamClient = false;
+					Utils.ShowFancyErrorMessage("Unable to access Steam Workshop. Steam Workshop related functionality has been disabled.\n" +
+						"Restart Steam and tModLoader to attempt to restore.", Interface.loadModsID);
+				}
 			}
 
 			/////// Process Query Result per Item ////////////////////
@@ -576,6 +591,10 @@ public partial class WorkshopHelper
 				DateTime lastUpdate = Utils.UnixTimeStampToDateTime((long)pDetails.m_rtimeUpdated);
 				string displayname = pDetails.m_rgchTitle;
 				bool banned = pDetails.m_bBanned;
+
+				var upvotes = pDetails.m_unVotesUp;
+				var downvotes = pDetails.m_unVotesDown;
+				var voteScore = pDetails.m_flScore;
 
 				// Item Tagged data / Player metadata
 				SteamedWraps.FetchMetadata(_primaryUGCHandle, i, out var metadata);
@@ -623,7 +642,7 @@ public partial class WorkshopHelper
 				// Item Statistics
 				SteamedWraps.FetchPlayTimeStats(_primaryUGCHandle, i, out var hot, out var downloads);
 
-				return new ModDownloadItem(displayname, metadata["name"], cVersion.modV, metadata["author"], metadata["modreferences"], modside, modIconURL, id.m_PublishedFileId.ToString(), (int)downloads, (int)hot, lastUpdate, cVersion.tmlV, metadata["homepage"], ownerId, refsById, banned, devMetadata);
+				return new ModDownloadItem(displayname, metadata["name"], cVersion.modV, metadata["author"], metadata["modreferences"], modside, modIconURL, id.m_PublishedFileId.ToString(), (int)downloads, (int)hot, lastUpdate, cVersion.tmlV, metadata["homepage"], ownerId, refsById, banned, devMetadata, upvotes, downvotes, voteScore);
 			}
 		}
 	}

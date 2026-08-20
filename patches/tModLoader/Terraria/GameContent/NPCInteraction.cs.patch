@@ -1,0 +1,93 @@
+--- src/TerrariaNetCore/Terraria/GameContent/NPCInteraction.cs
++++ src/tModLoader/Terraria/GameContent/NPCInteraction.cs
+@@ -1,15 +_,39 @@
+ using Microsoft.Xna.Framework;
++using Terraria.ModLoader;
+ 
+ namespace Terraria.GameContent;
+ 
++/// <summary>
++/// Creates an interactive chat button that can be assigned to an NPC.
++/// </summary>
+ public abstract class NPCInteraction
+ {
++	/// <summary>
++	/// Set to true to display a small exclamation point next to the chat button.
++	/// <br/>Defaults to false.
++	/// </summary>
+ 	public virtual bool ShowExcalmation => false;
+ 
++	/// <summary>
++	/// The local player instance of who is speaking to the NPC.
++	/// </summary>
+ 	public Player LocalPlayer => Main.LocalPlayer;
+ 
+-	public NPC TalkNPC => Main.npc[LocalPlayer.talkNPC];
++	/// <summary>
++	/// The instance of the NPC the player is speaking to. Will return null if the player is not speaking to any NPC.
++	/// <br/>Short for <c><see cref="Main.npc"/>[<see cref="LocalPlayer"/>.talkNPC]</c>
++	/// </summary>
++	public NPC TalkNPC { // TML: Changed to add the safety check. Otherwise it would silently error when opening signs.
++		get {
++			if (LocalPlayer.talkNPC == -1)
++				return null;
++			return Main.npc[LocalPlayer.talkNPC];
++		}
++	}
+ 
++	/// <summary>
++	/// The NPC type of the NPC the player is speaking to. Will be 0 if the player is not speaking to any NPC.
++	/// </summary>
+ 	public int TalkNPCType {
+ 		get {
+ 			if (LocalPlayer.talkNPC == -1)
+@@ -19,15 +_,49 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Determines when this NPCInteraction can/will be shown.
++	/// <br/><br/> Note that this will be checked every game update while the player is talking to the NPC.
++	/// </summary>
+ 	public abstract bool Condition();
+ 
++	/// <summary>
++	/// The text of the button.
++	/// </summary>
+ 	public abstract string GetText();
+ 
++	/// <summary>
++	/// The action that happens when the button is clicked such as opening a shop.
++	/// <br/> Call <see cref="Main.DoNPCPortraitHop()"/> to make the portrait bounce if desired.
++	/// <br/> Assign <see cref="Main.npcChatText"/> to show text in the town npc chat panel.
++	/// </summary>
++	/// <remarks>If <see cref="GlobalNPC.PreChatButtonClicked(NPC, NPCInteraction)"/> returns false, this method will not be called.</remarks>
+ 	public abstract void Interact();
+ 
++	/// <summary>
++	/// Adds a coin counter display to the right of the button if set to true.
++	/// </summary>
++	/// <param name="chatColor">Allows for the color of the button to be changed.
++	/// <br/>For more control over the color of the button, use <see cref="NPCInteraction.TextColor(ref Color, ref Color, bool)"/></param>
++	/// <param name="coinValue">The value of coins to display. The value can be negative and it will display properly.</param>
+ 	public virtual bool TryAddCoins(ref Color chatColor, out int coinValue)
+ 	{
+ 		coinValue = 0;
+ 		return false;
++	}
++
++	// Added by TML
++	/// <summary>
++	/// Allows for the color of button to be changed.
++	/// <br/> This runs after <see cref="NPCInteraction.TryAddCoins(ref Color, out int)"/> runs.
++	/// </summary>
++	/// <param name="chatColor">The color of the button's text.
++	/// <br/>Defaults to a pale yellow color that pulses between (190, 172, 95) and (255, 231, 127)
++	/// <br/>Multiply your color or its alpha by <c>(<see cref="Main.mouseTextColor"/> / 255f)</c> to achieve a similar pulsing effect.</param>
++	/// <param name="chatColorShadow">The color of the text's background shadow.
++	/// <br/>Defaults to <see cref="Color.Black"/> and <see cref="Color.Brown"/> while hovering over the button.</param>
++	/// <param name="hoveringOverButton">This will be true if the mouse is hovering over the button.</param>
++	public virtual void TextColor(ref Color chatColor, ref Color chatColorShadow, bool hoveringOverButton)
++	{
+ 	}
+ }

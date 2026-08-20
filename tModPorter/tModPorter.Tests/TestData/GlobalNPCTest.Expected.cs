@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Terraria;
+using Terraria.GameContent;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -64,4 +65,7 @@ public class GlobalNPCTest : GlobalNPC
 	public override void EditSpawnPool(IDictionary<int, float> pool, NPC.Spawner spawner) {
 		if (spawner.waterTile) { }
 	}
+	public override void OnChatButtonClicked(NPC npc, NPCInteraction interaction) { }
+	public override bool PreChatButtonClicked(NPC npc, NPCInteraction interaction) => true;
+	public override void BuffTownNPC(NPC npc, ref float damageMult, ref float attackSpeedMult, ref int defense, ref int maxLife) { }
 }

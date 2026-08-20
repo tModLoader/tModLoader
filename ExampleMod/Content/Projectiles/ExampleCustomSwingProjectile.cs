@@ -6,6 +6,7 @@ using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent;
+using Terraria.GameContent.Tile_Entities;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -74,9 +75,6 @@ namespace ExampleMod.Content.Projectiles
 		private Player Owner => Main.player[Projectile.owner];
 
 		public override void SetStaticDefaults() {
-#if COMPILE_ERROR_TODOS
-			ProjectileID.Sets.HeldProjDoesNotUsePlayerGfxOffY/* tModPorter Note: Removed. AI() should use master.RotatedRelativePoint(master.MountedCenter + ...) to position held projectiles */[Type] = true;
-#endif
 			ProjectileID.Sets.AllowsContactDamageFromJellyfish[Type] = true;
 		}
 
@@ -91,6 +89,7 @@ namespace ExampleMod.Content.Projectiles
 			Projectile.localNPCHitCooldown = -1; // We set this to -1 to make sure the projectile doesn't hit twice
 			Projectile.ownerHitCheck = true; // Make sure the owner of the projectile has line of sight to the target (aka can't hit things through tile).
 			Projectile.DamageType = DamageClass.Melee; // Projectile is a melee projectile
+			Projectile.drawLayer = ProjectileDrawLayerID.HeldProj; // Draws over the player's body and under the player's hands
 		}
 
 		public override void OnSpawn(IEntitySource source) {
@@ -285,6 +284,27 @@ namespace ExampleMod.Content.Projectiles
 					Projectile.Kill();
 				}
 			}
+		}
+
+		// This hook lets us change how the held projectile looks while a mannequin is holding it.
+		// The following code is adapted from vanilla's Projectile.AI_DisplayDoll for aiStyle 20 (Drill)
+		// Due to how our sprite is oriented and our custom holdout distance, we need to customize the rotation and holdout distance and can't just use ProjAIStyleID.Drill directly.
+		public override bool DisplayDollSettings(Player doll, TEDisplayDoll.DisplayDollPose pose, ref int aiStyle, ref int aiType) {
+			Projectile.spriteDirection = Projectile.direction;
+			Vector2 projectileDirection = Vector2.UnitX * 5f; // How far out the item is held.
+			float armRotation = 0f;
+			if (pose.ItemAimRadians.HasValue)
+				armRotation = pose.ItemAimRadians.Value;
+
+			projectileDirection = projectileDirection.RotatedBy(armRotation); // The rotation of the mannequin's hand.
+			if (Projectile.direction == -1)
+				projectileDirection.X *= -1f;
+
+			Projectile.velocity = projectileDirection;
+			Projectile.position += projectileDirection; // Move the projectile's location while being held by the mannequin.
+			Projectile.rotation = projectileDirection.ToRotation(); // Set the projectile's rotation based on the mannequin's hand.
+
+			return false;
 		}
 	}
 }
