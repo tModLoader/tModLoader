@@ -24,6 +24,7 @@ using Terraria.ModLoader.Core;
 using Terraria.ModLoader.Default;
 using Terraria.ModLoader.Config;
 using System.Net.Http;
+using JetBrains.Annotations;
 using Newtonsoft.Json.Linq;
 
 namespace Terraria;
@@ -649,4 +650,11 @@ public partial class Main
 			ConfigManager.OnChangedAll();
 		}
 	}
+
+	/// <summary>
+	/// Reference to the screen target after FilterManager.EndCapture has run, has all filters applied, and accounts for reverse gravity. <para/>
+	/// <see langword="null"/> if referenced before FilterManager.EndCapture or if the screen was not captured this frame. <para/>
+	/// Use <see cref="ModSystem.RequiresScreenTarget"/> to force this target to be populated.
+	/// </summary>
+	[CanBeNull]	public static RenderTarget2D finalScreenTarget;
 }

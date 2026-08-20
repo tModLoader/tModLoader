@@ -6794,10 +6794,12 @@
  		if (gameMenu || player[myPlayer].gravDir == 1f)
  			Rasterizer = RasterizerState.CullCounterClockwise;
  		else
-@@ -53663,7 +_,7 @@
+@@ -53662,8 +_,8 @@
+ 				Terraria.Graphics.Effects.Filters.Scene.Deactivate("Sepia");
  		}
  
- 		bool flag2 = Terraria.Graphics.Effects.Filters.Scene.CanCapture() || ForegroundSunlightEffects;
+-		bool flag2 = Terraria.Graphics.Effects.Filters.Scene.CanCapture() || ForegroundSunlightEffects;
++		bool flag2 = Terraria.Graphics.Effects.Filters.Scene.CanCapture() || ForegroundSunlightEffects || SystemLoader.RequiresScreenTarget();
 -		bool flag3 = !drawToScreen && !mapFullscreen && !onlyDrawFancyUI && Lighting.NotRetro && flag2;
 +		bool flag3 = !drawToScreen && !mapFullscreen && !onlyDrawFancyUI /* && Lighting.NotRetro */ && flag2;
  		if (flag3) {
@@ -6812,6 +6814,14 @@
  		TimeLogger.SurfaceBackground.AddTime(fromTimestamp7);
  		if (gameMenu || netMode == 2) {
  			TimeLogger.StartTimestamp fromTimestamp8 = TimeLogger.Start();
+@@ -53758,6 +_,7 @@
+ 			PostDrawMenu(screenSizeCache, screenSizeCacheAfterScaling);
+ 			TimeLogger.MenuDrawTime.AddTime(fromTimestamp8);
+ 			HorizonHelper.UpdateSunVisibility(flag3 ? screenTarget : null);
++			finalScreenTarget = null;
+ 			if (flag3)
+ 				Terraria.Graphics.Effects.Filters.Scene.EndCapture(null, screenTarget, screenTargetSwap);
+ 
 @@ -53864,6 +_,9 @@
  		}
  
@@ -6822,7 +6832,7 @@
  		HasInteractableObjectThatIsNotATile = false;
  		SortDrawCacheWorms();
  		DrawSuperSpecialProjectiles(DrawCacheFirstFractals);
-@@ -53935,7 +_,7 @@
+@@ -53935,10 +_,11 @@
  		MoonlordDeathDrama.DrawWhite(spriteBatch);
  		ScreenObstruction.Draw(spriteBatch);
  		spriteBatch.End();
@@ -6831,6 +6841,10 @@
  		TimeLogger.Overlays.AddTime(fromTimestamp11);
  		DebugLineDraw.World.Draw(spriteBatch);
  		HorizonHelper.UpdateSunVisibility(flag3 ? screenTarget : null);
++		finalScreenTarget = null;
+ 		if (flag3)
+ 			Terraria.Graphics.Effects.Filters.Scene.EndCapture(null, screenTarget, screenTargetSwap);
+ 
 @@ -54062,6 +_,21 @@
  		else
  			mouseRightRelease = true;
