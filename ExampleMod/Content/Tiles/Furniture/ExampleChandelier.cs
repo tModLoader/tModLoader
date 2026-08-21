@@ -59,6 +59,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 			TileObjectData.newTile.RandomStyleRange = 6;
 			TileObjectData.newTile.StyleHorizontal = true;
 			TileObjectData.newTile.StyleLineSkip = 2;
+			TileObjectData.newTile.DrawYOffset = -2; // Draw this tile 2 pixels up to align visually with the bottom of the tile it is anchored to.
 			TileObjectData.addTile(Type);
 
 			AddMapEntry(new Color(235, 166, 135), Language.GetText("MapObject.Chandelier"));
@@ -68,6 +69,12 @@ namespace ExampleMod.Content.Tiles.Furniture
 
 			// Frozen style uses the temporary animation system to cycle between frames to give this style a flickering light effect when turning on.
 			turningOnAnimationType = Animation.RegisterTemporaryAnimation(frameRate: 12, frames: [0, 2, 2, 3, 2, 2, 1, 3]);
+		}
+
+		public override void SetDrawPositions(int i, int j, ref int width, ref int offsetY, ref int height, ref short tileFrameX, ref short tileFrameY) {
+			// Due to MultiTileVine rendering the tile 2 pixels higher than expected for modded tiles using TileObjectData.DrawYOffset, we need to add 2 to fix the math for correct drawing
+			offsetY += 2;
+			return;
 		}
 
 		public override void HitWire(int i, int j) {
