@@ -1822,6 +1822,7 @@ public static class ItemLoader
 	private static HookList HookWingGlidingSpeeds = AddHook<DelegateWingGlidingSpeeds>(g => g.WingGlidingSpeeds);
 	/// <summary>
 	/// If the player is gliding using wings, this uses the result of GetWing, and calls ModItem.WingGlidingSpeeds then all GlobalItem.WingGlidingSpeeds hooks.
+	/// <para/> Return false to prevent vanilla gliding behavior.
 	/// </summary>
 	public static bool WingGlidingSpeeds(Player player, ref float gravityMultiplier, ref float maxSpeedMultiplier)
 	{

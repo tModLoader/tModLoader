@@ -4880,25 +4880,29 @@
  							if (wings == 4) {
  								rocketDelay2--;
  								if (rocketDelay2 <= 0) {
-@@ -21062,7 +_,14 @@
+@@ -21062,7 +_,17 @@
  								}
  							}
  						}
 +						float gravityMultiplier = 1f / 3f;
 +						float maxSpeedMultiplier = 1f / 3f;
+ 
++						// As per method docs, true means apply vanilla logic. False means use the custom logic only
 +						if (!ItemLoader.WingGlidingSpeeds(this, ref gravityMultiplier, ref maxSpeedMultiplier))
 +							goto skipGliding;
- 
++
++						// Begin vanilla logic
 +						float gravity = this.gravity * gravityMultiplier * 3f;
 +						float maxFallSpeed = this.maxFallSpeed * maxSpeedMultiplier * 3f;
 +						
  						velocity.Y += gravity / 3f * gravDir;
  						if (gravDir == 1f) {
  							if (velocity.Y > maxFallSpeed / 3f && !TryingToHoverDown)
-@@ -21071,6 +_,7 @@
+@@ -21071,6 +_,8 @@
  						else if (velocity.Y < (0f - maxFallSpeed) / 3f && !TryingToHoverUp) {
  							velocity.Y = (0f - maxFallSpeed) / 3f;
  						}
++						// End vanilla logic
 +						skipGliding:;
  					}
  					else if (cartRampTime <= 0) {

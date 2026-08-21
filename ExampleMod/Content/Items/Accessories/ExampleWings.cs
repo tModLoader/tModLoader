@@ -45,8 +45,9 @@ namespace ExampleMod.Content.Items.Accessories
 			constantAscend = 0.135f;
 		}
 
-		// WingGlidingSpeeds allows adjusting speeds while gliding. This example increases horizontal gliding speed while holding up and reduces the effect of gravity while increasing max fall speed otherwise.
+		// WingGlidingSpeeds allows adjusting player speed during the gliding phase of wings usage.
 		public override bool WingGlidingSpeeds(Player player, ref float gravityMultiplier, ref float maxSpeedMultiplier) {
+			// This example increases horizontal gliding speed while holding 'up key'.
 			if (player.controlUp) {
 				float descent = player.velocity.Y * 0.02f;
 				player.velocity.Y -= descent;
@@ -54,8 +55,14 @@ namespace ExampleMod.Content.Items.Accessories
 				player.velocity.X *= 0.996f;
 				return player.velocity.Y < player.maxFallSpeed * maxSpeedMultiplier;
 			}
+
+			// Reduces the effect of gravity and increases max fall speed at all times.
 			gravityMultiplier *= 0.5f;
 			maxSpeedMultiplier *= 3f;
+
+			// Returning TRUE will allow vanilla gliding effects to be applied ('up key' will slow fall while 'down key' will increase fall speed). 
+			// Returning FALSE will prevent vanilla gliding effects and use only custom logic.
+			// ModItem's base class is default return true.
 			return base.WingGlidingSpeeds(player, ref gravityMultiplier, ref maxSpeedMultiplier);
 		}
 

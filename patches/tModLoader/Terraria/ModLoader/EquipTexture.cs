@@ -160,6 +160,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 
 	/// <summary>
 	/// Allows you to modify wing gliding speeds.
+	/// <para/> Return false to prevent vanilla gliding behavior.
 	/// </summary>
 	/// <param name="player"></param>
 	/// <param name="gravityMultiplier"></param>
