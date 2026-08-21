@@ -34,7 +34,7 @@
  	public static bool crimson;
  	public static int[] tileCounts = new int[TileID.Count];
  	public static int totalEvil;
-@@ -816,6 +_,9 @@
+@@ -816,8 +_,14 @@
  	private static bool mergeDown;
  	private static bool mergeLeft;
  	private static bool mergeRight;
@@ -43,7 +43,12 @@
 +	/// </summary>
  	private static bool stopDrops;
  	public static bool noLiquidCheck;
++	/// <summary>
++	/// When true, "infections" such as crimson, corruption, and hallow are allowed to spread. This is always true unless the journey mode biome spread toggle has been used to disable infection spread.
++	/// </summary>
  	public static bool AllowedToSpreadInfections = true;
+ 	[ThreadStatic]
+ 	public static UnifiedRandom _genRand;
 @@ -825,6 +_,7 @@
  	public static int _genRandSeed = -2;
  	public static int _lastSeed;
@@ -2382,6 +2387,36 @@
  
  		bool result = false;
  		if (i >= 0 && j >= 0 && i < Main.maxTilesX && j < Main.maxTilesY) {
+@@ -42156,7 +_,21 @@
+ 					num = 662;
+ 			}
+ 
++			int? unusedForcedRandom = null;
++			bool? unusedOverrideCanPlace = null;
++			TileLoader.OverridePlacementTile(i, j, null, ref num, ref style, ref unusedForcedRandom, ref unusedOverrideCanPlace); // OverridePlacementTile called here to handle non-item/player tile placement overrides.
++
++			/*
+ 			if (forced || Collision.EmptyTile(i, j) || !Main.tileSolid[num] || (num == 23 && tile.type == 0 && tile.active()) || (num == 199 && tile.type == 0 && tile.active()) || (num == 2 && tile.type == 0 && tile.active()) || (num == 109 && tile.type == 0 && tile.active()) || (num == 60 && tile.type == 59 && tile.active()) || (num == 661 && tile.type == 59 && tile.active()) || (num == 662 && tile.type == 59 && tile.active()) || (num == 70 && tile.type == 59 && tile.active()) || (num == 633 && tile.type == 57 && tile.active()) || (Main.tileMoss[num] && (tile.type == 1 || tile.type == 38) && tile.active())) {
++			*/
++			if (forced || Collision.EmptyTile(i, j) || !Main.tileSolid[num] || TileID.Sets.Grass[num] && num != TileID.GolfGrass && num != TileID.GolfGrassHallowed && tile.TileType == TileID.Dirt && tile.HasTile || TileID.Sets.GrassSpecial[num] && tile.TileType == TileID.Mud && tile.HasTile || TileID.Sets.NeedsGrassFraming[num] && tile.TileType == TileID.Sets.NeedsGrassFramingDirt[num] && tile.HasTile || (Main.tileMoss[num] && (tile.type == 1 || tile.type == 38) && tile.active())) {
++				if (TileID.Sets.Grass[num] && num != TileID.GolfGrass && num != TileID.GolfGrassHallowed && (tile.TileType != TileID.Dirt || !tile.HasTile))
++					return false;
++				if (TileID.Sets.GrassSpecial[num] && (tile.TileType != TileID.Mud || !tile.HasTile))
++					return false;
++				if (TileID.Sets.NeedsGrassFraming[num] && (tile.TileType != TileID.Sets.NeedsGrassFramingDirt[num] || !tile.HasTile))
++					return false;
++				/* These checks replaced with more extensible checks above.
+ 				if (num == 23 && (tile.type != 0 || !tile.active()))
+ 					return false;
+ 
+@@ -42183,6 +_,7 @@
+ 
+ 				if (num == 633 && (tile.type != 57 || !tile.active()))
+ 					return false;
++				*/
+ 
+ 				if (Main.tileMoss[num]) {
+ 					if ((tile.type != 1 && tile.type != 38) || !tile.active())
 @@ -42238,8 +_,12 @@
  							if (style != 8 && style != 11 && style != 17)
  								return false;
@@ -2796,6 +2831,30 @@
  		for (int k = 0; k < num16; k++) {
  			KillTile_MakeTileDust(i, j, tile);
  		}
+@@ -45575,13 +_,23 @@
+ 			if (Main.netMode != 1 && TileID.Sets.IsShakeable[tile.type])
+ 				ShakeTree(i, j);
+ 
++			/*
+ 			if (tile.type == 2 || tile.type == 23 || tile.type == 109 || tile.type == 199 || tile.type == 477 || tile.type == 492)
++			*/
++			if (TileID.Sets.Grass[tile.type])
+ 				tile.type = 0;
+ 
++			/*
+ 			if (tile.type == 633)
+ 				tile.type = 57;
++			*/
++			if (TileID.Sets.NeedsGrassFraming[tile.type])
++				tile.type = (ushort)TileID.Sets.NeedsGrassFramingDirt[tile.type];
+ 
++			/*
+ 			if (tile.type == 60 || tile.type == 661 || tile.type == 662 || tile.type == 70)
++			*/
++			if (TileID.Sets.GrassSpecial[tile.type])
+ 				tile.type = 59;
+ 
+ 			if (Main.tileMoss[tile.type])
 @@ -45754,11 +_,23 @@
  		}
  	}
@@ -3301,6 +3360,16 @@
  			Main.tile[num2, num3].wall = num6.Value;
  			if (Main.netMode == 2)
  				NetMessage.SendTileSquare(-1, num2, num3);
+@@ -54477,6 +_,9 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Attempts to spread <paramref name="grass"/> to a <paramref name="dirt"/> at the provided coordinates. Does various checks and will apply the provided paint (<paramref name="color"/>) to the new grass tiles.
++	/// </summary>
+ 	public static void SpreadGrass(int i, int j, int dirt = 0, int grass = 2, bool repeat = true, TileColorCache color = default(TileColorCache))
+ 	{
+ 		try {
 @@ -55301,7 +_,16 @@
  					if (!(Math.Abs((double)m - vector2D.X) + Math.Abs((double)n - vector2D.Y) < (double)num2 * 0.5 * (1.0 + (double)genRand.Next(-10, 11) * 0.015)))
  						continue;
@@ -3763,7 +3832,7 @@
 +										/*
  										if (num != 2 && num != 23 && num != 60 && num != 70 && num != 109 && num != 199 && num != 477 && num != 492 && num != 633 && num != 661 && num != 662) {
 +										*/
-+										if (!TileID.Sets.Grass[num] && !TileID.Sets.GrassSpecial[num]) {
++										if (!TileID.Sets.Grass[num] && !TileID.Sets.GrassSpecial[num] && !TileID.Sets.NeedsGrassFraming[num]) {
  											if (up == -1 && down == -2 && left == num && right == num) {
  												switch (num27) {
  													case 0:
@@ -3774,7 +3843,7 @@
 +									/*
  									if (num == 2 || num == 23 || num == 60 || num == 70 || num == 109 || num == 199 || num == 477 || num == 492 || num == 633 || num == 661 || num == 662 || Main.tileMoss[num] || TileID.Sets.tileMossBrick[num]) {
 +									*/
-+									if (TileID.Sets.Grass[num] || TileID.Sets.GrassSpecial[num] || Main.tileMoss[num] || TileID.Sets.tileMossBrick[num]) {
++									if (TileID.Sets.Grass[num] || TileID.Sets.GrassSpecial[num] || TileID.Sets.NeedsGrassFraming[num] || Main.tileMoss[num] || TileID.Sets.tileMossBrick[num]) {
  										TileMergeAttempt(num, -2, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
  										tileMergeCullCache.Cull(ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
  									}

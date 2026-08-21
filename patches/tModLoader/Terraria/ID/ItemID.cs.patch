@@ -92,7 +92,7 @@
  		public static List<int> ItemsThatAreProcessedAfterNormalContentSample = new List<int> {
  			1533,
  			1534,
-@@ -46,17 +_,85 @@
+@@ -46,17 +_,84 @@
  			1536,
  			1537
  		};
@@ -143,8 +143,7 @@
  		public static bool[] WorksInVoidBag = Factory.CreateBoolSet(true, 4346, 5095);
 +
 +		/// <summary>
-+		/// <strong>Only checked for vanilla IDs.</strong>
-+		/// <br/> If <see langword="true"/> for a given item type (<see cref="Item.type"/>), then that item can be placed using Smart Cursor on dirt.
++		/// If <see langword="true"/> for a given item type (<see cref="Item.type"/>), then that item can be placed using Smart Cursor on "dirt" tiles (such as Dirt, Mud, and Ash). Set <see cref="GrassSeedDirtTiles"/> to dictate which tiles are considered valid "dirt" tiles for this item.
 +		/// <br/> Additionally, those items cannot be used when trying to smart-place blocks.
 +		/// <br/> Defaults to <see langword="false"/>.
 +		/// </summary>

@@ -6458,7 +6458,17 @@
  				if (inventory[selectedItem].stack == 0)
  					inventory[selectedItem].SetDefaults();
  
-@@ -30673,9 +_,14 @@
+@@ -30666,16 +_,24 @@
+ 				tileToCreate = 662;
+ 		}
+ 
++		/*
+ 		if (canUse && ((!tile.active() && !flag) || (Main.tileCut[tile.type] && tile.type != 484) || (tile.type >= 373 && tile.type <= 375) || tile.type == 461 || tileToCreate == 199 || tileToCreate == 23 || tileToCreate == 662 || tileToCreate == 661 || tileToCreate == 2 || tileToCreate == 109 || tileToCreate == 60 || tileToCreate == 70 || tileToCreate == 633 || Main.tileMoss[tileToCreate] || TileID.Sets.BreakableWhenPlacing[tile.type]) && ItemTimeIsZero && itemAnimation > 0 && controlUseItem) {
++		*/
++		if (canUse && ((!tile.active() && !flag) || (Main.tileCut[tile.type] && tile.type != 484) || (tile.type >= 373 && tile.type <= 375) || tile.type == 461 || (TileID.Sets.Grass[tileToCreate] && tileToCreate != TileID.GolfGrass && tileToCreate != TileID.GolfGrassHallowed) || TileID.Sets.GrassSpecial[tileToCreate] || TileID.Sets.NeedsGrassFraming[tileToCreate] || Main.tileMoss[tileToCreate] || TileID.Sets.BreakableWhenPlacing[tile.type]) && ItemTimeIsZero && itemAnimation > 0 && controlUseItem) {
+ 			bool canPlace = false;
+ 			bool newObjectType = false;
+ 			bool? overrideCanPlace = null;
  			int? forcedRandom = null;
  			TileObject objectData = default(TileObject);
  			FigureOutWhatToPlace(tile, item, out tileToCreate, out var previewPlaceStyle, out overrideCanPlace, out forcedRandom);
@@ -6473,6 +6483,15 @@
  			else if (TileObjectData.CustomPlace(tileToCreate, previewPlaceStyle) && tileToCreate != 82 && tileToCreate != 227) {
  				newObjectType = true;
  				canPlace = TileObject.CanPlace(tileTargetX, tileTargetY, (ushort)tileToCreate, previewPlaceStyle, direction, out objectData, onlyCheck: false, forcedRandom);
+@@ -30685,7 +_,7 @@
+ 				PlaceThing_Tiles_BlockPlacementForRepeatedCoralAndBeachPiles(ref canPlace, ref objectData);
+ 			}
+ 			else {
+-				canPlace = PlaceThing_Tiles_BlockPlacementForAssortedThings(canPlace);
++				canPlace = PlaceThing_Tiles_BlockPlacementForAssortedThings(canPlace, tileToCreate); // TML: add tileToCreate parameter
+ 			}
+ 
+ 			if (canPlace)
 @@ -30757,9 +_,15 @@
  			if (!WorldGen.IsTileReplacable(tileTargetX, tileTargetY))
  				return false;
@@ -6571,10 +6590,12 @@
  
  			flag = WorldGen.PlaceTile(tileTargetX, tileTargetY, tileToCreate, mute: false, forced, whoAmI, num);
  		}
-@@ -30963,9 +_,13 @@
+@@ -30962,10 +_,14 @@
+ 			PlaceThing_Tiles_PlaceIt_SpinSmartPlatform();
  			PlaceThing_Tiles_PlaceIt_ConsumeFlexibleWandMaterial();
  			PlaceThing_Tiles_PlaceIt_UnslopeForSolids();
- 			PlaceThing_Tiles_PlaceIt_KillGrassForSolids();
+-			PlaceThing_Tiles_PlaceIt_KillGrassForSolids();
++			PlaceThing_Tiles_PlaceIt_KillGrassForSolids(tileToCreate);
 -			PlaceThing_Tiles_PlaceIt_AutoPaintAndActuate(typeCaches, tileToCreate);
 +			PlaceThing_Tiles_PlaceIt_AutoPaintAndActuate(typeCaches, tileToCreate, topLeft);
 +
@@ -6676,6 +6697,30 @@
  					if (Main.tile[num, num2].active())
  						array[i, j] = Main.tile[num, num2].type;
  					else
+@@ -31185,15 +_,23 @@
+ 		}
+ 	}
+ 
++	/*
+ 	private void PlaceThing_Tiles_PlaceIt_KillGrassForSolids()
+ 	{
+ 		if (!Main.tileSolid[inventory[selectedItem].createTile])
++	*/
++	private void PlaceThing_Tiles_PlaceIt_KillGrassForSolids(int tileToCreate) // TML: Add tileToCreate param to fix bug with seeds that place multiple grass options.
++	{
++		if (!Main.tileSolid[tileToCreate])
+ 			return;
+ 
+ 		for (int i = tileTargetX - 1; i <= tileTargetX + 1; i++) {
+ 			for (int j = tileTargetY - 1; j <= tileTargetY + 1; j++) {
+ 				Tile tile = Main.tile[i, j];
++				/*
+ 				if (!tile.active() || inventory[selectedItem].createTile == tile.type || (tile.type != 2 && tile.type != 23 && tile.type != 60 && tile.type != 70 && tile.type != 109 && tile.type != 199 && tile.type != 477 && tile.type != 492 && tile.type != 633))
++				*/
++				if (!tile.active() || tileToCreate == tile.type || (!TileID.Sets.Grass[tile.type] && !TileID.Sets.GrassSpecial[tile.type] && !TileID.Sets.NeedsGrassFraming[tile.type] || TileID.Sets.GrassNotKilledWhenSurrounded[tile.type]))
+ 					continue;
+ 
+ 				bool flag = true;
 @@ -31213,7 +_,7 @@
  		}
  	}
@@ -6718,11 +6763,51 @@
  					if (inventory[num7].stack <= 0)
  						inventory[num7].SetDefaults();
  				}
-@@ -31648,7 +_,7 @@
+@@ -31610,13 +_,14 @@
+ 		return placed;
+ 	}
+ 
+-	private bool PlaceThing_Tiles_BlockPlacementForAssortedThings(bool canPlace)
++	private bool PlaceThing_Tiles_BlockPlacementForAssortedThings(bool canPlace, int tileToCreate) // TML: add tileToCreate parameter to support grass seed items placing on many dirts.
+ 	{
+ 		bool flag = inventory[selectedItem].type == 213 || inventory[selectedItem].type == 5295;
+ 		if (flag) {
+ 			if (Main.tile[tileTargetX, tileTargetY].type == 0 || Main.tile[tileTargetX, tileTargetY].type == 1 || Main.tile[tileTargetX, tileTargetY].type == 38)
+ 				canPlace = true;
+ 		}
++		/*
+ 		else if (inventory[selectedItem].createTile == 2 || inventory[selectedItem].createTile == 109) {
+ 			if (Main.tile[tileTargetX, tileTargetY].nactive() && Main.tile[tileTargetX, tileTargetY].type == 0)
+ 				canPlace = true;
+@@ -31629,6 +_,17 @@
+ 					canPlace = true;
+ 			}
+ 		}
++		*/
++		// TML: Support modded grass. Allow placing grass tile over corresponding "dirt" tile. Commented-out vanilla checks are also replaced by new checks.
++		else if (TileID.Sets.Grass[tileToCreate] && tileToCreate != TileID.GolfGrass && tileToCreate != TileID.GolfGrassHallowed || TileID.Sets.GrassSpecial[tileToCreate] || TileID.Sets.NeedsGrassFraming[tileToCreate]) {
++			if (Main.tile[tileTargetX, tileTargetY].HasUnactuatedTile) {
++				var dirt = TileID.Sets.Grass[tileToCreate] ? TileID.Dirt :
++					TileID.Sets.GrassSpecial[tileToCreate] ? TileID.Mud :
++					TileID.Sets.NeedsGrassFramingDirt[tileToCreate];
++				if (Main.tile[tileTargetX, tileTargetY].type == dirt)
++					canPlace = true;
++			}
++		}
+ 		else if (inventory[selectedItem].createTile == 227) {
+ 			canPlace = true;
+ 		}
+@@ -31644,11 +_,13 @@
+ 			if (Main.tile[num3, num4].nactive() && Main.tileSolid[Main.tile[num3, num4].type] && !Main.tileSolidTop[Main.tile[num3, num4].type])
+ 				canPlace = true;
+ 		}
++		/*
+ 		else if (inventory[selectedItem].createTile == 60 || inventory[selectedItem].createTile == 70 || inventory[selectedItem].createTile == 661 || inventory[selectedItem].createTile == 662) {
  			if (Main.tile[tileTargetX, tileTargetY].nactive() && Main.tile[tileTargetX, tileTargetY].type == 59)
  				canPlace = true;
  		}
 -		else if (inventory[selectedItem].createTile == 4 || inventory[selectedItem].createTile == 136) {
++		*/
 +		else if (TileID.Sets.Torch[inventory[selectedItem].createTile] || inventory[selectedItem].createTile == 136) {
  			if (Main.tile[tileTargetX, tileTargetY].wall > 0) {
  				canPlace = true;
@@ -7257,6 +7342,15 @@
  
  		if (targetTile != null && targetTile.active()) {
  			ushort type = targetTile.type;
+@@ -33795,6 +_,8 @@
+ 
+ 		if (!ModifyFlexibleWandPlacementInfo(ref tileToCreate, ref previewPlaceStyle, ref forcedRandom))
+ 			overrideCanPlace = false;
++
++		TileLoader.OverridePlacementTile(tileTargetX, tileTargetY, sItem, ref tileToCreate, ref previewPlaceStyle, ref forcedRandom, ref overrideCanPlace);
+ 	}
+ 
+ 	private void ItemCheck_OwnerOnlyCode(ref ItemCheckContext context, Item sItem, int weaponDamage, Rectangle heldItemFrame)
 @@ -33820,13 +_,18 @@
  			_spawnMuramasaCut = true;
  
@@ -8796,6 +8890,17 @@
  
  		if (tileTarget.type == 147 || tileTarget.type == 0 || tileTarget.type == 40 || tileTarget.type == 53 || tileTarget.type == 57 || tileTarget.type == 59 || tileTarget.type == 123 || tileTarget.type == 224 || tileTarget.type == 397)
  			num += pickPower;
+@@ -41386,7 +_,10 @@
+ 
+ 	private bool DoesPickTargetTransformOnKill(HitTile hitCounter, int damage, int x, int y, int pickPower, int bufferIndex, Tile tileTarget)
+ 	{
++		/* // Causes KillTile to be called with the fail parameter as true, which will transform the tile to stone or the corresponding "dirt".
+ 		if (hitCounter.AddDamage(bufferIndex, damage, updateAmount: false) >= 100 && (tileTarget.type == 2 || tileTarget.type == 477 || tileTarget.type == 492 || tileTarget.type == 23 || tileTarget.type == 60 || tileTarget.type == 70 || tileTarget.type == 109 || tileTarget.type == 199 || Main.tileMoss[tileTarget.type] || tileTarget.type == 662 || tileTarget.type == 661 || TileID.Sets.tileMossBrick[tileTarget.type] || tileTarget.type == 633))
++		*/
++		if (hitCounter.AddDamage(bufferIndex, damage, updateAmount: false) >= 100 && (TileID.Sets.Grass[tileTarget.type] || TileID.Sets.GrassSpecial[tileTarget.type] || TileID.Sets.NeedsGrassFraming[tileTarget.type] || Main.tileMoss[tileTarget.type] || TileID.Sets.tileMossBrick[tileTarget.type]))
+ 			return true;
+ 
+ 		return false;
 @@ -41631,15 +_,43 @@
  	public void DropItems()
  	{

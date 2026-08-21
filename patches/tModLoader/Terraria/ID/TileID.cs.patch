@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/ID/TileID.cs
 +++ src/tModLoader/Terraria/ID/TileID.cs
-@@ -1,11 +_,13 @@
+@@ -1,14 +_,17 @@
  using System.Collections.Generic;
  using ReLogic.Reflection;
 +using Terraria.ModLoader;
@@ -16,6 +16,10 @@
  	{
  		public static class Conversion
  		{
++			/// <summary> Set by all <see cref="TileID.Sets.Grass"/> tiles and controls how they merge/frame with dirt tiles. </summary>
+ 			public static bool[] MergesWithDirtInASpecialWay = Factory.CreateBoolSet(2, 23, 109, 199, 477, 492);
+ 			public static bool[] JungleGrass = Factory.CreateBoolSet(60, 661, 662);
+ 			public static bool[] MushroomGrass = Factory.CreateBoolSet(70);
 @@ -30,6 +_,7 @@
  		{
  			public static bool[] None = Factory.CreateBoolSet(false);
@@ -24,7 +28,7 @@
  			public static bool[] Regrowth = Factory.CreateBoolSet(false, 3, 24, 52, 61, 62, 71, 73, 74, 82, 83, 84, 110, 113, 115, 184, 205, 201, 519, 518, 528, 529, 530, 549, 637, 638, 636);
  		}
  
-@@ -106,19 +_,81 @@
+@@ -106,21 +_,87 @@
  			};
  		}
  
@@ -106,7 +110,13 @@
 +		/// </summary>
  		public static bool[] CanBeDugByShovel = Factory.CreateBoolSet(false, 0, 668, 59, 57, 123, 224, 147, 2, 109, 23, 661, 199, 662, 60, 70, 477, 492, 53, 116, 112, 234, 40, 495, 633);
  		public static bool[] NonSolidSaveSlopes = Factory.CreateBoolSet(false, 131, 351);
++		/// <summary>
++		/// If <see langword="false"/> for a given tile type (<see cref="Tile.TileType"/>), then that tile will skip the normal logic that would reset an existing half-brick tile to being not half-brick. This is set for all grass and moss tiles, allowing them to keep their shape when moss or grass is placed over existing half-brick tiles.
++		/// <br/> Defaults to <see langword="true"/>.
++		/// </summary>
  		public static bool[] ResetsHalfBrickPlacementAttempt = Factory.CreateBoolSet(true, 2, 23, 661, 60, 70, 199, 662, 109, 477, 492, 179, 512, 180, 513, 181, 514, 182, 515, 183, 516, 381, 517, 534, 535, 536, 537, 539, 540, 625, 626, 627, 628, 633);
+ 		public static bool[] CrackedBricks = Factory.CreateBoolSet(481, 482, 483);
+ 		public static bool[] ForcedDirtMerging = Factory.CreateBoolSet(75, 76, 508, 507, 226, 409, 669, 670, 671, 672, 673, 674, 675, 676, 683, 684, 273, 274, 459, 458, 326, 327, 345, 328, 329, 192, 384, 284, 325, 272, 268, 262, 267, 265, 266, 264, 263, 261, 255, 260, 258, 259, 257, 256, 54, 357);
 @@ -129,6 +_,10 @@
  		public static bool[] MergesWithClouds = Factory.CreateBoolSet(196, 460);
  		public static bool[] Boulders = Factory.CreateBoolSet(138, 484, 664, 665);
@@ -129,7 +139,7 @@
  		public static bool?[] DrawTileInSolidLayer = Factory.CreateCustomSet<bool?>(null, new object[10] {
  			(ushort)11,
  			true,
-@@ -148,25 +_,73 @@
+@@ -148,25 +_,78 @@
  			(ushort)579,
  			true
  		});
@@ -155,6 +165,11 @@
 +		/// If this tile is below a tile being replaced via the block swap feature, it will be destroyed. Contains various vine tiles.
 +		/// </summary>
  		public static bool[] ReplaceTileBreakDown = Factory.CreateBoolSet(205, 115, 62, 52, 382, 444, 528, 638, 636);
++		/// <summary>
++		/// If true, then this tile will be killed during random tile updates if enough liquid is in the same tile.
++		/// <br/> Set by various plants, saplings, and flower tiles.
++		/// <br/> Defaults to <see langword="true"/>.
++		/// </summary>
  		public static bool[] SlowlyDiesInWater = Factory.CreateBoolSet(3, 20, 24, 27, 73, 201, 80, 110, 529, 530, 590, 595, 615, 637);
 +		/// <summary>
 +		/// If true, the wall behind this tile will be drawn despite game logic expecting the wall to be fully hidden by the tile. Use this for <see cref="Main.tileSolid"/> tiles that don't fully cover all the pixels of their tile location or are transparent. Some examples include <see cref="ClosedDoor"/>, <see cref="Glass"/>, and <see cref="Boulder"/>. If walls seem to disappear when placed behind your tile, set this to true.
@@ -203,9 +218,24 @@
  		public static bool[] HasOutlines = Factory.CreateBoolSet(10, 11, 15, 21, 29, 55, 79, 85, 88, 89, 97, 102, 104, 125, 132, 136, 139, 144, 207, 209, 212, 215, 216, 237, 287, 335, 338, 354, 356, 377, 386, 387, 388, 389, 410, 411, 425, 441, 455, 463, 467, 468, 470, 475, 487, 480, 494, 497, 509, 510, 511, 621, 464, 657, 658, 663);
  		public static bool[] AllTiles = Factory.CreateBoolSet(true);
  		public static bool[] Dirt = Factory.CreateBoolSet(0, 668);
-@@ -181,10 +_,30 @@
+@@ -176,15 +_,45 @@
+ 		public static bool[] Ices = Factory.CreateBoolSet(161, 200, 163, 164);
+ 		public static bool[] IcesSlush = Factory.CreateBoolSet(161, 200, 163, 164, 224);
+ 		public static bool[] IcesSnow = Factory.CreateBoolSet(161, 200, 163, 164, 147);
++		/// <summary>
++		/// Contains grasses that transform into <see cref="TileID.Mud"/> when mined.
++		/// <br/><br/> Vanilla entries include <see cref="JungleGrass"/>, <see cref="MushroomGrass"/>, <see cref="CorruptJungleGrass"/>, and <see cref="CrimsonJungleGrass"/>,
++		/// <br/><br/> Defaults to <see langword="false"/>. See also <see cref="TileID.Sets.Grass"/> and <see cref="NeedsGrassFraming"/>.
++		/// </summary>
+ 		public static bool[] GrassSpecial = Factory.CreateBoolSet(70, 60, 661, 662);
+ 		public static bool[] JungleSpecial = Factory.CreateBoolSet(226, 225, 211);
  		public static bool[] HellSpecial = Factory.CreateBoolSet(58, 76, 75);
  		public static bool[] Leaves = Factory.CreateBoolSet(384, 192);
++		/// <summary>
++		/// Contains moss tiles variants for <see cref="GrayBrick"/>. These tiles look like <see cref="TileID.GrayBrick"/> with moss overlaying it. They act like GrayBrick for various operations and turn into GrayBrick when mined. They also spread moss to nearby tiles.
++		/// <br/><br/> Vanilla entries include <see cref="GreenMossBrick"/>, BrownMossBrick, RedMossBrick, BlueMossBrick, PurpleMossBrick, LavaMossBrick, KryptonMossBrick, XenonMossBrick, ArgonMossBrick, VioletMossBrick, and RainbowMossBrick.
++		/// <br/><br/> Defaults to <see langword="false"/>. See also <see cref="Main.tileMoss"/>.
++		/// </summary>
  		public static bool[] tileMossBrick = Factory.CreateBoolSet(false, 512, 513, 514, 515, 516, 517, 535, 537, 540, 626, 628);
 +		/// <summary>
 +		/// Indicates if a tile is eligible to be replaced during world generation. Tiles indicated to not be valid for general placement will prevent the placement of various micro biomes such as hives, campsites, enchanted sword shrines, and minecart tracks.
@@ -234,7 +264,7 @@
  		public static bool[] CanBeClearedDuringGeneration = Factory.CreateBoolSet(true, 396, 400, 401, 397, 398, 399, 404, 368, 367, 226, 237);
  		public static List<int> CorruptCountCollection = new List<int> {
  			23,
-@@ -231,34 +_,87 @@
+@@ -231,34 +_,104 @@
  		public static bool[] IsSkippedForNPCSpawningGroundTypeCheck = Factory.CreateBoolSet(false, 421, 422);
  		public static bool[] BlocksStairs = Factory.CreateBoolSet(386, 387, 54, 541);
  		public static bool[] BlocksStairsAbove = Factory.CreateBoolSet(386, 387);
@@ -245,7 +275,16 @@
 -		public static bool[] BlocksWaterDrawingBehindSelf = Factory.CreateBoolSet(false, 54, 541, 328, 470);
 +		public static bool[] BlocksWaterDrawingBehindSelf = Factory.CreateBoolSet(false, 54, 541, 328, 470, 459);
  		public static bool[] AllowLightInWater = Factory.CreateBoolSet(false, 54, 541, 328);
++		/// <summary>
++		/// Additional grass tiles that need to be framed like grass but don't merge with dirt (<see cref="Sets.Grass"/>) or mud (<see cref="Sets.GrassSpecial"/>). This is used for grass tiles that don't merge with dirt or mud, such as <see cref="TileID.AshGrass"/>. <see cref="NeedsGrassFramingDirt"/> will also need to be set.
++		/// <br/><br/> Defaults to <see langword="false"/>. 
++		/// </summary>
  		public static bool[] NeedsGrassFraming = Factory.CreateBoolSet(633);
++		/// <summary>
++		/// Maps additional grass tiles to the tile it merges with (its "dirt" tile). This is used for grass tiles that don't merge with dirt (<see cref="Sets.Grass"/>) or mud (<see cref="Sets.GrassSpecial"/>). These entries must able be found in <see cref="NeedsGrassFraming"/>.
++		/// <br/><br/> Vanilla entries include <see cref="TileID.AshGrass"/>-><see cref="TileID.Ash"/>. 
++		/// <br/><br/> Defaults to 0 (Dirt). 
++		/// </summary>
  		public static int[] NeedsGrassFramingDirt = Factory.CreateIntSet(0, 633, 57);
  		public static bool[] ChecksForMerge = Factory.CreateBoolSet(0, 668, 2, 661, 60, 70, 199, 662, 109, 477, 492, 633, 57, 58, 75, 76, 684, 147, 161, 164, 163, 200, 162, 189, 196, 460, 224, 191, 383, 211, 225, 59, 226, 396, 397, 398, 399, 402, 400, 401, 403, 404, 234, 112, 407);
 +		/// <summary>
@@ -316,7 +355,15 @@
 +		/// </summary>
  		public static bool[] FriendlyFairyCanLureTo = Factory.CreateBoolSet(8, 169, 21, 467, 107, 108, 111, 221, 222, 223, 211, 12, 665, 639, 236, 227);
  		public static bool[] IgnoredInHouseScore = Factory.CreateBoolSet(4, 3, 73, 82, 83, 84, 386);
++		/// <summary>
++		/// Tiles in this set will call <see cref="WorldGen.UpdateWorld_GrassGrowth"/> during <see cref="WorldGen.UpdateWorld_OvergroundTile"/>. 
++		/// <br/><br/> There is no support for modded tiles in <see cref="WorldGen.UpdateWorld_GrassGrowth"/>, so modded tiles should implement their own plant and grass spreading logic in <see cref="ModBlockType.RandomUpdate(int, int)"/> directly.
++		/// </summary>
  		public static bool[] SpreadOverground = Factory.CreateBoolSet(2, 23, 661, 32, 60, 70, 109, 199, 662, 352, 477, 492, 633);
++		/// <summary>
++		/// Tiles in this set will call <see cref="WorldGen.UpdateWorld_GrassGrowth"/> during <see cref="WorldGen.UpdateWorld_UndergroundTile"/>. 
++		/// <br/><br/> There is no support for modded tiles in <see cref="WorldGen.UpdateWorld_GrassGrowth"/>, so modded tiles should implement their own plant and grass spreading logic in <see cref="ModBlockType.RandomUpdate(int, int)"/> directly.
++		/// </summary>
  		public static bool[] SpreadUnderground = Factory.CreateBoolSet(23, 661, 109, 199, 662, 60, 70, 633);
  	}
 +#endif
