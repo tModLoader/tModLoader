@@ -7,27 +7,18 @@ using Terraria.ModLoader.Config;
 // This file defines a custom data type that can be used as a key in dictionary.
 namespace ExampleMod.Common.Configs.CustomDataTypes
 {
-	public class ClassUsedAsKeyConverter : TypeConverter
-	{
-		public override bool CanConvertFrom(ITypeDescriptorContext? context, Type sourceType) {
-			return sourceType == typeof(string);
-		}
-		public override bool CanConvertTo(ITypeDescriptorContext? context, [NotNullWhen(true)] Type? destinationType) {
-			return destinationType != typeof(string);
-		}
-		public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value) {
-			if (value is string v)
-				return ClassUsedAsKey.FromString(v);
-			return base.ConvertFrom(context, culture, value);
-		}
+	public class ClassUsedAsKeyConverter : ToFromStringConverter<ClassUsedAsKey> {
 	}
+
 	[TypeConverter("ExampleMod.Common.Configs.CustomDataTypes.ClassUsedAsKeyConverter")]
+	// Note: do not use typeof(ClassUsedAsKeyConverter)... that overload does not work.
 	public class ClassUsedAsKey
 	{
 		// When you save data from a dictionary into a file (json), you need to represent the key as a string
 		// But to get the object back, you need a TypeConverter, and this example shows how to implement one
 
-		// You start with the [TypeConverter(typeof(ToFromStringConverter<NameOfClassHere>))] attribute above the class
+		// You start with implementing ToFromStringConverter<T> as a specific converter for this class.
+		// Then you add the TypeConverter as the means by which this class will be converted as an attribute
 		// For this to work, you need the usual Equals and GetHashCode overrides as explained in the other examples,
 		// plus ToString and FromString, which are used to transform your object into a string and back
 
@@ -55,6 +46,10 @@ namespace ExampleMod.Common.Configs.CustomDataTypes
 		public static ClassUsedAsKey FromString(string s) {
 			// This following code depends on your implementation of ToString, here we just have two values separated by a ','
 			string[] vars = s.Split(new char[] { ',' }, 2, StringSplitOptions.RemoveEmptyEntries);
+
+			if (vars.Length != 2)
+				throw new Exception($"Invalid input string {s}");
+
 			// The System.Convert class provides methods to transform data types between each other, here using the string overload
 			return new ClassUsedAsKey {
 				SomeBool = Convert.ToBoolean(vars[0]),
