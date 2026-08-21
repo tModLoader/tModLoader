@@ -6,10 +6,19 @@ namespace Terraria.DataStructures;
 
 public partial class ArmorSetBonuses
 {
-	/// <inheritdoc cref="ModItem.AddArmorSet(int, int, int, Localization.LocalizedText, ArmorSetBonus.PartType, string, ArmorSetBonus.ArmorSetEffect)"/>
+	/// <inheritdoc cref="ModItem.AddArmorSet(int, int, int, string, ArmorSetBonus.PartType, string, ArmorSetBonus.ArmorSetEffect)"/>
 	public static void Add(int Head, int Body, int Legs, string TextKey, ArmorSetBonus.PartType PrimaryPart, string Identifier, ArmorSetBonus.ArmorSetEffect Effect)
 	{
 		Create(Effect, TextKey, PrimaryPart, Identifier).Set(Head, Body, Legs).Add();
+	}
+
+	/// <inheritdoc cref="ModItem.AddArmorSet(int, int, int, string, ArmorSetBonus.PartType, string, ArmorSetBonus.ArmorSetEffect)"/>
+	public static void Add<THead, TBody, TLegs>(string TextKey, ArmorSetBonus.PartType PrimaryPart, string Identifier, ArmorSetBonus.ArmorSetEffect Effect)
+		where THead : ModItem
+		where TBody : ModItem
+		where TLegs : ModItem
+	{
+		Create(Effect, TextKey, PrimaryPart, Identifier).Set<THead, TBody, TLegs>().Add();
 	}
 
 	/// <inheritdoc cref="ModLoader.ModItem.CreateArmorSet(LocalizedText, ArmorSetBonus.PartType, string, ArmorSetBonus.ArmorSetEffect)"/>
@@ -21,6 +30,15 @@ public partial class ArmorSetBonuses
 	public static void Add(int Head, int Body, int Legs, LocalizedText LocalizedText, ArmorSetBonus.PartType PrimaryPart, string Identifier, ArmorSetBonus.ArmorSetEffect Effect)
 	{
 		Create(Effect, LocalizedText, PrimaryPart, Identifier).Set(Head, Body, Legs).Add();
+	}
+
+	/// <inheritdoc cref="ModItem.AddArmorSet(int, int, int, LocalizedText, ArmorSetBonus.PartType, string, ArmorSetBonus.ArmorSetEffect)"/>
+	public static void Add<THead, TBody, TLegs>(LocalizedText LocalizedText, ArmorSetBonus.PartType PrimaryPart, string Identifier, ArmorSetBonus.ArmorSetEffect Effect)
+		where THead : ModItem
+		where TBody : ModItem
+		where TLegs : ModItem
+	{
+		Create(Effect, LocalizedText, PrimaryPart, Identifier).Set<THead, TBody, TLegs>().Add();
 	}
 
 	private static void AssignKeysToVanillaArmorSets()

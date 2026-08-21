@@ -322,6 +322,9 @@ int legs = ModContent.ItemType<ExampleLeggings>();
 // Basic armor set. Consists of a full set of items. No substitutions. 
 AddArmorSet(Type, body, legs);
 
+// Basic armor set alternate approach. Generics can be used if all items are ModItems.
+AddArmorSet<ExampleHelmet, ExampleBreastplate, ExampleLeggings>(); 
+
 // Basic armor set with no legs. This is how the Wizard Hat set is implemented.
 AddArmorSet(Type, body, ItemID.None);
 
@@ -329,6 +332,9 @@ AddArmorSet(Type, body, ItemID.None);
 // For armor sets with multiple options, the CreateArmorSet method is followed by any number of Set methods to define the options, then Add must be called at the end.
 int alternateHelmet = ModContent.ItemType<ExampleHood>();
 CreateArmorSet().Set(Type, body, legs).Set(alternateHelmet, body, legs).Add();
+
+// Same as above but using generics.
+CreateArmorSet().Set<ExampleHelmet, ExampleBreastplate, ExampleLeggings>().Set<ExampleHood, ExampleBreastplate, ExampleLeggings>().Add();
 
 // Armor set with multiple options and the same behavior. In this case either complete set will satisfy and apply the armor set. Note that the items aren't interchangeable and can't be mixed and matched. This is how the Wood armor sets are implemented.
 int alternateBody = ModContent.ItemType<ExampleBreastplate_Alt>();

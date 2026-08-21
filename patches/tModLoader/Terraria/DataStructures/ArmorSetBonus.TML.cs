@@ -1,4 +1,5 @@
 ﻿using Terraria.Localization;
+using Terraria.ModLoader;
 
 namespace Terraria.DataStructures;
 
@@ -15,6 +16,15 @@ public partial class ArmorSetBonus
 			LocalizedText = localizedText;
 			PrimaryPart = primaryPart;
 			Identifier = identifier;
+		}
+
+		/// <inheritdoc cref="Set(int, int, int)"/>
+		public Builder Set<THead, TBody, TLegs>()
+			where THead : ModItem
+			where TBody : ModItem
+			where TLegs : ModItem
+		{
+			return Set(ModContent.ItemType<THead>(), ModContent.ItemType<TBody>(), ModContent.ItemType<TLegs>());
 		}
 	}
 

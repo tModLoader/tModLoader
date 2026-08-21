@@ -25,9 +25,7 @@ namespace ExampleMod.Content.Items.Armor
 			SetBonusText = this.GetLocalization("SetBonus").WithFormatArgs(AdditiveGenericDamageBonus);
 
 			// Registers an armor set. Note that ExampleHood also registers a similar armor set. The PartType parameter is needed in this case because the 2 sets have different tooltips.
-			int body = ModContent.ItemType<ExampleBreastplate>();
-			int legs = ModContent.ItemType<ExampleLeggings>();
-			AddArmorSet(Type, body, legs, SetBonusText, Terraria.DataStructures.ArmorSetBonus.PartType.Head); 
+			AddArmorSet<ExampleHelmet, ExampleBreastplate, ExampleLeggings>(SetBonusText, Terraria.DataStructures.ArmorSetBonus.PartType.Head); 
 		}
 
 		public override void SetDefaults() {

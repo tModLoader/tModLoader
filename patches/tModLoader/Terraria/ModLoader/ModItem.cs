@@ -70,6 +70,15 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 		ArmorSetBonuses.Add(Head, Body, Legs, LocalizedText ?? this.GetLocalization("SetBonus"), PrimaryPart, Identifier ?? this.FullName, Effect ?? UpdateArmorSet);
 	}
 
+	/// <inheritdoc cref="AddArmorSet(int, int, int, LocalizedText, ArmorSetBonus.PartType, string, ArmorSetBonus.ArmorSetEffect)"/>
+	public void AddArmorSet<THead, TBody, TLegs>(LocalizedText LocalizedText = null, ArmorSetBonus.PartType PrimaryPart = ArmorSetBonus.PartType.None, string Identifier = null, ArmorSetBonus.ArmorSetEffect Effect = null)
+		where THead : ModItem
+		where TBody : ModItem
+		where TLegs : ModItem
+	{
+		AddArmorSet(ModContent.ItemType<THead>(), ModContent.ItemType<TBody>(), ModContent.ItemType<TLegs>(), LocalizedText, PrimaryPart, Identifier, Effect);
+	}
+
 	/// <summary>
 	/// Creates and registers a typical armor set consisting of the provided <paramref name="Head"/>, <paramref name="Body"/>, and <paramref name="Legs"/> armor items. <see cref="ItemID.None"/> can be used for any armor slot that is irrelevant to the armor set.
 	/// <para/> When a player is wearing these items, <paramref name="Effect"/> will run. Use <paramref name="Effect"/> to apply stat changes to the player. If unassigned, this will automatically be set to this item's <see cref="ModItem.UpdateArmorSet(Player)"/> method.
@@ -81,6 +90,15 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	public void AddArmorSet(int Head, int Body, int Legs, string TextKey, ArmorSetBonus.PartType PrimaryPart = ArmorSetBonus.PartType.None, string Identifier = null, ArmorSetBonus.ArmorSetEffect Effect = null)
 	{
 		ArmorSetBonuses.Add(Head, Body, Legs, TextKey, PrimaryPart, Identifier ?? this.FullName, Effect ?? UpdateArmorSet);
+	}
+
+	/// <inheritdoc cref="AddArmorSet(int, int, int, string, ArmorSetBonus.PartType, string, ArmorSetBonus.ArmorSetEffect)"/>
+	public void AddArmorSet<THead, TBody, TLegs>(string TextKey, ArmorSetBonus.PartType PrimaryPart = ArmorSetBonus.PartType.None, string Identifier = null, ArmorSetBonus.ArmorSetEffect Effect = null)
+		where THead : ModItem
+		where TBody : ModItem
+		where TLegs : ModItem
+	{
+		AddArmorSet(ModContent.ItemType<THead>(), ModContent.ItemType<TBody>(), ModContent.ItemType<TLegs>(), TextKey, PrimaryPart, Identifier, Effect);
 	}
 
 	/// <summary>
