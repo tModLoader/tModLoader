@@ -25,7 +25,7 @@
 +	/// How many life hearts should be drawn
 +	/// </summary>
 +	public int AmountOfLifeHearts {
-+		get => numLifeHearts;
++		get => numLifeHearts = Utils.Clamp(numLifeHearts, int.MinValue, 20);
 +		set => numLifeHearts = Utils.Clamp(value, int.MinValue, 20);
 +	}
 +
