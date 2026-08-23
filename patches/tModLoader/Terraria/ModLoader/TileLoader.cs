@@ -1172,12 +1172,8 @@ public static class TileLoader
 
 	public static void AdjTiles(Player player, int type)
 	{
-		ModTile modTile = GetTile(type);
-		if (modTile != null) {
-			foreach (int k in modTile.AdjTiles) {
-				player.adjTile[k] = true;
-			}
-		}
+		// ModTile.AdjTiles is registered into Recipe.TileCountsAs during Recipe.SetupRecipes,
+		// so Player.SetAdjTile already handles it. Only the dynamic GlobalTile hook runs here.
 		foreach (var hook in HookAdjTiles) {
 			int[] adjTiles = hook(type);
 			foreach (int k in adjTiles) {
