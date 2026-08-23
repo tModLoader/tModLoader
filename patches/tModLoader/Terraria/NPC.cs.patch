@@ -534,7 +534,7 @@
  	public static bool downedDeerclops = false;
  	public static int ShieldStrengthTowerSolar = 0;
  	public static int ShieldStrengthTowerVortex = 0;
-@@ -4594,59 +_,223 @@
+@@ -4594,58 +_,227 @@
  	public static bool TowerActiveNebula = false;
  	public static bool TowerActiveStardust = false;
  	public static bool LunarApocalypseIsUp = false;
@@ -634,7 +634,11 @@
 +	/// Stores the value of <see cref="defense"/> at the end of SetDefaults. Useful for scaling defense in AI code, like how King Slime changes defense as it gets smaller.
 +	/// </summary>
  	public int defDefense;
- 	public int defLifeMax;
++
++	/// <summary>
++	/// Stores the value of <see cref="lifeMax"/> at the end of SetDefaults. Useful for scaling max life in AI code, such as for expert or master mode scaling.
++	/// </summary>
++	public int defLifeMax;
 +
 +	/// <summary>
 +	/// Denotes whether or not this NPC counts as dealing cold damage for the purposes of the Warmth Potion.<br/>
