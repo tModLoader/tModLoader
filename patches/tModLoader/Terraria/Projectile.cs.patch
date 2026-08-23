@@ -1,12 +1,5 @@
 --- src/TerrariaNetCore/Terraria/Projectile.cs
 +++ src/tModLoader/Terraria/Projectile.cs
-@@ -1,5 +_,6 @@
- using System;
- using System.Collections.Generic;
-+using System.Numerics;
- using Microsoft.Xna.Framework;
- using Microsoft.Xna.Framework.Audio;
- using ReLogic.Utilities;
 @@ -21,15 +_,17 @@
  using Terraria.Graphics.Shaders;
  using Terraria.ID;
@@ -1624,7 +1617,7 @@
  					vector6.Y *= 0.5f;
  
 -				base.Center = mountedCenter + vector6 * num15;
-+				base.Center = mountedCenter + vector4 * spinVisualDistance; // TML: 30->spinVisualDistance
++				base.Center = mountedCenter + vector6 * spinVisualDistance; // TML: 30->spinVisualDistance
  				velocity = Vector2.Zero;
  				localNPCHitCooldown = num12;
  				break;
