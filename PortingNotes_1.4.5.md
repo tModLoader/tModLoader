@@ -100,7 +100,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Item.IsTheSameAs removed
 - RefreshInfoAccsFromItemType is now being called on vanity equipment too. Does this affect any of our changes? Is any slot now being checked twice? Do we need to adjust ModAccessorySlotPlayer for the same behavior?
 - `//TML: Eventide and nightglow handled by Item.useLimitPerAnimation.` comment now commenting out item 5669. Might need to make changes to that item similar to 4956
-- ItemLoader.UseItemHitbox callsite useStyle == 3 needs adjustment to call hook reliably.
 - clientClone changed. I think the `_clientClone` field is no longer needed, or extraneous.
 - Player.nonTorch removed
 - What is ApplyRapidAttackBonus?

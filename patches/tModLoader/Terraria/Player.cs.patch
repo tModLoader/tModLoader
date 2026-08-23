@@ -7177,6 +7177,20 @@
  		if (!mount.Active || (mount.Type != 62 && mount.Type != 63) || !sItem.melee || sItem.noMelee || sItem.noUseGraphic)
  			return;
  
+@@ -36494,6 +_,13 @@
+ 
+ 	private void ItemCheck_GetMeleeHitbox(Item sItem, Rectangle heldItemFrame, out bool dontAttack, out Rectangle itemRectangle)
+ 	{
++		// TML: The vanilla method has several early returns (e.g. during the early portion of a useStyle 3 swing) which would skip the UseItemHitbox hook if it were called at the end of the method. Call the hook from a wrapper instead so it always runs.
++		ItemCheck_GetMeleeHitbox_Inner(sItem, heldItemFrame, out dontAttack, out itemRectangle);
++		ItemLoader.UseItemHitbox(sItem, this, ref itemRectangle, ref dontAttack);
++	}
++
++	private void ItemCheck_GetMeleeHitbox_Inner(Item sItem, Rectangle heldItemFrame, out bool dontAttack, out Rectangle itemRectangle)
++	{
+ 		dontAttack = false;
+ 		itemRectangle = new Rectangle((int)itemLocation.X, (int)itemLocation.Y, 32, 32);
+ 		if (!Main.dedServ) {
 @@ -36570,6 +_,8 @@
  					itemRectangle.X += 10;
  			}
