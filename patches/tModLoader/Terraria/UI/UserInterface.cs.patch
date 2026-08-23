@@ -9,7 +9,7 @@
  {
  	private delegate void MouseElementEvent(UIElement element, UIMouseEvent evt);
  
-@@ -77,6 +_,9 @@
+@@ -77,8 +_,14 @@
  	{
  		LeftMouse.Clear();
  		RightMouse.Clear();
@@ -18,7 +18,12 @@
 +		XButton2Mouse.Clear();
  	}
  
++	/// <summary>
++	/// Whether any UI element is currently holding the mouse capture, that is, a mouse button was pressed down over an element and hasn't been released yet. Useful to prevent gameplay interactions while the cursor is over UI.
++	/// </summary>
  	public bool MouseCaptured()
+ 	{
+ 		if (!LeftMouse.WasDown || LeftMouse.LastDown == null) {
 @@ -125,6 +_,9 @@
  	{
  		LeftMouse.WasDown = Main.mouseLeft;
