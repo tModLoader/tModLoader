@@ -3004,6 +3004,21 @@
  		bool result = false;
  		if (type == 2 || type == -43 || type == 190 || type == 191 || type == 192 || type == 193 || type == 194 || type == 317 || type == 318 || type == 133)
  			result = true;
+@@ -78332,7 +_,13 @@
+ 		}
+ 	}
+ 
+-	private void TryAddingRepeatedBuff(int buffId, int timeToGive, int lowThresholdUndeathToAllowBuff = 10)
++	/// <summary>
++	/// Adds <paramref name="buffId"/> for <paramref name="timeToGive"/> ticks if the NPC doesn't already have it or if its remaining duration is at or below <paramref name="lowThresholdUndeathToAllowBuff"/>. Useful for town NPC comfort buffs, such as the Campfire buff.
++	/// </summary>
++	/// <param name="buffId">The buff type</param>
++	/// <param name="timeToGive">The desired buff time in ticks. 60 ticks is 1 second</param>
++	/// <param name="lowThresholdUndeathToAllowBuff">The remaining duration under which the buff will be reapplied.</param>
++	public void TryAddingRepeatedBuff(int buffId, int timeToGive, int lowThresholdUndeathToAllowBuff = 10) // TML: Made public so mods can use it for town NPC or other repeated buffs
+ 	{
+ 		if (!buffImmune[buffId]) {
+ 			int num = FindBuffIndex(buffId);
 @@ -78423,6 +_,9 @@
  		if (IsABestiaryIconDummy)
  			newColor = Color.White;
