@@ -27,7 +27,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - TileLoader.SpecialDraw (and other tile methods I assume) now takes a TileBatch instead of Main.spriteBatch. What does this affect? How will mods need to change? Why do some methods in TileDrawing still use Main.spriteBatch?
 - ShaderData classes now have `if (Main.dedServ)` checks. Are these overzealous, or do we need to adjust other places or inform modders that shader code might attempt to run on servers.
 - Player.voiceOverride. Currently an sbyte, might need to be an int like the other equipment slot IDs. Also an example would be nice.
-- Need to document ArmorIDs.Face.Sets.DrawInFaceMaskLayer as well
 - Player.revolverCritChanceBonus needs a quick test now that it has been implemented as a Projectile.CritChance bonus. Need to hookup `Item.GetVisualCritChance`
 - Player.adjTile patches are weird. It shouldn't be necessary to resize, they should be correct when the Player is initialized anyway.
 - Player.coat added. It might also need and EquipType

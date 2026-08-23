@@ -424,7 +424,7 @@
  			public static bool[] IsAScarf = Factory.CreateBoolSet(false, 8, 9);
  		}
  
-@@ -1133,19 +_,53 @@
+@@ -1133,19 +_,57 @@
  		public const sbyte Magiluminescence = 11;
  		public const sbyte MoltenCharm = 12;
  		public static readonly int Count = 13;
@@ -458,6 +458,10 @@
 +			/// <br/> Defaults to <see langword="false"/>.
 +			/// </summary>
  			public static bool[] DrawInFaceUnderHairLayer = Factory.CreateBoolSet(false, 5);
++			/// <summary>
++			/// If <see langword="true"/> for a given <see cref="Face"/>, then that equip will draw in the face mask layer, causing equips in the face under hair and face flower layers to be hidden while equipped.
++			/// <br/> Defaults to <see langword="false"/>.
++			/// </summary>
  			public static bool[] DrawInFaceMaskLayer = Factory.CreateBoolSet(false, 22);
 +
 +			/// <summary>
