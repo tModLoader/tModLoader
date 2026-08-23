@@ -1,0 +1,35 @@
+--- src/Terraria/Terraria/TimeLogger.cs
++++ src/TerrariaNetCore/Terraria/TimeLogger.cs
+@@ -10,6 +_,7 @@
+ using Terraria.GameContent.Drawing;
+ using Terraria.GameInput;
+ using Terraria.Testing;
++using Terraria.Utilities;
+ 
+ namespace Terraria;
+ 
+@@ -142,7 +_,11 @@
+ 
+ 		public int ElapsedTicks => (int)(Stopwatch.GetTimestamp() - ticks);
+ 
++		// TML#5330:
++		/*
+ 		public TimeSpan Elapsed => Utils.SWTicksToTimeSpan(ElapsedTicks);
++		*/
++		public SWTimeSpan Elapsed => Utils.SWTicksToTimeSpan(ElapsedTicks);
+ 	}
+ 
+ 	private class FormatPool
+@@ -699,7 +_,12 @@
+ 
+ 	private static string FormatTicks(int ticks)
+ 	{
++		// TML#5330:
++		/*
+ 		TimeSpan timeSpan = Utils.SWTicksToTimeSpan(ticks);
++		*/
++		var timeSpan = Utils.SWTicksToTimeSpan(ticks);
++
+ 		string text = _msFormat.Format((float)timeSpan.TotalMilliseconds);
+ 		if (text.Length > 5)
+ 			text = text.Substring(0, 5);
