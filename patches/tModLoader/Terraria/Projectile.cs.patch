@@ -590,7 +590,7 @@
  	public static int NewProjectile(IEntitySource spawnSource, Vector2 position, Vector2 velocity, int Type, int Damage, float KnockBack, int Owner = -1, float ai0 = 0f, float ai1 = 0f, float ai2 = 0f, NewProjectileModifier modifer = null) => NewProjectile(spawnSource, position.X, position.Y, velocity.X, velocity.Y, Type, Damage, KnockBack, Owner, ai0, ai1, ai2, modifer);
  
  	public static int FindOldestProjectile()
-@@ -9172,6 +_,25 @@
+@@ -9172,6 +_,26 @@
  		return result;
  	}
  
@@ -612,7 +612,8 @@
 +	/// <param name="ai0"></param>
 +	/// <param name="ai1"></param>
 +	/// <param name="ai2"></param>
-+	/// <returns></returns>
++	/// <param name="modifer">An optional delegate invoked with the spawned <see cref="Projectile"/> right before it is returned, allowing final adjustments such as making the projectile <see cref="Projectile.netImportant"/> or changing penetration. Vanilla uses this for <see cref="NewProjectileModifiers.IchorDartUpdatePenetrate"/>.</param>
++	/// <returns>The index of the spawned projectile within <see cref="Main.projectile"/>.</returns>
  	public static int NewProjectile(IEntitySource spawnSource, float X, float Y, float SpeedX, float SpeedY, int Type, int Damage, float KnockBack, int Owner = -1, float ai0 = 0f, float ai1 = 0f, float ai2 = 0f, NewProjectileModifier modifer = null)
  	{
  		if (Owner == -1)
