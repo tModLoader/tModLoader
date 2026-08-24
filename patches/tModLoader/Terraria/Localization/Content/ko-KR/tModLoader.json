@@ -59,9 +59,9 @@
 		"WaitXSeconds": "{0}초간 기다려 주세요...",
 		"ViewInstructions": "설명 보기",
 		"ModReadyFor144": "이 모드는 1.4.4에 맞게 업데이트되었습니다",
-		"ModsModsList": "모드 목록",
 
 		// Mods Menu
+		"ModsModsList": "모드 목록",
 		"ModsEnableAll": "전부 켜기",
 		"ModsEnableAllConfirm": "정말로 모든 모드를 켜시겠습니까?",
 		"ModsDisableAll": "전부 끄기",

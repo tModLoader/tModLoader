@@ -12,9 +12,15 @@ tModLoaderLocalizationFilename = '../../src/tModLoader/Terraria/Localization/Con
 steamToLocalizationKey = {
   #"language":"english",
   #"appid":1281930,
-  "category_0":"TagsCategoryModFeatures",
-  "category_1":"TagsCategoryModSide",
-  "category_2":"TagsCategoryTModLoaderVersion",
+  "category_mtx_tags_0":"TagsCategoryModFeatures",
+  "category_readytouse_tags_0":"TagsCategoryModFeatures",
+  "category_collection_tags_0":"TagsCategoryModFeatures",
+  "category_mtx_tags_1":"TagsCategoryModSide",
+  "category_readytouse_tags_1":"TagsCategoryModSide",
+  "category_collection_tags_1":"TagsCategoryModSide",
+  "category_mtx_tags_2":"TagsCategoryTModLoaderVersion",
+  "category_readytouse_tags_2":"TagsCategoryTModLoaderVersion",
+  "category_collection_tags_2":"TagsCategoryTModLoaderVersion",
   #"category_3":"LegacyMenu.103", # Handled manually below
   "tag_197618":"TagsQoL", #"quality of life",
   "tag_197621":"TagsContent", #"new content",
@@ -47,7 +53,7 @@ steamToLocalizationKey = {
 }
 
 # English will be updated directly, if ever needed. -- actually, not sure what the website text input changes yet, internal or display.
-languages = ['en-US', 'de-DE', 'it-IT', 'fr-FR', 'es-ES', 'ru-RU', 'zh-Hans', 'pt-BR', 'pl-PL']
+languages = ['en-US', 'de-DE', 'it-IT', 'fr-FR', 'es-ES', 'ru-RU', 'zh-Hans', 'pt-BR', 'pl-PL', 'ja-JP', 'ko-KR', 'zh-Hant']
 steamLanguages = ['english', 'german', 'italian', 'french', 'spanish', 'russian', 'schinese', 'brazilian', 'polish', 'japanese', 'koreana', 'tchinese']
 TagsCategoryLanguage = ['Language', 'Sprache', 'Lingua', 'Langue', 'Idioma', 'Язык', '语言', 'Idioma', 'Język', '言語', '언어', '語言'] # not in tModLoader.json, so just do it manually for simplicity. Take from LegacyMenu.103
 
@@ -73,8 +79,9 @@ def DuplicateOutputForForSimilarLanguages(newLanguage, newLanguageDisplay, steam
 for index, (language, steamLanguage) in enumerate(zip(languages, steamLanguages)):
     print("Updating:", language)
     missing = 0
+    filename = "workshop_tags_1281930_{0}.json".format(steamLanguage)
 
-    with open("workshop_tags_1281930_{0}.json".format(steamLanguage), 'r', encoding='utf-8') as tagFile:
+    with open(filename, 'r', encoding='utf-8') as tagFile:
         steamTagData = json5.load(tagFile)
     with open(tModLoaderLocalizationFilename.format(language), 'r', encoding='utf-8') as english:
         tModLoaderJsonData = json5.load(english) # use json5 to load to support comments
@@ -87,13 +94,15 @@ for index, (language, steamLanguage) in enumerate(zip(languages, steamLanguages)
         else:
             missing += 1
     
-    steamTagData['category_3'] = TagsCategoryLanguage[index]
+    steamTagData['category_mtx_tags_3'] = TagsCategoryLanguage[index]
+    steamTagData['category_readytouse_tags_3'] = TagsCategoryLanguage[index]
+    steamTagData['category_collection_tags_3'] = TagsCategoryLanguage[index]
 
     if missing > 0:
         missings.append( (language, missing) )
         print("Missing:", missing)
 
-    outputFilename = "workshop_tags_1281930_{0}_Output.json".format(steamLanguage)
+    outputFilename = filename
     outputString = json.dumps(steamTagData, indent=4, ensure_ascii=False) # json.dump instead of json5.dump for quoted keys
 
     originalString = ""
