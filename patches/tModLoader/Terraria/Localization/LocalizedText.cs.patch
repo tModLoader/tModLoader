@@ -150,7 +150,7 @@
  	}
  
 +	/// <summary>
-+	/// Version of <see cref="ConditionsMetWith(Func{string, object})"/> that uses the public properties of an object as the lookup function (eg new { Value = 10 })
++	/// Version of <see cref="ConditionsMetWith(Func{string, object})"/> that uses the public properties of an object as the lookup function (eg <c>new { Value = 10 }</c>).
 +	/// </summary>
  	public bool ConditionsMetWith(object obj)
  	{
@@ -162,7 +162,7 @@
  	}
  
 +	/// <summary>
-+	/// Using the values from <paramref name="lookup"/>, checks if all of the conditional substitutions in the localized value are satisfied, and all other substitutions have non-null values<br/>
++	/// Using the values from <paramref name="lookup"/>, checks if all of the conditional substitutions in the localized value are satisfied, and all other substitutions have non-null values.<br/>
 +	/// Eg, if the value contains {?Day} or {?!Day} then <c>lookup("Day")</c> must return true or false respectively.<br/>
 +	/// If the value contains {Nurse} then <c>lookup("Nurse")</c> must be non null
 +	/// </summary>

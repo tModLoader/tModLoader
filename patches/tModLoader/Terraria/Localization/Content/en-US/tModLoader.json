@@ -608,7 +608,7 @@
 		"CommandPurgeUnloadedDescription": "Removes unloaded tiles and walls from the world",
 		"CommandPurgeUnloadedUsage": "/purgeunloaded [ModName] [-t (purge tiles)] [-w (purge walls)] [-p (confirm purge action)]",
 		"CommandGlobalSubstitutionsDescription": "Displays all registered global substitutions.",
-		"CommandGlobalSubstitutionsUsage": "/globalsubstitutions [ModName|SetKey|SearchTerm] [-o (open logs folder)]",
+		"CommandGlobalSubstitutionsUsage": "/globalsubstitutions [ModName|SearchTerm] [-o (open logs folder)]",
 
 		// Mod Building
 		"Building": "Building: {0}",

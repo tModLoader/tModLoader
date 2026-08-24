@@ -155,12 +155,12 @@
  	public static string GetBuffDescription(int id) => _buffDescriptionCache[id].Value;
  
  	public static string GetDryadWorldStatusDialog(out bool worldIsEntirelyPure)
-@@ -335,7 +_,20 @@
+@@ -335,7 +_,22 @@
  		return npc.FullName;
  	}
  
 +	/// <summary>
-+	/// Filters LocalizedText objects by checking if their key starts with the provided <paramref name="startsWith"/> parameter and if the conditions embedded into the LocalizedText are all satisfied by the data in <paramref name="substitutions"/>. See <see cref="LocalizedText.CanFormatWith(object)"/> for more information about conditions embedded in localization text. <br/><br/>
++	/// Filters LocalizedText objects by checking if their key starts with the provided <paramref name="startsWith"/> parameter and if the conditions embedded into the LocalizedText are all satisfied by the data in <paramref name="substitutions"/>. See <see cref="LocalizedText.ConditionsMetWith(object)"/> for more information about conditions embedded in localization text. <br/><br/>
 +	/// When passed into <see cref="Language.FindAll(LanguageSearchFilter)"/>, all LocalizedText with keys starting with <paramref name="startsWith"/> that satisfy <paramref name="substitutions"/> will be returned. When passed into <see cref="Language.SelectRandom(LanguageSearchFilter, UnifiedRandom)"/>, a single random LocalizedText with key starting with <paramref name="startsWith"/> that satisfies <paramref name="substitutions"/> will be returned.<br/><br/>
 +	/// </summary>
 +	/// <param name="startsWith"></param>
@@ -169,9 +169,11 @@
  	public static LanguageSearchFilter CreateDialogFilter(string startsWith, object substitutions) => (string key, LocalizedText text) => key.StartsWith(startsWith) && text.ConditionsMetWith(substitutions);
 +	/// <summary>
 +	/// Filters LocalizedText objects by checking if their key starts with the provided <paramref name="startsWith"/> parameter.<br/><br/>
-+	/// When passed into <see cref="Language.FindAll(LanguageSearchFilter)"/>, all LocalizedText with keys starting with <paramref name="startsWith"/> will be returned. When passed into <see cref="Language.SelectRandom(LanguageSearchFilter, UnifiedRandom)"/>, a single random LocalizedText with key starting with <paramref name="startsWith"/> will be returned.<br/><br/>
++	/// If <paramref name="checkConditions"/> is true, then conditions embedded into the LocalizedText will be checked as well.<br/><br/>
++	/// When passed into <see cref="Language.FindAll(LanguageSearchFilter)"/>, all LocalizedText with keys starting with <paramref name="startsWith"/> and matching all conditions (if checkConditions is true), will be returned. When passed into <see cref="Language.SelectRandom(LanguageSearchFilter, UnifiedRandom)"/>, a single random LocalizedText with key starting with <paramref name="startsWith"/> will be returned.<br/><br/>	
 +	/// </summary>
 +	/// <param name="startsWith"></param>
++	/// <param name="checkConditions"></param>
 +	/// <returns></returns>
  	public static LanguageSearchFilter CreateDialogFilter(string startsWith, bool checkConditions = true) => (string key, LocalizedText text) => key.StartsWith(startsWith) && (!checkConditions || text.ConditionsMet);
  
