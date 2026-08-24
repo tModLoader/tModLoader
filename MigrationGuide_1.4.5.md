@@ -371,6 +371,12 @@ We highly recommend that mods utilize global substitutions to greatly streamline
 
 The text variation system allows for a single text key to have several variant options. The game uses this in many non-English languages to support prefixes adjusting their spelling to the gender of the item. This feature is not limited to gendered item prefixes, variant text can be used to support alternate localizations or even metadata. The `LanguageVariantSystem.cs` file demonstrates some potential ideas for novel uses of this feature.
 
+### New language support
+Japanese ("ja-JP"), Korean ("ko-KR"), and Traditional Chinese ("zh-Hant") have been added as newly supported languages. 
+* Supporting these new languages in mods is the same process as the existing languages.
+* If you have custom fonts, you may need to build your font files again and include the new characters in your font creation.
+  * TODO: We will have new tooling for this made available sometime.
+
 ## Other Changes
 
 * Fishing power bonus now applies to any chair, not just toilets.

@@ -6,3 +6,6 @@ it-IT 1042
 fr-FR 507
 es-ES 41
 de-DE 470
+ja-JP 3
+ko-KR 3
+zh-Hant 51

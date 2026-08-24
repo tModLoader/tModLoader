@@ -1,0 +1,15 @@
+--- src/TerrariaNetCore/Terraria/Localization/Content/zh-Hans/Main.json
++++ src/tModLoader/Terraria/Localization/Content/zh-Hans/Main.json
+@@ -32,9 +_,9 @@
+ 		"Portuguese": "Português brasileiro (巴西葡萄牙语)",
+ 		"German": "Deutsch (德语)",
+ 		"Polish": "Polski (波兰语)",
+-		"Korean": "한국어 (Korean)",
++		"Korean": "한국어 (朝鲜语)",
+-		"ChineseTraditional": "繁體中文 (Traditional Chinese)",
++		"ChineseTraditional": "繁體中文 (繁体中文)",
+-		"Japanese": "日本語 (Japanese)"
++		"Japanese": "日本語 (日语)"
+ 	},
+ 	"CLI": {
+ 		"Server": "泰拉瑞亚服务器{0}",
