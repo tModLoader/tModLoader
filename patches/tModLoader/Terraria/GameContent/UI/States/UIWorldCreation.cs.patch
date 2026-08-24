@@ -1,5 +1,13 @@
 --- src/TerrariaNetCore/Terraria/GameContent/UI/States/UIWorldCreation.cs
 +++ src/tModLoader/Terraria/GameContent/UI/States/UIWorldCreation.cs
+@@ -14,6 +_,7 @@
+ using Terraria.ID;
+ using Terraria.IO;
+ using Terraria.Localization;
++using Terraria.ModLoader;
+ using Terraria.Social;
+ using Terraria.Testing;
+ using Terraria.UI;
 @@ -118,6 +_,12 @@
  		ResetSpecialSeedRing();
  	}
@@ -13,3 +21,70 @@
  	public void SetGoBackTarget(UIState state)
  	{
  		_goBackTarget = state;
+@@ -484,7 +_,7 @@
+ 	private void ClickAdvancedSeedMenu(UIMouseEvent evt, UIElement listeningElement)
+ 	{
+ 		ResetSpecialSeedRing();
+-		UIWorldCreationAdvanced uIWorldCreationAdvanced = new UIWorldCreationAdvanced(this);
++		UIWorldCreationAdvanced uIWorldCreationAdvanced = new UIWorldCreationAdvanced(this, true);
+ 		SetGoBackTarget(uIWorldCreationAdvanced);
+ 		Main.MenuUI.SetState(uIWorldCreationAdvanced);
+ 	}
+@@ -718,6 +_,9 @@
+ 
+ 	public void ToggleSeedOption(AWorldGenerationOption seedOption)
+ 	{
++		if (seedOption is ModSpecialSeedUIOption modSeedOption && !modSeedOption.ToggleOnClick) {
++			return;
++		}
+ 		if (_isSpecialSeedText) {
+ 			_optionSeed = string.Empty;
+ 			_isSpecialSeedText = false;
+@@ -793,6 +_,9 @@
+ 				WorldGenerationOptions.SelectOption(optionFromSeedText);
+ 				SoundEngine.PlaySound(24);
+ 			}
++			else {
++				_isSpecialSeedText = SeedLoader.CanEnableSeedsFromText(_optionSeed);
++			}
+ 
+ 			if (WorldGen.SecretSeed.CheckInputForSecretSeed(_optionSeed, out var secretSeed)) {
+ 				if (!secretSeed.Enabled) {
+@@ -942,6 +_,8 @@
+ 			Main.ActiveWorldFileData.SetSeed(seed);
+ 		}
+ 
++		SeedLoader.SetWorldGenMenu();
++
+ 		WorldGenerator.Controller controller = new WorldGenerator.Controller {
+ 			Paused = (DebugOptions.enableDebugCommands && Main.keyState.PressingControl())
+ 		};
+@@ -985,6 +_,9 @@
+ 		Array.Clear(oldTangent, 0, oldTangent.Length);
+ 	}
+ 
++	// Added by TML. Used by UIWorldCreationAdvanced.
++	internal bool RecalculateSpecialSeedRing { get; set; }
++
+ 	public void DrawSpecialSeedRingCallback(UIElement element, SpriteBatch spriteBatch)
+ 	{
+ 		if (!HasEnteredSpecialSeed)
+@@ -992,7 +_,8 @@
+ 
+ 		spriteBatch.End();
+ 		spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.UIScaleMatrix);
+-		if (oldPos[0] == Vector2.Zero) {
++		if (oldPos[0] == Vector2.Zero || RecalculateSpecialSeedRing) {
++			RecalculateSpecialSeedRing = false;
+ 			for (int i = 0; i < 61; i++) {
+ 				UpdateSpecialSeedRing(element);
+ 			}
+@@ -1005,7 +_,7 @@
+ 
+ 		DrawSpecialSeedRing();
+ 		spriteBatch.End();
+-		spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.UIScaleMatrix);
++		spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.None, new RasterizerState{CullMode = CullMode.CullCounterClockwiseFace, ScissorTestEnable = true}, null, Main.UIScaleMatrix);
+ 	}
+ 
+ 	public void DrawSpecialSeedRingCallbackWithoutCondition(UIElement element, SpriteBatch spriteBatch)

@@ -1,9 +1,12 @@
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework;
 using ReLogic.Content;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Terraria.IO;
 using Terraria.Localization;
+using Terraria.ModLoader;
 using Terraria.ModLoader.Core;
 using Terraria.ModLoader.UI;
 using Terraria.UI;
@@ -158,5 +161,41 @@ public partial class UIWorldListItem : AWorldListItem
 	private void ConfigButtonClick(UIMouseEvent evt, UIElement listeningElement)
 	{
 
+	}
+
+	private void UpdateIconForModSeeds(UIElement element)
+	{
+		if (_moddedSeeds.Count == 0) {
+			return;
+		}
+		UICyclingImage worldIcon = null;
+		if (element is UICyclingImage castWorldIcon) {
+			worldIcon = castWorldIcon;
+		}
+		if (worldIcon == null) {
+			return;
+		}
+
+		worldIcon.AllowResizingDimensions = false;
+		worldIcon.Width.Set(60,0f);
+		worldIcon.Height.Set(58,0f);
+		int currentIndex = worldIcon.CurrentTextureIndex;
+		if (worldIcon.FramesCounted >= worldIcon.FramesPerCycle - 1) {
+			currentIndex++;
+		}
+		if (currentIndex >= worldIcon.TextureCount) {
+			currentIndex = 0;
+		}
+
+		int modSeedIndex = currentIndex - (worldIcon.TextureCount - _moddedSeeds.Count);
+		if (modSeedIndex < 0) {
+			worldIcon.Frame = null;
+			return;
+		}
+		Rectangle frame = Rectangle.Empty;
+		_moddedSeeds[modSeedIndex].ModifyWorldIconDrawParams(_data.HasCrimson, _data.HasCorruption, ref frame);
+		if (frame != Rectangle.Empty) {
+			worldIcon.Frame = frame;
+		}
 	}
 }

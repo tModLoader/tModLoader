@@ -1681,6 +1681,29 @@ Mods: {
 			// ShortPose.VictoryCheer: Yay!
 			// LongPose.VictoryCheer: We did it!
 		}
+
+		Seeds: {
+			ExampleSpecialSeed: {
+				/* Description:
+					'''
+					This is an example special seed. Entering either 'example' or '1337' into the seed input will trigger this seed.
+					Enter examplesecret into the seed input to unlock the example secret seed.
+					''' */
+				// DisplayName: Example Special Seed
+			}
+
+			ExampleAdvancedSpecialSeed: {
+				// Description: This is another example special seed that demonstrates more advanced features of ModSpecialSeed, like dependencies, incompatibilities, sorting, and the OnSeedButtonPress hook.
+				// DisplayName: Example Advanced Special Seed
+			}
+
+			// ExampleSecretSeed.Description: This is an example of a modded secret seed. (Effects are usually explained in these parentheses)
+		}
+
+		SpecialSeeds: {
+			// ExampleAdvancedSpecialSeed.DisplayName: Example Advanced Special Seed
+			// ExampleSpecialSeed.DisplayName: Example Special Seed
+		}
 	}
 }
 

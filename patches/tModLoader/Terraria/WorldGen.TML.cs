@@ -6,6 +6,8 @@ using Terraria.IO;
 using Terraria.ModLoader;
 using Terraria.ID;
 using System;
+using Terraria.Audio;
+using Terraria.Localization;
 
 namespace Terraria;
 
@@ -136,5 +138,28 @@ public partial class WorldGen
 		tile2.TileColor = tileTileColor;
 		tile2.IsTileFullbright = tileIsTileFullbright;
 		tile2.IsTileInvisible = tileIsTileInvisible;
+	}
+
+	public partial class SecretSeed
+	{
+		public LocalizedText Description {
+			get => _description ?? Language.GetText(Localization);
+			set => _description = value;
+		}
+		private LocalizedText _description;
+
+		/// <summary>
+		/// The encrypted code used to match seed inputs with this secret seed.
+		/// </summary>
+		public string Code { get => _code; internal set => _code = value; }
+
+		public ModSecretSeed ModSecretSeed { get; internal set; }
+
+		internal SecretSeed(LocalizedText description, SoundStyle sound, string code)
+		{
+			Description = description;
+			_sound = sound;
+			_code = code;
+		}
 	}
 }
