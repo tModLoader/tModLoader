@@ -123,6 +123,7 @@ public class SimpleRenamedVanillaMembersTest
 		player.IsAValidEquipmentSlotForIteration(0);
 		player.VanillaUpdateEquip(null);
 		player.CanBuyItem(100000);
+		player.oldAdjTile[0] = false;
 
 		Main.DrawPlayer(player, Vector2.Zero, 0f, Vector2.Zero, 1f);
 

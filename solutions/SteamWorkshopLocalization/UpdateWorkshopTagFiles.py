@@ -44,8 +44,8 @@ steamToLocalizationKey = {
 
 # English will be updated directly, if ever needed. -- actually, not sure what the website text input changes yet, internal or display.
 languages = ['en-US', 'de-DE', 'it-IT', 'fr-FR', 'es-ES', 'ru-RU', 'zh-Hans', 'pt-BR', 'pl-PL']
-steamLanguages = ['english', 'german', 'italian', 'french', 'spanish', 'russian', 'schinese', 'brazilian', 'polish']
-TagsCategoryLanguage = ['Language', 'Sprache', 'Lingua', 'Langue', 'Idioma', 'Язык', '语言', 'Idioma', 'Język'] # not in tModLoader.json, so just do it manually for simplicity
+steamLanguages = ['english', 'german', 'italian', 'french', 'spanish', 'russian', 'schinese', 'brazilian', 'polish', 'japanese', 'koreana', 'tchinese']
+TagsCategoryLanguage = ['Language', 'Sprache', 'Lingua', 'Langue', 'Idioma', 'Язык', '语言', 'Idioma', 'Język', '言語', '언어', '語言'] # not in tModLoader.json, so just do it manually for simplicity. Take from LegacyMenu.103
 
 # TODO: what to do about latam-spanishlatinamerica, sc_schinese-steamsimplifiedchinese, tchinese-traditionalchinese, portuguese-portugalportuguese?
 # should we copy the results from the similar language? Not sure why there are 3 chinese either, steam website only has 2 options.
@@ -56,6 +56,15 @@ anyFileNeedsUploading = False
 # open the template, open the tmod file
 # for each entry in the mapping, update the json if exists
 # write out steam tag json
+
+def DuplicateOutputForForSimilarLanguages(newLanguage, newLanguageDisplay, steamLanguage, steamTagData):
+    print(f"Duplicating {steamLanguage} to {newLanguageDisplay}")
+    steamTagData['language'] = newLanguage
+    outputFilename = "workshop_tags_1281930_{0}_Output.json".format(newLanguage)
+    outputString = json.dumps(steamTagData, indent=4, ensure_ascii=False)
+    print("Updated File:", outputFilename)
+    with open(outputFilename, "w", encoding='utf-8') as tagFileNew:
+        tagFileNew.write(outputString)
 
 for index, (language, steamLanguage) in enumerate(zip(languages, steamLanguages)):
     print("Updating:", language)
@@ -94,6 +103,12 @@ for index, (language, steamLanguage) in enumerate(zip(languages, steamLanguages)
         
         with open(outputFilename, "w", encoding='utf-8') as tagFileNew:
             tagFileNew.write(outputString)
+        
+        if steamLanguage == "spanish":
+            DuplicateOutputForForSimilarLanguages("latam", "latin america spanish", steamLanguage, steamTagData)
+
+        if steamLanguage == "brazilian":
+            DuplicateOutputForForSimilarLanguages("portuguese", "portuguese", steamLanguage, steamTagData)
 
 with open('./TranslationsNeeded.txt', 'w', encoding='utf-8') as output:
     if len(missings) == 0:

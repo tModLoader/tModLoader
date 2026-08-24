@@ -3141,7 +3141,7 @@
  			minionDamage += 0.11f;
  		}
 +
-+		// Lifted from NPC.SpawnNPC for NewNPC(..., 45), which is NPCID.Tim. See usage of the flag
++		// Lifted from NPC.Spawner.SetSpawnFlags/Spawner.offensiveToTim. See usage of the flag
 +		if (armorPiece.type == 4256 || (armorPiece.type >= 1282 && armorPiece.type <= 1287))
 +			hasGemRobe = true;
 +
@@ -4779,6 +4779,34 @@
  							if (wings == 4) {
  								rocketDelay2--;
  								if (rocketDelay2 <= 0) {
+@@ -21819,6 +_,17 @@
+ 							}
+ 						}
+ 
++						float gravityMultiplier = 1f / 3f;
++						float maxSpeedMultiplier = 1f / 3f;
++
++						// As per method docs, true means apply vanilla logic. False means use the custom logic only
++						if (!ItemLoader.WingGlidingSpeeds(this, ref gravityMultiplier, ref maxSpeedMultiplier))
++							goto skipGliding;
++
++						// Begin vanilla logic
++						float gravity = this.gravity * gravityMultiplier * 3f;
++						float maxFallSpeed = this.maxFallSpeed * maxSpeedMultiplier * 3f;
++
+ 						velocity.Y += gravity / 3f * gravDir;
+ 						if (gravDir == 1f) {
+ 							if (velocity.Y > maxFallSpeed / 3f && !TryingToHoverDown)
+@@ -21827,6 +_,9 @@
+ 						else if (velocity.Y < (0f - maxFallSpeed) / 3f && !TryingToHoverUp) {
+ 							velocity.Y = (0f - maxFallSpeed) / 3f;
+ 						}
++
++						// End vanilla logic
++						skipGliding:;
+ 					}
+ 					else if (cartRampTime <= 0) {
+ 						velocity.Y += gravity * gravDir;
 @@ -22003,12 +_,16 @@
  
  				for (int num77 = 0; num77 < Main.maxNPCs; num77++) {
@@ -5246,7 +5274,7 @@
 +	/// Fetches the range at which the given item begins to gravitate towards the player.<br/>
 +	/// This range, referred to as item grab range, is measured in pixels.
 +	/// </summary>
-+	/// <param name="item">The item whose grab range is being evaluated.</param>
++	/// <param name="worldItem">The item whose grab range is being evaluated.</param>
 +	/// <returns>The item grab range of the player, in pixels.</returns>
 +	public int GetItemGrabRange(WorldItem worldItem)
  	{
@@ -6916,8 +6944,16 @@
  			}
  		}
  
-@@ -35234,7 +_,10 @@
- 			ItemCheck_GetMeleeHitbox(sItem, heldItemFrame, out var dontAttack2, out var itemRectangle2);
+@@ -35230,11 +_,17 @@
+ 		if (sItem.type > 0 && itemAnimation > 0)
+ 			ItemCheck_GetMeleeHitboxParticles(sItem, heldItemFrame);
+ 
++		/*
+ 		if (((sItem.damage >= 0 && sItem.type > 0 && !sItem.noMelee) || sItem.type == 1991 || sItem.type == 3183 || sItem.type == 4821) && itemAnimation > 0) {
++		*/
++		if (((sItem.damage >= 0 && sItem.type > 0 && !sItem.noMelee) || ItemID.Sets.CatchingTool[sItem.type]) && itemAnimation > 0) {
+-			ItemCheck_GetMeleeHitbox(sItem, heldItemFrame, out var dontAttack2, out var itemRectangle2);
++				ItemCheck_GetMeleeHitbox(sItem, heldItemFrame, out var dontAttack2, out var itemRectangle2);
  			if (!dontAttack2) {
  				ItemCheck_EmitUseVisuals(sItem, itemRectangle2);
 +				/*
@@ -7132,15 +7168,15 @@
  		}
  	}
  
-@@ -36451,6 +_,8 @@
- 			if (mount.Type == 63)
- 				Main.dust[num27].color = Color.Lerp(new Color(1f, 0.7f, 0.5f), Color.White, num28 * num28 * num28);
- 		}
-+
-+		CombinedHooks.MeleeEffects(this, sItem, itemRectangle);
- 	}
+@@ -36436,6 +_,8 @@
+ 		if (sItem.type == 1304 && Main.rand.Next(60) == 0 && ChildSafety.Disabled)
+ 			Gore.NewGore(new Vector2(itemRectangle.Left + itemRectangle.Width / 2, itemRectangle.Top + itemRectangle.Height / 2), new Vector2((float)direction * (2f + Main.rand.NextFloat() * 3f), -2f - Main.rand.NextFloat() * 3f), Main.rand.Next(3, 6));
  
- 	private void ItemCheck_GetMeleeHitboxParticles(Item sItem, Rectangle heldItemFrame)
++		CombinedHooks.MeleeEffects(this, sItem, itemRectangle); // ItemCheck_EmitUseVisuals
++
+ 		if (!mount.Active || (mount.Type != 62 && mount.Type != 63) || !sItem.melee || sItem.noMelee || sItem.noUseGraphic)
+ 			return;
+ 
 @@ -36570,6 +_,8 @@
  					itemRectangle.X += 10;
  			}

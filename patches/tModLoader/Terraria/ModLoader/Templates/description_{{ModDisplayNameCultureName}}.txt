@@ -1,0 +1,2 @@
+{{#IncludeLocalizedModDisplayName}}Modify this file with a description of your mod.
+{{/IncludeLocalizedModDisplayName}}

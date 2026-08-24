@@ -416,6 +416,7 @@ The text variation system allows for a single text key to have several variant o
 	* As mentioned in the Projectile Draw Changes section, PreDraw/Draw/PostDraw code needs to be updated to use the new `player` parameter instead of using `Main.player[Projectile.owner]`.
 	* `Projectile.drawLayer = ProjectileDrawLayerID.HeldProj` will likely need to be added to `SetDefaults` for the projectile to draw on the correct layer.
 * `Condition.DownedEarlygameBoss` now includes King Slime and Deerclops
+* Workarounds to get the correct mouse position for projectiles that draw during other draw layers are no longer required and should be removed for correct behavior. See the ExampleInteractableProjectile.cs changes.
 
 ### Example Mod
 
@@ -594,3 +595,4 @@ All classes are in the `Terraria.ModLoader` or `Terraria` namespaces unless othe
   * Add `displayName.[languageCode] = LocalizedDisplayName` to `build.txt` to support other languages for the name of the mod.
   * Add `description_[languageCode].txt` and `description_workshop_[languageCode].txt` to support other languages for the in-game description and steam workshop description.
 * `(Mod|Global)BlockType.RandomUpdate` (Tiles and Walls) now have an `underground` parameter to more easily support underground or overground-only logic and better support the "Don't dig up" special world seed behaviors. If that seed is active, tile locations technically underground (below `Main.worldSurface`) might be considered overground for random update purposes. Modders should trust the `underground` parameter rather than rely on checking `Main.worldSurface` to support the special characteristics of "Don't dig up".
+* 🤖: `ModCloud.Draw` now has a `List<DrawData>` parameter replacing the `SpriteBatch` parameter. Manually drawing during this hook is no longer supported due to the new horizon visuals drawing clouds using a shader, but the new parameter allows supplying additional `DrawData` if desired.

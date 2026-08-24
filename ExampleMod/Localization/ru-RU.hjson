@@ -1304,6 +1304,11 @@ Mods: {
 				// DisplayName: Example Golf Club (Driver)
 				// Tooltip: "{$CommonItemTooltip.GolfDriver}"
 			}
+
+			ExampleSpecialGlideWings: {
+				// DisplayName: Example Special Glide Wings
+				// Tooltip: ""
+			}
 		}
 
 		# Projectile display names mainly show in chat when a player dies from it.
