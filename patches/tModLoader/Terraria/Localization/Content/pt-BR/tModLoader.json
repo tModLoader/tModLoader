@@ -613,6 +613,8 @@
 		"CommandCustomSetsUsage": "/customsets [NomeDoMod|ChaveDoConjunto|TermoDePesquisa] [-v (valor de saída)] [-o (abre a pasta de logs)]",
 		"CommandPurgeUnloadedDescription": "Remove blocos e paredes descarregados do mundo",
 		"CommandPurgeUnloadedUsage": "/purgeunloaded [NomeDoMod] [-t (remove blocos)] [-w (remove paredes)] [-p (confirma a deletação)]",
+		// "CommandGlobalSubstitutionsDescription": "Displays all registered global substitutions.",
+		// "CommandGlobalSubstitutionsUsage": "/globalsubstitutions [ModName|SearchTerm] [-o (open logs folder)]",
 
 		// Mod Building
 		"Building": "Construindo: {0}",

@@ -615,6 +615,8 @@
 		"CommandCustomSetsUsage": "/customsets [模组名|设置Key|搜索词] [-v (输出值)] [-o (打开日志文件夹)]",
 		"CommandPurgeUnloadedDescription": "从世界中清理未使用的物块和背景墙。",
 		"CommandPurgeUnloadedUsage": "/purgeunloaded [模组名] [-t (清理物块)] [-w (清理背景墙)] [-p (确认清除操作)]",
+		// "CommandGlobalSubstitutionsDescription": "Displays all registered global substitutions.",
+		// "CommandGlobalSubstitutionsUsage": "/globalsubstitutions [ModName|SearchTerm] [-o (open logs folder)]",
 
 		// Mod Building
 		"Building": "构建中：{0}",

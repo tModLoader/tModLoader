@@ -613,6 +613,8 @@
 		"CommandCustomSetsUsage": "/customsets [ModName|SetKey|SearchTerm] [-v (показать значения)] [-o (открыть лог-папку)]",
 		"CommandPurgeUnloadedDescription": "Удаляет выгруженные блоки и стены из мира",
 		"CommandPurgeUnloadedUsage": "/purgeunloaded [ModName] [-t (удалить блоки)] [-w (удалить стены)] [-p (подтвердить удаление)]",
+		// "CommandGlobalSubstitutionsDescription": "Displays all registered global substitutions.",
+		// "CommandGlobalSubstitutionsUsage": "/globalsubstitutions [ModName|SearchTerm] [-o (open logs folder)]",
 
 		// Mod Building
 		"Building": "Идёт сборка: {0}",

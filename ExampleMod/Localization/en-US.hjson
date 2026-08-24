@@ -382,10 +382,11 @@ Mods: {
 			ExampleHood: {
 				DisplayName: Example Hood
 				Tooltip: This is a modded hood.
+				# The {ToggleArmorSetBonusKey} will automatically display "UP" or "DOWN" depending on the user's "Activate Set Bonuses" setting.
 				SetBonus:
 					'''
-					Double tap or hold {0} to toggle various armor shadow effects
-					{$CommonItemTooltip.PercentReducedManaCost@1}
+					Double tap or hold {ToggleArmorSetBonusKey} to toggle various armor shadow effects
+					{$CommonItemTooltip.PercentReducedManaCost}
 					'''
 			}
 
@@ -1506,11 +1507,15 @@ Mods: {
 		#This is used to display the NPC's dialogues.
 		Dialogue: {
 			ExamplePerson: {
-				PartyGirlDialogue: Can you please tell {0} to stop decorating my house with colors?
+				# The names of these entries are purely instructional. You can simply number them if you wish.
+				PartyGirlDialogue: Can you please tell {PartyGirl} to stop decorating my house with colors?
 				StandardDialogue1: Sometimes I feel like I'm different from everyone else here.
 				StandardDialogue2: What's your favorite color? My favorite colors are white and black.
 				StandardDialogue3: What? I don't have any arms or legs? Oh, don't be ridiculous!
 				StandardDialogue4: Hey, if you find a [i:HiveBackpack], I can upgrade it for you.
+				# See LanguageSubstitutionSystem.cs for an explanation of how "global substitutions" work and how to register custom substitutions. These are showcased in these chat options.
+				ConditionalDialogue1: "{?ExampleMod/DownedMinionBoss}{?GolemDefeated}Wow, you defeated both {$NPCs.MinionBossBody.DisplayName} and {$NPCName.Golem}? Amazing!"
+				ConditionalDialogue2: "{?!Day}{?!NPCFirstName_ExampleMod/ExampleTownPet}It's scary at night. I'd feel a lot safer if I had a pet to keep me company."
 				CommonDialogue: This message has a weight of 5, meaning it appears 5 times more often.
 				RareDialogue: This message has a weight of 0.1, meaning it appears 10 times as rare.
 				TalkALot: I'm getting tired of talking to you. I have to go.
@@ -1523,10 +1528,11 @@ Mods: {
 			}
 
 			ExampleTravelingMerchant: {
-				PartyGirlDialogue: Can you please tell {0} to stop decorating my cousin's house with colors?
+				PartyGirlDialogue: Can you please tell {PartyGirl} to stop decorating my cousin's house with colors?
 				StandardDialogue1: Sometimes my cousin feels like they're different from everyone else here.
 				StandardDialogue2: What's your favorite color? My cousin's favorite colors are white and black.
 				StandardDialogue3: I'm a traveling merchant, and I sell things.
+				ConditionalDialogue1: Is that my cousin {NPCFirstName_ExampleMod/ExamplePerson} over there?
 				HiveBackpackDialogue: Hey, if you find a [i:HiveBackpack], my cousin can upgrade it for you.
 			}
 
@@ -1537,6 +1543,7 @@ Mods: {
 			ExampleTip0: Woah! Example Tip!
 			ExampleTip1: This tip was added by Example Mod!
 			ExampleTip2: This is yet another tip added by Example Mod!
+			ExampleTip3: You can press {InputTrigger_ExampleMod/RandomBuff} for a random buff!
 			DisabledExampleTip: This tip will be added but then disabled by Example Mod.
 		}
 
@@ -1680,6 +1687,28 @@ Mods: {
 			HandsUpWithFireworksVictoryPose.VictoryCheer: I'm on fire today!
 			ShortPose.VictoryCheer: Yay!
 			LongPose.VictoryCheer: We did it!
+		}
+
+		# Variation is a feature that allows a single text key to have several variant options. This is used in many non-English languages to support prefixes/adjectives adjusting their spelling to the gender of the item/noun. The wiki has more information on this feature.
+		# This feature is not limited to gendered item prefixes, ExampleMod demonstrates other potential uses of this feature in LanguageVariantSystem.cs using the keys below.
+		VariationShowcase: {
+			LooksNiceMessage: That's a good looking {0}
+			LooksNiceMessage$Male: That's a handsome {0}
+			LooksNiceMessage$Female: That's a pretty {0}
+			CollectiveNounMessage: A group of {0}.
+			CollectiveNounMessage$Flock: A flock of {0} flying high.
+			CollectiveNounMessage$School: A school of {0} swimming gracefully.
+			CollectiveNounMessage$Herd: A herd of {0} roaming around.
+			NounA: "{^0:lizard;lizards}"
+			NounB: "{^0:cat;cats}"
+			NounB$Gender: Female
+			NounB$Collective: Herd
+			NounC: "{^0:dog;dogs}"
+			NounC$Gender: Male
+			NounD: "{^0:bird;birds}"
+			NounD$Collective: Flock
+			NounE: fish
+			NounE$Collective: School
 		}
 	}
 }
