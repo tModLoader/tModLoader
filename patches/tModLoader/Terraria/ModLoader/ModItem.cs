@@ -1122,6 +1122,19 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	}
 
 	/// <summary>
+	/// Allows you to modify the speed at which you fall when gliding with these wings are equipped.
+	/// <para/> Called on local, server, and remote clients.
+	/// <para/> Return false to prevent vanilla gliding behavior.
+	/// </summary>
+	/// <param name="player">The player.</param>
+	/// <param name="gravityMultiplier">The multiplier applied to <see cref="Player.gravity"/>.</param>
+	/// <param name="maxSpeedMultiplier">The multiplier applied to <see cref="Player.maxFallSpeed"/>.</param>
+	public virtual bool WingGlidingSpeeds(Player player, ref float gravityMultiplier, ref float maxSpeedMultiplier)
+	{
+		return true;
+	}
+
+	/// <summary>
 	/// Allows you to modify these wing's horizontal flight speed and acceleration.
 	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
@@ -1375,10 +1388,11 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 
 	/// <summary>
 	/// Allows you to modify what item, and in what quantity, is obtained when any item belonging to the extractinator type corresponding to this item is fed into the Extractinator. Use <see cref="ItemID.Sets.ExtractinatorMode"/> to allow an item to be fed into the Extractinator.
-	/// <para/> This method is only called if <c>ItemID.Sets.ExtractinatorMode[Item.type] = Item.type;</c> in used in SetStaticDefaults. Other items belonging to the same extractinator group should use <c>ItemID.Sets.ExtractinatorMode[Item.type] = ModContent.ItemType&lt;IconicItemForThisExtractinatorType&gt;();</c> to indicate that they share the same extractinator output pool and to avoid code duplication.
+	/// <para/> This method is only called if <c>ItemID.Sets.ExtractinatorMode[Type] = Type;</c> in used in SetStaticDefaults. Other items belonging to the same extractinator group should use <c>ItemID.Sets.ExtractinatorMode[Type] = ModContent.ItemType&lt;IconicItemForThisExtractinatorType&gt;();</c> to indicate that they share the same extractinator output pool and to avoid code duplication.
 	/// <para/> By default the parameters will be set to the output of feeding Silt/Slush into the Extractinator.
 	/// <para/> Use <paramref name="extractinatorBlockType"/> to provide different behavior for <see cref="TileID.ChlorophyteExtractinator"/> if desired.
-	/// <para/> If the Chlorophyte Extractinator item swapping behavior is desired, see the example in <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Common/GlobalItems/TorchExtractinatorGlobalItem.cs">TorchExtractinatorGlobalItem.cs</see>.
+	/// <para/> <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/Items/Placeable/ExampleBlock.cs">ExampleBlock.cs</see> showcases using this to implement unique drops. The <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Common/GlobalItems/TorchExtractinatorGlobalItem.cs">TorchExtractinatorGlobalItem.cs</see> example showcases even more advanced behavior.
+	/// <para/> If the Chlorophyte Extractinator item swapping behavior is desired, that is handled by <see cref="ItemTrader.ChlorophyteExtractinator"/> instead. See the example in <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/Items/Placeable/ExampleBar.cs">ExampleBar.cs</see>.
 	/// <para/> This method is not instanced.
 	/// <para/> Called on the local client only.
 	/// </summary>

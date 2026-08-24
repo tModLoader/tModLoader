@@ -29,7 +29,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Need to document ArmorIDs.Face.Sets.DrawInFaceMaskLayer as well
 - Player.revolverCritChanceBonus needs a quick test now that it has been implemented as a Projectile.CritChance bonus. Need to hookup `Item.GetVisualCritChance`
 - Player.adjTile patches are weird. It shouldn't be necessary to resize, they should be correct when the Player is initialized anyway.
-- player.oldAdjTile has been removed. Did modders depend on this for any reason? Tracking previous frames?
 - Player.coat added. It might also need and EquipType
 - What is Player._pendingRefunds? Does it require modded item support?
 - Player.ApplyEquipVanity now calls RefreshInfoAccsFromItemType. Is this new behavior, will our existing hooks now call things multiple times by accident?
@@ -45,7 +44,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
   - Seems to control MessageID.PlayerControls being sent but I don't know why. 1 is unused.
 - Adjacent tiles are now contained in Recipe.TileCountsAs rather than hard-coded. Need to adjust TileLoader.AdjTiles hooks/docs/exampels to prioritize using Recipe.TileCountsAs
   - Restore `TileLoader.AdjTiles(this, Main.tile[j, k].type);` patch to new Player.SetAdjTile method
-- ItemID.Sets.ExtractinatorMode entries seem to have changed a lot. There is also a new CanBeExtractinated set. Need to investigate and adjust things if necessary.
 - Terraria added a CanConsumeConsumableItem stub method. Should it check item.consumable or only ItemLoader.ConsumeItem.
 - We'll need to check all bag drops and update the drop database.
 - A lot of the GetItemSettings presets have been renamed or removed. Might be something to document.
@@ -111,7 +109,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Main.OpenPlayerSelectFromNet changed how our patches can be implemented for invite joining. Need to be reimplemented.
 - DrawColorCodedStringWithShadow methods no longer return Vector2 string size. Is this because of some reason? All patches in ChatManager need to be revisited.
 - Paladin shield patches might have been mixed up. Double Check.
-- Missing Actuator/849 ConsumeItem patch. Is this a vanilla bug or is the stack now consumed elsewhere?
 - New GetItemManaUsageDetails and ItemCheck_PayMana_X methods split mana costs into multiple methods. Should be able to remove a lot of Player.TML.cs patches and use them directly.
 - Test TryDroppingSingleItem with stacks (hardcore death). Modded data should be preserved with Item.NewItem overload taking Item instance, but not sure about how that handled stack in the past.
 - Vanilla now uses Player.clientCloneItem() instead of Item.Clone(). I think we can just use that instead of swapping them for CopyNetStateTo and adjust `clientCloneItem` with `NetStateVersion`, but this may need more testing.

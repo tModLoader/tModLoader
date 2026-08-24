@@ -1304,6 +1304,11 @@ Mods: {
 				Tooltip: "{$CommonItemTooltip.GolfDriver}"
 			}
 
+			ExampleSpecialGlideWings: {
+				DisplayName: Example Special Glide Wings
+				Tooltip: ""
+			}
+
 			ExampleVoiceAccessory: {
 				DisplayName: Example Voice Accessory
 				Tooltip: "'Boing!'"
