@@ -70,7 +70,7 @@ anyFileNeedsUploading = False
 def DuplicateOutputForForSimilarLanguages(newLanguage, newLanguageDisplay, steamLanguage, steamTagData):
     print(f"Duplicating {steamLanguage} to {newLanguageDisplay}")
     steamTagData['language'] = newLanguage
-    outputFilename = "workshop_tags_1281930_{0}_Output.json".format(newLanguage)
+    outputFilename = "workshop_tags_1281930_{0}.json".format(newLanguage)
     outputString = json.dumps(steamTagData, indent=4, ensure_ascii=False)
     print("Updated File:", outputFilename)
     with open(outputFilename, "w", encoding='utf-8') as tagFileNew:
