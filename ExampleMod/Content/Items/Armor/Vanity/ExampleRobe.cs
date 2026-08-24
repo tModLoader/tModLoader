@@ -1,4 +1,5 @@
 ﻿using Terraria;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -28,8 +29,8 @@ namespace ExampleMod.Content.Items.Armor.Vanity
 
 			/* ExampleRobe is intended to be vanity, but if it was armor like other Robes, we could do the following:
 			// Add armor sets for the Wizard and Magic Hat so wearing this will apply the expected armor set bonuses.
-			AddArmorSet(ItemID.WizardHat, Type, ItemID.None, "ArmorSetBonus.Wizard", ArmorSetBonus.PartType.Head, ArmorSetBonuses.Benefits.Wizard);
-			AddArmorSet(ItemID.MagicHat, Type, ItemID.None, "ArmorSetBonus.MagicHat", ArmorSetBonus.PartType.Head, ArmorSetBonuses.Benefits.MagicHat);
+			AddArmorSet(ItemID.WizardHat, Type, ItemID.None, "ArmorSetBonus.Wizard", ArmorSetBonus.PartType.Head, Effect: ArmorSetBonuses.Benefits.Wizard);
+			AddArmorSet(ItemID.MagicHat, Type, ItemID.None, "ArmorSetBonus.MagicHat", ArmorSetBonus.PartType.Head, Effect: ArmorSetBonuses.Benefits.MagicHat);
 			*/
 		}
 

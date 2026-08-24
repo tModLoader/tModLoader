@@ -949,7 +949,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 
 	/// <summary>
 	/// Returns whether or not the head armor, body armor, and leg armor textures make up a set. This hook is used for the <see cref="PreUpdateVanitySet(Player)"/>, <see cref="UpdateVanitySet(Player)"/>, and <see cref="ArmorSetShadows(Player)"/> hooks.
-	/// By default, this will return the <see cref="ArmorSetBonus.Identifier"/> of any complete armor set that is found using the equipment textures' associated items as parameters, so you will not have to use this hook unless you want vanity effects to be entirely separate from armor sets. Note that this hook is only ever called through this item's associated equipment texture.
+	/// By default, this will return the <see cref="ArmorSetBonus"/> of any complete armor set that is found using the equipment textures' associated items as parameters, so you will not have to use this hook unless you want vanity effects to be entirely separate from armor sets. Note that this hook is only ever called through this item's associated equipment texture.
 	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="head">The visible head equipment slot (<see cref="Player.head"/>).</param>
