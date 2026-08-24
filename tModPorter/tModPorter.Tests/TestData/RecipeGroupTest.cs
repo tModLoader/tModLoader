@@ -20,6 +20,8 @@ public class RecipeGroupTest : ModSystem
 		RecipeGroup.RegisterGroup(nameof(ItemID.SilverBar), SilverBarRecipeGroup);
 
 		RecipeGroup.recipeGroups[RecipeGroupID.Sand].ValidItems.Add(ItemID.SandstoneBrick);
+
+		bool hasItem = SilverBarRecipeGroup.ContainsItem(ItemID.TungstenBar);
 	}
 
 	public override void AddRecipes()

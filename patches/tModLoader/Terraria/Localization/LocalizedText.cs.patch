@@ -9,7 +9,7 @@
  {
  	public static readonly LocalizedText Empty = new LocalizedText("", "");
  	private static Regex _substitutionRegex = new Regex("{(\\?(?:!)?)?([a-zA-Z][\\w\\.]*)}", RegexOptions.Compiled);
-@@ -13,6 +_,10 @@
+@@ -13,25 +_,43 @@
  	private object _value;
  	private static Dictionary<Type, PropertyDescriptorCollection> _propertyLookupCache = new Dictionary<Type, PropertyDescriptorCollection>();
  
@@ -19,8 +19,11 @@
 +	/// </summary>
  	public string Value {
  		get {
- 			if (_value is VariableText variableText && variableText.TryFormat(Lang.GetGlobalSubstitution, out var formatted))
-@@ -22,12 +_,26 @@
+-			if (_value is VariableText variableText && variableText.TryFormat(Lang.GetGlobalSubstitution, out var formatted))
++			if (_value is VariableText variableText && TryFormat(variableText, Lang.GetGlobalSubstitution, out var formatted))
+ 				return formatted;
+ 
+ 			return _value.ToString();
  		}
  	}
  
@@ -47,6 +50,11 @@
  	public bool ConditionsMet {
  		get {
  			if (_value is VariableText variableText)
+-				return variableText.ConditionsMet(Lang.GetGlobalSubstitution);
++				return CheckConditionsMet(variableText, Lang.GetGlobalSubstitution);
+ 
+ 			return true;
+ 		}
 @@ -40,6 +_,7 @@
  	internal LocalizedText(string key, string text)
  	{
@@ -55,7 +63,7 @@
  		SetValue(text);
  	}
  
-@@ -52,10 +_,29 @@
+@@ -52,37 +_,68 @@
  		if (LanguageManager.Instance != null && LanguageManager.Instance.ActiveCulture == GameCulture.DefaultCulture)
  			EnglishValue = value;
  
@@ -85,7 +93,10 @@
  	public bool GetValueIfConditionsMet(out string formatted)
  	{
  		if (_value is VariableText variableText)
-@@ -65,6 +_,9 @@
+-			return variableText.TryFormat(Lang.GetGlobalSubstitution, out formatted);
++			return TryFormat(variableText, Lang.GetGlobalSubstitution, out formatted);
+ 
+ 		formatted = Value;
  		return true;
  	}
  
@@ -95,19 +106,26 @@
  	public bool TryFormatWith(object obj, out string formatted)
  	{
  		if (_value is VariableText variableText)
-@@ -74,6 +_,11 @@
+-			return variableText.TryFormat(GetPropertyLookupFunc(obj), out formatted);
++			return TryFormat(variableText, GetPropertyLookupFunc(obj), out formatted);
+ 
+ 		formatted = Value;
  		return true;
  	}
  
 +	/// <summary>
 +	/// Attempts to format this text values from <paramref name="lookup"/><br/>
-+	/// Eg {Value} placeholders will be replaced with <c>lookup("Value")</c>
-+	/// Conditions and null values affect success (see <see cref="ConditionsMetWith(Func{string, object})"/>
++	/// Eg {Variable} placeholders will be replaced with <c>lookup("Variable")</c><br/>
++	/// Conditions and null values affect success (see <see cref="ConditionsMetWith(Func{string, object})"/><br/>
++	/// Does not support positional {0} args. To combine positional args with global substitutions, use <see cref="Format(object[])"/>
 +	/// </summary>
  	public bool TryFormatWith(Func<string, object> lookup, out string formatted)
  	{
  		if (_value is VariableText variableText)
-@@ -83,6 +_,9 @@
+-			return variableText.TryFormat(lookup, out formatted);
++			return TryFormat(variableText, lookup, out formatted);
+ 
+ 		formatted = Value;
  		return true;
  	}
  
@@ -127,42 +145,53 @@
  	public string FormatWith(Func<string, object> lookup)
  	{
  		if (!TryFormatWith(lookup, out var formatted))
-@@ -99,6 +_,9 @@
+@@ -99,34 +_,80 @@
  		return formatted;
  	}
  
 +	/// <summary>
-+	/// Version of <see cref="ConditionsMetWith(Func{string, object})"/> that uses the public properties of an object as the lookup function (eg new { Value = 10 })
++	/// Version of <see cref="ConditionsMetWith(Func{string, object})"/> that uses the public properties of an object as the lookup function (eg <c>new { Value = 10 }</c>).
 +	/// </summary>
  	public bool ConditionsMetWith(object obj)
  	{
  		if (_value is VariableText variableText)
-@@ -107,6 +_,11 @@
+-			return variableText.ConditionsMet(GetPropertyLookupFunc(obj));
++			return CheckConditionsMet(variableText, GetPropertyLookupFunc(obj));
+ 
  		return true;
  	}
  
 +	/// <summary>
-+	/// Using the values from <paramref name="lookup"/>, checks if all of the conditional substitutions in the localized value are satisfied, and all other substitutions have non-null values<br/>
++	/// Using the values from <paramref name="lookup"/>, checks if all of the conditional substitutions in the localized value are satisfied, and all other substitutions have non-null values.<br/>
 +	/// Eg, if the value contains {?Day} or {?!Day} then <c>lookup("Day")</c> must return true or false respectively.<br/>
 +	/// If the value contains {Nurse} then <c>lookup("Nurse")</c> must be non null
 +	/// </summary>
  	public bool ConditionsMetWith(Func<string, object> lookup)
  	{
  		if (_value is VariableText variableText)
-@@ -115,7 +_,12 @@
+-			return variableText.ConditionsMet(lookup);
++			return CheckConditionsMet(variableText, lookup);
+ 
  		return true;
  	}
  
 +	/*
  	public NetworkText ToNetworkText() => NetworkText.FromKey(Key);
+-	public NetworkText ToNetworkText(params object[] substitutions) => NetworkText.FromKey(Key, substitutions);
 +	*/
 +	/// <summary> Convert this <see cref="LocalizedText"/> to a <see cref="NetworkText"/> for use in various network code applications. Non-chat messages sent to other players should be sent as <see cref="NetworkText"/> to facilitate localization. </summary>
-+	public NetworkText ToNetworkText() => NetworkText.FromKey(Key, BoundArgs ?? []);
++	public NetworkText ToNetworkText() => ToNetworkText([]);
++
 +	/// <inheritdoc cref="ToNetworkText()"/>
- 	public NetworkText ToNetworkText(params object[] substitutions) => NetworkText.FromKey(Key, substitutions);
++	/// <param name="substitutions">Substitutions for the placeholders this text still has. Any <see cref="BoundArgs"/> are supplied first, automatically.</param>
++	public NetworkText ToNetworkText(params object[] substitutions)
++	{
++		if (string.IsNullOrEmpty(Key) && !string.IsNullOrEmpty(UnformattedValue)) ThrowInvalidLiteralOperation();
++		return NetworkText.FromKey(Key, [.. BoundArgs ?? [], .. substitutions]);
++	}
  
  	public static explicit operator string(LocalizedText text)
-@@ -123,10 +_,33 @@
+ 	{
  		return text.Value;
  	}
  
@@ -175,19 +204,23 @@
 +
 +	/// <summary>
 +	/// Creates a string from this LocalizedText populated with data from the provided <paramref name="args"/> arguments. Formats the string in the same manner as <see href="https://learn.microsoft.com/en-us/dotnet/api/system.string.format?view=net-6.0">string.Format</see>. Placeholders such as "{0}", "{1}", etc will be replaced with the string representation of the corresponding objects provided.<br/>
-+	/// Additionally, pluralization is supported as well. The <see href="https://github.com/tModLoader/tModLoader/wiki/Localization#string-formatting">Localization Guide</see> teaches more about placeholders and plural support.
-+	///
++	/// Additionally, pluralization is supported as well. The <see href="https://github.com/tModLoader/tModLoader/wiki/Localization#string-formatting">Localization Guide</see> teaches more about placeholders and plural support.<br/>
++	/// Any {Variable} placeholders in the text are resolved via <see cref="Lang.GetGlobalSubstitution"/>, just like <see cref="Value"/>.
 +	/// </summary>
 +	/// <param name="args"></param>
 +	/// <returns></returns>
 +	public string Format(params object[] args)
 +	{
 +		try {
++			if (_value is VariableText variableText && variableText.TryFormat(Lang.GetGlobalSubstitution, args, out var formatted))
++				return formatted;
++
 +			if (_value is CompositeText ct)
 +				return ct.Format(args);
 +		}
 +		catch (Exception e) {
-+			throw new Exception($"The localization key:\n  \"{Key}\"\nwith a value of:\n  \"{UnformattedValue}\"\nfailed to be formatted with the inputs:\n  [{string.Join(", ", args)}]", e);
++			ReportFormatException(args, e);
++			return UnformattedValue;
 +		}
 +
 +		return Value;

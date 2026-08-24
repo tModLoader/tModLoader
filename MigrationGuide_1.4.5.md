@@ -353,7 +353,26 @@ Example Mod's whips have been updated with new examples and additional comments.
 
 See ExampleWhip, ExampleWhipAdvanced, ExampleWhipProjectile, and ExampleWhipProjectileAdvanced for more examples.
 
-## New language support
+
+### Localization
+
+#### Global Substitutions
+
+Global substitutions are text substitutions that automatically and dynamically update the text value of the `LocalizedText` they are used in. For example, `"{PartyGirl} is always so loud"` could be used as a TownNPC chat message and it will always display the first name of the Party Girl in the world in place of `{PartyGirl}`. In 1.4.5, support for modded global substitutions is added.
+
+* Use `Lang.RegisterGlobalSubstitution` or `Lang.RegisterModdedGlobalSubstitution` to register a global substitution.
+* Include global substitutions in localization entries. The format is `{GlobalSubstitutionKeyHere}`.
+* `ModNPC` and `ModKeybind` will automatically have suitable global substitutions registered by tModLoader.
+
+Global substitutions are also usable as conditions. Using substitutions as conditions allows filtering out text options that are not relevant to the current state of the world. For example, in the `"{PartyGirl} is always so loud"` example, the corresponding `LocalizedText` will automatically detect that there is no Party Girl in the world and `LocalizedText.ConditionsMet` will be `false`. Helper methods like `Lang.CreateDialogFilter` will automatically filter out all text that doesn't satisfy their conditions, making chat dialogue code much simpler. Substitutions with a `?` at the start (`{?GlobalSubstitutionKeyHere}`) can be used to filter out text options that satisfy the conditions without affecting the text itself. This is usually used for substitutions that return a `bool`, like `{?Day}`. `{?!Day}` checks that it is night time.
+
+We highly recommend that mods utilize global substitutions to greatly streamline TownNPC chat message logic. There is more information about this feature on the [correesponding pull request](https://github.com/tModLoader/tModLoader/pull/5275) and the [localization wiki page](https://github.com/tModLoader/tModLoader/wiki/Localization).
+
+#### Text Variation
+
+The text variation system allows for a single text key to have several variant options. The game uses this in many non-English languages to support prefixes adjusting their spelling to the gender of the item. This feature is not limited to gendered item prefixes, variant text can be used to support alternate localizations or even metadata. The `LanguageVariantSystem.cs` file demonstrates some potential ideas for novel uses of this feature.
+
+### New language support
 Japanese ("ja-JP"), Korean ("ko-KR"), and Traditional Chinese ("zh-Hant") have been added as newly supported languages. 
 * Supporting these new languages in mods is the same process as the existing languages.
 * If you have custom fonts, you may need to build your font files again and include the new characters in your font creation.

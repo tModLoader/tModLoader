@@ -320,7 +320,6 @@ public static class ModContent
 
 		Interface.loadMods.SetLoadStage("tModLoader.MSResizing");
 		ResizeArrays();
-		RecipeGroupHelper.CreateRecipeGroupLookups();
 
 		Main.ResourceSetsManager.AddModdedDisplaySets();
 		Main.ResourceSetsManager.SetActiveFromOriginalConfigKey();

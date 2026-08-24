@@ -1,0 +1,14 @@
+--- src/Terraria/Terraria/Testing/DetailedFPS.cs
++++ src/TerrariaNetCore/Terraria/Testing/DetailedFPS.cs
+@@ -100,7 +_,11 @@
+ 	private const int BoxHeight = 100;
+ 	private static string[] _gcGenText;
+ 
++	// TML#5330:
++	/*
+ 	public static TimeSpan CurrentFrameTime {
++	*/
++	public static SWTimeSpan CurrentFrameTime {
+ 		get {
+ 			Frame frame = Frames[newest];
+ 			return Utils.SWTicksToTimeSpan(frame.events.Last().timestamp - frame.events[0].timestamp);

@@ -15,8 +15,8 @@
 		"MenuModPackDescription": "현재 모드 설정 및 목록을 가져오고 내보낼 수 있는 모드팩을 관리합니다. 실험 기능입니다.",
 		"MenuEnableDeveloperMode": "개발자 모드 켜기",
 		//No Longer In Use. "WelcomeMessageBeta": "Welcome to tModLoader 1.4 Alpha.\n\nYou have successfully installed an unstable version of tModLoader that may contain game-breaking bugs. \n\nUse the Workshop menu to access tModLoader Mod related functions.\n\nJoin the tModLoader Discord to learn more about which testing mods and/or tools are available for 1.4 tModLoader as part of its 1.4 overhaul.",
-		// "WelcomeMessageUpgradeBeta": "Welcome to tModLoader Beta.\n\nYou have successfully installed an unstable version of tModLoader that may contain game-breaking bugs. \n\nUse the Workshop menu to access tModLoader Mod related functions.\n\nJoin the tModLoader Discord to learn more about which testing mods and/or tools are available for tModLoader as part of its Terraria version upgrade.",
-		// "MonthlyFreezeNotification": "The monthly freeze has started. As a reminder, on the 21st of each month, there is a period of time where modders are expected to publish an update for their mods on the 1.4-preview branch in anticipation for all of the code and API changes to tModLoader that were made over the last month. The current 1.4-preview will become the new 1.4-stable (default) on the 1st of next month.\n\nFailure to do so will mean that mods you've made will likely fail to load starting on the 1st of next month.\n\nJoin the tModLoader Discord to learn more about the changes from this month and view migration notes. Click \"More Info\" to learn more about the continous release cycle.",
+		//No Longer In Use. "WelcomeMessageUpgradeBeta": "Welcome to tModLoader Beta.\n\nYou have successfully installed an unstable version of tModLoader that may contain game-breaking bugs. \n\nUse the Workshop menu to access tModLoader Mod related functions.\n\nJoin the tModLoader Discord to learn more about which testing mods and/or tools are available for tModLoader as part of its Terraria version upgrade.",
+		//No Longer In Use. "MonthlyFreezeNotification": "The monthly freeze has started. As a reminder, on the 21st of each month, there is a period of time where modders are expected to publish an update for their mods on the 1.4-preview branch in anticipation for all of the code and API changes to tModLoader that were made over the last month. The current 1.4-preview will become the new 1.4-stable (default) on the 1st of next month.\n\nFailure to do so will mean that mods you've made will likely fail to load starting on the 1st of next month.\n\nJoin the tModLoader Discord to learn more about the changes from this month and view migration notes. Click \"More Info\" to learn more about the continous release cycle.",
 		"WelcomeMessagePreview": "경고: 플레이어는 조심하세요!!\n이건 치명적인 변경점이 있는 월간 프리뷰 빌드로, 모드가 망가집니다.\n[c/ff1919:모더에게 이 프리뷰 빌드에 맞게 모드를 고쳐달라고 하지 마세요.]\n이 미리 보기 브랜치는 모더가 \"스스로\" 일정이 될 때 고칠 수 있는 기회를 제공합니다.\n\n\"더 알아보기\"를 눌러 진행 중인 출시 주기를 알아보세요.\n\ntModLoader 디스코드에 참가해 이 달의 변경점과 합병 관련 참고 사항을 확인하세요.",
 		"FirstLaunchWelcomeMessage": "tModLoader에 온 걸 환영합니다.\n\n성공적으로 tModLoader를 설치했습니다. 창작마당 메뉴에서 tModLoader 모드에 관한 기능을 사용하세요.\n\n만약 오늘 전까지 1.3 버전을 플레이하고 있었다면 Steam에서 1.3-legacy 베타 브랜치로 돌아가 플레이할 수 있습니다. 만약 플레이하려던 모드가 없다면, 아직 1.3에만 존재하고 있을지도 모릅니다.",
 		"WhatsNewMessage": "다음은 마지막으로 프리뷰를 실행하고 나서의 주요 변경 사항입니다. 이와 관련된 모드는 제작자가 다시 빌드해야 할 수도 있습니다. 자세한 내용은 GitHub에서 확인하세요:\n",
@@ -51,6 +51,7 @@
 		"SwitchVersionConfirm": "정말로 브랜치를 변경하시겠습니까?",
 		"SwitchVersionDefaultBranchName": "기본 공개 버전",
 		"SwitchVersionDefaultBranchDescription": "이게 대부분의 플레이어가 사용 중인 기본 안정 버전입니다",
+		// "SwitchVersionObsoleteBranch": "This branch is obsolete.",
 		"LatestNews": "최근 소식: {0}",
 		"LatestNewsOffline": "오프라인",
 		"LatestNewsChecking": "찾는 중...",
@@ -612,6 +613,8 @@
 		"CommandCustomSetsUsage": "/customsets [ModName|SetKey|SearchTerm] [-v (값 출력)] [-o (로그 폴더 열기)]",
 		"CommandPurgeUnloadedDescription": "세계로부터 언로드된 타일과 벽을 제거했습니다",
 		"CommandPurgeUnloadedUsage": "/purgeunloaded [ModName] [-t (타일 병합)] [-w (벽 병합)] [-p (병합 확인)]",
+		// "CommandGlobalSubstitutionsDescription": "Displays all registered global substitutions.",
+		// "CommandGlobalSubstitutionsUsage": "/globalsubstitutions [ModName|SearchTerm] [-o (open logs folder)]",
 
 		// Mod Building
 		"Building": "빌드 중: {0}",
