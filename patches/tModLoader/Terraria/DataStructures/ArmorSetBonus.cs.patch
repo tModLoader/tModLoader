@@ -74,6 +74,16 @@
  					Head = set.Head,
  					Body = set.Body,
  					Legs = set.Legs,
+@@ -134,6 +_,9 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Applies stat changes to the player. Allowed to be null. Modded armor sets might prefer to use <see cref="ModLoader.ModItem.UpdateArmorSet"/> for organizational purposes, which will also be called alongside <see cref="ModLoader.GlobalItem.UpdateArmorSet"/>.
++	/// </summary>
+ 	public ArmorSetEffect Effect;
+ 	public LocalizedText Description;
+ 	public int Head;
 @@ -205,5 +_,5 @@
  		});
  	}

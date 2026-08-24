@@ -67,7 +67,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	/// </summary>
 	public void AddArmorSet(int Head, int Body, int Legs, LocalizedText LocalizedText = null, ArmorSetBonus.PartType PrimaryPart = ArmorSetBonus.PartType.None, string Identifier = null, ArmorSetBonus.ArmorSetEffect Effect = null)
 	{
-		ArmorSetBonuses.Add(Head, Body, Legs, LocalizedText ?? this.GetLocalization("SetBonus"), PrimaryPart, Identifier ?? this.FullName, Effect ?? UpdateArmorSet);
+		ArmorSetBonuses.Add(Head, Body, Legs, LocalizedText ?? this.GetLocalization("SetBonus"), PrimaryPart, Identifier ?? this.FullName, Effect);
 	}
 
 	/// <inheritdoc cref="AddArmorSet(int, int, int, LocalizedText, ArmorSetBonus.PartType, string, ArmorSetBonus.ArmorSetEffect)"/>
@@ -81,7 +81,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 
 	/// <summary>
 	/// Creates and registers a typical armor set consisting of the provided <paramref name="Head"/>, <paramref name="Body"/>, and <paramref name="Legs"/> armor items. <see cref="ItemID.None"/> can be used for any armor slot that is irrelevant to the armor set.
-	/// <para/> When a player is wearing these items, <paramref name="Effect"/> will run. Use <paramref name="Effect"/> to apply stat changes to the player. If unassigned, this will automatically be set to this item's <see cref="ModItem.UpdateArmorSet(Player)"/> method.
+	/// <para/> When a player is wearing these items, <paramref name="Effect"/> will run. <paramref name="Effect"/> can be used to apply stat changes to the player. This item's <see cref="UpdateArmorSet(Player)"/> method will also run and would be necessary if the effects depend on instanced item data.
 	/// <para/> <paramref name="TextKey"/> is the tooltip text for the armor set. If unassigned, the automatically derived "Mods.{ModName}.Items.{ItemName}.SetBonus" key will be created and used.
 	/// <para/> <paramref name="PrimaryPart"/> indicates which equipment slot is responsible differentiating this set bonus from other similar set bonuses that share the remaining equipment items. This affects the tooltip of equipment items that are in the inventory instead of equipped. Rather than displaying the set bonus tooltip, they will display "Changes with (head/torso/leg) piece" since it is unknown which <paramref name="PrimaryPart"/> the item will be paired with. If unassigned, the items will all display the set bonus tooltip as usual.
 	/// <para/> <paramref name="Identifier"/> can be used to differentiate between multiple <see cref="ArmorSetBonus"/>. If unassigned, the default values will be <see cref="ModType.FullName"/> ("ModName/ModItemName").
@@ -89,7 +89,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	/// </summary>
 	public void AddArmorSet(int Head, int Body, int Legs, string TextKey, ArmorSetBonus.PartType PrimaryPart = ArmorSetBonus.PartType.None, string Identifier = null, ArmorSetBonus.ArmorSetEffect Effect = null)
 	{
-		ArmorSetBonuses.Add(Head, Body, Legs, TextKey, PrimaryPart, Identifier ?? this.FullName, Effect ?? UpdateArmorSet);
+		ArmorSetBonuses.Add(Head, Body, Legs, TextKey, PrimaryPart, Identifier ?? this.FullName, Effect);
 	}
 
 	/// <inheritdoc cref="AddArmorSet(int, int, int, string, ArmorSetBonus.PartType, string, ArmorSetBonus.ArmorSetEffect)"/>
@@ -108,7 +108,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	/// </summary>
 	public ArmorSetBonus.Builder CreateArmorSet(LocalizedText LocalizedText = null, ArmorSetBonus.PartType PrimaryPart = ArmorSetBonus.PartType.None, string Identifier = null, ArmorSetBonus.ArmorSetEffect Effect = null)
 	{
-		return ArmorSetBonus.Create(Effect ?? UpdateArmorSet, LocalizedText ?? this.GetLocalization("SetBonus"), PrimaryPart);
+		return ArmorSetBonus.Create(Effect, LocalizedText ?? this.GetLocalization("SetBonus"), PrimaryPart);
 	}
 
 	/// <summary>
@@ -118,7 +118,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	/// </summary>
 	public ArmorSetBonus.Builder CreateArmorSet(string TextKey, ArmorSetBonus.PartType PrimaryPart = ArmorSetBonus.PartType.None, string Identifier = null, ArmorSetBonus.ArmorSetEffect Effect = null)
 	{
-		return ArmorSetBonus.Create(Effect ?? UpdateArmorSet, TextKey, PrimaryPart);
+		return ArmorSetBonus.Create(Effect, TextKey, PrimaryPart);
 	}
 
 	protected override Item CreateTemplateEntity() => new() { ModItem = this };
@@ -939,11 +939,12 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Allows you to give set bonuses to the armor set that this armor is in. Set <see cref="Player.setBonus"/> to a string for the bonus description.
+	/// Allows you to give set bonuses to the armor set that this armor is in.
 	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="player">The player.</param>
-	public virtual void UpdateArmorSet(Player player/*, ArmorSetBonus armorSetBonus*/)
+	/// <param name="armorSetBonus">The armor set bonus.</param>
+	public virtual void UpdateArmorSet(Player player, ArmorSetBonus armorSetBonus)
 	{
 	}
 

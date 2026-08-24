@@ -1,5 +1,6 @@
 ﻿using ExampleMod.Common.Players;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -34,7 +35,7 @@ namespace ExampleMod.Content.Items.Armor
 		}
 
 		// UpdateArmorSet allows you to give set bonuses to the armor.
-		public override void UpdateArmorSet(Player player) {
+		public override void UpdateArmorSet(Player player, ArmorSetBonus armorSetBonus) {
 			player.manaCost -= ManaCostReductionPercent / 100f; // Reduces mana cost by 10%
 			player.GetModPlayer<ExampleArmorSetBonusPlayer>().ExampleSetHood = true;
 		}

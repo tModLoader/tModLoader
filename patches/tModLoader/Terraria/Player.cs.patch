@@ -3376,7 +3376,7 @@
  		ArmorSetBonuses.GetCompleteSet(new ArmorSetBonus.QueryContext(this))?.Effect(this);
 +		*/
 +		ArmorSetBonus armorSetBonus = ArmorSetBonuses.GetCompleteSet(new ArmorSetBonus.QueryContext(this));
-+		armorSetBonus?.Effect(this);
++		armorSetBonus?.Effect?.Invoke(this);
  		UpdateArmorSets_Always_Beetle();
  		UpdateArmorSets_Always_Solar();
  		UpdateArmorSets_Always_Stardust();

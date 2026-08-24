@@ -362,7 +362,7 @@ AddArmorSet(Type, body, legs, SetBonusText);
 // The SetBonus_Melee and SetBonus_Ranged examples above show using a custom key and a custom identifier.
 
 // And of course, we can use a specific localization key, either by typing it out or using Mod.GetLocalizationKey, which can be useful for organization.
-AddArmorSetByKey(Type, body, legs, Mod.GetLocalizationKey("CommonSetBonuses.Example"));
+AddArmorSet(Type, body, legs, Mod.GetLocalizationKey("CommonSetBonuses.Example"));
 
 // Finally, we can customize the code that runs for each armor set. By default, the UpdateArmorSet method is called. We could check the data on the ArmorSetBonus passed into the method to implement custom code for alternate armor sets, but another option is to pass in a ArmorSetBonus.ArmorSetEffect delegate directly. Here is a full example of that:
 
@@ -389,8 +389,8 @@ private void UpdateArmorSetRanged(Player player) {
 ```
 
 #### Porting Notes
-* `ModItem.UpdateArmorSet` now has a `ArmorSetBonus armorSetBonus` parameter.
-* `ModItem.IsArmorSet` removed.
+* 🤖: `ModItem.UpdateArmorSet` and `GlobalItem.UpdateArmorSet` now have an `ArmorSetBonus armorSetBonus` parameter.
+* ⚙️: `ModItem.IsArmorSet` and `GlobalItem.IsArmorSet` removed. Use `AddArmorSet` as described above to replace this.
 * Using vanilla armor from existing armor sets in modded sets is now potentially confusing to the user due to how the set bonus tooltip is calculated and displayed. The game will show the armor set tooltip for an item in the inventory (not just the equipment slots), so if a modded armor set also uses that item, it might potentially show the modded armor set bonus tooltip rather than the original vanilla armor set bonus tooltip the player might be looking for. 
 
 ### Whips and Tag Effects

@@ -1327,19 +1327,19 @@ public static class ItemLoader
 	private static HookList HookUpdateArmorSet = AddHook<Action<Player, ArmorSetBonus>>(g => g.UpdateArmorSet);
 
 	/// <summary>
-	/// Calls <see cref="ModItem.UpdateArmorSet(Player)"/> on the head, body, and legs modded items that belong to the active ArmorSetBonus. Then <see cref="GlobalItem.UpdateArmorSet(Player, ArmorSetBonus)"/> is called on each GlobalItem.
+	/// Calls <see cref="ModItem.UpdateArmorSet(Player, ArmorSetBonus)"/> on the head, body, and legs modded items that belong to the active ArmorSetBonus. Then <see cref="GlobalItem.UpdateArmorSet(Player, ArmorSetBonus)"/> is called on each GlobalItem.
 	/// </summary>
 	public static void UpdateArmorSet(Player player, ArmorSetBonus armorSetBonus, Item head, Item body, Item legs)
 	{
 		if (armorSetBonus != null) {
 			if (head.ModItem != null && armorSetBonus.Head == head.type)
-				head.ModItem.UpdateArmorSet(player/*, armorSetBonus*/);
+				head.ModItem.UpdateArmorSet(player, armorSetBonus);
 
 			if (body.ModItem != null && armorSetBonus.Body == body.type)
-				body.ModItem.UpdateArmorSet(player/*, armorSetBonus*/);
+				body.ModItem.UpdateArmorSet(player, armorSetBonus);
 
 			if (legs.ModItem != null && armorSetBonus.Legs == legs.type)
-				legs.ModItem.UpdateArmorSet(player/*, armorSetBonus*/);
+				legs.ModItem.UpdateArmorSet(player, armorSetBonus);
 		}
 
 		foreach (var g in HookUpdateArmorSet.Enumerate()) {
