@@ -41,6 +41,15 @@
  				if (Main.npcChatText == "")
  					Main.npcChatText = Main.defaultChestName;
  
+@@ -129,7 +_,7 @@
+ 				}, delegate {
+ 					ChestUI.RenameChestCancel();
+ 					Close(quiet: true);
+-				}, keyboardContext));
++				}, keyboardContext, maxLength: Chest.MaxNameLength));
+ 				break;
+ 		}
+ 
 @@ -154,8 +_,11 @@
  			Main.playerInventory = true;
  

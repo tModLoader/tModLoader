@@ -16,8 +16,7 @@ namespace ExampleMod.Content.Items.Armor
 		public static LocalizedText SetBonusText { get; private set; }
 
 		public override void SetStaticDefaults() {
-			// We are passing in "{0}" into WithFormatArgs to replace "{0}" with itself because we do the final formatting for this LocalizedText in UpdateArmorSet itself according to the players current ReversedUpDownArmorSetBonuses setting.
-			SetBonusText = this.GetLocalization("SetBonus").WithFormatArgs("{0}", ManaCostReductionPercent);
+			SetBonusText = this.GetLocalization("SetBonus").WithFormatArgs(ManaCostReductionPercent);
 		}
 
 		public override void SetDefaults() {
@@ -38,7 +37,7 @@ namespace ExampleMod.Content.Items.Armor
 			// This is the setbonus tooltip:
 			//   Double tap or hold DOWN/UP to toggle various armor shadow effects
 			//   10% reduced mana cost
-			player.setBonus = SetBonusText.Format(Language.GetTextValue(Main.ReversedUpDownArmorSetBonuses ? "Key.UP" : "Key.DOWN"));
+			player.setBonus = SetBonusText.Value;
 			player.manaCost -= ManaCostReductionPercent / 100f; // Reduces mana cost by 10%
 			player.GetModPlayer<ExampleArmorSetBonusPlayer>().ExampleSetHood = true;
 		}

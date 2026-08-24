@@ -9,3 +9,30 @@
  {
  	public static class Regexes
  	{
+@@ -30,6 +_,9 @@
+ 		Vector2.UnitY
+ 	};
+ 
++	// TML: True while a shadow pass is drawing, so UniqueDraw implementations can detect shadow drawing
++	public static bool IsDrawingShadow;
++
+ 	public static Color WaveColor(Color color)
+ 	{
+ 		float num = (float)(int)Main.mouseTextColor / 255f;
+@@ -180,8 +_,14 @@
+ 
+ 	public static void DrawColorCodedStringShadow(SpriteBatch spriteBatch, DynamicSpriteFont font, List<PositionedSnippet> snippets, Vector2 position, Color shadowColor, float rotation, Vector2 origin, Vector2 scale, float spread = 2f)
+ 	{
++		IsDrawingShadow = true;
++		try {
+-		for (int i = 0; i < ShadowDirections.Length; i++) {
++			for (int i = 0; i < ShadowDirections.Length; i++) {
+-			DrawColorCodedString(spriteBatch, font, snippets, position + ShadowDirections[i] * spread, rotation, origin, scale, out var _, shadowColor);
++				DrawColorCodedString(spriteBatch, font, snippets, position + ShadowDirections[i] * spread, rotation, origin, scale, out var _, shadowColor);
++			}
++		}
++		finally {
++			IsDrawingShadow = false;
+ 		}
+ 	}
+ 

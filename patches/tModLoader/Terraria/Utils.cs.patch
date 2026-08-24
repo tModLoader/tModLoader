@@ -201,7 +201,7 @@
  			}
  			else {
  #if NETCORE
-@@ -960,6 +_,11 @@
+@@ -968,6 +_,11 @@
  		return array;
  	}
  
@@ -213,7 +213,7 @@
  	public static float NextFloat(this UnifiedRandom r) => (float)r.NextDouble();
  	public static float NextFloatDirection(this UnifiedRandom r) => (float)r.NextDouble() * 2f - 1f;
  	public static float NextFloat(this UnifiedRandom random, FloatRange range) => random.NextFloat() * (range.Maximum - range.Minimum) + range.Minimum;
-@@ -1011,6 +_,7 @@
+@@ -1019,6 +_,7 @@
  		return asset.Value.Height;
  	}
  
@@ -221,7 +221,7 @@
  	public static Rectangle Frame(this Asset<Texture2D> tex, int horizontalFrames = 1, int verticalFrames = 1, int frameX = 0, int frameY = 0, int sizeOffsetX = 0, int sizeOffsetY = 0)
  	{
  		if (!tex.IsLoaded)
-@@ -1034,6 +_,10 @@
+@@ -1042,6 +_,10 @@
  		return tex.Value.Size();
  	}
  
@@ -232,7 +232,7 @@
  	public static Rectangle Frame(this Texture2D tex, int horizontalFrames = 1, int verticalFrames = 1, int frameX = 0, int frameY = 0, int sizeOffsetX = 0, int sizeOffsetY = 0)
  	{
  		int num = tex.Width / horizontalFrames;
-@@ -1310,7 +_,9 @@
+@@ -1318,7 +_,9 @@
  	public static Vector3 ToVector3(this Vector2 v) => new Vector3(v.X, v.Y, 0f);
  	public static Vector2D ToVector2D(this Point p) => new Vector2D(p.X, p.Y);
  	public static Vector2D ToVector2D(this Point16 p) => new Vector2D(p.X, p.Y);
@@ -242,7 +242,7 @@
  	public static Vector2 ToWorldCoordinates(this Point16 p, float autoAddX = 8f, float autoAddY = 8f) => p.ToVector2() * 16f + new Vector2(autoAddX, autoAddY);
  
  	public static Vector2 MoveTowards(this Vector2 currentPosition, Vector2 targetPosition, float maxAmountAllowedToMove)
-@@ -1335,8 +_,10 @@
+@@ -1343,8 +_,10 @@
  		return num2;
  	}
  
@@ -253,7 +253,7 @@
  	public static Point ToTileCoordinates(this Vector2 vec) => new Point((int)vec.X >> 4, (int)vec.Y >> 4);
  	public static Point ToTileCoordinates(this Vector2D vec) => new Point((int)vec.X >> 4, (int)vec.Y >> 4);
  	public static Point ToPoint(this Vector2 v) => new Point((int)v.X, (int)v.Y);
-@@ -1344,6 +_,11 @@
+@@ -1352,6 +_,11 @@
  	public static Vector2 ToVector2(this Vector2D v) => new Vector2((float)v.X, (float)v.Y);
  	public static Vector2D ToVector2D(this Vector2 v) => new Vector2D(v.X, v.Y);
  
@@ -265,7 +265,7 @@
  	public static Vector2 SafeNormalize(this Vector2 v, Vector2 defaultValue)
  	{
  		if (v == Vector2.Zero || v.HasNaNs())
-@@ -1362,6 +_,7 @@
+@@ -1370,6 +_,7 @@
  
  	public static Point ClampedInWorld(this Point p, int fluff = 0) => new Point(Clamp(p.X, fluff, Main.maxTilesX - fluff - 1), Clamp(p.Y, fluff, Main.maxTilesX - fluff - 1));
  
@@ -273,7 +273,7 @@
  	public static Vector2 ClosestPointOnLine(this Vector2 P, Vector2 A, Vector2 B)
  	{
  		Vector2 value = P - A;
-@@ -1430,16 +_,24 @@
+@@ -1438,16 +_,24 @@
  	public static float DistanceSQ(this Vector2 Origin, Vector2 Target) => Vector2.DistanceSquared(Origin, Target);
  	public static Vector2 DirectionTo(this Vector2 Origin, Vector2 Target) => Vector2.Normalize(Target - Origin);
  	public static Vector2 DirectionFrom(this Vector2 Origin, Vector2 Target) => Vector2.Normalize(Origin - Target);
@@ -298,7 +298,7 @@
  	public static int ToDirectionInt(this bool value)
  	{
  		if (!value)
-@@ -1448,6 +_,7 @@
+@@ -1456,6 +_,7 @@
  		return 1;
  	}
  
@@ -306,7 +306,7 @@
  	public static int ToInt(this bool value)
  	{
  		if (!value)
-@@ -1560,6 +_,7 @@
+@@ -1568,6 +_,7 @@
  		return false;
  	}
  
@@ -314,7 +314,7 @@
  	public static List<int> GetTrueIndexes(this bool[] array)
  	{
  		List<int> list = new List<int>();
-@@ -1853,14 +_,26 @@
+@@ -1861,14 +_,26 @@
  			text.Substring(0, maxCharactersDisplayed);
  
  		DynamicSpriteFont value = FontAssets.DeathText.Value;

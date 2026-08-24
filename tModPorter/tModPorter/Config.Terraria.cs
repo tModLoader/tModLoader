@@ -348,6 +348,7 @@ public static partial class Config
 		RenameMethod("Terraria.Main", "ShouldShowInvisibleWalls", "ShouldShowInvisibleBlocksAndWalls");
 		RenameMethod("Terraria.Player", "IsProjectileInteractibleAndInInteractionRange", "IsProjectileInteractableAndInInteractionRange");
 		RenameMethod("Terraria.Localization.LocalizedText", from: "CanFormatWith", to: "ConditionsMetWith");
+		RenameMethod("Terraria.RecipeGroup", from: "ContainsItem", to: "Contains");
 		RenameMethod("Terraria.Utils", from: "PlotTileArea", to: "FloodFillTile").FollowBy(AddCommentToMethodInvocation("Parameters have changed")); // No longer returns bool, parameters changed
 		RenameMethod("Terraria.WorldGen", from: "CheckTight", to: "CheckStalactite");
 

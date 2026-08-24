@@ -271,35 +271,42 @@ namespace ExampleMod.Content.NPCs
 		}
 
 		public override string GetChat() {
-			WeightedRandom<string> chat = new WeightedRandom<string>();
+			// This method shows implementing chat selection with different weights (chance) and additional custom dynamic logic. If these are not required, the following is all that is needed for typical chat selection. This approach supports global substitutions (like "{?Day}" and "{PartyGirl}") so common conditional and substitution logic will be supported automatically.
+			// return Language.SelectRandom(Lang.CreateDialogFilter("Mods.ExampleMod.Dialogue.ExamplePerson")).Value;
 
-			int partyGirl = NPC.FindFirstNPC(NPCID.PartyGirl);
-			if (partyGirl >= 0 && Main.rand.NextBool(4)) {
-				chat.Add(Language.GetTextValue("Mods.ExampleMod.Dialogue.ExamplePerson.PartyGirlDialogue", Main.npc[partyGirl].GivenName));
-			}
-			// These are things that the NPC has a chance of telling you when you talk to it.
-			chat.Add(Language.GetTextValue("Mods.ExampleMod.Dialogue.ExamplePerson.StandardDialogue1"));
-			chat.Add(Language.GetTextValue("Mods.ExampleMod.Dialogue.ExamplePerson.StandardDialogue2"));
-			chat.Add(Language.GetTextValue("Mods.ExampleMod.Dialogue.ExamplePerson.StandardDialogue3"));
-			chat.Add(Language.GetTextValue("Mods.ExampleMod.Dialogue.ExamplePerson.StandardDialogue4"));
-			chat.Add(Language.GetTextValue("Mods.ExampleMod.Dialogue.ExamplePerson.CommonDialogue"), 5.0);
-			chat.Add(Language.GetTextValue("Mods.ExampleMod.Dialogue.ExamplePerson.RareDialogue"), 0.1);
+			WeightedRandom<LocalizedText> chat = new WeightedRandom<LocalizedText>();
+
+			// Find all the localization entries that start with the provided text and that also satisfy the "global substitutions" contained within.
+			LocalizedText[] dialogueOptions = Language.FindAll(Lang.CreateDialogFilter("Mods.ExampleMod.Dialogue.ExamplePerson", checkConditions: true));
 
 			NumberOfTimesTalkedTo++;
-			if (NumberOfTimesTalkedTo >= 10) {
-				// This counter is linked to a single instance of the NPC, so if ExamplePerson is killed, the counter will reset.
-				chat.Add(Language.GetTextValue("Mods.ExampleMod.Dialogue.ExamplePerson.TalkALot"));
-			}
 
-			string chosenChat = chat; // chat is implicitly cast to a string. This is where the random choice is made.
+			foreach (var dialogueOption in dialogueOptions) {
+				if (dialogueOption.Key == "Mods.ExampleMod.Dialogue.ExamplePerson.TalkALot" && NumberOfTimesTalkedTo < 10) {
+					// This counter is linked to a single instance of the NPC, so if ExamplePerson is killed, the counter will reset.
+					continue;
+				}
+
+				// Give each option a weight.
+				float weight = dialogueOption.Key.Split(".")[^1] switch {
+					"CommonDialogue" => 5f,
+					"RareDialogue" => 0.1f,
+					"PartyGirlDialogue" => 0.25f,
+					_ => 1f,
+				};
+
+				chat.Add(dialogueOption, weight);
+			}
+		
+			LocalizedText chosenChat = chat.Get(); // Now that all the chat options are added, select one at random.
 
 			// Here is some additional logic based on the chosen chat line. In this case, we want to display an item in the corner for StandardDialogue4.
-			if (chosenChat == Language.GetTextValue("Mods.ExampleMod.Dialogue.ExamplePerson.StandardDialogue4")) {
+			if (chosenChat.Key == "Mods.ExampleMod.Dialogue.ExamplePerson.StandardDialogue4") {
 				// Main.npcChatCornerItem shows a single item in the corner, like the Angler Quest chat.
 				Main.npcChatCornerItem = ItemID.HiveBackpack;
 			}
 
-			return chosenChat;
+			return chosenChat.Value;
 		}
 
 		public override void RegisterChatButtons(NPCInteractionList interactions) {

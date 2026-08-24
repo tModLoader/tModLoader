@@ -32,6 +32,8 @@ public class RecipeGroupTest : ModSystem
 #if COMPILE_ERROR
 		RecipeGroup.recipeGroups[RecipeGroups.Sand].ValidItems.Add(ItemID.SandstoneBrick);
 #endif
+
+		bool hasItem = SilverBarRecipeGroup.Contains(ItemID.TungstenBar);
 	}
 
 	public override void AddRecipes()

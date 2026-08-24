@@ -61,6 +61,15 @@ anyFileNeedsUploading = False
 # for each entry in the mapping, update the json if exists
 # write out steam tag json
 
+def DuplicateOutputForForSimilarLanguages(newLanguage, newLanguageDisplay, steamLanguage, steamTagData):
+    print(f"Duplicating {steamLanguage} to {newLanguageDisplay}")
+    steamTagData['language'] = newLanguage
+    outputFilename = "workshop_tags_1281930_{0}_Output.json".format(newLanguage)
+    outputString = json.dumps(steamTagData, indent=4, ensure_ascii=False)
+    print("Updated File:", outputFilename)
+    with open(outputFilename, "w", encoding='utf-8') as tagFileNew:
+        tagFileNew.write(outputString)
+
 for index, (language, steamLanguage) in enumerate(zip(languages, steamLanguages)):
     print("Updating:", language)
     missing = 0
@@ -98,6 +107,12 @@ for index, (language, steamLanguage) in enumerate(zip(languages, steamLanguages)
         
         with open(outputFilename, "w", encoding='utf-8') as tagFileNew:
             tagFileNew.write(outputString)
+        
+        if steamLanguage == "spanish":
+            DuplicateOutputForForSimilarLanguages("latam", "latin america spanish", steamLanguage, steamTagData)
+
+        if steamLanguage == "brazilian":
+            DuplicateOutputForForSimilarLanguages("portuguese", "portuguese", steamLanguage, steamTagData)
 
 with open('./TranslationsNeeded.txt', 'w', encoding='utf-8') as output:
     if len(missings) == 0:

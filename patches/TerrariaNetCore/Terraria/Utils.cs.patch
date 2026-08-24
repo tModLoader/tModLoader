@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/Utils.cs
 +++ src/TerrariaNetCore/Terraria/Utils.cs
-@@ -941,7 +_,11 @@
+@@ -941,13 +_,25 @@
  				});
  			}
  			else {
@@ -12,3 +12,17 @@
  			}
  		}
  	}
+ 
++	// TML#5330:
++	// Due to the potential of StopWatch having higher precision than TimeSpan is able to store,
++	// for convenience and minimal patching, the following method has been changed to use a new SWTimeSpan type instead.
++	/*
+ 	public static TimeSpan SWTicksToTimeSpan(long swTicks) => new TimeSpan((long)((double)swTicks * 10000000.0 / (double)Stopwatch.Frequency));
++	*/
++	public static SWTimeSpan SWTicksToTimeSpan(long swTicks) => new(swTicks);
+ 	public static long TimeSpanToSWTicks(TimeSpan timeSpan) => timeSpan.Ticks * Stopwatch.Frequency / 10000000;
++	// TML#5330: Additional overload.
++	public static long TimeSpanToSWTicks(SWTimeSpan timeSpan) => timeSpan.Ticks;
+ 
+ 	public static byte[] ToByteArray(this string str)
+ 	{

@@ -77,6 +77,8 @@ partial class SystemLoader
 
 	private static HookList HookModifyLightingBrightness = AddHook<DelegateModifyLightingBrightness>(s => s.ModifyLightingBrightness);
 
+	private static HookList HookRequiresScreenTarget = AddHook<Func<bool>>(s => s.RequiresScreenTarget);
+
 	private static HookList HookPreDrawMapIconOverlay = AddHook<DelegatePreDrawMapIconOverlay>(s => s.PreDrawMapIconOverlay);
 
 	private static HookList HookPostDrawFullscreenMap = AddHook<DelegatePostDrawFullscreenMap>(s => s.PostDrawFullscreenMap);
