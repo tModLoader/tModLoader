@@ -40,9 +40,9 @@ steamToLocalizationKey = {
   "tag_362269":"TagsLanguage_Portuguese",
   "tag_362270":"TagsLanguage_Polish",
   # TODO after tags added to workshop.
-  "tag_???":"TagsLanguage_Japanese",
-  "tag_???":"TagsLanguage_Korean",
-  "tag_???":"TagsLanguage_TraditionalChinese",
+  #"tag_???":"TagsLanguage_Japanese",
+  #"tag_???":"TagsLanguage_Korean",
+  #"tag_???":"TagsLanguage_TraditionalChinese",
   "tag_558042":"TagsTranslation",
 }
 
