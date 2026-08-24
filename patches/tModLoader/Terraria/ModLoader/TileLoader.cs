@@ -337,6 +337,10 @@ public static class TileLoader
 		}
 		*/
 		tileData = TileObjectData.GetTileData(Main.tile[i, j]);
+		// The tile can already be inactive here, since CheckModTile runs while the object is being destroyed.
+		if (tileData == null)
+			return;
+
 		int partFrameX = frameX % tileData.CoordinateFullWidth;
 		int partFrameY = frameY % tileData.CoordinateFullHeight;
 		int partX = partFrameX / (tileData.CoordinateWidth + tileData.CoordinatePadding);
