@@ -353,7 +353,6 @@ Example Mod's whips have been updated with new examples and additional comments.
 
 See ExampleWhip, ExampleWhipAdvanced, ExampleWhipProjectile, and ExampleWhipProjectileAdvanced for more examples.
 
-
 ### Localization
 
 #### Global Substitutions
