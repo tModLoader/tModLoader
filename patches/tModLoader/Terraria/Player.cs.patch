@@ -7938,7 +7938,7 @@
  		return 0;
 +		*/
 +
-+		float crit = sItem.crit + GetTotalCritChance(sItem.DamageType);
++		float crit = sItem.GetVisualCritChance(this) + GetTotalCritChance(sItem.DamageType);
 +		CombinedHooks.ModifyWeaponCrit(this, sItem, ref crit);
 +		return (int)(crit + 5E-06f);
  	}

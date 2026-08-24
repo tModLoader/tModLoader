@@ -659,7 +659,7 @@
  		return num;
  	}
  
-@@ -9403,26 +_,81 @@
+@@ -9403,26 +_,80 @@
  		}
  	}
  
@@ -688,14 +688,12 @@
  
  			bonusTagDamage += item.bonusTagDamage;
  			armorPenetration += item.armorPenetration;
--			if (item.type == 2269 && entitySource_ItemUse.Entity is Player) {
-+			if (item.type == 2269/* && entitySource_ItemUse.Entity is Player*/) {
-+				/*
++			/*
+ 			if (item.type == 2269 && entitySource_ItemUse.Entity is Player) {
  				Player player = (Player)entitySource_ItemUse.Entity;
  				bonusCritChance += player.revolverCritChanceBonus;
-+				*/
-+				CritChance += player.revolverCritChanceBonus;
  			}
++			*/
 +
 +			// TML added:
 +			// Apply the weapon and player bonuses to the base stats
