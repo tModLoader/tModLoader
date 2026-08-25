@@ -1,0 +1,17 @@
+--- src/TerrariaNetCore/Terraria/GameContent/UI/Minimap/MinimapFrameManager.cs
++++ src/tModLoader/Terraria/GameContent/UI/Minimap/MinimapFrameManager.cs
+@@ -6,11 +_,13 @@
+ 
+ namespace Terraria.GameContent.UI.Minimap;
+ 
++// Vanilla code: public class MinimapFrameManager : SelectionHolder<MinimapFrame>
+-public class MinimapFrameManager : SelectionHolder<MinimapFrame>
++public partial class MinimapFrameManager : SelectionHolder<MinimapFrame>
+ {
+ 	protected override void Configuration_OnLoad(Preferences obj)
+ 	{
+ 		ActiveSelectionConfigKey = Main.Configuration.Get("MinimapFrame", "Default");
++		_activeSelectionConfigKeyOriginal = ActiveSelectionConfigKey;
+ 	}
+ 
+ 	protected override void Configuration_Save(Preferences obj)
