@@ -1987,17 +1987,14 @@
  					if (type == 109) {
  						num1107 = 147;
  						num1108 = 0;
-@@ -63743,8 +_,9 @@
+@@ -63743,6 +_,7 @@
  						num1107 = 495;
  						num1108 = 4090;
  					}
 +					*/
  
--					if (type == 1081 && !WorldGen.SolidTile3(num1105, num1106 + 1)) {
-+					if (type == ProjectileID.MudBallPlayer && !WorldGen.SolidTile3(num1105, num1106 + 1)) {
+ 					if (type == 1081 && !WorldGen.SolidTile3(num1105, num1106 + 1)) {
  						if (WorldGen.SolidTile3(num1105 - 1, num1106 + 1) && !Main.tile[num1105 - 1, num1106].active())
- 							num1105--;
- 						else if (WorldGen.SolidTile3(num1105 + 1, num1106 + 1) && !Main.tile[num1105 + 1, num1106].active())
 @@ -63886,9 +_,13 @@
  					x2 *= 1f + (float)Main.rand.Next(-20, 21) * 0.01f;
  					y8 *= 1f + (float)Main.rand.Next(-20, 21) * 0.01f;
