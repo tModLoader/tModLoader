@@ -8,6 +8,15 @@
  
  namespace Terraria.GameContent;
  
+@@ -170,7 +_,7 @@
+ 
+ 	private static bool AllowNormalBlockPlacementBehaviourForItemType(int itemType)
+ 	{
+-		if (itemType < 0 || itemType >= ItemID.Count)
++		if (itemType < 0)
+ 			return false;
+ 
+ 		if (itemType == 213 || itemType == 5295 || ItemID.Sets.GrassSeeds[itemType] || ItemID.Sets.Moss[itemType])
 @@ -221,7 +_,7 @@
  			return;
  
