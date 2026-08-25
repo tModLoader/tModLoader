@@ -2068,6 +2068,14 @@
  		switch (Main.tile[x, y].type) {
  			case 26:
  			case 88:
+@@ -64035,6 +_,7 @@
+ 			case 504:
+ 			case 685:
+ 			case 686:
++			case var t when TileID.Sets.BasicDresser[t]:
+ 				return false;
+ 			case 107:
+ 			case 108:
 @@ -64069,6 +_,9 @@
  		return true;
  	}
