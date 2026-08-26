@@ -162,8 +162,11 @@ public partial class ItemSlot
 				return true;
 		}
 
+		// Vanilla compares accessories by type only (see HasSameItemInSlot), so a second copy of an
+		// accessory can never be equipped. IsNotTheSameAs also compares prefix and stack, which let
+		// two copies with different prefixes be equipped at the same time.
 		for (int i = 0; i < itemCollection.Length; i++) {
-			if (!item.IsNotTheSameAs(itemCollection[i]))
+			if (i != slot && !itemCollection[i].IsAir && itemCollection[i].type == item.type)
 				return true;
 		}
 
