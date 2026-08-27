@@ -487,6 +487,8 @@ tree /a /f > NonGithubFiles.txt
 |   |   |   Armor_Legs_98.xnb
 |   |   |   Background_0.xnb
 |   |   |   Background_10.xnb
+|   |   |   Background_100.xnb
+|   |   |   Background_101.xnb
 |   |   |   Background_11.xnb
 |   |   |   Background_112.xnb
 |   |   |   Background_143.xnb
@@ -527,6 +529,8 @@ tree /a /f > NonGithubFiles.txt
 |   |   |   Background_8.xnb
 |   |   |   Background_9.xnb
 |   |   |   Background_93.xnb
+|   |   |   Background_98.xnb
+|   |   |   Background_99.xnb
 |   |   |   BackPack_1.xnb
 |   |   |   BackPack_2.xnb
 |   |   |   BackPack_3.xnb
@@ -764,6 +768,7 @@ tree /a /f > NonGithubFiles.txt
 |   |   |   Flame_3.xnb
 |   |   |   Flame_4.xnb
 |   |   |   FlyingCarpet.xnb
+|   |   |   gemChain-2.xnb
 |   |   |   Ghost.xnb
 |   |   |   Glow_103.xnb
 |   |   |   Glow_104.xnb
@@ -2061,10 +2066,17 @@ tree /a /f > NonGithubFiles.txt
 |   |   |   Player_9_4.xnb
 |   |   |   Player_9_6.xnb
 |   |   |   Player_9_8.xnb
+|   |   |   Player_Hair_17.xnb
 |   |   |   Projectile_102.xnb
 |   |   |   Projectile_112.xnb
 |   |   |   Projectile_113.xnb
 |   |   |   Projectile_120.xnb
+|   |   |   Projectile_121.xnb
+|   |   |   Projectile_122.xnb
+|   |   |   Projectile_123.xnb
+|   |   |   Projectile_124.xnb
+|   |   |   Projectile_125.xnb
+|   |   |   Projectile_126.xnb
 |   |   |   Projectile_127.xnb
 |   |   |   Projectile_133.xnb
 |   |   |   Projectile_134.xnb
@@ -2152,6 +2164,7 @@ tree /a /f > NonGithubFiles.txt
 |   |   |   Projectile_282.xnb
 |   |   |   Projectile_30.xnb
 |   |   |   Projectile_303.xnb
+|   |   |   Projectile_308.xnb
 |   |   |   Projectile_31.xnb
 |   |   |   Projectile_312.xnb
 |   |   |   Projectile_32.xnb
@@ -2161,6 +2174,7 @@ tree /a /f > NonGithubFiles.txt
 |   |   |   Projectile_37.xnb
 |   |   |   Projectile_373.xnb
 |   |   |   Projectile_375.xnb
+|   |   |   Projectile_377.xnb
 |   |   |   Projectile_38.xnb
 |   |   |   Projectile_39.xnb
 |   |   |   Projectile_398.xnb
@@ -2175,8 +2189,12 @@ tree /a /f > NonGithubFiles.txt
 |   |   |   Projectile_56.xnb
 |   |   |   Projectile_590.xnb
 |   |   |   Projectile_591.xnb
+|   |   |   Projectile_597.xnb
 |   |   |   Projectile_623.xnb
 |   |   |   Projectile_65.xnb
+|   |   |   Projectile_663.xnb
+|   |   |   Projectile_665.xnb
+|   |   |   Projectile_667.xnb
 |   |   |   Projectile_67.xnb
 |   |   |   Projectile_68.xnb
 |   |   |   Projectile_71.xnb
@@ -2423,6 +2441,7 @@ tree /a /f > NonGithubFiles.txt
 |   |       |   IconCrimson.xnb
 |   |       |   IconHallowCorruption.xnb
 |   |       |   IconHallowCrimson.xnb
+|   |       |   PVP_0.xnb
 |   |       |   Sort_0.xnb
 |   |       |   Sort_1.xnb
 |   |       |   
@@ -2437,6 +2456,8 @@ tree /a /f > NonGithubFiles.txt
 |       |   Item_36.xnb
 |       |   Item_38.xnb
 |       |   Item_40.xnb
+|       |   Item_43.xnb
+|       |   Item_8.xnb
 |       |   NPC_Killed_43.xnb
 |       |   Zombie_20.xnb
 |       |   Zombie_9.xnb

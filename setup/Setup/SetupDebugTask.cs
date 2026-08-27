@@ -17,6 +17,10 @@ namespace Terraria.ModLoader.Setup
 			taskInterface.SetStatus("Updating ModCompile version");
 			var modCompile = Path.Combine(tMLSteamDir, "ModCompile");
 			UpdateModCompileVersion(modCompile);
+
+			// Temp adjust PATH since modern msbuild installs say: "Unknown switch: /restore"
+			Environment.SetEnvironmentVariable("PATH", $@"C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Current\Bin\;{Environment.GetEnvironmentVariable("PATH")}", EnvironmentVariableTarget.Process);
+
 			bool msBuildOnPath = RunCmd("RoslynWrapper", "where",
 				"msbuild",
 				(s) => Console.WriteLine(s), null, null, taskInterface.CancellationToken
