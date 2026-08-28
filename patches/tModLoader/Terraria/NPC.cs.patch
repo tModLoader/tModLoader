@@ -534,7 +534,7 @@
  	public static bool downedDeerclops = false;
  	public static int ShieldStrengthTowerSolar = 0;
  	public static int ShieldStrengthTowerVortex = 0;
-@@ -4594,59 +_,223 @@
+@@ -4594,59 +_,227 @@
  	public static bool TowerActiveNebula = false;
  	public static bool TowerActiveStardust = false;
  	public static bool LunarApocalypseIsUp = false;
@@ -634,6 +634,10 @@
 +	/// Stores the value of <see cref="defense"/> at the end of SetDefaults. Useful for scaling defense in AI code, like how King Slime changes defense as it gets smaller.
 +	/// </summary>
  	public int defDefense;
++
++	/// <summary>
++	/// Stores the value of <see cref="lifeMax"/> at the end of SetDefaults. This value takes into account difficulty mode adjustments. Useful for calculating dynamically changing <see cref="lifeMax"/> in AI code, such as how <see cref="ItemID.CombatBook"/> affects Town NPC, or how some slimes have different health values if carrying specific items.
++	/// </summary>
  	public int defLifeMax;
 +
 +	/// <summary>

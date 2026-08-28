@@ -149,7 +149,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - UserInterface.MouseCaptured -> could be useful
 - FlexibleTileWand is now used to place many other tiles that used to rely solely on RandomStyleRange. We should add an example of a custom FlexibleTileWand item/tile and document when to use it.
 - UIScrollbar.AutoHide and CanScroll
-- NPC.defLifeMax
 - NPC.DelBuff has new quiet parameter
 - TileID.Sets.DontDrawTileSlopes.
 - Player.selectedItem is not a getter property instead of a field. We might need to document selectedItemState and other related new fields.
