@@ -584,6 +584,12 @@ internal class UIModItem : UIPanel
 				return false;
 			}
 		}
+		if (Interface.modsMenu.modLibraryFilterMode != ModLibraryFilter.All) {
+			if (_mod.properties.libMod != (Interface.modsMenu.modLibraryFilterMode == ModLibraryFilter.LibraryOnly)) {
+				filterResults.filteredByModLibrary++;
+				return false;
+			}
+		}
 		switch (Interface.modsMenu.enabledFilterMode) {
 			default:
 			case EnabledFilter.All:

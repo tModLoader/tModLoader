@@ -274,7 +274,7 @@ public partial class WorkshopHelper
 				if (bIOFailure) {
 					_primaryQueryResult = EResult.k_EResultIOFailure;
 					return;
-				}	
+				}
 
 				_primaryUGCHandle = pCallback.m_handle;
 				_primaryQueryResult = pCallback.m_eResult;
@@ -341,7 +341,7 @@ public partial class WorkshopHelper
 								continue;
 							}
 
-							if (match != WorkshopSearchReturnState.Success) {		
+							if (match != WorkshopSearchReturnState.Success) {
 								// This would be the case if Steam workshop failed to respond or the mod item is corrupt
 								Logging.tML.Warn($"{match}: Search Attempt Failed for Mod with ID {idArray[j]}");
 								missingMods.Add(idArray[j]);
@@ -595,6 +595,7 @@ public partial class WorkshopHelper
 
 				// Item Tagged data / Player metadata
 				SteamedWraps.FetchMetadata(_primaryUGCHandle, i, out var metadata);
+				SteamedWraps.FetchTags(_primaryUGCHandle, i, out var tags);
 
 				// Developer Metadata
 				SteamedWraps.FetchDeveloperMetadata(_primaryUGCHandle, i, out string devMetadataSerialized);
@@ -639,7 +640,9 @@ public partial class WorkshopHelper
 				// Item Statistics
 				SteamedWraps.FetchPlayTimeStats(_primaryUGCHandle, i, out var hot, out var downloads);
 
-				return new ModDownloadItem(displayname, metadata["name"], cVersion.modV, metadata["author"], metadata["modreferences"], modside, modIconURL, id.m_PublishedFileId.ToString(), (int)downloads, (int)hot, lastUpdate, cVersion.tmlV, metadata["homepage"], ownerId, refsById, banned, devMetadata);
+				bool isLibraryMod = tags.Any(SteamedWraps.IsLibraryTag);
+
+				return new ModDownloadItem(displayname, metadata["name"], cVersion.modV, metadata["author"], metadata["modreferences"], modside, modIconURL, id.m_PublishedFileId.ToString(), (int)downloads, (int)hot, lastUpdate, cVersion.tmlV, metadata["homepage"], ownerId, refsById, banned, devMetadata, isLibraryMod);
 			}
 		}
 	}

@@ -21,6 +21,7 @@ public class ModDownloadItem
 	public readonly DateTime TimeStamp;
 	public readonly bool Banned;
 	public readonly DeveloperMetadata DevMetadata;
+	public readonly bool IsLibraryMod;
 
 	public readonly string ModReferencesBySlug;
 	public readonly ModPubId_t[] ModReferenceByModId;
@@ -36,7 +37,7 @@ public class ModDownloadItem
 	public bool AppNeedRestartToReinstall { get; private set; }
 	public bool IsInstalled => Installed != null;
 
-	public ModDownloadItem(string displayName, string name, Version version, string author, string modReferences, ModSide modSide, string modIconUrl, string publishId, int downloads, int hot, DateTime timeStamp, Version modloaderversion, string homepage, string ownerId, string[] referencesById, bool banned, DeveloperMetadata devMetadata)
+	public ModDownloadItem(string displayName, string name, Version version, string author, string modReferences, ModSide modSide, string modIconUrl, string publishId, int downloads, int hot, DateTime timeStamp, Version modloaderversion, string homepage, string ownerId, string[] referencesById, bool banned, DeveloperMetadata devMetadata, bool isLibraryMod = false)
 	{
 		ModName = name;
 		DisplayName = displayName;
@@ -57,6 +58,7 @@ public class ModDownloadItem
 		ModloaderVersion = modloaderversion;
 		Banned = banned;
 		DevMetadata = devMetadata;
+		IsLibraryMod = isLibraryMod;
 
 		UpdateInstallState();
 	}
@@ -70,7 +72,7 @@ public class ModDownloadItem
 		Installed = Interface.modBrowser.SocialBackend.IsItemInstalled(ModName);
 
 		NeedUpdate = IsInstalled && Interface.modBrowser.SocialBackend.DoesItemNeedUpdate(PublishId, Installed, Version);
-		
+
 		// The below line is to identify the transient state where it isn't installed, but Steam considers it as such - Solxan
 		// Steam keeps a cache once a download starts, and doesn't clean up cache until game close, which gets very confusing.
 		AppNeedRestartToReinstall = Installed == null && Interface.modBrowser.SocialBackend.DoesAppNeedRestartToReinstallItem(PublishId);

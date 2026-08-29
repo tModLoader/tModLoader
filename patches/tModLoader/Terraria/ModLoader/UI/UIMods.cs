@@ -16,6 +16,8 @@ using Terraria.Audio;
 using Terraria.ID;
 using System;
 using Terraria.GameContent;
+using Terraria.Social.Base;
+using Terraria.Social.Steam;
 
 namespace Terraria.ModLoader.UI;
 
@@ -41,6 +43,7 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 	public ModsMenuSortMode sortMode = ModsMenuSortMode.RecentlyUpdated;
 	public EnabledFilter enabledFilterMode = EnabledFilter.All;
 	public ModSideFilter modSideFilterMode = ModSideFilter.All;
+	public ModLibraryFilter modLibraryFilterMode = ModLibraryFilter.All;
 	public SearchFilter searchFilterMode = SearchFilter.Name;
 	internal readonly List<UICycleImage> _categoryButtons = new List<UICycleImage>();
 	internal string filter;
@@ -162,7 +165,7 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 		};
 
 		UICycleImage toggleImage;
-		for (int j = 0; j < 4; j++) {
+		for (int j = 0; j < 5; j++) {
 			if (j == 0) { //TODO: ouch, at least there's a loop but these click events look quite similar
 				toggleImage = new UICycleImage(texture, 3, 32, 32, 34 * 3, 0);
 				toggleImage.SetCurrentState((int)sortMode);
@@ -198,6 +201,18 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 				};
 				toggleImage.OnRightClick += (a, b) => {
 					modSideFilterMode = modSideFilterMode.PreviousEnum();
+					updateNeeded = true;
+				};
+			}
+			else if (j == 3) {
+				toggleImage = new UICycleImage(texture, 3, 32, 32, 34 * 10, 0);
+				toggleImage.SetCurrentState((int)modLibraryFilterMode);
+				toggleImage.OnLeftClick += (a, b) => {
+					modLibraryFilterMode = modLibraryFilterMode.NextEnum();
+					updateNeeded = true;
+				};
+				toggleImage.OnRightClick += (a, b) => {
+					modLibraryFilterMode = modLibraryFilterMode.PreviousEnum();
 					updateNeeded = true;
 				};
 			}
@@ -508,6 +523,8 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 				filterMessages.Add(Language.GetTextValue("tModLoader.ModsXModsFilteredByModSide", filterResults.filteredByModSide));
 			if (filterResults.filteredBySearch > 0)
 				filterMessages.Add(Language.GetTextValue("tModLoader.ModsXModsFilteredBySearch", filterResults.filteredBySearch));
+			if (filterResults.filteredByModLibrary > 0)
+				filterMessages.Add(Language.GetTextValue("tModLoader.ModsXModsFilteredByModLibrary", filterResults.filteredByModLibrary));
 			string filterMessage = string.Join("\n", filterMessages);
 			var text = new UIText(filterMessage);
 			text.Width.Set(0, 1f);
@@ -541,9 +558,12 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 						text = modSideFilterMode.ToFriendlyString();
 						break;
 					case 3:
-						text = Language.GetTextValue("tModLoader.ShowMemoryEstimates" + (showRamUsage ? "Yes" : "No"));
+						text = modLibraryFilterMode.ToFriendlyString();
 						break;
 					case 4:
+						text = Language.GetTextValue("tModLoader.ShowMemoryEstimates" + (showRamUsage ? "Yes" : "No"));
+						break;
+					case 5:
 						text = searchFilterMode.ToFriendlyString();
 						break;
 					default:
@@ -592,8 +612,29 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 	{
 		modItemsTask = Task.Run(() => {
 			var mods = ModOrganizer.FindMods(logDuplicates: true);
+			var libraryWorkshopIds = new HashSet<string>();
+			try {
+				// Direct workshop item details queries don't reliably apply Steam tag filters, but the returned item
+				// can still expose the actual tags. Store by PublishId instead of ModName so local mods with the
+				// same internal name as a workshop mod (for example ExampleMod) are not misclassified.
+				libraryWorkshopIds.UnionWith(Interface.modBrowser.SocialBackend.DirectQueryInstalledMDItems().Where(x => x.IsLibraryMod).Select(x => x.PublishId.m_ModPubId));
+			}
+			catch {
+				// If Steam Workshop data is unavailable, keep using local build.txt libMod and local workshop.json tags.
+			}
+
 			var pendingUIModItems = new List<UIModItem>();
 			foreach (var mod in mods) {
+				if (mod.location == ModLocation.Workshop) {
+					string parentDir = ModOrganizer.GetParentDir(mod.modFile.path);
+					if (ModOrganizer.TryReadManifest(parentDir, out var info)) {
+						mod.properties.libMod |= info.tags?.Any(SteamedWraps.IsLibraryTag) == true;
+					}
+
+					if (WorkshopHelper.GetPublishIdLocal(mod.modFile, out ulong publishId)) {
+						mod.properties.libMod |= libraryWorkshopIds.Contains(publishId.ToString());
+					}
+				}
 				UIModItem modItem = new UIModItem(mod);
 				pendingUIModItems.Add(modItem);
 			}
@@ -607,7 +648,8 @@ public class UIModsFilterResults
 	public int filteredBySearch;
 	public int filteredByModSide;
 	public int filteredByEnabled;
-	public bool AnyFiltered => filteredBySearch > 0 || filteredByModSide > 0 || filteredByEnabled > 0;
+	public int filteredByModLibrary;
+	public bool AnyFiltered => filteredBySearch > 0 || filteredByModSide > 0 || filteredByEnabled > 0 || filteredByModLibrary > 0;
 }
 
 public static class ModsMenuSortModesExtensions
@@ -642,6 +684,22 @@ public static class EnabledFilterModesExtensions
 	}
 }
 
+public static class ModLibraryFilterModesExtensions
+{
+	public static string ToFriendlyString(this ModLibraryFilter modLibraryFilterMode)
+	{
+		switch (modLibraryFilterMode) {
+			case ModLibraryFilter.All:
+				return Language.GetTextValue("tModLoader.ModsShowAllLibraryTypes");
+			case ModLibraryFilter.LibraryOnly:
+				return Language.GetTextValue("tModLoader.ModsShowLibraryMods");
+			case ModLibraryFilter.NonLibraryOnly:
+				return Language.GetTextValue("tModLoader.ModsShowNonLibraryMods");
+		}
+		return "Unknown Sort";
+	}
+}
+
 public enum ModsMenuSortMode
 {
 	RecentlyUpdated,
@@ -654,4 +712,11 @@ public enum EnabledFilter
 	All,
 	EnabledOnly,
 	DisabledOnly,
+}
+
+public enum ModLibraryFilter
+{
+	All,
+	LibraryOnly,
+	NonLibraryOnly,
 }

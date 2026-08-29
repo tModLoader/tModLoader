@@ -18,6 +18,21 @@ namespace Terraria.Social.Steam;
 
 public static class SteamedWraps
 {
+	internal const string LibraryTagInternalName = "Library";
+	internal const string LibraryTagSteamId = "tag_275098";
+	private static readonly HashSet<string> LibraryTagNames = new(StringComparer.OrdinalIgnoreCase) {
+		LibraryTagInternalName,
+		LibraryTagSteamId,
+		"模组类库",
+		"Библиотека",
+		"Biblioteca",
+		"Biblioteka (lib)",
+		"Librerías",
+		"Programmbibliothek"
+	};
+
+	internal static bool IsLibraryTag(string tag) => !string.IsNullOrWhiteSpace(tag) && LibraryTagNames.Contains(tag);
+
 	internal const uint thisApp = ModLoader.Engine.Steam.TMLAppID;
 
 	public static bool SteamClient { get; set; }
@@ -354,6 +369,32 @@ public static class SteamedWraps
 			SteamGameServerUGC.GetQueryUGCPreviewURL(handle, index, out modIconUrl, 1000);
 		else
 			modIconUrl = null;
+	}
+
+	public static void FetchTags(UGCQueryHandle_t handle, uint index, out string[] tags)
+	{
+		uint tagCount;
+		var tagList = new List<string>();
+
+		if (SteamClient)
+			tagCount = SteamUGC.GetQueryUGCNumTags(handle, index);
+		else if (SteamAvailable)
+			tagCount = SteamGameServerUGC.GetQueryUGCNumTags(handle, index);
+		else
+			tagCount = 0;
+
+		for (uint j = 0; j < tagCount; j++) {
+			string tag;
+
+			if (SteamClient)
+				SteamUGC.GetQueryUGCTag(handle, index, j, out tag, byte.MaxValue);
+			else
+				SteamGameServerUGC.GetQueryUGCTag(handle, index, j, out tag, byte.MaxValue);
+
+			tagList.Add(tag);
+		}
+
+		tags = tagList.ToArray();
 	}
 
 	public static void FetchMetadata(UGCQueryHandle_t handle, uint index, out NameValueCollection metadata)
