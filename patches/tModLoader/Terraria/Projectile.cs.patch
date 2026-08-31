@@ -47,7 +47,7 @@
 +	/// <summary>
 +	/// Set to true if you don't want this projectile to have a chance to recover the ammo item that shot this, provided that the projectile is programmed to drop the item. For example, if you shoot the <see cref="ProjectileID.PaperAirplaneA"/> projectile, it will always drop the <see cref="ItemID.PaperAirplaneA"/> item. If your weapon shoots multiple recoverable projectiles for 1 ammo, you might want to consider setting this field to prevent infinite ammo exploits. Make sure to set this for any situation where a potentially recoverable ammo is spawned by something other than the player, such as traps and Town NPC.
 +	/// <para/> To implement recoverable ammo item drops, in <see cref="ModProjectile.OnKill(int)"/> check this, <see cref="owner"/>, and optionally a random chance to decide if the item should drop: <c>if (Projectile.owner == Main.myPlayer &amp;&amp; !Projectile.noDropItem)</c> See <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/Projectiles/ExamplePaperAirplaneProjectile.cs#L142">ExamplePaperAirplaneProjectile</see> for an example of this logic.
-+	/// <para/> Set directly on the projectile instance returned from <see cref="Projectile.NewProjectile(IEntitySource, float, float, float, float, int, int, float, int, float, float, float)"/>, not in <see cref="ModProjectile.SetDefaults"/>. This ensures that the weapon or source spawning the projectile decides if the ammo item will spawn, which is more compatible.
++	/// <para/> Set directly on the projectile instance returned from <see cref="Projectile.NewProjectile(IEntitySource, float, float, float, float, int, int, float, int, float, float, float, NewProjectileModifier)"/>, not in <see cref="ModProjectile.SetDefaults"/>. This ensures that the weapon or source spawning the projectile decides if the ammo item will spawn, which is more compatible.
 +	/// <para/> Set automatically when shot from a weapon that counts as <see cref="DamageClass.Throwing"/> and <see cref="Player.AnyThrownCostReduction"/> is <see langword="true"/>.
 +	/// <para/> Defaults to <see langword="false"/>.
 +	/// </summary>
@@ -101,7 +101,7 @@
 +	/// <summary>
 +	/// An array with 3 slots used for any sort of data storage, which is occasionally synced to the server. Each vanilla <see cref="ProjAIStyleID"/> uses these slots for different purposes. Set <see cref="netUpdate"/> to true during AI methods to manually sync. The advantage of using these 3 floats is that they are synced automatically. Using fields in your <see cref="ModProjectile"/> class will work just the same, but they might need to be synced via <see cref="ModProjectile.SendExtraAI(System.IO.BinaryWriter)"/> and <see cref="ModProjectile.ReceiveExtraAI(System.IO.BinaryReader)"/> if necessary.
 +	/// <br/> Clever use of <see href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/ref#reference-return-values">Reference return values</see> as seen in <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/Pets/ExampleLightPet/ExampleLightPetProjectile.cs#L22">ExampleLightPetProjectile.cs</see> can be used to reuse the ai array entries with readable names.
-+	/// <br/> Defaults to the values passed into <see cref="Projectile.NewProjectile(IEntitySource, float, float, float, float, int, int, float, int, float, float, float)"/>, usually [0, 0, 0].
++	/// <br/> Defaults to the values passed into <see cref="Projectile.NewProjectile(IEntitySource, float, float, float, float, int, int, float, int, float, float, float, NewProjectileModifier)"/>, usually [0, 0, 0].
 +	/// </summary>
  	public float[] ai = new float[maxAI];
 +
@@ -584,18 +584,18 @@
  	}
  
 +	/// <summary>
-+	/// <inheritdoc cref="Projectile.NewProjectile(IEntitySource, float, float, float, float, int, int, float, int, float, float, float)"/>
++	/// <inheritdoc cref="Projectile.NewProjectile(IEntitySource, float, float, float, float, int, int, float, int, float, float, float, NewProjectileModifier)"/>
 +	/// <br/><br/>This particular overload uses a Vector2 instead of X and Y to determine the actual spawn position and a Vector2 to dictate the initial velocity.
 +	/// </summary>
  	public static int NewProjectile(IEntitySource spawnSource, Vector2 position, Vector2 velocity, int Type, int Damage, float KnockBack, int Owner = -1, float ai0 = 0f, float ai1 = 0f, float ai2 = 0f, NewProjectileModifier modifer = null) => NewProjectile(spawnSource, position.X, position.Y, velocity.X, velocity.Y, Type, Damage, KnockBack, Owner, ai0, ai1, ai2, modifer);
  
  	public static int FindOldestProjectile()
-@@ -9172,6 +_,25 @@
+@@ -9172,6 +_,26 @@
  		return result;
  	}
  
 +	/// <summary>
-+	/// Spawns a projectile into the game world with the given type. The spawn position is given in world coordinates by the X and Y parameters. SpeedX and SpeedY dictate the initial velocity. Damage and KnockBack are self-explanatory. Owner is the player who spawned the projectile, almost always Main.myPlayer. ai0, ai1, and ai2 will initialize the Projectile.ai[] array with the supplied values. This can be used to pass in information to the Projectile. The Projectile AI code will have to be written to utilize those values. The return value is the index of the spawned Projectile within the <see cref="Main.projectile"/> array.
++	/// Spawns a projectile into the game world with the given type. The spawn position is given in world coordinates by the X and Y parameters. SpeedX and SpeedY dictate the initial velocity. Damage and KnockBack are self-explanatory. Owner is the player who spawned the projectile, almost always Main.myPlayer. ai0, ai1, and ai2 will initialize the Projectile.ai[] array with the supplied values. This can be used to pass in information to the Projectile. The Projectile AI code will have to be written to utilize those values. <paramref name="modifer"/> can be used to adjust the spawned projectile before it is synced over the network. The return value is the index of the spawned Projectile within the <see cref="Main.projectile"/> array.
 +	/// <br/> Make sure that this method is called only by the client in charge of the source causing this projectile to spawn. Failure to do this will result in the projectile spawning once for each player in the world. For example, if Player code uses this method, make sure to first check <code>if(Main.myPlayer == Player.whoAmI)</code> to ensure that only the local player spawns the projectile.
 +	/// <br/> Projectiles spawning other projectiles should check <code>if(Main.myPlayer == Projectile.owner)</code>
 +	/// <br/> If the source is an NPC or non-player owned projectile, checking <code>if (Main.netMode != NetmodeID.MultiplayerClient)</code> will ensure that clients don't attempt to spawn the projectile.
@@ -612,7 +612,8 @@
 +	/// <param name="ai0"></param>
 +	/// <param name="ai1"></param>
 +	/// <param name="ai2"></param>
-+	/// <returns></returns>
++	/// <param name="modifer">An optional delegate invoked with the spawned <see cref="Projectile"/> right before it is returned, allowing final adjustments before it is synced over the network, similar to <see cref="ModProjectile.OnSpawn(IEntitySource)"/>. Vanilla uses can be seen in the <see cref="NewProjectileModifiers"/> class.</param>
++	/// <returns>The index of the spawned projectile within <see cref="Main.projectile"/>.</returns>
  	public static int NewProjectile(IEntitySource spawnSource, float X, float Y, float SpeedX, float SpeedY, int Type, int Damage, float KnockBack, int Owner = -1, float ai0 = 0f, float ai1 = 0f, float ai2 = 0f, NewProjectileModifier modifer = null)
  	{
  		if (Owner == -1)
@@ -2007,14 +2008,14 @@
  					if (type == 109) {
  						num1107 = 147;
  						num1108 = 0;
-@@ -63750,6 +_,7 @@
- 						else if (WorldGen.SolidTile3(num1105 + 1, num1106 + 1) && !Main.tile[num1105 + 1, num1106].active())
- 							num1105++;
+@@ -63743,6 +_,7 @@
+ 						num1107 = 495;
+ 						num1108 = 4090;
  					}
 +					*/
  
- 					if (type == 109) {
- 						int num1109 = Player.FindClosest(position, width, height);
+ 					if (type == 1081 && !WorldGen.SolidTile3(num1105, num1106 + 1)) {
+ 						if (WorldGen.SolidTile3(num1105 - 1, num1106 + 1) && !Main.tile[num1105 - 1, num1106].active())
 @@ -63886,9 +_,13 @@
  					x2 *= 1f + (float)Main.rand.Next(-20, 21) * 0.01f;
  					y8 *= 1f + (float)Main.rand.Next(-20, 21) * 0.01f;
@@ -2067,6 +2068,14 @@
  		switch (Main.tile[x, y].type) {
  			case 26:
  			case 88:
+@@ -64035,6 +_,7 @@
+ 			case 504:
+ 			case 685:
+ 			case 686:
++			case var t when TileID.Sets.BasicDresser[t]:
+ 				return false;
+ 			case 107:
+ 			case 108:
 @@ -64069,6 +_,9 @@
  		return true;
  	}

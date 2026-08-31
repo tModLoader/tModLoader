@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/ID/ArmorIDs.cs
 +++ src/tModLoader/Terraria/ID/ArmorIDs.cs
-@@ -1,22 +_,48 @@
+@@ -1,22 +_,52 @@
  using System.Collections.Generic;
 +using ReLogic.Reflection;
  using Terraria.DataStructures;
@@ -37,6 +37,10 @@
  			public static bool[] UseSkinColor = Factory.CreateBoolSet(false, 274, 277);
  			public static bool[] HidesHead = Factory.CreateBoolSet(false, 38, 135, 269, 282, 288);
  			public static bool[] DrawFaceMaskUnderHeadLayer = Factory.CreateBoolSet(false, 26, 51, 289, 81, 92, 106, 291, 10, 12, 178, 198, 267, 279, 160, 52, 53, 71, 55, 166, 167, 278);
++			/// <summary>
++			/// If <see langword="true"/> for a given <see cref="Head"/>, then that equip will hide face flower layer equips (<see cref="Face.Sets.DrawInFaceFlowerLayer"/>).
++			/// <para/> Some examples include <see cref="UmbrellaHat"/> and <see cref="Eyebrella"/>.
++			/// </summary>
  			public static bool[] PreventFaceFlowerDraw = Factory.CreateBoolSet(false, 92, 275);
  			public static bool[] PreventFaceMaskDraw = Factory.CreateBoolSet(false, 27, 102, 20, 107, 108, 127, 162, 168, 118, 123, 164, 155, 150, 137, 186, 125, 136, 153, 154, 169, 148, 165, 151, 173, 146, 147, 175, 193, 271, 268, 260, 221, 236, 208, 209, 207, 187, 192, 188, 276, 270, 58, 77, 142, 152, 241, 210, 22, 196);
 +
@@ -424,7 +428,7 @@
  			public static bool[] IsAScarf = Factory.CreateBoolSet(false, 8, 9);
  		}
  
-@@ -1133,19 +_,53 @@
+@@ -1133,19 +_,65 @@
  		public const sbyte Magiluminescence = 11;
  		public const sbyte MoltenCharm = 12;
  		public static readonly int Count = 13;
@@ -444,25 +448,35 @@
 +			/// <summary>
 +			/// If <see langword="true"/> for a given <see cref="Face"/>, then that equip will completely hide the player's hair when equipped.
 +			/// <br/> Defaults to <see langword="false"/>.
++			/// <para/> Some examples include: <see cref="ArcticDivingGear"/>, <see cref="JellyfishDivingGear"/>, <see cref="DivingGear"/>, <see cref="BoneHelm"/>
 +			/// </summary>
  			public static bool[] PreventHairDraw = Factory.CreateBoolSet(false, 2, 3, 4, 19);
 +
 +			/// <summary>
 +			/// If <see langword="true"/> for a given <see cref="Face"/>, then that equip will hide the player's <see cref="Head"/> when equipped.
 +			/// <br/> Defaults to <see langword="false"/>.
++			/// <para/> Some examples include: <see cref="ArcticDivingGear"/>, <see cref="JellyfishDivingGear"/>, <see cref="DivingGear"/>, <see cref="BoneHelm"/>
 +			/// </summary>
  			public static bool[] OverrideHelmet = Factory.CreateBoolSet(false, 2, 3, 4, 19);
 +
 +			/// <summary>
 +			/// If <see langword="true"/> for a given <see cref="Face"/>, then that equip will draw under the player's hair.
 +			/// <br/> Defaults to <see langword="false"/>.
++			/// <para/> Some examples include: <see cref="Blindfold"/>
 +			/// </summary>
  			public static bool[] DrawInFaceUnderHairLayer = Factory.CreateBoolSet(false, 5);
++
++			/// <summary>
++			/// If <see langword="true"/> for a given <see cref="Face"/>, then that equip will draw in the face mask layer (<see cref="Player.faceMask"/>, <see cref="Player.cFaceMask"/>).
++			/// <br/> Defaults to <see langword="false"/>.
++			/// <para/> Some examples include: <see cref="WeldingMask"/>
++			/// </summary>
  			public static bool[] DrawInFaceMaskLayer = Factory.CreateBoolSet(false, 22);
 +
 +			/// <summary>
 +			/// If <see langword="true"/> for a given <see cref="Face"/>, then that equip will draw in the face flower layer (<see cref="Player.faceFlower"/>, <see cref="Player.cFaceFlower"/>).
 +			/// <br/> Defaults to <see langword="false"/>.
++			/// <para/> Some examples include: <see cref="NaturesGift"/>, <see cref="ObsidianRose"/>, <see cref="JungleRose"/>, <see cref="ArcaneFlower"/>
 +			/// </summary>
  			public static bool[] DrawInFaceFlowerLayer = Factory.CreateBoolSet(false, 1, 6, 9, 8);
 +
@@ -470,6 +484,7 @@
 +			/// If <see langword="true"/> for a given <see cref="Face"/>, then that equip will draw in the face head layer (<see cref="Player.faceHead"/>, <see cref="Player.cFaceHead"/>).
 +			/// <br/> If a <see cref="Head"/> equip in the <see cref="Head.Sets.UseAltFaceHeadDraw"/> set is equipped, then this equip will be replaced with its value in <see cref="AltFaceHead"/> if one exists.
 +			/// <br/> Defaults to <see langword="false"/>.
++			/// <para/> Some examples include: <see cref="LavaSkull"/>, <see cref="MoltenSkullRose"/>, <see cref="ObsidianSkull"/>, <see cref="ObsidianSkullRose"/>
 +			/// </summary>
  			public static bool[] DrawInFaceHeadLayer = Factory.CreateBoolSet(false, 12, 10, 13, 11);
 +
@@ -477,6 +492,7 @@
 +			/// If <c>!= -1</c> for a given <see cref="Face"/>, then that equip will be replaced with the retrieved <see cref="Face"/> equip if the player is wearing a <see cref="Head"/> in the <see cref="Head.Sets.UseAltFaceHeadDraw"/> set.
 +			/// <br/> Only applies to <see cref="Face"/> equips also in the <see cref="DrawInFaceHeadLayer"/> set.
 +			/// <br/> Defaults to <c>-1</c>.
++			/// <para/> Some examples include: <see cref="ObsidianSkull"/> -> <see cref="ObsidianSkullAlt"/>, <see cref="LavaSkull"/> -> <see cref="LavaSkullAlt"/>, <see cref="ObsidianSkullRose"/> -> <see cref="ObsidianSkullRoseAlt"/>, <see cref="MoltenSkullRose"/> -> <see cref="MoltenSkullRoseAlt"/>
 +			/// </summary>
  			public static int[] AltFaceHead = Factory.CreateIntSet(-1, 12, 17, 10, 15, 13, 18, 11, 16);
  			public static bool[] CanDrawOnVelociraptorMount = Factory.CreateBoolSet(false, 1, 6, 9, 8, 19, 7, 20, 21, 23);

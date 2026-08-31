@@ -26,7 +26,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Also, ItemSourceID.SortingWithNoSpace has been removed.
 - TileLoader.SpecialDraw (and other tile methods I assume) now takes a TileBatch instead of Main.spriteBatch. What does this affect? How will mods need to change? Why do some methods in TileDrawing still use Main.spriteBatch?
 - ShaderData classes now have `if (Main.dedServ)` checks. Are these overzealous, or do we need to adjust other places or inform modders that shader code might attempt to run on servers.
-- Need to document ArmorIDs.Face.Sets.DrawInFaceMaskLayer as well
 - Player.revolverCritChanceBonus needs a quick test now that it has been implemented as a Projectile.CritChance bonus. Need to hookup `Item.GetVisualCritChance`
 - Player.adjTile patches are weird. It shouldn't be necessary to resize, they should be correct when the Player is initialized anyway.
 - Player.coat added. It might also need and EquipType
@@ -80,7 +79,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - TileLoader.DropCritterChance could be updated with LuckyClover chance. Also Lavafly/HellButterfly chance
 - TileID.Sets.SpreadsCrimson added. Need docs and possibly adjust biome spread logic. SpreadsHallow
 - OreRunner changed, new parameters should make the method more useful, need docs. Also in 1.4.4 OreRunner was missing a tileMoss check, so that might affect mods when fixed.
-- NewProjectile now has a NewProjectileModifier parameter. How is it used? How should modders use it? Need to add it to Docs for each overload.
 - Code in Projectile claiming "// Moved to CombinedHooks.ModifyHitByProjectile" will need to be copied over again if that is still the intention. It seems that deadMansSweater is also nearby, should it also be commented?
 - Not sure about the order for "VanillaOnHitEffectsResume:" and other labels. SpawnHitVisuals method added in between existing patches.
 - It seems like bomb damage logic has been reworked. Maybe many of our patches are no longer necessary or our explosive projectile examples need fixing. 
@@ -150,7 +148,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - UserInterface.MouseCaptured -> could be useful
 - FlexibleTileWand is now used to place many other tiles that used to rely solely on RandomStyleRange. We should add an example of a custom FlexibleTileWand item/tile and document when to use it.
 - UIScrollbar.AutoHide and CanScroll
-- NPC.defLifeMax
 - NPC.DelBuff has new quiet parameter
 - TileID.Sets.DontDrawTileSlopes.
 - Player.selectedItem is not a getter property instead of a field. We might need to document selectedItemState and other related new fields.

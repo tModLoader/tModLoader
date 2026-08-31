@@ -153,6 +153,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 		SetStaticDefaults();
 		NPCID.Search.Add(FullName, Type);
 		_ = DeathMessage;
+		Lang.RegisterGlobalSubstitution($"NPCFirstName_{FullName}", () => NPC.GetFirstNPCNameOrNull(Type));
 	}
 
 	/// <summary>
