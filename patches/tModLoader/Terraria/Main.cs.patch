@@ -2435,7 +2435,7 @@
  							break;
  					}
 -
-+				*/ 
++				*/
 +				// TODO: Not really sure what these patches are trying to do.
 +				else {
 +					newMusic = MenuLoader.CurrentMenu.Music;
@@ -2868,10 +2868,10 @@
  		}
  
  		CurrentFrameFlags.AnyActiveBossNPC = anyActiveBossNPC;
-+		
++
 +		SystemLoader.PostUpdateNPCs();
 +		SystemLoader.PreUpdateGores();
-+		
++
  		if (netMode != 2) {
  			for (int m = 0; m < 600; m++) {
  				if (ignoreErrors) {
@@ -3084,20 +3084,7 @@
  		if (diff == 1)
  			baseColor = new Microsoft.Xna.Framework.Color((byte)((float)(int)mcColor.R * num3), (byte)((float)(int)mcColor.G * num3), (byte)((float)(int)mcColor.B * num3), mouseTextColor);
  
-@@ -17229,6 +_,7 @@
- 			rare = -12;
- 
- 		float knockBack = hoverItem.knockBack;
-+		/* // Fix #5302
- 		float num = 1f;
- 		if (hoverItem.melee && player[myPlayer].kbGlove)
- 			num += 1f;
-@@ -17241,10 +_,18 @@
- 
- 		if (hoverItem.ranged && player[myPlayer].shroomiteStealth)
- 			hoverItem.knockBack *= 1f + (1f - player[myPlayer].stealth) * 0.5f;
-+		*/
- 
+@@ -17245,6 +_,13 @@
  		int numLines = 1;
  		string[] mouseTextTooltipLine_Text = _mouseTextTooltipLine_Text;
  		Microsoft.Xna.Framework.Color[] mouseTextTooltipLine_Color = _mouseTextTooltipLine_Color;
@@ -3823,7 +3810,7 @@
 +				toolTipNames[numLines] = "PrefixAccMeleeSpeed";
  				numLines++;
  			}
-+			
++
 +			prefixlineIndex = numLines;
  		}
  
@@ -5058,9 +5045,9 @@
 +
  		reforgeItem.ResetPrefix();
  		reforgeItem.Prefix(-2, out var rolledPrefixIsTopTier);
-+		
++
 +		ItemLoader.PostReforge(reforgeItem);
-+		
++
  		PopupText.NewText(rolledPrefixIsTopTier ? PopupTextContext.ItemReforge_Best : PopupTextContext.ItemReforge, reforgeItem, LocalPlayer.Center, reforgeItem.stack, noStack: true);
  		if (rolledPrefixIsTopTier) {
  			SoundEngine.PlaySound(SoundID.BestReforge);
@@ -6035,7 +6022,15 @@
  				array4[num5 - 1] = 16;
  				for (int num24 = 0; num24 < num5; num24++) {
  					array7[num24] = 0.6f;
-@@ -43149,8 +_,12 @@
+@@ -43143,14 +_,19 @@
+ 				}
+ 
+ 				num25++;
+-				string textValue = Language.GetTextValue("UI.MinimapFrame_" + MinimapFrameManagerInstance.ActiveSelectionKeyName);
++				// Vanilla code: string textValue = Language.GetTextValue("UI.MinimapFrame_" + MinimapFrameManagerInstance.ActiveSelectionKeyName);
++				string textValue = MinimapFrameManagerInstance.ActiveSelectionDisplayName;
+ 				array9[num25] = Language.GetTextValue("UI.SelectMapBorder", textValue);
+ 				if (selectedMenu == num25)
  					MinimapFrameManagerInstance.CycleSelection();
  
  				num25++;
@@ -6259,7 +6254,7 @@
 +			// ModPack
 +			if (ModOrganizer.ModPackActive != null) {
 +				var font = FontAssets.MouseText.Value;
-+				string modpackText = Language.GetTextValue("tModLoader.CurrentModPack", Path.GetFileName(ModOrganizer.ModPackActive));
++				string modpackText = Language.GetTextValue("tModLoader.CurrentModPack", Path.GetFileNameWithoutExtension(ModOrganizer.ModPackActive));
 +				var packOrigin = font.MeasureString(modpackText);
 +
 +				spriteBatch.DrawString(font, modpackText, new Vector2(packOrigin.X + num + 10f, screenHeight - packOrigin.Y + num2 - 2f - (int)upBump), color, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);

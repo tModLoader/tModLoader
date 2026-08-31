@@ -1710,6 +1710,8 @@ Mods: {
 			// NounE: fish
 			// NounE$Collective: School
 		}
+
+		MinimapFrames.ExampleMinimapFrame.DisplayName: Example Mod
 	}
 }
 
