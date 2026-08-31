@@ -174,6 +174,7 @@ public abstract class ModTile : ModBlockType
 
 	/// <summary>
 	/// Whether or not the smart interact function can select this tile. Useful for things like chests. Defaults to false.
+	/// <para/> Any tile used in as a crafting station in a recipe will automatically behave this way as well.
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>
