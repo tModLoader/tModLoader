@@ -6226,7 +6226,7 @@
  			PlaceThing_Tiles_TryPlacing(tileToCreate, overrideCanPlace, forcedRandom, data, previewPlaceStyle);
  		}
  	}
-@@ -32113,7 +_,11 @@
+@@ -32113,7 +_,14 @@
  		if (overrideCanPlace.HasValue) {
  			canPlace = overrideCanPlace.Value;
  		}
@@ -6234,7 +6234,9 @@
 +			canPlace = false;
 +			// TODO: CanPlace hook that allows forcing canPlace to true, rather than just preventing placement.
 +		}
--		else if (TileObjectData.CustomPlace(tileToCreate, placeStyle) && tileToCreate != 82 && tileToCreate != 227 && tileToCreate != 4) {
++		/*
+ 		else if (TileObjectData.CustomPlace(tileToCreate, placeStyle) && tileToCreate != 82 && tileToCreate != 227 && tileToCreate != 4) {
++		*/
 +		else if (TileObjectData.CustomPlace(tileToCreate, placeStyle) && tileToCreate != 82 && tileToCreate != 227 && !TileID.Sets.Torches[tileToCreate]) {
  			newObjectType = true;
  			canPlace = TileObject.CanPlace(tileTargetX, tileTargetY, (ushort)tileToCreate, placeStyle, direction, out data, onlyCheck: false, forcedRandom);
