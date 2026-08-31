@@ -9,7 +9,7 @@
  {
  	private delegate void MouseElementEvent(UIElement element, UIMouseEvent evt);
  
-@@ -77,8 +_,14 @@
+@@ -77,8 +_,15 @@
  	{
  		LeftMouse.Clear();
  		RightMouse.Clear();
@@ -19,7 +19,8 @@
  	}
  
 +	/// <summary>
-+	/// Whether any UI element is currently holding the mouse capture, that is, a mouse button was pressed down over an element and hasn't been released yet. Useful to prevent gameplay interactions while the cursor is over UI.
++	/// Whether any UI element in this UserInterface is currently holding the mouse capture, that is, a mouse button was pressed down over an element and hasn't been released yet.
++	/// <para/> For most situations, <see cref="Player.mouseInterface"/> (<c>Main.LocalPlayer.mouseInterface</c>) should be used instead.
 +	/// </summary>
  	public bool MouseCaptured()
  	{
