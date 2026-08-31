@@ -2697,14 +2697,15 @@
  	public static int FindFirstNPC(int Type)
  	{
  		for (int i = 0; i < Main.maxNPCs; i++) {
-@@ -75514,6 +_,14 @@
+@@ -75514,6 +_,15 @@
  		return -1;
  	}
  
 +	/// <summary>
-+	/// Gives this NPC the provided buff. This accounts for if the NPC is immune to the buff.
-+	/// <br/> If the NPC already has the buff, the re-apply logic will happen. Vanilla buff types are found in <see cref="BuffID"/> and modded buffs are typically retrieved using <see cref="ModContent.BuffType{T}"/>.
-+	/// <br/> The quiet parameter will determine if the network sync message should happen. This should always stay false.
++	/// Gives this NPC the provided buff for the provided duration. This accounts for if the NPC is immune to the buff.
++	/// <para/> If the NPC already has the buff, the re-apply logic will happen. Vanilla buff types are found in <see cref="BuffID"/> and modded buffs are typically retrieved using <see cref="ModContent.BuffType{T}"/>.
++	/// <para/> The quiet parameter will determine if the network sync message should be skipped. This should always stay false.
++	/// <para/> For buffs that apply constantly or potentially each game update, such as a buff applied by nearby tiles, consider using <see cref="TryAddingRepeatedBuff(int, int, int)"/> instead to reduce network spam.
 +	/// </summary>
 +	/// <param name="type">The buff type</param>
 +	/// <param name="time">The desired buff time in ticks. 60 ticks is 1 second</param>
@@ -3004,18 +3005,19 @@
  		bool result = false;
  		if (type == 2 || type == -43 || type == 190 || type == 191 || type == 192 || type == 193 || type == 194 || type == 317 || type == 318 || type == 133)
  			result = true;
-@@ -78332,7 +_,13 @@
+@@ -78332,7 +_,14 @@
  		}
  	}
  
 -	private void TryAddingRepeatedBuff(int buffId, int timeToGive, int lowThresholdUndeathToAllowBuff = 10)
 +	/// <summary>
-+	/// Adds <paramref name="buffId"/> for <paramref name="timeToGive"/> ticks if the NPC doesn't already have it or if its remaining duration is at or below <paramref name="lowThresholdUndeathToAllowBuff"/>. Useful for town NPC comfort buffs, such as the Campfire buff.
++	/// Gives this NPC the provided buff, but only if the NPC doesn't already have it or if its remaining duration is at or below <paramref name="lowThresholdUndeathToAllowBuff"/>.
++	/// <para/> This is useful for buffs that could potentially be constantly applied to an NPC each game update. By using this method rather than <see cref="AddBuff(int, int, bool)"/>, the buff will not trigger network syncing to happen every game update as the buff is constantly re-applied. For example, <see cref="BuffID.Stinky"/> and <see cref="BuffID.Shimmer"/> are both applied in this manner.
 +	/// </summary>
 +	/// <param name="buffId">The buff type</param>
 +	/// <param name="timeToGive">The desired buff time in ticks. 60 ticks is 1 second</param>
 +	/// <param name="lowThresholdUndeathToAllowBuff">The remaining duration under which the buff will be reapplied.</param>
-+	public void TryAddingRepeatedBuff(int buffId, int timeToGive, int lowThresholdUndeathToAllowBuff = 10) // TML: Made public so mods can use it for town NPC or other repeated buffs
++	public void TryAddingRepeatedBuff(int buffId, int timeToGive, int lowThresholdUndeathToAllowBuff = 10) // TML: Made public
  	{
  		if (!buffImmune[buffId]) {
  			int num = FindBuffIndex(buffId);
