@@ -7177,15 +7177,20 @@
  		if (!mount.Active || (mount.Type != 62 && mount.Type != 63) || !sItem.melee || sItem.noMelee || sItem.noUseGraphic)
  			return;
  
-@@ -36570,6 +_,8 @@
- 					itemRectangle.X += 10;
- 			}
- 		}
-+
-+		ItemLoader.UseItemHitbox(sItem, this, ref itemRectangle, ref dontAttack);
- 	}
+@@ -36494,6 +_,13 @@
  
- 	private void ItemCheck_UseDemonHeart(Item sItem)
+ 	private void ItemCheck_GetMeleeHitbox(Item sItem, Rectangle heldItemFrame, out bool dontAttack, out Rectangle itemRectangle)
+ 	{
++		// TML: Wrapper approach to handle the early returns to call UseItemHitbox reliably.
++		ItemCheck_GetMeleeHitbox_Inner(sItem, heldItemFrame, out dontAttack, out itemRectangle);
++		ItemLoader.UseItemHitbox(sItem, this, ref itemRectangle, ref dontAttack);
++	}
++
++	private void ItemCheck_GetMeleeHitbox_Inner(Item sItem, Rectangle heldItemFrame, out bool dontAttack, out Rectangle itemRectangle)
++	{
+ 		dontAttack = false;
+ 		itemRectangle = new Rectangle((int)itemLocation.X, (int)itemLocation.Y, 32, 32);
+ 		if (!Main.dedServ) {
 @@ -36645,29 +_,75 @@
  		releaseUseItem = false;
  	}
