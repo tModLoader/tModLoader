@@ -151,6 +151,25 @@ public abstract class GlobalTile : GlobalBlockType
 	{
 	}
 
+	/// <summary>
+	/// Allow you to adjust the glow of the tile.
+	/// </summary>
+	/// <param name="i">The x position in tile coordinates.</param>
+	/// <param name="j">The y position in tile coordinates.</param>
+	/// <param name="type">The tile type</param>
+	/// <param name="width"></param>
+	/// <param name="offsetY"></param>
+	/// <param name="height"></param>
+	/// <param name="tileFrameX"></param>
+	/// <param name="tileFrameY"></param>
+	/// <param name="glowTexture"></param>
+	/// <param name="glowSourceRect"></param>
+	/// <param name="glowColor"></param>
+	public virtual void SetGlow(int i, int j, int type, int width, int offsetY, int height, short tileFrameX, short tileFrameY, ref Texture2D glowTexture, ref Rectangle glowSourceRect, ref Color glowColor)
+	{
+
+	}
+
 	/// <inheritdoc cref="ModTile.DrawEffects(int, int, SpriteBatch, ref TileDrawInfo)"/>
 	public virtual void DrawEffects(int i, int j, int type, SpriteBatch spriteBatch, ref TileDrawInfo drawData)
 	{
