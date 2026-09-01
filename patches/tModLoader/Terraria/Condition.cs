@@ -111,7 +111,9 @@ public sealed record Condition(LocalizedText Description, Func<bool> Predicate)
 	public static readonly Condition DownedKingSlime =			new("Conditions.DownedKingSlime",			() => NPC.downedSlimeKing);
 	public static readonly Condition DownedEyeOfCthulhu =		new("Conditions.DownedEyeOfCthulhu",		() => NPC.downedBoss1);
 	public static readonly Condition DownedEowOrBoc =			new("Conditions.DownedBoss2",				() => NPC.downedBoss2);
+	/// <summary> Checks NPC.downedBoss2 and !WorldGen.crimson, not actually if the boss has been defeated </summary>
 	public static readonly Condition DownedEaterOfWorlds =		new("Conditions.DownedEaterOfWorlds",		() => NPC.downedBoss2 && !WorldGen.crimson);
+	/// <summary> Checks NPC.downedBoss2 and !WorldGen.crimson, not actually if the boss has been defeated </summary>
 	public static readonly Condition DownedBrainOfCthulhu =		new("Conditions.DownedBrainOfCthulhu",		() => NPC.downedBoss2 && WorldGen.crimson);
 	public static readonly Condition DownedQueenBee =			new("Conditions.DownedQueenBee",			() => NPC.downedQueenBee);
 	public static readonly Condition DownedSkeletron =			new("Conditions.DownedSkeletron",			() => NPC.downedBoss3);
