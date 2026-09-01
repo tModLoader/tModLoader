@@ -1,14 +1,15 @@
 --- src/TerrariaNetCore/Terraria/Graphics/Light/LightingEngine.cs
 +++ src/tModLoader/Terraria/Graphics/Light/LightingEngine.cs
-@@ -4,6 +_,7 @@
+@@ -4,7 +_,8 @@
  using ReLogic.Threading;
  using Terraria.Graphics.Capture;
  using Terraria.Map;
 +using Terraria.ModLoader;
+ using Terraria.Testing;
  
  namespace Terraria.Graphics.Light;
  
-@@ -167,6 +_,13 @@
+@@ -170,6 +_,13 @@
  		}
  
  		Player perspectivePlayer = Main.SceneMetrics.PerspectivePlayer;
@@ -22,7 +23,7 @@
  		if (perspectivePlayer.nightVision) {
  			workingLightMap.LightDecayThroughAir *= 1.03f;
  			workingLightMap.LightDecayThroughSolid *= 1.03f;
-@@ -189,6 +_,15 @@
+@@ -192,6 +_,15 @@
  
  		workingLightMap.LightDecayThroughAir *= Main.SceneState.airLightDecay;
  		workingLightMap.LightDecayThroughSolid *= Main.SceneState.solidLightDecay;

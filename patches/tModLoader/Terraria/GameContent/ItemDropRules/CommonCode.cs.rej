@@ -1,0 +1,9 @@
+@@ -37,7 +_,7 @@
+ 			Main.item[num].TurnToAir();
+ 		}
+ 		else {
+-			DropItemFromNPC(npc, itemId, stack);
++			_DropItemFromNPC(npc, itemId, stack);
+ 		}
+ 
+ 		npc.value = 0f;

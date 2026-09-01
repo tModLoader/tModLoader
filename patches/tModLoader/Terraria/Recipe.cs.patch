@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Recipe.cs
 +++ src/tModLoader/Terraria/Recipe.cs
-@@ -1,15 +_,19 @@
+@@ -1,16 +_,20 @@
  using System;
  using System.Collections.Generic;
 +using System.Linq;
@@ -12,6 +12,7 @@
 +using Terraria.ModLoader;
 +using Terraria.ModLoader.IO;
 +using Terraria.ModLoader.Utilities;
+ using Terraria.Testing;
  using Terraria.UI;
  
  namespace Terraria;
@@ -21,13 +22,13 @@
  {
  	public struct RequiredItemEntry
  	{
-@@ -50,32 +_,44 @@
+@@ -51,32 +_,44 @@
  		}
  	}
  
 -	public static int maxRequirements = 15;
 +	internal static int maxVanillaRequirements = 15;
- 	public static int maxRecipes = 3600;
+ 	public static int maxRecipes = 3700;
  	public static int numRecipes;
  	public static bool[] TileUsedInRecipes = new bool[TileID.Count];
  	public static List<int>[] TileCountsAs = new List<int>[TileID.Count];
@@ -82,7 +83,7 @@
  	public bool DoesNotNeedTileOrLiquid {
  		get {
  			if (requiredTile < 0 && !needHoney && !needWater)
-@@ -89,7 +_,7 @@
+@@ -90,7 +_,7 @@
  	{
  		StringBuilder stringBuilder = new StringBuilder();
  		stringBuilder.AppendLine(createItem.ToString());
@@ -91,7 +92,7 @@
  		foreach (Item item in array) {
  			if (item.IsAir)
  				break;
-@@ -97,7 +_,7 @@
+@@ -98,7 +_,7 @@
  			stringBuilder.AppendLine("  " + item.ToString());
  		}
  
@@ -100,7 +101,7 @@
  		foreach (int num in array2) {
  			if (num < 0)
  				break;
-@@ -108,9 +_,9 @@
+@@ -109,9 +_,9 @@
  		return stringBuilder.ToString();
  	}
  
@@ -112,7 +113,7 @@
  			if (acceptedGroups[i] == -1) {
  				acceptedGroups[i] = group.RegisteredId;
  				break;
-@@ -120,12 +_,8 @@
+@@ -121,12 +_,8 @@
  
  	public bool ProcessGroupsForText(int type, out string theText)
  	{
@@ -127,7 +128,7 @@
  				theText = RecipeGroup.recipeGroups[num].GetText();
  				return true;
  			}
-@@ -135,7 +_,7 @@
+@@ -136,7 +_,7 @@
  		return false;
  	}
  
@@ -136,7 +137,7 @@
  	{
  		if (customShimmerResults == null)
  			customShimmerResults = new List<Item>();
-@@ -144,9 +_,10 @@
+@@ -145,9 +_,10 @@
  		item.SetDefaults(itemType);
  		item.stack = itemStack;
  		customShimmerResults.Add(item);
@@ -148,7 +149,7 @@
  	public Recipe()
  	{
  		for (int i = 0; i < maxRequirements; i++) {
-@@ -154,10 +_,18 @@
+@@ -155,10 +_,18 @@
  			acceptedGroups[i] = -1;
  		}
  	}
@@ -168,7 +169,7 @@
  			RequiredItemEntry requiredItemEntry = requiredItemQuickLookup[i];
  			if (requiredItemEntry.itemIdOrRecipeGroup != 0) {
  				requiredItemEntry.stack -= GetIngredientCraftingDiscount(player, requiredItemEntry);
-@@ -173,6 +_,7 @@
+@@ -174,6 +_,7 @@
  
  	private int GetIngredientCraftingDiscount(Player player, RequiredItemEntry req)
  	{
@@ -176,7 +177,7 @@
  		int num = 0;
  		if (alchemy && player.alchemyTable) {
  			for (int i = 0; i < req.stack; i++) {
-@@ -182,6 +_,9 @@
+@@ -183,6 +_,9 @@
  		}
  
  		return num;
@@ -186,7 +187,7 @@
  	}
  
  	public static void UpdateRecipeList()
-@@ -204,7 +_,14 @@
+@@ -205,7 +_,14 @@
  			if (recipe.createItem.type == 0)
  				break;
  
@@ -201,7 +202,7 @@
  				AddToAvailableRecipes(i);
  		}
  
-@@ -297,9 +_,35 @@
+@@ -298,9 +_,35 @@
  		CollectItems(player.inventory, 58);
  		CollectItemsFromChests(player);
  		AddFakeCountsForItemGroups();
@@ -237,7 +238,7 @@
  	private static void CollectItemsFromChests(Player player)
  	{
  		_recipeChests.Clear();
-@@ -336,8 +_,17 @@
+@@ -337,8 +_,17 @@
  
  	private static void CollectItems(Item[] currentInventory, int slotCap)
  	{
@@ -255,7 +256,7 @@
  			if (item.stack > 0) {
  				int num = item.stack;
  				if (_ownedItems.TryGetValue(item.type, out var value))
-@@ -361,7 +_,10 @@
+@@ -363,7 +_,10 @@
  			if (recipe.createItem.type == 0)
  				break;
  
@@ -267,7 +268,7 @@
  				RequiredItemEntry requiredItemEntry = recipe.requiredItemQuickLookup[j];
  				if (requiredItemEntry.itemIdOrRecipeGroup == 0)
  					break;
-@@ -434,6 +_,8 @@
+@@ -438,6 +_,8 @@
  		RecipeGroups.Fragment = new RecipeGroup(Lang.misc[51].Key, 3458, 3456, 3457, 3459).Register();
  		RecipeGroups.PressurePlate = new RecipeGroup(Lang.misc[38].Key, 542, 852, 543, 541, 1151, 529, 853, 4261).Register();
  		RecipeGroups.Jellyfish = new RecipeGroup("Misc.Jellyfish", 2436, 2437, 2438).Register();
@@ -276,7 +277,7 @@
  	}
  
  	public static void UpdateItemVariants()
-@@ -441,8 +_,9 @@
+@@ -445,8 +_,9 @@
  		for (int i = 0; i < maxRecipes; i++) {
  			Recipe obj = Main.recipe[i];
  			obj.createItem.Refresh();
@@ -288,7 +289,7 @@
  				array[j].Refresh();
  			}
  		}
-@@ -497,6 +_,7 @@
+@@ -501,6 +_,7 @@
  
  	public static void SetupRecipes()
  	{
@@ -296,7 +297,7 @@
  		Array.Clear(TileUsedInRecipes, 0, TileUsedInRecipes.Length);
  		SetupTileInheritance();
  		int num = 5;
-@@ -15022,11 +_,19 @@
+@@ -15153,11 +_,19 @@
  		AddRecipe();
  		CreateReverseWallRecipes();
  		CreateReversePlatformRecipes();
@@ -316,7 +317,7 @@
  		foreach (RecipeGroup value in RecipeGroup.recipeGroups.Values) {
  			value.SortDecraftingEntries();
  		}
-@@ -15036,19 +_,14 @@
+@@ -15167,19 +_,14 @@
  
  	private static void CreateRequiredItemQuickLookups()
  	{
@@ -340,7 +341,7 @@
  					RecipeGroup recipeGroup = RecipeGroup.recipeGroups[num];
  					if (recipeGroup.ValidItems.Contains(item.type))
  						requiredItemEntry.itemIdOrRecipeGroup = recipeGroup.GetGroupFakeItemId();
-@@ -15062,8 +_,8 @@
+@@ -15193,8 +_,8 @@
  	private static void UpdateMaterialFieldForAllRecipes()
  	{
  		for (int i = 0; i < numRecipes; i++) {
@@ -351,7 +352,7 @@
  			}
  
  			Main.recipe[i].createItem.Refresh(onlyIfVariantChanged: false);
-@@ -15075,7 +_,11 @@
+@@ -15206,7 +_,11 @@
  		bool[] array = new bool[RecipeGroup.nextRecipeGroupIndex];
  		for (int i = 0; i < numRecipes; i++) {
  			Recipe recipe = Main.recipe[i];
@@ -364,7 +365,7 @@
  				RequiredItemEntry requiredItemEntry = recipe.requiredItemQuickLookup[j];
  				if (requiredItemEntry.itemIdOrRecipeGroup == 0)
  					break;
-@@ -15099,7 +_,10 @@
+@@ -15230,7 +_,10 @@
  
  	public static void UpdateWhichItemsAreCrafted()
  	{
@@ -375,7 +376,7 @@
  			if (!Main.recipe[i].notDecraftable)
  				ItemID.Sets.IsCrafted[Main.recipe[i].createItem.type] = i;
  
-@@ -15108,7 +_,15 @@
+@@ -15239,7 +_,15 @@
  
  			if (Main.recipe[i].corruption)
  				ItemID.Sets.IsCraftedCorruption[Main.recipe[i].createItem.type] = i;
@@ -391,7 +392,7 @@
  	}
  
  	private static void AddSolarFurniture()
-@@ -16730,7 +_,7 @@
+@@ -16861,7 +_,7 @@
  	{
  		int num = numRecipes;
  		for (int i = 0; i < num; i++) {
@@ -400,7 +401,7 @@
  				currentRecipe.createItem.SetDefaults(Main.recipe[i].requiredItem[0].type);
  				currentRecipe.createItem.stack = Main.recipe[i].requiredItem[0].stack;
  				currentRecipe.requiredItem[0].SetDefaults(Main.recipe[i].createItem.type);
-@@ -16740,10 +_,12 @@
+@@ -16871,10 +_,12 @@
  				Recipe recipe = Main.recipe[numRecipes - 1];
  				for (int num2 = numRecipes - 2; num2 > i; num2--) {
  					Main.recipe[num2 + 1] = Main.recipe[num2];
@@ -413,7 +414,7 @@
  			}
  		}
  	}
-@@ -16752,7 +_,7 @@
+@@ -16883,7 +_,7 @@
  	{
  		int num = numRecipes;
  		for (int i = 0; i < num; i++) {
@@ -422,7 +423,7 @@
  				currentRecipe.createItem.SetDefaults(Main.recipe[i].requiredItem[0].type);
  				currentRecipe.createItem.stack = Main.recipe[i].requiredItem[0].stack;
  				currentRecipe.requiredItem[0].SetDefaults(Main.recipe[i].createItem.type);
-@@ -16762,15 +_,17 @@
+@@ -16893,15 +_,17 @@
  				Recipe recipe = Main.recipe[numRecipes - 1];
  				for (int num2 = numRecipes - 2; num2 > i; num2--) {
  					Main.recipe[num2 + 1] = Main.recipe[num2];
@@ -441,7 +442,7 @@
  	{
  		if (ingredients.Length == 1) {
  			ingredients = new int[2] {
-@@ -16789,22 +_,83 @@
+@@ -16920,22 +_,83 @@
  		}
  	}
  

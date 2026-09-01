@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/GameContent/PlayerEyeHelper.cs
 +++ src/tModLoader/Terraria/GameContent/PlayerEyeHelper.cs
-@@ -2,22 +_,48 @@
+@@ -2,23 +_,49 @@
  
  public struct PlayerEyeHelper
  {
@@ -48,10 +48,11 @@
 +		/// <summary>
 +		/// <br/> Out of 120 ticks, 19 of them will have eyes closed; otherwise eyes are half closed.
 +		/// </summary>
- 		IsPoisoned
+ 		IsPoisoned,
+ 		LowMana
  	}
  
-@@ -25,8 +_,22 @@
+@@ -26,8 +_,22 @@
  	private int _timeInState;
  	private const int TimeToActDamaged = 20;
  
@@ -74,7 +75,7 @@
  	public void Update(Player player)
  	{
  		SetStateByPlayerInfo(player);
-@@ -109,7 +_,7 @@
+@@ -116,7 +_,7 @@
  		}
  	}
  

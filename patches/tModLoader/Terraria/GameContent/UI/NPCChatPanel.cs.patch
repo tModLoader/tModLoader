@@ -1,41 +1,38 @@
 --- src/TerrariaNetCore/Terraria/GameContent/UI/NPCChatPanel.cs
 +++ src/tModLoader/Terraria/GameContent/UI/NPCChatPanel.cs
-@@ -1,6 +_,8 @@
+@@ -1,7 +_,8 @@
  using System;
 +using System.Collections;
  using System.Collections.Generic;
  using Microsoft.Xna.Framework;
-+using Microsoft.Xna.Framework.Graphics;
+ using Microsoft.Xna.Framework.Graphics;
  using ReLogic.Graphics;
  using ReLogic.Localization.IME;
  using ReLogic.OS;
-@@ -46,16 +_,24 @@
+@@ -47,13 +_,21 @@
  			return;
  		}
  
-+		// TML: Moved color definition up.
++		// TML: Moved color2 definition up.
 +		int num = (mouseTextColor * 2 + 255) / 3;
-+		Color color = new Color(num, num, num, num);
-+		PrepareText(color);
++		Color color2 = new Color(num, num, num, num);
++		PrepareText(color2);
 +		/*
  		PrepareText();
 +		*/
  		PrepareInteractions();
  		PrepareVirtualKeyboard();
- 		Color chatBack = new Color(200, 200, 200, 200);
+ 		Color color = new Color(200, 200, 200, 200);
 +		/*
  		int num = (mouseTextColor * 2 + 255) / 3;
- 		Color color = new Color(num, num, num, num);
+ 		Color color2 = new Color(num, num, num, num);
 +		*/
  		Point point = new Point(500, 500);
  		Rectangle rectangle = new Rectangle(Main.screenWidth / 2 - point.X / 2, 100, point.X, 30);
  		rectangle.Height += 30 * _textDisplayCache.AmountOfLines;
 -		rectangle.Height += 30 * _neededInteractionLines + Math.Max(0, 2 * (_neededInteractionLines - 1));
 +		rectangle.Height += 20 * Math.Min(_neededInteractionLines, 8) + Math.Max(0, 2 * (Math.Min(_neededInteractionLines, 8) - 1)); // TML: changed +30 to +20. Capped the _neededInteractionLines to 8 (32 buttons).
- 		Utils.DrawInvBG(Main.spriteBatch, rectangle);
- 		DrawText(color, rectangle);
- 		Main.DrawNPCPortrait(chatBack, rectangle.TopLeft());
-@@ -69,15 +_,19 @@
+@@ -77,15 +_,19 @@
  	private void DrawButtons(Rectangle panelArea, Color chatColor)
  	{
  		UILinkPointNavigator.Shortcuts.NPCCHAT_ButtonsNew = true;
@@ -57,7 +54,7 @@
  			byte b = mouseTextColor;
  			chatColor = new Color(b, (int)((double)(int)b / 1.1), (int)b / 2, b);
  			if (num % 4 == 0) {
-@@ -107,6 +_,8 @@
+@@ -115,6 +_,8 @@
  			if (flag)
  				num2 = num;
  
@@ -66,7 +63,7 @@
  			ChatManager.DrawColorCodedStringShadow(Main.spriteBatch, value, text, vector3, baseColor, 0f, origin, vector2 * num5);
  			ChatManager.DrawColorCodedString(Main.spriteBatch, value, text, vector3, chatColor, 0f, origin, vector2 * num5);
  			UILinkPointNavigator.SetPosition(2500 + num, rectangle.Center.ToVector2());
-@@ -125,7 +_,11 @@
+@@ -133,7 +_,11 @@
  				num2 = num;
  				if (Main.mouseLeft && Main.mouseLeftRelease) {
  					Main.mouseLeftRelease = false;
@@ -78,7 +75,7 @@
  				}
  			}
  		}
-@@ -139,10 +_,20 @@
+@@ -147,10 +_,20 @@
  	private void PrepareInteractions()
  	{
  		_interactions.Clear();
@@ -99,7 +96,7 @@
  
  		int count = _interactions.Count;
  		_neededInteractionLines = (int)Math.Ceiling((float)count / 4f);
-@@ -159,11 +_,11 @@
+@@ -167,11 +_,11 @@
  		UIVirtualKeyboard.OffsetDown = num;
  	}
  
@@ -113,7 +110,7 @@
  	}
  
  	private void OverrideChatTextWithShenanigans(ref string chatTextToShow)
-@@ -187,9 +_,15 @@
+@@ -195,9 +_,15 @@
  	{
  		Vector2 vector = textArea.TopLeft() + new Vector2(20f, 20f);
  		DynamicSpriteFont value = FontAssets.MouseText.Value;
@@ -129,7 +126,7 @@
  			string text = textLines[i];
  			if (text != null) {
  				if (allowRichText)
-@@ -197,13 +_,30 @@
+@@ -205,13 +_,30 @@
  				else
  					Utils.DrawBorderStringFourWay(Main.spriteBatch, value, text, vector.X, vector.Y + (float)(i * 30), textColor, Color.Black, Vector2.Zero);
  			}

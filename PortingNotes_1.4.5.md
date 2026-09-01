@@ -139,8 +139,19 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Player.setBonus is unused by vanilla. We will likely remove it (and comment out UpdateArmorSetsOld since it is misleading) and migrate all ExampleMod set bonuses to the new system. We'll need examples of various common set bonus setups (multiple helments, partial sets, typical head/chest/leg set, etc.)
 - Check ModifyEquipTextureDraw to determine if there is any other locations where the hook needs to be applied in PlayerDrawLayers.cs
 - PlayerDrawLayers.cs DrawPlayer_13_Leggings
+
+## 1.4.5.8
 - EmoteBubble.DeserializeNetAnchor and #WorldUIAnchorProjectileSyncFix need to use the new ProjectileKey system
 - Should NetMessage.LogMessageError Invariant.Assert be directed to ModNet.LogMessageError somehow?
+- ItemID.Sets.DuplicationMenuToolsFilter needs 6174
+- TileDrawing.IsTileDangerous vanilla now has tilex/y, but different order, so we might need to adjust TML variant or other callsites
+- Need to handle public static ItemVariantCondition SkyblockWorld;, SkyblockWorld = Condition.SkyblockWorld;
+- BannerSystem.newBanner is new, needs NPCLoader.ResizeArrays, make public?
+- Why did ProjectileID.SummonTagDamageMultiplier change?
+- NeedsUUID removed. Investigate
+- Clound.cs, there is now CloudID.Sets.RareClouds_Normal, CloudID.Sets.RareClouds_Celebration for more control. Document and maybe use in ExampleMod.
+- public static LanguageSearchFilter CreateDialogFilter(string startsWith, object substitutions) removed from Lang.cs? Could still be useful, add back into Lang.TML.cs?
+- _unusedResearchLine removed from MouseText_DrawItemTooltip_GetLinesInfo, verify other callsites
 
 # New Fields that might need more documentation
 
@@ -153,6 +164,13 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Add docs for new GetItemSettings parameters
 - Main.menuChat
 - Need to fix documentation for various secret and special seeds, like Main.specialSeedWorld. Need to change secret to special in most cases, and fix wiki links.
+
+## 1.4.5.8
+- Document EyeState.LowMana
+- Document MountID.DoesNotOverrideWings
+- Document NPCID.BoundTownNPCs, SyncAnchor
+- Document ProjectileID.DespawnItemIcon, DespawnItemGivesItemBack, DisplayDollDrawUseStyle
+- ProjectileID.FixedSelfDamageForPlayers, SkipDamage_EVP added
 
 # Changes that need to be communicated to modders
 
@@ -192,6 +210,13 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Main.GameModeInfo.IsJourneyMode -> Main.IsJourneyMode
 - Item.SetDefaults() -> Item.SetDefaults(0)
 - Item.SetDefaults(int, bool) -> Item.SetDefaults(int)
+
+## 1.4.5.8
+- MessageID.Dodge/Unknown62 now has proper vanilla name: SyncDodge. Needs tModPorter
+- MessageID.InstancedItem renamed to SpawnInstancedItem. Needs tModPorter
+- SyncItemsWithShimmer->SyncItemsWithShimmerDeprecated. Needs tModPorter
+- SyncItemCannotBeTakenByEnemies->SyncItemCannotBeTakenByEnemiesDeprecated. Needs tModPorter
+- TileID.Sets.UsesADifferentTileTypeForNPCSpawning -> InheritTypeOfTileBelowForNPCSpawning. tModporter
 
 # ExampleMod TODOs
 - Verify that ExampleZombieThief still works with changes

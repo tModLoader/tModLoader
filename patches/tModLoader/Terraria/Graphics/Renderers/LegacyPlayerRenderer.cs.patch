@@ -1,14 +1,15 @@
 --- src/TerrariaNetCore/Terraria/Graphics/Renderers/LegacyPlayerRenderer.cs
 +++ src/tModLoader/Terraria/Graphics/Renderers/LegacyPlayerRenderer.cs
-@@ -5,6 +_,7 @@
+@@ -5,7 +_,8 @@
  using Terraria.DataStructures;
  using Terraria.GameContent;
  using Terraria.ID;
 +using Terraria.ModLoader;
+ using Terraria.Testing;
  
  namespace Terraria.Graphics.Renderers;
  
-@@ -33,6 +_,7 @@
+@@ -34,6 +_,7 @@
  
  	public void DrawPlayerHead(Camera camera, Player drawPlayer, Vector2 position, float alpha = 1f, float scale = 1f, Color borderColor = default(Color))
  	{
@@ -16,7 +17,7 @@
  		if (!drawPlayer.ShouldNotDraw) {
  			_drawData.Clear();
  			_dust.Clear();
-@@ -51,6 +_,9 @@
+@@ -52,6 +_,9 @@
  			CreateOutlines(alpha, scale, borderColor);
  			PlayerDrawHeadLayers.DrawPlayer_RenderAllLayers(ref drawinfo);
  		}
@@ -26,7 +27,7 @@
  	}
  
  	private void CreateOutlines(float alpha, float scale, Color borderColor)
-@@ -115,6 +_,12 @@
+@@ -116,6 +_,12 @@
  
  	public void DrawPlayer(Camera camera, Player drawPlayer, Vector2 position, float rotation, Vector2 rotationOrigin, float shadow = 0f, float scale = 1f)
  	{
@@ -39,7 +40,7 @@
  		if (drawPlayer.ShouldNotDraw)
  			return;
  
-@@ -122,12 +_,36 @@
+@@ -123,12 +_,36 @@
  		_drawData.Clear();
  		_dust.Clear();
  		_gore.Clear();
@@ -76,7 +77,7 @@
  		PlayerDrawLayers.DrawPlayer_RenderAllLayers(ref drawInfo);
  		if (!drawInfo.drawPlayer.mount.Active || !drawInfo.drawPlayer.UsingSuperCart || OverrideHeldProjectile != null)
  			return;
-@@ -251,6 +_,9 @@
+@@ -252,6 +_,9 @@
  		}
  		else {
  			PrepareDrawForFrame(drawPlayer);

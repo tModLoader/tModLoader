@@ -34,15 +34,14 @@
  
  	public static void Initialize()
  	{
-@@ -1707,6 +_,7 @@
- 
- 		hellPosition = num22;
- 		colorLookup[num22] = color11;
-+		modPosition = (ushort)(num22 + 1); // Added by TML.
+@@ -1709,5 +_,6 @@
+ 		hellPosition = num21;
+ 		colorLookup[num21] = color11;
++		modPosition = (ushort)(num21 + 1); // Added by TML.
  		snowTypes = new ushort[6];
  		snowTypes[0] = tileLookup[147];
  		snowTypes[1] = tileLookup[161];
-@@ -1811,10 +_,16 @@
+@@ -1828,10 +_,16 @@
  		if (baseType == 0) {
  			newColor = 0;
  			newLight = Light;
@@ -59,7 +58,7 @@
  	}
  
  	private static void GetTileType(int i, int j, Tile tileCache, ref int newColor, ref int newLight, ref int baseType, ref int baseOption)
-@@ -1875,7 +_,7 @@
+@@ -1892,7 +_,7 @@
  			int num = tileCache.liquidType();
  			baseType = liquidPosition + num;
  		}
@@ -68,7 +67,7 @@
  			int wall = tileCache.wall;
  			baseType = wallLookup[wall];
  			newColor = tileCache.wallColor();
-@@ -1916,7 +_,7 @@
+@@ -1933,7 +_,7 @@
  		if (j < Main.UnderworldLayer) {
  			byte b = 0;
  			if (!WorldGen.generatingWorld) {
@@ -77,7 +76,7 @@
  					for (int k = i - 36; k <= i + 30; k += 10) {
  						for (int l = j - 36; l <= j + 30; l += 10) {
  							int type = Main.Map[k, l].Type;
-@@ -2716,7 +_,10 @@
+@@ -2733,7 +_,10 @@
  					byte b6 = 0;
  					int num7;
  					ushort num8;
@@ -88,7 +87,7 @@
  						flag2 = false;
  						flag = false;
  						num7 = 0;
-@@ -2869,6 +_,8 @@
+@@ -2886,6 +_,8 @@
  
  			deflateStream.Dispose();
  			FileUtilities.WriteAllBytes(text, memoryStream.ToArray(), isCloudSave);
@@ -97,7 +96,7 @@
  		}
  
  		noStatusText = false;
-@@ -2877,6 +_,7 @@
+@@ -2894,6 +_,7 @@
  	public static void DecompressChunk(byte[] srcData, long srcLength, byte[] dstData, long dstLength, out long resultLength)
  	{
  		resultLength = 0L;
@@ -105,7 +104,7 @@
  		ZlibCodec zlibCodec = zlibDecompress;
  		zlibCodec.InitializeInflate();
  		zlibCodec.InputBuffer = srcData;
-@@ -2888,6 +_,18 @@
+@@ -2905,6 +_,18 @@
  		int num = zlibCodec.Inflate(FlushType.Finish);
  		if ((num == 0 || 1 == num) && zlibCodec.TotalBytesOut > 0)
  			resultLength = zlibCodec.TotalBytesOut;
@@ -124,7 +123,7 @@
  
  		for (int i = (int)resultLength; i < dstLength; i++) {
  			dstData[i] = 0;
-@@ -3105,6 +_,7 @@
+@@ -3122,6 +_,7 @@
  
  	public static void LoadMapVersion1(BinaryReader fileIO, int release)
  	{

@@ -1,37 +1,41 @@
 --- src/TerrariaNetCore/Terraria/Net/NetManager.cs
 +++ src/tModLoader/Terraria/Net/NetManager.cs
-@@ -1,5 +_,8 @@
+@@ -1,6 +_,9 @@
  using System.Collections.Generic;
  using System.IO;
 +using log4net.Core;
 +using Terraria.Localization;
 +using Terraria.ModLoader;
  using Terraria.Net.Sockets;
+ using Terraria.Testing;
  
  namespace Terraria.Net;
-@@ -51,6 +_,8 @@
+@@ -52,7 +_,9 @@
  
  	public void Broadcast(NetPacket packet, int ignoreClient = -1)
  	{
 +		LogSend(packet, ignoreClient: ignoreClient);
 +
+ 		Invariant.Assert(Main.dedServ, "Packets can only be broadcast from a server.");
  		for (int i = 0; i < 256; i++) {
  			if (i != ignoreClient && Netplay.Clients[i].IsConnected())
  				SendData(Netplay.Clients[i].Socket, packet);
-@@ -61,6 +_,8 @@
+@@ -63,7 +_,9 @@
  
  	public void Broadcast(NetPacket packet, BroadcastCondition conditionToBroadcast, int ignoreClient = -1)
  	{
 +		LogSend(packet, ignoreClient: ignoreClient);
 +
+ 		Invariant.Assert(Main.dedServ, "Packets can only be broadcast from a server.");
  		for (int i = 0; i < 256; i++) {
  			if (i != ignoreClient && Netplay.Clients[i].IsConnected() && conditionToBroadcast(i))
  				SendData(Netplay.Clients[i].Socket, packet);
-@@ -108,12 +_,14 @@
+@@ -111,16 +_,18 @@
  
  	public void SendToServer(NetPacket packet)
  	{
 +		LogSend(packet);
+ 		Invariant.Assert(!Main.dedServ, "Packets can only be sent to the server from a client.");
  		SendData(Netplay.Connection.Socket, packet);
  		packet.Recycle();
  	}
@@ -39,10 +43,13 @@
  	public void SendToClient(NetPacket packet, int playerId)
  	{
 +		LogSend(packet, toClient: playerId);
- 		SendData(Netplay.Clients[playerId].Socket, packet);
+ 		Invariant.Assert(Main.dedServ, "Packets can only be sent to a client from a server.");
+ 		if (Netplay.Clients[playerId].IsConnected())
+ 			SendData(Netplay.Clients[playerId].Socket, packet);
+ 
  		packet.Recycle();
  	}
-@@ -137,10 +_,18 @@
+@@ -144,10 +_,18 @@
  			socket.AsyncSend(packet.Buffer.Data, 0, packet.Length, EmptyCallback);
  		}
  		catch {

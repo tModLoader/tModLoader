@@ -1,14 +1,15 @@
 --- src/TerrariaNetCore/Terraria/UI/ItemSorting.cs
 +++ src/tModLoader/Terraria/UI/ItemSorting.cs
-@@ -2,6 +_,7 @@
+@@ -2,7 +_,8 @@
  using System.Collections.Generic;
  using System.Linq;
  using Terraria.ID;
 +using Terraria.ModLoader;
+ using Terraria.Testing;
  
  namespace Terraria.UI;
  
-@@ -985,11 +_,17 @@
+@@ -986,11 +_,17 @@
  
  	private struct DamageTypeSortingLayerEntry
  	{
@@ -26,7 +27,7 @@
  		{
  			Multiplier = multiplier;
  			Layer = layer;
-@@ -1121,7 +_,7 @@
+@@ -1122,7 +_,7 @@
  		list.Add(ItemSortingLayers.LastTilesCommon);
  		list.Add(ItemSortingLayers.LastNotTrash);
  		list.Add(ItemSortingLayers.LastTrash);
@@ -35,7 +36,7 @@
  			Item item = new Item();
  			item.netDefaults(i);
  			list2.Add(item);
-@@ -1130,7 +_,7 @@
+@@ -1131,7 +_,7 @@
  
  		Item[] array = list2.ToArray();
  		_layerCount = list.Count;
@@ -44,7 +45,7 @@
  		for (int j = 0; j < list.Count; j++) {
  			ItemSortingLayer itemSortingLayer = list[j];
  			List<int> list4 = itemSortingLayer.SortingMethod(itemSortingLayer, array, list3);
-@@ -1161,7 +_,10 @@
+@@ -1164,7 +_,10 @@
  
  	private static int Descending(DamageTypeSortingLayerEntry x, DamageTypeSortingLayerEntry y)
  	{
@@ -55,7 +56,7 @@
  		if (num == 0)
  			num = x.Index.CompareTo(y.Index);
  
-@@ -1251,6 +_,9 @@
+@@ -1254,6 +_,9 @@
  
  				Item item3 = inv[_sort_itemsToSort[k]];
  				if (Item.CanStack(item2, item3) && item3.stack != item3.maxStack) {
@@ -65,7 +66,7 @@
  					int num2 = item3.stack;
  					if (num < num2)
  						num2 = num;
-@@ -1258,6 +_,7 @@
+@@ -1261,6 +_,7 @@
  					item2.stack += num2;
  					item3.stack -= num2;
  					num -= num2;
@@ -73,7 +74,7 @@
  					if (item3.stack == 0) {
  						inv[_sort_itemsToSort[k]] = new Item();
  						_sort_itemsToSort.Remove(_sort_itemsToSort[k]);
-@@ -1557,6 +_,11 @@
+@@ -1560,6 +_,11 @@
  		for (int i = loopStartIndex; i < loopEndIndex; i++) {
  			Item item = inv[i];
  			if (item.stack >= 1 && item.type == itemToRefill.type && !item.favorited) {
@@ -85,7 +86,7 @@
  				int num2 = item.stack;
  				if (num2 > num)
  					num2 = num;
-@@ -1564,6 +_,8 @@
+@@ -1567,6 +_,8 @@
  				num -= num2;
  				itemToRefill.stack += num2;
  				item.stack -= num2;

@@ -1,14 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Testing/ChatCommands/ToolkitDebugCommands.cs
 +++ src/tModLoader/Terraria/Testing/ChatCommands/ToolkitDebugCommands.cs
-@@ -3,6 +_,7 @@
- using System.Diagnostics;
- using System.IO;
- using Microsoft.Xna.Framework;
-+using ReLogic.OS;
- using Terraria.Chat;
- using Terraria.GameContent.UI.States;
- using Terraria.ID;
-@@ -112,6 +_,24 @@
+@@ -116,6 +_,24 @@
  		Main.ThrottleWhenInactive = !Main.ThrottleWhenInactive;
  		Main.SaveSettings();
  		message.Reply("Inactive CPU throttling " + (Main.ThrottleWhenInactive ? "enabled" : "disabled"));

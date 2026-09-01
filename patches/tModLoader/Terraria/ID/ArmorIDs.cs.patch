@@ -36,13 +36,13 @@
 +			/// </remarks>
  			public static bool[] UseSkinColor = Factory.CreateBoolSet(false, 274, 277);
  			public static bool[] HidesHead = Factory.CreateBoolSet(false, 38, 135, 269, 282, 288);
- 			public static bool[] DrawFaceMaskUnderHeadLayer = Factory.CreateBoolSet(false, 26, 51, 289, 81, 92, 106, 291, 10, 12, 178, 198, 267, 279, 160, 52, 53, 71, 55, 166, 167, 278);
+ 			public static bool[] DrawFaceMaskUnderHeadLayer = Factory.CreateBoolSet(false, 26, 51, 289, 81, 92, 106, 291, 10, 12, 178, 198, 267, 279, 160, 52, 53, 71, 55, 166, 167, 278, 203);
 +			/// <summary>
 +			/// If <see langword="true"/> for a given <see cref="Head"/>, then that equip will hide face flower layer equips (<see cref="Face.Sets.DrawInFaceFlowerLayer"/>).
 +			/// <para/> Some examples include <see cref="UmbrellaHat"/> and <see cref="Eyebrella"/>.
 +			/// </summary>
  			public static bool[] PreventFaceFlowerDraw = Factory.CreateBoolSet(false, 92, 275);
- 			public static bool[] PreventFaceMaskDraw = Factory.CreateBoolSet(false, 27, 102, 20, 107, 108, 127, 162, 168, 118, 123, 164, 155, 150, 137, 186, 125, 136, 153, 154, 169, 148, 165, 151, 173, 146, 147, 175, 193, 271, 268, 260, 221, 236, 208, 209, 207, 187, 192, 188, 276, 270, 58, 77, 142, 152, 241, 210, 22, 196);
+ 			public static bool[] PreventFaceMaskDraw = Factory.CreateBoolSet(false, 27, 20, 107, 108, 127, 162, 168, 118, 123, 164, 155, 150, 137, 186, 125, 136, 153, 154, 169, 148, 165, 151, 173, 146, 147, 175, 193, 271, 268, 260, 221, 236, 208, 209, 207, 187, 192, 188, 276, 270, 58, 77, 142, 152, 241, 210, 22, 196);
 +
 +			/// <summary>
 +			/// If <see langword="true"/> for a given <see cref="Head"/>, then that equip will hide the player's beard when equipped.
@@ -224,7 +224,7 @@
 +		public partial class Sets
  		{
 -			public static SetFactory Factory = new SetFactory(Count);
--			public static bool[] UsesNewFramingCode = Factory.CreateBoolSet(false, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 16, 17, 18, 19, 20, 21, 22, 23, 24);
+-			public static bool[] UsesNewFramingCode = Factory.CreateBoolSet(false, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32);
 +			public static SetFactory Factory = new SetFactory(EquipLoader.nextEquip[EquipType.HandsOn], $"{nameof(ArmorIDs)}.{nameof(HandOn)}", Search);
 +			// Made internal to avoid confusion.
 +			internal static bool[] UsesNewFramingCode = Factory.CreateBoolSet(false, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 16, 17, 18, 19, 20, 21, 22, 23, 24);
@@ -239,10 +239,10 @@
  			public static bool[] UsesOldFramingTexturesForWalking = Factory.CreateBoolSet(false, 12, 8, 17);
  		}
  
-@@ -850,14 +_,17 @@
- 		public const sbyte HandOfCreation = 23;
- 		public const sbyte LavaCharm = 24;
- 		public static readonly int Count = 25;
+@@ -858,14 +_,17 @@
+ 		public const sbyte TwilightGrasp = 31;
+ 		public const sbyte ArmletOfRuin = 32;
+ 		public static readonly int Count = 33;
 +
 +		public static IdDictionary Search = IdDictionary.Create<HandOn, sbyte>();
  	}
@@ -254,17 +254,17 @@
 +		public partial class Sets
  		{
 -			public static SetFactory Factory = new SetFactory(Count);
--			public static bool[] UsesNewFramingCode = Factory.CreateBoolSet(false, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
+-			public static bool[] UsesNewFramingCode = Factory.CreateBoolSet(false, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18);
 +			public static SetFactory Factory = new SetFactory(EquipLoader.nextEquip[EquipType.HandsOff], $"{nameof(ArmorIDs)}.{nameof(HandOff)}", Search);
 +			// Made internal to avoid confusion.
 +			internal static bool[] UsesNewFramingCode = Factory.CreateBoolSet(false, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
  		}
  
  		public const sbyte FireGauntlet = 1;
-@@ -878,14 +_,26 @@
- 		public const sbyte BoneGlove = 14;
- 		public const sbyte HandOfCreation = 15;
- 		public static readonly int Count = 16;
+@@ -889,14 +_,26 @@
+ 		public const sbyte SilverBracer = 17;
+ 		public const sbyte TwilightGrasp = 18;
+ 		public static readonly int Count = 19;
 +
 +		public static IdDictionary Search = IdDictionary.Create<HandOff, sbyte>();
  	}
@@ -289,12 +289,12 @@
 +			/// <br/> Defaults to <see langword="false"/>.
 +			/// </summary>
  			public static bool[] DrawInTailLayer = Factory.CreateBoolSet(false, 18, 19, 21, 25, 26, 27, 28);
- 			public static bool[] IsACape = Factory.CreateBoolSet(false, 1, 2, 3, 4, 5, 6, 14, 24, 34, 36, 39);
+ 			public static bool[] IsACape = Factory.CreateBoolSet(false, 1, 2, 3, 4, 5, 6, 14, 24, 34, 36, 39, 41);
  		}
-@@ -930,13 +_,23 @@
- 		public const sbyte ChippysWings = 38;
- 		public const sbyte LunasCloak = 39;
- 		public static readonly int Count = 40;
+@@ -943,13 +_,23 @@
+ 		public const sbyte PhoenixQuiver = 40;
+ 		public const sbyte DruidicSerpentCloak = 41;
+ 		public static readonly int Count = 42;
 +
 +		public static IdDictionary Search = IdDictionary.Create<Back, sbyte>();
  	}
@@ -318,10 +318,11 @@
  			public static bool[] DrawsInNeckLayer = Factory.CreateBoolSet(false, 6);
  			public static bool[] DrawsInNeckLayerRegardlessOfPlayerFrame = Factory.CreateBoolSet(false, 13);
  			public static bool[] DontDrawIfWearingAScarfOrCape = Factory.CreateBoolSet(false, 13);
-@@ -961,13 +_,20 @@
+@@ -974,14 +_,21 @@
  		public const sbyte ChippysWings = 15;
  		public const sbyte LunasCloak = 16;
- 		public static readonly int Count = 17;
+ 		public const sbyte DruidicSerpentCloak = 17;
+ 		public static readonly int Count = 18;
 +
 +		public static IdDictionary Search = IdDictionary.Create<Front, sbyte>();
  	}
@@ -342,7 +343,7 @@
  			public static int[] MaleToFemaleID = Factory.CreateIntSet(-1, 25, 26);
  			public static bool[] IsARollerSkate = Factory.CreateBoolSet(false, 27, 28, 29, 30);
  		}
-@@ -1004,14 +_,26 @@
+@@ -1018,14 +_,26 @@
  		public const sbyte RollerSkatesWhite = 29;
  		public const sbyte RollerSkatesPink = 30;
  		public static readonly int Count = 31;
@@ -363,19 +364,20 @@
 +			/// If <see langword="true"/> for a given <see cref="Waist"/>, then that equip will draw using <see cref="Player.bodyFrame"/> instead of <see cref="Player.legFrame"/>.
 +			/// <br/> Defaults to <see langword="false"/>.
 +			/// </summary>
- 			public static bool[] UsesTorsoFraming = Factory.CreateBoolSet(false, 5, 10, 10, 12);
+ 			public static bool[] UsesTorsoFraming = Factory.CreateBoolSet(false, 5, 10, 10, 12, 17);
 +
 +			/// <summary>
 +			/// If <see langword="true"/> for a given <see cref="Waist"/>, then that equip won't draw if the player is wearing a <see cref="Body.Sets.DisableBeltAccDraw"/> <see cref="Body"/> equip.
 +			/// <br/> Defaults to <see langword="false"/>.
 +			/// </summary>
- 			public static bool[] IsABelt = Factory.CreateBoolSet(false, 5, 10, 10, 12);
+ 			public static bool[] IsABelt = Factory.CreateBoolSet(false, 5, 10, 10, 12, 17);
  		}
  
-@@ -1033,14 +_,25 @@
+@@ -1047,15 +_,26 @@
  		public const sbyte SandstorminaBottle = 15;
  		public const sbyte TreasureMagnet = 16;
- 		public static readonly int Count = 17;
+ 		public const sbyte MysticArtsSash = 17;
+ 		public static readonly int Count = 18;
 +
 +		public static IdDictionary Search = IdDictionary.Create<Waist, sbyte>();
  	}
@@ -401,7 +403,7 @@
  			public static bool[] AlwaysAnimated = Factory.CreateBoolSet(false, 22, 28, 45, 34, 48, 39, 40, 44);
  		}
  
-@@ -1096,6 +_,8 @@
+@@ -1111,6 +_,8 @@
  		public const sbyte KazzymodusWings = 50;
  		public const sbyte LunasWings = 51;
  		public static readonly int Count = 52;
@@ -410,10 +412,10 @@
  	}
  
  	public class Shield
-@@ -1110,13 +_,16 @@
- 		public const sbyte Hero = 8;
- 		public const sbyte BouncingShield = 9;
- 		public static readonly int Count = 10;
+@@ -1128,13 +_,16 @@
+ 		public const sbyte RoyalGuardHarness = 11;
+ 		public const sbyte RestorationShield = 12;
+ 		public static readonly int Count = 13;
 +
 +		public static IdDictionary Search = IdDictionary.Create<Shield, sbyte>();
  	}
@@ -428,10 +430,10 @@
  			public static bool[] IsAScarf = Factory.CreateBoolSet(false, 8, 9);
  		}
  
-@@ -1133,19 +_,65 @@
- 		public const sbyte Magiluminescence = 11;
- 		public const sbyte MoltenCharm = 12;
- 		public static readonly int Count = 13;
+@@ -1153,19 +_,65 @@
+ 		public const sbyte CrossedHeartNecklace = 13;
+ 		public const sbyte SeraphNecklace = 14;
+ 		public static readonly int Count = 15;
 +
 +		public static IdDictionary Search = IdDictionary.Create<Neck, sbyte>();
  	}
@@ -497,7 +499,7 @@
  			public static int[] AltFaceHead = Factory.CreateIntSet(-1, 12, 17, 10, 15, 13, 18, 11, 16);
  			public static bool[] CanDrawOnVelociraptorMount = Factory.CreateBoolSet(false, 1, 6, 9, 8, 19, 7, 20, 21, 23);
  		}
-@@ -1174,14 +_,27 @@
+@@ -1194,14 +_,27 @@
  		public const sbyte WeldingMask = 22;
  		public const sbyte ChippysHeadband = 23;
  		public static readonly sbyte Count = 24;
@@ -528,7 +530,7 @@
  			public static bool[] UsesTorsoFraming = Factory.CreateBoolSet(false, 18);
  		}
  
-@@ -1205,6 +_,8 @@
+@@ -1225,6 +_,8 @@
  		public const sbyte RoyalScepter = 18;
  		public const sbyte HorseshoeBundle = 19;
  		public static readonly int Count = 20;
@@ -537,7 +539,7 @@
  	}
  
  	public class RocketBoots
-@@ -1222,7 +_,16 @@
+@@ -1242,7 +_,16 @@
  	{
  		public class Sets
  		{
@@ -555,7 +557,7 @@
  			public static bool[] UseHairColor = Factory.CreateBoolSet(false, 2, 3, 4);
  		}
  
-@@ -1231,5 +_,7 @@
+@@ -1251,5 +_,7 @@
  		public const sbyte WilsonBeardLong = 3;
  		public const sbyte WilsonBeardMagnificent = 4;
  		public static readonly sbyte Count = 5;
