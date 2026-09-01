@@ -11,7 +11,7 @@ using Terraria.ModLoader.IO;
 namespace ExampleMod.Content.Items.Consumables
 {
 	// This showcases how the CanStack hook can be used in conjunction with custom data
-	// Custom data is also shown in ExampleDataItem, but here we need to use more hooks
+	// Custom data is also shown in more detail in ExampleInstancedItem
 
 	// This item, when crafted, stores the players name, and only lets other players open it. Bags with the same stored name aren't stackable
 	public class ExampleCanStackItem : ModItem
