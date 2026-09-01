@@ -1532,4 +1532,22 @@ public static class PlayerLoader
 			modPlayer.DrawPlayer(camera);
 		}
 	}
+
+	private static HookList HookOnDash = AddHook<Action<int>>(p => p.OnDash);
+
+	public static void OnDash(Player player, int dir)
+	{
+		foreach (var modPlayer in HookOnDash.Enumerate(player)) {
+			modPlayer.OnDash(dir);
+		}
+	}
+
+	private static HookList HookPostDash = AddHook<Action>(p => p.PostDash);
+
+	public static void PostDash(Player player)
+	{
+		foreach (var modPlayer in HookPostDash.Enumerate(player)) {
+			modPlayer.PostDash();
+		}
+	}
 }
