@@ -3,11 +3,13 @@ using Microsoft.Xna.Framework.Graphics;
 using Newtonsoft.Json;
 using ReLogic.Content;
 using System;
+using System.Collections.Generic;
 using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
 using Terraria.GameContent.UI.States;
 using Terraria.Localization;
 using Terraria.ModLoader.UI;
+using Terraria.UI;
 
 namespace Terraria.ModLoader.Config.UI;
 
@@ -16,8 +18,6 @@ internal class ObjectElement : ConfigElement<object>
 	protected Func<string> AbridgedTextDisplayFunction { get; set; }
 
 	private readonly bool ignoreSeparatePage;
-	//private SeparatePageAttribute separatePageAttribute;
-	//private object data;
 	private bool separatePage;
 	private bool pendingChanges;
 	private bool expanded = true;
@@ -25,7 +25,7 @@ internal class ObjectElement : ConfigElement<object>
 	private UIModConfigHoverImage initializeButton;
 	private UIModConfigHoverImage deleteButton;
 	private UIModConfigHoverImage expandButton;
-	internal UIPanel separatePagePanel;
+	internal UIModConfig.ConfigPage separateConfigPage;
 	private UITextPanel<FuncStringWrapper> separatePageButton;
 
 	// Label:
@@ -82,34 +82,15 @@ internal class ObjectElement : ConfigElement<object>
 
 		separatePage = ConfigManager.GetCustomAttributeFromMemberThenMemberType<SeparatePageAttribute>(MemberInfo, Item, List) != null;
 
-		//separatePage = separatePage && !ignoreSeparatePage;
-		//separatePage = (SeparatePageAttribute)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(SeparatePageAttribute)) != null;
-
 		if (separatePage && !ignoreSeparatePage) {
+			separateConfigPage = new UIModConfig.ConfigPage(Language.GetText(Label));
+
 			// TODO: UITextPanel doesn't update...
 			separatePageButton = new UITextPanel<FuncStringWrapper>(new FuncStringWrapper(TextDisplayFunction));
 			separatePageButton.HAlign = 0.5f;
-			//e.Recalculate();
-			//elementHeight = (int)e.GetOuterDimensions().Height;
 			separatePageButton.OnLeftClick += (a, c) => {
-				UIModConfig.SwitchToSubConfig(this.separatePagePanel);
-				/*	Interface.modConfig.uIElement.RemoveChild(Interface.modConfig.configPanelStack.Peek());
-					Interface.modConfig.uIElement.Append(separateListPanel);
-					Interface.modConfig.configPanelStack.Push(separateListPanel);*/
-				//separateListPanel.SetScrollbar(Interface.modConfig.uIScrollbar);
-
-				//UIPanel panel = new UIPanel();
-				//panel.Width.Set(200, 0);
-				//panel.Height.Set(200, 0);
-				//panel.Left.Set(200, 0);
-				//panel.Top.Set(200, 0);
-				//Interface.modConfig.Append(panel);
-
-				//Interface.modConfig.subMenu.Enqueue(subitem);
-				//Interface.modConfig.DoMenuModeState();
+				UIModConfig.Instance.PushConfigPage(separateConfigPage);
 			};
-			//e = new UIText($"{memberInfo.Name} click for more ({type.Name}).");
-			//e.OnLeftClick += (a, b) => { };
 		}
 
 		//data = _GetValue();// memberInfo.GetValue(this.item);
@@ -168,8 +149,6 @@ internal class ObjectElement : ConfigElement<object>
 
 			Value = data;
 
-			//SeparatePageAttribute here?
-
 			pendingChanges = true;
 			//RemoveChild(initializeButton);
 			//Append(deleteButton);
@@ -177,7 +156,7 @@ internal class ObjectElement : ConfigElement<object>
 
 			SetupList();
 			Interface.modConfig.RecalculateChildren();
-			Interface.modConfig.SetPendingChanges();
+			Interface.modConfig.OnConfigModified();
 		};
 
 		expandButton = new UIModConfigHoverImage(expanded ? ExpandedTexture : CollapsedTexture, expanded ? Language.GetTextValue("tModLoader.ModConfigCollapse") : Language.GetTextValue("tModLoader.ModConfigExpand"));
@@ -197,7 +176,7 @@ internal class ObjectElement : ConfigElement<object>
 
 			SetupList();
 			//Interface.modConfig.RecalculateChildren();
-			Interface.modConfig.SetPendingChanges();
+			Interface.modConfig.OnConfigModified();
 		};
 
 		if (Value != null) {
@@ -257,6 +236,50 @@ internal class ObjectElement : ConfigElement<object>
 		}
 	}
 
+	public override void RefreshUI()
+	{
+		pendingChanges = true;
+
+		if (Value is null) {
+			wrappedElements.Clear();
+			separateConfigPage?.ConfigElements.Clear();
+		}
+
+		if (separateConfigPage is not null) {
+			foreach (var wrappedElement in separateConfigPage.ConfigElements) {
+				if (wrappedElement.Item2 is not ConfigElement configElement)
+					return;
+
+				configElement.Item = Value;
+				configElement.RefreshUI();
+			}
+		}
+
+		foreach (var wrappedElement in wrappedElements) {
+			if (wrappedElement.Item2 is not ConfigElement configElement)
+				return;
+
+			configElement.Item = Value;
+			configElement.RefreshUI();
+		}
+	}
+
+	public override void SetExpanded(bool expanded)
+	{
+		bool prevExpanded = this.expanded;
+		this.expanded = expanded;
+		pendingChanges |= prevExpanded != this.expanded;
+
+		foreach (var wrappedElement in wrappedElements) {
+			if (wrappedElement.Item2 is not ConfigElement configElement)
+				return;
+
+			configElement.SetExpanded(expanded);
+		}
+	}
+
+	private List<Tuple<UIElement, UIElement>> wrappedElements = [];
+
 	private void SetupList()
 	{
 		dataList.Clear();
@@ -265,10 +288,26 @@ internal class ObjectElement : ConfigElement<object>
 
 		if (data != null) {
 			if (separatePage && !ignoreSeparatePage) {
-				separatePagePanel = UIModConfig.MakeSeparateListPanel(Item, data, MemberInfo, List, Index, AbridgedTextDisplayFunction);
+				separateConfigPage.ConfigElements.Clear();
+
+				int top = 0;
+				int order = 0;
+				// ReSharper disable once LoopCanBePartlyConvertedToQuery
+				foreach (PropertyFieldWrapper variable in ConfigManager.GetFieldsAndProperties(data)) {
+					if (Attribute.IsDefined(variable.MemberInfo, typeof(JsonIgnoreAttribute)) && !Attribute.IsDefined(variable.MemberInfo, typeof(ShowDespiteJsonIgnoreAttribute)))
+						continue;
+
+					var header = UIModConfig.HandleHeader(null, ref top, ref order, variable);
+					if (header is not null) {
+						separateConfigPage.ConfigElements.Add(header);
+					}
+
+					separateConfigPage.ConfigElements.Add(UIModConfig.WrapIt(null, ref top, variable, data, order++));
+				}
 			}
 			else {
 				int order = 0;
+				wrappedElements.Clear();
 				foreach (PropertyFieldWrapper variable in ConfigManager.GetFieldsAndProperties(data)) {
 					if (Attribute.IsDefined(variable.MemberInfo, typeof(JsonIgnoreAttribute)) && !Attribute.IsDefined(variable.MemberInfo, typeof(ShowDespiteJsonIgnoreAttribute)))
 						continue;
@@ -278,6 +317,7 @@ internal class ObjectElement : ConfigElement<object>
 					UIModConfig.HandleHeader(dataList, ref top, ref order, variable);
 
 					var wrapped = UIModConfig.WrapIt(dataList, ref top, variable, data, order++);
+					wrappedElements.Add(wrapped);
 
 					if (List != null) {
 						//wrapped.Item1.Left.Pixels -= 20;

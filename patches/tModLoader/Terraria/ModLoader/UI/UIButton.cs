@@ -14,6 +14,8 @@ public class UIButton<T> : UIAutoScaleTextTextPanel<T>
 {
 	public SoundStyle? HoverSound = null;
 	public SoundStyle? ClickSound = null;
+	public SoundStyle? AltHoverSound = null;
+	public SoundStyle? AltClickSound = null;
 
 	public T HoverText = default;
 	public T AltHoverText = default;
@@ -49,6 +51,9 @@ public class UIButton<T> : UIAutoScaleTextTextPanel<T>
 
 		AltHoverPanelColor ??= HoverPanelColor;
 		AltHoverBorderColor ??= HoverBorderColor;
+
+		// Don't set default values for the alt hover and click sounds
+		// They need to be able to be null, e.g. we might want a hover sound in regular mode but not in alt mode
 	}
 
 	protected void SetPanelColors()
@@ -92,15 +97,27 @@ public class UIButton<T> : UIAutoScaleTextTextPanel<T>
 	{
 		base.MouseOver(evt);
 
-		if (HoverSound != null)
-			SoundEngine.PlaySound(HoverSound.Value);
+		if (UseAltColors()) {
+			if (AltHoverSound != null)
+				SoundEngine.PlaySound(AltHoverSound.Value);
+		}
+		else {
+			if (HoverSound != null)
+				SoundEngine.PlaySound(HoverSound.Value);
+		}
 	}
 
 	public override void LeftClick(UIMouseEvent evt)
 	{
 		base.LeftClick(evt);
 
-		if (ClickSound != null)
-			SoundEngine.PlaySound(ClickSound.Value);
+		if (UseAltColors()) {
+			if (AltClickSound != null)
+				SoundEngine.PlaySound(AltClickSound.Value);
+		}
+		else {
+			if (ClickSound != null)
+				SoundEngine.PlaySound(ClickSound.Value);
+		}
 	}
 }

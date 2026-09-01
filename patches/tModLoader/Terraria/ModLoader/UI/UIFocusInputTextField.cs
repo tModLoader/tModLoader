@@ -12,7 +12,7 @@ internal class UIFocusInputTextField : UIElement
 	internal bool Focused = false;
 	internal string CurrentString = "";
 
-	private readonly string _hintText;
+	private readonly object _hintText;
 	private int _textBlinkerCount;
 	private int _textBlinkerState;
 	public bool UnfocusOnTab { get; internal set; } = false;
@@ -23,7 +23,7 @@ internal class UIFocusInputTextField : UIElement
 	public event EventHandler OnUnfocus;
 	public event EventHandler OnTab;
 
-	public UIFocusInputTextField(string hintText)
+	public UIFocusInputTextField(object hintText)
 	{
 		_hintText = hintText;
 	}
@@ -99,7 +99,7 @@ internal class UIFocusInputTextField : UIElement
 		}
 		CalculatedStyle space = GetDimensions();
 		if (CurrentString.Length == 0 && !Focused) {
-			Utils.DrawBorderString(spriteBatch, _hintText, new Vector2(space.X, space.Y), Color.Gray);
+			Utils.DrawBorderString(spriteBatch, _hintText.ToString(), new Vector2(space.X, space.Y), Color.Gray);
 		}
 		else {
 			Utils.DrawBorderString(spriteBatch, displayString, new Vector2(space.X, space.Y), Color.White);

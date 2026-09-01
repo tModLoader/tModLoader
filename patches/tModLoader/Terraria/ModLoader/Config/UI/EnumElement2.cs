@@ -235,13 +235,25 @@ internal class EnumElement2 : ConfigElement
 		return options;
 	}
 
+	public override void RefreshUI()
+	{
+		UpdateNeeded = true;
+	}
+
+	public override void SetExpanded(bool expanded)
+	{
+		bool prevExpanded = SelectionExpanded;
+		SelectionExpanded = expanded;
+		UpdateNeeded |= prevExpanded != SelectionExpanded;
+	}
+
 	private void DefaultSetValue(int index)
 	{
 		if (!MemberInfo.CanWrite)
 			return;
 
 		MemberInfo.SetValue(Item, Enum.GetValues(MemberInfo.Type).GetValue(index));
-		Interface.modConfig.SetPendingChanges();
+		Interface.modConfig.OnConfigModified();
 	}
 
 	private object DefaultGetValue()
