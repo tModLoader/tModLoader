@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2026.07</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2026.08</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -544,6 +544,9 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>UseItemHitbox
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>VerticalWingSpeeds</b> (<a class="el" href="class_item.html">Item</a> item, <a class="el" href="class_player.html">Player</a> player, ref float ascentWhenFalling, ref float ascentWhenRising, ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float constantAscend)</td></tr>
 <tr class="memdesc:a118590ca9ea6cf217136a8d223489e4b inherit pub_methods_class_global_item"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the speeds at which you rise and fall when wings are equipped. Called on local, server, and remote clients. <br /></td></tr>
 <tr class="separator:a118590ca9ea6cf217136a8d223489e4b inherit pub_methods_class_global_item"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad7d7c1aa7f480a3adeb4d49eaca75d2e inherit pub_methods_class_global_item"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_global_item.html#ad7d7c1aa7f480a3adeb4d49eaca75d2e">WingGlidingSpeeds</a> (<a class="el" href="class_item.html">Item</a> item, <a class="el" href="class_player.html">Player</a> player, ref float gravityMultiplier, ref float maxSpeedMultiplier, bool prevented)</td></tr>
+<tr class="memdesc:ad7d7c1aa7f480a3adeb4d49eaca75d2e inherit pub_methods_class_global_item"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the speeds at which you fall when gliding with wings. Called on local, server, and remote clients. Return false to prevent vanilla gliding behavior  <a href="class_global_item.html#ad7d7c1aa7f480a3adeb4d49eaca75d2e">More...</a><br /></td></tr>
+<tr class="separator:ad7d7c1aa7f480a3adeb4d49eaca75d2e inherit pub_methods_class_global_item"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a33e5bd665370eb317fdb03140e17b7e2 inherit pub_methods_class_global_item"><td class="memItemLeft" align="right" valign="top"><a id="a33e5bd665370eb317fdb03140e17b7e2" name="a33e5bd665370eb317fdb03140e17b7e2"></a>
 virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>WingUpdate</b> (int wings, <a class="el" href="class_player.html">Player</a> player, bool inUse)</td></tr>
 <tr class="memdesc:a33e5bd665370eb317fdb03140e17b7e2 inherit pub_methods_class_global_item"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows for Wings to do various things while in use. "inUse" is whether or not the jump button is currently pressed. Called when wings visually appear on the player. Use to animate wings, create dusts, invoke sounds, and create lights. False will keep everything the same. True, you need to handle all animations in your own code. This method is not instanced. Called on local, server, and remote clients. <br /></td></tr>

@@ -1,5 +1,13 @@
 var NAVTREEINDEX28 =
 {
+"struct_player_1_1_directional_input_sync_cache.html":[3,0,983,3],
+"struct_player_1_1_hurt_info.html":[3,0,983,5],
+"struct_player_1_1_hurt_info.html#a0b963c7867ccb5300ec1014b4ffbf599":[3,0,983,5,10],
+"struct_player_1_1_hurt_info.html#a223f4407c111b66c39b1181faea167d4":[3,0,983,5,7],
+"struct_player_1_1_hurt_info.html#a385a782077b2fc03ef6c72dc7a0fd3dc":[3,0,983,5,6],
+"struct_player_1_1_hurt_info.html#a41eee83d32d4ec3a401a607533e84064":[3,0,983,5,8],
+"struct_player_1_1_hurt_info.html#a603b4682ffb76da1f6baa70147d9ed04":[3,0,983,5,4],
+"struct_player_1_1_hurt_info.html#a6e1a388c6c0a6f0ffacea98b29231e3c":[3,0,983,5,5],
 "struct_player_1_1_hurt_info.html#a774b81521a19a1eafe2153e7fa3e9cdb":[3,0,983,5,9],
 "struct_player_1_1_hurt_info.html#a932995c5c67ad2875496015ab83c0893":[3,0,983,5,3],
 "struct_player_1_1_hurt_info.html#aaebb41670c5634510e9d78a5120fbd68":[3,0,983,5,0],

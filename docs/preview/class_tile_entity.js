@@ -9,6 +9,7 @@ var class_tile_entity =
     [ "Update", "class_tile_entity.html#a483e78bf9c57dcc8d265703a67e91167", null ],
     [ "ByID", "class_tile_entity.html#ab7804011f0846b3cc67f83b55f5b766a", null ],
     [ "ByPosition", "class_tile_entity.html#a85c0c3f8d2b5645dc89880c75e59dc2e", null ],
+    [ "EntityCreationLock", "class_tile_entity.html#aa7506b3f655c66a6db9c5b2d3b1eb368", null ],
     [ "ID", "class_tile_entity.html#a359aa4330130859cf7fe59a3fc8e0f12", null ],
     [ "Position", "class_tile_entity.html#a081b9deb4499fb7629a1ad5d54e0dedb", null ]
 ];

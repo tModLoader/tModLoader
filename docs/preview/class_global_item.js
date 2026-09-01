@@ -119,5 +119,6 @@ var class_global_item =
     [ "UseStyle", "class_global_item.html#aae856ec57610ee3ad7d5c69ef45a67b0", null ],
     [ "UseTimeMultiplier", "class_global_item.html#abfb16c554413693def92e02ce4da165c", null ],
     [ "VerticalWingSpeeds", "class_global_item.html#a118590ca9ea6cf217136a8d223489e4b", null ],
+    [ "WingGlidingSpeeds", "class_global_item.html#ad7d7c1aa7f480a3adeb4d49eaca75d2e", null ],
     [ "WingUpdate", "class_global_item.html#a33e5bd665370eb317fdb03140e17b7e2", null ]
 ];

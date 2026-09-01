@@ -11,6 +11,7 @@ var class_equip_texture =
     [ "SetMatch", "class_equip_texture.html#a12e8019e43cf953da3c8453f6795b8e8", null ],
     [ "UpdateVanitySet", "class_equip_texture.html#a9c343e9a3ebe72c6f888c178ab69dd7b", null ],
     [ "VerticalWingSpeeds", "class_equip_texture.html#a7da84fd613abe37f01553d6876a19ba2", null ],
+    [ "WingGlidingSpeeds", "class_equip_texture.html#aeb55c3654d78c770a64c44d53fb42606", null ],
     [ "WingUpdate", "class_equip_texture.html#a0f23db3a822455578ac4a81577ac46ae", null ],
     [ "Item", "class_equip_texture.html#a04598992facef2f95d269c11b89f6a7a", null ],
     [ "Name", "class_equip_texture.html#a60e24d290786b27433d212601b8ac619", null ],

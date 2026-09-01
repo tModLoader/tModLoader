@@ -28,6 +28,7 @@ var class_player_draw_layers =
     [ "JimsDroneRadio", "class_player_draw_layers.html#aed9cc4f2f009ae70a33871765845d069", null ],
     [ "Leggings", "class_player_draw_layers.html#a48ccce6ffd36d979bbe215366dec389f", null ],
     [ "LeinforsHairShampoo", "class_player_draw_layers.html#a427ea9e35e74afe6df2ba28b09342f18", null ],
+    [ "Magiluminescence", "class_player_draw_layers.html#a4db5bd1801d149d9e32303338ccbd4b6", null ],
     [ "MountBack", "class_player_draw_layers.html#a4eb1ff873183cf35f2a2a5d2f8ed40c7", null ],
     [ "MountFront", "class_player_draw_layers.html#a1427617a1698e06b0007677d9048f694", null ],
     [ "MountGroup", "class_player_draw_layers.html#acae85840f117812f831e15c4467d70f3", null ],

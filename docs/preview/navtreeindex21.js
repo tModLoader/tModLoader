@@ -1,5 +1,10 @@
 var NAVTREEINDEX21 =
 {
+"class_recipe.html#a474a5953b0fbbdec4c68881277228d79":[3,0,1064,24],
+"class_recipe.html#a4fb1462aac3ce2547c222f858b55b6d5":[3,0,1064,14],
+"class_recipe.html#a57e4f436ccb5261a6a76bf4b2d1bf268":[3,0,1064,30],
+"class_recipe.html#a65694504cb539a30b4b834cfe5c66e1e":[3,0,1064,8],
+"class_recipe.html#a6b5557174d959e1f2753e4a91abf24c9":[3,0,1064,12],
 "class_recipe.html#a751327b6eabc4ce750fd7059387b120a":[3,0,1064,21],
 "class_recipe.html#a7e44a7659baf373b83f44c0fab3f5ac0":[3,0,1064,18],
 "class_recipe.html#a80a75313e584f7c91e3dc0e02c594708":[3,0,1064,29],
@@ -244,10 +249,5 @@ var NAVTREEINDEX21 =
 "class_steam_p2_p_reader_1_1_read_result.html":[3,0,1199,0],
 "class_steam_p2_p_writer.html":[3,0,1200],
 "class_steam_p2_p_writer_1_1_write_information.html":[3,0,1200,0],
-"class_steamed_wraps.html":[3,0,1198],
-"class_stopwatch_info_display.html":[3,0,1201],
-"class_stopwatch_info_display.html#a10031152437ee1fa39696762bfd75e6c":[3,0,1201,0],
-"class_stray_methods.html":[3,0,1202],
-"class_structure_map.html":[3,0,1203],
-"class_structure_map.html#a746436c215907a8e40f9a7c610b74684":[3,0,1203,2]
+"class_steamed_wraps.html":[3,0,1198]
 };

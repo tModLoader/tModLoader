@@ -1,5 +1,13 @@
 var NAVTREEINDEX26 =
 {
+"class_world_workshop_entry.html":[3,0,1523],
+"class_worm_shader.html":[3,0,1524],
+"class_wsc_json_object.html":[3,0,1525],
+"class_yellow_wire_visibility_builder_toggle.html":[3,0,1526],
+"classes.html":[3,1],
+"classnativefiledialog.html":[3,0,876],
+"functions.html":[3,3,0],
+"functions.html":[3,3,0,0],
 "functions_b.html":[3,3,0,1],
 "functions_c.html":[3,3,0,2],
 "functions_d.html":[3,3,0,3],
@@ -241,13 +249,5 @@ var NAVTREEINDEX26 =
 "struct_active_entity_iterator.html":[3,0,19],
 "struct_active_entity_iterator_1_1_enumerator.html":[3,0,19,0],
 "struct_addable_float.html":[3,0,22],
-"struct_advanced_popup_request.html":[3,0,23],
-"struct_alignment.html":[3,0,27],
-"struct_ambience_server_1_1_ambience_spawn_info.html":[3,0,32,0],
-"struct_ambient_sky_draw_cache_1_1_ocean_line_cache.html":[3,0,34,0],
-"struct_ambient_sky_draw_cache_1_1_underworld_cache.html":[3,0,34,1],
-"struct_anchor_data.html":[3,0,37],
-"struct_anchor_data.html#a1beb4cc288b9cae4f95d606748352f5a":[3,0,37,0],
-"struct_armor_i_ds_1_1_body_1_1_sets_1_1_include_cape_front_and_back_info.html":[3,0,48,3,0,0],
-"struct_armor_i_ds_1_1_body_1_1_sets_1_1_include_cape_front_and_back_info.html#a0bc1e5563d255007edcba481e935752e":[3,0,48,3,0,0,2]
+"struct_advanced_popup_request.html":[3,0,23]
 };
