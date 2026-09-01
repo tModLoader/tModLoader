@@ -1,9 +1,9 @@
 --- src/Terraria/Terraria/FocusHelper.cs
 +++ src/TerrariaNetCore/Terraria/FocusHelper.cs
 @@ -117,6 +_,8 @@
- 		wantsToPause = false;
- 		bool flag = !Main.SettingPlayWhenUnfocused;
  		IsSelectedApplication = Main.instance.IsActive;
+ 		bool flag = !Main.SettingPlayWhenUnfocused;
+ 		wantsToPause = !IsSelectedApplication && Main.netMode == 0 && flag;
 +
 +#if !NETCORE
  		if (Platform.IsWindows) {
@@ -15,5 +15,5 @@
  		}
 +#endif
  
- 		if (!IsSelectedApplication && Main.netMode == 0 && flag) {
+ 		if (!IsSelectedApplication) {
  			if (!Platform.IsOSX)
