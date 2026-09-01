@@ -1,5 +1,9 @@
 var NAVTREEINDEX23 =
 {
+"class_tile_i_d_1_1_sets.html#aff1403f322dfd6e9126e89ef2d1de620":[3,0,1259,0,84],
+"class_tile_i_d_1_1_sets.html#aff8ff43ce2fe95a587735a42c9a9326d":[3,0,1259,0,55],
+"class_tile_i_d_1_1_sets_1_1_conversion.html":[3,0,1259,0,0],
+"class_tile_i_d_1_1_sets_1_1_falling_block_projectile_info.html":[3,0,1259,0,1],
 "class_tile_i_d_1_1_sets_1_1_for_advanced_collision.html":[3,0,1259,0,2],
 "class_tile_i_d_1_1_sets_1_1_room_needs.html":[3,0,1259,0,3],
 "class_tile_i_d_1_1_sets_1_1_tile_cut_ignore.html":[3,0,1259,0,4],
@@ -245,9 +249,5 @@ var NAVTREEINDEX23 =
 "class_u_i_create_mod.html#ad812299fa8ce141892ff42c4ec05fe7b":[3,0,1344,1],
 "class_u_i_create_mod.html#adbfd28096af77a960ed2e9f4a56ef58e":[3,0,1344,3],
 "class_u_i_creative_infinite_items_display.html":[3,0,1345],
-"class_u_i_creative_infinite_items_display.html#a1a04b56d353c3df14889d9b5bb1167d4":[3,0,1345,0],
-"class_u_i_creative_items_infinite_filtering_options.html":[3,0,1346],
-"class_u_i_creative_power_button.html":[3,0,1347],
-"class_u_i_creative_powers_menu.html":[3,0,1348],
-"class_u_i_creative_powers_menu.html#a20cce538df395462dd1e9bf04c9dfc7e":[3,0,1348,1]
+"class_u_i_creative_infinite_items_display.html#a1a04b56d353c3df14889d9b5bb1167d4":[3,0,1345,0]
 };

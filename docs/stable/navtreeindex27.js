@@ -1,5 +1,9 @@
 var NAVTREEINDEX27 =
 {
+"struct_armor_i_ds_1_1_body_1_1_sets_1_1_include_cape_front_and_back_info.html#aa7f4e733e7c3cce70917381b6a698329":[3,0,48,3,0,0,0],
+"struct_armor_i_ds_1_1_body_1_1_sets_1_1_include_cape_front_and_back_info.html#ae20b61126a07dddf9beb6b96acd18d7a":[3,0,48,3,0,0,1],
+"struct_ball_collision_event.html":[3,0,74],
+"struct_ball_pass_through_event.html":[3,0,75],
 "struct_ball_step_result.html":[3,0,76],
 "struct_bestiary_u_i_collection_info.html":[3,0,84],
 "struct_bestiary_u_i_collection_info.html#a241e31d860a66f18b9e41a81d0abed6f":[3,0,84,0],
@@ -245,9 +249,5 @@ var NAVTREEINDEX27 =
 "struct_player_1_1_hurt_info.html#a385a782077b2fc03ef6c72dc7a0fd3dc":[3,0,983,5,6],
 "struct_player_1_1_hurt_info.html#a41eee83d32d4ec3a401a607533e84064":[3,0,983,5,8],
 "struct_player_1_1_hurt_info.html#a603b4682ffb76da1f6baa70147d9ed04":[3,0,983,5,4],
-"struct_player_1_1_hurt_info.html#a6e1a388c6c0a6f0ffacea98b29231e3c":[3,0,983,5,5],
-"struct_player_1_1_hurt_info.html#a774b81521a19a1eafe2153e7fa3e9cdb":[3,0,983,5,9],
-"struct_player_1_1_hurt_info.html#a932995c5c67ad2875496015ab83c0893":[3,0,983,5,3],
-"struct_player_1_1_hurt_info.html#aaebb41670c5634510e9d78a5120fbd68":[3,0,983,5,0],
-"struct_player_1_1_hurt_info.html#ab45ce066eaadcc876fa4ff86490f7e08":[3,0,983,5,1]
+"struct_player_1_1_hurt_info.html#a6e1a388c6c0a6f0ffacea98b29231e3c":[3,0,983,5,5]
 };

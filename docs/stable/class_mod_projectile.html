@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2026.06</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2026.07</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -145,6 +145,13 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>DrawBehind</b
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>EmitEnchantmentVisualsAt</b> (Vector2 boxPosition, int boxWidth, int boxHeight)</td></tr>
 <tr class="memdesc:a350eab2d1922b8049a18af8e1c7376ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called when <a class="el" href="class_projectile.html#aa66acc1f00862c2a8057513498e452d9" title="Spawns weapon enchantment visuals the specified location. boxPosition  is the top left corner of the ...">Projectile.EmitEnchantmentVisualsAt(Vector2, int, int)</a> is called. Typically used to spawn visual effects (<a class="el" href="class_dust.html" title="Dust are particles effects used to add visual elements to weapons and other effects....">Dust</a>) indicating weapon enchantments such as flasks, frost armor, or magma stone effects. This is similar to how items spawn visual effects in CombinedHooks.MeleeEffects(Player, Item, Rectangle), but for projectiles instead. A typical weapon enchantment would likely include similar code in both to support weapon enchantment visuals for both items and projectiles. Projectiles can use <a class="el" href="class_projectile.html#a23046e06b5013cd46e42576bb467cfba" title="If true, this projectile will not benefit from weapon enchantments such as flasks,...">Projectile.noEnchantments</a> to indicate that a projectile should not be considered for enchantment visuals, so check that field if relevant. Called on local, server, and remote clients. <br /></td></tr>
 <tr class="separator:a350eab2d1922b8049a18af8e1c7376ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acf855d764af3f35ddd9ae450b6e62601"><td class="memItemLeft" align="right" valign="top"><a id="acf855d764af3f35ddd9ae450b6e62601" name="acf855d764af3f35ddd9ae450b6e62601"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>FlailSpinCollisionRange</b> (ref float range)</td></tr>
+<tr class="memdesc:acf855d764af3f35ddd9ae450b6e62601"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used to adjust flail spin collision range. Called during Projectile.Colliding(Rectangle, Rectangle) when aiStyle is <a class="el" href="class_proj_a_i_style_i_d.html#a3d43fdff9f9801317a7a320900f874be" title="Used by: ProjectileID.BallOHurt, ProjectileID.BlueMoon, ProjectileID.Sunfury, ProjectileID....">ProjAIStyleID.Flail</a>. <br /></td></tr>
+<tr class="separator:acf855d764af3f35ddd9ae450b6e62601"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5407eb6d6e040052a50c181d6e75c514"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_projectile.html#a5407eb6d6e040052a50c181d6e75c514">FlailStats</a> (ref int launchTimeLimit, ref float launchSpeed, ref float maxLaunchLength, ref float retractAcceleration, ref float maxRetractSpeed, ref float forcedRetractAcceleration, ref float maxForcedRetractSpeed, ref int ricochetTimeLimit, ref float spinVisualDistance)</td></tr>
+<tr class="memdesc:a5407eb6d6e040052a50c181d6e75c514"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used to adjust flail properties. Called when aiStyle is <a class="el" href="class_proj_a_i_style_i_d.html#a3d43fdff9f9801317a7a320900f874be" title="Used by: ProjectileID.BallOHurt, ProjectileID.BlueMoon, ProjectileID.Sunfury, ProjectileID....">ProjAIStyleID.Flail</a>.  <a href="class_mod_projectile.html#a5407eb6d6e040052a50c181d6e75c514">More...</a><br /></td></tr>
+<tr class="separator:a5407eb6d6e040052a50c181d6e75c514"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a06bc673759fe0d67576f5e657e093e2c"><td class="memItemLeft" align="right" valign="top"><a id="a06bc673759fe0d67576f5e657e093e2c" name="a06bc673759fe0d67576f5e657e093e2c"></a>
 virtual ? Color&#160;</td><td class="memItemRight" valign="bottom"><b>GetAlpha</b> (Color lightColor)</td></tr>
 <tr class="memdesc:a06bc673759fe0d67576f5e657e093e2c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine the color and transparency in which this projectile is drawn. Return null to use the default color (normally light and buff color). Returns null by default. Called on local and remote clients. <br /></td></tr>
@@ -592,6 +599,100 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsCloneable</
 </div><div class="memdoc">
 
 <p>Implements <a class="el" href="class_mod_type.html">ModType&lt; Projectile, ModProjectile &gt;</a>.</p>
+
+</div>
+</div>
+<a id="a5407eb6d6e040052a50c181d6e75c514" name="a5407eb6d6e040052a50c181d6e75c514"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5407eb6d6e040052a50c181d6e75c514">&#9670;&nbsp;</a></span>FlailStats()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void ModProjectile.FlailStats </td>
+          <td>(</td>
+          <td class="paramtype">ref int&#160;</td>
+          <td class="paramname"><em>launchTimeLimit</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ref float&#160;</td>
+          <td class="paramname"><em>launchSpeed</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ref float&#160;</td>
+          <td class="paramname"><em>maxLaunchLength</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ref float&#160;</td>
+          <td class="paramname"><em>retractAcceleration</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ref float&#160;</td>
+          <td class="paramname"><em>maxRetractSpeed</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ref float&#160;</td>
+          <td class="paramname"><em>forcedRetractAcceleration</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ref float&#160;</td>
+          <td class="paramname"><em>maxForcedRetractSpeed</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ref int&#160;</td>
+          <td class="paramname"><em>ricochetTimeLimit</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ref float&#160;</td>
+          <td class="paramname"><em>spinVisualDistance</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Used to adjust flail properties. Called when aiStyle is <a class="el" href="class_proj_a_i_style_i_d.html#a3d43fdff9f9801317a7a320900f874be" title="Used by: ProjectileID.BallOHurt, ProjectileID.BlueMoon, ProjectileID.Sunfury, ProjectileID....">ProjAIStyleID.Flail</a>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">launchTimeLimit</td><td>How much time the projectile can go before retracting (speed and shootTimer will set the flail's range)</td></tr>
+    <tr><td class="paramname">launchSpeed</td><td>How fast the projectile can move</td></tr>
+    <tr><td class="paramname">maxLaunchLength</td><td>How far the projectile's chain can stretch before being forced to retract when in launched state</td></tr>
+    <tr><td class="paramname">retractAcceleration</td><td>How quickly the projectile will accelerate back towards the player while retracting</td></tr>
+    <tr><td class="paramname">maxRetractSpeed</td><td>The max speed the projectile will have while retracting</td></tr>
+    <tr><td class="paramname">forcedRetractAcceleration</td><td>How quickly the projectile will accelerate back towards the player while being forced to retract</td></tr>
+    <tr><td class="paramname">maxForcedRetractSpeed</td><td>The max speed the projectile will have while being forced to retract</td></tr>
+    <tr><td class="paramname">ricochetTimeLimit</td><td>How long the projectile will remain in the ricocheting state before switching to the dropping state</td></tr>
+    <tr><td class="paramname">spinVisualDistance</td><td>How far from the player the flail will be while spinning</td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
