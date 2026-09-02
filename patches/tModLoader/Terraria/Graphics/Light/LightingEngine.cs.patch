@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Graphics/Light/LightingEngine.cs
 +++ src/tModLoader/Terraria/Graphics/Light/LightingEngine.cs
-@@ -4,6 +_,7 @@
+@@ -4,10 +_,11 @@
  using ReLogic.Threading;
  using Terraria.Graphics.Capture;
  using Terraria.Map;
@@ -8,6 +8,31 @@
  
  namespace Terraria.Graphics.Light;
  
+-public class LightingEngine : ILightingEngine
++public partial class LightingEngine : ILightingEngine
+ {
+ 	private enum EngineState
+ 	{
+@@ -92,7 +_,10 @@
+ 
+ 		TimeLogger.LightingByPass[(int)_state].AddTime(fromTimestamp);
+ 		IncrementState();
+-	}
++
++		// TML: Mark light map as dirty.
++        _workingLightMap.MarkDirty();
++    }
+ 
+ 	private void IncrementState()
+ 	{
+@@ -104,6 +_,7 @@
+ 		area.Inflate(28, 28);
+ 		_workingProcessedArea = area;
+ 		_workingLightMap.SetSize(area.Width, area.Height);
++		_workingLightMap.UpdateArea(area);
+ 		_workingLightMap.NonVisiblePadding = 18;
+ 		_tileScanner.Update();
+ 		_tileScanner.ExportTo(area, _workingLightMap, new TileLightScannerOptions {
 @@ -167,6 +_,13 @@
  		}
  
