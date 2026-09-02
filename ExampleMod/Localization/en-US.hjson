@@ -72,6 +72,7 @@ Mods: {
 		Keybinds: {
 			RandomBuff.DisplayName: Random Buff
 			LearningExample.DisplayName: Learning Example
+			UnboundDefault.DisplayName: Unbound Default
 		}
 
 		NPCs: {
