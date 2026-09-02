@@ -152,6 +152,21 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Clound.cs, there is now CloudID.Sets.RareClouds_Normal, CloudID.Sets.RareClouds_Celebration for more control. Document and maybe use in ExampleMod.
 - public static LanguageSearchFilter CreateDialogFilter(string startsWith, object substitutions) removed from Lang.cs? Could still be useful, add back into Lang.TML.cs?
 - _unusedResearchLine removed from MouseText_DrawItemTooltip_GetLinesInfo, verify other callsites
+- WorldGen.SwapTileData might not be necessary anymore. ErrorWorldSwapTiles exists. The new name isn't as useful, however.
+- Projectile.identity removed, Projectile.key added. How to use? Also Projectile.IndexForVisuals. Also Main.projectileIdentity
+- Projectile.TransformType added, replaces direct setting of Projectile.type in AI. Might need a hook or more logic if used with modded projectiles.
+- New Worldgen.IsTileLoaded method seems like an issue with our non-null tiles.
+- Code near "Yoyos with effective top speed" comment in AI_009_2_Yoyos seems weird. Was this fixed in vanilla and the "< 1.01f" code left in? Probably can remove the duplicate bounds check, check blame
+- ProjectileID.Sets.IsInteractable needs updating
+- Item.fishinPole now defaults to 1. Why? Update docs.
+- Item.hasVanityEffects no longer marked as [Old], why? Did something change?
+- Item.active property removed
+- Item.TurnToAir no longer has fullReset parameter and now always calls SetDefaults. Verify that this isn't an issue.
+- Move TML added Item ctor patches near others or to Item.TML.cs
+- Item.NewItem has new overloads. We might need to rework all our TML-added overloads or remove them. position is now natively a Vector2, rather than being case to int for the final step, and a velocity and NewItemOwnership are new parameters.
+- Main.rand can now have key-specific UnifiedRandom instances. Not sure how a mod might use it.
+- SystemLoader.PostUpdatePlayers(); call, move TimeLogger.UpdatePlayers.AddTime call?
+- PreUpdateNPCs doesn't exactly match 1.4.4 location because of UpdateWorld_SpawnNPCs being added. Do we want 2 more hooks there? Probably need to double check that all Main Update methods have a Pre and Post method, and that they are documented and any deviations from 1.4.4. order are documented as well (UpdateWorld_FloatingText, UpdateWorld_SpawnNPCs, etc)
 
 # New Fields that might need more documentation
 
