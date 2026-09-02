@@ -3,6 +3,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using ICSharpCode.Decompiler.Metadata;
 using Terraria.ModLoader.Setup.Core.Abstractions;
+using Terraria.ModLoader.Setup.Core.Utilities;
 
 namespace Terraria.ModLoader.Setup.Core;
 
@@ -77,7 +78,8 @@ public sealed class TerrariaDecompileExecutableProvider
 			return expectedExePath;
 		}
 
-		if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) && File.Exists(originalExePath) && TryCheckVersion(originalExePath, version, out _)) {
+		bool isWindowsInstall = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) || WslPaths.IsOnWindowsDrive(originalExePath);
+		if (isWindowsInstall && File.Exists(originalExePath) && TryCheckVersion(originalExePath, version, out _)) {
 			File.Copy(originalExePath, expectedExePath);
 			return expectedExePath;
 		}
