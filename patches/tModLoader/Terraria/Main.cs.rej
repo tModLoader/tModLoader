@@ -49,6 +49,14 @@
  			if (inputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Z) && !oldInputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Z)) {
  				text = "";
  			}
+@@ -18039,6 +_,7 @@
+ 
+ 			if (player[myPlayer].setBonus != "") {
+ 				toolTipLine[numLines] = Lang.tip[48].Value + " " + player[myPlayer].setBonus;
++				toolTipNames[numLines] = "SetBonus";
+ 				numLines++;
+ 			}
+ 		}
 @@ -33572,7 +_,7 @@
  			if (numAvailableRecipes > 0) {
  				UILinkPointNavigator.Shortcuts.CRAFT_CurrentRecipeBig = -1;
@@ -246,3 +254,12 @@
  				vec = vec.Floor();
  				int hoveredSnippet = 0;
  				ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.MouseText.Value, player[i].chatOverhead.snippets, vec, 0f, player[i].chatOverhead.color, Vector2.Zero, Vector2.One, out hoveredSnippet);
+@@ -54329,6 +_,8 @@
+ 			}
+ 		}
+ 
++		PlayerLoader.ModifyZoom(LocalPlayer, ref num);
++
+ 		if (num <= 0f)
+ 			return false;
+ 

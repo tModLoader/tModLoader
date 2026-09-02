@@ -20,15 +20,17 @@
  {
  	public struct GemStaffFeatures
  	{
-@@ -61,96 +_,400 @@
- 		public Rectangle GetBulletHitbox(int bulletIndex, Vector2 centerPoint) => Utils.CenteredRectangle(GetBulletPosition(bulletIndex, centerPoint), BulletSize);
+@@ -233,99 +_,403 @@
+ 		}
  	}
  
 +	/// <summary>
 +	/// If true, the Projectile actually exists within the game world. Within <see cref="Main.projectile"/>, if active is false, the projectile is junk data. Always check active if iterating over <see cref="Main.projectile"/>. Another option for iterating is to use <see cref="Main.ActiveProjectiles"/> instead for simpler code.
 +	/// </summary>
  	public bool active;
- 	public static uint[][] perIDStaticNPCImmunity = new uint[ProjectileID.Count][];
+ 	public static uint[,] perIDStaticNPCImmunity = new uint[ProjectileID.Count, InitData.MaxNPCs];
+ 	private static int[] slotGenerations = new int[1001];
+ 	private static int[,] keyToIndex = new int[256, 1001];
  	public const int SentryLifeTime = 36000;
  	public const int ArrowLifeTime = 1200;
  	public float ownerHitCheckDistance = 1000f;
@@ -82,6 +84,7 @@
 +	/// <para/> Defaults to 0.
 +	/// </summary>
  	public int alpha;
+ 	public int immunityIdentity;
 +	/// <summary>
 +	/// Indicates that this projectile is a sentry.
 +	/// <br/><br/> Defaults to <see langword="false"/>.
@@ -203,7 +206,7 @@
 +	/// The projectile's universal unique identifier, which is the same on all clients and the server. Usually used to find the same projectile on multiple clients and/or the server, e.g. <c>Projectile match = Main.projectile.FirstOrDefault(x => x.identity == identity);</c>
 +	/// <br/> Projectile.whoAmI indexes are not consistent between clients.
 +	/// </summary>
- 	public int identity;
+ 	public ProjectileKey key;
 +
 +	/// <summary>
 +	/// Set to a value above 0f to make this projectile emit a white light (higher number: more intensive light. 1f being stronger than a torch))
@@ -294,6 +297,7 @@
 +	/// </summary>
  	public bool isAPreviewDisplayDoll;
  	public MinionSpawnInfo MinionSpawnInfo;
+ 	public object customHitbox;
 +	/// <summary>
 +	/// Indicates the draw order of the projectile relative to tiles, npc, and players. By default projectiles are drawn in after (in front of) Tiles and NPC but before Players. Setting this will change that behavior.
 +	/// <br/><br/> Defaults to 0 (<see cref="ProjectileDrawLayerID.None"/>).
@@ -394,7 +398,6 @@
 +	/// </summary>
  	public int frame;
  	public bool manualDirectionChange;
- 	public int projUUID = -1;
  	public bool correctSlopeCollision;
  	public bool decidesManualFallThrough;
  	public bool shouldFallThrough;
@@ -549,49 +552,6 @@
  			width = 8;
  			height = 8;
  			aiStyle = 36;
-@@ -9249,7 +_,7 @@
- 			projectile.ai[1] = projectile.position.Y;
- 		}
- 
--		if (Type > 0 && Type < ProjectileID.Count) {
-+		if (Type > 0) {
- 			if (ProjectileID.Sets.NeedsUUID[Type])
- 				projectile.projUUID = projectile.identity;
- 
-@@ -9378,18 +_,33 @@
- 
- 			if (Type == 777 || Type == 781 || Type == 794 || Type == 797 || Type == 800 || Type == 785 || Type == 788 || Type == 791 || Type == 903 || Type == 904 || Type == 905 || Type == 906 || Type == 910 || Type == 911)
- 				projectile.timeLeft = 180;
-+
-+			// Copied from 1.3, moved from Shoot context to OnSpawn with matching logic
-+			if (Main.netMode != NetmodeID.Server) {
-+				Player throwingPlayer = Main.player[Owner];
-+				if (throwingPlayer.AnyThrownCostReduction && throwingPlayer.HeldItem.CountsAsClass(DamageClass.Throwing) && spawnSource is EntitySource_ItemUse_WithAmmo)
-+					projectile.noDropItem = true;
-+			}
- 		}
- 
- 		if (Type == 249)
- 			projectile.frame = Main.rand.Next(5);
- 
- 		modifer?.Invoke(projectile);
-+		/* Moved below
- 		if (Main.netMode != 0 && Owner == Main.myPlayer)
- 			NetMessage.SendData(27, -1, -1, null, num);
-+		*/
- 
- 		if (Owner == Main.myPlayer)
- 			Main.player[Owner].TryUpdateChannel(projectile);
- 
-+		projectile.ApplyStatsFromSource(spawnSource);
-+		ProjectileLoader.OnSpawn(projectile, spawnSource);
-+
-+		if (Main.netMode != 0 && Owner == Main.myPlayer)
-+			NetMessage.SendData(27, -1, -1, null, num);
-+
- 		return num;
- 	}
- 
 @@ -9560,13 +_,21 @@
  			// Dummy block for a nice patch.
  		}
@@ -662,6 +622,36 @@
  	public static int NewProjectile(IEntitySource spawnSource, float X, float Y, float SpeedX, float SpeedY, int Type, int Damage, float KnockBack, int Owner = -1, float ai0 = 0f, float ai1 = 0f, float ai2 = 0f, NewProjectileModifier modifer = null)
  	{
  		if (Owner == -1)
+@@ -9931,15 +_,29 @@
+ 			if (Type == 777 || Type == 781 || Type == 794 || Type == 797 || Type == 800 || Type == 785 || Type == 788 || Type == 791 || Type == 903 || Type == 904 || Type == 905 || Type == 906 || Type == 910 || Type == 911)
+ 				projectile.timeLeft = 180;
++
++			// Copied from 1.3, moved from Shoot context to OnSpawn with matching logic
++			if (Main.netMode != NetmodeID.Server) {
++				Player throwingPlayer = Main.player[Owner];
++				if (throwingPlayer.AnyThrownCostReduction && throwingPlayer.HeldItem.CountsAsClass(DamageClass.Throwing) && spawnSource is EntitySource_ItemUse_WithAmmo)
++					projectile.noDropItem = true;
++			}
+ 		}
+ 
+ 		if (Type == 249)
+ 			projectile.frame = Main.rand.Next(5);
+ 
+ 		projectile.FinalizeProjectile();
+ 		modifer?.Invoke(projectile);
++		/* Moved below
+ 		NetMessage.SendData(27, -1, -1, null, projectile.whoAmI);
++		*/
+ 		if (Owner == Main.myPlayer)
+ 			Main.player[Owner].TryUpdateChannel(projectile);
+ 
++		projectile.ApplyStatsFromSource(spawnSource);
++		ProjectileLoader.OnSpawn(projectile, spawnSource);
++
++		NetMessage.SendData(27, -1, -1, null, projectile.whoAmI);
++
+ 		return projectile.whoAmI;
+ 	}
 @@ -9954,26 +_,81 @@
  		}
  	}

@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/GameContent/CraftingRequests.cs
 +++ src/tModLoader/Terraria/GameContent/CraftingRequests.cs
-@@ -107,10 +_,10 @@
+@@ -108,10 +_,10 @@
  		CraftingEffects.OnCraft(recipe, quickCraft);
  	}
  
@@ -28,10 +28,11 @@
  	}
  
  	private static void CraftViaRequest(Recipe recipe, bool quickCraft, List<Chest> chests, List<Recipe.RequiredItemEntry> ingredients)
-@@ -140,7 +_,7 @@
+@@ -141,8 +_,8 @@
  			}
  		}
  
+ 		Invariant.Assert(list2.Any(), "CraftViaRequest with no items?");
 -		Item item = CreateResult(recipe);
 +		Item item = CreateResult(recipe, list);
  		if (!quickCraft)

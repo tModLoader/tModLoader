@@ -153,7 +153,7 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - public static LanguageSearchFilter CreateDialogFilter(string startsWith, object substitutions) removed from Lang.cs? Could still be useful, add back into Lang.TML.cs?
 - _unusedResearchLine removed from MouseText_DrawItemTooltip_GetLinesInfo, verify other callsites
 - WorldGen.SwapTileData might not be necessary anymore. ErrorWorldSwapTiles exists. The new name isn't as useful, however.
-- Projectile.identity removed, Projectile.key added. How to use? Also Projectile.IndexForVisuals. Also Main.projectileIdentity
+- Projectile.identity removed, Projectile.key added. How to use? Also Projectile.IndexForVisuals. Also Main.projectileIdentity. Need to fix Projectile.key docs, it is the identity docs.
 - Projectile.TransformType added, replaces direct setting of Projectile.type in AI. Might need a hook or more logic if used with modded projectiles.
 - New Worldgen.IsTileLoaded method seems like an issue with our non-null tiles.
 - Code near "Yoyos with effective top speed" comment in AI_009_2_Yoyos seems weird. Was this fixed in vanilla and the "< 1.01f" code left in? Probably can remove the duplicate bounds check, check blame
@@ -167,6 +167,10 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Main.rand can now have key-specific UnifiedRandom instances. Not sure how a mod might use it.
 - SystemLoader.PostUpdatePlayers(); call, move TimeLogger.UpdatePlayers.AddTime call?
 - PreUpdateNPCs doesn't exactly match 1.4.4 location because of UpdateWorld_SpawnNPCs being added. Do we want 2 more hooks there? Probably need to double check that all Main Update methods have a Pre and Post method, and that they are documented and any deviations from 1.4.4. order are documented as well (UpdateWorld_FloatingText, UpdateWorld_SpawnNPCs, etc)
+- Could NPC.lifeRegenExpectedLossPerSecond or interactedWithPlayerLocally be useful to modders?
+- Is NPC.OnSpawn useful for tmod?
+- Projectile.perIDStaticNPCImmunity is not a 2d array instead of a staggared array, might need some adjustments.
+- New vanilla named tooltiplines: Buffs, Healing, ManaHealing, Mount. Others?
 
 # New Fields that might need more documentation
 
@@ -186,6 +190,7 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Document NPCID.BoundTownNPCs, SyncAnchor
 - Document ProjectileID.DespawnItemIcon, DespawnItemGivesItemBack, DisplayDollDrawUseStyle
 - ProjectileID.FixedSelfDamageForPlayers, SkipDamage_EVP added
+- NPC.dontTakeDamageStillShowLife
 
 # Changes that need to be communicated to modders
 
