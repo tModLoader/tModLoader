@@ -640,7 +640,7 @@ public partial class WorkshopHelper
 				// Item Statistics
 				SteamedWraps.FetchPlayTimeStats(_primaryUGCHandle, i, out var hot, out var downloads);
 
-				bool isLibraryMod = tags.Any(SteamedWraps.IsLibraryTag);
+				bool isLibraryMod = tags.Contains(SteamedWraps.LibraryTagInternalName);
 
 				return new ModDownloadItem(displayname, metadata["name"], cVersion.modV, metadata["author"], metadata["modreferences"], modside, modIconURL, id.m_PublishedFileId.ToString(), (int)downloads, (int)hot, lastUpdate, cVersion.tmlV, metadata["homepage"], ownerId, refsById, banned, devMetadata, isLibraryMod);
 			}

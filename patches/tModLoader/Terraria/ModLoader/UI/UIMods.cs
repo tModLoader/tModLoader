@@ -43,7 +43,7 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 	public ModsMenuSortMode sortMode = ModsMenuSortMode.RecentlyUpdated;
 	public EnabledFilter enabledFilterMode = EnabledFilter.All;
 	public ModSideFilter modSideFilterMode = ModSideFilter.All;
-	public ModLibraryFilter modLibraryFilterMode = ModLibraryFilter.All;
+	public ModLibraryFilter modLibraryFilterMode = ModLibraryFilter.NonLibraryOnly;
 	public SearchFilter searchFilterMode = SearchFilter.Name;
 	internal readonly List<UICycleImage> _categoryButtons = new List<UICycleImage>();
 	internal string filter;
@@ -628,7 +628,7 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 				if (mod.location == ModLocation.Workshop) {
 					string parentDir = ModOrganizer.GetParentDir(mod.modFile.path);
 					if (ModOrganizer.TryReadManifest(parentDir, out var info)) {
-						mod.properties.libMod |= info.tags?.Any(SteamedWraps.IsLibraryTag) == true;
+						mod.properties.libMod |= info.tags?.Contains(SteamedWraps.LibraryTagInternalName) == true;
 					}
 
 					if (WorkshopHelper.GetPublishIdLocal(mod.modFile, out ulong publishId)) {

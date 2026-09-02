@@ -19,19 +19,6 @@ namespace Terraria.Social.Steam;
 public static class SteamedWraps
 {
 	internal const string LibraryTagInternalName = "Library";
-	internal const string LibraryTagSteamId = "tag_275098";
-	private static readonly HashSet<string> LibraryTagNames = new(StringComparer.OrdinalIgnoreCase) {
-		LibraryTagInternalName,
-		LibraryTagSteamId,
-		"模组类库",
-		"Библиотека",
-		"Biblioteca",
-		"Biblioteka (lib)",
-		"Librerías",
-		"Programmbibliothek"
-	};
-
-	internal static bool IsLibraryTag(string tag) => !string.IsNullOrWhiteSpace(tag) && LibraryTagNames.Contains(tag);
 
 	internal const uint thisApp = ModLoader.Engine.Steam.TMLAppID;
 
