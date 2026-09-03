@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -207,6 +207,26 @@ namespace Terraria.ModLoader
 			};
 			ModOrganizer.EnsureDependenciesExist(list9, false);
 			ModOrganizer.EnsureDependenciesExist(list9, true);
+
+			//test one-sided reference (a hard reference must load everywhere the mod requiring it does)
+			var list10 = new List<LocalMod> {
+				Make("A", ModSide.Client),
+				Make("B", refs: new[] {"A"})
+			};
+			AssertModException(
+				() => ModOrganizer.EnsureDependenciesExist(list10, false),
+				new[] {"B"},
+				"B (side: Both) requires A (side: Client), which does not load on Server. Consider changing to a weak reference");
+
+			//test Both and NoSync references, which load on every side and so may be required by anything
+			var list11 = new List<LocalMod> {
+				Make("A"),
+				Make("B", ModSide.Client, refs: new[] {"A"}),
+				Make("C", ModSide.NoSync),
+				Make("D", ModSide.Server, refs: new[] {"C"}),
+				Make("E", refs: new[] {"C"})
+			};
+			ModOrganizer.EnsureDependenciesExist(list11, false);
 		}
 
 		//test missing dependencies
