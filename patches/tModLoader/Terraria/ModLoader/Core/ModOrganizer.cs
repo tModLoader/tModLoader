@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -655,9 +655,8 @@ internal static class ModOrganizer
 
 		foreach (var mod in synced.list) {
 			var chains = new List<List<LocalMod>>();
-			//define recursive chain finding method
-			Action<LocalMod, Stack<LocalMod>> FindChains = null;
-			FindChains = (search, stack) => {
+			void FindChains(LocalMod search, Stack<LocalMod> stack)
+			{
 				stack.Push(search);
 
 				if (search.properties.side == ModSide.Both && stack.Count > 1) {
@@ -670,7 +669,7 @@ internal static class ModOrganizer
 				}
 
 				stack.Pop();
-			};
+			}
 			FindChains(mod, new Stack<LocalMod>());
 
 			if (chains.Count == 0)
