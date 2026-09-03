@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/DataStructures/ArmorSetBonuses.cs
 +++ src/tModLoader/Terraria/DataStructures/ArmorSetBonuses.cs
-@@ -2,6 +_,7 @@
+@@ -2,10 +_,11 @@
  using System.Linq;
  using Terraria.GameContent.Achievements;
  using Terraria.ID;
@@ -8,6 +8,11 @@
  
  namespace Terraria.DataStructures;
  
+-public class ArmorSetBonuses
++public partial class ArmorSetBonuses
+ {
+ 	public static class Benefits
+ 	{
 @@ -119,8 +_,11 @@
  			player.minionDamage += 0.15f;
  			player.whipRangeMultiplier += 0.3f;
@@ -52,7 +57,28 @@
  		}
  
  		public static void Platinum(Player player)
-@@ -564,7 +_,7 @@
+@@ -380,7 +_,13 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Contains all registered <see cref="ArmorSetBonus"/>. Populated automatically by armor sets registered using <c>Create</c> or <c>Add</c>.
++	/// </summary>
+ 	public static List<ArmorSetBonus> All = new List<ArmorSetBonus>();
++	/// <summary>
++	/// Maps armor item types to all <see cref="ArmorSetBonus"/> that use that item. Populated automatically by armor sets registered using <c>Create</c> or <c>Add</c>. Used to query armor sets.
++	/// </summary>
+ 	public static ArmorSetBonus[][] SetsContaining;
+ 
+ 	public static void Initialize()
+@@ -559,12 +_,14 @@
+ 		Add(Benefits.HuntressTier3, "ArmorSetBonus.HuntressTier3", 3877, 3878, 3879);
+ 		Add(Benefits.MonkTier3, "ArmorSetBonus.MonkTier3", 3880, 3881, 3882);
+ 		Add(Benefits.ObsidianOutlaw, "ArmorSetBonus.ObsidianOutlaw", 3266, 3267, 3268);
++
++		AssignKeysToVanillaArmorSets();
+ 	}
+ 
  	public static void BuildLookup()
  	{
  		ArmorSetBonus[] array = new ArmorSetBonus[0];
@@ -61,3 +87,23 @@
  		for (int i = 0; i < SetsContaining.Length; i++) {
  			SetsContaining[i] = array;
  		}
+@@ -604,14 +_,16 @@
+ 		return null;
+ 	}
+ 
+-	private static ArmorSetBonus.Builder Create(ArmorSetBonus.ArmorSetEffect effect, string textKey, ArmorSetBonus.PartType primaryPart = ArmorSetBonus.PartType.None) => ArmorSetBonus.Create(effect, textKey, primaryPart);
++	// TML made public, capitalize parameters for documentation refs, add Identifier
++	public static ArmorSetBonus.Builder Create(ArmorSetBonus.ArmorSetEffect Effect, string TextKey, ArmorSetBonus.PartType PrimaryPart = ArmorSetBonus.PartType.None, string Identifier = null) => ArmorSetBonus.Create(Effect, TextKey, PrimaryPart, Identifier);
+ 
++	// Made private, these should only be used by vanilla sets and Identifier added later.
+-	public static void Add(ArmorSetBonus.ArmorSetEffect Effect, string TextKey, int Head, int Body, int Legs)
++	private static void Add(ArmorSetBonus.ArmorSetEffect Effect, string TextKey, int Head, int Body, int Legs)
+ 	{
+ 		Create(Effect, TextKey).Set(Head, Body, Legs).Add();
+ 	}
+ 
+-	public static void Add(ArmorSetBonus.ArmorSetEffect Effect, string TextKey, ArmorSetBonus.PartType PrimaryPart, int Head, int Body, int Legs)
++	private static void Add(ArmorSetBonus.ArmorSetEffect Effect, string TextKey, ArmorSetBonus.PartType PrimaryPart, int Head, int Body, int Legs)
+ 	{
+ 		Create(Effect, TextKey, PrimaryPart).Set(Head, Body, Legs).Add();
+ 	}

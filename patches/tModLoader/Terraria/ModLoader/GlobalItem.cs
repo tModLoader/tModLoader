@@ -711,30 +711,19 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	}
 
 	/// <summary>
-	/// Allows you to determine whether the player is wearing an armor set, and return a name for this set. If there is no armor set, return the empty string. Returns the empty string by default.
-	/// <br/><br/> This return value should then be checked for in <see cref="UpdateArmorSet(Player, string)"/> to provide the actual effects of the armor set.
-	/// <para/> This method is not instanced.
-	/// <para/> Called on local, server, and remote clients.
-	/// </summary>
-	public virtual string IsArmorSet(Item head, Item body, Item legs)
-	{
-		return "";
-	}
-
-	/// <summary>
 	/// Allows you to give set bonuses to your armor set with the given name.
-	/// The set name will be the same as returned by <see cref="IsArmorSet(Item, Item, Item)"/>.
+	/// The currently active armor set is passed in as <paramref name="armorSetBonus"/>.
 	/// <para/> This method is not instanced.
 	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
-	public virtual void UpdateArmorSet(Player player, string set)
+	public virtual void UpdateArmorSet(Player player, ArmorSetBonus armorSetBonus)
 	{
 	}
 
 	/// <summary>
 	/// Returns whether or not the head armor, body armor, and leg armor textures make up a set.
 	/// This hook is used for the <see cref="GlobalItem.PreUpdateVanitySet(Player, string)"/>, <see cref="GlobalItem.UpdateVanitySet(Player, string)"/>, and <see cref="GlobalItem.ArmorSetShadows(Player, string)"/> hooks, and will use items in the social slots if they exist.
-	/// By default this will return the same value as the <see cref="IsArmorSet(Item, Item, Item)"/> hook, so you will not have to use this hook unless you want vanity effects to be entirely separate from armor sets.
+	/// By default this will return the <see cref="ArmorSetBonus.Identifier"/> of any complete armor set that is found using the corresponding items, so you will not have to use this hook unless you want vanity effects to be entirely separate from armor sets.
 	/// <para/> This method is not instanced.
 	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
@@ -758,7 +747,8 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 
 		Item legItem = ContentSamples.ItemsByType[legsItemType];
 
-		return IsArmorSet(headItem, bodyItem, legItem);
+		ArmorSetBonus armorSetBonus = ArmorSetBonuses.GetCompleteSet(new ArmorSetBonus.QueryContext() { HeadItem = headItemType, BodyItem = bodyItemType, LegItem = legsItemType });
+		return armorSetBonus?.Identifier ?? "";
 	}
 
 	/// <summary>
