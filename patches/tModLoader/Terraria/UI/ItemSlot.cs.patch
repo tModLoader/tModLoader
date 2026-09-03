@@ -314,6 +314,87 @@
  					Main.mouseItem.stack = (Main.mouseItem.OnlyNeedOneInInventory() ? 1 : Main.mouseItem.maxStack);
  					Main.mouseItem.OnCreated(new JourneyDuplicationItemCreationContext());
  					AnnounceTransfer(new ItemTransferInfo(inv[slot], 29, 21));
+@@ -980,6 +_,9 @@
+ 				case 12:
+ 					result = Main.LocalPlayer.IsItemSlotUnlockedAndUsable(slot) && checkItem.dye > 0;
+ 					break;
++				case Context.ModdedDyeSlot:
++					result = LoaderManager.Get<AccessorySlotLoader>().ModdedIsItemSlotUnlockedAndUsable(slot, Main.LocalPlayer) && checkItem.dye > 0;
++					break;
+ 				case 25:
+ 				case 27:
+ 				case 33:
+@@ -1004,7 +_,10 @@
+ 					result = checkItem.buffType > 0 && Main.lightPet[checkItem.buffType];
+ 					break;
+ 				case 10:
++					/*
+ 					result = Main.LocalPlayer.armor[slot].type != checkItem.type && !checkItem.vanity && checkItem.accessory && Main.LocalPlayer.IsItemSlotUnlockedAndUsable(slot) && CanEquipAccessoryInSlot(checkItem, slot);
++					*/
++					result = Main.LocalPlayer.armor[slot].type != checkItem.type && !checkItem.vanity && checkItem.accessory && Main.LocalPlayer.IsItemSlotUnlockedAndUsable(slot) && !AccCheck_ForLocalPlayer(Main.LocalPlayer.armor.Concat(AccessorySlotLoader.ModSlotPlayer(Main.LocalPlayer).exAccessorySlot).ToArray(), checkItem, slot);
+ 					break;
+ 				case 24: {
+ 					TEDisplayDoll tEDisplayDoll = Main.LocalPlayer.tileEntityAnchor.GetTileEntity() as TEDisplayDoll;
+@@ -1015,8 +_,22 @@
+ 					result = TEDisplayDoll.AcceptedInWeaponSlot(checkItem);
+ 					break;
+ 				case 11:
++					/*
+ 					result = Main.LocalPlayer.armor[slot].type != checkItem.type && checkItem.vanity && checkItem.accessory && Main.LocalPlayer.IsItemSlotUnlockedAndUsable(slot) && CanEquipAccessoryInVanitySlot(checkItem, slot);
++					*/
++					result = Main.LocalPlayer.armor[slot].type != checkItem.type && checkItem.vanity && checkItem.accessory && Main.LocalPlayer.IsItemSlotUnlockedAndUsable(slot) && !AccCheck_ForLocalPlayer(Main.LocalPlayer.armor.Concat(AccessorySlotLoader.ModSlotPlayer(Main.LocalPlayer).exAccessorySlot).ToArray(), checkItem, slot);
+ 					break;
++				case Context.ModdedAccessorySlot:
++				case Context.ModdedVanityAccessorySlot: {
++					var accLoader = LoaderManager.Get<AccessorySlotLoader>();
++					var accessories = AccessorySlotLoader.ModSlotPlayer(Main.LocalPlayer).exAccessorySlot;
++					bool vanity = context == Context.ModdedVanityAccessorySlot;
++					int slotIndex = vanity ? slot - accessories.Length / 2 : slot;
++					result = accessories[slot].type != checkItem.type && checkItem.vanity == vanity && checkItem.accessory
++						&& accLoader.ModdedIsSpecificItemSlotUnlockedAndUsable(slotIndex, Main.LocalPlayer, vanity)
++						&& accLoader.ModSlotCheck(checkItem, slot, context);
++					break;
++				}
+ 			}
+ 		}
+ 
+@@ -1068,7 +_,10 @@
+ 					flag = checkItem.buffType <= 0 || !Main.lightPet[checkItem.buffType];
+ 					break;
+ 				case 10:
++					/*
+ 					flag = !checkItem.accessory || !Main.LocalPlayer.IsItemSlotUnlockedAndUsable(slot) || !CanEquipAccessoryInSlot(checkItem, slot);
++					*/
++					flag = !checkItem.accessory || !Main.LocalPlayer.IsItemSlotUnlockedAndUsable(slot) || AccCheck_ForLocalPlayer(Main.LocalPlayer.armor.Concat(AccessorySlotLoader.ModSlotPlayer(Main.LocalPlayer).exAccessorySlot).ToArray(), checkItem, slot);
+ 					break;
+ 				case 24: {
+ 					TEDisplayDoll tEDisplayDoll = Main.LocalPlayer.tileEntityAnchor.GetTileEntity() as TEDisplayDoll;
+@@ -1079,8 +_,25 @@
+ 					flag = !TEDisplayDoll.AcceptedInWeaponSlot(checkItem);
+ 					break;
+ 				case 11:
++					/*
+ 					flag = !checkItem.accessory || !Main.LocalPlayer.IsItemSlotUnlockedAndUsable(slot) || !CanEquipAccessoryInVanitySlot(checkItem, slot);
++					*/
++					flag = !checkItem.accessory || !Main.LocalPlayer.IsItemSlotUnlockedAndUsable(slot) || AccCheck_ForLocalPlayer(Main.LocalPlayer.armor.Concat(AccessorySlotLoader.ModSlotPlayer(Main.LocalPlayer).exAccessorySlot).ToArray(), checkItem, slot);
+ 					break;
++				case Context.ModdedDyeSlot:
++					flag = !LoaderManager.Get<AccessorySlotLoader>().ModdedIsItemSlotUnlockedAndUsable(slot, Main.LocalPlayer) || checkItem.dye <= 0;
++					break;
++				case Context.ModdedAccessorySlot:
++				case Context.ModdedVanityAccessorySlot: {
++					var accLoader = LoaderManager.Get<AccessorySlotLoader>();
++					var accessories = AccessorySlotLoader.ModSlotPlayer(Main.LocalPlayer).exAccessorySlot;
++					bool vanity = context == Context.ModdedVanityAccessorySlot;
++					int slotIndex = vanity ? slot - accessories.Length / 2 : slot;
++					flag = !checkItem.accessory
++						|| !accLoader.ModdedIsSpecificItemSlotUnlockedAndUsable(slotIndex, Main.LocalPlayer, vanity)
++						|| !accLoader.ModSlotCheck(checkItem, slot, context);
++					break;
++				}
+ 			}
+ 		}
+ 
 @@ -1159,7 +_,15 @@
  					result = 1;
  				break;
@@ -558,6 +639,27 @@
  				case 3:
  					value = TextureAssets.InventoryBack5.Value;
  					break;
+@@ -1855,9 +_,17 @@
+ 			else if (value == TextureAssets.InventoryBack12.Value) {
+ 				color4 = new Color(45, 85, 105, color2.A);
+ 			}
+-			else if (value == TextureAssets.InventoryBack13.Value) {
+-				TryGetSlotColor(Main.LocalPlayer.CurrentLoadoutIndex, context, out color4);
+-				color4.A = color2.A;
++			else if (value == TextureAssets.InventoryBack13.Value || Math.Abs(context) == Context.ModdedDyeSlot) {
++				if (TryGetSlotColor(Main.LocalPlayer.CurrentLoadoutIndex, context, out color4))
++					color4.A = color2.A;
++				else
++					color4 = color2;
++			}
++			// Modded accessory slots can use any background texture, so none of the vanilla ones above
++			// necessarily match. Use the color the equivalent vanilla slot would have, otherwise the
++			// highlight is drawn in the slot's own background color, which is dimmed while disabled.
++			else if (context < 0) {
++				color4 = new Color(50, 106, 46, color2.A);
+ 			}
+ 
+ 			color4 *= 2f;
 @@ -1899,6 +_,16 @@
  			case 33:
  				num15 = 1;
@@ -621,6 +723,17 @@
  		}
  		else if (context == 6) {
  			Texture2D value11 = TextureAssets.Trash.Value;
+@@ -2145,7 +_,10 @@
+ 			return false;
+ 
+ 		int num = -1;
++		/*
+ 		switch (context) {
++		*/
++		switch (Math.Abs(context)) {
+ 			case 8:
+ 			case 10:
+ 				num = 0;
 @@ -2201,6 +_,10 @@
  
  		Vector2 origin = frame.Size() / 2f;
@@ -670,15 +783,28 @@
  			case 19:
  				result = 180;
  				break;
-@@ -2594,7 +_,7 @@
+@@ -2593,9 +_,18 @@
+ 			inv[slot] = ArmorSwap(inv[slot], out success, out var targetSlot2);
  			if (success) {
  				Main.EquipPageSelected = 0;
- 				Item item = player.armor[targetSlot2];
++				if (targetSlot2 >= player.armor.Length) {
++					var modSlots = AccessorySlotLoader.ModSlotPlayer(player).exAccessorySlot;
++					int modSlot = targetSlot2 - player.armor.Length;
++					int modContext = modSlot < modSlots.Length / 2 ? Context.ModdedAccessorySlot : Context.ModdedVanityAccessorySlot;
++					AchievementsHelper.HandleOnEquip(player, modSlots[modSlot], num * Math.Sign(context));
++					DisplayTransfer_TwoWay(inv, context, slot, modSlots, modContext, modSlot);
++				}
++				else {
+-				Item item = player.armor[targetSlot2];
++					Item item = player.armor[targetSlot2];
 -				AchievementsHelper.HandleOnEquip(player, item, num);
-+				AchievementsHelper.HandleOnEquip(player, item, num * Math.Sign(context));
- 				DisplayTransfer_TwoWay(inv, context, slot, player.armor, num, targetSlot2);
++					AchievementsHelper.HandleOnEquip(player, item, num * Math.Sign(context));
+-				DisplayTransfer_TwoWay(inv, context, slot, player.armor, num, targetSlot2);
++					DisplayTransfer_TwoWay(inv, context, slot, player.armor, num, targetSlot2);
++				}
  			}
  		}
+ 
 @@ -2722,6 +_,7 @@
  		return true;
  	}
@@ -687,6 +813,60 @@
  	private static Item DyeSwap(Item item, out bool success, out int targetSlot)
  	{
  		targetSlot = -1;
+@@ -2765,8 +_,16 @@
+ 			if (HasSameItemInSlot(item, new ArraySegment<Item>(Main.LocalPlayer.armor, 0, 3)) || HasSameItemInSlot(item, new ArraySegment<Item>(Main.LocalPlayer.armor, 10, 3)))
+ 				return item;
+ 		}
++		else if (item.accessory) {
++			// TML: The same check is applied to the modded slots on the opposite side, so that a copy
++			// in a modded slot blocks the swap just like a copy in a vanilla slot does.
++			var oppositeModSlots = AccessorySlotLoader.ModSlotPlayer(player).exAccessorySlot;
++			int oppositeModCount = oppositeModSlots.Length / 2;
+-		else if (item.accessory && (item.vanity ? HasSameItemInSlot(item, new ArraySegment<Item>(player.armor, 3, 7)) : HasSameItemInSlot(item, new ArraySegment<Item>(player.armor, 13, 7)))) {
++			if (item.vanity ? HasSameItemInSlot(item, new ArraySegment<Item>(player.armor, 3, 7)) : HasSameItemInSlot(item, new ArraySegment<Item>(player.armor, 13, 7)))
+-			return item;
++				return item;
++
++			if (HasSameItemInSlot(item, new ArraySegment<Item>(oppositeModSlots, item.vanity ? 0 : oppositeModCount, oppositeModCount)))
++				return item;
+ 		}
+ 
+ 		if (item.headSlot != -1) {
+@@ -2779,8 +_,20 @@
+ 			targetSlot = num + 2;
+ 		}
+ 		else if (item.accessory) {
++			var accLoader = LoaderManager.Get<AccessorySlotLoader>();
++			var modSlots = AccessorySlotLoader.ModSlotPlayer(player).exAccessorySlot;
++			int modCount = modSlots.Length / 2;
+ 			ArraySegment<Item> accessories = new ArraySegment<Item>(player.armor, 3 + num, 7);
++
++			// An incompatible accessory in a modded slot has to be swapped with as well, so
++			// targetSlot is offset by player.armor.Length to address the modded slots.
++			if (HasIncompatibleAccessory(item, new ArraySegment<Item>(modSlots, item.vanity ? modCount : 0, modCount), out int modCollision)) {
++				if (!accLoader.ModdedIsSpecificItemSlotUnlockedAndUsable(modCollision % modCount, player, item.vanity))
++					return item;
++
++				targetSlot = modCollision + player.armor.Length;
++			}
+-			if (HasIncompatibleAccessory(item, accessories, out targetSlot)) {
++			else if (HasIncompatibleAccessory(item, accessories, out targetSlot)) {
+ 				if (!player.IsItemSlotUnlockedAndUsable(targetSlot))
+ 					return item;
+ 			}
+@@ -2801,7 +_,11 @@
+ 
+ 		item.favorited = false;
+ 		SoundEngine.PlaySound(7);
++		if (targetSlot >= player.armor.Length)
++			Utils.Swap(ref item, ref AccessorySlotLoader.ModSlotPlayer(player).exAccessorySlot[targetSlot - player.armor.Length]);
++		else
+-		Utils.Swap(ref item, ref player.armor[targetSlot]);
++			Utils.Swap(ref item, ref player.armor[targetSlot]);
++
+ 		success = true;
+ 		return item;
+ 	}
 @@ -2917,7 +_,7 @@
  
  	public static Color GetItemLight(ref Color currentColor, ref float scale, int type, bool outInTheWorld = false, float lightScalar = 1f)
