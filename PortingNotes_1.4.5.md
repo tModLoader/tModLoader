@@ -171,6 +171,17 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Is NPC.OnSpawn useful for tmod?
 - Projectile.perIDStaticNPCImmunity is not a 2d array instead of a staggared array, might need some adjustments.
 - New vanilla named tooltiplines: Buffs, Healing, ManaHealing, Mount. Others?
+- NPCID.Sets.GoldCrittersCollection changes are confusing, fix patches if still needed.
+- Chest.AddItemToShop changes need more thought to fit in vanilla changes.
+- NPCLoader.UpdateLifeRegen will need to be changed. This has changed a lot.
+- Player.hasWings might be useful.
+- Player.strongestMoveSpeedDebuff? Seems like a split between move speed buffs and debuffs
+- Player.maxRunSpeed should mention originalRunSpeed maybe.
+- We'll need to recheck all the container drop loot tables again. At least OpenLockBox has changed
+- Seems like shared loadout slots don't actually populate Player.armor slots. Modders will have to use Player.GetEffectiveArmor to get the actual armor that is active.
+- Player.manaPotionDelay is new.
+- Player.ApplyManaRegenerationDelay() replaces setting Player.manaRegenDelay directly.
+- Remove Item.ChangePlayerDirectionOnShoot from item 723
 
 # New Fields that might need more documentation
 

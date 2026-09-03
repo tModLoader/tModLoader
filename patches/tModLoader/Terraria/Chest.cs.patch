@@ -476,55 +476,6 @@
  	public static void DestroyChestDirect(int X, int Y, int id)
  	{
  		if (id < 0 || id >= Main.chest.Length)
-@@ -534,23 +_,44 @@
- 		}
- 	}
- 
-+	//TML: Now returns the item's index.
-+	/// <summary>
-+	/// Adds an item to the first empty slot in this shop.
-+	/// </summary>
-+	/// <param name="newItem">The item to add.</param>
-+	/// <returns><c>0</c> if the item could not be added to the shop, or the index in <see cref="item"/> if the item was successfully added.</returns>
--	public void AddItemToShop(Item newItem)
-+	public int AddItemToShop(Item newItem)
- 	{
- 		int num = Main.shopSellbackHelper.Remove(newItem);
--		if (num >= newItem.stack)
--			return;
-+
-+		if (num >= newItem.stack) {
-+			for (int i = 0; i < 39; i++)
-+				if (item[i] != null && item[i].type == newItem.type)
-+					return i;
-+			return 0; // Technically this shouldn't happen
-+		}
-+
-+		//TML:
-+		// When selling to vendor with full inventory, replace 2nd to last
-+		// item rather than have the item disappear to facilitate PostSellItem Item reference.
- 
- 		for (int i = 0; i < 39; i++) {
--			if (item[i] == null || item[i].type == 0) {
-+			if (item[i] == null || item[i].type == 0 || i == 38) {
- 				item[i] = newItem.Clone();
- 				item[i].favorited = false;
- 				item[i].buyOnce = true;
- 				item[i].stack -= num;
- 				_ = item[i].value;
- 				_ = 0;
-+
-+				/*
- 				break;
-+				*/
-+				return i;
- 			}
- 		}
-+
-+		return 0;
- 	}
- 
- 	public static void SetupTravelShop_AddToShop(int itemID, ref int added, ref int count)
 @@ -1023,6 +_,9 @@
  		}
  	}

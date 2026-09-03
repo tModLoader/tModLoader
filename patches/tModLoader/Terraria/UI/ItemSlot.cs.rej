@@ -45,6 +45,22 @@
  	{
  		Player player = Main.player[Main.myPlayer];
  		if (inv[slot].type <= 0)
+@@ -1159,7 +_,15 @@
+ 					result = 1;
+ 				break;
+ 			case 10:
++				/*
+ 				if (checkItem.type == 0 || CanEquipAccessoryInSlot(checkItem, slot))
++				*/
++				if (checkItem.type == 0 || (checkItem.accessory && !AccCheck_ForLocalPlayer(Main.LocalPlayer.armor.Concat(AccessorySlotLoader.ModSlotPlayer(Main.LocalPlayer).exAccessorySlot).ToArray(), checkItem, slot)))
++					result = 1;
++				break;
++			case Context.ModdedAccessorySlot:
++			case Context.ModdedVanityAccessorySlot:
++				if (checkItem.type == 0 || (checkItem.accessory && LoaderManager.Get<AccessorySlotLoader>().ModSlotCheck(checkItem, slot, context)))
+ 					result = 1;
+ 				break;
+ 			case 24:
 @@ -1167,6 +_,9 @@
  					result = 1;
  				break;

@@ -2583,19 +2583,6 @@
  			}
  
  			if (type == 1) {
-@@ -67983,10 +_,10 @@
- 			else
- 				checkDead();
- 
--			return num;
-+			return (int)num;
- 		}
- 
--		return 0.0;
-+		return 0;
- 	}
- 
- 	public static void LadyBugKilled(Vector2 Position, bool GoldLadyBug = false)
 @@ -68131,7 +_,29 @@
  		}
  	}
@@ -2918,19 +2905,15 @@
  		if (wet) {
  			if (shimmerWet) {
  				gravity = 0.15f;
-@@ -77087,9 +_,12 @@
- 				lifeRegen += 24;
- 		}
+@@ -77016,6 +_,8 @@
+ 				else if (ai[1] == 364f || ai[1] == 1104f || ai[1] == 365f || ai[1] == 1105f || ai[1] == 366f || ai[1] == 1106f)
+ 					none.AddSuperNaturalRegeneration(24);
+ 			}
  
-+		NPCLoader.UpdateLifeRegen(this, ref num);
++			NPCLoader.UpdateLifeRegen(this, ref num);
 +
- 		if (lifeRegen <= -240 && num < 2)
- 			num = 2;
- 
-+		// Extra patch context.
- 		lifeRegenCount += lifeRegen;
- 		while (lifeRegenCount >= 120) {
- 			lifeRegenCount -= 120;
+ 			if (none.BlockNaturalRegeneration && lifeRegen > 0)
+ 				lifeRegen = 0;
 @@ -77349,12 +_,16 @@
  			if (buffType[i] == 324)
  				onFrostBurn2 = true;

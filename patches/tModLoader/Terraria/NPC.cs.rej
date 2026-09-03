@@ -23,3 +23,16 @@
  				Main.npc[i].active = false;
  				NetMessage.SendData(23, -1, -1, null, i);
  			}
+@@ -67983,10 +_,10 @@
+ 			else
+ 				checkDead();
+ 
+-			return num;
++			return (int)num;
+ 		}
+ 
+-		return 0.0;
++		return 0;
+ 	}
+ 
+ 	public static void LadyBugKilled(Vector2 Position, bool GoldLadyBug = false)

@@ -157,6 +157,27 @@
  		if (WorldGen.isGeneratingOrLoadingWorld)
  			return 0;
  
+@@ -48686,10 +_,20 @@
+ 		EmergencyStacking.ClearPendingTransfersInvolving(Main.item[num]);
+ 		Main.item[num] = new WorldItem();
+ 		WorldItem worldItem = Main.item[num];
++
++		if (itemToClone != null) {
++			// TODO: Is setting inner enough, or do we need to call other WorldItem methods.
++			worldItem.inner = itemToClone.Clone();
++			Type = itemToClone.type; // just to be safe if IL edits change type swaps and velocity tweaks.
++			goto skipItemCreation;
++		}
++
+ 		worldItem.SetDefaults(Type);
+ 		worldItem.whoAmI = num;
+ 		worldItem.Prefix(pfix);
+ 		worldItem.stack = Stack;
++		skipItemCreation:
++
+ 		worldItem.position.X = X + Width / 2 - worldItem.width / 2;
+ 		worldItem.position.Y = Y + Height / 2 - worldItem.height / 2;
+ 		worldItem.wet = Collision.WetCollision(worldItem.position, worldItem.width, worldItem.height);
 @@ -48822,6 +_,9 @@
  		mountType = -1;
  		useStyle = 0;

@@ -44,7 +44,7 @@
  		TileEntityType<TEWeaponsRack>.Kill(num3, num4);
  		WorldGen.destroyObject = false;
  	}
-@@ -109,30 +_,37 @@
+@@ -109,25 +_,32 @@
  	public void DropItem()
  	{
  		if (Main.netMode != 1)
@@ -60,13 +60,9 @@
  		WorldGen.RangeFrame(x, y, x + 3, y + 3);
  		if (!TileEntity.TryGetAt<TEWeaponsRack>(x, y, out var result)) {
 +			/*
- 			int num = Item.NewItem(new EntitySource_TileBreak(x, y), x * 16, y * 16, 32, 32, 1);
- 			Main.item[num].SetDefaults(type);
- 			Main.item[num].Prefix(prefix);
- 			Main.item[num].stack = stack;
- 			NetMessage.SendData(21, -1, -1, null, num);
+ 			Item.NewItem(new EntitySource_TileBreak(x, y), x * 16, y * 16, 16, 16, type, stack, noBroadcast: false, prefix);
 +			*/
-+			Item.NewItem(new EntitySource_TileBreak(x, y), new Rectangle(x * 16, y * 16, 32, 32), item);
++			Item.NewItem(new EntitySource_TileBreak(x, y), new Rectangle(x * 16, y * 16, 16, 16), item);
  			return;
  		}
  
@@ -83,8 +79,7 @@
 +
  		NetMessage.SendData(86, -1, -1, null, result.ID, x, y);
  	}
- 
-@@ -183,16 +_,20 @@
+@@ -179,16 +_,20 @@
  				NetMessage.SendData(17, -1, -1, null, 0, Player.tileTargetX, y, 1f);
  		}
  

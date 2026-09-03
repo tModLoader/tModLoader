@@ -157,6 +157,25 @@
 +
 +		spriteBatch.DrawString(FontAssets.MouseText.Value, Localization.Language.GetTextValue("tModLoader.PressXToClose", Microsoft.Xna.Framework.Input.Keys.F7), new Vector2(20, num23 + 32), Color.White, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
  	}
+@@ -39280,7 +_,8 @@
+ 			if (LocalPlayer.dead) {
+ 				num += 40;
+ 			}
++			//TML: Remove the Setting button being moved when player has too many slots. The ModAccessorySlot rework fixed this in a better fashion.
+-			else if (amountOfExtraAccessorySlotsToShow >= 1 && (screenHeight < num3 || (screenHeight < num4 && mapStyle == 1))) {
++			else if (false && amountOfExtraAccessorySlotsToShow >= 1 && (screenHeight < num3 || (screenHeight < num4 && mapStyle == 1))) {
+ 				num -= 140;
+ 				num2 -= PlayerInput.SettingsForUI.PushEquipmentAreaUp.ToInt() * 30;
+ 				_settingsButtonIsPushedToSide = true;
+@@ -40762,7 +_,7 @@
+ 
+ 	private void DrawInfoAccs_AdjustInfoTextColorsForNPC(NPC npc, ref Microsoft.Xna.Framework.Color infoTextColor, ref Microsoft.Xna.Framework.Color infoTextShadowColor)
+ 	{
+-		for (int i = 0; i < NPCID.Sets.GoldCrittersCollection.Count; i++) {
++		for (int i = 0; i < NPCID.Sets.GoldCrittersCollection.Length; i++) {
+ 			int num = NPCID.Sets.GoldCrittersCollection[i];
+ 			if (npc.type == num) {
+ 				infoTextColor = OurFavoriteColor;
 @@ -43698,7 +_,7 @@
  									Lighting.GetCornerColors(num24, num25, out var vertices);
  									vertices.BottomLeftColor = new Microsoft.Xna.Framework.Color(vertices.BottomLeftColor.ToVector3() * vector2);

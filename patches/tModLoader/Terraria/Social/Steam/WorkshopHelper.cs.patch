@@ -99,7 +99,7 @@
  						}
  						else {
  							WorldPaths.Add(listOfSubscribedItemsPath);
-@@ -161,19 +_,33 @@
+@@ -159,19 +_,33 @@
  
  			protected WorkshopItemPublicSettingId _publicity;
  			protected SteamWorkshopItem _entryData;
@@ -134,7 +134,7 @@
  				ERemoteStoragePublishedFileVisibility visibility = GetVisibility(publicity);
  				_entryData = new SteamWorkshopItem {
  					Title = itemTitle,
-@@ -181,9 +_,22 @@
+@@ -179,9 +_,22 @@
  					ContentFolderPath = contentFolderPath,
  					Tags = tags,
  					PreviewImagePath = previewImagePath,
@@ -158,7 +158,7 @@
  				ulong? num = null;
  				if (AWorkshopEntry.TryReadingManifest(contentFolderPath + Path.DirectorySeparatorChar + "workshop.json", out var info))
  					num = info.workshopEntryId;
-@@ -191,9 +_,23 @@
+@@ -189,9 +_,23 @@
  				if (num.HasValue && finder.HasItemOfId(num.Value)) {
  					_publishedFileID = new PublishedFileId_t(num.Value);
  					PreventUpdatingCertainThings();
@@ -182,7 +182,7 @@
  					CreateItem();
  				}
  			}
-@@ -213,19 +_,55 @@
+@@ -211,14 +_,50 @@
  						return ERemoteStoragePublishedFileVisibility.k_ERemoteStoragePublishedFileVisibilityFriendsOnly;
  					case WorkshopItemPublicSettingId.Public:
  						return ERemoteStoragePublishedFileVisibility.k_ERemoteStoragePublishedFileVisibilityPublic;
@@ -197,10 +197,8 @@
 +
 +				_createCallback = EResult.k_EResultNone;
 +
- 				CoreSocialModule.SetSkipPulsing(shouldSkipPausing: true);
  				SteamAPICall_t hAPICall = SteamUGC.CreateItem(SteamUtils.GetAppID(), EWorkshopFileType.k_EWorkshopFileTypeFirst);
  				_createItemHook.Set(hAPICall, CreateItemResult);
- 				CoreSocialModule.SetSkipPulsing(shouldSkipPausing: false);
 +
 +				// Everything below is for command line publishing to work.
 +				if (!Main.dedServ)
@@ -235,12 +233,9 @@
 +				}
 +
 +				/*
- 				if (param.m_bUserNeedsToAcceptWorkshopLegalAgreement) {
- 					_issueReporter.ReportDelayedUploadProblem("Workshop.ReportIssue_FailedToPublish_UserDidNotAcceptWorkshopTermsOfService");
- 					_endAction(this);
-@@ -238,12 +_,36 @@
- 					_issueReporter.ReportDelayedUploadProblemWithoutKnownReason("Workshop.ReportIssue_FailedToPublish_WithoutKnownReason", param.m_eResult.ToString());
- 					_endAction(this);
+@@ -245,11 +_,35 @@
+ 				else {
+ 					UpdateItem();
  				}
 +				*/
 +
@@ -274,8 +269,7 @@
 +			/*
  			private void UpdateItem()
  			{
- 				string headerText = GetHeaderText();
-@@ -251,8 +_,15 @@
+@@ -257,8 +_,15 @@
  					_endAction(this);
  					return;
  				}
@@ -291,7 +285,7 @@
  				UGCUpdateHandle_t uGCUpdateHandle_t = SteamUGC.StartItemUpdate(SteamUtils.GetAppID(), _publishedFileID);
  				if (_entryData.Title != null)
  					SteamUGC.SetItemTitle(uGCUpdateHandle_t, _entryData.Title);
-@@ -267,23 +_,68 @@
+@@ -273,20 +_,65 @@
  
  				if (_entryData.Visibility.HasValue)
  					SteamUGC.SetItemVisibility(uGCUpdateHandle_t, _entryData.Visibility.Value);
@@ -301,12 +295,10 @@
 +				_updateCallback = EResult.k_EResultNone;
 +				Logging.tML.Info("Submitting workshop update handle to Steam");
  
- 				CoreSocialModule.SetSkipPulsing(shouldSkipPausing: true);
 -				SteamAPICall_t hAPICall = SteamUGC.SubmitItemUpdate(uGCUpdateHandle_t, "");
 +				SteamAPICall_t hAPICall = SteamUGC.SubmitItemUpdate(uGCUpdateHandle_t, _entryData.ChangeNotes);
  				_updateHandle = uGCUpdateHandle_t;
  				_updateItemHook.Set(hAPICall, UpdateItemResult);
- 				CoreSocialModule.SetSkipPulsing(shouldSkipPausing: false);
 +
 +				// Below Added by tModLoader for command-line/server publishing
 +				Logging.tML.Info("Handle submitted. Waiting on Steam");
@@ -348,11 +340,8 @@
 +
 +				_updateCallback = param.m_eResult;
 +
- 				if (param.m_bUserNeedsToAcceptWorkshopLegalAgreement) {
- 					_issueReporter.ReportDelayedUploadProblem("Workshop.ReportIssue_FailedToPublish_UserDidNotAcceptWorkshopTermsOfService");
- 					_endAction(this);
- 					return;
- 				}
+ 				if (bIOFailure)
+ 					param.m_eResult = EResult.k_EResultIOFailure;
  
 -				switch (param.m_eResult) {
 +				if (_updateCallback != EResult.k_EResultOK)
@@ -360,9 +349,11 @@
 +
 +				switch (_updateCallback) {
  					case EResult.k_EResultOK:
+ 						if (param.m_bUserNeedsToAcceptWorkshopLegalAgreement)
+ 							_issueReporter.ReportDelayedUploadProblem("Workshop.ReportIssue_FailedToPublish_UserDidNotAcceptWorkshopTermsOfService");
  						SteamFriends.ActivateGameOverlayToWebPage("steam://url/CommunityFilePage/" + _publishedFileID.m_PublishedFileId);
  						break;
-@@ -307,6 +_,15 @@
+@@ -312,6 +_,15 @@
  						break;
  				}
  
@@ -378,7 +369,7 @@
  				_endAction(this);
  			}
  
-@@ -322,6 +_,19 @@
+@@ -327,6 +_,19 @@
  					_issueReporter.ReportManifestCreationProblem("Workshop.ReportIssue_CouldNotCreateResourcePackManifestFile", exception);
  					return false;
  				}
