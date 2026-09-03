@@ -189,6 +189,15 @@ internal class BuildProperties
 		if (properties.dllReferences.Intersect(properties.modReferences.Select(x => x.mod)).Any())
 			throw new Exception("dllReferences contains duplicate of modReferences");
 
+		if (properties.sortBefore.Intersect(properties.sortAfter).Any())
+			throw new Exception("sortBefore contains duplicate of sortAfter");
+
+		if (sortIgnore.Intersect(properties.sortAfter.Concat(properties.sortBefore)).Any())
+			throw new Exception("sortIgnore contains duplicate of sortAfter/sortBefore");
+
+		if (sortIgnore.Except(refs).Any())
+			throw new Exception("sortIgnore contains mods which are not mod/weak references");
+
 		//add (mod|weak)References that are not in sortBefore or sortIgnore to sortAfter
 		properties.sortAfter = properties.RefNames(true)
 			.Where(dep => !properties.sortBefore.Contains(dep) && !sortIgnore.Contains(dep))
