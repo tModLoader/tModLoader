@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -190,9 +190,9 @@ internal class BuildProperties
 			throw new Exception("dllReferences contains duplicate of modReferences");
 
 		//add (mod|weak)References that are not in sortBefore or sortIgnore to sortAfter
-		properties.sortAfter = properties.RefNames(true).Where(dep => !properties.sortBefore.Contains(dep))
-			.Concat(properties.sortAfter).Distinct().Where(dep => !sortIgnore.Contains(dep)).ToArray();
-		properties.sortBefore = properties.sortBefore.Where(dep => !sortIgnore.Contains(dep)).ToArray();
+		properties.sortAfter = properties.RefNames(true)
+			.Where(dep => !properties.sortBefore.Contains(dep) && !sortIgnore.Contains(dep))
+			.Concat(properties.sortAfter).Distinct().ToArray();
 
 		// Interpolate description values
 		ModCompile.UpdateSubstitutedDescriptionValues(ref properties.description, properties.version.ToString(), properties.homepage);
@@ -224,11 +224,6 @@ internal class BuildProperties
 				if (sortBefore.Length > 0) {
 					writer.Write("sortBefore");
 					WriteList(sortBefore, writer);
-				}
-				string[] sortIgnore = modReferences.Union(weakReferences).Select(dep => dep.mod).Except(sortAfter).Except(sortBefore).ToArray();
-				if (sortIgnore.Length > 0) {
-					writer.Write("sortIgnore");
-					WriteList(sortIgnore, writer);
 				}
 				if (author.Length > 0) {
 					writer.Write("author");
@@ -406,7 +401,8 @@ internal class BuildProperties
 		if (properties.sortBefore.Length > 0)
 			sb.AppendLine($"sortBefore = {string.Join(", ", properties.sortBefore)}");
 
-		string[] sortIgnore = properties.modReferences.Union(properties.weakReferences).Select(dep => dep.mod).Except(properties.sortAfter).Except(properties.sortBefore).ToArray();
+		//sortIgnore is not stored in Info, but a reference with no sort entry could only have come from one
+		string[] sortIgnore = properties.RefNames(true).Except(properties.sortAfter).Except(properties.sortBefore).ToArray();
 		if (sortIgnore.Length > 0)
 			sb.AppendLine($"sortIgnore = {string.Join(", ", sortIgnore)}");
 		var bytes = Encoding.UTF8.GetBytes(sb.ToString());
