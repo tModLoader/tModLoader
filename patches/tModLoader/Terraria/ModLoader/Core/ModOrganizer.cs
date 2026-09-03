@@ -688,14 +688,14 @@ internal static class ModOrganizer
 	internal static List<LocalMod> Sort(ICollection<LocalMod> mods)
 	{
 		var nameMap = mods.ToDictionary(mod => mod.Name);
-		var toProcess = new Queue<LocalMod>(mods.Where(mod => mod.properties.side == ModSide.Both));
 		var knownSyncedMods = new HashSet<LocalMod>(mods.Where(mod => mod.properties.side == ModSide.Both));
+		var toProcess = new Queue<LocalMod>(knownSyncedMods);
 		while (toProcess.TryDequeue(out LocalMod processing)) {
 			foreach (BuildProperties.ModReference reference in processing.properties.modReferences) {
 				LocalMod requirement = nameMap[reference.mod];
 				if (requirement.properties.side is not ModSide.Both and not ModSide.NoSync)
 					throw new ModSortingException([processing], "TODO: write error or warning, mods should never require mods with more restrictive sides");
-				if (!knownSyncedMods.Add(requirement))
+				if (knownSyncedMods.Add(requirement))
 					toProcess.Enqueue(requirement);
 			}
 		}

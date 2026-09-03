@@ -400,6 +400,54 @@ namespace Terraria.ModLoader
 				"Some of these mods may not exist on both client and server. Add a direct sort entries or weak references.");
 		}
 
+		// A mod hard-required by a synced mod is itself guaranteed to exist on both sides, and so are its own
+		// requirements, all the way down. TestSidedSorts only covers the first step of that chain.
+		[TestMethod]
+		public void TestSyncedModClosureIsTransitive() {
+			//D (Both) -> C (NoSync) -> B (NoSync) -> A (Both)
+			//C and B both exist wherever D does, so D may be sorted against A through them
+			AssertSortSatisfied([
+				Make("A"),
+				Make("B", sortAfter: new[] { "A" }, side: ModSide.NoSync),
+				Make("C", sortAfter: new[] { "B" }, refs: new[] { "B" }, side: ModSide.NoSync),
+				Make("D", sortAfter: new[] { "C" }, refs: new[] { "C" })
+			]);
+
+			//same, one link longer
+			AssertSortSatisfied([
+				Make("A"),
+				Make("B", sortAfter: new[] { "A" }, side: ModSide.NoSync),
+				Make("C", sortAfter: new[] { "B" }, refs: new[] { "B" }, side: ModSide.NoSync),
+				Make("D", sortAfter: new[] { "C" }, refs: new[] { "C" }, side: ModSide.NoSync),
+				Make("E", sortAfter: new[] { "D" }, refs: new[] { "D" })
+			]);
+
+			//a weak reference carries no such guarantee, so the chain must not be extended through one
+			AssertModException(
+				() => AssertSortSatisfied([
+					Make("A"),
+					Make("B", sortAfter: new[] { "A" }, side: ModSide.NoSync),
+					Make("C", sortAfter: new[] { "B" }, weakRefs: new[] { "B" }, side: ModSide.NoSync),
+					Make("D", sortAfter: new[] { "C" }, refs: new[] { "C" })
+				]),
+				["C", "D"],
+				"C indirectly depends on A via C -> B -> A\r\n" +
+				"D indirectly depends on A via D -> C -> B -> A\r\n" +
+				"Some of these mods may not exist on both client and server. Add a direct sort entries or weak references.");
+		}
+
+		//mods may require each other; walking the requirement graph must not revisit mods forever
+		[TestMethod]
+		[Timeout(30000)]
+		public void TestSyncedModClosureWithReferenceCycle() {
+			//A and B require each other. sortBefore keeps the load order acyclic, since BuildProperties omits
+			//references listed in sortBefore when it folds them into sortAfter.
+			AssertSortSatisfied([
+				Make("A", refs: new[] { "B" }, sortBefore: new[] { "B" }),
+				Make("B", refs: new[] { "A" }, sortAfter: new[] { "A" })
+			]);
+		}
+
 		[TestMethod]
 		public void TestSidedSortsMatch() {
 			//diamond pattern
