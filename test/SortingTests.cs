@@ -466,6 +466,12 @@ namespace Terraria.ModLoader
 				Make("A", refs: new[] { "B" }, sortBefore: new[] { "B" }),
 				Make("B", refs: new[] { "A" }, sortAfter: new[] { "A" })
 			]);
+			//A and B require each other. sortIgnore keeps the load order acyclic, since BuildProperties omits
+			//references listed in sortIgnore when it folds them into sortAfter.
+			AssertSortSatisfied([
+				Make("A", refs: new[] { "B" }),
+				Make("B", refs: new[] { "A" }, sortAfter: new[] { "A" })
+			]);
 		}
 
 		[TestMethod]
