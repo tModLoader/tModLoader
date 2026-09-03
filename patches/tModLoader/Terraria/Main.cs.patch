@@ -4788,6 +4788,15 @@
  
  		int num = npcChatPortraitFrameCounter++;
  		int num2 = 56;
+@@ -34878,7 +_,7 @@
+ 			spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, UIScaleMatrix);
+ 		}
+ 
+-		string givenName = nPC.GivenName;
++		string givenName = nPC.GivenOrTypeName;
+ 		DynamicSpriteFont value3 = FontAssets.ItemStack.Value;
+ 		Vector2 vector2 = value3.MeasureString(givenName);
+ 		float num19 = 1f;
 @@ -34894,6 +_,7 @@
  		return false;
  	}
