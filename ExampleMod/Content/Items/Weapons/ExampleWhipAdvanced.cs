@@ -28,6 +28,9 @@ namespace ExampleMod.Content.Items.Weapons
 				PlayerBuffId = ModContent.BuffType<ExampleWhipAdvancedPlayerBuff>(),
 				PlayerBuffTime = 180
 			};
+
+			// Change it to ExampleWhip after right click in inventory.
+			ItemID.Sets.RightClickItemSwap[Type] = ModContent.ItemType<ExampleWhip>();
 		}
 
 		public override void SetDefaults() {
