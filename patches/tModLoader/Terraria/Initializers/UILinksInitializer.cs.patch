@@ -19,8 +19,8 @@
 +		}
  		cp22.UpdateEvent += delegate {
  			if (UILinkPointNavigator.Shortcuts.NPCCHAT_ButtonsNew) {
- 				for (int num69 = 0; num69 < UILinkPointNavigator.Shortcuts.NPCCHAT_ButtonsCount; num69++) {
-@@ -772,7 +_,8 @@
+ 				for (int num75 = 0; num75 < UILinkPointNavigator.Shortcuts.NPCCHAT_ButtonsCount; num75++) {
+@@ -809,7 +_,8 @@
  			return text3;
  		};
  
@@ -30,29 +30,28 @@
  			UILinkPoint value13 = new UILinkPoint(num14, enabled: true, num14 + 10, num14 - 10, num14 - 1, num14 + 1);
  			cp15.LinkMap.Add(num14, value13);
  		}
-@@ -782,7 +_,8 @@
- 			if (num58 == 0)
- 				num58 = 100;
+@@ -819,7 +_,8 @@
+ 			if (num63 == 0)
+ 				num63 = 100;
  
 +			// Increased (50 -> 98) for modded TownNPC support. #461
--			for (int num59 = 0; num59 < 50; num59++) {
-+			for (int num59 = 0; num59 < 98; num59++) {
- 				cp15.LinkMap[600 + num59].Up = ((num59 % num58 == 0) ? (-1) : (600 + num59 - 1));
- 				if (cp15.LinkMap[600 + num59].Up == -1) {
- 					if (num59 >= num58 * 2)
-@@ -796,6 +_,11 @@
- 				cp15.LinkMap[600 + num59].Down = (((num59 + 1) % num58 == 0 || num59 == UILinkPointNavigator.Shortcuts.NPCS_IconsTotal - 1) ? 308 : (600 + num59 + 1));
- 				cp15.LinkMap[600 + num59].Left = ((num59 < UILinkPointNavigator.Shortcuts.NPCS_IconsTotal - num58) ? (600 + num59 + num58) : (-3));
- 				cp15.LinkMap[600 + num59].Right = ((num59 < num58) ? (-4) : (600 + num59 - num58));
+-			for (int num64 = 0; num64 < 50; num64++) {
++			for (int num64 = 0; num64 < 98; num64++) {
+ 				cp15.LinkMap[600 + num64].Up = ((num64 % num63 == 0) ? (-1) : (600 + num64 - 1));
+ 				if (cp15.LinkMap[600 + num64].Up == -1) {
+ 					if (num64 >= num63 * 2)
+@@ -833,5 +_,10 @@
+ 				cp15.LinkMap[600 + num64].Down = (((num64 + 1) % num63 == 0 || num64 == UILinkPointNavigator.Shortcuts.NPCS_IconsTotal - 1) ? 308 : (600 + num64 + 1));
+ 				cp15.LinkMap[600 + num64].Left = ((num64 < UILinkPointNavigator.Shortcuts.NPCS_IconsTotal - num63) ? (600 + num64 + num63) : (-3));
+ 				cp15.LinkMap[600 + num64].Right = ((num64 < num63) ? (-4) : (600 + num64 - num63));
 +				// Avoid navigating to crafting menu when a lot of TownNPC. #4790
-+				if (cp15.LinkMap[600 + num59].Down >= 698)
-+					cp15.LinkMap[600 + num59].Down = 308;
-+				if (cp15.LinkMap[600 + num59].Left >= 698)
-+					cp15.LinkMap[600 + num59].Left = -3;
++				if (cp15.LinkMap[600 + num64].Down >= 698)
++					cp15.LinkMap[600 + num64].Down = 308;
++				if (cp15.LinkMap[600 + num64].Left >= 698)
++					cp15.LinkMap[600 + num64].Left = -3;
  			}
  		};
- 
-@@ -1556,8 +_,19 @@
+@@ -1663,8 +_,19 @@
  
  		cp4.OnSpecialInteracts += () => (Main.InGameUI.CurrentState is UIBestiaryTest) ? (PlayerInput.BuildCommand(Lang.misc[82].Value, PlayerInput.ProfileGamepadUI.KeyStatus["Inventory"]) + PlayerInput.BuildCommand(Language.GetText("UI.SwitchPage").Value, PlayerInput.ProfileGamepadUI.KeyStatus["HotbarMinus"], PlayerInput.ProfileGamepadUI.KeyStatus["HotbarPlus"]) + PlayerInput.BuildCommand(Lang.misc[53].Value, PlayerInput.ProfileGamepadUI.KeyStatus["MouseLeft"]) + FancyUISpecialInstructions()) : (PlayerInput.BuildCommand(Lang.misc[53].Value, PlayerInput.ProfileGamepadUI.KeyStatus["MouseLeft"]) + PlayerInput.BuildCommand(Lang.misc[82].Value, PlayerInput.ProfileGamepadUI.KeyStatus["Inventory"]) + FancyUISpecialInstructions());
  		cp4.UpdateEvent += delegate {
@@ -72,7 +71,7 @@
  		};
  
  		cp4.EnterEvent += delegate {
-@@ -1810,6 +_,12 @@
+@@ -2014,6 +_,12 @@
  				if (Main.MenuUI.CurrentState is IHaveBackButtonCommand haveBackButtonCommand)
  					haveBackButtonCommand.HandleBackButtonUsage();
  				break;

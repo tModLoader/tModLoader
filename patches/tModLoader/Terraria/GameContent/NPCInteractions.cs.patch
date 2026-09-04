@@ -128,7 +128,7 @@
 +		/// <summary> This interaction is predefined and can be used with <see cref="NPCInteractionDatabase.HousingButton"/></summary>
  		public class RequestHome : NPCInteraction
  		{
- 			public override bool ShowExcalmation => true;
+ 			public override bool ShowExclamation => true;
 @@ -265,13 +_,22 @@
  					text = "Slime" + slimeType + "Chatter";
  				}

@@ -1,14 +1,15 @@
 --- src/TerrariaNetCore/Terraria/Graphics/Light/LegacyLighting.cs
 +++ src/tModLoader/Terraria/Graphics/Light/LegacyLighting.cs
-@@ -4,6 +_,7 @@
+@@ -4,7 +_,8 @@
  using ReLogic.Threading;
  using Terraria.DataStructures;
  using Terraria.Graphics.Capture;
 +using Terraria.ModLoader;
+ using Terraria.Testing;
  using Terraria.Utilities;
  
  namespace Terraria.Graphics.Light;
-@@ -144,6 +_,9 @@
+@@ -145,6 +_,9 @@
  
  	public Vector3 GetColor(int x, int y)
  	{
@@ -18,7 +19,7 @@
  		if (x < _expandedRectLeft || x >= _expandedRectRight || y < _expandedRectTop || y >= _expandedRectBottom)
  			return Vector3.Zero;
  
-@@ -581,6 +_,7 @@
+@@ -582,6 +_,7 @@
  		num3 = Utils.Clamp(_expandedRectTop, 5, Main.maxTilesY - 1);
  		num4 = Utils.Clamp(_expandedRectBottom, 5, Main.maxTilesY - 1);
  		Main.UpdateSceneMetrics();
@@ -26,7 +27,7 @@
  		_tileScanner.Update();
  		_tileScanner.ExportTo(new Rectangle(num, num3, num2 - num, num4 - num3), _lightMap, new TileLightScannerOptions {
  			DrawInvisibleWalls = Main.ShouldShowInvisibleBlocksAndWalls()
-@@ -588,6 +_,7 @@
+@@ -589,6 +_,7 @@
  
  		for (int m = num; m < num2; m++) {
  			LightingState[] array3 = _states[m - _expandedRectLeft];
@@ -34,20 +35,7 @@
  			for (int n = num3; n < num4; n++) {
  				LightingState lightingState2 = array3[n - _expandedRectTop];
  				Tile tile = Main.tile[m, n];
-@@ -671,6 +_,12 @@
- 		if (!Main.gamePaused && !CaptureManager.Instance.IsCapturing)
- 			_tempLights.Clear();
- 
-+		if (Testing.DebugOptions.devLightTilesCheat) {
-+			Main.renderCount = 1;
-+			TimeLogger.LightingInit.AddTime(fromTimestamp);
-+			return;
-+		}
-+
- 		_minX += _expandedRectLeft;
- 		_maxX += _expandedRectLeft;
- 		_minY += _expandedRectTop;
-@@ -688,6 +_,9 @@
+@@ -695,6 +_,9 @@
  
  	private void DoColors()
  	{
@@ -57,7 +45,7 @@
  		if (IsColorOrWhiteMode) {
  			_blueWave += (float)_blueDir * 0.0001f;
  			if (_blueWave > 1f) {
-@@ -761,6 +_,8 @@
+@@ -768,6 +_,8 @@
  						_wetLightB = 0f;
  						break;
  				}
@@ -66,7 +54,7 @@
  			}
  			else {
  				_negLight = 0.9f;
-@@ -792,6 +_,8 @@
+@@ -799,6 +_,8 @@
  				_negLight2 *= 0.85f;
  				_negLight3 *= 0.85f;
  			}
@@ -75,7 +63,7 @@
  		}
  		else {
  			_negLight = 0.04f;
-@@ -820,6 +_,8 @@
+@@ -827,6 +_,8 @@
  				_negLight2 += 0.18f;
  				_negLight3 += 0.18f;
  			}

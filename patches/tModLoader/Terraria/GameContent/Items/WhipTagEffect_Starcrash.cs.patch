@@ -1,16 +1,16 @@
 --- src/TerrariaNetCore/Terraria/GameContent/Items/WhipTagEffect_Starcrash.cs
 +++ src/tModLoader/Terraria/GameContent/Items/WhipTagEffect_Starcrash.cs
-@@ -5,16 +_,22 @@
- 
+@@ -6,16 +_,22 @@
  public class WhipTagEffect_Starcrash : WhipTagEffect
  {
 +	/*
- 	public override void OnProcHit(Player owner, Projectile optionalProjectile, NPC npcHit, int calcDamage)
+ 	public override bool OnProcHit(Player owner, Projectile optionalProjectile, NPC npcHit, int calcDamage)
 +	*/
-+	public override void OnProcHit(Player owner, Projectile optionalProjectile, NPC npcHit, NPC.HitInfo hit)
++	public override bool OnProcHit(Player owner, Projectile optionalProjectile, NPC npcHit, NPC.HitInfo hit)
  	{
 -		SpawnMeteorWhipMeteorOn(optionalProjectile, npcHit, calcDamage);
 +		SpawnMeteorWhipMeteorOn(optionalProjectile, npcHit, hit);
+ 		return true;
  	}
  
 +	/*

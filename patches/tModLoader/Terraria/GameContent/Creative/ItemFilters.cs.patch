@@ -8,8 +8,8 @@
  using Terraria.UI;
  
  namespace Terraria.GameContent.Creative;
-@@ -22,19 +_,43 @@
- 		private int _unusedResearchLine;
+@@ -21,18 +_,42 @@
+ 		private int _unusedYoyoLogo;
  		private string _search;
  
 +		// Added by TML.
@@ -30,8 +30,8 @@
  			float knockBack = entry.knockBack;
  			int stack = entry.stack;
  			entry.stack = 1;
--			Main.MouseText_DrawItemTooltip_GetLinesInfo(entry, ref _unusedYoyoLogo, ref _unusedResearchLine, knockBack, ref numLines, _toolTipLines, _unusedColor);
-+			Main.MouseText_DrawItemTooltip_GetLinesInfo(entry, ref _unusedYoyoLogo, ref _unusedResearchLine, knockBack, ref numLines, _toolTipLines, _unusedColor, _toolTipNames, out _);
+-			Main.MouseText_DrawItemTooltip_GetLinesInfo(entry, ref _unusedYoyoLogo, knockBack, ref numLines, _toolTipLines, _unusedColor);
++			Main.MouseText_DrawItemTooltip_GetLinesInfo(entry, ref _unusedYoyoLogo, knockBack, ref numLines, _toolTipLines, _unusedColor, _toolTipNames, out _);
 +
 +			List<TooltipLine> modifiedTooltipLines;
 +			try {
@@ -52,8 +52,7 @@
 +				if (line.Text.ToLower().IndexOf(_search, StringComparison.OrdinalIgnoreCase) != -1)
  					return true;
  			}
- 
-@@ -111,6 +_,7 @@
+@@ -110,6 +_,7 @@
  
  	public class Tools : IItemEntryFilter, IEntryFilter<Item>
  	{
@@ -61,9 +60,10 @@
  		private HashSet<int> _itemIdsThatAreAccepted = new HashSet<int> {
  			213,
  			5295,
-@@ -170,6 +_,7 @@
+@@ -169,7 +_,8 @@
  			114,
- 			5667
+ 			5667,
+ 			6174
  		};
 +		*/
  

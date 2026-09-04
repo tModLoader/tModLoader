@@ -9,7 +9,7 @@
  using Microsoft.Xna.Framework;
  using Microsoft.Xna.Framework.Graphics.PackedVector;
  using Terraria.Chat;
-@@ -12,6 +_,8 @@
+@@ -11,6 +_,8 @@
  using Terraria.ID;
  using Terraria.Localization;
  using Terraria.Map;
@@ -18,7 +18,7 @@
  using Terraria.Social;
  using Terraria.Testing;
  
-@@ -57,10 +_,11 @@
+@@ -56,10 +_,11 @@
  	private static short[] _compressChestList = new short[8000];
  	private static short[] _compressSignList = new short[32000];
  	private static short[] _compressEntities = new short[1000];
@@ -31,7 +31,7 @@
  	public static bool TrySendData(int msgType, int remoteClient = -1, int ignoreClient = -1, NetworkText text = null, int number = 0, float number2 = 0f, float number3 = 0f, float number4 = 0f, int number5 = 0, int number6 = 0, int number7 = 0)
  	{
  		try {
-@@ -73,6 +_,13 @@
+@@ -72,6 +_,13 @@
  		return true;
  	}
  
@@ -45,7 +45,7 @@
  	public static void SendData(int msgType, int remoteClient = -1, int ignoreClient = -1, NetworkText text = null, int number = 0, float number2 = 0f, float number3 = 0f, float number4 = 0f, int number5 = 0, int number6 = 0, int number7 = 0)
  	{
  		if (Main.netMode == 0)
-@@ -91,6 +_,9 @@
+@@ -101,6 +_,9 @@
  		if (Main.netMode == 2 && remoteClient >= 0)
  			num = remoteClient;
  
@@ -55,102 +55,97 @@
  		lock (buffer[num]) {
  			BinaryWriter writer = buffer[num].writer;
  			if (writer == null) {
-@@ -104,12 +_,12 @@
+@@ -114,13 +_,13 @@
  			writer.Write((byte)msgType);
  			switch (msgType) {
  				case 1:
--					writer.Write("Terraria" + 319);
+-					writer.Write("Terraria" + 326);
 +					writer.Write(ModNet.NetVersionString);
  					break;
  				case 2:
  					text.Serialize(writer);
+ 					Netplay.Clients[num].Kicked = true;
  					if (Main.dedServ)
 -						Console.WriteLine(Language.GetTextValue("CLI.ClientWasBooted", Netplay.Clients[num].Socket.GetRemoteAddress().ToString(), text));
 +						Logging.ServerConsoleLine(Language.GetTextValue("CLI.ClientWasBooted", Netplay.Clients[num].Socket.GetRemoteAddress().ToString(), text));
  					break;
  				case 3:
  					writer.Write((byte)remoteClient);
-@@ -123,7 +_,7 @@
- 					writer.Write(player5.voicePitchOffset);
- 					writer.Write((byte)player5.hair);
- 					writer.Write(player5.name);
--					writer.Write(player5.hairDye);
-+					writer.Write7BitEncodedInt(player5.hairDye);
- 					WriteAccessoryVisibility(writer, player5.hideVisibleAccessory);
- 					writer.Write(player5.hideMisc);
- 					writer.WriteRGB(player5.hairColor);
-@@ -170,12 +_,16 @@
+@@ -134,7 +_,7 @@
+ 					writer.Write(player6.voicePitchOffset);
+ 					writer.Write((byte)player6.hair);
+ 					writer.Write(player6.name);
+-					writer.Write(player6.hairDye);
++					writer.Write7BitEncodedInt(player6.hairDye);
+ 					WriteAccessoryVisibility(writer, player6.hideVisibleAccessory);
+ 					writer.Write(player6.hideMisc);
+ 					writer.WriteRGB(player6.hairColor);
+@@ -181,12 +_,16 @@
  
- 					int num7 = item5.stack;
+ 					int num11 = item5.stack;
  					int type = item5.type;
 +					// Extra patch context.
- 					if (num7 < 0)
- 						num7 = 0;
+ 					if (num11 < 0)
+ 						num11 = 0;
  
 +					ItemIO.Send(item5, writer, writeStack: true);
 +					/*
- 					writer.Write((short)num7);
+ 					writer.Write((short)num11);
  					writer.Write(item5.prefix);
  					writer.Write((short)type);
 +					*/
- 					BitsByte bitsByte5 = default(BitsByte);
- 					bitsByte5[0] = item5.favorited;
- 					bitsByte5[1] = number3 != 0f;
-@@ -356,9 +_,13 @@
- 						writer.Write(SocialAPI.Network.GetLobbyId());
- 					else
- 						writer.Write(0uL);
-+					// Extra patch context.
- 
- 					writer.Write(Sandstorm.IntendedSeverity);
+ 					BitsByte bitsByte15 = default(BitsByte);
+ 					bitsByte15[0] = item5.favorited;
+ 					bitsByte15[1] = number3 != 0f;
+@@ -376,6 +_,8 @@
  					ExtraSpawnPointManager.Write(writer, networking: true);
+ 					writer.Write((short)Main.dungeonX);
+ 					writer.Write((short)Main.dungeonY);
 +
 +					WorldIO.SendModData(writer);
-+
  					break;
  				}
  				case 8:
-@@ -583,8 +_,12 @@
+@@ -602,8 +_,12 @@
  					writer.Write((short)number);
- 					writer.WriteVector2(worldItem3.position);
- 					writer.WriteVector2(worldItem3.velocity);
-+					writer.Write7BitEncodedInt(inner.stack);
-+					writer.Write7BitEncodedInt(inner.prefix);
+ 					writer.WriteVector2(worldItem4.position);
+ 					writer.WriteVector2(worldItem4.velocity);
 +					/*
- 					writer.Write((short)inner.stack);
--					writer.Write(inner.prefix);
-+					writer.Write((byte)inner.prefix);
+ 					writer.Write((short)worldItem4.stack);
+ 					writer.Write(worldItem4.prefix);
 +					*/
- 					writer.Write((byte)number2);
- 					short value3 = 0;
- 					if (worldItem3.active && worldItem3.stack > 0)
-@@ -599,6 +_,7 @@
- 					if (msgType == 148)
- 						writer.Write((byte)MathHelper.Clamp(worldItem3.timeLeftInWhichTheItemCannotBeTakenByEnemies, 0f, 255f));
++					writer.Write7BitEncodedInt(worldItem4.stack);
++					writer.Write7BitEncodedInt(worldItem4.prefix);
+ 					writer.Write(bitsByte31);
+ 					writer.Write((short)((!worldItem4.IsAir) ? worldItem4.type : 0));
+ 					if (bitsByte31[2]) {
+@@ -614,6 +_,7 @@
+ 					if (bitsByte31[3])
+ 						writer.Write((byte)MathHelper.Clamp(worldItem4.enemyGrabDelayTime, 0f, 255f));
  
-+					ItemIO.SendModData(inner, writer);
++					ItemIO.SendModData(worldItem4.inner, writer);
  					break;
  				}
  				case 151:
-@@ -640,6 +_,11 @@
- 					bitsByte2[2] = nPC2.difficulty != 1f;
- 					bitsByte2[3] = nPC2.spawnNeedsSyncing;
- 					bitsByte2[4] = nPC2.spawnNeedsSyncing && nPC2.shimmerTransparency > 0f;
+@@ -659,6 +_,11 @@
+ 					bitsByte30[2] = nPC3.difficulty != 1f;
+ 					bitsByte30[3] = nPC3.spawnNeedsSyncing;
+ 					bitsByte30[4] = nPC3.spawnNeedsSyncing && nPC3.shimmerTransparency > 0f;
 +
 +					byte[] extraAI = NPCLoader.WriteExtraAI(nPC2);
 +					bool hasExtraAI = extraAI?.Length > 0;
-+					bitsByte2[5] = hasExtraAI; // This bit is unused by vanilla
++					bitsByte30[5] = hasExtraAI; // This bit is unused by vanilla
 +
- 					writer.Write(bitsByte2);
- 					for (int l = 0; l < NPC.maxAI; l++) {
- 						if (array[l])
-@@ -674,9 +_,13 @@
+ 					writer.Write(bitsByte30);
+ 					for (int num20 = 0; num20 < NPC.maxAI; num20++) {
+ 						if (array[num20])
+@@ -693,9 +_,13 @@
  						}
  					}
  
--					if (nPC2.type >= 0 && nPC2.type < NPCID.Count && Main.npcCatchable[nPC2.type])
-+					if (nPC2.type >= 0 && Main.npcCatchable[nPC2.type])
- 						writer.Write((byte)nPC2.releaseOwner);
+-					if (nPC3.type >= 0 && nPC3.type < NPCID.Count && Main.npcCatchable[nPC3.type])
++					if (nPC3.type >= 0 && Main.npcCatchable[nPC3.type])
+ 						writer.Write((byte)nPC3.releaseOwner);
  
 +					if (hasExtraAI) {
 +						NPCLoader.SendExtraAI(writer, extraAI);
@@ -159,26 +154,19 @@
  					break;
  				}
  				case 24:
-@@ -711,12 +_,16 @@
- 					if (projectile.knockBack != 0f)
- 						bitsByte28[5] = true;
- 
--					if (projectile.type > 0 && projectile.type < ProjectileID.Count && ProjectileID.Sets.NeedsUUID[projectile.type])
-+					if (projectile.type > 0 && ProjectileID.Sets.NeedsUUID[projectile.type])
- 						bitsByte28[7] = true;
- 
+@@ -733,6 +_,10 @@
  					if (projectile.originalDamage != 0)
- 						bitsByte28[6] = true;
+ 						bitsByte26[6] = true;
  
 +					byte[] extraAI = ProjectileLoader.WriteExtraAI(projectile);
 +					bool hasExtraAI = extraAI?.Length > 0;
-+					bitsByte29[1] = hasExtraAI; // This bit is unused by vanilla
++					bitsByte27[1] = hasExtraAI; // This bit is unused by vanilla
 +
- 					if ((byte)bitsByte29 != 0)
- 						bitsByte28[2] = true;
+ 					if ((byte)bitsByte27 != 0)
+ 						bitsByte26[2] = true;
  
-@@ -748,14 +_,38 @@
- 					if (bitsByte29[0])
+@@ -761,15 +_,39 @@
+ 					if (bitsByte27[0])
  						writer.Write(projectile.ai[2]);
  
 +					if (hasExtraAI) {
@@ -188,7 +176,8 @@
  					break;
  				}
  				case 28:
- 					writer.Write((short)number);
+ 					writer.Write((byte)number);
+ 					writer.Write(Main.npc[number].generation);
 +					/*
  					writer.Write((short)number2);
  					writer.Write(number3);
@@ -215,28 +204,27 @@
 +					writer.Write(flags);
  					break;
  				case 29:
- 					writer.Write((short)number);
-@@ -773,13 +_,18 @@
+ 					writer.Write(number);
+@@ -787,13 +_,18 @@
  					Item item6 = Main.chest[number].item[(byte)number2];
  					writer.Write((short)number);
  					writer.Write((byte)number2);
 +
 +					ItemIO.Send(item6, writer, writeStack: true);
 +					/*
- 					short value4 = (short)item6.type;
+ 					short value2 = (short)item6.type;
  					if (item6.Name == null)
- 						value4 = 0;
+ 						value2 = 0;
  
 +					// Extra patch context
  					writer.Write((short)item6.stack);
--					writer.Write(item6.prefix);
-+					writer.Write((byte)item6.prefix);
- 					writer.Write(value4);
+ 					writer.Write(item6.prefix);
+ 					writer.Write(value2);
 +					*/
  					break;
  				}
  				case 33: {
-@@ -795,7 +_,7 @@
+@@ -809,7 +_,7 @@
  					if (number2 == 1f) {
  						string text3 = text.ToString();
  						num10 = (byte)text3.Length;
@@ -245,7 +233,7 @@
  							num10 = 255;
  						else
  							text2 = text3;
-@@ -823,6 +_,11 @@
+@@ -837,6 +_,11 @@
  					else {
  						writer.Write((short)0);
  					}
@@ -257,17 +245,17 @@
  					break;
  				case 35:
  					writer.Write((byte)number);
-@@ -837,6 +_,9 @@
- 					writer.Write(player4.zone4);
- 					writer.Write(player4.zone5);
- 					writer.Write((byte)player4.townNPCs);
+@@ -851,6 +_,9 @@
+ 					writer.Write(player5.zone4);
+ 					writer.Write(player5.zone5);
+ 					writer.Write((byte)player5.townNPCs);
 +
-+					BiomeLoader.SendCustomBiomes(player4, writer);
++					BiomeLoader.SendCustomBiomes(player5, writer);
 +
  					break;
  				}
  				case 38:
-@@ -1105,7 +_,7 @@
+@@ -1119,7 +_,7 @@
  					bool flag2 = TileEntity.TryGet<TileEntity>(number, out result3);
  					writer.Write(flag2);
  					if (flag2)
@@ -276,7 +264,7 @@
  
  					break;
  				}
-@@ -1168,14 +_,24 @@
+@@ -1182,14 +_,24 @@
  					writer.Write((short)number);
  					writer.Write((short)number2);
  					Item item4 = Main.player[(int)number4].inventory[(int)number3];
@@ -302,20 +290,7 @@
  					if (number2 != 255f) {
  						writer.Write((ushort)number3);
  						writer.Write((ushort)number4);
-@@ -1190,6 +_,12 @@
- 					writer.Write(number3);
- 					writer.Write(number4);
- 					break;
-+				case MessageID.DevCommands:
-+					writer.Write(text.ToString());
-+					writer.Write(number);
-+					writer.Write(number2);
-+					writer.Write(number3);
-+					break;
- 				case 95:
- 					writer.Write((ushort)number);
- 					writer.Write((byte)number2);
-@@ -1295,6 +_,11 @@
+@@ -1315,6 +_,11 @@
  					writer.Write(number);
  					break;
  				case 117:
@@ -327,7 +302,7 @@
  					writer.Write((byte)number);
  					_currentPlayerDeathReason.WriteSelfTo(writer);
  					writer.Write((short)number2);
-@@ -1302,6 +_,19 @@
+@@ -1322,6 +_,19 @@
  					writer.Write((byte)number4);
  					writer.Write((sbyte)number5);
  					break;
@@ -347,7 +322,7 @@
  				case 118:
  					writer.Write((byte)number);
  					_currentPlayerDeathReason.WriteSelfTo(writer);
-@@ -1334,9 +_,13 @@
+@@ -1354,9 +_,13 @@
  					writer.Write((short)number);
  					writer.Write((short)number2);
  					Item item3 = Main.player[(int)number4].inventory[(int)number3];
@@ -362,7 +337,7 @@
  					break;
  				}
  				case 124: {
-@@ -1399,9 +_,13 @@
+@@ -1419,9 +_,13 @@
  					writer.Write((short)number);
  					writer.Write((short)number2);
  					Item item2 = Main.player[(int)number4].inventory[(int)number3];
@@ -377,7 +352,7 @@
  					break;
  				}
  				case 134: {
-@@ -1479,9 +_,14 @@
+@@ -1499,9 +_,14 @@
  					writer.Write((short)number);
  					writer.Write((short)number2);
  					Item item = Main.player[(int)number4].inventory[(int)number3];
@@ -392,7 +367,7 @@
  					break;
  				}
  				case 150:
-@@ -1527,6 +_,16 @@
+@@ -1547,6 +_,16 @@
  				throw new Exception("Maximum packet length exceeded. id: " + msgType + " length: " + num21);
  
  			writer.BaseStream.Position = position;
@@ -409,7 +384,7 @@
  			writer.Write((ushort)num21);
  			writer.BaseStream.Position = num21;
  			if (Main.netMode == 1) {
-@@ -1657,7 +_,7 @@
+@@ -1677,7 +_,7 @@
  
  			buffer[num].writeLocked = false;
  			if (msgType == 2 && Main.netMode == 2)
@@ -418,7 +393,7 @@
  		}
  	}
  
-@@ -1723,11 +_,11 @@
+@@ -1743,11 +_,11 @@
  		int num6 = 0;
  		byte b = 0;
  		byte[] array = new byte[16];
@@ -432,7 +407,7 @@
  					num4 = (short)(num4 + 1);
  					continue;
  				}
-@@ -1774,7 +_,7 @@
+@@ -1794,7 +_,7 @@
  						}
  					}
  
@@ -441,7 +416,7 @@
  						short num8 = (short)Chest.FindChest(j, i);
  						if (num8 != -1) {
  							_compressChestList[num] = num8;
-@@ -1794,7 +_,7 @@
+@@ -1814,7 +_,7 @@
  							_compressSignList[num2++] = num10;
  					}
  
@@ -450,7 +425,7 @@
  						short num11 = (short)Sign.ReadSign(j, i);
  						if (num11 != -1)
  							_compressSignList[num2++] = num11;
-@@ -1990,9 +_,18 @@
+@@ -2010,9 +_,18 @@
  			writer.Write(sign.text);
  		}
  
@@ -470,7 +445,7 @@
  		}
  	}
  
-@@ -2005,16 +_,20 @@
+@@ -2025,14 +_,16 @@
  
  	public static void DecompressTileBlock_Inner(BinaryReader reader, int xStart, int yStart, int width, int height)
  	{
@@ -483,25 +458,21 @@
  					num--;
 +					/*
  					if (Main.tile[j, i] == null)
- 						Main.tile[j, i] = new Tile(tile);
- 					else
- 						Main.tile[j, i].CopyFrom(tile);
+ 						Main.tile[j, i] = new Tile();
 +					*/
-+
-+					Main.tile[j, i].CopyFrom(tile);
  
+ 					Main.tile[j, i].CopyFrom(tile);
  					continue;
- 				}
-@@ -2187,7 +_,7 @@
+@@ -2206,7 +_,7 @@
  
  		num3 = reader.ReadInt16();
  		for (int m = 0; m < num3; m++) {
--			TileEntity.Add(TileEntity.Read(reader, 319));
+-			TileEntity.Add(TileEntity.Read(reader, 326));
 +			TileEntity.Add(TileEntity.Read(reader, Main.curRelease, networkSend: true)); //TML: Made networkSend true, but lightSend should be false.
  		}
  
  		MapUpdateQueue.Add(new Rectangle(xStart, yStart, width, height));
-@@ -2196,20 +_,45 @@
+@@ -2215,20 +_,45 @@
  
  	public static void ReceiveBytes(byte[] bytes, int streamLength, int i = 256)
  	{
@@ -549,7 +520,7 @@
  				}
  			}
  		}
-@@ -2234,7 +_,11 @@
+@@ -2258,7 +_,11 @@
  			buffer[bufferIndex].checkBytes = false;
  			int num = 0;
  			int num2 = buffer[bufferIndex].totalData;
@@ -561,30 +532,7 @@
  				while (num2 >= 2) {
  					int num3 = BitConverter.ToUInt16(buffer[bufferIndex].readBuffer, num);
  					if (num3 < 3)
-@@ -2242,7 +_,7 @@
- 
- 					if (num2 >= num3) {
- 						long position = buffer[bufferIndex].reader.BaseStream.Position;
--						buffer[bufferIndex].GetData(num + 2, num3 - 2, out var _);
-+						buffer[bufferIndex].GetData(num + 2, num3 - 2, out msgId);
- 						buffer[bufferIndex].reader.BaseStream.Position = position + num3;
- 						num2 -= num3;
- 						num += num3;
-@@ -2252,9 +_,12 @@
- 					break;
- 				}
- 			}
--			catch (Exception) {
-+			catch (Exception e) {
-+				/*
- 				if (Main.dedServ && num < buffer.Length - 100)
- 					Console.WriteLine(Language.GetTextValue("Error.NetMessageError", buffer[num + 2]));
-+				*/
-+				ModNet.Error(bufferIndex, $"{MessageID.GetName(msgId)}({msgId})", e);
- 
- 				num2 = 0;
- 				num = 0;
-@@ -2266,6 +_,9 @@
+@@ -2295,6 +_,9 @@
  				}
  
  				buffer[bufferIndex].totalData = num2;
@@ -594,7 +542,7 @@
  			}
  		}
  	}
-@@ -2297,8 +_,12 @@
+@@ -2336,8 +_,12 @@
  			SendData(77, whoAmi, -1, null, animationType, tileType, xCoord, yCoord);
  	}
  
@@ -608,7 +556,7 @@
  		_currentPlayerDeathReason = reason;
  		BitsByte bitsByte = (byte)0;
  		bitsByte[0] = critical;
-@@ -2306,6 +_,14 @@
+@@ -2345,6 +_,14 @@
  		SendData(117, remoteClient, ignoreClient, null, playerTargetIndex, damage, direction, (int)(byte)bitsByte, hitContext);
  	}
  
@@ -623,7 +571,7 @@
  	public static void SendPlayerDeath(int playerTargetIndex, PlayerDeathReason reason, int damage, int direction, bool pvp, int remoteClient = -1, int ignoreClient = -1)
  	{
  		_currentPlayerDeathReason = reason;
-@@ -2326,17 +_,53 @@
+@@ -2365,17 +_,53 @@
  		SendData(126, remoteClient, ignoreClient);
  	}
  
@@ -677,7 +625,7 @@
  	public static void SendTileSquare(int whoAmi, int tileX, int tileY, TileChangeType changeType = TileChangeType.None)
  	{
  		int num = 1;
-@@ -2525,7 +_,7 @@
+@@ -2565,7 +_,7 @@
  		}
  
  		if (!flag) {
@@ -686,7 +634,7 @@
  			Netplay.Disconnect = true;
  		}
  	}
-@@ -2580,11 +_,14 @@
+@@ -2619,11 +_,14 @@
  			SyncOnePlayer_ItemArray(plr, toWho, fromWho, Main.player[plr].Loadouts[1].Dye, PlayerItemSlotID.Loadout2_Dye_0);
  			SyncOnePlayer_ItemArray(plr, toWho, fromWho, Main.player[plr].Loadouts[2].Armor, PlayerItemSlotID.Loadout3_Armor_0);
  			SyncOnePlayer_ItemArray(plr, toWho, fromWho, Main.player[plr].Loadouts[2].Dye, PlayerItemSlotID.Loadout3_Dye_0);
@@ -702,7 +650,7 @@
  			}
  
  			for (int l = 0; l < 1000; l++) {
-@@ -2602,7 +_,7 @@
+@@ -2642,7 +_,7 @@
  			Netplay.Clients[plr].IsAnnouncementCompleted = false;
  			ChatHelper.BroadcastChatMessage(NetworkText.FromKey(Lang.mp[20].Key, Netplay.Clients[plr].Name), new Color(255, 240, 20), plr);
  			if (Main.dedServ)

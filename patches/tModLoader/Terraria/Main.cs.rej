@@ -49,6 +49,14 @@
  			if (inputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Z) && !oldInputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Z)) {
  				text = "";
  			}
+@@ -18039,6 +_,7 @@
+ 
+ 			if (player[myPlayer].setBonus != "") {
+ 				toolTipLine[numLines] = Lang.tip[48].Value + " " + player[myPlayer].setBonus;
++				toolTipNames[numLines] = "SetBonus";
+ 				numLines++;
+ 			}
+ 		}
 @@ -33572,7 +_,7 @@
  			if (numAvailableRecipes > 0) {
  				UILinkPointNavigator.Shortcuts.CRAFT_CurrentRecipeBig = -1;
@@ -149,6 +157,25 @@
 +
 +		spriteBatch.DrawString(FontAssets.MouseText.Value, Localization.Language.GetTextValue("tModLoader.PressXToClose", Microsoft.Xna.Framework.Input.Keys.F7), new Vector2(20, num23 + 32), Color.White, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
  	}
+@@ -39280,7 +_,8 @@
+ 			if (LocalPlayer.dead) {
+ 				num += 40;
+ 			}
++			//TML: Remove the Setting button being moved when player has too many slots. The ModAccessorySlot rework fixed this in a better fashion.
+-			else if (amountOfExtraAccessorySlotsToShow >= 1 && (screenHeight < num3 || (screenHeight < num4 && mapStyle == 1))) {
++			else if (false && amountOfExtraAccessorySlotsToShow >= 1 && (screenHeight < num3 || (screenHeight < num4 && mapStyle == 1))) {
+ 				num -= 140;
+ 				num2 -= PlayerInput.SettingsForUI.PushEquipmentAreaUp.ToInt() * 30;
+ 				_settingsButtonIsPushedToSide = true;
+@@ -40762,7 +_,7 @@
+ 
+ 	private void DrawInfoAccs_AdjustInfoTextColorsForNPC(NPC npc, ref Microsoft.Xna.Framework.Color infoTextColor, ref Microsoft.Xna.Framework.Color infoTextShadowColor)
+ 	{
+-		for (int i = 0; i < NPCID.Sets.GoldCrittersCollection.Count; i++) {
++		for (int i = 0; i < NPCID.Sets.GoldCrittersCollection.Length; i++) {
+ 			int num = NPCID.Sets.GoldCrittersCollection[i];
+ 			if (npc.type == num) {
+ 				infoTextColor = OurFavoriteColor;
 @@ -43698,7 +_,7 @@
  									Lighting.GetCornerColors(num24, num25, out var vertices);
  									vertices.BottomLeftColor = new Microsoft.Xna.Framework.Color(vertices.BottomLeftColor.ToVector3() * vector2);
@@ -246,3 +273,12 @@
  				vec = vec.Floor();
  				int hoveredSnippet = 0;
  				ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.MouseText.Value, player[i].chatOverhead.snippets, vec, 0f, player[i].chatOverhead.color, Vector2.Zero, Vector2.One, out hoveredSnippet);
+@@ -54329,6 +_,8 @@
+ 			}
+ 		}
+ 
++		PlayerLoader.ModifyZoom(LocalPlayer, ref num);
++
+ 		if (num <= 0f)
+ 			return false;
+ 

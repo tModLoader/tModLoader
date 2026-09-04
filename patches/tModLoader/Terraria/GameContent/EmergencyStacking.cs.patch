@@ -1,10 +1,11 @@
 --- src/TerrariaNetCore/Terraria/GameContent/EmergencyStacking.cs
 +++ src/tModLoader/Terraria/GameContent/EmergencyStacking.cs
-@@ -3,6 +_,7 @@
+@@ -3,7 +_,8 @@
  using System.Linq;
  using Microsoft.Xna.Framework;
  using Terraria.ID;
 +using Terraria.ModLoader;
+ using Terraria.Testing;
  
  namespace Terraria.GameContent;
  
@@ -17,16 +18,12 @@
  							select PreservationOrder.First((Group g) => g.Contains(ContentSamples.ItemsByType[t]))).ToArray();
  
  			return _groupLookup;
-@@ -149,6 +_,8 @@
- 
- 	public static bool HasPendingTransferInvolving(WorldItem item) => HasPendingTransfer[item.whoAmI];
- 
+@@ -159,2 +_,4 @@
 +	public static void ResetGroupLookup() => _groupLookup = null;
 +
  	public static void ClearPendingTransfersInvolving(WorldItem item)
  	{
- 		if (HasPendingTransferInvolving(item)) {
-@@ -263,6 +_,10 @@
+@@ -267,6 +_,10 @@
  				if (stackableItem.type != other.type || stackableItem.item == other.item || stackableItem.IsPreferredDestination(other) || !Item.CanStack(stackableItem.item.inner, other.item.inner))
  					continue;
  
@@ -37,7 +34,7 @@
  				int num = DistanceBetween(stackableItem.item, other.item);
  				if (num <= MaxTransferDistance) {
  					Group group = GroupLookup[stackableItem.type];
-@@ -295,8 +_,11 @@
+@@ -300,8 +_,11 @@
  
  		int numToTransfer = t.NumToTransfer;
  		if (numToTransfer != 0) {

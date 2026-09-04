@@ -1,0 +1,38 @@
+@@ -4756,7 +_,9 @@
+ 	private static bool EoCKilledToday;
+ 	private static bool WoFKilledToday;
+ 	public const int SPAWN_SLOT_PROTECTION_TIME = 2;
++	/*
+ 	private static int ignorePlayerInteractions = 0;
++	*/
+ 	public static int ladyBugGoodLuckTime = 43200;
+ 	public static int ladyBugBadLuckTime = -10800;
+ 	private static int ladyBugRainTime = 1800;
+@@ -66613,8 +_,14 @@
+ 				NetMessage.SendData(106, -1, -1, null, (int)vector.X, vector.Y);
+ 			}
+ 			else {
++				/*
+ 				new Item().SetDefaults(Main.npc[i].catchItem);
+ 				Item.NewItem(GetSpawnSource_NPCCatch(who), (int)Main.player[who].Center.X, (int)Main.player[who].Center.Y, 0, 0, Main.npc[i].catchItem, 1, noBroadcast: false, 0, noGrabDelay: true);
++				*/
++				int itemWhoAmI = Item.NewItem(GetSpawnSource_NPCCatch(who, Main.npc[i]), (int)Main.player[who].Center.X, (int)Main.player[who].Center.Y, 0, 0, Main.npc[i].catchItem, 1, noBroadcast: true, 0, noGrabDelay: true);
++
++				NetMessage.SendData(MessageID.SyncItem, -1, -1, null, itemWhoAmI, 1f); // NewItem above changed to noBroadcast, number2 is 1 for noGrabDelay effect.
++
+ 				Main.npc[i].active = false;
+ 				NetMessage.SendData(23, -1, -1, null, i);
+ 			}
+@@ -67983,10 +_,10 @@
+ 			else
+ 				checkDead();
+ 
+-			return num;
++			return (int)num;
+ 		}
+ 
+-		return 0.0;
++		return 0;
+ 	}
+ 
+ 	public static void LadyBugKilled(Vector2 Position, bool GoldLadyBug = false)

@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Localization/LocalizedText.cs
 +++ src/tModLoader/Terraria/Localization/LocalizedText.cs
-@@ -5,7 +_,7 @@
+@@ -4,6 +_,6 @@
  
  namespace Terraria.Localization;
  
@@ -8,8 +8,7 @@
 +public partial class LocalizedText
  {
  	public static readonly LocalizedText Empty = new LocalizedText("", "");
- 	private static Regex _substitutionRegex = new Regex("{(\\?(?:!)?)?([a-zA-Z][\\w\\.]*)}", RegexOptions.Compiled);
-@@ -13,25 +_,43 @@
+@@ -11,25 +_,43 @@
  	private object _value;
  	private static Dictionary<Type, PropertyDescriptorCollection> _propertyLookupCache = new Dictionary<Type, PropertyDescriptorCollection>();
  
@@ -55,7 +54,7 @@
  
  			return true;
  		}
-@@ -40,6 +_,7 @@
+@@ -38,6 +_,7 @@
  	internal LocalizedText(string key, string text)
  	{
  		Key = key;
@@ -63,7 +62,7 @@
  		SetValue(text);
  	}
  
-@@ -52,37 +_,68 @@
+@@ -50,37 +_,68 @@
  		if (LanguageManager.Instance != null && LanguageManager.Instance.ActiveCulture == GameCulture.DefaultCulture)
  			EnglishValue = value;
  
@@ -135,7 +134,7 @@
  	public string FormatWith(object obj)
  	{
  		if (!TryFormatWith(obj, out var formatted))
-@@ -91,6 +_,9 @@
+@@ -89,6 +_,9 @@
  		return formatted;
  	}
  
@@ -145,7 +144,7 @@
  	public string FormatWith(Func<string, object> lookup)
  	{
  		if (!TryFormatWith(lookup, out var formatted))
-@@ -99,34 +_,80 @@
+@@ -97,34 +_,80 @@
  		return formatted;
  	}
  

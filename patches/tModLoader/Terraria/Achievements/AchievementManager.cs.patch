@@ -6,9 +6,9 @@
  using Newtonsoft.Json.Linq;
 +using Terraria.ModLoader;
  using Terraria.Social;
+ using Terraria.Testing;
  using Terraria.UI;
- using Terraria.Utilities;
-@@ -33,7 +_,8 @@
+@@ -34,7 +_,8 @@
  
  	public AchievementManager()
  	{
@@ -18,7 +18,7 @@
  			_savePath = SocialAPI.Achievements.GetSavePath();
  			_isCloudSave = true;
  			_cryptoKey = SocialAPI.Achievements.GetEncryptionKey();
-@@ -59,13 +_,31 @@
+@@ -60,13 +_,31 @@
  				SocialAPI.Achievements.StoreStats();
  
  			try {
@@ -50,7 +50,7 @@
  			}
  			catch (Exception exception) {
  				FancyErrorPrinter.ShowFileSavingFailError(exception, _savePath);
-@@ -75,6 +_,25 @@
+@@ -76,6 +_,25 @@
  
  	public List<Achievement> CreateAchievementsList() => _achievements.Values.ToList();
  
@@ -76,7 +76,7 @@
  	public void Load()
  	{
  		Load(_savePath, _isCloudSave);
-@@ -144,6 +_,10 @@
+@@ -145,6 +_,10 @@
  			achievement.Value.ClearProgress();
  		}
  
@@ -87,7 +87,7 @@
  		Save();
  	}
  
-@@ -160,6 +_,13 @@
+@@ -161,6 +_,13 @@
  		achievement.OnCompleted += AchievementCompleted;
  	}
  
@@ -101,7 +101,7 @@
  	public void RegisterIconIndex(string achievementName, int iconIndex)
  	{
  		_achievementIconIndexes.Add(achievementName, iconIndex);
-@@ -170,6 +_,9 @@
+@@ -172,6 +_,9 @@
  		_achievements[achievementName].SetCategory(category);
  	}
  
@@ -111,7 +111,7 @@
  	public Achievement GetAchievement(string achievementName)
  	{
  		if (_achievements.TryGetValue(achievementName, out var value))
-@@ -194,5 +_,98 @@
+@@ -196,5 +_,98 @@
  			return value;
  
  		return 0;

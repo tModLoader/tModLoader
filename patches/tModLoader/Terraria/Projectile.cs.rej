@@ -19,6 +19,15 @@
  
  		if (Owner == Main.myPlayer) {
  			if (ProjectileID.Sets.IsAGolfBall[Type] && Damage <= 0) {
+@@ -9249,7 +_,7 @@
+ 			projectile.ai[1] = projectile.position.Y;
+ 		}
+ 
+-		if (Type > 0 && Type < ProjectileID.Count) {
++		if (Type > 0) {
+ 			if (ProjectileID.Sets.NeedsUUID[Type])
+ 				projectile.projUUID = projectile.identity;
+ 
 @@ -9766,5 +_,5 @@
  		Rectangle rectangle = Damage_GetHitbox();
 -		if (friendly && Main.getGoodWorld && aiStyle == 16 && Main.netMode == 1 && owner != Main.myPlayer && !npcProj) {

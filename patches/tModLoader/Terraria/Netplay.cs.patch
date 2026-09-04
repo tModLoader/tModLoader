@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Netplay.cs
 +++ src/tModLoader/Terraria/Netplay.cs
-@@ -8,8 +_,11 @@
+@@ -7,8 +_,11 @@
  using NATUPNPLib;
  using ReLogic.OS;
  using Terraria.Audio;
@@ -12,23 +12,7 @@
  using Terraria.Net;
  using Terraria.Net.Sockets;
  using Terraria.Social;
-@@ -33,7 +_,14 @@
- 	public static string ServerPassword = "";
- 	public static RemoteClient[] Clients = new RemoteClient[256];
- 	public static RemoteServer Connection = new RemoteServer();
-+	private static IPAddress _serverIP;
--	public static IPAddress ServerIP;
-+	public static IPAddress ServerIP {
-+		get => _serverIP;
-+		set {
-+			IsHostAndPlay = false;
-+			_serverIP = value;
-+		}
-+	}
- 	public static string ServerIPText = "";
- 	public static bool IsHostAndPlay;
- 	public static string HostToken;
-@@ -82,6 +_,12 @@
+@@ -92,6 +_,12 @@
  		Main.ActiveNetDiagnosticsUI.Reset();
  	}
  
@@ -41,7 +25,7 @@
  	public static void ResetSections()
  	{
  		RemoteClient[] clients = Clients;
-@@ -166,6 +_,8 @@
+@@ -176,6 +_,8 @@
  
  	private static void OnConnectionAccepted(ISocket client)
  	{
@@ -50,31 +34,34 @@
  		int num = FindNextOpenClientSlot();
  		if (num != -1) {
  			Clients[num].Reset();
-@@ -300,8 +_,13 @@
- 			if (Clients[i].PendingTermination) {
- 				num++;
- 				if (Clients[i].PendingTerminationApproved) {
--					Clients[i].Reset();
+@@ -299,8 +_,16 @@
+ 					if (!Clients[i].Kicked && !Clients[i].IsAnnouncementCompleted)
+ 						Console.WriteLine(Language.GetTextValue("Net.ClientLostConnection", Clients[i].Socket.GetRemoteAddress()));
+ 
 +					// TML: Re-order to prevent RemoteClient.Reset from re-instantiating the player before
 +					//      execution ends up in PlayerLoader.PlayerDisconnect, which would invoke the hook
 +					//      with useless Player/ModPlayer data.
 +					//      Set the RemoteClient.State to 0 so SyncOnePlayer will still treat them as disconnected.
++					/*
+ 					Clients[i].Reset();
++					*/
 +					Clients[i].State = 0;
  					NetMessage.SyncDisconnectedPlayer(i);
 +					Clients[i].Reset();
  				}
- 
- 				continue;
-@@ -314,7 +_,7 @@
  			}
- 
- 			if (Clients[i].IsActive) {
+ 			else if (Clients[i].IsConnected()) {
+@@ -308,9 +_,6 @@
+ 				if (Clients[i].State == 10)
+ 					num++;
+ 			}
+-			else if (Clients[i].IsActive) {
 -				Clients[i].PendingTermination = true;
-+				Clients[i].SetPendingTermination("Connection lost");
- 				Clients[i].PendingTerminationApproved = true;
- 				continue;
- 			}
-@@ -415,6 +_,12 @@
+-			}
+ 		}
+ 
+ 		HasFullyConnectedClients = num != 0;
+@@ -396,6 +_,12 @@
  
  	private static void ClientLoopSetup(RemoteAddress address)
  	{
@@ -87,21 +74,16 @@
  		Connection.ResetSpecialFlags();
  		ResetNetDiag();
  		Main.ServerSideCharacter = false;
-@@ -431,11 +_,11 @@
- 		Main.netMode = 1;
- 		Main.menuMode = 14;
- 		if (!Main.autoPass)
--			Main.statusText = Language.GetTextValue("Net.ConnectingTo", address.GetFriendlyName());
-+			Main.statusText = Language.GetTextValue("Net.ConnectingTo", friendlyName);
- 
+@@ -412,7 +_,7 @@
  		Disconnect = false;
- 		Connection = new RemoteServer();
--		Connection.ReadBuffer = new byte[1024];
-+		Connection.ReadBuffer = new byte[ushort.MaxValue]; // TML: 1024 -> ushort.MaxValue
- 	}
+ 		NetMessage.buffer[256].Reset();
+ 		Connection = new RemoteServer {
+-			ReadBuffer = new byte[1024]
++			ReadBuffer = new byte[ushort.MaxValue]; // TML: 1024 -> ushort.MaxValue
+ 		};
  
- 	private static void InnerClientLoop()
-@@ -456,6 +_,24 @@
+ 		Main.menuMode = 14;
+@@ -438,6 +_,24 @@
  						Ping.Reset();
  					}
  
@@ -126,7 +108,7 @@
  					if (Connection.State == 2 && num != Connection.State)
  						Main.statusText = Language.GetTextValue("Net.SendingPlayerData");
  
-@@ -475,6 +_,9 @@
+@@ -457,6 +_,9 @@
  						Main.cloudAlpha = Main.maxRaining;
  						Main.ToggleGameplayUpdates(state: false);
  						WorldGen.clearWorld();
@@ -136,7 +118,7 @@
  						if (Main.mapEnabled)
  							Main.Map.Load();
  					}
-@@ -524,6 +_,11 @@
+@@ -506,6 +_,11 @@
  			}
  
  			if (!Main.gameMenu) {
@@ -145,18 +127,18 @@
 +				string originalStatusText = Main.statusText;
 +				SystemLoader.OnWorldUnload();
 +
+ 				Main.menuMode = 14;
  				Main.gameMenu = true;
  				Main.SwitchNetMode(0);
- 				MapHelper.noStatusText = true;
-@@ -533,6 +_,7 @@
+@@ -515,6 +_,7 @@
+ 				Main.ActivePlayerFileData.StopPlayTimer();
  				SoundEngine.StopTrackedSounds();
  				MapHelper.noStatusText = false;
- 				Main.menuMode = 14;
 +				Main.statusText = originalStatusText;
  			}
  
- 			NetMessage.buffer[256].Reset();
-@@ -590,7 +_,29 @@
+ 			if (Main.menuMode == 15 && Main.statusText == Language.GetTextValue("Net.LostConnection"))
+@@ -571,7 +_,29 @@
  		thread.Start();
  	}
  

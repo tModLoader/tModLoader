@@ -140,6 +140,49 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Check ModifyEquipTextureDraw to determine if there is any other locations where the hook needs to be applied in PlayerDrawLayers.cs
 - PlayerDrawLayers.cs DrawPlayer_13_Leggings
 
+## 1.4.5.8
+- EmoteBubble.DeserializeNetAnchor and #WorldUIAnchorProjectileSyncFix need to use the new ProjectileKey system
+- Should NetMessage.LogMessageError Invariant.Assert be directed to ModNet.LogMessageError somehow?
+- ItemID.Sets.DuplicationMenuToolsFilter needs 6174
+- TileDrawing.IsTileDangerous vanilla now has tilex/y, but different order, so we might need to adjust TML variant or other callsites
+- Need to handle public static ItemVariantCondition SkyblockWorld;, SkyblockWorld = Condition.SkyblockWorld;
+- BannerSystem.newBanner is new, needs NPCLoader.ResizeArrays, make public?
+- Why did ProjectileID.SummonTagDamageMultiplier change?
+- NeedsUUID removed. Investigate
+- Clound.cs, there is now CloudID.Sets.RareClouds_Normal, CloudID.Sets.RareClouds_Celebration for more control. Document and maybe use in ExampleMod.
+- public static LanguageSearchFilter CreateDialogFilter(string startsWith, object substitutions) removed from Lang.cs? Could still be useful, add back into Lang.TML.cs?
+- _unusedResearchLine removed from MouseText_DrawItemTooltip_GetLinesInfo, verify other callsites
+- WorldGen.SwapTileData might not be necessary anymore. ErrorWorldSwapTiles exists. The new name isn't as useful, however.
+- Projectile.identity removed, Projectile.key added. How to use? Also Projectile.IndexForVisuals. Also Main.projectileIdentity. Need to fix Projectile.key docs, it is the identity docs.
+- Projectile.TransformType added, replaces direct setting of Projectile.type in AI. Might need a hook or more logic if used with modded projectiles.
+- New Worldgen.IsTileLoaded method seems like an issue with our non-null tiles.
+- Code near "Yoyos with effective top speed" comment in AI_009_2_Yoyos seems weird. Was this fixed in vanilla and the "< 1.01f" code left in? Probably can remove the duplicate bounds check, check blame
+- ProjectileID.Sets.IsInteractable needs updating
+- Item.fishinPole now defaults to 1. Why? Update docs.
+- Item.hasVanityEffects no longer marked as [Old], why? Did something change?
+- Item.active property removed
+- Item.TurnToAir no longer has fullReset parameter and now always calls SetDefaults. Verify that this isn't an issue.
+- Move TML added Item ctor patches near others or to Item.TML.cs
+- Item.NewItem has new overloads. We might need to rework all our TML-added overloads or remove them. position is now natively a Vector2, rather than being case to int for the final step, and a velocity and NewItemOwnership are new parameters.
+- Main.rand can now have key-specific UnifiedRandom instances. Not sure how a mod might use it.
+- SystemLoader.PostUpdatePlayers(); call, move TimeLogger.UpdatePlayers.AddTime call?
+- PreUpdateNPCs doesn't exactly match 1.4.4 location because of UpdateWorld_SpawnNPCs being added. Do we want 2 more hooks there? Probably need to double check that all Main Update methods have a Pre and Post method, and that they are documented and any deviations from 1.4.4. order are documented as well (UpdateWorld_FloatingText, UpdateWorld_SpawnNPCs, etc)
+- Could NPC.lifeRegenExpectedLossPerSecond or interactedWithPlayerLocally be useful to modders?
+- Is NPC.OnSpawn useful for tmod?
+- Projectile.perIDStaticNPCImmunity is not a 2d array instead of a staggared array, might need some adjustments.
+- New vanilla named tooltiplines: Buffs, Healing, ManaHealing, Mount. Others?
+- NPCID.Sets.GoldCrittersCollection changes are confusing, fix patches if still needed.
+- Chest.AddItemToShop changes need more thought to fit in vanilla changes.
+- NPCLoader.UpdateLifeRegen will need to be changed. This has changed a lot.
+- Player.hasWings might be useful.
+- Player.strongestMoveSpeedDebuff? Seems like a split between move speed buffs and debuffs
+- Player.maxRunSpeed should mention originalRunSpeed maybe.
+- We'll need to recheck all the container drop loot tables again. At least OpenLockBox has changed
+- Seems like shared loadout slots don't actually populate Player.armor slots. Modders will have to use Player.GetEffectiveArmor to get the actual armor that is active.
+- Player.manaPotionDelay is new.
+- Player.ApplyManaRegenerationDelay() replaces setting Player.manaRegenDelay directly.
+- Remove Item.ChangePlayerDirectionOnShoot from item 723
+
 # New Fields that might need more documentation
 
 - UIElement.PassThroughMouseInteraction --> What does it do? How does it differ from IgnoresMouseInteraction?
@@ -151,6 +194,14 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Add docs for new GetItemSettings parameters
 - Main.menuChat
 - Need to fix documentation for various secret and special seeds, like Main.specialSeedWorld. Need to change secret to special in most cases, and fix wiki links.
+
+## 1.4.5.8
+- Document EyeState.LowMana
+- Document MountID.DoesNotOverrideWings
+- Document NPCID.BoundTownNPCs, SyncAnchor
+- Document ProjectileID.DespawnItemIcon, DespawnItemGivesItemBack, DisplayDollDrawUseStyle
+- ProjectileID.FixedSelfDamageForPlayers, SkipDamage_EVP added
+- NPC.dontTakeDamageStillShowLife
 
 # Changes that need to be communicated to modders
 
@@ -190,6 +241,13 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Main.GameModeInfo.IsJourneyMode -> Main.IsJourneyMode
 - Item.SetDefaults() -> Item.SetDefaults(0)
 - Item.SetDefaults(int, bool) -> Item.SetDefaults(int)
+
+## 1.4.5.8
+- MessageID.Dodge/Unknown62 now has proper vanilla name: SyncDodge. Needs tModPorter
+- MessageID.InstancedItem renamed to SpawnInstancedItem. Needs tModPorter
+- SyncItemsWithShimmer->SyncItemsWithShimmerDeprecated. Needs tModPorter
+- SyncItemCannotBeTakenByEnemies->SyncItemCannotBeTakenByEnemiesDeprecated. Needs tModPorter
+- TileID.Sets.UsesADifferentTileTypeForNPCSpawning -> InheritTypeOfTileBelowForNPCSpawning. tModporter
 
 # ExampleMod TODOs
 - Verify that ExampleZombieThief still works with changes

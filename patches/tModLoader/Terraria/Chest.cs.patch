@@ -6,13 +6,14 @@
  using System.Collections.Generic;
  using Microsoft.Xna.Framework;
  using Terraria.Audio;
-@@ -10,10 +_,15 @@
+@@ -10,11 +_,16 @@
  using Terraria.GameContent.Events;
  using Terraria.Graphics.Renderers;
  using Terraria.ID;
 +using Terraria.Localization;
 +using Terraria.ModLoader;
  using Terraria.ObjectData;
+ using Terraria.Testing;
  
  namespace Terraria;
  
@@ -22,7 +23,7 @@
  public class Chest : IFixLoadedData
  {
  	public struct ItemTransferVisualizationSettings
-@@ -33,25 +_,100 @@
+@@ -34,25 +_,100 @@
  		};
  	}
  
@@ -124,7 +125,7 @@
  	public int eatingAnimationTime;
  	private bool _itemsGotSet;
  	private static Dictionary<Point, Chest> _chestsByCoords = new Dictionary<Point, Chest>();
-@@ -209,6 +_,11 @@
+@@ -221,6 +_,11 @@
  		return false;
  	}
  
@@ -136,7 +137,7 @@
  	public static List<int> GetCurrentlyOpenChests()
  	{
  		List<int> list = new List<int>();
-@@ -220,13 +_,27 @@
+@@ -232,13 +_,27 @@
  		return list;
  	}
  
@@ -166,7 +167,7 @@
  		if (t.type == 21 && ((t.frameX >= 72 && t.frameX <= 106) || (t.frameX >= 144 && t.frameX <= 178) || (t.frameX >= 828 && t.frameX <= 1006) || (t.frameX >= 1296 && t.frameX <= 1330) || (t.frameX >= 1368 && t.frameX <= 1402) || (t.frameX >= 1440 && t.frameX <= 1474)))
  			return true;
  
-@@ -236,6 +_,14 @@
+@@ -248,6 +_,14 @@
  		return false;
  	}
  
@@ -181,7 +182,7 @@
  	public static void VisualizeChestTransfer(Vector2 position, Vector2 chestPosition, int itemType, ItemTransferVisualizationSettings settings)
  	{
  		BitsByte bitsByte = new BitsByte(settings.RandomizeStartPosition, settings.RandomizeEndPosition, settings.TransitionIn, settings.Fullbright);
-@@ -246,6 +_,13 @@
+@@ -258,6 +_,13 @@
  		});
  	}
  
@@ -195,7 +196,7 @@
  	public static void VisualizeChestTransfer_CoinsBatch(Vector2 position, Vector2 chestPosition, long coinsMoved, ItemTransferVisualizationSettings settings)
  	{
  		int[] array = Utils.CoinsSplit(coinsMoved);
-@@ -257,6 +_,12 @@
+@@ -269,6 +_,12 @@
  
  	public object Clone() => MemberwiseClone();
  
@@ -208,7 +209,7 @@
  	public static bool Unlock(int X, int Y)
  	{
  		if (Main.tile[X, Y] == null || Main.tile[X + 1, Y] == null || Main.tile[X, Y + 1] == null || Main.tile[X + 1, Y + 1] == null)
-@@ -267,6 +_,24 @@
+@@ -279,6 +_,24 @@
  		Tile tileSafely = Framing.GetTileSafely(X, Y);
  		int type2 = tileSafely.type;
  		int num2 = tileSafely.frameX / 36;
@@ -233,7 +234,7 @@
  		switch (type2) {
  			case 21:
  				switch (num2) {
-@@ -313,13 +_,19 @@
+@@ -325,13 +_,19 @@
  				return false;
  		}
  
@@ -253,7 +254,7 @@
  					for (int k = 0; k < 4; k++) {
  						Dust.NewDust(new Vector2(i * 16, j * 16), 16, 16, type);
  					}
-@@ -330,6 +_,12 @@
+@@ -342,6 +_,12 @@
  		return true;
  	}
  
@@ -266,7 +267,7 @@
  	public static bool Lock(int X, int Y)
  	{
  		if (Main.tile[X, Y] == null || Main.tile[X + 1, Y] == null || Main.tile[X, Y + 1] == null || Main.tile[X + 1, Y + 1] == null)
-@@ -339,6 +_,21 @@
+@@ -351,6 +_,21 @@
  		Tile tileSafely = Framing.GetTileSafely(X, Y);
  		int type = tileSafely.type;
  		int num2 = tileSafely.frameX / 36;
@@ -288,7 +289,7 @@
  		switch (type) {
  			case 21:
  				switch (num2) {
-@@ -378,13 +_,17 @@
+@@ -390,13 +_,17 @@
  				return false;
  		}
  
@@ -306,7 +307,7 @@
  				}
  			}
  		}
-@@ -392,6 +_,11 @@
+@@ -404,6 +_,11 @@
  		return true;
  	}
  
@@ -318,7 +319,7 @@
  	public static int UsingChest(int i)
  	{
  		if (Main.chest[i] != null) {
-@@ -404,6 +_,15 @@
+@@ -416,6 +_,15 @@
  		return -1;
  	}
  
@@ -334,7 +335,7 @@
  	public static int FindChest(int X, int Y)
  	{
  		if (_chestsByCoords.TryGetValue(new Point(X, Y), out var value))
-@@ -412,6 +_,19 @@
+@@ -424,6 +_,19 @@
  		return -1;
  	}
  
@@ -354,7 +355,7 @@
  	public static int FindEmptyChest(int x, int y, int type = 21, int style = 0, int direction = 1, int alternate = 0)
  	{
  		int num = -1;
-@@ -429,6 +_,12 @@
+@@ -441,6 +_,12 @@
  		return num;
  	}
  
@@ -367,7 +368,7 @@
  	public static bool NearOtherChests(int x, int y)
  	{
  		for (int i = x - 25; i < x + 25; i++) {
-@@ -442,6 +_,19 @@
+@@ -454,6 +_,19 @@
  		return false;
  	}
  
@@ -387,7 +388,7 @@
  	public static int AfterPlacement_Hook(int x, int y, int type = 21, int style = 0, int direction = 1, int alternate = 0)
  	{
  		Point16 baseCoords = new Point16(x, y);
-@@ -455,21 +_,47 @@
+@@ -467,21 +_,47 @@
  		}
  		else {
  			switch (type) {
@@ -435,7 +436,7 @@
  	public static int CreateChest(int X, int Y, int id = -1)
  	{
  		int num = id;
-@@ -486,6 +_,12 @@
+@@ -498,6 +_,12 @@
  		return num;
  	}
  
@@ -448,7 +449,7 @@
  	public static bool CanDestroyChest(int X, int Y)
  	{
  		if (!_chestsByCoords.TryGetValue(new Point(X, Y), out var value))
-@@ -499,6 +_,12 @@
+@@ -511,6 +_,12 @@
  		return true;
  	}
  
@@ -461,7 +462,7 @@
  	public static bool DestroyChest(int X, int Y)
  	{
  		if (!_chestsByCoords.TryGetValue(new Point(X, Y), out var value))
-@@ -517,6 +_,13 @@
+@@ -529,6 +_,13 @@
  		return true;
  	}
  
@@ -475,56 +476,7 @@
  	public static void DestroyChestDirect(int X, int Y, int id)
  	{
  		if (id < 0 || id >= Main.chest.Length)
-@@ -534,23 +_,44 @@
- 		}
- 	}
- 
-+	//TML: Now returns the item's index.
-+	/// <summary>
-+	/// Adds an item to the first empty slot in this shop.
-+	/// </summary>
-+	/// <param name="newItem">The item to add.</param>
-+	/// <returns><c>0</c> if the item could not be added to the shop, or the index in <see cref="item"/> if the item was successfully added.</returns>
--	public void AddItemToShop(Item newItem)
-+	public int AddItemToShop(Item newItem)
- 	{
- 		int num = Main.shopSellbackHelper.Remove(newItem);
--		if (num >= newItem.stack)
--			return;
-+
-+		if (num >= newItem.stack) {
-+			for (int i = 0; i < 39; i++)
-+				if (item[i] != null && item[i].type == newItem.type)
-+					return i;
-+			return 0; // Technically this shouldn't happen
-+		}
-+
-+		//TML:
-+		// When selling to vendor with full inventory, replace 2nd to last
-+		// item rather than have the item disappear to facilitate PostSellItem Item reference.
- 
- 		for (int i = 0; i < 39; i++) {
--			if (item[i] == null || item[i].type == 0) {
-+			if (item[i] == null || item[i].type == 0 || i == 38) {
- 				item[i] = newItem.Clone();
- 				item[i].favorited = false;
- 				item[i].buyOnce = true;
- 				item[i].stack -= num;
- 				_ = item[i].value;
- 				_ = 0;
-+
-+				/*
- 				break;
-+				*/
-+				return i;
- 			}
- 		}
-+
-+		return 0;
- 	}
- 
- 	public static void SetupTravelShop_AddToShop(int itemID, ref int added, ref int count)
-@@ -998,6 +_,9 @@
+@@ -1023,6 +_,9 @@
  		}
  	}
  
@@ -534,7 +486,7 @@
  	public static void SetupTravelShop()
  	{
  		for (int i = 0; i < Main.travelShop.Length; i++) {
-@@ -1076,10 +_,17 @@
+@@ -1101,10 +_,17 @@
  				break;
  			}
  		}
@@ -552,7 +504,7 @@
  		_ = Main.LocalPlayer.currentShoppingSettings;
  		Item[] array = item;
  		for (int i = 0; i < maxItems; i++) {
-@@ -2264,12 +_,12 @@
+@@ -2263,12 +_,12 @@
  				num++;
  				array[num].SetDefaults(1979);
  				num++;
@@ -567,7 +519,7 @@
  					array[num].SetDefaults(1978);
  					num++;
  				}
-@@ -2986,7 +_,36 @@
+@@ -2981,7 +_,36 @@
  		}
  	}
  
@@ -605,7 +557,7 @@
  	{
  		if (!DidDiscoverBestiaryEntry(585))
  			return false;
-@@ -3002,6 +_,11 @@
+@@ -2997,6 +_,11 @@
  
  	private static bool DidDiscoverBestiaryEntry(int npcId) => Main.BestiaryDB.FindEntryByNPCID(npcId).UIInfoProvider.GetEntryUICollectionInfo().UnlockState > BestiaryEntryUnlockState.NotKnownAtAll_0;
  
@@ -617,7 +569,7 @@
  	public static void AskForChestToEatItem(Vector2 worldPosition, int duration)
  	{
  		Point point = worldPosition.ToTileCoordinates();
-@@ -3034,6 +_,10 @@
+@@ -3029,6 +_,10 @@
  		}
  	}
  
@@ -628,7 +580,7 @@
  	public static void UpdateChestFrames()
  	{
  		int num = 8000;
-@@ -3077,6 +_,9 @@
+@@ -3072,6 +_,9 @@
  		}
  	}
  

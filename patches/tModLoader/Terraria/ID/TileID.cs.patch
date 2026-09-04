@@ -270,7 +270,7 @@
  		public static bool[] CountsAsWaterForCrafting = Factory.CreateBoolSet(172, 207);
  		public static bool[] AllTiles = Factory.CreateBoolSet(true);
  		public static bool[] Dirt = Factory.CreateBoolSet(0, 668);
-@@ -243,11 +_,31 @@
+@@ -243,10 +_,30 @@
  		public static bool[] Leaves = Factory.CreateBoolSet(384, 192);
  		public static bool[] bonusCutTiles = Factory.CreateBoolSet(false, 233);
  		public static bool[] tileMossBrick = Factory.CreateBoolSet(false, 512, 513, 514, 515, 516, 517, 535, 537, 540, 626, 628);
@@ -301,10 +301,9 @@
 +		/// </summary>
  		public static bool[] CanBeClearedDuringGeneration = Factory.CreateBoolSet(true, 396, 400, 401, 397, 398, 399, 404, 368, 367, 41, 43, 44, 481, 482, 483, 226, 237);
  		public static bool[] PreventsSlopesDuringGeneration = Factory.CreateBoolSet(false, 48, 137, 232, 191, 151, 274, 135, 442, 428);
- 		public static List<int> CorruptCountCollection = new List<int> {
-@@ -298,33 +_,85 @@
+@@ -300,33 +_,85 @@
  		public static bool[] SpreadsCrimson = Factory.CreateBoolSet(199, 662, 203, 234, 399, 401, 200, 352, 205, 201);
- 		public static bool[] UsesADifferentTileTypeForNPCSpawning = Factory.CreateBoolSet(false, 421, 422);
+ 		public static bool[] InheritTypeOfTileBelowForNPCSpawning = Factory.CreateBoolSet(false, 421, 422);
  		public static bool[] BlocksStairs = Factory.CreateBoolSet(386, 387, 54, 328, 459, 541);
 +		/// <summary>
 +		/// Indicates that this tile should not be considered solid for the purpose of tile placement anchors despite being <see cref="Main.tileSolid"/>. Used by <see cref="ClosedDoor"/>, <see cref="TrapdoorClosed"/>, and <see cref="TallGateClosed"/>. These tiles are solid and have collision, but because they transform into a non-solid tile when interacted with, they are not suitable for placing tiles on.
@@ -388,7 +387,7 @@
  		public static bool[] FriendlyFairyCanLureTo = Factory.CreateBoolSet(8, 169, 21, 467, 107, 108, 111, 221, 222, 223, 211, 12, 665, 639, 236, 702, 227);
  		public static bool[] IgnoredInHouseScore = Factory.CreateBoolSet(4, 3, 73, 82, 83, 84, 386);
  		public static bool[] SpreadOverground = Factory.CreateBoolSet(2, 23, 661, 32, 60, 70, 109, 199, 662, 352, 477, 492, 633, 226);
-@@ -341,6 +_,7 @@
+@@ -343,6 +_,7 @@
  			}
  		}
  	}
@@ -396,10 +395,11 @@
  
  	public const ushort Dirt = 0;
  	public const ushort Stone = 1;
-@@ -1096,5 +_,6 @@
+@@ -1098,6 +_,7 @@
  	public const ushort PalworldDigtoiseSleeping = 751;
  	public const ushort PalworldChilletEgg = 752;
- 	public static readonly ushort Count = 753;
+ 	public const ushort GiantTiki = 753;
+ 	public static readonly ushort Count = 754;
 +	/// <inheritdoc cref="IdDictionary"/>
  	public static readonly IdDictionary Search = IdDictionary.Create<TileID, ushort>();
  }

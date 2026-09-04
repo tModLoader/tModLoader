@@ -28,13 +28,15 @@
 +	private NetworkText _customReason;
  
 +	/*
- 	public int? SourceProjectileType {
+ 	public int? SourceOtherIndex {
  		get {
- 			if (_sourceProjectileLocalIndex == -1)
-@@ -22,7 +_,26 @@
- 			return _sourceProjectileType;
+ 			if (_sourceOtherIndex >= 0)
+@@ -31,9 +_,28 @@
+ 			return null;
  		}
  	}
+ 
+ 	public string CustomReason => _sourceCustomReason;
 +	*/
  
 +	// Ref fields added by TML.
@@ -58,7 +60,7 @@
  	public bool TryGetCausingEntity(out Entity entity)
  	{
  		entity = null;
-@@ -33,6 +_,11 @@
+@@ -44,6 +_,11 @@
  
  		if (Main.projectile.IndexInRange(_sourceProjectileLocalIndex)) {
  			entity = Main.projectile[_sourceProjectileLocalIndex];
@@ -70,7 +72,7 @@
  			return true;
  		}
  
-@@ -58,6 +_,11 @@
+@@ -69,6 +_,11 @@
  		};
  	}
  
@@ -82,7 +84,7 @@
  	public static PlayerDeathReason ByCustomReason(string reasonInEnglish)
  	{
  		return new PlayerDeathReason {
-@@ -65,18 +_,37 @@
+@@ -76,18 +_,37 @@
  		};
  	}
  
@@ -121,7 +123,7 @@
  			_sourceOtherIndex = type
  		};
  	}
-@@ -89,16 +_,21 @@
+@@ -100,16 +_,21 @@
  			_sourceProjectileType = Main.projectile[projectileIndex].type
  		};
  
@@ -143,7 +145,7 @@
  		if (_sourceCustomReason != null)
  			return NetworkText.FromLiteral(_sourceCustomReason);
  
-@@ -114,7 +_,10 @@
+@@ -125,7 +_,10 @@
  		bitsByte[3] = _sourceOtherIndex != -1;
  		bitsByte[4] = _sourceProjectileType != 0;
  		bitsByte[5] = _sourceItemType != 0;
@@ -154,7 +156,7 @@
  		bitsByte[7] = _sourceCustomReason != null;
  		writer.Write(bitsByte);
  		if (bitsByte[0])
-@@ -133,10 +_,16 @@
+@@ -144,10 +_,16 @@
  			writer.Write((short)_sourceProjectileType);
  
  		if (bitsByte[5])
@@ -171,7 +173,7 @@
  
  		if (bitsByte[7])
  			writer.Write(_sourceCustomReason);
-@@ -161,11 +_,18 @@
+@@ -172,11 +_,18 @@
  		if (bitsByte[4])
  			playerDeathReason._sourceProjectileType = reader.ReadInt16();
  

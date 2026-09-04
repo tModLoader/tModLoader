@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Social/Base/WorkshopIssueReporter.cs
 +++ src/tModLoader/Terraria/Social/Base/WorkshopIssueReporter.cs
-@@ -39,12 +_,23 @@
+@@ -39,13 +_,24 @@
  	public void ReportInstantUploadProblem(string textKey)
  	{
  		string textValue = Language.GetTextValue(textKey);
@@ -14,17 +14,18 @@
  		OpenReportsScreen();
  	}
  
- 	public void ReportInstantUploadProblemFromValue(string text)
+ 	public void ReportInstantUploadProblem(string textKey, object subs)
  	{
+ 		string textValueWith = Language.GetTextValueWith(textKey, subs);
 +		// Logging and dedServ check added by TML.
-+		Utils.LogAndConsoleErrorMessage(text);
++		Utils.LogAndConsoleErrorMessage(textValueWith);
 +		if (Main.dedServ)
-+			throw new NotImplementedException(text);
++			throw new NotImplementedException(textValueWith);
 +
- 		AddReport(text);
+ 		AddReport(textValueWith);
  		OpenReportsScreen();
  	}
-@@ -52,6 +_,12 @@
+@@ -53,6 +_,12 @@
  	public void ReportDelayedUploadProblem(string textKey)
  	{
  		string textValue = Language.GetTextValue(textKey);
@@ -37,7 +38,20 @@
  		AddReport(textValue);
  		NotifyReportsScreen();
  	}
-@@ -63,6 +_,12 @@
+@@ -60,6 +_,12 @@
+ 	public void ReportDelayedUploadProblem(string textKey, object subs)
+ 	{
+ 		string textValueWith = Language.GetTextValueWith(textKey, subs);
++
++		// Logging and dedServ check added by TML.
++		Utils.LogAndConsoleErrorMessage(textValueWith);
++		if (Main.dedServ)
++			return;
++
+ 		AddReport(textValueWith);
+ 		NotifyReportsScreen();
+ 	}
+@@ -72,6 +_,12 @@
  		};
  
  		string textValueWith = Language.GetTextValueWith(textKey, obj);
@@ -50,20 +64,7 @@
  		AddReport(textValueWith);
  		NotifyReportsScreen();
  	}
-@@ -75,6 +_,12 @@
- 		};
- 
- 		string textValueWith = Language.GetTextValueWith(textKey, obj);
-+
-+		// Logging and dedServ check added by TML.
-+		Utils.LogAndConsoleErrorMessage(textValueWith);
-+		if (Main.dedServ)
-+			return;
-+
- 		AddReport(textValueWith);
- 		NotifyReportsScreen();
- 	}
-@@ -86,6 +_,12 @@
+@@ -83,6 +_,12 @@
  		};
  
  		string textValueWith = Language.GetTextValueWith(textKey, obj);
