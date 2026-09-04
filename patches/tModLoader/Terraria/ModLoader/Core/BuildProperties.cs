@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -46,7 +46,7 @@ internal class BuildProperties
 	internal ModReference[] modReferences = new ModReference[0];
 	internal ModReference[] weakReferences = new ModReference[0];
 	//this mod will load after any mods in this list
-	//sortAfter includes (mod|weak)References that are not in sortBefore
+	//sortAfter includes (mod|weak)References that are not in sortBefore or sortIgnore
 	internal string[] sortAfter = new string[0];
 	//this mod will load before any mods in this list
 	internal string[] sortBefore = new string[0];
@@ -106,6 +106,7 @@ internal class BuildProperties
 		if (File.Exists(descriptionfile)) {
 			properties.description = File.ReadAllText(descriptionfile);
 		}
+		string[] sortIgnore = [];
 		foreach (string line in File.ReadAllLines(propertiesFile)) {
 			if (string.IsNullOrWhiteSpace(line)) {
 				continue;
@@ -133,6 +134,9 @@ internal class BuildProperties
 					break;
 				case "sortAfter":
 					properties.sortAfter = ReadList(value).ToArray();
+					break;
+				case "sortIgnore":
+					sortIgnore = ReadList(value).ToArray();
 					break;
 				case "author":
 					properties.author = value;
@@ -189,8 +193,18 @@ internal class BuildProperties
 		if (properties.dllReferences.Intersect(properties.modReferences.Select(x => x.mod)).Any())
 			throw new Exception("dllReferences contains duplicate of modReferences");
 
-		//add (mod|weak)References that are not in sortBefore to sortAfter
-		properties.sortAfter = properties.RefNames(true).Where(dep => !properties.sortBefore.Contains(dep))
+		if (properties.sortBefore.Intersect(properties.sortAfter).Any())
+			throw new Exception("sortBefore contains duplicate of sortAfter");
+
+		if (sortIgnore.Intersect(properties.sortAfter.Concat(properties.sortBefore)).Any())
+			throw new Exception("sortIgnore contains duplicate of sortAfter/sortBefore");
+
+		if (sortIgnore.Except(refs).Any())
+			throw new Exception("sortIgnore contains mods which are not mod/weak references");
+
+		//add (mod|weak)References that are not in sortBefore or sortIgnore to sortAfter
+		properties.sortAfter = properties.RefNames(true)
+			.Where(dep => !properties.sortBefore.Contains(dep) && !sortIgnore.Contains(dep))
 			.Concat(properties.sortAfter).Distinct().ToArray();
 
 		// Interpolate description values
@@ -407,6 +421,11 @@ internal class BuildProperties
 			sb.AppendLine($"sortAfter = {string.Join(", ", properties.sortAfter)}");
 		if (properties.sortBefore.Length > 0)
 			sb.AppendLine($"sortBefore = {string.Join(", ", properties.sortBefore)}");
+
+		//sortIgnore is not stored in Info, but a reference with no sort entry could only have come from one
+		string[] sortIgnore = properties.RefNames(true).Except(properties.sortAfter).Except(properties.sortBefore).ToArray();
+		if (sortIgnore.Length > 0)
+			sb.AppendLine($"sortIgnore = {string.Join(", ", sortIgnore)}");
 		var bytes = Encoding.UTF8.GetBytes(sb.ToString());
 		dst.Write(bytes, 0, bytes.Length);
 	}
