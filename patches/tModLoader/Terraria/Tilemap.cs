@@ -4,14 +4,17 @@ using Microsoft.Xna.Framework;
 
 namespace Terraria;
 
-public readonly struct Tilemap
+public struct Tilemap : IDisposable
 {
-	public readonly ushort Width;
-	public readonly ushort Height;
+	private bool disposed;
+
+	public ushort Width { get; private set; }
+	public ushort Height { get; private set; }
+	public readonly uint Offset;
 
 	public Tile this[int x, int y] {
 		[MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
-		get {
+		readonly get {
 			if ((uint)x >= Width || (uint)y >= Height) {
 				throw new IndexOutOfRangeException();
 
@@ -21,7 +24,7 @@ public readonly struct Tilemap
 #if TILE_X_Y
 			return new((ushort)x, (ushort)y, (uint)(y + (x * Height)));
 #else
-			return new((uint)(y + (x * Height)));
+			return new((uint)(y + (x * Height) + Offset));
 #endif
 		}
 		internal set {
@@ -29,18 +32,59 @@ public readonly struct Tilemap
 		}
 	}
 	
-	public Tile this[Point pos] => this[pos.X, pos.Y];
+	public readonly Tile this[Point pos] => this[pos.X, pos.Y];
 
-	public Tile this[DataStructures.Point16 pos] => this[pos.X, pos.Y];
+	public readonly Tile this[DataStructures.Point16 pos] => this[pos.X, pos.Y];
 
-	internal Tilemap(ushort width, ushort height)
+	public Tilemap(ushort width, ushort height)
 	{
 		Width = width;
 		Height = height;
-		TileData.SetLength((uint)width * height);
+		Offset = TileData.AddTilemap(this);
 	}
 
-	public void ClearEverything() => TileData.ClearEverything();
+	/// <summary>
+	/// Clears all tile data associated with this <see cref="Tilemap"/>.
+	/// </summary>
+	/// <exception cref="ObjectDisposedException"></exception>
+	public readonly void Clear()
+	{
+		if (disposed) {
+			throw new ObjectDisposedException(GetType().Name);
+		}
+		TileData.ClearTilemap(this);
+	}
 
-	public T[] GetData<T>() where T : unmanaged, ITileData => TileData<T>.data;
+	/// <summary>
+	/// Copies tile data from this instance to <paramref name="other"/>.
+	/// </summary>
+	/// <param name="other"></param>
+	/// <exception cref="ObjectDisposedException"></exception>
+	/// <exception cref="ArgumentException"></exception>
+	public readonly void CopyTo(Tilemap other)
+	{
+		if (disposed) {
+			throw new ObjectDisposedException(GetType().Name);
+		}
+		if (Width != other.Width || Height != other.Height) {
+			throw new ArgumentException("The provided tilemaps must have the same width and height.");
+		}
+		TileData.CopyTilemap(this, other);
+	}
+
+	public readonly Span<T> GetData<T>() where T : unmanaged, ITileData
+		=> TileData<T>.data[(int)Offset..(int)(Offset + (Width * Height))];
+
+	/// <summary>
+	/// Clears all tile data and frees the memory space used by this <see cref="Tilemap"/> instance.
+	/// </summary>
+	public void Dispose()
+	{
+		if (!disposed) {
+			TileData.RemoveTilemap(this);
+			Width = 0;
+			Height = 0;
+			disposed = true;
+		}
+	}
 }
