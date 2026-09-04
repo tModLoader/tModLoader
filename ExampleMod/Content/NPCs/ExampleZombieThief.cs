@@ -70,6 +70,7 @@ namespace ExampleMod.Content.NPCs
 				// Pickup the items only if the NPC touches them and they aren't already being grabbed by a player
 				if (item.active && !item.beingGrabbed && item.type == ModContent.ItemType<ExampleItem>() && hitbox.Intersects(item.Hitbox)) {
 					StolenItems += item.stack;
+					item.TurnToAir(fullReset: true);
 
 					NetMessage.SendData(MessageID.SyncItem, number: item.whoAmI);
 
