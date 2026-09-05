@@ -20,7 +20,7 @@ public enum DistributionPlatform
 internal static class InstallVerifier
 {
 	private static string VanillaExe = "Terraria.exe";
-	private const string TerrariaVersion = "1.4.5.6";
+	private const string TerrariaVersion = "1.4.5.8";
 	private static string CheckExe = $"Terraria_v{TerrariaVersion}.exe"; // This should match the hashes. {Main.versionNumber}
 	internal static string vanillaExePath; // Only reliable for GOG installs
 
@@ -44,12 +44,12 @@ internal static class InstallVerifier
 			}
 			else {
 				steamAPIPath = "/steam_api64.dll";
-				steamAPIHash = ToByteArray("3bae3a5ecad22eec751e154f68e09361");
+				steamAPIHash = ToByteArray("fa6e351b64c92230fb011a2181c55486");
 			}
 
 			vanillaSteamAPI = "steam_api.dll";
 			gogHash = ToByteArray("18013fe58e2b64be3ed0d7b7161c6800"); // Don't forget to update CheckExe above
-			steamHash = ToByteArray("1ea72236140aafb8737e5664557266c3");
+			steamHash = ToByteArray("fa6e351b64c92230fb011a2181c55486");
 		}
 		else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX)) {
 			portableRid = $"osx";
