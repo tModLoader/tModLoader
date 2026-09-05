@@ -589,6 +589,40 @@ public static class PlayerLoader
 		}
 	}
 
+	private static HookList HookCanDoWireStuffHere = AddHook<Func<int, int, bool?>>(p => p.CanDoWireStuffHere);
+
+	public static bool? CanDoWireStuffHere(Player player, int x, int y)
+	{
+		bool? ret = null;
+		foreach (var modPlayer in HookCanDoWireStuffHere.Enumerate(player)) {
+			bool? canDoWire = modPlayer.CanDoWireStuffHere(x, y);
+			if (canDoWire.HasValue) {
+				if (!canDoWire.Value)
+					return false;
+
+				ret = true;
+			}
+		}
+		return ret;
+	}
+
+	private static HookList HookCanShowWireStuffHere = AddHook<Func<int, int, bool?>>(p => p.CanShowWireStuffHere);
+
+	public static bool? CanShowWireStuffHere(Player player, int x, int y)
+	{
+		bool? ret = null;
+		foreach (var modPlayer in HookCanShowWireStuffHere.Enumerate(player)) {
+			bool? canShowWire = modPlayer.CanShowWireStuffHere(x, y);
+			if (canShowWire.HasValue) {
+				if (!canShowWire.Value)
+					return false;
+
+				ret = true;
+			}
+		}
+		return ret;
+	}
+
 	private static HookList HookPreItemCheck = AddHook<Func<bool>>(p => p.PreItemCheck);
 
 	public static bool PreItemCheck(Player player)
