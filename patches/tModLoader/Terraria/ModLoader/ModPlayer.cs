@@ -576,6 +576,34 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
+	/// Allows you to control whether the player can see wires.<br></br>
+	/// Return true or false to respectively allow or disallow the player from seeing wires, overriding vanilla rules.<br></br>
+	/// Returns null by default, which allows vanilla wire rules to function normally.<para/>
+	/// <para/> See also <see cref="CanShowWireStuffHere"/>.
+	/// <para/> Called on the local client only, when the player attempts to use <see href="https://terraria.wiki.gg/wiki/Mechanisms">Mechanisms</see>.
+	/// </summary>
+	/// <param name="x">The x position in tile coordinates.</param>
+	/// <param name="y">The y position in tile coordinates.</param>
+	public virtual bool? CanDoWireStuffHere(int x, int y)
+	{
+		return null;
+	}
+
+	/// <summary>
+	/// Allows you to control whether the player can break or place wires.<br></br>
+	/// Return true or false to respectively allow or disallow the player from breaking or placing wires, overriding vanilla rules.<br></br>
+	/// Returns null by default, which allows vanilla wire rules to function normally.<para/>
+	/// <para/> See also <see cref="CanDoWireStuffHere"/>.
+	/// <para/> Called on the local client only, when the player attempts to use <see href="https://terraria.wiki.gg/wiki/Mechanisms">Mechanisms</see>.
+	/// </summary>
+	/// <param name="x">The x position in tile coordinates.</param>
+	/// <param name="y">The y position in tile coordinates.</param>
+	public virtual bool? CanShowWireStuffHere(int x, int y)
+	{
+		return null;
+	}
+
+	/// <summary>
 	/// Allows you to do anything before the update code for the player's held item is run. Return false to stop the held item update code from being run (for example, if the player is frozen). Returns true by default.
 	/// <para/> Called on local, server, and remote clients.
 	/// </summary>

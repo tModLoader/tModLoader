@@ -7469,6 +7469,26 @@
  				if (inventory[num6].stack <= 0)
  					inventory[num6].SetDefaults(0);
  
+@@ -38004,6 +_,9 @@
+ 		if (!WorldGen.InWorld(x, y))
+ 			return false;
+ 
++		if (PlayerLoader.CanDoWireStuffHere(this, x, y) is bool result)
++			return result;
++
+ 		Tile tile = Main.tile[x, y];
+ 		if (tile.wall == 350)
+ 			return false;
+@@ -38024,6 +_,9 @@
+ 		if (!WorldGen.InWorld(x, y))
+ 			return false;
+ 
++		if (PlayerLoader.CanShowWireStuffHere(this, x, y) is bool result)
++			return result;
++
+ 		if (!NPC.downedGolemBoss) {
+ 			Tile tile = Main.tile[x, y];
+ 			if (Main.dualDungeonsSeed && (double)y > Main.worldSurface && DungeonGenerationStyles.Temple.WallIsInStyle(tile.wall, includeWindows: true))
 @@ -38090,11 +_,21 @@
  
  	private void ItemCheck_Shoot(int i, Item sItem, int weaponDamage, bool withAudioVisualFeedback = true)
