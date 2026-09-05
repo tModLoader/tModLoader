@@ -67,6 +67,10 @@ public partial class Mod
 	/// A placeholder mod icon, for use when a mod doesn't have a valid icon.
 	/// </summary>
 	public static Asset<Texture2D> PlaceholderModIcon => Main.Assets.Request<Texture2D>("Images/UI/DefaultResourcePackIcon");
+	/// <summary>
+	/// A placeholder small mod icon, for use when a mod doesn't have a valid small icon.
+	/// </summary>
+	public static Asset<Texture2D> PlaceholderSmallModIcon => ModLoader.ManifestAssets.Request<Texture2D>("Terraria.ModLoader.UI.PlaceholderSmallModIcon");
 
 	public List<string> TranslationForMods { get; internal set; }
 

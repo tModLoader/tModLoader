@@ -152,6 +152,18 @@ internal abstract class DefinitionElement<T> : ConfigElement<T> where T : Entity
 		OptionChoice.SetItem(Value);
 	}
 
+	public override void RefreshUI()
+	{
+		UpdateNeeded = true;
+	}
+
+	public override void SetExpanded(bool expanded)
+	{
+		bool prevExpanded = SelectionExpanded;
+		SelectionExpanded = expanded;
+		UpdateNeeded |= prevExpanded != SelectionExpanded;
+	}
+
 	protected abstract List<DefinitionOptionElement<T>> GetPassedOptionElements();
 	protected abstract List<DefinitionOptionElement<T>> CreateDefinitionOptionElementList();
 	protected abstract DefinitionOptionElement<T> CreateDefinitionOptionElement();

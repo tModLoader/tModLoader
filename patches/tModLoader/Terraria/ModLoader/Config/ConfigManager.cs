@@ -425,10 +425,15 @@ public static class ConfigManager
 	/// </summary>
 	public static ModConfig GeneratePopulatedClone(ModConfig original)
 	{
-		string json = JsonConvert.SerializeObject(original, ConfigManager.serializerSettings);
 		ModConfig properClone = original.Clone();
-		JsonConvert.PopulateObject(json, properClone, ConfigManager.serializerSettings);
+		RevertConfigChanges(original, properClone);
 		return properClone;
+	}
+
+	internal static void RevertConfigChanges(ModConfig originalConfig, ModConfig pendingConfig)
+	{
+		string json = JsonConvert.SerializeObject(originalConfig, serializerSettings);
+		JsonConvert.PopulateObject(json, pendingConfig, serializerSettings);
 	}
 
 	public static object? AlternateCreateInstance(Type type)
@@ -461,10 +466,12 @@ public static class ConfigManager
 		return UIModConfig.WrapIt(parent, ref top, memberInfo, item, order, list, arrayType, index);
 	}
 
+	// TODO: remove in future, it is no longer needed, since ModConfig is public
 	public static void SetPendingChanges(bool changes = true)
 	{
 		// public api for modders.
-		Interface.modConfig.SetPendingChanges(changes);
+		if (changes)
+			Interface.modConfig.OnConfigModified();
 	}
 
 	// TODO: better home?
@@ -492,6 +499,14 @@ public static class ConfigManager
 			hasNextB = enumeratorB.MoveNext();
 		}
 		return !hasNextA && !hasNextB;
+	}
+
+	public static bool AreConfigsEqual(ModConfig a, ModConfig b)
+	{
+		if (a.GetType() != b.GetType())
+			return false;
+
+		return JsonConvert.SerializeObject(a, serializerSettingsCompact) == JsonConvert.SerializeObject(b, serializerSettingsCompact);
 	}
 
 	internal static string FormatTextAttribute(LocalizedText localizedText, object[]? args)

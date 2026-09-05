@@ -233,7 +233,7 @@ internal class DictionaryElement : CollectionElement
 				deleteButton.OnLeftClick += (a, b) => {
 					((IDictionary)Data).Remove(o);
 					SetupList();
-					Interface.modConfig.SetPendingChanges();
+					Interface.modConfig.OnConfigModified();
 				};
 
 				wrapped.Item1.Append(deleteButton);
