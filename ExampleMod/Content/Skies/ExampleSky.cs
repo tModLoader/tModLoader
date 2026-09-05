@@ -18,7 +18,7 @@ namespace ExampleMod.Content.Skies;
 public class ExampleSky : ModSky
 {
     // FadeOpacity is a property that automatically shifts between 0 and 1 when a sky is activated / deactivated.
-    // This property dictates how much FadeOpacity is modified per frame. By default, it's 0.01f;
+    // This property dictates how much FadeOpacity is modified per frame. By default, it's 0.01.
     public override float FadeRate => 0.05f;
 
     // minDepth and maxDepth are somewhat arbitrary values, but they can be used to specify where an element is to be drawn.
