@@ -35,10 +35,21 @@ public class ExampleSky : ModSky
             spriteBatch.Draw(TextureAssets.MagicPixel.Value, new Rectangle(0, 0, Main.screenWidth, Main.screenHeight), Color.Red * opacity);
     }
 
-    // You may override OnActivate / OnDeactivate to implement any relevant logic.
+    // The following hooks can be quite useful for logic unrelated to rendering the sky.
     public override void OnActivate(Vector2 position, params object[] args)
     {
-        SoundEngine.PlaySound(SoundID.AbigailAttack);
+        SoundEngine.PlaySound(SoundID.AbigailUpgrade);
         Main.NewLightning();
+    }
+    
+    public override void OnUpdate(GameTime gameTime)
+    {
+        if (Main.rand.NextBool(2000))
+            Main.NewLightning();
+    }
+
+    public override void OnDeactivate(params object[] args)
+    {
+        SoundEngine.PlaySound(SoundID.AbigailCry);
     }
 }
