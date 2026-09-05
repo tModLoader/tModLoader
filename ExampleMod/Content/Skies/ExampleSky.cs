@@ -17,7 +17,7 @@ namespace ExampleMod.Content.Skies;
 // It is important to note that you don't miss out on any freedom by using ModSky over CustomSky, the range of capabilities is identical.
 public class ExampleSky : ModSky
 {
-    // FadeOpacity is a property that automatically interpolates between 0 and 1 when a sky is activated / deactivated.
+    // FadeOpacity is a property that automatically shifts between 0 and 1 when a sky is activated / deactivated.
     // This property dictates how much FadeOpacity is modified per frame. By default, it's 0.01f;
     public override float FadeRate => 0.05f;
 

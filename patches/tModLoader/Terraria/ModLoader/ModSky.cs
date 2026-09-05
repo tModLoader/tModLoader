@@ -38,7 +38,7 @@ public abstract class ModSky : CustomSky, IModType, ILoadable
     public bool Enabled { get; private set; }
 
     /// <summary>
-    /// An automatically handled value between 0-1 for fading the sky's visuals in and out.<para/>
+    /// A value that shifts between 0-1 for fading the sky's visuals in and out.<para/>
     /// You may override <see cref="FadeRate"/> to alter the speed at which this value is modified, you may also return false in <see cref="ShouldFade"/> to skip the automatic linear fading behavior and replace it with your own. 
     /// </summary>
     public float FadeOpacity { get; set; }
