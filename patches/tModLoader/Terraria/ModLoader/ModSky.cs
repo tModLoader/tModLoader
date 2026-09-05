@@ -39,7 +39,7 @@ public abstract class ModSky : CustomSky, IModType, ILoadable
 
     /// <summary>
     /// An automatically handled value between 0-1 for fading the sky's visuals in and out.<para/>
-    /// You may override <see cref="FadeRate"/> to alter the speed at which this value is modified, you may also return false in <see cref="PreUpdate"/> to skip the automatic linear fading behavior and replace it with your own. 
+    /// You may override <see cref="FadeRate"/> to alter the speed at which this value is modified, you may also return false in <see cref="ShouldFade"/> to skip the automatic linear fading behavior and replace it with your own. 
     /// </summary>
     public float FadeOpacity { get; set; }
 
@@ -49,16 +49,14 @@ public abstract class ModSky : CustomSky, IModType, ILoadable
     public virtual float FadeRate => 0.01f;
 
     /// <summary>
-    /// Called before <see cref="FadeOpacity"/> is modified.<para/>
-    /// You may return false to skip <see cref="FadeOpacity"/>'s modification but <see cref="PostUpdate"/> will be called regardless.
+    /// Whether <see cref="FadeOpacity"/> should be updated as normal or not. You may return false to provide your own fading logic. 
     /// </summary>
-    public virtual bool PreUpdate(GameTime gameTime) => true;
+    public virtual bool ShouldFade => true;
 
     /// <summary>
-    /// Called after <see cref="FadeOpacity"/> is modified.<para/>
-    /// This will be called regardless of what <see cref="PreUpdate"/> returns.
+    /// Called when this sky's logic is updated.
     /// </summary>
-    public virtual void PostUpdate(GameTime gameTime)
+    public virtual void OnUpdate(GameTime gameTime)
     {
         
     }
@@ -88,11 +86,10 @@ public abstract class ModSky : CustomSky, IModType, ILoadable
     
     public sealed override void Update(GameTime gameTime)
     {
-        if (PreUpdate(gameTime))
-        {
+        if (ShouldFade)
             FadeOpacity = MathHelper.Clamp(FadeOpacity + Enabled.ToDirectionInt() * FadeRate, 0, 1);
-        }
-        PostUpdate(gameTime);
+        
+        OnUpdate(gameTime);
     }
 
     public sealed override void Activate(Vector2 position, params object[] args)
