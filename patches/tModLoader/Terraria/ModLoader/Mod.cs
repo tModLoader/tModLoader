@@ -130,6 +130,10 @@ public partial class Mod
 	public short NetID => netID;
 	/// <summary> If true, this mod has a <see cref="NetID"/> assigned. This is mainly useful for checking if a <see cref="ModSide.NoSync"/> mod is present on the server from a client to determine if a <see cref="ModPacket"/> can be sent to the server or not. </summary>
 	public bool IsNetSynced => netID >= 0;
+	/// <summary>
+	/// The index of this mod in <see cref="ModLoader.Mods"/>.
+	/// </summary>
+	public int Index { get; internal set; }
 
 	private IDisposable fileHandle;
 
