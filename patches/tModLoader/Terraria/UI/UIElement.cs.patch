@@ -13,7 +13,7 @@
  {
  	public delegate void MouseEvent(UIMouseEvent evt, UIElement listeningElement);
  
-@@ -19,27 +_,56 @@
+@@ -19,32 +_,61 @@
  	public delegate void UIElementAction(UIElement element);
  
  	protected readonly List<UIElement> Elements = new List<UIElement>();
@@ -70,6 +70,12 @@
  	public float VAlign;
  	private CalculatedStyle _innerDimensions;
  	private CalculatedStyle _dimensions;
+ 	private CalculatedStyle _outerDimensions;
+-	private static readonly RasterizerState OverflowHiddenRasterizerState = new RasterizerState {
++	internal static readonly RasterizerState OverflowHiddenRasterizerState = new RasterizerState {
+ 		CullMode = CullMode.None,
+ 		ScissorTestEnable = true
+ 	};
 @@ -52,12 +_,19 @@
  	private SnapPoint _snapPoint;
  	private static int _idCounter = 0;
@@ -177,6 +183,25 @@
  	public virtual void Update(GameTime gameTime)
  	{
  		if (this.OnUpdate != null)
+@@ -191,10 +_,15 @@
+ 		}
+ 	}
+ 
++	public virtual Rectangle GetClippingRectangle(SpriteBatch spriteBatch)
++	{
++		return GetClippingRectangleFrom(spriteBatch, _innerDimensions);
++	}
++
+-	public Rectangle GetClippingRectangle(SpriteBatch spriteBatch)
++	public static Rectangle GetClippingRectangleFrom(SpriteBatch spriteBatch, CalculatedStyle innerDimensions)
+ 	{
+-		Vector2 vector = new Vector2(_innerDimensions.X, _innerDimensions.Y);
++		Vector2 vector = new Vector2(innerDimensions.X, innerDimensions.Y);
+-		Vector2 position = new Vector2(_innerDimensions.Width, _innerDimensions.Height) + vector;
++		Vector2 position = new Vector2(innerDimensions.Width, innerDimensions.Height) + vector;
+ 		vector = Vector2.Transform(vector, Main.UIScaleMatrix);
+ 		position = Vector2.Transform(position, Main.UIScaleMatrix);
+ 		Rectangle rectangle = new Rectangle((int)vector.X, (int)vector.Y, (int)(position.X - vector.X), (int)(position.Y - vector.Y));
 @@ -296,6 +_,9 @@
  
  	public virtual Rectangle GetViewCullingArea() => _dimensions.ToRectangle();
