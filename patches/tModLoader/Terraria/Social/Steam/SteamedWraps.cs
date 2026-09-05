@@ -18,8 +18,6 @@ namespace Terraria.Social.Steam;
 
 public static class SteamedWraps
 {
-	internal const string LibraryTagInternalName = "Library";
-
 	internal const uint thisApp = ModLoader.Engine.Steam.TMLAppID;
 
 	public static bool SteamClient { get; set; }

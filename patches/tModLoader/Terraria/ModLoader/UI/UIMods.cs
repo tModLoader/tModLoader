@@ -16,9 +16,6 @@ using Terraria.Audio;
 using Terraria.ID;
 using System;
 using Terraria.GameContent;
-using Terraria.Social.Base;
-using Terraria.Social.Steam;
-
 namespace Terraria.ModLoader.UI;
 
 internal class UIMods : UIState, IHaveBackButtonCommand
@@ -612,29 +609,8 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 	{
 		modItemsTask = Task.Run(() => {
 			var mods = ModOrganizer.FindMods(logDuplicates: true);
-			var libraryWorkshopIds = new HashSet<string>();
-			try {
-				// Direct workshop item details queries don't reliably apply Steam tag filters, but the returned item
-				// can still expose the actual tags. Store by PublishId instead of ModName so local mods with the
-				// same internal name as a workshop mod (for example ExampleMod) are not misclassified.
-				libraryWorkshopIds.UnionWith(Interface.modBrowser.SocialBackend.DirectQueryInstalledMDItems().Where(x => x.IsLibraryMod).Select(x => x.PublishId.m_ModPubId));
-			}
-			catch {
-				// If Steam Workshop data is unavailable, keep using local build.txt libMod and local workshop.json tags.
-			}
-
 			var pendingUIModItems = new List<UIModItem>();
 			foreach (var mod in mods) {
-				if (mod.location == ModLocation.Workshop) {
-					string parentDir = ModOrganizer.GetParentDir(mod.modFile.path);
-					if (ModOrganizer.TryReadManifest(parentDir, out var info)) {
-						mod.properties.libMod |= info.tags?.Contains(SteamedWraps.LibraryTagInternalName) == true;
-					}
-
-					if (WorkshopHelper.GetPublishIdLocal(mod.modFile, out ulong publishId)) {
-						mod.properties.libMod |= libraryWorkshopIds.Contains(publishId.ToString());
-					}
-				}
 				UIModItem modItem = new UIModItem(mod);
 				pendingUIModItems.Add(modItem);
 			}

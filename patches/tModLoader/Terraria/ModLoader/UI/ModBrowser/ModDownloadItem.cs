@@ -21,7 +21,6 @@ public class ModDownloadItem
 	public readonly DateTime TimeStamp;
 	public readonly bool Banned;
 	public readonly DeveloperMetadata DevMetadata;
-	public readonly bool IsLibraryMod;
 
 	public readonly string ModReferencesBySlug;
 	public readonly ModPubId_t[] ModReferenceByModId;
@@ -37,7 +36,7 @@ public class ModDownloadItem
 	public bool AppNeedRestartToReinstall { get; private set; }
 	public bool IsInstalled => Installed != null;
 
-	public ModDownloadItem(string displayName, string name, Version version, string author, string modReferences, ModSide modSide, string modIconUrl, string publishId, int downloads, int hot, DateTime timeStamp, Version modloaderversion, string homepage, string ownerId, string[] referencesById, bool banned, DeveloperMetadata devMetadata, bool isLibraryMod = false)
+	public ModDownloadItem(string displayName, string name, Version version, string author, string modReferences, ModSide modSide, string modIconUrl, string publishId, int downloads, int hot, DateTime timeStamp, Version modloaderversion, string homepage, string ownerId, string[] referencesById, bool banned, DeveloperMetadata devMetadata)
 	{
 		ModName = name;
 		DisplayName = displayName;
@@ -58,7 +57,6 @@ public class ModDownloadItem
 		ModloaderVersion = modloaderversion;
 		Banned = banned;
 		DevMetadata = devMetadata;
-		IsLibraryMod = isLibraryMod;
 
 		UpdateInstallState();
 	}
