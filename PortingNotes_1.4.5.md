@@ -155,7 +155,7 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - WorldGen.SwapTileData might not be necessary anymore. ErrorWorldSwapTiles exists. The new name isn't as useful, however.
 - Projectile.identity removed, Projectile.key added. How to use? Also Projectile.IndexForVisuals. Also Main.projectileIdentity. Need to fix Projectile.key docs, it is the identity docs.
 - Projectile.TransformType added, replaces direct setting of Projectile.type in AI. Might need a hook or more logic if used with modded projectiles.
-- New Worldgen.IsTileLoaded method seems like an issue with our non-null tiles.
+- New Worldgen.IsTileLoaded method seems like an issue with our non-null tiles. Keep patches to use Main.sectionManager.TileLoaded? Fix WorldGen.IsTileLoaded?
 - Code near "Yoyos with effective top speed" comment in AI_009_2_Yoyos seems weird. Was this fixed in vanilla and the "< 1.01f" code left in? Probably can remove the duplicate bounds check, check blame
 - ProjectileID.Sets.IsInteractable needs updating
 - Item.fishinPole now defaults to 1. Why? Update docs.
@@ -182,6 +182,12 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Player.manaPotionDelay is new.
 - Player.ApplyManaRegenerationDelay() replaces setting Player.manaRegenDelay directly.
 - Remove Item.ChangePlayerDirectionOnShoot from item 723
+- Item 3852 Tome of Infinite Wisdom ItemCheck_OwnerOnlyCode changed. Does Item.useLimitPerAnimation still make sense?
+- 4953, 4952, 4956, 5669 ItemCheck_OwnerOnlyCode also changed, check if useLimitPerAnimation still makes sense. What about 6152?
+- Where should chlorophyteBladeCounter-- fit in the new ItemCheck_inner code.
+- Is the "// Stealth knockback. Moved from GetWeaponKnockback" change fine? It seems the Player.stealth value is being remapped, so moving this logic and applying it using the remapped value might be an issue.
+- Player.CollideWithNPCs changed, new parameters
+- Player.ApplyDamageToNPC changed, new parameters, new overloads
 
 # New Fields that might need more documentation
 

@@ -62,6 +62,28 @@
  			}
  			else if (buffType[j] == 192) {
  				pickSpeed -= 0.2f;
+@@ -12525,10 +_,13 @@
+ 
+ 		if (head == 112 && body == 75 && legs == 64) {
+ 			setBonus = Language.GetTextValue("ArmorSetBonus.Pumpkin");
++			allDamage += 0.1f;
++			/*
+ 			meleeDamage += 0.1f;
+ 			magicDamage += 0.1f;
+ 			rangedDamage += 0.1f;
+ 			minionDamage += 0.1f;
++			*/
+ 		}
+ 
+ 		if (head == 180 && body == 182 && legs == 122) {
+@@ -12758,6 +_,7 @@
+ 			rangedCrit += 10;
+ 			meleeCrit += 10;
+ 			magicCrit += 10;
++			*/
+ 			dashType = 5;
+ 		}
+ 
 @@ -19323,8 +_,12 @@
  							DpadRadial.ChangeSelection(-1);
  							CircularRadial.ChangeSelection(-1);
