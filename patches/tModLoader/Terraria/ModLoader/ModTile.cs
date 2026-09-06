@@ -36,7 +36,12 @@ public abstract class ModTile : ModBlockType
 	/// <para/> Use <see cref="MineResist"/> to adjust how long a tile takes to be mined.</summary>
 	public int MinPick { get; set; }
 
-	/// <summary> An array of the IDs of tiles that this tile can be considered as when looking for crafting stations. </summary>
+	/// <summary>
+	/// An array of the IDs of tiles that this tile can be considered as when looking for crafting stations.
+	/// <br/><br/> Registered into <see cref="Recipe.TileCountsAs"/> during recipe setup, so it must be assigned
+	/// in <see cref="ModBlockType.SetStaticDefaults"/>. Changing it afterwards has no effect. Use
+	/// <see cref="GlobalTile.AdjTiles(int)"/> for equivalences that need to change at runtime.
+	/// </summary>
 	public int[] AdjTiles { get; set; } = new int[0];
 
 	public override string LocalizationCategory => "Tiles";

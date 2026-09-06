@@ -5369,6 +5369,15 @@
  		List<Item[]> list = new List<Item[]>();
  		Dictionary<int, List<int>> dictionary = new Dictionary<int, List<int>>();
  		List<Point> list2 = new List<Point>();
+@@ -28824,6 +_,8 @@
+ 		if (tileType == 355 || tileType == 699)
+ 			alchemyTable = true;
+ 
++		TileLoader.AdjTiles(this, tileType);
++
+ 		List<int> list = Recipe.TileCountsAs[tileType];
+ 		if (list == null)
+ 			return;
 @@ -28842,6 +_,8 @@
  		adjHoney = false;
  		oldAdjLava = adjLava;
@@ -5378,7 +5387,7 @@
  		alchemyTable = false;
  		Rectangle tileRegion = TileReachCheckSettings.Simple.GetTileRegion(this, ateArtisanBread ? 4 : 0);
  		tileRegion = WorldUtils.ClampToWorld(tileRegion);
-@@ -28852,6 +_,14 @@
+@@ -28852,6 +_,12 @@
  					SetAdjTile(tile.type);
  					if (TileID.Sets.CountsAsWaterForCrafting[tile.type])
  						adjWaterSource = true;
@@ -5388,8 +5397,6 @@
 +						adjLava = true;
 +					if (TileID.Sets.CountsAsShimmerForCrafting[tile.type])
 +						adjShimmer = true;
-+
-+					// TODO: Move to SetAdjTile: TileLoader.AdjTiles(this, Main.tile[j, k].type);
  				}
  
  				if (tile.liquid > 200 && tile.liquidType() == 0)
