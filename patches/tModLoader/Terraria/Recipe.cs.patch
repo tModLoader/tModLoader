@@ -148,7 +148,7 @@
  	public Recipe()
  	{
  		for (int i = 0; i < maxRequirements; i++) {
-@@ -154,10 +_,18 @@
+@@ -154,10 +_,22 @@
  			acceptedGroups[i] = -1;
  		}
  	}
@@ -168,6 +168,10 @@
  			RequiredItemEntry requiredItemEntry = requiredItemQuickLookup[i];
  			if (requiredItemEntry.itemIdOrRecipeGroup != 0) {
  				requiredItemEntry.stack -= GetIngredientCraftingDiscount(player, requiredItemEntry);
++
++				// TML: ConsumeIngredient hook allows adjusting the amount of each ingredient consumed. See IngredientQuantityRules.Alchemy.
++				int type = requiredItemEntry.IsRecipeGroup ? requiredItemEntry.RecipeGroup.GetPlaceholderItemType() : requiredItemEntry.itemIdOrRecipeGroup;
++				RecipeLoader.ConsumeIngredient(this, type, ref requiredItemEntry.stack, false);
 @@ -173,6 +_,7 @@
  
  	private int GetIngredientCraftingDiscount(Player player, RequiredItemEntry req)
@@ -176,13 +180,14 @@
  		int num = 0;
  		if (alchemy && player.alchemyTable) {
  			for (int i = 0; i < req.stack; i++) {
-@@ -182,6 +_,9 @@
+@@ -182,6 +_,10 @@
  		}
  
  		return num;
 +		*/
 +
-+		return 0; // TODO, reimplement crafting discounts in terms of RequiredItemEntry
++		// Crafting ingredient discounts (like the alchemy table) are handled by ConsumeIngredient callbacks, see GetIngredientsForOneCraft.
++		return 0;
  	}
  
  	public static void UpdateRecipeList()
