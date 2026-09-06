@@ -192,7 +192,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Item.SetDefaults(int, bool) -> Item.SetDefaults(int)
 
 # ExampleMod TODOs
-- Verify that ExampleZombieThief still works with changes
 
 # Terraria update requests
 
