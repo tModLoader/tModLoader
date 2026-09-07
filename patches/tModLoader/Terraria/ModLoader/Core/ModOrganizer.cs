@@ -763,22 +763,39 @@ internal static class ModOrganizer
 			RemoveSkippablePreview(repo);
 
 		string[] tmods = Directory.GetFiles(repo, "*.tmod", SearchOption.AllDirectories);
-		if (tmods.Length <= 3)
+		if (tmods.Length <= 2)
 			return;
 
 		var information = AnalyzeWorkshopTmods(repo);
-		if (information == null || information.Count() <= 3)
+		if (information == null || information.Count() <= 2)
 			return;
 
-		foreach (var requirement in SocialBrowserModule.keepRequirements) {
-			var mods = GetOrderedTmodWorkshopInfoForVersion(information, requirement.browserVersion).Skip(requirement.keepCount);
+		// Purge .tmod files that are unrelated to this BrowserVersion
+		foreach (var requirement in SocialBrowserModule.browserVersionRetainRequirements) {
+			if (SocialBrowserModule.CurrentBrowserVersion == requirement.Key)
+				continue;
 
-			foreach (var item in mods) {
+			var unrelatedMods = GetOrderedTmodWorkshopInfoForVersion(information, requirement.Key);
+			foreach (var item in unrelatedMods) {
 				if (item.isInFolder)
 					Directory.Delete(Path.GetDirectoryName(item.file), recursive: true);
 				else
 					File.Delete(item.file);
 			}
+		}
+
+		var mods = GetOrderedTmodWorkshopInfoForVersion(information, SocialBrowserModule.CurrentBrowserVersion);
+		var candidates = mods.Where(a => a.tModVersion < BuildInfo.stableVersion);
+		if (candidates.Count() <= 1)
+			return;
+
+		// Remove outdated stable copies
+		var toDelete = candidates.Skip(1);
+		foreach (var item in toDelete) {
+			if (item.isInFolder)
+				Directory.Delete(Path.GetDirectoryName(item.file), recursive: true);
+			else
+				File.Delete(item.file);
 		}
 	}
 
