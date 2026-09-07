@@ -845,7 +845,7 @@
  	public static void DropCache(IEntitySource reason, Vector2 pos, Vector2 spread, int t, bool stopCaching = true)
  	{
  		if (cachedItemSpawnsByType[t] == -1)
-@@ -282,17 +_,63 @@
+@@ -282,10 +_,44 @@
  		}
  	}
  
@@ -860,6 +860,7 @@
 +	internal IEntitySource GetItemSource_Misc(int itemSourceId) => new EntitySource_Misc(context: ItemSourceID.ToContextString(itemSourceId));
 +
  	public override string ToString() => $"Name: \"{Name}\" Type: {type} Stack: {stack}";
+-	public bool CanHavePrefixes() => GetRollablePrefixes() != null;
 +
 +	/// <summary>
 +	/// Determines if this <see cref="Item"/> can receive prefixes.
@@ -867,11 +868,20 @@
 +	/// <returns>
 +	/// <see langword="true"/> if this <see cref="Item"/> is allowed to receive prefixes, <see langword="false"/> otherwise.
 +	/// </returns>
- 	public bool CanHavePrefixes() => GetRollablePrefixes() != null;
- 
++	public bool CanHavePrefixes()
++	{
++		/* TML: vanilla implementation only checked GetRollablePrefixes(), which only covers vanilla prefix tables.
++		 * That makes mod items with valid prefix categories fail the reforge slot / prefix checks.
++		 *
++		 * Vanilla code:
++		 * return GetRollablePrefixes() != null;
++		 */
++		return GetRollablePrefixes() != null || GetPrefixCategories().Count > 0;
++	}
++
 +	/* TODO: reintergrate TML rules
 +	public bool CanHavePrefixes()
-+ 	{
++	 	{
 +		return type != 0
 +			&& ItemID.Sets.CanGetPrefixes[type]
 +			&& (maxStack == 1 || AllowReforgeForStackableItem)
@@ -879,10 +889,10 @@
 +			&& (damage > 0 || IsAPrefixableAccessory());
 +	}
 +	*/
-+
+ 
  	public bool Prefix(int prefixWeWant)
  	{
- 		bool rolledPrefixIsTopTier;
+@@ -293,6 +_,27 @@
  		return Prefix(prefixWeWant, out rolledPrefixIsTopTier);
  	}
  
