@@ -253,6 +253,19 @@ public partial class InvokeRewriter : BaseRewriter
 		return invoke;
 	};
 
+	public static RewriteInvoke ConvertItemSetDefaults => (rw, invoke, methodName) => {
+		// Remove noMatCheck parameter
+		if (invoke.ArgumentList.Arguments.Count != 0) return RemoveParameter(1, "noMatCheck", "bool")(rw, invoke, methodName);
+
+		// Item.SetDefaults() -> Item.SetDefaults(0)
+		var zero = Argument(
+			LiteralExpression(
+				SyntaxKind.NumericLiteralExpression, Literal(0)
+			)
+		);
+		return invoke.WithArgumentList(invoke.ArgumentList.AddArguments(zero));
+	};
+
 	private static SyntaxNode CommentOutNode(SyntaxNode node) {
 
 		var t = node.GetLeadingTrivia();
