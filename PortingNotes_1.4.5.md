@@ -188,6 +188,8 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Is the "// Stealth knockback. Moved from GetWeaponKnockback" change fine? It seems the Player.stealth value is being remapped, so moving this logic and applying it using the remapped value might be an issue.
 - Player.CollideWithNPCs changed, new parameters
 - Player.ApplyDamageToNPC changed, new parameters, new overloads
+- There are some changed patches that now use Item.RequestNewItem, these will need to have changes to support dropping instanced data
+- Double check that allDamage and allCrit are used in new armor set code
 
 # New Fields that might need more documentation
 
@@ -208,6 +210,7 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Document ProjectileID.DespawnItemIcon, DespawnItemGivesItemBack, DisplayDollDrawUseStyle
 - ProjectileID.FixedSelfDamageForPlayers, SkipDamage_EVP added
 - NPC.dontTakeDamageStillShowLife
+- mount.MovementStatsAreAdditive
 
 # Changes that need to be communicated to modders
 

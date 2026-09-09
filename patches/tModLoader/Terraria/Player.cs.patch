@@ -1647,16 +1647,6 @@
  	public static byte FindClosest(Vector2 Position, int Width, int Height)
  	{
  		byte result = 0;
-@@ -3357,7 +_,8 @@
- 			if (whoAmI == Main.myPlayer && theItemWeDrop.type == 5095)
- 				LucyAxeMessage.Create(LucyAxeMessage.MessageSource.ThrownAway, base.Top, new Vector2(direction * 7, -2f));
- 
--			int num = Item.NewItem(GetItemSource_Misc(ItemSourceID.PlayerDrop), (int)position.X, (int)position.Y, width, height, theItemWeDrop.type);
-+			// int num = Item.NewItem(GetItemSource_Misc(ItemSourceID.PlayerDrop), (int)position.X, (int)position.Y, width, height, theItemWeDrop.type);
-+			int num = Item.NewItem(GetItemSource_Misc(ItemSourceID.PlayerDrop), position, width, height, theItemWeDrop);
- 			Main.item[num].OverrideWith(theItemWeDrop);
- 			theItemWeDrop = new Item();
- 			if (slot == 58)
 @@ -3549,7 +_,23 @@
  		return -1;
  	}
@@ -1936,23 +1926,6 @@
  		Vector2 vector = new Vector2(position.X + (float)width * 0.5f, position.Y + (float)height * 0.5f);
  		float num11 = (float)Main.mouseX + Main.screenPosition.X - vector.X;
  		float num12 = (float)Main.mouseY + Main.screenPosition.Y - vector.Y;
-@@ -4833,9 +_,16 @@
- 
-+	/// <summary>
-+	/// Adds/returns an item to the player's inventory, and drops the remainder in the world if space runs out.<br/>
-+	/// See also <seealso cref="GetItem(Item, GetItemSettings)"/>
-+	/// </summary>
- 	public void GetOrDropItem(Item item, GetItemSettings settings)
- 	{
- 		Item item2 = GetItem(item, settings);
- 		if (!item2.IsAir) {
-+			/*
- 			int num = Item.NewItem(GetItemSource_InventoryOverflow(), (int)position.X, (int)position.Y, width, height, item2.type, item2.stack, noBroadcast: false, item2.prefix, noGrabDelay: true);
-+			*/
-+			int num = Item.NewItem(GetItemSource_InventoryOverflow(), (int)position.X, (int)position.Y, width, height, item2, noBroadcast: false, noGrabDelay: true);
- 			Main.item[num].newAndShiny = item.newAndShiny;
- 			settings.HandlePostAction(Main.item[num].inner);
- 			if (Main.netMode == 1)
 @@ -4890,6 +_,12 @@
  		if (Main.myPlayer != whoAmI)
  			return;
@@ -3313,8 +3286,22 @@
  		}
  
  		if (currentItem.type == 854)
-@@ -12024,11 +_,23 @@
- 			manaCost -= 0.08f;
+@@ -12426,10 +_,13 @@
+ 			minionDamage += 0.15f;
+ 
+ 		if (currentItem.type == 935) {
++			allDamage += 0.12f;
++			/*
+ 			magicDamage += 0.12f;
+ 			meleeDamage += 0.12f;
+ 			rangedDamage += 0.12f;
+ 			minionDamage += 0.12f;
++			*/
+ 		}
+ 
+ 		if (currentItem.wingSlot != -1)
+@@ -12564,11 +_,23 @@
+ 			hasWings = true;
  		}
  
 +		//TML: Moved here from UpdateEquips.
@@ -3336,32 +3323,8 @@
 -			else if (currentItem.type == 576 && Main.rand.Next(540) == 0 && Main.curMusic > 0 && Main.curMusic <= Main.maxMusic && MusicID.Sets.CanBeRecorded[Main.curMusic]) {
 +			else if (currentItem.type == 576 && Main.rand.Next(540) == 0 && Main.curMusic > 0 && MusicID.Sets.CanBeRecorded[Main.curMusic]) {
  				SoundEngine.PlaySound(SoundID.Item166, base.Center);
- 				int num3 = -1;
+ 				int num7 = -1;
  				if (Main.curMusic == 1)
-@@ -12426,10 +_,13 @@
- 			minionDamage += 0.15f;
- 
- 		if (currentItem.type == 935) {
-+			allDamage += 0.12f;
-+			/*
- 			magicDamage += 0.12f;
- 			meleeDamage += 0.12f;
- 			rangedDamage += 0.12f;
- 			minionDamage += 0.12f;
-+			*/
- 		}
- 
- 		if (currentItem.wingSlot != -1)
-@@ -12751,6 +_,9 @@
- 
- 		if (head == 261 && body == 230 && legs == 213) {
- 			setBonus = Language.GetTextValue("ArmorSetBonus.CrystalNinja");
-+			allDamage += 0.1f;
-+			allCrit += 10;
-+			/*
- 			rangedDamage += 0.1f;
- 			meleeDamage += 0.1f;
- 			magicDamage += 0.1f;
 @@ -12763,6 +_,8 @@
  					currentItem.SetDefaults(6144);
  				else if (Main.curMusic == 102 || Main.curMusic == 103)
@@ -3371,23 +3334,6 @@
  			}
  
  			ApplyMusicBox(currentItem);
-@@ -12874,11 +_,16 @@
- 			minionDamage += 0.15f;
- 			whipRangeMultiplier += 0.3f;
- 			float num = 1.15f;
-+			/*
- 			float num2 = 1f / num;
- 			whipUseTimeMultiplier *= num2;
-+			*/
-+			summonerWeaponSpeedBonus += num - 1; //TML: Obsidian armor changed to additive.
- 		}
- 
- 		ApplyArmorSoundAndDustChanges();
-+
-+		ItemLoader.UpdateArmorSet(this, armor[0], armor[1], armor[2]);
- 	}
- 
- 	private void UpdateArmorSets_Always_Vortex()
 @@ -13017,6 +_,9 @@
  
  		if (currentItem.type == 6146)
@@ -3515,22 +3461,6 @@
  				if (Main.netMode == 1)
  					NetMessage.SendData(21, -1, -1, null, number, 1f);
  			}
-@@ -14224,13 +_,14 @@
- 			int num4 = Main.rand.Next(num);
- 			int num5 = _torchAttackPosX[num4];
- 			int num6 = _torchAttackPosY[num4];
--			if (Main.tile[num5, num6].type == 4 && Main.tile[num5, num6].frameX < 66) {
-+			if (TileID.Sets.Torches[Main.tile[num5, num6].type] && Main.tile[num5, num6].frameX < 66) {
- 				float num7 = 8f;
- 				int num8 = 20;
- 				if (num8 < 10)
- 					num8 = 10;
- 
- 				int num9 = (int)MathHelper.Clamp(Main.tile[num5, num6].frameY / 22, 0f, TorchID.Count - 1);
-+				// TODO: Full Torch god support for modded torches would require TorchID.Dust support, but this is fine for now.
- 				num9 = TorchID.Dust[num9];
- 				Main.tile[num5, num6].frameX += 66;
- 				unlitTorchX[numberOfTorchAttacksMade] = num5;
 @@ -14283,6 +_,16 @@
  				if (tile == null)
  					return;
@@ -3557,6 +3487,19 @@
  					_torchAttackPosX[num] = i;
  					_torchAttackPosY[num] = j;
  					num++;
+@@ -14378,10 +_,11 @@
+ 			int num4 = Main.rand.Next(num);
+ 			int num5 = _torchAttackPosX[num4];
+ 			int num6 = _torchAttackPosY[num4];
+-			if (Main.tile[num5, num6].type == 4 && Main.tile[num5, num6].frameX < 66) {
++			if (TileID.Sets.Torches[Main.tile[num5, num6].type] && Main.tile[num5, num6].frameX < 66) {
+ 				float num7 = 8f;
+ 				int damage = (int)(40f * GameDifficultyData.HostileProjectileDamageMultiplier.Sample(Main.Difficulty));
+ 				int num8 = (int)MathHelper.Clamp(Main.tile[num5, num6].frameY / 22, 0f, TorchID.Count - 1);
++				// TODO: Full Torch god support for modded torches would require TorchID.Dust support, but this is fine for now.
+ 				num8 = TorchID.Dust[num8];
+ 				Main.tile[num5, num6].frameX += 66;
+ 				unlitTorchX[numberOfTorchAttacksMade] = num5;
 @@ -14411,6 +_,9 @@
  		if (inventory[selectedItem].createTile == 4 && inventory[selectedItem].placeStyle < TorchID.Count)
  			nearbyTorch[inventory[selectedItem].placeStyle] = true;
@@ -3794,17 +3737,6 @@
  		if (bleed)
  			lifeRegenTime = 0f;
  
-@@ -15526,8 +_,8 @@
- 	public void UpdateJumpHeight()
- 	{
- 		if (mount.Active) {
--			jumpHeight = mount.JumpHeight(velocity.X);
-+			jumpHeight = mount.JumpHeight(this, velocity.X);
--			jumpSpeed = mount.JumpSpeed(velocity.X);
-+			jumpSpeed = mount.JumpSpeed(this, velocity.X);
- 		}
- 		else {
- 			if (jumpBoost) {
 @@ -15533,6 +_,8 @@
  		if (rabid)
  			num5 = ((!shinyStone) ? (num5 / 2f) : (num5 * 0.75f));
@@ -3814,6 +3746,26 @@
  		float num7 = (float)statLifeMax2 / 400f * 0.85f + 0.15f;
  		num5 *= num7;
  		lifeRegen += (int)Math.Round(num5);
+@@ -15838,11 +_,19 @@
+ 		jumpSpeed += jumpSpeedBoost;
+ 		if (mount.Active) {
+ 			if (mount.MovementStatsAreAdditive) {
++				/*
+ 				jumpHeight += mount.JumpHeight(velocity.X);
+ 				jumpSpeed += mount.JumpSpeed(velocity.X);
++				*/
++				jumpHeight += mount.JumpHeight(this, velocity.X);
++				jumpSpeed += mount.JumpSpeed(this, velocity.X);
+ 			}
+ 			else {
++				/*
+ 				jumpHeight = mount.JumpHeight(velocity.X);
+ 				jumpSpeed = mount.JumpSpeed(velocity.X);
++				*/
++				jumpHeight = mount.JumpHeight(this, velocity.X);
++				jumpSpeed = mount.JumpSpeed(this, velocity.X);
+ 			}
+ 		}
 @@ -16223,14 +_,14 @@
  			if (flag4)
  				num6 = 30;
@@ -5717,15 +5669,6 @@
  	public void Teleport(Vector2 newPos, int Style = 0, int extraInfo = 0)
  	{
  		try {
-@@ -30897,7 +_,7 @@
- 		}
- 
- 		if (magicCuffs) {
--			int num3 = num;
-+			int num3 = info.SourceDamage; //num;
- 			statMana += num3;
- 			if (statMana > statManaMax2)
- 				statMana = statManaMax2;
 @@ -31040,6 +_,10 @@
  			}
  
@@ -5800,6 +5743,18 @@
  		if (invis) {
  			for (int k = 0; k < maxBuffs; k++) {
  				if (buffType[k] == 10)
+@@ -31633,8 +_,11 @@
+ 		}
+ 
+ 		if (magicCuffs) {
+ 			float num3 = 1f;
++ 			/*
+ 			int num4 = (int)((float)num * num3);
++ 			*/
++			int num4 = (int)((float)info.SourceDamage * num3);
+ 			statMana += num4;
+ 			if (statMana > statManaMax2)
+ 				statMana = statManaMax2;
 @@ -31643,25 +_,31 @@
  				ManaEffect(num4);
  		}
@@ -8074,17 +8029,6 @@
  		}
  
  		array = armor;
-@@ -44126,7 +_,10 @@
- 	public void TryDroppingSingleItem(IEntitySource source, Item theItem, int stack)
- 	{
- 		if (stack > 0 && Main.netMode != 1) {
-+			/*
- 			int num = Item.NewItem(source, (int)position.X, (int)position.Y, width, height, theItem.type, stack, noBroadcast: true, theItem.prefix);
-+			*/
-+			int num = Item.NewItem(source, (int)position.X, (int)position.Y, width, height, theItem, noBroadcast: true);
- 			WorldItem obj = Main.item[num];
- 			obj.velocity.Y = (float)Main.rand.Next(-20, 1) * 0.2f;
- 			obj.velocity.X = (float)Main.rand.Next(-20, 21) * 0.2f;
 @@ -44180,8 +_,14 @@
  		}
  	}
@@ -8585,6 +8529,19 @@
  	}
  
  	public void TryDroppingSingleItem(IEntitySource source, Item theItem)
+@@ -45480,9 +_,12 @@
+ 	public void TryDroppingSingleItem(IEntitySource source, Item theItem, int stack)
+ 	{
+ 		if (stack > 0 && Main.netMode != 1)
++			/*
+ 			Item.NewItem(velocity: new Vector2((float)Main.rand.Next(-20, 21) * 0.2f, (float)Main.rand.Next(-20, 1) * 0.2f), source: source, X: (int)position.X, Y: (int)position.Y, Width: width, Height: height, type: theItem.type, stack: stack, noBroadcast: false, prefix: theItem.prefix);
++			*/
++			Item.NewItem(velocity: new Vector2((float)Main.rand.Next(-20, 21) * 0.2f, (float)Main.rand.Next(-20, 1) * 0.2f), source: source, X: (int)position.X, Y: (int)position.Y, Width: width, Height: height, theItem, noBroadcast: false);
+ 
+ 		theItem.stack -= stack;
+ 		if (theItem.stack <= 0)
+ 			theItem.TurnToAir();
+ 	}
 @@ -45573,6 +_,9 @@
  		clonePlayer.townNPCs = townNPCs;
  		clonePlayer.voidVaultInfo = voidVaultInfo;

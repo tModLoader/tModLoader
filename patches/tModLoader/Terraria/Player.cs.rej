@@ -31,6 +31,16 @@
  				Main.item[num3].newAndShiny = false;
  				if (Main.netMode == 1)
  					NetMessage.SendData(21, -1, -1, null, num3, 1f);
+@@ -3357,7 +_,8 @@
+ 			if (whoAmI == Main.myPlayer && theItemWeDrop.type == 5095)
+ 				LucyAxeMessage.Create(LucyAxeMessage.MessageSource.ThrownAway, base.Top, new Vector2(direction * 7, -2f));
+ 
+-			int num = Item.NewItem(GetItemSource_Misc(ItemSourceID.PlayerDrop), (int)position.X, (int)position.Y, width, height, theItemWeDrop.type);
++			// int num = Item.NewItem(GetItemSource_Misc(ItemSourceID.PlayerDrop), (int)position.X, (int)position.Y, width, height, theItemWeDrop.type);
++			int num = Item.NewItem(GetItemSource_Misc(ItemSourceID.PlayerDrop), position, width, height, theItemWeDrop);
+ 			Main.item[num].OverrideWith(theItemWeDrop);
+ 			theItemWeDrop = new Item();
+ 			if (slot == 58)
 @@ -3651,6 +_,11 @@
  							Main.projectile[num8].Kill();
  							break;
@@ -43,6 +53,23 @@
  				}
  			}
  		}
+@@ -4833,9 +_,16 @@
+ 
++	/// <summary>
++	/// Adds/returns an item to the player's inventory, and drops the remainder in the world if space runs out.<br/>
++	/// See also <seealso cref="GetItem(Item, GetItemSettings)"/>
++	/// </summary>
+ 	public void GetOrDropItem(Item item, GetItemSettings settings)
+ 	{
+ 		Item item2 = GetItem(item, settings);
+ 		if (!item2.IsAir) {
++			/*
+ 			int num = Item.NewItem(GetItemSource_InventoryOverflow(), (int)position.X, (int)position.Y, width, height, item2.type, item2.stack, noBroadcast: false, item2.prefix, noGrabDelay: true);
++			*/
++			int num = Item.NewItem(GetItemSource_InventoryOverflow(), (int)position.X, (int)position.Y, width, height, item2, noBroadcast: false, noGrabDelay: true);
+ 			Main.item[num].newAndShiny = item.newAndShiny;
+ 			settings.HandlePostAction(Main.item[num].inner);
+ 			if (Main.netMode == 1)
 @@ -7162,8 +_,18 @@
  				manaRegenDelayBonus += 0.5f;
  				manaRegenBonus += 10;
@@ -76,6 +103,16 @@
  		}
  
  		if (head == 180 && body == 182 && legs == 122) {
+@@ -12751,6 +_,9 @@
+ 
+ 		if (head == 261 && body == 230 && legs == 213) {
+ 			setBonus = Language.GetTextValue("ArmorSetBonus.CrystalNinja");
++			allDamage += 0.1f;
++			allCrit += 10;
++			/*
+ 			rangedDamage += 0.1f;
+ 			meleeDamage += 0.1f;
+ 			magicDamage += 0.1f;
 @@ -12758,6 +_,7 @@
  			rangedCrit += 10;
  			meleeCrit += 10;
@@ -84,6 +121,23 @@
  			dashType = 5;
  		}
  
+@@ -12874,11 +_,16 @@
+ 			minionDamage += 0.15f;
+ 			whipRangeMultiplier += 0.3f;
+ 			float num = 1.15f;
++			/*
+ 			float num2 = 1f / num;
+ 			whipUseTimeMultiplier *= num2;
++			*/
++			summonerWeaponSpeedBonus += num - 1; //TML: Obsidian armor changed to additive.
+ 		}
+ 
+ 		ApplyArmorSoundAndDustChanges();
++
++		ItemLoader.UpdateArmorSet(this, armor[0], armor[1], armor[2]);
+ 	}
+ 
+ 	private void UpdateArmorSets_Always_Vortex()
 @@ -19323,8 +_,12 @@
  							DpadRadial.ChangeSelection(-1);
  							CircularRadial.ChangeSelection(-1);
