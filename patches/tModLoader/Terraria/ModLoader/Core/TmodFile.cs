@@ -1,4 +1,3 @@
-using Ionic.Zlib;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using Ionic.Zlib;
 using Terraria.Localization;
 using Terraria.ModLoader.IO;
 using Terraria.ModLoader.UI;
@@ -69,6 +69,8 @@ public class TmodFile : IEnumerable<TmodFile.FileEntry>
 	// Starting position of the hashable part of the stream.
 	private long hashStartPos;
 	private bool? hashVerified;
+	private bool? originVerified;
+	internal string downloadOrigin;
 
 	internal TmodFile(string path, string name = null, Version version = null)
 	{
@@ -459,5 +461,21 @@ public class TmodFile : IEnumerable<TmodFile.FileEntry>
 		using var fs = File.OpenRead(path);
 		fs.Position = hashStartPos;
 		return Hash.SequenceEqual(SHA1.Create().ComputeHash(fs));
+	}
+
+	internal bool VerifyOrigin() => originVerified ??= _VerifyOrigin();
+
+	private bool _VerifyOrigin()
+	{
+		if (FileOriginChecker.IsDownloadedFile(path, out string url)) {
+			if (!string.IsNullOrEmpty(url)) {
+				downloadOrigin = url;
+			}
+			else {
+				downloadOrigin = "Unknown";
+			}
+			Logging.tML.Warn($"The mod {Path.GetFileName(path)} was downloaded from the internet: {downloadOrigin}");
+		}
+		return true;
 	}
 }
