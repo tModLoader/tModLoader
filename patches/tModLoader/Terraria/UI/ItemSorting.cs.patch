@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/UI/ItemSorting.cs
 +++ src/tModLoader/Terraria/UI/ItemSorting.cs
-@@ -2,7 +_,8 @@
+@@ -2,6 +_,7 @@
  using System.Collections.Generic;
  using System.Linq;
  using Terraria.ID;
@@ -8,7 +8,6 @@
  using Terraria.Testing;
  
  namespace Terraria.UI;
- 
 @@ -986,11 +_,17 @@
  
  	private struct DamageTypeSortingLayerEntry

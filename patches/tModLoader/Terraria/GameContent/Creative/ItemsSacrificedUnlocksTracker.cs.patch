@@ -1,7 +1,6 @@
 --- src/TerrariaNetCore/Terraria/GameContent/Creative/ItemsSacrificedUnlocksTracker.cs
 +++ src/tModLoader/Terraria/GameContent/Creative/ItemsSacrificedUnlocksTracker.cs
-@@ -1,7 +_,8 @@
- using System;
+@@ -2,6 +_,7 @@
  using System.Collections.Concurrent;
  using System.Collections.Generic;
  using System.IO;

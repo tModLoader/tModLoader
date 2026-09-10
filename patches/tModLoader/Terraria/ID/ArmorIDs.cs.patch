@@ -318,8 +318,7 @@
  			public static bool[] DrawsInNeckLayer = Factory.CreateBoolSet(false, 6);
  			public static bool[] DrawsInNeckLayerRegardlessOfPlayerFrame = Factory.CreateBoolSet(false, 13);
  			public static bool[] DontDrawIfWearingAScarfOrCape = Factory.CreateBoolSet(false, 13);
-@@ -974,14 +_,21 @@
- 		public const sbyte ChippysWings = 15;
+@@ -975,13 +_,20 @@
  		public const sbyte LunasCloak = 16;
  		public const sbyte DruidicSerpentCloak = 17;
  		public static readonly int Count = 18;
@@ -373,8 +372,7 @@
  			public static bool[] IsABelt = Factory.CreateBoolSet(false, 5, 10, 10, 12, 17);
  		}
  
-@@ -1047,15 +_,26 @@
- 		public const sbyte SandstorminaBottle = 15;
+@@ -1048,14 +_,25 @@
  		public const sbyte TreasureMagnet = 16;
  		public const sbyte MysticArtsSash = 17;
  		public static readonly int Count = 18;

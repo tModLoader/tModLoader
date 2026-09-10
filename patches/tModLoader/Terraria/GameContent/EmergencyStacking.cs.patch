@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/GameContent/EmergencyStacking.cs
 +++ src/tModLoader/Terraria/GameContent/EmergencyStacking.cs
-@@ -3,7 +_,8 @@
+@@ -3,6 +_,7 @@
  using System.Linq;
  using Microsoft.Xna.Framework;
  using Terraria.ID;
@@ -8,7 +8,6 @@
  using Terraria.Testing;
  
  namespace Terraria.GameContent;
- 
 @@ -140,7 +_,7 @@
  				item.StackingPriority = count--;
  			}
@@ -18,11 +17,15 @@
  							select PreservationOrder.First((Group g) => g.Contains(ContentSamples.ItemsByType[t]))).ToArray();
  
  			return _groupLookup;
-@@ -159,2 +_,4 @@
+@@ -156,6 +_,8 @@
+ 		return PendingTransfers.Any((Transfer t) => t.src == item || t.dst == item);
+ 	}
+ 
 +	public static void ResetGroupLookup() => _groupLookup = null;
 +
  	public static void ClearPendingTransfersInvolving(WorldItem item)
  	{
+ 		if (PendingTransfers.Count != 0) {
 @@ -267,6 +_,10 @@
  				if (stackableItem.type != other.type || stackableItem.item == other.item || stackableItem.IsPreferredDestination(other) || !Item.CanStack(stackableItem.item.inner, other.item.inner))
  					continue;

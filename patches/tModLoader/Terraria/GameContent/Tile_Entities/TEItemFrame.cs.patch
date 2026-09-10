@@ -26,7 +26,7 @@
  		writer.Write((short)item.stack);
  	}
  
-@@ -53,25 +_,32 @@
+@@ -53,26 +_,33 @@
  	public void DropItem()
  	{
  		if (Main.netMode != 1)
@@ -61,6 +61,7 @@
 +
  		NetMessage.SendData(86, -1, -1, null, result.ID, x, y);
  	}
+ 
 @@ -122,16 +_,20 @@
  				NetMessage.SendData(17, -1, -1, null, 0, Player.tileTargetX, y, 1f);
  		}

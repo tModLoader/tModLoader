@@ -155,7 +155,10 @@
  	public static string GetBuffDescription(int id) => _buffDescriptionCache[id].Value;
  
  	public static string GetDryadWorldStatusDialog(out bool worldIsEntirelyPure)
-@@ -343,3 +_,11 @@
+@@ -340,6 +_,14 @@
+ 		return npc.FullName;
+ 	}
+ 
 +	/// <summary>
 +	/// Filters LocalizedText objects by checking if their key starts with the provided <paramref name="startsWith"/> parameter.<br/><br/>
 +	/// If <paramref name="checkConditions"/> is true, then conditions embedded into the LocalizedText will be checked as well.<br/><br/>

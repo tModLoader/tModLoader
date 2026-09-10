@@ -172,8 +172,7 @@
  	public virtual void Update(GameTime gameTime)
  	{
  		if (this.OnUpdate != null)
-@@ -296,7 +_,10 @@
- 
+@@ -297,6 +_,9 @@
  	public virtual bool ContainsPoint(Vector2 point) => _dimensions.ToRectangle().Contains(point.ToPoint());
  	public virtual Rectangle GetViewCullingArea() => _dimensions.ToRectangle();
  

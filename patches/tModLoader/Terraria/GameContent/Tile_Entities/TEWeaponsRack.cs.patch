@@ -44,7 +44,7 @@
  		TileEntityType<TEWeaponsRack>.Kill(num3, num4);
  		WorldGen.destroyObject = false;
  	}
-@@ -109,25 +_,32 @@
+@@ -109,26 +_,33 @@
  	public void DropItem()
  	{
  		if (Main.netMode != 1)
@@ -79,6 +79,7 @@
 +
  		NetMessage.SendData(86, -1, -1, null, result.ID, x, y);
  	}
+ 
 @@ -179,16 +_,20 @@
  				NetMessage.SendData(17, -1, -1, null, 0, Player.tileTargetX, y, 1f);
  		}

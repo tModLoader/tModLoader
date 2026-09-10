@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/GameContent/PlayerEyeHelper.cs
 +++ src/tModLoader/Terraria/GameContent/PlayerEyeHelper.cs
-@@ -2,23 +_,49 @@
+@@ -2,22 +_,48 @@
  
  public struct PlayerEyeHelper
  {
@@ -51,7 +51,6 @@
  		IsPoisoned,
  		LowMana
  	}
- 
 @@ -26,8 +_,22 @@
  	private int _timeInState;
  	private const int TimeToActDamaged = 20;

@@ -5,7 +5,7 @@
  using Microsoft.Xna.Framework;
  using Terraria.Localization;
  
-@@ -5,8 +_,8 @@
+@@ -5,7 +_,7 @@
  
  public static class DebugOptions
  {
@@ -14,4 +14,3 @@
  	public static bool Shared_ReportCommandUsage = true;
  	public static bool Shared_RandomizeProjectileSlots = false;
  	public static int Shared_ServerPing = 0;
- 	public static double UpdateWaitInMs = 0.0;

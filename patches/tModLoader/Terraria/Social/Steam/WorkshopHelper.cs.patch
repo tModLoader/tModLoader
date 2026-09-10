@@ -182,7 +182,7 @@
  					CreateItem();
  				}
  			}
-@@ -211,14 +_,50 @@
+@@ -211,17 +_,53 @@
  						return ERemoteStoragePublishedFileVisibility.k_ERemoteStoragePublishedFileVisibilityFriendsOnly;
  					case WorkshopItemPublicSettingId.Public:
  						return ERemoteStoragePublishedFileVisibility.k_ERemoteStoragePublishedFileVisibilityPublic;
@@ -233,7 +233,10 @@
 +				}
 +
 +				/*
-@@ -245,11 +_,35 @@
+ 				if (bIOFailure)
+ 					param.m_eResult = EResult.k_EResultIOFailure;
+ 
+@@ -245,20 +_,51 @@
  				else {
  					UpdateItem();
  				}
@@ -269,7 +272,7 @@
 +			/*
  			private void UpdateItem()
  			{
-@@ -257,8 +_,15 @@
+ 				if (!TryWritingManifestToFolder(_entryData.ContentFolderPath, GetHeaderText())) {
  					_endAction(this);
  					return;
  				}
@@ -285,7 +288,7 @@
  				UGCUpdateHandle_t uGCUpdateHandle_t = SteamUGC.StartItemUpdate(SteamUtils.GetAppID(), _publishedFileID);
  				if (_entryData.Title != null)
  					SteamUGC.SetItemTitle(uGCUpdateHandle_t, _entryData.Title);
-@@ -273,20 +_,65 @@
+@@ -273,18 +_,63 @@
  
  				if (_entryData.Visibility.HasValue)
  					SteamUGC.SetItemVisibility(uGCUpdateHandle_t, _entryData.Visibility.Value);
@@ -351,8 +354,6 @@
  					case EResult.k_EResultOK:
  						if (param.m_bUserNeedsToAcceptWorkshopLegalAgreement)
  							_issueReporter.ReportDelayedUploadProblem("Workshop.ReportIssue_FailedToPublish_UserDidNotAcceptWorkshopTermsOfService");
- 						SteamFriends.ActivateGameOverlayToWebPage("steam://url/CommunityFilePage/" + _publishedFileID.m_PublishedFileId);
- 						break;
 @@ -312,6 +_,15 @@
  						break;
  				}

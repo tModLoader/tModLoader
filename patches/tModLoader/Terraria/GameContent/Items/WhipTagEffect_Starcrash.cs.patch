@@ -1,6 +1,7 @@
 --- src/TerrariaNetCore/Terraria/GameContent/Items/WhipTagEffect_Starcrash.cs
 +++ src/tModLoader/Terraria/GameContent/Items/WhipTagEffect_Starcrash.cs
-@@ -6,16 +_,22 @@
+@@ -5,17 +_,23 @@
+ 
  public class WhipTagEffect_Starcrash : WhipTagEffect
  {
 +	/*

@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Localization/LocalizedText.cs
 +++ src/tModLoader/Terraria/Localization/LocalizedText.cs
-@@ -4,6 +_,6 @@
+@@ -4,32 +_,50 @@
  
  namespace Terraria.Localization;
  
@@ -8,7 +8,7 @@
 +public partial class LocalizedText
  {
  	public static readonly LocalizedText Empty = new LocalizedText("", "");
-@@ -11,25 +_,43 @@
+ 	public readonly string Key;
  	private object _value;
  	private static Dictionary<Type, PropertyDescriptorCollection> _propertyLookupCache = new Dictionary<Type, PropertyDescriptorCollection>();
  

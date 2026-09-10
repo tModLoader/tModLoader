@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Net/NetManager.cs
 +++ src/tModLoader/Terraria/Net/NetManager.cs
-@@ -1,6 +_,9 @@
+@@ -1,5 +_,8 @@
  using System.Collections.Generic;
  using System.IO;
 +using log4net.Core;
@@ -9,8 +9,7 @@
  using Terraria.Net.Sockets;
  using Terraria.Testing;
  
- namespace Terraria.Net;
-@@ -52,7 +_,9 @@
+@@ -52,6 +_,8 @@
  
  	public void Broadcast(NetPacket packet, int ignoreClient = -1)
  	{
@@ -19,8 +18,7 @@
  		Invariant.Assert(Main.dedServ, "Packets can only be broadcast from a server.");
  		for (int i = 0; i < 256; i++) {
  			if (i != ignoreClient && Netplay.Clients[i].IsConnected())
- 				SendData(Netplay.Clients[i].Socket, packet);
-@@ -63,7 +_,9 @@
+@@ -63,6 +_,8 @@
  
  	public void Broadcast(NetPacket packet, BroadcastCondition conditionToBroadcast, int ignoreClient = -1)
  	{
@@ -29,8 +27,7 @@
  		Invariant.Assert(Main.dedServ, "Packets can only be broadcast from a server.");
  		for (int i = 0; i < 256; i++) {
  			if (i != ignoreClient && Netplay.Clients[i].IsConnected() && conditionToBroadcast(i))
- 				SendData(Netplay.Clients[i].Socket, packet);
-@@ -111,16 +_,18 @@
+@@ -111,6 +_,7 @@
  
  	public void SendToServer(NetPacket packet)
  	{
@@ -38,7 +35,7 @@
  		Invariant.Assert(!Main.dedServ, "Packets can only be sent to the server from a client.");
  		SendData(Netplay.Connection.Socket, packet);
  		packet.Recycle();
- 	}
+@@ -118,6 +_,7 @@
  
  	public void SendToClient(NetPacket packet, int playerId)
  	{
@@ -46,9 +43,6 @@
  		Invariant.Assert(Main.dedServ, "Packets can only be sent to a client from a server.");
  		if (Netplay.Clients[playerId].IsConnected())
  			SendData(Netplay.Clients[playerId].Socket, packet);
- 
- 		packet.Recycle();
- 	}
 @@ -144,10 +_,18 @@
  			socket.AsyncSend(packet.Buffer.Data, 0, packet.Length, EmptyCallback);
  		}

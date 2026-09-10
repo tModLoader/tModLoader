@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Graphics/Light/LightingEngine.cs
 +++ src/tModLoader/Terraria/Graphics/Light/LightingEngine.cs
-@@ -4,7 +_,8 @@
+@@ -4,6 +_,7 @@
  using ReLogic.Threading;
  using Terraria.Graphics.Capture;
  using Terraria.Map;
@@ -8,7 +8,6 @@
  using Terraria.Testing;
  
  namespace Terraria.Graphics.Light;
- 
 @@ -170,6 +_,13 @@
  		}
  

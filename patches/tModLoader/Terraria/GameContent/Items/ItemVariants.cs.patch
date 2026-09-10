@@ -43,15 +43,15 @@
 +	/// Represents a variant of a boss summoning item that is conditionally disabled.
 +	/// </summary>
  	public static ItemVariant DisabledBossSummonVariant;
--	public static ItemVariantCondition RemixWorld;
--	public static ItemVariantCondition GetGoodWorld;
--	public static ItemVariantCondition MechdusaWorld;
--	public static ItemVariantCondition SkyblockWorld;
 +
 +	// Made private and changed to reference standard tML conditions
+-	public static ItemVariantCondition RemixWorld;
 +	private static ItemVariantCondition RemixWorld;
+-	public static ItemVariantCondition GetGoodWorld;
 +	private static ItemVariantCondition GetGoodWorld;
+-	public static ItemVariantCondition MechdusaWorld;
 +	private static ItemVariantCondition MechdusaWorld;
+-	public static ItemVariantCondition SkyblockWorld;
 +	private static ItemVariantCondition SkyblockWorld;
  
 +	/// <summary>
@@ -101,14 +101,14 @@
  	{
  		_variants = new List<VariantEntry>[ItemID.Count];
 -		StrongerVariant = new ItemVariant(NetworkText.FromKey("ItemVariant.Stronger"));
--		WeakerVariant = new ItemVariant(NetworkText.FromKey("ItemVariant.Weaker"));
--		RebalancedVariant = new ItemVariant(NetworkText.FromKey("ItemVariant.Rebalanced"));
--		EnabledVariant = new ItemVariant(NetworkText.FromKey("ItemVariant.Enabled"));
--		DisabledBossSummonVariant = new ItemVariant(NetworkText.FromKey("ItemVariant.DisabledBossSummon"));
 +		StrongerVariant = new ItemVariant(Language.GetText("ItemVariant.Stronger"));
+-		WeakerVariant = new ItemVariant(NetworkText.FromKey("ItemVariant.Weaker"));
 +		WeakerVariant = new ItemVariant(Language.GetText("ItemVariant.Weaker"));
+-		RebalancedVariant = new ItemVariant(NetworkText.FromKey("ItemVariant.Rebalanced"));
 +		RebalancedVariant = new ItemVariant(Language.GetText("ItemVariant.Rebalanced"));
+-		EnabledVariant = new ItemVariant(NetworkText.FromKey("ItemVariant.Enabled"));
 +		EnabledVariant = new ItemVariant(Language.GetText("ItemVariant.Enabled"));
+-		DisabledBossSummonVariant = new ItemVariant(NetworkText.FromKey("ItemVariant.DisabledBossSummon"));
 +		DisabledBossSummonVariant = new ItemVariant(Language.GetText("ItemVariant.DisabledBossSummon"));
 +
 +		/*

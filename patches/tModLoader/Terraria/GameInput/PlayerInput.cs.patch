@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/GameInput/PlayerInput.cs
 +++ src/tModLoader/Terraria/GameInput/PlayerInput.cs
-@@ -9,15 +_,16 @@
+@@ -9,6 +_,7 @@
  using Terraria.GameContent.UI.States;
  using Terraria.ID;
  using Terraria.Localization;
@@ -8,8 +8,7 @@
  using Terraria.Social;
  using Terraria.Testing;
  using Terraria.Testing.Cloning;
- using Terraria.UI;
- using Terraria.UI.Gamepad;
+@@ -17,7 +_,7 @@
  
  namespace Terraria.GameInput;
  

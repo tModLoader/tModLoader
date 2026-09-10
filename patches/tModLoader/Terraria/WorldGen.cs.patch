@@ -243,9 +243,7 @@
  
  		Main.invasionProgress = -1;
  		Main.invasionProgressDisplayLeft = 0;
-@@ -5353,8 +_,16 @@
- 		Main.menuMode = 10;
- 		Main.gameMenu = true;
+@@ -5355,6 +_,14 @@
  		Netplay.Disconnect = true;
  		Main.netMode = 0;
  		SoundEngine.StopTrackedSounds();
@@ -260,17 +258,17 @@
  		CaptureInterface.ResetFocus();
  		Main.ActivePlayerFileData.StopPlayTimer();
  		Main.fastForwardTimeToDawn = false;
-@@ -5383,6 +_,10 @@
- 			WorldFile.SaveWorld(resetTime: false, useTemps: true);
+@@ -5384,6 +_,10 @@
  			SoundEngine.PlaySound(10);
  		}
-+
+ 
 +		// This is only called in case of a manual quit or disconnect.
 +		// There is a less common (client) call to this in Netplay.InnerClientLoop.
 +		SystemLoader.OnWorldUnload();
- 
++
  		Main.fastForwardTimeToDawn = false;
  		Main.fastForwardTimeToDusk = false;
+ 		Main.UpdateTimeRate();
 @@ -5405,7 +_,14 @@
  
  	public static void SaveAndQuit(Action callback = null)
@@ -557,7 +555,7 @@
  			AddGenerationPass(new DitherSnakePass(GenPassNameID.DualDungeonsDitherSnake));
  
  		AddGenerationPass(GenPassNameID.Dungeon, delegate (GenerationProgress progress, GameConfiguration passConfig) {
-@@ -13364,9 +_,10 @@
+@@ -13364,10 +_,11 @@
  							int num700 = 0;
  							while (!flag51 && num700 < 100) {
  								num700++;
@@ -569,16 +567,16 @@
 +								if (Main.tile[num701, num702].active() && TileID.Sets.Torches[Main.tile[num701, num702].type])
  									flag51 = true;
  							}
-@@ -17357,8 +_,8 @@
- 		AddGenerationPass(GenPassNameID.MicroBiomes, delegate (GenerationProgress progress, GameConfiguration passConfig) {
- 			if (!Skyblock.denyAllGeneration) {
- 				if (getGoodWorldGen)
+ 
+@@ -17360,7 +_,7 @@
  					Main.tileSolid[56] = true;
  
  				Main.tileSolid[229] = true;
 -				progress.Message = Lang.gen[76].Value;
 +				progress.Message = Lang.gen[76].Value + "..Dead Man's Chests"; // GenPassNameID.MicroBiomes
  				_ = (double)(Main.maxTilesX * Main.maxTilesY) / 5040000.0;
+ 				double num152 = 10.0;
+ 				float num153 = 0f;
 @@ -17370,6 +_,7 @@
  					if (getGoodWorldGen || noTrapsWorldGen)
  						num152 *= 3.0;
@@ -1268,7 +1266,7 @@
  
  		if (type == 245) {
  			switch (num) {
-@@ -38221,13 +_,15 @@
+@@ -38221,6 +_,7 @@
  			return;
  
  		destroyObject = true;
@@ -1276,7 +1274,7 @@
  		for (int k = num4; k < num4 + 3; k++) {
  			for (int l = num3; l < num3 + 2; l++) {
  				Tile tile3 = Main.tile[k, l];
- 				if (tile3 != null && tile3.type == type && tile3.active())
+@@ -38228,6 +_,7 @@
  					KillTile(k, l);
  			}
  		}
@@ -1284,7 +1282,7 @@
  
  		if (type == 246) {
  			switch (num) {
-@@ -38337,13 +_,15 @@
+@@ -38337,6 +_,7 @@
  			return;
  
  		destroyObject = true;
@@ -1292,7 +1290,7 @@
  		for (int k = num4; k < num4 + 4; k++) {
  			for (int l = num3; l < num3 + 3; l++) {
  				Tile tile3 = Main.tile[k, l];
- 				if (tile3 != null && tile3.type == type && tile3.active())
+@@ -38344,6 +_,7 @@
  					KillTile(k, l);
  			}
  		}
@@ -1300,7 +1298,7 @@
  
  		if (type == 241)
  			Item.NewItem(GetItemSource_FromTileBreak(x, y), x * 16, y * 16, 32, 32, 1417);
-@@ -38416,13 +_,15 @@
+@@ -38416,6 +_,7 @@
  			return;
  
  		destroyObject = true;
@@ -1308,7 +1306,7 @@
  		for (int k = num5; k < num5 + 6; k++) {
  			for (int l = num4; l < num4 + 4; l++) {
  				Tile tile3 = Main.tile[k, l];
- 				if (tile3 != null && tile3.type == type && tile3.active())
+@@ -38423,6 +_,7 @@
  					KillTile(k, l);
  			}
  		}
@@ -2889,10 +2887,7 @@
  		if (worldUpdateRate == 0)
  			return;
  
-@@ -60497,10 +_,10 @@
- 		double num2 = 6E-05f * (float)worldUpdateRate;
- 		double num3 = 1.5E-05f * (float)worldUpdateRate;
- 		double num4 = 2.5E-05f * (float)worldUpdateRate;
+@@ -60500,7 +_,7 @@
  		if (homelessSpawnTimeout > 0)
  			homelessSpawnTimeout--;
  

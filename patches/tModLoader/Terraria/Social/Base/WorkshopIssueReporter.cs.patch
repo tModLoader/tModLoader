@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Social/Base/WorkshopIssueReporter.cs
 +++ src/tModLoader/Terraria/Social/Base/WorkshopIssueReporter.cs
-@@ -39,13 +_,24 @@
+@@ -39,6 +_,12 @@
  	public void ReportInstantUploadProblem(string textKey)
  	{
  		string textValue = Language.GetTextValue(textKey);
@@ -13,7 +13,7 @@
  		AddReport(textValue);
  		OpenReportsScreen();
  	}
- 
+@@ -46,6 +_,11 @@
  	public void ReportInstantUploadProblem(string textKey, object subs)
  	{
  		string textValueWith = Language.GetTextValueWith(textKey, subs);

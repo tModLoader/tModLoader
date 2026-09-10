@@ -1,6 +1,7 @@
 --- src/TerrariaNetCore/Terraria/GameContent/Items/WhipTagEffect_Possession.cs
 +++ src/tModLoader/Terraria/GameContent/Items/WhipTagEffect_Possession.cs
-@@ -3,7 +_,10 @@
+@@ -2,7 +_,10 @@
+ 
  public class WhipTagEffect_Possession : WhipTagEffect
  {
 +	/*
@@ -10,4 +11,3 @@
  	{
  		Projectile.SpawnMoonLordWhipProc(optionalProjectile, npcHit, 20, 0);
  		return true;
- 	}

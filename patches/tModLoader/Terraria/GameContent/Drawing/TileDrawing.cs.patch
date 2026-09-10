@@ -387,8 +387,8 @@
  		}
  	}
  
--	private static bool IsTileDangerous(Player localPlayer, int tileX, int tileY, Tile tileCache, ushort typeCache)
 +	// TML: Made internal. Public variant in partial TML class. localPlayer is actually the perspective player.
+-	private static bool IsTileDangerous(Player localPlayer, int tileX, int tileY, Tile tileCache, ushort typeCache)
 +	internal static bool IsTileDangerous(Player localPlayer, int tileX, int tileY, Tile tileCache, ushort typeCache)
  	{
  		bool flag = false || typeCache == 135 || typeCache == 137 || TileID.Sets.Boulders[typeCache] || typeCache == 141 || typeCache == 210 || typeCache == 442 || typeCache == 443 || typeCache == 444 || typeCache == 411 || typeCache == 485 || typeCache == 85 || typeCache == 654 || (typeCache == 314 && Minecart.IsPressurePlate(tileCache));

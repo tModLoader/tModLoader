@@ -34,7 +34,8 @@
  
  	public static void Initialize()
  	{
-@@ -1709,5 +_,6 @@
+@@ -1708,6 +_,7 @@
+ 
  		hellPosition = num21;
  		colorLookup[num21] = color11;
 +		modPosition = (ushort)(num21 + 1); // Added by TML.

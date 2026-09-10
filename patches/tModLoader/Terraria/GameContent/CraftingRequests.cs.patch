@@ -30,8 +30,7 @@
  	}
  
  	private static void CraftViaRequest(Recipe recipe, bool quickCraft, List<Chest> chests, List<Recipe.RequiredItemEntry> ingredients)
-@@ -141,8 +_,8 @@
- 			}
+@@ -142,7 +_,7 @@
  		}
  
  		Invariant.Assert(list2.Any(), "CraftViaRequest with no items?");

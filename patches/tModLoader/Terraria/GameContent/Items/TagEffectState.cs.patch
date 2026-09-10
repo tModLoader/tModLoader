@@ -25,8 +25,8 @@
  	{
  		if (IsNPCTagged(npcHit.whoAmI) && _effect.CanRunHitEffects(_owner, optionalProjectile, npcHit)) {
 -			_effect.OnTaggedHit(_owner, optionalProjectile, npcHit, calcDamage);
--			if (CanProcOnNPC(npcHit.whoAmI) && _effect.OnProcHit(_owner, optionalProjectile, npcHit, calcDamage))
 +			_effect.OnTaggedHit(_owner, optionalProjectile, npcHit, hit);
+-			if (CanProcOnNPC(npcHit.whoAmI) && _effect.OnProcHit(_owner, optionalProjectile, npcHit, calcDamage))
 + 			if (CanProcOnNPC(npcHit.whoAmI) && _effect.OnProcHit(_owner, optionalProjectile, npcHit, hit))
  				ClearProcOnNPC(npcHit.whoAmI);
  		}

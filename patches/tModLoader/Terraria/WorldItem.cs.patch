@@ -83,7 +83,7 @@
  				position = Vector2.Lerp(worldItem.position, position, amount);
  				velocity = Vector2.Lerp(worldItem.velocity, velocity, amount);
  				if (worldItem.stack <= 0)
-@@ -174,7 +_,8 @@
+@@ -174,8 +_,9 @@
  					continue;
  
  				Player.ItemSpaceStatus status = player.ItemSpace(this);
@@ -93,6 +93,7 @@
 +					/*
  					if (player.manaMagnet && (type == 184 || type == 1735 || type == 1868))
  						num4 -= (float)Item.manaGrabRange;
+ 
 @@ -184,6 +_,9 @@
  
  					if (type == 4143)
@@ -114,7 +115,7 @@
  				gravity = 0f;
  				velocity = Vector2.Zero;
  				if (instanced && Main.GameUpdateCount % 10u == 0)
-@@ -366,5 +_,7 @@
+@@ -366,6 +_,8 @@
  		if (timeSinceItemSpawned < 2147483547)
  			timeSinceItemSpawned++;
  
@@ -122,6 +123,7 @@
 +
  		if (grabDelayTime > 0)
  			grabDelayTime--;
+ 
 @@ -461,7 +_,7 @@
  		if (WorldGen.InWorld(num, num2) && WallID.Sets.AllowsWind[Main.tile[num, num2].wall]) {
  			int num3 = 600;
@@ -161,8 +163,7 @@
  
  	public static void ShimmerEffect(Vector2 shimmerPositon)
  	{
-@@ -1413,8 +_,10 @@
- 		int shimmerEquivalentType = inner.GetShimmerEquivalentType();
+@@ -1414,7 +_,9 @@
  		int decraftingRecipeIndex = ShimmerTransforms.GetDecraftingRecipeIndex(inner.GetShimmerEquivalentType(forDecrafting: true));
  		int transformToItem = ShimmerTransforms.GetTransformToItem(shimmerEquivalentType);
  		int makeNPC = inner.makeNPC;
@@ -182,7 +183,8 @@
  
  			Main.player[Main.myPlayer].AddCoinLuck(base.Center, stack);
  			NetMessage.SendData(146, -1, -1, null, 1, base.Center.X, base.Center.Y, stack);
-@@ -1509,10 +_,13 @@
+@@ -1508,12 +_,15 @@
+ 
  				int num8 = num6 * item.stack;
  				int key = (item.IsRecipeGroup ? item.RecipeGroup.DecraftItemId : item.itemIdOrRecipeGroup);
 +				/*
@@ -196,3 +198,4 @@
 +				RecipeLoader.ConsumeIngredient(recipe, key, ref num8, true);
  
  				while (num8 > 0) {
+ 					int num10 = Math.Min(num8, ContentSamples.ItemsByType[key].maxStack);

@@ -31,9 +31,7 @@
  	public int? SourceOtherIndex {
  		get {
  			if (_sourceOtherIndex >= 0)
-@@ -31,9 +_,28 @@
- 			return null;
- 		}
+@@ -33,7 +_,26 @@
  	}
  
  	public string CustomReason => _sourceCustomReason;

@@ -7,7 +7,7 @@
  using Microsoft.Xna.Framework;
  using Terraria.Audio;
  using Terraria.DataStructures;
-@@ -10,10 +_,12 @@
+@@ -10,12 +_,14 @@
  using Terraria.GameContent.UI;
  using Terraria.Graphics.Shaders;
  using Terraria.ID;
@@ -21,7 +21,10 @@
 -public class Item : IEntitySourceTarget
 +public partial class Item : IEntitySourceTarget
  {
-@@ -39,8 +_,27 @@
+ 	private class DefaultAssignNewItemsToPlayer_OverrideHandle : IDisposable
+ 	{
+@@ -38,9 +_,28 @@
+ 
  	public int width;
  	public int height;
 +
@@ -470,7 +473,7 @@
  	public sbyte handOnSlot = -1;
  	public sbyte handOffSlot = -1;
  	public sbyte backSlot = -1;
-@@ -135,47 +_,275 @@
+@@ -135,48 +_,276 @@
  	public sbyte balloonSlot = -1;
  	public sbyte beardSlot = -1;
  	public sbyte voiceSlot;
@@ -751,6 +754,7 @@
 +	/// </summary>
  	public bool hasVanityEffects;
  	private const int foodWidth = 22;
+ 	private const int foodHeight = 22;
 @@ -187,8 +_,30 @@
  	public static readonly int PickupReplacementTime = 1200;
  	public static readonly int SlotsRemainingBeforeEmergencyStackingInMultiplayer = 40;
@@ -1808,7 +1812,7 @@
  		if (hairDye != 0)
  			hairDye = GameShaders.Hair.GetShaderIdFromItemId(type);
  
-@@ -48298,7 +_,9 @@
+@@ -48298,8 +_,10 @@
  		if (type >= 1803 && type <= 1807)
  			SetDefaults(1533 + type - 1803);
  
@@ -1819,6 +1823,7 @@
 +		if (type > 0 && ItemID.Sets.Deprecated[type])
  			TurnToAir();
  	}
+ 
 @@ -48311,24 +_,46 @@
  
  	public void OnCreated(ItemCreationContext context)
@@ -1949,7 +1954,9 @@
  			cachedItemSpawnsByType[type] += stack;
  			return 400;
  		}
-@@ -49123,4 +_,7 @@
+@@ -49121,6 +_,9 @@
+ 			worldItem.enemyGrabDelayTime = WorldItem.DefaultGrabDelay;
+ 
  		modifier?.Invoke(worldItem);
 +
 +		ItemLoader.OnSpawn(worldItem, source);
@@ -2039,7 +2046,8 @@
  	public void ClearNameOverride()
  	{
  		_nameOverride = null;
-@@ -49248,8 +_,8 @@
+@@ -49247,9 +_,9 @@
+ 
  	public void Serialize(BinaryWriter writer, bool writeFavorite = false)
  	{
 -		writer.Write(type);
@@ -2050,8 +2058,7 @@
  		if (writeFavorite)
  			writer.Write(favorited);
  	}
-@@ -49261,8 +_,8 @@
- 		Prefix(reader.ReadByte());
+@@ -49262,7 +_,7 @@
  		if (readFavorite)
  			favorited = reader.ReadBoolean();
  

@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Graphics/Renderers/LegacyPlayerRenderer.cs
 +++ src/tModLoader/Terraria/Graphics/Renderers/LegacyPlayerRenderer.cs
-@@ -5,7 +_,8 @@
+@@ -5,6 +_,7 @@
  using Terraria.DataStructures;
  using Terraria.GameContent;
  using Terraria.ID;
@@ -8,7 +8,6 @@
  using Terraria.Testing;
  
  namespace Terraria.Graphics.Renderers;
- 
 @@ -34,6 +_,7 @@
  
  	public void DrawPlayerHead(Camera camera, Player drawPlayer, Vector2 position, float alpha = 1f, float scale = 1f, Color borderColor = default(Color))

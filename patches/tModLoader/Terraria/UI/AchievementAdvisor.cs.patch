@@ -34,7 +34,7 @@
  		spriteBatch.Draw(_achievementsBorderTexture.Value, position + vector, null, color, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
  		if (hovered)
  			spriteBatch.Draw(value, position + vector2, null, Main.OurFavoriteColor, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
-@@ -159,6 +_,7 @@
+@@ -170,6 +_,7 @@
  	public void Initialize()
  	{
  		float num = 1f;
@@ -42,7 +42,7 @@
  		_cards.Add(new AchievementAdvisorCard(Main.Achievements.GetAchievement("TIMBER"), num++));
  		_cards.Add(new AchievementAdvisorCard(Main.Achievements.GetAchievement("BENCHED"), num++));
  		_cards.Add(new AchievementAdvisorCard(Main.Achievements.GetAchievement("OBTAIN_HAMMER"), num++));
-@@ -196,5 +_,79 @@
+@@ -207,5 +_,79 @@
  		_cards.Add(new AchievementAdvisorCard(Main.Achievements.GetAchievement("STAR_DESTROYER"), num++));
  		_cards.Add(new AchievementAdvisorCard(Main.Achievements.GetAchievement("CHAMPION_OF_TERRARIA"), num++));
  		_cards.OrderBy((AchievementAdvisorCard x) => x.order);

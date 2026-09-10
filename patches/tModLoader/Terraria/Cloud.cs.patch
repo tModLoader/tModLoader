@@ -1,7 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Cloud.cs
 +++ src/tModLoader/Terraria/Cloud.cs
-@@ -1,12 +_,13 @@
- using Microsoft.Xna.Framework;
+@@ -2,11 +_,12 @@
  using Microsoft.Xna.Framework.Graphics;
  using Terraria.GameContent;
  using Terraria.ID;

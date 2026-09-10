@@ -20,7 +20,7 @@
  {
  	public struct GemStaffFeatures
  	{
-@@ -233,99 +_,403 @@
+@@ -233,6 +_,9 @@
  		}
  	}
  
@@ -30,7 +30,7 @@
  	public bool active;
  	public static uint[,] perIDStaticNPCImmunity = new uint[ProjectileID.Count, InitData.MaxNPCs];
  	private static int[] slotGenerations = new int[1001];
- 	private static int[,] keyToIndex = new int[256, 1001];
+@@ -240,92 +_,393 @@
  	public const int SentryLifeTime = 36000;
  	public const int ArrowLifeTime = 1200;
  	public float ownerHitCheckDistance = 1000f;
@@ -622,7 +622,8 @@
  	public static int NewProjectile(IEntitySource spawnSource, float X, float Y, float SpeedX, float SpeedY, int Type, int Damage, float KnockBack, int Owner = -1, float ai0 = 0f, float ai1 = 0f, float ai2 = 0f, NewProjectileModifier modifer = null)
  	{
  		if (Owner == -1)
-@@ -9931,15 +_,29 @@
+@@ -9930,6 +_,13 @@
+ 
  			if (Type == 777 || Type == 781 || Type == 794 || Type == 797 || Type == 800 || Type == 785 || Type == 788 || Type == 791 || Type == 903 || Type == 904 || Type == 905 || Type == 906 || Type == 910 || Type == 911)
  				projectile.timeLeft = 180;
 +
@@ -635,7 +636,7 @@
  		}
  
  		if (Type == 249)
- 			projectile.frame = Main.rand.Next(5);
+@@ -9937,10 +_,17 @@
  
  		projectile.FinalizeProjectile();
  		modifer?.Invoke(projectile);
@@ -652,6 +653,7 @@
 +
  		return projectile.whoAmI;
  	}
+ 
 @@ -9954,26 +_,81 @@
  		}
  	}
@@ -770,7 +772,8 @@
  		bool ownedBySomeone = OwnedBySomeone;
  		bool flag = !targetNPC.friendly;
  		flag |= type == 318;
-@@ -11085,9 +_,14 @@
+@@ -11084,10 +_,15 @@
+ 		if (type == 1091 && targetNPC.type == 548)
  			flag2 = false;
  
 +		if (forceHit) { } else
@@ -795,7 +798,7 @@
  		if (flag4 || (!targetNPC.noTileCollide && ownerHitCheck && !CanHitWithMeleeWeapon(targetNPC)))
  			return;
  
-@@ -11264,12 +_,20 @@
+@@ -11264,14 +_,22 @@
  		if (type == 604)
  			Main.player[owner].Counterweight(targetNPC.Center, damage, knockBack);
  
@@ -818,7 +821,11 @@
 -					num6 += 5;
 +					modifiers.ArmorPenetration += 5; //num6 += 5
  				break;
-@@ -11284,8 +_,13 @@
+ 			case 877:
+ 			case 878:
+@@ -11282,10 +_,15 @@
+ 				if (ai[0] < 2f)
+ 					num5 = 0f;
  				break;
 +			// Patch note: If this area updates - see the note above the switch block. 				
  		}
@@ -845,7 +852,7 @@
  			int num13 = 0;
  			if (bonusCritChance > 0)
  				num13 += bonusCritChance;
-@@ -11326,12 +_,22 @@
+@@ -11326,11 +_,21 @@
  			if (melee && Main.rand.Next(1, 101) <= Main.player[owner].meleeCrit + num13)
  				crit = true;
  
@@ -867,8 +874,10 @@
  
  			Main.player[owner].TryConsumingTimerCrit(targetNPC.Hitbox, ref crit);
  			int num14 = type;
- 			if ((uint)(num14 - 688) <= 2u) {
-@@ -11369,3 +_,7 @@
+@@ -11366,7 +_,11 @@
+ 		if (type == 1130)
+ 			crit = false;
+ 
 +		/*
  		int dmg = ((!ownedBySomeone) ? Main.DamageVar(num15) : Main.DamageVar(num15, Main.player[owner].luck));
 +		*/
@@ -876,6 +885,7 @@
 +		float dmg = 1000; // to reduce patches, set to 1000, and then turn it into a multiplier later
  		if (type == 1002)
  			dmg /= 2;
+ 
 @@ -11512,7 +_,7 @@
  			else
  				direction = -1;
@@ -961,7 +971,7 @@
  		switch (type) {
  			case 697:
  			case 699:
-@@ -11961,5 +_,20 @@
+@@ -11961,8 +_,23 @@
  		if (type == 22)
  			num40 = ((Main.player[owner].Center.X < targetNPC.Center.X) ? 1 : (-1));
  
@@ -982,7 +992,12 @@
  		if (ownedBySomeone && !hostile)
  			dmg += targetNPC.checkArmorPenetration(num6, armorPenetrationPercent);
 +		*/
-@@ -11978,10 +_,16 @@
+ 
+ 		if (ownedBySomeone && (melee || ProjectileID.Sets.IsAWhip[type])) {
+ 			if (Main.player[owner].meleeEnchant == 6)
+@@ -11976,14 +_,20 @@
+ 		NPCDamageTracker.SetSourceForNextHit(targetNPC, PlayerNPCHitSource.FromProjectile(type));
+ 		Invariant.Assert(Main.netMode == 0 || owner == Main.myPlayer, "Cannot simulate someone else's projectile dealing damage. ({0})", this);
  		Invariant.Assert(Main.netMode != 1 || ownedBySomeone, "Must be ownedBySomeone to do damage on client. ({0})", this);
 +		/*
  		int num41 = targetNPC.StrikeNPC(dmg, num5, num40, crit, fromNet: false, ownedBySomeone ? owner : 255);
@@ -1000,6 +1015,8 @@
 +		*/
 +		Main.player[owner].TagEffectState.OnHit(this, targetNPC, strike);
  		flag10 |= num41 > 0 && targetNPC.lifeMax > 5 && friendly && !hostile && aiStyle != 59;
+ 		if (arrow && ownedBySomeone && aiStyle == 1) {
+ 			AI_001_Features aI_001_Features = new AI_001_Features(ai[2]);
 @@ -12386,6 +_,8 @@
  		if (type == 710)
  			BetsySharpnel(victimIndex);
@@ -1080,7 +1097,7 @@
  		int myPlayer = Main.myPlayer;
  		bool flag = Main.player[myPlayer].active && !Main.player[myPlayer].dead && (!Main.player[myPlayer].immune || num != ImmunityCooldownID.General);
  		if (flag && type == 281)
-@@ -12966,17 +_,22 @@
+@@ -12966,6 +_,9 @@
  		if (!flag || !Colliding(projRectangle, Main.player[myPlayer].getRect()))
  			return;
  
@@ -1090,11 +1107,7 @@
  		int num2 = direction;
  		num2 = ((!(Main.player[myPlayer].position.X + (float)(Main.player[myPlayer].width / 2) < position.X + (float)(width / 2))) ? 1 : (-1));
  		bool flag2 = Main.player[myPlayer].CanParryAgainst(Main.player[myPlayer].Hitbox, base.Hitbox, velocity);
- 		if (type == 1091 && Main.noLightningSeed && Main.moreLightningSeed) {
- 			Main.player[myPlayer].Heal(80);
- 			flag2 = true;
- 		}
- 
+@@ -12977,6 +_,8 @@
  		if (!flag2) {
  			SpawnHitVisuals(Main.player[myPlayer]);
  			int num3 = Main.DamageVar(damage, 0f - Main.player[owner].luck);
@@ -1131,7 +1144,8 @@
  		return result;
  	}
  
-@@ -13177,6 +_,7 @@
+@@ -13176,7 +_,8 @@
+ 
  		bool dodgeable = IsDamageDodgeable();
  		PlayerDeathReason damageSource = PlayerDeathReason.ByProjectile(playerIndex, whoAmI);
 +		// Added ArmorPenetration argument
@@ -1182,15 +1196,15 @@
  		if (type == 1041 && ai[0] < 0f)
  			return false;
  
-@@ -13431,6 +_,7 @@
+@@ -13430,6 +_,7 @@
+ 
  				vector2.Y /= num;
  				float num2 = 55f;
 +				ProjectileLoader.FlailSpinCollisionRange(this, ref num2);
  				CollisionVisualizer.VisualizeElipticalLine(mountedCenter, vector, num2, 1f, num, needsCanHitCheck: false);
  				return vector2.Length() <= num2;
  			}
- 		}
-@@ -13860,7 +_,10 @@
+@@ -13860,6 +_,9 @@
  			}
  		}
  
@@ -1200,8 +1214,7 @@
  		CollisionVisualizer.VisualizeRects(myRect, targetRect, needsCanHitCheck: false);
  		if (myRect.Intersects(targetRect))
  			return true;
- 
-@@ -14538,6 +_,9 @@
+@@ -14538,7 +_,10 @@
  		if (Main.netMode == 1 && (ProjectileID.Sets.IsAGolfBall[type] || type == 820)) {
  			int x = (int)(position.X + (float)(width / 2)) / 16;
  			int y = (int)(position.Y + (float)(height / 2)) / 16;
@@ -1211,6 +1224,7 @@
 +			if (!Main.sectionManager.TileLoaded(x, y))
  				return;
  		}
+ 
 @@ -14569,9 +_,18 @@
  			if (!noEnchantmentVisuals)
  				UpdateEnchantmentVisuals();
@@ -1471,7 +1485,8 @@
  		switch (num) {
  			default:
  				botherDrawing = false;
-@@ -19888,9 +_,17 @@
+@@ -19887,10 +_,18 @@
+ 					botherDrawing = false;
  				break;
  		}
 +
@@ -1529,8 +1544,7 @@
  	}
  
  	private void AI_111_DryadsWard()
-@@ -36115,7 +_,7 @@
- 	private void AI_190_NightsEdge()
+@@ -36116,7 +_,7 @@
  	{
  		if (localAI[0] == 0f) {
  			if (type == 984) {
@@ -1538,6 +1552,7 @@
 +				SoundEffectInstance soundEffectInstance = SoundEngine.PlaySound((SoundStyle?)SoundID.Item60, position);
  				if (soundEffectInstance != null)
  					soundEffectInstance.Volume *= 0.65f;
+ 			}
 @@ -36353,7 +_,7 @@
  	{
  		if (soundDelay == 0) {
@@ -1600,7 +1615,7 @@
  							int num3 = damage;
  							position = base.Center;
  							int num4 = 0;
-@@ -39352,4 +_,12 @@
+@@ -39352,6 +_,14 @@
  		return result;
  	}
  
@@ -1613,6 +1628,8 @@
 +	/// </param>
 +	/// <returns>The index, in <see cref="Main.npc"/>, of the closest targetable NPC.</returns>
  	public int FindTargetWithLineOfSight(float maxRange = 800f, ICollection<int> ignoreTargets = null) => FindTargetWithLineOfSight(this, maxRange, ignoreTargets);
+ 
+ 	public static int FindTargetWithLineOfSight(Entity targeter, float maxRange = 800f, ICollection<int> ignoreTargets = null)
 @@ -39881,7 +_,10 @@
  				break;
  		}
@@ -1876,7 +1893,7 @@
  				for (int k = 0; k < num5; k++) {
  					Dust obj = Main.dust[WorldGen.KillTile_MakeTileDust(i, j, tileSafely)];
  					obj.velocity.Y -= 3f + (float)num4 * 1.5f;
-@@ -59470,6 +_,6 @@
+@@ -59470,7 +_,7 @@
  			Kill();
  	}
  
@@ -1884,6 +1901,7 @@
 +	public void CreateImpactExplosion(int dustAmountMultiplier, Vector2 explosionOrigin, ref Point scanAreaStart, ref Point scanAreaEnd, int explosionRange, out bool causedShockwaves) // TML: Made public
  	{
  		causedShockwaves = false;
+ 		int num = 4;
 @@ -59487,7 +_,7 @@
  				if (tileSafely2.active() && Main.tileSolid[tileSafely2.type] && !Main.tileSolidTop[tileSafely2.type])
  					continue;
@@ -1902,7 +1920,7 @@
  	{
  		Vector2 spinningpoint = new Vector2(7f, 0f);
  		Vector2 vector = new Vector2(1f, 0.7f);
-@@ -60339,7 +_,7 @@
+@@ -60339,14 +_,14 @@
  		int num = timeLeft;
  		timeLeft = 0;
  		bool flag = true;
@@ -1911,7 +1929,8 @@
  			flag = false;
  
  		if (owner == Main.myPlayer && flag)
-@@ -60348,5 +_,5 @@
+ 			Main.player[owner].TryCancelChannel(this);
+ 
  		bool flag2 = true;
 -		if (aiStyle == 16) {
 +		if (aiStyle == 16 || ProjectileID.Sets.Explosive[type]) {
@@ -1947,18 +1966,16 @@
  		}
  		else if (type == 614) {
  			for (int num178 = 0; num178 < 10; num178++) {
-@@ -66776,8 +_,11 @@
- 		if (owner == Main.myPlayer && Main.netMode != 0)
- 			NetMessage.SendData(29, -1, -1, null, key, vector.X, vector.Y);
- 
+@@ -66779,6 +_,9 @@
  		if (flag2)
  			Kill_ExplodeTiles();
-+
+ 
 +		// Patch note: End of Projectile.Kill().
 +		ProjectileLoader.OnKill(this, num);
- 
++
  		active = false;
  	}
+ 
 @@ -66887,6 +_,16 @@
  				int num16 = (int)(position.Y + (float)(height / 2)) / 16;
  				int num17 = 0;
@@ -2060,7 +2077,7 @@
  		switch (type) {
  			case 525:
  			case 734:
-@@ -68177,7 +_,11 @@
+@@ -68177,10 +_,14 @@
  			default:
  				return false;
  		}
@@ -2072,3 +2089,6 @@
 +		if (ProjectileLoader.GetAlpha(this, newColor) is Color modColor)
 +			return modColor;
 +
+ 		if (type == 1130 || type == 1135) {
+ 			int num = 20;
+ 			float amount = localAI[0] / ((float)num * 0.95f);

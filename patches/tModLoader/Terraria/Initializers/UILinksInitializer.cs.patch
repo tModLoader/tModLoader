@@ -40,7 +40,7 @@
  				cp15.LinkMap[600 + num64].Up = ((num64 % num63 == 0) ? (-1) : (600 + num64 - 1));
  				if (cp15.LinkMap[600 + num64].Up == -1) {
  					if (num64 >= num63 * 2)
-@@ -833,5 +_,10 @@
+@@ -833,6 +_,11 @@
  				cp15.LinkMap[600 + num64].Down = (((num64 + 1) % num63 == 0 || num64 == UILinkPointNavigator.Shortcuts.NPCS_IconsTotal - 1) ? 308 : (600 + num64 + 1));
  				cp15.LinkMap[600 + num64].Left = ((num64 < UILinkPointNavigator.Shortcuts.NPCS_IconsTotal - num63) ? (600 + num64 + num63) : (-3));
  				cp15.LinkMap[600 + num64].Right = ((num64 < num63) ? (-4) : (600 + num64 - num63));
@@ -51,6 +51,7 @@
 +					cp15.LinkMap[600 + num64].Left = -3;
  			}
  		};
+ 
 @@ -1663,8 +_,19 @@
  
  		cp4.OnSpecialInteracts += () => (Main.InGameUI.CurrentState is UIBestiaryTest) ? (PlayerInput.BuildCommand(Lang.misc[82].Value, PlayerInput.ProfileGamepadUI.KeyStatus["Inventory"]) + PlayerInput.BuildCommand(Language.GetText("UI.SwitchPage").Value, PlayerInput.ProfileGamepadUI.KeyStatus["HotbarMinus"], PlayerInput.ProfileGamepadUI.KeyStatus["HotbarPlus"]) + PlayerInput.BuildCommand(Lang.misc[53].Value, PlayerInput.ProfileGamepadUI.KeyStatus["MouseLeft"]) + FancyUISpecialInstructions()) : (PlayerInput.BuildCommand(Lang.misc[53].Value, PlayerInput.ProfileGamepadUI.KeyStatus["MouseLeft"]) + PlayerInput.BuildCommand(Lang.misc[82].Value, PlayerInput.ProfileGamepadUI.KeyStatus["Inventory"]) + FancyUISpecialInstructions());

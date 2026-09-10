@@ -1,15 +1,12 @@
 --- src/TerrariaNetCore/Terraria/GameContent/UI/NPCChatPanel.cs
 +++ src/tModLoader/Terraria/GameContent/UI/NPCChatPanel.cs
-@@ -1,7 +_,8 @@
+@@ -1,4 +_,5 @@
  using System;
 +using System.Collections;
  using System.Collections.Generic;
  using Microsoft.Xna.Framework;
  using Microsoft.Xna.Framework.Graphics;
- using ReLogic.Graphics;
- using ReLogic.Localization.IME;
- using ReLogic.OS;
-@@ -47,13 +_,21 @@
+@@ -47,16 +_,24 @@
  			return;
  		}
  
@@ -32,6 +29,9 @@
  		rectangle.Height += 30 * _textDisplayCache.AmountOfLines;
 -		rectangle.Height += 30 * _neededInteractionLines + Math.Max(0, 2 * (_neededInteractionLines - 1));
 +		rectangle.Height += 20 * Math.Min(_neededInteractionLines, 8) + Math.Max(0, 2 * (Math.Min(_neededInteractionLines, 8) - 1)); // TML: changed +30 to +20. Capped the _neededInteractionLines to 8 (32 buttons).
+ 		if (true) {
+ 			Main.spriteBatch.Draw(TextureAssets.ChatBack.Value, rectangle.TopLeft(), new Rectangle(0, 0, TextureAssets.ChatBack.Width(), rectangle.Height - 30), color, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
+ 			Main.spriteBatch.Draw(TextureAssets.ChatBack.Value, new Vector2(rectangle.TopLeft().X, rectangle.Y + rectangle.Height - 30), new Rectangle(0, TextureAssets.ChatBack.Height() - 30, TextureAssets.ChatBack.Width(), 30), color, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
 @@ -77,15 +_,19 @@
  	private void DrawButtons(Rectangle panelArea, Color chatColor)
  	{

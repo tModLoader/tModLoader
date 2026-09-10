@@ -73,8 +73,7 @@
  	private void ProcessCopyCommandsInTexts()
  	{
  		Regex regex = new Regex("{\\$(\\w+\\.\\w+)}", RegexOptions.Compiled);
-@@ -158,15 +_,20 @@
- 					break;
+@@ -159,14 +_,19 @@
  				}
  
  				value.SetValue(text);

@@ -27,7 +27,7 @@
  			int x = (int)npc.position.X + npc.width / 2;
  			int y = (int)npc.position.Y + npc.height / 2;
  			if (scattered) {
-@@ -17,10 +_,44 @@
+@@ -17,13 +_,47 @@
  			}
  
  			int itemIndex = Item.NewItem(npc.GetItemSource_Loot(), x, y, 0, 0, itemId, stack, noBroadcast: false, -1);
@@ -73,6 +73,9 @@
  	{
 -		if (itemId > 0 && itemId < ItemID.Count) {
 +		if (itemId > 0 && itemId < ItemLoader.ItemCount) {
+ 			int num = Item.NewItem(npc.GetItemSource_Loot(), (int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, itemId, stack, noBroadcast: true, -1);
+ 			Main.item[num].MakeInstanced((Player p) => npc.playerInteraction[p.whoAmI] || !interactionRequired);
+ 			npc.value = 0f;
 @@ -32,7 +_,7 @@
  
  	public static void DropItemForEachInteractingPlayerOnThePlayer(NPC npc, int itemId, UnifiedRandom rng, int chanceNumerator, int chanceDenominator, int stack = 1, bool interactionRequired = true)

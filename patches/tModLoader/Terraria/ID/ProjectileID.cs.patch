@@ -95,7 +95,7 @@
  		public static bool?[] WindPhysicsImmunity = Factory.CreateCustomSet<bool?>(null, new object[140] {
  			(short)20,
  			true,
-@@ -169,4 +_,9 @@
+@@ -169,6 +_,11 @@
  			(short)1120,
  			true
  		});
@@ -105,7 +105,12 @@
 +		/// <br/> Defaults to <see langword="false"/>.
 +		/// </summary>
  		public static bool[] RocketsSkipDamageForPlayers = Factory.CreateBoolSet(338, 339, 340, 341, 803, 804, 862, 863, 805, 806, 807, 808, 809, 810, 930, 1088);
-@@ -256,12 +_,66 @@
+ 		public const int FixedDamageForRockets = 60;
+ 		public static int?[] FixedSelfDamageForPlayers = Factory.CreateCustomSet<int?>(null, new object[78] {
+@@ -253,15 +_,69 @@
+ 		});
+ 		public static bool[] SkipDamage_EVP = Factory.CreateBoolSet(108, 164, 1002);
+ 		public static bool[] IsABombWithFuse = Factory.CreateBoolSet(28, 37, 516, 519, 910, 911, 1086, 1087, 906, 905, 904, 903, 773, 1077, 75, 102, 681, 470, 29, 637);
 +
 +		/// <summary>
 +		/// The lifetime of a yoyo projectile (<see cref="ProjAIStyleID.Yoyo"/>) in seconds.

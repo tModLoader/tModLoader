@@ -270,7 +270,7 @@
  		public static bool[] CountsAsWaterForCrafting = Factory.CreateBoolSet(172, 207);
  		public static bool[] AllTiles = Factory.CreateBoolSet(true);
  		public static bool[] Dirt = Factory.CreateBoolSet(0, 668);
-@@ -243,10 +_,30 @@
+@@ -243,11 +_,31 @@
  		public static bool[] Leaves = Factory.CreateBoolSet(384, 192);
  		public static bool[] bonusCutTiles = Factory.CreateBoolSet(false, 233);
  		public static bool[] tileMossBrick = Factory.CreateBoolSet(false, 512, 513, 514, 515, 516, 517, 535, 537, 540, 626, 628);
@@ -301,6 +301,7 @@
 +		/// </summary>
  		public static bool[] CanBeClearedDuringGeneration = Factory.CreateBoolSet(true, 396, 400, 401, 397, 398, 399, 404, 368, 367, 41, 43, 44, 481, 482, 483, 226, 237);
  		public static bool[] PreventsSlopesDuringGeneration = Factory.CreateBoolSet(false, 48, 137, 232, 191, 151, 274, 135, 442, 428);
+ 		public static bool[] IsAPressurePlate = Factory.CreateBoolSet(false, 135, 442, 428);
 @@ -300,33 +_,85 @@
  		public static bool[] SpreadsCrimson = Factory.CreateBoolSet(199, 662, 203, 234, 399, 401, 200, 352, 205, 201);
  		public static bool[] InheritTypeOfTileBelowForNPCSpawning = Factory.CreateBoolSet(false, 421, 422);
@@ -395,8 +396,7 @@
  
  	public const ushort Dirt = 0;
  	public const ushort Stone = 1;
-@@ -1098,6 +_,7 @@
- 	public const ushort PalworldDigtoiseSleeping = 751;
+@@ -1099,5 +_,6 @@
  	public const ushort PalworldChilletEgg = 752;
  	public const ushort GiantTiki = 753;
  	public static readonly ushort Count = 754;

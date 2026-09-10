@@ -45,16 +45,16 @@
  	private static bool[] canFavoriteAt;
  	private static bool[] retainFavoriteOnMoveAt;
  	public static bool[] canLoadoutShareAt;
-@@ -448,6 +_,9 @@
- 
+@@ -449,6 +_,9 @@
  		return false;
  	}
-+
+ 
 +	// Helper added by TML
 +	private static bool IsAccessoryContext(int context) => Math.Abs(context) is Context.EquipAccessory or Context.EquipAccessoryVanity;
- 
++
  	public static void Handle(Item[] inv, int context = 0, int slot = 0, bool allowInteract = true)
  	{
+ 		OverrideHover(inv, context, slot);
 @@ -465,6 +_,10 @@
  		if (!PlayerInput.UsingGamepad)
  			UILinkPointNavigator.SuggestUsage(GetGamepadPointForSlot(inv, context, slot));
@@ -315,7 +315,9 @@
  					Main.mouseItem.stack = (Main.mouseItem.OnlyNeedOneInInventory() ? 1 : Main.mouseItem.maxStack);
  					Main.mouseItem.OnCreated(new JourneyDuplicationItemCreationContext());
  					AnnounceTransfer(new ItemTransferInfo(inv[slot], 29, 21));
-@@ -1280,4 +_,5 @@
+@@ -1278,6 +_,7 @@
+ 				break;
+ 			}
  			case 12:
 +			case Context.ModdedDyeSlot:
  			case 25:
@@ -341,7 +343,10 @@
  					return;
  				}
  
-@@ -1366,4 +_,4 @@
+@@ -1363,7 +_,7 @@
+ 					return;
+ 				}
+ 
 -				switch (context) {
 +				switch (Math.Abs(context)) {
  					case 9:
@@ -578,7 +583,7 @@
  							num22 += inv[j].stack;
  					}
  				}
-@@ -2277,12 +_,17 @@
+@@ -2277,14 +_,19 @@
  				Vector2 position4 = position + value.Size() * inventoryScale / 2f - TextureAssets.Cd.Value.Size() * inventoryScale / 2f;
  				Color color7 = item.GetAlpha(color) * 0.5f;
  				spriteBatch.Draw(TextureAssets.Cd.Value, position4, null, color7, 0f, default(Vector2), scale, SpriteEffects.None, 0f);
@@ -593,10 +598,12 @@
  				Color white = Color.White;
  				spriteBatch.Draw(TextureAssets.Cd.Value, position5, null, white * itemFade, 0f, default(Vector2), scale, SpriteEffects.None, 0f);
  			}
-+
-+			// Extra context.
  
++			// Extra context.
++
  			if (num18 != -1) {
+ 				float num25 = 0.7f;
+ 				int num26 = (int)MathHelper.Clamp(310 + num18, 310f, 312f);
 @@ -2421,6 +_,10 @@
  
  		Vector2 origin = frame.Size() / 2f;

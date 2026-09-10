@@ -8,7 +8,7 @@
  using Terraria.Net;
  
  namespace Terraria.GameContent;
-@@ -114,9 +_,13 @@
+@@ -114,8 +_,12 @@
  	}
  
  	public static readonly int MaxBannerTypes = 293;
@@ -23,7 +23,6 @@
  	private static bool[] newBanner = new bool[MaxBannerTypes];
  	public static bool AnyNewClaimableBanners;
  
- 	public static int GetKillCount(int banner) => killCount[banner];
 @@ -285,8 +_,20 @@
  		}
  	}

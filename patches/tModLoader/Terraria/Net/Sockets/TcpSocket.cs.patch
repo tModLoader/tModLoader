@@ -10,7 +10,7 @@
  
  namespace Terraria.Net.Sockets;
  
-@@ -41,5 +_,8 @@
+@@ -41,6 +_,9 @@
  
  	void ISocket.Close()
  	{
@@ -19,6 +19,7 @@
 +
  		_remoteAddress = null;
  		_connection.Close();
+ 		if (_debugStream != null)
 @@ -93,7 +_,17 @@
  			tuple = (Tuple<SocketSendCallback, object>)obj[0];
  		}

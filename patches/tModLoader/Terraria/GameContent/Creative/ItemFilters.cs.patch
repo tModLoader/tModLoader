@@ -8,7 +8,7 @@
  using Terraria.UI;
  
  namespace Terraria.GameContent.Creative;
-@@ -21,18 +_,42 @@
+@@ -21,19 +_,43 @@
  		private int _unusedYoyoLogo;
  		private string _search;
  
@@ -52,6 +52,7 @@
 +				if (line.Text.ToLower().IndexOf(_search, StringComparison.OrdinalIgnoreCase) != -1)
  					return true;
  			}
+ 
 @@ -110,6 +_,7 @@
  
  	public class Tools : IItemEntryFilter, IEntryFilter<Item>
@@ -60,8 +61,7 @@
  		private HashSet<int> _itemIdsThatAreAccepted = new HashSet<int> {
  			213,
  			5295,
-@@ -169,7 +_,8 @@
- 			114,
+@@ -170,6 +_,7 @@
  			5667,
  			6174
  		};
