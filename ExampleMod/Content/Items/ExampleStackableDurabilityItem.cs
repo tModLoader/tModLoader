@@ -11,6 +11,7 @@ using Terraria.ModLoader.IO;
 
 namespace ExampleMod.Content.Items
 {
+	// Custom data is also shown in more detail in ExampleInstancedItem
 	public class ExampleStackableDurabilityItem : ModItem
 	{
 		// 0 to 1

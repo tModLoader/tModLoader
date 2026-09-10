@@ -10,6 +10,7 @@ using Terraria.ModLoader.IO;
 
 namespace ExampleMod.Content.Items.Consumables
 {
+	// Custom data is also shown in more detail in ExampleInstancedItem
 	public class ExampleMultiUseItem : ModItem
 	{
 		public static readonly int MaxUses = 4;
