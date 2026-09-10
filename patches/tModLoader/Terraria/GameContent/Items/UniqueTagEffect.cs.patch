@@ -1,14 +1,12 @@
 --- src/TerrariaNetCore/Terraria/GameContent/Items/UniqueTagEffect.cs
 +++ src/tModLoader/Terraria/GameContent/Items/UniqueTagEffect.cs
-@@ -1,40 +_,122 @@
+@@ -1,36 +_,118 @@
 +using Terraria.ModLoader;
 +
  namespace Terraria.GameContent.Items;
  
  public abstract class UniqueTagEffect
  {
- 	public bool NetSync;
- 	public bool SyncProcs;
 +	/// <summary> How long the tag effect will last. 240 ticks (4 seconds) by default for <see cref="WhipTagEffect"/>. </summary>
  	public int TagDuration;
  
@@ -52,7 +50,7 @@
  	public virtual bool CanRunHitEffects(Player owner, Projectile optionalProjectile, NPC npcHit) => true;
  
 +	/*
- 	public virtual void ModifyTaggedHit(Player owner, Projectile optionalProjectile, NPC npcHit, ref int damageDealt, ref bool crit)
+ 	public virtual void ModifyTaggedHit(Player owner, Projectile optionalProjectile, NPC npcHit, ref TagDamageChanges changes)
 +	*/
 +	/// <summary>
 +	/// Allows the damage dealt to be modified when a tagged enemy takes damage from a minion, sentry, or one of their projectiles.
@@ -66,7 +64,7 @@
  	}
  
 +	/*
- 	public virtual void ModifyProcHit(Player owner, Projectile optionalProjectile, NPC npcHit, ref int damageDealt, ref bool crit)
+ 	public virtual void ModifyProcHit(Player owner, Projectile optionalProjectile, NPC npcHit, ref TagDamageChanges changes)
 +	*/
 +	/// <summary>
 +	/// Allows the damage dealt to be modified when a tag effect triggers on a tagged enemy.
@@ -102,7 +100,7 @@
  	}
  
 +	/*
- 	public virtual void OnProcHit(Player owner, Projectile optionalProjectile, NPC npcHit, int calcDamage)
+ 	public virtual bool OnProcHit(Player owner, Projectile optionalProjectile, NPC npcHit, int calcDamage) => false;
 +	*/
 +	/// <summary>
 +	/// Allows you to create special effects when a tag effect triggers on a tagged enemy.
@@ -119,7 +117,5 @@
 +	/// <param name="npcHit">The NPC who was hit.</param>
 +	/// <param name="hit">The damage after calculations from <see cref="ModifyTaggedHit"/> and <see cref="ModifyProcHit"/>.</param>
 +	/// <remarks>Procs will be removed from the NPC once they activate.</remarks>
-+	public virtual void OnProcHit(Player owner, Projectile optionalProjectile, NPC npcHit, NPC.HitInfo hit)
- 	{
- 	}
++	public virtual bool OnProcHit(Player owner, Projectile optionalProjectile, NPC npcHit, NPC.HitInfo hit) => false;
  }

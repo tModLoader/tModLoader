@@ -2322,29 +2322,43 @@
  			return false;
  
  		int num = townNpcVariationIndex;
-@@ -67658,12 +_,16 @@
+@@ -67702,6 +_,8 @@
+ 		}
+ 	}
+ 
++	// Moved to AddStatsToDamageCalculation
++	/*
+ 	public int checkArmorPenetration(int armorPenetration, float armorPenetrationPercent)
+ 	{
+ 		if (ichor)
+@@ -67722,3 +_,4 @@
  
  		return armorPenetration / 2;
  	}
 +	*/
- 
--	public double StrikeNPCNoInteraction(int Damage, float knockBack, int hitDirection, bool crit = false, bool noEffect = false, bool fromNet = false)
-+	internal int StrikeNPCNoInteraction(int Damage, float knockBack, int hitDirection)
+@@ -67726,9 +_,15 @@
++	/*
+ 	public int KeyBrandStrike(int plr, int dmg, Vector2 bestSwordSpot)
++	*/
++	public float KeyBrandStrike(int plr, float dmg, Vector2 bestSwordSpot)
  	{
+ 		float t = (float)life / (float)lifeMax;
+ 		float lerpValue = Utils.GetLerpValue(1f, 0.1f, t, clamped: true);
+ 		float num = 1f * lerpValue;
 +		/*
- 		if (Main.netMode == 0)
- 			ignorePlayerInteractions++;
- 
- 		return StrikeNPC(Damage, knockBack, hitDirection, crit, noEffect, fromNet, 255);
+ 		dmg = (int)((float)dmg * (1f + num));
 +		*/
-+		return StrikeNPC(Damage, knockBack, hitDirection, noPlayerInteraction: true);
- 	}
- 
-@@ -67681,20 +_,154 @@
- 		return dmg;
- 	}
- 
--	public double StrikeNPC(int Damage, float knockBack, int hitDirection, bool crit = false, bool noEffect = false, bool fromNet = false, int owner = -1)
++		dmg = (dmg * (1f + num));
+ 		Vector2 positionInWorld = base.Hitbox.ClosestPointInRect(bestSwordSpot);
+ 		ParticleOrchestrator.RequestParticleSpawn(clientOnly: false, ParticleOrchestraType.Keybrand, new ParticleOrchestraSettings {
+ 			PositionInWorld = positionInWorld
+@@ -67740,1 +_,4 @@
++	/*
+ 	public int StrikeNPCNoInteraction(int Damage, float knockBack, int hitDirection) => StrikeNPC(Damage, knockBack, hitDirection, crit: false, fromNet: false, 255);
++	*/
++	internal int StrikeNPCNoInteraction(int Damage, float knockBack, int hitDirection) => StrikeNPC(Damage, knockBack, hitDirection, noPlayerInteraction: true);
+@@ -67742,4 +_,135 @@
+-	public int StrikeNPC(int Damage, float knockBack, int hitDirection, bool crit = false, bool fromNet = false, int owner = -1)
 +	internal int StrikeNPC(int Damage, float knockBack, int hitDirection, bool crit = false, bool fromNet = false, bool noPlayerInteraction = false)
 +	{
 +		return StrikeNPC(CalculateStrikeFromLegacyValues(Damage, knockBack, hitDirection, crit), fromNet, noPlayerInteraction);
@@ -2480,49 +2494,6 @@
  	{
  		if (owner < 0)
  			owner = Main.myPlayer;
- 
- 		if (Main.onlyShimmerOceanWorlds && type == 680 && GivenName == "Slimefors")
--			return 0.0;
-+ 			return 0;
- 
- 		bool flag = Main.netMode == 0;
-+		/*
- 		if (flag && ignorePlayerInteractions > 0) {
- 			ignorePlayerInteractions--;
- 			flag = false;
- 		}
-+		*/
-+		flag &= !noPlayerInteraction;
- 
- 		if (!active || life <= 0)
--			return 0.0;
-+			return 0;
- 
-@@ -67702,6 +_,8 @@
- 		}
- 	}
- 
-+	// Moved to AddStatsToDamageCalculation
-+	/*
- 	public int checkArmorPenetration(int armorPenetration, float armorPenetrationPercent)
- 	{
- 		if (ichor)
-@@ -67726,9 +_,15 @@
-+	/*
- 	public int KeyBrandStrike(int plr, int dmg, Vector2 bestSwordSpot)
-+	*/
-+	public float KeyBrandStrike(int plr, float dmg, Vector2 bestSwordSpot)
- 	{
- 		float t = (float)life / (float)lifeMax;
- 		float lerpValue = Utils.GetLerpValue(1f, 0.1f, t, clamped: true);
- 		float num = 1f * lerpValue;
-+		/*
- 		dmg = (int)((float)dmg * (1f + num));
-+		*/
-+		dmg = (dmg * (1f + num));
- 		Vector2 positionInWorld = base.Hitbox.ClosestPointInRect(bestSwordSpot);
- 		ParticleOrchestrator.RequestParticleSpawn(clientOnly: false, ParticleOrchestraType.Keybrand, new ParticleOrchestraSettings {
- 			PositionInWorld = positionInWorld
 @@ -67781,1 +_,4 @@
 +		/*
  		bool flag = Damage >= 9999 && owner == 255;
@@ -2940,36 +2911,38 @@
  				if (hitbox.Intersects(npcRect) && (type != 453 || !NPCID.Sets.Skeletons[nPC.type]) && nPC.type != 624 && nPC.type != 690) {
  					BeHurtByOtherNPC(i, nPC);
  					break;
-@@ -77637,14 +_,30 @@
+@@ -77634,14 +_,32 @@
  		if (type == 548)
  			num = 20;
  
 +		/*
  		int num2 = Main.DamageVar(thatNPC.damage);
 +		*/
+ 		if (type == 695 || type == 696)
+ 			num2 = 5;
+ 
  		int num3 = 6;
  		int num4 = ((!(thatNPC.Center.X > base.Center.X)) ? 1 : (-1));
 +
 +		/*
- 		double num5 = StrikeNPCNoInteraction(num2, num3, num4);
- 		if (Main.netMode != 0)
- 			NetMessage.SendData(28, -1, -1, null, whoAmI, num2, num3, num4);
+ 		int num5 = StrikeNPCNoInteraction(num2, num3, num4);
 +		*/
 +		var modifiers = GetIncomingStrikeModifiers(DamageClass.Default, num4);
 +		NPCLoader.ModifyHitNPC(thatNPC, this, ref modifiers);
 +		var strike = modifiers.ToHitInfo(thatNPC.damage, crit: false, num3, damageVariation: true);
-+		double num5 = StrikeNPC(strike, noPlayerInteraction: true);
++		int num5 = StrikeNPC(strike, noPlayerInteraction: true);
++		/* // Not sure about this.
 +		if (Main.netMode != 0) {
 +			NetMessage.SendStrikeNPC(this, strike);
 +		}
- 
++		*/
  		immune[255] = num;
 +
 +		NPCLoader.OnHitNPC(thatNPC, this, strike);
 +		int num2 = strike.SourceDamage; // slightly more 'technically correct' to use modifiers.GetVanillaDamage, but better practice is to use pre-randomization or even post-mitigation values for reflection.
 +
  		if (dryadWard) {
- 			num2 = (int)num5 / 3;
+ 			num2 = num5 / 3;
  			num3 = 6;
 @@ -78018,6 +_,9 @@
  

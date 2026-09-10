@@ -23,6 +23,24 @@
  				Main.npc[i].active = false;
  				NetMessage.SendData(23, -1, -1, null, i);
  			}
+@@ -67689,12 +_,15 @@
+ 		if (Main.onlyShimmerOceanWorlds && type == 680 && GivenName == "Slimefors")
+-			return 0.0;
++ 			return 0;
+ 
+ 		bool flag = Main.netMode == 0;
++		/*
+ 		if (flag && ignorePlayerInteractions > 0) {
+ 			ignorePlayerInteractions--;
+ 			flag = false;
+ 		}
++		*/
++		flag &= !noPlayerInteraction;
+ 
+ 		if (!active || life <= 0)
+-			return 0.0;
++			return 0;
+ 
 @@ -67983,10 +_,10 @@
  			else
  				checkDead();

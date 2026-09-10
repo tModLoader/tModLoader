@@ -196,6 +196,8 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - New PickAmmo_PickAmmoItem method seems to replicate our old PickAmmo/ChooseAmmo split.
 - Our PickAmmo overload patch lost. Maybe just put in .TML.cs file anyway.
 - Not sure about VanillaOnHitEffectsWhipsStart label location
+- Is TagDamageChanges just a pseudo NPC.HitModifiers? Should TagEffectState use one or the other?
+- WhipTagEffect.ModifyTaggedHit patches are wrong, method changed a lot
 
 # New Fields that might need more documentation
 
