@@ -395,6 +395,25 @@ public abstract class ModTile : ModBlockType
 	}
 
 	/// <summary>
+	/// Allow you to adjust the glow of the tile.
+	/// </summary>
+	/// <param name="i">The x position in tile coordinates.</param>
+	/// <param name="j">The y position in tile coordinates.</param>
+	/// <param name="type">The tile type</param>
+	/// <param name="width"></param>
+	/// <param name="offsetY"></param>
+	/// <param name="height"></param>
+	/// <param name="tileFrameX"></param>
+	/// <param name="tileFrameY"></param>
+	/// <param name="glowTexture"></param>
+	/// <param name="glowSourceRect"></param>
+	/// <param name="glowColor"></param>
+	public virtual void SetGlow(int i, int j, int type, int width, int offsetY, int height, short tileFrameX, short tileFrameY, ref Texture2D glowTexture, ref Rectangle glowSourceRect, ref Color glowColor)
+	{
+
+	}
+
+	/// <summary>
 	/// Animates an individual tile. <paramref name="i"/> and <paramref name="j"/> are the coordinates of the Tile in question. <paramref name="frameXOffset"/> and <paramref name="frameYOffset"/> should be used to specify an offset from the tiles <see cref="Tile.TileFrameX"/> and <see cref="Tile.TileFrameY"/>. <c>frameYOffset = modTile.AnimationFrameHeight * Main.tileFrame[type];</c> will already be set before this hook is called, taking into account the TileID-wide animation set via <see cref="AnimateTile(ref int, ref int)"/>.
 	/// <para/> Use this hook for off-sync animations (lightning bug in a bottle), state specific animations (campfires), temporary animations (trap chests), or TileEntities to achieve unique animation behaviors without having to manually draw the tile via <see cref="ModBlockType.PreDraw(int, int, SpriteBatch)"/>.
 	/// </summary>
