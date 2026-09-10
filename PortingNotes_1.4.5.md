@@ -188,8 +188,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 
 - ItemVariants.EverythingWorld renamed to MechdusaWorld
 - Main.GameModeInfo.IsJourneyMode -> Main.IsJourneyMode
-- Item.SetDefaults() -> Item.SetDefaults(0)
-- Item.SetDefaults(int, bool) -> Item.SetDefaults(int)
 
 # ExampleMod TODOs
 - Verify that ExampleZombieThief still works with changes

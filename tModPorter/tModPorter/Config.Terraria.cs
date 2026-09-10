@@ -268,7 +268,7 @@ public static partial class Config
 		RenameInstanceField("Terraria.DataStructures.EntitySource_OnHit", "EntityStriking", "Attacker");
 		RenameInstanceField("Terraria.DataStructures.EntitySource_OnHit", "EntityStruck", "Victim");
 
-		// 1.4.5                
+		// 1.4.5
 		RenameStaticField("Terraria.ID.BuffID.Sets", from: "LongerExpertDebuff", to: "BuffTimeIsExtendedWithGameDifficulty");
 		RenameStaticField("Terraria.ID.GoreID.Sets", from: "LiquidDroplet", to: "IsDrip");
 		RenameStaticField("Terraria.ID.ImmunityCooldownID", from: "Bosses", to: "BossNoCheese");
@@ -371,7 +371,7 @@ public static partial class Config
 		RefactorStaticMethodCall("Terraria.Chest", "FindChestByGuessing", Removed("Use Chest.FindChest with the top left tile coordinate"));
 		RefactorStaticMethodCall("Terraria.RecipeGroup", "RegisterGroup", Removed("Replace this and \"new RecipeGroup()\" with RecipeGroup.Register"));
 
-		RefactorInstanceMethodCall("Terraria.Item", "SetDefaults", RemoveParameter(1, "noMatCheck", "bool"));
+		RefactorInstanceMethodCall("Terraria.Item", "SetDefaults", ConvertItemSetDefaults);
 		RefactorInstanceMethodCall("Terraria.Player", "GetItem", RemoveParameter(0, "plr", "int"));
 		RefactorInstanceMethodCall("Terraria.Player", "AddBuff", RemoveParameter(2, "quiet", "bool"));
 		RefactorInstanceMethodCall("Terraria.Player", "AddBuff", RemoveParameter(3, "foodHack", "bool")); // Order seems to matter here
