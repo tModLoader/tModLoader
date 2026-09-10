@@ -68,6 +68,7 @@ internal class UIFocusInputTextField : UIElement
 		if (Focused) {
 			GameInput.PlayerInput.WritingText = true;
 			Main.instance.HandleIME();
+			SetIMEPanelAnchor();
 			string newString = Main.GetInputText(CurrentString);
 			if (Main.inputTextEscape) {
 				Main.inputTextEscape = false;
@@ -104,5 +105,11 @@ internal class UIFocusInputTextField : UIElement
 		else {
 			Utils.DrawBorderString(spriteBatch, displayString, new Vector2(space.X, space.Y), Color.White);
 		}
+	}
+
+	private void SetIMEPanelAnchor()
+	{
+		Rectangle rect = GetDimensions().ToRectangle();
+		Main.instance.SetIMEPanelAnchor(new Vector2(rect.Left, rect.Bottom + 32), 0f);
 	}
 }
