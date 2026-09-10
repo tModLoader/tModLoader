@@ -190,6 +190,12 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Player.ApplyDamageToNPC changed, new parameters, new overloads
 - There are some changed patches that now use Item.RequestNewItem, these will need to have changes to support dropping instanced data
 - Double check that allDamage and allCrit are used in new armor set code
+- GetNanoFlaskDamageBoost in ProcessHitAgainstNPC might not be accounted for correctly. 
+- New PickAmmo_PickAmmoItem, PickAmmo_IterateRange, PlayerAmmoCyclingMode. ItemLoader.CanChooseAmmo patches need to be reworked 
+- Nano bullet might need some changes for the new 25% damage increase 
+- New PickAmmo_PickAmmoItem method seems to replicate our old PickAmmo/ChooseAmmo split.
+- Our PickAmmo overload patch lost. Maybe just put in .TML.cs file anyway.
+- Not sure about VanillaOnHitEffectsWhipsStart label location
 
 # New Fields that might need more documentation
 
@@ -257,6 +263,7 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - SyncItemsWithShimmer->SyncItemsWithShimmerDeprecated. Needs tModPorter
 - SyncItemCannotBeTakenByEnemies->SyncItemCannotBeTakenByEnemiesDeprecated. Needs tModPorter
 - TileID.Sets.UsesADifferentTileTypeForNPCSpawning -> InheritTypeOfTileBelowForNPCSpawning. tModporter
+- WorldItem.noGrabDelay ->  grabDelayTime...I think. double check this, it seems noGrabDelay might have been split into a few fields.
 
 # ExampleMod TODOs
 - Verify that ExampleZombieThief still works with changes

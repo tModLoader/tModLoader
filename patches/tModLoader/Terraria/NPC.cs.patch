@@ -1439,12 +1439,12 @@
  			TargetClosest();
  			if (position.X < Main.player[target].position.X) {
  				direction = 1;
-@@ -45050,7 +_,10 @@
+@@ -45168,7 +_,10 @@
  			}
  		}
  
 +		/*
- 		if (!WorldGen.InWorld(num6, num7) || Main.tile[num6, num7] == null)
+ 		if (!WorldGen.IsTileLoaded(num6, num7))
 +		*/
 +		if (!WorldGen.InWorld(num6, num7) || Main.netMode == 1 && !Main.sectionManager.TileLoaded(num6, num7))
  			return;
@@ -2322,7 +2322,7 @@
  			return false;
  
  		int num = townNpcVariationIndex;
-@@ -67658,21 +_,31 @@
+@@ -67658,12 +_,16 @@
  
  		return armorPenetration / 2;
  	}
@@ -2340,22 +2340,7 @@
 +		return StrikeNPC(Damage, knockBack, hitDirection, noPlayerInteraction: true);
  	}
  
-+	/*
- 	public int KeyBrandStrike(int plr, int dmg, Vector2 bestSwordSpot)
-+	*/
-+	public float KeyBrandStrike(int plr, float dmg, Vector2 bestSwordSpot)
- 	{
- 		float t = (float)life / (float)lifeMax;
- 		float lerpValue = Utils.GetLerpValue(1f, 0.1f, t, clamped: true);
- 		float num = 1f * lerpValue;
-+		/*
- 		dmg = (int)((float)dmg * (1f + num));
-+		*/
-+		dmg = (dmg * (1f + num));
- 		Vector2 positionInWorld = base.Hitbox.ClosestPointInRect(bestSwordSpot);
- 		ParticleOrchestrator.RequestParticleSpawn(clientOnly: false, ParticleOrchestraType.Keybrand, new ParticleOrchestraSettings {
- 			PositionInWorld = positionInWorld
-@@ -67681,24 +_,165 @@
+@@ -67681,20 +_,154 @@
  		return dmg;
  	}
  
@@ -2513,17 +2498,6 @@
 -			return 0.0;
 +			return 0;
  
- 		NetUpdateLowPriority();
-+		double num = hit.Damage;
-+		bool crit = hit.Crit;
-+		int hitDirection = hit.HitDirection;
-+		if (hit.InstantKill)
-+			num = realLife > 0 ? Main.npc[realLife].life : life;
-+
-+		/*
- 		double num = Damage;
- 		num = Main.CalculateDamageNPCsTake((int)num, defense);
- 		if (crit)
 @@ -67702,6 +_,8 @@
  		}
  	}
@@ -2533,56 +2507,81 @@
  	public int checkArmorPenetration(int armorPenetration, float armorPenetrationPercent)
  	{
  		if (ichor)
-@@ -67714,6 +_,8 @@
- 			num *= (double)takenDamageMultiplier;
+@@ -67726,9 +_,15 @@
++	/*
+ 	public int KeyBrandStrike(int plr, int dmg, Vector2 bestSwordSpot)
++	*/
++	public float KeyBrandStrike(int plr, float dmg, Vector2 bestSwordSpot)
+ 	{
+ 		float t = (float)life / (float)lifeMax;
+ 		float lerpValue = Utils.GetLerpValue(1f, 0.1f, t, clamped: true);
+ 		float num = 1f * lerpValue;
++		/*
+ 		dmg = (int)((float)dmg * (1f + num));
++		*/
++		dmg = (dmg * (1f + num));
+ 		Vector2 positionInWorld = base.Hitbox.ClosestPointInRect(bestSwordSpot);
+ 		ParticleOrchestrator.RequestParticleSpawn(clientOnly: false, ParticleOrchestraType.Keybrand, new ParticleOrchestraSettings {
+ 			PositionInWorld = positionInWorld
+@@ -67781,1 +_,4 @@
++		/*
+ 		bool flag = Damage >= 9999 && owner == 255;
++		*/
++		bool flag = hit.InstantKill && owner == 255;
+@@ -67782,6 +_,13 @@
+ 		NetUpdateLowPriority();
++		double num = hit.Damage;
++		bool crit = hit.Crit;
++		int hitDirection = hit.HitDirection;
++		if (hit.InstantKill)
++			num = realLife > 0 ? Main.npc[realLife].life : life;
++
++		/*
+ 		int num = (int)Math.Max(1.0, Main.CalculateDamageNPCsTake(Damage, defense) * (double)((!crit) ? 1 : 2));
+ 		if (RedHatSkeletronAdjustmentsEnabled())
+ 			num = Math.Max(1, (int)((float)num * 0.7f));
  
- 		if ((takenDamageMultiplier > 1f || Damage != 9999) && lifeMax > 1) {
+ 		if (takenDamageMultiplier > 1f)
+@@ -67790,7 +_,9 @@
+ 		Invariant.Assert(num >= 1, "StrikeNPC must do at least 1 damage");
+ 		num = Math.Max(1, num);
+ 		if (!flag && lifeMax > 1) {
 +		*/
 +		if (!hit.HideCombatText && !hit.InstantKill && lifeMax > 1 && !HideStrikeDamage) {
  			if (friendly) {
  				Color color = (crit ? CombatText.DamagedFriendlyCrit : CombatText.DamagedFriendly);
- 				CombatText.NewText(new Rectangle((int)position.X, (int)position.Y, width, height), color, (int)num, crit);
-@@ -67820,7 +_,10 @@
- 				localAI[0] = 1f;
- 
- 			if (!immortal) {
-+				/*
- 				bool flag2 = Damage >= 9999 && owner == 255;
-+				*/
-+				bool flag2 = hit.InstantKill && owner == 255;
- 				if (Main.netMode != 1 && !flag2)
- 					NPCDamageTracker.AddDamage(this, owner, (int)num);
- 
-@@ -67833,11 +_,14 @@
- 					life -= (int)num;
- 				}
+ 				CombatText.NewText(new Rectangle((int)position.X, (int)position.Y, width, height), color, num, crit);
  			}
+@@ -67905,11 +_,14 @@
+ 				life -= num;
+ 			}
+ 		}
 -
-+			/*
- 			if (knockBack > 0f && knockBackResist > 0f) {
- 				float num3 = knockBack * knockBackResist;
- 				if (onFire2)
- 					num3 *= 1.1f;
-+			*/
-+			if (hit.Knockback > 0) {
-+				float num3 = hit.Knockback;
++		/*
+ 		if (knockBack > 0f && knockBackResist > 0f) {
+ 			float num3 = knockBack * knockBackResist;
+ 			if (onFire2)
+ 				num3 *= 1.1f;
++		*/
++		if (hit.Knockback > 0) {
++			float num3 = hit.Knockback;
  
- 				if (num3 > 8f) {
- 					float num4 = num3 - 8f;
-@@ -67914,11 +_,11 @@
- 			if ((type == 113 || type == 114) && life <= 0) {
- 				for (int i = 0; i < Main.maxNPCs; i++) {
- 					if (Main.npc[i].active && (Main.npc[i].type == 113 || Main.npc[i].type == 114))
--						Main.npc[i].HitEffect(hitDirection, num);
-+						Main.npc[i].HitEffect(hitDirection, num, hit.InstantKill);
- 				}
+ 			if (num3 > 8f) {
+ 				float num4 = num3 - 8f;
+@@ -67986,11 +_,11 @@
+ 		if ((type == 113 || type == 114) && life <= 0) {
+ 			for (int i = 0; i < Main.maxNPCs; i++) {
+ 				if (Main.npc[i].active && (Main.npc[i].type == 113 || Main.npc[i].type == 114))
+-					Main.npc[i].HitEffect(hitDirection, num);
++					Main.npc[i].HitEffect(hitDirection, num, hit.InstantKill);
  			}
- 			else {
--				HitEffect(hitDirection, num);
-+				HitEffect(hit);
- 			}
+ 		}
+ 		else {
+-			HitEffect(hitDirection, num);
++			HitEffect(hit);
+ 		}
  
- 			if (type == 1) {
+ 		if (type == 1) {
 @@ -68131,7 +_,29 @@
  		}
  	}

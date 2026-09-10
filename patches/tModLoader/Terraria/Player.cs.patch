@@ -2657,23 +2657,6 @@
  	public void BuffHandle_SpawnPetIfNeededAndSetTime(int buffIndex, ref bool petBool, int petProjID, int buffTimeToGive = 18000)
  	{
  		buffTime[buffIndex] = buffTimeToGive;
-@@ -9783,6 +_,8 @@
- 			maxTurrets++;
- 		}
- 
-+		//TML: Wing loop is merged into ApplyEquipFunctional
-+		/*
- 		for (int n = 3; n < 10; n++) {
- 			if (armor[n].wingSlot > 0 && IsItemSlotUnlockedAndUsable(n)) {
- 				if (!hideVisibleAccessory[n] || (velocity.Y != 0f && mount.CanUseWings))
-@@ -9791,6 +_,7 @@
- 				wingsLogic = armor[n].wingSlot;
- 			}
- 		}
-+		*/
- 
- 		for (int num = 13; num < 20; num++) {
- 			if (IsItemSlotUnlockedAndUsable(num))
 @@ -9863,9 +_,12 @@
  		accStopwatch = false;
  		accOreFinder = false;
@@ -3300,18 +3283,7 @@
  		}
  
  		if (currentItem.wingSlot != -1)
-@@ -12564,11 +_,23 @@
- 			hasWings = true;
- 		}
- 
-+		//TML: Moved here from UpdateEquips.
-+		if (currentItem.wingSlot > 0) {
-+			if (!hideVisibleAccessory[itemSlot] || velocity.Y != 0f && !mount.Active)
-+				wings = currentItem.wingSlot;
-+
-+			wingsLogic = currentItem.wingSlot;
-+			equippedWings = currentItem;
-+		}
+@@ -12567,8 +_,12 @@
 +
 +		ItemLoader.UpdateAccessory(currentItem, this, hideVisual);
 +
@@ -3452,15 +3424,6 @@
  						if (!flag2)
  							continue;
  
-@@ -14212,7 +_,7 @@
- 				NetMessage.SendData(4, -1, -1, null, whoAmI);
- 
- 			if (numberOfTorchAttacksMade >= 95) {
--				int number = Item.NewItem(new EntitySource_ByItemSourceId(this, ItemSourceID.TorchGod), (int)position.X, (int)position.Y, width, height, 5043);
-+				int number = Item.NewItem(GetItemSource_Misc(ItemSourceID.TorchGod), (int)position.X, (int)position.Y, width, height, 5043);
- 				if (Main.netMode == 1)
- 					NetMessage.SendData(21, -1, -1, null, number, 1f);
- 			}
 @@ -14283,6 +_,16 @@
  				if (tile == null)
  					return;
@@ -3487,6 +3450,11 @@
  					_torchAttackPosX[num] = i;
  					_torchAttackPosY[num] = j;
  					num++;
+@@ -14371,3 +_,3 @@
+ 			if (numberOfTorchAttacksMade >= 95)
+-				Item.RequestNewItem(new EntitySource_ByItemSourceId(this, ItemSourceID.TorchGod), base.Center, 5043, 1, 0, NewItemOwnership.ReserveForLocalPlayer);
++				Item.RequestNewItem(GetItemSource_Misc(ItemSourceID.TorchGod), base.Center, 5043, 1, 0, NewItemOwnership.ReserveForLocalPlayer);
+ 		}
 @@ -14378,10 +_,11 @@
  			int num4 = Main.rand.Next(num);
  			int num5 = _torchAttackPosX[num4];
@@ -3783,79 +3751,6 @@
  		}
  
  		if (mount.Active && mount.Type == 44 && Math.Abs(velocity.X) > mount.DashSpeed - mount.RunSpeed / 4f) {
-@@ -16225,20 +_,71 @@
- 		return num;
- 	}
- 
--	public void ApplyDamageToNPC(NPC npc, int damage, float knockback, int direction, bool crit)
-+	/// <summary>
-+	/// Deals damage to an NPC (and syncs the hit in multiplayer). <br/>
-+	/// The damage will be affected by modifiers, armor pen, enemy resistances etc. <br/>
-+	/// Will not apply damage class modifiers/knockback. Use <see cref="GetTotalDamage{T}"/> to adjust the damage before calling if necessary. <br/>
-+	/// Will apply damage class based armor penetration. <br/>
-+	/// Will exit early with no effect if <see cref="PlayerLoader.CanHitNPC"/> returns false.
-+	/// </summary>
-+	/// <param name="npc">The NPC to strike</param>
-+	/// <param name="damage">The damage to deal to the NPC, before modifications, defense, resistances etc</param>
-+	/// <param name="knockback">The amount of knockback to apply</param>
-+	/// <param name="direction">The hit direction of the resulting strike (1 or -1)</param>
-+	/// <param name="crit">Whether or not the strike is a crit</param>
-+	/// <param name="damageType">Defaults to <see cref="DamageClass.Default"/></param>
-+	/// <param name="damageVariation">Whether to apply damage variation. Defaults to false.</param>
-+	public void ApplyDamageToNPC(NPC npc, int damage, float knockback, int direction, bool crit = false, DamageClass? damageType = null, bool damageVariation = false)
- 	{
-+		if (!PlayerLoader.CanHitNPC(this, npc))
-+			return;
-+
-+		/*
- 		if (GetBannerBuffEffect(npc, out var effect))
- 			damage = (int)((float)damage * effect.DamageDealt.Sample(Main.Difficulty));
-+		*/
-+		var modifiers = npc.GetIncomingStrikeModifiers(damageType ?? DamageClass.Default, direction);
-+		PlayerLoader.ModifyHitNPC(this, npc, ref modifiers);
- 
-+		if (GetBannerBuffEffect(npc, out var effect))
-+			ApplyBannerOffenseBuff(effect, ref modifiers);
-+
-+		// most instances of this damage in vanilla are not scaling but they still use generic armor penetration bonus
-+		modifiers.ArmorPenetration += GetTotalArmorPenetration(damageType ?? DamageClass.Generic);
-+
-+		StrikeNPCDirect(npc, modifiers.ToHitInfo(damage, crit, knockback, damageVariation, luck));
-+	}
-+
-+	/// <summary>
-+	/// Applies a hit to an NPC via <see cref="NPC.StrikeNPC(NPC.HitInfo, bool, bool)"/>. <br/>
-+	/// Also calls player based OnHit and OnKill hooks, tracks dps and net syncs the strike
-+	/// </summary>
-+	/// <param name="npc">The NPC to strike</param>
-+	/// <param name="hit">The hit to apply</param>
-+	public void StrikeNPCDirect(NPC npc, NPC.HitInfo hit)
-+	{
- 		OnHit(npc.Center.X, npc.Center.Y, npc);
-+		/*
- 		damage += npc.checkArmorPenetration(GetArmorPenetration(melee: false), 0f);
-+		*/
- 		NPCKillAttempt attempt = new NPCKillAttempt(npc);
-+		/*
- 		int dmg = (int)npc.StrikeNPC(damage, knockback, direction, crit, noEffect: false, fromNet: false, whoAmI);
-+		*/
-+		int dmg = npc.StrikeNPC(hit);
-+		PlayerLoader.OnHitNPC(this, npc, hit, dmg);
-+
-+		/*
- 		if (accDreamCatcher)
-+		*/
-+		if (accDreamCatcher && !npc.HideStrikeDamage)
- 			addDPS(dmg);
- 
- 		if (Main.netMode != 0)
-+			/*
- 			NetMessage.SendData(28, -1, -1, null, npc.whoAmI, damage, knockback, direction, crit.ToInt());
-+			*/
-+			NetMessage.SendStrikeNPC(npc, hit);
- 
- 		int num = BannerSystem.NPCtoBanner(npc.BannerID());
- 		if (num >= 0)
 @@ -16241,10 +_,10 @@
  			rect2.Width = 2;
  			rect2.Inflate(6, 12);
@@ -3946,6 +3841,71 @@
  
  				nPC.immune[whoAmI] = NPCImmuneTime;
  				GiveImmuneTimeForCollisionAttack(PlayerImmuneTime);
+@@ -16534,15 +_,63 @@
+ 		ApplyDamageToNPC(npc, damage, knockback, direction, crit, new PlayerNPCHitSource(sourceItemId, sourceProjectileId, sourceIdentifier));
+ 	}
+ 
+-	public void ApplyDamageToNPC(NPC npc, int damage, float knockback, int direction, bool crit, PlayerNPCHitSource hitSource)
++	/// <summary>
++	/// Deals damage to an NPC (and syncs the hit in multiplayer). <br/>
++	/// The damage will be affected by modifiers, armor pen, enemy resistances etc. <br/>
++	/// Will not apply damage class modifiers/knockback. Use <see cref="GetTotalDamage{T}"/> to adjust the damage before calling if necessary. <br/>
++	/// Will apply damage class based armor penetration. <br/>
++	/// Will exit early with no effect if <see cref="PlayerLoader.CanHitNPC"/> returns false.
++	/// </summary>
++	/// <param name="npc">The NPC to strike</param>
++	/// <param name="damage">The damage to deal to the NPC, before modifications, defense, resistances etc</param>
++	/// <param name="knockback">The amount of knockback to apply</param>
++	/// <param name="direction">The hit direction of the resulting strike (1 or -1)</param>
++	/// <param name="crit">Whether or not the strike is a crit</param>
++	/// <param name="damageType">Defaults to <see cref="DamageClass.Default"/></param>
++	/// <param name="damageVariation">Whether to apply damage variation. Defaults to false.</param>
++	public void ApplyDamageToNPC(NPC npc, int damage, float knockback, int direction, bool crit = false, DamageClass? damageType = null, bool damageVariation = false)
+ 	{
++		if (!PlayerLoader.CanHitNPC(this, npc))
++			return;
++
++		/*
+ 		if (GetBannerBuffEffect(npc, out var effect))
+ 			damage = (int)((float)damage * effect.DamageDealt.Sample(Main.Difficulty));
++		*/
++		var modifiers = npc.GetIncomingStrikeModifiers(damageType ?? DamageClass.Default, direction);
++		PlayerLoader.ModifyHitNPC(this, npc, ref modifiers);
+ 
++		if (GetBannerBuffEffect(npc, out var effect))
++			ApplyBannerOffenseBuff(effect, ref modifiers);
++
++		// most instances of this damage in vanilla are not scaling but they still use generic armor penetration bonus
++		modifiers.ArmorPenetration += GetTotalArmorPenetration(damageType ?? DamageClass.Generic);
++
++		StrikeNPCDirect(npc, modifiers.ToHitInfo(damage, crit, knockback, damageVariation, luck));
++	}
++
++	/// <summary>
++	/// Applies a hit to an NPC via <see cref="NPC.StrikeNPC(NPC.HitInfo, bool, bool)"/>. <br/>
++	/// Also calls player based OnHit and OnKill hooks, tracks dps and net syncs the strike
++	/// </summary>
++	/// <param name="npc">The NPC to strike</param>
++	/// <param name="hit">The hit to apply</param>
++	public void StrikeNPCDirect(NPC npc, NPC.HitInfo hit)
++	{
+ 		OnHit(npc.Center.X, npc.Center.Y, npc);
++		/*
+ 		damage += npc.checkArmorPenetration(GetArmorPenetration(melee: false), 0f);
++		*/
+ 		NPCKillAttempt attempt = new NPCKillAttempt(npc);
++		/*
+ 		NPCDamageTracker.SetSourceForNextHit(npc, hitSource);
+ 		int dmg = npc.StrikeNPC(damage, knockback, direction, crit, fromNet: false, whoAmI);
++		*/
++		int dmg = npc.StrikeNPC(hit);
++		PlayerLoader.OnHitNPC(this, npc, hit, dmg);
++
++		/*
+ 		if (accDreamCatcher)
++		*/
++		if (accDreamCatcher && !npc.HideStrikeDamage)
+ 			addDPS(dmg);
 @@ -16622,7 +_,7 @@
  
  				Rectangle rect2 = nPC.getRect();
@@ -4012,10 +3972,40 @@
  				if (!flag2 && !flag) {
  					if (canJumpAgain_Basilisk) {
  						flag12 = true;
-@@ -16770,16 +_,24 @@
+@@ -16798,6 +_,10 @@
+ 						canJumpAgain_Cloud = false;
+ 					}
+ 				}
++				*/
++
++				// Patch context: flag
++				bool attemptDoubleJumps = !flag;
+ 
+ 				canRocket = false;
+ 				rocketRelease = false;
+@@ -16829,6 +_,10 @@
+ 				else if (flag13) {
+ 					velocity.Y = 16f * gravDir;
+ 				}
++				else if (attemptDoubleJumps && !blockExtraJumps) {
++					ExtraJumpLoader.ProcessJumps(this);
++				}
++				/*
+ 				else if (flag5) {
+ 					isPerformingJump_Sandstorm = true;
+ 					_ = height;
+@@ -17039,6 +_,7 @@
+ 					Main.gore[num28].velocity.X = Main.gore[num28].velocity.X * 0.1f - velocity.X * 0.1f;
+ 					Main.gore[num28].velocity.Y = Main.gore[num28].velocity.Y * 0.1f - velocity.Y * 0.05f;
+ 				}
++				*/
+ 			}
+ 
+ 			releaseJump = false;
+@@ -17082,15 +_,23 @@
  					}
  
- 					if (victimHitbox.Intersects(npcRect) && (nPC.noTileCollide || CanHit(nPC))) {
+ 					if (rectangle.Intersects(npcRect) && (nPC.noTileCollide || CanHit(nPC))) {
 +						/*
  						float num = 30f * meleeDamage;
  						float num2 = 9f;
@@ -4037,73 +4027,41 @@
 +						if (Main.rand.Next(100) < GetTotalCritChance(DamageClass.Melee))
  							crit = true;
  
- 						int num3 = direction;
-@@ -16790,7 +_,7 @@
- 							num3 = 1;
- 
+@@ -17099,5 +_,5 @@
  						if (whoAmI == Main.myPlayer)
--							ApplyDamageToNPC(nPC, (int)num, num2, num3, crit);
-+							ApplyDamageToNPC(nPC, (int)num, num2, num3, crit, DamageClass.Melee);
+-							ApplyDamageToNPC(nPC, (int)num, num2, num3, crit, null, 3097);
++							ApplyDamageToNPC(nPC, (int)num, num2, num3, crit, null, 3097, DamageClass.Melee);
  
  						eocDash = 10;
  						dashDelay = 30;
-@@ -16798,6 +_,10 @@
- 						canJumpAgain_Cloud = false;
- 					}
- 				}
-+				*/
-+
-+				// Patch context: flag
-+				bool attemptDoubleJumps = !flag;
- 
- 				canRocket = false;
- 				rocketRelease = false;
-@@ -16826,16 +_,25 @@
+@@ -17142,17 +_,26 @@
  						ConsumeSolarFlare();
  					}
  
 +					/*
- 					float num4 = 150f * meleeDamage;
- 					float num5 = 9f;
+ 					float num5 = 150f * meleeDamage;
+ 					float num6 = 9f;
 +					*/
-+					float num4 = GetTotalDamage(DamageClass.Melee).ApplyTo(150f);
-+					float num5 = GetTotalKnockback(DamageClass.Melee).ApplyTo(9f);
++					float num5 = GetTotalDamage(DamageClass.Melee).ApplyTo(150f);
++					float num6 = GetTotalKnockback(DamageClass.Melee).ApplyTo(9f);
 +
  					bool crit2 = false;
 +
 +					// Knockback glove and buff moved to UpdateEquips and Update
 +					/*
  					if (kbGlove)
- 						num5 *= 2f;
+ 						num6 *= 2f;
  
  					if (kbBuff)
- 						num5 *= 1.5f;
+ 						num6 *= 1.5f;
 +					*/
  
 -					if (Main.rand.Next(100) < meleeCrit)
 +					if (Main.rand.Next(100) < GetTotalCritChance(DamageClass.Melee))
  						crit2 = true;
  
- 					int num6 = direction;
-@@ -16829,6 +_,10 @@
- 				else if (flag13) {
- 					velocity.Y = 16f * gravDir;
- 				}
-+				else if (attemptDoubleJumps && !blockExtraJumps) {
-+					ExtraJumpLoader.ProcessJumps(this);
-+				}
-+				/*
- 				else if (flag5) {
- 					isPerformingJump_Sandstorm = true;
- 					_ = height;
-@@ -17039,6 +_,7 @@
- 					Main.gore[num28].velocity.X = Main.gore[num28].velocity.X * 0.1f - velocity.X * 0.1f;
- 					Main.gore[num28].velocity.Y = Main.gore[num28].velocity.Y * 0.1f - velocity.Y * 0.05f;
- 				}
-+				*/
- 			}
- 
- 			releaseJump = false;
+ 					TryConsumingTimerCrit(Rectangle.Intersect(rectangle2, npcRect2), ref crit2);
+ 					int num7 = direction;
 @@ -17163,7 +_,7 @@
  						num7 = 1;
  
@@ -4376,21 +4334,6 @@
  		infernoCounter++;
  		if (infernoCounter >= 180)
  			infernoCounter = 0;
-@@ -20239,11 +_,14 @@
- 					}
- 				}
- 
-+				/*
- 				bool flag9 = false;
- 				for (int num15 = 3; num15 < 10; num15++) {
- 					if (armor[num15].stack > 0 && armor[num15].wingSlot > -1)
- 						flag9 = true;
- 				}
-+				*/
-+				bool flag9 = equippedWings != null;
- 
- 				if (stoned) {
- 					int num16 = (int)(((float)num10 * gravDir - 2f) * 20f);
 @@ -20374,7 +_,10 @@
  				}
  			}
@@ -4891,18 +4834,6 @@
  	public bool ShouldDrawWingsThatAreAlwaysAnimated(bool ignoreMounts = false)
  	{
  		if (velocity.Y != 0f && grappling[0] <= -1 && (!wet || !ShouldFloatInWater)) {
-@@ -25200,8 +_,11 @@
- 					ApplyDamageToNPC(Main.npc[i], damage, knockback, -num3, crit: false);
- 				}
- 
-+				// Moved to CombinedHooks.ModifyHitByNPC
-+				/*
- 				if (resistCold && Main.npc[i].coldDamage)
- 					num4 = (int)((float)num4 * 0.7f);
-+				*/
- 
- 				if (flag && Hurt(dodgeable: Main.npc[i].IsDamageDodgeable(), damageSource: PlayerDeathReason.ByNPC(i), Damage: num4, hitDirection: num3, pvp: false, quiet: false, Crit: false, cooldownCounter: specialHitSetter) > 0.0 && !dead && !flag2)
- 					StatusFromNPC(Main.npc[i]);
 @@ -25453,7 +_,7 @@
  		if (TileID.Sets.BasicChest[tile.type] || tile.type == 97)
  			r = new Rectangle(chestPointX * 16, chestPointY * 16, 32, 32);
@@ -4937,6 +4868,18 @@
  				bool flag3 = !immune;
  				if (specialHitSetter >= 0)
  					flag3 = hurtCooldowns[specialHitSetter] == 0;
+@@ -25739,8 +_,11 @@
+ 					ApplyDamageToNPC(Main.npc[i], damage, knockback, -num3, crit: false, PlayerNPCHitSources.CactusThorns);
+ 				}
+ 
++				// Moved to CombinedHooks.ModifyHitByNPC
++				/*
+ 				if (resistCold && Main.npc[i].coldDamage)
+ 					num4 = (int)((float)num4 * 0.7f);
++				*/
+ 
+ 				if (flag && Hurt(dodgeable: Main.npc[i].IsDamageDodgeable(), damageSource: PlayerDeathReason.ByNPC(i), Damage: num4, hitDirection: num3, pvp: false, quiet: false, Crit: false, cooldownCounter: specialHitSetter) > 0.0 && !dead && !flag2)
+ 					StatusFromNPC(Main.npc[i]);
 @@ -25824,6 +_,9 @@
  
  	public void ItemCheck_ManageRightClickFeatures()
@@ -5563,7 +5506,39 @@
  		if (drawPlayer.stoned || drawPlayer.stealth != 1f) {
  			armorEffectDrawOutlines = false;
  			armorEffectDrawShadow = false;
-@@ -30825,21 +_,83 @@
+@@ -30851,13 +_,20 @@
+ 				case 249:
+ 					if (!male)
+ 						num2 = 250;
++					// Patch context
+ 					break;
+ 			}
+ 		}
+ 
++		ItemLoader.SetMatch(armorSlotRequested, num, male, ref num2, ref somethingSpecial);
+ 		return num2;
+ 	}
+ 
++	/// <summary>
++	/// Teleports the player to the provided world coordinates. In multiplayer, clients should send <see cref="MessageID.TeleportEntity"/> rather than call this method directly.
++	/// <br/> <b>newPos: </b> The teleportation destination in world coordinates. (Sets position, not Center)
++	/// <br/> <b>Style: </b> Controls the visuals and sounds of the teleport. Equivalent to <see cref="TeleportationStyleID"/> values.
++	/// </summary>
+ 	public void Teleport(Vector2 newPos, int Style = 0, int extraInfo = 0)
+ 	{
+ 		try {
+@@ -31040,6 +_,10 @@
+ 			}
+ 
+ 			immune = true;
++
++			if (dead)
++				PlayerLoader.OnRespawn(this);
++
+ 			dead = false;
+ 			deadTime = 0;
+ 			immuneTime = 0;
+@@ -31556,21 +_,83 @@
  		return false;
  	}
  
@@ -5645,50 +5620,9 @@
 +			if (PlayerLoader.FreeDodge(this, info))
 +				return 0.0;
 +		
- 			if (blackBelt && Main.rand.Next(10) == 0) {
- 				NinjaDodge();
+ 			if (mysticSashDodge && Main.rand.Next(10) == 0) {
+ 				DoMysticSashDodge();
  				return 0.0;
-@@ -30851,13 +_,20 @@
- 				case 249:
- 					if (!male)
- 						num2 = 250;
-+					// Patch context
- 					break;
- 			}
- 		}
- 
-+		ItemLoader.SetMatch(armorSlotRequested, num, male, ref num2, ref somethingSpecial);
- 		return num2;
- 	}
- 
-+	/// <summary>
-+	/// Teleports the player to the provided world coordinates. In multiplayer, clients should send <see cref="MessageID.TeleportEntity"/> rather than call this method directly.
-+	/// <br/> <b>newPos: </b> The teleportation destination in world coordinates. (Sets position, not Center)
-+	/// <br/> <b>Style: </b> Controls the visuals and sounds of the teleport. Equivalent to <see cref="TeleportationStyleID"/> values.
-+	/// </summary>
- 	public void Teleport(Vector2 newPos, int Style = 0, int extraInfo = 0)
- 	{
- 		try {
-@@ -31040,6 +_,10 @@
- 			}
- 
- 			immune = true;
-+
-+			if (dead)
-+				PlayerLoader.OnRespawn(this);
-+
- 			dead = false;
- 			deadTime = 0;
- 			immuneTime = 0;
-@@ -31056,7 +_,7 @@
- 					else if (Main.expertMode)
- 						num18 *= 2;
- 
--					Projectile.NewProjectile(GetProjectileSource_Accessory(item), x, y, num15, num16, type, num18, 5f, whoAmI, 0f, position.Y);
-+					Projectile.NewProjectile(GetSource_Accessory_OnHurt(item, info.DamageSource), x, y, num15, num16, type, num18, 5f, whoAmI, 0f, position.Y);
- 				}
- 			}
- 
 @@ -31590,19 +_,36 @@
  				ShadowDodge();
  				return 0.0;
@@ -5859,6 +5793,14 @@
  			}
  
  			if (starCloakItem != null && !starCloakItem.IsAir) {
+@@ -31789,6 +_,6 @@
+ 				else if (Main.expertMode)
+ 					num16 *= 2;
+ 
+-				IEntitySource projectileSource_Accessory = GetProjectileSource_Accessory(item);
++				IEntitySource projectileSource_Accessory = GetSource_Accessory_OnHurt(item, info.DamageSource)
+ 				if (true) {
+ 					for (int num17 = 0; num17 < num15; num17++) {
 @@ -31827,7 +_,7 @@
  				else if (Main.expertMode)
  					num22 *= 1.5f;
@@ -6815,51 +6757,6 @@
  		if (itemAnimation > 0)
  			ItemCheck_ApplyUseStyle(mountOffset, item, drawHitbox);
  		else
-@@ -35855,22 +_,43 @@
- 			if (nPC.life > 5)
- 				OnHit(nPC.Center.X, nPC.Center.Y, nPC);
- 
-+			/*
- 			num3 += nPC.checkArmorPenetration(GetArmorPenetration(sItem.melee), armorPenetrationPercent);
-+			*/
-+			modifiers.ArmorPenetration += GetWeaponArmorPenetration(sItem);
-+			modifiers.ScalingArmorPenetration += armorPenetrationPercent;
-+			CombinedHooks.ModifyPlayerHitNPCWithItem(this, sItem, nPC, ref modifiers);
-+			var strike = modifiers.ToHitInfo(originalDamage, flag3, knockBack, damageVariation: true, luck);
-+
- 			NPCKillAttempt attempt = new NPCKillAttempt(nPC);
-+			/*
- 			int num5 = (int)nPC.StrikeNPC(num3, knockBack, direction, flag3, noEffect: false, fromNet: false, whoAmI);
-+			*/
-+			int num5 = nPC.StrikeNPC(strike);
-+
-+			CombinedHooks.OnPlayerHitNPCWithItem(this, sItem, nPC, strike, num5);
-+			/*
- 			ApplyNPCOnHitEffects(sItem, itemRectangle, damage, knockBack, npcIndex, num3, num5);
-+			*/
-+			// num was pre-variation and post buffs. Equivalent to strike.SourceDamage.
-+			// num6 is post-variation and armor pen, only used by bees and muramasa.
-+			// By switching to strike.SourceDamage for num6, we introduce a slight vanilla discrepancy, but we remove the double damage randomization, and armor penetration
-+			ApplyNPCOnHitEffects(sItem, itemRectangle, strike.SourceDamage, strike.Knockback, npcIndex, strike.SourceDamage, num5);
- 			int num6 = BannerSystem.NPCtoBanner(nPC.BannerID());
- 			if (num6 >= 0)
- 				lastCreatureHit = num6;
- 
- 			if (Main.netMode != 0) {
-+				/*
- 				if (flag3)
- 					NetMessage.SendData(28, -1, -1, null, npcIndex, num3, knockBack, direction, 1);
- 				else
- 					NetMessage.SendData(28, -1, -1, null, npcIndex, num3, knockBack, direction);
-+				*/
-+				NetMessage.SendStrikeNPC(nPC, strike);
- 			}
- 
--			if (accDreamCatcher)
-+			if (accDreamCatcher && !nPC.HideStrikeDamage)
- 				addDPS(num5);
- 
- 			SetMeleeHitCooldown(npcIndex, itemAnimation);
 @@ -35872,6 +_,8 @@
  			framesInMovementForPlacementPreview = Utils.Clamp(framesInMovementForPlacementPreview + num, 0, 33);
  			Tile targetTile = Main.tile[tileTargetX, tileTargetY];
@@ -7087,6 +6984,40 @@
  			}
  
  			if (sItem.type == 3258) {
+@@ -36694,9 +_,27 @@
+ 				num3 = (int)((float)num3 * nanoFlaskDamageBoost);
+ 			}
+ 
++			/*
+ 			num3 += nPC.checkArmorPenetration(GetArmorPenetration(sItem.melee), armorPenetrationPercent);
++			*/
++			modifiers.ArmorPenetration += GetWeaponArmorPenetration(sItem);
++			modifiers.ScalingArmorPenetration += armorPenetrationPercent;
++			CombinedHooks.ModifyPlayerHitNPCWithItem(this, sItem, nPC, ref modifiers);
++			var strike = modifiers.ToHitInfo(originalDamage, crit, knockBack, damageVariation: true, luck);
++
+ 			NPCKillAttempt attempt = new NPCKillAttempt(nPC);
++			/*
+ 			NPCDamageTracker.SetSourceForNextHit(nPC, PlayerNPCHitSource.FromItem(sItem.type));
+ 			int num4 = nPC.StrikeNPC(num3, knockBack, direction, crit, fromNet: false, whoAmI);
++			*/
++			int num4 = nPC.StrikeNPC(strike);
++
++			CombinedHooks.OnPlayerHitNPCWithItem(this, sItem, nPC, strike, num4);
++			/*
+ 			ApplyNPCOnHitEffects(sItem, itemRectangle, damage, knockBack, nPC, num3, num4);
++			*/
++			// num was pre-variation and post buffs. Equivalent to strike.SourceDamage.
++			// num5 is post-variation and armor pen, only used by bees and muramasa.
++			// By switching to strike.SourceDamage for num6, we introduce a slight vanilla discrepancy, but we remove the double damage randomization, and armor penetration
++			ApplyNPCOnHitEffects(sItem, itemRectangle, strike.SourceDamage, strike.Knockback, npcIndex, strike.SourceDamage, num4);
+ 			int num5 = BannerSystem.NPCtoBanner(nPC.BannerID());
+@@ -36706,4 +_,4 @@
+-			if (accDreamCatcher)
++			if (accDreamCatcher && !nPC.HideStrikeDamage)
+ 				addDPS(num4);
+ 
+ 			SetMeleeHitCooldown(npcIndex, itemAnimation);
 @@ -36968,11 +_,17 @@
  
  	private void ItemCheck_CatchCritters(Item sItem, Rectangle itemRectangle)
@@ -7731,236 +7662,6 @@
  		if (item.type == 3001) {
  			int healLife = item.healLife;
  			int num2 = 120;
-@@ -43399,18 +_,78 @@
- 		if (AmmoID.Sets.SpecificLauncherAmmoProjectileMatches.TryGetValue(launcher, out var value) && value.TryGetValue(ammo, out pickedProjectileId))
- 			return true;
- 
-+		// Added fallback functionality for mod compatibility
-+		launcher = AmmoID.Sets.SpecificLauncherAmmoProjectileFallback[launcher];
-+		if (launcher != -1) {
-+			if (AmmoID.Sets.SpecificLauncherAmmoProjectileMatches.TryGetValue(launcher, out var fallbackValue) && fallbackValue.TryGetValue(ammo, out pickedProjectileId))
-+				return true;
-+		}
-+
- 		return false;
- 	}
- 
-+	// Overloaded added by TML.
-+	/// <summary>
-+	/// A more-convenient-to-call variant of the vanilla PickAmmo method, which handles most vanilla ammunition logic to decide various common stats related to ammunition-consuming weapons.<br></br>
-+	/// The stats output by this method take into account any extra stats which the ammunition it finds may provide (read: it accounts for ammo damage and knockback).<br></br>
-+	/// </summary>
-+	/// <param name="weapon">The weapon for which to handle ammunition logic.</param>
-+	/// <param name="projToShoot">The projectile that should be shot based on the given weapon and the located ammunition.</param>
-+	/// <param name="speed">The speed at which the projectile that would be made by the given weapon and located ammunition should move.</param>
-+	/// <param name="damage">The damage value that the projectile shot should have, based on the given weapon and the located ammunition.</param>
-+	/// <param name="knockBack">The knockback value that the projectile shot should have, based on the given weapon and the located ammunition.</param>
-+	/// <param name="usedAmmoItemId">The numerical ID of the located ammunition.</param>
-+	/// <param name="dontConsume">
-+	/// Whether or not ammo consumption logic should be called upon.<br></br>
-+	/// This defaults to false, and if it is true for any reason, ammo will not be consumed at the end of the method.<br></br>
-+	/// This is useful for gathering the data needed based on PickAmmo's calculations without incidentally consuming any ammunition in the process.
-+	/// </param>
-+	/// <returns>True if ammo was found/chosen, and false otherwise.</returns>
-+	public bool PickAmmo(Item weapon, out int projToShoot, out float speed, out int damage, out float knockBack, out int usedAmmoItemId, bool dontConsume = false)
-+	{
-+		projToShoot = weapon.shoot;
-+		speed = weapon.shootSpeed;
-+		damage = GetWeaponDamage(weapon);
-+		knockBack = GetWeaponKnockback(weapon);
-+
-+		bool canShoot = false;
-+		PickAmmo(weapon, ref projToShoot, ref speed, ref canShoot, ref damage, ref knockBack, out usedAmmoItemId, dontConsume);
-+
-+		if (!canShoot) {
-+			projToShoot = 0;
-+			return false;
-+		}
-+
-+		return true;
-+	}
-+
-+	//TML: Method split, 1st part of original PickAmmo.
-+	/*
- 	public void PickAmmo(Item sItem, ref int projToShoot, ref float speed, ref bool canShoot, ref int Damage, ref float KnockBack, out int usedAmmoItemId, bool dontConsume = false)
-+	*/
-+	/// <summary>
-+	/// Attempts to select an ammo item stack from this player's inventory to shoot with the given weapon.
-+	/// </summary>
-+	/// <param name="weapon">The weapon for which this call should try to find ammo.</param>
-+	/// <returns>Null if no suitable ammo is found; otherwise, returns the first ammo item found.</returns>
-+	public Item ChooseAmmo(Item weapon)
- 	{
--		Item item = new Item();
-+		var sItem = weapon;
-+		Item item = null;
- 		bool flag = false;
-+		/*
- 		usedAmmoItemId = 0;
-+		*/
-+		bool canShoot = false; // Dummy.
-+
- 		if (sItem.useAmmo == AmmoID.Coin) {
- 			for (int i = 0; i < 4; i++) {
- 				int num = 50 + i;
-+
-+				/*
- 				if (inventory[num].ammo == sItem.useAmmo && inventory[num].stack > 0) {
-+				*/
-+				if (inventory[num].stack > 0 && ItemLoader.CanChooseAmmo(sItem, inventory[i], this)) {
- 					item = inventory[num];
- 					canShoot = true;
- 					flag = true;
-@@ -43420,7 +_,10 @@
- 		}
- 
- 		for (int j = 54; j < 58; j++) {
-+			/*
- 			if (inventory[j].ammo == sItem.useAmmo && inventory[j].stack > 0) {
-+			*/
-+			if (inventory[j].stack > 0 && ItemLoader.CanChooseAmmo(sItem, inventory[j], this)) {
- 				item = inventory[j];
- 				canShoot = true;
- 				flag = true;
-@@ -43430,7 +_,10 @@
- 
- 		if (!flag) {
- 			for (int k = 0; k < 54; k++) {
-+				/*
- 				if (inventory[k].ammo == sItem.useAmmo && inventory[k].stack > 0) {
-+				*/
-+				if (inventory[k].stack > 0 && ItemLoader.CanChooseAmmo(sItem, inventory[k], this)) {
- 					item = inventory[k];
- 					canShoot = true;
- 					break;
-@@ -43438,17 +_,52 @@
- 			}
- 		}
- 
-+		return item;
-+	}
-+
-+	//TML: Method split, 2nd part of original PickAmmo. This one gets called by vanilla in place of it.
-+	internal void PickAmmo(Item sItem, ref int projToShoot, ref float speed, ref bool canShoot, ref int totalDamage, ref float KnockBack, out int usedAmmoItemId, bool dontConsume = false)
-+	{
-+		usedAmmoItemId = 0;
-+		Item item = ChooseAmmo(sItem);
-+		canShoot = item != null;
-+
-+		bool shootWithNoAmmo = false;
-+		if (!canShoot && !ItemLoader.NeedsAmmo(sItem, this)) {
-+			item = ContentSamples.ItemsByType[sItem.useAmmo];
-+			if (item.ammo == sItem.useAmmo)
-+				canShoot = shootWithNoAmmo = true;
-+		}
-+
- 		if (!canShoot)
- 			return;
- 
- 		usedAmmoItemId = item.type;
-+
-+		StatModifier ammoDamage = GetTotalDamage(item.DamageType);
-+		if (AmmoID.Sets.IsArrow[item.ammo])
-+			ammoDamage = ammoDamage.CombineWith(arrowDamage);
-+
-+		if (AmmoID.Sets.IsBullet[item.ammo])
-+			ammoDamage = ammoDamage.CombineWith(bulletDamage);
-+
-+		if (AmmoID.Sets.IsSpecialist[item.ammo])
-+			ammoDamage = ammoDamage.CombineWith(specialistDamage);
-+
-+		// TODO: Why do we reset Base to 0 here? Why not use += for Flat?
-+		ammoDamage.Base = 0;
-+		ammoDamage.Flat = totalDamage;
-+		ref float Damage = ref ammoDamage.Flat; // Vanilla projectile damage applied from here on is interpreted as flat additions
-+
- 		int pickedProjectileId = -1;
- 		if (PickAmmo_TryFindingSpecificMatches(sItem.type, item.type, out pickedProjectileId))
- 			projToShoot = pickedProjectileId;
-+		/* These 2 are unused and will never be right for modded rocket ammo. Following check is kept in to preserve existing behavior if being relied on.
- 		else if (sItem.type == 1946)
- 			projToShoot = 338 + item.type - 771;
- 		else if (sItem.type == 3930)
- 			projToShoot = 715 + item.type - AmmoID.Rocket;
-+		*/
- 		else if (sItem.useAmmo == AmmoID.Rocket)
- 			projToShoot += item.shoot;
- 		else if (sItem.useAmmo == AmmoID.Solution)
-@@ -43500,8 +_,12 @@
- 			speed *= 1.1f;
- 		}
- 
-+		// Item damage applied below, with ammoDamage.ApplyTo(item.damage)
-+		// Damage class boosts come from the ammo damage class
-+		/*
- 		if (item.damage > 0)
- 			Damage += (int)((float)item.damage * GetWeaponDamageMultiplier(item));
-+		*/
- 
- 		if (AmmoID.Sets.IsArrow[item.ammo] && archery && speed < 20f) {
- 			speed *= 1.2f;
-@@ -43510,7 +_,61 @@
- 		}
- 
- 		KnockBack += item.knockBack;
-+
-+		ItemLoader.PickAmmo(sItem, item, this, ref projToShoot, ref speed, ref ammoDamage, ref KnockBack);
-+		totalDamage = (int)(ammoDamage.ApplyTo(item.damage) + 5E-06f);
-+
-+		if (!dontConsume && !shootWithNoAmmo && item.consumable && !IsAmmoFreeThisShot(sItem, item, projToShoot)) {
-+			CombinedHooks.OnConsumeAmmo(this, sItem, item);
-+			item.stack--;
-+			if (item.stack <= 0) {
-+				item.TurnToAir();
-+			}
-+		}
-+	}
-+
-+	//TML: Method split, 3rd part of original PickAmmo.
-+	/// <summary>
-+	/// Determines whether or not the given ammunition should be conserved, based on the given weapon as wielded by this player.
-+	/// </summary>
-+	/// <param name="weapon">The weapon attempting to consume the ammo.</param>
-+	/// <param name="ammo">The ammo attempting to be conserved (i.e. not consumed).</param>
-+	/// <param name="projToShoot">The projectile that should be shot by the given weapon/ammo combination.</param>
-+	/// <returns>True if the ammo should be conserved on the given shot; false otherwise.</returns>
-+	public bool IsAmmoFreeThisShot(Item weapon, Item ammo, int projToShoot)
-+	{
-+		Item sItem = weapon;
-+		Item item = ammo;
-+
-+		// TODO:
-+		// The current approach to ammo consumption hooks demands that vanilla conservation chances still be allowed to factor in.
-+		// While this is fine for some, for others, it may be preferable to be able to guarantee ammo consumption if it should happen.
-+		// For this, two approaches exist. each has their ups and downs:
-+		// 1 - CanConsumeAmmo to nullable, return given value if it exists
-+		// 2 - separate hook for forced ammo consumption. returns false by default, return true to bypass all vanilla conservation chances
-+		//
-+		// Post-May-freeze, will decide on one and make changes accordingly.
-+		// - Thomas
-+
-+		if (!CombinedHooks.CanConsumeAmmo(this, sItem, item))
-+			return true;
-+
-+		if (sItem.consumeAmmoOnFirstShotOnly && !ItemAnimationJustStarted)
-+			return true;
-+
-+		if (sItem.consumeAmmoOnLastShotOnly) {
-+			int useTime = CombinedHooks.TotalUseTime(sItem.useTime, this, sItem);
-+			bool isLastShot = itemAnimation <= useTime || // not enough time to shoot again
-+				sItem.useLimitPerAnimation != null && ItemUsesThisAnimation == sItem.useLimitPerAnimation - 1; // this shot hits the limit
-+
-+			if (!isLastShot)
-+				return true;
-+		}
-+
-+		/*
- 		bool flag2 = dontConsume;
-+		*/
-+		bool flag2 = false;
- 		if (sItem.type == 3475 && Main.rand.Next(3) != 0)
- 			flag2 = true;
- 
 @@ -43529,6 +_,9 @@
  
  	private bool ItemCheck_CheckCanUse_Inner(Item sItem, bool ignoreCursed = false)
@@ -7991,59 +7692,6 @@
  			return true;
  
  		if (sItem.shoot > 0 && ProjectileID.Sets.TurretFeature[sItem.shoot] && altFire)
-@@ -44077,12 +_,37 @@
- 			return;
- 		}
- 
-+		// DropItems
-+		var startInventory = PlayerLoader.GetStartingItems(this, DropItems_GetDefaults().Where(item => !item.IsAir), true);
-+		var startCounts = new Dictionary<int, int>();
-+
-+		foreach (Item item in startInventory) {
-+			if (!startCounts.ContainsKey(item.type))
-+				startCounts[item.type] = 0;
-+
-+			startCounts[item.type] += item.stack;
-+		}
-+
-+		startCounts[ModContent.ItemType<ModLoader.Default.StartBag>()] = 1;
-+
-+		//TML: Drop code for modded accessory Slots, should run prior to dropping other items in case conditions are used based on player's current equips
-+		AccessorySlotLoader.ModSlotPlayer(this).DropItems(itemSource_Death);
-+
- 		array = inventory;
- 		foreach (Item item2 in array) {
-+			/*
- 			if (item2.type == 3507 || item2.type == 3506 || item2.type == 3509)
- 				item2.TurnToAir(fullReset: true);
- 			else
- 				TryDroppingSingleItem(itemSource_Death, item2);
-+			*/
-+			if (startCounts.TryGetValue(item2.type, out int startCount)) {
-+				int n = Math.Min(item2.stack, startCount);
-+				item2.stack -= n;
-+				startCounts[item2.type] -= n;
-+			}
-+			if (item2.stack > 0)
-+				TryDroppingSingleItem(itemSource_Death, item2);
- 		}
- 
- 		array = armor;
-@@ -44180,8 +_,14 @@
- 		}
- 	}
- 
-+	private Player _clientClone;
- 	public Player clientClone(Player clonePlayer)
- 	{
-+		// Disable cloning until the end of the method.
-+		using var _disableItemCLone = new Item.DisableCloneMethod("Item.Clone is bad for performance, and should not be called during Player.clientClone or ModPlayer.CopyClientStateTo. Use Item.CopyNetStateTo instead");
-+
-+		if(_clientClone == null)
-+			clonePlayer = Main.clientPlayer = new Player();
- 		clonePlayer.zone1 = zone1;
- 		clonePlayer.zone2 = zone2;
- 		clonePlayer.zone3 = zone3;
 @@ -44221,6 +_,13 @@
  		if (sItem.IsAir || (selectedItemState.HasBufferedChange && (sItem.shoot <= 0 || ItemTimeIsZero)))
  			return;
@@ -8132,119 +7780,6 @@
  	public void UpdateMaxTurrets()
  	{
  		if (Main.myPlayer != whoAmI)
-@@ -44428,11 +_,33 @@
- 		if (string.IsNullOrEmpty(path))
- 			return;
- 
-+		// TML: Split method into several methods to facilitate separation between saving to disk and generating save data.
-+		// TML: Delay vanilla saving until modded data is serialized (in case of exceptions)
-+		// Moved to SavePlayerFile_Write
-+		/*
- 		if (FileUtilities.Exists(path, isCloudSave))
- 			FileUtilities.Copy(path, path + ".bak", isCloudSave);
-+		*/
-+
-+		PlayerLoader.PreSavePlayer(player);
-+		byte[] plrData = SavePlayerFile_Vanilla(playerFile);
-+		PlayerLoader.PostSavePlayer(player);
-+
-+		player.ModSaveErrors.Clear(); // Here instead of inside PlayerIO.SaveData because SerializedClone would clear.
-+		TagCompound tplrData = PlayerIO.SaveData(player);
-+
-+		SavePlayerFile_Write(playerFile, plrData, tplrData);
-+	}
-+
-+	public static byte[] SavePlayerFile_Vanilla(PlayerFileData playerFile)
-+	{
-+		var player = playerFile.Player;
- 
- 		RijndaelManaged rijndaelManaged = new RijndaelManaged();
-+		/*
- 		using Stream stream = (isCloudSave ? ((Stream)new MemoryStream(2000)) : ((Stream)new FileStream(path, FileMode.Create)));
-+		*/
-+		using Stream stream = new MemoryStream(2000);
- 		using CryptoStream cryptoStream = new CryptoStream(stream, rijndaelManaged.CreateEncryptor(ENCRYPTION_KEY, ENCRYPTION_KEY), CryptoStreamMode.Write);
- 		using BinaryWriter binaryWriter = new BinaryWriter(cryptoStream);
- 		binaryWriter.Write(319);
-@@ -44507,57 +_,58 @@
- 		fileIO.Write(newPlayer.shoeColor.G);
- 		fileIO.Write(newPlayer.shoeColor.B);
- 		for (int k = 0; k < newPlayer.armor.Length; k++) {
--			fileIO.Write(newPlayer.armor[k].type);
--			fileIO.Write(newPlayer.armor[k].prefix);
-+			ItemIO.WriteVanillaID(newPlayer.armor[k], fileIO);
-+			ItemIO.WriteByteVanillaPrefix(newPlayer.armor[k], fileIO);
- 		}
- 
- 		for (int l = 0; l < newPlayer.dye.Length; l++) {
--			fileIO.Write(newPlayer.dye[l].type);
--			fileIO.Write(newPlayer.dye[l].prefix);
-+			ItemIO.WriteVanillaID(newPlayer.dye[l], fileIO);
-+			ItemIO.WriteByteVanillaPrefix(newPlayer.dye[l], fileIO);
- 		}
- 
- 		for (int m = 0; m < 58; m++) {
--			fileIO.Write(newPlayer.inventory[m].type);
-+			ItemIO.WriteVanillaID(newPlayer.inventory[m], fileIO);
- 			fileIO.Write(newPlayer.inventory[m].stack);
--			fileIO.Write(newPlayer.inventory[m].prefix);
-+			ItemIO.WriteByteVanillaPrefix(newPlayer.inventory[m], fileIO);
- 			fileIO.Write(newPlayer.inventory[m].favorited);
- 		}
- 
- 		for (int n = 0; n < newPlayer.miscEquips.Length; n++) {
--			fileIO.Write(newPlayer.miscEquips[n].type);
--			fileIO.Write(newPlayer.miscEquips[n].prefix);
--			fileIO.Write(newPlayer.miscDyes[n].type);
--			fileIO.Write(newPlayer.miscDyes[n].prefix);
-+			ItemIO.WriteVanillaID(newPlayer.miscEquips[n], fileIO);
-+			ItemIO.WriteByteVanillaPrefix(newPlayer.miscEquips[n], fileIO);
-+			ItemIO.WriteVanillaID(newPlayer.miscDyes[n], fileIO);
-+			ItemIO.WriteByteVanillaPrefix(newPlayer.miscDyes[n], fileIO);
- 		}
- 
- 		for (int num = 0; num < newPlayer.bank.maxItems; num++) {
--			fileIO.Write(newPlayer.bank.item[num].type);
-+			ItemIO.WriteVanillaID(newPlayer.bank.item[num], fileIO);
- 			fileIO.Write(newPlayer.bank.item[num].stack);
--			fileIO.Write(newPlayer.bank.item[num].prefix);
-+			ItemIO.WriteByteVanillaPrefix(newPlayer.bank.item[num], fileIO);
- 		}
- 
- 		for (int num2 = 0; num2 < newPlayer.bank2.maxItems; num2++) {
--			fileIO.Write(newPlayer.bank2.item[num2].type);
-+			ItemIO.WriteVanillaID(newPlayer.bank2.item[num2], fileIO);
- 			fileIO.Write(newPlayer.bank2.item[num2].stack);
--			fileIO.Write(newPlayer.bank2.item[num2].prefix);
-+			ItemIO.WriteByteVanillaPrefix(newPlayer.bank2.item[num2], fileIO);
- 		}
- 
- 		for (int num3 = 0; num3 < newPlayer.bank3.maxItems; num3++) {
--			fileIO.Write(newPlayer.bank3.item[num3].type);
-+			ItemIO.WriteVanillaID(newPlayer.bank3.item[num3], fileIO);
- 			fileIO.Write(newPlayer.bank3.item[num3].stack);
--			fileIO.Write(newPlayer.bank3.item[num3].prefix);
-+			ItemIO.WriteByteVanillaPrefix(newPlayer.bank3.item[num3], fileIO);
- 		}
- 
- 		for (int num4 = 0; num4 < newPlayer.bank4.maxItems; num4++) {
--			fileIO.Write(newPlayer.bank4.item[num4].type);
-+			ItemIO.WriteVanillaID(newPlayer.bank4.item[num4], fileIO);
- 			fileIO.Write(newPlayer.bank4.item[num4].stack);
--			fileIO.Write(newPlayer.bank4.item[num4].prefix);
-+			ItemIO.WriteByteVanillaPrefix(newPlayer.bank4.item[num4], fileIO);
- 			fileIO.Write(newPlayer.bank4.item[num4].favorited);
- 		}
- 
- 		fileIO.Write(newPlayer.voidVaultInfo);
--		for (int num5 = 0; num5 < maxBuffs; num5++) {
--			if (Main.buffNoSave[newPlayer.buffType[num5]]) {
-+		for (int num5 = 0; num5 < 44; num5++) {
-+			//TML: Don't save buffs to vanilla player
-+			if (true || Main.buffNoSave[newPlayer.buffType[num5]]) {
- 				fileIO.Write(0);
- 				fileIO.Write(0);
- 			}
 @@ -44618,8 +_,14 @@
  		}
  	}
@@ -8359,6 +7894,71 @@
  	}
  
  	private bool PickAmmo_TryFindingSpecificMatches(int launcher, int ammo, out int pickedProjectileId)
+@@ -44709,5 +_,12 @@
+ 		if (AmmoID.Sets.SpecificLauncherAmmoProjectileMatches.TryGetValue(launcher, out var value) && value.TryGetValue(ammo, out pickedProjectileId))
+ 			return true;
+ 
++		// Added fallback functionality for mod compatibility
++		launcher = AmmoID.Sets.SpecificLauncherAmmoProjectileFallback[launcher];
++		if (launcher != -1) {
++			if (AmmoID.Sets.SpecificLauncherAmmoProjectileMatches.TryGetValue(launcher, out var fallbackValue) && fallbackValue.TryGetValue(ammo, out pickedProjectileId))
++				return true;
++		}
++
+ 		return false;
+ 	}
+@@ -44715,21 +_,51 @@
++	/*
+ 	public void PickAmmo(Item sItem, ref int projToShoot, ref float speed, ref bool canShoot, ref int Damage, ref float KnockBack, out int usedAmmoItemId, bool dontConsume = false)
++	*/
++	internal void PickAmmo(Item sItem, ref int projToShoot, ref float speed, ref bool canShoot, ref int totalDamage, ref float KnockBack, out int usedAmmoItemId, bool dontConsume = false)
+ 	{
+ 		_ = _pickAmmo_foundAmmo;
+ 		usedAmmoItemId = 0;
+ 		Item item = PickAmmo_PickAmmoItem(sItem);
++		canShoot = item != null;
++
++		bool shootWithNoAmmo = false;
++		if (!canShoot && !ItemLoader.NeedsAmmo(sItem, this)) {
++			item = ContentSamples.ItemsByType[sItem.useAmmo];
++			if (item.ammo == sItem.useAmmo)
++				canShoot = shootWithNoAmmo = true;
++		}
++
+ 		if (item == null)
+ 			return;
+ 
+ 		canShoot = true;
+ 		usedAmmoItemId = item.type;
++
++		StatModifier ammoDamage = GetTotalDamage(item.DamageType);
++		if (AmmoID.Sets.IsArrow[item.ammo])
++			ammoDamage = ammoDamage.CombineWith(arrowDamage);
++
++		if (AmmoID.Sets.IsBullet[item.ammo])
++			ammoDamage = ammoDamage.CombineWith(bulletDamage);
++
++		if (AmmoID.Sets.IsSpecialist[item.ammo])
++			ammoDamage = ammoDamage.CombineWith(specialistDamage);
++
++		// TODO: Why do we reset Base to 0 here? Why not use += for Flat?
++		ammoDamage.Base = 0;
++		ammoDamage.Flat = totalDamage;
++		ref float Damage = ref ammoDamage.Flat; // Vanilla projectile damage applied from here on is interpreted as flat additions
++
+ 		int num = item.damage;
+ 		int pickedProjectileId = -1;
+ 		if (PickAmmo_TryFindingSpecificMatches(sItem.type, item.type, out pickedProjectileId))
+ 			projToShoot = pickedProjectileId;
++		/* These 2 are unused and will never be right for modded rocket ammo. Following check is kept in to preserve existing behavior if being relied on.
+ 		else if (sItem.type == 1946)
+ 			projToShoot = 338 + item.type - 771;
+ 		else if (sItem.type == 3930)
+ 			projToShoot = 715 + item.type - AmmoID.Rocket;
++		*/
+ 		else if (sItem.useAmmo == AmmoID.Rocket)
+ 			projToShoot += item.shoot;
+ 		else if (sItem.useAmmo == AmmoID.Solution)
 @@ -44753,6 +_,7 @@
  			projToShoot = 117;
  
@@ -8380,6 +7980,79 @@
  		}
  
  		if (inventory[selectedItem].type == 2888 && projToShoot == 1)
+@@ -44786,8 +_,12 @@
+ 			num += num2;
+ 		}
+ 
++		// Item damage applied below, with ammoDamage.ApplyTo(item.damage)
++		// Damage class boosts come from the ammo damage class
++		/*
+ 		if (num > 0)
+ 			Damage += (int)((float)num * GetWeaponDamageMultiplier(item));
++		*/
+ 
+ 		if (projToShoot == 285) {
+ 			float num3 = 1.25f;
+@@ -44810,5 +_,59 @@
+ 		}
+ 
++
++		ItemLoader.PickAmmo(sItem, item, this, ref projToShoot, ref speed, ref ammoDamage, ref KnockBack);
++		totalDamage = (int)(ammoDamage.ApplyTo(item.damage) + 5E-06f);
++
++		if (!dontConsume && !shootWithNoAmmo && item.consumable && !IsAmmoFreeThisShot(sItem, item, projToShoot)) {
++			CombinedHooks.OnConsumeAmmo(this, sItem, item);
++			item.stack--;
++			if (item.stack <= 0) {
++				item.TurnToAir();
++			}
++		}
++	}
++
++	//TML: Method split, 3rd part of original PickAmmo.
++	/// <summary>
++	/// Determines whether or not the given ammunition should be conserved, based on the given weapon as wielded by this player.
++	/// </summary>
++	/// <param name="weapon">The weapon attempting to consume the ammo.</param>
++	/// <param name="ammo">The ammo attempting to be conserved (i.e. not consumed).</param>
++	/// <param name="projToShoot">The projectile that should be shot by the given weapon/ammo combination.</param>
++	/// <returns>True if the ammo should be conserved on the given shot; false otherwise.</returns>
++	public bool IsAmmoFreeThisShot(Item weapon, Item ammo, int projToShoot)
++	{
++		Item sItem = weapon;
++		Item item = ammo;
++
++		// TODO:
++		// The current approach to ammo consumption hooks demands that vanilla conservation chances still be allowed to factor in.
++		// While this is fine for some, for others, it may be preferable to be able to guarantee ammo consumption if it should happen.
++		// For this, two approaches exist. each has their ups and downs:
++		// 1 - CanConsumeAmmo to nullable, return given value if it exists
++		// 2 - separate hook for forced ammo consumption. returns false by default, return true to bypass all vanilla conservation chances
++		//
++		// Post-May-freeze, will decide on one and make changes accordingly.
++		// - Thomas
++
++		if (!CombinedHooks.CanConsumeAmmo(this, sItem, item))
++			return true;
++
++		if (sItem.consumeAmmoOnFirstShotOnly && !ItemAnimationJustStarted)
++			return true;
++
++		if (sItem.consumeAmmoOnLastShotOnly) {
++			int useTime = CombinedHooks.TotalUseTime(sItem.useTime, this, sItem);
++			bool isLastShot = itemAnimation <= useTime || // not enough time to shoot again
++				sItem.useLimitPerAnimation != null && ItemUsesThisAnimation == sItem.useLimitPerAnimation - 1; // this shot hits the limit
++
++			if (!isLastShot)
++				return true;
++		}
++
++		/*
+ 		bool flag = dontConsume;
++		*/
++		bool flag = false;
+ 		if (sItem.type == 3475 && Main.rand.Next(3) != 0)
+ 			flag = true;
 @@ -44822,7 +_,10 @@
  		if (sItem.type == 5134 && Main.rand.Next(3) == 0)
  			flag = true;
@@ -8496,6 +8169,44 @@
  	public void DropItems(bool gemsOnly)
  	{
  		trashItem.TurnToAir();
+@@ -45434,12 +_,37 @@
+ 			return;
+ 		}
+ 
++		// DropItems
++		var startInventory = PlayerLoader.GetStartingItems(this, DropItems_GetDefaults().Where(item => !item.IsAir), true);
++		var startCounts = new Dictionary<int, int>();
++
++		foreach (Item item in startInventory) {
++			if (!startCounts.ContainsKey(item.type))
++				startCounts[item.type] = 0;
++
++			startCounts[item.type] += item.stack;
++		}
++
++		startCounts[ModContent.ItemType<ModLoader.Default.StartBag>()] = 1;
++
++		//TML: Drop code for modded accessory Slots, should run prior to dropping other items in case conditions are used based on player's current equips
++		AccessorySlotLoader.ModSlotPlayer(this).DropItems(itemSource_Death);
++
+ 		array = inventory;
+ 		foreach (Item item2 in array) {
++			/*
+ 			if (item2.type == 3507 || item2.type == 3506 || item2.type == 3509)
+ 				item2.TurnToAir();
+ 			else
+ 				TryDroppingSingleItem(itemSource_Death, item2);
++			*/
++			if (startCounts.TryGetValue(item2.type, out int startCount)) {
++				int n = Math.Min(item2.stack, startCount);
++				item2.stack -= n;
++				startCounts[item2.type] -= n;
++			}
++			if (item2.stack > 0)
++				TryDroppingSingleItem(itemSource_Death, item2);
+ 		}
+ 
+ 		array = armor;
 @@ -45467,12 +_,32 @@
  			loadouts[i].TryDroppingItems(this, itemSource_Death);
  		}
@@ -8529,7 +8240,7 @@
  	}
  
  	public void TryDroppingSingleItem(IEntitySource source, Item theItem)
-@@ -45480,9 +_,12 @@
+@@ -45483,9 +_,12 @@
  	public void TryDroppingSingleItem(IEntitySource source, Item theItem, int stack)
  	{
  		if (stack > 0 && Main.netMode != 1)
@@ -8542,6 +8253,18 @@
  		if (theItem.stack <= 0)
  			theItem.TurnToAir();
  	}
+@@ -45565,5 +_,11 @@
++	private Player _clientClone;
+ 	public Player clientClone(Player clonePlayer)
+ 	{
++		// Disable cloning until the end of the method.
++		using var _disableItemCLone = new Item.DisableCloneMethod("Item.Clone is bad for performance, and should not be called during Player.clientClone or ModPlayer.CopyClientStateTo. Use Item.CopyNetStateTo instead");
++
++		if(_clientClone == null)
++			clonePlayer = Main.clientPlayer = new Player();
+ 		cloneSyncedControls(clonePlayer);
+ 		clonePlayer.zone1 = zone1;
+ 		clonePlayer.zone2 = zone2;
 @@ -45573,6 +_,9 @@
  		clonePlayer.townNPCs = townNPCs;
  		clonePlayer.voidVaultInfo = voidVaultInfo;
@@ -8602,6 +8325,40 @@
  			throw;
  		}
  	}
+@@ -45818,11 +_,33 @@
+ 		if (string.IsNullOrEmpty(path))
+ 			return;
+ 
++		// TML: Split method into several methods to facilitate separation between saving to disk and generating save data.
++		// TML: Delay vanilla saving until modded data is serialized (in case of exceptions)
++		// Moved to SavePlayerFile_Write
++		/*
+ 		if (FileUtilities.Exists(path, isCloudSave))
+ 			FileUtilities.Copy(path, path + ".bak", isCloudSave);
++		*/
++
++		PlayerLoader.PreSavePlayer(player);
++		byte[] plrData = SavePlayerFile_Vanilla(playerFile);
++		PlayerLoader.PostSavePlayer(player);
++
++		player.ModSaveErrors.Clear(); // Here instead of inside PlayerIO.SaveData because SerializedClone would clear.
++		TagCompound tplrData = PlayerIO.SaveData(player);
++
++		SavePlayerFile_Write(playerFile, plrData, tplrData);
++	}
++
++	public static byte[] SavePlayerFile_Vanilla(PlayerFileData playerFile)
++	{
++		var player = playerFile.Player;
+ 
+ 		RijndaelManaged rijndaelManaged = new RijndaelManaged();
++		/*
+ 		using Stream stream = (isCloudSave ? ((Stream)new MemoryStream(2000)) : ((Stream)new FileStream(path, FileMode.Create)));
++		*/
++		using Stream stream = new MemoryStream(2000);
+ 		using CryptoStream cryptoStream = new CryptoStream(stream, rijndaelManaged.CreateEncryptor(ENCRYPTION_KEY, ENCRYPTION_KEY), CryptoStreamMode.Write);
+ 		using BinaryWriter binaryWriter = new BinaryWriter(cryptoStream);
+ 		binaryWriter.Write(326);
 @@ -45831,8 +_,31 @@
  		binaryWriter.Flush();
  		cryptoStream.FlushFinalBlock();
@@ -8661,6 +8418,87 @@
  		fileIO.Write(newPlayer.extraAccessory);
  		fileIO.Write(newPlayer.unlockedBiomeTorches);
  		fileIO.Write(newPlayer.UsingBiomeTorches);
+@@ -45898,59 +_,60 @@
+ 		fileIO.Write(newPlayer.shoeColor.G);
+ 		fileIO.Write(newPlayer.shoeColor.B);
+ 		for (int k = 0; k < newPlayer.armor.Length; k++) {
+-			fileIO.Write(newPlayer.armor[k].type);
+-			fileIO.Write(newPlayer.armor[k].prefix);
++			ItemIO.WriteVanillaID(newPlayer.armor[k], fileIO);
++			ItemIO.WriteByteVanillaPrefix(newPlayer.armor[k], fileIO);
+ 			fileIO.Write(newPlayer.armor[k].favorited);
+ 		}
+ 
+ 		for (int l = 0; l < newPlayer.dye.Length; l++) {
+-			fileIO.Write(newPlayer.dye[l].type);
+-			fileIO.Write(newPlayer.dye[l].prefix);
++			ItemIO.WriteVanillaID(newPlayer.dye[l], fileIO);
++			ItemIO.WriteByteVanillaPrefix(newPlayer.dye[l], fileIO);
+ 			fileIO.Write(newPlayer.dye[l].favorited);
+ 		}
+ 
+ 		for (int m = 0; m < 58; m++) {
+-			fileIO.Write(newPlayer.inventory[m].type);
++			ItemIO.WriteVanillaID(newPlayer.inventory[m], fileIO);
+ 			fileIO.Write(newPlayer.inventory[m].stack);
+-			fileIO.Write(newPlayer.inventory[m].prefix);
++			ItemIO.WriteByteVanillaPrefix(newPlayer.inventory[m], fileIO);
+ 			fileIO.Write(newPlayer.inventory[m].favorited);
+ 		}
+ 
+ 		for (int n = 0; n < newPlayer.miscEquips.Length; n++) {
+-			fileIO.Write(newPlayer.miscEquips[n].type);
+-			fileIO.Write(newPlayer.miscEquips[n].prefix);
+-			fileIO.Write(newPlayer.miscDyes[n].type);
+-			fileIO.Write(newPlayer.miscDyes[n].prefix);
++			ItemIO.WriteVanillaID(newPlayer.miscEquips[n], fileIO);
++			ItemIO.WriteByteVanillaPrefix(newPlayer.miscEquips[n], fileIO);
++			ItemIO.WriteVanillaID(newPlayer.miscDyes[n], fileIO);
++			ItemIO.WriteByteVanillaPrefix(newPlayer.miscDyes[n], fileIO);
+ 		}
+ 
+ 		for (int num = 0; num < newPlayer.bank.maxItems; num++) {
+-			fileIO.Write(newPlayer.bank.item[num].type);
++			ItemIO.WriteVanillaID(newPlayer.bank.item[num], fileIO);
+ 			fileIO.Write(newPlayer.bank.item[num].stack);
+-			fileIO.Write(newPlayer.bank.item[num].prefix);
++			ItemIO.WriteByteVanillaPrefix(newPlayer.bank.item[num], fileIO);
+ 		}
+ 
+ 		for (int num2 = 0; num2 < newPlayer.bank2.maxItems; num2++) {
+-			fileIO.Write(newPlayer.bank2.item[num2].type);
++			ItemIO.WriteVanillaID(newPlayer.bank2.item[num2], fileIO);
+ 			fileIO.Write(newPlayer.bank2.item[num2].stack);
+-			fileIO.Write(newPlayer.bank2.item[num2].prefix);
++			ItemIO.WriteByteVanillaPrefix(newPlayer.bank2.item[num2], fileIO);
+ 		}
+ 
+ 		for (int num3 = 0; num3 < newPlayer.bank3.maxItems; num3++) {
+-			fileIO.Write(newPlayer.bank3.item[num3].type);
++			ItemIO.WriteVanillaID(newPlayer.bank3.item[num3], fileIO);
+ 			fileIO.Write(newPlayer.bank3.item[num3].stack);
+-			fileIO.Write(newPlayer.bank3.item[num3].prefix);
++			ItemIO.WriteByteVanillaPrefix(newPlayer.bank3.item[num3], fileIO);
+ 		}
+ 
+ 		for (int num4 = 0; num4 < newPlayer.bank4.maxItems; num4++) {
+-			fileIO.Write(newPlayer.bank4.item[num4].type);
++			ItemIO.WriteVanillaID(newPlayer.bank4.item[num4], fileIO);
+ 			fileIO.Write(newPlayer.bank4.item[num4].stack);
+-			fileIO.Write(newPlayer.bank4.item[num4].prefix);
++			ItemIO.WriteByteVanillaPrefix(newPlayer.bank4.item[num4], fileIO);
+ 			fileIO.Write(newPlayer.bank4.item[num4].favorited);
+ 		}
+ 
+ 		fileIO.Write(newPlayer.voidVaultInfo);
+-		for (int num5 = 0; num5 < maxBuffs; num5++) {
+-			if (Main.buffNoSave[newPlayer.buffType[num5]]) {
++		for (int num5 = 0; num5 < 44; num5++) {
++			//TML: Don't save buffs to vanilla player
++			if (true || Main.buffNoSave[newPlayer.buffType[num5]]) {
+ 				fileIO.Write(0);
+ 				fileIO.Write(0);
+ 			}
 @@ -45973,7 +_,7 @@
  		}
  
