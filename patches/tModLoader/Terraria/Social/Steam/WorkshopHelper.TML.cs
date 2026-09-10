@@ -274,7 +274,7 @@ public partial class WorkshopHelper
 				if (bIOFailure) {
 					_primaryQueryResult = EResult.k_EResultIOFailure;
 					return;
-				}	
+				}
 
 				_primaryUGCHandle = pCallback.m_handle;
 				_primaryQueryResult = pCallback.m_eResult;
@@ -341,7 +341,7 @@ public partial class WorkshopHelper
 								continue;
 							}
 
-							if (match != WorkshopSearchReturnState.Success) {		
+							if (match != WorkshopSearchReturnState.Success) {
 								// This would be the case if Steam workshop failed to respond or the mod item is corrupt
 								Logging.tML.Warn($"{match}: Search Attempt Failed for Mod with ID {idArray[j]}");
 								missingMods.Add(idArray[j]);
