@@ -323,6 +323,7 @@ public static class ModContent
 
 		Main.ResourceSetsManager.AddModdedDisplaySets();
 		Main.ResourceSetsManager.SetActiveFromOriginalConfigKey();
+		MinimapFrameLoader.AddModdedFrames(AssetRequestMode.ImmediateLoad);
 
 
 		Interface.loadMods.SetLoadStage("tModLoader.MSSetupContent", ModLoader.Mods.Length);
@@ -563,6 +564,7 @@ public static class ModContent
 
 		ResourceOverlayLoader.Unload();
 		ResourceDisplaySetLoader.Unload();
+		MinimapFrameLoader.Unload();
 
 		LoaderManager.Unload();
 
