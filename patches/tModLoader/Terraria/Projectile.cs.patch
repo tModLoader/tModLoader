@@ -1944,7 +1944,7 @@
  	{
  		Vector2 spinningpoint = new Vector2(7f, 0f);
  		Vector2 vector = new Vector2(1f, 0.7f);
-@@ -56518,7 +_,7 @@
+@@ -56518,18 +_,23 @@
  		int num = timeLeft;
  		timeLeft = 0;
  		bool flag = true;
@@ -1953,7 +1953,15 @@
  			flag = false;
  
  		if (owner == Main.myPlayer && flag)
-@@ -56529,7 +_,7 @@
+ 			Main.player[owner].TryCancelChannel(this);
+ 
++		if (!ProjectileLoader.PreKill(this, num)) {
++			active = false;
++			return;
++		}
++
+ 		if (aiStyle == 16 && ProjectileID.Sets.IsABombWithFuse[type]) {
+ 			SoundEngine.GetActiveSound(SlotId.FromFloat(localAI[2]))?.Stop();
  			localAI[2] = 0f;
  		}
  
