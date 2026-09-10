@@ -1,6 +1,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.UI;
 
@@ -92,6 +93,46 @@ public abstract class ModMenu : ModType
 	/// Called just after the logo is drawn, and gives the values of some of the parameters of the logo draw code.
 	/// </summary>
 	public virtual void PostDrawLogo(SpriteBatch spriteBatch, Vector2 logoDrawCenter, float logoRotation, float logoScale, Color drawColor)
+	{
+	}
+
+	/// <summary>
+	/// Allows you to modify some of the parameters of the sky's drawing code. You may modify the color of the sky through changing <see cref="Main.ColorOfTheSkies"/>.
+	/// <para>Do not draw anything in this hook, use <see cref="PreDrawSky(SpriteBatch, SkyDrawParams)"/> or <see cref="PostDrawSky(SpriteBatch, SkyDrawParams)"/> for drawing.</para>
+	/// </summary>
+	public virtual void ModifyDrawSky(ref SkyDrawParams drawParams) 
+	{
+	}
+
+	/// <summary>
+	/// Called just before the sky is drawn.
+	/// <para>You may modify some common parameters relating to the sky's rendering in <see cref="ModifyDrawSky(ref SkyDrawParams)"/>.</para>
+	/// </summary>
+	public virtual void PreDrawSky(SpriteBatch spriteBatch, SkyDrawParams drawParams)
+	{
+	}
+
+	/// <summary>
+	/// Called just after the sky is drawn.
+	/// <para>You may modify some common parameters relating to the sky's rendering in <see cref="ModifyDrawSky(ref SkyDrawParams)"/>.</para>
+	/// </summary>
+	public virtual void PostDrawSky(SpriteBatch spriteBatch, SkyDrawParams drawParams)
+	{
+	}
+
+	/// <summary>
+	/// Called just before the background is drawn. 
+	/// <para>Return false to prevent the usual background from drawing.</para>
+	/// </summary>
+	public virtual bool PreDrawBackground(SpriteBatch spriteBatch)
+	{
+		return true;
+	}
+
+	/// <summary>
+	/// Called just after the background is drawn, regardless of what <see cref="PreDrawBackground(SpriteBatch)"/> returns.
+	/// </summary>
+	public virtual void PostDrawBackground(SpriteBatch spriteBatch)
 	{
 	}
 }
