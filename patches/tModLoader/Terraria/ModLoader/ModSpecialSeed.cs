@@ -30,7 +30,7 @@ public abstract class ModSpecialSeed : ModSeedType
 	/// <summary>
 	/// The translation for the display name of this special seed
 	/// </summary>
-	public virtual LocalizedText DisplayName => Language.GetOrRegister($"Mods.{Mod.Name}.SpecialSeeds.{Name}.{nameof(DisplayName)}", PrettyPrintName);
+	public virtual LocalizedText DisplayName => Language.GetOrRegister($"Mods.{Mod.Name}.Seeds.{Name}.{nameof(DisplayName)}", PrettyPrintName);
 
 	public virtual string Texture => (GetType().Namespace + "." + Name).Replace('.', '/');
 
