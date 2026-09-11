@@ -422,7 +422,7 @@
  		public static Color[][] DrinkParticleColors = Factory.CreateCustomSet(new Color[0], (short)28, new Color[3] {
  			new Color(164, 16, 47),
  			new Color(246, 34, 79),
-@@ -972,31 +_,168 @@
+@@ -972,31 +_,173 @@
  			new Color(251, 126, 73)
  		});
  		private static BannerEffect DD2BannerEffect = BannerEffect.Reduced;
@@ -470,6 +470,11 @@
 +
 +		/// <inheritdoc cref="IsFishingCrate"/>
  		public static bool[] IsFishingCrateHardmode = Factory.CreateBoolSet(3979, 3980, 3981, 3982, 3983, 3984, 3985, 3986, 3987, 4406, 4408, 4878, 5003);
++
++		/// <summary>
++		/// Denotes this item as a voice changing accessory. Naturally spawning slimes holding this item will receive triple HP.
++		/// <para/>To let your voice changing item generate in chest loot and lets slimes in Skyblock spawn carrying this item, additionally set <see cref="ItemID.Sets.VoiceChangeItemForChestLootAndSlimes"/>.
++		/// </summary>
  		public static bool[] IsAVoiceChangeItem = Factory.CreateBoolSet(5507, 5502, 5485, 5484, 5506, 5503, 5534, 5499, 5500, 5505, 5501, 5504, 5508, 5509, 215);
 +
 +		/// <summary>

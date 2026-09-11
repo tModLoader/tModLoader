@@ -5987,6 +5987,38 @@
  	}
  
  	public void PlayHurtSound()
+@@ -31210,6 +_,15 @@
+ 				return;
+ 		}
+ 
++		// Run ModItem.PlayerHurtSoundOverride to override the hurt sound if voiceOverride == ModItem.Type. PlayerHurtSoundOverride returning true will return.
++		if (voiceOverride > PlayerVoiceOverrideID.Other && (ContentSamples.ItemsByType[voiceOverride]?.ModItem?.VoiceItemHurtSoundOverride(this, vector) ?? false)) {
++			return;
++		}
++
++		if (PlayerLoader.PlayerHurtSound(this, vector)) {
++			return;
++		}
++
+ 		if (mount.Active) {
+ 			if (mount.Type == 52) {
+ 				SoundEngine.PlaySound(3, vector, 6);
+@@ -31296,6 +_,15 @@
+ 				return;
+ 		}
+ 
++		// Run ModItem.PlayerDeathSoundOverride to override the hurt sound if voiceOverride == ModItem.Type. PlayerDeathSoundOverride returning true will return.
++		if (voiceOverride > PlayerVoiceOverrideID.Other && (ContentSamples.ItemsByType[voiceOverride]?.ModItem?.VoiceItemDeathSoundOverride(this) ?? false)) {
++			return;
++		}
++
++		if (PlayerLoader.PlayerDeathSound(this)) {
++			return;
++		}
++
+ 		if (Main.dontStarveWorld || Main.tenthAnniversaryWorld)
+ 			SoundEngine.PlaySound(Male ? SoundID.DSTMaleHurt : SoundID.DSTFemaleHurt, position);
+ 		else
 @@ -31347,6 +_,14 @@
  			if (FileUtilities.Exists(Main.playerPathName + ".bak", isCloudSave))
  				FileUtilities.Delete(Main.playerPathName + ".bak", isCloudSave);
