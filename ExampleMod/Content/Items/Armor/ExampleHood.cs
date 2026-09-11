@@ -1,5 +1,6 @@
 ﻿using ExampleMod.Common.Players;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -16,7 +17,13 @@ namespace ExampleMod.Content.Items.Armor
 		public static LocalizedText SetBonusText { get; private set; }
 
 		public override void SetStaticDefaults() {
+			// This is the armor set bonus tooltip:
+			//   Double tap or hold DOWN/UP to toggle various armor shadow effects
+			//   10% reduced mana cost
 			SetBonusText = this.GetLocalization("SetBonus").WithFormatArgs(ManaCostReductionPercent);
+
+			// Registers an armor set. Note that ExampleHelmet also registers a similar armor set. The PartType parameter is needed in this case because the 2 sets have different tooltips.
+			AddArmorSet<ExampleHood, ExampleBreastplate, ExampleLeggings>(SetBonusText, Terraria.DataStructures.ArmorSetBonus.PartType.Head);
 		}
 
 		public override void SetDefaults() {
@@ -27,17 +34,8 @@ namespace ExampleMod.Content.Items.Armor
 			Item.defense = 4; // The amount of defense the item will give when equipped
 		}
 
-		// IsArmorSet determines what armor pieces are needed for the setbonus to take effect
-		public override bool IsArmorSet(Item head, Item body, Item legs) {
-			return body.type == ModContent.ItemType<ExampleBreastplate>() && legs.type == ModContent.ItemType<ExampleLeggings>();
-		}
-
 		// UpdateArmorSet allows you to give set bonuses to the armor.
-		public override void UpdateArmorSet(Player player) {
-			// This is the setbonus tooltip:
-			//   Double tap or hold DOWN/UP to toggle various armor shadow effects
-			//   10% reduced mana cost
-			player.setBonus = SetBonusText.Value;
+		public override void UpdateArmorSet(Player player, ArmorSetBonus armorSetBonus) {
 			player.manaCost -= ManaCostReductionPercent / 100f; // Reduces mana cost by 10%
 			player.GetModPlayer<ExampleArmorSetBonusPlayer>().ExampleSetHood = true;
 		}
