@@ -860,6 +860,8 @@ Mods: {
 					'''
 					{$CommonItemTooltip.SummonTagDamage}
 					{$CommonItemTooltip.Whips}
+					<right> to change it to the advanced version
+					Hold for longer reach
 					'''
 			}
 
@@ -869,6 +871,7 @@ Mods: {
 					'''
 					{0}% extra summon tag damage to the next minion or sentry hit
 					{$CommonItemTooltip.Whips}
+					<right> to change it to the basic version
 					Hold for longer reach
 					'''
 			}
@@ -1179,6 +1182,17 @@ Mods: {
 			ExampleWormHeadBanner: {
 				DisplayName: "{$NPCs.ExampleWormHead.DisplayName} Banner"
 				Tooltip: "{$CommonItemTooltip.BannerBonus}{$NPCs.ExampleWormHead.DisplayName}"
+			}
+
+			ExampleShellphone: {
+				DisplayName: Shellphone (Model)
+				Tooltip:
+					'''
+					Displays everything
+					Allows you to pretend to travel
+					<right> to toggle destination
+					'If you listen closely, you can hear something about your car's warranty'
+					'''
 			}
 
 			ExampleChandelier: {

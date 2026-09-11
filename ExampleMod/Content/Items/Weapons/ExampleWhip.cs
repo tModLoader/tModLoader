@@ -20,6 +20,9 @@ namespace ExampleMod.Content.Items.Weapons
 			// TagDuration and CritChance can be modified, too.
 			// For more customizability, see Example Whip Advanced's tag effects.
 			ItemID.Sets.UniqueTagEffects[Type] = new WhipTagEffect() { TagDamage = ExampleWhipTagDamage };
+
+			// Change it to ExampleWhipAdvanced after right click in inventory.
+			ItemID.Sets.RightClickItemSwap[Type] = ModContent.ItemType<ExampleWhipAdvanced>();
 		}
 
 		public override void SetDefaults() {

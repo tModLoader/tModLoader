@@ -486,6 +486,41 @@
  		SoundEngine.PlaySound(7);
  		if (inv[slot].stack > 0) {
  			switch (context) {
+@@ -1438,6 +_,7 @@
+ 	private static void TryItemSwap(Item item)
+ 	{
+ 		int type = item.type;
++		/*
+ 		switch (type) {
+ 			case 4131:
+ 			case 5325:
+@@ -1507,14 +_,26 @@
+ 				AfterItemSwap(type, item.type);
+ 				break;
+ 		}
++		*/
++		int to = ItemID.Sets.RightClickItemSwap[type];
++		if (to != -1) {
++			item.ChangeItemType(to);
++			AfterItemSwap(type, item.type);
++		}
+ 	}
+ 
+ 	private static void AfterItemSwap(int oldType, int newType)
+ 	{
++		/*
+ 		if (newType == 5324 || newType == 5329 || newType == 5330 || newType == 4346 || newType == 5391 || newType == 5358 || newType == 5361 || newType == 5360 || newType == 5359 || newType == 2611 || newType == 5526)
+ 			SoundEngine.PlaySound(22);
+ 		else
+ 			SoundEngine.PlaySound(7);
++		*/
++		if (ItemID.Sets.UseUnlockSoundStyleAfterItemSwap[newType])
++			SoundEngine.PlaySound(22);
++		else
++			SoundEngine.PlaySound(7);
+ 
+ 		Main.stackSplit = 30;
+ 		Main.mouseRightRelease = false;
 @@ -1556,6 +_,9 @@
  
  		Player localPlayer = Main.LocalPlayer;
