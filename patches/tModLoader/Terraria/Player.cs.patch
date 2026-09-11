@@ -5058,7 +5058,7 @@
  				for (int i = 0; i < pylons.Count; i++) {
  					TeleportPylonInfo info = pylons[i];
  					if (TeleportPylonsMapLayer.IsRevealed(info))
-@@ -25892,7 +_,7 @@
+@@ -25892,12 +_,15 @@
  				Wiring.HitSwitch(myX, myY);
  				NetMessage.SendData(59, -1, -1, null, myX, myY);
  			}
@@ -5067,6 +5067,14 @@
  				flag2 = true;
  				SoundEngine.PlaySound(28, myX * 16, myY * 16, 0);
  				WorldGen.SwitchMB(myX, myY);
+ 			}
++			/*
+ 			else if (TileID.Sets.Campfires[tile.type]) {
++			*/
++			else if (TileID.Sets.Campfires[tile.type] && tile.type < TileID.Count) {
+ 				flag2 = true;
+ 				SoundEngine.PlaySound(28, myX * 16, myY * 16, 0);
+ 				int num17 = 3;
 @@ -26022,7 +_,10 @@
  				flag2 = true;
  				GamepadEnableGrappleCooldown();
