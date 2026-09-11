@@ -198,6 +198,9 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Not sure about VanillaOnHitEffectsWhipsStart label location
 - Is TagDamageChanges just a pseudo NPC.HitModifiers? Should TagEffectState use one or the other?
 - WhipTagEffect.ModifyTaggedHit patches are wrong, method changed a lot
+- DustID.Spider and InfernoFlame are new and differ from names we made up in TML.cs file, remove our entries?
+- SpriteCharacterData is class now.
+- FocusHelper.AllowUIInputs and AllowGameplayInputs removed. Seems like AllowInputProcessing and AllowInputProcessingForGamepad absorbed their usages. Double check
 
 # New Fields that might need more documentation
 

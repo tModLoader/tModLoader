@@ -755,13 +755,10 @@
  	public bool hasVanityEffects;
  	private const int foodWidth = 22;
  	private const int foodHeight = 22;
-@@ -187,8 +_,30 @@
+@@ -187,8 +_,27 @@
  	public static readonly int PickupReplacementTime = 1200;
  	public static readonly int SlotsRemainingBeforeEmergencyStackingInMultiplayer = 40;
  
-+	// EntryFilter complains if item doesn't have a parameterless constructor (even when the parameter is optional).
-+	public Item() { }
-+
 +	// Added by TML.
 +	public Item(int setDefaultsToType, int stack = 1, int prefix = 0)
 +	{

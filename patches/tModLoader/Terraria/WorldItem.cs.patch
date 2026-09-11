@@ -60,6 +60,15 @@
  	public bool active => type != 0;
  
  	public int type {
+@@ -51,7 +_,7 @@
+ 		}
+ 	}
+ 
+-	public byte prefix {
++	public int prefix { // TML: byte->int
+ 		get {
+ 			return inner.prefix;
+ 		}
 @@ -132,10 +_,22 @@
  		for (int i = whoAmI + 1; i < 400; i++) {
  			WorldItem worldItem = Main.item[i];

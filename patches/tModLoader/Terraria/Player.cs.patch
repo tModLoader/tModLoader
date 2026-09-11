@@ -5124,8 +5124,8 @@
  	{
 +		if (!CombinedHooks.OnPickup(itemToPickUp, this)) {
 +			int stack = itemToPickUp.stack;
-+			Item item = GetItem(itemToPickUp, GetItemSettings.PickupItemFromWorld);
-+			itemToPickUp.OverrideWith(item);
++			Item item = GetItem(itemToPickUp.inner, GetItemSettings.PickupItemFromWorld);
++			itemToPickUp.ReplaceWith(item);
 +			if (item.stack == stack)
 +				return;
 +		} else
@@ -5807,7 +5807,7 @@
  					num16 *= 2;
  
 -				IEntitySource projectileSource_Accessory = GetProjectileSource_Accessory(item);
-+				IEntitySource projectileSource_Accessory = GetSource_Accessory_OnHurt(item, info.DamageSource)
++				IEntitySource projectileSource_Accessory = GetSource_Accessory_OnHurt(item, info.DamageSource);
  				if (true) {
  					for (int num17 = 0; num17 < num15; num17++) {
  						float x = position.X + (float)Main.rand.Next(-400, 400);

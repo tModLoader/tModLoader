@@ -835,7 +835,7 @@
 -		if (type > 0 && type < ProjectileID.Count && ProjectileID.Sets.StardustDragon[type]) {
 +		*/
 +		modifiers.SourceDamage *= projectileSpecificDamageMultiplier;
-+		float num4 = 1000; // to reduce patches, set to 1000, and then turn it into a multiplier later
++		float num7 = 1000; // to reduce patches, set to 1000, and then turn it into a multiplier later
 +		if (type > 0 && ProjectileID.Sets.StardustDragon[type]) {
  			float value = (scale - 1f) * 100f;
  			value = Utils.Clamp(value, 0f, 50f);
@@ -1527,7 +1527,7 @@
  						for (int num949 = num947 - num945; num949 <= num947 + num945; num949++) {
  							int num950 = Main.rand.Next(8);
 -							if (num950 < 4 && new Vector2(num946 - num948, num947 - num949).Length() < (float)num945 && Main.tile[num948, num949] != null && Main.tile[num948, num949].active() && Main.IsTileSpelunkable(Main.tile[num948, num949])) {
-+							if (num950 < 4 && new Vector2(num946 - num948, num947 - num949).Length() < (float)num945 && Main.tile[num948, num949] != null && Main.tile[num948, num949].active() && Main.IsTileSpelunkable(num948, num94])) {
++							if (num950 < 4 && new Vector2(num946 - num948, num947 - num949).Length() < (float)num945 && Main.tile[num948, num949] != null && Main.tile[num948, num949].active() && Main.IsTileSpelunkable(num948, num949)) {
  								float num951 = Distance(new Vector2(num948 * 16 + 8, num949 * 16 + 8));
  								if (num951 < num944 || num944 == -1f) {
  									num944 = num951;

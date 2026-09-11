@@ -79,7 +79,7 @@
  		NetMessage.buffer[256].Reset();
  		Connection = new RemoteServer {
 -			ReadBuffer = new byte[1024]
-+			ReadBuffer = new byte[ushort.MaxValue]; // TML: 1024 -> ushort.MaxValue
++			ReadBuffer = new byte[ushort.MaxValue] // TML: 1024 -> ushort.MaxValue
  		};
  
  		Main.menuMode = 14;
