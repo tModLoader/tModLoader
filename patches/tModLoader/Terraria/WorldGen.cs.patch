@@ -2619,6 +2619,15 @@
  		for (int k = 0; k < num13; k++) {
  			KillTile_MakeTileDust(i, j, tile);
  		}
+@@ -53477,6 +_,8 @@
+ 		if (Main.netMode != 2)
+ 			AchievementsHelper.NotifyTileDestroyed(Main.player[Main.myPlayer], tile.type);
+ 
++		TileLoader.OnTileKilled(i, j, tile.type);
++
+ 		tile.active(active: false);
+ 		tile.halfBrick(halfBrick: false);
+ 		tile.frameX = -1;
 @@ -53524,11 +_,23 @@
  		}
  	}

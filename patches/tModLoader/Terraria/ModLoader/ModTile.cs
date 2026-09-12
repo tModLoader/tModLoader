@@ -307,6 +307,17 @@ public abstract class ModTile : ModBlockType
 	}
 
 	/// <summary>
+	/// Called when the tile at the given coordinates is destroyed by regular means (<see cref="WorldGen.KillTile(int, int, bool, bool, bool)"/>).
+	/// <para/>This will be called for all tiles, including each tile of a multi-tile.
+	/// <br/> For multi-tiles, <see cref="KillMultiTile(int, int, int, int)"/> may be more appropriate depending on your use case.
+	/// </summary>
+	/// <param name="i">The x position in tile coordinates.</param>
+	/// <param name="j">The y position in tile coordinates.</param>
+	public virtual void OnTileKilled(int i, int j)
+	{
+	}
+
+	/// <summary>
 	/// Allows you to make things happen when this tile is within a certain range of the player, such as how banners, campfire, and monoliths work.
 	/// <para/> This method will be called on tiles within 2 specific ranges, once for calculating visual effects and another time for calculating gameplay effects:
 	/// <para/> When calculating <b>visual effects</b>, the <paramref name="closer"/> parameter will be <see langword="true"/>. The visual effect range depend on the game window resolution, zoom level, and lighting mode, so it will not be reliable for gameplay effects but rather it adjusts to the players view of the game world. This is suitable for monoliths, water fountains, and music boxes.

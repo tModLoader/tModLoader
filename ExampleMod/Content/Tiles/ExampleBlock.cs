@@ -2,6 +2,7 @@ using ExampleMod.Content.Biomes;
 using ExampleMod.Content.Dusts;
 using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -26,6 +27,13 @@ namespace ExampleMod.Content.Tiles
 
 		public override void ChangeWaterfallStyle(ref int style) {
 			style = ModContent.GetInstance<ExampleWaterfallStyle>().Slot;
+		}
+
+		public override void OnTileKilled(int i, int j) {
+			// 1% chance to release a firework when broken.
+			if (Main.netMode != NetmodeID.MultiplayerClient && Main.rand.NextBool(100)) {
+				Projectile.NewProjectile(new EntitySource_TileBreak(i, j), i * 16f, j * 16f, 0f, -4f, ProjectileID.RocketFireworksBoxRed + Main.rand.Next(4), 0, 0, Main.myPlayer);
+			}
 		}
 	}
 }

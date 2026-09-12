@@ -88,6 +88,17 @@ public abstract class GlobalTile : GlobalBlockType
 	{
 	}
 
+	/// <summary>
+	/// Called when the tile at the given coordinates is destroyed by regular means (<see cref="WorldGen.KillTile(int, int, bool, bool, bool)"/>).
+	/// <para/>This will be called for all tiles, including each tile of a multi-tile.
+	/// </summary>
+	/// <param name="i">The x position in tile coordinates.</param>
+	/// <param name="j">The y position in tile coordinates.</param>
+	/// <param name="type">The tile type</param>
+	public virtual void OnTileKilled(int i, int j, int type)
+	{
+	}
+
 	/// <inheritdoc cref="ModTile.NearbyEffects(int, int, bool)"/>
 	public virtual void NearbyEffects(int i, int j, int type, bool closer)
 	{
