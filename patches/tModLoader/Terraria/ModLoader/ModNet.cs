@@ -359,7 +359,7 @@ public static class ModNet
 		};
 
 		if (riskState == DownloadModRiskState.LowSubscriberCount || riskState == DownloadModRiskState.AvailableOnWorkshop){
-			if (!workshopMod.DevMetadata.modVersionHashes.Any(x => x.GetHash().SequenceEqual(header.hash))) {
+			if (!workshopMod.GetKnownWorkshopVersionHashes().Any(x => x.GetHash().SequenceEqual(header.hash))) {
 				// Mod doesn't match any hash on workshop. Either a dev build or custom build by host.
 				riskState = DownloadModRiskState.HashDiffersFromWorkshop;
 			}

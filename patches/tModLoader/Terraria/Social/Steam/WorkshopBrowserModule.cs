@@ -166,7 +166,7 @@ internal class WorkshopBrowserModule : SocialBrowserModule
 	/// This uses the provided modId and retrieves the list of approved mod hashes from ModBrowser.
 	/// Uses Steam Web API as a fall back when Steam API isn't available (such as headless environments)
 	/// </summary>
-	public DeveloperMetadata GetDeveloperMetadataFromModBrowser(ModPubId_t modId)
+	public (DeveloperMetadata longForm, DeveloperMetadata browserVersion) GetDeveloperMetadataFromModBrowser(ModPubId_t modId)
 	{
 		// Mod Doesn't Exist, return empty hashes
 		if (string.IsNullOrEmpty(modId.m_ModPubId) || string.Equals(modId.m_ModPubId, "0"))
@@ -176,13 +176,25 @@ internal class WorkshopBrowserModule : SocialBrowserModule
 			// If Steam Server and Steam Client are both not available, retrieve it via WebAPI
 			var itemDetails = SteamWebWrapper.GetItemMetadata(modId.m_ModPubId);
 
-			return DeveloperMetadata.Deserialize(itemDetails.Metadata);
+			return (DeveloperMetadata.Deserialize(itemDetails.Metadata), DeveloperMetadata.Deserialize(itemDetails.KeyValuePairs.FirstOrDefault(a => a.key == $"{SocialBrowserModule.CurrentBrowserVersion}-legacy").value));
 		}
 
 		// Mod should Exist, check Mod Browser
 		var items = DirectQueryItems(new QueryParameters() { searchModIds = [modId], queryType = QueryType.SearchDirect, returnDevMetadata = true }, out _);
+		var item = items.FirstOrDefault();
 
-		return items.FirstOrDefault()?.DevMetadata ?? new();
+		return (item.LongFormDevMetadata, item.BrowserVersionDevMetadata);
+	}
+
+	public List<string> GetSupportedBrowserVersions(ModPubId_t modId)
+	{
+		if (string.IsNullOrEmpty(modId.m_ModPubId) || string.Equals(modId.m_ModPubId, "0"))
+			return new();
+
+		var items = DirectQueryItems(new QueryParameters() { searchModIds = [modId], queryType = QueryType.SearchDirect, returnDevMetadata = true }, out _);
+		var item = items.FirstOrDefault();
+
+		return item.SupportedVersions;
 	}
 }
 

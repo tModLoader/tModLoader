@@ -49,7 +49,8 @@ public interface SocialBrowserModule
 
 	public List<ModDownloadItem> DirectQueryItems(QueryParameters queryParams, out List<string> missingMods);
 
-	public DeveloperMetadata GetDeveloperMetadataFromModBrowser(ModPubId_t modId);
+	public (DeveloperMetadata longForm, DeveloperMetadata browserVersion) GetDeveloperMetadataFromModBrowser(ModPubId_t modId);
+	public List<string> GetSupportedBrowserVersions(ModPubId_t modId);
 
 	/////// Display of Browser Items ///////////////////////////////////////////
 
@@ -144,6 +145,7 @@ public interface SocialBrowserModule
 		}
 	}
 
+	// BROWSER_VERSION_RELEASE_FLAG
 	public static string GetBrowserVersionNumber(Version tmlVersion)
 	{
 		if (tmlVersion < new Version(0, 12)) // Versions 0 to 0.11.8.9
@@ -164,17 +166,24 @@ public interface SocialBrowserModule
 		if (tmlVersion < new Version(2026, DateTime.Now.Month)) // Versions 2022.3.85.0 to 2026.?.XXX
 			return "1.4.4"; // Long Term Service version 1.4.4
 
-		return "1.4.5"; // Long Term Service Version 1.4.45(Current)
+		return "1.4.5"; // Long Term Service Version 1.4.5 (Current)
 	}
 
-	// 1.4.5_RELEASE_FLAG
+	public static string CurrentBrowserVersion => GetBrowserVersionNumber(ModLoader.BuildInfo.tMLVersion);
+
+	// BROWSER_VERSION_RELEASE_FLAG
 	/// <summary>
-	/// Solxan: We want to keep 4 copies of the mod. A Preview version, a Stable Version, and a Legacy version in case
+	/// Solxan: We want to keep max of 3 copies of the mod. A Preview version, a Stable Version, and a Legacy version in case
 	/// we need to rollback to the last stable due to a significant bug.
-	/// We also keep a 1.4.3 version from version 2022.9 prior and a 1.4.4 version from 2026.??? prior
 	/// </summary>
-	public static (string browserVersion, int keepCount)[] keepRequirements =
-			{ ("1.4.3", 1), ("1.4.4", 3), ("1.3", 1), ("1.4.4-Transitive", 0) };
+	public static Dictionary<string, int> browserVersionRetainRequirements => new Dictionary<string, int>() {
+		{ "1.3", 1}, // LEGACY
+		{"1.4.3", 1}, // LEGACY
+		{ "1.4.4-Transitive", 0 }, // UNSUPPORTED
+		{ "1.4.4", 1 }, // LEGACY
+		{"1.4.5", 3 } 
+	};
+			
 
 	public static string[] branchNameBlacklist = { "unknown", "stable", "preview", "1.4.3-Legacy", "1.4.4-Legacy" };
 
