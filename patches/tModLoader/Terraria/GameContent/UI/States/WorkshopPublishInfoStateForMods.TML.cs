@@ -169,6 +169,12 @@ public class WorkshopPublishInfoStateForMods : AWorkshopPublishInfoState<TmodFil
 				// Automatically set option slightly redder, indicating it was automatically selected. Even redder if below 75%
 				tagOption.SetColor(tagOption.IsSelected ? (!localTag.degraded ? new Color(192, 175, 235) : new Color(255, 175, 235)) : Colors.InventoryDefaultColor, 1f);
 			}
+
+			// Override existing selection. Existing selection will persist
+			var libraryTag = _tagOptions.Find(a => a.OptionValue.InternalNameForAPIs == "Library");
+			libraryTag.SetCurrentOption(mod.IsLib ? libraryTag.OptionValue : null);
+			libraryTag.SetColor(libraryTag.IsSelected ? new Color(192, 175, 235) : Colors.InventoryDefaultColor, 1f);
+
 			var translationTagOption = _tagOptions.FirstOrDefault(x => x.OptionValue.NameKey == "tModLoader.TagsTranslation");
 			translationTagOption.SetCurrentOption(mod.TranslationForMods != null ? translationTagOption.OptionValue : null);
 			translationTagOption.SetColor(translationTagOption.IsSelected ? new Color(192, 175, 235) : Colors.InventoryDefaultColor, 1f);
