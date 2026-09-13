@@ -702,9 +702,13 @@ public static class SteamedWraps
 
 		Logging.tML.Info("Adding tags and visibility");
 
+		if (!Directory.Exists(_entryData.ContentFolderPath))
+			throw new Exception($"The upload folder is missing: {_entryData.ContentFolderPath}");
+
 		SteamUGC.SetItemContent(uGCUpdateHandle_t, _entryData.ContentFolderPath);
 		SteamUGC.SetItemTags(uGCUpdateHandle_t, _entryData.Tags);
-		if (_entryData.PreviewImagePath != null)
+
+		if (_entryData.PreviewImagePath != null && File.Exists(_entryData.PreviewImagePath))
 			SteamUGC.SetItemPreview(uGCUpdateHandle_t, _entryData.PreviewImagePath);
 
 		if (_entryData.Visibility.HasValue)
