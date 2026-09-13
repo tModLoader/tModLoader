@@ -1060,6 +1060,14 @@
  	}
  
  	public void SetDefaults_ForNetId(int Type, NPCSpawnParams spawnparams, float scaleOverride)
+@@ -6432,6 +_,7 @@
+ 	{
+ 		direction = 0;
+ 		oldDirection = 0;
++		thisEntitySourceCache = new EntitySource_Parent(this); // TML
+ 	}
+ 
+ 	public static void ClearAll()
 @@ -6499,6 +_,15 @@
  			return;
  		}
@@ -2134,8 +2142,8 @@
  		}
  	}
  
-+	//TML: Added 'typeName' parameter.
 -	private void DoDeathEvents_CelebrateBossDeath()
++	//TML: Added 'typeName' parameter.
 +	private void DoDeathEvents_CelebrateBossDeath(string typeName)
  	{
  		NPCDamageTracker.BossKilled(this);
@@ -2163,12 +2171,12 @@
  		}
  
  		if (boss) {
+-			DoDeathEvents_DropBossPotionsAndHearts();
+-			DoDeathEvents_CelebrateBossDeath();
 +			// Added by TML.
 +			string typeName = TypeName;
 +
--			DoDeathEvents_DropBossPotionsAndHearts();
 +			DoDeathEvents_DropBossPotionsAndHearts(ref typeName);
--			DoDeathEvents_CelebrateBossDeath();
 +			DoDeathEvents_CelebrateBossDeath(typeName);
  			if (Main.netMode == 2)
  				NetMessage.SendData(7);

@@ -281,9 +281,9 @@
 +
 +				var num242 = reader.Read7BitEncodedInt();
 +				NPC.HitInfo hit = default;
-+				if (num212 >= 0) {
++				if (num242 >= 0) {
 +					hit = new NPC.HitInfo {
-+						Damage = num212,
++						Damage = num242,
 +						SourceDamage = reader.Read7BitEncodedInt(),
 +						DamageType = DamageClassLoader.DamageClasses[reader.Read7BitEncodedInt()],
 +						HitDirection = reader.ReadSByte(),
@@ -363,7 +363,7 @@
  
 +
 +				ushort modType = 0;
-+				if (b2 >= 100)
++				if (b4 >= 100)
 +					modType = reader.ReadUInt16();
 +
  				if (Main.netMode == 2) {

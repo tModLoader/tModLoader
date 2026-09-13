@@ -1,0 +1,21 @@
+--- src/TerrariaNetCore/Terraria/GameContent/Items/WhipTagEffect_SwordWhip.cs
++++ src/tModLoader/Terraria/GameContent/Items/WhipTagEffect_SwordWhip.cs
+@@ -5,14 +_,14 @@
+ 
+ public class WhipTagEffect_SwordWhip : WhipTagEffect
+ {
+-	public override void ModifyProcHit(Player owner, Projectile optionalProjectile, NPC npcHit, ref TagDamageChanges changes)
++	public override void ModifyProcHit(Player owner, Projectile optionalProjectile, NPC npcHit, ref NPC.HitModifiers modifiers)
+ 	{
+-		MegaSlash(npcHit, ref changes);
++		MegaSlash(npcHit, ref modifiers);
+ 	}
+ 
+-	public override bool OnProcHit(Player owner, Projectile optionalProjectile, NPC npcHit, int calcDamage) => true;
++	public override bool OnProcHit(Player owner, Projectile optionalProjectile, NPC npcHit, NPC.HitInfo hit) => true;
+ 
+-	public static void MegaSlash(NPC npcHit, ref TagDamageChanges changes)
++	public static void MegaSlash(NPC npcHit, ref NPC.HitModifiers modifiers)
+ 	{
+ 		int num = 30;
+ 		Vector2 positionInWorld = Main.rand.NextVector2FromRectangle(npcHit.Hitbox);

@@ -4320,7 +4320,7 @@
  		if (proj.aiStyle == 99 && proj.ai[0] != -2f) {
  			Vector2 pos = mountedCenter;
  			pos.Y += player.gfxOffY;
-@@ -24642,6 +_,12 @@
+@@ -24642,6 +_,13 @@
  				return;
  		}
  		else {
@@ -4329,11 +4329,12 @@
 +
 +	private void DrawProj_DrawSpecialProjs(Projectile proj, Player player, ref bool earlyReturn)
 +	{
++		bool flag = proj.isAPreviewDisplayDoll || player.isDisplayDollOrInanimate; // Moved from DrawProjDirect
 +		{
  			if (proj.aiStyle == 160) {
  				DrawKite(proj, player.GetArmPosition() + Main.player[proj.owner].netOffset, WindForVisuals);
  				return;
-@@ -24953,6 +_,11 @@
+@@ -24953,6 +_,12 @@
  			return;
  		}
  
@@ -4342,6 +4343,7 @@
 +
 +	private void DrawProj_DrawExtras(Projectile proj, Player player, Vector2 mountedCenter, ref float polePosX, ref float polePosY)
 +	{
++		bool flag = proj.isAPreviewDisplayDoll || player.isDisplayDollOrInanimate; // Moved from DrawProjDirect
  		if (proj.bobber && player.inventory[player.selectedItem].holdStyle != 0) {
  			DrawProj_FishingLine(proj, player, ref polePosX, ref polePosY, mountedCenter);
  		}
@@ -4356,7 +4358,7 @@
  		Microsoft.Xna.Framework.Color projectileColor = Lighting.GetColor((int)((double)proj.position.X + (double)proj.width * 0.5) / 16, (int)(((double)proj.position.Y + (double)proj.height * 0.5) / 16.0));
  		if (proj.usesOwnerLight)
  			projectileColor = Lighting.GetColor((int)mountedCenter.X / 16, (int)(mountedCenter.Y / 16f));
-@@ -26099,6 +_,26 @@
+@@ -26099,6 +_,27 @@
  		if (proj.type == 14)
  			projectileColor = Microsoft.Xna.Framework.Color.White;
  
@@ -4380,6 +4382,7 @@
 +
 +	private void DrawProj_DrawNormalProjs(Projectile proj, Player player, float polePosX, float polePosY, Vector2 mountedCenter, ref Color projectileColor)
 +	{
++		bool flag = proj.isAPreviewDisplayDoll || player.isDisplayDollOrInanimate; // Moved from DrawProjDirect
  		int num151 = 0;
  		int num152 = 0;
  		if (proj.type == 1022)
@@ -6267,7 +6270,7 @@
 +
 +				spriteBatch.DrawString(font, patreonShortURL, new Vector2(patreonOrigin.X + num + 10f, screenHeight - patreonOrigin.Y + num2 - 2f - (int)upBump), color, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
 +
-+				if (i == 4 && mouseLeftRelease && mouseLeft && new Microsoft.Xna.Framework.Rectangle((int)patreonOrigin.X + 10, screenHeight - (int)urlSize.Y - 2 - (int)upBump, (int)urlSize.X, (int)patreonOrigin.Y).Contains(new Microsoft.Xna.Framework.Point(mouseX, mouseY)) && FocusHelper.AllowUIInputs) {
++				if (i == 4 && mouseLeftRelease && mouseLeft && new Microsoft.Xna.Framework.Rectangle((int)patreonOrigin.X + 10, screenHeight - (int)urlSize.Y - 2 - (int)upBump, (int)urlSize.X, (int)patreonOrigin.Y).Contains(new Microsoft.Xna.Framework.Point(mouseX, mouseY)) && FocusHelper.AllowInputProcessing) {
 +					SoundEngine.PlaySound(SoundID.MenuOpen);
 +					Utils.OpenToURL("https://www.patreon.com/tModLoader");
 +				}
