@@ -1,11 +1,12 @@
 --- src/TerrariaNetCore/Terraria/GameContent/Tile_Entities/TEDisplayDoll.cs
 +++ src/tModLoader/Terraria/GameContent/Tile_Entities/TEDisplayDoll.cs
-@@ -7,11 +_,13 @@
+@@ -7,12 +_,14 @@
  using Terraria.DataStructures;
  using Terraria.GameInput;
  using Terraria.Graphics.Renderers;
 +using Terraria.ModLoader;
 +using Terraria.ModLoader.IO;
+ using Terraria.ID;
  using Terraria.UI;
  
  namespace Terraria.GameContent.Tile_Entities;
@@ -15,7 +16,7 @@
  {
  	public struct DisplayDollPose
  	{
-@@ -70,7 +_,14 @@
+@@ -71,7 +_,14 @@
  		RegisterUsePose(15, DisplayDollPoseID.Use1, 0.5f);
  	}
  
@@ -31,7 +32,7 @@
  	{
  		if (!SupportedUseStylePoses.TryGetValue(useStyle, out var value)) {
  			value = new List<DisplayDollPose>();
-@@ -168,8 +_,8 @@
+@@ -169,8 +_,8 @@
  		Item[] equip = _equip;
  		foreach (Item item in equip) {
  			if (!item.IsAir) {
@@ -42,7 +43,7 @@
  				writer.Write((short)item.stack);
  			}
  		}
-@@ -177,8 +_,8 @@
+@@ -178,8 +_,8 @@
  		equip = _dyes;
  		foreach (Item item2 in equip) {
  			if (!item2.IsAir) {
@@ -53,7 +54,7 @@
  				writer.Write((short)item2.stack);
  			}
  		}
-@@ -186,8 +_,8 @@
+@@ -187,8 +_,8 @@
  		equip = _misc;
  		foreach (Item item3 in equip) {
  			if (!item3.IsAir) {
@@ -64,7 +65,7 @@
  				writer.Write((short)item3.stack);
  			}
  		}
-@@ -278,11 +_,14 @@
+@@ -279,11 +_,14 @@
  			return;
  
  		TileEntityType<TEDisplayDoll>.Kill(num, num2);
@@ -79,7 +80,7 @@
  		WorldGen.destroyObject = true;
  		for (int k = num; k < num + 2; k++) {
  			for (int l = num2; l < num2 + 3; l++) {
-@@ -420,7 +_,10 @@
+@@ -426,7 +_,10 @@
  				_playerRenderer.OverrideHeldProjectile = projectileDummy;
  				int drawLayer = projectileDummy.drawLayer;
  				if ((uint)drawLayer <= 3u)
@@ -90,7 +91,7 @@
  			}
  		}
  
-@@ -672,6 +_,10 @@
+@@ -678,6 +_,10 @@
  	public void WriteItem(int itemIndex, BinaryWriter writer, Item[] collection)
  	{
  		Item item = collection[itemIndex];
@@ -101,7 +102,7 @@
  		writer.Write((ushort)item.type);
  		writer.Write((ushort)item.stack);
  		writer.Write(item.prefix);
-@@ -679,14 +_,22 @@
+@@ -685,14 +_,22 @@
  
  	public void ReadItem(int itemIndex, BinaryReader reader, Item[] collection)
  	{

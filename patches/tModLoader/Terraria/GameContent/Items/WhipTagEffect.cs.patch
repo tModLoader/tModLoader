@@ -67,12 +67,12 @@
  	public override void OnTagAppliedToNPC(Player player, NPC npc)
  	{
  		if (player == Main.LocalPlayer)
-@@ -45,15 +_,42 @@
- 			player.AddBuff(PlayerBuffId, PlayerBuffTime);
+@@ -47,17 +_,46 @@
+ 		}
  	}
  
 +	/*
- 	public override void ModifyTaggedHit(Player owner, Projectile optionalProjectile, NPC npcHit, ref int damageDealt, ref bool crit)
+ 	public override void ModifyTaggedHit(Player owner, Projectile optionalProjectile, NPC npcHit, ref TagDamageChanges changes)
 +	*/
 +	/// <summary>
 +	/// Allows the damage dealt to be modified when a tagged enemy takes damage from a minion, sentry, or one of their projectiles.
@@ -85,15 +85,19 @@
 +	/// <param name="modifiers">The original damage that was dealt to the NPC.</param>
 +	public override void ModifyTaggedHit(Player owner, Projectile optionalProjectile, NPC npcHit, ref NPC.HitModifiers modifiers)
  	{
- 		if (optionalProjectile != null)
-+			/*
- 			damageDealt += (int)((float)(TagDamage + optionalProjectile.bonusTagDamage) * ProjectileID.Sets.SummonTagDamageMultiplier[optionalProjectile.type]);
-+			*/
-+			modifiers.FlatBonusDamage += (TagDamage + optionalProjectile.bonusTagDamage) * ProjectileID.Sets.SummonTagDamageMultiplier[optionalProjectile.type];
++		/*
+ 		changes.AddProjectileTagDamage = true;
+ 		changes.AddedBaseDamage += TagDamage;
+ 		if (changes.HighestAddedBaseDamage < TagDamage)
+ 			changes.HighestAddedBaseDamage = TagDamage;
++		*/
++
++		// TODO: Replicate above
++		modifiers.FlatBonusDamage += (TagDamage + optionalProjectile.bonusTagDamage) * ProjectileID.Sets.SummonTagDamageMultiplier[optionalProjectile.type];
  
  		if (Main.rand.Next(100) < CritChance)
 +			/*
- 			crit = true;
+ 			changes.Crit = true;
 +			*/
 +			modifiers.SetCrit();
  	}

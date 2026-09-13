@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/ID/MountID.cs
 +++ src/tModLoader/Terraria/ID/MountID.cs
-@@ -1,22 +_,67 @@
+@@ -1,23 +_,68 @@
 +using ReLogic.Reflection;
 +using Terraria.ModLoader;
 +
@@ -24,7 +24,7 @@
 +		/// If <see langword="true"/>, the player can use dashes while mounted on this mount, either normal player dashes or mount specific dashes (<see cref="Chillet"/>).
 +		/// <br/><br/> Some examples include <see cref="Bat"/>, <see cref="Pixie"/>, <see cref="Chillet"/> and <see cref="RollerSkates"/>.
 +		/// </summary>
- 		public static bool[] CanDash = Factory.CreateBoolSet(56, 57, 58, 59, 60, 61, 62, 63);
+ 		public static bool[] CanDash = Factory.CreateBoolSet(56, 57, 58, 59, 60, 61, 62, 63, 64, 65);
 +		/// <summary>
 +		/// If <see langword="true"/> for a given <see cref="MountID"/>, then that mount will not affect the player's body frames (<see cref="Player.bodyFrame"/>), meaning the body will animate as normal as if the player were not mounted.
 +		/// <br/><br/> This is used by <see cref="RollerSkates"/> and similar mounts.
@@ -40,6 +40,7 @@
 +		/// <br/><br/> This is used by <see cref="RollerSkates"/> and similar mounts.
 +		/// </summary>
  		public static bool[] DoesNotOverrideBackpackDraw = Factory.CreateBoolSet(57, 58, 59, 60);
+ 		public static bool[] DoesNotOverrideWings = Factory.CreateBoolSet(57, 58, 59, 60);
 +		/// <summary>
 +		/// This mount is a roller skates mount. Affects movement, animation, spawn dust, and more.
 +		/// </summary>
@@ -70,10 +71,10 @@
  
  	public const int None = -1;
  	public const int Rudolph = 0;
-@@ -84,4 +_,6 @@
- 	public const int Chillet = 62;
- 	public const int ChilletIgnis = 63;
- 	public static int Count = 64;
+@@ -87,4 +_,6 @@
+ 	public const int TrustyChillet = 64;
+ 	public const int TrustyChilletIgnis = 65;
+ 	public static int Count = 66;
 +
 +	public static IdDictionary Search = IdDictionary.Create<MountID, int>();
  }

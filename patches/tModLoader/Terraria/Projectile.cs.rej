@@ -19,6 +19,15 @@
  
  		if (Owner == Main.myPlayer) {
  			if (ProjectileID.Sets.IsAGolfBall[Type] && Damage <= 0) {
+@@ -9249,7 +_,7 @@
+ 			projectile.ai[1] = projectile.position.Y;
+ 		}
+ 
+-		if (Type > 0 && Type < ProjectileID.Count) {
++		if (Type > 0) {
+ 			if (ProjectileID.Sets.NeedsUUID[Type])
+ 				projectile.projUUID = projectile.identity;
+ 
 @@ -9766,5 +_,5 @@
  		Rectangle rectangle = Damage_GetHitbox();
 -		if (friendly && Main.getGoodWorld && aiStyle == 16 && Main.netMode == 1 && owner != Main.myPlayer && !npcProj) {
@@ -26,6 +35,30 @@
  			BombsHurtPlayers(rectangle, Main.myPlayer);
  			return;
  		}
+@@ -10664,5 +_,7 @@
+ 			}
+ 		}
+ 
+-		int damageDealt = num4;
+-		Main.player[owner].TagEffectState.ModifyHit(this, targetNPC, ref damageDealt, ref crit);
++		modifiers.SourceDamage *= num4 / 1000;
++		// set this just so that summon procs which scale with this value can spawn correctly
++		//float damageDealt = modifiers.SourceDamage.ApplyTo(damage);
++		Main.player[owner].TagEffectState.ModifyHit(this, targetNPC, ref modifiers);
+@@ -11353,10 +_,13 @@
+ 			NewProjectile(GetProjectileSource_FromThis(), targetNPC.Center.X, targetNPC.Center.Y, targetNPC.velocity.X, targetNPC.velocity.Y, 289, 0, 0f, owner);
+ 
+ 		if (Main.netMode != 0) {
++			/*
+ 			if (crit)
+ 				NetMessage.SendData(28, -1, -1, null, victimIndex, num12, num2, num27, 1);
+ 			else
+ 				NetMessage.SendData(28, -1, -1, null, victimIndex, num12, num2, num27);
++			*/
++			NetMessage.SendStrikeNPC(targetNPC, strike);
+ 		}
+ 
+ 		if (type == 1088)
 @@ -11354,6 +_,6 @@
  	private void BombsHurtPlayers(Rectangle projRectangle, int j)
  	{

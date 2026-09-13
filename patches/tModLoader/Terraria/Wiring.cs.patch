@@ -261,19 +261,19 @@
  	}
  
  	private static void Extractinator(int sourceX, int sourceY)
-@@ -2470,8 +_,11 @@
- 		if (worldItem.stack + item.stack > item.maxStack)
- 			num = item.maxStack - item.stack;
+@@ -2465,8 +_,11 @@
+ 		if (worldItem.stack + chestItem.stack > chestItem.maxStack)
+ 			num = chestItem.maxStack - chestItem.stack;
  
 +		/* TML: Use StackItems so OnStack hook fires.
  		worldItem.stack -= num;
- 		item.stack += num;
+ 		chestItem.stack += num;
 +		*/
 +		ItemLoader.StackItems(item, worldItem.inner, out _, numToTransfer: num);
  		if (worldItem.stack <= 0) {
  			worldItem.TurnToAir();
  			return true;
-@@ -2824,7 +_,7 @@
+@@ -2819,7 +_,7 @@
  		return false;
  	}
  
@@ -282,7 +282,7 @@
  	{
  		if (!Main.tile[i, j].active() || (Main.tile[i, j].type == 226 && (double)j > Main.worldSurface && !NPC.downedPlantBoss))
  			return;
-@@ -2850,7 +_,7 @@
+@@ -2845,7 +_,7 @@
  		}
  	}
  
@@ -291,7 +291,7 @@
  	{
  		Main.tile[i, j].inActive(inActive: false);
  		WorldGen.SquareTileFrame(i, j, resetFrame: false);
-@@ -2934,7 +_,11 @@
+@@ -2929,7 +_,11 @@
  		if (!flag)
  			MassWireOperationStep(user, pe, toolMode, ref wireCount, ref actuatorCount);
  

@@ -71,21 +71,12 @@
 +
  	public static void DropItemLocalPerClientAndSetNPCMoneyTo0(NPC npc, int itemId, int stack, bool interactionRequired = true)
  	{
--		if (itemId <= 0 || itemId >= ItemID.Count)
-+		if (itemId <= 0 || itemId >= ItemLoader.ItemCount)
- 			return;
- 
- 		if (Main.netMode == 2) {
-@@ -37,7 +_,7 @@
- 			Main.item[num].TurnToAir();
- 		}
- 		else {
--			DropItemFromNPC(npc, itemId, stack);
-+			_DropItemFromNPC(npc, itemId, stack);
- 		}
- 
- 		npc.value = 0f;
-@@ -45,7 +_,7 @@
+-		if (itemId > 0 && itemId < ItemID.Count) {
++		if (itemId > 0 && itemId < ItemLoader.ItemCount) {
+ 			int num = Item.NewItem(npc.GetItemSource_Loot(), (int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, itemId, stack, noBroadcast: true, -1);
+ 			Main.item[num].MakeInstanced((Player p) => npc.playerInteraction[p.whoAmI] || !interactionRequired);
+ 			npc.value = 0f;
+@@ -32,7 +_,7 @@
  
  	public static void DropItemForEachInteractingPlayerOnThePlayer(NPC npc, int itemId, UnifiedRandom rng, int chanceNumerator, int chanceDenominator, int stack = 1, bool interactionRequired = true)
  	{
@@ -94,7 +85,7 @@
  			return;
  
  		if (Main.netMode == 2) {
-@@ -58,7 +_,7 @@
+@@ -45,7 +_,7 @@
  			}
  		}
  		else if (rng.Next(chanceDenominator) < chanceNumerator) {

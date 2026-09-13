@@ -1,6 +1,6 @@
 --- src/decompiled/Terraria/Netplay.cs
 +++ src/Terraria/Terraria/Netplay.cs
-@@ -5,6 +_,9 @@
+@@ -4,6 +_,9 @@
  using System.Net;
  using System.Net.Sockets;
  using System.Threading;
@@ -12,7 +12,7 @@
  using Terraria.Localization;
 @@ -45,6 +_,10 @@
  	public static bool SpamCheck = false;
- 	public static bool HasClients;
+ 	public static bool HasFullyConnectedClients;
  	private static Thread _serverThread;
 +#if SERVER && WINDOWS
 +	private static UPnPNAT _upnpnat;
@@ -21,7 +21,7 @@
  	public static MessageBuffer fullBuffer = new MessageBuffer();
  	private static int _currentRequestId;
  	private static long swTicksLast;
-@@ -116,10 +_,43 @@
+@@ -126,10 +_,43 @@
  
  	private static void OpenPort(int port)
  	{

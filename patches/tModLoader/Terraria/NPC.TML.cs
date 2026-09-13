@@ -74,11 +74,6 @@ public partial class NPC : IEntityWithGlobals<GlobalNPC>
 
 	private bool catchableNPCOriginallyFriendly; // TML: Fix #3299, Allow npcCatchable to work with friendly npc.
 
-	public NPC()
-	{
-		thisEntitySourceCache = new EntitySource_Parent(this);
-	}
-
 	/// <summary> Returns whether or not this NPC currently has a (de)buff of the provided type. </summary>
 	public bool HasBuff(int type) => FindBuffIndex(type) != -1;
 

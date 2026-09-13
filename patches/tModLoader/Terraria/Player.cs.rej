@@ -31,6 +31,16 @@
  				Main.item[num3].newAndShiny = false;
  				if (Main.netMode == 1)
  					NetMessage.SendData(21, -1, -1, null, num3, 1f);
+@@ -3357,7 +_,8 @@
+ 			if (whoAmI == Main.myPlayer && theItemWeDrop.type == 5095)
+ 				LucyAxeMessage.Create(LucyAxeMessage.MessageSource.ThrownAway, base.Top, new Vector2(direction * 7, -2f));
+ 
+-			int num = Item.NewItem(GetItemSource_Misc(ItemSourceID.PlayerDrop), (int)position.X, (int)position.Y, width, height, theItemWeDrop.type);
++			// int num = Item.NewItem(GetItemSource_Misc(ItemSourceID.PlayerDrop), (int)position.X, (int)position.Y, width, height, theItemWeDrop.type);
++			int num = Item.NewItem(GetItemSource_Misc(ItemSourceID.PlayerDrop), position, width, height, theItemWeDrop);
+ 			Main.item[num].OverrideWith(theItemWeDrop);
+ 			theItemWeDrop = new Item();
+ 			if (slot == 58)
 @@ -3651,6 +_,11 @@
  							Main.projectile[num8].Kill();
  							break;
@@ -43,6 +53,23 @@
  				}
  			}
  		}
+@@ -4833,9 +_,16 @@
+ 
++	/// <summary>
++	/// Adds/returns an item to the player's inventory, and drops the remainder in the world if space runs out.<br/>
++	/// See also <seealso cref="GetItem(Item, GetItemSettings)"/>
++	/// </summary>
+ 	public void GetOrDropItem(Item item, GetItemSettings settings)
+ 	{
+ 		Item item2 = GetItem(item, settings);
+ 		if (!item2.IsAir) {
++			/*
+ 			int num = Item.NewItem(GetItemSource_InventoryOverflow(), (int)position.X, (int)position.Y, width, height, item2.type, item2.stack, noBroadcast: false, item2.prefix, noGrabDelay: true);
++			*/
++			int num = Item.NewItem(GetItemSource_InventoryOverflow(), (int)position.X, (int)position.Y, width, height, item2, noBroadcast: false, noGrabDelay: true);
+ 			Main.item[num].newAndShiny = item.newAndShiny;
+ 			settings.HandlePostAction(Main.item[num].inner);
+ 			if (Main.netMode == 1)
 @@ -7162,8 +_,18 @@
  				manaRegenDelayBonus += 0.5f;
  				manaRegenBonus += 10;
@@ -62,6 +89,94 @@
  			}
  			else if (buffType[j] == 192) {
  				pickSpeed -= 0.2f;
+@@ -9783,6 +_,8 @@
+ 			maxTurrets++;
+ 		}
+ 
++		//TML: Wing loop is merged into ApplyEquipFunctional
++		/*
+ 		for (int n = 3; n < 10; n++) {
+ 			if (armor[n].wingSlot > 0 && IsItemSlotUnlockedAndUsable(n)) {
+ 				if (!hideVisibleAccessory[n] || (velocity.Y != 0f && mount.CanUseWings))
+@@ -9791,6 +_,7 @@
+ 				wingsLogic = armor[n].wingSlot;
+ 			}
+ 		}
++		*/
+ 
+ 		for (int num = 13; num < 20; num++) {
+ 			if (IsItemSlotUnlockedAndUsable(num))
+@@ -12525,10 +_,13 @@
+ 
+ 		if (head == 112 && body == 75 && legs == 64) {
+ 			setBonus = Language.GetTextValue("ArmorSetBonus.Pumpkin");
++			allDamage += 0.1f;
++			/*
+ 			meleeDamage += 0.1f;
+ 			magicDamage += 0.1f;
+ 			rangedDamage += 0.1f;
+ 			minionDamage += 0.1f;
++			*/
+ 		}
+ 
+ 		if (head == 180 && body == 182 && legs == 122) {
+@@ -12564,3 +_,11 @@
+ 			hasWings = true;
+ 		}
+ 
++		//TML: Moved here from UpdateEquips.
++		if (currentItem.wingSlot > 0) {
++			if (!hideVisibleAccessory[itemSlot] || velocity.Y != 0f && !mount.Active)
++				wings = currentItem.wingSlot;
++
++			wingsLogic = currentItem.wingSlot;
++			equippedWings = currentItem;
++		}
+@@ -12751,6 +_,9 @@
+ 
+ 		if (head == 261 && body == 230 && legs == 213) {
+ 			setBonus = Language.GetTextValue("ArmorSetBonus.CrystalNinja");
++			allDamage += 0.1f;
++			allCrit += 10;
++			/*
+ 			rangedDamage += 0.1f;
+ 			meleeDamage += 0.1f;
+ 			magicDamage += 0.1f;
+@@ -12758,6 +_,7 @@
+ 			rangedCrit += 10;
+ 			meleeCrit += 10;
+ 			magicCrit += 10;
++			*/
+ 			dashType = 5;
+ 		}
+ 
+@@ -12874,11 +_,16 @@
+ 			minionDamage += 0.15f;
+ 			whipRangeMultiplier += 0.3f;
+ 			float num = 1.15f;
++			/*
+ 			float num2 = 1f / num;
+ 			whipUseTimeMultiplier *= num2;
++			*/
++			summonerWeaponSpeedBonus += num - 1; //TML: Obsidian armor changed to additive.
+ 		}
+ 
+ 		ApplyArmorSoundAndDustChanges();
++
++		ItemLoader.UpdateArmorSet(this, armor[0], armor[1], armor[2]);
+ 	}
+ 
+ 	private void UpdateArmorSets_Always_Vortex()
+@@ -16239,6 +_,9 @@
+ 
+ 		if (Main.netMode != 0)
++			/*
+ 			NetMessage.SendData(28, -1, -1, null, npc.whoAmI, damage, knockback, direction, crit.ToInt());
++			*/
++			NetMessage.SendStrikeNPC(npc, hit);
+ 
+ 		int num = BannerSystem.NPCtoBanner(npc.BannerID());
+ 		if (num >= 0)
 @@ -19323,8 +_,12 @@
  							DpadRadial.ChangeSelection(-1);
  							CircularRadial.ChangeSelection(-1);
@@ -108,6 +223,21 @@
  
  			if (stoned != lastStoned) {
  				if (whoAmI == Main.myPlayer && stoned) {
+@@ -20239,11 +_,14 @@
+ 					}
+ 				}
+ 
++				/*
+ 				bool flag9 = false;
+ 				for (int num15 = 3; num15 < 10; num15++) {
+ 					if (armor[num15].stack > 0 && armor[num15].wingSlot > -1)
+ 						flag9 = true;
+ 				}
++				*/
++				bool flag9 = equippedWings != null;
+ 
+ 				if (stoned) {
+ 					int num16 = (int)(((float)num10 * gravDir - 2f) * 20f);
 @@ -23995,6 +_,12 @@
  
  	public void ScrollHotbar(int Offset)
@@ -206,6 +336,20 @@
 +			*/
  
  			if (player == Main.LocalPlayer && num7 < PaladinsShieldRange)
+@@ -35863,10 +_,13 @@
+ 			if (num6 >= 0)
+ 				lastCreatureHit = num6;
+ 
+ 			if (Main.netMode != 0) {
++				/*
+ 				if (flag3)
+ 					NetMessage.SendData(28, -1, -1, null, npcIndex, num3, knockBack, direction, 1);
+ 				else
+ 					NetMessage.SendData(28, -1, -1, null, npcIndex, num3, knockBack, direction);
++				*/
++				NetMessage.SendStrikeNPC(nPC, strike);
+ 			}
+ 
 @@ -40306,6 +_,11 @@
  		if (sItem.type == 3006)
  			flag2 = true;
@@ -306,6 +450,97 @@
  			}
  		}
  	}
+@@ -43404,1 +_,35 @@
+ 
++	// Overloaded added by TML.
++	/// <summary>
++	/// A more-convenient-to-call variant of the vanilla PickAmmo method, which handles most vanilla ammunition logic to decide various common stats related to ammunition-consuming weapons.<br></br>
++	/// The stats output by this method take into account any extra stats which the ammunition it finds may provide (read: it accounts for ammo damage and knockback).<br></br>
++	/// </summary>
++	/// <param name="weapon">The weapon for which to handle ammunition logic.</param>
++	/// <param name="projToShoot">The projectile that should be shot based on the given weapon and the located ammunition.</param>
++	/// <param name="speed">The speed at which the projectile that would be made by the given weapon and located ammunition should move.</param>
++	/// <param name="damage">The damage value that the projectile shot should have, based on the given weapon and the located ammunition.</param>
++	/// <param name="knockBack">The knockback value that the projectile shot should have, based on the given weapon and the located ammunition.</param>
++	/// <param name="usedAmmoItemId">The numerical ID of the located ammunition.</param>
++	/// <param name="dontConsume">
++	/// Whether or not ammo consumption logic should be called upon.<br></br>
++	/// This defaults to false, and if it is true for any reason, ammo will not be consumed at the end of the method.<br></br>
++	/// This is useful for gathering the data needed based on PickAmmo's calculations without incidentally consuming any ammunition in the process.
++	/// </param>
++	/// <returns>True if ammo was found/chosen, and false otherwise.</returns>
++	public bool PickAmmo(Item weapon, out int projToShoot, out float speed, out int damage, out float knockBack, out int usedAmmoItemId, bool dontConsume = false)
++	{
++		projToShoot = weapon.shoot;
++		speed = weapon.shootSpeed;
++		damage = GetWeaponDamage(weapon);
++		knockBack = GetWeaponKnockback(weapon);
++
++		bool canShoot = false;
++		PickAmmo(weapon, ref projToShoot, ref speed, ref canShoot, ref damage, ref knockBack, out usedAmmoItemId, dontConsume);
++
++		if (!canShoot) {
++			projToShoot = 0;
++			return false;
++		}
++
++		return true;
++	}
+@@ -43405,12 +_,31 @@
++
++	//TML: Method split, 1st part of original PickAmmo.
++	/*
+ 	public void PickAmmo(Item sItem, ref int projToShoot, ref float speed, ref bool canShoot, ref int Damage, ref float KnockBack, out int usedAmmoItemId, bool dontConsume = false)
++	*/
++	/// <summary>
++	/// Attempts to select an ammo item stack from this player's inventory to shoot with the given weapon.
++	/// </summary>
++	/// <param name="weapon">The weapon for which this call should try to find ammo.</param>
++	/// <returns>Null if no suitable ammo is found; otherwise, returns the first ammo item found.</returns>
++	public Item ChooseAmmo(Item weapon)
+ 	{
+-		Item item = new Item();
++		var sItem = weapon;
++		Item item = null;
+ 		bool flag = false;
++		/*
+ 		usedAmmoItemId = 0;
++		*/
++		bool canShoot = false; // Dummy.
++
+ 		if (sItem.useAmmo == AmmoID.Coin) {
+ 			for (int i = 0; i < 4; i++) {
+ 				int num = 50 + i;
++
++				/*
+ 				if (inventory[num].ammo == sItem.useAmmo && inventory[num].stack > 0) {
++				*/
++				if (inventory[num].stack > 0 && ItemLoader.CanChooseAmmo(sItem, inventory[i], this)) {
+ 					item = inventory[num];
+ 					canShoot = true;
+ 					flag = true;
+@@ -43420,7 +_,10 @@
+ 		}
+ 
+ 		for (int j = 54; j < 58; j++) {
++			/*
+ 			if (inventory[j].ammo == sItem.useAmmo && inventory[j].stack > 0) {
++			*/
++			if (inventory[j].stack > 0 && ItemLoader.CanChooseAmmo(sItem, inventory[j], this)) {
+ 				item = inventory[j];
+ 				canShoot = true;
+ 				flag = true;
+@@ -43430,7 +_,10 @@
+ 
+ 		if (!flag) {
+ 			for (int k = 0; k < 54; k++) {
++				/*
+ 				if (inventory[k].ammo == sItem.useAmmo && inventory[k].stack > 0) {
++				*/
++				if (inventory[k].stack > 0 && ItemLoader.CanChooseAmmo(sItem, inventory[k], this)) {
+ 					item = inventory[k];
+ 					canShoot = true;
+ 					break;
 @@ -43489,11 +_,14 @@
  			if (Main.netMode == 1)
  				NetMessage.SendData(21, -1, -1, null, number, 1f);

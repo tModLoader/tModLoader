@@ -161,8 +161,8 @@
  			Item item = new Item();
  			item.SetDefaults(k);
  			ItemsByType[k] = item;
-@@ -805,7 +_,10 @@
- 		AddItemResearchOverride(5526, 2611);
+@@ -807,7 +_,10 @@
+ 		AddItemResearchOverride(6190, 6195);
  	}
  
 +	/// <summary>
@@ -173,7 +173,7 @@
  	{
  		for (int i = 0; i < itemsThatWillResearchTheItemToUnlock.Length; i++) {
  			AddItemResearchOverride_Inner(itemsThatWillResearchTheItemToUnlock[i], itemTypeToUnlock);
-@@ -983,7 +_,10 @@
+@@ -985,7 +_,10 @@
  		NPCSpawnParams nPCSpawnParams = default(NPCSpawnParams);
  		nPCSpawnParams.difficultyOverride = GameDifficultyLevel.Classic;
  		NPCSpawnParams spawnparams = nPCSpawnParams;

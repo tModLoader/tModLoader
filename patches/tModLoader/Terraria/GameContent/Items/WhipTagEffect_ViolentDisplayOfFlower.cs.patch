@@ -5,9 +5,9 @@
  public class WhipTagEffect_ViolentDisplayOfFlower : WhipTagEffect
  {
 +	/*
- 	public override void OnProcHit(Player owner, Projectile optionalProjectile, NPC npcHit, int calcDamage)
+ 	public override bool OnProcHit(Player owner, Projectile optionalProjectile, NPC npcHit, int calcDamage)
 +	*/
-+	public override void OnProcHit(Player owner, Projectile optionalProjectile, NPC npcHit, NPC.HitInfo hit)
++	public override bool OnProcHit(Player owner, Projectile optionalProjectile, NPC npcHit, NPC.HitInfo hit)
  	{
- 		SpawnFlowerExplosionOn(optionalProjectile, npcHit, 40);
- 	}
+ 		if (optionalProjectile != null)
+ 			SpawnFlowerExplosionOn(optionalProjectile, npcHit, calcDamage);

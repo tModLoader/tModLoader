@@ -428,8 +428,7 @@
 +
 +	// Player, dodgeType { NinjaDodge = 1, ShadowDodge = 2 }
 +	// Forwarded to other clients
--	public const byte Unknown62 = 62;
-+	public const byte Dodge = 62;
+ 	public const byte SyncDodge = 62;
 +
 +	// WorldGen.paintTile(x, y, color)
 +	// Forwarded to other clients
@@ -566,9 +565,8 @@
 +	/// <br/><br/> <see cref="SyncItem"/> docs:
 +	/// <br/><br/> <inheritdoc cref="SyncItem"/>
 +	/// </summary>
--	public const byte InstancedItem = 90;
-+	public const byte InstancedItem = 90
-+		;
+ 	public const byte SpawnInstancedItem = 90;
++
  	public const byte SyncEmoteBubble = 91;
 +
  	public const byte SyncExtraValue = 92;
@@ -690,7 +688,7 @@
 +	/// <br/><br/> <see cref="SyncItem"/> docs:
 +	/// <br/><br/> <inheritdoc cref="SyncItem"/>
 +	/// </summary>
- 	public const byte SyncItemsWithShimmer = 145;
+ 	public const byte SyncItemsWithShimmerDeprecated = 145;
 +
  	public const byte ShimmerActions = 146;
 +
@@ -701,7 +699,7 @@
 +	/// <br/><br/> <see cref="SyncItem"/> docs:
 +	/// <br/><br/> <inheritdoc cref="SyncItem"/>
 +	/// </summary>
- 	public const byte SyncItemCannotBeTakenByEnemies = 148;
+ 	public const byte SyncItemCannotBeTakenByEnemiesDeprecated = 148;
 +
  	public const byte DeadCellsDisplayJarTryPlacing = 149;
  	public const byte SpectatePlayer = 150;

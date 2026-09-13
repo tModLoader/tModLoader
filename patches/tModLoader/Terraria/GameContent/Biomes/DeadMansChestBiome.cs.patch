@@ -10,14 +10,14 @@
  
 @@ -203,7 +_,7 @@
  
- 	private void PlaceBoulderTrapSpot(Point position, int yPush)
+ 	private void FindBoulderTrapSpot_CheckSpot(Point position, int yPush)
  	{
 -		int[] array = new int[TileID.Count];
 +		int[] array = new int[TileLoader.TileCount];
  		for (int i = position.X; i < position.X + 2; i++) {
  			for (int j = position.Y - 4; j <= position.Y; j++) {
  				Tile tile = Main.tile[i, j];
-@@ -267,7 +_,7 @@
+@@ -272,7 +_,7 @@
  		int y = position.Y;
  		for (int i = 0; i < 20; i++) {
  			Tile tile = Main.tile[x + i * directionX, y];
@@ -26,7 +26,7 @@
  				if (i >= 5 && !tile.actuator() && !Main.tileFrameImportant[tile.type] && WorldGen.CanBeClearedDuringGeneration(tile.type, x + i * directionX, y)) {
  					_dartTrapPlacementSpots.Add(new DartTrapPlacementAttempt(position, directionX, x, y, i, tile));
  					return true;
-@@ -331,7 +_,7 @@
+@@ -336,7 +_,7 @@
  	private bool IsGoodSpotsForExplosive(int x, int y)
  	{
  		Tile tile = Main.tile[x, y];

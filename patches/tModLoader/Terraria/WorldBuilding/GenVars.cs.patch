@@ -8,7 +8,7 @@
  	public static StructureMap structures;
  	public static int copper;
  	public static int iron;
-@@ -141,7 +_,13 @@
+@@ -142,7 +_,13 @@
  	public static readonly int oasisHeight = 20;
  	public static int hellChest;
  	public static int[] hellChestItem;

@@ -1,11 +1,13 @@
+using System;
+using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using ReLogic.Content;
-using System;
-using System.Linq;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.Utilities;
 using static Terraria.Audio.ActiveSound;
+using static Terraria.WorldGen.SecretSeed;
 
 #nullable enable
 
@@ -313,6 +315,9 @@ public record struct SoundStyle
 
 	public SoundStyle WithVolumeScale(float scale)
 		=> this with { Volume = Volume * scale };
+
+	public SoundStyle WithVolumePerceived(float volume)
+		=> WithVolume((float)Math.Pow(volume, 1.6609f));
 
 	public SoundStyle WithPitchOffset(float offset)
 		=> this with { Pitch = Pitch + offset };

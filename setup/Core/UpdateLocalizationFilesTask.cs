@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics;
-using System.Text;
 using Microsoft.Extensions.DependencyInjection;
 using Terraria.ModLoader.Setup.Core.Abstractions;
 
@@ -21,17 +20,17 @@ public sealed class UpdateLocalizationFilesTask : SetupOperation
 	{
 		using var taskProgress = progress.StartTask("Updating localization files...");
 
-		var err = new StringBuilder();
+		string? err = null;
 		int exitCode = RunCmd.Run(
 			Path.GetDirectoryName(UpdateLocalizationFilesPath)!,
 			"python",
 			Path.GetFileName(UpdateLocalizationFilesPath),
 			output: s => taskProgress.ReportStatus(s),
-			error: s => err.Append(s),
+			error: s => err = s,
 			cancel: cancellationToken);
 
-		if (err.Length > 0)
-			throw new Exception(err.ToString());
+		if (!string.IsNullOrEmpty(err))
+			throw new Exception(err);
 
 		success = exitCode == 0;
 
