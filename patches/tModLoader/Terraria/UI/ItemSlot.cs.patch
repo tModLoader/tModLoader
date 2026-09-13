@@ -314,6 +314,56 @@
  					Main.mouseItem.stack = (Main.mouseItem.OnlyNeedOneInInventory() ? 1 : Main.mouseItem.maxStack);
  					Main.mouseItem.OnCreated(new JourneyDuplicationItemCreationContext());
  					AnnounceTransfer(new ItemTransferInfo(inv[slot], 29, 21));
+@@ -1006,6 +_,23 @@
+ 				case 10:
+ 					result = Main.LocalPlayer.armor[slot].type != checkItem.type && !checkItem.vanity && checkItem.accessory && Main.LocalPlayer.IsItemSlotUnlockedAndUsable(slot) && CanEquipAccessoryInSlot(checkItem, slot);
+ 					break;
++				case Context.ModdedAccessorySlot: {
++					AccessorySlotLoader loader = LoaderManager.Get<AccessorySlotLoader>();
++					ModAccessorySlotPlayer modPlayer = AccessorySlotLoader.ModSlotPlayer(Main.LocalPlayer);
++					int modSlot = slot % modPlayer.SlotCount;
++					result = !checkItem.vanity && checkItem.accessory && modPlayer.exAccessorySlot[modSlot].type != checkItem.type && loader.ModdedIsSpecificItemSlotUnlockedAndUsable(modSlot, Main.LocalPlayer, vanity: false) && ItemLoader.CanEquipAccessory(checkItem, modSlot, true) && loader.CanAcceptItem(modSlot, checkItem, context) && !loader.IsAccessoryInConflict(Main.LocalPlayer, checkItem, modSlot, context);
++					break;
++				}
++				case Context.ModdedVanityAccessorySlot: {
++					AccessorySlotLoader loader = LoaderManager.Get<AccessorySlotLoader>();
++					ModAccessorySlotPlayer modPlayer = AccessorySlotLoader.ModSlotPlayer(Main.LocalPlayer);
++					int modSlot = slot % modPlayer.SlotCount;
++					result = modPlayer.exAccessorySlot[modSlot + modPlayer.SlotCount].type != checkItem.type && checkItem.vanity && checkItem.accessory && loader.ModdedIsSpecificItemSlotUnlockedAndUsable(modSlot, Main.LocalPlayer, vanity: true) && ItemLoader.CanEquipAccessory(checkItem, modSlot, true) && loader.CanAcceptItem(modSlot, checkItem, context) && !loader.IsAccessoryInConflict(Main.LocalPlayer, checkItem, modSlot + modPlayer.SlotCount, context);
++					break;
++				}
++				case Context.ModdedDyeSlot:
++					result = checkItem.dye > 0;
++					break;
+ 				case 24: {
+ 					TEDisplayDoll tEDisplayDoll = Main.LocalPlayer.tileEntityAnchor.GetTileEntity() as TEDisplayDoll;
+ 					result = checkItem.accessory && CanEquipAccessoryInSlot(checkItem, new ArraySegment<Item>(tEDisplayDoll.Equipment, 3, 5), slot);
+@@ -1070,6 +_,25 @@
+ 				case 10:
+ 					flag = !checkItem.accessory || !Main.LocalPlayer.IsItemSlotUnlockedAndUsable(slot) || !CanEquipAccessoryInSlot(checkItem, slot);
+ 					break;
++				case Context.ModdedAccessorySlot: {
++					AccessorySlotLoader loader = LoaderManager.Get<AccessorySlotLoader>();
++					ModAccessorySlotPlayer modPlayer = AccessorySlotLoader.ModSlotPlayer(Main.LocalPlayer);
++					int modSlot = slot % modPlayer.SlotCount;
++					flag = !checkItem.accessory || !loader.ModdedIsSpecificItemSlotUnlockedAndUsable(modSlot, Main.LocalPlayer, vanity: false) || !ItemLoader.CanEquipAccessory(checkItem, modSlot, true) || !loader.CanAcceptItem(modSlot, checkItem, context) || loader.IsAccessoryInConflict(Main.LocalPlayer, checkItem, modSlot, context);
++					break;
++				}
++				case Context.ModdedVanityAccessorySlot: {
++					AccessorySlotLoader loader = LoaderManager.Get<AccessorySlotLoader>();
++					ModAccessorySlotPlayer modPlayer = AccessorySlotLoader.ModSlotPlayer(Main.LocalPlayer);
++					int modSlot = slot % modPlayer.SlotCount;
++					flag = !checkItem.accessory || !loader.ModdedIsSpecificItemSlotUnlockedAndUsable(modSlot, Main.LocalPlayer, vanity: true) || !ItemLoader.CanEquipAccessory(checkItem, modSlot, true) || !loader.CanAcceptItem(modSlot, checkItem, context) || loader.IsAccessoryInConflict(Main.LocalPlayer, checkItem, modSlot + modPlayer.SlotCount, context);
++					if (checkItem.accessory && !checkItem.vanity && !loader.IsAccessoryInConflict(Main.LocalPlayer, checkItem, modSlot, Context.ModdedAccessorySlot))
++						flag = false;
++					break;
++				}
++				case Context.ModdedDyeSlot:
++					flag = checkItem.dye <= 0;
++					break;
+ 				case 24: {
+ 					TEDisplayDoll tEDisplayDoll = Main.LocalPlayer.tileEntityAnchor.GetTileEntity() as TEDisplayDoll;
+ 					flag = !checkItem.accessory || !CanEquipAccessoryInSlot(checkItem, new ArraySegment<Item>(tEDisplayDoll.Equipment, 3, 5), slot);
 @@ -1159,7 +_,15 @@
  					result = 1;
  				break;
@@ -558,6 +608,20 @@
  				case 3:
  					value = TextureAssets.InventoryBack5.Value;
  					break;
+@@ -1856,8 +_,11 @@
+ 				color4 = new Color(45, 85, 105, color2.A);
+ 			}
+ 			else if (value == TextureAssets.InventoryBack13.Value) {
+-				TryGetSlotColor(Main.LocalPlayer.CurrentLoadoutIndex, context, out color4);
+-				color4.A = color2.A;
++				color4 = color2;
++				if (TryGetSlotColor(Main.LocalPlayer.CurrentLoadoutIndex, Math.Abs(context), out Color loadoutColor)) {
++					color4 = loadoutColor;
++					color4.A = color2.A;
++				}
+ 			}
+ 
+ 			color4 *= 2f;
 @@ -1899,6 +_,16 @@
  			case 33:
  				num15 = 1;
