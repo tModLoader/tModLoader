@@ -202,6 +202,13 @@ public class OpenShopOnlyAvailableDuringDay(string shopName, string customTextKe
 }
 ```
 
+### Recipe Changes
+
+* Crafting stations are now interactable as well as smart interactable. When right clicked, the crafting window shows recipes that use the crafting station. As they are now interactable, they should have a highlight texture as well.
+  * 💀: Add `TileID.Sets.HasOutlines[Type] = true;` to each crafting station `ModTile`. 
+  * 💀: Also add a `TileName_Highlight.png` texture as well.
+  * 💀: Make sure each tile also has a map entry (`AddMapEntry`) assigned. This is what is shown on the crafting window header.
+
 ## New Vanilla Features
 
 The [Terraria 1.4.5 changelog](https://terraria.wiki.gg/wiki/1.4.5.0) lists many vanilla changes made in the 1.4.5 update. A select portion of the changes relevant to modding will be detailed here as well.

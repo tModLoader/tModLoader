@@ -1,5 +1,22 @@
 --- src/TerrariaNetCore/Terraria/GameContent/UI/NewCraftingUI.cs
 +++ src/tModLoader/Terraria/GameContent/UI/NewCraftingUI.cs
+@@ -12,6 +_,7 @@
+ using Terraria.ID;
+ using Terraria.Localization;
+ using Terraria.Map;
++using Terraria.ModLoader;
+ using Terraria.UI;
+ using Terraria.UI.Chat;
+ using Terraria.UI.Gamepad;
+@@ -125,7 +_,7 @@
+ 		public CraftStationRecipeFilter(int tileType, int tileStyle)
+ 			: base(tileType, tileStyle)
+ 		{
+-			acceptTileTypes = new bool[TileID.Count];
++			acceptTileTypes = new bool[TileLoader.TileCount];
+ 			AcceptTileType(tileType);
+ 		}
+ 
 @@ -392,8 +_,11 @@
  				HandleCraftSlot(recipeEntry, 42);
  
