@@ -9,6 +9,26 @@
  {
  	public enum ColorTheme
  	{
+@@ -20,6 +_,9 @@
+ 	private bool _isDragging;
+ 	private bool _isHoveringOverHandle;
+ 	private float _dragYOffset;
++	/// <summary>
++	/// If <see langword="true"/>, the scrollbar is hidden while it cannot be scrolled (<see cref="CanScroll"/> is <see langword="false"/>).
++	/// </summary>
+ 	public bool AutoHide;
+ 	private Asset<Texture2D> _texture;
+ 	private Asset<Texture2D> _innerTexture;
+@@ -34,6 +_,9 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Whether the scrollbar can currently be scrolled, i.e. whether the view size is smaller than the max view size.
++	/// </summary>
+ 	public bool CanScroll => _maxViewSize != _viewSize;
+ 
+ 	public void GoToBottom()
 @@ -77,7 +_,7 @@
  		return new Rectangle((int)innerDimensions.X, (int)(innerDimensions.Y + innerDimensions.Height * (_viewPosition / _maxViewSize)) - 3, 20, (int)(innerDimensions.Height * (_viewSize / _maxViewSize)) + 7);
  	}

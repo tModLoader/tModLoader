@@ -664,7 +664,7 @@
  	public static Gore[] gore = new Gore[601];
  	public static Rain[] rain = new Rain[maxRain + 1];
 +	/// <summary>
-+	/// Contains all the <see cref="Projectile"/>s in the game world. Projectiles should only be spawned via <see cref="Projectile.NewProjectile(IEntitySource, float, float, float, float, int, int, float, int, float, float, float)"/> or similar methods. Projectile ordering is <b>not</b> consistent between multiplayer clients.
++	/// Contains all the <see cref="Projectile"/>s in the game world. Projectiles should only be spawned via <see cref="Projectile.NewProjectile(IEntitySource, float, float, float, float, int, int, float, int, float, float, float, NewProjectileModifier)"/> or similar methods. Projectile ordering is <b>not</b> consistent between multiplayer clients.
 +	/// <para/> Only entries in this array that are <see cref="Projectile.active"/> are relevant. Each projectile has a <see cref="Entity.whoAmI"/> corresponding to their index within Main.projectile. The last entry is a dummy entry used for overflow and should not be accessed.
 +	/// <para/> Modders seeking to run logic on all projectiles should use <see cref="ActiveProjectiles"/> to iterate over the Main.projectile entries to easily account for inactive entries and the dummy entry.
 +	/// </summary>

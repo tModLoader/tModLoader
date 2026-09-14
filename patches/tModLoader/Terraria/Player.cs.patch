@@ -6226,7 +6226,7 @@
  			PlaceThing_Tiles_TryPlacing(tileToCreate, overrideCanPlace, forcedRandom, data, previewPlaceStyle);
  		}
  	}
-@@ -32113,6 +_,10 @@
+@@ -32113,7 +_,14 @@
  		if (overrideCanPlace.HasValue) {
  			canPlace = overrideCanPlace.Value;
  		}
@@ -6234,9 +6234,13 @@
 +			canPlace = false;
 +			// TODO: CanPlace hook that allows forcing canPlace to true, rather than just preventing placement.
 +		}
++		/*
  		else if (TileObjectData.CustomPlace(tileToCreate, placeStyle) && tileToCreate != 82 && tileToCreate != 227 && tileToCreate != 4) {
++		*/
++		else if (TileObjectData.CustomPlace(tileToCreate, placeStyle) && tileToCreate != 82 && tileToCreate != 227 && !TileID.Sets.Torches[tileToCreate]) {
  			newObjectType = true;
  			canPlace = TileObject.CanPlace(tileTargetX, tileTargetY, (ushort)tileToCreate, placeStyle, direction, out data, onlyCheck: false, forcedRandom);
+ 			PlaceThing_Tiles_BlockPlacementIfOverPlayers(ref canPlace, ref data);
 @@ -32200,9 +_,15 @@
  			if (!WorldGen.IsTileReplaceable(tileTargetX, tileTargetY))
  				return false;
@@ -7177,15 +7181,20 @@
  		if (!mount.Active || (mount.Type != 62 && mount.Type != 63) || !sItem.melee || sItem.noMelee || sItem.noUseGraphic)
  			return;
  
-@@ -36570,6 +_,8 @@
- 					itemRectangle.X += 10;
- 			}
- 		}
-+
-+		ItemLoader.UseItemHitbox(sItem, this, ref itemRectangle, ref dontAttack);
- 	}
+@@ -36494,6 +_,13 @@
  
- 	private void ItemCheck_UseDemonHeart(Item sItem)
+ 	private void ItemCheck_GetMeleeHitbox(Item sItem, Rectangle heldItemFrame, out bool dontAttack, out Rectangle itemRectangle)
+ 	{
++		// TML: Wrapper approach to handle the early returns to call UseItemHitbox reliably.
++		ItemCheck_GetMeleeHitbox_Inner(sItem, heldItemFrame, out dontAttack, out itemRectangle);
++		ItemLoader.UseItemHitbox(sItem, this, ref itemRectangle, ref dontAttack);
++	}
++
++	private void ItemCheck_GetMeleeHitbox_Inner(Item sItem, Rectangle heldItemFrame, out bool dontAttack, out Rectangle itemRectangle)
++	{
+ 		dontAttack = false;
+ 		itemRectangle = new Rectangle((int)itemLocation.X, (int)itemLocation.Y, 32, 32);
+ 		if (!Main.dedServ) {
 @@ -36645,29 +_,75 @@
  		releaseUseItem = false;
  	}

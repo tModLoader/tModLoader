@@ -42,6 +42,7 @@ partial class ProjectileID
 			PearlSandBallGun, new FallingBlockTileItemInfo(TileID.Pearlsand),
 			CrimsandBallGun, new FallingBlockTileItemInfo(TileID.Crimsand),
 			MudBall, new FallingBlockTileItemInfo(TileID.Mud),
+			MudBallPlayer, new FallingBlockTileItemInfo(TileID.Mud, ItemID.MudBlock),
 			AshBallFalling, new FallingBlockTileItemInfo(TileID.Ash),
 			SnowBallHostile, new FallingBlockTileItemInfo(TileID.SnowBlock),
 			SandBallFalling, new FallingBlockTileItemInfo(TileID.Sand, ItemID.SandBlock),
