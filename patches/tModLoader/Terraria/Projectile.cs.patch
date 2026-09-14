@@ -1021,7 +1021,7 @@
  		if (type == 710)
  			BetsySharpnel(victimIndex);
  
-+		CombinedHooks.OnHitNPCWithProj(this, targetNPC, strike, num28); // see addDPS above for patch context of num28
++		CombinedHooks.OnHitNPCWithProj(this, targetNPC, strike, num41); // see addDPS above for patch context of num28
 +
  		if (penetrate > 0 && type != 317 && type != 866) {
  			if (type == 357)
@@ -1544,6 +1544,15 @@
  	}
  
  	private void AI_111_DryadsWard()
+@@ -36037,7 +_,7 @@
+ 				if (!IsTileSolidForImpact(tileSafely) || IsTileSolidForImpact(Framing.GetTileSafely(i, k - 1)))
+ 					continue;
+ 
+-				int num4 = WorldGen.KillTile_GetTileDustAmount(fail: true, tileSafely) * 6;
++				int num4 = WorldGen.KillTile_GetTileDustAmount(fail: true, tileSafely, i, k) * 6;
+ 				for (int l = 0; l < num4; l++) {
+ 					Dust obj = Main.dust[WorldGen.KillTile_MakeTileDust(i, k, tileSafely)];
+ 					obj.velocity.Y -= 3f + (float)num2 * 1f;
 @@ -36116,7 +_,7 @@
  	{
  		if (localAI[0] == 0f) {
@@ -1911,6 +1920,15 @@
  				for (int k = 0; k < num2; k++) {
  					Dust obj = Main.dust[WorldGen.KillTile_MakeTileDust(i, j, tileSafely)];
  					obj.velocity.Y -= 3f + (float)num * 1.5f;
+@@ -59528,7 +_,7 @@
+ 				if (tileSafely2.active() && Main.tileSolid[tileSafely2.type] && !Main.tileSolidTop[tileSafely2.type])
+ 					continue;
+ 
+-				int num4 = WorldGen.KillTile_GetTileDustAmount(fail: true, tileSafely) * dustAmountMultiplier;
++				int num4 = WorldGen.KillTile_GetTileDustAmount(fail: true, tileSafely, i, j) * dustAmountMultiplier;
+ 				for (int k = 0; k < num4; k++) {
+ 					Dust obj = Main.dust[WorldGen.KillTile_MakeTileDust(i, j, tileSafely)];
+ 					obj.velocity.Y -= 3f + (float)num2 * 1.5f;
 @@ -59592,7 +_,7 @@
  		}
  	}

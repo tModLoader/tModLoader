@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Social/Base/WorkshopIssueReporter.cs
 +++ src/tModLoader/Terraria/Social/Base/WorkshopIssueReporter.cs
-@@ -39,6 +_,12 @@
+@@ -39,13 +_,34 @@
  	public void ReportInstantUploadProblem(string textKey)
  	{
  		string textValue = Language.GetTextValue(textKey);
@@ -11,9 +11,19 @@
 +			throw new NotImplementedException(textValue);
 +
  		AddReport(textValue);
++		OpenReportsScreen();
++	}
++
++	public void ReportInstantUploadProblemFromValue(string text) // TML added back in
++	{
++		Utils.LogAndConsoleErrorMessage(text);
++		if (Main.dedServ)
++			throw new NotImplementedException(text);
++
++		AddReport(text);
  		OpenReportsScreen();
  	}
-@@ -46,6 +_,11 @@
+ 
  	public void ReportInstantUploadProblem(string textKey, object subs)
  	{
  		string textValueWith = Language.GetTextValueWith(textKey, subs);

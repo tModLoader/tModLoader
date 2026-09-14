@@ -1,0 +1,28 @@
+--- src/TerrariaNetCore/Terraria/Testing/StateSnapshot.cs
++++ src/tModLoader/Terraria/Testing/StateSnapshot.cs
+@@ -13,6 +_,7 @@
+ using Terraria.Localization;
+ using Terraria.Testing.Cloning;
+ using Terraria.UI;
++using LegacySoundStyle = Terraria.Audio.SoundStyle;
+ 
+ namespace Terraria.Testing;
+ 
+@@ -68,7 +_,7 @@
+ 		private unsafe static void BackupRange(int x0, int x1, TileData[] data)
+ 		{
+ 			int maxTilesY = Main.maxTilesY;
+-			Tile[,] tile = Main.tile;
++			Tilemap tile = Main.tile;
+ 			fixed (TileData* ptr = &data[x0 * maxTilesY]) {
+ 				TileData* ptr2 = ptr;
+ 				for (int i = x0; i < x1; i++) {
+@@ -94,7 +_,7 @@
+ 		private unsafe static void RestoreRange(int x0, int x1, TileData[] data)
+ 		{
+ 			int maxTilesY = Main.maxTilesY;
+-			Tile[,] tile = Main.tile;
++			Tilemap tile = Main.tile;
+ 			fixed (TileData* ptr = &data[x0 * maxTilesY]) {
+ 				TileData* ptr2 = ptr;
+ 				for (int i = x0; i < x1; i++) {

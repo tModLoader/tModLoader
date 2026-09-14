@@ -1749,7 +1749,13 @@
  	{
  		useStyle = 1;
  		useTurn = true;
-@@ -48108,6 +_,28 @@
+@@ -48103,11 +_,33 @@
+ 	{
+ 	}
+ 
+-	public Item(int Type, ItemVariant variant = null)
++	public Item(int Type, ItemVariant variant) // TML: Made variant non-optional to avoid ambiguity with tML added overload
+ 	{
  		SetDefaults(Type, variant);
  	}
  
@@ -1932,6 +1938,55 @@
  			return makeNPC > 0;
  
  		return true;
+@@ -49008,6 +_,10 @@
+ 
+ 	public static IDisposable DefaultAssignNewItemsToPlayer(int plr) => new DefaultAssignNewItemsToPlayer_OverrideHandle(plr);
+ 
++	/// <summary>
++	/// Similar to <see cref="NewItem(IEntitySource, Vector2, int, int, int, NewItemOwnership, Vector2?, NewItemModifier, bool)"/>, except it can be called on multiplayer clients to spawn items.
++	/// </summary>
++	/// <inheritdoc cref="NewItem(IEntitySource, Vector2, int, int, int, NewItemOwnership, Vector2?, NewItemModifier, bool)" path="/param"/>
+ 	public static void RequestNewItem(IEntitySource source, Vector2 center, int type, int stack = 1, int prefix = 0, NewItemOwnership ownership = NewItemOwnership.None, Vector2? velocity = null, NewItemModifier modifier = null)
+ 	{
+ 		int number = NewItem(source, center, type, stack, prefix, ownership, velocity, modifier);
+@@ -49015,11 +_,37 @@
+ 			NetMessage.SendData(21, -1, -1, null, number, (float)ownership);
+ 	}
+ 
++	/// <summary>
++	/// <inheritdoc cref="NewItem(IEntitySource, Vector2, int, int, int, NewItemOwnership, Vector2?, NewItemModifier, bool)"/>
++	/// <br/><br/> This particular overload uses <paramref name="X"/>, <paramref name="Y"/>, <paramref name="Width"/>, and <paramref name="Height"/> to calculate the centered spawn position instead of a center parameter.
++	/// </summary>
++	/// <returns><inheritdoc cref="NewItem(IEntitySource, Vector2, int, int, int, NewItemOwnership, Vector2?, NewItemModifier, bool)"/></returns>
+ 	[Obsolete("Unergonomic")]
+ 	public static int NewItem(IEntitySource source, int X, int Y, int Width, int Height, int type, int stack = 1, bool noBroadcast = false, int prefix = 0, NewItemOwnership ownership = NewItemOwnership.None, Vector2? velocity = null, NewItemModifier modifier = null) => NewItem(source, new Vector2(X + Width / 2, Y + Height / 2), type, stack, prefix, ownership, velocity, modifier, noBroadcast);
+ 
++	/// <summary>
++	/// Spawns an item into the game world with the given type and stack size. The center parameter is the location the item will be spawned centered at. Other overloads support passing in this position in other ways.
++	/// <br/><br/> This method should not be called on multiplayer clients. If you need to spawn items from client code, use <see cref="Player.QuickSpawnItem(IEntitySource, int, int)"/> instead, it handles the multiplayer syncing code needed.
++	/// <br/><br/> See the <paramref name="noBroadcast"/> documentation if you need to customize attached ModItem or GlobalItem data prior to syncing.
++	/// <br/><br/> The source represents the entity causing this item to spawn. The return value is the index of the spawned Item within the <see cref="Main.item"/> array.
++	/// </summary>
++	/// <param name="source"></param>
++	/// <param name="center"></param>
++	/// <param name="type">Either an <see cref="ItemID"/> entry or <see cref="ModContent.ItemType{T}"/>, for example <see cref="ItemID.IronskinPotion"/> or ModContent.ItemType&lt;MyModItem&gt;()</param>
++	/// <param name="stack">Item stack</param>
++	/// <param name="prefix"></param>
++	/// <param name="ownership"></param>
++	/// <param name="velocity"></param>
++	/// <param name="modifier"></param>
++	/// <param name="noBroadcast">Controls whether an item spawned on a server is synced using <see cref="NetMessage.SendData"/> and <see cref="MessageID.SyncItem"/>. If false, the item will be synced. If true, the calling code can modify the item instance and then sync the item with <see cref="MessageID.SyncItem"/>. Has no effect except on server. NewItem running on multiplayer clients always needs to manually sync, see <see cref="Player.QuickSpawnItem(IEntitySource, int, int)"/> source code for an example.</param>
++	/// <returns>The index of the item within <see cref="Main.item"/></returns>
+ 	public static int NewItem(IEntitySource source, Vector2 center, int type, int stack = 1, int prefix = 0, NewItemOwnership ownership = NewItemOwnership.None, Vector2? velocity = null, NewItemModifier modifier = null, bool noBroadcast = false)
+ 	{
++		return NewItem_Inner(source, center, null, type, stack, prefix, ownership, velocity, modifier, noBroadcast);
++	}
++
++	private static int NewItem_Inner(IEntitySource source, Vector2 center, Item itemToClone, int type, int stack = 1, int prefix = 0, NewItemOwnership ownership = NewItemOwnership.None, Vector2? velocity = null, NewItemModifier modifier = null, bool noBroadcast = false)
++	{
+ 		if (WorldGen.isGeneratingOrLoadingWorld)
+ 			return 0;
+ 
 @@ -49029,6 +_,9 @@
  		if (Main.rand == null)
  			Main.rand = new UnifiedRandom();

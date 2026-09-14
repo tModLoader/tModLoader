@@ -2247,6 +2247,17 @@
  	{
  		if (!Main.npc[i].active || Main.npc[i].catchItem <= 0)
  			return;
+@@ -66647,7 +_,10 @@
+ 		}
+ 		else {
+ 			using (Item.DefaultAssignNewItemsToPlayer(who)) {
++				/*
+ 				Item.NewItem(GetSpawnSource_NPCCatch(who), (int)Main.player[who].Center.X, (int)Main.player[who].Center.Y, 0, 0, Main.npc[i].catchItem);
++				*/
++				Item.NewItem(GetSpawnSource_NPCCatch(who, Main.npc[i]), (int)Main.player[who].Center.X, (int)Main.player[who].Center.Y, 0, 0, Main.npc[i].catchItem);
+ 			}
+ 
+ 			Main.npc[i].active = false;
 @@ -66793,7 +_,7 @@
  		if (Main.netMode == 1) {
  			NetMessage.SendData(71, -1, -1, null, x, y, Type, Style);
@@ -2506,16 +2517,50 @@
  	{
  		if (owner < 0)
  			owner = Main.myPlayer;
-@@ -67778,8 +_,18 @@
+@@ -67750,7 +_,10 @@
+ 		if (!active || life <= 0)
+ 			return 0;
  
- 	private int StrikeNPC_Inner(int Damage, float knockBack, int hitDirection, bool crit = false, bool fromNet = false, int owner = -1)
++		/*
+ 		bool condition = Damage >= 9999 && owner == 255;
++		*/
++		bool condition = hit.InstantKill && owner == 255;
+ 		if (!fromNet) {
+ 			if (Main.netMode == 1 && owner != Main.myPlayer) {
+ 				Invariant.Assert(owner == 255, "Simulated strike from another client {0}? ({1})", owner, this);
+@@ -67762,24 +_,40 @@
+ 					return 0;
+ 				}
+ 
++				/*
+ 				NetMessage.SendData(28, -1, -1, null, whoAmI, Damage, knockBack, hitDirection, crit.ToInt());
++				*/
++				NetMessage.SendStrikeNPC(this, hit);
+ 				if (Main.netMode == 1)
+ 					_currentStrikePendingDamage = PushPendingDamage(this);
+ 			}
+ 		}
+ 
+ 		try {
++			/*
+ 			return StrikeNPC_Inner(Damage, knockBack, hitDirection, crit, fromNet, owner);
++			*/
++			return StrikeNPC_Inner(hit, fromNet, owner);
+ 		}
+ 		finally {
+ 			_currentStrikePendingDamage = null;
+ 		}
+ 	}
+ 
+-	private int StrikeNPC_Inner(int Damage, float knockBack, int hitDirection, bool crit = false, bool fromNet = false, int owner = -1)
++	private int StrikeNPC_Inner(HitInfo hit, bool fromNet = false, int owner = -1)
  	{
 +		/*
  		bool flag = Damage >= 9999 && owner == 255;
 +		*/
 +		bool flag = hit.InstantKill && owner == 255;
  		NetUpdateLowPriority();
-+		double num = hit.Damage;
++		int num = hit.Damage;
 +		bool crit = hit.Crit;
 +		int hitDirection = hit.HitDirection;
 +		if (hit.InstantKill)

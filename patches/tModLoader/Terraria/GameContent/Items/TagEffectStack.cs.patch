@@ -1,0 +1,28 @@
+--- src/TerrariaNetCore/Terraria/GameContent/Items/TagEffectStack.cs
++++ src/tModLoader/Terraria/GameContent/Items/TagEffectStack.cs
+@@ -90,17 +_,23 @@
+ 			_effectStates[num].RemoveAllProcs();
+ 	}
+ 
++	/*
+ 	public void ModifyHit(Projectile optionalProjectile, NPC npcHit, ref TagDamageChanges changes)
++	*/
++	public void ModifyHit(Projectile optionalProjectile, NPC npcHit, ref NPC.HitModifiers modifiers)
+ 	{
+ 		for (int i = 0; i < _activeEffectCount; i++) {
+-			_effectStates[i].ModifyHit(optionalProjectile, npcHit, ref changes);
++			_effectStates[i].ModifyHit(optionalProjectile, npcHit, ref modifiers);
+ 		}
+ 	}
+ 
++	/*
+ 	public void OnHit(Projectile optionalProjectile, NPC npcHit, int calcDamage)
++	*/
++	public void OnHit(Projectile optionalProjectile, NPC npcHit, NPC.HitInfo hit)
+ 	{
+ 		for (int i = 0; i < _activeEffectCount; i++) {
+-			_effectStates[i].OnHit(optionalProjectile, npcHit, calcDamage);
++			_effectStates[i].OnHit(optionalProjectile, npcHit, hit);
+ 		}
+ 	}
+ 

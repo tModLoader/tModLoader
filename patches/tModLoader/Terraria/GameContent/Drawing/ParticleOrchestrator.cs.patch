@@ -1,5 +1,22 @@
 --- src/TerrariaNetCore/Terraria/GameContent/Drawing/ParticleOrchestrator.cs
 +++ src/tModLoader/Terraria/GameContent/Drawing/ParticleOrchestrator.cs
+@@ -14,6 +_,7 @@
+ using Terraria.Graphics.Shaders;
+ using Terraria.ID;
+ using Terraria.Net;
++using LegacySoundStyle = Terraria.Audio.SoundStyle;
+ 
+ namespace Terraria.GameContent.Drawing;
+ 
+@@ -739,7 +_,7 @@
+ 			for (int k = point.Y - 3; k <= point.Y + 3; k++) {
+ 				Tile tileSafely = Framing.GetTileSafely(j, k);
+ 				if (tileSafely.active()) {
+-					int num6 = WorldGen.KillTile_GetTileDustAmount(fail: true, tileSafely);
++					int num6 = WorldGen.KillTile_GetTileDustAmount(fail: true, tileSafely, j, k);
+ 					for (int l = 0; l < num6; l++) {
+ 						Dust obj = Main.dust[WorldGen.KillTile_MakeTileDust(j, k, tileSafely)];
+ 						obj.velocity.Y -= 3f + (float)num5 * 1.5f;
 @@ -941,7 +_,7 @@
  				if (!tileSafely.active())
  					continue;

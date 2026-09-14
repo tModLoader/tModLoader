@@ -3845,11 +3845,20 @@
  
  				nPC.immune[whoAmI] = NPCImmuneTime;
  				GiveImmuneTimeForCollisionAttack(PlayerImmuneTime);
-@@ -16534,17 +_,65 @@
- 		ApplyDamageToNPC(npc, damage, knockback, direction, crit, new PlayerNPCHitSource(sourceItemId, sourceProjectileId, sourceIdentifier));
+@@ -16529,22 +_,73 @@
+ 		}
  	}
  
--	public void ApplyDamageToNPC(NPC npc, int damage, float knockback, int direction, bool crit, PlayerNPCHitSource hitSource)
+-	public void ApplyDamageToNPC(NPC npc, int damage, float knockback, int direction, bool crit, string sourceIdentifier = null, int sourceItemId = 0, int sourceProjectileId = 0)
++	public void ApplyDamageToNPC(NPC npc, int damage, float knockback, int direction, bool crit, string sourceIdentifier = null, int sourceItemId = 0, int sourceProjectileId = 0, DamageClass? damageType = null)
+ 	{
+-		ApplyDamageToNPC(npc, damage, knockback, direction, crit, new PlayerNPCHitSource(sourceItemId, sourceProjectileId, sourceIdentifier));
++		ApplyDamageToNPC(npc, damage, knockback, direction, crit, damageType, false, new PlayerNPCHitSource(sourceItemId, sourceProjectileId, sourceIdentifier));
+ 	}
+ 
++	/*
+ 	public void ApplyDamageToNPC(NPC npc, int damage, float knockback, int direction, bool crit, PlayerNPCHitSource hitSource)
++	*/
 +	/// <summary>
 +	/// Deals damage to an NPC (and syncs the hit in multiplayer). <br/>
 +	/// The damage will be affected by modifiers, armor pen, enemy resistances etc. <br/>
@@ -3864,7 +3873,7 @@
 +	/// <param name="crit">Whether or not the strike is a crit</param>
 +	/// <param name="damageType">Defaults to <see cref="DamageClass.Default"/></param>
 +	/// <param name="damageVariation">Whether to apply damage variation. Defaults to false.</param>
-+	public void ApplyDamageToNPC(NPC npc, int damage, float knockback, int direction, bool crit = false, DamageClass? damageType = null, bool damageVariation = false)
++	public void ApplyDamageToNPC(NPC npc, int damage, float knockback, int direction, bool crit = false, DamageClass? damageType = null, bool damageVariation = false, PlayerNPCHitSource hitSource = default)
  	{
 +		if (!PlayerLoader.CanHitNPC(this, npc))
 +			return;
@@ -3882,7 +3891,7 @@
 +		// most instances of this damage in vanilla are not scaling but they still use generic armor penetration bonus
 +		modifiers.ArmorPenetration += GetTotalArmorPenetration(damageType ?? DamageClass.Generic);
 +
-+		StrikeNPCDirect(npc, modifiers.ToHitInfo(damage, crit, knockback, damageVariation, luck));
++		StrikeNPCDirect(npc, modifiers.ToHitInfo(damage, crit, knockback, damageVariation, luck), hitSource);
 +	}
 +
 +	/// <summary>
@@ -3891,15 +3900,15 @@
 +	/// </summary>
 +	/// <param name="npc">The NPC to strike</param>
 +	/// <param name="hit">The hit to apply</param>
-+	public void StrikeNPCDirect(NPC npc, NPC.HitInfo hit)
++	public void StrikeNPCDirect(NPC npc, NPC.HitInfo hit, PlayerNPCHitSource hitSource)
 +	{
  		OnHit(npc.Center.X, npc.Center.Y, npc);
 +		/*
  		damage += npc.checkArmorPenetration(GetArmorPenetration(melee: false), 0f);
 +		*/
  		NPCKillAttempt attempt = new NPCKillAttempt(npc);
-+		/*
  		NPCDamageTracker.SetSourceForNextHit(npc, hitSource);
++		/*
  		int dmg = npc.StrikeNPC(damage, knockback, direction, crit, fromNet: false, whoAmI);
 +		*/
 +		int dmg = npc.StrikeNPC(hit);
@@ -3926,7 +3935,7 @@
  
  					if (whoAmI == Main.myPlayer)
 -						ApplyDamageToNPC(nPC, (int)num, knockback, num2, crit: false, null, 2430);
-+						ApplyDamageToNPC(nPC, (int)num, knockback, num2, crit: false, null, 2430, DamageClass.Summon);
++						ApplyDamageToNPC(nPC, (int)num, knockback, num2, crit: false, null, 2430, damageType: DamageClass.Summon);
  
  					nPC.immune[whoAmI] = 10;
  					velocity.Y = -10f;
@@ -7015,7 +7024,7 @@
 +			// num was pre-variation and post buffs. Equivalent to strike.SourceDamage.
 +			// num5 is post-variation and armor pen, only used by bees and muramasa.
 +			// By switching to strike.SourceDamage for num6, we introduce a slight vanilla discrepancy, but we remove the double damage randomization, and armor penetration
-+			ApplyNPCOnHitEffects(sItem, itemRectangle, strike.SourceDamage, strike.Knockback, npcIndex, strike.SourceDamage, num4);
++			ApplyNPCOnHitEffects(sItem, itemRectangle, strike.SourceDamage, strike.Knockback, nPC, strike.SourceDamage, num4);
  			int num5 = BannerSystem.NPCtoBanner(nPC.BannerID());
  			if (num5 >= 0)
  				lastCreatureHit = num5;

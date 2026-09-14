@@ -476,6 +476,64 @@
  	public static void DestroyChestDirect(int X, int Y, int id)
  	{
  		if (id < 0 || id >= Main.chest.Length)
+@@ -546,12 +_,27 @@
+ 		}
+ 	}
+ 
++	//TML: Now returns the item's index.
++	/// <summary>
++	/// Adds an item to the first empty slot in this shop.
++	/// </summary>
++	/// <param name="newItem">The item to add.</param>
++	/// <returns><c>0</c> if the item could not be added to the shop, or the index in <see cref="item"/> if the item was successfully added.</returns>
+-	public void AddItemToShop(Item newItem)
++	public int AddItemToShop(Item newItem)
+ 	{
+ 		int num = Main.shopSellbackHelper.Remove(newItem);
++		/*
+ 		if (num >= newItem.stack)
+ 			return;
++		*/
++		if (num >= newItem.stack) {
++			for (int i = 0; i < 39; i++)
++				if (item[i] != null && item[i].type == newItem.type)
++					return i;
++			return -1; // Technically this shouldn't happen
++		}
+ 
++		int destinationIndex = -1; // The logic should never allow this to be returned as -1.
+ 		int num2 = newItem.stack - num;
+ 		for (int i = 0; i < 39; i++) {
+ 			if (num2 <= 0)
+@@ -561,21 +_,27 @@
+ 				int num3 = Math.Min(num2, item[i].maxStack - item[i].stack);
+ 				item[i].stack += num3;
+ 				num2 -= num3;
++				destinationIndex = i;
+ 			}
+ 		}
+ 
++		//TML:
++		// When selling to vendor with full inventory, replace 2nd to last
++		// item rather than have the item disappear to facilitate PostSellItem Item reference.
+ 		for (int j = 0; j < 39; j++) {
+ 			if (num2 <= 0)
+ 				break;
+ 
+-			if (item[j] == null || item[j].IsAir) {
++			if (item[j] == null || item[j].IsAir || j == 38) {
+ 				item[j] = newItem.Clone();
+ 				item[j].favorited = false;
+ 				item[j].buyOnce = true;
+ 				item[j].stack = num2;
++				destinationIndex = j;
+ 				break;
+ 			}
+ 		}
++		return destinationIndex;
+ 	}
+ 
+ 	public static void SetupTravelShop_AddToShop(int itemID, ref int added, ref int count)
 @@ -1023,6 +_,9 @@
  		}
  	}

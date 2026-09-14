@@ -132,7 +132,7 @@
  					bitsByte30[3] = nPC3.spawnNeedsSyncing;
  					bitsByte30[4] = nPC3.spawnNeedsSyncing && nPC3.shimmerTransparency > 0f;
 +
-+					byte[] extraAI = NPCLoader.WriteExtraAI(nPC2);
++					byte[] extraAI = NPCLoader.WriteExtraAI(nPC3);
 +					bool hasExtraAI = extraAI?.Length > 0;
 +					bitsByte30[5] = hasExtraAI; // This bit is unused by vanilla
 +

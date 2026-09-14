@@ -269,7 +269,7 @@
  		worldItem.stack -= num;
  		chestItem.stack += num;
 +		*/
-+		ItemLoader.StackItems(item, worldItem.inner, out _, numToTransfer: num);
++		ItemLoader.StackItems(chestItem, worldItem.inner, out _, numToTransfer: num);
  		if (worldItem.stack <= 0) {
  			worldItem.TurnToAir();
  			return true;

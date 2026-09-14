@@ -13,7 +13,7 @@
  {
  	public const int POSITIVE_SACRIFICE_COUNT_CAP = 9999;
 -	private ConcurrentDictionary<string, int> _sacrificeCountByItemPersistentId;
-+	internal Dictionary<string, int> _sacrificeCountByItemPersistentId;
++	internal ConcurrentDictionary<string, int> _sacrificeCountByItemPersistentId;
 -	private Dictionary<int, int> _sacrificesCountByItemIdCache;
  	private Dictionary<int, string> _unlockedByTeammate;
  	private HashSet<int> _newlyUnlocked;
@@ -30,7 +30,7 @@
  		KeyValuePair<string, int>[] array = _sacrificeCountByItemPersistentId.ToArray();
 +		*/
 +		// Only include vanilla items in the dictionary.
-+		Dictionary<string, int> dictionary = _sacrificeCountByItemPersistentId
++		KeyValuePair<string, int>[] array = _sacrificeCountByItemPersistentId
 +			.Where(pair => ContentSamples.ItemNetIdsByPersistentIds.TryGetValue(pair.Key, out int netID) && ContentSamples.ItemsByType.TryGetValue(netID, out Item realItem) && realItem.ModItem == null)
 +			.ToArray();
 +

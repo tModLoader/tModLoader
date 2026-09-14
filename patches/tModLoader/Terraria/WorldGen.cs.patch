@@ -136,6 +136,17 @@
  		if (type == 160) {
  			if (!NPC.unlockedTruffleSpawn && (double)roomY2 > Main.worldSurface && !Main.NoFunctionalSurface)
  				return false;
+@@ -4516,7 +_,10 @@
+ 		roomDoor = false;
+ 		roomTable = false;
+ 		roomTorch = false;
++		/*
+ 		int[] countsAsChairTypes = TileID.Sets.RoomNeeds.CountsAsChairTypes;
++		*/
++		ReadOnlySpan<int> countsAsChairTypes = TileID.Sets.RoomNeeds.CountsAsChairTypes;
+ 		foreach (int num in countsAsChairTypes) {
+ 			if (houseTile[num]) {
+ 				roomChair = true;
 @@ -4693,7 +_,7 @@
  		int num = 0;
  		int num2 = 50;

@@ -1264,7 +1264,7 @@
  	{
  		try {
 +			if (!OperatingSystem.IsWindows())
-+				return;
++				return false;
 +
  			RegistryKey currentUser = Registry.CurrentUser;
  			currentUser = currentUser.CreateSubKey("Software\\Terraria");

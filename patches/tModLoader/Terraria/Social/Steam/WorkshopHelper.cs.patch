@@ -182,7 +182,7 @@
  					CreateItem();
  				}
  			}
-@@ -211,17 +_,53 @@
+@@ -211,17 +_,55 @@
  						return ERemoteStoragePublishedFileVisibility.k_ERemoteStoragePublishedFileVisibilityFriendsOnly;
  					case WorkshopItemPublicSettingId.Public:
  						return ERemoteStoragePublishedFileVisibility.k_ERemoteStoragePublishedFileVisibilityPublic;
@@ -227,7 +227,9 @@
  			{
 +				if (bIOFailure) {
 +					_updateCallback = EResult.k_EResultIOFailure;
-+					_issueReporter.ReportDelayedUploadProblemWithoutKnownReason("Workshop.ReportIssue_FailedToPublish_WithoutKnownReason", _updateCallback.ToString());
++					_issueReporter.ReportDelayedUploadProblem("Workshop.ReportIssue_FailedToPublish_WithoutKnownReason", new {
++						Reason = _updateCallback.ToString()
++					});
 +					_endAction(this);
 +					return;
 +				}
@@ -236,7 +238,7 @@
  				if (bIOFailure)
  					param.m_eResult = EResult.k_EResultIOFailure;
  
-@@ -245,20 +_,51 @@
+@@ -245,20 +_,53 @@
  				else {
  					UpdateItem();
  				}
@@ -244,7 +246,9 @@
 +
 +				_createCallback = param.m_eResult;
 +				if (param.m_eResult != EResult.k_EResultOK) {
-+					_issueReporter.ReportDelayedUploadProblemWithoutKnownReason("Workshop.ReportIssue_FailedToPublish_WithoutKnownReason", param.m_eResult.ToString());
++					_issueReporter.ReportDelayedUploadProblem("Workshop.ReportIssue_FailedToPublish_WithoutKnownReason", new {
++						Reason = param.m_eResult.ToString()
++					});
 +					SteamedWraps.ReportCheckSteamLogs();
 +					_endAction(this);
 +					return;
@@ -288,7 +292,7 @@
  				UGCUpdateHandle_t uGCUpdateHandle_t = SteamUGC.StartItemUpdate(SteamUtils.GetAppID(), _publishedFileID);
  				if (_entryData.Title != null)
  					SteamUGC.SetItemTitle(uGCUpdateHandle_t, _entryData.Title);
-@@ -273,18 +_,63 @@
+@@ -273,18 +_,65 @@
  
  				if (_entryData.Visibility.HasValue)
  					SteamUGC.SetItemVisibility(uGCUpdateHandle_t, _entryData.Visibility.Value);
@@ -336,7 +340,9 @@
  			{
 +				if (bIOFailure) {
 +					_updateCallback = EResult.k_EResultIOFailure;
-+					_issueReporter.ReportDelayedUploadProblemWithoutKnownReason("Workshop.ReportIssue_FailedToPublish_WithoutKnownReason", _updateCallback.ToString());
++					_issueReporter.ReportDelayedUploadProblem("Workshop.ReportIssue_FailedToPublish_WithoutKnownReason", new {
++						Reason = _updateCallback.ToString()
++					});
 +					_endAction(this);
 +					return;
 +				}
