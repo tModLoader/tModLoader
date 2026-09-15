@@ -111,11 +111,11 @@
 +	///		Main.player[Projectile.owner].TagEffectState.TryEnableProcOnNPC(Projectile.tagEffectType, target);
 +	///	}
 +	/// </code></para>
++	/// <para/> Return <see langword="true"/> to remove the proc from the NPC, or <see langword="false"/> to keep it active for future hits.
 +	/// </summary>
 +	/// <param name="owner">The player who inflicted the tag effect.</param>
 +	/// <param name="optionalProjectile">The projectile that hit the NPC.</param>
 +	/// <param name="npcHit">The NPC who was hit.</param>
 +	/// <param name="hit">The damage after calculations from <see cref="ModifyTaggedHit"/> and <see cref="ModifyProcHit"/>.</param>
-+	/// <remarks>Procs will be removed from the NPC once they activate.</remarks>
 +	public virtual bool OnProcHit(Player owner, Projectile optionalProjectile, NPC npcHit, NPC.HitInfo hit) => false;
  }

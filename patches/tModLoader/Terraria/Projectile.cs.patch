@@ -2010,6 +2010,17 @@
  				for (int k = 0; k < num5; k++) {
  					Dust obj = Main.dust[WorldGen.KillTile_MakeTileDust(i, j, tileSafely)];
  					obj.velocity.Y -= 3f + (float)num4 * 1.5f;
+@@ -59348,7 +_,10 @@
+ 				_ = localAI[1];
+ 				_ = 1f;
+ 				int num11 = NewProjectile(GetProjectileSource_FromThis(), vector3 + new Vector2(num6 * -15, -60f), new Vector2(num6, 0f), 698, num5, 0f, owner);
++				/*
+ 				Main.projectile[num11].bonusCritChance = 25;
++				*/
++				Main.projectile[num11].CritChance = 25;
+ 				SoundEngine.PlayTrackedSound(SoundID.DD2_MonkStaffGroundImpact, base.Center);
+ 			}
+ 		}
 @@ -59470,7 +_,7 @@
  			Kill();
  	}

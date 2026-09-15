@@ -2967,13 +2967,14 @@
  				if (hitbox.Intersects(npcRect) && (type != 453 || !NPCID.Sets.Skeletons[nPC.type]) && nPC.type != 624 && nPC.type != 690) {
  					BeHurtByOtherNPC(i, nPC);
  					break;
-@@ -77634,14 +_,32 @@
+@@ -77634,14 +_,33 @@
  		if (type == 548)
  			num = 20;
  
 +		/*
  		int num2 = Main.DamageVar(thatNPC.damage);
 +		*/
++		int num2 = thatNPC.damage;
  		if (type == 695 || type == 696)
  			num2 = 5;
  
@@ -2985,7 +2986,7 @@
 +		*/
 +		var modifiers = GetIncomingStrikeModifiers(DamageClass.Default, num4);
 +		NPCLoader.ModifyHitNPC(thatNPC, this, ref modifiers);
-+		var strike = modifiers.ToHitInfo(thatNPC.damage, crit: false, num3, damageVariation: true);
++		var strike = modifiers.ToHitInfo(num2, crit: false, num3, damageVariation: true);
 +		int num5 = StrikeNPC(strike, noPlayerInteraction: true);
 +		/* // Not sure about this.
 +		if (Main.netMode != 0) {
@@ -2995,7 +2996,7 @@
  		immune[255] = num;
 +
 +		NPCLoader.OnHitNPC(thatNPC, this, strike);
-+		int num2 = strike.SourceDamage; // slightly more 'technically correct' to use modifiers.GetVanillaDamage, but better practice is to use pre-randomization or even post-mitigation values for reflection.
++		num2 = strike.SourceDamage; // slightly more 'technically correct' to use modifiers.GetVanillaDamage, but better practice is to use pre-randomization or even post-mitigation values for reflection.
 +
  		if (dryadWard) {
  			num2 = num5 / 3;

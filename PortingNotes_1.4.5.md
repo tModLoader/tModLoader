@@ -287,7 +287,6 @@ These are simple changes that we'd like Terraria to implement, mainly to reduce 
 - NPC.catchItem, change from short to int?
 - `private static readonly bool[] SafeDust` and `private static readonly bool[] SafeGore` being private and readonly, unlike every other set, is a bit odd.
 - More simple typos: "GameUI.PrecentFishingPower"
-- NPCInteraction.ShowExcalmation -> ShowExclamation
 - PlayerDrawSet.missingHand and missingArm are the opposite of what they sound like apparently. tModLoader changes them as follows:
 ```diff
 +	// Renames for less confusion [

@@ -1839,7 +1839,7 @@
  			}
 +			*/
 +			if (CheckMana(item, -1, true, true))
-+				manaRegenDelay = (int)maxRegenDelay;
++				ApplyManaRegenerationDelay();
 +			else
 +				flag = false;
  		}
@@ -4046,7 +4046,7 @@
  						int num3 = ((velocity.X != 0f) ? Math.Sign(velocity.X) : direction);
  						if (whoAmI == Main.myPlayer)
 -							ApplyDamageToNPC(nPC, (int)num, num2, num3, crit, null, 3097);
-+							ApplyDamageToNPC(nPC, (int)num, num2, num3, crit, null, 3097, DamageClass.Melee);
++							ApplyDamageToNPC(nPC, (int)num, num2, num3, crit, null, 3097, damageType: DamageClass.Melee);
  
  						eocDash = 10;
  						dashDelay = 30;
@@ -7001,8 +7001,14 @@
  			}
  
  			if (sItem.type == 3258) {
-@@ -36694,16 +_,34 @@
+@@ -36691,19 +_,40 @@
+ 
+ 			if (meleeEnchant == 6) {
+ 				float nanoFlaskDamageBoost = GetNanoFlaskDamageBoost();
++				/*
  				num3 = (int)((float)num3 * nanoFlaskDamageBoost);
++				*/
++				modifiers.TargetDamageMultiplier *= nanoFlaskDamageBoost;
  			}
  
 +			/*
@@ -7899,7 +7905,7 @@
 +		if (!canUse)
 +			return false; // just in case I guess...
 +
-+		return sItem.useAmmo == 0 || ChooseAmmo(sItem) != null || !ItemLoader.NeedsAmmo(sItem, this);
++		return sItem.useAmmo == 0 || PickAmmo_PickAmmoItem(sItem) != null || !ItemLoader.NeedsAmmo(sItem, this);
 +
 +		/*
  		if (sItem.useAmmo > 0) {
@@ -8270,7 +8276,7 @@
 +			/*
  			Item.NewItem(velocity: new Vector2((float)Main.rand.Next(-20, 21) * 0.2f, (float)Main.rand.Next(-20, 1) * 0.2f), source: source, X: (int)position.X, Y: (int)position.Y, Width: width, Height: height, type: theItem.type, stack: stack, noBroadcast: false, prefix: theItem.prefix);
 +			*/
-+			Item.NewItem(velocity: new Vector2((float)Main.rand.Next(-20, 21) * 0.2f, (float)Main.rand.Next(-20, 1) * 0.2f), source: source, X: (int)position.X, Y: (int)position.Y, Width: width, Height: height, theItem, noBroadcast: false);
++			Item.NewItem(velocity: new Vector2((float)Main.rand.Next(-20, 21) * 0.2f, (float)Main.rand.Next(-20, 1) * 0.2f), source: source, X: (int)position.X, Y: (int)position.Y, Width: width, Height: height, item: theItem, noBroadcast: false);
  
  		theItem.stack -= stack;
  		if (theItem.stack <= 0)
