@@ -450,42 +450,6 @@
  			}
  		}
  	}
-@@ -43404,1 +_,35 @@
- 
-+	// Overloaded added by TML.
-+	/// <summary>
-+	/// A more-convenient-to-call variant of the vanilla PickAmmo method, which handles most vanilla ammunition logic to decide various common stats related to ammunition-consuming weapons.<br></br>
-+	/// The stats output by this method take into account any extra stats which the ammunition it finds may provide (read: it accounts for ammo damage and knockback).<br></br>
-+	/// </summary>
-+	/// <param name="weapon">The weapon for which to handle ammunition logic.</param>
-+	/// <param name="projToShoot">The projectile that should be shot based on the given weapon and the located ammunition.</param>
-+	/// <param name="speed">The speed at which the projectile that would be made by the given weapon and located ammunition should move.</param>
-+	/// <param name="damage">The damage value that the projectile shot should have, based on the given weapon and the located ammunition.</param>
-+	/// <param name="knockBack">The knockback value that the projectile shot should have, based on the given weapon and the located ammunition.</param>
-+	/// <param name="usedAmmoItemId">The numerical ID of the located ammunition.</param>
-+	/// <param name="dontConsume">
-+	/// Whether or not ammo consumption logic should be called upon.<br></br>
-+	/// This defaults to false, and if it is true for any reason, ammo will not be consumed at the end of the method.<br></br>
-+	/// This is useful for gathering the data needed based on PickAmmo's calculations without incidentally consuming any ammunition in the process.
-+	/// </param>
-+	/// <returns>True if ammo was found/chosen, and false otherwise.</returns>
-+	public bool PickAmmo(Item weapon, out int projToShoot, out float speed, out int damage, out float knockBack, out int usedAmmoItemId, bool dontConsume = false)
-+	{
-+		projToShoot = weapon.shoot;
-+		speed = weapon.shootSpeed;
-+		damage = GetWeaponDamage(weapon);
-+		knockBack = GetWeaponKnockback(weapon);
-+
-+		bool canShoot = false;
-+		PickAmmo(weapon, ref projToShoot, ref speed, ref canShoot, ref damage, ref knockBack, out usedAmmoItemId, dontConsume);
-+
-+		if (!canShoot) {
-+			projToShoot = 0;
-+			return false;
-+		}
-+
-+		return true;
-+	}
 @@ -43405,12 +_,31 @@
 +
 +	//TML: Method split, 1st part of original PickAmmo.
