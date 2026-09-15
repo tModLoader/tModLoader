@@ -221,6 +221,9 @@ public class SimpleRenamedVanillaMembersTest
 		Projectile projectile = Main.projectile[0];
 #if COMPILE_ERROR
 		Vector2 armPosition = Main.GetPlayerArmPosition(projectile, player)/* tModPorter Note: Removed. Use Player.GetArmPosition instead */;
+		_ = projectile.identity/* tModPorter Note: Removed. Use Projectile.key instead. */;
+		_ = projectile.projUUID/* tModPorter Note: Removed. Use Projectile.key instead. */;
+		_ = Projectile.GetByUUID(projectile.owner, projectile.whoAmI)/* tModPorter Note: Removed. Use Projectile.key instead. */;
 #endif
 	}
 }

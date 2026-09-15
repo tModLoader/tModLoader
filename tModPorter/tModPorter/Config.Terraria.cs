@@ -319,6 +319,8 @@ public static partial class Config
 		RenameInstanceField("Terraria.Item", from: "netID", to: "type");
 		RenameInstanceField("Terraria.Main", from: "HasInteractibleObjectThatIsNotATile", to: "HasInteractableObjectThatIsNotATile");
 		RenameInstanceField("Terraria.Main.CurrentFrameFlags", from: "HadAnActiveInteractibleProjectile", to: "HadAnActiveInteractableProjectile");
+		RenameInstanceField("Terraria.WorldItem", from: "noGrabDelay", to: "grabDelayTime");
+
 		RenameInstanceFieldMultiple("Terraria.NPC.Spawner", froms: ["desertCave", "DesertCave"], to: "spawnUndergroundDesert");
 		RenameInstanceFieldMultiple("Terraria.NPC.Spawner", froms: ["granite", "Granite"], to: "nearGranite");
 		RenameInstanceFieldMultiple("Terraria.NPC.Spawner", froms: ["invasion", "Invasion"], to: "invaders");
@@ -357,12 +359,15 @@ public static partial class Config
 		RefactorStaticMember("Terraria.ID.MountID.Sets", "FacePlayersVelocity", Removed("Now automatic for all minecarts"));
 		RefactorStaticMember("Terraria.ID.ProjectileID.Sets", "HeldProjDoesNotUsePlayerGfxOffY", Removed("AI() should use master.RotatedRelativePoint(master.MountedCenter + ...) to position held projectiles"));
 		RefactorStaticMember("Terraria.ID.ProjectileID.Sets", "DontAttachHideToAlpha", Removed("Now true by default. See Projectile.usesOwnerLight and Projectile.drawLayer for more details."));
+		RefactorStaticMember("Terraria.ID.ProjectileID.Sets", "NeedsUUID", Removed("Use Projectile.key instead."));
 		RefactorStaticMember("Terraria.Item", "whoAmI", Removed("Moved to WorldItem"));
 		RefactorStaticMember("Terraria.Item", "beingGrabbed", Removed("Moved to WorldItem"));
 		RefactorStaticMember("Terraria.Main", "GameModeInfo", RewriteIsJourneyMode);
 		RefactorStaticMember("Terraria.Main", "musicBox2", Removed("Use Player.musicBox instead"));
 		RefactorStaticMember("Terraria.NPC", "netSkip", Removed("No longer necessary when setting life <= 0 and was never necessary when setting active = false"));
 		RefactorStaticMember("Terraria.Player", "RandomTeleportationAttemptSettings", Removed("Use Utils.RandomTeleportationAttemptSettings instead and populate all the relevant new fields"));
+		RefactorStaticMember("Terraria.Projectile", "identity", Removed("Use Projectile.key instead."));
+		RefactorStaticMember("Terraria.Projectile", "projUUID", Removed("Use Projectile.key instead."));
 
 		RefactorInstanceMember("Terraria.NPC.Spawner", "PlayerFloorX", Removed("Player floor coordinates are no longer tracked by NPC.Spawner"));
 		RefactorInstanceMember("Terraria.NPC.Spawner", "PlayerFloorY", Removed("Player floor coordinates are no longer tracked by NPC.Spawner"));
@@ -376,6 +381,7 @@ public static partial class Config
 		RefactorInstanceMethodCall("Terraria.Player", "GetItem", RemoveParameter(0, "plr", "int"));
 		RefactorInstanceMethodCall("Terraria.Player", "AddBuff", RemoveParameter(2, "quiet", "bool"));
 		RefactorInstanceMethodCall("Terraria.Player", "AddBuff", RemoveParameter(3, "foodHack", "bool")); // Order seems to matter here
+		RefactorInstanceMethodCall("Terraria.Projectile", "GetByUUID", Removed("Use Projectile.key instead."));
 		RefactorInstanceMethodCall("Terraria.Tile", "water", GetterSetterToProperty("LiquidType", "Terraria.ID.LiquidID", "Water"));
 		RefactorInstanceMethodCall("Terraria.Tile", "anyWater", GetterToProperty("HasWater"));
 		RefactorInstanceMethodCall("Terraria.Tile", "anyLava", GetterToProperty("HasLava"));

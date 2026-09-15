@@ -430,6 +430,10 @@ Japanese ("ja-JP"), Korean ("ko-KR"), and Traditional Chinese ("zh-Hant") have b
 	* `Projectile.drawLayer = ProjectileDrawLayerID.HeldProj` will likely need to be added to `SetDefaults` for the projectile to draw on the correct layer.
 * `Condition.DownedEarlygameBoss` now includes King Slime and Deerclops
 * Workarounds to get the correct mouse position for projectiles that draw during other draw layers are no longer required and should be removed for correct behavior. See the ExampleInteractableProjectile.cs changes.
+* Projectile identity approach has changed
+  * `Projectile.identity`, `Projectile.GetByUUID`, `Projectile.projUUID`, `ProjectileID.Sets.NeedsUUID` removed.
+  * Use `Projectile.key` instead for a consistent reference to a projectile.
+* `Item.RequestNewItem` can be used to spawn an item on a multiplayer client. Replace `Item.NewItem` followed by `NetMessage.SendData(MessageID.SyncItem, ...)` patterns with `Item.RequestNewItem`.
 
 ### Example Mod
 

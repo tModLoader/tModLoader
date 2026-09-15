@@ -72,7 +72,7 @@
 +	/// <code>
 +	/// if (Projectile.localAI[0] == 0f) {
 +	/// Projectile.localAI[0] = 1f;
-+	///		Main.player[Projectile.owner].TagEffectState.TryEnableProcOnNPC(Projectile.tagEffectType, target);
++	///		Main.player[Projectile.owner].TagEffectStack.TryEnableProcOnNPC(Projectile.tagEffectType, target);
 +	///	}
 +	/// </code></para>
 +	/// </summary>
@@ -108,7 +108,7 @@
 +	/// <code>
 +	/// if (Projectile.localAI[0] == 0f) {
 +	/// Projectile.localAI[0] = 1f;
-+	///		Main.player[Projectile.owner].TagEffectState.TryEnableProcOnNPC(Projectile.tagEffectType, target);
++	///		Main.player[Projectile.owner].TagEffectStack.TryEnableProcOnNPC(Projectile.tagEffectType, target);
 +	///	}
 +	/// </code></para>
 +	/// <para/> Return <see langword="true"/> to remove the proc from the NPC, or <see langword="false"/> to keep it active for future hits.

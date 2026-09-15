@@ -160,5 +160,8 @@ public class SimpleRenamedVanillaMembersTest
 
 		Projectile projectile = Main.projectile[0];
 		Vector2 armPosition = Main.GetPlayerArmPosition(projectile, player);
+		_ = projectile.identity;
+		_ = projectile.projUUID;
+		_ = Projectile.GetByUUID(projectile.owner, projectile.whoAmI);
 	}
 }
