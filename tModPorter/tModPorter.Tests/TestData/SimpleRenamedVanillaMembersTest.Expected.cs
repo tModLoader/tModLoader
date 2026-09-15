@@ -217,5 +217,10 @@ public class SimpleRenamedVanillaMembersTest
 #if COMPILE_ERROR
 		Utils.FloodFillTile(10, 20, DelegateMethods.SpreadLightOpen_StopForSolids)/* tModPorter Parameters have changed */;
 #endif
+
+		Projectile projectile = Main.projectile[0];
+#if COMPILE_ERROR
+		Vector2 armPosition = Main.GetPlayerArmPosition(projectile, player)/* tModPorter Note: Removed. Use Player.GetArmPosition instead */;
+#endif
 	}
 }

@@ -471,7 +471,7 @@ Several Example Mod examples have been updated to adapt to 1.4.5 changes and to 
 
 * 💀: `Item.NewItem` methods no longer have the `bool reverseLookup` parameter. Remove it.
 * 🤖: `Main.DrawWindowsIMEPanel` has been split into `Main.DrawIMEPanel` and `Main.SetIMEPanelAnchor`. `DrawIMEPanel` is automatically called each game update, so just replace  `DrawWindowsIMEPanel` calls with `SetIMEPanelAnchor` to customize the panel location.
-* 💀: `Main.GetPlayerArmPosition` now has a `Player` parameter.
+* 🤖: `Main.GetPlayerArmPosition` removed. Use `Player.GetArmPosition` instead.
 * ⚙️: `RecipeGroup.RegisterGroup` removed. See [RecipeGroup](#recipegroup) for more information.
 * ⚙️: `Utils.PlotTileArea` -> `Utils.FloodFillTile`. No longer returns `bool` and parameters are now `Point point, float maxDist, TileActionAttempt plot` instead of `int x, int y, TileActionAttempt plot`.
 * 🤖: `WorldGen.CheckTight` -> `WorldGen.CheckStalactite`

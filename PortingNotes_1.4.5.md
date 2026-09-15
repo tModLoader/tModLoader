@@ -214,6 +214,7 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Add docs for new GetItemSettings parameters
 - Main.menuChat
 - Need to fix documentation for various secret and special seeds, like Main.specialSeedWorld. Need to change secret to special in most cases, and fix wiki links.
+- Player.GetArmPosition needs docs
 
 ## 1.4.5.8
 - Document EyeState.LowMana
