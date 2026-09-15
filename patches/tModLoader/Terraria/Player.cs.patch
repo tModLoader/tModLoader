@@ -6979,9 +6979,12 @@
  				parryDamageBuff = false;
  				ClearBuff(198);
  			}
-@@ -36636,13 +_,16 @@
+@@ -36634,15 +_,18 @@
+ 				damage = nPC.KeyBrandStrike(whoAmI, damage, itemRectangle.Center.ToVector2());
+ 
  			if (accPyroclast)
- 				Projectile.TryMakingSnappingStoneStrike(GetProjectileSource_Item(sItem), this, whoAmI, nPC, ref damage, 1);
+-				Projectile.TryMakingSnappingStoneStrike(GetProjectileSource_Item(sItem), this, whoAmI, nPC, ref damage, 1);
++				Projectile.TryMakingSnappingStoneStrike(GetProjectileSource_Item(sItem), this, whoAmI, nPC, ref modifiers, 1);
  
 +			/*
  			int num3 = Main.DamageVar(damage, luck);

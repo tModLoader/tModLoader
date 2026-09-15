@@ -30,7 +30,7 @@
  	public bool active;
  	public static uint[,] perIDStaticNPCImmunity = new uint[ProjectileID.Count, InitData.MaxNPCs];
  	private static int[] slotGenerations = new int[1001];
-@@ -240,92 +_,393 @@
+@@ -240,92 +_,394 @@
  	public const int SentryLifeTime = 36000;
  	public const int ArrowLifeTime = 1200;
  	public float ownerHitCheckDistance = 1000f;
@@ -203,8 +203,9 @@
  	public int maxPenetrate = 1;
 +
 +	/// <summary>
-+	/// The projectile's universal unique identifier, which is the same on all clients and the server. Usually used to find the same projectile on multiple clients and/or the server, e.g. <c>Projectile match = Main.projectile.FirstOrDefault(x => x.identity == identity);</c>
-+	/// <br/> Projectile.whoAmI indexes are not consistent between clients.
++	/// Provides a consistent reference to this projectile across servers, clients, and slot reuse, because <c>whoAmI</c> indexes may be different.<br/>
++	/// Store this value in Projectile/NPC ai, or use it in multiplayer packets.<br/>
++	/// Use <c>key.TryGetActive(out var projectile)</c> to lookup a referenced projectile
 +	/// </summary>
  	public ProjectileKey key;
 +
@@ -759,7 +760,7 @@
  
  	private void Damage_PVE_Inner(int victimIndex, NPC targetNPC, Rectangle projRectangle, float projectileSpecificDamageMultiplier, int[] immuneArray, ref bool keepIterating)
  	{
-+	
++
 +		bool forceHit = false;
 +		if (CombinedHooks.CanHitNPCWithProj(this, targetNPC) is bool b) {
 +			if (!b)
@@ -784,7 +785,7 @@
 +
 +		if (forceHit)
 +			flag3 = true;
-+		
++
  		if (!(owner < 0 || targetNPC.immune[owner] == 0 || flag3))
  			return;
  
@@ -809,7 +810,7 @@
  		float num5 = knockBack;
  		bool crit = false;
  		float armorPenetrationPercent = 0f;
-+		
++
 +		// TML:
 +		// This is unused, replaced with this.ArmorPenetration.
 +		// Make sure to keep ArmorPenetration values in sync with the switch table below.
@@ -874,6 +875,33 @@
  
  			Main.player[owner].TryConsumingTimerCrit(targetNPC.Hitbox, ref crit);
  			int num14 = type;
+@@ -11345,7 +_,12 @@
+ 			}
+ 		}
+ 
++		/*
+ 		int num15 = num7;
++		*/
++		modifiers.SourceDamage *= num7 / 1000;
++
++		/*
+ 		TagDamageChanges changes = TagDamageChanges.None;
+ 		Main.player[owner].TagEffectStack.ModifyHit(this, targetNPC, ref changes);
+ 		if (changes.AddProjectileTagDamage) {
+@@ -11359,6 +_,13 @@
+ 			if (changes.Crit.HasValue)
+ 				crit = changes.Crit.Value;
+ 		}
++		*/
++		// Most changes applied directly to modifiers in WhipTagEffect.ModifyTaggedHit
++		var changes = new { AddProjectileTagDamage = Main.player[owner].TagEffectStack.IsTaggedHit(this, targetNPC) };
++		if (changes.AddProjectileTagDamage)
++			modifiers.FlatBonusDamage += bonusTagDamage * ProjectileID.Sets.SummonTagDamageMultiplier[type];
++
++		Main.player[owner].TagEffectStack.ModifyHit(this, targetNPC, ref modifiers);
+ 
+ 		if (ownedBySomeone && (sentry || (type >= 0 && ProjectileID.Sets.SentryShot[type])) && Main.player[owner].accGolemSentryBackpack && Main.rand.Next(10) == 0)
+ 			crit = true;
 @@ -11366,7 +_,11 @@
  		if (type == 1130)
  			crit = false;
@@ -915,9 +943,20 @@
  			dmg = (int)((float)dmg * 0.75f);
  
  		if (type == 497 && penetrate != 1) {
-@@ -11745,6 +_,9 @@
+@@ -11737,14 +_,17 @@
+ 		}
+ 
+ 		if ((melee || ranged) && ownedBySomeone && Main.player[owner].accPyroclast)
+-			TryMakingSnappingStoneStrike(GetProjectileSource_FromThis(), this, owner, targetNPC, ref dmg, 1);
++			TryMakingSnappingStoneStrike(GetProjectileSource_FromThis(), this, owner, targetNPC, ref modifiers, 1);
+ 
+ 		if (ranged && ownedBySomeone && Main.player[owner].accSnappingStone)
+-			TryMakingSnappingStoneStrike(GetProjectileSource_FromThis(), this, owner, targetNPC, ref dmg, 0);
++			TryMakingSnappingStoneStrike(GetProjectileSource_FromThis(), this, owner, targetNPC, ref modifiers, 0);
+ 
  		if (changes.AddProjectileTagDamage && ownedBySomeone && Main.player[owner].accArmletOfRuin)
- 			TryMakingSnappingStoneStrike(GetProjectileSource_FromThis(), this, owner, targetNPC, ref dmg, 2);
+-			TryMakingSnappingStoneStrike(GetProjectileSource_FromThis(), this, owner, targetNPC, ref dmg, 2);
++			TryMakingSnappingStoneStrike(GetProjectileSource_FromThis(), this, owner, targetNPC, ref modifiers, 2);
  
 +		// Essentially, the following block is moved to execute later on.
 +		goto VanillaOnHitEffectsWhipsEnd;
@@ -1013,7 +1052,7 @@
 +		/*
  		Main.player[owner].TagEffectStack.OnHit(this, targetNPC, num7);
 +		*/
-+		Main.player[owner].TagEffectState.OnHit(this, targetNPC, strike);
++		Main.player[owner].TagEffectStack.OnHit(this, targetNPC, strike);
  		flag10 |= num41 > 0 && targetNPC.lifeMax > 5 && friendly && !hostile && aiStyle != 59;
  		if (arrow && ownedBySomeone && aiStyle == 1) {
  			AI_001_Features aI_001_Features = new AI_001_Features(ai[2]);
@@ -1039,6 +1078,75 @@
  
  			localAI[1] = 4f;
  		}
+@@ -12511,7 +_,10 @@
+ 			Main.player[owner].SetMeleeHitCooldown(victimIndex, Main.player[owner].itemAnimation);
+ 	}
+ 
++	/*
+ 	public static void TryMakingSnappingStoneStrike(IEntitySource entitySource, Entity targeter, int owner, NPC victim, ref int dmg, int snappingType)
++	*/
++	public static void TryMakingSnappingStoneStrike(IEntitySource entitySource, Entity targeter, int owner, NPC victim, ref NPC.HitModifiers modifiers, int snappingType)
+ 	{
+ 		bool flag = snappingType == 0;
+ 		bool flag2 = snappingType == 1;
+@@ -12525,17 +_,26 @@
+ 		int num3 = 40;
+ 		int num4 = 10;
+ 		if (flag) {
++			/*
+ 			num = (int)((float)num * Main.player[owner].rangedDamage);
++			*/
++			num = (int)Main.player[owner].GetTotalDamage(DamageClass.Ranged).ApplyTo(num);
+ 		}
+ 		else if (flag2) {
+ 			num = 45;
++			/*
+ 			num = (int)((float)num * Main.player[owner].meleeDamage);
++			*/
++			num = (int)Main.player[owner].GetTotalDamage(DamageClass.Melee).ApplyTo(num);
+ 			num3 = 70;
+ 			maxRange = 300f;
+ 		}
+ 		else if (flag3) {
+ 			num = 150;
++			/*
+ 			num = (int)((float)num * Main.player[owner].minionDamage);
++			*/
++			num = (int)Main.player[owner].GetTotalDamage(DamageClass.Summon).ApplyTo(num);
+ 			num3 = 150;
+ 			maxRange = 400f;
+ 		}
+@@ -12596,18 +_,30 @@
+ 		int num13 = num2 - num7;
+ 		int num14 = num3 + num4 * num13;
+ 		if (flag) {
++			/*
+ 			num14 = (int)((float)num14 * Main.player[owner].rangedDamage);
++			*/
++			num14 = (int)Main.player[owner].GetTotalDamage(DamageClass.Ranged).ApplyTo(num14);
+ 		}
+ 		else if (flag2) {
++			/*
+ 			float num15 = Math.Max(Main.player[owner].meleeDamage, Main.player[owner].rangedDamage);
+ 			num14 = (int)((float)num14 * num15);
++			*/
++			num14 = (int)Math.Max(Main.player[owner].GetTotalDamage(DamageClass.Melee).ApplyTo(num14), Main.player[owner].GetTotalDamage(DamageClass.Ranged).ApplyTo(num14));
+ 			victim.AddBuff(323, 180);
+ 		}
+ 		else if (flag3) {
++			/*
+ 			num14 = (int)((float)num14 * Main.player[owner].minionDamage);
++			*/
++			num14 = (int)Main.player[owner].GetTotalDamage(DamageClass.Summon).ApplyTo(num14);
+ 		}
+ 
++		/*
+ 		dmg += num14;
++		*/
++		modifiers.FlatBonusDamage += num14;
+ 		if (flag)
+ 			SoundEngine.PlaySound(SoundID.Item30, Main.player[owner].MountedCenter, 0.3f, 0.08f);
+ 		else if (flag2)
 @@ -12788,6 +_,9 @@
  			if (!flag || !Colliding(projRectangle, player.getRect()))
  				continue;

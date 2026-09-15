@@ -264,7 +264,7 @@
  
  					break;
  				}
-@@ -1182,14 +_,24 @@
+@@ -1182,16 +_,24 @@
  					writer.Write((short)number);
  					writer.Write((short)number2);
  					Item item4 = Main.player[(int)number4].inventory[(int)number3];
@@ -282,14 +282,15 @@
  				case 91:
  					writer.Write(number);
  					writer.Write((byte)number2);
-+
-+					// Send byte for owner if type corresponds to projectile (magic number 2) #WorldUIAnchorProjectileSyncFix
-+					if ((byte)number2 == 2)
-+						writer.Write((byte)((int)number2 >> 8));
-+
  					if (number2 != 255f) {
- 						writer.Write((ushort)number3);
++						if (number2 == 2f)
++							writer.Write(number3);
++						else
+-						writer.Write((ushort)number3);
++							writer.Write((ushort)number3);
  						writer.Write((ushort)number4);
+ 						writer.Write((byte)number5);
+ 						if (number5 < 0)
 @@ -1315,6 +_,11 @@
  					writer.Write(number);
  					break;

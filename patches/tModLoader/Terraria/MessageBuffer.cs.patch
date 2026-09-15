@@ -588,20 +588,24 @@
  					break;
  				}
  			}
-@@ -2847,6 +_,13 @@
+@@ -2854,7 +_,7 @@
+ 					break;
+ 				}
  
- 				int num246 = reader.ReadInt32();
- 				int num247 = reader.ReadByte();
-+
-+				// If type corresponds to projectile (magic number 2), read another byte for owner #WorldUIAnchorProjectileSyncFix
-+				if (num247 == 2) {
-+					int owner = reader.ReadByte();
-+					num247 |= owner << 8; // Reassign num247 for use in DeserializeNetAnchor - this is now "packedOwnerType"
-+				}
-+
- 				if (num247 == 255) {
- 					if (EmoteBubble.byID.ContainsKey(num246))
- 						EmoteBubble.byID.Remove(num246);
+-				int num248 = reader.ReadUInt16();
++				float num248 = num247 == 2 ? reader.ReadSingle() : reader.ReadUInt16();
+ 				int num249 = reader.ReadUInt16();
+ 				int num250 = reader.ReadByte();
+ 				int metadata = 0;
+@@ -2863,7 +_,7 @@
+ 
+ 				WorldUIAnchor worldUIAnchor = EmoteBubble.DeserializeNetAnchor(num247, num248);
+ 				if (num247 == 1)
+-					Main.player[num248].emoteTime = 360;
++					Main.player[(int)num248].emoteTime = 360;
+ 
+ 				lock (EmoteBubble.byID) {
+ 					if (!EmoteBubble.byID.ContainsKey(num246)) {
 @@ -2879,6 +_,7 @@
  					EmoteBubble.byID[num246].ID = num246;
  					EmoteBubble.byID[num246].metadata = metadata;

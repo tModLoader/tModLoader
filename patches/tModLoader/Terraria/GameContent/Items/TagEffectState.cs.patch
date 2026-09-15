@@ -1,5 +1,15 @@
 --- src/TerrariaNetCore/Terraria/GameContent/Items/TagEffectState.cs
 +++ src/tModLoader/Terraria/GameContent/Items/TagEffectState.cs
+@@ -20,6 +_,9 @@
+ 	public bool IsNPCTagged(int npcIndex) => TimeLeftOnNPC[npcIndex] > 0;
+ 	public bool CanProcOnNPC(int npcIndex) => ProcTimeLeftOnNPC[npcIndex] > 0;
+ 
++	// Added by TML.
++	public bool IsTaggedHit(Projectile optionalProjectile, NPC npcHit) => IsNPCTagged(npcHit.whoAmI) && _effect.CanRunHitEffects(_owner, optionalProjectile, npcHit);
++
+ 	public void ClearProcOnNPC(int npcIndex)
+ 	{
+ 		ProcTimeLeftOnNPC[npcIndex] = 0;
 @@ -79,20 +_,26 @@
  		Array.Clear(ProcTimeLeftOnNPC, 0, ProcTimeLeftOnNPC.Length);
  	}

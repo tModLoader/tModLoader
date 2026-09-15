@@ -51,6 +51,15 @@
  		public static bool HadAnActiveInteractableProjectile;
  	}
  
+@@ -107,7 +_,7 @@
+ 
+ 		public static RandomSwap Swap(UnifiedRandom r)
+ 		{
+-			Utils.Swap(ref rand, ref r);
++			Utils.Swap(ref _rand, ref r);
+ 			return new RandomSwap {
+ 				prev = r
+ 			};
 @@ -251,13 +_,22 @@
  	public static bool AnnouncementBoxDisabled;
  	public static int AnnouncementBoxRange = -1;
@@ -1861,6 +1870,15 @@
 +			worldEventUpdates = 1;
  		}
  	}
+ 
+@@ -5523,7 +_,7 @@
+ 			cloudBGActive = v;
+ 		});
+ 
+-		StateSnapshot.Gameplay.AddVal("Main.ladyBugRainBoost", () => ladyBugRainBoost, delegate (int v) {
++		StateSnapshot.Gameplay.AddVal("Main.ladyBugRainBoost", () => ladyBugRainBoost, delegate (double v) {
+ 			ladyBugRainBoost = v;
+ 		});
  
 @@ -5600,7 +_,13 @@
  #if FNA

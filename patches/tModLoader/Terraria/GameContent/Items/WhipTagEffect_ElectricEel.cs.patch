@@ -1,21 +1,48 @@
 --- src/TerrariaNetCore/Terraria/GameContent/Items/WhipTagEffect_ElectricEel.cs
 +++ src/tModLoader/Terraria/GameContent/Items/WhipTagEffect_ElectricEel.cs
-@@ -7,14 +_,14 @@
+@@ -7,14 +_,23 @@
  
  public class WhipTagEffect_ElectricEel : WhipTagEffect
  {
--	public override void ModifyProcHit(Player owner, Projectile optionalProjectile, NPC npcHit, ref TagDamageChanges changes)
++	/*
+ 	public override void ModifyProcHit(Player owner, Projectile optionalProjectile, NPC npcHit, ref TagDamageChanges changes)
++	*/
 +	public override void ModifyProcHit(Player owner, Projectile optionalProjectile, NPC npcHit, ref NPC.HitModifiers modifiers)
  	{
 -		CreateLightningBlast(owner, npcHit, ref changes);
 +		CreateLightningBlast(owner, npcHit, ref modifiers);
  	}
  
--	public override bool OnProcHit(Player owner, Projectile optionalProjectile, NPC npcHit, int calcDamage) => true;
++	/*
+ 	public override bool OnProcHit(Player owner, Projectile optionalProjectile, NPC npcHit, int calcDamage) => true;
++	*/
 +	public override bool OnProcHit(Player owner, Projectile optionalProjectile, NPC npcHit, NPC.HitInfo hit) => true;
  
--	public static void CreateLightningBlast(Player owner, NPC npcHit, ref TagDamageChanges changes)
++	/*
+ 	public static void CreateLightningBlast(Player owner, NPC npcHit, ref TagDamageChanges changes)
++	*/
 +	public static void CreateLightningBlast(Player owner, NPC npcHit, ref NPC.HitModifiers modifiers)
  	{
  		int num = 0;
  		int num2 = 5;
+@@ -22,8 +_,10 @@
+ 		int num4 = 50;
+ 		int num5 = 450;
+ 		int num6 = 20;
++		/*
+ 		if (0 == 1)
+ 			num6 = (int)((float)num6 * owner.minionDamage);
++		*/
+ 
+ 		for (int i = 0; i < Main.maxNPCs; i++) {
+ 			if (num >= num2)
+@@ -46,6 +_,9 @@
+ 		}
+ 
+ 		SoundEngine.PlaySound(SoundID.NPCHit34, npcHit.Center);
++		/*
+ 		changes.AddedFlatDamage += num3 + num * num4;
++		*/
++		modifiers.FlatBonusDamage += num3 + num * num4;
+ 	}
+ }

@@ -7,7 +7,7 @@
  
  namespace Terraria.GameContent.Items;
  
-@@ -6,14 +_,24 @@
+@@ -6,14 +_,25 @@
  {
  	private static float ProcDamageMultiplier = 2.75f;
  
@@ -20,7 +20,8 @@
 +		/*
  		changes.TotalDamageMultiplier *= ProcDamageMultiplier;
 +		*/
-+		modifiers.ScalingBonusDamage += ProcDamageMultiplier * ProjectileID.Sets.SummonTagDamageMultiplier[optionalProjectile.type];
++		// Unlike vanilla, this doesn't multiply tag damage, since that is applied as FlatBonusDamage, but this should never really amtter for balance
++		modifiers.ScalingBonusDamage += (ProcDamageMultiplier - 1f) * ProjectileID.Sets.SummonTagDamageMultiplier[optionalProjectile.type];
  	}
  
 +	/*

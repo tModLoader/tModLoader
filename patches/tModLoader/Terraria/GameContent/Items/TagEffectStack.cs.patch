@@ -1,5 +1,23 @@
 --- src/TerrariaNetCore/Terraria/GameContent/Items/TagEffectStack.cs
 +++ src/tModLoader/Terraria/GameContent/Items/TagEffectStack.cs
+@@ -68,6 +_,17 @@
+ 		return _effectStates[num].CanProcOnNPC(npcIndex);
+ 	}
+ 
++	// Added by TML.
++	public bool IsTaggedHit(Projectile optionalProjectile, NPC npcHit)
++	{
++		for (int i = 0; i < _activeEffectCount; i++) {
++			if (_effectStates[i].IsTaggedHit(optionalProjectile, npcHit))
++				return true;
++		}
++
++		return false;
++	}
++
+ 	public void TryApplyTagToNPC(int tagType, NPC npc)
+ 	{
+ 		if (ItemID.Sets.UniqueTagEffects[tagType].CanApplyTagToNPC(npc.type)) {
 @@ -90,17 +_,23 @@
  			_effectStates[num].RemoveAllProcs();
  	}
