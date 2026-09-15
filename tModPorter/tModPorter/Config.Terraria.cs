@@ -306,7 +306,7 @@ public static partial class Config
 		RenameStaticField("Terraria.ID.WallID.Sets", from: "Hallow", to: "SpreadsHallow");
 		RenameStaticField("Terraria.Main", from: "DisableIntenseVisualEffects", to: "FlashyEffectsWorld").FollowBy(InvertBool);
 		RenameStaticField("Terraria.Main", "gameInactive", "GameplayActive", "Terraria.FocusHelper").FollowBy(InvertBool);
-		RenameStaticField("Terraria.Main", "hasFocus", "AllowGameplayInputs", "Terraria.FocusHelper").FollowBy(AddCommentToFieldAccess("Suggestion: Also consider FocusHelper.AllowUIInputs, FocusHelper.UpdateVisualEffects, or others"));
+		RenameStaticField("Terraria.Main", "hasFocus", "IsSelectedApplication", "Terraria.FocusHelper").FollowBy(AddCommentToFieldAccess("Suggestion: Also consider FocusHelper.AllowInputProcessing, FocusHelper.GameplayActive, FocusHelper.UpdateVisualEffects, or others"));
 		RenameStaticField("Terraria.Main", "LogicCheckScreenHeight", "MaxWorldViewSize.Y");
 		RenameStaticField("Terraria.Main", "LogicCheckScreenWidth", "MaxWorldViewSize.X");
 		RenameStaticField("Terraria.Main", "popupText", "popupText", "Terraria.PopupText");

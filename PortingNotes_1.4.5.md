@@ -200,7 +200,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - WhipTagEffect.ModifyTaggedHit patches are wrong, method changed a lot
 - DustID.Spider and InfernoFlame are new and differ from names we made up in TML.cs file, remove our entries?
 - SpriteCharacterData is class now.
-- FocusHelper.AllowUIInputs and AllowGameplayInputs removed. Seems like AllowInputProcessing and AllowInputProcessingForGamepad absorbed their usages. Double check
 - Terraria.Testing.Cloning.CloneByReference shares name with tmod class. Problem? Same purpose? Investigate.
 - Item.NewItem changed even more. Need to investigate how this affects porting.
 
