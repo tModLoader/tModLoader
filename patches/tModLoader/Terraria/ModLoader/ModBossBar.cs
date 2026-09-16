@@ -12,6 +12,7 @@ namespace Terraria.ModLoader;
 /// <summary>
 /// A class that is used to create custom boss health bars for modded and vanilla NPCs.
 /// </summary>
+[CloneByReference]
 public abstract class ModBossBar : ModTexturedType, IBigProgressBar
 {
 	internal int index;

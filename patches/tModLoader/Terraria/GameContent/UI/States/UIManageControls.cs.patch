@@ -16,7 +16,7 @@
  {
  	public class SpecialControls
  	{
-@@ -253,6 +_,10 @@
+@@ -257,6 +_,10 @@
  		List<string> bindings = new List<string> {
  			"MouseLeft",
  			"MouseRight",
@@ -27,7 +27,7 @@
  			"Up",
  			"Down",
  			"Left",
-@@ -285,6 +_,10 @@
+@@ -290,6 +_,10 @@
  		List<string> bindings2 = new List<string> {
  			"MouseLeft",
  			"MouseRight",
@@ -38,7 +38,7 @@
  			"Up",
  			"Down",
  			"Left",
-@@ -362,6 +_,8 @@
+@@ -368,6 +_,8 @@
  			"sp13"
  		};
  
@@ -47,7 +47,7 @@
  		InputMode currentInputMode = InputMode.Keyboard;
  		_bindsKeyboard.Add(CreateBindingGroup(0, bindings, currentInputMode));
  		_bindsKeyboard.Add(CreateBindingGroup(1, bindings4, currentInputMode));
-@@ -382,6 +_,8 @@
+@@ -388,6 +_,8 @@
  		_bindsGamepadUI.Add(CreateBindingGroup(2, bindings3, currentInputMode));
  		_bindsGamepadUI.Add(CreateBindingGroup(3, bindings5, currentInputMode));
  		_bindsGamepadUI.Add(CreateBindingGroup(4, bindings6, currentInputMode));
@@ -56,7 +56,7 @@
  	}
  
  	private UISortableElement CreateBindingGroup(int elementIndex, List<string> bindings, InputMode currentInputMode)
-@@ -420,6 +_,10 @@
+@@ -426,6 +_,10 @@
  			case 4:
  				uIPanel.BackgroundColor = Color.Lerp(uIPanel.BackgroundColor, Color.Turquoise, 0.18f);
  				break;
@@ -67,7 +67,7 @@
  		}
  
  		CreateElementGroup(uIList, bindings, currentInputMode, uIPanel.BackgroundColor);
-@@ -441,6 +_,10 @@
+@@ -447,6 +_,10 @@
  			case 4:
  				text = Lang.menu[198];
  				break;
@@ -78,7 +78,7 @@
  		}
  
  		UITextPanel<LocalizedText> element = new UITextPanel<LocalizedText>(text, 0.7f) {
-@@ -484,6 +_,16 @@
+@@ -490,6 +_,16 @@
  				continue;
  			}
  
@@ -95,8 +95,8 @@
  			UIElement uIElement3 = CreatePanel(bindings[i], currentInputMode, color);
  			uIElement3.Width.Set(-5f, 0.5f);
  			uIElement3.Height.Set(0f, 1f);
-@@ -682,12 +_,26 @@
- 				return uIKeybindingToggleListItem;
+@@ -732,12 +_,26 @@
+ 				return uIKeybindingCycleListItem;
  			}
  			default:
 +				var tmlResult = HandlePanelCreation(bind, currentInputMode, color);

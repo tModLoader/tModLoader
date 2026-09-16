@@ -157,5 +157,11 @@ public class SimpleRenamedVanillaMembersTest
 		_ = Item.BannerToNPC(Banner);
 
 		Utils.PlotTileArea(10, 20, DelegateMethods.SpreadLightOpen_StopForSolids);
+
+		Projectile projectile = Main.projectile[0];
+		Vector2 armPosition = Main.GetPlayerArmPosition(projectile, player);
+		_ = projectile.identity;
+		_ = projectile.projUUID;
+		_ = Projectile.GetByUUID(projectile.owner, projectile.whoAmI);
 	}
 }

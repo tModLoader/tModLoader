@@ -18,7 +18,7 @@
  			}
  		}
  		else if (player.chest == -2) {
-@@ -404,12 +_,17 @@
+@@ -410,12 +_,17 @@
  			if (chest.item[i].stack >= chest.item[i].maxStack || !Item.CanStack(player.inventory[playerInventorySlot], chest.item[i]))
  				continue;
  
@@ -36,7 +36,7 @@
  			SoundEngine.PlaySound(7);
  			if (player.inventory[playerInventorySlot].stack <= 0) {
  				player.inventory[playerInventorySlot].SetDefaults(0);
-@@ -433,12 +_,17 @@
+@@ -439,12 +_,17 @@
  	{
  		for (int i = 0; i < chest.maxItems; i++) {
  			if (chest.item[i].stack < chest.item[i].maxStack && Item.CanStack(player.inventory[p], chest.item[i])) {
@@ -54,7 +54,7 @@
  				SoundEngine.PlaySound(7);
  				if (player.inventory[p].stack <= 0) {
  					player.inventory[p].SetDefaults(0);
-@@ -610,10 +_,15 @@
+@@ -618,10 +_,15 @@
  						num4 = num5;
  
  					SoundEngine.PlaySound(7);
@@ -70,7 +70,7 @@
  
  					array2[num3] = true;
  				}
-@@ -651,8 +_,12 @@
+@@ -659,8 +_,12 @@
  					if (num7 > num8)
  						num7 = num8;
  
@@ -83,7 +83,7 @@
  					if (array[item5.Key].stack == 0)
  						array[item5.Key] = new Item();
  
-@@ -760,12 +_,16 @@
+@@ -768,12 +_,16 @@
  				if (!Item.CanStack(inventory[num2], item[i]) || ItemSlot.PickItemMovementAction(inventory, context, num2, item[i]) == -1)
  					continue;
  
@@ -100,7 +100,7 @@
  				flag = true;
  				if (inventory[num2].stack == inventory[num2].maxStack) {
  					if (Main.netMode == 1 && Main.player[Main.myPlayer].chest > -1)
-@@ -1015,8 +_,12 @@
+@@ -1023,8 +_,12 @@
  					break;
  				}
  
