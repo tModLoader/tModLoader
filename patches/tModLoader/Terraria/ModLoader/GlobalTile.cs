@@ -226,6 +226,9 @@ public abstract class GlobalTile : GlobalBlockType
 
 	/// <summary>
 	/// Allows you to determine which tiles the given tile type can be considered as when looking for crafting stations.
+	/// <br/><br/> Queried every time adjacent tiles are recalculated, so it can vary at runtime. For equivalences
+	/// that are fixed, prefer <see cref="ModTile.AdjTiles"/>, which is registered into
+	/// <see cref="Recipe.TileCountsAs"/> and also applies to the crafting station filter UI.
 	/// </summary>
 	/// <param name="type"></param>
 	/// <returns></returns>

@@ -288,14 +288,34 @@
  				array[j].Refresh();
  			}
  		}
-@@ -497,6 +_,7 @@
+@@ -471,6 +_,16 @@
+ 		AddTileCountsAs(304, 86);
+ 	}
+ 
++	// Added by TML. Must run after SetupTileInheritance, which clears the table.
++	private static void SetupModdedTileInheritance()
++	{
++		foreach (ModTile modTile in TileLoader.tiles) {
++			foreach (int adjTile in modTile.AdjTiles) {
++				AddTileCountsAs(modTile.Type, adjTile);
++			}
++		}
++	}
++
+ 	private static bool TileUsedInRecipeInherited(int tileType)
+ 	{
+ 		if (TileUsedInRecipes[tileType])
+@@ -497,8 +_,10 @@
  
  	public static void SetupRecipes()
  	{
 +		Recipe.SetupRecipeGroups(); // TML
  		Array.Clear(TileUsedInRecipes, 0, TileUsedInRecipes.Length);
  		SetupTileInheritance();
++		SetupModdedTileInheritance(); // TML
  		int num = 5;
+ 		int stack = 2;
+ 		currentRecipe.createItem.SetDefaults(8);
 @@ -15022,11 +_,19 @@
  		AddRecipe();
  		CreateReverseWallRecipes();
