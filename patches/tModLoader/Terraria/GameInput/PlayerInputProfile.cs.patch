@@ -16,7 +16,7 @@
  {
  	public Dictionary<InputMode, KeyConfiguration> InputModes = new Dictionary<InputMode, KeyConfiguration> {
  		{ InputMode.Keyboard, new KeyConfiguration() },
-@@ -206,9 +_,13 @@
+@@ -216,9 +_,13 @@
  
  	public void CopyGameplaySettingsFrom(PlayerInputProfile profile, InputMode mode)
  	{

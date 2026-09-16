@@ -51,7 +51,7 @@
  		assetRepository.AssetValueUpdatedHandler = (AssetValueUpdated)Delegate.Combine(assetRepository.AssetValueUpdatedHandler, new AssetValueUpdated(TagAsset));
  		services.AddService(typeof(AssetReaderCollection), assetReaderCollection);
  		services.AddService(typeof(IAssetRepository), assetRepository);
-@@ -645,6 +_,8 @@
+@@ -646,6 +_,8 @@
  		Main.ResourceSetsManager.LoadContent(mode);
  		Main.MinimapFrameManagerInstance.LoadContent(mode);
  		Main.AchievementAdvisor.LoadContent();

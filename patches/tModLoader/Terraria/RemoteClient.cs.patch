@@ -8,7 +8,7 @@
  using Terraria.Net.Sockets;
  
  namespace Terraria;
-@@ -12,7 +_,10 @@
+@@ -12,12 +_,19 @@
  	public int Id;
  	public string Name = "Anonymous";
  	public bool IsActive;
@@ -18,12 +18,10 @@
 +	// Vanilla code must be changed to use SetPendingTermination instead.
 +	public bool PendingTermination { get; private set; }
  	public bool PendingTerminationApproved;
+ 	public bool Kicked;
  	public bool IsAnnouncementCompleted;
  	public int State;
-@@ -21,6 +_,10 @@
- 	public string StatusText2;
- 	public int StatusCount;
- 	public int StatusMax;
+ 	public int TimeOutTimer;
 +	/// <summary>
 +	/// Indicates if specific world sections (200 x 150 tile chunks) of the world are loaded by this client. The server will sync world sections to the client as the player visits them by calling <see cref="CheckSection"/>.
 +	/// <br/><br/> <b>Only accessible on Server!</b>
@@ -31,7 +29,7 @@
  	public bool[,] TileSections = new bool[Main.maxTilesX / 200 + 1, Main.maxTilesY / 150 + 1];
  	public uint[,] TileSectionsCheckTime = new uint[Main.maxTilesX / 200 + 1, Main.maxTilesY / 150 + 1];
  	public bool CheckingSections;
-@@ -39,6 +_,13 @@
+@@ -36,6 +_,13 @@
  
  	public static event Action<int, Point> NetSectionActivated;
  
@@ -45,7 +43,7 @@
  	public bool IsConnected()
  	{
  		if (Socket != null)
-@@ -94,6 +_,11 @@
+@@ -91,6 +_,11 @@
  		SpamWater = 0f;
  	}
  
@@ -57,7 +55,7 @@
  	public static void CheckSection(int playerIndex, Vector2 position, int fluff = 1)
  	{
  		RemoteClient remoteClient = Netplay.Clients[playerIndex];
-@@ -232,7 +_,7 @@
+@@ -223,7 +_,7 @@
  			}
  		}
  		catch {
@@ -66,7 +64,7 @@
  		}
  	}
  
-@@ -240,7 +_,7 @@
+@@ -231,7 +_,7 @@
  	{
  		if (!Netplay.Disconnect) {
  			if (length == 0) {
@@ -75,12 +73,3 @@
  			}
  			else {
  				try {
-@@ -283,7 +_,7 @@
- 				StatusText = Language.GetTextValue("Net.ClientPlaying", Socket.GetRemoteAddress(), Name);
- 			}
- 			catch (Exception) {
--				PendingTermination = true;
-+				SetPendingTermination("Exception in Socket.GetRemoteAddress while updating StatusText (State == 10)");
- 			}
- 		}
- 	}

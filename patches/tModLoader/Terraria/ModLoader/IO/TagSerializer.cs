@@ -10,6 +10,7 @@ using Terraria.DataStructures;
 
 namespace Terraria.ModLoader.IO;
 
+[CloneByReference]
 public abstract class TagSerializer : ModType
 {
 	public abstract Type Type { get; }

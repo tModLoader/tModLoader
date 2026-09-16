@@ -179,7 +179,7 @@
  			public NPCPortraitSelector Default(NPCPortraitProvider portrait)
  			{
  				_entries.Add(new Entry {
-@@ -174,7 +_,13 @@
+@@ -175,7 +_,13 @@
  			public const int Hemorrhage = 375;
  		}
  
@@ -194,7 +194,7 @@
  		public static Dictionary<int, int> SpecialSpawningRules = new Dictionary<int, int> {
  			{ 259, 0 },
  			{ 260, 0 },
-@@ -183,6 +_,17 @@
+@@ -184,6 +_,17 @@
  			{ 56, 0 },
  			{ 101, 0 }
  		};
@@ -212,7 +212,7 @@
  		public static Dictionary<int, NPCPortraitProvider> NPCPortraits = new Dictionary<int, NPCPortraitProvider> {
  			{ 369, PrioritizedPortrait().With(ShimmeredPortraitCondition, BasicPortrait("Images/TownNPCs/Portraits/Portrait_Angler_shimmer")).Default(BasicPortrait("Images/TownNPCs/Portraits/Portrait_Angler")) },
  			{ 19, PrioritizedPortrait().With(ShimmeredPortraitCondition, BasicPortrait("Images/TownNPCs/Portraits/Portrait_ArmsDealer_shimmer")).Default(BasicPortrait("Images/TownNPCs/Portraits/Portrait_ArmsDealer")) },
-@@ -250,8 +_,18 @@
+@@ -251,8 +_,18 @@
  					.Default(BasicPortrait("Images/TownNPCs/Portraits/Portrait_Bunny_Angora"))
  			}
  		};
@@ -232,7 +232,7 @@
  			{ 0, null },
  			{
  				1,
-@@ -5001,6 +_,10 @@
+@@ -5007,6 +_,10 @@
  				}
  			}
  		};
@@ -243,7 +243,7 @@
  		public static List<int> NormalGoldCritterBestiaryPriority = new List<int> {
  			46,
  			540,
-@@ -5050,6 +_,10 @@
+@@ -5056,6 +_,10 @@
  			669,
  			677
  		};
@@ -254,7 +254,7 @@
  		public static List<int> BossBestiaryPriority = new List<int> {
  			664,
  			4,
-@@ -5114,6 +_,10 @@
+@@ -5120,6 +_,10 @@
  			400,
  			401
  		};
@@ -265,7 +265,7 @@
  		public static List<int> TownNPCBestiaryPriority = new List<int> {
  			22,
  			17,
-@@ -5157,14 +_,61 @@
+@@ -5163,14 +_,61 @@
  			37,
  			687
  		};
@@ -328,7 +328,7 @@
  			443,
  			442,
  			592,
-@@ -5180,13 +_,50 @@
+@@ -5186,13 +_,50 @@
  			448,
  			539
  		};
@@ -368,7 +368,7 @@
 +		/// <para/> Vanilla entries include mainly boss summons and other NPC that shouldn't be able to respawn naturally. See also <see cref="RespawnEnemyID"/>.
 +		/// <para/> Defaults to <see langword="false"/>.
 +		/// </summary>
- 		public static bool[] CantTakeLunchMoney = Factory.CreateBoolSet(394, 393, 392, 690, 492, 491, 662, 384, 478, 535, 658, 659, 660, 128, 131, 129, 130, 139, 267, 247, 248, 246, 249, 245, 409, 410, 397, 396, 401, 400, 440, 68, 534, 316);
+ 		public static bool[] CantTakeLunchMoney = Factory.CreateBoolSet(394, 393, 392, 690, 492, 491, 662, 384, 478, 535, 658, 659, 660, 128, 131, 129, 130, 139, 267, 247, 248, 246, 249, 245, 409, 410, 397, 396, 401, 400, 440, 68, 534, 316, 259, 260, 43, 175, 101);
 +
 +		/// <summary>
 +		/// Associates an NPC type (<see cref="NPC.type"/>) with the NPC type it respawns as from the coin loss system (<see cref="GameContent.CoinLossRevengeSystem"/>).
@@ -379,7 +379,7 @@
  		public static Dictionary<int, int> RespawnEnemyID = new Dictionary<int, int> {
  			{ 492, 0 },
  			{ 491, 0 },
-@@ -5232,6 +_,12 @@
+@@ -5238,6 +_,12 @@
  			{ 622, 621 },
  			{ 623, 621 }
  		};
@@ -392,7 +392,7 @@
  		public static Dictionary<int, Vector2> NPCPortraitsCloseUpOffsets = new Dictionary<int, Vector2> {
  			{ 17, new Vector2(6f, 0f) },
  			{ 18, new Vector2(-6f, 0f) },
-@@ -5274,6 +_,12 @@
+@@ -5280,6 +_,12 @@
  			{ 683, new Vector2(-6f, 2f) },
  			{ 682, new Vector2(-3f, 2f) }
  		};
@@ -405,7 +405,7 @@
  		public static Dictionary<int, Vector2> NPCPortraitsFullBodyRetroOffsets = new Dictionary<int, Vector2> {
  			{ 18, new Vector2(-3f, 0f) },
  			{ 20, new Vector2(-4f, 0f) },
-@@ -5297,63 +_,435 @@
+@@ -5303,65 +_,437 @@
  			{ 683, new Vector2(-6f, 0f) },
  			{ 682, new Vector2(-6f, 0f) }
  		};
@@ -499,6 +499,7 @@
 +		/// <para/> Set to false by <see cref="NPCID.Bee"/>, <see cref="NPCID.BeeSmall"/>, and <see cref="NPCID.QueenBee"/>. 
 +		/// </summary>
  		public static bool[] CanBeHurtByBees = Factory.CreateBoolSet(true, 210, 211, 222);
+ 		public static bool[] BoundTownNPCs = Factory.CreateBoolSet(105, 123, 106, 685, 686, 687, 354, 376, 579, 589);
 +
 +		/// <summary>
 +		/// If <see langword="true"/> for a given NPC type (<see cref="NPC.type"/>), then that NPC will be moved when standing on a conveyer belt.
@@ -601,6 +602,7 @@
 +		/// </summary>
 +		/// <remarks>To prevent smoothing by NPC type (<see cref="NPC.type"/>), use <see cref="NoMultiplayerSmoothingByType"/>.</remarks>
  		public static bool[] NoMultiplayerSmoothingByAI = Factory.CreateBoolSet(6, 8, 37);
+ 		public static Vector2[] SyncAnchor = Factory.CreateCustomSet(Vector2.Zero, (short)50, new Vector2(0.5f, 1f));
 +
 +		/// <summary>
 +		/// If <see langword="true"/> for a given NPC type (<see cref="NPC.type"/>), then that NPC can be summoned in multiplayer using <see cref="MessageID.SpawnBossUseLicenseStartEvent"/>.
@@ -844,7 +846,7 @@
  			new int[26] {
  				0,
  				0,
-@@ -5563,13 +_,38 @@
+@@ -5571,13 +_,38 @@
  				2,
  				4,
  				2
@@ -884,7 +886,7 @@
  		public static bool ShimmeredPortraitCondition()
  		{
  			int talkNPC = Main.LocalPlayer.talkNPC;
-@@ -5585,21 +_,34 @@
+@@ -5593,21 +_,34 @@
  			Dictionary<int, NPCBestiaryDrawModifiers> leinforsEntries = GetLeinforsEntries();
  			Dictionary<int, NPCBestiaryDrawModifiers> groxEntries = GetGroxEntries();
  			Dictionary<int, NPCBestiaryDrawModifiers> dictionary = new Dictionary<int, NPCBestiaryDrawModifiers>();
@@ -922,7 +924,7 @@
  		private static Dictionary<int, NPCBestiaryDrawModifiers> GetRedigitEntries()
  		{
  			return new Dictionary<int, NPCBestiaryDrawModifiers> {
-@@ -10358,7 +_,9 @@
+@@ -10366,7 +_,9 @@
  				}
  			};
  		}
@@ -932,7 +934,7 @@
  
  	private static readonly int[] NetIdMap = new int[65] {
  		81,
-@@ -11666,6 +_,7 @@
+@@ -11674,6 +_,7 @@
  	public const short PalworldCattivaDistressed = 695;
  	public const short PalworldFoxsparksDistressed = 696;
  	public static readonly short Count = 697;

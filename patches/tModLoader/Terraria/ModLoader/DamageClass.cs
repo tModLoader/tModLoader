@@ -13,6 +13,7 @@ namespace Terraria.ModLoader;
 /// New classes can be created and can be set to inherit these applications from other classes.
 /// <para>For a more in-depth explanation and demonstration refer to <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/DamageClasses/ExampleDamageClass.cs">ExampleMod's ExampleDamageClass.cs</see>.</para>
 /// </remarks>
+[CloneByReference]
 public abstract class DamageClass : ModType, ILocalizedModType
 {
 	public class Sets
