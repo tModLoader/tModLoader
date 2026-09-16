@@ -302,8 +302,13 @@
  		public static bool[] CanBeClearedDuringGeneration = Factory.CreateBoolSet(true, 396, 400, 401, 397, 398, 399, 404, 368, 367, 41, 43, 44, 481, 482, 483, 226, 237);
  		public static bool[] PreventsSlopesDuringGeneration = Factory.CreateBoolSet(false, 48, 137, 232, 191, 151, 274, 135, 442, 428);
  		public static bool[] IsAPressurePlate = Factory.CreateBoolSet(false, 135, 442, 428);
-@@ -300,33 +_,85 @@
+@@ -298,35 +_,90 @@
+ 		public static bool[] CrimsonBiomeSight = Factory.CreateBoolSet(199, 662, 203, 234, 200, 399, 401, 205, 201, 352);
+ 		public static bool[] Crimson = Factory.CreateBoolSet(199, 662, 203, 234, 200, 399, 401, 205);
  		public static bool[] SpreadsCrimson = Factory.CreateBoolSet(199, 662, 203, 234, 399, 401, 200, 352, 205, 201);
++		/// <summary>
++		/// Indicates that NPC spawning logic at this tile should use the tile below it to drive spawn logic instead of itself. Used by <see cref="ConveyorBeltLeft"/> and <see cref="ConveyorBeltRight"/>.
++		/// </summary>
  		public static bool[] InheritTypeOfTileBelowForNPCSpawning = Factory.CreateBoolSet(false, 421, 422);
  		public static bool[] BlocksStairs = Factory.CreateBoolSet(386, 387, 54, 328, 459, 541);
 +		/// <summary>

@@ -405,7 +405,7 @@
  		public static Dictionary<int, Vector2> NPCPortraitsFullBodyRetroOffsets = new Dictionary<int, Vector2> {
  			{ 18, new Vector2(-3f, 0f) },
  			{ 20, new Vector2(-4f, 0f) },
-@@ -5303,65 +_,437 @@
+@@ -5303,65 +_,441 @@
  			{ 683, new Vector2(-6f, 0f) },
  			{ 682, new Vector2(-6f, 0f) }
  		};
@@ -499,6 +499,10 @@
 +		/// <para/> Set to false by <see cref="NPCID.Bee"/>, <see cref="NPCID.BeeSmall"/>, and <see cref="NPCID.QueenBee"/>. 
 +		/// </summary>
  		public static bool[] CanBeHurtByBees = Factory.CreateBoolSet(true, 210, 211, 222);
++
++		/// <summary>
++		/// Contains TownNPcs that are found in the world and transform into their normal form when talked to, such as <see cref="BoundGoblin"/> or <see cref="BoundTownSlimePurple"/>.
++		/// </summary>
  		public static bool[] BoundTownNPCs = Factory.CreateBoolSet(105, 123, 106, 685, 686, 687, 354, 376, 579, 589);
 +
 +		/// <summary>

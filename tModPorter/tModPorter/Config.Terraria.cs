@@ -284,6 +284,10 @@ public static partial class Config
 		RenameStaticField("Terraria.ID.MessageID", from: "PaintWall", to: "SyncWallPaintOrCoating");
 		RenameStaticField("Terraria.ID.MessageID", from: "NPCKillCountDeathTally", to: "Unused83");
 		RenameStaticField("Terraria.ID.MessageID", from: "TEDisplayDollItemSync", to: "TEDisplayDollDataSync");
+		RenameStaticField("Terraria.ID.MessageID", from: "Dodge", to: "SyncDodge");
+		RenameStaticField("Terraria.ID.MessageID", from: "InstancedItem", to: "SpawnInstancedItem");
+		RenameStaticField("Terraria.ID.MessageID", from: "SyncItemsWithShimmer", to: "SyncItemsWithShimmerDeprecated");
+		RenameStaticField("Terraria.ID.MessageID", from: "SyncItemCannotBeTakenByEnemies", to: "SyncItemCannotBeTakenByEnemiesDeprecated");
 		RenameStaticFields("Terraria.ID.MusicID", "Night", "OverworldNight", "Title", "TitleClassic", "Jungle", "JungleDay", "TheHallow", "Hallow", "Space", "SpaceNight", "Boss4", "Golem", "AltOverworldDay", "OverworldDayAlt", "Ocean", "OceanDay", "RainSoundEffect", "RainAmbience", "Mushrooms", "Mushroom", "AltUnderground", "UndergroundAlt", "TheTowers", "LunarPillars", "Hell", "Underworld", "LunarBoss", "MoonLord", "GoblinInvasion", "GoblinArmy", "DayRemix", "OverworldDayRemix", "MenuMusic", "TitleJourneysBeginningWithIntro", "Monsoon", "Storm", "JungleUnderground", "UndergroundJungle", "ConsoleMenu", "TitleAlt", "OtherworldlyRain", "OtherworldRain", "OtherworldlyDay", "OtherworlddDay", "OtherworldlyNight", "OtherworldNight", "OtherworldlyUnderground", "OtherworldUnderground", "OtherworldlyDesert", "OtherworldDesert", "OtherworldlyOcean", "OtherworldOcean", "OtherworldlyMushrooms", "OtherworldMushroom", "OtherworldlyDungeon", "OtherworldDungeon", "OtherworldlySpace", "OtherworldSpace", "OtherworldlyUnderworld", "OtherworldUnderworld", "OtherworldlySnow", "OtherworldSnow", "OtherworldlyCorruption", "OtherworldCorruption", "OtherworldlyUGCorrption", "OtherworldUndergroundCorruption", "OtherworldlyCrimson", "OtherworldCrimson", "OtherworldlyUGCrimson", "OtherworldUndergroundCrimson", "OtherworldlyIce", "OtherworldIce", "OtherworldlyUGHallow", "OtherworldUndergroundHallow", "OtherworldlyEerie", "OtherworldEerie", "OtherworldlyBoss2", "OtherworldBoss2", "OtherworldlyBoss1", "OtherworldBoss1", "OtherworldlyInvasion", "OtherworldInvasion", "OtherworldlyTowers", "OtherworldLunarPillars", "OtherworldlyLunarBoss", "OtherworldMoonLord", "OtherworldlyPlantera", "OtherworldPlantera", "OtherworldlyJungle", "OtherworldJungle", "OtherworldlyWoF", "OtherworldWallOfFlesh", "OtherworldlyHallow", "OtherworldHallow", "Credits", "JourneysEnd", "Shimmer", "Aether");
 		RenameStaticField("Terraria.ID.NPCID.Sets", from: "UsesNewTargetting", to: "UsesNewTargeting");
 		RenameStaticField("Terraria.ID.NPCID.Sets", from: "GoldCrittersCollection", to: "IsGoldCritter").FollowBy(ConvertCollectionAddToSetTrue);
@@ -297,6 +301,7 @@ public static partial class Config
 		RenameStaticField("Terraria.ID.TileID.Sets", from: "CountsAsShimmerSource", to: "CountsAsShimmerForCrafting");
 		RenameStaticField("Terraria.ID.TileID.Sets", from: "IsATrigger", to: "Wiring.IsATrigger");
 		RenameStaticField("Terraria.ID.TileID.Sets", from: "IsAMechanism", to: "Wiring.IsAMechanism");
+		RenameStaticField("Terraria.ID.TileID.Sets", from: "IsSkippedForNPCSpawningGroundTypeCheck", to: "InheritTypeOfTileBelowForNPCSpawning");
 		RenameStaticField("Terraria.ID.TileID.Sets", from: "InteractibleByNPCs", to: "InteractableByNPCs");
 		RenameStaticField("Terraria.ID.TileID.Sets", from: "Torch", to: "Torches");
 		RenameStaticField("Terraria.ID.TileID.Sets", from: "Campfire", to: "Campfires");

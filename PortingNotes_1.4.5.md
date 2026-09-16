@@ -215,9 +215,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - We need docs on how to use /checkpoint and StateSnapshot. Wiki page most likely, teaching why and how to use, limitations, etc.
 
 ## 1.4.5.8
-- Document EyeState.LowMana
-- Document MountID.DoesNotOverrideWings
-- Document NPCID.BoundTownNPCs, SyncAnchor
 - Document ProjectileID.DespawnItemIcon, DespawnItemGivesItemBack, DisplayDollDrawUseStyle
 - ProjectileID.FixedSelfDamageForPlayers, SkipDamage_EVP added
 - NPC.dontTakeDamageStillShowLife
@@ -263,11 +260,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Item.SetDefaults(int, bool) -> Item.SetDefaults(int)
 
 ## 1.4.5.8
-- MessageID.Dodge/Unknown62 now has proper vanilla name: SyncDodge. Needs tModPorter
-- MessageID.InstancedItem renamed to SpawnInstancedItem. Needs tModPorter
-- SyncItemsWithShimmer->SyncItemsWithShimmerDeprecated. Needs tModPorter
-- SyncItemCannotBeTakenByEnemies->SyncItemCannotBeTakenByEnemiesDeprecated. Needs tModPorter
-- TileID.Sets.UsesADifferentTileTypeForNPCSpawning -> InheritTypeOfTileBelowForNPCSpawning. tModporter
 - WorldItem.noGrabDelay ->  grabDelayTime...I think. double check this, it seems noGrabDelay might have been split into a few fields.
 
 # ExampleMod TODOs

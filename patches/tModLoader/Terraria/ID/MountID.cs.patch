@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/ID/MountID.cs
 +++ src/tModLoader/Terraria/ID/MountID.cs
-@@ -1,23 +_,68 @@
+@@ -1,23 +_,72 @@
 +using ReLogic.Reflection;
 +using Terraria.ModLoader;
 +
@@ -40,6 +40,10 @@
 +		/// <br/><br/> This is used by <see cref="RollerSkates"/> and similar mounts.
 +		/// </summary>
  		public static bool[] DoesNotOverrideBackpackDraw = Factory.CreateBoolSet(57, 58, 59, 60);
++		/// <summary>
++		/// If <see langword="true"/> for a given <see cref="MountID"/>, then that mount will not disable the player's wing visuals.
++		/// <br/><br/> This is used by <see cref="RollerSkates"/> and similar mounts.
++		/// </summary>
  		public static bool[] DoesNotOverrideWings = Factory.CreateBoolSet(57, 58, 59, 60);
 +		/// <summary>
 +		/// This mount is a roller skates mount. Affects movement, animation, spawn dust, and more.

@@ -2828,14 +2828,20 @@
  		bool flag4 = true;
  		while (flag4) {
  			flag4 = false;
-@@ -59155,6 +_,7 @@
+@@ -59155,8 +_,13 @@
  				Convert(num15, num16, 2, tiles: true, walls: false);
  			}
  		}
 +		*/
  	}
  
++	/// <summary>
++	/// Returns true if the tile exists, isn't actuated, is <see cref="Main.tileSolid"/>, isn't <see cref="Main.tileSolidTop"/>, isn't <see cref="Tile.IsHalfBlock"/>, and isn't sloped (<see cref="Tile.Slope"/> is <see cref="SlopeType.Solid"/>).
++	/// <para/> Essentially, this is checking for a solid tile that physically occupies the entire tile space and can be collided with. 
++	/// </summary>
  	public static bool SolidTile(Tile testTile)
+ 	{
+ 		try {
 @@ -59285,6 +_,10 @@
  
  	public static bool SolidTile(Point p) => SolidTile(p.X, p.Y);
@@ -2856,6 +2862,17 @@
  					return false;
  
  				return true;
+@@ -59304,6 +_,10 @@
+ 		return false;
+ 	}
+ 
++	/// <summary>
++	/// Returns true if the tile exists, isn't actuated, is <see cref="Main.tileSolid"/>, isn't <see cref="Tile.IsHalfBlock"/>, and isn't sloped (<see cref="Tile.Slope"/> is <see cref="Terraria.ID.SlopeType.Solid"/>).
++	/// <para/> Essentially, this is checking for a tile that can be stood on, since not <see cref="Main.tileSolidTop"/> isn't checked. Use <see cref="SolidTile3(Tile)"/> instead to omit tiles like <see cref="TileID.Tables"/> and <see cref="TileID.Platforms"/>.
++	/// </summary>
+ 	public static bool SolidTile2(Tile testTile)
+ 	{
+ 		try {
 @@ -59332,6 +_,10 @@
  		return true;
  	}
@@ -2867,6 +2884,28 @@
  	public static bool SolidTileAllowBottomSlope(int i, int j)
  	{
  		try {
+@@ -59561,8 +_,10 @@
+ 		return false;
+ 	}
+ 
++	/// <inheritdoc cref="SolidTile3(Tile)"/>
+ 	public static bool SolidTile3(Point p) => SolidTile3(p.X, p.Y);
+ 
++	/// <inheritdoc cref="SolidTile3(Tile)"/>
+ 	public static bool SolidTile3(int i, int j)
+ 	{
+ 		if (!InWorld(i, j, 1))
+@@ -59571,6 +_,10 @@
+ 		return SolidTile3(Main.tile[i, j]);
+ 	}
+ 
++	/// <summary>
++	/// Returns true if the tile exists, isn't actuated, is <see cref="Main.tileSolid"/>, and isn't <see cref="Main.tileSolidTop"/>.
++	/// <para/> Essentially, this is checking for a solid tile that physically occupies the tile space and can be collided with, but might be hammered in some way.
++	/// </summary>
+ 	public static bool SolidTile3(Tile t)
+ 	{
+ 		if (t == null)
 @@ -60455,10 +_,21 @@
  
  	public static void UpdateWorld()

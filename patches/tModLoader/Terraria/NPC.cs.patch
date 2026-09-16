@@ -113,10 +113,11 @@
  
  			if (!CheckNotSpawningOnScreen(spawnTileX, spawnTileY))
  				return false;
-@@ -241,10 +_,15 @@
+@@ -241,10 +_,16 @@
  			FindGroundTile(spawnTileX, spawnTileY, out var groundTileY);
  			int type = Main.tile[spawnTileX, groundTileY].type;
  			int spawnWallType = GetSpawnWallType(spawnTileX, spawnTileY);
++			GroundTileY = groundTileY; // TML
 +			SpawnTileType = type; // TML
 +			SpawnWallType = spawnWallType; // TML
  			if (!PostCheckChosenSpawnTile(spawnTileX, spawnTileY, type, spawnWallType))
