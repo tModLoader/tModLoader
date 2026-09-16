@@ -147,7 +147,7 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Need to handle public static ItemVariantCondition SkyblockWorld;, SkyblockWorld = Condition.SkyblockWorld;
 - BannerSystem.newBanner is new, needs NPCLoader.ResizeArrays, make public?
 - Why did ProjectileID.SummonTagDamageMultiplier change?
-- Clound.cs, there is now CloudID.Sets.RareClouds_Normal, CloudID.Sets.RareClouds_Celebration for more control. Document and maybe use in ExampleMod.
+- Clound.cs, there is now CloudID.Sets.RareClouds_Normal, CloudID.Sets.RareClouds_Celebration for more control. Document and maybe use in ExampleMod. CloudID.Search also needs to be populated
 - public static LanguageSearchFilter CreateDialogFilter(string startsWith, object substitutions) removed from Lang.cs? Could still be useful, add back into Lang.TML.cs?
 - _unusedResearchLine removed from MouseText_DrawItemTooltip_GetLinesInfo, verify other callsites
 - WorldGen.SwapTileData might not be necessary anymore. ErrorWorldSwapTiles exists. The new name isn't as useful, however.
@@ -212,6 +212,7 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Main.menuChat
 - Need to fix documentation for various secret and special seeds, like Main.specialSeedWorld. Need to change secret to special in most cases, and fix wiki links.
 - Player.GetArmPosition needs docs
+- We need docs on how to use /checkpoint and StateSnapshot. Wiki page most likely, teaching why and how to use, limitations, etc.
 
 ## 1.4.5.8
 - Document EyeState.LowMana
