@@ -17,15 +17,6 @@
  {
  	public class MiscSettingsTEMP
  	{
-@@ -127,7 +_,7 @@
- 		private int _itemType;
- 		private bool _shouldFastUse;
- 		private bool _isMouseItem;
--		[CloneByReference]
-+		[Testing.Cloning.CloneByReference]
- 		private Player _player;
- 
- 		public bool TryStartForItemSlot(Player player, int itemSlot)
 @@ -642,10 +_,31 @@
  		}
  	}
