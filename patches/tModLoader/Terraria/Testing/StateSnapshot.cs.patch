@@ -26,3 +26,12 @@
  			fixed (TileData* ptr = &data[x0 * maxTilesY]) {
  				TileData* ptr2 = ptr;
  				for (int i = x0; i < x1; i++) {
+@@ -160,6 +_,8 @@
+ 		BackupRestoreHelper<Chest>.Register(new ChestCloneHelper());
+ 		AddGameplayComponents();
+ 		AddInputComponents();
++		Gameplay.SetVanillaComponentCount();
++		Input.SetVanillaComponentCount();
+ 	}
+ 
+ 	private static void AddGameplayComponents()
