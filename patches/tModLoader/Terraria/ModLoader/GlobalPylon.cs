@@ -8,6 +8,7 @@ namespace Terraria.ModLoader;
 /// Global Type that exists for pylons that allows for modification of teleportation steps, map drawing, and
 /// other functionality for any pylon that exists, whether it be vanilla or modded.
 /// </summary>
+[CloneByReference]
 public abstract class GlobalPylon : ModType
 {
 
