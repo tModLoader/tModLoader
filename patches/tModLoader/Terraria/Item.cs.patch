@@ -845,7 +845,7 @@
  	public static void DropCache(IEntitySource reason, Vector2 pos, Vector2 spread, int t, bool stopCaching = true)
  	{
  		if (cachedItemSpawnsByType[t] == -1)
-@@ -282,17 +_,63 @@
+@@ -282,17 +_,62 @@
  		}
  	}
  
@@ -901,7 +901,6 @@
 +	/// <item><paramref name="prefixWeWant"/> is <c>0</c></item>
 +	/// <item><see cref="CanHavePrefixes"/> returns <see langword="false"/></item>
 +	/// <item><see cref="CanApplyPrefix(int)"/> returns <see langword="false"/></item>
-+	/// <item><c><paramref name="prefixWeWant"/> == -1</c> and <c><see cref="maxStack"/> &gt; 1</c></item>
 +	/// <item><see cref="ItemLoader.PrefixChance(Item, int, UnifiedRandom)"/> returns <see langword="false"/></item>
 +	/// <item><c><paramref name="prefixWeWant"/> == -1 or -2 or -3</c> and <see cref="PrefixLoader.Roll(Item, UnifiedRandom, out int, bool)"/> returns <see langword="false"/>.</item>
 +	/// </list>
@@ -910,7 +909,7 @@
  	public bool Prefix(int prefixWeWant, out bool rolledPrefixIsTopTier)
  	{
  		if (!WorldGen.isGeneratingOrLoadingWorld && Main.rand == null)
-@@ -312,7 +_,21 @@
+@@ -312,7 +_,17 @@
  		if (prefixWeWant == -2 || prefixWeWant == -1)
  			num = BestPrefixValue();
  
@@ -918,10 +917,6 @@
 +		if (prefixWeWant > 0 && !CanApplyPrefix(prefixWeWant))
 +			return false;
 +		*/
-+
-+		//#StackablePrefixWeapons: Stackable items will not spawn with a prefix on craft/generate. Only when deliberately reforged.
-+		if (prefixWeWant == -1 && maxStack > 1)
-+			return false;
 +
  		UnifiedRandom unifiedRandom = (WorldGen.isGeneratingOrLoadingWorld ? WorldGen.genRand : Main.rand);
 +
