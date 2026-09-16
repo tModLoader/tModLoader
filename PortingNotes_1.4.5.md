@@ -114,8 +114,7 @@ Once all patches are fixed, these items need to be fixed or double checked:
   - useX (useWood, ext) also removed. Same.
   - Need needTorchGodsFavor condition
   - needEverythingSeed seems to be replaced by needMechdusa. TODo: Rename Condition.ZenithWorld?
-  - Recipe item consumption seems to be in another class now, patches need to be moved. GetIngredientCraftingDiscount also needs to be tweaked to work again for modded RecipeLoader.ConsumeIngredient
-    - Hook needs rework to use `Recipe.RequiredItemEntry`
+  - Recipe item consumption is now in `CraftingRequests`. `RecipeLoader.ConsumeIngredient` is now called from `Recipe.GetIngredientsForOneCraft`, so consume ingredient callbacks work for crafting again.
   - CraftViaRequest complicates `RecipeItemCreationContext.DestinationStack` I think. Removed for compile, restore if possible. OnCraftHooks also not hooked up.
     - In theory it can be restored, since the `_pendingCrafts` queue remains on the client, and changes to `Main.mouseItem` are forbidden while a craft is pending. Documentation needs to note that the craft could be refunded though, so we likely need `OnCraft` hoook to be in `CraftItem_GrantItem`. We could amend the response packet from the server to send the consumed items, at the cost of quite some bandwidth when rapid crafting
 - ItemSlot flow changed a lot. AccCheck no longer exists, replaced by CanEquipAccessoryInSlot?
