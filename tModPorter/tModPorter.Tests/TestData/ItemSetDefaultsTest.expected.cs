@@ -13,6 +13,6 @@ public class ItemSetDefaultsTest
 		item.SetDefaults(5, variant: null);
 		item.SetDefaults(6);
 		item.SetDefaults(7, variant: null);
-		item.SetDefaults(0);
+		item.TurnToAir();
 	}
 }

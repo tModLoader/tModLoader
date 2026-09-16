@@ -257,13 +257,11 @@ public partial class InvokeRewriter : BaseRewriter
 		// Remove noMatCheck parameter
 		if (invoke.ArgumentList.Arguments.Count != 0) return RemoveParameter(1, "noMatCheck", "bool")(rw, invoke, methodName);
 
-		// Item.SetDefaults() -> Item.SetDefaults(0)
-		var zero = Argument(
-			LiteralExpression(
-				SyntaxKind.NumericLiteralExpression, Literal(0)
-			)
+		// Item.SetDefaults() -> Item.TurnToAir()
+		return invoke.ReplaceNode(
+			methodName,
+			IdentifierName("TurnToAir").WithTriviaFrom(methodName)
 		);
-		return invoke.WithArgumentList(invoke.ArgumentList.AddArguments(zero));
 	};
 
 	private static SyntaxNode CommentOutNode(SyntaxNode node) {
