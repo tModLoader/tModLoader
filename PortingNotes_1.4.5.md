@@ -141,14 +141,12 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - PlayerDrawLayers.cs DrawPlayer_13_Leggings
 
 ## 1.4.5.8
-- EmoteBubble.DeserializeNetAnchor and #WorldUIAnchorProjectileSyncFix need to use the new ProjectileKey system
 - Should NetMessage.LogMessageError Invariant.Assert be directed to ModNet.LogMessageError somehow?
 - ItemID.Sets.DuplicationMenuToolsFilter needs 6174
 - TileDrawing.IsTileDangerous vanilla now has tilex/y, but different order, so we might need to adjust TML variant or other callsites
 - Need to handle public static ItemVariantCondition SkyblockWorld;, SkyblockWorld = Condition.SkyblockWorld;
 - BannerSystem.newBanner is new, needs NPCLoader.ResizeArrays, make public?
 - Why did ProjectileID.SummonTagDamageMultiplier change?
-- NeedsUUID removed. Investigate
 - Clound.cs, there is now CloudID.Sets.RareClouds_Normal, CloudID.Sets.RareClouds_Celebration for more control. Document and maybe use in ExampleMod.
 - public static LanguageSearchFilter CreateDialogFilter(string startsWith, object substitutions) removed from Lang.cs? Could still be useful, add back into Lang.TML.cs?
 - _unusedResearchLine removed from MouseText_DrawItemTooltip_GetLinesInfo, verify other callsites
@@ -196,7 +194,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - New PickAmmo_PickAmmoItem method seems to replicate our old PickAmmo/ChooseAmmo split.
 - Our PickAmmo overload patch lost. Maybe just put in .TML.cs file anyway.
 - Not sure about VanillaOnHitEffectsWhipsStart label location
-- Is TagDamageChanges just a pseudo NPC.HitModifiers? Should TagEffectState use one or the other?
 - WhipTagEffect.ModifyTaggedHit patches are wrong, method changed a lot
 - DustID.Spider and InfernoFlame are new and differ from names we made up in TML.cs file, remove our entries?
 - SpriteCharacterData is class now.
