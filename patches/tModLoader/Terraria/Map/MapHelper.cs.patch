@@ -14,6 +14,28 @@
  using Terraria.Social;
  using Terraria.Testing;
  using Terraria.Utilities;
+@@ -120,9 +_,21 @@
+ 	private const int maxDirtGradients = 256;
+ 	private const int maxRockGradients = 256;
+ 	private static object IOLock = new object();
++	/// <summary>
++	/// The number of map entry options for the Tile type.
++	/// </summary>
+ 	public static int[] tileOptionCounts;
++	/// <summary>
++	/// The number of map entry options for the Wall type.
++	/// </summary>
+ 	public static int[] wallOptionCounts;
++	/// <summary>
++	/// Maps from Tile type to the 1st map entry for that tile. 0 if no entries.
++	/// </summary>
+ 	public static ushort[] tileLookup;
++	/// <summary>
++	/// Maps from Wall type to the 1st map entry for that wall. 0 if no entries.
++	/// </summary>
+ 	public static ushort[] wallLookup;
+ 	private static ushort tilePosition;
+ 	private static ushort wallPosition;
 @@ -131,7 +_,8 @@
  	private static ushort dirtPosition;
  	private static ushort rockPosition;
@@ -42,6 +64,16 @@
  		snowTypes = new ushort[6];
  		snowTypes[0] = tileLookup[147];
  		snowTypes[1] = tileLookup[161];
+@@ -1728,6 +_,9 @@
+ 
+ 	public static bool HasOption(int tileType, int option) => option < tileOptionCounts[tileType];
+ 
++	/// <summary>
++	/// Returns the map entry index for the given tile type and option.
++	/// </summary>
+ 	public static int TileToLookup(int tileType, int option)
+ 	{
+ 		Invariant.Assert(tileType >= 0 && tileType <= TileID.Count, "MapHelper.TileToLookup passed a bad tileType: {0}", tileType);
 @@ -1828,10 +_,16 @@
  		if (baseType == 0) {
  			newColor = 0;

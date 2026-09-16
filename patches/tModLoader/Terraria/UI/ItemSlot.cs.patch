@@ -557,6 +557,15 @@
  			case 16:
  				num15 = 4;
  				break;
+@@ -2058,7 +_,7 @@
+ 		int num16 = -1;
+ 		float num17 = 1f;
+ 		int num18 = -1;
+-		if (canLoadoutShareAt[context]) {
++		if (canLoadoutShareAt[Math.Abs(context)]) {
+ 			int? sharedFromLoadout;
+ 			Item sharedLoadoutItem = GetSharedLoadoutItem(context, slot, out sharedFromLoadout);
+ 			if (item.IsAir && sharedFromLoadout.HasValue) {
 @@ -2079,7 +_,14 @@
  			Rectangle rectangle = value6.Frame(3, 7, num15 % 3, num15 / 3);
  			rectangle.Width -= 2;
