@@ -61,7 +61,7 @@
 +	// Added by TML.
 +	public static int DropItem(Vector2 position, IEntitySource entitySource, int itemId, int stack)
 +	{
-+		int number = Item.NewItem(entitySource, position, itemId, stack, -1, noBroadcast: false);
++		int number = Item.NewItem(entitySource, position, itemId, stack, prefix: -1, noBroadcast: false);
 +
 +		if (Main.netMode == 1)
 +			NetMessage.SendData(21, -1, -1, null, number, 1f);
@@ -76,7 +76,7 @@
  			int num = Item.NewItem(npc.GetItemSource_Loot(), (int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, itemId, stack, noBroadcast: true, -1);
  			Main.item[num].MakeInstanced((Player p) => npc.playerInteraction[p.whoAmI] || !interactionRequired);
  			npc.value = 0f;
-@@ -32,7 +_,7 @@
+@@ -32,20 +_,20 @@
  
  	public static void DropItemForEachInteractingPlayerOnThePlayer(NPC npc, int itemId, UnifiedRandom rng, int chanceNumerator, int chanceDenominator, int stack = 1, bool interactionRequired = true)
  	{
@@ -85,7 +85,13 @@
  			return;
  
  		if (Main.netMode == 2) {
-@@ -45,7 +_,7 @@
+ 			for (int i = 0; i < 255; i++) {
+ 				Player player = Main.player[i];
+ 				if (player.active && (npc.playerInteraction[i] || !interactionRequired) && rng.Next(chanceDenominator) < chanceNumerator) {
+-					int itemIndex = Item.NewItem(npc.GetItemSource_Loot(), player.Center, itemId, stack, -1);
++					int itemIndex = Item.NewItem(npc.GetItemSource_Loot(), player.Center, itemId, stack, prefix: -1);
+ 					ModifyItemDropFromNPC(npc, itemIndex);
+ 				}
  			}
  		}
  		else if (rng.Next(chanceDenominator) < chanceNumerator) {

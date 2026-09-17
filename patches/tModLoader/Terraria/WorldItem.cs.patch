@@ -192,11 +192,12 @@
  
  			Main.player[Main.myPlayer].AddCoinLuck(base.Center, stack);
  			NetMessage.SendData(146, -1, -1, null, 1, base.Center.X, base.Center.Y, stack);
-@@ -1508,12 +_,15 @@
+@@ -1508,12 +_,16 @@
  
  				int num8 = num6 * item.stack;
  				int key = (item.IsRecipeGroup ? item.RecipeGroup.DecraftItemId : item.itemIdOrRecipeGroup);
-+				/*
++
++				/* TML: Recipe.alchemy is removed due to being replaced by consume item hooks
  				if (recipe.alchemy) {
  					for (int num9 = num8; num9 > 0; num9--) {
  						if (Main.rand.Next(3) == 0)

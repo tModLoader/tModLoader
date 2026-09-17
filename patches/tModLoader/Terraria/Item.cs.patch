@@ -1938,18 +1938,28 @@
  			return makeNPC > 0;
  
  		return true;
-@@ -49008,6 +_,10 @@
+@@ -49006,8 +_,20 @@
+ 		}
+ 	}
  
++	/// <summary>
++	/// Allows a server to temporarily designate a 'local' player for newly spawned items, such as while handling that player's packet.<br/>
++	/// Automatically converts <c>NewItem</c> calls with <see cref="NewItemOwnership.None"/> to <see cref="NewItemOwnership.ReserveForLocalPlayer"/>.<br/>
++	/// Used by vanilla when handling packets such as <see cref="MessageID.TileManipulation"/> and <see cref="MessageID.HitSwitch"/>.<br/>
++	/// <br/>
++	/// <c>using (Item.DefaultAssignNewItemsToPlayer(whoAmI)) { ... }</c><br/>
++	/// <br/>
++	/// </summary>
  	public static IDisposable DefaultAssignNewItemsToPlayer(int plr) => new DefaultAssignNewItemsToPlayer_OverrideHandle(plr);
  
 +	/// <summary>
 +	/// Similar to <see cref="NewItem(IEntitySource, Vector2, int, int, int, NewItemOwnership, Vector2?, NewItemModifier, bool)"/>, except it can be called on multiplayer clients to spawn items.
 +	/// </summary>
-+	/// <inheritdoc cref="NewItem(IEntitySource, Vector2, int, int, int, NewItemOwnership, Vector2?, NewItemModifier, bool)" path="/param"/>
++	/// <inheritdoc cref="NewItem(IEntitySource, Vector2, int, int, int, NewItemOwnership, Vector2?, NewItemModifier, bool)" path="/param[not(@name='noBroadcast')]"/>
  	public static void RequestNewItem(IEntitySource source, Vector2 center, int type, int stack = 1, int prefix = 0, NewItemOwnership ownership = NewItemOwnership.None, Vector2? velocity = null, NewItemModifier modifier = null)
  	{
  		int number = NewItem(source, center, type, stack, prefix, ownership, velocity, modifier);
-@@ -49015,11 +_,37 @@
+@@ -49015,11 +_,36 @@
  			NetMessage.SendData(21, -1, -1, null, number, (float)ownership);
  	}
  
@@ -1963,18 +1973,17 @@
  
 +	/// <summary>
 +	/// Spawns an item into the game world with the given type and stack size. The center parameter is the location the item will be spawned centered at. Other overloads support passing in this position in other ways.
-+	/// <br/><br/> This method should not be called on multiplayer clients. If you need to spawn items from client code, use <see cref="Player.QuickSpawnItem(IEntitySource, int, int)"/> instead, it handles the multiplayer syncing code needed.
-+	/// <br/><br/> See the <paramref name="noBroadcast"/> documentation if you need to customize attached ModItem or GlobalItem data prior to syncing.
++	/// <br/><br/> This method should not be called on multiplayer clients. If you need to spawn items from client code, use <see cref="RequestNewItem(IEntitySource, Vector2, int, int, int, NewItemOwnership, Vector2?, NewItemModifier)"/> or <see cref="Player.QuickSpawnItem(IEntitySource, int, int)"/> instead, they handle the multiplayer syncing code needed.
 +	/// <br/><br/> The source represents the entity causing this item to spawn. The return value is the index of the spawned Item within the <see cref="Main.item"/> array.
 +	/// </summary>
 +	/// <param name="source"></param>
 +	/// <param name="center"></param>
 +	/// <param name="type">Either an <see cref="ItemID"/> entry or <see cref="ModContent.ItemType{T}"/>, for example <see cref="ItemID.IronskinPotion"/> or ModContent.ItemType&lt;MyModItem&gt;()</param>
 +	/// <param name="stack">Item stack</param>
-+	/// <param name="prefix"></param>
-+	/// <param name="ownership"></param>
-+	/// <param name="velocity"></param>
-+	/// <param name="modifier"></param>
++	/// <param name="prefix">A <see cref="PrefixID"/> entry or <see cref="ModContent.PrefixType{T}"/>. See <see cref="Prefix(int)"/> for the meaning of the negative values.</param>
++	/// <param name="ownership">Controls which players and NPCs can pick up the item immediately and vs waiting for <see cref="WorldItem.DefaultGrabDelay"/></param>
++	/// <param name="velocity">Override the default randomized velocity</param>
++	/// <param name="modifier">An optional delegate invoked with the spawned <see cref="WorldItem"/> right before it is returned, allowing final adjustments before it is synced over the network, similar to <see cref="ModItem.OnSpawn(WorldItem, IEntitySource)"/>. Prefer this over <paramref name="noBroadcast"/> and a manual <see cref="MessageID.SyncItem"/>.</param>
 +	/// <param name="noBroadcast">Controls whether an item spawned on a server is synced using <see cref="NetMessage.SendData"/> and <see cref="MessageID.SyncItem"/>. If false, the item will be synced. If true, the calling code can modify the item instance and then sync the item with <see cref="MessageID.SyncItem"/>. Has no effect except on server. NewItem running on multiplayer clients always needs to manually sync, see <see cref="Player.QuickSpawnItem(IEntitySource, int, int)"/> source code for an example.</param>
 +	/// <returns>The index of the item within <see cref="Main.item"/></returns>
  	public static int NewItem(IEntitySource source, Vector2 center, int type, int stack = 1, int prefix = 0, NewItemOwnership ownership = NewItemOwnership.None, Vector2? velocity = null, NewItemModifier modifier = null, bool noBroadcast = false)
@@ -2006,6 +2015,26 @@
  			cachedItemSpawnsByType[type] += stack;
  			return 400;
  		}
+@@ -49090,10 +_,18 @@
+ 
+ 		Main.timeItemSlotCannotBeReusedFor[num] = 0;
+ 		EmergencyStacking.ClearPendingTransfersInvolving(Main.item[num]);
++
++		Item item;
++		if (itemToClone != null) {
++			item = itemToClone.Clone();
++			goto skipItemCreation;
++		}
+-		Item item = new Item();
++		item = new Item();
+ 		item.SetDefaults(type);
+ 		item.stack = stack;
+ 		item.Prefix(prefix);
++		skipItemCreation:
++
+ 		WorldItem worldItem = new WorldItem(item) {
+ 			whoAmI = num
+ 		};
 @@ -49121,6 +_,9 @@
  			worldItem.enemyGrabDelayTime = WorldItem.DefaultGrabDelay;
  

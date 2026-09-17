@@ -38,6 +38,22 @@ The `Item` class has had the in-world functionality split into a new `WorldItem`
 
 Hooks that deal with items in the game world will now have a `WorldItem item` parameter as well. This will require modders to switch from `Item` to `item` in various `ModItem` classes if dealing with the fields that are now on `WorldItem`.
 
+### Item.NewItem
+
+`Item.NewItem` has been reworked.
+- 🤖 Instead of passing a `rectangle`, `position, size` or `X, Y, W, H` only for the item to spawn at the center. Just pass `center` directly
+- 🤖 `noGrabDelay` has been replaced by `NewItemOwnership`, we recommend reading the docs on it and considering the right value to pass to each of your call sites
+- 🤖 `reverseLookup` is gone, no replacement
+- New `velocity` and `modifier` parameters make it easy to modify the item before syncing. 
+  - These should replace the need for `noBroadcast: true`
+  - Some uses of `Mod/GlobalItem.OnSpawn` may be better served by passing a `modifier` delegate, if they only apply to some call sites.
+
+🤖 Due to the signature changes, many 1.4.4 calls will no longer compile, but tModPorter can handle the vast majority of them.
+
+`Item.RequestNewItem` has been added to make spawning world items from multiplayer clients easier. It is also safe to call in single player, but we generally recommend considering `QuickSpawnItem` first.
+
+There should be almost no reason to send `MessageID.SyncItem` packets manually, or use `noBroadcast: true` anymore
+
 ### Projectile Draw Changes
 
 There have been several changes to projectile drawing in this update.
@@ -433,7 +449,6 @@ Japanese ("ja-JP"), Korean ("ko-KR"), and Traditional Chinese ("zh-Hant") have b
 * Projectile identity approach has changed
   * `Projectile.identity`, `Projectile.GetByUUID`, `Projectile.projUUID`, `ProjectileID.Sets.NeedsUUID` removed.
   * Use `Projectile.key` instead for a consistent reference to a projectile.
-* `Item.RequestNewItem` can be used to spawn an item on a multiplayer client. Replace `Item.NewItem` followed by `NetMessage.SendData(MessageID.SyncItem, ...)` patterns with `Item.RequestNewItem`.
 
 ### Example Mod
 
@@ -473,7 +488,7 @@ Several Example Mod examples have been updated to adapt to 1.4.5 changes and to 
 
 ### Static Methods
 
-* 💀: `Item.NewItem` methods no longer have the `bool reverseLookup` parameter. Remove it.
+* 🤖: `Item.NewItem` has new signatures. See [Item.NewItem](#itemnewitem) for more information.
 * 🤖: `Main.DrawWindowsIMEPanel` has been split into `Main.DrawIMEPanel` and `Main.SetIMEPanelAnchor`. `DrawIMEPanel` is automatically called each game update, so just replace  `DrawWindowsIMEPanel` calls with `SetIMEPanelAnchor` to customize the panel location.
 * 🤖: `Main.GetPlayerArmPosition` removed. Use `Player.GetArmPosition` instead.
 * ⚙️: `RecipeGroup.RegisterGroup` removed. See [RecipeGroup](#recipegroup) for more information.

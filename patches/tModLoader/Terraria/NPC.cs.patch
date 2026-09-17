@@ -1331,6 +1331,15 @@
  		if (aiStyle == 0) {
  			if (type >= 0 && NPCID.Sets.BoundTownNPCs[type])
  				homeless = true;
+@@ -36372,7 +_,7 @@
+ 		if (type == 696)
+ 			num = 5664;
+ 
+-		Item.NewItem(GetItemSource_Loot(), base.Center, num, 1, -1);
++		Item.NewItem(GetItemSource_Loot(), base.Center, num, 1, prefix: -1);
+ 	}
+ 
+ 	private int AI_127_Pal_SummonAttacker(int side) => 0;
 @@ -37237,7 +_,7 @@
  			timeLeft = 86400;
  		}
