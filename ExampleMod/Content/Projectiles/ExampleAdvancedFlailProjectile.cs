@@ -433,7 +433,7 @@ namespace ExampleMod.Content.Projectiles
 
 		// PreDraw is used to draw a chain and trail before the projectile is drawn normally.
 		public override bool PreDraw(Player player, ref Color lightColor) {
-			Vector2 playerArmPosition = Main.GetPlayerArmPosition(Projectile, player);
+			Vector2 playerArmPosition = player.GetArmPosition();
 			Rectangle? chainSourceRectangle = null;
 			// Drippler Crippler customizes sourceRectangle to cycle through sprite frames: sourceRectangle = asset.Frame(1, 6);
 			float chainHeightAdjustment = 0f; // Use this to adjust the chain overlap.

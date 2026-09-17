@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -141,10 +142,7 @@ public partial class Projectile : IEntityWithGlobals<GlobalProjectile>
 			int item = Main.rand.Next(list);
 			list.Remove(item);
 			int stack = Main.rand.Next(dict[item].minStack, dict[item].maxStack);
-			int num = Item.NewItem(new EntitySource_Loot(entity), entity.position, entity.Size, item, stack);
-			Main.item[num].noGrabDelay = 0;
-			if (Main.netMode == 1)
-				NetMessage.SendData(21, -1, -1, null, num, 1f);
+			Item.RequestNewItem(new EntitySource_Loot(entity), entity.Center, item, stack, 0, NewItemOwnership.ReserveForLocalPlayer);
 		}
 	}
 

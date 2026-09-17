@@ -1,9 +1,15 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace Terraria.ModLoader.Setup.Core.Utilities
 {
 	public static class PathUtils
 	{
-		public static string GetCrossPlatformFullPath(string path)
+		[return: NotNullIfNotNull(nameof(path))]
+		public static string? GetCrossPlatformFullPath(string? path)
 		{
+			if (string.IsNullOrEmpty(path))
+				return path;
+
 			if (path is "~" or "~/" or "~\\") {
 				return Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
 			}
@@ -11,6 +17,10 @@ namespace Terraria.ModLoader.Setup.Core.Utilities
 			string result = path;
 			if (path.StartsWith("~/") || path.StartsWith("~\\")) {
 				result = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), path[2..]);
+			}
+
+			if (WslPaths.TryToUnix(result, out string unixPath)) {
+				result = unixPath;
 			}
 
 			return Path.GetFullPath(result);

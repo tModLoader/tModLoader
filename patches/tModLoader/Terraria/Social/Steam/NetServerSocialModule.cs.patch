@@ -24,4 +24,4 @@
 +			Utils.LogAndConsoleInfoMessage("User " + SteamFriends.GetFriendPersonaName(steamIDRemote) + "connection rejected. Not a friend of lobby Owner.\nSet allow Friends of Friends to accept non-Friends of Host.");
  		}
  	}
- }
+ 

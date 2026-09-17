@@ -54,7 +54,31 @@ public class HookRewriter : BaseRewriter
 		if (baseSym == null || baseSym.IsObsolete())
 			baseSym = sym.ContainingType.BaseType.LookupMember<T>(sym.Name);
 
-		return baseSym != null;
+		if (baseSym == null)
+			return false;
+
+		// Check the signature for resolve errors. They can cause fake rewrites and infinite recursion. A missing type in a base symbol is a .csproj error
+		EnsureTypesResolved(baseSym);
+		return true;
+	}
+
+	private static void EnsureTypesResolved(ISymbol sym) {
+		switch (sym) {
+			case IMethodSymbol method:
+				EnsureResolved(method.ReturnType);
+				foreach (var param in method.Parameters)
+					EnsureResolved(param.Type);
+
+				break;
+			case IPropertySymbol prop:
+				EnsureResolved(prop.Type);
+				break;
+		}
+
+		void EnsureResolved(ITypeSymbol type) {
+			if (type.TypeKind == TypeKind.Error)
+				throw new Exception($"Unable to resolve '{type}' from '{type.ContainingAssembly?.Identity}' in the signature of '{sym}'. Check the TargetFramework and references of the project.");
+		}
 	}
 
 	public override SyntaxNode VisitPropertyDeclaration(PropertyDeclarationSyntax node) {

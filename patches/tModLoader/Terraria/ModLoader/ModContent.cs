@@ -29,6 +29,7 @@ using System.Threading.Tasks;
 using System.Runtime.CompilerServices;
 using Terraria.GameContent.Prefixes;
 using Terraria.Achievements;
+using Terraria.Testing;
 
 namespace Terraria.ModLoader;
 
@@ -570,6 +571,8 @@ public static class ModContent
 		PlayerDrawLayerLoader.Unload();
 		MapLayerLoader.Unload();
 		SystemLoader.Unload();
+		StateSnapshot.Gameplay.RemoveModdedComponents();
+		StateSnapshot.Input.RemoveModdedComponents();
 		ResizeArrays(true);
 		for (int k = 0; k < Recipe.maxRecipes; k++) {
 			Main.recipe[k] = new Recipe();

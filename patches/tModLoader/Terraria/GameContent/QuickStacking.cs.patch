@@ -5,10 +5,10 @@
  using Microsoft.Xna.Framework;
  using Terraria.ID;
 +using Terraria.ModLoader;
+ using Terraria.Testing;
  using Terraria.UI;
  
- namespace Terraria.GameContent;
-@@ -93,6 +_,7 @@
+@@ -99,6 +_,7 @@
  
  		public void Reset()
  		{

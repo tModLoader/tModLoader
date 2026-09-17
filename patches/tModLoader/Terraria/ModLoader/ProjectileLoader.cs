@@ -80,11 +80,7 @@ public static class ProjectileLoader
 			Lang._projectileNameCache[k] = LocalizedText.Empty;
 		}
 
-		Array.Resize(ref Projectile.perIDStaticNPCImmunity, ProjectileCount);
-
-		for (int i = 0; i < ProjectileCount; i++) {
-			Projectile.perIDStaticNPCImmunity[i] = new uint[200];
-		}
+		Projectile.perIDStaticNPCImmunity = new uint[ProjectileID.Count, InitData.MaxNPCs];
 	}
 
 	internal static void FinishSetup()

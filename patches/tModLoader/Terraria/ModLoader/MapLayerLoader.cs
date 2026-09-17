@@ -10,6 +10,7 @@ public static class MapLayerLoader
 	public static int MapLayerCount => MapLayers.Count;
 
 	internal static readonly List<IMapLayer> MapLayers = [
+		IMapLayer.Digtoise,
 		IMapLayer.BossBag,
 		IMapLayer.Spawn,
 		IMapLayer.TeamBasedSpawn,

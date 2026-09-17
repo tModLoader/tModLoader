@@ -37,11 +37,14 @@ internal static class MapLoader
 			return;
 		}
 		Array.Resize(ref MapHelper.tileLookup, TileLoader.TileCount);
+		Array.Resize(ref MapHelper.tileOptionCounts, TileLoader.TileCount);
 		Array.Resize(ref MapHelper.wallLookup, WallLoader.WallCount);
+		Array.Resize(ref MapHelper.wallOptionCounts, WallLoader.WallCount);
 		IList<Color> colors = new List<Color>();
 		IList<LocalizedText> names = new List<LocalizedText>();
 		foreach (ushort type in tileEntries.Keys) {
 			MapHelper.tileLookup[type] = (ushort)(MapHelper.modPosition + colors.Count);
+			MapHelper.tileOptionCounts[type] = tileEntries[type].Count;
 			foreach (MapEntry entry in tileEntries[type]) {
 				ushort mapType = (ushort)(MapHelper.modPosition + colors.Count);
 				entryToTile[mapType] = type;
@@ -58,6 +61,7 @@ internal static class MapLoader
 		}
 		foreach (ushort type in wallEntries.Keys) {
 			MapHelper.wallLookup[type] = (ushort)(MapHelper.modPosition + colors.Count);
+			MapHelper.wallOptionCounts[type] = wallEntries[type].Count;
 			foreach (MapEntry entry in wallEntries[type]) {
 				ushort mapType = (ushort)(MapHelper.modPosition + colors.Count);
 				entryToWall[mapType] = type;

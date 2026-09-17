@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/Graphics/Capture/CaptureManager.cs
 +++ src/TerrariaNetCore/Terraria/Graphics/Capture/CaptureManager.cs
-@@ -6,7 +_,12 @@
+@@ -7,7 +_,12 @@
  
  public class CaptureManager : IDisposable
  {
