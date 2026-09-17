@@ -1,5 +1,7 @@
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -32,6 +34,13 @@ namespace ExampleMod.Content.Tiles
 				WorldGen.KillTile(i, j);
 			}
 			return true;
+		}
+
+		public override void SetGlow(int i, int j, int type, int width, int offsetY, int height, short tileFrameX, short tileFrameY, ref Texture2D glowTexture, ref Rectangle glowSourceRect, ref Color glowColor) {
+			// This function can produce an effect similar to Illuminant Coating
+			glowTexture = TextureAssets.Tile[Type].Value;
+			glowSourceRect = new Rectangle(tileFrameX, tileFrameY, width, height);
+			glowColor = Main.DiscoColor * 0.5f;
 		}
 	}
 }
