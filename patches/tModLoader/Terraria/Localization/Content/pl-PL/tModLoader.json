@@ -1,4 +1,4 @@
-{
+﻿{
 	"tModLoader": {
 		// Main Menu
 		"PatreonSupport": "Wesprzyj nas: ",
@@ -223,7 +223,7 @@
 		"CommandLinePublishOnlyUsableWithServerSideMods": "Publikowanie z wiersza poleceń może być obecnie używane tylko do publikowania modów serwerowych.",
 		"WorkshopTagNotFound": "Podany tag '{0}' nie jest prawidłową opcją dla -publishtags.",
 		"TestServerModLoadingNotification": "To okno testuje, czy mod serwerowy ładuje się bez błędów\nNie zamykaj, aby umożliwić zakończenie testu.",
-		
+
 		// Mod Errors
 		"LoadError": "Wystąpił błąd podczas ładowania {0}",
 		"LoadErrorDisabled": "Mod(y) zostały automatycznie wyłączone.",
@@ -235,6 +235,7 @@
 		"LoadErrorLikelyOutdated": "Mod musi zostać zaktualizowany, aby pasował do obecnej wersji tModLoadera, lub może być niezgodny z wersją niektórych innych modów. Kliknij przycisk '{$tModLoader.OpenWebHelp}', aby dowiedzieć się więcej.",
 		"LoadErrorDotNet45Required": ".NET Framework 4.5 lub nowszy jest wymagany, aby używać modów. Proszę, pobierz najnowszy .NET Framework",
 		"LoadErrorDependencyMissing": "Brakujący mod: {0} wymagany przez {1}",
+		// "LoadErrorDependencySideIncompatible": "{0} (side: {1}) requires {2} (side: {3}), which does not load on {4}. Consider changing to a weak reference",
 		"LoadErrorErrorReadingModFile": "Błąd podczas ładowania pliku moda {0}",
 		"LoadErrorHashMismatchCorrupted": "Niepoprawny hash, dane moda zostały zmodyfikowane lub uszkodzone",
 		"LoadErrorHashMismatchCorruptedWithModName": "Nie można zweryfikować spójności {0}: niezgodność hash; obiekt danych został zmodyfikowany lub uszkodzony",
@@ -340,7 +341,7 @@
 		"MPServerModsCantDownloadReasonSigned": "ponieważ akceptujesz tylko mody podpisane przez przeglądarkę modów",
 		"MPServerModsCantDownloadReasonAutomaticDownloadDisabled": "ponieważ masz wyłączone automatyczne pobieranie modów",
 		"MPServerModsCantDownloadChangeSettingsHint": "Musisz zmienić swoje ustawienia lub nabyć mody od właściciela serwera.",
-  "MPServerModsDownloadFromServerWarning": "Mody mogą zawierać złośliwy kod. Pobieraj je tylko wtedy, gdy ufasz gospodarzowi serwera.",
+		"MPServerModsDownloadFromServerWarning": "Mody mogą zawierać złośliwy kod. Pobieraj je tylko wtedy, gdy ufasz gospodarzowi serwera.",
 		"MPServerModAvailableOnWorkshop": "Dostępne w Warsztacie",
 		"MPServerModAvailableOnWorkshopLowSubscriberCount": "Niska liczba subskrybentów. Czy ufasz gospodarzowi serwera?",
 		"MPServerModBannedOnWorkshop": "Ten mod został zablokowany w Warsztacie i prawdopodobnie jest niebezpieczny.",
@@ -369,7 +370,7 @@
 		"ReloadRequiredExplanationConfigChanged": "[c/{0}:Zmień konfigurację] tymczasowo",
 		"ReloadRequiredExplanationConfigChangedRestore": "[c/{0}:Przywróć konfigurację]",
 		"ReloadRequiredHostAndPlayModWasDisabledHint": "Możliwe, że wcześniej włączony mod wykazał błędy podczas uruchamiania na serwerze i został automatycznie wyłączony. Sprawdź server.log, aby zbadać ten problem. Kliknij tutaj, aby otworzyć FAQ dla tego problemu.",
-		
+
 		// UIAsyncList
 		"ALLoading": "Ładowanie...",
 		"ALNoEntries": "Brak pasujących wpisów",
@@ -685,7 +686,7 @@
 		"WatchLocalizationFileMessage": "Poniższe pliki lokalizacyjne zostały zmienione i zostaną ponownie załadowane: {0}",
 
 		// MessageBox
-		"SharedAccessorySlotConflictMessage": "Jeden lub więcej wspólnych akcesoriów koliduje z akcesoriami w tym zestawie ekwipunku, zostały one wyłączone.",
+		// "TerrariaGraphicsResourcesInitFailed": "The game could not create the needed graphics resources.\n\nYour computer may not be performant enough to run tModLoader.\n\nEnsure your graphics card is working/connected, and try restarting.",
 		"ContentFolderNotFound": "Folder z zawartością Terrarii nie został znaleziony. Jeśli zainstalowałeś tModLoader przez Steam, upewnij się, że Terraria jest zainstalowana. Jeśli nie, upewnij się, że zainstalowałeś tModLoader w folderze wewnątrz katalogu instalacyjnego Terraria lub w folderze obok katalogu instalacyjnego Terraria.",
 		"GraphicsEngineFailure": "Błąd silnika graficznego",
 		"GraphicsEngineReportUnknown": "Nieznany",
@@ -895,7 +896,7 @@
 		"WorldDontStarve": "W świecie Don't Starve",
 		"WorldNoTraps": "W świecie No Traps",
 		"WorldZenith": "W świecie Zenith",
-  "WorldSkyblock": "W świecie Skyblock",
+		"WorldSkyblock": "W świecie Skyblock",
 		"SeedVampire": "W świecie Wampiryzmu",
 		"SeedInfected": "W świecie Oczyść ten świat",
 		"SeedTeamBasedSpawns": "W świecie Royale z serem",
@@ -1008,7 +1009,7 @@
 		"PlayerCarriesItem5": "Gdy gracz posiada w ekwipunku {0}, {1}, {2}, {3} lub {4}",
 		"NpcIsPresent": "Gdy {0} jest obecny",
 		"IsNpcShimmered": "Gdy sprzedawca jest wariantem migoczącym",
-  "NotIsNpcShimmered": "Gdy sprzedawca nie jest wariantem migoczącym",
+		"NotIsNpcShimmered": "Gdy sprzedawca nie jest wariantem migoczącym",
 		"IsNpcHomeless": "Gdy sprzedawca nie posiada domu",
 		"NotIsNpcHomeless": "Gdy sprzedawca posiada dom",
 		"BiomeSpreadingItems": "Nie w świecie Remix, lub w świecie Celebration Mk 10 i nie w świecie For the Worthy",
@@ -1016,7 +1017,6 @@
 		"JungleORCelebrationMk10ANDNotTheBeesANDNotRemix": "W biomie dżungli, lub w świecie Celebration Mk 10 i Not The Bees oraz nie w świecie Remix",
 		"DownedKingSlimeOrEoC": "Po pokonaniu Króla Szlamu lub Oka Cthulhu",
 		"NpcIsPresentOrDownedPlantera": "Gdy {0} jest obecny lub po pokonaniu Plantery",
-
 
 		"AtleastXHealth": "Kiedy gracz ma co najmniej {0} maksymalnego życia",
 		"AtleastXMana": "Kiedy gracz ma co najmniej {0} maksymalnej many",
