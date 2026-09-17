@@ -98,15 +98,19 @@ public partial class NPCID
 		static Sets()
 		{
 			ImmuneToAllBuffs = Factory.CreateBoolSet();
-			ImmuneToRegularBuffs  = Factory.CreateBoolSet();
+			ImmuneToRegularBuffs = Factory.CreateBoolSet();
 			SpecificDebuffImmunity = Factory.CreateCustomSet<bool?[]>(null);
-			for (int type = 0; type < NPCLoader.NPCCount; type++) {
+			for (int type = 0; type < NPCLoader.NPCCount; type++)
+			{
 				SpecificDebuffImmunity[type] = new bool?[BuffLoader.BuffCount];
-				if (DebuffImmunitySets.TryGetValue(type, out var data) && data != null) {
+				if (DebuffImmunitySets.TryGetValue(type, out var data) && data != null)
+				{
 					ImmuneToAllBuffs[type] = data.ImmuneToAllBuffsThatAreNotWhips && data.ImmuneToWhips;
-					ImmuneToRegularBuffs[type] = data.ImmuneToAllBuffsThatAreNotWhips;				
-					if (data.SpecificallyImmuneTo != null) {
-						foreach (var buff in data.SpecificallyImmuneTo) {
+					ImmuneToRegularBuffs[type] = data.ImmuneToAllBuffsThatAreNotWhips;
+					if (data.SpecificallyImmuneTo != null)
+					{
+						foreach (var buff in data.SpecificallyImmuneTo)
+						{
 							SpecificDebuffImmunity[type][buff] = true;
 						}
 					}
@@ -114,7 +118,7 @@ public partial class NPCID
 				SpecificDebuffImmunity[type][BuffID.Shimmer] = ShimmerImmunity[type];
 			}
 		}
-		
+
 		// All BelongsToInvasion set IDs taken from NPC.GetNPCInvasionGroup
 		/// <summary>
 		/// If <see langword="true"/> for a given NPC type (<see cref="NPC.type"/>), then that NPC belongs to the Goblin Army invasion.
@@ -166,6 +170,10 @@ public partial class NPCID
 		/// </remarks>
 		public static int[] InvasionSlotCount = Factory.CreateIntSet(1, 216, 5, 395, 10, 491, 10, 471, 10, 472, 0, 387, 0);
 
+		/// <summary>
+		/// When spawning a new npc, if the player's luck roll returns that the NPC should be golden, spawns the ID corresponding to its type instead.
+		/// </summary>
+		public static int[] GoldCritterRedirect = Factory.CreateIntSet(-1);
 		// IDs taken from Player.GetPettingInfo
 		/// <summary>
 		/// While petting, the number of pixels away the player stands from the NPC. Defaults to 36 pixels.
