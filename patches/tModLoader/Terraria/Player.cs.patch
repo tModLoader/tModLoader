@@ -7587,7 +7587,7 @@
  	}
  
 +	/// <summary>
-+	/// Returns the position of the player's hand, accounting for their current body frame, facing direction, gravity, mount, and rotation.
++	/// Returns the world position of the player's main hand, accounting for their current body frame, facing direction, gravity, mount, and rotation.
 +	/// <br/> Used as the origin point for projectiles that are connected to the player's hand, such as whips, flails, kites, etc.
 +	/// </summary>
  	public Vector2 GetArmPosition()
