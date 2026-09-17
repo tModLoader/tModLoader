@@ -103,6 +103,26 @@
  	public static UserInterface InGameUI = new UserInterface();
  	private static Action _pendingCharacterSelect;
  	public static bool drawBackGore;
+@@ -353,6 +_,9 @@
+ 		new Vector2(16f, 16f),
+ 		new Vector2(16f, 16f)
+ 	};
++	/// <summary>
++	/// Contains offsets for the player's main hand, indexed by the body animation frame (<c>player.bodyFrame.Y / 56</c>). Usually used indirectly through <see cref="Player.HandPosition"/> or <see cref="Player.GetArmPosition"/>.
++	/// </summary>
+ 	public static Vector2[] OffsetsPlayerOnhand = new Vector2[20] {
+ 		new Vector2(6f, 19f),
+ 		new Vector2(5f, 10f),
+@@ -375,6 +_,9 @@
+ 		new Vector2(7f, 17f),
+ 		new Vector2(7f, 17f)
+ 	};
++	/// <summary>
++	/// Contains offsets for the player's headgear, indexed by the body animation frame (<c>player.bodyFrame.Y / 56</c>). This is to account for the bobbing of the head as the player walks.
++	/// </summary>
+ 	public static Vector2[] OffsetsPlayerHeadgear = new Vector2[20] {
+ 		new Vector2(0f, 2f),
+ 		new Vector2(0f, 2f),
 @@ -418,6 +_,7 @@
  	public static bool drawBetterDebug;
  	public static bool betterDebugRelease;

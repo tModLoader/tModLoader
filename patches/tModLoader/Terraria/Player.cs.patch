@@ -533,7 +533,7 @@
  	public sbyte handon = -1;
  	public sbyte handoff = -1;
  	public sbyte back = -1;
-@@ -1106,6 +_,28 @@
+@@ -1106,10 +_,41 @@
  	public sbyte balloonFront = -1;
  	public sbyte beard = -1;
  	public sbyte voiceOverride;
@@ -561,7 +561,20 @@
 +	/// </summary>
  	public bool[] hideVisibleAccessory = new bool[10];
  	public BitsByte hideMisc = (byte)0;
++	/// <summary>
++	/// Unused, <see cref="bodyFrame"/> determines which animation frame the head is in.
++	/// </summary>
  	public Rectangle headFrame;
++	/// <summary>
++	/// Contains the body animation frame for the player. Used to control which frame of body animation will be used, which includes the body, head, and arms. Adjusted during <see cref="PlayerFrame"/>. Width will always be 40 and Height will always be 56. <c>player.bodyFrame.Y / 56</c> can be used to get the body animation frame number.
++	/// </summary>
+ 	public Rectangle bodyFrame;
++	/// <summary>
++	/// Contains the leg animation frame for the player. Adjusted during <see cref="PlayerFrame"/>.
++	/// </summary>
+ 	public Rectangle legFrame;
+ 	public Rectangle hairFrame;
+ 	public PlayerInputSyncCache LocalInputCache;
 @@ -1118,6 +_,7 @@
  	public bool controlUp;
  	public bool controlDown;
@@ -804,7 +817,7 @@
 +
 +	/// <summary>
 +	/// This player's <see cref="Mount"/>.
-+	/// <br/> <strong>Do not overwrite this value.</strong> Instead, call <see cref="Mount.SetMount(int, Player, bool)"/> or <see cref="Mount.Dismount(Player)"/> on it.
++	/// <br/> <strong>Do not overwrite this value.</strong> Instead, call <see cref="Mount.SetMount(int, Player)"/> or <see cref="Mount.Dismount(Player, bool)"/> on it.
 +	/// <para/> Check <see cref="Mount.Active"/> (via <c>Player.mount.Active</c>) to determine if the player is currently using a mount.
 +	/// </summary>
  	public Mount mount;
