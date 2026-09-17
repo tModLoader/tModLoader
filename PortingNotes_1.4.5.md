@@ -214,9 +214,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 
 ## 1.4.5.8
 - Document ProjectileID.DespawnItemIcon, DespawnItemGivesItemBack, DisplayDollDrawUseStyle
-- ProjectileID.FixedSelfDamageForPlayers, SkipDamage_EVP added
-- NPC.dontTakeDamageStillShowLife
-- mount.MovementStatsAreAdditive
 
 # Changes that need to be communicated to modders
 

@@ -95,7 +95,7 @@
  		public static bool?[] WindPhysicsImmunity = Factory.CreateCustomSet<bool?>(null, new object[140] {
  			(short)20,
  			true,
-@@ -169,6 +_,11 @@
+@@ -169,8 +_,17 @@
  			(short)1120,
  			true
  		});
@@ -106,9 +106,21 @@
 +		/// </summary>
  		public static bool[] RocketsSkipDamageForPlayers = Factory.CreateBoolSet(338, 339, 340, 341, 803, 804, 862, 863, 805, 806, 807, 808, 809, 810, 930, 1088);
  		public const int FixedDamageForRockets = 60;
++		/// <summary>
++		/// If set for a given projectile type (<see cref="Projectile.type"/>), then that projectile will deal the specified amount of damage to players regardless of the projectile's <see cref="Projectile.damage"/> value.
++		/// <para/> This is used for rockets and other explosives, most of which deal 60 damage. <see cref="ProjectileID.LightningStrikeShot"/> sets this to 120 damage.
++		/// </summary>
  		public static int?[] FixedSelfDamageForPlayers = Factory.CreateCustomSet<int?>(null, new object[78] {
-@@ -253,15 +_,69 @@
+ 			(short)134,
+ 			60,
+@@ -251,17 +_,75 @@
+ 			(short)783,
+ 			60
  		});
++		/// <summary>
++		/// Projectiles in this set skip damage calculations in <see cref="Projectile.Damage_EVP(Rectangle)"/>
++		/// <para/> This is used by <see cref="Explosives"/>, <see cref="Landmine"/>, and <see cref="TNTBarrel"/>.
++		/// </summary>
  		public static bool[] SkipDamage_EVP = Factory.CreateBoolSet(108, 164, 1002);
  		public static bool[] IsABombWithFuse = Factory.CreateBoolSet(28, 37, 516, 519, 910, 911, 1086, 1087, 906, 905, 904, 903, 773, 1077, 75, 102, 681, 470, 29, 637);
 +

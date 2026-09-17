@@ -535,7 +535,7 @@
  	public static bool downedDeerclops = false;
  	public static int ShieldStrengthTowerSolar = 0;
  	public static int ShieldStrengthTowerVortex = 0;
-@@ -4663,61 +_,229 @@
+@@ -4663,61 +_,233 @@
  	public static bool TowerActiveNebula = false;
  	public static bool TowerActiveStardust = false;
  	public static bool LunarApocalypseIsUp = false;
@@ -758,6 +758,10 @@
 +	/// <para/> Defaults to false.
 +	/// </summary>
  	public bool dontTakeDamage;
++	/// <summary>
++	/// If true, the health bar will still be drawn despite <see cref="dontTakeDamage"/> being true.
++	/// <para/> Used by <see cref="NPCID.SolarCrawltipedeHead"/>
++	/// </summary>
  	public bool dontTakeDamageStillShowLife;
  	private int catchableNPCTempImmunityCounter;
 +	/// <summary>
