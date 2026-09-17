@@ -5,7 +5,7 @@
  using System.Threading;
  using ReLogic.OS;
 +using Steamworks;
- using Terraria.Localization;
+ using Terraria.Testing;
 +using Terraria.ModLoader;
  
  namespace Terraria.Net.Sockets;
@@ -19,8 +19,8 @@
 +
  		_remoteAddress = null;
  		_connection.Close();
- 	}
-@@ -83,7 +_,17 @@
+ 		if (_debugStream != null)
+@@ -93,7 +_,17 @@
  			tuple = (Tuple<SocketSendCallback, object>)obj[0];
  		}
  
@@ -38,7 +38,7 @@
  			GetStream().EndWrite(result);
  			tuple.Item1(tuple.Item2);
  		}
-@@ -94,6 +_,18 @@
+@@ -104,6 +_,18 @@
  
  	void ISocket.AsyncSend(byte[] data, int offset, int size, SocketSendCallback callback, object state)
  	{
@@ -57,14 +57,3 @@
  		if (!Platform.IsWindows) {
  			byte[] array = LegacyNetBufferPool.RequestBuffer(data, offset, size);
  			GetStream().BeginWrite(array, 0, size, SendCallback, new object[2] {
-@@ -156,7 +_,10 @@
- 		while (_isListening && !Netplay.Disconnect) {
- 			try {
- 				ISocket socket = new TcpSocket(_listener.AcceptTcpClient());
-+				// Moved to Netplay.OnConnectionAccepted to report steam connections as well
-+				/*
- 				Console.WriteLine(Language.GetTextValue("Net.ClientConnecting", socket.GetRemoteAddress()));
-+				*/
- 				_listenerCallback(socket);
- 			}
- 			catch (Exception) {

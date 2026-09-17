@@ -1,4 +1,4 @@
-{
+﻿{
 	"tModLoader": {
 		// Main Menu
 		"PatreonSupport": "Zeig uns deine Unterstüzung: ",
@@ -235,6 +235,7 @@
 		// "LoadErrorLikelyOutdated": "The mod will either need to be updated to match the current tModLoader version, or may be incompatible with the version of some of your other mods. Click the '{$tModLoader.OpenWebHelp}' button to learn more.",
 		"LoadErrorDotNet45Required": ".NET Framework 4.5 wird benötigt um Mods zu benutzen. Bitte lade die neueste Version von.NET Framework herunter",
 		"LoadErrorDependencyMissing": "Fehlender Mod: {0} Wird benötigt von: {1}",
+		// "LoadErrorDependencySideIncompatible": "{0} (side: {1}) requires {2} (side: {3}), which does not load on {4}. Consider changing to a weak reference",
 		"LoadErrorErrorReadingModFile": "Fehler beim Lesen der Mod-Datei {0}",
 		"LoadErrorHashMismatchCorrupted": "Hash unpassend, data blob wurde verändert.",
 		// "LoadErrorHashMismatchCorruptedWithModName": "Unable to verify integrity of {0}: hash mismatch; data blob has been modified or corrupted",

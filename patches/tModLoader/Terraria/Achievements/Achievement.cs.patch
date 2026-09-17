@@ -8,9 +8,9 @@
  using Terraria.Localization;
 +using Terraria.ModLoader;
  using Terraria.Social;
+ using Terraria.Testing;
  
- namespace Terraria.Achievements;
-@@ -13,14 +_,18 @@
+@@ -14,14 +_,18 @@
  
  	private static int _totalAchievements;
  	public readonly string Name;
@@ -33,7 +33,7 @@
  
  	public AchievementCategory Category => _category;
  
-@@ -32,8 +_,9 @@
+@@ -33,8 +_,9 @@
  
  	public IAchievementTracker GetTracker() => _tracker;
  
@@ -44,7 +44,7 @@
  		Name = name;
  		FriendlyName = Language.GetText("Achievements." + name + "_Name");
  		Description = Language.GetText("Achievements." + name + "_Description");
-@@ -52,6 +_,7 @@
+@@ -53,6 +_,7 @@
  
  	public void Load(Dictionary<string, JObject> conditions)
  	{
@@ -52,17 +52,17 @@
  		foreach (KeyValuePair<string, JObject> condition in conditions) {
  			if (_conditions.TryGetValue(condition.Key, out var value)) {
  				value.Load(condition.Value);
-@@ -66,6 +_,9 @@
+@@ -67,6 +_,9 @@
  
  	public void AddCondition(AchievementCondition condition)
  	{
 +		if (_conditions.ContainsKey(condition.Name))
 +			throw new Exception($"Cannot add two conditions with the same name: {condition.Name}");
 +
+ 		Invariant.Assert(!_conditions.ContainsKey(condition.Name), "Duplicate condition");
  		_conditions[condition.Name] = condition;
  		condition.OnComplete += OnConditionComplete;
- 	}
-@@ -82,7 +_,7 @@
+@@ -85,7 +_,7 @@
  		}
  	}
  

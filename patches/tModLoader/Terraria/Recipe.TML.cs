@@ -460,6 +460,9 @@ public partial class Recipe
 		if (requiredTile == TileID.Bottles)
 			AddConsumeIngredientCallback(IngredientQuantityRules.Alchemy);
 
+		if (requiredTile >= 0)
+			TileUsedInRecipes[requiredTile] = true;
+
 		if (numRecipes >= maxRecipes) {
 			maxRecipes += 500;
 

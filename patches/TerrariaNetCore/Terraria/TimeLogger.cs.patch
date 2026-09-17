@@ -5,10 +5,10 @@
  using Terraria.GameInput;
  using Terraria.Testing;
 +using Terraria.Utilities;
+ using Terraria.UI.Chat;
  
  namespace Terraria;
- 
-@@ -142,7 +_,11 @@
+@@ -143,7 +_,11 @@
  
  		public int ElapsedTicks => (int)(Stopwatch.GetTimestamp() - ticks);
  
@@ -20,7 +20,7 @@
  	}
  
  	private class FormatPool
-@@ -699,7 +_,12 @@
+@@ -736,7 +_,12 @@
  
  	private static string FormatTicks(int ticks)
  	{

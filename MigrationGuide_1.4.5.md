@@ -202,6 +202,13 @@ public class OpenShopOnlyAvailableDuringDay(string shopName, string customTextKe
 }
 ```
 
+### Recipe Changes
+
+* Crafting stations are now interactable as well as smart interactable. When right clicked, the crafting window shows recipes that use the crafting station. As they are now interactable, they should have a highlight texture as well.
+  * 💀: Add `TileID.Sets.HasOutlines[Type] = true;` to each crafting station `ModTile`. 
+  * 💀: Also add a `TileName_Highlight.png` texture as well.
+  * 💀: Make sure each tile also has a map entry (`AddMapEntry`) assigned. This is what is shown on the crafting window header.
+
 ## New Vanilla Features
 
 The [Terraria 1.4.5 changelog](https://terraria.wiki.gg/wiki/1.4.5.0) lists many vanilla changes made in the 1.4.5 update. A select portion of the changes relevant to modding will be detailed here as well.
@@ -423,6 +430,10 @@ Japanese ("ja-JP"), Korean ("ko-KR"), and Traditional Chinese ("zh-Hant") have b
 	* `Projectile.drawLayer = ProjectileDrawLayerID.HeldProj` will likely need to be added to `SetDefaults` for the projectile to draw on the correct layer.
 * `Condition.DownedEarlygameBoss` now includes King Slime and Deerclops
 * Workarounds to get the correct mouse position for projectiles that draw during other draw layers are no longer required and should be removed for correct behavior. See the ExampleInteractableProjectile.cs changes.
+* Projectile identity approach has changed
+  * `Projectile.identity`, `Projectile.GetByUUID`, `Projectile.projUUID`, `ProjectileID.Sets.NeedsUUID` removed.
+  * Use `Projectile.key` instead for a consistent reference to a projectile.
+* `Item.RequestNewItem` can be used to spawn an item on a multiplayer client. Replace `Item.NewItem` followed by `NetMessage.SendData(MessageID.SyncItem, ...)` patterns with `Item.RequestNewItem`.
 
 ### Example Mod
 
@@ -464,7 +475,7 @@ Several Example Mod examples have been updated to adapt to 1.4.5 changes and to 
 
 * 💀: `Item.NewItem` methods no longer have the `bool reverseLookup` parameter. Remove it.
 * 🤖: `Main.DrawWindowsIMEPanel` has been split into `Main.DrawIMEPanel` and `Main.SetIMEPanelAnchor`. `DrawIMEPanel` is automatically called each game update, so just replace  `DrawWindowsIMEPanel` calls with `SetIMEPanelAnchor` to customize the panel location.
-* 💀: `Main.GetPlayerArmPosition` now has a `Player` parameter.
+* 🤖: `Main.GetPlayerArmPosition` removed. Use `Player.GetArmPosition` instead.
 * ⚙️: `RecipeGroup.RegisterGroup` removed. See [RecipeGroup](#recipegroup) for more information.
 * ⚙️: `Utils.PlotTileArea` -> `Utils.FloodFillTile`. No longer returns `bool` and parameters are now `Point point, float maxDist, TileActionAttempt plot` instead of `int x, int y, TileActionAttempt plot`.
 * 🤖: `WorldGen.CheckTight` -> `WorldGen.CheckStalactite`
@@ -519,7 +530,7 @@ All classes are in the `Terraria` or `Terraria.ID` namespaces unless otherwise i
 * 🤖: `WallID.Sets.Crimson` -> `WallID.Sets.SpreadsCrimson`
 * 🤖: `WallID.Sets.Hallow` -> `WallID.Sets.SpreadsHallow`
 * 🤖: `Main.DisableIntenseVisualEffects` -> `Main.FlashyEffectsWorld`. The new field has the opposite meaning of the old field.
-* 💀: `Main.hasFocus` -> `Terraria.FocusHelper.AllowGameplayInputs`, most likely. Other options include `FocusHelper.AllowUIInputs`, `FocusHelper.UpdateVisualEffects`, and many more. Choose the property that best matches the intention of the code.
+* 💀: `Main.hasFocus` -> `Terraria.FocusHelper.IsSelectedApplication`, most likely. Other options include `FocusHelper.AllowInputProcessing`, `FocusHelper.GameplayActive`, `FocusHelper.UpdateVisualEffects`, and many more. Choose the property that best matches the intention of the code.
 * 🤖: `Main.gameInactive` -> `Terraria.FocusHelper.GameplayActive`. The new field has the opposite meaning of the old field.
 * 🤖: `NPC.killCount` -> `Terraria.GameContent.BannerSystem.killCount`
 * 🤖: `WorldGen.gen` -> `WorldGen.isGeneratingOrLoadingWorld`

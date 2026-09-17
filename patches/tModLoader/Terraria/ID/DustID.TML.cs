@@ -200,7 +200,6 @@ public partial class DustID
 	public const short TheDestroyer = 182;
 	public const short VampireHeal = 183;
 	public const short ScourgeOfTheCorruptor = 184;
-	public const short FrostHydra = 185;
 	public const short RedsWingsRun = 186;
 	public const short Flare_Blue = 187;
 	public const short FartInAJar = 188;

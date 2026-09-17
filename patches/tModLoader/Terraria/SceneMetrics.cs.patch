@@ -203,7 +203,7 @@
  		if (_tileCounts[27] > 0)
  			HasSunflower = true;
  
-@@ -633,6 +_,8 @@
+@@ -623,6 +_,8 @@
  
  	public int GetTileCount(ushort tileId) => _tileCounts[tileId];
  
@@ -212,7 +212,7 @@
  	public void Reset()
  	{
  		LastScanTime = uint.MaxValue;
-@@ -717,6 +_,12 @@
+@@ -707,6 +_,12 @@
  		_bestOreDistSq = int.MaxValue;
  		TownNPCCount = 0;
  		PerspectivePlayer = _dummyPlayer;

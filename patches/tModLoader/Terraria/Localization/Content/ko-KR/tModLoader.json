@@ -1,4 +1,4 @@
-{
+﻿{
 	"tModLoader": {
 		// Main Menu
 		"PatreonSupport": "지원해 주세요: ",
@@ -235,6 +235,7 @@
 		"LoadErrorLikelyOutdated": "모드가 현재 tModLoader 버전에 맞게 업데이트해야 할 수도 있고, 다른 모드의 버전와 호환되지 않을 수 있습니다. '{$tModLoader.OpenWebHelp}' 버튼을 눌러 더 알아보세요.",
 		"LoadErrorDotNet45Required": "모드를 사용하려면 .NET Framework 4.5 이상이 필요합니다. 최신 .NET Framework를 다운로드해 주세요",
 		"LoadErrorDependencyMissing": "누락된 모드: {1} 모드가 {0} 필요",
+		// "LoadErrorDependencySideIncompatible": "{0} (side: {1}) requires {2} (side: {3}), which does not load on {4}. Consider changing to a weak reference",
 		"LoadErrorErrorReadingModFile": "모드 파일 {0} 읽는 중 오류",
 		"LoadErrorHashMismatchCorrupted": "해시 불일치, 데이터 블롭이 수정되었거나 손상되었습니다",
 		"LoadErrorHashMismatchCorruptedWithModName": "{0}의 무결성 확인 불가: 해시 불일치, 데이터 블롭이 수정되었거나 손상되었습니다",

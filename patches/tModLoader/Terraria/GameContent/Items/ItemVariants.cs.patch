@@ -14,7 +14,7 @@
  public static class ItemVariants
  {
  	public class VariantEntry
-@@ -28,15 +_,42 @@
+@@ -28,16 +_,43 @@
  	}
  
  	private static List<VariantEntry>[] _variants;
@@ -51,6 +51,8 @@
 +	private static ItemVariantCondition GetGoodWorld;
 -	public static ItemVariantCondition MechdusaWorld;
 +	private static ItemVariantCondition MechdusaWorld;
+-	public static ItemVariantCondition SkyblockWorld;
++	private static ItemVariantCondition SkyblockWorld;
  
 +	/// <summary>
 +	/// Gets all of the <see cref="ItemVariant"/>s associated with <paramref name="itemId"/>.
@@ -60,7 +62,7 @@
  	public static IEnumerable<VariantEntry> GetVariants(int itemId)
  	{
  		if (!_variants.IndexInRange(itemId))
-@@ -48,6 +_,12 @@
+@@ -49,6 +_,12 @@
  
  	private static VariantEntry GetEntry(int itemId, ItemVariant variant) => GetVariants(itemId).SingleOrDefault((VariantEntry v) => v.Variant == variant);
  
@@ -73,7 +75,7 @@
  	public static void AddVariant(int itemId, ItemVariant variant, params ItemVariantCondition[] conditions)
  	{
  		VariantEntry variantEntry = GetEntry(itemId, variant);
-@@ -62,8 +_,20 @@
+@@ -63,8 +_,20 @@
  		variantEntry.AddConditions(conditions);
  	}
  
@@ -94,7 +96,7 @@
  	public static ItemVariant SelectVariant(int itemId)
  	{
  		if (!_variants.IndexInRange(itemId))
-@@ -84,14 +_,21 @@
+@@ -85,15 +_,23 @@
  	static ItemVariants()
  	{
  		_variants = new List<VariantEntry>[ItemID.Count];
@@ -110,16 +112,15 @@
 +		DisabledBossSummonVariant = new ItemVariant(Language.GetText("ItemVariant.DisabledBossSummon"));
 +
 +		/*
--		RemixWorld = new ItemVariantCondition(NetworkText.FromKey("ItemVariantCondition.RemixWorld"), () => Main.remixWorld);
-+		RemixWorld = new ItemVariantCondition(Language.GetText("ItemVariantCondition.RemixWorld"), () => Main.remixWorld);
--		GetGoodWorld = new ItemVariantCondition(NetworkText.FromKey("ItemVariantCondition.GetGoodWorld"), () => Main.getGoodWorld);
-+		GetGoodWorld = new ItemVariantCondition(Language.GetText("ItemVariantCondition.GetGoodWorld"), () => Main.getGoodWorld);
--		MechdusaWorld = new ItemVariantCondition(NetworkText.FromKey("ItemVariantCondition.MechdusaWorld"), () => SpecialSeedFeatures.Mechdusa);
-+		MechdusaWorld = new ItemVariantCondition(Language.GetText("ItemVariantCondition.MechdusaWorld"), () => SpecialSeedFeatures.Mechdusa);
+ 		RemixWorld = new ItemVariantCondition(NetworkText.FromKey("ItemVariantCondition.RemixWorld"), () => Main.remixWorld);
+ 		GetGoodWorld = new ItemVariantCondition(NetworkText.FromKey("ItemVariantCondition.GetGoodWorld"), () => Main.getGoodWorld);
+ 		MechdusaWorld = new ItemVariantCondition(NetworkText.FromKey("ItemVariantCondition.MechdusaWorld"), () => SpecialSeedFeatures.Mechdusa);
+ 		SkyblockWorld = new ItemVariantCondition(NetworkText.FromKey("ItemVariantCondition.SkyblockWorld"), () => Main.skyblockWorld);
 +		*/
 +		RemixWorld = Condition.RemixWorld;
 +		GetGoodWorld = Condition.ForTheWorthyWorld;
 +		MechdusaWorld = Condition.ZenithWorld;
++		SkyblockWorld = Condition.SkyblockWorld;
 +
  		AddVariant(112, StrongerVariant, RemixWorld);
  		AddVariant(157, StrongerVariant, RemixWorld);
