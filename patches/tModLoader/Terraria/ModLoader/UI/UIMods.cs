@@ -381,6 +381,8 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 		foreach (UIModItem modItem in items) {
 			if (modItem.tMLUpdateRequired != null)
 				continue;
+			if (modItem.trustRequired != null)
+				continue;
 			modItem.Enable();
 		}
 	}
