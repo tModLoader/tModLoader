@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Terraria;
 using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -47,6 +48,13 @@ namespace ExampleMod.Content
 		public override bool PreDrawLogo(SpriteBatch spriteBatch, ref Vector2 logoDrawCenter, ref float logoRotation, ref float logoScale, ref Color drawColor) {
 			drawColor = Main.DiscoColor; // Changes the draw color of the logo
 			return true;
+		}
+
+		// ModifyDrawSky lets you modify some parameters in the menu such as whether or not the sun and moon should draw.
+		public override void ModifyDrawSky(ref SkyDrawParams drawParams) {
+			drawParams.DrawStars = false; // Prevents the stars in the background from drawing.
+			
+			drawParams.CloudAlpha = 0.2f; // Set the cloud opacity to 20%
 		}
 	}
 }
