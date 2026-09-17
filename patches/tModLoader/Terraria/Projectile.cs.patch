@@ -2057,7 +2057,7 @@
  	{
  		Vector2 spinningpoint = new Vector2(7f, 0f);
  		Vector2 vector = new Vector2(1f, 0.7f);
-@@ -60339,14 +_,20 @@
+@@ -60339,14 +_,19 @@
  		int num = timeLeft;
  		timeLeft = 0;
  		bool flag = true;
@@ -2072,7 +2072,6 @@
 +			active = false;
 +			return;
 +		}
-+
 +
  		bool flag2 = true;
 -		if (aiStyle == 16) {
