@@ -10,6 +10,7 @@ namespace Terraria.ModLoader;
 /// <summary>
 /// A ModAccessorySlot instance represents a net new accessory slot instance. You can store fields in the ModAccessorySlot class.
 /// </summary>
+[CloneByReference]
 public abstract class ModAccessorySlot : ModType
 {
 	public int Type { get; internal set; }

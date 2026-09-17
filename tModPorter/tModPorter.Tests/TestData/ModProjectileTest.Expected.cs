@@ -25,6 +25,7 @@ public class ModProjectileTest : ModProjectile
 #if COMPILE_ERROR
 		ProjectileID.Sets.HeldProjDoesNotUsePlayerGfxOffY/* tModPorter Note: Removed. AI() should use master.RotatedRelativePoint(master.MountedCenter + ...) to position held projectiles */[Type] = true;
 		ProjectileID.Sets.DontAttachHideToAlpha/* tModPorter Note: Removed. Now true by default. See Projectile.usesOwnerLight and Projectile.drawLayer for more details. */[Type] = true;
+		ProjectileID.Sets.NeedsUUID/* tModPorter Note: Removed. Use Projectile.key instead. */[Type] = true;
 #endif
 	}
 

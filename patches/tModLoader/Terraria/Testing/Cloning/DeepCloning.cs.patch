@@ -1,0 +1,37 @@
+--- src/TerrariaNetCore/Terraria/Testing/Cloning/DeepCloning.cs
++++ src/tModLoader/Terraria/Testing/Cloning/DeepCloning.cs
+@@ -2,6 +_,8 @@
+ using System.Collections.Generic;
+ using System.Linq;
+ using System.Reflection;
++using Terraria.ModLoader;
++using Terraria.ModLoader.Core;
+ 
+ namespace Terraria.Testing.Cloning;
+ 
+@@ -26,6 +_,7 @@
+ 		AddPrivateFieldsUniqueType(typeof(List<>));
+ 		AddPrivateFieldsUniqueType(typeof(Dictionary<,>));
+ 		AddPrivateFieldsUniqueType(typeof(HashSet<>));
++		TypeCaching.OnClear += ClearCollectibleTypes;
+ 	}
+ 
+ 	public static T Clone<T>(T source, DeepCloneContext ctx = null) where T : class => DeepClassCloning<T>.CloneRef(source, ctx ?? new DeepCloneContext());
+@@ -124,6 +_,17 @@
+ 				value = (_structInfo[t] = new StructTypeInfo(t));
+ 
+ 			return value;
++		}
++	}
++
++	private static void ClearCollectibleTypes()
++	{
++		lock (_lock) {
++			foreach (var type in _classConfig.Keys.Where(t => t.IsCollectible).ToArray())
++				_classConfig.Remove(type);
++
++			foreach (var type in _structInfo.Keys.Where(t => t.IsCollectible).ToArray())
++				_structInfo.Remove(type);
+ 		}
+ 	}
+ 

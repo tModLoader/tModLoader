@@ -235,6 +235,7 @@
 		"LoadErrorLikelyOutdated": "該模組可能需要更新以適應目前的 tModLoader 版本，否則可能會與您安裝的其他模組不相容。\n點擊下方按鈕「{$tModLoader.OpenWebHelp}」以獲取更多資訊。",
 		"LoadErrorDotNet45Required": "需要 [.NET Framework 4.5] 或更高版本才能使用模組。請下載最新版本的 [.NET Framework]",
 		"LoadErrorDependencyMissing": "缺少模組：{0} 需求來源：{1}",
+		// "LoadErrorDependencySideIncompatible": "{0} (side: {1}) requires {2} (side: {3}), which does not load on {4}. Consider changing to a weak reference",
 		"LoadErrorErrorReadingModFile": "讀取模組檔案時發生錯誤 {0}",
 		"LoadErrorHashMismatchCorrupted": "校驗碼不匹配，模組檔案已損壞",
 		"LoadErrorHashMismatchCorruptedWithModName": "無法驗證{0}的完整性：校驗碼不匹配；資料區塊已被修改或損壞",

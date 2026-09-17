@@ -284,6 +284,10 @@ public static partial class Config
 		RenameStaticField("Terraria.ID.MessageID", from: "PaintWall", to: "SyncWallPaintOrCoating");
 		RenameStaticField("Terraria.ID.MessageID", from: "NPCKillCountDeathTally", to: "Unused83");
 		RenameStaticField("Terraria.ID.MessageID", from: "TEDisplayDollItemSync", to: "TEDisplayDollDataSync");
+		RenameStaticField("Terraria.ID.MessageID", from: "Dodge", to: "SyncDodge");
+		RenameStaticField("Terraria.ID.MessageID", from: "InstancedItem", to: "SpawnInstancedItem");
+		RenameStaticField("Terraria.ID.MessageID", from: "SyncItemsWithShimmer", to: "SyncItemsWithShimmerDeprecated");
+		RenameStaticField("Terraria.ID.MessageID", from: "SyncItemCannotBeTakenByEnemies", to: "SyncItemCannotBeTakenByEnemiesDeprecated");
 		RenameStaticFields("Terraria.ID.MusicID", "Night", "OverworldNight", "Title", "TitleClassic", "Jungle", "JungleDay", "TheHallow", "Hallow", "Space", "SpaceNight", "Boss4", "Golem", "AltOverworldDay", "OverworldDayAlt", "Ocean", "OceanDay", "RainSoundEffect", "RainAmbience", "Mushrooms", "Mushroom", "AltUnderground", "UndergroundAlt", "TheTowers", "LunarPillars", "Hell", "Underworld", "LunarBoss", "MoonLord", "GoblinInvasion", "GoblinArmy", "DayRemix", "OverworldDayRemix", "MenuMusic", "TitleJourneysBeginningWithIntro", "Monsoon", "Storm", "JungleUnderground", "UndergroundJungle", "ConsoleMenu", "TitleAlt", "OtherworldlyRain", "OtherworldRain", "OtherworldlyDay", "OtherworlddDay", "OtherworldlyNight", "OtherworldNight", "OtherworldlyUnderground", "OtherworldUnderground", "OtherworldlyDesert", "OtherworldDesert", "OtherworldlyOcean", "OtherworldOcean", "OtherworldlyMushrooms", "OtherworldMushroom", "OtherworldlyDungeon", "OtherworldDungeon", "OtherworldlySpace", "OtherworldSpace", "OtherworldlyUnderworld", "OtherworldUnderworld", "OtherworldlySnow", "OtherworldSnow", "OtherworldlyCorruption", "OtherworldCorruption", "OtherworldlyUGCorrption", "OtherworldUndergroundCorruption", "OtherworldlyCrimson", "OtherworldCrimson", "OtherworldlyUGCrimson", "OtherworldUndergroundCrimson", "OtherworldlyIce", "OtherworldIce", "OtherworldlyUGHallow", "OtherworldUndergroundHallow", "OtherworldlyEerie", "OtherworldEerie", "OtherworldlyBoss2", "OtherworldBoss2", "OtherworldlyBoss1", "OtherworldBoss1", "OtherworldlyInvasion", "OtherworldInvasion", "OtherworldlyTowers", "OtherworldLunarPillars", "OtherworldlyLunarBoss", "OtherworldMoonLord", "OtherworldlyPlantera", "OtherworldPlantera", "OtherworldlyJungle", "OtherworldJungle", "OtherworldlyWoF", "OtherworldWallOfFlesh", "OtherworldlyHallow", "OtherworldHallow", "Credits", "JourneysEnd", "Shimmer", "Aether");
 		RenameStaticField("Terraria.ID.NPCID.Sets", from: "UsesNewTargetting", to: "UsesNewTargeting");
 		RenameStaticField("Terraria.ID.NPCID.Sets", from: "GoldCrittersCollection", to: "IsGoldCritter").FollowBy(ConvertCollectionAddToSetTrue);
@@ -297,6 +301,7 @@ public static partial class Config
 		RenameStaticField("Terraria.ID.TileID.Sets", from: "CountsAsShimmerSource", to: "CountsAsShimmerForCrafting");
 		RenameStaticField("Terraria.ID.TileID.Sets", from: "IsATrigger", to: "Wiring.IsATrigger");
 		RenameStaticField("Terraria.ID.TileID.Sets", from: "IsAMechanism", to: "Wiring.IsAMechanism");
+		RenameStaticField("Terraria.ID.TileID.Sets", from: "IsSkippedForNPCSpawningGroundTypeCheck", to: "InheritTypeOfTileBelowForNPCSpawning");
 		RenameStaticField("Terraria.ID.TileID.Sets", from: "InteractibleByNPCs", to: "InteractableByNPCs");
 		RenameStaticField("Terraria.ID.TileID.Sets", from: "Torch", to: "Torches");
 		RenameStaticField("Terraria.ID.TileID.Sets", from: "Campfire", to: "Campfires");
@@ -306,7 +311,7 @@ public static partial class Config
 		RenameStaticField("Terraria.ID.WallID.Sets", from: "Hallow", to: "SpreadsHallow");
 		RenameStaticField("Terraria.Main", from: "DisableIntenseVisualEffects", to: "FlashyEffectsWorld").FollowBy(InvertBool);
 		RenameStaticField("Terraria.Main", "gameInactive", "GameplayActive", "Terraria.FocusHelper").FollowBy(InvertBool);
-		RenameStaticField("Terraria.Main", "hasFocus", "AllowGameplayInputs", "Terraria.FocusHelper").FollowBy(AddCommentToFieldAccess("Suggestion: Also consider FocusHelper.AllowUIInputs, FocusHelper.UpdateVisualEffects, or others"));
+		RenameStaticField("Terraria.Main", "hasFocus", "IsSelectedApplication", "Terraria.FocusHelper").FollowBy(AddCommentToFieldAccess("Suggestion: Also consider FocusHelper.AllowInputProcessing, FocusHelper.GameplayActive, FocusHelper.UpdateVisualEffects, or others"));
 		RenameStaticField("Terraria.Main", "LogicCheckScreenHeight", "MaxWorldViewSize.Y");
 		RenameStaticField("Terraria.Main", "LogicCheckScreenWidth", "MaxWorldViewSize.X");
 		RenameStaticField("Terraria.Main", "popupText", "popupText", "Terraria.PopupText");
@@ -319,6 +324,8 @@ public static partial class Config
 		RenameInstanceField("Terraria.Item", from: "netID", to: "type");
 		RenameInstanceField("Terraria.Main", from: "HasInteractibleObjectThatIsNotATile", to: "HasInteractableObjectThatIsNotATile");
 		RenameInstanceField("Terraria.Main.CurrentFrameFlags", from: "HadAnActiveInteractibleProjectile", to: "HadAnActiveInteractableProjectile");
+		RenameInstanceField("Terraria.WorldItem", from: "noGrabDelay", to: "grabDelayTime");
+
 		RenameInstanceFieldMultiple("Terraria.NPC.Spawner", froms: ["desertCave", "DesertCave"], to: "spawnUndergroundDesert");
 		RenameInstanceFieldMultiple("Terraria.NPC.Spawner", froms: ["granite", "Granite"], to: "nearGranite");
 		RenameInstanceFieldMultiple("Terraria.NPC.Spawner", froms: ["invasion", "Invasion"], to: "invaders");
@@ -357,12 +364,15 @@ public static partial class Config
 		RefactorStaticMember("Terraria.ID.MountID.Sets", "FacePlayersVelocity", Removed("Now automatic for all minecarts"));
 		RefactorStaticMember("Terraria.ID.ProjectileID.Sets", "HeldProjDoesNotUsePlayerGfxOffY", Removed("AI() should use master.RotatedRelativePoint(master.MountedCenter + ...) to position held projectiles"));
 		RefactorStaticMember("Terraria.ID.ProjectileID.Sets", "DontAttachHideToAlpha", Removed("Now true by default. See Projectile.usesOwnerLight and Projectile.drawLayer for more details."));
+		RefactorStaticMember("Terraria.ID.ProjectileID.Sets", "NeedsUUID", Removed("Use Projectile.key instead."));
 		RefactorStaticMember("Terraria.Item", "whoAmI", Removed("Moved to WorldItem"));
 		RefactorStaticMember("Terraria.Item", "beingGrabbed", Removed("Moved to WorldItem"));
 		RefactorStaticMember("Terraria.Main", "GameModeInfo", RewriteIsJourneyMode);
 		RefactorStaticMember("Terraria.Main", "musicBox2", Removed("Use Player.musicBox instead"));
 		RefactorStaticMember("Terraria.NPC", "netSkip", Removed("No longer necessary when setting life <= 0 and was never necessary when setting active = false"));
 		RefactorStaticMember("Terraria.Player", "RandomTeleportationAttemptSettings", Removed("Use Utils.RandomTeleportationAttemptSettings instead and populate all the relevant new fields"));
+		RefactorStaticMember("Terraria.Projectile", "identity", Removed("Use Projectile.key instead."));
+		RefactorStaticMember("Terraria.Projectile", "projUUID", Removed("Use Projectile.key instead."));
 
 		RefactorInstanceMember("Terraria.NPC.Spawner", "PlayerFloorX", Removed("Player floor coordinates are no longer tracked by NPC.Spawner"));
 		RefactorInstanceMember("Terraria.NPC.Spawner", "PlayerFloorY", Removed("Player floor coordinates are no longer tracked by NPC.Spawner"));
@@ -372,9 +382,11 @@ public static partial class Config
 		RefactorStaticMethodCall("Terraria.RecipeGroup", "RegisterGroup", Removed("Replace this and \"new RecipeGroup()\" with RecipeGroup.Register"));
 
 		RefactorInstanceMethodCall("Terraria.Item", "SetDefaults", RemoveParameter(1, "noMatCheck", "bool"));
+		RefactorInstanceMethodCall("Terraria.Main", "GetPlayerArmPosition", Removed("Use Player.GetArmPosition instead"));
 		RefactorInstanceMethodCall("Terraria.Player", "GetItem", RemoveParameter(0, "plr", "int"));
 		RefactorInstanceMethodCall("Terraria.Player", "AddBuff", RemoveParameter(2, "quiet", "bool"));
 		RefactorInstanceMethodCall("Terraria.Player", "AddBuff", RemoveParameter(3, "foodHack", "bool")); // Order seems to matter here
+		RefactorInstanceMethodCall("Terraria.Projectile", "GetByUUID", Removed("Use Projectile.key instead."));
 		RefactorInstanceMethodCall("Terraria.Tile", "water", GetterSetterToProperty("LiquidType", "Terraria.ID.LiquidID", "Water"));
 		RefactorInstanceMethodCall("Terraria.Tile", "anyWater", GetterToProperty("HasWater"));
 		RefactorInstanceMethodCall("Terraria.Tile", "anyLava", GetterToProperty("HasLava"));

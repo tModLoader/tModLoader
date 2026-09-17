@@ -165,15 +165,9 @@ namespace ExampleMod.Content.Projectiles
 			// This is an important check as Kill() is called on clients, and you only want the item to drop once
 			if (Projectile.owner == Main.myPlayer) {
 				// Drop a javelin item, 1 in 18 chance (~5.5% chance)
-				int item = 0;
 				if (Main.rand.NextBool(18)) {
-					item = Item.NewItem(Projectile.GetSource_DropAsItem(), Projectile.getRect(), ModContent.ItemType<ExampleJavelin>());
-				}
-
-				// Sync the drop for multiplayer
-				// Note the usage of Terraria.ID.MessageID, please use this!
-				if (Main.netMode == NetmodeID.MultiplayerClient && item >= 0) {
-					NetMessage.SendData(MessageID.SyncItem, -1, -1, null, item, 1f);
+					// Create a new item in the world from client code and make sure the item is synced in multiplayer games.
+					Item.RequestNewItem(Projectile.GetSource_DropAsItem(), Projectile.Center, ModContent.ItemType<ExampleJavelin>());
 				}
 			}
 		}

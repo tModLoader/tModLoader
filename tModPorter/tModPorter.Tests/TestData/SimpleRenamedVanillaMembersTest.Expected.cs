@@ -63,7 +63,7 @@ public class SimpleRenamedVanillaMembersTest
 		bool isJourney = Main.IsJourneyMode;
 		_ = Main.PipsUseGrid;
 		_ = Main.PipsFastScroll;
-		_ = FocusHelper.AllowGameplayInputs/* tModPorter Suggestion: Also consider FocusHelper.AllowUIInputs, FocusHelper.UpdateVisualEffects, or others */;
+		_ = FocusHelper.IsSelectedApplication/* tModPorter Suggestion: Also consider FocusHelper.AllowInputProcessing, FocusHelper.GameplayActive, FocusHelper.UpdateVisualEffects, or others */;
 
 		PopupText popupText = PopupText.popupText[0];
 
@@ -216,6 +216,14 @@ public class SimpleRenamedVanillaMembersTest
 
 #if COMPILE_ERROR
 		Utils.FloodFillTile(10, 20, DelegateMethods.SpreadLightOpen_StopForSolids)/* tModPorter Parameters have changed */;
+#endif
+
+		Projectile projectile = Main.projectile[0];
+#if COMPILE_ERROR
+		Vector2 armPosition = Main.GetPlayerArmPosition(projectile, player)/* tModPorter Note: Removed. Use Player.GetArmPosition instead */;
+		_ = projectile.identity/* tModPorter Note: Removed. Use Projectile.key instead. */;
+		_ = projectile.projUUID/* tModPorter Note: Removed. Use Projectile.key instead. */;
+		_ = Projectile.GetByUUID(projectile.owner, projectile.whoAmI)/* tModPorter Note: Removed. Use Projectile.key instead. */;
 #endif
 	}
 }

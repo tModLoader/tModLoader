@@ -235,6 +235,7 @@
 		"LoadErrorLikelyOutdated": "このModは現在のtModLoaderバージョンに合わせて更新する必要があるか、他に導入しているModの一部とバージョンの互換性がない可能性があります。\n詳しくは「ウェブヘルプを開く」ボタンをクリックしてください。",
 		"LoadErrorDotNet45Required": "Modを使用するには.NET Framework 4.5以上が必要です。最新の.NET Frameworkをダウンロードしてください。",
 		"LoadErrorDependencyMissing": "必要なModがありません: {0} (必要とするMod: {1})",
+		// "LoadErrorDependencySideIncompatible": "{0} (side: {1}) requires {2} (side: {3}), which does not load on {4}. Consider changing to a weak reference",
 		"LoadErrorErrorReadingModFile": "Modファイル {0} の読み込み中にエラーが発生しました。",
 		"LoadErrorHashMismatchCorrupted": "ハッシュが一致しません。データが変更または破損しています。",
 		"LoadErrorHashMismatchCorruptedWithModName": "{0} の整合性を確認できません: ハッシュが一致しません。データが変更または破損しています。",

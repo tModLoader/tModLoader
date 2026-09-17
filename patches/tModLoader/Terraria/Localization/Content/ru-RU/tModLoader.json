@@ -235,6 +235,7 @@
 		"LoadErrorLikelyOutdated": "Этому моду вероятно требуется обновление для совместимости с текущей версией tModLoader, либо он может быть не совместим с установленными версиями некоторых из ваших модов. Нажмите кнопку '{$tModLoader.OpenWebHelp}' чтобы узнать больше.",
 		"LoadErrorDotNet45Required": "Для использования модов требуется .NET Framework 4.5 или новее. Пожалуйста, скачайте и установите последнюю версию .NET Framework",
 		"LoadErrorDependencyMissing": "Отсутствует мод: Для правильной работы {1} требуется {0}",
+		// "LoadErrorDependencySideIncompatible": "{0} (side: {1}) requires {2} (side: {3}), which does not load on {4}. Consider changing to a weak reference",
 		"LoadErrorErrorReadingModFile": "Ошибка при чтении файла мода {0}",
 		"LoadErrorHashMismatchCorrupted": "Несоответствие хэша, массив данных был изменён или повреждён",
 		"LoadErrorHashMismatchCorruptedWithModName": "Не удалось проверить целостность {0}: несоответствие хэша; данные были изменены или повреждены",

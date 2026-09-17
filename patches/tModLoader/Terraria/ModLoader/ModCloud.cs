@@ -11,6 +11,7 @@ namespace Terraria.ModLoader;
 /// <para/> This class is not instanced, all clouds of the same type will share the same instance.
 /// </summary>
 [Autoload(Side = ModSide.Client)]
+[CloneByReference]
 public abstract class ModCloud : ModTexturedType
 {
 	internal string nameOverride;

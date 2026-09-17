@@ -1,0 +1,10 @@
+--- src/TerrariaNetCore/Terraria/Testing/Cloning/ClassTypeInfo.cs
++++ src/tModLoader/Terraria/Testing/Cloning/ClassTypeInfo.cs
+@@ -1,6 +_,7 @@
+ using System;
+ using System.Linq;
+ using System.Reflection;
++using Terraria.ModLoader;
+ 
+ namespace Terraria.Testing.Cloning;
+ 

@@ -235,6 +235,7 @@
 		"LoadErrorLikelyOutdated": "O mod precisará ser atualizado para coincidir com a versão atual do tModLoader ou poderá se tornar incompativel com versão de alguns de seus outros mods. Clique no botão '{$tModLoader.OpenWebHelp}' para saber mais.",
 		"LoadErrorDotNet45Required": ".NET Framework 4.5 ou superior é necessário para usar mods. Por favor, baixe o .NET Framework mais recente.",
 		"LoadErrorDependencyMissing": "Mod não encontrado: {0} necessário por {1}",
+		// "LoadErrorDependencySideIncompatible": "{0} (side: {1}) requires {2} (side: {3}), which does not load on {4}. Consider changing to a weak reference",
 		"LoadErrorErrorReadingModFile": "Erro ao ler o arquivo de mod {0}",
 		"LoadErrorHashMismatchCorrupted": "Hash incompatível, o blob de dados foi modificado ou está corrompido",
 		"LoadErrorHashMismatchCorruptedWithModName": "Não foi possível verificar a integridade de {0}: hash incompatível; o blob de dados foi modificado ou está corrompido",

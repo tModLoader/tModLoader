@@ -32,6 +32,7 @@ public class ItemToWorldItemTest
 #if COMPILE_ERROR
 				item.active = false;
 #endif
+				_ = item.grabDelayTime;
 
 				NetMessage.SendData(MessageID.SyncItem, number: item.whoAmI);
 			}
