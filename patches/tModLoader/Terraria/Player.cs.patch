@@ -7575,7 +7575,7 @@
  		bool flag = !isDisplayDollOrInanimate;
  		if (petting.isPetting) {
  			if (mount.Active && (mount.Type == 62 || mount.Type == 63 || mount.Type == 64 || mount.Type == 65)) {
-@@ -42293,7 +_,10 @@
+@@ -42293,10 +_,17 @@
  
  	private void ItemCheck_ApplyManaRegenDelay(Item sItem)
  	{
@@ -7586,6 +7586,13 @@
  			ApplyManaRegenerationDelay();
  	}
  
++	/// <summary>
++	/// Returns the world position of the player's main hand, accounting for their current body frame, facing direction, gravity, mount, and rotation.
++	/// <br/> Used as the origin point for projectiles that are connected to the player's hand, such as whips, flails, kites, etc.
++	/// </summary>
+ 	public Vector2 GetArmPosition()
+ 	{
+ 		Vector2 vector = Main.OffsetsPlayerOnhand[bodyFrame.Y / 56] * 2f;
 @@ -42377,6 +_,12 @@
  
  	public void ItemCheck_ApplyUseStyle(float mountOffset, Item sItem, Rectangle heldItemFrame)
