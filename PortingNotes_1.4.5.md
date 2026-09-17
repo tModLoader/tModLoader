@@ -254,8 +254,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 
 - ItemVariants.EverythingWorld renamed to MechdusaWorld
 - Main.GameModeInfo.IsJourneyMode -> Main.IsJourneyMode
-- Item.SetDefaults() -> Item.SetDefaults(0)
-- Item.SetDefaults(int, bool) -> Item.SetDefaults(int)
 
 ## 1.4.5.8
 - WorldItem.noGrabDelay ->  grabDelayTime...I think. double check this, it seems noGrabDelay might have been split into a few fields.
