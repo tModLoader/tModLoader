@@ -1,9 +1,9 @@
 author = TML Team
-displayName = Example Mod
+displayName = Example Library Mod
 homepage = https://tmodloader.net/
 hideCode = false
 hideResources = false
 includeSource = true
 buildIgnore = *.csproj, *.user, obj\*, bin\*, .vs\*, Old\*
-#modReferences = ExampleLibMod
+libMod = true
 version = 9999.0

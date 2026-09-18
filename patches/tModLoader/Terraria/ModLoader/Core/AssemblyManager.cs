@@ -211,6 +211,7 @@ public static class AssemblyManager
 			m.Code = mod.assembly;
 			m.Logger = LogManager.GetLogger(m.Name);
 			m.Side = mod.properties.side;
+			m.IsLib = mod.properties.libMod;
 			m.DisplayName = mod.properties.displayName;
 			m.TModLoaderVersion = mod.properties.buildVersion;
 			m.TranslationForMods = mod.properties.translationMod ? mod.properties.RefNames(true).ToList() : null;
