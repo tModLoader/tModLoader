@@ -2145,7 +2145,7 @@
  					case 471:
  					case 472:
 +					*/
-+					case int _ when NPCID.Sets.BelongsToInvasionGoblinArmy[npc[i].type] && NPCID.Sets.InvasionSlotCount[npc[i].type] > 0:
++					case int _ when NPCID.Sets.BelongsToInvasionGoblinArmy[npc[i].type]:
  						num2 = 11;
  						break;
  					case 113:
@@ -2158,7 +2158,7 @@
  					case 144:
  					case 145:
 +					*/
-+					case int _ when NPCID.Sets.BelongsToInvasionFrostLegion[npc[i].type] && NPCID.Sets.InvasionSlotCount[npc[i].type] > 0:
++					case int _ when NPCID.Sets.BelongsToInvasionFrostLegion[npc[i].type]:
  						num2 = 11;
  						break;
  					case 266:
@@ -2174,7 +2174,7 @@
  					case 662:
 +					*/
 +					// Note: 492 isn't here but is in BelongsToInvasionPirate, excluded via NoInvasionMusic
-+					case int _ when NPCID.Sets.BelongsToInvasionPirate[npc[i].type] && NPCID.Sets.InvasionSlotCount[npc[i].type] > 0:
++					case int _ when NPCID.Sets.BelongsToInvasionPirate[npc[i].type]:
  						num2 = 8;
  						break;
  					case 245:
@@ -2203,7 +2203,7 @@
  					case 520:
 +					*/
 +					// Note: 394 isn't here but is in BelongsToInvasionMartianMadness, excluded via NoInvasionMusic
-+					case int _ when NPCID.Sets.BelongsToInvasionMartianMadness[npc[i].type] && NPCID.Sets.InvasionSlotCount[npc[i].type] > 0:
++					case int _ when NPCID.Sets.BelongsToInvasionMartianMadness[npc[i].type]:
  						num2 = 9;
  						break;
  					case 398:
@@ -2410,7 +2410,7 @@
  					case 471:
  					case 472:
 +					*/
-+					case int _ when NPCID.Sets.BelongsToInvasionGoblinArmy[npc[j].type] && NPCID.Sets.InvasionSlotCount[npc[j].type] > 0:
++					case int _ when NPCID.Sets.BelongsToInvasionGoblinArmy[npc[j].type]:
  						num3 = 11;
  						break;
  					case 113:
@@ -2423,8 +2423,8 @@
  					case 144:
  					case 145:
 +					*/
-+					// Note: 266 Brain of Cthulhu shares Boss 3 with FrostLegion
-+					case int _ when NPCID.Sets.BelongsToInvasionFrostLegion[npc[j].type] && NPCID.Sets.InvasionSlotCount[npc[j].type] > 0:
++					// Note: 266 Brain of Cthulhu shares Boss 3 with FrostLegion (regular music only)
++					case int _ when NPCID.Sets.BelongsToInvasionFrostLegion[npc[j].type]:
  					case 266:
  						num3 = 3;
  						break;
@@ -2438,7 +2438,7 @@
  					case 662:
 +					*/
 +					// Note: 492 isn't here but is in BelongsToInvasionPirate, excluded via NoInvasionMusic
-+					case int _ when NPCID.Sets.BelongsToInvasionPirate[npc[j].type] && NPCID.Sets.InvasionSlotCount[npc[j].type] > 0:
++					case int _ when NPCID.Sets.BelongsToInvasionPirate[npc[j].type]:
  						num3 = 8;
  						break;
  					case 245:
@@ -2467,7 +2467,7 @@
  					case 520:
 +					*/
 +					// Note: 394 isn't here but is in BelongsToInvasionMartianMadness, excluded via NoInvasionMusic
-+					case int _ when NPCID.Sets.BelongsToInvasionMartianMadness[npc[j].type] && NPCID.Sets.InvasionSlotCount[npc[j].type] > 0:
++					case int _ when NPCID.Sets.BelongsToInvasionMartianMadness[npc[j].type]:
  						num3 = 9;
  						break;
  					case 398:
