@@ -130,7 +130,7 @@ public partial class NPCID
 		/// <br/> If any NPC in this set is alive and <see cref="InvasionSlotCount"/> is above 0, the Pirate Invasion music will play.
 		/// <br/> Defaults to <see langword="false"/>.
 		/// </summary>
-		public static bool[] BelongsToInvasionPirate = Factory.CreateBoolSet(212, 213, 214, 215, 216, 491, 492, 252, 662);
+		public static bool[] BelongsToInvasionPirate = Factory.CreateBoolSet(212, 213, 214, 215, 216, 252, 491, 492, 662);
 
 		/// <summary>
 		/// If <see langword="true"/> for a given NPC type (<see cref="NPC.type"/>), then that NPC belongs to the Martian Madness invasion.
@@ -146,7 +146,7 @@ public partial class NPCID
 		/// <br/> By default, alive NPCs in any BelongsToInvasion set will automatically play the associated invasion music if <see cref="InvasionSlotCount"/> is above 0.
 		/// <br/> Defaults to <see langword="false"/>.
 		/// </summary>
-		public static bool[] NoInvasionMusic = Factory.CreateBoolSet(387);
+		public static bool[] NoInvasionMusic = Factory.CreateBoolSet(394, 492);
 
 		// IDs taken from NPC.checkDead
 		/// <summary>

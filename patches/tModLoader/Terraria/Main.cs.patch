@@ -2149,7 +2149,36 @@
  						num2 = 11;
  						break;
  					case 113:
-@@ -10737,6 +_,7 @@
+@@ -10708,14 +_,18 @@
+ 					case 134:
+ 						num2 = 2;
+ 						break;
++					/*
+ 					case 143:
+ 					case 144:
+ 					case 145:
++					*/
++					case int _ when NPCID.Sets.BelongsToInvasionFrostLegion[npc[i].type] && NPCID.Sets.InvasionSlotCount[npc[i].type] > 0:
+ 						num2 = 11;
+ 						break;
+ 					case 266:
+ 						num2 = 1;
+ 						break;
++					/*
+ 					case 212:
+ 					case 213:
+ 					case 214:
+@@ -10724,6 +_,9 @@
+ 					case 252:
+ 					case 491:
+ 					case 662:
++					*/
++					// Note: 492 isn't here but is in BelongsToInvasionPirate, excluded via NoInvasionMusic
++					case int _ when NPCID.Sets.BelongsToInvasionPirate[npc[i].type] && NPCID.Sets.InvasionSlotCount[npc[i].type] > 0:
+ 						num2 = 8;
+ 						break;
+ 					case 245:
+@@ -10737,10 +_,13 @@
  					case 264:
  						num2 = 6;
  						break;
@@ -2157,26 +2186,37 @@
  					case 381:
  					case 382:
  					case 383:
-@@ -10751,6 +_,8 @@
++					*/
+ 					case 384:
++					/*
+ 					case 385:
+ 					case 386:
+ 					case 387:
+@@ -10748,9 +_,14 @@
+ 					case 389:
+ 					case 390:
+ 					case 391:
++					*/
  					case 392:
++					/*
  					case 395:
  					case 520:
 +					*/
++					// Note: 394 isn't here but is in BelongsToInvasionMartianMadness, excluded via NoInvasionMusic
 +					case int _ when NPCID.Sets.BelongsToInvasionMartianMadness[npc[i].type] && NPCID.Sets.InvasionSlotCount[npc[i].type] > 0:
  						num2 = 9;
  						break;
  					case 398:
-@@ -10791,7 +_,8 @@
- 						break;
- 				}
- 
--				if (NPCID.Sets.BelongsToInvasionOldOnesArmy[npc[i].type])
-+				//TML: Added bounds check
-+				if (npc[i].type < NPCID.Sets.BelongsToInvasionOldOnesArmy.Length && NPCID.Sets.BelongsToInvasionOldOnesArmy[npc[i].type])
+@@ -10794,17 +_,25 @@
+ 				if (NPCID.Sets.BelongsToInvasionOldOnesArmy[npc[i].type])
  					num2 = 12;
  
++				if (NPCID.Sets.NoInvasionMusic[npc[i].type] && NPC.GetNPCInvasionGroup(npc[i].type) != 0)
++					num2 = 0;
++
  				if (remixWorld && getGoodWorld && (npc[i].type == 127 || npc[i].type == 134 || npc[i].type == 125 || npc[i].type == 126))
-@@ -10800,11 +_,16 @@
+ 					num2 = 17;
+ 
  				if (num2 == 0 && npc[i].boss)
  					num2 = 1;
  
@@ -2357,7 +2397,24 @@
  			Microsoft.Xna.Framework.Rectangle rectangle = new Microsoft.Xna.Framework.Rectangle((int)screenPosition.X, (int)screenPosition.Y, screenWidth, screenHeight);
  			int num2 = 5000;
  			for (int j = 0; j < maxNPCs; j++) {
-@@ -11174,12 +_,16 @@
+@@ -11145,6 +_,7 @@
+ 					case 36:
+ 						num3 = 24;
+ 						break;
++					/*
+ 					case 26:
+ 					case 27:
+ 					case 28:
+@@ -11152,6 +_,8 @@
+ 					case 111:
+ 					case 471:
+ 					case 472:
++					*/
++					case int _ when NPCID.Sets.BelongsToInvasionGoblinArmy[npc[j].type] && NPCID.Sets.InvasionSlotCount[npc[j].type] > 0:
+ 						num3 = 11;
+ 						break;
+ 					case 113:
+@@ -11174,12 +_,17 @@
  					case 131:
  						num3 = 22;
  						break;
@@ -2366,6 +2423,7 @@
  					case 144:
  					case 145:
 +					*/
++					// Note: 266 Brain of Cthulhu shares Boss 3 with FrostLegion
 +					case int _ when NPCID.Sets.BelongsToInvasionFrostLegion[npc[j].type] && NPCID.Sets.InvasionSlotCount[npc[j].type] > 0:
  					case 266:
  						num3 = 3;
@@ -2379,12 +2437,12 @@
  					case 491:
  					case 662:
 +					*/
-+					// Note: 492 isn't here but is in BelongsToInvasionPirate
++					// Note: 492 isn't here but is in BelongsToInvasionPirate, excluded via NoInvasionMusic
 +					case int _ when NPCID.Sets.BelongsToInvasionPirate[npc[j].type] && NPCID.Sets.InvasionSlotCount[npc[j].type] > 0:
  						num3 = 8;
  						break;
  					case 245:
-@@ -11201,6 +_,7 @@
+@@ -11201,10 +_,13 @@
  					case 264:
  						num3 = 6;
  						break;
@@ -2392,17 +2450,28 @@
  					case 381:
  					case 382:
  					case 383:
-@@ -11215,6 +_,9 @@
++					*/
+ 					case 384:
++					/*
+ 					case 385:
+ 					case 386:
+ 					case 387:
+@@ -11212,9 +_,14 @@
+ 					case 389:
+ 					case 390:
+ 					case 391:
++					*/
  					case 392:
++					/*
  					case 395:
  					case 520:
 +					*/
-+					// No 387 tesla turret, handled via NoInvasionMusic below
++					// Note: 394 isn't here but is in BelongsToInvasionMartianMadness, excluded via NoInvasionMusic
 +					case int _ when NPCID.Sets.BelongsToInvasionMartianMadness[npc[j].type] && NPCID.Sets.InvasionSlotCount[npc[j].type] > 0:
  						num3 = 9;
  						break;
  					case 398:
-@@ -11261,6 +_,9 @@
+@@ -11261,17 +_,26 @@
  				if (NPCID.Sets.BelongsToInvasionOldOnesArmy[npc[j].type])
  					num3 = 12;
  
@@ -2412,7 +2481,12 @@
  				if (num3 == 0 && npc[j].boss)
  					num3 = 1;
  
-@@ -11272,6 +_,12 @@
+ 				if (remixWorld && getGoodWorld && (npc[j].type == 127 || npc[j].type == 134 || npc[j].type == 125 || npc[j].type == 126))
+ 					num3 = 17;
+ 
+-				if (num3 == 0)
++				if (num3 == 0 && (npc[j].ModNPC == null || npc[j].ModNPC.Music < 0))
+ 					continue;
  
  				Microsoft.Xna.Framework.Rectangle value = new Microsoft.Xna.Framework.Rectangle((int)(npc[j].position.X + (float)(npc[j].width / 2)) - num2, (int)(npc[j].position.Y + (float)(npc[j].height / 2)) - num2, num2 * 2, num2 * 2);
  				if (rectangle.Intersects(value)) {
