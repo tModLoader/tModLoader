@@ -1457,17 +1457,6 @@
  			TargetClosest();
  			if (position.X < Main.player[target].position.X) {
  				direction = 1;
-@@ -45168,7 +_,10 @@
- 			}
- 		}
- 
-+		/*
- 		if (!WorldGen.IsTileLoaded(num6, num7))
-+		*/
-+		if (!WorldGen.InWorld(num6, num7) || Main.netMode == 1 && !Main.sectionManager.TileLoaded(num6, num7))
- 			return;
- 
- 		if (Main.tile[num6, num7].type == 666 && Main.netMode != 1)
 @@ -45231,6 +_,9 @@
  				if (Main.npc[m].Distance(base.Center) >= num11)
  					continue;

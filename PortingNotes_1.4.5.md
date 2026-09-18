@@ -148,7 +148,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - WorldGen.SwapTileData might not be necessary anymore. ErrorWorldSwapTiles exists. The new name isn't as useful, however.
 - Projectile.identity removed, Projectile.key added. How to use? Also Projectile.IndexForVisuals. Also Main.projectileIdentity. Need to fix Projectile.key docs, it is the identity docs.
 - Projectile.TransformType added, replaces direct setting of Projectile.type in AI. Might need a hook or more logic if used with modded projectiles.
-- New Worldgen.IsTileLoaded method seems like an issue with our non-null tiles. Keep patches to use Main.sectionManager.TileLoaded? Fix WorldGen.IsTileLoaded?
 - Code near "Yoyos with effective top speed" comment in AI_009_2_Yoyos seems weird. Was this fixed in vanilla and the "< 1.01f" code left in? Probably can remove the duplicate bounds check, check blame
 - Item.hasVanityEffects no longer marked as [Old], why? Did something change?
 - Item.active property removed

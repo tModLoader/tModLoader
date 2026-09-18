@@ -443,6 +443,18 @@
  	public static bool InWorld(int x, int y, int fluff = 0)
  	{
  		if (x < fluff || x >= Main.maxTilesX - fluff || y < fluff || y >= Main.maxTilesY - fluff)
+@@ -8072,7 +_,11 @@
+ 	public static bool IsTileLoaded(int x, int y)
+ 	{
+ 		if (InWorld(x, y))
++			/*
+ 			return Main.tile[x, y] != null;
++			*/
++			// TML: Tiles are never null, so check that the section has been received from the server instead.
++			return Main.netMode != 1 || Main.sectionManager.TileLoaded(x, y);
+ 
+ 		return false;
+ 	}
 @@ -8419,17 +_,17 @@
  
  	private static void AddGenerationPass(string name, WorldGenLegacyMethod method)

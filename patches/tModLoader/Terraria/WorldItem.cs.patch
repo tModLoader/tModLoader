@@ -113,17 +113,6 @@
  
  					if (num3 > num4) {
  						num3 = num4;
-@@ -305,7 +_,10 @@
- 		float maxFallSpeed = 7f;
- 		if (Main.netMode == 1) {
- 			Point point = base.Bottom.ToTileCoordinates();
-+			/*
- 			if (!WorldGen.IsTileLoaded(point.X, point.Y)) {
-+			*/
-+			if (WorldGen.InWorld(point) && !Main.sectionManager.TileLoaded(point.X, point.Y)) {
- 				gravity = 0f;
- 				velocity = Vector2.Zero;
- 				if (instanced && Main.GameUpdateCount % 10u == 0)
 @@ -366,6 +_,8 @@
  		if (timeSinceItemSpawned < 2147483547)
  			timeSinceItemSpawned++;
