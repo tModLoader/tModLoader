@@ -9,11 +9,16 @@ namespace ExampleMod.Common.Systems
 		public static ModKeybind RandomBuffKeybind { get; private set; }
 		public static ModKeybind LearningExampleKeybind { get; private set; }
 
+		public static ModKeybind UnboundDefaultKeybind { get; private set; }
+
 		public override void Load() {
 			// Registers a new keybind
 			// We localize keybinds by adding a Mods.{ModName}.Keybind.{KeybindName} entry to our localization files. The actual text displayed to English users is in en-US.hjson
 			RandomBuffKeybind = KeybindLoader.RegisterKeybind(Mod, "RandomBuff", "P");
 			LearningExampleKeybind = KeybindLoader.RegisterKeybind(Mod, "LearningExample", "O");
+
+			//You can also pass in null to create an unbound keybind which displays "Clear" instead of "Reset to .."
+			UnboundDefaultKeybind = KeybindLoader.RegisterKeybind(Mod, "UnboundDefault", null);
 		}
 
 		// Please see ExampleMod.cs' Unload() method for a detailed explanation of the unloading process.
