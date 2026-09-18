@@ -256,7 +256,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - WorldItem.noGrabDelay ->  grabDelayTime...I think. double check this, it seems noGrabDelay might have been split into a few fields.
 
 # ExampleMod TODOs
-- Verify that ExampleZombieThief still works with changes
 
 # Terraria update requests
 
