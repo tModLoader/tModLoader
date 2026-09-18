@@ -1,10 +1,14 @@
 --- src/TerrariaNetCore/Terraria/Graphics/Effects/SkyManager.cs
 +++ src/tModLoader/Terraria/Graphics/Effects/SkyManager.cs
-@@ -1,3 +_,4 @@
+@@ -1,6 +_,8 @@
 +using System;
  using System.Collections.Generic;
  using Microsoft.Xna.Framework;
  using Microsoft.Xna.Framework.Graphics;
++using Terraria.ModLoader;
+ 
+ namespace Terraria.Graphics.Effects;
+ 
 @@ -21,11 +_,13 @@
  
  	public void Update(GameTime gameTime)
@@ -20,11 +24,10 @@
  			LinkedListNode<CustomSky> linkedListNode = _activeSkies.First;
  			while (linkedListNode != null) {
  				CustomSky value = linkedListNode.Value;
-@@ -98,5 +_,14 @@
- 		}
+@@ -99,4 +_,45 @@
  
  		return MathHelper.Clamp(num, 0f, 1f);
-+	}
+ 	}
 +
 +	// Added by TML.
 +	internal void DeactivateAll()
@@ -33,5 +36,37 @@
 +			if (this[key].IsActive())
 +				this[key].Deactivate(Array.Empty<object>());
 +		}
- 	}
++	}
++    
++    public void Activate<T>(Vector2 position = default(Vector2), params object[] args) where T : ModSky
++    {
++        Activate(ModContent.GetInstance<T>().FullName, position, args);
++    }
++
++    public void Deactivate<T>(params object[] args) where T : ModSky
++    {
++        Deactivate(ModContent.GetInstance<T>().FullName, args);
++    }
++    
++    /// <summary>
++    /// Toggles a sky based on a condition, this can be used to avoid checking if a sky is active before calling Activate or vice versa
++    /// </summary>
++    public void Toggle(string name, bool condition, Vector2 position = default, params object[] args)
++    {
++        if (!_effects.ContainsKey(name))
++            throw new MissingEffectException(string.Concat("Unable to find effect named: ", name, ". Type: ", typeof(CustomSky), "."));
++        
++        var sky = this[name];
++        if (condition && !sky.IsActive())
++            Activate(name, position, args);
++        else if (!condition && sky.IsActive())
++            Deactivate(name, args);
++    }
++    
++    /// <inheritdoc cref="Toggle"/>
++    public void Toggle<T>(bool condition, Vector2 position = default, params object[] args) where T : ModSky
++    {
++        var sky = ModContent.GetInstance<T>();
++        Toggle(sky.FullName, condition, position, args);
++    }
  }
