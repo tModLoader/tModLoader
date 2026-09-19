@@ -2471,7 +2471,7 @@
  							break;
  					}
 -
-+				*/ 
++				*/
 +				// TODO: Not really sure what these patches are trying to do.
 +				else {
 +					newMusic = MenuLoader.CurrentMenu.Music;
@@ -2926,7 +2926,7 @@
  		}
  
  		CurrentFrameFlags.AnyActiveBossNPC = anyActiveBossNPC;
-+		
++
 +		SystemLoader.PostUpdateNPCs();
 +
  		TimeLogger.UpdateNPCs.AddTime(fromTimestamp);
@@ -2935,7 +2935,7 @@
  	private void UpdateWorld_Gores()
  	{
 +		SystemLoader.PreUpdateGores();
-+		
++
  		if (netMode == 2)
  			return;
  
@@ -3919,7 +3919,7 @@
 +				toolTipNames[numLines] = "PrefixAccMeleeSpeed";
  				numLines++;
  			}
-+			
++
 +			prefixlineIndex = numLines;
  		}
  
@@ -5135,9 +5135,9 @@
 +
  		reforgeItem.ResetPrefix();
  		reforgeItem.Prefix(-2, out var rolledPrefixIsTopTier);
-+		
++
 +		ItemLoader.PostReforge(reforgeItem);
-+		
++
  		PopupText.NewText(rolledPrefixIsTopTier ? PopupTextContext.ItemReforge_Best : PopupTextContext.ItemReforge, reforgeItem, LocalPlayer.Center, reforgeItem.stack, noStack: true);
  		if (rolledPrefixIsTopTier) {
  			SoundEngine.PlaySound(SoundID.BestReforge);
@@ -6093,7 +6093,16 @@
  				array4[num5 - 1] = 16;
  				for (int num23 = 0; num23 < num5; num23++) {
  					array7[num23] = 0.6f;
-@@ -44382,8 +_,12 @@
+@@ -44376,14 +_,21 @@
+ 				}
+ 
+ 				num24++;
++				/*
+ 				string textValue = Language.GetTextValue("UI.MinimapFrame_" + MinimapFrameManagerInstance.ActiveSelectionKeyName);
++				*/
++				string textValue = MinimapFrameManagerInstance.ActiveSelectionDisplayName;
+ 				array9[num24] = Language.GetTextValue("UI.SelectMapBorder", textValue);
+ 				if (selectedMenu == num24)
  					MinimapFrameManagerInstance.CycleSelection();
  
  				num24++;
