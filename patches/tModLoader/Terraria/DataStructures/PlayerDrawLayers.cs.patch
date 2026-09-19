@@ -14,14 +14,18 @@
  {
  	public static void DrawPlayer_extra_TorsoPlus(ref PlayerDrawSet drawinfo)
  	{
-@@ -39,7 +_,17 @@
+@@ -37,9 +_,20 @@
+ 		drawinfo.Position.Y -= (int)drawinfo.mountOffSet / 2;
+ 	}
  
- 	public static void DrawCompositeArmorPiece(ref PlayerDrawSet drawinfo, CompositePlayerDrawContext context, DrawData data, int bodyIndex)
+-	public static void DrawCompositeArmorPiece(ref PlayerDrawSet drawinfo, CompositePlayerDrawContext context, DrawData data, int bodyIndex)
++	// TML: Added equipType so coat composite pieces invoke hooks for their own EquipType.
++	public static void DrawCompositeArmorPiece(ref PlayerDrawSet drawinfo, CompositePlayerDrawContext context, DrawData data, int bodyIndex, EquipType equipType = EquipType.Body)
  	{
 +		var args = context switch {
 +			CompositePlayerDrawContext.FrontArmAccessory => (EquipType.HandsOn, drawinfo.drawPlayer.handon),
 +			CompositePlayerDrawContext.BackArmAccessory => (EquipType.HandsOff, drawinfo.drawPlayer.handoff),
-+			_ => (EquipType.Body, drawinfo.drawPlayer.body),
++			_ => (equipType, equipType == EquipType.Coat ? drawinfo.drawPlayer.coat : drawinfo.drawPlayer.body),
 +		};
 +
 +		ItemLoader.ModifyEquipTextureDraw(ref drawinfo, ref data, args.Item1, args.Item2); // Body, HandsOn, HandsOff, Normal
@@ -287,8 +291,18 @@
  		bool flag5 = !drawinfo.hidesTopSkin;
  		bool flag6 = false;
  		if (flag3) {
-@@ -1294,7 +_,7 @@
- 			}, drawinfo.drawPlayer.coat);
+@@ -1286,15 +_,15 @@
+ 			if (!drawinfo.hideCompositeShoulders) {
+ 				DrawCompositeArmorPiece(ref drawinfo, CompositePlayerDrawContext.BackShoulder, new DrawData(value4, position, drawinfo.compBackShoulderFrame, drawinfo.colorArmorBody, bodyRotation, drawinfo.bodyVect, 1f, drawinfo.playerEffect) {
+ 					shader = drawinfo.cCoat
+-				}, drawinfo.drawPlayer.coat);
++				}, drawinfo.drawPlayer.coat, EquipType.Coat);
+ 			}
+ 
+ 			DrawCompositeArmorPiece(ref drawinfo, CompositePlayerDrawContext.BackArm, new DrawData(value4, vector3, drawinfo.compBackArmFrame, drawinfo.colorArmorBody, rotation, bodyVect, 1f, drawinfo.playerEffect) {
+ 				shader = drawinfo.cCoat
+-			}, drawinfo.drawPlayer.coat);
++			}, drawinfo.drawPlayer.coat, EquipType.Coat);
  		}
  
 -		if (drawinfo.drawPlayer.handoff > 0 && drawinfo.drawPlayer.handoff < ArmorIDs.HandOff.Count) {
@@ -296,6 +310,22 @@
  			Texture2D value5 = TextureAssets.AccHandsOffComposite[drawinfo.drawPlayer.handoff].Value;
  			DrawCompositeArmorPiece(ref drawinfo, CompositePlayerDrawContext.BackArmAccessory, new DrawData(value5, vector3, drawinfo.compBackArmFrame, drawinfo.colorArmorBody, rotation, bodyVect, 1f, drawinfo.playerEffect) {
  				shader = drawinfo.cHandOff
+@@ -1317,13 +_,13 @@
+ 		if (matchingBodyExtensionBack != -1) {
+ 			Main.instance.LoadArmorLegs(matchingBodyExtensionBack);
+ 			if (drawinfo.isSitting && !ArmorIDs.Legs.Sets.DoesNotSupportSittingDraw[matchingBodyExtensionBack]) {
+-				DrawSittingLegs(ref drawinfo, TextureAssets.ArmorLeg[matchingBodyExtensionBack].Value, drawinfo.colorArmorBody, drawinfo.cCoat, matchingBodyExtensionBack, new Vector2(0f, drawinfo.seatYOffset));
++				DrawSittingLegs(ref drawinfo, TextureAssets.ArmorLeg[matchingBodyExtensionBack].Value, drawinfo.colorArmorBody, drawinfo.cCoat, matchingBodyExtensionBack, new Vector2(0f, drawinfo.seatYOffset), equipType: EquipType.Coat);
+ 				return;
+ 			}
+ 
+ 			DrawData cdd = new DrawData(TextureAssets.ArmorLeg[matchingBodyExtensionBack].Value, new Vector2((int)(drawinfo.Position.X - Main.screenPosition.X - (float)(drawinfo.drawPlayer.legFrame.Width / 2) + (float)(drawinfo.drawPlayer.width / 2)), (int)(drawinfo.Position.Y - Main.screenPosition.Y + (float)drawinfo.drawPlayer.height - (float)drawinfo.drawPlayer.legFrame.Height + 4f)) + drawinfo.drawPlayer.legPosition + drawinfo.legVect, drawinfo.drawPlayer.legFrame, drawinfo.colorArmorBody, drawinfo.drawPlayer.legRotation, drawinfo.legVect, 1f, drawinfo.playerEffect);
+ 			cdd.shader = drawinfo.cCoat;
+-			DrawLongCoat(ref drawinfo, ref cdd, matchingBodyExtensionBack);
++			DrawLongCoat(ref drawinfo, ref cdd, matchingBodyExtensionBack, EquipType.Coat);
+ 		}
+ 	}
+ 
 @@ -1334,11 +_,14 @@
  			return;
  
@@ -357,7 +387,7 @@
  	{
  		Vector2 legsOffset = drawinfo.legsOffset;
  		Vector2 vector = new Vector2((int)(drawinfo.Position.X - Main.screenPosition.X - (float)(drawinfo.drawPlayer.legFrame.Width / 2) + (float)(drawinfo.drawPlayer.width / 2)), (int)(drawinfo.Position.Y - Main.screenPosition.Y + (float)drawinfo.drawPlayer.height - (float)drawinfo.drawPlayer.legFrame.Height + 4f)) + drawinfo.drawPlayer.legPosition + drawinfo.legVect;
-@@ -1587,35 +_,53 @@
+@@ -1587,35 +_,50 @@
  			position.Y += num9;
  			DrawData cdd = new DrawData(textureToDraw, position, value, matchingColor, drawinfo.drawPlayer.legRotation, drawinfo.legVect, 1f, drawinfo.playerEffect);
  			cdd.shader = shaderIndex;
@@ -365,21 +395,19 @@
 +			int slot = equipType switch {
 +				EquipType.Shoes => drawinfo.drawPlayer.shoe,
 +				EquipType.Legs => drawinfo.drawPlayer.legs,
++				EquipType.Coat => drawinfo.drawPlayer.coat,
 +				_ => -1,
 +			};
 +
  			if (flag)
-+				// Long coat body additional legs, sitting. No support yet. Note that this uses body shader.
- 				DrawLongCoat(ref drawinfo, ref cdd, legIndex);
+-				DrawLongCoat(ref drawinfo, ref cdd, legIndex);
 -			else
++				DrawLongCoat(ref drawinfo, ref cdd, legIndex, equipType);
 +			else if (equipType == null) {
  				drawinfo.DrawDataCache.Add(cdd);
 +			}
 +			else {
-+				if (equipType == EquipType.Shoes)
-+					ItemLoader.ModifyEquipTextureDraw(ref drawinfo, ref cdd, EquipType.Shoes, drawinfo.drawPlayer.shoe);
-+				else if (equipType == EquipType.Legs)
-+					ItemLoader.ModifyEquipTextureDraw(ref drawinfo, ref cdd, EquipType.Legs, drawinfo.drawPlayer.legs);
++				ItemLoader.ModifyEquipTextureDraw(ref drawinfo, ref cdd, equipType.Value, slot);
 +			}
  		}
  	}
@@ -415,15 +443,67 @@
  			if (drawinfo.isSitting) {
  				DrawSittingLegs(ref drawinfo, TextureAssets.Players[drawinfo.skinVar, 14].Value, drawinfo.colorShirt, 0, drawinfo.drawPlayer.legs, default(Vector2), skin: true);
  				return;
-@@ -1753,6 +_,8 @@
- 				break;
- 		}
+@@ -1645,19 +_,22 @@
+ 		if (matchingBodyExtension2 != -1) {
+ 			Main.instance.LoadArmorLegs(matchingBodyExtension2);
+ 			if (drawinfo.isSitting && !ArmorIDs.Legs.Sets.DoesNotSupportSittingDraw[matchingBodyExtension2]) {
+-				DrawSittingLegs(ref drawinfo, TextureAssets.ArmorLeg[matchingBodyExtension2].Value, drawinfo.colorArmorBody, drawinfo.cCoat, matchingBodyExtension2);
++				DrawSittingLegs(ref drawinfo, TextureAssets.ArmorLeg[matchingBodyExtension2].Value, drawinfo.colorArmorBody, drawinfo.cCoat, matchingBodyExtension2, equipType: EquipType.Coat);
+ 				return;
+ 			}
  
-+		// TODO: There is no support for modded long coats yet. Robes replace legs, long coats add an additional leg texture drawn over normal legs.
-+
- 		return result;
+ 			DrawData cdd = new DrawData(TextureAssets.ArmorLeg[matchingBodyExtension2].Value, new Vector2((int)(drawinfo.Position.X - Main.screenPosition.X - (float)(drawinfo.drawPlayer.legFrame.Width / 2) + (float)(drawinfo.drawPlayer.width / 2)), (int)(drawinfo.Position.Y - Main.screenPosition.Y + (float)drawinfo.drawPlayer.height - (float)drawinfo.drawPlayer.legFrame.Height + 4f)) + drawinfo.drawPlayer.legPosition + drawinfo.legVect, drawinfo.drawPlayer.legFrame, drawinfo.colorArmorBody, drawinfo.drawPlayer.legRotation, drawinfo.legVect, 1f, drawinfo.playerEffect);
+ 			cdd.shader = drawinfo.cCoat;
+-			DrawLongCoat(ref drawinfo, ref cdd, matchingBodyExtension2);
++			DrawLongCoat(ref drawinfo, ref cdd, matchingBodyExtension2, EquipType.Coat);
+ 		}
  	}
  
+-	private static void DrawLongCoat(ref PlayerDrawSet drawinfo, ref DrawData cdd, int specialLegCoat)
++	private static void DrawLongCoat(ref PlayerDrawSet drawinfo, ref DrawData cdd, int specialLegCoat, EquipType? equipType = null)
+ 	{
++		if (equipType == EquipType.Coat)
++			ItemLoader.ModifyEquipTextureDraw(ref drawinfo, ref cdd, EquipType.Coat, drawinfo.drawPlayer.coat);
++		else
+-		drawinfo.DrawDataCache.Add(cdd);
++			drawinfo.DrawDataCache.Add(cdd);
+ 		if (specialLegCoat == 238) {
+ 			DrawData item = cdd;
+ 			item.texture = TextureAssets.GlowMask[363].Value;
+@@ -1671,11 +_,15 @@
+ 
+ 	public static int GetMatchingBodyExtensionBack(ref PlayerDrawSet drawinfo, int bodyValue)
+ 	{
++		/* VanillaCode:
+ 		int result = -1;
+ 		if (bodyValue == 251)
+ 			result = 239;
+ 
+ 		return result;
++		*/
++		// TML: Allow each Coat equip texture to select a back lower extension.
++		return (uint)bodyValue < ArmorIDs.Coat.Sets.BackToLegExtension.Length ? ArmorIDs.Coat.Sets.BackToLegExtension[bodyValue] : -1;
+ 	}
+ 
+ 	public static int GetMatchingBodyExtension(ref PlayerDrawSet drawinfo, int bodyValue)
+@@ -1748,10 +_,17 @@
+ 			case 81:
+ 				result = 169;
+ 				break;
++			/* VanillaCode:
+ 			case 251:
+ 				result = 238;
+ 				break;
++			*/
+ 		}
++
++		// TML: Coat extensions add a leg texture over normal legs instead of replacing them like robes.
++		int coatExtension = (uint)bodyValue < ArmorIDs.Coat.Sets.FrontToLegExtension.Length ? ArmorIDs.Coat.Sets.FrontToLegExtension[bodyValue] : -1;
++		if (coatExtension != -1)
++			result = coatExtension;
+ 
+ 		return result;
+ 	}
 @@ -1761,7 +_,7 @@
  		if (drawinfo.usesCompositeTorso) {
  			DrawPlayer_17_TorsoComposite(ref drawinfo);
@@ -455,6 +535,23 @@
  			flag = true;
  			if (!drawinfo.drawPlayer.invis || IsArmorDrawnWhenInvisible(drawinfo.drawPlayer.body)) {
  				Texture2D value = TextureAssets.ArmorBodyComposite[drawinfo.drawPlayer.body].Value;
+@@ -1847,11 +_,15 @@
+ 			drawinfo.DrawDataCache.Add(new DrawData(TextureAssets.Players[drawinfo.skinVar, 6].Value, vector, drawinfo.compTorsoFrame, drawinfo.colorShirt, bodyRotation, drawinfo.bodyVect, 1f, drawinfo.playerEffect));
+ 		}
+ 
++		/* VanillaCode:
+ 		if (drawinfo.drawPlayer.coat > 0 && drawinfo.drawPlayer.coat < ArmorIDs.Body.Count && (!drawinfo.drawPlayer.invis || IsArmorDrawnWhenInvisible(drawinfo.drawPlayer.coat))) {
++		*/
++		// TML: Modded coat slots extend beyond ArmorIDs.Body.Count.
++		if (drawinfo.drawPlayer.coat > 0 && (!drawinfo.drawPlayer.invis || IsArmorDrawnWhenInvisible(drawinfo.drawPlayer.coat))) {
+ 			Texture2D value3 = TextureAssets.ArmorBodyComposite[drawinfo.drawPlayer.coat].Value;
+ 			DrawCompositeArmorPiece(ref drawinfo, CompositePlayerDrawContext.Torso, new DrawData(value3, vector, drawinfo.compTorsoFrame, drawinfo.colorArmorBody, bodyRotation, drawinfo.bodyVect, 1f, drawinfo.playerEffect) {
+ 				shader = drawinfo.cCoat
+-			}, drawinfo.drawPlayer.coat);
++			}, drawinfo.drawPlayer.coat, EquipType.Coat);
+ 		}
+ 
+ 		if (drawinfo.drawFloatingTube) {
 @@ -1863,9 +_,10 @@
  
  	public static void DrawPlayer_18_OffhandAcc(ref PlayerDrawSet drawinfo)
@@ -822,7 +919,20 @@
  		int num2 = (drawinfo.compShoulderOverFrontArm ? 1 : 0);
  		int num3 = ((!drawinfo.compShoulderOverFrontArm) ? 1 : 0);
  		int num4 = ((!drawinfo.compShoulderOverFrontArm) ? 1 : 0);
-@@ -3475,7 +_,7 @@
+@@ -3464,18 +_,18 @@
+ 				if (k == num2 && !drawinfo.hideCompositeShoulders) {
+ 					DrawCompositeArmorPiece(ref drawinfo, CompositePlayerDrawContext.FrontShoulder, new DrawData(value5, position, drawinfo.compFrontShoulderFrame, drawinfo.colorArmorBody, bodyRotation, bodyVect, 1f, drawinfo.playerEffect) {
+ 						shader = drawinfo.cCoat
+-					}, drawinfo.drawPlayer.coat);
++					}, drawinfo.drawPlayer.coat, EquipType.Coat);
+ 				}
+ 
+ 				if (k == num3) {
+ 					DrawCompositeArmorPiece(ref drawinfo, CompositePlayerDrawContext.FrontArm, new DrawData(value5, vector, drawinfo.compFrontArmFrame, drawinfo.colorArmorBody, rotation, bodyVect, 1f, drawinfo.playerEffect) {
+ 						shader = drawinfo.cCoat
+-					}, drawinfo.drawPlayer.coat);
++					}, drawinfo.drawPlayer.coat, EquipType.Coat);
+ 				}
  			}
  		}
  
