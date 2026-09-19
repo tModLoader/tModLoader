@@ -82,6 +82,28 @@ internal static class SourceManagement
 				TryWriteModTemplateFile(modSrcDirectory, resourceKey.Substring(TemplateResourcePrefix.Length), templateParameters);
 			}
 		}
+
+		// In addition to the default en-US localization template, create a matching localization
+		// file for the currently selected language so new mods are immediately ready to edit in-game.
+		TryWriteActiveCultureLocalizationTemplateFile(modSrcDirectory, templateParameters);
+	}
+
+	private static void TryWriteActiveCultureLocalizationTemplateFile(string modSrcDirectory, TemplateParameters templateParameters)
+	{
+		string activeCultureName = Language.ActiveCulture?.Name;
+		string defaultCultureName = GameCulture.DefaultCulture?.Name;
+
+		// The default culture file is already written by the template itself.
+		if (string.IsNullOrEmpty(activeCultureName) || string.IsNullOrEmpty(defaultCultureName) || string.Equals(activeCultureName, defaultCultureName, StringComparison.OrdinalIgnoreCase)) {
+			return;
+		}
+
+		string defaultLocalizationPath = Path.Combine(modSrcDirectory, "Localization", $"{defaultCultureName}_Mods.{templateParameters.ModName}.hjson");
+		string activeCultureLocalizationPath = Path.Combine(modSrcDirectory, "Localization", $"{activeCultureName}_Mods.{templateParameters.ModName}.hjson");
+
+		if (File.Exists(defaultLocalizationPath) && !File.Exists(activeCultureLocalizationPath)) {
+			File.Copy(defaultLocalizationPath, activeCultureLocalizationPath);
+		}
 	}
 
 	/// <summary> Writes a single mod template file to the provided source-code directory. </summary>
