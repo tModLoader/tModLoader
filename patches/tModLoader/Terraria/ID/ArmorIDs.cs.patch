@@ -180,7 +180,7 @@
  			public static bool[] DisableBeltAccDraw = Factory.CreateBoolSet(83, 82);
  		}
  
-@@ -567,14 +_,25 @@
+@@ -567,14 +_,50 @@
  		public const int PalworldPalMetalArmorBody = 260;
  		public const int LunasBody = 261;
  		public static readonly int Count = 262;
@@ -188,13 +188,37 @@
 +		public static IdDictionary Search = IdDictionary.Create<Body, int>();
  	}
  
++	/// <summary>
++	/// Contains IDs and sets for coat equipment textures. Vanilla coat textures use IDs from <see cref="Body"/>, while modded IDs can be obtained through <see cref="Search"/> or <see cref="EquipLoader.GetEquipSlot"/>.
++	/// </summary>
 -	public class Legs
-+	public partial class Legs
++	public class Coat
  	{
--		public class Sets
-+		public partial class Sets
+ 		public class Sets
  		{
 -			public static SetFactory Factory = new SetFactory(Count);
++			public static SetFactory Factory = new SetFactory(EquipLoader.nextEquip[EquipType.Coat], $"{nameof(ArmorIDs)}.{nameof(Coat)}", Search);
++
++			/// <summary>
++			/// The <see cref="Legs"/> equip texture drawn as the front lower extension of this coat.
++			/// <br/> Defaults to -1, meaning no front extension is drawn.
++			/// </summary>
++			public static int[] FrontToLegExtension = Factory.CreateIntSet(-1, Body.ChickenBonesRobe, Legs.ChickenBonesRobeExtension);
++
++			/// <summary>
++			/// The <see cref="Legs"/> equip texture drawn as the back lower extension of this coat.
++			/// <br/> Defaults to -1, meaning no back extension is drawn.
++			/// </summary>
++			public static int[] BackToLegExtension = Factory.CreateIntSet(-1, Body.ChickenBonesRobe, Legs.ChickenBonesRobeExtensionBack);
++		}
++
++		public static IdDictionary Search = IdDictionary.Create<Coat, int>();
++	}
++
++	public partial class Legs
++	{
++		public partial class Sets
++		{
 +			public static SetFactory Factory = new SetFactory(EquipLoader.nextEquip[EquipType.Legs], $"{nameof(ArmorIDs)}.{nameof(Legs)}", Search);
 +
 +			/// <summary>

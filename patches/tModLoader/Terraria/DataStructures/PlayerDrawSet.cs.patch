@@ -123,12 +123,13 @@
  
  		drawPlayer.GetHairSettings(out fullHair, out hatHair, out hideHair, out backHairDraw, out drawsBackHairWithoutHeadgear);
  		hairDyePacked = PlayerDrawHelper.PackShader(drawPlayer.hairDye, PlayerDrawHelper.ShaderConfiguration.HairShader);
-@@ -597,6 +_,11 @@
+@@ -597,6 +_,12 @@
  			colorArmorLegs = drawPlayer.GetImmuneAlphaPure(new Color(b14, b14, b14, 255), shadow);
  		}
  
 +		ItemLoader.DrawArmorColor(EquipType.Head, drawPlayer.head, drawPlayer, shadow, ref colorArmorHead, ref headGlowMask, ref headGlowColor);
 +		ItemLoader.DrawArmorColor(EquipType.Body, drawPlayer.body, drawPlayer, shadow, ref colorArmorBody, ref bodyGlowMask, ref bodyGlowColor);
++		ItemLoader.DrawArmorColor(EquipType.Coat, drawPlayer.coat, drawPlayer, shadow, ref colorArmorBody, ref bodyGlowMask, ref bodyGlowColor);
 +		ItemLoader.ArmorArmGlowMask(drawPlayer.body, drawPlayer, shadow, ref armGlowMask, ref armGlowColor);
 +		ItemLoader.DrawArmorColor(EquipType.Legs, drawPlayer.legs, drawPlayer, shadow, ref colorArmorLegs, ref legsGlowMask, ref legsGlowColor);
 +
@@ -185,7 +186,7 @@
  		drawAngelHalo = drawPlayer.hasAngelHalo;
  		drawFrontAccInNeckAccLayer = false;
 -		if (drawPlayer.front > 0 && drawPlayer.front < ArmorIDs.Front.Count) {
-+		if (drawPlayer.front > 0) {		
++		if (drawPlayer.front > 0) {
  			if (ArmorIDs.Front.Sets.DrawsInNeckLayerRegardlessOfPlayerFrame[drawPlayer.front])
  				drawFrontAccInNeckAccLayer = true;
  			else if (drawPlayer.bodyFrame.Y / drawPlayer.bodyFrame.Height == 5 && ArmorIDs.Front.Sets.DrawsInNeckLayer[drawPlayer.front])

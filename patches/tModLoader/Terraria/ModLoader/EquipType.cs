@@ -20,4 +20,8 @@ public enum EquipType
 	Face,
 	Balloon,
 	Beard,
+	/// <summary>
+	/// An outer body layer drawn over the equipped body armor using the body composite texture layout.
+	/// </summary>
+	Coat,
 }

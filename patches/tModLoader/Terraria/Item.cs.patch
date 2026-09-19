@@ -473,7 +473,7 @@
  	public sbyte handOnSlot = -1;
  	public sbyte handOffSlot = -1;
  	public sbyte backSlot = -1;
-@@ -135,48 +_,276 @@
+@@ -135,48 +_,282 @@
  	public sbyte balloonSlot = -1;
  	public sbyte beardSlot = -1;
  	public sbyte voiceSlot;
@@ -506,6 +506,12 @@
 +	public int balloonSlot = -1;
 +	/// <inheritdoc cref="handOnSlot"/>
 +	public int beardSlot = -1;
++	/// <summary>
++	/// The coat equipment slot for this item (<see cref="ArmorIDs.Body"/>). When this item is equipped, <see cref="Player.coat"/> will be set to this value and the corresponding equipment texture will be displayed over the player's body armor.
++	/// <br/><br/> For <see cref="ModItem"/>, this is set automatically using <see cref="AutoloadEquip"/> with <see cref="EquipType.Coat"/>.
++	/// <br/><br/> Defaults to -1.
++	/// </summary>
++	public int coatSlot = -1;
 +	/// <inheritdoc cref="handOnSlot"/>
 +	public int voiceSlot = -1;
  	public int stringColor;
@@ -1308,6 +1314,15 @@
  				useStyle = 5;
  				autoReuse = true;
  				useAnimation = 30;
+@@ -43469,6 +_,8 @@
+ 				height = 30;
+ 				accessory = true;
+ 				vanity = true;
++				// TML: Expose the vanilla coat visual through the same field used by modded Coat equip textures.
++				coatSlot = ArmorIDs.Body.ChickenBonesRobe;
+ 				break;
+ 			case 5588:
+ 				DefaultToHeadgear(18, 18, 285);
 @@ -47272,6 +_,19 @@
  		voiceSlot = voiceOverrideID;
  	}
@@ -1890,6 +1905,15 @@
  		placeStyle = 0;
  		buffTime = 0;
  		buffType = 0;
+@@ -48416,6 +_,8 @@
+ 		faceSlot = -1;
+ 		balloonSlot = -1;
+ 		beardSlot = -1;
++		// TML: Reset the mod-extensible coat equipment slot.
++		coatSlot = -1;
+ 		voiceSlot = 0;
+ 		uniqueStack = false;
+ 		favorited = false;
 @@ -48541,6 +_,9 @@
  
  	public Color GetAlpha(Color newColor)
