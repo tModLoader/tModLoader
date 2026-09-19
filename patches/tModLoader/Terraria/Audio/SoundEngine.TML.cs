@@ -39,7 +39,7 @@ partial class SoundEngine
 			return SlotId.Invalid;
 		}
 
-		return SoundPlayer.Play(in style, position, updateCallback);
+		return SoundPlayer.Play(in style, XYToOptionalPosition(position), updateCallback);
 	}
 
 	/// <inheritdoc cref="SoundPlayer.TryGetActiveSound(SlotId, out ActiveSound?)"/>
@@ -58,7 +58,7 @@ partial class SoundEngine
 	internal static SoundEffectInstance? PlaySound(SoundStyle? style, Vector2? position = null, float pitchOffset = 0, float volumeScale = 1)
 	{
 		style = style?.WithPitchOffset(pitchOffset).WithVolumeScale(volumeScale);
-		var slotId = PlaySound(in style, position);
+		var slotId = PlaySound(in style, XYToOptionalPosition(position));
 
 		return slotId.IsValid ? GetActiveSound(slotId)?.Sound : null;
 	}
@@ -97,4 +97,7 @@ partial class SoundEngine
 
 	private static Vector2? XYToOptionalPosition(int x, int y)
 		=> x != -1 || y != -1 ? new Vector2(x, y) : null;
+
+	private static Vector2? XYToOptionalPosition(Vector2? position)
+		=> (position.HasValue && position.Value.X == -1 && position.Value.Y == -1) ? null : position;
 }
