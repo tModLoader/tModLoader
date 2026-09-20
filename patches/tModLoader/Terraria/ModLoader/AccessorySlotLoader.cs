@@ -378,7 +378,8 @@ public class AccessorySlotLoader : Loader<ModAccessorySlot>
 				}
 			}
 
-			ItemSlot.MouseHover(items, Math.Abs(context), slot);
+			// Keep modded slot contexts negative so ItemSlot.MouseHover doesn't treat them as vanilla loadout-share slots.
+			ItemSlot.MouseHover(items, context, slot);
 
 			if (context < 0) {
 				OnHover(slot, context);
@@ -391,7 +392,7 @@ public class AccessorySlotLoader : Loader<ModAccessorySlot>
 
 				// TODO: We could also show the name of an UnloadedAccessorySlot in the tooltip.
 
-				// Debug Code: 
+				// Debug Code:
 				//Main.hoverItemName += " - Slot #" + slot;
 			}
 		}

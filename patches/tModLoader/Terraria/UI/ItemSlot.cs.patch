@@ -45,17 +45,19 @@
  	private static bool[] canFavoriteAt;
  	private static bool[] retainFavoriteOnMoveAt;
  	public static bool[] canLoadoutShareAt;
-@@ -449,6 +_,9 @@
+@@ -449,6 +_,11 @@
  		return false;
  	}
  
 +	// Helper added by TML
 +	private static bool IsAccessoryContext(int context) => Math.Abs(context) is Context.EquipAccessory or Context.EquipAccessoryVanity;
++	internal static bool IsModdedLoadoutShareContext(int context) => context is Context.ModdedAccessorySlot or Context.ModdedVanityAccessorySlot or Context.ModdedDyeSlot;
++	internal static bool CanModdedLoadoutShare(int context, int slot) => IsModdedLoadoutShareContext(context) && AccessorySlotLoader.ModSlotPlayer(Main.LocalPlayer).CanLoadoutShare(context, slot);
 +
  	public static void Handle(Item[] inv, int context = 0, int slot = 0, bool allowInteract = true)
  	{
  		OverrideHover(inv, context, slot);
-@@ -465,6 +_,10 @@
+@@ -465,16 +_,21 @@
  		if (!PlayerInput.UsingGamepad)
  			UILinkPointNavigator.SuggestUsage(GetGamepadPointForSlot(inv, context, slot));
  
@@ -66,6 +68,19 @@
  		if (inv[slot].IsAir)
  			return;
  
+ 		if (Main.keyState.IsKeyDown(Main.FavoriteKey)) {
+-			if (Main.drawingPlayerChat && canShareAt[context]) {
++			if (Main.drawingPlayerChat && context >= 0 && canShareAt[context]) {
+ 				Main.cursorOverride = 2;
+ 				return;
+ 			}
+ 
+-			if (canFavoriteAt[context] || canLoadoutShareAt[context]) {
++			// VanillaCode: if (canFavoriteAt[context] || canLoadoutShareAt[context]) {
++			if (context >= 0 && (canFavoriteAt[context] || canLoadoutShareAt[context]) || CanModdedLoadoutShare(context, slot)) {
+ 				Main.cursorOverride = 3;
+ 				return;
+ 			}
 @@ -493,7 +_,7 @@
  
  		bool flag = Options.DisableLeftShiftTrashCan && !PlayerInput.UsingGamepad;
@@ -88,13 +103,20 @@
  		if (Main.cursorOverride == 2) {
  			if (ChatManager.AddChatText(FontAssets.MouseText.Value, ItemTagHandler.GenerateTag(item), Vector2.One))
  				SoundEngine.PlaySound(12);
-@@ -574,7 +_,7 @@
+@@ -574,12 +_,13 @@
  		}
  
  		if (Main.cursorOverride == 3) {
 -			if (canFavoriteAt[context]) {
-+			if (canFavoriteAt[Math.Abs(context)]) {
++			if (context >= 0 && canFavoriteAt[context]) {
  				ToggleFavorited(item);
+ 				return true;
+ 			}
+ 
+-			if (canLoadoutShareAt[context]) {
++			// VanillaCode: if (canLoadoutShareAt[context]) {
++			if (context >= 0 && canLoadoutShareAt[context] || CanModdedLoadoutShare(context, slot)) {
+ 				ToggleLoadoutShare(inv, context, slot);
  				return true;
  			}
 @@ -605,8 +_,11 @@
@@ -142,6 +164,18 @@
  			}
  
  			return true;
+@@ -711,6 +_,11 @@
+ 
+ 	private static void ClearSlotShareInOtherLoadouts(Item[] inv, int context, int slot)
+ 	{
++		if (IsModdedLoadoutShareContext(context)) {
++			AccessorySlotLoader.ModSlotPlayer(Main.LocalPlayer).ClearSlotShareInOtherLoadouts(context, slot);
++			return;
++		}
++
+ 		EquipmentLoadout[] loadouts = Main.LocalPlayer.Loadouts;
+ 		foreach (EquipmentLoadout equipmentLoadout in loadouts) {
+ 			Item[] array;
 @@ -756,14 +_,26 @@
  					inv[slot].SetDefaults(0);
  				}
@@ -315,6 +349,86 @@
  					Main.mouseItem.stack = (Main.mouseItem.OnlyNeedOneInInventory() ? 1 : Main.mouseItem.maxStack);
  					Main.mouseItem.OnCreated(new JourneyDuplicationItemCreationContext());
  					AnnounceTransfer(new ItemTransferInfo(inv[slot], 29, 21));
+@@ -1012,7 +_,8 @@
+ 	private static void MouseItemSwap(ref Item slot, int context)
+ 	{
+ 		Utils.Swap(ref slot, ref Main.mouseItem);
+-		if (!retainFavoriteOnMoveAt[context]) {
++		// VanillaCode: if (!retainFavoriteOnMoveAt[context]) {
++		if (!retainFavoriteOnMoveAt[Math.Abs(context)]) {
+ 			slot.favorited = false;
+ 			Main.mouseItem.favorited = false;
+ 		}
+@@ -1072,6 +_,19 @@
+ 				case 12:
+ 					result = Main.LocalPlayer.IsItemSlotUnlockedAndUsable(slot) && checkItem.dye > 0;
+ 					break;
++				case Context.ModdedAccessorySlot:
++				case Context.ModdedVanityAccessorySlot: {
++					bool vanity = context == Context.ModdedVanityAccessorySlot;
++					result = checkItem.vanity == vanity && CanEquipInModdedAccessorySlot(checkItem, slot, context, vanity);
++					break;
++				}
++				case Context.ModdedDyeSlot: {
++					AccessorySlotLoader accessorySlotLoader = LoaderManager.Get<AccessorySlotLoader>();
++					result = checkItem.dye > 0
++						&& accessorySlotLoader.ModdedIsItemSlotUnlockedAndUsable(slot, Main.LocalPlayer)
++						&& accessorySlotLoader.CanAcceptItem(slot, checkItem, context);
++					break;
++				}
+ 				case 25:
+ 				case 27:
+ 				case 33:
+@@ -1130,6 +_,19 @@
+ 				case 12:
+ 					flag = !Main.LocalPlayer.IsItemSlotUnlockedAndUsable(slot) || checkItem.dye <= 0;
+ 					break;
++				case Context.ModdedAccessorySlot:
++				case Context.ModdedVanityAccessorySlot: {
++					bool vanity = context == Context.ModdedVanityAccessorySlot;
++					flag = !CanEquipInModdedAccessorySlot(checkItem, slot, context, vanity);
++					break;
++				}
++				case Context.ModdedDyeSlot: {
++					AccessorySlotLoader accessorySlotLoader = LoaderManager.Get<AccessorySlotLoader>();
++					flag = checkItem.dye <= 0
++						|| !accessorySlotLoader.ModdedIsItemSlotUnlockedAndUsable(slot, Main.LocalPlayer)
++						|| !accessorySlotLoader.CanAcceptItem(slot, checkItem, context);
++					break;
++				}
+ 				case 25:
+ 				case 27:
+ 				case 33:
+@@ -1168,6 +_,16 @@
+ 			itemFade = 0.5f;
+ 	}
+ 
++	private static bool CanEquipInModdedAccessorySlot(Item checkItem, int slot, int context, bool vanity)
++	{
++		if (!checkItem.accessory)
++			return false;
++
++		AccessorySlotLoader accessorySlotLoader = LoaderManager.Get<AccessorySlotLoader>();
++		return accessorySlotLoader.ModdedIsSpecificItemSlotUnlockedAndUsable(slot, Main.LocalPlayer, vanity)
++			&& accessorySlotLoader.ModSlotCheck(checkItem, slot, context);
++	}
++
+ 	public static bool CanEquipInArmorSlot(Player player, Item checkItem, int slot)
+ 	{
+ 		bool num = slot % 10 < 3;
+@@ -1262,6 +_,12 @@
+ 				if (checkItem.type == 0 || CanEquipInArmorSlot(Main.LocalPlayer, checkItem, slot))
+ 					result = 1;
+ 				break;
++			case Context.ModdedAccessorySlot:
++			case Context.ModdedVanityAccessorySlot:
++				// VanillaCode: Modded accessory slots did not exist in vanilla PickItemMovementAction.
++				if (checkItem.type == 0 || LoaderManager.Get<AccessorySlotLoader>().ModSlotCheck(checkItem, slot, context))
++					result = 1;
++				break;
+ 			case 23:
+ 				if (checkItem.type == 0 || (checkItem.headSlot > 0 && slot == 0) || (checkItem.bodySlot > 0 && slot == 1) || (checkItem.legSlot > 0 && slot == 2))
+ 					result = 1;
 @@ -1278,6 +_,7 @@
  				break;
  			}
@@ -323,7 +437,7 @@
  			case 25:
  			case 27:
  			case 33:
-@@ -1349,10 +_,19 @@
+@@ -1349,21 +_,31 @@
  				return;
  
  			if (Main.mouseItem.IsAir || !Item.CanStack(inv[slot], Main.mouseItem)) {
@@ -343,7 +457,12 @@
  					return;
  				}
  
-@@ -1363,7 +_,7 @@
+-				if (!PlayerInput.UsingGamepadUI && canItemSwapAt[context] && inv[slot].stack == 1 && ItemID.Sets.HasItemSwap[inv[slot].type]) {
++				// VanillaCode: if (!PlayerInput.UsingGamepadUI && canItemSwapAt[context] && inv[slot].stack == 1 && ItemID.Sets.HasItemSwap[inv[slot].type]) {
++				if (!PlayerInput.UsingGamepadUI && context >= 0 && canItemSwapAt[context] && inv[slot].stack == 1 && ItemID.Sets.HasItemSwap[inv[slot].type]) {
+ 					if (Main.mouseRightRelease)
+ 						TryItemSwap(inv[slot]);
+ 
  					return;
  				}
  
@@ -523,6 +642,23 @@
  		}
  	}
  
+@@ -1769,12 +_,14 @@
+ 		Color color2 = Main.inventoryBack;
+ 		bool flag3 = false;
+ 		bool highlightThingsForMouse = PlayerInput.SettingsForUI.HighlightThingsForMouse;
+-		if (!item.IsAir && item.favorited && retainFavoriteOnMoveAt[context]) {
++		// VanillaCode: if (!item.IsAir && item.favorited && retainFavoriteOnMoveAt[context]) {
++		if (!item.IsAir && item.favorited && context >= 0 && retainFavoriteOnMoveAt[context]) {
+ 			value = TextureAssets.InventoryBack10.Value;
+ 			if (context == 32)
+ 				value = TextureAssets.InventoryBack19.Value;
+ 		}
+-		else if (!item.IsAir && (DrawNewAndShinyHighlightOverride || (Options.HighlightNewItems && item.newAndShiny && !hideNewAndShinyHighlightAt[context] && !ItemID.Sets.NeverAppearsAsNewInInventory[item.type]))) {
++		// VanillaCode: else if (!item.IsAir && (DrawNewAndShinyHighlightOverride || (Options.HighlightNewItems && item.newAndShiny && !hideNewAndShinyHighlightAt[context] && !ItemID.Sets.NeverAppearsAsNewInInventory[item.type]))) {
++		else if (!item.IsAir && (DrawNewAndShinyHighlightOverride || (Options.HighlightNewItems && item.newAndShiny && (context < 0 || !hideNewAndShinyHighlightAt[context]) && !ItemID.Sets.NeverAppearsAsNewInInventory[item.type]))) {
+ 			value = TextureAssets.InventoryBack15.Value;
+ 			float num2 = (float)(int)Main.mouseTextColor / 255f;
+ 			num2 = num2 * 0.2f + 0.8f;
 @@ -1824,6 +_,16 @@
  					value = TextureAssets.InventoryBack13.Value;
  					color2 = GetColorByLoadout(slot, context);
@@ -540,6 +676,25 @@
  				case 3:
  					value = TextureAssets.InventoryBack5.Value;
  					break;
+@@ -1988,7 +_,7 @@
+ 				color4 = new Color(45, 85, 105, color2.A);
+ 			}
+ 			else if (value == TextureAssets.InventoryBack13.Value) {
+-				TryGetSlotColor(Main.LocalPlayer.CurrentLoadoutIndex, context, out color4);
++				TryGetSlotColor(Main.LocalPlayer.CurrentLoadoutIndex, GetSlotColorContext(context), out color4);
+ 				color4.A = color2.A;
+ 			}
+ 
+@@ -1996,7 +_,8 @@
+ 			spriteBatch.Draw(TextureAssets.InventoryBack22.Value, position, null, color4, 0f, default(Vector2), inventoryScale, SpriteEffects.None, 0f);
+ 		}
+ 		else if (!item.IsAir && item.favorited) {
+-			_ = canLoadoutShareAt[context];
++			// VanillaCode: _ = canLoadoutShareAt[context];
++			_ = context >= 0 && canLoadoutShareAt[context] || CanModdedLoadoutShare(context, slot);
+ 		}
+ 
+ 		int num15 = -1;
 @@ -2034,6 +_,16 @@
  			case 33:
  				num15 = 1;
@@ -557,12 +712,13 @@
  			case 16:
  				num15 = 4;
  				break;
-@@ -2058,7 +_,7 @@
+@@ -2058,7 +_,8 @@
  		int num16 = -1;
  		float num17 = 1f;
  		int num18 = -1;
 -		if (canLoadoutShareAt[context]) {
-+		if (canLoadoutShareAt[Math.Abs(context)]) {
++		// VanillaCode: if (canLoadoutShareAt[Math.Abs(context)]) {
++		if (context >= 0 && canLoadoutShareAt[context] || CanModdedLoadoutShare(context, slot)) {
  			int? sharedFromLoadout;
  			Item sharedLoadoutItem = GetSharedLoadoutItem(context, slot, out sharedFromLoadout);
  			if (item.IsAir && sharedFromLoadout.HasValue) {
@@ -613,6 +769,36 @@
  			if (num18 != -1) {
  				float num25 = 0.7f;
  				int num26 = (int)MathHelper.Clamp(310 + num18, 310f, 312f);
+@@ -2331,6 +_,14 @@
+ 			UILinkPointNavigator.SetPosition(gamepadPointForSlot, position + vector * 0.75f);
+ 	}
+ 
++	private static int GetSlotColorContext(int context) => context switch
++	{
++		Context.ModdedAccessorySlot => Context.EquipAccessory,
++		Context.ModdedVanityAccessorySlot => Context.EquipAccessoryVanity,
++		Context.ModdedDyeSlot => Context.EquipDye,
++		_ => context
++	};
++
+ 	public static Color GetColorByLoadout(int slot, int context)
+ 	{
+ 		Color color = Color.White;
+@@ -2383,6 +_,14 @@
+ 
+ 	public static Item GetSharedLoadoutItem(int context, int slot, out int? sharedFromLoadout)
+ 	{
++		if (IsModdedLoadoutShareContext(context))
++			return AccessorySlotLoader.ModSlotPlayer(Main.LocalPlayer).GetSharedLoadoutItem(context, slot, out sharedFromLoadout);
++
++		sharedFromLoadout = null;
++
++		if (context < 0)
++			return new Item();
++
+ 		if (context != 12)
+ 			return Main.LocalPlayer.GetEffectiveArmor(slot, out sharedFromLoadout);
+ 
 @@ -2421,6 +_,10 @@
  
  		Vector2 origin = frame.Size() / 2f;
@@ -662,6 +848,16 @@
  			case 19:
  				result = 180;
  				break;
+@@ -2691,7 +_,8 @@
+ 			Main.hoverItemName = Lang.inter[3].Value;
+ 
+ 		Item item = inv[slot];
+-		if (canLoadoutShareAt[context] && item.IsAir)
++		// VanillaCode: if (canLoadoutShareAt[context] && item.IsAir)
++		if ((context >= 0 && canLoadoutShareAt[context] || CanModdedLoadoutShare(context, slot)) && item.IsAir)
+ 			item = GetSharedLoadoutItem(context, slot, out var _);
+ 
+ 		if (!item.IsAir) {
 @@ -2839,7 +_,7 @@
  			if (success) {
  				Main.EquipPageSelected = 0;
@@ -688,14 +884,10 @@
  			return currentColor;
  
  		if (type == 662 || type == 663 || type == 5444 || type == 5450 || type == 5643) {
-@@ -3388,6 +_,18 @@
- 					s += PlayerInput.BuildCommand(Language.GetTextValue("UI.ActionChangeType"), PlayerInput.ProfileGamepadUI.KeyStatus["Grapple"]);
- 					if (CanExecuteCommand() && PlayerInput.Triggers.JustPressed.Grapple) {
- 						TryItemSwap(inv[slot]);
-+						PlayerInput.LockGamepadButtons("Grapple");
-+						PlayerInput.SettingsForUI.TryRevertingToMouseMode();
-+					}
-+				}
+@@ -3392,6 +_,18 @@
+ 						PlayerInput.SettingsForUI.TryRevertingToMouseMode();
+ 					}
+ 				}
 +				// TML: Add a right click path for items that might not want "Open" as the gamepad hint text.
 +				else if (ItemLoader.CanRightClick(inv[slot])) {
 +					s += PlayerInput.BuildCommand(Language.GetTextValue("UI.ActionAltAction"), PlayerInput.ProfileGamepadUI.KeyStatus["Grapple"]);
@@ -704,6 +896,30 @@
 +							TryOpenContainer(inv, context, slot, player);
 +						else
 +							ItemLoader.RightClick(inv[slot], player);
- 						PlayerInput.LockGamepadButtons("Grapple");
- 						PlayerInput.SettingsForUI.TryRevertingToMouseMode();
++						PlayerInput.LockGamepadButtons("Grapple");
++						PlayerInput.SettingsForUI.TryRevertingToMouseMode();
++					}
++				}
+ 				else if (inv[slot].stack == 1 && inv[slot].CanBeEquipped()) {
+ 					s += PlayerInput.BuildCommand(Lang.misc[67].Value, PlayerInput.ProfileGamepadUI.KeyStatus["Grapple"]);
+ 					if (CanExecuteCommand() && PlayerInput.Triggers.JustPressed.Grapple) {
+@@ -3507,7 +_,8 @@
  					}
+ 				}
+ 
+-				if (canLoadoutShareAt[context]) {
++				// VanillaCode: if (canLoadoutShareAt[context]) {
++				if (context >= 0 && canLoadoutShareAt[context] || CanModdedLoadoutShare(context, slot)) {
+ 					s += PlayerInput.BuildCommand(Language.GetTextValue("UI.LoadoutShare"), PlayerInput.ProfileGamepadUI.KeyStatus["SmartCursor"]);
+ 					if (CanExecuteCommand() && PlayerInput.Triggers.JustPressed.SmartCursor) {
+ 						ToggleLoadoutShare(inv, context, slot);
+@@ -3674,7 +_,8 @@
+ 
+ 		_ = 41;
+ 		if (!Main.mouseItem.IsAir) {
+-			if (canQuickDropAt[context]) {
++			// VanillaCode: if (canQuickDropAt[context]) {
++			if (context >= 0 && canQuickDropAt[context]) {
+ 				s += PlayerInput.BuildCommand(Lang.inter[121].Value, PlayerInput.ProfileGamepadUI.KeyStatus["SmartSelect"]);
+ 				if (CanExecuteCommand() && PlayerInput.Triggers.JustPressed.SmartSelect) {
+ 					player.DropSelectedItem();
