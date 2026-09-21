@@ -8,12 +8,12 @@ public class ProjAIStyleID
 	public static readonly IdDictionary Search = IdDictionary.Create<ProjAIStyleID, short>();
 	/// <summary>
 	/// Behavior: Includes Bullets and Lasers<br/><br/>
-	/// Used by: <see cref="WoodenArrowFriendly"/>, <see cref="FireArrow"/>, <see cref="UnholyArrow"/>, <see cref="JestersArrow"/>, <see cref="Bullet"/>, <see cref="GreenLaser"/>, <see cref="MeteorShot"/>, <see cref="HarpyFeather"/>, <see cref="HellfireArrow"/>, <see cref="Seed"/>, <see cref="Stinger"/>, <see cref="WoodenArrowHostile"/>, <see cref="FlamingArrow"/>, <see cref="EyeLaser"/>, <see cref="PinkLaser"/>, <see cref="PurpleLaser"/>, <see cref="CrystalBullet"/>, <see cref="HolyArrow"/>, <see cref="PoisonDart"/>, <see cref="DeathLaser"/>, <see cref="CursedArrow"/>, <see cref="CursedBullet"/>, <see cref="BulletSnowman"/>, <see cref="BoneArrow"/>, <see cref="FrostArrow"/>, <see cref="CopperCoin"/>, <see cref="SilverCoin"/>, <see cref="GoldCoin"/>, <see cref="PlatinumCoin"/>, <see cref="FrostburnArrow"/>, <see cref="IceSpike"/>, <see cref="JungleSpike"/>, <see cref="ConfettiGun"/>, <see cref="BulletDeadeye"/>, <see cref="PoisonDartTrap"/>, <see cref="PygmySpear"/>, <see cref="ChlorophyteBullet"/>, <see cref="ChlorophyteArrow"/>, <see cref="BulletHighVelocity"/>, <see cref="Stynger"/>, <see cref="FlowerPowPetal"/>, <see cref="FrostBeam"/>, <see cref="EyeBeam"/>, <see cref="PoisonFang"/>, <see cref="PoisonDartBlowgun"/>, <see cref="Skull"/>, <see cref="SeedPlantera"/>, <see cref="PoisonSeedPlantera"/>, <see cref="IchorArrow"/>, <see cref="IchorBullet"/>, <see cref="VenomArrow"/>, <see cref="VenomBullet"/>, <see cref="PartyBullet"/>, <see cref="NanoBullet"/>, <see cref="ExplosiveBullet"/>, <see cref="GoldenBullet"/>, <see cref="ConfettiMelee"/>, <see cref="Shadowflames"/>, <see cref="SniperBullet"/>, <see cref="CandyCorn"/>, <see cref="JackOLantern"/>, <see cref="Stake"/>, <see cref="FlamingWood"/>, <see cref="PineNeedleFriendly"/>, <see cref="Blizzard"/>, <see cref="NorthPoleSnowflake"/>, <see cref="PineNeedleHostile"/>, <see cref="FrostWave"/>, <see cref="FrostShard"/>, <see cref="Missile"/>, <see cref="VenomFang"/>, <see cref="PulseBolt"/>, <see cref="HornetStinger"/>, <see cref="ImpFireball"/>, <see cref="MiniRetinaLaser"/>, <see cref="MiniSharkron"/>, <see cref="Meteor1"/>, <see cref="Meteor2"/>, <see cref="Meteor3"/>, <see cref="MartianTurretBolt"/>, <see cref="BrainScramblerBolt"/>, <see cref="GigaZapperSpear"/>, <see cref="RayGunnerLaser"/>, <see cref="LaserMachinegunLaser"/>, <see cref="ElectrosphereMissile"/>, <see cref="SaucerLaser"/>, <see cref="ChargedBlasterOrb"/>, <see cref="PhantasmalBolt"/>, <see cref="CultistBossFireBall"/>, <see cref="CultistBossFireBallClone"/>, <see cref="BeeArrow"/>, <see cref="WebSpit"/>, <see cref="BoneArrowFromMerchant"/>, <see cref="CrystalDart"/>, <see cref="CursedDart"/>, <see cref="IchorDart"/>, <see cref="SeedlerThorn"/>, <see cref="Hellwing"/>, <see cref="ShadowFlameArrow"/>, <see cref="ProjectileID.Nail"/>, <see cref="JavelinFriendly"/>, <see cref="JavelinHostile"/>, <see cref="BoneGloveProj"/>, <see cref="SalamanderSpit"/>, <see cref="NebulaLaser"/>, <see cref="VortexLaser"/>, <see cref="VortexAcid"/>, <see cref="ClothiersCurse"/>, <see cref="PainterPaintball"/>, <see cref="MartianWalkerLaser"/>, <see cref="AncientDoomProjectile"/>, <see cref="BlowupSmoke"/>, <see cref="PortalGunBolt"/>, <see cref="SpikedSlimeSpike"/>, <see cref="ProjectileID.ScutlixLaser"/>, <see cref="VortexBeaterRocket"/>, <see cref="BlowupSmokeMoonlord"/>, <see cref="NebulaBlaze1"/>, <see cref="NebulaBlaze2"/>, <see cref="MoonlordBullet"/>, <see cref="MoonlordArrow"/>, <see cref="MoonlordArrowTrail"/>, <see cref="LunarFlare"/>, <see cref="SkyFracture"/>, <see cref="BlackBolt"/>, <see cref="DD2JavelinHostile"/>, <see cref="DD2DrakinShot"/>, <see cref="DD2DarkMageBolt"/>, <see cref="DD2OgreSpit"/>, <see cref="DD2BallistraProj"/>, <see cref="DD2LightningBugZap"/>, <see cref="DD2SquireSonicBoom"/>, <see cref="DD2JavelinHostileT3"/>, <see cref="DD2BetsyFireball"/>, <see cref="DD2PhoenixBowShot"/>, <see cref="MonkStaffT3_AltShot"/>, <see cref="DD2BetsyArrow"/>, <see cref="ApprenticeStaffT3Shot"/>, <see cref="BookStaffShot"/>, <see cref="QueenBeeStinger"/>, <see cref="RollingCactusSpike"/>, <see cref="Geode"/>, <see cref="BloodShot"/>, <see cref="BloodNautilusShot"/>, <see cref="BloodArrow"/>, <see cref="BookOfSkullsSkull"/>, <see cref="ZapinatorLaser"/>, <see cref="QueenSlimeMinionBlueSpike"/>, <see cref="QueenSlimeMinionPinkBall"/>, <see cref="QueenSlimeGelAttack"/>, <see cref="VolatileGelatinBall"/>, <see cref="DeerclopsRangedProjectile"/>, <see cref="VenomDartTrap"/>, <see cref="SilverBullet"/>, <see cref="ShimmerArrow"/>, <see cref="DeadCellsBarrel"/>, <see cref="PoisonDartShotFromSlimes"/>, <see cref="PalworldMinionFoxsparksFireball"/>, <see cref="SoundGun"/>
+	/// Used by: <see cref="WoodenArrowFriendly"/>, <see cref="FireArrow"/>, <see cref="UnholyArrow"/>, <see cref="JestersArrow"/>, <see cref="Bullet"/>, <see cref="GreenLaser"/>, <see cref="MeteorShot"/>, <see cref="HarpyFeather"/>, <see cref="HellfireArrow"/>, <see cref="Seed"/>, <see cref="Stinger"/>, <see cref="WoodenArrowHostile"/>, <see cref="FlamingArrow"/>, <see cref="EyeLaser"/>, <see cref="PinkLaser"/>, <see cref="PurpleLaser"/>, <see cref="CrystalBullet"/>, <see cref="HolyArrow"/>, <see cref="PoisonDart"/>, <see cref="DeathLaser"/>, <see cref="CursedArrow"/>, <see cref="CursedBullet"/>, <see cref="BulletSnowman"/>, <see cref="BoneArrow"/>, <see cref="FrostArrow"/>, <see cref="CopperCoin"/>, <see cref="SilverCoin"/>, <see cref="GoldCoin"/>, <see cref="PlatinumCoin"/>, <see cref="FrostburnArrow"/>, <see cref="IceSpike"/>, <see cref="JungleSpike"/>, <see cref="ConfettiGun"/>, <see cref="BulletDeadeye"/>, <see cref="PoisonDartTrap"/>, <see cref="PygmySpear"/>, <see cref="ChlorophyteBullet"/>, <see cref="ChlorophyteArrow"/>, <see cref="BulletHighVelocity"/>, <see cref="Stynger"/>, <see cref="FlowerPowPetal"/>, <see cref="FrostBeam"/>, <see cref="EyeBeam"/>, <see cref="PoisonFang"/>, <see cref="PoisonDartBlowgun"/>, <see cref="Skull"/>, <see cref="SeedPlantera"/>, <see cref="PoisonSeedPlantera"/>, <see cref="IchorArrow"/>, <see cref="IchorBullet"/>, <see cref="VenomArrow"/>, <see cref="VenomBullet"/>, <see cref="PartyBullet"/>, <see cref="NanoBullet"/>, <see cref="ExplosiveBullet"/>, <see cref="GoldenBullet"/>, <see cref="ConfettiMelee"/>, <see cref="Shadowflames"/>, <see cref="SniperBullet"/>, <see cref="CandyCorn"/>, <see cref="JackOLantern"/>, <see cref="Stake"/>, <see cref="FlamingWood"/>, <see cref="PineNeedleFriendly"/>, <see cref="Blizzard"/>, <see cref="NorthPoleSnowflake"/>, <see cref="PineNeedleHostile"/>, <see cref="FrostWave"/>, <see cref="FrostShard"/>, <see cref="Missile"/>, <see cref="VenomFang"/>, <see cref="PulseBolt"/>, <see cref="HornetStinger"/>, <see cref="ImpFireball"/>, <see cref="MiniRetinaLaser"/>, <see cref="MiniSharkron"/>, <see cref="Meteor1"/>, <see cref="Meteor2"/>, <see cref="Meteor3"/>, <see cref="MartianTurretBolt"/>, <see cref="BrainScramblerBolt"/>, <see cref="GigaZapperSpear"/>, <see cref="RayGunnerLaser"/>, <see cref="LaserMachinegunLaser"/>, <see cref="ElectrosphereMissile"/>, <see cref="SaucerLaser"/>, <see cref="ChargedBlasterOrb"/>, <see cref="PhantasmalBolt"/>, <see cref="CultistBossFireBall"/>, <see cref="CultistBossFireBallClone"/>, <see cref="BeeArrow"/>, <see cref="WebSpit"/>, <see cref="BoneArrowFromMerchant"/>, <see cref="CrystalDart"/>, <see cref="CursedDart"/>, <see cref="IchorDart"/>, <see cref="SeedlerThorn"/>, <see cref="Hellwing"/>, <see cref="ShadowFlameArrow"/>, <see cref="ProjectileID.Nail"/>, <see cref="JavelinFriendly"/>, <see cref="JavelinHostile"/>, <see cref="BoneGloveProj"/>, <see cref="SalamanderSpit"/>, <see cref="NebulaLaser"/>, <see cref="VortexLaser"/>, <see cref="VortexAcid"/>, <see cref="ClothiersCurse"/>, <see cref="PainterPaintball"/>, <see cref="MartianWalkerLaser"/>, <see cref="AncientDoomProjectile"/>, <see cref="BlowupSmoke"/>, <see cref="PortalGunBolt"/>, <see cref="SpikedSlimeSpike"/>, <see cref="ProjectileID.ScutlixLaser"/>, <see cref="VortexBeaterRocket"/>, <see cref="BlowupSmokeMoonlord"/>, <see cref="NebulaBlaze1"/>, <see cref="NebulaBlaze2"/>, <see cref="MoonlordBullet"/>, <see cref="MoonlordArrow"/>, <see cref="MoonlordArrowTrail"/>, <see cref="LunarFlare"/>, <see cref="SkyFracture"/>, <see cref="BlackBolt"/>, <see cref="DD2JavelinHostile"/>, <see cref="DD2DrakinShot"/>, <see cref="DD2DarkMageBolt"/>, <see cref="DD2OgreSpit"/>, <see cref="DD2BallistraProj"/>, <see cref="DD2LightningBugZap"/>, <see cref="DD2SquireSonicBoom"/>, <see cref="DD2JavelinHostileT3"/>, <see cref="DD2BetsyFireball"/>, <see cref="DD2PhoenixBowShot"/>, <see cref="MonkStaffT3_AltShot"/>, <see cref="DD2BetsyArrow"/>, <see cref="ApprenticeStaffT3Shot"/>, <see cref="BookStaffShot"/>, <see cref="QueenBeeStinger"/>, <see cref="RollingCactusSpike"/>, <see cref="Geode"/>, <see cref="BloodShot"/>, <see cref="BloodNautilusShot"/>, <see cref="BloodArrow"/>, <see cref="BookOfSkullsSkull"/>, <see cref="ZapinatorLaser"/>, <see cref="QueenSlimeMinionBlueSpike"/>, <see cref="QueenSlimeMinionPinkBall"/>, <see cref="QueenSlimeGelAttack"/>, <see cref="VolatileGelatinBall"/>, <see cref="DeerclopsRangedProjectile"/>, <see cref="VenomDartTrap"/>, <see cref="SilverBullet"/>, <see cref="ShimmerArrow"/>, <see cref="DeadCellsBarrel"/>, <see cref="PoisonDartShotFromSlimes"/>, <see cref="PalworldMinionFoxsparksFireball"/>, <see cref="SoundGun"/>, <see cref="BoneShard"/>
 	/// </summary>
 	public const short Arrow = 1;
 	/// <summary>
 	/// Behavior: Includes Shurikens, Bones, and Knives<br/><br/>
-	/// Used by: <see cref="Shuriken"/>, <see cref="Bone"/>, <see cref="ThrowingKnife"/>, <see cref="PoisonedKnife"/>, <see cref="HolyWater"/>, <see cref="UnholyWater"/>, <see cref="MagicDagger"/>, <see cref="CannonballFriendly"/>, <see cref="SnowBallFriendly"/>, <see cref="CannonballHostile"/>, <see cref="StyngerShrapnel"/>, <see cref="PaladinsHammerHostile"/>, <see cref="VampireKnife"/>, <see cref="EatersBite"/>, <see cref="RottenEgg"/>, <see cref="StarAnise"/>, <see cref="OrnamentHostileShrapnel"/>, <see cref="LovePotion"/>, <see cref="FoulPotion"/>, <see cref="SkeletonBone"/>, <see cref="ShadowFlameKnife"/>, <see cref="DrManFlyFlask"/>, <see cref="Spark"/>, <see cref="ToxicFlask"/>, <see cref="FrostDaggerfish"/>, <see cref="NurseSyringeHurt"/>, <see cref="SantaBombs"/>, <see cref="BoneDagger"/>, <see cref="BloodWater"/>, <see cref="Football"/>, <see cref="TreeGlobe"/>, <see cref="WorldGlobe"/>, <see cref="RockGolemRock"/>, <see cref="GelBalloon"/>, <see cref="WandOfSparkingSpark"/>, <see cref="PewMaticHornShot"/>, <see cref="WandOfFrostingFrost"/>, <see cref="MoonGlobe"/>, <see cref="Waffle"/>, <see cref="PrettyMirror"/>
+	/// Used by: <see cref="Shuriken"/>, <see cref="Bone"/>, <see cref="ThrowingKnife"/>, <see cref="PoisonedKnife"/>, <see cref="HolyWater"/>, <see cref="UnholyWater"/>, <see cref="MagicDagger"/>, <see cref="CannonballFriendly"/>, <see cref="SnowBallFriendly"/>, <see cref="CannonballHostile"/>, <see cref="StyngerShrapnel"/>, <see cref="PaladinsHammerHostile"/>, <see cref="VampireKnife"/>, <see cref="EatersBite"/>, <see cref="RottenEgg"/>, <see cref="StarAnise"/>, <see cref="OrnamentHostileShrapnel"/>, <see cref="LovePotion"/>, <see cref="FoulPotion"/>, <see cref="SkeletonBone"/>, <see cref="ShadowFlameKnife"/>, <see cref="DrManFlyFlask"/>, <see cref="Spark"/>, <see cref="ToxicFlask"/>, <see cref="FrostDaggerfish"/>, <see cref="NurseSyringeHurt"/>, <see cref="SantaBombs"/>, <see cref="BoneDagger"/>, <see cref="BloodWater"/>, <see cref="Football"/>, <see cref="TreeGlobe"/>, <see cref="WorldGlobe"/>, <see cref="RockGolemRock"/>, <see cref="GelBalloon"/>, <see cref="WandOfSparkingSpark"/>, <see cref="PewMaticHornShot"/>, <see cref="WandOfFrostingFrost"/>, <see cref="MoonGlobe"/>, <see cref="Waffle"/>, <see cref="PrettyMirror"/>, <see cref="MeleeBone"/>
 	/// </summary>
 	public const short ThrownProjectile = 2;
 	/// <summary>
@@ -25,7 +25,7 @@ public class ProjAIStyleID
 	/// </summary>
 	public const short Vilethorn = 4;
 	/// <summary>
-	/// Used by: <see cref="Starfury"/>, <see cref="ProjectileID.FallingStar"/>, <see cref="HallowStar"/>, <see cref="StarWrath"/>, <see cref="ManaCloakStar"/>, <see cref="BeeCloakStar"/>, <see cref="StarVeilStar"/>, <see cref="StarCloakStar"/>, <see cref="StarCannonStar"/>, <see cref="MeteorWhipMeteor"/>, <see cref="MeteorStormMeteor"/>
+	/// Used by: <see cref="Starfury"/>, <see cref="ProjectileID.FallingStar"/>, <see cref="HallowStar"/>, <see cref="StarWrath"/>, <see cref="ManaCloakStar"/>, <see cref="BeeCloakStar"/>, <see cref="StarVeilStar"/>, <see cref="StarCloakStar"/>, <see cref="StarCannonStar"/>, <see cref="MeteorWhipMeteor"/>, <see cref="MeteorStormMeteor"/>, <see cref="SnakeBandStarCloakTinkerStar"/>
 	/// </summary>
 	public const short FallingStar = 5;
 	/// <summary>
@@ -110,7 +110,7 @@ public class ProjAIStyleID
 	/// </summary>
 	public const short Flames = 23;
 	/// <summary>
-	/// Used by: <see cref="ProjectileID.CrystalShard"/>, <see cref="CrystalStorm"/>
+	/// Used by: <see cref="ProjectileID.CrystalShard"/>, <see cref="CrystalStorm"/>, <see cref="DaybloomStaffShot"/>, <see cref="CrystalShardMelee"/>
 	/// </summary>
 	public const short CrystalShard = 24;
 	/// <summary>
@@ -119,7 +119,7 @@ public class ProjAIStyleID
 	public const short Boulder = 25;
 	/// <summary>
 	/// Behavior: Includes some minions with simple AI, such as the Baby Slime<br/><br/>
-	/// Used by: <see cref="Bunny"/>, <see cref="Penguin"/>, <see cref="Turtle"/>, <see cref="BabyEater"/>, <see cref="Pygmy"/>, <see cref="Pygmy2"/>, <see cref="Pygmy3"/>, <see cref="Pygmy4"/>, <see cref="BabySkeletronHead"/>, <see cref="BabyHornet"/>, <see cref="TikiSpirit"/>, <see cref="PetLizard"/>, <see cref="Parrot"/>, <see cref="Truffle"/>, <see cref="Sapling"/>, <see cref="Wisp"/>, <see cref="BabyDino"/>, <see cref="BabySlime"/>, <see cref="EyeSpring"/>, <see cref="BabySnowman"/>, <see cref="Spider"/>, <see cref="Squashling"/>, <see cref="BlackCat"/>, <see cref="CursedSapling"/>, <see cref="Puppy"/>, <see cref="BabyGrinch"/>, <see cref="ZephyrFish"/>, <see cref="VenomSpider"/>, <see cref="JumperSpider"/>, <see cref="DangerousSpider"/>, <see cref="MiniMinotaur"/>, <see cref="BabyFaceMonster"/>, <see cref="SugarGlider"/>, <see cref="SharkPup"/>, <see cref="LilHarpy"/>, <see cref="FennecFox"/>, <see cref="GlitteryButterfly"/>, <see cref="BabyImp"/>, <see cref="BabyRedPanda"/>, <see cref="Plantero"/>, <see cref="DynamiteKitten"/>, <see cref="BabyWerewolf"/>, <see cref="ShadowMimic"/>, <see cref="VoltBunny"/>, <see cref="KingSlimePet"/>, <see cref="BrainOfCthulhuPet"/>, <see cref="SkeletronPet"/>, <see cref="QueenBeePet"/>, <see cref="SkeletronPrimePet"/>, <see cref="PlanteraPet"/>, <see cref="GolemPet"/>, <see cref="DukeFishronPet"/>, <see cref="MoonLordPet"/>, <see cref="EverscreamPet"/>, <see cref="MartianPet"/>, <see cref="DD2OgrePet"/>, <see cref="DD2BetsyPet"/>, <see cref="QueenSlimePet"/>, <see cref="BerniePet"/>, <see cref="DeerclopsPet"/>, <see cref="PigPet"/>, <see cref="ChesterPet"/>, <see cref="JunimoPet"/>, <see cref="BlueChickenPet"/>, <see cref="Spiffo"/>, <see cref="CavelingGardener"/>, <see cref="DeadCellsSwarmBiter"/>, <see cref="Pufferfish"/>, <see cref="PalworldMinionFoxsparks"/>, <see cref="PalworldPetChillet"/>, <see cref="PalworldPetChilletIgnis"/>
+	/// Used by: <see cref="Bunny"/>, <see cref="Penguin"/>, <see cref="Turtle"/>, <see cref="BabyEater"/>, <see cref="Pygmy"/>, <see cref="Pygmy2"/>, <see cref="Pygmy3"/>, <see cref="Pygmy4"/>, <see cref="BabySkeletronHead"/>, <see cref="BabyHornet"/>, <see cref="TikiSpirit"/>, <see cref="PetLizard"/>, <see cref="Parrot"/>, <see cref="Truffle"/>, <see cref="Sapling"/>, <see cref="Wisp"/>, <see cref="BabyDino"/>, <see cref="BabySlime"/>, <see cref="EyeSpring"/>, <see cref="BabySnowman"/>, <see cref="Spider"/>, <see cref="Squashling"/>, <see cref="BlackCat"/>, <see cref="CursedSapling"/>, <see cref="Puppy"/>, <see cref="BabyGrinch"/>, <see cref="ZephyrFish"/>, <see cref="VenomSpider"/>, <see cref="JumperSpider"/>, <see cref="DangerousSpider"/>, <see cref="MiniMinotaur"/>, <see cref="BabyFaceMonster"/>, <see cref="SugarGlider"/>, <see cref="SharkPup"/>, <see cref="LilHarpy"/>, <see cref="FennecFox"/>, <see cref="GlitteryButterfly"/>, <see cref="BabyImp"/>, <see cref="BabyRedPanda"/>, <see cref="Plantero"/>, <see cref="DynamiteKitten"/>, <see cref="BabyWerewolf"/>, <see cref="ShadowMimic"/>, <see cref="VoltBunny"/>, <see cref="KingSlimePet"/>, <see cref="BrainOfCthulhuPet"/>, <see cref="SkeletronPet"/>, <see cref="QueenBeePet"/>, <see cref="SkeletronPrimePet"/>, <see cref="PlanteraPet"/>, <see cref="GolemPet"/>, <see cref="DukeFishronPet"/>, <see cref="MoonLordPet"/>, <see cref="EverscreamPet"/>, <see cref="MartianPet"/>, <see cref="DD2OgrePet"/>, <see cref="DD2BetsyPet"/>, <see cref="QueenSlimePet"/>, <see cref="BerniePet"/>, <see cref="DeerclopsPet"/>, <see cref="PigPet"/>, <see cref="ChesterPet"/>, <see cref="JunimoPet"/>, <see cref="BlueChickenPet"/>, <see cref="Spiffo"/>, <see cref="CavelingGardener"/>, <see cref="DeadCellsSwarmBiter"/>, <see cref="Pufferfish"/>, <see cref="PalworldMinionFoxsparks"/>, <see cref="PalworldPetChillet"/>, <see cref="PalworldPetChilletIgnis"/>, <see cref="PalworldMinionTrustyFoxsparks"/>
 	/// </summary>
 	public const short Pet = 26;
 	/// <summary>
@@ -132,7 +132,7 @@ public class ProjAIStyleID
 	/// </summary>
 	public const short ColdBolt = 28;
 	/// <summary>
-	/// Used by: <see cref="AmethystBolt"/>, <see cref="TopazBolt"/>, <see cref="SapphireBolt"/>, <see cref="EmeraldBolt"/>, <see cref="RubyBolt"/>, <see cref="DiamondBolt"/>, <see cref="CrystalPulse"/>, <see cref="CrystalPulse2"/>, <see cref="AmberBolt"/>, <see cref="NebulaArcanumExplosionShot"/>, <see cref="NebulaArcanumExplosionShotShard"/>, <see cref="ThunderStaffShot"/>
+	/// Used by: <see cref="AmethystBolt"/>, <see cref="TopazBolt"/>, <see cref="SapphireBolt"/>, <see cref="EmeraldBolt"/>, <see cref="RubyBolt"/>, <see cref="DiamondBolt"/>, <see cref="CrystalPulse"/>, <see cref="CrystalPulse2"/>, <see cref="AmberBolt"/>, <see cref="NebulaArcanumExplosionShot"/>, <see cref="NebulaArcanumExplosionShotShard"/>, <see cref="ThunderStaffShot"/>, <see cref="ForbiddenMinionShot"/>
 	/// </summary>
 	public const short GemStaffBolt = 29;
 	/// <summary>
@@ -289,7 +289,7 @@ public class ProjAIStyleID
 	public const short MiniTwins = 66;
 	/// <summary>
 	/// Behavior: Includes Mini Pirate, Crimson Heart, Companion Cube, Vampire Frog, and Desert Tiger projectiles<br/><br/>
-	/// Used by: <see cref="OneEyedPirate"/>, <see cref="SoulscourgePirate"/>, <see cref="PirateCaptain"/>, <see cref="CrimsonHeart"/>, <see cref="CompanionCube"/>, <see cref="VampireFrog"/>, <see cref="StormTigerTier1"/>, <see cref="StormTigerTier2"/>, <see cref="StormTigerTier3"/>, <see cref="FlinxMinion"/>, <see cref="DirtiestBlock"/>, <see cref="DeadCellsMushroomBoiMinion"/>, <see cref="CobWhipSpider"/>, <see cref="BoulderPet"/>, <see cref="RainbowBoulderPet"/>, <see cref="PalworldMinionCattiva"/>
+	/// Used by: <see cref="OneEyedPirate"/>, <see cref="SoulscourgePirate"/>, <see cref="PirateCaptain"/>, <see cref="CrimsonHeart"/>, <see cref="CompanionCube"/>, <see cref="VampireFrog"/>, <see cref="StormTigerTier1"/>, <see cref="StormTigerTier2"/>, <see cref="StormTigerTier3"/>, <see cref="FlinxMinion"/>, <see cref="DirtiestBlock"/>, <see cref="DeadCellsMushroomBoiMinion"/>, <see cref="CobWhipSpider"/>, <see cref="BoulderPet"/>, <see cref="RainbowBoulderPet"/>, <see cref="PalworldMinionCattiva"/>, <see cref="PalworldMinionTrustyCattiva"/>, <see cref="ClayPotMinion"/>
 	/// </summary>
 	public const short CommonFollow = 67;
 	/// <summary>
@@ -390,7 +390,7 @@ public class ProjAIStyleID
 	/// </summary>
 	public const short ShadowFlame = 91;
 	/// <summary>
-	/// Used by: <see cref="ProjectileID.ToxicCloud"/>, <see cref="ToxicCloud2"/>, <see cref="ToxicCloud3"/>, <see cref="GasTrap"/>
+	/// Used by: <see cref="ProjectileID.ToxicCloud"/>, <see cref="ToxicCloud2"/>, <see cref="ToxicCloud3"/>, <see cref="GasTrap"/>, <see cref="ChlorophyteClaymoreSporeCloud"/>
 	/// </summary>
 	public const short ToxicCloud = 92;
 	/// <summary>
@@ -682,7 +682,7 @@ public class ProjAIStyleID
 	/// </summary>
 	public const short Kite = 160;
 	/// <summary>
-	/// Used by: <see cref="GladiusStab"/>, <see cref="RulerStab"/>, <see cref="CopperShortswordStab"/>, <see cref="TinShortswordStab"/>, <see cref="IronShortswordStab"/>, <see cref="LeadShortswordStab"/>, <see cref="SilverShortswordStab"/>, <see cref="TungstenShortswordStab"/>, <see cref="GoldShortswordStab"/>, <see cref="PlatinumShortswordStab"/>
+	/// Used by: <see cref="GladiusStab"/>, <see cref="RulerStab"/>, <see cref="CopperShortswordStab"/>, <see cref="TinShortswordStab"/>, <see cref="IronShortswordStab"/>, <see cref="LeadShortswordStab"/>, <see cref="SilverShortswordStab"/>, <see cref="TungstenShortswordStab"/>, <see cref="GoldShortswordStab"/>, <see cref="PlatinumShortswordStab"/>, <see cref="ChlorophyteSaberStab"/>
 	/// </summary>
 	public const short ShortSword = 161;
 	/// <summary>
@@ -799,11 +799,11 @@ public class ProjAIStyleID
 	/// </summary>
 	public const short LightsBane = 188;
 	/// <summary>
-	/// Used by: <see cref="ProjectileID.Volcano"/>
+	/// Used by: <see cref="ProjectileID.Volcano"/>, <see cref="CascadeExplosion"/>
 	/// </summary>
 	public const short Volcano = 189;
 	/// <summary>
-	/// Used by: <see cref="ProjectileID.NightsEdge"/>, <see cref="Excalibur"/>, <see cref="TrueExcalibur"/>, <see cref="TerraBlade2"/>, <see cref="TheHorsemansBlade"/>, <see cref="DeadCellsFlintSlash"/>
+	/// Used by: <see cref="ProjectileID.NightsEdge"/>, <see cref="Excalibur"/>, <see cref="TrueExcalibur"/>, <see cref="TerraBlade2"/>, <see cref="TheHorsemansBlade"/>, <see cref="DeadCellsFlintSlash"/>, <see cref="ChlorophyteClaymoreBlade"/>
 	/// </summary>
 	public const short NightsEdge = 190;
 	/// <summary>
@@ -827,7 +827,7 @@ public class ProjAIStyleID
 	/// </summary>
 	public const short JimsDrone = 195;
 	/// <summary>
-	/// Used by: <see cref="FlowerWhipPetal"/>
+	/// Used by: <see cref="FlowerWhipPetal"/>, <see cref="PetalstormShot"/>
 	/// </summary>
 	public const short Petal = 196;
 	/// <summary>
@@ -855,11 +855,11 @@ public class ProjAIStyleID
 	/// </summary>
 	public const short TorchGodHelper = 202;
 	/// <summary>
-	/// Used by: <see cref="ProjectileID.StormLightning"/>
+	/// Used by: <see cref="ProjectileID.StormLightning"/>, <see cref="LightningStrikeShot"/>, <see cref="ArcSurge"/>
 	/// </summary>
 	public const short StormLightning = 203;
 	/// <summary>
-	/// Used by: <see cref="PalworldDigtoise"/>
+	/// Used by: <see cref="PalworldDigtoise"/>, <see cref="PalworldTrustyDigtoise"/>
 	/// </summary>
 	public const short Digtoise = 204;
 	/// <summary>
@@ -871,8 +871,8 @@ public class ProjAIStyleID
 	/// </summary>
 	public const short ForbiddenMinion = 206;
 	/// <summary>
-	/// <strong>Unused.</strong>
-	/// <br/>Contains no AI.
+	/// <strong>Unused.</strong> Contains no AI.<br/><br/>
+	/// Used by: None
 	/// </summary>
 	public const short SnappingStoneUnused = 207;
 	/// <summary>
@@ -884,7 +884,7 @@ public class ProjAIStyleID
 	/// </summary>
 	public const short ChlorophyteClaymoreBladeSlam = 209;
 	/// <summary>
-	/// Used by: <see cref="ProjectileID.TheEyeOfCthulhuDash"/> and <see cref="ProjectileID.KrakenWave"/>
+	/// Used by: <see cref="TheEyeOfCthulhuDash"/>, <see cref="KrakenWave"/>
 	/// </summary>
 	public const short YoyoShots = 210;
 }
