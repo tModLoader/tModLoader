@@ -145,7 +145,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - ItemID.Sets.DuplicationMenuToolsFilter needs 6174
 - TileDrawing.IsTileDangerous vanilla now has tilex/y, but different order, so we might need to adjust TML variant or other callsites
 - Need to handle public static ItemVariantCondition SkyblockWorld;, SkyblockWorld = Condition.SkyblockWorld;
-- BannerSystem.newBanner is new, needs NPCLoader.ResizeArrays, make public?
 - Why did ProjectileID.SummonTagDamageMultiplier change?
 - Clound.cs, there is now CloudID.Sets.RareClouds_Normal, CloudID.Sets.RareClouds_Celebration for more control. Document and maybe use in ExampleMod. CloudID.Search also needs to be populated
 - public static LanguageSearchFilter CreateDialogFilter(string startsWith, object substitutions) removed from Lang.cs? Could still be useful, add back into Lang.TML.cs?
