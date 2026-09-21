@@ -866,4 +866,25 @@ public class ProjAIStyleID
 	/// Used by: <see cref="ProjectileID.RemoteControlCar"/>
 	/// </summary>
 	public const short RemoteControlCar = 205;
+	/// <summary>
+	/// Used by: <see cref="ProjectileID.ForbiddenMinion"/>
+	/// </summary>
+	public const short ForbiddenMinion = 206;
+	/// <summary>
+	/// <strong>Unused.</strong>
+	/// <br/>Contains no AI.
+	/// </summary>
+	public const short SnappingStoneUnused = 207;
+	/// <summary>
+	/// Used by: <see cref="ProjectileID.GlacierFangShot"/>
+	/// </summary>
+	public const short GlacierFangShot = 208;
+	/// <summary>
+	/// Used by: <see cref="ProjectileID.ChlorophyteClaymoreBladeSlam"/>
+	/// </summary>
+	public const short ChlorophyteClaymoreBladeSlam = 209;
+	/// <summary>
+	/// Used by: <see cref="ProjectileID.TheEyeOfCthulhuDash"/> and <see cref="ProjectileID.KrakenWave"/>
+	/// </summary>
+	public const short YoyoShots = 210;
 }
