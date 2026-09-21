@@ -535,7 +535,7 @@
  	public static bool downedDeerclops = false;
  	public static int ShieldStrengthTowerSolar = 0;
  	public static int ShieldStrengthTowerVortex = 0;
-@@ -4663,61 +_,229 @@
+@@ -4663,61 +_,233 @@
  	public static bool TowerActiveNebula = false;
  	public static bool TowerActiveStardust = false;
  	public static bool LunarApocalypseIsUp = false;
@@ -758,6 +758,10 @@
 +	/// <para/> Defaults to false.
 +	/// </summary>
  	public bool dontTakeDamage;
++	/// <summary>
++	/// If true, the health bar will still be drawn despite <see cref="dontTakeDamage"/> being true.
++	/// <para/> Used by <see cref="NPCID.SolarCrawltipedeHead"/>
++	/// </summary>
  	public bool dontTakeDamageStillShowLife;
  	private int catchableNPCTempImmunityCounter;
 +	/// <summary>
@@ -1327,6 +1331,15 @@
  		if (aiStyle == 0) {
  			if (type >= 0 && NPCID.Sets.BoundTownNPCs[type])
  				homeless = true;
+@@ -36372,7 +_,7 @@
+ 		if (type == 696)
+ 			num = 5664;
+ 
+-		Item.NewItem(GetItemSource_Loot(), base.Center, num, 1, -1);
++		Item.NewItem(GetItemSource_Loot(), base.Center, num, 1, prefix: -1);
+ 	}
+ 
+ 	private int AI_127_Pal_SummonAttacker(int side) => 0;
 @@ -37237,7 +_,7 @@
  			timeLeft = 86400;
  		}
@@ -2747,14 +2760,15 @@
  			return;
  
  		int num = FindBuffIndex(buffTypeToRemove);
-@@ -75643,6 +_,10 @@
+@@ -75643,6 +_,11 @@
  		}
  	}
  
 +	/// <summary>
-+	/// Removes the buff at the provided index and shuffles the remaining buff indexes down to fill the gap. The buff types and times will then be synced to clients. This method should only be called on the server or in single player.
++	/// Removes the buff at the provided index and shuffles the remaining buff indexes down to fill the gap. The buff types and times will then be synced to clients, unless <paramref name="quiet"/> is <see langword="true"/>. This method should only be called on the server or in single player.
 +	/// </summary>
 +	/// <param name="buffIndex">The index of the buff to remove.</param>
++	/// <param name="quiet">If true, the network sync message is skipped.</param>
  	public void DelBuff(int buffIndex, bool quiet = false)
  	{
  		buffTime[buffIndex] = 0;

@@ -64,7 +64,7 @@
  		snowTypes = new ushort[6];
  		snowTypes[0] = tileLookup[147];
  		snowTypes[1] = tileLookup[161];
-@@ -1728,6 +_,9 @@
+@@ -1728,9 +_,12 @@
  
  	public static bool HasOption(int tileType, int option) => option < tileOptionCounts[tileType];
  
@@ -73,7 +73,11 @@
 +	/// </summary>
  	public static int TileToLookup(int tileType, int option)
  	{
- 		Invariant.Assert(tileType >= 0 && tileType <= TileID.Count, "MapHelper.TileToLookup passed a bad tileType: {0}", tileType);
+-		Invariant.Assert(tileType >= 0 && tileType <= TileID.Count, "MapHelper.TileToLookup passed a bad tileType: {0}", tileType);
++		Invariant.Assert(tileType >= 0 && tileType <= tileLookup.Length, "MapHelper.TileToLookup passed a bad tileType: {0}", tileType);
+ 		Invariant.Assert(option >= 0, "MapHelper.TileToLookup passed a bad option: {0}", option);
+ 		Invariant.Assert(option < tileOptionCounts[tileType], "MapHelper.TileToLookup passed an option for tileType {0} that does not exist: {1}", tileType, option);
+ 		return tileLookup[tileType] + option;
 @@ -1828,10 +_,16 @@
  		if (baseType == 0) {
  			newColor = 0;

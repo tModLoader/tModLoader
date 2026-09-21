@@ -145,7 +145,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - ItemID.Sets.DuplicationMenuToolsFilter needs 6174
 - TileDrawing.IsTileDangerous vanilla now has tilex/y, but different order, so we might need to adjust TML variant or other callsites
 - Need to handle public static ItemVariantCondition SkyblockWorld;, SkyblockWorld = Condition.SkyblockWorld;
-- BannerSystem.newBanner is new, needs NPCLoader.ResizeArrays, make public?
 - Why did ProjectileID.SummonTagDamageMultiplier change?
 - Clound.cs, there is now CloudID.Sets.RareClouds_Normal, CloudID.Sets.RareClouds_Celebration for more control. Document and maybe use in ExampleMod. CloudID.Search also needs to be populated
 - public static LanguageSearchFilter CreateDialogFilter(string startsWith, object substitutions) removed from Lang.cs? Could still be useful, add back into Lang.TML.cs?
@@ -179,7 +178,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Seems like shared loadout slots don't actually populate Player.armor slots. Modders will have to use Player.GetEffectiveArmor to get the actual armor that is active.
 - Player.manaPotionDelay is new.
 - Player.ApplyManaRegenerationDelay() replaces setting Player.manaRegenDelay directly.
-- Remove Item.ChangePlayerDirectionOnShoot from item 723
 - Item 3852 Tome of Infinite Wisdom ItemCheck_OwnerOnlyCode changed. Does Item.useLimitPerAnimation still make sense?
 - 4953, 4952, 4956, 5669 ItemCheck_OwnerOnlyCode also changed, check if useLimitPerAnimation still makes sense. What about 6152?
 - Where should chlorophyteBladeCounter-- fit in the new ItemCheck_inner code.
@@ -205,20 +203,15 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - UIElement.PassThroughMouseInteraction --> What does it do? How does it differ from IgnoresMouseInteraction?
 - TileEntity.Read now has a gameversion parameter. For modded tiles, I don't think this affects anything. Vanilla TEs have updated save and load code, need to verify poses and other changes work with modded items.
 - FlexibleTileWand is now used to place many other tiles that used to rely solely on RandomStyleRange. We should add an example of a custom FlexibleTileWand item/tile and document when to use it.
-- NPC.DelBuff has new quiet parameter
 - TileID.Sets.DontDrawTileSlopes.
 - Player.selectedItem is not a getter property instead of a field. We might need to document selectedItemState and other related new fields.
 - Add docs for new GetItemSettings parameters
 - Main.menuChat
 - Need to fix documentation for various secret and special seeds, like Main.specialSeedWorld. Need to change secret to special in most cases, and fix wiki links.
-- Player.GetArmPosition needs docs
 - We need docs on how to use /checkpoint and StateSnapshot. Wiki page most likely, teaching why and how to use, limitations, etc.
 
 ## 1.4.5.8
 - Document ProjectileID.DespawnItemIcon, DespawnItemGivesItemBack, DisplayDollDrawUseStyle
-- ProjectileID.FixedSelfDamageForPlayers, SkipDamage_EVP added
-- NPC.dontTakeDamageStillShowLife
-- mount.MovementStatsAreAdditive
 
 # Changes that need to be communicated to modders
 
@@ -256,8 +249,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 
 - ItemVariants.EverythingWorld renamed to MechdusaWorld
 - Main.GameModeInfo.IsJourneyMode -> Main.IsJourneyMode
-- Item.SetDefaults() -> Item.SetDefaults(0)
-- Item.SetDefaults(int, bool) -> Item.SetDefaults(int)
 
 ## 1.4.5.8
 - WorldItem.noGrabDelay ->  grabDelayTime...I think. double check this, it seems noGrabDelay might have been split into a few fields.

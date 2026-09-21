@@ -9,7 +9,7 @@
  
  namespace Terraria;
  
-@@ -111,10 +_,14 @@
+@@ -111,43 +_,106 @@
  
  	public class MountData
  	{
@@ -24,7 +24,79 @@
  		public Asset<Texture2D> frontTexture = Asset<Texture2D>.Empty;
  		public Asset<Texture2D> frontTextureGlow = Asset<Texture2D>.Empty;
  		public Asset<Texture2D> frontTextureExtra = Asset<Texture2D>.Empty;
-@@ -145,6 +_,10 @@
+ 		public Asset<Texture2D> frontTextureExtraGlow = Asset<Texture2D>.Empty;
+ 		public int textureWidth;
+ 		public int textureHeight;
++		/// <summary>
++		/// An offset to the player's position.X while mounted.
++		/// </summary>
+ 		public int xOffset;
++		/// <summary>
++		/// An offset to the player's position.Y while mounted.
++		/// </summary>
+ 		public int yOffset;
++		/// <summary>
++		/// An additional offset to the player's position depending on the current animation frame. Set this to an array of length <see cref="totalFrames"/>. The value at each index is the offset for that frame.
++		/// </summary>
+ 		public int[] playerYOffsets;
++		/// <summary>
++		/// The body frame index of the player while mounted. Will set <see cref="Player.bodyFrame"/> to the corresponding animation frame while the mount is active unless <see cref="MountID.Sets.DoesNotOverrideBodyFrames"/> is set. Most mounts set this to 3, a standing pose. <see cref="MountID.WitchBroom"/> sets this to 0. <see cref="MountID.Flamingo"/> sets this to 4, a knees bent pose.
++		/// </summary>
+ 		public int bodyFrame;
++		/// <summary>
++		/// The offset of the player's head icon on the minimap while mounted. <see cref="MountID.Slime"/> uses 22, <see cref="MountID.Rat"/> uses -30.
++		/// </summary>
+ 		public int playerHeadOffset;
++		/// <summary>
++		/// How much higher off the ground the player is while mounted. <see cref="MountID.Slime"/> uses 20, <see cref="MountID.WitchBroom"/> uses 0.
++		/// </summary>
+ 		public int heightBoost;
++		/// <summary>
++		/// The Buff ID number of the buff assigned to the mount.
++		/// </summary>
+ 		public int buff;
++		/// <summary>
++		/// The amount of time in frames a mount can be in the state of flying.
++		/// </summary>
+ 		public int flightTimeMax;
+ 		public bool usesHover;
++		/// <summary>
++		/// The run speed of this mount. Equivalent to <see cref="Player.maxRunSpeed"/>. <see cref="MountID.Scutlix"/> uses 8, <see cref="MountID.Bee"/> uses 2. The MPH equivalent is roughly 5 times these values.
++		/// </summary>
+ 		public float runSpeed;
++		/// <summary>
++		/// The run speed of this mount. Equivalent to <see cref="Player.accRunSpeed"/>.
++		/// </summary>
+ 		public float dashSpeed;
+ 		public float swimSpeed;
++		/// <summary>
++		/// The rate at which the mount speeds up.
++		/// </summary>
+ 		public float acceleration;
++		/// <summary>
++		/// The rate at which the player and mount ascend towards (negative y velocity) the jump height when the jump button is pressed.
++		/// </summary>
+ 		public float jumpSpeed;
++		/// <summary>
++		/// How high the mount can jump.
++		/// </summary>
+ 		public int jumpHeight;
++		/// <summary>
++		/// Fall damage multiplier. 0 for normal fall damage, 1 for no fall damage. <see cref="MountID.Flamingo"/> uses 0.2 (a 80% reduction), <see cref="MountID.Slime"/> uses 0.5 (a 50% reduction), <see cref="MountID.Bee"/> uses 1 (Cancels fall damage).
++		/// <para/> Defaults to 0.
++		/// </summary>
+ 		public float fallDamage;
+ 		public int extraFall;
+ 		public int fatigueMax;
++		/// <summary>
++		/// Allows you to hold the jump button down.
++		/// </summary>
+ 		public bool constantJump;
++		/// <summary>
++		/// Determines whether or not you can use a double jump (like cloud in a bottle) while in the mount.
++		/// </summary>
+ 		public bool blockExtraJumps;
+ 		public int abilityChargeMax;
  		public int abilityDuration;
  		public int abilityCooldown;
  		public int walkingGraceTimeMax;
@@ -33,9 +105,26 @@
 +		/// <para/> Some examples include <see cref="MountID.Rat"/>, <see cref="MountID.Bat"/>, and <see cref="MountID.Pixie"/>.
 +		/// </summary>
  		public bool dismountsOnItemUse;
++		/// <summary>
++		/// The Dust ID of the dust spawned when mounted or dismounted.
++		/// </summary>
  		public int spawnDust;
  		public bool spawnDustNoGravity;
-@@ -179,6 +_,16 @@
++		/// <summary>
++		/// The number of animation frames this mount has.
++		/// </summary>
+ 		public int totalFrames;
+ 		public int standingFrameStart;
+ 		public int standingFrameCount;
+@@ -174,11 +_,24 @@
+ 		public bool Minecart;
+ 		public bool CanRideMinecartTracks;
+ 		public bool CanUseWings;
++		/// <summary>
++		/// When true, <see cref="runSpeed"/>, <see cref="dashSpeed"/>, and <see cref="acceleration"/> are added to the player movement stats instead of overriding them.
++		/// </summary>
+ 		public bool MovementStatsAreAdditive;
+ 		public Vector3 lightColor = Vector3.One;
  		public bool emitsLight;
  		public MountDelegatesData delegations = new MountDelegatesData();
  		public int playerXOffset;

@@ -1,4 +1,5 @@
-﻿using ExampleMod.Content.Items;
+﻿using Microsoft.Xna.Framework;
+using ExampleMod.Content.Items;
 using ExampleMod.Content.NPCs;
 using ExampleMod.Content.Projectiles;
 using ExampleMod.Content.Tiles;
@@ -17,14 +18,14 @@ namespace ExampleMod.Common.GlobalTiles
 		public override bool ShakeTree(int x, int y, TreeTypes treeType) {
 			// Normal forest trees have a 5% chance to drop an Example Item.
 			if (treeType == TreeTypes.Forest && WorldGen.genRand.NextBool(20)) {
-				Item.NewItem(WorldGen.GetItemSource_FromTreeShake(x, y), x * 16, y * 16, 16, 16, ModContent.ItemType<ExampleItem>());
+				Item.NewItem(WorldGen.GetItemSource_FromTreeShake(x, y), new Point(x, y).ToWorldCoordinates(), ModContent.ItemType<ExampleItem>());
 				// We return true to indicate that the primary item has dropped and prevent the game from attempting to drop other items.
 				return true;
 			}
 
 			// Glowing Mushroom trees have 10% chance to drop between 3 and 10 Mushroom Torches.
 			if (treeType == TreeTypes.Mushroom && WorldGen.genRand.NextBool(10)) {
-				Item.NewItem(WorldGen.GetItemSource_FromTreeShake(x, y), x * 16, y * 16, 16, 16, ItemID.MushroomTorch, WorldGen.genRand.Next(3, 11));
+				Item.NewItem(WorldGen.GetItemSource_FromTreeShake(x, y), new Point(x, y).ToWorldCoordinates(), ItemID.MushroomTorch, WorldGen.genRand.Next(3, 11));
 				return true;
 			}
 
@@ -54,7 +55,7 @@ namespace ExampleMod.Common.GlobalTiles
 				WorldGen.GetTreeBottom(x, y, out int baseX, out int baseY); // Finds the block that the tree is planted on.
 				// If the block the tree is planted on is an Example Block, we know we have found an Example Tree.
 				if (Main.tile[baseX, baseY].TileType == ModContent.TileType<ExampleBlock>() && WorldGen.genRand.NextBool(2)) {
-					Item.NewItem(WorldGen.GetItemSource_FromTreeShake(x, y), x * 16, y * 16, 16, 16, ItemID.Coconut);
+					Item.NewItem(WorldGen.GetItemSource_FromTreeShake(x, y), new Point(x, y).ToWorldCoordinates(), ItemID.Coconut);
 					return true;
 				}
 			}
