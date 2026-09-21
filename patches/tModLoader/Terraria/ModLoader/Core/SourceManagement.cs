@@ -90,18 +90,16 @@ internal static class SourceManagement
 
 	private static void TryWriteActiveCultureLocalizationTemplateFile(string modSrcDirectory, TemplateParameters templateParameters)
 	{
-		string activeCultureName = Language.ActiveCulture?.Name;
-		string defaultCultureName = GameCulture.DefaultCulture?.Name;
-
 		// The default culture file is already written by the template itself.
-		if (string.IsNullOrEmpty(activeCultureName) || string.IsNullOrEmpty(defaultCultureName) || string.Equals(activeCultureName, defaultCultureName, StringComparison.OrdinalIgnoreCase)) {
+		if (Language.ActiveCulture == GameCulture.DefaultCulture) {
 			return;
 		}
 
-		string defaultLocalizationPath = Path.Combine(modSrcDirectory, "Localization", $"{defaultCultureName}_Mods.{templateParameters.ModName}.hjson");
-		string activeCultureLocalizationPath = Path.Combine(modSrcDirectory, "Localization", $"{activeCultureName}_Mods.{templateParameters.ModName}.hjson");
+		string defaultLocalizationPath = Path.Combine(modSrcDirectory, "Localization", $"{GameCulture.DefaultCulture.Name}_Mods.{templateParameters.ModName}.hjson");
+		string activeCultureLocalizationPath = Path.Combine(modSrcDirectory, "Localization", $"{Language.ActiveCulture.Name}_Mods.{templateParameters.ModName}.hjson");
 
 		if (File.Exists(defaultLocalizationPath) && !File.Exists(activeCultureLocalizationPath)) {
+			// The file is a direct copy, so the entries won't be commented out, but for a modder on another language this will likely be what they want anyway.
 			File.Copy(defaultLocalizationPath, activeCultureLocalizationPath);
 		}
 	}
