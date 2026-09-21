@@ -151,7 +151,6 @@ public partial class NPCID
 		// IDs taken from NPC.checkDead
 		/// <summary>
 		/// If above 0 for a given NPC type (<see cref="NPC.type"/>), and its associated invasion is NOT a wave-based one, then that NPC will decrement <see cref="Main.invasionSize"/> by that amount when killed.
-		/// <br/> If this NPC's entry is 0, it won't play its associated invasion's music when alive.
 		/// </summary>
 		/// <remarks>
 		///	Note: Even though this defaults to 1, this set should only be checked if <see cref="NPC.GetNPCInvasionGroup(int)"/> is above 0 or if any BelongsToInvasion sets are <see langword="true"/>.

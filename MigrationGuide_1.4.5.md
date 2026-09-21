@@ -434,6 +434,7 @@ Japanese ("ja-JP"), Korean ("ko-KR"), and Traditional Chinese ("zh-Hant") have b
   * `Projectile.identity`, `Projectile.GetByUUID`, `Projectile.projUUID`, `ProjectileID.Sets.NeedsUUID` removed.
   * Use `Projectile.key` instead for a consistent reference to a projectile.
 * `Item.RequestNewItem` can be used to spawn an item on a multiplayer client. Replace `Item.NewItem` followed by `NetMessage.SendData(MessageID.SyncItem, ...)` patterns with `Item.RequestNewItem`.
+* If you relied on `NPCID.Sets.InvasionSlotCount[Type] = 0;` for preventing your modded vanilla event NPCs from playing music, use `NPCID.Sets.NoInvasionMusic[Type] = true;` in addition to it.
 
 ### Example Mod
 
