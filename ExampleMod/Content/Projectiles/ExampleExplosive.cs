@@ -18,6 +18,13 @@ namespace ExampleMod.Content.Projectiles
 			set => Projectile.localAI[0] = value.ToInt();
 		}
 
+		// Explosives set ai[0] to 1000 to indicated that the item is being despawned via right click
+		// (see the ProjectileID.Sets.DespawnItemIcon and ProjectileID.Sets.Explosive documentation)
+		private bool BeingPickedUp {
+			get => Projectile.ai[0] == 1000;
+			set => Projectile.ai[0] = value ? 1000 : 0;
+		}
+
 		public override void SetStaticDefaults() {
 			ProjectileID.Sets.PlayerHurtDamageIgnoresDifficultyScaling[Type] = true; // Damage dealt to players does not scale with difficulty in vanilla.
 
@@ -25,6 +32,10 @@ namespace ExampleMod.Content.Projectiles
 			// Sets the timeLeft to 3 and the projectile direction when colliding with an NPC or player in PVP (so the explosive can detonate).
 			// Explosives also bounce off the top of Shimmer, detonate with no blast damage when touching the bottom or sides of Shimmer, and damage other players in For the Worthy worlds.
 			ProjectileID.Sets.Explosive[Type] = true;
+
+			// These sets support retrieving the projectile back as an item by right clicking on it in the world.
+			ProjectileID.Sets.DespawnItemIcon[Type] = ModContent.ItemType<Items.Weapons.ExampleExplosive>();
+			ProjectileID.Sets.DespawnItemGivesItemBack[Type] = true;
 		}
 
 		public override void SetDefaults() {
@@ -101,9 +112,9 @@ namespace ExampleMod.Content.Projectiles
 					dust.position = Projectile.Center + new Vector2(1, 0).RotatedBy(Projectile.rotation - 2.1f, default) * 10f;
 				}
 			}
-			Projectile.ai[0] += 1f;
-			if (Projectile.ai[0] > 10f) {
-				Projectile.ai[0] = 10f;
+			Projectile.ai[1] += 1f;
+			if (Projectile.ai[1] > 10f) {
+				Projectile.ai[1] = 10f;
 				// Roll speed dampening.
 				if (Projectile.velocity.Y == 0f && Projectile.velocity.X != 0f) {
 					Projectile.velocity.X = Projectile.velocity.X * 0.96f;
@@ -132,6 +143,11 @@ namespace ExampleMod.Content.Projectiles
 		}
 
 		public override void OnKill(int timeLeft) {
+			// If we are being picked up via right click, don't explode at all.
+			if (BeingPickedUp) {
+				return;
+			}
+
 			// If we are the original projectile running on the owner, spawn the 5 child projectiles.
 			if (Projectile.owner == Main.myPlayer && !IsChild) {
 				for (int i = 0; i < 5; i++) {
@@ -199,6 +215,15 @@ namespace ExampleMod.Content.Projectiles
 				bool explodeWalls = Projectile.ShouldWallExplode(Projectile.Center, explosionRadius, minTileX, maxTileX, minTileY, maxTileY);
 				Projectile.ExplodeTiles(Projectile.Center, explosionRadius, minTileX, maxTileX, minTileY, maxTileY, explodeWalls);
 			}
+		}
+
+		public override void PreTryDespawning(ref bool giveItem) {
+			if (IsChild) {
+				giveItem = false;
+			}
+
+			// This is already set by ProjectileID.Sets.Explosive, but for other projectiles we would need to set a similar flag to prevent certain logic in OnKill from running when the projectile is being despawned via right click.
+			//BeingPickedUp = true;
 		}
 	}
 }

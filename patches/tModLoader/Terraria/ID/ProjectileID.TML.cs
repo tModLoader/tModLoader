@@ -1,3 +1,5 @@
+using Terraria.ModLoader;
+
 namespace Terraria.ID;
 
 partial class ProjectileID
@@ -65,6 +67,7 @@ partial class ProjectileID
 		/// <para/> Several shared behaviors of explosive projectiles will be automatically applied to projectiles using this set:
 		/// <para/> Sets the timeLeft to 3 and the projectile direction when colliding with an NPC or player in PVP (so the explosive can detonate).
 		/// <para/> Explosives also bounce off the top of Shimmer, detonate with no blast damage when touching the bottom or sides of Shimmer, and damage other players in For the Worthy worlds.
+		/// <para/> <c>projectile.ai[0]</c> will be set to 1000 immediately before the projectile is killed via the <see cref="ProjectileID.Sets.DespawnItemIcon"/> functionality, provided the projectile isn't hostile. Check for this value in <see cref="ModProjectile.OnKill(int)"/> to prevent explosion visuals, sounds, and other effects.
 		/// <para/> Note that code should check both <c>(projectile.aiStyle == ProjAIStyleID.Explosive || ProjectileID.Sets.Explosive[projectile.type])</c> for any code targeting explosive projectiles since this set might not be complete.
 		/// </summary>
 		public static bool[] Explosive = Factory.CreateBoolSet(false, Bomb, Dynamite, Grenade, StickyBomb, HappyBomb, BombSkeletronPrime, Explosives,

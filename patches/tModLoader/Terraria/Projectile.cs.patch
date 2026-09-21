@@ -1772,7 +1772,7 @@
  	}
  
 +	/// <summary>
-+	/// Used to adjust projectile properties immediately before the projectile becomes an explosion. This is called on projectiles using the <see cref="ProjAIStyleID.Explosive"/> aiStyle or projectiles that are contained in the <see cref="ProjectileID.Sets.Explosive"/> set. By defaults tileCollide is set to false and alpha is set to 255.
++	/// Used to adjust projectile properties immediately before the projectile becomes an explosion. This is called on projectiles using the <see cref="ProjAIStyleID.Explosive"/> aiStyle or projectiles that are contained in the <see cref="ProjectileID.Sets.Explosive"/> set. It won't be called if ai[0] is 1000, indicating the the projectile is being despawned manually by the player. By defaults tileCollide is set to false and alpha is set to 255.
 +	/// <para/> Calls the <see cref="ProjectileLoader.PrepareBombToBlow(Projectile)"/> method.
 +	/// </summary>
 -	private void PrepareBombToBlow()
