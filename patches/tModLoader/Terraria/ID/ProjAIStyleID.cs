@@ -1,4 +1,5 @@
 using ReLogic.Reflection;
+using Terraria.ModLoader;
 using static Terraria.ID.ProjectileID;
 
 namespace Terraria.ID;
@@ -71,6 +72,7 @@ public class ProjAIStyleID
 	/// </summary>
 	public const short GroundProjectile = 14;
 	/// <summary>
+	/// This aiStyle can be customized using <see cref="ModProjectile.FlailStats"/> and <see cref="ModProjectile.FlailSpinCollisionRange(ref float)"/>.<br/><br/>
 	/// Used by: <see cref="BallOHurt"/>, <see cref="BlueMoon"/>, <see cref="Sunfury"/>, <see cref="TheDaoofPow"/>, <see cref="TheMeatball"/>, <see cref="FlowerPow"/>, <see cref="DripplerFlail"/>, <see cref="Mace"/>, <see cref="FlamingMace"/>, <see cref="FlaironFlail"/>
 	/// </summary>
 	public const short Flail = 15;
