@@ -360,7 +360,7 @@ public class AccessorySlotLoader : Loader<ModAccessorySlot>
 
 			Player.mouseInterface = true;
 			Main.armorHide = true;
-			ItemSlot.OverrideHover(items, Math.Abs(context), slot);
+			ItemSlot.OverrideHover(items, context, slot);
 
 			if (!flag) {
 				if (Math.Abs(context) == 12) {

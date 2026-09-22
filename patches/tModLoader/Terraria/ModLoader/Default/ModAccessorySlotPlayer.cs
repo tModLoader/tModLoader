@@ -155,14 +155,13 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 		return validSlot && !IsSharedSlot(slot);
 	}
 
-	internal Item GetSharedLoadoutItem(int context, int slot, out int? sharedFromLoadout)
+	// Equivalent to Player.GetEffectiveArmor
+	public Item GetSharedLoadoutItem(int context, int slot, out int? sharedFromLoadout)
 	{
 		sharedFromLoadout = null;
-		if (!CanLoadoutShare(context, slot))
-			return new Item();
-
 		Item[] items = context == Terraria.UI.ItemSlot.Context.ModdedDyeSlot ? exDyesAccessory : exAccessorySlot;
-		if (!items[slot].IsAir)
+
+		if (!items[slot].IsAir || !CanLoadoutShare(context, slot))
 			return items[slot];
 
 		foreach (ExEquipmentLoadout equipmentLoadout in exLoadouts) {
