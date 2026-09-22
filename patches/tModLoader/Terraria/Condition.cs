@@ -112,7 +112,6 @@ public sealed record Condition(LocalizedText Description, Func<bool> Predicate)
 	public static readonly Condition NotEclipse =				new("Conditions.NotSolarEclipse",			() => !Main.eclipse);
 	public static readonly Condition EclipseOrBloodMoon =		new("Conditions.BloodOrSun",				() => Main.bloodMoon || Main.eclipse);
 	public static readonly Condition NotEclipseAndNotBloodMoon =new("Conditions.NotBloodOrSun",				() => !Main.bloodMoon && !Main.eclipse);
-	public static readonly Condition NeedTorchGodsFavor =		new("Conditions.TorchGodsFavor",			() => Main.LocalPlayer.unlockedBiomeTorches);
 
 	public static readonly Condition Thunderstorm =				new("Conditions.Thunderstorm",				() => Main.IsItStorming);
 	public static readonly Condition BirthdayParty =			new("Conditions.BirthdayParty",				() => GameContent.Events.BirthdayParty.PartyIsUp);
@@ -209,6 +208,7 @@ public sealed record Condition(LocalizedText Description, Func<bool> Predicate)
 	public static readonly Condition NotIsNpcHomeless =			new("Conditions.NotIsNpcHomeless",			() => !Main.LocalPlayer.TalkNPC.homeless);
 	/// <summary> Not Remix world, OR Celebration Mk10 AND not For the Worthy worlds.</summary>
 	public static readonly Condition BiomeSpreadingItems =		new("Conditions.BiomeSpreadingItems",		() => !Main.remixWorld || (Main.tenthAnniversaryWorld && !Main.getGoodWorld));
+	public static readonly Condition NeedTorchGodsFavor =		new("Conditions.TorchGodsFavor",			() => Main.LocalPlayer.unlockedBiomeTorches);
 
 	// Moon phases :( thanks to Chicken Bones for help with those
 	public static readonly Condition MoonPhaseFull =			new("Conditions.FullMoon",					() => Main.GetMoonPhase() == MoonPhase.Full);
