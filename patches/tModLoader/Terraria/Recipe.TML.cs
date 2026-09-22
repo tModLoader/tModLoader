@@ -424,6 +424,7 @@ public partial class Recipe
 		clone.needWater = needWater;
 		clone.needLava = needLava;
 		clone.needSnowBiome = needSnowBiome;
+		clone.needTorchGodsFavor = needTorchGodsFavor;
 		clone.needGraveyardBiome = needGraveyardBiome;
 		clone.needMechdusa = needMechdusa;
 
