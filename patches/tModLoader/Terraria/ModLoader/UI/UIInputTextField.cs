@@ -35,6 +35,7 @@ internal class UIInputTextField : UIElement
 	{
 		GameInput.PlayerInput.WritingText = true;
 		Main.instance.HandleIME();
+		SetIMEPanelAnchor();
 		string newString = Main.GetInputText(_currentString);
 		if (newString != _currentString) {
 			_currentString = newString;
@@ -52,5 +53,11 @@ internal class UIInputTextField : UIElement
 		else {
 			Utils.DrawBorderString(spriteBatch, displayString, new Vector2(space.X, space.Y), Color.White);
 		}
+	}
+
+	private void SetIMEPanelAnchor()
+	{
+		Rectangle rect = GetDimensions().ToRectangle();
+		Main.instance.SetIMEPanelAnchor(new Vector2(rect.Left, rect.Bottom + 32), 0f);
 	}
 }
