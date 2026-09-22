@@ -926,6 +926,18 @@
  	public static int SmartInteractProj;
  	public static bool SmartInteractPotionOfReturn;
  	public static List<Microsoft.Xna.Framework.Point> SmartInteractTileCoords = new List<Microsoft.Xna.Framework.Point>();
+@@ -1937,6 +_,11 @@
+ 	public static int TileInteractionLY = -1;
+ 	public static int TileInteractionHX = -1;
+ 	public static int TileInteractionHY = -1;
++	/// <summary>
++	/// The mouse cursor to display, a <see cref="ID.CursorOverrideID"/> value, overriding the normal mouse cursor. Affects visuals and inventory item slot click behavior.
++	/// <para/> Typically set during code handling <see cref="ItemSlot"/>s. Can be set during <see cref="ModPlayer.HoverSlot(Item[], int, int)"/> and checked against during <see cref="ModPlayer.ShiftClickSlot(Item[], int, int)"/>. 
++	/// <para/> Defaults to -1.
++	/// </summary>
+ 	public static int cursorOverride = -1;
+ 	public static int signHover = -1;
+ 	public static string cMapZoomIn = "Add";
 @@ -2006,8 +_,8 @@
  	public static bool _shouldUseWindyDayMusic = false;
  	public static bool _shouldUseStormMusic = false;

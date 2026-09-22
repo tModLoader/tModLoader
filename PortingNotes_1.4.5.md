@@ -141,20 +141,15 @@ Once all patches are fixed, these items need to be fixed or double checked:
 
 ## 1.4.5.8
 - Should NetMessage.LogMessageError Invariant.Assert be directed to ModNet.LogMessageError somehow?
-- ItemID.Sets.DuplicationMenuToolsFilter needs 6174
 - TileDrawing.IsTileDangerous vanilla now has tilex/y, but different order, so we might need to adjust TML variant or other callsites
-- Need to handle public static ItemVariantCondition SkyblockWorld;, SkyblockWorld = Condition.SkyblockWorld;
 - Why did ProjectileID.SummonTagDamageMultiplier change?
 - Clound.cs, there is now CloudID.Sets.RareClouds_Normal, CloudID.Sets.RareClouds_Celebration for more control. Document and maybe use in ExampleMod. CloudID.Search also needs to be populated
 - public static LanguageSearchFilter CreateDialogFilter(string startsWith, object substitutions) removed from Lang.cs? Could still be useful, add back into Lang.TML.cs?
-- _unusedResearchLine removed from MouseText_DrawItemTooltip_GetLinesInfo, verify other callsites
 - WorldGen.SwapTileData might not be necessary anymore. ErrorWorldSwapTiles exists. The new name isn't as useful, however.
 - Projectile.identity removed, Projectile.key added. How to use? Also Projectile.IndexForVisuals. Also Main.projectileIdentity. Need to fix Projectile.key docs, it is the identity docs.
 - Projectile.TransformType added, replaces direct setting of Projectile.type in AI. Might need a hook or more logic if used with modded projectiles.
 - New Worldgen.IsTileLoaded method seems like an issue with our non-null tiles. Keep patches to use Main.sectionManager.TileLoaded? Fix WorldGen.IsTileLoaded?
 - Code near "Yoyos with effective top speed" comment in AI_009_2_Yoyos seems weird. Was this fixed in vanilla and the "< 1.01f" code left in? Probably can remove the duplicate bounds check, check blame
-- ProjectileID.Sets.IsInteractable needs updating
-- Item.fishinPole now defaults to 1. Why? Update docs.
 - Item.hasVanityEffects no longer marked as [Old], why? Did something change?
 - Item.active property removed
 - Item.TurnToAir no longer has fullReset parameter and now always calls SetDefaults. Verify that this isn't an issue.
@@ -166,7 +161,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Could NPC.lifeRegenExpectedLossPerSecond or interactedWithPlayerLocally be useful to modders?
 - Is NPC.OnSpawn useful for tmod?
 - Projectile.perIDStaticNPCImmunity is not a 2d array instead of a staggared array, might need some adjustments.
-- NPCID.Sets.GoldCrittersCollection changes are confusing, fix patches if still needed.
 - Chest.AddItemToShop changes need more thought to fit in vanilla changes.
 - NPCLoader.UpdateLifeRegen will need to be changed. This has changed a lot.
 - Player.hasWings might be useful.

@@ -36,6 +36,14 @@
  		public const int InventoryItem = 0;
  		public const int InventoryCoin = 1;
  		public const int InventoryAmmo = 2;
+@@ -115,6 +_,7 @@
+ 
+ 	public struct AlternateClickAction
+ 	{
++		/// <inheritdoc cref="Main.cursorOverride"/>
+ 		public readonly int cursorOverride;
+ 		public readonly LocalizedText gamepadHintText;
+ 		public static AlternateClickAction Trash = new AlternateClickAction(6, Lang.misc[74]);
 @@ -190,7 +_,7 @@
  	public static bool DrawSelectionHighlightForGridSlot;
  	public static bool DrawNewAndShinyHighlightOverride;
