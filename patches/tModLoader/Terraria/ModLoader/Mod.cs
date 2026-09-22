@@ -105,6 +105,12 @@ public partial class Mod
 	/// The ModSide that controls how this mod is synced between client and server.
 	/// </summary>
 	public ModSide Side { get; internal set; }
+
+	/// <summary>
+	/// If this mod is a 'true Library Mod' that could be hidden from the player when used by other mods.
+	/// </summary>
+	public bool IsLib { get; internal set; }
+
 	/// <summary>
 	/// The display name of this mod in the Mods menu.
 	/// </summary>

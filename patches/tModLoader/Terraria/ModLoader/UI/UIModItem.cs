@@ -197,9 +197,10 @@ internal class UIModItem : UIPanel
 		HashSet<string> allDependents = new();
 		GetDependents(_mod.Name, allDependents);
 		_modDependents = allDependents.ToArray();
-		if (_modDependents.Any()) {
+		if (_modDependents.Any() || _mod.properties.libMod) {
 			if (!string.IsNullOrWhiteSpace(_modRequiresTooltip))
 				_modRequiresTooltip += "\n\n";
+
 			string refs = string.Join("\n", _modDependents.Select(x => "- " + (Interface.modsMenu.FindUIModItem(x)?._mod.DisplayName ?? x + Language.GetTextValue("tModLoader.ModPackMissing"))));
 			_modRequiresTooltip += Language.GetTextValue("tModLoader.ModDependentsTooltip", refs);
 		}
@@ -462,12 +463,20 @@ internal class UIModItem : UIPanel
 
 		if (!_mod.Enabled) {
 			DisableDependents();
+			DisableUnusedLibDependenciesRecursive();
+
+			if (Interface.modsMenu.enabledFilterMode == EnabledFilter.All) { // Regenerate filters if enabled/disabled isn't active.
+				Interface.modsMenu.StoreCurrentScrollPosition();
+				Interface.modsMenu.Activate();
+			}
+
 			return;
 		}
 
 		EnableDependencies();
 	}
 
+	// Used for 'Enable All' & in EnableDependencies
 	internal void Enable()
 	{
 		if (_mod.Enabled) { return; }
@@ -475,6 +484,7 @@ internal class UIModItem : UIPanel
 		UpdateUIForEnabledChange();
 	}
 
+	// Used for 'Disable All' & in DisableDependents
 	internal void Disable()
 	{
 		if (!_mod.Enabled) { return; }
@@ -530,6 +540,32 @@ internal class UIModItem : UIPanel
 		}
 	}
 
+	private void DisableUnusedLibDependenciesRecursive()
+	{
+		foreach (var name in _modReferences) {
+			var dep = Interface.modsMenu.FindUIModItem(name);
+			if (dep == null || !dep._mod.properties.libMod || dep.IsAnyEnabledDependents())
+				continue;
+
+			dep.DisableDependentsRecursive();
+			dep.Disable();
+		}
+	}
+
+	private bool IsAnyEnabledDependents()
+	{
+		foreach (var name in _modDependents) {
+			var dep = Interface.modsMenu.FindUIModItem(name);
+			if (dep == null)
+				continue;
+
+			if (dep._mod.Enabled)
+				return true;
+		}
+
+		return false;
+	}
+
 	internal void ShowMoreInfo(UIMouseEvent evt, UIElement listeningElement)
 	{
 		SoundEngine.PlaySound(SoundID.MenuOpen);
@@ -581,6 +617,16 @@ internal class UIModItem : UIPanel
 		if (Interface.modsMenu.modSideFilterMode != ModSideFilter.All) {
 			if ((int)_mod.properties.side != (int)Interface.modsMenu.modSideFilterMode - 1) {
 				filterResults.filteredByModSide++;
+				return false;
+			}
+		}
+		if (Interface.modsMenu.modLibraryFilterMode != ModLibraryFilter.All) {
+			if (Interface.modsMenu.modLibraryFilterMode == ModLibraryFilter.LibraryOnly && !_mod.properties.libMod) {
+				filterResults.filteredByModLibrary++;
+				return false;
+			}
+			else if (Interface.modsMenu.modLibraryFilterMode == ModLibraryFilter.NonLibraryOnly && (_mod.properties.libMod && IsAnyEnabledDependents())) {
+				filterResults.filteredByModLibrary++;
 				return false;
 			}
 		}

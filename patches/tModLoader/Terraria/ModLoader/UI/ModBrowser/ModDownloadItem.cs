@@ -70,7 +70,7 @@ public class ModDownloadItem
 		Installed = Interface.modBrowser.SocialBackend.IsItemInstalled(ModName);
 
 		NeedUpdate = IsInstalled && Interface.modBrowser.SocialBackend.DoesItemNeedUpdate(PublishId, Installed, Version);
-		
+
 		// The below line is to identify the transient state where it isn't installed, but Steam considers it as such - Solxan
 		// Steam keeps a cache once a download starts, and doesn't clean up cache until game close, which gets very confusing.
 		AppNeedRestartToReinstall = Installed == null && Interface.modBrowser.SocialBackend.DoesAppNeedRestartToReinstallItem(PublishId);

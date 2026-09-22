@@ -25,6 +25,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tModCodeAssist.CodeFixes", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tModCodeAssist.Tests", "..\tModCodeAssist\tModCodeAssist.Tests\tModCodeAssist.Tests.csproj", "{056DA6CC-A753-0D1A-777F-02C12C756543}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleLibMod", "..\ExampleLibMod\ExampleLibMod.csproj", "{B714C768-BEDF-92F1-9B3D-EC662065D0A8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -75,6 +77,10 @@ Global
 		{056DA6CC-A753-0D1A-777F-02C12C756543}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{056DA6CC-A753-0D1A-777F-02C12C756543}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{056DA6CC-A753-0D1A-777F-02C12C756543}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B714C768-BEDF-92F1-9B3D-EC662065D0A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B714C768-BEDF-92F1-9B3D-EC662065D0A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B714C768-BEDF-92F1-9B3D-EC662065D0A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B714C768-BEDF-92F1-9B3D-EC662065D0A8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
