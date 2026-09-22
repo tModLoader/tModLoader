@@ -3405,7 +3405,7 @@
  		if (diff == 1)
  			result = new Microsoft.Xna.Framework.Color(mcColor.R, mcColor.G, mcColor.B);
  
-@@ -17805,15 +_,18 @@
+@@ -17805,15 +_,20 @@
  		return result;
  	}
  
@@ -3420,8 +3420,9 @@
 +		toolTipNames[0] = "ItemName";
  		bool flag = false;
  		bool flag2 = false;
--		if (item.tooltipContext >= 0 && ItemSlot.canLoadoutShareAt[item.tooltipContext]) {
-+		// VanillaCode: if (item.tooltipContext >= 0 && ItemSlot.canLoadoutShareAt[item.tooltipContext]) {
++		/*
+ 		if (item.tooltipContext >= 0 && ItemSlot.canLoadoutShareAt[item.tooltipContext]) {
++		*/
 +		if ((item.tooltipContext >= 0 && ItemSlot.canLoadoutShareAt[item.tooltipContext]) || ItemSlot.CanModdedLoadoutShare(item.tooltipContext, item.tooltipSlot)) {
  			ItemSlot.GetSharedLoadoutItem(item.tooltipContext, item.tooltipSlot, out var sharedFromLoadout);
  			if (sharedFromLoadout.HasValue)
