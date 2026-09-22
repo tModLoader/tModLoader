@@ -394,23 +394,6 @@
  				case 25:
  				case 27:
  				case 33:
-@@ -1168,6 +_,16 @@
- 			itemFade = 0.5f;
- 	}
- 
-+	private static bool CanEquipInModdedAccessorySlot(Item checkItem, int slot, int context, bool vanity)
-+	{
-+		if (!checkItem.accessory)
-+			return false;
-+
-+		AccessorySlotLoader accessorySlotLoader = LoaderManager.Get<AccessorySlotLoader>();
-+		return accessorySlotLoader.ModdedIsSpecificItemSlotUnlockedAndUsable(slot, Main.LocalPlayer, vanity)
-+			&& accessorySlotLoader.ModSlotCheck(checkItem, slot, context);
-+	}
-+
- 	public static bool CanEquipInArmorSlot(Player player, Item checkItem, int slot)
- 	{
- 		bool num = slot % 10 < 3;
 @@ -1262,6 +_,11 @@
  				if (checkItem.type == 0 || CanEquipInArmorSlot(Main.LocalPlayer, checkItem, slot))
  					result = 1;
@@ -768,21 +751,6 @@
  			if (num18 != -1) {
  				float num25 = 0.7f;
  				int num26 = (int)MathHelper.Clamp(310 + num18, 310f, 312f);
-@@ -2331,6 +_,14 @@
- 			UILinkPointNavigator.SetPosition(gamepadPointForSlot, position + vector * 0.75f);
- 	}
- 
-+	private static int GetSlotColorContext(int context) => context switch
-+	{
-+		Context.ModdedAccessorySlot => Context.EquipAccessory,
-+		Context.ModdedVanityAccessorySlot => Context.EquipAccessoryVanity,
-+		Context.ModdedDyeSlot => Context.EquipDye,
-+		_ => context
-+	};
-+
- 	public static Color GetColorByLoadout(int slot, int context)
- 	{
- 		Color color = Color.White;
 @@ -2383,6 +_,14 @@
  
  	public static Item GetSharedLoadoutItem(int context, int slot, out int? sharedFromLoadout)
