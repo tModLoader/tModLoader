@@ -1035,6 +1035,7 @@
 		"NoAteLoaf": "Quando o jogador não tenha consumido um Pãozinho Artesanal antes",
 		"BloodOrSun": "Durante uma Lua de Sangue ou Eclipse Solar",
 		"NotBloodOrSun": "Fora de uma Lua de Sangue ou Eclipse Solar",
+		// "TorchGodsFavor": "When the player has unlocked Biome Torches",
 		"HardmodeFTW": "No modo difícil em um mundo Para os Dignos, caso contrário, a qualquer momento",
 		"NightOrEclipse": "À noite ou durante um Eclipse Solar",
 		"BloodMoonOrHardmode": "Durante uma Lua de Sangue, ou a qualquer momento no Modo Difícil",

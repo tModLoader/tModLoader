@@ -112,7 +112,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Recipe Changes:
   - anyX (anyWood, anySand, etc) all removed. We should no longer need to maintain those old recipe group approaches.
   - useX (useWood, ext) also removed. Same.
-  - Need needTorchGodsFavor condition
   - needEverythingSeed seems to be replaced by needMechdusa. TODo: Rename Condition.ZenithWorld?
   - Recipe item consumption seems to be in another class now, patches need to be moved. GetIngredientCraftingDiscount also needs to be tweaked to work again for modded RecipeLoader.ConsumeIngredient
     - Hook needs rework to use `Recipe.RequiredItemEntry`

@@ -1035,6 +1035,7 @@
 		"NoAteLoaf": "Kiedy gracz nie skonsumował Chleb rzemieślniczego wcześniej",
 		"BloodOrSun": "Podczas krwawego księżyca lub zaćmienia słońca",
 		"NotBloodOrSun": "Nie podczas krwawego księżyca lub zaćmienia słońca",
+		// "TorchGodsFavor": "When the player has unlocked Biome Torches",
 		"HardmodeFTW": "W hardmode w świecie For the Worthy, w przeciwnym razie o każdej porze",
 		"NightOrEclipse": "W nocy lub podczas zaćmienia słońca",
 		"BloodMoonOrHardmode": "Podczas Krwawego Księżyca lub w dowolnym momencie w trybie Hardmode",
