@@ -143,7 +143,7 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Should NetMessage.LogMessageError Invariant.Assert be directed to ModNet.LogMessageError somehow?
 - TileDrawing.IsTileDangerous vanilla now has tilex/y, but different order, so we might need to adjust TML variant or other callsites
 - Why did ProjectileID.SummonTagDamageMultiplier change?
-- Clound.cs, there is now CloudID.Sets.RareClouds_Normal, CloudID.Sets.RareClouds_Celebration for more control. Document and maybe use in ExampleMod. CloudID.Search also needs to be populated
+- Clound.cs, there is now CloudID.Sets.RareClouds_Normal, CloudID.Sets.RareClouds_Celebration for more control. Document and maybe use in ExampleMod.
 - public static LanguageSearchFilter CreateDialogFilter(string startsWith, object substitutions) removed from Lang.cs? Could still be useful, add back into Lang.TML.cs?
 - WorldGen.SwapTileData might not be necessary anymore. ErrorWorldSwapTiles exists. The new name isn't as useful, however.
 - Projectile.identity removed, Projectile.key added. How to use? Also Projectile.IndexForVisuals. Also Main.projectileIdentity. Need to fix Projectile.key docs, it is the identity docs.
@@ -152,7 +152,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Code near "Yoyos with effective top speed" comment in AI_009_2_Yoyos seems weird. Was this fixed in vanilla and the "< 1.01f" code left in? Probably can remove the duplicate bounds check, check blame
 - Item.hasVanityEffects no longer marked as [Old], why? Did something change?
 - Item.active property removed
-- Item.TurnToAir no longer has fullReset parameter and now always calls SetDefaults. Verify that this isn't an issue.
 - Move TML added Item ctor patches near others or to Item.TML.cs
 - Item.NewItem has new overloads. We might need to rework all our TML-added overloads or remove them. position is now natively a Vector2, rather than being case to int for the final step, and a velocity and NewItemOwnership are new parameters.
 - Main.rand can now have key-specific UnifiedRandom instances. Not sure how a mod might use it.
@@ -160,7 +159,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - PreUpdateNPCs doesn't exactly match 1.4.4 location because of UpdateWorld_SpawnNPCs being added. Do we want 2 more hooks there? Probably need to double check that all Main Update methods have a Pre and Post method, and that they are documented and any deviations from 1.4.4. order are documented as well (UpdateWorld_FloatingText, UpdateWorld_SpawnNPCs, etc)
 - Could NPC.lifeRegenExpectedLossPerSecond or interactedWithPlayerLocally be useful to modders?
 - Is NPC.OnSpawn useful for tmod?
-- Projectile.perIDStaticNPCImmunity is not a 2d array instead of a staggared array, might need some adjustments.
 - Chest.AddItemToShop changes need more thought to fit in vanilla changes.
 - NPCLoader.UpdateLifeRegen will need to be changed. This has changed a lot.
 - Player.hasWings might be useful.
@@ -218,8 +216,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Magic and Summon prefixes have been split into separate categories
 - Pylons no longer require happiness to be sold. Remove Condition.HappyEnoughToSellPylons from ModPylon.GetNPCShopEntry() to match vanilla.
 - Removed Condition.HappyEnough and Condition.HappyEnoughToSellPylons. Replaced with Condition.CurrentPriceAdjustmentUnder(float priceModifier) and Condition.CurrentPriceAdjustmentOver(float priceModifier).
-- Item.SetDefaults(int Type = 0) no longer exists
-- Item.SetDefaults(int Type, bool noMatCheck = false, ItemVariant variant = null) change to SetDefaults(int Type, ItemVariant variant = null) (noMatCheck parameter removed)
 - UnifiedRandom.Next methods are no longer virtual
 - UIWrappedSearchBar, is it useful to modders?
 - Various text rendering methods have been changed or improved. Investigate new functionality and previous bug fixes.

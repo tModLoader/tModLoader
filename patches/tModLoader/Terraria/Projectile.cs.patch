@@ -20,7 +20,7 @@
  {
  	public struct GemStaffFeatures
  	{
-@@ -233,6 +_,9 @@
+@@ -233,99 +_,421 @@
  		}
  	}
  
@@ -28,9 +28,12 @@
 +	/// If true, the Projectile actually exists within the game world. Within <see cref="Main.projectile"/>, if active is false, the projectile is junk data. Always check active if iterating over <see cref="Main.projectile"/>. Another option for iterating is to use <see cref="Main.ActiveProjectiles"/> instead for simpler code.
 +	/// </summary>
  	public bool active;
++	/// <summary>
++	/// Maps <see cref="Projectile.type"/> and NPC index (index within <see cref="Main.npc"/>) to the game update tick when immunity will be lost. Used only for projectiles using <see cref="usesIDStaticNPCImmunity"/>.
++	/// </summary>
  	public static uint[,] perIDStaticNPCImmunity = new uint[ProjectileID.Count, InitData.MaxNPCs];
  	private static int[] slotGenerations = new int[1001];
-@@ -240,92 +_,394 @@
+ 	private static int[,] keyToIndex = new int[256, 1001];
  	public const int SentryLifeTime = 36000;
  	public const int ArrowLifeTime = 1200;
  	public float ownerHitCheckDistance = 1000f;
@@ -84,6 +87,10 @@
 +	/// <para/> Defaults to 0.
 +	/// </summary>
  	public int alpha;
++	/// <summary>
++	/// The Projectile type this projectile should act as for the purpose of <see cref="perIDStaticNPCImmunity"/>. This allows multiple projectile types to share the same cooldown.
++	/// <para/> Defaults to <see cref="type"/>, but can 
++	/// </summary>
  	public int immunityIdentity;
 +	/// <summary>
 +	/// Indicates that this projectile is a sentry.
@@ -175,20 +182,27 @@
 +
 +	/// <summary>
 +	/// The remaining number of npc can this projectile hit before dying. (Or tile bounces). Assign this field in SetDefaults and use it in ModProjectile logic if needed. A value of -1 means the projectile will penetrate infinitely. See <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/Projectiles/ExamplePiercingProjectile.cs">ExamplePiercingProjectile</see> for more information on how penetrate influences NPC immunity frames.
-+	/// <br/> Defaults to 1. Used to automatically assigned a value to <see cref="maxPenetrate"/> at the end of SetDefaults.
++	/// <para/> Defaults to 1. Used to automatically assigned a value to <see cref="maxPenetrate"/> at the end of SetDefaults.
 +	/// </summary>
  	public int penetrate = 1;
++	/// <summary>
++	/// The immunity timers for this projectile instance used with <see cref="usesLocalNPCImmunity"/>. Indexed by NPC index.
++	/// </summary>
  	public int[] localNPCImmunity = new int[Main.maxNPCs];
 +	/// <summary>
-+	/// If true, this projectile manages it's own immunity timers for each npc.<br/>
-+	/// Use this rather than <see cref="usesIDStaticNPCImmunity"/> if you want multiple projectiles of the same type to have a chance to attack rapidly, but don't want a single projectile to hit rapidly.<br/>
-+	/// <see cref="localNPCHitCooldown"/> controls the cooldown timing and must be assigned a suitable value to work properly.<br/>
++	/// <para/> If true, this projectile manages it's own immunity timers for each npc.
++	/// <para/> Use this rather than <see cref="usesIDStaticNPCImmunity"/> if you want multiple projectiles of the same type to have a chance to attack rapidly, but don't want a single projectile to hit rapidly.
++	/// <para/> <see cref="localNPCHitCooldown"/> controls the cooldown timing and must be assigned a suitable value to work properly.
++	/// <para/> The <see href="https://terraria.wiki.gg/wiki/Invincibility_frame#Local_invincibility">Terraria wiki</see> refers to this as "Local invincibility". and has more information.
++	/// <para/> Defaults to false.
 +	/// </summary>
  	public bool usesLocalNPCImmunity;
 +	/// <summary>
-+	/// If true, all projectiles of this type share an immunity cooldown for each npc.<br/>
-+	/// Use this rather than <see cref="usesLocalNPCImmunity"/> if you want other projectile types a chance to attack the npc, but don't want projectile of the same projectile type to hit an npc rapidly.<br/>
-+	/// <see cref="idStaticNPCHitCooldown"/> controls the cooldown timing and must be assigned a suitable value to work properly.<br/>
++	/// If true, all projectiles of this type share an immunity cooldown for each npc.
++	/// <para/> Use this rather than <see cref="usesLocalNPCImmunity"/> if you want other projectile types a chance to attack the npc, but don't want projectile of the same projectile type to hit an npc rapidly.
++	/// <para/> <see cref="idStaticNPCHitCooldown"/> controls the cooldown timing and must be assigned a suitable value to work properly.
++	/// <para/> The <see href="https://terraria.wiki.gg/wiki/Invincibility_frame#Static_invincibility">Terraria wiki</see> refers to this as "Static invincibility". and has more information.
++	/// <para/> Defaults to false.
 +	/// </summary>
  	public bool usesIDStaticNPCImmunity;
 +	/// <summary>
@@ -323,6 +337,9 @@
 +	/// <br/> Defaults to <see langword="false"/>.
 +	/// </summary>
  	public bool ownerHitCheck;
++	/// <summary>
++	/// If <see langword="true"/>, then this projectile will use the owner player's melee hit cooldown (<see cref="Player.meleeNPCHitCooldown"/>) to determine if the NPC can be hit. This makes the projectile apply the standard number of immunity frames as normal melee attacks (<see cref="Player.itemAnimation"/>). This is used by swung projectile weapons like <see cref="ProjectileID.Excalibur"/> and <see cref="ProjectileID.NightsEdge"/>.
++	/// </summary>
  	public bool usesOwnerMeleeHitCD;
  	public int[] playerImmune = new int[255];
  	public string miscText = "";
@@ -476,6 +493,26 @@
  	public NPC OwnerMinionAttackTargetNPC {
  		get {
  			if (Main.player[owner].MinionAttackTargetNPC < 0)
+@@ -391,6 +_,9 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Indicates if a projectile is owned by a player. Specifically, this checks that it is not an <see cref="npcProj"/> and not a <see cref="trap"/>. Note that this doesn't check if the projectile is <see cref="hostile"/>.
++	/// </summary>
+ 	public bool OwnedBySomeone {
+ 		get {
+ 			if (!npcProj)
+@@ -411,6 +_,9 @@
+ 
+ 	public Point NetSectionCoordinates => new Point(Netplay.GetSectionX((int)position.X >> 4), Netplay.GetSectionY((int)position.Y >> 4));
+ 
++	/// <summary>
++	/// Determines if the NPC at the given index is NOT immune (despite the name) to the projectile type (Passed in using <see cref="immunityIdentity"/>). This is only used for projectiles using <see cref="usesIDStaticNPCImmunity"/>, where all projectiles of the same type share an immunity cooldown for each individual NPC.
++	/// </summary>
+ 	public static bool IsNPCIndexImmuneToProjectileType(int projectileType, int npcIndex) => perIDStaticNPCImmunity[projectileType, npcIndex] <= Main.GameUpdateCount;
+ 
+ 	public static void ResetNPCSlotData(int npcIndex)
 @@ -493,8 +_,46 @@
  		type = typeToChangeInto;
  	}
@@ -553,7 +590,7 @@
  			width = 8;
  			height = 8;
  			aiStyle = 36;
-@@ -9560,13 +_,21 @@
+@@ -9560,26 +_,39 @@
  			// Dummy block for a nice patch.
  		}
  		else {
@@ -575,6 +612,26 @@
  		width = (int)((float)width * scale);
  		height = (int)((float)height * scale);
  		maxPenetrate = penetrate;
+ 	}
+ 
++	/// <summary>
++	/// Sets a projectile to set <see cref="usesIDStaticNPCImmunity"/> to true, <see cref="idStaticNPCHitCooldown"/> to 10, and <see cref="immunityIdentity"/> to the given type.
++	/// <para/> This causes all projectiles of this type and of the provided type to share an immunity cooldown for each npc. This allows for projectile variation while preserving intended damage immunity timings. Some examples include <see cref="ProjectileID.Bee"/> and <see cref="ProjectileID.GiantBee"/>, <see cref="ItemID.SporeSac"/> projectiles, and <see cref="ItemID.ToxicFlask"/> projectiles.
++	/// </summary>
++	/// <param name="Type"></param>
+-	private void UseGroupStaticImmunity(int Type)
++	public void UseGroupStaticImmunity(int Type)
+ 	{
+ 		usesIDStaticNPCImmunity = true;
+ 		idStaticNPCHitCooldown = 10;
+ 		immunityIdentity = Type;
+ 	}
+ 
+-	private void ApplyGemStaffStats()
++	public void ApplyGemStaffStats()
+ 	{
+ 		friendly = true;
+ 		usesLocalNPCImmunity = true;
 @@ -9614,6 +_,9 @@
  		extraUpdates = 1;
  		usesLocalNPCImmunity = true;
