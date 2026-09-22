@@ -3405,7 +3405,7 @@
  		if (diff == 1)
  			result = new Microsoft.Xna.Framework.Color(mcColor.R, mcColor.G, mcColor.B);
  
-@@ -17805,12 +_,14 @@
+@@ -17805,15 +_,20 @@
  		return result;
  	}
  
@@ -3420,7 +3420,13 @@
 +		toolTipNames[0] = "ItemName";
  		bool flag = false;
  		bool flag2 = false;
++		/*
  		if (item.tooltipContext >= 0 && ItemSlot.canLoadoutShareAt[item.tooltipContext]) {
++		*/
++		if ((item.tooltipContext >= 0 && ItemSlot.canLoadoutShareAt[item.tooltipContext]) || ItemSlot.CanModdedLoadoutShare(item.tooltipContext, item.tooltipSlot)) {
+ 			ItemSlot.GetSharedLoadoutItem(item.tooltipContext, item.tooltipSlot, out var sharedFromLoadout);
+ 			if (sharedFromLoadout.HasValue)
+ 				toolTipLine[numLines++] = Language.GetTextValue("UI.ItemLoadoutSharedFrom", sharedFromLoadout.Value + 1);
 @@ -17826,22 +_,39 @@
  		}
  		else if (item.favorited) {
