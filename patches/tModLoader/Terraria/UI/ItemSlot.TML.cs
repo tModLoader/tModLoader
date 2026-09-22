@@ -169,4 +169,8 @@ public partial class ItemSlot
 
 		return !ItemLoader.CanEquipAccessory(player, item, slot >= 20 ? slot - 20 : slot, slot >= 20);
 	}
+
+	private static bool IsAccessoryContext(int context) => Math.Abs(context) is Context.EquipAccessory or Context.EquipAccessoryVanity;
+	internal static bool IsModdedLoadoutShareContext(int context) => context is Context.ModdedAccessorySlot or Context.ModdedVanityAccessorySlot or Context.ModdedDyeSlot;
+	internal static bool CanModdedLoadoutShare(int context, int slot) => IsModdedLoadoutShareContext(context) && AccessorySlotLoader.ModSlotPlayer(Main.LocalPlayer).CanLoadoutShare(context, slot);
 }

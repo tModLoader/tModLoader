@@ -45,19 +45,7 @@
  	private static bool[] canFavoriteAt;
  	private static bool[] retainFavoriteOnMoveAt;
  	public static bool[] canLoadoutShareAt;
-@@ -449,6 +_,11 @@
- 		return false;
- 	}
- 
-+	// Helper added by TML
-+	private static bool IsAccessoryContext(int context) => Math.Abs(context) is Context.EquipAccessory or Context.EquipAccessoryVanity;
-+	internal static bool IsModdedLoadoutShareContext(int context) => context is Context.ModdedAccessorySlot or Context.ModdedVanityAccessorySlot or Context.ModdedDyeSlot;
-+	internal static bool CanModdedLoadoutShare(int context, int slot) => IsModdedLoadoutShareContext(context) && AccessorySlotLoader.ModSlotPlayer(Main.LocalPlayer).CanLoadoutShare(context, slot);
-+
- 	public static void Handle(Item[] inv, int context = 0, int slot = 0, bool allowInteract = true)
- 	{
- 		OverrideHover(inv, context, slot);
-@@ -465,16 +_,23 @@
+@@ -465,16 +_,26 @@
  		if (!PlayerInput.UsingGamepad)
  			UILinkPointNavigator.SuggestUsage(GetGamepadPointForSlot(inv, context, slot));
  
@@ -69,7 +57,9 @@
  			return;
  
  		if (Main.keyState.IsKeyDown(Main.FavoriteKey)) {
--			if (Main.drawingPlayerChat && canShareAt[context]) {
++			/*
+ 			if (Main.drawingPlayerChat && canShareAt[context]) {
++			*/
 +			if (Main.drawingPlayerChat && context >= 0 && canShareAt[context]) {
  				Main.cursorOverride = 2;
  				return;
@@ -104,11 +94,13 @@
  		if (Main.cursorOverride == 2) {
  			if (ChatManager.AddChatText(FontAssets.MouseText.Value, ItemTagHandler.GenerateTag(item), Vector2.One))
  				SoundEngine.PlaySound(12);
-@@ -574,12 +_,15 @@
+@@ -574,12 +_,18 @@
  		}
  
  		if (Main.cursorOverride == 3) {
--			if (canFavoriteAt[context]) {
++			/*
+ 			if (canFavoriteAt[context]) {
++			*/
 +			if (context >= 0 && canFavoriteAt[context]) {
  				ToggleFavorited(item);
  				return true;

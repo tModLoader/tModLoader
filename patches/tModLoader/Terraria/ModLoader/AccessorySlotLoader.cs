@@ -392,7 +392,7 @@ public class AccessorySlotLoader : Loader<ModAccessorySlot>
 
 				// TODO: We could also show the name of an UnloadedAccessorySlot in the tooltip.
 
-				// Debug Code:
+				// Debug Code: 
 				//Main.hoverItemName += " - Slot #" + slot;
 			}
 		}
