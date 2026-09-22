@@ -3405,7 +3405,7 @@
  		if (diff == 1)
  			result = new Microsoft.Xna.Framework.Color(mcColor.R, mcColor.G, mcColor.B);
  
-@@ -17805,15 +_,20 @@
+@@ -17805,20 +_,29 @@
  		return result;
  	}
  
@@ -3425,8 +3425,19 @@
 +		*/
 +		if ((item.tooltipContext >= 0 && ItemSlot.canLoadoutShareAt[item.tooltipContext]) || ItemSlot.CanModdedLoadoutShare(item.tooltipContext, item.tooltipSlot)) {
  			ItemSlot.GetSharedLoadoutItem(item.tooltipContext, item.tooltipSlot, out var sharedFromLoadout);
- 			if (sharedFromLoadout.HasValue)
+-			if (sharedFromLoadout.HasValue)
++			if (sharedFromLoadout.HasValue) {
  				toolTipLine[numLines++] = Language.GetTextValue("UI.ItemLoadoutSharedFrom", sharedFromLoadout.Value + 1);
++				toolTipNames[numLines - 1] = "ItemLoadoutSharedFrom";
++			}
+-			else if (item.favorited)
++			else if (item.favorited) {
+ 				toolTipLine[numLines++] = Language.GetTextValue("UI.ItemLoadoutShared");
++				toolTipNames[numLines - 1] = "ItemLoadoutShared";
++			}
+ 			else
+ 				flag2 = true;
+ 
 @@ -17826,22 +_,39 @@
  		}
  		else if (item.favorited) {
@@ -3632,7 +3643,7 @@
  			numLines++;
  		}
  
-@@ -18001,14 +_,16 @@
+@@ -18001,71 +_,93 @@
  				toolTipLine[numLines] = Language.GetTextValue("CommonItemTooltip.RestoresLifeRange", healLife, num6);
  			}
  			else {
@@ -3651,7 +3662,24 @@
  			numLines++;
  		}
  
-@@ -18029,43 +_,59 @@
+ 		if (item.buffType > 0 && !item.summon && !lightPet[item.buffType] && !vanityPet[item.buffType]) {
+ 			toolTipLine[numLines] = Language.GetTextValue("CommonItemTooltip.Buffs");
++			toolTipNames[numLines] = "Buffs";
+ 			numLines++;
+ 		}
+ 		else if (item.healLife > 0) {
+ 			toolTipLine[numLines] = Language.GetTextValue("CommonItemTooltip.Healing");
++			toolTipNames[numLines] = "Healing";
+ 			numLines++;
+ 		}
+ 		else if (item.healMana > 0) {
+ 			toolTipLine[numLines] = Language.GetTextValue("CommonItemTooltip.ManaHealing");
++			toolTipNames[numLines] = "ManaHealing";
+ 			numLines++;
+ 		}
+ 		else if (item.mountType > 0 && !MountID.Sets.Cart[item.mountType]) {
+ 			toolTipLine[numLines] = Language.GetTextValue("CommonItemTooltip.Mount");
++			toolTipNames[numLines] = "Mount";
  			numLines++;
  		}
  
@@ -4020,6 +4048,14 @@
  					lineColors[numLines] = (result.Complete ? Microsoft.Xna.Framework.Color.LimeGreen : new Microsoft.Xna.Framework.Color(130, 130, 130));
  					numLines++;
  				}
+@@ -18405,6 +_,7 @@
+ 
+ 		if (flag2 && Player.Settings.ShowLoadoutShareHint) {
+ 			toolTipLine[numLines] = Language.GetTextValue("UI.ItemLoadoutShareHint");
++			toolTipNames[numLines] = "ItemLoadoutShareHint";
+ 			lineColors[numLines] = new Microsoft.Xna.Framework.Color(OurFavoriteColor.R, OurFavoriteColor.G, OurFavoriteColor.B, 190);
+ 			numLines++;
+ 		}
 @@ -18414,13 +_,28 @@
  			if (amountWeHave < amountNeededTotal) {
  				toolTipLine[numLines] = Language.GetTextValue("CommonItemTooltip.CreativeSacrificeNeeded", amountNeededTotal - amountWeHave);

@@ -166,7 +166,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Could NPC.lifeRegenExpectedLossPerSecond or interactedWithPlayerLocally be useful to modders?
 - Is NPC.OnSpawn useful for tmod?
 - Projectile.perIDStaticNPCImmunity is not a 2d array instead of a staggared array, might need some adjustments.
-- New vanilla named tooltiplines: Buffs, Healing, ManaHealing, Mount. Others?
 - NPCID.Sets.GoldCrittersCollection changes are confusing, fix patches if still needed.
 - Chest.AddItemToShop changes need more thought to fit in vanilla changes.
 - NPCLoader.UpdateLifeRegen will need to be changed. This has changed a lot.
