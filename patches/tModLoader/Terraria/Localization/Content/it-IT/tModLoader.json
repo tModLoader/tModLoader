@@ -1037,6 +1037,7 @@
 		// "NoAteLoaf": "When the player has not consumed an Artisan Loaf before",
 		// "BloodOrSun": "During a Blood Moon or Solar Eclipse",
 		// "NotBloodOrSun": "Not during a Blood Moon or Solar Eclipse",
+		// "TorchGodsFavor": "When the player has unlocked Biome Torches",
 		// "HardmodeFTW": "In Hardmode when in a For the Worthy world, otherwise anytime",
 		// "NightOrEclipse": "At night or during Solar Eclipse",
 		// "BloodMoonOrHardmode": "During a Blood Moon, or anytime in Hardmode",

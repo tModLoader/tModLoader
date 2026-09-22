@@ -112,6 +112,7 @@ public sealed record Condition(LocalizedText Description, Func<bool> Predicate)
 	public static readonly Condition NotEclipse =				new("Conditions.NotSolarEclipse",			() => !Main.eclipse);
 	public static readonly Condition EclipseOrBloodMoon =		new("Conditions.BloodOrSun",				() => Main.bloodMoon || Main.eclipse);
 	public static readonly Condition NotEclipseAndNotBloodMoon =new("Conditions.NotBloodOrSun",				() => !Main.bloodMoon && !Main.eclipse);
+	public static readonly Condition NeedTorchGodsFavor =		new("Conditions.TorchGodsFavor",			() => Main.LocalPlayer.unlockedBiomeTorches);
 
 	public static readonly Condition Thunderstorm =				new("Conditions.Thunderstorm",				() => Main.IsItStorming);
 	public static readonly Condition BirthdayParty =			new("Conditions.BirthdayParty",				() => GameContent.Events.BirthdayParty.PartyIsUp);
@@ -253,4 +254,3 @@ public sealed record Condition(LocalizedText Description, Func<bool> Predicate)
 	public static Condition CurrentPriceAdjustmentUnder(float priceModifier) => new(Language.GetText("Conditions.CurrentPriceAdjustmentUnder").WithFormatArgs(priceModifier), () => Main.LocalPlayer.currentShoppingSettings.PriceAdjustment <= priceModifier);
 	public static Condition CurrentPriceAdjustmentOver(float priceModifier) => new(Language.GetText("Conditions.CurrentPriceAdjustmentOver").WithFormatArgs(priceModifier), () => Main.LocalPlayer.currentShoppingSettings.PriceAdjustment >= priceModifier);
 }
-			
