@@ -121,6 +121,7 @@ public static partial class Config
 		RefactorInstanceMember("Terraria.Player",		"meleeSpeed",		DamageModifier("Melee",		"GetAttackSpeed"));
 		RefactorInstanceMember("Terraria.Player",		"minionKB",			DamageModifier("Summon",	"GetKnockback", "Base"));
 		RefactorInstanceMember("Terraria.Player",		"armorPenetration",	DamageModifier("Generic",	"GetArmorPenetration"));
+		RefactorInstanceMember("Terraria.Player",		"meleeArmorPenetration", DamageModifier("Melee", "GetArmorPenetration"));
 		RefactorInstanceMember("Terraria.Player",		"whipUseTimeMultiplier",	DamageModifier("SummonMeleeSpeed",	"GetAttackSpeed"));
 
 		RefactorInstanceMethodCall("Terraria.Player", "VanillaUpdateEquip",	Removed("Use either GrantPrefixBenefits (if Item.accessory) or GrantArmorBenefits (for armor slots)"));
