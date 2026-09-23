@@ -503,6 +503,7 @@ All classes are in the `Terraria` or `Terraria.ID` namespaces unless otherwise i
 * ⚙️: `BuffID.Sets.BasicMountData` removed. Replace with `BuffID.Sets.MountType[Type] = ModContent.MountType<MyMount>();`.
 * 🤖: `BuffID.Sets.LongerExpertDebuff` -> `BuffID.Sets.BuffTimeIsExtendedWithGameDifficulty`
 * 💀: `Chest.maxItems` is no longer static.
+* 🤖: `Condition.ZenithWorld` might need to be replaced with the new `Condition.MechdusaSeedFeature` in code that specifically is checking for Mechadusa. They can technically differ.
 * 🤖: `GoreID.Sets.LiquidDroplet` -> `GoreID.Sets.IsDrip`
 * 🤖: `ImmunityCooldownID.Bosses` -> `ImmunityCooldownID.BossNoCheese`
 * ⚙️: `ItemID.Sets.ItemSpawnDecaySpeed` removed. No longer used.

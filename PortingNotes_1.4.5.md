@@ -226,7 +226,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 
 # tModPorter TODOs
 
-
 # ExampleMod TODOs
 - Verify that ExampleZombieThief still works with changes
 
