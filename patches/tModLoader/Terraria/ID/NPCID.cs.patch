@@ -175,7 +175,7 @@
 +			/// <summary>
 +			/// The default portrait type to use if no other portrait conditions (Example: shimmer variant condition) are met.
 +			/// </summary>
-+			/// <param name="portrait">The portrait to use. For example: <see cref="ModTownNPCPortrait(string)"/></param>
++			/// <param name="portrait">The portrait to use. For example: <c>NPCID.Sets.BasicPortrait($"{Texture}_Portrait")</c> (<see cref="NPCID.Sets.BasicPortrait"/>)</param>
  			public NPCPortraitSelector Default(NPCPortraitProvider portrait)
  			{
  				_entries.Add(new Entry {
@@ -800,7 +800,7 @@
 +
 +		/// <summary>
 +		/// If <see langword="true"/> for a given NPC type (<see cref="NPC.type"/>), then that NPC is considered dangerous without having <see cref="NPC.boss"/> set.
-+		/// <br/> <see cref="Main.CurrentFrameFlags.AnyActiveBossNPC"/> will be set to <see langword="true"/> if any NPC in this set is alive, and <see cref="NPC.AnyDanger(bool, bool)"/> will return <see langword="true"/> if any NPCs in this set are alive.
++		/// <br/> <see cref="Main.CurrentFrameFlags.AnyActiveBossNPC"/> will be set to <see langword="true"/> if any NPC in this set is alive, and <see cref="NPC.AnyDanger(bool, bool, bool)"/> will return <see langword="true"/> if any NPCs in this set are alive.
 +		/// <br/> Defaults to <see langword="false"/>.
 +		/// </summary>
  		public static bool[] DangerThatPreventsOtherDangers = Factory.CreateBoolSet(517, 422, 507, 493, 399, 13, 14, 15);

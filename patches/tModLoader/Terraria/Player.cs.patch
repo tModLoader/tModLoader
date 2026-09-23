@@ -399,7 +399,7 @@
 +	/// The <see cref="BuffID"/>s of all buffs this player has active.
 +	/// <br/> A value of <c>0</c> means that buff slot is empty.
 +	/// <br/> Buff times are stored with the same index in <see cref="buffTime"/>.
-+	/// <br/> <see cref="AddBuff(int, int, bool, bool)"/>, <see cref="ClearBuff(int)"/>, and <see cref="DelBuff(int)"/> should be used to manipulate player buffs.
++	/// <br/> <see cref="AddBuff(int, int)"/>, <see cref="ClearBuff(int)"/>, and <see cref="DelBuff(int)"/> should be used to manipulate player buffs.
 +	/// </summary>
  	public int[] buffType = new int[maxBuffs];
 +
@@ -407,7 +407,7 @@
 +	/// The remaining durations in ticks of all buffs this player has active.
 +	/// <br/> A value of <c>0</c> means that buff slot is empty.
 +	/// <br/> Buff types are stored with the same index in <see cref="buffType"/>.
-+	/// <br/> <see cref="AddBuff(int, int, bool, bool)"/>, <see cref="ClearBuff(int)"/>, and <see cref="DelBuff(int)"/> should be used to manipulate player buffs.
++	/// <br/> <see cref="AddBuff(int, int)"/>, <see cref="ClearBuff(int)"/>, and <see cref="DelBuff(int)"/> should be used to manipulate player buffs.
 +	/// </summary>
  	public int[] buffTime = new int[maxBuffs];
 +
@@ -419,7 +419,7 @@
  	public bool[] buffImmune = new bool[BuffID.Count];
 +	/// <summary>
 +	/// The index of the projectile (<see cref="Entity.whoAmI"/>) currently being "held" by the player as if it were an item. Set during projectile AI. Held projectiles will be drawn during player rendering over the player's arms.
-+	/// <para/> When making a held projectile, make sure to test holding the projectile while moving up or down a single block obstacles and adjust <see cref="Player.RotatedRelativePoint"/>, <see cref="Player.gfxOffY"/> or <see cref="ProjectileID.Sets.HeldProjDoesNotUsePlayerGfxOffY"/> accordingly if the draw location is incorrect.
++	/// <para/> When making a held projectile, make sure to test holding the projectile while moving up or down a single block obstacles and use <c>owner.RotatedRelativePoint(owner.MountedCenter + ...)</c> to position the held projectile's draw location.
 +	/// <para/> Defaults to -1.
 +	/// </summary>
  	public int heldProj = -1;
@@ -997,13 +997,13 @@
 +	/// <remarks>To apply a global run speed modifier, use <see cref="moveSpeed"/>.</remarks>
  	public float runAcceleration = 0.08f;
  	public float runSlowdown = 0.2f;
-+	/// <summary> True if the player is within crafting range of a tile with water or a <see cref="TileID.Sets.CountsAsWaterSource"/> tile. (adjWater stands for adjacent to water) </summary>
++	/// <summary> True if the player is within crafting range of a tile with water or a <see cref="TileID.Sets.CountsAsWaterForCrafting"/> tile. (adjWater stands for adjacent to water) </summary>
  	public bool adjWaterSource;
-+	/// <summary> True if the player is within crafting range of a tile with honey or a <see cref="TileID.Sets.CountsAsHoneySource"/> tile. (adjHoney stands for adjacent to honey) </summary>
++	/// <summary> True if the player is within crafting range of a tile with honey or a <see cref="TileID.Sets.CountsAsHoneyForCrafting"/> tile. (adjHoney stands for adjacent to honey) </summary>
  	public bool adjHoney;
-+	/// <summary> True if the player is within crafting range of a tile with shimmer or a <see cref="TileID.Sets.CountsAsShimmerSource"/> tile. (adjShimmer stands for adjacent to shimmer) </summary>
++	/// <summary> True if the player is within crafting range of a tile with shimmer or a <see cref="TileID.Sets.CountsAsShimmerForCrafting"/> tile. (adjShimmer stands for adjacent to shimmer) </summary>
 +	public bool adjShimmer;
-+	/// <summary> True if the player is within crafting range of a tile with lava or a <see cref="TileID.Sets.CountsAsLavaSource"/> tile. (adjLava stands for adjacent to lava) </summary>
++	/// <summary> True if the player is within crafting range of a tile with lava or a <see cref="TileID.Sets.CountsAsLavaForCrafting"/> tile. (adjLava stands for adjacent to lava) </summary>
  	public bool adjLava;
  	public bool oldAdjWaterSource;
  	public bool oldAdjHoney;
@@ -1228,7 +1228,7 @@
  	public float MountFishronSpecialCounter;
  	public Vector2 MinionRestTargetPoint = Vector2.Zero;
 +	/// <summary>
-+	/// The index of the NPC targeted by the player, either by right clicking with a summon item (<see cref="ProjectileID.Sets.MinionTargettingFeature"/>) or by hitting the NPC with a whip.
++	/// The index of the NPC targeted by the player, either by right clicking with a summon item (<see cref="ProjectileID.Sets.MinionTargetingFeature"/>) or by hitting the NPC with a whip.
 +	/// <br/><br/> Will be -1 if there is no current target, or check <see cref="HasMinionAttackTargetNPC"/> instead.
 +	/// </summary>
  	public int MinionAttackTargetNPC = -1;
@@ -1293,12 +1293,13 @@
  	private Item[] _pendingRefunds = new Item[0];
  	private static readonly PlayerFileData _visualCloneDummyData = new PlayerFileData();
  	private static readonly MemoryStream _visualCloneStream = new MemoryStream();
-@@ -1951,6 +_,9 @@
+@@ -1951,6 +_,10 @@
  
  	public float BaseHeight => height - HeightOffsetBoost;
  
 +	/// <summary>
-+	/// Returns the player's center adjusted for mount and step stool usage. Typically used in conjunction with <see cref="RotatedRelativePoint(Vector2, bool, bool)"/> to retrieve a suitable position for positioning items and effects originating from the player.
++	/// Returns the player's center adjusted for mount and step stool usage. Typically used in conjunction with <see cref="RotatedRelativePoint(Vector2, bool, bool, int)"/> to retrieve a suitable position for positioning items and effects originating from the player.
++	/// <para/> For example: <c>player.RotatedRelativePoint(player.MountedCenter + ...)</c>
 +	/// </summary>
  	public Vector2 MountedCenter {
  		get {
@@ -1464,16 +1465,18 @@
  
  	public bool UsingOrReusingItem {
  		get {
-@@ -2633,6 +_,13 @@
+@@ -2633,6 +_,15 @@
  		y = vector.Y;
  	}
  
 +	/// <summary>
-+	/// Takes an input position and returns the position adjusted to the players visual rotation and offset. This accounts for the player being shifted up or down and rotated while riding a mount, sitting in a chair, and sleeping. <br/>
++	/// Takes an input position and returns the position adjusted to the players visual rotation and offset. This accounts for the player being shifted up or down and rotated while riding a mount, sitting in a chair, and sleeping. 
++	/// <para/> For example: <c>player.RotatedRelativePoint(player.MountedCenter + ...)</c>
 +	/// </summary>
 +	/// <param name="pos"></param>
 +	/// <param name="reverseRotation"></param>
 +	/// <param name="addGfxOffY"></param>
++	/// <param name="pushFromOriginHack"></param>
 +	/// <returns></returns>
  	public Vector2 RotatedRelativePoint(Vector2 pos, bool reverseRotation = false, bool addGfxOffY = true, int pushFromOriginHack = 0)
  	{
@@ -3877,7 +3880,7 @@
  
  				nPC.immune[whoAmI] = NPCImmuneTime;
  				GiveImmuneTimeForCollisionAttack(PlayerImmuneTime);
-@@ -16529,22 +_,73 @@
+@@ -16529,22 +_,75 @@
  		}
  	}
  
@@ -3905,6 +3908,7 @@
 +	/// <param name="crit">Whether or not the strike is a crit</param>
 +	/// <param name="damageType">Defaults to <see cref="DamageClass.Default"/></param>
 +	/// <param name="damageVariation">Whether to apply damage variation. Defaults to false.</param>
++	/// <param name="hitSource"></param>
 +	public void ApplyDamageToNPC(NPC npc, int damage, float knockback, int direction, bool crit = false, DamageClass? damageType = null, bool damageVariation = false, PlayerNPCHitSource hitSource = default)
  	{
 +		if (!PlayerLoader.CanHitNPC(this, npc))
@@ -3927,11 +3931,12 @@
 +	}
 +
 +	/// <summary>
-+	/// Applies a hit to an NPC via <see cref="NPC.StrikeNPC(NPC.HitInfo, bool, bool)"/>. <br/>
++	/// Applies a hit to an NPC via <see cref="NPC.StrikeNPC(NPC.HitInfo, bool, bool, int)"/>. <br/>
 +	/// Also calls player based OnHit and OnKill hooks, tracks dps and net syncs the strike
 +	/// </summary>
 +	/// <param name="npc">The NPC to strike</param>
 +	/// <param name="hit">The hit to apply</param>
++	/// <param name="hitSource"></param>
 +	public void StrikeNPCDirect(NPC npc, NPC.HitInfo hit, PlayerNPCHitSource hitSource)
 +	{
  		OnHit(npc.Center.X, npc.Center.Y, npc);
@@ -6040,7 +6045,7 @@
  
 +	/// <summary>
 +	/// Places the <paramref name="newItem"/> directly into this player's inventory. The <paramref name="settings"/> dictate how or if the pickup text is displayed as well as if the item can be placed into the Void Vault inventory. It is typical to use one of the existing options contained in the static fields of <see cref="GetItemSettings"/> for this parameter to match vanilla behavior.
-+	/// <para/> Modders commonly use <see cref="QuickSpawnItem(IEntitySource, Item, int)"/> to give a player an item as it is simpler to implement, but GetItem allows for more control and should be used when possible.
++	/// <para/> Modders commonly use <see cref="QuickSpawnItem(IEntitySource, Item)"/> to give a player an item as it is simpler to implement, but GetItem allows for more control and should be used when possible.
 +	/// <para/> The return value is an Item instance containing the overflow. If the full stack of <paramref name="newItem"/> is placed into the inventory successfully, the return value will be an empty item instance. If the inventory is full or if only a partial stack of <paramref name="newItem"/> fit in the inventory, the return value will be the Item that didn't fit. If the returned <see cref="Item"/> isn't <see cref="Item.IsAir"/>, that will have to be handled by the calling code, typically by spawning the item in the world as a drop or leaving it where <paramref name="newItem"/> came from.
 +	/// <para/> Make sure to test code using this method with a full inventory. Consulting vanilla code to match similar usages is recommended to implement specific item movement and popup text behavior the user would expect.
 +	/// </summary>
@@ -7216,7 +7221,7 @@
  	}
  
 +	/// <summary>
-+	/// Clamps the provided world position to the normal gameplay range (<see cref="Main.LogicCheckScreenWidth"/>, <see cref="Main.LogicCheckScreenHeight"/>) from this player.
++	/// Clamps the provided world position to the normal gameplay range (<see cref="Main.MaxWorldViewSize"/>) from this player.
 +	/// <br/><br/> This is used to limit the ranges of various items (teleport, minion, sentry, magic missile, etc) to prevent users with high resolution screens from having a gameplay advantage.
 +	/// </summary>
  	public void LimitPointToPlayerReachableArea(ref Vector2 pointPosition)

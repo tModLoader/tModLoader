@@ -50,7 +50,7 @@ public partial class Recipe
 	[Obsolete($"Replaced by {nameof(IngredientQuantityCallback)} due to not accounting for shimmer decrafting")]
 	public delegate void ConsumeItemCallback(Recipe recipe, int type, ref int amount);
 	/// <summary>
-	/// Called for both <see cref="Create()"/> and <see cref="Item.GetShimmered"/>, using <paramref name="isDecrafting"/> = <see langword="true"/> to denote a shimmer operation
+	/// Called for both <see cref="Create()"/> and <see cref="WorldItem.GetShimmered"/>, using <paramref name="isDecrafting"/> = <see langword="true"/> to denote a shimmer operation
 	/// </summary>
 	public delegate void IngredientQuantityCallback(Recipe recipe, int type, ref int amount, bool isDecrafting);
 	internal OnCraftCallback OnCraftHooks { get; private set; }

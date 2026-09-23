@@ -688,7 +688,7 @@
  	public static int[] timeItemSlotCannotBeReusedFor = new int[401];
 +	/// <summary>
 +	/// Contains all the <see cref="NPC"/>s in the game world. NPC are spawned via the <see cref="NPC.NewNPC(IEntitySource, int, int, int, int, float, float, float, float, int)"/> method.
-+	/// <para/> Only entries in this array that are <see cref="Entity.active"/> are relevant. Each NPC has an <see cref="Entity.whoAmI"/> corresponding to their index within Main.npc. The last entry is a dummy entry used for overflow and should not be accessed.
++	/// <para/> Only entries in this array that are <see cref="NPC.active"/> are relevant. Each NPC has an <see cref="Entity.whoAmI"/> corresponding to their index within Main.npc. The last entry is a dummy entry used for overflow and should not be accessed.
 +	/// <para/> Modders seeking to run logic on all NPCs should use <see cref="ActiveNPCs"/> to iterate over the Main.npc entries to easily account for inactive entries and the dummy entry.
 +	/// </summary>
  	public static NPC[] npc = new NPC[maxNPCs + 1];

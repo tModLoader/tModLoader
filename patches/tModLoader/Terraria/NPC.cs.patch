@@ -235,7 +235,7 @@
  	public bool SpawnedFromStatue;
 +	/// <summary>
 +	/// If true, this NPC can be replaced by a newly spawning NPC when <see cref="Main.npc"/> is completely full. This is typically set for NPCs spawned by players, such as NPC spawned from statues, to prevent players from cheesing boss fights by preventing minions from spawning because Main.npc is already full.
-+	/// <summary>
++	/// </summary>
  	public bool CanBeReplacedByOtherNPCs;
  	public bool dripping;
  	public bool drippingSlime;
@@ -608,7 +608,7 @@
 +	/// The Player that this NPC is currently targeting, represented as the index of that Player within <see cref="Main.player"/> (the Player's <see cref="Entity.whoAmI"/>).
 +	/// <para/> This is typically set by calling the <see cref="NPC.TargetClosest(bool)"/> method. Use <see cref="HasValidTarget"/> to check if <see cref="target"/> has a valid value before accessing <c>Main.player[NPC.target]</c> and doing logic dealing with the targeted player.
 +	/// <para/> Defaults to -1.
-+	/// <para/> Some NPC support targeting other NPC (<see cref="SupportsNPCTargets"/>). For these NPC, <see cref="target"/> will be set to a value between 300 and 500. See <see cref="HasNPCTarget"/>, <see cref="TranslatedTargetIndex"/>, and <see cref="NPCID.Sets.UsesNewTargetting"/> for more information on that feature.
++	/// <para/> Some NPC support targeting other NPC (<see cref="SupportsNPCTargets"/>). For these NPC, <see cref="target"/> will be set to a value between 300 and 500. See <see cref="HasNPCTarget"/>, <see cref="TranslatedTargetIndex"/>, and <see cref="NPCID.Sets.UsesNewTargeting"/> for more information on that feature.
 +	/// </summary>
  	public int target = -1;
  	public ulong targetSetFrame;
@@ -804,7 +804,7 @@
  	}
  
 +	/// <summary>
-+	/// Shorthand for checking <see cref="NPCID.Sets.UsesNewTargetting"/>.
++	/// Shorthand for checking <see cref="NPCID.Sets.UsesNewTargeting"/>.
 +	/// </summary>
  	public bool SupportsNPCTargets => NPCID.Sets.UsesNewTargeting[type];
  
@@ -2375,7 +2375,7 @@
  		Vector2 positionInWorld = base.Hitbox.ClosestPointInRect(bestSwordSpot);
  		ParticleOrchestrator.RequestParticleSpawn(clientOnly: false, ParticleOrchestraType.Keybrand, new ParticleOrchestraSettings {
  			PositionInWorld = positionInWorld
-@@ -67737,9 +_,143 @@
+@@ -67737,9 +_,144 @@
  		return dmg;
  	}
  
@@ -2462,7 +2462,7 @@
 +	/// <param name="damageType">Defaults to <see cref="DamageClass.Default"/></param>
 +	/// <param name="damageVariation">Whether to apply damage variation. Defaults to false.</param>
 +	/// <param name="luck">Luck modifier to produce weight damageVariation towards higher (positive) or lower (negative) values. Defaults to 0</param>
-+	/// <returns>A <see cref="HitInfo"/> for use with <see cref="StrikeNPC(HitInfo, bool, bool)"/> and <see cref="NetMessage.SendStrikeNPC"/></returns>
++	/// <returns>A <see cref="HitInfo"/> for use with <see cref="StrikeNPC(HitInfo, bool, bool, int)"/> and <see cref="NetMessage.SendStrikeNPC"/></returns>
 +	/// <remarks>
 +	/// Note: This method doesn't include entity-related hit modifying hooks and shouldn't be used in normal contexts.
 +	/// <br/><br/> Consider using <see cref="StrikeOtherNPC"/> instead.
@@ -2472,7 +2472,7 @@
 +	}
 +
 +	/// <summary>
-+	/// Calls <see cref="CalculateHitInfo"/>, <see cref="StrikeNPC(HitInfo, bool, bool)"/> and then <see cref="NetMessage.SendStrikeNPC"/> (in multiplayer) <br/>
++	/// Calls <see cref="CalculateHitInfo"/>, <see cref="StrikeNPC(HitInfo, bool, bool, int)"/> and then <see cref="NetMessage.SendStrikeNPC"/> (in multiplayer) <br/>
 +	/// </summary>
 +	/// <param name="damage">The damage to deal to the NPC, before modifications, defense, resistances etc</param>
 +	/// <param name="hitDirection">The hit direction of the resulting strike (1 or -1)</param>
@@ -2494,7 +2494,7 @@
 +	}
 +
 +	/// <summary>
-+	/// Helper method for calling <see cref="StrikeNPC(HitInfo, bool, bool)"/> with a <see cref="HitInfo.InstantKill"/> strike. <br/>
++	/// Helper method for calling <see cref="StrikeNPC(HitInfo, bool, bool, int)"/> with a <see cref="HitInfo.InstantKill"/> strike. <br/>
 +	/// Use to butcher your own NPCs. <br/>
 +	/// Not recommended for use on multiplayer clients because the net packet will trigger <see cref="PlayerInteraction"/> on the server.
 +	/// </summary>
@@ -2515,6 +2515,7 @@
 +	/// <param name="hit">The parameters of the hit. Normally obtained via <see cref="NPC.HitModifiers"/> or <see cref="CalculateHitInfo"/></param>
 +	/// <param name="fromNet">true if this strike came from another client over the network. Just changes the combat text to be darker in color.</param>
 +	/// <param name="noPlayerInteraction">Prevents <see cref="PlayerInteraction(int)"/> from being called in single player. In multiplayer, player interaction is handled by the server.</param>
++	/// <param name="owner"></param>
 +	/// <returns>The actual health lost by the NPC. Normally this is <see cref="HitInfo.Damage"/> but it is capped at the current health of the NPC, and represents the actual damage dealt in the case of <see cref="HitInfo.InstantKill"/> </returns>
 +	public int StrikeNPC(HitInfo hit, bool fromNet = false, bool noPlayerInteraction = false, int owner = -1)
  	{

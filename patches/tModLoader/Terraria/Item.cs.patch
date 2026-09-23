@@ -846,7 +846,7 @@
  	public static void DropCache(IEntitySource reason, Vector2 pos, Vector2 spread, int t, bool stopCaching = true)
  	{
  		if (cachedItemSpawnsByType[t] == -1)
-@@ -300,17 +_,63 @@
+@@ -300,17 +_,64 @@
  		}
  	}
  
@@ -897,6 +897,7 @@
 +	///	<br/> If <c><paramref name="prefixWeWant"/> == -3</c>, then this method simple checks if this item <em>can</em> receive prefixes.
 +	///	<br/> Otherwise, attempt to apply the given <see cref="PrefixID"/> to this item.
 +	/// </param>
++	/// <param name="rolledPrefixIsTopTier"></param>
 +	/// <returns>
 +	/// <see langword="false"/> if:<list type="bullet">
 +	/// <item><paramref name="prefixWeWant"/> is <c>0</c></item>
@@ -1367,7 +1368,7 @@
  	}
  
 +	/// <summary>
-+	/// Calls <see cref="SetDefaults(int)"/> to change this item to another item type while preserving <see cref="Item.favorited"/>. Used by right click code of items that transform into other items, such as how <see cref="ItemID.Shellphone"/> cycles between different items for different destinations. Does not preserve modded data.
++	/// Calls <see cref="SetDefaults(int, ItemVariant)"/> to change this item to another item type while preserving <see cref="Item.favorited"/>. Used by right click code of items that transform into other items, such as how <see cref="ItemID.Shellphone"/> cycles between different items for different destinations. Does not preserve modded data.
 +	/// </summary>
 +	/// <param name="to"></param>
  	public void ChangeItemType(int to)

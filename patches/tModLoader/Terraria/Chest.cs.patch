@@ -1,11 +1,5 @@
 --- src/TerrariaNetCore/Terraria/Chest.cs
 +++ src/tModLoader/Terraria/Chest.cs
-@@ -1,4 +_,5 @@
- using System;
-+using System;
- using System.Collections.Generic;
- using Microsoft.Xna.Framework;
- using Terraria.Audio;
 @@ -10,11 +_,16 @@
  using Terraria.GameContent.Events;
  using Terraria.Graphics.Renderers;
@@ -172,17 +166,17 @@
  	}
  
 +	/// <summary>
-+	/// Visually moves <paramref name="item"/> from <paramref name="position"/> to <paramref name="chestPosition"/>.
++	/// Visually moves <paramref name="itemType"/> from <paramref name="position"/> to <paramref name="chestPosition"/>.
 +	/// <br/> If called on <see cref="NetmodeID.MultiplayerClient"/>, sync the transfer to all clients.
 +	/// </summary>
-+	/// <param name="position">The original position of <paramref name="item"/> in world coordinates.</param>
++	/// <param name="position">The original position of the item in world coordinates.</param>
 +	/// <param name="chestPosition">The position of the destination chest in world coordinates.</param>
-+	/// <param name="item">The item to move. Only <see cref="Item.type"/> is read.</param>
-+	/// <param name="amountMoved"><strong>Unused.</strong></param>
++	/// <param name="itemType">The type of the item to move.</param>
++	/// <param name="settings"></param>
  	public static void VisualizeChestTransfer(Vector2 position, Vector2 chestPosition, int itemType, ItemTransferVisualizationSettings settings)
  	{
  		BitsByte bitsByte = new BitsByte(settings.RandomizeStartPosition, settings.RandomizeEndPosition, settings.TransitionIn, settings.Fullbright);
-@@ -258,6 +_,13 @@
+@@ -258,6 +_,14 @@
  		});
  	}
  
@@ -193,6 +187,7 @@
 +	/// <param name="position">The original position of the coins in world coordinates.</param>
 +	/// <param name="chestPosition">The position of the destination chest in world coordinates.</param>
 +	/// <param name="coinsMoved">The value of the coins moved in copper coins.</param>
++	/// <param name="settings"></param>
  	public static void VisualizeChestTransfer_CoinsBatch(Vector2 position, Vector2 chestPosition, long coinsMoved, ItemTransferVisualizationSettings settings)
  	{
  		int[] array = Utils.CoinsSplit(coinsMoved);

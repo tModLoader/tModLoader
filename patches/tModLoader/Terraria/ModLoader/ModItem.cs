@@ -1461,7 +1461,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	//Does not use <see cref="NetReceive"> because of inheritdoc on the equivalent GlobalItem hook
 	/// <summary>
 	/// Allows you to send custom data for this item between client and server, which will be handled in NetReceive.
-	/// <br/>Called whenever an item container syncs its contents (various MessageIDs and sources), or <see cref="MessageID.SyncItem"/> and <see cref="MessageID.InstancedItem"/> are successfully sent, for example when the item is dropped into the world.
+	/// <br/>Called whenever an item container syncs its contents (various MessageIDs and sources), or <see cref="MessageID.SyncItem"/> and <see cref="MessageID.SpawnInstancedItem"/> are successfully sent, for example when the item is dropped into the world.
 	/// <br/>Can be called on both server and client.
 	/// </summary>
 	/// <param name="writer">The writer.</param>
@@ -1472,7 +1472,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	//Does not use <see cref="NetSend"> because of inheritdoc on the equivalent GlobalItem hook
 	/// <summary>
 	/// Receives the custom data sent in NetSend.
-	/// <br/>Called whenever an item container syncs its contents (various MessageIDs and sources), or <see cref="MessageID.SyncItem"/> and <see cref="MessageID.InstancedItem"/> are successfully received.
+	/// <br/>Called whenever an item container syncs its contents (various MessageIDs and sources), or <see cref="MessageID.SyncItem"/> and <see cref="MessageID.SpawnInstancedItem"/> are successfully received.
 	/// <br/>Can be called on both server and client.
 	/// </summary>
 	/// <param name="reader">The reader.</param>

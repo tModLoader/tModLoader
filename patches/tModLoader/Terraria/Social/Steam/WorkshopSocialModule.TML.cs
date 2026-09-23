@@ -524,9 +524,9 @@ public partial class WorkshopSocialModule
 			// https://steamapi.xpaw.me/#IPublishedFileService/GetDetails
 
 			string webRequest = $"https://api.steampowered.com/IPublishedFileService/GetDetails/v1/?key={webKey}&publishedfileids%5B0%5D={publishFileId}&includetags=false&includeadditionalpreviews=false&includechildren=false&includekvtags=true&includevotes=false&short_description=true&includeforsaledata=false&includemetadata=true&return_playtime_stats=0&appid=1281930&strip_description_bbcode=false&admin_query=true";
-			/// Response Format Will Include these, if it has data for it. If no data in metadata, will not show at all.
-			/// "kvtags":[{"key":"name","value":"ToBeDeleted"},{"key":"Author","value":"Solxan"},{"key":"modside","value":"Both"},{"key":"homepage","value":""},{"key":"modloaderversion","value":"9999.0"},{"key":"version","value":"0.0.0"},{"key":"modreferences","value":""},{"key":"versionsummary","value":"9999.0:0.3.0.13;2023.10.3.0:0.3.0.9;2024.3:0.3.0.11"}]
-			/// "metadata":"{\"hashes\":[\"9999.0|0.3.0.13|\\u0010�L��\\fI\\\"r�����\\\\���n�\",\"9999.0|0.3.0.13|\\u0012%E�Aa�l�A�RdG����m0\"]}"
+			// Response Format Will Include these, if it has data for it. If no data in metadata, will not show at all.
+			// "kvtags":[{"key":"name","value":"ToBeDeleted"},{"key":"Author","value":"Solxan"},{"key":"modside","value":"Both"},{"key":"homepage","value":""},{"key":"modloaderversion","value":"9999.0"},{"key":"version","value":"0.0.0"},{"key":"modreferences","value":""},{"key":"versionsummary","value":"9999.0:0.3.0.13;2023.10.3.0:0.3.0.9;2024.3:0.3.0.11"}]
+			// "metadata":"{\"hashes\":[\"9999.0|0.3.0.13|\\u0010�L��\\fI\\\"r�����\\\\���n�\",\"9999.0|0.3.0.13|\\u0012%E�Aa�l�A�RdG����m0\"]}"
 
 			//
 

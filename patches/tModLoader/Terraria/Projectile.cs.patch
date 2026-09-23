@@ -63,7 +63,7 @@
 +
 +	/// <summary>
 +	/// Scales how large the projectile will be drawn. Will also affect the hitbox (<see cref="Entity.width"/>, <see cref="Entity.height"/>) if assigned in SetDefaults. If changed elsewhere it will not affect the hitbox, so that will have to be adjusted manually via code in that situation if needed. <para/>
-+	/// Due to legacy code, scale does not affect the draw origin correctly, resulting in the projectile not rotating around the hitbox center correctly nor being drawn correctly centered on the hitbox. For small changes (0.8f to 1.2f) the effect is unnoticeable, but it is advised to avoid large values unless the projectile is manually drawn with the correct approach via <see cref="ModProjectile.PreDraw(ref Color)"/>.<para/>
++	/// Due to legacy code, scale does not affect the draw origin correctly, resulting in the projectile not rotating around the hitbox center correctly nor being drawn correctly centered on the hitbox. For small changes (0.8f to 1.2f) the effect is unnoticeable, but it is advised to avoid large values unless the projectile is manually drawn with the correct approach via <see cref="ModProjectile.PreDraw(Player, ref Color)"/>.<para/>
 +	/// <br/> Defaults to 1f.
 +	/// </summary>
  	public float scale = 1f;
@@ -89,7 +89,7 @@
  	public int alpha;
 +	/// <summary>
 +	/// The Projectile type this projectile should act as for the purpose of <see cref="perIDStaticNPCImmunity"/>. This allows multiple projectile types to share the same cooldown.
-+	/// <para/> Defaults to <see cref="type"/>, but can 
++	/// <para/> Defaults to <see cref="type"/>, but can set to another projectile type directly or via <see cref="UseGroupStaticImmunity(int)"/>.
 +	/// </summary>
  	public int immunityIdentity;
 +	/// <summary>
@@ -122,7 +122,7 @@
 +	/// </summary>
  	public float[] localAI = new float[maxAI];
 +	/// <summary>
-+	/// An offset from the actual position of the projectile that will be added to the draw position. Used to offset some held projectiles to match the players <see cref="Player.gfxOffY"/>, thereby keeping the projectile visually in sync with the player. <see cref="ProjectileID.Sets.HeldProjDoesNotUsePlayerGfxOffY"/> can be used to ignore that usage.
++	/// An offset from the actual position of the projectile that will be added to the draw position. Used to offset some held projectiles to match the player's <see cref="Player.gfxOffY"/>, thereby keeping the projectile visually in sync with the player.
 +	/// </summary>
  	public float gfxOffY;
 +	/// <summary>
@@ -157,7 +157,7 @@
 +	/// <summary>
 +	/// The damage of this projectile, without any player bonuses.
 +	/// <br/><br/> Used by <see cref="ContinuouslyUpdateDamageStats"/> to recalculate <see cref="damage"/>.
-+	/// <br/><br/> Automatically set to the damage passed into <see cref="NewProjectile(IEntitySource, float, float, float, float, int, int, float, int, float, float, float)"/>. If the IEntitySource of NewProjectile corresponds to a player using an item, this will be set to <see cref="Item.damage"/> instead.
++	/// <br/><br/> Automatically set to the damage passed into <see cref="NewProjectile(IEntitySource, Vector2, Vector2, int, int, float, int, float, float, float, NewProjectileModifier)"/>. If the IEntitySource of NewProjectile corresponds to a player using an item, this will be set to <see cref="Item.damage"/> instead.
 +	/// </summary>
  	public int originalDamage;
  	public int spriteDirection = 1;
@@ -315,7 +315,7 @@
  	public object customHitbox;
 +	/// <summary>
 +	/// Indicates the draw order of the projectile relative to tiles, npc, and players. By default projectiles are drawn in after (in front of) Tiles and NPC but before Players. Setting this will change that behavior.
-+	/// <br/><br/> Defaults to 0 (<see cref="ProjectileDrawLayerID.None"/>).
++	/// <br/><br/> Defaults to 0 (<see cref="ProjectileDrawLayerID.Default"/>).
 +	/// </summary>
  	public int drawLayer;
 +	/// <summary>
@@ -487,7 +487,7 @@
  	}
  
 +	/// <summary>
-+	/// The NPC targeted by the owner player of this projectile, either by right clicking with a summon item (<see cref="ProjectileID.Sets.MinionTargettingFeature"/>) or by hitting the NPC with a whip.
++	/// The NPC targeted by the owner player of this projectile, either by right clicking with a summon item (<see cref="ProjectileID.Sets.MinionTargetingFeature"/>) or by hitting the NPC with a whip.
 +	/// <br/><br/> Will be null if there is no current target. See also <see cref="Player.MinionAttackTargetNPC"/>.
 +	/// </summary>
  	public NPC OwnerMinionAttackTargetNPC {
@@ -1778,7 +1778,7 @@
  							int num3 = damage;
  							position = base.Center;
  							int num4 = 0;
-@@ -39352,6 +_,14 @@
+@@ -39352,6 +_,15 @@
  		return result;
  	}
  
@@ -1789,6 +1789,7 @@
 +	/// The maximum range at which this projectile should search out a target, measured in pixels.<br/>
 +	/// Defaults to 800 (50 tiles). Each tile, for reference, measures out to be 16x16 pixels.
 +	/// </param>
++	/// <param name="ignoreTargets">NPC indexes to ignore</param>
 +	/// <returns>The index, in <see cref="Main.npc"/>, of the closest targetable NPC.</returns>
  	public int FindTargetWithLineOfSight(float maxRange = 800f, ICollection<int> ignoreTargets = null) => FindTargetWithLineOfSight(this, maxRange, ignoreTargets);
  
