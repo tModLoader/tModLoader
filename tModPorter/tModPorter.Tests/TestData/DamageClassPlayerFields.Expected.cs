@@ -1,5 +1,6 @@
 using Terraria;
 using Terraria.ModLoader;
+using Terraria.GameContent.Items;
 
 public class DamageClassPlayerFields : ModPlayer {
 	public void MethodA() {
@@ -8,6 +9,9 @@ public class DamageClassPlayerFields : ModPlayer {
 		Player.GetArmorPenetration(DamageClass.Generic) += 1;
 		Player.GetArmorPenetration(DamageClass.Melee) += 1;
 		Player.GetAttackSpeed(DamageClass.SummonMeleeSpeed) = 2;
+		Condition.RemixWorld.ToString();
+		Condition.ForTheWorthyWorld.ToString();
+		Condition.ZenithWorld.ToString();
 	}
 
 	public override void UpdateEquips() {
