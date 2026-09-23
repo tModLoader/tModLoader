@@ -32,7 +32,7 @@ public class ItemToWorldItemTest
 #if COMPILE_ERROR
 				item.active = false;
 #endif
-				_ = item.grabDelayTime;
+				_ = item.grabDelayTime/* tModPorter Suggestion: Also consider checking/setting grabDelayPlayer */;
 
 				NetMessage.SendData(MessageID.SyncItem, number: item.whoAmI);
 			}

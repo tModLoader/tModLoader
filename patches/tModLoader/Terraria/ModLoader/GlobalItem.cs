@@ -841,7 +841,7 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	/// <para/>This is only called when two items of the same type attempt to stack. This is called on the item that would be stacked onto (<see langword="this"/>/<paramref name="destination"/>).
 	/// <para/>This is usually not called for coins and ammo in the inventory/UI.
 	/// <para/>This covers all scenarios, if you just need to change in-world stacking behavior, use <see cref="CanStackInWorld"/>.
-	/// <para/> Called on the local client only.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="destination">The item instance that <paramref name="source"/> will attempt to stack onto</param>
 	/// <param name="source">The item instance being stacked onto <paramref name="destination"/></param>
@@ -854,7 +854,7 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	/// <summary>
 	/// Allows you to prevent items from stacking in the world.
 	/// <para/> This is only called when two items of the same type attempt to stack. This is called on the item that would be stacked onto (<see langword="this"/>/<paramref name="destination"/>).
-	/// <para/> Called on the local client or server, depending on who the item is reserved for.
+	/// <para/> Called on the server and the owning client.
 	/// </summary>
 	/// <param name="destination">The item instance that <paramref name="source"/> will attempt to stack onto</param>
 	/// <param name="source">The item instance being stacked onto <paramref name="destination"/></param>
@@ -867,7 +867,7 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	/// <summary>
 	/// Allows you to make things happen when items stack together.
 	/// <para/> This hook is called on the item being stacked onto (<see langword="this"/>/<paramref name="destination"/>) before the items are transferred from <paramref name="source"/> to <paramref name="destination"/>. This will be called both for in-world and in-inventory stacking.
-	/// <para/> Called on the local client only.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="destination">The item instance that <paramref name="source"/> will attempt to stack onto</param>
 	/// <param name="source">The item instance being stacked onto <paramref name="destination"/></param>

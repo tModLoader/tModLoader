@@ -1656,6 +1656,17 @@
  	public static byte FindClosest(Vector2 Position, int Width, int Height)
  	{
  		byte result = 0;
+@@ -3496,7 +_,10 @@
+ 			if (whoAmI == Main.myPlayer && theItemWeDrop.type == 5095)
+ 				LucyAxeMessage.Create(LucyAxeMessage.MessageSource.ThrownAway, base.Top, new Vector2(direction * 7, -2f));
+ 
++			/*
+ 			Item.RequestNewItem(GetItemSource_Misc(ItemSourceID.PlayerDrop), base.Center, theItemWeDrop.type, theItemWeDrop.stack, theItemWeDrop.prefix, ItemID.Sets.DropWithGrabDelayForAllPlayers[theItemWeDrop.type] ? NewItemOwnership.GrabDelayForAllPlayers : NewItemOwnership.GrabDelayForLocalPlayer, new Vector2((float)(4 * direction) + velocity.X, -2f));
++			*/
++			Item.RequestNewItem(GetItemSource_Misc(ItemSourceID.PlayerDrop), base.Center, theItemWeDrop, ItemID.Sets.DropWithGrabDelayForAllPlayers[theItemWeDrop.type] ? NewItemOwnership.GrabDelayForAllPlayers : NewItemOwnership.GrabDelayForLocalPlayer, new Vector2((float)(4 * direction) + velocity.X, -2f));
+ 			theItemWeDrop = new Item();
+ 			if (slot == 58)
+ 				Main.mouseItem = new Item();
 @@ -3549,7 +_,23 @@
  		return -1;
  	}
@@ -2018,7 +2029,15 @@
  		GetOrDropItem(item, settings);
  	}
  
-@@ -5133,6 +_,13 @@
+@@ -5128,11 +_,21 @@
+ 	{
+ 		Item item2 = GetItem(item, settings);
+ 		if (!item2.IsAir)
++			/*
+ 			Item.RequestNewItem(GetItemSource_InventoryOverflow(), base.Center, item2.type, item2.stack, item2.prefix, NewItemOwnership.ReserveForLocalPlayer);
++			*/
++			Item.RequestNewItem(GetItemSource_InventoryOverflow(), base.Center, item2, NewItemOwnership.ReserveForLocalPlayer);
+ 	}
  
  	public void OpenBossBag(int type)
  	{
@@ -8313,14 +8332,21 @@
  	}
  
  	public void TryDroppingSingleItem(IEntitySource source, Item theItem)
-@@ -45483,7 +_,10 @@
+@@ -45482,8 +_,16 @@
+ 
  	public void TryDroppingSingleItem(IEntitySource source, Item theItem, int stack)
  	{
- 		if (stack > 0 && Main.netMode != 1)
+-		if (stack > 0 && Main.netMode != 1)
++		if (stack > 0 && Main.netMode != 1) {
 +			/*
  			Item.NewItem(velocity: new Vector2((float)Main.rand.Next(-20, 21) * 0.2f, (float)Main.rand.Next(-20, 1) * 0.2f), source: source, X: (int)position.X, Y: (int)position.Y, Width: width, Height: height, type: theItem.type, stack: stack, noBroadcast: false, prefix: theItem.prefix);
 +			*/
++			// TML: The item overload clones theItem, so the stack must be set to the amount being dropped.
++			int fullStack = theItem.stack;
++			theItem.stack = stack;
 +			Item.NewItem(velocity: new Vector2((float)Main.rand.Next(-20, 21) * 0.2f, (float)Main.rand.Next(-20, 1) * 0.2f), source: source, X: (int)position.X, Y: (int)position.Y, Width: width, Height: height, item: theItem, noBroadcast: false);
++			theItem.stack = fullStack;
++		}
  
  		theItem.stack -= stack;
  		if (theItem.stack <= 0)

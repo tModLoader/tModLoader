@@ -997,7 +997,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	/// <para/> This is only called when attempting to stack with an item of the same type.
 	/// <para/> This is not called for coins in inventory/UI.
 	/// <para/> This covers all scenarios, if you just need to change in-world stacking behavior, use <see cref="CanStackInWorld"/>.
-	/// <para/> Called on the local client only.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="source">The item instance being stacked onto this item</param>
 	/// <returns>Whether or not the item is allowed to stack</returns>
@@ -1009,7 +1009,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	/// <summary>
 	/// Allows you to decide if this item is allowed to stack with another of its type in the world.
 	/// <para/> This is only called when attempting to stack with an item of the same type.
-	/// <para/> Called on the local client or server, depending on who the item is reserved for.
+	/// <para/> Called on the server and the owning client.
 	/// </summary>
 	/// <param name="destination">The WorldItem for this item</param>
 	/// <param name="source">The WorldItem instance being stacked onto this item</param>
@@ -1021,8 +1021,8 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to make things happen when items stack together.
-	/// <para/> This hook is called on item being stacked onto from <paramref name="source"/> and before the items are transferred
-	/// <para/> Called on the local client only.
+	/// <para/> This hook is called on the item being stacked onto before the items are transferred from <paramref name="source"/>. This will be called both for in-world and in-inventory stacking.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="source">The item instance being stacked onto this item</param>
 	/// <param name="numToTransfer">The quantity of <paramref name="source"/> that will be transferred to this item</param>

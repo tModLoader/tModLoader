@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/WorldItem.cs
 +++ src/tModLoader/Terraria/WorldItem.cs
-@@ -9,28 +_,58 @@
+@@ -9,28 +_,61 @@
  using Terraria.GameContent.Drawing;
  using Terraria.GameContent.Events;
  using Terraria.ID;
@@ -16,13 +16,19 @@
  	public int playerIndexTheItemIsReservedFor;
  	public int timeSinceTheItemHasBeenReservedForSomeone;
  	public int timeToKeepReservation;
++	/// <summary>
++	/// The player(s) who must wait <see cref="grabDelayTime"/> to pick this item up.<br/>
++	/// 255 (<c>Main.maxPlayers</c>) means all players.
++	/// </summary>
  	public int grabDelayPlayer;
 +	/// <summary>
-+	/// The delay, in ticks, before players can pick up this item.<br/>
-+	/// Usually set to 100 (approximately 1.666... seconds) whenever an item is dropped.<br/>
-+	/// Set to 0 whenever an item drops from a projectile.<br/>
++	/// The delay in ticks before <see cref="grabDelayPlayer"/> may pick this item up. For NPCs, see <see cref="enemyGrabDelayTime"/>.<br/>
++	/// Typically set when a new item is spawned with <see cref="NewItemOwnership.GrabDelayForLocalPlayer"/> or <see cref="NewItemOwnership.GrabDelayForAllPlayers"/>
 +	/// </summary>
  	public int grabDelayTime;
++	/// <summary>
++	/// The delay in ticks before NPCs can pick this item up, either to steal money, or to transform into copper slime
++	/// </summary>
  	public int enemyGrabDelayTime;
  	public static readonly int DefaultGrabDelay;
  	public bool shimmered;
@@ -32,10 +38,7 @@
 +	/// Instanced items only appear on the client they were spawned on and are less likely to be replaced if a new item is spawned.<br/>
 +	/// Instanced items do not exist on servers.<br/>
 +	/// Vanilla uses this field for treasure bags and Defender Medals. tModLoader automatically handles this for modded treasure bags.<br/>
-+	/// If you would like to make an instanced item, see any one of the following for examples:<br/>
-+	/// - <see cref="NPC.DropItemInstanced"/><br/>
-+	/// - <see cref="GameContent.ItemDropRules.CommonCode.DropItemLocalPerClientAndSetNPCMoneyTo0"/><br/>
-+	/// - <see cref="MessageID.InstancedItem"/><br/>
++	/// To make an item instanced, spawn it on the server with <c>noBroadcast: true</c>and call <see cref="MakeInstanced"/>
 +	/// Defaults to <see langword="false"/>.<br/>
 +	/// </summary>
  	public bool instanced;
@@ -69,17 +72,14 @@
  		get {
  			return inner.prefix;
  		}
-@@ -132,10 +_,22 @@
+@@ -132,10 +_,19 @@
  		for (int i = whoAmI + 1; i < 400; i++) {
  			WorldItem worldItem = Main.item[i];
  			if (!worldItem.IsAir && Item.CanStack(inner, worldItem.inner) && worldItem.shimmered == shimmered && worldItem.playerIndexTheItemIsReservedFor == playerIndexTheItemIsReservedFor && !(Math.Abs(position.X - worldItem.position.X) + Math.Abs(position.Y - worldItem.position.Y) > (float)num)) {
-+				// TML: CanStackInWorld is world-only; it does NOT affect inventory/chest stacking.
-+				if (!ItemLoader.CanStackInWorld(this, worldItem))
++				if (!ItemLoader.CanStackInWorld(destination: this, source: worldItem))
 +					continue;
 +
-+				// TML: Use StackItems so OnStack fires. StackItems performs the same stack arithmetic
-+				// as the replaced vanilla code (plus favorited transfer and shopCustomPrice nulling,
-+				// which were already part of the 1.4.4 behavior via this same method call).
++				// TML: Use StackItems so OnStack fires.
 +				ItemLoader.StackItems(inner, worldItem.inner, out int numTransferred);
 +
 +				/* #OnStackHook
@@ -113,6 +113,19 @@
  
  					if (num3 > num4) {
  						num3 = num4;
+@@ -264,6 +_,12 @@
+ 			FindOwner();
+ 	}
+ 
++	/// <summary>
++	/// Sends <see cref="MessageID.SpawnInstancedItem"/> to matching players, and sets <see cref="Main.timeItemSlotCannotBeReusedFor"/> to lock out the slot.<br/>
++	/// Note that instanced items are not synced, and will be forcibly despawned when the time expires.
++	/// </summary>
++	/// <param name="shouldSpawnForPlayer">A predicate for choosing which players get a copy of the item (eg, if they interacted with the boss)</param>
++	/// <param name="defaultLifetimeOverride">Override the default despawn time of 15 minutes</param>
+ 	public void MakeInstanced(Predicate<Player> shouldSpawnForPlayer, int defaultLifetimeOverride = 0)
+ 	{
+ 		if (Main.netMode != 2)
 @@ -366,6 +_,8 @@
  		if (timeSinceItemSpawned < 2147483547)
  			timeSinceItemSpawned++;
@@ -187,6 +200,30 @@
  
  			Main.player[Main.myPlayer].AddCoinLuck(base.Center, stack);
  			NetMessage.SendData(146, -1, -1, null, 1, base.Center.X, base.Center.Y, stack);
+@@ -1439,6 +_,13 @@
+ 			inner.SetDefaults(transformToItem);
+ 			stack = num;
+ 			shimmered = true;
++
++			// TML: The result may have a lower maxStack, spawn the excess as separate shimmered stacks.
++			for (int i = 1; stack > maxStack; i++) {
++				int excess = Math.Min(stack - maxStack, maxStack);
++				stack -= excess;
++				SpawnShimmeredItem(i, type, excess);
++			}
+ 		}
+ 		else if (type == 4986) {
+ 			if (NPC.unlockedSlimeRainbowSpawn)
+@@ -1490,7 +_,9 @@
+ 		else if (decraftingRecipeIndex >= 0) {
+ 			int num6 = inner.FindDecraftAmount();
+ 			Recipe recipe = Main.recipe[decraftingRecipeIndex];
++			/* TML: Unused, and throws for single ingredient recipes since requiredItem is a List
+ 			_ = recipe.requiredItem[1].stack;
++			*/
+ 			IEnumerable<Recipe.RequiredItemEntry> enumerable = recipe.requiredItemQuickLookup;
+ 			if (recipe.customShimmerResults != null) {
+ 				enumerable = recipe.customShimmerResults.Select(delegate (Item item) {
 @@ -1508,12 +_,16 @@
  
  				int num8 = num6 * item.stack;
