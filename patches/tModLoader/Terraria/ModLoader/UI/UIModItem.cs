@@ -31,6 +31,7 @@ internal class UIModItem : UIPanel
 	private UIText _modName;
 	private UIModStateText _uiModStateText;
 	internal UIAutoScaleTextTextPanel<string> tMLUpdateRequired;
+	internal UIAutoScaleTextTextPanel<string> trustRequired;
 	private UIImage _modReferenceIcon;
 	private UIImage _translationModIcon;
 	private UIImage _deleteModButton;
@@ -49,6 +50,7 @@ internal class UIModItem : UIPanel
 	private string[] _modDependencies; // Note: Recursive
 	private string _modRequiresTooltip;
 	public readonly string DisplayNameClean; // No chat tags: for search and sort functionality.
+	public readonly string DownloadOrigin;
 
 	private string ToggleModStateText {
 		get {
@@ -76,6 +78,9 @@ internal class UIModItem : UIPanel
 		Width.Percent = 1f;
 		SetPadding(6f);
 		DisplayNameClean = _mod.DisplayNameClean;
+
+		_mod.modFile.VerifyOrigin();
+		DownloadOrigin = _mod.modFile.downloadOrigin;
 	}
 
 	public override void OnInitialize()
@@ -138,6 +143,19 @@ internal class UIModItem : UIPanel
 				Utils.OpenToURL(updateURL);
 			};
 			Append(tMLUpdateRequired);
+		}
+		else if (DownloadOrigin != null) {
+			trustRequired = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("Downloaded From Internet")).WithFadedMouseOver(Color.Red, Color.Red * 0.7f);
+			trustRequired.BackgroundColor = Color.Red * 0.7f;
+			trustRequired.Top.Pixels = 40;
+			trustRequired.Width.Pixels = 280;
+			trustRequired.Height.Pixels = 36;
+			trustRequired.Left.Pixels += _uiModStateText.Width.Pixels + _uiModStateText.Left.Pixels + PADDING;
+			trustRequired.OnLeftClick += (a, b) => {
+				SoundEngine.PlaySound(SoundID.MenuOpen);
+				Interface.infoMessage.Show("This mod was downloaded from the internet.\n\nMods may contain malicious code, such as stealing passwords or installing viruses, especially mods not downloaded directly from Steam Workshop.\n\nOnly enable this mod if you trust the person who sent you this mod.", Interface.modsMenuID, altButtonText: "Trust file", altButtonAction: () => { FileOriginChecker.ClearDownloadFlags(_mod.modFile.path); }, okButtonText: "Do not trust file");
+			};
+			Append(trustRequired);
 		}
 		else
 			Append(_uiModStateText);
@@ -298,6 +316,8 @@ internal class UIModItem : UIPanel
 		OnLeftDoubleClick += (e, el) => {
 			if (tMLUpdateRequired != null)
 				return;
+			if (trustRequired != null)
+				return;
 			// Only trigger if we didn't target the ModStateText, otherwise we trigger this behavior twice
 			if (e.Target.GetType() != typeof(UIModStateText))
 				_uiModStateText.LeftClick(e);
@@ -420,6 +440,9 @@ internal class UIModItem : UIPanel
 		}
 		else if (tMLUpdateRequired?.IsMouseHovering == true) {
 			_tooltip = Language.GetTextValue("tModLoader.SwitchVersionInfoButton");
+		}
+		else if (trustRequired?.IsMouseHovering == true) {
+			_tooltip = $"This file was downloaded from the internet, this is extremely risky.\n{DownloadOrigin}";
 		}
 		else if (_modReferenceIcon?.IsMouseHovering == true) {
 			_tooltip = _modRequiresTooltip;
