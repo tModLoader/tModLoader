@@ -227,7 +227,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 
 # tModPorter TODOs
 
-- ItemVariants.EverythingWorld renamed to MechdusaWorld
 - Main.GameModeInfo.IsJourneyMode -> Main.IsJourneyMode
 
 # ExampleMod TODOs

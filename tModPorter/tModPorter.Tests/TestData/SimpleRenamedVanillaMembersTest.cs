@@ -1,5 +1,4 @@
 using Terraria;
-using Terraria.GameContent.Items;
 using Terraria.ID;
 using Terraria.ObjectData;
 using Microsoft.Xna.Framework;
@@ -7,7 +6,6 @@ using Microsoft.Xna.Framework;
 public class SimpleRenamedVanillaMembersTest
 {
 	void Method() {
-		var everythingWorld = ItemVariants.EverythingWorld;
 		var dresserX = Main.dresserX;
 		var dresserY = Main.dresserY;
 		var activePlayerCount = Main.ActivePlayerCount;

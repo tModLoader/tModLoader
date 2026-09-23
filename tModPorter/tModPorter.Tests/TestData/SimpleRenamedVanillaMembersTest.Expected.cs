@@ -1,7 +1,6 @@
 using Terraria;
 using Terraria.Chat;
 using Terraria.GameContent;
-using Terraria.GameContent.Items;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
@@ -10,9 +9,6 @@ using Microsoft.Xna.Framework;
 public class SimpleRenamedVanillaMembersTest
 {
 	void Method() {
-#if COMPILE_ERROR
-		var everythingWorld = ItemVariants.MechdusaWorld;
-#endif
 		var dresserX = Main.interactedDresserTopLeftX;
 		var dresserY = Main.interactedDresserTopLeftY;
 		var activePlayerCount = Main.CurrentFrameFlags.ActivePlayersCount;
