@@ -122,15 +122,21 @@
  		if (grabDelayTime > 0)
  			grabDelayTime--;
  
-@@ -461,7 +_,7 @@
+@@ -459,11 +_,14 @@
+ 		int num = (int)base.Center.X / 16;
+ 		int num2 = (int)base.Center.Y / 16;
  		if (WorldGen.InWorld(num, num2) && WallID.Sets.AllowsWind[Main.tile[num, num2].wall]) {
++			/*
  			int num3 = 600;
  			if (Main.dayRate > 0 && Main.dayRate < num3)
--				num3 /= Main.dayRate;
-+				num3 = (int)(num3 / Main.dayRate); //num3 /= Main.dayRate;
+ 				num3 /= Main.dayRate;
  
  			if (Main.rand.Next(num3) == 0 && Main.rand.NextFloat() < Main.maxRaining) {
++			*/
++			if (Main.rand.NextDouble() < Main.dayRate / 600.0 && Main.rand.NextFloat() < Main.maxRaining) {
  				int num4 = stack;
+ 				inner.SetDefaults(206);
+ 				stack = num4;
 @@ -654,6 +_,8 @@
  
  	private void MoveInWorld(float gravity, float maxFallSpeed, ref Vector2 wetVelocity)

@@ -7430,15 +7430,22 @@
  					int num8 = 0;
  					for (int j = 0; j < maxNPCs; j++) {
  						if (npc[j].active && npc[j].townNPC && npc[j].type != 37 && npc[j].type != 453)
-@@ -57580,7 +_,7 @@
+@@ -57580,12 +_,15 @@
  				WorldGen.UnspawnHomelessNPC();
  			}
  			else if (dayTime && time < 27000.0 && !IsFastForwardingTime() && WorldGen.GetWorldUpdateRate() > 0) {
--				int num9 = dayRate;
-+				double num9 = dayRate; // TML: int->double
++				/*
+ 				int num9 = dayRate;
  				if (num9 < 1)
  					num9 = 1;
  
+ 				int maxValue = (int)(27000.0 / (double)num9);
+ 				if (rand.Next(maxValue) == 0)
++				*/
++				if (rand.NextDouble() < dayRate / 27000.0)
+ 					WorldGen.SpawnHomelessNPC();
+ 			}
+ 		}
 @@ -57679,7 +_,10 @@
  	public static bool AnyPlayerReadyToFightKingSlime()
  	{
