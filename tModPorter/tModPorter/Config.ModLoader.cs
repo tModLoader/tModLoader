@@ -485,9 +485,6 @@ public static partial class Config
 		RenameMethod("Terraria.Recipe", from: "AddRecipe", "Register");
 		RenameType(from: "Terraria.Recipe.Condition", to: "Terraria.Condition");
 		RenameStaticField("Terraria.Condition", from: "InGraveyardBiome", to: "InGraveyard");
-		RenameStaticField("Terraria.GameContent.Items.ItemVariants", from: "RemixWorld", to: "RemixWorld", newType: "Terraria.Condition");
-		RenameStaticField("Terraria.GameContent.Items.ItemVariants", from: "GetGoodWorld", to: "ForTheWorthyWorld", newType: "Terraria.Condition");
-		RenameStaticField("Terraria.GameContent.Items.ItemVariants", from: "EverythingWorld", to: "ZenithWorld", newType: "Terraria.Condition");
 
 		RefactorInstanceMember("Terraria.Item", "IsCandidateForReforge", Removed("Use `maxStack == 1 || Item.AllowReforgeForStackableItem` or `Item.Prefix(-3)` to check whether an item is reforgeable"));
 		RefactorInstanceMethodCall("Terraria.Item", "CloneWithModdedDataFrom", Removed("Use Clone, ResetPrefix or Refresh"));

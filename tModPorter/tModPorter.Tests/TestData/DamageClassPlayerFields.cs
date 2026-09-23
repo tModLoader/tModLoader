@@ -1,6 +1,5 @@
 using Terraria;
 using Terraria.ModLoader;
-using Terraria.GameContent.Items;
 
 public class DamageClassPlayerFields : ModPlayer {
 	public void MethodA() {
@@ -9,9 +8,6 @@ public class DamageClassPlayerFields : ModPlayer {
 		player.armorPenetration += 1;
 		player.meleeArmorPenetration += 1;
 		player.whipUseTimeMultiplier = 2;
-		ItemVariants.RemixWorld.ToString();
-		ItemVariants.GetGoodWorld.ToString();
-		ItemVariants.EverythingWorld.ToString();
 	}
 
 	public override void UpdateEquips() {
