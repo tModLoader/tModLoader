@@ -29,7 +29,7 @@ public sealed class KeybindLoader : Loader
 	/// </summary>
 	/// <param name="mod"> The mod that this keybind will belong to. Usually, this would be your mod instance. </param>
 	/// <param name="name"> The internal name of the keybind. The localization key "Mods.{ModName}.Keybinds.{KeybindName}.DisplayName" will be used for the display name. <br/>It is recommended that this not have any spaces. </param>
-	/// <param name="defaultBinding"> The default binding. </param>
+	/// <param name="defaultBinding"> The default binding. <see langword="null"/> or whitespace will register the keybind as unbound by default. </param>
 	public static ModKeybind RegisterKeybind(Mod mod, string name, string defaultBinding)
 	{
 		if (mod == null)
@@ -38,8 +38,7 @@ public sealed class KeybindLoader : Loader
 		if (string.IsNullOrWhiteSpace(name))
 			throw new ArgumentNullException(nameof(name));
 
-		if (string.IsNullOrWhiteSpace(defaultBinding))
-			throw new ArgumentNullException(nameof(defaultBinding));
+		defaultBinding = string.IsNullOrWhiteSpace(defaultBinding) ? string.Empty : defaultBinding;
 
 		return RegisterKeybind(new ModKeybind(mod, name, defaultBinding));
 	}
