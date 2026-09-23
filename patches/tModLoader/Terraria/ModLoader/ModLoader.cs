@@ -133,8 +133,11 @@ public static class ModLoader
 			var modInstances = AssemblyManager.InstantiateMods(modsToLoad, token);
 			modInstances.Insert(0, new ModLoaderMod());
 			Mods = modInstances.ToArray();
-			foreach (var mod in Mods)
+			for (int i = 0; i < Mods.Length; i++) {
+				Mod mod = Mods[i];
+				mod.Index = i;
 				modsByName[mod.Name] = mod;
+			}
 
 			ModContent.Load(token);
 
