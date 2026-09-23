@@ -79,7 +79,7 @@
  			}
  		}
 +
-+		LocalizationLoader.LoadModTranslations(culture);
++		LocalizationLoader.LoadModTranslations(this, culture);
  	}
  
 +	// Replaced by ProcessCopyCommandsInTexts implementation in LanguageManager.tML.cs
