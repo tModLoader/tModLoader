@@ -54,6 +54,7 @@ public static partial class Config
 		RefactorInstanceMethodCall("Terraria.Tile", "HasSameSlope",		ComparisonFunctionToPropertyEquality("BlockType"));
 		RefactorInstanceMethodCall("Terraria.Tile", "isTheSameAs",		Comment("Suggestion: Read https://github.com/tModLoader/tModLoader/wiki/Update-Migration-Guide#tiles"));
 
+		RenameStaticField("Terraria.GameContent.Items.ItemVariants", from: "EverythingWorld", to: "MechdusaWorld");
 		RenameStaticField("Terraria.ID.DustID",    from: "Fire",			to: "Torch");
 		RenameStaticField("Terraria.ID.MessageID", from: "SendNPCBuffs",	to: "NPCBuffs");
 		RenameStaticField("Terraria.ID.MessageID", from: "Unlock",			to: "LockAndUnlock");
