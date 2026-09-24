@@ -1,4 +1,4 @@
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using System;
 using Terraria;
 using Terraria.Audio;
@@ -22,6 +22,7 @@ namespace ExampleMod.Content.Projectiles
 			// This set handles some things for us already:
 			// Sets the timeLeft to 3 and the projectile direction when colliding with an NPC or player in PVP (so the explosive can detonate).
 			// Explosives also bounce off the top of Shimmer, detonate with no blast damage when touching the bottom or sides of Shimmer, and damage other players in For the Worthy worlds.
+			// Killing the projectile runs the explosion: PrepareBombToBlow, then damage to nearby NPCs and to the owner.
 			ProjectileID.Sets.Explosive[Type] = true;
 		}
 
@@ -53,11 +54,10 @@ namespace ExampleMod.Content.Projectiles
 		public override bool OnTileCollide(Vector2 oldVelocity) {
 			// Die immediately if IsChild is true (We set this to true for the 5 extra explosives we spawn in OnKill)
 			if (IsChild) {
-				// These two are so the bomb will damage the player correctly.
-				Projectile.timeLeft = 0;
-				Projectile.PrepareBombToBlow();
-				return true;
+				Projectile.Kill(); // Detonate
+				return false;
 			}
+
 			// OnTileCollide can trigger quite frequently, so using soundDelay helps prevent the sound from overlapping too much.
 			if (Projectile.soundDelay == 0) {
 				// We adjust Volume since the sound is a bit too loud. PitchVariance gives the sound some random pitch variance.
@@ -80,24 +80,28 @@ namespace ExampleMod.Content.Projectiles
 		}
 
 		public override void AI() {
-			// The projectile is in the midst of exploding during the last 3 updates.
-			if (Projectile.owner == Main.myPlayer && Projectile.timeLeft <= 3) {
-				Projectile.PrepareBombToBlow(); // Get ready to explode.
+			// Other clients wait for the owner's kill message, so the explosion happens at the same time in the same place for everyone.
+			if (Projectile.owner != Main.myPlayer && Projectile.timeLeft < 5) {
+				Projectile.timeLeft = 5;
 			}
-			else {
-				// Smoke and fuse dust spawn. The position is calculated to spawn the dust directly on the fuse.
-				if (Main.rand.NextBool()) {
-					Dust dust = Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustID.Smoke, 0f, 0f, 100, default, 1f);
-					dust.scale = 0.1f + Main.rand.Next(5) * 0.1f;
-					dust.fadeIn = 1.5f + Main.rand.Next(5) * 0.1f;
-					dust.noGravity = true;
-					dust.position = Projectile.Center + new Vector2(1, 0).RotatedBy(Projectile.rotation - 2.1f, default) * 10f;
 
-					dust = Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustID.Torch, 0f, 0f, 100, default, 1f);
-					dust.scale = 1f + Main.rand.Next(5) * 0.1f;
-					dust.noGravity = true;
-					dust.position = Projectile.Center + new Vector2(1, 0).RotatedBy(Projectile.rotation - 2.1f, default) * 10f;
-				}
+			if (Projectile.owner == Main.myPlayer && Projectile.timeLeft <= 3) {
+				Projectile.Kill(); // Detonate
+				return;
+			}
+
+			// Smoke and fuse dust spawn. The position is calculated to spawn the dust directly on the fuse.
+			if (Main.rand.NextBool()) {
+				Dust dust = Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustID.Smoke, 0f, 0f, 100, default, 1f);
+				dust.scale = 0.1f + Main.rand.Next(5) * 0.1f;
+				dust.fadeIn = 1.5f + Main.rand.Next(5) * 0.1f;
+				dust.noGravity = true;
+				dust.position = Projectile.Center + new Vector2(1, 0).RotatedBy(Projectile.rotation - 2.1f, default) * 10f;
+
+				dust = Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustID.Torch, 0f, 0f, 100, default, 1f);
+				dust.scale = 1f + Main.rand.Next(5) * 0.1f;
+				dust.noGravity = true;
+				dust.position = Projectile.Center + new Vector2(1, 0).RotatedBy(Projectile.rotation - 2.1f, default) * 10f;
 			}
 			Projectile.ai[0] += 1f;
 			if (Projectile.ai[0] > 10f) {
@@ -119,9 +123,6 @@ namespace ExampleMod.Content.Projectiles
 		}
 
 		public override void PrepareBombToBlow() {
-			Projectile.tileCollide = false; // This is important or the explosion will be in the wrong place if the bomb explodes on slopes.
-			Projectile.alpha = 255; // Set to transparent. This projectile technically lives as transparent for about 3 frames
-
 			// Change the hitbox size, centered about the original projectile center. This makes the projectile damage enemies during the explosion.
 			Projectile.Resize(ExplosionWidthHeight, ExplosionWidthHeight);
 

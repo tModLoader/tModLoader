@@ -4635,6 +4635,15 @@
  		stringColor = TryApplyingPlayerStringColor(theOwner.stringColor, stringColor);
  		float gravDir = theOwner.gravDir;
  		switch (type) {
+@@ -33736,7 +_,7 @@
+ 
+ 	private void TryDespawningProjectile_ModifyBeforeKill(Projectile proj, ref bool giveItem)
+ 	{
+-		if (proj.aiStyle == 16 && !proj.hostile) {
++		if ((proj.aiStyle == 16 || ProjectileID.Sets.Explosive[proj.type]) && !proj.hostile) {
+ 			proj.ai[0] = 1000f;
+ 			NetMessage.SendData(27, -1, -1, null, proj.whoAmI);
+ 		}
 @@ -33939,10 +_,13 @@
  			}
  			else if (npc[i].type == 516 || npc[i].type == 519) {

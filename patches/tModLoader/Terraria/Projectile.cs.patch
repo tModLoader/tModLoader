@@ -1832,12 +1832,13 @@
  			Kill();
  
  		rotation = (float)Math.Atan2(velocity.Y, velocity.X) + 2.355f;
-@@ -40343,10 +_,15 @@
+@@ -40343,10 +_,16 @@
  			Kill();
  	}
  
 +	/// <summary>
 +	/// Used to adjust projectile properties immediately before the projectile becomes an explosion. This is called on projectiles using the <see cref="ProjAIStyleID.Explosive"/> aiStyle or projectiles that are contained in the <see cref="ProjectileID.Sets.Explosive"/> set. By defaults tileCollide is set to false and alpha is set to 255.
++	/// <para/> Called from <see cref="Kill"/>, immediately before the explosion deals its damage, and therefore runs on every client and the server.
 +	/// <para/> Calls the <see cref="ProjectileLoader.PrepareBombToBlow(Projectile)"/> method.
 +	/// </summary>
 -	private void PrepareBombToBlow()

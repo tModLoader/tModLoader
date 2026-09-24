@@ -66,6 +66,7 @@ partial class ProjectileID
 		/// <para/> Sets the timeLeft to 3 and the projectile direction when colliding with an NPC or player in PVP (so the explosive can detonate).
 		/// <para/> Explosives also bounce off the top of Shimmer, detonate with no blast damage when touching the bottom or sides of Shimmer, and damage other players in For the Worthy worlds.
 		/// <para/> Note that code should check both <c>(projectile.aiStyle == ProjAIStyleID.Explosive || ProjectileID.Sets.Explosive[projectile.type])</c> for any code targeting explosive projectiles since this set might not be complete.
+		/// <para/> If the projectile has <see cref="DespawnItemIcon"/>, then right clicking it will defuse it by setting <c>ai[0]</c> of <c>1000f</c> before calling <c>Kill</c>
 		/// </summary>
 		public static bool[] Explosive = Factory.CreateBoolSet(false, Bomb, Dynamite, Grenade, StickyBomb, HappyBomb, BombSkeletronPrime, Explosives,
 			GrenadeI, RocketI, ProximityMineI, GrenadeII, RocketII, ProximityMineII, GrenadeIII, RocketIII, ProximityMineIII, GrenadeIV, RocketIV, ProximityMineIV,
