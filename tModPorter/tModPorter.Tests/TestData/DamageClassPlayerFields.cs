@@ -6,7 +6,6 @@ public class DamageClassPlayerFields : ModPlayer {
 		player.meleeSpeed = 1;
 		player.minionKB = 1;
 		player.armorPenetration += 1;
-		player.meleeArmorPenetration += 1;
 		player.whipUseTimeMultiplier = 2;
 	}
 
