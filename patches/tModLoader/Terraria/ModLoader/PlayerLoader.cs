@@ -1156,7 +1156,7 @@ public static class PlayerLoader
 	public static bool? CanConsumeBait(Player player, Item bait)
 	{
 		bool? ret = null;
-		foreach (var modPlayer in HookCaughtFish.Enumerate(player)) {
+		foreach (var modPlayer in HookCanConsumeBait.Enumerate(player)) {
 			if (modPlayer.CanConsumeBait(bait) is bool b)
 				ret = (ret ?? true) && b;
 		}
