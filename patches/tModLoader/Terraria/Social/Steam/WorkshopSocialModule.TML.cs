@@ -4,6 +4,7 @@ using System.Collections.Specialized;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Security.Policy;
 using System.Text;
 using Newtonsoft.Json;
 using Terraria.Localization;
@@ -196,13 +197,11 @@ public partial class WorkshopSocialModule
 			// Cleanup Old Folders
 			ModOrganizer.CleanupOldPublish(workshopFolderPath);
 
-			// Should be called after folder created & cleaned up
-			tagsList.AddRange(DetermineSupportedVersionsFromWorkshop(workshopFolderPath));
-
 			// Developer Metadata Calculations must occur after cleanup old publish
-			var devMetadata = GetDeveloperMetadataForPublish(workshopFolderPath, currPublishID);
+			GetDeveloperMetadataForPublish(ref buildData, workshopFolderPath, currPublishID);
 
-			buildData["developermetadata"] = devMetadata.Serialize();
+			// Should be called after folder created & cleaned up
+			tagsList.AddRange(DetermineSupportedVersionsFromWorkshop(workshopFolderPath, currPublishID));
 
 			var modPublisherInstance = new WorkshopHelper.ModPublisherInstance();
 
@@ -216,7 +215,7 @@ public partial class WorkshopSocialModule
 		return false;
 	}
 
-	// Output version string: "2022.05.10.20:0.2.0;2022.06.10.20:0.2.1;2022.07.10.20:0.2.2"
+	// Output version string: "2022.05.10.20:0.2.0;2022.06.10.20:0.2.1;2022.07.10.20:0.2.2" -- needed for preview vs stable
 	// Return False if the mod version did not increase for the particular tml version
 	// Return False if the mod version isn't less than releases on future tml version
 	// This will have up to 1 more version than is actually relevant, but that won't break anything
@@ -257,10 +256,16 @@ public partial class WorkshopSocialModule
 		return true;
 	}
 
-	internal static HashSet<string> DetermineSupportedVersionsFromWorkshop(string repo)
+	private static HashSet<string> DetermineSupportedVersionsFromWorkshop(string repo, ulong publishId)
 	{
 		var summary = ModOrganizer.AnalyzeWorkshopTmods(repo);
-		return summary.Select(info => SocialBrowserModule.GetBrowserVersionNumber(info.tModVersion)).ToHashSet();
+
+		var localList = summary.Select(info => SocialBrowserModule.GetBrowserVersionNumber(info.tModVersion)).ToHashSet();
+
+		var pubId = new ModPubId_t() { m_ModPubId = publishId.ToString() };
+		var remoteList = WorkshopBrowserModule.Instance.GetSupportedBrowserVersions(pubId);
+
+		return localList.Union(remoteList).ToHashSet();
 	}
 
 	// PR 4345 - We combine the hash data that is currently on workshop with the hash data from the updated publishing folder to ensure that when mods are updated it is backwards compatible
@@ -269,16 +274,26 @@ public partial class WorkshopSocialModule
 	/// Gets the revised Developer Metadata fo usage with publishing a new mod or update to an existing mod.
 	/// Takes the folder path containing all .tmod files and the PublishFileID. A PublishFileID of zero is a new mod by convention.
 	/// </summary>
-	internal static DeveloperMetadata GetDeveloperMetadataForPublish(string folderPath, ulong publishId)
+	internal static void GetDeveloperMetadataForPublish(ref NameValueCollection buildData, string folderPath, ulong publishId)
 	{
 		var pubId = new ModPubId_t() { m_ModPubId = publishId.ToString() };
-		var developerMetadata = WorkshopBrowserModule.Instance.GetDeveloperMetadataFromModBrowser(pubId);
-
 		var currentHashes = GetModHashesFromFolder(folderPath);
 
-		developerMetadata.modVersionHashes = currentHashes.Concat(developerMetadata.modVersionHashes.Except(currentHashes).ToList()).ToList();
-		developerMetadata.TrimDevMetadataForPublish();
-		return developerMetadata;
+		(var longListDeveloperMetadata, var browserVersionDeveloperMetadata) = WorkshopBrowserModule.Instance.GetDeveloperMetadataFromModBrowser(pubId);
+
+		// Calculate and set the long list developer metadata for use with Steam Developer MEtadata field
+		longListDeveloperMetadata.modVersionHashes = currentHashes.Concat(longListDeveloperMetadata.modVersionHashes.Except(currentHashes).ToList()).ToList();
+		longListDeveloperMetadata.TrimDevMetadataForMainDeveloperMetadataFieldBeforePublish();
+
+		buildData[SteamedWraps.LongFormDeveloperMetadataKey] = longListDeveloperMetadata.Serialize();
+
+		// Calulate and set the short list browser version metadata for use with Steam Key Value Pair field
+		browserVersionDeveloperMetadata.modVersionHashes = currentHashes.Concat(browserVersionDeveloperMetadata.modVersionHashes.Except(currentHashes).ToList()).ToList();
+		browserVersionDeveloperMetadata.TrimDevMetadataForBrowserVersionFieldBeforePublish();
+
+		browserVersionDeveloperMetadata.versionData = buildData["versionsummary"];
+
+		buildData[SteamedWraps.BrowserDeveloperMetadataKey] = browserVersionDeveloperMetadata.Serialize();
 	}
 
 	internal static List<ModVersionHash> GetModHashesFromFolder(string folderPath)
