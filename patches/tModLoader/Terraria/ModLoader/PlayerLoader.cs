@@ -491,7 +491,7 @@ public static class PlayerLoader
 
 	public static void ModifyHurt(Player player, ref Player.HurtModifiers modifiers)
 	{
-		// safe to get source entity, as hurt is not synchronized across the net
+		// safe to get source entity, as hurt is not yet synchronized across the net
 		if (modifiers.DamageSource.TryGetCausingEntity(out Entity sourceEntity)) {
 			switch (sourceEntity) {
 				case Projectile proj:
@@ -515,13 +515,12 @@ public static class PlayerLoader
 
 	public static void OnHurt(Player player, Player.HurtInfo info)
 	{
-		// source entity is only safe to retrieve if the hit is happening 'locally'
 		if (info.DamageSource.TryGetCausingEntity(out Entity sourceEntity)) {
 			switch (sourceEntity) {
-				case Projectile proj when player == Main.LocalPlayer:
+				case Projectile proj when !info.DamageSource.NetSynced: // we want to avoid having a hook which fires inconsistently on remote clients depending on whether or not the Projectile has despawned
 					CombinedHooks.OnHitByProjectile(player, proj, info);
 					break;
-				case NPC npc when player == Main.LocalPlayer:
+				case NPC npc when !info.DamageSource.NetSynced: // we want to avoid having a hook which fires inconsistently on remote clients depending on whether or not the NPC has been replaced
 					CombinedHooks.OnHitByNPC(player, npc, info);
 					break;
 				case Player sourcePlayer when info.DamageSource.SourceItem is Item item && info.PvP:

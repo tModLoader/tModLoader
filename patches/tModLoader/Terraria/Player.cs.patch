@@ -5760,7 +5760,8 @@
  			if (whoAmI == Main.myPlayer) {
  				IEntitySource spawnSource = GetProjectileSource_SetBonus(1);
  				Entity entity = null;
- 				if (damageSource.TryGetCausingEntity(out entity))
+-				if (damageSource.TryGetCausingEntity(out entity))
++				if (!damageSource.NetSynced && damageSource.TryGetCausingEntity(out entity))
  					spawnSource = GetProjectileSource_OnHurt(entity, 1);
  
 -				int num6 = Projectile.NewProjectile(spawnSource, base.Center.X, base.Center.Y, 0f, 0f, 608, (int)(150f * meleeDamage), 15f, Main.myPlayer);
@@ -5918,6 +5919,28 @@
  	}
  
  	public void PlayHurtSound()
+@@ -32057,6 +_,10 @@
+ 		if (cooldownCounter == 1)
+ 			return false;
+ 
++		// TML: Check projectile type rather than attempting to get causing entity for remote client sync consistency
++		if (damageSource.SourceProjectileType > 0 && ProjectileID.Sets.CanHitPastShimmer[damageSource.SourceProjectileType])
++			return false;
++
+ 		Entity entity = null;
+ 		if (!damageSource.TryGetCausingEntity(out entity))
+ 			return true;
+@@ -32064,8 +_,10 @@
+ 		if (entity is NPC nPC && nPC.active && (nPC.boss || NPC.GetNPCInvasionGroup(nPC.type) != 0 || NPCID.Sets.CanHitPastShimmer[nPC.type]))
+ 			return false;
+ 
++		/*
+ 		if (entity is Projectile projectile && projectile.active && ProjectileID.Sets.CanHitPastShimmer[projectile.type])
+ 			return false;
++		*/
+ 
+ 		return true;
+ 	}
 @@ -32094,6 +_,14 @@
  			if (FileUtilities.Exists(Main.playerPathName + ".bak", isCloudSave))
  				FileUtilities.Delete(Main.playerPathName + ".bak", isCloudSave);

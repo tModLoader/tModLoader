@@ -321,6 +321,7 @@ public static partial class Config
 		RenameStaticField("Terraria.WorldGen", from: "gen", to: "isGeneratingOrLoadingWorld");
 		RenameStaticField("Terraria.ID.ContentSamples.CreativeHelper.ItemGroup", from: "PlacableObjects", to: "PlaceableObjects");
 
+		RenameInstanceField("Terraria.DataStructures.PlayerDeathReason", from: "SourceProjectileLocalIndex", to: "SourceProjectileKey").FollowBy(AddCommentToFieldAccess("See Projectile.key"));
 		RenameInstanceField("Terraria.Dust", from: "noLightEmittence", to: "noLightEmittance");
 		RenameInstanceField("Terraria.Item", from: "netID", to: "type");
 		RenameInstanceField("Terraria.Main", from: "HasInteractibleObjectThatIsNotATile", to: "HasInteractableObjectThatIsNotATile");

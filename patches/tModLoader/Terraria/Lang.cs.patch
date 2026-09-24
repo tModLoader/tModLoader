@@ -194,3 +194,21 @@
  		for (int i = 0; i < _mapLegendCache.Length; i++) {
  			_mapLegendCache[i] = LocalizedText.Empty;
  		}
+@@ -914,13 +_,16 @@
+ 		_mapLegendCache[MapHelper.TileToLookup(752, 0)] = itemNameCache[6142];
+ 	}
+ 
+-	public static NetworkText CreateDeathMessage(string deadPlayerName, int plr = -1, int npc = -1, int proj = -1, int other = -1, int projType = 0, int plrItemType = 0)
++	public static NetworkText CreateDeathMessage(string deadPlayerName, int plr = -1, int npc = -1, int unused/*proj*/ = -1, int other = -1, int projType = 0, int plrItemType = 0)
+ 	{
+ 		NetworkText networkText = NetworkText.Empty;
+ 		NetworkText networkText2 = NetworkText.Empty;
+ 		NetworkText networkText3 = NetworkText.Empty;
+ 		NetworkText networkText4 = NetworkText.Empty;
++		/*
+ 		if (proj >= 0)
++		*/
++		if (projType > 0)
+ 			networkText = NetworkText.FromKey(GetProjectileName(projType).Key);
+ 
+ 		if (npc >= 0)
