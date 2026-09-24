@@ -319,6 +319,7 @@ public static partial class Config
 		RenameStaticField("Terraria.Main", "recFastScroll", "PipsFastScroll");
 		RenameStaticField("Terraria.NPC", "killCount", "killCount", "Terraria.GameContent.BannerSystem");
 		RenameStaticField("Terraria.WorldGen", from: "gen", to: "isGeneratingOrLoadingWorld");
+		RenameStaticField("Terraria.ID.ContentSamples.CreativeHelper.ItemGroup", from: "PlacableObjects", to: "PlaceableObjects");
 
 		RenameInstanceField("Terraria.Dust", from: "noLightEmittence", to: "noLightEmittance");
 		RenameInstanceField("Terraria.Item", from: "netID", to: "type");

@@ -228,5 +228,7 @@ public class SimpleRenamedVanillaMembersTest
 
 		var tradeOption = new ItemTrader.TradeOption();
 		_ = tradeOption.GivingItemType;
+
+		_ = ContentSamples.CreativeHelper.ItemGroup.PlaceableObjects;
 	}
 }
