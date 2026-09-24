@@ -230,7 +230,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Main.GameModeInfo.IsJourneyMode -> Main.IsJourneyMode
 
 # ExampleMod TODOs
-- Verify that ExampleZombieThief still works with changes
 
 # Terraria update requests
 
