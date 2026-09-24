@@ -20,7 +20,7 @@
  {
  	public struct GemStaffFeatures
  	{
-@@ -233,99 +_,421 @@
+@@ -233,99 +_,427 @@
  		}
  	}
  
@@ -443,6 +443,12 @@
 +	/* Removed in favor of tML CritChance
  	public int bonusCritChance;
 +	*/
++
++
++	/// <summary>
++	/// Adjust the player hurt damage difficulty multiplier for <see cref="hostile"/> projectiles in <see cref="Damage_EVP"/><br/>
++	/// Used by vanilla with <see cref="GameDifficultyData.LightningPlayerDamageScaling"/>
++	/// </summary>
  	public GameDifficultyData.LinearCurve hostileDamageScaling = GameDifficultyData.HostileProjectileDamageMultiplier;
  	private static Conditions.IsSolid _cachedConditions_solid = new Conditions.IsSolid();
  	private static Conditions.NotNull _cachedConditions_notNull = new Conditions.NotNull();
@@ -1272,7 +1278,7 @@
  		int num2 = direction;
  		num2 = ((!(Main.player[myPlayer].position.X + (float)(Main.player[myPlayer].width / 2) < position.X + (float)(width / 2))) ? 1 : (-1));
  		bool flag2 = Main.player[myPlayer].CanParryAgainst(Main.player[myPlayer].Hitbox, base.Hitbox, velocity);
-@@ -12977,6 +_,8 @@
+@@ -12977,15 +_,19 @@
  		if (!flag2) {
  			SpawnHitVisuals(Main.player[myPlayer]);
  			int num3 = Main.DamageVar(damage, 0f - Main.player[owner].luck);
@@ -1281,11 +1287,12 @@
  			if (Main.player[myPlayer].GetBannerBuffEffect(bannerIdToRespondTo, out var effect))
  				num3 = (int)((float)num3 * effect.DamageReceived.Sample(Main.Difficulty));
  
-@@ -12985,7 +_,9 @@
+ 			if (Main.player[myPlayer].resistCold && coldDamage)
+ 				num3 = (int)((float)num3 * 0.7f);
++			*/
  
  			if (!reflected)
  				num3 = (int)((float)num3 * hostileDamageScaling.Sample(Main.Difficulty));
-+			*/
  
 +			// projectiles just do double damage to players :|
  			int num4 = 2;
@@ -1301,7 +1308,7 @@
  				StatusPlayer(Main.player[myPlayer]);
  
  			if (trap) {
-@@ -13148,6 +_,7 @@
+@@ -13148,10 +_,17 @@
  		if (type == 967)
  			result.Inflate(10, 10);
  
@@ -1309,6 +1316,17 @@
  		return result;
  	}
  
++	/// <summary>
++	/// Damages <see cref="Main.LocalPlayer"/> with this projectile if it is <see cref="Colliding(Rectangle, Rectangle)"/> with them. Used by explosives, torch god, and the lightning strike weapon.<br/>
++	/// Deals <see cref="damage"/> unless <see cref="ProjectileID.Sets.FixedSelfDamageForPlayers"/> has an override. Does NOT apply <see cref="hostileDamageScaling"/> or the 2* multiplier from <see cref="Damage_EVP"/><br/>
++	/// The damage counts as PvP damage attributed to <see cref="owner"/> unless this projectile is <see cref="hostile"/>.<br/>
++	/// Clients that want to take damage from another player's projectiles must call this independently (which is how bombs hurt other players in FTW).<br/>
++	/// </summary>
+-	private void SelfHurtPlayers()
++	public void SelfHurtPlayers()
+ 	{
+ 		Player localPlayer = Main.LocalPlayer;
+ 		if (!localPlayer.active || localPlayer.dead || localPlayer.immune || (ownerHitCheck && !CanHitWithMeleeWeapon(localPlayer)) || !Colliding(base.Hitbox, localPlayer.Hitbox))
 @@ -13176,7 +_,8 @@
  
  		bool dodgeable = IsDamageDodgeable();

@@ -26,6 +26,7 @@ public class ModProjectileTest : ModProjectile
 		ProjectileID.Sets.HeldProjDoesNotUsePlayerGfxOffY/* tModPorter Note: Removed. AI() should use master.RotatedRelativePoint(master.MountedCenter + ...) to position held projectiles */[Type] = true;
 		ProjectileID.Sets.DontAttachHideToAlpha/* tModPorter Note: Removed. Now true by default. See Projectile.usesOwnerLight and Projectile.drawLayer for more details. */[Type] = true;
 		ProjectileID.Sets.NeedsUUID/* tModPorter Note: Removed. Use Projectile.key instead. */[Type] = true;
+		ProjectileID.Sets.PlayerHurtDamageIgnoresDifficultyScaling/* tModPorter Note: Removed. Damage dealt to a player by their own projectile, or by another player, is never scaled by difficulty. For hostile projectiles, assign Projectile.hostileDamageScaling in SetDefaults instead */[Type] = true;
 #endif
 	}
 

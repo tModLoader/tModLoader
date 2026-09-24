@@ -610,6 +610,8 @@ public static partial class Config
 
 		RenameType(from: "Terraria.ModLoader.NPCSpawnInfo", to: "Terraria.NPC+Spawner");
 
+		RefactorStaticMember("Terraria.ID.ProjectileID.Sets", "PlayerHurtDamageIgnoresDifficultyScaling", Removed("Damage dealt to a player by their own projectile, or by another player, is never scaled by difficulty. For hostile projectiles, assign Projectile.hostileDamageScaling in SetDefaults instead"));
+
 		RenameStaticField("Terraria.ID.NPCID.Sets", from: "ImmuneToAllBuffs", to: "ImmuneToRegularBuffs").FollowBy(AddCommentToFieldAccess("NPCID.Sets.ImmuneToAllBuffs was removed. If immunity to whip tag effects are desired, also set NPCID.Sets.ImmuneToWhipTags to true."));
 	}
 }
