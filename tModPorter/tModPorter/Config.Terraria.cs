@@ -325,6 +325,7 @@ public static partial class Config
 		RenameInstanceField("Terraria.Main", from: "HasInteractibleObjectThatIsNotATile", to: "HasInteractableObjectThatIsNotATile");
 		RenameInstanceField("Terraria.Main.CurrentFrameFlags", from: "HadAnActiveInteractibleProjectile", to: "HadAnActiveInteractableProjectile");
 		RenameInstanceField("Terraria.WorldItem", from: "noGrabDelay", to: "grabDelayTime").FollowBy(AddCommentToFieldAccess("Suggestion: Also consider checking/setting grabDelayPlayer"));
+		RenameInstanceField("Terraria.GameContent.ItemTrader.TradeOption", from: "GivingITemType", to: "GivingItemType");
 
 		RenameInstanceFieldMultiple("Terraria.NPC.Spawner", froms: ["desertCave", "DesertCave"], to: "spawnUndergroundDesert");
 		RenameInstanceFieldMultiple("Terraria.NPC.Spawner", froms: ["granite", "Granite"], to: "nearGranite");
