@@ -225,5 +225,10 @@ public class SimpleRenamedVanillaMembersTest
 		_ = projectile.projUUID/* tModPorter Note: Removed. Use Projectile.key instead. */;
 		_ = Projectile.GetByUUID(projectile.owner, projectile.whoAmI)/* tModPorter Note: Removed. Use Projectile.key instead. */;
 #endif
+
+		var tradeOption = new ItemTrader.TradeOption();
+		_ = tradeOption.GivingItemType;
+
+		_ = ContentSamples.CreativeHelper.ItemGroup.PlaceableObjects;
 	}
 }

@@ -1,4 +1,5 @@
 using Terraria;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ObjectData;
 using Microsoft.Xna.Framework;
@@ -163,5 +164,10 @@ public class SimpleRenamedVanillaMembersTest
 		_ = projectile.identity;
 		_ = projectile.projUUID;
 		_ = Projectile.GetByUUID(projectile.owner, projectile.whoAmI);
+
+		var tradeOption = new ItemTrader.TradeOption();
+		_ = tradeOption.GivingITemType;
+
+		_ = ContentSamples.CreativeHelper.ItemGroup.PlacableObjects;
 	}
 }
