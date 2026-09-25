@@ -31,7 +31,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Player.coat added. It might also need and EquipType
 - What is Player._pendingRefunds? Does it require modded item support?
 - Player.ApplyEquipVanity now calls RefreshInfoAccsFromItemType. Is this new behavior, will our existing hooks now call things multiple times by accident?
-- Player.meleeArmorPenetration is new, need to hook it up
 - Player.ApplyItemTime has been updated, we might not need as many patches?
 - Integrate new `private void SetItemAnimation(int baseFrames, float multiplier)` method into our usetime hooks. Make public.
 - What does `Main.item[num].OverrideWith(theItemWeDrop);` do differently than `Main.item[num] = theItemWeDrop;`? Do we need to document or adjust how modders interact with Main.item[]?
@@ -226,8 +225,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Item.width and height no longer have any relation to the in-world hitbox of dropped items. All items now have a 16x16 hitbox in the game world.
 
 # tModPorter TODOs
-
-- Main.GameModeInfo.IsJourneyMode -> Main.IsJourneyMode
 
 # ExampleMod TODOs
 - Verify that ExampleZombieThief still works with changes
