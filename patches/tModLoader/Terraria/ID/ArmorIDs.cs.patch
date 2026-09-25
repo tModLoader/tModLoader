@@ -227,7 +227,7 @@
 -			public static bool[] UsesNewFramingCode = Factory.CreateBoolSet(false, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32);
 +			public static SetFactory Factory = new SetFactory(EquipLoader.nextEquip[EquipType.HandsOn], $"{nameof(ArmorIDs)}.{nameof(HandOn)}", Search);
 +			// Made internal to avoid confusion.
-+			internal static bool[] UsesNewFramingCode = Factory.CreateBoolSet(false, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 16, 17, 18, 19, 20, 21, 22, 23, 24);
++			internal static bool[] UsesNewFramingCode = Factory.CreateBoolSet(false, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32);
 +
 +			/// <summary>
 +			/// If <see langword="true"/> for a given <see cref="HandOn"/>, then that equip uses the pre-1.4 system for walking animations.
@@ -257,7 +257,7 @@
 -			public static bool[] UsesNewFramingCode = Factory.CreateBoolSet(false, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18);
 +			public static SetFactory Factory = new SetFactory(EquipLoader.nextEquip[EquipType.HandsOff], $"{nameof(ArmorIDs)}.{nameof(HandOff)}", Search);
 +			// Made internal to avoid confusion.
-+			internal static bool[] UsesNewFramingCode = Factory.CreateBoolSet(false, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
++			internal static bool[] UsesNewFramingCode = Factory.CreateBoolSet(false, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18);
  		}
  
  		public const sbyte FireGauntlet = 1;
