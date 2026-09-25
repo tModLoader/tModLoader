@@ -1083,10 +1083,16 @@
  	{
  		_ = type;
  		if (PrefixLegacy.ItemSets.SwordsHammersAxesPicks[type])
-@@ -886,16 +_,70 @@
+@@ -883,19 +_,76 @@
+ 		if (IsAPrefixableAccessory())
+ 			return PrefixLegacy.Prefixes.PrefixesForAccessories;
+ 
++		if (ItemLoader.IsModItem(type) && !consumable && GetPrefixCategories().Count > 0)
++			return [];
++
  		return null;
  	}
- 
++
 +	// Added by TML.
 +	/// <summary>
 +	/// Determines the <see cref="PrefixCategory"/> of this <see cref="Item"/>.
@@ -1131,7 +1137,7 @@
 +		PrefixCategory.Accessory => PrefixLegacy.Prefixes.PrefixesForAccessories,
 +		_ => Array.Empty<int>(),
 +	};
-+
+ 
  	private bool RollAPrefix(UnifiedRandom random, ref int rolledPrefix)
  	{
 +		/*
