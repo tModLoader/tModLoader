@@ -193,7 +193,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - We need docs on how to use /checkpoint and StateSnapshot. Wiki page most likely, teaching why and how to use, limitations, etc.
 
 ## 1.4.5.8
-- Document ProjectileID.DespawnItemIcon, DespawnItemGivesItemBack, DisplayDollDrawUseStyle
 
 # Changes that need to be communicated to modders
 
