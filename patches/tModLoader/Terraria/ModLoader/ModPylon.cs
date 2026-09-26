@@ -44,6 +44,7 @@ namespace Terraria.ModLoader;
 /// </remarks>
 public abstract class ModPylon : ModTile
 {
+	private bool _lastDrawnIconOnScreen = true;
 
 	/// <summary>
 	/// What type of Pylon this ModPylon represents.
@@ -384,18 +385,48 @@ public abstract class ModPylon : ModTile
 	/// <param name="drawColor"> The color to draw the icon as. </param>
 	/// <param name="deselectedScale"> The scale to draw the map icon when it is not selected (not being hovered over). </param>
 	/// <param name="selectedScale"> The scale to draw the map icon when it IS selected (being hovered over). </param>
-	public bool DefaultDrawMapIcon(ref MapOverlayDrawContext context, Asset<Texture2D> mapIcon, Vector2 drawCenter, Color drawColor, float deselectedScale, float selectedScale)
+	public bool DefaultDrawMapIcon(ref MapOverlayDrawContext context,
+		Asset<Texture2D> mapIcon, Vector2 drawCenter, Color drawColor,
+		float deselectedScale, float selectedScale)
 	{
+		bool result = DefaultDrawMapIcon(ref context, mapIcon, drawCenter, drawColor,
+			deselectedScale, selectedScale, out bool onScreen);
+		_lastDrawnIconOnScreen = onScreen;
+		return result;
+	}
+
+	/// <inheritdoc cref="DefaultDrawMapIcon(ref MapOverlayDrawContext, Asset{Texture2D}, Vector2, Color, float, float)"/>
+	/// <param name="onScreen"> Whether or not the icon was drawn on-screen (not clamped to the edge). </param>
+	public bool DefaultDrawMapIcon(ref MapOverlayDrawContext context,
+		Asset<Texture2D> mapIcon, Vector2 drawCenter, Color drawColor,
+		float deselectedScale, float selectedScale, out bool onScreen)
+	{
+		if (Main.mapFullscreen) {
+			return context.DrawClamped(
+				mapIcon.Value,
+				TextureAssets.Extra[299].Value,
+				drawCenter,
+				drawColor,
+				new SpriteFrame(1, 1, 0, 0),
+				deselectedScale,
+				selectedScale,
+				deselectedScale * 0.5f,
+				Alignment.Center,
+				10,
+				out onScreen
+			).IsMouseOver;
+		}
+
+		onScreen = true;
 		return context.Draw(
-						  mapIcon.Value,
-						  drawCenter,
-						  drawColor,
-						  new SpriteFrame(1, 1, 0, 0),
-						  deselectedScale,
-						  selectedScale,
-						  Alignment.Center
-						  )
-					  .IsMouseOver;
+			mapIcon.Value,
+			drawCenter,
+			drawColor,
+			new SpriteFrame(1, 1, 0, 0),
+			deselectedScale,
+			selectedScale,
+			Alignment.Center
+		).IsMouseOver;
 	}
 
 	/// <summary>
@@ -408,22 +439,36 @@ public abstract class ModPylon : ModTile
 	/// The localization key that will be used to display text on the mouse, granted the mouse is currently hovering over the map icon.
 	/// </param>
 	/// <param name="mouseOverText"> The reference to the string value that actually changes the mouse text value. </param>
-	public void DefaultMapClickHandle(bool mouseIsHovering, TeleportPylonInfo pylonInfo, string hoveringTextKey, ref string mouseOverText)
+	public void DefaultMapClickHandle(bool mouseIsHovering,
+		TeleportPylonInfo pylonInfo, string hoveringTextKey, ref string mouseOverText)
+		=> DefaultMapClickHandle(mouseIsHovering, _lastDrawnIconOnScreen, pylonInfo,
+			hoveringTextKey, ref mouseOverText);
+
+	/// <inheritdoc cref="DefaultMapClickHandle(bool, TeleportPylonInfo, string, ref string)"/>
+	/// <param name="onScreen"> Whether or not the icon was drawn on-screen (not clamped to the edge). </param>
+	public void DefaultMapClickHandle(bool mouseIsHovering, bool onScreen,
+		TeleportPylonInfo pylonInfo, string hoveringTextKey, ref string mouseOverText)
 	{
-		// We only want these things to happen if the mouse is hovering, thus the check:
-		if (!mouseIsHovering) {
+		if (!mouseIsHovering)
 			return;
-		}
 
 		Main.cancelWormHole = true;
 		mouseOverText = Language.GetTextValue(hoveringTextKey);
 
-		// If clicking, then teleport!
 		if (Main.mouseLeft && Main.mouseLeftRelease) {
 			Main.mouseLeftRelease = false;
-			Main.mapFullscreen = false;
-			PlayerInput.LockGamepadButtons("MouseLeft");
-			Main.PylonSystem.RequestTeleportation(pylonInfo, Main.LocalPlayer);
+
+			if (onScreen) {
+				Main.mapFullscreen = false;
+				PlayerInput.LockGamepadButtons("MouseLeft");
+				Main.PylonSystem.RequestTeleportation(pylonInfo, Main.LocalPlayer);
+			}
+			else {
+				PlayerInput.LockGamepadButtons("MouseLeft");
+				Main.PanTargetMapFullscreen = true;
+				Main.PanTargetMapFullscreenEnd.X = pylonInfo.PositionInTiles.X;
+				Main.PanTargetMapFullscreenEnd.Y = pylonInfo.PositionInTiles.Y;
+			}
 		}
 	}
 }
