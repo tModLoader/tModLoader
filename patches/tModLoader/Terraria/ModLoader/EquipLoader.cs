@@ -24,6 +24,10 @@ public static class EquipLoader
 	//list of equiptypes and slots registered for an item id. Used for SetDefaults
 	internal static readonly Dictionary<int, Dictionary<EquipType, int>> idToSlot = new();
 
+	// TML: Optional Legs equip textures automatically associated with Coat equip textures.
+	private static readonly Dictionary<int, int> coatFrontToLegExtension = new();
+	private static readonly Dictionary<int, int> coatBackToLegExtension = new();
+
 	//holds mappings of slot id -> item id for head/body/legs
 	//used to populate Item.(head/body/leg)Type for Mannequins
 	internal static readonly Dictionary<EquipType, Dictionary<int, int>> slotToId = new();
@@ -43,7 +47,17 @@ public static class EquipLoader
 	}
 
 	internal static int ReserveEquipID(EquipType type)
-		=> nextEquip[type]++;
+	{
+		// TML: Body and Coat share ArmorBodyComposite, so their slot IDs must never overlap.
+		if (type == EquipType.Body || type == EquipType.Coat) {
+			int slot = Math.Max(nextEquip[EquipType.Body], nextEquip[EquipType.Coat]);
+			nextEquip[EquipType.Body] = slot + 1;
+			nextEquip[EquipType.Coat] = slot + 1;
+			return slot;
+		}
+
+		return nextEquip[type]++;
+	}
 
 	/// <summary>
 	/// Gets the equipment texture for the specified equipment type and ID.
@@ -61,7 +75,7 @@ public static class EquipLoader
 		//Textures
 		Array.Resize(ref TextureAssets.ArmorHead, nextEquip[EquipType.Head]);
 		Array.Resize(ref TextureAssets.ArmorBody, nextEquip[EquipType.Body]);
-		Array.Resize(ref TextureAssets.ArmorBodyComposite, nextEquip[EquipType.Body]);
+		Array.Resize(ref TextureAssets.ArmorBodyComposite, nextEquip[EquipType.Body]); // TML: Coat shares Body's slot range and composite texture array.
 		Array.Resize(ref TextureAssets.FemaleBody, nextEquip[EquipType.Body]);
 		Array.Resize(ref TextureAssets.ArmorArm, nextEquip[EquipType.Body]);
 		Array.Resize(ref TextureAssets.ArmorLeg, nextEquip[EquipType.Legs]);
@@ -92,7 +106,7 @@ public static class EquipLoader
 
 				GetTextureArray(type)[slot] = ModContent.Request<Texture2D>(texture);
 
-				if (type == EquipType.Body) {
+				if (type == EquipType.Body || type == EquipType.Coat) {
 					ArmorIDs.Body.Sets.UsesNewFramingCode[slot] = true;
 				}
 				else if (type == EquipType.HandsOn) {
@@ -103,6 +117,12 @@ public static class EquipLoader
 				}
 			}
 		}
+
+		foreach (var entry in coatFrontToLegExtension)
+			ArmorIDs.Coat.Sets.FrontToLegExtension[entry.Key] = entry.Value;
+
+		foreach (var entry in coatBackToLegExtension)
+			ArmorIDs.Coat.Sets.BackToLegExtension[entry.Key] = entry.Value;
 
 		static void ResizeAndRegisterType(EquipType equipType, ref int[] typeArray)
 		{
@@ -126,6 +146,9 @@ public static class EquipLoader
 		}
 
 		idToSlot.Clear();
+		coatFrontToLegExtension.Clear();
+		coatBackToLegExtension.Clear();
+		ArmorIDs.Coat.Search = IdDictionary.Create<ArmorIDs.Coat, int>();
 		slotToId[EquipType.Head].Clear();
 		slotToId[EquipType.Body].Clear();
 		slotToId[EquipType.Legs].Clear();
@@ -135,6 +158,7 @@ public static class EquipLoader
 		=> type switch {
 			EquipType.Head => ArmorIDs.Head.Count,
 			EquipType.Body => ArmorIDs.Body.Count,
+			EquipType.Coat => ArmorIDs.Body.Count,
 			EquipType.Legs => ArmorIDs.Legs.Count,
 			EquipType.HandsOn => ArmorIDs.HandOn.Count,
 			EquipType.HandsOff => ArmorIDs.HandOff.Count,
@@ -155,6 +179,7 @@ public static class EquipLoader
 		=> type switch {
 			EquipType.Head => ArmorIDs.Head.Search,
 			EquipType.Body => ArmorIDs.Body.Search,
+			EquipType.Coat => ArmorIDs.Coat.Search,
 			EquipType.Legs => ArmorIDs.Legs.Search,
 			EquipType.HandsOn => ArmorIDs.HandOn.Search,
 			EquipType.HandsOff => ArmorIDs.HandOff.Search,
@@ -175,6 +200,7 @@ public static class EquipLoader
 		=> type switch {
 			EquipType.Head => TextureAssets.ArmorHead,
 			EquipType.Body => TextureAssets.ArmorBodyComposite,
+			EquipType.Coat => TextureAssets.ArmorBodyComposite,
 			EquipType.Legs => TextureAssets.ArmorLeg,
 			EquipType.HandsOn => TextureAssets.AccHandsOnComposite,
 			EquipType.HandsOff => TextureAssets.AccHandsOffComposite,
@@ -205,6 +231,9 @@ public static class EquipLoader
 					break;
 				case EquipType.Body:
 					item.bodySlot = slot;
+					break;
+				case EquipType.Coat:
+					item.coatSlot = slot;
 					break;
 				case EquipType.Legs:
 					item.legSlot = slot;
@@ -253,6 +282,7 @@ public static class EquipLoader
 		=> type switch {
 			EquipType.Head => player.head,
 			EquipType.Body => player.body,
+			EquipType.Coat => player.coat,
 			EquipType.Legs => player.legs,
 			EquipType.HandsOn => player.handon,
 			EquipType.HandsOff => player.handoff,
@@ -308,6 +338,22 @@ public static class EquipLoader
 
 		equipTextures[type][slot] = equipTexture;
 		mod.equipTextures[Tuple.Create(equipTexture.Name, type)] = equipTexture;
+
+		// TML: A Coat can optionally provide standard Legs textures for its lower front and back extensions.
+		// These are kept anonymous so they don't assign Item.legSlot and replace the player's equipped legs.
+		if (type == EquipType.Coat && item != null && !Main.dedServ) {
+			AddCoatExtensionIfExists("Front", coatFrontToLegExtension);
+			AddCoatExtensionIfExists("Back", coatBackToLegExtension);
+		}
+
+		void AddCoatExtensionIfExists(string suffix, Dictionary<int, int> extensions)
+		{
+			string extensionTexture = $"{texture}_{suffix}";
+			if (ModContent.HasAsset(extensionTexture)) {
+				int legSlot = AddEquipTexture(mod, extensionTexture, EquipType.Legs, name: $"{equipTexture.Name}_{EquipType.Coat}_{suffix}");
+				extensions[slot] = legSlot;
+			}
+		}
 
 		// TODO: The docs claim that the first registered equip texture for an item will be the one used for mannequins and the player, but currently if multiple equip textures are registered for the same item, whichever one is registered last will be the one used since they overwrite each other. This should be fixed so that the first one is used instead, since that makes more sense. This will need to happen in 1.4.5 probably.
 		if (item != null) {

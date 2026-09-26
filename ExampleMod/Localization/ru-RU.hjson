@@ -267,6 +267,11 @@ Mods: {
 				// Tooltip: This is a modded beard which matches your hair color.
 			}
 
+			ExampleCoat: {
+				// DisplayName: Example Coat
+				// Tooltip: This is a modded coat drawn over body armor.
+			}
+
 			ExampleImmunityAccessory: {
 				// DisplayName: Example Immunity Accessory
 				// Tooltip: This is a modded cross necklace that increases your immunity time by 1 second.
