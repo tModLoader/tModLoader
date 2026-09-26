@@ -13,10 +13,10 @@
  			if (playerInfo.hitboxToOpenDoor.Top < rectangle.Top || playerInfo.hitboxToOpenDoor.Bottom > rectangle.Bottom)
  				return false;
  
-+			int originalClosedDoorType = TileID.ClosedDoor;
-+			ModTile modTile = ModContent.GetModTile(Main.tile[tileCoordsForToggling.X, tileCoordsForToggling.Y].type);
-+			if (modTile != null && TileID.Sets.OpenDoorID[modTile.Type] > -1)
-+				originalClosedDoorType = modTile.Type;
++			Tile doorTile = Main.tile[tileCoordsForToggling.X, tileCoordsForToggling.Y];
++			int originalClosedDoorType = doorTile.type;
++			if (TileLoader.OpenDoorID(doorTile) < 0)
++				return false;
 +
  			WorldGen.OpenDoor(tileCoordsForToggling.X, tileCoordsForToggling.Y, intendedOpeningDirection);
 -			if (Main.tile[tileCoordsForToggling.X, tileCoordsForToggling.Y].type != 10) {
