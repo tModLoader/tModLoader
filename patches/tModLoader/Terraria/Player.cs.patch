@@ -7415,12 +7415,17 @@
  				if (inventory[num6].stack <= 0)
  					inventory[num6].SetDefaults(0);
  
-@@ -38943,11 +_,21 @@
+@@ -38943,11 +_,26 @@
  
  	private void ItemCheck_Shoot(int i, Item sItem, int weaponDamage, bool withAudioVisualFeedback = true)
  	{
 +		if (!CombinedHooks.CanShoot(this, sItem))
 +			return;
++
++		if (!withAudioVisualFeedback)
++			sItem.IsPerformingFreeUse = true;
++		else
++			sItem.IsPerformingFreeUse = false;
 +
  		int projToShoot = sItem.shoot;
  		float speed = sItem.shootSpeed;
@@ -7472,7 +7477,7 @@
  			flag = false;
  
  		Vector2 value = Vector2.UnitX.RotatedBy(fullRotation);
-@@ -39189,6 +_,16 @@
+@@ -39189,6 +_,22 @@
  			num5 = vector5.Y;
  		}
  
@@ -7480,6 +7485,12 @@
 +
 +		ShootHook:
 +		Vector2 velocity = new Vector2(num4, num5);
++
++		// TML: Moved Wicket Armlet's +1 whip knockback to outside the item type check.
++		if (accWickedArmlet && ProjectileID.Sets.IsAWhip[sItem.shoot]) {
++			float num167 = 1f;
++			KnockBack += num167;
++		}
 +
 +		CombinedHooks.ModifyShootStats(this, sItem, ref pointPosition, ref velocity, ref projToShoot, ref Damage, ref KnockBack);
 +
@@ -7534,6 +7545,20 @@
  
  			Vector2 vector12 = new Vector2(num4, num5);
  			vector12.Normalize();
+@@ -40485,10 +_,13 @@
+ 				num165 *= -2.5f;
+ 
+ 			float num166 = 1f;
++			// TML: Moved outside of the item type check to right before CombinedHooks.ModifyShootStats
++			/*
+ 			if (accWickedArmlet) {
+ 				float num167 = 1f;
+ 				KnockBack += num167;
+ 			}
++			*/
+ 
+ 			float ai6 = 0f;
+ 			if (!withAudioVisualFeedback) {
 @@ -41527,10 +_,14 @@
  		projType = 721;
  		Item item = inventory[selectedItem];
