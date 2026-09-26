@@ -5164,16 +5164,12 @@
  				if (manaMagnet && flag2) {
  					PullItem_Pickup(worldItem, 12f, 5);
  				}
-@@ -28884,6 +_,13 @@
+@@ -28884,6 +_,9 @@
  
  	private void PickupItem(WorldItem itemToPickUp)
  	{
 +		if (!CombinedHooks.OnPickup(itemToPickUp, this)) {
-+			int stack = itemToPickUp.stack;
-+			Item item = GetItem(itemToPickUp.inner, GetItemSettings.PickupItemFromWorld);
-+			itemToPickUp.ReplaceWith(item);
-+			if (item.stack == stack)
-+				return;
++			itemToPickUp.TurnToAir();
 +		} else
  		if (ItemID.Sets.NebulaPickup[itemToPickUp.type]) {
  			SoundEngine.PlaySound(7, (int)position.X, (int)position.Y);
