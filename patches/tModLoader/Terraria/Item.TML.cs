@@ -164,6 +164,12 @@ public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>
 		set => _armorPenetration = Math.Max(0, value);
 	}
 
+	/// <summary>
+	/// Denotes that this item is currently in use but is not applying any use time.
+	/// <br/>Used by the Snake Band's secondary whips, gem stave's combined effects, and automatic resummoning of minions upon respawning.
+	/// </summary>
+	public bool IsPerformingFreeUse { get; internal set; }
+
 	public TagCompound SerializeData() => ItemIO.Save(this);
 
 	/// <inheritdoc cref="CountsAsClass"/>

@@ -348,7 +348,7 @@ The way whip tag damage and effects are applied have been redone. Most functiona
 
 #### Whip Changes
 
-Whip AI has changed slightly. `Projectile.ai[1]` is now used to set the swing direction.
+Whip AI has changed. `Projectile.ai[1]` is now used to set the swing direction and `Projectile.ai[2]` is used to denote it as a secondary whip.
 
 * This means you'll need to override the item's `Shoot` and spawn the projectile manually now.
 * The following code is exactly what you'll need and is what vanilla does.
@@ -365,7 +365,34 @@ public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, 
 	}
 	// Set swingDirection to 1f for the pre-1.4.5 behavior.
 
-	Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI, 0f, swingDirection);
+	// If the Snake Band spawns this whip, no item time is applied.
+	// However, the whip projectile AI applies the life time from the item time.
+	// So, spawn the secondary whip with a value set in Projectile.ai[2] with its life time.
+	float secondaryWhipTime = 0f;
+	if (Item.IsPerformingFreeUse) {
+		// Set the velocity of the secondary whip to be a little different from the primary whip.
+		velocity = velocity.RotatedByRandom(MathHelper.Pi / 10f);
+
+		// Secondary whips are set to double this item's animation time.
+		// The 1000f is important for designating that the whip is a secondary whip and is corrected in Projectile.GetWhipSettings().
+		secondaryWhipTime = 1000f + player.itemAnimationMax * 2f;
+
+		// Reduce the damage and knockback of the secondary whip.
+		float secondaryWhipDamageMultiplier = 0.3f; // -70% damage
+		float secondaryWhipKnockbackMultiplier = 0.25f; // -75% knockback
+		damage = (int)MathHelper.Max(damage * secondaryWhipDamageMultiplier, 3); // Make the secondary whip deal at least 3 damage.
+		knockback *= secondaryWhipKnockbackMultiplier;
+	}
+
+	// Spawn the whip projectile.
+	Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI, ai0: 0f, ai1: swingDirection, ai2: secondaryWhipTime);
+
+	// If the whip is a primary whip (not spawned by the Snake Band), keep track of how many swings we've done.
+	if (!Item.IsPerformingFreeUse) {
+		player.repeatWhipSwings++;
+		player.repeatWhipsResetCooldown = 120;
+	}
+
 	return false; // Return false because we've already spawned the projectile.
 }
 ```
@@ -474,8 +501,11 @@ Several Example Mod examples have been updated to adapt to 1.4.5 changes and to 
     * Added the `Shoot()` override to spawn the projectile manually for the swing direction. See the *Whip Changes* section above for details.
     * If you weren't using `Projectile.DefaultToWhip()`, add `Projectile.drawLayer = ProjectileDrawLayerID.HeldProj` to the projectile's SetDefaults.
     * Replace `float swingTime = owner.itemAnimationMax * Projectile.MaxUpdates` with `Projectile.GetWhipSettings(Projectile, out float timeToFlyOut, out _, out _)`
-	  * `Projectile.GetWhipSettings` has new functionality for when the whip is displayed on a mannequin.
-    * Add `owner.MatchItemTimeToItemAnimation()` after setting the `heldProj` to match vanilla.
+	  * `Projectile.GetWhipSettings` has new functionality for when the whip is displayed on a mannequin and for secondary whips.
+	* The check for `owner.itemAnimation <= 0` before `Projectile.Kill()` needs to be removed.
+	* Before setting the heldProj, there is a new check to see if the whip is a secondary whip.
+      * Add `owner.MatchItemTimeToItemAnimation()` after setting the `heldProj` to match vanilla.
+	* The local assignment of `Projectile.WhipPointsForCollision` has changed to using `Projectile.WhipPointsForCollision` directly as well as clearing it before `Projectile.FillWhipControlPoints`.
     * The draw code has been changed to work better for different segment amounts.
 	  * `Projectile.FillWhipControlPoints` has been updated to pass the player parameter.
       * Previously, the draw code was specific for `ExampleWhipProjectileAdvanced`. Now it will work for any number of segments.
