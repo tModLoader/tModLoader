@@ -54,15 +54,14 @@
  		{ 388, new TallGateOpeningInfoProvider() }
  	};
  	private List<DoorOpenCloseTogglingInfo> _ongoingOpenDoors = new List<DoorOpenCloseTogglingInfo>();
-@@ -333,9 +_,11 @@
+@@ -333,9 +_,10 @@
  		if (tile == null)
  			return false;
  
 -		if (!_handlerByTileType.TryGetValue(tile.type, out infoProvider))
 -			return false;
 +		int type = tile.type;
-+		ModTile modTile = ModContent.GetModTile(type);
-+		if (modTile != null && TileID.Sets.OpenDoorID[modTile.Type] > -1)
++		if (ModContent.GetModTile(type) != null && TileLoader.OpenDoorID(tile) > -1)
 +			type = TileID.ClosedDoor;
  
 -		return true;
