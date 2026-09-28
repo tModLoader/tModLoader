@@ -5137,7 +5137,7 @@
  		if (PlayerInput.UsingGamepad && cursorItemIconText.Length == 0) {
  			cursorItemIconEnabled = false;
  			cursorItemIconID = 0;
-@@ -28789,11 +_,17 @@
+@@ -28789,6 +_,9 @@
  			if (!worldItem.active || worldItem.shimmerTime != 0f || (worldItem.grabDelayTime > 0 && (worldItem.grabDelayPlayer == i || worldItem.grabDelayPlayer == 255)) || worldItem.playerIndexTheItemIsReservedFor != i || !CanAcceptItemIntoInventory(worldItem) || (worldItem.shimmered && !((double)worldItem.velocity.Length() < 0.2)))
  				continue;
  
@@ -5147,15 +5147,6 @@
  			int itemGrabRange = GetItemGrabRange(worldItem);
  			Rectangle hitbox = worldItem.Hitbox;
  			if (base.Hitbox.Intersects(hitbox)) {
--				if (i == Main.myPlayer && (inventory[selectedItem].type != 0 || itemAnimation <= 0))
-+				if (i == Main.myPlayer && (inventory[selectedItem].type != 0 || itemAnimation <= 0)) {
-+					
-+
- 					PickupItem(worldItem);
-+				}
- 			}
- 			else {
- 				if (!new Rectangle((int)position.X - itemGrabRange, (int)position.Y - itemGrabRange, width + itemGrabRange * 2, height + itemGrabRange * 2).Intersects(hitbox))
 @@ -28810,6 +_,7 @@
  					flag = true;
  
@@ -5164,16 +5155,12 @@
  				if (manaMagnet && flag2) {
  					PullItem_Pickup(worldItem, 12f, 5);
  				}
-@@ -28884,6 +_,13 @@
+@@ -28884,6 +_,9 @@
  
  	private void PickupItem(WorldItem itemToPickUp)
  	{
 +		if (!CombinedHooks.OnPickup(itemToPickUp, this)) {
-+			int stack = itemToPickUp.stack;
-+			Item item = GetItem(itemToPickUp.inner, GetItemSettings.PickupItemFromWorld);
-+			itemToPickUp.ReplaceWith(item);
-+			if (item.stack == stack)
-+				return;
++			itemToPickUp.TurnToAir();
 +		} else
  		if (ItemID.Sets.NebulaPickup[itemToPickUp.type]) {
  			SoundEngine.PlaySound(7, (int)position.X, (int)position.Y);
