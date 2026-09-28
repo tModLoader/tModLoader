@@ -453,6 +453,7 @@ Japanese ("ja-JP"), Korean ("ko-KR"), and Traditional Chinese ("zh-Hant") have b
 * Some projectiles can now be despawned when right clicked, and optionally spawn an item as well. Flares, glowsticks, bombs, sentries, golf balls, and others despawn when right clicked by setting `ProjectileID.Sets.DespawnItemIcon`. Of those, glowsticks and bombs usually return the item as well by setting `ProjectileID.Sets.DespawnItemGivesItemBack`.
   * 💀: Projectiles using `ProjectileID.Sets.Explosive` and `ProjectileID.Sets.DespawnItemIcon` will now automatically have `Projectile.ai[0]` set to `1000` immediately before the projectile is killed via right clicking. This might conflict with existing `ModProjectile` code and will require adjustments.
   * Use the new `ModProjectile.PreTryDespawning` hook to set any flags necessary to adjust `ModProjectile.OnKill` behavior to support picking up projectiles.
+* `ProjectileID.Sets.Explosive` and `PrepareBombToBlow` behavior have changed. `Projectile.Kill()` will now automatically call `PrepareBombToBlow` if `Projectile.ai[0]` isn't `1000` (see above). Replace `Projectile.PrepareBombToBlow` with `Projectile.Kill`. Explosives should also set `Projectile.timeLeft = 5;` in `AI` for projectiles not owned by the client to facilitate better multiplayer sync behavior. Modders should consult relevant ExampleMod `ModProjectile` examples and adjust accordingly.
 
 ### Example Mod
 
