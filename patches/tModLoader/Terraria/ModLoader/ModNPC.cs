@@ -99,7 +99,7 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	/// // In ExampleWormBody.SetDefaults:
 	/// Banner = ModContent.NPCType&lt;ExampleWormHead&gt;();</code>
 	/// <para/> For NPC that are variants of each other, it is also useful to share a Banner value so that each variant counts towards the same banner kill count rather than each having their own banner drop. <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/NPCs/PartyZombie.cs">PartyZombie.cs</see> does this and shares the vanilla Zombie banner. By doing this it is affected by the Zombie banner and counts towards dropping it as well.
-	/// <para/> To retrieve and use a vanilla banner value, use the <see cref="Item.NPCtoBanner"/> method:
+	/// <para/> To retrieve and use a vanilla banner value, use the <see cref="BannerSystem.NPCtoBanner"/> method:
 	/// <code>Banner = Item.NPCtoBanner(NPCID.Zombie);</code>
 	/// </summary>
 	public int Banner { get; set; }

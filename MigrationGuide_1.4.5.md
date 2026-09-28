@@ -38,6 +38,22 @@ The `Item` class has had the in-world functionality split into a new `WorldItem`
 
 Hooks that deal with items in the game world will now have a `WorldItem item` parameter as well. This will require modders to switch from `Item` to `item` in various `ModItem` classes if dealing with the fields that are now on `WorldItem`.
 
+### Item.NewItem
+
+`Item.NewItem` has been reworked.
+- 🤖 Instead of passing a `rectangle`, `position, size` or `X, Y, W, H` only for the item to spawn at the center. Just pass `center` directly
+- 🤖 `noGrabDelay` has been replaced by `NewItemOwnership`, we recommend reading the docs on it and considering the right value to pass to each of your call sites
+- 🤖 `reverseLookup` is gone, no replacement
+- New `velocity` and `modifier` parameters make it easy to modify the item before syncing. 
+  - These should replace the need for `noBroadcast: true`
+  - Some uses of `Mod/GlobalItem.OnSpawn` may be better served by passing a `modifier` delegate, if they only apply to some call sites.
+
+🤖 Due to the signature changes, many 1.4.4 calls will no longer compile, but tModPorter can handle the vast majority of them.
+
+`Item.RequestNewItem` has been added to make spawning world items from multiplayer clients easier. It is also safe to call in single player, but we generally recommend considering `QuickSpawnItem` first.
+
+There should be almost no reason to send `MessageID.SyncItem` packets manually, or use `noBroadcast: true` anymore
+
 ### Projectile Draw Changes
 
 There have been several changes to projectile drawing in this update.
@@ -395,7 +411,7 @@ Japanese ("ja-JP"), Korean ("ko-KR"), and Traditional Chinese ("zh-Hant") have b
 * Several item tooltip line changes:
   * The "SocialDesc" tooltip line no longer exists. The "Social" tooltip line (now "Equipped in social slot") will now only show for items that are neither `Item.vanity` or `Item.hasVanityEffects`.
     * `Item.hasVanityEffects` is now used. It was previously unused. Set this for accessories that have vanity effects to prevent the "Social" tooltip line from appearing and suggesting the item has no effect in vanity slots.
-  * There are new tooltip lines: "Wireable", "Container", "WireTrigger", "WizardHatDuringAnniversary", "BurningBlock", "MechSummonDuringEverything", "MechdusaSummonNotDuringEverything", "PrefixArmorPenetration", "PrefixTagDamage", "SetBonusSinglePiece", "JourneyResearchTeammate", and "MissingRequirements".
+  * There are new tooltip lines: "ItemLoadoutSharedFrom", "ItemLoadoutShared", "Buffs", "Healing", "ManaHealing", "Mount", "Wireable", "Container", "WireTrigger", "WizardHatDuringAnniversary", "BurningBlock", "MechSummonDuringEverything", "MechdusaSummonNotDuringEverything", "PrefixArmorPenetration", "PrefixTagDamage", "SetBonusSinglePiece", "ItemLoadoutShareHint", "JourneyResearchTeammate", and "MissingRequirements".
   * The "SetBonus" tooltip has changed. It now automatically displays partial sets and adjusts the color to indicate if the set is complete.
   * The "SetBonusSinglePiece" tooltip shows the set bonus that would be applied if the unequipped equipment were equipped.
 * Town NPCs who are homeless have a new "Housing" button that displays their "NoHome" dialogue as well as a hint on what valid housing is. The hint text can be customized through the localization file. If the key `Mods.ModName.NPCs.NPCName.HousingText.HousingRequirements` exists, it will automatically be used over the default text.
@@ -433,7 +449,7 @@ Japanese ("ja-JP"), Korean ("ko-KR"), and Traditional Chinese ("zh-Hant") have b
 * Projectile identity approach has changed
   * `Projectile.identity`, `Projectile.GetByUUID`, `Projectile.projUUID`, `ProjectileID.Sets.NeedsUUID` removed.
   * Use `Projectile.key` instead for a consistent reference to a projectile.
-* `Item.RequestNewItem` can be used to spawn an item on a multiplayer client. Replace `Item.NewItem` followed by `NetMessage.SendData(MessageID.SyncItem, ...)` patterns with `Item.RequestNewItem`.
+* If you relied on `NPCID.Sets.InvasionSlotCount[Type] = 0;` for preventing your modded vanilla event NPCs from playing music, use `NPCID.Sets.NoInvasionMusic[Type] = true;` in addition to it.
 * Some projectiles can now be despawned when right clicked, and optionally spawn an item as well. Flares, glowsticks, bombs, sentries, golf balls, and others despawn when right clicked by setting `ProjectileID.Sets.DespawnItemIcon`. Of those, glowsticks and bombs usually return the item as well by setting `ProjectileID.Sets.DespawnItemGivesItemBack`.
   * 💀: Projectiles using `ProjectileID.Sets.Explosive` and `ProjectileID.Sets.DespawnItemIcon` will now automatically have `Projectile.ai[0]` set to `1000` immediately before the projectile is killed via right clicking. This might conflict with existing `ModProjectile` code and will require adjustments.
   * Use the new `ModProjectile.PreTryDespawning` hook to set any flags necessary to adjust `ModProjectile.OnKill` behavior to support picking up projectiles.
@@ -476,7 +492,7 @@ Several Example Mod examples have been updated to adapt to 1.4.5 changes and to 
 
 ### Static Methods
 
-* 💀: `Item.NewItem` methods no longer have the `bool reverseLookup` parameter. Remove it.
+* 🤖: `Item.NewItem` has new signatures. See [Item.NewItem](#itemnewitem) for more information.
 * 🤖: `Main.DrawWindowsIMEPanel` has been split into `Main.DrawIMEPanel` and `Main.SetIMEPanelAnchor`. `DrawIMEPanel` is automatically called each game update, so just replace  `DrawWindowsIMEPanel` calls with `SetIMEPanelAnchor` to customize the panel location.
 * 🤖: `Main.GetPlayerArmPosition` removed. Use `Player.GetArmPosition` instead.
 * ⚙️: `RecipeGroup.RegisterGroup` removed. See [RecipeGroup](#recipegroup) for more information.
@@ -490,6 +506,7 @@ All classes are in the `Terraria` or `Terraria.ID` namespaces unless otherwise i
 * ⚙️: `BuffID.Sets.BasicMountData` removed. Replace with `BuffID.Sets.MountType[Type] = ModContent.MountType<MyMount>();`.
 * 🤖: `BuffID.Sets.LongerExpertDebuff` -> `BuffID.Sets.BuffTimeIsExtendedWithGameDifficulty`
 * 💀: `Chest.maxItems` is no longer static.
+* 🤖: `Condition.ZenithWorld` might need to be replaced with the new `Condition.MechdusaSeedFeature` in code that specifically is checking for Mechadusa. They can technically differ.
 * 🤖: `GoreID.Sets.LiquidDroplet` -> `GoreID.Sets.IsDrip`
 * 🤖: `ImmunityCooldownID.Bosses` -> `ImmunityCooldownID.BossNoCheese`
 * ⚙️: `ItemID.Sets.ItemSpawnDecaySpeed` removed. No longer used.
@@ -505,7 +522,7 @@ All classes are in the `Terraria` or `Terraria.ID` namespaces unless otherwise i
 * 🤖: `Main.recBigList` -> `Main.PopsUseGrid`
 * 🤖: `Main.recFastScroll` -> `Main.PipsFastScroll`
 * ⚙️: `Main.item` is now `WorldItem[]` instead of `Item[]`.
-* 🤖: `MessageID` entry changes: `TileSquare` -> `AreaTileChange`, `ShotAnimationAndSound` -> `ItemRotationAndAnimation`, `PlayerTeam` -> `TeamChange`, `RequestReadSign` -> `OpenSignRequest`, `ReadSign` -> `OpenSignResponse`, `AddPlayerBuff` -> `AddPlayerBuffPvP`, `PaintTile` -> `SyncTilePaintOrCoating`, `PaintWall` -> `SyncWallPaintOrCoating`, `NPCKillCountDeathTally` -> `Unused83`, `TEDisplayDollItemSync` -> `TEDisplayDollDataSync`
+* 🤖: `MessageID` entry changes: `TileSquare` -> `AreaTileChange`, `ShotAnimationAndSound` -> `ItemRotationAndAnimation`, `PlayerTeam` -> `TeamChange`, `RequestReadSign` -> `OpenSignRequest`, `ReadSign` -> `OpenSignResponse`, `AddPlayerBuff` -> `AddPlayerBuffPvP`, `PaintTile` -> `SyncTilePaintOrCoating`, `PaintWall` -> `SyncWallPaintOrCoating`, `NPCKillCountDeathTally` -> `Unused83`, `TEDisplayDollItemSync` -> `TEDisplayDollDataSync`, `Dodge` -> `SyncDodge`, `InstancedItem` -> `SpawnInstancedItem`, `SyncItemsWithShimmer` -> `SyncItemsWithShimmerDeprecated`, `SyncItemCannotBeTakenByEnemies` -> `SyncItemCannotBeTakenByEnemiesDeprecated`
 * ⚙️: `MountID.Sets.FacePlayersVelocity` removed. Now automatic for all minecarts.
 * 🤖: `MusicId` entry changes: `Night` -> `OverworldNight`, `Title` -> `TitleClassic`, `Jungle` -> `JungleDay`, `TheHallow` -> `Hallow`, `Space` -> `SpaceNight`, `Boss4` -> `Golem`, `AltOverworldDay` -> `OverworldDayAlt`, `Ocean` -> `OceanDay`, `RainSoundEffect` -> `RainAmbience`, `Mushrooms` -> `Mushroom`, `AltUnderground` -> `UndergroundAlt`, `TheTowers` -> `LunarPillars`, `Hell` -> `Underworld`, `LunarBoss` -> `MoonLord`, `GoblinInvasion` -> `GoblinArmy`, `DayRemix` -> `OverworldDayRemix`, `MenuMusic` -> `TitleJourneysBeginningWithIntro`, `Monsoon` -> `Storm`, `JungleUnderground` -> `UndergroundJungle`, `ConsoleMenu` -> `TitleAlt`, `OtherworldlyRain` -> `OtherworldRain`, `OtherworldlyDay` -> `OtherworlddDay`, `OtherworldlyNight` -> `OtherworldNight`, `OtherworldlyUnderground` -> `OtherworldUnderground`, `OtherworldlyDesert` -> `OtherworldDesert`, `OtherworldlyOcean` -> `OtherworldOcean`, `OtherworldlyMushrooms` -> `OtherworldMushroom`, `OtherworldlyDungeon` -> `OtherworldDungeon`, `OtherworldlySpace` -> `OtherworldSpace`, `OtherworldlyUnderworld` -> `OtherworldUnderworld`, `OtherworldlySnow` -> `OtherworldSnow`, `OtherworldlyCorruption` -> `OtherworldCorruption`, `OtherworldlyUGCorrption` -> `OtherworldUndergroundCorruption`, `OtherworldlyCrimson` -> `OtherworldCrimson`, `OtherworldlyUGCrimson` -> `OtherworldUndergroundCrimson`, `OtherworldlyIce` -> `OtherworldIce`, `OtherworldlyUGHallow` -> `OtherworldUndergroundHallow`, `OtherworldlyEerie` -> `OtherworldEerie`, `OtherworldlyBoss2` -> `OtherworldBoss2`, `OtherworldlyBoss1` -> `OtherworldBoss1`, `OtherworldlyInvasion` -> `OtherworldInvasion`, `OtherworldlyTowers` -> `OtherworldLunarPillars`, `OtherworldlyLunarBoss` -> `OtherworldMoonLord`, `OtherworldlyPlantera` -> `OtherworldPlantera`, `OtherworldlyJungle` -> `OtherworldJungle`, `OtherworldlyWoF` -> `OtherworldWallOfFlesh`, `OtherworldlyHallow` -> `OtherworldHallow`, `Credits` -> `JourneysEnd`, `Shimmer` -> `Aether`
 * 🤖: `NPCID.Sets.UsesNewTargetting` -> `NPCID.Sets.UsesNewTargeting`
@@ -525,6 +542,7 @@ All classes are in the `Terraria` or `Terraria.ID` namespaces unless otherwise i
 * ⚙️: `TileID.Sets.IsAMechanism` -> `TileID.Sets.Wiring.IsAMechanism`
   * 💀: The meaning of `IsAMechanism` has changed, it is now used for all wireable tiles and is how the items that place the tiles automatically get the "Wireable" tooltip. Add `TileID.Sets.Wiring.IsAMechanism[Type] = true;` to all tiles that do something when wired and add `TileID.Sets.Wiring.IgnoreWhenValidatingTraps[Type] = true;` to wireable tiles that aren't traps.
 * 🤖: `TileID.Sets.IsATrigger` -> `TileID.Sets.Wiring.IsATrigger`
+* 🤖: `TileID.Sets.IsSkippedForNPCSpawningGroundTypeCheck` -> `TileID.Sets.InheritTypeOfTileBelowForNPCSpawning`
 * 🤖: `TileID.Sets.InteractibleByNPCs` -> `TileID.Sets.InteractableByNPCs`
 * 🤖: `TileID.Sets.Torch` -> `TileID.Sets.Torches`
 * 🤖: `TileID.Sets.Campfire` -> `TileID.Sets.Campfires`

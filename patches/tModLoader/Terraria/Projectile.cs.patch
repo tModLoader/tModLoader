@@ -20,7 +20,7 @@
  {
  	public struct GemStaffFeatures
  	{
-@@ -233,6 +_,9 @@
+@@ -233,99 +_,427 @@
  		}
  	}
  
@@ -28,9 +28,12 @@
 +	/// If true, the Projectile actually exists within the game world. Within <see cref="Main.projectile"/>, if active is false, the projectile is junk data. Always check active if iterating over <see cref="Main.projectile"/>. Another option for iterating is to use <see cref="Main.ActiveProjectiles"/> instead for simpler code.
 +	/// </summary>
  	public bool active;
++	/// <summary>
++	/// Maps <see cref="Projectile.type"/> and NPC index (index within <see cref="Main.npc"/>) to the game update tick when immunity will be lost. Used only for projectiles using <see cref="usesIDStaticNPCImmunity"/>.
++	/// </summary>
  	public static uint[,] perIDStaticNPCImmunity = new uint[ProjectileID.Count, InitData.MaxNPCs];
  	private static int[] slotGenerations = new int[1001];
-@@ -240,92 +_,394 @@
+ 	private static int[,] keyToIndex = new int[256, 1001];
  	public const int SentryLifeTime = 36000;
  	public const int ArrowLifeTime = 1200;
  	public float ownerHitCheckDistance = 1000f;
@@ -60,7 +63,7 @@
 +
 +	/// <summary>
 +	/// Scales how large the projectile will be drawn. Will also affect the hitbox (<see cref="Entity.width"/>, <see cref="Entity.height"/>) if assigned in SetDefaults. If changed elsewhere it will not affect the hitbox, so that will have to be adjusted manually via code in that situation if needed. <para/>
-+	/// Due to legacy code, scale does not affect the draw origin correctly, resulting in the projectile not rotating around the hitbox center correctly nor being drawn correctly centered on the hitbox. For small changes (0.8f to 1.2f) the effect is unnoticeable, but it is advised to avoid large values unless the projectile is manually drawn with the correct approach via <see cref="ModProjectile.PreDraw(ref Color)"/>.<para/>
++	/// Due to legacy code, scale does not affect the draw origin correctly, resulting in the projectile not rotating around the hitbox center correctly nor being drawn correctly centered on the hitbox. For small changes (0.8f to 1.2f) the effect is unnoticeable, but it is advised to avoid large values unless the projectile is manually drawn with the correct approach via <see cref="ModProjectile.PreDraw(Player, ref Color)"/>.<para/>
 +	/// <br/> Defaults to 1f.
 +	/// </summary>
  	public float scale = 1f;
@@ -84,6 +87,10 @@
 +	/// <para/> Defaults to 0.
 +	/// </summary>
  	public int alpha;
++	/// <summary>
++	/// The Projectile type this projectile should act as for the purpose of <see cref="perIDStaticNPCImmunity"/>. This allows multiple projectile types to share the same cooldown.
++	/// <para/> Defaults to <see cref="type"/>, but can set to another projectile type directly or via <see cref="UseGroupStaticImmunity(int)"/>.
++	/// </summary>
  	public int immunityIdentity;
 +	/// <summary>
 +	/// Indicates that this projectile is a sentry.
@@ -115,7 +122,7 @@
 +	/// </summary>
  	public float[] localAI = new float[maxAI];
 +	/// <summary>
-+	/// An offset from the actual position of the projectile that will be added to the draw position. Used to offset some held projectiles to match the players <see cref="Player.gfxOffY"/>, thereby keeping the projectile visually in sync with the player. <see cref="ProjectileID.Sets.HeldProjDoesNotUsePlayerGfxOffY"/> can be used to ignore that usage.
++	/// An offset from the actual position of the projectile that will be added to the draw position. Used to offset some held projectiles to match the player's <see cref="Player.gfxOffY"/>, thereby keeping the projectile visually in sync with the player.
 +	/// </summary>
  	public float gfxOffY;
 +	/// <summary>
@@ -150,7 +157,7 @@
 +	/// <summary>
 +	/// The damage of this projectile, without any player bonuses.
 +	/// <br/><br/> Used by <see cref="ContinuouslyUpdateDamageStats"/> to recalculate <see cref="damage"/>.
-+	/// <br/><br/> Automatically set to the damage passed into <see cref="NewProjectile(IEntitySource, float, float, float, float, int, int, float, int, float, float, float)"/>. If the IEntitySource of NewProjectile corresponds to a player using an item, this will be set to <see cref="Item.damage"/> instead.
++	/// <br/><br/> Automatically set to the damage passed into <see cref="NewProjectile(IEntitySource, Vector2, Vector2, int, int, float, int, float, float, float, NewProjectileModifier)"/>. If the IEntitySource of NewProjectile corresponds to a player using an item, this will be set to <see cref="Item.damage"/> instead.
 +	/// </summary>
  	public int originalDamage;
  	public int spriteDirection = 1;
@@ -175,20 +182,27 @@
 +
 +	/// <summary>
 +	/// The remaining number of npc can this projectile hit before dying. (Or tile bounces). Assign this field in SetDefaults and use it in ModProjectile logic if needed. A value of -1 means the projectile will penetrate infinitely. See <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/Projectiles/ExamplePiercingProjectile.cs">ExamplePiercingProjectile</see> for more information on how penetrate influences NPC immunity frames.
-+	/// <br/> Defaults to 1. Used to automatically assigned a value to <see cref="maxPenetrate"/> at the end of SetDefaults.
++	/// <para/> Defaults to 1. Used to automatically assigned a value to <see cref="maxPenetrate"/> at the end of SetDefaults.
 +	/// </summary>
  	public int penetrate = 1;
++	/// <summary>
++	/// The immunity timers for this projectile instance used with <see cref="usesLocalNPCImmunity"/>. Indexed by NPC index.
++	/// </summary>
  	public int[] localNPCImmunity = new int[Main.maxNPCs];
 +	/// <summary>
-+	/// If true, this projectile manages it's own immunity timers for each npc.<br/>
-+	/// Use this rather than <see cref="usesIDStaticNPCImmunity"/> if you want multiple projectiles of the same type to have a chance to attack rapidly, but don't want a single projectile to hit rapidly.<br/>
-+	/// <see cref="localNPCHitCooldown"/> controls the cooldown timing and must be assigned a suitable value to work properly.<br/>
++	/// <para/> If true, this projectile manages it's own immunity timers for each npc.
++	/// <para/> Use this rather than <see cref="usesIDStaticNPCImmunity"/> if you want multiple projectiles of the same type to have a chance to attack rapidly, but don't want a single projectile to hit rapidly.
++	/// <para/> <see cref="localNPCHitCooldown"/> controls the cooldown timing and must be assigned a suitable value to work properly.
++	/// <para/> The <see href="https://terraria.wiki.gg/wiki/Invincibility_frame#Local_invincibility">Terraria wiki</see> refers to this as "Local invincibility". and has more information.
++	/// <para/> Defaults to false.
 +	/// </summary>
  	public bool usesLocalNPCImmunity;
 +	/// <summary>
-+	/// If true, all projectiles of this type share an immunity cooldown for each npc.<br/>
-+	/// Use this rather than <see cref="usesLocalNPCImmunity"/> if you want other projectile types a chance to attack the npc, but don't want projectile of the same projectile type to hit an npc rapidly.<br/>
-+	/// <see cref="idStaticNPCHitCooldown"/> controls the cooldown timing and must be assigned a suitable value to work properly.<br/>
++	/// If true, all projectiles of this type share an immunity cooldown for each npc.
++	/// <para/> Use this rather than <see cref="usesLocalNPCImmunity"/> if you want other projectile types a chance to attack the npc, but don't want projectile of the same projectile type to hit an npc rapidly.
++	/// <para/> <see cref="idStaticNPCHitCooldown"/> controls the cooldown timing and must be assigned a suitable value to work properly.
++	/// <para/> The <see href="https://terraria.wiki.gg/wiki/Invincibility_frame#Static_invincibility">Terraria wiki</see> refers to this as "Static invincibility". and has more information.
++	/// <para/> Defaults to false.
 +	/// </summary>
  	public bool usesIDStaticNPCImmunity;
 +	/// <summary>
@@ -301,7 +315,7 @@
  	public object customHitbox;
 +	/// <summary>
 +	/// Indicates the draw order of the projectile relative to tiles, npc, and players. By default projectiles are drawn in after (in front of) Tiles and NPC but before Players. Setting this will change that behavior.
-+	/// <br/><br/> Defaults to 0 (<see cref="ProjectileDrawLayerID.None"/>).
++	/// <br/><br/> Defaults to 0 (<see cref="ProjectileDrawLayerID.Default"/>).
 +	/// </summary>
  	public int drawLayer;
 +	/// <summary>
@@ -323,6 +337,9 @@
 +	/// <br/> Defaults to <see langword="false"/>.
 +	/// </summary>
  	public bool ownerHitCheck;
++	/// <summary>
++	/// If <see langword="true"/>, then this projectile will use the owner player's melee hit cooldown (<see cref="Player.meleeNPCHitCooldown"/>) to determine if the NPC can be hit. This makes the projectile apply the standard number of immunity frames as normal melee attacks (<see cref="Player.itemAnimation"/>). This is used by swung projectile weapons like <see cref="ProjectileID.Excalibur"/> and <see cref="ProjectileID.NightsEdge"/>.
++	/// </summary>
  	public bool usesOwnerMeleeHitCD;
  	public int[] playerImmune = new int[255];
  	public string miscText = "";
@@ -426,6 +443,12 @@
 +	/* Removed in favor of tML CritChance
  	public int bonusCritChance;
 +	*/
++
++
++	/// <summary>
++	/// Adjust the player hurt damage difficulty multiplier for <see cref="hostile"/> projectiles in <see cref="Damage_EVP"/><br/>
++	/// Used by vanilla with <see cref="GameDifficultyData.LightningPlayerDamageScaling"/>
++	/// </summary>
  	public GameDifficultyData.LinearCurve hostileDamageScaling = GameDifficultyData.HostileProjectileDamageMultiplier;
  	private static Conditions.IsSolid _cachedConditions_solid = new Conditions.IsSolid();
  	private static Conditions.NotNull _cachedConditions_notNull = new Conditions.NotNull();
@@ -470,12 +493,32 @@
  	}
  
 +	/// <summary>
-+	/// The NPC targeted by the owner player of this projectile, either by right clicking with a summon item (<see cref="ProjectileID.Sets.MinionTargettingFeature"/>) or by hitting the NPC with a whip.
++	/// The NPC targeted by the owner player of this projectile, either by right clicking with a summon item (<see cref="ProjectileID.Sets.MinionTargetingFeature"/>) or by hitting the NPC with a whip.
 +	/// <br/><br/> Will be null if there is no current target. See also <see cref="Player.MinionAttackTargetNPC"/>.
 +	/// </summary>
  	public NPC OwnerMinionAttackTargetNPC {
  		get {
  			if (Main.player[owner].MinionAttackTargetNPC < 0)
+@@ -391,6 +_,9 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Indicates if a projectile is owned by a player. Specifically, this checks that it is not an <see cref="npcProj"/> and not a <see cref="trap"/>. Note that this doesn't check if the projectile is <see cref="hostile"/>.
++	/// </summary>
+ 	public bool OwnedBySomeone {
+ 		get {
+ 			if (!npcProj)
+@@ -411,6 +_,9 @@
+ 
+ 	public Point NetSectionCoordinates => new Point(Netplay.GetSectionX((int)position.X >> 4), Netplay.GetSectionY((int)position.Y >> 4));
+ 
++	/// <summary>
++	/// Determines if the NPC at the given index is NOT immune (despite the name) to the projectile type (Passed in using <see cref="immunityIdentity"/>). This is only used for projectiles using <see cref="usesIDStaticNPCImmunity"/>, where all projectiles of the same type share an immunity cooldown for each individual NPC.
++	/// </summary>
+ 	public static bool IsNPCIndexImmuneToProjectileType(int projectileType, int npcIndex) => perIDStaticNPCImmunity[projectileType, npcIndex] <= Main.GameUpdateCount;
+ 
+ 	public static void ResetNPCSlotData(int npcIndex)
 @@ -493,8 +_,46 @@
  		type = typeToChangeInto;
  	}
@@ -553,7 +596,7 @@
  			width = 8;
  			height = 8;
  			aiStyle = 36;
-@@ -9560,13 +_,21 @@
+@@ -9560,26 +_,39 @@
  			// Dummy block for a nice patch.
  		}
  		else {
@@ -575,6 +618,26 @@
  		width = (int)((float)width * scale);
  		height = (int)((float)height * scale);
  		maxPenetrate = penetrate;
+ 	}
+ 
++	/// <summary>
++	/// Sets a projectile to set <see cref="usesIDStaticNPCImmunity"/> to true, <see cref="idStaticNPCHitCooldown"/> to 10, and <see cref="immunityIdentity"/> to the given type.
++	/// <para/> This causes all projectiles of this type and of the provided type to share an immunity cooldown for each npc. This allows for projectile variation while preserving intended damage immunity timings. Some examples include <see cref="ProjectileID.Bee"/> and <see cref="ProjectileID.GiantBee"/>, <see cref="ItemID.SporeSac"/> projectiles, and <see cref="ItemID.ToxicFlask"/> projectiles.
++	/// </summary>
++	/// <param name="Type"></param>
+-	private void UseGroupStaticImmunity(int Type)
++	public void UseGroupStaticImmunity(int Type)
+ 	{
+ 		usesIDStaticNPCImmunity = true;
+ 		idStaticNPCHitCooldown = 10;
+ 		immunityIdentity = Type;
+ 	}
+ 
+-	private void ApplyGemStaffStats()
++	public void ApplyGemStaffStats()
+ 	{
+ 		friendly = true;
+ 		usesLocalNPCImmunity = true;
 @@ -9614,6 +_,9 @@
  		extraUpdates = 1;
  		usesLocalNPCImmunity = true;
@@ -1215,7 +1278,7 @@
  		int num2 = direction;
  		num2 = ((!(Main.player[myPlayer].position.X + (float)(Main.player[myPlayer].width / 2) < position.X + (float)(width / 2))) ? 1 : (-1));
  		bool flag2 = Main.player[myPlayer].CanParryAgainst(Main.player[myPlayer].Hitbox, base.Hitbox, velocity);
-@@ -12977,6 +_,8 @@
+@@ -12977,15 +_,19 @@
  		if (!flag2) {
  			SpawnHitVisuals(Main.player[myPlayer]);
  			int num3 = Main.DamageVar(damage, 0f - Main.player[owner].luck);
@@ -1224,11 +1287,12 @@
  			if (Main.player[myPlayer].GetBannerBuffEffect(bannerIdToRespondTo, out var effect))
  				num3 = (int)((float)num3 * effect.DamageReceived.Sample(Main.Difficulty));
  
-@@ -12985,7 +_,9 @@
+ 			if (Main.player[myPlayer].resistCold && coldDamage)
+ 				num3 = (int)((float)num3 * 0.7f);
++			*/
  
  			if (!reflected)
  				num3 = (int)((float)num3 * hostileDamageScaling.Sample(Main.Difficulty));
-+			*/
  
 +			// projectiles just do double damage to players :|
  			int num4 = 2;
@@ -1244,7 +1308,7 @@
  				StatusPlayer(Main.player[myPlayer]);
  
  			if (trap) {
-@@ -13148,6 +_,7 @@
+@@ -13148,10 +_,17 @@
  		if (type == 967)
  			result.Inflate(10, 10);
  
@@ -1252,6 +1316,17 @@
  		return result;
  	}
  
++	/// <summary>
++	/// Damages <see cref="Main.LocalPlayer"/> with this projectile if it is <see cref="Colliding(Rectangle, Rectangle)"/> with them. Used by explosives, torch god, and the lightning strike weapon.<br/>
++	/// Deals <see cref="damage"/> unless <see cref="ProjectileID.Sets.FixedSelfDamageForPlayers"/> has an override. Does NOT apply <see cref="hostileDamageScaling"/> or the 2* multiplier from <see cref="Damage_EVP"/><br/>
++	/// The damage counts as PvP damage attributed to <see cref="owner"/> unless this projectile is <see cref="hostile"/>.<br/>
++	/// Clients that want to take damage from another player's projectiles must call this independently (which is how bombs hurt other players in FTW).<br/>
++	/// </summary>
+-	private void SelfHurtPlayers()
++	public void SelfHurtPlayers()
+ 	{
+ 		Player localPlayer = Main.LocalPlayer;
+ 		if (!localPlayer.active || localPlayer.dead || localPlayer.immune || (ownerHitCheck && !CanHitWithMeleeWeapon(localPlayer)) || !Colliding(base.Hitbox, localPlayer.Hitbox))
 @@ -13176,7 +_,8 @@
  
  		bool dodgeable = IsDamageDodgeable();
@@ -1322,17 +1397,6 @@
  		CollisionVisualizer.VisualizeRects(myRect, targetRect, needsCanHitCheck: false);
  		if (myRect.Intersects(targetRect))
  			return true;
-@@ -14538,7 +_,10 @@
- 		if (Main.netMode == 1 && (ProjectileID.Sets.IsAGolfBall[type] || type == 820)) {
- 			int x = (int)(position.X + (float)(width / 2)) / 16;
- 			int y = (int)(position.Y + (float)(height / 2)) / 16;
-+			/*
- 			if (!WorldGen.IsTileLoaded(x, y))
-+			*/
-+			if (!Main.sectionManager.TileLoaded(x, y))
- 				return;
- 		}
- 
 @@ -14569,9 +_,18 @@
  			if (!noEnchantmentVisuals)
  				UpdateEnchantmentVisuals();
@@ -1732,7 +1796,7 @@
  							int num3 = damage;
  							position = base.Center;
  							int num4 = 0;
-@@ -39352,6 +_,14 @@
+@@ -39352,6 +_,15 @@
  		return result;
  	}
  
@@ -1743,6 +1807,7 @@
 +	/// The maximum range at which this projectile should search out a target, measured in pixels.<br/>
 +	/// Defaults to 800 (50 tiles). Each tile, for reference, measures out to be 16x16 pixels.
 +	/// </param>
++	/// <param name="ignoreTargets">NPC indexes to ignore</param>
 +	/// <returns>The index, in <see cref="Main.npc"/>, of the closest targetable NPC.</returns>
  	public int FindTargetWithLineOfSight(float maxRange = 800f, ICollection<int> ignoreTargets = null) => FindTargetWithLineOfSight(this, maxRange, ignoreTargets);
  

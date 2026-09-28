@@ -85,12 +85,6 @@ partial class ProjectileID
 		/// <br/><br/> The <see href="https://github.com/tModLoader/tModLoader/tree/1.4.4/ExampleMod/Content/Projectiles/ExampleInteractableProjectile.cs">ExampleInteractableProjectile.cs</see> example demonstrates properly implementing an interactable projectile.
 		/// <br/><br/> Defaults to false. Vanilla entries include <see cref="FlyingPiggyBank"/>, <see cref="VoidLens"/>, <see cref="ChesterPet"/>, <see cref="PalworldMinionCattiva"/>, <see cref="PalworldMinionFoxsparks"/>, and <see cref="PalworldDigtoise"/>.
 		/// </summary>
-		public static bool[] IsInteractable = Factory.CreateBoolSet(false, 525, 734, 960, 1093, 1094, 1098);
-
-		/// <summary>
-		/// If <see langword="true"/> for a given projectile type (<see cref="Projectile.type"/>), then that projectile will do the same damage to players regardless of difficulty (expert/master etc). <br/>
-		/// This set includes all the friendly vanilla explosives which can hurt players from vanilla
-		/// </summary>
-		public static bool[] PlayerHurtDamageIgnoresDifficultyScaling = Factory.CreateBoolSet(28, 29, 30, 37, 108, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 164, 397, 470, 516, 517, 519, 588, 637, 773, 776, 777, 778, 779, 780, 781, 782, 783, 784, 785, 786, 787, 788, 789, 790, 791, 792, 793, 794, 795, 796, 797, 798, 799, 800, 801, 903, 904, 905, 906, 910, 911, 1002);
+		public static bool[] IsInteractable = Factory.CreateBoolSet(false, 525, 734, 960, 1093, 1094, 1098, 1112, 1113, 1118, 1123);
 	}
 }

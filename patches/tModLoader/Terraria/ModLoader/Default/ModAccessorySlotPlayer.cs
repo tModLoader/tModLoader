@@ -144,6 +144,50 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 		extraItems.Clear();
 	}
 
+	internal bool CanLoadoutShare(int context, int slot)
+	{
+		bool validSlot = context switch {
+			Terraria.UI.ItemSlot.Context.ModdedAccessorySlot or Terraria.UI.ItemSlot.Context.ModdedVanityAccessorySlot => (uint)slot < (uint)exAccessorySlot.Length,
+			Terraria.UI.ItemSlot.Context.ModdedDyeSlot => (uint)slot < (uint)exDyesAccessory.Length,
+			_ => false
+		};
+
+		return validSlot && !IsSharedSlot(slot);
+	}
+
+	// Equivalent to Player.GetEffectiveArmor
+	public Item GetSharedLoadoutItem(int context, int slot, out int? sharedFromLoadout)
+	{
+		sharedFromLoadout = null;
+		Item[] items = context == Terraria.UI.ItemSlot.Context.ModdedDyeSlot ? exDyesAccessory : exAccessorySlot;
+
+		if (!items[slot].IsAir || !CanLoadoutShare(context, slot))
+			return items[slot];
+
+		foreach (ExEquipmentLoadout equipmentLoadout in exLoadouts) {
+			Item item = context == Terraria.UI.ItemSlot.Context.ModdedDyeSlot ? equipmentLoadout.ExDyesAccessory[slot] : equipmentLoadout.ExAccessorySlot[slot];
+			if (!item.IsAir && item.favorited) {
+				sharedFromLoadout = equipmentLoadout.LoadoutIndex;
+				return item;
+			}
+		}
+
+		return items[slot];
+	}
+
+	internal void ClearSlotShareInOtherLoadouts(int context, int slot)
+	{
+		if (!CanLoadoutShare(context, slot))
+			return;
+
+		foreach (ExEquipmentLoadout equipmentLoadout in exLoadouts) {
+			if (context == Terraria.UI.ItemSlot.Context.ModdedDyeSlot)
+				equipmentLoadout.ExDyesAccessory[slot].favorited = false;
+			else
+				equipmentLoadout.ExAccessorySlot[slot].favorited = false;
+		}
+	}
+
 	// Updates Code:
 	/// <summary>
 	/// Updates functional slot visibility information on the player for Mod Slots, in a similar fashion to Player.UpdateVisibleAccessories()
@@ -154,7 +198,7 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 
 		for (int k = 0; k < SlotCount; k++) {
 			if (loader.ModdedIsSpecificItemSlotUnlockedAndUsable(k, Player, vanity: false)) {
-				Player.UpdateVisibleAccessories(exAccessorySlot[k], exHideAccessory[k], k, true);
+				Player.UpdateVisibleAccessories(GetSharedLoadoutItem(Terraria.UI.ItemSlot.Context.ModdedAccessorySlot, k, out _), exHideAccessory[k], k, true);
 			}
 		}
 	}
@@ -169,8 +213,9 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 		for (int k = 0; k < SlotCount; k++) {
 			if (loader.ModdedIsSpecificItemSlotUnlockedAndUsable(k, Player, vanity: true)) {
 				var vanitySlot = k + SlotCount;
-				if (!Player.ItemIsVisuallyIncompatible(exAccessorySlot[vanitySlot]))
-					Player.UpdateVisibleAccessory(vanitySlot, exAccessorySlot[vanitySlot], true);
+				Item vanityItem = GetSharedLoadoutItem(Terraria.UI.ItemSlot.Context.ModdedVanityAccessorySlot, vanitySlot, out _);
+				if (!Player.ItemIsVisuallyIncompatible(vanityItem))
+					Player.UpdateVisibleAccessory(vanitySlot, vanityItem, true);
 			}
 		}
 	}
@@ -190,7 +235,7 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 		for (int i = start; i < end; i++) {
 			if (loader.ModdedIsSpecificItemSlotUnlockedAndUsable(i, Player, vanity: socialSlots)) {
 				int num = i % exDyesAccessory.Length;
-				Player.UpdateItemDye(i < exDyesAccessory.Length, exHideAccessory[num], exAccessorySlot[i], exDyesAccessory[num]);
+				Player.UpdateItemDye(i < exDyesAccessory.Length, exHideAccessory[num], GetSharedLoadoutItem(socialSlots ? Terraria.UI.ItemSlot.Context.ModdedVanityAccessorySlot : Terraria.UI.ItemSlot.Context.ModdedAccessorySlot, i, out _), GetSharedLoadoutItem(Terraria.UI.ItemSlot.Context.ModdedDyeSlot, num, out _));
 			}
 		}
 	}

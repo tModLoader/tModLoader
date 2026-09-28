@@ -1035,6 +1035,7 @@
 		"NoAteLoaf": "플레이어가 장인의 빵을 소비한 적이 없을 때",
 		"BloodOrSun": "블러드 문이나 일식 도중",
 		"NotBloodOrSun": "블러드 문이나 일식이 아닐 때",
+		// "TorchGodsFavor": "When the player has unlocked Biome Torches",
 		"HardmodeFTW": "For the Worthy 세계라면 하드모드에서, 아니라면 아무 때나",
 		"NightOrEclipse": "밤이거나 일식일 때",
 		"BloodMoonOrHardmode": "블러드 문이거나 하드모드라면 아무 때나",

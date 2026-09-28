@@ -1,7 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
-using System.Linq.Expressions;
+using System.Linq;
 using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -114,7 +115,29 @@ public sealed class ChangeMagicNumberToIDAnalyzer() : AbstractDiagnosticAnalyzer
 			var node = (InvocationExpressionSyntax)ctx.Node;
 
 			if (ctx.SemanticModel.GetSymbolInfo(node, ctx.CancellationToken).Symbol as IMethodSymbol is not { } invokedMethodSymbol) return;
-			if (!MagicNumberBindings.HasBindingsForSymbol(invokedMethodSymbol)) return;
+
+			MagicNumberBindings.Binding fallbackBinding = null;
+			MagicNumberBindings.FallbackBehavior fallbackBehavior = null;
+
+			if (!MagicNumberBindings.HasBindingsForSymbol(invokedMethodSymbol)) {
+				// Determine the fallback binding if the method should fallback to a containing member
+				// for example: ItemID.Sets.Factory.CreateBoolSet falls back to the binding for Terraria.ID.ItemID.Sets
+				if (MagicNumberBindings.HasFallbackBehaviorForMethod(invokedMethodSymbol)) {
+					var expr = node.Expression;
+					while (expr is MemberAccessExpressionSyntax memberAccessSyntax) {
+						var symbol = ctx.SemanticModel.GetSymbolInfo(memberAccessSyntax, ctx.CancellationToken).Symbol;
+						if (symbol is { } && MagicNumberBindings.TryGetBinding(symbol, out var binding)) {
+							fallbackBinding = binding;
+							break;
+						}
+
+						expr = memberAccessSyntax.Expression;
+					}
+				}
+				else {
+					return;
+				}
+			}
 
 			if (ctx.SemanticModel.GetOperation(node) is not IInvocationOperation invokeOperation)
 				return;
@@ -123,10 +146,41 @@ public sealed class ChangeMagicNumberToIDAnalyzer() : AbstractDiagnosticAnalyzer
 			{
 				ctx.CancellationToken.ThrowIfCancellationRequested();
 
-				if (argument.Parameter is null || argument.Syntax is not ArgumentSyntax argumentSyntax)
+				if (argument.Parameter is null)
 					continue;
 
-				if (!MagicNumberBindings.TryGetBinding(argument.Parameter, out var binding))
+				// ItemID.Class.Method(TileID, params ItemID)
+				if (!MagicNumberBindings.TryGetBinding(argument.Parameter, out var binding)) {
+					if (fallbackBinding != null && MagicNumberBindings.TryGetFallbackBinding(invokedMethodSymbol, argument.Parameter, out fallbackBehavior))
+						binding = fallbackBinding;
+
+					if (binding == null)
+						continue;
+				}
+
+				if (argument.Parameter.IsParams) {
+					IEnumerable<SyntaxNode> syntaxNodes = argument.Value switch {
+						IArrayCreationOperation arrayCreation => arrayCreation.Initializer?.ElementValues.Select(x => x.Syntax),
+						{ Syntax: ArrayCreationExpressionSyntax arrayCreationExpressionSyntax } => arrayCreationExpressionSyntax.Initializer?.Expressions,
+						{ Syntax: CollectionExpressionSyntax collectionExpressionSyntax } => collectionExpressionSyntax.Elements.OfType<ExpressionElementSyntax>().Select(x => x.Expression),
+						_ => null
+					};
+
+					if (syntaxNodes == null)
+						continue;
+
+					int paramCount = -1;
+					foreach (var syntaxNode in syntaxNodes) {
+						paramCount++;
+						if (fallbackBehavior?.evenOnly == true && paramCount % 2 != 0)
+							continue;
+
+						TryReportVariedDiagnostics(ctx.ReportDiagnostic, ctx.SemanticModel, syntaxNode, binding, ctx.CancellationToken);
+					}
+					return;
+				}
+
+				if (argument.Syntax is not ArgumentSyntax argumentSyntax)
 					continue;
 
 				TryReportVariedDiagnostics(ctx.ReportDiagnostic, ctx.SemanticModel, argumentSyntax.Expression, binding, ctx.CancellationToken);

@@ -1035,6 +1035,7 @@
 		"NoAteLoaf": "需要在使用過工匠麵包之前",
 		"BloodOrSun": "需要在血月或日食期間",
 		"NotBloodOrSun": "需要不在血月或日食期間",
+		// "TorchGodsFavor": "When the player has unlocked Biome Torches",
 		"HardmodeFTW": "需要在擊敗血肉之牆之後，或者非榮耀世界",
 		"NightOrEclipse": "需要在夜晚或日食期間",
 		"BloodMoonOrHardmode": "需要在血月或擊敗血肉之牆之後",

@@ -1035,6 +1035,7 @@
 		"NoAteLoaf": "プレイヤーが以前にアーティザンローフを消費していない",
 		"BloodOrSun": "ブラッドムーンまたは日食中",
 		"NotBloodOrSun": "ブラッドムーンまたは日食中ではない",
+		// "TorchGodsFavor": "When the player has unlocked Biome Torches",
 		"HardmodeFTW": "For the Worthy世界ではハードモード時、それ以外はいつでも",
 		"NightOrEclipse": "夜間または日食中",
 		"BloodMoonOrHardmode": "ブラッドムーン中、またはハードモードではいつでも",

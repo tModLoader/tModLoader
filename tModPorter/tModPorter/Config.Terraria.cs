@@ -319,12 +319,15 @@ public static partial class Config
 		RenameStaticField("Terraria.Main", "recFastScroll", "PipsFastScroll");
 		RenameStaticField("Terraria.NPC", "killCount", "killCount", "Terraria.GameContent.BannerSystem");
 		RenameStaticField("Terraria.WorldGen", from: "gen", to: "isGeneratingOrLoadingWorld");
+		RenameStaticField("Terraria.ID.ContentSamples.CreativeHelper.ItemGroup", from: "PlacableObjects", to: "PlaceableObjects");
 
+		RenameInstanceField("Terraria.DataStructures.PlayerDeathReason", from: "SourceProjectileLocalIndex", to: "SourceProjectileKey").FollowBy(AddCommentToFieldAccess("See Projectile.key"));
 		RenameInstanceField("Terraria.Dust", from: "noLightEmittence", to: "noLightEmittance");
 		RenameInstanceField("Terraria.Item", from: "netID", to: "type");
 		RenameInstanceField("Terraria.Main", from: "HasInteractibleObjectThatIsNotATile", to: "HasInteractableObjectThatIsNotATile");
 		RenameInstanceField("Terraria.Main.CurrentFrameFlags", from: "HadAnActiveInteractibleProjectile", to: "HadAnActiveInteractableProjectile");
-		RenameInstanceField("Terraria.WorldItem", from: "noGrabDelay", to: "grabDelayTime");
+		RenameInstanceField("Terraria.WorldItem", from: "noGrabDelay", to: "grabDelayTime").FollowBy(AddCommentToFieldAccess("Suggestion: Also consider checking/setting grabDelayPlayer"));
+		RenameInstanceField("Terraria.GameContent.ItemTrader.TradeOption", from: "GivingITemType", to: "GivingItemType");
 
 		RenameInstanceFieldMultiple("Terraria.NPC.Spawner", froms: ["desertCave", "DesertCave"], to: "spawnUndergroundDesert");
 		RenameInstanceFieldMultiple("Terraria.NPC.Spawner", froms: ["granite", "Granite"], to: "nearGranite");
@@ -360,7 +363,7 @@ public static partial class Config
 		RenameMethod("Terraria.WorldGen", from: "CheckTight", to: "CheckStalactite");
 
 		RefactorStaticMember("Terraria.ID.BuffID.Sets", "BasicMountData", Removed("Replace with BuffID.Sets.MountType[Type] = ModContent.MountType<MyMount>();"));
-		RefactorStaticMember("Terraria.ID.ItemID.Sets", "ItemSpawnDecaySpeed", Removed("No longer used."));
+		RefactorStaticMember("Terraria.ID.ItemID.Sets", "ItemSpawnDecaySpeed", Removed("Replaced by EmergencyStacking"));
 		RefactorStaticMember("Terraria.ID.MountID.Sets", "FacePlayersVelocity", Removed("Now automatic for all minecarts"));
 		RefactorStaticMember("Terraria.ID.ProjectileID.Sets", "HeldProjDoesNotUsePlayerGfxOffY", Removed("AI() should use master.RotatedRelativePoint(master.MountedCenter + ...) to position held projectiles"));
 		RefactorStaticMember("Terraria.ID.ProjectileID.Sets", "DontAttachHideToAlpha", Removed("Now true by default. See Projectile.usesOwnerLight and Projectile.drawLayer for more details."));
@@ -378,6 +381,7 @@ public static partial class Config
 		RefactorInstanceMember("Terraria.NPC.Spawner", "PlayerFloorY", Removed("Player floor coordinates are no longer tracked by NPC.Spawner"));
 		RefactorInstanceMember("Terraria.Player", "oldAdjTile", Removed("No longer used."));
 
+		RefactorStaticMethodCall("Terraria.Item", "NewItem", RewriteNewItem);
 		RefactorStaticMethodCall("Terraria.Chest", "FindChestByGuessing", Removed("Use Chest.FindChest with the top left tile coordinate"));
 		RefactorStaticMethodCall("Terraria.RecipeGroup", "RegisterGroup", Removed("Replace this and \"new RecipeGroup()\" with RecipeGroup.Register"));
 
