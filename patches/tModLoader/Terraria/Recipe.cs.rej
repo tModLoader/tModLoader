@@ -204,20 +204,6 @@
  			if (!player.adjTile[tempRec.requiredTile[i]])
  				return false;
  		}
-@@ -628,4 +_,5 @@
- 
-+		/*
- 		if (Main.remixWorld && Main.getGoodWorld) {
- 			ItemID.Sets.IsAMaterial[544] = true;
- 			ItemID.Sets.IsAMaterial[556] = true;
-@@ -636,6 +_,7 @@
- 			ItemID.Sets.IsAMaterial[556] = false;
- 			ItemID.Sets.IsAMaterial[557] = false;
- 		}
-+		*/
- 	}
- 
- 	public static void SetupRecipes()
 @@ -14542,4 +_,5 @@
  	{
  		if (flag)
