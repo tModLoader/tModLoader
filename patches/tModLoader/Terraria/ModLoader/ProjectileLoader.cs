@@ -826,7 +826,7 @@ public static class ProjectileLoader
 		}
 	}
 
-	private delegate void DelegatePreTryDespawning(Projectile projectile, out bool giveItem, out bool sync);
+	private delegate bool DelegatePreTryDespawning(Projectile projectile, ref bool giveItem, ref bool sync);
 	private static HookList HookPreTryDespawning = AddHook<DelegatePreTryDespawning>(g => g.PreTryDespawning);
 
 	public static bool PreTryDespawning(Projectile projectile, out bool giveItem, out bool sync)
