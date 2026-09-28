@@ -216,13 +216,15 @@ namespace ExampleMod.Content.Projectiles
 			}
 		}
 
-		public override void PreTryDespawning(ref bool giveItem) {
+		public override bool PreTryDespawning(ref bool giveItem, ref bool sync) {
 			if (IsChild) {
 				giveItem = false;
 			}
 
 			// This is already set by ProjectileID.Sets.Explosive, but for other projectiles we would need to set a similar flag to prevent certain logic in OnKill from running when the projectile is being despawned via right click.
 			//BeingPickedUp = true;
+
+			return true;
 		}
 	}
 }

@@ -826,15 +826,20 @@ public static class ProjectileLoader
 		}
 	}
 
-	private delegate void DelegatePreTryDespawning(Projectile projectile, ref bool giveItem);
+	private delegate void DelegatePreTryDespawning(Projectile projectile, out bool giveItem, out bool sync);
 	private static HookList HookPreTryDespawning = AddHook<DelegatePreTryDespawning>(g => g.PreTryDespawning);
 
-	public static void PreTryDespawning(Projectile projectile, ref bool giveItem)
+	public static bool PreTryDespawning(Projectile projectile, out bool giveItem, out bool sync)
 	{
-		projectile.ModProjectile?.PreTryDespawning(ref giveItem);
+		giveItem = true;
+		sync = true;
+
+		bool result = projectile.ModProjectile?.PreTryDespawning(ref giveItem, ref sync) ?? true;
 
 		foreach (var g in HookPreTryDespawning.Enumerate(projectile)) {
-			g.PreTryDespawning(projectile, ref giveItem);
+			result &= g.PreTryDespawning(projectile, ref giveItem, ref sync);
 		}
+
+		return result;
 	}
 }

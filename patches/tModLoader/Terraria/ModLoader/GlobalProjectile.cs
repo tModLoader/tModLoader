@@ -443,7 +443,8 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 	}
 
 	/// <inheritdoc cref="ModProjectile.PreTryDespawning"/>
-	public virtual void PreTryDespawning(Projectile projectile, ref bool giveItem)
-	{
+	public virtual bool PreTryDespawning(Projectile projectile, ref bool giveItem, ref bool sync)
+	{ 
+		return true;
 	}
 }

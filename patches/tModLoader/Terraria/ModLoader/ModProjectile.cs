@@ -512,9 +512,11 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 	}
 
 	/// <summary>
-	/// Called during <see cref="Main.TryDespawningProjectile(Projectile, int)"/> before the projectile is killed. This will be called when projectiles that can be despawned by right clicking on them by using <see cref="ProjectileID.Sets.DespawnItemIcon"/> are right clicked. The <paramref name="giveItem"/> parameter controls if the item will drop provided <see cref="ProjectileID.Sets.DespawnItemGivesItemBack"/> is also true.
+	/// Called during <see cref="Main.TryDespawningProjectile(Projectile, int)"/> before the projectile is killed. This will be called when projectiles that can be despawned by right clicking on them by using <see cref="ProjectileID.Sets.DespawnItemIcon"/> are right clicked. The <paramref name="giveItem"/> parameter controls if the item will drop provided <see cref="ProjectileID.Sets.DespawnItemGivesItemBack"/> is also true. The <paramref name="sync"/> parameter controls if the <see cref="MessageID.SyncProjectile"/> net message will be sent for explosive projectiles (<c>(projectile.aiStyle == ProjAIStyleID.Explosive || ProjectileID.Sets.Explosive[projectile.type])</c>). 
 	/// <para/> This can be used to prevent aspects of the usual projectile kill logic that shouldn't run when the projectile is being despawned by a player.
+	/// <para/> Return false to prevent the projectile from despawning.
 	/// </summary>
-	public virtual void PreTryDespawning(ref bool giveItem) {
+	public virtual bool PreTryDespawning(ref bool giveItem, ref bool sync) {
+		return true;
 	}
 }
