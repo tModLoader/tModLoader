@@ -119,15 +119,6 @@
  		if (Main.netMode == 2)
  			Netplay.ResetSections();
  
-@@ -33829,7 +_,7 @@
- 			if (Main.tile[k, j - 1] == null)
- 				Main.tile[k, j - 1] = new Tile();
- 
--			if (Main.tile[k, j - 1].active() && (TileID.Sets.BasicChest[Main.tile[k, j - 1].type] || TileID.Sets.BasicChestFake[Main.tile[k, j - 1].type] || Main.tile[k, j - 1].type == 88 || Main.tile[k, j - 1].type == 470 || Main.tile[k, j - 1].type == 475 || Main.tile[k, j - 1].type == 597))
-+			if (Main.tile[k, j - 1].active() && (TileID.Sets.BasicChest[Main.tile[k, j - 1].type] || TileID.Sets.BasicChestFake[Main.tile[k, j - 1].type] || TileID.Sets.BasicDresser[Main.tile[k, j - 1].type]  || Main.tile[k, j - 1].type == 470 || Main.tile[k, j - 1].type == 475 || Main.tile[k, j - 1].type == 597))
- 				return;
- 
- 			if (!SolidTileAllowBottomSlope(k, j + 1))
 @@ -60380,14 +_,20 @@
  										break;
  								}
