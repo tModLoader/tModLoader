@@ -228,7 +228,8 @@ public sealed record Condition(LocalizedText Description, Func<bool> Predicate)
 	public static Condition GolfScoreOver(int score) => new(Language.GetText("Conditions.GolfScoreOver").WithFormatArgs(score), () => Main.LocalPlayer.golferScoreAccumulated >= score);
 	public static Condition NpcIsPresent(int npcId) => new(Language.GetText("Conditions.NpcIsPresent").WithFormatArgs(Lang.GetNPCName(npcId)), () => NPC.AnyNPCs(npcId));
 	public static Condition AnglerQuestsFinishedOver(int quests) => new(Language.GetText("Conditions.AnglerQuestsFinishedOver").WithFormatArgs(quests), () => Main.LocalPlayer.anglerQuestsFinished >= quests);
-	public static Condition BestiaryFilledPercent(int percent) {
+	public static Condition BestiaryFilledPercent(int percent)
+	{
 		if (percent >= 100)
 			return new Condition("Conditions.BestiaryFull", () => Main.GetBestiaryProgressReport().CompletionPercent >= 1f);
 
