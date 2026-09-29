@@ -18,6 +18,7 @@ public class TagPrinter
 
 	private string TypeString(Type type)
 	{
+#pragma warning disable format
 		if (type == typeof(byte)) return "byte";
 		if (type == typeof(short)) return "short";
 		if (type == typeof(int)) return "int";
@@ -29,6 +30,7 @@ public class TagPrinter
 		if (type == typeof(int[])) return "int[]";
 		if (type == typeof(TagCompound)) return "object";
 		if (type == typeof(IList)) return "list";
+#pragma warning restore format
 		throw new ArgumentException("Unknown Type: " + type);
 	}
 

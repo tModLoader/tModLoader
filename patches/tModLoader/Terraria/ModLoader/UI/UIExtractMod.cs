@@ -116,7 +116,7 @@ internal class UIExtractMod : UIProgress
 					File.Copy(path, Path.Combine(modReferencesPath, $"{mod.Name}_v{mod.modFile.Version}.xml"), true);
 					log?.WriteLine($"You can find this mod's documentation .xml file under {Path.GetFullPath(modReferencesPath)} for easy mod collaboration!");
 				}
-			};
+			}
 			Utils.OpenFolder(dir);
 		}
 		catch (OperationCanceledException e) {
