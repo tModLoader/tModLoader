@@ -13,7 +13,7 @@
  				}
  			}
 +			*/
-+			GenBase._tiles.ClearEverything();
++			GenBase._tiles.Clear();
  		}
  	}
  
