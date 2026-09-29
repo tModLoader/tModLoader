@@ -8116,7 +8116,7 @@
 +		/*
  		if (!spaceGun || (sItem.type != 127 && sItem.type != 4347 && sItem.type != 4348))
 +		*/
-+ 		if (GetManaCost(sItem) > 0)
++		if (GetManaCost(sItem) > 0)
  			manaRegenDelay = (int)maxRegenDelay;
  	}
  
@@ -8250,7 +8250,7 @@
  		if (sItem.type == 3006)
  			flag2 = true;
  
-+		if (sItem.type != ItemID.MedusaHead /*3269*/ && !CheckMana(sItem, pay:!flag2))
++		if (sItem.type != ItemID.MedusaHead /*3269*/ && !CheckMana(sItem, pay: !flag2))
 +			canUse = false;
 +
 +		return canUse; // TML: The below code was moved to CheckMana and GetManaCost in Player.TML.
@@ -9384,7 +9384,7 @@
 +	{
 +		// Fake variables
 +		var armor = newPlayer.armor;
-+		newPlayer.armor = new[] {item};
++		newPlayer.armor = new[] { item };
 +		int i = 0;
 +
 +		// Originally the for loop in the previous method

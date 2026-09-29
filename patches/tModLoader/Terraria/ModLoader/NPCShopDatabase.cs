@@ -203,6 +203,7 @@ public static partial class NPCShopDatabase
 
 		var mushroomPylonCondition = new Condition("Conditions.InGlowshroom", () => Main.LocalPlayer.ZoneGlowshroom && (!Main.remixWorld || !Main.LocalPlayer.ZoneUnderworldHeight));
 
+#pragma warning disable format // All "incorrect" whitespace below this point is intentional.
 		yield return new Entry(ItemID.TeleportationPylonPurity,        Condition.HappyEnoughToSellPylons, Condition.AnotherTownNPCNearby, Condition.NotInEvilBiome, forestPylonCondition).OrderLast();
 		yield return new Entry(ItemID.TeleportationPylonSnow,          Condition.HappyEnoughToSellPylons, Condition.AnotherTownNPCNearby, Condition.NotInEvilBiome, Condition.InSnow).OrderLast();
 		yield return new Entry(ItemID.TeleportationPylonDesert,        Condition.HappyEnoughToSellPylons, Condition.AnotherTownNPCNearby, Condition.NotInEvilBiome, Condition.InDesert).OrderLast();
@@ -211,7 +212,6 @@ public static partial class NPCShopDatabase
 		yield return new Entry(ItemID.TeleportationPylonJungle,        Condition.HappyEnoughToSellPylons, Condition.AnotherTownNPCNearby, Condition.NotInEvilBiome, Condition.InJungle).OrderLast();
 		yield return new Entry(ItemID.TeleportationPylonHallow,        Condition.HappyEnoughToSellPylons, Condition.AnotherTownNPCNearby, Condition.NotInEvilBiome, Condition.InHallow).OrderLast();
 		yield return new Entry(ItemID.TeleportationPylonMushroom,      Condition.HappyEnoughToSellPylons, Condition.AnotherTownNPCNearby, Condition.NotInEvilBiome, mushroomPylonCondition).OrderLast();
-
 
 		foreach (ModPylon pylon in PylonLoader.modPylons) {
 			if (pylon.GetNPCShopEntry() is { } entry)
@@ -831,7 +831,6 @@ public static partial class NPCShopDatabase
 		var torchCondition = new Condition("Conditions.Periodically", () => Main.time % 60 > 30);
 
 		new NPCShop(NPCID.SkeletonMerchant)
-#pragma warning disable format
 			.Add(ItemID.WoodenBoomerang,		Condition.MoonPhaseFull)
 			.Add(ItemID.Umbrella,				Condition.MoonPhaseWaningGibbous)
 			.Add(ItemID.WandofSparking,			Condition.MoonPhaseThirdQuarter, Condition.NotRemixWorld)
@@ -863,7 +862,6 @@ public static partial class NPCShopDatabase
 			.Add(ItemID.SlapHand,				Condition.Hardmode, Condition.BloodMoon)
 			.Add(ItemID.MagicLantern,			Condition.TimeNight, Condition.MoonPhaseFull)
 			.Add(ItemID.ArtisanLoaf,			artisanCondition, Condition.MoonPhasesNearNew)
-#pragma warning restore format
 			.Register();
 	}
 
@@ -894,7 +892,6 @@ public static partial class NPCShopDatabase
 		shop.Add(ItemID.DD2ElderCrystalStand);																// Eternia Crystal Stand
 		AddEntry(ItemID.DefendersForge, 50);
 
-#pragma warning disable format
 		AddEntry(ItemID.SquireGreatHelm,			15, Condition.Hardmode, Condition.DownedMechBossAny);
 		AddEntry(ItemID.SquirePlating,				15, Condition.Hardmode, Condition.DownedMechBossAny);
 		AddEntry(ItemID.SquireGreaves,				15, Condition.Hardmode, Condition.DownedMechBossAny);
@@ -937,8 +934,6 @@ public static partial class NPCShopDatabase
 		AddEntry(ItemID.MonkAltHead,				50, Condition.Hardmode, Condition.DownedGolem);         // Shinobi Infiltrator's Helmet
 		AddEntry(ItemID.MonkAltShirt,				50, Condition.Hardmode, Condition.DownedGolem);         // Shinobi Infiltrator's Torso
 		AddEntry(ItemID.MonkAltPants,				50, Condition.Hardmode, Condition.DownedGolem);         // Shinobi Infiltrator's Pants
-#pragma warning restore format
-
 		shop.Register();
 	}
 
@@ -949,7 +944,6 @@ public static partial class NPCShopDatabase
 		var scoreOver2000 = Condition.GolfScoreOver(2000);
 
 		new NPCShop(NPCID.Golfer)
-#pragma warning disable format
 			.Add(ItemID.GolfClubStoneIron)                                                                      // Worn Golf Club (Iron)
 			.Add(ItemID.GolfClubWoodDriver)                                                                     // Worn Golf Club (Driver)
 			.Add(ItemID.GolfClubBronzeWedge)                                                                    // Worn Golf Club (Wedge)
@@ -992,14 +986,12 @@ public static partial class NPCShopDatabase
 			.Add(ItemID.GolfPainting2,				scoreOver2000, Condition.MoonPhasesQuarter1)				// Study of a Ball at Rest
 			.Add(ItemID.GolfPainting3,				scoreOver2000, Condition.MoonPhasesQuarter2)				// Fore!
 			.Add(ItemID.GolfPainting4,				scoreOver2000, Condition.MoonPhasesQuarter3)                // The Duplicity of Reflections
-#pragma warning restore format
 			.Register();
 	}
 
 	private static void RegisterZoologist()
 	{
 		new NPCShop(NPCID.BestiaryGirl)
-#pragma warning disable format
 			.Add(ItemID.FairyGlowstick,				new Condition("Conditions.BestiaryWinx", () => Chest.BestiaryGirl_IsFairyTorchAvailable()))
 			.Add(ItemID.DontHurtCrittersBook)
 			.Add(ItemID.SquirrelHook)
@@ -1036,7 +1028,6 @@ public static partial class NPCShopDatabase
 			.Add(ItemID.LizardTail,					Condition.MoonPhasesQuarter2)
 			.Add(ItemID.BunnyEars,					Condition.MoonPhasesQuarter3)
 			.Add(ItemID.BunnyTail,					Condition.MoonPhasesQuarter3)
-#pragma warning restore format
 			.Register();
 	}
 
@@ -1049,7 +1040,6 @@ public static partial class NPCShopDatabase
 		for (int i = ItemID.RoyalScepter; i <= ItemID.DarkSideHallow; i++) {
 			shop.Add(i);
 		}
-#pragma warning disable format
 		shop.Add(ItemID.PrincessStyle)
 			.Add(ItemID.SuspiciouslySparkly)
 			.Add(ItemID.TerraBladeChronicles)
@@ -1066,7 +1056,6 @@ public static partial class NPCShopDatabase
 			.Add(ItemID.CoinGun,			Condition.TenthAnniversaryWorld, Condition.Hardmode, Condition.DownedPirates, Condition.MoonPhasesQuarter3)
 			.Add(ItemID.BerniePetItem)
 			.Register();
-#pragma warning restore format
 	}
 
 	private static void RegisterTravellingMerchant()

@@ -12,6 +12,7 @@ public sealed record Condition(LocalizedText Description, Func<bool> Predicate)
 
 	public bool IsMet() => Predicate();
 
+#pragma warning disable format
 	// Near Liquids
 	public static readonly Condition NearWater =			new("Conditions.NearWater",				() => Main.LocalPlayer.adjWater || Main.LocalPlayer.adjTile[TileID.Sinks]);
 	public static readonly Condition NearLava =				new("Conditions.NearLava",				() => Main.LocalPlayer.adjLava);
@@ -220,6 +221,7 @@ public sealed record Condition(LocalizedText Description, Func<bool> Predicate)
 	public static readonly Condition MoonPhases15 =				new("Conditions.MoonPhases15",				() => Main.moonPhase % 4 == 1);
 	public static readonly Condition MoonPhases26 =				new("Conditions.MoonPhases26",				() => Main.moonPhase % 4 == 2);
 	public static readonly Condition MoonPhases37 =				new("Conditions.MoonPhases37",				() => Main.moonPhase % 4 == 3);
+#pragma warning restore format
 
 	// Parameters
 	public static Condition PlayerCarriesItem(int itemId) => new(Language.GetText("Conditions.PlayerCarriesItem").WithFormatArgs(Lang.GetItemName(itemId)), () => Main.LocalPlayer.HasItem(itemId));
@@ -233,4 +235,3 @@ public sealed record Condition(LocalizedText Description, Func<bool> Predicate)
 		return new(Language.GetText("Conditions.BestiaryPercentage").WithFormatArgs(percent), () => Main.GetBestiaryProgressReport().CompletionPercent >= percent / 100f);
 	}
 }
-			
