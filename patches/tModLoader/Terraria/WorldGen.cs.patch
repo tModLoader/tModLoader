@@ -2326,7 +2326,7 @@
  	{
  		int num = KillWall_GetItemDrops(tileCache);
 -		if (num > 0)
-+		if (WallLoader.Drop(i, j, Main.tile[i,j].wall, ref num) && num > 0)
++		if (WallLoader.Drop(i, j, Main.tile[i, j].wall, ref num) && num > 0)
  			Item.NewItem(GetItemSource_FromWallBreak(i, j), i * 16, j * 16, 16, 16, num);
  	}
  
