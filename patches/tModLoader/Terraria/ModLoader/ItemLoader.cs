@@ -1901,7 +1901,7 @@ public static class ItemLoader
 		EquipTexture texture = EquipLoader.GetEquipTexture(type, slot);
 		bool? result = texture?.ModifyDraw(ref drawInfo, ref drawData, methodName);
 
-		if(result ?? true)
+		if (result ?? true)
 			drawInfo.DrawDataCache.Add(drawData);
 
 		return;

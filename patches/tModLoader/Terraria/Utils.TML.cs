@@ -60,7 +60,7 @@ partial class Utils
 
 	public static T NextEnum<T>(this T src) where T : struct
 	{
-		if(!typeof(T).IsEnum)
+		if (!typeof(T).IsEnum)
 			throw new ArgumentException($"Argument {typeof(T).FullName} is not an Enum");
 
 		T[] Arr = (T[])Enum.GetValues(src.GetType());
@@ -71,7 +71,7 @@ partial class Utils
 
 	public static T PreviousEnum<T>(this T src) where T : struct
 	{
-		if(!typeof(T).IsEnum)
+		if (!typeof(T).IsEnum)
 			throw new ArgumentException($"Argument {typeof(T).FullName} is not an Enum");
 
 		T[] Arr = (T[])Enum.GetValues(src.GetType());
@@ -136,7 +136,7 @@ partial class Utils
 	/// <summary> Returns true 1 out of X times. </summary>
 	public static bool NextBool(this UnifiedRandom r, int consequent)
 	{
-		if(consequent < 1)
+		if (consequent < 1)
 			throw new ArgumentOutOfRangeException(nameof(consequent), "consequent must be greater than or equal to 1.");
 
 		return r.Next(consequent) == 0;
@@ -145,7 +145,7 @@ partial class Utils
 	/// <summary> Returns true X out of Y times. </summary>
 	public static bool NextBool(this UnifiedRandom r, int antecedent, int consequent)
 	{
-		if(antecedent > consequent)
+		if (antecedent > consequent)
 			throw new ArgumentOutOfRangeException(nameof(antecedent), "antecedent must be less than or equal to consequent.");
 
 		return r.Next(consequent) < antecedent;

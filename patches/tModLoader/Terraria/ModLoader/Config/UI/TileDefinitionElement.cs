@@ -128,7 +128,7 @@ internal class TileDefinitionOptionElement : DefinitionOptionElement<TileDefinit
 			float drawDimensionHeight = dimensions.Height - 8;
 			float drawDimensionWidth = dimensions.Width - 8;
 			// Note: dimensions.Width already takes DefinitionOptionElement.Scale into account
-			float drawScale = Math.Min(drawDimensionWidth / (tileData.CoordinateWidth * tileData.Width) , drawDimensionHeight / tileData.CoordinateHeights.Sum());
+			float drawScale = Math.Min(drawDimensionWidth / (tileData.CoordinateWidth * tileData.Width), drawDimensionHeight / tileData.CoordinateHeights.Sum());
 			float adjustX = tileData.Width < tileData.Height ? (tileData.Height - tileData.Width) / (tileData.Height * 2f) : 0f;
 			float adjustY = tileData.Height < tileData.Width ? (tileData.Width - tileData.Height) / (tileData.Width * 2f) : 0f;
 

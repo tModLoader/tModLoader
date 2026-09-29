@@ -104,7 +104,8 @@ internal class ModCompile
 		try {
 			if (Directory.Exists(oldModReferencesPath))
 				Directory.Delete(oldModReferencesPath, true);
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			Logging.tML.Error("Failed to delete old /references dir", e);
 		}
 
@@ -116,7 +117,8 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 		referencesUpdated = true;
 	}
 
-	private static void UpdateFileContents(string path, string contents) {
+	private static void UpdateFileContents(string path, string contents)
+	{
 		Directory.CreateDirectory(Path.GetDirectoryName(path));
 
 		byte[] bytes = Encoding.UTF8.GetBytes(contents);
@@ -226,7 +228,8 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 
 	private BuildingMod ReadBuildInfo(string modFolder)
 	{
-		if (modFolder.EndsWith("\\") || modFolder.EndsWith("/")) modFolder = modFolder.Substring(0, modFolder.Length - 1);
+		if (modFolder.EndsWith("\\") || modFolder.EndsWith("/"))
+			modFolder = modFolder.Substring(0, modFolder.Length - 1);
 		var modName = Path.GetFileName(modFolder);
 		status.SetStatus(Language.GetTextValue("tModLoader.ReadingProperties", modName));
 
@@ -382,7 +385,8 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 		}
 	}
 
-	private void BuildMod(BuildingMod mod, out byte[] code, out byte[] pdb) {
+	private void BuildMod(BuildingMod mod, out byte[] code, out byte[] pdb)
+	{
 		string dllName = mod.Name + ".dll";
 		string dllPath = null;
 		string pdbPath() => Path.ChangeExtension(dllPath, "pdb");
@@ -416,7 +420,7 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 
 	private void CompileMod(BuildingMod mod, out byte[] code, out byte[] pdb)
 	{
-		status.SetStatus(Language.GetTextValue("tModLoader.Compiling", mod.Name+".dll"));
+		status.SetStatus(Language.GetTextValue("tModLoader.Compiling", mod.Name + ".dll"));
 		var tempDir = Path.Combine(mod.path, "compile_temp");
 		if (Directory.Exists(tempDir))
 			Directory.Delete(tempDir, true);
@@ -477,7 +481,7 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 		if (numErrors > 0) {
 			var firstError = results.First(e => e.Severity == DiagnosticSeverity.Error);
 			var buildException = new BuildException(Language.GetTextValue("tModLoader.CompileError", mod.Name + ".dll", numErrors, numWarnings) + $"\nError: {firstError}");
-			if(firstError.ToString().Contains("'LocalizedText' does not contain a definition for 'SetDefault'")) {
+			if (firstError.ToString().Contains("'LocalizedText' does not contain a definition for 'SetDefault'")) {
 				buildException.HelpLink = "https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Modding-FAQ#localizedtext-does-not-contain-a-definition-for-setdefault";
 				buildException.Data["showTModPorterHint"] = true;
 			}
@@ -502,7 +506,8 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 		throw new BuildException("Missing dll reference: " + path);
 	}
 
-	private static IEnumerable<string> GetTerrariaReferences() {
+	private static IEnumerable<string> GetTerrariaReferences()
+	{
 		var executingAssembly = Assembly.GetExecutingAssembly();
 		yield return executingAssembly.Location;
 

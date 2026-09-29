@@ -46,7 +46,7 @@ public class ModDownloadItem
 
 		Author = author;
 		ModReferencesBySlug = modReferences;
-		ModReferenceByModId = Array.ConvertAll(referencesById, x => new ModPubId_t() { m_ModPubId = x});
+		ModReferenceByModId = Array.ConvertAll(referencesById, x => new ModPubId_t() { m_ModPubId = x });
 		ModSide = modSide;
 		ModIconUrl = modIconUrl;
 		Downloads = downloads;

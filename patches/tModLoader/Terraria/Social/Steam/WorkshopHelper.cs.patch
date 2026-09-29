@@ -158,7 +158,7 @@
  					_publishedFileID = new PublishedFileId_t(num.Value);
  					PreventUpdatingCertainThings();
 +				*/
-+								_publishedFileID = new PublishedFileId_t(existingID);
++				_publishedFileID = new PublishedFileId_t(existingID);
 +
 +				// Verify can write to the manifest before running creating any items.
 +				if (!WrappedWriteManifest())
@@ -210,7 +210,7 @@
 +				if (_createCallback != EResult.k_EResultOK)
 +					return;
 +
-+				UpdateItem(creatingItem:true);
++				UpdateItem(creatingItem: true);
 +
 +				do {
 +					Thread.Sleep(1);

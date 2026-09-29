@@ -38,7 +38,7 @@
  			}
  		}
  
-+		if(drop)
++		if (drop)
 -		Item.NewItem(new EntitySource_TileBreak(num3, num4), num3 * 16, num4 * 16, 48, 48, 2699);
 +			Item.NewItem(new EntitySource_TileBreak(num3, num4), num3 * 16, num4 * 16, 48, 48, 2699);
  		Kill(num3, num4);

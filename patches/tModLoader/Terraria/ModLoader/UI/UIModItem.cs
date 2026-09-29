@@ -53,7 +53,7 @@ internal class UIModItem : UIPanel
 	private string ToggleModStateText {
 		get {
 			if (_mod.Enabled) {
-				if(_modDependents.Any())
+				if (_modDependents.Any())
 					return Language.GetTextValue("tModLoader.ModsDisableAndDependents", _mod.DisplayName, _modDependents.Length);
 				return Language.GetTextValue("tModLoader.ModsDisable");
 			}

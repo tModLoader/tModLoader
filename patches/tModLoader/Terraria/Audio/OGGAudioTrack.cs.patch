@@ -6,7 +6,7 @@
  using System.Collections.Generic;
  using System.IO;
  using Microsoft.Xna.Framework.Audio;
-@@ -57,16 +_,34 @@
+@@ -57,16 +_,35 @@
  
  	private void FindLoops()
  	{
@@ -20,7 +20,8 @@
 +		// TML: Fixed parsing
 +		var tags = _vorbisReader.Tags.All;
 +
-+		void TryReadInteger(string entryName, ref int result) {
++		void TryReadInteger(string entryName, ref int result)
++		{
 +			if (tags.TryGetValue(entryName, out var values) && values.Count > 0 && int.TryParse(values[0], out int potentialResult)) {
 +				result = potentialResult;
 +			}

@@ -89,7 +89,8 @@ internal class UIExtractMod : UIProgress
 				if (hidden) {
 					log.WriteLine($"[hidden] {name}");
 					continue;
-				} else {
+				}
+				else {
 					log.WriteLine(name);
 				}
 

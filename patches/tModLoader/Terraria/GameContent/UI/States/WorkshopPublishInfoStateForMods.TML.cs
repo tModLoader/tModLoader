@@ -151,7 +151,7 @@ public class WorkshopPublishInfoStateForMods : AWorkshopPublishInfoState<TmodFil
 		ShowOptionDescription(evt, listeningElement);
 	}
 
-	private void TmlDisclaimerText_OnClick(UIMouseEvent evt, UIElement listeningElement) =>	Utils.OpenToURL(TmlRules);
+	private void TmlDisclaimerText_OnClick(UIMouseEvent evt, UIElement listeningElement) => Utils.OpenToURL(TmlRules);
 
 	public override void OnInitialize()
 	{

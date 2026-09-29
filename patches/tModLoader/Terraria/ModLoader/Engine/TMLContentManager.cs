@@ -31,7 +31,8 @@ internal class TMLContentManager : ContentManager
 		this.overrideContentManager = overrideContentManager;
 
 		//Fill cache for ImageExists() lookup.
-		void CacheImagePaths(string path) {
+		void CacheImagePaths(string path)
+		{
 			string basePath = Path.Combine(path, "Images");
 
 			foreach (string file in Directory.EnumerateFiles(basePath, "*.xnb", SearchOption.AllDirectories)) {
@@ -53,7 +54,7 @@ internal class TMLContentManager : ContentManager
 					using var _ = new Logging.QuietExceptionHandle();
 					return overrideContentManager.OpenStream(assetName);
 				}
-				catch {}
+				catch { }
 			}
 			return base.OpenStream(assetName);
 		}

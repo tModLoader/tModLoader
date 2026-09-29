@@ -258,7 +258,7 @@ internal static class ModOrganizer
 
 			if (reuploadMDItems.Any() && await UIModBrowser.DownloadMods(reuploadMDItems, Interface.loadModsID)) {
 				Main.menuMode = Interface.loadModsID;
-				Main.MenuUI.SetState(null);	
+				Main.MenuUI.SetState(null);
 			}
 
 			// Group 2: Delete mods that originated from workshop but workshop doesn't have a replacement
@@ -279,7 +279,7 @@ internal static class ModOrganizer
 			}
 		}
 		*/
-		
+
 		if (reuploadMDItems.Any()) {
 			messages.AppendLine(Language.GetTextValue("tModLoader.ReuploadedWorkshopMods"));
 			foreach (var mod in reuploadMDItems) {

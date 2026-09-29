@@ -38,14 +38,18 @@ public class TagPrinter
 		indent += "  ";
 		var first = true;
 		foreach (var entry in list) {
-			if (first) first = false;
-			else sb.Append(multiline ? "," : ", ");
+			if (first)
+				first = false;
+			else
+				sb.Append(multiline ? "," : ", ");
 
-			if (multiline) sb.AppendLine().Append(indent);
+			if (multiline)
+				sb.AppendLine().Append(indent);
 			write(entry);
 		}
 		indent = indent.Substring(2);
-		if (multiline && !first) sb.AppendLine().Append(indent);
+		if (multiline && !first)
+			sb.AppendLine().Append(indent);
 		sb.Append(end);
 	}
 

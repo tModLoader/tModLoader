@@ -77,7 +77,8 @@ public abstract partial class ExtraJump : ModType
 	/// By default, this hook returns whether the player is moving upwards with respect to <see cref="Player.gravDir"/>
 	/// </summary>
 	/// <param name="player">The player performing the jump</param>
-	public virtual bool CanShowVisuals(Player player) {
+	public virtual bool CanShowVisuals(Player player)
+	{
 		return (player.gravDir == 1f && player.velocity.Y < 0f) || (player.gravDir == -1f && player.velocity.Y > 0f);
 	}
 

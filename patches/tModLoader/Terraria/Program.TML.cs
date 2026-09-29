@@ -347,10 +347,10 @@ public static partial class Program
 
 			AttemptSupportHighDPI(isServer); // Can run anytime
 
-		    if (!isServer) {
-		    	NativeLibraries.CheckNativeFAudioDependencies();
-		       	FNALogging.RedirectLogs(); // Needs to run after CheckDependencies
-		    }
+			if (!isServer) {
+				NativeLibraries.CheckNativeFAudioDependencies();
+				FNALogging.RedirectLogs(); // Needs to run after CheckDependencies
+			}
 		}
 		catch (Exception ex) {
 			ErrorReporting.FatalExit("An unexpected error occurred during tML startup", ex);
@@ -406,7 +406,7 @@ public static partial class Program
 		if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX)) {
 			return; // Let FNA decide by /enablehighdpi command-line argument, default: 0
 		}
-		
+
 		if (ddpi >= HighDpiThreshold || hdpi >= HighDpiThreshold || vdpi >= HighDpiThreshold) {
 			Environment.SetEnvironmentVariable("FNA_GRAPHICS_ENABLE_HIGHDPI", "1");
 			Logging.tML.Info($"High DPI Display detected: setting FNA to highdpi mode");

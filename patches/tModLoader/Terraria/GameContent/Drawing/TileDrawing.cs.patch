@@ -154,7 +154,7 @@
  			_specialsCount[11] = 0;
 +			_specialsCount[(int)TileCounterType.CustomNonSolid] = 0;
  		}
-+		if(solidLayer && flag)
++		if (solidLayer && flag)
 +			_specialsCount[(int)TileCounterType.CustomSolid] = 0;
  	}
  
@@ -438,7 +438,7 @@
  			num += 4;
  
 +		if (Main.tile[x, y].active() && TileLoader.CanGrowModPalmTree(Main.tile[x, y].type))
-+			num = (ModPalmTree.VanillaStyleCount + Main.tile[x,y].type) * (WorldGen.IsPalmOasisTree(x) ? -1 : 1);
++			num = (ModPalmTree.VanillaStyleCount + Main.tile[x, y].type) * (WorldGen.IsPalmOasisTree(x) ? -1 : 1);
 +
  		return num;
  	}

@@ -40,8 +40,10 @@ internal class DownloadFile
 
 	public bool Verify()
 	{
-		if (string.IsNullOrWhiteSpace(Url)) return false;
-		if (string.IsNullOrWhiteSpace(FilePath)) return false;
+		if (string.IsNullOrWhiteSpace(Url))
+			return false;
+		if (string.IsNullOrWhiteSpace(FilePath))
+			return false;
 		//if (File.Exists(FilePath)) return false;
 		return true;
 	}
@@ -49,7 +51,8 @@ internal class DownloadFile
 	public Task<DownloadFile> Download(CancellationToken token, ProgressUpdated updateProgressAction = null)
 	{
 		SetupDownloadRequest();
-		if (updateProgressAction != null) OnUpdateProgress = updateProgressAction;
+		if (updateProgressAction != null)
+			OnUpdateProgress = updateProgressAction;
 		return Task.Factory.FromAsync(
 			Request.BeginGetResponse,
 			asyncResult => Request.EndGetResponse(asyncResult),

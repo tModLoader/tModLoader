@@ -147,17 +147,17 @@ public static class NPCLoader
 
 				var biomePreferenceList = (BiomePreferenceListTrait)shopModifiers.SingleOrDefault(t => t is BiomePreferenceListTrait);
 				if (biomePreferenceList != null) {
-					if(biomePreferenceList.Preferences.Any(x => x.Affection == AffectionLevel.Love))
+					if (biomePreferenceList.Preferences.Any(x => x.Affection == AffectionLevel.Love))
 						keys.Add("LoveBiome");
-					if(biomePreferenceList.Preferences.Any(x => x.Affection == AffectionLevel.Like))
+					if (biomePreferenceList.Preferences.Any(x => x.Affection == AffectionLevel.Like))
 						keys.Add("LikeBiome");
-					if(biomePreferenceList.Preferences.Any(x => x.Affection == AffectionLevel.Dislike))
+					if (biomePreferenceList.Preferences.Any(x => x.Affection == AffectionLevel.Dislike))
 						keys.Add("DislikeBiome");
-					if(biomePreferenceList.Preferences.Any(x => x.Affection == AffectionLevel.Hate))
+					if (biomePreferenceList.Preferences.Any(x => x.Affection == AffectionLevel.Hate))
 						keys.Add("HateBiome");
 				}
 
-				if(shopModifiers.Any(t => t is NPCPreferenceTrait { Level: AffectionLevel.Love }))
+				if (shopModifiers.Any(t => t is NPCPreferenceTrait { Level: AffectionLevel.Love }))
 					keys.Add("LoveNPC");
 				if (shopModifiers.Any(t => t is NPCPreferenceTrait { Level: AffectionLevel.Like }))
 					keys.Add("LikeNPC");
@@ -634,7 +634,8 @@ public static class NPCLoader
 
 	private static HookList HookPickEmote = AddHook<Func<NPC, Player, List<int>, WorldUIAnchor, int?>>(g => g.PickEmote);
 
-	public static int? PickEmote(NPC npc, Player closestPlayer, List<int> emoteList, WorldUIAnchor anchor) {
+	public static int? PickEmote(NPC npc, Player closestPlayer, List<int> emoteList, WorldUIAnchor anchor)
+	{
 		int? result = null;
 
 		if (npc.ModNPC != null) {
