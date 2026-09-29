@@ -356,6 +356,7 @@ public static class SteamedWraps
 			modIconUrl = null;
 	}
 
+	// Currently Unused
 	public static void FetchTags(UGCQueryHandle_t handle, uint index, out string[] tags)
 	{
 		uint tagCount;

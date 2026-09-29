@@ -463,7 +463,7 @@ internal class UIModItem : UIPanel
 
 		if (!_mod.Enabled) {
 			DisableDependents();
-			DisableUnusedLibDependenciesRecursive();
+			DisableUnusedLibraryDependenciesRecursive();
 
 			if (Interface.modsMenu.enabledFilterMode == EnabledFilter.All) { // Regenerate filters if enabled/disabled isn't active.
 				Interface.modsMenu.StoreCurrentScrollPosition();
@@ -540,7 +540,7 @@ internal class UIModItem : UIPanel
 		}
 	}
 
-	private void DisableUnusedLibDependenciesRecursive()
+	private void DisableUnusedLibraryDependenciesRecursive()
 	{
 		foreach (var name in _modReferences) {
 			var dep = Interface.modsMenu.FindUIModItem(name);

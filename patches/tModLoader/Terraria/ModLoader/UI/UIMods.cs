@@ -16,6 +16,7 @@ using Terraria.Audio;
 using Terraria.ID;
 using System;
 using Terraria.GameContent;
+
 namespace Terraria.ModLoader.UI;
 
 internal class UIMods : UIState, IHaveBackButtonCommand
