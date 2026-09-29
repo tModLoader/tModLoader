@@ -590,10 +590,16 @@
  	public bool friendly;
  	public bool closeDoor;
  	public int doorX;
-@@ -382,7 +_,9 @@
- 	private static bool dayTimeHax;
- 	private static bool rainingHax;
- 	private static float cloudAlphaHax;
+@@ -379,10 +_,12 @@
+ 	private static bool EoCKilledToday;
+ 	private static bool WoFKilledToday;
+ 	public static bool fairyLog = false;
+-	private static bool dayTimeHax;
++	internal static bool dayTimeHax;
+-	private static bool rainingHax;
++	internal static bool rainingHax;
+-	private static float cloudAlphaHax;
++	internal static float cloudAlphaHax;
 +	/*
  	private static int ignorePlayerInteractions = 0;
 +	*/
@@ -2241,7 +2247,7 @@
  								flag15 = true;
  						}
  					}
-@@ -61076,17 +_,25 @@
+@@ -61076,17 +_,22 @@
  						flag2 = false;
  
  					if (Main.tile[num, num2 - 1].honey())
@@ -2254,9 +2260,6 @@
  
  				int num29 = (int)Main.player[k].Center.X / 16;
  				int num30 = (int)(Main.player[k].Bottom.Y + 8f) / 16;
-+
-+				spawnInfo.PlayerFloorX = num29;
-+				spawnInfo.PlayerFloorY = num30;
 +
  				if (Main.tile[num, num2].type == 367) {
 +					// Patch note: flag10 - Marble
@@ -2283,7 +2286,7 @@
  									flag13 = true;
  							}
  						}
-@@ -61258,9 +_,37 @@
+@@ -61258,9 +_,50 @@
  			}
  
  			num49 = SpawnNPC_TryFindingProperGroundTileType(num49, num, num2);
@@ -2292,12 +2295,19 @@
 +			spawnInfo.SpawnTileX = num;
 +			spawnInfo.SpawnTileY = num2;
 +			spawnInfo.SpawnTileType = num3;
++			spawnInfo.ProperGroundTileType = num49;
++			spawnInfo.WallTileType = num50;
 +			spawnInfo.Player = Main.player[k];
++
++			spawnInfo.TooWindyForButterflies = tooWindyForButterflies;
++			spawnInfo.TooWindyForWaterStriders = flag;
++			// flag2 prevents us reaching here so isn't needed
 +			spawnInfo.Sky = flag3;
 +			spawnInfo.Lihzahrd = flag4;
 +			spawnInfo.PlayerSafe = flag5;
 +			spawnInfo.Invasion = flag6;
 +			spawnInfo.Water = flag7;
++			spawnInfo.Honey = flag8;
 +			spawnInfo.Granite = flag9;
 +			spawnInfo.Marble = flag10;
 +			spawnInfo.SpiderCave = flag11;
@@ -2305,6 +2315,12 @@
 +			spawnInfo.DesertCave = flag13;
 +			//spawnInfo.PlanteraDefeated = flag14;
 +			spawnInfo.SafeRangeX = flag15;
++
++			spawnInfo.UnderGround = flag17;
++			spawnInfo.OverWorld = flag20;
++			spawnInfo.Caverns = flag21;
++			spawnInfo.Ocean = flag22;
++			spawnInfo.Beach = flag23;
 +
  			int newNPC = 200;
  			int cattailX;
@@ -2355,6 +2371,24 @@
  			if (Main.npc[newNPC].type == 1 && Main.player[k].RollLuck(180) == 0)
  				Main.npc[newNPC].SetDefaults(-4);
  
+@@ -63610,7 +_,7 @@
+ 		return 639;
+ 	}
+ 
+-	private static bool SpawnNPC_CheckToSpawnRockGolem(int spawnTileX, int spawnTileY, int plr, int tileType)
++	internal static bool SpawnNPC_CheckToSpawnRockGolem(int spawnTileX, int spawnTileY, int plr, int tileType)
+ 	{
+ 		if (!Main.hardMode || (tileType != 1 && !TileID.Sets.Conversion.Moss[tileType]) || Main.player[plr].ZoneSnow)
+ 			return false;
+@@ -63624,7 +_,7 @@
+ 		return true;
+ 	}
+ 
+-	private static bool SpawnNPC_CheckToSpawnUndergroundFairy(int spawnTileX, int spawnTileY, int plr)
++	internal static bool SpawnNPC_CheckToSpawnUndergroundFairy(int spawnTileX, int spawnTileY, int plr)
+ 	{
+ 		if (!fairyLog)
+ 			return false;
 @@ -64272,6 +_,23 @@
  			ChatHelper.BroadcastChatMessage(NetworkText.FromKey("Announcement.HasAwoken", Main.npc[num].GetTypeNetName()), new Color(175, 75, 255));
  	}
