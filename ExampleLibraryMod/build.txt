@@ -5,5 +5,5 @@ hideCode = false
 hideResources = false
 includeSource = true
 buildIgnore = *.csproj, *.user, obj\*, bin\*, .vs\*, Old\*
-libMod = true
+libraryMod = true
 version = 9999.0

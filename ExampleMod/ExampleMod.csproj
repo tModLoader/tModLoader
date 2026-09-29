@@ -11,6 +11,6 @@
     <None Remove="Old\**" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ExampleLibMod\ExampleLibMod.csproj" />
+    <ProjectReference Include="..\ExampleLibraryMod\ExampleLibraryMod.csproj" />
   </ItemGroup>
 </Project>

@@ -172,7 +172,7 @@ public class WorkshopPublishInfoStateForMods : AWorkshopPublishInfoState<TmodFil
 
 			// Override existing selection. Existing selection will persist
 			var libraryTag = _tagOptions.Find(a => a.OptionValue.InternalNameForAPIs == "Library");
-			libraryTag.SetCurrentOption(mod.IsLib ? libraryTag.OptionValue : null);
+			libraryTag.SetCurrentOption(mod.IsLibrary ? libraryTag.OptionValue : null);
 			libraryTag.SetColor(libraryTag.IsSelected ? new Color(192, 175, 235) : Colors.InventoryDefaultColor, 1f);
 
 			var translationTagOption = _tagOptions.FirstOrDefault(x => x.OptionValue.NameKey == "tModLoader.TagsTranslation");

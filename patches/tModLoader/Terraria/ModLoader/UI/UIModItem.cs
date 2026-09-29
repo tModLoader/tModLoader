@@ -197,7 +197,7 @@ internal class UIModItem : UIPanel
 		HashSet<string> allDependents = new();
 		GetDependents(_mod.Name, allDependents);
 		_modDependents = allDependents.ToArray();
-		if (_modDependents.Any() || _mod.properties.libMod) {
+		if (_modDependents.Any() || _mod.properties.libraryMod) {
 			if (!string.IsNullOrWhiteSpace(_modRequiresTooltip))
 				_modRequiresTooltip += "\n\n";
 
@@ -544,7 +544,7 @@ internal class UIModItem : UIPanel
 	{
 		foreach (var name in _modReferences) {
 			var dep = Interface.modsMenu.FindUIModItem(name);
-			if (dep == null || !dep._mod.properties.libMod || dep.IsAnyEnabledDependents())
+			if (dep == null || !dep._mod.properties.libraryMod || dep.IsAnyEnabledDependents())
 				continue;
 
 			dep.DisableDependentsRecursive();
@@ -621,11 +621,11 @@ internal class UIModItem : UIPanel
 			}
 		}
 		if (Interface.modsMenu.modLibraryFilterMode != ModLibraryFilter.All) {
-			if (Interface.modsMenu.modLibraryFilterMode == ModLibraryFilter.LibraryOnly && !_mod.properties.libMod) {
+			if (Interface.modsMenu.modLibraryFilterMode == ModLibraryFilter.LibraryOnly && !_mod.properties.libraryMod) {
 				filterResults.filteredByModLibrary++;
 				return false;
 			}
-			else if (Interface.modsMenu.modLibraryFilterMode == ModLibraryFilter.NonLibraryOnly && (_mod.properties.libMod && IsAnyEnabledDependents())) {
+			else if (Interface.modsMenu.modLibraryFilterMode == ModLibraryFilter.NonLibraryOnly && (_mod.properties.libraryMod && IsAnyEnabledDependents())) {
 				filterResults.filteredByModLibrary++;
 				return false;
 			}

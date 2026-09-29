@@ -5,5 +5,5 @@ hideCode = false
 hideResources = false
 includeSource = true
 buildIgnore = *.csproj, *.user, obj\*, bin\*, .vs\*, Old\*
-#modReferences = ExampleLibMod
+#modReferences = ExampleLibraryMod
 version = 9999.0

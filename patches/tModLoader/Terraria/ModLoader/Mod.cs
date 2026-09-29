@@ -109,7 +109,7 @@ public partial class Mod
 	/// <summary>
 	/// If this mod is a 'true Library Mod' that could be hidden from the player when used by other mods.
 	/// </summary>
-	public bool IsLib { get; internal set; }
+	public bool IsLibrary { get; internal set; }
 
 	/// <summary>
 	/// The display name of this mod in the Mods menu.
