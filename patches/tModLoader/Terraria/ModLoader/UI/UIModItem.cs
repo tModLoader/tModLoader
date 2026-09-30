@@ -41,6 +41,7 @@ internal class UIModItem : UIPanel
 	private UIText _modName;
 	private UIModStateText _uiModStateText;
 	internal UIAutoScaleTextTextPanel<string> tMLUpdateRequired;
+	internal UIAutoScaleTextTextPanel<string> trustRequired;
 	private UIImage _modReferenceIcon;
 	private UIImage _translationModIcon;
 	private UIImage _deleteModButton;
@@ -60,6 +61,7 @@ internal class UIModItem : UIPanel
 	private string[] _modDependencies; // Note: Recursive
 	private string _modRequiresTooltip;
 	public readonly string DisplayNameClean; // No chat tags: for search and sort functionality.
+	public readonly string DownloadOrigin;
 
 	private string ToggleModStateText {
 		get {
@@ -89,6 +91,9 @@ internal class UIModItem : UIPanel
 		DisplayNameClean = _mod.DisplayNameClean;
 
 		WorkshopHelper.GetPublishIdLocal(_mod?.modFile, out _publishId);
+
+		_mod.modFile.VerifyOrigin();
+		DownloadOrigin = _mod.modFile.downloadOrigin;
 	}
 
 	public override void OnInitialize()
@@ -151,6 +156,19 @@ internal class UIModItem : UIPanel
 				Utils.OpenToURL(updateURL);
 			};
 			Append(tMLUpdateRequired);
+		}
+		else if (DownloadOrigin != null) {
+			trustRequired = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModDownloadedFromInternet")).WithFadedMouseOver(Color.Red, Color.Red * 0.7f);
+			trustRequired.BackgroundColor = Color.Red * 0.7f;
+			trustRequired.Top.Pixels = 40;
+			trustRequired.Width.Pixels = 280;
+			trustRequired.Height.Pixels = 36;
+			trustRequired.Left.Pixels += _uiModStateText.Width.Pixels + _uiModStateText.Left.Pixels + PADDING;
+			trustRequired.OnLeftClick += (a, b) => {
+				SoundEngine.PlaySound(SoundID.MenuOpen);
+				Interface.infoMessage.Show(Language.GetTextValue("tModLoader.ModDownloadedFromInternetWarning"), Interface.modsMenuID, altButtonText: Language.GetTextValue("tModLoader.ModDownloadedFromInternetTrustFile"), altButtonAction: () => { FileOriginChecker.ClearDownloadFlags(_mod.modFile.path); }, okButtonText: Language.GetTextValue("tModLoader.ModDownloadedFromInternetDoNotTrustFile"));
+			};
+			Append(trustRequired);
 		}
 		else
 			Append(_uiModStateText);
@@ -313,11 +331,16 @@ internal class UIModItem : UIPanel
 			if (tMLUpdateRequired != null)
 				return;
 
-			// Prevent infinite recursion.
-			if (e.Target.GetType() == typeof(UIModStateText)) return;
-			// Ignore inner elements that may not react immediately.
-			if (e.Target == _rateButton) return;
+			_uiModStateText.LeftClick(e);
+			if (trustRequired != null)
+				return;
 
+            // Prevent infinite recursion.
+            if (e.Target.GetType() == typeof(UIModStateText)) return;
+            // Ignore inner elements that may not react immediately.
+            if (e.Target == _rateButton) return;
+
+            // Only trigger if we didn't target the ModStateText, otherwise we trigger this behavior twice
 			_uiModStateText.LeftClick(e);
 		};
 
@@ -503,6 +526,9 @@ internal class UIModItem : UIPanel
 		}
 		else if (tMLUpdateRequired?.IsMouseHovering == true) {
 			_tooltip = Language.GetTextValue("tModLoader.SwitchVersionInfoButton");
+		}
+		else if (trustRequired?.IsMouseHovering == true) {
+			_tooltip = Language.GetTextValue("tModLoader.ModDownloadedFromInternetTooltip", DownloadOrigin);
 		}
 		else if (_modReferenceIcon?.IsMouseHovering == true) {
 			_tooltip = _modRequiresTooltip;
