@@ -324,7 +324,7 @@ public static class ModContent
 
 		Main.ResourceSetsManager.AddModdedDisplaySets();
 		Main.ResourceSetsManager.SetActiveFromOriginalConfigKey();
-
+		MinimapFrameLoader.AddModdedFrames(AssetRequestMode.ImmediateLoad);
 
 		Interface.loadMods.SetLoadStage("tModLoader.MSSetupContent", ModLoader.Mods.Length);
 		LanguageManager.Instance.ReloadLanguage(resetValuesToKeysFirst: false); // Don't reset values to keys in case any new translations were registered during Load. All mod translations were wiped in Unload anyway
@@ -565,6 +565,7 @@ public static class ModContent
 
 		ResourceOverlayLoader.Unload();
 		ResourceDisplaySetLoader.Unload();
+		MinimapFrameLoader.Unload();
 
 		LoaderManager.Unload();
 
