@@ -453,8 +453,8 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 
 	/// <summary>
 	/// Used to adjust projectile properties immediately before the projectile becomes an explosion. This is called on projectiles using the <see cref="ProjAIStyleID.Explosive"/> aiStyle or projectiles that are contained in the <see cref="ProjectileID.Sets.Explosive"/> set. By defaults tileCollide is set to false and alpha is set to 255. Use this to adjust damage, knockBack, and the projectile hitbox (Projectile.Resize).
-	/// <para/> Called during Projectile.PrepareBombToBlow, which is called by default during Projectile.AI_016 and during Projectile.Kill for the aforementioned projectiles.
-	/// <para/> Can be called on the local client or server, depending on who owns the projectile.
+	/// <para/> Called during Projectile.PrepareBombToBlow, which is called by default during Projectile.Kill for the aforementioned projectiles, immediately before the explosion deals its damage.
+	/// <para/> Called on all clients and the server.
 	/// </summary>
 	public virtual void PrepareBombToBlow()
 	{
@@ -509,5 +509,15 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 	/// </summary>
 	public virtual void FlailSpinCollisionRange(ref float range)
 	{
+	}
+
+	/// <summary>
+	/// Called during <see cref="Main.TryDespawningProjectile(Projectile, int)"/> before the projectile is killed. This will be called when projectiles that can be despawned by right clicking on them by using <see cref="ProjectileID.Sets.DespawnItemIcon"/> are right clicked. The <paramref name="giveItem"/> parameter controls if the item will drop provided <see cref="ProjectileID.Sets.DespawnItemGivesItemBack"/> is also true.
+	/// <para/> This can be used to prevent aspects of the usual projectile kill logic that shouldn't run when the projectile is being despawned by a player.
+	/// <para/> Return false to prevent the projectile from despawning.
+	/// <para/> Called on the local client.
+	/// </summary>
+	public virtual bool PreTryDespawning(ref bool giveItem) {
+		return true;
 	}
 }
