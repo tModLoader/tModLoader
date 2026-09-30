@@ -130,6 +130,12 @@
 		"ModsXWalls": "{0} {^0:wall;walls}",
 		"ModsXBuffs": "{0} {^0:buff;buffs}",
 		"ModsXMounts": "{0} {^0:mount;mounts}",
+		"ModDownloadedFromInternet": "Downloaded From Internet",
+		"ModDownloadedFromInternetWarning": "This mod was downloaded from the internet.\n\nMods may contain [c/FF0000:malicious] code, such as stealing passwords or installing viruses, especially mods not downloaded directly from Steam Workshop.\n\nOnly enable this mod if you trust the person who sent you this mod.",
+		"ModDownloadedFromInternetTrustFile": "Trust file",
+		"ModDownloadedFromInternetDoNotTrustFile": "Do not trust file",
+		"ModDownloadedFromInternetTooltip": "This file was downloaded from the internet, this is extremely risky.\n{0}",
+		"ModDownloadedFromInternetLoadAttemptExceptionMessage": "{0} was downloaded from the internet (from {1}) and has not been trusted.\n\nMods may contain [c/FF0000:malicious] code, such as stealing passwords or installing viruses, especially mods not downloaded directly from Steam Workshop.\n\nThis mod can be trusted from the mods menu.",
 
 		//Dedicated server
 		"ModsReloadAndReturn": "Reload and return to world menu",

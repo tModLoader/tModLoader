@@ -475,6 +475,7 @@ internal static class ModOrganizer
 			EnsureDependenciesExist(modsToLoad, false);
 			EnsureTargetVersionsMet(modsToLoad);
 			EnsureHashesAreValid(modsToLoad);
+			EnsureFileIsTrusted(modsToLoad);
 			return Sort(modsToLoad);
 		}
 		catch (ModSortingException e) {
@@ -646,6 +647,21 @@ internal static class ModOrganizer
 		}
 		if (errored.Count > 0)
 			throw new ModSortingException(errored, errorLog.ToString());
+	}
+
+	internal static void EnsureFileIsTrusted(ICollection<LocalMod> mods)
+	{
+		var errorLog = new StringBuilder();
+		foreach (var mod in mods) {
+			mod.modFile.VerifyOrigin();
+			string DownloadOrigin = mod.modFile.downloadOrigin;
+			if (DownloadOrigin != null) {
+				var e = new Exception(Language.GetTextValue("tModLoader.ModDownloadedFromInternetLoadAttemptExceptionMessage", mod.modFile.path, DownloadOrigin));
+				e.Data["mod"] = mod.Name;
+				e.Data["hideStackTrace"] = true;
+				throw e;
+			}
+		}
 	}
 
 	internal static void EnsureSyncedDependencyStability(TopoSort<LocalMod> synced, TopoSort<LocalMod> full)
