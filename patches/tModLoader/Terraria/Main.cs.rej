@@ -1,25 +1,3 @@
-@@ -3933,8 +_,10 @@
- 						new FileInfo(text2);
- 						autoGenFileLocation = text2;
- 						ActiveWorldFileData = WorldFile.GetAllMetadata(text2, cloudSave: false);
-+						ActiveWorldFileData ??= new();
- 					}
- 					catch {
-+						ActiveWorldFileData = new();
- 					}
- 				}
- 
-@@ -9065,7 +_,10 @@
- 		Assets = base.Services.Get<IAssetRepository>();
- 		Assets.AssetLoadFailHandler = OnceFailedLoadingAnAsset;
- 		mapSectionTexture = new RenderTarget2D(base.GraphicsDevice, 200, 150);
-+		/*
- 		ShaderContentManager = new ContentManager(base.Content.ServiceProvider, base.Content.RootDirectory);
-+		*/
-+		ShaderContentManager = Main.instance.Content; // Use TMLContentManager to properly fallback shaders.
- 		PixelShaderRef.Value = ShaderContentManager.Load<Effect>("PixelShader");
- 		VertexPixelShaderRef.Value = ShaderContentManager.Load<Effect>("PixelShader");
- 		TileShaderRef.Value = ShaderContentManager.Load<Effect>("TileShader");
 @@ -13947,6 +_,9 @@
  					focusRecipe = 0;
  			}
@@ -49,14 +27,6 @@
  			if (inputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Z) && !oldInputText.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Z)) {
  				text = "";
  			}
-@@ -18039,6 +_,7 @@
- 
- 			if (player[myPlayer].setBonus != "") {
- 				toolTipLine[numLines] = Lang.tip[48].Value + " " + player[myPlayer].setBonus;
-+				toolTipNames[numLines] = "SetBonus";
- 				numLines++;
- 			}
- 		}
 @@ -33572,7 +_,7 @@
  			if (numAvailableRecipes > 0) {
  				UILinkPointNavigator.Shortcuts.CRAFT_CurrentRecipeBig = -1;
@@ -150,13 +120,6 @@
  			if (num == item.type && TryGetAmmo(item, out var ammoItem, out var ammoColor, out var ammoScale, out var ammoOffset)) {
  				float scale = num2 * ammoScale;
  				int type = ammoItem.type;
-@@ -37178,4 +_,6 @@
- 		num22 = 240;
- 		text9 = $"{upTimerMax:F2}ms";
- 		spriteBatch.DrawString(FontAssets.MouseText.Value, text9, new Vector2(num22, num23), Microsoft.Xna.Framework.Color.White, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
-+
-+		spriteBatch.DrawString(FontAssets.MouseText.Value, Localization.Language.GetTextValue("tModLoader.PressXToClose", Microsoft.Xna.Framework.Input.Keys.F7), new Vector2(20, num23 + 32), Color.White, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
- 	}
 @@ -39280,7 +_,8 @@
  			if (LocalPlayer.dead) {
  				num += 40;
