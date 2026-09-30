@@ -216,7 +216,7 @@ namespace ExampleMod.Content.Projectiles
 			}
 		}
 
-		public override bool PreTryDespawning(ref bool giveItem, ref bool sync) {
+		public override bool PreTryDespawning(ref bool giveItem) {
 			if (IsChild) {
 				giveItem = false;
 			}

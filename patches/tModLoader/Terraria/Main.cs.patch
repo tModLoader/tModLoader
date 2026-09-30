@@ -4635,11 +4635,11 @@
  		stringColor = TryApplyingPlayerStringColor(theOwner.stringColor, stringColor);
  		float gravDir = theOwner.gravDir;
  		switch (type) {
-@@ -33712,17 +_,23 @@
+@@ -33712,17 +_,22 @@
  			localPlayer.GamepadEnableGrappleCooldown();
  
  		if (mouseRight && mouseRightRelease && Player.BlockInteractionWithProjectiles == 0) {
-+			if (!ProjectileLoader.PreTryDespawning(proj, out bool giveItem, out bool sync))
++			if (!ProjectileLoader.PreTryDespawning(proj, out bool giveItem))
 +				goto PostDespawn;
  			mouseRightRelease = false;
  			localPlayer.tileInteractAttempted = true;
@@ -4647,9 +4647,8 @@
  			localPlayer.releaseUseTile = false;
 +			/*
  			bool giveItem = true;
- 			TryDespawningProjectile_ModifyBeforeKill(proj, ref giveItem);
 +			*/
-+			TryDespawningProjectile_ModifyBeforeKill(proj, sync, ref giveItem);
+ 			TryDespawningProjectile_ModifyBeforeKill(proj, ref giveItem);
  			proj.Kill();
  			if (giveItem && ProjectileID.Sets.DespawnItemGivesItemBack[proj.type])
  				Item.RequestNewItem(proj.GetItemSource_DropAsItem(), proj.Center, itemIcon, 1, 0, NewItemOwnership.ReserveForLocalPlayer);
@@ -4659,21 +4658,15 @@
  		}
  
  		if (!SmartCursorIsUsed && !PlayerInput.UsingGamepad)
-@@ -33734,10 +_,12 @@
- 		return 0;
- 	}
+@@ -33736,7 +_,7 @@
  
--	private void TryDespawningProjectile_ModifyBeforeKill(Projectile proj, ref bool giveItem)
-+	private void TryDespawningProjectile_ModifyBeforeKill(Projectile proj, bool sync, ref bool giveItem)
+ 	private void TryDespawningProjectile_ModifyBeforeKill(Projectile proj, ref bool giveItem)
  	{
 -		if (proj.aiStyle == 16 && !proj.hostile) {
 +		if ((proj.aiStyle == 16 || ProjectileID.Sets.Explosive[proj.type]) && !proj.hostile) {
  			proj.ai[0] = 1000f;
-+			if (!sync)
-+				return;
  			NetMessage.SendData(27, -1, -1, null, proj.whoAmI);
  		}
- 	}
 @@ -33939,10 +_,13 @@
  			}
  			else if (npc[i].type == 516 || npc[i].type == 519) {
