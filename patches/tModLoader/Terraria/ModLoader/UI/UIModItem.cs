@@ -145,7 +145,7 @@ internal class UIModItem : UIPanel
 			Append(tMLUpdateRequired);
 		}
 		else if (DownloadOrigin != null) {
-			trustRequired = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("Downloaded From Internet")).WithFadedMouseOver(Color.Red, Color.Red * 0.7f);
+			trustRequired = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModDownloadedFromInternet")).WithFadedMouseOver(Color.Red, Color.Red * 0.7f);
 			trustRequired.BackgroundColor = Color.Red * 0.7f;
 			trustRequired.Top.Pixels = 40;
 			trustRequired.Width.Pixels = 280;
@@ -153,7 +153,7 @@ internal class UIModItem : UIPanel
 			trustRequired.Left.Pixels += _uiModStateText.Width.Pixels + _uiModStateText.Left.Pixels + PADDING;
 			trustRequired.OnLeftClick += (a, b) => {
 				SoundEngine.PlaySound(SoundID.MenuOpen);
-				Interface.infoMessage.Show("This mod was downloaded from the internet.\n\nMods may contain malicious code, such as stealing passwords or installing viruses, especially mods not downloaded directly from Steam Workshop.\n\nOnly enable this mod if you trust the person who sent you this mod.", Interface.modsMenuID, altButtonText: "Trust file", altButtonAction: () => { FileOriginChecker.ClearDownloadFlags(_mod.modFile.path); }, okButtonText: "Do not trust file");
+				Interface.infoMessage.Show(Language.GetTextValue("tModLoader.ModDownloadedFromInternetWarning"), Interface.modsMenuID, altButtonText: Language.GetTextValue("tModLoader.ModDownloadedFromInternetTrustFile"), altButtonAction: () => { FileOriginChecker.ClearDownloadFlags(_mod.modFile.path); }, okButtonText: Language.GetTextValue("tModLoader.ModDownloadedFromInternetDoNotTrustFile"));
 			};
 			Append(trustRequired);
 		}
@@ -443,7 +443,7 @@ internal class UIModItem : UIPanel
 			_tooltip = Language.GetTextValue("tModLoader.SwitchVersionInfoButton");
 		}
 		else if (trustRequired?.IsMouseHovering == true) {
-			_tooltip = $"This file was downloaded from the internet, this is extremely risky.\n{DownloadOrigin}";
+			_tooltip = Language.GetTextValue("tModLoader.ModDownloadedFromInternetTooltip", DownloadOrigin);
 		}
 		else if (_modReferenceIcon?.IsMouseHovering == true) {
 			_tooltip = _modRequiresTooltip;
