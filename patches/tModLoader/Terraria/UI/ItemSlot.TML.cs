@@ -65,7 +65,7 @@ public partial class ItemSlot
 		if (accSlotToSwapTo >= 20) {
 			int num3 = accSlotToSwapTo - 20;
 			if (isEquipLocked(accessories[num3].type)) {
-				result =  item;
+				result = item;
 				return false;
 			}
 

@@ -14,8 +14,10 @@ internal class UIProgressBar : UIPanel
 	public string DisplayText {
 		get => _textPanel?.Text ?? _cachedText;
 		set {
-			if (_textPanel == null) _cachedText = value;
-			else _textPanel.SetText(value ?? _textPanel.Text);
+			if (_textPanel == null)
+				_cachedText = value;
+			else
+				_textPanel.SetText(value ?? _textPanel.Text);
 		}
 	}
 

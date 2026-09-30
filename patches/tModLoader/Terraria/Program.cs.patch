@@ -70,7 +70,7 @@
  
  	private static void ForceLoadAssembly(Assembly assembly, bool initializeStaticMembers)
  	{
-+ 		/*
++		/*
  		ThingsToLoad = assembly.GetTypes().Length;
  		ForceJITOnAssembly(assembly);
 + 		*/

@@ -538,7 +538,7 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 		if (spaceGun && ItemID.Sets.IsSpaceGun[item.type])
 			mult = 0;
 
-		if(item.type == ItemID.BookStaff && altFunctionUse == 2)
+		if (item.type == ItemID.BookStaff && altFunctionUse == 2)
 			mult = 2;
 
 		CombinedHooks.ModifyManaCost(this, item, ref reduce, ref mult);

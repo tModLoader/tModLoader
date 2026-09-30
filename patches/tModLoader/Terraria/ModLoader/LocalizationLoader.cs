@@ -133,9 +133,9 @@ public static class LocalizationLoader
 	/// <param name="culture"></param>
 	/// <param name="prefix"></param>
 	/// <returns></returns>
-	#nullable enable
+#nullable enable
 	public static bool TryGetCultureAndPrefixFromPath(string path, [NotNullWhen(true)] out GameCulture? culture, [NotNullWhen(true)] out string? prefix)
-	#nullable disable
+#nullable disable
 	{
 		path = Path.ChangeExtension(path, null);
 		path = path.Replace("\\", "/");

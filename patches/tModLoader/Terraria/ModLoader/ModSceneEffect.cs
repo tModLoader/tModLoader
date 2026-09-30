@@ -116,6 +116,7 @@ public abstract partial class ModSceneEffect : ModType
 	/// Uses to customize the draw color of the map background (<see cref="MapBackground"/>) drawn on the fullscreen map. <see cref="MapBackgroundFullbright"/> can be used for typical effects, but this method can be used if further customization is needed.
 	/// </summary>
 	/// <param name="color">White or Main.ColorOfTheSkies depending on if above ground and MapBackgroundUsesSkyColor value.</param>
-	public virtual void MapBackgroundColor(ref Color color) {
-	} 
+	public virtual void MapBackgroundColor(ref Color color)
+	{
+	}
 }

@@ -78,7 +78,7 @@
  		expParam.ExceptionPointers = IntPtr.Zero;
  		if (exceptionInfo == ExceptionInfo.Present)
  			expParam.ExceptionPointers = Marshal.GetExceptionPointers();
-+		if(exceptionPointers != IntPtr.Zero)
++		if (exceptionPointers != IntPtr.Zero)
 +			expParam.ExceptionPointers = exceptionPointers;
  
  		bool flag = false;

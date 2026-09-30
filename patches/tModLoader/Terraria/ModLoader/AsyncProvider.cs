@@ -15,7 +15,8 @@ public static class AsyncProviderStateExtensions
 	);
 };
 
-public enum AsyncProviderState {
+public enum AsyncProviderState
+{
 	Loading,
 	Completed,
 	Canceled,
@@ -34,7 +35,8 @@ public class AsyncProvider<T>
 	 *   as argument to allow cancellation notification.
 	 * </remarks>
 	 */
-	public AsyncProvider(IAsyncEnumerable<T> provider) {
+	public AsyncProvider(IAsyncEnumerable<T> provider)
+	{
 		_Channel = Channel.CreateUnbounded<T>();
 		TokenSource = new CancellationTokenSource();
 		var taskRunner = async () => {

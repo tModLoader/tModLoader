@@ -518,7 +518,7 @@
  				}
  			}
  		}
-@@ -2194,12 +_,16 @@
+@@ -2194,12 +_,33 @@
  
  			int num = 0;
  			int num2 = buffer[bufferIndex].totalData;
@@ -529,6 +529,23 @@
 +
  				while (num2 >= 2) {
  					int num3 = BitConverter.ToUInt16(buffer[bufferIndex].readBuffer, num);
++					// A frame contains a two-byte length and at least one message-type byte.
++					// In particular, a zero length would leave this loop at the same offset forever.
++					if (num3 < 3) {
++						if (Main.netMode == 2) {
++							Netplay.Clients[bufferIndex].SetPendingTermination($"Invalid packet length: {num3}");
++							Netplay.Clients[bufferIndex].PendingTerminationApproved = true;
++						}
++						else {
++							ModNet.Error(bufferIndex, $"Invalid packet length: {num3}");
++							Netplay.Disconnect = true;
++						}
++
++						buffer[bufferIndex].totalData = 0;
++						buffer[bufferIndex].checkBytes = false;
++						return;
++					}
++
  					if (num2 >= num3) {
  						long position = buffer[bufferIndex].reader.BaseStream.Position;
 -						buffer[bufferIndex].GetData(num + 2, num3 - 2, out var _);

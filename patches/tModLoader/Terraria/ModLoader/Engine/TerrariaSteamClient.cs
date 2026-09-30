@@ -235,13 +235,15 @@ internal class TerrariaSteamClient
 		try {
 			Logger.Info("Marking Steam Terraria Installation as Corrupt to force 'Verify Local Files' on next run");
 			SendCmd(MsgInvalidateTerrariaInstall);
-		} catch {	}
+		}
+		catch { }
 	}
 
 	internal static void Shutdown()
 	{
 		try {
 			SendCmd(MsgShutdown);
-		} catch { }
+		}
+		catch { }
 	}
 }

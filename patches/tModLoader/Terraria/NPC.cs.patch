@@ -1043,7 +1043,7 @@
 +			// Apply all `SpecificDebuffImmunity` `false` overrides
 +			for (int i = 0; i < NPCID.Sets.SpecificDebuffImmunity[type].Length; i++) {
 +				bool? buffImmunity = NPCID.Sets.SpecificDebuffImmunity[type][i];
-+				if(buffImmunity is false) {
++				if (buffImmunity is false) {
 +					buffImmune[i] = false;
 +				}
 +			}
@@ -1636,12 +1636,12 @@
  						return 58;
  				}
  			case 2:
-+				return Main.rand.Next(System.Linq.Enumerable.ToList(ItemID.Sets.OreDropsFromSlime.Keys)); // TML
 +				/*
  				if (Main.rand.Next(2) == 0)
  					return Main.rand.Next(11, 15);
  				return Main.rand.Next(699, 703);
 +				*/
++				return Main.rand.Next(System.Linq.Enumerable.ToList(ItemID.Sets.OreDropsFromSlime.Keys)); // TML
  			default:
  				switch (Main.rand.Next(3)) {
  					case 0:
@@ -2429,7 +2429,7 @@
  	public int checkArmorPenetration(int armorPenetration, float armorPenetrationPercent)
  	{
  		if (ichor)
-@@ -64591,26 +_,169 @@
+@@ -64591,26 +_,170 @@
  
  		return armorPenetration / 2;
  	}
@@ -2530,7 +2530,8 @@
 +	/// Note: This method doesn't include entity-related hit modifying hooks and shouldn't be used in normal contexts.
 +	/// <br/><br/> Consider using <see cref="StrikeOtherNPC"/> instead.
 +	/// </remarks>
-+	public HitInfo CalculateHitInfo(int damage, int hitDirection, bool crit = false, float knockBack = 0f, DamageClass damageType = null, bool damageVariation = false, float luck = 0) {
++	public HitInfo CalculateHitInfo(int damage, int hitDirection, bool crit = false, float knockBack = 0f, DamageClass damageType = null, bool damageVariation = false, float luck = 0)
++	{
 +		return GetIncomingStrikeModifiers(damageType, hitDirection).ToHitInfo(damage, crit, knockBack, damageVariation, luck);
 +	}
 +

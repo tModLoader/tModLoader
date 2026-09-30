@@ -336,7 +336,7 @@ public static class SteamedWraps
 			SteamUGC.GetQueryUGCStatistic(handle, index, EItemStatistic.k_EItemStatistic_NumUniqueSubscriptions, out downloads);
 			SteamUGC.GetQueryUGCStatistic(handle, index, EItemStatistic.k_EItemStatistic_NumSecondsPlayedDuringTimePeriod, out hot); //Temp: based on how often being played lately?
 		}
-		else if (SteamAvailable){
+		else if (SteamAvailable) {
 			SteamGameServerUGC.GetQueryUGCStatistic(handle, index, EItemStatistic.k_EItemStatistic_NumUniqueSubscriptions, out downloads);
 			SteamGameServerUGC.GetQueryUGCStatistic(handle, index, EItemStatistic.k_EItemStatistic_NumSecondsPlayedDuringTimePeriod, out hot); //Temp: based on how often being played lately?
 		}
@@ -354,6 +354,33 @@ public static class SteamedWraps
 			SteamGameServerUGC.GetQueryUGCPreviewURL(handle, index, out modIconUrl, 1000);
 		else
 			modIconUrl = null;
+	}
+
+	// Currently Unused
+	public static void FetchTags(UGCQueryHandle_t handle, uint index, out string[] tags)
+	{
+		uint tagCount;
+		var tagList = new List<string>();
+
+		if (SteamClient)
+			tagCount = SteamUGC.GetQueryUGCNumTags(handle, index);
+		else if (SteamAvailable)
+			tagCount = SteamGameServerUGC.GetQueryUGCNumTags(handle, index);
+		else
+			tagCount = 0;
+
+		for (uint j = 0; j < tagCount; j++) {
+			string tag;
+
+			if (SteamClient)
+				SteamUGC.GetQueryUGCTag(handle, index, j, out tag, byte.MaxValue);
+			else
+				SteamGameServerUGC.GetQueryUGCTag(handle, index, j, out tag, byte.MaxValue);
+
+			tagList.Add(tag);
+		}
+
+		tags = tagList.ToArray();
 	}
 
 	public static void FetchMetadata(UGCQueryHandle_t handle, uint index, out NameValueCollection metadata)
@@ -702,9 +729,13 @@ public static class SteamedWraps
 
 		Logging.tML.Info("Adding tags and visibility");
 
+		if (!Directory.Exists(_entryData.ContentFolderPath))
+			throw new Exception($"The upload folder is missing: {_entryData.ContentFolderPath}");
+
 		SteamUGC.SetItemContent(uGCUpdateHandle_t, _entryData.ContentFolderPath);
 		SteamUGC.SetItemTags(uGCUpdateHandle_t, _entryData.Tags);
-		if (_entryData.PreviewImagePath != null)
+
+		if (_entryData.PreviewImagePath != null && File.Exists(_entryData.PreviewImagePath))
 			SteamUGC.SetItemPreview(uGCUpdateHandle_t, _entryData.PreviewImagePath);
 
 		if (_entryData.Visibility.HasValue)

@@ -34,7 +34,7 @@
 +	internal static ItemTooltip[] _itemTooltipCache = new ItemTooltip[ItemID.Count];
 +
 -	private static LocalizedText[] _emojiNameCache = new LocalizedText[EmoteID.Count];
-+ 	internal static LocalizedText[] _emojiNameCache = new LocalizedText[EmoteID.Count];
++	internal static LocalizedText[] _emojiNameCache = new LocalizedText[EmoteID.Count];
  
  	public static string GetMapObjectName(int id)
  	{

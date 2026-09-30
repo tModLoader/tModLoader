@@ -49,13 +49,11 @@ public abstract class ConfigKeyAttribute : Attribute
 
 	public ConfigKeyAttribute(string key)
 	{
-		if (!key.StartsWith("$"))
-		{
+		if (!key.StartsWith("$")) {
 			malformed = true;
 			this.key = key;
 		}
-		else
-		{
+		else {
 			this.key = key.Substring(1);
 		}
 	}
@@ -566,7 +564,7 @@ public class NullAllowedAttribute : Attribute
 public class ExpandAttribute : Attribute
 {
 	public bool Expand { get; }
-	public bool? ExpandListElements  { get; }
+	public bool? ExpandListElements { get; }
 
 	// bool? not allowed in attribute ctor, so 2 ctors
 	public ExpandAttribute(bool expand = true)

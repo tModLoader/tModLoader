@@ -255,7 +255,8 @@ public partial class Main
 		}
 	}
 
-	public static void BuilderTogglePageHandler(int startY, int activeToggles, out bool moveDownForButton, out int startIndex, out int endIndex) {
+	public static void BuilderTogglePageHandler(int startY, int activeToggles, out bool moveDownForButton, out int startIndex, out int endIndex)
+	{
 		startIndex = 0;
 		endIndex = activeToggles;
 		moveDownForButton = false;
@@ -562,7 +563,8 @@ public partial class Main
 	private static PosixSignalRegistration SIGTERMHandler;
 	public static void AddSignalTraps()
 	{
-		static void Handle(PosixSignalContext ctx) {
+		static void Handle(PosixSignalContext ctx)
+		{
 			ctx.Cancel = true;
 			Logging.tML.Info($"Signal {ctx.Signal}, Closing Server...");
 			Netplay.Disconnect = true;
@@ -641,7 +643,7 @@ public partial class Main
 			}
 		}
 
-		if(ConfigManager.AnyModNeedsReloadCheckOnly(out List<Mod> modsWithChangedConfigs)) {
+		if (ConfigManager.AnyModNeedsReloadCheckOnly(out List<Mod> modsWithChangedConfigs)) {
 			needsReload = true;
 			foreach (var mod in modsWithChangedConfigs) {
 				var localMod = normalModsToLoad.First(localMod => localMod.Name == mod.Name);
