@@ -191,8 +191,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Need to fix documentation for various secret and special seeds, like Main.specialSeedWorld. Need to change secret to special in most cases, and fix wiki links.
 - We need docs on how to use /checkpoint and StateSnapshot. Wiki page most likely, teaching why and how to use, limitations, etc.
 
-## 1.4.5.8
-
 # Changes that need to be communicated to modders
 
 - UIElement.OnDraw is now a DrawEvent not a ElementEvent (can this be tModPorted?)
