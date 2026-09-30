@@ -1055,7 +1055,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	/// <para/> This is only called when attempting to stack with an item of the same type.
 	/// <para/> This is not called for coins in inventory/UI.
 	/// <para/> This covers all scenarios, if you just need to change in-world stacking behavior, use <see cref="CanStackInWorld"/>.
-	/// <para/> Called on the local client only.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="source">The item instance being stacked onto this item</param>
 	/// <returns>Whether or not the item is allowed to stack</returns>
@@ -1067,7 +1067,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	/// <summary>
 	/// Allows you to decide if this item is allowed to stack with another of its type in the world.
 	/// <para/> This is only called when attempting to stack with an item of the same type.
-	/// <para/> Called on the local client or server, depending on who the item is reserved for.
+	/// <para/> Called on the server and the owning client.
 	/// </summary>
 	/// <param name="destination">The WorldItem for this item</param>
 	/// <param name="source">The WorldItem instance being stacked onto this item</param>
@@ -1079,8 +1079,8 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to make things happen when items stack together.
-	/// <para/> This hook is called on item being stacked onto from <paramref name="source"/> and before the items are transferred
-	/// <para/> Called on the local client only.
+	/// <para/> This hook is called on the item being stacked onto before the items are transferred from <paramref name="source"/>. This will be called both for in-world and in-inventory stacking.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="source">The item instance being stacked onto this item</param>
 	/// <param name="numToTransfer">The quantity of <paramref name="source"/> that will be transferred to this item</param>
@@ -1270,11 +1270,13 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	}
 
 	/// <summary>
-	/// Allows you to make special things happen when the player picks up this item. Return false to stop the item from being added to the player's inventory; returns true by default.
+	/// Allows you to make special things happen when the player picks up this item. This is typically used for resource pickups, such as <see cref="ItemID.Heart"/>, <see cref="ItemID.Star"/>, or <see cref="ItemID.NebulaPickup1"/>.
+	/// <para/> Return false to stop the item from being added to the player's inventory. The world item will still be despawned.
 	/// <para/> Called on the local client only.
+	/// <para/> Returns true by default.
 	/// </summary>
 	/// <param name="item">The WorldItem instance of this item.</param>
-	/// <param name="player">The player.</param>
+	/// <param name="player">The local player.</param>
 	/// <returns></returns>
 	public virtual bool OnPickup(WorldItem item, Player player)
 	{
@@ -1519,7 +1521,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	//Does not use <see cref="NetReceive"> because of inheritdoc on the equivalent GlobalItem hook
 	/// <summary>
 	/// Allows you to send custom data for this item between client and server, which will be handled in NetReceive.
-	/// <br/>Called whenever an item container syncs its contents (various MessageIDs and sources), or <see cref="MessageID.SyncItem"/> and <see cref="MessageID.InstancedItem"/> are successfully sent, for example when the item is dropped into the world.
+	/// <br/>Called whenever an item container syncs its contents (various MessageIDs and sources), or <see cref="MessageID.SyncItem"/> and <see cref="MessageID.SpawnInstancedItem"/> are successfully sent, for example when the item is dropped into the world.
 	/// <br/>Can be called on both server and client.
 	/// </summary>
 	/// <param name="writer">The writer.</param>
@@ -1530,7 +1532,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	//Does not use <see cref="NetSend"> because of inheritdoc on the equivalent GlobalItem hook
 	/// <summary>
 	/// Receives the custom data sent in NetSend.
-	/// <br/>Called whenever an item container syncs its contents (various MessageIDs and sources), or <see cref="MessageID.SyncItem"/> and <see cref="MessageID.InstancedItem"/> are successfully received.
+	/// <br/>Called whenever an item container syncs its contents (various MessageIDs and sources), or <see cref="MessageID.SyncItem"/> and <see cref="MessageID.SpawnInstancedItem"/> are successfully received.
 	/// <br/>Can be called on both server and client.
 	/// </summary>
 	/// <param name="reader">The reader.</param>

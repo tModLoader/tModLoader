@@ -11,7 +11,7 @@
  			}
  		}
  
-@@ -213,6 +_,10 @@
+@@ -217,6 +_,10 @@
  			if (MessageBox.Show("Quick Load skipped. Do you want to delete the configuration?", "", MessageBoxButtons.YesNo) == DialogResult.Yes)
  				Clear();
  		}
@@ -22,7 +22,7 @@
  	}
  
  	public static void OnContentLoaded()
-@@ -224,6 +_,8 @@
+@@ -228,6 +_,8 @@
  		catch (Exception ex) {
  			if (MessageBox.Show("Do you want to delete the configuration?\n\n" + ex, "Quickload Error", MessageBoxButtons.YesNo, MessageBoxIcon.Error) == DialogResult.Yes)
  				Clear();

@@ -48,7 +48,7 @@ public partial class NPCShop
 		}
 
 		/// <summary>
-		/// Reserves a slot for this entry even if its conditions are not met (<see cref="ConditionsMet"/>). This can be used to create a defined shop layout similar to the Tavernkeep shop.
+		/// Reserves a slot for this entry even if its conditions are not met (<see cref="AbstractNPCShop.Entry.ConditionsMet"/>). This can be used to create a defined shop layout similar to the Tavernkeep shop.
 		/// </summary>
 		/// <returns></returns>
 		public Entry ReserveSlot()

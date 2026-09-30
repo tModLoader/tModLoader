@@ -376,7 +376,7 @@ namespace ExampleMod.Content.NPCs
 				// LocalPlayer.ConsumeItem(ItemID.HiveBackpack);
 				// LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<WaspNest>());
 			}
-			public override bool ShowExcalmation => true; // This will show a little exclamation point next to the button.
+			public override bool ShowExclamation => true; // This will show a little exclamation point next to the button.
 		}
 
 		// Here is an example of inheriting an existing NPCInteraction and modifying the condition.

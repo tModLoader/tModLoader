@@ -21,6 +21,8 @@ public class ModProjectileTest : ModProjectile
 	{
 		ProjectileID.Sets.HeldProjDoesNotUsePlayerGfxOffY[Type] = true;
 		ProjectileID.Sets.DontAttachHideToAlpha[Type] = true;
+		ProjectileID.Sets.NeedsUUID[Type] = true;
+		ProjectileID.Sets.PlayerHurtDamageIgnoresDifficultyScaling[Type] = true;
 	}
 
 	public override bool CanDamage() { return false; }

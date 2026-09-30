@@ -122,6 +122,16 @@ public static class Extensions
 
 	public static bool NonDefault(this SemanticModel model, ExpressionSyntax x, object defaultValue) => x != null && (dynamic)model.GetOperation(x).ConstantValue.Value != (dynamic)defaultValue;
 
+	public static ITypeSymbol TypeOf(this SemanticModel model, ExpressionSyntax expr) => expr == null ? null : model.GetOperation(expr)?.Type;
+
+	public static bool Is(this ITypeSymbol type, string name) => type?.ToString() == name;
+
+	public static bool IsIntegral(this ITypeSymbol type) => type?.SpecialType is
+		SpecialType.System_SByte or SpecialType.System_Byte or
+		SpecialType.System_Int16 or SpecialType.System_UInt16 or
+		SpecialType.System_Int32 or SpecialType.System_UInt32 or
+		SpecialType.System_Int64 or SpecialType.System_UInt64;
+
 	public static bool IsObsolete(this ISymbol sym) => sym.GetAttributes().Any(a => a.AttributeClass?.Name == "ObsoleteAttribute");
 }
 

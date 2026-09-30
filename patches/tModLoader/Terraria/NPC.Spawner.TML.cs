@@ -17,12 +17,17 @@ public partial class NPC
 		public int SpawnTileY { get; private set; }
 
 		/// <summary>
-		/// The tile type (<see cref="TileID"/> or <see cref="ModContent.TileType{T}"/>) at <see cref="SpawnTileX"/> and Y.
+		/// The y-coordinate of the tile used for some spawning logic pertaining to tiles. This is potentially below <see cref="SpawnTileY"/> if that tile (and potentially some number of tiles below it) happens to be a platform, conveyor belt, or any other tile that is not considered valid for spawning logic purposes.
+		/// </summary>
+		public int GroundTileY { get; private set; }
+
+		/// <summary>
+		/// The tile type (<see cref="TileID"/> or <see cref="ModContent.TileType{T}"/>) at <see cref="SpawnTileX"/> and <see cref="GroundTileY"/>.
 		/// </summary>
 		public int SpawnTileType { get; private set; }
 
 		/// <summary>
-		/// The wall type (<see cref="WallID"/> or <see cref="ModContent.WallType{T}"/>) at <see cref="SpawnTileX"/> and Y.
+		/// The wall type (<see cref="WallID"/> or <see cref="ModContent.WallType{T}"/>) at <see cref="SpawnTileX"/> and <see cref="GroundTileY"/>.
 		/// </summary>
 		public int SpawnWallType { get; private set; }
 

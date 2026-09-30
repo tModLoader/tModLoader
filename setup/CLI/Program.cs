@@ -92,6 +92,9 @@ public static class Program
 
 			config.AddCommand<UpdateWorkspaceInfoCommand>("update-workspace-info")
 				.WithDescription("Updates the paths in WorkspaceInfo.targets");
+
+			config.AddCommand<TerrariaVersionCommand>("terraria-version")
+				.WithDescription("Prints the assembly version of a Terraria executable.");
 		});
 
 		return await app.RunAsync(args);
