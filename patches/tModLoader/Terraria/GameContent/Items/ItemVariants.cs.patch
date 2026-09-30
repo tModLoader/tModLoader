@@ -119,7 +119,7 @@
 +		*/
 +		RemixWorld = Condition.RemixWorld;
 +		GetGoodWorld = Condition.ForTheWorthyWorld;
-+		MechdusaWorld = Condition.ZenithWorld;
++		MechdusaWorld = Condition.MechdusaSeedFeature;
 +		SkyblockWorld = Condition.SkyblockWorld;
 +
  		AddVariant(112, StrongerVariant, RemixWorld);

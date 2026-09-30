@@ -103,6 +103,10 @@ public sealed record Condition(LocalizedText Description, Func<bool> Predicate)
 	public static readonly Condition NotInfectedSeed =			new("Conditions.SeedNotInfected",			() => !Main.infectedSeed);
 	public static readonly Condition NotTeamBasedSpawnsSeed =	new("Conditions.SeedNotTeamBasedSpawns",	() => !Main.teamBasedSpawnsSeed);
 	public static readonly Condition NotDualDungeonsSeed =		new("Conditions.SeedNotDualDungeons",		() => !Main.dualDungeonsSeed);
+
+	// World Features
+	public static readonly Condition MechdusaSeedFeature =		new("Conditions.SeedFeatureMechdusa",		() => SpecialSeedFeatures.Mechdusa);
+
 	// Events
 	public static readonly Condition Christmas =				new("Conditions.Christmas",					() => Main.xMas);
 	public static readonly Condition Halloween =				new("Conditions.Halloween",					() => Main.halloween);

@@ -399,7 +399,7 @@
 +	/// The <see cref="BuffID"/>s of all buffs this player has active.
 +	/// <br/> A value of <c>0</c> means that buff slot is empty.
 +	/// <br/> Buff times are stored with the same index in <see cref="buffTime"/>.
-+	/// <br/> <see cref="AddBuff(int, int, bool, bool)"/>, <see cref="ClearBuff(int)"/>, and <see cref="DelBuff(int)"/> should be used to manipulate player buffs.
++	/// <br/> <see cref="AddBuff(int, int)"/>, <see cref="ClearBuff(int)"/>, and <see cref="DelBuff(int)"/> should be used to manipulate player buffs.
 +	/// </summary>
  	public int[] buffType = new int[maxBuffs];
 +
@@ -407,7 +407,7 @@
 +	/// The remaining durations in ticks of all buffs this player has active.
 +	/// <br/> A value of <c>0</c> means that buff slot is empty.
 +	/// <br/> Buff types are stored with the same index in <see cref="buffType"/>.
-+	/// <br/> <see cref="AddBuff(int, int, bool, bool)"/>, <see cref="ClearBuff(int)"/>, and <see cref="DelBuff(int)"/> should be used to manipulate player buffs.
++	/// <br/> <see cref="AddBuff(int, int)"/>, <see cref="ClearBuff(int)"/>, and <see cref="DelBuff(int)"/> should be used to manipulate player buffs.
 +	/// </summary>
  	public int[] buffTime = new int[maxBuffs];
 +
@@ -419,7 +419,7 @@
  	public bool[] buffImmune = new bool[BuffID.Count];
 +	/// <summary>
 +	/// The index of the projectile (<see cref="Entity.whoAmI"/>) currently being "held" by the player as if it were an item. Set during projectile AI. Held projectiles will be drawn during player rendering over the player's arms.
-+	/// <para/> When making a held projectile, make sure to test holding the projectile while moving up or down a single block obstacles and adjust <see cref="Player.RotatedRelativePoint"/>, <see cref="Player.gfxOffY"/> or <see cref="ProjectileID.Sets.HeldProjDoesNotUsePlayerGfxOffY"/> accordingly if the draw location is incorrect.
++	/// <para/> When making a held projectile, make sure to test holding the projectile while moving up or down a single block obstacles and use <c>owner.RotatedRelativePoint(owner.MountedCenter + ...)</c> to position the held projectile's draw location.
 +	/// <para/> Defaults to -1.
 +	/// </summary>
  	public int heldProj = -1;
@@ -997,13 +997,13 @@
 +	/// <remarks>To apply a global run speed modifier, use <see cref="moveSpeed"/>.</remarks>
  	public float runAcceleration = 0.08f;
  	public float runSlowdown = 0.2f;
-+	/// <summary> True if the player is within crafting range of a tile with water or a <see cref="TileID.Sets.CountsAsWaterSource"/> tile. (adjWater stands for adjacent to water) </summary>
++	/// <summary> True if the player is within crafting range of a tile with water or a <see cref="TileID.Sets.CountsAsWaterForCrafting"/> tile. (adjWater stands for adjacent to water) </summary>
  	public bool adjWaterSource;
-+	/// <summary> True if the player is within crafting range of a tile with honey or a <see cref="TileID.Sets.CountsAsHoneySource"/> tile. (adjHoney stands for adjacent to honey) </summary>
++	/// <summary> True if the player is within crafting range of a tile with honey or a <see cref="TileID.Sets.CountsAsHoneyForCrafting"/> tile. (adjHoney stands for adjacent to honey) </summary>
  	public bool adjHoney;
-+	/// <summary> True if the player is within crafting range of a tile with shimmer or a <see cref="TileID.Sets.CountsAsShimmerSource"/> tile. (adjShimmer stands for adjacent to shimmer) </summary>
++	/// <summary> True if the player is within crafting range of a tile with shimmer or a <see cref="TileID.Sets.CountsAsShimmerForCrafting"/> tile. (adjShimmer stands for adjacent to shimmer) </summary>
 +	public bool adjShimmer;
-+	/// <summary> True if the player is within crafting range of a tile with lava or a <see cref="TileID.Sets.CountsAsLavaSource"/> tile. (adjLava stands for adjacent to lava) </summary>
++	/// <summary> True if the player is within crafting range of a tile with lava or a <see cref="TileID.Sets.CountsAsLavaForCrafting"/> tile. (adjLava stands for adjacent to lava) </summary>
  	public bool adjLava;
  	public bool oldAdjWaterSource;
  	public bool oldAdjHoney;
@@ -1228,7 +1228,7 @@
  	public float MountFishronSpecialCounter;
  	public Vector2 MinionRestTargetPoint = Vector2.Zero;
 +	/// <summary>
-+	/// The index of the NPC targeted by the player, either by right clicking with a summon item (<see cref="ProjectileID.Sets.MinionTargettingFeature"/>) or by hitting the NPC with a whip.
++	/// The index of the NPC targeted by the player, either by right clicking with a summon item (<see cref="ProjectileID.Sets.MinionTargetingFeature"/>) or by hitting the NPC with a whip.
 +	/// <br/><br/> Will be -1 if there is no current target, or check <see cref="HasMinionAttackTargetNPC"/> instead.
 +	/// </summary>
  	public int MinionAttackTargetNPC = -1;
@@ -1293,12 +1293,13 @@
  	private Item[] _pendingRefunds = new Item[0];
  	private static readonly PlayerFileData _visualCloneDummyData = new PlayerFileData();
  	private static readonly MemoryStream _visualCloneStream = new MemoryStream();
-@@ -1951,6 +_,9 @@
+@@ -1951,6 +_,10 @@
  
  	public float BaseHeight => height - HeightOffsetBoost;
  
 +	/// <summary>
-+	/// Returns the player's center adjusted for mount and step stool usage. Typically used in conjunction with <see cref="RotatedRelativePoint(Vector2, bool, bool)"/> to retrieve a suitable position for positioning items and effects originating from the player.
++	/// Returns the player's center adjusted for mount and step stool usage. Typically used in conjunction with <see cref="RotatedRelativePoint(Vector2, bool, bool, int)"/> to retrieve a suitable position for positioning items and effects originating from the player.
++	/// <para/> For example: <c>player.RotatedRelativePoint(player.MountedCenter + ...)</c>
 +	/// </summary>
  	public Vector2 MountedCenter {
  		get {
@@ -1464,16 +1465,18 @@
  
  	public bool UsingOrReusingItem {
  		get {
-@@ -2633,6 +_,13 @@
+@@ -2633,6 +_,15 @@
  		y = vector.Y;
  	}
  
 +	/// <summary>
-+	/// Takes an input position and returns the position adjusted to the players visual rotation and offset. This accounts for the player being shifted up or down and rotated while riding a mount, sitting in a chair, and sleeping. <br/>
++	/// Takes an input position and returns the position adjusted to the players visual rotation and offset. This accounts for the player being shifted up or down and rotated while riding a mount, sitting in a chair, and sleeping. 
++	/// <para/> For example: <c>player.RotatedRelativePoint(player.MountedCenter + ...)</c>
 +	/// </summary>
 +	/// <param name="pos"></param>
 +	/// <param name="reverseRotation"></param>
 +	/// <param name="addGfxOffY"></param>
++	/// <param name="pushFromOriginHack"></param>
 +	/// <returns></returns>
  	public Vector2 RotatedRelativePoint(Vector2 pos, bool reverseRotation = false, bool addGfxOffY = true, int pushFromOriginHack = 0)
  	{
@@ -1656,6 +1659,17 @@
  	public static byte FindClosest(Vector2 Position, int Width, int Height)
  	{
  		byte result = 0;
+@@ -3496,7 +_,10 @@
+ 			if (whoAmI == Main.myPlayer && theItemWeDrop.type == 5095)
+ 				LucyAxeMessage.Create(LucyAxeMessage.MessageSource.ThrownAway, base.Top, new Vector2(direction * 7, -2f));
+ 
++			/*
+ 			Item.RequestNewItem(GetItemSource_Misc(ItemSourceID.PlayerDrop), base.Center, theItemWeDrop.type, theItemWeDrop.stack, theItemWeDrop.prefix, ItemID.Sets.DropWithGrabDelayForAllPlayers[theItemWeDrop.type] ? NewItemOwnership.GrabDelayForAllPlayers : NewItemOwnership.GrabDelayForLocalPlayer, new Vector2((float)(4 * direction) + velocity.X, -2f));
++			*/
++			Item.RequestNewItem(GetItemSource_Misc(ItemSourceID.PlayerDrop), base.Center, theItemWeDrop, ItemID.Sets.DropWithGrabDelayForAllPlayers[theItemWeDrop.type] ? NewItemOwnership.GrabDelayForAllPlayers : NewItemOwnership.GrabDelayForLocalPlayer, new Vector2((float)(4 * direction) + velocity.X, -2f));
+ 			theItemWeDrop = new Item();
+ 			if (slot == 58)
+ 				Main.mouseItem = new Item();
 @@ -3549,7 +_,23 @@
  		return -1;
  	}
@@ -2018,7 +2032,15 @@
  		GetOrDropItem(item, settings);
  	}
  
-@@ -5133,6 +_,13 @@
+@@ -5128,11 +_,21 @@
+ 	{
+ 		Item item2 = GetItem(item, settings);
+ 		if (!item2.IsAir)
++			/*
+ 			Item.RequestNewItem(GetItemSource_InventoryOverflow(), base.Center, item2.type, item2.stack, item2.prefix, NewItemOwnership.ReserveForLocalPlayer);
++			*/
++			Item.RequestNewItem(GetItemSource_InventoryOverflow(), base.Center, item2, NewItemOwnership.ReserveForLocalPlayer);
+ 	}
  
  	public void OpenBossBag(int type)
  	{
@@ -3858,7 +3880,7 @@
  
  				nPC.immune[whoAmI] = NPCImmuneTime;
  				GiveImmuneTimeForCollisionAttack(PlayerImmuneTime);
-@@ -16529,22 +_,73 @@
+@@ -16529,22 +_,75 @@
  		}
  	}
  
@@ -3886,6 +3908,7 @@
 +	/// <param name="crit">Whether or not the strike is a crit</param>
 +	/// <param name="damageType">Defaults to <see cref="DamageClass.Default"/></param>
 +	/// <param name="damageVariation">Whether to apply damage variation. Defaults to false.</param>
++	/// <param name="hitSource"></param>
 +	public void ApplyDamageToNPC(NPC npc, int damage, float knockback, int direction, bool crit = false, DamageClass? damageType = null, bool damageVariation = false, PlayerNPCHitSource hitSource = default)
  	{
 +		if (!PlayerLoader.CanHitNPC(this, npc))
@@ -3908,11 +3931,12 @@
 +	}
 +
 +	/// <summary>
-+	/// Applies a hit to an NPC via <see cref="NPC.StrikeNPC(NPC.HitInfo, bool, bool)"/>. <br/>
++	/// Applies a hit to an NPC via <see cref="NPC.StrikeNPC(NPC.HitInfo, bool, bool, int)"/>. <br/>
 +	/// Also calls player based OnHit and OnKill hooks, tracks dps and net syncs the strike
 +	/// </summary>
 +	/// <param name="npc">The NPC to strike</param>
 +	/// <param name="hit">The hit to apply</param>
++	/// <param name="hitSource"></param>
 +	public void StrikeNPCDirect(NPC npc, NPC.HitInfo hit, PlayerNPCHitSource hitSource)
 +	{
  		OnHit(npc.Center.X, npc.Center.Y, npc);
@@ -5113,7 +5137,7 @@
  		if (PlayerInput.UsingGamepad && cursorItemIconText.Length == 0) {
  			cursorItemIconEnabled = false;
  			cursorItemIconID = 0;
-@@ -28789,11 +_,17 @@
+@@ -28789,6 +_,9 @@
  			if (!worldItem.active || worldItem.shimmerTime != 0f || (worldItem.grabDelayTime > 0 && (worldItem.grabDelayPlayer == i || worldItem.grabDelayPlayer == 255)) || worldItem.playerIndexTheItemIsReservedFor != i || !CanAcceptItemIntoInventory(worldItem) || (worldItem.shimmered && !((double)worldItem.velocity.Length() < 0.2)))
  				continue;
  
@@ -5123,15 +5147,6 @@
  			int itemGrabRange = GetItemGrabRange(worldItem);
  			Rectangle hitbox = worldItem.Hitbox;
  			if (base.Hitbox.Intersects(hitbox)) {
--				if (i == Main.myPlayer && (inventory[selectedItem].type != 0 || itemAnimation <= 0))
-+				if (i == Main.myPlayer && (inventory[selectedItem].type != 0 || itemAnimation <= 0)) {
-+					
-+
- 					PickupItem(worldItem);
-+				}
- 			}
- 			else {
- 				if (!new Rectangle((int)position.X - itemGrabRange, (int)position.Y - itemGrabRange, width + itemGrabRange * 2, height + itemGrabRange * 2).Intersects(hitbox))
 @@ -28810,6 +_,7 @@
  					flag = true;
  
@@ -5140,16 +5155,12 @@
  				if (manaMagnet && flag2) {
  					PullItem_Pickup(worldItem, 12f, 5);
  				}
-@@ -28884,6 +_,13 @@
+@@ -28884,6 +_,9 @@
  
  	private void PickupItem(WorldItem itemToPickUp)
  	{
 +		if (!CombinedHooks.OnPickup(itemToPickUp, this)) {
-+			int stack = itemToPickUp.stack;
-+			Item item = GetItem(itemToPickUp.inner, GetItemSettings.PickupItemFromWorld);
-+			itemToPickUp.ReplaceWith(item);
-+			if (item.stack == stack)
-+				return;
++			itemToPickUp.TurnToAir();
 +		} else
  		if (ItemID.Sets.NebulaPickup[itemToPickUp.type]) {
  			SoundEngine.PlaySound(7, (int)position.X, (int)position.Y);
@@ -5736,7 +5747,8 @@
  			if (whoAmI == Main.myPlayer) {
  				IEntitySource spawnSource = GetProjectileSource_SetBonus(1);
  				Entity entity = null;
- 				if (damageSource.TryGetCausingEntity(out entity))
+-				if (damageSource.TryGetCausingEntity(out entity))
++				if (!damageSource.NetSynced && damageSource.TryGetCausingEntity(out entity))
  					spawnSource = GetProjectileSource_OnHurt(entity, 1);
  
 -				int num6 = Projectile.NewProjectile(spawnSource, base.Center.X, base.Center.Y, 0f, 0f, 608, (int)(150f * meleeDamage), 15f, Main.myPlayer);
@@ -5894,6 +5906,28 @@
  	}
  
  	public void PlayHurtSound()
+@@ -32057,6 +_,10 @@
+ 		if (cooldownCounter == 1)
+ 			return false;
+ 
++		// TML: Check projectile type rather than attempting to get causing entity for remote client sync consistency
++		if (damageSource.SourceProjectileType > 0 && ProjectileID.Sets.CanHitPastShimmer[damageSource.SourceProjectileType])
++			return false;
++
+ 		Entity entity = null;
+ 		if (!damageSource.TryGetCausingEntity(out entity))
+ 			return true;
+@@ -32064,8 +_,10 @@
+ 		if (entity is NPC nPC && nPC.active && (nPC.boss || NPC.GetNPCInvasionGroup(nPC.type) != 0 || NPCID.Sets.CanHitPastShimmer[nPC.type]))
+ 			return false;
+ 
++		/*
+ 		if (entity is Projectile projectile && projectile.active && ProjectileID.Sets.CanHitPastShimmer[projectile.type])
+ 			return false;
++		*/
+ 
+ 		return true;
+ 	}
 @@ -32094,6 +_,14 @@
  			if (FileUtilities.Exists(Main.playerPathName + ".bak", isCloudSave))
  				FileUtilities.Delete(Main.playerPathName + ".bak", isCloudSave);
@@ -6021,7 +6055,7 @@
  
 +	/// <summary>
 +	/// Places the <paramref name="newItem"/> directly into this player's inventory. The <paramref name="settings"/> dictate how or if the pickup text is displayed as well as if the item can be placed into the Void Vault inventory. It is typical to use one of the existing options contained in the static fields of <see cref="GetItemSettings"/> for this parameter to match vanilla behavior.
-+	/// <para/> Modders commonly use <see cref="QuickSpawnItem(IEntitySource, Item, int)"/> to give a player an item as it is simpler to implement, but GetItem allows for more control and should be used when possible.
++	/// <para/> Modders commonly use <see cref="QuickSpawnItem(IEntitySource, Item)"/> to give a player an item as it is simpler to implement, but GetItem allows for more control and should be used when possible.
 +	/// <para/> The return value is an Item instance containing the overflow. If the full stack of <paramref name="newItem"/> is placed into the inventory successfully, the return value will be an empty item instance. If the inventory is full or if only a partial stack of <paramref name="newItem"/> fit in the inventory, the return value will be the Item that didn't fit. If the returned <see cref="Item"/> isn't <see cref="Item.IsAir"/>, that will have to be handled by the calling code, typically by spawning the item in the world as a drop or leaving it where <paramref name="newItem"/> came from.
 +	/// <para/> Make sure to test code using this method with a full inventory. Consulting vanilla code to match similar usages is recommended to implement specific item movement and popup text behavior the user would expect.
 +	/// </summary>
@@ -6334,17 +6368,6 @@
  			if (Main.tile[tileTargetX + 1, tileTargetY].active() || Main.tile[tileTargetX + 1, tileTargetY].wall > 0 || Main.tile[tileTargetX - 1, tileTargetY].active() || Main.tile[tileTargetX - 1, tileTargetY].wall > 0 || Main.tile[tileTargetX, tileTargetY + 1].active() || Main.tile[tileTargetX, tileTargetY + 1].wall > 0 || Main.tile[tileTargetX, tileTargetY - 1].active() || Main.tile[tileTargetX, tileTargetY - 1].wall > 0)
  				canPlace = true;
  		}
-@@ -34285,7 +_,10 @@
- 				}
- 
- 				num3++;
-+				/*
- 				if (!WorldGen.IsTileLoaded(num4, num3 + 1)) {
-+				*/
-+				if (Main.netMode == 1 && !Main.sectionManager.TileLoaded(num4, num3 + 1)) {
- 					if (controlUseItem)
- 						NetMessage.SendData(159, -1, -1, null, num4 / 200, (num3 + 1) / 150);
- 
 @@ -34681,7 +_,9 @@
  		byte paint = targetItem.paint;
  		if (paintingAWall) {
@@ -7208,7 +7231,7 @@
  	}
  
 +	/// <summary>
-+	/// Clamps the provided world position to the normal gameplay range (<see cref="Main.LogicCheckScreenWidth"/>, <see cref="Main.LogicCheckScreenHeight"/>) from this player.
++	/// Clamps the provided world position to the normal gameplay range (<see cref="Main.MaxWorldViewSize"/>) from this player.
 +	/// <br/><br/> This is used to limit the ranges of various items (teleport, minion, sentry, magic missile, etc) to prevent users with high resolution screens from having a gameplay advantage.
 +	/// </summary>
  	public void LimitPointToPlayerReachableArea(ref Vector2 pointPosition)
@@ -8324,14 +8347,21 @@
  	}
  
  	public void TryDroppingSingleItem(IEntitySource source, Item theItem)
-@@ -45483,7 +_,10 @@
+@@ -45482,8 +_,16 @@
+ 
  	public void TryDroppingSingleItem(IEntitySource source, Item theItem, int stack)
  	{
- 		if (stack > 0 && Main.netMode != 1)
+-		if (stack > 0 && Main.netMode != 1)
++		if (stack > 0 && Main.netMode != 1) {
 +			/*
  			Item.NewItem(velocity: new Vector2((float)Main.rand.Next(-20, 21) * 0.2f, (float)Main.rand.Next(-20, 1) * 0.2f), source: source, X: (int)position.X, Y: (int)position.Y, Width: width, Height: height, type: theItem.type, stack: stack, noBroadcast: false, prefix: theItem.prefix);
 +			*/
++			// TML: The item overload clones theItem, so the stack must be set to the amount being dropped.
++			int fullStack = theItem.stack;
++			theItem.stack = stack;
 +			Item.NewItem(velocity: new Vector2((float)Main.rand.Next(-20, 21) * 0.2f, (float)Main.rand.Next(-20, 1) * 0.2f), source: source, X: (int)position.X, Y: (int)position.Y, Width: width, Height: height, item: theItem, noBroadcast: false);
++			theItem.stack = fullStack;
++		}
  
  		theItem.stack -= stack;
  		if (theItem.stack <= 0)

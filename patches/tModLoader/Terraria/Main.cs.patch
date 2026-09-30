@@ -688,7 +688,7 @@
  	public static int[] timeItemSlotCannotBeReusedFor = new int[401];
 +	/// <summary>
 +	/// Contains all the <see cref="NPC"/>s in the game world. NPC are spawned via the <see cref="NPC.NewNPC(IEntitySource, int, int, int, int, float, float, float, float, int)"/> method.
-+	/// <para/> Only entries in this array that are <see cref="Entity.active"/> are relevant. Each NPC has an <see cref="Entity.whoAmI"/> corresponding to their index within Main.npc. The last entry is a dummy entry used for overflow and should not be accessed.
++	/// <para/> Only entries in this array that are <see cref="NPC.active"/> are relevant. Each NPC has an <see cref="Entity.whoAmI"/> corresponding to their index within Main.npc. The last entry is a dummy entry used for overflow and should not be accessed.
 +	/// <para/> Modders seeking to run logic on all NPCs should use <see cref="ActiveNPCs"/> to iterate over the Main.npc entries to easily account for inactive entries and the dummy entry.
 +	/// </summary>
  	public static NPC[] npc = new NPC[maxNPCs + 1];
@@ -4635,6 +4635,38 @@
  		stringColor = TryApplyingPlayerStringColor(theOwner.stringColor, stringColor);
  		float gravDir = theOwner.gravDir;
  		switch (type) {
+@@ -33712,17 +_,22 @@
+ 			localPlayer.GamepadEnableGrappleCooldown();
+ 
+ 		if (mouseRight && mouseRightRelease && Player.BlockInteractionWithProjectiles == 0) {
++			if (!ProjectileLoader.PreTryDespawning(proj, out bool giveItem))
++				goto PostDespawn;
+ 			mouseRightRelease = false;
+ 			localPlayer.tileInteractAttempted = true;
+ 			localPlayer.tileInteractionHappened = true;
+ 			localPlayer.releaseUseTile = false;
++			/*
+ 			bool giveItem = true;
++			*/
+ 			TryDespawningProjectile_ModifyBeforeKill(proj, ref giveItem);
+ 			proj.Kill();
+ 			if (giveItem && ProjectileID.Sets.DespawnItemGivesItemBack[proj.type])
+ 				Item.RequestNewItem(proj.GetItemSource_DropAsItem(), proj.Center, itemIcon, 1, 0, NewItemOwnership.ReserveForLocalPlayer);
+ 
+ 			TryDespawningProjectile_SpecialkillCode(proj);
++			PostDespawn:;
+ 		}
+ 
+ 		if (!SmartCursorIsUsed && !PlayerInput.UsingGamepad)
+@@ -33736,7 +_,7 @@
+ 
+ 	private void TryDespawningProjectile_ModifyBeforeKill(Projectile proj, ref bool giveItem)
+ 	{
+-		if (proj.aiStyle == 16 && !proj.hostile) {
++		if ((proj.aiStyle == 16 || ProjectileID.Sets.Explosive[proj.type]) && !proj.hostile) {
+ 			proj.ai[0] = 1000f;
+ 			NetMessage.SendData(27, -1, -1, null, proj.whoAmI);
+ 		}
 @@ -33939,10 +_,13 @@
  			}
  			else if (npc[i].type == 516 || npc[i].type == 519) {
@@ -7430,15 +7462,22 @@
  					int num8 = 0;
  					for (int j = 0; j < maxNPCs; j++) {
  						if (npc[j].active && npc[j].townNPC && npc[j].type != 37 && npc[j].type != 453)
-@@ -57580,7 +_,7 @@
+@@ -57580,12 +_,15 @@
  				WorldGen.UnspawnHomelessNPC();
  			}
  			else if (dayTime && time < 27000.0 && !IsFastForwardingTime() && WorldGen.GetWorldUpdateRate() > 0) {
--				int num9 = dayRate;
-+				double num9 = dayRate; // TML: int->double
++				/*
+ 				int num9 = dayRate;
  				if (num9 < 1)
  					num9 = 1;
  
+ 				int maxValue = (int)(27000.0 / (double)num9);
+ 				if (rand.Next(maxValue) == 0)
++				*/
++				if (rand.NextDouble() < dayRate / 27000.0)
+ 					WorldGen.SpawnHomelessNPC();
+ 			}
+ 		}
 @@ -57679,7 +_,10 @@
  	public static bool AnyPlayerReadyToFightKingSlime()
  	{

@@ -1,3 +1,5 @@
+using Terraria.ModLoader;
+
 namespace Terraria.ID;
 
 partial class ProjectileID
@@ -65,6 +67,7 @@ partial class ProjectileID
 		/// <para/> Several shared behaviors of explosive projectiles will be automatically applied to projectiles using this set:
 		/// <para/> Sets the timeLeft to 3 and the projectile direction when colliding with an NPC or player in PVP (so the explosive can detonate).
 		/// <para/> Explosives also bounce off the top of Shimmer, detonate with no blast damage when touching the bottom or sides of Shimmer, and damage other players in For the Worthy worlds.
+		/// <para/> If the projectile has <see cref="DespawnItemIcon"/>, then right clicking it will defuse it by setting <c>ai[0]</c> of <c>1000f</c> before calling <c>Kill</c>. Check for this value in <see cref="ModProjectile.OnKill(int)"/> to prevent explosion visuals, sounds, and other effects.
 		/// <para/> Note that code should check both <c>(projectile.aiStyle == ProjAIStyleID.Explosive || ProjectileID.Sets.Explosive[projectile.type])</c> for any code targeting explosive projectiles since this set might not be complete.
 		/// </summary>
 		public static bool[] Explosive = Factory.CreateBoolSet(false, Bomb, Dynamite, Grenade, StickyBomb, HappyBomb, BombSkeletronPrime, Explosives,
@@ -83,11 +86,5 @@ partial class ProjectileID
 		/// <br/><br/> Defaults to false. Vanilla entries include <see cref="FlyingPiggyBank"/>, <see cref="VoidLens"/>, <see cref="ChesterPet"/>, <see cref="PalworldMinionCattiva"/>, <see cref="PalworldMinionFoxsparks"/>, and <see cref="PalworldDigtoise"/>.
 		/// </summary>
 		public static bool[] IsInteractable = Factory.CreateBoolSet(false, 525, 734, 960, 1093, 1094, 1098, 1112, 1113, 1118, 1123);
-
-		/// <summary>
-		/// If <see langword="true"/> for a given projectile type (<see cref="Projectile.type"/>), then that projectile will do the same damage to players regardless of difficulty (expert/master etc). <br/>
-		/// This set includes all the friendly vanilla explosives which can hurt players from vanilla
-		/// </summary>
-		public static bool[] PlayerHurtDamageIgnoresDifficultyScaling = Factory.CreateBoolSet(28, 29, 30, 37, 108, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 164, 397, 470, 516, 517, 519, 588, 637, 773, 776, 777, 778, 779, 780, 781, 782, 783, 784, 785, 786, 787, 788, 789, 790, 791, 792, 793, 794, 795, 796, 797, 798, 799, 800, 801, 903, 904, 905, 906, 910, 911, 1002);
 	}
 }

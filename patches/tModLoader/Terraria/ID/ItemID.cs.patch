@@ -350,13 +350,13 @@
 +		/// <br/> Defaults to <see langword="false"/>.
 +		/// </summary>
 +		/// <remarks>
-+		/// This set does <strong>not</strong> make items disappear from the inventory when picked up. Use <see cref="ModItem.OnPickup(Player)"/> or <see cref="GlobalItem.OnPickup(Item, Player)"/> for that.
++		/// This set does <strong>not</strong> make items disappear from the inventory when picked up. Use <see cref="ModItem.OnPickup(WorldItem, Player)"/> or <see cref="GlobalItem.OnPickup(WorldItem, Player)"/> for that.
 +		/// </remarks>
  		public static bool[] IsAPickup = Factory.CreateBoolSet(58, 184, 1734, 1735, 1867, 1868, 3453, 3454, 3455, 4143);
 +
 +		/// <summary>
 +		/// If <see langword="true"/> for a given item type (<see cref="Item.type"/>), then that item is a drill.
-+		/// <br/> Drills have 40% faster use times (<see cref="Item.useTime"/>, <see cref="Item.useAnimation"/>) and 1 less tile reach (<see cref="Item.tileBoost"/>) than what are set in <see cref="Item.SetDefaults(int)"/>.
++		/// <br/> Drills have 40% faster use times (<see cref="Item.useTime"/>, <see cref="Item.useAnimation"/>) and 1 less tile reach (<see cref="Item.tileBoost"/>) than what are set in <see cref="Item.SetDefaults(int, ItemVariant)"/>.
 +		/// <br/> Defaults to <see langword="false"/>.
 +		/// </summary>
 +		/// <remarks>
@@ -366,7 +366,7 @@
 +
 +		/// <summary>
 +		/// If <see langword="true"/> for a given item type (<see cref="Item.type"/>), then that item is a chainsaw.
-+		/// <br/> Chainsaws have 40% faster use times (<see cref="Item.useTime"/>, <see cref="Item.useAnimation"/>) and 1 less tile reach (<see cref="Item.tileBoost"/>) than what are set in <see cref="Item.SetDefaults(int)"/>.
++		/// <br/> Chainsaws have 40% faster use times (<see cref="Item.useTime"/>, <see cref="Item.useAnimation"/>) and 1 less tile reach (<see cref="Item.tileBoost"/>) than what are set in <see cref="Item.SetDefaults(int, ItemVariant)"/>.
 +		/// <br/> Defaults to <see langword="false"/>.
 +		/// </summary>
 +		/// <remarks>
@@ -502,7 +502,7 @@
  		public static bool[] TrapSigned = Factory.CreateBoolSet(false, 3665, 3666, 3667, 3668, 3669, 3670, 3671, 3672, 3673, 3674, 3675, 3676, 3677, 3678, 3679, 3680, 3681, 3682, 3683, 3684, 3685, 3686, 3687, 3688, 3689, 3690, 3691, 3692, 3693, 3694, 3695, 3696, 3697, 3698, 3699, 3700, 3701, 3703, 3702, 3704, 3705, 3706, 3886, 3887, 3950, 3976, 4164, 4185, 4206, 4227, 4266, 4268, 4585, 4713, 5167, 5188, 5209, 5567, 5620, 5708, 5731, 5754, 5776, 5797, 5818, 5839, 5857, 5878, 5897, 5918, 5952, 5974, 5995, 6018, 6041, 6064, 6087, 6131);
 +
 +		/// <summary>
-+		/// If <see langword="true"/> for a given item type (<see cref="Item.type"/>), then that item cannot exist normally: It will be destroyed at the end of <see cref="Item.SetDefaults(int)"/>.
++		/// If <see langword="true"/> for a given item type (<see cref="Item.type"/>), then that item cannot exist normally: It will be destroyed at the end of <see cref="Item.SetDefaults(int, ItemVariant)"/>.
 +		/// <br/><br/> Defaults to <see langword="false"/>.
 +		/// <br/><br/> Modifying this set is not recommended. Currently deprecating existing items will potentially break the crafting functionality (See the <see href="https://github.com/tModLoader/tModLoader/issues/2487">corresponding issue</see> for more information).
 +		/// </summary>
@@ -575,7 +575,7 @@
 +		/// <br/> Defaults to <see langword="false"/>.
 +		/// </summary>
 +		/// <remarks>
-+		/// If you want an item to act like a Nebula pickup without the side effects, see <see cref="IsAPickup"/> and <see cref="ModItem.OnPickup(Player)"/> / <see cref="GlobalItem.OnPickup(Item, Player)"/>.
++		/// If you want an item to act like a Nebula pickup without the side effects, see <see cref="IsAPickup"/> and <see cref="ModItem.OnPickup(WorldItem, Player)"/> / <see cref="GlobalItem.OnPickup(WorldItem, Player)"/>.
 +		/// </remarks>
  		public static bool[] NebulaPickup = Factory.CreateBoolSet(3453, 3454, 3455);
 +

@@ -145,7 +145,7 @@ public partial class Main
 	/// </summary>
 	public static ActiveProjectileIterator ActiveProjectiles => new(projectile.AsSpan(0, maxProjectiles));
 	/// <summary>
-	/// Use to iterate over active items. Game logic is usually only interested in <see cref="Item.active"/> elements, this iterator facilitates that usage and allows for simpler and more readable code.
+	/// Use to iterate over active world items. Game logic is usually only interested in <see cref="WorldItem.active"/> elements, this iterator facilitates that usage and allows for simpler and more readable code.
 	/// <para/> Typically used in a foreach statement:
 	/// <code>foreach (var item in Main.ActiveItems) {
 	///     // Code
@@ -160,7 +160,7 @@ public partial class Main
 	///     // Code
 	/// }
 	/// </code>
-	/// Note that if the index of the Item in the <see cref="item"/> array is needed, <see cref="Entity.whoAmI"/> can <b>not</b> be used. This will be fixed in 1.4.5, but for now the for loop approach would have to be used instead.
+	/// Note that if the index of the WorldItem in the <see cref="item"/> array is needed, <see cref="Entity.whoAmI"/> can be used.
 	/// </summary>
 	public static ActiveItemIterator ActiveItems => new(item.AsSpan(0, maxItems));
 
