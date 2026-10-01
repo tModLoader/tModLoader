@@ -61,7 +61,7 @@ internal static class FileOriginChecker
 				// Parse standard ZoneId (ZoneId=3 means Internet, ZoneId=4 means Untrusted internet sites)
 				if (content.Contains("ZoneId=3") || content.Contains("ZoneId=4")) {
 					// Attempt to extract HostUrl if modern browsers saved it
-					foreach (var line in content.Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries)) {
+					foreach (var line in content.Split((char[])['\r', '\n'], StringSplitOptions.RemoveEmptyEntries)) {
 						// ReferrerUrl= is another option
 						if (line.StartsWith("HostUrl=", StringComparison.OrdinalIgnoreCase)) {
 							originUrl = line.Substring(8).Trim();
