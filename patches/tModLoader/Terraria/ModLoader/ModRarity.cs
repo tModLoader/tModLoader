@@ -2,6 +2,7 @@ using Microsoft.Xna.Framework;
 
 namespace Terraria.ModLoader;
 
+[CloneByReference]
 public abstract class ModRarity : ModType
 {
 	public int Type { get; internal set; }

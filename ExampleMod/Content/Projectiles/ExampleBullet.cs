@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using Terraria;
 using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -62,15 +63,26 @@ namespace ExampleMod.Content.Projectiles
 		public override bool PreDraw(Player player, ref Color lightColor) {
 			// Draws an afterimage trail. See https://github.com/tModLoader/tModLoader/wiki/Basic-Projectile#afterimage-trail for more information.
 
-			Texture2D texture = TextureAssets.Projectile[Type].Value;
+			// GetDefaultDrawData calculates the draw parameters (such as texture, frame, origin, etc.) that would be used for the normal projectile drawing.
+			var drawData = Projectile.GetDefaultDrawData(player, lightColor);
 
-			Vector2 drawOrigin = new Vector2(texture.Width * 0.5f, Projectile.height * 0.5f);
 			for (int k = Projectile.oldPos.Length - 1; k > 0; k--) {
-				Vector2 drawPos = (Projectile.oldPos[k] - Main.screenPosition) + drawOrigin + new Vector2(0f, Projectile.gfxOffY);
-				Color color = Projectile.GetAlpha(lightColor) * ((Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length);
-				Main.EntitySpriteDraw(texture, drawPos, null, color, Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0);
+				if (Projectile.oldPos[k] == Vector2.Zero) {
+					continue;
+				}
+
+				// Adjust the position and color of the default draw parameters for the afterimage trail. The position is adjusted to be the old position, and the color is adjusted to be more transparent the older the position is.
+				DrawData adjustedDrawData = drawData with {
+					// The position is adjusted by subtracting the current position and adding the old position, so that the afterimage is drawn at the old position while still taking into account the existing draw origin and offset values, if applicable.
+					position = drawData.position - Projectile.position + Projectile.oldPos[k],
+					color = drawData.color * ((Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length)
+				};
+
+				// Draw the adjusted draw parameters.
+				Main.EntitySpriteDraw(adjustedDrawData);
 			}
 
+			// Since we return true, the vanilla drawing code will run as well, which draws the projectile normally. If you return false, the vanilla drawing code will not run, and you would have to draw the projectile yourself.
 			return true;
 		}
 

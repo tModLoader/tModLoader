@@ -12,7 +12,7 @@
  	public static FlexibleTileWand RubblePlacementLarge = CreateRubblePlacerLarge();
  	public static FlexibleTileWand MiteyTitey = CreateMiteyTitey();
  	public static FlexibleTileWand SandCastleBucket = CreateSingleTileWand(169, 552, 0, 1, 2, 3).WithoutAmmoIcon();
-@@ -304,6 +_,14 @@
+@@ -305,6 +_,14 @@
  		flexibleTileWand.AddVariationsWithOffset(3086, tileIdToPlace, offset, 24, 25, 26);
  		flexibleTileWand.AddVariationsWithOffset(3081, tileIdToPlace, offset, 27, 28, 29);
  		return flexibleTileWand;

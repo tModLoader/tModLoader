@@ -29,6 +29,7 @@ using System.Threading.Tasks;
 using System.Runtime.CompilerServices;
 using Terraria.GameContent.Prefixes;
 using Terraria.Achievements;
+using Terraria.Testing;
 
 namespace Terraria.ModLoader;
 
@@ -320,7 +321,6 @@ public static class ModContent
 
 		Interface.loadMods.SetLoadStage("tModLoader.MSResizing");
 		ResizeArrays();
-		RecipeGroupHelper.CreateRecipeGroupLookups();
 
 		Main.ResourceSetsManager.AddModdedDisplaySets();
 		Main.ResourceSetsManager.SetActiveFromOriginalConfigKey();
@@ -398,6 +398,7 @@ public static class ModContent
 	{
 		// The server (or client with Main.SkipAssemblyLoad) doesn't naturally init these, and then the constructors get run twice in ResizeArrays
 		RuntimeHelpers.RunClassConstructor(typeof(AmmoID.Sets).TypeHandle);
+		RuntimeHelpers.RunClassConstructor(typeof(CloudID.Sets).TypeHandle);
 		RuntimeHelpers.RunClassConstructor(typeof(DustID.Sets).TypeHandle);
 		RuntimeHelpers.RunClassConstructor(typeof(MountID.Sets).TypeHandle);
 		RuntimeHelpers.RunClassConstructor(typeof(NPCHeadID.Sets).TypeHandle);
@@ -455,7 +456,8 @@ public static class ModContent
 				loadAction(mod);
 			}
 			catch (Exception e) {
-				e.Data["mod"] = mod.Name;
+				if (!e.Data.Contains("mod"))
+					e.Data["mod"] = mod.Name;
 				throw;
 			}
 			finally {
@@ -570,6 +572,8 @@ public static class ModContent
 		PlayerDrawLayerLoader.Unload();
 		MapLayerLoader.Unload();
 		SystemLoader.Unload();
+		StateSnapshot.Gameplay.RemoveModdedComponents();
+		StateSnapshot.Input.RemoveModdedComponents();
 		ResizeArrays(true);
 		for (int k = 0; k < Recipe.maxRecipes; k++) {
 			Main.recipe[k] = new Recipe();

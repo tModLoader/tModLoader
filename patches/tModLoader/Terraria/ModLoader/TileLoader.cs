@@ -81,7 +81,7 @@ public static class TileLoader
 	private delegate bool DelegatePreDrawPlacementPreview(int i, int j, int type, SpriteBatch spriteBatch, ref Rectangle frame, ref Vector2 position, ref Color color, bool validPlacement, ref SpriteEffects spriteEffects);
 	private static DelegatePreDrawPlacementPreview[] HookPreDrawPlacementPreview;
 	private static Action<int, int, int, SpriteBatch, Rectangle, Vector2, Color, bool, SpriteEffects>[] HookPostDrawPlacementPreview;
-	private static Action<int, int, int>[] HookRandomUpdate;
+	private static Action<int, int, int, bool>[] HookRandomUpdate;
 	private delegate bool DelegateTileFrame(int i, int j, int type, ref bool resetFrame, ref bool noBreak);
 	private static DelegateTileFrame[] HookTileFrame;
 	private static Func<int, int, int, bool>[] HookCanPlace;
@@ -337,6 +337,10 @@ public static class TileLoader
 		}
 		*/
 		tileData = TileObjectData.GetTileData(Main.tile[i, j]);
+		// The tile can already be inactive here, since CheckModTile runs while the object is being destroyed.
+		if (tileData == null)
+			return;
+
 		int partFrameX = frameX % tileData.CoordinateFullWidth;
 		int partFrameY = frameY % tileData.CoordinateFullHeight;
 		int partX = partFrameX / (tileData.CoordinateWidth + tileData.CoordinatePadding);
@@ -613,7 +617,7 @@ public static class TileLoader
 			foreach (var item in itemDrops) {
 				item.Prefix(-1); // Assign a random prefix, as expected
 				int num = Item.NewItem(WorldGen.GetItemSource_FromTileBreak(x, y), x * 16, y * 16, 16, 16, item, noBroadcast: false);
-				Main.item[num].TryCombiningIntoNearbyItems(num);
+				Main.item[num].TryCombiningIntoNearbyItems();
 			}
 		}
 	}
@@ -1078,16 +1082,28 @@ public static class TileLoader
 		}
 	}
 
-	public static void RandomUpdate(int i, int j, int type)
+	public static void RandomUpdate(int i, int j, int type, bool underground)
 	{
 		if (!Main.tile[i, j].active()) {
 			return;
 		}
-		GetTile(type)?.RandomUpdate(i, j);
+		GetTile(type)?.RandomUpdate(i, j, underground);
 
 		foreach (var hook in HookRandomUpdate) {
-			hook(i, j, type);
+			hook(i, j, type, underground);
 		}
+	}
+
+	/// <summary>
+	/// Invokes <see cref="ModTile.GrowSapling"/> for the modded tile at the given coordinates.
+	/// Called by <see cref="WorldGen.AttemptToGrowTreeFromSapling"/> when fertilizer is used on a modded sapling tile.
+	/// </summary>
+	public static bool GrowModSapling(int i, int j, int type, bool underground, int treeHeightAddon, bool ignoreWalls)
+	{
+		if (!Main.tile[i, j].active())
+			return false;
+
+		return GetTile(type)?.GrowSapling(i, j, underground, treeHeightAddon, ignoreWalls) ?? false;
 	}
 
 	public static bool TileFrame(int i, int j, int type, ref bool resetFrame, ref bool noBreak)

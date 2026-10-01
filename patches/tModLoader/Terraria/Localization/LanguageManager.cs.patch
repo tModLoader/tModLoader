@@ -1,11 +1,11 @@
 --- src/TerrariaNetCore/Terraria/Localization/LanguageManager.cs
 +++ src/tModLoader/Terraria/Localization/LanguageManager.cs
-@@ -13,14 +_,16 @@
+@@ -13,15 +_,16 @@
  using ReLogic.Content.Sources;
  using ReLogic.Graphics;
  using ReLogic.Utilities;
-+using Terraria.Initializers;
 +using Terraria.ModLoader;
+ using Terraria.Testing;
  using Terraria.Utilities;
  
  namespace Terraria.Localization;
@@ -19,7 +19,7 @@
  	private readonly Dictionary<string, List<string>> _categoryGroupedKeys = new Dictionary<string, List<string>>();
  	private readonly Dictionary<string, Dictionary<string, string>> _textVariations = new Dictionary<string, Dictionary<string, string>>();
  	private GameCulture _fallbackCulture = GameCulture.DefaultCulture;
-@@ -85,6 +_,9 @@
+@@ -86,6 +_,9 @@
  
  	public void SetLanguage(GameCulture culture)
  	{
@@ -29,33 +29,38 @@
  		if (ActiveCulture != culture) {
  			Thread.CurrentThread.CurrentCulture = culture.CultureInfo;
  			Thread.CurrentThread.CurrentUICulture = culture.CultureInfo;
-@@ -114,6 +_,25 @@
- 		ProcessCopyCommandsInTexts();
+@@ -93,18 +_,29 @@
+ 		}
  	}
  
-+	// Added by tML, replacement for commented code above
-+	internal void ReloadLanguage(bool resetValuesToKeysFirst = true)
-+	{
-+		if (resetValuesToKeysFirst)
-+			SetAllTextValuesToKeys();
-+
-+		LoadFilesForCulture(_fallbackCulture);
-+		if (ActiveCulture != _fallbackCulture)
-+			LoadFilesForCulture(ActiveCulture);
-+
-+		LoadFromContentSources();
-+
-+		ProcessCopyCommandsInTexts();
-+		RecalculateBoundTextValues();
-+		ChatInitializer.PrepareAliases();
-+
-+		SystemLoader.OnLocalizationsLoaded();
-+	}
-+
- 	private void LoadFilesForCulture(GameCulture culture)
++	/*
+ 	private void ReloadLanguage(GameCulture targetCulture)
++	*/
++	private void ReloadLanguage(GameCulture targetCulture, bool resetValuesToKeysFirst = true)
  	{
- 		string[] languageFilesForCulture = GetLanguageFilesForCulture(culture);
-@@ -136,8 +_,12 @@
+ 		if (ActiveCulture != _fallbackCulture) {
++			if (resetValuesToKeysFirst)
+-			SetAllTextValuesToKeys();
++				SetAllTextValuesToKeys();
++
+ 			if (targetCulture != _fallbackCulture)
+ 				LoadLanguage(_fallbackCulture);
+ 		}
+ 
+ 		LoadLanguage(targetCulture);
++		RecalculateBoundTextValues(); // Added by TML
++
+ 		if (this.OnLanguageChanged != null)
+ 			this.OnLanguageChanged(this);
++
++		SystemLoader.OnLocalizationsLoaded(); // Added by TML
+ 	}
++
++	internal void ReloadLanguage(bool resetValuesToKeysFirst = true) => ReloadLanguage(ActiveCulture, resetValuesToKeysFirst);
+ 
+ 	private void LoadLanguage(GameCulture culture)
+ 	{
+@@ -137,8 +_,12 @@
  				break;
  			}
  		}
@@ -68,19 +73,27 @@
  	private void ProcessCopyCommandsInTexts()
  	{
  		Regex regex = new Regex("{\\$(\\w+\\.\\w+)}", RegexOptions.Compiled);
-@@ -155,9 +_,11 @@
- 					break;
+@@ -159,14 +_,19 @@
+ 				}
  
  				value.SetValue(text);
 +				// patch context
  			}
+ 
+ 			Invariant.Assert(condition, "Replacement loop created when attempts to parse: {0}", value.UnformattedValue);
  		}
  	}
 +	*/ // ProcessCopyCommandsInTexts
  
  	public void UseSources(List<IContentSource> sourcesFromLowestToHighest)
  	{
-@@ -170,8 +_,9 @@
++		if (_contentSources.SequenceEqual(sourcesFromLowestToHighest)) // Added by tML
++			return;
++
+ 		_contentSources = sourcesFromLowestToHighest;
+ 		ReloadLanguage(ActiveCulture);
+ 	}
+@@ -176,8 +_,9 @@
  		string name = ActiveCulture.Name;
  		string assetNameStart = ("Localization" + Path.DirectorySeparatorChar + name).ToLower();
  		foreach (IContentSource contentSource in _contentSources) {
@@ -92,7 +105,7 @@
  				if (!(extension == ".json") && !(extension == ".csv"))
  					continue;
  
-@@ -186,6 +_,15 @@
+@@ -192,6 +_,15 @@
  						LoadLanguageFromFileTextCsv(fileText);
  				}
  				catch (Exception innerException) {
@@ -108,7 +121,16 @@
  					IAssetRepository assetRepository = Main.instance.Services.Get<IAssetRepository>();
  					if (assetRepository != null && assetRepository.AssetLoadFailHandler != null) {
  						string assetName = item + extension;
-@@ -353,6 +_,9 @@
+@@ -254,7 +_,7 @@
+ 		}
+ 	}
+ 
+-	private bool UpdateTextValue(string key, string value)
++	internal bool UpdateTextValue(string key, string value)
+ 	{
+ 		if (key.Contains('$')) {
+ 			string[] array = key.Split('$');
+@@ -359,6 +_,9 @@
  		if (!_categoryGroupedKeys.TryGetValue(categoryName, out var value))
  			return new LocalizedText(categoryName + ".RANDOM", categoryName + ".RANDOM");
  
@@ -118,7 +140,7 @@
  		return GetText(categoryName + "." + value[(random ?? Main.rand).Next(value.Count)]);
  	}
  
-@@ -361,6 +_,9 @@
+@@ -367,6 +_,9 @@
  		if (!_categoryGroupedKeys.TryGetValue(categoryName, out var value))
  			return new LocalizedText(categoryName + ".INDEXED", categoryName + ".INDEXED");
  
@@ -128,7 +150,7 @@
  		int index2 = index % value.Count;
  		return GetText(categoryName + "." + value[index2]);
  	}
-@@ -372,7 +_,20 @@
+@@ -378,7 +_,20 @@
  		if (_localizedTexts.TryGetValue(key, out var value))
  			return value;
  

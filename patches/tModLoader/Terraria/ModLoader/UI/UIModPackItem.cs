@@ -51,7 +51,13 @@ internal class UIModPackItem : UIPanel
 	private readonly UIAutoScaleTextTextPanel<string> _removePackLocalButton;
 	private readonly UIImageButton _deleteButton;
 	private readonly UIImageButton _fakeDeleteButton;
+	/// <summary>
+	/// Either the filename without .json extension (legacy) or the folder name (modern).
+	/// </summary>
 	private readonly string _filename;
+	/// <summary>
+	/// Either the filename without .json extension (legacy) or the full folder path (modern). (No trailing slash)
+	/// </summary>
 	private readonly string _filepath;
 	private readonly bool _legacy;
 	private string _tooltip;
@@ -60,7 +66,7 @@ internal class UIModPackItem : UIPanel
 	public UIModPackItem(string name, string[] mods, bool legacy, IEnumerable<LocalMod> localMods)
 	{
 		_legacy = legacy;
-		_filename = _legacy ? name : Path.GetFileNameWithoutExtension(name);
+		_filename = _legacy ? name : Path.GetFileName(name);
 		_filepath = name;
 
 		_numModsEnabled = 0;
@@ -327,7 +333,7 @@ internal class UIModPackItem : UIPanel
 	public override void MouseOver(UIMouseEvent evt)
 	{
 		base.MouseOver(evt);
-		if (Path.GetFileNameWithoutExtension(ModOrganizer.ModPackActive) == _filename)
+		if (Path.GetFileName(ModOrganizer.ModPackActive) == _filename)
 			BackgroundColor = Color.MediumPurple * 0.4f;
 		else
 			BackgroundColor = UICommon.DefaultUIBlue;
@@ -338,7 +344,7 @@ internal class UIModPackItem : UIPanel
 	public override void MouseOut(UIMouseEvent evt)
 	{
 		base.MouseOut(evt);
-		if (Path.GetFileNameWithoutExtension(ModOrganizer.ModPackActive) == _filename)
+		if (Path.GetFileName(ModOrganizer.ModPackActive) == _filename)
 			BackgroundColor = Color.MediumPurple * 0.7f;
 		else
 			BackgroundColor = UICommon.DefaultUIBlueMouseOver;

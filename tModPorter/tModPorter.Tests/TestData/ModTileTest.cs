@@ -51,6 +51,7 @@ public class ModTileTest : ModTile
 
 		TileID.Sets.IsAMechanism[Type] = true;
 		TileID.Sets.IsATrigger[Type] = true;
+		TileID.Sets.WallsMergeWith[Type] = true;
 
 		AddToArray(ref TileID.Sets.CountsAsPylon); // Shouldn't change
 		AddToArray(ref TileID.Sets.RoomNeeds.CountsAsTable);
@@ -78,6 +79,8 @@ public class ModTileTest : ModTile
 	public override void SetDrawPositions(int i, int j, ref int width, ref int offsetY, ref int height) { /* comment */ }
 
 	public override bool Drop(int i, int j) { /* Empty */ }
+
+	public override void RandomUpdate(int i, int j) { /* Empty */ }
 }
 
 public static class TileHelpers

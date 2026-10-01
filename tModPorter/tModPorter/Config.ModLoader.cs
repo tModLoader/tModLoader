@@ -554,6 +554,8 @@ public static partial class Config
 		ChangeHookSignature("Terraria.ModLoader.ModTree", "SetTreeFoliageSettings");
 
 		// 1.4.5
+		ChangeHookSignature("Terraria.ModLoader.ModBlockType", "RandomUpdate");
+		ChangeHookSignature("Terraria.ModLoader.GlobalBlockType", "RandomUpdate");
 		ChangeHookSignature("Terraria.ModLoader.ModNPC", "BossLoot");
 		ChangeHookSignature("Terraria.ModLoader.ModNPC", "SpawnChance").RenameParameter("spawnInfo", "spawner");
 		ChangeHookSignature("Terraria.ModLoader.ModNPC", "OnChatButtonClicked", comment: "Suggestion: Previously this was used to assign a shop to a button, but that is now handled by RegisterChatButtons. If that is all this was used for, remove this hook");
@@ -588,6 +590,7 @@ public static partial class Config
 		ChangeHookSignature("Terraria.ModLoader.GlobalProjectile", "PreDrawExtras", ProjectileDrawPlayerHint);
 		ChangeHookSignature("Terraria.ModLoader.GlobalProjectile", "PreDraw", ProjectileDrawPlayerHint);
 		ChangeHookSignature("Terraria.ModLoader.GlobalProjectile", "PostDraw", ProjectileDrawPlayerHint);
+		ChangeHookSignature("Terraria.ModLoader.ModCloud", "Draw");
 
 		RefactorInstanceMethodCall("Terraria.ModLoader.ModTile", "AddToArray", RewriteAddToArrayForRoomNeeds);
 
@@ -606,6 +609,8 @@ public static partial class Config
 		RenameInstanceField("Terraria.ModLoader.TooltipLine", "OverrideColor", "Color");
 
 		RenameType(from: "Terraria.ModLoader.NPCSpawnInfo", to: "Terraria.NPC+Spawner");
+
+		RefactorStaticMember("Terraria.ID.ProjectileID.Sets", "PlayerHurtDamageIgnoresDifficultyScaling", Removed("Damage dealt to a player by their own projectile, or by another player, is never scaled by difficulty. For hostile projectiles, assign Projectile.hostileDamageScaling in SetDefaults instead"));
 
 		RenameStaticField("Terraria.ID.NPCID.Sets", from: "ImmuneToAllBuffs", to: "ImmuneToRegularBuffs").FollowBy(AddCommentToFieldAccess("NPCID.Sets.ImmuneToAllBuffs was removed. If immunity to whip tag effects are desired, also set NPCID.Sets.ImmuneToWhipTags to true."));
 	}

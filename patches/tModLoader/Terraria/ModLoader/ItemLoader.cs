@@ -4,11 +4,13 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Runtime.CompilerServices;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent;
+using Terraria.GameContent.Golf;
 using Terraria.GameContent.Items;
 using Terraria.GameContent.Prefixes;
 using Terraria.ID;
@@ -86,8 +88,10 @@ public static class ItemLoader
 		LoaderUtils.ResetStaticMembers(typeof(AmmoID));
 		LoaderUtils.ResetStaticMembers(typeof(PrefixLegacy.ItemSets));
 		LoaderUtils.ResetStaticMembers(typeof(ItemVariants));
-		if (unloading)
+		if (unloading) {
 			LoaderUtils.ResetStaticMembers(typeof(ItemUseStyleID));
+			LoaderUtils.ResetStaticMembers(typeof(GameContent.Tile_Entities.TEDisplayDoll));
+		}
 
 		//Etc
 		Array.Resize(ref Item.cachedItemSpawnsByType, ItemCount);
@@ -1121,7 +1125,8 @@ public static class ItemLoader
 	/// </summary>
 	public static bool ConsumeItem(Item item, Player player)
 	{
-		if (item.IsAir) return true;
+		if (item.IsAir)
+			return true;
 		if (item.ModItem != null && !item.ModItem.ConsumeItem(player))
 			return false;
 
@@ -1821,6 +1826,29 @@ public static class ItemLoader
 		}
 	}
 
+	private delegate bool DelegateWingGlidingSpeeds(Item item, Player player, ref float gravityMultiplier, ref float maxSpeedMultiplier, bool prevented);
+	private static HookList HookWingGlidingSpeeds = AddHook<DelegateWingGlidingSpeeds>(g => g.WingGlidingSpeeds);
+	/// <summary>
+	/// If the player is gliding using wings, this uses the result of GetWing, and calls ModItem.WingGlidingSpeeds then all GlobalItem.WingGlidingSpeeds hooks.
+	/// <para/> Return false to prevent vanilla gliding behavior.
+	/// </summary>
+	public static bool WingGlidingSpeeds(Player player, ref float gravityMultiplier, ref float maxSpeedMultiplier)
+	{
+		Item item = player.equippedWings;
+		if (item == null) {
+			EquipTexture texture = EquipLoader.GetEquipTexture(EquipType.Wings, player.wingsLogic);
+			return texture?.WingGlidingSpeeds(player, ref gravityMultiplier, ref maxSpeedMultiplier) ?? true;
+		}
+
+		bool result = item.ModItem?.WingGlidingSpeeds(player, ref gravityMultiplier, ref maxSpeedMultiplier) ?? true;
+
+		foreach (GlobalItem g in HookWingGlidingSpeeds.Enumerate(item)) {
+			result &= g.WingGlidingSpeeds(item, player, ref gravityMultiplier, ref maxSpeedMultiplier, !result);
+		}
+
+		return result;
+	}
+
 	private delegate void DelegateHorizontalWingSpeeds(Item item, Player player, ref float speed, ref float acceleration);
 	private static HookList HookHorizontalWingSpeeds = AddHook<DelegateHorizontalWingSpeeds>(g => g.HorizontalWingSpeeds);
 
@@ -1863,7 +1891,32 @@ public static class ItemLoader
 		return retVal ?? false;
 	}
 
-	private delegate void DelegateUpdate(WorldItem item, ref float gravity, ref float maxFallSpeed);
+    public static void ModifyEquipTextureDraw(ref PlayerDrawSet drawInfo, ref DrawData drawData, EquipType type, int slot, [CallerMemberName] string methodName = "")
+    {
+        // Notes:
+        // Glowmasks not supported yet, but might in future
+        // Front, called twice, once for each half of texture
+        // Head, can be called twice if Head.Sets.FrontToBackID used
+        // Shield, Can be called many times if parrying, but no api support for that yet
+        // Body, called 5 times for each CompositePlayerDrawContext
+
+        if (slot <= 0)
+        {
+            drawInfo.DrawDataCache.Add(drawData);
+            return;
+        }
+
+        // TODO: We can make a GlobalItem hook if requested, it would just need the equip type and slot passed to it rather than EquipTexture for it to work with vanilla equipment.
+        EquipTexture texture = EquipLoader.GetEquipTexture(type, slot);
+        bool? result = texture?.ModifyDraw(ref drawInfo, ref drawData, methodName);
+
+        if (result ?? true)
+            drawInfo.DrawDataCache.Add(drawData);
+
+        return;
+    }
+
+    private delegate void DelegateUpdate(WorldItem item, ref float gravity, ref float maxFallSpeed);
 	private static HookList HookUpdate = AddHook<DelegateUpdate>(g => g.Update);
 
 	/// <summary>
@@ -2045,6 +2098,36 @@ public static class ItemLoader
 
 		foreach (var g in HookPostDrawInInventory.Enumerate(item)) {
 			g.PostDrawInInventory(item, spriteBatch, position, frame, drawColor, itemColor, origin, scale);
+		}
+	}
+
+	private delegate void DelegatePreModifyItemDraw(Item item, ref PlayerDrawSet drawInfo, ref DrawData drawData, ref DrawData? coloredDrawData, ref DrawData? glowmaskDrawData);
+	private static HookList HookPreModifyItemDraw = AddHook<DelegatePreModifyItemDraw>(g => g.PreModifyItemDraw);
+	private delegate void DelegatePostModifyItemDraw(Item item, ref PlayerDrawSet drawInfo, DrawData drawData, DrawData? coloredDrawData, DrawData? glowmaskDrawData);
+	private static HookList HookPostModifyItemDraw = AddHook<DelegatePostModifyItemDraw>(g => g.PostModifyItemDraw);
+
+	/// <summary>
+	/// Calls GlobalItem.PreModifyItemDraw, then ModItem.ModifyItemDraw, then GlobalItem.PostModifyItemDraw.
+	/// </summary>
+	public static void ModifyItemDraw(Item item, ref PlayerDrawSet drawInfo, DrawData drawData, DrawData? coloredDrawData, DrawData? glowmaskDrawData)
+	{
+		// Draw behind and modify normal drawData
+		foreach (var g in HookPreModifyItemDraw.Enumerate(item)) {
+			g.PreModifyItemDraw(item, ref drawInfo, ref drawData, ref coloredDrawData, ref glowmaskDrawData);
+		}
+
+		// Draw before, modify normal drawData, draw after
+		if (item.ModItem?.ModifyItemDraw(ref drawInfo, ref drawData, ref coloredDrawData, ref glowmaskDrawData) ?? true) {
+			drawInfo.DrawDataCache.Add(drawData);
+			if (coloredDrawData.HasValue)
+				drawInfo.DrawDataCache.Add(coloredDrawData.Value);
+			if (glowmaskDrawData.HasValue)
+				drawInfo.DrawDataCache.Add(glowmaskDrawData.Value);
+		}
+
+		// Draw in front
+		foreach (var g in HookPostModifyItemDraw.Enumerate(item)) {
+			g.PostModifyItemDraw(item, ref drawInfo, drawData, coloredDrawData, glowmaskDrawData);
 		}
 	}
 
@@ -2347,6 +2430,17 @@ public static class ItemLoader
 		if (item.ModItem != null || item.prefix >= PrefixID.Count)
 			return true;
 
+		return false;
+	}
+
+	public static bool GetGolfClubProperties(int type, out GolfHelper.ClubProperties properties)
+	{
+		if (GetItem(type)?.GetGolfClubProperties() is GolfHelper.ClubProperties result) {
+			properties = result;
+			return true;
+		}
+
+		properties = default;
 		return false;
 	}
 }

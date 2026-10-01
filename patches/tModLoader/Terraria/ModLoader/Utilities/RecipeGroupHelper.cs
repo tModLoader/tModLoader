@@ -26,19 +26,5 @@ internal static class RecipeGroupHelper
 				throw;
 			}
 		}
-		CreateRecipeGroupLookups();
-	}
-
-	internal static void CreateRecipeGroupLookups()
-	{
-		/*
-		for (int k = 0; k < RecipeGroup.nextRecipeGroupIndex; k++) {
-			RecipeGroup rec = RecipeGroup.recipeGroups[k];
-			rec.ValidItemsLookup = new bool[ItemLoader.ItemCount];
-			foreach (int type in rec.ValidItems) {
-				rec.ValidItemsLookup[type] = true;
-			}
-		}
-		*/
 	}
 }

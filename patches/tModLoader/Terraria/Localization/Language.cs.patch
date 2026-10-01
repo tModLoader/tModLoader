@@ -49,13 +49,13 @@
  	public static int GetCategorySize(string key) => LanguageManager.Instance.GetCategorySize(key);
  	public static LocalizedText[] FindAll(Regex regex) => LanguageManager.Instance.FindAll(regex);
 +	/// <summary>
-+	/// Finds all LocalizedText that satisfy the <paramref name="filter"/> parameter. Typically used with <see cref="Lang.CreateDialogFilter(string)"/> or <see cref="Lang.CreateDialogFilter(string, object)"/> as the <paramref name="filter"/> argument to find all LocalizedText that have a specific key prefix and satisfy provided conditions.
++	/// Finds all LocalizedText that satisfy the <paramref name="filter"/> parameter. Typically used with <see cref="Lang.CreateDialogFilter(string, bool)"/> or <see cref="Lang.CreateDialogFilter(string, object)"/> as the <paramref name="filter"/> argument to find all LocalizedText that have a specific key prefix and satisfy provided conditions.
 +	/// </summary>
 +	/// <param name="filter"></param>
 +	/// <returns></returns>
  	public static LocalizedText[] FindAll(LanguageSearchFilter filter) => LanguageManager.Instance.FindAll(filter);
 +	/// <summary>
-+	/// Selects a single random LocalizedText that satisfies the <paramref name="filter"/> parameter. Typically used with <see cref="Lang.CreateDialogFilter(string)"/> or <see cref="Lang.CreateDialogFilter(string, object)"/> as the <paramref name="filter"/> argument to find a random LocalizedText that has a specific key prefix and satisfies the provided conditions.
++	/// Selects a single random LocalizedText that satisfies the <paramref name="filter"/> parameter. Typically used with <see cref="Lang.CreateDialogFilter(string, bool)"/> or <see cref="Lang.CreateDialogFilter(string, object)"/> as the <paramref name="filter"/> argument to find a random LocalizedText that has a specific key prefix and satisfies the provided conditions.
 +	/// </summary>
 +	/// <param name="filter"></param>
 +	/// <param name="random"></param>
@@ -63,7 +63,7 @@
  	public static LocalizedText SelectRandom(LanguageSearchFilter filter, UnifiedRandom random = null) => LanguageManager.Instance.SelectRandom(filter, random);
 +	/// <summary>
 +	/// <b>This method is not suitable for modded localization keys.</b>
-+	/// <br/><br/> To select a random LocalizedText from all entries that share the same "category"/prefix, use <see cref="Lang.CreateDialogFilter(string)"/> and <see cref="SelectRandom(LanguageSearchFilter, UnifiedRandom)"/> together instead of this method:
++	/// <br/><br/> To select a random LocalizedText from all entries that share the same "category"/prefix, use <see cref="Lang.CreateDialogFilter(string, bool)"/> and <see cref="SelectRandom(LanguageSearchFilter, UnifiedRandom)"/> together instead of this method:
 +	/// <code>LocalizedText randomOption = Language.SelectRandom(Lang.CreateDialogFilter(this.GetLocalizationKey("Options.")));</code>
 +	/// </summary>
  	public static LocalizedText RandomFromCategory(string categoryName, UnifiedRandom random = null) => LanguageManager.Instance.RandomFromCategory(categoryName, random);

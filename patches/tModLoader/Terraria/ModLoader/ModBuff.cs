@@ -9,6 +9,7 @@ namespace Terraria.ModLoader;
 /// <summary>
 /// This class serves as a place for you to define a new buff and how that buff behaves.
 /// </summary>
+[CloneByReference]
 public abstract class ModBuff : ModTexturedType, ILocalizedModType
 {
 	/// <summary> The buff id of this buff. </summary>
@@ -69,7 +70,8 @@ public abstract class ModBuff : ModTexturedType, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Allows to you make special things happen when adding this buff to a player when the player already has this buff. Return true to block the vanilla re-apply code from being called; returns false by default. The vanilla re-apply code sets the buff time to the "time" argument if that argument is larger than the current buff time.
+	/// Allows to you make special things happen when adding this buff to a player when the player already has this buff. Return true to block the vanilla re-apply code from being called; returns false by default.
+	/// <para/> The vanilla re-apply code sets the buff time to the "time" argument if that argument is larger than the current buff time. If <see cref="BuffID.Sets.AddBuffTimeAdditivelyToCap"/> is set, it will instead accumulate up to the cap contained in that set.
 	/// </summary>
 	public virtual bool ReApply(Player player, int time, int buffIndex)
 	{

@@ -1,0 +1,46 @@
+--- src/TerrariaNetCore/Terraria/GameContent/UI/TextDisplayCache.cs
++++ src/tModLoader/Terraria/GameContent/UI/TextDisplayCache.cs
+@@ -1,4 +_,7 @@
++using System.Collections.Generic;
++using Microsoft.Xna.Framework;
+ using Terraria.GameInput;
++using Terraria.UI.Chat;
+ 
+ namespace Terraria.GameContent.UI;
+ 
+@@ -9,19 +_,33 @@
+ 	private int _lastScreenHeight;
+ 	private InputMode _lastInputMode;
+ 
+-	public string[] TextLines { get; private set; }
++	// Added by TML.
++	private Color originalColor;
++
++	public List<List<TextSnippet>> TextLines { get; private set; } // Changed from string[]
+ 
+ 	public int AmountOfLines { get; private set; }
+ 
+-	public void PrepareCache(string text)
++	// Fix all instances of drawing text to use TextSnippets instead of strings (#FixNPCChat)
++	// Added baseColor parameter
++	public void PrepareCache(string text, Color baseColor)
+ 	{
++		/*
+ 		if (false | (Main.screenWidth != _lastScreenWidth) | (Main.screenHeight != _lastScreenHeight) | (_originalText != text) | (PlayerInput.CurrentInputMode != _lastInputMode)) {
++		*/
++		if (false | (Main.screenWidth != _lastScreenWidth) | (Main.screenHeight != _lastScreenHeight) | (_originalText != text) | (PlayerInput.CurrentInputMode != _lastInputMode) | (originalColor != baseColor)) {
+ 			_lastScreenWidth = Main.screenWidth;
+ 			_lastScreenHeight = Main.screenHeight;
+ 			_originalText = text;
+ 			_lastInputMode = PlayerInput.CurrentInputMode;
++			originalColor = baseColor;
++
++			/*
+ 			TextLines = Utils.WordwrapString(text, FontAssets.MouseText.Value, 460, 10, out var lineAmount);
+ 			AmountOfLines = lineAmount;
++			*/
++			TextLines = Utils.WordwrapStringSmart(text, baseColor, FontAssets.MouseText.Value, 460, 10);
++			AmountOfLines = TextLines.Count;
+ 		}
+ 	}
+ }

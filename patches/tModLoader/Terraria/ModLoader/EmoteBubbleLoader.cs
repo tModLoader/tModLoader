@@ -4,11 +4,10 @@ using MonoMod.Cil;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Terraria.Chat.Commands;
 using Terraria.GameContent.UI;
 using Terraria.GameContent.UI.Elements;
-using Terraria.Initializers;
 using Terraria.Localization;
+using Terraria.UI.Chat;
 
 namespace Terraria.ModLoader;
 
@@ -30,6 +29,7 @@ public static class EmoteBubbleLoader
 		emoteBubbles.Clear();
 		globalEmoteBubbles.Clear();
 		categoryEmoteLookup.Clear();
+		ChatManager.Commands.PrepareAliases();
 	}
 
 	internal static void ResizeArrays()
@@ -45,10 +45,9 @@ public static class EmoteBubbleLoader
 	{
 		foreach (ModEmoteBubble emoteBubble in emoteBubbles) {
 			Lang._emojiNameCache[emoteBubble.Type] = emoteBubble.Command;
-
-			if (emoteBubble.Command != LocalizedText.Empty) // TODO: does this work?
-				EmojiCommand._byName[emoteBubble.Command] = emoteBubble.Type;
 		}
+
+		ChatManager.Commands.PrepareAliases();
 	}
 
 	internal static Dictionary<Mod, List<int>> GetAllUnlockedModEmotes()

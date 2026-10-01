@@ -1,0 +1,12 @@
+--- src/TerrariaNetCore/Terraria/GameContent/ItemTrader.cs
++++ src/tModLoader/Terraria/GameContent/ItemTrader.cs
+@@ -20,6 +_,9 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Handles the special conversions item trade feature of the Chlorophyte Extractinator. See the example in <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/Items/Placeable/ExampleBar.cs">ExampleBar.cs</see> for an example of how to add your own trade options.
++	/// </summary>
+ 	public static ItemTrader ChlorophyteExtractinator = CreateChlorophyteExtractinator();
+ 	private List<TradeOption> _options = new List<TradeOption>();
+ 

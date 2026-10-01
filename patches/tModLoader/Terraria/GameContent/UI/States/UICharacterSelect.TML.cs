@@ -28,7 +28,7 @@ public partial class UICharacterSelect : UIState
 		_migrationPanel = new UIExpandablePanel();
 		_migrationPanel.OnExpanded += _migrationPanel_OnExpanded;
 
-		var playerMigrationPanelTitle = new UIText(Language.GetTextValue("tModLoader.MigrateIndividualPlayersHeader"));
+		var playerMigrationPanelTitle = new UIText(Language.GetText("tModLoader.MigrateIndividualPlayersHeader"));
 		playerMigrationPanelTitle.Top.Set(4, 0);
 		_migrationPanel.Append(playerMigrationPanelTitle);
 
@@ -75,7 +75,7 @@ public partial class UICharacterSelect : UIState
 			_ or BuildInfo.BuildPurpose.Dev => 3,
 		};
 
-		foreach (var (otherSaveFolderPath, message, stabilityLevel) in otherPaths) {
+		foreach (var (otherSaveFolderPath, releaseName, stabilityLevel) in otherPaths) {
 			if (stabilityLevel == currentStabilityLevel)
 				continue;
 
@@ -143,7 +143,7 @@ public partial class UICharacterSelect : UIState
 					}
 				}
 
-				var migrateIndividualPlayerText = new UIText(string.Format(message, fileData.Name));
+				var migrateIndividualPlayerText = new UIText(Language.GetTextValue("tModLoader.ClickToCopyFileOverFromReleaseName", fileData.Name, releaseName));
 
 				migrateIndividualPlayerText.Width.Set(-left, 1);
 				migrateIndividualPlayerText.Left.Set(left, 0);

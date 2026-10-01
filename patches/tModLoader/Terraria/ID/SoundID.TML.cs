@@ -96,7 +96,7 @@ partial class SoundID
 	public static readonly SoundStyle Camera = new($"{Prefix}Camera");
 	// Note: Vanilla logic has special distance falloff rules, but this sound is unused.
 	public static readonly SoundStyle MoonLord = new($"{Prefix}NPC_Killed_10") { PitchVariance = 0.2f, MaxInstances = 0 };
-	public static readonly SoundStyle Thunder = new($"{Prefix}Thunder_", 0, 7, SoundType.Ambient) { PitchVariance = 0.2f, RerollAttempts = 6, LimitsArePerVariant = true };
+	public static readonly SoundStyle Thunder = new($"{Prefix}Thunder_", 0, 6, SoundType.Ambient) { PitchVariance = 0.2f, RerollAttempts = 5, LimitsArePerVariant = true };
 	public static readonly SoundStyle Seagull = new($"{Prefix}Zombie_", 106, 3, SoundType.Ambient) { Identifier = "Terraria/Seagull", Volume = 0.2f, PitchRange = (-0.7f, 0f), MaxInstances = 0 };
 	public static readonly SoundStyle Dolphin = new($"{Prefix}Zombie_109", SoundType.Ambient) { Volume = 0.3f, PitchVariance = 0.2f, SoundLimitBehavior = IgnoreNew };
 	// There is a 1 in 300 chance for an owl to play one of 3 easter egg sound variants.
@@ -376,6 +376,7 @@ partial class SoundID
 	public static readonly SoundStyle Item111 = ItemSound(111);
 	public static readonly SoundStyle Item112 = ItemSound(112);
 	public static readonly SoundStyle Item113 = ItemSound(113);
+	public static readonly SoundStyle Item113_Quiet = ItemSound(113).WithVolumePerceived(2 / 3f);
 	public static readonly SoundStyle Item114 = ItemSound(114);
 	public static readonly SoundStyle Item115 = ItemSound(115);
 	public static readonly SoundStyle Item116 = ItemSound(116) with { Volume = 0.5f };
@@ -442,7 +443,7 @@ partial class SoundID
 	public static readonly SoundStyle Item176 = ItemSound(176) with { Volume = 0.9f };
 	public static readonly SoundStyle Item177 = ItemSound(177);
 	public static readonly SoundStyle Item178 = ItemSound(178);
-	public static readonly SoundStyle Item179 = ItemSound(179);
+	public static readonly SoundStyle Item179 = ItemSound(179) with { Volume = 0.6f };
 	public static readonly SoundStyle Item180 = ItemSound(180);
 	public static readonly SoundStyle Item181 = ItemSound(181);
 	public static readonly SoundStyle Item182 = ItemSound(182);
@@ -463,6 +464,17 @@ partial class SoundID
 	public static readonly SoundStyle Item197 = ItemSound(197);
 	public static readonly SoundStyle Item198 = ItemSound(198);
 	public static readonly SoundStyle Item199 = ItemSound(199);
+	public static readonly SoundStyle MysticBloom = ItemSound(60).WithVolumePerceived(0.65f);
+	public static readonly SoundStyle GlacierFang_Muzzle = ItemSound(201);
+	public static readonly SoundStyle Unused = ItemSound(202);
+	public static readonly SoundStyle ArcSurge = ItemSound(203).WithVolumePerceived(0.4f);
+	public static readonly SoundStyle LightningStrikeHit = ItemSound(204);
+	public static readonly SoundStyle StackableItem8ForRubyStaff = ItemSound(205) with { MaxInstances = 0 };
+	public static readonly SoundStyle PyroclasticStone = ItemSound(206);
+	public static readonly SoundStyle ArmletOfRuin = ItemSound(207);
+	public static readonly SoundStyle Unused2 = ItemSound(208);
+	public static readonly SoundStyle Unused3 = ItemSound(209);
+	public static readonly SoundStyle GlacierFang_Charging = ItemSound(210) with { Volume = 0.35f };
 	// ZombieX sound styles are new, and weren't present in vanilla neither as int nor SoundStyle fields. 
 	public static readonly SoundStyle Zombie1 = ZombieSound(1);
 	public static readonly SoundStyle Zombie2 = ZombieSound(2);

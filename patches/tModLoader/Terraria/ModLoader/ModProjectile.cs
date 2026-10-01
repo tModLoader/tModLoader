@@ -1,11 +1,12 @@
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria.DataStructures;
 using Terraria.GameContent;
+using Terraria.GameContent.Tile_Entities;
 using Terraria.ID;
 using Terraria.Localization;
 
@@ -452,8 +453,8 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 
 	/// <summary>
 	/// Used to adjust projectile properties immediately before the projectile becomes an explosion. This is called on projectiles using the <see cref="ProjAIStyleID.Explosive"/> aiStyle or projectiles that are contained in the <see cref="ProjectileID.Sets.Explosive"/> set. By default, tileCollide is set to false and alpha is set to 255. Use this to adjust damage, knockBack, and the projectile hitbox (Projectile.Resize).
-	/// <para/> Called during Projectile.PrepareBombToBlow, which is called by default during Projectile.AI_016 and during Projectile.Kill for the aforementioned projectiles.
-	/// <para/> Can be called on the local client or server, depending on who owns the projectile.
+	/// <para/> Called during Projectile.PrepareBombToBlow, which is called by default during Projectile.Kill for the aforementioned projectiles, immediately before the explosion deals its damage.
+	/// <para/> Called on all clients and the server.
 	/// </summary>
 	public virtual void PrepareBombToBlow()
 	{
@@ -466,5 +467,58 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 	/// </summary>
 	public virtual void EmitEnchantmentVisualsAt(Vector2 boxPosition, int boxWidth, int boxHeight)
 	{
+	}
+
+	/// <summary>
+	/// Allows for modifying the position of the held projectile while a Mannequin is holding it.
+	/// <para/> This is needed for held projectiles such as Spears, Drills, Shortswords, Yoyos, Flails, and Whips.
+	/// <para/> Vanilla code supports <see cref="ProjAIStyleID.Spear"/>, <see cref="ProjAIStyleID.Drill"/>, <see cref="ProjAIStyleID.ShortSword"/>, <see cref="ProjAIStyleID.HeldProjectile"/>, <see cref="ProjAIStyleID.ForwardStab"/>, <see cref="ProjAIStyleID.SleepyOctopod"/>, <see cref="ProjAIStyleID.Yoyo"/>, <see cref="ProjAIStyleID.Flail"/>, <see cref="ProjAIStyleID.MedusaRay"/>, and <see cref="ProjAIStyleID.Whip"/>, but the existing logic might not work or look correct for all modded projectiles. <paramref name="aiStyle"/> can be set to a supported vanilla aiStyle to get the same behavior as a vanilla projectile. <paramref name="aiType"/> can be set to a supported vanilla projectile type for some aiStyles that check type.
+	/// <para/> If re-using an existing aiStyle value doesn't work, you will need to implement this hook to make it display correctly on mannequins. Consult the decompiled code of <see cref="Projectile.AI_DisplayDoll(Player, Item, TEDisplayDoll.DisplayDollPose, out bool)"/> or Example Mod usages for sample code.
+	/// <para/> Additionally, <see cref="ProjectileID.Sets.DisplayDollDrawUseStyle"/> can be set to use the poses from a specific useStyle instead of the item's useStyle.
+	/// <para/> See also <see cref="Projectile.isAPreviewDisplayDoll"/>.
+	/// </summary>
+	/// <param name="doll"> The mannequin holding the projectile. </param>
+	/// <param name="pose"> The pose that the mannequin is in. </param>
+	/// <param name="aiType"> The Projectile.type of the projectile. Will be set to <see cref="AIType"/> if set. Can be changed to a supported type within the style. </param>
+	/// <param name="aiStyle"> The Projectile.aiStyle of the projectile. Can be changed to a supported style. </param>
+	/// <returns> Return false to skip the vanilla logic. Returns true by default. </returns>
+	public virtual bool DisplayDollSettings(Player doll, TEDisplayDoll.DisplayDollPose pose, ref int aiStyle, ref int aiType)
+	{
+		return true;
+	}
+
+	/// <summary>
+	/// Used to adjust flail properties.
+	/// <para/> Called when aiStyle is <see cref="ProjAIStyleID.Flail"/>.
+	/// </summary>
+	/// <param name="launchTimeLimit">How much time the projectile can go before retracting (speed and shootTimer will set the flail's range)</param>
+	/// <param name="launchSpeed">How fast the projectile can move</param>
+	/// <param name="maxLaunchLength">How far the projectile's chain can stretch before being forced to retract when in launched state</param>
+	/// <param name="retractAcceleration">How quickly the projectile will accelerate back towards the player while retracting</param>
+	/// <param name="maxRetractSpeed">The max speed the projectile will have while retracting</param>
+	/// <param name="forcedRetractAcceleration">How quickly the projectile will accelerate back towards the player while being forced to retract</param>
+	/// <param name="maxForcedRetractSpeed">The max speed the projectile will have while being forced to retract</param>
+	/// <param name="ricochetTimeLimit">How long the projectile will remain in the ricocheting state before switching to the dropping state</param>
+	/// <param name="spinVisualDistance">How far from the player the flail will be while spinning</param>
+	public virtual void FlailStats(ref int launchTimeLimit, ref float launchSpeed, ref float maxLaunchLength, ref float retractAcceleration, ref float maxRetractSpeed, ref float forcedRetractAcceleration, ref float maxForcedRetractSpeed, ref int ricochetTimeLimit, ref float spinVisualDistance)
+	{
+	}
+
+	/// <summary>
+	/// Used to adjust flail spin collision range.
+	/// <para/> Called during <see cref="Projectile.Colliding(Rectangle, Rectangle)"/> when aiStyle is <see cref="ProjAIStyleID.Flail"/>.
+	/// </summary>
+	public virtual void FlailSpinCollisionRange(ref float range)
+	{
+	}
+
+	/// <summary>
+	/// Called during <see cref="Main.TryDespawningProjectile(Projectile, int)"/> before the projectile is killed. This will be called when projectiles that can be despawned by right clicking on them by using <see cref="ProjectileID.Sets.DespawnItemIcon"/> are right clicked. The <paramref name="giveItem"/> parameter controls if the item will drop provided <see cref="ProjectileID.Sets.DespawnItemGivesItemBack"/> is also true.
+	/// <para/> This can be used to prevent aspects of the usual projectile kill logic that shouldn't run when the projectile is being despawned by a player.
+	/// <para/> Return false to prevent the projectile from despawning.
+	/// <para/> Called on the local client.
+	/// </summary>
+	public virtual bool PreTryDespawning(ref bool giveItem) {
+		return true;
 	}
 }

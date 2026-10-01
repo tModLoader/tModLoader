@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
+using Terraria.GameContent.Tile_Entities;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -49,7 +50,7 @@ namespace ExampleMod.Content.Projectiles
 			Player owner = Main.player[Projectile.owner];
 			Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2; // Without PiOver2, the rotation would be off by 90 degrees counterclockwise.
 
-			Projectile.Center = Main.GetPlayerArmPosition(Projectile, owner) + Projectile.velocity * Timer;
+			Projectile.Center = owner.GetArmPosition() + Projectile.velocity * Timer;
 			// Vanilla uses Vector2.Dot(Projectile.velocity, Vector2.UnitX) here. Dot Product returns the difference between two vectors, 0 meaning they are perpendicular.
 			// However, the use of UnitX basically turns it into a more complicated way of checking if the projectile's velocity is above or equal to zero on the X axis.
 			Projectile.spriteDirection = Projectile.velocity.X >= 0f ? 1 : -1;
@@ -134,7 +135,7 @@ namespace ExampleMod.Content.Projectiles
 			// This is needed in order for OnProcHit in the WhipTagEffect to activate.
 			if (Projectile.localAI[0] == 0f) {
 				Projectile.localAI[0] = 1f;
-				Main.player[Projectile.owner].TagEffectState.TryEnableProcOnNPC(Projectile.tagEffectType, target);
+				Main.player[Projectile.owner].TagEffectStack.TryEnableProcOnNPC(Projectile.tagEffectType, target);
 			}
 		}
 
@@ -162,7 +163,7 @@ namespace ExampleMod.Content.Projectiles
 
 		public override bool PreDraw(Player player, ref Color lightColor) {
 			List<Vector2> list = new List<Vector2>();
-			Projectile.FillWhipControlPoints(Projectile, list);
+			Projectile.FillWhipControlPoints(Projectile, list, player);
 
 			DrawLine(list);
 
@@ -215,7 +216,7 @@ namespace ExampleMod.Content.Projectiles
 					frame.Y = 42;
 					frame.Height = 16;
 				}
-				else {  // At the start of the whip after the handle, the first segment is used.
+				else if (i != 0) {  // At the start of the whip after the handle, the first segment is used.
 					// First Segment
 					frame.Y = 26;
 					frame.Height = 16;
@@ -232,6 +233,13 @@ namespace ExampleMod.Content.Projectiles
 				pos += diff;
 			}
 			return false;
+		}
+
+		// This hook lets us change how the held projectile looks while a mannequin is holding it.
+		// We set aiStyle to Whip to draw the projectile as if it had the vanilla whip aiStyle.
+		public override bool DisplayDollSettings(Player doll, TEDisplayDoll.DisplayDollPose pose, ref int aiStyle, ref int aiType) {
+			aiStyle = ProjAIStyleID.Whip;
+			return true;
 		}
 	}
 }

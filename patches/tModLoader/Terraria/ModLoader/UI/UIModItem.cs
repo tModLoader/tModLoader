@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Terraria.GameContent.UI.Elements;
 using Terraria.UI;
 using Terraria.ID;
@@ -13,7 +14,10 @@ using Terraria.ModLoader.UI.ModBrowser;
 using Terraria.Audio;
 using Terraria.GameContent;
 using ReLogic.Content;
+using Steamworks;
 using Terraria.Social.Base;
+using Terraria.Social.Steam;
+using System.Threading;
 
 namespace Terraria.ModLoader.UI;
 
@@ -22,10 +26,16 @@ internal class UIModItem : UIPanel
 	private const float PADDING = 5f;
 	private float left2ndLine = 0;
 
+	private CancellationTokenSource _ratingCts;
+	private ulong _publishId;
+	private bool? _ratedUp; // null = not rated, false = rated down
+    private bool _gotRating;
+    private float _bufferRotation;
+
 	private UIImage _moreInfoButton;
 	private UIImage _modIcon;
 	private UIImageFramed updatedModDot;
-	private Version previousVersionHint;
+	private System.Version previousVersionHint;
 	private UIHoverImage _keyImage;
 	private UIImage _configButton;
 	private UIText _modName;
@@ -34,6 +44,7 @@ internal class UIModItem : UIPanel
 	private UIImage _modReferenceIcon;
 	private UIImage _translationModIcon;
 	private UIImage _deleteModButton;
+	private UIImage _rateButton;
 	private UIAutoScaleTextTextPanel<string> _dialogYesButton;
 	private UIAutoScaleTextTextPanel<string> _dialogNoButton;
 	private UIText _dialogText;
@@ -76,6 +87,8 @@ internal class UIModItem : UIPanel
 		Width.Percent = 1f;
 		SetPadding(6f);
 		DisplayNameClean = _mod.DisplayNameClean;
+
+		WorkshopHelper.GetPublishIdLocal(_mod?.modFile, out _publishId);
 	}
 
 	public override void OnInitialize()
@@ -83,24 +96,8 @@ internal class UIModItem : UIPanel
 		base.OnInitialize();
 
 		string text = _mod.DisplayName + " v" + _mod.modFile.Version;
-		var modIcon = Main.Assets.Request<Texture2D>("Images/UI/DefaultResourcePackIcon", AssetRequestMode.ImmediateLoad);
+		var modIcon = ModLoader.GetModIcon(_mod.modFile) ?? Mod.PlaceholderModIcon;
 		_modIconAdjust += 85;
-
-		if (_mod.modFile.HasFile("icon.png")) {
-			try {
-				using (_mod.modFile.Open())
-				using (var s = _mod.modFile.GetStream("icon.png")) {
-					var iconTexture = Main.Assets.CreateUntracked<Texture2D>(s, ".png");
-
-					if (iconTexture.Width() == 80 && iconTexture.Height() == 80) {
-						modIcon = iconTexture;
-					}
-				}
-			}
-			catch (Exception e) {
-				Logging.tML.Error("Unknown error", e);
-			}
-		}
 
 		_modIcon = new UIImage(modIcon) {
 			Left = { Percent = 0f },
@@ -314,23 +311,58 @@ internal class UIModItem : UIPanel
 		OnLeftDoubleClick += (e, el) => {
 			if (tMLUpdateRequired != null)
 				return;
-			// Only trigger if we didn't target the ModStateText, otherwise we trigger this behavior twice
-			if (e.Target.GetType() != typeof(UIModStateText))
-				_uiModStateText.LeftClick(e);
+
+			// Prevent infinite recursion.
+			if (e.Target.GetType() == typeof(UIModStateText)) return;
+			// Ignore inner elements that may not react immediately.
+			if (e.Target == _rateButton) return;
+
+			_uiModStateText.LeftClick(e);
 		};
 
 		if (!_loaded && ModOrganizer.CanDeleteFrom(_mod.location)) {
 			bottomRightRowOffset -= 36;
-			_deleteModButton = new UIImage(TextureAssets.Trash) {
+			_deleteModButton = new UIImage(UICommon.ButtonDeleteTexture) {
 				RemoveFloatingPointsFromDrawPosition = true,
 				Width = { Pixels = 36 },
 				Height = { Pixels = 36 },
 				Left = { Pixels = bottomRightRowOffset - PADDING, Precent = 1 },
-				Top = { Pixels = 42.5f }
+				Top = { Pixels = 40 }
 			};
 			_deleteModButton.OnLeftClick += QuickModDelete;
 			Append(_deleteModButton);
+			bottomRightRowOffset -= (int)PADDING;
 		}
+
+		if (SteamedWraps.SteamClient && _loaded && _mod.location == ModLocation.Workshop) {
+			Rectangle frame = new Rectangle(0, 0, 36, 36);
+			bottomRightRowOffset -= 36;
+			_rateButton = new UIImage(UICommon.ButtonRateTexture) {
+				RemoveFloatingPointsFromDrawPosition = true,
+				Width = { Pixels = 36 },
+				Height = { Pixels = 36 },
+				Frame = frame,
+				Left = { Pixels = bottomRightRowOffset - PADDING, Precent = 1 },
+				Top = { Pixels = 40 }
+			};
+			_rateButton.OnLeftClick += Rate;
+
+            var bufferImage = new UIElement()
+            {
+                Width = { Percent = 1f },
+                Height = { Percent = 1f },
+                IgnoresMouseInteraction = true
+            };
+            bufferImage.OnDraw += DrawRatingBuffer;
+            _rateButton.Append(bufferImage);
+            
+			Append(_rateButton);
+
+			_ratingCts?.Cancel(false);
+			_ratingCts?.Dispose();
+			_ratingCts = new CancellationTokenSource();
+            Task.Run(GetRating, _ratingCts.Token);
+        }
 
 		var oldModVersionData = ModOrganizer.modsThatUpdatedSinceLastLaunch.FirstOrDefault(x => x.ModName == ModName);
 		if (oldModVersionData != default) {
@@ -360,6 +392,13 @@ internal class UIModItem : UIPanel
 		}
 
 		SetHoverColors(hovered: false);
+	}
+
+	public override void OnDeactivate()
+	{
+		_ratingCts?.Cancel(false);
+		_ratingCts?.Dispose();
+		_ratingCts = null;
 	}
 
 	// TODO: "Generate Language File Template" button in upcoming "Miscellaneous Tools" menu.
@@ -413,12 +452,39 @@ internal class UIModItem : UIPanel
 				UICommon.DrawHoverStringInBounds(spriteBatch, Language.GetTextValue("tModLoader.ModIsServerSide"));
 		}
 
+        if (!_gotRating)
+            _rateButton?.Frame = new Rectangle(0, 0, 36, 36);
+        else if (_rateButton?.IsMouseHovering == false)
+        {
+            if (_ratedUp == null)
+                _rateButton?.Frame = new Rectangle(0, 38, 36, 36);
+            else
+                _rateButton?.Frame = new Rectangle(0, 38 * (_ratedUp == true ? 4 : 5), 36, 36);
+        }
+        
 		if (_moreInfoButton?.IsMouseHovering == true) {
 			_tooltip = Language.GetTextValue("tModLoader.ModsMoreInfo");
 		}
 		else if (_deleteModButton?.IsMouseHovering == true) {
 			_tooltip = Language.GetTextValue("UI.Delete");
 		}
+		else if (_rateButton?.IsMouseHovering == true && _gotRating) {
+			bool ratingUp = UserInterface.ActiveInstance.MousePosition.Y < _rateButton.GetDimensions().Center().Y;
+            if (_ratedUp != true && ratingUp)
+                _tooltip = Language.GetTextValue("tModLoader.ModsRateUp");
+            else if (_ratedUp != false && !ratingUp)
+                _tooltip = Language.GetTextValue("tModLoader.ModsRateDown");
+
+            if (_ratedUp != null)
+            {
+                if (_ratedUp != ratingUp)
+                    _rateButton?.Frame = new Rectangle(0, 38 * 6, 36, 36);
+                else 
+                    _rateButton?.Frame = new Rectangle(0, 38 * (_ratedUp == true ? 4 : 5), 36, 36);
+            }
+            else
+                _rateButton?.Frame = new Rectangle(0, 38 * (ratingUp ? 3 : 2), 36, 36);
+        }
 		else if (_modName?.IsMouseHovering == true && _mod?.properties.author.Length > 0) {
 			_tooltip = Language.GetTextValue("tModLoader.ModsByline", _mod.properties.author);
 		}
@@ -445,6 +511,25 @@ internal class UIModItem : UIPanel
 			_tooltip = Language.GetTextValue("tModLoader.TranslationModTooltip", refs);
 		}
 	}
+
+	public override void Update(GameTime gameTime)
+	{
+		base.Update(gameTime);
+
+		// Update rating buffer.
+		if (!_gotRating) {
+	        _bufferRotation -= 0.15f;
+		}
+	}
+
+	private void DrawRatingBuffer(UIElement element, SpriteBatch spriteBatch)
+    {
+        if (_gotRating)
+            return;
+                
+        var texture = UICommon.SmallLoaderTexture.Value;
+        spriteBatch.Draw(texture, element.GetDimensions().Center(), null, Color.White, _bufferRotation, texture.Size() / 2f, 1f, SpriteEffects.None, 0);
+    }
 
 	public override void MouseOver(UIMouseEvent evt)
 	{
@@ -549,7 +634,7 @@ internal class UIModItem : UIPanel
 	internal void ShowMoreInfo(UIMouseEvent evt, UIElement listeningElement)
 	{
 		SoundEngine.PlaySound(SoundID.MenuOpen);
-		Interface.modInfo.Show(ModName, _mod.DisplayName, Interface.modsMenuID, _mod, _mod.properties.description, _mod.properties.homepage);
+		Interface.modInfo.Show(ModName, _mod.DisplayName, Interface.modsMenuID, _mod, _mod.GetDescription(), _mod.properties.homepage);
 	}
 
 	internal void OpenConfig(UIMouseEvent evt, UIElement listeningElement)
@@ -665,6 +750,45 @@ internal class UIModItem : UIPanel
 		else {
 			DeleteMod(evt, listeningElement);
 		}
+	}
+
+	private void Rate(UIMouseEvent evt, UIElement listeningElement)
+    {
+		bool ratingUp = evt.MousePosition.Y < listeningElement.GetDimensions().Center().Y;
+		if (!_gotRating || (ratingUp && _ratedUp == true) || (!ratingUp && _ratedUp == false))
+			return;
+
+		SoundEngine.PlaySound(LegacySoundIDs.MenuTick, -1, -1, 1);
+
+        _gotRating = false;
+		_ratingCts?.Cancel(false);
+		_ratingCts?.Dispose();
+		_ratingCts = new CancellationTokenSource();
+		Task.Run(cancellationToken: _ratingCts.Token, function: async () => {
+			await SteamedWraps.SetUserRating(_publishId, ratingUp);
+			await GetRating();
+		});
+	}
+
+	private async Task GetRating()
+    {
+        _gotRating = false;
+
+		var result = await SteamedWraps.GetUserRating(_publishId);
+        if (result != null) {
+            RefreshRating(result.Value);
+	        _gotRating = true;
+		}
+	}
+
+	private void RefreshRating(GetUserItemVoteResult_t result)
+	{
+		if (result.m_bVotedUp)
+			_ratedUp = true;
+		else if (result.m_bVotedDown)
+			_ratedUp = false;
+		else
+			_ratedUp = null;
 	}
 
 	private void DeleteMod(UIMouseEvent evt, UIElement listeningElement)

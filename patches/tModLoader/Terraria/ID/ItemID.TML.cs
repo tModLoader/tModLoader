@@ -99,7 +99,8 @@ partial class ItemID
 			4711,
 			4049,
 			114,
-			5667
+			5667,
+			6174
 		);
 
 		/// <summary>
@@ -206,5 +207,16 @@ partial class ItemID
 		/// Set to <see langword="true"/> to have seeds drop whenever grass breaks with this Item in the player's inventory.
 		/// </summary>
 		public static bool[] DropSeedsIfInInventory = Factory.CreateBoolSet(false, Blowpipe, Blowgun);
+
+		/// <summary>
+		/// Whether or not this item is a golf club. Set this to <see langword="true"/> for custom golf club items.
+		/// <para/> <see cref="ModLoader.ModItem.GetGolfClubProperties"/> must be used to specify the <see cref="GameContent.Golf.GolfHelper.ClubProperties"/> for the club.
+		/// </summary>
+		public static bool[] IsAGolfClub = Factory.CreateBoolSet(false,
+			GolfClubIron, GolfClubPutter, GolfClubWedge, GolfClubDriver,
+			GolfClubStoneIron, GolfClubRustyPutter, GolfClubBronzeWedge, GolfClubWoodDriver,
+			GolfClubMythrilIron, GolfClubLeadPutter, GolfClubGoldWedge, GolfClubPearlwoodDriver,
+			GolfClubTitaniumIron, GolfClubShroomitePutter, GolfClubDiamondWedge, GolfClubChlorophyteDriver
+		);
 	}
 }

@@ -203,7 +203,7 @@
 +				UIText uIText = new UIText(Language.GetText("tModLoader.TagsCategoryLanguage")) {
 +					HAlign = 0f,
 +					VAlign = 0f,
-+					Width = StyleDimension.FromPixelsAndPercent(-40f, 1f),
++					Width = StyleDimension.FromPixelsAndPercent(0f, 1f),
 +					Height = StyleDimension.FromPixelsAndPercent(44, 0f),
 +					Top = StyleDimension.FromPixelsAndPercent(5f + num5 * heightPerRow, 0f)
 +				};
@@ -224,7 +224,7 @@
 +				UIText uIText = new UIText(Language.GetText("tModLoader.TagsCategoryRating")) {
 +					HAlign = 0f,
 +					VAlign = 0f,
-+					Width = StyleDimension.FromPixelsAndPercent(-40f, 1f),
++					Width = StyleDimension.FromPixelsAndPercent(0f, 1f),
 +					Height = StyleDimension.FromPixelsAndPercent(44, 0f),
 +					Top = StyleDimension.FromPixelsAndPercent(5f + num5 * heightPerRow, 0f)
 +				};

@@ -42,7 +42,7 @@ public static class WallLoader
 	private static Func<int, int, int, Player, string, bool>[] HookCanBeTeleportedTo;
 	private delegate void DelegateModifyLight(int i, int j, int type, ref float r, ref float g, ref float b);
 	private static DelegateModifyLight[] HookModifyLight;
-	private static Action<int, int, int>[] HookRandomUpdate;
+	private static Action<int, int, int, bool>[] HookRandomUpdate;
 	private delegate bool DelegateWallFrame(int i, int j, int type, bool randomizeFrame, ref int style, ref int frameNumber);
 	private static DelegateWallFrame[] HookWallFrame;
 	private static Func<int, int, int, SpriteBatch, bool>[] HookPreDraw;
@@ -508,12 +508,12 @@ public static class WallLoader
 	//in Terraria.WorldGen.UpdateWorld after each call to TileLoader.RandomUpdate call
 	//  WallLoader.RandomUpdate(num7, num8, Main.tile[num7, num8].wall);
 	//  WallLoader.RandomUpdate(num64, num65, Main.tile[num64, num65].wall);
-	public static void RandomUpdate(int i, int j, int type)
+	public static void RandomUpdate(int i, int j, int type, bool underground)
 	{
-		GetWall(type)?.RandomUpdate(i, j);
+		GetWall(type)?.RandomUpdate(i, j, underground);
 
 		foreach (var hook in HookRandomUpdate) {
-			hook(i, j, type);
+			hook(i, j, type, underground);
 		}
 	}
 

@@ -10,7 +10,7 @@
  using Terraria.UI;
  using Terraria.UI.Chat;
  
-@@ -31,6 +_,7 @@
+@@ -31,13 +_,15 @@
  			Main.instance.MouseText(_item.Name, _item.rare, 0);
  		}
  
@@ -18,6 +18,15 @@
  		public override bool UniqueDraw(bool justCheckingString, out Vector2 size, SpriteBatch spriteBatch, Vector2 position = default(Vector2), Color color = default(Color), float scale = 1f)
  		{
  			if (Main.netMode != 2 && !Main.dedServ)
+ 				Main.instance.LoadItem(_item.type);
+ 
+ 			scale *= 0.75f;
+-			if (!justCheckingString && color != Color.Black) {
++			// TML: Don't draw item tags in the shadow pass (shadow colors can be any color, so check the shadow flag instead)
++			if (!justCheckingString && !ChatManager.IsDrawingShadow) {
+ 				float inventoryScale = Main.inventoryScale;
+ 				Main.inventoryScale = scale;
+ 				ItemSlot.Draw(spriteBatch, ref _item, 14, position - new Vector2(10f) * Main.inventoryScale, Color.White);
 @@ -52,20 +_,30 @@
  	TextSnippet ITagHandler.Parse(string text, Color baseColor, string options)
  	{

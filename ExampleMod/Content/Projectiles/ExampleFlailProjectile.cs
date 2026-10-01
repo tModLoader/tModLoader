@@ -19,6 +19,7 @@ namespace ExampleMod.Content.Projectiles
 			Projectile.penetrate = -1; // Infinite pierce
 			Projectile.DamageType = DamageClass.Melee; // Deals melee damage
 			Projectile.scale = 0.8f;
+			Projectile.drawLayer = ProjectileDrawLayerID.HeldProj; // Draws over the player's body and under the player's hands
 			Projectile.usesLocalNPCImmunity = true; // Used for hit cooldown changes in the ai hook
 			Projectile.localNPCHitCooldown = 10; // This facilitates custom hit cooldown logic
 
@@ -27,8 +28,8 @@ namespace ExampleMod.Content.Projectiles
 			AIType = ProjectileID.Sunfury;
 
 			// These help center the projectile as it rotates since its hitbox and scale doesn't match the actual texture size
-			DrawOffsetX = -6;
-			DrawOriginOffsetY = -6;
+			DrawOffsetX = -8;
+			DrawOriginOffsetY = -8;
 		}
 
 		// All of the following methods are additional behaviors of Sunfury that are not automatically inherited by ExampleFlailProjectile through the use of Projectile.aiStyle and AIType. You'll need to find corresponding code in the decompiled source code if you wish to clone a different vanilla projectile as a starting point.
@@ -42,6 +43,15 @@ namespace ExampleMod.Content.Projectiles
 		public override bool PreDrawExtras(Player player) {
 			Projectile.type = ProjectileID.Sunfury;
 			return base.PreDrawExtras(player);
+		}
+
+		// These 2 hooks are specific to projectiles using ProjAIStyleID.Flail and allow customizing the behavior of that aiStyle to some degree.
+		public override void FlailStats(ref int launchTimeLimit, ref float launchSpeed, ref float maxLaunchLength, ref float retractAcceleration, ref float maxRetractSpeed, ref float forcedRetractAcceleration, ref float maxForcedRetractSpeed, ref int ricochetTimeLimit, ref float spinVisualDistance) {
+			spinVisualDistance += 30;
+		}
+
+		public override void FlailSpinCollisionRange(ref float range) {
+			range += 30;
 		}
 
 		public override bool PreDraw(Player player, ref Color lightColor) {
@@ -81,13 +91,11 @@ namespace ExampleMod.Content.Projectiles
 
 		public override void OnHitPlayer(Player target, Player.HurtInfo info) {
 			if (Main.rand.NextBool(4)) {
-#if COMPILE_ERROR_TODOS
-				target.AddBuff(BuffID.OnFire, 180, quiet: false);
-#endif
+				target.AddBuff(BuffID.OnFire, 180);
 			}
 		}
 
-		// Finally, you can slightly customize the AI if you read and understand the vanilla aiStyle source code. You can't customize the range, retract speeds, or anything else. If you need to customize those things, you'll need to follow ExampleAdvancedFlailProjectile. This example spawns a Grenade right when the flail starts to retract.
+		// Finally, you can customize the AI if you read and understand the vanilla aiStyle source code. This example spawns a Grenade right when the flail starts to retract.
 		public override void AI() {
 			// The only reason this code works is because the author read the vanilla code and comprehended it well enough to tack on additional logic.
 			if (Main.myPlayer == Projectile.owner && Projectile.ai[0] == 2f && Projectile.ai[1] == 0f) {

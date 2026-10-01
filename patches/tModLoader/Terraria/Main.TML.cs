@@ -24,6 +24,7 @@ using Terraria.ModLoader.Core;
 using Terraria.ModLoader.Default;
 using Terraria.ModLoader.Config;
 using System.Net.Http;
+using JetBrains.Annotations;
 using Newtonsoft.Json.Linq;
 
 namespace Terraria;
@@ -144,7 +145,7 @@ public partial class Main
 	/// </summary>
 	public static ActiveProjectileIterator ActiveProjectiles => new(projectile.AsSpan(0, maxProjectiles));
 	/// <summary>
-	/// Use to iterate over active items. Game logic is usually only interested in <see cref="Item.active"/> elements, this iterator facilitates that usage and allows for simpler and more readable code.
+	/// Use to iterate over active world items. Game logic is usually only interested in <see cref="WorldItem.active"/> elements, this iterator facilitates that usage and allows for simpler and more readable code.
 	/// <para/> Typically used in a foreach statement:
 	/// <code>foreach (var item in Main.ActiveItems) {
 	///     // Code
@@ -159,7 +160,7 @@ public partial class Main
 	///     // Code
 	/// }
 	/// </code>
-	/// Note that if the index of the Item in the <see cref="item"/> array is needed, <see cref="Entity.whoAmI"/> can <b>not</b> be used. This will be fixed in 1.4.5, but for now the for loop approach would have to be used instead.
+	/// Note that if the index of the WorldItem in the <see cref="item"/> array is needed, <see cref="Entity.whoAmI"/> can be used.
 	/// </summary>
 	public static ActiveItemIterator ActiveItems => new(item.AsSpan(0, maxItems));
 
@@ -592,7 +593,7 @@ public partial class Main
 				var newsColor = newsMouseOver && newsURL != null ? highVersionColor : menuColor;
 				ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.MouseText.Value, latestNewsText, newsPosition - newsSize, newsColor, 0f, Vector2.Zero, newsScales);
 
-				if (newsMouseOver && mouseLeftRelease && mouseLeft && FocusHelper.AllowUIInputs && newsURL != null) {
+				if (newsMouseOver && mouseLeftRelease && mouseLeft && FocusHelper.AllowInputProcessing && newsURL != null) {
 					SoundEngine.PlaySound(SoundID.MenuOpen);
 					Utils.OpenToURL(newsURL);
 					newsIsNew = false;
@@ -613,7 +614,7 @@ public partial class Main
 				continue;
 			var normalMod = normalModsToLoad.First(mod => mod.Name == loadedMod.Name); // If this throws, we have a big issue.
 			if (normalMod.modFile.path != loadedMod.File.path) {
-				reloadRequiredExplanationEntries.Add(new ReloadRequiredExplanation(1, normalMod.Name, normalMod, Language.GetTextValue("tModLoader.ReloadRequiredExplanationSwitchVersion", "FFFACD", normalMod.Version, loadedMod.Version)));
+				reloadRequiredExplanationEntries.Add(new ReloadRequiredExplanation(2, normalMod.Name, normalMod, Language.GetTextValue("tModLoader.ReloadRequiredExplanationSwitchVersion", "FFFACD", normalMod.Version, loadedMod.Version)));
 				needsReload = true;
 			}
 		}
@@ -649,4 +650,11 @@ public partial class Main
 			ConfigManager.OnChangedAll();
 		}
 	}
+
+	/// <summary>
+	/// Reference to the screen target after FilterManager.EndCapture has run, has all filters applied, and accounts for reverse gravity. <para/>
+	/// <see langword="null"/> if referenced before FilterManager.EndCapture or if the screen was not captured this frame. <para/>
+	/// Use <see cref="ModSystem.RequiresScreenTarget"/> to force this target to be populated.
+	/// </summary>
+	[CanBeNull]	public static RenderTarget2D finalScreenTarget;
 }

@@ -16,18 +16,15 @@ public class ModSourceBestiaryInfoElement : ModBestiaryInfoElement
 
 	public override UIElement GetFilterImage()
 	{
-		Asset<Texture2D> asset;
-		if (_mod.HasAsset("icon_small")) {
-			asset = _mod.Assets.Request<Texture2D>("icon_small");
-			if (asset.Size() == new Vector2(30)) {
-				return new UIImage(asset) {
-					HAlign = 0.5f,
-					VAlign = 0.5f
-				};
-			}
-			_mod.Logger.Info("icon_small needs to be 30x30 pixels.");
+		Asset<Texture2D> asset = _mod.SmallModIcon;
+		if (asset != null) {
+			return new UIImage(asset) {
+				HAlign = 0.5f,
+				VAlign = 0.5f
+			};
 		}
-		asset = Main.Assets.Request<Texture2D>("Images/UI/Bestiary/Icon_Tags_Shadow");
+
+		asset = Main.Assets.Request<Texture2D>("Images/UI/Bestiary/Icon_Tags_Shadow", AssetRequestMode.ImmediateLoad);
 		return new UIImageFramed(asset, asset.Frame(16, 5, 0, 4)) {
 			HAlign = 0.5f,
 			VAlign = 0.5f

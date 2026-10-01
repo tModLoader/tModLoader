@@ -5,6 +5,7 @@ namespace Terraria.ModLoader;
 /// <summary>
 /// This is the superclass for GlobalTile and GlobalWall, combining common code
 /// </summary>
+[CloneByReference]
 public abstract class GlobalBlockType : ModType
 {
 	internal GlobalBlockType() { }
@@ -101,7 +102,8 @@ public abstract class GlobalBlockType : ModType
 	/// <param name="i"></param>
 	/// <param name="j"></param>
 	/// <param name="type"></param>
-	public virtual void RandomUpdate(int i, int j, int type)
+	/// <param name="underground">Whether the tile/wall is considered underground. This usually means below <see cref="Main.worldSurface"/>, but if the "Don't dig up" special world seed (<see cref="Main.remixWorld"/>) is active tiles technically underground might be considered overground for random update purposes. </param>
+	public virtual void RandomUpdate(int i, int j, int type, bool underground)
 	{
 	}
 

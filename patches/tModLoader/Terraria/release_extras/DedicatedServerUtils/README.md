@@ -3,10 +3,11 @@ This directory contains utilities for a dedicated server on Linux or Docker
 
 ---
 
-## **Currently ARM support does not exist for TML or the Dedicated Server**
-You can track the status of it [here](https://github.com/tModLoader/tModLoader/pull/2639). A user claims to have a workaround [in this issue](https://github.com/tModLoader/tModLoader/issues/3429),
-but as they have not posted the solution there is currently **no known way to run any TML applications on ARM**
+## ARM64 Linux Support
 
+Linux ARM64 (aarch64) is natively supported as of tModLoader 1.4.4. No extra workarounds are required — you can install directly from Steam or GitHub releases.
+
+If you are using **tModLoader 1.4.3 or earlier**, the Steamworks.NET library did not support ARM in its managed code. For those legacy versions only, use the [20.1.0 Release build on this fork](https://github.com/MikolajKolek/Steamworks.NET-arm64/releases/tag/20.1.0) by [MikolajKolek](https://github.com/MikolajKolek) and replace the existing `.dll` in `Libraries/Steamworks.net/20.1.0/lib/netstandard2.1`.
 ---
 
 ## Quick Links

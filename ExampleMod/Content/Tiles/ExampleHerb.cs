@@ -160,7 +160,7 @@ namespace ExampleMod.Content.Tiles
 			return stage == PlantStage.Grown;
 		}
 
-		public override void RandomUpdate(int i, int j) {
+		public override void RandomUpdate(int i, int j, bool underground) {
 			Tile tile = Framing.GetTileSafely(i, j);
 			PlantStage stage = GetStage(i, j);
 

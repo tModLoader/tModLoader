@@ -12,7 +12,6 @@ namespace ExampleMod.Content.Projectiles.Rockets
 	{
 		public override void SetStaticDefaults() {
 			ProjectileID.Sets.IsARocketThatDealsDoubleDamageToPrimaryEnemy[Type] = true; // Deals double damage on direct hits.
-			ProjectileID.Sets.PlayerHurtDamageIgnoresDifficultyScaling[Type] = true; // Damage dealt to players does not scale with difficulty in vanilla.
 
 			// This set handles some things for us already:
 			// Sets the timeLeft to 3 and the projectile direction when colliding with an NPC or player in PVP (so the explosive can detonate).

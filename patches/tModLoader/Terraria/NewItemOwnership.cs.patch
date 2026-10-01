@@ -1,0 +1,38 @@
+--- src/TerrariaNetCore/Terraria/NewItemOwnership.cs
++++ src/tModLoader/Terraria/NewItemOwnership.cs
+@@ -1,9 +_,35 @@
+ namespace Terraria;
+ 
++/// <summary>
++/// Used to control who can pick up a newly spawned item immediately, and who has to wait for <see cref="WorldItem.DefaultGrabDelay"/>
++/// </summary>
+ public enum NewItemOwnership
+ {
++	/// <summary>
++	/// Anyone can pick the item up immediately. Assigned to whoever is closest in MP<br/>
++	/// The default behavior for any item spawned by the world, including npc loot
++	/// </summary>
+ 	None,
++	/// <summary>
++	/// Only the 'local' (requesting) player can pick the item up immediately. NPCs and other players must wait<br/>
++	/// Intended for use with <see cref="Item.RequestNewItem(DataStructures.IEntitySource, Microsoft.Xna.Framework.Vector2, int, int, int, NewItemOwnership, Microsoft.Xna.Framework.Vector2?, Item.NewItemModifier)"/><br/>
++	/// Servers can temporarily set the 'local' player (eg in response to a player interaction packet) with<br/>
++	/// <br/>
++	/// <c>using (Item.DefaultAssignNewItemsToPlayer(whoAmI)) { ... }</c><br/>
++	/// <br/>
++	/// A good default for any items requested by a client. Used by vanilla for Extractinator, Lucky Coin. Bomb disarming, Glowstick pickup, Scythe/Paint Scraper<br/>
++	/// Prefer <see cref="Player.QuickSpawnItem(DataStructures.IEntitySource, Item)"/> if the item is meant to go directly to the player's inventory without being seen in the world.
++	/// </summary>
+ 	ReserveForLocalPlayer,
++	/// <summary>
++	/// The 'local' player and NPCs must wait to pick up the item.<br/>
++	/// Used by vanilla exclusively for items dropped from inventory.
++	/// </summary>
+ 	GrabDelayForLocalPlayer,
++	/// <summary>
++	/// All players must wait to pick up the item, NPCs can take it immediately.<br/>
++	/// Used only when the item is meant to stay on the ground briefly for visual effect.<br/>
++	/// Used by vanilla for guide voodoo dolls dropped from inventory, toilet poop, and Tax Collector's Stick of Doom
++	/// </summary>
+ 	GrabDelayForAllPlayers
+ }

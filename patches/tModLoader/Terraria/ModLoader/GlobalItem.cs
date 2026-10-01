@@ -841,7 +841,7 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	/// <para/>This is only called when two items of the same type attempt to stack. This is called on the item that would be stacked onto (<see langword="this"/>/<paramref name="destination"/>).
 	/// <para/>This is usually not called for coins and ammo in the inventory/UI.
 	/// <para/>This covers all scenarios, if you just need to change in-world stacking behavior, use <see cref="CanStackInWorld"/>.
-	/// <para/> Called on the local client only.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="destination">The item instance that <paramref name="source"/> will attempt to stack onto</param>
 	/// <param name="source">The item instance being stacked onto <paramref name="destination"/></param>
@@ -854,7 +854,7 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	/// <summary>
 	/// Allows you to prevent items from stacking in the world.
 	/// <para/> This is only called when two items of the same type attempt to stack. This is called on the item that would be stacked onto (<see langword="this"/>/<paramref name="destination"/>).
-	/// <para/> Called on the local client or server, depending on who the item is reserved for.
+	/// <para/> Called on the server and the owning client.
 	/// </summary>
 	/// <param name="destination">The item instance that <paramref name="source"/> will attempt to stack onto</param>
 	/// <param name="source">The item instance being stacked onto <paramref name="destination"/></param>
@@ -867,7 +867,7 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	/// <summary>
 	/// Allows you to make things happen when items stack together.
 	/// <para/> This hook is called on the item being stacked onto (<see langword="this"/>/<paramref name="destination"/>) before the items are transferred from <paramref name="source"/> to <paramref name="destination"/>. This will be called both for in-world and in-inventory stacking.
-	/// <para/> Called on the local client only.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="destination">The item instance that <paramref name="source"/> will attempt to stack onto</param>
 	/// <param name="source">The item instance being stacked onto <paramref name="destination"/></param>
@@ -958,6 +958,21 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	}
 
 	/// <summary>
+	/// Allows you to modify the speeds at which you fall when gliding with wings.
+	/// <para/> Called on local, server, and remote clients.
+	/// <para/> Return false to prevent vanilla gliding behavior
+	/// </summary>
+	/// <param name="item">The wings.</param>
+	/// <param name="player">The player.</param>
+	/// <param name="gravityMultiplier">The multiplier applied to <see cref="Player.gravity"/>.</param>
+	/// <param name="maxSpeedMultiplier">The multiplier applied to <see cref="Player.maxFallSpeed"/>.</param>
+	/// <param name="prevented">Whether or not vanilla behavior has been prevented, this will usually indicate that some modded behavior has already run.</param>
+	public virtual bool WingGlidingSpeeds(Item item, Player player, ref float gravityMultiplier, ref float maxSpeedMultiplier, bool prevented)
+	{
+		return true;
+	}
+
+	/// <summary>
 	/// Allows you to modify the horizontal flight speed and acceleration of wings.
 	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
@@ -1020,10 +1035,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 		return true;
 	}
 
-	/// <summary>
-	/// Allows you to make special things happen when the player picks up an item. Return false to stop the item from being added to the player's inventory; returns true by default.
-	/// <para/> Called on the local client only.
-	/// </summary>
+	/// <inheritdoc cref="ModItem.OnPickup(WorldItem, Player)"/>
 	public virtual bool OnPickup(WorldItem item, Player player)
 	{
 		return true;
@@ -1080,6 +1092,21 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	}
 
 	/// <summary>
+	/// Allows customization of the <see cref="DrawData"/> responsible for drawing the held item. Held items are drawn as part of the player drawing process. Additional <see cref="DrawData"/> can be added to <paramref name="drawInfo"/> for more advanced drawing if needed. (Add DrawData objects to <see cref="PlayerDrawSet.DrawDataCache"/>)
+	/// <br/><br/> <paramref name="drawData"/> is the DrawData for the normal drawing. <paramref name="coloredDrawData"/> is an additional drawing if <see cref="Item.color"/> was set, overlaid over the normal drawing to tint it. <paramref name="glowMaskDrawData"/> is a separate glow mask texture, if <see cref="Item.glowMask"/> was set.
+	/// </summary>
+	public virtual void PreModifyItemDraw(Item item, ref PlayerDrawSet drawInfo, ref DrawData drawData, ref DrawData? coloredDrawData, ref DrawData? glowMaskDrawData)
+	{
+	}
+
+	/// <summary>
+	/// Allows drawing additional <see cref="DrawData"/> after the normal drawing by adding to <paramref name="drawInfo"/>. (Add DrawData objects to <see cref="PlayerDrawSet.DrawDataCache"/>)
+	/// </summary>
+	public virtual void PostModifyItemDraw(Item item, ref PlayerDrawSet drawInfo, DrawData drawData, DrawData? coloredDrawData, DrawData? glowmaskDrawData)
+	{
+	}
+
+	/// <summary>
 	/// Allows you to determine the offset of an item's sprite when used by the player.
 	/// This is only used for items with a useStyle of 5 that aren't staves.
 	/// Return null to use the item's default holdout offset; returns null by default.
@@ -1127,10 +1154,11 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 
 	/// <summary>
 	/// Allows you to modify what item, and in what quantity, is obtained when an item of the given type is fed into the Extractinator. Use <see cref="ItemID.Sets.ExtractinatorMode"/> to allow an item to be fed into the Extractinator.
-	/// <para/> An extractType of 0 represents the default extraction (Silt and Slush). 0, <see cref="ItemID.DesertFossil"/>, <see cref="ItemID.OldShoe"/>, and <see cref="ItemID.LavaMoss"/> are vanilla extraction types. Modded types by convention will correspond to the iconic item of the extraction type. The <see href="https://terraria.wiki.gg/wiki/Extractinator">Extractinator wiki page</see> has more info.
+	/// <para/> An extractType of 0 represents the default extraction (Silt and Slush). 0, <see cref="ItemID.DesertFossil"/>, <see cref="ItemID.OldShoe"/>, <see cref="ItemID.LavaMoss"/>, <see cref="ItemID.PoopBlock"/>, <see cref="ItemID.Hive"/>, and <see cref="ItemID.ShellPileBlock"/> are vanilla extraction types. Modded types by convention will correspond to the iconic item of the extraction type. The <see href="https://terraria.wiki.gg/wiki/Extractinator">Extractinator wiki page</see> has more info.
 	/// <para/> By default the parameters will be set to the output of feeding Silt/Slush into the Extractinator.
 	/// <para/> Use <paramref name="extractinatorBlockType"/> to provide different behavior for <see cref="TileID.ChlorophyteExtractinator"/> if desired.
-	/// <para/> If the Chlorophyte Extractinator item swapping behavior is desired, see the example in <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Common/GlobalItems/TorchExtractinatorGlobalItem.cs">TorchExtractinatorGlobalItem.cs</see>.
+	/// <para/> <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/Items/Placeable/ExampleBlock.cs">ExampleBlock.cs</see> showcases using this to implement unique drops. The <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Common/GlobalItems/TorchExtractinatorGlobalItem.cs">TorchExtractinatorGlobalItem.cs</see> example showcases even more advanced behavior.
+	/// <para/> If the Chlorophyte Extractinator item swapping behavior is desired, that is handled by <see cref="Terraria.GameContent.ItemTrader.ChlorophyteExtractinator"/> instead. See the example in <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/Items/Placeable/ExampleBar.cs">ExampleBar.cs</see>.
 	/// <para/> This method is not instanced.
 	/// <para/> Called on the local client only.
 	/// </summary>

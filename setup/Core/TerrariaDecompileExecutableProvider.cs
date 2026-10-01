@@ -3,13 +3,14 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using ICSharpCode.Decompiler.Metadata;
 using Terraria.ModLoader.Setup.Core.Abstractions;
+using Terraria.ModLoader.Setup.Core.Utilities;
 
 namespace Terraria.ModLoader.Setup.Core;
 
 public sealed class TerrariaDecompileExecutableProvider
 {
-	private static readonly Version ClientVersion = new("1.4.5.6");
-	private static readonly Version ServerVersion = new("1.4.5.6");
+	private static readonly Version ClientVersion = new("1.4.5.8");
+	private static readonly Version ServerVersion = new("1.4.5.8");
 
 	private readonly WorkspaceInfo workspaceInfo;
 	private readonly HttpClient httpClient;
@@ -58,7 +59,7 @@ public sealed class TerrariaDecompileExecutableProvider
 
 			string serverVersionWithoutDots = ServerVersion.ToString().Replace(".", "");
 			string url = $"https://terraria.org/api/download/pc-dedicated-server/terraria-server-{serverVersionWithoutDots}.zip";
-			using var zip = new ZipArchive(await httpClient.GetStreamAsync(url, cancellationToken));
+			using var zip = new ZipArchive(new MemoryStream(await httpClient.GetByteArrayAsync(url, cancellationToken)));
 			zip.Entries.Single(e => e.FullName == $"{serverVersionWithoutDots}/Windows/TerrariaServer.exe").ExtractToFile(destinationPath);
 		}
 	}
@@ -77,7 +78,8 @@ public sealed class TerrariaDecompileExecutableProvider
 			return expectedExePath;
 		}
 
-		if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) && File.Exists(originalExePath) && TryCheckVersion(originalExePath, version, out _)) {
+		bool isWindowsInstall = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) || WslPaths.IsOnWindowsDrive(originalExePath);
+		if (isWindowsInstall && File.Exists(originalExePath) && TryCheckVersion(originalExePath, version, out _)) {
 			File.Copy(originalExePath, expectedExePath);
 			return expectedExePath;
 		}
@@ -124,7 +126,7 @@ public sealed class TerrariaDecompileExecutableProvider
 
 		taskProgress.ReportStatus("Downloading .NET Framework Reference Assemblies...");
 		var url = "https://www.nuget.org/api/v2/package/Microsoft.NETFramework.ReferenceAssemblies.net481/1.0.3";
-		using var zip = new ZipArchive(await httpClient.GetStreamAsync(url, cancellationToken));
+		using var zip = new ZipArchive(new MemoryStream(await httpClient.GetByteArrayAsync(url, cancellationToken)));
 
 		var subfolder = "build/.NETFramework/v4.8.1";
 		foreach (var e in zip.Entries) {
