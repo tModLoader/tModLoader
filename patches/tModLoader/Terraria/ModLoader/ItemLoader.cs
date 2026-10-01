@@ -2443,4 +2443,17 @@ public static class ItemLoader
 		properties = default;
 		return false;
 	}
+
+	private static HookList HookModifyArmorSets = AddHook<Action>(g => g.ModifyArmorSets);
+
+	public static void ModifyArmorSets()
+	{
+		foreach (ModItem item in items) {
+			item.ModifyArmorSets();
+		}
+
+		foreach (GlobalItem g in HookModifyArmorSets.Enumerate()) {
+			g.ModifyArmorSets();
+		}
+	}
 }

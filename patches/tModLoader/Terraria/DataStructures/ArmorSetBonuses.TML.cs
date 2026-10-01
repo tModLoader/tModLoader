@@ -6,6 +6,8 @@ namespace Terraria.DataStructures;
 
 public partial class ArmorSetBonuses
 {
+	internal static bool ArmorSetsFinishedPopulating = false;
+
 	/// <inheritdoc cref="ModItem.AddArmorSet(int, int, int, string, ArmorSetBonus.PartType, string, ArmorSetBonus.ArmorSetEffect)"/>
 	public static void Add(int Head, int Body, int Legs, string TextKey, ArmorSetBonus.PartType PrimaryPart, string Identifier, ArmorSetBonus.ArmorSetEffect Effect)
 	{
@@ -50,6 +52,7 @@ public partial class ArmorSetBonuses
 
 	internal static void Unload()
 	{
+		ArmorSetsFinishedPopulating = false;
 		All.Clear();
 	}
 }

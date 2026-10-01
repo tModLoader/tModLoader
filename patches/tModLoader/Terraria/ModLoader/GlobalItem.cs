@@ -712,7 +712,7 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 
 	/// <summary>
 	/// Allows you to give set bonuses to your armor set with the given name.
-	/// The currently active armor set is passed in as <paramref name="armorSetBonus"/>.
+	/// The currently active armor set is passed in as <paramref name="armorSetBonus"/>, which can be null.
 	/// <para/> This method is not instanced.
 	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
@@ -1278,6 +1278,11 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 
 	/// <inheritdoc cref="ModItem.NetReceive"/>
 	public virtual void NetReceive(Item item, BinaryReader reader)
+	{
+	}
+
+	/// <inheritdoc cref="ModItem.ModifyArmorSets"/>
+	public virtual void ModifyArmorSets()
 	{
 	}
 }

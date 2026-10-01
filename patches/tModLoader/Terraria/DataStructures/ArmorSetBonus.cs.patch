@@ -53,7 +53,7 @@
  		public Builder Set(int[] headOptions, int[] bodyOptions, int[] legsOptions)
  		{
  			if (headOptions == null)
-@@ -119,12 +_,20 @@
+@@ -119,12 +_,23 @@
  			return this;
  		}
  
@@ -62,6 +62,9 @@
 +		/// </summary>
  		public void Add()
  		{
++			if (ArmorSetBonuses.ArmorSetsFinishedPopulating)
++				throw new System.Exception($"Armor Sets can't be added at this time.");
++
  			foreach (Parts set in _sets) {
 +				// TODO: Unique Identifier like "{Identifier}_#" for sets with multiple options?
  				ArmorSetBonuses.All.Add(new ArmorSetBonus {

@@ -1630,4 +1630,12 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	{
 		return true;
 	}
+
+	/// <summary>
+	/// Allows modifying registered armor sets (<see cref="ArmorSetBonuses.All"/>). This is called after all armor sets have been registered, ensuring that modifications occur after all mods have finished registering armor sets.
+	/// <para/> Registering new armor sets should be done earlier in <c>SetStaticDefaults</c>.
+	/// </summary>
+	public virtual void ModifyArmorSets()
+	{
+	}
 }
