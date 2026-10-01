@@ -1,11 +1,13 @@
 var NAVTREEINDEX26 =
 {
-"class_world_workshop_entry.html":[3,0,1523],
-"class_worm_shader.html":[3,0,1524],
-"class_wsc_json_object.html":[3,0,1525],
-"class_yellow_wire_visibility_builder_toggle.html":[3,0,1526],
+"class_world_u_i_anchor.html":[3,0,1522],
+"class_world_utils.html":[3,0,1523],
+"class_world_workshop_entry.html":[3,0,1524],
+"class_worm_shader.html":[3,0,1525],
+"class_wsc_json_object.html":[3,0,1526],
+"class_yellow_wire_visibility_builder_toggle.html":[3,0,1527],
 "classes.html":[3,1],
-"classnativefiledialog.html":[3,0,876],
+"classnativefiledialog.html":[3,0,878],
 "functions.html":[3,3,0],
 "functions.html":[3,3,0,0],
 "functions_b.html":[3,3,0,1],
@@ -234,10 +236,10 @@ var NAVTREEINDEX26 =
 "interface_i_tree.html":[3,0,669],
 "interface_i_u_pn_p_n_a_t.html":[3,0,671],
 "interface_i_update_before_sorting.html":[3,0,670],
-"interface_segments_1_1_player_segment_1_1_i_shader_effect.html":[3,0,1119,6,1],
-"interface_segments_1_1_sprite_segment_1_1_i_shader_effect.html":[3,0,1119,7,0],
-"interface_social_browser_module.html":[3,0,1167],
-"interface_tag_serializable.html":[3,0,1217],
+"interface_segments_1_1_player_segment_1_1_i_shader_effect.html":[3,0,1120,6,1],
+"interface_segments_1_1_sprite_segment_1_1_i_shader_effect.html":[3,0,1120,7,0],
+"interface_social_browser_module.html":[3,0,1168],
+"interface_tag_serializable.html":[3,0,1218],
 "md__github_workspace_src_t_mod_loader__terraria_release_extras__dedicated_server_utils__r_e_a_d_m_e.html":[0],
 "md__github_workspace_src_t_mod_loader__terraria_release_extras_t_mod_porter__r_e_a_d_m_e.html":[1],
 "namespace_terraria.html":[2,0,0],
@@ -247,7 +249,5 @@ var NAVTREEINDEX26 =
 "namespaces.html":[2,0],
 "pages.html":[],
 "struct_active_entity_iterator.html":[3,0,19],
-"struct_active_entity_iterator_1_1_enumerator.html":[3,0,19,0],
-"struct_addable_float.html":[3,0,22],
-"struct_advanced_popup_request.html":[3,0,23]
+"struct_active_entity_iterator_1_1_enumerator.html":[3,0,19,0]
 };
