@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2026.07</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2026.08</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -141,6 +141,9 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>ModifyDraw</b
 <tr class="memitem:a7da84fd613abe37f01553d6876a19ba2"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_equip_texture.html#a7da84fd613abe37f01553d6876a19ba2">VerticalWingSpeeds</a> (<a class="el" href="class_player.html">Player</a> player, ref float ascentWhenFalling, ref float ascentWhenRising, ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float constantAscend)</td></tr>
 <tr class="memdesc:a7da84fd613abe37f01553d6876a19ba2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify vertical wing speeds.  <a href="class_equip_texture.html#a7da84fd613abe37f01553d6876a19ba2">More...</a><br /></td></tr>
 <tr class="separator:a7da84fd613abe37f01553d6876a19ba2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeb55c3654d78c770a64c44d53fb42606"><td class="memItemLeft" align="right" valign="top">virtual ? bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_equip_texture.html#aeb55c3654d78c770a64c44d53fb42606">WingGlidingSpeeds</a> (<a class="el" href="class_player.html">Player</a> player, ref float gravityMultiplier, ref float maxSpeedMultiplier)</td></tr>
+<tr class="memdesc:aeb55c3654d78c770a64c44d53fb42606"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify wing gliding speeds. Return false to prevent vanilla gliding behavior.  <a href="class_equip_texture.html#aeb55c3654d78c770a64c44d53fb42606">More...</a><br /></td></tr>
+<tr class="separator:aeb55c3654d78c770a64c44d53fb42606"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0f23db3a822455578ac4a81577ac46ae"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_equip_texture.html#a0f23db3a822455578ac4a81577ac46ae">WingUpdate</a> (<a class="el" href="class_player.html">Player</a> player, bool inUse)</td></tr>
 <tr class="memdesc:a0f23db3a822455578ac4a81577ac46ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows for wing textures to do various things while in use. "inUse" is whether or not the jump button is currently pressed. Called when this wing texture visually appears on the player. Use to animate wings, create dusts, invoke sounds, and create lights. By default this will call the associated <a class="el" href="class_mod_item.html" title="This class serves as a place for you to place all your properties and hooks for each item....">ModItem</a>'s <a class="el" href="class_mod_item.html#a119bbb1160e79491555445544b0744ff" title="Allows for Wings to do various things while in use. inUse  is whether or not the jump button is curre...">ModItem.WingUpdate(Player, bool)</a> if there is an associated <a class="el" href="class_mod_item.html" title="This class serves as a place for you to place all your properties and hooks for each item....">ModItem</a>.  <a href="class_equip_texture.html#a0f23db3a822455578ac4a81577ac46ae">More...</a><br /></td></tr>
 <tr class="separator:a0f23db3a822455578ac4a81577ac46ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -671,6 +674,58 @@ EquipType&#160;</td><td class="memItemRight" valign="bottom"><b>Type</b><code> [
     <tr><td class="paramname">maxCanAscendMultiplier</td><td></td></tr>
     <tr><td class="paramname">maxAscentMultiplier</td><td></td></tr>
     <tr><td class="paramname">constantAscend</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="aeb55c3654d78c770a64c44d53fb42606" name="aeb55c3654d78c770a64c44d53fb42606"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeb55c3654d78c770a64c44d53fb42606">&#9670;&nbsp;</a></span>WingGlidingSpeeds()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual ? bool EquipTexture.WingGlidingSpeeds </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_player.html">Player</a>&#160;</td>
+          <td class="paramname"><em>player</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ref float&#160;</td>
+          <td class="paramname"><em>gravityMultiplier</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ref float&#160;</td>
+          <td class="paramname"><em>maxSpeedMultiplier</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Allows you to modify wing gliding speeds. Return false to prevent vanilla gliding behavior. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">player</td><td></td></tr>
+    <tr><td class="paramname">gravityMultiplier</td><td></td></tr>
+    <tr><td class="paramname">maxSpeedMultiplier</td><td></td></tr>
   </table>
   </dd>
 </dl>

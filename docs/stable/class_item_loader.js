@@ -79,5 +79,6 @@ var class_item_loader =
     [ "UseItemHitbox", "class_item_loader.html#a8da67083aeb88eabde0ee0a8d01be3f3", null ],
     [ "UseStyle", "class_item_loader.html#ac03b509ad3618df1cbb79167de5130b2", null ],
     [ "VerticalWingSpeeds", "class_item_loader.html#a6558c311b2b25aa66ac2564bee5a016b", null ],
+    [ "WingGlidingSpeeds", "class_item_loader.html#aa439f02459997cca8bc9ba941d841e39", null ],
     [ "WingUpdate", "class_item_loader.html#a8da5e3afb33529eb9de4ecb400e50ace", null ]
 ];

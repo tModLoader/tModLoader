@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2026.07</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2026.08</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -576,8 +576,8 @@ static Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>RotatedBy</
 <tr class="memitem:a918bf5849c43bc51bb30efe74e0e5beb"><td class="memItemLeft" align="right" valign="top"><a id="a918bf5849c43bc51bb30efe74e0e5beb" name="a918bf5849c43bc51bb30efe74e0e5beb"></a>
 static Vector2D&#160;</td><td class="memItemRight" valign="bottom"><b>RotatedBy</b> (this Vector2D spinningpoint, double radians, Vector2D center=default(Vector2D))</td></tr>
 <tr class="separator:a918bf5849c43bc51bb30efe74e0e5beb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae291f7cc07c6d88a047a22e066f4d07e"><td class="memItemLeft" align="right" valign="top"><a id="ae291f7cc07c6d88a047a22e066f4d07e" name="ae291f7cc07c6d88a047a22e066f4d07e"></a>
-static Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>RotatedByRandom</b> (this Vector2 spinninpoint, double maxRadians)</td></tr>
+<tr class="memitem:ae291f7cc07c6d88a047a22e066f4d07e"><td class="memItemLeft" align="right" valign="top">static Vector2&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_utils.html#ae291f7cc07c6d88a047a22e066f4d07e">RotatedByRandom</a> (this Vector2 spinninpoint, double maxRadians)</td></tr>
+<tr class="memdesc:ae291f7cc07c6d88a047a22e066f4d07e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Rotates a Vector2 by a random amount between -<em>maxRadians</em>  and <em>maxRadians</em>  and returns it. The random rotation value follows a triangular distribution rather than a uniform distribution, meaning that rotation values close to 0 are more likely than rotations at the extreme ends from -maxRadians to maxRadians. This behavior makes it ideal for bullet spread calculations, since bullets clustering close to the original rotation rather than a uniform random spread is the expected behavior of that natural phenomenon. For a uniform distribution, use  <a href="class_utils.html#ae291f7cc07c6d88a047a22e066f4d07e">More...</a><br /></td></tr>
 <tr class="separator:ae291f7cc07c6d88a047a22e066f4d07e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa800ef22cf091fdc330cd9839df80953"><td class="memItemLeft" align="right" valign="top"><a id="aa800ef22cf091fdc330cd9839df80953" name="aa800ef22cf091fdc330cd9839df80953"></a>
 static Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>RotateRandom</b> (this Vector2 spinninpoint, double maxRadians)</td></tr>
@@ -1287,6 +1287,53 @@ It will not return <em>maxValue</em> . </p>
 </dd>
 </dl>
 </div>
+
+</div>
+</div>
+<a id="ae291f7cc07c6d88a047a22e066f4d07e" name="ae291f7cc07c6d88a047a22e066f4d07e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae291f7cc07c6d88a047a22e066f4d07e">&#9670;&nbsp;</a></span>RotatedByRandom()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static Vector2 Utils.RotatedByRandom </td>
+          <td>(</td>
+          <td class="paramtype">this Vector2&#160;</td>
+          <td class="paramname"><em>spinninpoint</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>maxRadians</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Rotates a Vector2 by a random amount between -<em>maxRadians</em>  and <em>maxRadians</em>  and returns it. The random rotation value follows a triangular distribution rather than a uniform distribution, meaning that rotation values close to 0 are more likely than rotations at the extreme ends from -maxRadians to maxRadians. This behavior makes it ideal for bullet spread calculations, since bullets clustering close to the original rotation rather than a uniform random spread is the expected behavior of that natural phenomenon. For a uniform distribution, use </p>
+<p ><code>Vector rotatedVector = vector.RotatedBy(Main.rand.NextFloat(-maxRadians, maxRadians));</code> instead. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">spinninpoint</td><td></td></tr>
+    <tr><td class="paramname">maxRadians</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
 </div>
 </div>

@@ -134,6 +134,7 @@ var class_mod_item =
     [ "ValidateType", "class_mod_item.html#ab049d0ec5d7010feae3de7e412c36b6f", null ],
     [ "VerticalWingSpeeds", "class_mod_item.html#ae176047bff9341583f7680d43cd41ca3", null ],
     [ "WeaponPrefix", "class_mod_item.html#a896b193acb3696c102165deb41e6c388", null ],
+    [ "WingGlidingSpeeds", "class_mod_item.html#a45c66eaac024a3d961f09b372e666bc7", null ],
     [ "WingUpdate", "class_mod_item.html#a119bbb1160e79491555445544b0744ff", null ],
     [ "DisplayName", "class_mod_item.html#adf748ca73e805eeb4ad1ec42d7f102d8", null ],
     [ "Item", "class_mod_item.html#ae7cd71216cb932d036dd916f67b2cdd1", null ],

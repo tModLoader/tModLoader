@@ -1,5 +1,13 @@
 var NAVTREEINDEX27 =
 {
+"struct_alignment.html":[3,0,27],
+"struct_ambience_server_1_1_ambience_spawn_info.html":[3,0,32,0],
+"struct_ambient_sky_draw_cache_1_1_ocean_line_cache.html":[3,0,34,0],
+"struct_ambient_sky_draw_cache_1_1_underworld_cache.html":[3,0,34,1],
+"struct_anchor_data.html":[3,0,37],
+"struct_anchor_data.html#a1beb4cc288b9cae4f95d606748352f5a":[3,0,37,0],
+"struct_armor_i_ds_1_1_body_1_1_sets_1_1_include_cape_front_and_back_info.html":[3,0,48,3,0,0],
+"struct_armor_i_ds_1_1_body_1_1_sets_1_1_include_cape_front_and_back_info.html#a0bc1e5563d255007edcba481e935752e":[3,0,48,3,0,0,2],
 "struct_armor_i_ds_1_1_body_1_1_sets_1_1_include_cape_front_and_back_info.html#aa7f4e733e7c3cce70917381b6a698329":[3,0,48,3,0,0,0],
 "struct_armor_i_ds_1_1_body_1_1_sets_1_1_include_cape_front_and_back_info.html#ae20b61126a07dddf9beb6b96acd18d7a":[3,0,48,3,0,0,1],
 "struct_ball_collision_event.html":[3,0,74],
@@ -241,13 +249,5 @@ var NAVTREEINDEX27 =
 "struct_placement_hook.html":[3,0,977],
 "struct_placement_hook.html#a4600e2c0b32bf0edd0aa0844dc281a45":[3,0,977,0],
 "struct_player_1_1_composite_arm_data.html":[3,0,983,1],
-"struct_player_1_1_defense_stat.html":[3,0,983,2],
-"struct_player_1_1_directional_input_sync_cache.html":[3,0,983,3],
-"struct_player_1_1_hurt_info.html":[3,0,983,5],
-"struct_player_1_1_hurt_info.html#a0b963c7867ccb5300ec1014b4ffbf599":[3,0,983,5,10],
-"struct_player_1_1_hurt_info.html#a223f4407c111b66c39b1181faea167d4":[3,0,983,5,7],
-"struct_player_1_1_hurt_info.html#a385a782077b2fc03ef6c72dc7a0fd3dc":[3,0,983,5,6],
-"struct_player_1_1_hurt_info.html#a41eee83d32d4ec3a401a607533e84064":[3,0,983,5,8],
-"struct_player_1_1_hurt_info.html#a603b4682ffb76da1f6baa70147d9ed04":[3,0,983,5,4],
-"struct_player_1_1_hurt_info.html#a6e1a388c6c0a6f0ffacea98b29231e3c":[3,0,983,5,5]
+"struct_player_1_1_defense_stat.html":[3,0,983,2]
 };

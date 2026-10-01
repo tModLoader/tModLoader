@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2026.07</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2026.08</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -631,6 +631,9 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>UpdateVisible
 virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>WeaponPrefix</b> ()</td></tr>
 <tr class="memdesc:a896b193acb3696c102165deb41e6c388 inherit pub_methods_class_mod_item"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to change whether or not a weapon receives generic prefixes. Return true if the item should receive generic prefixes and false if it should only receive them from another category. <br /></td></tr>
 <tr class="separator:a896b193acb3696c102165deb41e6c388 inherit pub_methods_class_mod_item"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a45c66eaac024a3d961f09b372e666bc7 inherit pub_methods_class_mod_item"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_item.html#a45c66eaac024a3d961f09b372e666bc7">WingGlidingSpeeds</a> (<a class="el" href="class_player.html">Player</a> player, ref float gravityMultiplier, ref float maxSpeedMultiplier)</td></tr>
+<tr class="memdesc:a45c66eaac024a3d961f09b372e666bc7 inherit pub_methods_class_mod_item"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the speed at which you fall when gliding with these wings are equipped. Called on local, server, and remote clients. Return false to prevent vanilla gliding behavior.  <a href="class_mod_item.html#a45c66eaac024a3d961f09b372e666bc7">More...</a><br /></td></tr>
+<tr class="separator:a45c66eaac024a3d961f09b372e666bc7 inherit pub_methods_class_mod_item"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a119bbb1160e79491555445544b0744ff inherit pub_methods_class_mod_item"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_item.html#a119bbb1160e79491555445544b0744ff">WingUpdate</a> (<a class="el" href="class_player.html">Player</a> player, bool inUse)</td></tr>
 <tr class="memdesc:a119bbb1160e79491555445544b0744ff inherit pub_methods_class_mod_item"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows for Wings to do various things while in use. <em>inUse</em>  is whether or not the jump button is currently pressed and there is remaining Player.wingTime, meaning the wings are actively flying. If <em>inUse</em>  is false but Player.controlJump is true, the player is gliding. Called when these wings visually appear on the player. Use to animate wings, create dusts, invoke sounds, and create lights. Note that this hook is only ever called through this item's associated equipment texture. False will keep everything the same. True, you need to handle all animations in your own code. Called on local, server, and remote clients.  <a href="class_mod_item.html#a119bbb1160e79491555445544b0744ff">More...</a><br /></td></tr>
 <tr class="separator:a119bbb1160e79491555445544b0744ff inherit pub_methods_class_mod_item"><td class="memSeparator" colspan="2">&#160;</td></tr>

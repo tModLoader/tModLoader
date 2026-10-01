@@ -1,5 +1,10 @@
 var NAVTREEINDEX20 =
 {
+"class_proj_a_i_style_i_d.html#a930f836aa91c7298bd3c2bd5064fdbb9":[3,0,1038,52],
+"class_proj_a_i_style_i_d.html#a9436129d4fb14a07f9067dc36899fa3b":[3,0,1038,179],
+"class_proj_a_i_style_i_d.html#a951547f295062017dd6c3bf75c865c52":[3,0,1038,106],
+"class_proj_a_i_style_i_d.html#a955f25aefb8903743ed350653bc00e43":[3,0,1038,183],
+"class_proj_a_i_style_i_d.html#a981a2c4f6d38447c6033572ef3539466":[3,0,1038,154],
 "class_proj_a_i_style_i_d.html#a981e052edc674c44bf9b6f63fa8400de":[3,0,1038,27],
 "class_proj_a_i_style_i_d.html#a9beb5ea80af9b2318d9d5c847cdf393e":[3,0,1038,57],
 "class_proj_a_i_style_i_d.html#a9f0ed9dc84035bbf91b4cd8ef582c51d":[3,0,1038,189],
@@ -244,10 +249,5 @@ var NAVTREEINDEX20 =
 "class_recipe.html#a297e1a167daf638e8859b7b55a599ab4":[3,0,1064,5],
 "class_recipe.html#a32e3bff72441114d4cda94dd4cb05ea7":[3,0,1064,10],
 "class_recipe.html#a3dff5481bb47513683cfdd8abec91a94":[3,0,1064,7],
-"class_recipe.html#a42c2a6104d56731eae1d3c50137485ae":[3,0,1064,25],
-"class_recipe.html#a474a5953b0fbbdec4c68881277228d79":[3,0,1064,24],
-"class_recipe.html#a4fb1462aac3ce2547c222f858b55b6d5":[3,0,1064,14],
-"class_recipe.html#a57e4f436ccb5261a6a76bf4b2d1bf268":[3,0,1064,30],
-"class_recipe.html#a65694504cb539a30b4b834cfe5c66e1e":[3,0,1064,8],
-"class_recipe.html#a6b5557174d959e1f2753e4a91abf24c9":[3,0,1064,12]
+"class_recipe.html#a42c2a6104d56731eae1d3c50137485ae":[3,0,1064,25]
 };

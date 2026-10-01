@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2026.07</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2026.08</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -528,6 +528,10 @@ static float&#160;</td><td class="memItemRight" valign="bottom"><b>UseTimeMultip
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>VerticalWingSpeeds</b> (<a class="el" href="class_player.html">Player</a> player, ref float ascentWhenFalling, ref float ascentWhenRising, ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float constantAscend)</td></tr>
 <tr class="memdesc:a6558c311b2b25aa66ac2564bee5a016b"><td class="mdescLeft">&#160;</td><td class="mdescRight">If the player is using wings, this uses the result of GetWing, and calls <a class="el" href="class_mod_item.html#ae176047bff9341583f7680d43cd41ca3" title="Allows you to modify the speeds at which you rise and fall when these wings are equipped....">ModItem.VerticalWingSpeeds</a> then all <a class="el" href="class_global_item.html#a118590ca9ea6cf217136a8d223489e4b" title="Allows you to modify the speeds at which you rise and fall when wings are equipped....">GlobalItem.VerticalWingSpeeds</a> hooks. <br /></td></tr>
 <tr class="separator:a6558c311b2b25aa66ac2564bee5a016b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa439f02459997cca8bc9ba941d841e39"><td class="memItemLeft" align="right" valign="top"><a id="aa439f02459997cca8bc9ba941d841e39" name="aa439f02459997cca8bc9ba941d841e39"></a>
+static bool&#160;</td><td class="memItemRight" valign="bottom"><b>WingGlidingSpeeds</b> (<a class="el" href="class_player.html">Player</a> player, ref float gravityMultiplier, ref float maxSpeedMultiplier)</td></tr>
+<tr class="memdesc:aa439f02459997cca8bc9ba941d841e39"><td class="mdescLeft">&#160;</td><td class="mdescRight">If the player is gliding using wings, this uses the result of GetWing, and calls <a class="el" href="class_mod_item.html#a45c66eaac024a3d961f09b372e666bc7" title="Allows you to modify the speed at which you fall when gliding with these wings are equipped....">ModItem.WingGlidingSpeeds</a> then all <a class="el" href="class_global_item.html#ad7d7c1aa7f480a3adeb4d49eaca75d2e" title="Allows you to modify the speeds at which you fall when gliding with wings. Called on local,...">GlobalItem.WingGlidingSpeeds</a> hooks. Return false to prevent vanilla gliding behavior. <br /></td></tr>
+<tr class="separator:aa439f02459997cca8bc9ba941d841e39"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8da5e3afb33529eb9de4ecb400e50ace"><td class="memItemLeft" align="right" valign="top"><a id="a8da5e3afb33529eb9de4ecb400e50ace" name="a8da5e3afb33529eb9de4ecb400e50ace"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>WingUpdate</b> (<a class="el" href="class_player.html">Player</a> player, bool inUse)</td></tr>
 <tr class="memdesc:a8da5e3afb33529eb9de4ecb400e50ace"><td class="mdescLeft">&#160;</td><td class="mdescRight">If wings can be seen on the player, calls the player's wing's equipment texture's WingUpdate and all <a class="el" href="class_global_item.html#a33e5bd665370eb317fdb03140e17b7e2" title="Allows for Wings to do various things while in use. &quot;inUse&quot; is whether or not the jump button is curr...">GlobalItem.WingUpdate</a> hooks. <br /></td></tr>
