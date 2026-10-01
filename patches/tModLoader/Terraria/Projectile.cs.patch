@@ -2276,6 +2276,33 @@
  							WorldGen.KillWall(k, l);
  							if (tile2.wall == 0 && Main.netMode != 0)
  								NetMessage.SendData(17, -1, -1, null, 2, k, l);
+@@ -68119,8 +_,15 @@
+ 		AchievementsHelper.CurrentlyMining = false;
+ 	}
+ 
++	/// <summary>
++	/// Sentries use <c>Projectile.ai[2]</c> to keep track if they can be picked up or are already picked up by a player if they have the Heavy Sling equipped.
++	/// </summary>
++	/// <returns><see langword="true"/> if <c>Projectile.ai[2] == 1f</c></returns>
+ 	public bool IsSentryBeingCarried() => ai[2] == 1f;
+ 
++	/// <summary>
++	/// States whether a sentry projectile is eligible to be picked up by a player if they have the Heavy Sling equipped.
++	/// </summary>
+ 	public bool CanGetPickedUpBySentryBackpack()
+ 	{
+ 		if (!sentry)
+@@ -68139,6 +_,10 @@
+ 		return true;
+ 	}
+ 
++	/// <summary>
++	/// Sets the cooldown for the player's ability to pick up a sentry to 2, preventing them from being able to pick one up.
++	/// <br/>Sets <see cref="Player.accSentryBackpackGrabCooldown"/> to 2.
++	/// </summary>
+ 	public void SetAsSelectedSentryBackpackTarget()
+ 	{
+ 		Main.player[owner].accSentryBackpackGrabCooldown = 2;
 @@ -68162,6 +_,8 @@
  
  	public bool IsInteractable()
