@@ -14,7 +14,9 @@ namespace ExampleMod.Content.Projectiles.Minions
 	{
 		public ref float ShootTimer => ref Projectile.ai[0];
 
-		public bool Floating => Projectile.ai[2] == 0;
+		public bool Floating => Projectile.ai[1] == 0;
+
+		// Projectile.ai[2] is used for whether the sentries is being carried by a player with the Heavy Sling.
 
 		public bool JustSpawned {
 			get => Projectile.localAI[0] == 0;
@@ -94,6 +96,8 @@ namespace ExampleMod.Content.Projectiles.Minions
 				}
 			}
 
+			AI_CheckForHeavySling(); // Run the AI for checking and positioning the sentry if the player picks it up with the Heavy Sling.
+
 			// Find an enemy to target.
 			float closestTargetDistance = TargetingRange;
 			NPC targetNPC = null;
@@ -165,6 +169,136 @@ namespace ExampleMod.Content.Projectiles.Minions
 				}
 			}
 		}
+
+		/// <summary>
+		/// This sub-method checks if the sentry can be picked up if the player has the Heavy Sling equipped.
+		/// </summary>
+		private void AI_CheckForHeavySling() {
+			// Projectile.ai[2] is used for whether the sentries is being carried by a player with the Heavy Sling.
+			// 0 == not being carried.
+			// 1 == being carried.
+			if (Projectile.ai[2] == 0f && Projectile.CanGetPickedUpBySentryBackpack()) {
+				Projectile.ai[2] = 1f;
+				Projectile.netUpdate = true;
+			}
+
+			// Projectile.IsSentryBeingCarried() is equivalent to (Projectile.ai[2] == 1f)
+			if (Projectile.IsSentryBeingCarried()) {
+				Projectile.SetAsSelectedSentryBackpackTarget();
+				Projectile.velocity = Vector2.Zero; // Set the velocity to 0 so it doesn't get affected by gravity.
+				Projectile.tileCollide = false;
+
+				// Depending on the design of your sentry, you may want to set its direction to be the same as the owner's direction.
+				// Projectile.direction = Projectile.spriteDirection = Main.player[Projectile.owner].direction;
+
+				// Some sentries also change their frame when being carried. For example, the Ballista sentry has frames without its stand when the player carries it.
+
+				AI_ExampleSentry_HeavySlingReposition(); // Change how the sentry gets positioned.
+			}
+		}
+
+		/// <summary>
+		/// This sub-method sets the position of the sentry while the player is carrying it with the Heavy Sling.
+		/// </summary>
+		private void AI_ExampleSentry_HeavySlingReposition() {
+			Player owner = Main.player[Projectile.owner];
+
+			// Kill the sentry if the player unequipped the accessory.
+			if (!owner.accSentryBackpack) {
+				Projectile.Kill();
+				return;
+			}
+
+			// The positioning for your sentry might need to differ from what is used below.
+
+			// Here are two useful bools for checking which kind of mount the player is riding.
+			bool playerTransformationMount = owner.mount.Active && owner.mount.Type >= MountID.Rudolph && MountID.Sets.IsTransformationMount[owner.mount.Type];
+			// bool playerRidingMinecart = player.mount.Active && player.mount.AnyTrackRider;
+
+			Vector2 halfProjSize = Projectile.Size / 2f;
+			// This is where we can change the offset of the sentry while the player is carrying it.
+			// The transformation mounts apply their own offsets, so only apply this offset while not transformed.
+			// Remember: negative Y is up.
+			Vector2 sentryOffset = new(0, playerTransformationMount ? 0 : -28);
+
+			// The pogo stick lets the player rotate while in the air. Adjust this value to make the sentry appear at the same spot relative to the player's rotation.
+			int pushFromOriginHack = 0;
+			if (owner.mount.Active && owner.mount.Type == MountID.PogoStick) {
+				pushFromOriginHack = 12;
+			}
+
+			switch (owner.mount.Type) {
+				default: {
+						// The default location of the sentry will be near the player's head.
+						Projectile.Center = owner.MountedCenter + sentryOffset;
+
+						// Add the additional height to the sentry to match the player's bobbing while walking.
+						Vector2 playerWalkingBobbing = Main.OffsetsPlayerHeadgear[owner.bodyFrame.Y / owner.bodyFrame.Height] + new Vector2(0f, -2f);
+						Projectile.position += playerWalkingBobbing * new Vector2(0f, owner.gravDir);
+
+						// Set the final position taking into account the player's rotation.
+						Projectile.position = owner.RotatedRelativePoint(Projectile.position + halfProjSize, reverseRotation: false, addGfxOffY: true, pushFromOriginHack) - halfProjSize;
+
+						// If desired, rotate the sentry to match the player's rotation.
+						Projectile.rotation = owner.fullRotation;
+						break;
+					}
+				// For the transformation mounts, set the position of the sentry to be on the mount's head or back.
+				case MountID.Rat: {
+						Projectile.Bottom = owner.Top;
+						int ratYOffset = 10;
+						int ratWalkingBobbing = 0;
+						int mountFrame = owner.mount.Frame;
+						if (mountFrame == 0 || (uint)(mountFrame - 11) <= 1u || (uint)(mountFrame - 15) <= 1u)
+							ratWalkingBobbing = 2;
+
+						Projectile.position.Y += ratYOffset + ratWalkingBobbing + owner.gfxOffY;
+						Projectile.Bottom += sentryOffset;
+						break;
+					}
+				case MountID.Pixie: {
+						Projectile.Bottom = owner.Top;
+						int pixieYOffset = 10;
+						Projectile.position.Y += pixieYOffset;
+						Projectile.Bottom += sentryOffset;
+						break;
+					}
+				case MountID.Bat: {
+						if (owner.dash > 0 && owner.dashDelay < 0) {
+							Projectile.Bottom = owner.Top + new Vector2(4f * owner.Directions.X, 3f);
+							Projectile.Bottom += new Vector2(0f, -2f);
+						}
+						else {
+							Projectile.Bottom = (owner.Directions.X > 0f) ? (owner.Left + new Vector2(9f, 0f)) : (owner.Right + new Vector2(-10f, 0f));
+						}
+
+						int batYOffset = 2;
+						int mountFrame = owner.mount.Frame;
+						if ((uint)(mountFrame - 3) <= 2u)
+							batYOffset = 0;
+
+						Projectile.Bottom += sentryOffset + new Vector2(0f, batYOffset);
+						Projectile.Bottom = owner.RotatedRelativePoint(Projectile.Bottom);
+						break;
+					}
+				case MountID.Velociraptor: {
+						Projectile.Bottom = owner.MountedTop + new Vector2(-12f * owner.Directions.X, 16f);
+						Projectile.Bottom += sentryOffset;
+						Projectile.Bottom = owner.RotatedRelativePoint(Projectile.Bottom);
+						break;
+					}
+				case MountID.Wolf: {
+						Projectile.Bottom = owner.MountedTop + new Vector2(-4f * owner.Directions.X, 10f);
+						Projectile.Bottom += sentryOffset;
+						Projectile.Bottom = owner.RotatedRelativePoint(Projectile.Bottom);
+						break;
+					}
+			}
+
+			// Floor the position to snap it to tile coordinates.
+			Projectile.position = Projectile.position.Floor();
+		}
+
 
 		public override void OnKill(int timeLeft) {
 			// Some sentries play a sound when despawned:
