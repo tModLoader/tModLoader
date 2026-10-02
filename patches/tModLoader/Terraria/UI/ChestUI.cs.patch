@@ -83,6 +83,19 @@
  					if (array[item5.Key].stack == 0)
  						array[item5.Key] = new Item();
  
+@@ -755,7 +_,12 @@
+ 
+ 		bool flag = false;
+ 		for (int i = 0; i < item.Length; i++) {
++			// #StackablePrefixWeapons, check moved down: a prefixed item must still reach
++			// Item.CanStack and ItemLoader.StackItems below, which decide whether it stacks.
++			/*
+ 			if (item[i].stack < 1 || item[i].prefix != 0 || !hashSet.Contains(item[i].type))
++			*/
++			if (item[i].stack < 1 || !hashSet.Contains(item[i].type))
+ 				continue;
+ 
+ 			bool flag2 = false;
 @@ -768,12 +_,16 @@
  				if (!Item.CanStack(inventory[num2], item[i]) || ItemSlot.PickItemMovementAction(inventory, context, num2, item[i]) == -1)
  					continue;
