@@ -22,7 +22,16 @@ namespace Terraria.Social.Steam;
 
 public partial class WorkshopHelper
 {
-	internal static string[] MetadataKeys = new string[8] { "name", "author", "modside", "homepage", "modloaderversion", "version", "modreferences", "versionsummary" };
+	internal static string[] MetadataKeys = new string[8] {
+		"name", // ACTIVE: Internal modname // tmod file name
+		"author", // ACTIVE: a custom field denoting an author so can be different than steam account name
+		"modside", // ACTIVE: the ModSide field
+		"homepage", // ACTIVE
+		"modloaderversion", // DISCONTINUED ???. Replaced by VersionSummary -- Example: "9999.0"  
+		"version", // DISCONTINUED ???. Replaced by VersionSummary  -- Example: "0.0.0"
+		"modreferences", // ACTIVE: the 'slugs' or internal mod names for dependencies this mod needs
+		"versionsummary" // DISCONTINUED SEPT 2026 -- Output version string: "2022.05.10.20:0.2.0;2022.06.10.20:0.2.1;2022.07.10.20:0.2.2"
+	};
 
 	// TODO: Per latest testing by Solxan Sept 2025, this doesn't work anymore. replace with SetMetadata via WebAPI
 	private static readonly Regex MetadataInDescriptionFallbackRegex = new Regex(@"\[quote=GithubActions\(Don't Modify\)\]Version Summary: (.*) \[/quote\]", RegexOptions.Compiled);
@@ -91,14 +100,19 @@ public partial class WorkshopHelper
 	}
 
 	/////// Workshop Version Calculation Helpers ////////////////////
-	private static (System.Version modV, System.Version tmlV) CalculateRelevantVersion(string mbDescription, NameValueCollection metadata)
+	private static (System.Version modV, System.Version tmlV) CalculateRelevantVersion(string mbDescription, NameValueCollection metadata, DeveloperMetadata browserVersionDevMetadata)
 	{
-		(System.Version modV, System.Version tmlV) selectVersion = new(new System.Version(metadata["version"].Replace("v", "")), new System.Version(metadata["modloaderversion"].Replace("tModLoader v", "")));
+		string versionSummary = string.IsNullOrEmpty(browserVersionDevMetadata.versionData) ? metadata["versionsummary"] : browserVersionDevMetadata.versionData;
+
+		(System.Version modV, System.Version tmlV) selectVersion = new(
+			new System.Version(metadata["version"].Replace("v", "")), new System.Version(metadata["modloaderversion"].Replace("tModLoader v", ""))
+		);
+
 		// Backwards compat after metadata version change
-		if (!metadata["versionsummary"].Contains(':'))
+		if (!versionSummary.Contains(':'))
 			return selectVersion;
 
-		InnerCalculateRelevantVersion(ref selectVersion, metadata["versionsummary"]);
+		InnerCalculateRelevantVersion(ref selectVersion, versionSummary);
 
 		// Handle Github Actions metadata from description
 		// Nominal string: [quote=GithubActions(Don't Modify)]Version Summary: YYYY.MM:#.#.#.#;YYYY.MM:#.#.#.#;... [/quote]
@@ -601,7 +615,7 @@ public partial class WorkshopHelper
 
 				// Developer Metadata
 				SteamedWraps.FetchDeveloperMetadata(_primaryUGCHandle, i, out string devMetadataSerialized);
-				var devMetadata = DeveloperMetadata.Deserialize(devMetadataSerialized);
+				var longFormDevMetadata = DeveloperMetadata.Deserialize(devMetadataSerialized);
 
 				// Backwards compat code for the metadata version change
 				if (metadata["versionsummary"] == null)
@@ -617,12 +631,16 @@ public partial class WorkshopHelper
 					throw new SocialBrowserException($"Mod has no internal name / slug: {id}: {displayname}"); // Somehow this happened before and broke mod downloads
 				}
 
+				DeveloperMetadata browserVersionDevMetadata = DeveloperMetadata.Deserialize(metadata[SteamedWraps.BrowserDeveloperMetadataKey]);
+
 				string[] refsById = SteamedWraps.FetchItemDependencies(_primaryUGCHandle, i, pDetails.m_unNumChildren).Select(x => x.m_PublishedFileId.ToString()).ToArray();
 
 				// Partial Description - we don't include Long Description so this is only first handful of characters
 				string description = pDetails.m_rgchDescription;
 
-				var cVersion = CalculateRelevantVersion(description, metadata);
+				List<string> supportedVersions = SteamedWraps.FetchGameVersionSupport(_primaryUGCHandle, i);
+
+				var cVersion = CalculateRelevantVersion(description, metadata, browserVersionDevMetadata);
 
 				// Assign ModSide Enum
 				ModSide modside = ModSide.Both;
@@ -642,7 +660,19 @@ public partial class WorkshopHelper
 				// Item Statistics
 				SteamedWraps.FetchPlayTimeStats(_primaryUGCHandle, i, out var hot, out var downloads);
 
-				return new ModDownloadItem(displayname, metadata["name"], cVersion.modV, metadata["author"], metadata["modreferences"], modside, modIconURL, id.m_PublishedFileId.ToString(), (int)downloads, (int)hot, lastUpdate, cVersion.tmlV, metadata["homepage"], ownerId, refsById, banned, devMetadata, upvotes, downvotes, voteScore);
+				return new ModDownloadItem(
+					displayname, metadata["name"], metadata["author"], metadata["homepage"],
+					(int)downloads, (int)hot, modIconURL, id.m_PublishedFileId.ToString(), ownerId,
+					upvotes, downvotes, voteScore, supportedVersions,
+					banned,	longFormDevMetadata, browserVersionDevMetadata,
+					lastUpdate,
+
+					// Properties that could be variant with tML Browser Version
+					metadata["modreferences"], refsById, modside,
+
+					// Properties that are variant with tML Browser Version
+					cVersion.modV, cVersion.tmlV
+				);
 			}
 		}
 	}

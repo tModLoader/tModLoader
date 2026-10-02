@@ -16,6 +16,7 @@ using Terraria.ModLoader.UI;
 using Terraria.ModLoader.UI.DownloadManager;
 using Terraria.ModLoader.UI.ModBrowser;
 using Terraria.Social.Base;
+using static Terraria.DataStructures.GameDifficultyData.LinearCurve;
 
 namespace Terraria.Social.Steam;
 
@@ -26,6 +27,9 @@ public static class SteamedWraps
 	public static bool SteamClient { get; set; }
 	public static bool FamilyShared { get; set; } = false;
 	internal static bool SteamAvailable { get; set; }
+
+	internal static string BrowserDeveloperMetadataKey => $"{SocialBrowserModule.CurrentBrowserVersion}-devmetadata";
+	internal const string LongFormDeveloperMetadataKey = "longformdevelopermetadata";
 
 	// Used to get the right token for fetching/setting localized descriptions from/to Steam Workshop
 	internal static string GetCurrentSteamLangKey() => GetSteamLangKey(LanguageManager.Instance.ActiveCulture);
@@ -441,6 +445,34 @@ public static class SteamedWraps
 		throw new Exception("Invalid Call to FetchDeveloperMetadata. Steam is not initialized");
 	}
 
+	public static List<string> FetchGameVersionSupport(UGCQueryHandle_t handle, uint index)
+	{
+		if (!SteamAvailable) throw new Exception("Invalid Call to FetchDeveloperMetadata. Steam is not initialized");
+
+		uint numberSupportedGameVersions = 0;
+		if (SteamClient)
+			numberSupportedGameVersions = SteamUGC.GetNumSupportedGameVersions(handle, index);
+		else
+			numberSupportedGameVersions = SteamGameServerUGC.GetNumSupportedGameVersions(handle, index);
+
+		List<string> minimumBranches = new List<string>();
+
+		for (uint i = 0; i < numberSupportedGameVersions; i++) {
+			string minimumBranch;
+			string maximumBranch;
+
+			if (SteamClient)
+				SteamUGC.GetSupportedGameVersionData(handle, index, i, out minimumBranch, out maximumBranch, 255);
+			else
+				SteamGameServerUGC.GetSupportedGameVersionData(handle, index, i, out minimumBranch, out maximumBranch, 255);
+
+			if (!string.IsNullOrEmpty(minimumBranch))
+				minimumBranches.Add(minimumBranch.Replace("-legacy", ""));
+		}
+
+		return minimumBranches;
+	}
+
 	/// <summary>
 	/// Used when CoreSocialModule.Pulse() is not available, such as when publishing using command line.
 	/// Also used when need to interact with both Steam Game Server for GoG and SteamClient equivocally (only Mod Browser downloads at this time).
@@ -803,9 +835,6 @@ public static class SteamedWraps
 			SteamUGC.AddItemKeyValueTag(uGCUpdateHandle_t, key, _entryData.BuildData[key]);
 		}
 
-		// Add developer metadata to the Workshop item
-		AddDeveloperMetadata(ref uGCUpdateHandle_t, _entryData.BuildData["developermetadata"]);
-
 		// Add Content Descriptors
 		AddContentDescriptors(ref uGCUpdateHandle_t, _entryData);
 
@@ -826,6 +855,21 @@ public static class SteamedWraps
 				}
 			}
 		}
+
+		Logging.tML.Info("Adding tModLoader Developer Metadata to Workshop Upload");
+
+		string minBrowserVersion = SocialBrowserModule.GetBrowserVersionNumber(BuildInfo.tMLVersion);
+		SteamUGC.SetRequiredGameVersions(uGCUpdateHandle_t, $"{minBrowserVersion}-Legacy",
+			// If the version publishing on is Legacy, in order to avoid this being considered 'the latest' on an active browser version,
+			// We have to set the Max Version field to the same value as the min (ie 1.4.4-legacy is then only changing 1.4.4-legacy).
+			(SocialBrowserModule.browserVersionRetainRequirements[minBrowserVersion] == 1) ? $"{minBrowserVersion}-Legacy" : null);
+
+		
+		SteamUGC.RemoveItemKeyValueTags(uGCUpdateHandle_t, BrowserDeveloperMetadataKey);
+		SteamUGC.AddItemKeyValueTag(uGCUpdateHandle_t, BrowserDeveloperMetadataKey, _entryData.BuildData[BrowserDeveloperMetadataKey]);
+
+		// Add developer metadata to the Workshop item
+		AddDeveloperMetadata(ref uGCUpdateHandle_t, _entryData.BuildData[LongFormDeveloperMetadataKey]);
 	}
 
 	// https://partner.steamgames.com/doc/api/ISteamUGC#EUGCContentDescriptorID

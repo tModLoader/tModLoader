@@ -44,6 +44,10 @@ public class DeveloperMetadata
 {
 	public List<ModVersionHash> modVersionHashes { get; set; } = new List<ModVersionHash>();
 
+	// Format version string: "2022.05.10.20:0.2.0;2022.06.10.20:0.2.1;2022.07.10.20:0.2.2"
+	// This replaces VersionSummary keyvaluepair when used with BrowserVersionDeveloperMetadata. Expected character usage: ~80 chars
+	public string versionData;
+
 	internal string Serialize()
 	{
 		return JsonConvert.SerializeObject(this, Formatting.None, new ModVersionHash.VersionHashConverter());
@@ -67,13 +71,28 @@ public class DeveloperMetadata
 
 	// This methods trims contents of developer metadata based on the preferred order of discarding information.
 	// It is primarily written with the intent of 'in case' we need to store other information in this Workshop text field
-	internal void TrimDevMetadataForPublish()
+	// Used for the KeyValue Pair short list
+	internal void TrimDevMetadataForBrowserVersionFieldBeforePublish()
+	{
+		const int MaxMetadataLength = Steamworks.Constants.k_cubUFSTagValueMax;
+
+		const int minNumberOfHashes = 4;
+
+		while (Serialize().Length > MaxMetadataLength && modVersionHashes.Count() > minNumberOfHashes + 2) {
+			modVersionHashes = modVersionHashes.Take(modVersionHashes.Count() - 2).ToList();
+		}
+	}
+
+	// This methods trims contents of developer metadata based on the preferred order of discarding information.
+	// It is primarily written with the intent of 'in case' we need to store other information in this Workshop text field
+	// Used for the WebAPI 'long list' of hashes
+	internal void TrimDevMetadataForMainDeveloperMetadataFieldBeforePublish()
 	{
 		const int MaxMetadataLength = Steamworks.Constants.k_cchDeveloperMetadataMax;
 
 		// In case we want to store anything else down the road and it takes up space, this is the minimum amount of hashes we need to keep
 		// This minimum avoids issues with delays in the deployment time on Steam from when it is published to when it actually arrives for all users globally
-		var minNumberOfHashes = 2 * SocialBrowserModule.keepRequirements.Select(a => a.keepCount).Sum();
+		var minNumberOfHashes = 2 * SocialBrowserModule.browserVersionRetainRequirements.Select(a => a.Value).Sum();
 
 		while (Serialize().Length > MaxMetadataLength && modVersionHashes.Count() > minNumberOfHashes + 2) {
 			modVersionHashes = modVersionHashes.Take(modVersionHashes.Count() - 2).ToList();
