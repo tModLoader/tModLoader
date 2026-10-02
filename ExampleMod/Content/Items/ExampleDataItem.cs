@@ -1,12 +1,14 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using Terraria;
 using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items
 {
+	// This item implements instanced fields, for more details see ExampleInstancedItem.cs
 	public class ExampleDataItem : ModItem
 	{
 		public override string Texture => "ExampleMod/Content/Items/ExampleItem";
@@ -33,6 +35,17 @@ namespace ExampleMod.Content.Items
 				Item.TurnToAir();
 			}
 		}
+
+		// To make the timer persistent when the item is dropped/moved around in multiplayer, NetSend + NetReceive are necessary
+		public override void NetSend(BinaryWriter writer) {
+			writer.Write(timer);
+		}
+
+		public override void NetReceive(BinaryReader reader) {
+			timer = reader.ReadInt32();
+		}
+
+		// LoadData + SaveData are not necessary here in the spirit of the "hot potato" example
 
 		public override void AddRecipes() {
 			Recipe recipe = CreateRecipe();
