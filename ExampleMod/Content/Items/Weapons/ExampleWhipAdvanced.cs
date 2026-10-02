@@ -63,7 +63,34 @@ namespace ExampleMod.Content.Items.Weapons
 			}
 			// Set swingDirection to 1f for the pre-1.4.5 behavior.
 
-			Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI, 0f, swingDirection);
+			// If the Snake Band spawns this whip, no item time is applied.
+			// However, the whip projectile AI applies the life time from the item time.
+			// So, spawn the secondary whip with a value set in Projectile.ai[2] with its life time.
+			float secondaryWhipTime = 0f;
+			if (Item.IsPerformingFreeUse) {
+				// Set the velocity of the secondary whip to be a little different from the primary whip.
+				velocity = velocity.RotatedByRandom(MathHelper.Pi / 10f);
+
+				// Secondary whips are set to double this item's animation time.
+				// The 1000f is important for designating that the whip is a secondary whip and is corrected in Projectile.GetWhipSettings().
+				secondaryWhipTime = 1000f + player.itemAnimationMax * 2f;
+
+				// Reduce the damage and knockback of the secondary whip.
+				float secondaryWhipDamageMultiplier = 0.3f; // -70% damage
+				float secondaryWhipKnockbackMultiplier = 0.25f; // -75% knockback
+				damage = (int)MathHelper.Max(damage * secondaryWhipDamageMultiplier, 3); // Make the secondary whip deal at least 3 damage.
+				knockback *= secondaryWhipKnockbackMultiplier;
+			}
+
+			// Spawn the whip projectile.
+			Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI, ai0: 0f, ai1: swingDirection, ai2: secondaryWhipTime);
+
+			// If the whip is a primary whip (not spawned by the Snake Band), keep track of how many swings we've done.
+			if (!Item.IsPerformingFreeUse) {
+				player.repeatWhipSwings++;
+				player.repeatWhipsResetCooldown = 120;
+			}
+
 			return false; // Return false because we've already spawned the projectile.
 		}
 
