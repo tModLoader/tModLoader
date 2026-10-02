@@ -521,4 +521,25 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 	public virtual bool PreTryDespawning(ref bool giveItem) {
 		return true;
 	}
+
+	/// <summary>
+	/// Called during <see cref="Projectile.AI_Sentries_HeavySlingReposition()"/> before the default logic to adjust how the sentries are position when carried with the Heavy Sling.
+	/// <para/>
+	/// </summary>
+	/// <param name="offset"> The offset of the sentry relative to the player's center.
+	/// <para/> Defaults to <see cref="Vector2.Zero"/>
+	/// </param>
+	/// <param name="halfSize"> Used for the position for everything except for the transformation mount.
+	/// <para/> Defaults to <c>Projectile.Size / 2f</c>
+	/// </param>
+	/// <param name="pushFromOrigin"> Used to change the origin of sentry for how it gets rotated.
+	/// <br/> It is most noticeably used by the <see cref="MountID.PogoStick"/> to keep the sentry position relative to the player's rotation.
+	/// <para/> Adjust this value to make the sentry appear at the same spot relative to the player's rotation.
+	/// <para/> Defaults to 0
+	/// </param>
+	/// <returns> Return false to skip the vanilla logic. Returns true by default. </returns>
+	public virtual bool SentryHeavySlingReposition(ref Vector2 offset, ref Vector2 halfSize, ref int pushFromOrigin)
+	{
+		return true;
+	}
 }
