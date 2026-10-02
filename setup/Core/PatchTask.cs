@@ -14,6 +14,21 @@ namespace Terraria.ModLoader.Setup.Core
 		public static IEnumerable<(string file, string relPath)> EnumerateSrcFiles(string dir) =>
 			EnumerateFiles(dir).Where(f => !f.relPath.Split('/').Any(NonSourceDirs.Contains));
 
+		/// <summary>
+		///     Returns a source file in the patched dir which was modified after the last patch or diff of that dir,
+		///     or null if there are none. Such a file holds edits which patching would discard.
+		/// </summary>
+		public static string? FindEditedFile(PatchTaskParameters parameters)
+		{
+			if (parameters.Cutoff.Get() is not DateTime cutoff || !Directory.Exists(parameters.PatchedDir))
+				return null;
+
+			return EnumerateSrcFiles(parameters.PatchedDir)
+				.Where(f => File.GetLastWriteTime(f.file) >= cutoff)
+				.Select(f => f.file)
+				.FirstOrDefault();
+		}
+
 		private readonly IUserPrompt userPrompt;
 		private readonly IPatchReviewer? patchReviewer;
 		private readonly ProgramSettings programSettings;
