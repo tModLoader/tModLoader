@@ -31,13 +31,52 @@ namespace ExampleMod.Content.Items.Tools
 			Item.value = Item.buyPrice(gold: 5);
 		}
 
+		// CanUseItem is a query and must not change the world. Since 1.4.5 the game calls it several
+		// times per use, twice from Player.TryingToUseItem and once from the actual use, so
+		// destroying the tile here would consume it before the item is really used.
+		// Item.shoot is set here because Player.ItemCheck_Shoot reads it before ModifyShootStats runs.
 		public override bool CanUseItem(Player player) {
 			if (player.whoAmI != Main.myPlayer) {
 				return true;
 			}
 
+			if (!TryGetTargetTile(out _, out var data)) {
+				return false;
+			}
+
+			Item.shoot = data.FallingProjectileType;
+			return true;
+		}
+
+		// ModifyShootStats runs inside Player.ItemCheck_Shoot, right before the projectile spawns,
+		// and only once per actual use. This is where the tile can safely be destroyed.
+		public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
+			// Make sure the spawn position of projectile is the same as mouse
+			position = Main.MouseWorld;
+			player.LimitPointToPlayerReachableArea(ref position);
+
+			if (player.whoAmI != Main.myPlayer || !TryGetTargetTile(out Point tilePos, out var data)) {
+				return;
+			}
+
+			// The tile may differ from the one seen in CanUseItem if the mouse moved since then
+			type = data.FallingProjectileType;
+
+			// Kill the tile without item dropping, so the projectile carries it instead
+			WorldGen.KillTile(tilePos.X, tilePos.Y, noItem: true);
+
+			// If it is on the multiplayer client, sync the tile destruction to the server
+			if (Main.netMode == NetmodeID.MultiplayerClient) {
+				// 4 corresponds to the "KillTile (No Item)" message
+				NetMessage.SendData(MessageID.TileManipulation, number: 4, number2: tilePos.X, number3: tilePos.Y);
+			}
+		}
+
+		private static bool TryGetTargetTile(out Point tilePos, out TileID.Sets.FallingBlockProjectileInfo data) {
+			data = null;
+
 			// Calculate the tile position where the mouse is on
-			Point tilePos = Main.MouseWorld.ToTileCoordinates();
+			tilePos = Main.MouseWorld.ToTileCoordinates();
 			Tile tile = Main.tile[tilePos];
 
 			if (!tile.HasTile) {
@@ -50,35 +89,12 @@ namespace ExampleMod.Content.Items.Tools
 			}
 
 			// Get which projectile the tile will create when falling
-			if (TileID.Sets.FallingBlockProjectile[tile.TileType] is not TileID.Sets.FallingBlockProjectileInfo data) {
+			if (TileID.Sets.FallingBlockProjectile[tile.TileType] is not TileID.Sets.FallingBlockProjectileInfo info) {
 				return false;
 			}
 
-			// Try to kill the tile without item dropping
-			WorldGen.KillTile(tilePos.X, tilePos.Y, noItem: true);
-
-			// If for some reason the tile can't be killed, don't use the item
-			if (Main.tile[tilePos].HasTile) {
-				return false;
-			}
-
-			// If the tile was killed successfully,
-			// set Item.shoot to data.FallingProjectileType to create the projectile corresponding to the killed tile
-			Item.shoot = data.FallingProjectileType;
-
-			// If it is on the multiplayer client, sync the tile destruction to the server
-			if (Main.netMode == NetmodeID.MultiplayerClient) {
-				// 4 corresponds to the "KillTile (No Item)" message
-				NetMessage.SendData(MessageID.TileManipulation, number: 4, number2: tilePos.X, number3: tilePos.Y);
-			}
-
+			data = info;
 			return true;
-		}
-
-		public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
-			// Make sure the spawn position of projectile is the same as mouse
-			position = Main.MouseWorld;
-			player.LimitPointToPlayerReachableArea(ref position);
 		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
