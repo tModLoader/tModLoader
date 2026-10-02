@@ -2076,6 +2076,51 @@
  				for (int k = 0; k < num5; k++) {
  					Dust obj = Main.dust[WorldGen.KillTile_MakeTileDust(i, j, tileSafely)];
  					obj.velocity.Y -= 3f + (float)num4 * 1.5f;
+@@ -58918,7 +_,7 @@
+ 		velocity.Y += 0.2f;
+ 	}
+ 
+-	private void AI_Sentries_HeavySlingReposition()
++	public void AI_Sentries_HeavySlingReposition() // TML: Made public
+ 	{
+ 		Player player = Main.player[owner];
+ 		if (!player.accSentryBackpack) {
+@@ -59056,6 +_,9 @@
+ 		if (flag5 && player.mount.Active && player.mount.Type == 43)
+ 			pushFromOriginHack = 12;
+ 
++		if (!ProjectileLoader.SentryHeavySlingReposition(this, ref vector2, ref vector, ref pushFromOriginHack))
++			return;
++
+ 		switch (player.mount.Type) {
+ 			default: {
+ 				base.Center = player.MountedCenter + vector2;
+@@ -59136,7 +_,7 @@
+ 					num3 = 0;
+ 
+ 				base.Bottom += vector2 + new Vector2(0f, num3);
+-				base.Bottom = player.RotatedRelativePoint(base.Bottom);
++				base.Bottom = player.RotatedRelativePoint(base.Bottom, addGfxOffY: false); // TML: Fix double player.gfxOffY
+ 				break;
+ 			}
+ 			case 54:
+@@ -59146,14 +_,14 @@
+ 				}
+ 				base.Bottom = player.MountedTop + new Vector2(-12f * player.Directions.X, 16f);
+ 				base.Bottom += vector2;
+-				base.Bottom = player.RotatedRelativePoint(base.Bottom);
++				base.Bottom = player.RotatedRelativePoint(base.Bottom, addGfxOffY: false); // TML: Fix double player.gfxOffY
+ 				break;
+ 			case 52:
+ 				base.Bottom = player.MountedTop + new Vector2(-4f * player.Directions.X, 10f);
+ 				if (flag4)
+ 					position.Y += 4f;
+ 				base.Bottom += vector2;
+-				base.Bottom = player.RotatedRelativePoint(base.Bottom);
++				base.Bottom = player.RotatedRelativePoint(base.Bottom, addGfxOffY: false); // TML: Fix double player.gfxOffY
+ 				break;
+ 		}
+ 
 @@ -59348,7 +_,10 @@
  				_ = localAI[1];
  				_ = 1f;
