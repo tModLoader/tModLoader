@@ -40,9 +40,9 @@ public abstract class ConfigElement : UIElement
 	// Provides access to the field/property contained in the item
 	protected internal PropertyFieldWrapper MemberInfo { get; set; }
 	// The object that contains the memberInfo. This is usually a ModConfig instance or an object instance contained within a ModConfig instance.
-	protected internal object Item { get; set; }
+	protected object Item { get; set; }
 	// If non-null, the memberInfo actually refers to the collection containing this item and array and index need to be used to assign this data
-	protected internal IList List { get; set; }
+	protected IList List { get; set; }
 	// Attributes
 	protected LabelKeyAttribute LabelAttribute;
 	protected string Label;
@@ -77,19 +77,6 @@ public abstract class ConfigElement : UIElement
 		List = array;
 		Index = index;
 		backgroundColor = UICommon.DefaultUIBlue;
-	}
-
-	/// <summary>
-	/// Used by <see cref="RefreshUI"/> in user code to update the value the config element references.
-	/// </summary>
-	/// <param name="item"></param>
-	/// <param name="array"></param>
-	/// <param name="index"></param>
-	public void UpdateObject(object item, IList array, int index)
-	{
-		Item = item;
-		List = array;
-		Index = index;
 	}
 
 	public virtual void OnBind()
@@ -148,18 +135,6 @@ public abstract class ConfigElement : UIElement
 
 		return MemberInfo.GetValue(Item);
 	}
-
-	/// <summary>
-	/// Called when the config UI refreshes.
-	/// <br/><br/> Ensure the ConfigElement UI still reflects the value from GetObject(), as the config may have had changes reverted or it's default values restored.
-	/// </summary>
-	public virtual void RefreshUI() { }
-
-	/// <summary>
-	/// Called when the config UI asks this element to collapse or expand.
-	/// <br/><br/> Ensure that custom child elements also have <see cref="SetExpanded"/> called on them.
-	/// </summary>
-	public virtual void SetExpanded(bool expanded) { }
 
 	protected override void DrawSelf(SpriteBatch spriteBatch)
 	{

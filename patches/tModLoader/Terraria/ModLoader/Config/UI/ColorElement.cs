@@ -1,9 +1,7 @@
-using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using Terraria.GameContent;
-using Terraria.UI;
 
 namespace Terraria.ModLoader.Config.UI;
 
@@ -115,10 +113,12 @@ internal class ColorElement : ConfigElement
 
 	public IList<Color> ColorList { get; set; }
 
-	private List<Tuple<UIElement, UIElement>> wrappedElements = [];
-
-	private void UpdateColorObject()
+	public override void OnBind()
 	{
+		base.OnBind();
+
+		ColorList = (IList<Color>)List;
+
 		if (ColorList != null) {
 			DrawLabel = false;
 			height = 30;
@@ -128,14 +128,6 @@ internal class ColorElement : ConfigElement
 			height = 30;
 			c = new ColorObject(MemberInfo, Item);
 		}
-	}
-
-	public override void OnBind()
-	{
-		base.OnBind();
-
-		ColorList = (IList<Color>)List;
-		UpdateColorObject();
 
 		// TODO: Draw the sliders in the same manner as vanilla.
 		var colorHSLSliderAttribute = ConfigManager.GetCustomAttributeFromMemberThenMemberType<ColorHSLSliderAttribute>(MemberInfo, Item, List);
@@ -162,25 +154,11 @@ internal class ColorElement : ConfigElement
 				continue;
 
 			var wrapped = UIModConfig.WrapIt(this, ref height, variable, c, order++);
-			wrappedElements.Add(wrapped);
 
 			if (ColorList != null) {
 				wrapped.Item1.Left.Pixels -= 20;
 				wrapped.Item1.Width.Pixels += 20;
 			}
-		}
-	}
-
-	public override void RefreshUI()
-	{
-		UpdateColorObject();
-
-		foreach (var wrappedElement in wrappedElements) {
-			if (wrappedElement.Item2 is not ConfigElement configElement)
-				return;
-
-			configElement.Item = c;
-			configElement.RefreshUI();
 		}
 	}
 

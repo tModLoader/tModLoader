@@ -236,50 +236,6 @@ internal class ObjectElement : ConfigElement<object>
 		}
 	}
 
-	public override void RefreshUI()
-	{
-		pendingChanges = true;
-
-		if (Value is null) {
-			wrappedElements.Clear();
-			separateConfigPage?.ConfigElements.Clear();
-		}
-
-		if (separateConfigPage is not null) {
-			foreach (var wrappedElement in separateConfigPage.ConfigElements) {
-				if (wrappedElement.Item2 is not ConfigElement configElement)
-					return;
-
-				configElement.Item = Value;
-				configElement.RefreshUI();
-			}
-		}
-
-		foreach (var wrappedElement in wrappedElements) {
-			if (wrappedElement.Item2 is not ConfigElement configElement)
-				return;
-
-			configElement.Item = Value;
-			configElement.RefreshUI();
-		}
-	}
-
-	public override void SetExpanded(bool expanded)
-	{
-		bool prevExpanded = this.expanded;
-		this.expanded = expanded;
-		pendingChanges |= prevExpanded != this.expanded;
-
-		foreach (var wrappedElement in wrappedElements) {
-			if (wrappedElement.Item2 is not ConfigElement configElement)
-				return;
-
-			configElement.SetExpanded(expanded);
-		}
-	}
-
-	private List<Tuple<UIElement, UIElement>> wrappedElements = [];
-
 	private void SetupList()
 	{
 		dataList.Clear();
@@ -307,7 +263,6 @@ internal class ObjectElement : ConfigElement<object>
 			}
 			else {
 				int order = 0;
-				wrappedElements.Clear();
 				foreach (PropertyFieldWrapper variable in ConfigManager.GetFieldsAndProperties(data)) {
 					if (Attribute.IsDefined(variable.MemberInfo, typeof(JsonIgnoreAttribute)) && !Attribute.IsDefined(variable.MemberInfo, typeof(ShowDespiteJsonIgnoreAttribute)))
 						continue;
@@ -317,7 +272,6 @@ internal class ObjectElement : ConfigElement<object>
 					UIModConfig.HandleHeader(dataList, ref top, ref order, variable);
 
 					var wrapped = UIModConfig.WrapIt(dataList, ref top, variable, data, order++);
-					wrappedElements.Add(wrapped);
 
 					if (List != null) {
 						//wrapped.Item1.Left.Pixels -= 20;

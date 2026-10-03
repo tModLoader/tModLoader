@@ -1,8 +1,6 @@
 using Microsoft.Xna.Framework;
 using Newtonsoft.Json;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
 using Terraria.GameContent.UI.States;
@@ -236,23 +234,6 @@ internal abstract class CollectionElement : ConfigElement
 				expandButton.SetImage(CollapsedTexture);
 			}
 		}
-	}
-
-	public override void RefreshUI()
-	{
-		pendingChanges = true;
-		Data = MemberInfo.GetValue(Item);
-		SetupList(); // TODO: this fucks with collapsing and entering text in input fields of the child elements, but it's still an improvement over not working
-		// - solution is probably to just impl RefreshUI for each collection element individually
-	}
-
-	public override void SetExpanded(bool expanded)
-	{
-		bool prevExpanded = this.expanded;
-		this.expanded = expanded;
-		pendingChanges |= prevExpanded != this.expanded;
-
-		// TODO: SetExpanded on children
 	}
 
 	public override void Recalculate()
