@@ -27,7 +27,7 @@ namespace ExampleMod.Content.Items
 
 		public override void AddRecipes() {
 			// Many items have multiple recipes. The first added recipe will usually be used for shimmer decrafting.
-			// Recipe decraft conditions may be used to only allow decrafting under certain conditions, the first recipe found that satisfies all of it's decraft conditions will be used.
+			// Recipe decraft conditions may be used to only allow decrafting under certain conditions, the first recipe found that satisfies all of its decraft conditions will be used.
 			// Therefore, this desert-specific example has priority over the world evil examples registered after it.
 			CreateRecipe()
 				.AddIngredient<ExampleItem>()
