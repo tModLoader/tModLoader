@@ -89,7 +89,7 @@ internal class ObjectElement : ConfigElement<object>
 			separatePageButton = new UITextPanel<FuncStringWrapper>(new FuncStringWrapper(TextDisplayFunction));
 			separatePageButton.HAlign = 0.5f;
 			separatePageButton.OnLeftClick += (a, c) => {
-				UIModConfig.Instance.PushConfigPage(separateConfigPage);
+				Interface.modConfig.PushConfigPage(separateConfigPage);
 			};
 		}
 
