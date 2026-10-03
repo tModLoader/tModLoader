@@ -23,16 +23,9 @@ namespace Terraria.ModLoader.Config.UI;
 
 public class UIModConfig : UIState, IHaveBackButtonCommand
 {
-	// Public API for modders since Interface is internal
-	// TODO: what if mods supply their own modConfig state, either a UIModConfig or another one?
-	public static UIModConfig Instance => Interface.modConfig;
-
-	// TODO: these can be deprecated/moved
-	// - UpdateCount can be replaced with GlobalTimeWrappedHourly
-	// - Tooltip can be set using Instance.Tooltip
 	public int UpdateCount { get; set; }
-	// TODO: remove in future when we want breaking changes
-	public static string Tooltip { get => Instance.ConfigElementTooltip; set => Instance.ConfigElementTooltip = value; }
+	[Obsolete("Use Interface.modConfig.ConfigElementTooltip for config element tooltips, and UICommon.TooltipMouseText for other tooltips")]
+	public static string Tooltip { get => Interface.modConfig.ConfigElementTooltip; set => Interface.modConfig.ConfigElementTooltip = value; }
 	public string ConfigElementTooltip { get; set; }
 
 	public bool HasUnsavedChanges { get; private set; }
@@ -80,9 +73,6 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 	private UIImageFramed configSideIndicator;
 
 	#region UI Creation
-
-	// TODO: in future, all of the UI methods and fields will be protected and/or virtual to allow modders to customize their UIState if they wish
-	// - also store more of the below UI elements as fields and make the fields protected
 
 	public override void OnInitialize()
 	{
@@ -190,21 +180,6 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 		filterTextField.OnTextChange += (_, _) => RefreshUI();
 		filterTextField.OnRightClick += (_, _) => filterTextField.SetText("");
 		textBoxBackground.Append(filterTextField);
-
-		var collapseAllButton = new UIImage(UICommon.ButtonCollapsedTexture) {
-			VAlign = 0.5f,
-			HAlign = 1f,
-			Left = { Pixels = -(textBoxBackground.GetOuterDimensions().Width + 10) },
-		};
-
-		collapseAllButton.OnLeftClick += CollapseAll;
-		collapseAllButton.OnDraw += delegate (UIElement affectedElement) {
-			if (collapseAllButton.IsMouseHovering) {
-				UICommon.TooltipMouseText(Language.GetTextValue("tModLoader.ModConfigCollapseAll"));
-			}
-		};
-
-		listHeaderContainer.Append(collapseAllButton);
 
 		var configSideIndicatorPanel = new UIPanel {
 			Width = { Pixels = 40 },
@@ -387,19 +362,6 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 		OnConfigModified();
 	}
 
-	private void CollapseAll(UIMouseEvent evt, UIElement listeningElement)
-	{
-		SoundEngine.PlaySound(SoundID.MenuTick);
-
-		foreach (var listItem in CurrentConfigPage.ConfigElements) {
-			if (listItem.Item2 is ConfigElement configElement) {
-				configElement.SetExpanded(false);
-			}
-		}
-
-		// TODO: fix the weird jump that happens when an element is collapsed with this (may need fixing when collapsing elements normally)
-	}
-
 	#endregion
 
 	#region UI Updating
@@ -433,43 +395,32 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 
 		refreshQueued = false;
 
-		// Refresh all of the config elements
-		// TODO: unfortunately, because of how ConfigElements currently handle changing values and because of reference types
-		// - nested elements require manual handling to make UI refresh on revert/restore
-		// - in future, this should be much easier, since things like the Item (the parent) won't be stored, and will instead be getters, based on a parent ConfigElement
-		// TODO: is it necessary to refresh all, or only the current page? RootCOnfigPage will refresh all of it's children
-		foreach (var listItem in rootConfigPage.ConfigElements) {
-			if (listItem.Item2 is ConfigElement configElement) {
-				configElement.RefreshUI();
-			}
-		}
+		// TODO: test collapsing + subpages on save/revert
+		// This config element updating system is a leftover from the previous config UI, since properly refreshing the config elements requires a lot of code changes and will probably break mods.
+		configPageStack.Clear();
+		rootConfigPage = new ConfigPage(modConfig.DisplayName);
+		CreateConfigElements(rootConfigPage, pendingConfig);
+		configPageStack.Push(rootConfigPage);
 
-		// Populate the config list
+		CheckSaveAndRestoreConditions();
+
+		// TODO: allow filtering to look inside of subpages
 		configElementList.Clear();
 		configElementList.AddRange(CurrentConfigPage.ConfigElements.Where(item => {
 			if (item.Item2 is ConfigElement configElement) {
-				// TODO: instead of using TextDisplayFunction, allow elements to define a "search string" so they can include things like sub-members and tooltips in their search info
 				return configElement.TextDisplayFunction().Contains(filterTextField.CurrentString, StringComparison.OrdinalIgnoreCase);
 			}
 			return true;
 		}).Select(x => x.Item1));
 
-		// Set panel color
-		// TODO: in future, this should be done via hooks here rather than attributes
-		// TODO: also account for the colour of the subpage
 		var backgroundColorAttribute = (BackgroundColorAttribute)Attribute.GetCustomAttribute(pendingConfig.GetType(), typeof(BackgroundColorAttribute));
 		uiPanel.BackgroundColor = backgroundColorAttribute?.Color ?? UICommon.MainPanelBackground;
 
 		Recalculate();
 	}
 
-	// TODO: strange bugs with reference types that default to null (such as strings) when backspacing themselves
-	// TODO: consider if it's necessary to call this every frame? do we really need to re-add all config elements every frame?
-	// TODO: merge CheckSaveAndRestoreConditions in?
-	// - to resolve a bunch of the above, it may be wise to do everything in a refreshUI method, but include flags for what needs updating
 	public void OnConfigModified()
 	{
-		CheckSaveAndRestoreConditions();
 		RefreshUI();
 	}
 
@@ -479,7 +430,12 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 		HasDefaultValues = ConfigManager.AreConfigsEqual(pendingConfig, ConfigManager.GetLoadTimeConfig(mod, modConfig.Name));
 	}
 
-	// TODO: ensure we can search for stuff inside of a sub-config (make the sub config show up if the children contain the value, perhaps highlight the subconfig to indicate its inside of it)
+	// Exists to avoid breaking mods that depended on this method signature, will be removed in the future
+	public void SetPendingChanges(bool changes = true)
+	{
+		OnConfigModified();
+	}
+
 	public void PushConfigPage(ConfigPage configPage)
 	{
 		configPageStack.Push(configPage);
@@ -519,7 +475,6 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 
 		base.Update(gameTime);
 
-		// TODO: remove in the future
 		UpdateCount++;
 	}
 
@@ -579,28 +534,12 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 		modNamePanel.Height.Set(modNamePanel.PaddingTop + modNameTextSize.Y + modNamePanel.PaddingBottom, 0f);
 		modNamePanel.Recalculate();
 
-		// Setup the config elements
+		configPageStack.Clear();
 		rootConfigPage = new ConfigPage(modConfig.DisplayName);
-
-		int top = 0;
-		int order = 0;
-		// ReSharper disable once LoopCanBePartlyConvertedToQuery
-		foreach (PropertyFieldWrapper variable in ConfigManager.GetFieldsAndProperties(pendingConfig)) {
-			if (Attribute.IsDefined(variable.MemberInfo, typeof(JsonIgnoreAttribute)) && !Attribute.IsDefined(variable.MemberInfo, typeof(ShowDespiteJsonIgnoreAttribute)))
-				continue;
-
-			var header = HandleHeader(null, ref top, ref order, variable);
-			if (header is not null) {
-				rootConfigPage.ConfigElements.Add(header);
-			}
-
-			rootConfigPage.ConfigElements.Add(WrapIt(null, ref top, variable, pendingConfig, order++));
-		}
-
+		CreateConfigElements(rootConfigPage, pendingConfig);
 		PushConfigPage(rootConfigPage);
 
 		RefreshUI(delayRefresh: false);
-		CheckSaveAndRestoreConditions();
 
 		if (scrollToOption != null) {
 			ScrollTo(scrollToOption, centerScrolledOption);
@@ -646,8 +585,25 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 
 	#endregion
 
-	// TODO: refactor in the future
 	#region ConfigElement Handling
+
+	private static void CreateConfigElements(ConfigPage configPage, object config)
+	{
+		int top = 0;
+		int order = 0;
+		// ReSharper disable once LoopCanBePartlyConvertedToQuery
+		foreach (PropertyFieldWrapper variable in ConfigManager.GetFieldsAndProperties(config)) {
+			if (Attribute.IsDefined(variable.MemberInfo, typeof(JsonIgnoreAttribute)) && !Attribute.IsDefined(variable.MemberInfo, typeof(ShowDespiteJsonIgnoreAttribute)))
+				continue;
+
+			var header = HandleHeader(null, ref top, ref order, variable);
+			if (header is not null) {
+				configPage.ConfigElements.Add(header);
+			}
+
+			configPage.ConfigElements.Add(WrapIt(null, ref top, variable, config, order++));
+		}
+	}
 
 	public static Tuple<UIElement, UIElement> WrapIt(UIElement parent, ref int top, PropertyFieldWrapper memberInfo, object item, int order, object list = null, Type arrayType = null, int index = -1)
 	{
@@ -870,7 +826,6 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 	#endregion
 }
 
-// TODO: make public in the future for any modded UI that may want popups
 internal class BlockInputElement : UIElement
 {
 	private UIElement elementToBlock;

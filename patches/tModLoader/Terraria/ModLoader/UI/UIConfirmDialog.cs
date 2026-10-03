@@ -9,7 +9,7 @@ using Terraria.UI;
 
 namespace Terraria.ModLoader.UI;
 
-// TODO: make UIMods use this, since this is adapted from it
+// TODO: make UIMods use this, since this is originally adapted from it
 public class UIConfirmDialog : UIElement
 {
 	public MouseEvent YesAction { get; }
