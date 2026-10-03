@@ -3,12 +3,9 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using Terraria.GameContent;
-using Terraria.ModLoader;
 using Terraria.ModLoader.Config;
 using Terraria.ModLoader.Config.UI;
-using Terraria.UI;
 
 // ATTENTION: Below this point is custom config UI element.
 // Be aware that mods using custom config elements will break with the next few tModLoader updates until their design is finalized.
