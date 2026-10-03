@@ -498,7 +498,6 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 
 		UpdateCount++;
 
-
 		currentMessageTimer++;
 		if (currentMessageTimer >= 60 * 5) {
 			currentMessage = null;
