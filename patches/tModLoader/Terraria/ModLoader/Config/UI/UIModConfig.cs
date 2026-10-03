@@ -207,7 +207,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 		// Gets appended in OnActivate
 
 		modNamePanel = new UIAutoScaleTextTextPanel<object>("") {
-			MaxWidth = { Pixels = 310, Percent = 0f }, // TODO: this needs a proper calculation (use ingame UI to measure paddings since it doesn't apply a scaling factor)
+			MaxWidth = { Pixels = 330, Percent = 0f },
 			Height = { Pixels = 40 },
 			Left = { Pixels = 50 },
 			VAlign = 0.5f,
