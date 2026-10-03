@@ -466,7 +466,6 @@ public static class ConfigManager
 		return UIModConfig.WrapIt(parent, ref top, memberInfo, item, order, list, arrayType, index);
 	}
 
-	// TODO: remove in future, it is no longer needed, since ModConfig is public
 	public static void SetPendingChanges(bool changes = true)
 	{
 		// public api for modders.
