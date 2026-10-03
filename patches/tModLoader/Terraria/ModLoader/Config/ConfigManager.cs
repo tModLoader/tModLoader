@@ -522,8 +522,7 @@ public static class ConfigManager
 	public static void SetPendingChanges(bool changes = true)
 	{
 		// public api for modders.
-		if (changes)
-			Interface.modConfig.SetPendingChanges();
+		Interface.modConfig.SetPendingChanges(changes);
 	}
 
 	// TODO: better home?

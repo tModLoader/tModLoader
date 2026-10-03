@@ -433,7 +433,8 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 	// Exists to avoid breaking mods that depended on this method signature, will be removed in the future
 	public void SetPendingChanges(bool changes = true)
 	{
-		OnConfigModified();
+		if (changes)
+			OnConfigModified();
 	}
 
 	public void PushConfigPage(ConfigPage configPage)
