@@ -245,21 +245,7 @@ internal class ObjectElement : ConfigElement<object>
 		if (data != null) {
 			if (separatePage && !ignoreSeparatePage) {
 				separateConfigPage.ConfigElements.Clear();
-
-				int top = 0;
-				int order = 0;
-				// ReSharper disable once LoopCanBePartlyConvertedToQuery
-				foreach (PropertyFieldWrapper variable in ConfigManager.GetFieldsAndProperties(data)) {
-					if (Attribute.IsDefined(variable.MemberInfo, typeof(JsonIgnoreAttribute)) && !Attribute.IsDefined(variable.MemberInfo, typeof(ShowDespiteJsonIgnoreAttribute)))
-						continue;
-
-					var header = UIModConfig.HandleHeader(null, ref top, ref order, variable);
-					if (header is not null) {
-						separateConfigPage.ConfigElements.Add(header);
-					}
-
-					separateConfigPage.ConfigElements.Add(UIModConfig.WrapIt(null, ref top, variable, data, order++));
-				}
+				UIModConfig.CreateConfigElements(separateConfigPage, data);
 			}
 			else {
 				int order = 0;

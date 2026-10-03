@@ -588,7 +588,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 
 	#region ConfigElement Handling
 
-	private static void CreateConfigElements(ConfigPage configPage, object config)
+	public static void CreateConfigElements(ConfigPage configPage, object config)
 	{
 		int top = 0;
 		int order = 0;
