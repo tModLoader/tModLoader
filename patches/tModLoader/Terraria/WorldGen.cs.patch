@@ -2093,6 +2093,25 @@
  
  		switch (num4) {
  			case 0:
+@@ -48048,6 +_,7 @@
+ 				break;
+ 		}
+ 
++		/*VANILLACODE
+ 		if (type == 653) {
+ 			int num8 = 0;
+ 			if (num4 <= 3)
+@@ -48082,6 +_,10 @@
+ 		if (Main.netMode != 1 && type != 653)
+ 			SpawnThingsFromPot(i, j, num, num2, num4);
+ 
++		*/
++
++		DropPotLoot(i, j, num, num2, num4, type);
++
+ 		destroyObject = false;
+ 	}
+ 
 @@ -48734,6 +_,19 @@
  		}
  	}
