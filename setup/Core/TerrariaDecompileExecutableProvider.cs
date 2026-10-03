@@ -1,7 +1,11 @@
+using System.Buffers;
 using System.IO.Compression;
+using System.Net;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using ICSharpCode.Decompiler.CSharp.Syntax;
 using ICSharpCode.Decompiler.Metadata;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Terraria.ModLoader.Setup.Core.Abstractions;
 using Terraria.ModLoader.Setup.Core.Utilities;
 
@@ -59,8 +63,43 @@ public sealed class TerrariaDecompileExecutableProvider
 
 			string serverVersionWithoutDots = ServerVersion.ToString().Replace(".", "");
 			string url = $"https://terraria.org/api/download/pc-dedicated-server/terraria-server-{serverVersionWithoutDots}.zip";
-			using var zip = new ZipArchive(new MemoryStream(await httpClient.GetByteArrayAsync(url, cancellationToken)));
+			var responseTask = httpClient.GetAsync(url, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
+
+			taskProgress.ReportStatus("Request sent...");
+
+			var response = await responseTask;
+			response.EnsureSuccessStatusCode();
+
+			long size = response.Content.Headers.ContentLength 
+				?? throw new WebException("Expected ContentLength header", WebExceptionStatus.ReceiveFailure);
+
+			taskProgress.ReportStatus("Downloading data...");
+
+			var stream = new MemoryStream((int)size);
+
+			await CopyAndReportProgress(await response.Content.ReadAsStreamAsync(), stream, (int)size, taskProgress);
+
+			using var zip = new ZipArchive(stream);
 			zip.Entries.Single(e => e.FullName == $"{serverVersionWithoutDots}/Windows/TerrariaServer.exe").ExtractToFile(destinationPath);
+		}
+	}
+
+	public async Task CopyAndReportProgress(Stream from, Stream to, int expectedSize, ITaskProgress progress) {
+		progress.SetMaxProgress(expectedSize / 1024);
+
+		var buffer = ArrayPool<byte>.Shared.Rent(81920);
+
+		int copied = 0;
+
+		while (true) {
+			int read = await from.ReadAsync(buffer, 0, buffer.Length);
+			if (read == 0) {
+				break;
+			}
+
+			copied += read;
+			progress.SetCurrentProgress(copied / 1024);
+			await to.WriteAsync(buffer, 0, read);
 		}
 	}
 
