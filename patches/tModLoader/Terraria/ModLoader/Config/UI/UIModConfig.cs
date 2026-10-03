@@ -71,6 +71,11 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 	private MarqueeText modNameText;
 	private UIImage smallModIcon;
 	private UIImageFramed configSideIndicator;
+	private UIText tooltipText;
+
+	private string currentMessage;
+	private Color currentMessageColor;
+	private int currentMessageTimer;
 
 	#region UI Creation
 
@@ -229,9 +234,31 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 
 		listHeaderContainer.Append(modNamePanel);
 
+		float tooltipBoxHeight = 100;
+		float tooltipBoxPadding = 12;
+
+		var tooltipBackground = new UISlicedImage(Main.Assets.Request<Texture2D>("Images/UI/CharCreation/CategoryPanelHighlight")) {
+			VAlign = 1f,
+			Width = { Percent = 1 },
+			Height = { Pixels = tooltipBoxHeight },
+			Color = Color.LightGray * 0.7f,
+		};
+
+		tooltipBackground.SetSliceDepths(10);
+		uiPanel.Append(tooltipBackground);
+
+		tooltipText = new UIText("") {
+			Width = { Percent = 1f },
+			Height = { Percent = 1f },
+			IsWrapped = true,
+		}.WithPadding(10);
+
+		tooltipBackground.Append(tooltipText);
+
 		configElementList = new UIList {
 			Width =  { Pixels = -25, Percent = 1f },
-			Height = { Pixels = -listHeaderContainer.Height.Pixels - 5, Percent = 1f },
+			Height = { Pixels = -listHeaderContainer.Height.Pixels - 5 - tooltipBoxHeight - tooltipBoxPadding, Percent = 1f },
+			Top = { Pixels = -tooltipBoxHeight - tooltipBoxPadding },
 			VAlign = 1f,
 			ListPadding = 5f,
 		};
@@ -239,6 +266,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 
 		scrollbar = new UIScrollbar {
 			Height = { Pixels = configElementList.Height.Pixels, Percent = 1f },
+			Top = { Pixels = configElementList.Top.Pixels },
 			HAlign = 1f,
 			VAlign = 1f,
 		}.WithView(100f, 1000f);
@@ -443,19 +471,11 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 		RefreshUI();
 	}
 
-	// TODO: reimpl
 	public void SetMessage(string text, Color color)
 	{
-		/*
-		message.TextScale = 1f;
-		message.SetText(Language.GetText("tModLoader.ModConfigNotification") + text);
-		float width = FontAssets.MouseText.Value.MeasureString(text).X;
-		if (width > 400) {
-			message.TextScale = 400 / width;
-			message.Recalculate();
-		}
-		message.TextColor = color;
-		//*/
+		currentMessage = text;
+		currentMessageColor = color;
+		currentMessageTimer = 0;
 	}
 
 	internal void SetMod(Mod mod, ModConfig config, bool openedFromModder = false, Action onClose = null, string scrollToOption = null, bool centerScrolledOption = true)
@@ -477,6 +497,12 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 		base.Update(gameTime);
 
 		UpdateCount++;
+
+
+		currentMessageTimer++;
+		if (currentMessageTimer >= 60 * 5) {
+			currentMessage = null;
+		}
 	}
 
 	public override void Draw(SpriteBatch spriteBatch)
@@ -485,9 +511,17 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 
 		base.Draw(spriteBatch);
 
-		// TODO: allow the tooltip to be displayed in a box instead
-		if (!string.IsNullOrEmpty(ConfigElementTooltip)) {
-			UICommon.TooltipMouseText(ConfigElementTooltip);
+		tooltipText.TextColor = Color.White;
+
+		if (!string.IsNullOrEmpty(currentMessage)) {
+			tooltipText.SetText(currentMessage);
+			tooltipText.TextColor = currentMessageColor;
+		}
+		else if (!string.IsNullOrEmpty(ConfigElementTooltip)) {
+			tooltipText.SetText(ConfigElementTooltip);
+		}
+		else {
+			tooltipText.SetText(Language.GetText("Workshop.HubDescriptionDefault"));
 		}
 
 		UILinkPointNavigator.Shortcuts.BackButtonCommand = 7;
