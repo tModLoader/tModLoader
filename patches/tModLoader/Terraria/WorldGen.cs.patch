@@ -2052,9 +2052,9 @@
  		}
 +
 +		if (conversionRecursionDepth == 1) {
-+			if (type != theTile.TileType) 
++			if (type != theTile.TileType)
 +				TileLoader.OnTileConverted(i2, j2, type, theTile.type, conversionType);
-+			if (wall != theTile.WallType) 
++			if (wall != theTile.WallType)
 +				WallLoader.OnWallConverted(i2, j2, wall, theTile.wall, conversionType);
 +		}
  	}
@@ -2093,6 +2093,14 @@
  
  		switch (num4) {
  			case 0:
+@@ -48082,6 +_,7 @@
+ 		if (Main.netMode != 1 && type != 653)
+ 			SpawnThingsFromPot(i, j, num, num2, num4);
+ 
++		DropPotLoot(i, j, num, num2, num4, type);
+ 		destroyObject = false;
+ 	}
+ 
 @@ -48734,6 +_,19 @@
  		}
  	}
@@ -2591,7 +2599,7 @@
  
 -	public static void KillTile_DropItems(int x, int y, Tile tileCache, bool includeLargeObjectDrops = false)
 +	// made internal, added includeAllModdedLargeObjectDrops param
-+ 	internal static void KillTile_DropItems(int x, int y, Tile tileCache, bool includeLargeObjectDrops = false, bool includeAllModdedLargeObjectDrops = false) 	
++ 	internal static void KillTile_DropItems(int x, int y, Tile tileCache, bool includeLargeObjectDrops = false, bool includeAllModdedLargeObjectDrops = false)
  	{
 +		if (!TileLoader.Drop(x, y, Main.tile[x, y].type, includeLargeObjectDrops))
 +			return;
@@ -2659,15 +2667,15 @@
  						dropItem = 9;
  						secondaryItem = 27;
  					}
-@@ -56037,6 +_,8 @@
- 				dropItem = 2503;
+@@ -56038,6 +_,8 @@
  				break;
  		}
-+		
-+		TileLoader.DropTreeWood(Main.tile[bottomX, bottomY].type, ref dropItem); // TODO: Likely wrong.
  
++		TileLoader.DropTreeWood(Main.tile[bottomX, bottomY].type, ref dropItem); // TODO: Likely wrong.
++
  		int num = Player.FindClosest(new Vector2(bottomX * 16, bottomY * 16), 16, 16);
  		int axe = Main.player[num].inventory[Main.player[num].selectedItem].axe;
+ 		if (genRand.Next(35) <= axe || Main.rand.Next(3) == 0)
 @@ -56066,6 +_,7 @@
  				num3 = 1000;
  
@@ -2778,7 +2786,7 @@
  	public static IEntitySource GetItemSource_FromTreeShake(int x, int y) => new EntitySource_ShakeTree(x, y);
  
 +	/// <summary>
-+	/// Returns true if any player is "located on screen" of the tile coordinates provided. Technically it checks a little farther than the normal max gameplay dimensions. Used for things like spawning tree leaves when trees grow near players or preventing the cultists from spawning when players are nearby. 
++	/// Returns true if any player is "located on screen" of the tile coordinates provided. Technically it checks a little farther than the normal max gameplay dimensions. Used for things like spawning tree leaves when trees grow near players or preventing the cultists from spawning when players are nearby.
 +	/// </summary>
  	public static bool PlayerLOS(int x, int y)
  	{
@@ -2849,7 +2857,7 @@
  
 +	/// <summary>
 +	/// Returns true if the tile exists, isn't actuated, is <see cref="Main.tileSolid"/>, isn't <see cref="Main.tileSolidTop"/>, isn't <see cref="Tile.IsHalfBlock"/>, and isn't sloped (<see cref="Tile.Slope"/> is <see cref="SlopeType.Solid"/>).
-+	/// <para/> Essentially, this is checking for a solid tile that physically occupies the entire tile space and can be collided with. 
++	/// <para/> Essentially, this is checking for a solid tile that physically occupies the entire tile space and can be collided with.
 +	/// </summary>
  	public static bool SolidTile(Tile testTile)
  	{
