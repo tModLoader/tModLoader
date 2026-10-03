@@ -75,6 +75,8 @@ internal class Vector2Element : ConfigElement
 	{
 		base.OnBind();
 
+		Vector2List = (IList<Vector2>)List;
+
 		if (Vector2List != null) {
 			DrawLabel = false;
 			height = 30;
