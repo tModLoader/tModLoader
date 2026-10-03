@@ -45,7 +45,7 @@ internal class Vector2Element : ConfigElement
 			else
 				array[index] = current;
 
-			Interface.modConfig.OnConfigModified();
+			Interface.modConfig.SetPendingChanges();
 		}
 
 		public Vector2Object(PropertyFieldWrapper memberInfo, object item)
@@ -71,10 +71,10 @@ internal class Vector2Element : ConfigElement
 
 	public IList<Vector2> Vector2List { get; set; }
 
-	private List<Tuple<UIElement, UIElement>> wrappedElements = [];
-
-	private void UpdateVector2Object()
+	public override void OnBind()
 	{
+		base.OnBind();
+
 		if (Vector2List != null) {
 			DrawLabel = false;
 			height = 30;
@@ -84,14 +84,6 @@ internal class Vector2Element : ConfigElement
 			height = 30;
 			c = new Vector2Object(MemberInfo, Item);
 		}
-	}
-
-	public override void OnBind()
-	{
-		base.OnBind();
-
-		Vector2List = (IList<Vector2>)List;
-		UpdateVector2Object();
 
 		if (RangeAttribute != null && RangeAttribute.Min is float && RangeAttribute.Max is float) {
 			max = (float)RangeAttribute.Max;
@@ -105,7 +97,6 @@ internal class Vector2Element : ConfigElement
 		int order = 0;
 		foreach (PropertyFieldWrapper variable in ConfigManager.GetFieldsAndProperties(c)) {
 			var wrapped = UIModConfig.WrapIt(this, ref height, variable, c, order++);
-			wrappedElements.Add(wrapped);
 
 			// Can X and Y inherit range and increment automatically? Pass in "fake PropertyFieldWrapper" to achieve? Real one desired for label.
 			if (wrapped.Item2 is FloatElement floatElement) {
@@ -119,19 +110,6 @@ internal class Vector2Element : ConfigElement
 				wrapped.Item1.Left.Pixels -= 20;
 				wrapped.Item1.Width.Pixels += 20;
 			}
-		}
-	}
-
-	public override void RefreshUI()
-	{
-		UpdateVector2Object();
-
-		foreach (var wrappedElement in wrappedElements) {
-			if (wrappedElement.Item2 is not ConfigElement configElement)
-				return;
-
-			configElement.Item = c;
-			configElement.RefreshUI();
 		}
 	}
 
