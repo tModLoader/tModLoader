@@ -6,6 +6,7 @@ using Terraria.IO;
 using Terraria.ModLoader;
 using Terraria.ID;
 using System;
+using Microsoft.Xna.Framework;
 using Terraria.GameContent.ItemDropRules;
 
 namespace Terraria;
@@ -17,10 +18,10 @@ public partial class WorldGen
 		if (Main.netMode == NetmodeID.MultiplayerClient || isGeneratingOrLoadingWorld)
 			return;
 
-		Player player = Main.player[Player.FindClosest(new Microsoft.Xna.Framework.Vector2(i * 16, j * 16), 16, 16)];
+		Player player = Main.player[Player.FindClosest(new Vector2(i * 16, j * 16), 16, 16)];
 		var potLoot = new PotLoot(type, style, x, y, player);
-		PopulatePotLoot(potLoot);
 		TileLoader.ModifyPotLoot(potLoot);
+
 		Main.ItemDropSolver.TryDropping(new DropAttemptInfo {
 			pot = potLoot,
 			player = player,
@@ -28,23 +29,6 @@ public partial class WorldGen
 			IsExpertMode = Main.expertMode,
 			IsMasterMode = Main.masterMode
 		});
-	}
-
-	// New default rewards. These rules replace the vanilla pot reward branches.
-	private static void PopulatePotLoot(PotLoot potLoot)
-	{
-		if (potLoot.TileType == TileID.PotsEcho) {
-			int[] items = { ItemID.ClayBlock, ItemID.IceBlock, ItemID.BambooBlock, ItemID.Bone,
-				ItemID.Obsidian, ItemID.EbonstoneBlock, ItemID.Cobweb, ItemID.CrimstoneBlock,
-				ItemID.HardenedSand, ItemID.LihzahrdBrick, ItemID.Marble, ItemID.Sandstone };
-			int index = potLoot.Style == 0 ? 0 : (potLoot.Style - 1) / 3;
-			if (index >= 0 && index < items.Length && potLoot.Style <= 36)
-				potLoot.Add(ItemDropRule.Common(items[index]));
-			return;
-		}
-
-		potLoot.Add(ItemDropRule.OneFromOptionsNotScalingWithLuck(1,
-			ItemID.Torch, ItemID.LesserHealingPotion, ItemID.Rope, ItemID.WoodenArrow, ItemID.SilverCoin));
 	}
 
 	internal static void ClearGenerationPasses()

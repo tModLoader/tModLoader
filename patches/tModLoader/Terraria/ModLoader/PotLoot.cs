@@ -52,6 +52,6 @@ public sealed class PotLoot : ILoot
 
 	public void RemoveWhere(Predicate<IItemDropRule> predicate, bool includeGlobalDrops = true) => rules.RemoveAll(predicate);
 
-	/// <summary>Removes all rules currently registered for this pot.</summary>
+	/// <summary>Removes all additional rules currently registered for this pot.</summary>
 	public void Clear() => rules.Clear();
 }
