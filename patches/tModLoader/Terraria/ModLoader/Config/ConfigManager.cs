@@ -471,7 +471,7 @@ public static class ConfigManager
 	{
 		// public api for modders.
 		if (changes)
-			Interface.modConfig.OnConfigModified();
+			Interface.modConfig.SetPendingChanges();
 	}
 
 	// TODO: better home?

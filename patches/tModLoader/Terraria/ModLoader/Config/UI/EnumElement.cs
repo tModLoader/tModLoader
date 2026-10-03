@@ -70,7 +70,7 @@ internal class EnumElement : RangeElement
 			return;
 
 		MemberInfo.SetValue(Item, Enum.GetValues(MemberInfo.Type).GetValue(index));
-		Interface.modConfig.OnConfigModified();
+		Interface.modConfig.SetPendingChanges();
 	}
 
 	private object DefaultGetValue()

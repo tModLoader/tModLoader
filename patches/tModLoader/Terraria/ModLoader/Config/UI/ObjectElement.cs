@@ -156,7 +156,7 @@ internal class ObjectElement : ConfigElement<object>
 
 			SetupList();
 			Interface.modConfig.RecalculateChildren();
-			Interface.modConfig.OnConfigModified();
+			Interface.modConfig.SetPendingChanges();
 		};
 
 		expandButton = new UIModConfigHoverImage(expanded ? ExpandedTexture : CollapsedTexture, expanded ? Language.GetTextValue("tModLoader.ModConfigCollapse") : Language.GetTextValue("tModLoader.ModConfigExpand"));
@@ -176,7 +176,7 @@ internal class ObjectElement : ConfigElement<object>
 
 			SetupList();
 			//Interface.modConfig.RecalculateChildren();
-			Interface.modConfig.OnConfigModified();
+			Interface.modConfig.SetPendingChanges();
 		};
 
 		if (Value != null) {
