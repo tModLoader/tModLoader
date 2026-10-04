@@ -7,5 +7,5 @@ fr-FR 510
 es-ES 44
 de-DE 473
 ja-JP 6
-ko-KR 6
+ko-KR 1
 zh-Hant 54
