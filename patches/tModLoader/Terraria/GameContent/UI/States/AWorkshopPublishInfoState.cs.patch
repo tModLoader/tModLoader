@@ -104,7 +104,7 @@
  		_previewImageUIElement = uIImage;
  		UICharacterNameButton uICharacterNameButton = new UICharacterNameButton(Language.GetText("Workshop.PreviewImagePathTitle"), Language.GetText("Workshop.PreviewImagePathEmpty"), Language.GetText("Workshop.PreviewImagePathDescription")) {
  			Width = StyleDimension.FromPixelsAndPercent(0f - num, 1f),
-@@ -161,6 +_,8 @@
+@@ -161,9 +_,12 @@
  		if (!TryFindingTags(out var info))
  			return;
  
@@ -112,7 +112,12 @@
 +
  		if (info.tags != null) {
  			foreach (GroupOptionButton<WorkshopTagOption> tagOption in _tagOptions) {
- 				bool flag = info.tags.Contains(tagOption.OptionValue.InternalNameForAPIs);
++				// Solxan: Added case ignore since workshop tag info retrieved via API is mismatch of both caps and no caps
+-				bool flag = info.tags.Contains(tagOption.OptionValue.InternalNameForAPIs);
++				bool flag = info.tags.Contains(tagOption.OptionValue.InternalNameForAPIs, StringComparer.InvariantCultureIgnoreCase);
+ 				tagOption.SetCurrentOption(flag ? tagOption.OptionValue : null);
+ 				tagOption.SetColor(tagOption.IsSelected ? new Color(152, 175, 235) : Colors.InventoryDefaultColor, 1f);
+ 			}
 @@ -329,41 +_,46 @@
  	private UIElement CreatePublicSettingsRow(float accumulatedHeight, float height, string tagGroup)
  	{

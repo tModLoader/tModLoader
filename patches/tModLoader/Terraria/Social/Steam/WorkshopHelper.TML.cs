@@ -660,6 +660,9 @@ public partial class WorkshopHelper
 				// Item Statistics
 				SteamedWraps.FetchPlayTimeStats(_primaryUGCHandle, i, out var hot, out var downloads);
 
+				// Workshop Item Tags
+				SteamedWraps.FetchTags(_primaryUGCHandle, i, out var tags);
+
 				return new ModDownloadItem(
 					displayname, metadata["name"], metadata["author"], metadata["homepage"],
 					(int)downloads, (int)hot, modIconURL, id.m_PublishedFileId.ToString(), ownerId,
@@ -668,7 +671,7 @@ public partial class WorkshopHelper
 					lastUpdate,
 
 					// Properties that could be variant with tML Browser Version
-					metadata["modreferences"], refsById, modside,
+					metadata["modreferences"], refsById, modside, tags,
 
 					// Properties that are variant with tML Browser Version
 					cVersion.modV, cVersion.tmlV

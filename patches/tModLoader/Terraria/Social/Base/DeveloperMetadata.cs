@@ -74,12 +74,12 @@ public class DeveloperMetadata
 	// Used for the KeyValue Pair short list
 	internal void TrimDevMetadataForBrowserVersionFieldBeforePublish()
 	{
-		const int MaxMetadataLength = Steamworks.Constants.k_cubUFSTagValueMax;
+		int maxMetadataLength = Steamworks.Constants.k_cubUFSTagValueMax - SteamedWraps.BrowserDeveloperMetadataKey.Length - 1;
 
-		const int minNumberOfHashes = 4;
+		const int minNumberOfHashes = 2; // This is the absolute minimum for day-to-day continuity. More is better. Expecting 3 to 5 based on testing
 
-		while (Serialize().Length > MaxMetadataLength && modVersionHashes.Count() > minNumberOfHashes + 2) {
-			modVersionHashes = modVersionHashes.Take(modVersionHashes.Count() - 2).ToList();
+		while (Serialize().Length > maxMetadataLength && modVersionHashes.Count() > minNumberOfHashes) {
+			modVersionHashes = modVersionHashes.Take(modVersionHashes.Count() - 1).ToList();
 		}
 	}
 
@@ -94,7 +94,7 @@ public class DeveloperMetadata
 		// This minimum avoids issues with delays in the deployment time on Steam from when it is published to when it actually arrives for all users globally
 		var minNumberOfHashes = 2 * SocialBrowserModule.browserVersionRetainRequirements.Select(a => a.Value).Sum();
 
-		while (Serialize().Length > MaxMetadataLength && modVersionHashes.Count() > minNumberOfHashes + 2) {
+		while (Serialize().Length > MaxMetadataLength && modVersionHashes.Count() >= minNumberOfHashes + 2) {
 			modVersionHashes = modVersionHashes.Take(modVersionHashes.Count() - 2).ToList();
 		}
 	}

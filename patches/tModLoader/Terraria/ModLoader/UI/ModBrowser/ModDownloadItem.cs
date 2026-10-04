@@ -35,6 +35,7 @@ public class ModDownloadItem
 	public readonly string Homepage;
 	public readonly Version ModloaderVersion;
 	public readonly List<string> SupportedVersions;
+	public readonly string[] Tags;
 
 	internal LocalMod Installed { get; set; }
 	public bool NeedUpdate { get; private set; }
@@ -51,34 +52,41 @@ public class ModDownloadItem
 
 		// Properties that could be variant with tML Browser Version
 		string modReferences, string[] referencesById, ModSide modSide,
+		string[] tags,
 
 		// Properties that are variant with tML Browser Version
 		Version version, Version modloaderversion
 		)
 	{
-		ModName = name;
 		DisplayName = displayName;
 		DisplayNameClean = Utils.CleanChatTags(displayName);
+		ModName = name;
+		Author = author;
+		Homepage = homepage;
+
+		Downloads = downloads;
+		Hot = hot;
+		ModIconUrl = modIconUrl;
 		PublishId = new ModPubId_t { m_ModPubId = publishId };
 		OwnerId = ownerId;
 
-		Author = author;
-		ModReferencesBySlug = modReferences;
-		ModReferenceByModId = Array.ConvertAll(referencesById, x => new ModPubId_t() { m_ModPubId = x});
-		ModSide = modSide;
-		ModIconUrl = modIconUrl;
-		Downloads = downloads;
-		Hot = hot;
-		Homepage = homepage;
-		LastUpdatedTimeStamp = lastUpdatedTimeStamp;
-		Version = version;
-		ModloaderVersion = modloaderversion;
-		Banned = banned;
-		LongFormDevMetadata = longFormDevMetadata;
-		BrowserVersionDevMetadata = browserVersionDevMetadata;
 		Upvotes = upvotes;
 		Downvotes = downvotes;
 		VoteScore = voteScore;
+		SupportedVersions = supportedVersions;
+
+		Banned = banned;
+		LongFormDevMetadata = longFormDevMetadata;
+		BrowserVersionDevMetadata = browserVersionDevMetadata;
+		LastUpdatedTimeStamp = lastUpdatedTimeStamp;
+
+		ModReferencesBySlug = modReferences;
+		ModReferenceByModId = Array.ConvertAll(referencesById, x => new ModPubId_t() { m_ModPubId = x});
+		ModSide = modSide;
+		Tags = tags; 
+		
+		Version = version;
+		ModloaderVersion = modloaderversion;
 
 		UpdateInstallState();
 	}

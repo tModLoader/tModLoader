@@ -28,7 +28,7 @@ public static class SteamedWraps
 	public static bool FamilyShared { get; set; } = false;
 	internal static bool SteamAvailable { get; set; }
 
-	internal static string BrowserDeveloperMetadataKey => $"{SocialBrowserModule.CurrentBrowserVersion}-devmetadata";
+	internal static string BrowserDeveloperMetadataKey => $"{SocialBrowserModule.CurrentBrowserVersion.Replace(".","")}_devmetadata";
 	internal const string LongFormDeveloperMetadataKey = "longformdevelopermetadata";
 
 	// Used to get the right token for fetching/setting localized descriptions from/to Steam Workshop
@@ -411,6 +411,32 @@ public static class SteamedWraps
 			modIconUrl = null;
 	}
 
+	public static void FetchTags(UGCQueryHandle_t handle, uint index, out string[] tags)
+	{
+		uint tagCount;
+		var tagList = new List<string>();
+
+		if (SteamClient)
+			tagCount = SteamUGC.GetQueryUGCNumTags(handle, index);
+		else if (SteamAvailable)
+			tagCount = SteamGameServerUGC.GetQueryUGCNumTags(handle, index);
+		else
+			tagCount = 0;
+
+		for (uint j = 0; j < tagCount; j++) {
+			string tag;
+
+			if (SteamClient)
+				SteamUGC.GetQueryUGCTag(handle, index, j, out tag, byte.MaxValue);
+			else
+				SteamGameServerUGC.GetQueryUGCTag(handle, index, j, out tag, byte.MaxValue);
+
+			tagList.Add(tag);
+		}
+
+		tags = tagList.ToArray();
+	}
+
 	public static void FetchMetadata(UGCQueryHandle_t handle, uint index, out NameValueCollection metadata)
 	{
 		uint keyCount;
@@ -466,7 +492,7 @@ public static class SteamedWraps
 			else
 				SteamGameServerUGC.GetSupportedGameVersionData(handle, index, i, out minimumBranch, out maximumBranch, 255);
 
-			if (!string.IsNullOrEmpty(minimumBranch))
+			if (!string.IsNullOrEmpty(minimumBranch) && minimumBranch != "public")
 				minimumBranches.Add(minimumBranch.Replace("-legacy", ""));
 		}
 
@@ -832,7 +858,8 @@ public static class SteamedWraps
 		Logging.tML.Info("Adding tModLoader Metadata to Workshop Upload");
 		foreach (var key in WorkshopHelper.MetadataKeys) {
 			SteamUGC.RemoveItemKeyValueTags(uGCUpdateHandle_t, key);
-			SteamUGC.AddItemKeyValueTag(uGCUpdateHandle_t, key, _entryData.BuildData[key]);
+			if (!SteamUGC.AddItemKeyValueTag(uGCUpdateHandle_t, key, _entryData.BuildData[key]))
+				throw new Exception($"Error from Add Item KeyVaue Tag in SteamedWraps: {key}");
 		}
 
 		// Add Content Descriptors
@@ -858,18 +885,22 @@ public static class SteamedWraps
 
 		Logging.tML.Info("Adding tModLoader Developer Metadata to Workshop Upload");
 
-		string minBrowserVersion = SocialBrowserModule.GetBrowserVersionNumber(BuildInfo.tMLVersion);
-		SteamUGC.SetRequiredGameVersions(uGCUpdateHandle_t, $"{minBrowserVersion}-Legacy",
-			// If the version publishing on is Legacy, in order to avoid this being considered 'the latest' on an active browser version,
-			// We have to set the Max Version field to the same value as the min (ie 1.4.4-legacy is then only changing 1.4.4-legacy).
-			(SocialBrowserModule.browserVersionRetainRequirements[minBrowserVersion] == 1) ? $"{minBrowserVersion}-Legacy" : null);
-
-		
-		SteamUGC.RemoveItemKeyValueTags(uGCUpdateHandle_t, BrowserDeveloperMetadataKey);
-		SteamUGC.AddItemKeyValueTag(uGCUpdateHandle_t, BrowserDeveloperMetadataKey, _entryData.BuildData[BrowserDeveloperMetadataKey]);
-
 		// Add developer metadata to the Workshop item
 		AddDeveloperMetadata(ref uGCUpdateHandle_t, _entryData.BuildData[LongFormDeveloperMetadataKey]);
+
+		SteamUGC.RemoveItemKeyValueTags(uGCUpdateHandle_t, BrowserDeveloperMetadataKey);
+
+		if (!SteamUGC.AddItemKeyValueTag(uGCUpdateHandle_t, BrowserDeveloperMetadataKey, _entryData.BuildData[BrowserDeveloperMetadataKey]))
+			throw new Exception("Error from Add Item KeyVaue Tag in SteamedWraps: BrowserDeveloperMetadataKey");
+
+		Logging.tML.Info("Adding compatible game version to Workshop Upload");
+		string minBrowserVersion = SocialBrowserModule.GetBrowserVersionNumber(BuildInfo.tMLVersion);
+
+		// If the version publishing on is Legacy, in order to avoid this being considered 'the latest' on an active browser version,
+		// We have to set the Max Version field to the same value as the min (ie 1.4.4-legacy is then only changing 1.4.4-legacy).
+		if (!SteamUGC.SetRequiredGameVersions(uGCUpdateHandle_t, $"{minBrowserVersion}-legacy",
+			(SocialBrowserModule.browserVersionRetainRequirements[minBrowserVersion] == 1) ? $"{minBrowserVersion}-legacy" : string.Empty))
+			throw new Exception("Error from Set Game Version; Failed to set game version");
 	}
 
 	// https://partner.steamgames.com/doc/api/ISteamUGC#EUGCContentDescriptorID

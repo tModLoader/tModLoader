@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Security.Policy;
 using System.Text;
+using log4net.Util.PatternStringConverters;
 using Newtonsoft.Json;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -20,6 +21,7 @@ public partial class WorkshopSocialModule
 {
 	public override List<string> GetListOfMods() => _downloader.ModPaths;
 	private ulong currPublishID = 0;
+	private ModDownloadItem modDownloadItemAsFound;
 
 	public override bool TryGetInfoForMod(TmodFile modFile, out FoundWorkshopEntryInfo info)
 	{
@@ -28,7 +30,7 @@ public partial class WorkshopSocialModule
 			queryType = QueryType.SearchDirect
 		};
 
-		var state = WorkshopHelper.QueryHelper.AQueryInstance.TryGetModDownloadItem(modFile.Name, out var modDownloadItemAsFound);
+		var state = WorkshopHelper.QueryHelper.AQueryInstance.TryGetModDownloadItem(modFile.Name, out modDownloadItemAsFound);
 
 		currPublishID = 0;
 
@@ -61,7 +63,12 @@ public partial class WorkshopSocialModule
 		ModOrganizer.WorkshopFileFinder.Refresh(new WorkshopIssueReporter()); // Force detection in case mod wasn't installed
 		string searchFolder = Path.Combine(Directory.GetParent(ModOrganizer.WorkshopFileFinder.ModPaths[0]).ToString(), $"{currPublishID}");
 
-		return ModOrganizer.TryReadManifest(searchFolder, out info);
+		bool readSuccess = ModOrganizer.TryReadManifest(searchFolder, out info);
+		if (!readSuccess)
+			return false;
+
+		info.tags = modDownloadItemAsFound.Tags;
+		return true;
 	}
 
 	public override bool PublishMod(TmodFile modFile, NameValueCollection buildData, WorkshopItemPublishSettings settings)
@@ -201,7 +208,7 @@ public partial class WorkshopSocialModule
 			GetDeveloperMetadataForPublish(ref buildData, workshopFolderPath, currPublishID);
 
 			// Should be called after folder created & cleaned up
-			tagsList.AddRange(DetermineSupportedVersionsFromWorkshop(workshopFolderPath, currPublishID));
+			tagsList.AddRange(DetermineSupportedVersionsFromWorkshop(workshopFolderPath));
 
 			var modPublisherInstance = new WorkshopHelper.ModPublisherInstance();
 
@@ -256,14 +263,19 @@ public partial class WorkshopSocialModule
 		return true;
 	}
 
-	private static HashSet<string> DetermineSupportedVersionsFromWorkshop(string repo, ulong publishId)
+	private HashSet<string> DetermineSupportedVersionsFromWorkshop(string repo)
 	{
 		var summary = ModOrganizer.AnalyzeWorkshopTmods(repo);
 
 		var localList = summary.Select(info => SocialBrowserModule.GetBrowserVersionNumber(info.tModVersion)).ToHashSet();
 
-		var pubId = new ModPubId_t() { m_ModPubId = publishId.ToString() };
+		var pubId = new ModPubId_t() { m_ModPubId = currPublishID.ToString() };
 		var remoteList = WorkshopBrowserModule.Instance.GetSupportedBrowserVersions(pubId);
+
+		// Legacy compatibility code that relies on ModDownloadItemAsFound to determine the last known state of tags that we can no longer calculate easily
+		foreach (var tag in modDownloadItemAsFound.Tags)
+			if (SocialBrowserModule.browserVersionRetainRequirements.Keys.Contains(tag))
+					remoteList.Add(tag);
 
 		return localList.Union(remoteList).ToHashSet();
 	}
@@ -288,10 +300,10 @@ public partial class WorkshopSocialModule
 		buildData[SteamedWraps.LongFormDeveloperMetadataKey] = longListDeveloperMetadata.Serialize();
 
 		// Calulate and set the short list browser version metadata for use with Steam Key Value Pair field
+		browserVersionDeveloperMetadata.versionData = buildData["versionsummary"];
+
 		browserVersionDeveloperMetadata.modVersionHashes = currentHashes.Concat(browserVersionDeveloperMetadata.modVersionHashes.Except(currentHashes).ToList()).ToList();
 		browserVersionDeveloperMetadata.TrimDevMetadataForBrowserVersionFieldBeforePublish();
-
-		browserVersionDeveloperMetadata.versionData = buildData["versionsummary"];
 
 		buildData[SteamedWraps.BrowserDeveloperMetadataKey] = browserVersionDeveloperMetadata.Serialize();
 	}
@@ -501,6 +513,12 @@ public partial class WorkshopSocialModule
 		File.Copy(newModPath, Path.Combine(contentFolder, $"{modName}.tmod"), true); // Copy the new file to the output
 
 		// Cleanup Old Folders
+		throw new NotImplementedException();
+
+		// TODO: This is still needed if we want to auto-push ExampleMod from CI.
+		// do we keep a 'CleanupOldPublishClassic' method for this?
+		// Publishing with SteamCMD is incompatible with both hashes and versioning and key value pairs that we are using...
+
 		ModOrganizer.CleanupOldPublish(publishFolder);
 
 		// Assign Workshop Description
