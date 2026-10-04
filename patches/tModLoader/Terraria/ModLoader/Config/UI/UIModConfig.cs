@@ -67,15 +67,10 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 	private UIList configElementList;
 	private UIScrollbar scrollbar;
 	private UIFocusInputTextField filterTextField;
-	private UIAutoScaleTextTextPanel<object> modNamePanel;
+	private UIPanel modNamePanel;
 	private MarqueeText modNameText;
 	private UIImage smallModIcon;
 	private UIImageFramed configSideIndicator;
-	private UIText tooltipText;
-
-	private string currentMessage;
-	private Color currentMessageColor;
-	private int currentMessageTimer;
 
 	#region UI Creation
 
@@ -186,11 +181,9 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 		filterTextField.OnRightClick += (_, _) => filterTextField.SetText("");
 		textBoxBackground.Append(filterTextField);
 
-		var configSideIndicatorPanel = new UIPanel {
-			Width = { Pixels = 40 },
-			Height = { Pixels = 40 },
-			VAlign = 0.5f,
-		}.WithPadding(0);
+		var configSideIndicatorPanel = CreateInfoBadge();
+		configSideIndicatorPanel.Width = configSideIndicatorPanel.Height;
+		configSideIndicatorPanel.SetPadding(0);
 		listHeaderContainer.Append(configSideIndicatorPanel);
 
 		configSideIndicator = new UIImageFramed(Asset<Texture2D>.Empty, Rectangle.Empty) {
@@ -199,8 +192,8 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 		};
 		configSideIndicatorPanel.Append(configSideIndicator);
 
-		configSideIndicator.OnDraw += delegate (UIElement affectedElement) {
-			if (configSideIndicator.IsMouseHovering) {
+		configSideIndicatorPanel.OnDraw += delegate {
+			if (configSideIndicatorPanel.IsMouseHovering) {
 				string hoverText = Language.GetTextValue(pendingConfig.Mode == ConfigScope.ServerSide ? "tModLoader.ModConfigServerSide" : "tModLoader.ModConfigClientSide");
 				UICommon.TooltipMouseText(hoverText);
 			}
@@ -211,14 +204,9 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 		};
 		// Gets appended in OnActivate
 
-		modNamePanel = new UIAutoScaleTextTextPanel<object>("") {
-			MaxWidth = { Pixels = 330, Percent = 0f },
-			Height = { Pixels = 40 },
-			Left = { Pixels = 50 },
-			VAlign = 0.5f,
-			UseInnerDimensions = true,
-			ScalePanel = false,
-		};
+		modNamePanel = CreateInfoBadge();
+		modNamePanel.MaxWidth.Set(330, 0);
+		modNamePanel.Left.Pixels = 50;
 		modNamePanel.SetPadding(6);
 
 		modNameText = new MarqueeText("[Unknown Mod Name]") {
@@ -234,31 +222,9 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 
 		listHeaderContainer.Append(modNamePanel);
 
-		float tooltipBoxHeight = 100;
-		float tooltipBoxPadding = 12;
-
-		var tooltipBackground = new UISlicedImage(Main.Assets.Request<Texture2D>("Images/UI/CharCreation/CategoryPanelHighlight")) {
-			VAlign = 1f,
-			Width = { Percent = 1 },
-			Height = { Pixels = tooltipBoxHeight },
-			Color = Color.LightGray * 0.7f,
-		};
-
-		tooltipBackground.SetSliceDepths(10);
-		uiPanel.Append(tooltipBackground);
-
-		tooltipText = new UIText("") {
-			Width = { Percent = 1f },
-			Height = { Percent = 1f },
-			IsWrapped = true,
-		}.WithPadding(10);
-
-		tooltipBackground.Append(tooltipText);
-
 		configElementList = new UIList {
 			Width =  { Pixels = -25, Percent = 1f },
-			Height = { Pixels = -listHeaderContainer.Height.Pixels - 5 - tooltipBoxHeight - tooltipBoxPadding, Percent = 1f },
-			Top = { Pixels = -tooltipBoxHeight - tooltipBoxPadding },
+			Height = { Pixels = -listHeaderContainer.Height.Pixels - 5, Percent = 1f },
 			VAlign = 1f,
 			ListPadding = 5f,
 		};
@@ -266,7 +232,6 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 
 		scrollbar = new UIScrollbar {
 			Height = { Pixels = configElementList.Height.Pixels, Percent = 1f },
-			Top = { Pixels = configElementList.Top.Pixels },
 			HAlign = 1f,
 			VAlign = 1f,
 		}.WithView(100f, 1000f);
@@ -283,6 +248,18 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 			BackgroundColor = UICommon.DefaultUIBlue,
 		}.WithPadding(15f);
 		uiElement.Append(headerTextPanel);
+	}
+
+	private UIPanel CreateInfoBadge()
+	{
+		var infoBadge = new UIPanel {
+			BackgroundColor = UICommon.DefaultUIBlueMouseOver * 0.5f,
+			BorderColor = UICommon.DefaultUIBlueMouseOver,
+			Height = { Pixels = 40 },
+			VAlign = 0.5f,
+		};
+
+		return infoBadge;
 	}
 
 	#endregion
@@ -409,6 +386,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 		configPageStack?.Clear();
 		configElementList?.Clear();
 		filterTextField?.SetText("");
+		UnblockInput(null, null);
 
 		if (scrollbar is not null)
 			scrollbar.ViewPosition = 0f;
@@ -477,9 +455,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 
 	public void SetMessage(string text, Color color)
 	{
-		currentMessage = text;
-		currentMessageColor = color;
-		currentMessageTimer = 0;
+		// TODO: impl, probably as a toast
 	}
 
 	internal void SetMod(Mod mod, ModConfig config, bool openedFromModder = false, Action onClose = null, string scrollToOption = null, bool centerScrolledOption = true)
@@ -501,11 +477,6 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 		base.Update(gameTime);
 
 		UpdateCount++;
-
-		currentMessageTimer++;
-		if (currentMessageTimer >= 60 * 5) {
-			currentMessage = null;
-		}
 	}
 
 	public override void Draw(SpriteBatch spriteBatch)
@@ -514,17 +485,8 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 
 		base.Draw(spriteBatch);
 
-		tooltipText.TextColor = Color.White;
-
-		if (!string.IsNullOrEmpty(currentMessage)) {
-			tooltipText.SetText(currentMessage);
-			tooltipText.TextColor = currentMessageColor;
-		}
-		else if (!string.IsNullOrEmpty(ConfigElementTooltip)) {
-			tooltipText.SetText(ConfigElementTooltip);
-		}
-		else {
-			tooltipText.SetText(Language.GetText("Workshop.HubDescriptionDefault"));
+		if (!string.IsNullOrEmpty(ConfigElementTooltip)) {
+			UICommon.TooltipMouseText(ConfigElementTooltip);
 		}
 
 		UILinkPointNavigator.Shortcuts.BackButtonCommand = 7;
@@ -566,7 +528,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 		modNamePanel.Append(smallModIcon);
 
 		// Resize the mod name panel
-		const float ExtraTextSize = 6f; // Stops the edges getting clipped
+		const float ExtraTextSize = 6f; // Stops the edges of the mod name text getting clipped
 		var modNameTextSize = ChatManager.GetStringSize(FontAssets.MouseText.Value, modNameText.Text, new Vector2(modNameText.MaxTextScale));
 		modNamePanel.Width.Set(modNamePanel.PaddingLeft + modNameTextSize.X + modNamePanel.PaddingRight + ExtraTextSize, 0f);
 		modNamePanel.Height.Set(modNamePanel.PaddingTop + modNameTextSize.Y + modNamePanel.PaddingBottom, 0f);
