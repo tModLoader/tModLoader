@@ -24,6 +24,7 @@ namespace Terraria.ModLoader.Config.UI;
 public class UIModConfig : UIState, IHaveBackButtonCommand
 {
 	public int UpdateCount { get; set; }
+	// Deprecated to encourage using instance fields so multiple instances of UIModConfig can exist in future (to allow mods to set their own config ui states)
 	[Obsolete("Use Interface.modConfig.ConfigElementTooltip for config element tooltips, and UICommon.TooltipMouseText for other tooltips")]
 	public static string Tooltip { get => Interface.modConfig.ConfigElementTooltip; set => Interface.modConfig.ConfigElementTooltip = value; }
 	public string ConfigElementTooltip { get; set; }
@@ -361,7 +362,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 		if (HasDefaultValues)
 			return;
 
-		SoundEngine.PlaySound(SoundID.MenuOpen);
+		SoundEngine.PlaySound(SoundID.MenuClose);
 		SetMessage(Language.GetTextValue("tModLoader.ModConfigDefaultsRestored"), Color.Green);
 		ConfigManager.Reset(pendingConfig);
 		RefreshUI();
