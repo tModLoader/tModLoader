@@ -1,0 +1,11 @@
+--- src/TerrariaNetCore/Terraria/GameContent/UI/Elements/UICreativeInfiniteItemsDisplay.cs
++++ src/tModLoader/Terraria/GameContent/UI/Elements/UICreativeInfiniteItemsDisplay.cs
+@@ -533,7 +_,7 @@
+ 		UIPanel uIPanel = (_searchBoxPanel = new UIPanel {
+ 			Width = new StyleDimension(0f - uIImageButton.Width.Pixels - 3f, 1f),
+ 			Height = new StyleDimension(0f, 1f),
+-			VAlign = 0.5f,
++		VAlign = 0.5f,
+ 			HAlign = 1f
+ 		});
+ 
