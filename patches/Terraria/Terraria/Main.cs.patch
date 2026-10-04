@@ -1,6 +1,6 @@
 --- src/decompiled/Terraria/Main.cs
 +++ src/Terraria/Terraria/Main.cs
-@@ -80,7 +_,11 @@
+@@ -82,7 +_,11 @@
  
  namespace Terraria;
  
@@ -12,7 +12,7 @@
  {
  	public static class CurrentFrameFlags
  	{
-@@ -5410,6 +_,9 @@
+@@ -5582,6 +_,9 @@
  			Map = new WorldMap(maxTilesX, maxTilesY);
  			Configuration.Load();
  			graphics = new GraphicsDeviceManager(this as Game);

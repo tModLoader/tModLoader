@@ -97,7 +97,7 @@ namespace ExampleMod.Content.NPCs
 				// Loop until all items are dropped, to avoid dropping more than maxStack items
 				int droppedAmount = Math.Min(ModContent.GetInstance<ExampleItem>().Item.maxStack, StolenItems);
 				StolenItems -= droppedAmount;
-				Item.NewItem(NPC.GetSource_Death(), NPC.Center, ModContent.ItemType<ExampleItem>(), droppedAmount, true);
+				Item.NewItem(NPC.GetSource_Death(), NPC.Center, ModContent.ItemType<ExampleItem>(), droppedAmount);
 			}
 		}
 

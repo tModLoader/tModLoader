@@ -31,7 +31,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Player.coat added. It might also need and EquipType
 - What is Player._pendingRefunds? Does it require modded item support?
 - Player.ApplyEquipVanity now calls RefreshInfoAccsFromItemType. Is this new behavior, will our existing hooks now call things multiple times by accident?
-- Player.meleeArmorPenetration is new, need to hook it up
 - Player.ApplyItemTime has been updated, we might not need as many patches?
 - Integrate new `private void SetItemAnimation(int baseFrames, float multiplier)` method into our usetime hooks. Make public.
 - What does `Main.item[num].OverrideWith(theItemWeDrop);` do differently than `Main.item[num] = theItemWeDrop;`? Do we need to document or adjust how modders interact with Main.item[]?
@@ -52,7 +51,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - BiomeConversionID.PurificationPowder (8) and Chlorophyte (9) might not match up with Terraria-added values. Need to double check where these were used against the new ID values. Chlorophyte is now either 8/9/10 and PurificationPowder is 11.
 - Lange.CreateDialogFilter now has a checkConditions parameter. It seems that there is a new system for object substitutions. We'll need to document these and make sure they work for modded substitutions. LocalizedText.CanFormatWith usages seem to be replaced with ConditionsMetWith. Some Language.GetTextValueWith usages changed to GetTextValue but still somehow support substitutions.
 - Should PlayerLoader.SyncPlayer in SyncOnePlayer be after syncing owner Projectiles?
-- ItemID.ItemSpawnDecaySpeed gone.
 - Vanilla Fishing drops are now declarative
   - Mods should be encouraged to use the new system, so new fishing features work.
     - "Fish now appear visually in the water while you are fishing" - (FishDropsDB.GetDisplayableDrops)
@@ -70,7 +68,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
   - "This is unused, replaced with this.ArmorPenetration." patch might be incorrect as well. Nearby switch table also changed a lot, might need to apply them elsewhere.
 - Vanilla CanHavePrefixes logic changed, might be able to use it rather than tml changes.
   - #StackablePrefixWeapons needs to be searched for and removed
-- Item Shimmer/CheckLavaDeath/GetPickedUpByMonsters_Special/FindOwner/getRect/GetShimmered/CombineWithNearbyItems/related methods have moved to World Item. Need to move docs/patches over.
 - ModPylon.DrawMapIcon needs to support new vanilla options (DrawClamped when fullscreen it seems.)
 - ItemSlot has new flip parameter, what is it used for? PreDrawInInventory needs flip parameter. (and itemFade parameter? And secondColor?)
 - "// Sound is played on animation start #ItemTimeOnAllClients" comments around "SoundEngine.PlaySound(item6.UseSound" in MessageBuffer's `ShotAnimationAndSound` code. ShotAnimationAndSound was renamed, we might need to verify that this is still fixed in tmod.
@@ -95,7 +92,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Need to find where ProjectileLoader.DrawHeldProjInFrontOfHeldItemAndArms (ModProjectile.DrawHeldProjInFrontOfHeldItemAndArms) should go. PlayerDrawSet removed heldProjOverHand and there are new fields as well. Seems like `SelectedDrawnProjectile.drawLayer == 8` replaced it in DrawPlayer_31_ProjectileOverArm? ProjectileDrawLayerID.HeldProjOverHand exists.
 - SoundID.TML: NPCHit58, NPCDeath67, NPCDeath68, Item179-199
 - CreateTrackable now has maxInstances parameter, need to make sure they are applied to our changes.
-- Item.CanStack has been added. ItemLoader.CanStack patches should probably be moved into it.
 - Item.IsTheSameAs removed
 - RefreshInfoAccsFromItemType is now being called on vanity equipment too. Does this affect any of our changes? Is any slot now being checked twice? Do we need to adjust ModAccessorySlotPlayer for the same behavior?
 - `//TML: Eventide and nightglow handled by Item.useLimitPerAnimation.` comment now commenting out item 5669. Might need to make changes to that item similar to 4956
@@ -107,12 +103,10 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - DrawColorCodedStringWithShadow methods no longer return Vector2 string size. Is this because of some reason? All patches in ChatManager need to be revisited.
 - Paladin shield patches might have been mixed up. Double Check.
 - New GetItemManaUsageDetails and ItemCheck_PayMana_X methods split mana costs into multiple methods. Should be able to remove a lot of Player.TML.cs patches and use them directly.
-- Test TryDroppingSingleItem with stacks (hardcore death). Modded data should be preserved with Item.NewItem overload taking Item instance, but not sure about how that handled stack in the past.
 - Vanilla now uses Player.clientCloneItem() instead of Item.Clone(). I think we can just use that instead of swapping them for CopyNetStateTo and adjust `clientCloneItem` with `NetStateVersion`, but this may need more testing.
 - Recipe Changes:
   - anyX (anyWood, anySand, etc) all removed. We should no longer need to maintain those old recipe group approaches.
   - useX (useWood, ext) also removed. Same.
-  - Need needTorchGodsFavor condition
   - needEverythingSeed seems to be replaced by needMechdusa. TODo: Rename Condition.ZenithWorld?
   - Recipe item consumption seems to be in another class now, patches need to be moved. GetIngredientCraftingDiscount also needs to be tweaked to work again for modded RecipeLoader.ConsumeIngredient
     - Hook needs rework to use `Recipe.RequiredItemEntry`
@@ -140,17 +134,62 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Check ModifyEquipTextureDraw to determine if there is any other locations where the hook needs to be applied in PlayerDrawLayers.cs
 - PlayerDrawLayers.cs DrawPlayer_13_Leggings
 
+## 1.4.5.8
+- Should NetMessage.LogMessageError Invariant.Assert be directed to ModNet.LogMessageError somehow?
+- TileDrawing.IsTileDangerous vanilla now has tilex/y, but different order, so we might need to adjust TML variant or other callsites
+- Why did ProjectileID.SummonTagDamageMultiplier change?
+- Clound.cs, there is now CloudID.Sets.RareClouds_Normal, CloudID.Sets.RareClouds_Celebration for more control. Document and maybe use in ExampleMod.
+- public static LanguageSearchFilter CreateDialogFilter(string startsWith, object substitutions) removed from Lang.cs? Could still be useful, add back into Lang.TML.cs?
+- WorldGen.SwapTileData might not be necessary anymore. ErrorWorldSwapTiles exists. The new name isn't as useful, however.
+- Projectile.identity removed, Projectile.key added. How to use? Also Projectile.IndexForVisuals. Also Main.projectileIdentity. Need to fix Projectile.key docs, it is the identity docs.
+- Projectile.TransformType added, replaces direct setting of Projectile.type in AI. Might need a hook or more logic if used with modded projectiles.
+- Code near "Yoyos with effective top speed" comment in AI_009_2_Yoyos seems weird. Was this fixed in vanilla and the "< 1.01f" code left in? Probably can remove the duplicate bounds check, check blame
+- Item.hasVanityEffects no longer marked as [Old], why? Did something change?
+- Item.active property removed
+- Move TML added Item ctor patches near others or to Item.TML.cs
+- Main.rand can now have key-specific UnifiedRandom instances. Not sure how a mod might use it.
+- SystemLoader.PostUpdatePlayers(); call, move TimeLogger.UpdatePlayers.AddTime call?
+- PreUpdateNPCs doesn't exactly match 1.4.4 location because of UpdateWorld_SpawnNPCs being added. Do we want 2 more hooks there? Probably need to double check that all Main Update methods have a Pre and Post method, and that they are documented and any deviations from 1.4.4. order are documented as well (UpdateWorld_FloatingText, UpdateWorld_SpawnNPCs, etc)
+- Could NPC.lifeRegenExpectedLossPerSecond or interactedWithPlayerLocally be useful to modders?
+- Is NPC.OnSpawn useful for tmod?
+- Chest.AddItemToShop changes need more thought to fit in vanilla changes.
+- NPCLoader.UpdateLifeRegen will need to be changed. This has changed a lot.
+- Player.hasWings might be useful.
+- Player.strongestMoveSpeedDebuff? Seems like a split between move speed buffs and debuffs
+- Player.maxRunSpeed should mention originalRunSpeed maybe.
+- We'll need to recheck all the container drop loot tables again. At least OpenLockBox has changed
+- Seems like shared loadout slots don't actually populate Player.armor slots. Modders will have to use Player.GetEffectiveArmor to get the actual armor that is active.
+- Player.manaPotionDelay is new.
+- Player.ApplyManaRegenerationDelay() replaces setting Player.manaRegenDelay directly.
+- Item 3852 Tome of Infinite Wisdom ItemCheck_OwnerOnlyCode changed. Does Item.useLimitPerAnimation still make sense?
+- 4953, 4952, 4956, 5669 ItemCheck_OwnerOnlyCode also changed, check if useLimitPerAnimation still makes sense. What about 6152?
+- Where should chlorophyteBladeCounter-- fit in the new ItemCheck_inner code.
+- Is the "// Stealth knockback. Moved from GetWeaponKnockback" change fine? It seems the Player.stealth value is being remapped, so moving this logic and applying it using the remapped value might be an issue.
+- Player.CollideWithNPCs changed, new parameters
+- Player.ApplyDamageToNPC changed, new parameters, new overloads
+- Double check that allDamage and allCrit are used in new armor set code
+- GetNanoFlaskDamageBoost in ProcessHitAgainstNPC might not be accounted for correctly. 
+- New PickAmmo_PickAmmoItem, PickAmmo_IterateRange, PlayerAmmoCyclingMode. ItemLoader.CanChooseAmmo patches need to be reworked 
+- Nano bullet might need some changes for the new 25% damage increase 
+- New PickAmmo_PickAmmoItem method seems to replicate our old PickAmmo/ChooseAmmo split.
+- Our PickAmmo overload patch lost. Maybe just put in .TML.cs file anyway.
+- Not sure about VanillaOnHitEffectsWhipsStart label location
+- WhipTagEffect.ModifyTaggedHit patches are wrong, method changed a lot
+- DustID.Spider and InfernoFlame are new and differ from names we made up in TML.cs file, remove our entries?
+- SpriteCharacterData is class now.
+- Terraria.Testing.Cloning.CloneByReference shares name with tmod class. Problem? Same purpose? Investigate.
+
 # New Fields that might need more documentation
 
 - UIElement.PassThroughMouseInteraction --> What does it do? How does it differ from IgnoresMouseInteraction?
 - TileEntity.Read now has a gameversion parameter. For modded tiles, I don't think this affects anything. Vanilla TEs have updated save and load code, need to verify poses and other changes work with modded items.
 - FlexibleTileWand is now used to place many other tiles that used to rely solely on RandomStyleRange. We should add an example of a custom FlexibleTileWand item/tile and document when to use it.
-- NPC.DelBuff has new quiet parameter
 - TileID.Sets.DontDrawTileSlopes.
 - Player.selectedItem is not a getter property instead of a field. We might need to document selectedItemState and other related new fields.
 - Add docs for new GetItemSettings parameters
 - Main.menuChat
 - Need to fix documentation for various secret and special seeds, like Main.specialSeedWorld. Need to change secret to special in most cases, and fix wiki links.
+- We need docs on how to use /checkpoint and StateSnapshot. Wiki page most likely, teaching why and how to use, limitations, etc.
 
 # Changes that need to be communicated to modders
 
@@ -165,8 +204,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Magic and Summon prefixes have been split into separate categories
 - Pylons no longer require happiness to be sold. Remove Condition.HappyEnoughToSellPylons from ModPylon.GetNPCShopEntry() to match vanilla.
 - Removed Condition.HappyEnough and Condition.HappyEnoughToSellPylons. Replaced with Condition.CurrentPriceAdjustmentUnder(float priceModifier) and Condition.CurrentPriceAdjustmentOver(float priceModifier).
-- Item.SetDefaults(int Type = 0) no longer exists
-- Item.SetDefaults(int Type, bool noMatCheck = false, ItemVariant variant = null) change to SetDefaults(int Type, ItemVariant variant = null) (noMatCheck parameter removed)
 - UnifiedRandom.Next methods are no longer virtual
 - UIWrappedSearchBar, is it useful to modders?
 - Various text rendering methods have been changed or improved. Investigate new functionality and previous bug fixes.
@@ -186,11 +223,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 
 # tModPorter TODOs
 
-- ItemVariants.EverythingWorld renamed to MechdusaWorld
-- Main.GameModeInfo.IsJourneyMode -> Main.IsJourneyMode
-- Item.SetDefaults() -> Item.SetDefaults(0)
-- Item.SetDefaults(int, bool) -> Item.SetDefaults(int)
-
 # ExampleMod TODOs
 - Verify that ExampleZombieThief still works with changes
 
@@ -206,7 +238,6 @@ These are simple changes that we'd like Terraria to implement, mainly to reduce 
 - NPC.catchItem, change from short to int?
 - `private static readonly bool[] SafeDust` and `private static readonly bool[] SafeGore` being private and readonly, unlike every other set, is a bit odd.
 - More simple typos: "GameUI.PrecentFishingPower"
-- NPCInteraction.ShowExcalmation -> ShowExclamation
 - PlayerDrawSet.missingHand and missingArm are the opposite of what they sound like apparently. tModLoader changes them as follows:
 ```diff
 +	// Renames for less confusion [

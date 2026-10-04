@@ -7,6 +7,12 @@ using ReLogic.Graphics;
 namespace Terraria.UI.Chat;
 public static partial class ChatManager
 {
+	public static void DrawColorCodedStringShadow(SpriteBatch spriteBatch, DynamicSpriteFont font, IEnumerable<TextSnippet> snippets, Vector2 position, Color shadowColor, float rotation, Vector2 origin, Vector2 scale, float maxWidth = -1f, float spread = 2f)
+	{
+		List<PositionedSnippet> snippets2 = LayoutSnippets(font, snippets, scale, maxWidth).ToList();
+		DrawColorCodedStringShadow(spriteBatch, font, snippets2, position, shadowColor, rotation, origin, scale, spread);
+	}
+
 	// Overload with shadowColor param
 	// Fix all instances of drawing text to use TextSnippets instead of strings (#FixNPCChat)
 	public static void DrawColorCodedStringWithShadow(SpriteBatch spriteBatch, DynamicSpriteFont font, TextSnippet[] snippets, Vector2 position, Color color, Color shadowColor, float rotation, Vector2 origin, Vector2 baseScale, out int hoveredSnippet, float maxWidth = -1f, float spread = 2f)

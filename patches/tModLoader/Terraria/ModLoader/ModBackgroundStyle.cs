@@ -2,6 +2,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Terraria.ModLoader;
 
+[CloneByReference]
 public abstract class ModBackgroundStyle : ModType
 {
 	/// <summary>
@@ -86,6 +87,7 @@ public abstract class ModSurfaceBackgroundStyle : ModBackgroundStyle
 /// <summary>
 /// This class serves to collect functions that operate on any kind of background style, without being specific to one single background style.
 /// </summary>
+[CloneByReference]
 public abstract class GlobalBackgroundStyle : ModType
 {
 	protected override sealed void Register()
