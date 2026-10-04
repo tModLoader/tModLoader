@@ -134,12 +134,12 @@
 		"ModsXWalls": "{0}个墙壁",
 		"ModsXBuffs": "{0}个Buff",
 		"ModsXMounts": "{0}个坐骑",
-		// "ModDownloadedFromInternet": "Downloaded From Internet",
-		// "ModDownloadedFromInternetWarning": "This mod was downloaded from the internet.\n\nMods may contain [c/FF0000:malicious] code, such as stealing passwords or installing viruses, especially mods not downloaded directly from Steam Workshop.\n\nOnly enable this mod if you trust the person who sent you this mod.",
-		// "ModDownloadedFromInternetTrustFile": "Trust file",
-		// "ModDownloadedFromInternetDoNotTrustFile": "Do not trust file",
-		// "ModDownloadedFromInternetTooltip": "This file was downloaded from the internet, this is extremely risky.\n{0}",
-		// "ModDownloadedFromInternetLoadAttemptExceptionMessage": "{0} was downloaded from the internet (from {1}) and has not been trusted.\n\nMods may contain [c/FF0000:malicious] code, such as stealing passwords or installing viruses, especially mods not downloaded directly from Steam Workshop.\n\nThis mod can be trusted from the mods menu.",
+		"ModDownloadedFromInternet": "下载自互联网",
+		"ModDownloadedFromInternetWarning": "该模组下载自互联网。\n\n注意：\n模组中可能包含[c/FF0000:恶意]代码，比如窃取密码或安装病毒。\n尤其是不从Steam创意工坊直接下载的模组。\n\n仅在你信任发送此模组的人时，才可以启用该模组。",
+		"ModDownloadedFromInternetTrustFile": "信任文件",
+		"ModDownloadedFromInternetDoNotTrustFile": "不信任",
+		"ModDownloadedFromInternetTooltip": "该文件下载自互联网，存在极高风险。\n{0}",
+		"ModDownloadedFromInternetLoadAttemptExceptionMessage": "{0}下载自互联网（来源：{1}），尚未设为信任。\n\n注意：\n模组中可能包含[c/FF0000:恶意]代码，比如窃取密码或安装病毒。\n尤其是不从Steam创意工坊直接下载的模组。\n\n可通过模组列表信任该模组。",
 
 		//Dedicated server
 		"ModsReloadAndReturn": "重新加载模组并回到地图选择页面",
