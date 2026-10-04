@@ -27,6 +27,9 @@ public static class ConfigManager
 
 	// This copy of Configs stores instances present during load. Its only use in detecting if a reload is needed.
 	private static readonly IDictionary<Mod, List<ModConfig>> loadTimeConfigs = new Dictionary<Mod, List<ModConfig>>();
+	// This copy of configs stores the default values of configs. It is used to detect if a config has default values set.
+	// TODO: in the future, configs with default values (including objects) should correctly serialize to "{}", so this will be redundant
+	private static readonly IDictionary<Mod, List<ModConfig>> defaultValueConfigs = new Dictionary<Mod, List<ModConfig>>();
 
 	public static readonly JsonSerializerSettings serializerSettings = new() {
 		Formatting = Formatting.Indented,
@@ -67,6 +70,14 @@ public static class ConfigManager
 
 	internal static void Add(ModConfig config)
 	{
+		// Maintain list of default value configs
+		if (!defaultValueConfigs.TryGetValue(config.Mod, out var defaultValueConfigList))
+			defaultValueConfigs[config.Mod] = defaultValueConfigList = new List<ModConfig>();
+
+		var defaultValueConfig = GeneratePopulatedClone(config);
+		Reset(defaultValueConfig);
+		defaultValueConfigList.Add(defaultValueConfig);
+
 		Load(config);
 
 		if (!Configs.TryGetValue(config.Mod, out var configList))
@@ -302,6 +313,14 @@ public static class ConfigManager
 	internal static ModConfig GetLoadTimeConfig(Mod mod, string config)
 	{
 		if (loadTimeConfigs.TryGetValue(mod, out List<ModConfig>? configs)) {
+			return configs.Single(x => x.Name == config);
+		}
+		throw new MissingResourceException("Missing config named " + config + " in mod " + mod.Name);
+	}
+
+	internal static ModConfig GetDefaultValueConfig(Mod mod, string config)
+	{
+		if (defaultValueConfigs.TryGetValue(mod, out List<ModConfig>? configs)) {
 			return configs.Single(x => x.Name == config);
 		}
 		throw new MissingResourceException("Missing config named " + config + " in mod " + mod.Name);

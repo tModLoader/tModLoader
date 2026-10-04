@@ -365,7 +365,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 
 		var result = modConfig.SaveChanges(pendingConfig, status: SetMessage, silent: false);
 		if (result == ConfigSaveResult.Success) // Don't clear out pending changes for needs reload or sent to server
-			OnConfigModified();
+			RefreshUI();
 	}
 
 	private void RevertConfig(UIMouseEvent evt, UIElement listeningElement)
@@ -376,7 +376,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 		SoundEngine.PlaySound(SoundID.MenuClose);
 		SetMessage(Language.GetTextValue("tModLoader.ModConfigChangesReverted"), Color.Green);
 		ConfigManager.RevertConfigChanges(modConfig, pendingConfig);
-		OnConfigModified();
+		RefreshUI();
 	}
 
 	private void RestoreDefaults(UIMouseEvent evt, UIElement listeningElement)
@@ -387,7 +387,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 		SoundEngine.PlaySound(SoundID.MenuOpen);
 		SetMessage(Language.GetTextValue("tModLoader.ModConfigDefaultsRestored"), Color.Green);
 		ConfigManager.Reset(pendingConfig);
-		OnConfigModified();
+		RefreshUI();
 	}
 
 	#endregion
@@ -430,6 +430,9 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 		CreateConfigElements(rootConfigPage, pendingConfig);
 		configPageStack.Push(rootConfigPage);
 
+		// TODO: this is a temporary fix for subpages, since refresh the UI requires recreating all of the UI, including the subpage UI
+		// TODO: make the ConfigPage stack store the config field names of each of the subpages and push them all back on here
+
 		CheckSaveAndRestoreConditions();
 
 		// TODO: allow filtering to look inside of subpages
@@ -449,13 +452,14 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 
 	public void OnConfigModified()
 	{
-		RefreshUI();
+		// Should be changed to RefreshUI in the future to ensure elements get updated without having to recreate all of them
+		CheckSaveAndRestoreConditions();
 	}
 
 	private void CheckSaveAndRestoreConditions()
 	{
-		HasUnsavedChanges = !ConfigManager.AreConfigsEqual(pendingConfig, modConfig);
-		HasDefaultValues = ConfigManager.AreConfigsEqual(pendingConfig, ConfigManager.GetLoadTimeConfig(mod, modConfig.Name));
+		HasUnsavedChanges = pendingConfig.HasChanges(modConfig);
+		HasDefaultValues = pendingConfig.HasDefaultValues();
 	}
 
 	// Exists to avoid breaking mods that depended on this method signature, will be removed in the future
