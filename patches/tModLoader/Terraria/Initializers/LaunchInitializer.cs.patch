@@ -119,7 +119,7 @@
 +
 +		// Added by TML
 +		if (TryParameter("-forceupdatemetadata") is string workshopForceDevMetadataFolder) {
-+			BatchMetadataSetRunner.RunForceUpdate(workshopForceDevMetadataFolder);
++			//BatchMetadataSetRunner.RunForceUpdate(workshopForceDevMetadataFolder);
 +			// Application Exits
 +		}
 +
