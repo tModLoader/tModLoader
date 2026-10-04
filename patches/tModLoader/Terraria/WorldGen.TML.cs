@@ -19,9 +19,11 @@ public partial class WorldGen
 			return;
 
 		Player player = Main.player[Player.FindClosest(new Vector2(i * 16, j * 16), 16, 16)];
-		var potLoot = new PotLoot(type, style, x, y, player);
-		TileLoader.ModifyPotLoot(potLoot);
+		var potLoot = new PotLoot(type, style, x, y, player, i, j);
+		if (type != TileID.PotsEcho)
+			PotLootTable.Register(potLoot, i, j);
 
+		TileLoader.ModifyPotLoot(potLoot);
 		Main.ItemDropSolver.TryDropping(new DropAttemptInfo {
 			pot = potLoot,
 			player = player,

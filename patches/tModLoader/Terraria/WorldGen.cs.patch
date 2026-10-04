@@ -2093,14 +2093,29 @@
  
  		switch (num4) {
  			case 0:
-@@ -48082,6 +_,7 @@
+@@ -48078,10 +_,13 @@
+ 			if (num8 != 0)
+ 				Item.NewItem(GetItemSource_FromTileBreak(i, j), i * 16, j * 16, 32, 32, num8);
+ 		}
+-
++		/*VANILLACODE
  		if (Main.netMode != 1 && type != 653)
  			SpawnThingsFromPot(i, j, num, num2, num4);
++		*/
  
++
 +		DropPotLoot(i, j, num, num2, num4, type);
  		destroyObject = false;
  	}
  
+@@ -48153,6 +_,7 @@
+ 		}
+ 	}
+ 
++
+ 	private static void SpawnThingsFromPot(int i, int j, int x2, int y2, int style)
+ 	{
+ 		bool flag = (double)j < Main.rockLayer;
 @@ -48734,6 +_,19 @@
  		}
  	}

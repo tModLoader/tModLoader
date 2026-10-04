@@ -23,11 +23,11 @@
 +	{
 -		if (itemId > 0 && itemId < ItemID.Count) {
 +		if (itemId > 0 && itemId < ItemLoader.ItemCount) {
-+			/*
++			/*VANILLACODE
  			int x = (int)npc.position.X + npc.width / 2;
  			int y = (int)npc.position.Y + npc.height / 2;
  			if (scattered) {
-@@ -17,13 +_,51 @@
+@@ -17,13 +_,55 @@
  			}
  
  			int itemIndex = Item.NewItem(npc.GetItemSource_Loot(), x, y, 0, 0, itemId, stack, noBroadcast: false, -1);
@@ -42,7 +42,11 @@
 +	{
 +		if (info.pot != null) {
 +			var pot = info.pot;
-+			DropItem(new Rectangle(pot.X * 16, pot.Y * 16, 32, 32), WorldGen.GetItemSource_FromTileBreak(pot.X, pot.Y), item, stack, scattered);
++			// Preserve the vanilla pot rectangle and NewItem defaults, including prefix zero.
++			if (scattered)
++				DropItem(new Rectangle(pot.DropX * 16, pot.DropY * 16, 16, 16), WorldGen.GetItemSource_FromTileBreak(pot.DropX, pot.DropY), item, stack, true);
++			else
++				Item.NewItem(WorldGen.GetItemSource_FromTileBreak(pot.DropX, pot.DropY), pot.DropX * 16, pot.DropY * 16, 16, 16, item, stack);
 +		}
 +		else if (info.npc != null) {
 +			_DropItemFromNPC(info.npc, item, stack, scattered);
