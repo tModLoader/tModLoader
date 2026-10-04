@@ -456,7 +456,8 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 
 	public void SetMessage(string text, Color color)
 	{
-		// TODO: impl, probably as a toast
+		var notification = new ConfigNotification(text, color);
+		InGameNotificationsTracker.AddMenuNotification(notification);
 	}
 
 	internal void SetMod(Mod mod, ModConfig config, bool openedFromModder = false, Action onClose = null, string scrollToOption = null, bool centerScrolledOption = true)
