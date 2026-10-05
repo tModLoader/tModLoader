@@ -15,7 +15,6 @@ using Terraria.Localization;
 using Terraria.ModLoader.Core;
 using Terraria.ModLoader.IO;
 using Terraria.Utilities;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace Terraria.ModLoader;
 
@@ -976,7 +975,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 
 		Item legItem = ContentSamples.ItemsByType[legsItemType];
 
-		ArmorSetBonus armorSetBonus = ArmorSetBonuses.GetCompleteSet(new ArmorSetBonus.QueryContext() {  HeadItem = headItemType, BodyItem = bodyItemType, LegItem = legsItemType });
+		ArmorSetBonus armorSetBonus = ArmorSetBonuses.GetCompleteSet(new ArmorSetBonus.QueryContext() { HeadItem = headItemType, BodyItem = bodyItemType, LegItem = legsItemType });
 		return armorSetBonus != null;
 	}
 
