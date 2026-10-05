@@ -457,7 +457,9 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 	public void SetMessage(string text, Color color)
 	{
 		var notification = new ConfigNotification(text, color);
-		InGameNotificationsTracker.AddMenuNotification(notification);
+		InGameNotificationsTracker.AddMenuNotification(notification); // TODO: test for in game too
+		// TODO: temporary, testing for comparison
+		InGameNotificationsTracker.AddMenuNotification(new InGamePopups.AchievementUnlockedPopup(Main.Achievements.GetAchievement("BENCHED")));
 	}
 
 	internal void SetMod(Mod mod, ModConfig config, bool openedFromModder = false, Action onClose = null, string scrollToOption = null, bool centerScrolledOption = true)
