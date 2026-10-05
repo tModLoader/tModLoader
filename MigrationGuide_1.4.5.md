@@ -411,10 +411,19 @@ private void UpdateArmorSetRanged(Player player) {
 }
 ```
 
+#### Modifying Existing Armor Sets
+
+Previously, mods used `IsArmorSet` and `UpdateArmorSet` to apply additional changes to vanilla armor sets. Now that `IsArmorSet` is gone, mods will instead check the `ArmorSetBonus.Identifier` directly in `UpdateArmorSet`: `if (armorSetBonus?.Identifier == "MagicHat") { ... }`.
+
+`(Mod|Global)Item.ModifyArmorSets` has been added, this is the intended location of modifying `ArmorSetBonus` data (Contained in `ArmorSetBonuses.All`). For example, `armorSetBonus.Effect += MagicHatAdditionalEffects` could be used as an alternative to `GlobalItem.UpdateArmorSet`. This is also where `ArmorSetBonus.Description` should be modified. Previously, modders would adjust `Player.setBonus` directly, but that has been removed. We recommend adjusting `ArmorSetBonus.Description` in the manner shown in ArmorSetTweaks.cs for compatibility. This approach should allow multiple mods to modify the armor set description without conflicting.
+
+ArmorSetTweaks.cs shows off modifying existing armor sets and ExampleRobe.cs shows off adding additional variants (different armor items) to existing armor sets.
+
 #### Porting Notes
 * 🤖: `ModItem.UpdateArmorSet` and `GlobalItem.UpdateArmorSet` now have an `ArmorSetBonus armorSetBonus` parameter.
 * ⚙️: `ModItem.IsArmorSet` and `GlobalItem.IsArmorSet` removed. Use `AddArmorSet` as described above to replace this.
 * Using vanilla armor from existing armor sets in modded sets is now potentially confusing to the user due to how the set bonus tooltip is calculated and displayed. The game will show the armor set tooltip for an item in the inventory (not just the equipment slots), so if a modded armor set also uses that item, it might potentially show the modded armor set bonus tooltip rather than the original vanilla armor set bonus tooltip the player might be looking for. 
+* 💀: `Player.setBonus` has been removed, see "Modifying Existing Armor Sets" above for how to modify set bonus description text.
 
 ### Whips and Tag Effects
 
