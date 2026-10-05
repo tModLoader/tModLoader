@@ -11,22 +11,12 @@ namespace ExampleMod.Content.Items.Armor
 	[AutoloadEquip(EquipType.Head)]
 	public class ExampleHelmet : ModItem
 	{
-		public static readonly int AdditiveGenericDamageBonus = 20;
-
-		public static LocalizedText SetBonusText { get; private set; }
-
 		public override void SetStaticDefaults() {
 			// If your head equipment should draw hair while drawn, use one of the following:
 			// ArmorIDs.Head.Sets.DrawHead[Item.headSlot] = false; // Don't draw the head at all. Used by Space Creature Mask
 			// ArmorIDs.Head.Sets.DrawHatHair[Item.headSlot] = true; // Draw hair as if a hat was covering the top. Used by Wizards Hat
 			// ArmorIDs.Head.Sets.DrawFullHair[Item.headSlot] = true; // Draw all hair as normal. Used by Mime Mask, Sunglasses
 			// ArmorIDs.Head.Sets.DrawsBackHairWithoutHeadgear[Item.headSlot] = true;
-
-			// This is the armor set bonus tooltip: "Increases dealt damage by 20%"
-			SetBonusText = this.GetLocalization("SetBonus").WithFormatArgs(AdditiveGenericDamageBonus);
-
-			// Registers an armor set. Note that ExampleHood also registers a similar armor set. The PartType parameter is needed in this case because the 2 sets have different tooltips.
-			AddArmorSet<ExampleHelmet, ExampleBreastplate, ExampleLeggings>(SetBonusText, Terraria.DataStructures.ArmorSetBonus.PartType.Head); 
 		}
 
 		public override void SetDefaults() {
@@ -35,11 +25,6 @@ namespace ExampleMod.Content.Items.Armor
 			Item.value = Item.sellPrice(gold: 1); // How many coins the item is worth
 			Item.rare = ItemRarityID.Green; // The rarity of the item
 			Item.defense = 5; // The amount of defense the item will give when equipped
-		}
-
-		// UpdateArmorSet allows you to give set bonuses to the armor.
-		public override void UpdateArmorSet(Player player, ArmorSetBonus armorSetBonus) {
-			player.GetDamage(DamageClass.Generic) += AdditiveGenericDamageBonus / 100f; // Increase dealt damage for all weapon classes by 20%
 		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.

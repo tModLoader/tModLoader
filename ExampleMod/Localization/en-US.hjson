@@ -376,18 +376,11 @@ Mods: {
 			ExampleHelmet: {
 				DisplayName: Example Helmet
 				Tooltip: This is a modded helmet.
-				SetBonus: Increases dealt damage by {0}%
 			}
 
 			ExampleHood: {
 				DisplayName: Example Hood
 				Tooltip: This is a modded hood.
-				# The {ToggleArmorSetBonusKey} will automatically display "UP" or "DOWN" depending on the user's "Activate Set Bonuses" setting.
-				SetBonus:
-					'''
-					Double tap or hold {ToggleArmorSetBonusKey} to toggle various armor shadow effects
-					{$CommonItemTooltip.PercentReducedManaCost}
-					'''
 			}
 
 			ExampleLeggings: {
@@ -1717,6 +1710,16 @@ Mods: {
 			{0}
 			{$CommonItemTooltip.IncreasesMaxExampleResourceBy@1}
 			'''
+
+		ArmorSetBonuses: {
+			ExampleHelmet: Increases dealt damage by {0}%
+			# The {ToggleArmorSetBonusKey} will automatically display "UP" or "DOWN" depending on the user's "Activate Set Bonuses" setting.
+			ExampleHood:
+				'''
+				Double tap or hold {ToggleArmorSetBonusKey} to toggle various armor shadow effects
+				{$CommonItemTooltip.PercentReducedManaCost}
+				'''
+		}
 	}
 }
 

@@ -1,8 +1,10 @@
-﻿using Microsoft.Xna.Framework;
+﻿using ExampleMod.Content.Items.Armor;
+using Microsoft.Xna.Framework;
 using System;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.Graphics;
+using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Common.Players
@@ -12,6 +14,9 @@ namespace ExampleMod.Common.Players
 	// This example demonstrates using several vanilla armor set shadows toggled by double tapping the down key, as well as a completely custom armor set shadow toggled by holding the down key. "Shadow" effects in vanilla are also used for some dodges and dashes.
 	public class ExampleArmorSetBonusPlayer : ModPlayer
 	{
+		public static readonly int ExampleHelmetSet_AdditiveGenericDamageBonus = 20;
+		public static readonly int ExampleHoodSet_ManaCostReductionPercent = 10;
+
 		public bool ExampleSetHood; // Indicates if the ExampleSet with ExampleHood is the active armor set.
 		public int ShadowStyle = 0; // This is the shadow to use. Note that ExampleHood.ArmorSetShadows will only be called if the full armor set is visible.
 		public bool CustomShadow; // Indicates that our custom shadow should be used.
@@ -21,6 +26,29 @@ namespace ExampleMod.Common.Players
 		public override void ResetEffects() {
 			ExampleSetHood = false;
 			CustomShadow = false;
+		}
+
+		public override void SetStaticDefaults() {
+			// Register armor sets.
+
+			// This is the armor set bonus tooltip: "Increases dealt damage by 20%"
+			var SetBonusText = Language.GetOrRegister("Mods.ExampleMod.ArmorSetBonuses.ExampleHelmet").WithFormatArgs(ExampleHelmetSet_AdditiveGenericDamageBonus);
+			ArmorSetBonuses.Add<ExampleHelmet, ExampleBreastplate, ExampleLeggings>(SetBonusText, ArmorSetBonus.PartType.Head, "ExampleMod/ExampleHelmetSet", ExampleHelmetSetEffect);
+
+			// This is the armor set bonus tooltip:
+			//   Double tap or hold DOWN/UP to toggle various armor shadow effects
+			//   10% reduced mana cost
+			SetBonusText = Language.GetOrRegister("Mods.ExampleMod.ArmorSetBonuses.ExampleHelmet").WithFormatArgs(ExampleHoodSet_ManaCostReductionPercent);
+			ArmorSetBonuses.Add<ExampleHood, ExampleBreastplate, ExampleLeggings>(SetBonusText, ArmorSetBonus.PartType.Head, "ExampleMod/ExampleHoodSet", ExampleHoodSetEffect);
+		}
+
+		public static void ExampleHelmetSetEffect(Player player) {
+			player.GetDamage(DamageClass.Generic) += ExampleHelmetSet_AdditiveGenericDamageBonus / 100f; // Increase dealt damage for all weapon classes by 20%
+		}
+
+		public static void ExampleHoodSetEffect(Player player) {
+			player.manaCost -= ExampleHoodSet_ManaCostReductionPercent / 100f; // Reduces mana cost by 10%
+			player.GetModPlayer<ExampleArmorSetBonusPlayer>().ExampleSetHood = true;
 		}
 
 		public override void ArmorSetBonusActivated() {
