@@ -9,6 +9,7 @@ using System.IO;
 using System.Text.RegularExpressions;
 using Terraria.DataStructures;
 using Terraria.GameContent;
+using Terraria.GameContent.Golf;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
@@ -101,7 +102,9 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	/// Gets called when your item spawns in world.
 	/// <para/> Called on the local client or the server where Item.NewItem is called.
 	/// </summary>
-	public virtual void OnSpawn(IEntitySource source)
+	/// <param name="item">The WorldItem instance of this item.</param>
+	/// <param name="source"></param>
+	public virtual void OnSpawn(WorldItem item, IEntitySource source)
 	{
 	}
 
@@ -166,6 +169,9 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	public virtual bool MagicPrefix()
 		=> Item.DamageType.GetsPrefixesFor(DamageClass.Magic);
 
+	public virtual bool SummonPrefix()
+		=> Item.DamageType.GetsPrefixesFor(DamageClass.Summon);
+
 	/// <summary>
 	/// To prevent putting the item in the tinkerer slot, return false when pre is -3.
 	/// To prevent rolling of a prefix on spawn, return false when pre is -1.
@@ -186,6 +192,11 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	/// Force a re-roll of a prefix by returning false.
 	/// </summary>
 	public virtual bool AllowPrefix(int pre) => true;
+
+	/// <summary>
+	/// Called immediately after prefix stat changes are applied (as well as <see cref="ModPrefix.Apply(Item)"/>), facilitating item-specific tweaks to prefix effects.
+	/// </summary>
+	public virtual void ApplyPrefix(int pre) { }
 
 	/// <summary>
 	/// Returns whether or not this item can be used. By default returns true.
@@ -352,6 +363,19 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	/// <param name="itemGroup">The item group this item is being assigned to</param>
 	public virtual void ModifyResearchSorting(ref ContentSamples.CreativeHelper.ItemGroup itemGroup)
 	{
+	}
+
+	/// <summary>
+	/// Allows you to specify the <see cref="GolfHelper.ClubProperties"/> for a custom golf club item.<br/>
+	/// This hook is only called if <see cref="ItemID.Sets.IsAGolfClub"/> is set to <see langword="true"/> for this item's type.
+	/// Return <see langword="null"/> by default, which will result in a club that can't launch a ball.<br/>
+	/// This method is not instanced.
+	/// <para/><b><see cref="GolfHelper.ClubProperties"/> documentation:</b>
+	/// <br/><inheritdoc cref="GolfHelper.ClubProperties" />
+	/// </summary>
+	public virtual GolfHelper.ClubProperties? GetGolfClubProperties()
+	{
+		return null;
 	}
 
 	/// <summary>
@@ -973,7 +997,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	/// <para/> This is only called when attempting to stack with an item of the same type.
 	/// <para/> This is not called for coins in inventory/UI.
 	/// <para/> This covers all scenarios, if you just need to change in-world stacking behavior, use <see cref="CanStackInWorld"/>.
-	/// <para/> Called on the local client only.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="source">The item instance being stacked onto this item</param>
 	/// <returns>Whether or not the item is allowed to stack</returns>
@@ -985,19 +1009,20 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	/// <summary>
 	/// Allows you to decide if this item is allowed to stack with another of its type in the world.
 	/// <para/> This is only called when attempting to stack with an item of the same type.
-	/// <para/> Called on the local client or server, depending on who the item is reserved for.
+	/// <para/> Called on the server and the owning client.
 	/// </summary>
-	/// <param name="source">The item instance being stacked onto this item</param>
+	/// <param name="destination">The WorldItem for this item</param>
+	/// <param name="source">The WorldItem instance being stacked onto this item</param>
 	/// <returns>Whether or not the item is allowed to stack</returns>
-	public virtual bool CanStackInWorld(Item source)
+	public virtual bool CanStackInWorld(WorldItem destination, WorldItem source)
 	{
 		return true;
 	}
 
 	/// <summary>
 	/// Allows you to make things happen when items stack together.
-	/// <para/> This hook is called on item being stacked onto from <paramref name="source"/> and before the items are transferred
-	/// <para/> Called on the local client only.
+	/// <para/> This hook is called on the item being stacked onto before the items are transferred from <paramref name="source"/>. This will be called both for in-world and in-inventory stacking.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="source">The item instance being stacked onto this item</param>
 	/// <param name="numToTransfer">The quantity of <paramref name="source"/> that will be transferred to this item</param>
@@ -1022,7 +1047,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	/// The passed reforge price equals the Item.value. Vanilla pricing will apply 20% discount if applicable and then price the reforge at a third of that value.
 	/// <para/> Called on the local client only.
 	/// </summary>
-	public virtual bool ReforgePrice(ref int reforgePrice, ref bool canApplyDiscount)
+	public virtual bool ReforgePrice(ref long reforgePrice, ref bool canApplyDiscount)
 	{
 		return true;
 	}
@@ -1057,6 +1082,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to modify the colors in which this armor and surrounding accessories are drawn, in addition to which glow mask and in what color is drawn. Note that this hook is only ever called through this item's associated equipment texture.
+	/// <br/><br/> Note that the <paramref name="glowMask"/> parameter will only work with existing glowmask textures (<see cref="GlowMaskID"/> until custom glowmask support is added. You can use <see cref="ModifyEquipTextureDraw"/> and manually add a DrawData for the glowmask instead.
 	/// <para/> Called on local and remote clients.
 	/// </summary>
 	/// <param name="drawPlayer">The draw player.</param>
@@ -1096,6 +1122,19 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	}
 
 	/// <summary>
+	/// Allows you to modify the speed at which you fall when gliding with these wings are equipped.
+	/// <para/> Called on local, server, and remote clients.
+	/// <para/> Return false to prevent vanilla gliding behavior.
+	/// </summary>
+	/// <param name="player">The player.</param>
+	/// <param name="gravityMultiplier">The multiplier applied to <see cref="Player.gravity"/>.</param>
+	/// <param name="maxSpeedMultiplier">The multiplier applied to <see cref="Player.maxFallSpeed"/>.</param>
+	public virtual bool WingGlidingSpeeds(Player player, ref float gravityMultiplier, ref float maxSpeedMultiplier)
+	{
+		return true;
+	}
+
+	/// <summary>
 	/// Allows you to modify these wing's horizontal flight speed and acceleration.
 	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
@@ -1107,11 +1146,11 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	}
 
 	/// <summary>
-	/// Allows for Wings to do various things while in use. "inUse" is whether or not the jump button is currently pressed. Called when these wings visually appear on the player. Use to animate wings, create dusts, invoke sounds, and create lights. Note that this hook is only ever called through this item's associated equipment texture. False will keep everything the same. True, you need to handle all animations in your own code.
+	/// Allows for Wings to do various things while in use. <paramref name="inUse"/> is whether or not the jump button is currently pressed and there is remaining <see cref="Player.wingTime"/>, meaning the wings are actively flying. If <paramref name="inUse"/> is false but <see cref="Player.controlJump"/> is true, the player is gliding. Called when these wings visually appear on the player. Use to animate wings, create dusts, invoke sounds, and create lights. Note that this hook is only ever called through this item's associated equipment texture. False will keep everything the same. True, you need to handle all animations in your own code.
 	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="player">The player.</param>
-	/// <param name="inUse">if set to <c>true</c> [in use].</param>
+	/// <param name="inUse">If <c>true</c>, the wings are actively flying.</param>
 	/// <returns></returns>
 	public virtual bool WingUpdate(Player player, bool inUse)
 	{
@@ -1122,9 +1161,10 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// Allows you to customize this item's movement when lying in the world. Note that this will not be called if this item is currently being grabbed by a player.
 	/// <para/> Called on all clients and the server.
 	/// </summary>
+	/// <param name="item">The WorldItem instance of this item.</param>
 	/// <param name="gravity">The gravity.</param>
 	/// <param name="maxFallSpeed">The maximum fall speed.</param>
-	public virtual void Update(ref float gravity, ref float maxFallSpeed)
+	public virtual void Update(WorldItem item, ref float gravity, ref float maxFallSpeed)
 	{
 	}
 
@@ -1132,7 +1172,8 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// Allows you to make things happen when this item is lying in the world. This will always be called, even when it is being grabbed by a player. This hook should be used for adding light, or for increasing the age of less valuable items.
 	/// <para/> Called on all clients and the server.
 	/// </summary>
-	public virtual void PostUpdate()
+	/// <param name="item">The WorldItem instance of this item.</param>
+	public virtual void PostUpdate(WorldItem item)
 	{
 	}
 
@@ -1140,9 +1181,10 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// Allows you to modify how close this item must be to the player in order to move towards the player.
 	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
+	/// <param name="item">The WorldItem instance of this item.</param>
 	/// <param name="player">The player.</param>
 	/// <param name="grabRange">The grab range.</param>
-	public virtual void GrabRange(Player player, ref int grabRange)
+	public virtual void GrabRange(WorldItem item, Player player, ref int grabRange)
 	{
 	}
 
@@ -1150,9 +1192,10 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// Allows you to modify the way this item moves towards the player. Return true if you override this hook; returning false will allow the vanilla grab style to take place. Returns false by default.
 	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
+	/// <param name="item">The WorldItem instance of this item.</param>
 	/// <param name="player">The player.</param>
 	/// <returns></returns>
-	public virtual bool GrabStyle(Player player)
+	public virtual bool GrabStyle(WorldItem item, Player player)
 	{
 		return false;
 	}
@@ -1161,19 +1204,23 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// Allows you to determine whether or not the item can be picked up
 	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
+	/// <param name="item">The WorldItem instance of this item.</param>
 	/// <param name="player">The player.</param>
-	public virtual bool CanPickup(Player player)
+	public virtual bool CanPickup(WorldItem item, Player player)
 	{
 		return true;
 	}
 
 	/// <summary>
-	/// Allows you to make special things happen when the player picks up this item. Return false to stop the item from being added to the player's inventory; returns true by default.
+	/// Allows you to make special things happen when the player picks up this item. This is typically used for resource pickups, such as <see cref="ItemID.Heart"/>, <see cref="ItemID.Star"/>, or <see cref="ItemID.NebulaPickup1"/>.
+	/// <para/> Return false to stop the item from being added to the player's inventory. The world item will still be despawned.
 	/// <para/> Called on the local client only.
+	/// <para/> Returns true by default.
 	/// </summary>
-	/// <param name="player">The player.</param>
+	/// <param name="item">The WorldItem instance of this item.</param>
+	/// <param name="player">The local player.</param>
 	/// <returns></returns>
-	public virtual bool OnPickup(Player player)
+	public virtual bool OnPickup(WorldItem item, Player player)
 	{
 		return true;
 	}
@@ -1202,30 +1249,33 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 
 	/// <summary>
 	/// Allows you to draw things behind this item, or to modify the way this item is drawn in the world. Return false to stop the game from drawing the item (useful if you're manually drawing the item).
-	/// <para/> Note that items in the world are drawn centered horizontally sitting at the bottom of the item hitbox, not in the center of the hitbox. To replicate the normal drawing calculations, use the following and then use <see cref="SpriteBatch.DrawString(SpriteFont, string, Vector2, Color, float, Vector2, float, SpriteEffects, float)"/>:
+	/// <para/> Note that items in the world are drawn centered horizontally sitting at the bottom of the item hitbox, not in the center of the hitbox. To replicate the normal drawing calculations, use the following and then use the <paramref name="spriteBatch"/>:
 	/// <para/> Called on all clients.
 	/// <code>
 	/// Main.GetItemDrawFrame(Item.type, out var itemTexture, out var itemFrame);
 	/// Vector2 drawOrigin = itemFrame.Size() / 2f;
 	/// Vector2 drawPosition = Item.Bottom - Main.screenPosition - new Vector2(0, drawOrigin.Y);
 	/// </code>
+	/// <br/><br/> See <c>PreDrawInInventory</c> and <c>PostDrawInInventory</c> for modifying the inventory visuals and <c>ModifyItemDraw</c> for modifying the held item visuals.
 	/// <para/> Returns true by default.
 	/// </summary>
+	/// <param name="item">The WorldItem instance of this item.</param>
 	/// <param name="spriteBatch">The sprite batch.</param>
-	/// <param name="lightColor">Color of the light.</param>
-	/// <param name="alphaColor">Color of the alpha.</param>
+	/// <param name="lightColor">The lighting color at the item's center.</param>
+	/// <param name="alphaColor">The final color used to draw the item, mixing its alpha and lighting.</param>
 	/// <param name="rotation">The item rotation. Items rotate slightly as they are thrown.</param>
 	/// <param name="scale">The draw scale. Items are usually drawn in the world at a scale of 1f but some effects like pulsing Soul items change this.</param>
 	/// <param name="whoAmI">The <see cref="Entity.whoAmI"/>.</param>
 	/// <returns></returns>
-	public virtual bool PreDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI)
+	public virtual bool PreDrawInWorld(WorldItem item, SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI)
 	{
 		return true;
 	}
 
 	/// <summary>
 	/// Allows you to draw things in front of this item. This method is called even if PreDrawInWorld returns false.
-	/// <para/> Note that items in the world are drawn centered horizontally sitting at the bottom of the item hitbox, not in the center of the hitbox. To replicate the normal drawing calculations, use the following and then use <see cref="SpriteBatch.DrawString(SpriteFont, string, Vector2, Color, float, Vector2, float, SpriteEffects, float)"/>:
+	/// <para/> Note that items in the world are drawn centered horizontally sitting at the bottom of the item hitbox, not in the center of the hitbox. To replicate the normal drawing calculations, use the following and then use the <paramref name="spriteBatch"/>:
+	/// <br/><br/> See <c>PreDrawInInventory</c> and <c>PostDrawInInventory</c> for modifying the inventory visuals and <c>ModifyItemDraw</c> for modifying the held item visuals.
 	/// <para/> Called on all clients.
 	/// <code>
 	/// Main.GetItemDrawFrame(Item.type, out var itemTexture, out var itemFrame);
@@ -1233,27 +1283,29 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// Vector2 drawPosition = Item.Bottom - Main.screenPosition - new Vector2(0, drawOrigin.Y);
 	/// </code>
 	/// </summary>
+	/// <param name="item">The WorldItem instance of this item.</param>
 	/// <param name="spriteBatch">The sprite batch.</param>
-	/// <param name="lightColor">Color of the light.</param>
-	/// <param name="alphaColor">Color of the alpha.</param>
+	/// <param name="lightColor">The lighting color at the item's center.</param>
+	/// <param name="alphaColor">The final color used to draw the item, mixing its alpha and lighting.</param>
 	/// <param name="rotation">The item rotation. Items rotate slightly as they are thrown.</param>
 	/// <param name="scale">The draw scale. Items are usually drawn in the world at a scale of 1f but some effects like pulsing Soul items change this.</param>
 	/// <param name="whoAmI">The <see cref="Entity.whoAmI"/>.</param>
-	public virtual void PostDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, float rotation, float scale, int whoAmI)
+	public virtual void PostDrawInWorld(WorldItem item, SpriteBatch spriteBatch, Color lightColor, Color alphaColor, float rotation, float scale, int whoAmI)
 	{
 	}
 
 	/// <summary>
 	/// Allows you to draw things behind this item in the inventory. Return false to stop the game from drawing the item (useful if you're manually drawing the item).
-	/// <para/> Note that <paramref name="position"/> is the center of the inventory slot and <paramref name="origin"/> is the center of the texture <paramref name="frame"/> to be drawn, so the provided parameters can be passed into <see cref="SpriteBatch.DrawString(SpriteFont, string, Vector2, Color, float, Vector2, float, SpriteEffects, float)"/> to draw a texture in the typical manner.
+	/// <para/> Note that <paramref name="position"/> is the center of the inventory slot and <paramref name="origin"/> is the center of the texture <paramref name="frame"/> to be drawn, so the provided parameters can be passed into the <paramref name="spriteBatch"/> to draw a texture in the typical manner.
+	/// <br/><br/> See <c>PreDrawInWorld</c> and <c>PostDrawInWorld</c> for modifying the in-world visuals and <c>ModifyItemDraw</c> for modifying the held item visuals.
 	/// <para/> Called on the local client only.
 	/// <para/> Returns true by default.
 	/// </summary>
 	/// <param name="spriteBatch">The sprite batch.</param>
 	/// <param name="position">The screen position of the center of the inventory slot.</param>
 	/// <param name="frame">The frame of the item texture to be drawn.</param>
-	/// <param name="drawColor">Color of the draw.</param>
-	/// <param name="itemColor">Color of the item.</param>
+	/// <param name="drawColor">The primary color used to draw the item icon.</param>
+	/// <param name="itemColor">The item color usually used for tinting the item with a secondary draw call.</param>
 	/// <param name="origin">The draw origin, the center of the frame to be drawn.</param>
 	/// <param name="scale">The scale the item has been calculated to draw in to fit in the inventory slot.</param>
 	/// <returns></returns>
@@ -1265,19 +1317,32 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 
 	/// <summary>
 	/// Allows you to draw things in front of this item in the inventory. This method is called even if PreDrawInInventory returns false.
-	/// <para/> Note that <paramref name="position"/> is the center of the inventory slot and <paramref name="origin"/> is the center of the texture <paramref name="frame"/> to be drawn, so the provided parameters can be passed into <see cref="SpriteBatch.DrawString(SpriteFont, string, Vector2, Color, float, Vector2, float, SpriteEffects, float)"/> to draw a texture in the typical manner.
+	/// <para/> Note that <paramref name="position"/> is the center of the inventory slot and <paramref name="origin"/> is the center of the texture <paramref name="frame"/> to be drawn, so the provided parameters can be passed into the <paramref name="spriteBatch"/> to draw a texture in the typical manner.
+	/// <br/><br/> See <c>PreDrawInWorld</c> and <c>PostDrawInWorld</c> for modifying the in-world visuals and <c>ModifyItemDraw</c> for modifying the held item visuals.
 	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="spriteBatch">The sprite batch.</param>
 	/// <param name="position">The screen position of the center of the inventory slot.</param>
 	/// <param name="frame">The frame of the item texture to be drawn.</param>
-	/// <param name="drawColor">Color of the draw.</param>
-	/// <param name="itemColor">Color of the item.</param>
+	/// <param name="drawColor">The primary color used to draw the item icon.</param>
+	/// <param name="itemColor">The item color usually used for tinting the item with a secondary draw call.</param>
 	/// <param name="origin">The draw origin, the center of the frame to be drawn.</param>
 	/// <param name="scale">The scale of the item drawing to to fit in the inventory slot.</param>
 	public virtual void PostDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor,
 		Color itemColor, Vector2 origin, float scale)
 	{
+	}
+
+	/// <summary>
+	/// Allows customization of the <see cref="DrawData"/> responsible for drawing the held item. Held items are drawn as part of the player drawing process. Additional <see cref="DrawData"/> can be added to <paramref name="drawInfo"/> for more advanced drawing if needed. (Add DrawData objects to <see cref="PlayerDrawSet.DrawDataCache"/>)
+	/// <br/><br/> <paramref name="drawData"/> is the DrawData for the normal drawing. <paramref name="coloredDrawData"/> is an additional drawing if <see cref="Item.color"/> was set, overlaid over the normal drawing to tint it. <paramref name="glowMaskDrawData"/> is a separate glow mask texture, if <see cref="Item.glowMask"/> was set.
+	/// <br/><br/> Return false to stop the game from adding the <paramref name="drawData"/> (and <paramref name="coloredDrawData"/> and <paramref name="glowMaskDrawData"/> if they are not null) to the player drawing. This is useful if manually adding <paramref name="drawInfo"/> and an additional custom DrawData to properly order the custom DrawData after the normal DrawData.
+	/// <br/><br/> See <c>PreDrawInInventory</c> and <c>PostDrawInInventory</c> for modifying the inventory visuals and <c>PreDrawInWorld</c> and <c>PostDrawInWorld</c> for modifying the in-world visuals.
+	/// <br/><br/> Returns true by default.
+	/// </summary>
+	public virtual bool ModifyItemDraw(ref PlayerDrawSet drawInfo, ref DrawData drawData, ref DrawData? coloredDrawData, ref DrawData? glowMaskDrawData)
+	{
+		return true;
 	}
 
 	/// <summary>
@@ -1325,10 +1390,11 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 
 	/// <summary>
 	/// Allows you to modify what item, and in what quantity, is obtained when any item belonging to the extractinator type corresponding to this item is fed into the Extractinator. Use <see cref="ItemID.Sets.ExtractinatorMode"/> to allow an item to be fed into the Extractinator.
-	/// <para/> This method is only called if <c>ItemID.Sets.ExtractinatorMode[Item.type] = Item.type;</c> in used in SetStaticDefaults. Other items belonging to the same extractinator group should use <c>ItemID.Sets.ExtractinatorMode[Item.type] = ModContent.ItemType&lt;IconicItemForThisExtractinatorType&gt;();</c> to indicate that they share the same extractinator output pool and to avoid code duplication.
+	/// <para/> This method is only called if <c>ItemID.Sets.ExtractinatorMode[Type] = Type;</c> in used in SetStaticDefaults. Other items belonging to the same extractinator group should use <c>ItemID.Sets.ExtractinatorMode[Type] = ModContent.ItemType&lt;IconicItemForThisExtractinatorType&gt;();</c> to indicate that they share the same extractinator output pool and to avoid code duplication.
 	/// <para/> By default the parameters will be set to the output of feeding Silt/Slush into the Extractinator.
 	/// <para/> Use <paramref name="extractinatorBlockType"/> to provide different behavior for <see cref="TileID.ChlorophyteExtractinator"/> if desired.
-	/// <para/> If the Chlorophyte Extractinator item swapping behavior is desired, see the example in <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Common/GlobalItems/TorchExtractinatorGlobalItem.cs">TorchExtractinatorGlobalItem.cs</see>.
+	/// <para/> <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/Items/Placeable/ExampleBlock.cs">ExampleBlock.cs</see> showcases using this to implement unique drops. The <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Common/GlobalItems/TorchExtractinatorGlobalItem.cs">TorchExtractinatorGlobalItem.cs</see> example showcases even more advanced behavior.
+	/// <para/> If the Chlorophyte Extractinator item swapping behavior is desired, that is handled by <see cref="ItemTrader.ChlorophyteExtractinator"/> instead. See the example in <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/Items/Placeable/ExampleBar.cs">ExampleBar.cs</see>.
 	/// <para/> This method is not instanced.
 	/// <para/> Called on the local client only.
 	/// </summary>
@@ -1357,14 +1423,6 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// <param name="stack">The stack.</param>
 	public virtual void CaughtFishStack(ref int stack)
 	{
-	}
-
-	/// <summary>
-	/// Whether or not the Angler can ever randomly request this type of item for his daily quest. Returns false by default.
-	/// </summary>
-	public virtual bool IsQuestFish()
-	{
-		return false;
 	}
 
 	/// <summary>
@@ -1405,7 +1463,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	//Does not use <see cref="NetReceive"> because of inheritdoc on the equivalent GlobalItem hook
 	/// <summary>
 	/// Allows you to send custom data for this item between client and server, which will be handled in NetReceive.
-	/// <br/>Called whenever an item container syncs its contents (various MessageIDs and sources), or <see cref="MessageID.SyncItem"/> and <see cref="MessageID.InstancedItem"/> are successfully sent, for example when the item is dropped into the world.
+	/// <br/>Called whenever an item container syncs its contents (various MessageIDs and sources), or <see cref="MessageID.SyncItem"/> and <see cref="MessageID.SpawnInstancedItem"/> are successfully sent, for example when the item is dropped into the world.
 	/// <br/>Can be called on both server and client.
 	/// </summary>
 	/// <param name="writer">The writer.</param>
@@ -1416,7 +1474,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	//Does not use <see cref="NetSend"> because of inheritdoc on the equivalent GlobalItem hook
 	/// <summary>
 	/// Receives the custom data sent in NetSend.
-	/// <br/>Called whenever an item container syncs its contents (various MessageIDs and sources), or <see cref="MessageID.SyncItem"/> and <see cref="MessageID.InstancedItem"/> are successfully received.
+	/// <br/>Called whenever an item container syncs its contents (various MessageIDs and sources), or <see cref="MessageID.SyncItem"/> and <see cref="MessageID.SpawnInstancedItem"/> are successfully received.
 	/// <br/>Can be called on both server and client.
 	/// </summary>
 	/// <param name="reader">The reader.</param>
@@ -1503,4 +1561,15 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// <param name="amount">The stack -> how many result items given when the recipe is crafted. (eg. 1 wood -> 4 wood platform)</param>
 	/// <returns></returns>
 	public Recipe CreateRecipe(int amount = 1) => Recipe.Create(Type, amount);
+
+	/// <summary>
+	/// Allows customization of the <see cref="DrawData"/> responsible for drawing the <see cref="EquipTexture"/> assigned to this item. Additional <see cref="DrawData"/> can be added to <paramref name="drawInfo"/> for more advanced drawing if needed.
+	/// <br/><br/> <paramref name="methodName"/> is the name of the method being hooked into. Some <see cref="EquipType"/> are drawn multiple times depending on layering, this provides that context if relevant.
+	/// <br/><br/> Note that this hook is only ever called through this item's associated equipment texture (<see cref="EquipTexture.ModifyDraw"/>). This means that the Item instance is not the actual equipped item instance. If the visuals depend on item data, you'll need to store that item instance in a ModPlayer and use the data from it rather than this item. See <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/Items/Accessories/WaspNest.cs#L77">WaspNestPlayer.strongBeesItem</see> for an example of this.
+	/// <br/><br/> Return false to stop the game from adding the <paramref name="drawData"/> to the player drawing. Returns true by default.
+	/// </summary>
+	public virtual bool ModifyEquipTextureDraw(ref PlayerDrawSet drawInfo, ref DrawData drawData, EquipTexture equipTexture, string methodName)
+	{
+		return true;
+	}
 }

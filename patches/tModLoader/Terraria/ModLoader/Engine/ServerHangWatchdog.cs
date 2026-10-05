@@ -30,7 +30,7 @@ internal static class ServerHangWatchdog
 
 	private static void Run(Thread mainThread)
 	{
-		while (true) {
+		while (!Debugger.IsAttached) {
 			Thread.Sleep(1000);
 			if (DateTime.Now - lastCheckin.Value > TIMEOUT) {
 				// TODO. https://github.com/dotnet/runtime/issues/31508
@@ -52,6 +52,7 @@ internal static class ServerHangWatchdog
 #endif
 			}
 		}
+		lastCheckin = null;
 	}
 
 #if !NETCORE

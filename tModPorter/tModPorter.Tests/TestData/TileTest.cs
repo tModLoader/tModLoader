@@ -39,6 +39,7 @@ public class TileTest
 		tile.wire2(!tile.wire2());
 		tile.wire3(!tile.wire3());
 		tile.wire4(!tile.wire4());
+		bool anyWire = tile.anyWire();
 		tile.checkingLiquid(!tile.checkingLiquid());
 		tile.skipLiquid(!tile.skipLiquid());
 
@@ -69,5 +70,11 @@ public class TileTest
 		tile.lava(false);
 		tile.honey(false);
 		tile.lava(liquid > 0);
+
+		bool water = tile.water();
+		bool hasWater = tile.anyWater();
+		bool hasLava = tile.anyLava();
+		bool hasHoney = tile.anyHoney();
+		bool hasShimmer = tile.anyShimmer();
 	}
 }

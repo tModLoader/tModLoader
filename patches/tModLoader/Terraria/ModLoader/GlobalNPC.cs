@@ -622,6 +622,17 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	}
 
 	/// <summary>
+	/// Allows you to modify natural spawn flags for the given player before spawn rate, spawn range, and spawn tile are determined.
+	/// <para/> Use this for player-level spawn context that should affect those later steps, such as biome, safe wall, or invasion flags.
+	/// <para/> For example, a modded safe-zone effect could set <c>spawner.noWorms = true</c> before vanilla spawn logic uses that flag.
+	/// <para/> Called in single player or on the server only.
+	/// </summary>
+	/// <param name="spawner"></param>
+	public virtual void EditSpawnFlags(NPC.Spawner spawner)
+	{
+	}
+
+	/// <summary>
 	/// Allows you to modify the chance of NPCs spawning around the given player and the maximum number of NPCs that can spawn around the player. Lower spawnRates mean a higher chance for NPCs to spawn.
 	/// <para/> Called in single player or on the server only.
 	/// </summary>
@@ -647,12 +658,23 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	}
 
 	/// <summary>
+	/// Allows you to modify natural spawn information after the spawn tile has been chosen and before the spawn pool is evaluated.
+	/// <para/> Use this for tile-level spawn context, such as water, granite, marble, spider cave, underground desert, spawn tile type, or spawn wall type.
+	/// <para/> For example, a modded tile could set <c>spawner.nearGranite = true</c> so later <see cref="ModNPC.SpawnChance"/> and <see cref="EditSpawnPool"/> logic sees the chosen tile as granite-like.
+	/// <para/> Called in single player or on the server only.
+	/// </summary>
+	/// <param name="spawner"></param>
+	public virtual void EditSpawnInfo(NPC.Spawner spawner)
+	{
+	}
+
+	/// <summary>
 	/// Allows you to control which NPCs can spawn and how likely each one is to spawn. The pool parameter maps NPC types to their spawning weights (likelihood to spawn compared to other NPCs). A type of 0 in the pool represents the default vanilla NPC spawning.
 	/// <para/> Called in single player or on the server only.
 	/// </summary>
 	/// <param name="pool"></param>
-	/// <param name="spawnInfo"></param>
-	public virtual void EditSpawnPool(IDictionary<int, float> pool, NPCSpawnInfo spawnInfo)
+	/// <param name="spawner"></param>
+	public virtual void EditSpawnPool(IDictionary<int, float> pool, NPC.Spawner spawner)
 	{
 	}
 
@@ -689,30 +711,37 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	}
 
 	/// <summary>
-	/// Allows you to determine if something can happen whenever a button is clicked on this NPC's chat window. The firstButton parameter tells whether the first button or second button (button and button2 from SetChatButtons) was clicked. Return false to prevent the normal code for this button from running. Returns true by default.
+	/// Allows you to determine if something can happen whenever a button is clicked on this NPC's chat window. Return false to prevent the normal code for this button from running. Returns <see langword="true"/> by default.
 	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="npc"></param>
-	/// <param name="firstButton"></param>
+	/// <param name="interaction">The type of interaction that was clicked.</param>
 	/// <returns></returns>
-	public virtual bool PreChatButtonClicked(NPC npc, bool firstButton)
+	/// <remarks>This hook does not run when interacting with signs.</remarks>
+	public virtual bool PreChatButtonClicked(NPC npc, NPCInteraction interaction)
 	{
 		return true;
 	}
 
+	/// <inheritdoc cref="ModNPC.RegisterChatButtons(NPCInteractionList)"/>
+	public virtual void RegisterChatButtons(NPC npc, NPCInteractionList interactions)
+	{
+	}
+
 	/// <summary>
-	/// Allows you to make something happen whenever a button is clicked on this NPC's chat window. The firstButton parameter tells whether the first button or second button (button and button2 from SetChatButtons) was clicked.
+	/// Allows you to make something happen whenever a button is clicked on this NPC's chat window.
 	/// <para/> Called on the local client only.
 	/// </summary>
 	/// <param name="npc"></param>
-	/// <param name="firstButton"></param>
-	public virtual void OnChatButtonClicked(NPC npc, bool firstButton)
+	/// <param name="interaction">The type of interaction that was clicked.</param>
+	/// <remarks>This hook does not run when interacting with signs.</remarks>
+	public virtual void OnChatButtonClicked(NPC npc, NPCInteraction interaction)
 	{
 	}
 
 	/// <summary>
 	/// Allows you to modify existing shop. Be aware that this hook is called just one time during loading.
-	/// <para/> The traveling merchant shop is handled separately in <see cref="SetupTravelShop(int[], ref int)"/>.
+	/// <para/> The traveling merchant shop is passed here, but the per visit (info) entries cannot be modified here. Use <see cref="SetupTravelShop(int[], ref int)"/> instead.
 	/// </summary>
 	/// <param name="shop">A <seealso cref="NPCShop"/> instance.</param>
 	public virtual void ModifyShop(NPCShop shop)
@@ -722,7 +751,6 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// <summary>
 	/// Allows you to modify the contents of a shop whenever player opens it. <br/>
 	/// If possible, use <see cref="ModifyShop(NPCShop)"/> instead, to reduce mod conflicts and improve compatibility.
-	/// Note that for special shops like travelling merchant, the <paramref name="shopName"/> may not correspond to a <see cref="NPCShop"/> in the <see cref="NPCShopDatabase"/>
 	/// <para/> Also note that unused slots in <paramref name="items"/> are null while <see cref="Item.IsAir"/> entries are entries that have a reserved slot (<see cref="NPCShop.Entry.SlotReserved"/>) but did not have their conditions met. These should not be overwritten.
 	/// <para/> Called on the local client only.
 	/// </summary>
@@ -780,9 +808,12 @@ public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	/// Allows you to modify the stats of town NPCs. Useful for buffing town NPCs when certain bosses are defeated, etc.
 	/// <para/> Called on the server and clients.
 	/// </summary>
-	/// <param name="damageMult"></param>
-	/// <param name="defense"></param>
-	public virtual void BuffTownNPC(ref float damageMult, ref int defense)
+	/// <param name="npc">The NPC</param>
+	/// <param name="damageMult">In vanilla, Pre-Hardmode bosses give <c>+= 0.05f</c> or <c>+= 0.1f</c> (+5% or +10% damage) and Hardmode bosses give <c>+= 0.15f</c> (+15% damage). The Advanced Combat Techniques books give <c>+= 0.25f</c> (+25% damage).</param>
+	/// <param name="attackSpeedMult">In vanilla, all bosses (except Moon Lord) give a <c>*= 0.985f</c> multiplier (+1.5% attack speed). The Advanced Combat Techniques books give <c>*= 0.8f</c> (+20% attack speed) each.</param>
+	/// <param name="defense">In vanilla, Pre-Hardmode bosses give <c>+= 2</c> or <c>+= 3</c> defense and Hardmode bosses give <c>+= 6</c> or <c>+= 8</c>. The Lunatic Cultist gives <c>+= 20</c> and Tipsy gives <c>*= 1.1f</c>.</param>
+	/// <param name="maxLife">The Advanced Combat Techniques books give <c>+= 250</c> each.</param>
+	public virtual void BuffTownNPC(NPC npc, ref float damageMult, ref float attackSpeedMult, ref int defense, ref int maxLife)
 	{
 	}
 

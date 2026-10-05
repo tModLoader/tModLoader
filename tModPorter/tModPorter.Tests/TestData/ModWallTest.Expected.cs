@@ -17,4 +17,6 @@ public class ModWallTest : ModWall
 		soundStyle/* tModPorter Note: Removed. Integrate into HitSound */ = 0;
 #endif
 	}
+
+	public override void RandomUpdate(int i, int j, bool underground) { /* Empty */ }
 }

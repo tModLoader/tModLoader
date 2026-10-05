@@ -153,7 +153,7 @@ namespace ExampleMod.Common.UI.ExampleCoinsUI
 			return item.type >= ItemID.CopperCoin && item.type <= ItemID.PlatinumCoin;
 		}
 
-		public override bool OnPickup(Item item, Player player) {
+		public override bool OnPickup(WorldItem item, Player player) {
 			// If we have picked up coins of any type, then we will update the values in exampleCoinsUI
 			ModContent.GetInstance<ExampleCoinsUISystem>().exampleCoinsUI.UpdateValue(item.stack * (item.value / 5));
 			return base.OnPickup(item, player);

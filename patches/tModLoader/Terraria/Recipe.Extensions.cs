@@ -41,6 +41,7 @@ public partial class Recipe
 
 	public bool HasRecipeGroup(int id) => acceptedGroups.Contains(id);
 
+	/*
 	public bool HasRecipeGroup(string name)
 	{
 		if (!RecipeGroup.recipeGroupIDs.ContainsKey(name))
@@ -49,10 +50,11 @@ public partial class Recipe
 		int id = RecipeGroup.recipeGroupIDs[name];
 		return HasRecipeGroup(id);
 	}
+	*/
 
 	public bool HasRecipeGroup(RecipeGroup group) => HasRecipeGroup(group.RegisteredId);
 
-	public bool HasTile(int tileID) => requiredTile.Contains(tileID);
+	public bool HasTile(int tileID) => requiredTile == tileID;
 
 	public bool HasTile(Mod mod, string tileName)
 	{
@@ -132,7 +134,10 @@ public partial class Recipe
 
 	public bool RemoveIngredient(int itemID) => requiredItem.RemoveAll(x => x.type == itemID) > 0;
 
-	public bool RemoveTile(int tileID) => requiredTile.Remove(tileID);
+	public bool RemoveTile(int tileID) {
+		requiredTile = -1;
+		return true;
+	}
 
 	public bool RemoveRecipeGroup(int groupID) => acceptedGroups.Remove(groupID);
 

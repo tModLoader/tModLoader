@@ -12,9 +12,9 @@
  	public SoundEffectInstance SoundInstancePixie;
  	public Asset<SoundEffect>[] SoundItem = new Asset<SoundEffect>[SoundID.ItemSoundCount];
  	public SoundEffectInstance[] SoundInstanceItem = new SoundEffectInstance[SoundID.ItemSoundCount];
--	public Asset<SoundEffect>[] SoundNpcHit = new Asset<SoundEffect>[58];
+-	public Asset<SoundEffect>[] SoundNpcHit = new Asset<SoundEffect>[59];
 +	public Asset<SoundEffect>[] SoundNpcHit = new Asset<SoundEffect>[SoundID.NPCHitCount];
--	public SoundEffectInstance[] SoundInstanceNpcHit = new SoundEffectInstance[58];
+-	public SoundEffectInstance[] SoundInstanceNpcHit = new SoundEffectInstance[59];
 +	public SoundEffectInstance[] SoundInstanceNpcHit = new SoundEffectInstance[SoundID.NPCHitCount];
  	public Asset<SoundEffect>[] SoundNpcKilled = new Asset<SoundEffect>[SoundID.NPCDeathCount];
  	public SoundEffectInstance[] SoundInstanceNpcKilled = new SoundEffectInstance[SoundID.NPCDeathCount];
@@ -27,7 +27,7 @@
  	public Asset<SoundEffect>[] SoundZombie = new Asset<SoundEffect>[131];
  	public SoundEffectInstance[] SoundInstanceZombie = new SoundEffectInstance[131];
  	public Asset<SoundEffect>[] SoundRoar = new Asset<SoundEffect>[3];
-@@ -99,6 +_,7 @@
+@@ -100,6 +_,7 @@
  
  	private void LoadAll()
  	{
@@ -60,15 +60,24 @@
  	}
  
  	private SoundEffectInstance CreateInstance(Asset<SoundEffect> asset)
-@@ -470,6 +_,7 @@
- 							case 103:
+@@ -279,7 +_,7 @@
+ 
+ 	private Asset<SoundEffect> Load(string assetName) => _services.Get<IAssetRepository>().Request<SoundEffect>(assetName, AssetRequestMode.AsyncLoad);
+ 
+-	public SoundEffectInstance PlaySound(int type, int x = -1, int y = -1, int Style = 1, float volumeScale = 1f, float pitchOffset = 0f)
++	public SoundEffectInstance PlaySound_Legacy(int type, int x = -1, int y = -1, int Style = 1, float volumeScale = 1f, float pitchOffset = 0f)
+ 	{
+ 		int num = Style;
+ 		try {
+@@ -471,6 +_,7 @@
  							case 156:
  							case 162:
+ 							case 205:
 +								// The preceding ItemX SoundStyle all need MaxInstances = 0 in SoundID.TML.cs
  								break;
  						}
  						SoundInstanceItem[num] = SoundItem[num].Value.CreateInstance();
-@@ -855,6 +_,7 @@
+@@ -859,6 +_,7 @@
  						break;
  					default:
  						switch (type) {

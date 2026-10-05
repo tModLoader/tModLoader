@@ -3,9 +3,12 @@ using Terraria;
 public class ModifiedVanillaMembersTest
 {
 	void Method() {
+		Chest.FindChestByGuessing(100, 200);
+
 		var player = new Player();
+		int talkNPC;
 		player.talkNPC = 1; // set changed
-		int talkNPC = player.talkNPC; // get unchanged
+		talkNPC = player.talkNPC; // get unchanged
 
 		player.Spawn();
 

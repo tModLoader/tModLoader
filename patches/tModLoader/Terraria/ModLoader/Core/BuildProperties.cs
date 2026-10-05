@@ -1,9 +1,11 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using Terraria.Localization;
+using Terraria.ModLoader.Exceptions;
 using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader.Core;
@@ -46,7 +48,7 @@ internal class BuildProperties
 	internal ModReference[] modReferences = new ModReference[0];
 	internal ModReference[] weakReferences = new ModReference[0];
 	//this mod will load after any mods in this list
-	//sortAfter includes (mod|weak)References that are not in sortBefore
+	//sortAfter includes (mod|weak)References that are not in sortBefore or sortIgnore
 	internal string[] sortAfter = new string[0];
 	//this mod will load before any mods in this list
 	internal string[] sortBefore = new string[0];
@@ -54,6 +56,7 @@ internal class BuildProperties
 	internal string author = "";
 	internal Version version = new Version(1, 0);
 	internal string displayName = "";
+	internal Dictionary<string, string> localizedDisplayNames = new(StringComparer.OrdinalIgnoreCase);
 	internal bool noCompile = false;
 	internal bool hideCode = false;
 	internal bool hideResources = false;
@@ -73,6 +76,29 @@ internal class BuildProperties
 		includeWeak ? modReferences.Concat(weakReferences) : modReferences;
 
 	public IEnumerable<string> RefNames(bool includeWeak) => Refs(includeWeak).Select(dep => dep.mod);
+
+	private static readonly Regex LocalizedDisplayNameRegex = new(@"^displayName\.(?<cultureName>.+)$", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
+	private static bool TryGetLocalizedDisplayNameFromText(string text, string value, out string cultureName, out string localizedDisplayName)
+	{
+		cultureName = null;
+		localizedDisplayName = null;
+
+		var match = LocalizedDisplayNameRegex.Match(text);
+		if (!match.Success)
+			return false;
+
+		string parsedCultureName = match.Groups["cultureName"].Value.Trim();
+		localizedDisplayName = value;
+
+		if (!GameCulture.KnownCultures.Any(culture => culture.Name.Equals(parsedCultureName, StringComparison.OrdinalIgnoreCase))) {
+			Logging.tML.Error($"Ignoring localized display name for unknown culture \"{Utils.CleanChatTags(parsedCultureName)}\". Expected one of: {string.Join(", ", GameCulture.KnownCultures.Select(culture => culture.Name))}");
+			return false;
+		}
+
+		cultureName = parsedCultureName;
+		return true;
+	}
 
 	private static IEnumerable<string> ReadList(string value)
 		=> value.Split(',').Select(s => s.Trim()).Where(s => s.Length > 0);
@@ -105,6 +131,7 @@ internal class BuildProperties
 		if (File.Exists(descriptionfile)) {
 			properties.description = File.ReadAllText(descriptionfile);
 		}
+		string[] sortIgnore = [];
 		foreach (string line in File.ReadAllLines(propertiesFile)) {
 			if (string.IsNullOrWhiteSpace(line)) {
 				continue;
@@ -117,6 +144,11 @@ internal class BuildProperties
 			if (value.Length == 0) {
 				continue;
 			}
+			if (TryGetLocalizedDisplayNameFromText(property, value, out string cultureName, out string localizedDisplayName)) {
+				properties.localizedDisplayNames[cultureName] = localizedDisplayName;
+				continue;
+			}
+
 			switch (property) {
 				case "dllReferences":
 					properties.dllReferences = ReadList(value).ToArray();
@@ -133,6 +165,9 @@ internal class BuildProperties
 				case "sortAfter":
 					properties.sortAfter = ReadList(value).ToArray();
 					break;
+				case "sortIgnore":
+					sortIgnore = ReadList(value).ToArray();
+					break;
 				case "author":
 					properties.author = value;
 					break;
@@ -141,10 +176,11 @@ internal class BuildProperties
 						properties.version = result;
 					}
 					else {
-						Logging.tML.Error($"The version found in {propertiesFile}, \"{value}\", is not a valid version number. Read the \"version\" section of https://github.com/tModLoader/tModLoader/wiki/build.txt#available-properties for more info on correct version numbers.");
+						throw new BuildException($"The version found in {propertiesFile}, \"{value}\", is not a valid version number. Read the \"version\" section of https://github.com/tModLoader/tModLoader/wiki/build.txt#available-properties for more info on correct version numbers.");
 					}
 					break;
 				case "displayName":
+					properties.localizedDisplayNames[GameCulture.DefaultCulture.Name] = value;
 					properties.displayName = value;
 					break;
 				case "homepage":
@@ -185,8 +221,18 @@ internal class BuildProperties
 		if (properties.dllReferences.Intersect(properties.modReferences.Select(x => x.mod)).Any())
 			throw new Exception("dllReferences contains duplicate of modReferences");
 
-		//add (mod|weak)References that are not in sortBefore to sortAfter
-		properties.sortAfter = properties.RefNames(true).Where(dep => !properties.sortBefore.Contains(dep))
+		if (properties.sortBefore.Intersect(properties.sortAfter).Any())
+			throw new Exception("sortBefore contains duplicate of sortAfter");
+
+		if (sortIgnore.Intersect(properties.sortAfter.Concat(properties.sortBefore)).Any())
+			throw new Exception("sortIgnore contains duplicate of sortAfter/sortBefore");
+
+		if (sortIgnore.Except(refs).Any())
+			throw new Exception("sortIgnore contains mods which are not mod/weak references");
+
+		//add (mod|weak)References that are not in sortBefore or sortIgnore to sortAfter
+		properties.sortAfter = properties.RefNames(true)
+			.Where(dep => !properties.sortBefore.Contains(dep) && !sortIgnore.Contains(dep))
 			.Concat(properties.sortAfter).Distinct().ToArray();
 
 		// Interpolate description values
@@ -226,9 +272,11 @@ internal class BuildProperties
 				}
 				writer.Write("version");
 				writer.Write(version.ToString());
-				if (displayName.Length > 0) {
-					writer.Write("displayName");
-					writer.Write(displayName);
+				foreach (var (cultureName, localizedDisplayName) in localizedDisplayNames.OrderBy(x => x.Key)) {
+					if (localizedDisplayName.Length > 0) {
+						writer.Write($"displayName.{cultureName}");
+						writer.Write(localizedDisplayName);
+					}
 				}
 				if (homepage.Length > 0) {
 					writer.Write("homepage");
@@ -314,7 +362,14 @@ internal class BuildProperties
 					properties.version = new Version(reader.ReadString());
 				}
 				if (tag == "displayName") {
-					properties.displayName = reader.ReadString();
+					properties.localizedDisplayNames[GameCulture.DefaultCulture.Name] = reader.ReadString();
+					properties.displayName = properties.localizedDisplayNames[GameCulture.DefaultCulture.Name];
+				}
+				else if (LocalizedDisplayNameRegex.IsMatch(tag)) {
+					string value = reader.ReadString();
+					if (TryGetLocalizedDisplayNameFromText(tag, value, out string cultureName, out string localizedDisplayName)) {
+						properties.localizedDisplayNames[cultureName] = localizedDisplayName;
+					}
 				}
 				if (tag == "homepage") {
 					properties.homepage = reader.ReadString();
@@ -354,6 +409,11 @@ internal class BuildProperties
 				}
 			}
 		}
+
+		if (string.IsNullOrEmpty(properties.displayName) && properties.localizedDisplayNames.TryGetValue(GameCulture.DefaultCulture.Name, out string defaultDisplayName)) {
+			properties.displayName = defaultDisplayName;
+		}
+
 		return properties;
 	}
 
@@ -361,8 +421,8 @@ internal class BuildProperties
 	{
 		BuildProperties properties = ReadFromStream(src);
 		var sb = new StringBuilder();
-		if (properties.displayName.Length > 0)
-			sb.AppendLine($"displayName = {properties.displayName}");
+		foreach (var (cultureName, localizedDisplayName) in properties.localizedDisplayNames.OrderBy(x => x.Key))
+			sb.AppendLine($"displayName.{cultureName} = {localizedDisplayName}");
 		if (properties.author.Length > 0)
 			sb.AppendLine($"author = {properties.author}");
 		sb.AppendLine($"version = {properties.version}");
@@ -395,6 +455,11 @@ internal class BuildProperties
 			sb.AppendLine($"sortAfter = {string.Join(", ", properties.sortAfter)}");
 		if (properties.sortBefore.Length > 0)
 			sb.AppendLine($"sortBefore = {string.Join(", ", properties.sortBefore)}");
+
+		//sortIgnore is not stored in Info, but a reference with no sort entry could only have come from one
+		string[] sortIgnore = properties.RefNames(true).Except(properties.sortAfter).Except(properties.sortBefore).ToArray();
+		if (sortIgnore.Length > 0)
+			sb.AppendLine($"sortIgnore = {string.Join(", ", sortIgnore)}");
 		var bytes = Encoding.UTF8.GetBytes(sb.ToString());
 		dst.Write(bytes, 0, bytes.Length);
 	}

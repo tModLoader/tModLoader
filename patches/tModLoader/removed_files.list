@@ -9,6 +9,9 @@ Terraria/DataStructures/EntitySource_ByProjectileSourceId.cs
 Terraria/DataStructures/EntitySource_OnHit_ByItemSourceID.cs
 Terraria/DataStructures/EntitySource_OnHit_ByProjectileSourceID.cs
 Terraria/Libraries/Common/Ionic.Zip.CF.dll
+Terraria/Libraries/Common/Newtonsoft.Json.dll
 Terraria/Libraries/FNA/FNA.dll
 Terraria/Libraries/Mono/Steamworks.NET.dll
 Terraria/Libraries/Mono/System.Windows.Forms.dll
+TerrariaNetCore.code-workspace
+TerrariaNetCore.sln

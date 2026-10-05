@@ -60,13 +60,6 @@ namespace ExampleMod.Content.Projectiles
 
 		public override void SetStaticDefaults() {
 			Main.projFrames[Type] = NumAnimationFrames;
-
-			// Signals to Terraria that this Projectile requires a unique identifier beyond its index in the Projectile array.
-			// This prevents the issue with the vanilla Last Prism where the beams are invisible in multiplayer.
-			ProjectileID.Sets.NeedsUUID[Type] = true;
-
-			// Prevents jitter when stepping up and down blocks and half blocks
-			ProjectileID.Sets.HeldProjDoesNotUsePlayerGfxOffY[Type] = true;
 		}
 
 		public override void SetDefaults() {
@@ -214,13 +207,10 @@ namespace ExampleMod.Content.Projectiles
 				beamVelocity = -Vector2.UnitY;
 			}
 
-			// This UUID will be the same between all players in multiplayer, ensuring that the beams are properly anchored on the Prism on everyone's screen.
-			int uuid = Projectile.GetByUUID(Projectile.owner, Projectile.whoAmI);
-
 			int damage = Projectile.damage;
 			float knockback = Projectile.knockBack;
 			for (int b = 0; b < NumBeams; ++b) {
-				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, beamVelocity, ModContent.ProjectileType<ExampleLastPrismBeam>(), damage, knockback, Projectile.owner, b, uuid);
+				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, beamVelocity, ModContent.ProjectileType<ExampleLastPrismBeam>(), damage, knockback, Projectile.owner, b, Projectile.key);
 			}
 
 			// After creating the beams, mark the Prism as having an important network event. This will make Terraria sync its data to other players ASAP.
@@ -228,7 +218,7 @@ namespace ExampleMod.Content.Projectiles
 		}
 
 		// Because the Prism is a holdout Projectile and stays glued to its user, it needs custom drawcode.
-		public override bool PreDraw(ref Color lightColor) {
+		public override bool PreDraw(Player player, ref Color lightColor) {
 			SpriteEffects effects = Projectile.spriteDirection == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
 			Texture2D texture = TextureAssets.Projectile[Type].Value;
 			int frameHeight = texture.Height / Main.projFrames[Type];

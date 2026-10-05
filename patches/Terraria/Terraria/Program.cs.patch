@@ -1,6 +1,15 @@
 --- src/decompiled/Terraria/Program.cs
 +++ src/Terraria/Terraria/Program.cs
-@@ -18,10 +_,15 @@
+@@ -12,13 +_,22 @@
+ using Terraria.Localization;
+ using Terraria.Social;
+ using Terraria.Utilities;
++#if FNA
++using Microsoft.Xna.Framework.Graphics;
++using SDL3;
++#endif
+ 
+ namespace Terraria;
  
  public static class Program
  {
@@ -12,13 +21,21 @@
 +	public static bool IsFna = true;
 +#endif
  	public static bool IsMono = Type.GetType("Mono.Runtime") != null;
--	public const bool IsDebug = false;
-+	// public const bool IsDebug = false;
  	public static Dictionary<string, string> LaunchParameters = new Dictionary<string, string>();
  	public static string SavePath;
- 	public const string TerrariaSaveFolderPath = "Terraria";
-@@ -153,6 +_,9 @@
+@@ -126,8 +_,10 @@
  
+ 	private static void InitializeConsoleOutput()
+ 	{
++#if !SERVER
+ 		if (Debugger.IsAttached)
+ 			return;
++#endif
+ 
+ 		try {
+ 			Console.OutputEncoding = Encoding.UTF8;
+@@ -149,6 +_,9 @@
+ 		LogFNANativeLibVersions();
  		LaunchParameters = Utils.ParseArguements(args);
  		SavePath = (LaunchParameters.ContainsKey("-savedirectory") ? LaunchParameters["-savedirectory"] : Platform.Get<IPathService>().GetStoragePath("Terraria"));
 +#if SERVER
@@ -27,3 +44,17 @@
  		ThreadPool.SetMinThreads(8, 8);
  		InitializeConsoleOutput();
  		SetupLogging();
+@@ -193,6 +_,13 @@
+ 
+ 	private static void LogFNANativeLibVersions()
+ 	{
++#if FNA
++		Console.WriteLine(("SDL v" + SDL.SDL_GetVersion() + "." + SDL.SDL_GetRevision()) ?? "");
++		uint num = FNA3D.FNA3D_LinkedVersion();
++		Console.WriteLine(("FNA3D v" + num / 10000 + "." + num / 100 % 100 + "." + num % 100) ?? "");
++		uint num2 = FAudio.FAudioLinkedVersion();
++		Console.WriteLine(("FAudio v" + num2 / 10000 + "." + num2 / 100 % 100 + "." + num2 % 100) ?? "");
++#endif
+ 	}
+ 
+ 	private static void DisplayException(Exception e)

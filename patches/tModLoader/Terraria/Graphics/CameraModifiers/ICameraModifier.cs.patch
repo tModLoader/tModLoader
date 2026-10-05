@@ -9,4 +9,4 @@
 +	/// </summary>
  	string UniqueIdentity { get; }
  
- 	bool Finished { get; }
+ 	bool IsAScreenShake { get; }

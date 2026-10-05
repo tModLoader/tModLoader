@@ -1,22 +1,23 @@
 --- src/TerrariaNetCore/Terraria/GameContent/ObjectInteractions/TileSmartInteractCandidateProvider.cs
 +++ src/tModLoader/Terraria/GameContent/ObjectInteractions/TileSmartInteractCandidateProvider.cs
-@@ -1,6 +_,7 @@
- using System;
+@@ -2,6 +_,7 @@
  using System.Collections.Generic;
  using Microsoft.Xna.Framework;
+ using Terraria.ID;
 +using Terraria.ModLoader;
  
  namespace Terraria.GameContent.ObjectInteractions;
  
-@@ -221,12 +_,15 @@
- 					num7 = 3;
+@@ -268,6 +_,7 @@
+ 					num7 = 4;
  					num8 = 4;
  					break;
 +				// Extra patch context.
  				case 464:
  					num7 = 5;
  					num8 = 4;
- 					break;
+@@ -279,6 +_,8 @@
+ 				num8 = 2;
  			}
  
 +			TileLoader.ModifySmartInteractCoords(tile.type, ref num7, ref num8, ref num9, ref num10, ref num11);
@@ -24,7 +25,7 @@
  			if (num7 == 0 || num8 == 0)
  				continue;
  
-@@ -363,11 +_,15 @@
+@@ -434,11 +_,15 @@
  						if (!Main.fastForwardTimeToDawn && (Main.netMode == 1 || Main.sundialCooldown == 0))
  							targets.Add(new Tuple<int, int>(i, j));
  						break;

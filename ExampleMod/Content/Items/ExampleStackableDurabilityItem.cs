@@ -64,7 +64,7 @@ namespace ExampleMod.Content.Items
 		}
 
 		public override void ModifyTooltips(List<TooltipLine> tooltips) {
-			tooltips.Add(new TooltipLine(Mod, "ExampleStackableDurabilityItem", DurabilityText.Format((int)(durability * 100))) { OverrideColor = Color.LightGreen });
+			tooltips.Add(new TooltipLine(Mod, "ExampleStackableDurabilityItem", DurabilityText.Format((int)(durability * 100))) { Color = Color.LightGreen });
 		}
 
 		private static float WeightedAverage(float durability1, int stack1, float durability2, int stack2) {

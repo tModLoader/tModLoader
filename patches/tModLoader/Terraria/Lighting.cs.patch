@@ -22,7 +22,15 @@
  	private static ILightingEngine _activeEngine;
  
  	public static float GlobalBrightness { get; set; }
-@@ -94,12 +_,19 @@
+@@ -62,6 +_,7 @@
+ 
+ 	public static bool UsingNewLighting => Mode == LightMode.Color;
+ 
++	[Obsolete("Always false in TML")]
+ 	public static bool UpdateEveryFrame {
+ 		get {
+ 			if (!Main.RenderTargetsRequired)
+@@ -96,12 +_,19 @@
  			GlobalBrightness = 1f;
  	}
  
@@ -42,7 +50,7 @@
  	public static Vector3 GetSubLight(Vector2 position)
  	{
  		Vector2 vector = position / 16f - new Vector2(0.5f, 0.5f);
-@@ -115,11 +_,27 @@
+@@ -117,11 +_,27 @@
  		return Vector3.Lerp(value, value2, vector2.Y);
  	}
  
@@ -70,7 +78,7 @@
  	public static void AddLight(Vector2 position, float r, float g, float b)
  	{
  		AddLight((int)(position.X / 16f), (int)(position.Y / 16f), r, g, b);
-@@ -137,6 +_,15 @@
+@@ -139,6 +_,15 @@
  		AddLight((int)position.X / 16, (int)position.Y / 16, R, G, B);
  	}
  
@@ -86,7 +94,7 @@
  	public static void AddLight(int i, int j, float r, float g, float b)
  	{
  		if (!Main.gamePaused && Main.netMode != 2)
-@@ -157,6 +_,7 @@
+@@ -159,6 +_,7 @@
  		_activeEngine.Clear();
  	}
  
@@ -94,7 +102,7 @@
  	public static Color GetColor(Point tileCoords)
  	{
  		if (Main.gameMenu)
-@@ -165,6 +_,10 @@
+@@ -167,6 +_,10 @@
  		return new Color(_activeEngine.GetColor(tileCoords.X, tileCoords.Y) * GlobalBrightness);
  	}
  
@@ -105,7 +113,7 @@
  	public static Color GetColor(Point tileCoords, Color originalColor)
  	{
  		if (Main.gameMenu)
-@@ -173,6 +_,7 @@
+@@ -175,6 +_,7 @@
  		return new Color(_activeEngine.GetColor(tileCoords.X, tileCoords.Y) * originalColor.ToVector3());
  	}
  
@@ -113,7 +121,7 @@
  	public static Color GetColor(int x, int y, Color oldColor)
  	{
  		if (Main.gameMenu)
-@@ -191,6 +_,10 @@
+@@ -193,6 +_,10 @@
  		return new Color(color * oldColor.ToVector3());
  	}
  

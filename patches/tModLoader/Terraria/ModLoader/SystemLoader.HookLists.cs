@@ -49,7 +49,7 @@ partial class SystemLoader
 
 	private delegate void DelegateModifyTimeRate(ref double timeRate, ref double tileUpdateRate, ref double eventUpdateRate);
 
-	private delegate void DelegateModifyWorldGenTasks(List<GenPass> passes, ref double totalWeight);
+	private delegate void DelegateModifyWorldGenTasks(List<GenPass> passes);
 
 	private delegate bool DelegateHijackGetData(ref byte messageType, ref BinaryReader reader, int playerNumber);
 
@@ -76,6 +76,8 @@ partial class SystemLoader
 	private static HookList HookModifySunLightColor = AddHook<DelegateModifySunLightColor>(s => s.ModifySunLightColor);
 
 	private static HookList HookModifyLightingBrightness = AddHook<DelegateModifyLightingBrightness>(s => s.ModifyLightingBrightness);
+
+	private static HookList HookRequiresScreenTarget = AddHook<Func<bool>>(s => s.RequiresScreenTarget);
 
 	private static HookList HookPreDrawMapIconOverlay = AddHook<DelegatePreDrawMapIconOverlay>(s => s.PreDrawMapIconOverlay);
 

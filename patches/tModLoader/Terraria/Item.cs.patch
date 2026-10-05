@@ -2,7 +2,6 @@
 +++ src/tModLoader/Terraria/Item.cs
 @@ -1,7 +_,9 @@
  using System;
- using System.Collections.Generic;
  using System.IO;
 +using System.Linq;
  using Microsoft.Xna.Framework;
@@ -21,16 +20,44 @@
  
  namespace Terraria;
  
--public class Item : Entity
-+public partial class Item : Entity
+-public class Item : IEntitySourceTarget
++public partial class Item : IEntitySourceTarget
  {
+ 	private class DefaultAssignNewItemsToPlayer_OverrideHandle : IDisposable
+ 	{
+@@ -38,9 +_,28 @@
+ 
+ 	public int width;
+ 	public int height;
++
++	/// <summary>
++	/// The additional distance, in pixels, that coins may be grabbed from if the player has the Gold Ring or its upgrades (<see cref="Player.goldRing"/>).<br/>
++	/// Applies to <see cref="ItemID.CopperCoin"/>, <see cref="ItemID.SilverCoin"/>, <see cref="ItemID.GoldCoin"/>, and <see cref="ItemID.PlatinumCoin"/>.<br/>
++	/// </summary>
+ 	public static int coinGrabRange = 350;
++
++	/// <summary>
++	/// The additional distance, in pixels, that mana stars may be grabbed from if the player has the Celestial Magnet or its upgrades (<see cref="Player.manaMagnet"/>).<br/>
++	/// Applies to <see cref="ItemID.Star"/>, <see cref="ItemID.SoulCake"/>, and <see cref="ItemID.SugarPlum"/>.<br/>
++	/// </summary>
+ 	public static int manaGrabRange = 300;
++
++	/// <summary>
++	/// The additional distance, in pixels, that mana stars may be grabbed from if the player has consumed a Heartreach Potion (<see cref="Player.lifeMagnet"/>).<br/>
++	/// Applies to <see cref="ItemID.Heart"/>, <see cref="ItemID.CandyApple"/>, and <see cref="ItemID.CandyCane"/>.<br/>
++	/// </summary>
+ 	public static int lifeGrabRange = 250;
++
++	/// <summary>
++	/// The additional distance, in pixels, that items may be grabbed from if the player has equipped a Treasure Magnet (<see cref="Player.treasureMagnet"/>).<br/>
++	/// </summary>
+ 	public static int treasureGrabRange = 150;
  	private string _nameOverride;
  	public const int luckPotionDuration1 = 18000;
-@@ -37,78 +_,473 @@
+@@ -59,69 +_,415 @@
  	private readonly int eclipsePrice = sellPrice(0, 7, 50);
  	private readonly int eclipsePostPlanteraPrice = sellPrice(0, 10);
  	private readonly int eclipseMothronPrice = sellPrice(0, 12, 50);
-+
 +	/// <summary>
 +	/// The default stack size for stackable items: 9999
 +	/// </summary>
@@ -55,6 +82,7 @@
 +	/// <br/><br/> This value is never changed. For creating a Philosopher's Stone-like item, For creating a Philosopher's Stone-like item, see <see cref="Player.pStone"/> and <see cref="Player.PotionDelayModifier"/>.
 +	/// </summary>
  	public static int restorationDelay = 2700;
+ 	public static int eggnogDelay = 2400;
 +
 +	/// <summary>
 +	/// The default cooldown, in ticks, of Mushrooms.
@@ -119,26 +147,6 @@
  	public bool mech;
 +
 +	/// <summary>
-+	/// The delay, in ticks, before players can pick up this item.<br/>
-+	/// Usually set to 100 (approximately 1.666... seconds) whenever an item is dropped.<br/>
-+	/// Set to 0 whenever an item drops from a projectile.<br/>
-+	/// </summary>
- 	public int noGrabDelay;
-+
-+	/// <summary>
-+	/// If true, then this item is currently being grabbed by a player.<br/>
-+	/// Items being grabbed by the player cannot combine with nearby items, be picked up by enemies, burn in lava, or despawn.<br/>
-+	/// </summary>
- 	public bool beingGrabbed;
-+
-+	/// <summary>
-+	/// A value that increases every tick an item is in the world.<br/>
-+	/// Defaults to the value in <see cref="ItemID.Sets.OverflowProtectionTimeOffset"/> when an item is created, and increases by <see cref="ItemID.Sets.ItemSpawnDecaySpeed"/> every tick.<br/>
-+	/// When creating new items, items with a high <c>timeSinceItemSpawned</c> value will be replaced if no empty item slots are available.<br/>
-+	/// </summary>
- 	public int timeSinceItemSpawned;
-+
-+	/// <summary>
 +	/// The numerical ID of the item this item consumes when used.<br/>
 +	/// If greater than 0, this item cannot be used unless the player has the item type <c>tileWand</c> is set to. The item also gains a counter for said item type.<br/>
 +	/// Defaults to -1.<br/>
@@ -158,6 +166,7 @@
 +	/// Defaults to -1.<br/>
 +	/// </summary>
  	public int tooltipContext = -1;
+ 	public int tooltipSlot = -1;
 -	public byte dye;
 +
 +	/// <summary>
@@ -173,7 +182,7 @@
 +	/// Fishing poles can be placed into weapon racks, have a counter for the bait the player is carrying, and are held out when a bobber is active.<br/>
 +	/// Defaults to 0.<br/>
 +	/// </summary>
- 	public int fishingPole = 1;
+ 	public int fishingPole;
 +
 +	/// <summary>
 +	/// The numerical value this item adds to a player's fishing skill when used as bait.<br/>
@@ -183,29 +192,6 @@
 +	/// Defaults to 0.<br/>
 +	/// </summary>
  	public int bait;
-+
-+	/// <summary>
-+	/// The additional distance, in pixels, that coins may be grabbed from if the player has the Gold Ring or its upgrades (<see cref="Player.goldRing"/>).<br/>
-+	/// Applies to <see cref="ItemID.CopperCoin"/>, <see cref="ItemID.SilverCoin"/>, <see cref="ItemID.GoldCoin"/>, and <see cref="ItemID.PlatinumCoin"/>.<br/>
-+	/// </summary>
- 	public static int coinGrabRange = 350;
-+
-+	/// <summary>
-+	/// The additional distance, in pixels, that mana stars may be grabbed from if the player has the Celestial Magnet or its upgrades (<see cref="Player.manaMagnet"/>).<br/>
-+	/// Applies to <see cref="ItemID.Star"/>, <see cref="ItemID.SoulCake"/>, and <see cref="ItemID.SugarPlum"/>.<br/>
-+	/// </summary>
- 	public static int manaGrabRange = 300;
-+
-+	/// <summary>
-+	/// The additional distance, in pixels, that mana stars may be grabbed from if the player has consumed a Heartreach Potion (<see cref="Player.lifeMagnet"/>).<br/>
-+	/// Applies to <see cref="ItemID.Heart"/>, <see cref="ItemID.CandyApple"/>, and <see cref="ItemID.CandyCane"/>.<br/>
-+	/// </summary>
- 	public static int lifeGrabRange = 250;
-+
-+	/// <summary>
-+	/// The additional distance, in pixels, that items may be grabbed from if the player has equipped a Treasure Magnet (<see cref="Player.treasureMagnet"/>).<br/>
-+	/// </summary>
- 	public static int treasureGrabRange = 150;
 -	public short makeNPC;
 +
 +	/// <summary>
@@ -261,23 +247,6 @@
 +	/// </summary>
  	public byte paint;
  	public byte paintCoating;
-+
-+	/// <summary>
-+	/// If true, then the given item is instanced per-client.<br/>
-+	/// Instanced items only appear on the client they were spawned on and are less likely to be replaced if a new item is spawned.<br/>
-+	/// Instanced items do not exist on servers.<br/>
-+	/// Vanilla uses this field for treasure bags and Defender Medals. tModLoader automatically handles this for modded treasure bags.<br/>
-+	/// If you would like to make an instanced item, see any one of the following for examples:<br/>
-+	/// - <see cref="NPC.DropItemInstanced"/><br/>
-+	/// - <see cref="GameContent.ItemDropRules.CommonCode.DropItemLocalPerClientAndSetNPCMoneyTo0"/><br/>
-+	/// - <see cref="MessageID.InstancedItem"/><br/>
-+	/// Defaults to <see langword="false"/>.<br/>
-+	/// </summary>
- 	public bool instanced;
- 	public int ownIgnore = -1;
- 	public int ownTime;
- 	public int keepTime;
- 	public int timeLeftInWhichTheItemCannotBeTakenByEnemies;
 +
 +	/// <summary>
 +	/// The Item ID of this item. The Item ID is a unique number assigned to each Item loaded into the game. This will be equal to either an <see cref="ItemID"/> entry or <see cref="ModContent.ItemType{T}"/>, for example <see cref="ItemID.IronskinPotion"/> or ModContent.ItemType&lt;MyModItem&gt;(). To check if an Item instance is a specific Item, check <c>Item.type == ItemID.VanillaItemHere</c> or <c>Item.type == ModContent.ItemType&lt;ModdedItemHere&gt;()</c> in an <see langword="if"/> statement.
@@ -339,7 +308,7 @@
 +
 +	/// <summary>
 +	/// The maximum number of items that can be contained within a single stack. <see cref="stack"/> indicates the current stack size.
-+	/// <br/> Defaults to 1.
++	/// <br/> Defaults to <see cref="Item.CommonMaxStack"/> which is 9999.
 +	/// </summary>
  	public int maxStack;
 +
@@ -468,6 +437,8 @@
 +	/// </summary>
  	public float scale = 1f;
 -	public LegacySoundStyle UseSound;
+-	public float useSoundPitch;
++	//public float useSoundPitch;
 +
 +	/// <summary>
 +	/// The sound this item makes when used. Set this to an existing <see cref="SoundID"/> entry or assign to a new <see cref="SoundStyle"/> for a custom sound.
@@ -504,10 +475,10 @@
  	public sbyte handOnSlot = -1;
  	public sbyte handOffSlot = -1;
  	public sbyte backSlot = -1;
-@@ -121,49 +_,272 @@
- 	public sbyte faceSlot = -1;
+@@ -135,48 +_,276 @@
  	public sbyte balloonSlot = -1;
  	public sbyte beardSlot = -1;
+ 	public sbyte voiceSlot;
 +	*/
 +	/// <summary>
 +	/// The equipment slot for this item (See the entry in <see cref="ArmorIDs"/> for this EquipType). When this item is equipped, the corresponding <see cref="Player"/> field will be set to this value (for example, item.faceSlot will set player.face) and the corresponding equipment texture will be displayed on the player.
@@ -537,10 +508,11 @@
 +	public int balloonSlot = -1;
 +	/// <inheritdoc cref="handOnSlot"/>
 +	public int beardSlot = -1;
++	/// <inheritdoc cref="handOnSlot"/>
++	public int voiceSlot = -1;
  	public int stringColor;
  	public ItemTooltip ToolTip;
  	public string BestiaryNotes;
- 	public int playerIndexTheItemIsReservedFor = 255;
 +
 +	/// <summary>
 +	/// Indicates the rarity of an item. Assign to a <see cref="ItemRarityID"/> value. Vanilla values range from -1 to 13.
@@ -615,7 +587,6 @@
 +	/// <br/> Defaults to <see langword="false"/>.
 +	/// </summary>
  	public bool noMelee;
- 	public int timeSinceTheItemHasBeenReservedForSomeone;
 +
 +	/// <summary>
 +	/// The number of copper coins this item is worth (aka, cost to buy from a merchant). Setting it to <c>10462</c> would mean the item cost 1 gold, 4 silver, and 62 copper. The sell price of an item is one fifth of its value. Value also influences reforge costs with the goblin tinkerer.
@@ -645,7 +616,7 @@
  	public bool noWet;
 +
 +	/// <summary>
-+	/// The Buff ID of the buff given by this item on use. To have a potion give multiple buffs, assign one buff here and in <see cref="ModItem.UseItem(Player)"/>, call <see cref="Player.AddBuff(int, int, bool, bool)"/> for the remaining buffs you wish to give.
++	/// The Buff ID of the buff given by this item on use. To have a potion give multiple buffs, assign one buff here and in <see cref="ModItem.UseItem(Player)"/>, call <see cref="Player.AddBuff(int, int)"/> for the remaining buffs you wish to give.
 +	/// <br/> Make sure to set <see cref="buffTime"/> as well or the buff will instantly disappear.
 +	/// <br/> Defaults to 0.
 +	/// </summary>
@@ -705,7 +676,6 @@
 +	/// Defaults to <see langword="false"/>.<br/>
 +	/// </summary>
  	public bool DD2Summon;
- 	public int netID;
 +
 +	/// <summary>
 +	/// The base critical chance for this item. Remember that the player has a base crit chance of 4.
@@ -713,6 +683,11 @@
 +	/// <br/> Defaults to 0
 +	/// </summary>
  	public int crit;
+ 	public int armorPenetration;
++	/// <summary>
++	/// Additional tag damage for this weapon, typically from prefixes/modifiers such as <see cref="PrefixID.Fabled"/>. Will be added alongside <see cref="WhipTagEffect.TagDamage"/> as a flat damage bonus to hits that satisfy <see cref="WhipTagEffect.CanRunHitEffects(Player, Projectile, NPC)"/>.
++	/// </summary>
+ 	public int bonusTagDamage;
 -	public byte prefix;
 -	public bool melee;
 -	public bool magic;
@@ -776,19 +751,16 @@
  	public bool newAndShiny;
 +
 +	/// <summary>
-+	/// If <see langword="true"/>, this item has vanity effects even though it doesn't use equipment slots.
-+	/// <br/> Unused in vanilla, as the system it was used for was removed in 1.4.4.
++	/// If <see langword="true"/>, this item has vanity effects even though it doesn't necessarily use equipment slots.
++	/// <br/> This will prevent the "Social" tooltip line from appearing and suggesting the item has no effect in vanity slots.
 +	/// </summary>
- 	[Old("This is used to allow items to be discerned as vanity even if they didn't have visual slots to poll against")]
  	public bool hasVanityEffects;
  	private const int foodWidth = 22;
-@@ -173,8 +_,30 @@
- 	public bool shimmered;
- 	public float shimmerTime;
+ 	private const int foodHeight = 22;
+@@ -187,8 +_,27 @@
+ 	public static readonly int PickupReplacementTime = 1200;
+ 	public static readonly int SlotsRemainingBeforeEmergencyStackingInMultiplayer = 40;
  
-+	// EntryFilter complains if item doesn't have a parameterless constructor (even when the parameter is optional).
-+	public Item() { }
-+
 +	// Added by TML.
 +	public Item(int setDefaultsToType, int stack = 1, int prefix = 0)
 +	{
@@ -813,7 +785,7 @@
  	public string HoverName {
  		get {
  			string text = AffixName();
-@@ -185,6 +_,9 @@
+@@ -199,6 +_,9 @@
  		}
  	}
  
@@ -823,9 +795,9 @@
  	public bool PaintOrCoating {
  		get {
  			if (paint <= 0)
-@@ -196,12 +_,24 @@
- 
- 	public bool FitsAccessoryVanitySlot => true;
+@@ -208,12 +_,24 @@
+ 		}
+ 	}
  
 +	/*
  	public int OriginalRarity => ContentSamples.ItemsByType[type].rare;
@@ -848,8 +820,8 @@
  	public ItemVariant Variant { get; private set; }
  
  	public bool IsACoin {
-@@ -254,12 +_,27 @@
- 		}
+@@ -275,12 +_,27 @@
+ 		return text;
  	}
  
 +	/// <summary>
@@ -876,7 +848,7 @@
  	public static void DropCache(IEntitySource reason, Vector2 pos, Vector2 spread, int t, bool stopCaching = true)
  	{
  		if (cachedItemSpawnsByType[t] == -1)
-@@ -279,12 +_,26 @@
+@@ -300,17 +_,64 @@
  		}
  	}
  
@@ -888,34 +860,33 @@
 +	/*
  	public IEntitySource GetItemSource_Misc(int itemSourceId) => new EntitySource_ByItemSourceId(this, itemSourceId);
 +	*/
-+	internal IEntitySource GetItemSource_Misc(int itemSourceId) => GetSource_Misc(context: ItemSourceID.ToContextString(itemSourceId));
++	internal IEntitySource GetItemSource_Misc(int itemSourceId) => new EntitySource_Misc(context: ItemSourceID.ToContextString(itemSourceId));
 +
- 	public override string ToString() => $"{{Name: \"{Name}\" NetID: {netID} Stack: {stack}";
- 
+ 	public override string ToString() => $"Name: \"{Name}\" Type: {type} Stack: {stack}";
++
 +	/// <summary>
 +	/// Determines if this <see cref="Item"/> can receive prefixes.
 +	/// </summary>
 +	/// <returns>
 +	/// <see langword="true"/> if this <see cref="Item"/> is allowed to receive prefixes, <see langword="false"/> otherwise.
 +	/// </returns>
--	private bool CanHavePrefixes()
-+	public bool CanHavePrefixes()
- 	{
-+		/*
- 		if (type != 0 && maxStack == 1) {
- 			if (damage <= 0)
- 				return accessory;
-@@ -293,8 +_,36 @@
- 		}
+ 	public bool CanHavePrefixes() => GetRollablePrefixes() != null;
  
- 		return false;
-+		*/
-+
++	/* TODO: reintergrate TML rules
++	public bool CanHavePrefixes()
++ 	{
 +		return type != 0
 +			&& ItemID.Sets.CanGetPrefixes[type]
 +			&& (maxStack == 1 || AllowReforgeForStackableItem)
 +			&& ammo == 0
 +			&& (damage > 0 || IsAPrefixableAccessory());
++	}
++	*/
++
+ 	public bool Prefix(int prefixWeWant)
+ 	{
+ 		bool rolledPrefixIsTopTier;
+ 		return Prefix(prefixWeWant, out rolledPrefixIsTopTier);
  	}
  
 +	/// <summary>
@@ -928,6 +899,7 @@
 +	///	<br/> If <c><paramref name="prefixWeWant"/> == -3</c>, then this method simple checks if this item <em>can</em> receive prefixes.
 +	///	<br/> Otherwise, attempt to apply the given <see cref="PrefixID"/> to this item.
 +	/// </param>
++	/// <param name="rolledPrefixIsTopTier"></param>
 +	/// <returns>
 +	/// <see langword="false"/> if:<list type="bullet">
 +	/// <item><paramref name="prefixWeWant"/> is <c>0</c></item>
@@ -939,21 +911,23 @@
 +	/// </list>
 +	/// Otherwise, return <see langword="true"/>.
 +	/// </returns>
- 	public bool Prefix(int prefixWeWant)
+ 	public bool Prefix(int prefixWeWant, out bool rolledPrefixIsTopTier)
  	{
- 		if (!WorldGen.gen && Main.rand == null)
-@@ -306,7 +_,19 @@
- 		if (!CanHavePrefixes())
- 			return false;
+ 		if (!WorldGen.isGeneratingOrLoadingWorld && Main.rand == null)
+@@ -330,7 +_,21 @@
+ 		if (prefixWeWant == -2 || prefixWeWant == -1)
+ 			num = BestPrefixValue();
  
++		/* TODO: CanApplyPrefix method no longer exists.
 +		if (prefixWeWant > 0 && !CanApplyPrefix(prefixWeWant))
 +			return false;
++		*/
 +
 +		//#StackablePrefixWeapons: Stackable items will not spawn with a prefix on craft/generate. Only when deliberately reforged.
 +		if (prefixWeWant == -1 && maxStack > 1)
 +			return false;
 +
- 		UnifiedRandom unifiedRandom = (WorldGen.gen ? WorldGen.genRand : Main.rand);
+ 		UnifiedRandom unifiedRandom = (WorldGen.isGeneratingOrLoadingWorld ? WorldGen.genRand : Main.rand);
 +
 +		bool? applyPrefixOverride = ItemLoader.PrefixChance(this, prefixWeWant, unifiedRandom);
 +		if (applyPrefixOverride is false)
@@ -962,7 +936,7 @@
  		int rolledPrefix = prefixWeWant;
  		float dmg = 1f;
  		float kb = 1f;
-@@ -318,12 +_,20 @@
+@@ -345,17 +_,32 @@
  		bool flag = true;
  		while (flag) {
  			flag = false;
@@ -983,57 +957,52 @@
  			if ((rolledPrefix == -1 || rolledPrefix == -2 || rolledPrefix == -3) && !RollAPrefix(unifiedRandom, ref rolledPrefix))
  				return false;
  
-@@ -331,8 +_,9 @@
- 				case -3:
- 					return true;
- 				case -1:
-+					if (applyPrefixOverride is true) { } else
- 					if (PrefixID.Sets.ReducedNaturalChance[rolledPrefix] && unifiedRandom.Next(3) != 0)
--						rolledPrefix = 0;
-+						return true; //rolledPrefix = 0;
- 					break;
- 			}
++			/*
+ 			if (prefixWeWant == -1 && PrefixID.Sets.ReducedNaturalChance[rolledPrefix] && unifiedRandom.Next(3) != 0)
+ 				rolledPrefix = 0;
++			*/
++			if (prefixWeWant == -1) {
++				if (applyPrefixOverride is true) { } else
++				if (PrefixID.Sets.ReducedNaturalChance[rolledPrefix] && unifiedRandom.Next(3) != 0)
++					return true;
++			}
  
-@@ -347,6 +_,8 @@
- 			}
+ 			if (prefixWeWant == -4)
+ 				rolledPrefix = 0;
+@@ -372,6 +_,8 @@
  		}
  
+ 		rolledPrefixIsTopTier = num2 == num;
 +		UndoItemAnimationCompensations();
 +
  		damage = (int)Math.Round((float)damage * dmg);
  		useAnimation = (int)Math.Round((float)useAnimation * spd);
  		useTime = (int)Math.Round((float)useTime * spd);
-@@ -356,6 +_,12 @@
- 		scale *= size;
- 		shootSpeed *= shtspd;
+@@ -383,6 +_,18 @@
  		crit += crt;
+ 		bonusTagDamage += tagdmg;
+ 		armorPenetration += arpen;
 +
 +		if (rolledPrefix >= PrefixID.Count)
 +			PrefixLoader.GetPrefix(rolledPrefix)?.Apply(this);
++		ItemLoader.ApplyPrefix(this, rolledPrefix);
 +
 +		ApplyItemAnimationCompensationsToVanillaItems();
 +
- 		float num = 1f * dmg * (2f - spd) * (2f - mcst) * size * kb * shtspd * (1f + (float)crt * 0.02f);
- 		if (rolledPrefix == 62 || rolledPrefix == 69 || rolledPrefix == 73 || rolledPrefix == 77)
- 			num *= 1.05f;
-@@ -369,6 +_,11 @@
- 		if (rolledPrefix == 65 || rolledPrefix == 72 || rolledPrefix == 76 || rolledPrefix == 80 || rolledPrefix == 68)
- 			num *= 1.2f;
- 
 +		if (rolledPrefix >= PrefixID.Count)
-+			PrefixLoader.GetPrefix(rolledPrefix)?.ModifyValue(ref num);
++			PrefixLoader.GetPrefix(rolledPrefix)?.ModifyValue(ref num2);
 +
 +		int baseRarity = rare;
 +
- 		if ((double)num >= 1.2)
+ 		if ((double)num2 >= 1.2)
  			rare += 2;
- 		else if ((double)num >= 1.05)
-@@ -378,25 +_,37 @@
- 		else if ((double)num <= 0.95)
+ 		else if ((double)num2 >= 1.05)
+@@ -392,22 +_,34 @@
+ 		else if ((double)num2 <= 0.95)
  			rare--;
  
 +		if (baseRarity >= ItemRarityID.Count)
-+			rare = RarityLoader.GetRarity(baseRarity).GetPrefixedRarity(rare - baseRarity, num);
++			rare = RarityLoader.GetRarity(baseRarity).GetPrefixedRarity(rare - baseRarity, num2);
 +		else if (rare > ItemRarityID.Purple)
 +			rare = ItemRarityID.Purple;
 +
@@ -1047,8 +1016,8 @@
 +				rare = RarityLoader.RarityCount - 1;
  		}
  
- 		num *= num;
- 		value = (int)((float)value * num);
+ 		num2 *= num2;
+ 		value = (int)((float)value * num2);
 -		prefix = (byte)rolledPrefix;
 +		prefix = rolledPrefix;
  		return true;
@@ -1062,14 +1031,11 @@
 +	/// <remarks>Just because a prefix can be rolled does not mean it can be applied -- use <see cref="CanApplyPrefix(int)"/> to check for that.</remarks>
  	public bool CanRollPrefix(int prefix)
  	{
- 		if (!CanHavePrefixes())
- 			return false;
- 
 +		/*
  		int[] rollablePrefixes = GetRollablePrefixes();
  		if (rollablePrefixes == null)
  			return false;
-@@ -407,8 +_,16 @@
+@@ -418,6 +_,9 @@
  		}
  
  		return false;
@@ -1078,30 +1044,39 @@
 +		return PrefixLoader.CanRoll(this, prefix);
  	}
  
-+	/// <summary>
-+	/// Determines if this <see cref="Item"/> can receive the given prefix.
-+	/// </summary>
-+	/// <param name="prefix">The <see cref="PrefixID"/> to check.</param>
-+	/// <returns><see langword="true"/> if this <see cref="Item"/> can roll the given prefix (<see cref="CanRollPrefix(int)"/>) and if the applied prefix does not fail to modify any stat values.</returns>
- 	public bool CanApplyPrefix(int prefix)
- 	{
- 		if (!CanRollPrefix(prefix))
-@@ -706,6 +_,13 @@
+ 	public int GetVisualCritChance(Player player)
+@@ -469,9 +_,12 @@
+ 		if (itemRarity == 10)
+ 			return new Color(255, 40, 100);
+ 
+-		if (itemRarity >= 11)
++		if (itemRarity == ItemRarityID.Purple)
+ 			return new Color(180, 40, 255);
+ 
++		if (itemRarity >= ItemRarityID.Count)
++			return RarityLoader.GetRarity(itemRarity).RarityColor;
++
+ 		return Color.White;
+ 	}
+ 
+@@ -810,6 +_,15 @@
  				dmg = 1.05f;
  				crt = 2;
  				break;
 +			// Handle mod prefixes.
 +			case int pre when PrefixLoader.GetPrefix(pre) is ModPrefix modPrefix:
-+				if (!modPrefix.AllStatChangesHaveEffectOn(this))
++				if (!modPrefix.AllStatChangesHaveEffectOn(this)) {
++					value = 1f;
 +					return false;
++				}
 +
 +				modPrefix.SetStats(ref dmg, ref kb, ref spd, ref size, ref shtspd, ref mcst, ref crt);
 +				break;
  		}
  
- 		if (dmg != 1f && Math.Round((float)damage * dmg) == (double)damage)
-@@ -723,7 +_,8 @@
- 		return true;
+ 		value = 1f * dmg * (2f - spd) * (2f - mcst) * size * kb * shtspd * (1f + (float)crt * 0.02f) * (1f + (float)arpen * 0.015f) * (1f + (float)tagdmg * 0.03f);
+@@ -856,7 +_,8 @@
+ 		return num;
  	}
  
 +	//TML: Made internal.
@@ -1110,7 +1085,7 @@
  	{
  		_ = type;
  		if (PrefixLegacy.ItemSets.SwordsHammersAxesPicks[type])
-@@ -750,16 +_,66 @@
+@@ -886,16 +_,70 @@
  		return null;
  	}
  
@@ -1128,8 +1103,11 @@
 +		if (PrefixLegacy.ItemSets.GunsBows[type] || ItemLoader.RangedPrefix(this))
 +			return PrefixCategory.Ranged;
 +
-+		if (PrefixLegacy.ItemSets.MagicAndSummon[type] || ItemLoader.MagicPrefix(this))
++		if (PrefixLegacy.ItemSets.Magic[type] || ItemLoader.MagicPrefix(this))
 +			return PrefixCategory.Magic;
++
++		if (PrefixLegacy.ItemSets.Summon[type] || ItemLoader.SummonPrefix(this))
++			return PrefixCategory.Summon;
 +
 +		if (PrefixLegacy.ItemSets.SpearsMacesChainsawsDrillsPunchCannon[type] || PrefixLegacy.ItemSets.BoomerangsChakrams[type] || PrefixLegacy.ItemSets.ItemsThatCanHaveLegendary2[type] || ItemLoader.WeaponPrefix(this))
 +			return PrefixCategory.AnyWeapon;
@@ -1149,7 +1127,8 @@
 +	public static int[] GetVanillaPrefixes(PrefixCategory category) => category switch {
 +		PrefixCategory.Melee => PrefixLegacy.Prefixes.PrefixesForSwords,
 +		PrefixCategory.Ranged => PrefixLegacy.Prefixes.PrefixesForGunsBows,
-+		PrefixCategory.Magic => PrefixLegacy.Prefixes.PrefixesForMagicAndSummons,
++		PrefixCategory.Magic => PrefixLegacy.Prefixes.PrefixesForMagic,
++		PrefixCategory.Summon => PrefixLegacy.Prefixes.PrefixesForSummons,
 +		PrefixCategory.AnyWeapon => PrefixLegacy.Prefixes.PrefixesForSpears,
 +		PrefixCategory.Accessory => PrefixLegacy.Prefixes.PrefixesForAccessories,
 +		_ => Array.Empty<int>(),
@@ -1177,7 +1156,7 @@
  	public bool IsAPrefixableAccessory()
  	{
  		if (accessory && !vanity)
-@@ -768,6 +_,10 @@
+@@ -936,6 +_,10 @@
  		return false;
  	}
  
@@ -1187,142 +1166,8 @@
 +	/// <returns>The localized name of this <see cref="Item"/> including its prefix, or simply <see cref="Name"/> if the prefix doesn't exist or is an empty string.</returns>
  	public string AffixName()
  	{
- 		if (prefix < 0 || prefix >= Lang.prefix.Length)
-@@ -789,8 +_,14 @@
- 			ToolTip = Lang.GetTooltip(netID);
- 	}
- 
-+	/// <summary>
-+	/// Gets this <see cref="Item"/>'s hitbox in the world. Equivalent to <see cref="Entity.Hitbox"/>.
-+	/// </summary>
-+	/// <returns>This <see cref="Item"/>'s hitbox in the world.</returns>
- 	public Rectangle getRect() => new Rectangle((int)position.X, (int)position.Y, width, height);
- 
-+	// Removed in favor of UpdateWhichItemsAreMaterials logic
-+	/*
- 	public bool checkMat()
- 	{
- 		if (type >= 71 && type <= 74) {
-@@ -839,9 +_,11 @@
- 
- 				material = false;
- 				return false;
-+				// Extra patch context.
- 			}
- 		}
- 	}
-+	*/
- 
- 	public void netDefaults(int type)
- 	{
-@@ -998,8 +_,20 @@
- 		}
- 	}
- 
-+	/// <summary>
-+	/// Converts a banner ID into the equivalent item type (<see cref="Item.type"/>).
-+	/// </summary>
-+	/// <param name="banner">The banner ID to convert.</param>
-+	/// <returns>
-+	/// The item type associated with the given banner ID.
-+	/// <br/> <strong>This method will return the wrong item type if <paramref name="banner"/> is not a valid banner ID.</strong>
-+	/// </returns>
-+	/// <remarks>You can get the banner ID of an NPC using <see cref="NPCtoBanner(int)"/>.</remarks>
- 	public static int BannerToItem(int banner)
- 	{
-+		if (NPCLoader.bannerToItem.TryGetValue(banner, out int result))
-+			return result;
-+
- 		int num = 0;
- 		if (banner == 289)
- 			return 5352;
-@@ -1037,6 +_,11 @@
- 		return 1615 + banner - 1;
- 	}
- 
-+	/// <summary>
-+	/// Converts an NPC type (<see cref="NPC.type"/>) into the equivalent banner ID.
-+	/// </summary>
-+	/// <param name="i">The NPC type to convert.</param>
-+	/// <returns>The banner ID associated with the given NPC type, or <c>0</c> if the NPC type has no associated banner.</returns>
- 	public static int NPCtoBanner(int i)
- 	{
- 		switch (i) {
-@@ -1771,15 +_,25 @@
- 				return 286;
- 			case 176:
- 				return 287;
-+			// Extra patch context.
- 			case 133:
- 				return 288;
- 			case 676:
- 				return 289;
- 			default:
-+				if (i >= NPCID.Count) // in NPCtoBanner method
-+					return NPCLoader.GetNPC(i).Banner;
-+
- 				return 0;
- 		}
- 	}
- 
-+	/// <summary>
-+	/// Converts a BannerID into the equivalent NPC type (<see cref="NPC.type"/>). Used to determine a single NPC type from a BannerID for display purposes.
-+	/// Note that modded BannerIDs are the same number as their NPC type, and those BannerIDs might not actually be used.
-+	/// </summary>
-+	/// <param name="i">The banner ID to convert.</param>
-+	/// <returns>The NPC type associated with the given banner ID, or <see cref="NPCID.None"/> for an invalid banner ID.</returns>
- 	public static int BannerToNPC(int i)
- 	{
- 		switch (i) {
-@@ -2347,11 +_,15 @@
- 				return 475;
- 			case 287:
- 				return 176;
-+			// Extra patch context.
- 			case 288:
- 				return 133;
- 			case 289:
- 				return 676;
- 			default:
-+				if (i >= NPCID.Count) // in BannerToNPC method
-+					return i;
-+
- 				return 0;
- 		}
- 	}
-@@ -3269,6 +_,7 @@
- 				consumable = true;
- 				createTile = 330;
- 				noMelee = true;
-+				material = false;
- 				break;
- 			case 72:
- 				width = 10;
-@@ -3289,6 +_,7 @@
- 				consumable = true;
- 				createTile = 331;
- 				noMelee = true;
-+				material = false;
- 				break;
- 			case 73:
- 				width = 10;
-@@ -3309,6 +_,7 @@
- 				consumable = true;
- 				createTile = 332;
- 				noMelee = true;
-+				material = false;
- 				break;
- 			case 74:
- 				width = 12;
-@@ -3329,6 +_,7 @@
- 				consumable = true;
- 				createTile = 333;
- 				noMelee = true;
-+				material = false;
- 				break;
- 			case 75:
- 				width = 18;
-@@ -7679,6 +_,8 @@
+ 		if (prefix <= 0 || prefix >= Lang.prefix.Length)
+@@ -6199,6 +_,8 @@
  				value = 300;
  				break;
  			case 434:
@@ -1331,7 +1176,7 @@
  				autoReuse = true;
  				useStyle = 5;
  				useAnimation = 12;
-@@ -8651,6 +_,8 @@
+@@ -7121,6 +_,8 @@
  				rare = 2;
  				break;
  			case 506:
@@ -1340,39 +1185,7 @@
  				useStyle = 5;
  				autoReuse = true;
  				useAnimation = 30;
-@@ -9158,6 +_,7 @@
- 					consumable = true;
- 					useAnimation = 45;
- 					useTime = 45;
-+					material = false;
- 				}
- 				maxStack = CommonMaxStack;
- 				rare = 3;
-@@ -9294,6 +_,7 @@
- 					consumable = true;
- 					useAnimation = 45;
- 					useTime = 45;
-+					material = false;
- 				}
- 				maxStack = CommonMaxStack;
- 				rare = 3;
-@@ -9306,6 +_,7 @@
- 					consumable = true;
- 					useAnimation = 45;
- 					useTime = 45;
-+					material = false;
- 				}
- 				maxStack = CommonMaxStack;
- 				rare = 3;
-@@ -11396,6 +_,7 @@
- 				knockBack = 6.5f;
- 				melee = true;
- 				value = sellPrice(0, 3);
-+				ChangePlayerDirectionOnShoot = false;// Added by tML
- 				break;
- 			case 724:
- 				autoReuse = true;
-@@ -12077,6 +_,8 @@
+@@ -10224,6 +_,8 @@
  				scale = 1f;
  				break;
  			case 779:
@@ -1381,7 +1194,19 @@
  				useStyle = 5;
  				autoReuse = true;
  				useAnimation = 30;
-@@ -22766,6 +_,8 @@
+@@ -18213,8 +_,11 @@
+ 				knockBack = 9f;
+ 				width = 14;
+ 				height = 28;
++				/*
+ 				UseSound = SoundID.Item1;
+ 				useSoundPitch = -0.5f;
++				*/
++				UseSound = SoundID.Item1.WithPitchOffset(-0.5f);
+ 				useAnimation = 15;
+ 				useTime = 15;
+ 				noUseGraphic = true;
+@@ -20438,6 +_,8 @@
  				melee = true;
  				return;
  			case 1910:
@@ -1390,15 +1215,14 @@
  				useStyle = 5;
  				autoReuse = true;
  				useAnimation = 30;
-@@ -30150,6 +_,17 @@
- 			value = buyPrice(0, 2, 70);
+@@ -27254,6 +_,16 @@
+ 			value = 200;
  	}
  
 +	/// <summary>
 +	/// This method sets a variety of Item values common to quest fish items.<br/>
 +	/// Specifically:<code>
 +	/// questItem = true;
-+	///	maxStack = 1;
 +	///	width = 26;
 +	///	height = 26;
 +	///	uniqueStack = true;
@@ -1408,7 +1232,7 @@
  	public void DefaultToQuestFish()
  	{
  		questItem = true;
-@@ -35265,6 +_,7 @@
+@@ -32076,6 +_,7 @@
  				rare = 2;
  				UseSound = SoundID.Item64;
  				mech = true;
@@ -1416,22 +1240,7 @@
  				return;
  			case 3612:
  				useStyle = 1;
-@@ -36121,8 +_,12 @@
- 			case 3767:
- 			case 3768:
- 			case 3769:
--				SetDefaults(198);
--				this.type = type;
-+				useStyle = 1;
-+				knockBack = 3f;
-+				width = 40;
-+				height = 40;
-+				UseSound = SoundID.Item15;
-+				melee = true;
- 				damage = 48;
- 				useTime = 16;
- 				useAnimation = 16;
-@@ -36886,6 +_,8 @@
+@@ -33628,6 +_,8 @@
  				shootSpeed = 17f;
  				return;
  			case 3852:
@@ -1440,7 +1249,7 @@
  				useStyle = 5;
  				useAnimation = 25;
  				useTime = 3;
-@@ -38322,6 +_,26 @@
+@@ -34973,6 +_,25 @@
  		}
  	}
  
@@ -1452,7 +1261,6 @@
 +	///	shootSpeed = 12f;
 +	///	width = 18;
 +	///	height = 20;
-+	///	maxStack = 1;
 +	///	UseSound = <see cref="SoundID.Item1"/>;
 +	///	useAnimation = 15;
 +	///	useTime = 15;
@@ -1467,38 +1275,7 @@
  	public void DefaultToGolfBall(int projid)
  	{
  		shoot = projid;
-@@ -38632,6 +_,7 @@
- 				width = 12;
- 				height = 12;
- 				value = 100000;
-+				material = false;
- 				break;
- 			case 4091:
- 				DefaultToPlaceableTile((ushort)496, 0);
-@@ -38769,6 +_,7 @@
- 				useTime = 28;
- 				rare = 3;
- 				value = sellPrice(0, 2);
-+				material = false;
- 				break;
- 			case 4132:
- 				width = 18;
-@@ -39568,8 +_,12 @@
- 				melee = true;
- 				break;
- 			case 4259:
--				SetDefaults(198);
--				this.type = type;
-+				useStyle = 1;
-+				knockBack = 3f;
-+				width = 40;
-+				height = 40;
-+				UseSound = SoundID.Item15;
-+				melee = true;
- 				damage = 48;
- 				useTime = 16;
- 				useAnimation = 16;
-@@ -43082,6 +_,8 @@
+@@ -39477,6 +_,8 @@
  				expert = true;
  				break;
  			case 4952:
@@ -1507,7 +1284,7 @@
  				autoReuse = true;
  				useStyle = 14;
  				holdStyle = 6;
-@@ -43103,6 +_,9 @@
+@@ -39498,6 +_,9 @@
  				flame = true;
  				break;
  			case 4953:
@@ -1517,7 +1294,7 @@
  				useStyle = 5;
  				autoReuse = true;
  				useAnimation = 30;
-@@ -44338,6 +_,8 @@
+@@ -40695,6 +_,8 @@
  				value = sellPrice(0, 0, 50);
  				break;
  			case 5134:
@@ -1526,8 +1303,8 @@
  				useStyle = 5;
  				autoReuse = true;
  				useAnimation = 30;
-@@ -46345,6 +_,20 @@
- 		}
+@@ -47272,6 +_,19 @@
+ 		voiceSlot = voiceOverrideID;
  	}
  
 +	/// <summary>
@@ -1539,7 +1316,6 @@
 +	///	height = 12;
 +	/// value = buyPrice(0, 0, 15);
 +	/// rare = 3;
-+	///	maxStack = <see cref="CommonMaxStack"/>;
 +	///	consumable = true;
 +	/// </code>
 +	/// </summary>
@@ -1547,7 +1323,7 @@
  	public void DefaultToSolution(int projectileId)
  	{
  		shoot = projectileId - 145;
-@@ -46357,6 +_,30 @@
+@@ -47283,6 +_,30 @@
  		consumable = true;
  	}
  
@@ -1578,7 +1354,7 @@
  	public void DefaultToWhip(int projectileId, int dmg, float kb, float shootspeed, int animationTotalTime = 30)
  	{
  		autoReuse = false;
-@@ -46368,7 +_,10 @@
+@@ -47294,7 +_,10 @@
  		shoot = projectileId;
  		UseSound = SoundID.Item152;
  		noMelee = true;
@@ -1589,18 +1365,32 @@
  		noUseGraphic = true;
  		damage = dmg;
  		knockBack = kb;
-@@ -46387,6 +_,10 @@
- 		SetShopValues(ItemRarityColor.Blue1, buyPrice(0, 2));
+@@ -47313,10 +_,14 @@
+ 		createTile = 723;
  	}
  
 +	/// <summary>
-+	/// Calls <see cref="SetDefaults(int)"/> to change this item to another item type while preserving <see cref="Item.favorited"/>. Used by right click code of items that transform into other items, such as how <see cref="ItemID.Shellphone"/> cycles between different items for different destinations. Does not preserve modded data.
++	/// Calls <see cref="SetDefaults(int, ItemVariant)"/> to change this item to another item type while preserving <see cref="Item.favorited"/>. Used by right click code of items that transform into other items, such as how <see cref="ItemID.Shellphone"/> cycles between different items for different destinations. Does not preserve modded data.
 +	/// </summary>
 +	/// <param name="to"></param>
  	public void ChangeItemType(int to)
  	{
  		bool flag = favorited;
-@@ -46422,7 +_,7 @@
+-		byte prefixWeWant = prefix;
++		int prefixWeWant = prefix;
+ 		int num = stack;
+ 		SetDefaults(to);
+ 		Prefix(prefixWeWant);
+@@ -47410,13 +_,16 @@
+ 			return true;
+ 
+ 		int num = item.type;
++		/*
+ 		if (num == 4039 || (uint)(num - 4092) <= 3u || (uint)(num - 4587) <= 11u)
++		*/
++		if (ItemID.Sets.IsAGolfClub[num] || num == ItemID.GolfWhistle)
+ 			return true;
+ 
  		return false;
  	}
  
@@ -1609,7 +1399,7 @@
  	{
  		useStyle = 1;
  		autoReuse = true;
-@@ -46456,7 +_,8 @@
+@@ -47449,7 +_,8 @@
  		}
  	}
  
@@ -1619,8 +1409,8 @@
  	{
  		useStyle = 1;
  		autoReuse = true;
-@@ -46471,6 +_,21 @@
- 		makeNPC = npcIdToSpawnOnUse;
+@@ -47464,6 +_,21 @@
+ 		createTile = 724;
  	}
  
 +	/// <summary>
@@ -1641,7 +1431,7 @@
  	public void DefaultToStaff(int projType, float pushForwardSpeed, int singleShotTime, int manaPerShot)
  	{
  		DefaultToMagicWeapon(projType, singleShotTime, pushForwardSpeed, hasAutoReuse: true);
-@@ -46480,6 +_,25 @@
+@@ -47473,6 +_,25 @@
  		UseSound = SoundID.Item43;
  	}
  
@@ -1667,7 +1457,7 @@
  	public void DefaultToSpear(int projType, float pushForwardSpeed, int animationTime)
  	{
  		useStyle = 5;
-@@ -46852,7 +_,24 @@
+@@ -47853,7 +_,23 @@
  		mountType = mount;
  	}
  
@@ -1680,7 +1470,6 @@
 +	///	useAnimation = 15;
 +	///	useTime = 7;
 +	///	autoReuse = true;
-+	///	maxStack = <see cref="CommonMaxStack"/>;
 +	///	consumable = true;
 +	///	createWall = wallToPlace;
 +	///	width = 12;
@@ -1693,7 +1482,7 @@
  	{
  		useStyle = 1;
  		useTurn = true;
-@@ -46866,6 +_,12 @@
+@@ -47866,6 +_,12 @@
  		height = 12;
  	}
  
@@ -1706,7 +1495,7 @@
  	public void SetWeaponValues(int dmg, float knockback, int bonusCritChance = 0)
  	{
  		damage = dmg;
-@@ -46873,6 +_,14 @@
+@@ -47873,6 +_,14 @@
  		crit = bonusCritChance;
  	}
  
@@ -1721,7 +1510,7 @@
  	public void DefaultToBow(int singleShotTime, float shotVelocity, bool hasAutoReuse = false)
  	{
  		DefaultToRangedWeapon(1, AmmoID.Arrow, singleShotTime, shotVelocity, hasAutoReuse);
-@@ -46881,6 +_,23 @@
+@@ -47881,6 +_,23 @@
  		UseSound = SoundID.Item5;
  	}
  
@@ -1745,7 +1534,7 @@
  	public void DefaultToMagicWeapon(int projType, int singleShotTime, float shotVelocity, bool hasAutoReuse = false)
  	{
  		autoReuse = hasAutoReuse;
-@@ -46893,6 +_,25 @@
+@@ -47893,6 +_,25 @@
  		magic = true;
  	}
  
@@ -1771,7 +1560,7 @@
  	public void DefaultToRangedWeapon(int baseProjType, int ammoID, int singleShotTime, float shotVelocity, bool hasAutoReuse = false)
  	{
  		autoReuse = hasAutoReuse;
-@@ -46906,6 +_,25 @@
+@@ -47906,6 +_,24 @@
  		ranged = true;
  	}
  
@@ -1787,7 +1576,6 @@
 +	///	noMelee = true;
 +	///	DamageType = DamageClass.Ranged;
 +	///	consumable = true;
-+	///	maxStack = <see cref="CommonMaxStack"/>;
 +	/// </code>
 +	/// </summary>
 +	/// <param name="baseProjType"></param>
@@ -1797,8 +1585,8 @@
  	public void DefaultToThrownWeapon(int baseProjType, int singleShotTime, float shotVelocity, bool hasAutoReuse = false)
  	{
  		autoReuse = hasAutoReuse;
-@@ -46920,7 +_,36 @@
- 		maxStack = CommonMaxStack;
+@@ -47919,7 +_,35 @@
+ 		consumable = true;
  	}
  
 +	/// <summary>
@@ -1808,7 +1596,6 @@
 +	/// noWet = !allowWaterPlacement;
 +	///	holdStyle = <see cref="ItemHoldStyleID.HoldFront"/>;
 +	///	autoReuse = true;
-+	///	maxStack = <see cref="CommonMaxStack"/>;
 +	///	consumable = true;
 +	///	createTile = tileIDToPlace;
 +	///	placeStyle = tileStyleToPlace;
@@ -1835,7 +1622,7 @@
  	{
  		flame = true;
  		noWet = !allowWaterPlacement;
-@@ -46939,11 +_,30 @@
+@@ -47937,11 +_,29 @@
  		useTime = 10;
  	}
  
@@ -1855,7 +1642,6 @@
 +	/// useStyle = <see cref="ItemUseStyleID.Swing"/>;
 +	/// useAnimation = 15;
 +	/// useTime = 10;
-+	/// maxStack = <see cref="CommonMaxStack"/>;
 +	/// useTurn = true;
 +	/// autoReuse = true;
 +	/// consumable = true;
@@ -1866,7 +1652,7 @@
  	public void DefaultToPlaceableTile(ushort tileIDToPlace, int tileStyleToPlace = 0)
  	{
  		createTile = tileIDToPlace;
-@@ -46959,6 +_,9 @@
+@@ -47956,6 +_,9 @@
  		consumable = true;
  	}
  
@@ -1876,7 +1662,7 @@
  	public void MakeUsableWithChlorophyteExtractinator()
  	{
  		useStyle = 1;
-@@ -46995,6 +_,27 @@
+@@ -47992,6 +_,26 @@
  		autoReuse = true;
  	}
  
@@ -1887,7 +1673,6 @@
 +	/// useStyle = useGulpSound ? <see cref="ItemUseStyleID.DrinkLiquid"/> : <see cref="ItemUseStyleID.EatFood"/>;
 +	/// useTurn = true;
 +	/// useAnimation = useTime = animationTime;
-+	/// maxStack = <see cref="CommonMaxStack"/>;
 +	/// consumable = true;
 +	/// buffType = <paramref name="foodbuff"/>;
 +	/// buffTime = <paramref name="foodbuffduration"/>;
@@ -1904,7 +1689,7 @@
  	public void DefaultToFood(int newwidth, int newheight, int foodbuff, int foodbuffduration, bool useGulpSound = false, int animationTime = 17)
  	{
  		if (useGulpSound)
-@@ -47035,12 +_,18 @@
+@@ -48030,12 +_,18 @@
  		healLife = healingAmount;
  	}
  
@@ -1923,7 +1708,7 @@
  	public void DefaultToHeadgear(int newwidth, int newheight, int helmetArtID)
  	{
  		width = newwidth;
-@@ -47065,7 +_,34 @@
+@@ -48080,7 +_,34 @@
  		useAnimation = (useTime = 12);
  	}
  
@@ -1959,8 +1744,14 @@
  	{
  		useStyle = 1;
  		useTurn = true;
-@@ -47088,6 +_,30 @@
- 		SetDefaults(Type, noMatCheck: false, null);
+@@ -48103,11 +_,33 @@
+ 	{
+ 	}
+ 
+-	public Item(int Type, ItemVariant variant = null)
++	public Item(int Type, ItemVariant variant) // TML: Made variant non-optional to avoid ambiguity with tML added overload
+ 	{
+ 		SetDefaults(Type, variant);
  	}
  
 +	// Added by TML.
@@ -1973,7 +1764,6 @@
 +	public void CloneDefaults(int TypeToClone)
 +	{
 +		int originalType = type;
-+		int originalNetID = netID;
 +		var originalMaterial = material;
 +		var originalModItem = ModItem;
 +		var originalGlobals = _globals;
@@ -1981,21 +1771,18 @@
 +		SetDefaults(TypeToClone);
 +
 +		type = originalType;
-+		netID = originalNetID;
 +		material = originalMaterial;
 +		ModItem = originalModItem;
 +		_globals = originalGlobals;
 +	}
 +
- 	public void SetDefaults(int Type, bool noMatCheck = false, ItemVariant variant = null)
+ 	public void SetDefaults(int Type, ItemVariant variant = null)
  	{
  		if (Type < 0) {
-@@ -47101,8 +_,12 @@
- 			playerIndexTheItemIsReservedFor = Main.myPlayer;
+@@ -48116,8 +_,10 @@
+ 		}
  
  		ResetStats(Type);
-+		material = ItemID.Sets.IsAMaterial[type];
-+
 +		/*
  		if (type >= ItemID.Count)
  			type = 0;
@@ -2003,9 +1790,9 @@
  
  		if (variant == null)
  			variant = ItemVariants.SelectVariant(Type);
-@@ -47133,7 +_,18 @@
+@@ -48141,7 +_,18 @@
+ 		else
  			SetDefaults5(type);
- 		}
  
 +		// Compensate for the change of itemAnimation getting reset at 0 instead of vanilla's 1.
 +		ApplyItemAnimationCompensationsToVanillaItems();
@@ -2023,26 +1810,19 @@
  		if (hairDye != 0)
  			hairDye = GameShaders.Hair.GetShaderIdFromItemId(type);
  
-@@ -47297,19 +_,24 @@
- 			maxStack = CommonMaxStack;
+@@ -48298,8 +_,10 @@
+ 		if (type >= 1803 && type <= 1807)
+ 			SetDefaults(1533 + type - 1803);
  
- 		netID = type;
--		if (!noMatCheck)
--			material = ItemID.Sets.IsAMaterial[type];
-+
 +		ItemLoader.SetDefaults(this);
- 
++
  		RebuildTooltip();
--		if (type > 0 && type < ItemID.Count && ItemID.Sets.Deprecated[type]) {
-+		if (type > 0 && ItemID.Sets.Deprecated[type]) {
-+			/*
- 			netID = 0;
- 			type = 0;
- 			stack = 0;
-+			*/
-+			TurnToAir();
- 		}
+-		if (type > 0 && type < ItemID.Count && ItemID.Sets.Deprecated[type])
++		if (type > 0 && ItemID.Sets.Deprecated[type])
+ 			TurnToAir();
  	}
+ 
+@@ -48311,24 +_,46 @@
  
  	public void OnCreated(ItemCreationContext context)
  	{
@@ -2051,9 +1831,13 @@
  		if (type == 5437)
  			SetDefaults(5358);
  	}
-@@ -47318,14 +_,34 @@
+ 
+ 	public void ResetStats(int Type)
  	{
+-		useSoundPitch = 0f;
++		//useSoundPitch = 0f;
  		tooltipContext = -1;
+ 		tooltipSlot = -1;
  		BestiaryNotes = null;
 +
 +		// TML field initialization:
@@ -2083,10 +1867,10 @@
  		isAShopItem = false;
  		expertOnly = false;
 +		masterOnly = false; // Added by TML.
- 		instanced = false;
  		questItem = false;
  		fishingPole = 0;
-@@ -47343,10 +_,14 @@
+ 		bait = 0;
+@@ -48346,10 +_,14 @@
  		mech = false;
  		flame = false;
  		reuseDelay = 0;
@@ -2101,16 +1885,7 @@
  		placeStyle = 0;
  		buffTime = 0;
  		buffType = 0;
-@@ -47366,7 +_,7 @@
- 		noUseGraphic = false;
- 		lifeRegen = 0;
- 		shootSpeed = 0f;
--		active = true;
-+		active = Type != 0;
- 		alpha = 0;
- 		ammo = AmmoID.None;
- 		useAmmo = AmmoID.None;
-@@ -47426,6 +_,9 @@
+@@ -48541,6 +_,9 @@
  
  	public Color GetAlpha(Color newColor)
  	{
@@ -2120,7 +1895,7 @@
  		if (ItemID.Sets.BossBag[type])
  			return Color.Lerp(newColor, Color.White, 0.4f);
  
-@@ -47623,6 +_,9 @@
+@@ -48748,6 +_,9 @@
  		return new Color(num, num2, num3, num4);
  	}
  
@@ -2130,7 +1905,7 @@
  	public static bool MechSpawn(float x, float y, int type)
  	{
  		int num = 0;
-@@ -47649,7 +_,18 @@
+@@ -48775,7 +_,18 @@
  		return true;
  	}
  
@@ -2148,116 +1923,16 @@
 +	/// <returns>The converted value.</returns>
  	public static int sellPrice(int platinum = 0, int gold = 0, int silver = 0, int copper = 0) => (copper + silver * 100 + gold * 100 * 100 + platinum * 100 * 100 * 100) * 5;
  
- 	public bool CanShimmer()
-@@ -47668,7 +_,7 @@
- 		if (type == 3461 || createTile == 139)
- 			flag = true;
+ 	public static int GetRandomVoiceItem()
+@@ -48821,7 +_,7 @@
+ 		if (shimmerEquivalentType == 560 && Main.slimeRain)
+ 			return false;
  
--		if (!flag && ItemID.Sets.ShimmerTransformToItem[shimmerEquivalentType] <= 0 && FindDecraftAmount() <= 0 && !ItemID.Sets.CommonCoin[type])
-+		if (!flag && ItemID.Sets.ShimmerTransformToItem[shimmerEquivalentType] <= 0 && FindDecraftAmount() <= 0 && ItemID.Sets.CoinLuckValue[type] <= 0)
+-		if ((shimmerEquivalentType != 4986 || NPC.unlockedSlimeRainbowSpawn) && ShimmerTransforms.GetTransformToItem(shimmerEquivalentType) <= 0 && !ShimmerTransforms.IsItemDecraftableAndIsDecraftUnlocked(this) && !ItemID.Sets.CommonCoin[shimmerEquivalentType])
++		if ((shimmerEquivalentType != 4986 || NPC.unlockedSlimeRainbowSpawn) && ShimmerTransforms.GetTransformToItem(shimmerEquivalentType) <= 0 && !ShimmerTransforms.IsItemDecraftableAndIsDecraftUnlocked(this) && ItemID.Sets.CoinLuckValue[shimmerEquivalentType] <= 0)
  			return makeNPC > 0;
  
  		return true;
-@@ -47723,7 +_,9 @@
- 	{
- 		int shimmerEquivalentType = GetShimmerEquivalentType();
- 		int decraftingRecipeIndex = ShimmerTransforms.GetDecraftingRecipeIndex(shimmerEquivalentType);
--		if (ItemID.Sets.CommonCoin[shimmerEquivalentType]) {
-+		if (ItemID.Sets.CoinLuckValue[shimmerEquivalentType] > 0) {
-+			stack *= ItemID.Sets.CoinLuckValue[shimmerEquivalentType];
-+			/*
- 			switch (shimmerEquivalentType) {
- 				case 72:
- 					stack *= 100;
-@@ -47737,6 +_,8 @@
- 					stack *= 1000000;
- 					break;
- 			}
-+			*/
-+			// patch context for CoinLuckValue
- 
- 			Main.player[Main.myPlayer].AddCoinLuck(base.Center, stack);
- 			NetMessage.SendData(146, -1, -1, null, 1, (int)base.Center.X, (int)base.Center.Y, stack);
-@@ -47808,10 +_,34 @@
- 			shimmered = true;
- 		}
- 		else if (ItemID.Sets.ShimmerTransformToItem[shimmerEquivalentType] > 0) {
-+			// Since 1.4.5 seems to add item stacking (April 2024 state of the game) this is likely a temporary fix. All variables are renamed as such so I can read this later. (Copy paste + modify from decrafting code) - Kogsey
--			int num8 = stack;
-+			int stackSize = stack;
- 			SetDefaults(ItemID.Sets.ShimmerTransformToItem[shimmerEquivalentType]);
--			stack = num8;
-+			stack = stackSize;
-+			if (stack > maxStack)
-+				stack = maxStack;
-+			stackSize -= stack;
- 			shimmered = true;
-+			int spawnCount = 0;
-+
-+			while (stackSize > 0) {
-+				spawnCount++;
-+
-+				int newItemIndex = NewItem(GetItemSource_Misc(8), (int)position.X, (int)position.Y, width, height, type);
-+				Item item = Main.item[newItemIndex];
-+				item.stack = stackSize;
-+				if (item.stack > maxStack)
-+					item.stack = maxStack;
-+				stackSize -= item.stack;
-+				item.shimmerTime = 1f;
-+				item.shimmered = true;
-+				item.shimmerWet = true;
-+				item.wet = true;
-+				item.velocity *= 0.1f;
-+				item.playerIndexTheItemIsReservedFor = Main.myPlayer;
-+
-+				NetMessage.SendData(145, -1, -1, null, newItemIndex, 1f);
-+			}
- 		}
- 		else if (type == 4986) {
- 			if (NPC.unlockedSlimeRainbowSpawn)
-@@ -47857,7 +_,7 @@
- 			int num13 = FindDecraftAmount();
- 			Recipe recipe = Main.recipe[decraftingRecipeIndex];
- 			int num14 = 0;
--			bool flag = recipe.requiredItem[1].stack > 0;
-+			bool flag = recipe.requiredItem.Count > 1;
- 			IEnumerable<Item> enumerable = recipe.requiredItem;
- 			if (recipe.customShimmerResults != null)
- 				enumerable = recipe.customShimmerResults;
-@@ -47869,17 +_,22 @@
- 
- 				num15++;
- 				int num16 = num13 * item2.stack;
-+
-+				/* TML: Recipe.alchemy is removed due to being replaced by consume item hooks
- 				if (recipe.alchemy) {
- 					for (int num17 = num16; num17 > 0; num17--) {
- 						if (Main.rand.Next(3) == 0)
- 							num16--;
- 					}
- 				}
-+				*/
-+
-+				RecipeLoader.ConsumeIngredient(recipe, item2.type, ref num16, true);
- 
- 				while (num16 > 0) {
- 					int num18 = num16;
--					if (num18 > 9999)
--						num18 = 9999;
-+					if (num18 > item2.maxStack)
-+						num18 = item2.maxStack;
- 
- 					num16 -= num18;
- 					int num19 = NewItem(GetItemSource_Misc(8), (int)position.X, (int)position.Y, width, height, item2.type);
-@@ -48004,7 +_,7 @@
- 		if (Main.netMode == 1) {
- 			int num = (int)(position.X + (float)(width / 2)) / 16;
- 			int num2 = (int)(position.Y + (float)(height / 2)) / 16;
--			if (num >= 0 && num2 >= 0 && num < Main.maxTilesX && num2 < Main.maxTilesY && Main.tile[num, num2] == null) {
-+			if (num >= 0 && num2 >= 0 && num < Main.maxTilesX && num2 < Main.maxTilesY && !Main.sectionManager.TileLoaded(num, num2)) {
- 				gravity = 0f;
- 				velocity.X = 0f;
- 				velocity.Y = 0f;
 @@ -48026,6 +_,10 @@
  			gravity = 0.08f;
  			maxFallSpeed = 5f;
@@ -2269,33 +1944,6 @@
  
  		if (ownTime > 0)
  			ownTime--;
-@@ -48124,6 +_,8 @@
- 			timeSinceItemSpawned += num7;
- 		}
- 
-+		ItemLoader.PostUpdate(this);
-+
- 		if (Main.netMode == 2 && playerIndexTheItemIsReservedFor != Main.myPlayer) {
- 			timeSinceTheItemHasBeenReservedForSomeone++;
- 			if (timeSinceTheItemHasBeenReservedForSomeone >= 300) {
-@@ -48274,7 +_,7 @@
- 
- 			NetMessage.SendData(21, -1, -1, null, i);
- 		}
--		else if (playerIndexTheItemIsReservedFor == Main.myPlayer && rare == 0 && type >= 0 && type < ItemID.Count && !ItemID.Sets.IsLavaImmuneRegardlessOfRarity[type]) {
-+		else if (playerIndexTheItemIsReservedFor == Main.myPlayer && rare == 0 && type >= 0 && !ItemID.Sets.IsLavaImmuneRegardlessOfRarity[type]) {
- 			active = false;
- 			type = 0;
- 			stack = 0;
-@@ -48285,6 +_,8 @@
- 
- 	private void MoveInWorld(float gravity, float maxFallSpeed, ref Vector2 wetVelocity, int i)
- 	{
-+		ItemLoader.Update(this, ref gravity, ref maxFallSpeed);
-+
- 		if (!shimmered && ItemID.Sets.ItemNoGravity[type]) {
- 			velocity.X *= 0.95f;
- 			if ((double)velocity.X < 0.1 && (double)velocity.X > -0.1)
 @@ -48362,12 +_,21 @@
  		if (Collision.shimmer)
  			shimmerWet = true;
@@ -2468,172 +2116,115 @@
  
  		if (wetCount > 0)
  			wetCount--;
-@@ -48553,7 +_,7 @@
- 		Rectangle hitbox = base.Hitbox;
- 		for (int j = 0; j < 200; j++) {
- 			NPC nPC = Main.npc[j];
--			if (nPC.active && flag && nPC.type >= 0 && nPC.type < NPCID.Count && NPCID.Sets.CanConvertIntoCopperSlimeTownNPC[nPC.type] && hitbox.Intersects(nPC.Hitbox)) {
-+			if (nPC.active && flag && nPC.type >= 0 && NPCID.Sets.CanConvertIntoCopperSlimeTownNPC[nPC.type] && hitbox.Intersects(nPC.Hitbox)) {
- 				flag3 = true;
- 				NPC.TransformCopperSlime(j);
- 				break;
-@@ -48669,14 +_,26 @@
- 				num2 *= 2;
- 
- 			if (num < (float)num2) {
-+				if (!ItemLoader.CanStack(this, item))
-+					continue;
-+
-+				if (!ItemLoader.CanStackInWorld(this, item))
-+					continue;
-+
- 				position = (position + item.position) / 2f;
- 				velocity = (velocity + item.velocity) / 2f;
-+
-+				ItemLoader.StackItems(this, item, out _);
-+
-+				/* #OnStackHook
- 				int num3 = item.stack;
- 				if (num3 > maxStack - stack)
- 					num3 = maxStack - stack;
- 
- 				item.stack -= num3;
- 				stack += num3;
-+				*/
-+
- 				if (item.stack <= 0) {
- 					item.SetDefaults();
- 					item.active = false;
-@@ -49077,21 +_,68 @@
- 			case 4070:
- 				return TextureAssets.Item[type].Frame(1, 4);
- 			default:
-+				/*
- 				return TextureAssets.Item[type].Frame();
-+				*/
-+
-+				// Notes:
-+				//   If the item doesn't have an animation, "Main.itemAnimations[type]" is just null, so the code will default to Asset<Texture2D>.Frame(), which will just be what vanilla does.
-+				//   However, if it does have an animation, then the source rect will be obtained from the animation instance, which is also what's used for displaying the animation
-+				//   source rect for items in the inventory and dropped items in the world.  This source rect will then be the basis for the use item's hitbox, rather than the entire
-+				//   spritesheet's size.
-+				//     - absoluteAquarian
-+				return Main.itemAnimations[type]?.GetFrame(TextureAssets.Item[type].Value) ?? TextureAssets.Item[type].Frame();
+@@ -49006,8 +_,20 @@
  		}
  	}
  
 +	/// <summary>
-+	/// <inheritdoc cref="Item.NewItem(IEntitySource, int, int, int, int, int, int, bool, int, bool, bool)"/>
-+	/// <br/><br/> This particular overload uses two Vector2 to determine the actual spawn position.
++	/// Allows a server to temporarily designate a 'local' player for newly spawned items, such as while handling that player's packet.<br/>
++	/// Automatically converts <c>NewItem</c> calls with <see cref="NewItemOwnership.None"/> to <see cref="NewItemOwnership.ReserveForLocalPlayer"/>.<br/>
++	/// Used by vanilla when handling packets such as <see cref="MessageID.TileManipulation"/> and <see cref="MessageID.HitSwitch"/>.<br/>
++	/// <br/>
++	/// <c>using (Item.DefaultAssignNewItemsToPlayer(whoAmI)) { ... }</c><br/>
++	/// <br/>
 +	/// </summary>
-+	/// <returns><inheritdoc cref="Item.NewItem(IEntitySource, int, int, int, int, int, int, bool, int, bool, bool)"/></returns>
- 	public static int NewItem(IEntitySource source, Vector2 pos, Vector2 randomBox, int Type, int Stack = 1, bool noBroadcast = false, int prefixGiven = 0, bool noGrabDelay = false, bool reverseLookup = false) => NewItem(source, (int)pos.X, (int)pos.Y, (int)randomBox.X, (int)randomBox.Y, Type, Stack, noBroadcast, prefixGiven, noGrabDelay, reverseLookup);
-+
-+	/// <summary>
-+	/// <inheritdoc cref="Item.NewItem(IEntitySource, int, int, int, int, int, int, bool, int, bool, bool)"/>
-+	/// <br/><br/> This particular overload uses a Vector2 instead of X and Y to determine the actual spawn position.
-+	/// </summary>
-+	/// <returns><inheritdoc cref="Item.NewItem(IEntitySource, int, int, int, int, int, int, bool, int, bool, bool)"/></returns>
- 	public static int NewItem(IEntitySource source, Vector2 pos, int Width, int Height, int Type, int Stack = 1, bool noBroadcast = false, int prefixGiven = 0, bool noGrabDelay = false, bool reverseLookup = false) => NewItem(source, (int)pos.X, (int)pos.Y, Width, Height, Type, Stack, noBroadcast, prefixGiven, noGrabDelay, reverseLookup);
+ 	public static IDisposable DefaultAssignNewItemsToPlayer(int plr) => new DefaultAssignNewItemsToPlayer_OverrideHandle(plr);
  
 +	/// <summary>
-+	/// Spawns an item into the game world with the given type and stack size. The X, Y, Width, and Height parameters dictate a rectangle, the item will be spawned centered within that rectangle. Other overloads support passing in a position directly, or just use 0 for Width and Height if the center is passed in a X and Y.
-+	/// <br/><br/> This method should not be called on multiplayer clients. If you need to spawn items from client code, use <see cref="Player.QuickSpawnItem(IEntitySource, int, int)"/> instead, it handles the multiplayer syncing code needed.
-+	/// <br/><br/> See the <paramref name="noBroadcast"/> documentation if you need to customize attached ModItem or GlobalItem data prior to syncing.
++	/// Similar to <see cref="NewItem(IEntitySource, Vector2, int, int, int, NewItemOwnership, Vector2?, NewItemModifier, bool)"/>, except it can be called on multiplayer clients to spawn items.
++	/// </summary>
++	/// <inheritdoc cref="NewItem(IEntitySource, Vector2, int, int, int, NewItemOwnership, Vector2?, NewItemModifier, bool)" path="/param[not(@name='noBroadcast')]"/>
+ 	public static void RequestNewItem(IEntitySource source, Vector2 center, int type, int stack = 1, int prefix = 0, NewItemOwnership ownership = NewItemOwnership.None, Vector2? velocity = null, NewItemModifier modifier = null)
+ 	{
+ 		int number = NewItem(source, center, type, stack, prefix, ownership, velocity, modifier);
+@@ -49015,11 +_,36 @@
+ 			NetMessage.SendData(21, -1, -1, null, number, (float)ownership);
+ 	}
+ 
++	/// <summary>
++	/// <inheritdoc cref="NewItem(IEntitySource, Vector2, int, int, int, NewItemOwnership, Vector2?, NewItemModifier, bool)"/>
++	/// <br/><br/> This particular overload uses <paramref name="X"/>, <paramref name="Y"/>, <paramref name="Width"/>, and <paramref name="Height"/> to calculate the centered spawn position instead of a center parameter.
++	/// </summary>
++	/// <returns><inheritdoc cref="NewItem(IEntitySource, Vector2, int, int, int, NewItemOwnership, Vector2?, NewItemModifier, bool)"/></returns>
+ 	[Obsolete("Unergonomic")]
+ 	public static int NewItem(IEntitySource source, int X, int Y, int Width, int Height, int type, int stack = 1, bool noBroadcast = false, int prefix = 0, NewItemOwnership ownership = NewItemOwnership.None, Vector2? velocity = null, NewItemModifier modifier = null) => NewItem(source, new Vector2(X + Width / 2, Y + Height / 2), type, stack, prefix, ownership, velocity, modifier, noBroadcast);
+ 
++	/// <summary>
++	/// Spawns an item into the game world with the given type and stack size. The center parameter is the location the item will be spawned centered at. Other overloads support passing in this position in other ways.
++	/// <br/><br/> This method should not be called on multiplayer clients. If you need to spawn items from client code, use <see cref="RequestNewItem(IEntitySource, Vector2, int, int, int, NewItemOwnership, Vector2?, NewItemModifier)"/> or <see cref="Player.QuickSpawnItem(IEntitySource, int, int)"/> instead, they handle the multiplayer syncing code needed.
 +	/// <br/><br/> The source represents the entity causing this item to spawn. The return value is the index of the spawned Item within the <see cref="Main.item"/> array.
 +	/// </summary>
 +	/// <param name="source"></param>
-+	/// <param name="X"></param>
-+	/// <param name="Y"></param>
-+	/// <param name="Width"></param>
-+	/// <param name="Height"></param>
-+	/// <param name="Type">Either an <see cref="ItemID"/> entry or <see cref="ModContent.ItemType{T}"/>, for example <see cref="ItemID.IronskinPotion"/> or ModContent.ItemType&lt;MyModItem&gt;()</param>
-+	/// <param name="Stack">Item stack</param>
++	/// <param name="center"></param>
++	/// <param name="type">Either an <see cref="ItemID"/> entry or <see cref="ModContent.ItemType{T}"/>, for example <see cref="ItemID.IronskinPotion"/> or ModContent.ItemType&lt;MyModItem&gt;()</param>
++	/// <param name="stack">Item stack</param>
++	/// <param name="prefix">A <see cref="PrefixID"/> entry or <see cref="ModContent.PrefixType{T}"/>. See <see cref="Prefix(int)"/> for the meaning of the negative values.</param>
++	/// <param name="ownership">Controls which players and NPCs can pick up the item immediately and vs waiting for <see cref="WorldItem.DefaultGrabDelay"/></param>
++	/// <param name="velocity">Override the default randomized velocity</param>
++	/// <param name="modifier">An optional delegate invoked with the spawned <see cref="WorldItem"/> right before it is returned, allowing final adjustments before it is synced over the network, similar to <see cref="ModItem.OnSpawn(WorldItem, IEntitySource)"/>. Prefer this over <paramref name="noBroadcast"/> and a manual <see cref="MessageID.SyncItem"/>.</param>
 +	/// <param name="noBroadcast">Controls whether an item spawned on a server is synced using <see cref="NetMessage.SendData"/> and <see cref="MessageID.SyncItem"/>. If false, the item will be synced. If true, the calling code can modify the item instance and then sync the item with <see cref="MessageID.SyncItem"/>. Has no effect except on server. NewItem running on multiplayer clients always needs to manually sync, see <see cref="Player.QuickSpawnItem(IEntitySource, int, int)"/> source code for an example.</param>
-+	/// <param name="pfix"></param>
-+	/// <param name="noGrabDelay"></param>
-+	/// <param name="reverseLookup"></param>
 +	/// <returns>The index of the item within <see cref="Main.item"/></returns>
- 	public static int NewItem(IEntitySource source, int X, int Y, int Width, int Height, int Type, int Stack = 1, bool noBroadcast = false, int pfix = 0, bool noGrabDelay = false, bool reverseLookup = false)
+ 	public static int NewItem(IEntitySource source, Vector2 center, int type, int stack = 1, int prefix = 0, NewItemOwnership ownership = NewItemOwnership.None, Vector2? velocity = null, NewItemModifier modifier = null, bool noBroadcast = false)
  	{
-+		return Item.NewItem_Inner(source, X, Y, Width, Height, null, Type, Stack, noBroadcast, pfix, noGrabDelay, reverseLookup);
++		return NewItem_Inner(source, center, null, type, stack, prefix, ownership, velocity, modifier, noBroadcast);
 +	}
 +
-+	private static int NewItem_Inner(IEntitySource source, int X, int Y, int Width, int Height, Item itemToClone, int Type, int Stack = 1, bool noBroadcast = false, int pfix = 0, bool noGrabDelay = false, bool reverseLookup = false)
++	private static int NewItem_Inner(IEntitySource source, Vector2 center, Item itemToClone, int type, int stack = 1, int prefix = 0, NewItemOwnership ownership = NewItemOwnership.None, Vector2? velocity = null, NewItemModifier modifier = null, bool noBroadcast = false)
 +	{
- 		if (WorldGen.gen)
+ 		if (WorldGen.isGeneratingOrLoadingWorld)
  			return 0;
  
+@@ -49029,6 +_,9 @@
  		if (Main.rand == null)
  			Main.rand = new UnifiedRandom();
  
-+		if (NPCLoader.blockLoot.Contains(Type) || newItemDisabled)
++		if (NPCLoader.blockLoot.Contains(type) || newItemDisabled)
 +			return Main.maxItems;
 +
  		if (Main.tenthAnniversaryWorld) {
- 			if (Type == 58) {
- 				Type = Main.rand.NextFromList(new short[3] {
-@@ -49126,7 +_,7 @@
- 				Type = 1868;
+ 			if (type == 58) {
+ 				type = Main.rand.NextFromList(new short[3] {
+@@ -49079,7 +_,7 @@
+ 			}
  		}
  
--		if (Type > 0 && cachedItemSpawnsByType[Type] != -1) {
-+		if (itemToClone == null && Type > 0 && cachedItemSpawnsByType[Type] != -1) {
- 			cachedItemSpawnsByType[Type] += Stack;
+-		if (type > 0 && cachedItemSpawnsByType[type] != -1) {
++		if (itemToClone == null && type > 0 && cachedItemSpawnsByType[type] != -1) {
+ 			cachedItemSpawnsByType[type] += stack;
  			return 400;
  		}
-@@ -49139,9 +_,19 @@
+@@ -49090,10 +_,18 @@
+ 
  		Main.timeItemSlotCannotBeReusedFor[num] = 0;
- 		Main.item[num] = new Item();
- 		Item item = Main.item[num];
+ 		EmergencyStacking.ClearPendingTransfersInvolving(Main.item[num]);
 +
++		Item item;
 +		if (itemToClone != null) {
-+			Main.item[num] = itemToClone.Clone();
-+			item = Main.item[num];
-+			Type = itemToClone.type; // just to be safe if IL edits change type swaps and velocity tweaks.
++			item = itemToClone.Clone();
 +			goto skipItemCreation;
 +		}
-+
- 		item.SetDefaults(Type);
- 		item.Prefix(pfix);
- 		item.stack = Stack;
+-		Item item = new Item();
++		item = new Item();
+ 		item.SetDefaults(type);
+ 		item.stack = stack;
+ 		item.Prefix(prefix);
 +		skipItemCreation:
 +
- 		item.position.X = X + Width / 2 - item.width / 2;
- 		item.position.Y = Y + Height / 2 - item.height / 2;
- 		item.wet = Collision.WetCollision(item.position, item.width, item.height);
-@@ -49161,6 +_,8 @@
- 		if (ItemSlot.Options.HighlightNewItems && item.type >= 0 && !ItemID.Sets.NeverAppearsAsNewInInventory[item.type])
- 			item.newAndShiny = true;
+ 		WorldItem worldItem = new WorldItem(item) {
+ 			whoAmI = num
+ 		};
+@@ -49121,6 +_,9 @@
+ 			worldItem.enemyGrabDelayTime = WorldItem.DefaultGrabDelay;
  
-+		ItemLoader.OnSpawn(item, source);
+ 		modifier?.Invoke(worldItem);
 +
- 		if (Main.netMode == 2 && !noBroadcast)
- 			NetMessage.SendData(21, -1, -1, null, num, noGrabDelay.ToInt());
- 		else if (Main.netMode == 0)
-@@ -49240,8 +_,9 @@
- 					continue;
- 
- 				Player.ItemSpaceStatus status = player.ItemSpace(Main.item[whoAmI]);
--				if (player.CanPullItem(Main.item[whoAmI], status)) {
-+				if (ItemLoader.CanPickup(Main.item[whoAmI], player) && player.CanPullItem(Main.item[whoAmI], status)) {
- 					float num3 = Math.Abs(player.position.X + (float)(player.width / 2) - position.X - (float)(width / 2)) + Math.Abs(player.position.Y + (float)(player.height / 2) - position.Y - (float)height);
-+					/*
- 					if (player.manaMagnet && (type == 184 || type == 1735 || type == 1868))
- 						num3 -= (float)manaGrabRange;
- 
-@@ -49250,6 +_,9 @@
- 
- 					if (type == 4143)
- 						num3 -= (float)manaGrabRange;
-+					*/
-+					// This will have grab range discrepancies with the above code due to this method having additional checks - Mutant
-+					num3 -= player.GetItemGrabRange(Main.item[whoAmI]);
- 
- 					if (num2 > num3) {
- 						num2 = num3;
-@@ -49266,10 +_,30 @@
++		ItemLoader.OnSpawn(worldItem, source);
++
+ 		if (Main.netMode == 0) {
+ 			worldItem.ApplySpawnOwnership(ownership, _DefaultAssignItemsToNewPlayer ?? Main.myPlayer);
  		}
+@@ -49186,10 +_,31 @@
+ 		return num;
  	}
  
 +
@@ -2658,25 +2249,44 @@
 +	*/
 +	internal Item DeepClone() => Clone();
  
-+	// TML: Made internal so that modders will have to replace it with a more straightforward item.type == compareItem.type
--	public bool IsTheSameAs(Item compareItem)
-+	internal bool IsTheSameAs(Item compareItem)
- 	{
- 		if (netID == compareItem.netID)
- 			return type == compareItem.type;
-@@ -49277,7 +_,9 @@
- 		return false;
- 	}
- 
-+	// TML: Made internal + renamed in Item.TML.cs with more descriptive name (IsNotSameTypePrefixAndStack)
++	// TML: Made internal + given more descriptive name (IsNotSameTypePrefixAndStack)
 +	// Many usages replaced with !IsNetStateEquivalent
 -	public bool IsNotTheSameAs(Item compareItem)
 +	internal bool IsNotTheSameAs(Item compareItem)
  	{
- 		if (netID == compareItem.netID && stack == compareItem.stack)
+ 		if (type == compareItem.type && stack == compareItem.stack)
  			return prefix != compareItem.prefix;
-@@ -49285,11 +_,19 @@
+@@ -49197,27 +_,44 @@
  		return true;
+ 	}
+ 
++	/// <summary>
++	/// returns false if and only if type, stack and prefix match<br/>
++	/// <seealso cref="IsNetStateDifferent(Item)"/>
++	/// </summary>
++	public bool IsNotSameTypePrefixAndStack(Item compareItem) => IsNotTheSameAs(compareItem);
++
++	/// <summary>
++	/// Returns true if these items are different and there is a need to re-sync them
++	/// </summary>
+ 	public bool IsNetStateDifferent(Item compareItem)
+ 	{
+ 		if (!IsNotTheSameAs(compareItem))
+-			return favorited != compareItem.favorited;
++			return favorited != compareItem.favorited || NetStateVersion != compareItem.NetStateVersion; // TML added || NetStateVersion
+ 
+ 		return true;
+ 	}
+ 
+ 	public static bool CanStack(Item item1, Item item2)
+ 	{
+-		if (item1.type == item2.type)
+-			return item1.prefix == item2.prefix;
++		if (item1.type != item2.type || item1.prefix != item2.prefix)
++			return false;
+ 
+-		return false;
++		return ItemLoader.CanStack(item1, item2);
  	}
  
 +	/// <summary>
@@ -2695,39 +2305,28 @@
  	public void ClearNameOverride()
  	{
  		_nameOverride = null;
-@@ -49309,6 +_,10 @@
- 		dye = 0;
- 		shoot = 0;
- 		mountType = -1;
-+		active = false;
-+
-+		ModItem = null;
-+		_globals = null;
- 	}
+@@ -49247,9 +_,9 @@
  
- 	public void OnPurchase(Item item)
-@@ -49330,9 +_,9 @@
- 	public void Serialize(BinaryWriter writer, ItemSerializationContext context)
+ 	public void Serialize(BinaryWriter writer, bool writeFavorite = false)
  	{
- 		if (context == ItemSerializationContext.SavingAndLoading) {
--			writer.Write(netID);
-+			writer.Write(netID >= ItemID.Count ? 0 : netID);
- 			writer.Write(stack);
--			writer.Write(prefix);
-+			ItemIO.WriteByteVanillaPrefix(this, writer);
- 		}
+-		writer.Write(type);
++		writer.Write(type >= ItemID.Count ? 0 : type);
+ 		writer.Write(stack);
+-		writer.Write(prefix);
++		ItemIO.WriteByteVanillaPrefix(this, writer);
+ 		if (writeFavorite)
+ 			writer.Write(favorited);
  	}
- 
-@@ -49344,7 +_,7 @@
- 			Prefix(reader.ReadByte());
- 		}
+@@ -49262,7 +_,7 @@
+ 		if (readFavorite)
+ 			favorited = reader.ReadBoolean();
  
 -		if (type >= ItemID.Count)
 +		if (type >= ItemLoader.ItemCount)
  			TurnToAir();
  	}
  
-@@ -49356,9 +_,19 @@
+@@ -49274,9 +_,19 @@
  		}
  	}
  
@@ -2746,8 +2345,8 @@
 +			/*
  			bool flag = favorited;
  			int num = stack;
- 			int num2 = netID;
-@@ -49367,6 +_,16 @@
+ 			int num2 = type;
+@@ -49285,6 +_,16 @@
  			Prefix(prefixWeWant);
  			stack = num;
  			favorited = flag;

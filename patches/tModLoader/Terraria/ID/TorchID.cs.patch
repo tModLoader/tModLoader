@@ -1,0 +1,27 @@
+--- src/TerrariaNetCore/Terraria/ID/TorchID.cs
++++ src/tModLoader/Terraria/ID/TorchID.cs
+@@ -1,13 +_,14 @@
+ using System.Runtime.InteropServices;
+ using Microsoft.Xna.Framework;
++using ReLogic.Reflection;
+ 
+ namespace Terraria.ID;
+ 
+-public static class TorchID
++public class TorchID
+ {
+ 	public class Sets
+ 	{
+-		public static SetFactory Factory = new SetFactory(Count);
++		public static SetFactory Factory = new SetFactory(Count, nameof(TorchID), Search);
+ 		public static bool[] IsABiomeTorch = Factory.CreateBoolSet(false, 0, 18, 19, 20, 21, 23, 13, 7, 9, 22, 16);
+ 	}
+ 
+@@ -128,6 +_,7 @@
+ 	public const short Mushroom = 22;
+ 	public const short Shimmer = 23;
+ 	public static readonly short Count = 24;
++	public static readonly IdDictionary Search = IdDictionary.Create<TorchID, short>();
+ 
+ 	public static void Initialize()
+ 	{

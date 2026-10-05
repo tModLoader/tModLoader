@@ -1,0 +1,38 @@
+--- src/TerrariaNetCore/Terraria/Utilities/MessageBox.cs
++++ src/tModLoader/Terraria/Utilities/MessageBox.cs
+@@ -9,9 +_,12 @@
+ 
+ namespace Terraria.Utilities;
+ 
+-public static class MessageBox
++public static partial class MessageBox
+ {
+ #if FNA
++	/// <summary>
++	/// Shows a simple OS-provided modal message box displaying a message and one of a selection of button options. Returns the option choosen by the user.
++	/// </summary>
+ 	public static DialogResult Show(string message, string title, MessageBoxButtons buttons = MessageBoxButtons.OK, MessageBoxIcon icon = MessageBoxIcon.None)
+ 	{
+ 		return buttons switch {
+@@ -59,6 +_,9 @@
+ 		return ptr;
+ 	}
+ 
++	/// <summary>
++	/// Shows an OS-provided modal message box displaying a message and a number of buttons and returns the button index of the user-selected option. Returns -1 if no selection is made. The <paramref name="returnButtonIndex"/> option will be mapped to return key and the <paramref name="cancelButtonIndex"/> to escape key. The options are displayed from right to left in order.
++	/// </summary>
+ 	public unsafe static int Show(string message, string title, string[] buttonLabels, int returnButtonIndex = -1, int cancelButtonIndex = -1, MessageBoxIcon icon = MessageBoxIcon.None)
+ 	{
+ 		SDL.SDL_MessageBoxButtonData* ptr = (SDL.SDL_MessageBoxButtonData*)(void*)Marshal.AllocHGlobal(Marshal.SizeOf(typeof(SDL.SDL_MessageBoxButtonData)) * buttonLabels.Length);
+@@ -78,7 +_,11 @@
+ 		SDL.SDL_MessageBoxData messageboxdata = sDL_MessageBoxData;
+ 		try {
+ 			if (!SDL.SDL_ShowMessageBox(ref messageboxdata, out var buttonid)) {
++				ModLoader.Logging.tML.Info("MessageBox.Show: Error displaying message box");
+ 				return -1;
++			}
++			if (buttonid == -1) {
++				ModLoader.Logging.tML.Info("MessageBox.Show: No selection");
+ 			}
+ 			return buttonid;
+ 		}

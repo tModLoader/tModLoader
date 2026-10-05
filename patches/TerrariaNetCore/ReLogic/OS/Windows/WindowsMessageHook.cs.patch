@@ -1,6 +1,6 @@
 --- src/Terraria/ReLogic/OS/Windows/WindowsMessageHook.cs
 +++ src/TerrariaNetCore/ReLogic/OS/Windows/WindowsMessageHook.cs
-@@ -1,11 +_,11 @@
+@@ -1,11 +_,15 @@
  using System;
  using System.Collections.Generic;
  using System.Runtime.InteropServices;
@@ -8,24 +8,30 @@
  
  namespace ReLogic.OS.Windows;
  
++#if NETCORE
 +// IMessageFilter interface not needed for WinImm32Ime implementation
--internal class WindowsMessageHook : IDisposable, IMessageFilter
-+internal class WindowsMessageHook : IDisposable //, IMessageFilter
++internal class WindowsMessageHook : IDisposable
++#else
+ internal class WindowsMessageHook : IDisposable, IMessageFilter
++#endif
  {
  	private delegate IntPtr WndProcCallback(IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam);
  
-@@ -19,9 +_,12 @@
+@@ -19,9 +_,17 @@
  	public WindowsMessageHook(IntPtr windowHandle)
  	{
  		_windowHandle = windowHandle;
--		Application.AddMessageFilter(this);
-+		// Application.AddMessageFilter(this);
++#if !NETCORE
+ 		Application.AddMessageFilter(this);
++#endif
  		_wndProc = WndProc;
 +
++#if NETCORE
 +		// SetWindowLong is for 32-bit applications, use SetWindowLongPtr for 64-bit
--		_previousWndProc = (IntPtr)NativeMethods.SetWindowLong(_windowHandle, -4, (int)Marshal.GetFunctionPointerForDelegate((Delegate)_wndProc));
-+		// _previousWndProc = (IntPtr)NativeMethods.SetWindowLong(_windowHandle, -4, (int)Marshal.GetFunctionPointerForDelegate((Delegate)_wndProc));
 +		_previousWndProc = NativeMethods.SetWindowLongPtr(_windowHandle, GWL_WNDPROC, Marshal.GetFunctionPointerForDelegate((Delegate)_wndProc));
++#else
+ 		_previousWndProc = (IntPtr)NativeMethods.SetWindowLong(_windowHandle, -4, (int)Marshal.GetFunctionPointerForDelegate((Delegate)_wndProc));
++#endif
  	}
  
  	public void AddMessageFilter(IMessageFilter filter)
@@ -33,7 +39,7 @@
  		return NativeMethods.CallWindowProc(_previousWndProc, message.HWnd, message.Msg, message.WParam, message.LParam);
  	}
  
-+	/*
++#if !NETCORE
  	public bool PreFilterMessage(ref Message message)
  	{
  		if (message.Msg == 258)
@@ -41,19 +47,20 @@
  
  		return InternalWndProc(ref message);
  	}
-+	*/
++#endif
  
  	private bool InternalWndProc(ref Message message)
  	{
-@@ -64,8 +_,11 @@
+@@ -64,8 +_,12 @@
  	protected virtual void Dispose(bool disposing)
  	{
  		if (!disposedValue) {
-+			/*
++#if NETCORE
++			NativeMethods.SetWindowLongPtr(_windowHandle, GWL_WNDPROC, _previousWndProc);
++#else
  			Application.RemoveMessageFilter(this);
  			NativeMethods.SetWindowLong(_windowHandle, -4, (int)_previousWndProc);
-+			*/
-+			NativeMethods.SetWindowLongPtr(_windowHandle, GWL_WNDPROC, _previousWndProc);
++#endif
  			disposedValue = true;
  		}
  	}

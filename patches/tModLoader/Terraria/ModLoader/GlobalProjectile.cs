@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
+using Terraria.GameContent.Tile_Entities;
 using Terraria.ID;
 using Terraria.ModLoader.Core;
 using Terraria.ModLoader.IO;
@@ -326,7 +327,8 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 	/// <para/> Called on local and remote clients.
 	/// </summary>
 	/// <param name="projectile"> The projectile. </param>
-	public virtual bool PreDrawExtras(Projectile projectile)
+	/// <param name="player"> The player associated with drawing this projectile. Not necessarily the same as player.owner for things like Mannequins. </param>
+	public virtual bool PreDrawExtras(Projectile projectile, Player player)
 	{
 		return true;
 	}
@@ -336,8 +338,9 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 	/// <para/> Called on local and remote clients.
 	/// </summary>
 	/// <param name="projectile"> The projectile. </param>
+	/// <param name="player"> The player associated with drawing this projectile. Not necessarily the same as player.owner for things like Mannequins. </param>
 	/// <param name="lightColor"> The color of the light at the projectile's center. </param>
-	public virtual bool PreDraw(Projectile projectile, ref Color lightColor)
+	public virtual bool PreDraw(Projectile projectile, Player player, ref Color lightColor)
 	{
 		return true;
 	}
@@ -347,23 +350,9 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 	/// <para/> Called on local and remote clients.
 	/// </summary>
 	/// <param name="projectile"> The projectile. </param>
+	/// <param name="player"> The player associated with drawing this projectile. Not necessarily the same as player.owner for things like Mannequins. </param>
 	/// <param name="lightColor"> The color of the light at the projectile's center, after being modified by vanilla and other mods. </param>
-	public virtual void PostDraw(Projectile projectile, Color lightColor)
-	{
-	}
-
-	/// <summary>
-	/// When used in conjunction with "projectile.hide = true", allows you to specify that this projectile should be drawn behind certain elements. Add the index to one and only one of the lists. For example, the Nebula Arcanum projectile draws behind NPCs and tiles.
-	/// <para/> Called on local and remote clients.
-	/// </summary>
-	/// <param name="projectile"></param>
-	/// <param name="index"></param>
-	/// <param name="behindNPCsAndTiles"></param>
-	/// <param name="behindNPCs"></param>
-	/// <param name="behindProjectiles"></param>
-	/// <param name="overPlayers"></param>
-	/// <param name="overWiresUI"></param>
-	public virtual void DrawBehind(Projectile projectile, int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
+	public virtual void PostDraw(Projectile projectile, Player player, Color lightColor)
 	{
 	}
 
@@ -435,5 +424,27 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 	/// <inheritdoc cref="ModProjectile.EmitEnchantmentVisualsAt"/>
 	public virtual void EmitEnchantmentVisualsAt(Projectile projectile, Vector2 boxPosition, int boxWidth, int boxHeight)
 	{
+	}
+
+	/// <inheritdoc cref="ModProjectile.DisplayDollSettings"/>
+	public virtual bool DisplayDollSettings(Projectile projectile, Player doll, TEDisplayDoll.DisplayDollPose pose, ref int aiStyle, ref int aiType)
+	{
+		return true;
+	}
+
+	/// <inheritdoc cref="ModProjectile.FlailStats"/>
+	public virtual void FlailStats(Projectile projectile, ref int launchTimeLimit, ref float launchSpeed, ref float maxLaunchLength, ref float retractAcceleration, ref float maxRetractSpeed, ref float forcedRetractAcceleration, ref float maxForcedRetractSpeed, ref int ricochetTimeLimit, ref float spinVisualDistance)
+	{
+	}
+
+	/// <inheritdoc cref="ModProjectile.FlailSpinCollisionRange"/>
+	public virtual void FlailSpinCollisionRange(Projectile projectile, ref float range)
+	{
+	}
+
+	/// <inheritdoc cref="ModProjectile.PreTryDespawning"/>
+	public virtual bool PreTryDespawning(Projectile projectile, ref bool giveItem)
+	{ 
+		return true;
 	}
 }

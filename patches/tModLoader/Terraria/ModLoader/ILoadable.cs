@@ -1,15 +1,15 @@
+using System;
+using System.Reflection;
 using JetBrains.Annotations;
 
 namespace Terraria.ModLoader;
 
 /// <summary>
-/// Allows for implementing types to be loaded and unloaded.
+/// Works with <see cref="Mod.AddContent"/> to provide Load and Unload callbacks.<br/>
+/// All non-abstract types extending this class which have a default constructor will be autoloaded and passed to <see cref="Mod.AddContent"/><br/>
+/// For autoloading types which do not have a default constructor, see <see cref="ICustomAutoload"/>
 /// </summary>
-[UsedImplicitly(
-	ImplicitUseKindFlags.InstantiatedNoFixedConstructorSignature,
-	ImplicitUseTargetFlags.WithMembers | ImplicitUseTargetFlags.WithInheritors
-)]
-public interface ILoadable
+public interface ILoadable : IAutoload<ILoadable.AutoloadImpl>
 {
 	/// <summary>
 	/// Called when loading the type.
@@ -27,4 +27,13 @@ public interface ILoadable
 	/// Called during unloading when needed.
 	/// </summary>
 	public abstract void Unload();
+
+	public class AutoloadImpl : IAutoloader
+	{
+		public static void Autoload(Mod mod, Type type)
+		{
+			if (type.GetConstructor(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, Type.EmptyTypes) is { } ctor)
+				mod.AddContent((ILoadable)ctor.Invoke(null));
+		}
+	}
 }

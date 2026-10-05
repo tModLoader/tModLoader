@@ -14,14 +14,14 @@
 -public class EntitySource_Mount : IEntitySource
 +public class EntitySource_Mount : EntitySource_Parent
  {
--	public readonly Entity Entity;
+-	public readonly IEntitySourceTarget Entity;
 -	public readonly int MountId;
 +	/// <summary>
 +	/// A <see cref="MountID"/> or <see cref="ModContent.MountType{T}"/>
 +	/// </summary>
 +	public int MountId { get; }
  
--	public EntitySource_Mount(Entity entity, int mountId)
+-	public EntitySource_Mount(IEntitySourceTarget entity, int mountId)
 +	public EntitySource_Mount(Player player, int mountId, string? context = null) : base(player, context)
  	{
 -		Entity = entity;

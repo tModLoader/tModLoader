@@ -1,0 +1,12 @@
+--- src/decompiled/Terraria/Initializers/AssetInitializer.cs
++++ src/Terraria/Terraria/Initializers/AssetInitializer.cs
+@@ -23,7 +_,9 @@
+ 		AssetReaderCollection assetReaderCollection = new AssetReaderCollection();
+ 		assetReaderCollection.RegisterReader(new PngReader(services.Get<IGraphicsDeviceService>().GraphicsDevice), ".png");
+ 		assetReaderCollection.RegisterReader(new XnbReader(services), ".xnb");
++#if XNA && !SERVER
+ 		assetReaderCollection.RegisterReader(new FxReader(services.Get<IGraphicsDeviceService>().GraphicsDevice), ".fx");
++#endif
+ 		AsyncAssetLoader asyncAssetLoader = new AsyncAssetLoader(assetReaderCollection, 20);
+ 		asyncAssetLoader.RequireTypeCreationOnTransfer(typeof(Texture2D));
+ 		asyncAssetLoader.RequireTypeCreationOnTransfer(typeof(DynamicSpriteFont));

@@ -28,19 +28,11 @@ public class TooltipLine
 	public string Text;
 
 	/// <summary>
-	/// Whether or not this tooltip gives prefix information. This will make it so that the tooltip is colored either green or red.
+	/// The color the tooltip is drawn in. Defaults to White.
+	/// <para/> <see cref="Terraria.ID.Colors.PrefixGood"/> and <see cref="Terraria.ID.Colors.PrefixBad"/> are the colors used by prefix stat changes.
+	/// <para/> The actual final color will be affected slightly by the mouse pulse effect (<see cref="Main.mouseTextColor"/>).
 	/// </summary>
-	public bool IsModifier;
-
-	/// <summary>
-	/// If isModifier is true, this determines whether the tooltip is colored green or red.
-	/// </summary>
-	public bool IsModifierBad;
-
-	/// <summary>
-	/// This completely overrides the color the tooltip is drawn in. If it is set to null (the default value) then the tooltip's color will not be overridden.
-	/// </summary>
-	public Color? OverrideColor;
+	public Color Color;
 
 	internal bool OneDropLogo;
 
@@ -49,11 +41,12 @@ public class TooltipLine
 	/// These are the names of the vanilla tooltip lines, in the order in which they appear, along with their functions. All of them will have a mod name of "Terraria". Remember that most of these tooltip lines will not exist depending on the item.<para />
 	/// <list type="bullet">
 	/// <item><description>"ItemName" - The name of the item.</description></item>
+	/// <item><description>"ItemLoadoutSharedFrom" - "Shared from loadout {0}"</description></item>
+	/// <item><description>"ItemLoadoutShared" - "Shared with other loadouts"</description></item>
 	/// <item><description>"Favorite" - Tells if the item is favorited.</description></item>
 	/// <item><description>"FavoriteDesc" - Tells what it means when an item is favorited.</description></item>
 	/// <item><description>"NoTransfer" - Warning that this item cannot be placed inside itself, used by Money Trough and Void Bag/Vault.</description></item>
 	/// <item><description>"Social" - Tells if the item is in a social slot.</description></item>
-	/// <item><description>"SocialDesc" - Tells what it means for an item to be in a social slot.</description></item>
 	/// <item><description>"Damage" - The damage value and type of the weapon.</description></item>
 	/// <item><description>"CritChance" - The critical strike chance of the weapon.</description></item>
 	/// <item><description>"Speed" - The use speed of the weapon.</description></item>
@@ -74,16 +67,29 @@ public class TooltipLine
 	/// <item><description>"TileBoost" - How much farther the item can reach than normal items.</description></item>
 	/// <item><description>"HealLife" - How much health the item recovers when used.</description></item>
 	/// <item><description>"HealMana" - How much mana the item recovers when used.</description></item>
+	/// <item><description>"Buffs" - "Press {InputTrigger_QuickBuff} to use buffs"</description></item>
+	/// <item><description>"Healing" - "Press {InputTrigger_Healing} to use"</description></item>
+	/// <item><description>"ManaHealing" - "Press {InputTrigger_ManaHealing} to use"</description></item>
+	/// <item><description>"Mount" - "Press {InputTrigger_Mount} to use"</description></item>
 	/// <item><description>"UseMana" - Tells how much mana the item consumes upon usage.</description></item>
 	/// <item><description>"Placeable" - Tells if the item is placeable.</description></item>
 	/// <item><description>"Ammo" - Tells if the item is ammo.</description></item>
 	/// <item><description>"Consumable" - Tells if the item is consumable.</description></item>
 	/// <item><description>"Material" - Tells if the item can be used to craft something.</description></item>
+	/// <item><description>"Wireable" - Tells if the item is wireable.</description></item>
+	/// <item><description>"Container" - The "Collects nearby dropped items when signaled" line.</description></item>
+	/// <item><description>"WireTrigger" - The "{InputTrigger_InteractWithTile} when placed to signal" line.</description></item>
 	/// <item><description>"Tooltip#" - A tooltip line of the item. # will be 0 for the first line, 1 for the second, etc.</description></item>
+	/// <item><description>"WizardHatDuringAnniversary" - The "Increases your max number of minions by 1" line.</description></item>
+	/// <item><description>"BurningBlock" - The "Burns you when touched without special protection" line.</description></item>
+	/// <item><description>"MechSummonDuringEverything" - The "'Part of a set'" line.</description></item>
+	/// <item><description>"MechdusaSummonNotDuringEverything" - The "'It has no effect in this world'" line.</description></item>
 	/// <item><description>"EtherianManaWarning" - Warning about how the item can't be used without Etherian Mana until the Eternia Crystal has been defeated.</description></item>
 	/// <item><description>"WellFedExpert" - In expert mode, tells that food increases life regeneration.</description></item>
 	/// <item><description>"BuffTime" - Tells how long the item's buff lasts.</description></item>
 	/// <item><description>"OneDropLogo" - The One Drop logo for yoyos.This is a specially-marked tooltip line that has no text.</description></item>
+	/// <item><description>"Expert" - Tells whether the item is from expert-mode.</description></item>
+	/// <item><description>"Master" - Whether the item is exclusive to Master Mode.</description></item>
 	/// <item><description>"PrefixDamage" - The damage modifier of the prefix.</description></item>
 	/// <item><description>"PrefixSpeed" - The usage speed modifier of the prefix.</description></item>
 	/// <item><description>"PrefixCritChance" - The critical strike chance modifier of the prefix.</description></item>
@@ -91,20 +97,24 @@ public class TooltipLine
 	/// <item><description>"PrefixSize" - The melee size modifier of the prefix.</description></item>
 	/// <item><description>"PrefixShootSpeed" - The shootSpeed modifier of the prefix.</description></item>
 	/// <item><description>"PrefixKnockback" - The knockback modifier of the prefix.</description></item>
+	/// <item><description>"PrefixArmorPenetration" - The armor penetration modifier of the prefix.</description></item>
+	/// <item><description>"PrefixTagDamage" - The tag damage modifier of the prefix.</description></item>
 	/// <item><description>"PrefixAccDefense" - The defense modifier of the accessory prefix.</description></item>
 	/// <item><description>"PrefixAccMaxMana" - The maximum mana modifier of the accessory prefix.</description></item>
 	/// <item><description>"PrefixAccCritChance" - The critical strike chance modifier of the accessory prefix.</description></item>
 	/// <item><description>"PrefixAccDamage" - The damage modifier of the accessory prefix.</description></item>
 	/// <item><description>"PrefixAccMoveSpeed" - The movement speed modifier of the accessory prefix.</description></item>
 	/// <item><description>"PrefixAccMeleeSpeed" - The melee speed modifier of the accessory prefix.</description></item>
+	/// <item><description>"SetBonusSinglePiece" - The set bonus description from a single piece of armor that is not equipped.</description></item>
 	/// <item><description>"SetBonus" - The set bonus description of the armor set.</description></item>
-	/// <item><description>"Expert" - Tells whether the item is from expert-mode.</description></item>
-	/// <item><description>"Master" - Whether the item is exclusive to Master Mode.</description></item>
+	/// <item><description>"ItemLoadoutShareHint" - "{InputTriggerUI_FavoriteItem} to share across loadouts"</description></item>
 	/// <item><description>"JourneyResearch" - How many more items need to be researched to unlock duplication in Journey Mode.</description></item>
+	/// <item><description>"JourneyResearchTeammate" - The "Research completed by {0}" line.</description></item>
 	/// <item><description>"ModifiedByMods" - Whether the item has been modified by any mods and what mods when holding shift, added by tModLoader.</description></item>
 	/// <item><description>"BestiaryNotes" - Any bestiary notes, used when hovering items in the bestiary.</description></item>
 	/// <item><description>"SpecialPrice" - Tells the alternate currency price of an item.</description></item>
 	/// <item><description>"Price" - Tells the price of an item.</description></item>
+	/// <item><description>"MissingRequirements" - Tells the crafting requirements not met for crafting this item.</description></item>
 	/// </list>
 	/// </summary>
 	/// <param name="mod">The mod instance</param>
@@ -115,6 +125,7 @@ public class TooltipLine
 		Mod = mod.Name;
 		Name = name;
 		Text = text;
+		Color = Color.White;
 	}
 
 	internal TooltipLine(string mod, string name, string text)
@@ -122,6 +133,7 @@ public class TooltipLine
 		Mod = mod;
 		Name = name;
 		Text = text;
+		Color = Color.White;
 	}
 
 	internal TooltipLine(string name, string text)
@@ -129,6 +141,7 @@ public class TooltipLine
 		Mod = "Terraria";
 		Name = name;
 		Text = text;
+		Color = Color.White;
 	}
 
 	public bool Visible { get; private set; } = true;

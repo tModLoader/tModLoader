@@ -3,7 +3,7 @@
 @@ -66,7 +_,9 @@
  		ThreadPriority priority = Thread.CurrentThread.Priority;
  		Thread.CurrentThread.Priority = ThreadPriority.Highest;
- 		*/
+ #endif
 -		
 +
 +		var tpStartState = (completed: ThreadPool.CompletedWorkItemCount, pending: ThreadPool.PendingWorkItemCount);
@@ -25,5 +25,5 @@
 +				Data = { ["dump"] = "normal" }
 +			};
  		}
+ #endif
  	}
- 

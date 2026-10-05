@@ -1,0 +1,25 @@
+--- src/TerrariaNetCore/Terraria/GameContent/Drawing/NextHorizonRenderer.cs
++++ src/tModLoader/Terraria/GameContent/Drawing/NextHorizonRenderer.cs
+@@ -213,7 +_,7 @@
+ 		_drawData.Clear();
+ 	}
+ 
+-	public void DrawCloud(float globalCloudAlpha, Cloud theCloud, int cloudPass, float cY)
++	public void DrawCloud(float globalCloudAlpha, Cloud theCloud, int cloudPass, float cY, int cloudIndex)
+ 	{
+ 		Asset<Texture2D> asset = TextureAssets.Cloud[theCloud.type];
+ 		Vector2 position = new Vector2(theCloud.position.X, cY) + asset.Size() / 2f;
+@@ -222,7 +_,13 @@
+ 		if (Main.atmo < 1f)
+ 			cloudColor *= Main.atmo;
+ 
++		/*
+ 		_drawData.Add(new DrawData(asset.Value, position, null, cloudColor * globalCloudAlpha, theCloud.rotation, asset.Size() / 2f, theCloud.scale, theCloud.spriteDir));
++		*/
++		var drawData = new DrawData(asset.Value, position, null, cloudColor * globalCloudAlpha, theCloud.rotation, asset.Size() / 2f, theCloud.scale, theCloud.spriteDir);
++		if (theCloud.ModCloud?.Draw(_drawData, theCloud, cloudIndex, ref drawData) == false)
++			return;
++		_drawData.Add(drawData);
+ 	}
+ 
+ 	private void OriginalColorsForCloud(Cloud theCloud, int cloudPass, ref Color cloudColor)

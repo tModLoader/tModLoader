@@ -82,7 +82,7 @@ namespace ExampleMod.Content.Tiles
 					if (Main.tileCut[tileType] || TileID.Sets.BreakableWhenPlacing[tileType] || tileType == TileID.WaterDrip || tileType == TileID.LavaDrip || tileType == TileID.HoneyDrip || tileType == TileID.SandDrip) {
 						bool foliageGrass = tileType == TileID.Plants || tileType == TileID.Plants2;
 						bool moddedFoliage = tileType >= TileID.Count && (Main.tileCut[tileType] || TileID.Sets.BreakableWhenPlacing[tileType]);
-						bool harvestableVanillaHerb = Main.tileAlch[tileType] && WorldGen.IsHarvestableHerbWithSeed(tileType, tile.TileFrameX / 18);
+						bool harvestableVanillaHerb = Main.tileAlch[tileType] && WorldGen.IsHarvestableHerbWithSeed(tileType, tile.TileFrameX / 18, j);
 
 						if (foliageGrass || moddedFoliage || harvestableVanillaHerb) {
 							WorldGen.KillTile(i, j);
@@ -160,7 +160,7 @@ namespace ExampleMod.Content.Tiles
 			return stage == PlantStage.Grown;
 		}
 
-		public override void RandomUpdate(int i, int j) {
+		public override void RandomUpdate(int i, int j, bool underground) {
 			Tile tile = Framing.GetTileSafely(i, j);
 			PlantStage stage = GetStage(i, j);
 

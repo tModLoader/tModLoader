@@ -144,7 +144,6 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 			NPC.noGravity = true;
 			NPC.noTileCollide = true;
 			NPC.value = Item.buyPrice(gold: 5);
-			NPC.SpawnWithHigherTime(30);
 			NPC.boss = true;
 			NPC.npcSlots = 10f; // Take up open spawn slots, preventing random NPCs from spawning during the fight
 
@@ -164,7 +163,7 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 
 				// If you would like to play alternate music when the otherworld soundtrack enabled, use this logic.
 				if (!Main.swapMusic == Main.drunkWorld && !Main.remixWorld) {
-					Music = MusicID.OtherworldlyBoss1;
+					Music = MusicID.OtherworldBoss1;
 				}
 			}
 		}
@@ -244,13 +243,14 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 			*/
 		}
 
-		public override void BossLoot(ref int potionType) {
-			// Here you'd want to change the potion type that drops when the boss is defeated. Because this boss is early pre-hardmode, we keep it unchanged
+		public override void BossLoot(ref int potionType, ref int potionStack, ref int heartStack) {
+			// Here you'd want to change the potion type, the amount of potions and the amount of hearts that drops when the boss is defeated. Because this boss is early pre-hardmode, we keep it unchanged
 			// (Lesser Healing Potion). If you wanted to change it, simply write "potionType = ItemID.HealingPotion;" or any other potion type
+			// Same goes for the potionStack and heartStack, simply write "heartStack = amount_desired;" or "potionStack = amount_desired;".
 		}
 
 		public override bool CanHitPlayer(Player target, ref int cooldownSlot) {
-			cooldownSlot = ImmunityCooldownID.Bosses; // use the boss immunity cooldown counter, to prevent ignoring boss attacks by taking damage from other sources
+			cooldownSlot = ImmunityCooldownID.BossNoCheese; // use the boss immunity cooldown counter, to prevent ignoring boss attacks by taking damage from other sources
 			return true;
 		}
 

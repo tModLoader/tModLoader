@@ -26,13 +26,12 @@ namespace ExampleMod.Content.Tiles.Furniture
 			TileID.Sets.CloseDoorID[Type] = ModContent.TileType<ExampleDoorClosed>();
 			TileID.Sets.DrawTileInSolidLayer[Type] = true; // needed to draw at the correct "layer" for npc that draw below solid tiles like worms
 
-			AddToArray(ref TileID.Sets.RoomNeeds.CountsAsDoor);
+			TileID.Sets.RoomNeeds.CountsAsDoor[Type] = true;
 
 			DustType = ModContent.DustType<Sparkle>();
 			AdjTiles = [TileID.OpenDoor];
 			// Tiles usually drop their corresponding item automatically, but RegisterItemDrop is needed here since the ExampleDoor item places ExampleDoorClosed, not this tile.
 			RegisterItemDrop(ModContent.ItemType<ExampleDoor>(), 0);
-			TileID.Sets.CloseDoorID[Type] = ModContent.TileType<ExampleDoorClosed>();
 
 			// Names
 			AddMapEntry(new Color(200, 200, 200), Language.GetText("MapObject.Door"));

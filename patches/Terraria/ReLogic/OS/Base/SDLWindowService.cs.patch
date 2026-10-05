@@ -1,0 +1,52 @@
+--- src/decompiled/ReLogic/OS/Base/SDLWindowService.cs
++++ src/Terraria/ReLogic/OS/Base/SDLWindowService.cs
+@@ -1,5 +_,8 @@
+ using System;
+ using Microsoft.Xna.Framework;
++#if FNA
++using SDL3;
++#endif
+ 
+ namespace ReLogic.OS.Base;
+ 
+@@ -26,19 +_,40 @@
+ 
+ 	public void Activate(GameWindow window)
+ 	{
++#if FNA
++		SDL.SDL_RaiseWindow(window.Handle);
++#endif
+ 	}
+ 
+ 	public bool IsSizeable(GameWindow window)
+ 	{
++#if FNA
++		var windowFlags = (SDL.SDL_WindowFlags)SDL.SDL_GetWindowFlags(window.Handle);
++		if ((windowFlags & SDL.SDL_WindowFlags.SDL_WINDOW_RESIZABLE) != 0uL)
++			return (windowFlags & SDL.SDL_WindowFlags.SDL_WINDOW_BORDERLESS) == 0;
++
++		return false;
++#else
+ 		throw new PlatformNotSupportedException();
++#endif
+ 	}
+ 
+ 	public void SetPosition(GameWindow window, int x, int y)
+ 	{
++#if FNA
++		SDL.SDL_SetWindowPosition(window.Handle, x, y);
++#endif
+ 	}
+ 
+ 	public Rectangle GetBounds(GameWindow window)
+ 	{
++#if FNA
++		if ((bool)SDL.SDL_GetWindowPosition(window.Handle, out var x, out var y) && (bool)SDL.SDL_GetWindowSize(window.Handle, out var w, out var h))
++			return new Rectangle(x, y, w, h);
++
++		return default(Rectangle);
++#else
+ 		throw new PlatformNotSupportedException();
++#endif
+ 	}
+ }

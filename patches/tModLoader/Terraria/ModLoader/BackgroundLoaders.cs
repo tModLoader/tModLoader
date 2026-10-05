@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using Terraria.GameContent;
 using Terraria.Graphics.Effects;
+using Terraria.ID;
 using Terraria.Localization;
 
 namespace Terraria.ModLoader;
@@ -66,6 +67,8 @@ public sealed class BackgroundTextureLoader : Loader
 		Array.Resize(ref TextureAssets.Background, TotalCount);
 		Array.Resize(ref Main.backgroundHeight, TotalCount);
 		Array.Resize(ref Main.backgroundWidth, TotalCount);
+		Array.Resize(ref SurfaceBackgroundID.Sets.IsForest, TotalCount);
+		Array.Resize(ref SurfaceBackgroundID.Sets.IsDesertVariant, TotalCount);
 
 		foreach (string texture in backgrounds.Keys) {
 			int slot = backgrounds[texture];
@@ -146,7 +149,7 @@ public class SurfaceBackgroundStylesLoader : SceneEffectLoader<ModSurfaceBackgro
 
 	public SurfaceBackgroundStylesLoader()
 	{
-		Initialize(Main.BG_STYLES_COUNT);
+		Initialize(SurfaceBackgroundID.Count);
 	}
 
 	internal override void ResizeArrays()
@@ -314,7 +317,9 @@ public class SurfaceBackgroundStylesLoader : SceneEffectLoader<ModSurfaceBackgro
 		SkyManager.Instance.DrawToDepth(Main.spriteBatch, 1f / (float)Main.instance.bgParallax);
 
 		Main.instance.bgStartX = (int)(-Math.IEEERemainder(Main.screenPosition.X * Main.instance.bgParallax, Main.bgWidthScaled) - (Main.bgWidthScaled / 2));
+		/* TODO: Main.instance.screenOff no longer exists. Adjust this logic to new logic.
 		Main.instance.bgTopY = (int)((-Main.screenPosition.Y + Main.instance.screenOff / 2f) / (Main.worldSurface * 16.0) * a + b) + (int)Main.instance.scAdj;
+		*/
 
 		if (Main.gameMenu) {
 			Main.instance.bgTopY = 320;

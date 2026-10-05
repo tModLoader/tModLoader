@@ -1,14 +1,15 @@
 --- src/TerrariaNetCore/Terraria/Utils.cs
 +++ src/tModLoader/Terraria/Utils.cs
-@@ -18,6 +_,7 @@
- using ReLogic.Utilities;
+@@ -20,6 +_,8 @@
  using Terraria.DataStructures;
  using Terraria.GameContent;
+ using Terraria.Localization;
++using Terraria.ModLoader;
 +using Terraria.ModLoader.Engine;
  using Terraria.UI;
  using Terraria.UI.Chat;
  using Terraria.Utilities;
-@@ -25,7 +_,7 @@
+@@ -27,7 +_,7 @@
  
  namespace Terraria;
  
@@ -17,7 +18,15 @@
  {
  	public delegate bool TileActionAttempt(int x, int y);
  
-@@ -75,10 +_,13 @@
+@@ -37,6 +_,7 @@
+ 
+ 	public class RandomTeleportationAttemptSettings
+ 	{
++		public Entity teleportee; // TML
+ 		public Vector2 teleporteeSize;
+ 		public Vector2 teleporteeVelocity;
+ 		public float teleporteeGravityDirection;
+@@ -130,10 +_,13 @@
  				continue;
  
  			if (args[i][0] == '-' || args[i][0] == '+') {
@@ -31,7 +40,7 @@
  
  				text = args[i];
  				text2 = "";
-@@ -91,10 +_,13 @@
+@@ -146,10 +_,13 @@
  			}
  		}
  
@@ -45,10 +54,11 @@
  
  		return dictionary;
  	}
-@@ -117,8 +_,27 @@
- 		return value;
+@@ -173,8 +_,28 @@
  	}
  
+ 	public static Rectangle Clamp(Rectangle r, Rectangle bounds) => new Rectangle(Clamp(r.X, bounds.Left, bounds.Right - r.Width), Clamp(r.Y, bounds.Top, bounds.Bottom - r.Height), r.Width, r.Height);
++
 +	/// <summary>
 +	/// Remaps a provided value from 0->1 to a cosine curve. Provides a method of turning an input sawtooth pattern into a smooth cyclic curve. This is useful when using repeating timers to drive effects that should return smoothly to their initial value before repeating rather than reset abruptly.
 +	/// </summary>
@@ -73,8 +83,8 @@
  	public static float PingPongFrom01To010(float value)
  	{
  		value %= 1f;
-@@ -131,6 +_,22 @@
- 		return value * 2f;
+@@ -201,6 +_,22 @@
+ 		}
  	}
  
 +	/// <summary>
@@ -96,7 +106,7 @@
  	public static float MultiLerp(float percent, params float[] floats)
  	{
  		float num = 1f / ((float)floats.Length - 1f);
-@@ -175,6 +_,10 @@
+@@ -258,6 +_,10 @@
  		return (t - from) / (to - from);
  	}
  
@@ -105,9 +115,19 @@
 +	/// <para/> For example, an input of (1.5f, 1, 3, 20, 30) would result in 22.5 because 1.5 is 25% between 1 and 3 and 25% between 20 and 30 is 22.5.
 +	/// </summary>
  	public static float Remap(float fromValue, float fromMin, float fromMax, float toMin, float toMax, bool clamped = true) => MathHelper.Lerp(toMin, toMax, GetLerpValue(fromMin, fromMax, fromValue, clamped));
- 
- 	public static void ClampWithinWorld(ref int minX, ref int minY, ref int maxX, ref int maxY, bool lastValuesInclusiveToIteration = false, int fluffX = 0, int fluffY = 0)
-@@ -278,6 +_,10 @@
+ 	public static double Remap(double fromValue, double fromMin, double fromMax, double toMin, double toMax, bool clamped = true) => Lerp(toMin, toMax, GetLerpValue(fromMin, fromMax, fromValue, clamped));
+ 	public static double EaseOutBounce(double x) => BounceEaseOut(x, 4, 2.0);
+@@ -505,6 +_,9 @@
+ 			if (!(Collision.TileCollision(vector - vector2, vector2, num, num2, fallThrough: false, fall2: false, (int)teleporteeGravityDirection) != vector2)) {
+ 				vector2 = -Vector2.UnitY * 16f;
+ 				if (!(Collision.TileCollision(vector - vector2, vector2, num, num2, fallThrough: false, fall2: false, (int)teleporteeGravityDirection) != vector2) && (!Main.dualDungeonsSeed || !UnbreakableWallScan.InsideUnbreakableWalls(new Point(num9, num10)))) {
++					if (settings.teleportee is Player player && !CombinedHooks.CanBeTeleportedTo(player, vector, num9, num10, "CheckForGoodTeleportationSpot"))
++						continue;
++
+ 					canSpawn = true;
+ 					num5 += num8;
+ 					break;
+@@ -610,6 +_,10 @@
  		return (t - from) / (to - from);
  	}
  
@@ -118,7 +138,7 @@
  	public static float GetDayTimeAs24FloatStartingFromMidnight()
  	{
  		if (Main.dayTime)
-@@ -294,7 +_,8 @@
+@@ -626,7 +_,8 @@
  		ArrayList arrayList = new ArrayList();
  		string text = "";
  		for (int i = 0; i < brokenArgs.Length; i++) {
@@ -128,22 +148,17 @@
  				if (text != "") {
  					arrayList.Add(text);
  					text = "";
-@@ -375,6 +_,14 @@
- 							num2 -= 16;
+@@ -777,6 +_,9 @@
+ 	public static Rectangle CenteredRectangle(Vector2 center, Vector2 size) => new Rectangle((int)(center.X - size.X / 2f), (int)(center.Y - size.Y / 2f), (int)size.X, (int)size.Y);
+ 	public static Rectangle CenteredRectangle(Point center, Point size) => new Rectangle(center.X - size.X / 2, center.Y - size.Y / 2, size.X, size.Y);
  
- 						int num3 = Math.Min(list3[l].Text.Length, num2 / 8);
-+
-+						// Loop added by TML. Explain what this is?
-+						for (int i = 0; i < list3[l].Text.Length; i++) {
-+							// TODO: hypen?, more efficient, binary search?, use ChatManager.GetStringSize to support other tags better.
-+							if (font.MeasureString(list3[l].Text.Substring(0, i)).X * list3[l].Scale < num2)
-+								num3 = i;
-+						}
-+
- 						if (num3 < 0)
- 							num3 = 0;
- 
-@@ -550,6 +_,9 @@
++	/// <summary>
++	/// Expands the provided <paramref name="rect"/> to include <paramref name="point"/> and returns the newly expanded <see cref="Rectangle"/>.
++	/// </summary>
+ 	public static Rectangle Including(this Rectangle rect, Point point)
+ 	{
+ 		int num = Math.Min(rect.Left, point.X);
+@@ -863,6 +_,9 @@
  		return num;
  	}
  
@@ -153,10 +168,10 @@
  	public static int[] CoinsSplit(long count)
  	{
  		int[] array = new int[4];
-@@ -644,17 +_,32 @@
- 			return false;
+@@ -959,16 +_,32 @@
  		}
  	}
+ 
 +	private static void OpenFolderXdg(string folderPath)
 +	{
 +		ProcessStartInfo processStartInfo = new ProcessStartInfo {
@@ -169,7 +184,7 @@
 +		processStartInfo.EnvironmentVariables["LD_LIBRARY_PATH"] = "/usr/lib:/lib";
 +		Process.Start(processStartInfo);
 +	}
- 
++
  	public static void OpenFolder(string folderPath)
  	{
  		if (TryCreatingDirectory(folderPath)) {
@@ -185,8 +200,8 @@
 +				OpenFolderXdg(folderPath);
  			}
  			else {
- 				Process.Start(new ProcessStartInfo(folderPath) { UseShellExecute = true });
-@@ -669,6 +_,11 @@
+ #if NETCORE
+@@ -998,6 +_,11 @@
  		return array;
  	}
  
@@ -198,7 +213,7 @@
  	public static float NextFloat(this UnifiedRandom r) => (float)r.NextDouble();
  	public static float NextFloatDirection(this UnifiedRandom r) => (float)r.NextDouble() * 2f - 1f;
  	public static float NextFloat(this UnifiedRandom random, FloatRange range) => random.NextFloat() * (range.Maximum - range.Minimum) + range.Minimum;
-@@ -697,6 +_,7 @@
+@@ -1049,6 +_,7 @@
  		return asset.Value.Height;
  	}
  
@@ -206,7 +221,7 @@
  	public static Rectangle Frame(this Asset<Texture2D> tex, int horizontalFrames = 1, int verticalFrames = 1, int frameX = 0, int frameY = 0, int sizeOffsetX = 0, int sizeOffsetY = 0)
  	{
  		if (!tex.IsLoaded)
-@@ -720,6 +_,10 @@
+@@ -1072,6 +_,10 @@
  		return tex.Value.Size();
  	}
  
@@ -217,8 +232,8 @@
  	public static Rectangle Frame(this Texture2D tex, int horizontalFrames = 1, int verticalFrames = 1, int frameX = 0, int frameY = 0, int sizeOffsetX = 0, int sizeOffsetY = 0)
  	{
  		int num = tex.Width / horizontalFrames;
-@@ -927,7 +_,9 @@
- 	public static Vector2 ToVector2(this Point16 p) => new Vector2(p.X, p.Y);
+@@ -1348,7 +_,9 @@
+ 	public static Vector3 ToVector3(this Vector2 v) => new Vector3(v.X, v.Y, 0f);
  	public static Vector2D ToVector2D(this Point p) => new Vector2D(p.X, p.Y);
  	public static Vector2D ToVector2D(this Point16 p) => new Vector2D(p.X, p.Y);
 +	/// <summary> <include file = 'CommonDocs.xml' path='Common/ToWorldCoordinates' /> </summary>
@@ -227,8 +242,8 @@
  	public static Vector2 ToWorldCoordinates(this Point16 p, float autoAddX = 8f, float autoAddY = 8f) => p.ToVector2() * 16f + new Vector2(autoAddX, autoAddY);
  
  	public static Vector2 MoveTowards(this Vector2 currentPosition, Vector2 targetPosition, float maxAmountAllowedToMove)
-@@ -939,14 +_,21 @@
- 		return currentPosition + v.SafeNormalize(Vector2.Zero) * maxAmountAllowedToMove;
+@@ -1373,8 +_,10 @@
+ 		return num2;
  	}
  
 +	/// <summary> <include file = 'CommonDocs.xml' path='Common/ToTileCoordinates' /> </summary>
@@ -238,7 +253,8 @@
  	public static Point ToTileCoordinates(this Vector2 vec) => new Point((int)vec.X >> 4, (int)vec.Y >> 4);
  	public static Point ToTileCoordinates(this Vector2D vec) => new Point((int)vec.X >> 4, (int)vec.Y >> 4);
  	public static Point ToPoint(this Vector2 v) => new Point((int)v.X, (int)v.Y);
- 	public static Point ToPoint(this Vector2D v) => new Point((int)v.X, (int)v.Y);
+@@ -1382,6 +_,11 @@
+ 	public static Vector2 ToVector2(this Vector2D v) => new Vector2((float)v.X, (float)v.Y);
  	public static Vector2D ToVector2D(this Vector2 v) => new Vector2D(v.X, v.Y);
  
 +	/// <summary>
@@ -249,15 +265,15 @@
  	public static Vector2 SafeNormalize(this Vector2 v, Vector2 defaultValue)
  	{
  		if (v == Vector2.Zero || v.HasNaNs())
-@@ -955,6 +_,7 @@
- 		return Vector2.Normalize(v);
- 	}
+@@ -1400,6 +_,7 @@
+ 
+ 	public static Point ClampedInWorld(this Point p, int fluff = 0) => new Point(Clamp(p.X, fluff, Main.maxTilesX - fluff - 1), Clamp(p.Y, fluff, Main.maxTilesX - fluff - 1));
  
 +	/// <summary> Returns the closest point on a line segment from <paramref name="A"/> to <paramref name="B"/> to another point <paramref name="P"/>. The resulting point will be on the line and not extend past A or B. </summary>
  	public static Vector2 ClosestPointOnLine(this Vector2 P, Vector2 A, Vector2 B)
  	{
  		Vector2 value = P - A;
-@@ -1007,16 +_,24 @@
+@@ -1468,16 +_,24 @@
  	public static float DistanceSQ(this Vector2 Origin, Vector2 Target) => Vector2.DistanceSquared(Origin, Target);
  	public static Vector2 DirectionTo(this Vector2 Origin, Vector2 Target) => Vector2.Normalize(Target - Origin);
  	public static Vector2 DirectionFrom(this Vector2 Origin, Vector2 Target) => Vector2.Normalize(Origin - Target);
@@ -282,7 +298,7 @@
  	public static int ToDirectionInt(this bool value)
  	{
  		if (!value)
-@@ -1025,6 +_,7 @@
+@@ -1486,6 +_,7 @@
  		return 1;
  	}
  
@@ -290,7 +306,7 @@
  	public static int ToInt(this bool value)
  	{
  		if (!value)
-@@ -1089,6 +_,7 @@
+@@ -1598,6 +_,7 @@
  		return false;
  	}
  
@@ -298,12 +314,12 @@
  	public static List<int> GetTrueIndexes(this bool[] array)
  	{
  		List<int> list = new List<int>();
-@@ -1383,14 +_,26 @@
+@@ -1902,14 +_,26 @@
  			text.Substring(0, maxCharactersDisplayed);
  
  		DynamicSpriteFont value = FontAssets.DeathText.Value;
 +
-+		TextSnippet[] snippets = ChatManager.ParseMessage(text, color).ToArray();
++		List<TextSnippet> snippets = ChatManager.ParseMessage(text, color);
 +		ChatManager.ConvertNormalSnippets(snippets);
 +		Vector2 textSize = ChatManager.GetStringSize(value, snippets, Vector2.One);
 +

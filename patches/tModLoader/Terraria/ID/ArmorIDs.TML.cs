@@ -106,7 +106,7 @@ partial class ArmorIDs
 			/// <br/> Defaults to <see langword="false"/>.
 			/// </summary>
 			// Created based on 'PlayerDrawLayers.ShouldOverrideLegs_CheckPants'.
-			public static bool[] OverridesLegs = Factory.CreateBoolSet(67, 106, 138, 140, 143, 217, 222, 226, 228);
+			public static bool[] OverridesLegs = Factory.CreateBoolSet(55, 63, 67, 106, 138, 140, 143, 217, 222, 226, 228);
 
 			// Created based on 'hidesTopSkin' definition in 'PlayerDrawSet.BoringSetup'.
 			/// <summary>
@@ -126,7 +126,7 @@ partial class ArmorIDs
 			/// <remarks>
 			/// The <see cref="Legs"/> equivalent to <see cref="Body.Sets.HidesBottomSkin"/>.
 			/// </remarks>
-			public static bool[] HidesBottomSkin = Factory.CreateBoolSet(20, 21);
+			public static bool[] HidesBottomSkin = Factory.CreateBoolSet(20, 21, 216, 214, 215);
 		}
 	}
 

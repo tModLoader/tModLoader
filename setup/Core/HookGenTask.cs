@@ -8,7 +8,7 @@ namespace Terraria.ModLoader.Setup.Core
 {
 	public class HookGenTask : SetupOperation
 	{
-		private const string DotnetTargetVersion = "net8.0";
+		private const string DotnetTargetVersion = "net10.0";
 		private const string LibsPath = "src/tModLoader/Terraria/Libraries";
 		private const string BinLibsPath = $"src/tModLoader/Terraria/bin/Release/{DotnetTargetVersion}/Libraries";
 

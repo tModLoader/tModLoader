@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Audio/SoundPlayer.cs
 +++ src/tModLoader/Terraria/Audio/SoundPlayer.cs
-@@ -2,24 +_,97 @@
+@@ -2,24 +_,98 @@
  using Microsoft.Xna.Framework;
  using ReLogic.Utilities;
  
@@ -14,8 +14,9 @@
  {
  	private readonly SlotVector<ActiveSound> _trackedSounds = new SlotVector<ActiveSound>(4096);
  
--	public SlotId Play(SoundStyle style, Vector2 position)
+-	public SlotId Play(SoundStyle style, Vector2 position, SoundPlayOverrides overrides = default(SoundPlayOverrides))
 +	//TML: Position parameter made nullable, SoundUpdateCallback parameter merged in, with changed type.
++	// TODO 1.4.5: Handle SoundPlayOverrides as a Play parameter or in SoundStyle
 +	public SlotId Play(in SoundStyle style, Vector2? position = null, SoundUpdateCallback? updateCallback = null)
  	{
 +		/*
@@ -33,7 +34,7 @@
 +			return SlotId.Invalid;
 +
 +		// Handle PlayOnlyIfFocused
-+		if (style.PlayOnlyIfFocused && !Main.hasFocus)
++		if (style.PlayOnlyIfFocused && !FocusHelper.AllowInputProcessing)
 +			return SlotId.Invalid;
 +
 +		// If not on the main thread - queue a main thread action, and wait for it to complete
@@ -91,21 +92,18 @@
 +			chosenStyle.Pitch += Main.musicPitch;
 +		}
  
--		ActiveSound value = new ActiveSound(style, position);
+-		ActiveSound value = new ActiveSound(style, position, overrides);
 +		ActiveSound value = new ActiveSound(chosenStyle, position, updateCallback);
  		return _trackedSounds.Add(value);
  	}
  
 +	//TML: Merged into the above method.
 +	/*
- 	public SlotId PlayLooped(SoundStyle style, Vector2 position, ActiveSound.LoopedPlayCondition loopingCondition)
+ 	public SlotId PlayLooped(SoundStyle style, Vector2 position, ActiveSound.LoopedPlayCondition loopingCondition, SoundPlayOverrides overrides = default(SoundPlayOverrides))
  	{
  		if (Main.dedServ || style == null || !style.IsTrackable)
-@@ -29,14 +_,19 @@
- 			return SlotId.Invalid;
- 
- 		ActiveSound value = new ActiveSound(style, position, loopingCondition);
-+
+@@ -31,12 +_,16 @@
+ 		ActiveSound value = new ActiveSound(style, position, loopingCondition, overrides);
  		return _trackedSounds.Add(value);
  	}
 +	*/
@@ -175,8 +173,8 @@
  					_trackedSounds.Remove(item.Id);
  			}
  			catch {
-@@ -91,7 +_,7 @@
- 		}
+@@ -103,7 +_,7 @@
+ 		return num;
  	}
  
 -	public ActiveSound FindActiveSound(SoundStyle style)

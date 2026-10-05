@@ -1,0 +1,12 @@
+--- src/TerrariaNetCore/Terraria/Map/BossBagMapLayer.cs
++++ src/tModLoader/Terraria/Map/BossBagMapLayer.cs
+@@ -6,6 +_,9 @@
+ 
+ public class BossBagMapLayer : IMapLayer
+ {
++	// Added by TML.
++	public bool Visible { get; set; } = true;
++
+ 	public void Draw(ref MapOverlayDrawContext context, ref string text)
+ 	{
+ 		for (int i = 0; i < 400; i++) {

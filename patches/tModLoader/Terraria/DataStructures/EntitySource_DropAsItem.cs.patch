@@ -11,11 +11,11 @@
 -public class EntitySource_DropAsItem : IEntitySource
 +public class EntitySource_DropAsItem : EntitySource_Parent
  {
--	public readonly Entity Entity;
+-	public readonly IEntitySourceTarget Entity;
 -
--	public EntitySource_DropAsItem(Entity entity)
+-	public EntitySource_DropAsItem(IEntitySourceTarget entity)
 -	{
 -		Entity = entity;
 -	}
-+	public EntitySource_DropAsItem(Entity entity, string? context = null) : base(entity, context) { }
++	public EntitySource_DropAsItem(IEntitySourceTarget entity, string? context = null) : base(entity, context) { }
  }

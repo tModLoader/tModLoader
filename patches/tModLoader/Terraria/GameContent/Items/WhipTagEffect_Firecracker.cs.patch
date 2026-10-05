@@ -1,0 +1,36 @@
+--- src/TerrariaNetCore/Terraria/GameContent/Items/WhipTagEffect_Firecracker.cs
++++ src/tModLoader/Terraria/GameContent/Items/WhipTagEffect_Firecracker.cs
+@@ -1,4 +_,6 @@
+ using Microsoft.Xna.Framework;
++using Terraria.ID;
++using Terraria.WorldBuilding;
+ 
+ namespace Terraria.GameContent.Items;
+ 
+@@ -6,14 +_,25 @@
+ {
+ 	private static float ProcDamageMultiplier = 2.75f;
+ 
++	/*
+ 	public override void ModifyProcHit(Player owner, Projectile optionalProjectile, NPC npcHit, ref TagDamageChanges changes)
++	*/
++	public override void ModifyProcHit(Player owner, Projectile optionalProjectile, NPC npcHit, ref NPC.HitModifiers modifiers)
+ 	{
++		base.ModifyProcHit(owner, optionalProjectile, npcHit, ref modifiers);
++		/*
+ 		changes.TotalDamageMultiplier *= ProcDamageMultiplier;
++		*/
++		// Unlike vanilla, this doesn't multiply tag damage, since that is applied as FlatBonusDamage, but this should never really amtter for balance
++		modifiers.ScalingBonusDamage += (ProcDamageMultiplier - 1f) * ProjectileID.Sets.SummonTagDamageMultiplier[optionalProjectile.type];
+ 	}
+ 
++	/*
+ 	public override bool OnProcHit(Player owner, Projectile optionalProjectile, NPC npcHit, int calcDamage)
++	*/
++	public override bool OnProcHit(Player owner, Projectile optionalProjectile, NPC npcHit, NPC.HitInfo hit)
+ 	{
+-		CreateExplosion(optionalProjectile, npcHit, (int)((float)calcDamage * ProcDamageMultiplier));
++		CreateExplosion(optionalProjectile, npcHit, (int)(hit.SourceDamage * ProcDamageMultiplier));
+ 		return true;
+ 	}
+ 

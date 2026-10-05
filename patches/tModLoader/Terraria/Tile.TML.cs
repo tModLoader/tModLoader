@@ -73,7 +73,7 @@ public readonly partial struct Tile
 
 	/// <summary>
 	/// The slope shape of the tile, which can be changed by hammering.<br/>
-	/// Used by <see cref="WorldGen.SlopeTile(int, int, int, bool)"/> and <see cref="BlockType"/>.<br/>
+	/// Used by <see cref="WorldGen.SlopeTile(int, int, int, bool, bool)"/> and <see cref="BlockType"/>.<br/>
 	/// Legacy/vanilla equivalent is <see cref="slope()"/> or <see cref="slope(byte)"/>.
 	/// </summary>
 	public SlopeType Slope { get => Get<TileWallWireStateData>().Slope; set => Get<TileWallWireStateData>().Slope = value; }
@@ -189,6 +189,30 @@ public readonly partial struct Tile
 	/// </summary>
 	public bool CheckingLiquid { get => Get<LiquidData>().CheckingLiquid; set => Get<LiquidData>().CheckingLiquid = value; }
 
+	/// <summary>
+	/// Whether there is water at this position.
+	/// <br/><br/> Legacy/vanilla equivalent is <see cref="anyWater()"/>.
+	/// </summary>
+	public bool HasWater => Get<LiquidData>().Amount > 0 && Get<LiquidData>().LiquidType == LiquidID.Water;
+
+	/// <summary>
+	/// Whether there is water at this position.
+	/// <br/><br/> Legacy/vanilla equivalent is <see cref="anyLava()"/>.
+	/// </summary>
+	public bool HasLava => Get<LiquidData>().Amount > 0 && Get<LiquidData>().LiquidType == LiquidID.Lava;
+
+	/// <summary>
+	/// Whether there is water at this position.
+	/// <br/><br/> Legacy/vanilla equivalent is <see cref="anyHoney()"/>.
+	/// </summary>
+	public bool HasHoney => Get<LiquidData>().Amount > 0 && Get<LiquidData>().LiquidType == LiquidID.Honey;
+
+	/// <summary>
+	/// Whether there is water at this position.
+	/// <br/><br/> Legacy/vanilla equivalent is <see cref="anyShimmer()"/>.
+	/// </summary>
+	public bool HasShimmer => Get<LiquidData>().Amount > 0 && Get<LiquidData>().LiquidType == LiquidID.Shimmer;
+
 	// Wires
 
 	/// <summary>
@@ -211,6 +235,12 @@ public readonly partial struct Tile
 	/// Legacy/vanilla equivalent is <see cref="wire4()"/> or <see cref="wire4(bool)"/>.
 	/// </summary>
 	public bool YellowWire { get => Get<TileWallWireStateData>().YellowWire; set => Get<TileWallWireStateData>().YellowWire = value; }
+
+	/// <summary>
+	/// Whether there is any wire at this position.<br/>
+	/// Legacy/vanilla equivalent is <see cref="anyWire()"/>.
+	/// </summary>
+	public bool HasWire => Get<TileWallWireStateData>().WireData > 0;
 
 	// Invisibility
 

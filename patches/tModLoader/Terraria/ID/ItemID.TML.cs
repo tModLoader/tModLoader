@@ -30,13 +30,6 @@ partial class ItemID
 		);
 
 		/// <summary>
-		/// If <see langword="true"/> for a given item type (<see cref="Item.type"/>), then that item is a glowstick.
-		/// <br/> Glowsticks work underwater and will be auto-selected by Smart Cursor when the cursor is far away from the player.
-		/// <br/> Defaults to <see langword="false"/>.
-		/// </summary>
-		public static bool[] Glowsticks = Factory.CreateBoolSet(282, 286, 3002, 3112, 4776);
-
-		/// <summary>
 		/// Set for pre-hardmode boss bags, except it also contains the Queen Slime's Boss Bag. Affects the way dev armor drops function, making it only drop in special world seeds.
 		/// <br/> Don't forget to use the <see cref="BossBag"/> set in conjunction with this one.
 		/// </summary>
@@ -50,6 +43,8 @@ partial class ItemID
 		/// <br/> See the code of <see cref="GameContent.Creative.ItemFilters.Tools.FitsFilter(Item)"/> to check if your item meets the automatic criteria.
 		/// </summary>
 		public static bool[] DuplicationMenuToolsFilter = Factory.CreateBoolSet(
+			213,
+			5295,
 			509,
 			850,
 			851,
@@ -103,7 +98,9 @@ partial class ItemID
 			1299,
 			4711,
 			4049,
-			114
+			114,
+			5667,
+			6174
 		);
 
 		/// <summary>
@@ -149,7 +146,8 @@ partial class ItemID
 			MonkStaffT2,
 			MonkStaffT3,
 			ChlorophytePartisan,
-			NorthPole
+			NorthPole,
+			SlimeSpear
 		);
 
 		/// <summary>
@@ -162,14 +160,6 @@ partial class ItemID
 			SilverCoin,	  100,
 			GoldCoin,	  10000,
 			PlatinumCoin, 1000000
-		);
-
-		/// <summary>
-		/// If true, the item counts as a specialist weapon.<br/>
-		/// Used for Shroomite Helmet damage buffs (and other effects that will affect <see cref="Player.specialistDamage"/>).<br/>
-		/// </summary>
-		public static bool[] IsRangedSpecialistWeapon = Factory.CreateBoolSet(
-			PiranhaGun, PainterPaintballGun, Toxikarp, Harpoon, AleThrowingGlove
 		);
 
 		/// <summary>
@@ -210,12 +200,23 @@ partial class ItemID
 		/// <summary>
 		/// Set to <see langword="true"/> to make this Item set its mana cost to 0 whenever <see cref="Player.spaceGun"/> is set to <see langword="true"/>.
 		/// </summary>
-		public static bool[] IsSpaceGun = Factory.CreateBoolSet(false, SpaceGun, ZapinatorGray, ZapinatorOrange);
+		public static bool[] IsSpaceGun = Factory.CreateBoolSet(false, SpaceGun, ZapinatorGray, ZapinatorOrange, LaserRifle);
 
 		// Values taken from KillTile_ShouldDropSeeds
 		/// <summary>
 		/// Set to <see langword="true"/> to have seeds drop whenever grass breaks with this Item in the player's inventory.
 		/// </summary>
 		public static bool[] DropSeedsIfInInventory = Factory.CreateBoolSet(false, Blowpipe, Blowgun);
+
+		/// <summary>
+		/// Whether or not this item is a golf club. Set this to <see langword="true"/> for custom golf club items.
+		/// <para/> <see cref="ModLoader.ModItem.GetGolfClubProperties"/> must be used to specify the <see cref="GameContent.Golf.GolfHelper.ClubProperties"/> for the club.
+		/// </summary>
+		public static bool[] IsAGolfClub = Factory.CreateBoolSet(false,
+			GolfClubIron, GolfClubPutter, GolfClubWedge, GolfClubDriver,
+			GolfClubStoneIron, GolfClubRustyPutter, GolfClubBronzeWedge, GolfClubWoodDriver,
+			GolfClubMythrilIron, GolfClubLeadPutter, GolfClubGoldWedge, GolfClubPearlwoodDriver,
+			GolfClubTitaniumIron, GolfClubShroomitePutter, GolfClubDiamondWedge, GolfClubChlorophyteDriver
+		);
 	}
 }

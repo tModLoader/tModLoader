@@ -9,9 +9,9 @@
  
  namespace ReLogic.Content.Sources;
  
-@@ -7,17 +_,57 @@
- {
- 	IContentValidator ContentValidator { get; set; }
+@@ -9,19 +_,59 @@
+ 
+ 	string FileWatcherPath { get; }
  
 +	/*
  	bool HasAsset(string assetName);
@@ -45,6 +45,8 @@
  
  	bool TryGetRejections(List<string> rejectionReasons);
 +	*/
+ 
+ 	void Refresh();
 +
 +	// Added by TML.
 +	/// <summary>

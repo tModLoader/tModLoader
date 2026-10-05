@@ -66,6 +66,19 @@ namespace ExampleMod.Content.NPCs.TownPets
 			NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
 
 			NPCProfile = new ExampleTownPetProfile(); // Assign our profile.
+
+			// Here we define which portrait to use for the Town NPC when the portrait style setting is set to detailed.
+			NPCID.Sets.NPCPortraits.Add(Type, NPCID.Sets.PrioritizedPortrait()
+				.With(NPCID.Sets.VariantPortraitCondition(0), NPCID.Sets.BasicPortrait($"{Texture}_Portrait")) // Each variant of Example Town Pet gets its own portrait.
+				.With(NPCID.Sets.VariantPortraitCondition(1), NPCID.Sets.BasicPortrait($"{Texture}_1_Portrait"))
+				.With(NPCID.Sets.VariantPortraitCondition(2), NPCID.Sets.BasicPortrait($"{Texture}_2_Portrait"))
+				.With(NPCID.Sets.VariantPortraitCondition(3), NPCID.Sets.BasicPortrait($"{Texture}_3_Portrait"))
+				.With(NPCID.Sets.VariantPortraitCondition(4), NPCID.Sets.BasicPortrait($"{Texture}_4_Portrait"))
+				.With(NPCID.Sets.VariantPortraitCondition(5), NPCID.Sets.BasicPortrait($"{Texture}_5_Portrait"))
+				.With(NPCID.Sets.VariantPortraitCondition(6), NPCID.Sets.BasicPortrait($"{Texture}_6_Portrait"))
+				.Default(NPCID.Sets.BasicPortrait($"{Texture}_Portrait"))); // The default portrait to use.
+			NPCID.Sets.NPCPortraitsCloseUpOffsets.Add(Type, new Vector2(-24f, 16f)); // Here we can change the offsets of Town NPC when the portrait style setting is set to profile.
+			//NPCID.Sets.NPCPortraitsFullBodyRetroOffsets.Add(Type, new Vector2(0f, 0f)); // Here we can change the offsets of Town NPC when the portrait style setting is set to retro.
 		}
 
 		public override void SetDefaults() {
@@ -132,7 +145,7 @@ namespace ExampleMod.Content.NPCs.TownPets
 				0 => NameList0,
 				1 => NameList1, // Variant 1 will be the Shimmered variant if your NPC has a shimmer variant.
 				// The Green (2) variant shows one approach to localizing Town NPC names.
-				// One additional benefit of this approach is a separate mod can add a Mods.ExampleMod.NPCs.ExampleTownPet.Names.Green.Emerald key and it will automatically be used as an name option.
+				// One additional benefit of this approach is a separate mod can add a Mods.ExampleMod.NPCs.ExampleTownPet.Names.Green.Emerald key and it will automatically be used as a name option.
 				2 => Language.FindAll(Lang.CreateDialogFilter(this.GetLocalizationKey("Names.Green."))).Select(x => x.Value).ToList(),
 				3 => NameList3,
 				4 => NameList4,
@@ -143,15 +156,8 @@ namespace ExampleMod.Content.NPCs.TownPets
 		}
 
 		public override string GetChat() {
-			WeightedRandom<string> chat = new();
-
-			chat.Add(Language.GetTextValue("Mods.ExampleMod.Dialogue.ExampleTownPet.StandardDialogue"));
-
-			return chat;
-		}
-
-		public override void SetChatButtons(ref string button, ref string button2) {
-			button = Language.GetTextValue("UI.PetTheAnimal"); // Automatically translated to say "Pet"
+			// Rather than list out each dialogue localization key and selecting one at random, we use this approach to easily select one based on the localization key prefix. This approach also means that additional keys added by other mods will automatically be supported as well.
+			return Language.SelectRandom(Lang.CreateDialogFilter("Mods.ExampleMod.Dialogue.ExampleTownPet")).Value;
 		}
 
 		public override bool PreAI() {

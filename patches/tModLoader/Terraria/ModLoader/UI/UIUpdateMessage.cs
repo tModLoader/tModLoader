@@ -1,4 +1,4 @@
-using Ionic.Zip;
+using System.IO.Compression;
 using ReLogic.OS;
 using System;
 using System.Diagnostics;
@@ -148,8 +148,7 @@ internal class UIUpdateMessage : UIState
 
 				Logging.tML.Info($"Extracting: {zipFilePath} -> {extractDir}");
 
-				using (var zip = ZipFile.Read(zipFilePath))
-					zip.ExtractAll(extractDir);
+				ZipFile.ExtractToDirectory(zipFilePath, extractDir);
 
 				File.Delete(zipFilePath);
 

@@ -6,9 +6,9 @@
  using Newtonsoft.Json.Linq;
 +using Terraria.ModLoader;
  using Terraria.Social;
+ using Terraria.Testing;
  using Terraria.UI;
- using Terraria.Utilities;
-@@ -33,7 +_,8 @@
+@@ -34,7 +_,8 @@
  
  	public AchievementManager()
  	{
@@ -18,7 +18,7 @@
  			_savePath = SocialAPI.Achievements.GetSavePath();
  			_isCloudSave = true;
  			_cryptoKey = SocialAPI.Achievements.GetEncryptionKey();
-@@ -59,13 +_,31 @@
+@@ -60,13 +_,31 @@
  				SocialAPI.Achievements.StoreStats();
  
  			try {
@@ -50,7 +50,7 @@
  			}
  			catch (Exception exception) {
  				FancyErrorPrinter.ShowFileSavingFailError(exception, _savePath);
-@@ -75,6 +_,25 @@
+@@ -76,6 +_,25 @@
  
  	public List<Achievement> CreateAchievementsList() => _achievements.Values.ToList();
  
@@ -76,7 +76,7 @@
  	public void Load()
  	{
  		Load(_savePath, _isCloudSave);
-@@ -131,6 +_,10 @@
+@@ -145,6 +_,10 @@
  			achievement.Value.ClearProgress();
  		}
  
@@ -87,7 +87,7 @@
  		Save();
  	}
  
-@@ -147,6 +_,13 @@
+@@ -161,6 +_,13 @@
  		achievement.OnCompleted += AchievementCompleted;
  	}
  
@@ -101,7 +101,7 @@
  	public void RegisterIconIndex(string achievementName, int iconIndex)
  	{
  		_achievementIconIndexes.Add(achievementName, iconIndex);
-@@ -157,6 +_,9 @@
+@@ -172,6 +_,9 @@
  		_achievements[achievementName].SetCategory(category);
  	}
  
@@ -111,7 +111,7 @@
  	public Achievement GetAchievement(string achievementName)
  	{
  		if (_achievements.TryGetValue(achievementName, out var value))
-@@ -181,5 +_,98 @@
+@@ -196,5 +_,98 @@
  			return value;
  
  		return 0;
@@ -119,22 +119,19 @@
 +
 +	internal static Achievement FirstVanillaAchievement => Main.Achievements.GetAchievement("TIMBER");
 +	internal static Achievement LastVanillaAchievement => Main.Achievements.GetAchievement("TO_INFINITY_AND_BEYOND");
-+	internal static readonly int DefaultLayerCount = 115;
++	internal static readonly int DefaultAchievementCount = 137;
 +
 +	internal static void FinishSetup()
 +	{
 +		if (Main.dedServ)
 +			return;
 +
-+		// Reload the achievements with each mod change to make sure any new mod's achievements are loaded with their completion value set.
-+		Main.Achievements.Load();
-+
 +		// Sort achievements by setting Achievement.Id:
 +		var AchievementsInOrder = Main.Achievements.CreateAchievementsList();
-+		IEnumerable<ModAchievement> ModdedAchievements = AchievementsInOrder.Skip(DefaultLayerCount).Select(x => x.ModAchievement);
++		IEnumerable<ModAchievement> ModdedAchievements = AchievementsInOrder.Skip(DefaultAchievementCount).Select(x => x.ModAchievement);
 +		AchievementsInOrder.Sort((x, y) => x.Id.CompareTo(y.Id));
 +
-+		var sortingSlots = new List<Achievement>[DefaultLayerCount + 1];
++		var sortingSlots = new List<Achievement>[DefaultAchievementCount + 1];
 +		for (int i = 0; i < sortingSlots.Length; ++i)
 +			sortingSlots[i] = [];
 +
@@ -149,7 +146,7 @@
 +			switch (position) {
 +				case ModAchievement.After after: {
 +					int afterIndex = AchievementsInOrder.IndexOf(after.Achievement);
-+					if (afterIndex >= DefaultLayerCount || afterIndex is -1)
++					if (afterIndex >= DefaultAchievementCount || afterIndex is -1)
 +						throw BlameAchievementException(new ArgumentException($"ModAchievement {modAchievement.FullName} did not refer to a vanilla achievement in GetDefaultPosition()"));
 +
 +					sortingSlots[afterIndex + 1].Add(modAchievement.Achievement);
@@ -157,7 +154,7 @@
 +				}
 +				case ModAchievement.Before before: {
 +					int beforeIndex = AchievementsInOrder.IndexOf(before.Achievement);
-+					if (beforeIndex >= DefaultLayerCount || beforeIndex is -1)
++					if (beforeIndex >= DefaultAchievementCount || beforeIndex is -1)
 +						throw BlameAchievementException(new ArgumentException($"ModAchievement {modAchievement.FullName} did not refer to a vanilla achievement in GetDefaultPosition()"));
 +
 +					sortingSlots[beforeIndex].Add(modAchievement.Achievement);
@@ -179,7 +176,7 @@
 +
 +		List<Achievement> sortedAchievements = [];
 +
-+		for (int i = 0; i < DefaultLayerCount + 1; i++) {
++		for (int i = 0; i < DefaultAchievementCount + 1; i++) {
 +			var elements = sortingSlots[i];
 +			var sort = new TopoSort<Achievement>(elements,
 +				l => l.ModAchievement?.GetModdedConstraints()?.OfType<ModAchievement.After>().Select(a => a.Achievement).Where(elements.Contains) ?? [],
@@ -189,13 +186,16 @@
 +				sortedAchievements.Add(layer);
 +			}
 +
-+			if (i < DefaultLayerCount)
++			if (i < DefaultAchievementCount)
 +				sortedAchievements.Add(AchievementsInOrder[i]);
 +		}
 +
 +		for (int i = 0; i < sortedAchievements.Count; i++) {
 +			sortedAchievements[i].Id = i;
 +		}
++
++		// Reload the achievements with each mod change to make sure any new mod's achievements are loaded with their completion value set.
++		Main.Achievements.Load();
 +	}
 +
 +	internal static void Unload()

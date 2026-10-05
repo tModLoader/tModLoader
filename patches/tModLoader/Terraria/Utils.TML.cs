@@ -321,18 +321,6 @@ partial class Utils
 		return rectangle;
 	}
 
-	/// <summary>
-	/// Expands the provided <paramref name="rect"/> to include <paramref name="point"/> and returns the newly expanded <see cref="Rectangle"/>.
-	/// </summary>
-	public static Rectangle Including(this Rectangle rect, Point point)
-	{
-		int l = Math.Min(rect.Left, point.X);
-		int r = Math.Max(rect.Right, point.X);
-		int t = Math.Min(rect.Top, point.Y);
-		int b = Math.Max(rect.Bottom, point.Y);
-		return new Rectangle(l, t, r - l, b - t);
-	}
-
 	/// <inheritdoc cref="Including(Rectangle, Point)"/>
 	public static Rectangle Including(this Rectangle rect, Vector2 point) => rect.Including(point.ToPoint());
 }

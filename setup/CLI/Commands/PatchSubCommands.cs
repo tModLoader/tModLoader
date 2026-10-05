@@ -1,5 +1,5 @@
 using System.ComponentModel;
-using DiffPatch;
+using CodeChicken.DiffPatch;
 using Spectre.Console.Cli;
 using Terraria.ModLoader.Setup.Core;
 

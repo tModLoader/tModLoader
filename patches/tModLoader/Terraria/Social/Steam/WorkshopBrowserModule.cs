@@ -38,6 +38,8 @@ internal class WorkshopBrowserModule : SocialBrowserModule
 
 		if (SteamedWraps.SteamAvailable)
 			CachedInstalledModDownloadItems = (this as SocialBrowserModule).DirectQueryInstalledMDItems();
+		else
+			CachedInstalledModDownloadItems = new List<ModDownloadItem>();
 
 		if (!isDeletion)
 			return;
@@ -77,7 +79,7 @@ internal class WorkshopBrowserModule : SocialBrowserModule
 		if (installed.Version < webVersion)
 			return true;
 
-		if (SteamedWraps.SteamAvailable && SteamedWraps.DoesWorkshopItemNeedUpdate(GetId(modId)))
+		if (SteamedWraps.DoesWorkshopItemNeedUpdate(GetId(modId)))
 			return true;
 
 		return false;
@@ -91,7 +93,6 @@ internal class WorkshopBrowserModule : SocialBrowserModule
 	// assumes SteamAvailable
 	public void DownloadItem(ModDownloadItem item, IDownloadProgress uiProgress)
 	{
-		item.UpdateInstallState();
 		if (item.Banned)
 			throw new BannedModException($"Attempted to Download a Banned Mod {item.DisplayName} with ID {item.PublishId}. Aborting...", item.DisplayName, item.PublishId.ToString());
 

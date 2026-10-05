@@ -235,7 +235,7 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 			properties = BuildProperties.ReadBuildFile(modFolder);
 		}
 		catch (Exception e) {
-			throw new BuildException(Language.GetTextValue("tModLoader.BuildErrorFailedLoadBuildTxt", Path.Combine(modFolder, "build.txt")), e);
+			throw new BuildException(Language.GetTextValue("tModLoader.BuildErrorFailedLoadBuildTxt", Path.Combine(modFolder, "build.txt")), e) { HelpLink = "https://github.com/tModLoader/tModLoader/wiki/build.txt#available-properties" };
 		}
 
 		var file = Path.Combine(ModLoader.ModPath, modName + ".tmod");
@@ -533,7 +533,7 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 		var emitOptions = new EmitOptions(debugInformationFormat: DebugInformationFormat.PortablePdb);
 
 		var refs = references.Select(s => MetadataReference.CreateFromFile(s));
-		refs = refs.Concat(Net80.References.All);
+		refs = refs.Concat(Net100.References.All);
 
 		var src = files.Select(f => SyntaxFactory.ParseSyntaxTree(File.ReadAllText(f), parseOptions, f, Encoding.UTF8));
 

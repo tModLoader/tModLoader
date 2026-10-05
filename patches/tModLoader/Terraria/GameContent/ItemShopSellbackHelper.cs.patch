@@ -6,15 +6,15 @@
  
  namespace Terraria.GameContent;
 @@ -9,16 +_,21 @@
- 		public readonly int itemNetID;
- 		public readonly int itemPrefix;
+ 		public readonly int type;
+ 		public readonly int prefix;
  		public int stack;
 +		public int value; // Added value to prevent exploits from shopCustomPrice being reasonably lower than value. (Buy a discounted 2nd item, sellback original for its full value)
  
  		public ItemMemo(Item item)
  		{
- 			itemNetID = item.netID;
- 			itemPrefix = item.prefix;
+ 			type = item.type;
+ 			prefix = item.prefix;
  			stack = item.stack;
 +			value = item.shopSpecialCurrency == -1 ? item.GetStoreValue() : item.value; // Since you can't sell to get special currency back, we track the coin value since that is what will be used to sell back. In vanilla you can sell back at full coin value after buying from tavernkeep.
  		}
@@ -24,6 +24,6 @@
 +			if (item.GetStoreValue() != value)
 +				return false;
 +
- 			if (item.netID == itemNetID)
- 				return item.prefix == itemPrefix;
+ 			if (item.IsConsideredSameItemAsType(type))
+ 				return item.prefix == prefix;
  

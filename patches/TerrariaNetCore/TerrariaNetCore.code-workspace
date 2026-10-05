@@ -1,0 +1,65 @@
+{
+	"folders": [
+		{
+			"path": "../../",
+			"name": "TerrariaNetCore"
+		},
+	],
+	"settings": {
+		// Automatically open the solution.
+		"dotnet.solution.autoOpen": "src/TerrariaNetCore/TerrariaNetCore.sln",
+
+		// Configure file lists & search navigation.
+	    // Prevent gitignore from making VSC omit the src directory.
+	    "explorer.excludeGitIgnore": false,
+	    "search.useIgnoreFiles": false,
+	    "files.exclude": {
+	        // Include
+	        "src/": false,
+	        // Exclude
+	        "**/bin/": true,
+	        "**/obj/": true,
+	        "**/packages/": true,
+	        "**/.vs/": true,
+	        "**/.idea/": true,
+	        "**/*.suo": true,
+	        "**/*.cache": true,
+	        "**/*.force": true,
+	        "**/*.obj": true,
+	        "**/msbuild.binlog": true,
+	        "artifacts/": true,
+	        "setup/logs/": true,
+	        "solutions/ReleaseExtras/": true,
+	        "solutions/**/*.zip": true,
+	        "solutions/**/*.tar.gz": true,
+	        "test/Terraria.xml": true,
+	        "test/tModLoader.xml": true,
+	        "test/Test Local/": true,
+	        "steam_build/": true,
+	    },
+	    "search.exclude": {
+			// Workspace-specific
+	        "src/Terraria/": true,
+	        "src/tModLoader/": true,
+	        "src/decompiled*/": true,
+	        // Include
+	        "src/": false,
+	        // Exclude
+	        "**/*.exe": true,
+	        "**/*.dll": true,
+	        "**/*.pdb": true,
+	        "**/*.so": true,
+	        "**/*.dylib": true,
+	        "**/*.png": true,
+	        "**/*.ogg": true,
+	        "**/*.mp3": true,
+	        "**/*.wav": true,
+	        "**/*.xnb": true,
+	        "patches/": true,
+	    },
+
+	    // The default sticky scroll (indentation display) model puts too much strain on the LSP.
+	    // Use the Folding model to avoid using the LSP for that entirely.
+	    "editor.stickyScroll.defaultModel": "foldingProviderModel",
+	}
+}

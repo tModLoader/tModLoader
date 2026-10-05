@@ -12,11 +12,11 @@
 -public class EntitySource_Loot : IEntitySource
 +public class EntitySource_Loot : EntitySource_Parent
  {
--	public readonly Entity Entity;
+-	public readonly IEntitySourceTarget Entity;
 -
--	public EntitySource_Loot(Entity entity)
+-	public EntitySource_Loot(IEntitySourceTarget entity)
 -	{
 -		Entity = entity;
 -	}
-+	public EntitySource_Loot(Entity entity, string? context = null) : base(entity, context) { }
++	public EntitySource_Loot(IEntitySourceTarget entity, string? context = null) : base(entity, context) { }
  }

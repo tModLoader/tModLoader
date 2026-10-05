@@ -26,17 +26,17 @@ public sealed class EncryptCommandSettings : CommandSettings
 
 public sealed class SecretEncryptCommand : CancellableAsyncCommand<EncryptCommandSettings>
 {
-	private readonly TerrariaExecutableSetter terrariaExecutableSetter;
+	private readonly SecretKeyProvider keyProvider;
 
-	public SecretEncryptCommand(TerrariaExecutableSetter terrariaExecutableSetter)
+	public SecretEncryptCommand(SecretKeyProvider keyProvider)
 	{
-		this.terrariaExecutableSetter = terrariaExecutableSetter;
+		this.keyProvider = keyProvider;
 	}
 
 	protected override async Task<int> ExecuteAsync(CommandContext context, EncryptCommandSettings settings, CancellationToken cancellationToken)
 	{
 		try {
-			var key = settings.Key != null ? Convert.FromHexString(settings.Key) : Secrets.DeriveKey(await terrariaExecutableSetter.CheckTerrariaExecutablePathsAndPromptIfNecessary(cancellationToken));
+			var key = settings.Key != null ? Convert.FromHexString(settings.Key) : await keyProvider.DeriveKey(cancellationToken);
 			new Secrets(key).UpdateFile(settings.Path);
 			return 0;
 		}
@@ -68,17 +68,17 @@ public sealed class OwnershipCommandSettings : CommandSettings
 
 public sealed class SecretOwnershipCommand : CancellableAsyncCommand<OwnershipCommandSettings>
 {
-	private readonly TerrariaExecutableSetter terrariaExecutableSetter;
+	private readonly SecretKeyProvider keyProvider;
 
-	public SecretOwnershipCommand(TerrariaExecutableSetter terrariaExecutableSetter)
+	public SecretOwnershipCommand(SecretKeyProvider keyProvider)
 	{
-		this.terrariaExecutableSetter = terrariaExecutableSetter;
+		this.keyProvider = keyProvider;
 	}
 
 	protected override async Task<int> ExecuteAsync(CommandContext context, OwnershipCommandSettings settings, CancellationToken cancellationToken)
 	{
 		try {
-			var key = settings.Key != null ? Convert.FromHexString(settings.Key) : Secrets.DeriveKey(await terrariaExecutableSetter.CheckTerrariaExecutablePathsAndPromptIfNecessary(cancellationToken));
+			var key = settings.Key != null ? Convert.FromHexString(settings.Key) : await keyProvider.DeriveKey(cancellationToken);
 			new Secrets(key).AddProofOfOwnershipFile(settings.Identifier, settings.Path);
 			return 0;
 		}
@@ -93,17 +93,17 @@ public sealed class RevealKeySettings : CommandSettings;
 
 public sealed class RevealKeyCommand : CancellableAsyncCommand<RevealKeySettings>
 {
-	private readonly TerrariaExecutableSetter terrariaExecutableSetter;
+	private readonly SecretKeyProvider keyProvider;
 
-	public RevealKeyCommand(TerrariaExecutableSetter terrariaExecutableSetter)
+	public RevealKeyCommand(SecretKeyProvider keyProvider)
 	{
-		this.terrariaExecutableSetter = terrariaExecutableSetter;
+		this.keyProvider = keyProvider;
 	}
 
 	protected override async Task<int> ExecuteAsync(CommandContext context, RevealKeySettings settings, CancellationToken cancellationToken)
 	{
 		try {
-			var key = Secrets.DeriveKey(await terrariaExecutableSetter.CheckTerrariaExecutablePathsAndPromptIfNecessary(cancellationToken));
+			var key = await keyProvider.DeriveKey(cancellationToken);
 			Console.WriteLine(Convert.ToHexString(key).ToLower());
 			return 0;
 		}

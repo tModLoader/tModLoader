@@ -2,9 +2,6 @@
 
 partial class GenPass
 {
-	public bool Enabled { get; private set; } = true;
-
-	public void Disable() => Enabled = false;
-
+	// TODO: Same as Enable() ?
 	internal void Reset() { Enabled = true; }
 }

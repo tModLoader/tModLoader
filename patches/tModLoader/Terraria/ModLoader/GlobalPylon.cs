@@ -8,6 +8,7 @@ namespace Terraria.ModLoader;
 /// Global Type that exists for pylons that allows for modification of teleportation steps, map drawing, and
 /// other functionality for any pylon that exists, whether it be vanilla or modded.
 /// </summary>
+[CloneByReference]
 public abstract class GlobalPylon : ModType
 {
 
@@ -68,24 +69,7 @@ public abstract class GlobalPylon : ModType
 	}
 
 	/// <summary>
-	/// Called before Step 2 of the ValidTeleportCheck process. This is the second vanilla check that is called when
-	/// the player attempts to teleport TO a Pylon. This method is called before both vanilla and
-	/// modded pylons check their Danger requirements, and returning false will prevent those checks from taking place,
-	/// forcefully failing the AnyDanger step. Returning null will enact vanilla behavior, and returning true will make the
-	/// step succeed regardless. Returns null by default.
-	/// </summary>
-	/// <remarks>
-	/// Note that it's important you put the right checks in the right ValidTeleportCheck step,
-	/// as whatever one returns false (if any) will determine the error message sent to the player.
-	/// </remarks>
-	/// <param name="pylonInfo"> The internal information pertaining to the current pylon being teleported TO. </param>
-	public virtual bool? ValidTeleportCheck_PreAnyDanger(TeleportPylonInfo pylonInfo)
-	{
-		return null;
-	}
-
-	/// <summary>
-	/// Called before Step 3 of the ValidTeleportCheck process. This is the fourth vanilla check that is called when
+	/// Called before Step 2 of the ValidTeleportCheck process. This is the third vanilla check that is called when
 	/// the player attempts to teleport FROM or TO a Pylon. This method is called before both vanilla and
 	/// modded pylons check their Biome requirements, and returning false will prevent those checks from taking place,
 	/// forcefully failing the BiomeRequirements step. Returning null will enact vanilla behavior, and returning true will make the

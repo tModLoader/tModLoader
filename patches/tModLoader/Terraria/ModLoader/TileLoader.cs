@@ -49,10 +49,6 @@ public static class TileLoader
 	internal static List<ConvertTile>[][] tileConversionDelegates = null;
 	internal static int[][] tileConversionFallbacks = null;
 	private static bool loaded = false;
-	private static readonly int vanillaChairCount = TileID.Sets.RoomNeeds.CountsAsChair.Length;
-	private static readonly int vanillaTableCount = TileID.Sets.RoomNeeds.CountsAsTable.Length;
-	private static readonly int vanillaTorchCount = TileID.Sets.RoomNeeds.CountsAsTorch.Length;
-	private static readonly int vanillaDoorCount = TileID.Sets.RoomNeeds.CountsAsDoor.Length;
 
 	private static Func<int, int, int, bool, bool>[] HookKillSound;
 	private delegate void DelegateNumDust(int i, int j, int type, bool fail, ref int num);
@@ -88,7 +84,7 @@ public static class TileLoader
 	private delegate bool DelegatePreDrawPlacementPreview(int i, int j, int type, SpriteBatch spriteBatch, ref Rectangle frame, ref Vector2 position, ref Color color, bool validPlacement, ref SpriteEffects spriteEffects);
 	private static DelegatePreDrawPlacementPreview[] HookPreDrawPlacementPreview;
 	private static Action<int, int, int, SpriteBatch, Rectangle, Vector2, Color, bool, SpriteEffects>[] HookPostDrawPlacementPreview;
-	private static Action<int, int, int>[] HookRandomUpdate;
+	private static Action<int, int, int, bool>[] HookRandomUpdate;
 	private delegate bool DelegateTileFrame(int i, int j, int type, ref bool resetFrame, ref bool noBreak);
 	private static DelegateTileFrame[] HookTileFrame;
 	private static Func<int, int, int, bool>[] HookCanPlace;
@@ -159,7 +155,8 @@ public static class TileLoader
 		LoaderUtils.ResetStaticMembers(typeof(TileID));
 
 		//Etc
-		Array.Resize(ref Main.SceneMetrics._tileCounts, nextTile);
+		Array.Resize(ref Main._playerSceneMetrics._tileCounts, nextTile);
+		Array.Resize(ref Main._cameraSceneMetrics._tileCounts, nextTile);
 		Array.Resize(ref Main.PylonSystem._sceneMetrics._tileCounts, nextTile);
 		Array.Resize(ref Main.tileLighted, nextTile);
 		Array.Resize(ref Main.tileMergeDirt, nextTile);
@@ -180,34 +177,37 @@ public static class TileLoader
 		Array.Resize(ref Main.tileSolidTop, nextTile);
 		Array.Resize(ref Main.tileSolid, nextTile);
 		Array.Resize(ref Main.tileBouncy, nextTile);
+		Array.Resize(ref Main.tileOreFinderPriority, nextTile);
 		Array.Resize(ref Main.tileLargeFrames, nextTile);
 		Array.Resize(ref Main.tileRope, nextTile);
 		Array.Resize(ref Main.tileBrick, nextTile);
 		Array.Resize(ref Main.tileMoss, nextTile);
 		Array.Resize(ref Main.tileNoAttach, nextTile);
 		Array.Resize(ref Main.tileNoFail, nextTile);
+		Array.Resize(ref Main.tileCracked, nextTile);
 		Array.Resize(ref Main.tileObsidianKill, nextTile);
 		Array.Resize(ref Main.tileFrameImportant, nextTile);
 		Array.Resize(ref Main.tilePile, nextTile);
 		Array.Resize(ref Main.tileBlendAll, nextTile);
+		Array.Resize(ref Main.tileGlowMask, nextTile);
 		Array.Resize(ref Main.tileContainer, nextTile);
 		Array.Resize(ref Main.tileSign, nextTile);
+		Array.Resize(ref Main.tileMerge, nextTile);
 		Array.Resize(ref Main.tileSand, nextTile);
 		Array.Resize(ref Main.tileFlame, nextTile);
 		Array.Resize(ref Main.tileFrame, nextTile);
 		Array.Resize(ref Main.tileFrameCounter, nextTile);
-		Array.Resize(ref Main.tileMerge, nextTile);
-		Array.Resize(ref Main.tileOreFinderPriority, nextTile);
-		Array.Resize(ref Main.tileGlowMask, nextTile);
-		Array.Resize(ref Main.tileCracked, nextTile);
 
 		Array.Resize(ref WorldGen.tileCounts, nextTile);
 		Array.Resize(ref WorldGen.houseTile, nextTile);
+		Array.Resize(ref WorldGen.Skyblock.hasTile, nextTile);
 		//Array.Resize(ref GameContent.Biomes.CaveHouseBiome._blacklistedTiles, nextTile);
 		Array.Resize(ref GameContent.Biomes.CorruptionPitBiome.ValidTiles, nextTile);
 		Array.Resize(ref GameContent.Metadata.TileMaterials.MaterialsByTileId, nextTile);
 		Array.Resize(ref HouseUtils.BlacklistedTiles, nextTile);
 		Array.Resize(ref HouseUtils.BeelistedTiles, nextTile);
+		Array.Resize(ref Recipe.TileUsedInRecipes, nextTile);
+		Array.Resize(ref Recipe.TileCountsAs, nextTile);
 
 		for (int i = 0; i < nextTile; i++) { //oh dear
 			Array.Resize(ref Main.tileMerge[i], nextTile);
@@ -306,11 +306,6 @@ public static class TileLoader
 			Main.instance.TilePaintSystem.Reset();
 		});
 
-		Array.Resize(ref TileID.Sets.RoomNeeds.CountsAsChair, vanillaChairCount);
-		Array.Resize(ref TileID.Sets.RoomNeeds.CountsAsTable, vanillaTableCount);
-		Array.Resize(ref TileID.Sets.RoomNeeds.CountsAsTorch, vanillaTorchCount);
-		Array.Resize(ref TileID.Sets.RoomNeeds.CountsAsDoor, vanillaDoorCount);
-
 		while (TileObjectData._data.Count > TileID.Count) {
 			TileObjectData._data.RemoveAt(TileObjectData._data.Count - 1);
 		}
@@ -352,6 +347,10 @@ public static class TileLoader
 		}
 		*/
 		tileData = TileObjectData.GetTileData(Main.tile[i, j]);
+		// The tile can already be inactive here, since CheckModTile runs while the object is being destroyed.
+		if (tileData == null)
+			return;
+
 		int partFrameX = frameX % tileData.CoordinateFullWidth;
 		int partFrameY = frameY % tileData.CoordinateFullHeight;
 		int partX = partFrameX / (tileData.CoordinateWidth + tileData.CoordinatePadding);
@@ -615,7 +614,7 @@ public static class TileLoader
 		else if (includeAllModdedLargeObjectDrops)
 			needDrops = true;
 		else if (includeLargeObjectDrops) {
-			if (TileID.Sets.BasicChest[tileCache.type] || TileID.Sets.BasicDresser[tileCache.type] || TileID.Sets.Campfire[tileCache.type]) {
+			if (TileID.Sets.BasicChest[tileCache.type] || TileID.Sets.BasicDresser[tileCache.type] || TileID.Sets.Campfires[tileCache.type]) {
 				needDrops = true;
 			}
 		}
@@ -628,7 +627,7 @@ public static class TileLoader
 			foreach (var item in itemDrops) {
 				item.Prefix(-1); // Assign a random prefix, as expected
 				int num = Item.NewItem(WorldGen.GetItemSource_FromTileBreak(x, y), x * 16, y * 16, 16, 16, item, noBroadcast: false);
-				Main.item[num].TryCombiningIntoNearbyItems(num);
+				Main.item[num].TryCombiningIntoNearbyItems();
 			}
 		}
 	}
@@ -791,7 +790,7 @@ public static class TileLoader
 			RegisterConversion(toType, BiomeConversionID.Purity, Purify);
 			RegisterConversion(toType, BiomeConversionID.PurificationPowder, Purify);
 			if (conversionType != BiomeConversionID.Hallow)
-				RegisterConversion(toType, BiomeConversionID.Chlorophyte, Purify);
+				RegisterConversion(toType, BiomeConversionID.ChlorophyteSpread, Purify); //TODO: Not sure about this ID.
 		}
 	}
 
@@ -810,7 +809,6 @@ public static class TileLoader
 
 		RegisterConversionFallback(TileID.CorruptJungleGrass, TileID.JungleGrass, BiomeConversionID.Corruption, BiomeConversionID.GlowingMushroom);
 		RegisterConversionFallback(TileID.CrimsonJungleGrass, TileID.JungleGrass, BiomeConversionID.Crimson, BiomeConversionID.GlowingMushroom);
-		RegisterConversionFallback(TileID.MushroomGrass, TileID.JungleGrass, BiomeConversionID.GlowingMushroom, BiomeConversionID.Corruption, BiomeConversionID.Crimson);
 
 		RegisterConversionFallback(TileID.CorruptIce, TileID.IceBlock, BiomeConversionID.Corruption);
 		RegisterConversionFallback(TileID.FleshIce, TileID.IceBlock, BiomeConversionID.Crimson);
@@ -898,7 +896,7 @@ public static class TileLoader
 
 		if (tile.TileType == type && TryGetConversionFallback(type, conversionType, out var fallback)) {
 			tile.TileType = (ushort)fallback;
-			WorldGen.Convert(i, j, conversionType, size: 0, walls: false);
+			WorldGen.Convert(i, j, conversionType, walls: false);
 
 			if (tile.TileType == fallback)
 				tile.TileType = (ushort)type;
@@ -1117,16 +1115,28 @@ public static class TileLoader
 		}
 	}
 
-	public static void RandomUpdate(int i, int j, int type)
+	public static void RandomUpdate(int i, int j, int type, bool underground)
 	{
 		if (!Main.tile[i, j].active()) {
 			return;
 		}
-		GetTile(type)?.RandomUpdate(i, j);
+		GetTile(type)?.RandomUpdate(i, j, underground);
 
 		foreach (var hook in HookRandomUpdate) {
-			hook(i, j, type);
+			hook(i, j, type, underground);
 		}
+	}
+
+	/// <summary>
+	/// Invokes <see cref="ModTile.GrowSapling"/> for the modded tile at the given coordinates.
+	/// Called by <see cref="WorldGen.AttemptToGrowTreeFromSapling"/> when fertilizer is used on a modded sapling tile.
+	/// </summary>
+	public static bool GrowModSapling(int i, int j, int type, bool underground, int treeHeightAddon, bool ignoreWalls)
+	{
+		if (!Main.tile[i, j].active())
+			return false;
+
+		return GetTile(type)?.GrowSapling(i, j, underground, treeHeightAddon, ignoreWalls) ?? false;
 	}
 
 	public static bool TileFrame(int i, int j, int type, ref bool resetFrame, ref bool noBreak)

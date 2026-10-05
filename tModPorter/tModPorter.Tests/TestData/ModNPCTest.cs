@@ -49,6 +49,7 @@ public class ModNPCTest : ModNPC
 	}
 
 	public override void OnChatButtonClicked(bool firstButton, ref bool shop) { /* Empty */ }
+	public override void OnChatButtonClicked(bool firstButton, ref string shopName) { /* Empty */ }
 	public override void SetupShop(Chest shop, ref int nextSlot) { }
 
 	public override void HitEffect(int hitDirection, double damage) { }
@@ -73,6 +74,10 @@ public class ModNPCTest : ModNPC
 		closeness = 10;
 	}
 
+	public override float SpawnChance(NPCSpawnInfo spawnInfo) {
+		return spawnInfo.Water ? 0f : 1f;
+	}
+
 	public override void SetStaticDefaults() {
 		NPCID.Sets.DebuffImmunitySets.Add(Type, new NPCDebuffImmunityData {
 			SpecificallyImmuneTo = new int[] {
@@ -81,5 +86,13 @@ public class ModNPCTest : ModNPC
 		});
 
 		NPCID.Sets.ShimmerImmunity[Type] = true;
+
+		NPCID.Sets.GoldCrittersCollection.Add(Type);
+
+		NPCID.Sets.SpawnFromLastEmptySlot[Type] = true;
+
+		NPCID.Sets.ImmuneToAllBuffs[Type] = true;
 	}
+
+	public override void BossLoot(ref int potionType) { }
 }

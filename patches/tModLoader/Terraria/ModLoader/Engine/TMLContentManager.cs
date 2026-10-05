@@ -25,7 +25,8 @@ internal class TMLContentManager : ContentManager
 
 	public TMLContentManager(IServiceProvider serviceProvider, string rootDirectory, TMLContentManager overrideContentManager) : base(serviceProvider, rootDirectory)
 	{
-		TryFixFileCasings(rootDirectory);
+		if (overrideContentManager != null) // Only need to check vanilla content directory.
+			TryFixFileCasings(rootDirectory);
 
 		this.overrideContentManager = overrideContentManager;
 

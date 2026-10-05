@@ -98,7 +98,7 @@ public static class UICommon
 	{
 		if (Main.SettingsEnabled_OpaqueBoxBehindTooltips) {
 			Item fakeItem = new Item();
-			fakeItem.SetDefaults(0, noMatCheck: true);
+			fakeItem.SetDefaults(0);
 			fakeItem.SetNameOverride(text);
 			fakeItem.type = 1;
 			fakeItem.scale = 0f;
@@ -130,7 +130,8 @@ public static class UICommon
 	public static Asset<Texture2D> ButtonOpenFolder { get; internal set; }
 	public static Asset<Texture2D> ButtonOpenFolderCustom { get; internal set; }
 	public static Asset<Texture2D> ButtonTranslationModTexture { get; internal set; }
-	public static Asset<Texture2D> LoaderTexture { get; internal set; }
+    public static Asset<Texture2D> LoaderTexture { get; internal set; }
+    public static Asset<Texture2D> SmallLoaderTexture { get; internal set; }
 	public static Asset<Texture2D> LoaderBgTexture { get; internal set; }
 	public static Asset<Texture2D> ButtonDownloadTexture { get; internal set; }
 	public static Asset<Texture2D> ButtonDowngradeTexture { get; internal set; }
@@ -145,6 +146,10 @@ public static class UICommon
 	public static Asset<Texture2D> tModLoaderTitleLinkButtonsTexture { get; internal set; }
 	public static Asset<Texture2D> CopyCodeButtonTexture { get; internal set; }
 	public static Asset<Texture2D> DropdownIconTexture { get; internal set; }
+	public static Asset<Texture2D> ButtonDeleteTexture { get; internal set; }
+	public static Asset<Texture2D> ButtonRateTexture { get; internal set; }
+	public static Asset<Texture2D> RatingIcons { get; internal set; }
+	public static Asset<Texture2D> RatingStar { get; internal set; }
 
 	internal static void LoadTextures()
 	{
@@ -170,6 +175,7 @@ public static class UICommon
 		ButtonTranslationModTexture = LoadEmbeddedTexture("UI.ButtonTranslationMod");
 		LoaderTexture = LoadEmbeddedTexture("UI.Loader");
 		LoaderBgTexture = LoadEmbeddedTexture("UI.LoaderBG");
+        SmallLoaderTexture = LoadEmbeddedTexture("UI.SmallLoader");
 		ButtonDownloadTexture = LoadEmbeddedTexture("UI.ButtonDownload");
 		ButtonDowngradeTexture = LoadEmbeddedTexture("UI.ButtonDowngrade");
 		ButtonDownloadMultipleTexture = LoadEmbeddedTexture("UI.ButtonDownloadMultiple");
@@ -185,5 +191,11 @@ public static class UICommon
 		tModLoaderTitleLinkButtonsTexture = LoadEmbeddedTexture("UI.tModLoaderTitleLinkButtons");
 		CopyCodeButtonTexture = LoadEmbeddedTexture("UI.CopyCodeButton");
 		DropdownIconTexture = LoadEmbeddedTexture("UI.DropdownIcon");
+
+		ButtonDeleteTexture = LoadEmbeddedTexture("UI.ButtonDelete");
+		ButtonRateTexture = LoadEmbeddedTexture("UI.ButtonRate");
+
+		RatingIcons = LoadEmbeddedTexture("UI.RatingIcons");
+		RatingStar = LoadEmbeddedTexture("UI.RatingStar");
 	}
 }

@@ -154,7 +154,7 @@ public static class PlayerLoader
 				if (k < items.Count)
 					player.inventory[k] = items[k];
 				else
-					player.inventory[k].SetDefaults();
+					player.inventory[k].SetDefaults(0);
 		}
 		else {
 			for (int k = 0; k < 49; k++) {
@@ -491,7 +491,7 @@ public static class PlayerLoader
 
 	public static void ModifyHurt(Player player, ref Player.HurtModifiers modifiers)
 	{
-		// safe to get source entity, as hurt is not synchronized across the net
+		// safe to get source entity, as hurt is not yet synchronized across the net
 		if (modifiers.DamageSource.TryGetCausingEntity(out Entity sourceEntity)) {
 			switch (sourceEntity) {
 				case Projectile proj:
@@ -515,13 +515,12 @@ public static class PlayerLoader
 
 	public static void OnHurt(Player player, Player.HurtInfo info)
 	{
-		// source entity is only safe to retrieve if the hit is happening 'locally'
 		if (info.DamageSource.TryGetCausingEntity(out Entity sourceEntity)) {
 			switch (sourceEntity) {
-				case Projectile proj when player == Main.LocalPlayer:
+				case Projectile proj when !info.DamageSource.NetSynced: // we want to avoid having a hook which fires inconsistently on remote clients depending on whether or not the Projectile has despawned
 					CombinedHooks.OnHitByProjectile(player, proj, info);
 					break;
-				case NPC npc when player == Main.LocalPlayer:
+				case NPC npc when !info.DamageSource.NetSynced: // we want to avoid having a hook which fires inconsistently on remote clients depending on whether or not the NPC has been replaced
 					CombinedHooks.OnHitByNPC(player, npc, info);
 					break;
 				case Player sourcePlayer when info.DamageSource.SourceItem is Item item && info.PvP:
@@ -1156,7 +1155,7 @@ public static class PlayerLoader
 	public static bool? CanConsumeBait(Player player, Item bait)
 	{
 		bool? ret = null;
-		foreach (var modPlayer in HookCaughtFish.Enumerate(player)) {
+		foreach (var modPlayer in HookCanConsumeBait.Enumerate(player)) {
 			if (modPlayer.CanConsumeBait(bait) is bool b)
 				ret = (ret ?? true) && b;
 		}
@@ -1474,9 +1473,9 @@ public static class PlayerLoader
 		}
 	}
 
-	private static HookList HookOnPickup = AddHook<Func<Item, bool>>(p => p.OnPickup);
+	private static HookList HookOnPickup = AddHook<Func<WorldItem, bool>>(p => p.OnPickup);
 
-	public static bool OnPickup(Player player, Item item)
+	public static bool OnPickup(Player player, WorldItem item)
 	{
 		foreach (var modPlayer in HookOnPickup.Enumerate(player)) {
 			if (!modPlayer.OnPickup(item)) {

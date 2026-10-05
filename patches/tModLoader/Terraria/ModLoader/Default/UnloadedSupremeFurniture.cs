@@ -23,10 +23,10 @@ public class UnloadedSupremeFurniture : UnloadedTile
 		Main.tileTable[Type] = true;
 		Main.tileNoAttach[Type] = true;
 
-		AddToArray(ref TileID.Sets.RoomNeeds.CountsAsChair);
-		AddToArray(ref TileID.Sets.RoomNeeds.CountsAsTable);
-		AddToArray(ref TileID.Sets.RoomNeeds.CountsAsDoor);
-		AddToArray(ref TileID.Sets.RoomNeeds.CountsAsTorch);
+		TileID.Sets.RoomNeeds.CountsAsChair[Type] = true;
+		TileID.Sets.RoomNeeds.CountsAsTable[Type] = true;
+		TileID.Sets.RoomNeeds.CountsAsDoor[Type] = true;
+		TileID.Sets.RoomNeeds.CountsAsTorch[Type] = true;
 
 		TileObjectData.newTile.CopyFrom(TileObjectData.Style1x1); // Disables hammering
 		TileObjectData.newTile.AnchorBottom = new AnchorData(AnchorType.None, 0, 0);

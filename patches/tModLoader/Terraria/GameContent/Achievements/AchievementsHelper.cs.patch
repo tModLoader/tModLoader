@@ -6,7 +6,7 @@
  namespace Terraria.GameContent.Achievements;
  
  public class AchievementsHelper
-@@ -18,6 +_,9 @@
+@@ -19,6 +_,9 @@
  	private static bool mayhem2down;
  	private static bool mayhem3down;
  
@@ -16,7 +16,7 @@
  	public static bool CurrentlyMining {
  		get {
  			return _isMining;
-@@ -30,6 +_,7 @@
+@@ -31,6 +_,7 @@
  	public static event ItemPickupEvent OnItemPickup;
  	public static event ItemCraftEvent OnItemCraft;
  	public static event TileDestroyedEvent OnTileDestroyed;
@@ -24,7 +24,7 @@
  	public static event NPCKilledEvent OnNPCKilled;
  	public static event ProgressionEventEvent OnProgressionEvent;
  
-@@ -114,10 +_,10 @@
+@@ -121,10 +_,10 @@
  			}
  		}
  
@@ -37,7 +37,7 @@
  			Main.Achievements.GetCondition("TOPPED_OFF", "Use").Complete();
  
  		if (player.miscEquips[4].type > 0)
-@@ -191,7 +_,7 @@
+@@ -199,7 +_,7 @@
  		if (context == 17)
  			Main.Achievements.GetCondition("THE_CAVALRY", "Equip").Complete();
  
@@ -46,7 +46,7 @@
  			Main.Achievements.GetCondition("HEAD_IN_THE_CLOUDS", "Equip").Complete();
  
  		if (context == 8 && player.armor[0].stack > 0 && player.armor[1].stack > 0 && player.armor[2].stack > 0)
-@@ -224,12 +_,12 @@
+@@ -232,12 +_,12 @@
  		switch (eventID) {
  			case 1:
  				Main.Achievements.GetCondition("STAR_POWER", "Use").Complete();

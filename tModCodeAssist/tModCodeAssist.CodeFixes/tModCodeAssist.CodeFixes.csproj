@@ -12,7 +12,7 @@
   <ItemGroup>
     <ProjectReference Include="..\tModCodeAssist\tModCodeAssist.csproj" />
     
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.3.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="5.3.0" />
   </ItemGroup>
   
   <ItemGroup>

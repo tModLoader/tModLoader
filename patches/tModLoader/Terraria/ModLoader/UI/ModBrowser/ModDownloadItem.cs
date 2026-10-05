@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Terraria.ModLoader.Core;
 using Terraria.Social.Base;
+using Terraria.Social.Steam;
 
 namespace Terraria.ModLoader.UI.ModBrowser;
 
@@ -27,16 +28,18 @@ public class ModDownloadItem
 	public readonly ModSide ModSide;
 	public readonly int Downloads;
 	public readonly int Hot;
+	public readonly uint Upvotes;
+	public readonly uint Downvotes;
+	public readonly float VoteScore;
 	public readonly string Homepage;
 	public readonly Version ModloaderVersion;
 
-	internal LocalMod Installed;
+	internal LocalMod Installed { get; set; }
 	public bool NeedUpdate { get; private set; }
 	public bool AppNeedRestartToReinstall { get; private set; }
-
 	public bool IsInstalled => Installed != null;
 
-	public ModDownloadItem(string displayName, string name, Version version, string author, string modReferences, ModSide modSide, string modIconUrl, string publishId, int downloads, int hot, DateTime timeStamp, Version modloaderversion, string homepage, string ownerId, string[] referencesById, bool banned, DeveloperMetadata devMetadata)
+	public ModDownloadItem(string displayName, string name, Version version, string author, string modReferences, ModSide modSide, string modIconUrl, string publishId, int downloads, int hot, DateTime timeStamp, Version modloaderversion, string homepage, string ownerId, string[] referencesById, bool banned, DeveloperMetadata devMetadata, uint upvotes, uint downvotes, float voteScore)
 	{
 		ModName = name;
 		DisplayName = displayName;
@@ -57,6 +60,11 @@ public class ModDownloadItem
 		ModloaderVersion = modloaderversion;
 		Banned = banned;
 		DevMetadata = devMetadata;
+		Upvotes = upvotes;
+		Downvotes = downvotes;
+		VoteScore = voteScore;
+
+		UpdateInstallState();
 	}
 
 	internal void UpdateInstallState()
@@ -67,10 +75,22 @@ public class ModDownloadItem
 		//TODO: This should assess the source of the ModDownloadItem and ensure matches with the active SocialBrowserModule instance for safety, but eh.
 		Installed = Interface.modBrowser.SocialBackend.IsItemInstalled(ModName);
 
-		NeedUpdate = Installed != null && Interface.modBrowser.SocialBackend.DoesItemNeedUpdate(PublishId, Installed, Version);
+		NeedUpdate = IsInstalled && Interface.modBrowser.SocialBackend.DoesItemNeedUpdate(PublishId, Installed, Version);
+		
 		// The below line is to identify the transient state where it isn't installed, but Steam considers it as such - Solxan
 		// Steam keeps a cache once a download starts, and doesn't clean up cache until game close, which gets very confusing.
 		AppNeedRestartToReinstall = Installed == null && Interface.modBrowser.SocialBackend.DoesAppNeedRestartToReinstallItem(PublishId);
+	}
+
+	internal bool IsReupload()
+	{
+		if (Installed is null)
+			return false;
+
+		if (!WorkshopHelper.GetPublishIdLocal(Installed.modFile, out var localPublishId))
+			return false;
+
+		return localPublishId.ToString() != PublishId.m_ModPubId;
 	}
 
 	public override bool Equals(object obj) => Equals(obj as ModDownloadItem);
@@ -101,7 +121,6 @@ public class ModDownloadItem
 			if (item == null)
 				return false;
 
-			item.UpdateInstallState();
 			return !item.IsInstalled || item.NeedUpdate;
 		});
 	}

@@ -1,0 +1,24 @@
+--- src/TerrariaNetCore/Terraria/SceneState.cs
++++ src/tModLoader/Terraria/SceneState.cs
+@@ -90,7 +_,11 @@
+ 		ManageSpecialBiomeVisuals("Noir", metrics.NoirMonolith || perspectivePlayer.noirShader);
+ 		ManageSpecialBiomeVisuals("CRT", metrics.CRTMonolith || perspectivePlayer.CRTMonolithShader);
+ 		ManageSpecialBiomeVisuals("Test2", metrics.RetroMonolith || perspectivePlayer.retroMonolithShader);
++		/*
+ 		ManageSpecialBiomeVisuals("WaterDistortion", Main.WaveQuality > 0);
++		*/
++		ManageSpecialBiomeVisuals("WaterDistortion", Main.WaveQuality > 0 && Lighting.NotRetro);
++
+ 		bool flag8 = metrics.TownNPCCount > 0 || metrics.PartyMonolithCount > 0;
+ 		MoveTowards(ref SkyManager.Instance["Party"].Opacity, flag8 ? 1 : 0, 0.01f);
+ 		if (Filters.Scene["Graveyard"].IsActive()) {
+@@ -292,7 +_,8 @@
+ 			MoveTowards(ref Main.shimmerAlpha, 0f, 0.05f);
+ 	}
+ 
++	// TML: Made public
+-	private void ManageSpecialBiomeVisuals(string biomeName, bool inZone, Vector2 activationSource = default(Vector2), bool alwaysInstant = false)
++	public void ManageSpecialBiomeVisuals(string biomeName, bool inZone, Vector2 activationSource = default(Vector2), bool alwaysInstant = false)
+ 	{
+ 		if (SkyManager.Instance[biomeName] != null && inZone != SkyManager.Instance[biomeName].IsActive()) {
+ 			if (inZone)

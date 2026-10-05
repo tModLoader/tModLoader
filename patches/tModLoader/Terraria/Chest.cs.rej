@@ -1,0 +1,34 @@
+@@ -257,6 +_,19 @@
+ 				}
+ 				else if (item.IsTheSameAs(Main.chest[i].item[j])) {
+ 					flag2 = true;
++					// flag set above means "item of same type found in chest, able to be put into an empty slot later", which means we have to respect it before TryStackItems
++					if (!ItemLoader.TryStackItems(Main.chest[i].item[j], item, out int numTransfered))
++						continue;
++
++					if(numTransfered > 0)
++						VisualizeChestTransfer(position, vector, item, numTransfered);
++
++					if (item.stack <= 0) {
++						item.SetDefaults();
++						return item;
++					}
++
++					/* #OnStackHook
+ 					int num = Main.chest[i].item[j].maxStack - Main.chest[i].item[j].stack;
+ 					if (num > 0) {
+ 						if (num > item.stack)
+@@ -268,11 +_,13 @@
+ 							Main.chest[i].item[j].stack += num;
+ 						}
+ 
++						// Extra context.
+ 						if (item.stack <= 0) {
+ 							item.SetDefaults();
+ 							return item;
+ 						}
+ 					}
++					*/
+ 				}
+ 				else {
+ 					flag3 = true;

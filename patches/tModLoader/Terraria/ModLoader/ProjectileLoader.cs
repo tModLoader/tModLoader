@@ -7,6 +7,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using Terraria.DataStructures;
 using Terraria.GameContent;
+using Terraria.GameContent.Tile_Entities;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
@@ -79,11 +80,7 @@ public static class ProjectileLoader
 			Lang._projectileNameCache[k] = LocalizedText.Empty;
 		}
 
-		Array.Resize(ref Projectile.perIDStaticNPCImmunity, ProjectileCount);
-
-		for (int i = 0; i < ProjectileCount; i++) {
-			Projectile.perIDStaticNPCImmunity[i] = new uint[200];
-		}
+		Projectile.perIDStaticNPCImmunity = new uint[ProjectileCount, InitData.MaxNPCs];
 	}
 
 	internal static void FinishSetup()
@@ -579,13 +576,6 @@ public static class ProjectileLoader
 		return projectile.ModProjectile?.Colliding(projHitbox, targetHitbox);
 	}
 
-	public static void DrawHeldProjInFrontOfHeldItemAndArms(Projectile projectile, ref bool flag)
-	{
-		if (projectile.ModProjectile != null) {
-			flag = projectile.ModProjectile.DrawHeldProjInFrontOfHeldItemAndArms;
-		}
-	}
-
 	[Obsolete($"Moved to ItemLoader. Fishing line position and color are now set by the pole used.")]
 	public static void ModifyFishingLine(Projectile projectile, ref float polePosX, ref float polePosY, ref Color lineColor)
 	{
@@ -625,49 +615,49 @@ public static class ProjectileLoader
 		}
 	}
 
-	private static HookList HookPreDrawExtras = AddHook<Func<Projectile, bool>>(g => g.PreDrawExtras);
+	private static HookList HookPreDrawExtras = AddHook<Func<Projectile, Player, bool>>(g => g.PreDrawExtras);
 
-	public static bool PreDrawExtras(Projectile projectile)
+	public static bool PreDrawExtras(Projectile projectile, Player player)
 	{
 		bool result = true;
 
 		foreach (var g in HookPreDrawExtras.Enumerate(projectile)) {
-			result &= g.PreDrawExtras(projectile);
+			result &= g.PreDrawExtras(projectile, player);
 		}
 
 		if (result && projectile.ModProjectile != null) {
-			return projectile.ModProjectile.PreDrawExtras();
+			return projectile.ModProjectile.PreDrawExtras(player);
 		}
 
 		return result;
 	}
 
-	private delegate bool DelegatePreDraw(Projectile projectile, ref Color lightColor);
+	private delegate bool DelegatePreDraw(Projectile projectile, Player player, ref Color lightColor);
 	private static HookList HookPreDraw = AddHook<DelegatePreDraw>(g => g.PreDraw);
 
-	public static bool PreDraw(Projectile projectile, ref Color lightColor)
+	public static bool PreDraw(Projectile projectile, Player player, ref Color lightColor)
 	{
 		bool result = true;
 
 		foreach (var g in HookPreDraw.Enumerate(projectile)) {
-			result &= g.PreDraw(projectile, ref lightColor);
+			result &= g.PreDraw(projectile, player, ref lightColor);
 		}
 
 		if (result && projectile.ModProjectile != null) {
-			return projectile.ModProjectile.PreDraw(ref lightColor);
+			return projectile.ModProjectile.PreDraw(player, ref lightColor);
 		}
 
 		return result;
 	}
 
-	private static HookList HookPostDraw = AddHook<Action<Projectile, Color>>(g => g.PostDraw);
+	private static HookList HookPostDraw = AddHook<Action<Projectile, Player, Color>>(g => g.PostDraw);
 
-	public static void PostDraw(Projectile projectile, Color lightColor)
+	public static void PostDraw(Projectile projectile, Player player, Color lightColor)
 	{
-		projectile.ModProjectile?.PostDraw(lightColor);
+		projectile.ModProjectile?.PostDraw(player, lightColor);
 
 		foreach (var g in HookPostDraw.Enumerate(projectile)) {
-			g.PostDraw(projectile, lightColor);
+			g.PostDraw(projectile, player, lightColor);
 		}
 	}
 
@@ -773,17 +763,6 @@ public static class ProjectileLoader
 		return flag;
 	}
 
-	private static HookList HookDrawBehind = AddHook<Action<Projectile, int, List<int>, List<int>, List<int>, List<int>, List<int>>>(g => g.DrawBehind);
-
-	internal static void DrawBehind(Projectile projectile, int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
-	{
-		projectile.ModProjectile?.DrawBehind(index, behindNPCsAndTiles, behindNPCs, behindProjectiles, overPlayers, overWiresUI);
-
-		foreach (var g in HookDrawBehind.Enumerate(projectile)) {
-			g.DrawBehind(projectile, index, behindNPCsAndTiles, behindNPCs, behindProjectiles, overPlayers, overWiresUI);
-		}
-	}
-
 	private static HookList HookPrepareBombToBlow = AddHook<Action<Projectile>>(g => g.PrepareBombToBlow);
 
 	internal static void PrepareBombToBlow(Projectile projectile)
@@ -803,5 +782,63 @@ public static class ProjectileLoader
 		foreach (var g in HookEmitEnchantmentVisualsAt.Enumerate(projectile)) {
 			g.EmitEnchantmentVisualsAt(projectile, boxPosition, boxWidth, boxHeight);
 		}
+	}
+
+	private delegate bool DelegateDisplayDollSettings(Projectile projectile, Player doll, TEDisplayDoll.DisplayDollPose pose, ref int aiStyle, ref int aiType);
+	private static HookList HookDisplayDollSettings = AddHook<DelegateDisplayDollSettings>(g => g.DisplayDollSettings);
+
+	internal static bool DisplayDollSettings(Projectile projectile, Player doll, TEDisplayDoll.DisplayDollPose pose, ref int aiStyle, ref int aiType)
+	{
+		bool result = true;
+
+		foreach (var g in HookDisplayDollSettings.Enumerate(projectile)) {
+			result &= g.DisplayDollSettings(projectile, doll, pose, ref aiStyle, ref aiType);
+		}
+
+		if (result && projectile.ModProjectile != null) {
+			return projectile.ModProjectile.DisplayDollSettings(doll, pose, ref aiStyle, ref aiType);
+		}
+
+		return result;
+	}
+
+	private delegate void DelegateFlailStats(Projectile projectile, ref int launchTimeLimit, ref float launchSpeed, ref float maxLaunchLength, ref float retractAcceleration, ref float maxRetractSpeed, ref float forcedRetractAcceleration, ref float maxForcedRetractSpeed, ref int ricochetTimeLimit, ref float spinVisualDistance);
+	private static HookList HookFlailStats = AddHook<DelegateFlailStats>(g => g.FlailStats);
+
+	public static void FlailStats(Projectile projectile, ref int launchTimeLimit, ref float launchSpeed, ref float maxLaunchLength, ref float retractAcceleration, ref float maxRetractSpeed, ref float forcedRetractAcceleration, ref float maxForcedRetractSpeed, ref int ricochetTimeLimit, ref float spinVisualDistance)
+	{
+		projectile.ModProjectile?.FlailStats(ref launchTimeLimit, ref launchSpeed, ref maxLaunchLength, ref retractAcceleration, ref maxRetractSpeed, ref forcedRetractAcceleration, ref maxForcedRetractSpeed, ref ricochetTimeLimit, ref spinVisualDistance);
+
+		foreach (var g in HookFlailStats.Enumerate(projectile)) {
+			g.FlailStats(projectile, ref launchTimeLimit, ref launchSpeed, ref maxLaunchLength, ref retractAcceleration, ref maxRetractSpeed, ref forcedRetractAcceleration, ref maxForcedRetractSpeed, ref ricochetTimeLimit, ref spinVisualDistance);
+		}
+	}
+
+	private delegate void DelegateFlailSpinCollisionRange(Projectile projectile, ref float range);
+	private static HookList HookFlailSpinCollisionRange = AddHook<DelegateFlailSpinCollisionRange>(g => g.FlailSpinCollisionRange);
+
+	public static void FlailSpinCollisionRange(Projectile projectile, ref float range)
+	{
+		projectile.ModProjectile?.FlailSpinCollisionRange(ref range);
+
+		foreach (var g in HookFlailSpinCollisionRange.Enumerate(projectile)) {
+			g.FlailSpinCollisionRange(projectile, ref range);
+		}
+	}
+
+	private delegate bool DelegatePreTryDespawning(Projectile projectile, ref bool giveItem);
+	private static HookList HookPreTryDespawning = AddHook<DelegatePreTryDespawning>(g => g.PreTryDespawning);
+
+	public static bool PreTryDespawning(Projectile projectile, out bool giveItem)
+	{
+		giveItem = true;
+
+		bool result = projectile.ModProjectile?.PreTryDespawning(ref giveItem) ?? true;
+
+		foreach (var g in HookPreTryDespawning.Enumerate(projectile)) {
+			result &= g.PreTryDespawning(projectile, ref giveItem);
+		}
+
+		return result;
 	}
 }

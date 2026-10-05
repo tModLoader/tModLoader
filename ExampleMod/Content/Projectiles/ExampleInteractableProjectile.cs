@@ -27,7 +27,6 @@ namespace ExampleMod.Content.Projectiles
 
 		public override void SetStaticDefaults() {
 			ProjectileID.Sets.IsInteractable[Type] = true; // Facilitates smart cursor support
-			ProjectileID.Sets.DontAttachHideToAlpha[Type] = true; // Necessary for non-held projectiles using Projectile.hide
 			Main.projFrames[Type] = 5;
 		}
 
@@ -36,28 +35,14 @@ namespace ExampleMod.Content.Projectiles
 			Projectile.height = 24;
 			Projectile.tileCollide = false;
 			Projectile.timeLeft = 10800; // Stays active for 3 minutes, or 3 * 60 * 60 game updates
-			Projectile.hide = true;
+			Projectile.drawLayer = ProjectileDrawLayerID.BehindProjectiles;
 
 			// Draw the projectile higher to line up the hitbox with the body of the projectile, not the flapping wings.
 			DrawOriginOffsetY = -5;
 		}
 
-		public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI) {
-			behindProjectiles.Add(index); // This projectile draws behind other projectiles to not be in the way.
-		}
-
-		public override void PostDraw(Color lightColor) {
+		public override void PostDraw(Player player, Color lightColor) {
 			// We use PostDraw to draw the highlight texture over the normal texture.
-
-			// This logic replicates the vanilla projectile drawing logic:
-			Asset<Texture2D> texture = TextureAssets.Projectile[Type];
-			int offsetY = 0;
-			int offsetX = 0;
-			float originX = (texture.Width() - Projectile.width) * 0.5f + Projectile.width * 0.5f;
-			ProjectileLoader.DrawOffset(Projectile, ref offsetX, ref offsetY, ref originX);
-			int frameHeight = texture.Height() / Main.projFrames[Type];
-			int frameY = frameHeight * Projectile.frame;
-			SpriteEffects drawEffects = Projectile.spriteDirection == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
 
 			// TryInteracting return values:
 			// 0: Not highlighted, 1: draw faded highlight, 2: draw selected highlight selected
@@ -71,16 +56,15 @@ namespace ExampleMod.Content.Projectiles
 			if (lightValue > 10) {
 				bool isProjectileSelected = highlightTextureDrawMode == 2;
 				Color selectionGlowColor = Colors.GetSelectionGlowColor(isProjectileSelected, lightValue);
-				Main.EntitySpriteDraw(
-					highlightTexture.Value,
-					new Vector2(Projectile.position.X - Main.screenPosition.X + originX + offsetX, Projectile.position.Y - Main.screenPosition.Y + (Projectile.height / 2) + Projectile.gfxOffY),
-					new Rectangle(0, frameY, texture.Width(), frameHeight - 1),
-					selectionGlowColor,
-					Projectile.rotation,
-					new Vector2(originX, Projectile.height / 2 + offsetY),
-					1f,
-					drawEffects
-				);
+
+				// GetDefaultDrawData calculates the vanilla draw parameters:
+				var drawData = Projectile.GetDefaultDrawData(player, lightColor);
+
+				// Adjust the draw parameters to use the highlight texture and selection color and draw them.
+				Main.EntitySpriteDraw(drawData with {
+					texture = highlightTexture.Value,
+					color = selectionGlowColor
+				});
 			}
 		}
 
@@ -93,16 +77,11 @@ namespace ExampleMod.Content.Projectiles
 			bool cursorHighlights = Main.SmartCursorIsUsed || PlayerInput.UsingGamepad;
 			Player localPlayer = Main.LocalPlayer;
 			Vector2 compareSpot = localPlayer.Center;
-			if (!localPlayer.IsProjectileInteractibleAndInInteractionRange(Projectile, ref compareSpot)) {
+			if (!localPlayer.IsProjectileInteractableAndInInteractionRange(Projectile, compareSpot)) {
 				return 0;
 			}
 
-			// Due to a quirk in how projectiles drawn using behindProjectiles are implemented, we need to do some math to calculate the correct world position of the mouse instead of using Main.MouseWorld directly.
-			Matrix matrix = Matrix.Invert(Main.GameViewMatrix.ZoomMatrix);
-			Vector2 position = Main.ReverseGravitySupport(Main.MouseScreen);
-			Vector2.Transform(Main.screenPosition, matrix);
-			Vector2 realMouseWorld = Vector2.Transform(position, matrix) + Main.screenPosition;
-
+			Vector2 realMouseWorld = Main.ReverseGravitySupport(Main.MouseScreen) + Main.screenPosition;
 			bool mouseDirectlyOver = Projectile.Hitbox.Contains(realMouseWorld.ToPoint());
 			bool interactingWithThisProjectile = mouseDirectlyOver || Main.SmartInteractProj == Projectile.whoAmI;
 			if (!interactingWithThisProjectile || localPlayer.lastMouseInterface) {
@@ -114,7 +93,7 @@ namespace ExampleMod.Content.Projectiles
 				}
 			}
 
-			Main.HasInteractibleObjectThatIsNotATile = true;
+			Main.HasInteractableObjectThatIsNotATile = true;
 			if (mouseDirectlyOver) {
 				localPlayer.noThrow = 2;
 				// Show the corresponding item icon on the cursor when directly over the interactable projectile.
@@ -155,7 +134,7 @@ namespace ExampleMod.Content.Projectiles
 			}
 
 			// Let the game know to check for interactable projectiles
-			Main.CurrentFrameFlags.HadAnActiveInteractibleProjectile = true;
+			Main.CurrentFrameFlags.HadAnActiveInteractableProjectile = true;
 
 			// Replace older projectiles when a new one is spawned.
 			if (Projectile.owner == Main.myPlayer) {

@@ -8,21 +8,21 @@
 +		// v1.61 8th November 2024
 +		// * RequestCurrentStats is no longer necessary and has been removed. The Steam Client will synchronize this data before your game launches.
 +
-+		/*
++#if !NETCORE
  		_userStatsReceived = Callback<UserStatsReceived_t>.Create(OnUserStatsReceived);
  		SteamUserStats.RequestCurrentStats();
  		while (!_areStatsReceived) {
  			CoreSocialModule.Pulse();
  			Thread.Sleep(10);
  		}
-+		*/
++#endif
  	}
  
  	public override void Shutdown()
  	{
-+		/*
++#if !NETCORE
  		_userStatsReceived.Unregister();
-+		*/
++#endif
  		StoreStats();
  	}
  

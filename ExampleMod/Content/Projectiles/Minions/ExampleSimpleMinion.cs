@@ -23,6 +23,7 @@ namespace ExampleMod.Content.Projectiles.Minions
 		public override void SetStaticDefaults() {
 			Main.buffNoSave[Type] = true; // This buff won't save when you exit the world
 			Main.buffNoTimeDisplay[Type] = true; // The time remaining won't display on this buff
+			BuffID.Sets.BuffTextHandlers.Add(Type, new CachedProjectileCounterBuffTextHandler(ModContent.ProjectileType<ExampleSimpleMinion>())); // Adds the counter under the buff for how many active minions there are.
 		}
 
 		public override void Update(Player player, ref int buffIndex) {
@@ -99,7 +100,7 @@ namespace ExampleMod.Content.Projectiles.Minions
 			// Sets the amount of frames this minion has on its spritesheet
 			Main.projFrames[Type] = 4;
 			// This is necessary for right-click targeting
-			ProjectileID.Sets.MinionTargettingFeature[Type] = true;
+			ProjectileID.Sets.MinionTargetingFeature[Type] = true;
 
 			Main.projPet[Type] = true; // Denotes that this projectile is a pet or minion
 

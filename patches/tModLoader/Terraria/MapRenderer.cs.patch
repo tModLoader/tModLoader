@@ -1,0 +1,13 @@
+--- src/TerrariaNetCore/Terraria/MapRenderer.cs
++++ src/tModLoader/Terraria/MapRenderer.cs
+@@ -17,8 +_,8 @@
+ 	private static readonly int numTargetsX;
+ 	private static readonly int numTargetsY;
+ 	private static readonly Color[] _mapColorCacheArray;
+-	private static RenderTarget2D mapSectionTexture;
+-	private static readonly RenderTarget2D[,] mapTarget;
++	public static RenderTarget2D mapSectionTexture; // TML: public
++	public static readonly RenderTarget2D[,] mapTarget; // TML: public
+ 	private static readonly bool[,] initMap;
+ 	private static readonly bool[,] mapWasContentLost;
+ 	private static readonly List<Point16>[,] changeQueues;

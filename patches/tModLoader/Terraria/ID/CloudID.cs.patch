@@ -1,0 +1,25 @@
+--- src/TerrariaNetCore/Terraria/ID/CloudID.cs
++++ src/tModLoader/Terraria/ID/CloudID.cs
+@@ -1,12 +_,13 @@
+ using System.Collections.Generic;
++using ReLogic.Reflection;
+ 
+ namespace Terraria.ID;
+ 
+-public static class CloudID
++public class CloudID
+ {
+ 	public static class Sets
+ 	{
+-		public static SetFactory Factory = new SetFactory(Count);
++		public static SetFactory Factory = new SetFactory(Count, nameof(CloudID), Search);
+ 		public static List<int> RareClouds_Normal = new List<int> {
+ 			22,
+ 			23,
+@@ -92,4 +_,6 @@
+ 	public const int Rare_DontStarveCharlie = 40;
+ 	public const int Rare_Pixie = 41;
+ 	public static readonly int Count = 42;
++	/// <inheritdoc cref="IdDictionary"/>
++	public static IdDictionary Search = IdDictionary.Create<CloudID, int>();
+ }

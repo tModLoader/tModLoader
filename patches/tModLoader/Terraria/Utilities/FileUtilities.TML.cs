@@ -106,16 +106,17 @@ public static partial class FileUtilities
 	// TODO: Do we need to do extra work for .plr files that have been renamed? Is that valid?
 	// TODO: We could probably support cloud players as well, if we tried.
 	// Vanilla and 1.3 paths are defaults, 1.4 TML paths are relative to current savepath.
-	public static (string path, string message, int stabilityLevel)[] GetAlternateSavePathFiles(string folderName)
+	public static (string path, string releaseName, int stabilityLevel)[] GetAlternateSavePathFiles(string folderName)
 	{
-		return new (string path, string message, int stabilityLevel)[] {
-			(path: Path.Combine(ReLogic.OS.Platform.Get<ReLogic.OS.IPathService>().GetStoragePath("Terraria"), $"{folderName}"), "Click to copy \"{0}\" over from Terraria", 0),
-			(path: Path.Combine(ReLogic.OS.Platform.Get<ReLogic.OS.IPathService>().GetStoragePath("Terraria"), "ModLoader", $"{folderName}"), "Click to copy \"{0}\" over from 1.3 tModLoader", 0),
-			(path: Path.Combine(Main.SavePath, "..", Program.ReleaseFolder, $"{folderName}"), "Click to copy \"{0}\" over from stable", 1),
-			(path: Path.Combine(Main.SavePath, "..", Program.PreviewFolder, $"{folderName}"), "Click to copy \"{0}\" over from preview", 2),
-			(path: Path.Combine(Main.SavePath, "..", Program.DevFolder, $"{folderName}"), "Click to copy \"{0}\" over from dev", 3),
-			(path: Path.Combine(Main.SavePath, "..", Program.Legacy143Folder, $"{folderName}"), "Click to copy \"{0}\" over from 1.4.3-Legacy", 0),
-		};
+		return new (string path, string releaseName, int stabilityLevel)[] {
+			(path: Path.Combine(ReLogic.OS.Platform.Get<ReLogic.OS.IPathService>().GetStoragePath("Terraria"), $"{folderName}"), "Terraria", 0),
+			(path: Path.Combine(ReLogic.OS.Platform.Get<ReLogic.OS.IPathService>().GetStoragePath("Terraria"), "ModLoader", $"{folderName}"), "1.3 tModLoader", 0),
+			(path: Path.Combine(Main.SavePath, "..", Program.ReleaseFolder, $"{folderName}"), "stable", 1),
+			(path: Path.Combine(Main.SavePath, "..", Program.PreviewFolder, $"{folderName}"), "preview", 2),
+			(path: Path.Combine(Main.SavePath, "..", Program.DevFolder, $"{folderName}"), "dev", 3),
+			(path: Path.Combine(Main.SavePath, "..", Program.Legacy143Folder, $"{folderName}"), "1.4.3-Legacy", 0),
+            (path: Path.Combine(Main.SavePath, "..", Program.Legacy144Folder, $"{folderName}"), "1.4.4-Legacy", 0),
+        };
 	}
 
 	internal static bool WriteTagCompound(string path, bool isCloud, TagCompound tag)

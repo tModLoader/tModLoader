@@ -1,0 +1,12 @@
+@@ -293,4 +_,11 @@
+ 		}
+ 
+ 		return false;
++		*/
++
++		return type != 0
++			&& ItemID.Sets.CanGetPrefixes[type]
++			&& (maxStack == 1 || AllowReforgeForStackableItem)
++			&& ammo == 0
++			&& (damage > 0 || IsAPrefixableAccessory());
+ 	}

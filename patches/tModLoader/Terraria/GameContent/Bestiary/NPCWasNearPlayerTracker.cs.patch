@@ -5,9 +5,9 @@
  using System.IO;
 +using System.Linq;
  using Microsoft.Xna.Framework;
+ using Terraria.GameContent.Achievements;
  using Terraria.GameContent.NetModules;
- using Terraria.ID;
-@@ -55,8 +_,12 @@
+@@ -54,8 +_,12 @@
  	public void Save(BinaryWriter writer)
  	{
  		lock (_entryCreationLock) {

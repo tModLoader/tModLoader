@@ -48,6 +48,13 @@ public class ModTileTest : ModTile
 		TileID.Sets.TouchDamageSands[Type] = 15;
 		TileID.Sets.TouchDamageOther[Type] = 99;
 		TileID.Sets.TouchDamageVines[Type] = 10;
+
+		TileID.Sets.IsAMechanism[Type] = true;
+		TileID.Sets.IsATrigger[Type] = true;
+		TileID.Sets.WallsMergeWith[Type] = true;
+
+		AddToArray(ref TileID.Sets.CountsAsPylon); // Shouldn't change
+		AddToArray(ref TileID.Sets.RoomNeeds.CountsAsTable);
 	}
 
 	public override int SaplingGrowthType(ref int style) { return -1; }
@@ -72,4 +79,22 @@ public class ModTileTest : ModTile
 	public override void SetDrawPositions(int i, int j, ref int width, ref int offsetY, ref int height) { /* comment */ }
 
 	public override bool Drop(int i, int j) { /* Empty */ }
+
+	public override void RandomUpdate(int i, int j) { /* Empty */ }
+}
+
+public static class TileHelpers
+{
+	static void SetSomeModTileProperties(this ModTile modTile)
+	{
+		modTile.minPick = 0;
+		modTile.mineResist = 0;
+		modTile.animationFrameHeight = 0;
+
+		TileID.Sets.IsAMechanism[modTile.Type] = true;
+		TileID.Sets.IsATrigger[modTile.Type] = true;
+
+		modTile.AddToArray(ref TileID.Sets.CountsAsPylon); // Shouldn't change
+		modTile.AddToArray(ref TileID.Sets.RoomNeeds.CountsAsTable);
+	}
 }

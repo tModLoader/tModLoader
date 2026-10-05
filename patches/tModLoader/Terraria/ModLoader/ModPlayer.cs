@@ -1400,12 +1400,14 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
-	/// Allows you to make special things happen when this player picks up an item. Return false to stop the item from being added to the player's inventory; returns true by default.
+	/// Allows you to make special things happen when this player picks up an item. This is typically used for resource pickups, such as <see cref="ItemID.Heart"/>, <see cref="ItemID.Star"/>, or <see cref="ItemID.NebulaPickup1"/>.
+	/// <para/> Return false to stop the item from being added to the player's inventory. The world item will still be despawned.
 	/// <para/> Called on the local client only.
+	/// <para/> Returns true by default.
 	/// </summary>
 	/// <param name="item">The item being picked up</param>
 	/// <returns></returns>
-	public virtual bool OnPickup(Item item)
+	public virtual bool OnPickup(WorldItem item)
 	{
 		return true;
 	}
@@ -1413,7 +1415,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// <summary>
 	/// Whether or not the player can be teleported to the given coordinates with methods such as Teleportation Potions or the Rod of Discord.
 	/// <para/> The coordinates correspond to the top left corner of the player position after teleporting.
-	/// <para/> This gets called in <see cref="Player.CheckForGoodTeleportationSpot(ref bool, int, int, int, int, Player.RandomTeleportationAttemptSettings)"/> and <see cref="Player.ItemCheck_UseTeleportRod(Item)"/>. The <paramref name="context"/> will have a value of "CheckForGoodTeleportationSpot" or "TeleportRod" respectively indicating which type of teleport is being attempted.
+	/// <para/> This gets called in <see cref="Utils.CheckForGoodTeleportationSpot(ref bool, int, int, int, int, Utils.RandomTeleportationAttemptSettings)"/> and <see cref="Player.ItemCheck_UseTeleportRod(Item)"/>. The <paramref name="context"/> will have a value of "CheckForGoodTeleportationSpot" or "TeleportRod" respectively indicating which type of teleport is being attempted.
 	/// </summary>
 	public virtual bool CanBeTeleportedTo(Vector2 teleportPosition, string context)
 	{

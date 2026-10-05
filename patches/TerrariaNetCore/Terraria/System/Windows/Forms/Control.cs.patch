@@ -1,0 +1,11 @@
+--- src/Terraria/Terraria/System/Windows/Forms/Control.cs
++++ src/TerrariaNetCore/Terraria/System/Windows/Forms/Control.cs
+@@ -4,7 +_,7 @@
+ // Keep the namespace declaration outside of the conditional so the game will
+ // still compile nicely with references to the namespace, even if no types in
+ // it are present.
+-#if !WINDOWS
++#if !WINDOWS && !NETCORE
+ internal class Control
+ {
+ 	internal static Form FromHandle(IntPtr handle)

@@ -57,7 +57,7 @@ public static partial class SystemLoader
 		{
 			RuntimeHelpers.RunClassConstructor(type.TypeHandle);
 			foreach (var nestedType in type.GetNestedTypes())
-				RunStaticCtorIfNotAlreadyRun(type);
+				RunStaticCtorIfNotAlreadyRun(nestedType);
 		}
 
 		foreach (var typesToReinitialize in TypesWithResizeArraysAttribute(mod.Code))
@@ -257,6 +257,15 @@ public static partial class SystemLoader
 
 		negLight = Math.Max(negLight, 0.001f);
 		negLight2 = Math.Max(negLight2, 0.001f);
+	}
+
+	public static bool RequiresScreenTarget()
+	{
+		bool result = false;
+		foreach (var g in HookRequiresScreenTarget.Enumerate()) {
+			result |= g.RequiresScreenTarget();
+		}
+		return result;
 	}
 
 	public static void PreDrawMapIconOverlay(IReadOnlyList<IMapLayer> layers, MapOverlayDrawContext mapOverlayDrawContext)
@@ -483,11 +492,11 @@ public static partial class SystemLoader
 		}
 	}
 
-	public static void ModifyWorldGenTasks(List<GenPass> passes, ref double totalWeight)
+	public static void ModifyWorldGenTasks(List<GenPass> passes)
 	{
 		foreach (var system in HookModifyWorldGenTasks.Enumerate()) {
 			try {
-				system.ModifyWorldGenTasks(passes, ref totalWeight);
+				system.ModifyWorldGenTasks(passes);
 			}
 			catch (Exception e) {
 				string message = string.Join(
@@ -501,7 +510,7 @@ public static partial class SystemLoader
 			}
 		}
 
-		passes.RemoveAll(x => !x.Enabled);
+		// passes.RemoveAll(x => !x.Enabled);
 	}
 
 	public static void PostWorldGen()

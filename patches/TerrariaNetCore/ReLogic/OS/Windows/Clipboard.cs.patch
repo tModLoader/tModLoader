@@ -1,35 +1,37 @@
 --- src/Terraria/ReLogic/OS/Windows/Clipboard.cs
 +++ src/TerrariaNetCore/ReLogic/OS/Windows/Clipboard.cs
-@@ -1,6 +_,8 @@
+@@ -1,12 +_,28 @@
  using System;
  using System.Threading;
 +#if WINDOWS
  using System.Windows.Forms;
 +#endif
  using ReLogic.OS.Base;
++#if FNA
++using SDL3;
++#endif
  
  namespace ReLogic.OS.Windows;
-@@ -16,7 +_,11 @@
  
- 		try {
- 			InvokeInStaThread(delegate {
+ internal class Clipboard : ReLogic.OS.Base.Clipboard
+ {
 +#if NETCORE
-+				NativeClipboard.SetText(text);
++	protected override string GetClipboard()
++	{
++		return SDL.SDL_GetClipboardText();
++	}
++
++	protected override void SetClipboard(string text)
++	{
++		SDL.SDL_SetClipboardText(text);
++	}
 +#else
- 				System.Windows.Forms.Clipboard.SetText(text);
-+#endif
- 			});
+ 	protected override string GetClipboard() => TryToGetClipboardText();
+ 
+ 	protected override void SetClipboard(string text)
+@@ -77,4 +_,5 @@
+ 			return ApartmentState.MTA;
  		}
- 		catch {
-@@ -27,7 +_,11 @@
- 	private string TryToGetClipboardText()
- 	{
- 		try {
-+#if NETCORE
-+			return InvokeInStaThread(() => NativeClipboard.TryGetText(out var text) ? text : "");
-+#else
- 			return InvokeInStaThread(() => System.Windows.Forms.Clipboard.GetText());
+ 	}
 +#endif
- 		}
- 		catch {
- 			string result = "";
+ }

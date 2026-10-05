@@ -28,16 +28,6 @@ public sealed class DrawableTooltipLine : TooltipLine
 	public readonly int Index;
 
 	/// <summary>
-	/// Whether or not this tooltip gives prefix information. This will make it so that the tooltip is colored either green or red.
-	/// </summary>
-	public new readonly bool IsModifier;
-
-	/// <summary>
-	/// If isModifier is true, this determines whether the tooltip is colored green or red.
-	/// </summary>
-	public new readonly bool IsModifierBad;
-
-	/// <summary>
 	/// The X position where the tooltip would be drawn that is not adjusted by mods.
 	/// </summary>
 	public int OriginalX {
@@ -64,14 +54,10 @@ public sealed class DrawableTooltipLine : TooltipLine
 	public int Y;
 
 	/// <summary>
-	/// The color the tooltip would be drawn in
+	/// The color the tooltip is drawn in. Defaults to White.
+	/// <para/> The actual final color will be affected slightly by the mouse pulse effect (<see cref="Main.mouseTextColor"/>).
 	/// </summary>
-	public Color Color { get; internal set; }
-
-	/// <summary>
-	/// If the tooltip line's color was overridden this will hold that color, it will be null otherwise
-	/// </summary>
-	public new Color? OverrideColor { get; internal set; }
+	public new Color Color { get; internal set; }
 
 	/// <summary>
 	/// Whether the tooltip is a One Drop logo or not. If it is, the tooltip text will be empty.
@@ -111,9 +97,6 @@ public sealed class DrawableTooltipLine : TooltipLine
 	/// <param name="color">The color the tooltip would be drawn in</param>
 	public DrawableTooltipLine(TooltipLine parent, int index, int x, int y, Color color) : base(parent.Mod, parent.Name, parent.Text)
 	{
-		IsModifier = parent.IsModifier;
-		IsModifierBad = parent.IsModifierBad;
-		OverrideColor = parent.OverrideColor;
 		OneDropLogo = parent.OneDropLogo;
 		Text = parent.Text;
 

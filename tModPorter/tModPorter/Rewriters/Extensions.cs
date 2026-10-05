@@ -70,14 +70,15 @@ public static class Extensions
 		return node.WithTrailingTrivia(existing.InsertRange(i, comments));
 	}
 
-	public static bool Contains(this SyntaxList<UsingDirectiveSyntax> usings, string @namespace) => usings.Any(u => u.Name.ToString() == @namespace);
+	public static bool Contains(this SyntaxList<UsingDirectiveSyntax> usings, string @namespace) => usings.Any(u => u.Name?.ToString() == @namespace);
 
 	public static SyntaxList<UsingDirectiveSyntax> WithUsingNamespace(this SyntaxList<UsingDirectiveSyntax> usings, string @namespace) {
 		if (usings.Contains(@namespace))
 			return usings;
 
+		// UsingDirectiveSyntax.Name can be null for namespace aliases. We could check .Alias.Name instead, but sorting before aliases is preferred.
 		int idx = 0;
-		while (idx < usings.Count && string.Compare(usings[idx].Name.ToString(), @namespace) < 0)
+		while (idx < usings.Count && usings[idx].Name != null && string.Compare(usings[idx].Name.ToString(), @namespace) < 0)
 			idx++;
 
 		return usings.Insert(idx, SimpleUsing(@namespace));
@@ -120,6 +121,16 @@ public static class Extensions
 	};
 
 	public static bool NonDefault(this SemanticModel model, ExpressionSyntax x, object defaultValue) => x != null && (dynamic)model.GetOperation(x).ConstantValue.Value != (dynamic)defaultValue;
+
+	public static ITypeSymbol TypeOf(this SemanticModel model, ExpressionSyntax expr) => expr == null ? null : model.GetOperation(expr)?.Type;
+
+	public static bool Is(this ITypeSymbol type, string name) => type?.ToString() == name;
+
+	public static bool IsIntegral(this ITypeSymbol type) => type?.SpecialType is
+		SpecialType.System_SByte or SpecialType.System_Byte or
+		SpecialType.System_Int16 or SpecialType.System_UInt16 or
+		SpecialType.System_Int32 or SpecialType.System_UInt32 or
+		SpecialType.System_Int64 or SpecialType.System_UInt64;
 
 	public static bool IsObsolete(this ISymbol sym) => sym.GetAttributes().Any(a => a.AttributeClass?.Name == "ObsoleteAttribute");
 }

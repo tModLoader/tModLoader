@@ -1,4 +1,4 @@
-using Ionic.Zip;
+using System.IO.Compression;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Newtonsoft.Json;
@@ -181,12 +181,16 @@ internal class UIModPacks : UIState, IHaveBackButtonCommand
 			var ModPacksToAdd = new List<UIElement>();
 			foreach (string modPackPath in files.Concat(dirs)) {
 				try {
-					if (!IsValidModpackName(Path.GetFileNameWithoutExtension(modPackPath)))
-						throw new Exception();
-					else if (Directory.Exists(modPackPath))
+					if (Directory.Exists(modPackPath)) {
+						if (!IsValidModpackName(Path.GetFileName(modPackPath)))
+							throw new Exception();
 						ModPacksToAdd.Add(LoadModernModPack(modPackPath));
-					else
+					}
+					else {
+						if (!IsValidModpackName(Path.GetFileNameWithoutExtension(modPackPath)))
+							throw new Exception();
 						ModPacksToAdd.Add(LoadLegacyModPack(modPackPath));
+					}
 				}
 				catch {
 					var badModPackMessage = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModPackMalformed", Path.GetFileName(modPackPath))) {
@@ -279,7 +283,7 @@ internal class UIModPacks : UIState, IHaveBackButtonCommand
 		Directory.CreateDirectory(Path.Combine(instancePath, "SaveData"));
 
 		//TODO: When implementing ModConfig as part of Mod Pack, update
-		string modsPath =  ModPackModsPath(modPackName);
+		string modsPath = ModPackModsPath(modPackName);
 		string configPath = Config.ConfigManager.ModConfigPath; //ModPackConfigPath(modPackName);
 
 		// Deploy Mods, Configs to instance
@@ -307,8 +311,7 @@ internal class UIModPacks : UIState, IHaveBackButtonCommand
 	{
 		string zipFilePath = Path.Combine(instancePath, "tModLoader.zip");
 
-		using (var zip = ZipFile.Read(zipFilePath))
-			zip.ExtractAll(instancePath);
+		ZipFile.ExtractToDirectory(zipFilePath, instancePath);
 
 		File.Delete(zipFilePath);
 	}

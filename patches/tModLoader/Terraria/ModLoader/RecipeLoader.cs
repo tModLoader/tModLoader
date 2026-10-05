@@ -180,7 +180,7 @@ public static class RecipeLoader
 	public static void OnCraft(Item item, Recipe recipe, List<Item> consumedItems, Item destinationStack)
 	{
 		recipe.OnCraftHooks?.Invoke(recipe, item, consumedItems, destinationStack);
-		item.OnCreated(new RecipeItemCreationContext(recipe, consumedItems, destinationStack));
+		item.OnCreated(new RecipeItemCreationContext(recipe, consumedItems/*, destinationStack*/));
 	}
 
 	/// <summary>

@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/UwUPnP/Gateway.cs
 +++ src/tModLoader/Terraria/UwUPnP/Gateway.cs
-@@ -6,6 +_,7 @@
+@@ -7,6 +_,7 @@
  using System.Net.Sockets;
  using System.Text;
  using System.Xml.Linq;
@@ -8,7 +8,7 @@
  
  namespace UwUPnP;
  
-@@ -21,9 +_,14 @@
+@@ -22,9 +_,14 @@
  	private readonly string controlURL = null;
  
  	// Allow user to set this env var in case they have some weird

@@ -13,10 +13,14 @@ namespace ExampleMod.Content.Dusts
 		public override string Texture => null; // Set to null to use the vanilla texture instead of a custom texture
 
 		public override void OnSpawn(Dust dust) {
+			// We use HackFrame to set this dust to use the sprite of a vanilla dust.
+			dust.HackFrame(DustID.Electric);
+			/* This is the same logic as HackFrame, for reference:
 			int desiredVanillaDustTexture = DustID.Electric;
 			int frameX = desiredVanillaDustTexture * 10 % 1000;
 			int frameY = desiredVanillaDustTexture * 10 / 1000 * 30 + Main.rand.Next(3) * 10;
 			dust.frame = new Rectangle(frameX, frameY, 8, 8);
+			*/
 		}
 
 		public override Color? GetAlpha(Dust dust, Color lightColor) {

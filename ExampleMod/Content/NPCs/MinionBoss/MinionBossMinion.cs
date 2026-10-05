@@ -94,7 +94,7 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 		}
 
 		public override bool CanHitPlayer(Player target, ref int cooldownSlot) {
-			cooldownSlot = ImmunityCooldownID.Bosses; // use the boss immunity cooldown counter, to prevent ignoring boss attacks by taking damage from other sources
+			cooldownSlot = ImmunityCooldownID.BossNoCheese; // use the boss immunity cooldown counter, to prevent ignoring boss attacks by taking damage from other sources
 			return true;
 		}
 

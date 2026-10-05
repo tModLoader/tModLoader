@@ -4,8 +4,8 @@
  
  namespace Terraria.GameContent.Tile_Entities;
  
--public class TELogicSensor : TileEntity
-+public sealed class TELogicSensor : TileEntity
+-public class TELogicSensor : TileEntityType<TELogicSensor>
++public sealed class TELogicSensor : TileEntityType<TELogicSensor>
  {
  	public enum LogicCheckType
  	{

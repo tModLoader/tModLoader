@@ -24,7 +24,7 @@ namespace ExampleMod.Content.Tiles
 			TileID.Sets.FramesOnKillWall[Type] = true;
 			TileID.Sets.AvoidedByNPCs[Type] = true;
 			TileID.Sets.TileInteractRead[Type] = true;
-			TileID.Sets.InteractibleByNPCs[Type] = true;
+			TileID.Sets.InteractableByNPCs[Type] = true;
 
 			VanillaFallbackOnModDeletion = TileID.Signs;
 

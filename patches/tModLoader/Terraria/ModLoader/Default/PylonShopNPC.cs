@@ -29,36 +29,4 @@ public sealed class PylonShopNPC : GlobalNPC
 	{
 		_pylonEntries = null;
 	}
-
-	public override void ModifyActiveShop(NPC npc, string shopName, Item[] items)
-	{
-		if (shopName == NPCShopDatabase.GetShopName(NPCID.DD2Bartender))
-			AddPylonsToBartenderShop(npc, items);
-	}
-
-	private void AddPylonsToBartenderShop(NPC npc, Item[] items)
-	{
-		// pylons can spawn in slots 4 and 30
-		int slot;
-		if (items[4].IsAir)
-			slot = 4;
-		else if (items[30].IsAir)
-			slot = 30;
-		else
-			return;
-
-		foreach (var entry in _pylonEntries) {
-			if (entry.Disabled || !entry.ConditionsMet())
-				continue;
-			
-			items[slot] = entry.Item.Clone();
-			entry.OnShopOpen(items[slot], npc);
-
-			do {
-				if (++slot >= items.Length)
-					return;
-			}
-			while (!items[slot].IsAir);
-		}
-	}
 }

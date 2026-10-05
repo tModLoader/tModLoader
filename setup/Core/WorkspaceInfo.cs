@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices;
 using System.Xml.Linq;
 using Terraria.ModLoader.Setup.Core.Utilities;
 
@@ -51,14 +52,24 @@ public sealed class WorkspaceInfo
 		private set => commitHashNode.Value = value;
 	}
 
+	// A file written by a Windows setup run holds paths like C:\Program Files (x86)\Steam, which are not
+	// absolute under WSL, so the stored spelling is resolved on read.
 	public string TerrariaSteamDirectory {
-		get => terrariaSteamDirectoryNode.Value;
-		private set => terrariaSteamDirectoryNode.Value = value;
+		get => PathUtils.GetCrossPlatformFullPath(terrariaSteamDirectoryNode.Value);
+		private set {
+			if (TerrariaSteamDirectory == value) // Intentionally compare via getter
+				return;
+
+			terrariaSteamDirectoryNode.Value = value;
+		}
 	}
 
 	public string TMLDevSteamDirectory {
-		get => tmlDevSteamDirectoryNode.Value;
+		get => PathUtils.GetCrossPlatformFullPath(tmlDevSteamDirectoryNode.Value);
 		private set {
+			if (TMLDevSteamDirectory == value) // Intentionally compare via getter
+				return;
+
 			tmlDevSteamDirectoryNode.Value = value;
 
 			foreach (Action<string> listener in tmlDevSteamDirectoryChangedListeners) {
@@ -112,10 +123,18 @@ public sealed class WorkspaceInfo
 		ArgumentException.ThrowIfNullOrWhiteSpace(terrariaSteamDirectory);
 
 		TerrariaSteamDirectory = PathUtils.GetCrossPlatformFullPath(terrariaSteamDirectory);
-		TMLDevSteamDirectory = PathUtils.GetCrossPlatformFullPath(
-			string.IsNullOrWhiteSpace(tMLDevSteamDirectory)
-				? Path.Combine(terrariaSteamDirectory, "..", "tModLoaderDev")
-				: tMLDevSteamDirectory);
+
+		if (string.IsNullOrWhiteSpace(tMLDevSteamDirectory)) {
+			var steamappsCommonDirectory = TerrariaSteamDirectory;
+			if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX) &&
+					steamappsCommonDirectory.EndsWith(Path.Combine("Terraria.app", "Contents", "Resources"), StringComparison.Ordinal)) {
+				steamappsCommonDirectory = Path.Combine(steamappsCommonDirectory, "..", "..", "..");
+			}
+			
+			tMLDevSteamDirectory = Path.Combine(steamappsCommonDirectory, "..", "tModLoaderDev");
+		}
+
+		TMLDevSteamDirectory = PathUtils.GetCrossPlatformFullPath(tMLDevSteamDirectory);
 
 		Directory.CreateDirectory(TMLDevSteamDirectory);
 

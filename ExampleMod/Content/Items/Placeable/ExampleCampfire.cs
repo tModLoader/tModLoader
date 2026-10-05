@@ -12,7 +12,7 @@ namespace ExampleMod.Content.Items.Placeable
 
 		public override void AddRecipes() {
 			CreateRecipe()
-				.AddRecipeGroup(RecipeGroupID.Wood, 10)
+				.AddRecipeGroup(RecipeGroups.Wood, 10)
 				.AddIngredient<ExampleTorch>(5)
 				.Register();
 		}

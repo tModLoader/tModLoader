@@ -4,13 +4,15 @@ using System.Linq;
 using System.Reflection;
 using Terraria.DataStructures;
 using Terraria.ID;
-using Terraria.ObjectData;
 using Terraria.Localization;
+using Terraria.ModLoader.Core;
+using Terraria.ObjectData;
 
 namespace Terraria.ModLoader;
 
 /// <summary>
-/// Tile Entities are Entities tightly coupled with tiles, allowing the possibility of tiles to exhibit cool behavior. TileEntity.Update is called in SP and on Server, not on Clients.
+/// Tile Entities are Entities tightly coupled with tiles, allowing the possibility of tiles to exhibit cool behavior. <see cref="TileEntity.Update"/> is called in SP and on Server, not on Clients.
+/// <para/> Modded tile entities update by default when they override <see cref="TileEntity.Update"/>. Set <see cref="TileEntity.RequiresUpdates"/> in the constructor to override this behavior.
 /// </summary>
 /// <seealso cref="TileEntity" />
 public abstract class ModTileEntity : TileEntity, IModType, ILoadable
@@ -38,7 +40,10 @@ public abstract class ModTileEntity : TileEntity, IModType, ILoadable
 	/// </summary>
 	public int Type { get; internal set; }
 
-	public ModTileEntity() { }
+	public ModTileEntity()
+	{
+		RequiresUpdates = LoaderUtils.HasOverride(this, e => e.Update);
+	}
 
 	/// <summary>
 	/// Returns the number of modded tile entities that exist in the world currently being played.
@@ -115,10 +120,7 @@ public abstract class ModTileEntity : TileEntity, IModType, ILoadable
 		newEntity.Position = new Point16(i, j);
 		newEntity.ID = AssignNewID();
 		newEntity.type = (byte)Type;
-		lock (EntityCreationLock) {
-			ByID[newEntity.ID] = newEntity;
-			ByPosition[newEntity.Position] = newEntity;
-		}
+		Add(newEntity);
 
 		return newEntity.ID;
 	}
@@ -133,8 +135,7 @@ public abstract class ModTileEntity : TileEntity, IModType, ILoadable
 		if (ByPosition.TryGetValue(pos, out var tileEntity)) {
 			if (tileEntity.type == Type) {
 				((ModTileEntity)tileEntity).OnKill();
-				ByID.Remove(tileEntity.ID);
-				ByPosition.Remove(pos);
+				Remove(tileEntity);
 			}
 		}
 	}
@@ -166,7 +167,7 @@ public abstract class ModTileEntity : TileEntity, IModType, ILoadable
 	/// Should never be called on ModTileEntity. Replaced by NetReceive and LoadData
 	/// Would make the base method internal if not for patch size
 	/// </summary>
-	public sealed override void ReadExtraData(BinaryReader reader, bool networkSend)
+	public sealed override void ReadExtraData(BinaryReader reader, int gameVersion, bool networkSend)
 	{
 		throw new NotImplementedException();
 	}

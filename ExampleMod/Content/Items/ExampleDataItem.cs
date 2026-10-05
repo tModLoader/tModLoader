@@ -19,7 +19,7 @@ namespace ExampleMod.Content.Items
 		}
 
 		public override void ModifyTooltips(List<TooltipLine> tooltips) {
-			TooltipLine tooltip = new TooltipLine(Mod, "ExampleMod: HotPotato", CountdownText.Format(Math.Round(timer / 60f, 1))) { OverrideColor = Color.Red };
+			TooltipLine tooltip = new TooltipLine(Mod, "ExampleMod: HotPotato", CountdownText.Format(Math.Round(timer / 60f, 1))) { Color = Color.Red };
 			tooltips.Add(tooltip);
 		}
 

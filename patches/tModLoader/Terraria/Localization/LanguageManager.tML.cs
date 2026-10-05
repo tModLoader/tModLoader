@@ -8,7 +8,6 @@ namespace Terraria.Localization;
 
 public partial class LanguageManager
 {
-	private IContentSource[] _contentSources = Array.Empty<IContentSource>();
 	private HashSet<string> _moddedKeys = new();
 
 	public List<string> GetKeysInCategory(string categoryName) => _categoryGroupedKeys[categoryName];
@@ -37,8 +36,9 @@ public partial class LanguageManager
 	private void ProcessCopyCommandsInTexts()
 	{
 		// Matches {$key.subkey.etc}
+		// Letters, digits, underscores, dots, forward slash
 		// Optional @n for arg index remapping, eg {$key.subkey.etc@5} to add 5 to all format arg indices
-		Regex referenceRegex = new Regex(@"{\$([\w\.]+)(?:@(\d+))?}", RegexOptions.Compiled);
+		Regex referenceRegex = new Regex(@"{\$([\w\./]+)(?:@(\d+))?}", RegexOptions.Compiled);
 		// The arg remapping regex matches both {0} and the pluralization pattern "{^0:item;items}" via positive lookbehind and lookahead
 		Regex argRemappingRegex = new Regex(@"(?<={\^?)(\d+)(?=(?::[^\r\n]+?)?})", RegexOptions.Compiled);
 
@@ -49,11 +49,11 @@ public partial class LanguageManager
 			if (!processed.Add(text))
 				return; // Already processed, or a recursive reference.
 
-			var newValue = referenceRegex.Replace(text.Value, match => {
+			var newValue = referenceRegex.Replace(text.UnformattedValue, match => {
 				var refText = GetText(FindKeyInScope(match.Groups[1].Value, text.Key));
 				Process(refText);
 
-				var repl = refText.Value;
+				var repl = refText.UnformattedValue;
 				if (match.Groups[2].Success && int.TryParse(match.Groups[2].Value, out int offset))
 					repl = argRemappingRegex.Replace(repl, match => (int.Parse(match.Groups[1].Value) + offset).ToString());
 
@@ -127,8 +127,8 @@ public partial class LanguageManager
 		if (boundTextCache.TryGetValue(binding, out var text))
 			return text;
 
-		text = new LocalizedText(key, GetTextValue(key));
-		text.BindArgs(args);
+		text = new LocalizedText(key, key);
+		text.BindArgs(GetText(key), args);
 
 		boundTextCache[binding] = text;
 		boundTexts.Add(text);
@@ -138,9 +138,7 @@ public partial class LanguageManager
 	internal void RecalculateBoundTextValues()
 	{
 		foreach (var text in boundTexts) {
-			var args = text.BoundArgs;
-			text.SetValue(GetTextValue(text.Key));
-			text.BindArgs(args);
+			text.BindArgs(GetText(text.Key), text.BoundArgs);
 		}
 	}
 	#endregion

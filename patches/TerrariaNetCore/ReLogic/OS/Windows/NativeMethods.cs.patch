@@ -9,17 +9,20 @@
  
  namespace ReLogic.OS.Windows;
  
-@@ -97,7 +_,8 @@
+@@ -97,7 +_,12 @@
  		FO_RENAME
  	}
  
-+	//TML: Removed packing, as it would cause crashes.
--	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto, Pack = 1)]
-+	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto /*, Pack = 1*/)]
++#if NETCORE
++	// Packing causes access violations in .NET Core.
++	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
++#else
+ 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto, Pack = 1)]
++#endif
  	private struct SHFILEOPSTRUCT
  	{
  		public IntPtr hwnd;
-@@ -115,11 +_,21 @@
+@@ -123,11 +_,21 @@
  	[DllImport("user32.dll", CharSet = CharSet.Unicode)]
  	public static extern IntPtr CallWindowProc(IntPtr lpPrevWndFunc, IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam);
  

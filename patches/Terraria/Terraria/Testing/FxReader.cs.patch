@@ -1,0 +1,12 @@
+--- src/decompiled/Terraria/Testing/FxReader.cs
++++ src/Terraria/Terraria/Testing/FxReader.cs
+@@ -1,3 +_,4 @@
++#if XNA && !SERVER
+ using System;
+ using System.IO;
+ using Microsoft.Xna.Framework.Content.Pipeline;
+@@ -112,3 +_,4 @@
+ 		return new Effect(_graphicsDevice, compiledEffectContent.GetEffectCode()) as T;
+ 	}
+ }
++#endif

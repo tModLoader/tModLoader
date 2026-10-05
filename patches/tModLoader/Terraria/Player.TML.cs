@@ -1,8 +1,9 @@
-using Microsoft.Xna.Framework;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria.DataStructures;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.GameContent.UI;
@@ -16,6 +17,9 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 	internal IList<string> usedMods;
 	/// <summary> Contains error messages from ModPlayer.SaveData from a previous player save retrieved from the .tplr. Shown when entering a world and on player select menu. Maps ModSystem.FullName.MethodName to exception string.</summary>
 	internal Dictionary<string, string> ModSaveErrors { get; set; } = new Dictionary<string, string>();
+	/// <summary>
+	/// The local mod pack (<see cref="ModLoader.Core.ModOrganizer.ModPackActive"/>) active when this player was last saved. Null if no mod pack was active.
+	/// </summary>
 	internal string modPack;
 	internal ModPlayer[] modPlayers = Array.Empty<ModPlayer>();
 
@@ -151,45 +155,6 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 		};
 		Main.ItemDropSolver.TryDropping(info);
 	}
-
-	/// <summary>
-	/// Will spawn an item like <see cref="Player.QuickSpawnItem(IEntitySource, int, int)"/>, but clones it (handy when you need to retain item infos)
-	/// </summary>
-	/// <param name="source">The spawn context</param>
-	/// <param name="item">The item you want to be cloned</param>
-	/// <param name="stack">The stack to give the item. Note that this will override maxStack if it's higher.</param>
-	// TODO: 1.4.4, delete this and move code to Player.QuickSpawnItem(IEntitySource source, Item item, int stack).
-	[Obsolete("Use Player.QuickSpawnItem(IEntitySource source, Item item, int stack) instead.")]
-	public int QuickSpawnClonedItem(IEntitySource source, Item item, int stack = 1)
-	{
-		int index = Item.NewItem(source, getRect(), item, false, false, false);
-		Main.item[index].stack = stack;
-
-		// Sync the item for mp
-		if (Main.netMode == NetmodeID.MultiplayerClient)
-			NetMessage.SendData(MessageID.SyncItem, -1, -1, null, index, 1f, 0f, 0f, 0, 0, 0);
-
-		return index;
-	}
-
-	/// <inheritdoc cref="QuickSpawnClonedItem"/>
-	public int QuickSpawnItem(IEntitySource source, Item item, int stack = 1)
-		=> QuickSpawnClonedItem(source, item, stack);
-
-	/// <summary><inheritdoc cref="QuickSpawnClonedItem"/></summary>
-	/// <returns>Returns the Item instance</returns>
-	public Item QuickSpawnClonedItemDirect(IEntitySource source, Item item, int stack = 1)
-		=> Main.item[QuickSpawnClonedItem(source, item, stack)];
-
-	/// <summary><inheritdoc cref="QuickSpawnClonedItem"/></summary>
-	/// <returns>Returns the Item instance</returns>
-	public Item QuickSpawnItemDirect(IEntitySource source, Item item, int stack = 1)
-		=> Main.item[QuickSpawnClonedItem(source, item, stack)];
-
-	/// <summary><inheritdoc cref="QuickSpawnItem(IEntitySource, int, int)"/></summary>
-	/// <returns>Returns the Item instance</returns>
-	public Item QuickSpawnItemDirect(IEntitySource source, int type, int stack = 1)
-		=> Main.item[QuickSpawnItem(source, type, stack)];
 
 	/// <summary> Returns whether or not this Player currently has a (de)buff of the provided type. </summary>
 	public bool HasBuff(int type) => FindBuffIndex(type) != -1;
@@ -385,7 +350,7 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 	{
 		float attackSpeed = GetTotalAttackSpeed(sItem.DamageType);
 		// apply a scale based on the set. It's not recommended for mods to use this, but vanilla does for super fast melee weapons so here we are
-		attackSpeed = 1 + ((attackSpeed - 1) * ItemID.Sets.BonusAttackSpeedMultiplier[sItem.type]);
+		attackSpeed = 1 + ((attackSpeed - 1) * ItemID.Sets.BonusMeleeSpeedMultiplier[sItem.type]);
 		return attackSpeed;
 	}
 
@@ -686,4 +651,64 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 
 		return false;
 	}
+
+	private void ApplyVanillaHurtEffectModifiers(ref HurtModifiers modifiers)
+	{
+		{
+			modifiers.FinalDamage *= Math.Max(1 - endurance, 0);
+			if (setSolar && solarShields > 0)
+				modifiers.FinalDamage *= 0.8f;
+
+			if (beetleDefense && beetleOrbs > 0)
+				modifiers.FinalDamage *= 1 - 0.15f * beetleOrbs;
+
+			/*
+			if (defendedByPaladin && whoAmI == Main.myPlayer && TeammateHasPalidinShieldAndCanTakeDamage())
+				modifiers.FinalDamage *= 0.75f;
+			*/
+		}
+	}
+
+	public void ApplyBannerOffenseBuff(ItemID.BannerEffect effect, ref NPC.HitModifiers modifiers)
+	{
+		modifiers.TargetDamageMultiplier *= effect.DamageDealt.Sample(Main.Difficulty);
+	}
+
+	/*
+	// Added by TML
+	public void ApplyBannerOffenseBuff(NPC npc, ref NPC.HitModifiers modifiers) => ApplyBannerOffenseBuff(Item.NPCtoBanner(npc.BannerID()), ref modifiers);
+
+	// Added by TML
+	public void ApplyBannerOffenseBuff(int bannerId, ref NPC.HitModifiers modifiers)
+	{
+		if (!HasNPCBannerBuff(bannerId))
+			return;
+
+		var effect = ItemID.Sets.BannerStrength[Item.BannerToItem(bannerId)];
+		modifiers.TargetDamageMultiplier *= Main.expertMode ? effect.ExpertDamageDealt : effect.NormalDamageDealt;
+	}
+	*/
+
+	public void ApplyBannerDefenseBuff(NPC npc, ref Player.HurtModifiers modifiers)
+	{
+		if (GetBannerBuffEffect(npc, out var effect))
+			ApplyBannerDefenseBuff(effect, ref modifiers);
+	}
+
+	public void ApplyBannerDefenseBuff(ItemID.BannerEffect effect, ref Player.HurtModifiers modifiers)
+	{
+		modifiers.IncomingDamageMultiplier *= effect.DamageReceived.Sample(Main.Difficulty);
+	}
+
+	public void ApplyBannerDefenseBuff(int bannerId, ref Player.HurtModifiers modifiers)
+	{
+		if (GetBannerBuffEffect(bannerId, out var effect))
+			ApplyBannerDefenseBuff(effect, ref modifiers);
+	}
+
+	private bool _customCCed;
+	/// <summary>
+	/// Call this method to mark <seealso cref="CCed"/> as true for this game update. Use for modded crowd control effects.
+	/// </summary>
+	public void SetCCed() => _customCCed = true;
 }

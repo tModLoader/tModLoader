@@ -84,6 +84,7 @@ public class WorldGenVarsTest
 		Use(GenVars.tRooms);
 		Use(GenVars.lAltarX);
 		Use(GenVars.lAltarY);
+#if COMPILE_ERROR
 		Use(GenVars.dungeonSide);
 		Use(GenVars.dungeonLocation);
 		Use(GenVars.dungeonLake);
@@ -118,6 +119,7 @@ public class WorldGenVarsTest
 		Use(GenVars.dMaxX);
 		Use(GenVars.dMinY);
 		Use(GenVars.dMaxY);
+#endif
 		Use(GenVars.skyLakes);
 		Use(GenVars.generatedShadowKey);
 		Use(GenVars.numIslandHouses);

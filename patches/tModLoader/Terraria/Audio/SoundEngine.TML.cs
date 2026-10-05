@@ -55,18 +55,19 @@ partial class SoundEngine
 
 	// Internal redirects
 
-	internal static SoundEffectInstance? PlaySound(SoundStyle? style, Vector2? position = null)
+	internal static SoundEffectInstance? PlaySound(SoundStyle? style, Vector2? position = null, float pitchOffset = 0, float volumeScale = 1)
 	{
+		style = style?.WithPitchOffset(pitchOffset).WithVolumeScale(volumeScale);
 		var slotId = PlaySound(in style, position);
 
 		return slotId.IsValid ? GetActiveSound(slotId)?.Sound : null;
 	}
 
-	internal static SoundEffectInstance? PlaySound(SoundStyle? type, int x, int y) //(SoundStyle type, int x = -1, int y = -1)
-		=> PlaySound(type, XYToOptionalPosition(x, y));
+	internal static SoundEffectInstance? PlaySound(SoundStyle? type, int x, int y, float pitchOffset = 0, float volumeScale = 1) //(SoundStyle type, int x = -1, int y = -1)
+		=> PlaySound(type?.WithPitchOffset(pitchOffset).WithVolumeScale(volumeScale), XYToOptionalPosition(x, y));
 
-	internal static void PlaySound(int type, Vector2 position, int style = 1)
-		=> PlaySound(type, (int)position.X, (int)position.Y, style);
+	internal static void PlaySound(int type, Vector2 position, int style = 1, float pitchOffset = 0)
+		=> PlaySound(type, (int)position.X, (int)position.Y, style, pitchOffset: pitchOffset);
 
 	internal static SoundEffectInstance? PlaySound(int type, int x = -1, int y = -1, int Style = 1, float volumeScale = 1f, float pitchOffset = 0f)
 	{
@@ -76,10 +77,7 @@ partial class SoundEngine
 			return null;
 		}
 
-		soundStyle = soundStyle with {
-			Volume = soundStyle.Volume * volumeScale,
-			Pitch = soundStyle.Pitch + pitchOffset
-		};
+		soundStyle = soundStyle.WithPitchOffset(pitchOffset).WithVolumeScale(volumeScale);
 
 		var slotId = PlaySound(soundStyle, XYToOptionalPosition(x, y));
 

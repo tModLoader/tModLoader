@@ -2,6 +2,7 @@ using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Terraria.GameContent;
 using Terraria.Graphics.Renderers;
 using Terraria.ID;
@@ -60,10 +61,10 @@ public static class NPCHeadLoader
 
 	internal static void ResizeAndFillArrays()
 	{
-		static void ResetHeadRenderer(ref NPCHeadRenderer renderer, Asset<Texture2D>[] textures)
+		static void ResetHeadRenderer(ref OutlinedTextureRenderer renderer, Asset<Texture2D>[] textures)
 		{
 			Main.ContentThatNeedsRenderTargets.Remove(renderer);
-			Main.ContentThatNeedsRenderTargets.Add(renderer = new NPCHeadRenderer(textures));
+			Main.ContentThatNeedsRenderTargets.Add(renderer = new OutlinedTextureRenderer(textures));
 		}
 
 		//Textures
@@ -89,6 +90,13 @@ public static class NPCHeadLoader
 
 		//Etc
 		Array.Resize(ref Main.instance._npcIndexWhoHoldsHeadIndex, nextHead);
+
+		// Add each head to the end of the HeadListOrder so they can be shown in the housing UI.
+		foreach (int head in heads.Values) {
+			if (NPCHeadID.Sets.HeadListOrder.Contains(head))
+				continue;
+			NPCHeadID.Sets.HeadListOrder = NPCHeadID.Sets.HeadListOrder.Append(head).ToArray();
+		}
 	}
 
 	internal static void Unload()

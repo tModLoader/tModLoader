@@ -17,6 +17,7 @@ namespace ExampleMod.Common
 		// This makes sure that other modifiers of the same identity don't run at the same time
 		public string UniqueIdentity { get; private set; }
 		public bool Finished { get; private set; }
+		public bool IsAScreenShake => false;
 
 		public ExampleCameraModifier(Vector2 position, int frames, string uniqueIdentity = null) {
 			targetPosition = position - new Vector2(Main.screenWidth / 2, Main.screenHeight / 2);
@@ -46,7 +47,7 @@ namespace ExampleMod.Common
 			cameraInfo.CameraPosition = Vector2.Lerp(cameraInfo.CameraPosition, targetPosition, lerpAmount);
 
 			// Pauses the effect if the game is tabbed out or paused
-			if (!Main.gameInactive && !Main.gamePaused) {
+			if (FocusHelper.GameplayActive && !Main.gamePaused) {
 				framesElapsed++;
 			}
 

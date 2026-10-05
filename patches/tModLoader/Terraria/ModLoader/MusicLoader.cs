@@ -238,6 +238,8 @@ public sealed class MusicLoader : ILoader
 
 		//Etc
 		Array.Resize(ref legacyAudioSystem.AudioTracks, MusicCount);
+		Array.Resize(ref legacyAudioSystem.PlayCallbacks, MusicCount);
+		Array.Resize(ref legacyAudioSystem.TrackLoopCounts, MusicCount);
 		Array.Resize(ref Main.musicFade, MusicCount);
 		Array.Resize(ref Main.musicNoCrossFade, MusicCount);
 

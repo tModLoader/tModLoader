@@ -1,0 +1,11 @@
+--- src/TerrariaNetCore/Terraria/GameContent/ConditionalDialogue.cs
++++ src/tModLoader/Terraria/GameContent/ConditionalDialogue.cs
+@@ -48,7 +_,7 @@
+ 		}
+ 	}
+ 
+-	private static List<ConditionalDialogue>[] _registry = new List<ConditionalDialogue>[NPCID.Count];
++	internal static List<ConditionalDialogue>[] _registry = new List<ConditionalDialogue>[NPCID.Count]; // TML: Made internal.
+ 	public readonly Predicate<NPC> ConditionsMet;
+ 
+ 	public bool ShowIndicator { get; private set; }

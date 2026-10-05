@@ -30,7 +30,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 			TileID.Sets.OpenDoorID[Type] = ModContent.TileType<ExampleDoorOpen>();
 			TileID.Sets.IgnoresWaterDuringWorldgen.Add(Type); //Just like normal closed doors, we make liquids flow through this tile during world generation.
 
-			AddToArray(ref TileID.Sets.RoomNeeds.CountsAsDoor);
+			TileID.Sets.RoomNeeds.CountsAsDoor[Type] = true;
 
 			DustType = ModContent.DustType<Sparkle>();
 			AdjTiles = [TileID.ClosedDoor];

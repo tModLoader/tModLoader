@@ -13,6 +13,9 @@ public sealed class AssemblyResourcesContentSource : ContentSource
 {
 	private readonly string rootPath;
 	private readonly Assembly assembly;
+	private readonly string[] excludedStartingPaths;
+
+	public override string FileWatcherPath => null;
 
 	[Obsolete]
 	private AssemblyResourcesContentSource(Assembly assembly, string rootPath)
@@ -20,24 +23,28 @@ public sealed class AssemblyResourcesContentSource : ContentSource
 
 	public AssemblyResourcesContentSource(Assembly assembly, string rootPath = null, IEnumerable<string> excludedStartingPaths = null)
 	{
+		this.rootPath = rootPath ?? "";
 		this.assembly = assembly;
-		excludedStartingPaths ??= Enumerable.Empty<string>();
+		this.excludedStartingPaths = excludedStartingPaths?.ToArray() ?? [];
+		Refresh();
+	}
 
+	public override Stream OpenStream(string assetName) => assembly.GetManifestResourceStream(rootPath + assetName);
+
+	public override void Refresh()
+	{
 		IEnumerable<string> resourceNames = assembly.GetManifestResourceNames();
 
 		foreach (string startingPath in excludedStartingPaths ?? Enumerable.Empty<string>()) {
 			resourceNames = resourceNames.Where(p => !p.StartsWith(startingPath));
 		}
 
-		if (rootPath != null) {
+		if (!string.IsNullOrEmpty(rootPath)) {
 			resourceNames = resourceNames
 				.Where(p => p.StartsWith(rootPath))
 				.Select(p => p.Substring(rootPath.Length));
 		}
 
-		this.rootPath = rootPath ?? "";
 		SetAssetNames(resourceNames);
 	}
-
-	public override Stream OpenStream(string assetName) => assembly.GetManifestResourceStream(rootPath + assetName);
 }

@@ -1,0 +1,63 @@
+--- src/TerrariaNetCore/Terraria/DataStructures/ArmorSetBonuses.cs
++++ src/tModLoader/Terraria/DataStructures/ArmorSetBonuses.cs
+@@ -2,6 +_,7 @@
+ using System.Linq;
+ using Terraria.GameContent.Achievements;
+ using Terraria.ID;
++using Terraria.ModLoader;
+ 
+ namespace Terraria.DataStructures;
+ 
+@@ -119,8 +_,11 @@
+ 			player.minionDamage += 0.15f;
+ 			player.whipRangeMultiplier += 0.3f;
+ 			float num = 1.15f;
++			/*
+ 			float num2 = 1f / num;
+ 			player.whipUseTimeMultiplier *= num2;
++			*/
++			player.summonerWeaponSpeedBonus += num - 1; //TML: Obsidian armor changed to additive.
+ 		}
+ 
+ 		public static void ChlorophyteMelee(Player player)
+@@ -234,6 +_,9 @@
+ 
+ 		public static void CrystalAssassin(Player player)
+ 		{
++			player.allDamage += 0.1f;
++			player.allCrit += 10;
++			/*
+ 			player.rangedDamage += 0.1f;
+ 			player.meleeDamage += 0.1f;
+ 			player.magicDamage += 0.1f;
+@@ -241,6 +_,7 @@
+ 			player.rangedCrit += 10;
+ 			player.meleeCrit += 10;
+ 			player.magicCrit += 10;
++			*/
+ 			player.dashType = 5;
+ 		}
+ 
+@@ -343,10 +_,13 @@
+ 
+ 		public static void Pumpkin(Player player)
+ 		{
++			player.allDamage += 0.1f;
++			/*
+ 			player.meleeDamage += 0.1f;
+ 			player.magicDamage += 0.1f;
+ 			player.rangedDamage += 0.1f;
+ 			player.minionDamage += 0.1f;
++			*/
+ 		}
+ 
+ 		public static void Platinum(Player player)
+@@ -564,7 +_,7 @@
+ 	public static void BuildLookup()
+ 	{
+ 		ArmorSetBonus[] array = new ArmorSetBonus[0];
+-		SetsContaining = new ArmorSetBonus[ItemID.Count][];
++		SetsContaining = new ArmorSetBonus[ItemLoader.ItemCount][];
+ 		for (int i = 0; i < SetsContaining.Length; i++) {
+ 			SetsContaining[i] = array;
+ 		}

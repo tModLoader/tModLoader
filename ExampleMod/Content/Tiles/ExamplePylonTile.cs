@@ -59,7 +59,7 @@ namespace ExampleMod.Content.Tiles
 
 			TileObjectData.addTile(Type);
 
-			TileID.Sets.InteractibleByNPCs[Type] = true;
+			TileID.Sets.InteractableByNPCs[Type] = true;
 			TileID.Sets.PreventsSandfall[Type] = true;
 			TileID.Sets.AvoidedByMeteorLanding[Type] = true;
 
@@ -72,7 +72,7 @@ namespace ExampleMod.Content.Tiles
 
 		public override NPCShop.Entry GetNPCShopEntry() {
 			// In this method we can customize the shop entry for the pylon item.
-			// The default method, base.GetNPCShopEntry(), generates a shop entry for the pylon item with the typical pylon conditions: Condition.HappyEnoughToSellPylons, Condition.AnotherTownNPCNearby, and Condition.NotInEvilBiome
+			// The default method, base.GetNPCShopEntry(), generates a shop entry for the pylon item with the typical pylon conditions: Condition.AnotherTownNPCNearby, and Condition.NotInEvilBiome
 			NPCShop.Entry shopEntry = base.GetNPCShopEntry();
 
 			// We will take that shop entry and add an additional condition to check for ExampleBiome, as this is typical for biome pylons

@@ -49,7 +49,7 @@ namespace ExampleMod.Content.Items
 				return;
 
 			for (int i = 0; i < colors.Length; i++) {
-				TooltipLine tooltipLine = new TooltipLine(Mod, "EM" + i, EMText.Format(i)) { OverrideColor = colors[i] };
+				TooltipLine tooltipLine = new TooltipLine(Mod, "EM" + i, EMText.Format(i)) { Color = colors[i] };
 				tooltips.Add(tooltipLine);
 			}
 		}

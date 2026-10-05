@@ -1,8 +1,8 @@
 --- src/TerrariaNetCore/Terraria/Audio/LegacyAudioSystem.cs
 +++ src/tModLoader/Terraria/Audio/LegacyAudioSystem.cs
-@@ -2,8 +_,11 @@
- using System.Collections;
+@@ -3,8 +_,11 @@
  using System.Collections.Generic;
+ using System.Collections.ObjectModel;
  using System.IO;
 +using System.Linq;
  using Microsoft.Xna.Framework.Audio;
@@ -12,7 +12,7 @@
  
  namespace Terraria.Audio;
  
-@@ -68,17 +_,19 @@
+@@ -71,17 +_,19 @@
  
  #if !SERVER
  			string extension = contentSource.GetExtension(assetPath);
@@ -35,11 +35,14 @@
  						break;
  				}
  
-@@ -100,10 +_,13 @@
+@@ -116,13 +_,13 @@
  
- 	public LegacyAudioSystem()
+ 	public void Init(string renderer = "")
  	{
--		Engine = new AudioEngine("Content\\TerrariaMusic.xgs");
+-		Engine = new AudioEngine("Content\\TerrariaMusic.xgs", TimeSpan.FromMilliseconds(250.0), renderer);
+-#if FNA
+-		Console.WriteLine("SDL Audio Driver: " + SDL3.SDL.SDL_GetCurrentAudioDriver());
+-#endif
 -		SoundBank = new SoundBank(Engine, "Content\\Sound Bank.xsb");
 +		var contentManager = (TMLContentManager)Main.instance.Content;
 +
@@ -52,7 +55,7 @@
  		Engine.Update();
  		AudioTracks = new IAudioTrack[Main.maxMusic];
  		TrackNamesByIndex = new Dictionary<int, string>();
-@@ -118,6 +_,10 @@
+@@ -139,6 +_,10 @@
  		}
  	}
  
@@ -63,14 +66,17 @@
  	public void LoadCue(int cueIndex, string cueName)
  	{
  		CueAudioTrack cueAudioTrack = new CueAudioTrack(SoundBank, cueName);
-@@ -245,18 +_,19 @@
- 					MusicReplayDelay = Main.rand.Next(14400, 21601);
+@@ -260,7 +_,7 @@
  
- 				AudioTracks[i].Reuse();
--				AudioTracks[i].SetVariable("Volume", totalVolume);
-+				AudioTracks[i].SetVariable(MusicID.Sets.SkipsVolumeRemap[i] ? "VolumeDirect" : "Volume", totalVolume);
- 				AudioTracks[i].Play();
- 			}
+ 		if (!AudioTracks[i].IsPlaying && active) {
+ 			AudioTracks[i].Reuse();
+-			AudioTracks[i].SetVariable("Volume", totalVolume);
++			AudioTracks[i].SetVariable(MusicID.Sets.SkipsVolumeRemap[i] ? "VolumeDirect" : "Volume", totalVolume);
+ 			AudioTracks[i].Play();
+ 			if (PlayCallbacks[i] != null)
+ 				PlayCallbacks[i](i, TrackLoopCounts[i]);
+@@ -268,7 +_,7 @@
+ 			TrackLoopCounts[i]++;
  		}
  		else {
 -			AudioTracks[i].SetVariable("Volume", totalVolume);
@@ -78,16 +84,8 @@
  		}
  	}
  
- 	public void UpdateCommonTrackTowardStopping(int i, float totalVolume, ref float tempFade, bool isMainTrackAudible)
- 	{
--		if (!WaveBank.IsPrepared)
-+		// Track should never really be null, save for some in-between loading if music is forced to play before mod loading is complete
-+		if (!WaveBank.IsPrepared || AudioTracks[i] is null)
- 			return;
- 
- 		if (AudioTracks[i].IsPlaying || !AudioTracks[i].IsStopped) {
-@@ -271,7 +_,7 @@
- 				AudioTracks[i].Stop(AudioStopOptions.Immediate);
+@@ -290,7 +_,7 @@
+ 				TrackLoopCounts[i] = 0;
  			}
  			else {
 -				AudioTracks[i].SetVariable("Volume", totalVolume);

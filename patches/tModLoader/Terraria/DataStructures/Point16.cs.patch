@@ -7,5 +7,5 @@
 -public struct Point16
 +public partial struct Point16
  {
- 	public readonly short X;
- 	public readonly short Y;
+ 	public short X;
+ 	public short Y;

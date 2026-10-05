@@ -21,7 +21,7 @@ public class UnloadedDresser : UnloadedTile
 		Main.tileSolidTop[Type] = true;
 		Main.tileContainer[Type] = true;
 		TileID.Sets.BasicDresser[Type] = true;
-		AddToArray(ref TileID.Sets.RoomNeeds.CountsAsTable);
+		TileID.Sets.RoomNeeds.CountsAsTable[Type] = true;
 
 		TileObjectData.newTile.CopyFrom(TileObjectData.Style3x2); // Disables hammering
 		TileObjectData.addTile(Type);

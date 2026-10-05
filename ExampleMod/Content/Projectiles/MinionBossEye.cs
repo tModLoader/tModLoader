@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using ExampleMod.Content.Buffs;
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -34,7 +35,7 @@ namespace ExampleMod.Content.Projectiles
 			Projectile.ignoreWater = true;
 			Projectile.netImportant = true;
 			Projectile.aiStyle = -1;
-			CooldownSlot = ImmunityCooldownID.Bosses; // use the boss immunity cooldown counter, to prevent ignoring boss attacks by taking damage from other sources
+			CooldownSlot = ImmunityCooldownID.BossNoCheese; // use the boss immunity cooldown counter, to prevent ignoring boss attacks by taking damage from other sources
 		}
 
 		public override Color? GetAlpha(Color lightColor) {
@@ -78,6 +79,11 @@ namespace ExampleMod.Content.Projectiles
 
 			// If the sprite points upwards, this will make it point towards the move direction (for other sprite orientations, change MathHelper.PiOver2)
 			Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
+		}
+
+		public override void OnHitPlayer(Player target, Player.HurtInfo info) {
+			// When hitting a player, a "crowd control" debuff similar to the Frozen/Webbed/Stoned effect will be given
+			target.AddBuff(ModContent.BuffType<ExampleCrowdControlledDebuff>(), 90);
 		}
 	}
 }

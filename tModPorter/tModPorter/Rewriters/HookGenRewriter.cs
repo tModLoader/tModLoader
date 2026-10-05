@@ -47,7 +47,7 @@ public class HookGenRewriter : BaseRewriter {
 	}
 
 	protected override SyntaxList<UsingDirectiveSyntax> VisitUsingList(SyntaxList<UsingDirectiveSyntax> usings) {
-		var renamed = usings.Where(u => MatchOldHookgenNamespace(u.Name.ToString(), out _, out _)).ToArray();
+		var renamed = usings.Where(u => u.Name != null && MatchOldHookgenNamespace(u.Name.ToString(), out _, out _)).ToArray();
 		if (renamed.Length == 0)
 			return usings;
 

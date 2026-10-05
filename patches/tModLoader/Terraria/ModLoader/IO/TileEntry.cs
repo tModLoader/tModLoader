@@ -38,10 +38,10 @@ internal class TileEntry : ModBlockEntry
 		if (TileID.Sets.BasicDresser[type])
 			return ModContent.GetInstance<UnloadedDresser>();
 
-		if (TileID.Sets.RoomNeeds.CountsAsChair.Contains(type) ||
-			TileID.Sets.RoomNeeds.CountsAsDoor.Contains(type) ||
-			TileID.Sets.RoomNeeds.CountsAsTable.Contains(type) ||
-			TileID.Sets.RoomNeeds.CountsAsTorch.Contains(type)) {
+		if (TileID.Sets.RoomNeeds.CountsAsChair[type] ||
+			TileID.Sets.RoomNeeds.CountsAsDoor[type] ||
+			TileID.Sets.RoomNeeds.CountsAsTable[type] ||
+			TileID.Sets.RoomNeeds.CountsAsTorch[type]) {
 			return ModContent.GetInstance<UnloadedSupremeFurniture>();
 		}
 

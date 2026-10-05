@@ -1,9 +1,12 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria.DataStructures;
+using Terraria.GameContent;
 using Terraria.GameContent.Achievements;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -47,12 +50,12 @@ public partial class Projectile : IEntityWithGlobals<GlobalProjectile>
 #endregion
 
 	/// <summary>
-	/// <inheritdoc cref="Projectile.NewProjectile(IEntitySource, float, float, float, float, int, int, float, int, float, float, float)"/>
+	/// <inheritdoc cref="Projectile.NewProjectile(IEntitySource, float, float, float, float, int, int, float, int, float, float, float, NewProjectileModifier)"/>
 	/// <br/><br/>This particular overload uses a Vector2 instead of X and Y to determine the actual spawn position and a Vector2 to dictate the initial velocity. The return value is the actual Projectile instance rather than the index of the spawned Projectile within the <see cref="Main.projectile"/> array.
 	/// <br/> A short-hand for <code> Main.projectile[Projectile.NewProjectile(...)] </code>
 	/// </summary>
-	public static Projectile NewProjectileDirect(IEntitySource spawnSource, Vector2 position, Vector2 velocity, int type, int damage, float knockback, int owner = -1, float ai0 = 0f, float ai1 = 0f, float ai2 = 0f)
-		=> Main.projectile[NewProjectile(spawnSource, position.X, position.Y, velocity.X, velocity.Y, type, damage, knockback, owner, ai0, ai1, ai2)];
+	public static Projectile NewProjectileDirect(IEntitySource spawnSource, Vector2 position, Vector2 velocity, int type, int damage, float knockback, int owner = -1, float ai0 = 0f, float ai1 = 0f, float ai2 = 0f, NewProjectileModifier modifer = null)
+		=> Main.projectile[NewProjectile(spawnSource, position.X, position.Y, velocity.X, velocity.Y, type, damage, knockback, owner, ai0, ai1, ai2, modifer)];
 
 	private DamageClass _damageClass = DamageClass.Default;
 	/// <summary>
@@ -66,14 +69,13 @@ public partial class Projectile : IEntityWithGlobals<GlobalProjectile>
 		set => _damageClass = value ?? throw new ArgumentException($"{nameof(Projectile)}.{nameof(DamageType)} cannot be null.");
 	}
 
-	private int _armorPenetration = 0;
 	/// <summary>
 	/// The number of defense points that this projectile can ignore on its own. Cannot be set to negative values. Defaults to 0.
 	/// On spawn, if this projectile was fired from a weapon, this value has the total armor penetration of the weapon that made the projectile added to itself.
 	/// </summary>
 	public int ArmorPenetration {
-		get => _armorPenetration;
-		set => _armorPenetration = Math.Max(0, value);
+		get => armorPenetration;
+		set => armorPenetration = Math.Max(0, value);
 	}
 
 	private int _crit = 0;
@@ -109,58 +111,6 @@ public partial class Projectile : IEntityWithGlobals<GlobalProjectile>
 	public bool ContinuouslyUpdateDamage { get => ContinuouslyUpdateDamageStats; set => ContinuouslyUpdateDamageStats = value; }
 
 	/// <summary>
-	/// Transfers stat modifiers from the spawn source to the projectile. <br/>
-	/// Adds <see cref="CritChance"/> and <see cref="ArmorPenetration"/> bonuses from players (<see cref="EntitySource_Parent"/>), weapons (<see cref="EntitySource_ItemUse"/>)<br/>
-	/// If the source is a <see cref="EntitySource_Parent"/> projectile, <c>CritChance</c> and <c>ArmorPenetration</c> from the parent will be added, in order to transfer the original item/player bonus values.<br/><br/>
-	/// <br/>
-	/// To support minions, sentries and <see cref="ContinuouslyUpdateDamageStats"/>, <see cref="OriginalCritChance"/> and <see cref="OriginalArmorPenetration"/> are also copied from item sources and parent projectiles.
-	/// </summary>
-	/// <param name="spawnSource"></param>
-	public void ApplyStatsFromSource(IEntitySource spawnSource)
-	{
-		originalDamage = damage;
-		OriginalCritChance = CritChance;
-		OriginalArmorPenetration = ArmorPenetration;
-
-		 if (spawnSource is EntitySource_Parent { Entity: Player player }) {
-			if (spawnSource is IEntitySource_WithStatsFromItem { Item: Item item }) {
-				// Apply the weapon and player bonuses to the base stats
-				CritChance += player.GetWeaponCrit(item);
-				ArmorPenetration += player.GetWeaponArmorPenetration(item);
-
-				// Apply original stats, so that ContinuouslyUpdateDamageStats can correctly scale the base values
-				// originalDamage is set to item.damage as a convenience.
-				if (item.damage >= 0)
-					originalDamage = item.damage;
-
-				OriginalCritChance += item.crit;
-				OriginalArmorPenetration += item.ArmorPenetration;
-			}
-			else {
-				// Apply player bonuses to the base stats
-				CritChance += (int)(player.GetTotalCritChance(DamageType) + 5E-06f);
-				ArmorPenetration += (int)(player.GetTotalArmorPenetration(DamageType) + 5E-06f);
-			}
-		}
-		else if (spawnSource is EntitySource_Parent { Entity: Projectile parentProjectile }) {
-			// This doesn't offer enough control, there's no way to determine if the parent originalDamage property should overwrite the child or not.
-			// In the case of parent.originalDamage = item.damage, it could be helpful, but the caller of NewProjectile could also just pass originalDamage as the dmg param and get the same effective result.
-			// In general, it is the responsibility of the creator of a minion or ContinuouslyUpdateDamageStats projectile to configure the child correctly.
-			// originalDamage = parentProjectile.originalDamage;
-
-			// To ensure snapshotted bonuses are passed on from parent to child, we just stack any parent CritChance/ArmorPenetration with the child default values
-			// This is a pattern that mods can safely follow for their own stats, matches vanilla non-snapshotting behavior, and is easy to use.
-			CritChance += parentProjectile.CritChance;
-			ArmorPenetration += parentProjectile.ArmorPenetration;
-
-			// In case this projectile is a minion or continuously updates damage (long running projectiles spawned by minions or sentries perhaps, maybe a laser for eg)
-			// We want to pass on the OriginalCrit and OriginalArmorPenetration values from the parent, so that item.crit and item.ArmorPenetration can affect the child.
-			OriginalCritChance += parentProjectile.OriginalCritChance;
-			OriginalArmorPenetration += parentProjectile.OriginalArmorPenetration;
-		}
-	}
-
-	/// <summary>
 	/// Attempts to get the owner player of this projectile. Returns null for projectiles spawned by TownNPC (<see cref="npcProj"/>) and trap projectiles (<see cref="trap"/>). Returns <c>Main.player[owner]</c> otherwise.
 	/// <para/> Note that this logic assumes that projectiles have the correct fields set, which might not always be true. Also note that in single player enemy projectiles are also "owned" by the player, so this alone isn't sufficient to know which projectiles were spawned by the player. Additional <see cref="friendly"/> checks would be needed for that.
 	/// </summary>
@@ -192,10 +142,7 @@ public partial class Projectile : IEntityWithGlobals<GlobalProjectile>
 			int item = Main.rand.Next(list);
 			list.Remove(item);
 			int stack = Main.rand.Next(dict[item].minStack, dict[item].maxStack);
-			int num = Item.NewItem(new EntitySource_Loot(entity), entity.position, entity.Size, item, stack);
-			Main.item[num].noGrabDelay = 0;
-			if (Main.netMode == 1)
-				NetMessage.SendData(21, -1, -1, null, num, 1f);
+			Item.RequestNewItem(new EntitySource_Loot(entity), entity.Center, item, stack, 0, NewItemOwnership.ReserveForLocalPlayer);
 		}
 	}
 
@@ -242,13 +189,78 @@ public partial class Projectile : IEntityWithGlobals<GlobalProjectile>
 		PlayerDeathReason damageSource = PlayerDeathReason.ByProjectile(owner, whoAmI); // Get the death message.
 
 		// Apply damage to the player.
-		if (targetPlayer.Hurt(damageSource, damageVariation, direction, pvp: true, quiet: false, Crit: false, -1, dodgeable: IsDamageDodgable(), armorPenetration: ArmorPenetration) > 0.0 && !targetPlayer.dead)
-			StatusPlayer(targetPlayer.whoAmI);
+		if (targetPlayer.Hurt(damageSource, damageVariation, direction, pvp: true, quiet: false, Crit: false, -1, dodgeable: IsDamageDodgeable(), armorPenetration: ArmorPenetration) > 0.0 && !targetPlayer.dead)
+			StatusPlayer(targetPlayer);
 
 		if (trap) {
 			targetPlayer.trapDebuffSource = true;
 			if (targetPlayer.dead)
 				AchievementsHelper.HandleSpecialEvent(targetPlayer, 4);
 		}
+	}
+
+	/// <summary>
+	/// Calculates the default drawing parameters for this projectile. This can be used to easily implement custom drawing without reimplementing the vanilla drawing logic, usually in <see cref="ModProjectile.PreDraw(Player, ref Color)"/> or <see cref="ModProjectile.PostDraw(Player, Color)"/>.
+	/// <para/> Note that this is only valid for modded projectiles and does not replicate any custom logic that would adjust the drawing parameters for vanilla projectiles.
+	/// <para/> This also does not apply to projectiles drawn with specialized logic, such as spears and chain-drawn projectiles, or projectiles with hardcoded type-specific draw parameters, like golf balls.
+	/// <para/> The returned <see cref="DrawData"/> can be adjusted and then drawn with <see cref="Main.EntitySpriteDraw(DrawData)"/>:
+	/// <code>
+	/// var drawData = Projectile.GetDefaultDrawData(player, lightColor);
+	/// var adjustedDrawData = drawData with { color = Color.Blue }; // Adjust any parameter here
+	/// Main.EntitySpriteDraw(adjustedDrawData);
+	/// </code>
+	/// </summary>
+	/// <param name="player">Owner of the projectile. For non-player-owned projectiles, pass <c>Main.player[Projectile.owner]</c></param>
+	/// <param name="lightColor">The lighting color for this projectile. Use the Color value passed into <see cref="ModProjectile.PreDraw(Player, ref Color)"/> or <see cref="ModProjectile.PostDraw(Player, Color)"/>. </param>
+	/// <returns>Vanilla's default draw parameters for this projectile</returns>
+	public DrawData GetDefaultDrawData(Player player, Color lightColor)
+	{
+		Texture2D texture = TextureAssets.Projectile[type].Value;
+
+		// Mirrors the offset setup at the top of Main.DrawProj_DrawNormalProjs
+		// Vanilla starts at zero and applies specific overrides depending on the type, then calls DrawOffset
+		// The type-specific overrides are intentionally skipped here.
+		int drawOffsetX = 0;
+		int originOffsetY = 0;
+
+		float originX = (texture.Width - width) * 0.5f + width * 0.5f; // Vanilla computes: (texWidth - width) * 0.5f + width * 0.5f
+
+		// Same hook vanilla calls, so ModProjectile's DrawOffsetX/DrawOriginOffsetY/DrawOriginOffsetX applies
+		ProjectileLoader.DrawOffset(this, ref drawOffsetX, ref originOffsetY, ref originX);
+
+		SpriteEffects effects = spriteDirection == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+
+		// Vanilla splits these into two separate paths in DrawProj_DrawNormalProjs:
+		// Animated projectiles draw a single frame while everything else draws the whole texture
+		Rectangle sourceRectangle;
+
+		if (Main.projFrames[type] > 1) {
+			int frameHeight = texture.Height / Main.projFrames[type];
+			sourceRectangle = new Rectangle(0, frameHeight * frame, texture.Width, frameHeight - 1);
+		}
+		else {
+			sourceRectangle = new Rectangle(0, 0, texture.Width, texture.Height);
+
+			if (ownerHitCheck && player.gravDir == -1f) {
+				if (player.direction == 1)
+					effects = SpriteEffects.FlipHorizontally;
+				else if (player.direction == -1)
+					effects = SpriteEffects.None;
+			}
+		}
+
+		return new DrawData(
+			texture,
+			new Vector2(
+				position.X - Main.screenPosition.X + originX + drawOffsetX,
+				position.Y - Main.screenPosition.Y + height / 2 + gfxOffY
+			),
+			sourceRectangle,
+			GetAlpha(lightColor),
+			rotation,
+			new Vector2(originX, height / 2 + originOffsetY),
+			scale,
+			effects
+		);
 	}
 }

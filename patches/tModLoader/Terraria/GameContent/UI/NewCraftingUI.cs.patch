@@ -1,0 +1,55 @@
+--- src/TerrariaNetCore/Terraria/GameContent/UI/NewCraftingUI.cs
++++ src/tModLoader/Terraria/GameContent/UI/NewCraftingUI.cs
+@@ -12,6 +_,7 @@
+ using Terraria.ID;
+ using Terraria.Localization;
+ using Terraria.Map;
++using Terraria.ModLoader;
+ using Terraria.UI;
+ using Terraria.UI.Chat;
+ using Terraria.UI.Gamepad;
+@@ -125,7 +_,7 @@
+ 		public CraftStationRecipeFilter(int tileType, int tileStyle)
+ 			: base(tileType, tileStyle)
+ 		{
+-			acceptTileTypes = new bool[TileID.Count];
++			acceptTileTypes = new bool[TileLoader.TileCount];
+ 			AcceptTileType(tileType);
+ 		}
+ 
+@@ -406,8 +_,11 @@
+ 				HandleCraftSlot(recipeEntry, 42);
+ 
+ 			spriteBatch.Draw(Main.Assets.Request<Texture2D>("Images/UI/Craft").Value, vector + new Vector2(47f, 13f), null, Color.White, 0f, Vector2.Zero, 0.8f, SpriteEffects.None, 0f);
++			/*
+ 			for (; i < Recipe.maxRequirements && !recipe.requiredItem[i].IsAir; i++) {
+ 			}
++			*/
++			i = recipe.requiredItem.Count;
+ 
+ 			vector += new Vector2(72f, 22f);
+ 			float num = Math.Min(11f / (float)i, 1f);
+@@ -477,11 +_,12 @@
+ 		return Language.GetTextValue("GameUI.NotEnoughMaterials");
+ 	}
+ 
+-	internal static void AddTooltipLines(Item hoverItem, ref int numLines, string[] lineText, Color[] lineColors)
++	internal static void AddTooltipLines(Item hoverItem, ref int numLines, string[] lineText, Color[] lineColors, string[] toolTipNames)
+ 	{
+ 		if (_instance == null || (_instance._missingRequirementsTooltipText != null && !hoverItem.IsAir)) {
+ 			lineText[numLines] = _instance._missingRequirementsTooltipText;
+ 			lineColors[numLines] = new Color(255, 140, 160, 255);
++			toolTipNames[numLines] = "MissingRequirements";
+ 			numLines++;
+ 		}
+ 	}
+@@ -659,7 +_,8 @@
+ 		UILinkPoint rightSide = ((materialCount == 0) ? null : uILinkPage.LinkMap[20001]);
+ 		UILinkPoint uILinkPoint11 = ((materialCount == 0) ? null : uILinkPage.LinkMap[20001 + materialCount - 1]);
+ 		_helper.PairLeftRight(uILinkPoint2, rightSide);
++		// TODO: Adjust to specific recipe if more than 15?
+-		for (int j = 0; j < Recipe.maxRequirements - 1; j++) {
++		for (int j = 0; j < Recipe.maxVanillaRequirements - 1; j++) {
+ 			UILinkPoint uILinkPoint12 = uILinkPage.LinkMap[20001 + j];
+ 			_helper.PairLeftRight(uILinkPoint12, uILinkPage.LinkMap[20001 + j + 1]);
+ 			uILinkPoint12.Down = uILinkPoint2?.Down ?? (-1);

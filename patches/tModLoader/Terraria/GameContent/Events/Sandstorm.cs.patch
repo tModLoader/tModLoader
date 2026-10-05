@@ -8,8 +8,8 @@
 +	public static double TimeLeft; //TML: Changed from int to double.
  	public static float Severity;
  	public static float IntendedSeverity;
- 	private static bool _effectsUp;
-@@ -29,9 +_,10 @@
+ 
+@@ -28,9 +_,10 @@
  				if (TimeLeft > 86400)
  					TimeLeft = 0;
  
@@ -22,7 +22,7 @@
  
  				if (Main.windSpeedCurrent == 0f)
  					TimeLeft = 0;
-@@ -43,7 +_,7 @@
+@@ -42,7 +_,7 @@
  				int num = 21600;
  				num = ((!Main.hardMode) ? (num * 3) : (num * 2));
  				if (HasSufficientWind()) {
@@ -31,7 +31,7 @@
  						if (Main.rand.Next(num) == 0)
  							StartSandstorm();
  					}
-@@ -85,14 +_,20 @@
+@@ -84,14 +_,20 @@
  			Severity = IntendedSeverity;
  	}
  

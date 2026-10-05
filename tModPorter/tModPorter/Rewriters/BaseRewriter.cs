@@ -84,7 +84,9 @@ public abstract class BaseRewriter : CSharpSyntaxRewriter
 			: name;
 	}
 
-	public IdentifierNameSyntax UseType(string fullname) => (IdentifierNameSyntax)UseType(model.Compilation.GetTypeByMetadataName(fullname));
+	public IdentifierNameSyntax UseType(string fullname) => (IdentifierNameSyntax)UseTypeByMetadataName(fullname);
+
+	public TypeSyntax UseTypeByMetadataName(string fullname) => UseType(model.Compilation.GetTypeByMetadataName(fullname));
 
 	public TypeSyntax UseType(IArrayTypeSymbol arrayType) => ArrayTypeRank1(UseType(arrayType.ElementType));
 
@@ -107,6 +109,12 @@ public abstract class BaseRewriter : CSharpSyntaxRewriter
 		switch (node.Parent) {
 			case MemberAccessExpressionSyntax memberAccess when node == memberAccess.Name && MemberReferenceInvalid(memberAccess, out op, out isInvoke):
 				targetType = model.GetTypeInfo(memberAccess.Expression).Type;
+
+				// With qualified member access expressions (such as Terraria.Main.field instead of Main.field), for some reason I can't get the correct Type unless we fallback to this.
+				var expressionSymbolInfo = model.GetSymbolInfo(memberAccess.Expression);
+				var expressionSymbol = expressionSymbolInfo.Symbol ?? (expressionSymbolInfo.CandidateSymbols.Length == 1 ? expressionSymbolInfo.CandidateSymbols[0] : null);
+				if (expressionSymbol is INamedTypeSymbol namedTypeSymbol)
+					targetType = namedTypeSymbol;
 				return true;
 
 			case MemberBindingExpressionSyntax memberBinding when MemberReferenceInvalid(memberBinding, out op, out isInvoke) && op.ChildOperations.First() is IConditionalAccessInstanceOperation target:
@@ -118,6 +126,11 @@ public abstract class BaseRewriter : CSharpSyntaxRewriter
 				op = targetOp;
 				targetType = parent.Type;
 				isInvoke = false;
+				return true;
+
+			case QualifiedNameSyntax qualifiedNameSyntax when node == qualifiedNameSyntax.Right && MemberReferenceInvalid(qualifiedNameSyntax, out op, out isInvoke):
+				// Not sure what the targetType should be, Left or Right. Currently only used for Terraria.Player.RandomTeleportationAttemptSettings inner class refactor, where we want to refactor the inner type directly, not a field or property of a type. Might need to change this and make a TypeRewriter class.
+				targetType = model.GetTypeInfo(qualifiedNameSyntax.Left).Type;
 				return true;
 		};
 
@@ -141,6 +154,12 @@ public abstract class BaseRewriter : CSharpSyntaxRewriter
 			isInvoke = true;
 			op = model.GetOperation(invoke);
 			return IsInvalidOrObsolete(op) && invoke.ArgumentList.Arguments.All(arg => model.GetOperation(arg) is not IInvalidOperation);
+		}
+
+		if (memberRefExpr.Parent is ObjectCreationExpressionSyntax objectCreation && memberRefExpr == objectCreation.Type) {
+			isInvoke = false;
+			op = model.GetOperation(objectCreation);
+			return IsInvalidOrObsolete(op);
 		}
 
 		isInvoke = false;

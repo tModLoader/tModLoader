@@ -62,7 +62,7 @@ namespace ExampleMod.Content.Items.Weapons
 			return true;
 		}
 
-		public override void PostDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, float rotation, float scale, int whoAmI) {
+		public override void PostDrawInWorld(WorldItem item, SpriteBatch spriteBatch, Color lightColor, Color alphaColor, float rotation, float scale, int whoAmI) {
 			// Draw the glow texture when in the game world.
 			Texture2D texture = glowTexture.Value;
 			spriteBatch.Draw
@@ -70,8 +70,8 @@ namespace ExampleMod.Content.Items.Weapons
 				texture,
 				new Vector2
 				(
-					Item.position.X - Main.screenPosition.X + Item.width * 0.5f,
-					Item.position.Y - Main.screenPosition.Y + Item.height - texture.Height * 0.5f
+					item.position.X - Main.screenPosition.X + Item.width * 0.5f,
+					item.position.Y - Main.screenPosition.Y + Item.height - texture.Height * 0.5f
 				),
 				new Rectangle(0, 0, texture.Width, texture.Height),
 				Color.White,

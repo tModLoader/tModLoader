@@ -31,7 +31,7 @@ namespace ExampleMod.Content.Tiles
 		public override bool CreateDust(int i, int j, ref int type) => false;
 
 		public override void KillMultiTile(int i, int j, int frameX, int frameY) {
-			if (!WorldGen.gen && Main.netMode != NetmodeID.MultiplayerClient) {
+			if (!WorldGen.isGeneratingOrLoadingWorld && Main.netMode != NetmodeID.MultiplayerClient) {
 				var multitileCenter = new Vector2((i + 1.5f) * 16f, (j + 1.5f) * 16f);
 				Projectile.NewProjectile(WorldGen.GetItemSource_FromTileBreak(i, j), multitileCenter, Vector2.Zero, ProjectileID.Boulder, 70, 10f, Main.myPlayer);
 			}

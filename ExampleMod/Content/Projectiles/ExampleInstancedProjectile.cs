@@ -23,7 +23,7 @@ namespace ExampleMod.Content.Projectiles
 			AIType = ProjectileID.Bullet; // Act exactly like default Bullet
 		}
 
-		public override bool PreDraw(ref Color lightColor) {
+		public override bool PreDraw(Player player, ref Color lightColor) {
 			Dust.NewDustPerfect(Projectile.Center, DustID.TintableDust, newColor: trailColor);
 
 			return false;

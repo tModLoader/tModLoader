@@ -53,7 +53,6 @@ namespace ExampleMod.Content.NPCs
 					ChatHelper.BroadcastChatMessage(NetworkText.FromKey("LegacyMisc.35", NPC.GetFullNetName()), new Color(50, 125, 255));
 				}
 				NPC.active = false;
-				NPC.netSkip = -1;
 				NPC.life = 0;
 				return false;
 			}
@@ -209,6 +208,13 @@ namespace ExampleMod.Content.NPCs
 				new Profiles.DefaultNPCProfile(Texture, NPCHeadLoader.GetHeadSlot(HeadTexture), Texture + "_Party"),
 				new Profiles.DefaultNPCProfile(Texture + "_Shimmer", ShimmerHeadIndex)
 			);
+
+			// Here we define which portrait to use for the Town NPC when the portrait style setting is set to detailed.
+			NPCID.Sets.NPCPortraits.Add(Type, NPCID.Sets.PrioritizedPortrait()
+				.With(NPCID.Sets.ShimmeredPortraitCondition, NPCID.Sets.BasicPortrait($"{Texture}_Shimmer_Portrait")) // This is the portrait to use while the Town NPC is shimmered.
+				.Default(NPCID.Sets.BasicPortrait($"{Texture}_Portrait"))); // Default portrait to use (not shimmered).
+			NPCID.Sets.NPCPortraitsCloseUpOffsets.Add(Type, new Vector2(-3f, 0f)); // Here we can change the offsets of Town NPC when the portrait style setting is set to profile.
+			//NPCID.Sets.NPCPortraitsFullBodyRetroOffsets.Add(Type, new Vector2(0f, 0f)); // Here we can change the offsets of Town NPC when the portrait style setting is set to retro.
 		}
 
 		public override void SetDefaults() {
@@ -305,37 +311,22 @@ namespace ExampleMod.Content.NPCs
 		}
 
 		public override string GetChat() {
-			WeightedRandom<string> chat = new WeightedRandom<string>();
+			LocalizedText chosenChat = Language.SelectRandom(Lang.CreateDialogFilter("Mods.ExampleMod.Dialogue.ExampleTravelingMerchant"));
 
-			int partyGirl = NPC.FindFirstNPC(NPCID.PartyGirl);
-			if (partyGirl >= 0) {
-				chat.Add(Language.GetTextValue("Mods.ExampleMod.Dialogue.ExampleTravelingMerchant.PartyGirlDialogue", Main.npc[partyGirl].GivenName));
-			}
-
-			chat.Add(Language.GetTextValue("Mods.ExampleMod.Dialogue.ExampleTravelingMerchant.StandardDialogue1"));
-			chat.Add(Language.GetTextValue("Mods.ExampleMod.Dialogue.ExampleTravelingMerchant.StandardDialogue2"));
-			chat.Add(Language.GetTextValue("Mods.ExampleMod.Dialogue.ExampleTravelingMerchant.StandardDialogue3"));
-
-			string hivePackDialogue = Language.GetTextValue("Mods.ExampleMod.Dialogue.ExampleTravelingMerchant.HiveBackpackDialogue");
-			chat.Add(hivePackDialogue);
-
-			string dialogueLine = chat; // chat is implicitly cast to a string.
-			if (hivePackDialogue.Equals(dialogueLine)) {
+			if (chosenChat.Key == "Mods.ExampleMod.Dialogue.ExampleTravelingMerchant.HiveBackpackDialogue") {
 				// Main.npcChatCornerItem shows a single item in the corner, like the Angler Quest chat.
 				Main.npcChatCornerItem = ItemID.HiveBackpack;
 			}
 
-			return dialogueLine;
+			return chosenChat.Value;
 		}
 
-		public override void SetChatButtons(ref string button, ref string button2) {
-			button = Language.GetTextValue("LegacyInterface.28"); // This is the key to the word "Shop"
-		}
-
-		public override void OnChatButtonClicked(bool firstButton, ref string shop) {
-			if (firstButton) {
-				shop = Shop.Name; // Opens the shop
-			}
+		public override void RegisterChatButtons(NPCInteractionList interactions) {
+			// Here is one way to assign a Shop button to our NPC.
+			// In this example, we are assigning the button to be at the beginning of the list.
+			// The shop name we pass in NPCInteractions.Shop() needs to be the same name as what we use to register the NPCShop.
+			interactions.Prepend(NPCInteractions.Shop(Shop.Name));
+			// In this case, this is the same thing as: interactions.InsertBefore(NPCInteractions.Shop(Shop.Name), NPCInteractionDatabase.CloseButton);
 		}
 
 		public override void AI() {
@@ -372,29 +363,14 @@ namespace ExampleMod.Content.NPCs
 
 	// You have the freedom to implement custom shops however you want
 	// This example uses a 'pool' concept where items will be randomly selected from a pool with equal weight
-	// We copy a bunch of code from NPCShop and NPCShop.Entry, allowing this shop to be easily adjusted by other mods.
 	//
 	// This uses some fairly advanced C# to avoid being excessively long, so make sure you learn the language before trying to adapt it significantly
 	public class ExampleTravelingMerchantShop : AbstractNPCShop
 	{
-		public new record Entry(Item Item, List<Condition> Conditions) : AbstractNPCShop.Entry
-		{
-			IEnumerable<Condition> AbstractNPCShop.Entry.Conditions => Conditions;
-
-			public bool Disabled { get; private set; }
-
-			public Entry Disable() {
-				Disabled = true;
-				return this;
-			}
-
-			public bool ConditionsMet() => Conditions.All(c => c.IsMet());
-		}
-
 		public record Pool(string Name, int Slots, List<Entry> Entries)
 		{
 			public Pool Add(Item item, params Condition[] conditions) {
-				Entries.Add(new Entry(item, conditions.ToList()));
+				Entries.Add(new Entry(item, conditions));
 				return this;
 			}
 
@@ -420,9 +396,9 @@ namespace ExampleMod.Content.NPCs
 
 		public List<Pool> Pools { get; } = new();
 
-		public ExampleTravelingMerchantShop(int npcType) : base(npcType) { }
+		protected override IEnumerable<Entry> AllEntries => Pools.SelectMany(p => p.Entries);
 
-		public override IEnumerable<Entry> ActiveEntries => Pools.SelectMany(p => p.Entries).Where(e => !e.Disabled);
+		public ExampleTravelingMerchantShop(int npcType) : base(npcType) { }
 
 		public Pool AddPool(string name, int slots) {
 			var pool = new Pool(name, slots, new List<Entry>());

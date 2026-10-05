@@ -245,7 +245,11 @@ public static class ModNet
 		if (clientSideMods.Any())
 			Logging.tML.Debug($"Client Side mods: " + string.Join(", ", clientSideMods.Select(x => $"{x.Name} ({x.DisplayNameClean})")));
 
-		var toDisable = clientMods.Where(m => m.Side == ModSide.Both).Select(m => m.Name).Except(SyncModHeaders.Select(h => h.name));
+		var missingSyncMods = clientMods.Where(m => m.Side == ModSide.Both).Select(m => m.Name).Except(SyncModHeaders.Select(h => h.name));
+		HashSet<string> toDisable = [];
+		foreach (var name in missingSyncMods) {
+			ModLoader.CollectEnabledDependents(modFiles, name, toDisable);
+		}
 		foreach (var name in toDisable) {
 			needsReload = true;
 			reloadRequiredExplanationEntries.Add(new ReloadRequiredExplanation(4, name, modFiles.Where(mod => mod.Name == name).OrderByDescending(mod => mod.Version).FirstOrDefault(), Language.GetTextValue("tModLoader.ReloadRequiredExplanationDisable", "FFA07A")));
@@ -569,7 +573,7 @@ public static class ModNet
 			Player.GetFileData(path, isCloudSave).SetAsActive();
 			//from Netplay.ClientLoopSetup
 			Main.player[Main.myPlayer].hostile = false;
-			Main.clientPlayer = (Player)Main.player[Main.myPlayer].clientClone();
+			Main.player[Main.myPlayer].clientClone(Main.clientPlayer);
 
 			if (!Netplay.Connection.Socket.IsConnected()) {
 				Main.menuMode = MenuID.Error;

@@ -1,0 +1,99 @@
+--- src/decompiled/Terraria/Utilities/MessageBox.cs
++++ src/Terraria/Terraria/Utilities/MessageBox.cs
+@@ -1,8 +_,96 @@
++using System;
++using System.Linq;
++using System.Runtime.InteropServices;
++using System.Text;
+ using System.Windows.Forms;
++#if FNA
++using SDL3;
++#endif
+ 
+ namespace Terraria.Utilities;
+ 
+ public static class MessageBox
+ {
++#if FNA
++	public static DialogResult Show(string message, string title, MessageBoxButtons buttons = MessageBoxButtons.OK, MessageBoxIcon icon = MessageBoxIcon.None)
++	{
++		return buttons switch {
++			MessageBoxButtons.OK => Show(message, title, new DialogResult[1] { DialogResult.OK }, icon, 0, 0),
++			MessageBoxButtons.OKCancel => Show(message, title, new DialogResult[2]
++			{
++				DialogResult.Cancel,
++				DialogResult.OK
++			}, icon, 0, 1),
++			MessageBoxButtons.YesNoCancel => Show(message, title, new DialogResult[3]
++			{
++				DialogResult.Yes,
++				DialogResult.No,
++				DialogResult.Cancel
++			}, icon, 0, 2),
++			MessageBoxButtons.YesNo => Show(message, title, new DialogResult[2]
++			{
++				DialogResult.No,
++				DialogResult.Yes
++			}, icon, 0),
++			MessageBoxButtons.RetryCancel => Show(message, title, new DialogResult[2]
++			{
++				DialogResult.Cancel,
++				DialogResult.Retry
++			}, icon, 0, 1),
++			_ => throw new ArgumentOutOfRangeException("buttons"),
++		};
++	}
++
++	private static DialogResult Show(string message, string title, DialogResult[] buttons, MessageBoxIcon icon, int returnButtonIndex = -1, int cancelButtonIndex = -1)
++	{
++		string[] buttonLabels = buttons.Select((DialogResult r) => Enum.GetName(typeof(DialogResult), r)).ToArray();
++		int num = Show(message, title, buttonLabels, -1, -1, icon);
++		if (num >= 0) {
++			return buttons[num];
++		}
++		return DialogResult.None;
++	}
++
++	private unsafe static byte* AllocUTF8(string s)
++	{
++		byte[] bytes = Encoding.UTF8.GetBytes(s + "\0");
++		byte* ptr = (byte*)(void*)Marshal.AllocHGlobal(bytes.Length);
++		Marshal.Copy(bytes, 0, (IntPtr)ptr, bytes.Length);
++		return ptr;
++	}
++
++	public unsafe static int Show(string message, string title, string[] buttonLabels, int returnButtonIndex = -1, int cancelButtonIndex = -1, MessageBoxIcon icon = MessageBoxIcon.None)
++	{
++		SDL.SDL_MessageBoxButtonData* ptr = (SDL.SDL_MessageBoxButtonData*)(void*)Marshal.AllocHGlobal(Marshal.SizeOf(typeof(SDL.SDL_MessageBoxButtonData)) * buttonLabels.Length);
++		for (int i = 0; i < buttonLabels.Length; i++) {
++			ptr[i] = new SDL.SDL_MessageBoxButtonData {
++				flags = ((i == returnButtonIndex) ? SDL.SDL_MessageBoxButtonFlags.SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT : ((i == cancelButtonIndex) ? SDL.SDL_MessageBoxButtonFlags.SDL_MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT : ((SDL.SDL_MessageBoxButtonFlags)0u))),
++				buttonID = i,
++				text = AllocUTF8(buttonLabels[i])
++			};
++		}
++		SDL.SDL_MessageBoxData sDL_MessageBoxData = default(SDL.SDL_MessageBoxData);
++		sDL_MessageBoxData.flags = (SDL.SDL_MessageBoxFlags)(icon | (MessageBoxIcon)128u);
++		sDL_MessageBoxData.message = AllocUTF8(message);
++		sDL_MessageBoxData.title = AllocUTF8(title);
++		sDL_MessageBoxData.buttons = ptr;
++		sDL_MessageBoxData.numbuttons = buttonLabels.Length;
++		SDL.SDL_MessageBoxData messageboxdata = sDL_MessageBoxData;
++		try {
++			if (!SDL.SDL_ShowMessageBox(ref messageboxdata, out var buttonid)) {
++				return -1;
++			}
++			return buttonid;
++		}
++		finally {
++			for (int j = 0; j < buttonLabels.Length; j++) {
++				Marshal.FreeHGlobal((IntPtr)ptr[j].text);
++			}
++			Marshal.FreeHGlobal((IntPtr)messageboxdata.message);
++			Marshal.FreeHGlobal((IntPtr)messageboxdata.title);
++		}
++	}
++#else
+ 	public static DialogResult Show(string message, string title, MessageBoxButtons buttons = MessageBoxButtons.OK, MessageBoxIcon icon = MessageBoxIcon.None) => (DialogResult)System.Windows.Forms.MessageBox.Show(message, title, (System.Windows.Forms.MessageBoxButtons)buttons, (System.Windows.Forms.MessageBoxIcon)icon);
++#endif
+ }

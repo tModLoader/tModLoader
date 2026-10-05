@@ -8,12 +8,14 @@
  using Steamworks;
  using Terraria.IO;
  using Terraria.Social.Base;
-@@ -57,6 +_,9 @@
+@@ -57,6 +_,11 @@
  
  			public bool Refresh(WorkshopIssueReporter issueReporter)
  			{
++#if NETCORE
 +				if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux) && RuntimeInformation.ProcessArchitecture == Architecture.Arm64)
 +					return true;
++#endif
 +
  				ResourcePackPaths.Clear();
  				WorldPaths.Clear();

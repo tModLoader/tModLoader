@@ -1,46 +1,74 @@
 --- src/TerrariaNetCore/Terraria/GameContent/Tile_Entities/TEDisplayDoll.cs
 +++ src/tModLoader/Terraria/GameContent/Tile_Entities/TEDisplayDoll.cs
-@@ -4,11 +_,13 @@
- using Terraria.Audio;
+@@ -7,12 +_,14 @@
  using Terraria.DataStructures;
  using Terraria.GameInput;
+ using Terraria.Graphics.Renderers;
 +using Terraria.ModLoader;
 +using Terraria.ModLoader.IO;
+ using Terraria.ID;
  using Terraria.UI;
  
  namespace Terraria.GameContent.Tile_Entities;
  
--public class TEDisplayDoll : TileEntity, IFixLoadedData
-+public sealed partial class TEDisplayDoll : TileEntity, IFixLoadedData
+-public class TEDisplayDoll : TileEntityType<TEDisplayDoll>, IFixLoadedData
++public sealed partial class TEDisplayDoll : TileEntityType<TEDisplayDoll>, IFixLoadedData
  {
- 	private static byte _myEntityID;
- 	private const int MyTileID = 470;
-@@ -118,8 +_,8 @@
- 		for (int i = 0; i < 8; i++) {
- 			Item item = _items[i];
+ 	public struct DisplayDollPose
+ 	{
+@@ -71,7 +_,14 @@
+ 		RegisterUsePose(15, DisplayDollPoseID.Use1, 0.5f);
+ 	}
+ 
+-	private static void RegisterUsePose(int useStyle, DisplayDollPoseID pose, float usePercent, float? useAim = null)
++	/// <summary>
++	/// Allows registering custom use styles for mannequins to use.
++	/// </summary>
++	/// <param name="useStyle">The use style ID. Use the result from <see cref="ItemLoader.RegisterUseStyle"/></param>
++	/// <param name="pose">The pose that the mannequin is in. Typically <see cref="DisplayDollPoseID.Use1"/> through 5.</param>
++	/// <param name="usePercent">How far into the item animation will be displayed.</param>
++	/// <param name="useAim">An angle (in radians) to rotate the item.</param>
++	public static void RegisterUsePose(int useStyle, DisplayDollPoseID pose, float usePercent, float? useAim = null) // TML: Made public
+ 	{
+ 		if (!SupportedUseStylePoses.TryGetValue(useStyle, out var value)) {
+ 			value = new List<DisplayDollPose>();
+@@ -169,8 +_,8 @@
+ 		Item[] equip = _equip;
+ 		foreach (Item item in equip) {
  			if (!item.IsAir) {
--				writer.Write((short)item.netID);
+-				writer.Write((short)item.type);
 -				writer.Write(item.prefix);
 +				ItemIO.WriteShortVanillaID(item, writer);
 +				ItemIO.WriteByteVanillaPrefix(item, writer);
  				writer.Write((short)item.stack);
  			}
  		}
-@@ -127,8 +_,8 @@
- 		for (int j = 0; j < 8; j++) {
- 			Item item2 = _dyes[j];
+@@ -178,8 +_,8 @@
+ 		equip = _dyes;
+ 		foreach (Item item2 in equip) {
  			if (!item2.IsAir) {
--				writer.Write((short)item2.netID);
+-				writer.Write((short)item2.type);
 -				writer.Write(item2.prefix);
 +				ItemIO.WriteShortVanillaID(item2, writer);
 +				ItemIO.WriteByteVanillaPrefix(item2, writer);
  				writer.Write((short)item2.stack);
  			}
  		}
-@@ -187,11 +_,14 @@
+@@ -187,8 +_,8 @@
+ 		equip = _misc;
+ 		foreach (Item item3 in equip) {
+ 			if (!item3.IsAir) {
+-				writer.Write((short)item3.type);
+-				writer.Write(item3.prefix);
++				ItemIO.WriteShortVanillaID(item3, writer);
++				ItemIO.WriteByteVanillaPrefix(item3, writer);
+ 				writer.Write((short)item3.stack);
+ 			}
+ 		}
+@@ -279,11 +_,14 @@
  			return;
  
- 		Kill(num, num2);
+ 		TileEntityType<TEDisplayDoll>.Kill(num, num2);
 +		if (!TileLoader.Drop(callX, callY, 470))
 +			goto skipDrops;
  		if (Main.tile[callX, callY].frameX / 72 != 1)
@@ -52,33 +80,48 @@
  		WorldGen.destroyObject = true;
  		for (int k = num; k < num + 2; k++) {
  			for (int l = num2; l < num2 + 3; l++) {
-@@ -468,6 +_,9 @@
- 		if (dye)
- 			item = _dyes[itemIndex];
+@@ -426,7 +_,10 @@
+ 				_playerRenderer.OverrideHeldProjectile = projectileDummy;
+ 				int drawLayer = projectileDummy.drawLayer;
+ 				if ((uint)drawLayer <= 3u)
++					/*
+ 					Main.instance.DrawProjDirect(projectileDummy);
++					*/
++					Main.instance.DrawProjDirect(projectileDummy, dollPlayer);
+ 			}
+ 		}
  
+@@ -678,6 +_,10 @@
+ 	public void WriteItem(int itemIndex, BinaryWriter writer, Item[] collection)
+ 	{
+ 		Item item = collection[itemIndex];
++		
 +		ItemIO.Send(item, writer, writeStack: true);
 +		return;
-+
- 		writer.Write((ushort)item.netID);
++		
+ 		writer.Write((ushort)item.type);
  		writer.Write((ushort)item.stack);
  		writer.Write(item.prefix);
-@@ -475,12 +_,19 @@
+@@ -685,14 +_,22 @@
  
- 	public void ReadItem(int itemIndex, BinaryReader reader, bool dye)
+ 	public void ReadItem(int itemIndex, BinaryReader reader, Item[] collection)
  	{
-+		Item item = (dye ? _dyes : _items)[itemIndex];
-+
-+		ItemIO.Receive(item, reader, readStack: true);
-+		return;
-+
- 		int defaults = reader.ReadUInt16();
++		/*
+ 		int num = reader.ReadUInt16();
  		int stack = reader.ReadUInt16();
  		int prefixWeWant = reader.ReadByte();
-+		/*
- 		Item item = _items[itemIndex];
- 		if (dye)
- 			item = _dyes[itemIndex];
 +		*/
+ 		if (itemIndex < collection.Length) {
+ 			Item obj = collection[itemIndex];
++			
++			ItemIO.Receive(obj, reader, readStack: true);
++			return;
++
++			/*
+ 			obj.SetDefaults(num);
+ 			obj.stack = stack;
+ 			obj.Prefix(prefixWeWant);
++			*/
+ 		}
+ 	}
  
- 		item.SetDefaults(defaults);
- 		item.stack = stack;

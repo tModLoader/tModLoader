@@ -114,7 +114,7 @@ namespace ExampleMod.Content.Projectiles
 		}
 
 		// We need to draw the projectile manually. If you don't include this, the projectile will be facing the wrong direction when flying left.
-		public override bool PreDraw(ref Color lightColor) {
+		public override bool PreDraw(Player player, ref Color lightColor) {
 			// This is where we specify which way to flip the sprite. If the projectile is moving to the left, then flip it vertically.
 			SpriteEffects spriteEffects = ((Projectile.spriteDirection <= 0) ? SpriteEffects.FlipVertically : SpriteEffects.None);
 
@@ -141,13 +141,9 @@ namespace ExampleMod.Content.Projectiles
 
 			if (Projectile.owner == Main.myPlayer && !Projectile.noDropItem) {
 				int dropItemType = ModContent.ItemType<Items.ExamplePaperAirplane>(); // This the item we want the paper airplane to drop.
-				int newItem = Item.NewItem(Projectile.GetSource_DropAsItem(), Projectile.Hitbox, dropItemType); // Create a new item in the world.
-				Main.item[newItem].noGrabDelay = 0; // Set the new item to be able to be picked up instantly
 
-				// Here we need to make sure the item is synced in multiplayer games.
-				if (Main.netMode == NetmodeID.MultiplayerClient && newItem >= 0) {
-					NetMessage.SendData(MessageID.SyncItem, -1, -1, null, newItem, 1f);
-				}
+				// Create a new item in the world from client code and make sure the item is synced in multiplayer games.
+				Item.RequestNewItem(Projectile.GetSource_DropAsItem(), Projectile.Center, dropItemType);
 			}
 
 			// Let's add some dust for special effect.

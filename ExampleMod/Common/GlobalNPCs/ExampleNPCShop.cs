@@ -3,6 +3,7 @@ using ExampleMod.Content.Items;
 using ExampleMod.Content.Items.Ammo;
 using ExampleMod.Content.Items.Consumables;
 using ExampleMod.Content.Items.Mounts;
+using ExampleMod.Content.Items.Tools;
 using ExampleMod.Content.NPCs;
 using Terraria;
 using Terraria.ID;
@@ -45,6 +46,9 @@ namespace ExampleMod.Common.GlobalNPCs
 			else if (shop.NpcType == NPCID.Cyborg) {
 				shop.Add<ExampleRocket>(Condition.NpcIsPresent(ModContent.NPCType<ExamplePerson>()));
 			}
+			else if (shop.NpcType == NPCID.Golfer) {
+				shop.Add<ExampleGolfClub>(Condition.GolfScoreOver(250));
+			}
 
 			// Example of adding new items with complex conditions in the Merchant shop.
 			// Style 1 check for application
@@ -76,10 +80,10 @@ namespace ExampleMod.Common.GlobalNPCs
 
 			// Let's add an item that appears just during Windy day and when NPC is happy enough (can sell pylons)
 			// If condition is fulfilled, add an item to the shop.
-			shop.Add<ExampleItem>(Condition.HappyWindyDay, Condition.HappyEnough);
+			shop.Add<ExampleItem>(Condition.HappyWindyDay, Condition.CurrentPriceAdjustmentUnder(0.9f));
 
 			// Custom condition, opposite of conditions for ExampleItem above.
-			var redPotCondition = new Condition("Mods.ExampleMod.Conditions.NotSellingExampleItem", () => !Condition.HappyWindyDay.IsMet() || !Condition.HappyEnough.IsMet());
+			var redPotCondition = new Condition("Mods.ExampleMod.Conditions.NotSellingExampleItem", () => !Condition.HappyWindyDay.IsMet() || !Condition.CurrentPriceAdjustmentUnder(0.9f).IsMet());
 			// Otherwise, if condition is not fulfilled, then let's check if its For The Worthy world and then sell Red Potion.
 			shop.Add(ItemID.RedPotion, redPotCondition, Condition.ForTheWorthyWorld);
 		}

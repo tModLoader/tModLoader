@@ -278,6 +278,35 @@ public class TileDefinition : EntityDefinition
 }
 
 /// <summary>
+/// WallDefinition represents a Wall identity.
+/// <para/> <inheritdoc/>
+/// </summary>
+[TypeConverter(typeof(ToFromStringConverter<WallDefinition>))]
+public class WallDefinition : EntityDefinition
+{
+	public static readonly Func<TagCompound, WallDefinition> DESERIALIZER = Load;
+
+	public override int Type => WallID.Search.TryGetId(Mod != "Terraria" ? $"{Mod}/{Name}" : Name, out int id) ? id : -1;
+
+	public WallDefinition() : base() { }
+	/// <summary><b>Note: </b>As ModConfig loads before other content, make sure to only use <see cref="WallDefinition(string, string)"/> for modded content in ModConfig classes. </summary>
+	public WallDefinition(int type) : base(WallID.Search.GetName(type)) { }
+	public WallDefinition(string key) : base(key) { }
+	public WallDefinition(string mod, string name) : base(mod, name) { }
+
+	public static WallDefinition FromString(string s)
+		=> new(s);
+
+	public static WallDefinition Load(TagCompound tag)
+		=> new(tag.GetString("mod"), tag.GetString("name"));
+
+	public override string DisplayName
+		=> IsUnloaded || Type == -1
+		? Language.GetTextValue("Mods.ModLoader.Unloaded")
+		: (WallLoader.wallTypeToItemType.TryGetValue(Type, out int itemType) ? Lang.GetItemNameValue(itemType) : Name);
+}
+
+/// <summary>
 /// This TypeConverter facilitates converting to and from the string Type. This is necessary for Objects that are to be used as Dictionary keys, since the JSON for keys needs to be a string. Classes annotated with this TypeConverter need to implement a static FromString method that returns T.
 /// </summary>
 /// <typeparam name="T">The Type that implements the static FromString method that returns Type T.</typeparam>

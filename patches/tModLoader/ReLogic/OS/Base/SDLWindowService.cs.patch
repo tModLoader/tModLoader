@@ -1,0 +1,27 @@
+--- src/TerrariaNetCore/ReLogic/OS/Base/SDLWindowService.cs
++++ src/tModLoader/ReLogic/OS/Base/SDLWindowService.cs
+@@ -65,4 +_,24 @@
+ 		throw new PlatformNotSupportedException();
+ #endif
+ 	}
++
++	// Added by TML.
++	public virtual void HideConsole()
++	{
++	}
++
++	// Added by TML.
++	public virtual void ShowConsole()
++	{
++	}
++
++	// Added by TML.
++	public virtual void ReleaseConsole()
++	{
++	}
++
++	// Added by TML.
++	public virtual void CreateAndRedirectConsole()
++	{
++	}
+ }

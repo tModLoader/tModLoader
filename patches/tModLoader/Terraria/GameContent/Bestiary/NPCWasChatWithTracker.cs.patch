@@ -1,13 +1,14 @@
 --- src/TerrariaNetCore/Terraria/GameContent/Bestiary/NPCWasChatWithTracker.cs
 +++ src/tModLoader/Terraria/GameContent/Bestiary/NPCWasChatWithTracker.cs
-@@ -1,5 +_,6 @@
+@@ -1,6 +_,7 @@
  using System.Collections.Generic;
  using System.IO;
+ using Terraria.GameContent.Achievements;
 +using System.Linq;
  using Terraria.GameContent.NetModules;
  using Terraria.ID;
  using Terraria.Net;
-@@ -46,8 +_,12 @@
+@@ -45,8 +_,12 @@
  	public void Save(BinaryWriter writer)
  	{
  		lock (_entryCreationLock) {

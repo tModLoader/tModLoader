@@ -1,7 +1,10 @@
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Text;
+using Terraria.Localization;
 
 [assembly: InternalsVisibleTo("tModLoaderTests")]
 namespace Terraria.ModLoader.Core;
@@ -15,8 +18,8 @@ internal class LocalMod
 	public DateTime lastModified;
 
 	public string Name => modFile.Name;
-	public string DisplayName => string.IsNullOrEmpty(properties.displayName) ? Name : properties.displayName;
-	public readonly string DisplayNameClean; // Suitable for console output, chat tags stripped away.
+	public string DisplayName => GetLocalizedDisplayName();
+	public string DisplayNameClean => Utils.CleanChatTags(DisplayName); // Suitable for console output, chat tags stripped away.
 	public Version Version => properties.version;
 	public Version tModLoaderVersion => properties.buildVersion;
 
@@ -27,6 +30,52 @@ internal class LocalMod
 
 	public override string ToString() => Name;
 
+	private string GetLocalizedDisplayName()
+	{
+		string cultureName = Language.ActiveCulture?.Name;
+		if (!string.IsNullOrEmpty(cultureName) && properties.localizedDisplayNames.TryGetValue(cultureName, out string localizedDisplayName) && !string.IsNullOrWhiteSpace(localizedDisplayName)) {
+			return localizedDisplayName;
+		}
+
+		return string.IsNullOrEmpty(properties.displayName) ? Name : properties.displayName;
+	}
+
+	public string GetDescription()
+	{
+		if (!TryReadLocalizedDescription(out string description)) {
+			description = properties.description;
+		}
+
+		ModCompile.UpdateSubstitutedDescriptionValues(ref description, properties.version.ToString(), properties.homepage);
+		return description;
+	}
+
+	private bool TryReadLocalizedDescription(out string description)
+	{
+		description = null;
+		string cultureName = Language.ActiveCulture?.Name;
+		if (!string.IsNullOrEmpty(cultureName) && TryReadDescriptionFile($"description_{cultureName}.txt", out description)) {
+			return true;
+		}
+
+		return false;
+	}
+
+	private bool TryReadDescriptionFile(string fileName, out string description)
+	{
+		description = null;
+		string actualFileName = modFile.GetFileNames().FirstOrDefault(x => x.Equals(fileName, StringComparison.OrdinalIgnoreCase));
+		if (actualFileName == null) {
+			return false;
+		}
+
+		using (modFile.Open()) {
+			description = Encoding.UTF8.GetString(modFile.GetBytes(actualFileName));
+		}
+
+		return !string.IsNullOrWhiteSpace(description);
+	}
+
 	public string DetailedInfo => $"{Name} {Version} for tML {tModLoaderVersion} from {location}" + (Path.GetFileNameWithoutExtension(modFile.path) != Name ? $" ({Path.GetFileName(modFile.path)})": "");
 
 	public LocalMod(ModLocation location, TmodFile modFile, BuildProperties properties)
@@ -34,7 +83,6 @@ internal class LocalMod
 		this.location = location;
 		this.modFile = modFile;
 		this.properties = properties;
-		DisplayNameClean = Utils.CleanChatTags(DisplayName);
 	}
 
 	public LocalMod(ModLocation location, TmodFile modFile) : this(location, modFile, BuildProperties.ReadModFile(modFile))

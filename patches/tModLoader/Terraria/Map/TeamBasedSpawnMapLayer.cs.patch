@@ -1,0 +1,12 @@
+--- src/TerrariaNetCore/Terraria/Map/TeamBasedSpawnMapLayer.cs
++++ src/tModLoader/Terraria/Map/TeamBasedSpawnMapLayer.cs
+@@ -8,6 +_,9 @@
+ 
+ public class TeamBasedSpawnMapLayer : IMapLayer
+ {
++	// Added by TML.
++	public bool Visible { get; set; } = true;
++
+ 	public void Draw(ref MapOverlayDrawContext context, ref string text)
+ 	{
+ 		if (Main.teamBasedSpawnsSeed) {

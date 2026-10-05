@@ -1,11 +1,12 @@
-using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using Terraria.GameContent.UI.BigProgressBar;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Core;
+using Terraria.WorldBuilding;
 
 namespace Terraria;
 
@@ -51,7 +52,7 @@ public partial class NPC : IEntityWithGlobals<GlobalNPC>
 	/// <summary>
 	/// Helper property for defense >= 9999. Extremely high defense is interpreted as 'super armor' where attacks will only do 1 damage (or 2 for crits), no matter how strong they are. <br/>
 	/// Passed to <see cref="HitModifiers.SuperArmor"/> when doing damage calculations. See the docs there for more info. <br/>
-	/// The only way to bypass super armor is to call <see cref="StrikeNPC(HitInfo, bool, bool)"/>, or set NPC life directly.
+	/// The only way to bypass super armor is to call <see cref="StrikeNPC(HitInfo, bool, bool, int)"/>, or set NPC life directly.
 	/// </summary>
 	public bool SuperArmor {
 		get => defense >= 9999;
@@ -59,7 +60,7 @@ public partial class NPC : IEntityWithGlobals<GlobalNPC>
 	}
 
 	/// <summary>
-	/// If true, damage combat text will not be shown by <see cref="StrikeNPC(HitInfo, bool, bool)"/> and dps meter will not record damage against this NPC. <br/>
+	/// If true, damage combat text will not be shown by <see cref="StrikeNPC(HitInfo, bool, bool, int)"/> and dps meter will not record damage against this NPC. <br/>
 	/// Recommended for use with <see cref="NPC.immortal"/>
 	/// </summary>
 	public bool HideStrikeDamage { get; set; }
@@ -69,14 +70,10 @@ public partial class NPC : IEntityWithGlobals<GlobalNPC>
 	/// <para>To assign a modded boss bar, use NPC.BossBar = ModContent.GetInstance&lt;ExampleBossBar&gt;(); where ExampleBossBar is a ModBossBar</para>
 	/// <para>To assign a vanilla boss bar for whatever reason, fetch it first through the NPC type using Main.BigBossProgressBar.TryGetSpecialVanillaBossBar</para>
 	/// </summary>
+	[field: CloneByReference]
 	public IBigProgressBar BossBar { get; set; }
 
 	private bool catchableNPCOriginallyFriendly; // TML: Fix #3299, Allow npcCatchable to work with friendly npc.
-
-	public NPC()
-	{
-		thisEntitySourceCache = new EntitySource_Parent(this);
-	}
 
 	/// <summary> Returns whether or not this NPC currently has a (de)buff of the provided type. </summary>
 	public bool HasBuff(int type) => FindBuffIndex(type) != -1;
@@ -122,6 +119,28 @@ public partial class NPC : IEntityWithGlobals<GlobalNPC>
 		bottom.X += direction * directionOffset; // Added to match PlayerSittingHelper
 		bottom += finalOffset; // Added to match PlayerSittingHelper
 	}
+
+	/// <summary>
+	/// A helper method for an NPC striking another NPC.
+	/// <br/><br/> Handles modifiers, hit info, network, and hooks automatically.
+	/// </summary>
+	public void StrikeOtherNPC(NPC target, int damage, float knockback, int hitDirection, bool crit = false, bool randomizeDamage = true)
+	{
+		NPC.HitModifiers modifiers = target.GetIncomingStrikeModifiers(DamageClass.Default, hitDirection, default);
+
+		NPCLoader.ModifyHitNPC(this, target, ref modifiers);
+
+		NPC.HitInfo hitInfo = modifiers.ToHitInfo(damage, crit, knockback, randomizeDamage);
+
+		target.StrikeNPC(hitInfo, false, true);
+
+		if (Main.netMode != 0) {
+			NetMessage.SendStrikeNPC(target, hitInfo);
+		}
+
+		NPCLoader.OnHitNPC(this, target, hitInfo);
+	}
+
 
 	/// <summary>
 	/// Runs most code related to the process of checking whether or not an NPC can be caught.<br></br>
@@ -319,5 +338,44 @@ public partial class NPC : IEntityWithGlobals<GlobalNPC>
 
 		if (Main.netMode == 2)
 			NetMessage.SendData(54, -1, -1, null, whoAmI);
+	}
+
+	/// <summary>
+	/// Clones all the default stats (damage, health, defense, etc) of another NPC type. This should be used in <see cref="ModNPC.SetDefaults"/> prior to changing any other stats
+	/// <para/> This is useful for creating a ModNPC that should be a copy of another NPC. Using CloneDefaults instead of manually setting stats will ensure that modifications done to the NPC being cloned by other mods will automatically apply to this clone as well.
+	/// <para/> Note that for cloning negative <see cref="NPCID"/>, the final values might be very slightly off for higher difficulty modes due to the way difficulty scaling is applied.
+	/// </summary>
+	/// <param name="Type"></param>
+	public void CloneDefaults(int Type)
+	{
+		int originalType = type;
+		int originalNetID = netID;
+		var originalModNPC = ModNPC;
+		var originalGlobals = _globals;
+
+		SetDefaultsKeepPlayerInteraction(Type, new NPCSpawnParams() { difficultyOverride = GameDifficultyLevel.Classic }.WithScale(1));
+
+		type = originalType;
+		netID = originalNetID;
+		ModNPC = originalModNPC;
+		_globals = originalGlobals;
+	}
+
+	public void SetDefaultsKeepPlayerInteraction(int Type)
+	{
+		SetDefaultsKeepPlayerInteraction(Type, default(NPCSpawnParams));
+	}
+
+	public void SetDefaultsKeepPlayerInteraction(int Type, NPCSpawnParams spawnParams)
+	{
+		bool[] array = new bool[playerInteraction.Length];
+		for (int i = 0; i < playerInteraction.Length; i++) {
+			array[i] = playerInteraction[i];
+		}
+
+		SetDefaults(Type, spawnParams);
+		for (int j = 0; j < playerInteraction.Length; j++) {
+			playerInteraction[j] = array[j];
+		}
 	}
 }

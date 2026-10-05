@@ -71,7 +71,7 @@ namespace ExampleMod.Content.NPCs
 			BannerItem = ModContent.ItemType<ExampleCustomAISlimeNPCBanner>();
 		}
 
-		public override float SpawnChance(NPCSpawnInfo spawnInfo) {
+		public override float SpawnChance(NPC.Spawner spawner) {
 			// we would like this npc to spawn in the overworld.
 			return SpawnCondition.OverworldDaySlime.Chance * 0.1f;
 		}

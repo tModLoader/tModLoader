@@ -1,7 +1,7 @@
 using System;
-using System.CodeDom.Compiler;
 using System.IO;
 using System.Text.RegularExpressions;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.Audio;
@@ -174,15 +174,14 @@ public class UICreateMod : UIState, IHaveBackButtonCommand
 			string modNameTrimmed = _modName.CurrentString.Trim();
 			string basicSwordTrimmed = _basicSword.CurrentString.Trim();
 			string sourceFolder = Path.Combine(ModCompile.ModSourcePath, modNameTrimmed);
-			var provider = CodeDomProvider.CreateProvider("C#");
 
 			if (Directory.Exists(sourceFolder))
 				_messagePanel.SetText(Language.GetTextValue("tModLoader.CreateModFolderAlreadyExists"));
-			else if (!provider.IsValidIdentifier(modNameTrimmed))
+			else if (!SyntaxFacts.IsValidIdentifier(modNameTrimmed))
 				_messagePanel.SetText(Language.GetTextValue("tModLoader.CreateModNameInvalid"));
 			else if (modNameTrimmed.Equals("Mod", StringComparison.InvariantCultureIgnoreCase) || modNameTrimmed.Equals("ModLoader", StringComparison.InvariantCultureIgnoreCase) || modNameTrimmed.Equals("tModLoader", StringComparison.InvariantCultureIgnoreCase))
 				_messagePanel.SetText(Language.GetTextValue("tModLoader.CreateModNameReserved"));
-			else if (!string.IsNullOrEmpty(basicSwordTrimmed) && !provider.IsValidIdentifier(basicSwordTrimmed))
+			else if (!string.IsNullOrEmpty(basicSwordTrimmed) && !SyntaxFacts.IsValidIdentifier(basicSwordTrimmed))
 				_messagePanel.SetText(Language.GetTextValue("tModLoader.CreateModBasicSwordInvalid"));
 			else if (string.IsNullOrWhiteSpace(_modDisplayName.CurrentString))
 				_messagePanel.SetText(Language.GetTextValue("tModLoader.CreateModDisplayNameEmpty"));

@@ -20,7 +20,7 @@ public enum DistributionPlatform
 internal static class InstallVerifier
 {
 	private static string VanillaExe = "Terraria.exe";
-	private const string TerrariaVersion = "1.4.4.9";
+	private const string TerrariaVersion = "1.4.5.6";
 	private static string CheckExe = $"Terraria_v{TerrariaVersion}.exe"; // This should match the hashes. {Main.versionNumber}
 	internal static string vanillaExePath; // Only reliable for GOG installs
 
@@ -48,16 +48,16 @@ internal static class InstallVerifier
 			}
 
 			vanillaSteamAPI = "steam_api.dll";
-			gogHash = ToByteArray("efccd835e6b54697e05e8a4b72d935cd"); // Don't forget to update CheckExe above
-			steamHash = ToByteArray("4530e0acfa4c789f462addb77b405ccb");
+			gogHash = ToByteArray("18013fe58e2b64be3ed0d7b7161c6800"); // Don't forget to update CheckExe above
+			steamHash = ToByteArray("1ea72236140aafb8737e5664557266c3");
 		}
 		else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX)) {
 			portableRid = $"osx";
 			steamAPIPath = "libsteam_api.dylib";
 			steamAPIHash = ToByteArray("b7736b391a8276faccb4c055d515d531");
 			vanillaSteamAPI = "libsteam_api.dylib";
-			gogHash = ToByteArray("da2b740b4c6031df3a8b1f68b40cb82b");
-			steamHash = ToByteArray("4512beef5d7607fa1771c3fdf6cdc712");
+			gogHash = ToByteArray("bac96f0a8b5bf31f64e19dddd89184a7");
+			steamHash = ToByteArray("352f3707864771ce2e51fc299dbf6fcb");
 		}
 		else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux)) {
 			if (RuntimeInformation.ProcessArchitecture == Architecture.Arm64) {
@@ -69,8 +69,8 @@ internal static class InstallVerifier
 			steamAPIPath = "libsteam_api.so";
 			steamAPIHash = ToByteArray("4b7a8cabaa354fcd25743aabfb4b1366");
 			vanillaSteamAPI = "libsteam_api.so";
-			gogHash = ToByteArray("9db40ef7cd4b37794cfe29e8866bb6b4");
-			steamHash = ToByteArray("2ff21c600897a9485ca5ae645a06202d");
+			gogHash = ToByteArray("0dbf043f8b07e128e124358ff1e32858");
+			steamHash = ToByteArray("15c5b36710fa6d5d911c474e60022df2");
 		}
 		else {
 			ErrorReporting.FatalExit(Language.GetTextValue("tModLoader.UnknownVerificationOS"));

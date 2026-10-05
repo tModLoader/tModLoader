@@ -10,6 +10,7 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Engine;
+using Terraria.Utilities;
 
 namespace Terraria;
 
@@ -47,6 +48,8 @@ public static partial class Program
 	public const string ReleaseFolder = "tModLoader";
 	public const string DevFolder = "tModLoader-dev";
 	public const string Legacy143Folder = "tModLoader-1.4.3";
+	public const string Legacy144Folder = "tModLoader-1.4.4";
+
 	public static string SaveFolderName => BuildInfo.IsStable ? ReleaseFolder : BuildInfo.IsPreview ? PreviewFolder : DevFolder;
 
 	private static void PortOldSaveDirectories(string savePath)
@@ -132,6 +135,7 @@ public static partial class Program
 
 		// Backwards compat line for 1.4.3-legacy, intended for use when is not Atomic Lockable
 		string portFilePath = Path.Combine(superSavePath, destination, maxVersionOfSource == "2022.9" ? $"143ported_{cloudName}.txt" : $"{maxVersionOfSource}{destination}ported_{cloudName}.txt");
+		// 1.4.5_RELEASE_FLAG
 
 		if (isAtomicLockable && Directory.Exists(newFolderPath) || !isAtomicLockable && File.Exists(portFilePath))
 			return;
@@ -206,6 +210,7 @@ public static partial class Program
 			return;
 		}
 
+		// 1.4.5_RELEASE_FLAG
 		// Copy all current stable player files to 1.4.3-legacy during transition period. Skip ModSources & Workshop shared folders
 		Logging.tML.Info($"Cloning current {source} files to {destination} save folder. Porting {cloudName}." +
 			$"\nThis may take a few minutes for a large amount of files.");
@@ -245,10 +250,14 @@ public static partial class Program
 			if (string.IsNullOrEmpty(lastLaunchedTml)) {
 				// If the config.json is missing LastLaunchedTModLoaderVersion entry, we can ask the user. (Most likely the user copied Terraria/config.json over)
 				// We can't localized these the normal way because localization isn't loaded at this point.
-				int result = ErrorReporting.ShowMessageBoxWithChoices(
+				int result = MessageBox.Show(
 					title: "Failed to read config.json configuration file",
 					message: "Your config.json file is incomplete.\n\nPlease select one of the following options and the game will resume loading:\n\nWhat is the highest version of tModLoader that you have launched?",
-					buttonLabels: new string[] { "1.4.4", "1.4.3", "Cancel" }
+					// 1.4.5_RELEASE_FLAG
+					buttonLabels: ["1.4.4", "1.4.3", "Cancel"],
+					returnButtonIndex: 0,
+					cancelButtonIndex: 2,
+					icon: MessageBoxIcon.Warning
 				);
 				if (result == 0)
 					lastLaunchedTml = BuildInfo.tMLVersion.ToString();
@@ -275,6 +284,8 @@ public static partial class Program
 			PortFilesFromXtoY(savePath, PreviewFolder, ReleaseFolder, maxVersionOfSource: "2023.6", isCloud, isAtomicLockable: false, migrationDay: new DateTime(2023, 9, 1));
 			// Local: Files and destination folder likely exist, copying in new files is expected/desired. Rely on already migrated file (canary file) to determine if migration should happen
 			// Steam: Move files if canary file doesn't exist.
+
+		// 1.4.5_RELEASE_FLAG
 	}
 
 	private static void SetSavePath()
@@ -345,10 +356,8 @@ public static partial class Program
 
 			SetSavePath();
 
-			AttemptSupportHighDPI(isServer); // Can run anytime
-
 		    if (!isServer) {
-		    	NativeLibraries.CheckNativeFAudioDependencies();
+		    	ModLoader.Engine.NativeLibraries.CheckNativeFAudioDependencies();
 		       	FNALogging.RedirectLogs(); // Needs to run after CheckDependencies
 		    }
 		}
@@ -380,30 +389,6 @@ public static partial class Program
 		}
 		catch (Exception e) {
 			ErrorReporting.FatalExit("Unhandled Issue with Launch Arguments. Please verify sources such as Steam Launch Options, cli-ArgsConfig, and VS profiles", e);
-		}
-	}
-
-	private const int HighDpiThreshold = 96; // Rando internet value that Solxan couldn't refind the sauce for.
-
-	// Add Support for High DPI displays, such as Mac M1 laptops. Must run before Game constructor.
-	private static void AttemptSupportHighDPI(bool isServer)
-	{
-		if (isServer)
-			return;
-
-		if (Platform.IsWindows) {
-			[System.Runtime.InteropServices.DllImport("user32.dll")]
-			static extern bool SetProcessDPIAware();
-
-			SetProcessDPIAware();
-		}
-
-		SDL2.SDL.SDL_VideoInit(null);
-		SDL2.SDL.SDL_GetDisplayDPI(0, out var ddpi, out float hdpi, out float vdpi);
-		Logging.tML.Info($"Display DPI: Diagonal DPI is {ddpi}. Vertical DPI is {vdpi}. Horizontal DPI is {hdpi}");
-		if (ddpi >= HighDpiThreshold || hdpi >= HighDpiThreshold || vdpi >= HighDpiThreshold) {
-			Environment.SetEnvironmentVariable("FNA_GRAPHICS_ENABLE_HIGHDPI", "1");
-			Logging.tML.Info($"High DPI Display detected: setting FNA to highdpi mode");
 		}
 	}
 }

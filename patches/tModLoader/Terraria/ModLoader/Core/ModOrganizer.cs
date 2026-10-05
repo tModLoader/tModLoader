@@ -1,16 +1,17 @@
-using Microsoft.CodeAnalysis;
-using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
+using Microsoft.CodeAnalysis;
+using Newtonsoft.Json;
 using Terraria.Localization;
 using Terraria.ModLoader.Exceptions;
 using Terraria.ModLoader.UI;
 using Terraria.ModLoader.UI.DownloadManager;
+using Terraria.ModLoader.UI.ModBrowser;
 using Terraria.Social.Base;
 using Terraria.Social.Steam;
 
@@ -47,6 +48,9 @@ internal static class ModOrganizer
 
 	private enum SearchFolders { }
 
+	/// <summary>
+	/// The full folder path of the currently active mod pack. Mods will load from this modern mod pack.
+	/// </summary>
 	internal static string ModPackActive = null;
 
 	/// <summary>Mods in workshop folders, not in dev folder or modpacks</summary>
@@ -202,6 +206,88 @@ internal static class ModOrganizer
 	internal static bool IsModFromSteam(string modPath)
 	{
 		return modPath.Contains(Path.Combine("workshop"), StringComparison.InvariantCultureIgnoreCase);
+	}
+
+	internal static string DetectAbnormalSteamWorkshopDownloads(out Action resolveAbnormalDownloads, out string continueButton, out string cancelButton)
+	{
+		//TODO: What happens if this is run on GoG or Family Share where it is using SteamGameServer and 'Subscribed' doesn't exist?
+		// Not tested -- 90% sure it should work fine since this code doesn't rely on Steam Workshop Subscription status to work. -- Solxan
+
+		// During initialize it forces update of CachedInstalledModDownloadItems
+		WorkshopBrowserModule.Instance.Initialize();
+
+		var foundMDItems = WorkshopBrowserModule.Instance.CachedInstalledModDownloadItems;
+
+		// if found installed mod download item that is newer then those in workshopDownloads and under a different publish ID
+		var reuploadMDItems = foundMDItems.Where(a => a.IsReupload());
+
+		// if a local mod is installed and it doesn't have a corresponding workshop publish item AND isn't the reupload case
+		var installedWorkshopModsNotFoundOnWorkshop = FindWorkshopMods().Except(foundMDItems.Select(a => a.Installed));
+
+		// Determine the Button Titles
+		/* This Code (& future related code) commented out as the UI for detecting installedModsNotOnWorkshop is underdeveloped
+		 * This code was added as a toss-in while doing PR 5071, but has too many extra complications to rush it compared to the needed reupload feature
+		 * To be re-added sometime after May 2026 -- Solxan
+		if (reuploadMDItems.Any() && installedWorkshopModsNotFoundOnWorkshop.Any()) {
+			cancelButton = Language.GetTextValue("tModLoader.KeepInstalled");
+			continueButton = Language.GetTextValue("tModLoader.ResolveAbnormalMods");
+		}
+		else if (installedWorkshopModsNotFoundOnWorkshop.Any()) {
+			cancelButton = Language.GetTextValue("tModLoader.KeepInstalled");
+			continueButton = Language.GetTextValue("tModLoader.DeleteMods");
+		}
+		else */ if (reuploadMDItems.Any()) {
+			cancelButton = Language.GetTextValue("tModLoader.ContinueAnyway");
+			continueButton = Language.GetTextValue("tModLoader.ResolveAbnormalMods");
+		}
+		else {
+			// Nothing to do/show
+			cancelButton = string.Empty;
+			continueButton = string.Empty;
+			resolveAbnormalDownloads = null;
+			return string.Empty;
+		}
+
+		var toDeleteOldMods = installedWorkshopModsNotFoundOnWorkshop.Where(a => reuploadMDItems.Select(b => b.ModName).Contains(a.Name));
+		installedWorkshopModsNotFoundOnWorkshop = installedWorkshopModsNotFoundOnWorkshop.Where(a => !reuploadMDItems.Select(b => b.ModName).Contains(a.Name));
+
+		resolveAbnormalDownloads = async () => {
+			// Group 1: If the mod is Reuploaded, delete the old and sub to the new.
+			foreach (var mod in toDeleteOldMods)
+				DeleteMod(mod);
+
+			if (reuploadMDItems.Any() && await UIModBrowser.DownloadMods(reuploadMDItems, Interface.loadModsID)) {
+				Main.menuMode = Interface.loadModsID;
+				Main.MenuUI.SetState(null);	
+			}
+
+			// Group 2: Delete mods that originated from workshop but workshop doesn't have a replacement
+			/*
+			foreach (var mod in installedWorkshopModsNotFoundOnWorkshop)
+				DeleteMod(mod);
+			*/
+	};
+
+		// Messages for Users
+		var messages = new StringBuilder();
+
+		/*
+		if (installedWorkshopModsNotFoundOnWorkshop.Any()) {
+			messages.AppendLine(Language.GetTextValue("tModLoader.RemovedWorkshopMods"));
+			foreach (var mod in installedWorkshopModsNotFoundOnWorkshop) {
+				messages.AppendLine($"  {mod.DisplayNameClean}");
+			}
+		}
+		*/
+		
+		if (reuploadMDItems.Any()) {
+			messages.AppendLine(Language.GetTextValue("tModLoader.ReuploadedWorkshopMods"));
+			foreach (var mod in reuploadMDItems) {
+				messages.AppendLine($"  {mod.Installed.DisplayNameClean} --> {mod.DisplayNameClean}");
+			}
+		}
+
+		return messages.Length > 0 ? messages.ToString() : string.Empty;
 	}
 
 	internal static HashSet<string> IdentifyMissingWorkshopDependencies()
@@ -499,12 +585,25 @@ internal static class ModOrganizer
 		var errored = new HashSet<LocalMod>();
 		var errorLog = new StringBuilder();
 
-		foreach (var mod in mods)
+		foreach (var mod in mods) {
 			foreach (var depName in mod.properties.RefNames(includeWeak))
 				if (!nameMap.ContainsKey(depName)) {
 					errored.Add(mod);
 					errorLog.AppendLine(Language.GetTextValue("tModLoader.LoadErrorDependencyMissing", depName, mod));
 				}
+
+			// Ensure that Client/Server mods can only be strong referenced (required) by other Client/Server mods
+			foreach (var depName in mod.properties.modReferences) {
+				if (!nameMap.TryGetValue(depName.mod, out var dep)) // already reported as missing above
+					continue;
+
+				if (dep.properties.side == mod.properties.side || dep.properties.side is ModSide.Both or ModSide.NoSync)
+					continue;
+
+				errored.Add(mod);
+				errorLog.AppendLine(Language.GetTextValue("tModLoader.LoadErrorDependencySideIncompatible", mod, mod.properties.side, dep, dep.properties.side, dep.properties.side is ModSide.Client ? ModSide.Server : ModSide.Client));
+			}
+		}
 
 		if (errored.Count > 0)
 			throw new ModSortingException(errored, errorLog.ToString());
@@ -556,9 +655,8 @@ internal static class ModOrganizer
 
 		foreach (var mod in synced.list) {
 			var chains = new List<List<LocalMod>>();
-			//define recursive chain finding method
-			Action<LocalMod, Stack<LocalMod>> FindChains = null;
-			FindChains = (search, stack) => {
+			void FindChains(LocalMod search, Stack<LocalMod> stack)
+			{
 				stack.Push(search);
 
 				if (search.properties.side == ModSide.Both && stack.Count > 1) {
@@ -571,7 +669,7 @@ internal static class ModOrganizer
 				}
 
 				stack.Pop();
-			};
+			}
 			FindChains(mod, new Stack<LocalMod>());
 
 			if (chains.Count == 0)
@@ -591,6 +689,28 @@ internal static class ModOrganizer
 		}
 	}
 
+	// Sync (Both) mods and all their non-weak dependencies
+	private static HashSet<LocalMod> FindSyncedMods(ICollection<LocalMod> mods)
+	{
+		var nameMap = mods.ToDictionary(mod => mod.Name);
+		var synced = new HashSet<LocalMod>();
+
+		foreach (var mod in mods)
+			if (mod.properties.side == ModSide.Both)
+				AddSynced(mod);
+
+		return synced;
+
+		void AddSynced(LocalMod mod)
+		{
+			if (!synced.Add(mod))
+				return;
+
+			foreach (var reference in mod.properties.modReferences)
+				AddSynced(nameMap[reference.mod]);
+		}
+	}
+
 	private static TopoSort<LocalMod> BuildSort(ICollection<LocalMod> mods)
 	{
 		var nameMap = mods.ToDictionary(mod => mod.Name);
@@ -601,8 +721,9 @@ internal static class ModOrganizer
 
 	internal static List<LocalMod> Sort(ICollection<LocalMod> mods)
 	{
+		var syncedMods = FindSyncedMods(mods);
 		var preSorted = mods.OrderBy(mod => mod.Name, StringComparer.InvariantCulture).ToList();
-		var syncedSort = BuildSort(preSorted.Where(mod => mod.properties.side == ModSide.Both).ToList());
+		var syncedSort = BuildSort(preSorted.Where(syncedMods.Contains).ToList());
 		var fullSort = BuildSort(preSorted);
 		EnsureSyncedDependencyStability(syncedSort, fullSort);
 
@@ -679,10 +800,6 @@ internal static class ModOrganizer
 		string[] tmods = Directory.GetFiles(repo, "*.tmod", SearchOption.AllDirectories);
 		if (tmods.Length <= 3)
 			return;
-
-		// Solxan: We want to keep 4 copies of the mod. A Preview version, a Stable Version, and a Legacy version in case
-		// we need to rollback to the last stable due to a significant bug.
-		// We also keep a 1.4.3 version from version 2022.9 prior
 
 		var information = AnalyzeWorkshopTmods(repo);
 		if (information == null || information.Count() <= 3)

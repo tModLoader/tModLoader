@@ -106,8 +106,9 @@ public class Secrets
 	private static byte[] Compress(byte[] data)
 	{
 		using var ms = new MemoryStream();
-		using var ds = new DeflateStream(ms, CompressionMode.Compress);
-		new MemoryStream(data).CopyTo(ds);
+		using (var ds = new DeflateStream(ms, CompressionMode.Compress))
+			new MemoryStream(data).CopyTo(ds);
+
 		return ms.ToArray();
 	}
 

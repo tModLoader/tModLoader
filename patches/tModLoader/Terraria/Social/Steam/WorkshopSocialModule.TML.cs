@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -45,6 +46,11 @@ public partial class WorkshopSocialModule
 		if (state == WorkshopHelper.WorkshopSearchReturnState.NotFound)
 			return false;
 
+		// If it is banned, then it can't be updated. This could be because it was malware or because of DMCA or whatever.
+		// It is imperative to ban malware accounts from further uploads during the 24 hour default ban time to prevent spam.
+		if (modDownloadItemAsFound.Banned)
+			return false;
+
 		currPublishID = ulong.Parse(modDownloadItemAsFound.PublishId.m_ModPubId);
 
 		// Update the subscribed mod to be the latest version published, so keeps all versions (stable, preview) together
@@ -81,6 +87,12 @@ public partial class WorkshopSocialModule
 		}
 
 		// Checks if Mod is adequate
+
+		// Check if mod is a debug build
+		if (AssemblyManager.IsLoadedModAssemblyDebugBuild(modFile.Name)) {
+			IssueReporter.ReportInstantUploadProblem("tModLoader.ModWasBuiltForDebugging");
+			return false;
+		}
 
 		// Check mod description
 		const string DescriptionFileName = "description.txt";
@@ -155,12 +167,13 @@ public partial class WorkshopSocialModule
 		}
 
 		string name = buildData["displaynameclean"];
-		if (name.Length >= Steamworks.Constants.k_cchPublishedDocumentTitleMax) {
+		if (Encoding.UTF8.GetByteCount(name) >= Steamworks.Constants.k_cchPublishedDocumentTitleMax) {
 			IssueReporter.ReportInstantUploadProblem("tModLoader.TitleLengthExceedLimit");
 			return false;
 		}
 
 		string description = CalculateDescriptionAndChangeNotes(isCi: false, buildData, ref settings.ChangeNotes);
+		List<(string steamLangKey, string description, string displayName)> localizedDescriptions = GetLocalizedWorkshopDescriptions(buildData, modFile);
 
 		List<string> tagsList = new List<string>();
 		tagsList.AddRange(settings.GetUsedTagsInternalNames());
@@ -195,7 +208,7 @@ public partial class WorkshopSocialModule
 
 			_publisherInstances.Add(modPublisherInstance);
 
-			modPublisherInstance.PublishContent(_publishedItems, base.IssueReporter, Forget, name, description, workshopFolderPath, settings.PreviewImagePath, settings.Publicity, tagsList.ToArray(), buildData, currPublishID, settings.ChangeNotes);
+			modPublisherInstance.PublishContent(_publishedItems, base.IssueReporter, Forget, name, description, workshopFolderPath, settings.PreviewImagePath, settings.Publicity, tagsList.ToArray(), buildData, currPublishID, settings.ChangeNotes, localizedDescriptions);
 
 			return true;
 		}
@@ -322,26 +335,9 @@ public partial class WorkshopSocialModule
 
 	private static string CalculateDescriptionAndChangeNotes(bool isCi, NameValueCollection buildData, ref string changeNotes)
 	{
-		string workshopDescFile = Path.Combine(buildData["sourcesfolder"], "description_workshop.txt");
-		string workshopDesc;
-		if (!File.Exists(workshopDescFile))
-			workshopDesc = buildData["description"];
-		else
-			workshopDesc = File.ReadAllText(workshopDescFile);
+		string workshopDesc = GetWorkshopDescription(buildData);
 
-		// Add version metadata override to allow CI publishing
-		string descriptionFinal = "";
-		if (isCi)
-			descriptionFinal += $"[quote=GithubActions(Don't Modify)]Version Summary {buildData["versionsummary"]}[/quote]";
-
-		descriptionFinal += $"{workshopDesc}" + $"[quote=tModLoader {buildData["name"]}]\nDeveloped By {buildData["author"]}[/quote]";
-
-		ModCompile.UpdateSubstitutedDescriptionValues(ref descriptionFinal, buildData["trueversion"], buildData["homepage"]);
-
-		if (descriptionFinal.Length >= Steamworks.Constants.k_cchPublishedDocumentDescriptionMax) {
-			//IssueReporter.ReportInstantUploadProblem("tModLoader.DescriptionLengthExceedLimit");
-			throw new Exception(Language.GetTextValue("tModLoader.DescriptionLengthExceedLimit", Steamworks.Constants.k_cchPublishedDocumentDescriptionMax));
-		}
+		string descriptionFinal = BuildWorkshopDescription(workshopDesc, isCi, buildData);
 
 		// If the modder hasn't supplied any change notes, then we will provde some default ones for them
 		if (string.IsNullOrWhiteSpace(changeNotes)) {
@@ -353,6 +349,88 @@ public partial class WorkshopSocialModule
 		ModCompile.UpdateSubstitutedDescriptionValues(ref changeNotes, buildData["trueversion"], buildData["homepage"]);
 
 		return descriptionFinal;
+	}
+
+	private static string BuildWorkshopDescription(string workshopDesc, bool isCi, NameValueCollection buildData)
+	{
+		// Add version metadata override to allow CI publishing
+		string descriptionFinal = "";
+		if (isCi)
+			descriptionFinal += $"[quote=GithubActions(Don't Modify)]Version Summary {buildData["versionsummary"]}[/quote]";
+
+		descriptionFinal += $"{workshopDesc}" + $"[quote=tModLoader {buildData["name"]}]\nDeveloped By {buildData["author"]}[/quote]";
+
+		ModCompile.UpdateSubstitutedDescriptionValues(ref descriptionFinal, buildData["trueversion"], buildData["homepage"]);
+
+		int descriptionByteCount = Encoding.UTF8.GetByteCount(descriptionFinal);
+		if (descriptionByteCount >= Steamworks.Constants.k_cchPublishedDocumentDescriptionMax) {
+			//IssueReporter.ReportInstantUploadProblem("tModLoader.DescriptionLengthExceedLimit");
+			throw new Exception(Language.GetTextValue("tModLoader.DescriptionLengthExceedLimit", Steamworks.Constants.k_cchPublishedDocumentDescriptionMax, descriptionByteCount - Steamworks.Constants.k_cchPublishedDocumentDescriptionMax));
+		}
+
+		return descriptionFinal;
+	}
+
+	private static string GetWorkshopDescription(NameValueCollection buildData)
+	{
+		string sourceFolder = buildData["sourcesfolder"];
+		string cultureName = Language.ActiveCulture?.Name;
+
+		if (!string.IsNullOrEmpty(cultureName)) {
+			string localizedWorkshopDescFile = Path.Combine(sourceFolder, $"description_workshop_{cultureName}.txt");
+			if (File.Exists(localizedWorkshopDescFile)) {
+				return File.ReadAllText(localizedWorkshopDescFile);
+			}
+		}
+
+		return GetDefaultWorkshopDescription(buildData);
+	}
+
+	private static List<(string steamLangKey, string description, string displayName)> GetLocalizedWorkshopDescriptions(NameValueCollection buildData, TmodFile modFile)
+	{
+		string sourceFolder = buildData["sourcesfolder"];
+		if (string.IsNullOrEmpty(sourceFolder) || !Directory.Exists(sourceFolder)) {
+			return null;
+		}
+
+		List<(string steamLangKey, string description, string displayName)> localizedDescriptions = new();
+
+		string currentSteamLanguageKey = SteamedWraps.GetCurrentSteamLangKey();
+		string defaultWorkshopDesc = GetDefaultWorkshopDescription(buildData);
+
+		Dictionary<string, string> localizedDisplayNames;
+		using (modFile.Open()) {
+			var localMod = new LocalMod(ModLocation.Local, modFile);
+			localizedDisplayNames = localMod.properties.localizedDisplayNames;
+		}
+
+		foreach (var culture in GameCulture.KnownCultures) {
+			string steamLanguageKey = SteamedWraps.GetSteamLangKey(culture);
+			if (steamLanguageKey == currentSteamLanguageKey) {
+				// These will be taken care of within the default publishing; we don't need to do extra publishing
+				continue;
+			}
+
+			string localizedWorkshopDescFile = Path.Combine(sourceFolder, $"description_workshop_{culture.Name}.txt");
+			string workshopDesc = File.Exists(localizedWorkshopDescFile) ? File.ReadAllText(localizedWorkshopDescFile) : defaultWorkshopDesc;
+			string descriptionFinal = BuildWorkshopDescription(workshopDesc, isCi: false, buildData);
+
+			string displayName = localizedDisplayNames.TryGetValue(culture.Name, out string localizedName) ? localizedName : buildData["displaynameclean"];
+
+			localizedDescriptions.Add((steamLanguageKey, descriptionFinal, Utils.CleanChatTags(displayName)));
+		}
+
+		return localizedDescriptions;
+	}
+
+	private static string GetDefaultWorkshopDescription(NameValueCollection buildData)
+	{
+		string workshopDescFile = Path.Combine(buildData["sourcesfolder"], "description_workshop.txt");
+		if (File.Exists(workshopDescFile)) {
+			return File.ReadAllText(workshopDescFile);
+		}
+
+		return buildData["description"];
 	}
 
 	public static void SteamCMDPublishPreparer(string modFolder)
@@ -446,9 +524,9 @@ public partial class WorkshopSocialModule
 			// https://steamapi.xpaw.me/#IPublishedFileService/GetDetails
 
 			string webRequest = $"https://api.steampowered.com/IPublishedFileService/GetDetails/v1/?key={webKey}&publishedfileids%5B0%5D={publishFileId}&includetags=false&includeadditionalpreviews=false&includechildren=false&includekvtags=true&includevotes=false&short_description=true&includeforsaledata=false&includemetadata=true&return_playtime_stats=0&appid=1281930&strip_description_bbcode=false&admin_query=true";
-			/// Response Format Will Include these, if it has data for it. If no data in metadata, will not show at all.
-			/// "kvtags":[{"key":"name","value":"ToBeDeleted"},{"key":"Author","value":"Solxan"},{"key":"modside","value":"Both"},{"key":"homepage","value":""},{"key":"modloaderversion","value":"9999.0"},{"key":"version","value":"0.0.0"},{"key":"modreferences","value":""},{"key":"versionsummary","value":"9999.0:0.3.0.13;2023.10.3.0:0.3.0.9;2024.3:0.3.0.11"}]
-			/// "metadata":"{\"hashes\":[\"9999.0|0.3.0.13|\\u0010�L��\\fI\\\"r�����\\\\���n�\",\"9999.0|0.3.0.13|\\u0012%E�Aa�l�A�RdG����m0\"]}"
+			// Response Format Will Include these, if it has data for it. If no data in metadata, will not show at all.
+			// "kvtags":[{"key":"name","value":"ToBeDeleted"},{"key":"Author","value":"Solxan"},{"key":"modside","value":"Both"},{"key":"homepage","value":""},{"key":"modloaderversion","value":"9999.0"},{"key":"version","value":"0.0.0"},{"key":"modreferences","value":""},{"key":"versionsummary","value":"9999.0:0.3.0.13;2023.10.3.0:0.3.0.9;2024.3:0.3.0.11"}]
+			// "metadata":"{\"hashes\":[\"9999.0|0.3.0.13|\\u0010�L��\\fI\\\"r�����\\\\���n�\",\"9999.0|0.3.0.13|\\u0012%E�Aa�l�A�RdG����m0\"]}"
 
 			//
 

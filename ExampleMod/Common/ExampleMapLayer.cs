@@ -73,7 +73,7 @@ namespace ExampleMod.Common
 				return;
 			}
 
-			foreach (Item item in Main.ActiveItems) {
+			foreach (WorldItem item in Main.ActiveItems) {
 				if (item.type == ModContent.ItemType<ExampleItem>()) {
 					Texture2D itemTexture = TextureAssets.Item[item.type].Value;
 

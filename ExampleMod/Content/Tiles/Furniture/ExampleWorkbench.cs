@@ -17,6 +17,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 			Main.tileLavaDeath[Type] = true;
 			Main.tileFrameImportant[Type] = true;
 			TileID.Sets.DisableSmartCursor[Type] = true;
+			TileID.Sets.HasOutlines[Type] = true; // Crafting stations usually have interact outlines
 			TileID.Sets.IgnoredByNpcStepUp[Type] = true; // This line makes NPCs not try to step up this tile during their movement. Only use this for furniture with solid tops.
 
 			DustType = ModContent.DustType<Dusts.Sparkle>();
@@ -27,7 +28,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 			TileObjectData.newTile.CoordinateHeights = [18];
 			TileObjectData.addTile(Type);
 
-			AddToArray(ref TileID.Sets.RoomNeeds.CountsAsTable);
+			TileID.Sets.RoomNeeds.CountsAsTable[Type] = true;
 
 			// Etc
 			LocalizedText name = CreateMapEntryName();

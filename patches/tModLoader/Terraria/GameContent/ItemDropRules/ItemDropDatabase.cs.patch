@@ -46,7 +46,7 @@
  	{
  		if (_entriesByNpcNetId.ContainsKey(npcNetId))
  			_entriesByNpcNetId[npcNetId].Remove(entry);
-@@ -143,6 +_,30 @@
+@@ -143,6 +_,32 @@
  		RegisterMimic();
  		RegisterEclipse();
  		RegisterBloodMoonFishing();
@@ -59,9 +59,11 @@
 +		RegisterHerbBag();
 +		RegisterGoodieBag();
 +		RegisterPresent();
++		RegisterLegacyPresent();
 +		RegisterCanOfWorms();
 +		RegisterOyster();
 +		RegisterCapricorns();
++		RegisterHugeDragonEgg();
 +
 +		NPCLoader.ModifyGlobalLoot(new GlobalLoot(this));
 +

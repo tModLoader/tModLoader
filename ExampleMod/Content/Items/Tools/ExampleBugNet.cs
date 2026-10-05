@@ -72,7 +72,7 @@ namespace ExampleMod.Content.Items.Tools
 	// This class is included here as a demonstration of how to use OnSpawn to modify the item spawned from catching an NPC or other entity.
 	public class ExampleCatchItemModification : GlobalItem
 	{
-		public override void OnSpawn(Item item, IEntitySource source) {
+		public override void OnSpawn(WorldItem item, IEntitySource source) {
 			if (source is not EntitySource_Caught catchEntity) {
 				return;
 			}

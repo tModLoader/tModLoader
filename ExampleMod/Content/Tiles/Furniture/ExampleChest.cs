@@ -30,7 +30,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 			TileID.Sets.BasicChest[Type] = true;
 			TileID.Sets.DisableSmartCursor[Type] = true;
 			TileID.Sets.AvoidedByNPCs[Type] = true;
-			TileID.Sets.InteractibleByNPCs[Type] = true;
+			TileID.Sets.InteractableByNPCs[Type] = true;
 			TileID.Sets.IsAContainer[Type] = true;
 			TileID.Sets.FriendlyFairyCanLureTo[Type] = true;
 			TileID.Sets.GeneralPlacementTiles[Type] = false;
@@ -189,7 +189,6 @@ namespace ExampleMod.Content.Tiles.Furniture
 			if (Main.netMode == NetmodeID.MultiplayerClient && !isLocked) {
 				if (left == player.chestX && top == player.chestY && player.chest != -1) {
 					player.chest = -1;
-					Recipe.FindRecipes();
 					SoundEngine.PlaySound(SoundID.MenuClose);
 				}
 				else {
@@ -220,8 +219,6 @@ namespace ExampleMod.Content.Tiles.Furniture
 							SoundEngine.PlaySound(player.chest < 0 ? SoundID.MenuOpen : SoundID.MenuTick);
 							player.OpenChest(left, top, chest);
 						}
-
-						Recipe.FindRecipes();
 					}
 				}
 			}

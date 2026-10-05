@@ -12,9 +12,9 @@ namespace ExampleMod.Content.Tiles
 		public override void SetStaticDefaults() {
 			// Hello! As you may have noticed, this is a sink --- and as such, it ought to be a water source, right?
 			// Well, let's do it one better, shall we?
-			TileID.Sets.CountsAsWaterSource[Type] = true;
-			TileID.Sets.CountsAsHoneySource[Type] = true;
-			TileID.Sets.CountsAsLavaSource[Type] = true;
+			TileID.Sets.CountsAsWaterForCrafting[Type] = true;
+			TileID.Sets.CountsAsHoneyForCrafting[Type] = true;
+			TileID.Sets.CountsAsLavaForCrafting[Type] = true;
 			// By using these three sets, we've registered our sink as counting as a water, lava, and honey source for crafting purposes! The future is now.
 			// Each one works individually and independently of the other two, so feel free to make your sink a source for whatever you'd like it to be!
 

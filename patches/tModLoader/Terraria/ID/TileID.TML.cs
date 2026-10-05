@@ -9,7 +9,7 @@ partial class TileID
 {
 	partial class Sets
 	{
-		/// <summary> Will cause the tile to be killed when right clicked, like <see cref="Torches"/> or <see cref="Bottles"/>. No need to set this if using <see cref="Torch"/>. </summary>
+		/// <summary> Will cause the tile to be killed when right clicked, like <see cref="TileID.Torches"/> or Water Bolt. No need to set this if using <see cref="Torches"/>. </summary>
 		public static bool[] CanDropFromRightClick = Factory.CreateBoolSet(4);
 		public static bool[] Stone = Factory.CreateBoolSet(1, 117, 25, 203);
 		public static bool[] Grass = Factory.CreateBoolSet(2, 23, 109, 199, 477, 492, 633); // Might be incorrect?
@@ -62,34 +62,8 @@ partial class TileID
 			ShellPile, new FallingBlockProjectileInfo(ProjectileID.ShellPileFalling)
 		);
 
-		/// <summary>
-		/// Whether or not the tile will be ignored for automatic step up regarding town NPC collision.
-		/// <br>Only checked when <see cref="Collision.StepUp"/> with specialChecksMode set to 1 is called</br>
-		/// </summary>
-		public static bool[] IgnoredByNpcStepUp = Factory.CreateBoolSet(14, 16, 18, 134, 469);
-
-		/// <summary>
-		/// Whether or not the smart cursor function is disabled when the cursor hovers above this tile. Used by tiles frequently right click interacted with to help prevent accidental tile placement when the player accidentally left clicks on it with smart cursor enabled, such as doors and containers.
-		/// <para/> Defaults to <see langword="false"/>.
-		/// </summary>
-		// Maybe this should be a hook instead?
-		public static bool[] DisableSmartCursor = Factory.CreateBoolSet(4, 10, 11, 13, 21, 29, 33, 49, 50, 55, 79, 85, 88, 97, 104, 125, 132, 136, 139, 144, 174, 207, 209, 212, 216, 219, 237, 287, 334, 335, 338, 354, 386, 387, 388, 389, 411, 425, 441, 463, 467, 468, 491, 494, 510, 511, 573, 621, 642);
-
-		/// <summary>
-		/// Whether or not the smart tile interaction function is disabled when the cursor hovers above this tile. Used by tiles interactable by right click that do not use smart interact, such as torches and candles.
-		/// <para/> Defaults to <see langword="false"/>.
-		/// </summary>
-		public static bool[] DisableSmartInteract = Factory.CreateBoolSet(4, 33, 334, 395, 410, 455, 471, 480, 509, 520, 657, 658);
-
 		/// <summary> Whether or not this tile is a valid spawn point. </summary>
 		public static bool[] IsValidSpawnPoint = Factory.CreateBoolSet(Beds);
-
-		/// <summary> Whether or not this tile behaves like a torch. If you are making a torch tile, then setting this to true is necessary in order for tile placement, tile framing, and the item's smart selection to work properly. Each item that places torch tiles should also set <see cref="ItemID.Sets.Torches"/>.</summary>
-		public static bool[] Torch = Factory.CreateBoolSet(TileID.Torches);
-
-		/// <summary> Whether or not this tile behaves like a campfire. Campfires must be 3x2 and need to follow the vanilla layout with the on state being at the top of the texture. Padding must also be present in the same manner, resulting in a 54x36 section for each style. The animation, however, can be done with a separate flame texture if desired. <br/>
-		/// Necessary for block swap and Marshmallow on a Stick features.</summary>
-		public static bool[] Campfire = Factory.CreateBoolSet(TileID.Campfire);
 
 		/// <summary> Whether or not this tile is a clock. </summary>
 		public static bool[] Clock = Factory.CreateBoolSet(GrandfatherClocks);
@@ -97,17 +71,14 @@ partial class TileID
 		/// <summary> Whether or not this tile is a sapling, which can grow into a tree based on the soil it's placed on. Be sure to set <see cref="CommonSapling"/> with this too. </summary>
 		public static bool[] TreeSapling = Factory.CreateBoolSet(Saplings);
 
-		/// <summary> Whether or not this tile counts as a water source for crafting purposes. </summary>
-		public static bool[] CountsAsWaterSource = Factory.CreateBoolSet(172);
-
 		/// <summary> Whether or not this tile counts as a honey source for crafting purposes. </summary>
-		public static bool[] CountsAsHoneySource = Factory.CreateBoolSet();
+		public static bool[] CountsAsHoneyForCrafting = Factory.CreateBoolSet();
 
 		/// <summary> Whether or not this tile counts as a lava source for crafting purposes. </summary>
-		public static bool[] CountsAsLavaSource = Factory.CreateBoolSet();
+		public static bool[] CountsAsLavaForCrafting = Factory.CreateBoolSet();
 
 		/// <summary> Whether or not this tile counts as a shimmer source for crafting purposes. </summary>
-		public static bool[] CountsAsShimmerSource = Factory.CreateBoolSet();
+		public static bool[] CountsAsShimmerForCrafting = Factory.CreateBoolSet();
 
 		/// <summary> Whether or not this tile counts as a specified liquid's source for crafting purposes. </summary>
 		public static bool[][] CountsAsLiquidSource;
@@ -122,10 +93,10 @@ partial class TileID
 		public static bool[] IgnoredByGrowingSaplings = Factory.CreateBoolSet(3, 24, 32, 61, 62, 69, 71, 73, 74, 82, 83, 84, 110, 113, 184, 201, 233, 352, 485, 529, 530, 637, 655);
 
 		/// <summary> Whether or not this tile prevents a meteor from landing near it.
-		/// <para/> Contains LihzahrdBrick, DisplayDoll, HatRack, FallenLog, and TeleportationPylon.
+		/// <para/> Contains DemonAltar, LihzahrdBrick, DisplayDoll, HatRack, FallenLog, and TeleportationPylon.
 		/// </summary>
 		/// <remarks> Note: Chests and Dungeon tiles are not in this set, but also prevent landing (handled through <see cref="BasicChest"/> and <see cref="Main.tileDungeon"/>)</remarks>
-		public static bool[] AvoidedByMeteorLanding = Factory.CreateBoolSet(226, 470, 475, 488, 597);
+		public static bool[] AvoidedByMeteorLanding = Factory.CreateBoolSet(26, 226, 470, 475, 488, 597);
 
 		/// <summary>
 		/// Whether or not this tile will prevent sand/slush from falling beneath it.
@@ -143,11 +114,6 @@ partial class TileID
 			597
 		};
 
-		/// <summary>
-		/// Tiles that are interpreted as a wall by nearby walls during framing, causing them to frame as if merging with this adjacent tile. Prevents wall from drawing within bounds for transparent tiles.
-		/// </summary>
-		public static bool[] WallsMergeWith = Factory.CreateBoolSet(Glass);
-
 		// Values taken from Main.SetupTileMerge
 		/// <summary>
 		/// The value a tile forces to be set for <see cref="BlockMergesWithMergeAllBlock"/> regardless of default conditions (see its documentation). null by default.
@@ -159,7 +125,7 @@ partial class TileID
 		/// Allows tiles to be placed next to any tile or wall. (Tiles normally need a <see cref="Main.tileSolid"/> tile, <see cref="Rope"/> tile, <see cref="IsBeam"/> tile, or a wall adjacent to the target position to be placeable.)
 		/// <br>Used by: Cobweb, Coin Piles, Living Fire Blocks, Smoke Blocks, Bubble Blocks</br>
 		/// </summary>
-		public static bool[] CanPlaceNextToNonSolidTile = Factory.CreateBoolSet(false, Cobweb, CopperCoinPile, SilverCoinPile, GoldCoinPile, PlatinumCoinPile, LivingFire, LivingCursedFire, LivingDemonFire, LivingFrostFire, LivingIchor, LivingUltrabrightFire, ChimneySmoke, Bubble);
+		public static bool[] CanPlaceNextToNonSolidTile = Factory.CreateBoolSet(false, Cobweb, CopperCoinPile, SilverCoinPile, GoldCoinPile, PlatinumCoinPile, LivingFire, LivingCursedFire, LivingDemonFire, LivingFrostFire, LivingIchor, LivingUltrabrightFire, ChimneySmoke, Bubble, CobwebReplica);
 
 		/// New created sets to facilitate vanilla biome block counting including modded blocks. To replace the current hardcoded counts in SceneMetrics.cs
 		public static int[] CorruptBiome = Factory.CreateIntSet(0, 23, 1, 661, 1, 24, 1, 25, 1, 32, 1, 112, 1, 163, 1, 400, 1, 398, 1, 27, -10);
@@ -194,10 +160,11 @@ partial class TileID
 		public static bool[] MultiTileSway = Factory.CreateBoolSet(false);
 
 		/// <summary>
-		/// If true, players landing on these tiles will not suffer <see href="https://terraria.wiki.gg/wiki/Fall_damage#Tiles">fall damage</see>. Vanilla entries include Cloud, RainCloud, SnowCloud, and PoopBlock. Defaults to false.
-		/// <para/> See also <see cref="Main.tileBouncy"/>.
+		/// If true, players landing on these tiles will not suffer <see href="https://terraria.wiki.gg/wiki/Fall_damage#Tiles">fall damage</see>. Entries in <see cref="Clouds"/> will have the same effect as well. Vanilla entries include PoopBlock.
+		/// <br/><br/> Defaults to <see langword="false"/>.
+		/// <br/><br/> See also <see cref="Main.tileBouncy"/>.
 		/// </summary>
-		public static bool[] NegatesFallDamage = Factory.CreateBoolSet(Cloud, RainCloud, SnowCloud, PoopBlock);
+		public static bool[] NegatesFallDamage = Factory.CreateBoolSet(PoopBlock);
 
 		/// <summary>
 		/// Indicates that this tile is a pressure plate, and which entities should trigger it when they collide with it. Custom tiles will still need to implement <see cref="ModTile.HitSwitch(int, int)"/> to act on the trigger. The <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/Tiles/ExamplePressurePlate.cs">ExamplePressurePlate.cs</see> example demonstrates this.

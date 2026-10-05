@@ -408,7 +408,7 @@ internal static class PlayerIO
 
 	internal static string SaveUsedModPack(Player player)
 	{
-		return Path.GetFileNameWithoutExtension(Core.ModOrganizer.ModPackActive);
+		return Path.GetFileName(Core.ModOrganizer.ModPackActive);
 	}
 
 	internal static TagCompound SaveLoadouts(EquipmentLoadout[] equipLoadouts)
@@ -457,7 +457,7 @@ internal static class PlayerIO
 	{
 		path = Path.ChangeExtension(path, ".tplr");
 		if (FileUtilities.Exists(path + ".bak", cloudSave)) {
-			FileUtilities.Move(path + ".bak", path, cloudSave, true);
+			FileUtilities.Move(path + ".bak", path, cloudSave);
 		}
 	}
 	//in Terraria.Main.ErasePlayer between the two try catches add

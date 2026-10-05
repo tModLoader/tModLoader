@@ -52,8 +52,7 @@ public static class BuildInfo
 		// Version name for players
 		versionedName = $"tModLoader v{tMLVersion}";
 
-		string[] branchNameBlacklist = { "unknown", "stable", "preview", "1.4.3-Legacy" };
-		if (!string.IsNullOrEmpty(BranchName) && !branchNameBlacklist.Contains(BranchName))
+		if (!string.IsNullOrEmpty(BranchName) && !Social.Base.SocialBrowserModule.branchNameBlacklist.Contains(BranchName))
 			versionedName += $" {BranchName}";
 
 		if (Purpose != BuildPurpose.Stable)

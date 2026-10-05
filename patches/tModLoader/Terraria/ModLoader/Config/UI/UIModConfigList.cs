@@ -215,7 +215,7 @@ internal class UIModConfigList : UIState
 
 		void AddSmallIcon(Mod mod, UIButton<string> modPanel)
 		{
-			var iconTexture = GetSmallIcon(mod);
+			var iconTexture = mod.SmallModIcon;
 			if (iconTexture == null) {
 				return;
 			}
@@ -224,7 +224,7 @@ internal class UIModConfigList : UIState
 			float iconPadding = 2;
 			modPanel.PaddingLeft += iconOffset + iconPadding;
 
-			var sideIndicator = new UIImage(iconTexture) {
+			var modIcon = new UIImage(iconTexture) {
 				VAlign = 0.5f,
 				HAlign = 0f,
 				Color = Color.White,
@@ -232,7 +232,7 @@ internal class UIModConfigList : UIState
 				MarginTop = -2, // 40 - 30 is 10, padding is 6, so -2 would make 5 pixels top and bottom since VAlign is 0.5
 			};
 
-			modPanel.Append(sideIndicator);
+			modPanel.Append(modIcon);
 		}
 	}
 
@@ -281,7 +281,7 @@ internal class UIModConfigList : UIState
 				MarginRight = -indicatorOffset - indicatorPadding + 4, // 4 for alignment
 			};
 
-			sideIndicator.OnDraw += delegate (UIElement affectedElement) {
+			sideIndicator.OnDraw += delegate (UIElement affectedElement, SpriteBatch spriteBatch) {
 				if (sideIndicator.IsMouseHovering) {
 					string hoverText = Language.GetTextValue(config.Mode == ConfigScope.ServerSide ? "tModLoader.ModConfigServerSide" : "tModLoader.ModConfigClientSide");
 					UICommon.TooltipMouseText(hoverText);
@@ -291,18 +291,6 @@ internal class UIModConfigList : UIState
 			configPanel.Append(sideIndicator);
 			configList.Add(configPanel);
 		}
-	}
-
-	private Asset<Texture2D> GetSmallIcon(Mod mod)
-	{
-		if (mod.HasAsset("icon_small")) {
-			var asset = mod.Assets.Request<Texture2D>("icon_small");
-			if (asset.Size() == new Vector2(30)) {
-				return asset;
-			}
-			mod.Logger.Info("icon_small needs to be 30x30 pixels.");
-		}
-		return null;
 	}
 
 	public override void Draw(SpriteBatch spriteBatch)

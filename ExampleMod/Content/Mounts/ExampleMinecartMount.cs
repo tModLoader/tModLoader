@@ -11,7 +11,6 @@ namespace ExampleMod.Content.Mounts
 	{
 		public override void SetStaticDefaults() {
 			MountID.Sets.Cart[Type] = true;
-			MountID.Sets.FacePlayersVelocity[Type] = true;
 
 			// Helper method setting many common properties for a minecart
 			Mount.SetAsMinecart(

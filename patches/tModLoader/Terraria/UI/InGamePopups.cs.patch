@@ -13,14 +13,3 @@
  			_achievementBorderTexture = Main.Assets.Request<Texture2D>("Images/UI/Achievement_Borders", AssetRequestMode.AsyncLoad);
  		}
  
-@@ -87,7 +_,10 @@
- 				float num3 = num * 0.3f;
- 				Vector2 vector = r.Right() - Vector2.UnitX * num * (12f + num3 * (float)_achievementIconFrame.Width);
- 				sb.Draw(_achievementTexture.Value, vector, _achievementIconFrame, Color.White * opacity, 0f, new Vector2(0f, _achievementIconFrame.Height / 2), num3, SpriteEffects.None, 0f);
-+				/*
- 				sb.Draw(_achievementBorderTexture.Value, vector, null, Color.White * opacity, 0f, new Vector2(0f, _achievementIconFrame.Height / 2), num3, SpriteEffects.None, 0f);
-+				*/
-+				sb.Draw(_achievementBorderTexture.Value, vector, null, Color.White * opacity, 0f, new Vector2(4f, _achievementBorderTexture.Height() / 2), num3, SpriteEffects.None, 0f); // Fix vanilla border/achievement drawing alignment bug.
- 				Utils.DrawBorderString(color: new Color(Main.mouseTextColor, Main.mouseTextColor, (int)Main.mouseTextColor / 5, Main.mouseTextColor) * opacity, sb: sb, text: _title, pos: vector - Vector2.UnitX * 10f, scale: num * 0.9f, anchorx: 1f, anchory: 0.4f);
- 				if (num2)
- 					OnMouseOver();

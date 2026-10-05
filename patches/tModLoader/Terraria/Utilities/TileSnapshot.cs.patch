@@ -1,0 +1,63 @@
+--- src/TerrariaNetCore/Terraria/Utilities/TileSnapshot.cs
++++ src/tModLoader/Terraria/Utilities/TileSnapshot.cs
+@@ -48,10 +_,10 @@
+ 			TileStruct result = default(TileStruct);
+ 			result._type = tile.type;
+ 			ushort wall = tile.wall;
+-			result._sTileHeader = tile.sTileHeader;
++			//result._sTileHeader = tile.sTileHeader;
+ 			result._liquid = tile.liquid;
+-			result._bTileHeader = tile.bTileHeader;
++			//result._bTileHeader = tile.bTileHeader;
+-			result._wall_bTileHeader3_packed = (ushort)(wall | ((tile.bTileHeader3 & 0xE0) << 8));
++			//result._wall_bTileHeader3_packed = (ushort)(wall | ((tile.bTileHeader3 & 0xE0) << 8));
+ 			if ((result._sTileHeader & 0x20) == 0) {
+ 				result._type = 0;
+ 				result._sTileHeader &= 35808;
+@@ -79,13 +_,13 @@
+ 		{
+ 			tile.type = _type;
+ 			tile.wall = (ushort)(_wall_bTileHeader3_packed & 0x1FFFu);
+-			tile.sTileHeader = _sTileHeader;
++			//tile.sTileHeader = _sTileHeader;
+ 			tile.frameX = _frameX;
+ 			tile.frameY = _frameY;
+ 			tile.liquid = _liquid;
+-			tile.bTileHeader = _bTileHeader;
++			//tile.bTileHeader = _bTileHeader;
+-			tile.bTileHeader2 = 0;
++			//tile.bTileHeader2 = 0;
+-			tile.bTileHeader3 = (byte)((uint)(_wall_bTileHeader3_packed >> 8) & 0xE0u);
++			//tile.bTileHeader3 = (byte)((uint)(_wall_bTileHeader3_packed >> 8) & 0xE0u);
+ 		}
+ 
+ 		public static bool operator ==(TileStruct lhs, TileStruct rhs)
+@@ -211,7 +_,7 @@
+ 	{
+ 		Array.Resize(ref _tiles, Main.maxTilesX * Main.maxTilesY);
+ 		FastParallel.For(0, Main.maxTilesX, delegate (int x0, int x1, object _) {
+-			Tile[,] tile = Main.tile;
++			var tile = Main.tile;
+ 			TileStruct[] tiles = _tiles;
+ 			int maxTilesY = Main.maxTilesY;
+ 			for (int i = x0; i < x1; i++) {
+@@ -291,7 +_,10 @@
+ 	{
+ 		FastParallel.For(0, Main.maxTilesX, delegate (int x0, int x1, object _) {
+ 			TileStruct[] tiles = _tiles;
++			/*
+ 			Tile[,] tile = Main.tile;
++			*/
++			var tile = Main.tile;
+ 			int maxTilesY = Main.maxTilesY;
+ 			for (int i = x0; i < x1; i++) {
+ 				for (int j = 0; j < maxTilesY; j++) {
+@@ -352,7 +_,7 @@
+ 	{
+ 		Array.Resize(ref _tiles, Main.maxTilesX * Main.maxTilesY);
+ 		FastParallel.For(0, Main.maxTilesX, delegate (int x0, int x1, object _) {
+-			Tile[,] tile = Main.tile;
++			var tile = Main.tile;
+ 			TileStruct[] tiles = _tiles;
+ 			int maxTilesY = Main.maxTilesY;
+ 			for (int i = x0; i < x1; i++) {

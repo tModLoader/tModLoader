@@ -85,7 +85,7 @@ namespace ExampleMod.Content.Tiles
 		}
 
 		// World generation is explained more in https://github.com/tModLoader/tModLoader/wiki/World-Generation
-		public override void ModifyWorldGenTasks(List<GenPass> tasks, ref double totalWeight) {
+		public override void ModifyWorldGenTasks(List<GenPass> tasks) {
 			// Because world generation is like layering several images on top of each other, we need to do some steps between the original world generation steps.
 
 			// Most vanilla ores are generated in a step called "Shinies", so for maximum compatibility, we will also do this.

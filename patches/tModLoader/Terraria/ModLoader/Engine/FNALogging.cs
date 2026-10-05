@@ -70,7 +70,7 @@ internal static class FNALogging
 			if (DriverIdentifier == null && s.StartsWith("FNA3D Driver: ")) {
 				DriverIdentifier = s.Substring("FNA3D Driver: ".Length);
 
-				Logging.FNA.Info($"SDL Video Diver: {SDL2.SDL.SDL_GetCurrentVideoDriver()}");
+				Logging.FNA.Info($"SDL Video Diver: {SDL3.SDL.SDL_GetCurrentVideoDriver()}");
 			}
 
 			Logging.FNA.Info(s);
@@ -84,8 +84,7 @@ internal static class FNALogging
 
 		Logging.FNA.Debug("Querying linked library versions...");
 
-		SDL2.SDL.SDL_GetVersion(out var sdl_version);
-		Logging.FNA.Debug($"SDL v{sdl_version.major}.{sdl_version.minor}.{sdl_version.patch}");
+		Logging.FNA.Debug($"SDL v{SDL3.SDL.SDL_GetVersion()}.{SDL3.SDL.SDL_GetRevision()}");
 
 		uint fna3d_version = FNA3D.FNA3D_LinkedVersion();
 		Logging.FNA.Debug($"FNA3D v{fna3d_version / 10000}.{fna3d_version / 100 % 100}.{fna3d_version % 100}");
@@ -121,6 +120,6 @@ internal static class FNALogging
 
 	internal static void PostAudioInit()
 	{
-		Logging.FNA.Info($"SDL Audio Driver: {SDL2.SDL.SDL_GetCurrentAudioDriver()}");
+		Logging.FNA.Info($"SDL Audio Driver: {SDL3.SDL.SDL_GetCurrentAudioDriver()}");
 	}
 }

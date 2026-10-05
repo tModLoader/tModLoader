@@ -20,10 +20,10 @@
  		public static bool[] ReducedNaturalChance = Factory.CreateBoolSet(7, 8, 9, 10, 11, 22, 23, 24, 29, 30, 31, 39, 40, 56, 41, 47, 48, 49);
  	}
  
-@@ -93,4 +_,7 @@
- 	public const int Mythical = 83;
- 	public const int Legendary2 = 84;
- 	public static readonly int Count = 85;
+@@ -106,4 +_,7 @@
+ 	public const int Ballistic = 96;
+ 	public const int Scraggling = 97;
+ 	public static readonly int Count = 98;
 +
 +	// Added by TML.
 +	public static readonly IdDictionary Search = IdDictionary.Create<PrefixID, int>();

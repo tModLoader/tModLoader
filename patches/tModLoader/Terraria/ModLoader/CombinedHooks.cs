@@ -181,17 +181,6 @@ public static class CombinedHooks
 		player.ApplyBannerDefenseBuff(projectile.bannerIdToRespondTo, ref modifiers);
 		if (player.resistCold && projectile.coldDamage)
 			modifiers.IncomingDamageMultiplier *= 0.7f;
-
-		if (!projectile.reflected && !ProjectileID.Sets.PlayerHurtDamageIgnoresDifficultyScaling[projectile.type]) {
-			float damageMult = Main.GameModeInfo.EnemyDamageMultiplier;
-			if (Main.GameModeInfo.IsJourneyMode) {
-				var power = CreativePowerManager.Instance.GetPower<CreativePowers.DifficultySliderPower>();
-				if (power.GetIsUnlocked())
-					damageMult = power.StrengthMultiplierToGiveNPCs;
-			}
-
-			modifiers.SourceDamage *= damageMult;
-		}
 	}
 
 	public static void OnHitByProjectile(Player player, Projectile projectile, in Player.HurtInfo hurtInfo)
@@ -323,7 +312,7 @@ public static class CombinedHooks
 		EquipLoader.EquipFrameEffects(player);
 	}
 
-	public static bool OnPickup(Item item, Player player)
+	public static bool OnPickup(WorldItem item, Player player)
 	{
 		return ItemLoader.OnPickup(item, player) && PlayerLoader.OnPickup(player, item);
 	}
