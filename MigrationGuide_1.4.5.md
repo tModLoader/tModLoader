@@ -423,7 +423,8 @@ ArmorSetTweaks.cs shows off modifying existing armor sets and ExampleRobe.cs sho
 * 🤖: `ModItem.UpdateArmorSet` and `GlobalItem.UpdateArmorSet` now have an `ArmorSetBonus armorSetBonus` parameter.
 * ⚙️: `ModItem.IsArmorSet` and `GlobalItem.IsArmorSet` removed. Use `AddArmorSet` as described above to replace this.
 * Using vanilla armor from existing armor sets in modded sets is now potentially confusing to the user due to how the set bonus tooltip is calculated and displayed. The game will show the armor set tooltip for an item in the inventory (not just the equipment slots), so if a modded armor set also uses that item, it might potentially show the modded armor set bonus tooltip rather than the original vanilla armor set bonus tooltip the player might be looking for. 
-* 💀: `Player.setBonus` has been removed, see "Modifying Existing Armor Sets" above for how to modify set bonus description text.
+* 💀: `Player.setBonus` has been removed. The set bonus tooltip is taken directly from the active `ArmorSetBonus`. This value will be populated as described previously.
+  * See "Modifying Existing Armor Sets" above for how to modify vanilla set bonus description text.
 
 ### Whips and Tag Effects
 
