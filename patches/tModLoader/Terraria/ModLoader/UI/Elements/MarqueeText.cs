@@ -120,10 +120,10 @@ public class MarqueeText : UIElement
     }
 
     // TODO: consider languages that read from right to left
-    // TODO: not working
     public static float GetStartAlignment(Vector2 textSize, float innerWidth, float textAlignX)
     {
-		return -(textSize.X * (1f - textAlignX)) + (innerWidth * (1f - textAlignX));
+	    float align = 1f - textAlignX;
+	    return -((textSize.X * align) - (innerWidth * align));
     }
 
     public void ResetScroll()

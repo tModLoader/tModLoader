@@ -253,7 +253,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 			HAlign = 0.5f,
 			Top = { Pixels = -46 }, // -35 is common for most UIs, but UIWorkshopHub uses -46 to fit more content
 			BackgroundColor = UICommon.DefaultUIBlue,
-			// TODO: not working AlignToStartWhenNotScrolling = true,
+			AlignToStartWhenNotScrolling = true,
 		}.WithPadding(15f);
 		uiElement.Append(headerTextPanel);
 	}
@@ -567,10 +567,13 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 		configSideIndicator.Recalculate();
 
 		// Set config name, mod name and small mod icon in the display panel
+		// This is kind of a mess but is needed to make the scrolling start a second after the UI opens
 		headerTextPanel.SetText(modConfig.DisplayName);
+		headerTextPanel.Recalculate();
 		headerTextPanel.ResetScroll();
 		headerTextPanel.SetScrollDelay(60);
 		modNameText.SetText(modConfig.Mod.DisplayName);
+		modNameText.Recalculate();
 		modNameText.ResetScroll();
 		modNameText.SetScrollDelay(60);
 
