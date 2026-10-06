@@ -138,6 +138,13 @@ public class MarqueeText : UIElement
 	    }
     }
 
+    public void ResetScroll()
+    {
+	    scroll = 0;
+	    scrollTimer = 0;
+	    scrollDirection = 1;
+    }
+
     public override Rectangle GetClippingRectangle(SpriteBatch spriteBatch)
     {
 	    const float ExtraXPadding = 2f; // Extra space to stop the right of the text getting clipped

@@ -38,6 +38,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 
 	private ConfigPage rootConfigPage;
 	private ConfigPage CurrentConfigPage => configPageStack.Peek();
+	private bool InSubPage => configPageStack.Count > 1;
 	private readonly Stack<ConfigPage> configPageStack = new();
 
 	public class ConfigPage(object name)
@@ -65,6 +66,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 	private UIButton<LocalizedText> revertConfigButton;
 	private UIButton<LocalizedText> restoreDefaultsConfigButton;
 
+	private UIElement listHeaderContainer;
 	private UIList configElementList;
 	private UIScrollbar scrollbar;
 	private UIFocusInputTextField filterTextField;
@@ -72,6 +74,8 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 	private MarqueeText modNameText;
 	private UIImage smallModIcon;
 	private UIImageFramed configSideIndicator;
+	private UIButton<LocalizedText> subPageBackButton;
+	private MarqueeTextPanel subPageBreadcrumb;
 
 	#region UI Creation
 
@@ -81,6 +85,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 		CreateButtons();
 		CreatePanelContents();
 		CreateHeaderPanel();
+		CreateSubPageUI();
 	}
 
 	private void CreateMainPanel()
@@ -157,7 +162,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 
 	private void CreatePanelContents()
 	{
-		var listHeaderContainer = new UIElement {
+		listHeaderContainer = new UIElement {
 			Width = { Percent = 1f },
 			Height = { Pixels = 40 },
 		};
@@ -251,6 +256,26 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 		uiElement.Append(headerTextPanel);
 	}
 
+	private void CreateSubPageUI()
+	{
+		subPageBackButton = new UIButton<LocalizedText>(Language.GetText("tModLoader.ModConfigBack"), 1f, false) {
+			Width = { Pixels = 100 },
+			Height = { Pixels = 40 },
+			Top = { Pixels = listHeaderContainer.Height.Pixels + 5 },
+			TooltipText = true,
+			HoverSound = SoundID.MenuTick,
+		};
+
+		subPageBackButton.OnLeftClick += BackSubPage;
+
+		subPageBreadcrumb = new MarqueeTextPanel("") {
+			Left = { Pixels = subPageBackButton.Width.Pixels + 10 },
+			MaxWidth = { Percent = 1f, Pixels = -(subPageBackButton.Width.Pixels + 10) },
+			Height = { Pixels = 40 },
+			Top = { Pixels = listHeaderContainer.Height.Pixels + 5 },
+		};
+	}
+
 	private UIPanel CreateInfoBadge()
 	{
 		var infoBadge = new UIPanel {
@@ -279,13 +304,6 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 	// Note that Escape key while in-game won't call this.
 	public void HandleBackButtonUsage()
 	{
-		// TODO: temporary until I make a real back button
-		if (configPageStack.Count > 1) {
-			configPageStack.Pop();
-			RefreshUI();
-			return;
-		}
-
 		if (HasUnsavedChanges) {
 			if (isConfirmDiscardChangsPopupOpen) {
 				return;
@@ -341,9 +359,9 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 		if (!HasUnsavedChanges)
 			return;
 
-		var result = modConfig.SaveChanges(pendingConfig, status: SetMessage, silent: false);
-		if (result == ConfigSaveResult.Success) // Don't clear out pending changes for needs reload or sent to server
-			RefreshUI();
+		modConfig.SaveChanges(pendingConfig, status: SetMessage, silent: false);
+		OnSaveRevertRestore(); // Temporary, read the comment inside OnSaveRevertRestore
+		RefreshUI();
 	}
 
 	private void RevertConfig(UIMouseEvent evt, UIElement listeningElement)
@@ -354,6 +372,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 		SoundEngine.PlaySound(SoundID.MenuClose);
 		SetMessage(Language.GetTextValue("tModLoader.ModConfigChangesReverted"), Color.Green);
 		ConfigManager.RevertConfigChanges(modConfig, pendingConfig);
+		OnSaveRevertRestore(); // Temporary, read the comment inside OnSaveRevertRestore
 		RefreshUI();
 	}
 
@@ -365,6 +384,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 		SoundEngine.PlaySound(SoundID.MenuClose);
 		SetMessage(Language.GetTextValue("tModLoader.ModConfigDefaultsRestored"), Color.Green);
 		ConfigManager.Reset(pendingConfig);
+		OnSaveRevertRestore(); // Temporary, read the comment inside OnSaveRevertRestore
 		RefreshUI();
 	}
 
@@ -387,10 +407,22 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 		configPageStack?.Clear();
 		configElementList?.Clear();
 		filterTextField?.SetText("");
+		headerTextPanel?.ResetScroll();
 		UnblockInput(null, null);
 
 		if (scrollbar is not null)
 			scrollbar.ViewPosition = 0f;
+	}
+
+	private void OnSaveRevertRestore()
+	{
+		// This is a leftover from the previous config UI, since properly refreshing the config elements requires a lot of code changes and will probably break mods.
+		// Currently, it is easier and less bug prone to just recreate the config UI.
+		// This (unfortunately) preserves the legacy behaviour of configs going back to the main config page on save/revert/restore.
+		configPageStack.Clear();
+		rootConfigPage = new ConfigPage(modConfig.DisplayName);
+		CreateConfigElements(rootConfigPage, pendingConfig);
+		configPageStack.Push(rootConfigPage);
 	}
 
 	private void RefreshUI(bool delayRefresh = true)
@@ -402,16 +434,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 
 		refreshQueued = false;
 
-		// TODO: test collapsing + subpages on save/revert
-		// This config element updating system is a leftover from the previous config UI, since properly refreshing the config elements requires a lot of code changes and will probably break mods.
-		configPageStack.Clear();
-		rootConfigPage = new ConfigPage(modConfig.DisplayName);
-		CreateConfigElements(rootConfigPage, pendingConfig);
-		configPageStack.Push(rootConfigPage);
-
-		// TODO: this is a temporary fix for subpages, since refresh the UI requires recreating all of the UI, including the subpage UI
-		// TODO: make the ConfigPage stack store the config field names of each of the subpages and push them all back on here
-
+		RefreshSubPageUI();
 		CheckSaveAndRestoreConditions();
 
 		// TODO: allow filtering to look inside of subpages
@@ -423,6 +446,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 			return true;
 		}).Select(x => x.Item1));
 
+		// TODO: make this work for subpages
 		var backgroundColorAttribute = (BackgroundColorAttribute)Attribute.GetCustomAttribute(pendingConfig.GetType(), typeof(BackgroundColorAttribute));
 		uiPanel.BackgroundColor = backgroundColorAttribute?.Color ?? UICommon.MainPanelBackground;
 
@@ -433,6 +457,38 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 	{
 		// Should be changed to RefreshUI in the future to ensure elements get updated without having to recreate all of them
 		CheckSaveAndRestoreConditions();
+	}
+
+	private void BackSubPage(UIMouseEvent evt, UIElement listeningElement)
+	{
+		if (configPageStack.Count <= 1) {
+			return;
+		}
+
+		SoundEngine.PlaySound(SoundID.MenuClose);
+		configPageStack.Pop();
+		RefreshUI();
+	}
+
+	private void RefreshSubPageUI()
+	{
+		subPageBackButton.Remove();
+		subPageBreadcrumb.Remove();
+
+		configElementList.Height.Pixels = -listHeaderContainer.Height.Pixels - 5;
+
+		if (InSubPage) {
+			uiPanel.Append(subPageBackButton);
+			uiPanel.Append(subPageBreadcrumb);
+
+			subPageBackButton.OnActivate(); // Refresh colors
+			subPageBreadcrumb.SetText(string.Join(" > ", configPageStack.Reverse().Skip(1).Select(p => p.Name)));
+			subPageBreadcrumb.ResetScroll();
+
+			configElementList.Height.Pixels -= subPageBackButton.Height.Pixels + 10;
+		}
+
+		scrollbar.Height.Pixels = configElementList.Height.Pixels;
 	}
 
 	private void CheckSaveAndRestoreConditions()
