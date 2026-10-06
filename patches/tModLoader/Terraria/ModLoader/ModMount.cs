@@ -197,9 +197,9 @@ public abstract class ModMount : ModType<Mount.MountData, ModMount>
 
 	/// <summary>
 	/// Allows for complete customization of mount drawing. This method will be called once for each supported mount texture layer that exists. Use drawType to conditionally apply changes.
-	/// drawType corresponds to the following: 0: backTexture, 1: backTextureExtra, 2: frontTexture. 3: frontTextureExtra
-	/// Corresponding glow textures, such as backTextureGlow, are paired with their corresponding texture and passed into this method as well.
-	/// Return false if you are manually adding DrawData to playerDrawData to replace the vanilla draw behavior, otherwise tweak ref variables to customize the drawing and add additional DrawData to playerDrawData.
+	/// <para/>drawType corresponds to the following: 0: backTexture, 1: backTextureExtra, 2: frontTexture. 3: frontTextureExtra
+	/// <br/>Corresponding glow textures, such as backTextureGlow, are paired with their corresponding texture and passed into this method as well.
+	/// <para/>Return false if you are manually adding DrawData to playerDrawData to replace the vanilla draw behavior, otherwise tweak ref variables to customize the drawing and add additional DrawData to playerDrawData.
 	/// </summary>
 	/// <param name="playerDrawData"></param>
 	/// <param name="drawType">Corresponds to the following: 0: backTexture, 1: backTextureExtra, 2: frontTexture. 3: frontTextureExtra</param>
@@ -219,5 +219,14 @@ public abstract class ModMount : ModType<Mount.MountData, ModMount>
 	public virtual bool Draw(List<DrawData> playerDrawData, int drawType, Player drawPlayer, ref Texture2D texture, ref Texture2D glowTexture, ref Vector2 drawPosition, ref Rectangle frame, ref Color drawColor, ref Color glowColor, ref float rotation, ref SpriteEffects spriteEffects, ref Vector2 drawOrigin, ref float drawScale, float shadow)
 	{
 		return true;
+	}
+
+	/// <summary>
+	/// Allows for modification of the PlayerDrawSet data on the player before it is finalized. This runs during the setup and before <see cref="ModPlayer.ModifyDrawInfo(ref PlayerDrawSet)"/>.
+	/// </summary>
+	/// <param name="drawInfo"></param>
+	public virtual void ModifyPlayerDrawInfo(ref PlayerDrawSet drawInfo)
+	{
+
 	}
 }

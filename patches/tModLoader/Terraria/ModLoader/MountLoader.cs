@@ -155,4 +155,14 @@ public static class MountLoader
 		}
 		return true;
 	}
+
+	/// <summary>
+	/// See <see cref="ModMount.ModifyPlayerDrawInfo(ref PlayerDrawSet)"/>
+	/// </summary>
+	public static void ModifyPlayerDrawInfo(Mount mount, ref PlayerDrawSet drawInfo)
+	{
+		if (IsModMount(mount._data)) {
+			mount._data.ModMount.ModifyPlayerDrawInfo(ref drawInfo);
+		}
+	}
 }

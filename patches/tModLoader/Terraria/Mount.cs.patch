@@ -340,6 +340,20 @@
  				}
  				break;
  			case 8:
+@@ -3236,10 +_,13 @@
+ 
+ 	private bool DoesHoverIgnoresFatigue()
+ 	{
++		return MountID.Sets.HoverIgnoresFatigue[_type];
++		/*
+ 		if (_type != 7 && _type != 8 && _type != 12 && _type != 23 && _type != 44 && _type != 49 && _type != 56)
+ 			return _type == 61;
+ 
+ 		return true;
++		*/
+ 	}
+ 
+ 	private float GetWitchBroomTrinketRotation(Player player)
 @@ -3260,6 +_,9 @@
  
  	public void UpdateFrame(Player mountedPlayer, int state, Vector2 velocity)
