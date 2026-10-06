@@ -33,5 +33,7 @@ public partial class ArmorSetBonus
 	/// </summary>
 	public string Identifier { get; internal set; }
 
-	public static Builder Create(ArmorSetEffect Effect, LocalizedText LocalizedText, PartType PrimaryPart = PartType.None, string Identifier = null) => new Builder(Effect, LocalizedText, PrimaryPart, Identifier);
+	public static Builder Create(string Identifier, LocalizedText LocalizedText, ArmorSetEffect Effect, PartType PrimaryPart = PartType.None) => new Builder(Effect, LocalizedText, PrimaryPart, Identifier);
+
+	public static Builder Create(string Identifier, string TextKey, ArmorSetEffect Effect, PartType PrimaryPart = PartType.None) => new Builder(Identifier, TextKey, Effect, PrimaryPart);
 }

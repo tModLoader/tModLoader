@@ -398,9 +398,9 @@ public override void SetStaticDefaults() {
 	int legs = ModContent.ItemType<ExampleLeggings>();
 
 	var SetBonusTextMelee = this.GetLocalization("SetBonus_Melee").WithFormatArgs(AdditiveMeleeDamageBonus);
-	ArmorSetBonuses.Add(Type, body, legs, SetBonusTextMelee, ArmorSetBonus.PartType.Body, "ExampleMod/ExampleArmor_Melee", UpdateArmorSetMelee);
+	ArmorSetBonuses.Add(Type, body, legs, "ExampleMod/ExampleArmor_Melee", SetBonusTextMelee, UpdateArmorSetMelee, ArmorSetBonus.PartType.Body);
 	var SetBonusTextRanged = this.GetLocalization("SetBonus_Ranged").WithFormatArgs(AdditiveRangedDamageBonus);
-	ArmorSetBonuses.Add(Type, alternateBody, legs, SetBonusTextRanged, ArmorSetBonus.PartType.Body, "ExampleMod/ExampleArmor_Ranged", UpdateArmorSetRanged);
+	ArmorSetBonuses.Add(Type, alternateBody, legs, "ExampleMod/ExampleArmor_Ranged", SetBonusTextRanged, UpdateArmorSetRanged, ArmorSetBonus.PartType.Body);
 }
 
 private void UpdateArmorSetMelee(Player player) {

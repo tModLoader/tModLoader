@@ -91,13 +91,9 @@
  		for (int i = 0; i < SetsContaining.Length; i++) {
  			SetsContaining[i] = array;
  		}
-@@ -604,14 +_,16 @@
- 		return null;
- 	}
+@@ -606,12 +_,13 @@
  
--	private static ArmorSetBonus.Builder Create(ArmorSetBonus.ArmorSetEffect effect, string textKey, ArmorSetBonus.PartType primaryPart = ArmorSetBonus.PartType.None) => ArmorSetBonus.Create(effect, textKey, primaryPart);
-+	// TML made public, capitalize parameters for documentation refs, add Identifier
-+	public static ArmorSetBonus.Builder Create(ArmorSetBonus.ArmorSetEffect Effect, string TextKey, ArmorSetBonus.PartType PrimaryPart = ArmorSetBonus.PartType.None, string Identifier = null) => ArmorSetBonus.Create(Effect, TextKey, PrimaryPart, Identifier);
+ 	private static ArmorSetBonus.Builder Create(ArmorSetBonus.ArmorSetEffect effect, string textKey, ArmorSetBonus.PartType primaryPart = ArmorSetBonus.PartType.None) => ArmorSetBonus.Create(effect, textKey, primaryPart);
  
 +	// Made private, these should only be used by vanilla sets and Identifier added later.
 -	public static void Add(ArmorSetBonus.ArmorSetEffect Effect, string TextKey, int Head, int Body, int Legs)

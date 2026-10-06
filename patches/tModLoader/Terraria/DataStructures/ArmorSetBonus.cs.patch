@@ -1,6 +1,9 @@
 --- src/TerrariaNetCore/Terraria/DataStructures/ArmorSetBonus.cs
 +++ src/tModLoader/Terraria/DataStructures/ArmorSetBonus.cs
-@@ -3,7 +_,7 @@
+@@ -1,9 +_,10 @@
+ using System.Collections.Generic;
++using System.Linq;
+ using Terraria.Localization;
  
  namespace Terraria.DataStructures;
  
@@ -23,7 +26,7 @@
  		private List<Parts> _sets = new List<Parts>();
  
 -		public Builder(ArmorSetEffect effect, string textKey, PartType primaryPart)
-+		public Builder(ArmorSetEffect effect, string textKey, PartType primaryPart, string identifier)
++		public Builder(string identifier, string textKey, ArmorSetEffect effect, PartType primaryPart)
  		{
  			Effect = effect;
  			TextKey = textKey;
@@ -87,10 +90,11 @@
  	public ArmorSetEffect Effect;
  	public LocalizedText Description;
  	public int Head;
-@@ -205,5 +_,5 @@
+@@ -205,5 +_,6 @@
  		});
  	}
  
 -	public static Builder Create(ArmorSetEffect effect, string textKey, PartType primaryPart = PartType.None) => new Builder(effect, textKey, primaryPart);
-+	public static Builder Create(ArmorSetEffect effect, string textKey, PartType primaryPart = PartType.None, string Identifier = null) => new Builder(effect, textKey, primaryPart, Identifier);
++	// Auto-assign identifiers to vanilla armor sets based on their text keys. All vanilla armor pass through this method.
++	internal static Builder Create(ArmorSetEffect effect, string textKey, PartType primaryPart = PartType.None) => new Builder(textKey.Split(".").Last(), textKey, effect, primaryPart);
  }
