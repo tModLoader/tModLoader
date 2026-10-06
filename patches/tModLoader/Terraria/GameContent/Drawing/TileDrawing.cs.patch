@@ -532,7 +532,7 @@
  				tileFrameY = (short)(22 * palmTreeBiome);
  				break;
  			}
-@@ -4848,9 +_,16 @@
+@@ -4848,9 +_,17 @@
  					glowColor = _meteorGlow;
  				}
  
@@ -546,6 +546,7 @@
 +		TileLoader.SetSpriteEffects(x, y, typeCache, ref tileSpriteEffect);
 +		TileLoader.SetDrawPositions(x, y, ref tileWidth, ref tileTop, ref tileHeight, ref tileFrameX, ref tileFrameY);
 +		TileLoader.SetAnimationFrame(typeCache, x, y, ref addFrX, ref addFrY);
++		TileLoader.SetGlow(x, y, typeCache, tileWidth, tileTop, tileHeight, tileFrameX, tileFrameY, ref glowTexture, ref glowSourceRect, ref glowColor);
  	}
  
  	private bool IsWindBlocked(int x, int y)
