@@ -14,7 +14,7 @@
  
  namespace Terraria.GameContent.Shaders;
  
-@@ -182,6 +_,10 @@
+@@ -184,6 +_,10 @@
  					if (!nPC.wet)
  						num2 = -20f;
  
@@ -25,7 +25,7 @@
  					QueueRipple(nPC.Center + velocity * num2, new Color(0.5f, (nPC.wet ? num : (0f - num)) * 0.5f + 0.5f, 0f, 1f) * 0.5f, new Vector2(nPC.width, (float)nPC.height * ((float)(int)nPC.wetCount / 9f)) * MathHelper.Clamp(num * 10f, 0f, 1f), RippleShape.Circle);
  				}
  			}
-@@ -210,6 +_,10 @@
+@@ -212,6 +_,10 @@
  					if (!player.wet)
  						num4 = -20f;
  
@@ -36,7 +36,7 @@
  					num3 *= 3f;
  					QueueRipple(player.Center + velocity2 * num4, player.wet ? num3 : (0f - num3), new Vector2(player.width, (float)player.height * ((float)(int)player.wetCount / 9f)) * MathHelper.Clamp(num3 * 10f, 0f, 1f), RippleShape.Circle);
  				}
-@@ -227,6 +_,9 @@
+@@ -229,6 +_,9 @@
  				bool flag = projectile.lavaWet;
  				bool flag2 = projectile.honeyWet;
  				bool flag3 = projectile.wet;
@@ -46,7 +46,7 @@
  				if (projectile.ignoreWater)
  					flag3 = true;
  
-@@ -236,8 +_,10 @@
+@@ -238,8 +_,10 @@
  				if (projectile.ignoreWater) {
  					bool num5 = Collision.LavaCollision(projectile.position, projectile.width, projectile.height);
  					flag = Collision.WetCollision(projectile.position, projectile.width, projectile.height);
@@ -58,7 +58,7 @@
  						continue;
  				}
  
-@@ -246,8 +_,36 @@
+@@ -248,8 +_,36 @@
  				num6 = 2f * (float)Math.Sqrt(0.05f * num6);
  				Vector2 velocity3 = projectile.velocity;
  				velocity3.Normalize();

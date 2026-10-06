@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Entity.cs
 +++ src/tModLoader/Terraria/Entity.cs
-@@ -1,36 +_,116 @@
+@@ -1,24 +_,101 @@
  using System;
 +using System.Linq;
  using Microsoft.Xna.Framework;
@@ -103,12 +103,7 @@
  
  	public bool AnyWet {
  		get {
- 			if (!wet && !lavaWet && !honeyWet)
- 				return shimmerWet;
- 
- 			return true;
- 		}
- 	}
+@@ -31,6 +_,9 @@
  
  	public virtual Vector2 VisualPosition => position;
  

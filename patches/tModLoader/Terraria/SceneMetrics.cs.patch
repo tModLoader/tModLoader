@@ -8,7 +8,7 @@
  using Terraria.WorldBuilding;
  
  namespace Terraria;
-@@ -70,11 +_,17 @@
+@@ -70,12 +_,18 @@
  	public bool InTorchGodMinigame;
  	public static int NPCEventZoneRadius = 4000;
  	public bool CanPlayCreditsRoll;
@@ -28,6 +28,7 @@
 +	internal int[] _liquidCounts = new int[LiquidLoader.LiquidCount];
  
  	public uint LastScanTime { get; private set; }
+ 
 @@ -115,67 +_,67 @@
  
  	public bool MusicBoxSilence { get; set; }
@@ -146,7 +147,7 @@
  		}
  	}
  
-@@ -279,6 +_,6 @@
+@@ -279,7 +_,7 @@
  
  				if (!tile.active()) {
  					if (tile.liquid > 0)
@@ -154,6 +155,7 @@
 +						_liquidCounts[tile.LiquidType]++;
  
  					continue;
+ 				}
 @@ -344,6 +_,8 @@
  				}
  
@@ -185,7 +187,9 @@
  			}
  		}
  	}
-@@ -467,6 +_,7 @@
+@@ -465,8 +_,9 @@
+ 		if (_tileCounts[567] > 0)
+ 			HasGardenGnome = true;
  
 -		ShimmerTileCount = _liquidCounts[3];
 +		ShimmerTileCount = _liquidCounts[LiquidID.Shimmer];

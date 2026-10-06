@@ -213,7 +213,7 @@
  					return wallTypes[tile2.wall];
  
  				return false;
-@@ -4455,16 +_,38 @@
+@@ -4455,15 +_,37 @@
  		}
  	}
  
@@ -251,7 +251,6 @@
  	public static readonly int MoonLordHeadAttackTotalLoopTime = 1200;
  	public static readonly int[,,] MoonLordAttacksArray = InitializeMoonLordAttacks();
  	public static readonly int[,] MoonLordAttacksArray2 = InitializeMoonLordAttacks2();
- 	public static int MoonLordFightingDistance = 4500;
 @@ -4483,7 +_,16 @@
  	public const float nameOverIncrement = 0.025f;
  	public const float nameOverDistance = 350f;
@@ -1103,7 +1102,7 @@
  	}
  
  	public static void ClearAll()
-@@ -6499,7 +_,26 @@
+@@ -6499,8 +_,27 @@
  			return;
  		}
  
@@ -1130,6 +1129,7 @@
 +		liquidMovementSpeed[LiquidID.Shimmer] = 0.375f;
  		altTexture = 0;
  		townNpcVariationIndex = 0;
+ 		nameOver = 0f;
 @@ -6530,10 +_,17 @@
  			oldPos[i].Y = 0f;
  		}
@@ -3223,7 +3223,10 @@
  						for (int n = 0; n < 10; n++) {
  							int num6 = Dust.NewDust(new Vector2(position.X - 6f, position.Y + (float)(height / 2) - 8f), width + 12, 24, 152);
  							Main.dust[num6].velocity.Y -= 1f;
-@@ -78326,4 +_,11 @@
+@@ -78323,7 +_,14 @@
+ 		}
+ 	}
+ 
 -	private void TryAddingRepeatedBuff(int buffId, int timeToGive, int lowThresholdUndeathToAllowBuff = 10)
 +	/// <summary>
 +	/// Gives this NPC the provided buff, but only if the NPC doesn't already have it or if its remaining duration is at or below <paramref name="lowThresholdUndeathToAllowBuff"/>.
