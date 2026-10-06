@@ -576,29 +576,29 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
-	/// Allows you to control whether the player can see wires.<br></br>
-	/// Return true or false to respectively allow or disallow the player from seeing wires, overriding vanilla rules.<br></br>
-	/// Returns null by default, which allows vanilla wire rules to function normally.<para/>
+	/// Allows you to control whether the player can break or place wires at the given tile coordinates. One such example is how wires in the Jungle Temple are not breakable or placeable until Golem is defeated.
+	/// <para/> Return true or false to respectively allow or disallow the player from breaking or placing wires, overriding vanilla rules.
+	/// <para/> Returns null by default, which allows vanilla wire rules to function normally.
 	/// <para/> See also <see cref="CanShowWireStuffHere"/>.
 	/// <para/> Called on the local client only, when the player attempts to use <see href="https://terraria.wiki.gg/wiki/Mechanisms">Mechanisms</see>.
 	/// </summary>
-	/// <param name="x">The x position in tile coordinates.</param>
-	/// <param name="y">The y position in tile coordinates.</param>
-	public virtual bool? CanDoWireStuffHere(int x, int y)
+	/// <param name="i">The x position in tile coordinates.</param>
+	/// <param name="j">The y position in tile coordinates.</param>
+	public virtual bool? CanDoWireStuffHere(int i, int j)
 	{
 		return null;
 	}
 
 	/// <summary>
-	/// Allows you to control whether the player can break or place wires.<br></br>
-	/// Return true or false to respectively allow or disallow the player from breaking or placing wires, overriding vanilla rules.<br></br>
-	/// Returns null by default, which allows vanilla wire rules to function normally.<para/>
+	/// Allows you to control whether the player can see wires at the given tile coordinates. One such example is how wires in the Jungle Temple are not visible until Golem is defeated.
+	/// <para/> Return true or false to respectively allow or disallow the player from seeing wires, overriding vanilla rules.
+	/// <para/> Returns null by default, which allows vanilla wire visibility rules to function normally.
 	/// <para/> See also <see cref="CanDoWireStuffHere"/>.
 	/// <para/> Called on the local client only, when the player attempts to use <see href="https://terraria.wiki.gg/wiki/Mechanisms">Mechanisms</see>.
 	/// </summary>
-	/// <param name="x">The x position in tile coordinates.</param>
-	/// <param name="y">The y position in tile coordinates.</param>
-	public virtual bool? CanShowWireStuffHere(int x, int y)
+	/// <param name="i">The x position in tile coordinates.</param>
+	/// <param name="j">The y position in tile coordinates.</param>
+	public virtual bool? CanShowWireStuffHere(int i, int j)
 	{
 		return null;
 	}
