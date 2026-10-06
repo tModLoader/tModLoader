@@ -15,11 +15,10 @@ namespace ExampleMod.Content.Projectiles.Rockets
 
 			// This set handles some things for us already:
 			// Sets the timeLeft to 3 and the projectile direction when colliding with an NPC or player in PVP (so the explosive can detonate).
-			// Explosives also bounce off the top of Shimmer, detonate with no blast damage when touching the bottom or sides of Shimmer, and use the shared player blast damage path when killed.
+			// Explosives also bounce off the top of Shimmer, detonate with no blast damage when touching the bottom or sides of Shimmer, and deal unscaled damage to players via SelfHurtPlayers when killed.
 			ProjectileID.Sets.Explosive[Type] = true;
 
-			// This set makes it so the rocket doesn't deal damage to players. Only used for vanilla rockets.
-			// Modded rockets that use ProjectileID.Sets.Explosive can use it to opt out of the shared player blast damage path.
+			// This set makes it so the rocket doesn't deal damage to players.
 			// ProjectileID.Sets.RocketsSkipDamageForPlayers[Type] = true;
 		}
 		public override void SetDefaults() {
