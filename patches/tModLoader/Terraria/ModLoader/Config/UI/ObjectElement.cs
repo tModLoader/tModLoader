@@ -245,7 +245,7 @@ internal class ObjectElement : ConfigElement<object>
 		if (data != null) {
 			if (separatePage && !ignoreSeparatePage) {
 				separateConfigPage.ConfigElements.Clear();
-				UIModConfig.CreateConfigElements(separateConfigPage, data);
+				UIModConfig.SetupConfigPage(separateConfigPage, data, MemberInfo);
 			}
 			else {
 				int order = 0;

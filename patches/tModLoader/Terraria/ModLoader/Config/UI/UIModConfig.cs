@@ -45,6 +45,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 	{
 		public object Name = name;
 		public readonly List<Tuple<UIElement, UIElement>> ConfigElements = new();
+		public Color BackgroundColor = UICommon.MainPanelBackground;
 	}
 
 	private BlockInputElement blockInput;
@@ -421,7 +422,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 		// This (unfortunately) preserves the legacy behaviour of configs going back to the main config page on save/revert/restore.
 		configPageStack.Clear();
 		rootConfigPage = new ConfigPage(modConfig.DisplayName);
-		CreateConfigElements(rootConfigPage, pendingConfig);
+		SetupConfigPage(rootConfigPage, pendingConfig, null);
 		configPageStack.Push(rootConfigPage);
 	}
 
@@ -438,6 +439,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 		CheckSaveAndRestoreConditions();
 
 		// TODO: allow filtering to look inside of subpages
+		// TODO: should a SearchFunction should be used instead to allow searching labels, tooltips, children, and "related phrases" that a modder can specify?
 		configElementList.Clear();
 		configElementList.AddRange(CurrentConfigPage.ConfigElements.Where(item => {
 			if (item.Item2 is ConfigElement configElement) {
@@ -446,17 +448,27 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 			return true;
 		}).Select(x => x.Item1));
 
-		// TODO: make this work for subpages
-		var backgroundColorAttribute = (BackgroundColorAttribute)Attribute.GetCustomAttribute(pendingConfig.GetType(), typeof(BackgroundColorAttribute));
-		uiPanel.BackgroundColor = backgroundColorAttribute?.Color ?? UICommon.MainPanelBackground;
+		uiPanel.BackgroundColor = CurrentConfigPage.BackgroundColor;
 
 		Recalculate();
 	}
 
 	public void OnConfigModified()
 	{
-		// Should be changed to RefreshUI in the future to ensure elements get updated without having to recreate all of them
 		CheckSaveAndRestoreConditions();
+	}
+
+	private void CheckSaveAndRestoreConditions()
+	{
+		HasUnsavedChanges = pendingConfig.HasChanges(modConfig);
+		HasDefaultValues = pendingConfig.HasDefaultValues();
+	}
+
+	// Exists to avoid breaking mods that depended on this method signature, will be removed in the future
+	public void SetPendingChanges(bool changes = true)
+	{
+		if (changes)
+			OnConfigModified();
 	}
 
 	private void BackSubPage(UIMouseEvent evt, UIElement listeningElement)
@@ -489,19 +501,6 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 		}
 
 		scrollbar.Height.Pixels = configElementList.Height.Pixels;
-	}
-
-	private void CheckSaveAndRestoreConditions()
-	{
-		HasUnsavedChanges = pendingConfig.HasChanges(modConfig);
-		HasDefaultValues = pendingConfig.HasDefaultValues();
-	}
-
-	// Exists to avoid breaking mods that depended on this method signature, will be removed in the future
-	public void SetPendingChanges(bool changes = true)
-	{
-		if (changes)
-			OnConfigModified();
 	}
 
 	public void PushConfigPage(ConfigPage configPage)
@@ -596,7 +595,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 
 		configPageStack.Clear();
 		rootConfigPage = new ConfigPage(modConfig.DisplayName);
-		CreateConfigElements(rootConfigPage, pendingConfig);
+		SetupConfigPage(rootConfigPage, pendingConfig, null);
 		PushConfigPage(rootConfigPage);
 
 		RefreshUI(delayRefresh: false);
@@ -647,8 +646,16 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 
 	#region ConfigElement Handling
 
-	internal static void CreateConfigElements(ConfigPage configPage, object config)
+	internal static void SetupConfigPage(ConfigPage configPage, object config, PropertyFieldWrapper memberInfo)
 	{
+		BackgroundColorAttribute backgroundColorAttribute = memberInfo != null
+			? ConfigManager.GetCustomAttributeFromMemberThenMemberType<BackgroundColorAttribute>(memberInfo, config, null)
+			: (BackgroundColorAttribute)Attribute.GetCustomAttribute(config.GetType(), typeof(BackgroundColorAttribute));
+
+		if (backgroundColorAttribute is not null) {
+			configPage.BackgroundColor = backgroundColorAttribute.Color;
+		}
+
 		int top = 0;
 		int order = 0;
 		// ReSharper disable once LoopCanBePartlyConvertedToQuery
