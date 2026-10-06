@@ -10,7 +10,7 @@ public partial class ArmorSetBonus
 		private LocalizedText LocalizedText;
 		private string Identifier;
 
-		public Builder(ArmorSetEffect effect, LocalizedText localizedText, PartType primaryPart, string identifier)
+		public Builder(string identifier, LocalizedText localizedText, ArmorSetEffect effect, PartType primaryPart)
 		{
 			Effect = effect;
 			LocalizedText = localizedText;
@@ -32,8 +32,4 @@ public partial class ArmorSetBonus
 	/// Identifies an armor effect. Not unique. Armor sets with multiple options will create multiple ArmorSetEffect that share the same Key.
 	/// </summary>
 	public string Identifier { get; internal set; }
-
-	public static Builder Create(string Identifier, LocalizedText LocalizedText, ArmorSetEffect Effect, PartType PrimaryPart = PartType.None) => new Builder(Effect, LocalizedText, PrimaryPart, Identifier);
-
-	public static Builder Create(string Identifier, string TextKey, ArmorSetEffect Effect, PartType PrimaryPart = PartType.None) => new Builder(Identifier, TextKey, Effect, PrimaryPart);
 }

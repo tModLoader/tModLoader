@@ -23,9 +23,9 @@ public partial class ArmorSetBonuses
 	}
 
 	/// <inheritdoc cref="ModLoader.ModItem.CreateArmorSet(LocalizedText, ArmorSetBonus.PartType, string, ArmorSetBonus.ArmorSetEffect)"/>
-	public static ArmorSetBonus.Builder Create(string Identifier, LocalizedText LocalizedText, ArmorSetBonus.ArmorSetEffect Effect, ArmorSetBonus.PartType PrimaryPart = ArmorSetBonus.PartType.None) => ArmorSetBonus.Create(Identifier, LocalizedText, Effect, PrimaryPart);
+	public static ArmorSetBonus.Builder Create(string Identifier, LocalizedText LocalizedText, ArmorSetBonus.ArmorSetEffect Effect, ArmorSetBonus.PartType PrimaryPart = ArmorSetBonus.PartType.None) => new ArmorSetBonus.Builder(Identifier, LocalizedText, Effect, PrimaryPart);
 
-	public static ArmorSetBonus.Builder Create(string Identifier, string TextKey, ArmorSetBonus.ArmorSetEffect Effect, ArmorSetBonus.PartType PrimaryPart = ArmorSetBonus.PartType.None) => ArmorSetBonus.Create(Identifier, TextKey, Effect, PrimaryPart);
+	public static ArmorSetBonus.Builder Create(string Identifier, string TextKey, ArmorSetBonus.ArmorSetEffect Effect, ArmorSetBonus.PartType PrimaryPart = ArmorSetBonus.PartType.None) => new ArmorSetBonus.Builder(Identifier, TextKey, Effect, PrimaryPart);
 
 	// New overloads with LocalizedText
 

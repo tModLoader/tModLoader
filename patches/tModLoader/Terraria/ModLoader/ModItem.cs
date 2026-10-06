@@ -107,7 +107,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	/// </summary>
 	public ArmorSetBonus.Builder CreateArmorSet(LocalizedText LocalizedText = null, ArmorSetBonus.PartType PrimaryPart = ArmorSetBonus.PartType.None, string Identifier = null, ArmorSetBonus.ArmorSetEffect Effect = null)
 	{
-		return ArmorSetBonus.Create(Identifier, LocalizedText, Effect, PrimaryPart);
+		return new ArmorSetBonus.Builder(Identifier, LocalizedText, Effect, PrimaryPart);
 	}
 
 	/// <summary>
@@ -117,7 +117,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	/// </summary>
 	public ArmorSetBonus.Builder CreateArmorSet(string TextKey, ArmorSetBonus.PartType PrimaryPart = ArmorSetBonus.PartType.None, string Identifier = null, ArmorSetBonus.ArmorSetEffect Effect = null)
 	{
-		return ArmorSetBonus.Create(Identifier, TextKey, Effect, PrimaryPart);
+		return new ArmorSetBonus.Builder(Identifier, TextKey, Effect, PrimaryPart);
 	}
 
 	protected override Item CreateTemplateEntity() => new() { ModItem = this };
