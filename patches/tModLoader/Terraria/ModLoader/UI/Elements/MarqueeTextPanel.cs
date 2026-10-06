@@ -3,7 +3,6 @@ using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Graphics;
 using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
-using Terraria.UI;
 using Terraria.UI.Chat;
 
 namespace Terraria.ModLoader.UI.Elements;
@@ -14,6 +13,7 @@ public class MarqueeTextPanel : UITextPanel<object>
 	public bool IsScrolling { get; set; } = true;
 	public float ClippingXPadding { get; set; } = 2f;
 	public float ClippingYPadding { get; set; } = 1000f;
+	public bool AlignToStartWhenNotScrolling = false;
 
 	private float scroll;
 	private int scrollTimer;
@@ -44,13 +44,18 @@ public class MarqueeTextPanel : UITextPanel<object>
 	{
 		base.Update(gameTime);
 
-		DynamicSpriteFont dynamicSpriteFont = _isLarge ? FontAssets.DeathText.Value : FontAssets.MouseText.Value;
-		Vector2 textSize = ChatManager.GetStringSize(dynamicSpriteFont, _text.ToString(), new Vector2(_textScale));
-		textSize.Y = (_isLarge ? 32f : 16f) * _textScale;
-
 		var dims = GetInnerDimensions();
-
-		MarqueeText.UpdateScrollValues(textSize, dims, TextHAlign, textSize.X >= dims.Width && IsScrolling, ScrollSpeed, ref scroll, ref scrollTimer, ref scrollDirection);
+		MarqueeText.UpdateScrollValues(
+			_textSize,
+			dims,
+			TextHAlign,
+			_textSize.X >= dims.Width && IsScrolling,
+			ScrollSpeed,
+			ref scroll,
+			ref scrollTimer,
+			ref scrollDirection,
+			ResetScroll
+		);
 
 		textOffset = -scroll * Vector2.UnitX;
 	}
@@ -63,7 +68,7 @@ public class MarqueeTextPanel : UITextPanel<object>
 		dims.Width += ClippingXPadding * 2;
 		dims.Height += ClippingYPadding * 2;
 
-		return UIElement.GetClippingRectangleFrom(spriteBatch, dims);
+		return GetClippingRectangleFrom(spriteBatch, dims);
 	}
 
 	public void ResetScroll()
@@ -71,6 +76,16 @@ public class MarqueeTextPanel : UITextPanel<object>
 		scroll = 0;
 		scrollTimer = 0;
 		scrollDirection = 1;
-		textOffset = Vector2.Zero;
+
+		if (AlignToStartWhenNotScrolling && _textSize.X >= GetInnerDimensions().Width) {
+			scroll = MarqueeText.GetStartAlignment(_textSize, GetInnerDimensions().Width, TextHAlign);
+		}
+
+		textOffset = -scroll * Vector2.UnitX;
+	}
+
+	public void SetScrollDelay(int scrollDelay)
+	{
+		scrollTimer = scrollDelay;
 	}
 }
