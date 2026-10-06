@@ -64,18 +64,18 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	/// <para/> <paramref name="Identifier"/> can be used to differentiate between multiple <see cref="ArmorSetBonus"/>. If unassigned, the default values will be <see cref="ModType.FullName"/> ("ModName/ModItemName"). To avoid name collisions, we recommend prepending "ModName/" to the identifier in most cases.
 	/// <para/> For armor sets with multiple options and sharing the same tooltip text, use <see cref="CreateArmorSet(LocalizedText, ArmorSetBonus.PartType, string, ArmorSetBonus.ArmorSetEffect)"/> instead. For armor sets with multiple options but different tooltip text, use this method multiple times alongside setting <paramref name="PrimaryPart"/>.
 	/// </summary>
-	public void AddArmorSet(int Head, int Body, int Legs, LocalizedText LocalizedText = null, ArmorSetBonus.PartType PrimaryPart = ArmorSetBonus.PartType.None, string Identifier = null, ArmorSetBonus.ArmorSetEffect Effect = null)
+	public void AddArmorSet(int Head, int Body, int Legs, LocalizedText LocalizedText = null, string Identifier = null, ArmorSetBonus.ArmorSetEffect Effect = null, ArmorSetBonus.PartType PrimaryPart = ArmorSetBonus.PartType.None)
 	{
 		ArmorSetBonuses.Add(Head, Body, Legs, Identifier ?? this.FullName, LocalizedText ?? this.GetLocalization("SetBonus"), Effect, PrimaryPart);
 	}
 
-	/// <inheritdoc cref="AddArmorSet(int, int, int, LocalizedText, ArmorSetBonus.PartType, string, ArmorSetBonus.ArmorSetEffect)"/>
-	public void AddArmorSet<THead, TBody, TLegs>(LocalizedText LocalizedText = null, ArmorSetBonus.PartType PrimaryPart = ArmorSetBonus.PartType.None, string Identifier = null, ArmorSetBonus.ArmorSetEffect Effect = null)
+	/// <inheritdoc cref="AddArmorSet(int, int, int, LocalizedText, string, ArmorSetBonus.ArmorSetEffect, ArmorSetBonus.PartType)"/>
+	public void AddArmorSet<THead, TBody, TLegs>(LocalizedText LocalizedText = null, string Identifier = null, ArmorSetBonus.ArmorSetEffect Effect = null, ArmorSetBonus.PartType PrimaryPart = ArmorSetBonus.PartType.None)
 		where THead : ModItem
 		where TBody : ModItem
 		where TLegs : ModItem
 	{
-		AddArmorSet(ModContent.ItemType<THead>(), ModContent.ItemType<TBody>(), ModContent.ItemType<TLegs>(), LocalizedText, PrimaryPart, Identifier, Effect);
+		AddArmorSet(ModContent.ItemType<THead>(), ModContent.ItemType<TBody>(), ModContent.ItemType<TLegs>(), LocalizedText, Identifier, Effect, PrimaryPart);
 	}
 
 	/// <summary>
@@ -86,22 +86,22 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	/// <para/> <paramref name="Identifier"/> can be used to differentiate between multiple <see cref="ArmorSetBonus"/>. If unassigned, the default values will be <see cref="ModType.FullName"/> ("ModName/ModItemName"). To avoid name collisions, we recommend prepending "ModName/" to the identifier in most cases.
 	/// <para/> For armor sets with multiple options and sharing the same tooltip text, use <see cref="CreateArmorSet(LocalizedText, ArmorSetBonus.PartType, string, ArmorSetBonus.ArmorSetEffect)"/> instead. For armor sets with multiple options but different tooltip text, use this method multiple times alongside setting <paramref name="PrimaryPart"/>.
 	/// </summary>
-	public void AddArmorSet(int Head, int Body, int Legs, string TextKey, ArmorSetBonus.PartType PrimaryPart = ArmorSetBonus.PartType.None, string Identifier = null, ArmorSetBonus.ArmorSetEffect Effect = null)
+	public void AddArmorSet(int Head, int Body, int Legs, string TextKey, string Identifier = null, ArmorSetBonus.ArmorSetEffect Effect = null, ArmorSetBonus.PartType PrimaryPart = ArmorSetBonus.PartType.None)
 	{
 		ArmorSetBonuses.Add(Head, Body, Legs, Identifier ?? this.FullName, TextKey, Effect, PrimaryPart);
 	}
 
-	/// <inheritdoc cref="AddArmorSet(int, int, int, string, ArmorSetBonus.PartType, string, ArmorSetBonus.ArmorSetEffect)"/>
-	public void AddArmorSet<THead, TBody, TLegs>(string TextKey, ArmorSetBonus.PartType PrimaryPart = ArmorSetBonus.PartType.None, string Identifier = null, ArmorSetBonus.ArmorSetEffect Effect = null)
+	/// <inheritdoc cref="AddArmorSet(int, int, int, string, string, ArmorSetBonus.ArmorSetEffect, ArmorSetBonus.PartType)"/>
+	public void AddArmorSet<THead, TBody, TLegs>(string TextKey, string Identifier = null, ArmorSetBonus.ArmorSetEffect Effect = null, ArmorSetBonus.PartType PrimaryPart = ArmorSetBonus.PartType.None)
 		where THead : ModItem
 		where TBody : ModItem
 		where TLegs : ModItem
 	{
-		AddArmorSet(ModContent.ItemType<THead>(), ModContent.ItemType<TBody>(), ModContent.ItemType<TLegs>(), TextKey, PrimaryPart, Identifier, Effect);
+		AddArmorSet(ModContent.ItemType<THead>(), ModContent.ItemType<TBody>(), ModContent.ItemType<TLegs>(), TextKey, Identifier, Effect, PrimaryPart);
 	}
 
 	/// <summary>
-	/// Similar to <see cref="AddArmorSet(int, int, int, LocalizedText, ArmorSetBonus.PartType, string, ArmorSetBonus.ArmorSetEffect)"/>, except this method is used to create multiple armor set options at once, all sharing the same identifier, armor set bonuses, tooltips, and primary part value. Follow-up this method with one or more calls to the <see cref="ArmorSetBonus.Builder.Set(int, int, int)"/> method, then finalize the armor sets by calling <see cref="ArmorSetBonus.Builder.Add"/>.
+	/// Similar to <see cref="AddArmorSet(int, int, int, LocalizedText, string, ArmorSetBonus.ArmorSetEffect, ArmorSetBonus.PartType)"/>, except this method is used to create multiple armor set options at once, all sharing the same identifier, armor set bonuses, tooltips, and primary part value. Follow-up this method with one or more calls to the <see cref="ArmorSetBonus.Builder.Set(int, int, int)"/> method, then finalize the armor sets by calling <see cref="ArmorSetBonus.Builder.Add"/>.
 	/// <para/> For example, <c>CreateArmorSet().Set(head, body, legs).Set(alternateHead, alternateBody, alternateLegs).Add();</c> adds 2 armor sets. The items are not interchangeable.
 	/// <para/> Use <see cref="ArmorSetBonus.Builder.Set(int[], int[], int[])"/> instead to make every option interchangeable.
 	/// </summary>
@@ -111,7 +111,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Similar to <see cref="AddArmorSet(int, int, int, string, ArmorSetBonus.PartType, string, ArmorSetBonus.ArmorSetEffect)"/>, except this method is used to create multiple armor set options at once, all sharing the same identifier, armor set bonuses, tooltips, and primary part value. Follow-up this method with one or more calls to the <see cref="ArmorSetBonus.Builder.Set(int, int, int)"/> method, then finalize the armor sets by calling <see cref="ArmorSetBonus.Builder.Add"/>.
+	/// Similar to <see cref="AddArmorSet(int, int, int, string, string, ArmorSetBonus.ArmorSetEffect, ArmorSetBonus.PartType)"/>, except this method is used to create multiple armor set options at once, all sharing the same identifier, armor set bonuses, tooltips, and primary part value. Follow-up this method with one or more calls to the <see cref="ArmorSetBonus.Builder.Set(int, int, int)"/> method, then finalize the armor sets by calling <see cref="ArmorSetBonus.Builder.Add"/>.
 	/// <para/> For example, <c>CreateArmorSet().Set(head, body, legs).Set(alternateHead, alternateBody, alternateLegs).Add();</c> adds 2 armor sets. The items are not interchangeable.
 	/// <para/> Use <see cref="ArmorSetBonus.Builder.Set(int[], int[], int[])"/> instead to make every option interchangeable.
 	/// </summary>

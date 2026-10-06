@@ -7,13 +7,13 @@ public partial class ArmorSetBonuses
 {
 	internal static bool ArmorSetsFinishedPopulating = false;
 
-	/// <inheritdoc cref="ModItem.AddArmorSet(int, int, int, string, ArmorSetBonus.PartType, string, ArmorSetBonus.ArmorSetEffect)"/>
+	/// <inheritdoc cref="ModItem.AddArmorSet(int, int, int, string, string, ArmorSetBonus.ArmorSetEffect, ArmorSetBonus.PartType)"/>
 	public static void Add(int Head, int Body, int Legs, string Identifier, string TextKey, ArmorSetBonus.ArmorSetEffect Effect, ArmorSetBonus.PartType PrimaryPart = ArmorSetBonus.PartType.None)
 	{
 		Create(Identifier, TextKey, Effect, PrimaryPart).Set(Head, Body, Legs).Add();
 	}
 
-	/// <inheritdoc cref="ModItem.AddArmorSet(int, int, int, string, ArmorSetBonus.PartType, string, ArmorSetBonus.ArmorSetEffect)"/>
+	/// <inheritdoc cref="ModItem.AddArmorSet(int, int, int, string, string, ArmorSetBonus.ArmorSetEffect, ArmorSetBonus.PartType)"/>
 	public static void Add<THead, TBody, TLegs>(string Identifier, string TextKey, ArmorSetBonus.ArmorSetEffect Effect, ArmorSetBonus.PartType PrimaryPart = ArmorSetBonus.PartType.None)
 		where THead : ModItem
 		where TBody : ModItem
@@ -30,13 +30,13 @@ public partial class ArmorSetBonuses
 
 	// New overloads with LocalizedText
 
-	/// <inheritdoc cref="ModItem.AddArmorSet(int, int, int, LocalizedText, ArmorSetBonus.PartType, string, ArmorSetBonus.ArmorSetEffect)"/>
+	/// <inheritdoc cref="ModItem.AddArmorSet(int, int, int, LocalizedText, string, ArmorSetBonus.ArmorSetEffect, ArmorSetBonus.PartType)"/>
 	public static void Add(int Head, int Body, int Legs, string Identifier, LocalizedText LocalizedText, ArmorSetBonus.ArmorSetEffect Effect, ArmorSetBonus.PartType PrimaryPart = ArmorSetBonus.PartType.None)
 	{
 		Create(Identifier, LocalizedText, Effect, PrimaryPart).Set(Head, Body, Legs).Add();
 	}
 
-	/// <inheritdoc cref="ModItem.AddArmorSet(int, int, int, LocalizedText, ArmorSetBonus.PartType, string, ArmorSetBonus.ArmorSetEffect)"/>
+	/// <inheritdoc cref="ModItem.AddArmorSet(int, int, int, LocalizedText, string, ArmorSetBonus.ArmorSetEffect, ArmorSetBonus.PartType)"/>
 	public static void Add<THead, TBody, TLegs>(string Identifier, LocalizedText LocalizedText, ArmorSetBonus.ArmorSetEffect Effect, ArmorSetBonus.PartType PrimaryPart = ArmorSetBonus.PartType.None)
 		where THead : ModItem
 		where TBody : ModItem

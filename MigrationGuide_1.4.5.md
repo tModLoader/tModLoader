@@ -370,8 +370,8 @@ CreateArmorSet().Set([Type, alternateHelmet], [body, alternateBody], [legs, alte
 // Armor sets sharing armor items except and having a primary item that changes the tooltip. 
 // The PartType parameter lets the game know that the head and legs items are part of multiple armor sets with different set bonus tooltips, so "Changes with (head/torso/leg) piece" is shown instead of the the set bonus tooltip. This is how the Beetle armor set is implemented.
 // Customizing localization and the identifier is explained in the next section.
-AddArmorSet(Type, body, legs, this.GetLocalization("SetBonus_Melee"), ArmorSetBonus.PartType.Body, "ExampleMod/ExampleArmor_Melee");
-AddArmorSet(Type, alternateBody, legs, this.GetLocalization("SetBonus_Ranged"), ArmorSetBonus.PartType.Body, "ExampleMod/ExampleArmor_Ranged");
+AddArmorSet(Type, body, legs, this.GetLocalization("SetBonus_Melee"), "ExampleMod/ExampleArmor_Melee", PrimaryPart: ArmorSetBonus.PartType.Body);
+AddArmorSet(Type, alternateBody, legs, this.GetLocalization("SetBonus_Ranged"), "ExampleMod/ExampleArmor_Ranged", PrimaryPart: ArmorSetBonus.PartType.Body);
 ```
 
 The examples above all used `ModItem` helper methods that automate registering a localization key, assigning the armor set effect to `ModItem.UpdateArmorSet`, and assigning a default identifier string. These can all be customized by providing values for the optional parameters of the methods. The set bonus text can be customized by passing in a `LocalizedText`. The code that executes can be customized as well by passing in a delegate. The identifier can also be passed in, which is useful if you need to differentiate between multiple set bonuses that use some of the same items. The `ArmorSetBonuses.Add` and `ArmorSetBonuses.Create` methods could be used instead of the `ModItem.AddArmorSet` and `ModItem.CreateArmorSet` helper methods as well, such as if used in `GlobalItem`.
