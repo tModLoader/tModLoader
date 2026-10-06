@@ -69,4 +69,11 @@ public class MarqueeTextPanel : UITextPanel<object>
 
 		return UIElement.GetClippingRectangleFrom(spriteBatch, dims);
 	}
+
+	public void ResetScroll()
+	{
+		scroll = 0;
+		scrollTimer = 0;
+		scrollDirection = 1;
+	}
 }
