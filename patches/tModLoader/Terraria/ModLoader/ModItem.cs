@@ -169,6 +169,9 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	public virtual bool MagicPrefix()
 		=> Item.DamageType.GetsPrefixesFor(DamageClass.Magic);
 
+	/// <summary>
+	/// Allows you to change whether or not a weapon receives summon prefixes. Return true if the item should receive summon prefixes and false if it should not
+	/// </summary>
 	public virtual bool SummonPrefix()
 		=> Item.DamageType.GetsPrefixesFor(DamageClass.Summon);
 
