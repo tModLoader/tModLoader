@@ -62,7 +62,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	/// <para/> <paramref name="LocalizedText"/> is the tooltip text for the armor set. If unassigned, the automatically derived "Mods.{ModName}.Items.{ItemName}.SetBonus" key will be created and used.
 	/// <para/> <paramref name="PrimaryPart"/> indicates which equipment slot is responsible differentiating this set bonus from other similar set bonuses that share the remaining equipment items. This affects the tooltip of equipment items that are in the inventory instead of equipped. Rather than displaying the set bonus tooltip, they will display "Changes with (head/torso/leg) piece" since it is unknown which <paramref name="PrimaryPart"/> the item will be paired with. If unassigned, the items will all display the set bonus tooltip as usual.
 	/// <para/> <paramref name="Identifier"/> can be used to differentiate between multiple <see cref="ArmorSetBonus"/>. If unassigned, the default values will be <see cref="ModType.FullName"/> ("ModName/ModItemName"). To avoid name collisions, we recommend prepending "ModName/" to the identifier in most cases.
-	/// <para/> For armor sets with multiple options and sharing the same tooltip text, use <see cref="CreateArmorSet(LocalizedText, ArmorSetBonus.PartType, string, ArmorSetBonus.ArmorSetEffect)"/> instead. For armor sets with multiple options but different tooltip text, use this method multiple times alongside setting <paramref name="PrimaryPart"/>.
+	/// <para/> For armor sets with multiple options and sharing the same tooltip text, use <see cref="CreateArmorSet(LocalizedText, string, ArmorSetBonus.ArmorSetEffect, ArmorSetBonus.PartType)"/> instead. For armor sets with multiple options but different tooltip text, use this method multiple times alongside setting <paramref name="PrimaryPart"/>.
 	/// </summary>
 	public void AddArmorSet(int Head, int Body, int Legs, LocalizedText LocalizedText = null, string Identifier = null, ArmorSetBonus.ArmorSetEffect Effect = null, ArmorSetBonus.PartType PrimaryPart = ArmorSetBonus.PartType.None)
 	{
@@ -84,7 +84,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	/// <para/> <paramref name="TextKey"/> is the tooltip text for the armor set. If unassigned, the automatically derived "Mods.{ModName}.Items.{ItemName}.SetBonus" key will be created and used.
 	/// <para/> <paramref name="PrimaryPart"/> indicates which equipment slot is responsible differentiating this set bonus from other similar set bonuses that share the remaining equipment items. This affects the tooltip of equipment items that are in the inventory instead of equipped. Rather than displaying the set bonus tooltip, they will display "Changes with (head/torso/leg) piece" since it is unknown which <paramref name="PrimaryPart"/> the item will be paired with. If unassigned, the items will all display the set bonus tooltip as usual.
 	/// <para/> <paramref name="Identifier"/> can be used to differentiate between multiple <see cref="ArmorSetBonus"/>. If unassigned, the default values will be <see cref="ModType.FullName"/> ("ModName/ModItemName"). To avoid name collisions, we recommend prepending "ModName/" to the identifier in most cases.
-	/// <para/> For armor sets with multiple options and sharing the same tooltip text, use <see cref="CreateArmorSet(LocalizedText, ArmorSetBonus.PartType, string, ArmorSetBonus.ArmorSetEffect)"/> instead. For armor sets with multiple options but different tooltip text, use this method multiple times alongside setting <paramref name="PrimaryPart"/>.
+	/// <para/> For armor sets with multiple options and sharing the same tooltip text, use <see cref="CreateArmorSet(LocalizedText, string, ArmorSetBonus.ArmorSetEffect, ArmorSetBonus.PartType)"/> instead. For armor sets with multiple options but different tooltip text, use this method multiple times alongside setting <paramref name="PrimaryPart"/>.
 	/// </summary>
 	public void AddArmorSet(int Head, int Body, int Legs, string TextKey, string Identifier = null, ArmorSetBonus.ArmorSetEffect Effect = null, ArmorSetBonus.PartType PrimaryPart = ArmorSetBonus.PartType.None)
 	{
@@ -105,9 +105,9 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	/// <para/> For example, <c>CreateArmorSet().Set(head, body, legs).Set(alternateHead, alternateBody, alternateLegs).Add();</c> adds 2 armor sets. The items are not interchangeable.
 	/// <para/> Use <see cref="ArmorSetBonus.Builder.Set(int[], int[], int[])"/> instead to make every option interchangeable.
 	/// </summary>
-	public ArmorSetBonus.Builder CreateArmorSet(LocalizedText LocalizedText = null, ArmorSetBonus.PartType PrimaryPart = ArmorSetBonus.PartType.None, string Identifier = null, ArmorSetBonus.ArmorSetEffect Effect = null)
+	public ArmorSetBonus.Builder CreateArmorSet(LocalizedText LocalizedText = null, string Identifier = null, ArmorSetBonus.ArmorSetEffect Effect = null, ArmorSetBonus.PartType PrimaryPart = ArmorSetBonus.PartType.None)
 	{
-		return new ArmorSetBonus.Builder(Identifier, LocalizedText, Effect, PrimaryPart);
+		return new ArmorSetBonus.Builder(Identifier ?? this.FullName, LocalizedText ?? this.GetLocalization("SetBonus"), Effect, PrimaryPart);
 	}
 
 	/// <summary>
@@ -115,9 +115,9 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	/// <para/> For example, <c>CreateArmorSet().Set(head, body, legs).Set(alternateHead, alternateBody, alternateLegs).Add();</c> adds 2 armor sets. The items are not interchangeable.
 	/// <para/> Use <see cref="ArmorSetBonus.Builder.Set(int[], int[], int[])"/> instead to make every option interchangeable.
 	/// </summary>
-	public ArmorSetBonus.Builder CreateArmorSet(string TextKey, ArmorSetBonus.PartType PrimaryPart = ArmorSetBonus.PartType.None, string Identifier = null, ArmorSetBonus.ArmorSetEffect Effect = null)
+	public ArmorSetBonus.Builder CreateArmorSet(string TextKey, string Identifier = null, ArmorSetBonus.ArmorSetEffect Effect = null, ArmorSetBonus.PartType PrimaryPart = ArmorSetBonus.PartType.None)
 	{
-		return new ArmorSetBonus.Builder(Identifier, TextKey, Effect, PrimaryPart);
+		return new ArmorSetBonus.Builder(Identifier ?? this.FullName, TextKey, Effect, PrimaryPart);
 	}
 
 	protected override Item CreateTemplateEntity() => new() { ModItem = this };
