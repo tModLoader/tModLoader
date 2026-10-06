@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/DataStructures/FishingAttempt.cs
 +++ src/tModLoader/Terraria/DataStructures/FishingAttempt.cs
-@@ -1,28 +_,139 @@
+@@ -1,29 +_,147 @@
 +using Terraria.ID;
 +
  namespace Terraria.DataStructures;
@@ -53,14 +53,15 @@
 +	/// If <see langword="true"/>, this fishing attempt can catch crates.
 +	/// </summary>
  	public bool crate;
--	public bool inLava;
--	public bool inHoney;
 +
 +	/// <summary>
 +	/// If <see langword="true"/>, this fishing attempt can catch junk.
 +	/// </summary>
  	public bool junk;
-+
++	/*
+ 	public bool inLava;
+ 	public bool inHoney;
++	*/
 +	/// <summary>
 +	/// If <see langword="true"/>, this fishing attempt is in lava.
 +	/// <br/> <br/> Legacy code, use <see cref="inLiquid"/> instead.

@@ -1,0 +1,9 @@
+@@ -1892,7 +_,7 @@
+ 			int num = tileCache.liquidType();
+ 			baseType = liquidPosition + num;
+ 		}
+-		else if (!tileCache.invisibleWall() && tileCache.wall > 0 && tileCache.wall < WallID.Count) {
++		else if (!tileCache.invisibleWall() && tileCache.wall > 0 && tileCache.wall < WallLoader.WallCount) {
+ 			int wall = tileCache.wall;
+ 			baseType = wallLookup[wall];
+ 			newColor = tileCache.wallColor();

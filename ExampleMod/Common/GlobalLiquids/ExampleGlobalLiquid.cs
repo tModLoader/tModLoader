@@ -156,7 +156,7 @@ namespace ExampleMod.Common.GlobalLiquids
 		}
 
 		//related to PlayerLiquidMovement hook, we make lava also ignore item physics when the item is falling in the liquid
-		public override void ItemLiquidCollision(Item item, int type, ref Vector2 wetVelocity, ref float gravity, ref float maxFallSpeed) {
+		public override void ItemLiquidCollision(WorldItem item, int type, ref Vector2 wetVelocity, ref float gravity, ref float maxFallSpeed) {
 			if (type == LiquidID.Lava) {
 				//we replicate the gravity with the values before liquid effects the references
 				gravity = 0.1f;

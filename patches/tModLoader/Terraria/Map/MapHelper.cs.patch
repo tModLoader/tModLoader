@@ -57,16 +57,16 @@
  
  	public static void Initialize()
  	{
-@@ -1579,8 +_,10 @@
+@@ -1683,8 +_,10 @@
  
- 		wallRangeEnd = num20;
- 		liquidPosition = num20;
+ 		wallRangeEnd = num21;
+ 		liquidPosition = num21;
 +		liquidLookup = new ushort[LiquidID.Count];
--		for (int num25 = 0; num25 < 4; num25++) {
-+		for (int num25 = 0; num25 < LiquidID.Count; num25++) {
- 			colorLookup[num20] = array3[num25];
-+			liquidLookup[num25] = num20;
- 			num20 = (ushort)(num20 + 1);
+-		for (int num26 = 0; num26 < 4; num26++) {
++		for (int num26 = 0; num26 < LiquidID.Count; num26++) {
+ 			colorLookup[num21] = array3[num26];
++			liquidLookup[num26] = num21;
+ 			num21 = (ushort)(num21 + 1);
  		}
  
 @@ -1708,6 +_,7 @@
@@ -91,19 +91,6 @@
  		Invariant.Assert(option >= 0, "MapHelper.TileToLookup passed a bad option: {0}", option);
  		Invariant.Assert(option < tileOptionCounts[tileType], "MapHelper.TileToLookup passed an option for tileType {0} that does not exist: {1}", tileType, option);
  		return tileLookup[tileType] + option;
-@@ -1747,9 +_,10 @@
- 
- 			if (tile.liquid > 32) {
- 				int num5 = tile.liquidType();
--				num3 = liquidPosition + num5;
-+				//num3 = liquidPosition + num5;
-+				num3 = liquidLookup[num5];
- 			}
--			else if (!tile.invisibleWall() && tile.wall > 0 && tile.wall < WallID.Count) {
-+			else if (!tile.invisibleWall() && tile.wall > 0 && tile.wall < WallLoader.WallCount) {
- 				int wall = tile.wall;
- 				num3 = wallLookup[wall];
- 				num = tile.wallColor();
 @@ -1828,10 +_,16 @@
  		if (baseType == 0) {
  			newColor = 0;
@@ -121,9 +108,14 @@
  	}
  
  	private static void GetTileType(int i, int j, Tile tileCache, ref int newColor, ref int newLight, ref int baseType, ref int baseOption)
-@@ -1892,7 +_,7 @@
+@@ -1890,9 +_,12 @@
+ 
+ 		if (tileCache.liquid > 32) {
  			int num = tileCache.liquidType();
++			/*
  			baseType = liquidPosition + num;
++			*/
++			baseType = liquidLookup[num];
  		}
 -		else if (!tileCache.invisibleWall() && tileCache.wall > 0 && tileCache.wall < WallID.Count) {
 +		else if (!tileCache.invisibleWall() && tileCache.wall > 0 && tileCache.wall < WallLoader.WallCount) {

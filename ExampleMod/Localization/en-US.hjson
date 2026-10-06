@@ -1285,7 +1285,7 @@ Mods: {
 
 			ExampleBasicLiquidBucket: {
 				DisplayName: Example Basic Liquid Bucket
-				Tooltip: 
+				Tooltip:
 					'''
 					Contains a small amount of basic example liquid
 					Can be poured out
@@ -1294,7 +1294,7 @@ Mods: {
 
 			ExampleBottomlessBucket: {
 				DisplayName: Example Bottomless Bucket
-				Tooltip: 
+				Tooltip:
 					'''
 					Contains an endless amount of example liquid
 					Can be poured out
@@ -1303,7 +1303,7 @@ Mods: {
 
 			ExampleComplexLiquidBucket: {
 				DisplayName: Example Complex Liquid Bucket
-				Tooltip: 
+				Tooltip:
 					'''
 					Contains a small amount of complex example liquid
 					Can be poured out
@@ -1312,7 +1312,7 @@ Mods: {
 
 			ExampleLiquidBucket: {
 				DisplayName: Example Liquid Bucket
-				Tooltip: 
+				Tooltip:
 					'''
 					Contains a small amount of example liquid
 					Can be poured out
@@ -1321,27 +1321,27 @@ Mods: {
 
 			ExampleLiquidSponge: {
 				DisplayName: Example Liquid Sponge
-				Tooltip: "Capable of soaking up an endless amount of example liquid"
+				Tooltip: Capable of soaking up an endless amount of example liquid
 			}
 
 			ExampleBasicLiquidSensor: {
 				DisplayName: Liquid Sensor (Example Basic)
-				Tooltip: "Activates whenever occupied by basic example liquid, deactivates otherwise"
+				Tooltip: Activates whenever occupied by basic example liquid, deactivates otherwise
 			}
 
 			ExampleCloudBlock: {
 				DisplayName: Example Cloud Block
-				Tooltip: "Prevents fall damage"
+				Tooltip: Prevents fall damage
 			}
 
 			ExampleComplexLiquidSensor: {
 				DisplayName: Liquid Sensor (Example Complex)
-				Tooltip: "Activates whenever occupied by complex example liquid, deactivates otherwise"
+				Tooltip: Activates whenever occupied by complex example liquid, deactivates otherwise
 			}
 
 			ExampleLiquidSensor: {
 				DisplayName: Liquid Sensor (Example)
-				Tooltip: "Activates whenever occupied by example liquid, deactivates otherwise"
+				Tooltip: Activates whenever occupied by example liquid, deactivates otherwise
 			}
 
 			MagicExampleLiquidDropper: {
@@ -1351,7 +1351,7 @@ Mods: {
 
 			ExampleWaders: {
 				DisplayName: Example Waders
-				Tooltip: "Provides the ability to walk on example liquid, example basic liquid & example complex liquid"
+				Tooltip: Provides the ability to walk on example liquid, example basic liquid & example complex liquid
 			}
 
 			ExampleGem: {

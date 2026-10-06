@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Entity.cs
 +++ src/tModLoader/Terraria/Entity.cs
-@@ -1,29 +_,102 @@
+@@ -1,36 +_,116 @@
  using System;
 +using System.Linq;
  using Microsoft.Xna.Framework;
@@ -67,8 +67,10 @@
 +	/// <br/> Projectile: Affects movement speed and some projectiles die when wet. <see cref="Projectile.ignoreWater"/> prevents this.
 +	/// </summary>
  	public bool wet;
--	public bool shimmerWet;
--	public bool honeyWet;
++	/*
+ 	public bool shimmerWet;
+ 	public bool honeyWet;
++	*/
 +	/// <summary>
 +	/// Legacy code, use <see cref="wets"/> instead.
 +	/// </summary>
@@ -84,7 +86,9 @@
 +		set => wets[LiquidID.Honey] = value;
 +	}
  	public byte wetCount;
--	public bool lavaWet;
++	/*
+ 	public bool lavaWet;
++	*/
 +	/// <summary>
 +	/// Legacy code, use <see cref="wets"/> instead.
 +	/// </summary>
@@ -96,6 +100,15 @@
 +	/// An array of whether the Entity is currently in a liquid or not.
 +	/// </summary>
 +	public bool[] wets = new bool[LiquidLoader.LiquidCount]; // Added by TML.
+ 
+ 	public bool AnyWet {
+ 		get {
+ 			if (!wet && !lavaWet && !honeyWet)
+ 				return shimmerWet;
+ 
+ 			return true;
+ 		}
+ 	}
  
  	public virtual Vector2 VisualPosition => position;
  

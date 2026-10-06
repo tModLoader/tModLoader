@@ -108,7 +108,7 @@
  	}
  
  	public static void PlaceStatueTrap(int x, int y)
-@@ -1072,19 +_,24 @@
+@@ -3593,19 +_,24 @@
  		}
  
  		int liquidMergeTileType = 0;
@@ -131,12 +131,12 @@
  			PlaceTile(x, y, liquidMergeTileType, mute: true);
  			SquareTileFrame(x, y);
  			if (Main.netMode != 0)
--				NetMessage.SendTileSquare(-1, x - 1, y - 1, GetLiquidChangeType(liquidType, b));
-+				NetMessage.SendTileSquare(-1, x - 1, y - 1, liquidType, b);
+-				NetMessage.SendTileSquare(-1, x, y, GetLiquidChangeType(liquidType, b));
++				NetMessage.SendTileSquare(-1, x, y, liquidType, b);
  
  			return true;
  		}
-@@ -1116,6 +_,26 @@
+@@ -3637,6 +_,26 @@
  		}
  	}
  

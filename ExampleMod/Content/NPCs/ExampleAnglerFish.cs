@@ -86,14 +86,14 @@ namespace ExampleMod.Content.NPCs
 		//Here we do the liquid check before spawning our NPC
 		//If the spawning position is in our modded liquid, then the NPC spawns
 		//There is an additional region check to make sure its not too close to the ocean and world spawn
-		public override float SpawnChance(NPCSpawnInfo spawnInfo) {
+		public override float SpawnChance(NPC.Spawner spawner) {
 			bool spawnTileIsInExampleLiquid = false;
-			if (Main.tile[spawnInfo.SpawnTileX, spawnInfo.SpawnTileY - 1].LiquidAmount > 0 && Main.tile[spawnInfo.SpawnTileX, spawnInfo.SpawnTileY - 2].LiquidAmount > 0) {
-				if (Main.tile[spawnInfo.SpawnTileX, spawnInfo.SpawnTileY - 1].LiquidType == ModContent.LiquidType<ExampleLiquid>()) {
+			if (Main.tile[spawner.SpawnTileX, spawner.SpawnTileY - 1].LiquidAmount > 0 && Main.tile[spawner.SpawnTileX, spawner.SpawnTileY - 2].LiquidAmount > 0) {
+				if (Main.tile[spawner.SpawnTileX, spawner.SpawnTileY - 1].LiquidType == ModContent.LiquidType<ExampleLiquid>()) {
 					spawnTileIsInExampleLiquid = true;
 				}
 			}
-			if (spawnTileIsInExampleLiquid && Main.rand.NextBool(4) && ((spawnInfo.SpawnTileX > WorldGen.oceanDistance && spawnInfo.SpawnTileX < Main.maxTilesX - WorldGen.oceanDistance) || spawnInfo.SpawnTileY > Main.worldSurface + 50.0)) {
+			if (spawnTileIsInExampleLiquid && Main.rand.NextBool(4) && ((spawner.SpawnTileX > WorldGen.oceanDistance && spawner.SpawnTileX < Main.maxTilesX - WorldGen.oceanDistance) || spawner.SpawnTileY > Main.worldSurface + 50.0)) {
 				return 1f;
 			}
 			return 0f;

@@ -101,7 +101,7 @@
  	private static readonly byte[] VISCOSITY_MASK = new byte[5] {
  		0,
  		200,
-@@ -84,12 +_,13 @@
+@@ -84,12 +_,15 @@
  		0,
  		0
  	};
@@ -223,7 +223,7 @@
  						LiquidCache liquidCache = ptr2[-1];
  						LiquidCache liquidCache2 = ptr2[1];
  						LiquidCache liquidCache3 = ptr2[-rectangle.Height];
-@@ -203,7 +_,7 @@
+@@ -205,7 +_,7 @@
  						float num3 = 1f / (float)(WATERFALL_LENGTH[ptr2->Type] + 1);
  						float num4 = 1f;
  						for (int num5 = 1; num5 <= WATERFALL_LENGTH[ptr2->Type]; num5++) {
@@ -257,7 +257,7 @@
  
  						if (!liquidCache2.HasVisibleLiquid && !liquidCache2.IsSolid && !liquidCache2.IsHalfBrick)
  							num11 -= liquidCache.VisibleLiquidLevel * (1f - visibleLiquidLevel);
-@@ -321,7 +_,11 @@
+@@ -323,7 +_,11 @@
  								ptr2->VisibleRightWall = (ptr2->RightWall * 2f + liquidCache.RightWall + liquidCache2.RightWall) * 0.25f;
  						}
  
@@ -291,7 +291,7 @@
  							}
  							else {
  								ptr4->IsVisible = false;
-@@ -463,7 +_,8 @@
+@@ -465,7 +_,8 @@
  			ptr2 = ptr;
  			for (int num25 = rectangle.X; num25 < rectangle.X + rectangle.Width; num25++) {
  				for (int num26 = rectangle.Y; num26 < rectangle.Y + rectangle.Height; num26++) {
@@ -318,41 +318,44 @@
  		}
  
  		if (this.WaveFilters != null)
-@@ -524,12 +_,19 @@
+@@ -526,15 +_,22 @@
  			LiquidDrawCache* ptr2 = ptr;
  			for (int i = drawArea.X; i < drawArea.X + drawArea.Width; i++) {
  				for (int j = drawArea.Y; j < drawArea.Y + drawArea.Height; j++) {
 +					// TML: Liquid draw caches merged, add shimmer type check
 +					/*
- 					if (ptr2->IsVisible) {
+ 					if (ptr2->IsVisible && (!waterOnly || ptr2->Type == 0)) {
 +					*/
 +					if (ptr2->IsVisible && ptr2->Type != LiquidID.Shimmer) {
 +						if (!LiquidLoader.PreDraw(i, j, ptr2->Type, *ptr2, drawOffset, isBackgroundDraw, waterStyle, globalAlpha))
 +							goto PostDraw;
 +
+ 						Main.tileBatch.SetLayer(0u, 0);
  						Rectangle sourceRectangle = ptr2->SourceRectangle;
  						if (ptr2->IsSurfaceLiquid)
  							sourceRectangle.Y = 1280;
+ 						else if (sourceRectangle.X == 16)
+ 							sourceRectangle.Y += _waterfallAnimationFrame * 80;
  						else
 -							sourceRectangle.Y += _animationFrame * 80;
 +							sourceRectangle.Y += Main.liquidFrame[ptr2->Type] * 80;
  
  						Vector2 liquidOffset = ptr2->LiquidOffset;
  						float num = ptr2->Opacity * (isBackgroundDraw ? 1f : DEFAULT_OPACITY[ptr2->Type]);
-@@ -551,7 +_,11 @@
+@@ -559,7 +_,11 @@
  						vertices.TopLeftColor *= num;
  						vertices.TopRightColor *= num;
  						Main.DrawTileInWater(drawOffset, i, j);
 +						var texture = ptr2->Type >= LiquidID.Count ? LiquidLoader.LiquidAssets[ptr2->Type] : _liquidTextures[num2];
--						Main.tileBatch.Draw(_liquidTextures[num2].Value, new Vector2(i << 4, j << 4) + drawOffset + liquidOffset, sourceRectangle, vertices, Vector2.Zero, 1f, SpriteEffects.None);
-+						Main.tileBatch.Draw(texture.Value, new Vector2(i << 4, j << 4) + drawOffset + liquidOffset, sourceRectangle, vertices, Vector2.Zero, 1f, SpriteEffects.None);
+-						Main.tileBatch.Draw(_liquidTextures[num2].Value, new Vector2(i << 4, j << 4) + drawOffset + liquidOffset, sourceRectangle, vertices, Vector2.Zero);
++						Main.tileBatch.Draw(texture.Value, new Vector2(i << 4, j << 4) + drawOffset + liquidOffset, sourceRectangle, vertices, Vector2.Zero);
 +
 +					PostDraw:
 +						LiquidLoader.PostDraw(i, j, ptr2->Type, *ptr2, drawOffset, isBackgroundDraw, waterStyle, globalAlpha);
  					}
  
  					ptr2++;
-@@ -575,25 +_,45 @@
+@@ -575,18 +_,36 @@
  	{
  		Rectangle drawArea = _drawArea;
  		Main.tileBatch.Restart();
@@ -401,8 +404,8 @@
  				Lighting.GetCornerColors(num3, num4, out var vertices);
  				SetShimmerVertexColors(ref vertices, val, num3, num4);
  				Main.DrawTileInWater(drawOffset, num3, num4);
-@@ -598,6 +_,9 @@
- 					Main.tileBatch.Draw(_liquidTextures[num2].Value, new Vector2(num3 << 4, num4 << 4) + drawOffset + liquidOffset, sourceRectangle, vertices, Vector2.Zero, 1f, SpriteEffects.None);
+@@ -608,6 +_,9 @@
+ 					Main.tileBatch.Draw(_liquidTextures[num2].Value, new Vector2(num3 << 4, num4 << 4) + drawOffset + liquidOffset, sourceRectangle, vertices, Vector2.Zero);
  				}
  
 +				PostDraw:
@@ -411,10 +414,10 @@
  				ptr2++;
  			}
  		}
-@@ -717,6 +_,14 @@
- 
- 			_frameState %= 16f;
+@@ -731,6 +_,14 @@
+ 			_waterfallFrameState %= 16f;
  			_animationFrame = (int)_frameState;
+ 			_waterfallAnimationFrame = (int)_waterfallFrameState;
 +
 +			for (int i = 0; i < Main.liquidFrameState.Length; i++) {
 +				if (!LiquidLoader.AnimateLiquid(i, gameTime, ref Main.liquidFrame[i], ref Main.liquidFrameState[i]))

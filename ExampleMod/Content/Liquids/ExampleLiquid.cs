@@ -148,7 +148,7 @@ namespace ExampleMod.Content.Liquids
 		}
 
 		//Using RetroDrawEffects, we can do stuff only during the rendering of liquids in the retro lighting style.
-		//Here we set the opacity we want during retro lighting so that its consistant with the opacity of the liquid when not in non-retro lighting
+		//Here we set the opacity we want during retro lighting so that its consistent with the opacity of the liquid when not in non-retro lighting
 		//NOTE: Despite being having RETRO in the name, this also applies to the "Trippy" Lighting style as well.
 		public override void RetroDrawEffects(int i, int j, SpriteBatch spriteBatch, ref RetroLiquidDrawInfo drawData, float liquidAmountModified, int liquidGFXQuality) {
 			drawData.liquidAlphaMultiplier *= 1.8f;
@@ -219,10 +219,10 @@ namespace ExampleMod.Content.Liquids
 		public override void OnPlayerCollision(Player player) {
 			//No conditions needed for our liquid
 			//Shimmer and honey also don't have any other conditions outside of already not shimmering
-			player.AddBuff(BuffID.WellFed2, 60 * 30, false, false);
+			player.AddBuff(BuffID.WellFed2, 60 * 30);
 		}
 
-		//Here we animate our liquid seperately from other liquids in the game.
+		//Here we animate our liquid separately from other liquids in the game.
 		//We animate it similarly to how it's normally animated, except the animation is twice as slow
 		public override void AnimateLiquid(GameTime gameTime, ref int frame, ref float frameState) {
 			float frameSpeed = Main.windSpeedCurrent * (25f / 2); //The code is exactly 1:1 with how vanilla animates it's liquids, except here the 2 is here to animate it half as slow
@@ -294,7 +294,7 @@ namespace ExampleMod.Content.Liquids
 		}
 
 		//related above, we use this method/hook to make items move at half the speed that they would when in honey
-		public override void ItemLiquidCollision(Item item, ref Vector2 wetVelocity, ref float gravity, ref float maxFallSpeed) {
+		public override void ItemLiquidCollision(WorldItem item, ref Vector2 wetVelocity, ref float gravity, ref float maxFallSpeed) {
 			gravity = 0.02f;
 			maxFallSpeed = 1f;
 			wetVelocity = item.velocity * 0.125f;
@@ -302,8 +302,8 @@ namespace ExampleMod.Content.Liquids
 			//The following has this liquid delete items of the Blue rarity similar to how lava deletes items of the white rarity
 			//We put this here as liquid movement is called just before lava deletion (Item.CheckLavaDeath)
 			if (!item.beingGrabbed) {
-				if (item.playerIndexTheItemIsReservedFor == Main.myPlayer && item.rare == ItemRarityID.Blue && item.type >= ItemID.None && !ItemID.Sets.IsLavaImmuneRegardlessOfRarity[item.type]) {
-					item.active = false;
+				if (item.playerIndexTheItemIsReservedFor == Main.myPlayer && item.inner.rare == ItemRarityID.Blue && item.type >= ItemID.None && !ItemID.Sets.IsLavaImmuneRegardlessOfRarity[item.type]) {
+					//item.active = false;
 					item.type = ItemID.None;
 					item.stack = 0;
 					if (Main.netMode != NetmodeID.SinglePlayer) {

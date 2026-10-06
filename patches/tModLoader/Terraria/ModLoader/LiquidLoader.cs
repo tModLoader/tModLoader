@@ -35,7 +35,7 @@ public static class LiquidLoader
 	private delegate void DelegateSlopeOpacity(int type, ref float slopeOpacity);
 	private delegate void DelegateLiquidMaskMode(int i, int j, int type, ref LightMaskMode liquidMaskMode);
 	private delegate void DelegatePlayerGravityModifier(Player player, int type, ref float grav, ref float gravMax, ref int jumpMax, ref float jumpSpeed);
-	private delegate void DelegateItemLiquidMovement(Item item, int type, ref Vector2 wetVelocity, ref float grav, ref float gravMax);
+	private delegate void DelegateItemLiquidMovement(WorldItem item, int type, ref Vector2 wetVelocity, ref float grav, ref float gravMax);
 	private delegate void DelegateNPCGravityModifier(NPC npc, int type, ref float grav, ref float gravMax);
 	private delegate bool DelegateProjectileLiquidMovement(Projectile proj, int type, ref Vector2 wetVelocity, Vector2 collisionPosition, int Width, int height, bool fallThrough);
 	private delegate bool DelegateAnimateLiquid(int type, GameTime gameTime, ref int frame, ref float frameState);
@@ -516,7 +516,7 @@ public static class LiquidLoader
 		}
 	}
 
-	public static void ItemLiquidMovement(int type, Item item, ref Vector2 wetVelocity, ref float gravity, ref float maxFallSpeed)
+	public static void ItemLiquidMovement(int type, WorldItem item, ref Vector2 wetVelocity, ref float gravity, ref float maxFallSpeed)
 	{
 		GetLiquid(type)?.ItemLiquidCollision(item, ref wetVelocity, ref gravity, ref maxFallSpeed);
 		DelegateItemLiquidMovement[] hookItemLiquidMovement = HookItemLiquidMovement;

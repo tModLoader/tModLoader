@@ -103,7 +103,7 @@ namespace ExampleMod.Content.Items.Placeable.LiquidBuckets
 				WorldGen.SquareTileFrame(Player.tileTargetX, Player.tileTargetY); //...frame the tile to update the liquid
 				if (!isBottomless) {
 					item.stack--; //...remove the item's count
-					player.PutItemInInventoryFromItemUsage(ItemID.EmptyBucket, player.selectedItem); //...create a bucket item
+					player.PutItemInInventoryFromItemUsage(ItemID.EmptyBucket); //...create a bucket item
 				}
 				player.ApplyItemTime(item); //...do item usetime
 

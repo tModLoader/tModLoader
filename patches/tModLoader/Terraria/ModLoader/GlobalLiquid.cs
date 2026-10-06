@@ -399,7 +399,7 @@ public abstract class GlobalLiquid : ModType
 
 	/// <summary>
 	/// Allows the user to specify how a liquid interacts with an item (especially item gravity and movement). <br/>
-	/// Please see <see cref="Terraria.Item.UpdateItem" />, to see how vanilla handles it's liquid collision. <br/> <br/>
+	/// Please see <see cref="Terraria.WorldItem.UpdateItem" />, to see how vanilla handles it's liquid collision. <br/> <br/>
 	/// This method is also used to modify items detected to be in liquids. Use this to do things such as deleting items touching this liquid.
 	/// </summary>
 	/// <param name="item">The item instance thats being effected by the liquid.</param>
@@ -407,7 +407,7 @@ public abstract class GlobalLiquid : ModType
 	/// <param name="wetVelocity">The velocity of the item when in the liquid.</param>
 	/// <param name="gravity">The gravity of the item.</param>
 	/// <param name="maxFallSpeed">The maximum fall speed of the item.</param>
-	public virtual void ItemLiquidCollision(Item item, int type, ref Vector2 wetVelocity, ref float gravity, ref float maxFallSpeed)
+	public virtual void ItemLiquidCollision(WorldItem item, int type, ref Vector2 wetVelocity, ref float gravity, ref float maxFallSpeed)
 	{
 	}
 

@@ -1,0 +1,67 @@
+@@ -984,23 +_,14 @@
+ 				num += tile3.liquid;
+ 				tile3.liquid = 0;
+ 			}
+-
+-			int liquidMergeTileType = 56;
+-			int liquidMergeType = 0;
+-			bool waterNearby = tile.liquidType() == 0 || tile2.liquidType() == 0 || tile3.liquidType() == 0;
++			//bool waterNearby = tile.liquidType() == 0 || tile2.liquidType() == 0 || tile3.liquidType() == 0;
+-			bool lavaNearby = tile.lava() || tile2.lava() || tile3.lava();
++			//bool lavaNearby = tile.lava() || tile2.lava() || tile3.lava();
+-			bool honeyNearby = tile.honey() || tile2.honey() || tile3.honey();
++			//bool honeyNearby = tile.honey() || tile2.honey() || tile3.honey();
+-			bool shimmerNearby = tile.shimmer() || tile2.shimmer() || tile3.shimmer();
++			//bool shimmerNearby = tile.shimmer() || tile2.shimmer() || tile3.shimmer();
+-			GetLiquidMergeTypes(thisLiquidType, out liquidMergeTileType, out liquidMergeType, waterNearby, lavaNearby, honeyNearby, shimmerNearby);
++			//GetLiquidMergeTypes(thisLiquidType, out liquidMergeTileType, out liquidMergeType, waterNearby, lavaNearby, honeyNearby, shimmerNearby);
+ 			if (num < 24 || liquidMergeType == thisLiquidType)
+ 				return;
+ 
+-			if (tile5.active() && Main.tileObsidianKill[tile5.type]) {
+-				WorldGen.KillTile(x, y);
+-				if (Main.netMode == 2)
+-					NetMessage.SendData(17, -1, -1, null, 0, x, y);
+-			}
+-
+ 			if (!tile5.active()) {
+ 				tile5.liquid = 0;
+ 				switch (thisLiquidType) {
+@@ -1015,14 +_,15 @@
+ 						break;
+ 				}
+ 
+-				TileChangeType liquidChangeType = WorldGen.GetLiquidChangeType(thisLiquidType, liquidMergeType);
++				//TileChangeType liquidChangeType = WorldGen.GetLiquidChangeType(thisLiquidType, liquidMergeType);
+ 				if (!WorldGen.gen)
+-					WorldGen.PlayLiquidChangeSound(liquidChangeType, x, y);
++					WorldGen.PlayLiquidChangeSound(x, y, thisLiquidType, liquidMergeType);
+ 
++				//Double check tile placement, according to documentation some non-frame important tiles might not place correctly
+ 				WorldGen.PlaceTile(x, y, liquidMergeTileType, mute: true, forced: true);
+ 				WorldGen.SquareTileFrame(x, y);
+ 				if (Main.netMode == 2)
+-					NetMessage.SendTileSquare(-1, x - 1, y - 1, 3, liquidChangeType);
++					NetMessage.SendTileSquare(-1, x - 1, y - 1, 3, (byte)thisLiquidType, (byte)liquidMergeType);
+ 			}
+ 		}
+ 		else {
+@@ -1077,14 +_,15 @@
+ 			}
+ 
+ 			tile4.liquid = 0;
+-			TileChangeType liquidChangeType2 = WorldGen.GetLiquidChangeType(thisLiquidType, liquidMergeType2);
++			//TileChangeType liquidChangeType2 = WorldGen.GetLiquidChangeType(thisLiquidType, liquidMergeType2);
+ 			if (!Main.gameMenu)
+-				WorldGen.PlayLiquidChangeSound(liquidChangeType2, x, y);
++				WorldGen.PlayLiquidChangeSound(x, y, thisLiquidType, liquidMergeType2);
+ 
++			//Same here as the last placement, some tiles may not place correctly, please force place a tile if so
+ 			WorldGen.PlaceTile(x, y + 1, liquidMergeTileType2, mute: true, forced: true);
+ 			WorldGen.SquareTileFrame(x, y + 1);
+ 			if (Main.netMode == 2)
+-				NetMessage.SendTileSquare(-1, x - 1, y, 3, liquidChangeType2);
++				NetMessage.SendTileSquare(-1, x - 1, y, 3, (byte)thisLiquidType, (byte)liquidMergeType2);
+ 		}
+ 	}
+ 

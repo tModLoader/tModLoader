@@ -49,7 +49,7 @@ namespace ExampleMod.Content.Liquids
 				//We then call the same method dry bombs call for removing liquid
 				DelegateMethods.v2_1 = new Vector2(liquidX, y);
 				DelegateMethods.f_1 = 3.5f;
-				Utils.PlotTileArea(liquidX, y, DelegateMethods.SpreadDry);
+				Utils.FloodFillTile(new Point(liquidX, y), 3.5f, DelegateMethods.SpreadDry);
 			}
 			//Here we call the visual effects for the explosion
 			//We seperate this into 2 as we need to directly call the visuals if on single player and send through a packet calling the explosion in multiplayer
@@ -221,7 +221,7 @@ namespace ExampleMod.Content.Liquids
 			return false;
 		}
 
-		public override bool OnItemSplash(Item item, bool isEnter) {
+		public override bool OnItemSplash(WorldItem item, bool isEnter) {
 			for (int i = 0; i < 5; i++) {
 				int dust = Dust.NewDust(new Vector2(item.position.X - 6f, item.position.Y + (item.height / 2) - 8f), item.width + 12, 24, DustID.RainbowTorch);
 				Main.dust[dust].velocity.Y -= 1f;

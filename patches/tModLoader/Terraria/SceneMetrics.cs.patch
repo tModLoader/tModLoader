@@ -127,15 +127,6 @@
  
  	public bool EnoughTilesForShimmer => ShimmerTileCount >= ShimmerTileThreshold;
  
-@@ -145,7 +_,7 @@
- 
- 					if (!tile.active()) {
- 						if (tile.liquid > 0)
--							_liquidCounts[tile.liquidType()]++;
-+							_liquidCounts[tile.LiquidType]++;
- 
- 						continue;
- 					}
 @@ -251,6 +_,9 @@
  			LastScanTime = Main.GameUpdateCount;
  			Center = settings.BiomeScanCenterPositionInWorld;
@@ -155,6 +146,14 @@
  		}
  	}
  
+@@ -279,6 +_,6 @@
+ 
+ 				if (!tile.active()) {
+ 					if (tile.liquid > 0)
+-						_liquidCounts[tile.liquidType()]++;
++						_liquidCounts[tile.LiquidType]++;
+ 
+ 					continue;
 @@ -344,6 +_,8 @@
  				}
  

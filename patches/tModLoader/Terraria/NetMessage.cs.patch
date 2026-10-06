@@ -106,13 +106,13 @@
  					break;
  				}
  				case 8:
-@@ -481,6 +_,7 @@
+@@ -531,6 +_,7 @@
+ 					writer.Write((byte)num14);
  					writer.Write((byte)num15);
- 					writer.Write((byte)num16);
  					writer.Write((byte)number5);
 +					writer.Write(number6);
- 					for (int num17 = num13; num17 < num13 + num15; num17++) {
- 						for (int num18 = num14; num18 < num14 + num16; num18++) {
+ 					for (int num16 = num12; num16 < num12 + num14; num16++) {
+ 						for (int num17 = num13; num17 < num13 + num15; num17++) {
  							BitsByte bitsByte19 = (byte)0;
 @@ -602,8 +_,12 @@
  					writer.Write((short)number);
@@ -434,7 +434,7 @@
  						short num11 = (short)Sign.ReadSign(j, i);
  						if (num11 != -1)
  							_compressSignList[num2++] = num11;
-@@ -1853,6 +_,9 @@
+@@ -1912,6 +_,9 @@
  						b = (byte)(b | 8u);
  					}
  
@@ -482,7 +482,7 @@
  
  					Main.tile[j, i].CopyFrom(tile);
  					continue;
-@@ -2045,6 +_,7 @@
+@@ -2103,6 +_,7 @@
  
  				b5 = (byte)((b4 & 0x18) >> 3);
  				if (b5 != 0) {
@@ -598,7 +598,7 @@
  	public static void SendPlayerDeath(int playerTargetIndex, PlayerDeathReason reason, int damage, int direction, bool pvp, int remoteClient = -1, int ignoreClient = -1)
  	{
  		_currentPlayerDeathReason = reason;
-@@ -2365,17 +_,53 @@
+@@ -2365,17 +_,76 @@
  		SendData(126, remoteClient, ignoreClient);
  	}
  

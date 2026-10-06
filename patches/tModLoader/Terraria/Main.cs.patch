@@ -645,7 +645,7 @@
  	public static bool[] tileSign = new bool[TileID.Count];
  	public static bool[][] tileMerge = new bool[TileID.Count][];
  	public static int cageFrames = 25;
-@@ -958,9 +_,32 @@
+@@ -958,11 +_,30 @@
  	public static int[] pufferfishCageFrame = new int[cageFrames];
  	public static int[] pufferfishCageFrameCounter = new int[cageFrames];
  	public static bool[] tileSand = new bool[TileID.Count];
@@ -5817,14 +5817,18 @@
  				num = 9;
  				text3 = Lang.inter[103].Value;
  				Vector2 vector = LocalPlayer.velocity + LocalPlayer.instantMovementAccumulatedThisFrame;
-@@ -38314,23 +_,41 @@
+@@ -41898,11 +_,29 @@
  				int num19 = 216000;
  				float num20 = num16 * (float)num19 / (float)num18;
  				if (!player[myPlayer].merman && !player[myPlayer].ignoreWater) {
--					if (player[myPlayer].honeyWet)
--						num20 /= 4f;
--					else if (player[myPlayer].wet)
--						num20 /= 2f;
++					/* 					
+ 					if (player[myPlayer].honeyWet)
+ 						num20 /= 4f;
+ 					else if (player[myPlayer].shimmerWet)
+ 						num20 *= 0.375f;
+ 					else if (player[myPlayer].wet && !player[myPlayer].trident)
+ 						num20 /= 2f;
++					*/
 +					float multiplier = 1f;
 +					for (int j = 0; j < LiquidLoader.LiquidCount; j++) {
 +						if (player[myPlayer].wets[j]) {
@@ -5843,7 +5847,6 @@
 +					num20 *= multiplier;
  				}
  
- 				Vector2 vector = LocalPlayer.velocity + LocalPlayer.instantMovementAccumulatedThisFrame;
 @@ -41909,14 +_,20 @@
  				text2 = Language.GetTextValue("GameUI.Speed", Math.Round(num20));
  				flag9 = true;
@@ -6775,33 +6778,7 @@
  			TilesRenderer.DrawLiquidBehindTiles(waterStyle);
  
  		LiquidRenderer.Instance.DrawNormalLiquids(spriteBatch, drawOffset, waterStyle, Alpha, bg, waterOnly);
-@@ -47337,16 +_,18 @@
- 
- 	public static void DrawTileInWater(Vector2 drawOffset, int x, int y)
- 	{
--		if (Main.tile[x, y] != null && Main.tile[x, y].active() && Main.tile[x, y].type == 518) {
-+		if (Main.tile[x, y] != null && Main.tile[x, y].active()) {
- 			instance.LoadTiles(Main.tile[x, y].type);
- 			Tile tile = Main.tile[x, y];
-+			if (TileLoader.DrawTileInWater(x, y, Main.tile[x, y].type, spriteBatch, drawOffset) && Main.tile[x, y].type == 518) {
--			int num = (int)tile.liquid / 16;
-+				int num = (int)tile.liquid / 16;
--			num -= 3;
-+				num -= 3;
--			if (WorldGen.SolidTile(x, y - 1) && num > 8)
-+				if (WorldGen.SolidTile(x, y - 1) && num > 8)
--				num = 8;
-+					num = 8;
- 
--			Microsoft.Xna.Framework.Rectangle value = new Microsoft.Xna.Framework.Rectangle(tile.frameX, tile.frameY, 16, 16);
-+				Microsoft.Xna.Framework.Rectangle value = new Microsoft.Xna.Framework.Rectangle(tile.frameX, tile.frameY, 16, 16);
--			spriteBatch.Draw(TextureAssets.Tile[tile.type].Value, new Vector2(x * 16, y * 16 - num) + drawOffset, value, Lighting.GetColor(x, y), 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
-+				spriteBatch.Draw(TextureAssets.Tile[tile.type].Value, new Vector2(x * 16, y * 16 - num) + drawOffset, value, Lighting.GetColor(x, y), 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
-+			}
- 		}
- 	}
- 
-@@ -47389,6 +_,10 @@
+@@ -51168,6 +_,10 @@
  				if (tile[j, i].liquid <= 0 || (tile[j, i].nactive() && tileSolid[tile[j, i].type] && !tileSolidTop[tile[j, i].type]) || !(Lighting.Brightness(j, i) > 0f || bg))
  					continue;
  
@@ -6812,16 +6789,16 @@
  				Microsoft.Xna.Framework.Color color = Lighting.GetColor(j, i);
  				float num11 = 256 - tile[j, i].liquid;
  				num11 /= 32f;
-@@ -47536,7 +_,7 @@
+@@ -51318,7 +_,7 @@
  					if (num17 > 1f)
  						num17 = 1f;
  
--					if (base.IsActive && !gamePaused && Dust.lavaBubbles < 200) {
-+					if (base.IsActive && !gamePaused && Dust.lavaBubbles < 200 && !LiquidLoader.DisableRetroLavaBubbles(j, i)) {
+-					if (FocusHelper.AllowMiscDustEffects && Dust.lavaBubbles < 200) {
++					if (FocusHelper.AllowMiscDustEffects && Dust.lavaBubbles < 200 && !LiquidLoader.DisableRetroLavaBubbles(j, i)) {
  						if (tile[j, i].liquid > 200 && rand.Next(700) == 0)
  							Dust.NewDust(new Vector2(j * 16, i * 16), 16, 16, 35);
  
-@@ -47553,6 +_,33 @@
+@@ -51335,6 +_,33 @@
  					}
  				}
  
@@ -6855,7 +6832,7 @@
  				float num23 = (float)(int)color.R * num17;
  				float num24 = (float)(int)color.G * num17;
  				float num25 = (float)(int)color.B * num17;
-@@ -47561,6 +_,7 @@
+@@ -51343,6 +_,7 @@
  				if (flag)
  					color = new Microsoft.Xna.Framework.Color(color.ToVector4() * LiquidRenderer.GetShimmerBaseColor(j, i));
  
@@ -6863,7 +6840,7 @@
  				if (Lighting.NotRetro && !bg) {
  					Microsoft.Xna.Framework.Color color2 = color;
  					if (num12 != 1 && ((double)(int)color2.R > (double)num6 * 0.6 || (double)(int)color2.G > (double)num6 * 0.65 || (double)(int)color2.B > (double)num6 * 0.7)) {
-@@ -47596,7 +_,9 @@
+@@ -51378,7 +_,9 @@
  								num28 = 8;
  								height = 8 - (16 - value.Height);
  							}
@@ -6874,7 +6851,7 @@
  							num23 = (float)(int)color4.R * num17;
  							num24 = (float)(int)color4.G * num17;
  							num25 = (float)(int)color4.B * num17;
-@@ -47609,16 +_,16 @@
+@@ -51391,16 +_,16 @@
  							if (flag)
  								color3 = new Microsoft.Xna.Framework.Color(color3.ToVector4() * LiquidRenderer.GetShimmerBaseColor(j, i));
  
@@ -6895,7 +6872,7 @@
  						}
  					}
  				}
-@@ -47626,10 +_,10 @@
+@@ -51408,10 +_,10 @@
  					if (value.Y < 4)
  						value.X += (int)(wFrame * 18f);
  
@@ -6908,7 +6885,7 @@
  					}
  				}
  
-@@ -47637,6 +_,9 @@
+@@ -51419,6 +_,9 @@
  					continue;
  
  				color = Lighting.GetColor(j, i + 1);
@@ -6918,7 +6895,7 @@
  				num23 = (float)(int)color.R * num17;
  				num24 = (float)(int)color.G * num17;
  				num25 = (float)(int)color.B * num17;
-@@ -47646,16 +_,9 @@
+@@ -51428,16 +_,9 @@
  					color = new Microsoft.Xna.Framework.Color(color.ToVector4() * LiquidRenderer.GetShimmerBaseColor(j, i));
  
  				vector2 = new Vector2(j * 16, i * 16 + 16);
@@ -6937,7 +6914,7 @@
  
  				for (int m = 0; (float)m < num29; m++) {
  					int num31 = i + 2 + m;
-@@ -47665,10 +_,11 @@
+@@ -51447,10 +_,11 @@
  					float num32 = 1f - (float)m / num29;
  					num32 *= num30;
  					vector2 = new Vector2(j * 16, num31 * 16 - 2);
@@ -7821,7 +7798,7 @@
  	{
  		double num = (double)Damage - (double)Defense * 0.5;
  		if (num < 1.0)
-@@ -54569,10 +_,16 @@
+@@ -58482,10 +_,16 @@
  
  		return num;
  	}
@@ -7839,7 +7816,7 @@
 +		}
  	}
  
- 	public static void ClearPendingPlayerSelectCallbacks()
+ 	public static bool IsFullScreenThatWouldBeStuckOnCrashMessage()
 @@ -58549,7 +_,11 @@
  
  	public static void SetFullScreen(bool fullscreen)
