@@ -409,6 +409,8 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 		configElementList?.Clear();
 		filterTextField?.SetText("");
 		headerTextPanel?.ResetScroll();
+		modNameText?.ResetScroll();
+		subPageBreadcrumb?.ResetScroll();
 		UnblockInput(null, null);
 
 		if (scrollbar is not null)
@@ -553,11 +555,6 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 
 	public override void OnActivate()
 	{
-		// TODO: temporary, for development
-		RemoveAllChildren();
-		OnInitialize();
-		// END TODO
-
 		ResetUI();
 
 		Interface.modConfigList.ModToSelectOnOpen = mod;
