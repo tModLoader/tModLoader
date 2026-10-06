@@ -71,5 +71,6 @@ public class MarqueeTextPanel : UITextPanel<object>
 		scroll = 0;
 		scrollTimer = 0;
 		scrollDirection = 1;
+		textOffset = Vector2.Zero;
 	}
 }
