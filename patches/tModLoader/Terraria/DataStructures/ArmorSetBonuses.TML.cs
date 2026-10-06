@@ -22,9 +22,10 @@ public partial class ArmorSetBonuses
 		Create(Identifier, TextKey, Effect, PrimaryPart).Set<THead, TBody, TLegs>().Add();
 	}
 
-	/// <inheritdoc cref="ModLoader.ModItem.CreateArmorSet(LocalizedText, ArmorSetBonus.PartType, string, ArmorSetBonus.ArmorSetEffect)"/>
+	/// <inheritdoc cref="ModItem.CreateArmorSet(LocalizedText, ArmorSetBonus.PartType, string, ArmorSetBonus.ArmorSetEffect)"/>
 	public static ArmorSetBonus.Builder Create(string Identifier, LocalizedText LocalizedText, ArmorSetBonus.ArmorSetEffect Effect, ArmorSetBonus.PartType PrimaryPart = ArmorSetBonus.PartType.None) => new ArmorSetBonus.Builder(Identifier, LocalizedText, Effect, PrimaryPart);
 
+	/// <inheritdoc cref="ModItem.CreateArmorSet(string, ArmorSetBonus.PartType, string, ArmorSetBonus.ArmorSetEffect)"/>
 	public static ArmorSetBonus.Builder Create(string Identifier, string TextKey, ArmorSetBonus.ArmorSetEffect Effect, ArmorSetBonus.PartType PrimaryPart = ArmorSetBonus.PartType.None) => new ArmorSetBonus.Builder(Identifier, TextKey, Effect, PrimaryPart);
 
 	// New overloads with LocalizedText
@@ -42,13 +43,6 @@ public partial class ArmorSetBonuses
 		where TLegs : ModItem
 	{
 		Create(Identifier, LocalizedText, Effect, PrimaryPart).Set<THead, TBody, TLegs>().Add();
-	}
-
-	private static void AssignKeysToVanillaArmorSets()
-	{
-		foreach (var armorSetBonus in All) {
-			//armorSetBonus.Identifier = armorSetBonus.Description.Key.Split(".").Last();
-		}
 	}
 
 	internal static void Unload()

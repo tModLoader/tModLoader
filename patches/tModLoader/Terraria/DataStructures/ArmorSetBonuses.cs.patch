@@ -72,13 +72,7 @@
  	public static ArmorSetBonus[][] SetsContaining;
  
  	public static void Initialize()
-@@ -559,12 +_,17 @@
- 		Add(Benefits.HuntressTier3, "ArmorSetBonus.HuntressTier3", 3877, 3878, 3879);
- 		Add(Benefits.MonkTier3, "ArmorSetBonus.MonkTier3", 3880, 3881, 3882);
- 		Add(Benefits.ObsidianOutlaw, "ArmorSetBonus.ObsidianOutlaw", 3266, 3267, 3268);
-+
-+		AssignKeysToVanillaArmorSets();
- 	}
+@@ -563,8 +_,11 @@
  
  	public static void BuildLookup()
  	{
