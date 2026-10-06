@@ -11,13 +11,12 @@ namespace Terraria.ModLoader.UI.Elements;
 public class MarqueeTextPanel : UITextPanel<object>
 {
 	public float ScrollSpeed { get; set; } = 1f;
-
 	public bool IsScrolling { get; set; } = true;
+	public float ClippingXPadding { get; set; } = 2f;
+	public float ClippingYPadding { get; set; } = 1000f;
 
 	private float scroll;
-
 	private int scrollTimer;
-
 	private int scrollDirection = 1;
 
 	public MarqueeTextPanel(object text, float textScale = 1, bool large = false) : base(text, textScale, large) { }
@@ -58,14 +57,11 @@ public class MarqueeTextPanel : UITextPanel<object>
 
 	public override Rectangle GetClippingRectangle(SpriteBatch spriteBatch)
 	{
-		const float ExtraXPadding = 2f; // Extra space to stop the right of the text getting clipped
-		const float ExtraYPadding = 1000f; // Stop clipping above and below the panel
-
 		var dims = GetInnerDimensions();
-		dims.X -=  ExtraXPadding;
-		dims.Y -=  ExtraYPadding;
-		dims.Width += ExtraXPadding * 2;
-		dims.Height += ExtraYPadding * 2;
+		dims.X -= ClippingXPadding;
+		dims.Y -= ClippingYPadding;
+		dims.Width += ClippingXPadding * 2;
+		dims.Height += ClippingYPadding * 2;
 
 		return UIElement.GetClippingRectangleFrom(spriteBatch, dims);
 	}

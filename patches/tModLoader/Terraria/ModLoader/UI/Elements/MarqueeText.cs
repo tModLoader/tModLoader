@@ -10,7 +10,6 @@ namespace Terraria.ModLoader.UI.Elements;
 public class MarqueeText : UIElement
 {
     private object text;
-
     public string Text
     {
         get
@@ -20,25 +19,18 @@ public class MarqueeText : UIElement
     }
 
     public float TextAlignX { get; set; } = 0f;
-
     public float TextAlignY { get; set; } = 0f;
-
     public float MaxTextScale { get; set; }
-
     public Color TextColor { get; set; }
-
     public bool Large { get; set; }
-
     public float ScrollSpeed { get; set; } = 1f;
-
     public bool IsScrolling { get; set; } = true;
+    public float ClippingXPadding { get; set; } = 2f;
+    public float ClippingYPadding { get; set; } = 0f;
 
     private float textScale;
-
     private float scroll;
-
     private int scrollTimer;
-
     private int scrollDirection = 1;
 
     public MarqueeText(object text, float scale = 1f, bool large = false)
@@ -147,11 +139,11 @@ public class MarqueeText : UIElement
 
     public override Rectangle GetClippingRectangle(SpriteBatch spriteBatch)
     {
-	    const float ExtraXPadding = 2f; // Extra space to stop the right of the text getting clipped
-
 	    var dims = GetInnerDimensions();
-	    dims.X -=  ExtraXPadding;
-	    dims.Width += ExtraXPadding * 2;
+	    dims.X -= ClippingXPadding;
+	    dims.Y -= ClippingYPadding;
+	    dims.Width += ClippingXPadding * 2;
+	    dims.Height += ClippingYPadding * 2;
 
 	    return UIElement.GetClippingRectangleFrom(spriteBatch, dims);
     }

@@ -255,7 +255,7 @@ internal class UIModConfigList : UIState
 			return;
 
 		// Have to sort by display name because normally configs are sorted by internal names
-		// TODO: Support sort by attribute or some other custom ordering then replicate logic in UIModConfig.SetMod too
+		// TODO: Support sort by attribute?
 		var sortedConfigs = configs.OrderBy(x => Utils.CleanChatTags(x.DisplayName.Value)).ToList();
 
 		foreach (var config in sortedConfigs) {
