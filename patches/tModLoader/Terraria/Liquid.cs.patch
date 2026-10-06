@@ -16,14 +16,11 @@
  {
  	public static readonly int maxLiquidBuffer = 50000;
  	public static readonly int maxLiquid = 25000;
-@@ -46,16 +_,24 @@
- 
- 	public static void tilesIgnoreWater(bool ignoreSolids)
+@@ -48,14 +_,21 @@
  	{
-+		/* // TODO: Fix
  		WorldGen.SetBoulderSolidity(!ignoreSolids);
  		Main.tileSolid[546] = !ignoreSolids;
-+		*/
++		
 +		foreach (int tileType in TileID.Sets.IgnoresWater)
 +				Main.tileSolid[tileType] = !ignoreSolids;
  	}
@@ -222,15 +219,13 @@
  			bool waterNearby = tile.anyWater() || tile2.anyWater() || tile3.anyWater();
  			bool lavaNearby = tile.anyLava() || tile2.anyLava() || tile3.anyLava();
  			bool honeyNearby = tile.anyHoney() || tile2.anyHoney() || tile3.anyHoney();
-@@ -996,9 +_,11 @@
+@@ -996,9 +_,6 @@
  				tile3.liquid = 0;
  			}
  
-+			/* // TODO: Not sure how this is supposed to go.
- 			int liquidMergeTileType = 56;
- 			int liquidMergeType = 0;
- 			GetLiquidMergeTypes(thisLiquidType, out liquidMergeTileType, out liquidMergeType, waterNearby, lavaNearby, honeyNearby, shimmerNearby);
-+			*/
+-			int liquidMergeTileType = 56;
+-			int liquidMergeType = 0;
+-			GetLiquidMergeTypes(thisLiquidType, out liquidMergeTileType, out liquidMergeType, waterNearby, lavaNearby, honeyNearby, shimmerNearby);
  			if (num >= 24 && liquidMergeType != thisLiquidType && (!tile5.active() || Main.tileObsidianKill[tile5.type])) {
  				tile5.liquid = 0;
  				CreateLiquidMergeTile(x, y, thisLiquidType, liquidMergeType, liquidMergeTileType, createMergeTilesDuringGen);
@@ -267,7 +262,7 @@
  	{
  		Tile tile = Main.tile[x, y];
 -		TileChangeType liquidChangeType = WorldGen.GetLiquidChangeType(thisLiquidType, liquidMergeType);
-+		// TileChangeType liquidChangeType = WorldGen.GetLiquidChangeType(thisLiquidType, liquidMergeType);
++		/*TileChangeType liquidChangeType = WorldGen.GetLiquidChangeType(thisLiquidType, liquidMergeType);*/
  		if (WorldGen.isGeneratingOrLoadingWorld && !createMergeTilesDuringGen) {
  			int liquidType = -1;
  			switch (liquidMergeTileType) {
@@ -278,14 +273,14 @@
 -			if (!Main.gameMenu && !WorldGen.isGeneratingOrLoadingWorld)
 +			if (!Main.gameMenu && !WorldGen.isGeneratingOrLoadingWorld) {
 -				WorldGen.PlayLiquidChangeSound(liquidChangeType, x, y);
-+				// WorldGen.PlayLiquidChangeSound(liquidChangeType, x, y);
++				/*WorldGen.PlayLiquidChangeSound(liquidChangeType, x, y);*/
 +				WorldGen.PlayLiquidChangeSound(x, y, thisLiquidType, liquidMergeType);
 +			}
 +			
  
  			bool t = true;
  			Utils.Swap(ref t, ref Main.tileSolid[546]);
-@@ -1095,16 +_,21 @@
+@@ -1095,16 +_,22 @@
  
  			WorldGen.SquareTileFrame(x, y);
  			Main.tileSolid[546] = t;
@@ -299,8 +294,9 @@
  		}
  	}
  
++
 -	public static void GetLiquidMergeTypes(int thisLiquidType, out int liquidMergeTileType, out int liquidMergeType, bool waterNearby, bool lavaNearby, bool honeyNearby, bool shimmerNearby)
-+	// Added x/y/liquidsNearby parameters and removed the waterNearby, lavaNearby, honeyNearby and shimmerNearby parameters
++	/*public static void GetLiquidMergeTypes(int x, int y, int thisLiquidType, out int liquidMergeTileType, out int liquidMergeType, bool waterNearby, bool lavaNearby, bool honeyNearby, bool shimmerNearby)*/
 +	public static void GetLiquidMergeTypes(int x, int y, int thisLiquidType, out int liquidMergeTileType, out int liquidMergeType, bool[] liquidsNearby)
  	{
  		liquidMergeTileType = 56;
