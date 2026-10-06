@@ -101,6 +101,9 @@ public partial class PlayerDrawLayers
 	/// <summary> Draws a finch nest on the player's head, if the player has a finch summoned. </summary>
 	public static readonly PlayerDrawLayer FinchNest = new VanillaPlayerDrawLayer(nameof(FinchNest), DrawPlayer_21_2_FinchNest, TorsoGroup, isHeadLayer: false);
 
+	/// <summary> Draws a glow over the body and head, if wearing <see cref="ID.ItemID.Magiluminescence"/>. </summary>
+	public static readonly PlayerDrawLayer Magiluminescence = new VanillaPlayerDrawLayer(nameof(Magiluminescence), DrawPlayer_21_1_Magiluminescence, TorsoGroup, isHeadLayer: false);
+
 	/// <summary> Draws the player's face accessory. </summary>
 	public static readonly PlayerDrawLayer FaceAcc = new VanillaPlayerDrawLayer(nameof(FaceAcc), DrawPlayer_22_FaceAcc, TorsoGroup, isHeadLayer: true);
 
@@ -171,7 +174,7 @@ public partial class PlayerDrawLayers
 
 
 	// Compare this with the vanilla layer drawing call order to make sure it's accurate when updating
-	internal static IReadOnlyList<PlayerDrawLayer> FixedVanillaLayers => new [] {
+	internal static IReadOnlyList<PlayerDrawLayer> FixedVanillaLayers => new[] {
 		JimsCloak,
 		MountBack,
 		Carpet,
@@ -200,6 +203,7 @@ public partial class PlayerDrawLayers
 		NeckAcc,
 		Head,
 		FinchNest,
+		Magiluminescence,
 		FaceAcc,
 		MountFront,
 		Pulley,

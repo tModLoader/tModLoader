@@ -133,7 +133,8 @@ public static class PrefixLoader
 
 		foreach (PrefixCategory category in categories) {
 			foreach (int pre in Item.GetVanillaPrefixes(category)) {
-				if (addedPrefixes.Add(pre)) wr.Add(pre, 1);
+				if (addedPrefixes.Add(pre))
+					wr.Add(pre, 1);
 			}
 			AddCategory(category);
 		}

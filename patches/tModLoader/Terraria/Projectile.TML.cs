@@ -18,7 +18,7 @@ public partial class Projectile : IEntityWithGlobals<GlobalProjectile>
 	/// </summary>
 	public ModProjectile ModProjectile { get; internal set; }
 
-#region Globals
+	#region Globals
 	int IEntityWithGlobals<GlobalProjectile>.Type => type;
 	internal GlobalProjectile[] _globals;
 	public RefReadOnlyArray<GlobalProjectile> EntityGlobals => _globals;
@@ -44,7 +44,7 @@ public partial class Projectile : IEntityWithGlobals<GlobalProjectile>
 	/// <returns> Whether or not the requested instance has been found. </returns>
 	public bool TryGetGlobalProjectile<T>(T baseInstance, out T result) where T : GlobalProjectile
 		=> GlobalProjectile.TryGetGlobal(type, EntityGlobals, baseInstance, out result);
-#endregion
+	#endregion
 
 	/// <summary>
 	/// <inheritdoc cref="Projectile.NewProjectile(IEntitySource, float, float, float, float, int, int, float, int, float, float, float)"/>
@@ -122,7 +122,7 @@ public partial class Projectile : IEntityWithGlobals<GlobalProjectile>
 		OriginalCritChance = CritChance;
 		OriginalArmorPenetration = ArmorPenetration;
 
-		 if (spawnSource is EntitySource_Parent { Entity: Player player }) {
+		if (spawnSource is EntitySource_Parent { Entity: Player player }) {
 			if (spawnSource is IEntitySource_WithStatsFromItem { Item: Item item }) {
 				// Apply the weapon and player bonuses to the base stats
 				CritChance += player.GetWeaponCrit(item);

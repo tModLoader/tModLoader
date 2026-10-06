@@ -29,7 +29,7 @@
  		AssemblyLoadContext.Default.ResolvingUnmanagedDll += ResolveNativeLibrary;
  #else
  		AppDomain.CurrentDomain.AssemblyResolve += delegate (object sender, ResolveEventArgs sargs) {
-@@ -34,6 +_,35 @@
+@@ -34,6 +_,36 @@
  #endif
  
  		Environment.SetEnvironmentVariable("FNA_WORKAROUND_WINDOW_RESIZABLE", "1");
@@ -54,7 +54,8 @@
 +			new Thread(new ThreadStart(LocalLaunchGame)).Start();
 +			// Move the dummy entry thread to background
 +			Thread.CurrentThread.IsBackground = true;
-+		} else {
++		}
++		else {
 +			LocalLaunchGame();
 +		}
 +	}

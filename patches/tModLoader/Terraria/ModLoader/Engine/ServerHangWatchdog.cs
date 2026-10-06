@@ -12,7 +12,8 @@ internal static class ServerHangWatchdog
 	private static volatile Ref<DateTime> lastCheckin;
 	internal static void Checkin()
 	{
-		if (Debugger.IsAttached) return;
+		if (Debugger.IsAttached)
+			return;
 		bool started = lastCheckin != null;
 		lastCheckin = new Ref<DateTime>(DateTime.Now);
 		if (!started)

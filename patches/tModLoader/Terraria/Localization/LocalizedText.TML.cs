@@ -80,7 +80,7 @@ public partial class LocalizedText
 			string[] options = match.Groups[2].Value.Split(';');
 			int count = Convert.ToInt32(args[argIndex] is IConvertible c ? c : args[argIndex].ToString());
 			int rule = CardinalPluralRule(Language.ActiveCulture, count);
-			return options[Math.Min(rule, options.Length-1)];
+			return options[Math.Min(rule, options.Length - 1)];
 		});
 	}
 

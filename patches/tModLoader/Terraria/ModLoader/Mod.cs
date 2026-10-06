@@ -109,6 +109,12 @@ public partial class Mod
 	/// The ModSide that controls how this mod is synced between client and server.
 	/// </summary>
 	public ModSide Side { get; internal set; }
+
+	/// <summary>
+	/// If this mod is a 'true Library Mod' that could be hidden from the player when used by other mods.
+	/// </summary>
+	public bool IsLibrary { get; internal set; }
+
 	/// <summary>
 	/// The display name of this mod in the Mods menu.
 	/// </summary>
@@ -142,7 +148,8 @@ public partial class Mod
 	/// <inheritdoc cref="Terraria.ModLoader.PreJITFilter"/>
 	public PreJITFilter PreJITFilter { get; protected set; } = new PreJITFilter();
 
-	public Mod() {
+	public Mod()
+	{
 		Content = new ContentCache(this);
 	}
 
@@ -353,7 +360,7 @@ public partial class Mod
 			if (Main.netMode == NetmodeID.SinglePlayer)
 				throw new Exception("GetPacket should only be called during multiplayer");
 			else
-				throw new Exception($"Cannot get packet for {Name} because it does not exist on the {(Main.dedServ ? "client": "server")}. GetPacket should not be called for server-side or client-side mods.");
+				throw new Exception($"Cannot get packet for {Name} because it does not exist on the {(Main.dedServ ? "client" : "server")}. GetPacket should not be called for server-side or client-side mods.");
 		}
 
 		var p = new ModPacket(MessageID.ModPacket, capacity + 5);

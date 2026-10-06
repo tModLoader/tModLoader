@@ -16,7 +16,7 @@ internal class FolderShortcutSupport
 				// This is the first file system writing we attempt in the usual documents folder.
 				CreateLogsFolderShortcut();
 			}
-			catch (Exception ex) when (ex is COMException || ex is FileNotFoundException) { 
+			catch (Exception ex) when (ex is COMException || ex is FileNotFoundException) {
 				if (ControlledFolderAccessSupport.ControlledFolderAccessDetected) {
 					Utils.OpenToURL("https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Usage-FAQ#controlled-folder-access");
 					throw new Exception($"\n\nControlled Folder Access feature detected.\n\nIf game fails to launch make sure to add \"{Environment.ProcessPath}\" to the \"Allow an app through Controlled folder access\" menu found in the \"Ransomware protection\" menu.\n\nMore instructions can be found in the website that just opened.\n\n");  // Before language is loaded, no need to localize
@@ -42,7 +42,7 @@ internal class FolderShortcutSupport
 		// save it
 		IPersistFile file = (IPersistFile)link;
 		string fullSavePath = Path.GetFullPath(Program.SavePath);
-		
+
 		Directory.CreateDirectory(fullSavePath);
 
 		file.Save(Path.Combine(fullSavePath, "Logs.lnk"), false);

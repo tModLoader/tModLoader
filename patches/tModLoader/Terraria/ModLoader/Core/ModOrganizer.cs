@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -48,6 +48,9 @@ internal static class ModOrganizer
 
 	private enum SearchFolders { }
 
+	/// <summary>
+	/// The full folder path of the currently active mod pack. Mods will load from this modern mod pack.
+	/// </summary>
 	internal static string ModPackActive = null;
 
 	/// <summary>Mods in workshop folders, not in dev folder or modpacks</summary>
@@ -255,7 +258,7 @@ internal static class ModOrganizer
 
 			if (reuploadMDItems.Any() && await UIModBrowser.DownloadMods(reuploadMDItems, Interface.loadModsID)) {
 				Main.menuMode = Interface.loadModsID;
-				Main.MenuUI.SetState(null);	
+				Main.MenuUI.SetState(null);
 			}
 
 			// Group 2: Delete mods that originated from workshop but workshop doesn't have a replacement
@@ -276,7 +279,7 @@ internal static class ModOrganizer
 			}
 		}
 		*/
-		
+
 		if (reuploadMDItems.Any()) {
 			messages.AppendLine(Language.GetTextValue("tModLoader.ReuploadedWorkshopMods"));
 			foreach (var mod in reuploadMDItems) {
@@ -472,6 +475,7 @@ internal static class ModOrganizer
 			EnsureDependenciesExist(modsToLoad, false);
 			EnsureTargetVersionsMet(modsToLoad);
 			EnsureHashesAreValid(modsToLoad);
+			EnsureFileIsTrusted(modsToLoad);
 			return Sort(modsToLoad);
 		}
 		catch (ModSortingException e) {
@@ -582,12 +586,25 @@ internal static class ModOrganizer
 		var errored = new HashSet<LocalMod>();
 		var errorLog = new StringBuilder();
 
-		foreach (var mod in mods)
+		foreach (var mod in mods) {
 			foreach (var depName in mod.properties.RefNames(includeWeak))
 				if (!nameMap.ContainsKey(depName)) {
 					errored.Add(mod);
 					errorLog.AppendLine(Language.GetTextValue("tModLoader.LoadErrorDependencyMissing", depName, mod));
 				}
+
+			// Ensure that Client/Server mods can only be strong referenced (required) by other Client/Server mods
+			foreach (var depName in mod.properties.modReferences) {
+				if (!nameMap.TryGetValue(depName.mod, out var dep)) // already reported as missing above
+					continue;
+
+				if (dep.properties.side == mod.properties.side || dep.properties.side is ModSide.Both or ModSide.NoSync)
+					continue;
+
+				errored.Add(mod);
+				errorLog.AppendLine(Language.GetTextValue("tModLoader.LoadErrorDependencySideIncompatible", mod, mod.properties.side, dep, dep.properties.side, dep.properties.side is ModSide.Client ? ModSide.Server : ModSide.Client));
+			}
+		}
 
 		if (errored.Count > 0)
 			throw new ModSortingException(errored, errorLog.ToString());
@@ -632,6 +649,21 @@ internal static class ModOrganizer
 			throw new ModSortingException(errored, errorLog.ToString());
 	}
 
+	internal static void EnsureFileIsTrusted(ICollection<LocalMod> mods)
+	{
+		var errorLog = new StringBuilder();
+		foreach (var mod in mods) {
+			mod.modFile.VerifyOrigin();
+			string DownloadOrigin = mod.modFile.downloadOrigin;
+			if (DownloadOrigin != null) {
+				var e = new Exception(Language.GetTextValue("tModLoader.ModDownloadedFromInternetLoadAttemptExceptionMessage", mod.modFile.path, DownloadOrigin));
+				e.Data["mod"] = mod.Name;
+				e.Data["hideStackTrace"] = true;
+				throw e;
+			}
+		}
+	}
+
 	internal static void EnsureSyncedDependencyStability(TopoSort<LocalMod> synced, TopoSort<LocalMod> full)
 	{
 		var errored = new HashSet<LocalMod>();
@@ -639,9 +671,8 @@ internal static class ModOrganizer
 
 		foreach (var mod in synced.list) {
 			var chains = new List<List<LocalMod>>();
-			//define recursive chain finding method
-			Action<LocalMod, Stack<LocalMod>> FindChains = null;
-			FindChains = (search, stack) => {
+			void FindChains(LocalMod search, Stack<LocalMod> stack)
+			{
 				stack.Push(search);
 
 				if (search.properties.side == ModSide.Both && stack.Count > 1) {
@@ -654,7 +685,7 @@ internal static class ModOrganizer
 				}
 
 				stack.Pop();
-			};
+			}
 			FindChains(mod, new Stack<LocalMod>());
 
 			if (chains.Count == 0)
@@ -674,6 +705,28 @@ internal static class ModOrganizer
 		}
 	}
 
+	// Sync (Both) mods and all their non-weak dependencies
+	private static HashSet<LocalMod> FindSyncedMods(ICollection<LocalMod> mods)
+	{
+		var nameMap = mods.ToDictionary(mod => mod.Name);
+		var synced = new HashSet<LocalMod>();
+
+		foreach (var mod in mods)
+			if (mod.properties.side == ModSide.Both)
+				AddSynced(mod);
+
+		return synced;
+
+		void AddSynced(LocalMod mod)
+		{
+			if (!synced.Add(mod))
+				return;
+
+			foreach (var reference in mod.properties.modReferences)
+				AddSynced(nameMap[reference.mod]);
+		}
+	}
+
 	private static TopoSort<LocalMod> BuildSort(ICollection<LocalMod> mods)
 	{
 		var nameMap = mods.ToDictionary(mod => mod.Name);
@@ -684,8 +737,9 @@ internal static class ModOrganizer
 
 	internal static List<LocalMod> Sort(ICollection<LocalMod> mods)
 	{
+		var syncedMods = FindSyncedMods(mods);
 		var preSorted = mods.OrderBy(mod => mod.Name, StringComparer.InvariantCulture).ToList();
-		var syncedSort = BuildSort(preSorted.Where(mod => mod.properties.side == ModSide.Both).ToList());
+		var syncedSort = BuildSort(preSorted.Where(syncedMods.Contains).ToList());
 		var fullSort = BuildSort(preSorted);
 		EnsureSyncedDependencyStability(syncedSort, fullSort);
 

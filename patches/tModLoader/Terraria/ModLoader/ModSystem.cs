@@ -451,6 +451,7 @@ public abstract partial class ModSystem : ModType
 	/// <para/> The CreateNamedXSet methods can be used to expose an ID set for other mods to use by name without a mod dependency.
 	/// <para/> See also <see cref="ReinitializeDuringResizeArraysAttribute "/> for another similar option.
 	/// </summary>
-	public virtual void ResizeArrays() {
+	public virtual void ResizeArrays()
+	{
 	}
 }

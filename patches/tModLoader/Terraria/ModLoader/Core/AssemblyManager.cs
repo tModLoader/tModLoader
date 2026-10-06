@@ -69,7 +69,7 @@ public static class AssemblyManager
 					}
 
 					assembly = Debugger.IsAttached && File.Exists(properties.eacPath) ?
-						LoadAssembly(modFile.GetModAssembly(), File.ReadAllBytes(properties.eacPath)): //load the unmodified dll and EaC pdb
+						LoadAssembly(modFile.GetModAssembly(), File.ReadAllBytes(properties.eacPath)) : //load the unmodified dll and EaC pdb
 						LoadAssembly(modFile.GetModAssembly(), modFile.GetModPdb());
 				}
 
@@ -97,9 +97,9 @@ public static class AssemblyManager
 			if (Program.LaunchParameters.ContainsKey("-dumpasm")) {
 				var dumpdir = Path.Combine(Main.SavePath, "asmdump");
 				Directory.CreateDirectory(dumpdir);
-				File.WriteAllBytes(Path.Combine(dumpdir, asm.FullName+".dll"), code);
+				File.WriteAllBytes(Path.Combine(dumpdir, asm.FullName + ".dll"), code);
 				if (pdb != null)
-					File.WriteAllBytes(Path.Combine(dumpdir, asm.FullName+".pdb"), code);
+					File.WriteAllBytes(Path.Combine(dumpdir, asm.FullName + ".pdb"), code);
 			}
 
 			return asm;
@@ -175,7 +175,8 @@ public static class AssemblyManager
 	}
 
 	[MethodImpl(MethodImplOptions.NoInlining)]
-	internal static void Unload() {
+	internal static void Unload()
+	{
 		foreach (var alc in loadedModContexts.Values) {
 			oldLoadContexts.Add(new WeakReference<AssemblyLoadContext>(alc));
 			alc.Unload();
@@ -211,6 +212,7 @@ public static class AssemblyManager
 			m.Code = mod.assembly;
 			m.Logger = LogManager.GetLogger(m.Name);
 			m.Side = mod.properties.side;
+			m.IsLibrary = mod.properties.libraryMod;
 			m.DisplayName = mod.properties.displayName;
 			m.TModLoaderVersion = mod.properties.buildVersion;
 			m.TranslationForMods = mod.properties.translationMod ? mod.properties.RefNames(true).ToList() : null;
@@ -304,7 +306,8 @@ public static class AssemblyManager
 	public static bool IsLoadedModAssemblyDebugBuild(string name)
 	{
 		var assembly = GetMainModAssembly(name);
-		if (assembly == null) return false;
+		if (assembly == null)
+			return false;
 
 		return assembly.GetCustomAttributes(false).OfType<DebuggableAttribute>().Any(da => da.IsJITOptimizerDisabled);
 	}
@@ -361,7 +364,7 @@ public static class AssemblyManager
 				foreach (MethodInfo method in type.GetMethods()) {
 					// Check if it is an abstract method which is not overridden
 					if (method.IsAbstract && method.DeclaringType != null && method.DeclaringType != type) {
-						if (method.DeclaringType.Assembly.FullName == Assembly.GetExecutingAssembly().FullName)	{
+						if (method.DeclaringType.Assembly.FullName == Assembly.GetExecutingAssembly().FullName) {
 							throw new Exception(
 								"This mod seems to contain a class which inherits from a tModLoader class but does not implement required abstract methods. Use tModPorter to update required methods." + "\n\n" + $"The method \"{method.Name}\" in the class \"{type.FullName}\" caused this error.\n\n" + e.Message,
 								e
@@ -377,7 +380,7 @@ public static class AssemblyManager
 			}
 
 			throw new Exceptions.GetLoadableTypesException(
-				"This mod seems to inherit from classes in another mod. Use the [ExtendsFromMod] attribute to allow this mod to load when that mod is not enabled." + "\n\n" + (type != null? $"The \"{type.FullName}\" class caused this error.\n\n" : "") + e.Message,
+				"This mod seems to inherit from classes in another mod. Use the [ExtendsFromMod] attribute to allow this mod to load when that mod is not enabled." + "\n\n" + (type != null ? $"The \"{type.FullName}\" class caused this error.\n\n" : "") + e.Message,
 				e
 			);
 		}
@@ -414,17 +417,18 @@ public static class AssemblyManager
 	/// <param name="assembly">Assembly to load type from</param>
 	/// <param name="type">Target type to get</param>
 	/// <returns></returns>
-	#nullable enable
-	private static Type? GetType(Assembly assembly, Type type) {
+#nullable enable
+	private static Type? GetType(Assembly assembly, Type type)
+	{
 		try {
 			return assembly.GetType(type.FullName, throwOnError: true, ignoreCase: false);
 		}
-		catch (TypeLoadException e)	{
+		catch (TypeLoadException e) {
 			e.Data["type"] = type;
 			throw;
 		}
 	}
-	#nullable disable
+#nullable disable
 
 	internal static Task JITModAsync(Mod mod, CancellationToken token) => JITAssembliesAsync(GetModAssemblies(mod.Name), mod.PreJITFilter, token);
 	internal static void JITMod(Mod mod) => JITAssemblies(GetModAssemblies(mod.Name), mod.PreJITFilter);
@@ -433,7 +437,7 @@ public static class AssemblyManager
 		=> JITAssembliesAsync(assemblies, filter, CancellationToken.None).GetAwaiter().GetResult();
 
 	public static async Task JITAssembliesAsync(IEnumerable<Assembly> assemblies, PreJITFilter filter, CancellationToken token)
-{
+	{
 		const BindingFlags ALL = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance;
 
 		bool ShouldJITRecursive(Type type) => filter.ShouldJIT(type) && (type.DeclaringType is null || ShouldJITRecursive(type.DeclaringType));
@@ -480,7 +484,7 @@ public static class AssemblyManager
 
 		message += string.Join("\n", exceptions.Select(x => $"In {x.method.DeclaringType.FullName}.{x.method.Name}, {x.exception.Message}")) + "\n";
 		var jitException = new Exceptions.JITException(message);
-		if(exceptions.Any(e => e.exception.Data.Contains("mod")))
+		if (exceptions.Any(e => e.exception.Data.Contains("mod")))
 			jitException.Data["mods"] = exceptions.Select(e => (string)e.exception.Data["mod"]).Where(x => !string.IsNullOrEmpty(x)).Distinct().ToArray();
 		throw jitException;
 	}

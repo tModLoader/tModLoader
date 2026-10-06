@@ -202,7 +202,11 @@ internal class UIServerModsDifferMessage : UIState, IHaveBackButtonCommand
 			};
 			reason.IsWrapped = true;
 
-			var modIcon = ModLoader.GetModIcon(entry.localMod.modFile) ?? Mod.PlaceholderModIcon;
+			var modIcon = Mod.PlaceholderModIcon;
+			if (entry.localMod != null && ModLoader.GetModIcon(entry.localMod.modFile) is Asset<Texture2D> localModIcon) {
+				modIcon = localModIcon;
+			}
+
 			UIImage modIconImage = new UIImage(modIcon) {
 				Left = { Percent = 0f },
 				Top = { Percent = 0f },

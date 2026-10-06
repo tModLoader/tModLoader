@@ -40,7 +40,7 @@
  					rectangle.Width++;
  
 -				int num19 = tileData2.AnchorLeft.checkStart;
-+				int num19 = tileData2.AnchorRight.checkStart; 
++				int num19 = tileData2.AnchorRight.checkStart;
  				if ((tileData2.AnchorRight.type & AnchorType.Tree) == AnchorType.Tree)
  					num19--;
  

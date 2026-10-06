@@ -9,6 +9,9 @@ namespace Terraria.IO;
 public partial class WorldFileData
 {
 	internal IList<string> usedMods;
+	/// <summary>
+	/// The local mod pack (<see cref="ModLoader.Core.ModOrganizer.ModPackActive"/>) active when this world was last saved. Null if no mod pack was active.
+	/// </summary>
 	internal string modPack;
 	internal Dictionary<string, Version> modVersionsDuringWorldGen; // Note: "ModLoader" entry also present, can be used to know tML version
 	/// <summary>

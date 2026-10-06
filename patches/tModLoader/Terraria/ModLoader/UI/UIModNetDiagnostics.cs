@@ -177,7 +177,7 @@ public class UIModNetDiagnostics : INetDiagnosticsUI
 		DrawText(spriteBatch, drawText, pos, color);
 	}
 
-	private void DrawText(SpriteBatch spriteBatch, string text, Vector2 pos, Color color) => 
+	private void DrawText(SpriteBatch spriteBatch, string text, Vector2 pos, Color color) =>
 		spriteBatch.DrawString(FontAsset.Value, text, pos, color, 0f, Vector2.Zero, TextScale, SpriteEffects.None, 0f);
 
 	// Not needed

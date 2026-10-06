@@ -32,10 +32,10 @@ internal class UIModConfig : UIState, IHaveBackButtonCommand
 	private UITextPanel<string> message;
 	private UITextPanel<string> previousConfigButton;
 	private UITextPanel<string> nextConfigButton;
-	private UITextPanel<string> saveConfigButton;
-	private UITextPanel<string> backButton;
-	private UITextPanel<string> revertConfigButton;
-	private UITextPanel<string> restoreDefaultsConfigButton;
+	private UIAutoScaleTextTextPanel<LocalizedText> saveConfigButton;
+	private UIAutoScaleTextTextPanel<LocalizedText> backButton;
+	private UIAutoScaleTextTextPanel<LocalizedText> revertConfigButton;
+	private UIAutoScaleTextTextPanel<LocalizedText> restoreDefaultsConfigButton;
 	private UIPanel uIPanel;
 	private readonly List<Tuple<UIElement, UIElement>> mainConfigItems = new();
 	private UIList mainConfigList;
@@ -145,9 +145,9 @@ internal class UIModConfig : UIState, IHaveBackButtonCommand
 		nextConfigButton.OnLeftClick += NextConfig;
 		//uIElement.Append(nextConfigButton);
 
-		saveConfigButton = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModConfigSaveConfig"), 1f, false);//"Save Config"
+		saveConfigButton = new UIAutoScaleTextTextPanel<LocalizedText>(Language.GetText("tModLoader.ModConfigSaveConfig"), 1f, false);//"Save Config"
 		saveConfigButton.Width.Set(-10f, 1f / 4f);
-		saveConfigButton.Height.Set(25f, 0f);
+		saveConfigButton.Height.Set(40f, 0f);
 		saveConfigButton.Top.Set(-20f, 0f);
 		saveConfigButton.WithFadedMouseOver();
 		saveConfigButton.HAlign = 0.33f;
@@ -155,7 +155,7 @@ internal class UIModConfig : UIState, IHaveBackButtonCommand
 		saveConfigButton.OnLeftClick += SaveConfig;
 		//uIElement.Append(saveConfigButton);
 
-		backButton = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModConfigBack"), 1f, false);//"Back"
+		backButton = new UIAutoScaleTextTextPanel<LocalizedText>(Language.GetText("tModLoader.ModConfigBack"), 1f, false);//"Back"
 		backButton.CopyStyle(saveConfigButton);
 		backButton.HAlign = 0;
 		backButton.WithFadedMouseOver();
@@ -170,7 +170,7 @@ internal class UIModConfig : UIState, IHaveBackButtonCommand
 		backButton.OnLeftClick += BackClick;
 		uIElement.Append(backButton);
 
-		revertConfigButton = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModConfigRevertChanges"), 1f, false);//"Revert Changes"
+		revertConfigButton = new UIAutoScaleTextTextPanel<LocalizedText>(Language.GetText("tModLoader.ModConfigRevertChanges"), 1f, false);//"Revert Changes"
 		revertConfigButton.CopyStyle(saveConfigButton);
 		revertConfigButton.WithFadedMouseOver();
 		revertConfigButton.HAlign = 0.66f;
@@ -178,7 +178,7 @@ internal class UIModConfig : UIState, IHaveBackButtonCommand
 		//uIElement.Append(revertConfigButton);
 
 		//float scale = Math.Min(1f, 130f/FontAssets.MouseText.Value.MeasureString("Restore Defaults").X);
-		restoreDefaultsConfigButton = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModConfigRestoreDefaults"), 1f, false);//"Restore Defaults"
+		restoreDefaultsConfigButton = new UIAutoScaleTextTextPanel<LocalizedText>(Language.GetText("tModLoader.ModConfigRestoreDefaults"), 1f, false);//"Restore Defaults"
 		restoreDefaultsConfigButton.CopyStyle(saveConfigButton);
 		restoreDefaultsConfigButton.WithFadedMouseOver();
 		restoreDefaultsConfigButton.HAlign = 1f;

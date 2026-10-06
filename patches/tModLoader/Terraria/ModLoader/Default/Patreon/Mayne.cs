@@ -6,69 +6,77 @@ using Terraria.ID;
 
 namespace Terraria.ModLoader.Default.Patreon
 {
-    [AutoloadEquip(EquipType.Head)]
-    internal class Mayne_Head : PatreonItem
-    {
-		public override void SetDefaults() {
-            base.SetDefaults();
+	[AutoloadEquip(EquipType.Head)]
+	internal class Mayne_Head : PatreonItem
+	{
+		public override void SetDefaults()
+		{
+			base.SetDefaults();
 
 			Item.width = 28;
 			Item.height = 18;
-        }
-    }
+		}
+	}
 
-    [AutoloadEquip(EquipType.Body)]
+	[AutoloadEquip(EquipType.Body)]
 	internal class Mayne_Body : PatreonItem
-    {
-		public override void SetDefaults() {
-            base.SetDefaults();
+	{
+		public override void SetDefaults()
+		{
+			base.SetDefaults();
 
 			Item.width = 26;
 			Item.height = 26;
-        }
-    }
+		}
+	}
 
-    [AutoloadEquip(EquipType.Legs)]
+	[AutoloadEquip(EquipType.Legs)]
 	internal class Mayne_Legs : PatreonItem
-    {
-		public override void SetDefaults() {
-            base.SetDefaults();
+	{
+		public override void SetDefaults()
+		{
+			base.SetDefaults();
 
 			Item.width = 20;
 			Item.height = 16;
-        }
-    }
+		}
+	}
 
-    [AutoloadEquip(EquipType.Wings)]
+	[AutoloadEquip(EquipType.Wings)]
 	internal class Mayne_Wings : PatreonItem
-    {
-		public override void SetStaticDefaults() {
+	{
+		public override void SetStaticDefaults()
+		{
 			base.SetStaticDefaults();
 
 			ArmorIDs.Wing.Sets.Stats[Item.wingSlot] = new WingStats(150, 7f);
 		}
 
-        public override void SetDefaults() {
-            base.SetDefaults();
+		public override void SetDefaults()
+		{
+			base.SetDefaults();
 
 			Item.vanity = false;
 			Item.width = 34;
 			Item.height = 20;
 			Item.accessory = true;
-        }
+		}
 	}
 
 	internal class MayneWingLayer : PlayerDrawLayer
 	{
-		public override Position GetDefaultPosition() {
+		public override Position GetDefaultPosition()
+		{
 			return new AfterParent(PlayerDrawLayers.Wings);
 		}
 
-		public override bool GetDefaultVisibility(PlayerDrawSet drawInfo) {
+		public override bool GetDefaultVisibility(PlayerDrawSet drawInfo)
+		{
 			return drawInfo.drawPlayer.wings == EquipLoader.GetEquipSlot(Mod, "Mayne_Wings", EquipType.Wings);
 		}
 
-		protected override void Draw(ref PlayerDrawSet drawInfo) {
+		protected override void Draw(ref PlayerDrawSet drawInfo)
+		{
 			if (drawInfo.drawPlayer.dead) {
 				return;
 			}

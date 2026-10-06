@@ -28,7 +28,7 @@ public struct TileTypeData : ITileData
 public struct WallTypeData : ITileData
 {
 	public ushort Type;
-}	
+}
 
 public struct LiquidData : ITileData
 {
@@ -39,9 +39,11 @@ public struct LiquidData : ITileData
 	// l = liquid id
 	private byte typeAndFlags;
 
+#pragma warning disable format
 	public int LiquidType		{ get => Unpack(typeAndFlags, 0, 6); set => typeAndFlags = (byte)Pack(value, typeAndFlags, 0, 6); }
 	public bool SkipLiquid		{ get => GetBit(typeAndFlags, 6); set => typeAndFlags = (byte)SetBit(value, typeAndFlags, 6); }
 	public bool CheckingLiquid	{ get => GetBit(typeAndFlags, 7); set => typeAndFlags = (byte)SetBit(value, typeAndFlags, 7); }
+#pragma warning restore format
 }
 
 public struct TileWallBrightnessInvisibilityData : ITileData
@@ -77,6 +79,7 @@ public struct TileWallWireStateData : ITileData
 	// wwwwsssh YYYXXXXN NnnCCCCC cccccait
 	private int bitpack;
 
+#pragma warning disable format
 	public bool HasTile			{ get => GetBit(bitpack, 0); set => bitpack = SetBit(value, bitpack, 0); }
 	public bool IsActuated		{ get => GetBit(bitpack, 1); set => bitpack = SetBit(value, bitpack, 1); }
 	public bool HasActuator		{ get => GetBit(bitpack, 2); set => bitpack = SetBit(value, bitpack, 2); }
@@ -98,6 +101,7 @@ public struct TileWallWireStateData : ITileData
 	public bool BlueWire		{ get => GetBit(bitpack, 29); set => bitpack = SetBit(value, bitpack, 29); }
 	public bool GreenWire		{ get => GetBit(bitpack, 30); set => bitpack = SetBit(value, bitpack, 30); }
 	public bool YellowWire		{ get => GetBit(bitpack, 31); set => bitpack = SetBit(value, bitpack, 31); }
+#pragma warning restore format
 
 	public int NonFrameBits => (int)(bitpack & 0xFF001FFF);
 

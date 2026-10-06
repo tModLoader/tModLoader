@@ -37,8 +37,9 @@ public partial class LanguageManager
 	private void ProcessCopyCommandsInTexts()
 	{
 		// Matches {$key.subkey.etc}
+		// Letters, digits, underscores, dots, forward slash
 		// Optional @n for arg index remapping, eg {$key.subkey.etc@5} to add 5 to all format arg indices
-		Regex referenceRegex = new Regex(@"{\$([\w\.]+)(?:@(\d+))?}", RegexOptions.Compiled);
+		Regex referenceRegex = new Regex(@"{\$([\w\./]+)(?:@(\d+))?}", RegexOptions.Compiled);
 		// The arg remapping regex matches both {0} and the pluralization pattern "{^0:item;items}" via positive lookbehind and lookahead
 		Regex argRemappingRegex = new Regex(@"(?<={\^?)(\d+)(?=(?::[^\r\n]+?)?})", RegexOptions.Compiled);
 

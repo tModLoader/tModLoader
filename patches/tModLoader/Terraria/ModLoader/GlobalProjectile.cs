@@ -436,4 +436,14 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 	public virtual void EmitEnchantmentVisualsAt(Projectile projectile, Vector2 boxPosition, int boxWidth, int boxHeight)
 	{
 	}
+
+	/// <inheritdoc cref="ModProjectile.FlailStats"/>
+	public virtual void FlailStats(Projectile projectile, ref int launchTimeLimit, ref float launchSpeed, ref float maxLaunchLength, ref float retractAcceleration, ref float maxRetractSpeed, ref float forcedRetractAcceleration, ref float maxForcedRetractSpeed, ref int ricochetTimeLimit, ref float spinVisualDistance)
+	{
+	}
+
+	/// <inheritdoc cref="ModProjectile.FlailSpinCollisionRange"/>
+	public virtual void FlailSpinCollisionRange(Projectile projectile, ref float range)
+	{
+	}
 }
