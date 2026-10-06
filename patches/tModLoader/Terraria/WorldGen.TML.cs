@@ -137,4 +137,22 @@ public partial class WorldGen
 		tile2.IsTileFullbright = tileIsTileFullbright;
 		tile2.IsTileInvisible = tileIsTileInvisible;
 	}
+
+	/// <summary>
+	/// Removed method in 1.4.5, reintroduced for modded liquid purpose
+	/// </summary>
+	/// <param name="x"></param>
+	/// <param name="y"></param>
+	/// <param name="liquidType"></param>
+	/// <returns></returns>
+	public static bool WouldTileReplacementBeBlockedByLiquid(int x, int y, int liquidType)
+	{
+		if ((Main.tile[x - 1, y].LiquidAmount <= 0 || Main.tile[x - 1, y].LiquidType != liquidType) && (Main.tile[x + 1, y].LiquidAmount <= 0 || Main.tile[x + 1, y].LiquidType != liquidType)) {
+			if (Main.tile[x, y - 1].LiquidAmount > 0) {
+				return Main.tile[x, y - 1].LiquidType == liquidType;
+			}
+			return false;
+		}
+		return true;
+	}
 }

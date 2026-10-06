@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Liquid.cs
 +++ src/tModLoader/Terraria/Liquid.cs
-@@ -4,6 +_,7 @@
+@@ -4,13 +_,14 @@
  using Terraria.GameContent.NetModules;
  using Terraria.ID;
  using Terraria.Localization;
@@ -8,6 +8,14 @@
  using Terraria.ObjectData;
  using Terraria.Testing;
  using Terraria.WorldBuilding;
+ 
+ namespace Terraria;
+ 
+-public struct Liquid
++public partial struct Liquid
+ {
+ 	public static readonly int maxLiquidBuffer = 50000;
+ 	public static readonly int maxLiquid = 25000;
 @@ -46,16 +_,24 @@
  
  	public static void tilesIgnoreWater(bool ignoreSolids)
@@ -179,17 +187,19 @@
  	public static void LiquidCheck(int x, int y, int thisLiquidType, bool createMergeTilesDuringGen = false)
  	{
  		if (!WorldGen.InWorld(x, y, 1) || WorldGen.SolidTile(x, y))
-@@ -976,6 +_,32 @@
+@@ -976,6 +_,34 @@
  		Tile tile4 = Main.tile[x, y + 1];
  		Tile tile5 = Main.tile[x, y];
  		if ((tile.liquid > 0 && tile.liquidType() != thisLiquidType) || (tile2.liquid > 0 && tile2.liquidType() != thisLiquidType) || (tile3.liquid > 0 && tile3.liquidType() != thisLiquidType)) {
 +			int liquidMergeTileType = 56;
 +			int liquidMergeType = 0;
++			/*
 +			if (tile5.active() && Main.tileObsidianKill[tile5.type]) {
 +				WorldGen.KillTile(x, y);
 +				if (Main.netMode == 2)
 +					NetMessage.SendData(17, -1, -1, null, 0, x, y);
 +			}
++			*/
 +			if (!tile5.active()) {
 +				bool[] liquidsNearby = new bool[LiquidLoader.LiquidCount]; // Added by TML, normally each liquid would have their own flag
 +
@@ -252,7 +262,40 @@
  			tile5.liquid = 0;
  			tile4.liquid = 0;
  			CreateLiquidMergeTile(x, y + 1, thisLiquidType, liquidMergeType2, liquidMergeTileType2, createMergeTilesDuringGen);
-@@ -1100,11 +_,13 @@
+@@ -1059,7 +_,7 @@
+ 	private static void CreateLiquidMergeTile(int x, int y, int thisLiquidType, int liquidMergeType, int liquidMergeTileType, bool createMergeTilesDuringGen)
+ 	{
+ 		Tile tile = Main.tile[x, y];
+-		TileChangeType liquidChangeType = WorldGen.GetLiquidChangeType(thisLiquidType, liquidMergeType);
++		// TileChangeType liquidChangeType = WorldGen.GetLiquidChangeType(thisLiquidType, liquidMergeType);
+ 		if (WorldGen.isGeneratingOrLoadingWorld && !createMergeTilesDuringGen) {
+ 			int liquidType = -1;
+ 			switch (liquidMergeTileType) {
+@@ -1083,8 +_,11 @@
+ 			LiquidOverwriteStrip(x, y, liquidType);
+ 		}
+ 		else {
+-			if (!Main.gameMenu && !WorldGen.isGeneratingOrLoadingWorld)
++			if (!Main.gameMenu && !WorldGen.isGeneratingOrLoadingWorld) {
+-				WorldGen.PlayLiquidChangeSound(liquidChangeType, x, y);
++				// WorldGen.PlayLiquidChangeSound(liquidChangeType, x, y);
++				WorldGen.PlayLiquidChangeSound(x, y, thisLiquidType, liquidMergeType);
++			}
++			
+ 
+ 			bool t = true;
+ 			Utils.Swap(ref t, ref Main.tileSolid[546]);
+@@ -1095,16 +_,21 @@
+ 
+ 			WorldGen.SquareTileFrame(x, y);
+ 			Main.tileSolid[546] = t;
+-			if (Main.netMode == 2)
++			if (Main.netMode == 2) {
+-				NetMessage.SendTileSquare(-1, x - 1, y - 1, 3, liquidChangeType);
++				// NetMessage.SendTileSquare(-1, x - 1, y - 1, 3, liquidChangeType);
++				NetMessage.SendTileSquare(-1, x - 1, y - 1, 3, (byte)thisLiquidType, (byte)liquidMergeType);
++			}
++				
  		}
  	}
  

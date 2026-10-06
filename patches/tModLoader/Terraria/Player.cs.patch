@@ -1,5 +1,21 @@
 --- src/TerrariaNetCore/Terraria/Player.cs
 +++ src/tModLoader/Terraria/Player.cs
+@@ -1,3 +_,5 @@
++using Microsoft.Xna.Framework;
++using ReLogic.Utilities;
+ using System;
+ using System.Collections.Generic;
+ using System.IO;
+@@ -5,8 +_,7 @@
+ using System.Security.Cryptography;
+ using System.Text;
+ using System.Threading;
+-using Microsoft.Xna.Framework;
+-using ReLogic.Utilities;
++using Terraria;
+ using Terraria.Audio;
+ using Terraria.Chat;
+ using Terraria.DataStructures;
 @@ -31,6 +_,10 @@
  using Terraria.IO;
  using Terraria.Localization;
@@ -5034,6 +5050,30 @@
  								for (int num94 = 0; num94 < 20; num94++) {
  									int num95 = Dust.NewDust(new Vector2(position.X - 6f, position.Y + (float)(height / 2) - 8f), width + 12, 24, 152);
  									Main.dust[num95].velocity.Y -= 1f;
+@@ -22598,6 +_,8 @@
+ 								SoundEngine.PlaySound(19, (int)position.X, (int)position.Y);
+ 							}
+ 							else {
++								ProcessPlayerLiquidSplashModded(true);
++								goto skip;
+ 								for (int num96 = 0; num96 < 50; num96++) {
+ 									int num97 = Dust.NewDust(new Vector2(position.X - 6f, position.Y + (float)(height / 2) - 8f), width + 12, 24, Dust.dustWater());
+ 									Main.dust[num97].velocity.Y -= 3f;
+@@ -22606,11 +_,12 @@
+ 									Main.dust[num97].alpha = 100;
+ 									Main.dust[num97].noGravity = true;
+ 								}
+-
++								skip:
+ 								SoundEngine.PlaySound(19, (int)position.X, (int)position.Y, 0);
+ 							}
+ 						}
+-						else {
++						/*else {*/
++						else if (LiquidLoader.OnPlayerSplash(LiquidID.Lava, this, true)) {
+ 							for (int num98 = 0; num98 < 20; num98++) {
+ 								int num99 = Dust.NewDust(new Vector2(position.X - 6f, position.Y + (float)(height / 2) - 8f), width + 12, 24, 35);
+ 								Main.dust[num99].velocity.Y -= 1.5f;
 @@ -22642,7 +_,7 @@
  				wetCount = 10;
  				if (!shimmering) {
@@ -5052,6 +5092,30 @@
  							for (int num102 = 0; num102 < 20; num102++) {
  								int num103 = Dust.NewDust(new Vector2(position.X - 6f, position.Y + (float)(height / 2) - 8f), width + 12, 24, 152);
  								Main.dust[num103].velocity.Y -= 1f;
+@@ -22680,6 +_,8 @@
+ 							SoundEngine.PlaySound(19, (int)position.X, (int)position.Y);
+ 						}
+ 						else {
++							ProcessPlayerLiquidSplashModded(false);
++							goto skip;
+ 							for (int num104 = 0; num104 < 50; num104++) {
+ 								int num105 = Dust.NewDust(new Vector2(position.X - 6f, position.Y + (float)(height / 2)), width + 12, 24, Dust.dustWater());
+ 								Main.dust[num105].velocity.Y -= 4f;
+@@ -22688,11 +_,13 @@
+ 								Main.dust[num105].alpha = 100;
+ 								Main.dust[num105].noGravity = true;
+ 							}
++							skip:
+ 
+ 							SoundEngine.PlaySound(19, (int)position.X, (int)position.Y, 0);
+ 						}
+ 					}
+-					else {
++					/*else {*/
++					else if (LiquidLoader.OnPlayerSplash(LiquidID.Lava, this, false)) {
+ 						for (int num106 = 0; num106 < 20; num106++) {
+ 							int num107 = Dust.NewDust(new Vector2(position.X - 6f, position.Y + (float)(height / 2) - 8f), width + 12, 24, 35);
+ 							Main.dust[num107].velocity.Y -= 1.5f;
 @@ -22718,7 +_,11 @@
  			lavaWet = false;
  			honeyWet = false;
@@ -5073,6 +5137,64 @@
  
  			if (gravDir == -1f) {
  				if ((carpetFrame != -1 || velocity.Y <= gravity) && !controlUp)
+@@ -22888,6 +_,8 @@
+ 		if (vortexDebuff)
+ 			velocity.Y = velocity.Y * 0.8f + (float)Math.Cos(base.Center.X % 120f / 120f * ((float)Math.PI * 2f)) * 5f * 0.2f;
+ 
++		PlayerLoader.PreUpdateMovement(this);
++
+ 		float num111 = 0.5f;
+ 		float num112 = 0.5f;
+ 		float movementSpeed = 0.25f;
+@@ -22901,14 +_,46 @@
+ 			position += velocity * num113;
+ 		}
+ 		else {
+-			if (shimmerWet) {
++			if (shimmerWet && LiquidLoader.PlayerLiquidMovement(LiquidID.Shimmer, this, fallThrough, flag30)) {
++		/*if (shimmerWet) {*/
+ 				WetCollision(fallThrough, flag30, num113);
+ 			}
+-			else if (honeyWet && !ignoreWater) {
++			/*else if (honeyWet && !ignoreWater) {
+ 				WetCollision(fallThrough, flag30, movementSpeed);
+ 			}
+ 			else if (wet && !merman && !ignoreWater && !trident) {
+ 				WetCollision(fallThrough, flag30, lavaWet ? num112 : num111);
++			}*/
++			else if (wet) {
++				int inModdedLiquid = 0;
++				for (int j = LiquidLoader.LiquidCount - 1; j >= LiquidID.Count; j--) {
++					if (wets[j]) {
++						inModdedLiquid = j;
++						break;
++					}
++				}
++
++				if (inModdedLiquid > 0) {
++					if (LiquidLoader.PlayerLiquidMovement(inModdedLiquid, this, fallThrough, flag30)) {
++						// TODO: See if this is still relevent or not
++						ModLiquidCollision(inModdedLiquid, fallThrough, flag30);
++					}
++				}
++				else if (shimmerWet) {
++					if (LiquidLoader.PlayerLiquidMovement(LiquidID.Shimmer, this, fallThrough, flag30)) {
++						WetCollision(fallThrough, flag30, num113);
++					}
++				}
++				else if (honeyWet && !ignoreWater) {
++				    if (LiquidLoader.PlayerLiquidMovement(LiquidID.Honey, this, fallThrough, flag30)) {
++					    WetCollision(fallThrough, flag30, movementSpeed);
++				    }
++				}
++				else if (!merman && !ignoreWater && !trident) {
++				    if (LiquidLoader.PlayerLiquidMovement(lavaWet ? LiquidID.Lava : LiquidID.Water, this, fallThrough, flag30)) {
++					    WetCollision(fallThrough, flag30, lavaWet ? num112 : num111);
++					}
++				}
+ 			}
+ 			else {
+ 				DryCollision(fallThrough, flag30);
 @@ -22995,6 +_,9 @@
  		if (statMana > statManaMax2)
  			statMana = statManaMax2;
@@ -5596,16 +5718,15 @@
  		List<Item[]> list = new List<Item[]>();
  		Dictionary<int, List<int>> dictionary = new Dictionary<int, List<int>>();
  		List<Point> list2 = new List<Point>();
-@@ -29416,12 +_,21 @@
+@@ -29416,12 +_,20 @@
  	public void AdjTiles()
  	{
  		Array.Clear(adjTile, 0, adjTile.Length);
-+		/* // TODO
 +		for (int i = 0; i < adjLiquid.Length; i++) {
 +			oldAdjLiquid[i] = adjLiquid[i];
 +			adjLiquid[i] = false;
 +		}
-+		*/
++		
 +
 +		/*
  		oldAdjWaterSource = adjWaterSource;
@@ -5618,6 +5739,46 @@
  		alchemyTable = false;
  		Rectangle tileRegion = TileReachCheckSettings.Simple.GetTileRegion(this, ateArtisanBread ? 4 : 0);
  		tileRegion = WorldUtils.ClampToWorld(tileRegion);
+@@ -29434,6 +_,7 @@
+ 						adjWaterSource = true;
+ 				}
+ 
++				goto skip;
+ 				if (tile.liquid > 200 && tile.liquidType() == 0)
+ 					adjWaterSource = true;
+ 
+@@ -29442,6 +_,31 @@
+ 
+ 				if (tile.liquid > 200 && tile.liquidType() == 1)
+ 					adjLava = true;
++				skip:
++				// TODO: Currently unsuse if this goes there as the only clue I had was alchemyTable = true; and there is only 1 reccurence that is very different
++				//Adjusts all liquid types instead of the hardcoded four
++				if (Main.tile[i, j].LiquidAmount > 200) {
++					adjLiquid[Main.tile[i, j].LiquidType] = true;
++				}
++				else {
++					for (int k = 0; k < LiquidLoader.LiquidCount; k++) {
++						if (TileID.Sets.CountsAsLiquidSource[Main.tile[i, j].TileType][k]) {
++							adjLiquid[k] = true;
++						}
++					}
++				}
++				LiquidLoader.AdjLiquids(this, Main.tile[i, j].LiquidType);//Adjusts all liquid types instead of the hardcoded four
++				if (Main.tile[i, j].LiquidAmount > 200) {
++					adjLiquid[Main.tile[i, j].LiquidType] = true;
++				}
++				else {
++					for (int k = 0; k < LiquidLoader.LiquidCount; k++) {
++						if (TileID.Sets.CountsAsLiquidSource[Main.tile[i, j].TileType][k]) {
++							adjLiquid[k] = true;
++						}
++					}
++				}
++				LiquidLoader.AdjLiquids(this, Main.tile[i, j].LiquidType);
+ 			}
+ 		}
+ 	}
 @@ -29555,7 +_,7 @@
  		bool flag = false;
  		bool flag2 = false;
@@ -6468,6 +6629,17 @@
  				if (inventory[selectedItem].stack == 0)
  					inventory[selectedItem].SetDefaults(0);
  
+@@ -32872,6 +_,10 @@
+ 			return;
+ 
+ 		cursorItemIconEnabled = true;
++		if (PlaceThing_Tiles_CheckLiquidBlocking()) {
++			return;
++		}
++
+ 		bool canUse = doPlacementAction;
+ 		canUse = PlaceThing_Tiles_CheckGamepadTorchUsability(canUse);
+ 		canUse = PlaceThing_Tiles_CheckWandUsability(canUse);
 @@ -32894,6 +_,7 @@
  			int? forcedRandom = null;
  			TileObject data = default(TileObject);
@@ -6526,6 +6698,19 @@
 +				PlaceThing_Tiles_PlaceIt_AutoPaintAndActuate(tileDataCaches, type, topLeft);
  			}
  		}
+ 
+@@ -33054,6 +_,12 @@
+ 			BiomeCampfirePlaceStyle(ref type, ref style);
+ 
+ 		Tile tile = Main.tile[tileTargetX, tileTargetY];
++		for (int i = 0; i < LiquidLoader.LiquidCount; i++) {
++			if (LiquidLoader.BlocksTilePlacement(this, Player.tileTargetX, Player.tileTargetY, i)) {
++				return !WorldGen.WouldTileReplacementBeBlockedByLiquid(Player.tileTargetX, Player.tileTargetY, i);
++			}
++		}
++
+ 		if (ItemID.Sets.SortingPriorityRopes[HeldItem.type] != -1)
+ 			return false;
  
 @@ -33204,7 +_,8 @@
  		if (!newObjectType)
@@ -6677,6 +6862,18 @@
  			if (Main.tile[tileTargetX + 1, tileTargetY].active() || Main.tile[tileTargetX + 1, tileTargetY].wall > 0 || Main.tile[tileTargetX - 1, tileTargetY].active() || Main.tile[tileTargetX - 1, tileTargetY].wall > 0 || Main.tile[tileTargetX, tileTargetY + 1].active() || Main.tile[tileTargetX, tileTargetY + 1].wall > 0 || Main.tile[tileTargetX, tileTargetY - 1].active() || Main.tile[tileTargetX, tileTargetY - 1].wall > 0)
  				canPlace = true;
  		}
+@@ -34274,8 +_,9 @@
+ 			int num3 = tileTargetY;
+ 			int num4 = tileTargetX;
+ 			bool flag = inventory[selectedItem].createTile == 214;
++		/*while (Main.tile[num4, num3].active() && (Main.tileRope[Main.tile[num4, num3].type] || Main.tile[num4, num3].type == 314 || TileID.Sets.Platforms[Main.tile[num4, num3].type] || Main.tile[num4, num3].type == 380) && num3 < Main.maxTilesY - 5 && (flag || !Main.tile[num4, num3 + 1].lava())) {*/
+-			while (Main.tile[num4, num3].active() && (Main.tileRope[Main.tile[num4, num3].type] || Main.tile[num4, num3].type == 314 || TileID.Sets.Platforms[Main.tile[num4, num3].type] || Main.tile[num4, num3].type == 380) && num3 < Main.maxTilesY - 5 && (flag || !Main.tile[num4, num3 + 1].lava())) {
++		while (Main.tile[num4, num3].active() && (Main.tileRope[Main.tile[num4, num3].type] || Main.tile[num4, num3].type == 314 || TileID.Sets.Platforms[Main.tile[num4, num3].type] || Main.tile[num4, num3].type == 380) && num3 < Main.maxTilesY - 5 && (flag || !LiquidLoader.BlocksTilePlacement(this, num2, num + 1, Main.tile[num4, num3 + 1].liquidType()))) {
+-				if (Main.tile[num4, num3].type == 314 || TileID.Sets.Platforms[Main.tile[num4, num3].type] || Main.tile[num4, num3].type == 380) {
++			if (Main.tile[num4, num3].type == 314 || TileID.Sets.Platforms[Main.tile[num4, num3].type] || Main.tile[num4, num3].type == 380) {
+ 					num2++;
+ 					if (num2 > num)
+ 						break;
 @@ -34681,7 +_,9 @@
  		byte paint = targetItem.paint;
  		if (paintingAWall) {

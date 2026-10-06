@@ -2,6 +2,7 @@
 using ExampleMod.Content.Tiles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent.Liquid;
 using Terraria.ID;
@@ -50,6 +51,17 @@ namespace ExampleMod.Content.Liquids
 				return TileID.ShimmerBlock;
 			}
 			return TileID.Stone;
+		}
+
+		/// <summary>
+		/// TODO: Better example
+		/// </summary>
+		/// <param name="player"></param>
+		/// <param name="i"></param>
+		/// <param name="j"></param>
+		/// <returns></returns>
+		public override bool BlocksTilePlacement(Player player, int i, int j) {
+			return true;
 		}
 
 		public override void LiquidMergeSound(int i, int j, int otherLiquid, ref SoundStyle? collisionSound) {
