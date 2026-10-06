@@ -253,6 +253,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 			HAlign = 0.5f,
 			Top = { Pixels = -46 }, // -35 is common for most UIs, but UIWorkshopHub uses -46 to fit more content
 			BackgroundColor = UICommon.DefaultUIBlue,
+			// TODO: not working AlignToStartWhenNotScrolling = true,
 		}.WithPadding(15f);
 		uiElement.Append(headerTextPanel);
 	}
@@ -567,7 +568,11 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 
 		// Set config name, mod name and small mod icon in the display panel
 		headerTextPanel.SetText(modConfig.DisplayName);
+		headerTextPanel.ResetScroll();
+		headerTextPanel.SetScrollDelay(60);
 		modNameText.SetText(modConfig.Mod.DisplayName);
+		modNameText.ResetScroll();
+		modNameText.SetScrollDelay(60);
 
 		// Same logic used in UIConfigList
 		var iconTexture = modConfig.Mod.SmallModIcon ?? Mod.PlaceholderSmallModIcon;
