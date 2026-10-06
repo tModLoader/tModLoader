@@ -7402,7 +7402,7 @@
  				if (inventory[num6].stack <= 0)
  					inventory[num6].SetDefaults(0);
  
-@@ -38004,6 +_,9 @@
+@@ -38830,6 +_,9 @@
  		if (!WorldGen.InWorld(x, y))
  			return false;
  
@@ -7412,7 +7412,7 @@
  		Tile tile = Main.tile[x, y];
  		if (tile.wall == 350)
  			return false;
-@@ -38024,6 +_,9 @@
+@@ -38850,6 +_,9 @@
  		if (!WorldGen.InWorld(x, y))
  			return false;
  
