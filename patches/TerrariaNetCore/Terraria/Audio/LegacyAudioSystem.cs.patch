@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/Audio/LegacyAudioSystem.cs
 +++ src/TerrariaNetCore/Terraria/Audio/LegacyAudioSystem.cs
-@@ -108,7 +_,7 @@
+@@ -122,7 +_,7 @@
  #endif
  		SoundBank = new SoundBank(Engine, "Content\\Sound Bank.xsb");
  		Engine.Update();

@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/Utils.cs
 +++ src/TerrariaNetCore/Terraria/Utils.cs
-@@ -941,13 +_,25 @@
+@@ -971,13 +_,25 @@
  				});
  			}
  			else {

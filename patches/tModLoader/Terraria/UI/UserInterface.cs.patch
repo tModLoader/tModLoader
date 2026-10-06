@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/UI/UserInterface.cs
 +++ src/tModLoader/Terraria/UI/UserInterface.cs
-@@ -7,7 +_,7 @@
+@@ -8,7 +_,7 @@
  
  namespace Terraria.UI;
  
@@ -9,7 +9,7 @@
  {
  	private delegate void MouseElementEvent(UIElement element, UIMouseEvent evt);
  
-@@ -77,8 +_,15 @@
+@@ -78,8 +_,15 @@
  	{
  		LeftMouse.Clear();
  		RightMouse.Clear();
@@ -25,7 +25,7 @@
  	public bool MouseCaptured()
  	{
  		if (!LeftMouse.WasDown || LeftMouse.LastDown == null) {
-@@ -125,6 +_,9 @@
+@@ -126,6 +_,9 @@
  	{
  		LeftMouse.WasDown = Main.mouseLeft;
  		RightMouse.WasDown = Main.mouseRight;
@@ -35,7 +35,7 @@
  	}
  
  	private void ResetState()
-@@ -159,6 +_,21 @@
+@@ -162,6 +_,21 @@
  		UIElement uIElement = (flag ? _currentState.GetElementAt(MousePosition) : null);
  		_clickDisabledTimeRemaining = Math.Max(0.0, _clickDisabledTimeRemaining - time.ElapsedGameTime.TotalMilliseconds);
  		bool num = _clickDisabledTimeRemaining > 0.0;
@@ -57,7 +57,7 @@
  		if (uIElement != _lastElementHover) {
  			if (_lastElementHover != null)
  				_lastElementHover.MouseOut(new UIMouseEvent(_lastElementHover, MousePosition));
-@@ -170,13 +_,23 @@
+@@ -173,13 +_,23 @@
  		if (!num) {
  			HandleClick(LeftMouse, time, Main.mouseLeft && flag, uIElement);
  			HandleClick(RightMouse, time, Main.mouseRight && flag, uIElement);

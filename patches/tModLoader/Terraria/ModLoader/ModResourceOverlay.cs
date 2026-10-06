@@ -8,6 +8,7 @@ namespace Terraria.ModLoader;
 /// For implementing your own resource displays, use <see cref="ModResourceDisplaySet"/>.
 /// </summary>
 [Autoload(true, Side = ModSide.Client)]
+[CloneByReference]
 public abstract class ModResourceOverlay : ModType
 {
 	public int Type { get; internal set; }

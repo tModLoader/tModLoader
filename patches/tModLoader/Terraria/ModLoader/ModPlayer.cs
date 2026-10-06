@@ -1428,8 +1428,10 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
-	/// Allows you to make special things happen when this player picks up an item. Return false to stop the item from being added to the player's inventory; returns true by default.
+	/// Allows you to make special things happen when this player picks up an item. This is typically used for resource pickups, such as <see cref="ItemID.Heart"/>, <see cref="ItemID.Star"/>, or <see cref="ItemID.NebulaPickup1"/>.
+	/// <para/> Return false to stop the item from being added to the player's inventory. The world item will still be despawned.
 	/// <para/> Called on the local client only.
+	/// <para/> Returns true by default.
 	/// </summary>
 	/// <param name="item">The item being picked up</param>
 	/// <returns></returns>

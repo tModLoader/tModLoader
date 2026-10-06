@@ -9,7 +9,7 @@
  
  namespace Terraria;
  
-@@ -111,10 +_,14 @@
+@@ -111,43 +_,106 @@
  
  	public class MountData
  	{
@@ -24,7 +24,79 @@
  		public Asset<Texture2D> frontTexture = Asset<Texture2D>.Empty;
  		public Asset<Texture2D> frontTextureGlow = Asset<Texture2D>.Empty;
  		public Asset<Texture2D> frontTextureExtra = Asset<Texture2D>.Empty;
-@@ -145,6 +_,10 @@
+ 		public Asset<Texture2D> frontTextureExtraGlow = Asset<Texture2D>.Empty;
+ 		public int textureWidth;
+ 		public int textureHeight;
++		/// <summary>
++		/// An offset to the player's position.X while mounted.
++		/// </summary>
+ 		public int xOffset;
++		/// <summary>
++		/// An offset to the player's position.Y while mounted.
++		/// </summary>
+ 		public int yOffset;
++		/// <summary>
++		/// An additional offset to the player's position depending on the current animation frame. Set this to an array of length <see cref="totalFrames"/>. The value at each index is the offset for that frame.
++		/// </summary>
+ 		public int[] playerYOffsets;
++		/// <summary>
++		/// The body frame index of the player while mounted. Will set <see cref="Player.bodyFrame"/> to the corresponding animation frame while the mount is active unless <see cref="MountID.Sets.DoesNotOverrideBodyFrames"/> is set. Most mounts set this to 3, a standing pose. <see cref="MountID.WitchBroom"/> sets this to 0. <see cref="MountID.Flamingo"/> sets this to 4, a knees bent pose.
++		/// </summary>
+ 		public int bodyFrame;
++		/// <summary>
++		/// The offset of the player's head icon on the minimap while mounted. <see cref="MountID.Slime"/> uses 22, <see cref="MountID.Rat"/> uses -30.
++		/// </summary>
+ 		public int playerHeadOffset;
++		/// <summary>
++		/// How much higher off the ground the player is while mounted. <see cref="MountID.Slime"/> uses 20, <see cref="MountID.WitchBroom"/> uses 0.
++		/// </summary>
+ 		public int heightBoost;
++		/// <summary>
++		/// The Buff ID number of the buff assigned to the mount.
++		/// </summary>
+ 		public int buff;
++		/// <summary>
++		/// The amount of time in frames a mount can be in the state of flying.
++		/// </summary>
+ 		public int flightTimeMax;
+ 		public bool usesHover;
++		/// <summary>
++		/// The run speed of this mount. Equivalent to <see cref="Player.maxRunSpeed"/>. <see cref="MountID.Scutlix"/> uses 8, <see cref="MountID.Bee"/> uses 2. The MPH equivalent is roughly 5 times these values.
++		/// </summary>
+ 		public float runSpeed;
++		/// <summary>
++		/// The run speed of this mount. Equivalent to <see cref="Player.accRunSpeed"/>.
++		/// </summary>
+ 		public float dashSpeed;
+ 		public float swimSpeed;
++		/// <summary>
++		/// The rate at which the mount speeds up.
++		/// </summary>
+ 		public float acceleration;
++		/// <summary>
++		/// The rate at which the player and mount ascend towards (negative y velocity) the jump height when the jump button is pressed.
++		/// </summary>
+ 		public float jumpSpeed;
++		/// <summary>
++		/// How high the mount can jump.
++		/// </summary>
+ 		public int jumpHeight;
++		/// <summary>
++		/// Fall damage multiplier. 0 for normal fall damage, 1 for no fall damage. <see cref="MountID.Flamingo"/> uses 0.2 (a 80% reduction), <see cref="MountID.Slime"/> uses 0.5 (a 50% reduction), <see cref="MountID.Bee"/> uses 1 (Cancels fall damage).
++		/// <para/> Defaults to 0.
++		/// </summary>
+ 		public float fallDamage;
+ 		public int extraFall;
+ 		public int fatigueMax;
++		/// <summary>
++		/// Allows you to hold the jump button down.
++		/// </summary>
+ 		public bool constantJump;
++		/// <summary>
++		/// Determines whether or not you can use a double jump (like cloud in a bottle) while in the mount.
++		/// </summary>
+ 		public bool blockExtraJumps;
+ 		public int abilityChargeMax;
  		public int abilityDuration;
  		public int abilityCooldown;
  		public int walkingGraceTimeMax;
@@ -33,9 +105,26 @@
 +		/// <para/> Some examples include <see cref="MountID.Rat"/>, <see cref="MountID.Bat"/>, and <see cref="MountID.Pixie"/>.
 +		/// </summary>
  		public bool dismountsOnItemUse;
++		/// <summary>
++		/// The Dust ID of the dust spawned when mounted or dismounted.
++		/// </summary>
  		public int spawnDust;
  		public bool spawnDustNoGravity;
-@@ -178,6 +_,16 @@
++		/// <summary>
++		/// The number of animation frames this mount has.
++		/// </summary>
+ 		public int totalFrames;
+ 		public int standingFrameStart;
+ 		public int standingFrameCount;
+@@ -174,11 +_,24 @@
+ 		public bool Minecart;
+ 		public bool CanRideMinecartTracks;
+ 		public bool CanUseWings;
++		/// <summary>
++		/// When true, <see cref="runSpeed"/>, <see cref="dashSpeed"/>, and <see cref="acceleration"/> are added to the player movement stats instead of overriding them.
++		/// </summary>
+ 		public bool MovementStatsAreAdditive;
+ 		public Vector3 lightColor = Vector3.One;
  		public bool emitsLight;
  		public MountDelegatesData delegations = new MountDelegatesData();
  		public int playerXOffset;
@@ -52,7 +141,7 @@
  	}
  
  	public enum DismountCheckResult
-@@ -198,7 +_,7 @@
+@@ -199,7 +_,7 @@
  	public const int DrawBackExtra = 1;
  	public const int DrawFront = 2;
  	public const int DrawFrontExtra = 3;
@@ -61,7 +150,7 @@
  	private static Vector2[] scutlixEyePositions;
  	private static Vector2 scutlixTextureSize;
  	public const int scutlixBaseDamage = 50;
-@@ -212,34 +_,39 @@
+@@ -213,34 +_,39 @@
  	public static int amountOfBeamsAtOnce = 2;
  	public const float maxDrillLength = 48f;
  	private static Vector2 santankTextureSize;
@@ -124,7 +213,7 @@
  	public static float SuperCartJumpSpeed = 5.15f;
  	private MountDelegatesData _defaultDelegatesData = new MountDelegatesData();
  	public static int[] idleFrames_Rat = new int[11] {
-@@ -256,6 +_,7 @@
+@@ -257,6 +_,7 @@
  		0
  	};
  
@@ -132,7 +221,7 @@
  	public bool Active => _active;
  
  	public int Type => _type;
-@@ -331,7 +_,7 @@
+@@ -332,7 +_,7 @@
  				return _data.runSpeed + 2f;
  
  			if (_shouldSuperCart)
@@ -141,7 +230,7 @@
  
  			return _data.runSpeed;
  		}
-@@ -340,7 +_,7 @@
+@@ -341,7 +_,7 @@
  	public float DashSpeed {
  		get {
  			if (_shouldSuperCart)
@@ -150,7 +239,7 @@
  
  			return _data.dashSpeed;
  		}
-@@ -349,7 +_,7 @@
+@@ -350,7 +_,7 @@
  	public float Acceleration {
  		get {
  			if (_shouldSuperCart)
@@ -159,7 +248,7 @@
  
  			return _data.acceleration;
  		}
-@@ -2511,6 +_,16 @@
+@@ -2550,6 +_,16 @@
  		}
  	}
  
@@ -176,7 +265,7 @@
  	public static void SetAsMinecart(MountData newMount, int buff, Asset<Texture2D> texture, int verticalOffset = 0, int playerVerticalOffset = 0)
  	{
  		newMount.Minecart = true;
-@@ -2566,13 +_,14 @@
+@@ -2605,13 +_,14 @@
  
  	public static int GetHeightBoost(int MountType)
  	{
@@ -193,7 +282,7 @@
  	{
  		int num = _data.jumpHeight;
  		switch (_type) {
-@@ -2587,15 +_,18 @@
+@@ -2626,15 +_,18 @@
  				if (_frameState == 4)
  					num += 5;
  				break;
@@ -214,7 +303,7 @@
  	{
  		float num = _data.jumpSpeed;
  		switch (_type) {
-@@ -2608,10 +_,13 @@
+@@ -2647,10 +_,13 @@
  				if (_frameState == 4)
  					num += 2.5f;
  				break;
@@ -229,7 +318,7 @@
  
  		return num;
  	}
-@@ -2975,7 +_,10 @@
+@@ -3014,7 +_,10 @@
  						Vector2 vector = mountedPlayer.Center + new Vector2(mountedPlayer.width * -mountedPlayer.direction, 26f);
  						Vector2 vector2 = new Vector2(0f, -4f).RotatedByRandom(0.10000000149011612);
  						Projectile.NewProjectile(GetProjectileSpawnSource(mountedPlayer), vector.X, vector.Y, vector2.X, vector2.Y, 930, damage, 0f, Main.myPlayer);
@@ -240,7 +329,7 @@
  					}
  
  					int type = 14;
-@@ -2990,7 +_,10 @@
+@@ -3029,7 +_,10 @@
  					v *= 12f;
  					v = v.RotatedByRandom(0.20000000298023224);
  					Projectile.NewProjectile(GetProjectileSpawnSource(mountedPlayer), vector4.X, vector4.Y, v.X, v.Y, type, damage2, 0f, Main.myPlayer);
@@ -251,7 +340,7 @@
  				}
  				break;
  			case 8:
-@@ -3221,6 +_,9 @@
+@@ -3260,6 +_,9 @@
  
  	public void UpdateFrame(Player mountedPlayer, int state, Vector2 velocity)
  	{
@@ -261,7 +350,7 @@
  		if (_frameState != state) {
  			if (_type == 56 && ((_frameState == 5 && (mountedPlayer.dash <= 0 || mountedPlayer.dashDelay >= 0)) || (_frameState != 5 && mountedPlayer.dash > 0 && mountedPlayer.dashDelay < 0)))
  				_frameCounter = 0f;
-@@ -4114,7 +_,7 @@
+@@ -4161,7 +_,7 @@
  
  		Tile tileSafely = Framing.GetTileSafely(p.X, p.Y);
  		if (WorldGen.SolidTile(p)) {
@@ -270,7 +359,7 @@
  			if (num > 1)
  				num = 1;
  
-@@ -4229,6 +_,9 @@
+@@ -4276,6 +_,9 @@
  	{
  		mountedPlayer.autoJump = AutoJump;
  		_shouldSuperCart = MountID.Sets.Cart[_type] && mountedPlayer.UsingSuperCart;
@@ -280,10 +369,10 @@
  		if (_shouldSuperCart) {
  			CastSuperCartLaser(mountedPlayer);
  			float num = 1f + Math.Abs(mountedPlayer.velocity.X) / RunSpeed * 2.5f;
-@@ -4238,10 +_,13 @@
- 		switch (_type) {
- 			case 62:
+@@ -4287,10 +_,13 @@
  			case 63:
+ 			case 64:
+ 			case 65:
 +				mountedPlayer.allDamage += 0.1f;
 +				/*
  				mountedPlayer.meleeDamage += 0.1f;
@@ -294,7 +383,7 @@
  				break;
  			case 23: {
  				Vector2 pos3 = mountedPlayer.Center + GetWitchBroomTrinketOriginOffset(mountedPlayer) + (GetWitchBroomTrinketRotation(mountedPlayer) + (float)Math.PI / 2f).ToRotationVector2() * 11f;
-@@ -4395,10 +_,13 @@
+@@ -4444,10 +_,13 @@
  					else
  						Lighting.AddLight(mountedPlayer.Center + Vector2.UnitX * mountedPlayer.direction * 20f, vector10.X, vector10.Y, vector10.Z);
  
@@ -308,7 +397,7 @@
  				}
  				if (mountedPlayer.statLife <= mountedPlayer.statLifeMax2 / 2)
  					mountedPlayer.MountFishronSpecialCounter = 60f;
-@@ -4698,6 +_,9 @@
+@@ -4747,6 +_,9 @@
  	public bool AimAbility(Player mountedPlayer, Vector2 mousePosition)
  	{
  		_aiming = true;
@@ -318,7 +407,7 @@
  		switch (_type) {
  			case 9: {
  				int frameExtra = _frameExtra;
-@@ -4860,7 +_,11 @@
+@@ -4909,7 +_,11 @@
  		}
  
  		int type = _type;
@@ -330,7 +419,7 @@
  			PlayerQueenSlimeMountTextureContent queenSlimeMount = TextureAssets.RenderTargets.QueenSlimeMount;
  			queenSlimeMount.Request();
  			if (queenSlimeMount.IsReady)
-@@ -5213,10 +_,13 @@
+@@ -5264,10 +_,13 @@
  				break;
  		}
  
@@ -344,27 +433,17 @@
  			if (texture2D2 != null) {
  				item = new DrawData(texture2D2, Position, value2, color * ((float)(int)drawColor.A / 255f), num9, origin, scale, spriteEffects);
  				item.shader = currentShader;
-@@ -5402,6 +_,10 @@
+@@ -5467,6 +_,9 @@
  		bool cart = Cart;
  		_active = false;
  		mountedPlayer.ClearBuff(_data.buff);
 +
-+		bool skipDust = false;
-+		MountLoader.Dismount(this, mountedPlayer, ref skipDust);
++		MountLoader.Dismount(this, mountedPlayer, ref ignoreEffect);
 +
  		_mountSpecificData = null;
  		int type = _type;
  		if ((uint)(type - 55) <= 1u && mountedPlayer.noItems && !mountedPlayer.cursed)
-@@ -5417,7 +_,7 @@
- 		if (mountedPlayer.petting.isPetting && mountedPlayer.petting.mount)
- 			mountedPlayer.StopPettingAnimal();
- 
--		if (!ignoreEffect)
-+		if (!ignoreEffect && !skipDust)
- 			DoSpawnDust(mountedPlayer, isDismounting: true);
- 
- 		Reset();
-@@ -5443,7 +_,7 @@
+@@ -5508,7 +_,7 @@
  
  	public void SetMount(int m, Player mountedPlayer)
  	{
@@ -373,7 +452,7 @@
  			return;
  
  		if (_active) {
-@@ -5533,7 +_,15 @@
+@@ -5598,7 +_,15 @@
  			_mountSpecificData = new SelectiveFlyingMountData();
  
  		FinalizeMountData(m, mountedPlayer);

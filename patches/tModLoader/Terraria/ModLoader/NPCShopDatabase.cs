@@ -377,7 +377,6 @@ public static partial class NPCShopDatabase
 		new NPCShop(NPCID.Clothier)
 			.Add(ItemID.BlackThread)
 			.Add(ItemID.PinkThread)
-			.Add(ItemID.PrettyMirror,					Condition.InGraveyard)
 			.Add(ItemID.SummerHat,						Condition.TimeDay, Condition.NotInGraveyard)
 			.Add(ItemID.PlumbersShirt,					Condition.MoonPhaseFull)
 			.Add(ItemID.PlumbersPants,					Condition.MoonPhaseFull)
@@ -759,6 +758,7 @@ public static partial class NPCShopDatabase
 			.Add(ItemID.ImbuingStation)
 			.Add(ItemID.Blowgun)
 			.Add(ItemID.BewitchingTable,	Condition.NpcIsPresent(NPCID.Wizard))
+			.Add(ItemID.GiantTiki,			Condition.InJungle)
 			.Add(ItemID.PygmyNecklace,		Condition.TimeNight)
 			.Add(ItemID.TikiMask,			Condition.DownedPlantera)
 			.Add(ItemID.TikiShirt,			Condition.DownedPlantera)
@@ -842,6 +842,7 @@ public static partial class NPCShopDatabase
 			.Add(ItemID.MartianHairDye,		Condition.DownedMartians)
 			.Add(ItemID.TwilightHairDye,	Condition.DownedMartians)
 			.Add(ItemID.WilsonBeardShort)
+			.Add(ItemID.PrettyMirror,		Condition.InGraveyard)
 			.Register();
 	}
 
@@ -884,8 +885,7 @@ public static partial class NPCShopDatabase
 			.Add(ItemID.RollerSkatesPartyMountItem, Condition.MoonPhases67)
 			.Add(ItemID.Bomb)
 			.Add(ItemID.Rope)
-			.Add(ItemID.Gradient,				Condition.Hardmode, Condition.MoonPhasesHalf0)
-			.Add(ItemID.FormatC,				Condition.Hardmode, Condition.MoonPhasesHalf1)
+			.Add(ItemID.Gradient,				Condition.Hardmode)
 			.Add(ItemID.YoYoGlove,				Condition.Hardmode)
 			.Add(ItemID.MagicString,			Condition.Hardmode, Condition.DownedMechBossAny)
 			.Add(ItemID.SlapHand,				Condition.Hardmode, Condition.BloodMoon)

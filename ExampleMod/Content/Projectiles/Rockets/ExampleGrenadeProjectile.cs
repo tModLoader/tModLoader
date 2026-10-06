@@ -11,11 +11,9 @@ namespace ExampleMod.Content.Projectiles.Rockets
 	public class ExampleGrenadeProjectile : ModProjectile
 	{
 		public override void SetStaticDefaults() {
-			ProjectileID.Sets.PlayerHurtDamageIgnoresDifficultyScaling[Type] = true; // Damage dealt to players does not scale with difficulty in vanilla.
-
 			// This set handles some things for us already:
 			// Sets the timeLeft to 3 and the projectile direction when colliding with an NPC or player in PVP (so the explosive can detonate).
-			// Explosives also bounce off the top of Shimmer, detonate with no blast damage when touching the bottom or sides of Shimmer, and damage other players in For the Worthy worlds.
+			// Explosives also bounce off the top of Shimmer, detonate with no blast damage when touching the bottom or sides of Shimmer, and deal unscaled damage to players via SelfHurtPlayers when killed.
 			ProjectileID.Sets.Explosive[Type] = true;
 		}
 		public override void SetDefaults() {
@@ -36,17 +34,22 @@ namespace ExampleMod.Content.Projectiles.Rockets
 			// AIType = ProjectileID.GrenadeI;
 		}
 		public override void AI() {
+			// Other clients wait for the owner's kill message, so the explosion happens at the same time in the same place for everyone.
+			if (Projectile.owner != Main.myPlayer && Projectile.timeLeft < 5) {
+				Projectile.timeLeft = 5;
+			}
+
 			// If timeLeft is <= 3, then explode the grenade.
 			if (Projectile.owner == Main.myPlayer && Projectile.timeLeft <= 3) {
-				Projectile.PrepareBombToBlow();
+				Projectile.Kill(); // Detonate
+				return;
 			}
-			else {
-				// Spawn a smoke dust.
-				var smokeDust = Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustID.Smoke, 0f, 0f, 100);
-				smokeDust.scale *= 1f + Main.rand.Next(10) * 0.1f;
-				smokeDust.velocity *= 0.2f;
-				smokeDust.noGravity = true;
-			}
+
+			// Spawn a smoke dust.
+			var smokeDust = Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustID.Smoke, 0f, 0f, 100);
+			smokeDust.scale *= 1f + Main.rand.Next(10) * 0.1f;
+			smokeDust.velocity *= 0.2f;
+			smokeDust.noGravity = true;
 
 			Projectile.ai[0] += 1f;
 			// Wait 15 ticks until applying friction and gravity.
@@ -75,15 +78,11 @@ namespace ExampleMod.Content.Projectiles.Rockets
 			}
 
 			// Return false so the projectile doesn't get killed. If you do want your projectile to explode on contact with tiles, do not return true here.
-			// If you return true, the projectile will die without being resized (no blast radius).
-			// Instead, set `Projectile.timeLeft = 3;` like the Example Rocket Projectile.
+			// Instead, set `Projectile.timeLeft = 3;` like the Example Rocket Projectile so the owner detonates it.
 			return false;
 		}
 
 		public override void PrepareBombToBlow() {
-			Projectile.tileCollide = false; // This is important or the explosion will be in the wrong place if the grenade explodes on slopes.
-			Projectile.alpha = 255; // Make the grenade invisible.
-
 			// Resize the hitbox of the projectile for the blast "radius".
 			// Rocket I: 128, Rocket III: 200, Mini Nuke Rocket: 250
 			// Measurements are in pixels, so 128 / 16 = 8 tiles.

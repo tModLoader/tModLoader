@@ -10,6 +10,7 @@ namespace Terraria.ModLoader;
 /// <summary>
 /// A ModAccessorySlot instance represents a net new accessory slot instance. You can store fields in the ModAccessorySlot class.
 /// </summary>
+[CloneByReference]
 public abstract class ModAccessorySlot : ModType
 {
 	public int Type { get; internal set; }
@@ -110,12 +111,15 @@ public abstract class ModAccessorySlot : ModType
 	/// </summary>
 	public virtual void ApplyEquipEffects()
 	{
-		if (FunctionalItem.accessory)
-			Player.GrantPrefixBenefits(FunctionalItem);
+		Item effectiveFunctionalItem = ModSlotPlayer.GetSharedLoadoutItem(ItemSlot.Context.ModdedAccessorySlot, Type, out _);
+		Item effectiveVanityItem = ModSlotPlayer.GetSharedLoadoutItem(ItemSlot.Context.ModdedVanityAccessorySlot, Type, out _);
 
-		Player.GrantArmorBenefits(FunctionalItem);
-		Player.ApplyEquipFunctional(FunctionalItem, HideVisuals);
-		Player.ApplyEquipVanity(VanityItem);
+		if (effectiveFunctionalItem.accessory)
+			Player.GrantPrefixBenefits(effectiveFunctionalItem);
+
+		Player.GrantArmorBenefits(effectiveFunctionalItem);
+		Player.ApplyEquipFunctional(effectiveFunctionalItem, HideVisuals);
+		Player.ApplyEquipVanity(effectiveVanityItem);
 	}
 
 	/// <summary>

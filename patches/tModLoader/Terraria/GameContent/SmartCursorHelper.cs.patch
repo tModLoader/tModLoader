@@ -8,7 +8,7 @@
  
  namespace Terraria.GameContent;
  
-@@ -170,7 +_,7 @@
+@@ -179,7 +_,7 @@
  
  	private static bool AllowNormalBlockPlacementBehaviourForItemType(int itemType)
  	{
@@ -17,7 +17,7 @@
  			return false;
  
  		if (itemType == 213 || itemType == 5295 || ItemID.Sets.GrassSeeds[itemType] || ItemID.Sets.Moss[itemType])
-@@ -221,7 +_,7 @@
+@@ -230,7 +_,7 @@
  			return;
  
  		int type = providedInfo.item.type;
@@ -26,7 +26,7 @@
  			return;
  
  		_targets.Clear();
-@@ -682,7 +_,7 @@
+@@ -691,7 +_,7 @@
  	private static void Step_BlocksLines(SmartCursorUsageInfo providedInfo, ref int focusedX, ref int focusedY)
  	{
  		int type = providedInfo.item.type;
@@ -35,7 +35,7 @@
  			return;
  
  		_targets.Clear();
-@@ -742,7 +_,7 @@
+@@ -751,7 +_,7 @@
  
  	private static void Step_Boulders(SmartCursorUsageInfo providedInfo, ref int focusedX, ref int focusedY)
  	{
@@ -44,7 +44,7 @@
  			return;
  
  		_targets.Clear();
-@@ -885,7 +_,7 @@
+@@ -894,7 +_,7 @@
  				for (int k = i; k <= i + 1; k++) {
  					for (int l = j - 1; l <= j; l++) {
  						Tile tile3 = Main.tile[k, l];
@@ -53,7 +53,7 @@
  							flag = false;
  					}
  				}
-@@ -1703,11 +_,13 @@
+@@ -1712,11 +_,13 @@
  
  				bool flag = (tile4.active() && TileID.Sets.CommonSapling[tile4.type]) || (tile5.active() && TileID.Sets.CommonSapling[tile5.type]);
  				bool flag2 = flag || (tile6.active() && TileID.Sets.CommonSapling[tile6.type]) || (tile7.active() && TileID.Sets.CommonSapling[tile7.type]) || (tile8.active() && TileID.Sets.CommonSapling[tile8.type]) || (tile9.active() && TileID.Sets.CommonSapling[tile9.type]);
@@ -68,7 +68,7 @@
  					case 2:
  					case 23:
  					case 109:
-@@ -1725,19 +_,30 @@
+@@ -1734,19 +_,30 @@
  					case 112:
  					case 116:
  					case 234:
@@ -101,7 +101,7 @@
  					switch (tile10.type) {
  						case 2:
  						case 23:
-@@ -2234,7 +_,7 @@
+@@ -2243,7 +_,7 @@
  			return;
  
  		int type = providedInfo.item.type;
@@ -110,7 +110,7 @@
  			return;
  
  		int reachableStartX = providedInfo.reachableStartX;
-@@ -2321,11 +_,14 @@
+@@ -2330,11 +_,14 @@
  		_ = providedInfo.screenTargetX;
  		_ = providedInfo.screenTargetY;
  		int type = providedInfo.item.type;

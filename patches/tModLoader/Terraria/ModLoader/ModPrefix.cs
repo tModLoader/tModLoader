@@ -19,6 +19,9 @@ public enum PrefixCategory
 	/// Can modify the mana usage of the weapon
 	/// </summary>
 	Magic,
+	/// <summary>
+	/// Can modify summon tag damage and armor penetration of the weapon
+	/// </summary>
 	Summon,
 	AnyWeapon,
 	Accessory,
@@ -31,6 +34,7 @@ public enum PrefixCategory
 /// <summary>
 /// Represents a modded prefix (or modifier). The <see href="https://terraria.wiki.gg/wiki/Modifiers">Modifiers page on the Terraria wiki</see> is a good resource for vanilla prefixes.
 /// </summary>
+[CloneByReference]
 public abstract class ModPrefix : ModType, ILocalizedModType
 {
 	public int Type { get; internal set; }
