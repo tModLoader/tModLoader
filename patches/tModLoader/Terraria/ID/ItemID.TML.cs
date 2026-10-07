@@ -99,7 +99,8 @@ partial class ItemID
 			4711,
 			4049,
 			114,
-			5667
+			5667,
+			6174
 		);
 
 		/// <summary>

@@ -38,6 +38,22 @@ The `Item` class has had the in-world functionality split into a new `WorldItem`
 
 Hooks that deal with items in the game world will now have a `WorldItem item` parameter as well. This will require modders to switch from `Item` to `item` in various `ModItem` classes if dealing with the fields that are now on `WorldItem`.
 
+### Item.NewItem
+
+`Item.NewItem` has been reworked.
+- 🤖 Instead of passing a `rectangle`, `position, size` or `X, Y, W, H` only for the item to spawn at the center. Just pass `center` directly
+- 🤖 `noGrabDelay` has been replaced by `NewItemOwnership`, we recommend reading the docs on it and considering the right value to pass to each of your call sites
+- 🤖 `reverseLookup` is gone, no replacement
+- New `velocity` and `modifier` parameters make it easy to modify the item before syncing. 
+  - These should replace the need for `noBroadcast: true`
+  - Some uses of `Mod/GlobalItem.OnSpawn` may be better served by passing a `modifier` delegate, if they only apply to some call sites.
+
+🤖 Due to the signature changes, many 1.4.4 calls will no longer compile, but tModPorter can handle the vast majority of them.
+
+`Item.RequestNewItem` has been added to make spawning world items from multiplayer clients easier. It is also safe to call in single player, but we generally recommend considering `QuickSpawnItem` first.
+
+There should be almost no reason to send `MessageID.SyncItem` packets manually, or use `noBroadcast: true` anymore
+
 ### Projectile Draw Changes
 
 There have been several changes to projectile drawing in this update.
@@ -202,6 +218,13 @@ public class OpenShopOnlyAvailableDuringDay(string shopName, string customTextKe
 }
 ```
 
+### Recipe Changes
+
+* Crafting stations are now interactable as well as smart interactable. When right clicked, the crafting window shows recipes that use the crafting station. As they are now interactable, they should have a highlight texture as well.
+  * 💀: Add `TileID.Sets.HasOutlines[Type] = true;` to each crafting station `ModTile`. 
+  * 💀: Also add a `TileName_Highlight.png` texture as well.
+  * 💀: Make sure each tile also has a map entry (`AddMapEntry`) assigned. This is what is shown on the crafting window header.
+
 ## New Vanilla Features
 
 The [Terraria 1.4.5 changelog](https://terraria.wiki.gg/wiki/1.4.5.0) lists many vanilla changes made in the 1.4.5 update. A select portion of the changes relevant to modding will be detailed here as well.
@@ -353,6 +376,30 @@ Example Mod's whips have been updated with new examples and additional comments.
 
 See ExampleWhip, ExampleWhipAdvanced, ExampleWhipProjectile, and ExampleWhipProjectileAdvanced for more examples.
 
+### Localization
+
+#### Global Substitutions
+
+Global substitutions are text substitutions that automatically and dynamically update the text value of the `LocalizedText` they are used in. For example, `"{PartyGirl} is always so loud"` could be used as a TownNPC chat message and it will always display the first name of the Party Girl in the world in place of `{PartyGirl}`. In 1.4.5, support for modded global substitutions is added.
+
+* Use `Lang.RegisterGlobalSubstitution` or `Lang.RegisterModdedGlobalSubstitution` to register a global substitution.
+* Include global substitutions in localization entries. The format is `{GlobalSubstitutionKeyHere}`.
+* `ModNPC` and `ModKeybind` will automatically have suitable global substitutions registered by tModLoader.
+
+Global substitutions are also usable as conditions. Using substitutions as conditions allows filtering out text options that are not relevant to the current state of the world. For example, in the `"{PartyGirl} is always so loud"` example, the corresponding `LocalizedText` will automatically detect that there is no Party Girl in the world and `LocalizedText.ConditionsMet` will be `false`. Helper methods like `Lang.CreateDialogFilter` will automatically filter out all text that doesn't satisfy their conditions, making chat dialogue code much simpler. Substitutions with a `?` at the start (`{?GlobalSubstitutionKeyHere}`) can be used to filter out text options that satisfy the conditions without affecting the text itself. This is usually used for substitutions that return a `bool`, like `{?Day}`. `{?!Day}` checks that it is night time.
+
+We highly recommend that mods utilize global substitutions to greatly streamline TownNPC chat message logic. There is more information about this feature on the [correesponding pull request](https://github.com/tModLoader/tModLoader/pull/5275) and the [localization wiki page](https://github.com/tModLoader/tModLoader/wiki/Localization).
+
+#### Text Variation
+
+The text variation system allows for a single text key to have several variant options. The game uses this in many non-English languages to support prefixes adjusting their spelling to the gender of the item. This feature is not limited to gendered item prefixes, variant text can be used to support alternate localizations or even metadata. The `LanguageVariantSystem.cs` file demonstrates some potential ideas for novel uses of this feature.
+
+### New language support
+Japanese ("ja-JP"), Korean ("ko-KR"), and Traditional Chinese ("zh-Hant") have been added as newly supported languages. 
+* Supporting these new languages in mods is the same process as the existing languages.
+* If you have custom fonts, you may need to build your font files again and include the new characters in your font creation.
+  * TODO: We will have new tooling for this made available sometime.
+
 ## Other Changes
 
 * Fishing power bonus now applies to any chair, not just toilets.
@@ -364,7 +411,7 @@ See ExampleWhip, ExampleWhipAdvanced, ExampleWhipProjectile, and ExampleWhipProj
 * Several item tooltip line changes:
   * The "SocialDesc" tooltip line no longer exists. The "Social" tooltip line (now "Equipped in social slot") will now only show for items that are neither `Item.vanity` or `Item.hasVanityEffects`.
     * `Item.hasVanityEffects` is now used. It was previously unused. Set this for accessories that have vanity effects to prevent the "Social" tooltip line from appearing and suggesting the item has no effect in vanity slots.
-  * There are new tooltip lines: "Wireable", "Container", "WireTrigger", "WizardHatDuringAnniversary", "BurningBlock", "MechSummonDuringEverything", "MechdusaSummonNotDuringEverything", "PrefixArmorPenetration", "PrefixTagDamage", "SetBonusSinglePiece", "JourneyResearchTeammate", and "MissingRequirements".
+  * There are new tooltip lines: "ItemLoadoutSharedFrom", "ItemLoadoutShared", "Buffs", "Healing", "ManaHealing", "Mount", "Wireable", "Container", "WireTrigger", "WizardHatDuringAnniversary", "BurningBlock", "MechSummonDuringEverything", "MechdusaSummonNotDuringEverything", "PrefixArmorPenetration", "PrefixTagDamage", "SetBonusSinglePiece", "ItemLoadoutShareHint", "JourneyResearchTeammate", and "MissingRequirements".
   * The "SetBonus" tooltip has changed. It now automatically displays partial sets and adjusts the color to indicate if the set is complete.
   * The "SetBonusSinglePiece" tooltip shows the set bonus that would be applied if the unequipped equipment were equipped.
 * Town NPCs who are homeless have a new "Housing" button that displays their "NoHome" dialogue as well as a hint on what valid housing is. The hint text can be customized through the localization file. If the key `Mods.ModName.NPCs.NPCName.HousingText.HousingRequirements` exists, it will automatically be used over the default text.
@@ -399,6 +446,14 @@ See ExampleWhip, ExampleWhipAdvanced, ExampleWhipProjectile, and ExampleWhipProj
 	* `Projectile.drawLayer = ProjectileDrawLayerID.HeldProj` will likely need to be added to `SetDefaults` for the projectile to draw on the correct layer.
 * `Condition.DownedEarlygameBoss` now includes King Slime and Deerclops
 * Workarounds to get the correct mouse position for projectiles that draw during other draw layers are no longer required and should be removed for correct behavior. See the ExampleInteractableProjectile.cs changes.
+* Projectile identity approach has changed
+  * `Projectile.identity`, `Projectile.GetByUUID`, `Projectile.projUUID`, `ProjectileID.Sets.NeedsUUID` removed.
+  * Use `Projectile.key` instead for a consistent reference to a projectile.
+* If you relied on `NPCID.Sets.InvasionSlotCount[Type] = 0;` for preventing your modded vanilla event NPCs from playing music, use `NPCID.Sets.NoInvasionMusic[Type] = true;` in addition to it.
+* Some projectiles can now be despawned when right clicked, and optionally spawn an item as well. Flares, glowsticks, bombs, sentries, golf balls, and others despawn when right clicked by setting `ProjectileID.Sets.DespawnItemIcon`. Of those, glowsticks and bombs usually return the item as well by setting `ProjectileID.Sets.DespawnItemGivesItemBack`.
+  * 💀: Projectiles using `ProjectileID.Sets.Explosive` and `ProjectileID.Sets.DespawnItemIcon` will now automatically have `Projectile.ai[0]` set to `1000` immediately before the projectile is killed via right clicking. This might conflict with existing `ModProjectile` code and will require adjustments.
+  * Use the new `ModProjectile.PreTryDespawning` hook to set any flags necessary to adjust `ModProjectile.OnKill` behavior to support picking up projectiles.
+* `ProjectileID.Sets.Explosive` and `PrepareBombToBlow` behavior have changed. `Projectile.Kill()` will now automatically call `PrepareBombToBlow` if `Projectile.ai[0]` isn't `1000` (see above). Replace `Projectile.PrepareBombToBlow` with `Projectile.Kill`. Explosives should also set `Projectile.timeLeft = 5;` in `AI` for projectiles not owned by the client to facilitate better multiplayer sync behavior. Modders should consult relevant ExampleMod `ModProjectile` examples and adjust accordingly.
 
 ### Example Mod
 
@@ -438,9 +493,9 @@ Several Example Mod examples have been updated to adapt to 1.4.5 changes and to 
 
 ### Static Methods
 
-* 💀: `Item.NewItem` methods no longer have the `bool reverseLookup` parameter. Remove it.
+* 🤖: `Item.NewItem` has new signatures. See [Item.NewItem](#itemnewitem) for more information.
 * 🤖: `Main.DrawWindowsIMEPanel` has been split into `Main.DrawIMEPanel` and `Main.SetIMEPanelAnchor`. `DrawIMEPanel` is automatically called each game update, so just replace  `DrawWindowsIMEPanel` calls with `SetIMEPanelAnchor` to customize the panel location.
-* 💀: `Main.GetPlayerArmPosition` now has a `Player` parameter.
+* 🤖: `Main.GetPlayerArmPosition` removed. Use `Player.GetArmPosition` instead.
 * ⚙️: `RecipeGroup.RegisterGroup` removed. See [RecipeGroup](#recipegroup) for more information.
 * ⚙️: `Utils.PlotTileArea` -> `Utils.FloodFillTile`. No longer returns `bool` and parameters are now `Point point, float maxDist, TileActionAttempt plot` instead of `int x, int y, TileActionAttempt plot`.
 * 🤖: `WorldGen.CheckTight` -> `WorldGen.CheckStalactite`
@@ -452,6 +507,7 @@ All classes are in the `Terraria` or `Terraria.ID` namespaces unless otherwise i
 * ⚙️: `BuffID.Sets.BasicMountData` removed. Replace with `BuffID.Sets.MountType[Type] = ModContent.MountType<MyMount>();`.
 * 🤖: `BuffID.Sets.LongerExpertDebuff` -> `BuffID.Sets.BuffTimeIsExtendedWithGameDifficulty`
 * 💀: `Chest.maxItems` is no longer static.
+* 🤖: `Condition.ZenithWorld` might need to be replaced with the new `Condition.MechdusaSeedFeature` in code that specifically is checking for Mechadusa. They can technically differ.
 * 🤖: `GoreID.Sets.LiquidDroplet` -> `GoreID.Sets.IsDrip`
 * 🤖: `ImmunityCooldownID.Bosses` -> `ImmunityCooldownID.BossNoCheese`
 * ⚙️: `ItemID.Sets.ItemSpawnDecaySpeed` removed. No longer used.
@@ -467,7 +523,7 @@ All classes are in the `Terraria` or `Terraria.ID` namespaces unless otherwise i
 * 🤖: `Main.recBigList` -> `Main.PopsUseGrid`
 * 🤖: `Main.recFastScroll` -> `Main.PipsFastScroll`
 * ⚙️: `Main.item` is now `WorldItem[]` instead of `Item[]`.
-* 🤖: `MessageID` entry changes: `TileSquare` -> `AreaTileChange`, `ShotAnimationAndSound` -> `ItemRotationAndAnimation`, `PlayerTeam` -> `TeamChange`, `RequestReadSign` -> `OpenSignRequest`, `ReadSign` -> `OpenSignResponse`, `AddPlayerBuff` -> `AddPlayerBuffPvP`, `PaintTile` -> `SyncTilePaintOrCoating`, `PaintWall` -> `SyncWallPaintOrCoating`, `NPCKillCountDeathTally` -> `Unused83`, `TEDisplayDollItemSync` -> `TEDisplayDollDataSync`
+* 🤖: `MessageID` entry changes: `TileSquare` -> `AreaTileChange`, `ShotAnimationAndSound` -> `ItemRotationAndAnimation`, `PlayerTeam` -> `TeamChange`, `RequestReadSign` -> `OpenSignRequest`, `ReadSign` -> `OpenSignResponse`, `AddPlayerBuff` -> `AddPlayerBuffPvP`, `PaintTile` -> `SyncTilePaintOrCoating`, `PaintWall` -> `SyncWallPaintOrCoating`, `NPCKillCountDeathTally` -> `Unused83`, `TEDisplayDollItemSync` -> `TEDisplayDollDataSync`, `Dodge` -> `SyncDodge`, `InstancedItem` -> `SpawnInstancedItem`, `SyncItemsWithShimmer` -> `SyncItemsWithShimmerDeprecated`, `SyncItemCannotBeTakenByEnemies` -> `SyncItemCannotBeTakenByEnemiesDeprecated`
 * ⚙️: `MountID.Sets.FacePlayersVelocity` removed. Now automatic for all minecarts.
 * 🤖: `MusicId` entry changes: `Night` -> `OverworldNight`, `Title` -> `TitleClassic`, `Jungle` -> `JungleDay`, `TheHallow` -> `Hallow`, `Space` -> `SpaceNight`, `Boss4` -> `Golem`, `AltOverworldDay` -> `OverworldDayAlt`, `Ocean` -> `OceanDay`, `RainSoundEffect` -> `RainAmbience`, `Mushrooms` -> `Mushroom`, `AltUnderground` -> `UndergroundAlt`, `TheTowers` -> `LunarPillars`, `Hell` -> `Underworld`, `LunarBoss` -> `MoonLord`, `GoblinInvasion` -> `GoblinArmy`, `DayRemix` -> `OverworldDayRemix`, `MenuMusic` -> `TitleJourneysBeginningWithIntro`, `Monsoon` -> `Storm`, `JungleUnderground` -> `UndergroundJungle`, `ConsoleMenu` -> `TitleAlt`, `OtherworldlyRain` -> `OtherworldRain`, `OtherworldlyDay` -> `OtherworlddDay`, `OtherworldlyNight` -> `OtherworldNight`, `OtherworldlyUnderground` -> `OtherworldUnderground`, `OtherworldlyDesert` -> `OtherworldDesert`, `OtherworldlyOcean` -> `OtherworldOcean`, `OtherworldlyMushrooms` -> `OtherworldMushroom`, `OtherworldlyDungeon` -> `OtherworldDungeon`, `OtherworldlySpace` -> `OtherworldSpace`, `OtherworldlyUnderworld` -> `OtherworldUnderworld`, `OtherworldlySnow` -> `OtherworldSnow`, `OtherworldlyCorruption` -> `OtherworldCorruption`, `OtherworldlyUGCorrption` -> `OtherworldUndergroundCorruption`, `OtherworldlyCrimson` -> `OtherworldCrimson`, `OtherworldlyUGCrimson` -> `OtherworldUndergroundCrimson`, `OtherworldlyIce` -> `OtherworldIce`, `OtherworldlyUGHallow` -> `OtherworldUndergroundHallow`, `OtherworldlyEerie` -> `OtherworldEerie`, `OtherworldlyBoss2` -> `OtherworldBoss2`, `OtherworldlyBoss1` -> `OtherworldBoss1`, `OtherworldlyInvasion` -> `OtherworldInvasion`, `OtherworldlyTowers` -> `OtherworldLunarPillars`, `OtherworldlyLunarBoss` -> `OtherworldMoonLord`, `OtherworldlyPlantera` -> `OtherworldPlantera`, `OtherworldlyJungle` -> `OtherworldJungle`, `OtherworldlyWoF` -> `OtherworldWallOfFlesh`, `OtherworldlyHallow` -> `OtherworldHallow`, `Credits` -> `JourneysEnd`, `Shimmer` -> `Aether`
 * 🤖: `NPCID.Sets.UsesNewTargetting` -> `NPCID.Sets.UsesNewTargeting`
@@ -487,6 +543,7 @@ All classes are in the `Terraria` or `Terraria.ID` namespaces unless otherwise i
 * ⚙️: `TileID.Sets.IsAMechanism` -> `TileID.Sets.Wiring.IsAMechanism`
   * 💀: The meaning of `IsAMechanism` has changed, it is now used for all wireable tiles and is how the items that place the tiles automatically get the "Wireable" tooltip. Add `TileID.Sets.Wiring.IsAMechanism[Type] = true;` to all tiles that do something when wired and add `TileID.Sets.Wiring.IgnoreWhenValidatingTraps[Type] = true;` to wireable tiles that aren't traps.
 * 🤖: `TileID.Sets.IsATrigger` -> `TileID.Sets.Wiring.IsATrigger`
+* 🤖: `TileID.Sets.IsSkippedForNPCSpawningGroundTypeCheck` -> `TileID.Sets.InheritTypeOfTileBelowForNPCSpawning`
 * 🤖: `TileID.Sets.InteractibleByNPCs` -> `TileID.Sets.InteractableByNPCs`
 * 🤖: `TileID.Sets.Torch` -> `TileID.Sets.Torches`
 * 🤖: `TileID.Sets.Campfire` -> `TileID.Sets.Campfires`
@@ -495,7 +552,7 @@ All classes are in the `Terraria` or `Terraria.ID` namespaces unless otherwise i
 * 🤖: `WallID.Sets.Crimson` -> `WallID.Sets.SpreadsCrimson`
 * 🤖: `WallID.Sets.Hallow` -> `WallID.Sets.SpreadsHallow`
 * 🤖: `Main.DisableIntenseVisualEffects` -> `Main.FlashyEffectsWorld`. The new field has the opposite meaning of the old field.
-* 💀: `Main.hasFocus` -> `Terraria.FocusHelper.AllowGameplayInputs`, most likely. Other options include `FocusHelper.AllowUIInputs`, `FocusHelper.UpdateVisualEffects`, and many more. Choose the property that best matches the intention of the code.
+* 💀: `Main.hasFocus` -> `Terraria.FocusHelper.IsSelectedApplication`, most likely. Other options include `FocusHelper.AllowInputProcessing`, `FocusHelper.GameplayActive`, `FocusHelper.UpdateVisualEffects`, and many more. Choose the property that best matches the intention of the code.
 * 🤖: `Main.gameInactive` -> `Terraria.FocusHelper.GameplayActive`. The new field has the opposite meaning of the old field.
 * 🤖: `NPC.killCount` -> `Terraria.GameContent.BannerSystem.killCount`
 * 🤖: `WorldGen.gen` -> `WorldGen.isGeneratingOrLoadingWorld`
@@ -578,3 +635,4 @@ All classes are in the `Terraria.ModLoader` or `Terraria` namespaces unless othe
   * Add `description_[languageCode].txt` and `description_workshop_[languageCode].txt` to support other languages for the in-game description and steam workshop description.
 * `(Mod|Global)BlockType.RandomUpdate` (Tiles and Walls) now have an `underground` parameter to more easily support underground or overground-only logic and better support the "Don't dig up" special world seed behaviors. If that seed is active, tile locations technically underground (below `Main.worldSurface`) might be considered overground for random update purposes. Modders should trust the `underground` parameter rather than rely on checking `Main.worldSurface` to support the special characteristics of "Don't dig up".
 * 🤖: `ModCloud.Draw` now has a `List<DrawData>` parameter replacing the `SpriteBatch` parameter. Manually drawing during this hook is no longer supported due to the new horizon visuals drawing clouds using a shader, but the new parameter allows supplying additional `DrawData` if desired.
+* `ModMount.Dismount`'s `skipDust` parameter can potentially be true before the hook is called. This indicates that the player is dismounting in a location without enough room and is being forcefully teleported to a safe location. In this case, skip manual dust spawning code because the teleport effect will be displayed instead. Basically, if `skipDust` is true, skip custom despawn dust logic.

@@ -253,6 +253,17 @@ public partial class InvokeRewriter : BaseRewriter
 		return invoke;
 	};
 
+	public static RewriteInvoke ConvertItemSetDefaults => (rw, invoke, methodName) => {
+		// Remove noMatCheck parameter
+		if (invoke.ArgumentList.Arguments.Count != 0) return RemoveParameter(1, "noMatCheck", "bool")(rw, invoke, methodName);
+
+		// Item.SetDefaults() -> Item.TurnToAir()
+		return invoke.ReplaceNode(
+			methodName,
+			IdentifierName("TurnToAir").WithTriviaFrom(methodName)
+		);
+	};
+
 	private static SyntaxNode CommentOutNode(SyntaxNode node) {
 
 		var t = node.GetLeadingTrivia();

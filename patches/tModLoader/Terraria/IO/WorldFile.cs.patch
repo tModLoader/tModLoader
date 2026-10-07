@@ -140,7 +140,7 @@
  		}
  	}
  
-@@ -1097,7 +_,9 @@
+@@ -1103,7 +_,9 @@
  		}
  
  		writer.Write(NPC.savedAngler);
@@ -151,7 +151,7 @@
  		writer.Write(NPC.savedStylist);
  		writer.Write(NPC.savedTaxCollector);
  		writer.Write(NPC.savedGolfer);
-@@ -1208,7 +_,7 @@
+@@ -1215,7 +_,7 @@
  				byte b3;
  				byte b4 = (b3 = (b2 = (b = 0)));
  				bool flag = false;
@@ -160,7 +160,7 @@
  					flag = true;
  
  				if (flag) {
-@@ -1222,9 +_,11 @@
+@@ -1229,9 +_,11 @@
  					}
  
  					if (Main.tileFrameImportant[tile.type]) {
@@ -174,7 +174,7 @@
  						num3++;
  						array[num3] = (byte)((uint)tile.frameY & 0xFFu);
  						num3++;
-@@ -1239,7 +_,7 @@
+@@ -1246,7 +_,7 @@
  					}
  				}
  
@@ -183,7 +183,7 @@
  					b4 = (byte)(b4 | 4u);
  					array[num3] = (byte)tile.wall;
  					num3++;
-@@ -1393,7 +_,7 @@
+@@ -1400,7 +_,7 @@
  			writer.Write(chest.maxItems);
  			for (int l = 0; l < chest.maxItems; l++) {
  				Item item = chest.item[l];
@@ -192,7 +192,7 @@
  					writer.Write((short)0);
  					continue;
  				}
-@@ -1404,7 +_,7 @@
+@@ -1411,7 +_,7 @@
  				writer.Write((short)item.stack);
  				if (item.stack > 0) {
  					writer.Write(item.type);
@@ -201,7 +201,7 @@
  				}
  			}
  		}
-@@ -1436,7 +_,10 @@
+@@ -1443,7 +_,10 @@
  
  	public static int SaveNPCs(BinaryWriter writer)
  	{
@@ -212,7 +212,7 @@
  		writer.Write(array.Count(value: true));
  		for (int i = 0; i < array.Length; i++) {
  			if (array[i])
-@@ -1446,6 +_,9 @@
+@@ -1453,6 +_,9 @@
  		for (int j = 0; j < Main.npc.Length; j++) {
  			NPC nPC = Main.npc[j];
  			if (nPC.active && nPC.townNPC && nPC.type != 368) {
@@ -222,7 +222,7 @@
  				writer.Write(nPC.active);
  				writer.Write(nPC.netID);
  				writer.Write(nPC.GivenName);
-@@ -1468,6 +_,9 @@
+@@ -1475,6 +_,9 @@
  		for (int k = 0; k < Main.npc.Length; k++) {
  			NPC nPC2 = Main.npc[k];
  			if (nPC2.active && NPCID.Sets.SavesAndLoads[nPC2.type]) {
@@ -232,7 +232,7 @@
  				writer.Write(nPC2.active);
  				writer.Write(nPC2.netID);
  				writer.WriteVector2(nPC2.position);
-@@ -2273,8 +_,21 @@
+@@ -2287,8 +_,21 @@
  
  				while (num3 > 0) {
  					j++;
@@ -254,7 +254,7 @@
  				}
  			}
  		}
-@@ -2387,7 +_,11 @@
+@@ -2401,7 +_,11 @@
  			int num3 = reader.ReadInt32();
  			Tile tile = Main.tile[num2, num3];
  			Sign sign;
@@ -266,7 +266,7 @@
  				sign = new Sign();
  				sign.text = text;
  				sign.x = num2;
-@@ -2724,6 +_,8 @@
+@@ -2738,6 +_,8 @@
  			return result;
  		}
  		catch (Exception value) {
@@ -275,7 +275,7 @@
  			using (StreamWriter streamWriter = new StreamWriter("client-crashlog.txt", append: true)) {
  				streamWriter.WriteLine(DateTime.Now);
  				streamWriter.WriteLine(value);
-@@ -2796,8 +_,9 @@
+@@ -2810,8 +_,9 @@
  	public static int SaveTileEntities(BinaryWriter writer)
  	{
  		lock (TileEntity.EntityCreationLock) {

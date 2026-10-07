@@ -7,6 +7,7 @@ namespace Terraria.ModLoader;
 /// <see cref="ExtraJump"/> is a singleton, defining the properties and behaviour of midair extra jumps.<br/>
 /// Fields defining the state of a jump per player are stored in <see cref="ExtraJumpState"/>
 /// </summary>
+[CloneByReference]
 public abstract partial class ExtraJump : ModType
 {
 	public static ExtraJump Flipper { get; private set; } = new FlipperJump();

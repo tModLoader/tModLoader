@@ -1,0 +1,11 @@
+{
+	"HomePage": {
+		"AreaTitle": "開発者ピックアップ",
+		"AreaDescription": "tModLoaderの開発者が厳選した、高品質ながらあまり知られていないTerraria Mod特集です。",
+	},
+	"General": {
+		"WorkshopTitle": "tModLoader Mods",
+		// Max Length: 200
+		"WorkshopDescription": "SteamワークショップでtModLoader Modを閲覧・ダウンロードできます。ここに掲載されているModは、通常版のtModLoaderでのみ使用可能です。1.3 Legacy版に対応したModは、別の場所に掲載されています。",
+	}
+}
