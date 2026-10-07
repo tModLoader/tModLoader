@@ -7890,11 +7890,13 @@
  			return;
  
  		if (!Main.GamepadDisableCursorItemIcon) {
-@@ -38342,7 +_,7 @@
+@@ -38341,8 +_,8 @@
+ 
  		if (!ItemTimeIsZero || itemAnimation <= 0 || !controlUseItem)
  			return;
- 
+-
 -		if ((sItem.type == 205 && !Main.tile[tileTargetX, tileTargetY].shimmer()) || (sItem.type == 3032 && Main.tile[tileTargetX, tileTargetY].liquidType() == 0) || (sItem.type == 3032 && Main.tile[tileTargetX, tileTargetY].shimmer()) || (sItem.type == 4872 && Main.tile[tileTargetX, tileTargetY].lava()) || (sItem.type == 5303 && Main.tile[tileTargetX, tileTargetY].honey()) || sItem.type == 5304) {
++		// TODO: OnBucketPickup(Item item, int LiquidID) hook
 +		if ((sItem.type == 205 && LiquidID.Sets.CreateLiquidBucketItem[Main.tile[tileTargetX, tileTargetY].liquidType()] != -1) || LiquidID.Sets.CanBeAbsorbedBy[Main.tile[tileTargetX, tileTargetY].liquidType()].Contains(sItem.type)) {
  			int num = Main.tile[tileTargetX, tileTargetY].liquidType();
  			int num2 = 0;

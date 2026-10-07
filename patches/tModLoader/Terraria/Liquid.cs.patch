@@ -184,7 +184,7 @@
  	public static void LiquidCheck(int x, int y, int thisLiquidType, bool createMergeTilesDuringGen = false)
  	{
  		if (!WorldGen.InWorld(x, y, 1) || WorldGen.SolidTile(x, y))
-@@ -976,6 +_,34 @@
+@@ -976,10 +_,40 @@
  		Tile tile4 = Main.tile[x, y + 1];
  		Tile tile5 = Main.tile[x, y];
  		if ((tile.liquid > 0 && tile.liquidType() != thisLiquidType) || (tile2.liquid > 0 && tile2.liquidType() != thisLiquidType) || (tile3.liquid > 0 && tile3.liquidType() != thisLiquidType)) {
@@ -197,9 +197,8 @@
 +					NetMessage.SendData(17, -1, -1, null, 0, x, y);
 +			}
 +			*/
++			bool[] liquidsNearby = new bool[LiquidLoader.LiquidCount]; // Added by TML, normally each liquid would have their own flag
 +			if (!tile5.active()) {
-+				bool[] liquidsNearby = new bool[LiquidLoader.LiquidCount]; // Added by TML, normally each liquid would have their own flag
-+
 +				if (tile.liquid > 0)
 +					liquidsNearby[tile.liquidType()] = true;
 +				if (tile2.liquid > 0)
@@ -216,9 +215,16 @@
 +			else {
 +				return;
 +			}
++			/*
  			bool waterNearby = tile.anyWater() || tile2.anyWater() || tile3.anyWater();
  			bool lavaNearby = tile.anyLava() || tile2.anyLava() || tile3.anyLava();
  			bool honeyNearby = tile.anyHoney() || tile2.anyHoney() || tile3.anyHoney();
+ 			bool shimmerNearby = tile.anyShimmer() || tile2.anyShimmer() || tile3.anyShimmer();
++			*/
++			GetLiquidMergeTypes(x, y, thisLiquidType, out liquidMergeTileType, out liquidMergeType, liquidsNearby);
+ 			int num = 0;
+ 			if (tile.liquidType() != thisLiquidType) {
+ 				num += tile.liquid;
 @@ -996,9 +_,6 @@
  				tile3.liquid = 0;
  			}
@@ -229,13 +235,14 @@
  			if (num >= 24 && liquidMergeType != thisLiquidType && (!tile5.active() || Main.tileObsidianKill[tile5.type])) {
  				tile5.liquid = 0;
  				CreateLiquidMergeTile(x, y, thisLiquidType, liquidMergeType, liquidMergeTileType, createMergeTilesDuringGen);
-@@ -1029,14 +_,21 @@
+@@ -1029,16 +_,25 @@
  
  				return;
  			}
 -
  			int liquidMergeTileType2 = 56;
  			int liquidMergeType2 = 0;
+-			bool waterNearby2 = tile4.water();
 +			bool[] liquidsNearby = new bool[LiquidLoader.LiquidCount];
 +			if (tile4.liquid > 0) {
 +				liquidsNearby[tile4.liquidType()] = true;
@@ -244,19 +251,18 @@
 +			if (!LiquidLoader.PreLiquidMerge(x, y, x, y + 1, thisLiquidType, liquidMergeType2)) {
 +				return;
 +			}
--			bool waterNearby2 = tile4.water();
-+			//bool waterNearby2 = tile4.liquidType() == 0;
--			bool lavaNearby2 = tile4.lava();
-+			//bool lavaNearby2 = tile4.lava();
--			bool honeyNearby2 = tile4.honey();
-+			//bool honeyNearby2 = tile4.honey();
--			bool shimmerNearby2 = tile4.shimmer();
-+			//bool shimmerNearby2 = tile4.shimmer();
--			GetLiquidMergeTypes(thisLiquidType, out liquidMergeTileType2, out liquidMergeType2, waterNearby2, lavaNearby2, honeyNearby2, shimmerNearby2);
-+			//GetLiquidMergeTypes(thisLiquidType, out liquidMergeTileType2, out liquidMergeType2, waterNearby2, lavaNearby2, honeyNearby2, shimmerNearby2);
++			/*
++			bool waterNearby2 = tile4.liquidType() == 0;
+ 			bool lavaNearby2 = tile4.lava();
+ 			bool honeyNearby2 = tile4.honey();
+ 			bool shimmerNearby2 = tile4.shimmer();
+ 			GetLiquidMergeTypes(thisLiquidType, out liquidMergeTileType2, out liquidMergeType2, waterNearby2, lavaNearby2, honeyNearby2, shimmerNearby2);
  			tile5.liquid = 0;
  			tile4.liquid = 0;
++			*/
  			CreateLiquidMergeTile(x, y + 1, thisLiquidType, liquidMergeType2, liquidMergeTileType2, createMergeTilesDuringGen);
+ 		}
+ 	}
 @@ -1059,7 +_,7 @@
  	private static void CreateLiquidMergeTile(int x, int y, int thisLiquidType, int liquidMergeType, int liquidMergeTileType, bool createMergeTilesDuringGen)
  	{
