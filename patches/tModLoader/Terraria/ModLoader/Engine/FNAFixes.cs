@@ -106,16 +106,16 @@ internal static class FNAFixes
 	private static void EnableHighDPI()
 	{
 		// Don't know if this is needed, maybe it helps us get resolutions? - Chicken Bones, SDL3 update
-
-		// High DPI is used by Windows for its 'SCALE' setting. This ensures that 200% SCALE does not break the game rendering
-		// On OSX, it creates issues and it is unknown whether this is needed on Linux. -- Solxan, forward port PR#4951 during 1.4.5
 		if (OperatingSystem.IsWindows()) {
 			[DllImport("user32.dll")]
 			static extern bool SetProcessDPIAware();
 			SetProcessDPIAware();
-
-			Environment.SetEnvironmentVariable("FNA_GRAPHICS_ENABLE_HIGHDPI", "1");
 		}
+
+		// Without high DPI, the Windows 'SCALE' setting breaks game rendering and Wayland fractional scaling makes the window blurry (#5390).
+		// On OSX it creates issues (#4257, #4951), so it is left to FNA's /enablehighdpi:1 launch argument there.
+		if (!OperatingSystem.IsMacOS())
+			Environment.SetEnvironmentVariable("FNA_GRAPHICS_ENABLE_HIGHDPI", "1");
 	}
 
 	private static void ConfigureDrivers()
