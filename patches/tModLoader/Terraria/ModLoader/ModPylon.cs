@@ -2,6 +2,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using System;
+using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.GameContent.ObjectInteractions;
@@ -44,7 +45,6 @@ namespace Terraria.ModLoader;
 /// </remarks>
 public abstract class ModPylon : ModTile
 {
-	private bool _lastDrawnIconOnScreen = true;
 
 	/// <summary>
 	/// What type of Pylon this ModPylon represents.
@@ -374,6 +374,10 @@ public abstract class ModPylon : ModTile
 		spriteBatch.Draw(crystalHighlightTexture.Value, drawingPosition - Main.screenPosition, smartCursorGlowFrame, selectionGlowColor, 0f, origin, 1f, SpriteEffects.None, 0f);
 	}
 
+	[Obsolete("Use the overload with out bool onScreen, and pass onScreen to DefaultMapClickHandle", error: true)]
+	public bool DefaultDrawMapIcon(ref MapOverlayDrawContext context, Asset<Texture2D> mapIcon, Vector2 drawCenter, Color drawColor, float deselectedScale, float selectedScale)
+		=> DefaultDrawMapIcon(ref context, mapIcon, drawCenter, drawColor, deselectedScale, selectedScale, out _);
+
 	/// <summary>
 	/// Draws the passed in map icon texture for pylons the exact way that vanilla would draw it. Note that this method
 	/// assumes that the texture is NOT framed, i.e there is only a single sprite that is not animated.
@@ -385,21 +389,9 @@ public abstract class ModPylon : ModTile
 	/// <param name="drawColor"> The color to draw the icon as. </param>
 	/// <param name="deselectedScale"> The scale to draw the map icon when it is not selected (not being hovered over). </param>
 	/// <param name="selectedScale"> The scale to draw the map icon when it IS selected (being hovered over). </param>
-	public bool DefaultDrawMapIcon(ref MapOverlayDrawContext context,
-		Asset<Texture2D> mapIcon, Vector2 drawCenter, Color drawColor,
-		float deselectedScale, float selectedScale)
-	{
-		bool result = DefaultDrawMapIcon(ref context, mapIcon, drawCenter, drawColor,
-			deselectedScale, selectedScale, out bool onScreen);
-		_lastDrawnIconOnScreen = onScreen;
-		return result;
-	}
-
-	/// <inheritdoc cref="DefaultDrawMapIcon(ref MapOverlayDrawContext, Asset{Texture2D}, Vector2, Color, float, float)"/>
-	/// <param name="onScreen"> Whether or not the icon was drawn on-screen (not clamped to the edge). </param>
-	public bool DefaultDrawMapIcon(ref MapOverlayDrawContext context,
-		Asset<Texture2D> mapIcon, Vector2 drawCenter, Color drawColor,
-		float deselectedScale, float selectedScale, out bool onScreen)
+	/// <param name="onScreen"><see langword="true"/> if the icon was on-screen, <see langword="false"/> if it was clamped to the edge. Pass this to <see cref="DefaultMapClickHandle(bool, bool, TeleportPylonInfo, string, ref string)"/>.
+	/// </param>
+	public bool DefaultDrawMapIcon(ref MapOverlayDrawContext context, Asset<Texture2D> mapIcon, Vector2 drawCenter, Color drawColor, float deselectedScale, float selectedScale, out bool onScreen)
 	{
 		if (Main.mapFullscreen) {
 			return context.DrawClamped(
@@ -412,7 +404,7 @@ public abstract class ModPylon : ModTile
 				selectedScale,
 				deselectedScale * 0.5f,
 				Alignment.Center,
-				10,
+				TeleportPylonsMapLayer.BorderSize,
 				out onScreen
 			).IsMouseOver;
 		}
@@ -429,25 +421,22 @@ public abstract class ModPylon : ModTile
 		).IsMouseOver;
 	}
 
+	[Obsolete("Use the overload with bool onScreen, passing onScreen from DefaultDrawMapIcon", error: true)]
+	public void DefaultMapClickHandle(bool mouseIsHovering, TeleportPylonInfo pylonInfo, string hoveringTextKey, ref string mouseOverText)
+		=> DefaultMapClickHandle(mouseIsHovering, true, pylonInfo, hoveringTextKey, ref mouseOverText);
+
 	/// <summary>
 	/// Handles mouse clicking on the map icon the exact way that vanilla handles it. In normal circumstances, this should be called
 	/// directly after DefaultDrawMapIcon.
 	/// </summary>
 	/// <param name="mouseIsHovering"> Whether or not the map icon is currently being hovered over. </param>
+	/// <param name="onScreen">Whether or not the map icon was drawn on-screen. Clicking an on-screen icon teleports to the pylon, while clicking an off-screen icon pans the map towards it.</param>
 	/// <param name="pylonInfo"> The information pertaining to the current pylon being drawn. </param>
 	/// <param name="hoveringTextKey">
 	/// The localization key that will be used to display text on the mouse, granted the mouse is currently hovering over the map icon.
 	/// </param>
 	/// <param name="mouseOverText"> The reference to the string value that actually changes the mouse text value. </param>
-	public void DefaultMapClickHandle(bool mouseIsHovering,
-		TeleportPylonInfo pylonInfo, string hoveringTextKey, ref string mouseOverText)
-		=> DefaultMapClickHandle(mouseIsHovering, _lastDrawnIconOnScreen, pylonInfo,
-			hoveringTextKey, ref mouseOverText);
-
-	/// <inheritdoc cref="DefaultMapClickHandle(bool, TeleportPylonInfo, string, ref string)"/>
-	/// <param name="onScreen"> Whether or not the icon was drawn on-screen (not clamped to the edge). </param>
-	public void DefaultMapClickHandle(bool mouseIsHovering, bool onScreen,
-		TeleportPylonInfo pylonInfo, string hoveringTextKey, ref string mouseOverText)
+	public void DefaultMapClickHandle(bool mouseIsHovering, bool onScreen, TeleportPylonInfo pylonInfo, string hoveringTextKey, ref string mouseOverText)
 	{
 		if (!mouseIsHovering)
 			return;
@@ -457,14 +446,14 @@ public abstract class ModPylon : ModTile
 
 		if (Main.mouseLeft && Main.mouseLeftRelease) {
 			Main.mouseLeftRelease = false;
+			PlayerInput.LockGamepadButtons("MouseLeft");
 
 			if (onScreen) {
 				Main.mapFullscreen = false;
-				PlayerInput.LockGamepadButtons("MouseLeft");
 				Main.PylonSystem.RequestTeleportation(pylonInfo, Main.LocalPlayer);
+				SoundEngine.PlaySound(11);
 			}
 			else {
-				PlayerInput.LockGamepadButtons("MouseLeft");
 				Main.PanTargetMapFullscreen = true;
 				Main.PanTargetMapFullscreenEnd.X = pylonInfo.PositionInTiles.X;
 				Main.PanTargetMapFullscreenEnd.Y = pylonInfo.PositionInTiles.Y;
