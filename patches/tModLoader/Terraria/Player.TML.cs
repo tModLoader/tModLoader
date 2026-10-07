@@ -26,6 +26,11 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 	public Item equippedWings = null;
 
 	/// <summary>
+	/// The currently active <see cref="ArmorSetBonus"/>.
+	/// </summary>
+	public ArmorSetBonus ActiveArmorSetBonus = null;
+
+	/// <summary>
 	/// Set by any gem robe when worn by the player in the functional armor slot. Increases the spawn rate of <see cref="NPCID.Tim"/>.
 	/// </summary>
 	public bool hasGemRobe = false;
