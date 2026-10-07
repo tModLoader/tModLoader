@@ -6706,19 +6706,6 @@
  			}
  		}
  
-@@ -33054,6 +_,12 @@
- 			BiomeCampfirePlaceStyle(ref type, ref style);
- 
- 		Tile tile = Main.tile[tileTargetX, tileTargetY];
-+		for (int i = 0; i < LiquidLoader.LiquidCount; i++) {
-+			if (LiquidLoader.BlocksTilePlacement(this, Player.tileTargetX, Player.tileTargetY, i)) {
-+				return !WorldGen.WouldTileReplacementBeBlockedByLiquid(Player.tileTargetX, Player.tileTargetY, i);
-+			}
-+		}
-+
- 		if (ItemID.Sets.SortingPriorityRopes[HeldItem.type] != -1)
- 			return false;
- 
 @@ -33204,7 +_,8 @@
  		if (!newObjectType)
  			style = PlaceThing_Tiles_PlaceIt_GetLegacyTileStyle(style);
@@ -7897,10 +7884,52 @@
 -
 -		if ((sItem.type == 205 && !Main.tile[tileTargetX, tileTargetY].shimmer()) || (sItem.type == 3032 && Main.tile[tileTargetX, tileTargetY].liquidType() == 0) || (sItem.type == 3032 && Main.tile[tileTargetX, tileTargetY].shimmer()) || (sItem.type == 4872 && Main.tile[tileTargetX, tileTargetY].lava()) || (sItem.type == 5303 && Main.tile[tileTargetX, tileTargetY].honey()) || sItem.type == 5304) {
 +		// TODO: OnBucketPickup(Item item, int LiquidID) hook
-+		if ((sItem.type == 205 && LiquidID.Sets.CreateLiquidBucketItem[Main.tile[tileTargetX, tileTargetY].liquidType()] != -1) || LiquidID.Sets.CanBeAbsorbedBy[Main.tile[tileTargetX, tileTargetY].liquidType()].Contains(sItem.type)) {
++		if ((ItemID.Sets.BucketItems.Contains(sItem.type) && LiquidID.Sets.CreateLiquidBucketItem[Main.tile[tileTargetX, tileTargetY].liquidType()] != -1) || LiquidID.Sets.CanBeAbsorbedBy[Main.tile[tileTargetX, tileTargetY].liquidType()].Contains(sItem.type)) {
  			int num = Main.tile[tileTargetX, tileTargetY].liquidType();
  			int num2 = 0;
  			for (int i = tileTargetX - 1; i <= tileTargetX + 1; i++) {
+@@ -38356,6 +_,7 @@
+ 				return;
+ 
+ 			int liquidType = Main.tile[tileTargetX, tileTargetY].liquidType();
++			goto newBucketLogic;
+ 			if (sItem.type != 3032 && sItem.type != 4872 && sItem.type != 5303 && sItem.type != 5304) {
+ 				if (Main.tile[tileTargetX, tileTargetY].honey() && sItem.type == 205) {
+ 					sItem.stack--;
+@@ -38373,6 +_,33 @@
+ 					PutItemInInventoryFromItemUsage(206);
+ 				}
+ 			}
++			newBucketLogic:
++			// if item is not sponge, convert to FactorySet?
++			if (!ItemID.Sets.SpongeItems.Contains(sItem.type)) {
++				// If the bucket in question is a vanilla bucket
++				
++				if (sItem.type == ItemID.EmptyBucket) {
++					bool? result = ItemLoader.OnVanillaBucketUse(sItem, liquidType, out int itemID);
++					if (result.HasValue && result == true && itemID != -1) {
++						sItem.stack--;
++						PutItemInInventoryFromItemUsage(itemID);
++					} else if (liquidType == LiquidID.Water) {
++						sItem.stack--;
++						PutItemInInventoryFromItemUsage(206);
++					} else if (liquidType == LiquidID.Honey) {
++						sItem.stack--;
++						PutItemInInventoryFromItemUsage(1128);
++					} else if (liquidType == LiquidID.Lava) {
++						sItem.stack--;
++						PutItemInInventoryFromItemUsage(207);
++					} else if (liquidType == LiquidID.Shimmer || !result.HasValue || itemID < -1) {
++						return;
++					}
++				}
++			}
++				
++			
++
+ 
+ 			SoundEngine.PlaySound(19, (int)position.X, (int)position.Y);
+ 			ApplyItemTime(sItem);
 @@ -38707,7 +_,9 @@
  			}
  

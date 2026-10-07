@@ -271,7 +271,7 @@
  		public static bool?[] ForceConsumption = Factory.CreateCustomSet<bool?>(null, new object[12] {
  			(short)2350,
  			false,
-@@ -182,15 +_,44 @@
+@@ -182,15 +_,60 @@
  			(short)4344,
  			true
  		});
@@ -308,6 +308,22 @@
 +		/// <br/> <strong>Do not manually add values to this set.</strong> Values in this set are generated using the item types (<see cref="Item.type"/>) in <see cref="NonColorfulDyeItems"/>.
 +		/// </summary>
  		public static bool[] ColorfulDyeValues = new bool[0];
++
++		/// <summary>
++		/// If <see langword="true"/> for a given item that is a bucket, it can execute the OnBucketUse hook
++		/// </summary>
++		public static List<int> BucketItems = new List<int> { 205 };
++
++		/// <summary>
++		/// If <see langword="true"/> for sponge item type
++		/// </summary>
++		public static List<int> SpongeItems = new List<int>
++		{
++			3032,
++			4872,
++			5303,
++			5304
++		};
 +
 +		/// <summary>
 +		/// If not <see langword="null"/> for a given item type (<see cref="Item.type"/>), then that item will place special tile styles on grass when used. See <see cref="FlowerPacketInfo"/> for more info.

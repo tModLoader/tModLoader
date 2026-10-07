@@ -1107,6 +1107,31 @@ public static class ItemLoader
 		return result ?? modItemResult;
 	}
 
+	private delegate bool? OnVanillaBucketUseDelegate(Item item, int liquidType, out int newItemId);
+
+	private static HookList HookOnVanillaBucketUse = AddHook<OnVanillaBucketUseDelegate>(g => g.OnVanillaBucketUse);
+
+	/// <summary>
+	/// TODO: DOCUMENTATION
+	/// </summary>
+	public static bool? OnVanillaBucketUse(Item item, int liquidType, out int newItemId)
+	{
+		newItemId = -1;
+		if (item.IsAir) 
+			return null;
+
+		bool? result = null;
+		foreach (var g in HookOnVanillaBucketUse.Enumerate(item)) {
+			bool? vanillaBucketUse = g.OnVanillaBucketUse(item, liquidType, out newItemId);
+			if (vanillaBucketUse.HasValue && result != false && newItemId != -1) {
+				result = vanillaBucketUse.Value;
+			}
+		}
+
+		return result;
+	}
+
+
 	private static HookList HookUseAnimation = AddHook<Action<Item, Player>>(g => g.UseAnimation);
 
 	public static void UseAnimation(Item item, Player player)

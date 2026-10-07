@@ -1,13 +1,14 @@
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Security.Policy;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria.DataStructures;
-using Terraria.ModLoader.IO;
-using Terraria.Utilities;
 using Terraria.ID;
 using Terraria.ModLoader.Core;
+using Terraria.ModLoader.IO;
+using Terraria.Utilities;
 
 namespace Terraria.ModLoader;
 
@@ -1261,6 +1262,15 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// </summary>
 	public virtual void ModifyTooltips(Item item, List<TooltipLine> tooltips)
 	{
+	}
+
+	/// <summary>
+	/// TODO: DOCUMENTATION
+	/// </summary>
+	public virtual bool? OnVanillaBucketUse(Item sItem, int liquidType, out int newItemId)
+	{
+		newItemId = -1;
+		return false;
 	}
 
 	/// <summary>
