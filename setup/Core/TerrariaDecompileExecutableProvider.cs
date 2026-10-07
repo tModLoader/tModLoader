@@ -59,9 +59,7 @@ public sealed class TerrariaDecompileExecutableProvider
 
 			string serverVersionWithoutDots = ServerVersion.ToString().Replace(".", "");
 			string url = $"https://terraria.org/api/download/pc-dedicated-server/terraria-server-{serverVersionWithoutDots}.zip";
-			
 			var stream = await DownloadHelpers.DownloadWithProgress(httpClient, url, taskProgress, cancellationToken);
-
 			using var zip = new ZipArchive(stream);
 			zip.Entries.Single(e => e.FullName == $"{serverVersionWithoutDots}/Windows/TerrariaServer.exe").ExtractToFile(destinationPath);
 		}

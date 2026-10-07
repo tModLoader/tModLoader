@@ -1,76 +1,43 @@
-using System.Buffers;
 using System.Net;
 using Terraria.ModLoader.Setup.Core.Abstractions;
 
 namespace Terraria.ModLoader.Setup.Core.Utilities {
-    public static class DownloadHelpers {
+	public static class DownloadHelpers {
 
-        public static async Task<MemoryStream> DownloadWithProgress(HttpClient client, string url, ITaskProgress progress, CancellationToken cancellationToken = default) {
-            var responseTask = client.GetAsync(url, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
-
-			progress.ReportStatus("Request sent...");
-
-			using var response = await responseTask;
+		public static async Task<MemoryStream> DownloadWithProgress(HttpClient client, string url, ITaskProgress progress, CancellationToken cancellationToken = default) {
+			using var response = await client.GetAsync(url, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
 			response.EnsureSuccessStatusCode();
 
-			long size = response.Content.Headers.ContentLength 
+			var size = (int?)response.Content.Headers.ContentLength
 				?? throw new WebException("Expected ContentLength header", WebExceptionStatus.ReceiveFailure);
 
-			progress.ReportStatus("Downloading data...");
+			progress.ReportStatus($"Downloading {FormatSize(size)}...");
+			progress.SetMaxProgress(size / 1024);
 
-			var stream = new MemoryStream((int)size);
+			using var body = await response.Content.ReadAsStreamAsync(cancellationToken);
+			var buffer = new byte[size];
 
-            using var body = await response.Content.ReadAsStreamAsync();
+			for (int copied = 0; copied < size; ) {
+				int read = await body.ReadAsync(buffer.AsMemory(copied), cancellationToken);
+				if (read == 0)
+					throw new EndOfStreamException();
 
-			await CopyWithProgress(body, stream, (int)size, progress);
+				copied += read;
+				progress.SetCurrentProgress(copied / 1024);
+			}
 
-            return stream;
-        }
+			progress.SetMaxProgress(0); // no need to leave the download progress at the top
+			return new MemoryStream(buffer);
+		}
 
-        public static async Task CopyWithProgress(Stream from, Stream to, int expectedSize, ITaskProgress progress, CancellationToken cancellationToken = default) {
-            progress.SetMaxProgress(expectedSize / 1024);
+		private static string FormatSize(long bytes) {
+			string[] units = ["B", "KB", "MB", "GB"];
+			double size = bytes;
+			int mag = 0;
+			for (; size >= 1024 && mag < units.Length - 1; mag++)
+				size /= 1024;
 
-            byte[]? buffer = null;
-            bool directBuffer = false;
-            int directStart = 0;
-
-            if (to is MemoryStream ms) {
-                try {
-                    directStart = (int)ms.Position;
-                    ms.SetLength((long)(expectedSize + directStart));
-                    buffer = ms.GetBuffer();
-                    directBuffer = true;
-                }
-                catch (UnauthorizedAccessException) {}
-            }
-
-            if (buffer is null) {
-                buffer = ArrayPool<byte>.Shared.Rent(81920);
-                directBuffer = false;
-            }
-            
-            int copied = 0;
-
-            while (!cancellationToken.IsCancellationRequested) {
-
-                int readStart = directBuffer? copied + directStart : 0;
-
-                int read = await from.ReadAsync(buffer, readStart, buffer.Length - readStart, cancellationToken);
-                if (read == 0) {
-                    break;
-                }
-
-                copied += read;
-                progress.SetCurrentProgress(copied / 1024);
-
-                if (!directBuffer) {
-                    await to.WriteAsync(buffer, 0, read, cancellationToken);
-                }
-            }
-
-            if (!directBuffer) {
-                ArrayPool<byte>.Shared.Return(buffer);
-            }
-        }
-    }
+			return $"{size:0.#} {units[mag]}";
+		}
+	}
 }
