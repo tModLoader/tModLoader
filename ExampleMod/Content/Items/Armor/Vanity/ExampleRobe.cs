@@ -29,8 +29,8 @@ namespace ExampleMod.Content.Items.Armor.Vanity
 
 			/* ExampleRobe is intended to be vanity, but if it was armor like other Robes, we could do the following:
 			// Add armor sets for the Wizard and Magic Hat using the same Identifier so wearing this will apply the expected armor set bonuses.
-			AddArmorSet(ItemID.WizardHat, Type, ItemID.None, "ArmorSetBonus.Wizard", ArmorSetBonus.PartType.Head, Identifier: "Wizard", Effect: ArmorSetBonuses.Benefits.Wizard);
-			AddArmorSet(ItemID.MagicHat, Type, ItemID.None, "ArmorSetBonus.MagicHat", ArmorSetBonus.PartType.Head, Identifier: "MagicHat", Effect: ArmorSetBonuses.Benefits.MagicHat);
+			AddArmorSet(ItemID.WizardHat, Type, ItemID.None, "Wizard", "ArmorSetBonus.Wizard", ArmorSetBonuses.Benefits.Wizard, ArmorSetBonus.PartType.Head);
+			AddArmorSet(ItemID.MagicHat, Type, ItemID.None, "MagicHat", "ArmorSetBonus.MagicHat", ArmorSetBonuses.Benefits.MagicHat, ArmorSetBonus.PartType.Head);
 			*/
 		}
 
