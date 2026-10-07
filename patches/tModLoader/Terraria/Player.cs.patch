@@ -1413,7 +1413,7 @@
  	public bool UsingSuperCart {
  		get {
  			if (!unlockedSuperCart)
-@@ -2440,11 +_,13 @@
+@@ -2440,12 +_,18 @@
  		}
  	}
  
@@ -1425,8 +1425,13 @@
  	public float specialistEffectiveDamage => rangedDamage * rocketDamage;
 +	*/
  
++	/// <summary>
++	/// Whether player can use rocket boots' (and derivatives') flying ability.<br></br>
++	/// <returns> False when <see cref = "Player"/> is using Ram Rune's down dash ability.</returns>
++	/// </summary>
  	public bool CanUseBootFlyingAbilities => !isPerformingJump_DownDash;
  
+ 	public bool CanUseWingAbilities {
 @@ -2470,8 +_,16 @@
  		}
  	}
@@ -4013,17 +4018,32 @@
  				if (wet && accFlipper) {
  					if (swimTime == 0)
  						swimTime = 30;
-@@ -16757,7 +_,9 @@
+@@ -16757,8 +_,11 @@
  				bool flag10 = false;
  				bool flag11 = false;
  				bool flag12 = false;
--				bool flag13 = false;
 +				*/
-+				bool flag13 = false; // TODO: isPerformingJump_DownDash needs integration.
-+				/*
+-				bool flag13 = false;
++				bool flag13 = false; 
++			
  				if (!flag2 && !flag) {
++					/*
  					if (canJumpAgain_Basilisk) {
  						flag12 = true;
+ 						canJumpAgain_Basilisk = false;
+@@ -16775,9 +_,11 @@
+ 						flag9 = true;
+ 						canJumpAgain_Unicorn = false;
+ 					}
++					*/
+-					else if (hasDeadCellsDownDash && controlDown && !isPerformingJump_DownDash && velocity.Y != 0f && !mount.Active) {
++					if (hasDeadCellsDownDash && controlDown && !isPerformingJump_DownDash && velocity.Y != 0f && !mount.Active) {
+ 						flag13 = true;
+ 					}
++					/*
+ 					else if (canJumpAgain_Sandstorm) {
+ 						flag5 = true;
+ 						canJumpAgain_Sandstorm = false;
 @@ -16798,6 +_,10 @@
  						canJumpAgain_Cloud = false;
  					}
@@ -4689,14 +4709,12 @@
  				if (flag19 && wings != 4 && wings != 22 && wings != 0 && wings != 24 && wings != 28 && wings != 30 && wings != 33 && wings != 45) {
  					bool flag21 = wingFrame == 3;
  					if (wings == 43 || wings == 44)
-@@ -21832,7 +_,10 @@
+@@ -21832,7 +_,7 @@
  				if (empressBrooch)
  					rocketTime = rocketTimeMax;
  
-+				/*
- 				if ((wingTime == 0f || wingsLogic == 0) && rocketBoots != 0 && controlJump && rocketDelay == 0 && canRocket && rocketRelease && CanUseBootFlyingAbilities) {
-+				*/
-+				if ((wingTime == 0f || wingsLogic == 0) && rocketBoots != 0 && controlJump && rocketDelay == 0 && canRocket && rocketRelease && !AnyExtraJumpUsable()) {
+-				if ((wingTime == 0f || wingsLogic == 0) && rocketBoots != 0 && controlJump && rocketDelay == 0 && canRocket && rocketRelease && CanUseBootFlyingAbilities) {
++				if ((wingTime == 0f || wingsLogic == 0) && rocketBoots != 0 && controlJump && rocketDelay == 0 && canRocket && rocketRelease && CanUseBootFlyingAbilities && !AnyExtraJumpUsable()) {
  					if (rocketTime > 0) {
  						rocketTime--;
  						rocketDelay = 10;
