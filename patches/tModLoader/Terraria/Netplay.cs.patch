@@ -34,6 +34,41 @@
  		int num = FindNextOpenClientSlot();
  		if (num != -1) {
  			Clients[num].Reset();
+@@ -175,11 +_,6 @@
+ 				KickClient(client, NetworkText.FromKey("CLI.ServerIsFull"));
+ 			}
+ 		}
+-
+-		if (FindNextOpenClientSlot() == -1) {
+-			StopListening();
+-			IsListening = false;
+-		}
+ 	}
+ 
+ 	private static void KickClient(ISocket client, NetworkText kickMessage)
+@@ -218,14 +_,6 @@
+ 		return TcpListener.StartListening(OnConnectionAccepted);
+ 	}
+ 
+-	private static void StopListening()
+-	{
+-		if (SocialAPI.Network != null)
+-			SocialAPI.Network.StopListening();
+-
+-		TcpListener.StopListening();
+-	}
+-
+ 	public static void StartServer()
+ 	{
+ 		InitializeServer();
+@@ -283,7 +_,6 @@
+ 		int num = 0;
+ 		StartBroadCasting();
+ 		while (!Disconnect) {
+-			StartListeningIfNeeded();
+ 			UpdateConnectedClients();
+ 			num = (num + 1) % 10;
+ 			Thread.Sleep((num == 0) ? 1 : 0);
 @@ -298,8 +_,13 @@
  		for (int i = 0; i < 256; i++) {
  			if (Clients[i].PendingTermination) {
@@ -58,6 +93,28 @@
  				Clients[i].PendingTerminationApproved = true;
  				continue;
  			}
+@@ -329,21 +_,6 @@
+ 		HasClients = num != 0;
+ 	}
+ 
+-	private static void StartListeningIfNeeded()
+-	{
+-		if (IsListening || !Clients.Any((RemoteClient client) => !client.IsConnected()))
+-			return;
+-
+-		try {
+-			StartListening();
+-			IsListening = true;
+-		}
+-		catch {
+-			if (!Main.ignoreErrors)
+-				throw;
+-		}
+-	}
+-
+ 	private static void UpdateClientInMainThread()
+ 	{
+ 		if (Main.netMode == 1 && Connection.Socket.IsConnected() && !Connection.ServerWantsToRunCheckBytesInClientLoopThread && NetMessage.buffer[256].checkBytes)
 @@ -413,6 +_,12 @@
  
  	private static void ClientLoopSetup(RemoteAddress address)
