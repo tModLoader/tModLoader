@@ -1314,6 +1314,11 @@ Mods: {
 				DisplayName: Example Flying Transformation Charm
 				Tooltip: Transforms the user into an Example Flying Transformation
 			}
+
+			ExampleBeastTransformationItem: {
+				DisplayName: Example Beast Transformation Skull
+				Tooltip: Transforms the user into an Example Beast Transformation
+			}
 		}
 
 		# Projectile display names mainly show in chat when a player dies from it.
@@ -1461,6 +1466,11 @@ Mods: {
 			ExampleFlyingTransformationBuff: {
 				DisplayName: Example Flying Transformation
 				Description: You turned into an Example Flying Transformation!
+			}
+
+			ExampleBeastTransformationBuff: {
+				DisplayName: Example Beast Transformation
+				Description: You turned into an Example Beast Transformation!
 			}
 		}
 

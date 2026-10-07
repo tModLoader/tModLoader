@@ -51,11 +51,11 @@ namespace ExampleMod.Content.Mounts
 
 			// Frame data and player offsets
 			MountData.totalFrames = 5; // The total number of frames in the sprite.
-			MountData.playerYOffsets = Enumerable.Repeat(20, MountData.totalFrames).ToArray(); // Fills an array with values for less repeating code
+			MountData.playerYOffsets = Enumerable.Repeat(0, MountData.totalFrames).ToArray(); // Fills an array with values for less repeating code
 			MountData.xOffset = 0; // The offset for the hitbox. The size of the hitbox is set in ExampleFlyingTransformationPlayerSize
 			MountData.yOffset = -1;
-			MountData.bodyFrame = 0;
 			MountData.playerHeadOffset = -24;
+			MountData.bodyFrame = 0; // Which body frame the player uses while mounted. Since this mount makes the player invisible, it doesn't matter here.
 
 			// This mount's frames are set up as frame 0 being the standing frame and 1-5 being the flying frames.
 

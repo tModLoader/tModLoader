@@ -229,4 +229,35 @@ public abstract class ModMount : ModType<Mount.MountData, ModMount>
 	{
 
 	}
+
+	/// <summary>
+	/// Allows you to make things happen when flight time is reset.
+	/// <para/>Example: setting it to the player's flight time <c>flightTime = player.wingTimeMax</c>
+	/// </summary>
+	/// <param name="player"></param>
+	/// <param name="flightTime">Same as <c>player.mount._flyTime</c></param>
+	public virtual void ResetFlightTime(Player player, ref int flightTime)
+	{
+
+	}
+
+	/// <summary>
+	/// Allows you to change if the mount can fly.
+	/// <para/>Vanilla returns <see langword="true"/> if <see cref="Mount.MountData.flightTimeMax"/> &gt; 0 by default.
+	/// </summary>
+	/// <returns> Return <see langword="null"/> for vanilla decision. </returns>
+	public virtual bool? CanFly(Player player)
+	{
+		return null;
+	}
+
+	/// <summary>
+	/// Allows you to make things happen to the mount right after the player's equipment is run.
+	/// <para/>Used by the <see cref="MountID.Velociraptor"/> to give infinite flight if the player has <see cref="Player.empressBrooch"/> equipped.
+	/// <br/>Used by the <see cref="MountID.Rat"/> to climb up walls by boosting <see cref="Player.spikedBoots"/>.
+	/// </summary>
+	public virtual void UpdateAfterEquips(Player player)
+	{
+
+	}
 }
