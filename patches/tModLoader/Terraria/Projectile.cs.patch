@@ -1494,6 +1494,29 @@
  								for (int k = 0; k < 10; k++) {
  									int num3 = Dust.NewDust(new Vector2(position.X - 6f, position.Y + (float)(height / 2) - 8f), width + 12, 24, 152);
  									Main.dust[num3].velocity.Y -= 1f;
+@@ -14720,6 +_,8 @@
+ 								SoundEngine.PlaySound(19, (int)position.X, (int)position.Y);
+ 							}
+ 							else {
++								ProcessProjectileLiquidSplashModded(false);
++								goto skip;
+ 								for (int l = 0; l < 10; l++) {
+ 									int num4 = Dust.NewDust(new Vector2(position.X - 6f, position.Y + (float)(height / 2) - 8f), width + 12, 24, Dust.dustWater());
+ 									Main.dust[num4].velocity.Y -= 4f;
+@@ -14728,11 +_,11 @@
+ 									Main.dust[num4].alpha = 100;
+ 									Main.dust[num4].noGravity = true;
+ 								}
+-
++								skip:
+ 								SoundEngine.PlaySound(19, (int)position.X, (int)position.Y);
+ 							}
+ 						}
+-						else {
++						else if (LiquidLoader.OnProjectileSplash(LiquidID.Lava, this, true)) {
+ 							for (int m = 0; m < 10; m++) {
+ 								int num5 = Dust.NewDust(new Vector2(position.X - 6f, position.Y + (float)(height / 2) - 8f), width + 12, 24, 35);
+ 								Main.dust[num5].velocity.Y -= 1.5f;
 @@ -14756,7 +_,7 @@
  					else if (wetCount == 0) {
  						wetCount = 10;
@@ -1512,6 +1535,29 @@
  								for (int num7 = 0; num7 < 10; num7++) {
  									int num8 = Dust.NewDust(new Vector2(position.X - 6f, position.Y + (float)(height / 2) - 8f), width + 12, 24, 152);
  									Main.dust[num8].velocity.Y -= 1f;
+@@ -14794,6 +_,8 @@
+ 								SoundEngine.PlaySound(19, (int)position.X, (int)position.Y);
+ 							}
+ 							else {
++								ProcessProjectileLiquidSplashModded(false);
++								goto skip;
+ 								for (int num9 = 0; num9 < 10; num9++) {
+ 									int num10 = Dust.NewDust(new Vector2(position.X - 6f, position.Y + (float)(height / 2)), width + 12, 24, Dust.dustWater());
+ 									Main.dust[num10].velocity.Y -= 4f;
+@@ -14802,11 +_,11 @@
+ 									Main.dust[num10].alpha = 100;
+ 									Main.dust[num10].noGravity = true;
+ 								}
+-
++								skip:
+ 								SoundEngine.PlaySound(19, (int)position.X, (int)position.Y);
+ 							}
+ 						}
+-						else {
++						else if (LiquidLoader.OnProjectileSplash(LiquidID.Lava, this, false)) {
+ 							for (int num11 = 0; num11 < 10; num11++) {
+ 								int num12 = Dust.NewDust(new Vector2(position.X - 6f, position.Y + (float)(height / 2) - 8f), width + 12, 24, 35);
+ 								Main.dust[num12].velocity.Y -= 1.5f;
 @@ -14822,10 +_,15 @@
  				}
  
@@ -1589,14 +1635,64 @@
  					if (type >= 736 && type <= 738) {
  						velocity = Collision.TileCollision(position, velocity, width, height, flag6, flag6);
  					}
-@@ -15339,6 +_,7 @@
+@@ -15339,9 +_,30 @@
  					else {
  						velocity = Collision.TileCollision(position, velocity, width, height, flag6, flag6);
  					}
 +					*/
  				}
  				else if (wet) {
- 					if (shimmerWet) {
+-					if (shimmerWet) {
++					bool inModdedLiquid = false;
++					for (int i = LiquidLoader.LiquidCount - 1; i > LiquidID.Count; i--) {
++						if (wets[i]) {
++							if (LiquidLoader.ProjectileLiquidMovement(i, this, ref wetVelocity, vector, colWidth, colHeight, flag6)) {
++								Vector2 vector3 = velocity;
++								velocity = Collision.TileCollision(vector, velocity, colWidth, colHeight, flag6, flag6);
++								wetVelocity = velocity * LiquidLoader.GetLiquid(i).ProjectileMovementMultiplier;
++								if (velocity.X != vector3.X) {
++									wetVelocity.X = velocity.X;
++								}
++								if (velocity.Y != vector3.Y) {
++										wetVelocity.Y = velocity.Y;
++								}
++							}
++							inModdedLiquid = true;
++						}
++					}
++					if(inModdedLiquid) {
++							goto postVanillaMovement;
++					}
++					if (shimmerWet && LiquidLoader.ProjectileLiquidMovement(LiquidID.Shimmer, this, ref wetVelocity, vector, colWidth, colHeight, flag6)) {
+ 						Vector2 vector2 = velocity;
+ 						velocity = Collision.TileCollision(vector, velocity, colWidth, colHeight, flag6, flag6, 1, ignoreDoors);
+ 						wetVelocity = velocity * 0.375f;
+@@ -15351,7 +_,7 @@
+ 						if (velocity.Y != vector2.Y)
+ 							wetVelocity.Y = velocity.Y;
+ 					}
+-					else if (honeyWet) {
++					else if (honeyWet && LiquidLoader.ProjectileLiquidMovement(LiquidID.Honey, this, ref wetVelocity, vector, colWidth, colHeight, flag6)) {
+ 						Vector2 vector3 = velocity;
+ 						velocity = Collision.TileCollision(vector, velocity, colWidth, colHeight, flag6, flag6, 1, ignoreDoors);
+ 						wetVelocity = velocity * 0.25f;
+@@ -15361,7 +_,7 @@
+ 						if (velocity.Y != vector3.Y)
+ 							wetVelocity.Y = velocity.Y;
+ 					}
+-					else {
++					else if (LiquidLoader.ProjectileLiquidMovement(lavaWet ? LiquidID.Lava : LiquidID.Water, this, ref wetVelocity, vector, colWidth, colHeight, flag6)) {
+ 						Vector2 vector4 = velocity;
+ 						velocity = Collision.TileCollision(vector, velocity, colWidth, colHeight, flag6, flag6, 1, ignoreDoors);
+ 						wetVelocity = velocity * 0.5f;
+@@ -15371,6 +_,7 @@
+ 						if (velocity.Y != vector4.Y)
+ 							wetVelocity.Y = velocity.Y;
+ 					}
++					postVanillaMovement:
+ 
+ 					if (!correctSlopeCollision) {
+ 						Vector4 vector5 = Collision.SlopeCollision(vector, velocity, colWidth, colHeight, 0f, fall: true);
 @@ -15637,6 +_,7 @@
  					}
  				}

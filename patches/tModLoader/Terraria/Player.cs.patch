@@ -4989,11 +4989,18 @@
  		bool flag25 = false;
  		if (!shimmering)
  			flag25 = Collision.LavaCollision(position, width, num82);
-@@ -22524,8 +_,11 @@
+@@ -22524,8 +_,18 @@
  		bool num86 = Collision.WetCollision(position, width, height);
  		bool flag27 = Collision.honey;
  		bool shimmer = Collision.shimmer;
 +		Collision.GetModdedWets(position, width, height, out bool[] liquidsIn);
++		// TODO: Verify this is the correct place where it should be
++		if (lavaWet) {
++			LiquidLoader.OnPlayerCollision(LiquidID.Lava, this);
++			wets[LiquidID.Lava] = true;
++			isWaterWet = false;
++		}
++
  		if (shimmer) {
  			shimmerWet = true;
 +			LiquidLoader.OnPlayerCollision(LiquidID.Shimmer, this);

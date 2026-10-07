@@ -1,9 +1,10 @@
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.GameContent.UI;
@@ -721,7 +722,7 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 				if (LiquidLoader.OnPlayerSplash(k, this, true)) {
 					ModLiquid modLiquid = LiquidLoader.GetLiquid(k);
 					if (modLiquid.OnPlayerSplash(this, isEnter)) {
-						for (int i = 0; i < 30; i++) {
+						for (int i = 0; i < 50; i++) {
 							int newDust = Dust.NewDust(new Vector2(position.X - 6f, position.Y + (float)(height / 2) - 8f), width + 12, 24, modLiquid.SplashDustType);
 							Main.dust[newDust].velocity.Y -= 4f;
 							Main.dust[newDust].velocity.X *= 2.5f;
@@ -730,6 +731,7 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 							Main.dust[newDust].noGravity = true;
 						}
 					}
+					SoundEngine.PlaySound(modLiquid.SplashSound, position);
 				}
 
 				inModdedLiquid = true;
@@ -737,7 +739,7 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 		}
 
 		if (!inModdedLiquid && LiquidLoader.OnPlayerSplash(LiquidID.Water, this, isEnter)) {
-			for (int i = 0; i < 30; i++) {
+			for (int i = 0; i < 50; i++) {
 				int newDust = Dust.NewDust(new Vector2(position.X - 6f, position.Y + (float)(height / 2) - 8f), width + 12, 24, Dust.dustWater());
 				Main.dust[newDust].velocity.Y -= 4f;
 				Main.dust[newDust].velocity.X *= 2.5f;
