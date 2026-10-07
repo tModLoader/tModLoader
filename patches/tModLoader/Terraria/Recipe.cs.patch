@@ -148,7 +148,7 @@
  	public Recipe()
  	{
  		for (int i = 0; i < maxRequirements; i++) {
-@@ -154,10 +_,22 @@
+@@ -154,13 +_,25 @@
  			acceptedGroups[i] = -1;
  		}
  	}
@@ -171,7 +171,10 @@
 +
 +				// TML: ConsumeIngredient hook allows adjusting the amount of each ingredient consumed. See IngredientQuantityRules.Alchemy.
 +				int type = requiredItemEntry.IsRecipeGroup ? requiredItemEntry.RecipeGroup.GetPlaceholderItemType() : requiredItemEntry.itemIdOrRecipeGroup;
-+				RecipeLoader.ConsumeIngredient(this, type, ref requiredItemEntry.stack, false);
++				RecipeLoader.ConsumeIngredient(this, type, ref requiredItemEntry.stack);
+ 				if (requiredItemEntry.stack > 0)
+ 					ingredients.Add(requiredItemEntry);
+ 
 @@ -173,6 +_,7 @@
  
  	private int GetIngredientCraftingDiscount(Player player, RequiredItemEntry req)
