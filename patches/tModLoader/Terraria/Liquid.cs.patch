@@ -74,7 +74,7 @@
  		if (tile5.lava()) {
  			LavaCheck(x, y);
  			if (!quickFall) {
-@@ -365,23 +_,22 @@
+@@ -365,7 +_,6 @@
  					delay++;
  					return;
  				}
@@ -82,82 +82,7 @@
  				delay = 0;
  			}
  		}
- 		else {
--			if (tile.lava())
-+			if (tile.lava()) {
- 				AddWater(x - 1, y);
--
--			if (tile2.lava())
-+			}
-+			if (tile2.lava()) {
- 				AddWater(x + 1, y);
--
--			if (tile3.lava())
-+			}
-+			if (tile3.lava()) {
- 				AddWater(x, y - 1);
--
--			if (tile4.lava())
-+			}
-+			if (tile4.lava()) {
- 				AddWater(x, y + 1);
--
-+			}
- 			if (tile5.honey()) {
- 				HoneyCheck(x, y);
- 				if (!quickFall) {
-@@ -389,42 +_,91 @@
- 						delay++;
- 						return;
- 					}
--
- 					delay = 0;
- 				}
- 			}
- 			else {
--				if (tile.honey())
-+				if (tile.honey()) {
- 					AddWater(x - 1, y);
--
--				if (tile2.honey())
-+				}
-+				if (tile2.honey()) {
- 					AddWater(x + 1, y);
--
--				if (tile3.honey())
-+				}
-+				if (tile3.honey()) {
- 					AddWater(x, y - 1);
--
--				if (tile4.honey())
-+				}
-+				if (tile4.honey()) {
- 					AddWater(x, y + 1);
--
-+				}
- 				if (tile5.shimmer()) {
- 					ShimmerCheck(x, y);
- 				}
- 				else {
--					if (tile.shimmer())
-+					if (tile.shimmer()) {
- 						AddWater(x - 1, y);
--
--					if (tile2.shimmer())
-+					}
-+					if (tile2.shimmer()) {
- 						AddWater(x + 1, y);
--
--					if (tile3.shimmer())
-+					}
-+					if (tile3.shimmer()) {
- 						AddWater(x, y - 1);
--
--					if (tile4.shimmer())
-+					}
-+					if (tile4.shimmer()) {
- 						AddWater(x, y + 1);
-+					}
+@@ -424,7 +_,56 @@
  				}
  			}
  		}
@@ -271,9 +196,8 @@
 +			/*
  			int liquidMergeTileType = 56;
  			int liquidMergeType = 0;
--			GetLiquidMergeTypes(thisLiquidType, out liquidMergeTileType, out liquidMergeType, waterNearby, lavaNearby, honeyNearby, shimmerNearby);
-+			GetLiquidMergeTypes(thisLiquidType, out liquidMergeTileType, out liquidMergeType, waterNearby, lavaNearby, honeyNearby, shimmerNearby); 
-+			 */
+ 			GetLiquidMergeTypes(thisLiquidType, out liquidMergeTileType, out liquidMergeType, waterNearby, lavaNearby, honeyNearby, shimmerNearby);
++			*/
  			if (num >= 24 && liquidMergeType != thisLiquidType && (!tile5.active() || Main.tileObsidianKill[tile5.type])) {
  				tile5.liquid = 0;
  				CreateLiquidMergeTile(x, y, thisLiquidType, liquidMergeType, liquidMergeTileType, createMergeTilesDuringGen);

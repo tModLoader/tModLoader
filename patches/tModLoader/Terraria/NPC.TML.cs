@@ -381,9 +381,7 @@ public partial class NPC : IEntityWithGlobals<GlobalNPC>
 		}
 	}
 
-	/// <summary>
-	/// Temporary name and documentation
-	/// </summary>
+	// Added because it is reused code at multiple place in the vanilla game
 	public void ProcessNpcLiquidSplashModded(bool isEnter)
 	{
 		bool inModdedLiquid = false;
@@ -427,6 +425,7 @@ public partial class NPC : IEntityWithGlobals<GlobalNPC>
 		}
 	}
 
+	// Added by tML, this normally goes in a if statement
 	public bool TryPutoutFire()
 	{
 		bool putsOutOnfire = true;

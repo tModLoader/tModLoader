@@ -1434,11 +1434,12 @@
  			if (active)
  				AI();
  
-@@ -14645,14 +_,38 @@
+@@ -14645,14 +_,39 @@
  				try {
  					flag = Collision.LavaCollision(position, width, height);
  					flag2 = Collision.WetCollision(position, width, height);
 -					if (flag)
++					/*if (flag)*/
 +					Collision.GetModdedWets(position, width, height, out bool[] liquidsIn);
 +					bool isWaterWet = true;
 +					if (flag) {
@@ -1635,7 +1636,7 @@
  					if (type >= 736 && type <= 738) {
  						velocity = Collision.TileCollision(position, velocity, width, height, flag6, flag6);
  					}
-@@ -15339,9 +_,30 @@
+@@ -15339,9 +_,31 @@
  					else {
  						velocity = Collision.TileCollision(position, velocity, width, height, flag6, flag6);
  					}
@@ -1643,7 +1644,8 @@
  				}
  				else if (wet) {
 -					if (shimmerWet) {
-+					bool inModdedLiquid = false;
++						/*if (shimmerWet) {*/
++						bool inModdedLiquid = false;
 +					for (int i = LiquidLoader.LiquidCount - 1; i > LiquidID.Count; i--) {
 +						if (wets[i]) {
 +							if (LiquidLoader.ProjectileLiquidMovement(i, this, ref wetVelocity, vector, colWidth, colHeight, flag6)) {
@@ -1777,11 +1779,12 @@
  				PopupText.AssignAsSonarText(PopupText.NewText(PopupTextContext.SonarAlert, fisher.rolledEnemySpawn, base.Center, stay5TimesLonger: false));
  				SoundEngine.PlaySound(SoundID.SonarPotion, position);
  			}
-@@ -17879,7 +_,7 @@
+@@ -17879,7 +_,8 @@
  
  	private void FishingCheck_RollEnemySpawns(ref FishingAttempt fisher)
  	{
 -		if (fisher.inLava || fisher.inHoney || !Main.bloodMoon || Main.dayTime)
++		/*if (fisher.inLava || fisher.inHoney || !Main.bloodMoon || Main.dayTime)*/
 +		if (!fisher.inLiquid[LiquidID.Water] || !Main.bloodMoon || Main.dayTime)
  			return;
  
@@ -1797,16 +1800,19 @@
  		if (fisher.junk) {
  			fisher.rolledItemDrop = Main.rand.Next(2337, 2340);
  			if (Main.rand.Next(8) == 0)
-@@ -18434,30 +_,40 @@
+@@ -18434,30 +_,49 @@
  			crate = true;
  	}
  
-+	// Added liquids parameter, removed lava and honey parameters.
++	// TML: Added liquids parameter, removed lava and honey parameters.
 -	private static void GetFishingPondState(int x, int y, out bool lava, out bool honey, out int numWaters, out int chumCount)
++	/*private static void GetFishingPondState(int x, int y, out bool lava, out bool honey, out int numWaters, out int chumCount)*/
 +	private static void GetFishingPondState(int x, int y, out bool[] liquids, out int numWaters, out int chumCount)
  	{
--		lava = false;
--		honey = false;
++		/*
+ 		lava = false;
+ 		honey = false;
++		 */
 +		liquids = new bool[LiquidLoader.LiquidCount];
  		numWaters = 0;
  		chumCount = 0;
@@ -1822,15 +1828,18 @@
  				else if (Main.tile[i, j].honey())
  					honey = true;
 -
++				
 +				*/
  				tileCoords.X = i;
  				tileCoords.Y = j;
  				chumCount += Main.instance.ChumBucketProjectileHelper.GetChumsInLocation(tileCoords);
  			}
  		}
- 
--		if (honey)
--			numWaters = (int)((double)numWaters * 1.5);
+-
++		/*
+ 		if (honey)
+ 			numWaters = (int)((double)numWaters * 1.5);
++		 */
 +		float poolMultiplier = 1f;
 +		if (liquids[LiquidID.Honey]) {
 +			poolMultiplier = 1.5f;
@@ -2274,11 +2283,12 @@
  	{
  		Player player = Main.player[owner];
  		bool flag = type >= 986 && type <= 993;
-@@ -46284,16 +_,14 @@
+@@ -46284,16 +_,16 @@
  		player.afkCounterForKiting = 0;
  		if (ai[1] > 0f && localAI[1] != 0f) {
  			localAI[1] = 0f;
 -			if (!lavaWet && !honeyWet)
++			/*if (!lavaWet && !honeyWet)*/
 -				AI_061_FishingBobber_DoASplash();
 +			AI_061_FishingBobber_DoASplash();
  		}
@@ -2288,6 +2298,7 @@
  				ai[0] += 1f;
  				SoundEngine.PlaySound(SoundID.Item17, position);
 -				if (!lavaWet && !honeyWet)
++				/*if (!lavaWet && !honeyWet)*/
 -					AI_061_FishingBobber_DoASplash();
 +				AI_061_FishingBobber_DoASplash();
  			}
@@ -2321,20 +2332,24 @@
  	{
  		float result = position.Y + (float)height;
  		if (Main.tile[X, Y - 1] == null)
-@@ -46457,21 +_,33 @@
+@@ -46457,8 +_,9 @@
  		return result;
  	}
  
 -	private void AI_061_FishingBobber_DoASplash()
 +	public void AI_061_FishingBobber_DoASplash()
  	{
--		for (int i = 0; i < 100; i++) {
--			int num = Dust.NewDust(new Vector2(position.X - 6f, position.Y - 10f), width + 12, 24, Dust.dustWater());
--			Main.dust[num].velocity.Y -= 4f;
--			Main.dust[num].velocity.X *= 2.5f;
--			Main.dust[num].scale = 0.8f;
--			Main.dust[num].alpha = 100;
--			Main.dust[num].noGravity = true;
++		goto newSplashLogic;
+ 		for (int i = 0; i < 100; i++) {
+ 			int num = Dust.NewDust(new Vector2(position.X - 6f, position.Y - 10f), width + 12, 24, Dust.dustWater());
+ 			Main.dust[num].velocity.Y -= 4f;
+@@ -46469,9 +_,34 @@
+ 		}
+ 
+ 		SoundEngine.PlaySound(19, (int)position.X, (int)position.Y, 0);
++		newSplashLogic:
++
++		// TML: Rewritten splash logic for bobber
 +		bool inModdedLiquid = false;
 +		for (int i = LiquidLoader.LiquidCount - 1; i >= LiquidID.Lava; i--) {
 +			if (wets[i]) {
@@ -2342,7 +2357,7 @@
 +				if (i >= LiquidID.Count)
 +					inModdedLiquid = true;
 +			}
- 		}
++		}
 +		if (!inModdedLiquid && !lavaWet && !honeyWet && !shimmerWet && wet) {
 +			if (LiquidLoader.OnFishingBobberSplash(LiquidID.Water, this)) {
 +				for (int i = 0; i < 100; i++) {
@@ -2353,8 +2368,7 @@
 +					Main.dust[num].alpha = 100;
 +					Main.dust[num].noGravity = true;
 +				}
- 
--		SoundEngine.PlaySound(19, (int)position.X, (int)position.Y, 0);
++
 +				SoundEngine.PlaySound(19, (int)position.X, (int)position.Y, 0);
 +			}
 +		}

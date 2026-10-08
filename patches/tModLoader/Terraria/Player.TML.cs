@@ -714,6 +714,7 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 	/// </summary>
 	public void SetCCed() => _customCCed = true;
 
+	// Added because it is reused code at multiple place in the vanilla game
 	public void ProcessPlayerLiquidSplashModded(bool isEnter)
 	{
 		bool inModdedLiquid = false;
@@ -750,6 +751,7 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 		}
 	}
 
+	// Re-added by TML, was removed in vanilla
 	private bool PlaceThing_Tiles_CheckLiquidBlocking()
 	{
 		bool result = false;

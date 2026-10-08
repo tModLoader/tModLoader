@@ -6908,7 +6908,7 @@
  				num23 = (float)(int)color.R * num17;
  				num24 = (float)(int)color.G * num17;
  				num25 = (float)(int)color.B * num17;
-@@ -51428,16 +_,9 @@
+@@ -51428,10 +_,11 @@
  					color = new Microsoft.Xna.Framework.Color(color.ToVector4() * LiquidRenderer.GetShimmerBaseColor(j, i));
  
  				vector2 = new Vector2(j * 16, i * 16 + 16);
@@ -6917,16 +6917,19 @@
  				if (flag)
 -					spriteBatch.Draw(TextureAssets.Liquid[num12].Value, vector2 - screenPosition + vector, new Microsoft.Xna.Framework.Rectangle(0, 40, 16, 8), LiquidRenderer.GetShimmerGlitterColor(flag2, j, i), 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
 +					spriteBatch.Draw(liquidTexture, vector2 - screenPosition + vector, new Microsoft.Xna.Framework.Rectangle(0, 40, 16, 8), LiquidRenderer.GetShimmerGlitterColor(flag2, j, i), 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
--
--				float num29 = 6f;
--				float num30 = 0.75f;
--				if (num12 == 1 || num12 == 11) {
--					num29 = 4f;
--					num30 = 0.5f;
--				}
  
++				/*
+ 				float num29 = 6f;
+ 				float num30 = 0.75f;
+ 				if (num12 == 1 || num12 == 11) {
+@@ -51439,6 +_,7 @@
+ 					num30 = 0.5f;
+ 				}
+ 
++				*/
  				for (int m = 0; (float)m < num29; m++) {
  					int num31 = i + 2 + m;
+ 					if (WorldGen.SolidTile(j, num31))
 @@ -51447,10 +_,11 @@
  					float num32 = 1f - (float)m / num29;
  					num32 *= num30;
@@ -7811,16 +7814,19 @@
  	{
  		double num = (double)Damage - (double)Defense * 0.5;
  		if (num < 1.0)
-@@ -58482,10 +_,16 @@
+@@ -58482,10 +_,18 @@
  
  		return num;
  	}
-+	*/
- 
+-
 -	public void OnTileChangeEvent(int x, int y, int count, TileChangeType eventType)
++	*/
++	// TML: Changed the last parameters to be 2 parameter instead, 1 for the TileChangeType for a secondary TileChangeType
++	/*public void OnTileChangeEvent(int x, int y, int count, TileChangeType eventType)*/
 +	public void OnTileChangeEvent(int x, int y, int count, byte data1, int data2)
  	{
 -		WorldGen.PlayLiquidChangeSound(eventType, x, y, count);
++		/*WorldGen.PlayLiquidChangeSound(eventType, x, y, count);*/
 +		if (data2 <= -1) {
 +			WorldGen.PlayLiquidChangeSound((TileChangeType)data1, x, y, count);
 +		}
