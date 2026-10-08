@@ -619,6 +619,19 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	public virtual bool? UseItem(Item item, Player player) => null;
 
 	/// <summary>
+	/// Allow you to modify the vanilla empty bucket  behavior. If it return false or the newItemId is not set before returning, it will not consume the bucket and do nothing.
+	/// </summary>
+	/// <param name="sItem"></param>
+	/// <param name="liquidType"></param>
+	/// <param name="newItemId"></param>
+	/// <returns></returns>
+	public virtual bool? OnBucketUse(Item sItem, int liquidType, out int newItemId)
+	{
+		newItemId = -1;
+		return false;
+	}
+
+	/// <summary>
 	/// Allows you to make things happen when an item's use animation starts.
 	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
@@ -1262,15 +1275,6 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// </summary>
 	public virtual void ModifyTooltips(Item item, List<TooltipLine> tooltips)
 	{
-	}
-
-	/// <summary>
-	/// TODO: DOCUMENTATION
-	/// </summary>
-	public virtual bool? OnVanillaBucketUse(Item sItem, int liquidType, out int newItemId)
-	{
-		newItemId = -1;
-		return false;
 	}
 
 	/// <summary>

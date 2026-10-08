@@ -1107,14 +1107,20 @@ public static class ItemLoader
 		return result ?? modItemResult;
 	}
 
+	// TODO: If someone decide to make a proper hook for modded bucket, just rename those (they are internal, so shouldn't break anything)
 	private delegate bool? OnVanillaBucketUseDelegate(Item item, int liquidType, out int newItemId);
 
-	private static HookList HookOnVanillaBucketUse = AddHook<OnVanillaBucketUseDelegate>(g => g.OnVanillaBucketUse);
+	private static HookList HookOnVanillaBucketUse = AddHook<OnVanillaBucketUseDelegate>(g => g.OnBucketUse);
 
 	/// <summary>
-	/// TODO: DOCUMENTATION
+	/// Returns false if any of ModItem.UseItem or GlobalItem.UseItem return false.
+	/// Returns true if anything returns true without returning false.
+	/// Returns null by default.
+	/// Does not fail fast (calls every hook)
+	/// newItemId out with -1 by default
+	/// if newItemId out with > 0, it will be the new item created
 	/// </summary>
-	public static bool? OnVanillaBucketUse(Item item, int liquidType, out int newItemId)
+	public static bool? OnBucketUse(Item item, int liquidType, out int newItemId)
 	{
 		newItemId = -1;
 		if (item.IsAir) 
@@ -1122,7 +1128,7 @@ public static class ItemLoader
 
 		bool? result = null;
 		foreach (var g in HookOnVanillaBucketUse.Enumerate(item)) {
-			bool? vanillaBucketUse = g.OnVanillaBucketUse(item, liquidType, out newItemId);
+			bool? vanillaBucketUse = g.OnBucketUse(item, liquidType, out newItemId);
 			if (vanillaBucketUse.HasValue && result != false && newItemId != -1) {
 				result = vanillaBucketUse.Value;
 			}

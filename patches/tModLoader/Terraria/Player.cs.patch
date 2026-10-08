@@ -7906,7 +7906,7 @@
 +				// If the bucket in question is a vanilla bucket
 +				
 +				if (sItem.type == ItemID.EmptyBucket) {
-+					bool? result = ItemLoader.OnVanillaBucketUse(sItem, liquidType, out int itemID);
++					bool? result = ItemLoader.OnBucketUse(sItem, liquidType, out int itemID);
 +					if (result.HasValue && result == true && itemID != -1) {
 +						sItem.stack--;
 +						PutItemInInventoryFromItemUsage(itemID);

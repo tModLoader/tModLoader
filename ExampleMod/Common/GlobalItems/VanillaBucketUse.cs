@@ -12,7 +12,7 @@ namespace ExampleMod.Common.GlobalItems
 		/// <summary>
 		/// Example of overriding vanilla bucket behavior, only work with absorbable liquid
 		/// </summary>
-		public override bool? OnVanillaBucketUse(Item sItem, int liquidType, out int newItemId) {
+		public override bool? OnBucketUse(Item sItem, int liquidType, out int newItemId) {
 			// Simple example to show how to make vanilla bucket work with your custom liquid
 			if (liquidType == ModContent.LiquidType<ExampleLiquid>()) {
 				newItemId = ModContent.ItemType<ExampleLiquidBucket>();
@@ -25,7 +25,7 @@ namespace ExampleMod.Common.GlobalItems
 				return true;
 			}
 
-			return base.OnVanillaBucketUse(sItem, liquidType, out newItemId);
+			return base.OnBucketUse(sItem, liquidType, out newItemId);
 		}
 	}
 }
