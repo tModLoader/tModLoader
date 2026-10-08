@@ -2987,7 +2987,7 @@
  		num *= num;
  		float num2 = (float)((double)(position.Y / 16f - (60f + 10f * num)) / (Main.worldSurface / 6.0));
  		if ((double)num2 < 0.25)
-@@ -76345,19 +_,31 @@
+@@ -76345,7 +_,15 @@
  			num2 = 1f;
  
  		gravity *= num2;
@@ -2998,26 +2998,31 @@
 +			return;
 +
  		if (wet) {
++			/*
++			float liqGravity = gravity;
+ 			if (shimmerWet) {
+ 				gravity = 0.15f;
+ 				maxFallSpeed = 5.5f;
+@@ -76357,7 +_,26 @@
+ 			else {
+ 				gravity = 0.2f;
+ 				maxFallSpeed = 7f;
++ 			}
++			*/
 +			float liqGravity = gravity;
 +			float liqMaxFallSpeed = maxFallSpeed;
- 			if (shimmerWet) {
--				gravity = 0.15f;
++			if (shimmerWet) {
 +				liqGravity = 0.15f;
--				maxFallSpeed = 5.5f;
 +				liqMaxFallSpeed = 5.5f;
  			}
- 			else if (honeyWet) {
--				gravity = 0.1f;
++			else if (honeyWet) {
 +				liqGravity = 0.1f;
--				maxFallSpeed = 4f;
 +				liqMaxFallSpeed = 4f;
- 			}
- 			else {
--				gravity = 0.2f;
++			}
++			else {
 +				liqGravity = 0.2f;
--				maxFallSpeed = 7f;
 +				liqMaxFallSpeed = 7f;
- 			}
++			}
 +			for (int i = 0; i < LiquidLoader.LiquidCount; i++)
 +				LiquidLoader.NPCGravityModifier(i, this, ref liqGravity, ref liqMaxFallSpeed);
 +			gravity = liqGravity;
@@ -3104,19 +3109,19 @@
  		}
  
  		if (wetCount > 0)
-@@ -77718,15 +_,28 @@
+@@ -77718,6 +_,7 @@
  		GetTileCollisionParameters(out var cPosition, out var cWidth, out var cHeight);
  		Vector2 oldDryVelocity = velocity;
  		ApplyTileCollision(fall, cPosition, cWidth, cHeight);
--		if (wet) {
--			if (shimmerWet)
--				Collision_MoveWhileWet(oldDryVelocity, shimmerMovementSpeed);
--			else if (honeyWet)
--				Collision_MoveWhileWet(oldDryVelocity, honeyMovementSpeed);
--			else if (lavaWet)
--				Collision_MoveWhileWet(oldDryVelocity, lavaMovementSpeed);
--			else
--				Collision_MoveWhileWet(oldDryVelocity, waterMovementSpeed);
++		/*
+ 		if (wet) {
+ 			if (shimmerWet)
+ 				Collision_MoveWhileWet(oldDryVelocity, shimmerMovementSpeed);
+@@ -77727,6 +_,29 @@
+ 				Collision_MoveWhileWet(oldDryVelocity, lavaMovementSpeed);
+ 			else
+ 				Collision_MoveWhileWet(oldDryVelocity, waterMovementSpeed);
++		*/
 +		bool canLiquidMove = true;
 +		for (int i = LiquidLoader.LiquidCount - 1; i >= 0; i--) {
 +			if (wets[i]) {
@@ -3344,11 +3349,13 @@
  		if (nPC.homeless && nPC.type != 37 && nPC.type != 368)
  			return nPC.type != 453;
  
-@@ -80086,7 +_,22 @@
+@@ -80085,8 +_,23 @@
+ 				breathCounter = 0;
  			}
  		}
- 
+-
 -		if (flag && Main.rand.Next(20) == 0 && !lavaWet && !honeyWet && !shimmerWet) {
++		/*if (flag && Main.rand.Next(20) == 0 && !lavaWet && !honeyWet && !shimmerWet) {*/
 +		bool? canEmitBreath = null;
 +		for (int i = 0; i < LiquidLoader.LiquidCount; i++) {
 +			if (wets[i]) {

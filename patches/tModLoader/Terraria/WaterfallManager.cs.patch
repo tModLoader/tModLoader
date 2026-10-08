@@ -42,7 +42,7 @@
  	private static readonly uint Layer_Rain = 0u;
  	private static readonly uint Layer_Waterfall = 1u;
  	private static bool _shouldShowInvisibleBlocksAndWalls = false;
-@@ -137,22 +_,38 @@
+@@ -137,15 +_,28 @@
  
  						if ((tile3.liquid > 160 || tile4.liquid > 160) && ((tile3.liquid == 0 && !WorldGen.SolidTile(tile3) && tile3.slope() == 0) || (tile4.liquid == 0 && !WorldGen.SolidTile(tile4) && tile4.slope() == 0)) && currentMax < qualityMax) {
  							waterfalls[currentMax].type = 0;
@@ -71,10 +71,10 @@
  							waterfalls[currentMax].x = i;
  							waterfalls[currentMax].y = j;
  							currentMax++;
- 						}
+@@ -153,6 +_,10 @@
  					}
  				}
--
+ 
 +				WaterfallData? data = TileLoader.CreateWaterfall(i, j, tile.type);
 +				if(data != null) {
 +					goto moddedWaterfalSkip;
@@ -224,7 +224,7 @@
  	{
  		float num = (float)(int)aColor.R * alpha;
  		float num2 = (float)(int)aColor.G * alpha;
-@@ -826,15 +_,21 @@
+@@ -826,15 +_,22 @@
  				num = 255f * alpha;
  				num2 = 255f * alpha;
  				num3 = 255f * alpha;
@@ -239,8 +239,9 @@
  		return aColor;
  	}
  
-+	// Added x/y parameters and removed the tileCache parameters
++	// TML: Added x/y parameters and removed the tileCache parameters
 -	private static float GetAlpha(float Alpha, int maxSteps, int waterfallType, int y, int s, Tile tileCache)
++	/*private static float GetAlpha(float Alpha, int maxSteps, int waterfallType, int y, int s, Tile tileCache)*/
 +	public static float GetAlpha(float Alpha, int maxSteps, int waterfallType, int y, int s, int tileX, int tileY)
  	{
 +		Tile tileCache = Main.tile[tileX, tileY];

@@ -4399,7 +4399,7 @@
  		if (Main.myPlayer == whoAmI) {
  			if (accMerman) {
  				if (flag)
-@@ -18899,7 +_,22 @@
+@@ -18899,7 +_,23 @@
  			}
  		}
  
@@ -4419,6 +4419,7 @@
 +				canEmitBreath = true;
 +		}
 -		if (!flag || Main.rand.Next(20) != 0 || lavaWet || honeyWet)
++		/*if (!flag || Main.rand.Next(20) != 0 || lavaWet || honeyWet)*/
 +		if (!flag || Main.rand.Next(20) != 0 || canEmitBreath == false)
  			return;
  
@@ -5066,7 +5067,7 @@
  								for (int num96 = 0; num96 < 50; num96++) {
  									int num97 = Dust.NewDust(new Vector2(position.X - 6f, position.Y + (float)(height / 2) - 8f), width + 12, 24, Dust.dustWater());
  									Main.dust[num97].velocity.Y -= 3f;
-@@ -22606,11 +_,12 @@
+@@ -22606,11 +_,11 @@
  									Main.dust[num97].alpha = 100;
  									Main.dust[num97].noGravity = true;
  								}
@@ -5076,7 +5077,6 @@
  							}
  						}
 -						else {
-+						/*else {*/
 +						else if (LiquidLoader.OnPlayerSplash(LiquidID.Lava, this, true)) {
  							for (int num98 = 0; num98 < 20; num98++) {
  								int num99 = Dust.NewDust(new Vector2(position.X - 6f, position.Y + (float)(height / 2) - 8f), width + 12, 24, 35);
@@ -5760,7 +5760,7 @@
  					adjLava = true;
 +				skip:
 +				// TODO: Currently unsuse if this goes there as the only clue I had was alchemyTable = true; and there is only 1 reccurence that is very different
-+				//Adjusts all liquid types instead of the hardcoded four
++				// Adjusts all liquid types instead of the hardcoded four
 +				if (Main.tile[i, j].LiquidAmount > 200) {
 +					adjLiquid[Main.tile[i, j].LiquidType] = true;
 +				}

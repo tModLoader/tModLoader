@@ -265,6 +265,7 @@ public partial class Projectile : IEntityWithGlobals<GlobalProjectile>
 		);
 	}
 
+	// Added because it is reused code at multiple place in the vanilla game
 	public void ProcessProjectileLiquidSplashModded(bool isEnter)
 	{
 		bool inModdedLiquid = false;
