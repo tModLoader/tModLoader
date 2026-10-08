@@ -441,4 +441,10 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 	public virtual void FlailSpinCollisionRange(Projectile projectile, ref float range)
 	{
 	}
+
+	/// <inheritdoc cref="ModProjectile.PreTryDespawning"/>
+	public virtual bool PreTryDespawning(Projectile projectile, ref bool giveItem)
+	{ 
+		return true;
+	}
 }

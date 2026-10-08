@@ -156,8 +156,8 @@
 +	/// Syncs all info about an item in the world, including modded data.
 +	/// <br/><br/> Use this whenever an item in the world is manipulated. <c>Item.NewItem</c> calls this automatically on the server to sync the item with other clients, but on clients this needs to be used or <c>Player.QuickSpawnItem</c> should be used instead.
 +	/// <br/><br/> <c>NetMessage.SendData</c> parameters:
-+	/// <br/> <b>number:</b> The index of the item within <see cref="Main.item"/>
-+	/// <br/> <b>number2:</b> Set to 1 to ignore the delay for the spawning client to pickup the item. The <c>noGrabDelay</c> parameter of <c>Item.NewItem</c> sets this.
++	/// <br/> <b>number:</b> The index of the item within <see cref="Main.item"/>. A client sends 400 to ask the server to spawn a new item, see <c>Item.RequestNewItem</c>.
++	/// <br/> <b>number2:</b> The <see cref="NewItemOwnership"/> to apply, cast to an int. Only read by the server, and only for a spawn request.
 +	/// <br/><br/> <b>Forwarded to other clients</b>
 +	/// </summary>
  	public const byte SyncItem = 21;

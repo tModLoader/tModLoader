@@ -359,7 +359,7 @@
 +
 +			if (Main.recipe[i].Disabled)
 +				continue;
-+			
++
 -			for (int j = 0; j < maxRequirements; j++) {
 +			for (int j = 0; j < recipe.requiredItem.Count; j++) {
  				RequiredItemEntry requiredItemEntry = recipe.requiredItemQuickLookup[j];
@@ -442,7 +442,7 @@
  	{
  		if (ingredients.Length == 1) {
  			ingredients = new int[2] {
-@@ -16920,22 +_,83 @@
+@@ -16920,22 +_,84 @@
  		}
  	}
  
@@ -490,6 +490,7 @@
 +
 +		ReplaceCondition(ref currentRecipe.needGraveyardBiome, Condition.InGraveyard);
 +		ReplaceCondition(ref currentRecipe.needSnowBiome, Condition.InSnow);
++		ReplaceCondition(ref currentRecipe.needTorchGodsFavor, Condition.NeedTorchGodsFavor);
 +		ReplaceCondition(ref currentRecipe.needWater, Condition.NearWater);
 +		ReplaceCondition(ref currentRecipe.needLava, Condition.NearLava);
 +		ReplaceCondition(ref currentRecipe.needHoney, Condition.NearHoney);

@@ -398,6 +398,7 @@ public static class ModContent
 	{
 		// The server (or client with Main.SkipAssemblyLoad) doesn't naturally init these, and then the constructors get run twice in ResizeArrays
 		RuntimeHelpers.RunClassConstructor(typeof(AmmoID.Sets).TypeHandle);
+		RuntimeHelpers.RunClassConstructor(typeof(CloudID.Sets).TypeHandle);
 		RuntimeHelpers.RunClassConstructor(typeof(DustID.Sets).TypeHandle);
 		RuntimeHelpers.RunClassConstructor(typeof(MountID.Sets).TypeHandle);
 		RuntimeHelpers.RunClassConstructor(typeof(NPCHeadID.Sets).TypeHandle);

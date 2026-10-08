@@ -111,7 +111,7 @@ public partial class NPCID
 		/// <summary>
 		/// If <see langword="true"/> for a given NPC type (<see cref="NPC.type"/>), then that NPC belongs to the Goblin Army invasion.
 		/// <br/> During the Goblin Army invasion, NPCs in this set will decrement <see cref="Main.invasionSize"/> by the amount specified in <see cref="InvasionSlotCount"/> when killed.
-		/// <br/> If any NPC in this set is alive and <see cref="InvasionSlotCount"/> is above 0, the Goblin Army music will play.
+		/// <br/> If any NPC in this set is alive, the Goblin Army music will play.
 		/// <br/> Defaults to <see langword="false"/>.
 		/// </summary>
 		public static bool[] BelongsToInvasionGoblinArmy = Factory.CreateBoolSet(26, 27, 28, 29, 111, 471, 472);
@@ -119,7 +119,7 @@ public partial class NPCID
 		/// <summary>
 		/// If <see langword="true"/> for a given NPC type (<see cref="NPC.type"/>), then that NPC belongs to the Frost Legion invasion.
 		/// <br/> During the Frost Legion invasion, NPCs in this set will decrement <see cref="Main.invasionSize"/> by the amount specified in <see cref="InvasionSlotCount"/> when killed.
-		/// <br/> If any NPC in this set is alive and <see cref="InvasionSlotCount"/> is above 0, the Boss 3 music will play.
+		/// <br/> If any NPC in this set is alive, the Boss 3 music will play.
 		/// <br/> Defaults to <see langword="false"/>.
 		/// </summary>
 		public static bool[] BelongsToInvasionFrostLegion = Factory.CreateBoolSet(143, 144, 145);
@@ -127,15 +127,15 @@ public partial class NPCID
 		/// <summary>
 		/// If <see langword="true"/> for a given NPC type (<see cref="NPC.type"/>), then that NPC belongs to the Pirate invasion.
 		/// <br/> During the Pirate invasion, NPCs in this set will decrement <see cref="Main.invasionSize"/> by the amount specified in <see cref="InvasionSlotCount"/> when killed.
-		/// <br/> If any NPC in this set is alive and <see cref="InvasionSlotCount"/> is above 0, the Pirate Invasion music will play.
+		/// <br/> If any NPC in this set is alive, the Pirate Invasion music will play.
 		/// <br/> Defaults to <see langword="false"/>.
 		/// </summary>
-		public static bool[] BelongsToInvasionPirate = Factory.CreateBoolSet(212, 213, 214, 215, 216, 491, 492, 252, 662);
+		public static bool[] BelongsToInvasionPirate = Factory.CreateBoolSet(212, 213, 214, 215, 216, 252, 491, 492, 662);
 
 		/// <summary>
 		/// If <see langword="true"/> for a given NPC type (<see cref="NPC.type"/>), then that NPC belongs to the Martian Madness invasion.
 		/// <br/> During the Martian Madness invasion, NPCs in this set will decrement <see cref="Main.invasionSize"/> by the amount specified in <see cref="InvasionSlotCount"/> when killed.
-		/// <br/> If any NPC in this set is alive and <see cref="InvasionSlotCount"/> is above 0, the Martian Madness music will play.
+		/// <br/> If any NPC in this set is alive, the Martian Madness music will play.
 		/// <br/> Defaults to <see langword="false"/>.
 		/// </summary>
 		public static bool[] BelongsToInvasionMartianMadness = Factory.CreateBoolSet(381, 382, 383, 384, 385, 386, 387, 388, 389, 390, 391, 394, 395, 520);
@@ -143,15 +143,14 @@ public partial class NPCID
 		// IDs taken from Main.UpdateAudio_DecideOnNewMusic, only if it doesn't appear in any BelongsToInvasion set
 		/// <summary>
 		/// If <see langword="true"/> for a given NPC type (<see cref="NPC.type"/>), then that NPC will not play its associated invasion music.
-		/// <br/> By default, alive NPCs in any BelongsToInvasion set will automatically play the associated invasion music if <see cref="InvasionSlotCount"/> is above 0.
+		/// <br/> By default, alive NPCs in any BelongsToInvasion set will automatically play the associated invasion music.
 		/// <br/> Defaults to <see langword="false"/>.
 		/// </summary>
-		public static bool[] NoInvasionMusic = Factory.CreateBoolSet(387);
+		public static bool[] NoInvasionMusic = Factory.CreateBoolSet(394, 492);
 
 		// IDs taken from NPC.checkDead
 		/// <summary>
 		/// If above 0 for a given NPC type (<see cref="NPC.type"/>), and its associated invasion is NOT a wave-based one, then that NPC will decrement <see cref="Main.invasionSize"/> by that amount when killed.
-		/// <br/> If this NPC's entry is 0, it won't play its associated invasion's music when alive.
 		/// </summary>
 		/// <remarks>
 		///	Note: Even though this defaults to 1, this set should only be checked if <see cref="NPC.GetNPCInvasionGroup(int)"/> is above 0 or if any BelongsToInvasion sets are <see langword="true"/>.

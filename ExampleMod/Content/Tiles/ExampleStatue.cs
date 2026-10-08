@@ -73,9 +73,7 @@ namespace ExampleMod.Content.Tiles
 						}
 					}
 
-#if COMPILE_ERROR_TODOS
-					Item.NewItem(entitySource, (int)spawnX, (int)spawnY - 20, 0, 0, id, 1, false, 0, false);
-#endif
+					Item.NewItem(entitySource, new Vector2(spawnX, spawnY - 20), id);
 				}
 			}
 			else {

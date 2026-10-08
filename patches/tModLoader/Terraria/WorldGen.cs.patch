@@ -443,6 +443,18 @@
  	public static bool InWorld(int x, int y, int fluff = 0)
  	{
  		if (x < fluff || x >= Main.maxTilesX - fluff || y < fluff || y >= Main.maxTilesY - fluff)
+@@ -8072,7 +_,11 @@
+ 	public static bool IsTileLoaded(int x, int y)
+ 	{
+ 		if (InWorld(x, y))
++			/*
+ 			return Main.tile[x, y] != null;
++			*/
++			// TML: Tiles are never null, so check that the section has been received from the server instead.
++			return Main.netMode != 1 || Main.sectionManager.TileLoaded(x, y);
+ 
+ 		return false;
+ 	}
 @@ -8419,17 +_,17 @@
  
  	private static void AddGenerationPass(string name, WorldGenLegacyMethod method)
@@ -3296,7 +3308,7 @@
  											TileMergeAttempt(num, Main.tileBrick, TileID.Sets.Mud, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
  											break;
  										case 633:
-@@ -68673,8 +_,12 @@
+@@ -68673,22 +_,34 @@
  								break;
  						}
  
@@ -3309,7 +3321,29 @@
  						bool flag = false;
  						switch (num) {
  							default:
-@@ -68705,22 +_,33 @@
+ 								flag = false;
+ 								break;
++ 							/*
+ 							case 1:
+ 							case 25:
+ 							case 117:
+ 							case 147:
++							*/
++							case int _ when TileID.Sets.Stone[num]:
++							/*
+ 							case 161:
+ 							case 163:
+ 							case 164:
+ 							case 200:
++							*/
++							case int _ when TileID.Sets.IcesSnow[num]:
++							/*
+ 							case 203:
++							*/
+ 							case 225:
+ 								flag = true;
+ 								break;
+@@ -68705,22 +_,34 @@
  						if (up == 165 && flag && flag3)
  							up = num;
  
@@ -3329,6 +3363,7 @@
  							case 25:
  							case 117:
  							case 147:
++							*/
 +							case int _ when TileID.Sets.Stone[num]:
 +							/*
  							case 161:
@@ -3336,7 +3371,7 @@
  							case 164:
  							case 200:
 +							*/
-+							case int _ when TileID.Sets.Ices[num]:
++							case int _ when TileID.Sets.IcesSnow[num]:
 +							/*
  							case 203:
 +							*/

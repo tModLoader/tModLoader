@@ -1,21 +1,26 @@
 --- src/TerrariaNetCore/Terraria/DataStructures/PlayerDeathReason.cs
 +++ src/tModLoader/Terraria/DataStructures/PlayerDeathReason.cs
-@@ -1,5 +_,8 @@
+@@ -1,5 +_,7 @@
 +using System;
  using System.IO;
  using Terraria.Localization;
-+using Terraria.ModLoader;
 +using Terraria.ModLoader.IO;
  
  namespace Terraria.DataStructures;
  
-@@ -10,10 +_,21 @@
+@@ -7,13 +_,27 @@
+ {
+ 	private int _sourcePlayerIndex = -1;
+ 	private int _sourceNPCIndex = -1;
++	/*
  	private int _sourceProjectileLocalIndex = -1;
++	*/
  	private int _sourceOtherIndex = -1;
  	private int _sourceProjectileType;
 +
-+	// Added
-+	private Item _sourceItem;
++	private byte _sourceNPCGeneration; // Added
++	private Item _sourceItem; // Added
++	private ProjectileKey _sourceProjectileKey; // Added
 +
 +	// Changed to reference _sourceItem
 +	/*
@@ -31,7 +36,7 @@
  	public int? SourceOtherIndex {
  		get {
  			if (_sourceOtherIndex >= 0)
-@@ -33,7 +_,26 @@
+@@ -33,17 +_,45 @@
  	}
  
  	public string CustomReason => _sourceCustomReason;
@@ -39,8 +44,9 @@
  
 +	// Ref fields added by TML.
 +	public ref int SourcePlayerIndex => ref _sourcePlayerIndex;
++	public ref byte SourceNPCGeneration => ref _sourceNPCGeneration;
 +	public ref int SourceNPCIndex => ref _sourceNPCIndex;
-+	public ref int SourceProjectileLocalIndex => ref _sourceProjectileLocalIndex;
++	public ref ProjectileKey SourceProjectileKey => ref _sourceProjectileKey;
 +	public ref int SourceOtherIndex => ref _sourceOtherIndex;
 +	public ref int SourceProjectileType => ref _sourceProjectileType;
 +	public ref Item SourceItem => ref _sourceItem;
@@ -49,28 +55,40 @@
 +	public ref NetworkText CustomReason => ref _customReason;
 +
 +	/// <summary>
-+	/// Only safe for use when the local player is the one taking damage! <br/>
-+	/// Projectile ids are not synchronized across clients, and NPCs may have despawned/died by the time a strike/death packet arrives. <br/>
-+	/// Just because the method returns true, doesn't mean that the _correct_ NPC/Projectile is returned on remote clients.
++	/// If this DamageSource has been sent over the network. <see cref="TryGetCausingEntity"/> may fail if so.
 +	/// </summary>
-+	/// <param name="entity"></param>
-+	/// <returns></returns>
++	public bool NetSynced { get; private set; }
++
++	/// <summary>
++	/// Not recommended for use when <see cref="NetSynced"/> is true as NPCs and Projectiles may have despawned/died by the time a strike/death packet arrives
++	/// </summary>
  	public bool TryGetCausingEntity(out Entity entity)
  	{
  		entity = null;
-@@ -44,6 +_,11 @@
- 
- 		if (Main.projectile.IndexInRange(_sourceProjectileLocalIndex)) {
- 			entity = Main.projectile[_sourceProjectileLocalIndex];
-+
-+			// some extra safety for projectiles, because their ids are not sent across the network
-+			if (Main.player.IndexInRange(_sourcePlayerIndex) && (_sourcePlayerIndex != Main.myPlayer || ((Projectile)entity).owner != _sourcePlayerIndex))
-+				entity = Main.player[_sourcePlayerIndex];
-+
++		/*
+ 		if (Main.npc.IndexInRange(_sourceNPCIndex)) {
++		*/
++		if (Main.npc.IndexInRange(_sourceNPCIndex) && Main.npc[_sourceNPCIndex].generation == _sourceNPCGeneration) {
+ 			entity = Main.npc[_sourceNPCIndex];
  			return true;
  		}
  
-@@ -69,6 +_,11 @@
++		/*
+ 		if (Main.projectile.IndexInRange(_sourceProjectileLocalIndex)) {
+ 			entity = Main.projectile[_sourceProjectileLocalIndex];
++		*/
++		if (_sourceProjectileKey.TryGetActive(out Projectile projectile)) {
++			entity = projectile;
+ 			return true;
+ 		}
+ 
+@@ -65,10 +_,16 @@
+ 	public static PlayerDeathReason ByNPC(int index)
+ 	{
+ 		return new PlayerDeathReason {
+-			_sourceNPCIndex = index
++			_sourceNPCIndex = index,
++			_sourceNPCGeneration = Main.npc[index].generation
  		};
  	}
  
@@ -121,8 +139,16 @@
  			_sourceOtherIndex = type
  		};
  	}
-@@ -100,16 +_,21 @@
- 			_sourceProjectileType = Main.projectile[projectileIndex].type
+@@ -96,23 +_,32 @@
+ 	{
+ 		PlayerDeathReason playerDeathReason = new PlayerDeathReason {
+ 			_sourcePlayerIndex = playerIndex,
++			/*
+ 			_sourceProjectileLocalIndex = projectileIndex,
++			*/
+-			_sourceProjectileType = Main.projectile[projectileIndex].type
++			_sourceProjectileType = Main.projectile[projectileIndex].type,
++			_sourceProjectileKey = Main.projectile[projectileIndex].key
  		};
  
 +		/*
@@ -143,7 +169,18 @@
  		if (_sourceCustomReason != null)
  			return NetworkText.FromLiteral(_sourceCustomReason);
  
-@@ -125,7 +_,10 @@
++		var _sourceProjectileLocalIndex = -1; // TML
+ 		return Lang.CreateDeathMessage(deadPlayerName, _sourcePlayerIndex, _sourceNPCIndex, _sourceProjectileLocalIndex, _sourceOtherIndex, _sourceProjectileType, _sourceItemType);
+ 	}
+ 
+@@ -121,21 +_,33 @@
+ 		BitsByte bitsByte = (byte)0;
+ 		bitsByte[0] = _sourcePlayerIndex != -1;
+ 		bitsByte[1] = _sourceNPCIndex != -1;
++		/*
+ 		bitsByte[2] = _sourceProjectileLocalIndex != -1;
++		*/
++		bitsByte[2] = _sourceProjectileKey != default;
  		bitsByte[3] = _sourceOtherIndex != -1;
  		bitsByte[4] = _sourceProjectileType != 0;
  		bitsByte[5] = _sourceItemType != 0;
@@ -154,6 +191,24 @@
  		bitsByte[7] = _sourceCustomReason != null;
  		writer.Write(bitsByte);
  		if (bitsByte[0])
+ 			writer.Write((short)_sourcePlayerIndex);
+ 
+-		if (bitsByte[1])
++		if (bitsByte[1]) {
+ 			writer.Write((short)_sourceNPCIndex);
++			writer.Write(_sourceNPCGeneration);
++		}
+ 
+-		if (bitsByte[2])
++		if (bitsByte[2]) {
++			/*
+ 			writer.Write((short)_sourceProjectileLocalIndex);
++			*/
++			writer.Write((int)_sourceProjectileKey);
++		}
+ 
+ 		if (bitsByte[3])
+ 			writer.Write((byte)_sourceOtherIndex);
 @@ -144,10 +_,16 @@
  			writer.Write((short)_sourceProjectileType);
  
@@ -171,7 +226,27 @@
  
  		if (bitsByte[7])
  			writer.Write(_sourceCustomReason);
-@@ -172,11 +_,18 @@
+@@ -160,11 +_,17 @@
+ 		if (bitsByte[0])
+ 			playerDeathReason._sourcePlayerIndex = reader.ReadInt16();
+ 
+-		if (bitsByte[1])
++		if (bitsByte[1]) {
+ 			playerDeathReason._sourceNPCIndex = reader.ReadInt16();
++			playerDeathReason._sourceNPCGeneration = reader.ReadByte();
++		}
+ 
+-		if (bitsByte[2])
++		if (bitsByte[2]) {
++			/*
+ 			playerDeathReason._sourceProjectileLocalIndex = reader.ReadInt16();
++			*/
++			playerDeathReason._sourceProjectileKey = (ProjectileKey)reader.ReadInt32();
++		}
+ 
+ 		if (bitsByte[3])
+ 			playerDeathReason._sourceOtherIndex = reader.ReadByte();
+@@ -172,15 +_,23 @@
  		if (bitsByte[4])
  			playerDeathReason._sourceProjectileType = reader.ReadInt16();
  
@@ -190,3 +265,8 @@
  
  		if (bitsByte[7])
  			playerDeathReason._sourceCustomReason = reader.ReadString();
+ 
++		playerDeathReason.NetSynced = true;
+ 		return playerDeathReason;
+ 	}
+ }
