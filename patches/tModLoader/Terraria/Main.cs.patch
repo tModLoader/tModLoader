@@ -6767,7 +6767,7 @@
  	{
  		if (!Lighting.NotRetro) {
  			oldDrawWater(bg, waterStyle, Alpha);
-@@ -51102,7 +_,7 @@
+@@ -51102,17 +_,21 @@
  		}
  
  		Vector2 drawOffset = (drawToScreen ? Vector2.Zero : new Vector2(offScreenRange, offScreenRange)) - screenPosition;
@@ -6776,6 +6776,21 @@
  			TilesRenderer.DrawLiquidBehindTiles(waterStyle);
  
  		LiquidRenderer.Instance.DrawNormalLiquids(spriteBatch, drawOffset, waterStyle, Alpha, bg, waterOnly);
+ 		if (!waterOnly)
+ 			LiquidRenderer.Instance.DrawShimmer(spriteBatch, drawOffset, bg);
+ 	}
+-
++	/*
+ 	public static void DrawTileInWater(Vector2 drawOffset, int x, int y)
+ 	{
+ 		if (Main.tile[x, y] != null && Main.tile[x, y].active() && Main.tile[x, y].type == 518) {
++	*/
++	public static void DrawTileInWater(Vector2 drawOffset, int x, int y)
++	{
++		if (Main.tile[x, y] != null && Main.tile[x, y].active() && TileLoader.DrawTileInWater(x, y, Main.tile[x, y].type, spriteBatch, drawOffset) && Main.tile[x, y].type == 518) {
+ 			instance.LoadTiles(Main.tile[x, y].type);
+ 			Tile tile = Main.tile[x, y];
+ 			int num = (int)tile.liquid / 16;
 @@ -51168,6 +_,10 @@
  				if (tile[j, i].liquid <= 0 || (tile[j, i].nactive() && tileSolid[tile[j, i].type] && !tileSolidTop[tile[j, i].type]) || !(Lighting.Brightness(j, i) > 0f || bg))
  					continue;

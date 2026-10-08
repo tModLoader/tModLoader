@@ -42,7 +42,7 @@
  	private static readonly uint Layer_Rain = 0u;
  	private static readonly uint Layer_Waterfall = 1u;
  	private static bool _shouldShowInvisibleBlocksAndWalls = false;
-@@ -137,15 +_,28 @@
+@@ -137,22 +_,38 @@
  
  						if ((tile3.liquid > 160 || tile4.liquid > 160) && ((tile3.liquid == 0 && !WorldGen.SolidTile(tile3) && tile3.slope() == 0) || (tile4.liquid == 0 && !WorldGen.SolidTile(tile4) && tile4.slope() == 0)) && currentMax < qualityMax) {
  							waterfalls[currentMax].type = 0;
@@ -71,6 +71,31 @@
  							waterfalls[currentMax].x = i;
  							waterfalls[currentMax].y = j;
  							currentMax++;
+ 						}
+ 					}
+ 				}
+-
++				WaterfallData? data = TileLoader.CreateWaterfall(i, j, tile.type);
++				if(data != null) {
++					goto moddedWaterfalSkip;
++				}
+ 				if (tile.type == 196) {
+ 					Tile tile5 = Main.tile[i, j + 1];
+ 					if (tile5 == null) {
+@@ -197,6 +_,13 @@
+ 						currentMax++;
+ 					}
+ 				}
++				moddedWaterfalSkip:
++				if(data != null && ((WaterfallData)data).type > -1) {
++					if (currentMax < qualityMax) {
++						waterfalls[currentMax] = (WaterfallData)data;
++						currentMax++;
++					}
++				}
+ 			}
+ 		}
+ 
 @@ -253,9 +_,46 @@
  			if (++snowFrameForeground > 7)
  				snowFrameForeground = 0;

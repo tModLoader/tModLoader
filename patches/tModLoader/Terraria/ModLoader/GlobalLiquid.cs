@@ -362,7 +362,7 @@ public abstract class GlobalLiquid : ModType
 	/// <param name="item">The item instance thats entering or exiting the liquid.</param>
 	/// <param name="type"></param>
 	/// <param name="isEnter">Whether the currently the liquid is being entered or exited.</param>
-	public virtual bool OnItemSplash(Item item, int type, bool isEnter)
+	public virtual bool OnItemSplash(WorldItem item, int type, bool isEnter)
 	{
 		return true;
 	}

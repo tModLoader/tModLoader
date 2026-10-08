@@ -4,11 +4,13 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.GameContent.UI;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.ObjectData;
 
 namespace Terraria;
 
@@ -711,4 +713,54 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 	/// Call this method to mark <seealso cref="CCed"/> as true for this game update. Use for modded crowd control effects.
 	/// </summary>
 	public void SetCCed() => _customCCed = true;
+
+	public void ProcessPlayerLiquidSplashModded(bool isEnter)
+	{
+		bool inModdedLiquid = false;
+		for (int k = LiquidID.Count; k < LiquidLoader.LiquidCount; k++) {
+			if (wets[k]) {
+				if (LiquidLoader.OnPlayerSplash(k, this, true)) {
+					ModLiquid modLiquid = LiquidLoader.GetLiquid(k);
+					if (modLiquid.OnPlayerSplash(this, isEnter)) {
+						for (int i = 0; i < 50; i++) {
+							int newDust = Dust.NewDust(new Vector2(position.X - 6f, position.Y + (float)(height / 2) - 8f), width + 12, 24, modLiquid.SplashDustType);
+							Main.dust[newDust].velocity.Y -= 4f;
+							Main.dust[newDust].velocity.X *= 2.5f;
+							Main.dust[newDust].scale *= 0.8f;
+							Main.dust[newDust].alpha = 100;
+							Main.dust[newDust].noGravity = true;
+						}
+					}
+					SoundEngine.PlaySound(modLiquid.SplashSound, position);
+				}
+
+				inModdedLiquid = true;
+			}
+		}
+
+		if (!inModdedLiquid && LiquidLoader.OnPlayerSplash(LiquidID.Water, this, isEnter)) {
+			for (int i = 0; i < 50; i++) {
+				int newDust = Dust.NewDust(new Vector2(position.X - 6f, position.Y + (float)(height / 2) - 8f), width + 12, 24, Dust.dustWater());
+				Main.dust[newDust].velocity.Y -= 4f;
+				Main.dust[newDust].velocity.X *= 2.5f;
+				Main.dust[newDust].scale *= 0.8f;
+				Main.dust[newDust].alpha = 100;
+				Main.dust[newDust].noGravity = true;
+			}
+		}
+	}
+
+	private bool PlaceThing_Tiles_CheckLiquidBlocking()
+	{
+		bool result = false;
+		if (Main.tile[Player.tileTargetX, Player.tileTargetY].LiquidAmount > 0 && LiquidLoader.BlocksTilePlacement(this, Player.tileTargetX, Player.tileTargetY, Main.tile[Player.tileTargetX, Player.tileTargetY].LiquidType)) {
+			if (Main.tileSolid[this.inventory[this.selectedItem].createTile]) {
+				result = true;
+			}
+			else if (!TileObjectData.CheckLiquidPlacement(this.inventory[this.selectedItem].createTile, this.inventory[this.selectedItem].placeStyle, Main.tile[Player.tileTargetX, Player.tileTargetY])) {
+				result = true;
+			}
+		}
+		return result;
+	}
 }

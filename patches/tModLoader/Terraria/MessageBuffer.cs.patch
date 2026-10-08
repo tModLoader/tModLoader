@@ -186,14 +186,33 @@
  
  					player9.dead = player9.statLife <= 0;
  					if (Main.netMode == 2)
-@@ -1145,13 +_,15 @@
+@@ -1138,20 +_,32 @@
+ 				ushort num93 = reader.ReadByte();
+ 				ushort num94 = reader.ReadByte();
+ 				byte b7 = reader.ReadByte();
++				int otherLiquid = reader.ReadInt32();
+ 				if (!WorldGen.InWorld(num91, num92, 3))
+ 					break;
+-
++				/* // TODO: Verify if it match Crr L + 10
+ 				TileChangeType type7 = TileChangeType.None;
  				if (Enum.IsDefined(typeof(TileChangeType), b7))
  					type7 = (TileChangeType)b7;
- 
-+				/* // TODO: Fix
+-
++				*/
++				/* // TODO: Verify if it match Curr L + 9
  				if (MessageBuffer.OnTileChangeReceived != null)
  					MessageBuffer.OnTileChangeReceived(num91, num92, Math.Max(num93, num94), type7);
 +				*/
++				if (otherLiquid <= -1) {
++					TileChangeType type7 = TileChangeType.None;
++					if (Enum.IsDefined(typeof(TileChangeType), b7))
++						type7 = (TileChangeType)b7;
++					
++					if (MessageBuffer.OnTileChangeReceived != null)
++						MessageBuffer.OnTileChangeReceived(num91, num92, Math.Max(num93, num94), b7, otherLiquid);
++					
++				}
  
  				BitsByte bitsByte19 = (byte)0;
  				BitsByte bitsByte20 = (byte)0;

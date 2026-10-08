@@ -66,7 +66,7 @@ public static class LiquidLoader
 	private static Func<NPC, int, bool, bool>[] HookOnNPCSplash;
 	private static Func<Projectile, int, bool, bool>[] HookOnProjectileSplash;
 	private static Func<Projectile, int, bool>[] HookOnFishingBobberSplash;
-	private static Func<Item, int, bool, bool>[] HookOnItemSplash;
+	private static Func<WorldItem, int, bool, bool>[] HookOnItemSplash;
 	private static Func<Player, int, bool, bool, bool>[] HookPlayerCollision;
 	private static DelegatePlayerGravityModifier[] HookPlayerGravityModifier;
 	private static DelegateItemLiquidMovement[] HookItemLiquidMovement;
@@ -485,9 +485,9 @@ public static class LiquidLoader
 		return true;
 	}
 
-	public static bool OnItemSplash(int type, Item item, bool isEnter)
+	public static bool OnItemSplash(int type, WorldItem item, bool isEnter)
 	{
-		Func<Item, int, bool, bool>[] hookOnPlayerSplash = HookOnItemSplash;
+		Func<WorldItem, int, bool, bool>[] hookOnPlayerSplash = HookOnItemSplash;
 		for (int k = 0; k < hookOnPlayerSplash.Length; k++) {
 			if (!hookOnPlayerSplash[k](item, type, isEnter)) {
 				return false;
