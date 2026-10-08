@@ -593,6 +593,8 @@ public static partial class Config
 		ChangeHookSignature("Terraria.ModLoader.ModCloud", "Draw");
 
 		RefactorInstanceMethodCall("Terraria.ModLoader.ModTile", "AddToArray", RewriteAddToArrayForRoomNeeds);
+		RefactorInstanceMethodCall("Terraria.ModLoader.ModPylon", "DefaultDrawMapIcon", InsertArgument(oldArgCount: 6, index: 6, "out bool onScreen"));
+		RefactorInstanceMethodCall("Terraria.ModLoader.ModPylon", "DefaultMapClickHandle", InsertArgument(oldArgCount: 4, index: 1, "onScreen"));
 
 		HookRemoved("Terraria.ModLoader.ModProjectile", "DrawBehind", "Set Projectile.drawLayer instead");
 		HookRemoved("Terraria.ModLoader.GlobalProjectile", "DrawBehind", "Set Projectile.drawLayer instead");
