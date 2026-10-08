@@ -46,26 +46,29 @@
  				if (projectile.ignoreWater)
  					flag3 = true;
  
-@@ -238,8 +_,10 @@
+@@ -238,8 +_,11 @@
  				if (projectile.ignoreWater) {
  					bool num5 = Collision.LavaCollision(projectile.position, projectile.width, projectile.height);
  					flag = Collision.WetCollision(projectile.position, projectile.width, projectile.height);
 +					Collision.GetModdedWets(projectile.position, projectile.width, projectile.height, out liquidsIn);
  					flag2 = Collision.honey;
 -					if (!(num5 || flag || flag2))
++					/*if (!(num5 || flag || flag2))*/
 +					shimmer = Collision.shimmer;
 +					if (!(num5 || flag || flag2 || shimmer || liquidsIn.Contains(true)))
  						continue;
  				}
  
-@@ -248,8 +_,36 @@
+@@ -248,8 +_,38 @@
  				num6 = 2f * (float)Math.Sqrt(0.05f * num6);
  				Vector2 velocity3 = projectile.velocity;
  				velocity3.Normalize();
-+				if (!_useViscosityFilter) {
 -				if (!_useViscosityFilter && (flag2 || flag))
-+					if ((flag2 || flag))
 -					num6 *= 0.3f;
++				if (!_useViscosityFilter) {
++				/*if (!_useViscosityFilter && (flag2 || flag))*/
++					if ((flag2 || flag))
++						/*num6 *= 0.3f;*/
 +						num6 *= 0.3f;
 +
 +					for (int l = LiquidLoader.LiquidCount - 1; l >= 0; l--) {

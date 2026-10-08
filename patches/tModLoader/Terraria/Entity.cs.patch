@@ -1,8 +1,7 @@
 --- src/TerrariaNetCore/Terraria/Entity.cs
 +++ src/tModLoader/Terraria/Entity.cs
-@@ -1,24 +_,101 @@
+@@ -1,24 +_,100 @@
  using System;
-+using System.Linq;
  using Microsoft.Xna.Framework;
 +using Terraria.ID;
 +using Terraria.ModLoader;

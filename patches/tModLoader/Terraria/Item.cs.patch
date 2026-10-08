@@ -1,14 +1,12 @@
 --- src/TerrariaNetCore/Terraria/Item.cs
 +++ src/tModLoader/Terraria/Item.cs
-@@ -1,6 +_,8 @@
+@@ -1,5 +_,6 @@
  using System;
  using System.IO;
 +using System.Linq;
  using Microsoft.Xna.Framework;
-+using MonoMod.Core.Platforms;
  using Terraria.Audio;
  using Terraria.DataStructures;
- using Terraria.Enums;
 @@ -10,12 +_,14 @@
  using Terraria.GameContent.UI;
  using Terraria.Graphics.Shaders;
