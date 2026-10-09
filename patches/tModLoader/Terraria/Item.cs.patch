@@ -52,7 +52,7 @@
  	public static int treasureGrabRange = 150;
  	private string _nameOverride;
  	public const int luckPotionDuration1 = 18000;
-@@ -59,69 +_,415 @@
+@@ -59,69 +_,418 @@
  	private readonly int eclipsePrice = sellPrice(0, 7, 50);
  	private readonly int eclipsePostPlanteraPrice = sellPrice(0, 10);
  	private readonly int eclipseMothronPrice = sellPrice(0, 12, 50);
@@ -435,8 +435,10 @@
 +	/// </summary>
  	public float scale = 1f;
 -	public LegacySoundStyle UseSound;
--	public float useSoundPitch;
-+	//public float useSoundPitch;
++	// TML: Pitch is part of the UseSound SoundStyle, see SoundStyle.WithPitchOffset
++	/*
+ 	public float useSoundPitch;
++	*/
 +
 +	/// <summary>
 +	/// The sound this item makes when used. Set this to an existing <see cref="SoundID"/> entry or assign to a new <see cref="SoundStyle"/> for a custom sound.
@@ -1820,7 +1822,7 @@
  			TurnToAir();
  	}
  
-@@ -48311,24 +_,46 @@
+@@ -48311,24 +_,48 @@
  
  	public void OnCreated(ItemCreationContext context)
  	{
@@ -1832,8 +1834,9 @@
  
  	public void ResetStats(int Type)
  	{
--		useSoundPitch = 0f;
-+		//useSoundPitch = 0f;
++		/*
+ 		useSoundPitch = 0f;
++		*/
  		tooltipContext = -1;
  		tooltipSlot = -1;
  		BestiaryNotes = null;
