@@ -1,12 +1,14 @@
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
-using Microsoft.Xna.Framework;
+using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent.UI.BigProgressBar;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Core;
 using Terraria.WorldBuilding;
+using static Terraria.WorldBuilding.Modifiers;
 
 namespace Terraria;
 
@@ -377,5 +379,63 @@ public partial class NPC : IEntityWithGlobals<GlobalNPC>
 		for (int j = 0; j < playerInteraction.Length; j++) {
 			playerInteraction[j] = array[j];
 		}
+	}
+
+	// Added because it is reused code at multiple place in the vanilla game
+	public void ProcessNpcLiquidSplashModded(bool isEnter)
+	{
+		bool inModdedLiquid = false;
+		for (int k = LiquidID.Count; k < LiquidLoader.LiquidCount; k++) {
+			if (wets[k]) {
+				if (LiquidLoader.OnNPCSplash(k, this, true)) {
+					ModLiquid modLiquid = LiquidLoader.GetLiquid(k);
+					if (modLiquid.OnNPCSplash(this, isEnter)) {
+						for (int i = 0; i < 30; i++) {
+							int newDust = Dust.NewDust(new Vector2(position.X - 6f, position.Y + (float)(height / 2) - 8f), width + 12, 24, modLiquid.SplashDustType);
+							Main.dust[newDust].velocity.Y -= 4f;
+							Main.dust[newDust].velocity.X *= 2.5f;
+							Main.dust[newDust].scale *= 0.8f;
+							Main.dust[newDust].alpha = 100;
+							Main.dust[newDust].noGravity = true;
+						}
+
+						if (aiStyle != NPCAIStyleID.Slime &&
+						    type != NPCID.BlueSlime && type != NPCID.MotherSlime && type != NPCID.IceSlime && type != NPCID.LavaSlime &&
+						    type != NPCID.Mouse &&
+						    aiStyle != NPCAIStyleID.GiantTortoise &&
+						    !noGravity) {
+							SoundEngine.PlaySound(modLiquid.SplashSound, position);
+						}
+					}
+				}
+
+				inModdedLiquid = true;
+			}
+		}
+
+		if (!inModdedLiquid && LiquidLoader.OnNPCSplash(LiquidID.Water, this, isEnter)) {
+			for (int i = 0; i < 30; i++) {
+				int newDust = Dust.NewDust(new Vector2(position.X - 6f, position.Y + (float)(height / 2) - 8f), width + 12, 24, Dust.dustWater());
+				Main.dust[newDust].velocity.Y -= 4f;
+				Main.dust[newDust].velocity.X *= 2.5f;
+				Main.dust[newDust].scale *= 0.8f;
+				Main.dust[newDust].alpha = 100;
+				Main.dust[newDust].noGravity = true;
+			}
+		}
+	}
+
+	// Added by tML, this normally goes in a if statement
+	public bool TryPutoutFire()
+	{
+		bool putsOutOnfire = true;
+		for (int i = LiquidLoader.LiquidCount - 1; i >= LiquidID.Count; i--) {
+			if (this.wets[i]) {
+				if (!LiquidLoader.GetLiquid(i).ExtinguishesOnFireDebuffs) {
+					putsOutOnfire = false;
+				}
+			}
+		}
+		return putsOutOnfire;
 	}
 }

@@ -3,6 +3,8 @@ using Terraria.Enums;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.Localization;
+using Terraria.Map;
+using Terraria.ModLoader;
 
 namespace Terraria;
 
@@ -257,4 +259,25 @@ public sealed record Condition(LocalizedText Description, Func<bool> Predicate)
 
 	public static Condition CurrentPriceAdjustmentUnder(float priceModifier) => new(Language.GetText("Conditions.CurrentPriceAdjustmentUnder").WithFormatArgs(priceModifier), () => Main.LocalPlayer.currentShoppingSettings.PriceAdjustment <= priceModifier);
 	public static Condition CurrentPriceAdjustmentOver(float priceModifier) => new(Language.GetText("Conditions.CurrentPriceAdjustmentOver").WithFormatArgs(priceModifier), () => Main.LocalPlayer.currentShoppingSettings.PriceAdjustment >= priceModifier);
+
+	public static Condition NearLiquid(int liquidID)
+	{
+		string liquidMapName = "";
+		if (liquidID < MapHelper.liquidLookup.Length) {
+			liquidMapName = Lang.GetMapObjectName(MapHelper.liquidLookup[liquidID]);
+		}
+		LocalizedText text;
+		if (liquidID == LiquidID.Water)
+			text = Language.GetText("Conditions.NearWater");
+		else if (liquidID == LiquidID.Lava)
+			text = Language.GetText("Conditions.NearLava");
+		else if (liquidID == LiquidID.Honey)
+			text = Language.GetText("Conditions.NearHoney");
+		else if (liquidID == LiquidID.Shimmer)
+			text = Language.GetText("Conditions.NearShimmer");
+		else
+			text = Language.GetText("Conditions.NearLiquid").WithFormatArgs(liquidMapName == "" ? LiquidLoader.GetLiquid(liquidID).Name : liquidMapName);
+
+		return new Condition(text, () => Main.LocalPlayer.adjLiquid[liquidID]);
+	}
 }

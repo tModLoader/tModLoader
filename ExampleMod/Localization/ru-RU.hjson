@@ -177,6 +177,8 @@ Mods: {
 					}
 				}
 			}
+
+			// ExampleAnglerFish.DisplayName: Example Angler Fish
 		}
 
 		Tiles: {
@@ -205,6 +207,7 @@ Mods: {
 				// StatusText: Filled: {0}%
 			}
 
+			// ExampleDrip.MapEntry: Example Drip
 			// ExampleWorkbench.MapEntry: Example Workbench
 			// ExampleExposedGem.MapEntry: Example Gem
 		}
@@ -1280,6 +1283,77 @@ Mods: {
 				// Tooltip: "{$ItemTooltip.WeightedPressurePlateCyan}"
 			}
 
+			ExampleBasicLiquidBucket: {
+				// DisplayName: Example Basic Liquid Bucket
+				/* Tooltip:
+					'''
+					Contains a small amount of basic example liquid
+					Can be poured out
+					''' */
+			}
+
+			ExampleBottomlessBucket: {
+				// DisplayName: Example Bottomless Bucket
+				/* Tooltip:
+					'''
+					Contains an endless amount of example liquid
+					Can be poured out
+					''' */
+			}
+
+			ExampleComplexLiquidBucket: {
+				// DisplayName: Example Complex Liquid Bucket
+				/* Tooltip:
+					'''
+					Contains a small amount of complex example liquid
+					Can be poured out
+					''' */
+			}
+
+			ExampleLiquidBucket: {
+				// DisplayName: Example Liquid Bucket
+				/* Tooltip:
+					'''
+					Contains a small amount of example liquid
+					Can be poured out
+					''' */
+			}
+
+			ExampleLiquidSponge: {
+				// DisplayName: Example Liquid Sponge
+				// Tooltip: Capable of soaking up an endless amount of example liquid
+			}
+
+			ExampleBasicLiquidSensor: {
+				// DisplayName: Liquid Sensor (Example Basic)
+				// Tooltip: Activates whenever occupied by basic example liquid, deactivates otherwise
+			}
+
+			ExampleCloudBlock: {
+				// DisplayName: Example Cloud Block
+				// Tooltip: Prevents fall damage
+			}
+
+			ExampleComplexLiquidSensor: {
+				// DisplayName: Liquid Sensor (Example Complex)
+				// Tooltip: Activates whenever occupied by complex example liquid, deactivates otherwise
+			}
+
+			ExampleLiquidSensor: {
+				// DisplayName: Liquid Sensor (Example)
+				// Tooltip: Activates whenever occupied by example liquid, deactivates otherwise
+			}
+
+			MagicExampleLiquidDropper: {
+				// DisplayName: Magic Example Liquid Dropper
+				// Tooltip: ""
+			}
+
+			ExampleWaders: {
+				// DisplayName: Example Waders
+				// Tooltip: Provides the ability to walk on example liquid, example basic liquid & example complex liquid
+			}
+
 			ExampleGem: {
 				// DisplayName: Example Gem
 				// Tooltip: ""
@@ -1710,6 +1784,8 @@ Mods: {
 			// NounE: fish
 			// NounE$Collective: School
 		}
+
+		// Liquids.ExampleLiquid.MapEntry: Example Liquid
 	}
 }
 

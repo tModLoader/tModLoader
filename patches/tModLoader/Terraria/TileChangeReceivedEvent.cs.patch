@@ -1,0 +1,8 @@
+--- src/TerrariaNetCore/Terraria/TileChangeReceivedEvent.cs
++++ src/tModLoader/Terraria/TileChangeReceivedEvent.cs
+@@ -2,4 +_,4 @@
+ 
+ namespace Terraria;
+ 
+-public delegate void TileChangeReceivedEvent(int x, int y, int count, TileChangeType type);
++public delegate void TileChangeReceivedEvent(int x, int y, int count, byte type, int data2);

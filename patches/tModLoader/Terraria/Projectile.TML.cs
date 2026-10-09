@@ -5,6 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.GameContent.Achievements;
@@ -262,5 +263,42 @@ public partial class Projectile : IEntityWithGlobals<GlobalProjectile>
 			scale,
 			effects
 		);
+	}
+
+	// Added because it is reused code at multiple place in the vanilla game
+	public void ProcessProjectileLiquidSplashModded(bool isEnter)
+	{
+		bool inModdedLiquid = false;
+		for (int k = LiquidID.Count; k < LiquidLoader.LiquidCount; k++) {
+			if (wets[k]) {
+				if (LiquidLoader.OnProjectileSplash(k, this, true)) {
+					ModLiquid modLiquid = LiquidLoader.GetLiquid(k);
+					if (modLiquid.OnProjectileSplash(this, isEnter)) {
+						for (int i = 0; i < 10; i++) {
+							int newDust = Dust.NewDust(new Vector2(position.X - 6f, position.Y + (float)(height / 2) - 8f), width + 12, 24, modLiquid.SplashDustType);
+							Main.dust[newDust].velocity.Y -= 4f;
+							Main.dust[newDust].velocity.X *= 2.5f;
+							Main.dust[newDust].scale *= 0.8f;
+							Main.dust[newDust].alpha = 100;
+							Main.dust[newDust].noGravity = true;
+						}
+					}
+					SoundEngine.PlaySound(modLiquid.SplashSound, position);
+				}
+
+				inModdedLiquid = true;
+			}
+		}
+
+		if (!inModdedLiquid && LiquidLoader.OnProjectileSplash(LiquidID.Water, this, isEnter)) {
+			for (int i = 0; i < 10; i++) {
+				int newDust = Dust.NewDust(new Vector2(position.X - 6f, position.Y + (float)(height / 2) - 8f), width + 12, 24, Dust.dustWater());
+				Main.dust[newDust].velocity.Y -= 4f;
+				Main.dust[newDust].velocity.X *= 2.5f;
+				Main.dust[newDust].scale *= 0.8f;
+				Main.dust[newDust].alpha = 100;
+				Main.dust[newDust].noGravity = true;
+			}
+		}
 	}
 }

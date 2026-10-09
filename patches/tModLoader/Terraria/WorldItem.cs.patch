@@ -126,6 +126,18 @@
  	public void MakeInstanced(Predicate<Player> shouldSpawnForPlayer, int defaultLifetimeOverride = 0)
  	{
  		if (Main.netMode != 2)
+@@ -329,6 +_,11 @@
+ 			maxFallSpeed = 5f;
+ 		}
+ 
++		for (int j = 0; j < LiquidLoader.LiquidCount; j++) {
++			if (wets[j])
++				LiquidLoader.ItemLiquidMovement(j, this, ref wetVelocity, ref gravity, ref maxFallSpeed);
++		}
++
+ 		if (!beingGrabbed) {
+ 			if (type == 205)
+ 				TryFillBucket();
 @@ -366,6 +_,8 @@
  		if (timeSinceItemSpawned < 2147483547)
  			timeSinceItemSpawned++;
@@ -159,6 +171,103 @@
  		if (!shimmered && ItemID.Sets.ItemNoGravity[type]) {
  			velocity.X *= 0.95f;
  			if ((double)velocity.X < 0.1 && (double)velocity.X > -0.1)
+@@ -732,12 +_,21 @@
+ 		if (Collision.shimmer)
+ 			shimmerWet = true;
+ 
++		Collision.GetModdedWets(position, width, height, out bool[] liquidsIn);
++		for (int j = LiquidID.Count; j < LiquidLoader.LiquidCount; j++) {
++			if (liquidsIn[j]) {
++				wets[j] = true;
++			}
++		}
++		if (!wets.Contains(true) && wet)
++			wets[LiquidID.Water] = true;
++
+ 		if (num4) {
+ 			if (!wet) {
+ 				if (wetCount == 0) {
+ 					wetCount = 20;
+ 					if (!flag2) {
+-						if (shimmerWet) {
++						if (shimmerWet && LiquidLoader.OnItemSplash(LiquidID.Shimmer, this, true)) {
+ 							for (int j = 0; j < 10; j++) {
+ 								int num5 = Dust.NewDust(new Vector2(position.X - 6f, position.Y + (float)(height / 2) - 8f), width + 12, 24, 308);
+ 								Main.dust[num5].velocity.Y -= 4f;
+@@ -762,7 +_,7 @@
+ 
+ 							SoundEngine.PlaySound(19, (int)position.X, (int)position.Y, 4);
+ 						}
+-						else if (honeyWet) {
++						else if (honeyWet && LiquidLoader.OnItemSplash(LiquidID.Honey, this, true)) {
+ 							for (int k = 0; k < 5; k++) {
+ 								int num6 = Dust.NewDust(new Vector2(position.X - 6f, position.Y + (float)(height / 2) - 8f), width + 12, 24, 152);
+ 								Main.dust[num6].velocity.Y -= 1f;
+@@ -774,7 +_,9 @@
+ 
+ 							SoundEngine.PlaySound(19, (int)position.X, (int)position.Y);
+ 						}
+-						else {
++						else  {
++							ProcessItemLiquidSplashModded(true);
++							goto skip;
+ 							for (int l = 0; l < 10; l++) {
+ 								int num7 = Dust.NewDust(new Vector2(position.X - 6f, position.Y + (float)(height / 2) - 8f), width + 12, 24, Dust.dustWater());
+ 								Main.dust[num7].velocity.Y -= 4f;
+@@ -783,11 +_,11 @@
+ 								Main.dust[num7].alpha = 100;
+ 								Main.dust[num7].noGravity = true;
+ 							}
+-
++							skip:
+ 							SoundEngine.PlaySound(19, (int)position.X, (int)position.Y);
+ 						}
+ 					}
+-					else {
++					else if (LiquidLoader.OnItemSplash(LiquidID.Lava, this, true)) {
+ 						for (int m = 0; m < 5; m++) {
+ 							int num8 = Dust.NewDust(new Vector2(position.X - 6f, position.Y + (float)(height / 2) - 8f), width + 12, 24, 35);
+ 							Main.dust[num8].velocity.Y -= 1.5f;
+@@ -847,6 +_,8 @@
+ 						SoundEngine.PlaySound(19, (int)position.X, (int)position.Y);
+ 					}
+ 					else {
++						ProcessItemLiquidSplashModded(false);
++						goto skip;
+ 						for (int num12 = 0; num12 < 10; num12++) {
+ 							int num13 = Dust.NewDust(new Vector2(position.X - 6f, position.Y + (float)(height / 2)), width + 12, 24, Dust.dustWater());
+ 							Main.dust[num13].velocity.Y -= 4f;
+@@ -855,11 +_,11 @@
+ 							Main.dust[num13].alpha = 100;
+ 							Main.dust[num13].noGravity = true;
+ 						}
+-
++						skip:
+ 						SoundEngine.PlaySound(19, (int)position.X, (int)position.Y);
+ 					}
+ 				}
+-				else {
++				else if (LiquidLoader.OnItemSplash(LiquidID.Lava, this, false)) {
+ 					for (int num14 = 0; num14 < 5; num14++) {
+ 						int num15 = Dust.NewDust(new Vector2(position.X - 6f, position.Y + (float)(height / 2) - 8f), width + 12, 24, 35);
+ 						Main.dust[num15].velocity.Y -= 1.5f;
+@@ -875,10 +_,16 @@
+ 		}
+ 
+ 		if (!wet) {
++			wets[LiquidID.Water] = false;
+ 			lavaWet = false;
+ 			honeyWet = false;
+ 			shimmerWet = false;
++			for (int j = LiquidID.Count; j < LiquidLoader.LiquidCount; j++) {
++				wets[j] = false;
++			}
+ 		}
++		if(!wets.Contains(true) && wet)
++			wets[LiquidID.Water] = true;
+ 
+ 		if (wetCount > 0)
+ 			wetCount--;
 @@ -931,7 +_,7 @@
  		Rectangle hitbox = base.Hitbox;
  		for (int i = 0; i < Main.maxNPCs; i++) {
