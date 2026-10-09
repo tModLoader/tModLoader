@@ -371,7 +371,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 		if (!HasUnsavedChanges)
 			return;
 
-		SoundEngine.PlaySound(SoundID.MenuClose);
+		SoundEngine.PlaySound(SoundID.MenuOpen);
 		SetMessage(Language.GetTextValue("tModLoader.ModConfigChangesReverted"), Color.Green);
 		ConfigManager.RevertConfigChanges(modConfig, pendingConfig);
 		OnSaveRevertRestore(); // Temporary, read the comment inside OnSaveRevertRestore
@@ -383,7 +383,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 		if (HasDefaultValues)
 			return;
 
-		SoundEngine.PlaySound(SoundID.MenuClose);
+		SoundEngine.PlaySound(SoundID.MenuOpen);
 		SetMessage(Language.GetTextValue("tModLoader.ModConfigDefaultsRestored"), Color.Green);
 		ConfigManager.Reset(pendingConfig);
 		OnSaveRevertRestore(); // Temporary, read the comment inside OnSaveRevertRestore
