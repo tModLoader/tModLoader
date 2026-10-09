@@ -635,6 +635,17 @@
  			}
  		}
  	}
+@@ -2407,6 +_,10 @@
+ 				shader = drawinfo.drawPlayer.cMount;
+ 			}
+ 
++			PlayerEyeHelper.EyeFrame eyeFrame = (PlayerEyeHelper.EyeFrame)frameY;
++			PlayerLoader.ModifyEyelid(drawinfo.drawPlayer, drawinfo, ref pos, ref color, ref shader, ref eyeFrame);
++			frameY = (int)eyeFrame;
++
+ 			if (drawinfo.drawPlayer.mount.Active && drawinfo.mountHandlesHeadDraw && drawinfo.mountDrawsEyelid && drawinfo.drawPlayer.head == 288) {
+ 				color = Color.Black;
+ 				frameY = 2;
 @@ -2546,14 +_,17 @@
  		bool hasRockGolemHead = false;
  		bool flag = drawinfo.drawPlayer.head == 287;

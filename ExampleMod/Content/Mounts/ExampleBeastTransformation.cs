@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Terraria;
 using Terraria.DataStructures;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -302,7 +303,6 @@ namespace ExampleMod.Content.Mounts
 			Terraria.DataStructures.On_PlayerDrawSet.CreateCompositeData += On_PlayerDrawSet_AdditionalDrawInfo;
 			Terraria.DataStructures.On_PlayerDrawLayers.DrawPlayer_28_ArmOverItem += On_PlayerDrawLayers_DrawArmOverItem;
 			Terraria.DataStructures.On_PlayerDrawLayers.DrawPlayer_GetMountOffsetForFaceAcc += On_PlayerDrawLayers_DrawPlayer_GetMountOffsetForFaceAcc;
-			Terraria.DataStructures.IL_PlayerDrawLayers.DrawPlayer_21_Head_TheFace_Eyelid += IL_PlayerDrawLayers_EditEyelid;
 			Terraria.On_Player.ApplyItemPositionOffsetFromMount += On_Player_ApplyItemPositionOffsetFromMount;
 			Terraria.On_Player.ApplyHeadOffsetFromMount += On_Player_ApplyHeadOffsetFromMount;
 			Terraria.On_Player.GetHelmetOffsetAddonFromMount += On_Player_GetHelmetOffsetAddonFromMount;
@@ -339,69 +339,6 @@ namespace ExampleMod.Content.Mounts
 			}
 
 			return pos;
-		}
-
-		private void IL_PlayerDrawLayers_EditEyelid(ILContext il) {
-
-			/* Original method
-			DrawPlayer_21_Head_TheFace_Eyelid(ref PlayerDrawSet drawinfo) {
-			...
-				Vector2 pos = Vector2.Zero;
-				drawinfo.drawPlayer.ApplyHeadOffsetFromMount(ref pos);
-				...
-				Color color = drawinfo.colorHead;
-				int shader = drawinfo.skinDyePacked;
-				int frameY = drawinfo.drawPlayer.eyeHelper.EyeFrameToShow;
-
-				<--- Insert our code right here
-
-				if (drawinfo.drawPlayer.mount.Active && drawinfo.drawPlayer.mount.Type == 54) { // Velociraptor mount
-					color = drawinfo.drawPlayer.GetImmuneAlpha(Lighting.GetColorClamped((int)drawinfo.drawPlayer.MountedCenter.X / 16, (int)drawinfo.drawPlayer.MountedCenter.Y / 16, new Color(158, 92, 67)), drawinfo.shadow);
-					shader = drawinfo.drawPlayer.cMount;
-				}
-
-				if (drawinfo.drawPlayer.mount.Active && drawinfo.mountHandlesHeadDraw && drawinfo.mountDrawsEyelid && drawinfo.drawPlayer.head == 288) { // Heroicis' Hat
-					color = Color.Black;
-					frameY = 2;
-				} 
-			}
-			*/
-
-			// We want to edit the pos, color, and shader for our mount.
-			// Inspecting the method's IL code shows that:
-			//  drawinfo is argument 0.
-			//  pos is index 2 on the stack.
-			//  color is index 4 on the stack.
-			//  shader is index 5 on the stack.
-			//  frameY is index 6 on the stack.
-
-			ILCursor c = new(il); // Create a new IL cursor
-
-			// Move the cursor to after the variable frameY.
-			// frameY is the 6th variable on the stack.
-			if (!c.TryGotoNext(MoveType.After, i => i.MatchStloc(6))) {
-				ModContent.GetInstance<ExampleMod>().Logger.Debug("Patch of IL_PlayerDrawLayers_DrawPlayer_21_Head_TheFace_Eyelid unable to be applied! ");
-				return; // Patch unable to be applied.
-			}
-
-			// Load the variables that we need.
-			c.Emit(OpCodes.Ldarg_0); // load drawinfo which is argument 0.
-			c.Emit(OpCodes.Ldloca_S, (byte)2); // load pos which is index 2 on the stack.
-			c.Emit(OpCodes.Ldloca_S, (byte)4); // load color which is index 4 on the stack.
-			c.Emit(OpCodes.Ldloca_S, (byte)5); // load shader which is index 5 on the stack.
-
-			// Create a delegate that uses the variables.
-			// drawinfo is a ref because the method argument has it as a ref.
-			// The other variables are all refs so that we can mutate them.
-			c.EmitDelegate((ref PlayerDrawSet drawinfo, ref Vector2 pos, ref Color color, ref int shader) => {
-				// Regular C# code here
-				if (drawinfo.drawPlayer.mount.Active && drawinfo.drawPlayer.mount.Type == ModContent.MountType<ExampleBeastTransformation>()) {
-					Color eyeLidColor = new(129, 148, 154); // Define the color of the eye lid here.
-					color = drawinfo.drawPlayer.GetImmuneAlpha(Lighting.GetColorClamped((int)drawinfo.drawPlayer.MountedCenter.X / 16, (int)drawinfo.drawPlayer.MountedCenter.Y / 16, eyeLidColor), drawinfo.shadow); // Set the color of the eye lid based on the lighting.
-					shader = drawinfo.drawPlayer.cMount; // Set the shader (dye).
-					pos += new Vector2(-2 * drawinfo.drawPlayer.direction, 0); // Move the eye to the match the spot on the mount's sprite.
-				}
-			});
 		}
 
 		private Vector2 On_Player_GetBeardOffsetAddonFromMount(On_Player.orig_GetBeardOffsetAddonFromMount orig, Player self, Vector2 beardOffset) {
@@ -671,6 +608,14 @@ namespace ExampleMod.Content.Mounts
 	}
 
 	public class ExampleBeastTransformationPlayer : ModPlayer {
-		
+		public override void ModifyEyelid(PlayerDrawSet drawinfo, ref Vector2 position, ref Color color, ref int shader, ref PlayerEyeHelper.EyeFrame eyeFrame) {
+			// Here we can modify the player's eyelids to match the color of the Example Beast Transformation.
+			if (drawinfo.drawPlayer.mount.Active && drawinfo.drawPlayer.mount.Type == ModContent.MountType<ExampleBeastTransformation>()) {
+				Color eyeLidColor = new(129, 148, 154); // Define the color of the eye lid here.
+				color = drawinfo.drawPlayer.GetImmuneAlpha(Lighting.GetColorClamped((int)drawinfo.drawPlayer.MountedCenter.X / 16, (int)drawinfo.drawPlayer.MountedCenter.Y / 16, eyeLidColor), drawinfo.shadow); // Set the color of the eye lid based on the lighting.
+				shader = drawinfo.drawPlayer.cMount; // Set the shader (dye).
+				position += new Vector2(-2 * drawinfo.drawPlayer.direction, 0); // Move the eye to the match the spot on the mount's sprite.
+			}
+		}
 	}
 }
