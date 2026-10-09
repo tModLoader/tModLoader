@@ -3400,12 +3400,11 @@
  	}
  
  	public void UpdateDead()
-@@ -13575,6 +_,8 @@
+@@ -13575,6 +_,7 @@
  		ResetFloorFlags();
  		wings = 0;
  		wingsLogic = 0;
 +		equippedWings = null; // Added by TML
-+		selectItemOnNextUse = false; // Added by TML
  		hasWings = false;
  		ResetVisibleAccessories();
  		poisoned = false;
@@ -6575,7 +6574,7 @@
  					cursorItemIconPush = 6;
  				}
  			}
-@@ -35241,6 +_,70 @@
+@@ -35241,6 +_,55 @@
  			}
  		}
  
@@ -6627,21 +6626,6 @@
 +		goto DecrementItemAnimation;
 +
 +		ReuseDelayAndAnimationStart:
-+
-+		// SmartSelectLookup moved here from Player.Update so that it can apply between uses, without changing selectedItem prematurely for half the Update method
-+		if (itemAnimation == 0 && reuseDelay == 0 && (!controlUseItem || selectItemOnNextUse)) {
-+			selectItemOnNextUse = false;
-+
-+			int oldSelect = selectedItem;
-+			SmartSelectLookup(out oldSelect);
-+			if (selectedItem != oldSelect) {
-+				item = inventory[selectedItem];
-+				// TML feature, allow the item to be instantly used
-+				releaseUseItem = true;
-+				// prevent remaining item time carrying over to new weapon (for items like starfury with less than one shot per use)
-+				itemTime = itemTimeMax = 0;
-+			}
-+		}
 +
  		ItemCheck_HandleMount();
  		int weaponDamage = GetWeaponDamage(item);
