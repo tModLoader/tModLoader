@@ -706,3 +706,5 @@ ModConfigShowcaseAcceptClientChanges: {
 		Tooltip: ""
 	}
 }
+
+ModConfigShowcaseSortOrder.DisplayName: Mod Config Showcase Sort Order
