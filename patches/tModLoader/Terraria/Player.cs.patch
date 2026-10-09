@@ -6783,7 +6783,12 @@
  						if (item.stack > 0)
  							item.stack--;
  
-@@ -35846,6 +_,9 @@
+@@ -35842,10 +_,13 @@
+ 
+ 	public Rectangle AnimatePlayerAndGetItemFrame(float mountOffset, Item sItem)
+ 	{
+-		Item item = ((itemAnimation > 0) ? lastVisualizedSelectedItem : sItem);
++		Item item = ((itemAnimation > 0 && sItem.IsAir) ? lastVisualizedSelectedItem : sItem); // TML added && sItem.IsAir
  		Rectangle drawHitbox = Item.GetDrawHitbox(item.type, this);
  		compositeFrontArm.enabled = false;
  		compositeBackArm.enabled = false;
