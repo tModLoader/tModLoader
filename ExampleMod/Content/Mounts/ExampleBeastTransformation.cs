@@ -2,6 +2,8 @@ using ExampleMod.Content.Buffs;
 using ExampleMod.Content.Dusts;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Mono.Cecil.Cil;
+using MonoMod.Cil;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,6 +28,7 @@ namespace ExampleMod.Content.Mounts
 
 			// Sets that specific for this mount
 			MountID.Sets.CanUseHooks[Type] = true; // Grappling hooks can be used while using this mount.
+			MountID.Sets.DrawHeadItemOnMountThatHidesThePlayer[Type] = true; // Allows hats and helmets to be shown on the mount even though the mount hides the player.
 
 			// Misc
 			MountData.spawnDust = ModContent.DustType<Sparkle>();
@@ -296,30 +299,10 @@ namespace ExampleMod.Content.Mounts
 		}
 
 		public override void Load() {
-			Terraria.DataStructures.On_PlayerDrawSet.CreateCompositeData += On_PlayerDrawSet_CreateCompositeData;
-			Terraria.DataStructures.On_PlayerDrawLayers.DrawPlayer_28_ArmOverItem += On_PlayerDrawLayers_DrawPlayer_28_ArmOverItem;
-		}
-
-		private void On_PlayerDrawLayers_DrawPlayer_28_ArmOverItem(On_PlayerDrawLayers.orig_DrawPlayer_28_ArmOverItem orig, ref PlayerDrawSet drawinfo) {
-			if (drawinfo.drawPlayer.mount.Active && drawinfo.drawPlayer.mount.Type == ModContent.MountType<ExampleBeastTransformation>()) {
-				drawinfo.drawPlayer.mount.Draw(drawinfo.DrawDataCache, 3, drawinfo.drawPlayer, drawinfo.Position, drawinfo.colorMount, drawinfo.playerEffect, drawinfo.shadow);
-			}
-			orig(ref drawinfo);
-		}
-
-		private void On_PlayerDrawSet_CreateCompositeData(On_PlayerDrawSet.orig_CreateCompositeData orig, ref PlayerDrawSet self) {
-			if (self.drawPlayer.mount.Active && self.drawPlayer.mount.Type == ModContent.MountType<ExampleBeastTransformation>()) {
-				self.mountHandlesHeadDraw = true;
-				// self.mountDrawsEyelid = true;
-			}
-
-			orig(ref self);
-		}
-	}
-
-	public class ExampleBeastTransformationPlayer : ModPlayer {
-
-		public override void Load() {
+			Terraria.DataStructures.On_PlayerDrawSet.CreateCompositeData += On_PlayerDrawSet_AdditionalDrawInfo;
+			Terraria.DataStructures.On_PlayerDrawLayers.DrawPlayer_28_ArmOverItem += On_PlayerDrawLayers_DrawArmOverItem;
+			Terraria.DataStructures.On_PlayerDrawLayers.DrawPlayer_GetMountOffsetForFaceAcc += On_PlayerDrawLayers_DrawPlayer_GetMountOffsetForFaceAcc;
+			Terraria.DataStructures.IL_PlayerDrawLayers.DrawPlayer_21_Head_TheFace_Eyelid += IL_PlayerDrawLayers_EditEyelid;
 			Terraria.On_Player.ApplyItemPositionOffsetFromMount += On_Player_ApplyItemPositionOffsetFromMount;
 			Terraria.On_Player.ApplyHeadOffsetFromMount += On_Player_ApplyHeadOffsetFromMount;
 			Terraria.On_Player.GetHelmetOffsetAddonFromMount += On_Player_GetHelmetOffsetAddonFromMount;
@@ -330,18 +313,107 @@ namespace ExampleMod.Content.Mounts
 			// CheckDrowning breathing reed
 		}
 
+		private void On_PlayerDrawLayers_DrawArmOverItem(On_PlayerDrawLayers.orig_DrawPlayer_28_ArmOverItem orig, ref PlayerDrawSet drawinfo) {
+			if (drawinfo.drawPlayer.mount.Active && drawinfo.drawPlayer.mount.Type == ModContent.MountType<ExampleBeastTransformation>()) {
+				drawinfo.drawPlayer.mount.Draw(drawinfo.DrawDataCache, 3, drawinfo.drawPlayer, drawinfo.Position, drawinfo.colorMount, drawinfo.playerEffect, drawinfo.shadow);
+			}
+			orig(ref drawinfo);
+		}
+
+		private void On_PlayerDrawSet_AdditionalDrawInfo(On_PlayerDrawSet.orig_CreateCompositeData orig, ref PlayerDrawSet self) {
+			if (self.drawPlayer.mount.Active && self.drawPlayer.mount.Type == ModContent.MountType<ExampleBeastTransformation>()) {
+				self.mountHandlesHeadDraw = true; // The mount changes how the player's head is drawn.
+				self.mountDrawsEyelid = true; // The mount changes how the eye lid is drawn.
+			}
+
+			orig(ref self);
+		}
+
+		private Vector2 On_PlayerDrawLayers_DrawPlayer_GetMountOffsetForFaceAcc(On_PlayerDrawLayers.orig_DrawPlayer_GetMountOffsetForFaceAcc orig, ref PlayerDrawSet drawinfo, ref bool isVelociraptor, ref bool hasRockGolemHead) {
+			Vector2 pos = orig(ref drawinfo, ref isVelociraptor, ref hasRockGolemHead);
+
+			if (drawinfo.drawPlayer.mount.Active && drawinfo.drawPlayer.mount.Type == ModContent.MountType<ExampleBeastTransformation>()) {
+				drawinfo.drawPlayer.ApplyHeadOffsetFromMount(ref pos);
+				pos -= drawinfo.drawPlayer.GetHelmetOffsetAddonFromMount();
+				isVelociraptor = true;
+			}
+
+			return pos;
+		}
+
+		private void IL_PlayerDrawLayers_EditEyelid(ILContext il) {
+
+			/* Original method
+			DrawPlayer_21_Head_TheFace_Eyelid(ref PlayerDrawSet drawinfo) {
+			...
+				Vector2 pos = Vector2.Zero;
+				drawinfo.drawPlayer.ApplyHeadOffsetFromMount(ref pos);
+				...
+				Color color = drawinfo.colorHead;
+				int shader = drawinfo.skinDyePacked;
+				int frameY = drawinfo.drawPlayer.eyeHelper.EyeFrameToShow;
+
+				<--- Insert our code right here
+
+				if (drawinfo.drawPlayer.mount.Active && drawinfo.drawPlayer.mount.Type == 54) { // Velociraptor mount
+					color = drawinfo.drawPlayer.GetImmuneAlpha(Lighting.GetColorClamped((int)drawinfo.drawPlayer.MountedCenter.X / 16, (int)drawinfo.drawPlayer.MountedCenter.Y / 16, new Color(158, 92, 67)), drawinfo.shadow);
+					shader = drawinfo.drawPlayer.cMount;
+				}
+
+				if (drawinfo.drawPlayer.mount.Active && drawinfo.mountHandlesHeadDraw && drawinfo.mountDrawsEyelid && drawinfo.drawPlayer.head == 288) { // Heroicis' Hat
+					color = Color.Black;
+					frameY = 2;
+				} 
+			}
+			*/
+
+			// We want to edit the pos, color, and shader for our mount.
+			// Inspecting the method's IL code shows that:
+			//  drawinfo is argument 0.
+			//  pos is index 2 on the stack.
+			//  color is index 4 on the stack.
+			//  shader is index 5 on the stack.
+			//  frameY is index 6 on the stack.
+
+			ILCursor c = new(il); // Create a new IL cursor
+
+			// Move the cursor to after the variable frameY.
+			// frameY is the 6th variable on the stack.
+			if (!c.TryGotoNext(MoveType.After, i => i.MatchStloc(6))) {
+				ModContent.GetInstance<ExampleMod>().Logger.Debug("Patch of IL_PlayerDrawLayers_DrawPlayer_21_Head_TheFace_Eyelid unable to be applied! ");
+				return; // Patch unable to be applied.
+			}
+
+			// Load the variables that we need.
+			c.Emit(OpCodes.Ldarg_0); // load drawinfo which is argument 0.
+			c.Emit(OpCodes.Ldloca_S, (byte)2); // load pos which is index 2 on the stack.
+			c.Emit(OpCodes.Ldloca_S, (byte)4); // load color which is index 4 on the stack.
+			c.Emit(OpCodes.Ldloca_S, (byte)5); // load shader which is index 5 on the stack.
+
+			// Create a delegate that uses the variables.
+			// drawinfo is a ref because the method argument has it as a ref.
+			// The other variables are all refs so that we can mutate them.
+			c.EmitDelegate((ref PlayerDrawSet drawinfo, ref Vector2 pos, ref Color color, ref int shader) => {
+				// Regular C# code here
+				if (drawinfo.drawPlayer.mount.Active && drawinfo.drawPlayer.mount.Type == ModContent.MountType<ExampleBeastTransformation>()) {
+					Color eyeLidColor = new(129, 148, 154); // Define the color of the eye lid here.
+					color = drawinfo.drawPlayer.GetImmuneAlpha(Lighting.GetColorClamped((int)drawinfo.drawPlayer.MountedCenter.X / 16, (int)drawinfo.drawPlayer.MountedCenter.Y / 16, eyeLidColor), drawinfo.shadow); // Set the color of the eye lid based on the lighting.
+					shader = drawinfo.drawPlayer.cMount; // Set the shader (dye).
+					pos += new Vector2(-2 * drawinfo.drawPlayer.direction, 0); // Move the eye to the match the spot on the mount's sprite.
+				}
+			});
+		}
+
 		private Vector2 On_Player_GetBeardOffsetAddonFromMount(On_Player.orig_GetBeardOffsetAddonFromMount orig, Player self, Vector2 beardOffset) {
 			Vector2 originalReturn = orig(self, beardOffset);
 
 			if (self.mount.Type == ModContent.MountType<ExampleBeastTransformation>()) {
-				int b = self.beard; // sbyte->int
-				if ((uint)(b - 1) <= 3u) {
-					beardOffset += new Vector2(8f, 4f) * self.Directions;
-					if (self.mount.Frame == 6)
-						beardOffset += new Vector2(0f, 2f) * self.Directions;
-					else if (self.mount.Frame == 7)
-						beardOffset += new Vector2(-2f, 4f) * self.Directions;
-				}
+				// beardOffset += new Vector2(8f, 4f) * self.Directions;
+				beardOffset += new Vector2(2f, 4f) * self.Directions; // Change where the beard sits on the mount. This is affected by the head offset, too.
+				if (self.mount.Frame == 6)
+					beardOffset += new Vector2(0f, 2f) * self.Directions;
+				else if (self.mount.Frame == 7)
+					beardOffset += new Vector2(-2f, 4f) * self.Directions;
 				return beardOffset;
 			}
 
@@ -443,7 +515,8 @@ namespace ExampleMod.Content.Mounts
 			Vector2 vector = Vector2.Zero;
 
 			if (self.mount.Type == ModContent.MountType<ExampleBeastTransformation>()) {
-				vector = new Vector2(23f, -8f) * self.Directions;
+				//vector = new Vector2(23f, -8f) * self.Directions;
+				vector = new Vector2(27f, -8f) * self.Directions; // Change where the head item sits on the mount.
 				switch (frame) {
 					case 5:
 						vector += new Vector2(0f, 4f) * self.Directions;
@@ -595,5 +668,9 @@ namespace ExampleMod.Content.Mounts
 
 			pos += itemOffset;
 		}
+	}
+
+	public class ExampleBeastTransformationPlayer : ModPlayer {
+		
 	}
 }
