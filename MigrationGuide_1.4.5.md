@@ -638,6 +638,7 @@ All classes are in the `Terraria.ModLoader` or `Terraria` namespaces unless othe
 * `ModMount.Dismount`'s `skipDust` parameter can potentially be true before the hook is called. This indicates that the player is dismounting in a location without enough room and is being forcefully teleported to a safe location. In this case, skip manual dust spawning code because the teleport effect will be displayed instead. Basically, if `skipDust` is true, skip custom despawn dust logic.
 * New `ModMount` features:
   * `MountID.Sets.HoverIgnoresFatigue` to allow for infinite flight.
+  * `MountID.Sets.DrawHeadItemOnMountThatHidesThePlayer` to allow for head items to draw on mounts even if they hide the player.
   * `ModMount.ModifyPlayerDrawInfo(ref PlayerDrawSet drawInfo)` to allow for editing the player's draw data before it is finalized.
     * Example: setting `drawInfo.hideEntirePlayer`.
   * `ModMount.ResetFlightTime(Player player, ref int flightTime)` to allow things to happen when flight time resets.
@@ -647,3 +648,4 @@ All classes are in the `Terraria.ModLoader` or `Terraria` namespaces unless othe
   * `ModMount.UpdateAfterEquips(Player player)` to allows you to make things happen to the mount right after the player's equipment is run.
     * Used by the Velociraptor to give infinite flight if the player has the Soaring Insignia equipped.
     * Used by the Rat to climb up walls by boosting Player.spikedBoots.
+* `ModPlayer.ModifyEyelid(PlayerDrawSet drawinfo, ref Vector2 position, ref Color color, ref int shader, ref PlayerEyeHelper.EyeFrame eyeFrame)` to allow for modifying the player's eyelid.
