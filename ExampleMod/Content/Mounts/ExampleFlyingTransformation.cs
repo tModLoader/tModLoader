@@ -165,19 +165,4 @@ namespace ExampleMod.Content.Mounts
 			drawInfo.weaponDrawOrder = WeaponDrawOrder.BehindBackArm;
 		}
 	}
-
-	/*
-	public class ExampleFlyingTransformationPlayer : ModPlayer {
-		public override void ModifyDrawInfo(ref PlayerDrawSet drawInfo) {
-			
-			if (drawInfo.drawPlayer.mount.Active && drawInfo.drawPlayer.mount.Type == ModContent.MountType<ExampleFlyingTransformation>()) {
-				drawInfo.hideEntirePlayer = true; // Doesn't work because it is set too late.
-				drawInfo.stealth = 1f; // Doesn't do anything.
-				// Works
-				drawInfo.colorDisplayDollSkin = drawInfo.legsGlowColor = drawInfo.armGlowColor = drawInfo.bodyGlowColor = drawInfo.headGlowColor = drawInfo.colorLegs = drawInfo.colorShoes = drawInfo.colorPants = drawInfo.colorUnderShirt = drawInfo.colorShirt = drawInfo.colorBodySkin = drawInfo.colorHead = drawInfo.colorHair = drawInfo.colorEyes = drawInfo.colorEyeWhites = drawInfo.colorArmorLegs = drawInfo.colorArmorBody = drawInfo.colorArmorHead = Color.Transparent;
-			}
-			
-		}
-	}
-	*/
 }

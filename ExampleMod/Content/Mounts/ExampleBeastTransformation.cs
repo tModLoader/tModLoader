@@ -2,8 +2,6 @@ using ExampleMod.Content.Buffs;
 using ExampleMod.Content.Dusts;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Mono.Cecil.Cil;
-using MonoMod.Cil;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -96,19 +94,6 @@ namespace ExampleMod.Content.Mounts
 			player.mount._mountSpecificData = new ExampleBeastTransformationSelectiveFlyingMountData();
 		}
 
-		public override void JumpSpeed(Player mountedPlayer, ref float jumpSeed, float xVelocity) {
-			/*
-			if (mountedPlayer.wingsLogic > 0) {
-				WingStats wingStats = mountedPlayer.GetWingStats(mountedPlayer.wingsLogic);
-				jumpSeed = wingStats.AccRunSpeedOverride / 1.5f;
-			}
-			*/
-		}
-
-		public override void JumpHeight(Player mountedPlayer, ref int jumpHeight, float xVelocity) {
-			//Main.NewText($"jumpHeight {jumpHeight}");
-		}
-
 		// Mounts that have flightTimeMax > 0 can automatically fly.
 		// This mount can only fly if the player if the has wings.
 		public override bool? CanFly(Player player) {
@@ -167,14 +152,15 @@ namespace ExampleMod.Content.Mounts
 		}
 
 		public override bool UpdateFrame(Player mountedPlayer, int state, Vector2 velocity) {
+			Mount mount = mountedPlayer.mount;
 
 			if (state != 0)
-				mountedPlayer.mount._idleTime = 0;
+				mount._idleTime = 0;
 
 			if (mountedPlayer.isDisplayDollOrInanimate)
-				mountedPlayer.mount._idleTime = 0;
+				mount._idleTime = 0;
 
-			var selectiveFlyingMountData = (ExampleBeastTransformationSelectiveFlyingMountData)mountedPlayer.mount._mountSpecificData;
+			var selectiveFlyingMountData = (ExampleBeastTransformationSelectiveFlyingMountData)mount._mountSpecificData;
 
 			// Flying in water
 			if (state == 4) { 
@@ -194,7 +180,7 @@ namespace ExampleMod.Content.Mounts
 			switch (state)
 				{
 				case 0: // Idle
-					mountedPlayer.mount._frame = mountedPlayer.mount._data.standingFrameStart;
+					mount._frame = mount._data.standingFrameStart;
 					break;
 				case 1: // Walking/Running
 					UpdateFrame_Walking(mountedPlayer, velocity);
@@ -203,18 +189,18 @@ namespace ExampleMod.Content.Mounts
 					UpdateFrame_Falling(mountedPlayer, velocity);
 					break;
 				case 3: { // In the air, flying
-						mountedPlayer.mount._frameCounter += 1f;
-						int flyingFrameDelay = mountedPlayer.mount._data.flyingFrameDelay;
-						if (mountedPlayer.mount._flyTime > 0)
+						mount._frameCounter += 1f;
+						int flyingFrameDelay = mount._data.flyingFrameDelay;
+						if (mount._flyTime > 0)
 							flyingFrameDelay -= 2;
 
-						if (mountedPlayer.mount._frameCounter > (float)flyingFrameDelay) {
-							mountedPlayer.mount._frameCounter -= flyingFrameDelay;
-							mountedPlayer.mount._frame++;
+						if (mount._frameCounter > (float)flyingFrameDelay) {
+							mount._frameCounter -= flyingFrameDelay;
+							mount._frame++;
 						}
 
-						if (mountedPlayer.mount._frame < mountedPlayer.mount._data.flyingFrameStart || mountedPlayer.mount._frame >= mountedPlayer.mount._data.flyingFrameStart + mountedPlayer.mount._data.flyingFrameCount)
-							mountedPlayer.mount._frame = mountedPlayer.mount._data.flyingFrameStart;
+						if (mount._frame < mount._data.flyingFrameStart || mount._frame >= mount._data.flyingFrameStart + mount._data.flyingFrameCount)
+							mount._frame = mount._data.flyingFrameStart;
 						break;
 					}
 			}
@@ -223,54 +209,56 @@ namespace ExampleMod.Content.Mounts
 		}
 
 		private static void UpdateFrame_Walking(Player mountedPlayer, Vector2 velocity) {
+			Mount mount = mountedPlayer.mount;
 			float absVelX = Math.Abs(velocity.X);
 
-			mountedPlayer.mount._frameCounter += absVelX;
+			mount._frameCounter += absVelX;
 			if (absVelX >= 0f) {
-				if (mountedPlayer.mount._frameCounter > (float)mountedPlayer.mount._data.runningFrameDelay) {
-					mountedPlayer.mount._frameCounter -= mountedPlayer.mount._data.runningFrameDelay;
-					mountedPlayer.mount._frame++;
+				if (mount._frameCounter > (float)mount._data.runningFrameDelay) {
+					mount._frameCounter -= mount._data.runningFrameDelay;
+					mount._frame++;
 				}
 
-				if (mountedPlayer.mount._frame < mountedPlayer.mount._data.runningFrameStart || mountedPlayer.mount._frame >= mountedPlayer.mount._data.runningFrameStart + mountedPlayer.mount._data.runningFrameCount)
-					mountedPlayer.mount._frame = mountedPlayer.mount._data.runningFrameStart;
+				if (mount._frame < mount._data.runningFrameStart || mount._frame >= mount._data.runningFrameStart + mount._data.runningFrameCount)
+					mount._frame = mount._data.runningFrameStart;
 			}
 			else {
-				if (mountedPlayer.mount._frameCounter < 0f) {
-					mountedPlayer.mount._frameCounter += mountedPlayer.mount._data.runningFrameDelay;
-					mountedPlayer.mount._frame--;
+				if (mount._frameCounter < 0f) {
+					mount._frameCounter += mount._data.runningFrameDelay;
+					mount._frame--;
 				}
 
-				if (mountedPlayer.mount._frame < mountedPlayer.mount._data.runningFrameStart || mountedPlayer.mount._frame >= mountedPlayer.mount._data.runningFrameStart + mountedPlayer.mount._data.runningFrameCount)
-					mountedPlayer.mount._frame = mountedPlayer.mount._data.runningFrameStart + mountedPlayer.mount._data.runningFrameCount - 1;
+				if (mount._frame < mount._data.runningFrameStart || mount._frame >= mount._data.runningFrameStart + mount._data.runningFrameCount)
+					mount._frame = mount._data.runningFrameStart + mount._data.runningFrameCount - 1;
 			}
 		}
 
 		private static void UpdateFrame_Falling(Player mountedPlayer, Vector2 velocity) {
-			mountedPlayer.mount._frameCounter += 1f;
-			if (mountedPlayer.mount._frameCounter > (float)mountedPlayer.mount._data.inAirFrameDelay) {
-				mountedPlayer.mount._frameCounter -= mountedPlayer.mount._data.inAirFrameDelay;
-				mountedPlayer.mount._frame++;
+			Mount mount = mountedPlayer.mount;
+			mount._frameCounter += 1f;
+			if (mount._frameCounter > (float)mount._data.inAirFrameDelay) {
+				mount._frameCounter -= mount._data.inAirFrameDelay;
+				mount._frame++;
 			}
 
-			if (mountedPlayer.mount._frame < mountedPlayer.mount._data.inAirFrameStart || mountedPlayer.mount._frame >= mountedPlayer.mount._data.inAirFrameStart + mountedPlayer.mount._data.inAirFrameCount)
-				mountedPlayer.mount._frame = mountedPlayer.mount._data.inAirFrameStart;
+			if (mount._frame < mount._data.inAirFrameStart || mount._frame >= mount._data.inAirFrameStart + mount._data.inAirFrameCount)
+				mount._frame = mount._data.inAirFrameStart;
 
 			if (mountedPlayer.grappling[0] >= 0) {
 				if (velocity.Length() > 0.01f) {
-					if (mountedPlayer.mount._frame == mountedPlayer.mount._data.inAirFrameStart + mountedPlayer.mount._data.inAirFrameCount - 1)
-						mountedPlayer.mount._frameCounter = 0f;
+					if (mount._frame == mount._data.inAirFrameStart + mount._data.inAirFrameCount - 1)
+						mount._frameCounter = 0f;
 				}
 				else {
-					mountedPlayer.mount._frame = 7;
+					mount._frame = 7;
 				}
 			}
 			else if (velocity.Y < 0f) {
-				if (mountedPlayer.mount._frame == mountedPlayer.mount._data.inAirFrameStart + mountedPlayer.mount._data.inAirFrameCount - 1)
-					mountedPlayer.mount._frameCounter = 0f;
+				if (mount._frame == mount._data.inAirFrameStart + mount._data.inAirFrameCount - 1)
+					mount._frameCounter = 0f;
 			}
 			else {
-				mountedPlayer.mount._frame = 7;
+				mount._frame = 7;
 			}
 		}
 
@@ -289,12 +277,12 @@ namespace ExampleMod.Content.Mounts
 		// ModPlayer.ModifyDrawInfo() doesn't work because it runs too late.
 		public override void ModifyPlayerDrawInfo(ref PlayerDrawSet drawInfo) {
 			drawInfo.hideEntirePlayerExceptHelmetsAndFaceAccessories = true;
-			drawInfo.weaponDrawOrder = WeaponDrawOrder.BehindFrontArm;
+			drawInfo.weaponDrawOrder = WeaponDrawOrder.BehindFrontArm; // Using items appears under the mount's hand.
 			drawInfo.VisualPositionOffset = new Vector2(-14f, 0f) * drawInfo.drawPlayer.Directions;
 			drawInfo.Position += drawInfo.VisualPositionOffset;
 			bool itemAnimating = drawInfo.drawPlayer.itemAnimation > 0;
 			if (drawInfo.heldItem.useStyle == ItemUseStyleID.GolfPlay && itemAnimating)
-				drawInfo.weaponDrawOrder = WeaponDrawOrder.OverFrontArm;
+				drawInfo.weaponDrawOrder = WeaponDrawOrder.OverFrontArm; // Golf clubs appear over the mount's hand.
 
 			drawInfo.drawPlayer.ApplyItemPositionOffsetFromMount(ref drawInfo.ItemLocation);
 		}
