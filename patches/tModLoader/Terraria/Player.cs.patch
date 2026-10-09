@@ -6807,6 +6807,19 @@
  			if ((!overrideCanPlace.HasValue || overrideCanPlace.Value) && TileObjectData.CustomPlace(tileToCreate, previewPlaceStyle))
  				TileObject.CanPlace(tileTargetX, tileTargetY, tileToCreate, previewPlaceStyle, direction, out var _, onlyCheck: true, forcedRandom);
  		}
+@@ -35908,7 +_,12 @@
+ 	private void ItemCheck_OwnerOnlyCode(ref ItemCheckContext context, Item sItem, int weaponDamage, Rectangle heldItemFrame)
+ 	{
+ 		bool flag = true;
++		/*
+ 		if (selectedItemState.HasBufferedChange && sItem.useTime > itemAnimation)
++		*/
++		// Blocks shots whose itemTime would outlast the animation and delay the buffered selection change.
++		// Vanilla blocks one more shot, because its counter is one lower when it shoots (#2351)
++		if (selectedItemState.HasBufferedChange && CombinedHooks.TotalUseTime(sItem.useTime, this, sItem) > itemAnimation)
+ 			flag = false;
+ 
+ 		int type = sItem.type;
 @@ -35936,13 +_,18 @@
  				useTime = sItem.useTime;
  
