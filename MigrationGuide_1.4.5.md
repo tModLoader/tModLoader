@@ -637,3 +637,16 @@ All classes are in the `Terraria.ModLoader` or `Terraria` namespaces unless othe
 * `(Mod|Global)BlockType.RandomUpdate` (Tiles and Walls) now have an `underground` parameter to more easily support underground or overground-only logic and better support the "Don't dig up" special world seed behaviors. If that seed is active, tile locations technically underground (below `Main.worldSurface`) might be considered overground for random update purposes. Modders should trust the `underground` parameter rather than rely on checking `Main.worldSurface` to support the special characteristics of "Don't dig up".
 * 🤖: `ModCloud.Draw` now has a `List<DrawData>` parameter replacing the `SpriteBatch` parameter. Manually drawing during this hook is no longer supported due to the new horizon visuals drawing clouds using a shader, but the new parameter allows supplying additional `DrawData` if desired.
 * `ModMount.Dismount`'s `skipDust` parameter can potentially be true before the hook is called. This indicates that the player is dismounting in a location without enough room and is being forcefully teleported to a safe location. In this case, skip manual dust spawning code because the teleport effect will be displayed instead. Basically, if `skipDust` is true, skip custom despawn dust logic.
+* New `ModMount` features:
+  * `MountID.Sets.HoverIgnoresFatigue` to allow for infinite flight.
+  * `MountID.Sets.DrawHeadItemOnMountThatHidesThePlayer` to allow for head items to draw on mounts even if they hide the player.
+  * `ModMount.ModifyPlayerDrawInfo(ref PlayerDrawSet drawInfo)` to allow for editing the player's draw data before it is finalized.
+    * Example: setting `drawInfo.hideEntirePlayer`.
+  * `ModMount.ResetFlightTime(Player player, ref int flightTime)` to allow things to happen when flight time resets.
+  * `bool? ModMount.CanFly(Player player)` to allow change whether the mount is allowed to fly.
+    * Mounts that have `flightTimeMax > 0` can automatically fly.
+	* Return `null` for vanilla decision.
+  * `ModMount.UpdateAfterEquips(Player player)` to allows you to make things happen to the mount right after the player's equipment is run.
+    * Used by the Velociraptor to give infinite flight if the player has the Soaring Insignia equipped.
+    * Used by the Rat to climb up walls by boosting Player.spikedBoots.
+* `ModPlayer.ModifyEyelid(PlayerDrawSet drawinfo, ref Vector2 position, ref Color color, ref int shader, ref PlayerEyeHelper.EyeFrame eyeFrame)` to allow for modifying the player's eyelid.
