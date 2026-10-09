@@ -6816,19 +6816,19 @@
  					flag = false;
  			}
  
-+			//TML: Eventide and nightglow handled by Item.useLimitPerAnimation. Zenith use limit didn't do anything anyway
++			//TML: Eventide, nightglow and daybloom staff handled by Item.useLimitPerAnimation. Zenith and true copper shortsword use limits didn't do anything anyway
 +			/*
  			if ((type == 4956 || type == 5669) && itemAnimation < itemAnimationMax - useTime * 3)
  				flag = false;
  
-@@ -35951,6 +_,7 @@
- 
- 			if (type == 4953 && itemAnimation < itemAnimationMax - useTime * 5)
- 				flag = false;
-+			*/
+@@ -35954,6 +_,7 @@
  
  			if (type == 6152 && itemAnimation < itemAnimationMax - useTime * 4)
  				flag = false;
++			*/
+ 		}
+ 
+ 		if (type == 5451 && ownedProjectileCounts[1020] > 0)
 @@ -35965,6 +_,10 @@
  		if (ItemID.Sets.ShootsOnUseRelease[sItem.type] && controlUseItem)
  			flag = false;
@@ -6900,6 +6900,17 @@
  
  					bool[] shouldIgnore2 = ItemCheck_GetTileCutIgnoreList(sItem);
  					ItemCheck_CutTiles(sItem, itemRectangle2, shouldIgnore2);
+@@ -36104,7 +_,10 @@
+ 			}
+ 		}
+ 
++		/*
+ 		if (sItem.type == 5464 && itemAnimation == itemAnimationMax - 1) {
++		*/
++		if (sItem.type == 5464 && ItemAnimationJustStarted) { // #2351
+ 			Vector2 vector3 = Main.MouseWorld - MountedCenter;
+ 			ChangeDir((vector3.X > 0f) ? 1 : (-1));
+ 			itemRotation = (vector3 * direction).ToRotation();
 @@ -36411,15 +_,21 @@
  			if (i == whoAmI || !player.active || !player.hostile || player.immune || player.dead || (team != 0 && team == player.team) || !itemRectangle.Intersects(player.Hitbox) || !CanHit(player))
  				continue;

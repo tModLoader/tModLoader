@@ -1303,6 +1303,14 @@
  				useStyle = 5;
  				autoReuse = true;
  				useAnimation = 30;
+@@ -46894,6 +_,7 @@
+ 				damage = 8;
+ 				UseSound = SoundID.Item8;
+ 				autoReuse = true;
++				useLimitPerAnimation = 4; // Added by TML.
+ 				break;
+ 			case 6153:
+ 				SetShopValues(ItemRarityColor.Blue1, sellPrice(0, 0, 40));
 @@ -47272,6 +_,19 @@
  		voiceSlot = voiceOverrideID;
  	}
