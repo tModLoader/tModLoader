@@ -307,6 +307,40 @@ public static class ConfigManager
 		throw new MissingResourceException("Missing config named " + config + " in mod " + mod.Name);
 	}
 
+	internal static IEnumerable<ModConfig> SortConfigsForUI(List<ModConfig> configs)
+	{
+		var configsWithSortInfo = configs.Select(config => Tuple.Create(config, (ConfigSortAttribute)Attribute.GetCustomAttribute(config.GetType(), typeof(ConfigSortAttribute))));
+
+		// Have to sort by display name because normally configs are sorted by internal names
+		var sortedConfigs = configsWithSortInfo
+		                    .Where(config => config.Item2 is null)
+		                    .Select(config => config.Item1)
+		                    .OrderBy(config => Utils.CleanChatTags(config.DisplayName.Value))
+		                    .ToList();
+
+		var customSortedConfigs = configsWithSortInfo.Where(config => config.Item2 is not null);
+		foreach (var config in customSortedConfigs) {
+			var modConfig = config.Item1;
+			var sortData = config.Item2;
+
+			int index = sortedConfigs.FindIndex(config => config.Name == sortData.OtherConfigName);
+			if (index == -1) {
+				string sortAfterText = sortData.SortAfter ? "after" : "before";
+				modConfig.Mod.Logger.Error($"Failed to find the config with the name '{sortData.OtherConfigName}' to sort config '{modConfig.Name}' {sortAfterText}");
+				sortedConfigs.Add(modConfig);
+				continue;
+			}
+
+			if (sortData.SortAfter) {
+				index += 1;
+			}
+
+			sortedConfigs.Insert(index, modConfig);
+		}
+
+		return sortedConfigs;
+	}
+
 	internal static void HandleInGameChangeConfigPacket(BinaryReader reader, int whoAmI)
 	{
 		if (Main.netMode == NetmodeID.MultiplayerClient) {
