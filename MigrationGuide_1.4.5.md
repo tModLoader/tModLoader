@@ -488,6 +488,7 @@ Several Example Mod examples have been updated to adapt to 1.4.5 changes and to 
 * `ExampleSimpleMinionBuff` now tracks how many minions were summoned with `BuffID.Sets.BuffTextHandlers`.
 * `ExampleAdvancedFlailProjectile`, `ExampleCustomSwingProjectile`, `ExampleDrillProjectile`, `ExampleFailProjectile`, `ExampleHeldProjectileWeaponProjectile`, `ExampleJoustingLanceProjectile`, `ExampleShortswordProjectile`, `ExampleSpearProjectile`, `ExampleWhipProjectile`, `ExampleWhipProjectileAdvanced`, and `ExampleYoyoProjectile` have been updated to support being held by mannequins.
 * `ExampleCustomUseStyleWeapon` (`ExampleCustomUseStyleGlobalItem`) has been updated to support being held by mannequins using `TEDisplayDoll.RegisterUsePose` and `player.isDisplayDollOrInanimate`.
+* `ExampleSentry` has been updated to add support for being carried if the player has the Heavy Sling equipped.
 
 ## Renamed, Moved, or Removed Members
 
