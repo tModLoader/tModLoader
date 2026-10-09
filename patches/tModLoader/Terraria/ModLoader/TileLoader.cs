@@ -57,6 +57,7 @@ public static class TileLoader
 	private static DelegateDropCritterChance[] HookDropCritterChance;
 	private static Func<int, int, int, bool>[] HookCanDrop;
 	private static Action<int, int, int>[] HookDrop;
+	private static Action<PotLoot>[] HookModifyPotLoot;
 	private delegate bool DelegateCanKillTile(int i, int j, int type, ref bool blockDamaged);
 	private static DelegateCanKillTile[] HookCanKillTile;
 	private delegate void DelegateKillTile(int i, int j, int type, ref bool fail, ref bool effectOnly, ref bool noItem);
@@ -229,6 +230,7 @@ public static class TileLoader
 		ModLoader.BuildGlobalHook<GlobalTile, DelegateDropCritterChance>(ref HookDropCritterChance, globalTiles, g => g.DropCritterChance);
 		ModLoader.BuildGlobalHook(ref HookCanDrop, globalTiles, g => g.CanDrop);
 		ModLoader.BuildGlobalHook(ref HookDrop, globalTiles, g => g.Drop);
+		ModLoader.BuildGlobalHook(ref HookModifyPotLoot, globalTiles, g => g.ModifyPotLoot);
 		ModLoader.BuildGlobalHook<GlobalTile, DelegateCanKillTile>(ref HookCanKillTile, globalTiles, g => g.CanKillTile);
 		ModLoader.BuildGlobalHook<GlobalTile, DelegateKillTile>(ref HookKillTile, globalTiles, g => g.KillTile);
 		ModLoader.BuildGlobalHook(ref HookCanExplode, globalTiles, g => g.CanExplode);
@@ -542,6 +544,13 @@ public static class TileLoader
 
 		foreach (var hook in HookDropCritterChance) {
 			hook(i, j, type, ref wormChance, ref grassHopperChance, ref jungleGrubChance);
+		}
+	}
+
+	internal static void ModifyPotLoot(PotLoot potLoot)
+	{
+		foreach (var hook in HookModifyPotLoot) {
+			hook(potLoot);
 		}
 	}
 

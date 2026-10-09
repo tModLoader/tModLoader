@@ -54,6 +54,16 @@ public abstract class GlobalTile : GlobalBlockType
 	}
 
 	/// <summary>
+	/// Allows you to change the complete drop table of a pot before its rules are resolved.
+	/// Called in single player or on the server for each pot break.
+	/// Use <see cref="PotLoot.Style"/> and <see cref="PotLoot.Player"/> for conditional rules.
+	/// Use <see cref="PotLoot.Clear"/> to replace all existing rewards.
+	/// </summary>
+	public virtual void ModifyPotLoot(PotLoot potLoot)
+	{
+	}
+
+	/// <summary>
 	/// Allows you to spawn additional items when the tile at the given coordinates drops.
 	/// <br/> This hook is called once for multi-tiles. Trees or Cactus call this method for every individual tile.
 	/// <br/> For multi-tiles, the coordinates correspond to the tile that triggered this multi-tile to drop, so if checking <see cref="Tile.TileFrameX"/> and <see cref="Tile.TileFrameY"/>, be aware that the coordinates won't necessarily be the top left corner or origin of the multi-tile. Also be aware that some parts of the multi-tile might already be mined out when this method is called, so any math to determine tile style should be done on the tile at the coordinates passed in.

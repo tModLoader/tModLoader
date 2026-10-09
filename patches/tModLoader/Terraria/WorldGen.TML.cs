@@ -6,11 +6,33 @@ using Terraria.IO;
 using Terraria.ModLoader;
 using Terraria.ID;
 using System;
+using Microsoft.Xna.Framework;
+using Terraria.GameContent.ItemDropRules;
 
 namespace Terraria;
 
 public partial class WorldGen
 {
+	private static void DropPotLoot(int i, int j, int x, int y, int style, int type)
+	{
+		if (Main.netMode == NetmodeID.MultiplayerClient || isGeneratingOrLoadingWorld)
+			return;
+
+		Player player = Main.player[Player.FindClosest(new Vector2(i * 16, j * 16), 16, 16)];
+		var potLoot = new PotLoot(type, style, x, y, player, i, j);
+		if (type != TileID.PotsEcho)
+			PotLootTable.Register(potLoot, i, j);
+
+		TileLoader.ModifyPotLoot(potLoot);
+		Main.ItemDropSolver.TryDropping(new DropAttemptInfo {
+			pot = potLoot,
+			player = player,
+			rng = Main.rand,
+			IsExpertMode = Main.expertMode,
+			IsMasterMode = Main.masterMode
+		});
+	}
+
 	internal static void ClearGenerationPasses()
 	{
 		_generator?._passes.Clear();
