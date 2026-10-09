@@ -24,20 +24,25 @@ namespace ExampleMod.Content.Projectiles
 			// Projectile.WhipSettings.RangeMultiplier = 1f;
 		}
 
+		/// <summary>
+		/// This timer keeps track of the whip's life time.
+		/// </summary>
 		private float Timer {
 			get => Projectile.ai[0];
 			set => Projectile.ai[0] = value;
 		}
 
 		// Projectile.ai[1] is used for the direction the swing will go in and is assigned when the projectile is spawned in.
+		// Projectile.ai[2] is used to keep track of the whip's life time if the whip is a secondary whips spawned by the Snake Band.
 
 		/*
 		// This example uses PreAI to implement a charging mechanic.
 		// If you add this, also add Item.channel = true to the item's SetDefaults.
-		private float ChargeTime {
-			get => Projectile.ai[2];
-			set => Projectile.ai[2] = value;
-		}
+
+		/// <summary>
+		/// This timer keeps track of how long the whip has been charged up.
+		/// </summary>
+		private float ChargeTime { get; set; }
 
 		public override bool PreAI() {
 			Player owner = Main.player[Projectile.owner];
@@ -59,11 +64,26 @@ namespace ExampleMod.Content.Projectiles
 
 			return false; // Prevent the vanilla whip AI from running.
 		}
+
+		// Sync the charge time in multiplayer
+		public override void SendExtraAI(BinaryWriter writer) {
+			writer.Write(ChargeTime);
+		}
+
+		public override void ReceiveExtraAI(BinaryReader reader) {
+			ChargeTime = reader.ReadSingle();
+		}
 		*/
 
 		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
 			Main.player[Projectile.owner].MinionAttackTargetNPC = target.whoAmI; // Apply the targeting focus on the NPC who was hit.
 			Projectile.damage = (int)(Projectile.damage * 0.5f); // Multihit penalty. Decrease the damage the more enemies the whip hits.
+
+			// This is needed in order for OnProcHit in the WhipTagEffect to activate.
+			if (Projectile.localAI[0] == 0f) {
+				Projectile.localAI[0] = 1f;
+				Main.player[Projectile.owner].TagEffectStack.TryEnableProcOnNPC(Projectile.tagEffectType, target);
+			}
 		}
 
 		// This method draws a line between all points of the whip, in case there's empty space between the sprites.
