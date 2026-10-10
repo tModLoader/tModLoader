@@ -230,7 +230,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 		listHeaderContainer.Append(modNamePanel);
 
 		configElementList = new UIList {
-			Width =  { Pixels = -25, Percent = 1f },
+			Width =  { Percent = 1f },
 			Height = { Pixels = -listHeaderContainer.Height.Pixels - 5, Percent = 1f },
 			VAlign = 1f,
 			ListPadding = 5f,
@@ -241,6 +241,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 			Height = { Pixels = configElementList.Height.Pixels, Percent = 1f },
 			HAlign = 1f,
 			VAlign = 1f,
+			AutoHide = true,
 		}.WithView(100f, 1000f);
 		uiPanel.Append(scrollbar);
 		configElementList.SetScrollbar(scrollbar);
@@ -450,6 +451,13 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 			}
 			return true;
 		}).Select(x => x.Item1));
+
+		configElementList.Recalculate();
+		configElementList.Width.Pixels = 0;
+		if (scrollbar.CanScroll) {
+			configElementList.Width.Pixels -= 25;
+		}
+		configElementList.Recalculate();
 
 		uiPanel.BackgroundColor = CurrentConfigPage.BackgroundColor;
 
