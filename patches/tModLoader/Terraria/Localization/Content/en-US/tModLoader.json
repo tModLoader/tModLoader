@@ -185,6 +185,7 @@
 		"ModConfigCantSaveBecauseChangesWouldRequireAReload": "Can't save because changes would require a reload",
 		"ModConfigServerSide": "Server Side Config",
 		"ModConfigClientSide": "Client Side Config",
+		"ModConfigSubPage": "Sub Config:",
 		"ModConfigAdd": "Add",
 		"ModConfigRemove": "Remove",
 		"ModConfigInitialize": "Initialize",

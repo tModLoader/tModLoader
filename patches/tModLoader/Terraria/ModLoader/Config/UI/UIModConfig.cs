@@ -75,8 +75,10 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 	private MarqueeText modNameText;
 	private UIImage smallModIcon;
 	private UIImageFramed configSideIndicator;
+
 	private UIButton<LocalizedText> subPageBackButton;
-	private MarqueeTextPanel subPageBreadcrumb;
+	private UIPanel subPageBreadcrumbPanel;
+	private MarqueeText subPageBreadcrumbText;
 
 	#region UI Creation
 
@@ -264,6 +266,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 		subPageBackButton = new UIButton<LocalizedText>(Language.GetText("tModLoader.ModConfigBack"), 1f, false) {
 			Width = { Pixels = 100 },
 			Height = { Pixels = 40 },
+			HAlign = 1f,
 			Top = { Pixels = listHeaderContainer.Height.Pixels + 5 },
 			TooltipText = true,
 			HoverSound = SoundID.MenuTick,
@@ -271,12 +274,30 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 
 		subPageBackButton.OnLeftClick += BackSubPage;
 
-		subPageBreadcrumb = new MarqueeTextPanel("") {
-			Left = { Pixels = subPageBackButton.Width.Pixels + 10 },
-			MaxWidth = { Percent = 1f, Pixels = -(subPageBackButton.Width.Pixels + 10) },
-			Height = { Pixels = 40 },
-			Top = { Pixels = listHeaderContainer.Height.Pixels + 5 },
+		subPageBreadcrumbPanel = new UIPanel {
+			Height = { Pixels = 24 },
+			Width = { Percent = 1f, Pixels = -(subPageBackButton.Width.Pixels + 10) },
+			BackgroundColor = new Color(35, 40, 83),
+			BorderColor = UICommon.DefaultUIBlueMouseOver * 0.5f,
+		}.WithPadding(0);
+
+		subPageBreadcrumbPanel.PaddingLeft = 10;
+		subPageBreadcrumbPanel.PaddingRight = 10;
+		subPageBreadcrumbPanel.Top.Pixels = subPageBackButton.Top.Pixels + (subPageBackButton.Height.Pixels - subPageBreadcrumbPanel.Height.Pixels) / 2f;
+
+		var subPagePrompt = new UIText(Language.GetText("tModLoader.ModConfigSubPage"), 0.8f) {
+			VAlign = 0.5f,
+			TextColor = Color.Gray,
 		};
+		subPageBreadcrumbPanel.Append(subPagePrompt);
+
+		subPageBreadcrumbText = new MarqueeText("", 0.8f) {
+			Width = { Percent = 1f, Pixels = -subPagePrompt.MinWidth.Pixels },
+			Height = { Percent = 1f },
+			VAlign = 0.5f,
+			HAlign = 1f,
+		};
+		subPageBreadcrumbPanel.Append(subPageBreadcrumbText);
 	}
 
 	private UIPanel CreateInfoBadge()
@@ -412,7 +433,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 		filterTextField?.SetText("");
 		headerTextPanel?.ResetScroll();
 		modNameText?.ResetScroll();
-		subPageBreadcrumb?.ResetScroll();
+		subPageBreadcrumbText?.ResetScroll();
 		UnblockInput(null, null);
 
 		if (scrollbar is not null)
@@ -466,7 +487,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 
 	public void OnConfigModified()
 	{
-		CheckSaveAndRestoreConditions();
+		RefreshUI();
 	}
 
 	private void CheckSaveAndRestoreConditions()
@@ -496,17 +517,22 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 	private void RefreshSubPageUI()
 	{
 		subPageBackButton.Remove();
-		subPageBreadcrumb.Remove();
+		subPageBreadcrumbPanel.Remove();
+
+		// TODO: temp
+		CreateSubPageUI();
 
 		configElementList.Height.Pixels = -listHeaderContainer.Height.Pixels - 5;
 
 		if (InSubPage) {
 			uiPanel.Append(subPageBackButton);
-			uiPanel.Append(subPageBreadcrumb);
+			uiPanel.Append(subPageBreadcrumbPanel);
 
+			// TODO: fix flicker of back button colours
 			subPageBackButton.OnActivate(); // Refresh colors
-			subPageBreadcrumb.SetText(string.Join(" > ", configPageStack.Reverse().Skip(1).Select(p => p.Name)));
-			subPageBreadcrumb.ResetScroll();
+			subPageBreadcrumbText.SetText(string.Join($" [c/{Color.DarkGray.Hex3()}:>] ", configPageStack.Reverse().Skip(1).Select(p => p.Name + " ASDAS DASD A")));
+			subPageBreadcrumbText.ResetScroll();
+			subPageBreadcrumbText.SetScrollDelay(60);
 
 			configElementList.Height.Pixels -= subPageBackButton.Height.Pixels + 10;
 		}
