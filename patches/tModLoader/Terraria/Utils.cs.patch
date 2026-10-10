@@ -217,6 +217,22 @@
  	public static Rectangle Frame(this Texture2D tex, int horizontalFrames = 1, int verticalFrames = 1, int frameX = 0, int frameY = 0, int sizeOffsetX = 0, int sizeOffsetY = 0)
  	{
  		int num = tex.Width / horizontalFrames;
+@@ -898,6 +_,15 @@
+ 		return result;
+ 	}
+ 
++	/// <summary>
++	/// Rotates a Vector2 by a random amount between -<paramref name="maxRadians"/> and <paramref name="maxRadians"/> and returns it.
++	/// <para/> The random rotation value follows a triangular distribution rather than a uniform distribution, meaning that rotation values close to 0 are more likely than rotations at the extreme ends from -maxRadians to maxRadians.
++	/// <para/> This behavior makes it ideal for bullet spread calculations, since bullets clustering close to the original rotation rather than a uniform random spread is the expected behavior of that natural phenomenon.
++	/// <para/> For a uniform distribution, use <code>Vector rotatedVector = vector.RotatedBy(Main.rand.NextFloat(-maxRadians, maxRadians));</code> instead.
++	/// </summary>
++	/// <param name="spinninpoint"></param>
++	/// <param name="maxRadians"></param>
++	/// <returns></returns>
+ 	public static Vector2 RotatedByRandom(this Vector2 spinninpoint, double maxRadians) => spinninpoint.RotatedBy(Main.rand.NextDouble() * maxRadians - Main.rand.NextDouble() * maxRadians);
+ 
+ 	public static Vector2 Floor(this Vector2 vec)
 @@ -927,7 +_,9 @@
  	public static Vector2 ToVector2(this Point16 p) => new Vector2(p.X, p.Y);
  	public static Vector2D ToVector2D(this Point p) => new Vector2D(p.X, p.Y);
@@ -257,6 +273,14 @@
  	public static Vector2 ClosestPointOnLine(this Vector2 P, Vector2 A, Vector2 B)
  	{
  		Vector2 value = P - A;
+@@ -992,6 +_,7 @@
+ 		return false;
+ 	}
+ 
++	/// <inheritdoc cref="RotatedByRandom(Vector2, double)"/>
+ 	public static Vector2 RotateRandom(this Vector2 spinninpoint, double maxRadians) => spinninpoint.RotatedBy(Main.rand.NextDouble() * maxRadians - Main.rand.NextDouble() * maxRadians);
+ 	public static float AngleTo(this Vector2 Origin, Vector2 Target) => (float)Math.Atan2(Target.Y - Origin.Y, Target.X - Origin.X);
+ 	public static float AngleFrom(this Vector2 Origin, Vector2 Target) => (float)Math.Atan2(Origin.Y - Target.Y, Origin.X - Target.X);
 @@ -1007,16 +_,24 @@
  	public static float DistanceSQ(this Vector2 Origin, Vector2 Target) => Vector2.DistanceSquared(Origin, Target);
  	public static Vector2 DirectionTo(this Vector2 Origin, Vector2 Target) => Vector2.Normalize(Target - Origin);

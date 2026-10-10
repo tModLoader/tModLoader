@@ -9,7 +9,7 @@ internal class WallEntry : ModBlockEntry
 
 	public WallEntry(ModWall wall) : base(wall) { }
 
-	public WallEntry(TagCompound tag) : base(tag) {}
+	public WallEntry(TagCompound tag) : base(tag) { }
 
 	public override ModBlockType DefaultUnloadedPlaceholder => ModContent.GetInstance<UnloadedWall>();
 }

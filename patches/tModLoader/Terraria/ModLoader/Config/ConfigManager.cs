@@ -342,7 +342,7 @@ public static class ConfigManager
 				activeConfig.OnChanged();
 				activeConfig.HandleAcceptClientChangesReply(success, requestor, message);
 
-				if(broadcast)
+				if (broadcast)
 					Main.NewText(Language.GetTextValue("tModLoader.ModConfigSharedConfigChanged", message, modname, configname));
 				if (Main.InGameUI.CurrentState == Interface.modConfig) {
 					Main.InGameUI.SetState(null);

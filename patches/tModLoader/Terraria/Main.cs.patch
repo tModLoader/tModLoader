@@ -1738,7 +1738,7 @@
  	private static void WriteFancyWorldLoadErrorToConsole()
  	{
  		Console.WriteLine();
-+		if(WorldFile.LastThrownLoadException != null)
++		if (WorldFile.LastThrownLoadException != null)
 -		Console.WriteLine(WorldFile.LastThrownLoadException.ToString());
 +			Console.WriteLine(WorldFile.LastThrownLoadException.ToString());
 +		else
@@ -2135,7 +2135,7 @@
  		}
 +
 +		//TODO: Re-implement game menu/menuloader audio in Other World soundtrack???
-+        /*if (gameMenu) {
++		/*if (gameMenu) {
 +			if (netMode != 2) {
 +				if (WorldGen.drunkWorldGen) {
 +					newMusic = 60;
@@ -3062,8 +3062,19 @@
  		if (diff == 1)
  			baseColor = new Microsoft.Xna.Framework.Color((byte)((float)(int)mcColor.R * num2), (byte)((float)(int)mcColor.G * num2), (byte)((float)(int)mcColor.B * num2), mouseTextColor);
  
-@@ -16095,6 +_,7 @@
+@@ -16081,6 +_,7 @@
+ 		int researchLine = -1;
+ 		rare = hoverItem.rare;
+ 		float knockBack = hoverItem.knockBack;
++		/*
+ 		float num = 1f;
+ 		if (hoverItem.melee && player[myPlayer].kbGlove)
+ 			num += 1f;
+@@ -16093,8 +_,10 @@
+ 
+ 		if (hoverItem.ranged && player[myPlayer].shroomiteStealth)
  			hoverItem.knockBack *= 1f + (1f - player[myPlayer].stealth) * 0.5f;
++		*/
  
  		int num2 = 30;
 +		num2 += hoverItem.ToolTip?.Lines ?? 0; // Easy fix to #4772. A full fix would require rewrites of hooks.
@@ -4411,7 +4422,7 @@
 +				ModDust modDust = DustLoader.GetDust(dust.type);
 +
 +				if (modDust != null) {
-+					if(modDust.PreDraw(dust))
++					if (modDust.PreDraw(dust))
 +						modDust.Draw(dust, newColor, scale);
 +
 +					if (newColor == Color.Black)
@@ -4957,7 +4968,7 @@
 +
 +			if (!_achievementAdvisor.CanDrawAboveCoins) {
 +				var achievePos = new Vector2(defPos.X - 10 - 47 - 47 - 14 - 14, defPos.Y - 56 * inventoryScale * 0.5f);
-+				_achievementAdvisor.DrawOneAchievement(spriteBatch, achievePos , large: false);
++				_achievementAdvisor.DrawOneAchievement(spriteBatch, achievePos, large: false);
 +				UILinkPointNavigator.SetPosition(1570, achievePos + new Vector2(20f) * inventoryScale);
 +			}
 +
@@ -5409,7 +5420,7 @@
 +		SystemLoader.ModifyInterfaceLayers(interfaceLayers);
 +
 +		foreach (var layer in interfaceLayers) {
-+			if(!layer.Draw())
++			if (!layer.Draw())
 +				break;
 +		}
  
@@ -6297,7 +6308,7 @@
 +			// ModPack
 +			if (ModOrganizer.ModPackActive != null) {
 +				var font = FontAssets.MouseText.Value;
-+				string modpackText = Language.GetTextValue("tModLoader.CurrentModPack", Path.GetFileNameWithoutExtension(ModOrganizer.ModPackActive));
++				string modpackText = Language.GetTextValue("tModLoader.CurrentModPack", Path.GetFileName(ModOrganizer.ModPackActive));
 +				var packOrigin = font.MeasureString(modpackText);
 +
 +				spriteBatch.DrawString(font, modpackText, new Vector2(packOrigin.X + num + 10f, screenHeight - packOrigin.Y + num2 - 2f - (int)upBump), color, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
@@ -7532,7 +7543,7 @@
 +	public static int DamageVar(float dmg, int percent, float luck = 0f)
 +	{
 -		float num = dmg * (1f + (float)rand.Next(-15, 16) * 0.01f);
-+		float num = dmg * (1f + (float)rand.Next(-percent, percent+1) * 0.01f);
++		float num = dmg * (1f + (float)rand.Next(-percent, percent + 1) * 0.01f);
  		if (luck > 0f) {
  			if (rand.NextFloat() < luck) {
 -				float num2 = dmg * (1f + (float)rand.Next(-15, 16) * 0.01f);

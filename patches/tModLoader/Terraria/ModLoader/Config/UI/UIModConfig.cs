@@ -48,6 +48,19 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 		public Color BackgroundColor = UICommon.MainPanelBackground;
 	}
 
+	private UIElement uIElement;
+	private UITextPanel<string> headerTextPanel;
+	private UITextPanel<string> message;
+	private UITextPanel<string> previousConfigButton;
+	private UITextPanel<string> nextConfigButton;
+	private UITextPanel<string> saveConfigButton;
+	private UITextPanel<string> backButton;
+	private UITextPanel<string> revertConfigButton;
+	private UITextPanel<string> restoreDefaultsConfigButton;
+	private UIPanel uIPanel;
+	private readonly List<Tuple<UIElement, UIElement>> mainConfigItems = new();
+	private UIList mainConfigList;
+	private UIScrollbar uIScrollbar;
 	private BlockInputElement blockInput;
 	private UIElement activeDialog;
 

@@ -119,14 +119,16 @@ public static class GlobalTypeLookups<TGlobal> where TGlobal : GlobalType<TGloba
 	{
 		public int Compare(Memory<TGlobal> m1, Memory<TGlobal> m2)
 		{
-			if (m1.Length.CompareTo(m2.Length) is int c && c != 0) return c;
+			if (m1.Length.CompareTo(m2.Length) is int c && c != 0)
+				return c;
 
 			var s1 = m1.Span;
 			var s2 = m2.Span;
 			for (int i = 0; i < s1.Length; i++) {
 				var g1 = s1[i];
 				var g2 = s2[i];
-				if (g1.StaticIndex.CompareTo(g2.StaticIndex) is int c2 && c2 != 0) return c2;
+				if (g1.StaticIndex.CompareTo(g2.StaticIndex) is int c2 && c2 != 0)
+					return c2;
 
 				if (g1 != g2)
 					throw new Exception($"Two globals with the same static index in the cache! Is one of them instanced? ({g1},{g2})");

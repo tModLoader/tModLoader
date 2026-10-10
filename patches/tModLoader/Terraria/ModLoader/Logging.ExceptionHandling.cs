@@ -27,6 +27,7 @@ public static partial class Logging
 	private static readonly HashSet<string> ignoreTypes = new() {
 		"ReLogic.Peripherals.RGB.DeviceInitializationException",
 		"System.Threading.Tasks.TaskCanceledException",
+		"System.OperationCanceledException"
 	};
 	private static readonly HashSet<string> ignoreSources = new() {
 		"MP3Sharp",

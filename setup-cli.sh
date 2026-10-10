@@ -1,5 +1,13 @@
 #!/bin/sh
 
+# For the best development experience, alias this script in your shell config.
+# For example:
+# (ba)sh  - alias tml=~/dev/terraria/tModLoader/setup-cli.sh
+# Nushell - alias tml = ~/dev/terraria/tModLoader/setup-cli.sh
+
+# CD to the script's directory and allow execution from elsewhere.
+cd "$(dirname "$0")"
+
 if ! command -v git > /dev/null; 
 then
     echo "git not found in PATH"

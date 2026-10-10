@@ -91,7 +91,7 @@
  			}
  			else {
 -				AudioTracks[i].SetVariable("Volume", totalVolume);
-+				AudioTracks[i].SetVariable(MusicID.Sets.SkipsVolumeRemap[i] ? "VolumeDirect"  : "Volume", totalVolume);
++				AudioTracks[i].SetVariable(MusicID.Sets.SkipsVolumeRemap[i] ? "VolumeDirect" : "Volume", totalVolume);
  			}
  		}
  		else {

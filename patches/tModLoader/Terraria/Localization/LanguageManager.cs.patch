@@ -87,7 +87,7 @@
  	private void ProcessCopyCommandsInTexts()
  	{
  		Regex regex = new Regex("{\\$(\\w+\\.\\w+)}", RegexOptions.Compiled);
-@@ -155,21 +_,37 @@
+@@ -155,21 +_,38 @@
  					break;
  
  				value.SetValue(text);
@@ -107,7 +107,8 @@
 +	}
 +
 +	// Method split from UseSources above
-+	private void LoadActiveCultureTranslationsFromSources() {
++	private void LoadActiveCultureTranslationsFromSources()
++	{
 +		var sourcesFromLowestToHighest = _contentSources;
 +
  		string name = ActiveCulture.Name;
@@ -135,7 +136,7 @@
 +				} catch {
 +					Logging.Terraria.Error($"An error occurred loading the \"{item2}\" file from one of the enabled resource packs. The language changes contained within will not take effect.");
 +					string basePath = null;
-+					if(item is FileSystemContentSource fileSystemContentSource) {
++					if (item is FileSystemContentSource fileSystemContentSource) {
 +						basePath = (string)typeof(FileSystemContentSource).GetField("_basePath", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(fileSystemContentSource);
 +						var resourcePack = Main.AssetSourceController.ActiveResourcePackList.EnabledPacks.FirstOrDefault(x => basePath.Contains(x.FileName));
 +						if (resourcePack != null) {

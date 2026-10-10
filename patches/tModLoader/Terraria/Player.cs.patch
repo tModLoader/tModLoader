@@ -4880,6 +4880,33 @@
  							if (wings == 4) {
  								rocketDelay2--;
  								if (rocketDelay2 <= 0) {
+@@ -21062,7 +_,17 @@
+ 								}
+ 							}
+ 						}
++						float gravityMultiplier = 1f / 3f;
++						float maxSpeedMultiplier = 1f / 3f;
+ 
++						// As per method docs, true means apply vanilla logic. False means use the custom logic only
++						if (!ItemLoader.WingGlidingSpeeds(this, ref gravityMultiplier, ref maxSpeedMultiplier))
++							goto skipGliding;
++
++						// Begin vanilla logic
++						float gravity = this.gravity * gravityMultiplier * 3f;
++						float maxFallSpeed = this.maxFallSpeed * maxSpeedMultiplier * 3f;
++						
+ 						velocity.Y += gravity / 3f * gravDir;
+ 						if (gravDir == 1f) {
+ 							if (velocity.Y > maxFallSpeed / 3f && !TryingToHoverDown)
+@@ -21071,6 +_,8 @@
+ 						else if (velocity.Y < (0f - maxFallSpeed) / 3f && !TryingToHoverUp) {
+ 							velocity.Y = (0f - maxFallSpeed) / 3f;
+ 						}
++						// End vanilla logic
++						skipGliding:;
+ 					}
+ 					else if (cartRampTime <= 0) {
+ 						velocity.Y += gravity * gravDir;
 @@ -21257,12 +_,16 @@
  
  				for (int num79 = 0; num79 < 200; num79++) {
@@ -7954,14 +7981,13 @@
  		if (projToShoot == 76) {
  			projToShoot += Main.rand.Next(3);
  			float num7 = (float)Main.screenHeight / Main.GameViewMatrix.Zoom.Y;
-@@ -36895,7 +_,9 @@
+@@ -36895,7 +_,8 @@
  		}
  		else if (sItem.type == 3029) {
  			int num11 = 3;
 -			if (projToShoot == 91 || projToShoot == 4 || projToShoot == 5 || projToShoot == 41) {
 +			//if (projToShoot == 91 || projToShoot == 4 || projToShoot == 5 || projToShoot == 41)
-+			if (ProjectileID.Sets.FiresFewerFromDaedalusStormbow[projToShoot])
-+			{
++			if (ProjectileID.Sets.FiresFewerFromDaedalusStormbow[projToShoot]) {
  				if (Main.rand.Next(3) == 0)
  					num11--;
  			}
@@ -8089,7 +8115,7 @@
 +		/*
  		if (!spaceGun || (sItem.type != 127 && sItem.type != 4347 && sItem.type != 4348))
 +		*/
-+ 		if (GetManaCost(sItem) > 0)
++		if (GetManaCost(sItem) > 0)
  			manaRegenDelay = (int)maxRegenDelay;
  	}
  
@@ -8223,7 +8249,7 @@
  		if (sItem.type == 3006)
  			flag2 = true;
  
-+		if (sItem.type != ItemID.MedusaHead /*3269*/ && !CheckMana(sItem, pay:!flag2))
++		if (sItem.type != ItemID.MedusaHead /*3269*/ && !CheckMana(sItem, pay: !flag2))
 +			canUse = false;
 +
 +		return canUse; // TML: The below code was moved to CheckMana and GetManaCost in Player.TML.
@@ -9357,7 +9383,7 @@
 +	{
 +		// Fake variables
 +		var armor = newPlayer.armor;
-+		newPlayer.armor = new[] {item};
++		newPlayer.armor = new[] { item };
 +		int i = 0;
 +
 +		// Originally the for loop in the previous method

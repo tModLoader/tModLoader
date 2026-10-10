@@ -2,6 +2,7 @@
 using Terraria.Localization;
 
 namespace Terraria.ModLoader.Default;
+
 public sealed class UnloadedPrefix : ModPrefix
 {
 	public override LocalizedText DisplayName => LocalizedText.Empty;

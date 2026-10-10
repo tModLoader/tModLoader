@@ -86,7 +86,7 @@
  			vec4 = vec4.Floor();
  			DrawData item = new DrawData(TextureAssets.AccBack[drawinfo.drawPlayer.backpack].Value, vec4, drawinfo.drawPlayer.bodyFrame, drawinfo.colorArmorBody, drawinfo.drawPlayer.bodyRotation, drawinfo.bodyVect, 1f, drawinfo.playerEffect);
  			item.shader = drawinfo.cBackpack;
-+			ItemLoader.ModifyEquipTextureDraw(ref drawinfo, ref item, EquipType.Back, drawinfo.drawPlayer.back); // Back, backpack
++			ItemLoader.ModifyEquipTextureDraw(ref drawinfo, ref item, EquipType.Back, drawinfo.drawPlayer.backpack); // Back, backpack
 +			/*
  			drawinfo.DrawDataCache.Add(item);
 +			*/
@@ -106,7 +106,7 @@
  			vec = vec.Floor();
  			DrawData item = new DrawData(TextureAssets.AccBack[drawinfo.drawPlayer.tail].Value, vec, drawinfo.drawPlayer.bodyFrame, drawinfo.colorArmorBody, drawinfo.drawPlayer.bodyRotation, drawinfo.bodyVect, 1f, drawinfo.playerEffect);
  			item.shader = drawinfo.cTail;
-+			ItemLoader.ModifyEquipTextureDraw(ref drawinfo, ref item, EquipType.Back, drawinfo.drawPlayer.back); // Back, tail
++			ItemLoader.ModifyEquipTextureDraw(ref drawinfo, ref item, EquipType.Back, drawinfo.drawPlayer.tail); // Back, tail
 +			/*
  			drawinfo.DrawDataCache.Add(item);
 +			*/

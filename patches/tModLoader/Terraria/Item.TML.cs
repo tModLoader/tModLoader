@@ -29,7 +29,7 @@ public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>
 	/// </summary>
 	public ModItem ModItem { get; internal set; }
 
-#region Globals
+	#region Globals
 	int IEntityWithGlobals<GlobalItem>.Type => type;
 	internal GlobalItem[] _globals;
 	public RefReadOnlyArray<GlobalItem> EntityGlobals => _globals;
@@ -55,7 +55,7 @@ public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>
 	/// <returns> Whether or not the requested instance has been found. </returns>
 	public bool TryGetGlobalItem<T>(T baseInstance, out T result) where T : GlobalItem
 		=> GlobalItem.TryGetGlobal(type, EntityGlobals, baseInstance, out result);
-#endregion
+	#endregion
 
 	public List<Mod> StatsModifiedBy { get; private set; } = new();
 
@@ -313,9 +313,11 @@ public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>
 	/// Determines the <see cref="PrefixCategory">prefix categories</see> of this <see cref="Item"/>.
 	/// </summary>
 	/// <returns>A <see cref="List{PrefixCategory}"/> of every category this <see cref="Item"/> matches, the <see cref="List{PrefixCategory}"/> will be empty if this <see cref="Item"/> doesn't have any categories.</returns>
-	public List<PrefixCategory> GetPrefixCategories() {
+	public List<PrefixCategory> GetPrefixCategories()
+	{
 		ref List<PrefixCategory> categories = ref PrefixLoader.itemPrefixesByType[type];
-		if (categories is not null) return categories;
+		if (categories is not null)
+			return categories;
 		categories = [];
 		if (PrefixLegacy.ItemSets.SwordsHammersAxesPicks[type] || ItemLoader.MeleePrefix(this))
 			categories.Add(PrefixCategory.Melee);

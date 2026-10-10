@@ -40,7 +40,7 @@
  		_cards.Add(new AchievementAdvisorCard(Main.Achievements.GetAchievement("TIMBER"), num++));
  		_cards.Add(new AchievementAdvisorCard(Main.Achievements.GetAchievement("BENCHED"), num++));
  		_cards.Add(new AchievementAdvisorCard(Main.Achievements.GetAchievement("OBTAIN_HAMMER"), num++));
-@@ -207,5 +_,79 @@
+@@ -207,5 +_,80 @@
  		_cards.Add(new AchievementAdvisorCard(Main.Achievements.GetAchievement("STAR_DESTROYER"), num++));
  		_cards.Add(new AchievementAdvisorCard(Main.Achievements.GetAchievement("CHAMPION_OF_TERRARIA"), num++));
  		_cards.OrderBy((AchievementAdvisorCard x) => x.order);
@@ -50,7 +50,8 @@
 +	internal static Achievement LastAdvisorAchievement => Main.Achievements.GetAchievement("CHAMPION_OF_TERRARIA");
 +	internal static readonly int AdvisorAchievementCount = 36;
 +
-+	public void FinishSetup() { 
++	public void FinishSetup()
++	{
 +		if (Main.dedServ)
 +			return;
 +

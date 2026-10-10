@@ -39,6 +39,9 @@ namespace ExampleMod.Content.Items.Weapons
 
 			// Normally shooting a projectile makes the player face the projectile, but if you don't want that (like the beam sword) use this line of code
 			// Item.ChangePlayerDirectionOnShoot = false;
+
+			// This lets the player target anywhere on the whole screen while using a controller, which weapons like this usually allow.
+			ItemID.Sets.GamepadWholeScreenUseRange[Type] = true;
 		}
 		// This method gets called when firing your weapon/sword.
 		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {

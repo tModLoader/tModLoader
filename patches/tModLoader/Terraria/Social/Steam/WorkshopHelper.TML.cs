@@ -271,6 +271,11 @@ public partial class WorkshopHelper
 
 			private void OnWorkshopQueryInitialized(SteamUGCQueryCompleted_t pCallback, bool bIOFailure)
 			{
+				if (bIOFailure) {
+					_primaryQueryResult = EResult.k_EResultIOFailure;
+					return;
+				}
+
 				_primaryUGCHandle = pCallback.m_handle;
 				_primaryQueryResult = pCallback.m_eResult;
 				_queryReturnCount = pCallback.m_unNumResultsReturned;
@@ -326,7 +331,7 @@ public partial class WorkshopHelper
 							}
 
 							// Check for reupload when searchModSlugs is provided
-							if (match == WorkshopSearchReturnState.NotFound	&& queryParameters.searchModSlugs?.Length == queryParameters.searchModIds.Length) {
+							if (match == WorkshopSearchReturnState.NotFound && queryParameters.searchModSlugs?.Length == queryParameters.searchModIds.Length) {
 								// Currently, only known case is if a mod the user is subbed to is set to hidden & not deleted by the user
 								// Includes 'Hide As Incompatible', Changes in Visibility (Friends-Only, Private), and as of April 2026 banned states (DMCA, Malware)
 								Logging.tML.Warn($"Mod ID {idArray[j]} Not Found on the Steam Workshop. Queuing for Search by Slug {queryParameters.searchModSlugs[itemsIndex]}");
@@ -336,7 +341,7 @@ public partial class WorkshopHelper
 								continue;
 							}
 
-							if (match != WorkshopSearchReturnState.Success) {		
+							if (match != WorkshopSearchReturnState.Success) {
 								// This would be the case if Steam workshop failed to respond or the mod item is corrupt
 								Logging.tML.Warn($"{match}: Search Attempt Failed for Mod with ID {idArray[j]}");
 								missingMods.Add(idArray[j]);
@@ -535,11 +540,12 @@ public partial class WorkshopHelper
 				try {
 					WaitForQueryResultAsync(query).GetAwaiter().GetResult();
 				}
-				catch (TimeoutException e) {
+				catch (Exception e) {
 					// Solxan: Most likely to occur during game startup if it occurs due to banned/malware startup check code
+					// Catch all workshop query failures (offline mode, timeout, k_EResultFail, etc.)
 					SteamedWraps.SteamAvailable = false;
 					SteamedWraps.SteamClient = false;
-					Utils.ShowFancyErrorMessage("Steam Workshop Timed Out. Steam Workshop related functionality has been disabled.\n" +
+					Utils.ShowFancyErrorMessage("Unable to access Steam Workshop. Steam Workshop related functionality has been disabled.\n" +
 						"Restart Steam and tModLoader to attempt to restore.", Interface.loadModsID);
 				}
 			}
@@ -569,7 +575,7 @@ public partial class WorkshopHelper
 				PublishedFileId_t id = pDetails.m_nPublishedFileId;
 
 				if (pDetails.m_eResult != EResult.k_EResultOK) {
-					if (pDetails.m_eResult  == EResult.k_EResultAccessDenied) {
+					if (pDetails.m_eResult == EResult.k_EResultAccessDenied) {
 						// When we directly query a particular publish ID, three scenarios can happen:
 						//	If it is a developer, then they will see the item exactly as is, regardless of visibility
 						//	If it is the modder who uploaded it, then they will see the same state as the developer

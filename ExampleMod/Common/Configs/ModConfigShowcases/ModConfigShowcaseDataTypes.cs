@@ -58,7 +58,6 @@ namespace ExampleMod.Common.Configs.ModConfigShowcases
 			[new PrefixDefinition(PrefixID.Awkward)] = 0.8f,
 		};
 
-		// TODO: Not working at the moment.
 		// Using a custom class as a key in a Dictionary. When used as a Dictionary Key, special code must be used.
 		public Dictionary<ClassUsedAsKey, Color> CustomKey = new Dictionary<ClassUsedAsKey, Color>();
 
