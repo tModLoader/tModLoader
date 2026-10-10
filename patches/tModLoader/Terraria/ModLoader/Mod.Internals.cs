@@ -51,12 +51,9 @@ partial class Mod
 
 		// Load icon.png and icon_small.png
 		// The embedded mod for tModLoader doesn't have File initialized
-		if (File != null && !Main.dedServ) {
+		if (File != null) {
 			ModIcon = ModLoader.GetModIcon(File, out string modIconError)
-				   ?? PlaceholderModIcon;
-			/* Enforce this on 1.4.5 only.
 			       ?? throw new MissingResourceException($"Failed to load icon.png. Reason: {modIconError}.");
-			*/
 
 			SmallModIcon = ModLoader.GetModIcon(File, out string smallIconError, "icon_small.png", 30);
 			if (SmallModIcon is null) {
@@ -145,7 +142,6 @@ partial class Mod
 				var reasons = new List<string>();
 				RootContentSource.Rejections.TryGetRejections(reasons); // Not technically the rejection reasons for the specific asset, but there is no current way of getting that.
 				var MissingResourceException = new Exceptions.MissingResourceException(reasons, assetPath.Replace("\\", "/"), cleanKeys);
-				MissingResourceException.Data["mod"] = ModContent.CurrentlyLoadingMod; // Attribute to the loading mod, not necessarily the mod corresponding to the asset path.
 				AssetExceptions.Add(MissingResourceException);
 			}
 			else {

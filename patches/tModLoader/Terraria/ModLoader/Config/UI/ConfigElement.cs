@@ -210,6 +210,7 @@ public abstract class ConfigElement : UIElement
 	}
 }
 
+// TODO: when reworking in future, remember that this is used in the controls menu too
 internal class HeaderElement : UIElement
 {
 	private readonly string header;
