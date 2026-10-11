@@ -34,7 +34,8 @@ namespace ExampleMod.Common.Systems
 
 				if (chest.type == ChestID.Frozen) {
 					// Add an item while keeping the chest's original contents.
-					chest.AddItem(ModContent.ItemType<ExampleMountItem>(), condition: () => WorldGen.genRand.NextBool(3));
+					if (WorldGen.genRand.NextBool(3))
+						chest.AddItem(ModContent.ItemType<ExampleMountItem>());
 					// Replace all Ice Torches and remove up to five Snowballs if those items are present.
 					chest.ReplaceItem(ItemID.IceTorch, ItemID.PinkJellyfishJar);
 					chest.RemoveItem(ItemID.Snowball, 5);
@@ -44,7 +45,8 @@ namespace ExampleMod.Common.Systems
 					chest.ClearItems();
 					chest.AddItem(ModContent.ItemType<ExampleMountItem>());
 					chest.AddItem(ModContent.ItemType<ExampleLightPetItem>());
-					chest.AddItem(ItemID.PinkJellyfishJar, 2, chanceNumerator: 1, chanceDenominator: 3);
+					if (WorldGen.genRand.NextBool(3))
+						chest.AddItem(ItemID.PinkJellyfishJar, 2);
 				}
 			}
 		}
@@ -59,8 +61,8 @@ namespace ExampleMod.Common.Systems
 				if (chest == null || chest.type != ChestID.LockedShadow)
 					continue;
 
-				// The condition is checked when AddItem runs; the saved flag prevents granting it again after reload.
-				if (chest.AddItem(ModContent.ItemType<ExampleLightPetItem>(), condition: () => NPC.downedBoss1)) {
+				// The boss condition is checked outside AddItem; the saved flag prevents duplicate grants after reload.
+				if (chest.AddItem(ModContent.ItemType<ExampleLightPetItem>())) {
 					_bossChestRewardAdded = true;
 					break;
 				}

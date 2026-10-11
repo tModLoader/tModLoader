@@ -26,30 +26,16 @@ public partial class Chest
 
 	/// <summary>
 	/// Adds the specified item to this chest, stacking with matching items before using empty slots.
-	/// The condition is checked first; then the chance is rolled as numerator/denominator.
-	/// Returns false if either check fails or there is not enough room for the full stack.
+	/// Conditions and random chances should be checked by the caller before calling this method.
+	/// Returns false if there is not enough room for the full stack.
 	/// For a live multiplayer world, call this on the server.
 	/// </summary>
 	/// <param name="itemType">The item type to add.</param>
 	/// <param name="stack">The number of items to add.</param>
-	/// <param name="condition">An optional condition that must return true before the chance is rolled.</param>
-	/// <param name="chanceNumerator">The chance numerator; defaults to a guaranteed result.</param>
-	/// <param name="chanceDenominator">The chance denominator; defaults to a guaranteed result.</param>
 	/// <returns>Whether the requested stack was added.</returns>
-	public bool AddItem(int itemType, int stack = 1, Func<bool> condition = null, int chanceNumerator = 1, int chanceDenominator = 1)
+	public bool AddItem(int itemType, int stack = 1)
 	{
 		ValidateItem(itemType, stack);
-		if (chanceDenominator <= 0)
-			throw new ArgumentOutOfRangeException(nameof(chanceDenominator));
-		if (chanceNumerator < 0 || chanceNumerator > chanceDenominator)
-			throw new ArgumentOutOfRangeException(nameof(chanceNumerator), "Chance must be between zero and the denominator.");
-
-		if (condition != null && !condition())
-			return false;
-		// Avoid a random roll for the guaranteed case so it does not consume worldgen RNG state.
-		if (chanceNumerator == 0 || (chanceNumerator < chanceDenominator && !WorldGen.genRand.NextBool(chanceNumerator, chanceDenominator)))
-			return false;
-
 		return TryAddItem(itemType, stack);
 	}
 
