@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Collision.cs
 +++ src/tModLoader/Terraria/Collision.cs
-@@ -1,8 +_,10 @@
+@@ -1,12 +_,14 @@
  using System;
  using System.Collections.Generic;
 +using System.Linq;
@@ -11,6 +11,11 @@
  
  namespace Terraria;
  
+-public class Collision
++public partial class Collision
+ {
+ 	public enum TileContactSide
+ 	{
 @@ -1179,7 +_,17 @@
  		for (int i = num3; i < value2; i++) {
  			for (int j = value3; j < value4; j++) {
@@ -95,7 +100,7 @@
  					vector.X = i * 16;
  					vector.Y = j * 16;
  					int num2 = 16;
-@@ -1401,13 +_,28 @@
+@@ -1401,12 +_,13 @@
  					num3 /= 32f;
  					vector.Y += num3 * 2f;
  					num2 -= (int)(num3 * 2f);
@@ -109,23 +114,8 @@
  		}
 -
  		return false;
-+	}
-+
-+	public static bool GetModdedWets(Vector2 Position, int Width, int Height, out bool[] liquidsIn)
-+	{
-+		liquidsIn = new bool[LiquidLoader.LiquidCount];
-+		WetCollision(Position, Width, Height, out bool[] liquidsInNorm);
-+		LavaCollision(Position, Width, Height, out bool[] liquidsInAlt);
-+		Array.Copy(liquidsInNorm, liquidsIn, LiquidLoader.LiquidCount);
-+		for (int i = LiquidID.Count; i < LiquidLoader.LiquidCount; i++) {
-+			if (LiquidLoader.GetLiquid(i).UsesLavaCollisionForWet) {
-+				liquidsIn[i] = liquidsInAlt[i];
-+			}
-+		}
-+		return liquidsIn.Contains(true);
  	}
  
- 	public static Vector4 WalkDownSlope(Vector2 Position, Vector2 Velocity, int Width, int Height, float gravity = 0f)
 @@ -2317,7 +_,9 @@
  		return false;
  	}

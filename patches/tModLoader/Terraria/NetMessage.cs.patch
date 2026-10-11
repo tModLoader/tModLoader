@@ -9,7 +9,7 @@
  using Microsoft.Xna.Framework;
  using Microsoft.Xna.Framework.Graphics.PackedVector;
  using Terraria.Chat;
-@@ -11,6 +_,8 @@
+@@ -11,12 +_,14 @@
  using Terraria.ID;
  using Terraria.Localization;
  using Terraria.Map;
@@ -18,6 +18,13 @@
  using Terraria.Social;
  using Terraria.Testing;
  
+ namespace Terraria;
+ 
+-public class NetMessage
++public partial class NetMessage
+ {
+ 	public struct NetSoundInfo
+ 	{
 @@ -56,10 +_,11 @@
  	private static short[] _compressChestList = new short[8000];
  	private static short[] _compressSignList = new short[32000];
@@ -598,7 +605,7 @@
  	public static void SendPlayerDeath(int playerTargetIndex, PlayerDeathReason reason, int damage, int direction, bool pvp, int remoteClient = -1, int ignoreClient = -1)
  	{
  		_currentPlayerDeathReason = reason;
-@@ -2365,17 +_,76 @@
+@@ -2365,17 +_,56 @@
  		SendData(126, remoteClient, ignoreClient);
  	}
  
@@ -635,16 +642,6 @@
 +		SendData(20, whoAmi, -1, null, tileX, tileY, xSize, ySize, (int)changeType, -1);
  	}
  
-+	/// <summary>
-+	/// <inheritdoc cref="SendTileSquare(int, int, int, int, int, TileChangeType)" path="/SharedSummary/node()"/>
-+	/// In this particular overload, <paramref name="liquidType"/> and <paramref name="otherLiquid"/> are used to send a liquid merge sound. Specifically used by Terraria.Liquid.LiquidCheck. <paramref name="liquidType"/> and <paramref name="otherLiquid"/> are the two liquid IDs merging together.
-+	/// </summary>
-+	public static void SendTileSquare(int whoAmi, int tileX, int tileY, int xSize, int ySize, byte liquidType, byte otherLiquid)
-+	{
-+		SendData(20, whoAmi, -1, null, tileX, tileY, xSize, ySize, liquidType, (int)(otherLiquid));
-+		WorldGen.RangeFrame(tileX, tileY, xSize, ySize);
-+	}
-+
 +	/// <SharedSummary>
 +	/// <inheritdoc cref="SendTileSquare(int, int, int, int, int, TileChangeType)" path="/SharedSummary/node()"/>
 +	/// <b>Range: </b>In this particular overload, <paramref name="tileX"/> and <paramref name="tileY"/> denote the center of a square range of tiles to sync and <paramref name="centeredSquareSize"/> denotes the width/height of the square to send. Odd <paramref name="centeredSquareSize"/> values result in a square centered directly on <paramref name="tileX"/> and <paramref name="tileY"/>, while even values will result in the square being 1 tile longer to the right of and below of the coordinates.
@@ -659,16 +656,6 @@
  		SendTileSquare(whoAmi, tileX - num, tileY - num, centeredSquareSize, centeredSquareSize, changeType);
  	}
  
-+	/// <summary>
-+	/// <inheritdoc cref="SendTileSquare(int, int, int, int, TileChangeType)" path="/SharedSummary/node()"/>
-+	/// <br/><br/> In this particular overload, <paramref name="liquidType"/> and <paramref name="otherLiquid"/> are used to send a liquid merge sound. Specifically used by Terraria.Liquid.LiquidCheck. <paramref name="liquidType"/> and <paramref name="otherLiquid"/> are the two liquid IDs merging together.
-+	/// </summary>
-+	public static void SendTileSquare(int whoAmi, int tileX, int tileY, int centeredSquareSize, byte liquidType, byte otherLiquid)
-+	{
-+		int num = (centeredSquareSize - 1) / 2;
-+		SendTileSquare(whoAmi, tileX - num, tileY - num, centeredSquareSize, centeredSquareSize, liquidType, otherLiquid);
-+	}
-+
 +	/// <summary>
 +	/// <inheritdoc cref="SendTileSquare(int, int, int, int, int, TileChangeType)" path="/SharedSummary/node()"/>
 +	/// <b>Range: </b>In this particular overload, <paramref name="tileX"/> and <paramref name="tileY"/> denote a single tile to sync. If sending multiple tiles use the other overloads instead.
