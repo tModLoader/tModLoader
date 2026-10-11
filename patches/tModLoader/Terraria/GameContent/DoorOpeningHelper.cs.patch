@@ -9,18 +9,12 @@
  
  namespace Terraria.GameContent;
  
-@@ -84,15 +_,20 @@
- 			if (playerInfo.hitboxToOpenDoor.Top < rectangle.Top || playerInfo.hitboxToOpenDoor.Bottom > rectangle.Bottom)
+@@ -85,14 +_,14 @@
  				return false;
  
-+			int originalClosedDoorType = TileID.ClosedDoor;
-+			ModTile modTile = ModContent.GetModTile(Main.tile[tileCoordsForToggling.X, tileCoordsForToggling.Y].type);
-+			if (modTile != null && TileID.Sets.OpenDoorID[modTile.Type] > -1)
-+				originalClosedDoorType = modTile.Type;
-+
  			WorldGen.OpenDoor(tileCoordsForToggling.X, tileCoordsForToggling.Y, intendedOpeningDirection);
 -			if (Main.tile[tileCoordsForToggling.X, tileCoordsForToggling.Y].type != 10) {
-+			if (Main.tile[tileCoordsForToggling.X, tileCoordsForToggling.Y].type != originalClosedDoorType) {
++			if (TileLoader.IsClosedDoor(Main.tile[tileCoordsForToggling.X, tileCoordsForToggling.Y].type)) {
 -				NetMessage.SendData(19, -1, -1, null, 0, tileCoordsForToggling.X, tileCoordsForToggling.Y, intendedOpeningDirection);
 +				NetMessage.SendData(MessageID.ToggleDoorState, -1, -1, null, 0, tileCoordsForToggling.X, tileCoordsForToggling.Y, intendedOpeningDirection);
  				return true;
@@ -28,7 +22,7 @@
  
  			WorldGen.OpenDoor(tileCoordsForToggling.X, tileCoordsForToggling.Y, -intendedOpeningDirection);
 -			if (Main.tile[tileCoordsForToggling.X, tileCoordsForToggling.Y].type != 10) {
-+			if (Main.tile[tileCoordsForToggling.X, tileCoordsForToggling.Y].type != originalClosedDoorType) {
++			if (TileLoader.IsClosedDoor(Main.tile[tileCoordsForToggling.X, tileCoordsForToggling.Y].type)) {
 -				NetMessage.SendData(19, -1, -1, null, 0, tileCoordsForToggling.X, tileCoordsForToggling.Y, -intendedOpeningDirection);
 +				NetMessage.SendData(MessageID.ToggleDoorState, -1, -1, null, 0, tileCoordsForToggling.X, tileCoordsForToggling.Y, -intendedOpeningDirection);
  				return true;

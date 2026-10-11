@@ -401,7 +401,7 @@ public static class TileLoader
 		if (modTile != null) {
 			return TileID.Sets.OpenDoorID[modTile.Type];
 		}
-		if (tile.type == TileID.ClosedDoor && (tile.frameY < 594 || tile.frameY > 646 || tile.frameX >= 54)) {
+		if (IsClosedDoor(tile.type) && (tile.frameY < 594 || tile.frameY > 646 || tile.frameX >= 54)) {
 			return TileID.OpenDoor;
 		}
 		return -1;
