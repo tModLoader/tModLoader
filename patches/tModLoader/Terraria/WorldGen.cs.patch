@@ -139,33 +139,6 @@
  
  			return true;
  		}
-@@ -3637,6 +_,26 @@
- 		}
- 	}
- 
-+	public static void PlayLiquidChangeSound(int x, int y, int type, int otherType, int count = 1)
-+	{
-+		SoundStyle? collisionSound = SoundID.LiquidsHoneyWater;
-+
-+		if ((type == LiquidID.Water && otherType == LiquidID.Lava) || (type == LiquidID.Lava && otherType == LiquidID.Water))
-+			collisionSound = SoundID.LiquidsWaterLava;
-+		else if ((type == LiquidID.Water && otherType == LiquidID.Honey) || (type == LiquidID.Honey && otherType == LiquidID.Water))
-+			collisionSound = SoundID.LiquidsHoneyWater;
-+		else if ((type == LiquidID.Lava && otherType == LiquidID.Honey) || (type == LiquidID.Honey && otherType == LiquidID.Lava))
-+			collisionSound = SoundID.LiquidsHoneyLava;
-+		else if ((type == LiquidID.Shimmer || otherType == LiquidID.Shimmer) && type < LiquidID.Count && otherType < LiquidID.Count)
-+			collisionSound = SoundID.ShimmerWeak1;
-+
-+		LiquidLoader.LiquidMergeSounds(x, y, type, otherType, ref collisionSound);
-+
-+		if (collisionSound != null) {
-+			SoundEngine.PlaySound(collisionSound, x * 16 + count * 8, y * 16 + count * 8);
-+		}
-+	}
-+
- 	public static TileChangeType GetLiquidChangeType(int liquidType, int otherLiquidType)
- 	{
- 		if ((liquidType == 0 && otherLiquidType == 1) || (liquidType == 1 && otherLiquidType == 0))
 @@ -3840,7 +_,7 @@
  		}
  

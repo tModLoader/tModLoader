@@ -1,11 +1,12 @@
-using MonoMod.Cil;
+using System;
 using System.Collections.Generic;
+using MonoMod.Cil;
+using Terraria.Audio;
 using Terraria.GameContent.Generation;
-using Terraria.WorldBuilding;
+using Terraria.ID;
 using Terraria.IO;
 using Terraria.ModLoader;
-using Terraria.ID;
-using System;
+using Terraria.WorldBuilding;
 
 namespace Terraria;
 
@@ -154,5 +155,33 @@ public partial class WorldGen
 			return false;
 		}
 		return true;
+	}
+
+	/// <summary>
+	/// Method for when a liquid merge happen such water + lava = obsidian.
+	/// </summary>
+	/// <param name="x"></param>
+	/// <param name="y"></param>
+	/// <param name="type"></param>
+	/// <param name="otherType"></param>
+	/// <param name="count"></param>
+	public static void PlayLiquidChangeSound(int x, int y, int type, int otherType, int count = 1)
+	{
+		SoundStyle? collisionSound = SoundID.LiquidsHoneyWater;
+
+		if ((type == LiquidID.Water && otherType == LiquidID.Lava) || (type == LiquidID.Lava && otherType == LiquidID.Water))
+			collisionSound = SoundID.LiquidsWaterLava;
+		else if ((type == LiquidID.Water && otherType == LiquidID.Honey) || (type == LiquidID.Honey && otherType == LiquidID.Water))
+			collisionSound = SoundID.LiquidsHoneyWater;
+		else if ((type == LiquidID.Lava && otherType == LiquidID.Honey) || (type == LiquidID.Honey && otherType == LiquidID.Lava))
+			collisionSound = SoundID.LiquidsHoneyLava;
+		else if ((type == LiquidID.Shimmer || otherType == LiquidID.Shimmer) && type < LiquidID.Count && otherType < LiquidID.Count)
+			collisionSound = SoundID.ShimmerWeak1;
+
+		LiquidLoader.LiquidMergeSounds(x, y, type, otherType, ref collisionSound);
+
+		if (collisionSound != null) {
+			SoundEngine.PlaySound(collisionSound, x * 16 + count * 8, y * 16 + count * 8);
+		}
 	}
 }

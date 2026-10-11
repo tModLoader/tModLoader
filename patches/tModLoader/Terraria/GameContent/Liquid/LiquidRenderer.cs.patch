@@ -302,41 +302,16 @@
  							}
  							else {
  								ptr4->IsVisible = false;
-@@ -465,26 +_,30 @@
+@@ -465,7 +_,7 @@
  			ptr2 = ptr;
  			for (int num25 = rectangle.X; num25 < rectangle.X + rectangle.Width; num25++) {
  				for (int num26 = rectangle.Y; num26 < rectangle.Y + rectangle.Height; num26++) {
-+					if (ptr2->HasVisibleLiquid && LiquidLoader.EmitEffects(num25, num26, ptr2->VisibleType, *ptr2))
-+						/*if (ptr2->VisibleType == 1 && ptr2->HasVisibleLiquid && Dust.lavaBubbles < 200) {*/
 -					if (ptr2->VisibleType == 1 && ptr2->HasVisibleLiquid && Dust.lavaBubbles < 200) {
-+						if (ptr2->VisibleType == 1 && Dust.lavaBubbles < 200) {
--						if (_random.Next(700) == 0)
-+							if (_random.Next(700) == 0)
--							Dust.NewDust(new Vector2(num25 * 16, num26 * 16), 16, 16, 35, 0f, 0f, 0, Color.White);
-+								Dust.NewDust(new Vector2(num25 * 16, num26 * 16), 16, 16, 35, 0f, 0f, 0, Color.White);
++					if (ptr2->VisibleType == 1 && ptr2->HasVisibleLiquid && Dust.lavaBubbles < 200 && LiquidLoader.EmitEffects(num25, num26, ptr2->VisibleType, *ptr2)) {
+ 						if (_random.Next(700) == 0)
+ 							Dust.NewDust(new Vector2(num25 * 16, num26 * 16), 16, 16, 35, 0f, 0f, 0, Color.White);
  
--						if (_random.Next(350) == 0) {
-+							if (_random.Next(350) == 0) {
--							int num27 = Dust.NewDust(new Vector2(num25 * 16, num26 * 16), 16, 8, 35, 0f, 0f, 50, Color.White, 1.5f);
-+								int num27 = Dust.NewDust(new Vector2(num25 * 16, num26 * 16), 16, 8, 35, 0f, 0f, 50, Color.White, 1.5f);
--							Main.dust[num27].velocity *= 0.8f;
-+								Main.dust[num27].velocity *= 0.8f;
--							Main.dust[num27].velocity.X *= 2f;
-+								Main.dust[num27].velocity.X *= 2f;
--							Main.dust[num27].velocity.Y -= (float)_random.Next(1, 7) * 0.1f;
-+								Main.dust[num27].velocity.Y -= (float)_random.Next(1, 7) * 0.1f;
--							if (_random.Next(10) == 0)
-+								if (_random.Next(10) == 0)
--								Main.dust[num27].velocity.Y *= _random.Next(2, 5);
-+									Main.dust[num27].velocity.Y *= _random.Next(2, 5);
- 
--							Main.dust[num27].noGravity = true;
-+								Main.dust[num27].noGravity = true;
-+							}
- 						}
--					}
- 
- 					ptr2++;
+@@ -485,6 +_,8 @@
  				}
  			}
  
