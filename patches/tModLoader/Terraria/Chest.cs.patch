@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Chest.cs
 +++ src/tModLoader/Terraria/Chest.cs
-@@ -10,11 +_,16 @@
+@@ -10,11 +_,19 @@
  using Terraria.GameContent.Events;
  using Terraria.Graphics.Renderers;
  using Terraria.ID;
@@ -14,7 +14,10 @@
 +/// <summary>
 +/// Represents a non-<see cref="Player"/> inventory, such as chests, portable storage, or NPC shops.
 +/// </summary>
++/*VanillaCode
  public class Chest : IFixLoadedData
++*/
++public partial class Chest : IFixLoadedData
  {
  	public struct ItemTransferVisualizationSettings
 @@ -34,25 +_,100 @@
