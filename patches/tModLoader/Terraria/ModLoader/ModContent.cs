@@ -1,3 +1,4 @@
+using Terraria.GameContent.ChestLootRules;
 using ReLogic.Content;
 using System;
 using System.Collections.Generic;
@@ -533,6 +534,7 @@ public static class ModContent
 	internal static void Unload()
 	{
 		MonoModHooks.Clear();
+		ChestLootDatabase.Unload();
 		TypeCaching.Clear();
 		ContentCache.Unload();
 		ItemLoader.Unload();
