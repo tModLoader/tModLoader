@@ -526,7 +526,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 			uiPanel.Append(subPageBreadcrumbPanel);
 
 			subPageBackButton.OnActivate(); // Refresh colors
-			subPageBreadcrumbText.SetText(string.Join($" [c/{Color.DarkGray.Hex3()}:>] ", configPageStack.Reverse().Skip(1).Select(p => p.Name + " ASDAS DASD A")));
+			subPageBreadcrumbText.SetText(string.Join($" [c/{Color.DarkGray.Hex3()}:>] ", configPageStack.Reverse().Skip(1).Select(p => p.Name)));
 			subPageBreadcrumbText.ResetScroll();
 			subPageBreadcrumbText.SetScrollDelay(60);
 
