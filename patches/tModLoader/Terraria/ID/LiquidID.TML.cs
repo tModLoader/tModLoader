@@ -8,7 +8,6 @@ namespace Terraria.ID;
 
 public partial class LiquidID
 {
-	public static readonly IdDictionary Search = IdDictionary.Create(typeof(LiquidID), typeof(short)); // Added By TML
 #if !TMLANALYZER
 	public static class Sets
 	{

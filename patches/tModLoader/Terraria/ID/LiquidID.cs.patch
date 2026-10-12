@@ -1,6 +1,8 @@
 --- src/TerrariaNetCore/Terraria/ID/LiquidID.cs
 +++ src/tModLoader/Terraria/ID/LiquidID.cs
-@@ -1,6 +_,6 @@
+@@ -1,10 +_,13 @@
++using ReLogic.Reflection;
++
  namespace Terraria.ID;
  
 -public static class LiquidID
@@ -8,3 +10,8 @@
  {
  	public const short Water = 0;
  	public const short Lava = 1;
+ 	public const short Honey = 2;
+ 	public const short Shimmer = 3;
+ 	public static readonly short Count = 4;
++	public static readonly IdDictionary Search = IdDictionary.Create(typeof(LiquidID), typeof(short)); // Added By TML
+ }
