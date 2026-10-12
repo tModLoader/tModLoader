@@ -17,9 +17,9 @@ namespace Terraria.ModLoader;
 /// This class represents a type of liquid that can be added by a mod. Only one instance of this class will ever exist for each type of liquid that is added. Any hooks that are called will be called by the instance corresponding to the liquid type. This is to prevent the game from using a massive amount of memory storing liquid instances.<br />
 /// </summary>
 // The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Tile">Basic Liquid Guide</see> teaches the basics of making a modded tile. //Add documentation page
-public abstract class ModLiquid : ModTexturedType, ILocalizedModType, IModType
+public abstract class ModLiquid : ModBlockType
 {
-	public string LocalizationCategory => "Liquids";
+	public override string LocalizationCategory => "Liquids";
 
 	/// <summary> The Liquid ID of this Modded Liquid </summary>
 	public ushort Type { get; internal set; }
@@ -86,7 +86,7 @@ public abstract class ModLiquid : ModTexturedType, ILocalizedModType, IModType
 	/// <summary>
 	/// Adds an entry to the minimap for this liquid with the given color and display name. This should be called in SetDefaults.
 	/// </summary>
-	public void AddMapEntry(Color color, LocalizedText name = null)
+	public override void AddMapEntry(Color color, LocalizedText name = null)
 	{
 		if (!MapLoader.initialized) {
 			MapEntry entry = new MapEntry(color, name);
@@ -101,7 +101,7 @@ public abstract class ModLiquid : ModTexturedType, ILocalizedModType, IModType
 	/// <inheritdoc cref="ModLiquid.AddMapEntry(Color, LocalizedText)" />
 	/// <br /><br /> <b>Overload specific:</b> This overload has an additional <paramref name="nameFunc" /> parameter. This function will be used to dynamically adjust the hover text. The parameters for the function are the default display name, x-coordinate, and y-coordinate.
 	/// </summary>
-	public void AddMapEntry(Color color, LocalizedText name, Func<string, int, int, string> nameFunc)
+	public override void AddMapEntry(Color color, LocalizedText name, Func<string, int, int, string> nameFunc)
 	{
 		if (!MapLoader.initialized) {
 			MapEntry entry = new MapEntry(color, name, nameFunc);
