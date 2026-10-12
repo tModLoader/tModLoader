@@ -519,9 +519,6 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 		subPageBackButton.Remove();
 		subPageBreadcrumbPanel.Remove();
 
-		// TODO: temp
-		CreateSubPageUI();
-
 		configElementList.Height.Pixels = -listHeaderContainer.Height.Pixels - 5;
 
 		if (InSubPage) {
