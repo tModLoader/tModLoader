@@ -228,10 +228,10 @@ public static class ChestLootDatabase
 		throw new ArgumentException($"No declared vanilla chest supplement for item {itemType} at 1/{chanceDenominator} chance.");
 	}
 
-	internal static bool TryDropVanillaAtSlot(Chest chest, int slot, UnifiedRandom random, int itemType, int chanceDenominator, bool stackBeforeSetDefaults = false, int stackMin = 1, int stackMax = 1, int chanceNumerator = 1, bool applyRandomPrefix = false)
+	internal static bool TryDropVanillaAtSlot(Chest chest, int slot, UnifiedRandom random, int itemType, int chanceDenominator, bool stackBeforeSetDefaults = false, int stackMin = 1, int stackMax = 1, int chanceNumerator = 1, bool applyRandomPrefix = false, bool successOnNonZero = false)
 	{
 		foreach ((IChestLootRule rule, _) in _vanillaSupplementalRules) {
-			if (rule is CommonChestDropRule commonRule && commonRule.ItemType == itemType && commonRule.ChanceDenominator == chanceDenominator && commonRule.ChanceNumerator == chanceNumerator && commonRule.StackMin == stackMin && commonRule.StackMax == stackMax)
+			if (rule is CommonChestDropRule commonRule && commonRule.ItemType == itemType && commonRule.ChanceDenominator == chanceDenominator && commonRule.ChanceNumerator == chanceNumerator && commonRule.StackMin == stackMin && commonRule.StackMax == stackMax && commonRule.SuccessOnNonZero == successOnNonZero)
 				return commonRule.TryDropAtSlot(chest, slot, random, stackBeforeSetDefaults, applyRandomPrefix);
 		}
 

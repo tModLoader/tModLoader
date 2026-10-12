@@ -1407,7 +1407,7 @@
  							if (flag6 && genRand.Next(3) != 0)
  								chest.item[itemIndex++].SetDefaults(5528);
 +							*/
-+							if (flag6 && ChestLootDatabase.TryDropVanillaAtSlot(chest, itemIndex, genRand, 5528, 3, chanceNumerator: 2))
++							if (flag6 && ChestLootDatabase.TryDropVanillaAtSlot(chest, itemIndex, genRand, 5528, 3, chanceNumerator: 2, successOnNonZero: true))
 +								itemIndex++;
  
 +							/*VanillaCode
@@ -1554,7 +1554,7 @@
  							itemIndex++;
  						}
 +						*/
-+						if (ChestLootDatabase.TryDropVanillaAtSlot(chest, itemIndex, genRand, 2350, 3, stackMin: 3, stackMax: 5, chanceNumerator: 2))
++						if (ChestLootDatabase.TryDropVanillaAtSlot(chest, itemIndex, genRand, 2350, 3, stackMin: 3, stackMax: 5, chanceNumerator: 2, successOnNonZero: true))
 +							itemIndex++;
  
 +						/*VanillaCode
@@ -1671,7 +1671,7 @@
  							if (flag6 && genRand.Next(3) != 0)
  								chest.item[itemIndex++].SetDefaults(5528);
 +							*/
-+							if (flag6 && ChestLootDatabase.TryDropVanillaAtSlot(chest, itemIndex, genRand, 5528, 3, chanceNumerator: 2))
++							if (flag6 && ChestLootDatabase.TryDropVanillaAtSlot(chest, itemIndex, genRand, 5528, 3, chanceNumerator: 2, successOnNonZero: true))
 +								itemIndex++;
  
  							if (flag9 && !flag10) {
@@ -1682,7 +1682,7 @@
  									itemIndex++;
  								}
 +								*/
-+								if (!GenVars.generatedShadowKey || ChestLootDatabase.TryDropVanillaAtSlot(chest, itemIndex, genRand, 329, 3)) {
++								if (!GenVars.generatedShadowKey || ChestLootDatabase.RollVanillaCommonChance(genRand, 329, 3)) {
 +									GenVars.generatedShadowKey = true;
 +									ChestLootDatabase.SetVanillaCommonAtSlot(chest, itemIndex, genRand, 329);
 +									itemIndex++;
@@ -1696,7 +1696,7 @@
  									itemIndex++;
  								}
 +								*/
-+								if (!GenVars.generatedRamRune || ChestLootDatabase.TryDropVanillaAtSlot(chest, itemIndex, genRand, 5465, 8, applyRandomPrefix: true)) {
++								if (!GenVars.generatedRamRune || ChestLootDatabase.RollVanillaCommonChance(genRand, 5465, 8)) {
 +									GenVars.generatedRamRune = true;
 +									ChestLootDatabase.SetVanillaCommonAtSlot(chest, itemIndex, genRand, 5465, applyRandomPrefix: true);
 +									itemIndex++;
@@ -1901,7 +1901,7 @@
  							itemIndex++;
  						}
 +						*/
-+						if (ChestLootDatabase.TryDropVanillaAtSlot(chest, itemIndex, genRand, 2350, 3, stackBeforeSetDefaults: true, stackMin: 2, stackMax: 4, chanceNumerator: 2))
++						if (ChestLootDatabase.TryDropVanillaAtSlot(chest, itemIndex, genRand, 2350, 3, stackBeforeSetDefaults: true, stackMin: 2, stackMax: 4, chanceNumerator: 2, successOnNonZero: true))
 +							itemIndex++;
  
 +						/*VanillaCode
@@ -2023,7 +2023,7 @@
  									itemIndex++;
  								}
 +								*/
-+								if (!GenVars.generatedShadowKey || ChestLootDatabase.TryDropVanillaAtSlot(chest, itemIndex, genRand, 329, 3)) {
++								if (!GenVars.generatedShadowKey || ChestLootDatabase.RollVanillaCommonChance(genRand, 329, 3)) {
 +									GenVars.generatedShadowKey = true;
 +									ChestLootDatabase.SetVanillaCommonAtSlot(chest, itemIndex, genRand, 329);
 +									itemIndex++;
@@ -2037,7 +2037,7 @@
  									itemIndex++;
  								}
 +								*/
-+								if (!GenVars.generatedRamRune || ChestLootDatabase.TryDropVanillaAtSlot(chest, itemIndex, genRand, 5465, 8, applyRandomPrefix: true)) {
++								if (!GenVars.generatedRamRune || ChestLootDatabase.RollVanillaCommonChance(genRand, 5465, 8)) {
 +									GenVars.generatedRamRune = true;
 +									ChestLootDatabase.SetVanillaCommonAtSlot(chest, itemIndex, genRand, 5465, applyRandomPrefix: true);
 +									itemIndex++;
