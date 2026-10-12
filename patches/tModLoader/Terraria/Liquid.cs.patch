@@ -13,7 +13,7 @@
  		WorldGen.SetBoulderSolidity(!ignoreSolids);
  		Main.tileSolid[546] = !ignoreSolids;
 +		
-+		foreach (int tileType in TileID.Sets.IgnoresWater)
++		foreach (int tileType in TileID.Sets.IgnoresLiquid)
 +				Main.tileSolid[tileType] = !ignoreSolids;
  	}
  
@@ -25,7 +25,7 @@
  		Main.tileSolid[191] = !ignoreSolids;
  		Main.tileSolid[190] = !ignoreSolids;
 +		*/
-+		foreach (int tileType in TileID.Sets.IgnoresWaterDuringWorldgen)
++		foreach (int tileType in TileID.Sets.IgnoresLiquidDuringWorldgen)
 +				Main.tileSolid[tileType] = !ignoreSolids;
  	}
  

@@ -218,5 +218,16 @@ partial class ItemID
 			GolfClubMythrilIron, GolfClubLeadPutter, GolfClubGoldWedge, GolfClubPearlwoodDriver,
 			GolfClubTitaniumIron, GolfClubShroomitePutter, GolfClubDiamondWedge, GolfClubChlorophyteDriver
 		);
+
+
+		/// <summary>
+		/// If <see langword="true"/> for a given item that is a bucket, it can execute the OnBucketUse hook
+		/// </summary>
+		public static int[] BucketItems = new int[] { 205 };
+
+		/// <summary>
+		/// If <see langword="true"/> for sponge item type
+		/// </summary>
+		public static int[] SpongeItems = new int[] { 3032, 4872, 5303, 5304 };
 	}
 }

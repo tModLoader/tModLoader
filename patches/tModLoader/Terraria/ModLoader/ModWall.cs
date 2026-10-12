@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.Localization;
+using Terraria.ModLoader.Interfaces;
 
 namespace Terraria.ModLoader;
 
@@ -12,14 +13,14 @@ namespace Terraria.ModLoader;
 /// This class represents a type of wall that can be added by a mod. Only one instance of this class will ever exist for each type of wall that is added. Any hooks that are called will be called by the instance corresponding to the wall type.
 /// <br/><br/> The <see href="https://github.com/tModLoader/tModLoader/wiki/Wall">Wall Guide</see> teaches the basics of making a modded wall.
 /// </summary>
-public abstract class ModWall : ModBlockType
+public abstract class ModWall : ModBlockType, IWorldUpdateBlock, IPlaceableBlock, IMineableBlock
 {
 	public override string LocalizationCategory => "Walls";
 
 	/// <summary>
 	/// Adds an entry to the minimap for this wall with the given color and display name. This should be called in SetDefaults.
 	/// </summary>
-	public void AddMapEntry(Color color, LocalizedText name = null)
+	public override void AddMapEntry(Color color, LocalizedText name = null)
 	{
 		if (!MapLoader.initialized) {
 			MapEntry entry = new MapEntry(color, name);
@@ -34,7 +35,7 @@ public abstract class ModWall : ModBlockType
 	/// <inheritdoc cref="AddMapEntry(Color, LocalizedText)"/>
 	/// <br/><br/> <b>Overload specific:</b> This overload has an additional <paramref name="nameFunc"/> parameter. This function will be used to dynamically adjust the hover text. The parameters for the function are the default display name, x-coordinate, and y-coordinate.
 	/// </summary>
-	public void AddMapEntry(Color color, LocalizedText name, Func<string, int, int, string> nameFunc)
+	public override void AddMapEntry(Color color, LocalizedText name, Func<string, int, int, string> nameFunc)
 	{
 		if (!MapLoader.initialized) {
 			MapEntry entry = new MapEntry(color, name, nameFunc);
@@ -125,5 +126,95 @@ public abstract class ModWall : ModBlockType
 	/// <param name="conversionType">A <see cref="BiomeConversionID"/> (or <see cref="ModBiomeConversion.Type"/>)</param>
 	public virtual void OnWallConverted(int i, int j, int fromType, int toType, int conversionType)
 	{
+	}
+
+	/// <summary>
+	/// Called whenever the world randomly decides to update this wall in a given tick. Useful for things such as growing or spreading.
+	/// </summary>
+	/// <param name="i">The x position in tile coordinates.</param>
+	/// <param name="j">The y position in tile coordinates.</param>
+	/// <param name="underground">Whether the wall is considered underground. This usually means below <see cref="Main.worldSurface"/>, but if the "Don't dig up" special world seed (<see cref="Main.remixWorld"/>) is active tiles technically underground might be considered overground for random update purposes. </param>
+	public virtual void RandomUpdate(int i, int j, bool underground)
+	{
+	}
+
+	/// <summary>
+	/// Allows you to change what happens when this wall is converted into another biome. If you need to override or add a new conversion to a vanilla tile, use <see cref="WallLoader.RegisterConversion"/>.
+	/// <para/> Purification powder uses a separate conversionType, as it doesn't convert hallowed tiles back to purity tiles. Be sure to check for <see cref="BiomeConversionID.PurificationPowder"/> as well as <see cref="BiomeConversionID.Purity"/> when handling corruption/crimson tiles.
+	/// <para/> You can use <see cref="WorldGen.ConvertWall"/> to automatically handle tile framing and multiplayer syncing.
+	/// </summary>
+	/// <param name="i"></param>
+	/// <param name="j"></param>
+	/// <param name="conversionType">The <see cref="BiomeConversionID"/> of the conversion</param>
+	public virtual void Convert(int i, int j, int conversionType)
+	{
+	}
+
+	/// <summary>
+	/// Allows you to stop this wall from being placed at the given coordinates. This method is called on the local client.
+	/// <para/> For tiles this is also checked during block replacement, but <see cref="ModTile.CanReplace(int, int, int)"/> should be used for replace-specific logic.
+	/// <para/> Return false to stop the wall from being placed. Returns true by default.
+	/// </summary>
+	/// <param name="i">The x position in tile coordinates.</param>
+	/// <param name="j">The y position in tile coordinates.</param>
+	public virtual bool CanPlace(int i, int j)
+	{
+		return true;
+	}
+
+	/// <summary>
+	/// Allows you to do something when this wall is placed. Called on the local Client and Single Player.
+	/// <para/> Note that the coordinates in this method account for the placement origin and are not necessarily the coordinates of the top left tile of a multi-tile.
+	/// </summary>
+	/// <param name="i">The x position in tile coordinates. Equal to Player.tileTargetX</param>
+	/// <param name="j">The y position in tile coordinates. Equal to Player.tileTargetY</param>
+	/// <param name="item">The item used to place this wall.</param>
+	public virtual void PlaceInWorld(int i, int j, Item item)
+	{
+	}
+
+	/// <summary>
+	/// Allows you to customize which sound you want to play when the wall at the given coordinates is hit. Return false to stop the game from playing its default sound for the wall. Returns true by default.
+	/// </summary>
+	/// <param name="i">The x position in tile coordinates.</param>
+	/// <param name="j">The y position in tile coordinates.</param>
+	/// <param name="fail">If true, the wall is only partially damaged. If false, the wall is fully destroyed.</param>
+	public virtual bool KillSound(int i, int j, bool fail)
+	{
+		return true;
+	}
+
+	/// <summary>
+	/// Allows you to change how many dust particles are created when the wall at the given coordinates is hit.
+	/// <para/> Use <see cref="CreateDust(int, int, ref int)"/> to customize the dust spawned.
+	/// </summary>
+	/// <param name="i">The x position in tile coordinates.</param>
+	/// <param name="j">The y position in tile coordinates.</param>
+	/// <param name="fail">If true, the tile is spawning dust for reasons other than the tile actually being destroyed. Worms, projectiles, and other effects cause dust to spawn aside from the usual case of the tile breaking.</param>
+	/// <param name="num">The number of dust that will be spawned by the calling code</param>
+	public virtual void NumDust(int i, int j, bool fail, ref int num)
+	{
+	}
+
+	/// <summary>
+	/// Allows you to modify the default type of dust created when the wall at the given coordinates is hit. Return false to stop the default dust (the type parameter) from being created. Returns true by default.
+	/// <para/> The <paramref name="type"/> parameter defaults to <see cref="DustType"/>.
+	/// </summary>
+	/// <param name="i">The x position in tile coordinates.</param>
+	/// <param name="j">The y position in tile coordinates.</param>
+	/// <param name="type">The dust type that will be spawned by the calling code</param>
+	public virtual bool CreateDust(int i, int j, ref int type)
+	{
+		return true;
+	}
+
+	/// <summary>
+	/// Whether or not the wall at the given coordinates can be killed by an explosion (ie. bombs). Returns true by default; return false to stop an explosion from destroying it.
+	/// </summary>
+	/// <param name="i">The x position in tile coordinates.</param>
+	/// <param name="j">The y position in tile coordinates.</param>
+	public virtual bool CanExplode(int i, int j)
+	{
+		return true;
 	}
 }

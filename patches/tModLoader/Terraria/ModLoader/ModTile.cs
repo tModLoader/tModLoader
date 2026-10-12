@@ -8,6 +8,7 @@ using Terraria.GameContent.ObjectInteractions;
 using Terraria.Graphics.Light;
 using Terraria.ID;
 using Terraria.Localization;
+using Terraria.ModLoader.Interfaces;
 using Terraria.ObjectData;
 using static Terraria.WaterfallManager;
 
@@ -17,7 +18,7 @@ namespace Terraria.ModLoader;
 /// This class represents a type of tile that can be added by a mod. Only one instance of this class will ever exist for each type of tile that is added. Any hooks that are called will be called by the instance corresponding to the tile type. This is to prevent the game from using a massive amount of memory storing tile instances.<br/>
 /// The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Tile">Basic Tile Guide</see> teaches the basics of making a modded tile.
 /// </summary>
-public abstract class ModTile : ModBlockType
+public abstract class ModTile : ModBlockType, IWorldUpdateBlock, IPlaceableBlock, IMineableBlock
 {
 	/// <summary> The height of a group of animation frames for this tile. Defaults to 0, which disables animations.
 	/// <para/> Used in conjunction with <see cref="AnimateTile(ref int, ref int)"/> to automatically animate tiles. Use <see cref="AnimateIndividualTile(int, int, int, ref int, ref int)"/> as well if needed.
@@ -68,7 +69,7 @@ public abstract class ModTile : ModBlockType
 	/// <br/> <see cref="ModBlockType.GetMapOption"/> will be used to choose which map entry is used for a given coordinate.
 	/// <br/><br/> Vanilla map entries for most furniture tiles tend to be fairly generic, opting to use a single map entry to show "Table" for all styles of tables instead of the style-specific text such as "Wooden Table", "Honey Table", etc. To use these existing localizations, use the <see cref="Language.GetText(string)"/> method with the appropriate key, such as "MapObject.Chair", "MapObject.Door", "ItemName.WorkBench", etc. Consult the source code or ExampleMod to find the existing localization keys for common furniture types. The <c>array</c> array in <c>MapHelper.Initialize</c> has vanilla tile color values and <c>Lang.BuildMapAtlas</c> has the text.
 	/// </summary>
-	public void AddMapEntry(Color color, LocalizedText name = null)
+	public override void AddMapEntry(Color color, LocalizedText name = null)
 	{
 		if (!MapLoader.initialized) {
 			MapEntry entry = new MapEntry(color, name);
@@ -83,7 +84,7 @@ public abstract class ModTile : ModBlockType
 	/// <inheritdoc cref="AddMapEntry(Color, LocalizedText)"/>
 	/// <br/><br/> <b>Overload specific:</b> This overload has an additional <paramref name="nameFunc"/> parameter. This function will be used to dynamically adjust the hover text. The parameters for the function are the default display name, x-coordinate, and y-coordinate. This function is most typically used for chests and dressers to show the current chest name, if assigned, instead of the default chest name. <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/Tiles/Furniture/ExampleChest.cs">ExampleMod's ExampleChest</see> is one example of this functionality.
 	/// </summary>
-	public void AddMapEntry(Color color, LocalizedText name, Func<string, int, int, string> nameFunc)
+	public override void AddMapEntry(Color color, LocalizedText name, Func<string, int, int, string> nameFunc)
 	{
 		if (!MapLoader.initialized) {
 			MapEntry entry = new MapEntry(color, name, nameFunc);
@@ -841,5 +842,91 @@ public abstract class ModTile : ModBlockType
 	public virtual WaterfallData CreateWaterfall(int i, int j)
 	{
 		return new WaterfallData() { type = -1, x = i, y = j };
+	}
+
+	/// <summary>
+	/// Called whenever the world randomly decides to update this tile in a given tick. Useful for things such as growing or spreading.
+	/// </summary>
+	/// <param name="i">The x position in tile coordinates.</param>
+	/// <param name="j">The y position in tile coordinates.</param>
+	/// <param name="underground">Whether the tile is considered underground. This usually means below <see cref="Main.worldSurface"/>, but if the "Don't dig up" special world seed (<see cref="Main.remixWorld"/>) is active tiles technically underground might be considered overground for random update purposes. </param>
+	public virtual void RandomUpdate(int i, int j, bool underground) { }
+
+	/// <summary>
+	/// Allows you to change what happens when this tile is converted into another biome. If you need to override or add a new conversion to a vanilla tile, use <see cref="TileLoader.RegisterConversion"/>.
+	/// <para/> Purification powder uses a separate conversionType, as it doesn't convert hallowed tiles back to purity tiles. Be sure to check for <see cref="BiomeConversionID.PurificationPowder"/> as well as <see cref="BiomeConversionID.Purity"/> when handling corruption/crimson tiles.
+	/// <para/> You can use <see cref="WorldGen.ConvertTile(int, int, int)"/> to automatically handle tile framing and multiplayer syncing.
+	/// </summary>
+	/// <param name="i"></param>
+	/// <param name="j"></param>
+	/// <param name="conversionType">The <see cref="BiomeConversionID"/> of the conversion</param>
+	public virtual void Convert(int i, int j, int conversionType) { }
+
+	/// <summary>
+	/// Allows you to stop this tile from being placed at the given coordinates. This method is called on the local client.
+	/// <para/> For tiles this is also checked during block replacement, but <see cref="ModTile.CanReplace(int, int, int)"/> should be used for replace-specific logic.
+	/// <para/> Return false to stop the tile from being placed. Returns true by default.
+	/// </summary>
+	/// <param name="i">The x position in tile coordinates.</param>
+	/// <param name="j">The y position in tile coordinates.</param>
+	public virtual bool CanPlace(int i, int j)
+	{
+		return true;
+	}
+
+	/// <summary>
+	/// Allows you to do something when this tile is placed. Called on the local Client and Single Player.
+	/// <para/> Note that the coordinates in this method account for the placement origin and are not necessarily the coordinates of the top left tile of a multi-tile.
+	/// </summary>
+	/// <param name="i">The x position in tile coordinates. Equal to Player.tileTargetX</param>
+	/// <param name="j">The y position in tile coordinates. Equal to Player.tileTargetY</param>
+	/// <param name="item">The item used to place this tile.</param>
+	public virtual void PlaceInWorld(int i, int j, Item item)
+	{
+	}
+
+	/// <summary>
+	/// Allows you to customize which sound you want to play when the tile at the given coordinates is hit. Return false to stop the game from playing its default sound for the tile. Returns true by default.
+	/// </summary>
+	/// <param name="i">The x position in tile coordinates.</param>
+	/// <param name="j">The y position in tile coordinates.</param>
+	/// <param name="fail">If true, the tile is only partially damaged. If false, the tile is fully destroyed.</param>
+	public virtual bool KillSound(int i, int j, bool fail)
+	{
+		return true;
+	}
+
+	/// <summary>
+	/// Allows you to change how many dust particles are created when the tile at the given coordinates is hit.
+	/// <para/> Use <see cref="CreateDust(int, int, ref int)"/> to customize the dust spawned.
+	/// </summary>
+	/// <param name="i">The x position in tile coordinates.</param>
+	/// <param name="j">The y position in tile coordinates.</param>
+	/// <param name="fail">If true, the tile is spawning dust for reasons other than the tile actually being destroyed. Worms, projectiles, and other effects cause dust to spawn aside from the usual case of the tile breaking.</param>
+	/// <param name="num">The number of dust that will be spawned by the calling code</param>
+	public virtual void NumDust(int i, int j, bool fail, ref int num)
+	{
+	}
+
+	/// <summary>
+	/// Allows you to modify the default type of dust created when the tile at the given coordinates is hit. Return false to stop the default dust (the type parameter) from being created. Returns true by default.
+	/// <para/> The <paramref name="type"/> parameter defaults to <see cref="DustType"/>.
+	/// </summary>
+	/// <param name="i">The x position in tile coordinates.</param>
+	/// <param name="j">The y position in tile coordinates.</param>
+	/// <param name="type">The dust type that will be spawned by the calling code</param>
+	public virtual bool CreateDust(int i, int j, ref int type)
+	{
+		return true;
+	}
+
+	/// <summary>
+	/// Whether or not the tile at the given coordinates can be killed by an explosion (ie. bombs). Returns true by default; return false to stop an explosion from destroying it.
+	/// </summary>
+	/// <param name="i">The x position in tile coordinates.</param>
+	/// <param name="j">The y position in tile coordinates.</param>
+	public virtual bool CanExplode(int i, int j)
+	{
+		return true;
 	}
 }

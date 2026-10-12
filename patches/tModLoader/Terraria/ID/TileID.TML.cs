@@ -84,10 +84,10 @@ partial class TileID
 		public static bool[][] CountsAsLiquidSource;
 
 		/// <summary> Whether or not the tile is non-solid to liquids, allowing them to flow through. </summary>
-		public static List<int> IgnoresWater = new List<int> { 138, 484, 546 };
+		public static List<int> IgnoresLiquid = new List<int> { 138, 484, 546 };
 
 		/// <summary> Whether or not the tile is non-solid to liquids during worldgen. </summary>
-		public static List<int> IgnoresWaterDuringWorldgen = new List<int> { 10, 192, 191, 190 };
+		public static List<int> IgnoresLiquidDuringWorldgen = new List<int> { 10, 192, 191, 190 };
 
 		/// <summary> Whether or not saplings count this tile as empty when trying to grow. </summary>
 		public static bool[] IgnoredByGrowingSaplings = Factory.CreateBoolSet(3, 24, 32, 61, 62, 69, 71, 73, 74, 82, 83, 84, 110, 113, 184, 201, 233, 352, 485, 529, 530, 637, 655);
