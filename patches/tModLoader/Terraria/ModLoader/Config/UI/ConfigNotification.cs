@@ -24,6 +24,7 @@ public class ConfigNotification : IInGameNotification
 		this.color = color;
 		this.timeLeft = timeLeft;
 
+		// We don't want to change the colour that mods use, since they can always change the colour themselves this way if they want to
 		if (this.color == Color.Green)
 			this.color = new Color(255, 255, 255 / 5);
 	}

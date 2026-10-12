@@ -25,7 +25,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 {
 	public int UpdateCount { get; set; }
 	// Deprecated to encourage using instance fields so multiple instances of UIModConfig can exist in future (to allow mods to set their own config ui states)
-	[Obsolete("Use Interface.modConfig.ConfigElementTooltip for config element tooltips, and UICommon.TooltipMouseText for other tooltips")]
+	[Obsolete("Use Interface.modConfig.ConfigElementTooltip instead")]
 	public static string Tooltip { get => Interface.modConfig.ConfigElementTooltip; set => Interface.modConfig.ConfigElementTooltip = value; }
 	public string ConfigElementTooltip { get; set; }
 
@@ -525,7 +525,6 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 			uiPanel.Append(subPageBackButton);
 			uiPanel.Append(subPageBreadcrumbPanel);
 
-			// TODO: fix flicker of back button colours
 			subPageBackButton.OnActivate(); // Refresh colors
 			subPageBreadcrumbText.SetText(string.Join($" [c/{Color.DarkGray.Hex3()}:>] ", configPageStack.Reverse().Skip(1).Select(p => p.Name + " ASDAS DASD A")));
 			subPageBreadcrumbText.ResetScroll();
@@ -655,7 +654,6 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 			if (x is UISortableElement sortableElement && sortableElement.Children.FirstOrDefault() is ConfigElement configElement && configElement.MemberInfo.Name == scrollToOption) {
 				if (configElement is ObjectElement objectElement && objectElement.separateConfigPage != null) {
 					PushConfigPage(objectElement.separateConfigPage);
-					RefreshUI();
 					return true;
 				}
 				configElement.Flashing = true;
@@ -699,7 +697,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 			if (Attribute.IsDefined(variable.MemberInfo, typeof(JsonIgnoreAttribute)) && !Attribute.IsDefined(variable.MemberInfo, typeof(ShowDespiteJsonIgnoreAttribute)))
 				continue;
 
-			var header = HandleHeader(null, ref top, ref order, variable);
+			var header = HandleAndGetHeader(null, ref top, ref order, variable);
 			if (header is not null) {
 				configPage.ConfigElements.Add(header);
 			}
@@ -893,7 +891,13 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 		return container;
 	}
 
-	public static Tuple<UIElement, UIElement> HandleHeader(UIElement parent, ref int top, ref int order, PropertyFieldWrapper variable)
+	// For API compat
+	public static void HandleHeader(UIElement parent, ref int top, ref int order, PropertyFieldWrapper variable)
+	{
+		HandleAndGetHeader(parent, ref top, ref order, variable);
+	}
+
+	public static Tuple<UIElement, UIElement> HandleAndGetHeader(UIElement parent, ref int top, ref int order, PropertyFieldWrapper variable)
 	{
 		HeaderAttribute header = ConfigManager.GetLocalizedHeader(variable.MemberInfo);
 
