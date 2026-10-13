@@ -1437,4 +1437,20 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	public virtual void DrawPlayer(Camera camera)
 	{
 	}
+
+	/// <summary>
+	/// Called whenever the player starts a dash.
+	/// <br/><br/> Called in <see cref="Terraria.Player.DoCommonDashHandle(out int, out bool, ref int, Player.DashStartAction)"/>.
+	/// </summary>
+	/// <param name="dir">The direction in which the dash is. -1 for left, 1 for right.</param>
+	public virtual void OnDash(int dir)
+	{
+	}
+
+	/// <summary>
+	/// Called right after vanilla handles its dash logic in <see cref="Player.Update(int)"/>. Useful for implementing modded dashes.
+	/// </summary>
+	public virtual void PostDash()
+	{
+	}
 }
