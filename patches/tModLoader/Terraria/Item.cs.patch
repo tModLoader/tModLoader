@@ -914,7 +914,7 @@
  	public bool Prefix(int prefixWeWant, out bool rolledPrefixIsTopTier)
  	{
  		if (!WorldGen.isGeneratingOrLoadingWorld && Main.rand == null)
-@@ -330,7 +_,21 @@
+@@ -330,7 +_,17 @@
  		if (prefixWeWant == -2 || prefixWeWant == -1)
  			num = BestPrefixValue();
  
@@ -922,10 +922,6 @@
 +		if (prefixWeWant > 0 && !CanApplyPrefix(prefixWeWant))
 +			return false;
 +		*/
-+
-+		//#StackablePrefixWeapons: Stackable items will not spawn with a prefix on craft/generate. Only when deliberately reforged.
-+		if (prefixWeWant == -1 && maxStack > 1)
-+			return false;
 +
  		UnifiedRandom unifiedRandom = (WorldGen.isGeneratingOrLoadingWorld ? WorldGen.genRand : Main.rand);
 +
