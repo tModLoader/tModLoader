@@ -564,33 +564,10 @@ public abstract class ModLiquid : ModBlockType
 	{
 	}
 
-	/// <summary>
-	/// Adds an entry to the minimap for this liquid with the given color and display name. This should be called in SetDefaults.
-	/// </summary>
-	public override void AddMapEntry(Color color, LocalizedText name = null)
+	/// <inheritdoc/>
+	public override void AddMapEntry(Color color, LocalizedText name = null, Func<string, int, int, string> nameFunc = null)
 	{
-		if (!MapLoader.initialized) {
-			MapEntry entry = new MapEntry(color, name);
-			if (!MapLoader.liquidEntries.Keys.Contains(Type)) {
-				MapLoader.liquidEntries[Type] = new List<MapEntry>();
-			}
-			MapLoader.liquidEntries[Type].Add(entry);
-		}
-	}
-
-	/// <summary>
-	/// <inheritdoc cref="ModLiquid.AddMapEntry(Color, LocalizedText)" />
-	/// <br /><br /> <b>Overload specific:</b> This overload has an additional <paramref name="nameFunc" /> parameter. This function will be used to dynamically adjust the hover text. The parameters for the function are the default display name, x-coordinate, and y-coordinate.
-	/// </summary>
-	public override void AddMapEntry(Color color, LocalizedText name, Func<string, int, int, string> nameFunc)
-	{
-		if (!MapLoader.initialized) {
-			MapEntry entry = new MapEntry(color, name, nameFunc);
-			if (!MapLoader.liquidEntries.Keys.Contains(Type)) {
-				MapLoader.liquidEntries[Type] = new List<MapEntry>();
-			}
-			MapLoader.liquidEntries[Type].Add(entry);
-		}
+		AddMapEntryToMapLoader(MapLoader.liquidEntries, color, name, nameFunc);
 	}
 
 	/// <summary>
