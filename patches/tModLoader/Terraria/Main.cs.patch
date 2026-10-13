@@ -6690,6 +6690,18 @@
  	public void LoadTiles(int i)
  	{
  		if (TextureAssets.Tile[i].State == AssetState.NotLoaded)
+@@ -48940,7 +_,10 @@
+ 		num4 = (0f - num3 + screenOff / 2f) / (num2 * 16f);
+ 		float num5 = 2f;
+ 		int num6 = 0;
++		SkyDrawParams skyDrawParams = new SkyDrawParams();
++		if (gameMenu)
++			MenuLoader.CurrentMenu.ModifyDrawSky(ref skyDrawParams);
+-		float num7 = SkyManager.Instance.ProcessCloudAlpha() * atmo;
++		float num7 = SkyManager.Instance.ProcessCloudAlpha() * atmo * skyDrawParams.CloudAlpha;
+ 		if (flag && (double)screenPosition.Y < worldSurface * 16.0 + 16.0) {
+ 			for (int i = 0; i < 200; i++) {
+ 				if (cloud[i].active && cloud[i].scale < 1f) {
 @@ -48951,7 +_,10 @@
  					color.G = (byte)((float)(int)color.G * num9);
  					float num10 = cloud[i].position.Y * ((float)screenHeight / 600f);
@@ -6923,6 +6935,75 @@
  		if (gameMenu || player[myPlayer].gravDir == 1f)
  			Rasterizer = RasterizerState.CullCounterClockwise;
  		else
+@@ -51113,7 +_,14 @@
+ 		sceneArea.totalWidth = screenWidth;
+ 		sceneArea.SceneLocalScreenPositionOffset = Vector2.Zero;
+ 		SceneArea sceneArea2 = sceneArea;
++		SkyDrawParams skyDrawParams = new SkyDrawParams() with { MoonColor = moonColor, SunColor = sunColor };
++		if (gameMenu) {
++			MenuLoader.CurrentMenu.ModifyDrawSky(ref skyDrawParams);
++			MenuLoader.CurrentMenu.PreDrawSky(spriteBatch, skyDrawParams);
++		}
+ 		if (!mapFullscreen) {
++			if (!skyDrawParams.DrawSkyGradient)
++				goto skipDrawSky;
+ 			unityMouseOver = false;
+ 			if ((double)screenPosition.Y < worldSurface * 16.0 + 16.0) {
+ 				Asset<Texture2D> asset = TextureAssets.Background[background];
+@@ -51126,31 +_,35 @@
+ 				if (false) {
+ 					for (int j = 0; j < bgLoops; j++) {
+ 						destinationRectangle.X = bgStartX + asset.Width() * j;
+-						spriteBatch.Draw(asset.Value, destinationRectangle, null, ColorOfTheSkies, 0f, Vector2.Zero, SpriteEffects.FlipVertically, 0f);
++						spriteBatch.Draw(asset.Value, destinationRectangle, null, ColorOfTheSkies * skyDrawParams.SkyAlpha, 0f, Vector2.Zero, SpriteEffects.FlipVertically, 0f);
+ 					}
+ 				}
+ 				else {
+ 					for (int k = 0; k < bgLoops; k++) {
+ 						destinationRectangle.X = bgStartX + asset.Width() * k;
+-						spriteBatch.Draw(asset.Value, destinationRectangle, ColorOfTheSkies);
++						spriteBatch.Draw(asset.Value, destinationRectangle, ColorOfTheSkies * skyDrawParams.SkyAlpha);
+ 					}
+ 				}
+ 
+ 				TimeLogger.DetailedDrawTime(6);
+ 			}
++			skipDrawSky:
+ 
+ 			spriteBatch.End();
+ 			spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, DefaultSamplerState, DepthStencilState.None, Rasterizer, null, BackgroundViewMatrix.EffectMatrix);
+-			if (shimmerAlpha != 1f)
++			if (shimmerAlpha != 1f && skyDrawParams.DrawStars)
+ 				DrawStarsInBackground(sceneArea2, artificial: false);
+ 
+-			if ((double)(screenPosition.Y / 16f) < worldSurface + 2.0)
+-				DrawSunAndMoon(sceneArea2, moonColor, sunColor, num6);
++			if ((double)(screenPosition.Y / 16f) < worldSurface + 2.0 && skyDrawParams.DrawSunAndMoon)
++				DrawSunAndMoon(sceneArea2, skyDrawParams.MoonColor * skyDrawParams.MoonAlpha, skyDrawParams.SunColor * skyDrawParams.SunAlpha, num6);
+ 
+ 			TimeLogger.DetailedDrawTime(7);
+ 		}
+ 
++		if (skyDrawParams.DrawSkyGradient)
+-		Overlays.Scene.Draw(spriteBatch, RenderLayers.Sky);
++			Overlays.Scene.Draw(spriteBatch, RenderLayers.Sky);
++		if (gameMenu)
++			MenuLoader.CurrentMenu.PostDrawSky(spriteBatch, skyDrawParams);
+ 		spriteBatch.End();
+ 		Vector2 vector = screenPosition;
+ 		int num8 = screenWidth;
+@@ -51162,7 +_,10 @@
+ 		transformationMatrix.Translation -= BackgroundViewMatrix.ZoomMatrix.Translation * new Vector3(1f, BackgroundViewMatrix.Effects.HasFlag(SpriteEffects.FlipVertically) ? (-1f) : 1f, 1f);
+ 		spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, Rasterizer, null, transformationMatrix);
+ 		CurrentFrameFlags.Hacks.CurrentBackgroundMatrixForCreditsRoll = transformationMatrix;
++		if (!gameMenu || MenuLoader.CurrentMenu.PreDrawBackground(spriteBatch))
+-		DrawBG();
++			DrawBG();
++		if (gameMenu)
++			MenuLoader.CurrentMenu.PostDrawBackground(spriteBatch);
+ 		screenWidth = num8;
+ 		screenHeight = num9;
+ 		screenPosition = vector;
 @@ -51170,7 +_,7 @@
  		spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, Rasterizer, null, GameViewMatrix.TransformationMatrix);
  		DrawBackgroundBlackFill();
@@ -7113,6 +7194,18 @@
  			else
  				spriteBatch.Draw(TextureAssets.Moon[num].Value, position2, new Microsoft.Xna.Framework.Rectangle(0, TextureAssets.Moon[num].Width() * moonPhase, TextureAssets.Moon[num].Width(), TextureAssets.Moon[num].Width()), moonColor, num9, new Vector2(TextureAssets.Moon[num].Width() / 2, TextureAssets.Moon[num].Width() / 2), num8, SpriteEffects.None, 0f);
  		}
+@@ -52035,7 +_,10 @@
+ 		if (netMode == 2 || ((double)screenPosition.Y >= worldSurface * 16.0 + 16.0 && shimmerAlpha == 0f))
+ 			return;
+ 
+-		float num = 1f;
++		SkyDrawParams skyDrawParams = new SkyDrawParams();
++		if (gameMenu)
++			MenuLoader.CurrentMenu.ModifyDrawSky(ref skyDrawParams);
++		float num = skyDrawParams.StarAlpha;
+ 		if (GraveyardVisualIntensity > 0f) {
+ 			float num2 = 1f - GraveyardVisualIntensity * 1.4f;
+ 			if (num2 <= 0f)
 @@ -52129,7 +_,7 @@
  		Vector2 origin = value3.Size() / 2f;
  		if (theStar.falling) {
