@@ -19,10 +19,7 @@ namespace Terraria.ModLoader;
 // The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Tile">Basic Liquid Guide</see> teaches the basics of making a modded tile. //Add documentation page
 public abstract class ModLiquid : ModBlockType
 {
-	public override string LocalizationCategory => "Liquids";
-
-	/// <summary> The Liquid ID of this Modded Liquid </summary>
-	public ushort Type { get; internal set; }
+	
 
 	/// <summary> The block texture of this liquid. Used for some slope framing and when liquids are rendered in retro lighting modes. </summary>
 	public virtual string BlockTexture => Texture + "_Block";
@@ -38,9 +35,6 @@ public abstract class ModLiquid : ModBlockType
 
 	/// <summary> Liquids can only have a maximum fall delay of 10 (which is the same as the fall of Honey), this is due to the delay being reset to 10 when in quickfall mode. </summary>
 	public int FallDelay { get; set; } = 0;
-
-	/// <summary> The vanilla ID of what should replace the instance when a user unloads and subsequently deletes data from your mod in their save file. Defaults to 0. </summary>
-	public ushort VanillaFallbackOnModDeletion { get; set; }
 
 	/// <summary> An array of the IDs of liquids that this tile can be considered as when looking for available liquids. </summary>
 	public int[] AdjLiquids { get; set; } = Array.Empty<int>();
@@ -83,35 +77,6 @@ public abstract class ModLiquid : ModBlockType
 	/// <br/> Only effects slopes when underground (similar to other liquids).</summary>
 	public float LiquidfallOpacityMultiplier { get; set; } = 1f;
 
-	/// <summary>
-	/// Adds an entry to the minimap for this liquid with the given color and display name. This should be called in SetDefaults.
-	/// </summary>
-	public override void AddMapEntry(Color color, LocalizedText name = null)
-	{
-		if (!MapLoader.initialized) {
-			MapEntry entry = new MapEntry(color, name);
-			if (!MapLoader.liquidEntries.Keys.Contains(Type)) {
-				MapLoader.liquidEntries[Type] = new List<MapEntry>();
-			}
-			MapLoader.liquidEntries[Type].Add(entry);
-		}
-	}
-
-	/// <summary>
-	/// <inheritdoc cref="ModLiquid.AddMapEntry(Color, LocalizedText)" />
-	/// <br /><br /> <b>Overload specific:</b> This overload has an additional <paramref name="nameFunc" /> parameter. This function will be used to dynamically adjust the hover text. The parameters for the function are the default display name, x-coordinate, and y-coordinate.
-	/// </summary>
-	public override void AddMapEntry(Color color, LocalizedText name, Func<string, int, int, string> nameFunc)
-	{
-		if (!MapLoader.initialized) {
-			MapEntry entry = new MapEntry(color, name, nameFunc);
-			if (!MapLoader.liquidEntries.Keys.Contains(Type)) {
-				MapLoader.liquidEntries[Type] = new List<MapEntry>();
-			}
-			MapLoader.liquidEntries[Type].Add(entry);
-		}
-	}
-
 	protected sealed override void Register()
 	{
 		ModTypeLookup<ModLiquid>.Register(this);
@@ -129,68 +94,7 @@ public abstract class ModLiquid : ModBlockType
 		LiquidRenderer.VISCOSITY_MASK[Type] = 0;
 		SetStaticDefaults();
 	}
-
-	/// <summary>
-	/// Legacy helper method for creating a localization sub-key MapEntry
-	/// </summary>
-	/// <returns></returns>
-	public LocalizedText CreateMapEntryName()
-	{
-		return this.GetLocalization("MapEntry", PrettyPrintName);
-	}
-
-	/// <summary>
-	/// Allows you to modify the properties after initial loading has completed.
-	/// <br /> This is where you would set the properties of this liquid. Many properties are stored as arrays throughout Terraria's code.
-	/// <br /> For example:
-	/// <list type="bullet">
-	/// <item> WATERFALL_LENGTH = 10 </item>
-	/// <item> DefaultOpacity = 0.6f; </item>
-	/// <item> VisualViscosity = 0; </item>
-	/// </list>
-	/// </summary>
-	public override void SetStaticDefaults()
-	{
-	}
-
-	/// <summary>
-	/// Allows you to choose which minimap entry the liquid at the given coordinates will use. 0 is the first entry added by AddMapEntry, 1 is the second entry, etc. Returns 0 by default.
-	/// </summary>
-	/// <param name="i">The x position in tile coordinates.</param>
-	/// <param name="j">The y position in tile coordinates.</param>
-	public virtual ushort GetMapOption(int i, int j)
-	{
-		return 0;
-	}
-
-	/// <summary>
-	/// Allows you to draw things behind the liquid at the given coordinates. Return false to stop the game from drawing the liquid normally. Returns true by default.<para />
-	/// This method is only called in "Color" and "White" lighting modes. Use <see cref="ModLiquid.PreRetroDraw" /> for the other Lighting modes pre drawing
-	/// </summary>
-	/// <param name="i">The x position in tile coordinates.</param>
-	/// <param name="j">The y position in tile coordinates.</param>
-	/// <param name="liquidDrawCache">The LiquidDrawCache of the rendering</param>
-	/// <param name="drawOffset">The amount the liquid rendered is offset by</param>
-	/// <param name="isBackgroundDraw">Whether or not the liquid is in the background</param>
-	public virtual bool PreDraw(int i, int j, LiquidDrawCache liquidDrawCache, Vector2 drawOffset, bool isBackgroundDraw)
-	{
-		return true;
-	}
-
-	/// <summary>
-	/// Allows you to draw things in front of the liquid at the given coordinates. This can also be used to do things such as rendering glowmasks.<para />
-	/// This hook is not called if <see cref="ModLiquid.PreDraw" /> returns false.<para />
-	/// This method is only called in "Color" and "White" lighting modes. Use <see cref="ModLiquid.PostRetroDraw" /> for the other Lighting modes post drawing
-	/// </summary>
-	/// <param name="i">The x position in tile coordinates.</param>
-	/// <param name="j">The y position in tile coordinates.</param>
-	/// <param name="liquidDrawCache">The LiquidDrawCache of the rendering</param>
-	/// <param name="drawOffset">The amount the liquid rendered is offset by</param>
-	/// <param name="isBackgroundDraw">Whether or not the liquid is in the background</param>
-	public virtual void PostDraw(int i, int j, LiquidDrawCache liquidDrawCache, Vector2 drawOffset, bool isBackgroundDraw)
-	{
-	}
-
+	
 	/// <summary>
 	/// Allows you to make stuff happen whenever the liquid at the given coordinates is drawn. For example, creating bubble dusts or changing the color the liquid is drawn in. <para />
 	/// This hook is seperate from Liquid Rendering, Only use this for things such as spawning particles.
@@ -267,20 +171,6 @@ public abstract class ModLiquid : ModBlockType
 	/// <param name="liquidSize">The size of the liquid</param>
 	/// <param name="colors">The color of the liquid. Usually the light color of the liquid</param>
 	public virtual void PostSlopeDraw(int i, int j, bool behindBlocks, ref Vector2 drawPosition, ref Rectangle liquidSize, ref VertexColors colors)
-	{
-	}
-
-	/// <summary>
-	/// Allows you to determine how much light this liquid emits.<br />
-	/// It can also let you light up the block in front of this liquid.<br />
-	/// See <see cref="TileLightScanner.ApplyTileLight(Tile, int, int, ref Terraria.Utilities.FastRandom, ref Vector3)" /> for vanilla tile light values to use as a reference.<br />
-	/// </summary>
-	/// <param name="i">The x position in tile coordinates.</param>
-	/// <param name="j">The y position in tile coordinates.</param>
-	/// <param name="r">The red component of light, usually a value between 0 and 1</param>
-	/// <param name="g">The green component of light, usually a value between 0 and 1</param>
-	/// <param name="b">The blue component of light, usually a value between 0 and 1</param>
-	public virtual void ModifyLight(int i, int j, ref float r, ref float g, ref float b)
 	{
 	}
 
@@ -656,4 +546,88 @@ public abstract class ModLiquid : ModBlockType
 	public virtual void PlayerRippleModifier(Player player, ref float rippleStrength, ref float rippleOffset)
 	{
 	}
+
+	#region ModBlockTypeOverrides
+	public override string LocalizationCategory => "Liquids";
+
+	/// <summary>
+	/// Allows you to modify the properties after initial loading has completed.
+	/// <br /> This is where you would set the properties of this liquid. Many properties are stored as arrays throughout Terraria's code.
+	/// <br /> For example:
+	/// <list type="bullet">
+	/// <item> WATERFALL_LENGTH = 10 </item>
+	/// <item> DefaultOpacity = 0.6f; </item>
+	/// <item> VisualViscosity = 0; </item>
+	/// </list>
+	/// </summary>
+	public override void SetStaticDefaults()
+	{
+	}
+
+	/// <summary>
+	/// Adds an entry to the minimap for this liquid with the given color and display name. This should be called in SetDefaults.
+	/// </summary>
+	public override void AddMapEntry(Color color, LocalizedText name = null)
+	{
+		if (!MapLoader.initialized) {
+			MapEntry entry = new MapEntry(color, name);
+			if (!MapLoader.liquidEntries.Keys.Contains(Type)) {
+				MapLoader.liquidEntries[Type] = new List<MapEntry>();
+			}
+			MapLoader.liquidEntries[Type].Add(entry);
+		}
+	}
+
+	/// <summary>
+	/// <inheritdoc cref="ModLiquid.AddMapEntry(Color, LocalizedText)" />
+	/// <br /><br /> <b>Overload specific:</b> This overload has an additional <paramref name="nameFunc" /> parameter. This function will be used to dynamically adjust the hover text. The parameters for the function are the default display name, x-coordinate, and y-coordinate.
+	/// </summary>
+	public override void AddMapEntry(Color color, LocalizedText name, Func<string, int, int, string> nameFunc)
+	{
+		if (!MapLoader.initialized) {
+			MapEntry entry = new MapEntry(color, name, nameFunc);
+			if (!MapLoader.liquidEntries.Keys.Contains(Type)) {
+				MapLoader.liquidEntries[Type] = new List<MapEntry>();
+			}
+			MapLoader.liquidEntries[Type].Add(entry);
+		}
+	}
+
+	/// <summary>
+	/// Allows you to draw things behind the liquid at the given coordinates. Return false to stop the game from drawing the liquid normally. Returns true by default.<para />
+	/// This method is only called in "Color" and "White" lighting modes. Use <see cref="ModLiquid.PreRetroDraw" /> for the other Lighting modes pre drawing
+	/// </summary>
+	/// <param name="i">The x position in tile coordinates.</param>
+	/// <param name="j">The y position in tile coordinates.</param>
+	/// <param name="liquidDrawCache">The LiquidDrawCache of the rendering</param>
+	/// <param name="drawOffset">The amount the liquid rendered is offset by</param>
+	/// <param name="isBackgroundDraw">Whether or not the liquid is in the background</param>
+	public virtual bool PreDraw(int i, int j, LiquidDrawCache liquidDrawCache, Vector2 drawOffset, bool isBackgroundDraw)
+	{
+		return true;
+	}
+
+	public virtual bool PreDraw(int i, int j, SpriteBatch spriteBatch)
+	{
+		return true;
+	}
+
+	/// <summary>
+	/// Allows you to draw things in front of the liquid at the given coordinates. This can also be used to do things such as rendering glowmasks.<para />
+	/// This hook is not called if <see cref="ModLiquid.PreDraw" /> returns false.<para />
+	/// This method is only called in "Color" and "White" lighting modes. Use <see cref="ModLiquid.PostRetroDraw" /> for the other Lighting modes post drawing
+	/// </summary>
+	/// <param name="i">The x position in tile coordinates.</param>
+	/// <param name="j">The y position in tile coordinates.</param>
+	/// <param name="liquidDrawCache">The LiquidDrawCache of the rendering</param>
+	/// <param name="drawOffset">The amount the liquid rendered is offset by</param>
+	/// <param name="isBackgroundDraw">Whether or not the liquid is in the background</param>
+	public virtual void PostDraw(int i, int j, LiquidDrawCache liquidDrawCache, Vector2 drawOffset, bool isBackgroundDraw)
+	{
+	}
+
+	public virtual void PostDraw(int i, int j, SpriteBatch spriteBatch)
+	{
+	}
+	#endregion
 }

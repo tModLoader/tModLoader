@@ -6,7 +6,6 @@ namespace Terraria.ModLoader.Interfaces;
 
 internal interface IMineableBlock
 {
-
 	/// <summary>
 	/// Allows you to customize which sound you want to play when the tile/wall at the given coordinates is hit. Return false to stop the game from playing its default sound for the tile/wall. Returns true by default.
 	/// </summary>

@@ -3,49 +3,13 @@ using Terraria.ModLoader.Default;
 
 namespace Terraria.ModLoader.IO;
 
-internal class LiquidEntry : TagSerializable
+internal class LiquidEntry : ModBlockEntry
 {
-	public ushort type;
-	public string modName;
-	public string name;
-	public ushort vanillaReplacementType;
-	public string unloadedType;
-	public ushort loadedType;
-
-	public LiquidEntry(ModLiquid liquid)
-	{
-		type = loadedType = liquid.Type;
-		modName = liquid.Mod.Name;
-		name = liquid.Name;
-		vanillaReplacementType = liquid.VanillaFallbackOnModDeletion;
-		unloadedType = GetUnloadedPlaceholder(liquid.Type).FullName;
-	}
-
 	public static Func<TagCompound, LiquidEntry> DESERIALIZER = tag => new LiquidEntry(tag);
 
-	public ModLiquid DefaultUnloadedPlaceholder => ModContent.GetInstance<UnloadedLiquid>();
+	public LiquidEntry(ModLiquid liquid) : base(liquid) { }
 
-	public ModLiquid GetUnloadedPlaceholder(ushort type) => DefaultUnloadedPlaceholder;
+	public LiquidEntry(TagCompound tag) : base(tag) { }
 
-	protected LiquidEntry(TagCompound tag)
-	{
-		type = tag.Get<ushort>("value");
-		modName = tag.Get<string>("mod");
-		name = tag.Get<string>("name");
-		vanillaReplacementType = tag.Get<ushort>("fallbackID");
-		unloadedType = tag.Get<string>("uType");
-	}
-
-	public bool IsUnloaded => loadedType != type;
-
-	public TagCompound SerializeData()
-	{
-		return new TagCompound {
-			["value"] = type,
-			["mod"] = modName,
-			["name"] = name,
-			["fallbackID"] = vanillaReplacementType,
-			["uType"] = unloadedType
-		};
-	}
+	public override ModBlockType DefaultUnloadedPlaceholder => ModContent.GetInstance<UnloadedLiquid>();
 }

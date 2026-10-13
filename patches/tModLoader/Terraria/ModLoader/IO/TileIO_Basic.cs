@@ -167,150 +167,33 @@ internal static partial class TileIO
 		}
 	}
 
-	public class LiquidIOImpl
+	public class LiquidIOImpl : IOImpl<ModLiquid, LiquidEntry>
 	{
-		public readonly string entriesKey;
+		public LiquidIOImpl() : base("liquidMap", "liquidData") { }
 
-		public readonly string dataKey;
+		protected override int LoadedBlockCount => LiquidLoader.LiquidCount;
 
-		public LiquidEntry[] entries;
+		protected override IEnumerable<ModLiquid> LoadedBlocks => LiquidLoader.liquids;
 
-		public PosData<ushort>[] unloadedEntryLookup;
+		protected override LiquidEntry ConvertBlockToEntry(ModLiquid liquid) => new LiquidEntry(liquid);
 
-		public List<ushort> unloadedTypes = new List<ushort>();
-
-		protected int LoadedLiquidCount => LiquidLoader.LiquidCount;
-
-		protected IEnumerable<ModLiquid> LoadedLiquids => LiquidLoader.liquids;
-
-		public LiquidIOImpl()
-		{
-			this.entriesKey = "liquidMap";
-			this.dataKey = "liquidData";
-		}
-
-		protected LiquidEntry ConvertLiquidToEntry(ModLiquid liquid) => new LiquidEntry(liquid);
-
-		private List<LiquidEntry> CreateEntries()
-		{
-			List<LiquidEntry> entries = Enumerable.Repeat<LiquidEntry>(null, LoadedLiquidCount).ToList();
-			foreach (ModLiquid Liquid in LoadedLiquids) {
-				if (!unloadedTypes.Contains(Liquid.Type)) {
-					entries[Liquid.Type] = ConvertLiquidToEntry(Liquid);
-				}
-			}
-			return entries;
-		}
-
-		public void LoadEntries(TagCompound tag, out LiquidEntry[] savedEntryLookup)
-		{
-			IList<LiquidEntry> savedEntryList = tag.GetList<LiquidEntry>(entriesKey);
-			List<LiquidEntry> Entries = CreateEntries();
-			if (savedEntryList.Count == 0) {
-				savedEntryLookup = null;
-			}
-			else {
-				savedEntryLookup = new LiquidEntry[savedEntryList.Max((LiquidEntry e) => e.type) + 1];
-				foreach (LiquidEntry entry in savedEntryList) {
-					savedEntryLookup[entry.type] = entry;
-					if (ModContent.TryFind<ModLiquid>(entry.modName, entry.name, out var Liquid)) {
-						entry.type = (entry.loadedType = Liquid.Type);
-						continue;
-					}
-					entry.type = (ushort)Entries.Count;
-					entry.loadedType = (ModContent.TryFind<ModLiquid>(entry.unloadedType, out var unloadedLiquid) ? unloadedLiquid : entry.DefaultUnloadedPlaceholder).Type;
-					Entries.Add(entry);
-				}
-			}
-			entries = Entries.ToArray();
-		}
-
-		protected void ReadData(Tile tile, LiquidEntry entry, BinaryReader reader)
-		{
-			tile.LiquidType = entry.loadedType;
-		}
-
-		public void LoadData(TagCompound tag, LiquidEntry[] savedEntryLookup)
-		{
-			if (!tag.ContainsKey(dataKey)) {
-				return;
-			}
-			using BinaryReader reader = new BinaryReader(tag.GetByteArray(dataKey).ToMemoryStream());
-			PosData<ushort>.OrderedSparseLookupBuilder builder = new PosData<ushort>.OrderedSparseLookupBuilder();
-			for (int x = 0; x < Main.maxTilesX; x++) {
-				for (int y = 0; y < Main.maxTilesY; y++) {
-					ushort saveType = reader.ReadUInt16();
-					if (saveType != 0) {
-						LiquidEntry entry = savedEntryLookup[saveType];
-						ReadData(Main.tile[x, y], entry, reader);
-						if (entry.IsUnloaded) {
-							builder.Add(x, y, entry.type);
-						}
-					}
-				}
-			}
-			unloadedEntryLookup = builder.Build();
-		}
-
-		public void Save(TagCompound tag)
-		{
-			if (entries == null) {
-				entries = CreateEntries().ToArray();
-			}
-			tag[dataKey] = SaveData(out var hasLiquid);
-			tag[entriesKey] = SelectEntries(hasLiquid, entries).ToList();
-		}
-
-		private IEnumerable<LiquidEntry> SelectEntries(bool[] select, LiquidEntry[] entries)
-		{
-			for (int i = 0; i < select.Length; i++) {
-				if (select[i]) {
-					yield return entries[i];
-				}
-			}
-		}
-
-		protected int GetModLiquidType(Tile tile)
+		protected override ushort GetModBlockType(Tile tile)
 		{
 			if (tile.LiquidAmount == 0 || tile.LiquidType < LiquidID.Count) {
 				return 0;
 			}
-			return tile.LiquidType;
+
+			return (ushort)tile.LiquidType;
 		}
 
-		protected void WriteData(BinaryWriter writer, Tile tile, LiquidEntry entry)
+		protected override void ReadData(Tile tile, LiquidEntry entry, BinaryReader reader)
+		{
+			tile.LiquidType = entry.loadedType;
+		}
+
+		protected override void WriteData(BinaryWriter writer, Tile tile, LiquidEntry entry)
 		{
 			writer.Write(entry.type);
-		}
-
-		public byte[] SaveData(out bool[] hasObj)
-		{
-			using MemoryStream ms = new MemoryStream();
-			BinaryWriter writer = new BinaryWriter(ms);
-			PosData<ushort>.OrderedSparseLookupReader unloadedReader = new PosData<ushort>.OrderedSparseLookupReader(unloadedEntryLookup);
-			hasObj = new bool[entries.Length];
-			for (int x = 0; x < Main.maxTilesX; x++) {
-				for (int y = 0; y < Main.maxTilesY; y++) {
-					Tile tile = Main.tile[x, y];
-					int liquidType = GetModLiquidType(tile);
-					if (liquidType == 0) {
-						writer.Write((ushort)0);
-						continue;
-					}
-					if (entries[liquidType] == null) {
-						liquidType = unloadedReader.Get(x, y);
-					}
-					hasObj[liquidType] = true;
-					WriteData(writer, tile, entries[liquidType]);
-				}
-			}
-			return ms.ToArray();
-		}
-
-		public void Clear()
-		{
-			entries = null;
-			unloadedEntryLookup = null;
 		}
 	}
 
@@ -390,15 +273,21 @@ internal static partial class TileIO
 			LoadLegacy(tag, tileEntriesLookup, wallEntriesLookup);
 		}
 		else {
-			Liquids.LoadData(tag, liquidEntriesLookup);
 			Tiles.LoadData(tag, tileEntriesLookup);
 			Walls.LoadData(tag, wallEntriesLookup);
+		}
+
+		if (false /*legacy loader for ModLiquidLibrary could go here*/) {
+
+		}
+		else {
+			Liquids.LoadData(tag, liquidEntriesLookup);
 		}
 
 		WorldIO.ValidateSigns(); //call this at end
 	}
 
-	//TODO: This can likely be refactored to be SaveWalls() and SaveTiles(), but is left as is to mirror LoadBasics()
+	//NOTE: This can likely be refactored to be SaveWalls() and SaveTiles(), but is left as is to mirror LoadBasics()
 	internal static TagCompound SaveBasics()
 	{
 		var tag = new TagCompound();
