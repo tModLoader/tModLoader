@@ -34,38 +34,45 @@
  		int num = FindNextOpenClientSlot();
  		if (num != -1) {
  			Clients[num].Reset();
-@@ -175,11 +_,6 @@
- 				KickClient(client, NetworkText.FromKey("CLI.ServerIsFull"));
+@@ -176,10 +_,13 @@
  			}
  		}
--
--		if (FindNextOpenClientSlot() == -1) {
--			StopListening();
--			IsListening = false;
--		}
+ 
++		// 1.4.5 backport (#5485)
++		/*
+ 		if (FindNextOpenClientSlot() == -1) {
+ 			StopListening();
+ 			IsListening = false;
+ 		}
++		*/
  	}
  
  	private static void KickClient(ISocket client, NetworkText kickMessage)
-@@ -218,14 +_,6 @@
+@@ -218,6 +_,8 @@
  		return TcpListener.StartListening(OnConnectionAccepted);
  	}
  
--	private static void StopListening()
--	{
--		if (SocialAPI.Network != null)
--			SocialAPI.Network.StopListening();
--
--		TcpListener.StopListening();
--	}
--
++	// 1.4.5 backport (#5485)
++	/*
+ 	private static void StopListening()
+ 	{
+ 		if (SocialAPI.Network != null)
+@@ -225,6 +_,7 @@
+ 
+ 		TcpListener.StopListening();
+ 	}
++	*/
+ 
  	public static void StartServer()
  	{
- 		InitializeServer();
-@@ -283,7 +_,6 @@
+@@ -283,7 +_,10 @@
  		int num = 0;
  		StartBroadCasting();
  		while (!Disconnect) {
--			StartListeningIfNeeded();
++			// 1.4.5 backport (#5485)
++			/*
+ 			StartListeningIfNeeded();
++			*/
  			UpdateConnectedClients();
  			num = (num + 1) % 10;
  			Thread.Sleep((num == 0) ? 1 : 0);
@@ -93,28 +100,23 @@
  				Clients[i].PendingTerminationApproved = true;
  				continue;
  			}
-@@ -329,21 +_,6 @@
+@@ -329,6 +_,8 @@
  		HasClients = num != 0;
  	}
  
--	private static void StartListeningIfNeeded()
--	{
--		if (IsListening || !Clients.Any((RemoteClient client) => !client.IsConnected()))
--			return;
--
--		try {
--			StartListening();
--			IsListening = true;
--		}
--		catch {
--			if (!Main.ignoreErrors)
--				throw;
--		}
--	}
--
++	// 1.4.5 backport (#5485)
++	/*
+ 	private static void StartListeningIfNeeded()
+ 	{
+ 		if (IsListening || !Clients.Any((RemoteClient client) => !client.IsConnected()))
+@@ -343,6 +_,7 @@
+ 				throw;
+ 		}
+ 	}
++	*/
+ 
  	private static void UpdateClientInMainThread()
  	{
- 		if (Main.netMode == 1 && Connection.Socket.IsConnected() && !Connection.ServerWantsToRunCheckBytesInClientLoopThread && NetMessage.buffer[256].checkBytes)
 @@ -413,6 +_,12 @@
  
  	private static void ClientLoopSetup(RemoteAddress address)
