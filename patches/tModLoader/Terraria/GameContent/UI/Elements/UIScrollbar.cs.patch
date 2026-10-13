@@ -9,6 +9,14 @@
  {
  	private float _viewPosition;
  	private float _viewSize = 1f;
+@@ -14,6 +_,7 @@
+ 	private bool _isDragging;
+ 	private bool _isHoveringOverHandle;
+ 	private float _dragYOffset;
++	public bool AutoHide;
+ 	private Asset<Texture2D> _texture;
+ 	private Asset<Texture2D> _innerTexture;
+ 
 @@ -64,7 +_,7 @@
  		return new Rectangle((int)innerDimensions.X, (int)(innerDimensions.Y + innerDimensions.Height * (_viewPosition / _maxViewSize)) - 3, 20, (int)(innerDimensions.Height * (_viewSize / _maxViewSize)) + 7);
  	}
@@ -18,6 +26,17 @@
  	{
  		spriteBatch.Draw(texture, new Rectangle(dimensions.X, dimensions.Y - 6, dimensions.Width, 6), new Rectangle(0, 0, texture.Width, 6), color);
  		spriteBatch.Draw(texture, new Rectangle(dimensions.X, dimensions.Y, dimensions.Width, dimensions.Height), new Rectangle(0, 6, texture.Width, 4), color);
+@@ -73,6 +_,10 @@
+ 
+ 	protected override void DrawSelf(SpriteBatch spriteBatch)
+ 	{
++		if (AutoHide && !CanScroll) {
++			return;
++		}
++
+ 		CalculatedStyle dimensions = GetDimensions();
+ 		CalculatedStyle innerDimensions = GetInnerDimensions();
+ 		if (_isDragging) {
 @@ -83,7 +_,8 @@
  		Rectangle handleRectangle = GetHandleRectangle();
  		Vector2 mousePosition = UserInterface.ActiveInstance.MousePosition;
