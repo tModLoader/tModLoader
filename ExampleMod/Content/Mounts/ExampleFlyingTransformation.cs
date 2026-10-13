@@ -11,7 +11,8 @@ using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Mounts
 {
-	public class ExampleFlyingTransformation : ModMount {
+	public class ExampleFlyingTransformation : ModMount
+	{
 		public override void SetStaticDefaults() {
 
 			// Sets and properties that are for transformation mounts
@@ -38,7 +39,7 @@ namespace ExampleMod.Content.Mounts
 			MountData.buff = ModContent.BuffType<ExampleFlyingTransformationBuff>();
 
 			// Movement
-			MountData.flightTimeMax = 320; 
+			MountData.flightTimeMax = 320;
 			MountData.fatigueMax = 320; // If MountID.Sets.HoverIgnoresFatigue is set to true, this value will be ignored and the mount will have infinite flight.
 			MountData.fallDamage = 0f;
 			MountData.usesHover = true; // This mount flies.
@@ -152,7 +153,6 @@ namespace ExampleMod.Content.Mounts
 		}
 
 		public override bool UpdateFrame(Player mountedPlayer, int state, Vector2 velocity) {
-			
 			Lighting.AddLight(mountedPlayer.Center, new Vector3(0.33f, 0.33f, 0.33f)); // Emit some light.
 
 			return base.UpdateFrame(mountedPlayer, state, velocity);

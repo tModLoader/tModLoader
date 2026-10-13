@@ -13,7 +13,8 @@ using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Mounts
 {
-	public class ExampleBeastTransformation : ModMount {
+	public class ExampleBeastTransformation : ModMount
+	{
 		public override void SetStaticDefaults() {
 
 			// Sets and properties that are for transformation mounts
@@ -163,7 +164,7 @@ namespace ExampleMod.Content.Mounts
 			var selectiveFlyingMountData = (ExampleBeastTransformationSelectiveFlyingMountData)mount._mountSpecificData;
 
 			// Flying in water
-			if (state == 4) { 
+			if (state == 4) {
 				// Change it to either In the air, flying or in the air, not flying.
 				state = (selectiveFlyingMountData.allowedToFly ? 3 : 2);
 			}
@@ -177,8 +178,7 @@ namespace ExampleMod.Content.Mounts
 				state = 2; // If the player cannot fly, change the state to in the air, not flying.
 			}
 
-			switch (state)
-				{
+			switch (state) {
 				case 0: // Idle
 					mount._frame = mount._data.standingFrameStart;
 					break;
@@ -595,7 +595,8 @@ namespace ExampleMod.Content.Mounts
 		}
 	}
 
-	public class ExampleBeastTransformationPlayer : ModPlayer {
+	public class ExampleBeastTransformationPlayer : ModPlayer
+	{
 		public override void ModifyEyelid(PlayerDrawSet drawinfo, ref Vector2 position, ref Color color, ref int shader, ref PlayerEyeHelper.EyeFrame eyeFrame) {
 			// Here we can modify the player's eyelids to match the color of the Example Beast Transformation.
 			if (drawinfo.drawPlayer.mount.Active && drawinfo.drawPlayer.mount.Type == ModContent.MountType<ExampleBeastTransformation>()) {

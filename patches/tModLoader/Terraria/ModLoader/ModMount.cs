@@ -197,9 +197,9 @@ public abstract class ModMount : ModType<Mount.MountData, ModMount>
 
 	/// <summary>
 	/// Allows for complete customization of mount drawing. This method will be called once for each supported mount texture layer that exists. Use drawType to conditionally apply changes.
-	/// <para/>drawType corresponds to the following: 0: backTexture, 1: backTextureExtra, 2: frontTexture. 3: frontTextureExtra
-	/// <br/>Corresponding glow textures, such as backTextureGlow, are paired with their corresponding texture and passed into this method as well.
-	/// <para/>Return false if you are manually adding DrawData to playerDrawData to replace the vanilla draw behavior, otherwise tweak ref variables to customize the drawing and add additional DrawData to playerDrawData.
+	/// <para/> drawType corresponds to the following: 0: backTexture, 1: backTextureExtra, 2: frontTexture. 3: frontTextureExtra
+	/// <br/> Corresponding glow textures, such as backTextureGlow, are paired with their corresponding texture and passed into this method as well.
+	/// <para/> Return false if you are manually adding DrawData to playerDrawData to replace the vanilla draw behavior, otherwise tweak ref variables to customize the drawing and add additional DrawData to playerDrawData.
 	/// </summary>
 	/// <param name="playerDrawData"></param>
 	/// <param name="drawType">Corresponds to the following: 0: backTexture, 1: backTextureExtra, 2: frontTexture. 3: frontTextureExtra</param>
@@ -227,12 +227,11 @@ public abstract class ModMount : ModType<Mount.MountData, ModMount>
 	/// <param name="drawInfo"></param>
 	public virtual void ModifyPlayerDrawInfo(ref PlayerDrawSet drawInfo)
 	{
-
 	}
 
 	/// <summary>
 	/// Allows you to make things happen when flight time is reset.
-	/// <para/>Example: setting it to the player's flight time <c>flightTime = player.wingTimeMax</c>
+	/// <para/> Example: setting it to the player's flight time <c>flightTime = player.wingTimeMax</c>
 	/// </summary>
 	/// <param name="player"></param>
 	/// <param name="flightTime">Same as <c>player.mount._flyTime</c></param>
@@ -243,7 +242,7 @@ public abstract class ModMount : ModType<Mount.MountData, ModMount>
 
 	/// <summary>
 	/// Allows you to change if the mount can fly.
-	/// <para/>Vanilla returns <see langword="true"/> if <see cref="Mount.MountData.flightTimeMax"/> &gt; 0 by default.
+	/// <para/> Vanilla returns <see langword="true"/> if <see cref="Mount.MountData.flightTimeMax"/> &gt; 0 by default.
 	/// </summary>
 	/// <returns> Return <see langword="null"/> for vanilla decision. </returns>
 	public virtual bool? CanFly(Player player)
@@ -253,11 +252,10 @@ public abstract class ModMount : ModType<Mount.MountData, ModMount>
 
 	/// <summary>
 	/// Allows you to make things happen to the mount right after the player's equipment is run.
-	/// <para/>Used by the <see cref="MountID.Velociraptor"/> to give infinite flight if the player has <see cref="Player.empressBrooch"/> equipped.
-	/// <br/>Used by the <see cref="MountID.Rat"/> to climb up walls by boosting <see cref="Player.spikedBoots"/>.
+	/// <para/> Used by the <see cref="MountID.Velociraptor"/> to give infinite flight if the player has <see cref="Player.empressBrooch"/> equipped.
+	/// <para/> Used by the <see cref="MountID.Rat"/> to climb up walls by boosting <see cref="Player.spikedBoots"/>.
 	/// </summary>
 	public virtual void UpdateAfterEquips(Player player)
 	{
-
 	}
 }

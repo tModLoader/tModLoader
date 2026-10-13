@@ -1638,8 +1638,7 @@
 +			// TML: Remove type check limit.
 +			/*
  			sbyte b = beard;
--			if ((uint)(b - 1) <= 3u) {
-+			if ((uint)(b - 1) <= 3u) { 
+ 			if ((uint)(b - 1) <= 3u) {
 +			*/
  				beardOffset += new Vector2(8f, 4f) * Directions;
  				if (mount.Frame == 6)

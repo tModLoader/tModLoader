@@ -123,13 +123,7 @@
  
  		drawPlayer.GetHairSettings(out fullHair, out hatHair, out hideHair, out backHairDraw, out drawsBackHairWithoutHeadgear);
  		hairDyePacked = PlayerDrawHelper.PackShader(drawPlayer.hairDye, PlayerDrawHelper.ShaderConfiguration.HairShader);
-@@ -263,11 +_,15 @@
- 
- 			if (drawPlayer.mount.Type == 56)
- 				AdjustmentsForBatMount();
--
-+			// extra patch context
- 			if (drawPlayer.mount.Type == 61)
+@@ -268,6 +_,10 @@
  				AdjustmentsForPixieMount();
  		}
  
