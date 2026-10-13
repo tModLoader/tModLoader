@@ -40,7 +40,7 @@ namespace ExampleMod.Common.Configs.ModConfigShowcases
 		private float propertyBackingField;
 		public float Property {
 			get { return propertyBackingField; }
-			set { propertyBackingField = value + 0.2f; } // + 0.2f is just to mess with the user.
+			set { propertyBackingField = value; }
 		}
 
 		// Using JsonIgnore on a public field means the field won't show up in the json or UI. Not really useful.

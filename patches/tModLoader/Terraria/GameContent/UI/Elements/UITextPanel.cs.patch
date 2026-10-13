@@ -9,6 +9,15 @@
  
  namespace Terraria.GameContent.UI.Elements;
  
+@@ -15,6 +_,8 @@
+ 	public float TextHAlign = 0.5f;
+ 	public bool HideContents;
+ 	private string _asterisks;
++	protected Vector2 textOffset = Vector2.Zero;
++	protected bool drawTextAsChild = false;
+ 
+ 	public bool IsLarge => _isLarge;
+ 
 @@ -74,7 +_,14 @@
  
  	public virtual void SetText(T text, float textScale, bool large)
@@ -24,3 +33,32 @@
  		_text = text;
  		_textScale = textScale;
  		_textSize = textSize;
+@@ -88,7 +_,16 @@
+ 		if (_drawPanel)
+ 			base.DrawSelf(spriteBatch);
+ 
++		if (!drawTextAsChild)
+-		DrawText(spriteBatch);
++			DrawText(spriteBatch);
++	}
++
++	protected override void DrawChildren(SpriteBatch spriteBatch)
++	{
++		if (drawTextAsChild)
++			DrawText(spriteBatch);
++
++		base.DrawChildren(spriteBatch);
+ 	}
+ 
+ 	protected void DrawText(SpriteBatch spriteBatch)
+@@ -110,8 +_,8 @@
+ 		}
+ 
+ 		if (_isLarge)
+-			Utils.DrawBorderStringBig(spriteBatch, text, pos, _color, _textScale);
++			Utils.DrawBorderStringBig(spriteBatch, text, pos + textOffset, _color, _textScale);
+ 		else
+-			Utils.DrawBorderString(spriteBatch, text, pos, _color, _textScale);
++			Utils.DrawBorderString(spriteBatch, text, pos + textOffset, _color, _textScale);
+ 	}
+ }

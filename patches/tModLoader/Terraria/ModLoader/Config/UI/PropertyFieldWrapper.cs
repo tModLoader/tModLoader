@@ -3,6 +3,7 @@ using System.Reflection;
 
 namespace Terraria.ModLoader.Config.UI;
 
+// TODO: move to Terraria.ModLoader.Config
 public class PropertyFieldWrapper
 {
 	private readonly FieldInfo fieldInfo;
@@ -13,7 +14,8 @@ public class PropertyFieldWrapper
 	public MemberInfo MemberInfo => fieldInfo ?? (MemberInfo)propertyInfo;
 	public string Name => fieldInfo?.Name ?? propertyInfo.Name;
 	public Type Type => fieldInfo?.FieldType ?? propertyInfo.PropertyType;
-	public bool IsFieldOfAnEnum => Type.IsEnum && (fieldInfo?.DeclaringType.IsEnum ?? false);
+	public bool IsFieldOfAnEnum => Type.IsEnum && (fieldInfo?.DeclaringType?.IsEnum ?? false);
+	public bool CanWrite => fieldInfo != null || propertyInfo.CanWrite;
 
 	public PropertyFieldWrapper(FieldInfo fieldInfo)
 	{
@@ -38,10 +40,8 @@ public class PropertyFieldWrapper
 		if (fieldInfo != null)
 			fieldInfo.SetValue(obj, value);
 		else {
-			if (propertyInfo.CanWrite) // TODO: Grey out?
+			if (propertyInfo.CanWrite)
 				propertyInfo.SetValue(obj, value, null);
 		}
 	}
-
-	public bool CanWrite => fieldInfo != null || propertyInfo.CanWrite;
 }
