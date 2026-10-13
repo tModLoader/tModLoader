@@ -9,7 +9,7 @@
  using Microsoft.Xna.Framework;
  using Microsoft.Xna.Framework.Graphics.PackedVector;
  using Terraria.Chat;
-@@ -11,6 +_,8 @@
+@@ -11,12 +_,14 @@
  using Terraria.ID;
  using Terraria.Localization;
  using Terraria.Map;
@@ -18,6 +18,13 @@
  using Terraria.Social;
  using Terraria.Testing;
  
+ namespace Terraria;
+ 
+-public class NetMessage
++public partial class NetMessage
+ {
+ 	public struct NetSoundInfo
+ 	{
 @@ -56,10 +_,11 @@
  	private static short[] _compressChestList = new short[8000];
  	private static short[] _compressSignList = new short[32000];
@@ -106,6 +113,14 @@
  					break;
  				}
  				case 8:
+@@ -531,6 +_,7 @@
+ 					writer.Write((byte)num14);
+ 					writer.Write((byte)num15);
+ 					writer.Write((byte)number5);
++					writer.Write(number6);
+ 					for (int num16 = num12; num16 < num12 + num14; num16++) {
+ 						for (int num17 = num13; num17 < num13 + num15; num17++) {
+ 							BitsByte bitsByte19 = (byte)0;
 @@ -602,8 +_,12 @@
  					writer.Write((short)number);
  					writer.WriteVector2(worldItem4.position);
@@ -426,6 +441,16 @@
  						short num11 = (short)Sign.ReadSign(j, i);
  						if (num11 != -1)
  							_compressSignList[num2++] = num11;
+@@ -1912,6 +_,9 @@
+ 						b = (byte)(b | 8u);
+ 					}
+ 
++					array[num5] = tile2.liquidType();
++					num5++;
++
+ 					array[num5] = tile2.liquid;
+ 					num5++;
+ 				}
 @@ -2010,9 +_,18 @@
  			writer.Write(sign.text);
  		}
@@ -464,6 +489,14 @@
  
  					Main.tile[j, i].CopyFrom(tile);
  					continue;
+@@ -2103,6 +_,7 @@
+ 
+ 				b5 = (byte)((b4 & 0x18) >> 3);
+ 				if (b5 != 0) {
++					tile.liquidType(reader.ReadByte());
+ 					tile.liquid = reader.ReadByte();
+ 					if ((b2 & 0x80) == 128) {
+ 						tile.shimmer(shimmer: true);
 @@ -2206,7 +_,7 @@
  
  		num3 = reader.ReadInt16();
@@ -572,7 +605,7 @@
  	public static void SendPlayerDeath(int playerTargetIndex, PlayerDeathReason reason, int damage, int direction, bool pvp, int remoteClient = -1, int ignoreClient = -1)
  	{
  		_currentPlayerDeathReason = reason;
-@@ -2365,17 +_,53 @@
+@@ -2365,17 +_,56 @@
  		SendData(126, remoteClient, ignoreClient);
  	}
  
@@ -605,13 +638,17 @@
 +	/// </summary>
  	public static void SendTileSquare(int whoAmi, int tileX, int tileY, int xSize, int ySize, TileChangeType changeType = TileChangeType.None)
  	{
- 		SendData(20, whoAmi, -1, null, tileX, tileY, xSize, ySize, (int)changeType);
+-		SendData(20, whoAmi, -1, null, tileX, tileY, xSize, ySize, (int)changeType);
++		SendData(20, whoAmi, -1, null, tileX, tileY, xSize, ySize, (int)changeType, -1);
  	}
  
-+	/// <summary>
++	/// <SharedSummary>
 +	/// <inheritdoc cref="SendTileSquare(int, int, int, int, int, TileChangeType)" path="/SharedSummary/node()"/>
 +	/// <b>Range: </b>In this particular overload, <paramref name="tileX"/> and <paramref name="tileY"/> denote the center of a square range of tiles to sync and <paramref name="centeredSquareSize"/> denotes the width/height of the square to send. Odd <paramref name="centeredSquareSize"/> values result in a square centered directly on <paramref name="tileX"/> and <paramref name="tileY"/>, while even values will result in the square being 1 tile longer to the right of and below of the coordinates.
 +	/// <para/> The <see cref="SendTileSquare(int, int, int, int, int, TileChangeType)"/> overload is usually preferred to this because it sends the exact range of tiles desired and visualizing how the square range fits over the desired range of tiles can be hard to visualize and program correctly.
++	/// </SharedSummary>
++	/// <summary>
++	/// <inheritdoc cref="SendTileSquare(int, int, int, int, TileChangeType)" path="/SharedSummary/node()"/>
 +	/// </summary>
  	public static void SendTileSquare(int whoAmi, int tileX, int tileY, int centeredSquareSize, TileChangeType changeType = TileChangeType.None)
  	{

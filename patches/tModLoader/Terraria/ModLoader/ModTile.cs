@@ -1,13 +1,16 @@
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.GameContent.ObjectInteractions;
+using Terraria.Graphics.Light;
 using Terraria.ID;
 using Terraria.Localization;
+using Terraria.ModLoader.Interfaces;
 using Terraria.ObjectData;
+using static Terraria.WaterfallManager;
 
 namespace Terraria.ModLoader;
 
@@ -15,7 +18,7 @@ namespace Terraria.ModLoader;
 /// This class represents a type of tile that can be added by a mod. Only one instance of this class will ever exist for each type of tile that is added. Any hooks that are called will be called by the instance corresponding to the tile type. This is to prevent the game from using a massive amount of memory storing tile instances.<br/>
 /// The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Tile">Basic Tile Guide</see> teaches the basics of making a modded tile.
 /// </summary>
-public abstract class ModTile : ModBlockType
+public abstract class ModTile : ModBlockType, IWorldUpdateBlock, IPlaceableBlock, IMineableBlock
 {
 	/// <summary> The height of a group of animation frames for this tile. Defaults to 0, which disables animations.
 	/// <para/> Used in conjunction with <see cref="AnimateTile(ref int, ref int)"/> to automatically animate tiles. Use <see cref="AnimateIndividualTile(int, int, int, ref int, ref int)"/> as well if needed.
@@ -58,38 +61,10 @@ public abstract class ModTile : ModBlockType
 		array[array.Length - 1] = Type;
 	}
 
-	/// <summary>
-	/// Adds an entry to the minimap for this tile with the given color and display name. This should be called in SetDefaults.
-	/// <br/> For a typical tile that has a map display name, use <see cref="ModBlockType.CreateMapEntryName"/> as the name parameter for a default key using the pattern "Mods.{ModName}.Tiles.{ContentName}.MapEntry".
-	/// <br/> If a tile will be using multiple map entries, it is suggested to use <c>this.GetLocalization("CustomMapEntryName")</c>. Modders can also re-use the display name localization of items, such as <c>ModContent.GetInstance&lt;ItemThatPlacesThisStyle&gt;().DisplayName</c>.
-	/// <br/><br/> Multiple map entries are suitable for tiles that need a different color or hover text for different tile styles. Vanilla code uses this mostly only for chest and dresser tiles. Map entries will be given a corresponding map option value, counting from 0, according to the order in which they are added. Map option values don't necessarily correspond to tile styles.
-	/// <br/> <see cref="ModBlockType.GetMapOption"/> will be used to choose which map entry is used for a given coordinate.
-	/// <br/><br/> Vanilla map entries for most furniture tiles tend to be fairly generic, opting to use a single map entry to show "Table" for all styles of tables instead of the style-specific text such as "Wooden Table", "Honey Table", etc. To use these existing localizations, use the <see cref="Language.GetText(string)"/> method with the appropriate key, such as "MapObject.Chair", "MapObject.Door", "ItemName.WorkBench", etc. Consult the source code or ExampleMod to find the existing localization keys for common furniture types. The <c>array</c> array in <c>MapHelper.Initialize</c> has vanilla tile color values and <c>Lang.BuildMapAtlas</c> has the text.
-	/// </summary>
-	public void AddMapEntry(Color color, LocalizedText name = null)
+	/// <inheritdoc/>
+	public override void AddMapEntry(Color color, LocalizedText name = null, Func<string, int, int, string> nameFunc = null)
 	{
-		if (!MapLoader.initialized) {
-			MapEntry entry = new MapEntry(color, name);
-			if (!MapLoader.tileEntries.Keys.Contains(Type)) {
-				MapLoader.tileEntries[Type] = new List<MapEntry>();
-			}
-			MapLoader.tileEntries[Type].Add(entry);
-		}
-	}
-
-	/// <summary>
-	/// <inheritdoc cref="AddMapEntry(Color, LocalizedText)"/>
-	/// <br/><br/> <b>Overload specific:</b> This overload has an additional <paramref name="nameFunc"/> parameter. This function will be used to dynamically adjust the hover text. The parameters for the function are the default display name, x-coordinate, and y-coordinate. This function is most typically used for chests and dressers to show the current chest name, if assigned, instead of the default chest name. <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/Tiles/Furniture/ExampleChest.cs">ExampleMod's ExampleChest</see> is one example of this functionality.
-	/// </summary>
-	public void AddMapEntry(Color color, LocalizedText name, Func<string, int, int, string> nameFunc)
-	{
-		if (!MapLoader.initialized) {
-			MapEntry entry = new MapEntry(color, name, nameFunc);
-			if (!MapLoader.tileEntries.Keys.Contains(Type)) {
-				MapLoader.tileEntries[Type] = new List<MapEntry>();
-			}
-			MapLoader.tileEntries[Type].Add(entry);
-		}
+		AddMapEntryToMapLoader(MapLoader.tileEntries, color, name, nameFunc);
 	}
 
 	/// <summary>
@@ -321,6 +296,18 @@ public abstract class ModTile : ModBlockType
 	}
 
 	/// <summary>
+	/// Allows you to change the Light Mask Mode for this tile. The Light Mask Mode is the mask for lighting to determine how light interacts with this tile. <br/>
+	/// Vanilla has options for Solid and None. Where all solid tiles will use Solid and active stone tiles will use the None option. <br/>
+	/// Defaults to LightMaskMode.Solid.
+	/// </summary>
+	/// <param name="i">The x position in tile coordinates.</param>
+	/// <param name="j">The y position in tile coordinates.</param>
+	public virtual LightMaskMode TileLightMaskMode(int i, int j)
+	{
+		return LightMaskMode.Solid;
+	}
+
+	/// <summary>
 	/// Only called for torches, when there is one nearby. Use this to contribute to vanilla torch luck calculations.
 	/// Typical return values are 1f for a torch in its biome, 0.5f for a weak positive torch, -1f for a torch in an opposing biome, and -0.5f for a weak negative torch.
 	/// </summary>
@@ -439,6 +426,18 @@ public abstract class ModTile : ModBlockType
 	/// <param name="spriteBatch"></param>
 	/// <param name="drawData">Various information about the tile that is being drawn, such as color, framing, glow textures, etc.</param>
 	public virtual void DrawEffects(int i, int j, SpriteBatch spriteBatch, ref TileDrawInfo drawData)
+	{
+	}
+
+	/// <summary>
+	/// Allows the rendering of tiles attached to liquids. <br/>
+	/// Lily pads use this hook to draw themselves to liquids so water ripples/waves effect those tiles.
+	/// </summary>
+	/// <param name="i">The x position in tile coordinates.</param>
+	/// <param name="j">The y position in tile coordinates.</param>
+	/// <param name="spriteBatch"></param>
+	/// <param name="drawOffset">The draw offset of the tile, used to position the tile correctly.</param>
+	public virtual void DrawTileInWater(int i, int j, SpriteBatch spriteBatch, Vector2 drawOffset)
 	{
 	}
 
@@ -802,4 +801,62 @@ public abstract class ModTile : ModBlockType
 	public virtual void OnTileConverted(int i, int j, int fromType, int toType, int conversionType)
 	{
 	}
+
+	/// <summary>
+	/// Used to create waterfalls from this tile. <br/>
+	/// This method is used only by rain clouds and snow clouds to create their effects beneath them. Modded tiles can use this method to create their own custom rain clouds.<br/>
+	/// Waterfall data is used to set the position and type of the waterfall. Return type -1 when you don't want to create a waterfall. <br/>
+	/// Returns waterfall data with the type as -1 by default.
+	/// </summary>
+	/// <param name="i">The x position in tile coordinates.</param>
+	/// <param name="j">The y position in tile coordinates.</param>
+	/// <returns>The data of a waterfall created by this tile.</returns>
+	public virtual WaterfallData CreateWaterfall(int i, int j)
+	{
+		return new WaterfallData() { type = -1, x = i, y = j };
+	}
+
+	#region InterfaceMethods
+	// IWorldUupdateBlock Interface methods
+	/// <inheritdoc/>
+	public virtual void RandomUpdate(int i, int j, bool underground) { }
+
+	/// <inheritdoc/>
+	public virtual void Convert(int i, int j, int conversionType) { }
+	// END IWorldUpdateBlock
+
+	// IPlaceableBlock Interface methods
+	/// <inheritdoc/>
+	public virtual bool CanPlace(int i, int j)
+	{
+		return true;
+	}
+
+	/// <inheritdoc/>
+	public virtual void PlaceInWorld(int i, int j, Item item) { }
+	// END IPlaceableBlock
+
+	// IMineableBlock Interface methods
+	/// <inheritdoc/>
+	public virtual bool KillSound(int i, int j, bool fail)
+	{
+		return true;
+	}
+
+	/// <inheritdoc/>
+	public virtual void NumDust(int i, int j, bool fail, ref int num) { }
+
+	/// <inheritdoc/>
+	public virtual bool CreateDust(int i, int j, ref int type)
+	{
+		return true;
+	}
+
+	/// <inheritdoc/>
+	public virtual bool CanExplode(int i, int j)
+	{
+		return true;
+	}
+	// END IMineableBlock
+	#endregion
 }
