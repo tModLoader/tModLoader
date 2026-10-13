@@ -19,8 +19,6 @@ namespace Terraria.ModLoader;
 // The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Tile">Basic Liquid Guide</see> teaches the basics of making a modded tile. //Add documentation page
 public abstract class ModLiquid : ModBlockType
 {
-	
-
 	/// <summary> The block texture of this liquid. Used for some slope framing and when liquids are rendered in retro lighting modes. </summary>
 	public virtual string BlockTexture => Texture + "_Block";
 
