@@ -17,3 +17,14 @@
  			return false;
  
  		if (Main.tileSolid[tile2.type] && !TileID.Sets.Platforms[tile2.type])
+@@ -616,7 +_,10 @@
+ 
+ 	public static bool NotDoorStand(int x, int y)
+ 	{
++		/*
+ 		if (Main.tile[x, y] != null && Main.tile[x, y].active() && Main.tile[x, y].type == 11) {
++		*/
++		if (Main.tile[x, y] != null && Main.tile[x, y].active() && (Main.tile[x, y].type == 11 || TileID.Sets.CloseDoorID[Main.tile[x, y].type] > -1)) {
+ 			if (Main.tile[x, y].frameX >= 18)
+ 				return Main.tile[x, y].frameX < 54;
+ 
