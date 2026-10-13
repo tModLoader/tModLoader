@@ -11,7 +11,7 @@
  using System.IO;
  using System.Linq;
  using System.Reflection;
-@@ -68,12 +_,19 @@
+@@ -68,24 +_,32 @@
  using Terraria.IO;
  using Terraria.Localization;
  using Terraria.Map;
@@ -26,12 +26,15 @@
  using Terraria.Physics;
  using Terraria.Social;
  using Terraria.Social.Base;
- using Terraria.Testing;
 +using Terraria.Social.Steam;
+ using Terraria.Testing;
  using Terraria.UI;
  using Terraria.UI.Chat;
  using Terraria.UI.Gamepad;
-@@ -83,9 +_,9 @@
+ using Terraria.Utilities;
+ using Terraria.WorldBuilding;
++using static Terraria.Testing.WindowsPerformanceDiagnostics;
+ 
  namespace Terraria;
  
  #if SERVER
@@ -7611,14 +7614,24 @@
  	{
  		double num = (double)Damage - (double)Defense * 0.5;
  		if (num < 1.0)
-@@ -58482,6 +_,7 @@
+@@ -58482,10 +_,17 @@
  
  		return num;
  	}
 +	*/
  
++	// TML: Changed the last parameters to be 2 parameter instead, 1 for the TileChangeType for a secondary TileChangeType
++	/*
  	public void OnTileChangeEvent(int x, int y, int count, TileChangeType eventType)
  	{
+ 		WorldGen.PlayLiquidChangeSound(eventType, x, y, count);
++	*/
++	public void OnTileChangeEvent(int x, int y, int count, TileChangeType eventType, int otherLiquid)
++	{
++		WorldGen.PlayLiquidChangeSound(eventType, x, y, count);
+ 	}
+ 
+ 	public static bool IsFullScreenThatWouldBeStuckOnCrashMessage()
 @@ -58549,7 +_,11 @@
  
  	public static void SetFullScreen(bool fullscreen)
