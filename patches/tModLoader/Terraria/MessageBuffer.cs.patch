@@ -186,31 +186,20 @@
  
  					player9.dead = player9.statLife <= 0;
  					if (Main.netMode == 2)
-@@ -1138,20 +_,32 @@
+@@ -1138,6 +_,7 @@
  				ushort num93 = reader.ReadByte();
  				ushort num94 = reader.ReadByte();
  				byte b7 = reader.ReadByte();
-+				int otherLiquid = reader.ReadInt32();
++				int otherLiquid = reader.ReadInt32(); // tML 'otherLiquid' Info, nominally used for Liquid Merge Sounds.
  				if (!WorldGen.InWorld(num91, num92, 3))
  					break;
  
-+				/* 
- 				TileChangeType type7 = TileChangeType.None;
- 				if (Enum.IsDefined(typeof(TileChangeType), b7))
+@@ -1146,12 +_,12 @@
  					type7 = (TileChangeType)b7;
  
  				if (MessageBuffer.OnTileChangeReceived != null)
- 					MessageBuffer.OnTileChangeReceived(num91, num92, Math.Max(num93, num94), type7);
-+				*/
-+
-+				if (otherLiquid <= -1) {
-+					TileChangeType type7 = TileChangeType.None;
-+					if (Enum.IsDefined(typeof(TileChangeType), b7))
-+						type7 = (TileChangeType)b7;
-+					
-+					if (MessageBuffer.OnTileChangeReceived != null)
-+						MessageBuffer.OnTileChangeReceived(num91, num92, Math.Max(num93, num94), (TileChangeType)b7, otherLiquid);
-+				}
+-					MessageBuffer.OnTileChangeReceived(num91, num92, Math.Max(num93, num94), type7);
++					MessageBuffer.OnTileChangeReceived(num91, num92, Math.Max(num93, num94), type7, otherLiquid);
  
  				BitsByte bitsByte19 = (byte)0;
  				BitsByte bitsByte20 = (byte)0;

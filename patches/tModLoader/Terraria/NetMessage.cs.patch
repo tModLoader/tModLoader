@@ -117,7 +117,7 @@
  					writer.Write((byte)num14);
  					writer.Write((byte)num15);
  					writer.Write((byte)number5);
-+					writer.Write(number6);
++					writer.Write(number6); // tML 'otherLiquid' Info, nominally used for Liquid Merge Sounds.
  					for (int num16 = num12; num16 < num12 + num14; num16++) {
  						for (int num17 = num13; num17 < num13 + num15; num17++) {
  							BitsByte bitsByte19 = (byte)0;
