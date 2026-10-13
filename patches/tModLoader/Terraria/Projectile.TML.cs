@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -49,12 +50,12 @@ public partial class Projectile : IEntityWithGlobals<GlobalProjectile>
 #endregion
 
 	/// <summary>
-	/// <inheritdoc cref="Projectile.NewProjectile(IEntitySource, float, float, float, float, int, int, float, int, float, float, float)"/>
+	/// <inheritdoc cref="Projectile.NewProjectile(IEntitySource, float, float, float, float, int, int, float, int, float, float, float, NewProjectileModifier)"/>
 	/// <br/><br/>This particular overload uses a Vector2 instead of X and Y to determine the actual spawn position and a Vector2 to dictate the initial velocity. The return value is the actual Projectile instance rather than the index of the spawned Projectile within the <see cref="Main.projectile"/> array.
 	/// <br/> A short-hand for <code> Main.projectile[Projectile.NewProjectile(...)] </code>
 	/// </summary>
-	public static Projectile NewProjectileDirect(IEntitySource spawnSource, Vector2 position, Vector2 velocity, int type, int damage, float knockback, int owner = -1, float ai0 = 0f, float ai1 = 0f, float ai2 = 0f)
-		=> Main.projectile[NewProjectile(spawnSource, position.X, position.Y, velocity.X, velocity.Y, type, damage, knockback, owner, ai0, ai1, ai2)];
+	public static Projectile NewProjectileDirect(IEntitySource spawnSource, Vector2 position, Vector2 velocity, int type, int damage, float knockback, int owner = -1, float ai0 = 0f, float ai1 = 0f, float ai2 = 0f, NewProjectileModifier modifer = null)
+		=> Main.projectile[NewProjectile(spawnSource, position.X, position.Y, velocity.X, velocity.Y, type, damage, knockback, owner, ai0, ai1, ai2, modifer)];
 
 	private DamageClass _damageClass = DamageClass.Default;
 	/// <summary>
@@ -141,10 +142,7 @@ public partial class Projectile : IEntityWithGlobals<GlobalProjectile>
 			int item = Main.rand.Next(list);
 			list.Remove(item);
 			int stack = Main.rand.Next(dict[item].minStack, dict[item].maxStack);
-			int num = Item.NewItem(new EntitySource_Loot(entity), entity.position, entity.Size, item, stack);
-			Main.item[num].noGrabDelay = 0;
-			if (Main.netMode == 1)
-				NetMessage.SendData(21, -1, -1, null, num, 1f);
+			Item.RequestNewItem(new EntitySource_Loot(entity), entity.Center, item, stack, 0, NewItemOwnership.ReserveForLocalPlayer);
 		}
 	}
 

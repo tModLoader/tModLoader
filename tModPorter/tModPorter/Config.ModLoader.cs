@@ -593,6 +593,8 @@ public static partial class Config
 		ChangeHookSignature("Terraria.ModLoader.ModCloud", "Draw");
 
 		RefactorInstanceMethodCall("Terraria.ModLoader.ModTile", "AddToArray", RewriteAddToArrayForRoomNeeds);
+		RefactorInstanceMethodCall("Terraria.ModLoader.ModPylon", "DefaultDrawMapIcon", InsertArgument(oldArgCount: 6, index: 6, "out bool onScreen"));
+		RefactorInstanceMethodCall("Terraria.ModLoader.ModPylon", "DefaultMapClickHandle", InsertArgument(oldArgCount: 4, index: 1, "onScreen"));
 
 		HookRemoved("Terraria.ModLoader.ModProjectile", "DrawBehind", "Set Projectile.drawLayer instead");
 		HookRemoved("Terraria.ModLoader.GlobalProjectile", "DrawBehind", "Set Projectile.drawLayer instead");
@@ -609,6 +611,8 @@ public static partial class Config
 		RenameInstanceField("Terraria.ModLoader.TooltipLine", "OverrideColor", "Color");
 
 		RenameType(from: "Terraria.ModLoader.NPCSpawnInfo", to: "Terraria.NPC+Spawner");
+
+		RefactorStaticMember("Terraria.ID.ProjectileID.Sets", "PlayerHurtDamageIgnoresDifficultyScaling", Removed("Damage dealt to a player by their own projectile, or by another player, is never scaled by difficulty. For hostile projectiles, assign Projectile.hostileDamageScaling in SetDefaults instead"));
 
 		RenameStaticField("Terraria.ID.NPCID.Sets", from: "ImmuneToAllBuffs", to: "ImmuneToRegularBuffs").FollowBy(AddCommentToFieldAccess("NPCID.Sets.ImmuneToAllBuffs was removed. If immunity to whip tag effects are desired, also set NPCID.Sets.ImmuneToWhipTags to true."));
 	}

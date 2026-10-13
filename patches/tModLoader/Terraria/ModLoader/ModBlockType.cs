@@ -8,6 +8,7 @@ namespace Terraria.ModLoader;
 /// <summary>
 /// This is the superclass for ModTile and ModWall, combining common code
 /// </summary>
+[CloneByReference]
 public abstract class ModBlockType : ModTexturedType, ILocalizedModType
 {
 	/// <summary> The internal ID of this type of tile/wall. </summary>

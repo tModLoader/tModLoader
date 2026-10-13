@@ -52,7 +52,7 @@ public partial class NPC : IEntityWithGlobals<GlobalNPC>
 	/// <summary>
 	/// Helper property for defense >= 9999. Extremely high defense is interpreted as 'super armor' where attacks will only do 1 damage (or 2 for crits), no matter how strong they are. <br/>
 	/// Passed to <see cref="HitModifiers.SuperArmor"/> when doing damage calculations. See the docs there for more info. <br/>
-	/// The only way to bypass super armor is to call <see cref="StrikeNPC(HitInfo, bool, bool)"/>, or set NPC life directly.
+	/// The only way to bypass super armor is to call <see cref="StrikeNPC(HitInfo, bool, bool, int)"/>, or set NPC life directly.
 	/// </summary>
 	public bool SuperArmor {
 		get => defense >= 9999;
@@ -60,7 +60,7 @@ public partial class NPC : IEntityWithGlobals<GlobalNPC>
 	}
 
 	/// <summary>
-	/// If true, damage combat text will not be shown by <see cref="StrikeNPC(HitInfo, bool, bool)"/> and dps meter will not record damage against this NPC. <br/>
+	/// If true, damage combat text will not be shown by <see cref="StrikeNPC(HitInfo, bool, bool, int)"/> and dps meter will not record damage against this NPC. <br/>
 	/// Recommended for use with <see cref="NPC.immortal"/>
 	/// </summary>
 	public bool HideStrikeDamage { get; set; }
@@ -70,14 +70,10 @@ public partial class NPC : IEntityWithGlobals<GlobalNPC>
 	/// <para>To assign a modded boss bar, use NPC.BossBar = ModContent.GetInstance&lt;ExampleBossBar&gt;(); where ExampleBossBar is a ModBossBar</para>
 	/// <para>To assign a vanilla boss bar for whatever reason, fetch it first through the NPC type using Main.BigBossProgressBar.TryGetSpecialVanillaBossBar</para>
 	/// </summary>
+	[field: CloneByReference]
 	public IBigProgressBar BossBar { get; set; }
 
 	private bool catchableNPCOriginallyFriendly; // TML: Fix #3299, Allow npcCatchable to work with friendly npc.
-
-	public NPC()
-	{
-		thisEntitySourceCache = new EntitySource_Parent(this);
-	}
 
 	/// <summary> Returns whether or not this NPC currently has a (de)buff of the provided type. </summary>
 	public bool HasBuff(int type) => FindBuffIndex(type) != -1;

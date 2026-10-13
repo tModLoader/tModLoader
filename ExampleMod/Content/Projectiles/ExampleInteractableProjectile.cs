@@ -77,7 +77,7 @@ namespace ExampleMod.Content.Projectiles
 			bool cursorHighlights = Main.SmartCursorIsUsed || PlayerInput.UsingGamepad;
 			Player localPlayer = Main.LocalPlayer;
 			Vector2 compareSpot = localPlayer.Center;
-			if (!localPlayer.IsProjectileInteractableAndInInteractionRange(Projectile, ref compareSpot)) {
+			if (!localPlayer.IsProjectileInteractableAndInInteractionRange(Projectile, compareSpot)) {
 				return 0;
 			}
 

@@ -196,10 +196,13 @@ public interface SocialBrowserModule
 					"French" => GameCulture.FromName("fr-FR"),
 					"Italian" => GameCulture.FromName("it-IT"),
 					"Russian" => GameCulture.FromName("ru-RU"),
-					"Chinese" => GameCulture.FromName("zh-Hans"),
+					"SimplifiedChinese" => GameCulture.FromName("zh-Hans"),
 					"Portuguese" => GameCulture.FromName("pt-BR"),
 					"German" => GameCulture.FromName("de-DE"),
 					"Polish" => GameCulture.FromName("pl-PL"),
+					"Japanese" => GameCulture.FromName("ja-JP"),
+					"Korean" => GameCulture.FromName("ko-KR"),
+					"TraditionalChinese" => GameCulture.FromName("zh-Hant"),
 					_ => throw new NotImplementedException(),
 				};
 

@@ -10,6 +10,7 @@ namespace Terraria.ModLoader;
 /// Represents an informational display toggle typically provided by <see href="https://terraria.wiki.gg/wiki/Informational_Accessories">informational accessories</see>.<para/>
 /// The <see cref="Active"/> property determines if the InfoDisplay could be shown to the user. The game tracks the players desired visibility of active InfoDisplay through the <see cref="Player.hideInfo"/> array.
 /// </summary>
+[CloneByReference]
 public abstract class InfoDisplay : ModTexturedType, ILocalizedModType
 {
 	public static InfoDisplay Watches { get; private set; } = new WatchesInfoDisplay();

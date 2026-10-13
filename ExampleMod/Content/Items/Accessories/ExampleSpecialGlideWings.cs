@@ -1,0 +1,75 @@
+using ExampleMod.Common.Configs;
+using Microsoft.Xna.Framework;
+using System;
+using System.Linq;
+using Terraria;
+using Terraria.DataStructures;
+using Terraria.ID;
+using Terraria.ModLoader;
+
+namespace ExampleMod.Content.Items.Accessories
+{
+	// This is a basic wings item.
+	// By default wings only support 4 frames of animation, see ExampleCustomDrawWings.cs for an example of custom wing animation.
+	[AutoloadEquip(EquipType.Wings)]
+	public class ExampleSpecialGlideWings : ModItem
+	{
+		public override string Texture => "ExampleMod/Content/Items/Accessories/ExampleWings";
+
+		public override void SetStaticDefaults() {
+			// These wings use the same values as the solar wings
+			// Fly time: 180 ticks = 3 seconds
+			// Fly speed: 9
+			// Acceleration multiplier: 2.5
+			ArmorIDs.Wing.Sets.Stats[Item.wingSlot] = new WingStats(180, 9f, 2.5f);
+		}
+
+		public override void SetDefaults() {
+			Item.width = 22;
+			Item.height = 20;
+			Item.value = 10000;
+			Item.rare = ItemRarityID.Green;
+			Item.accessory = true;
+			Item.color = Color.Yellow;
+		}
+
+		public override void VerticalWingSpeeds(Player player, ref float ascentWhenFalling, ref float ascentWhenRising,
+			ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float constantAscend) {
+			ascentWhenFalling = 0.85f; // Falling glide speed
+			ascentWhenRising = 0.15f; // Rising speed
+			maxCanAscendMultiplier = 1f;
+			maxAscentMultiplier = 3f;
+			constantAscend = 0.135f;
+		}
+
+		// WingGlidingSpeeds allows adjusting player speed during the gliding phase of wings usage.
+		public override bool WingGlidingSpeeds(Player player, ref float gravityMultiplier, ref float maxSpeedMultiplier) {
+			// This example increases horizontal gliding speed while holding 'up key'.
+			if (player.controlUp) {
+				float descent = player.velocity.Y * 0.02f;
+				player.velocity.Y -= descent;
+				player.velocity.X += player.direction * Math.Abs(descent) * 3;
+				player.velocity.X *= 0.996f;
+				return player.velocity.Y < player.maxFallSpeed * maxSpeedMultiplier;
+			}
+
+			// Reduces the effect of gravity and increases max fall speed at all times.
+			gravityMultiplier *= 0.5f;
+			maxSpeedMultiplier *= 3f;
+
+			// Returning TRUE will allow vanilla gliding effects to be applied ('up key' will slow fall while 'down key' will increase fall speed). 
+			// Returning FALSE will prevent vanilla gliding effects and use only custom logic.
+			// ModItem's base class is default return true.
+			return base.WingGlidingSpeeds(player, ref gravityMultiplier, ref maxSpeedMultiplier);
+		}
+
+		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
+		public override void AddRecipes() {
+			CreateRecipe()
+				.AddIngredient<ExampleItem>()
+				.AddTile<Tiles.Furniture.ExampleWorkbench>()
+				.SortBefore(Main.recipe.First(recipe => recipe.createItem.wingSlot != -1)) // Places this recipe before any wing so every wing stays together in the crafting menu.
+				.Register();
+		}
+	}
+}

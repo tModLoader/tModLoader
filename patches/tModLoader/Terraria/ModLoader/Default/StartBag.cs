@@ -31,7 +31,7 @@ public class StartBag : ModLoaderModItem
 		var itemSource = player.GetItemSource_OpenItem(Type);
 
 		foreach (Item item in items) {
-			int k = Item.NewItem(itemSource, player.getRect(), item.type, item.stack, prefixGiven: item.prefix);
+			int k = Item.NewItem(itemSource, player.getRect(), item.type, item.stack, prefix: item.prefix);
 
 			if (Main.netMode == 1) {
 				NetMessage.SendData(ID.MessageID.SyncItem, -1, -1, null, k, 1f);

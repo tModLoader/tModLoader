@@ -97,9 +97,9 @@
  		public static Dictionary<int, IBuffTextHandler> BuffTextHandlers = new Dictionary<int, IBuffTextHandler> {
  			{ 64, new CachedProjectileCounterBuffTextHandler(266) },
  			{ 125, new CachedProjectileCounterBuffTextHandler(373) },
-@@ -47,8 +_,15 @@
- 			{ 385, new CachedProjectileCounterBuffTextHandler(1093) },
- 			{ 386, new CachedProjectileCounterBuffTextHandler(1094) }
+@@ -51,8 +_,15 @@
+ 			{ 393, new CachedProjectileCounterBuffTextHandler(1118) },
+ 			{ 394, new CachedProjectileCounterBuffTextHandler(1119) }
  		};
 +
 +		/// <summary>
@@ -107,7 +107,7 @@
 +		/// <br/> All entries in this set should have <see cref="Main.buffNoTimeDisplay"/> and <see cref="Main.buffNoSave"/> set to <see langword="true"/>.
 +		/// <br/> Defaults to <c>-1</c>.
 +		/// </summary>
- 		public static int[] MountType = Factory.CreateIntSet(-1, 118, 6, 184, 13, 166, 11, 208, 15, 210, 16, 220, 18, 222, 19, 224, 20, 226, 21, 228, 22, 231, 24, 233, 25, 235, 26, 237, 27, 239, 28, 241, 29, 243, 30, 245, 31, 247, 32, 249, 33, 251, 34, 253, 35, 255, 36, 269, 38, 272, 39, 338, 51, 346, 53, 90, 0, 128, 1, 129, 2, 130, 3, 131, 4, 132, 5, 168, 12, 141, 7, 142, 8, 143, 9, 162, 10, 193, 14, 212, 17, 230, 23, 265, 37, 275, 40, 276, 41, 277, 42, 278, 43, 279, 44, 280, 45, 281, 46, 282, 47, 283, 48, 305, 49, 318, 50, 342, 52, 370, 54, 374, 55, 377, 56, 378, 57, 379, 58, 380, 59, 381, 60, 384, 61, 387, 62, 388, 63);
+ 		public static int[] MountType = Factory.CreateIntSet(-1, 118, 6, 184, 13, 166, 11, 208, 15, 210, 16, 220, 18, 222, 19, 224, 20, 226, 21, 228, 22, 231, 24, 233, 25, 235, 26, 237, 27, 239, 28, 241, 29, 243, 30, 245, 31, 247, 32, 249, 33, 251, 34, 253, 35, 255, 36, 269, 38, 272, 39, 338, 51, 346, 53, 90, 0, 128, 1, 129, 2, 130, 3, 131, 4, 132, 5, 168, 12, 141, 7, 142, 8, 143, 9, 162, 10, 193, 14, 212, 17, 230, 23, 265, 37, 275, 40, 276, 41, 277, 42, 278, 43, 279, 44, 280, 45, 281, 46, 282, 47, 283, 48, 305, 49, 318, 50, 342, 52, 370, 54, 374, 55, 377, 56, 378, 57, 379, 58, 380, 59, 381, 60, 384, 61, 387, 62, 388, 63, 391, 64, 392, 65);
  	}
 +#endif
  

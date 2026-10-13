@@ -21,6 +21,7 @@ using Terraria.ModLoader.Engine;
 using Terraria.ModLoader.Exceptions;
 using Terraria.ModLoader.UI;
 using Terraria.Social.Steam;
+using Terraria.Testing;
 
 namespace Terraria.ModLoader;
 
@@ -124,6 +125,9 @@ public static class ModLoader
 
 		if (!Unload())
 			return;
+
+		// StateSnapshot registers vanilla immutable types with DeepCloning, register and freeze these to prevent any possible init order issues
+		RuntimeHelpers.RunClassConstructor(typeof(StateSnapshot).TypeHandle);
 
 		var availableMods = ModOrganizer.FindMods(logDuplicates: true);
 		try {

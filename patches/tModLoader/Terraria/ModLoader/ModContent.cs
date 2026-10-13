@@ -29,6 +29,7 @@ using System.Threading.Tasks;
 using System.Runtime.CompilerServices;
 using Terraria.GameContent.Prefixes;
 using Terraria.Achievements;
+using Terraria.Testing;
 
 namespace Terraria.ModLoader;
 
@@ -397,6 +398,7 @@ public static class ModContent
 	{
 		// The server (or client with Main.SkipAssemblyLoad) doesn't naturally init these, and then the constructors get run twice in ResizeArrays
 		RuntimeHelpers.RunClassConstructor(typeof(AmmoID.Sets).TypeHandle);
+		RuntimeHelpers.RunClassConstructor(typeof(CloudID.Sets).TypeHandle);
 		RuntimeHelpers.RunClassConstructor(typeof(DustID.Sets).TypeHandle);
 		RuntimeHelpers.RunClassConstructor(typeof(MountID.Sets).TypeHandle);
 		RuntimeHelpers.RunClassConstructor(typeof(NPCHeadID.Sets).TypeHandle);
@@ -570,6 +572,8 @@ public static class ModContent
 		PlayerDrawLayerLoader.Unload();
 		MapLayerLoader.Unload();
 		SystemLoader.Unload();
+		StateSnapshot.Gameplay.RemoveModdedComponents();
+		StateSnapshot.Input.RemoveModdedComponents();
 		ResizeArrays(true);
 		for (int k = 0; k < Recipe.maxRecipes; k++) {
 			Main.recipe[k] = new Recipe();

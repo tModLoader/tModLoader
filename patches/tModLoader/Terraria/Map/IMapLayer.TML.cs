@@ -2,6 +2,7 @@
 
 public partial interface IMapLayer
 {
+	public static IMapLayer Digtoise { get; private set; } = new DigtoiseMapLayer();
 	public static IMapLayer BossBag { get; private set; } = new BossBagMapLayer();
 	public static IMapLayer Spawn { get; private set; } = new SpawnMapLayer();
 	public static IMapLayer TeamBasedSpawn { get; private set; } = new TeamBasedSpawnMapLayer();

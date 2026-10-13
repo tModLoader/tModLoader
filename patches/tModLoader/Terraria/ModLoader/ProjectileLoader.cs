@@ -80,11 +80,7 @@ public static class ProjectileLoader
 			Lang._projectileNameCache[k] = LocalizedText.Empty;
 		}
 
-		Array.Resize(ref Projectile.perIDStaticNPCImmunity, ProjectileCount);
-
-		for (int i = 0; i < ProjectileCount; i++) {
-			Projectile.perIDStaticNPCImmunity[i] = new uint[200];
-		}
+		Projectile.perIDStaticNPCImmunity = new uint[ProjectileCount, InitData.MaxNPCs];
 	}
 
 	internal static void FinishSetup()
@@ -801,6 +797,46 @@ public static class ProjectileLoader
 
 		if (result && projectile.ModProjectile != null) {
 			return projectile.ModProjectile.DisplayDollSettings(doll, pose, ref aiStyle, ref aiType);
+		}
+
+		return result;
+	}
+
+	private delegate void DelegateFlailStats(Projectile projectile, ref int launchTimeLimit, ref float launchSpeed, ref float maxLaunchLength, ref float retractAcceleration, ref float maxRetractSpeed, ref float forcedRetractAcceleration, ref float maxForcedRetractSpeed, ref int ricochetTimeLimit, ref float spinVisualDistance);
+	private static HookList HookFlailStats = AddHook<DelegateFlailStats>(g => g.FlailStats);
+
+	public static void FlailStats(Projectile projectile, ref int launchTimeLimit, ref float launchSpeed, ref float maxLaunchLength, ref float retractAcceleration, ref float maxRetractSpeed, ref float forcedRetractAcceleration, ref float maxForcedRetractSpeed, ref int ricochetTimeLimit, ref float spinVisualDistance)
+	{
+		projectile.ModProjectile?.FlailStats(ref launchTimeLimit, ref launchSpeed, ref maxLaunchLength, ref retractAcceleration, ref maxRetractSpeed, ref forcedRetractAcceleration, ref maxForcedRetractSpeed, ref ricochetTimeLimit, ref spinVisualDistance);
+
+		foreach (var g in HookFlailStats.Enumerate(projectile)) {
+			g.FlailStats(projectile, ref launchTimeLimit, ref launchSpeed, ref maxLaunchLength, ref retractAcceleration, ref maxRetractSpeed, ref forcedRetractAcceleration, ref maxForcedRetractSpeed, ref ricochetTimeLimit, ref spinVisualDistance);
+		}
+	}
+
+	private delegate void DelegateFlailSpinCollisionRange(Projectile projectile, ref float range);
+	private static HookList HookFlailSpinCollisionRange = AddHook<DelegateFlailSpinCollisionRange>(g => g.FlailSpinCollisionRange);
+
+	public static void FlailSpinCollisionRange(Projectile projectile, ref float range)
+	{
+		projectile.ModProjectile?.FlailSpinCollisionRange(ref range);
+
+		foreach (var g in HookFlailSpinCollisionRange.Enumerate(projectile)) {
+			g.FlailSpinCollisionRange(projectile, ref range);
+		}
+	}
+
+	private delegate bool DelegatePreTryDespawning(Projectile projectile, ref bool giveItem);
+	private static HookList HookPreTryDespawning = AddHook<DelegatePreTryDespawning>(g => g.PreTryDespawning);
+
+	public static bool PreTryDespawning(Projectile projectile, out bool giveItem)
+	{
+		giveItem = true;
+
+		bool result = projectile.ModProjectile?.PreTryDespawning(ref giveItem) ?? true;
+
+		foreach (var g in HookPreTryDespawning.Enumerate(projectile)) {
+			result &= g.PreTryDespawning(projectile, ref giveItem);
 		}
 
 		return result;

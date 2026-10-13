@@ -337,6 +337,10 @@ public static class TileLoader
 		}
 		*/
 		tileData = TileObjectData.GetTileData(Main.tile[i, j]);
+		// The tile can already be inactive here, since CheckModTile runs while the object is being destroyed.
+		if (tileData == null)
+			return;
+
 		int partFrameX = frameX % tileData.CoordinateFullWidth;
 		int partFrameY = frameY % tileData.CoordinateFullHeight;
 		int partX = partFrameX / (tileData.CoordinateWidth + tileData.CoordinatePadding);
@@ -613,7 +617,7 @@ public static class TileLoader
 			foreach (var item in itemDrops) {
 				item.Prefix(-1); // Assign a random prefix, as expected
 				int num = Item.NewItem(WorldGen.GetItemSource_FromTileBreak(x, y), x * 16, y * 16, 16, 16, item, noBroadcast: false);
-				Main.item[num].TryCombiningIntoNearbyItems(num);
+				Main.item[num].TryCombiningIntoNearbyItems();
 			}
 		}
 	}

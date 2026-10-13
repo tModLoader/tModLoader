@@ -5,6 +5,7 @@ namespace Terraria.ModLoader;
 /// <summary>
 /// This is the superclass for GlobalTile and GlobalWall, combining common code
 /// </summary>
+[CloneByReference]
 public abstract class GlobalBlockType : ModType
 {
 	internal GlobalBlockType() { }
