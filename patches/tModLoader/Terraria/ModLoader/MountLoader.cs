@@ -196,4 +196,15 @@ public static class MountLoader
 			mount._data.ModMount.UpdateAfterEquips(player);
 		}
 	}
+
+	/// <summary>
+	/// See <see cref="ModMount.HeadItemOffset(Player)"/>
+	/// </summary>
+	public static Vector2 HeadItemOffset(Mount mount, Player player)
+	{
+		if (IsModMount(mount._data)) {
+			return mount._data.ModMount.HeadItemOffset(player);
+		}
+		return Vector2.Zero;
+	}
 }

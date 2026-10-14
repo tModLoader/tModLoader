@@ -258,4 +258,13 @@ public abstract class ModMount : ModType<Mount.MountData, ModMount>
 	public virtual void UpdateAfterEquips(Player player)
 	{
 	}
+
+	/// <summary>
+	/// Allows you to change where head items sit. Useful for transformation hats that can wear hats.
+	/// </summary>
+	/// <returns> Returns <see cref="Vector2.Zero"/> by default. </returns>
+	public virtual Vector2 HeadItemOffset(Player player)
+	{
+		return Vector2.Zero;
+	}
 }

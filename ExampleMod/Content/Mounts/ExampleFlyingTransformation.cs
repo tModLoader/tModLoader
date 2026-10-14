@@ -11,6 +11,14 @@ using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Mounts
 {
+	// This transformation mount which behaves similarly to the Pixie transformation (Enchanted Pixie Dust).
+	// Transformation mounts have the characteristic of hiding the player to make it appear like the player has transformed into something else.
+	// This mount has the following characteristics:
+	// * Hides the player.
+	// * Changes the player's hitbox.
+	// * Has infinite flight.
+	// * Can dash, but only if the player has a dash item equipped.
+	// * Dismounts the player if the player uses an item.
 	public class ExampleFlyingTransformation : ModMount
 	{
 		public override void SetStaticDefaults() {
@@ -19,6 +27,7 @@ namespace ExampleMod.Content.Mounts
 			MountID.Sets.IsTransformationMount[Type] = true; // Designates this as a transformation mount.
 			MountID.Sets.PlayerIsHidden[Type] = true; // Used by other drawing things to know that this mount hides the player. Settings this does NOT actually hide the player. (See below for that)
 
+			// This mount uses special delegates for additional functionality.
 			MountData.delegations = new Mount.MountDelegatesData {
 				MouthPosition = DelegateMethods.Mount.NoPosition, // Set the position of the mount's mouth. In this case, none.
 				HandPosition = DelegateMethods.Mount.NoPosition, // Set the position of the mount's hands. In this case, none.
@@ -52,10 +61,10 @@ namespace ExampleMod.Content.Mounts
 
 			// Frame data and player offsets
 			MountData.totalFrames = 5; // The total number of frames in the sprite.
-			MountData.playerYOffsets = Enumerable.Repeat(0, MountData.totalFrames).ToArray(); // Fills an array with values for less repeating code
+			MountData.playerYOffsets = Enumerable.Repeat(0, MountData.totalFrames).ToArray(); // Fills an array with values for less repeating code. There are 5 frames, so fill in 0's for the offset for each frame.
 			MountData.xOffset = 0; // The offset for the hitbox. The size of the hitbox is set in ExampleFlyingTransformationPlayerSize
 			MountData.yOffset = -1;
-			MountData.playerHeadOffset = -24;
+			MountData.playerHeadOffset = -24; // Offset for the player's head on the minimap.
 			MountData.bodyFrame = 0; // Which body frame the player uses while mounted. Since this mount makes the player invisible, it doesn't matter here.
 
 			// This mount's frames are set up as frame 0 being the standing frame and 1-5 being the flying frames.
@@ -100,8 +109,8 @@ namespace ExampleMod.Content.Mounts
 		/// <br/> To offset the hitbox, set MountData.xOffset and MountData.yOffset
 		/// </summary>
 		public static bool ExampleFlyingTransformationPlayerSize(Player player, out Vector2? size) {
-			size = new Vector2(14f, 14f);
-			return true;
+			size = new Vector2(14f, 14f); // Each tile is 16x16, so this is slightly smaller than 1x1 tiles.
+			return true; // Return true to say we modified something.
 		}
 
 		/// <summary>
@@ -132,11 +141,13 @@ namespace ExampleMod.Content.Mounts
 		}
 
 		public override void UpdateEffects(Player player) {
-			// Spawn some dusts while active.
+			// Prevent the transformed player from holding items
 			player.IsAllowedToHoldItems = false;
 			player.noItems = true;
+
+			// Spawn some dusts while active.
 			bool flag = Main.rand.NextBool(15);
-			if ((int)Main.timeForVisualEffects % 2 == 0 && (flag || (float)(Main.rand.Next(6) + 1) < player.velocity.Length())) {
+			if ((int)Main.timeForVisualEffects % 2 == 0 && (flag || (Main.rand.Next(6) + 1) < player.velocity.Length())) {
 				Dust dust = Dust.NewDustDirect(player.Center, 0, 0, ModContent.DustType<Sparkle>(), 0f, 0f, 100, default, 0.5f);
 				dust.position = player.Center + new Vector2(0f, -2f);
 				if (flag)
@@ -161,8 +172,8 @@ namespace ExampleMod.Content.Mounts
 		// Here is where we change the player's draw info to hide the entire player.
 		// Setting drawInfo.hideEntirePlayer = true in ModPlayer.ModifyDrawInfo() doesn't work because it runs too late.
 		public override void ModifyPlayerDrawInfo(ref PlayerDrawSet drawInfo) {
-			drawInfo.hideEntirePlayer = true;
-			drawInfo.weaponDrawOrder = WeaponDrawOrder.BehindBackArm;
+			drawInfo.hideEntirePlayer = true; // Hide the entire player.
+			drawInfo.weaponDrawOrder = WeaponDrawOrder.BehindBackArm; // Move used items to behind the player's arm. This would have a bigger effect if the mount could hold items.
 		}
 	}
 }

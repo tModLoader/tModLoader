@@ -13,6 +13,17 @@ using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Mounts
 {
+	// This transformation mount which behaves similarly to the Velociraptor transformation (Slasher's Mysterious Skull).
+	// Transformation mounts have the characteristic of hiding the player to make it appear like the player has transformed into something else.
+	// This mount has the following characteristics:
+	// * Hides the player.
+	// * Can fly, but only if the player has wings equipped.
+	// * Cannot dash.
+	// * Allows the use of items.
+	// * Can use grappling hooks.
+	// * Can wear most hats/helmets.
+	// * Can wear beards.
+	// * Has dynamic eyes (blinking and closing when taking damage, etc.).
 	public class ExampleBeastTransformation : ModMount
 	{
 		public override void SetStaticDefaults() {
@@ -21,6 +32,7 @@ namespace ExampleMod.Content.Mounts
 			MountID.Sets.IsTransformationMount[Type] = true; // Designates this as a transformation mount.
 			MountID.Sets.PlayerIsHidden[Type] = true; // Used by other drawing things to know that this mount hides the player. Settings this does NOT actually hide the player. (See below for that)
 
+			// This mount uses special delegates for additional functionality.
 			MountData.delegations = new Mount.MountDelegatesData {
 				MouthPosition = ExampleBeastTransformationMouthPosition, // Sets the position of the items.
 				HandPosition = DelegateMethods.Mount.NoPosition // You might expect this mount to change the hand position, but it actually uses the mouth position for items.
@@ -45,7 +57,7 @@ namespace ExampleMod.Content.Mounts
 
 			// Frame data and player offsets
 			MountData.totalFrames = 21; // The total number of frames in the sprite.
-			MountData.playerYOffsets = Enumerable.Repeat(0, MountData.totalFrames).ToArray(); // Fills an array with values for less repeating code
+			MountData.playerYOffsets = Enumerable.Repeat(0, MountData.totalFrames).ToArray(); // Fills an array with values for less repeating code. There are 21 frames, so fill in 0's for the offset for each frame.
 			MountData.xOffset = 4; // The offset for the hitbox.
 			MountData.yOffset = -4;
 			MountData.bodyFrame = 0; // Which body frame the player uses while mounted. Since this mount makes the player invisible, it doesn't matter here.
@@ -102,24 +114,28 @@ namespace ExampleMod.Content.Mounts
 		}
 
 		public override void UpdateAfterEquips(Player player) {
-			bool hasWings = player.wingsLogic > 0;
+			bool hasWings = player.wingsLogic > 0; // wingsLogic says what kind of wings the player is wear. If it is greater than 0, the player has some kind of wings equipped.
+
 			// This mount can only fly if the player if the has wings.
 			((ExampleBeastTransformationSelectiveFlyingMountData)player.mount._mountSpecificData).allowedToFly = hasWings;
+
 			if (hasWings && player.empressBrooch) {
 				player.mount._flyTime = player.wingTimeMax; // Infinite flight if the Soaring Insignia is equipped.
 			}
 		}
 
 		public override void ResetFlightTime(Player player, ref int flightTime) {
-			flightTime = player.wingTimeMax; // Set the max flight time to the same the player's.
+			flightTime = player.wingTimeMax; // Set the max flight time to the same as the player's.
 		}
 
 
 		public override bool Draw(List<DrawData> playerDrawData, int drawType, Player drawPlayer, ref Texture2D texture, ref Texture2D glowTexture, ref Vector2 drawPosition, ref Rectangle frame, ref Color drawColor, ref Color glowColor, ref float rotation, ref SpriteEffects spriteEffects, ref Vector2 drawOrigin, ref float drawScale, float shadow) {
 			int yFrame = 0;
 			// Animate the arm
+			// ExampleBeastTransformation loads frontTexture for the body and frontTextureExtra for the arm.
 			// drawType 3 is the frontTextureExtra
 			if (drawType == 3) {
+				// Change the frame for the arm if the player is using certain types of items.
 				if (drawPlayer.itemAnimation > 0) {
 					Rectangle bodyFrame = drawPlayer.bodyFrame;
 					int bodyYFrame = bodyFrame.Y / bodyFrame.Height;
@@ -134,15 +150,17 @@ namespace ExampleMod.Content.Mounts
 					if (useStyle == ItemUseStyleID.GolfPlay || useStyle == ItemUseStyleID.MowTheLawn)
 						yFrame = 3;
 				}
+				// Change the frame for the arm if the player is holding certain types of items.
 				else {
 					yFrame = drawPlayer.lastVisualizedSelectedItem.holdStyle switch {
-						1 or 6 => 3,
-						2 => 2,
+						ItemHoldStyleID.HoldFront or ItemHoldStyleID.HoldLamp => 3,
+						ItemHoldStyleID.HoldUp => 2,
 						_ => drawPlayer.mount._frame,
 					};
 				}
 			}
 			else {
+				// The body texture gets set to the mount's current frame.
 				yFrame = drawPlayer.mount._frame;
 			}
 			int totalMountFrames = drawPlayer.mount._data.totalFrames;
@@ -264,11 +282,9 @@ namespace ExampleMod.Content.Mounts
 
 		private class ExampleBeastTransformationSelectiveFlyingMountData
 		{
-			public bool showFlyingFrames;
 			public bool allowedToFly;
 
 			public ExampleBeastTransformationSelectiveFlyingMountData() {
-				showFlyingFrames = false;
 				allowedToFly = false;
 			}
 		}
@@ -287,20 +303,60 @@ namespace ExampleMod.Content.Mounts
 			drawInfo.drawPlayer.ApplyItemPositionOffsetFromMount(ref drawInfo.ItemLocation);
 		}
 
+		// Change where the head item sits on the mount.
+		// If your mount cannot wear hats, you can remove this hook.
+		public override Vector2 HeadItemOffset(Player player) {
+			// Change these values to match the head of your mount if your mount can wear hats.
+			Vector2 offset = new Vector2(27f, -8f) * player.Directions;
+
+			// Change where the head item sits based on the frame of the mount (to say on the head during animations).
+			switch (player.mount.Frame) {
+				case 5:
+					offset += new Vector2(0f, 4f) * player.Directions;
+					break;
+				case 6:
+					offset += new Vector2(2f, 2f) * player.Directions;
+					break;
+				case 7:
+					offset += new Vector2(2f, 0f) * player.Directions;
+					break;
+				case 8:
+				case 9:
+				case 11:
+				case 12:
+				case 13:
+				case 15:
+					offset += new Vector2(4f, 4f) * player.Directions;
+					break;
+				case 10:
+				case 14:
+					offset += new Vector2(4f, 2f) * player.Directions;
+					break;
+				case 16:
+				case 17:
+				case 18:
+				case 19:
+				case 20:
+					offset += new Vector2(4f, 4f) * player.Directions;
+					break;
+			}
+			return offset;
+		}
+
+		// Our transformation mount requires some more logic that cannot be achieved with the hooks or sets that are currently available.
+		// We can detour vanilla methods to insert our custom logic before or after the vanilla code runs.
+		// See the Detouring guide for more information on detours https://github.com/tModLoader/tModLoader/wiki/Advanced-Detouring-Guide 
 		public override void Load() {
 			Terraria.DataStructures.On_PlayerDrawSet.CreateCompositeData += On_PlayerDrawSet_AdditionalDrawInfo;
 			Terraria.DataStructures.On_PlayerDrawLayers.DrawPlayer_28_ArmOverItem += On_PlayerDrawLayers_DrawArmOverItem;
 			Terraria.DataStructures.On_PlayerDrawLayers.DrawPlayer_GetMountOffsetForFaceAcc += On_PlayerDrawLayers_DrawPlayer_GetMountOffsetForFaceAcc;
 			Terraria.On_Player.ApplyItemPositionOffsetFromMount += On_Player_ApplyItemPositionOffsetFromMount;
-			Terraria.On_Player.ApplyHeadOffsetFromMount += On_Player_ApplyHeadOffsetFromMount;
 			Terraria.On_Player.GetHelmetOffsetAddonFromMount += On_Player_GetHelmetOffsetAddonFromMount;
 			Terraria.On_Player.GetBeardOffsetAddonFromMount += On_Player_GetBeardOffsetAddonFromMount;
-			// DoEyebrellaRainEffect Skipping for now.
-			// Skipping solar shield offset
-			// MowTheLawn
-			// CheckDrowning breathing reed
+			// There are a few other minor things that the Velociratpor does such as an offset for the Eyebrella rain and the Solar Shield.
 		}
 
+		// Draw the mount's arm over the items its holding.
 		private void On_PlayerDrawLayers_DrawArmOverItem(On_PlayerDrawLayers.orig_DrawPlayer_28_ArmOverItem orig, ref PlayerDrawSet drawinfo) {
 			if (drawinfo.drawPlayer.mount.Active && drawinfo.drawPlayer.mount.Type == ModContent.MountType<ExampleBeastTransformation>()) {
 				drawinfo.drawPlayer.mount.Draw(drawinfo.DrawDataCache, 3, drawinfo.drawPlayer, drawinfo.Position, drawinfo.colorMount, drawinfo.playerEffect, drawinfo.shadow);
@@ -308,6 +364,7 @@ namespace ExampleMod.Content.Mounts
 			orig(ref drawinfo);
 		}
 
+		// Make the mount handle drawing the head and the eyelid.
 		private void On_PlayerDrawSet_AdditionalDrawInfo(On_PlayerDrawSet.orig_CreateCompositeData orig, ref PlayerDrawSet self) {
 			if (self.drawPlayer.mount.Active && self.drawPlayer.mount.Type == ModContent.MountType<ExampleBeastTransformation>()) {
 				self.mountHandlesHeadDraw = true; // The mount changes how the player's head is drawn.
@@ -317,6 +374,7 @@ namespace ExampleMod.Content.Mounts
 			orig(ref self);
 		}
 
+		// Apply the same offset for face accessories as the Velociraptor.
 		private Vector2 On_PlayerDrawLayers_DrawPlayer_GetMountOffsetForFaceAcc(On_PlayerDrawLayers.orig_DrawPlayer_GetMountOffsetForFaceAcc orig, ref PlayerDrawSet drawinfo, ref bool isVelociraptor, ref bool hasRockGolemHead) {
 			Vector2 pos = orig(ref drawinfo, ref isVelociraptor, ref hasRockGolemHead);
 
@@ -329,11 +387,11 @@ namespace ExampleMod.Content.Mounts
 			return pos;
 		}
 
+		// Change where the beard sits on the mount if the mount can wear beards.
 		private Vector2 On_Player_GetBeardOffsetAddonFromMount(On_Player.orig_GetBeardOffsetAddonFromMount orig, Player self, Vector2 beardOffset) {
 			Vector2 originalReturn = orig(self, beardOffset);
 
 			if (self.mount.Type == ModContent.MountType<ExampleBeastTransformation>()) {
-				// beardOffset += new Vector2(8f, 4f) * self.Directions;
 				beardOffset += new Vector2(2f, 4f) * self.Directions; // Change where the beard sits on the mount. This is affected by the head offset, too.
 				if (self.mount.Frame == 6)
 					beardOffset += new Vector2(0f, 2f) * self.Directions;
@@ -345,6 +403,7 @@ namespace ExampleMod.Content.Mounts
 			return originalReturn;
 		}
 
+		// Certain helmets have an additional offset to better sit on the mount's head.
 		private Vector2 On_Player_GetHelmetOffsetAddonFromMount(On_Player.orig_GetHelmetOffsetAddonFromMount orig, Player self) {
 			Vector2 originalReturn = orig(self);
 
@@ -433,50 +492,7 @@ namespace ExampleMod.Content.Mounts
 			return originalReturn;
 		}
 
-		private void On_Player_ApplyHeadOffsetFromMount(On_Player.orig_ApplyHeadOffsetFromMount orig, Player self, ref Vector2 pos) {
-			orig(self, ref pos);
-
-			int frame = self.mount.Frame;
-			Vector2 vector = Vector2.Zero;
-
-			if (self.mount.Type == ModContent.MountType<ExampleBeastTransformation>()) {
-				//vector = new Vector2(23f, -8f) * self.Directions;
-				vector = new Vector2(27f, -8f) * self.Directions; // Change where the head item sits on the mount.
-				switch (frame) {
-					case 5:
-						vector += new Vector2(0f, 4f) * self.Directions;
-						break;
-					case 6:
-						vector += new Vector2(2f, 2f) * self.Directions;
-						break;
-					case 7:
-						vector += new Vector2(2f, 0f) * self.Directions;
-						break;
-					case 8:
-					case 9:
-					case 11:
-					case 12:
-					case 13:
-					case 15:
-						vector += new Vector2(4f, 4f) * self.Directions;
-						break;
-					case 10:
-					case 14:
-						vector += new Vector2(4f, 2f) * self.Directions;
-						break;
-					case 16:
-					case 17:
-					case 18:
-					case 19:
-					case 20:
-						vector += new Vector2(4f, 4f) * self.Directions;
-						break;
-				}
-			}
-
-			pos += vector;
-		}
-
+		// Offsets items that the player is holding to match up with the mount's hand.
 		private void On_Player_ApplyItemPositionOffsetFromMount(On_Player.orig_ApplyItemPositionOffsetFromMount orig, Player self, ref Vector2 pos) {
 			orig(self, ref pos);
 

@@ -7653,6 +7653,15 @@
  		if (Main.dedServ)
  			return;
  
+@@ -43198,6 +_,8 @@
+ 			}
+ 		}
+ 
++		vector += MountLoader.HeadItemOffset(mount, this);
++
+ 		pos += vector;
+ 	}
+ 
 @@ -43219,6 +_,9 @@
  		if (grappling[0] > -1) {
  			pulley = false;
