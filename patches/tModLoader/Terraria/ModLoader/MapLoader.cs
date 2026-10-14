@@ -13,10 +13,12 @@ internal static class MapLoader
 	internal static bool initialized = false;
 	internal static readonly IDictionary<ushort, IList<MapEntry>> tileEntries = new Dictionary<ushort, IList<MapEntry>>();
 	internal static readonly IDictionary<ushort, IList<MapEntry>> wallEntries = new Dictionary<ushort, IList<MapEntry>>();
+	internal static readonly IDictionary<ushort, IList<MapEntry>> liquidEntries = new Dictionary<ushort, IList<MapEntry>>();
 	internal static readonly IDictionary<ushort, Func<string, int, int, string>> nameFuncs =
 		new Dictionary<ushort, Func<string, int, int, string>>();
 	internal static readonly IDictionary<ushort, ushort> entryToTile = new Dictionary<ushort, ushort>();
 	internal static readonly IDictionary<ushort, ushort> entryToWall = new Dictionary<ushort, ushort>();
+	internal static readonly IDictionary<ushort, ushort> entryToLiquid = new Dictionary<ushort, ushort>();
 
 	internal static int modTileOptions(ushort type)
 	{
@@ -26,6 +28,11 @@ internal static class MapLoader
 	internal static int modWallOptions(ushort type)
 	{
 		return wallEntries[type].Count;
+	}
+
+	internal static int modLiquidOptions(ushort type)
+	{
+		return liquidEntries[type].Count;
 	}
 	//make Terraria.Map.MapHelper.colorLookup internal
 	//add internal modPosition field to Terraria.Map.MapHelper
@@ -37,6 +44,7 @@ internal static class MapLoader
 			return;
 		}
 		Array.Resize(ref MapHelper.tileLookup, TileLoader.TileCount);
+		Array.Resize(ref MapHelper.liquidLookup, LiquidLoader.LiquidCount);
 		Array.Resize(ref MapHelper.tileOptionCounts, TileLoader.TileCount);
 		Array.Resize(ref MapHelper.wallLookup, WallLoader.WallCount);
 		Array.Resize(ref MapHelper.wallOptionCounts, WallLoader.WallCount);
@@ -50,13 +58,18 @@ internal static class MapLoader
 				entryToTile[mapType] = type;
 				nameFuncs[mapType] = entry.getName;
 				colors.Add(entry.color);
-				if (entry.name != null) {
-					names.Add(entry.name);
-				}
-				else {
-					throw new Exception("How did this happen?");
-					//names.Add(Language.GetText(entry.translation.Key));
-				}
+				names.Add(entry.name ?? throw new Exception($"MapEntry.name == null for Tile {TileLoader.GetTile(type)}"));
+			}
+		}
+		
+		foreach (ushort type in liquidEntries.Keys) {
+			MapHelper.liquidLookup[type] = (ushort)(MapHelper.modPosition + colors.Count);
+			foreach (MapEntry entry in liquidEntries[type]) {
+				ushort mapType = (ushort)(MapHelper.modPosition + colors.Count);
+				entryToLiquid[mapType] = type;
+				nameFuncs[mapType] = entry.getName;
+				colors.Add(entry.color);
+				names.Add(entry.name ?? throw new Exception($"MapEntry.name == null for Liquid {LiquidLoader.GetLiquid(type)}"));
 			}
 		}
 		foreach (ushort type in wallEntries.Keys) {
@@ -67,13 +80,7 @@ internal static class MapLoader
 				entryToWall[mapType] = type;
 				nameFuncs[mapType] = entry.getName;
 				colors.Add(entry.color);
-				if (entry.name != null) {
-					names.Add(entry.name);
-				}
-				else {
-					throw new Exception("How did this happen?");
-					//names.Add(Language.GetText(entry.translation.Key));
-				}
+				names.Add(entry.name ?? throw new Exception($"MapEntry.name == null for Wall {WallLoader.GetWall(type)}"));
 			}
 		}
 		Array.Resize(ref MapHelper.colorLookup, MapHelper.modPosition + colors.Count);
@@ -89,15 +96,18 @@ internal static class MapLoader
 	{
 		tileEntries.Clear();
 		wallEntries.Clear();
+		liquidEntries.Clear();
 		if (Main.dedServ) {
 			return;
 		}
 		nameFuncs.Clear();
 		entryToTile.Clear();
 		entryToWall.Clear();
+		entryToLiquid.Clear();
 		Array.Resize(ref MapHelper.tileLookup, TileID.Count);
 		Array.Resize(ref MapHelper.wallLookup, WallID.Count);
 		Array.Resize(ref MapHelper.colorLookup, MapHelper.modPosition);
+		Array.Resize(ref MapHelper.liquidLookup, LiquidID.Count);
 		Lang._mapLegendCache.Resize(MapHelper.modPosition);
 		initialized = false;
 	}
@@ -110,6 +120,14 @@ internal static class MapLoader
 			ushort option = tile.GetMapOption(i, j);
 			if (option < 0 || option >= modTileOptions(tile.Type)) {
 				throw new ArgumentOutOfRangeException("Bad map option for tile " + tile.Name + " from mod " + tile.Mod.Name);
+			}
+			mapType += option;
+		}
+		else if (entryToLiquid.ContainsKey(mapType)) {
+			ModLiquid liquid = LiquidLoader.GetLiquid(entryToLiquid[mapType]);
+			ushort option = liquid.GetMapOption(i, j);
+			if (option < 0 || option >= modLiquidOptions(liquid.Type)) {
+				throw new ArgumentOutOfRangeException("Bad map option for liquid " + liquid.Name + " from mod " + liquid.Mod.Name);
 			}
 			mapType += option;
 		}
