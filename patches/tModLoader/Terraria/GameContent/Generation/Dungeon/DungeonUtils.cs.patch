@@ -1,0 +1,28 @@
+--- src/TerrariaNetCore/Terraria/GameContent/Generation/Dungeon/DungeonUtils.cs
++++ src/tModLoader/Terraria/GameContent/Generation/Dungeon/DungeonUtils.cs
+@@ -1,3 +_,4 @@
++using Terraria.GameContent.ChestLootRules;
+ using System;
+ using System.Collections.Generic;
+ using System.Linq;
+@@ -7,6 +_,7 @@
+ using Terraria.GameContent.Generation.Dungeon.Features;
+ using Terraria.GameContent.Generation.Dungeon.Rooms;
+ using Terraria.ID;
++using Terraria.ModLoader;
+ using Terraria.Utilities;
+ using Terraria.WorldBuilding;
+ 
+@@ -290,9 +_,12 @@
+ 				itemType = 1293;
+ 				break;
+ 			case 13:
++				/*VanillaCode
+ 				itemType = 832;
+ 				if (genRand.Next(3) == 0)
+ 					itemType = 4281;
++				*/
++				itemType = ChestLootDatabase.RollVanillaOptionItemType(genRand, 3, 832);
+ 				break;
+ 		}
+ 

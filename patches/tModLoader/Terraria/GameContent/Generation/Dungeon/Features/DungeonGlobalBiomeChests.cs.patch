@@ -1,0 +1,27 @@
+--- src/TerrariaNetCore/Terraria/GameContent/Generation/Dungeon/Features/DungeonGlobalBiomeChests.cs
++++ src/tModLoader/Terraria/GameContent/Generation/Dungeon/Features/DungeonGlobalBiomeChests.cs
+@@ -1,5 +_,7 @@
++using Terraria.GameContent.ChestLootRules;
+ using System.Collections.Generic;
+ using Terraria.GameContent.Generation.Dungeon.Rooms;
++using Terraria.ModLoader;
+ using Terraria.Utilities;
+ 
+ namespace Terraria.GameContent.Generation.Dungeon.Features;
+@@ -111,6 +_,7 @@
+ 				ushort chestTileType = 21;
+ 				int mainItemInChest = 0;
+ 				int chestStyle = 0;
++				/*VanillaCode
+ 				switch (i % num) {
+ 					case 0:
+ 						chestStyle = 23;
+@@ -150,6 +_,8 @@
+ 						}
+ 						break;
+ 				}
++				*/
++				ChestLootDatabase.GetVanillaDungeonBiomeChestInfo(i % num, num, WorldGen.crimson, out chestTileType, out chestStyle, out mainItemInChest);
+ 
+ 				flag = WorldGen.AddBuriedChest(num4, num5, mainItemInChest, notNearOtherChests: false, chestStyle, trySlope: false, chestTileType);
+ 			}
