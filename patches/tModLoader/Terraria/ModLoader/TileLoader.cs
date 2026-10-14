@@ -148,9 +148,6 @@ public static class TileLoader
 		LoaderUtils.ResetStaticMembers(typeof(TileID));
 
 		//Etc
-		Array.Resize(ref Main._playerSceneMetrics._tileCounts, nextTile);
-		Array.Resize(ref Main._cameraSceneMetrics._tileCounts, nextTile);
-		Array.Resize(ref Main.PylonSystem._sceneMetrics._tileCounts, nextTile);
 		Array.Resize(ref Main.tileLighted, nextTile);
 		Array.Resize(ref Main.tileMergeDirt, nextTile);
 		Array.Resize(ref Main.tileCut, nextTile);

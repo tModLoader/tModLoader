@@ -3400,12 +3400,11 @@
  	}
  
  	public void UpdateDead()
-@@ -13575,6 +_,8 @@
+@@ -13575,6 +_,7 @@
  		ResetFloorFlags();
  		wings = 0;
  		wingsLogic = 0;
 +		equippedWings = null; // Added by TML
-+		selectItemOnNextUse = false; // Added by TML
  		hasWings = false;
  		ResetVisibleAccessories();
  		poisoned = false;
@@ -6575,7 +6574,7 @@
  					cursorItemIconPush = 6;
  				}
  			}
-@@ -35241,6 +_,70 @@
+@@ -35241,6 +_,55 @@
  			}
  		}
  
@@ -6627,21 +6626,6 @@
 +		goto DecrementItemAnimation;
 +
 +		ReuseDelayAndAnimationStart:
-+
-+		// SmartSelectLookup moved here from Player.Update so that it can apply between uses, without changing selectedItem prematurely for half the Update method
-+		if (itemAnimation == 0 && reuseDelay == 0 && (!controlUseItem || selectItemOnNextUse)) {
-+			selectItemOnNextUse = false;
-+
-+			int oldSelect = selectedItem;
-+			SmartSelectLookup(out oldSelect);
-+			if (selectedItem != oldSelect) {
-+				item = inventory[selectedItem];
-+				// TML feature, allow the item to be instantly used
-+				releaseUseItem = true;
-+				// prevent remaining item time carrying over to new weapon (for items like starfury with less than one shot per use)
-+				itemTime = itemTimeMax = 0;
-+			}
-+		}
 +
  		ItemCheck_HandleMount();
  		int weaponDamage = GetWeaponDamage(item);
@@ -6799,7 +6783,12 @@
  						if (item.stack > 0)
  							item.stack--;
  
-@@ -35846,6 +_,9 @@
+@@ -35842,10 +_,13 @@
+ 
+ 	public Rectangle AnimatePlayerAndGetItemFrame(float mountOffset, Item sItem)
+ 	{
+-		Item item = ((itemAnimation > 0) ? lastVisualizedSelectedItem : sItem);
++		Item item = ((itemAnimation > 0 && sItem.IsAir) ? lastVisualizedSelectedItem : sItem); // TML added && sItem.IsAir
  		Rectangle drawHitbox = Item.GetDrawHitbox(item.type, this);
  		compositeFrontArm.enabled = false;
  		compositeBackArm.enabled = false;
@@ -6818,6 +6807,19 @@
  			if ((!overrideCanPlace.HasValue || overrideCanPlace.Value) && TileObjectData.CustomPlace(tileToCreate, previewPlaceStyle))
  				TileObject.CanPlace(tileTargetX, tileTargetY, tileToCreate, previewPlaceStyle, direction, out var _, onlyCheck: true, forcedRandom);
  		}
+@@ -35908,7 +_,12 @@
+ 	private void ItemCheck_OwnerOnlyCode(ref ItemCheckContext context, Item sItem, int weaponDamage, Rectangle heldItemFrame)
+ 	{
+ 		bool flag = true;
++		/*
+ 		if (selectedItemState.HasBufferedChange && sItem.useTime > itemAnimation)
++		*/
++		// Blocks shots whose itemTime would outlast the animation and delay the buffered selection change.
++		// Vanilla blocks one more shot, because its counter is one lower when it shoots (#2351)
++		if (selectedItemState.HasBufferedChange && CombinedHooks.TotalUseTime(sItem.useTime, this, sItem) > itemAnimation)
+ 			flag = false;
+ 
+ 		int type = sItem.type;
 @@ -35936,13 +_,18 @@
  				useTime = sItem.useTime;
  
@@ -6832,19 +6834,19 @@
  					flag = false;
  			}
  
-+			//TML: Eventide and nightglow handled by Item.useLimitPerAnimation. Zenith use limit didn't do anything anyway
++			//TML: Eventide, nightglow and daybloom staff handled by Item.useLimitPerAnimation. Zenith and true copper shortsword use limits didn't do anything anyway
 +			/*
  			if ((type == 4956 || type == 5669) && itemAnimation < itemAnimationMax - useTime * 3)
  				flag = false;
  
-@@ -35951,6 +_,7 @@
- 
- 			if (type == 4953 && itemAnimation < itemAnimationMax - useTime * 5)
- 				flag = false;
-+			*/
+@@ -35954,6 +_,7 @@
  
  			if (type == 6152 && itemAnimation < itemAnimationMax - useTime * 4)
  				flag = false;
++			*/
+ 		}
+ 
+ 		if (type == 5451 && ownedProjectileCounts[1020] > 0)
 @@ -35965,6 +_,10 @@
  		if (ItemID.Sets.ShootsOnUseRelease[sItem.type] && controlUseItem)
  			flag = false;
@@ -6916,6 +6918,17 @@
  
  					bool[] shouldIgnore2 = ItemCheck_GetTileCutIgnoreList(sItem);
  					ItemCheck_CutTiles(sItem, itemRectangle2, shouldIgnore2);
+@@ -36104,7 +_,10 @@
+ 			}
+ 		}
+ 
++		/*
+ 		if (sItem.type == 5464 && itemAnimation == itemAnimationMax - 1) {
++		*/
++		if (sItem.type == 5464 && ItemAnimationJustStarted) { // #2351
+ 			Vector2 vector3 = Main.MouseWorld - MountedCenter;
+ 			ChangeDir((vector3.X > 0f) ? 1 : (-1));
+ 			itemRotation = (vector3 * direction).ToRotation();
 @@ -36411,15 +_,21 @@
  			if (i == whoAmI || !player.active || !player.hostile || player.immune || player.dead || (team != 0 && team == player.team) || !itemRectangle.Intersects(player.Hitbox) || !CanHit(player))
  				continue;

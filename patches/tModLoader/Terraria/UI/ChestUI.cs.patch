@@ -87,7 +87,7 @@
  				if (!Item.CanStack(inventory[num2], item[i]) || ItemSlot.PickItemMovementAction(inventory, context, num2, item[i]) == -1)
  					continue;
  
-+				ItemLoader.StackItems(inventory[num2], item[i], out _); // #StackablePrefixWeapons, check moved here
++				ItemLoader.StackItems(inventory[num2], item[i], out _);
 +
 +				/* #OnStackHook
  				int num3 = item[i].stack;
