@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
@@ -25,6 +25,10 @@ public static class LiquidLoader
 
 	internal static int ReserveLiquidID()
 	{
+		if (nextLiquid >= LiquidData.MaxLiquidTypes) {
+			throw new Exception($"Cannot add more than {LiquidData.MaxLiquidTypes} liquid types");
+		}
+
 		int result = nextLiquid;
 		nextLiquid++;
 		return result;
