@@ -58,8 +58,6 @@ public static class LiquidLoader
 		Array.Resize(ref LiquidRenderer.DEFAULT_OPACITY, nextLiquid);
 		Array.Resize(ref LiquidRenderer.WAVE_MASK_STRENGTH, nextLiquid);
 		Array.Resize(ref LiquidRenderer.VISCOSITY_MASK, nextLiquid);
-		Array.Resize(ref Main.liquidFrame, nextLiquid);
-		Array.Resize(ref Main.liquidFrameState, nextLiquid);
 
 		LoaderUtils.ResetStaticMembers(typeof(LiquidID));
 

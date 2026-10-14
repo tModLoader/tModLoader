@@ -7610,24 +7610,14 @@
  	{
  		double num = (double)Damage - (double)Defense * 0.5;
  		if (num < 1.0)
-@@ -58482,10 +_,17 @@
+@@ -58482,6 +_,7 @@
  
  		return num;
  	}
 +	*/
  
-+	// TML: Changed the last parameters to be 2 parameter instead, 1 for the TileChangeType for a secondary TileChangeType
-+	/*
  	public void OnTileChangeEvent(int x, int y, int count, TileChangeType eventType)
  	{
- 		WorldGen.PlayLiquidChangeSound(eventType, x, y, count);
-+	*/
-+	public void OnTileChangeEvent(int x, int y, int count, TileChangeType eventType, int otherLiquid)
-+	{
-+		WorldGen.PlayLiquidChangeSound(eventType, x, y, count);
- 	}
- 
- 	public static bool IsFullScreenThatWouldBeStuckOnCrashMessage()
 @@ -58549,7 +_,11 @@
  
  	public static void SetFullScreen(bool fullscreen)
