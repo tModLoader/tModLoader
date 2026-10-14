@@ -58,28 +58,18 @@ internal static class MapLoader
 				entryToTile[mapType] = type;
 				nameFuncs[mapType] = entry.getName;
 				colors.Add(entry.color);
-				if (entry.name != null) {
-					names.Add(entry.name);
-				}
-				else {
-					throw new Exception("How did this happen?");
-					//names.Add(Language.GetText(entry.translation.Key));
-				}
+				names.Add(entry.name ?? throw new Exception($"MapEntry.name == null for Tile {TileLoader.GetTile(type)}"));
 			}
 		}
 		
-		foreach (ushort type2 in liquidEntries.Keys) {
-			MapHelper.liquidLookup[type2] = (ushort)(MapHelper.modPosition + colors.Count);
-			foreach (MapEntry entry2 in liquidEntries[type2]) {
-				ushort mapType2 = (ushort)(MapHelper.modPosition + colors.Count);
-				entryToLiquid[mapType2] = type2;
-				MapLoader.nameFuncs[mapType2] = entry2.getName;
-				colors.Add(entry2.color);
-				if (entry2.name != null) {
-					names.Add(entry2.name);
-					continue;
-				}
-				throw new Exception("How did this happen?");
+		foreach (ushort type in liquidEntries.Keys) {
+			MapHelper.liquidLookup[type] = (ushort)(MapHelper.modPosition + colors.Count);
+			foreach (MapEntry entry in liquidEntries[type]) {
+				ushort mapType = (ushort)(MapHelper.modPosition + colors.Count);
+				entryToLiquid[mapType] = type;
+				nameFuncs[mapType] = entry.getName;
+				colors.Add(entry.color);
+				names.Add(entry.name ?? throw new Exception($"MapEntry.name == null for Liquid {LiquidLoader.GetLiquid(type)}"));
 			}
 		}
 		foreach (ushort type in wallEntries.Keys) {
@@ -90,13 +80,7 @@ internal static class MapLoader
 				entryToWall[mapType] = type;
 				nameFuncs[mapType] = entry.getName;
 				colors.Add(entry.color);
-				if (entry.name != null) {
-					names.Add(entry.name);
-				}
-				else {
-					throw new Exception("How did this happen?");
-					//names.Add(Language.GetText(entry.translation.Key));
-				}
+				names.Add(entry.name ?? throw new Exception($"MapEntry.name == null for Wall {WallLoader.GetWall(type)}"));
 			}
 		}
 		Array.Resize(ref MapHelper.colorLookup, MapHelper.modPosition + colors.Count);
