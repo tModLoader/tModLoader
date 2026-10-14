@@ -380,4 +380,12 @@ public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>
 
 		return categories;
 	}
+
+	/// <summary>
+	/// Determines if this <see cref="Item"/> can receive the given prefix.
+	/// </summary>
+	/// <param name="prefix">The <see cref="PrefixID"/> to check.</param>
+	/// <returns><see langword="true"/> if this <see cref="Item"/> can roll the given prefix (<see cref="CanRollPrefix(int)"/>) and if the applied prefix does not fail to modify any stat values.</returns>
+	public bool CanApplyPrefix(int prefix)
+		=> CanRollPrefix(prefix) && TryGetPrefixStatMultipliersForItem(prefix, out _, out _, out _, out _, out _, out _, out _, out _, out _, out _);
 }

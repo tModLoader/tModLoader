@@ -901,21 +901,19 @@
 +	/// <item><see cref="CanHavePrefixes"/> returns <see langword="false"/></item>
 +	/// <item><see cref="CanApplyPrefix(int)"/> returns <see langword="false"/></item>
 +	/// <item><see cref="ItemLoader.PrefixChance(Item, int, UnifiedRandom)"/> returns <see langword="false"/></item>
-+	/// <item><c><paramref name="prefixWeWant"/> == -1 or -2 or -3</c> and <see cref="PrefixLoader.Roll(Item, UnifiedRandom, out int, bool)"/> returns <see langword="false"/>.</item>
++	/// <item><c><paramref name="prefixWeWant"/> == -1 or -2</c> and <see cref="PrefixLoader.Roll(Item, UnifiedRandom, out int)"/> returns <see langword="false"/>.</item>
 +	/// </list>
 +	/// Otherwise, return <see langword="true"/>.
 +	/// </returns>
  	public bool Prefix(int prefixWeWant, out bool rolledPrefixIsTopTier)
  	{
  		if (!WorldGen.isGeneratingOrLoadingWorld && Main.rand == null)
-@@ -330,7 +_,17 @@
+@@ -330,7 +_,15 @@
  		if (prefixWeWant == -2 || prefixWeWant == -1)
  			num = BestPrefixValue();
  
-+		/* TODO: CanApplyPrefix method no longer exists.
 +		if (prefixWeWant > 0 && !CanApplyPrefix(prefixWeWant))
 +			return false;
-+		*/
 +
  		UnifiedRandom unifiedRandom = (WorldGen.isGeneratingOrLoadingWorld ? WorldGen.genRand : Main.rand);
 +
@@ -926,7 +924,7 @@
  		int rolledPrefix = prefixWeWant;
  		float dmg = 1f;
  		float kb = 1f;
-@@ -345,17 +_,32 @@
+@@ -345,8 +_,12 @@
  		bool flag = true;
  		while (flag) {
  			flag = false;
@@ -939,11 +937,7 @@
  
  			if (prefixWeWant < -1)
  				rolledPrefix = -1;
- 
-+			// Faster check implementation than actually rolling.
-+			if (prefixWeWant == -3)
-+				return PrefixLoader.Roll(this, unifiedRandom, out _, justCheck: true);
-+
+@@ -354,8 +_,15 @@
  			if ((rolledPrefix == -1 || rolledPrefix == -2 || rolledPrefix == -3) && !RollAPrefix(unifiedRandom, ref rolledPrefix))
  				return false;
  
@@ -987,7 +981,7 @@
  		if ((double)num2 >= 1.2)
  			rare += 2;
  		else if ((double)num2 >= 1.05)
-@@ -392,22 +_,34 @@
+@@ -392,22 +_,37 @@
  		else if ((double)num2 <= 0.95)
  			rare--;
  
@@ -1021,6 +1015,9 @@
 +	/// <remarks>Just because a prefix can be rolled does not mean it can be applied -- use <see cref="CanApplyPrefix(int)"/> to check for that.</remarks>
  	public bool CanRollPrefix(int prefix)
  	{
++		if (!CanHavePrefixes())
++			return false;
++
 +		/*
  		int[] rollablePrefixes = GetRollablePrefixes();
  		if (rollablePrefixes == null)
@@ -1136,7 +1133,7 @@
  		return true;
 +		*/
 +
-+		return PrefixLoader.Roll(this, random, out rolledPrefix, justCheck: false);
++		return PrefixLoader.Roll(this, random, out rolledPrefix);
  	}
  
 +	/// <summary>
