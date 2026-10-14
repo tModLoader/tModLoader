@@ -486,7 +486,7 @@ public static partial class Config
 		RenameType(from: "Terraria.Recipe.Condition", to: "Terraria.Condition");
 		RenameStaticField("Terraria.Condition", from: "InGraveyardBiome", to: "InGraveyard");
 
-		RefactorInstanceMember("Terraria.Item", "IsCandidateForReforge", Removed("Use `maxStack == 1 || Item.AllowReforgeForStackableItem` or `Item.Prefix(-3)` to check whether an item is reforgeable"));
+		RefactorInstanceMember("Terraria.Item", "IsCandidateForReforge", Removed("Use `Item.CanHavePrefixes()` to check whether an item is reforgeable"));
 		RefactorInstanceMethodCall("Terraria.Item", "CloneWithModdedDataFrom", Removed("Use Clone, ResetPrefix or Refresh"));
 		RefactorInstanceMethodCall("Terraria.ModLoader.Mod", "CreateTranslation", ToStaticMethodCall("Terraria.ModLoader.LocalizationLoader", "CreateTranslation", targetBecomesFirstArg: true));
 

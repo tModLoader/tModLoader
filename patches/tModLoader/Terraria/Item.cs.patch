@@ -848,7 +848,7 @@
  	public static void DropCache(IEntitySource reason, Vector2 pos, Vector2 spread, int t, bool stopCaching = true)
  	{
  		if (cachedItemSpawnsByType[t] == -1)
-@@ -300,17 +_,62 @@
+@@ -300,10 +_,30 @@
  		}
  	}
  
@@ -865,26 +865,22 @@
  	public override string ToString() => $"Name: \"{Name}\" Type: {type} Stack: {stack}";
 +
 +	/// <summary>
-+	/// Determines if this <see cref="Item"/> can receive prefixes.
++	/// Determines if this <see cref="Item"/> can receive prefixes.<br/>
++	/// Allows placement in the reforge slot.<br/>
++	/// Blocks stacking into the mouse when crafting.<br/>
++	/// Controls whether prefix rolls are attempted. The item may still be unable to roll a valid prefix.
 +	/// </summary>
-+	/// <returns>
-+	/// <see langword="true"/> if this <see cref="Item"/> is allowed to receive prefixes, <see langword="false"/> otherwise.
-+	/// </returns>
- 	public bool CanHavePrefixes() => GetRollablePrefixes() != null;
- 
-+	/* TODO: reintergrate TML rules
-+	public bool CanHavePrefixes()
-+ 	{
-+		return type != 0
-+			&& ItemID.Sets.CanGetPrefixes[type]
-+			&& ammo == 0
-+			&& (damage > 0 || IsAPrefixableAccessory());
-+	}
-+	*/
++	public bool CanHavePrefixes() => GetRollablePrefixes() != null
++		// Temporary support for the PrefixCategory system until we can make something better
++		|| ItemID.Sets.CanGetPrefixes[type] && ammo == 0 && damage > 0 && !consumable && GetPrefixCategories().Count > 0;
 +
++	/*
+ 	public bool CanHavePrefixes() => GetRollablePrefixes() != null;
++	*/
+ 
  	public bool Prefix(int prefixWeWant)
  	{
- 		bool rolledPrefixIsTopTier;
+@@ -311,6 +_,27 @@
  		return Prefix(prefixWeWant, out rolledPrefixIsTopTier);
  	}
  
