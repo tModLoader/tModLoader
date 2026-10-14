@@ -132,4 +132,22 @@ public abstract class GlobalBlockType : ModType
 	public virtual void ModifyLight(int i, int j, int type, ref float r, ref float g, ref float b)
 	{
 	}
+
+	/// <inheritdoc cref="ModTileOrWall.CanDoWireStuffHere(int, int)"/>
+	/// <param name="i">The x position in tile coordinates.</param>
+	/// <param name="j">The y position in tile coordinates.</param>
+	/// <param name="type">The type of the tile/wall at the given coordinates.</param>
+	public virtual bool? CanDoWireStuffHere(int i, int j, int type)
+	{
+		return null;
+	}
+
+	/// <inheritdoc cref="ModTileOrWall.CanShowWireStuffHere(int, int)"/>
+	/// <param name="i">The x position in tile coordinates.</param>
+	/// <param name="j">The y position in tile coordinates.</param>
+	/// <param name="type">The type of the tile/wall at the given coordinates.</param>
+	public virtual bool? CanShowWireStuffHere(int i, int j, int type)
+	{
+		return null;
+	}
 }
