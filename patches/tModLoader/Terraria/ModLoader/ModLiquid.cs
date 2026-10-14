@@ -1,7 +1,6 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
 using Terraria.GameContent.Liquid;
 using Terraria.Localization;
 
@@ -27,9 +26,9 @@ public abstract class ModLiquid : ModBlockType
 
 	public sealed override void SetupContent()
 	{
-		LiquidLoader.LiquidAssets[Type] = ModContent.Request<Texture2D>(Texture, (AssetRequestMode)2);
-		LiquidLoader.LiquidBlockAssets[Type] = ModContent.Request<Texture2D>(BlockTexture, (AssetRequestMode)2);
-		LiquidLoader.LiquidSlopeAssets[Type] = ModContent.Request<Texture2D>(SlopeTexture, (AssetRequestMode)2);
+		LiquidLoader.LiquidAssets[Type] = ModContent.Request<Texture2D>(Texture);
+		LiquidLoader.LiquidBlockAssets[Type] = ModContent.Request<Texture2D>(BlockTexture);
+		LiquidLoader.LiquidSlopeAssets[Type] = ModContent.Request<Texture2D>(SlopeTexture);
 		LiquidRenderer.WATERFALL_LENGTH[Type] = 10;
 		LiquidRenderer.DEFAULT_OPACITY[Type] = 0.6f;
 		LiquidRenderer.VISCOSITY_MASK[Type] = 0;
