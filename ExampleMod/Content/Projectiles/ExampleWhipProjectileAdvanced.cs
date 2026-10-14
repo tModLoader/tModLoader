@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -34,17 +35,35 @@ namespace ExampleMod.Content.Projectiles
 			Projectile.WhipSettings.RangeMultiplier = 1.5f;
 		}
 
+		/// <summary>
+		/// This timer keeps track of the whip's life time.
+		/// </summary>
 		private float Timer {
 			get => Projectile.ai[0];
 			set => Projectile.ai[0] = value;
 		}
 
-		// Projectile.ai[1] is used for the direction the swing will go in and is assigned when the projectile is spawned in.
+		/// <summary>
+		/// Whips are spawned with some randomness on their swing animation and direction.
+		/// <br/>This value is set when the projectile spawns in the item's Shoot() method.
+		/// </summary>
+		private float SwingDirection {
+			get => Projectile.ai[1];
+			set => Projectile.ai[1] = value;
+		}
 
-		private float ChargeTime {
+		/// <summary>
+		/// This timer keeps track of the whip's life time if the whip is a secondary whips spawned by the Snake Band.
+		/// </summary>
+		private float SecondaryWhipTimer {
 			get => Projectile.ai[2];
 			set => Projectile.ai[2] = value;
 		}
+
+		/// <summary>
+		/// This timer keeps track of how long the whip has been charged up.
+		/// </summary>
+		private float ChargeTime { get; set; }
 
 		public override void AI() {
 			Player owner = Main.player[Projectile.owner];
@@ -60,21 +79,34 @@ namespace ExampleMod.Content.Projectiles
 				return; // timer doesn't update while charging, freezing the animation at the start.
 			}
 
-			Timer++;
+			Timer++; // make sure you keep this line if you remove the charging mechanic.
 
 			Projectile.GetWhipSettings(Projectile, out float timeToFlyOut, out _, out _);
-			if (Timer >= timeToFlyOut || owner.itemAnimation <= 0) {
+
+			if (Timer >= timeToFlyOut) {
 				Projectile.Kill();
 				return;
 			}
 
-			owner.heldProj = Projectile.whoAmI;
-			owner.MatchItemTimeToItemAnimation();
+			// Secondary whips spawned from the Snake Band will have their ai[2] set to 1000 + (item time * 2).
+			// Projectile.GetWhipSettings also checks for secondary whips and corrects for the extra 1000.
+			bool isASecondaryWhip = SecondaryWhipTimer >= 1000f;
+
+			if (!isASecondaryWhip) {
+				// The primary whip is the real held projectile and gets the item time applied to it.
+				owner.heldProj = Projectile.whoAmI;
+				owner.MatchItemTimeToItemAnimation();
+			}
+			else {
+				// The secondary whip will be drawn behind the player.
+				Projectile.drawLayer = ProjectileDrawLayerID.Default;
+			}
+
 			if (Timer == timeToFlyOut / 2) {
 				// Plays a whipcrack sound at the tip of the whip.
-				List<Vector2> points = Projectile.WhipPointsForCollision;
-				Projectile.FillWhipControlPoints(Projectile, points);
-				SoundEngine.PlaySound(SoundID.Item153, points[points.Count - 1]);
+				Projectile.WhipPointsForCollision.Clear();
+				Projectile.FillWhipControlPoints(Projectile, Projectile.WhipPointsForCollision);
+				SoundEngine.PlaySound(SoundID.Item153, Projectile.WhipPointsForCollision[^1]);
 			}
 
 			// Spawn Dust along the whip path
@@ -240,6 +272,15 @@ namespace ExampleMod.Content.Projectiles
 		public override bool DisplayDollSettings(Player doll, TEDisplayDoll.DisplayDollPose pose, ref int aiStyle, ref int aiType) {
 			aiStyle = ProjAIStyleID.Whip;
 			return true;
+		}
+
+		// Sync the charge time in multiplayer
+		public override void SendExtraAI(BinaryWriter writer) {
+			writer.Write(ChargeTime);
+		}
+
+		public override void ReceiveExtraAI(BinaryReader reader) {
+			ChargeTime = reader.ReadSingle();
 		}
 	}
 }
