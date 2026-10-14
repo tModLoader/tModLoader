@@ -1552,8 +1552,8 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 
 	/// <summary>
 	/// Allows customizing the tile type, tile style, and random style offset that this item will place. Used for advanced scenarios where the usual placement logic is insufficient.
-	/// <br/> This is called before the tile is placed and also for the tile placement preview, code in this hook should not have effects on the tiles in the world.
-	/// <br/> <see cref="ModTile.OverridePlacementTile(int, int, Item, ref int, ref int, ref int?, ref bool?)"/> also exists and is recommended for affecting manual tile placement (<see cref="WorldGen.PlaceTile(int, int, int, bool, bool, int, int)"/>) instead of just placing tiles with an item.
+	/// <para/> This is called before the tile is placed and also for the tile placement preview, code in this hook should not have effects on the tiles in the world.
+	/// <para/> <see cref="ModTile.OverridePlacementTile(int, int, Item, ref int, ref int, ref int?, ref bool?)"/> also exists and is recommended for affecting manual tile placement (<see cref="WorldGen.PlaceTile(int, int, int, bool, bool, int, int)"/>) instead of just placing tiles with an item.
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>

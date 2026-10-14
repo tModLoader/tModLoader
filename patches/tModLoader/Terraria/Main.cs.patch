@@ -617,8 +617,8 @@
  	public static bool[] tileBrick = new bool[TileID.Count];
 +	/// <summary>
 +	/// Contains moss tiles. Moss tiles look like <see cref="TileID.Stone"/> with moss overlaying it. They act like Stone for various operations and turn into Stone when mined. They also spread moss to nearby tiles.
-+	/// <br/><br/> Vanilla entries include <see cref="TileID.GreenMoss"/>, LavaMoss, KryptonMoss, XenonMoss, ArgonMoss, VioletMoss, RainbowMoss, BrownMoss, RedMoss, BlueMoss, and PurpleMoss.
-+	/// <br/><br/> Defaults to <see langword="false"/>. See also <see cref="TileID.Sets.tileMossBrick"/>.
++	/// <para/> Vanilla entries include <see cref="TileID.GreenMoss"/>, LavaMoss, KryptonMoss, XenonMoss, ArgonMoss, VioletMoss, RainbowMoss, BrownMoss, RedMoss, BlueMoss, and PurpleMoss.
++	/// <para/> Defaults to <see langword="false"/>. See also <see cref="TileID.Sets.tileMossBrick"/>.
 +	/// </summary>
  	public static bool[] tileMoss = new bool[TileID.Count];
 +	/// <summary>

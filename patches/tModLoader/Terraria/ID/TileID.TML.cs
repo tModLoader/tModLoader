@@ -13,8 +13,8 @@ partial class TileID
 
 		/// <summary>
 		/// Contains grasses that transform into <see cref="TileID.Dirt"/> when mined.
-		/// <br/><br/> Vanilla entries include <see cref="TileID.Grass"/>, <see cref="CorruptGrass"/>, <see cref="HallowedGrass"/>, <see cref="CrimsonGrass"/>, <see cref="GolfGrass"/>, and <see cref="GolfGrassHallowed"/>.
-		/// <br/><br/> Defaults to <see langword="false"/>. See also <see cref="TileID.Sets.GrassSpecial"/> and <see cref="NeedsGrassFraming"/>.
+		/// <para/> Vanilla entries include <see cref="TileID.Grass"/>, <see cref="CorruptGrass"/>, <see cref="HallowedGrass"/>, <see cref="CrimsonGrass"/>, <see cref="GolfGrass"/>, and <see cref="GolfGrassHallowed"/>.
+		/// <para/> Defaults to <see langword="false"/>. See also <see cref="TileID.Sets.GrassSpecial"/> and <see cref="NeedsGrassFraming"/>.
 		/// </summary>
 		public static bool[] Grass = Factory.CreateBoolSet(TileID.Grass, CorruptGrass, HallowedGrass, CrimsonGrass, GolfGrass, GolfGrassHallowed); // 2, 23, 109, 199, 477, 492
 
