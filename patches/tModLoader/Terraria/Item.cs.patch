@@ -848,7 +848,7 @@
  	public static void DropCache(IEntitySource reason, Vector2 pos, Vector2 spread, int t, bool stopCaching = true)
  	{
  		if (cachedItemSpawnsByType[t] == -1)
-@@ -300,17 +_,63 @@
+@@ -300,17 +_,62 @@
  		}
  	}
  
@@ -877,7 +877,6 @@
 + 	{
 +		return type != 0
 +			&& ItemID.Sets.CanGetPrefixes[type]
-+			&& (maxStack == 1 || AllowReforgeForStackableItem)
 +			&& ammo == 0
 +			&& (damage > 0 || IsAPrefixableAccessory());
 +	}
@@ -1825,7 +1824,7 @@
  			TurnToAir();
  	}
  
-@@ -48311,24 +_,48 @@
+@@ -48311,24 +_,47 @@
  
  	public void OnCreated(ItemCreationContext context)
  	{
@@ -1848,7 +1847,6 @@
 +		ModItem = null;
 +		_globals = null;
 +		StatsModifiedBy = new();
-+		AllowReforgeForStackableItem = false;
 +		useTurnOnAnimationStart = false;
 +		attackSpeedOnlyAffectsWeaponAnimation = false;
 +		useLimitPerAnimation = null;

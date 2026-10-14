@@ -607,6 +607,7 @@ public static partial class Config
 		RefactorInstanceMember("Terraria.ModLoader.ModProjectile", "DrawHeldProjInFrontOfHeldItemAndArms", Removed("Replace with Projectile.drawLayer = ProjectileDrawLayerID.HeldProjOverHand;"));
 		RefactorInstanceMember("Terraria.ModLoader.TooltipLine", "IsModifier", Removed("Set Color = Terraria.ID.Colors.PrefixGood instead"));
 		RefactorInstanceMember("Terraria.ModLoader.TooltipLine", "IsModifierBad", Removed("Set Color = Terraria.ID.Colors.PrefixBad instead"));
+		RefactorInstanceMember("Terraria.Item", "AllowReforgeForStackableItem", Removed("In 1.4.5 items with prefixes can stack"));
 
 		RenameInstanceField("Terraria.ModLoader.TooltipLine", "OverrideColor", "Color");
 

@@ -89,12 +89,6 @@ public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>
 	public bool attackSpeedOnlyAffectsWeaponAnimation { get; set; }
 
 	/// <summary>
-	/// Set to true in SetDefaults to allow this item to receive a prefix on reforge even if maxStack is not 1.
-	/// <br>This prevents it from receiving a prefix on craft.</br>
-	/// </summary>
-	public bool AllowReforgeForStackableItem { get; set; }
-
-	/// <summary>
 	/// Similar to useTurn, but only allows turning when an animation starts (eg between swings). Many early-game vanilla swords use this as it makes them clunky and hard to kite with.
 	/// <br/> Defaults to <see langword="false"/>.
 	/// </summary>
