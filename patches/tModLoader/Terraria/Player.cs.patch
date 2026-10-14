@@ -7415,6 +7415,38 @@
  				if (inventory[num6].stack <= 0)
  					inventory[num6].SetDefaults(0);
  
+@@ -38831,6 +_,13 @@
+ 			return false;
+ 
+ 		Tile tile = Main.tile[x, y];
++
++		var tileResult = TileLoader.CanDoWireStuffHere(x, y, tile.TileType);
++		var wallResult = WallLoader.CanDoWireStuffHere(x, y, tile.WallType);
++		if (tileResult.HasValue || wallResult.HasValue) {
++			return (tileResult ?? true) && (wallResult ?? true);
++		}
++
+ 		if (tile.wall == 350)
+ 			return false;
+ 
+@@ -38850,8 +_,17 @@
+ 		if (!WorldGen.InWorld(x, y))
+ 			return false;
+ 
++		Tile tile = Main.tile[x, y];
++		var tileResult = TileLoader.CanShowWireStuffHere(x, y, tile.TileType);
++		var wallResult = WallLoader.CanShowWireStuffHere(x, y, tile.WallType);
++		if (tileResult.HasValue || wallResult.HasValue) {
++			return (tileResult ?? true) && (wallResult ?? true);
++		}
++
+ 		if (!NPC.downedGolemBoss) {
++			/*
+ 			Tile tile = Main.tile[x, y];
++			*/
+ 			if (Main.dualDungeonsSeed && (double)y > Main.worldSurface && DungeonGenerationStyles.Temple.WallIsInStyle(tile.wall, includeWindows: true))
+ 				return false;
+ 
 @@ -38943,11 +_,21 @@
  
  	private void ItemCheck_Shoot(int i, Item sItem, int weaponDamage, bool withAudioVisualFeedback = true)
